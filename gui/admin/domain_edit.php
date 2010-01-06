@@ -3,7 +3,7 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @version 	SVN: $ID$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
@@ -24,7 +24,7 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
- * Portions created by the ispCP Team are Copyright (C) 2006-2009 by
+ * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  */
 
@@ -64,7 +64,7 @@ $tpl->assign(
 		'TR_DOMAIN_NAME'		=> tr('Domain name'),
 		'TR_DOMAIN_IP'			=> tr('Domain IP'),
 		'TR_DOMAIN_EXPIRE'		=> tr('Domain expire'),
-		'TR_DOMAIN_NEW_EXPIRE'	=> tr('New expire date'),  
+		'TR_DOMAIN_NEW_EXPIRE'	=> tr('New expire date'),
 		'TR_PHP_SUPP'			=> tr('PHP support'),
 		'TR_CGI_SUPP'			=> tr('CGI support'),
 		'TR_DNS_SUPP'			=> tr('Manual DNS support (EXPERIMENTAL)'),
@@ -86,7 +86,7 @@ $tpl->assign(
 		'TR_CANCEL'				=> tr('Cancel'),
 		'TR_YES'				=> tr('Yes'),
 		'TR_NO'					=> tr('No'),
-		'TR_DMN_EXP_HELP' 		=> tr("In case 'Domain expire' is 'N/A', the expiration date will be set from today.") 
+		'TR_DMN_EXP_HELP' 		=> tr("In case 'Domain expire' is 'N/A', the expiration date will be set from today.")
 	)
 );
 
@@ -189,7 +189,7 @@ function load_additional_data($user_id, $domain_id) {
 	$query = "
 		SELECT
 			`domain_name`,
-			`domain_expires`, 
+			`domain_expires`,
 			`domain_ip_id`,
 			`domain_php`,
 			`domain_cgi`,
@@ -210,13 +210,13 @@ function load_additional_data($user_id, $domain_id) {
 	$domain_expires		= $data['domain_expires'];
 	$_SESSION['domain_expires'] = $domain_expires;
 
-	if ($domain_expires == 0) { 
- 		$domain_expires = tr('N/A'); 
- 	} else { 
- 		$date_formt = Config::get('DATE_FORMAT'); 
- 		$domain_expires = date($date_formt, $domain_expires); 
- 	} 
-	
+	if ($domain_expires == 0) {
+ 		$domain_expires = tr('N/A');
+ 	} else {
+ 		$date_formt = Config::get('DATE_FORMAT');
+ 		$domain_expires = date($date_formt, $domain_expires);
+ 	}
+
 	$domain_ip_id		= $data['domain_ip_id'];
 	$php_sup			= $data['domain_php'];
 	$cgi_supp			= $data['domain_cgi'];
@@ -346,7 +346,7 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 	global $domain_cgi, $allowbackup;
 	global $domain_dns;
 
-	$domain_new_expire = clean_input($_POST['dmn_expire']); 
+	$domain_new_expire = clean_input($_POST['dmn_expire']);
 
 	$sub			= clean_input($_POST['dom_sub']);
 	$als				= clean_input($_POST['dom_alias']);

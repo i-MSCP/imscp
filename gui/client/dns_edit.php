@@ -2,7 +2,7 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @version 	SVN: $ID$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
@@ -21,7 +21,7 @@
  * The Original Code is "ispCP - isp Control Panel".
  *
  * The Initial Developer of the Original Code is ispCP Team.
- * Portions created by Initial Developer are Copyright (C) 2006-2009 by
+ * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  */
 
@@ -43,7 +43,7 @@ $add_mode = preg_match('~dns_add.php~', $_SERVER['REQUEST_URI']);
 
 $tpl->assign(
 	array(
-		'TR_EDIT_DNS_PAGE_TITLE'	=> ($add_mode) ? tr("ispCP - Manage Domain Alias/Add DNS zone's record") : 
+		'TR_EDIT_DNS_PAGE_TITLE'	=> ($add_mode) ? tr("ispCP - Manage Domain Alias/Add DNS zone's record") :
 													tr("ispCP - Manage Domain Alias/Edit DNS zone's record"),
 		'THEME_COLOR_PATH'			=> "../themes/$theme_color",
 		'THEME_CHARSET'				=> tr('encoding'),
@@ -608,7 +608,7 @@ function check_fwd_data(&$tpl, $edit_id) {
 				AND	`domain_aliasses`.`alias_id` = ?
 			";
 			exec_query($sql, $query, array(Config::get('ITEM_CHANGE_STATUS'), $dmn_id, $alias_id));
-			
+
 			$query = "
  				UPDATE
 					`subdomain_alias`
@@ -619,7 +619,7 @@ function check_fwd_data(&$tpl, $edit_id) {
 			";
 			exec_query($sql, $query, array(Config::get('ITEM_CHANGE_STATUS'), $alias_id));
 		}
-		
+
 		send_request();
 
 		$admin_login = $_SESSION['user_logged'];

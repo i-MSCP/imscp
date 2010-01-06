@@ -3,7 +3,7 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @version 	SVN: $ID$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
@@ -24,7 +24,7 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
- * Portions created by the ispCP Team are Copyright (C) 2006-2009 by
+ * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  */
 
@@ -154,7 +154,7 @@ function restore_form(&$tpl) {
 					'HP_PAYMENT'			=> clean_input($_POST['hp_payment'], true)
 			)
 	);
-	
+
 	$tpl->assign(
 			array(
 					'TR_PHP_YES'	=> ($_POST['php'] == '_yes_') ? 'checked="checked"' : '',
@@ -209,7 +209,7 @@ SQL_QUERY;
 	$payment = $data['payment'];
 	$status = $data['status'];
 
-	list(	
+	list(
 			$hp_php,
 			$hp_cgi,
 			$hp_sub,
@@ -307,7 +307,7 @@ function check_data_iscorrect(&$tpl) {
 	{
 		$ahp_error = tr('Undefined reference to data!');
 	}
-	
+
 	// put hosting plan id into session value
 	$_SESSION['hpid'] = $hpid;
 
@@ -378,7 +378,7 @@ function save_data_to_db() {
 	global $hp_traff, $hp_disk;
 	global $hpid;
 	global $hp_backup, $hp_dns;
-	
+
 	$sql = Database::getInstance();
 
 	$description	= clean_input($_POST['hp_description']);

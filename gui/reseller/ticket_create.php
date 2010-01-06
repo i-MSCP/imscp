@@ -24,7 +24,7 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
- * Portions created by the ispCP Team are Copyright (C) 2006-2009 by
+ * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  */
 
@@ -130,16 +130,16 @@ if (isset($_POST['urgency'])) {
 }
 switch ($userdata['URGENCY']) {
 	case 1:
-		$userdata['OPT_URGENCY_1'] = ' selected="selected"';  
+		$userdata['OPT_URGENCY_1'] = ' selected="selected"';
 		break;
 	case 3:
-		$userdata['OPT_URGENCY_3'] = ' selected="selected"';  
+		$userdata['OPT_URGENCY_3'] = ' selected="selected"';
 		break;
 	case 4:
-		$userdata['OPT_URGENCY_4'] = ' selected="selected"';  
+		$userdata['OPT_URGENCY_4'] = ' selected="selected"';
 		break;
 	default:
-		$userdata['OPT_URGENCY_2'] = ' selected="selected"';  
+		$userdata['OPT_URGENCY_2'] = ' selected="selected"';
 		break;
 }
 $userdata['SUBJECT'] = isset($_POST['subj']) ? clean_input($_POST['subj'], true) : '';

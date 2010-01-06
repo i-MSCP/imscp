@@ -1,10 +1,10 @@
 #!/bin/sh
 #
-# ispCP required repositories install script for OpenSuse 11.2
+# ispCP required repositories install script for OpenSuse 11.1, 11.2
 #
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2006-2009 by isp Control Panel - http://ispcp.net
-# author        Laurent Declercq <l.declercq@nuxwin.com>
+# author        Laurent Declercq <laurent.declercq@ispcp.net>
 # version		1.1
 #
 # SVN: $Id$
@@ -28,6 +28,7 @@
 # The ispCP ω Home Page is:
 #
 #    http://isp-control.net
+#
 
 # Special note for DevTeam:
 #

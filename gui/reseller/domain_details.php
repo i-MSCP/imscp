@@ -3,7 +3,7 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @version 	SVN: $ID$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
@@ -24,7 +24,7 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
- * Portions created by the ispCP Team are Copyright (C) 2006-2009 by
+ * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  */
 
@@ -265,18 +265,18 @@ function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
 	// Check if Backup support is available for this user
 	switch($data['allowbackup']){
     case "full":
-        $tpl->assign( array('VL_BACKUP_SUPPORT' => tr('Full'))); 
+        $tpl->assign( array('VL_BACKUP_SUPPORT' => tr('Full')));
         break;
     case "sql":
-        $tpl->assign( array('VL_BACKUP_SUPPORT' => tr('SQL'))); 
+        $tpl->assign( array('VL_BACKUP_SUPPORT' => tr('SQL')));
         break;
     case "dmn":
-        $tpl->assign( array('VL_BACKUP_SUPPORT' => tr('Domain'))); 
+        $tpl->assign( array('VL_BACKUP_SUPPORT' => tr('Domain')));
         break;
     default:
         $tpl->assign( array('VL_BACKUP_SUPPORT' => tr('No')));
     }
-	
+
 	$dom_alias = translate_limit_value($data['domain_alias_limit']);
 	// Fill in the fields
 	$tpl->assign(

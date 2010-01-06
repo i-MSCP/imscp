@@ -1,8 +1,8 @@
 #!/usr/bin/perl
- 
+
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
-# Copyright (C) 2006-2009 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
 #
 # Version: $Id$
 #
@@ -21,7 +21,7 @@
 # The Initial Developer of the Original Code is moleSoftware GmbH.
 # Portions created by Initial Developer are Copyright (C) 2001-2006
 # by moleSoftware GmbH. All Rights Reserved.
-# Portions created by the ispCP Team are Copyright (C) 2006-2009 by
+# Portions created by the ispCP Team are Copyright (C) 2006-2010 by
 # isp Control Panel. All Rights Reserved.
 #
 # The ispCP ω Home Page is:
@@ -147,19 +147,19 @@ sub gen_log_file {
 	my $pos = 0;
 
 	#Creating the logdb file where the log position for each log reside if not already created
-		
+
 	if (!-e "$logdb_file") {
-	
+
 		$rs = sys_command("$main::cfg{'CMD_TOUCH'} $logdb_file");
-			
+
 		return ($rs, '') if ($rs != 0);
-			
+
 	}
 
 	push_el(\@main::el, 'gen_log_file()', "Taking the domain log positions from '$logdb_file'...");
 
 	$rs = open (LOGDB,'+<',"$logdb_file");
-		
+
 	if (!defined($rs)) {
 
 		push_el(\@main::el, 'gen_log_file()', "ERROR: Can't open '$logdb_file' for reading !");
@@ -178,7 +178,7 @@ sub gen_log_file {
 
 	if (-e $dest_file_prev) {
 
-		#There is almost no chance two log files to have the same size and not to be identical. However if you find your logs too precious, keep the byte by byte cmp ;) 
+		#There is almost no chance two log files to have the same size and not to be identical. However if you find your logs too precious, keep the byte by byte cmp ;)
 
 		if (-s $dest_file == -s $dest_file_prev) {
 
@@ -199,7 +199,7 @@ sub gen_log_file {
 		if (!defined($rs)) {
 
 			push_el(\@main::el, 'gen_log_file()', "ERROR: Can't open '$dest_file' for reading !");
-			
+
 			return (-1, '');
 
 		}
@@ -209,33 +209,33 @@ sub gen_log_file {
 		if (!defined($rs)) {
 
 			push_el(\@main::el, 'gen_log_file()', "ERROR: Can't open '$log_file' for writing !");
-			
+
 			return (-1, '');
 
 		}
-		
+
 		#We check if we have last saved position for this domain log
 
-		if (exists($logdb{$fname})) { 
+		if (exists($logdb{$fname})) {
 
 			$pos = $logdb{$fname};
 
 			#The log is not rotated so we just copy the remaining entries from our last saved position to the end
 
 			if (-s $dest_file > -s $dest_file_prev) {
-				
+
 				push_el(\@main::el, 'gen_log_file'," Parsing for $dest_file begins at position $pos.");
 
 				seek(DESTLOG,$pos,0);
 
 				while (<DESTLOG>) {
-					
+
 					print LOGFILE $_;
-					
+
 					$pos = tell(DESTLOG) if (eof(DESTLOG));
-				
+
 				}
-				
+
 				$logdb{$fname} = $pos;
 
 			}
@@ -248,28 +248,28 @@ sub gen_log_file {
 
 				my $old_dest_file = "$dest_file.1";
 
-				if (-e $old_src_file) { 
-				
+				if (-e $old_src_file) {
+
 					push_el(\@main::el, 'gen_log_file',"$dest_file was rotated. Parsing begins at position $pos in  $old_src_file");
 
 					$rs = sys_command("$main::cfg{'CMD_CP'} $old_src_file $old_dest_file");
-				
+
 					return ($rs, '') if ($rs != 0);
-			
+
 					$rs = open (OLDLOG,'<',$old_dest_file);
-	
+
 					if (!defined($rs)) {
 
 						push_el(\@main::el, 'gen_log_file()', "ERROR: Can't open '$old_dest_file' for reading !");
-			
+
 						return (-1, '');
 
 					}
-		
+
 					seek(OLDLOG,$pos,0);
 
 					while (<OLDLOG>) {
-		
+
 						print LOGFILE $_;
 
 					}
@@ -277,12 +277,12 @@ sub gen_log_file {
 					close OLDLOG;
 
 					$rs = del_file($old_dest_file);
-				
+
 					return ($rs, '') if ($rs != 0);
 
 				}
 
-				else { 
+				else {
 
 					push_el(\@main::el, 'gen_log_file',"$dest_file was rotated but no $old_src_file found!");
 
@@ -293,17 +293,17 @@ sub gen_log_file {
 					print LOGFILE $_;
 
 					$pos = tell(DESTLOG) if (eof(DESTLOG));
-					
+
 				}
 
 				$logdb{$fname} = $pos;
 			}
 
 		}
-		
+
 		#We have no entry for this domain log. Lets create one!
 		else {
-			
+
 			if (-s $dest_file > -s $dest_file_prev) {
 
 
@@ -312,11 +312,11 @@ sub gen_log_file {
 				if (!defined($rs)) {
 
 					push_el(\@main::el, 'gen_log_file()', "ERROR: Can't open '$dest_file' for reading !");
-			
+
 					return (-1, '');
 
 				}
-				
+
 				push_el(\@main::el, 'gen_log_file',"No log db entry for $dest_file. Checking last position in $dest_file_prev.");
 
 				seek(DESTLOGPREV,0,2);
@@ -326,17 +326,17 @@ sub gen_log_file {
 				close(DESTLOGPREV);
 
 			}
-			
+
 			seek(DESTLOG,$pos,0);
 
 			while (<DESTLOG>) {
-				
+
 				print LOGFILE $_;
 
 				$pos = tell(DESTLOG) if (eof(DESTLOG));
-				
+
 			}
-			
+
 			$logdb{$fname} = $pos;
 
 		}
@@ -360,7 +360,7 @@ sub gen_log_file {
 		if (!defined($rs)) {
 
 			push_el(\@main::el, 'gen_log_file()', "ERROR: Can't open '$dest_file' for reading !");
-			
+
 			return (-1, '');
 
 		}
@@ -370,14 +370,14 @@ sub gen_log_file {
 		seek(DESTLOG,0,2);
 
 		$pos = tell(DESTLOG);
-				
-		
+
+
 		$logdb{$fname} = $pos;
 
 	}
 
 	#Let's write the new position back to the log db
-		
+
 	push_el(\@main::el, 'gen_log_file()', "Saving new domain log positions in '$logdb_file'...");
 
 	seek(LOGDB,0,0);
@@ -398,9 +398,9 @@ sub gen_log_file {
 }
 
 sub collect_http_traffic_from_log {
-	
+
 	my ($key, $value) = @_;
-	
+
 	my ($rs, $rdata, $timestamp, $sum, $rows, $sql) = (undef, undef, time(), 0, undef, undef);
 
 	# timestamp has floor down for the last half'n our to make timestamps in
@@ -437,11 +437,11 @@ sub collect_http_traffic_from_log {
 	}
 
 	if($sum != 0){
-		
+
 		$sql="select COUNT(`domain_id`) from domain_traffic where `domain_id`='$value' and `dtraff_time`>=UNIX_TIMESTAMP(CURRENT_DATE())";
-	
+
 		($rs, $rows) = doSQL($sql);
-	
+
 		return $rs if ($rs != 0);
 
 		if($$rows[0][0] == 0){
@@ -560,23 +560,23 @@ sub collect_ftp_traffic {
 			if($value != 0){
 
 				my $sql = undef;
-	
+
 				$sql="select COUNT(`domain_id`) from domain_traffic where `domain_id`='$id' and `dtraff_time`>=UNIX_TIMESTAMP(CURRENT_DATE())";
-		
+
 				my ($rs, $rows) = doSQL($sql);
-		
+
 				return $rs if ($rs != 0);
-	
+
 				if($$rows[0][0] == 0){
-	
+
 					$sql = "insert into `domain_traffic` (domain_id, dtraff_time, dtraff_web, dtraff_ftp, dtraff_mail, dtraff_pop) values ('$id', '$timestamp', '0', $value, '0', '0');";
-	
+
 				} else {
-	
+
 					$sql = "update `domain_traffic` set `dtraff_ftp`=`dtraff_ftp`+$value, `dtraff_time`='$timestamp', `correction`=0 where `domain_id`='$id' and `dtraff_time`>=UNIX_TIMESTAMP(CURRENT_DATE()) LIMIT 1";
-	
+
 				}
-	
+
 				($rs, $rdata) = doSQL($sql);
 
 				return $rs if ($rs != 0);
@@ -918,7 +918,7 @@ sub collect_mail_traffic {
 				}
 
 				($rs, $rdata) = doSQL($sql);
-	
+
 				return $rs if ($rs != 0);
 
 			}
@@ -942,7 +942,7 @@ sub collect_mail_traffic {
 				return $rs if ($rs != 0);
 
 				if($$rows[0][0] == 0){
-	
+
 					$sql = "insert into `domain_traffic` (domain_id, dtraff_time, dtraff_web, dtraff_ftp, dtraff_mail, dtraff_pop) values ('$id', '$timestamp', '0', '0', '0', $value);";
 
 				} else {

@@ -2,7 +2,7 @@
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
-# Copyright (C) 2006-2009 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
 #
 # Version: $Id$
 #
@@ -21,7 +21,7 @@
 # The Initial Developer of the Original Code is moleSoftware GmbH.
 # Portions created by Initial Developer are Copyright (C) 2001-2006
 # by moleSoftware GmbH. All Rights Reserved.
-# Portions created by the ispCP Team are Copyright (C) 2006-2009 by
+# Portions created by the ispCP Team are Copyright (C) 2006-2010 by
 # isp Control Panel. All Rights Reserved.
 #
 # The ispCP ω Home Page is:
@@ -29,17 +29,28 @@
 #    http://isp-control.net
 #
 
+################################################################################
+## Program Short Desciption:                                                  ##
+##  Domain Alias Manager - Manage all data related to a domain alias          ##
+################################################################################
+
 use FindBin;
 use lib "$FindBin::Bin/";
+
 require 'ispcp_common_code.pl';
+
 use strict;
 use warnings;
+
 $main::als_task_id = undef;
 
 ################################################################################
+##                                SUBROUTINES                                 ##
+################################################################################
+
 ################################################################################
 ##
-##
+## Start Up!
 ##
 sub als_mngr_start_up {
 	my ($rs, $rdata) = (undef, undef);
@@ -56,40 +67,51 @@ sub als_mngr_start_up {
 		return $rs if ($rs != 0);
 	}
 
+	# Already done in the common file
 	# config check;
-	$rs = get_conf();
-	return $rs if ($rs != 0);
+	#$rs = get_conf();
+	#return $rs if ($rs != 0);
 
 	# sql check;
-	#
-	# getting initial data also must be done here;
-	#
+	# FIXME Really required ?
+
+	#my $sql = "
+	#	SELECT
+	#		domain_id,
+	#		domain_name,
+	#		domain_gid,
+	#		domain_uid,
+	#		domain_admin_id,
+	#		domain_created_id,
+	#		domain_created,
+	#		domain_last_modified,
+	#		domain_mailacc_limit,
+	#		domain_ftpacc_limit,
+	#		domain_traffic_limit,
+	#		domain_sqld_limit,
+	#		domain_sqlu_limit,
+	#		domain_status,
+	#		domain_alias_limit,
+	#		domain_subd_limit,
+	#		domain_ip_id,
+	#		domain_disk_limit,
+	#		domain_disk_usage,
+	#		domain_php,
+	#		domain_cgi
+	#	FROM
+	#		domain
+	#";
+
 	my $sql = "
 		SELECT
-			domain_id,
-			domain_name,
-			domain_gid,
-			domain_uid,
-			domain_admin_id,
-			domain_created_id,
-			domain_created,
-			domain_last_modified,
-			domain_mailacc_limit,
-			domain_ftpacc_limit,
-			domain_traffic_limit,
-			domain_sqld_limit,
-			domain_sqlu_limit,
-			domain_status,
-			domain_alias_limit,
-			domain_subd_limit,
-			domain_ip_id,
-			domain_disk_limit,
-			domain_disk_usage,
-			domain_php,
-			domain_cgi
+			admin_id
 		FROM
-			domain
+			admin
+		WHERE
+			admin_id = 1
+		;
 	";
+
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
@@ -108,52 +130,53 @@ sub als_mngr_start_up {
 	#
 	# getting task id and domain record id;
 	#
+
 	$main::als_task_id = $ARGV[0];
 
 	push_el(\@main::el, 'als_mngr_start_up()', 'Ending...');
-	return 0;
+
+	0;
 }
 
 ################################################################################
-################################################################################
 ##
-##
+## Shut Down!
 ##
 sub als_mngr_shut_down {
+
 	my $rs = undef;
 
 	push_el(\@main::el, 'als_mngr_shut_down()', 'Starting...');
 	push_el(\@main::el, 'als_mngr_shut_down()', 'Ending...');
 
-	return 0;
+	0;
 }
 
-####################################################
-##
-## domain named data managment;
-##
-####################################################
+################################################################################
+##                             DNS data managment                             ##
+################################################################################
 
 ################################################################################
-################################################################################
 ##
-## Add Named cfg data in main configuration file
+## Adds main DNS cfg data related to a domain alias
 ##
 sub als_add_named_cfg_data {
 
 	push_el(\@main::el, 'als_add_named_cfg_data()', 'Starting...');
 
 	my ($data) = @_;
+	my ($rs, $cmd, $wrk_file) = (undef, undef, undef, undef);
 
-	my ($rs, $rdata, $cmd, $working) = (undef, undef, undef, undef);
-
-	if (!defined($data) || $data eq '')
-	{
-		push_el(\@main::el, 'als_add_named_cfg_data()', 'FATAL: Undefined Input Data...');
+	if (!defined($data) || $data eq '') {
+		push_el(
+			\@main::el,
+			'als_add_named_cfg_data()',
+			'FATAL: Undefined Input Data...'
+		);
 		return -1;
 	}
 
-	# Alias domain name
+	# Zone name
 	my $zone_name = @$data[2];
 
 	# Directories paths
@@ -163,13 +186,35 @@ sub als_add_named_cfg_data {
 	my $wrk_dir = "$cfg_dir/working";
 
 	#
+	## Saving the current production file if it exist - Begin
+	#
+
+	if(-e $main::cfg{'BIND_CONF_FILE'}) {
+		my $timestamp = time;
+
+		$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'BIND_CONF_FILE'} " .
+			"$bkp_dir/named.conf.$timestamp";
+
+		$rs = sys_command($cmd);
+		return $rs if ($rs != 0);
+	}
+
+	#
+	## Saving the current production file if it exist - End
+	#
+
+	# Loading the working file from tpl directory (eg. /etc/ispcp/bind/working/)
+	($rs, $wrk_file) = get_file("$wrk_dir/named.conf");
+	return $rs if ($rs != 0);
+
+	#
 	## Loading all needed templates from (eg. /etc/ispcp/bind/parts/) - Begin
 	#
 
 	my ($dta_b, $dta_e, $entry_b, $entry_e, $entry) = ('', '', '', '', '');
 
-	(
-		$rs,
+	# Gets all needed templates
+	(	$rs,
 		$dta_b,
 		$dta_e,
 		$entry_b,
@@ -190,20 +235,19 @@ sub als_add_named_cfg_data {
 	#
 
 	#
-	## Let's construct needed tags and entries - Begin
+	## Construct needed tags and entries - Begin
 	#
 
-	# Tags
+	# Tags Preparation
 	my %tag_hash = (
 		'{DMN_NAME}' => $zone_name,
-		'{DB_DIR}'   => $main::cfg{'BIND_DB_DIR'}
+		'{DB_DIR}' => $main::cfg{'BIND_DB_DIR'}
 	);
 
-	# Entries
+	# Entries Preparation
 	my ($entry_b_val, $entry_e_val, $entry_val) = ('', '', '');
 
-	(
-		$rs,
+	(	$rs,
 		$entry_b_val,
 		$entry_e_val,
 		$entry_val
@@ -216,71 +260,56 @@ sub als_add_named_cfg_data {
 	return $rs if ($rs != 0);
 
 	#
-	## Let's construct needed tags and entries - End
+	## Construct needed tags and entries - End
 	#
 
-	# Loading the working file from (eg. /etc/ispcp/bind/working/)
-	($rs, $working) = get_file("$wrk_dir/named.conf");
+	#
+	## Building the new file - Begin
+	#
+
+	# Checks if the file contains all main tags needed
+	# TODO: Recovery process - Add it if doesn't exist
+	($rs, undef) = get_tag($dta_b, $dta_e, $wrk_file);
 	return $rs if ($rs != 0);
 
-	# Check the validity of the working file
-	($rs, $rdata) = get_tag($dta_b, $dta_e, $working);
-	return $rs if ($rs != 0);
+	# Removes the entries related to the domain if it exist
+	($rs, $wrk_file) = del_tag($entry_b_val, "$entry_e_val\n", $wrk_file);
+	return $rs if ($rs != 0 && $rs != -5);
 
-	#
-	## If the new entry already exists, remove it - Begin
-	#
-
-	# Check if the new entry already exists in the current working file
-	($rs, $rdata) = get_tag($entry_b_val, $entry_e_val, $working);
-
-	# If the entry exists, remove it !
-	if ($rs == 0)
-	{
-		($rs, $working) = del_tag($entry_b_val, "$entry_e_val\n", $working);
-		return $rs if ($rs != 0);
-	}
-
-	#
-	## If the new entry already exists, remove it - End
-	#
-
-	# Check the validity of the working file
-	($rs, $rdata) = get_tag($entry_b, $entry_e, $working);
-	return $rs if ($rs != 0);
-
-	#
-	## Saving the current production file if it exist - Begin
-	#
-
-	if(-e $main::cfg{'BIND_CONF_FILE'})
-	{
-		my $timestamp = time;
-
-		my $cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'BIND_CONF_FILE'} $bkp_dir/named.conf.$timestamp";
-		$rs = sys_command($cmd);
-		return $rs if ($rs != 0);
-	}
-
-	#
-	## Saving the current production file if it exist - End
-	#
-
-	#
-	## Building, storage and installation of the new file  - Begin
-	#
-
-	# Let's construct the replacement and do it
+	# Construct the replacement
 	my $entry_repl = "$entry_b_val$entry_val$entry_e_val\n$entry_b$entry_e";
 
-	# Building the new file
-	($rs, $working) = repl_tag($entry_b, $entry_e, $working, $entry_repl, "als_add_named_cfg_data");
+	# Adds new entries
+	(	$rs,
+		$wrk_file
+	) = repl_tag(
+	 	$entry_b,
+	 	$entry_e,
+	 	$wrk_file,
+	 	$entry_repl,
+	 	'als_add_named_cfg_data'
+	);
 	return $rs if ($rs != 0);
+
+	# Checks if the file contains all needed tags for futur entries
+	# TODO: Recovery process - Add it if doesn't exist
+	# FIXME Really needed ? Because can only occur if the above call
+	# of repl_tag() fail. and if that fail, the present code will never run
+	($rs, undef) = get_tag($entry_b, $entry_e, $wrk_file);
+	return $rs if ($rs != 0);
+
+	#
+	## Building the new file - End
+	#
+
+	#
+	## Storage and installation of the new file  - Begin
+	#
 
 	# Store the new file in working directory
 	$rs = store_file(
 		"$wrk_dir/named.conf",
-		$working,
+		$wrk_file,
 		$main::cfg{'ROOT_USER'},
 		$main::cfg{'ROOT_GROUP'},
 		0644
@@ -288,12 +317,14 @@ sub als_add_named_cfg_data {
 	return $rs if ($rs != 0);
 
 	# Install the new file in production directory
-	$cmd = "$main::cfg{'CMD_CP'} -pf $wrk_dir/named.conf $main::cfg{'BIND_CONF_FILE'}";
+	$cmd = "$main::cfg{'CMD_CP'} -pf $wrk_dir/named.conf " .
+		"$main::cfg{'BIND_CONF_FILE'}";
+
 	$rs = sys_command($cmd);
 	return $rs if ($rs != 0);
 
 	#
-	## Building, storage and installation of the new file  - End
+	## Storage and installation of the new file  - End
 	#
 
 	push_el(\@main::el, 'als_add_named_cfg_data()', 'Ending...');
@@ -302,39 +333,64 @@ sub als_add_named_cfg_data {
 }
 
 ################################################################################
-################################################################################
 ##
-##
+## Deletes main DNS cfg data related to a domain alias
 ##
 sub als_del_named_cfg_data {
-	my ($als_data)   = @_;
-	my ($rs, $rdata) = (undef, undef);
 
 	push_el(\@main::el, 'als_del_named_cfg_data()', 'Starting...');
-	if (!defined($als_data) || $als_data eq '') {
-		push_el(\@main::el, 'als_del_named_cfg_data()', 'ERROR: Undefined Input Data...');
+
+	my ($data) = @_;
+	my ($rs, $cmd, $wrk_file) = (undef, undef, undef, undef);
+
+	if (!defined($data) || $data eq '') {
+		push_el(
+			\@main::el,
+			'als_del_named_cfg_data()',
+			'FATAL: Undefined Input Data...'
+		);
 		return -1;
 	}
 
+	# Zone name
+	my $zone_name = @$data[2];
+
+	# Directories paths
+	my $cfg_dir = "$main::cfg{'CONF_DIR'}/bind";
+	my $tpl_dir = "$cfg_dir/parts";
+	my $bkp_dir = "$cfg_dir/backup";
+	my $wrk_dir = "$cfg_dir/working";
+
 	#
-	# Initial data we need;
+	## Saving the current production file if it exist - Begin
 	#
-	my $als_name     = @$als_data[2];
-	my $conf_dir     = $main::cfg{'CONF_DIR'};
-	my $sys_cfg      = $main::cfg{'BIND_CONF_FILE'};
-	my $named_db_dir = $main::cfg{'BIND_DB_DIR'};
-	my $tpl_dir      = "$conf_dir/bind/parts";
-	my $backup_dir   = "$conf_dir/bind/backup";
-	my $working_dir  = "$conf_dir/bind/working";
-	my $timestamp    = time;
-	my $backup_cfg   = "$backup_dir/named.conf.$timestamp";
-	my $working_cfg  = "$working_dir/named.conf";
+
+	if(-e $main::cfg{'BIND_CONF_FILE'}) {
+		my $timestamp = time;
+
+		$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'BIND_CONF_FILE'} " .
+			"$bkp_dir/named.conf.$timestamp";
+
+		$rs = sys_command($cmd);
+		return $rs if ($rs != 0);
+	}
+
 	#
-	#  BEGIN/END tags, and templates needed for this config;
+	## Saving the current production file if it exist - End
 	#
+
+	# Loading the working file from tpl directory (eg. /etc/ispcp/bind/working/)
+	($rs, $wrk_file) = get_file("$wrk_dir/named.conf");
+	return $rs if ($rs != 0);
+
+	#
+	## Loading all needed templates from (eg. /etc/ispcp/bind/parts/) - Begin
+	#
+
 	my ($dta_b, $dta_e, $entry_b, $entry_e, $entry) = ('', '', '', '', '');
-	(
-		$rs,
+
+	# Gets all needed templates
+	(	$rs,
 		$dta_b,
 		$dta_e,
 		$entry_b,
@@ -351,15 +407,23 @@ sub als_del_named_cfg_data {
 	return $rs if ($rs != 0);
 
 	#
-	# Let's construct needed tags and entries;
+	## Loading all needed template from (eg. /etc/ispcp/bind/parts/) - End
 	#
+
+	#
+	## Construct needed tags and entries - Begin
+	#
+
+	# Tags Preparation
 	my %tag_hash = (
-		'{DMN_NAME}' => $als_name,
-		'{DB_DIR}'   => $named_db_dir
+		'{DMN_NAME}' => $zone_name,
+		'{DB_DIR}' => $main::cfg{'BIND_DB_DIR'}
 	);
+
+	# Entries Preparation
 	my ($entry_b_val, $entry_e_val, $entry_val) = ('', '', '');
-	(
-		$rs,
+
+	(	$rs,
 		$entry_b_val,
 		$entry_e_val,
 		$entry_val
@@ -372,94 +436,98 @@ sub als_del_named_cfg_data {
 	return $rs if ($rs != 0);
 
 	#
-	# Let's get Sytem and Working config files;
+	## Construct needed tags and entries - End
 	#
-	my ($sys, $working) = ('', '');
-	($rs, $sys) = get_file($sys_cfg);
-	return $rs  if ($rs != 0);
 
-	($rs, $working) = get_file($working_cfg);
-	return $rs  if ($rs != 0);
+	#
+	## Building the new file - Begin
+	#
 
-	($rs, $rdata) = get_tag($dta_b, $dta_e, $working);
+	# Checks if the file contains all main tags needed
+	# TODO: Recovery process - Add it if doesn't exist
+	($rs, undef) = get_tag($dta_b, $dta_e, $wrk_file);
 	return $rs if ($rs != 0);
 
-	#
-	# Does the new domain entry exists ?
-	#
-	($rs, $rdata) = get_tag($entry_b_val, $entry_e_val, $working);
-	if ($rs == 0) {
-		# Yes it exists ! Then we must delete it !
-		($rs, $working) = del_tag($entry_b_val, "$entry_e_val\n", $working);
-		return $rs if ($rs != 0);
+	# Removes the entries related to the domain if it exist
+	($rs, $wrk_file) = del_tag($entry_b_val, "$entry_e_val\n", $wrk_file);
+	return $rs if ($rs != 0 && $rs != -5);
+
+	# Avoid work if the entries doesn't exist
+	if($rs == -5) {
+		push_el(
+			\@main::el,
+			'als_del_named_cfg_data()',
+			'WARNING: Entries were not found ! Aborting...'
+		);
+
+		return 0;
 	}
-	($rs, $rdata) = get_tag($entry_b, $entry_e, $working);
+
+	# Checks if the file contains all needed tags for futur entries
+	# TODO: Recovery process - Add it if doesn't exist
+	($rs, undef) = get_tag($entry_b, $entry_e, $wrk_file);
 	return $rs if ($rs != 0);
 
 	#
-	# Let's construct the replacement and do it;
+	## Building the new file - End
 	#
-	#
-	#my $entry_repl = "$entry_b_val$entry_val$entry_e_val\n$entry_b$entry_e";
-	#
-	#($rs, $working) = repl_tag($entry_b, $entry_e, $working, $entry_repl);
-	#
-	#return $rs if ($rs != 0);
 
 	#
+	## Storage and installation of the new file  - Begin
 	#
-	# Here we'll backup production config file;
-	#
-	$rs = sys_command("cp -p $sys_cfg $backup_cfg");
+
+	# Store the new file in working directory
+	$rs = store_file(
+		"$wrk_dir/named.conf",
+		$wrk_file,
+		$main::cfg{'ROOT_USER'},
+		$main::cfg{'ROOT_GROUP'},
+		0644
+	);
+	return $rs if ($rs != 0);
+
+	# Install the new file in production directory
+	$cmd = "$main::cfg{'CMD_CP'} -pf $wrk_dir/named.conf " .
+		"$main::cfg{'BIND_CONF_FILE'}";
+
+	$rs = sys_command($cmd);
 	return $rs if ($rs != 0);
 
 	#
-	# Let's save working copy;
+	## Storage and installation of the new file  - End
 	#
-	$rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-	return $rs if ($rs != 0);
-
-	#
-	# Here we'll replace data in production config file with data in working
-	# confing file. A little workaround will be done. If working copy data does not exist
-	# in production config then we will add it;
-	#
-	($rs, $rdata) = get_tag($dta_b, $dta_e, $sys);
-	if ($rs == 0) { # YES ! Data is here ! /in production config file/;
-		($rs, $sys) = repl_tag($dta_b, $dta_e, $sys, $working, "als_del_named_cfg_data");
-		return $rs if ($rs != 0);
-	} elsif ($rs == -5) {
-		$sys .= $working;
-	} else {
-		return $rs;
-	}
-	$rs = store_file($sys_cfg, $sys, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
-	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'als_del_named_cfg_data()', 'Ending...');
-	return 0;
+
+	0;
 }
 
 ################################################################################
-################################################################################
 ##
+## Create DNS db zone file related to a domain alias
 ##
-##
-
 sub als_add_named_db_data {
-	my ($als_data)   = @_;
-	my ($rs, $rdata) = (undef, undef);
 
 	push_el(\@main::el, 'als_add_named_db_data()', 'Starting...');
 
+	my ($als_data) = @_;
+
+	my ($rs, $rdata) = (undef, undef);
+
 	if (!defined($als_data) || $als_data eq '') {
-		push_el(\@main::el, 'als_add_named_db_data()', 'ERROR: Undefined Input Data...');
+		push_el(
+			\@main::el,
+			'als_add_named_db_data()',
+			'ERROR: Undefined Input Data...'
+		);
+
 		return -1;
 	}
 
 	#
 	# Initial data we need;
 	#
+
 	my $als_name     = @$als_data[2];
 	my $als_ip_id    = @$als_data[5];
 	my $als_ip       = $main::ip_id_num{$als_ip_id};
@@ -471,28 +539,37 @@ sub als_add_named_db_data {
 	#
 	# Any secondary DNS defined;
 	#
+
 	if (!$sec_dns_ip) {
 		$sec_dns_ip = $base_svr_ip;
 	}
 
-	my $tpl_dir     = "$conf_dir/bind/parts";
-	my $backup_dir  = "$conf_dir/bind/backup";
+	my $tpl_dir = "$conf_dir/bind/parts";
+	my $backup_dir = "$conf_dir/bind/backup";
 	my $working_dir = "$conf_dir/bind/working";
-	my $db_fname    = "$als_name.db";
-	my $sys_cfg     = "$named_db_dir/$db_fname";
+	my $db_fname = "$als_name.db";
+	my $sys_cfg = "$named_db_dir/$db_fname";
 	my $working_cfg = "$working_dir/$db_fname";
 
 	#
 	# Let's get needed tags and templates;
 	#
-	my ($entry, $dns2_b, $dns2_e, $db_dns_entry_b, $db_dns_entry_e, $db_dns_entry) = ('', '', '', '', '', '');
-	(   $rs,
-	    $entry,
-	    $dns2_b,
-	    $dns2_e,
-	    $db_dns_entry_b,
-	    $db_dns_entry_e,
-	    $db_dns_entry
+
+	my ($entry,
+		$dns2_b,
+		$dns2_e,
+		$db_dns_entry_b,
+		$db_dns_entry_e,
+		$db_dns_entry
+	) = ('', '', '', '', '', '');
+
+	(	$rs,
+		$entry,
+		$dns2_b,
+		$dns2_e,
+		$db_dns_entry_b,
+		$db_dns_entry_e,
+		$db_dns_entry
 	) = get_tpl(
 		$tpl_dir,
 		'db_e.tpl',
@@ -505,22 +582,26 @@ sub als_add_named_db_data {
 	return $rs if ($rs != 0);
 
 	my $seq = 0;
+
 	#
 	# RFC 1912
 	#
+
 	my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
 	my $time2 = sprintf "%4d%02d%02d00",$year+1900,$mon+1,$mday,$seq;
 
 	#
 	# Let's prepare them;
 	#
+
 	my %tag_hash = (
-		'{DMN_NAME}'         => $als_name,
-		'{DMN_IP}'           => $als_ip,
-		'{BASE_SERVER_IP}'   => $base_svr_ip,
+		'{DMN_NAME}' => $als_name,
+		'{DMN_IP}' => $als_ip,
+		'{BASE_SERVER_IP}' => $base_svr_ip,
 		'{SECONDARY_DNS_IP}' => $sec_dns_ip,
-		'{TIMESTAMP}'        => $time2
+		'{TIMESTAMP}' => $time2
 	);
+
 	($rs, $entry, $dns2_b, $dns2_e) = prep_tpl(
 		\%tag_hash,
 		$entry,
@@ -529,99 +610,137 @@ sub als_add_named_db_data {
 	);
 	return $rs if ($rs != 0);
 
-	#if ($main::cfg{'SECONDARY_DNS'}) {
-	#   my $dns2 = undef;
-	#    $dns2 = "\t\t \t NS \t $main::cfg{'SECONDARY_DNS'}.\n";
-	#    $dns2 = "$dns2_b$dns2$dns2_e";
-	#    ($rs, $entry) = repl_tag($dns2_b, $dns2_e, $entry, $dns2);
-	#    return $rs if ($rs != 0);
-	#} else {
-	#    ($rs, $entry) = del_tag($dns2_b, $dns2_e, $entry);
-	#    return $rs if ($rs != 0);
-	#}
+	#
+	# Manual DNS records - Begin
+	#
 
-#blondak : support for manual DNS records : begin
-	my $als_alias_id     = @$als_data[0];
-        my $als_domain_id    = @$als_data[1];
+	my $als_alias_id = @$als_data[0];
+	my $als_domain_id = @$als_data[1];
 
 	my $sql = "
-	    SELECT
-		domain_dns_id,
-		domain_id,
-		alias_id,
-		domain_dns,
-		domain_text,
-		domain_class,
-		domain_type
+		SELECT
+			domain_dns_id,
+			domain_id,
+			alias_id,
+			domain_dns,
+			domain_text,
+			domain_class,
+			domain_type
 	    FROM
-		domain_dns
+			domain_dns
 	    WHERE
 		    domain_dns.alias_id = $als_alias_id
-		AND domain_dns.domain_id = $als_domain_id
+		AND
+			domain_dns.domain_id = $als_domain_id
 	    ;
 	";
 
 	my $rows;
 	($rs, $rows) = doSQL($sql);
-	if ($rs == 0){
 
-    	    my ($row, $test);
-	    my ($db_dns_entry_b_val, $db_dns_entry_e_val, $db_dns_entry_val) = (undef, undef, undef);
-	    foreach $row (@$rows){
-		%tag_hash = (
-		    '{MANUAL_DNS_NAME}' => @$row[3],
-		    '{MANUAL_DNS_ID}' => @$row[0],
-		    '{MANUAL_DNS_DATA}' => @$row[4],
-		    '{MANUAL_DNS_CLASS}' => @$row[5],
-		    '{MANUAL_DNS_TYPE}' => @$row[6]
-		);
-		($rs, $db_dns_entry_val, $db_dns_entry_b_val, $db_dns_entry_e_val) = prep_tpl(
-		    \%tag_hash,
-		    $db_dns_entry,
-		    $db_dns_entry_b,
-		    $db_dns_entry_e
-		);
-		$db_dns_entry_val = "$db_dns_entry_b_val$db_dns_entry_val$db_dns_entry_e_val\n$db_dns_entry_b$db_dns_entry_e";
-		($rs, $test) = repl_tag($db_dns_entry_b, $db_dns_entry_e, $entry, $db_dns_entry_val, "als_add_named_db_data_test");
-		if ($rs==0){
-		    $entry = $test;
+	if ($rs == 0) {
+
+		my ($row, $test);
+
+		my ($db_dns_entry_b_val,
+			$db_dns_entry_e_val,
+			$db_dns_entry_val
+		) = (undef, undef, undef);
+
+		foreach $row (@$rows) {
+
+			%tag_hash = (
+				'{MANUAL_DNS_NAME}' => @$row[3],
+				'{MANUAL_DNS_ID}' => @$row[0],
+				'{MANUAL_DNS_DATA}' => @$row[4],
+				'{MANUAL_DNS_CLASS}' => @$row[5],
+				'{MANUAL_DNS_TYPE}' => @$row[6]
+			);
+
+			(	$rs,
+				$db_dns_entry_val,
+				$db_dns_entry_b_val,
+				$db_dns_entry_e_val
+			) = prep_tpl(
+				\%tag_hash,
+				$db_dns_entry,
+				$db_dns_entry_b,
+				$db_dns_entry_e
+			);
+
+			$db_dns_entry_val = "$db_dns_entry_b_val$db_dns_entry_val" .
+				"$db_dns_entry_e_val\n$db_dns_entry_b$db_dns_entry_e";
+
+			($rs, $test) = repl_tag(
+				$db_dns_entry_b,
+				$db_dns_entry_e,
+				$entry,
+				$db_dns_entry_val,
+				'als_add_named_db_data_test'
+			);
+
+			if ($rs==0){
+		    	$entry = $test;
+			}
 		}
-	    }
 	}
-#blondak : support for manual DNS records : end
+
+	#
+	# Manual DNS records - End
+	#
 
 	#
 	# Let's store generated data;
 	#
-	$rs = store_file($working_cfg, $entry, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	$rs = store_file(
+		$working_cfg,
+		$entry,
+		$main::cfg{'ROOT_USER'},
+		$main::cfg{'ROOT_GROUP'},
+		0644
+	);
 	return $rs if ($rs != 0);
 
-	$rs = store_file($sys_cfg, $entry, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	$rs = store_file(
+		$sys_cfg,
+		$entry,
+		$main::cfg{'ROOT_USER'},
+		$main::cfg{'ROOT_GROUP'},
+		0644
+	);
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'als_add_named_db_data()', 'Ending...');
-	return 0;
+
+	0;
 }
 
-
-################################################################################
 ################################################################################
 ##
-##
+## Deletes DNS db zone file related to a domain alias
 ##
 sub als_del_named_db_data {
-	my ($als_data)   = @_;
-	my ($rs, $rdata) = (undef, undef);
 
 	push_el(\@main::el, 'als_del_named_db_data()', 'Starting...');
+
+	my ($als_data) = @_;
+
+	my ($rs, $rdata) = (undef, undef);
+
 	if (!defined($als_data) || $als_data eq '') {
-		push_el(\@main::el, 'als_del_named_db_data()', 'ERROR: Undefined Input Data...');
+		push_el(
+			\@main::el,
+			'als_del_named_db_data()',
+			'ERROR: Undefined Input Data...'
+		);
+
 		return -1;
 	}
 
 	#
 	# Initial data we need;
 	#
+
 	my $als_name     = @$als_data[2];
 	my $als_ip_id    = @$als_data[5];
 	my $als_ip       = $main::ip_id_num{$als_ip_id};
@@ -633,9 +752,11 @@ sub als_del_named_db_data {
 	my $db_fname     = "$als_name.db";
 	my $sys_cfg      = "$named_db_dir/$db_fname";
 	my $working_cfg  = "$working_dir/$db_fname";
+
 	#
 	# Let's remove .db files for this domain;
 	#
+
 	$rs = del_file($working_cfg);
 	return $rs if ($rs != 0);
 
@@ -643,25 +764,34 @@ sub als_del_named_db_data {
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'als_del_named_db_data()', 'Ending...');
-	return 0;
+
+	0;
 }
 
-
-################################################################################
 ################################################################################
 ##
-##
+## Adds all DNS configuration data related to a domain alias
+## See als_add_named_cfg_data() && als_add_named_db_data()
 ##
 sub als_add_named_data {
-	my ($als_data) = @_;
-	my $rs         = undef;
 
 	push_el(\@main::el, 'als_add_named_data()', 'Starting...');
+
+	my ($als_data) = @_;
+
+	my $rs = undef;
+
+	return 0 if ($main::cfg{'CMD_NAMED'} eq 'no');
+
 	if (!defined($als_data) || $als_data eq '') {
-		push_el(\@main::el, 'als_add_named_data()', 'ERROR: Undefined Input Data...');
+		push_el(
+			\@main::el,
+			'als_add_named_data()',
+			'ERROR: Undefined Input Data...'
+		);
+
 		return -1;
 	}
-	return 0 if ($main::cfg{'CMD_NAMED'} eq 'no');
 
 	$rs = als_add_named_cfg_data($als_data);
 	return $rs if ($rs != 0);
@@ -670,48 +800,65 @@ sub als_add_named_data {
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'als_add_named_data()', 'Ending...');
-	return 0;
+
+	0;
 }
 
-
-################################################################################
 ################################################################################
 ##
-##
+## Changes all DNS configuration data related to a domain alias
+## See als_add_named_data()
 ##
 sub als_change_named_data {
-	my ($als_data) = @_;
-	my $rs         = undef;
 
 	push_el(\@main::el, 'als_change_named_data()', 'Starting...');
+
+	my ($als_data) = @_;
+
+	my $rs = undef;
+
+	return 0 if ($main::cfg{'CMD_NAMED'} eq 'no');
+
 	if (!defined($als_data) || $als_data eq '') {
-		push_el(\@main::el, 'als_change_named_data()', 'ERROR: Undefined Input Data...');
+		push_el(
+			\@main::el,
+			'als_change_named_data()',
+			'ERROR: Undefined Input Data...'
+		);
+
 		return -1;
 	}
-	return 0 if ($main::cfg{'CMD_NAMED'} eq 'no');
 
 	$rs = als_add_named_data($als_data);
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'als_change_named_data()', 'Ending...');
-	return 0;
+
+	0;
 }
 
-
-################################################################################
 ################################################################################
 ##
-##
+## Deletes all DNS configuration data related to a domain alias
+## See als_del_named_cfg_data() && als_del_named_db_data()
 ##
 sub als_del_named_data {
-	my ($als_data) = @_;
-	my $rs         = undef;
 
 	push_el(\@main::el, 'als_del_named_data()', 'Starting...');
+
+	my ($als_data) = @_;
+	my $rs = undef;
+
 	if (!defined($als_data) || $als_data eq '') {
-		push_el(\@main::el, 'als_del_named_data()', 'ERROR: Undefined Input Data...');
+		push_el(
+			\@main::el,
+			'als_del_named_data()',
+			'ERROR: Undefined Input Data...'
+		);
+
 		return -1;
 	}
+
 	return 0 if ($main::cfg{'CMD_NAMED'} eq 'no');
 
 	$rs = als_del_named_cfg_data($als_data);
@@ -721,41 +868,47 @@ sub als_del_named_data {
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'als_del_named_data()', 'Ending...');
-	return 0;
+
+	0;
 }
 
-########################################
-##
-## alias httpd data managment;
-##
-########################################
+################################################################################
+##                             Httpd data managment                           ##
+################################################################################
 
 ################################################################################
-################################################################################
 ##
-##
+## Should be documented
 ##
 sub gen_httpd_als_entry {
-	my ($als_data) = @_;
 
 	push_el(\@main::el, 'gen_httpd_als_entry()', 'Starting...');
+
+	my ($als_data) = @_;
+
 	if (!defined($als_data) || $als_data eq '') {
-		push_el(\@main::el, 'gen_httpd_als_entry()', "ERORR: Undefined input data...");
+		push_el(
+			\@main::el,
+			'gen_httpd_als_entry()',
+			'ERORR: Undefined input data...'
+		);
+
 		return (-1, '');
 	}
-	my ($rs, $rdata)        = (undef, undef);
-	my $als_name            = @$als_data[2];
-	my $als_ip_id           = @$als_data[5];
-	my $als_ip              = $main::ip_id_num{$als_ip_id};
-	my $dmn_id              = @$als_data[7];
-	my $dmn_name            = @$als_data[8];
-	my $mount_point         = @$als_data[4];
+
+	my ($rs, $rdata) = (undef, undef);
+	my $als_name = @$als_data[2];
+	my $als_ip_id = @$als_data[5];
+	my $als_ip = $main::ip_id_num{$als_ip_id};
+	my $dmn_id = @$als_data[7];
+	my $dmn_name = @$als_data[8];
+	my $mount_point = @$als_data[4];
 	my ($als_php, $als_cgi) = (@$als_data[26], @$als_data[27]);
-	my $url_forward         = decode_entities(@$als_data[6]);
-	my $conf_dir            = $main::cfg{'CONF_DIR'};
-	my $tpl_dir             = "$conf_dir/apache/parts";
-	my (
-		$als_b,
+	my $url_forward = decode_entities(@$als_data[6]);
+	my $conf_dir = $main::cfg{'CONF_DIR'};
+	my $tpl_dir = "$conf_dir/apache/parts";
+
+	my ($als_b,
 		$als_entry,
 		$als_e,
 		$als_rdr_b,
@@ -775,9 +928,12 @@ sub gen_httpd_als_entry {
 		$als_awstats_static_entry,
 		$als_awstats_e,
 		$als_custom
-	) = ('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
-	(
-		$rs,
+	) = (
+		'', '', '', '', '', '', '', '', '', '',
+		'', '', '', '', '', '', '', '', '', ''
+	);
+
+	(	$rs,
 		$als_b,
 		$als_entry,
 		$als_e,
@@ -825,43 +981,43 @@ sub gen_httpd_als_entry {
 
 	push_el(\@main::el, 'als_entry:', "$als_e");
 
-	if ($mount_point eq "/") {
-		$mount_point = "";
-	}
+	$mount_point = '' if ($mount_point eq '/');
 
-	my ($suexec_uid, $suexec_gid)    = get_dmn_suexec_user($dmn_id);
-	my $suexec_user_pref             = $main::cfg{'APACHE_SUEXEC_USER_PREF'};
-	my ($suexec_user, $suexec_group) = ("$suexec_user_pref$suexec_uid", "$suexec_user_pref$suexec_gid");
-	my %tag_hash =
-	(
-		'{DMN_NAME}'                => $dmn_name,
-		'{DMN_GRP}'                 => $dmn_name,
-		'{ALS_NAME}'                => $als_name,
-		'{SELF}'                    => $als_name,
-		'{ALS_IP}'                  => $als_ip,
-		'{URI}'                     => $url_forward,
-		'{MOUNT_POINT}'             => $mount_point,
-		'{STARTER_DIR}'             => $main::cfg{'PHP_STARTER_DIR'},
-		'{PHP_VERSION}'             => $main::cfg{'PHP_VERSION'},
-		'{BASE_SERVER_VHOST}'       => $main::cfg{'BASE_SERVER_VHOST'},
-		'{BASE_SERVER_VHOST_PREFIX}'=> $main::cfg{'BASE_SERVER_VHOST_PREFIX'},
-		'{WWW_DIR}'                 => $main::cfg{'APACHE_WWW_DIR'},
-		'{APACHE_LOG_DIR}'          => $main::cfg{'APACHE_LOG_DIR'},
-		'{MODS_DIR}'                => $main::cfg{'APACHE_MODS_DIR'},
-		'{GUI_ROOT_DIR}'            => $main::cfg{'GUI_ROOT_DIR'},
-		'{PEAR_DIR}'                => $main::cfg{'PEAR_DIR'},
-		'{APACHE_USERS_LOG_DIR}'    => $main::cfg{'APACHE_USERS_LOG_DIR'},
-		'{CUSTOM_SITES_CONFIG_DIR}' => $main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'},
+	my ($suexec_uid, $suexec_gid) = get_dmn_suexec_user($dmn_id);
+	my $suexec_user_pref = $main::cfg{'APACHE_SUEXEC_USER_PREF'};
 
-		'{AWSTATS_GROUP_AUTH}'        => $main::cfg{'AWSTATS_GROUP_AUTH'},
-		'{HTACCESS_USERS_FILE_NAME}'  => $main::cfg{'HTACCESS_USERS_FILE_NAME'},
-		'{HTACCESS_GROUPS_FILE_NAME}' => $main::cfg{'HTACCESS_GROUPS_FILE_NAME'},
-
-		'{SUEXEC_USER}'             => $suexec_user,
-		'{SUEXEC_GROUP}'            => $suexec_group
+	my ($suexec_user, $suexec_group) = (
+		"$suexec_user_pref$suexec_uid",
+		"$suexec_user_pref$suexec_gid"
 	);
-	(
-		$rs,
+
+	my %tag_hash = (
+		'{DMN_NAME}' => $dmn_name,
+		'{DMN_GRP}'  => $dmn_name,
+		'{ALS_NAME}' => $als_name,
+		'{SELF}' => $als_name,
+		'{ALS_IP}' => $als_ip,
+		'{URI}' => $url_forward,
+		'{MOUNT_POINT}' => $mount_point,
+		'{STARTER_DIR}' => $main::cfg{'PHP_STARTER_DIR'},
+		'{PHP_VERSION}' => $main::cfg{'PHP_VERSION'},
+		'{BASE_SERVER_VHOST}' => $main::cfg{'BASE_SERVER_VHOST'},
+		'{BASE_SERVER_VHOST_PREFIX}' => $main::cfg{'BASE_SERVER_VHOST_PREFIX'},
+		'{WWW_DIR}' => $main::cfg{'APACHE_WWW_DIR'},
+		'{APACHE_LOG_DIR}' => $main::cfg{'APACHE_LOG_DIR'},
+		'{MODS_DIR}' => $main::cfg{'APACHE_MODS_DIR'},
+		'{GUI_ROOT_DIR}'  => $main::cfg{'GUI_ROOT_DIR'},
+		'{PEAR_DIR}' => $main::cfg{'PEAR_DIR'},
+		'{APACHE_USERS_LOG_DIR}' => $main::cfg{'APACHE_USERS_LOG_DIR'},
+		'{CUSTOM_SITES_CONFIG_DIR}' => $main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'},
+		'{AWSTATS_GROUP_AUTH}' => $main::cfg{'AWSTATS_GROUP_AUTH'},
+		'{HTACCESS_USERS_FILE_NAME}' => $main::cfg{'HTACCESS_USERS_FILE_NAME'},
+		'{HTACCESS_GROUPS_FILE_NAME}' => $main::cfg{'HTACCESS_GROUPS_FILE_NAME'},
+		'{SUEXEC_USER}' => $suexec_user,
+		'{SUEXEC_GROUP}' => $suexec_group
+	);
+
+	(	$rs,
 		$als_b,
 		$als_entry,
 		$als_e,
@@ -902,12 +1058,13 @@ sub gen_httpd_als_entry {
 		# No AWStats
 		$awstats_entry = "$als_awstats_b\n$als_awstats_e";
 	}
+
 	($rs, $als_entry) = repl_tag(
 		$als_awstats_b,
 		$als_awstats_e,
 		$als_entry,
 		$awstats_entry,
-		"gen_httpd_als_entry"
+		'gen_httpd_als_entry'
 	);
 	return ($rs, '') if ($rs != 0);
 
@@ -921,62 +1078,73 @@ sub gen_httpd_als_entry {
 	} else {
 		$cgi_entry = "$als_cgi_b$als_cgi_e";
 	}
+
 	($rs, $als_entry) = repl_tag(
 		$als_cgi_b,
 		$als_cgi_e,
 		$als_entry,
 		$cgi_entry,
-		"gen_httpd_als_entry"
+		'gen_httpd_als_entry'
 	);
 	return ($rs, '') if ($rs != 0);
 
 	#
 	# Any PHP entry?
 	#
+
 	my $php_entry = undef;
+
 	if ($als_php eq 'no') {
 		$php_entry = "$als_php_b$als_php_entry$als_php_e";
 	} else {
-		$php_entry     = "$als_php_b$als_php_e";
+
+		$php_entry = "$als_php_b$als_php_e";
 		my $php2_entry = "$als_php2_b$als_php2_entry$als_php2_e";
+
 		($rs, $als_entry) = repl_tag(
 			$als_php2_b,
 			$als_php2_e,
 			$als_entry,
 			$php2_entry,
-			"gen_httpd_als_entry"
+			'gen_httpd_als_entry'
 		);
 		return ($rs, '') if ($rs != 0);
 	}
+
 	($rs, $als_entry) = repl_tag(
 		$als_php_b,
 		$als_php_e,
 		$als_entry,
 		$php_entry,
-		"gen_httpd_als_entry"
+		'gen_httpd_als_entry'
 	);
 	return ($rs, '') if ($rs != 0);
 
 	#
 	# Any REDIRECT entry?
 	#
+
 	if ($url_forward ne 'no') {
+
 		my $rdr_entry = "$als_rdr_b$als_rdr_entry$als_rdr_e";
+
 		($rs, $als_entry) = repl_tag(
 			$als_rdr_b,
 			$als_rdr_e,
 			$als_entry,
 			$rdr_entry,
-			"gen_httpd_als_entry"
+			'gen_httpd_als_entry'
 		);
 		return ($rs, '') if ($rs != 0);
 	}
+
 	my $als_result_entry = "$als_b$als_entry$als_e";
 
 	#
 	# Custom domain config file
 	#
-	if ( ! -e "$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$als_name.conf" ){
+
+	if (!-e "$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$als_name.conf") {
 		$rs = store_file(
 			"$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$als_name.conf",
 			$als_custom,
@@ -986,43 +1154,51 @@ sub gen_httpd_als_entry {
 		);
 		return $rs if ($rs != 0);
 	}
+
 	push_el(\@main::el, 'gen_httpd_als_entry()', "\n$als_result_entry");
+
 	return (0, $als_result_entry);
 }
 
-
-################################################################################
 ################################################################################
 ##
-##
+## Should be documented
 ##
 sub als_add_httpd_cfg_data {
-	my ($als_data)   = @_;
-	my ($rs, $rdata) = (undef, undef);
 
 	push_el(\@main::el, 'als_add_httpd_cfg_data()', 'Starting...');
+
+	my ($als_data)   = @_;
+
+	my ($rs, $rdata) = (undef, undef);
+
 	if (!defined($als_data) || $als_data eq '') {
-		push_el(\@main::el, 'als_add_httpd_cfg_data()', 'ERROR: Undefined Input Data...');
+		push_el(
+			\@main::el,
+			'als_add_httpd_cfg_data()',
+			'ERROR: Undefined Input Data...'
+		);
+
 		return -1;
 	}
 
-	my $als_name    = @$als_data[2];
-	my $als_ip_id   = @$als_data[5];
-	my $als_ip      = $main::ip_id_num{$als_ip_id};
-	my $conf_dir    = $main::cfg{'CONF_DIR'};
-	my $tpl_dir     = "$conf_dir/apache/parts";
+	my $als_name = @$als_data[2];
+	my $als_ip_id = @$als_data[5];
+	my $als_ip = $main::ip_id_num{$als_ip_id};
+	my $conf_dir = $main::cfg{'CONF_DIR'};
+	my $tpl_dir = "$conf_dir/apache/parts";
 	my $working_dir = "$conf_dir/apache/working";
-	my $backup_dir  = "$conf_dir/apache/backup";
-	my $sys_cfg     = "$main::cfg{'APACHE_SITES_DIR'}/ispcp.conf";
+	my $backup_dir = "$conf_dir/apache/backup";
+	my $sys_cfg = "$main::cfg{'APACHE_SITES_DIR'}/ispcp.conf";
 	my $working_cfg = "$working_dir/ispcp.conf";
-	my $timestamp   = time;
-	my $backup_cfg  = "$backup_dir/httpd.conf.$timestamp";
+	my $timestamp = time;
+	my $backup_cfg = "$backup_dir/httpd.conf.$timestamp";
 
 	#
 	# Getting needed templates;
 	#
-	my (
-		$cfg_b,
+
+	my ($cfg_b,
 		$cfg_e,
 		$vh_b,
 		$vh_entry,
@@ -1030,8 +1206,8 @@ sub als_add_httpd_cfg_data {
 		$als_b,
 		$als_e
 	) = ('', '', '', '', '', '', '');
-	(
-		$rs,
+
+	(	$rs,
 		$cfg_b,
 		$cfg_e,
 		$vh_b,
@@ -1054,14 +1230,15 @@ sub als_add_httpd_cfg_data {
 	#
 	# Preparing templates;
 	#
-	my (
-		$vh_b_val,
+
+	my ($vh_b_val,
 		$vh_entry_val,
 		$vh_e_val
 	) = ('', '', '');
+
 	my %tag_hash = ('{IP}' => $als_ip);
-	(
-		$rs,
+
+	($rs,
 		$vh_b_val,
 		$vh_entry_val,
 		$vh_e_val
@@ -1072,13 +1249,12 @@ sub als_add_httpd_cfg_data {
 		$vh_e
 	);
 	return $rs if ($rs != 0);
-	my (
-		$als_b_val,
-		$als_e_val
-	) = ('', '');
+
+	my ($als_b_val, $als_e_val) = ('', '');
+
 	%tag_hash = ('{ALS_NAME}' => $als_name);
-	(
-		$rs,
+
+	(	$rs,
 		$als_b_val,
 		$als_e_val
 	) = prep_tpl (
@@ -1087,10 +1263,13 @@ sub als_add_httpd_cfg_data {
 		$als_e
 	);
 	return $rs if ($rs != 0);
+
 	#
 	# Let's construct alias entry.
 	#
+
 	my $als_entry_contents = '';
+
 	($rs, $als_entry_contents) = gen_httpd_als_entry($als_data);
 	return $rs if ($rs != 0);
 
@@ -1108,6 +1287,7 @@ sub als_add_httpd_cfg_data {
 	#
 	# Check for $cfg_b, $cfg_e in working config;
 	#
+
 	($rs, $rdata) = get_tag($cfg_b, $cfg_e, $working);
 	return $rs if ($rs != 0);
 
@@ -1115,49 +1295,57 @@ sub als_add_httpd_cfg_data {
 	# Check for $vh_b_val, $vh_e_val in working config;
 	# Have we valued virtual host entry in working config?
 	#
+
 	my $vh_entry_contents = '';
 	($rs, $vh_entry_contents) = get_tag($vh_b_val, $vh_e_val, $working);
 
 	push_el(\@main::el, 'als_add_httpd_cfg_data()', "\n$vh_entry_contents");
 
-	if ($rs == -5) { # No, we have not! We must add it here.
+	# No, we have not! We must add it here.
+	if ($rs == -5) {
+
 		my $repl = "$als_entry_contents\n$als_b$als_e";
+
 		($rs, $vh_entry_val) = repl_tag(
 			$als_b,
 			$als_e,
 			$vh_entry_val,
 			$repl,
-			"als_add_httpd_cfg_data"
+			'als_add_httpd_cfg_data'
 		);
 		return $rs if ($rs != 0);
 
 		$repl = "$vh_b_val$vh_entry_val$vh_e_val\n";
 		$repl .= "$vh_b$vh_e";
+
 		($rs, $working) = repl_tag(
 			$vh_b,
 			$vh_e,
 			$working,
 			$repl,
-			"als_add_httpd_cfg_data "
+			'als_add_httpd_cfg_data'
 		);
 		return $rs if ($rs != 0);
-		# ?!
+
 		($rs, $rdata) = get_tag($vh_b_val, $vh_e_val, $working);
 		return $rs if ($rs != 0);
 
-	} elsif ($rs == 0) { # Yes, we have! We must edit it here.
+	# Yes, we have! We must edit it here.
+	} elsif ($rs == 0) {
+
 		# Check for valued Domain Group Entry in this Virtual Host Entry;
 		($rs, $rdata) = get_tag(
 			$als_b_val,
 			$als_e_val,
 			$vh_entry_contents
 		);
+
 		if ($rs == 0) {
 			# We have one ! We must delete it!
 			($rs, $vh_entry_contents) = del_tag(
-			$als_b_val,
-			"$als_e_val\n",
-			$vh_entry_contents
+				$als_b_val,
+				"$als_e_val\n",
+				$vh_entry_contents
 			);
 			return $rs if ($rs != 0);
 		}
@@ -1168,12 +1356,13 @@ sub als_add_httpd_cfg_data {
 
 		# Constructing als entry.
 		my $repl = "$als_entry_contents\n$als_b$als_e";
+
 		($rs, $vh_entry_contents) = repl_tag(
 			$als_b,
 			$als_e,
 			$vh_entry_contents,
 			$repl,
-			"als_add_httpd_cfg_data"
+			'als_add_httpd_cfg_data'
 		);
 		return $rs if ($rs != 0);
 
@@ -1183,19 +1372,32 @@ sub als_add_httpd_cfg_data {
 			$vh_e_val,
 			$working,
 			$vh_entry_contents,
-			"als_add_httpd_cfg_data"
+			'als_add_httpd_cfg_data'
 		);
 		return $rs if ($rs != 0);
+
 	} elsif ($rs != 0) {
 		return $rs;
 	}
+
 	#
 	# Check for $cfg_b, $cfg_e data in system config;
 	#
+
 	($rs, $rdata) = get_tag($cfg_b, $cfg_e, $sys);
-	if ($rs == 0) { # Yes, We have some ! We'll replace it;
-		($rs, $sys) = repl_tag($cfg_b, $cfg_e, $sys, $working, "als_add_httpd_cfg_data");
+
+	# Yes, We have some ! We'll replace it;
+	if ($rs == 0) {
+
+		($rs, $sys) = repl_tag(
+			$cfg_b,
+			$cfg_e,
+			$sys,
+			$working,
+			'als_add_httpd_cfg_data'
+		);
 		return $rs if ($rs != 0);
+
 	} elsif ($rs == -5) { # No, We haven't ! We'll add it;
 		$sys .= $working;
 	} else { # Some error that should not be happend ! Exiting...
@@ -1205,75 +1407,106 @@ sub als_add_httpd_cfg_data {
 	#
 	# Backuping system config;
 	#
+
 	($rs, $rdata) = sys_command("cp -p $sys_cfg $backup_cfg");
 	return $rs if ($rs != 0);
 
 	#
 	# Let's store all the stuff;
 	#
-	($rs, $rdata) = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+
+	($rs, $rdata) = store_file(
+		$working_cfg,
+		$working,
+		$main::cfg{'ROOT_USER'},
+		$main::cfg{'ROOT_GROUP'},
+		0644
+	);
 	return $rs if ($rs != 0);
 
-	($rs, $rdata) = store_file($sys_cfg, $sys, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	($rs, $rdata) = store_file(
+		$sys_cfg,
+		$sys,
+		$main::cfg{'ROOT_USER'},
+		$main::cfg{'ROOT_GROUP'},
+		0644
+	);
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'als_add_httpd_cfg_data()', 'Ending...');
-	return 0;
+
+	0;
 }
 
-
-################################################################################
 ################################################################################
 ##
-##
+## Should be documented
 ##
 sub als_change_httpd_cfg_data {
-	my ($als_data) = @_;
-	my $rs         = undef;
 
 	push_el(\@main::el, 'als_change_httpd_cfg_data()', 'Starting...');
+
+	my ($als_data) = @_;
+	my $rs = undef;
+
+
 	if (!defined($als_data) || $als_data eq '') {
-		push_el(\@main::el, 'als_change_httpd_cfg_data()', 'ERROR: Undefined Input Data...');
+		push_el(
+			\@main::el,
+			'als_change_httpd_cfg_data()',
+			'ERROR: Undefined Input Data...'
+		);
+
 		return -1;
 	}
+
 	$rs = als_add_httpd_cfg_data($als_data);
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'als_change_httpd_cfg_data()', 'Ending...');
-	return 0;
+
+	0;
 }
 
 ################################################################################
-################################################################################
 ##
-##
+## Should be documented
 ##
 sub als_del_httpd_cfg_data {
-	my ($als_data)   = @_;
-	my ($rs, $rdata) = (undef, undef);
 
 	push_el(\@main::el, 'als_del_httpd_cfg_data()', 'Starting...');
+
+	my ($als_data) = @_;
+
+	my ($rs, $rdata) = (undef, undef);
+
 	if (!defined($als_data) || $als_data eq '') {
-		push_el(\@main::el, 'als_del_httpd_cfg_data()', 'ERROR: Undefined Input Data...');
+		push_el(
+			\@main::el,
+			'als_del_httpd_cfg_data()',
+			'ERROR: Undefined Input Data...'
+		);
+
 		return -1;
 	}
 
-	my $als_name    = @$als_data[2];
-	my $als_ip_id   = @$als_data[5];
-	my $als_ip      = $main::ip_id_num{$als_ip_id};
-	my $conf_dir    = $main::cfg{'CONF_DIR'};
-	my $tpl_dir     = "$conf_dir/apache/parts";
+	my $als_name = @$als_data[2];
+	my $als_ip_id = @$als_data[5];
+	my $als_ip = $main::ip_id_num{$als_ip_id};
+	my $conf_dir = $main::cfg{'CONF_DIR'};
+	my $tpl_dir = "$conf_dir/apache/parts";
 	my $working_dir = "$conf_dir/apache/working";
-	my $backup_dir  = "$conf_dir/apache/backup";
-	my $sys_cfg     = "$main::cfg{'APACHE_SITES_DIR'}/ispcp.conf";
+	my $backup_dir = "$conf_dir/apache/backup";
+	my $sys_cfg = "$main::cfg{'APACHE_SITES_DIR'}/ispcp.conf";
 	my $working_cfg = "$working_dir/ispcp.conf";
-	my $timestamp   = time;
-	my $backup_cfg  = "$backup_dir/httpd.conf.$timestamp";
+	my $timestamp = time;
+	my $backup_cfg = "$backup_dir/httpd.conf.$timestamp";
+
 	#
 	# Getting needed templates;
 	#
-	my (
-		$cfg_b,
+
+	my ($cfg_b,
 		$cfg_e,
 		$vh_b,
 		$vh_entry,
@@ -1281,8 +1514,8 @@ sub als_del_httpd_cfg_data {
 		$als_b,
 		$als_e
 	) = ('', '', '', '', '', '', '');
-	(
-		$rs,
+
+	(	$rs,
 		$cfg_b,
 		$cfg_e,
 		$vh_b,
@@ -1305,14 +1538,15 @@ sub als_del_httpd_cfg_data {
 	#
 	# Preparing templates;
 	#
-	my (
-		$vh_b_val,
+
+	my ($vh_b_val,
 		$vh_entry_val,
 		$vh_e_val
 	) = ('', '', '');
+
 	my %tag_hash = ('{IP}' => $als_ip);
-	(
-		$rs,
+
+	(	$rs,
 		$vh_b_val,
 		$vh_entry_val,
 		$vh_e_val
@@ -1324,13 +1558,13 @@ sub als_del_httpd_cfg_data {
 	);
 	return $rs if ($rs != 0);
 
-	my (
-		$als_b_val,
+	my ($als_b_val,
 		$als_e_val
 	) = ('', '');
+
 	%tag_hash = ('{ALS_NAME}' => $als_name);
-	(
-		$rs,
+
+	(	$rs,
 		$als_b_val,
 		$als_e_val
 	) = prep_tpl (
@@ -1343,7 +1577,9 @@ sub als_del_httpd_cfg_data {
 	#
 	# Let's get some configs;
 	#
+
 	my ($sys, $working) = ('', '');
+
 	($rs, $sys) = get_file($sys_cfg);
 	return $rs if ($rs != 0);
 
@@ -1353,6 +1589,7 @@ sub als_del_httpd_cfg_data {
 	#
 	# Check for $cfg_b, $cfg_e in working config;
 	#
+
 	($rs, $rdata) = get_tag($cfg_b, $cfg_e, $working);
 	return $rs if ($rs != 0);
 
@@ -1360,18 +1597,22 @@ sub als_del_httpd_cfg_data {
 	# Check for $vh_b_val, $vh_e_val in working config;
 	# Have we valued virtual host entry in working config?
 	#
+
 	my $vh_entry_contents = '';
+
 	($rs, $vh_entry_contents) = get_tag($vh_b_val, $vh_e_val, $working);
 
 	push_el(\@main::el, 'als_del_httpd_cfg_data()', "\n$vh_entry_contents");
 
 	if ($rs == 0) { # Yes, we have! We must edit it here.
+
 		# Check for valued Domain Group Entry in this Virtual Host Entry;
 		($rs, $rdata) = get_tag(
 			$als_b_val,
 			$als_e_val,
 			$vh_entry_contents
 		);
+
 		if ($rs == 0) {
 			# We have one ! We must delete it!
 			($rs, $vh_entry_contents) = del_tag(
@@ -1392,7 +1633,7 @@ sub als_del_httpd_cfg_data {
 			$vh_e_val,
 			$working,
 			$vh_entry_contents,
-			"als_del_httpd_cfg_data"
+			'als_del_httpd_cfg_data'
 		);
 		return $rs if ($rs != 0);
 	}
@@ -1400,77 +1641,132 @@ sub als_del_httpd_cfg_data {
 	#
 	# Check for $cfg_b, $cfg_e data in system config;
 	#
+
 	($rs, $rdata) = get_tag($cfg_b, $cfg_e, $sys);
+
 	if ($rs == 0) { # Yes, We have some ! We'll replace it;
-		($rs, $sys) = repl_tag($cfg_b, $cfg_e, $sys, $working, "als_del_httpd_cfg_data");
+
+		($rs, $sys) = repl_tag(
+			$cfg_b,
+			$cfg_e,
+			$sys,
+			$working,
+			'als_del_httpd_cfg_data');
 		return $rs if ($rs != 0);
+
 	} elsif ($rs == -5) { # No, We haven't ! We'll add it;
 		$sys .= $working;
 	} else { # Some error that should not be happend ! Exiting...
 		return $rs;
 	}
+
 	#
 	# Backuping system config;
 	#
+
 	($rs, $rdata) = sys_command("cp -p $sys_cfg $backup_cfg");
 	return $rs if ($rs != 0);
 
 	#
 	# Let's store all the stuff;
 	#
-	($rs, $rdata) = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+
+	($rs, $rdata) = store_file(
+		$working_cfg,
+		$working,
+		$main::cfg{'ROOT_USER'},
+		$main::cfg{'ROOT_GROUP'},
+		0644
+	);
 	return $rs if ($rs != 0);
 
-	($rs, $rdata) = store_file($sys_cfg, $sys, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	($rs, $rdata) = store_file(
+		$sys_cfg,
+		$sys,
+		$main::cfg{'ROOT_USER'},
+		$main::cfg{'ROOT_GROUP'},
+		0644
+	);
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'als_del_httpd_cfg_data()', 'Ending...');
-	return 0;
+
+	0;
 }
 
-
-################################################################################
 ################################################################################
 ##
-##
+## Should be documented
 ##
 sub als_add_httpd_file_data {
-	my ($als_data)   = @_;
-	my ($rs, $rdata) = (undef, undef);
 
 	push_el(\@main::el, 'als_add_httpd_file_data()', 'Starting...');
+
+	my ($als_data) = @_;
+
+	my ($rs, $rdata) = (undef, undef);
+
 	if (!defined($als_data) || $als_data eq '') {
-		push_el(\@main::el, 'als_add_httpd_file_data()', 'ERROR: Undefined Input Data...');
+		push_el(
+			\@main::el,
+			'als_add_httpd_file_data()',
+			'ERROR: Undefined Input Data...'
+		);
+
 		return -1;
 	}
 
-	my $als_mount           = @$als_data[4];
-	my $dmn_id              = @$als_data[7];
-	my $dmn_name            = @$als_data[8];
-	my $als_dmn             = @$als_data[2];
-	my $als_name            = "$dmn_name$als_mount";
-	my $root_dir            = $main::cfg{'ROOT_DIR'};
-	my $www_dir             = $main::cfg{'APACHE_WWW_DIR'};
-	my $httpd_gid           = $main::cfg{'APACHE_GROUP'};
+	my $als_mount = @$als_data[4];
+	my $dmn_id = @$als_data[7];
+	my $dmn_name = @$als_data[8];
+	my $als_dmn = @$als_data[2];
+	my $als_name = "$dmn_name$als_mount";
+	my $root_dir = $main::cfg{'ROOT_DIR'};
+	my $www_dir = $main::cfg{'APACHE_WWW_DIR'};
+	my $httpd_gid = $main::cfg{'APACHE_GROUP'};
 	my ($sys_uid, $sys_gid) = get_dmn_suexec_user($dmn_id);
-	my $suexec_user_pref    = $main::cfg{'APACHE_SUEXEC_USER_PREF'};
-	my $sys_user            = "$suexec_user_pref$sys_uid";
-	my $sys_group           = "$suexec_user_pref$sys_gid";
+	my $suexec_user_pref = $main::cfg{'APACHE_SUEXEC_USER_PREF'};
+	my $sys_user = "$suexec_user_pref$sys_uid";
+	my $sys_group = "$suexec_user_pref$sys_gid";
 
 	#
 	# Skip data creation if the mount point already exists
 	#
+
 	return 0 if ($als_mount eq '/' || $als_mount eq '');
 
 	# check for aliases with same mount point
-	my $sql = "select count(alias_id) from domain_aliasses where domain_id=$dmn_id and alias_mount='$als_mount'";
+	my $sql = "
+		SELECT
+			count(alias_id)
+		FROM
+			domain_aliasses
+		WHERE
+			domain_id = $dmn_id
+		AND
+			alias_mount = '$als_mount'
+		;
+	";
+
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
 	return 0 if (@{@$rdata[0]}[0] > 1);
 
 	# check for subdomains with same mount point
-	$sql = "select count(subdomain_id) from subdomain where domain_id=$dmn_id and subdomain_mount='$als_mount'";
+
+	$sql = "
+		SELECT
+			count(subdomain_id)
+		FROM
+			subdomain
+		WHERE
+			domain_id = $dmn_id
+		AND
+			subdomain_mount = '$als_mount'
+		;
+	";
+
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
@@ -1479,6 +1775,7 @@ sub als_add_httpd_file_data {
 	#
 	# Domain WWW directories;
 	#
+
 	$rs = make_dir(
 		"$www_dir/$als_name",
 		$sys_user,
@@ -1530,8 +1827,10 @@ sub als_add_httpd_file_data {
 	#
 	# AWStats Directory (if static AWStats is enabled)
 	#
+
 	if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes' && $main::cfg{'AWSTATS_MODE'} eq 1) {
 		if (! -d "$www_dir/$als_name/statistics") {
+
 			$rs = make_dir(
 				"$www_dir/$als_name/statistics",
 				$sys_user,
@@ -1566,40 +1865,71 @@ sub als_add_httpd_file_data {
 	#
 	# Default error pages;
 	#
+
 	my @errordocs = (401, 403, 404, 500);
 	my ($i, $key) = ('', '');
 
 	for($i = 0; $i < scalar(@errordocs); $i++) {
+
 		$key = $errordocs[$i];
+
 		if (-e "$root_dir/gui/errordocs/$key.html") {
-			$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/$key.html $www_dir/$als_name/errors/");
+			$rs = sys_command("$main::cfg{'CMD_CP'} -p " .
+				"$root_dir/gui/errordocs/$key.html $www_dir/$als_name/errors/");
 			return $rs if ($rs != 0);
-			$rs = setfmode("$www_dir/$als_name/errors/$key.html", $sys_user, $sys_group, 0644);
+
+			$rs = setfmode(
+				"$www_dir/$als_name/errors/$key.html",
+				$sys_user,
+				$sys_group,
+				0644
+			);
 			return $rs if ($rs != 0);
 		}
 	}
-	$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/inc/error_top.jpg $www_dir/$als_name/errors/inc/");
+
+	$rs = sys_command("$main::cfg{'CMD_CP'} -p " .
+		"$root_dir/gui/errordocs/inc/error_top.jpg $www_dir/$als_name/errors/inc/");
 	return $rs if ($rs != 0);
 
-	$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/inc/errordocs.js $www_dir/$als_name/errors/inc/");
+	$rs = sys_command("$main::cfg{'CMD_CP'} -p " .
+		"$root_dir/gui/errordocs/inc/errordocs.js $www_dir/$als_name/errors/inc/");
 	return $rs if ($rs != 0);
 
-	$rs = sys_command("$main::cfg{'CMD_CP'} -p $root_dir/gui/errordocs/inc/errordocs.css $www_dir/$als_name/errors/inc/");
+	$rs = sys_command("$main::cfg{'CMD_CP'} -p " .
+		"$root_dir/gui/errordocs/inc/errordocs.css $www_dir/$als_name/errors/inc/");
 	return $rs if ($rs != 0);
 
-	$rs = setfmode("$www_dir/$als_name/errors/inc/error_top.jpg", $sys_user, $sys_group, 0644);
+	$rs = setfmode(
+		"$www_dir/$als_name/errors/inc/error_top.jpg",
+		$sys_user,
+		$sys_group,
+		0644
+	);
 	return $rs if ($rs != 0);
 
-	$rs = setfmode("$www_dir/$als_name/errors/inc/errordocs.js", $sys_user, $sys_group, 0644);
+	$rs = setfmode(
+		"$www_dir/$als_name/errors/inc/errordocs.js",
+		$sys_user,
+		$sys_group,
+		0644
+	);
 	return $rs if ($rs != 0);
 
-	$rs = setfmode("$www_dir/$als_name/errors/inc/errordocs.css", $sys_user, $sys_group, 0644);
+	$rs = setfmode(
+		"$www_dir/$als_name/errors/inc/errordocs.css",
+		$sys_user,
+		$sys_group,
+		0644
+	);
 	return $rs if ($rs != 0);
 
 	#
 	# Default domain page template;
 	#
+
 	if (!(-e "$www_dir/$als_name/htdocs/")) {
+
 		$rs = make_dir(
 			"$www_dir/$als_name/htdocs",
 			$sys_user,
@@ -1611,11 +1941,14 @@ sub als_add_httpd_file_data {
 		my $index_tpl = '';
 		my $vhost = $main::cfg{'BASE_SERVER_VHOST'};
 
-		($rs, $index_tpl) = get_file("$root_dir/gui/domain_default_page/index.html");
+		($rs, $index_tpl) = get_file(
+			"$root_dir/gui/domain_default_page/index.html"
+		);
 		return $rs if ($rs != 0);
 
 		$index_tpl =~ s/{DOMAIN_NAME}/$als_dmn/gi;
 		$index_tpl =~ s/{BASE_SERVER_VHOST}/$vhost/gi;
+
 		($rs, $rdata) = store_file(
 			"$www_dir/$als_name/htdocs/index.html",
 			$index_tpl,
@@ -1625,10 +1958,16 @@ sub als_add_httpd_file_data {
 		);
 		return $rs if ($rs != 0);
 
-		$rs = sys_command("$main::cfg{'CMD_CP'} -rp $root_dir/gui/domain_default_page/images $www_dir/$als_name/htdocs/");
+		$rs = sys_command("$main::cfg{'CMD_CP'} -rp " .
+			"$root_dir/gui/domain_default_page/images $www_dir/$als_name/htdocs/");
 		return $rs if ($rs != 0);
 
-		$rs = setfmode("$www_dir/$als_name/htdocs/images/", $sys_user, $sys_group, 0755);
+		$rs = setfmode(
+			"$www_dir/$als_name/htdocs/images/",
+			$sys_user,
+			$sys_group,
+			0755
+		);
 		return $rs if ($rs != 0);
 
 		opendir(DIR, "$www_dir/$als_name/htdocs/images/");
@@ -1638,47 +1977,66 @@ sub als_add_httpd_file_data {
 		foreach (@files) {
 			# ignore . and .. :
             next if ($_ eq "." || $_ eq "..");
-			$rs = setfmode("$www_dir/$als_name/htdocs/images/$_", $sys_user, $sys_group, 0644);
+			$rs = setfmode(
+				"$www_dir/$als_name/htdocs/images/$_",
+				$sys_user,
+				$sys_group,
+				0644
+			);
 			return $rs if ($rs != 0);
 		}
 	}
+
 	push_el(\@main::el, 'als_add_httpd_file_data()', 'Ending...');
-	return 0;
+
+	0;
 }
 
-
-################################################################################
 ################################################################################
 ##
-##
+## Should be documented
 ##
 sub als_change_httpd_file_data {
-	my ($als_data) = @_;
-	my $rs         = undef;
 
 	push_el(\@main::el, 'als_change_httpd_file_data()', 'Starting...');
+
+	my ($als_data) = @_;
+
+	my $rs = undef;
+
 	if (!defined($als_data) || $als_data eq '') {
-		push_el(\@main::el, 'als_change_httpd_file_data()', 'ERROR: Undefined Input Data...');
+		push_el(
+			\@main::el,
+			'als_change_httpd_file_data()',
+			'ERROR: Undefined Input Data...'
+		);
 		return -1;
 	}
 
-	my $als_mount           = @$als_data[4];
-	my $dmn_id              = @$als_data[7];
-	my $dmn_name            = @$als_data[8];
-	my $als_name            = "$dmn_name$als_mount";
-	my $root_dir            = $main::cfg{'ROOT_DIR'};
-	my $www_dir             = $main::cfg{'APACHE_WWW_DIR'};
+	my $als_mount = @$als_data[4];
+	my $dmn_id = @$als_data[7];
+	my $dmn_name = @$als_data[8];
+	my $als_name = "$dmn_name$als_mount";
+	my $root_dir = $main::cfg{'ROOT_DIR'};
+	my $www_dir = $main::cfg{'APACHE_WWW_DIR'};
 	my ($sys_uid, $sys_gid) = get_dmn_suexec_user($dmn_id);
-	my $suexec_user_pref    = $main::cfg{'APACHE_SUEXEC_USER_PREF'};
-	my $sys_user            = "$suexec_user_pref$sys_uid";
-	my $sys_group           = "$suexec_user_pref$sys_gid";
+	my $suexec_user_pref = $main::cfg{'APACHE_SUEXEC_USER_PREF'};
+	my $sys_user = "$suexec_user_pref$sys_uid";
+	my $sys_group = "$suexec_user_pref$sys_gid";
 
 	#
 	# AWStats Directory (if static AWStats is enabled)
 	#
+
 	if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes' && $main::cfg{'AWSTATS_MODE'} eq 1) {
+
 		if (! -d "$www_dir/$als_name/statistics") {
-			$rs = make_dir("$www_dir/$als_name/statistics", $sys_user, $sys_group, 0755);
+			$rs = make_dir(
+				"$www_dir/$als_name/statistics",
+				$sys_user,
+				$sys_group,
+				0755
+			);
 			return $rs if ($rs != 0);
 		}
 	}
@@ -1686,7 +2044,9 @@ sub als_change_httpd_file_data {
 	#
 	# Domain WWW directories;
 	#
+
 	if( ! -d "$www_dir/$als_name/phptmp") {
+
 		$rs = make_dir(
 			"$www_dir/$als_name/phptmp",
 			$sys_user,
@@ -1697,70 +2057,119 @@ sub als_change_httpd_file_data {
 	}
 
 	push_el(\@main::el, 'als_change_httpd_file_data()', 'Ending...');
-	return 0;
+
+	0;
 }
 
-
-################################################################################
 ################################################################################
 ##
-##
+## Should be documented
 ##
 sub als_del_httpd_file_data {
-	my ($als_data)   = @_;
-	my ($rs, $rdata) = (undef, undef);
 
 	push_el(\@main::el, 'als_del_httpd_file_data()', 'Starting...');
+
+	my ($als_data) = @_;
+
+	my ($rs, $rdata) = (undef, undef);
+
 	if (!defined($als_data) || $als_data eq '') {
-		push_el(\@main::el, 'als_del_httpd_file_data()', 'ERROR: Undefined Input Data...');
+		push_el(
+			\@main::el,
+			'als_del_httpd_file_data()',
+			'ERROR: Undefined Input Data...'
+		);
 		return -1;
 	}
 
 	my $als_mount = @$als_data[4];
-	my $dmn_name  = @$als_data[8];
-	my $dmn_id    = @$als_data[7];
-	my $als_dir   = "$dmn_name$als_mount";
-	my $als_name  = @$als_data[2];
-	my $root_dir  = $main::cfg{'ROOT_DIR'};
-	my $www_dir   = $main::cfg{'APACHE_WWW_DIR'};
+	my $dmn_name = @$als_data[8];
+	my $dmn_id = @$als_data[7];
+	my $als_dir= "$dmn_name$als_mount";
+	my $als_name = @$als_data[2];
+	my $root_dir = $main::cfg{'ROOT_DIR'};
+	my $www_dir = $main::cfg{'APACHE_WWW_DIR'};
 
 	#
 	# Custom http config
 	#
-	if ( -e "$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$als_name.conf" ){
-		$rs = del_file("$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$als_name.conf");
+
+	if (-e "$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$als_name.conf" ) {
+		$rs = del_file(
+			"$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$als_name.conf"
+		);
 		return $rs if ($rs != 0);
 	}
-	if ( -e "$main::cfg{'APACHE_USERS_LOG_DIR'}/$als_name-error.log") {
-		($rs, $rdata) = del_file("$main::cfg{'APACHE_USERS_LOG_DIR'}/$als_name-error.log");
+
+	if (-e "$main::cfg{'APACHE_USERS_LOG_DIR'}/$als_name-error.log") {
+		($rs, $rdata) = del_file(
+			"$main::cfg{'APACHE_USERS_LOG_DIR'}/$als_name-error.log"
+		);
 		return $rs if ($rs != 0);
 	}
-	if ( -e "$main::cfg{'APACHE_USERS_LOG_DIR'}/$als_name-access.log") {
-		($rs, $rdata) = del_file("$main::cfg{'APACHE_USERS_LOG_DIR'}/$als_name-access.log");
+
+	if (-e "$main::cfg{'APACHE_USERS_LOG_DIR'}/$als_name-access.log") {
+		($rs, $rdata) = del_file(
+			"$main::cfg{'APACHE_USERS_LOG_DIR'}/$als_name-access.log"
+		);
 		return $rs if ($rs != 0);
 	}
-	if ( -e "$main::cfg{'APACHE_LOG_DIR'}/$als_name-combined.log") {
-		($rs, $rdata) = del_file("$main::cfg{'APACHE_LOG_DIR'}/$als_name-combined.log");
+
+	if (-e "$main::cfg{'APACHE_LOG_DIR'}/$als_name-combined.log") {
+		($rs, $rdata) = del_file(
+			"$main::cfg{'APACHE_LOG_DIR'}/$als_name-combined.log"
+		);
 		return $rs if ($rs != 0);
 	}
-	if ( -e "$main::cfg{'APACHE_LOG_DIR'}/$als_name-traf.log") {
-		($rs, $rdata) = del_file("$main::cfg{'APACHE_LOG_DIR'}/$als_name-traf.log");
+
+	if (-e "$main::cfg{'APACHE_LOG_DIR'}/$als_name-traf.log") {
+		($rs, $rdata) = del_file(
+			"$main::cfg{'APACHE_LOG_DIR'}/$als_name-traf.log"
+		);
 		return $rs if ($rs != 0);
 	}
 
 	#
 	# Skip data deletion if the mount point is shared
 	#
+
 	return 0 if ($als_mount eq '/' || $als_mount eq '');
 
-	my $sql = "select count(alias_id) from domain_aliasses where domain_id=$dmn_id and alias_mount='$als_mount' and alias_status='ok' ";
+	my $sql = "
+		SELECT
+			count(alias_id)
+		FROM
+			domain_aliasses
+		WHERE
+			domain_id = $dmn_id
+		AND
+			alias_mount = '$als_mount'
+		AND
+			alias_status = 'ok'
+		;
+	";
+
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
 	return 0 if (@{@$rdata[0]}[0] > 1);
 
 	# check for subdomains with same mount point
-	$sql = "select count(subdomain_id) from subdomain where domain_id=$dmn_id and subdomain_mount='$als_mount' and subdomain_status='ok' ";
+
+	$sql = "
+		SELECT
+			count(subdomain_id)
+		FROM
+			subdomain
+		WHERE
+			domain_id = $dmn_id
+		AND
+			subdomain_mount = '$als_mount'
+		AND
+			subdomain_status='ok'
+		;
+	";
+
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
@@ -1769,26 +2178,34 @@ sub als_del_httpd_file_data {
 	#
 	# Domain WWW directories;
 	#
+
 	($rs, $rdata) = del_dir("$www_dir/$als_dir");
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'als_del_httpd_file_data()', 'Ending...');
-	return 0;
+
+	0;
 }
 
-
-################################################################################
 ################################################################################
 ##
-##
+## Should be documented
 ##
 sub als_add_httpd_data {
-	my ($als_data) = @_;
-	my $rs         = undef;
 
 	push_el(\@main::el, 'als_add_httpd_data()', 'Starting...');
+
+	my ($als_data) = @_;
+
+	my $rs = undef;
+
 	if (!defined($als_data) || $als_data eq '') {
-		push_el(\@main::el, 'als_add_httpd_data()', 'ERROR: Undefined Input Data...');
+		push_el(
+			\@main::el,
+			'als_add_httpd_data()',
+			'ERROR: Undefined Input Data...'
+		);
+
 		return -1;
 	}
 
@@ -1799,24 +2216,32 @@ sub als_add_httpd_data {
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'als_add_httpd_data()', 'Ending...');
-	return 0;
+
+	0;
 }
 
-
-################################################################################
 ################################################################################
 ##
-##
+## Should be documented
 ##
 sub als_change_httpd_data {
-	my ($als_data) = @_;
-	my $rs         = undef;
 
 	push_el(\@main::el, 'als_change_httpd_data()', 'Starting...');
+
+	my ($als_data) = @_;
+
+	my $rs = undef;
+
 	if (!defined($als_data) || $als_data eq '') {
-		push_el(\@main::el, 'als_change_httpd_data()', 'ERROR: Undefined Input Data...');
+		push_el(
+			\@main::el,
+			'als_change_httpd_data()',
+			'ERROR: Undefined Input Data...'
+		);
+
 		return -1;
 	}
+
 	$rs = als_change_httpd_cfg_data($als_data);
 	return $rs if ($rs != 0);
 
@@ -1824,24 +2249,32 @@ sub als_change_httpd_data {
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'als_change_httpd_data()', 'Ending...');
-	return 0;
+
+	0;
 }
 
-
-################################################################################
 ################################################################################
 ##
-##
+## Should be documented
 ##
 sub als_del_httpd_data {
-	my ($als_data) = @_;
-	my $rs = undef;
 
 	push_el(\@main::el, 'als_del_httpd_data()', 'Starting...');
+
+	my ($als_data) = @_;
+
+	my $rs = undef;
+
 	if (!defined($als_data) || $als_data eq '') {
-		push_el(\@main::el, 'als_del_httpd_data()', 'ERROR: Undefined Input Data...');
+		push_el(
+			\@main::el,
+			'als_del_httpd_data()',
+			'ERROR: Undefined Input Data...'
+		);
+
 		return -1;
 	}
+
 	$rs = als_del_httpd_cfg_data($als_data);
 	return $rs if ($rs != 0);
 
@@ -1849,39 +2282,48 @@ sub als_del_httpd_data {
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'als_del_httpd_data()', 'Ending...');
-	return 0;
+
+	0;
 }
 
-
-################################################################################
 ################################################################################
 ##
-##
+## Should be documented
 ##
 sub als_add_mta_cfg_data {
-	my ($als_data) = @_;
-	my ($rs, $rdata) = (undef, undef);
 
 	push_el(\@main::el, 'als_add_mta_cfg_data()', 'Starting...');
+
+	my ($als_data) = @_;
+
+	my ($rs, $rdata) = (undef, undef);
+
 	if (!defined($als_data) || $als_data eq '') {
-		push_el(\@main::el, 'als_add_mta_cfg_data()', 'ERROR: Undefined Input Data...');
+
+		push_el(
+			\@main::el,
+			'als_add_mta_cfg_data()',
+			'ERROR: Undefined Input Data...'
+		);
 		return -1;
 	}
-	my $als_name        = @$als_data[2];
-	my $conf_dir        = $main::cfg{'CONF_DIR'};
-	my $cmd_postmap     = $main::cfg{'CMD_POSTMAP'};
-	my $tpl_dir         = "$conf_dir/postfix/parts";
-	my $working_dir     = "$conf_dir/postfix/working";
-	my $backup_dir      = "$conf_dir/postfix/backup";
-	my $sys_cfg         = $main::cfg{'MTA_VIRTUAL_DMN_HASH'};
-	my $working_cfg     = "$working_dir/domains";
-	my $timestamp       = time;
-	my $backup_cfg      = "$backup_dir/domains.$timestamp";
+
+	my $als_name = @$als_data[2];
+	my $conf_dir = $main::cfg{'CONF_DIR'};
+	my $cmd_postmap = $main::cfg{'CMD_POSTMAP'};
+	my $tpl_dir = "$conf_dir/postfix/parts";
+	my $working_dir = "$conf_dir/postfix/working";
+	my $backup_dir = "$conf_dir/postfix/backup";
+	my $sys_cfg = $main::cfg{'MTA_VIRTUAL_DMN_HASH'};
+	my $working_cfg = "$working_dir/domains";
+	my $timestamp = time;
+	my $backup_cfg = "$backup_dir/domains.$timestamp";
 	my ($sys, $working) = (undef, undef);
 
 	#
 	# Getting needed configs;
 	#
+
 	($rs, $sys) = get_file($sys_cfg);
 	return $rs if ($rs != 0);
 
@@ -1891,6 +2333,7 @@ sub als_add_mta_cfg_data {
 	#
 	# Checking for domain entry existance;
 	#
+
 	$working =~ s/^$als_name\t\t\t[^\n]+\n//gim;
 
 	# Add domain entry only if mail accounts are activated
@@ -1901,56 +2344,83 @@ sub als_add_mta_cfg_data {
 	#
 	# Let's do some backup first;
 	#
-	$rs = store_file($backup_cfg, $sys, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+
+	$rs = store_file(
+		$backup_cfg,
+		$sys,
+		$main::cfg{'ROOT_USER'},
+		$main::cfg{'ROOT_GROUP'},
+		0644
+	);
 	return $rs if ($rs != 0);
 
 	#
 	# Let's write configs;
 	#
-	$rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	$rs = store_file(
+		$working_cfg,
+		$working,
+		$main::cfg{'ROOT_USER'},
+		$main::cfg{'ROOT_GROUP'},
+		0644
+	);
 	return $rs if ($rs != 0);
 
-	$rs = store_file($sys_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	$rs = store_file(
+		$sys_cfg,
+		$working,
+		$main::cfg{'ROOT_USER'},
+		$main::cfg{'ROOT_GROUP'},
+		0644
+	);
 	return $rs if ($rs != 0);
 
 	$rs = sys_command("$cmd_postmap $sys_cfg");
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'als_add_mta_cfg_data()', 'Ending...');
-	return 0;
+
+	0;
 }
 
-
-################################################################################
 ################################################################################
 ##
-##
+## Should be documented
 ##
 sub als_del_mta_cfg_data {
-	my ($als_data)   = @_;
-	my ($rs, $rdata) = (undef, undef);
 
 	push_el(\@main::el, 'als_del_mta_cfg_data()', 'Starting...');
+
+	my ($als_data) = @_;
+
+	my ($rs, $rdata) = (undef, undef);
+
 	if (!defined($als_data) || $als_data eq '') {
-		push_el(\@main::el, 'als_del_mta_cfg_data()', 'ERROR: Undefined Input Data...');
+		push_el(
+			\@main::el,
+			'als_del_mta_cfg_data()',
+			'ERROR: Undefined Input Data...'
+		);
+
 		return -1;
 	}
 
-	my $als_name        = @$als_data[2];
-	my $conf_dir        = $main::cfg{'CONF_DIR'};
-	my $cmd_postmap     = $main::cfg{'CMD_POSTMAP'};
-	my $tpl_dir         = "$conf_dir/postfix/parts";
-	my $working_dir     = "$conf_dir/postfix/working";
-	my $backup_dir      = "$conf_dir/postfix/backup";
-	my $sys_cfg         = $main::cfg{'MTA_VIRTUAL_DMN_HASH'};
-	my $working_cfg     = "$working_dir/domains";
-	my $timestamp       = time;
-	my $backup_cfg      = "$backup_dir/domains.$timestamp";
+	my $als_name = @$als_data[2];
+	my $conf_dir = $main::cfg{'CONF_DIR'};
+	my $cmd_postmap = $main::cfg{'CMD_POSTMAP'};
+	my $tpl_dir = "$conf_dir/postfix/parts";
+	my $working_dir = "$conf_dir/postfix/working";
+	my $backup_dir = "$conf_dir/postfix/backup";
+	my $sys_cfg = $main::cfg{'MTA_VIRTUAL_DMN_HASH'};
+	my $working_cfg = "$working_dir/domains";
+	my $timestamp  = time;
+	my $backup_cfg = "$backup_dir/domains.$timestamp";
 	my ($sys, $working) = (undef, undef);
 
 	#
 	# Getting needed configs;
 	#
+
 	($rs, $sys) = get_file($sys_cfg);
 	return $rs if ($rs != 0);
 
@@ -1960,43 +2430,71 @@ sub als_del_mta_cfg_data {
 	#
 	# Checking for domain entry existance;
 	#
+
 	$working =~ s/^$als_name\t\t\t[^\n]+\n//gim;
 
 	#
 	# Let's do some backup first;
 	#
-	$rs = store_file($backup_cfg, $sys, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+
+	$rs = store_file(
+		$backup_cfg,
+		$sys,
+		$main::cfg{'ROOT_USER'},
+		$main::cfg{'ROOT_GROUP'},
+		0644
+	);
 	return $rs if ($rs != 0);
 
 	#
 	# Let's write configs;
 	#
-	$rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+
+	$rs = store_file(
+		$working_cfg,
+		$working,
+		$main::cfg{'ROOT_USER'},
+		$main::cfg{'ROOT_GROUP'},
+		0644
+	);
 	return $rs if ($rs != 0);
 
-	$rs = store_file($sys_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	$rs = store_file(
+		$sys_cfg,
+		$working,
+		$main::cfg{'ROOT_USER'},
+		$main::cfg{'ROOT_GROUP'},
+		0644
+	);
 	return $rs if ($rs != 0);
 
 	$rs = sys_command("$cmd_postmap $sys_cfg");
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'als_del_mta_cfg_data()', 'Ending...');
-	return 0;
+
+	0;
 }
 
-
-################################################################################
 ################################################################################
 ##
-##
+## Should be documented
 ##
 sub als_add_mta_file_data {
-	my ($als_data) = @_;
-	my ($rs, $rdata) = (undef, undef);
 
 	push_el(\@main::el, 'als_add_mta_file_data()', 'Starting...');
+
+	my ($als_data) = @_;
+
+	my ($rs, $rdata) = (undef, undef);
+
 	if (!defined($als_data) || $als_data eq '') {
-		push_el(\@main::el, 'als_add_mta_file_data()', 'ERROR: Undefined Input Data...');
+		push_el(
+			\@main::el,
+			'als_add_mta_file_data()',
+			'ERROR: Undefined Input Data...'
+		);
+
 		return -1;
 	}
 
@@ -2014,26 +2512,31 @@ sub als_add_mta_file_data {
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'als_add_mta_file_data()', 'Ending...');
-	return 0;
+
+	0;
 }
 
-
-################################################################################
 ################################################################################
 ##
-##
+## Should be documented
 ##
 sub als_del_mta_file_data {
-	my ($als_data)   = @_;
-	my ($rs, $rdata) = (undef, undef);
+
 	push_el(\@main::el, 'als_del_mta_file_data()', 'Starting...');
 
+	my ($als_data) = @_;
+	my ($rs, $rdata) = (undef, undef);
+
 	if (!defined($als_data) || $als_data eq '') {
-		push_el(\@main::el, 'als_del_mta_file_data()', 'ERROR: Undefined Input Data...');
+		push_el(
+			\@main::el,
+			'als_del_mta_file_data()',
+			'ERROR: Undefined Input Data...'
+		);
 		return -1;
 	}
 
-	my $als_name         = @$als_data[2];
+	my $als_name = @$als_data[2];
 	my $virtual_mail_dir = $main::cfg{'MTA_VIRTUAL_MAIL_DIR'};
 	my $mailbox_uid_name = $main::cfg{'MTA_MAILBOX_UID_NAME'};
 	my $mailbox_gid_name = $main::cfg{'MTA_MAILBOX_GID_NAME'};
@@ -2042,24 +2545,31 @@ sub als_del_mta_file_data {
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'als_del_mta_file_data()', 'Ending...');
-	return 0;
+
+	0;
 }
 
-
-################################################################################
 ################################################################################
 ##
-##
+## Should be documented
 ##
 sub als_add_mta_data {
-	my ($als_data) = @_;
-	my $rs         = undef;
 
 	push_el(\@main::el, 'als_add_mta_data()', 'Starting...');
+
+	my ($als_data) = @_;
+
+	my $rs = undef;
+
 	if (!defined($als_data) || $als_data eq '') {
-		push_el(\@main::el, 'als_add_mta_data()', 'ERROR: Undefined Input Data...');
+		push_el(
+			\@main::el,
+			'als_add_mta_data()',
+			'ERROR: Undefined Input Data...'
+		);
 		return -1;
 	}
+
 	$rs = als_add_mta_cfg_data($als_data);
 	return $rs if ($rs != 0);
 
@@ -2067,22 +2577,29 @@ sub als_add_mta_data {
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'als_add_mta_data()', 'Ending...');
-	return 0;
+
+	0;
 }
 
-
-################################################################################
 ################################################################################
 ##
-##
+## Should be documented
 ##
 sub als_change_mta_data {
-	my ($als_data) = @_;
-	my $rs         = undef;
 
 	push_el(\@main::el, 'als_change_mta_data()', 'Starting...');
+
+	my ($als_data) = @_;
+
+	my $rs = undef;
+
 	if (!defined($als_data) || $als_data eq '') {
-		push_el(\@main::el, 'als_change_mta_data()', 'ERROR: Undefined Input Data...');
+		push_el(
+			\@main::el,
+			'als_change_mta_data()',
+			'ERROR: Undefined Input Data...'
+		);
+
 		return -1;
 	}
 
@@ -2090,22 +2607,29 @@ sub als_change_mta_data {
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'als_change_mta_data()', 'Ending...');
-	return 0;
+
+	0;
 }
 
-
-################################################################################
 ################################################################################
 ##
-##
+## Should be documented
 ##
 sub als_del_mta_data {
-	my ($als_data) = @_;
-	my $rs         = undef;
 
 	push_el(\@main::el, 'als_del_mta_data()', 'Starting...');
+
+	my ($als_data) = @_;
+
+	my $rs = undef;
+
 	if (!defined($als_data) || $als_data eq '') {
-		push_el(\@main::el, 'als_del_mta_data()', 'ERROR: Undefined Input Data...');
+		push_el(
+			\@main::el,
+			'als_del_mta_data()',
+			'ERROR: Undefined Input Data...'
+		);
+
 		return -1;
 	}
 
@@ -2116,56 +2640,62 @@ sub als_del_mta_data {
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'als_del_mta_data()', 'Ending...');
-	return 0;
+
+	0;
 }
 
-
 ################################################################################
-##
-## alias proftpd data managment;
-##
+##                             Proftpd data managment                         ##
 ################################################################################
 
 ################################################################################
 ##
-##
+## Should be documented
 ##
 sub als_add_proftpd_cfg_data {
-	my ($als_data)   = @_;
-	my ($rs, $rdata) = (undef, undef);
 
 	push_el(\@main::el, 'als_add_proftpd_cfg_data()', 'Starting...');
 
+	my ($als_data) = @_;
+
+	my ($rs, $rdata) = (undef, undef);
+
 	if (!defined($als_data) || $als_data eq '') {
-		push_el(\@main::el, 'als_add_proftpd_cfg_data()', 'ERROR: Undefined Input Data...');
+		push_el(
+			\@main::el,
+			'als_add_proftpd_cfg_data()',
+			'ERROR: Undefined Input Data...'
+		);
+
 		return -1;
 	}
 
 	#
 	# Initial data we need;
 	#
-	my $alias_id           = @$als_data[0];
-	my $domain_id          = @$als_data[1];
-	my $als_name           = @$als_data[2];
-	my $als_mount_point    = @$als_data[4];
-	my $als_to             = @$als_data[8];
 
-	my $conf_dir         = $main::cfg{'CONF_DIR'};
+	my $alias_id = @$als_data[0];
+	my $domain_id = @$als_data[1];
+	my $als_name = @$als_data[2];
+	my $als_mount_point = @$als_data[4];
+	my $als_to = @$als_data[8];
+
+	my $conf_dir = $main::cfg{'CONF_DIR'};
 	my $proftpd_conf_dir = $main::cfg{'FTPD_CONF_DIR'};
-	my $apache_www_dir   = $main::cfg{'APACHE_WWW_DIR'};
+	my $apache_www_dir = $main::cfg{'APACHE_WWW_DIR'};
 
-	my $tpl_dir          = "$conf_dir/proftpd/parts";
-	my $backup_dir       = "$conf_dir/proftpd/backup";
-	my $working_dir      = "$conf_dir/proftpd/working";
-	my $als_fname         = "$als_name.conf";
-	my $als_path         = "$apache_www_dir/$als_to$als_mount_point";
-	my $working_cfg      = "$working_dir/$als_fname";
-	my $sys_cfg          = "$proftpd_conf_dir/$als_fname";
+	my $tpl_dir = "$conf_dir/proftpd/parts";
+	my $backup_dir = "$conf_dir/proftpd/backup";
+	my $working_dir = "$conf_dir/proftpd/working";
+	my $als_fname = "$als_name.conf";
+	my $als_path = "$apache_www_dir/$als_to$als_mount_point";
+	my $working_cfg = "$working_dir/$als_fname";
+	my $sys_cfg = "$proftpd_conf_dir/$als_fname";
 
-# dirty trick to allow mount point sharing
+	# dirty trick to allow mount point sharing
 	my ($entry, $fill) = ('', 1);
 
-# first subdomains
+	# first subdomains
 	my $sql = "
 		SELECT
 			subdomain_name,
@@ -2180,19 +2710,28 @@ sub als_add_proftpd_cfg_data {
 			t1.domain_id = '$domain_id'
 		AND
 			t1.subdomain_mount = '$als_mount_point'
+		;
 	";
+
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
 	foreach (@$rdata) {
 		my $row = $_;
 		my $othersub="$proftpd_conf_dir/@$row[0].@$row[1].conf";
+
 		if(-e $othersub && -s $othersub){
-			push_el(\@main::el, 'als_add_proftpd_cfg_data()', "@$row[0].@$row[1] share same mount_point. Skipping...");
+			push_el(
+				\@main::el,
+				'als_add_proftpd_cfg_data()',
+				"@$row[0].@$row[1] share same mount_point. Skipping..."
+			);
+
 			$fill=0;
 		}
 	}
-# first alias
+
+	# first alias
 	$sql = "
 		SELECT
 			alias_name
@@ -2204,19 +2743,28 @@ sub als_add_proftpd_cfg_data {
 			alias_mount = '$als_mount_point'
 		AND
 			alias_id != '$alias_id'
+		;
 	";
+
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
 	foreach (@$rdata) {
 		my $row = $_;
 		my $alias="$proftpd_conf_dir/@$row[0].conf";
+
 		if(-e $alias && -s $alias){
-			push_el(\@main::el, 'als_add_proftpd_cfg_data()', "@$row[0] share same mount_point. Skipping...");
+			push_el(
+				\@main::el,
+				'als_add_proftpd_cfg_data()',
+				"@$row[0] share same mount_point. Skipping..."
+			);
+
 			$fill=0;
 		}
 	}
-# then alias subdomain
+
+	# then alias subdomain
 	$sql = "
 		SELECT
 			t1.subdomain_alias_name,
@@ -2231,20 +2779,28 @@ sub als_add_proftpd_cfg_data {
 			t2.domain_id = '$domain_id'
 		AND
 			subdomain_alias_mount = '$als_mount_point'
+		;
 	";
+
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
 	foreach (@$rdata) {
 		my $row = $_;
 		my $alssub="$proftpd_conf_dir/@$row[0].@$row[1].conf";
+
 		if(-e $alssub && -s $alssub){
-			push_el(\@main::el, 'als_add_proftpd_cfg_data()', "@$row[0].@$row[1] share same mount_point. Skipping...");
+			push_el(
+				\@main::el,
+				'als_add_proftpd_cfg_data()',
+				"@$row[0].@$row[1] share same mount_point. Skipping..."
+			);
+
 			$fill=0;
 		}
 	}
 
-	if ( $fill == 1 && $als_mount_point ne "/" ) {
+	if ($fill == 1 && $als_mount_point ne '/') {
 
 		($rs, $entry) = get_tpl(
 			$tpl_dir,
@@ -2255,9 +2811,11 @@ sub als_add_proftpd_cfg_data {
 		#
 		# Let's prepare them;
 		#
+
 		my %tag_hash = (
-			'{PATH}'         => $als_path,
+			'{PATH}' => $als_path,
 		);
+
 		($rs, $entry) = prep_tpl(
 			\%tag_hash,
 			$entry
@@ -2268,28 +2826,47 @@ sub als_add_proftpd_cfg_data {
 	#
 	# Let's store generated data;
 	#
-	$rs = store_file($working_cfg, $entry, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+
+	$rs = store_file(
+		$working_cfg,
+		$entry,
+		$main::cfg{'ROOT_USER'},
+		$main::cfg{'ROOT_GROUP'},
+		0644
+	);
 	return $rs if ($rs != 0);
 
-	$rs = store_file($sys_cfg, $entry, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	$rs = store_file(
+		$sys_cfg, $entry,
+		$main::cfg{'ROOT_USER'},
+		$main::cfg{'ROOT_GROUP'},
+		0644
+	);
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'als_add_proftpd_cfg_data()', 'Ending...');
-	return 0;
+
+	0;
 }
 
 ################################################################################
-################################################################################
 ##
-##
+## Should be documented
 ##
 sub als_del_proftpd_cfg_data {
-	my ($als_data)   = @_;
-	my ($rs, $rdata) = (undef, undef);
 
 	push_el(\@main::el, 'als_del_proftpd_cfg_data()', 'Starting...');
+
+	my ($als_data) = @_;
+
+	my ($rs, $rdata) = (undef, undef);
+
 	if (!defined($als_data) || $als_data eq '') {
-		push_el(\@main::el, 'als_del_proftpd_cfg_data()', 'ERROR: Undefined Input Data...');
+		push_el(
+			\@main::el,
+			'als_del_proftpd_cfg_data()',
+			'ERROR: Undefined Input Data...'
+		);
 		return -1;
 	}
 
@@ -2297,17 +2874,18 @@ sub als_del_proftpd_cfg_data {
 	# Initial data we need;
 	#
 
-	my $als_name         = @$als_data[2];
-	my $conf_dir         = $main::cfg{'CONF_DIR'};
+	my $als_name = @$als_data[2];
+	my $conf_dir = $main::cfg{'CONF_DIR'};
 	my $proftpd_conf_dir = $main::cfg{'FTPD_CONF_DIR'};
-	my $als_fname        = "$als_name.conf";
-	my $working_dir      = "$conf_dir/proftpd/working";
-	my $working_cfg      = "$working_dir/$als_fname";
-	my $sys_cfg          = "$proftpd_conf_dir/$als_fname";
+	my $als_fname = "$als_name.conf";
+	my $working_dir = "$conf_dir/proftpd/working";
+	my $working_cfg = "$working_dir/$als_fname";
+	my $sys_cfg = "$proftpd_conf_dir/$als_fname";
 
 	#
 	# Let's remove .db files for this domain;
 	#
+
 	$rs = del_file($working_cfg);
 	return $rs if ($rs != 0);
 
@@ -2315,131 +2893,184 @@ sub als_del_proftpd_cfg_data {
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'als_del_proftpd_cfg_data()', 'Ending...');
-	return 0;
+
+	0;
 }
 
 ################################################################################
-################################################################################
 ##
-##
+## Should be documented
 ##
 sub als_add_proftpd_data {
-	my ($als_data) = @_;
-	my $rs         = undef;
 
 	push_el(\@main::el, 'als_add_proftpd_data()', 'Starting...');
+
+	my ($als_data) = @_;
+
+	my $rs = undef;
+
 	if (!defined($als_data) || $als_data eq '') {
-		push_el(\@main::el, 'als_add_proftpd_data()', 'ERROR: Undefined Input Data...');
+		push_el(
+			\@main::el,
+			'als_add_proftpd_data()',
+			'ERROR: Undefined Input Data...'
+		);
+
 		return -1;
 	}
+
 	return 0 if ($main::cfg{'CMD_NAMED'} eq 'no');
 
 	$rs = als_add_proftpd_cfg_data($als_data);
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'als_add_proftpd_data()', 'Ending...');
-	return 0;
+
+	0;
 }
 
 ################################################################################
-################################################################################
 ##
-##
+## Should be documented
 ##
 sub als_change_proftpd_data {
-	my ($als_data) = @_;
-	my $rs         = undef;
 
 	push_el(\@main::el, 'als_change_proftpd_data()', 'Starting...');
+
+	return 0 if ($main::cfg{'CMD_NAMED'} eq 'no');
+
+	my ($als_data) = @_;
+
+	my $rs = undef;
+
 	if (!defined($als_data) || $als_data eq '') {
-		push_el(\@main::el, 'als_change_proftpd_data()', 'ERROR: Undefined Input Data...');
+		push_el(
+			\@main::el,
+			'als_change_proftpd_data()',
+			'ERROR: Undefined Input Data...'
+		);
+
 		return -1;
 	}
-	return 0 if ($main::cfg{'CMD_NAMED'} eq 'no');
 
 	$rs = als_add_proftpd_data($als_data);
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'als_change_proftpd_data()', 'Ending...');
-	return 0;
+
+	0;
 }
 
 ################################################################################
-################################################################################
 ##
-##
+## Should be documented
 ##
 sub als_del_proftpd_data {
-	my ($als_data) = @_;
-	my $rs         = undef;
 
 	push_el(\@main::el, 'als_del_proftpd_data()', 'Starting...');
+
+	return 0 if ($main::cfg{'CMD_NAMED'} eq 'no');
+
+	my ($als_data) = @_;
+
+	my $rs = undef;
+
 	if (!defined($als_data) || $als_data eq '') {
-		push_el(\@main::el, 'als_del_proftpd_data()', 'ERROR: Undefined Input Data...');
+		push_el(
+			\@main::el,
+			'als_del_proftpd_data()',
+			'ERROR: Undefined Input Data...'
+		);
+
 		return -1;
 	}
-	return 0 if ($main::cfg{'CMD_NAMED'} eq 'no');
 
 	$rs = als_del_proftpd_cfg_data($als_data);
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'als_del_proftpd_data()', 'Ending...');
-	return 0;
+
+	0;
 }
 
-################################### AWStats ####################################
+################################################################################
+##                           AWStats data managment                           ##
+################################################################################
+
 ################################################################################
 ##
 ## Add AWStats Data
 ##
 sub als_add_awstats_data {
-	my ($als_data) = @_;
-	my $rs         = undef;
 
 	push_el(\@main::el, 'als_add_awstats_data()', 'Starting...');
+
+	my ($als_data) = @_;
+
+	my $rs = undef;
+
 	if (!defined($als_data) || $als_data eq '') {
-		push_el(\@main::el, 'als_add_awstats_data()', 'ERROR: Undefined Input Data...');
+		push_el(
+			\@main::el,
+			'als_add_awstats_data()',
+			'ERROR: Undefined Input Data...'
+		);
+
 		return -1;
 	}
 
 	my $aws_type = $main::cfg{'AWSTATS_MODE'};
 	$rs = als_add_awstats_cfg_data($als_data);
+
 	if ($aws_type eq 1) {
 		$rs = als_add_awstats_cron($als_data);
 		return $rs if ($rs != 0);
 	}
+
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'als_add_awstats_data()', 'Ending...');
-	return 0;
+
+	0;
 }
+
 ################################################################################
 ##
 ## Add AWStats CFG Data
 ##
 sub als_add_awstats_cfg_data {
-	my ($als_data)   = @_;
-	my ($rs, $rdata) = (undef, undef);
 
 	push_el(\@main::el, 'als_add_awstats_cfg_data()', 'Starting...');
+
+	my ($als_data)   = @_;
+
+	my ($rs, $rdata) = (undef, undef);
+
 	if (!defined($als_data) || $als_data eq '') {
-		push_el(\@main::el, 'als_add_awstats_cfg_data()', 'ERROR: Undefined Input Data...');
+		push_el(
+			\@main::el,
+			'als_add_awstats_cfg_data()',
+			'ERROR: Undefined Input Data...'
+		);
+
 		return -1;
 	}
 
 	#
 	# Initial data we need;
 	#
-	my $als_name      = @$als_data[2];
-	my $conf_dir      = $main::cfg{'CONF_DIR'};
-	my $awstats_dir   = $main::cfg{'AWSTATS_CONFIG_DIR'};
-	my $tpl_dir       = "$conf_dir/awstats";
+
+	my $als_name = @$als_data[2];
+	my $conf_dir = $main::cfg{'CONF_DIR'};
+	my $awstats_dir = $main::cfg{'AWSTATS_CONFIG_DIR'};
+	my $tpl_dir = "$conf_dir/awstats";
 	my $awstats_fname = "awstats.$als_name.conf";
-	my $sys_cfg       = "$awstats_dir/$awstats_fname";
+	my $sys_cfg = "$awstats_dir/$awstats_fname";
 
 	#
 	# Let's get needed tags and templates;
 	#
+
 	my $entry = '';
 	($rs, $entry) = get_tpl(
 		$tpl_dir,
@@ -2451,13 +3082,14 @@ sub als_add_awstats_cfg_data {
 	# Let's prepare them;
 	#
 	my %tag_hash = (
-		'{DOMAIN_NAME}'        => $als_name,
-		'{CMD_CAT}'            => $main::cfg{'CMD_CAT'},
-		'{APACHE_LOG_DIR}'     => $main::cfg{'APACHE_LOG_DIR'},
-		'{AWSTATS_CACHE_DIR}'  => $main::cfg{'AWSTATS_CACHE_DIR'},
-		'{AWSTATS_ENGINE_DIR}' => $main::cfg{'AWSTATS_ENGINE_DIR'},
-		'{AWSTATS_WEB_DIR}'    => $main::cfg{'AWSTATS_WEB_DIR'}
+		'{DOMAIN_NAME}' => $als_name,
+		'{CMD_CAT}' => $main::cfg{'CMD_CAT'},
+		'{APACHE_LOG_DIR}' => $main::cfg{'APACHE_LOG_DIR'},
+		'{AWSTATS_CACHE_DIR}' => $main::cfg{'AWSTATS_CACHE_DIR'},
+		'{AWSTATS_ENGINE_DIR}'=> $main::cfg{'AWSTATS_ENGINE_DIR'},
+		'{AWSTATS_WEB_DIR}' => $main::cfg{'AWSTATS_WEB_DIR'}
 	);
+
 	($rs, $entry) = prep_tpl(
 		\%tag_hash,
 		$entry
@@ -2467,27 +3099,45 @@ sub als_add_awstats_cfg_data {
 	#
 	# Let's store generated data;
 	#
-	$rs = store_file($sys_cfg, $entry, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+
+	$rs = store_file(
+		$sys_cfg,
+		$entry,
+		$main::cfg{'ROOT_USER'},
+		$main::cfg{'ROOT_GROUP'},
+		0644
+	);
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'als_add_awstats_cfg_data()', 'Ending...');
-	return 0;
+
+	0;
 }
+
 ################################################################################
 ##
 ## Change AWStats Data
 ##
 sub als_change_awstats_data {
-	my ($als_data) = @_;
-	my $rs         = undef;
 
 	push_el(\@main::el, 'als_change_awstats_data()', 'Starting...');
+
+	my ($als_data) = @_;
+
+	my $rs = undef;
+
 	if (!defined($als_data) || $als_data eq '') {
-		push_el(\@main::el, 'als_change_awstats_data()', 'ERROR: Undefined Input Data...');
+		push_el(
+			\@main::el,
+			'als_change_awstats_data()',
+			'ERROR: Undefined Input Data...'
+		);
+
 		return -1;
 	}
 
 	my $aws_type = $main::cfg{'AWSTATS_MODE'};
+
 	$rs = als_add_awstats_cfg_data($als_data);
 	return $rs if ($rs != 0);
 
@@ -2497,7 +3147,8 @@ sub als_change_awstats_data {
 	}
 
 	push_el(\@main::el, 'als_change_awstats_data()', 'Ending...');
-	return 0;
+
+	0;
 }
 
 ################################################################################
@@ -2505,16 +3156,25 @@ sub als_change_awstats_data {
 ## Delete AWStats Data
 ##
 sub als_del_awstats_data {
-	my ($als_data) = @_;
-	my $rs         = undef;
 
 	push_el(\@main::el, 'als_del_awstats_data()', 'Starting...');
+
+	my ($als_data) = @_;
+
+	my $rs = undef;
+
 	if (!defined($als_data) || $als_data eq '') {
-		push_el(\@main::el, 'als_del_awstats_data()', 'ERROR: Undefined Input Data...');
+		push_el(
+			\@main::el,
+			'als_del_awstats_data()',
+			'ERROR: Undefined Input Data...'
+		);
+
 		return -1;
 	}
 
 	my $aws_type = $main::cfg{'AWSTATS_MODE'};
+
 	$rs = als_del_awstats_cfg_data($als_data);
 	return $rs if ($rs != 0);
 
@@ -2524,7 +3184,8 @@ sub als_del_awstats_data {
 	}
 
 	push_el(\@main::el, 'als_del_awstats_data()', 'Ending...');
-	return 0;
+
+	0;
 }
 
 ################################################################################
@@ -2532,83 +3193,119 @@ sub als_del_awstats_data {
 ## Delete AWStats CFG Data
 ##
 sub als_del_awstats_cfg_data {
-	my ($als_data)   = @_;
-	my ($rs, $rdata) = (undef, undef);
 
 	push_el(\@main::el, 'als_del_awstats_cfg_data()', 'Starting...');
+
+	my ($als_data) = @_;
+	my ($rs, $rdata) = (undef, undef);
+
+
 	if (!defined($als_data) || $als_data eq '') {
-		push_el(\@main::el, 'als_del_awstats_cfg_data()', 'ERROR: Undefined Input Data...');
+		push_el(
+			\@main::el,
+			'als_del_awstats_cfg_data()',
+			'ERROR: Undefined Input Data...'
+		);
+
 		return -1;
 	}
 
 	#
 	# Initial data we need;
 	#
-	my $als_name      = @$als_data[2];
-	my $awstats_dir   = $main::cfg{'AWSTATS_CONFIG_DIR'};
+
+	my $als_name = @$als_data[2];
+	my $awstats_dir = $main::cfg{'AWSTATS_CONFIG_DIR'};
 	my $awstats_fname = "awstats.$als_name.conf";
-	my $sys_cfg       = "$awstats_dir/$awstats_fname";
+	my $sys_cfg = "$awstats_dir/$awstats_fname";
 
 	#
 	# Let's delete file, if exists
 	#
+
 	if ( -e $sys_cfg) {
 		$rs = del_file($sys_cfg);
 		return $rs if ($rs != 0);
 	}
 
 	push_el(\@main::el, 'als_del_awstats_cfg_data()', 'Ending...');
-	return 0;
+
+	0;
 }
+
 ################################################################################
 ##
 ## Add AWStats Cron Data
 ##
 sub als_add_awstats_cron {
+
 	push_el(\@main::el, 'als_add_awstats_cron()', 'Starting...');
 
 	my ($als_data) = @_;
+
 	my ($awstats_b, $awstats_entry, $awstats_e) = (undef, undef, undef);
 
 	if (!defined($als_data) || $als_data eq '') {
-		push_el(\@main::el, 'als_add_awstats_cron()', 'ERROR: Undefined Input Data...');
+		push_el(
+			\@main::el,
+			'als_add_awstats_cron()',
+			'ERROR: Undefined Input Data...'
+		);
+
 		return -1;
 	}
 
-	my $cronjob_minute  = @$als_data[0];
-	my $als_name        = @$als_data[2];
+	my $cronjob_minute = @$als_data[0];
+	my $als_name = @$als_data[2];
 	my $als_mount_point = @$als_data[4];
-	my $dmn_name        = @$als_data[8];
-	$als_mount_point    = "$dmn_name$als_mount_point";
+	my $dmn_name = @$als_data[8];
+	$als_mount_point = "$dmn_name$als_mount_point";
 
 	# to prevent running all crons at same time
 	$cronjob_minute = $cronjob_minute % 60;
 
-	my $cronjob_hour       = '3';
-	my $conf_dir           = $main::cfg{'CONF_DIR'};
-	my $virtual_dir        = $main::cfg{'APACHE_WWW_DIR'};
-	my $tpl_dir            = "$conf_dir/cron.d/parts";
-	my $working_dir        = "$conf_dir/cron.d/working";
-	my $backup_dir         = "$conf_dir/cron.d/backup";
-	my $working_cfg        = "$working_dir/ispcp";
-	my $timestamp          = time;
-	my $backup_cfg         = "$backup_dir/ispcp.$timestamp";
-	my $user_lang          = "en";
-	my $awstats_root_dir   = $main::cfg{'AWSTATS_ROOT_DIR'};
+	my $cronjob_hour = '3';
+	my $conf_dir = $main::cfg{'CONF_DIR'};
+	my $virtual_dir = $main::cfg{'APACHE_WWW_DIR'};
+	my $tpl_dir = "$conf_dir/cron.d/parts";
+	my $working_dir= "$conf_dir/cron.d/working";
+	my $backup_dir  = "$conf_dir/cron.d/backup";
+	my $working_cfg = "$working_dir/ispcp";
+	my $timestamp = time;
+	my $backup_cfg = "$backup_dir/ispcp.$timestamp";
+	my $user_lang = "en";
+	my $awstats_root_dir= $main::cfg{'AWSTATS_ROOT_DIR'};
 	my $awstats_engine_dir = $main::cfg{'AWSTATS_ENGINE_DIR'};
-	my $awstats_web_dir    = $main::cfg{'AWSTATS_WEB_DIR'};
+	my $awstats_web_dir = $main::cfg{'AWSTATS_WEB_DIR'};
 
 	# Selecting user language
 	my $user_id = @$als_data[1];
 
-	my $sql = "SELECT `domain_admin_id` FROM `domain` WHERE `domain_id` = ".$user_id.";";
+	my $sql = "
+		SELECT
+			`domain_admin_id`
+		FROM
+			`domain`
+		WHERE
+			`domain_id` = ".$user_id."
+		;
+	";
+
 	my ($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
 	$rdata = @$rdata[0];
 	$user_id=@$rdata[0];
 
-	$sql = "SELECT `lang` FROM `user_gui_props` WHERE `user_id` = ".$user_id.";";
+	$sql = "
+		SELECT
+			`lang`
+		FROM
+			`user_gui_props`
+		WHERE
+			`user_id` = ".$user_id."
+		;
+	";
 	($rs, $rdata) = doSQL($sql);
 
 	$rdata = @$rdata[0];
@@ -2670,9 +3367,10 @@ sub als_add_awstats_cron {
 	#
 	# Getting needed templates;
 	#
+
 	my ($als_awstats_b, $als_awstats_entry, $als_awstats_e) = ('', '', '');
-	(
-		$rs,
+
+	(	$rs,
 		$als_awstats_b,
 		$als_awstats_entry,
 		$als_awstats_e
@@ -2687,20 +3385,21 @@ sub als_add_awstats_cron {
 	#
 	# Preparing templates;
 	#
+
 	my %tag_hash = (
-		'{ALS_NAME}'           => $als_name,
-		'{DMN_NAME}'           => $als_name,
-		'{ALS_PATH}'           => $als_mount_point,
-		'{MINUTE}'             => $cronjob_minute,
-		'{HOUR}'               => $cronjob_hour,
-		'{AWSTATS_ROOT_DIR}'   => $awstats_root_dir,
-		'{AWSTATS_ENGINE_DIR}' => $awstats_engine_dir,
-		'{AWSTATS_WEB_DIR}'    => $awstats_web_dir,
-		'{USER_LANG}'          => $user_lang,
-		'{APACHE_WWW_DIR}'     => $virtual_dir
+		'{ALS_NAME}' => $als_name,
+		'{DMN_NAME}' => $als_name,
+		'{ALS_PATH}' => $als_mount_point,
+		'{MINUTE}' => $cronjob_minute,
+		'{HOUR}' => $cronjob_hour,
+		'{AWSTATS_ROOT_DIR}' => $awstats_root_dir,
+		'{AWSTATS_ENGINE_DIR}'=> $awstats_engine_dir,
+		'{AWSTATS_WEB_DIR}' => $awstats_web_dir,
+		'{USER_LANG}' => $user_lang,
+		'{APACHE_WWW_DIR}' => $virtual_dir
 	);
-	(
-		$rs,
+
+	(	$rs,
 		$awstats_b,
 		$awstats_entry,
 		$awstats_e
@@ -2715,8 +3414,10 @@ sub als_add_awstats_cron {
 	#
 	# Creating working config data;
 	#
+
 	my ($sys, $working) = (undef, undef);
 	$rdata = undef;
+
 	($rs, $working) = get_file($working_cfg);
 	return $rs if ($rs != 0);
 
@@ -2725,8 +3426,10 @@ sub als_add_awstats_cron {
 		$awstats_e,
 		$working
 	);
+
 	if ($rs == 0) {
-		# We have one! We have to delete it because of possible future changes in this Domain Group entry;
+		# We have one! We have to delete it because of possible future
+		# changes in this Domain Group entry;
 		($rs, $working) = del_tag(
 			$awstats_b,
 			"$awstats_e\n",
@@ -2734,6 +3437,7 @@ sub als_add_awstats_cron {
 		);
 		return $rs if ($rs != 0);
 	}
+
 	($rs, $rdata) = get_tag(
 		$als_awstats_b,
 		$als_awstats_e,
@@ -2741,76 +3445,94 @@ sub als_add_awstats_cron {
 	);
 	return $rs if ($rs != 0);
 
-	my $als_awstats_task = "$awstats_b\n$awstats_entry\n$awstats_e\n$als_awstats_b\n$als_awstats_e";
+	my $als_awstats_task =
+		"$awstats_b\n$awstats_entry\n$awstats_e\n$als_awstats_b\n$als_awstats_e";
+
 	($rs, $working) = repl_tag(
 		$als_awstats_b,
 		$als_awstats_e,
 		$working,
 		$als_awstats_task,
-		"als_add_awstats_cron"
+		'als_add_awstats_cron'
 	);
 	return $rs if ($rs != 0);
 
-	$rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	$rs = store_file(
+		$working_cfg,
+		$working, $main::cfg{'ROOT_USER'},
+		$main::cfg{'ROOT_GROUP'},
+		0644
+	);
 	return $rs if ($rs != 0);
 
 	#
 	# Now we'll proceed system config;
 	#
-        # BSD/NUX Command
-        if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
-                $rs = sys_command_rs("$main::cfg{'CMD_CP'} /var/cron/tabs/root $backup_cfg");
-        } else {
-                $rs = sys_command_rs("$main::cfg{'CMD_CP'} /etc/cron.d/ispcp $backup_cfg");
-        }
-        return $rs if ($rs != 0);
 
-        # BSD/NUX Command
-        if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
-                $rs = sys_command_rs("$main::cfg{'CMD_CRONTAB'} -u root $working_cfg");
-        } else {
-                $rs = sys_command_rs("$main::cfg{'CMD_CP'} -f $working_cfg /etc/cron.d/");
-        }
-        return $rs if ($rs != 0);
+	# BSD/NUX Command
+	if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
+			$rs = sys_command_rs(
+				"$main::cfg{'CMD_CP'} " .
+				"/var/cron/tabs/root $backup_cfg"
+			);
+	} else {
+		$rs = sys_command_rs("$main::cfg{'CMD_CP'} /etc/cron.d/ispcp $backup_cfg");
+	}
+
+	return $rs if ($rs != 0);
+
+	# BSD/NUX Command
+	if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
+		$rs = sys_command_rs("$main::cfg{'CMD_CRONTAB'} -u root $working_cfg");
+	} else {
+		$rs = sys_command_rs("$main::cfg{'CMD_CP'} -f $working_cfg /etc/cron.d/");
+	}
+
+	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'als_add_awstats_cron()', 'Ending...');
-	return 0;
+
+	0;
 }
+
 ################################################################################
 ##
-## Delete AWStats Cron Data
+## Deletes AWStats Cron Data
 ##
 sub als_del_awstats_cron {
 
+	push_el(\@main::el, 'als_del_awstats_cron()', 'Starting...');
+
 	my ($als_data) = @_;
+
 	my ($rs, $awstats_b, $awstats_e) = (undef, '', '', '');
 
-	push_el(\@main::el, 'als_del_awstats_cron()', 'Starting...');
 	if (!defined($als_data) || $als_data eq '') {
-		push_el(\@main::el, 'als_del_awstats_cron()', 'ERROR: Undefined Input Data...');
+		push_el(
+			\@main::el,
+			'als_del_awstats_cron()',
+			'ERROR: Undefined Input Data...'
+		);
+
 		return -1;
 	}
 
-	my $als_name       = @$als_data[2];
-# 	my $dmn_name       = @$als_data[8];
-# 	my $cronjob_minute = @$als_data[0];
-	# to prevent running all crons at same time
-# 	$cronjob_minute    = $cronjob_minute % 60;
-# 	my $cronjob_hour   = '3';
-	my $conf_dir       = $main::cfg{'CONF_DIR'};
-	my $tpl_dir        = "$conf_dir/cron.d/parts";
-	my $working_dir    = "$conf_dir/cron.d/working";
-	my $backup_dir     = "$conf_dir/cron.d/backup";
-	my $working_cfg    = "$working_dir/ispcp";
-	my $timestamp      = time;
-	my $backup_cfg     = "$backup_dir/ispcp.$timestamp";
+	my $als_name = @$als_data[2];
+	my $conf_dir  = $main::cfg{'CONF_DIR'};
+	my $tpl_dir = "$conf_dir/cron.d/parts";
+	my $working_dir = "$conf_dir/cron.d/working";
+	my $backup_dir = "$conf_dir/cron.d/backup";
+	my $working_cfg  = "$working_dir/ispcp";
+	my $timestamp = time;
+	my $backup_cfg = "$backup_dir/ispcp.$timestamp";
 
 	#
 	# Getting needed templates;
 	#
+
 	my ($als_awstats_b, $als_awstats_entry, $als_awstats_e) = ('', '', '');
-	(
-		$rs,
+
+	(	$rs,
 		$als_awstats_b,
 		$als_awstats_e
 	) = get_tpl(
@@ -2825,8 +3547,8 @@ sub als_del_awstats_cron {
 	#
 
 	my %tag_hash = ( '{DMN_NAME}' => $als_name );
-	(
-		$rs,
+
+	(	$rs,
 		$awstats_b,
 		$awstats_e
 	) = prep_tpl (
@@ -2839,7 +3561,9 @@ sub als_del_awstats_cron {
 	#
 	# Creating working config data;
 	#
+
 	my ($sys, $working, $rdata) = (undef, undef, undef);
+
 	($rs, $working) = get_file($working_cfg);
 	return $rs if ($rs != 0);
 
@@ -2850,6 +3574,7 @@ sub als_del_awstats_cron {
 	);
 
 	push_el(\@main::el, 'als_del_awstats_cron() search', $awstats_b);
+
 	if ($rs == 0) {
 		# We have one! We have to delete it
 		($rs, $working) = del_tag(
@@ -2857,9 +3582,12 @@ sub als_del_awstats_cron {
 			"$awstats_e\n",
 			$working
 		);
+
 		push_el(\@main::el, 'als_del_awstats_cron() del', $awstats_b);
+
 		return $rs if ($rs != 0);
 	}
+
 	($rs, $rdata) = get_tag(
 		$als_awstats_b,
 		$als_awstats_e,
@@ -2869,51 +3597,75 @@ sub als_del_awstats_cron {
 	push_el(\@main::el, 'als_del_awstats_cron() search', $als_awstats_b);
 	return $rs if ($rs != 0);
 
-	$rs = store_file($working_cfg, $working, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644);
+	$rs = store_file(
+		$working_cfg, $working,
+		$main::cfg{'ROOT_USER'},
+		$main::cfg{'ROOT_GROUP'},
+		0644
+	);
 	return $rs if ($rs != 0);
 
 	#
 	# Now we'll proceed system config;
 	#
-        # BSD/NUX Command
-        if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
-                $rs = sys_command_rs("$main::cfg{'CMD_CP'} /var/cron/tabs/root $backup_cfg");
-        } else {
-                $rs = sys_command_rs("$main::cfg{'CMD_CP'} /etc/cron.d/ispcp $backup_cfg");
-        }
-        return $rs if ($rs != 0);
 
-        # BSD/NUX Command
-        if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
-                $rs = sys_command_rs("$main::cfg{'CMD_CRONTAB'} -u root $working_cfg");
-        } else {
-                $rs = sys_command_rs("$main::cfg{'CMD_CP'} -f $working_cfg /etc/cron.d/");
-        }
-        return $rs if ($rs != 0);
+	# BSD/NUX Command
+	if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
+		$rs = sys_command_rs(
+			"$main::cfg{'CMD_CP'} " .
+			"/var/cron/tabs/root $backup_cfg"
+		);
+	} else {
+		$rs = sys_command_rs(
+			"$main::cfg{'CMD_CP'} " .
+			"/etc/cron.d/ispcp $backup_cfg"
+		);
+	}
+
+	return $rs if ($rs != 0);
+
+	# BSD/NUX Command
+	if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
+		$rs = sys_command_rs("$main::cfg{'CMD_CRONTAB'} -u root $working_cfg");
+	} else {
+		$rs = sys_command_rs("$main::cfg{'CMD_CP'} -f $working_cfg /etc/cron.d/");
+	}
+
+	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'als_del_awstats_cron()', 'Ending...');
-	return 0;
+
+	0;
 }
-########################################################
-# high level functions.
-########################################################
 
 ################################################################################
+##                            High level subroutines                          ##
+################################################################################
+
 ################################################################################
 ##
-##
+## Adds all data related to the domain alias, that include data for Awstats,
+## DNS, Httpd, MTA and Proftpd
 ##
 sub als_add_data {
-	my ($als_data) = @_;
-	my $rs         = undef;
 
 	push_el(\@main::el, 'als_add_data()', 'Starting...');
+
+	my ($als_data) = @_;
+	my $rs = undef;
+
 	if (!defined($als_data) || $als_data eq '') {
-		push_el(\@main::el, 'als_add_data()', 'ERROR: Undefined Input Data...');
+		push_el(
+			\@main::el,
+			'als_add_data()',
+			'ERROR: Undefined Input Data...'
+		);
+
 		return -1;
 	}
 
 	my $awstats = $main::cfg{'AWSTATS_ACTIVE'};
+
 	# check whether AWStats is enabled
 	if ($awstats ne 'no') {
 		$rs = als_add_awstats_data($als_data);
@@ -2933,19 +3685,29 @@ sub als_add_data {
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'als_add_data()', 'Ending...');
-	return 0;
+
+	0;
 }
-################################################################################
+
 ################################################################################
 ##
+## Deletes all data related to the domain alias, that include data for Awstats,
+## DNS, Httpd, MTA and Proftpd
 ##
 sub als_change_data {
-	my ($als_data) = @_;
-	my $rs         = undef;
 
 	push_el(\@main::el, 'als_change_data()', 'Starting...');
+
+	my ($als_data) = @_;
+
+	my $rs = undef;
+
 	if (!defined($als_data) || $als_data eq '') {
-		push_el(\@main::el, 'als_change_data()', 'ERROR: Undefined Input Data...');
+		push_el(\@main::el,
+			'als_change_data()',
+			'ERROR: Undefined Input Data...'
+		);
+
 		return -1;
 	}
 
@@ -2970,19 +3732,30 @@ sub als_change_data {
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'als_change_data()', 'Ending...');
-	return 0;
+
+	0;
 }
-################################################################################
+
 ################################################################################
 ##
+## Deletes all data related to the domain alias, that include data for Awstats,
+## DNS, Httpd, MTA and Proftpd
 ##
 sub als_del_data {
-	my ($als_data) = @_;
-	my $rs         = undef;
 
 	push_el(\@main::el, 'als_del_data()', 'Starting...');
+
+	my ($als_data) = @_;
+
+	my $rs = undef;
+
 	if (!defined($als_data) || $als_data eq '') {
-		push_el(\@main::el, 'als_del_data()', 'ERROR: Undefined Input Data...');
+		push_el(
+			\@main::el,
+			'als_del_data()',
+			'ERROR: Undefined Input Data...'
+		);
+
 		return -1;
 	}
 
@@ -3007,16 +3780,19 @@ sub als_del_data {
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'als_del_data()', 'Ending...');
-	return 0;
+
+	0;
 }
-################################################################################
+
 ################################################################################
 ##
+## Should be documented
 ##
 sub als_mngr_engine {
-	my ($rs, $rows, $rdata) = (undef, undef, undef);
 
 	push_el(\@main::el, 'als_mngr_engine()', 'Starting...');
+
+	my ($rs, $rows, $rdata) = (undef, undef, undef);
 
 	my $sql = "
 		SELECT
@@ -3050,10 +3826,11 @@ sub als_mngr_engine {
 			t2.domain_cgi
 		FROM
 			domain_aliasses AS t1,
-			domain          AS t2
+			domain AS t2
 		WHERE
 			t2.domain_id = t1.domain_id
 			AND t1.alias_id  = $main::als_task_id
+		;
 	";
 	my $sql2 = undef;
 
@@ -3062,65 +3839,132 @@ sub als_mngr_engine {
 
 	push_el(\@main::el, 'als_mngr_engine()', "proceeding -> $sql");
 
-	my $entry                 = @$rows[0];
+	my $entry = @$rows[0];
 	my ($als_status, $als_id) = (@$entry[3], @$entry[0]);
-	my $timestamp             = undef;
+	my $timestamp = undef;
 
 	if ($als_status eq 'toadd') {
+
 		$rs = als_add_data($entry);
 		$timestamp = time();
+
 		if ($rs == 0) {
-			$sql = "update domain_aliasses set alias_status='ok' where alias_id = $als_id";
+			$sql = "
+				UPDATE
+					domain_aliasses
+				SET
+					alias_status = 'ok'
+				WHERE
+					alias_id = $als_id
+				;
+			";
 		} else {
+
 			my ($sub_name, $msg) = split(/$main::el_sep/, pop_el(\@main::el));
+
 			$msg =~ s/\'/\\\'/g;
-			$sql = "update domain_aliasses set alias_status='$sub_name | $msg' where alias_id = $als_id;";
+
+			$sql = "
+				UPDATE
+					domain_aliasses
+				SET
+					alias_status = '$sub_name | $msg'
+				WHERE
+					alias_id = $als_id
+				;
+			";
 		}
+
 		($rs, $rdata) = doSQL($sql);
 		return $rs if ($rs != 0);
+
 	} elsif ($als_status eq 'change') {
 		# Changing domains;
 		$rs = als_change_data($entry);
 		$timestamp = time();
+
 		if ($rs == 0) {
-			$sql = "update domain_aliasses set alias_status='ok' where alias_id = $als_id;";
+			$sql = "
+				UPDATE
+					domain_aliasses
+				SET
+					alias_status = 'ok'
+				WHERE
+					alias_id = $als_id
+				;
+			";
 		} else {
 			my ($sub_name, $msg) = split(/$main::el_sep/, pop_el(\@main::el));
+
 			$msg =~ s/\'/\\\'/g;
-			$sql = "update domain_aliasses set alias_status='$sub_name | $msg' where alias_id = $als_id;";
+
+			$sql = "
+				UPDATE
+					domain_aliasses
+				SET
+					alias_status = '$sub_name | $msg'
+				WHERE
+					alias_id = $als_id
+				;
+			";
 		}
+
 		($rs, $rdata) = doSQL($sql);
 		return $rs if ($rs != 0);
+
 	} elsif ($als_status eq 'delete') {
 		# Removing domains;
 		$rs = als_del_data($entry);
+
 		$timestamp = time();
+
 		if ($rs == 0) {
-			$sql = "delete from domain_aliasses where alias_id = $als_id;";
+			$sql = "
+				DELETE FROM
+					domain_aliasses
+				WHERE
+					alias_id = $als_id
+				;
+			";
+
 			($rs, $rdata) = doSQL($sql);
 			return $rs if ($rs != 0);
+
 		} else {
 			my ($sub_name, $msg) = split(/$main::el_sep/, pop_el(\@main::el));
+
 			$msg =~ s/\'/\\\'/g;
-			$sql = "update domain_aliasses set alias_status='$sub_name | $msg' where alias_id = $als_id;";
+
+			$sql = "
+				UPDATE
+					domain_aliasses
+				SET
+					alias_status = '$sub_name | $msg'
+				WHERE
+					alias_id = $als_id
+				;
+			";
+
 			($rs, $rdata) = doSQL($sql);
 			return $rs if ($rs != 0);
 		}
 	}
+
 	sleep(1);
+
 	push_el(\@main::el, 'als_mngr_engine()', 'Ending...');
-	return 0;
+
+	0;
 }
 
-################################################################
-#                                                              #
-#                       MAIN PROGRAM                           #
-#                                                              #
-################################################################
+################################################################################
+##                               MAIN PROGRAM                                 ##
+################################################################################
 
 my $rs = undef;
 
 $rs = als_mngr_start_up();
+
 if ($rs != 0) {
 	dump_el(\@main::el, $main::ispcp_als_mngr_el);
 	als_mngr_shut_down();
@@ -3128,6 +3972,7 @@ if ($rs != 0) {
 }
 
 $rs = als_mngr_engine();
+
 if ($rs != 0) {
 	dump_el(\@main::el, $main::ispcp_als_mngr_el);
 	als_mngr_shut_down();
@@ -3135,8 +3980,10 @@ if ($rs != 0) {
 }
 
 $rs = als_mngr_shut_down();
+
 if ($rs != 0) {
 	dump_el(\@main::el, $main::ispcp_als_mngr_el);
 	exit 1;
 }
+
 exit 0;

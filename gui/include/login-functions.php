@@ -3,7 +3,7 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @version 	SVN: $ID$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
@@ -24,13 +24,13 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
- * Portions created by the ispCP Team are Copyright (C) 2006-2009 by
+ * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  */
 
 /**
  * Checks if an username exists
- * 
+ *
  * @param  String	$username	Username to be checked
  * @return Boolean				true, if username exists
  */
@@ -46,7 +46,7 @@ function username_exists($username) {
 
 /**
  * Returns the stored data related to the username
- * 
+ *
  * @param  String	$username	Username that data should be returend
  * @return Array				Array of user-related data
  */
@@ -61,13 +61,13 @@ function get_userdata($username) {
 
 /**
  * Checks if the user account (domain name) is still vaild
- * 
+ *
  * @param  String	$username	Username that data should be checked
  * @return Boolean				true, if still valid
  */
 function is_userdomain_expired($username) {
 	$sql = Database::getInstance();
-	
+
 	$udata = get_userdata($username);
 
 	if (!is_array($udata)) {
@@ -83,7 +83,7 @@ function is_userdomain_expired($username) {
 	$res = exec_query($sql, $query, array($udata['admin_id']));
 
 	$row = $res->FetchRow();
-	
+
 	$result = false;
 	if (!empty($row['domain_expires'])) {
 		if (time() > $row['domain_expires']) $result = true;
@@ -94,7 +94,7 @@ function is_userdomain_expired($username) {
 
 /**
  * Checks if the user account's status is 'ok'
- * 
+ *
  * @param  String	$username	Username that data should be checked
  * @return Boolean				true, if status is 'ok'
  */
@@ -122,9 +122,9 @@ function is_userdomain_ok($username) {
 
 /**
  * @todo describe function
- * 
- * @param  Integer	$timeout	
- * @param  String	$type	
+ *
+ * @param  Integer	$timeout
+ * @param  String	$type
  */
 function unblock($timeout = null, $type = 'bruteforce') {
 	$sql = Database::getInstance();
@@ -157,10 +157,10 @@ function unblock($timeout = null, $type = 'bruteforce') {
 
 /**
  * @todo describe function
- * 
- * @param  String	$ipaddr	
- * @param  String	$type	
- * @param  Boolean	$autodeny	
+ *
+ * @param  String	$ipaddr
+ * @param  String	$type
+ * @param  Boolean	$autodeny
  * @return Boolean				true, if...
  */
 function is_ipaddr_blocked($ipaddr = null, $type = 'bruteforce', $autodeny = false) {
@@ -199,9 +199,9 @@ function is_ipaddr_blocked($ipaddr = null, $type = 'bruteforce', $autodeny = fal
 
 /**
  * @todo describe function
- * 
- * @param  String	$ipaddr	
- * @param  Boolean	$displayMessage	
+ *
+ * @param  String	$ipaddr
+ * @param  Boolean	$displayMessage
  * @return Boolean					true, if...
  */
 function shall_user_wait($ipaddr = null, $displayMessage = true) {
@@ -244,9 +244,9 @@ function shall_user_wait($ipaddr = null, $displayMessage = true) {
 
 /**
  * @todo describe function
- * 
- * @param  String	$ipaddr	
- * @param  String	$type	
+ *
+ * @param  String	$ipaddr
+ * @param  String	$type
  * @return Boolean				true, if...
  */
 function check_ipaddr($ipaddr = null, $type = "bruteforce") {
@@ -311,9 +311,9 @@ function check_ipaddr($ipaddr = null, $type = "bruteforce") {
 
 /**
  * @todo describe function
- * 
- * @param  String	$ipaddr	
- * @param  String	$type	
+ *
+ * @param  String	$ipaddr
+ * @param  String	$type
  */
 function block_ipaddr($ipaddr, $type = 'General') {
 	write_log("$type protection, <b><i> " . htmlspecialchars($ipaddr, ENT_QUOTES, "UTF-8") . "</i></b> blocked for " . Config::get('BRUTEFORCE_BLOCK_TIME') . " minutes.");
@@ -330,7 +330,7 @@ function deny_access() {
 
 /**
  * Returns the user's IP address
- * 
+ *
  * @return String				user's IP address
  */
 function getipaddr() {
@@ -356,7 +356,7 @@ function do_session_timeout() {
 
 /**
  * Checks if an session already exists and the IP address is matching
- * 
+ *
  * @param  String	$sess_id	user session id from cookie
  * @return Boolean				true, if session is valid
  */

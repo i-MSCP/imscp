@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
-# Copyright (C) 2006-2009 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
 #
 # Version: $Id$
 #
@@ -18,7 +18,7 @@
 # The Original Code is "ispCP ω (OMEGA) a Virtual Hosting Control Panel".
 #
 # The Initial Developer of the Original Code is ispCP Team.
-# Portions created by Initial Developer are Copyright (C) 2006-2009 by
+# Portions created by Initial Developer are Copyright (C) 2006-2010 by
 # isp Control Panel. All Rights Reserved.
 #
 # The ispCP ω Home Page is:
@@ -241,12 +241,15 @@ sub update_shutdown {
 	my $rs = setup_cleanup();
 	return $rs if($rs != 0);
 
-	my $shut_down_message = colored(['bold underline'],
-		"\n\n\tCongratulations, you updated ispCP '$main::cfg{'Version'}' successfully!\n\n");
+	my $shut_down_message = colored(
+		['bold underline'],
+		"\n\n\tCongratulations, you updated ispCP " .
+		"'$main::cfg{'Version'}' successfully!\n\n"
+	);
 
 	my $login_message =
-		"\tType http://$main::cfg{'BASE_SERVER_VHOST'} into your browser to log in\n".
-		"\tto your panel.\n\n";
+		"\tType http://$main::cfg{'BASE_SERVER_VHOST'} into your browser to " .
+		"log in\n\tto your panel.\n\n";
 
 	print STDOUT $shut_down_message, $login_message;
 
@@ -283,9 +286,9 @@ sub welcome_note {
 		"\n\tWelcome to ispCP '$main::cfg{'Version'}' Update Dialog.\n\n");
 
 	my $welcome_message =
-		"\tThis program will update your current ispCP OMEGA installation on this\n".
-		"\tserver.\n".
-		"\tPlease make sure you did a backup of all your server data.\n\n";
+		"\tThis program will update your current ispCP OMEGA installation on " .
+		"this\n\tserver.\n\tPlease make sure you did a backup of all your " .
+		"server data.\n\n";
 
 	my $welcome_note = colored(['bold'], "\tNOTE:") .
 		" During the migration process some or all services might require to\n".
@@ -298,7 +301,6 @@ sub welcome_note {
 	print STDOUT $welcome, $welcome_message, $welcome_note, $welcome_warning;
 
 	do {
-
 		print STDOUT "\tDo you want to continue [Y/n]: ";
 		chomp($rdata = readline \*STDIN);
 
@@ -320,7 +322,8 @@ sub warn_msg {
 
 	my $warning = colored(['bold'], "\n\tNOTICE:") .
 		" Make sure you have read and performed all steps from\n".
-		"\tdocs/distro/INSTALL document (where distro is your linux distribution).\n\n";
+		"\tdocs/distro/INSTALL document (where distro is your linux " .
+		"distribution).\n\n";
 
 	system 'clear';
 
@@ -329,11 +332,11 @@ sub warn_msg {
 	do {
 
 		if(defined $rdata && $rdata eq '?')	{
-
-			print STDOUT "\n\tOptions:\n".
-  				"\t\ty : Continue the update\n".
-  				"\t\tn : Abort and exit\n".
-  				"\t\ts : Select specific tasks to perform (Not yet implemented)\n\n";
+			print STDOUT "\n\tOptions:\n" .
+  				"\t\ty : Continue the update\n" .
+  				"\t\tn : Abort and exit\n" .
+  				"\t\ts : Select specific tasks to perform " .
+  				"(Not yet implemented)\n\n";
 		}
 
 		print STDOUT "\tDo you want to continue [Y/n/?]: ";
@@ -359,7 +362,9 @@ sub load_old_ispcp_cfg {
 	if (get_conf($old_ispcp_cfg_file)) {
 
 		do {
-			print STDOUT "\tPlease enter path to your ispcp.old.conf [/etc/ispcp/ispcp.old.conf]: ";
+			print STDOUT "\tPlease enter path to your ispcp.old.conf " .
+				"[/etc/ispcp/ispcp.old.conf]: ";
+
 			chomp($old_ispcp_cfg_file = readline \*STDIN);
 
 		} while (get_conf($old_ispcp_cfg_file));
@@ -428,7 +433,10 @@ sub update_database_schema {
 	if($rdata =~ s/{GUI_ROOT_DIR}/$main::cfg{'GUI_ROOT_DIR'}/) {
 
 		# Saving the modified file
-		$rs = save_file("$main::cfg{'ROOT_DIR'}/engine/setup/updDB.php", $rdata);
+		$rs = save_file(
+			"$main::cfg{'ROOT_DIR'}/engine/setup/updDB.php",
+			$rdata
+		);
 		return $rs if($rs != 0);
 	}
 
@@ -436,7 +444,10 @@ sub update_database_schema {
 
 	$main::db_pwd =~ s/([\'\"])/\\$1/g;
 
-	$cmd = "$main::cfg{'CMD_PHP'} $main::cfg{'ROOT_DIR'}/engine/setup/updDB.php &>/tmp/ispcp-update-database.log";
+	$cmd = "
+		$main::cfg{'CMD_PHP'} $main::cfg{'ROOT_DIR'}/engine/setup/updDB.php " .
+		"&>/tmp/ispcp-update-database.log";
+
 	$rs = sys_command_rs($cmd);
 	return $rs if($rs !=0);
 
@@ -577,13 +588,25 @@ sub rebuild_customers_cfg {
 
 	# Set status as 'change'
 	while (my ($table, $field) = each %$tables) {
-		($rs, $rdata) = doSQL("UPDATE $table SET $field='change' WHERE $field='ok'");
+		($rs, $rdata) = doSQL(
+			"
+				UPDATE
+					$table
+				SET
+					$field = 'change'
+				WHERE
+					$field = 'ok'
+				;
+			"
+		);
 		return $rs if ($rs != 0);
 	}
 
 	$main::db = undef;
 
-	$rs = sys_command_rs("perl $main::cfg{'ROOT_DIR'}/engine/ispcp-rqst-mngr &>/tmp/ispcp-update-customers.log");
+	$rs = sys_command_rs(
+		"perl $main::cfg{'ROOT_DIR'}/engine/ispcp-rqst-mngr " .
+		"&>/tmp/ispcp-update-customers.log");
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'rebuild_customers_cfg()', 'Ending...');
@@ -604,7 +627,11 @@ sub set_permissions {
 		$print = " Set $_ permissions:";
 		print STDOUT "\t" . $print ;
 
-		$cmd = "$main::cfg{'CMD_SHELL'} $main::cfg{'ROOT_DIR'}/engine/setup/set-$_-permissions.sh &>/tmp/ispcp-update-permissions.log";
+		$cmd =
+			"$main::cfg{'CMD_SHELL'} " .
+			"$main::cfg{'ROOT_DIR'}/engine/setup/set-$_-permissions.sh " .
+			"&>/tmp/ispcp-update-permissions.log";
+
 		$rs = sys_command_rs($cmd);
 		exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
 

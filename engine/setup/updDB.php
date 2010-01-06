@@ -2,10 +2,10 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @author 		Laurent Declercq <laurent.declercq@ispcp.net>
+ * @version 	SVN: $Id$
  * @link 		http://isp-control.net
- * @author 		Laurent Declercq <l.declercq@nuxwin.com>
  *
  * @license
  * The contents of this file are subject to the Mozilla Public License
@@ -21,9 +21,9 @@
  * The Original Code is "ispCP ω (OMEGA) a Virtual Hosting Control Panel".
  *
  * The Initial Developer of the Original Code is ispCP Team.
- * Portions created by Initial Developer are Copyright (C) 2006-2009 by
+ * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the ispCP Team are Copyright (C) 2006-2009 by
+ * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  */
 

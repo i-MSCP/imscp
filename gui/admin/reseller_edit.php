@@ -24,7 +24,7 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
- * Portions created by the ispCP Team are Copyright (C) 2006-2009 by
+ * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  */
 
@@ -283,8 +283,8 @@ function check_reseller_data($reseller_id, $rip_lst, $reseller_ips) {
 
 	if ($err == '_off_') {
 		// Hot fix:
-		// Commented out; we cannot calculate how many domains are added: 3 Mail 
-		// Accounts are created by default but user can delete them and there 
+		// Commented out; we cannot calculate how many domains are added: 3 Mail
+		// Accounts are created by default but user can delete them and there
 		// would be a new inconsitency if so.
 		// TODO: Fix it!
 		/* if ($umail_max != $rmail_current && $umail_current > 0)
@@ -847,7 +847,7 @@ $tpl->assign(
 
 		'EDIT_ID' => $edit_id,
 		'TR_UPDATE' => tr('Update'),
-		
+
 		// The entries below are for Demo versions only
 		'PASSWORD_DISABLED'	=> tr('Password change is deactivated!'),
 		'DEMO_VERSION'		=> tr('Demo Version!')

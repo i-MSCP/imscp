@@ -202,7 +202,7 @@ function delete_domain($domain_id) {
  */
 function delete_user($user_id) {
 	global $sql;
-	
+
 	$query = "SELECT `admin_type` FROM `admin` WHERE `admin_id` = ?";
 	$res = exec_query($sql, $query, array($user_id));
 	$data = $res->FetchRow();
@@ -238,9 +238,9 @@ function delete_user($user_id) {
  */
 function validate_user_deletion($user_id) {
 	global $sql;
-	
+
 	$result = false;
-	
+
 	// check if there are domains created by user
 	$query = "SELECT COUNT(`domain_id`) AS `num_domains` FROM `domain` WHERE `domain_created_id` = ?";
 	$res = exec_query($sql, $query, array($user_id));

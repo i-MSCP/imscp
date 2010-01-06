@@ -20,8 +20,8 @@
  *
  * The Original Code is "ispCP - ISP Control Panel".
  *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
- * Portions created by Initial Developer are Copyright (C) 2006-2009 by
+ * The Initial Developer of the Original Code is ispCP Team.
+ * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  */
 
@@ -827,7 +827,7 @@ SQL_QUERY;
 		$sqlUpd = array();
 
 		// Change all NULL values to decimal 0
-		$sqlUpd[] = "UPDATE `domain_dns` SET `domain_dns`.`alias_id` = '0' ". 
+		$sqlUpd[] = "UPDATE `domain_dns` SET `domain_dns`.`alias_id` = '0' ".
 					"WHERE `domain_dns`.`alias_id`= NULL;";
 		// Remove NULL value for alias_id
 		$sqlUpd[] = "ALTER TABLE `domain_dns` CHANGE `domain_dns`.`alias_id` ".

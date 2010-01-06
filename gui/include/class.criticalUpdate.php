@@ -2,7 +2,7 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @version 	SVN: $ID$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
@@ -21,7 +21,7 @@
  * The Original Code is "ispCP - ISP Control Panel".
  *
  * The Initial Developer of the Original Code is ispCP Team.
- * Portions created by Initial Developer are Copyright (C) 2006-2009 by
+ * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  */
 
@@ -38,19 +38,19 @@ class criticalUpdate extends ispcpUpdate {
 
 	/**
 	 * The database variable name for the update version
-	 * @var string 
+	 * @var string
 	 */
 	protected $databaseVariableName = "CRITICAL_UPDATE_REVISION";
-	
+
 	/**
 	 * The update functions prefix
-	 * @var string 
+	 * @var string
 	 */
 	protected $functionName = "_criticalUpdate_";
-	
+
 	/**
-	 * Error message for updates that have failed 
-	 * @var string 
+	 * Error message for updates that have failed
+	 * @var string
 	 */
 	protected $errorMessage = "Critical update %s failed";
 
@@ -60,7 +60,7 @@ class criticalUpdate extends ispcpUpdate {
 	 * return object criticalUpdate instance
 	 */
 	public static function getInstance() {
-	
+
 		static $instance = null;
 		if ($instance === null) $instance = new self();
 

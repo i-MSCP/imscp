@@ -3,7 +3,7 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @version 	SVN: $ID$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
@@ -24,7 +24,7 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
- * Portions created by the ispCP Team are Copyright (C) 2006-2009 by
+ * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  */
 
@@ -119,12 +119,12 @@ function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
 
 	$res = exec_query($sql, $query, array($domain_id));
 	$data = $res->FetchRow();
-	
-	
+
+
 	if ($res->RecordCount() <= 0) {
 		user_goto('manage_users.php');
 	}
-	
+
 	// Get admin data
 	$query = "SELECT `admin_name` FROM `admin` WHERE `admin_id` = ?";
 	$res1 = exec_query($sql, $query, array($data['domain_admin_id']));
@@ -138,7 +138,7 @@ function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
 	$ipdat = $ipres->FetchRow();
 	// Get status name
 	$dstatus = $data['domain_status'];
-	
+
 	if ($dstatus == Config::get('ITEM_OK_STATUS')
 		|| $dstatus == Config::get('ITEM_DISABLED_STATUS')
 		|| $dstatus == Config::get('ITEM_DELETE_STATUS')
@@ -195,7 +195,7 @@ function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
 		$pr = ($traff / $domain_traffic_limit) * 100;
 		$pr = sprintf("%.2f", $pr);
 	}
-	
+
 	$indx = (int)$pr;
 
 	list($traffic_percent, $indx, $a) = make_usage_vals($domain_all_traffic, $domain_traffic_limit * 1024 * 1024);
@@ -268,22 +268,22 @@ function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
 	$query = "SELECT COUNT(*) AS alias_num FROM `domain_aliasses` WHERE `domain_id` = ?";
 	$res1 = exec_query($sql, $query, array($data['domain_id']));
 	$alias_num_data = $res1->FetchRow();
-	
+
 	// Check if Backup support is available for this user
 	switch($data['allowbackup']){
     case "full":
-        $tpl->assign( array('VL_BACKUP_SUPPORT' => tr('Full'))); 
+        $tpl->assign( array('VL_BACKUP_SUPPORT' => tr('Full')));
         break;
     case "sql":
-        $tpl->assign( array('VL_BACKUP_SUPPORT' => tr('SQL'))); 
+        $tpl->assign( array('VL_BACKUP_SUPPORT' => tr('SQL')));
         break;
     case "dmn":
-        $tpl->assign( array('VL_BACKUP_SUPPORT' => tr('Domain'))); 
+        $tpl->assign( array('VL_BACKUP_SUPPORT' => tr('Domain')));
         break;
     default:
         $tpl->assign( array('VL_BACKUP_SUPPORT' => tr('No')));
     }
-	
+
 	$dom_alias = translate_limit_value($data['domain_alias_limit']);
 	// Fill in the fields
 	$tpl->assign(

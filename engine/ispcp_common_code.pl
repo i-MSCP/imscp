@@ -1,8 +1,8 @@
 #!/usr/bin/perl
- 
+
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
-# Copyright (C) 2006-2009 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
 #
 # Version: $Id$
 #
@@ -21,7 +21,7 @@
 # The Initial Developer of the Original Code is moleSoftware GmbH.
 # Portions created by Initial Developer are Copyright (C) 2001-2006
 # by moleSoftware GmbH. All Rights Reserved.
-# Portions created by the ispCP Team are Copyright (C) 2006-2009 by
+# Portions created by the ispCP Team are Copyright (C) 2006-2010 by
 # isp Control Panel. All Rights Reserved.
 #
 # The ispCP ω Home Page is:
@@ -42,9 +42,7 @@ my $rs;
 $main::cfg_file = '/etc/ispcp/ispcp.conf';
 
 $rs = get_conf($main::cfg_file);
-#return $rs if ($rs != 0);	# Bad code because we use 'return' outside a subroutine
 die("FATAL: Can't load the ispcp.conf file") if($rs !=0);
-
 
 if ($main::cfg{'DEBUG'} != 0) {
 	$main::engine_debug = '_on_';
@@ -52,16 +50,23 @@ if ($main::cfg{'DEBUG'} != 0) {
 
 if ($main::db_pass_key eq '{KEY}' || $main::db_pass_iv eq '{IV}') {
 
-	print STDOUT "\tGenerating database keys, it may take some time, please wait...\n";
-	print STDOUT "\tIf it takes to long, please check http://www.isp-control.net/documentation/frequently_asked_questions/what_does_generating_database_keys_it_may_take_some_time_please_wait..._on_setup_mean\n";
+	print STDOUT "\tGenerating database keys, it may take some time, please ".
+		"wait...\n";
+	print STDOUT "\tIf it takes to long, please check".
+	 "http://www.isp-control.net/documentation/frequently_asked_questions/what".
+	 "_does_generating_database_keys_it_may_take_some_time_please_wait..._on_".
+	 "setup_mean\n";
 
-	$rs = sys_command("perl $main::cfg{'ROOT_DIR'}/keys/rpl.pl $main::cfg{'GUI_ROOT_DIR'}/include/ispcp-db-keys.php $main::cfg{'ROOT_DIR'}/engine/ispcp-db-keys.pl $main::cfg{'ROOT_DIR'}/engine/messenger/ispcp-db-keys.pl");
+	$rs = sys_command(
+		"perl $main::cfg{'ROOT_DIR'}/keys/rpl.pl " .
+		"$main::cfg{'GUI_ROOT_DIR'}/include/ispcp-db-keys.php " .
+		"$main::cfg{'ROOT_DIR'}/engine/ispcp-db-keys.pl " .
+		"$main::cfg{'ROOT_DIR'}/engine/messenger/ispcp-db-keys.pl"
+	);
 
-	#return $rs if ($rs != 0); # Bad code because we use 'return' outside a subroutine
 	die('FATAL: Error during database keys generation !') if ($rs != 0);
 
 	do 'ispcp-db-keys.pl';
-	# get_conf(); Not needed here
 }
 
 $main::lock_file = $main::cfg{'MR_LOCK_FILE'};

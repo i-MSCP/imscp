@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
-# Copyright (C) 2006-2009 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
 #
 # Version: $Id$
 #
@@ -18,7 +18,7 @@
 # The Original Code is "ispCP ω (OMEGA) a Virtual Hosting Control Panel".
 #
 # The Initial Developer of the Original Code is ispCP Team.
-# Portions created by Initial Developer are Copyright (C) 2006-2009 by
+# Portions created by Initial Developer are Copyright (C) 2006-2010 by
 # isp Control Panel. All Rights Reserved.
 #
 # The ispCP ω Home Page is:
@@ -56,8 +56,10 @@ sub ask_hostname {
 
 		if ($rdata =~ /^([\w][\w-]{0,253}[\w])\.([a-zA-Z]{2,6})$/) {
 
-			my $wmsg = colored(['bold yellow'], "\tWARNING:") .
-				 " $rdata is not a \"fully qualified hostname\". Be aware you cannot use this domain for websites.";
+			my $wmsg = colored(
+				['bold yellow'], "\tWARNING:") .
+				 " $rdata is not a \"fully qualified hostname\". " .
+				 "Be aware you cannot use this domain for websites.";
 
 			print STDOUT $wmsg;
 		}
@@ -86,22 +88,25 @@ sub ask_eth {
 	my ($rs, $rdata, $warn_msg) = (undef, undef, '');
 
 	# TODO: Replace ifconfig, grep, awk with paths in ispcp.conf
-	my $cmd = "/sbin/ifconfig |grep -v inet6|grep inet|grep -v 127.0.0.1|awk ' {print \$2}'|head -n 1|awk -F: '{print \$NF}' 1>/tmp/ispcp-setup.ip";
+	my $cmd =
+		"/sbin/ifconfig |grep -v inet6|grep inet|grep -v 127.0.0.1|awk ' " .
+		"{print \$2}'|head -n 1|awk -F: '{print \$NF}' 1>/tmp/ispcp-setup.ip";
 
 	# FIXME: No error correction, if /tmp/ispcp-setup.ip not readable
 	$rs = sys_command($cmd);
 
 	unless(!$rs) {
-		$warn_msg = colored(['bold red'], "\n\tERROR:") .
-			' External command $cmd returned an error status on eth lookup!'. "\n";
+		$warn_msg = colored(
+			['bold red'], "\n\tERROR: ") .
+			'External command $cmd returned an error status on eth lookup!'."\n";
 		return ($rs, $warn_msg);
 	}
 
 	($rs, $rdata) = get_file('/tmp/ispcp-setup.ip');
 
 	unless(!$rs){
-		$warn_msg = colored(['bold red'], "\n\tERROR:") .
-			' Unable to get the file /tmp/ispcp-setup.ip!'. "\n";
+		$warn_msg = colored(['bold red'], "\n\tERROR: ") .
+			'Unable to get the file /tmp/ispcp-setup.ip!'. "\n";
 		return ($rs, $warn_msg);
 	}
 
@@ -110,8 +115,8 @@ sub ask_eth {
 	$rs = del_file('/tmp/ispcp-setup.ip');
 
 	unless(!$rs) {
-		$warn_msg = colored(['bold red'], "\n\tERROR:") .
-			' Unable to delete /tmp/ispcp-setup.ip'. "\n";
+		$warn_msg = colored(['bold red'], "\n\tERROR: ") .
+			'Unable to delete /tmp/ispcp-setup.ip'. "\n";
 		return ($rs, $warn_msg);
 	}
 
@@ -228,8 +233,8 @@ sub ask_db_password {
 
 		} else {
 
-			print STDOUT colored(['bold red'], "\n\tERROR:") .
-				' Passwords do not match!';
+			print STDOUT colored(['bold red'], "\n\tERROR: ") .
+				'Passwords do not match!';
 
 			return 1;
 		}
@@ -258,8 +263,8 @@ sub ask_db_ftp_user {
 
 	} elsif( $rdata eq $main::ua{'db_user'}) {
 
-		$qmsg = colored(['bold red'], "\n\tERROR:") .
-			' Ftp SQL user must not be identical to system SQL user!';
+		$qmsg = colored(['bold red'], "\n\tERROR: ") .
+			'Ftp SQL user must not be identical to system SQL user!';
 
 		print STDOUT $qmsg;
 
@@ -305,7 +310,7 @@ sub ask_db_ftp_password {
 
 		} else {
 
-			print STDOUT colored(['bold red'], "\n\tERROR:") .
+			print STDOUT colored(['bold red'], "\n\tERROR: ") .
 				'Passwords do not match!';
 
 			return 1;
@@ -330,11 +335,8 @@ sub ask_admin {
 	chomp($rdata = readline \*STDIN);
 
 	if (!defined($rdata) || $rdata eq '') {
-
 		$main::ua{'admin'} = $admin;
-
 	} else {
-
 		$main::ua{'admin'} = $rdata;
 	}
 
@@ -354,15 +356,14 @@ sub ask_admin_password {
 	$pass1 = read_password($qmsg);
 
 	if (!defined($pass1) || $pass1 eq '') {
-
 		print STDOUT colored(['bold red'], "\n\tERROR:") .
 			 ' Password cannot be empty!';
+
 		return 1;
 
 	} else {
 
 		if (length($pass1) < 5) {
-
 			print STDOUT colored(['bold red'], "\n\tERROR:") .
 				'Password too short!';
 
@@ -375,11 +376,8 @@ sub ask_admin_password {
 		if ($pass1 =~ m/[a-zA-Z]/ && $pass1 =~ m/[0-9]/) {
 
 			if ($pass1 eq $pass2) {
-
 				$main::ua{'admin_password'} = $pass1;
-
 			} else {
-
 				print STDOUT colored(['bold red'], "\n\tERROR:") .
 					' Passwords do not match!';
 
@@ -387,7 +385,6 @@ sub ask_admin_password {
 			}
 
 		} else {
-
 			print STDOUT colored(['bold red'], "\n\tERROR:") .
 				' Passwords must contain at least digits and chars!';
 
@@ -463,11 +460,8 @@ sub ask_admin_email {
 					)
 			$/x
 		) {
-
 			$main::ua{'admin_email'} = $rdata;
-
 		} else {
-
 			print STDOUT colored(['bold red'], "\n\tERROR:") .
 				' E-mail address not valid!';
 
@@ -510,17 +504,12 @@ sub ask_vhost {
 	chomp($rdata = readline \*STDIN);
 
 	if (!defined($rdata) || $rdata eq '') {
-
 		$main::ua{'admin_vhost'} = $vhost;
-
 	} else {
 
 		if ($rdata =~ /^([\w][\w-]{0,253}[\w]\.)*([\w][\w-]{0,253}[\w])\.([a-zA-Z]{2,6})$/) {
-
 			$main::ua{'admin_vhost'} = $rdata;
-
 		} else {
-
 			print STDOUT colored(['bold red'], "\n\tERROR:") .
 				' Vhost not valid!';
 
@@ -545,17 +534,13 @@ sub ask_second_dns {
 	chomp($rdata = readline \*STDIN);
 
 	if (!defined($rdata) || $rdata eq '') {
-
 		$main::ua{'secondary_dns'} = '';
 
 	} else {
 
 		unless (check_eth($rdata)) {
-
 			$main::ua{'secondary_dns'} = $rdata;
-
 		} else {
-
 			print STDOUT colored(['bold red'], "\n\tERROR:") .
 				' No valid IP, please retry!';
 
@@ -998,6 +983,8 @@ sub setup_named {
 		push_el(\@main::el, 'add_named_db_data()', "WARNING: Can't find the parent file for named...");
 		$cfg = '';
 	}
+
+	#
 
 	# Loading the template from /etc/ispcp/bind/named.conf
 	($rs, $cfg_tpl) = get_file("$cfg_dir/named.conf");
@@ -1680,7 +1667,8 @@ sub setup_mta {
 }
 
 # IspCP Courier setup / update
-# Build, store and install Courier, related configuration files (authdaemonrc userdb)
+# Build, store and install Courier, related configuration
+# files (authdaemonrc userdb)
 # Creates userdb.dat from the contents of userdb
 sub setup_po {
 
@@ -1825,7 +1813,7 @@ sub setup_ftpd {
 
 	# Sets the path to the configuration file - Begin
 
-	if (! -e $main::cfg{'FTPD_CONF_FILE'}) {
+	if (!-e $main::cfg{'FTPD_CONF_FILE'}) {
 
 		$rs = set_conf_val('FTPD_CONF_FILE', '/etc/proftpd/proftpd.conf');
 		return $rs if ($rs != 0);
@@ -1906,7 +1894,7 @@ sub setup_ftpd {
 		# We ask the database ftp user and password, and we create new Sql ftp user account if needed
 		if(!defined($main::ua{'db_ftp_user'}) || !defined($main::ua{'db_ftp_password'})) {
 
-			print defined($warn_msg) ? $warn_msg :  "\n\tWARNING: Unable to retrieve your current username and" .
+			print defined($warn_msg) ? $warn_msg :  "\n\tWARNING: Unable to retrieve your current username and/or" .
 				"\n\tpassword for the Ftpd Sql account! We will create a new Ftpd Sql account.\n";
 
 			do {
@@ -1931,12 +1919,31 @@ sub setup_ftpd {
 
 			# We ensure that news data doesn't exist in database - Begin
 
-			$sql = "DELETE FROM tables_priv WHERE Host = '$main::cfg{'SERVER_HOSTNAME'}' " .
-				"AND Db = '$main::db_name' AND User = '$main::ua{'db_ftp_user'}'";
+			$sql = "
+				DELETE FROM
+					tables_priv
+				WHERE
+					Host = '$main::cfg{'SERVER_HOSTNAME'}'
+				AND
+					Db = '$main::db_name'
+				AND
+					User = '$main::ua{'db_ftp_user'}'
+				;
+			";
+
 			($rs, $rdata) = doSQL($sql);
 			return $rs if ($rs != 0);
 
-			$sql = "DELETE FROM user WHERE Host = '$main::db_host' AND User = '$main::ua{'db_ftp_user'}'";
+			$sql = "
+				DELETE FROM
+					user
+				WHERE
+					Host = '$main::db_host'
+				AND
+					User = '$main::ua{'db_ftp_user'}'
+				;
+			";
+
 			($rs, $rdata) = doSQL($sql);
 			return $rs if ($rs != 0);
 
@@ -1950,8 +1957,15 @@ sub setup_ftpd {
 
 			foreach(qw/ftp_group ftp_users quotalimits quotatallies/) {
 
-				$sql = "GRANT SELECT,INSERT,UPDATE,DELETE ON $main::db_name.$_ " .
-					"TO '$main::ua{'db_ftp_user'}'\@'$main::db_host' IDENTIFIED BY '$main::ua{'db_ftp_password'}'";
+				$sql = "
+					GRANT SELECT,INSERT,UPDATE,DELETE ON
+						$main::db_name.$_
+					TO
+						'$main::ua{'db_ftp_user'}'\@'$main::db_host'
+					IDENTIFIED BY
+						'$main::ua{'db_ftp_password'}'
+					;
+				";
 
 				($rs, $rdata) = doSQL($sql);
 				return $rs if ($rs != 0);
@@ -2033,7 +2047,7 @@ sub setup_ftpd {
 }
 
 #  IspCP Daemon, network setup / update
-#  Install ispCP daemon and network init scripts
+#  Install or update the ispCP daemon and network init scripts
 sub setup_ispcp_daemon_network {
 
 	push_el(\@main::el, 'setup_ispcp_daemon_network()', 'Starting...');
@@ -2042,7 +2056,9 @@ sub setup_ispcp_daemon_network {
 
 	my $filename = undef;
 
-	my $services_log = (!defined &update_engine) ? '/tmp/ispcp-setup-services.log' : '/tmp/ispcp-update-services.log';
+	my $services_log = (!defined &update_engine) ?
+		'/tmp/ispcp-setup-services.log' : '/tmp/ispcp-update-services.log';
+
 
 	foreach ($main::cfg{'CMD_ISPCPD'}, $main::cfg{'CMD_ISPCPN'}) {
 
@@ -2051,21 +2067,46 @@ sub setup_ispcp_daemon_network {
 
 		($filename) = /.*\/(.*)$/;
 
-		$rs = sys_command_rs("$main::cfg{'CMD_CHOWN'} $main::cfg{'ROOT_USER'}:$main::cfg{'ROOT_GROUP'} $_ &> $services_log");
+		$rs = sys_command_rs(
+			"$main::cfg{'CMD_CHOWN'} $main::cfg{'ROOT_USER'}:$main::cfg{'ROOT_GROUP'} $_ &> $services_log"
+		);
 		return $rs if($rs != 0);
 
 		$rs = sys_command_rs("$main::cfg{'CMD_CHMOD'} 0755 $_ &> $services_log");
 		return $rs if($rs != 0);
 
-		if(-x "/usr/sbin/update-rc.d") {
+		# Services installation / update (Debian, Ubuntu)
+		# Todo Check it for Debian Squeeze
+		if(-x '/usr/sbin/update-rc.d') {
 
-			sys_command_rs("/usr/sbin/update-rc.d $filename defaults 99 &> $services_log");
+			# Update task - The links should be removed first to be updated
+			if(defined &update_engine) {
+				sys_command_rs(
+					"/usr/sbin/update-rc.d -f $filename remove &> $services_log"
+				);
+			}
 
-		#LSB 3.1 Core section 20.4 compatibility {
-		} elsif(-x "/usr/lib/lsb/install_initd") {
+			# ispcp_network should be stopped before the MySQL server (due to the
+			# interfaces deletion process)
+			if($filename eq 'ispcp_network') {
+				sys_command_rs(
+					"/usr/sbin/update-rc.d $filename defaults 99 20 &> $services_log"
+				);
+			} else {
+				sys_command_rs(
+					"/usr/sbin/update-rc.d $filename defaults 99 &> $services_log"
+				);
+			}
+
+		# LSB 3.1 Core section 20.4 compatibility (ex. OpenSUSE > 10.1)
+		} elsif(-x '/usr/lib/lsb/install_initd') {
+
+			# Update task
+			if(-x '/usr/lib/lsb/remove_initd' && defined &update_engine) {
+				sys_command_rs("/usr/lib/lsb/remove_initd $_ &> $services_log");
+			}
 
 			sys_command_rs("/usr/lib/lsb/install_initd $_ &> $services_log");
-
 			return $rs if ($rs != 0);
 		}
 	}
@@ -2109,6 +2150,7 @@ sub setup_gui_httpd {
 		# Saving the current production file if it exists
 		if(-e "$main::cfg{'APACHE_SITES_DIR'}/00_master.conf") {
 			$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'APACHE_SITES_DIR'}/00_master.conf $bk_dir/00_master.conf.$timestamp";
+
 			$rs = sys_command_rs($cmd);
 			return $rs if($rs != 0);
 		}
@@ -2161,6 +2203,7 @@ sub setup_gui_httpd {
 	return $rs if ($rs != 0);
 
 	$cmd = "$main::cfg{'CMD_CP'} -pf $wrk_dir/00_master.conf $main::cfg{'APACHE_SITES_DIR'}/";
+
 	$rs = sys_command_rs($cmd);
 	return $rs if($rs != 0);
 
@@ -2246,6 +2289,7 @@ sub setup_gui_php {
 				$file = $_ if(!defined $file);
 
 				$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'PHP_STARTER_DIR'}/master/$_ $bk_dir/master.$file.$timestamp";
+
 				$rs = sys_command_rs($cmd);
 				return $rs if($rs != 0);
 			}
@@ -2294,6 +2338,7 @@ sub setup_gui_php {
 
 	# Install the new file
 	$cmd = "$main::cfg{'CMD_CP'} -pf $wrk_dir/master.php5-fcgi-starter $main::cfg{'PHP_STARTER_DIR'}/master/php5-fcgi-starter";
+
 	$rs = sys_command($cmd);
 	return $rs if ($rs != 0);
 
@@ -2376,8 +2421,8 @@ sub setup_gui_pma {
 
 		if($cfg_file =~ /\{(?:HOSTNAME|PMA_USER|PMA_PASS|BLOWFISH|TMP_DIR)\}/) {
 
-			print STDOUT colored(['bold yellow'], "\n\n\tWARNING:") .
-				" Your PMA configuration file should be updated !\n";
+			print STDOUT colored(['bold yellow'], "\n\n\tWARNING: ") .
+				"Your PMA configuration file should be rebuilded !\n";
 
 			# Gets the new pma controluser username
 			do {
@@ -2411,7 +2456,7 @@ sub setup_gui_pma {
 
 		#
 		## We ensure the new user is not already registered and we remove the
-		## old user during updates
+		## old user if one exist
 		#
 
 		my $i = 0;
@@ -2423,17 +2468,42 @@ sub setup_gui_pma {
 				next;
 			}
 
-			$sql = "DELETE FROM tables_priv WHERE Host = '$hostname'
-				AND Db = 'mysql' AND User = '$_';";
+			$sql = "
+				DELETE FROM
+					tables_priv
+				WHERE
+					Host = '$hostname'
+				AND
+					Db = 'mysql' AND User = '$_'
+				;
+			";
+
 			($rs, undef) = doSQL($sql);
 			return $rs if ($rs != 0);
 
-			$sql = "DELETE FROM user WHERE Host = '$hostname' AND User = '$_';";
+			$sql = "
+				DELETE FROM
+					user
+				WHERE
+					Host = '$hostname'
+				AND
+					User = '$_'
+				;
+			";
+
 			($rs, undef) = doSQL($sql);
 			return $rs if ($rs != 0);
 
-			$sql = "DELETE FROM columns_priv WHERE Host = '$hostname'
-				AND User = '$_';";
+			$sql = "
+				DELETE FROM
+					columns_priv
+				WHERE
+					Host = '$hostname'
+				AND
+					User = '$_'
+				;
+			";
+
 			($rs, undef) = doSQL($sql);
 			return $rs if ($rs != 0);
 		}
@@ -2453,9 +2523,10 @@ sub setup_gui_pma {
 			GRANT USAGE ON
 				mysql.*
 			TO
-				\'$pma_sql_user\'\@\'$hostname\'
+				'$pma_sql_user'\@'$hostname'
 			IDENTIFIED BY
-				\'$pma_sql_password\';
+				'$pma_sql_password'
+			;
 		";
 
 		($rs, undef) = doSQL($sql);
@@ -2466,19 +2537,21 @@ sub setup_gui_pma {
 		#
 
 		$sql = "
-			GRANT SELECT
-				(Host, User, Select_priv, Insert_priv,
+			GRANT SELECT (
+				Host, User, Select_priv, Insert_priv,
 				 Update_priv, Delete_priv, Create_priv,
 				 Drop_priv, Reload_priv, Shutdown_priv,
 				 Process_priv, File_priv, Grant_priv,
 				 References_priv, Index_priv, Alter_priv,
 				 Show_db_priv, Super_priv, Create_tmp_table_priv,
 				 Lock_tables_priv, Execute_priv, Repl_slave_priv,
-				 Repl_client_priv)
+				 Repl_client_priv
+			)
 			ON
 				mysql.user
 			TO
-				\'$pma_sql_user\'\@\'$hostname\';
+				'$pma_sql_user'\@'$hostname'
+			;
 		";
 
 		($rs, undef) = doSQL($sql);
@@ -2488,7 +2561,8 @@ sub setup_gui_pma {
 			GRANT SELECT ON
 				mysql.db
 			TO
-				\'$pma_sql_user\'\@\'$hostname\';
+				'$pma_sql_user'\@'$hostname'
+			;
 		";
 
 		($rs, undef) = doSQL($sql);
@@ -2498,7 +2572,8 @@ sub setup_gui_pma {
 			GRANT SELECT ON
 				mysql.host
 			TO
-				\'$pma_sql_user\'\@\'$hostname\';
+				'$pma_sql_user'\@'$hostname'
+			;
 		";
 
 		($rs, undef) = doSQL($sql);
@@ -2510,7 +2585,8 @@ sub setup_gui_pma {
 			ON
 				mysql.tables_priv
 			TO
-				\'$pma_sql_user\'\@\'$hostname\';
+				'$pma_sql_user'\@'$hostname'
+			;
 		";
 
 		($rs, undef) = doSQL($sql);
@@ -2578,7 +2654,10 @@ sub setup_gui_named {
 	return $rs if($rs != 0);
 
 	# Building GUI named dns records file
-	$rs = setup_gui_named_db_data($main::cfg{'BASE_SERVER_IP'}, $main::cfg{'BASE_SERVER_VHOST'});
+	$rs = setup_gui_named_db_data(
+		$main::cfg{'BASE_SERVER_IP'},
+		$main::cfg{'BASE_SERVER_VHOST'}
+	);
 	return $rs if($rs != 0);
 
 	push_el(\@main::el, 'setup_gui_named()', 'Ending...');
@@ -2605,7 +2684,11 @@ sub setup_gui_named_cfg_data {
 
 	if (!defined($base_vhost) || $base_vhost eq '') {
 
-		push_el(\@main::el, 'setup_gui_named_cfg_data()', 'FATAL: Undefined Input Data...');
+		push_el(
+			\@main::el,
+			'setup_gui_named_cfg_data()',
+			'FATAL: Undefined Input Data...'
+		);
 		return 1;
 	}
 
@@ -2626,16 +2709,15 @@ sub setup_gui_named_cfg_data {
 	# Loading all needed templates from /etc/ispcp/bind/parts
 	my ($entry_b, $entry_e, $entry) = ('', '', '');
 
-	(
-		$rs,
+	(	$rs,
 		$entry_b,
 		$entry_e,
 		$entry
 	) = get_tpl(
-					$tpl_dir,
-					'cfg_entry_b.tpl',
-					'cfg_entry_e.tpl',
-					'cfg_entry.tpl'
+		$tpl_dir,
+		'cfg_entry_b.tpl',
+		'cfg_entry_e.tpl',
+		'cfg_entry.tpl'
 	);
 	return $rs if ($rs != 0);
 
@@ -2648,16 +2730,15 @@ sub setup_gui_named_cfg_data {
 	# Replacement tags
 	my ($entry_b_val, $entry_e_val, $entry_val) = ('', '', '');
 
-	(
-		$rs,
+	(	$rs,
 		$entry_b_val,
 		$entry_e_val,
 		$entry_val
 	) = prep_tpl(
-			\%tags_hash,
-			$entry_b,
-			$entry_e,
-			$entry
+		\%tags_hash,
+		$entry_b,
+		$entry_e,
+		$entry
 	);
 	return $rs if ($rs != 0);
 
@@ -2667,7 +2748,14 @@ sub setup_gui_named_cfg_data {
 
 	# Building the new configuration file
 	my $entry_repl = "$entry_b_val$entry_val$entry_e_val\n$entry_b$entry_e";
-	($rs, $cfg) = repl_tag($entry_b, $entry_e, $cfg, $entry_repl, "setup_gui_named_cfg_data");
+
+	($rs, $cfg) = repl_tag(
+		$entry_b,
+		$entry_e,
+		$cfg,
+		$entry_repl,
+		'setup_gui_named_cfg_data'
+	);
 	return $rs if ($rs != 0);
 
 	#
@@ -2734,8 +2822,12 @@ sub setup_gui_named_db_data {
 	my $bk_cfg = "$bk_dir/$db_fname";
 
 	if (!defined($base_vhost) || $base_vhost eq '') {
+		push_el(
+			\@main::el,
+			'add_named_db_data()',
+			'FATAL: Undefined Input Data...'
+		);
 
-		push_el(\@main::el, 'add_named_db_data()', 'FATAL: Undefined Input Data...');
 		return 1;
 	}
 
@@ -2766,12 +2858,12 @@ sub setup_gui_named_db_data {
 
 		# Extraction of old time data and revision number
 		unless ( ($otime, $rev_nbr) = /^.+?(\d{8})(\d{2}).*?;/s ) {
-
 			push_el(
 				\@main::el,
 				'add_named_db_data()',
 				"FATAL: Can't retrieve the serial number in the master domain SOA record..."
 			);
+
 			return 1;
 		}
 
@@ -2813,7 +2905,7 @@ sub setup_gui_named_db_data {
 		'{DMN_NAME}' => $base_vhost,
 		'{DMN_IP}' => $base_ip,
 		'{BASE_SERVER_IP}' => $base_ip,
-		'{SECONDARY_DNS_IP}'	=> ($sec_dns_ip) ? $sec_dns_ip : $base_ip ,
+		'{SECONDARY_DNS_IP}' => ($sec_dns_ip) ? $sec_dns_ip : $base_ip ,
 		'{TIMESTAMP}' => $serial
 	);
 
@@ -2915,9 +3007,11 @@ sub setup_cleanup {
 # Check ip
 sub check_eth {
 
-	return 0 if(shift =~ /^(\d+)\.(\d+)\.(\d+)\.(\d+)$/ &&
+	return 0 if(
+		shift =~ /^(\d+)\.(\d+)\.(\d+)\.(\d+)$/ &&
 		($1 >  0) && ($1 <  255) && ($2 >= 0) && ($2 <= 255) &&
-		($3 >= 0) && ($3 <= 255) && ($4 >  0) && ($4 <  255));
+		($3 >= 0) && ($3 <= 255) && ($4 >  0) && ($4 <  255)
+	);
 
 	1;
 }
@@ -2933,15 +3027,13 @@ sub check_sql_connection {
 	push_el(\@main::el, 'sql_check_connections()', 'Starting...');
 
 	my ($user, $password) = @_;
-
-	my ($rs, $rdata, $sql) = (undef, undef, undef);
+	my ($rs, $rdata) = (undef, undef);
 
 	# First, we reset db connection
 	$main::db = undef;
 
 	# If we as receive username and password, we redefine the dsn
 	if(defined $user && defined $password ) {
-
 		@main::db_connect = (
 			"DBI:mysql:$main::db_name:$main::db_host",
 			$user,
@@ -2949,9 +3041,7 @@ sub check_sql_connection {
 		);
 	}
 
-	$sql = "show databases;";
-
-	($rs, $rdata) = doSQL($sql);
+	($rs, $rdata) = doSQL('show databases;');
 	return $rs if ($rs != 0);
 
 	# We reset the connection and restore the previous DSN
@@ -2973,9 +3063,9 @@ sub check_sql_connection {
 # install the required packages and will also perform other
 # tasks as rename, move directories that may be helpful as
 # part of an update.
-sub _preinst {
+sub preinst {
 
-	push_el(\@main::el, '_preinst()', 'Starting...');
+	push_el(\@main::el, 'preinst()', 'Starting...');
 
 	my $task = shift;
 
@@ -2990,7 +3080,7 @@ sub _preinst {
 	$rs = sys_command_rs($cmd);
 	return $rs if($rs != 0);
 
-	push_el(\@main::el, '_preinst()', 'Ending...');
+	push_el(\@main::el, 'preinst()', 'Ending...');
 
 	0;
 }
