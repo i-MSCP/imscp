@@ -58,6 +58,11 @@
             <td class="content">{TR_ACCOUNT_NAME} / {TR_MAIN_DOMAIN}</td>
             <td width="230" class="content2">{ACCOUNT_NAME}</td>
           </tr>
+          <tr>
+            <td width="25">&nbsp;</td>
+            <td class="content">{TR_DOMAIN_EXPIRE}</td>
+            <td width="230" class="content2">{DMN_EXPIRES} ( <strong style="text-decoration:underline;">{DMN_EXPIRES_DATE}</strong> )</td>
+          </tr>
           <!-- BDP: t_php_support -->
           <tr>
             <td width="25">&nbsp;</td>

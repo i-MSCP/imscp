@@ -1,24 +1,34 @@
 ispCP ω 1.0.4 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-01-06 Peter Ziergöbel
+	- GUI:
+		* Fixed #1994: Domain expiration in client's General information
+
 2010-01-04 Christian Hernmarck
 	- GUI:
-		* Fixed: #2142 "Subdomain add Bug" (problem of ie caused by wrong html in tpl)
+		* Fixed #2142: "Subdomain add Bug" (problem of ie caused by wrong html in tpl)
 
-2010-01-02 Peter Ziergöbe
-	GUI:
-		* FIXED #2123: Add "Backup Support" in ../reseller/domain_details.php and in ../admin/domain_details.php
+2010-01-02 Peter Ziergöbel
+	- GUI:
+		* Fixed #2123: Add "Backup Support" in ../reseller/domain_details.php and in ../admin/domain_details.php
 
 2009-12-31 Laurent Declercq
-	CONFIGS:
+	- CONFIGS:
 		* Fixed #2132: All ispCP init scripts must be written in Shell and use only POSIX features
-	DOCS:
+	- DOCS:
 		* Updated OpenSUSE INSTALL file
 
 2009-12-30 Christian Hernmarck
 	- GUI:
 		* Fixed #2139: HY93 (or similar) error when deleting domain with alias
 		* Fixed #2138: Deny to create the subdomains "backups" and "phptmp"
+
+2009-12-29 Benedikt Heintel
+	- GUI:
+		* Fixed Error in Hosting Plan Edit
+	- LANGUAGES:
+		* Updated Lithuanian
 
 2009-12-29 Christian Hernmarck
 	- CONFIGS:

@@ -162,10 +162,10 @@ function restore_form(&$tpl, &$sql) {
 					'TR_CGI_NO'		=> ($_POST['cgi'] == '_no_') ? 'checked="checked"' : '',
 					'TR_DNS_YES'	=> ($_POST['dns'] == '_yes_') ? 'checked="checked"' : '',
 					'TR_DNS_NO'		=> ($_POST['dns'] == '_no_') ? 'checked="checked"' : '',
-					'VL_BACKUPD'	=> ($hp_backup == '_dmn_') ? 'checked="checked"' : '',
-					'VL_BACKUPS'	=> ($hp_backup == '_sql_') ? 'checked="checked"' : '',
-					'VL_BACKUPF'	=> ($hp_backup == '_full_') ? 'checked="checked"' : '',
-					'VL_BACKUPN'	=> ($hp_backup == '_no_') ? 'checked="checked"' : '',
+					'VL_BACKUPD'	=> ($_POST['backup'] == '_dmn_') ? 'checked="checked"' : '',
+					'VL_BACKUPS'	=> ($_POST['backup'] == '_sql_') ? 'checked="checked"' : '',
+					'VL_BACKUPF'	=> ($_POST['backup'] == '_full_') ? 'checked="checked"' : '',
+					'VL_BACKUPN'	=> ($_POST['backup']== '_no_') ? 'checked="checked"' : '',
 					'TR_STATUS_YES'	=> ($_POST['status']) ? 'checked="checked"' : '',
 					'TR_STATUS_NO'	=> (!$_POST['status']) ? 'checked="checked"' : ''
 			)
