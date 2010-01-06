@@ -1,36 +1,41 @@
 #!/bin/sh
-# chkconfig: - 85 15
-# description: Starts and stops the ISPCP  networking
-#
-# pidfile: /var/run/ispcp.pid
-# config:  /etc/ispcp/ispcp.conf
-# ispCP ω (OMEGA) a Virtual Hosting Control System
-# Copyright (c) 2007 by ispCP
-# http://www.isp-control.net
-#
-#
-# License:
-#    This program is free software; you can redistribute it and/or
-#    modify it under the terms of the MPL Mozilla Public License
-#    as published by the Free Software Foundation; either version 1.1
-#    of the License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    MPL Mozilla Public License for more details.
-#
-#    You may have received a copy of the MPL Mozilla Public License
-#    along with this program.
-#
-#    An on-line copy of the MPL Mozilla Public License can be found
-#    http://www.mozilla.org/MPL/MPL-1.1.html
-#
-#
-# The ispCP Home Page is at:
-#
-#    http://www.isp-control.net
 
+# ispCP ω (OMEGA) a Virtual Hosting Control Panel
+# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+#
+# Version: $ID$
+#
+# The contents of this file are subject to the Mozilla Public License
+# Version 1.1 (the "License"); you may not use this file except in
+# compliance with the License. You may obtain a copy of the License at
+# http://www.mozilla.org/MPL/
+#
+# Software distributed under the License is distributed on an "AS IS"
+# basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+# License for the specific language governing rights and limitations
+# under the License.
+#
+# The Original Code is "ispCP - ISP Control Panel".
+#
+# The Initial Developer of the Original Code is ispCP Team.
+# Portions created by the ispCP Team are Copyright (C) 2006-2010 by
+# isp Control Panel. All Rights Reserved.
+#
+# The ispCP ω Home Page is:
+#
+#    http://isp-control.net
+#
+### BEGIN INIT INFO
+# Provides:             ispcp_network
+# Required-Start:       $network $local_fs $remote_fs
+# Required-Stop:
+# Should-Stop:          $local_fs
+# chkconfig: 			- 85 15
+# pidfile: 				/var/run/ispcp.pid
+# config:  				/etc/ispcp/ispcp.conf
+# Short-Description:    ispCP Network Traffic Logger
+#
+### END INIT INFO
 # Note: do not modify any of these vars here, use /etc/default/$NAME instead
 
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
@@ -54,6 +59,11 @@ START=1
 # IMAP4(S)): 143 993
 # MAIL(S): 25 465 587
 SERVICES="80 443 110 143 25 465 587 995 993"
+# To monitor more outgoing ports, edit SERVICES_OUT variable add your own ports 
+# (mail, etc.)
+#
+# MAIL(S): 25 465 587
+SERVICES_OUT="25 465 587
 
 # Read config file if it is present.
 if [ -r /etc/default/$NAME ]; then
@@ -73,12 +83,17 @@ add_rules() {
 	${IPTABLES} -I INPUT -j ISPCP_INPUT 2>> "${LOG_DIR}/${NAME}.err.log"
 	${IPTABLES} -I OUTPUT -j ISPCP_OUTPUT 2>> "${LOG_DIR}/${NAME}.err.log"
 
-	# Services from matrix
+	# Services from matrix basically receiving data
 	for PORT in $SERVICES; do
 		${IPTABLES} -I ISPCP_INPUT  -p tcp --dport "$PORT" 2>> "$LOGFILE"
 		${IPTABLES} -I ISPCP_OUTPUT -p tcp --sport "$PORT" 2>> "$LOGFILE"
 	done
-
+	
+	# Services from matrix basically sending data
+	for PORT in $SERVICES_OUT; do
+		${IPTABLES} -I ISPCP_INPUT  -p tcp --sport "$PORT" 2>> "$LOGFILE"
+		${IPTABLES} -I ISPCP_OUTPUT -p tcp --dport "$PORT" 2>> "$LOGFILE"
+	done
 
 	# Explicit return once done
 	${IPTABLES} -A ISPCP_INPUT -j RETURN

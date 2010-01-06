@@ -3,8 +3,9 @@ ispCP ω 1.0.4 Changelog
 
 2010-01-06 Benedikt Heintel
 	- GUI:
-		* Fixed #2093: The main index.php page doesn't deal properly with ssl controlpannel (Patch by aseques)
 		* Fixed #1121: Support System (Patch by Sebastian Sellmeyer)
+		* Fixed #2093: The main index.php page doesn't deal properly with ssl controlpannel (Patch by aseques)
+		* Fixed #2096: Fix for iptables accounting in srv-traff (Patch by aseques)
 
 2010-01-06 Peter Ziergöbel
 	- GUI:
