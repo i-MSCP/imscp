@@ -2,16 +2,16 @@ ispCP ω 1.0.4 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2010-01-06 Laurent Declercq
-	- PACKAGES:
+	- PACKAGE:
 		* Updates all Licenses Headers
 		* Added license headers in some files
 	- ENGINE:
-		* Fixed #2146 Bind9 - configuration file - twice header/entries
+		* Fixed #2146: Bind9 - configuration file - twice header/entries
 		* Indenting code - Alignment (80 chars per line)
 		* Added headers  for subroutines - (Some should be commented)
 		* Code optimization - Useless invocation of subroutines get_conf()
 	- SETUP
-		Fixed (partially) #2131: ispcp_network doesn't stop properly - (I'll finish later)
+		* Fixed (partially) #2131: ispcp_network doesn't stop properly - (I'll finish later)
 
 2010-01-06 Benedikt Heintel
 	- GUI:
