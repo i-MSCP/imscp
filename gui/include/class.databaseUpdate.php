@@ -2,7 +2,7 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @version 	SVN: $ID$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
@@ -837,6 +837,27 @@ SQL_QUERY;
 					"ADD UNIQUE (`domain_id`, `alias_id`, `domain_dns`, ".
 					"`domain_class`, `domain_type`, `domain_text`);";
 
+		return $sqlUpd;
+	}
+	
+	/**
+	 * Adding Support System Control:
+	 * Admin can Enable and Disable Reseller's support system from frontend, 
+	 * belongs to ticket #1121 @see http://isp-control.net/ispcp/ticket/1121
+     *
+	 * @author		Sebastian Sellmeier
+	 * @copyright	2006-2010 by ispCP | http://isp-control.net
+	 * @version		1.0.1
+	 * @since		r2500
+     *
+	 * @access		protected
+	 * @return		sql statements to be performed
+	 */
+	protected function _databaseUpdate_27() {
+		$sqlUpd = array();
+		$sqlUpd[] = "ALTER TABLE " .
+				    "`reseller_props` ADD `support_system` ENUM( 'yes', 'no' ) " .
+				    "NOT NULL DEFAULT 'yes' AFTER `max_traff_amnt`";
 		return $sqlUpd;
 	}
 

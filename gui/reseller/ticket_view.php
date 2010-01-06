@@ -3,7 +3,7 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @version 	SVN: $ID$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
@@ -32,7 +32,18 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-if (!Config::get('ISPCP_SUPPORT_SYSTEM')) {
+$query = "
+  SELECT
+    `support_system`
+  FROM
+    `reseller_props`
+  WHERE
+    `reseller_id` = '?'
+";
+
+$rs = exec_query($sql, $query, array($_SESSION['user_id']));
+
+if (!Config::get('ISPCP_SUPPORT_SYSTEM') || $rs->fields['support_system'] == 'no') {
 	user_goto('index.php');
 }
 

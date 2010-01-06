@@ -3,7 +3,7 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @version 	SVN: $ID$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
@@ -504,7 +504,18 @@ SQL_QUERY;
 	if ($dmn_ftpacc_limit == -1) $tpl->assign('ISACTIVE_FTP', '');
 	if ($dmn_sqld_limit == -1) $tpl->assign('ISACTIVE_SQL', '');
 
-	if (!Config::get('ISPCP_SUPPORT_SYSTEM')) {
+	$query = "
+	SELECT
+		`support_system`
+	FROM
+		`reseller_props`
+	WHERE
+		`reseller_id` = '?'
+	";
+
+	$rs = exec_query($sql, $query, array($_SESSION['user_created_by']));
+  
+	if (!Config::get('ISPCP_SUPPORT_SYSTEM') || $rs->fields['support_system'] == 'no') {
 		$tpl->assign('ISACTIVE_SUPPORT', '');
 	}
 
@@ -616,7 +627,18 @@ function gen_client_menu(&$tpl, $menu_file) {
 			$i++;
 		} // end while
 	} // end else
-	if (!Config::get('ISPCP_SUPPORT_SYSTEM')) {
+	$query = "
+	SELECT
+		`support_system`
+	FROM
+		`reseller_props`
+	WHERE
+		`reseller_id` = '?'
+	";
+
+	$rs = exec_query($sql, $query, array($_SESSION['user_created_by']));
+  
+	if (!Config::get('ISPCP_SUPPORT_SYSTEM') || $rs->fields['support_system'] == 'no') {
 		$tpl->assign('SUPPORT_SYSTEM', '');
 	}
 

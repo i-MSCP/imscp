@@ -3,7 +3,7 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @version 	SVN: $ID$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
@@ -581,6 +581,7 @@ function update_reseller(&$sql) {
 			$nreseller_max_traffic = clean_input($_POST['nreseller_max_traffic']);
 			$nreseller_max_disk = clean_input($_POST['nreseller_max_disk']);
 			$customer_id = clean_input($_POST['customer_id']);
+			$support_system = clean_input($_POST['support_system']);
 
 			$query = "
 				UPDATE
@@ -596,6 +597,7 @@ function update_reseller(&$sql) {
 					`max_sql_user_cnt` = ?,
 					`max_traff_amnt` = ?,
 					`max_disk_amnt` = ?,
+					`support_system` = ?,
 					`customer_id` = ?
 				WHERE
 					`reseller_id` = ?
@@ -611,6 +613,7 @@ function update_reseller(&$sql) {
 					$nreseller_max_sql_user_cnt,
 					$nreseller_max_traffic,
 					$nreseller_max_disk,
+					$support_system,
 					$customer_id,
 					$edit_id)
 			);
@@ -654,7 +657,8 @@ function get_reseller_prop(&$sql) {
 			`current_ftp_cnt`, `max_sql_db_cnt`, `current_sql_db_cnt`,
 			`max_sql_user_cnt`, `current_sql_user_cnt`, `max_traff_amnt`,
 			`current_traff_amnt`, `max_disk_amnt`, `current_disk_amnt`,
-			r.`customer_id` AS customer_id, `reseller_ips`, `gender`
+			r.`support_system` as support_system, r.`customer_id` AS customer_id, 
+			`reseller_ips`, `gender`
 		FROM
 			`admin` AS a,
 			`reseller_props` AS r
@@ -704,6 +708,7 @@ function get_reseller_prop(&$sql) {
 		$rs->fields['current_traff_amnt'],
 		$rs->fields['max_disk_amnt'],
 		$rs->fields['current_disk_amnt'],
+		$rs->fields['support_system'],
 		$rs->fields['customer_id'],
 		$rs->fields['reseller_ips']
 	);
@@ -729,8 +734,8 @@ list($admin_name, $fname,
 	$max_sql_user_cnt, $current_sql_user_cnt,
 	$max_traff_amnt, $current_traff_amnt,
 	$max_disk_amnt, $current_disk_amnt,
-	$customer_id, $rip_lst
-	) = get_reseller_prop(&$sql);
+	$support_system, $customer_id, 
+	$rip_lst) = get_reseller_prop(&$sql);
 
 $reseller_ips = get_servers_IPs($tpl, $sql, $rip_lst);
 
@@ -738,6 +743,14 @@ update_reseller($sql);
 
 gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_users_manage.tpl');
 gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_users_manage.tpl');
+
+if($support_system == 'yes') { 
+	$support_yes = 'checked="checked"'; 
+	$support_no = ''; 
+} else {
+	$support_no = 'checked="checked"'; 
+	$support_yes = '';
+}
 
 $tpl->assign(
 	array(
@@ -774,6 +787,7 @@ $tpl->assign(
 		'TR_LOGO_UPLOAD' => tr('Logo upload'),
 		'TR_YES' => tr('yes'),
 		'TR_NO' => tr('no'),
+		'TR_SUPPORT_SYSTEM' => tr('Support system'),
 
 		'TR_RESELLER_IPS' => tr('Reseller IPs'),
 
@@ -811,6 +825,8 @@ $tpl->assign(
 		'MAX_SQL_USERS_COUNT' => $max_sql_user_cnt,
 		'MAX_TRAFFIC_AMOUNT' => $max_traff_amnt,
 		'MAX_DISK_AMOUNT' => $max_disk_amnt,
+		'SUPPORT_YES' => $support_yes,
+		'SUPPORT_NO' => $support_no,
 
 		'CUSTOMER_ID' => $customer_id,
 		'FIRST_NAME' => $fname,
