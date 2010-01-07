@@ -433,15 +433,12 @@ if(time() < $dmn_expire) {
 	}
 } else if($dmn_expire != 0) {
 	$tpl->assign(
-		array(
-		'DMN_EXPIRES' => "<font color=\"red\">This Domain has expired </font> "
-		)
+		array('DMN_EXPIRES' => "<span style=\"color:red\">".
+								tr("This Domain is expired")."</span> ")
 	);
 } else {
 	$tpl->assign(
-		array(
-		'DMN_EXPIRES' => ""
-		)
+		array('DMN_EXPIRES' => "")
 	);
 }
  
