@@ -353,7 +353,7 @@ list(
 		$dmn_uid,
 		$dmn_created_id,
 		$dmn_created,
-		$dmn_expire,
+		$dmn_expires,
 		$dmn_last_modified,
 		$dmn_mailacc_limit,
 		$dmn_ftpacc_limit,
@@ -403,11 +403,11 @@ check_user_permissions(
 
 $account_name = decode_idna($_SESSION['user_logged']);
 
-if ($dmn_expire == 0) {
-	$dmn_expire = tr('N/A');
+if ($dmn_expires == 0) {
+	$dmn_expires = tr('N/A');
 } else {
 	$date_formt = Config::get('DATE_FORMAT');
-	$dmn_expires = date($date_formt, $dmn_expire);
+	$dmn_expires = date($date_formt, $dmn_expires);
 }
 
 list(
@@ -417,7 +417,7 @@ list(
 	$hours, 
 	$minutes,
 	$seconds
-		) = gen_remain_time($dmn_expire);
+		) = gen_remain_time($dmn_expires);
 
 if (($years > 0) && ($month > 0) && ($days <= 14)) {
 	$tpl->assign(
