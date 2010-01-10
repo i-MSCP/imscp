@@ -1,6 +1,10 @@
 ispCP ω 1.0.4 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-01-10 Thomas Wacker
+	- GUI:
+		* Fixed #2127: Update hosting package works wrong
+
 2010-01-07 Peter Ziergöbel
 	- GUI:
 		* Fixed #1994: Domain expiration in client's General information
