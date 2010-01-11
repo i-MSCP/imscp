@@ -1,6 +1,10 @@
 ispCP ω 1.0.4 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-01-12 Christian Hernmarck
+	- CONFIGS:
+		* Fixed #2149: tar [etch] does not understand --lzma (or --xz) -> info in config
+
 2010-01-11 Christian Hernmarck
 	- ENGINE:
 		* Fixed #2021: Error in backup (part II: tar-file and logfile not in backup directory)
