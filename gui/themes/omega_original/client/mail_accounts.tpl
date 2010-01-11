@@ -69,10 +69,10 @@ function action_delete(url, mailacc) {
                 </tr>
                     <!-- EDP: page_message -->
                 <tr>
-                   <td nowrap="nowrap" class="content3"><b>{TR_MAIL}</b></td>
-                   <td nowrap="nowrap" class="content3" width="150"><b>{TR_TYPE}</b></td>
-                   <td nowrap="nowrap" class="content3" align="center" width="180"><b>{TR_STATUS}</b></td>
-                   <td nowrap="nowrap" class="content3" align="center" width="100" colspan="5"><b>{TR_ACTION}</b></td>
+                   <td nowrap="nowrap" class="content3" align="center" width="200"><b>{TR_MAIL}</b></td>
+                   <td nowrap="nowrap" class="content3" align="center" width="210"><b>{TR_TYPE}</b></td>
+                   <td nowrap="nowrap" class="content3" align="center" width="100"><b>{TR_STATUS}</b></td>
+                   <td nowrap="nowrap" class="content3" align="center" width="180" colspan="5"><b>{TR_ACTION}</b></td>
                 </tr>
                     <!-- BDP: mail_message -->
                 <tr>
@@ -81,31 +81,43 @@ function action_delete(url, mailacc) {
                     <!-- EDP: mail_message -->
                     <!-- BDP: mail_item -->
                 <tr class="hl">
-                   <td nowrap="nowrap" class="{ITEM_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/mail_icon.png" width="16" height="16" style="vertical-align:middle" alt="" />&nbsp;{MAIL_ACC}
-                          <!-- BDP: auto_respond --><div style="display: {AUTO_RESPOND_VIS};">
-						  <br /><span class="style1">
-						  {TR_AUTORESPOND}: [&nbsp;&nbsp;
-                          <a href="{AUTO_RESPOND_DISABLE_SCRIPT}" class="link">{AUTO_RESPOND_DISABLE}</a>&nbsp;&nbsp;
-						  <a href="{AUTO_RESPOND_EDIT_SCRIPT}" class="link">{AUTO_RESPOND_EDIT}</a>
-						  ]
-						  </span></div>
-						  <!-- EDP: auto_respond -->
+                   <td nowrap="nowrap" class="{ITEM_CLASS}" width="200"><img src="{THEME_COLOR_PATH}/images/icons/mail_icon.png" width="16" height="16" style="vertical-align:middle" alt="" />&nbsp;{MAIL_ACC}
+                   	<!-- BDP: auto_respond -->
+			<div style="display: {AUTO_RESPOND_VIS};">
+				<br />
+				<span class="style1">
+					{TR_AUTORESPOND}: [&nbsp;&nbsp;
+                          		<a href="{AUTO_RESPOND_DISABLE_SCRIPT}" class="link">{AUTO_RESPOND_DISABLE}</a>&nbsp;&nbsp;
+					<a href="{AUTO_RESPOND_EDIT_SCRIPT}" class="link">{AUTO_RESPOND_EDIT}</a>]
+				 </span>
+			</div>
+			<!-- EDP: auto_respond -->
                       </td>
-                   <td nowrap="nowrap" class="{ITEM_CLASS}" width="150">{MAIL_TYPE}</td>
-                   <td nowrap="nowrap" class="{ITEM_CLASS}" align="center" width="180">{MAIL_STATUS}</td>
-                   <td nowrap="nowrap" class="{ITEM_CLASS}" align="center" width="100"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="#" class="link" onclick="action_delete('{MAIL_DELETE_SCRIPT}', '{MAIL_ACC}')">{MAIL_DELETE}</a></td>
-                   <td nowrap="nowrap" class="{ITEM_CLASS}" align="center" width="100"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="{MAIL_EDIT_SCRIPT}" class="link">{MAIL_EDIT}</a></td>
+                   <td nowrap="nowrap" class="{ITEM_CLASS}" width="210">{MAIL_TYPE}</td>
+                   <td nowrap="nowrap" class="{ITEM_CLASS}" align="center" width="100">{MAIL_STATUS}</td>
+                   <td nowrap="nowrap" class="{ITEM_CLASS}" align="center" width="85">
+                   	<img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="#" class="link" onclick="action_delete('{MAIL_DELETE_SCRIPT}', '{MAIL_ACC}')">{MAIL_DELETE}</a>
+                   </td>
+                   <td nowrap="nowrap" class="{ITEM_CLASS}" align="center" width="85">
+                   	<img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="{MAIL_EDIT_SCRIPT}" class="link">{MAIL_EDIT}</a>
+                   	</td>
                     </tr>
                     <!-- EDP: mail_item -->
                     <!-- BDP: mails_total -->
                     <tr>
                       <td colspan="5" align="right" nowrap="nowrap" class="content3">{TR_TOTAL_MAIL_ACCOUNTS}:&nbsp;<b>{TOTAL_MAIL_ACCOUNTS}</b>/{ALLOWED_MAIL_ACCOUNTS}</td>
                     </tr>
-		      <tr>
-			<td colspan="2"><form action="mail_accounts.php" method="post" name="showdefault" id="showdefault"><input type="hidden" name="uaction" value="show" />
-			  <input name="Submit" type="submit" class="button" value="{TR_SHOW_DEFAULT_EMAILS}" /></form></td>
-		      </tr>
-                    <!-- EDP: mails_total -->
+		<!-- EDP: mails_total -->
+		<!-- BDP: default_mails_form -->
+		    <tr>
+		    	<td colspan="2">
+		    		<form action="mail_accounts.php" method="post" name="showdefault" id="showdefault">
+		    			<input type="hidden" name="uaction" value="{VL_DEFAULT_EMAILS_BUTTON}" />
+		    			<input name="Submit" type="submit" class="button" value="{TR_DEFAULT_EMAILS_BUTTON}" />
+		    		</form>
+		    	</td>
+		    </tr>
+		<!-- EDP: default_mails_form -->
                   </table></td>
                 </tr>
             </table></td>

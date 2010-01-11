@@ -1,6 +1,12 @@
 ispCP ω 1.0.4 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-01-12 Laurent Declercq
+	- GUI:
+		* Fixed #2118: The button "Show default E-mail addresses" should be hidden if the default mail addresses do not exists.
+		* Fixed #2147: Not correct mail users count
+		* Enhancement: Show/hide the mails addresses created by default is now possible
+
 2010-01-12 Christian Hernmarck
 	- CONFIGS:
 		* Fixed #2149: tar [etch] does not understand --lzma (or --xz) -> info in config
