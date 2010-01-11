@@ -1,6 +1,10 @@
 ispCP ω 1.0.4 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-01-11 Christian Hernmarck
+	- ENGINE:
+		* Fixed #2021: Error in backup (part II: tar-file and logfile not in backup directory)
+
 2010-01-10 Thomas Wacker
 	- GUI:
 		* Fixed #2127: Update hosting package works wrong
@@ -427,7 +431,7 @@ facilitate the maintenances.
 
 2009-10-20 Christian Hernmarck
 	- ENGINE:
-		* Fixed #2021: Error in backup
+		* Fixed #2021: Error in backup (part I: information if something went wrong...)
 
 2009-10-17 Benedikt Heintel
 	- ENGINE:
