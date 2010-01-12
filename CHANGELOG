@@ -1,6 +1,10 @@
 ispCP ω 1.0.4 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-01-12 Sascha Bay
+	- GUI:
+		* Fixed #2151: Adding user and exceeding mail account from reseller won't work correct
+
 2010-01-12 Laurent Declercq
 	- GUI:
 		* Fixed #2118: The button "Show default E-mail addresses" should be hidden if the default mail addresses do not exists.
