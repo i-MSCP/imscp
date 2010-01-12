@@ -315,7 +315,7 @@ function get_admin_general_info(&$tpl, &$sql) {
 	);
 
 	// If COUNT_DEFAULT_EMAIL_ADDRESSES = false, admin total emails show [total - default_emails]/[total_emails]
-	$retrieve_total_emails = records_count('mail_users', '', '');
+	$retrieve_total_emails = records_count('mail_users', 'mail_type NOT RLIKE \'_catchall\'', '');
 	if (Config::get('COUNT_DEFAULT_EMAIL_ADDRESSES')) {
 		$show_total_emails = $retrieve_total_emails;
 	} else {
@@ -333,7 +333,7 @@ function get_admin_general_info(&$tpl, &$sql) {
 			'NORMAL_USERS' => records_count('admin', 'admin_type', 'user'),
 			'DOMAINS' => records_count('domain', '', ''),
 			'SUBDOMAINS' => records_count('subdomain', '', '') + records_count('subdomain_alias', 'subdomain_alias_id', '', ''),
-			'DOMAINS_ALIASES' => records_count( 'domain_aliasses', '', ''),
+			'DOMAINS_ALIASES' => records_count('domain_aliasses', '', ''),
 			'MAIL_ACCOUNTS' => $show_total_emails,
 			'FTP_ACCOUNTS' => records_count('ftp_users', '', ''),
 			'SQL_DATABASES' => records_count('sql_database', '', ''),
@@ -1000,11 +1000,20 @@ function generate_user_props($user_id) {
 
 	$als_current = records_count('domain_aliasses', 'domain_id', $user_id);
 	$als_max = $rs->fields['domain_alias_limit'];
-	// Sorry for the strange hack, but it works - RatS
-	$mail_current = records_count('mail_users', 'mail_type NOT RLIKE \'_catchall\' AND domain_id', $user_id);
+	//This works with the admin option(Count default E-Mail addresses) is working - TheCry
+	if (Config::get('COUNT_DEFAULT_EMAIL_ADDRESSES')) {
+		$mail_current = records_count('mail_users', 'mail_type NOT RLIKE \'_catchall\' AND domain_id', $user_id);
+	} else {
+		$where = "`mail_acc` != 'abuse'
+		AND `mail_acc` != 'postmaster'
+		AND `mail_acc` != 'webmaster'
+		AND `domain_id`
+		AND `mail_type` NOT RLIKE '_catchall'";
+		$mail_current = records_count( 'mail_users', $where, $user_id);
+	}
 	$mail_max = $rs->fields['domain_mailacc_limit'];
 
-	$ftp_current = sub_records_rlike_count(	'domain_name', 'domain', 'domain_id', $user_id,
+	$ftp_current = sub_records_rlike_count('domain_name', 'domain', 'domain_id', $user_id,
 											'userid', 'ftp_users', 'userid', '@', '');
 
 	$ftp_current += sub_records_rlike_count('subdomain_name', 'subdomain', 'domain_id', $user_id,
@@ -1042,8 +1051,13 @@ function records_count($table, $where, $value) {
 	$sql = Database::getInstance();
 
 	if ($where != '') {
-		$query = "SELECT COUNT(*) AS cnt FROM $table WHERE $where = ?";
-		$rs = exec_query($sql, $query, array($value));
+		if($value != '') {
+			$query = "SELECT COUNT(*) AS cnt FROM $table WHERE $where = ?";
+			$rs = exec_query($sql, $query, array($value));
+		} else {
+			$query = "SELECT COUNT(*) AS cnt FROM $table WHERE $where";
+			$rs = exec_query($sql, $query, array());
+		}
 	} else {
 		$query = "SELECT COUNT(*) AS cnt FROM $table";
 		$rs = exec_query($sql, $query, array());
