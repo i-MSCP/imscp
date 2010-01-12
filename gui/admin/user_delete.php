@@ -203,7 +203,15 @@ function delete_domain($domain_id) {
 function delete_user($user_id) {
 	global $sql;
 
-	$query = "SELECT `admin_type` FROM `admin` WHERE `admin_id` = ?";
+	$query = "
+		SELECT
+			a.`admin_type`,
+			b.`logo`
+		FROM `admin` AS a
+		LEFT JOIN
+			`user_gui_props` AS b ON b.`user_id` = a.`admin_id`
+		WHERE
+			`admin_id` = ?";
 	$res = exec_query($sql, $query, array($user_id));
 	$data = $res->FetchRow();
 	$type = $data['admin_type'];
@@ -213,12 +221,21 @@ function delete_user($user_id) {
 	}
 
 	if ($type == 'reseller') {
+		$reseller_logo = $data['logo'];
 		// delete reseller props
 		$query = "DELETE FROM `reseller_props` WHERE `reseller_id` = ?";
 		exec_query($sql, $query, array($user_id));
 		// delete hosting plans
 		$query = "DELETE FROM `hosting_plans` WHERE `reseller_id` = ?";
 		exec_query($sql, $query, array($user_id));
+		// delete reseller logo if exists
+		if(!empty($reseller_logo) && $reseller_logo !== 0) {
+			try {
+				unlink(Config::get('IPS_LOGO_PATH') . '/' . $reseller_logo);
+			} catch(Exception $e) {
+				set_page_message(tr('Logo could not be deleted:') . " " . $e->getMessage());
+			}
+		}
 	}
 
 	// Delete ispcp login:

@@ -106,7 +106,7 @@ function update_logo() {
 			return;
 		}
 
-		$newFName = get_user_name($user_id) . '.' . $fext;
+		$newFName = sha1($fname .'-'. $user_id) .'.'. $fext;
 
 		$path = substr($_SERVER['SCRIPT_FILENAME'], 0, strpos($_SERVER['SCRIPT_FILENAME'], '/admin/settings_layout.php') + 1);
 
@@ -140,6 +140,7 @@ $tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/settings_lay
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('hosting_plans', 'page');
 $tpl->define_dynamic('def_layout', 'page');
+$tpl->define_dynamic('logo_remove_button', 'page');
 
 save_layout($sql);
 
@@ -148,6 +149,12 @@ update_logo();
 $theme_color = Config::get('USER_INITIAL_THEME');
 
 gen_def_layout($tpl, $_SESSION['user_theme']);
+
+if(get_own_logo($_SESSION['user_id']) !== Config::get('IPS_LOGO_PATH').'/isp_logo.gif') {
+	$tpl->parse('LOGO_REMOVE_BUTTON', '.logo_remove_button');
+} else {
+	$tpl->assign('LOGO_REMOVE_BUTTON', '');
+}
 
 $tpl->assign(
 	array(

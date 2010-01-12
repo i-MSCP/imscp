@@ -126,7 +126,7 @@ function gen_reseller_mainmenu(&$tpl, $menu_file) {
 	FROM
 		`reseller_props`
 	WHERE
-		`reseller_id` = '?'
+		`reseller_id` = ?
 	";
 
 	$rs = exec_query($sql, $query, array($_SESSION['user_id']));
@@ -228,7 +228,7 @@ function gen_reseller_menu(&$tpl, $menu_file) {
 	FROM
 		`reseller_props`
 	WHERE
-		`reseller_id` = '?'
+		`reseller_id` = ?
 	";
 
 	$rs = exec_query($sql, $query, array($_SESSION['user_id']));

@@ -8,11 +8,16 @@ ispCP ω 1.0.4 Changelog
 2010-01-12 Benedikt Heintel
 	- ENGINE:
 		* Fixed #2091: Make use of the BASE_SERVER_VHOST_PREFIX in ispcp-dmn-mngr for default pages
+	- GUI:
+		* Fixed #1121: Support System (review)
 
 2010-01-12 Sascha Bay
 	- GUI:
+		* Fixed #2124: Errors in Layout Settings
 		* Fixed #2144: Wrong Option declaration in Admin (reseller_edit.php)
 		* Fixed #2151: Adding user and exceeding mail account from reseller won't work correct
+		* Fixed #2153: Changing userlogo upload and deleting userlogo won't work
+		* Fixed #2154: Reseller Overview shows -1 if function is disabled
 
 2010-01-12 Laurent Declercq
 	- GUI:

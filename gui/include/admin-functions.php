@@ -1298,7 +1298,11 @@ function get_logo($user_id) {
 	if ($rs->fields['admin_type'] == 'admin') {
 		return get_admin_logo($user_id);
 	} else {
-		return get_admin_logo($rs->fields['created_by']);
+		if(get_admin_logo($rs->fields['created_by']) === Config::get('IPS_LOGO_PATH').'/isp_logo.gif') {
+			return get_admin_logo($user_id);
+		} else {
+			return get_admin_logo($rs->fields['created_by']);
+		}
 	}
 }
 
@@ -1308,6 +1312,7 @@ function get_own_logo($user_id) {
 
 /**
  * @todo logo path shouldn't be hardcoded in this function, use a config file and/or global variable
+ * hardcoded path is changed - TheCry
  */
 function get_admin_logo($user_id) {
 	$sql = Database::getInstance();
@@ -1319,7 +1324,7 @@ function get_admin_logo($user_id) {
 	$user_logo = $rs->fields['logo'];
 
 	if (empty($user_logo)) { // default logo
-		return '../themes/user_logos/isp_logo.gif';
+		return Config::get('IPS_LOGO_PATH') . '/isp_logo.gif';
 	} else {
 		return Config::get('IPS_LOGO_PATH') . '/' . $user_logo;
 	}

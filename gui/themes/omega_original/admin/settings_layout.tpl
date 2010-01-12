@@ -65,8 +65,9 @@
 													</tr>
 													<tr>
 														<td nowrap="nowrap">&nbsp;</td>
-														<td nowrap="nowrap"></td>
+														<td nowrap="nowrap">&nbsp;</td>
 													</tr>
+													<!-- BDP: logo_remove_button -->
 													<tr>
 														<td class="content2"><img src="{OWN_LOGO}" alt="admin logo" /></td>
 														<td class="content">
@@ -76,6 +77,7 @@
 															</form>
 														</td>
 													</tr>
+													<!-- EDP: logo_remove_button -->
 												</table>
 												<!-- end of content -->
 											</td>

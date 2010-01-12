@@ -510,7 +510,7 @@ SQL_QUERY;
 	FROM
 		`reseller_props`
 	WHERE
-		`reseller_id` = '?'
+		`reseller_id` = ?
 	";
 
 	$rs = exec_query($sql, $query, array($_SESSION['user_created_by']));
@@ -633,7 +633,7 @@ function gen_client_menu(&$tpl, $menu_file) {
 	FROM
 		`reseller_props`
 	WHERE
-		`reseller_id` = '?'
+		`reseller_id` = ?
 	";
 
 	$rs = exec_query($sql, $query, array($_SESSION['user_created_by']));
