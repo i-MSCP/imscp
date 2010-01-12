@@ -711,7 +711,7 @@ function gen_page_lists(&$tpl, &$sql, $user_id) {
 	$alssub_mails = gen_page_als_sub_mail_list($tpl, $sql, $dmn_id, $dmn_name);
 	$als_mails = gen_page_als_mail_list($tpl, $sql, $dmn_id, $dmn_name);
 	
-	// If uaction is set and own value is !=hide, the total includes
+	// If 'uaction' is set and own value is != 'hide', the total includes
 	// the number of email by default
 	$counted_mails = $total_mails =
 		$dmn_mails +
@@ -762,13 +762,16 @@ function gen_page_lists(&$tpl, &$sql, $user_id) {
  * Count the number of email addresses created by default
  *
  * Return the number of default mail adresses according
- * the state of uaction. If no 'uaction' is set or if the
+ * the state of 'uaction''. If no 'uaction' is set or if the
  * 'uaction' is set to 'hide', 0 will be returned.
+ * 
+ * Note: 'uaction' = user action -> ($_POST['uaction'])
  *
  * For performances reasons, the query is performed only once
+ * and the result is cached.
  * 
- * @author Laurent declercq@ispcp.net
- * @since rxxxxx
+ * @author Laurent declercq <laurent.declercq@ispcp.net>
+ * @since r2513
  * @param object &$sql reference to the Database instance
  * @param int domain name id
  * @return int number of default mails adresses
