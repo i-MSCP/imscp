@@ -263,10 +263,10 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 
 		$hdd_usage = tr('Disk limit') . ": " . translate_limit_value($hp_disk, true) . "<br />";
 
-		$curr_value = $traffic[6] / 1048576; // convert traffic to MB
+		$curr_value = $traffic[10] / 1048576; // convert max. traffic to MB
 
 		if (!check_update_current_value($curr_value, $hp_traff)) {
-			$error_msgs[] = tr("You have more traffic than the new hosting plan limits.");
+			$warning_msgs[] = tr("You did have more traffic than the new hosting plan limits.");
 		}
 
 		$traffic_usage = tr('Traffic limit') . ": " . translate_limit_value($hp_traff, true);
@@ -482,11 +482,6 @@ function add_new_order(&$tpl, &$sql, $order_id, $user_id) {
 	$curr_value = $traffic[7] / 1048576; // disk usage
 	if (!check_update_current_value($curr_value, $hp_disk)) {
 		$error_msgs[] = tr("You have more disk space in use than the new hosting plan limits.");
-	}
-
-	$curr_value = $traffic[6] / 1048576; // total
-	if (!check_update_current_value($curr_value, $hp_traff)) {
-		$error_msgs[] = tr("You have more traffic than the new hosting plan limits.");
 	}
 
 	$curr_value = get_domain_running_als_cnt($sql, $domain_id);

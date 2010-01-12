@@ -481,6 +481,8 @@ function get_user_traffic($user_id) {
 
 		$query = "
 			SELECT
+				YEAR(FROM_UNIXTIME(`dtraff_time`)) AS `tyear`, 
+				MONTH(FROM_UNIXTIME(`dtraff_time`)) AS `tmonth`,
 				SUM(`dtraff_web`) AS web,
 				SUM(`dtraff_ftp`) AS ftp,
 				SUM(`dtraff_mail`) AS smtp,
@@ -493,11 +495,25 @@ function get_user_traffic($user_id) {
 				`domain_traffic`
 			WHERE
 				`domain_id` = ?
+			GROUP BY
+				`tyear`, `tmonth`
 		";
 
 		$res = exec_query($sql, $query, array($domain_id));
 
-		$data = $res->FetchRow();
+		$max_traffic_month = 
+		$data['web'] = $data['ftp'] = $data['smtp'] = 
+		$data['pop'] = $data['total'] = 0;
+
+		while ($row = $res->FetchRow()) {
+			$data['web'] += $row['web'];
+			$data['ftp'] += $row['ftp'];
+			$data['smtp'] += $row['smtp'];
+			$data['pop'] += $row['total'];
+			if ($row['total'] > $max_traffic_month) {
+				$max_traffic_month = $row['total'];
+			}
+		}
 
 		return array($domain_name,
 			$domain_id,
@@ -508,7 +524,8 @@ function get_user_traffic($user_id) {
 			$data['total'],
 			$domain_disk_usage,
 			$domain_traff_limit,
-			$domain_disk_limit
+			$domain_disk_limit,
+			$max_traffic_month
 		);
 	}
 } // end of get_user_traffic()
