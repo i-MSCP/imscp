@@ -1961,6 +1961,7 @@ sub dmn_add_httpd_file_data {
 
 		my ($index_tpl, $err_cfg_dir) = (undef, undef);
 		my $vhost = $main::cfg{'BASE_SERVER_VHOST'};
+		my $prefix = $main::cfg{'BASE_SERVER_VHOST_PREFIX'};
 		$err_cfg_dir = "$main::cfg{'GUI_ROOT_DIR'}/domain_default_page";
 
 		($rs, $index_tpl) = get_tpl($err_cfg_dir, 'index.html');
@@ -1970,7 +1971,8 @@ sub dmn_add_httpd_file_data {
 
 		my %tag_hash = (
 			'{DOMAIN_NAME}' => $decoded_dmn_name,
-			'{BASE_SERVER_VHOST}' => $vhost
+			'{BASE_SERVER_VHOST}' => $vhost,
+			'{BASE_SERVER_VHOST_PREFIX}' => $prefix
 		);
 
 		($rs, $cfg) = prep_tpl(\%tag_hash, $index_tpl);
