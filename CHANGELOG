@@ -1,6 +1,10 @@
 ispCP ω 1.0.4 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-01-07 Peter Ziergöbel
+	- GUI:
+		* Fixed #2125: Domain exire date can't set to "Never" (N/A) when it changed
+
 2010-01-12 Benedikt Heintel
 	- ENGINE:
 		* Fixed #2091: Make use of the BASE_SERVER_VHOST_PREFIX in ispcp-dmn-mngr for default pages

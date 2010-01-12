@@ -67,6 +67,7 @@ $tpl->assign(
 		'TR_DOMAIN_EXPIRE'					=> tr('Domain expire'),
 		'TR_DOMAIN_NEW_EXPIRE'				=> tr('New expire date'),
 		'TR_DOMAIN_EXPIRE_UNCHANGED'		=> tr('Unchanged'),
+		'TR_DOMAIN_EXPIRE_NEVER'			=> tr('Never'), 
 		'TR_DOMAIN_EXPIRE_MIN_1_MONTH'		=> tr('- 1 Month'),
 		'TR_DOMAIN_EXPIRE_PLUS_1_MONTH'		=> tr('+ 1 Month'),
 		'TR_DOMAIN_EXPIRE_PLUS_2_MONTHS'	=> tr('+ 2 Months'),
@@ -485,12 +486,13 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 		$domain_expires = $_SESSION['domain_expires'];
 
 		if ($domain_expires != 0 && $domain_new_expire != 0) {
-			$domain_new_expire = $domain_expires + ($domain_new_expire * 2635200);
-			update_expire_date($user_id, $domain_new_expire);
+			$domain_expires = $domain_expires + ($domain_new_expire * 2635200);
+		} elseif ($domain_new_expire == "OFF") {
+			$domain_expires = "0";
 		} elseif ($domain_expires == 0 && $domain_new_expire != 0) {
-			$domain_new_expire = time() + ($domain_new_expire * 2635200);
-			update_expire_date($user_id, $domain_new_expire);
+			$domain_expires = time() + ($domain_new_expire * 2635200);
 		}
+		update_expire_date($user_id, $domain_expires);
 
 		$reseller_props = "$rdmn_current;$rdmn_max;";
 		$reseller_props .= "$rsub_current;$rsub_max;";

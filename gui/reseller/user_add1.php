@@ -68,7 +68,6 @@ $tpl->assign(
 			'TR_CORE_DATA'				=> tr('Core data'),
 			'TR_DOMAIN_NAME'			=> tr('Domain name'),
 			'TR_DOMAIN_EXPIRE'			=> tr('Domain expire'),
-			'TR_DOMAIN_EXPIRE'			=> tr('Domain expire'),
 			'TR_DOMAIN_EXPIRE_NEVER'	=> tr('Never'),
 			'TR_DOMAIN_EXPIRE_1_MONTH'	=> tr('1 Month'),
 			'TR_DOMAIN_EXPIRE_2_MONTHS'	=> tr('2 Months'),
