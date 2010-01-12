@@ -763,7 +763,7 @@ $tpl->assign(
 		'TR_PASSWORD_REPEAT' => tr('Repeat password'),
 		'TR_EMAIL' => tr('E-mail'),
 		'TR_UNLIMITED' => tr('unlimited'),
-		'TR_MAX_DOMAIN_COUNT' => tr('Domains limit<br><i>(-1 disabled, 0 unlimited)</i>'),
+		'TR_MAX_DOMAIN_COUNT' => tr('Domains limit<br><i>(0 unlimited)</i>'),
 		'TR_MAX_SUBDOMAIN_COUNT' => tr('Subdomains limit<br><i>(-1 disabled, 0 unlimited)</i>'),
 		'TR_MAX_ALIASES_COUNT' => tr('Aliases limit<br><i>(-1 disabled, 0 unlimited)</i>'),
 		'TR_MAX_MAIL_USERS_COUNT' => tr('Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>'),
