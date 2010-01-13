@@ -2,9 +2,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: v1.0\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: http://www.isp-control.net/forum\n"
 "POT-Creation-Date: 2009-12-18 12:36+0100\n"
-"PO-Revision-Date: 2009-12-21 14:13+0100\n"
+"PO-Revision-Date: 2010-01-13 09:26+0100\n"
 "Last-Translator: multimatica <internet@multimatica.net>\n"
 "Language-Team: Spanish Spain <es_ES@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -489,7 +489,7 @@ msgid "Enabled"
 msgstr "Habilitado"
 
 msgid "Disabled"
-msgstr "Desactivado"
+msgstr "Deshabilitado"
 
 msgid "ispCP - Admin/Edit Domain"
 msgstr "ispCP - Admin/Editar dominio"
@@ -2115,10 +2115,10 @@ msgid "Enable Forward"
 msgstr "Reenvio de email (forward)"
 
 msgid "Enable"
-msgstr "Activado"
+msgstr "Habilitar"
 
 msgid "Disable"
-msgstr "Desactivado"
+msgstr "Deshabilitar"
 
 msgid "A Forward URL has to start with 'http://'"
 msgstr "Un redireccionamiento tiene que empezar por 'http://'"

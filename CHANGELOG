@@ -1,6 +1,10 @@
 ispCP ω 1.0.4 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-01-13 Marc Pujol
+	- GUI:
+		* Updated spanish language files
+
 2010-01-13 Sascha Bay
 	- GUI:
 		* Fixed #2164: Manual dns record's - Unable to access to the interface in some circumstances
