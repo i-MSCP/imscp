@@ -523,10 +523,17 @@ SQL_QUERY;
 		$domain_dns
 	) = get_domain_default_props($sql, $_SESSION['user_id']);
 
-	if ($dmn_mailacc_limit == -1) $tpl->assign('ISACTIVE_EMAIL', '');
-	if (($dmn_als_limit == -1) && ($dmn_subd_limit == -1)) $tpl->assign('ISACTIVE_DOMAIN', '');
-	if ($dmn_ftpacc_limit == -1) $tpl->assign('ISACTIVE_FTP', '');
-	if ($dmn_sqld_limit == -1) $tpl->assign('ISACTIVE_SQL', '');
+	if ($dmn_mailacc_limit == -1)
+		$tpl->assign('ISACTIVE_EMAIL', '');
+
+	if ($dmn_als_limit == -1 && $dmn_subd_limit == -1 && $domain_dns != 'yes')
+		$tpl->assign('ISACTIVE_DOMAIN', '');
+
+	if ($dmn_ftpacc_limit == -1)
+		$tpl->assign('ISACTIVE_FTP', '');
+
+	if ($dmn_sqld_limit == -1)
+		$tpl->assign('ISACTIVE_SQL', '');
 
 	$query = "
 	SELECT
