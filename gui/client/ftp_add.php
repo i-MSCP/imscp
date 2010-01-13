@@ -4,7 +4,7 @@
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
+ * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
  *
@@ -222,6 +222,7 @@ function get_ftp_user_gid(&$sql, $dmn_name, $ftp_user) {
 			$temp_dmn_uid,
 			$temp_dmn_created_id,
 			$temp_dmn_created,
+			$temp_dmn_expires,
 			$temp_dmn_last_modified,
 			$temp_dmn_mailacc_limit,
 			$temp_dmn_ftpacc_limit,
@@ -235,7 +236,10 @@ function get_ftp_user_gid(&$sql, $dmn_name, $ftp_user) {
 			$temp_dmn_disk_limit,
 			$temp_dmn_disk_usage,
 			$temp_dmn_php,
-			$temp_dmn_cgi) = get_domain_default_props($sql, $_SESSION['user_id']);
+			$temp_dmn_cgi,
+			$allowbackup,
+			$dmn_dns
+		) = get_domain_default_props($sql, $_SESSION['user_id']);
 
 		$query = <<<SQL_QUERY
 			INSERT INTO ftp_group
@@ -320,6 +324,7 @@ SQL_QUERY;
 		$temp_dmn_uid,
 		$temp_dmn_created_id,
 		$temp_dmn_created,
+		$temp_dmn_expires,
 		$temp_dmn_last_modified,
 		$temp_dmn_mailacc_limit,
 		$temp_dmn_ftpacc_limit,
@@ -333,7 +338,10 @@ SQL_QUERY;
 		$temp_dmn_disk_limit,
 		$temp_dmn_disk_usage,
 		$temp_dmn_php,
-		$temp_dmn_cgi) = get_domain_default_props($sql, $_SESSION['user_id']);
+		$temp_dmn_cgi,
+		$allowbackup,
+		$dmn_dns
+	) = get_domain_default_props($sql, $_SESSION['user_id']);
 
 	return $temp_dmn_uid;
 }
@@ -474,6 +482,7 @@ function gen_page_ftp_acc_props(&$tpl, &$sql, $user_id) {
 		$dmn_uid,
 		$dmn_created_id,
 		$dmn_created,
+		$dmn_expires,
 		$dmn_last_modified,
 		$dmn_mailacc_limit,
 		$dmn_ftpacc_limit,
@@ -487,7 +496,10 @@ function gen_page_ftp_acc_props(&$tpl, &$sql, $user_id) {
 		$dmn_disk_limit,
 		$dmn_disk_usage,
 		$dmn_php,
-		$dmn_cgi) = get_domain_default_props($sql, $user_id);
+		$dmn_cgi,
+		$allowbackup,
+		$dmn_dns
+	) = get_domain_default_props($sql, $user_id);
 
 	list($ftp_acc_cnt, $dmn_ftp_acc_cnt, $sub_ftp_acc_cnt, $als_ftp_acc_cnt) = get_domain_running_ftp_acc_cnt($sql, $dmn_id);
 

@@ -3,7 +3,7 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
+ * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
  *
@@ -220,6 +220,7 @@ function gen_editdns_page(&$tpl, $edit_id) {
 		$dmn_uid,
 		$dmn_created_id,
 		$dmn_created,
+		$dmn_expires,
 		$dmn_last_modified,
 		$dmn_mailacc_limit,
 		$dmn_ftpacc_limit,
@@ -234,7 +235,9 @@ function gen_editdns_page(&$tpl, $edit_id) {
 		$dmn_disk_usage,
 		$dmn_php,
 		$dmn_cgi,
-		$dmn_dns) = get_domain_default_props($sql, $_SESSION['user_id']);
+		$allowbackup,
+		$dmn_dns
+	) = get_domain_default_props($sql, $_SESSION['user_id']);
 
 	if ($dmn_dns != 'yes') {
 		not_allowed();

@@ -4,7 +4,7 @@
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
+ * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
  *
@@ -33,7 +33,10 @@ include '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::get('CLIENT_TEMPLATE_PATH') . '/webtools.tpl');
+$tpl->define_dynamic(
+	'page',
+	Config::get('CLIENT_TEMPLATE_PATH') . '/webtools.tpl'
+);
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('active_awstats', 'page');
 $tpl->define_dynamic('active_email', 'page');
@@ -51,13 +54,30 @@ $tpl->assign(
 );
 
 // Check, if e-mail is active for this user
-
-// Check, if e-mail is active for this user
 list(
-		$dmn_id, $dmn_name, $dmn_gid, $dmn_uid, $dmn_created_id, $dmn_created, $dmn_last_modified,
-		$dmn_mailacc_limit, $dmn_ftpacc_limit, $dmn_traff_limit, $dmn_sqld_limit, $dmn_sqlu_limit,
-		$dmn_status, $dmn_als_limit, $dmn_subd_limit, $dmn_ip_id, $dmn_disk_limit, $dmn_disk_usage,
-		$dmn_php, $dmn_cgi, $backup
+	$dmn_id,
+	$dmn_name,
+	$dmn_gid,
+	$dmn_uid,
+	$dmn_created_id,
+	$dmn_created,
+	$dmn_expires,
+	$dmn_last_modified,
+	$dmn_mailacc_limit,
+	$dmn_ftpacc_limit,
+	$dmn_traff_limit,
+	$dmn_sqld_limit,
+	$dmn_sqlu_limit,
+	$dmn_status,
+	$dmn_als_limit,
+	$dmn_subd_limit,
+	$dmn_ip_id,
+	$dmn_disk_limit,
+	$dmn_disk_usage,
+	$dmn_php,
+	$dmn_cgi,
+	$backup,
+	$dmn_dns
 ) = get_domain_default_props($sql, $_SESSION['user_id']);
 
 if ($dmn_mailacc_limit == -1) {
@@ -74,7 +94,11 @@ if($backup == 'no') {
  *
  */
 
-gen_client_mainmenu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/main_menu_webtools.tpl');
+gen_client_mainmenu(
+	$tpl,
+	Config::get('CLIENT_TEMPLATE_PATH') . '/main_menu_webtools.tpl'
+);
+
 gen_client_menu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/menu_webtools.tpl');
 
 gen_logged_from($tpl);

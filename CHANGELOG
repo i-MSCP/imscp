@@ -1,13 +1,21 @@
 ispCP ω 1.0.4 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-01-13 Laurent Declercq
+ - GUI:
+ 	* Fixed #2160: Backup button not exist in client's GUI
+ 	* Added missing '$domain_expires|$dmn_expire' && '$allowbackup' && 
+ 	  '$domain_dns|$dmn_dns' variables in all 'list()' that are linked to
+ 	   the function 'get_domain_default_props()'
+ 	* Fixed wrong syntax for svn Id keyword in several files
+
 2010-01-12 Thomas Wacker
 	- GUI:
 		* Fixed #2158: Wrong calculation for traffic in update hosting plan
 
 2010-01-07 Peter Ziergöbel
 	- GUI:
-		* Fixed #2125: Domain exire date can't set to "Never" (N/A) when it changed
+		* Fixed #2125: Domain expire date can't set to "Never" (N/A) when it changed
 
 2010-01-12 Benedikt Heintel
 	- ENGINE:

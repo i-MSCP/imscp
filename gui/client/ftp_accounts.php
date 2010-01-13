@@ -4,7 +4,7 @@
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
+ * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
  *
@@ -98,12 +98,14 @@ function gen_page_ftp_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 }
 
 function gen_page_lists(&$tpl, &$sql, $user_id) {
+
 	list($dmn_id,
 		$dmn_name,
 		$dmn_gid,
 		$dmn_uid,
 		$dmn_created_id,
 		$dmn_created,
+		$dmn_expires,
 		$dmn_last_modified,
 		$dmn_mailacc_limit,
 		$dmn_ftpacc_limit,
@@ -117,7 +119,10 @@ function gen_page_lists(&$tpl, &$sql, $user_id) {
 		$dmn_disk_limit,
 		$dmn_disk_usage,
 		$dmn_php,
-		$dmn_cgi) = get_domain_default_props($sql, $user_id);
+		$dmn_cgi,
+		$allowbackup,
+		$dmn_dns
+	) = get_domain_default_props($sql, $user_id);
 
 	gen_page_ftp_list($tpl, $sql, $dmn_id, $dmn_name);
 	// return $total_mails;

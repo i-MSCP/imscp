@@ -4,7 +4,7 @@
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
+ * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
  *
@@ -354,7 +354,7 @@ list(
 		$dmn_uid,
 		$dmn_created_id,
 		$dmn_created,
-		$dmn_expire,
+		$dmn_expires,
 		$dmn_last_modified,
 		$dmn_mailacc_limit,
 		$dmn_ftpacc_limit,
@@ -404,11 +404,11 @@ check_user_permissions(
 
 $account_name = decode_idna($_SESSION['user_logged']);
 
-if ($dmn_expire == 0) {
+if ($dmn_expires == 0) {
 	$dmn_expires_date = tr('N/A');
 } else {
 	$date_formt = Config::get('DATE_FORMAT');
-	$dmn_expires_date = date($date_formt, $dmn_expire);
+	$dmn_expires_date = date($date_formt, $dmn_expires);
 }
 
 list(
@@ -418,9 +418,9 @@ list(
 	$hours, 
 	$minutes,
 	$seconds
-		) = gen_remain_time($dmn_expire);
+		) = gen_remain_time($dmn_expires);
 
-if(time() < $dmn_expire) {
+if(time() < $dmn_expires) {
 	if (($years > 0) && ($month > 0) && ($days <= 14)) {
 		$tpl->assign(
 			array('DMN_EXPIRES' => $years." Years, ".$month." Month, ".$days." Days")
@@ -431,7 +431,7 @@ if(time() < $dmn_expire) {
 									$month." Month, ".$days." Days</span>")
 		);
 	}
-} else if($dmn_expire != 0) {
+} else if($dmn_expires != 0) {
 	$tpl->assign(
 		array('DMN_EXPIRES' => "<span style=\"color:red\">".
 								tr("This Domain is expired")."</span> ")

@@ -689,7 +689,7 @@ function gen_page_lists(&$tpl, &$sql, $user_id) {
 		$dmn_uid,
 		$dmn_created_id,
 		$dmn_created,
-		$domain_expires,
+		$dmn_expires,
 		$dmn_last_modified,
 		$dmn_mailacc_limit,
 		$dmn_ftpacc_limit,
@@ -703,7 +703,9 @@ function gen_page_lists(&$tpl, &$sql, $user_id) {
 		$dmn_disk_limit,
 		$dmn_disk_usage,
 		$dmn_php,
-		$dmn_cgi
+		$dmn_cgi,
+		$allowbackup,
+		$dmn_dns
 	) = get_domain_default_props($sql, $user_id);
 
 	$dmn_mails = gen_page_dmn_mail_list($tpl, $sql, $dmn_id, $dmn_name);

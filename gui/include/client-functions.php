@@ -4,7 +4,7 @@
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
+ * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
  *
@@ -29,6 +29,11 @@
  */
 
 function get_domain_default_props(&$sql, $domain_admin_id, $returnWKeys = false) {
+	
+	// /!\ Note to dev:
+	// Please, when you adds new field here, you must
+	// report it in all scripts that calls this function.
+
 	$query = <<<SQL_QUERY
 		SELECT
 			`domain_id`,
@@ -493,11 +498,30 @@ SQL_QUERY;
 	} // end else
 
 	list(
-		$dmn_id, $dmn_name, $dmn_gid, $dmn_uid, $dmn_created_id, $dmn_created,
-		$dmn_last_modified, $dmn_mailacc_limit, $dmn_ftpacc_limit, $dmn_traff_limit,
-		$dmn_sqld_limit, $dmn_sqlu_limit, $dmn_status, $dmn_als_limit,
-		$dmn_subd_limit, $dmn_ip_id, $dmn_disk_limit, $dmn_disk_usage,
-		$dmn_php, $dmn_cgi) = get_domain_default_props($sql, $_SESSION['user_id']);
+		$dmn_id,
+		$dmn_name,
+		$dmn_gid,
+		$dmn_uid,
+		$dmn_created_id,
+		$dmn_created,
+		$domain_expires,
+		$dmn_last_modified,
+		$dmn_mailacc_limit,
+		$dmn_ftpacc_limit,
+		$dmn_traff_limit,
+		$dmn_sqld_limit,
+		$dmn_sqlu_limit,
+		$dmn_status,
+		$dmn_als_limit,
+		$dmn_subd_limit,
+		$dmn_ip_id,
+		$dmn_disk_limit,
+		$dmn_disk_usage,
+		$dmn_php,
+		$dmn_cgi,
+		$allowbackup,
+		$domain_dns
+	) = get_domain_default_props($sql, $_SESSION['user_id']);
 
 	if ($dmn_mailacc_limit == -1) $tpl->assign('ISACTIVE_EMAIL', '');
 	if (($dmn_als_limit == -1) && ($dmn_subd_limit == -1)) $tpl->assign('ISACTIVE_DOMAIN', '');
@@ -643,10 +667,30 @@ function gen_client_menu(&$tpl, $menu_file) {
 	}
 
 	list(
-		$dmn_id, $dmn_name, $dmn_gid, $dmn_uid, $dmn_created_id, $dmn_created, $dmn_last_modified,
-		$dmn_mailacc_limit, $dmn_ftpacc_limit, $dmn_traff_limit, $dmn_sqld_limit, $dmn_sqlu_limit,
-		$dmn_status, $dmn_als_limit, $dmn_subd_limit, $dmn_ip_id, $dmn_disk_limit, $dmn_disk_usage,
-		$dmn_php, $dmn_cgi, $dmn_dns) = get_domain_default_props($sql, $_SESSION['user_id']);
+		$dmn_id,
+		$dmn_name,
+		$dmn_gid,
+		$dmn_uid,
+		$dmn_created_id,
+		$dmn_created,
+		$dmn_expires,
+		$dmn_last_modified,
+		$dmn_mailacc_limit,
+		$dmn_ftpacc_limit,
+		$dmn_traff_limit,
+		$dmn_sqld_limit,
+		$dmn_sqlu_limit,
+		$dmn_status,
+		$dmn_als_limit,
+		$dmn_subd_limit,
+		$dmn_ip_id,
+		$dmn_disk_limit,
+		$dmn_disk_usage,
+		$dmn_php,
+		$dmn_cgi,
+		$allowbackup,
+		$dmn_dns
+	) = get_domain_default_props($sql, $_SESSION['user_id']);
 
 	if ($dmn_mailacc_limit == -1) $tpl->assign('ACTIVE_EMAIL', '');
 
