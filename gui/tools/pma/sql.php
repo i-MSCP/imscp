@@ -3,7 +3,7 @@
 /**
  * @todo    we must handle the case if sql.php is called directly with a query
  *          that returns 0 rows - to prevent cyclic redirects or includes
- * @version $Id: sql.php 12608 2009-06-30 10:48:08Z lem9 $
+ * @version $Id: sql.php 13165 2009-12-17 17:27:47Z lem9 $
  * @package phpMyAdmin
  */
 
@@ -292,6 +292,13 @@ if (isset($GLOBALS['show_as_php']) || !empty($GLOBALS['validatequery'])) {
 } else {
     if (isset($_SESSION['profiling']) && PMA_profilingSupported()) {
         PMA_DBI_query('SET PROFILING=1;');
+    }
+
+    // fisharebest: release the session lock, otherwise we won't be able to run other
+    // scripts until the query has finished (which could take a very long time). 
+    // Note: footer.inc.php writes debug info to $_SESSION, so debuggers will have to wait.
+    if (empty($_SESSION['debug'])) {
+        session_write_close();
     }
 
     // garvin: Measure query time.

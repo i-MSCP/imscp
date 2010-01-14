@@ -3,7 +3,7 @@
 /**
  * Set of functions used with the relation and pdf feature
  *
- * @version $Id: relation.lib.php 12597 2009-06-24 21:18:00Z lem9 $
+ * @version $Id: relation.lib.php 13136 2009-11-28 13:11:13Z lem9 $
  * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
@@ -133,13 +133,15 @@ function PMA_printRelationsParamDiagnostic($cfgRelation)
 
     PMA_printDiagMessageForFeature('strColComFeat', 'commwork', $messages, false);
 
-    PMA_printDiagMessageForFeature('strBookmarkQuery', 'bookmarkwork', $messages, false);
-
     PMA_printDiagMessageForFeature('strMIME_transformation', 'mimework', $messages);
 
     if ($cfgRelation['commwork'] && ! $cfgRelation['mimework']) {
         echo '<tr><td colspan=2 align="left">' . $GLOBALS['strUpdComTab'] . '</td></tr>' . "\n";
     }
+
+    PMA_printDiagMessageForParameter('bookmarktable', isset($cfgRelation['bookmark']), $messages, 'bookmark');
+
+    PMA_printDiagMessageForFeature('strBookmarkQuery', 'bookmarkwork', $messages);
 
     PMA_printDiagMessageForParameter('history', isset($cfgRelation['history']), $messages, 'history');
 
@@ -668,6 +670,7 @@ function PMA_setDbComment($db, $comment = '')
  * Set a SQL history entry
  *
  * @uses    $_SESSION['sql_history']
+ * @uses    $cfg['QueryHistoryDB']
  * @uses    $cfg['QueryHistoryMax']
  * @uses    PMA_getRelationsParam()
  * @uses    PMA_query_as_cu()
@@ -711,7 +714,7 @@ function PMA_setHistory($db, $table, $username, $sqlquery)
         array_shift($_SESSION['sql_history']);
     }
 
-    if (! $cfgRelation['historywork']) {
+    if (! $cfgRelation['historywork'] || ! $GLOBALS['cfg']['QueryHistoryDB']) {
         return;
     }
 

@@ -1,5 +1,5 @@
 <?php
-/* $Id: georgian-utf-8.inc.php 13109 2009-11-08 12:04:19Z lem9 $ */
+/* $Id: georgian-utf-8.inc.php 13227 2010-01-07 08:25:31Z nijel $ */
 
 /**
  * Translation by Kakha Mchedlidze <kahka at gmail.com>
@@ -398,7 +398,7 @@ $strInnoDBDataHomeDir = 'Data home directory';
 $strInnoDBDataHomeDirDesc = 'The common part of the directory path for all InnoDB data files.';
 $strInnoDBPages = 'pages';
 $strInnodbStat = 'InnoDB-ის მდგომარეობა';
-$strInsecureMySQL = 'Your configuration file contains settings (root with no password) that correspond to the default MySQL privileged account. Your MySQL server is running with this default, is open to intrusion, and you really should fix this security hole by setting a password for user \'.root\'.';
+$strInsecureMySQL = 'Your configuration file contains settings (root with no password) that correspond to the default MySQL privileged account. Your MySQL server is running with this default, is open to intrusion, and you really should fix this security hole by setting a password for user \'root\'.';
 $strInsertAsNewRow = 'ახალი სტრიქონის ჩამატება';
 $strInsertedRowId = 'ჩამატებული სტრიქონის id: %1$d';
 $strInsert = 'ჩასმა';

@@ -16,7 +16,7 @@
  *
  * All directives are explained in Documentation.html
  *
- * @version $Id: config.default.php 13102 2009-11-03 13:10:44Z lem9 $
+ * @version $Id: config.default.php 13159 2009-12-09 17:53:48Z lem9 $
  * @package phpMyAdmin
  */
 
@@ -756,7 +756,7 @@ $cfg['ShowStats'] = true;
 $cfg['ShowPhpInfo'] = false;
 
 /**
- * show MySQL server information
+ * show MySQL server and web server information
  *
  * @global boolean $cfg['ShowServerInfo']
  */

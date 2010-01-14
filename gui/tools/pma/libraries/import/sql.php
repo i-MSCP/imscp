@@ -3,7 +3,7 @@
 /**
  * SQL import plugin for phpMyAdmin
  *
- * @version $Id: sql.php 13013 2009-09-26 11:22:19Z lem9 $
+ * @version $Id: sql.php 13166 2009-12-17 17:54:53Z lem9 $
  * @package phpMyAdmin-Import
  */
 if (! defined('PHPMYADMIN')) {
@@ -118,7 +118,7 @@ while (!($GLOBALS['finished'] && $i >= $len) && !$error && !$timeout_passed) {
         $old_i = $i;
         // this is about 7 times faster that looking for each sequence i
         // one by one with strpos()
-        if (preg_match('/(\'|"|#|-- |\/\*|`|(?i)' . $delimiter_keyword . ')/', $buffer, $matches, PREG_OFFSET_CAPTURE, $i)) {
+        if (preg_match('/(\'|"|#|-- |\/\*|`|(?i)(?<![A-Z0-9_])' . $delimiter_keyword . ')/', $buffer, $matches, PREG_OFFSET_CAPTURE, $i)) {
             // in $matches, index 0 contains the match for the complete
             // expression but we don't use it
             $first_position = $matches[1][1];

@@ -2,8 +2,29 @@
 phpMyAdmin - ChangeLog
 ----------------------
 
-$Id: ChangeLog 13140 2009-12-02 18:11:04Z lem9 $
+$Id: ChangeLog 13232 2010-01-10 12:16:33Z lem9 $
 $HeadURL: https://phpmyadmin.svn.sourceforge.net/svnroot/phpmyadmin/trunk/phpMyAdmin/ChangeLog $
+
+3.2.5.0 (2010-01-10)
+- patch #2903400 [bookmarks] Status of bookmark table, 
+  thanks to Virsacer - virsacer
+- bug [history] QueryHistoryDB is not respected
+- bug #2905629 [auth] Blowfish secret is not hashed 
+- bug #2910000 [gui] ShowServerInfo should hide all server info from main page 
+- bug #2910568 [structure] Table size for ARCHIVE tables is not displayed 
+- patch #2899969 [core] Session lock blocks working from a second window,
+  thanks to Greg Roach - fisharebest
+- patch #2915168 [import] Incorrect parsing of DELIMITER keyword,
+  thanks to Greg Roach - fisharebest
+- patch #2918831 [export] Missing backquotes on reserved words, 
+  thanks to Virsacer - virsacer
+- [core] Fix broken cleanup of $_GET
+- bug #2924357 [operations] Cannot rename a database that has foreign key
+  constraints
+- bug #869006 [structure] Ignore number of records for MRG_MyISAM tables
+- bug [browse] "Show BLOB contents" should display HTML code that is present
+  in a BLOB, thanks to Vincent van der Tuin
+- [privileges] Improve escaping of hostname
 
 3.2.4.0 (2009-12-02)
 - bug [engines] Innodb_buffer_pool_pages_latched no longer returned in status 

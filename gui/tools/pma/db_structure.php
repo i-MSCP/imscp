@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: db_structure.php 13034 2009-10-12 21:47:40Z lem9 $
+ * @version $Id: db_structure.php 13209 2010-01-03 16:27:46Z lem9 $
  * @package phpMyAdmin
  */
 
@@ -289,11 +289,12 @@ foreach ($tables as $keyname => $each_table) {
 
     switch ( $each_table['ENGINE']) {
         // MyISAM, ISAM or Heap table: Row count, data size and index size
-        // are accurate.
+        // are accurate; data size is accurate for ARCHIVE
         case 'MyISAM' :
         case 'ISAM' :
         case 'HEAP' :
         case 'MEMORY' :
+        case 'ARCHIVE' :
             if ($db_is_information_schema) {
                 $each_table['Rows'] = PMA_Table::countRecords($db,
                     $each_table['Name'], $return = true);
@@ -329,7 +330,7 @@ foreach ($tables as $keyname => $each_table) {
             }
             //$display_rows                   =  ' - ';
             break;
-        case 'MRG_MyISAM' :
+        case 'MRG_MYISAM' :
         case 'BerkeleyDB' :
             // Merge or BerkleyDB table: Only row count is accurate.
             if ($is_show_stats) {
@@ -357,7 +358,10 @@ foreach ($tables as $keyname => $each_table) {
                 $unit          =  '';
             }
     } // end switch
-    $sum_entries += $each_table['TABLE_ROWS'];
+
+    if ('MRG_MYISAM' != $each_table['ENGINE']) {
+        $sum_entries += $each_table['TABLE_ROWS'];
+    }
 
     if (isset($each_table['Collation'])) {
         $collation = '<dfn title="'

@@ -1,5 +1,5 @@
 <?php
-/* $Id: english-utf-8.inc.php 13109 2009-11-08 12:04:19Z lem9 $ */
+/* $Id: english-utf-8.inc.php 13227 2010-01-07 08:25:31Z nijel $ */
 
 $charset = 'utf-8';
 $text_dir = 'ltr'; // ('ltr' for left to right, 'rtl' for right to left)
@@ -398,7 +398,7 @@ $strInnoDBDataHomeDir = 'Data home directory';
 $strInnoDBDataHomeDirDesc = 'The common part of the directory path for all InnoDB data files.';
 $strInnoDBPages = 'pages';
 $strInnodbStat = 'InnoDB Status';
-$strInsecureMySQL = 'Your configuration file contains settings (root with no password) that correspond to the default MySQL privileged account. Your MySQL server is running with this default, is open to intrusion, and you really should fix this security hole by setting a password for user \'.root\'.';
+$strInsecureMySQL = 'Your configuration file contains settings (root with no password) that correspond to the default MySQL privileged account. Your MySQL server is running with this default, is open to intrusion, and you really should fix this security hole by setting a password for user \'root\'.';
 $strInsertAsNewRow = 'Insert as new row';
 $strInsertedRowId = 'Inserted row id: %1$d';
 $strInsert = 'Insert';
