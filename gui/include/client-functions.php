@@ -1055,3 +1055,43 @@ function mount_point_exists($dmn_id, $mnt_point) {
 	}
 	return false;
 }
+
+/**
+ * Checks the User rights to add Domain Aliases
+ * 
+ * @param int User ID
+ * @return boolean Client Domain Alias Permissions
+ */
+function check_client_domainalias_permissions($user_id) {
+	$sql = Database::getInstance();
+
+	list($dmn_id,
+		$dmn_name,
+		$dmn_gid,
+		$dmn_uid,
+		$dmn_created_id,
+		$dmn_created,
+		$dmn_expires,
+		$dmn_last_modified,
+		$dmn_mailacc_limit,
+		$dmn_ftpacc_limit,
+		$dmn_traff_limit,
+		$dmn_sqld_limit,
+		$dmn_sqlu_limit,
+		$dmn_status,
+		$dmn_als_limit,
+		$dmn_subd_limit,
+		$dmn_ip_id,
+		$dmn_disk_limit,
+		$dmn_disk_usage,
+		$dmn_php,
+		$dmn_cgi,
+		$allowbackup,
+		$dmn_dns
+	) = get_domain_default_props($sql, $user_id);
+
+	if ($dmn_als_limit == "-1") {
+		return false;
+	}
+	return true;
+}

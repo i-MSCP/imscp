@@ -120,7 +120,7 @@ generate_users_list($tpl, $_SESSION['user_id']);
 check_externel_events($tpl);
 gen_page_message($tpl);
 
-if (check_reseller_domainalias_permissions($_SESSION['user_id'])) {
+if (!check_reseller_domainalias_permissions($_SESSION['user_id'])) {
 	$tpl->assign('alias_menu', '');
 }
 

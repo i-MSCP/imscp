@@ -76,8 +76,23 @@ $tpl->assign(
 	)
 );
 
-if (check_reseller_domainalias_permissions($_SESSION['user_id'])) {
+list($rdmn_current, $rdmn_max, 
+	$rsub_current, $rsub_max, 
+ 	$rals_current, $rals_max, 
+ 	$rmail_current, $rmail_max, 
+ 	$rftp_current, $rftp_max, 
+ 	$rsql_db_current, $rsql_db_max, 
+ 	$rsql_user_current, $rsql_user_max, 
+ 	$rtraff_current, $rtraff_max, 
+ 	$rdisk_current, $rdisk_max 
+ 	) = get_reseller_default_props($sql, $reseller_id);
+
+if ($rals_max != 0 && $rals_current >= $rals_max) {
 	$_SESSION['almax'] = '_yes_';
+}
+
+if (!check_reseller_domainalias_permissions($_SESSION['user_id']) || 
+	isset($_SESSION['almax'])) {
 	user_goto('alias.php');
 }
 

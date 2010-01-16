@@ -215,7 +215,7 @@ send_circular($tpl, $sql);
 gen_page_data ($tpl, $sql);
 gen_page_message($tpl);
 
-if (check_reseller_domainalias_permissions($_SESSION['user_id'])) {
+if (!check_reseller_domainalias_permissions($_SESSION['user_id'])) {
 	$tpl->assign('ALIAS_MENU', '');
 }
 

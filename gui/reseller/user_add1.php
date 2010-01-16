@@ -96,7 +96,7 @@ if (isset($_POST['uaction'])) {
 get_hp_data_list($tpl, $_SESSION['user_id']);
 gen_page_message($tpl);
 
-if (check_reseller_domainalias_permissions($_SESSION['user_id'])) {
+if (!check_reseller_domainalias_permissions($_SESSION['user_id'])) {
 	$tpl->assign('ALIAS_MENU', '');
 }
 

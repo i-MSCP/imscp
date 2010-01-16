@@ -1901,7 +1901,7 @@ function check_reseller_domainalias_permissions($reseller_id) {
 			$rdisk_current, $rdisk_max
 		) = get_reseller_default_props($sql, $reseller_id);
 
-	if ($rals_max != 0 && $rals_current >= $rals_max) {
+	if ($rals_max == "-1") {
 		return false;
 	}
 	return true;	

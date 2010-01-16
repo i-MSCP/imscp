@@ -39,9 +39,11 @@ $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('als_message', 'page');
 $tpl->define_dynamic('als_list', 'page');
 $tpl->define_dynamic('als_item', 'als_list');
+$tpl->define_dynamic('alias_add', 'page');
 $tpl->define_dynamic('sub_message', 'page');
 $tpl->define_dynamic('sub_list', 'page');
 $tpl->define_dynamic('sub_item', 'sub_list');
+$tpl->define_dynamic('subdomain_add', 'page');
 $tpl->define_dynamic('dns_message', 'page');
 $tpl->define_dynamic('dns_list', 'page');
 $tpl->define_dynamic('dns_item','dns_list');
@@ -375,6 +377,11 @@ $tpl->assign(
 );
 
 gen_page_message($tpl);
+
+if (!check_client_domainalias_permissions($_SESSION['user_id'])) {
+	$tpl->assign('ALIAS_ADD', '');
+}
+
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 

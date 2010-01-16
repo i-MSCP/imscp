@@ -37,6 +37,7 @@ $tpl->define_dynamic('page', Config::get('CLIENT_TEMPLATE_PATH') . '/subdomain_a
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('als_list', 'page');
+$tpl->define_dynamic('alias_add', 'page');
 
 // page functions.
 
@@ -442,6 +443,10 @@ $tpl->assign(
 );
 
 gen_page_message($tpl);
+
+if (!check_client_domainalias_permissions($_SESSION['user_id'])) {
+	$tpl->assign('ALIAS_ADD', '');
+}
 
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();

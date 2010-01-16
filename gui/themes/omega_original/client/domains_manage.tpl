@@ -43,6 +43,7 @@ function action_delete(url, alias_or_subdomain) {
 				</tr>
 				<tr>
 					<td colspan="3">
+					<!-- BDP: alias_add -->
 						<table width="100%" border="0" cellspacing="0" cellpadding="0">
 							<tr>
 								<td align="left">
@@ -102,6 +103,7 @@ function action_delete(url, alias_or_subdomain) {
 								<td>&nbsp;</td>
 							</tr>
 						</table>
+					<!-- EDP: alias_add -->
 						<table width="100%" border="0" cellspacing="0" cellpadding="0">
 							<tr>
 								<td align="left">

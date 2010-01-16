@@ -80,7 +80,7 @@ $tpl->assign(
 	)
 );
 
-check_user_domainalias_permissions($sql, $_SESSION['user_id']);
+check_client_domainalias_counts($sql, $_SESSION['user_id']);
 
 $err_txt = '_off_';
 if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_alias') {
@@ -95,7 +95,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_alias') {
  * Begin function declaration lines
  */
 
-function check_user_domainalias_permissions($sql, $user_id) {
+function check_client_domainalias_counts($sql, $user_id) {
 
 	list($dmn_id,
 		$dmn_name,
@@ -122,12 +122,12 @@ function check_user_domainalias_permissions($sql, $user_id) {
 		$dmn_dns
 	) = get_domain_default_props($sql, $user_id);
 
-		$als_cnt = get_domain_running_als_cnt($sql, $dmn_id);
+	$als_cnt = get_domain_running_als_cnt($sql, $dmn_id);
 
-		if ($dmn_als_limit != 0 && $als_cnt >= $dmn_als_limit) {
-			set_page_message(tr('Domain alias limit reached!'));
-			user_goto('domains_manage.php');
-		}
+	if ($dmn_als_limit != 0 && $als_cnt >= $dmn_als_limit) {
+		set_page_message(tr('Domain alias limit reached!'));
+		user_goto('domains_manage.php');
+	}
 }
 
 function init_empty_data() {
