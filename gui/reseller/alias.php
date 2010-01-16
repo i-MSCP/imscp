@@ -264,7 +264,16 @@ function generate_als_list(&$tpl, $reseller_id, &$als_err) {
 		if (isset($_SESSION['search_for'])) {
 			$als_err = tr('Not found user records matching the search criteria!');
 		} else {
-			$als_err = tr('You have no alias records.');
+			if (isset($_SESSION['almax'])) {
+				if ($_SESSION['almax'] === '_yes_')
+					$als_err = tr('Domain alias limit reached!');
+				else
+					$als_err = tr('You have no alias records.');
+					
+				unset($_SESSION['almax']);
+			} else {
+				$als_err = tr('You have no alias records.');
+			}
 		}
 		return;
 	} else {
@@ -421,6 +430,13 @@ function generate_als_messages(&$tpl, $als_err) {
 			$tpl->assign('MESSAGE', tr('Ordered domain alias not activated!'));
 
 		unset($_SESSION['orderalact']);
+	} else if (isset($_SESSION['almax'])) {
+		if ('_yes_' === $_SESSION['almax'])
+			$tpl->assign('MESSAGE', tr('Domain alias limit reached!'));
+		else
+			$tpl->assign('MESSAGE', '');
+
+		unset($_SESSION['almax']);
 	} else {
 		$tpl->assign('MESSAGE', '');
 		$tpl->assign('PAGE_MESSAGE', "");

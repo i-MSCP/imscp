@@ -24,12 +24,14 @@
   <tr>
     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
   </tr>
+  <!-- BDP: alias_menu -->
   <tr>
     <td><a href="alias.php" class="submenu">{TR_MENU_DOMAIN_ALIAS}</a></td>
   </tr>
   <tr>
     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
   </tr>
+  <!-- EDP: alias_menu -->
   <tr>
     <td><a href="settings_welcome_mail.php" class="submenu">{TR_MENU_E_MAIL_SETUP}</a></td>
   </tr>

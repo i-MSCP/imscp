@@ -76,6 +76,11 @@ $tpl->assign(
 	)
 );
 
+if (check_domainalias_permissions($_SESSION['user_id'])) {
+	$_SESSION['almax'] = '_yes_';
+	user_goto('alias.php');
+}
+
 $err_txt = '_off_';
 if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_alias') {
 	add_domain_alias($sql, $err_txt);

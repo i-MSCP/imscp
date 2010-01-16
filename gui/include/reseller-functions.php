@@ -1880,3 +1880,29 @@ function get_reseller_id($domain_id) {
 	$data = $rs->FetchRow();
 	return $data['created_by'];
 }
+
+/**
+ * Checks if a reseller has the right to add domain aliases
+ * 
+ * @param int $reseller_id
+ * @return boolean domain alias permissions  
+ */
+function check_domainalias_permissions($reseller_id) {
+	$sql = Database::getInstance();
+	
+	list($rdmn_current, $rdmn_max,
+			$rsub_current, $rsub_max,
+			$rals_current, $rals_max,
+			$rmail_current, $rmail_max,
+			$rftp_current, $rftp_max,
+			$rsql_db_current, $rsql_db_max,
+			$rsql_user_current, $rsql_user_max,
+			$rtraff_current, $rtraff_max,
+			$rdisk_current, $rdisk_max
+		) = get_reseller_default_props($sql, $reseller_id);
+
+	if ($rals_max != 0 && $rals_current >= $rals_max) {
+		return false;
+	}
+	return true;	
+}

@@ -32,6 +32,23 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
+$tpl = new pTemplate();
+$tpl->define_dynamic('page', Config::get('RESELLER_TEMPLATE_PATH') . '/circular.tpl');
+$tpl->define_dynamic('page_message', 'page');
+$tpl->define_dynamic('logged_from', 'page');
+$tpl->define_dynamic('alias_menu', 'page');
+
+$theme_color = Config::get('USER_INITIAL_THEME');
+
+$tpl->assign(
+	array(
+		'TR_RESELLER_CIRCULAR_PAGE_TITLE' => tr('ispCP - Circular'),
+		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => get_logo($_SESSION['user_id']),
+	)
+);
+
 function gen_page_data(&$tpl, &$sql) {
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'send_circular') {
 		$tpl->assign(
@@ -165,22 +182,6 @@ function send_circular_email($to, $from, $subject, $message) {
 	mail($to, $subject, $message, $headers);
 }
 
-$tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::get('RESELLER_TEMPLATE_PATH') . '/circular.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('logged_from', 'page');
-
-$theme_color = Config::get('USER_INITIAL_THEME');
-
-$tpl->assign(
-	array(
-		'TR_RESELLER_CIRCULAR_PAGE_TITLE' => tr('ispCP - Circular'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
-		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => get_logo($_SESSION['user_id']),
-	)
-);
-
 /*
  *
  * static page messages.
@@ -211,10 +212,12 @@ $tpl->assign(
 );
 
 send_circular($tpl, $sql);
-
 gen_page_data ($tpl, $sql);
-
 gen_page_message($tpl);
+
+if (check_domainalias_permissions($_SESSION['user_id'])) {
+	$tpl->assign('ALIAS_MENU', '');
+}
 
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();

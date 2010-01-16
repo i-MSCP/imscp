@@ -32,8 +32,8 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-if (Config::exists('HOSTING_PLANS_LEVEL') && strtolower(Config::get('HOSTING_PLANS_LEVEL')) == 'admin')
-{
+if (Config::exists('HOSTING_PLANS_LEVEL') && 
+	strtolower(Config::get('HOSTING_PLANS_LEVEL')) == 'admin') {
 	user_goto('hosting_plan.php');
 }
 
@@ -101,17 +101,14 @@ $tpl->assign(
 		)
 );
 
-if (isset($_POST['uaction']) && ('add_plan' === $_POST['uaction']))
-{
+if (isset($_POST['uaction']) && ('add_plan' === $_POST['uaction'])) {
 	// Process data
 	if (check_data_correction($tpl)) {
 		save_data_to_db($tpl, $_SESSION['user_id']);
 	}
 
 	gen_data_ahp_page($tpl);
-}
-else
-{
+} else {
 	gen_empty_ahp_page($tpl);
 }
 
@@ -120,8 +117,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG'))
-{
+if (Config::get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
 }
 
@@ -289,45 +285,28 @@ function check_data_correction(&$tpl) {
 		$ahp_error = tr('Setup fee must be a number!');
 	}
 
-	if (!ispcp_limit_check($hp_sub, -1))
-	{
+	if (!ispcp_limit_check($hp_sub, -1)) {
 		$ahp_error = tr('Incorrect subdomains limit!');
-	}
-	elseif(!ispcp_limit_check($hp_als, -1))
-	{
+	} elseif(!ispcp_limit_check($hp_als, -1)) {
 		$ahp_error = tr('Incorrect aliases limit!');
-	}
-	elseif (!ispcp_limit_check($hp_mail, -1)) {
+	} elseif (!ispcp_limit_check($hp_mail, -1)) {
 		$ahp_error = tr('Incorrect mail accounts limit!');
-	}
-	elseif(!ispcp_limit_check($hp_ftp, -1))
-	{
+	} elseif(!ispcp_limit_check($hp_ftp, -1)) {
 		$ahp_error = tr('Incorrect FTP accounts limit!');
-	}
-	elseif(!ispcp_limit_check($hp_sql_user, -1))
-	{
+	} elseif(!ispcp_limit_check($hp_sql_user, -1)) {
 		$ahp_error = tr('Incorrect SQL databases limit!');
-	}
-	elseif(!ispcp_limit_check($hp_sql_db, -1))
-	{
+	} elseif(!ispcp_limit_check($hp_sql_db, -1)) {
 		$ahp_error = tr('Incorrect SQL users limit!');
-	}
-	elseif(!ispcp_limit_check($hp_traff, null))
-	{
+	} elseif(!ispcp_limit_check($hp_traff, null)) {
 		$ahp_error = tr('Incorrect traffic limit!');
-	}
-	elseif(!ispcp_limit_check($hp_disk, null))
-	{
+	} elseif(!ispcp_limit_check($hp_disk, null)) {
 		$ahp_error = tr('Incorrect disk quota limit!');
 	}
 
-	if ($ahp_error == '_off_')
-	{
+	if ($ahp_error == '_off_') {
 		$tpl->assign('MESSAGE', '');
 		return true;
-	}
-	else
-	{
+	} else {
 		set_page_message($ahp_error);
 		// $tpl->assign('MESSAGE', $ahp_error);
 		return false;
@@ -360,15 +339,11 @@ function save_data_to_db(&$tpl, $admin_id) {
 		// this id is just for fake and is not used in reseller_limits_check.
 		$hpid = 0;
 
-		if (reseller_limits_check($sql, $err_msg, $admin_id, $hpid, $hp_props))
-		{
-			if (!empty($err_msg))
-			{
+		if (reseller_limits_check($sql, $err_msg, $admin_id, $hpid, $hp_props)) {
+			if (!empty($err_msg)) {
 				set_page_message($err_msg);
 				return false;
-			}
-			else
-			{
+			} else {
 				$query = "
 					INSERT INTO
 						`hosting_plans`(
@@ -390,9 +365,7 @@ function save_data_to_db(&$tpl, $admin_id) {
 				$_SESSION['hp_added'] = '_yes_';
 				user_goto('hosting_plan.php');
 			}
-		}
-		else
-		{
+		} else {
 			set_page_message(tr("Hosting plan values exceed reseller maximum values!"));
 			return false;
 		}

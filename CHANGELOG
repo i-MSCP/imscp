@@ -1,6 +1,10 @@
 ispCP ω 1.0.4 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-01-16 Benedikt Heintel
+	- GUI:
+		* Fixed #2165: Reseller can add alias while disabled by the admin (based on a patch by Sascha Bay)
+
 2010-01-16 Marc Pujol
 	- GUI:
 		* Fixed #2168: Error Message in Browser: HY093 (whats wrong with my database?)

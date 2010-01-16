@@ -44,6 +44,7 @@ $tpl->define_dynamic('scroll_prev', 'page');
 $tpl->define_dynamic('scroll_next_gray', 'page');
 $tpl->define_dynamic('scroll_next', 'page');
 $tpl->define_dynamic('edit_option', 'page');
+$tpl->define_dynamic('alias_menu', 'page');
 
 $theme_color = Config::get('USER_INITIAL_THEME');
 
@@ -56,6 +57,7 @@ $tpl->assign(
 	)
 );
 
+// TODO: comment!
 unset($_SESSION['dmn_name']);
 unset($_SESSION['ch_hpprops']);
 unset($_SESSION['local_data']);
@@ -115,10 +117,12 @@ if (Config::exists('HOSTING_PLANS_LEVEL') && Config::get('HOSTING_PLANS_LEVEL') 
 }
 
 generate_users_list($tpl, $_SESSION['user_id']);
-
 check_externel_events($tpl);
-
 gen_page_message($tpl);
+
+if (check_domainalias_permissions($_SESSION['user_id'])) {
+	$tpl->assign('alias_menu', '');
+}
 
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
