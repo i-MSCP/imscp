@@ -1,6 +1,10 @@
 ispCP ω 1.0.4 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-01-16 Peter Ziergöbel
+	- GUI:
+		* Fixed #2156: Reseller hosting plan update error
+
 2010-01-16 Benedikt Heintel
 	- GUI:
 		* Fixed #2165: Reseller can add alias while disabled by the admin (based on a patch by Sascha Bay)

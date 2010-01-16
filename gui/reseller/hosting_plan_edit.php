@@ -439,6 +439,7 @@ function save_data_to_db() {
 
 	} else {
 		set_page_message(tr("Hosting plan values exceed reseller maximum values!"));
+		restore_form($tpl, $sql);
 		return false;
 	}
 } // end of save_data_to_db()
