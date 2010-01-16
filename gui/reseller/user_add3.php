@@ -38,6 +38,7 @@ $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('ip_entry', 'page');
 $tpl->define_dynamic('alias_menu', 'page');
+$tpl->define_dynamic('alias_add', 'page');
 
 $theme_color = Config::get('USER_INITIAL_THEME');
 
@@ -117,8 +118,9 @@ if (isset($_POST['uaction'])
 gen_user_add3_page($tpl);
 gen_page_message($tpl);
 
-if (check_domainalias_permissions($_SESSION['user_id'])) {
+if (check_reseller_domainalias_permissions($_SESSION['user_id'])) {
 	$tpl->assign('ALIAS_MENU', '');
+	$tpl->assign('ALIAS_ADD', '');
 }
 
 $tpl->parse('PAGE', 'page');

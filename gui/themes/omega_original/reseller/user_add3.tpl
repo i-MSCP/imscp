@@ -89,11 +89,13 @@
                           <td class="content"><input type="text" name="useremail" value="{VL_MAIL}" style="width:210px" class="textinput" />
                           </td>
                         </tr>
+                        <!-- BDP: alias_add -->
                         <tr>
                           <td>&nbsp;</td>
                           <td class="content2">{TR_ADD_ALIASES}</td>
                           <td class="content"><input name="add_alias" type="checkbox" id="add_alias" value="on" /></td>
                         </tr>
+                        <!-- EDP: alias_add -->
                         <tr>
                           <td width="25">&nbsp;</td>
                           <td colspan="2" class="content3"><b>{TR_ADDITIONAL_DATA}</b></td>

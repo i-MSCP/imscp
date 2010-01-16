@@ -37,6 +37,7 @@ $tpl->define_dynamic('page', Config::get('RESELLER_TEMPLATE_PATH') . '/user_add2
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('alias_menu', 'page');
+$tpl->define_dynamic('alias_add', 'page');
 
 $theme_color = Config::get('USER_INITIAL_THEME');
 
@@ -121,8 +122,9 @@ if (isset($_POST['uaction'])
 get_init_au2_page($tpl);
 gen_page_message($tpl);
 
-if (check_domainalias_permissions($_SESSION['user_id'])) {
+if (check_reseller_domainalias_permissions($_SESSION['user_id'])) {
 	$tpl->assign('ALIAS_MENU', '');
+	$tpl->assign('ALIAS_ADD', '');
 }
 
 $tpl->parse('PAGE', 'page');
@@ -213,7 +215,8 @@ function get_hp_data($hpid, $admin_id) {
 
 		$props = $data['props'];
 
-		list($hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk, $hp_backup, $hp_dns) = explode(";", $props);
+		list($hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, 
+			$hp_sql_user, $hp_traff, $hp_disk, $hp_backup, $hp_dns) = explode(";", $props);
 
 		$hp_name = $data['name'];
 	} else {
@@ -308,7 +311,9 @@ function check_user_data(&$tpl) {
 		set_page_message(tr('Incorrect subdomains limit!'));
 	}
 
-	if (!ispcp_limit_check($hp_als, -1)) {
+	if (check_reseller_domainalias_permissions($_SESSION['user_id']) == false) {
+		$hp_als = "-1";
+	} elseif (!ispcp_limit_check($hp_als, -1)) {
 		set_page_message(tr('Incorrect aliases limit!'));
 	}
 

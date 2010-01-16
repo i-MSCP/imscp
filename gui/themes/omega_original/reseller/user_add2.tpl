@@ -66,11 +66,13 @@
                           <td class="content2" width="200">{TR_MAX_SUBDOMAIN}</td>
                           <td class="content"><input type="text" name="nreseller_max_subdomain_cnt" value="{MAX_SUBDMN_CNT}" style="width:140px" class="textinput" /></td>
                         </tr>
+                        <!-- BDP: alias_add -->
                         <tr>
                           <td width="25">&nbsp;</td>
                           <td class="content2" width="175">{TR_MAX_DOMAIN_ALIAS}</td>
                           <td class="content"><input type="text" name="nreseller_max_alias_cnt" value="{MAX_DMN_ALIAS_CNT}" style="width:140px" class="textinput" /></td>
                         </tr>
+                        <!-- EDP: alias_add -->
                         <tr>
                           <td width="25">&nbsp;</td>
                           <td class="content2" width="200">{TR_MAX_MAIL_COUNT}</td>

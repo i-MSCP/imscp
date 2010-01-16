@@ -1887,7 +1887,7 @@ function get_reseller_id($domain_id) {
  * @param int $reseller_id
  * @return boolean domain alias permissions  
  */
-function check_domainalias_permissions($reseller_id) {
+function check_reseller_domainalias_permissions($reseller_id) {
 	$sql = Database::getInstance();
 	
 	list($rdmn_current, $rdmn_max,

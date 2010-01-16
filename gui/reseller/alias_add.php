@@ -76,7 +76,7 @@ $tpl->assign(
 	)
 );
 
-if (check_domainalias_permissions($_SESSION['user_id'])) {
+if (check_reseller_domainalias_permissions($_SESSION['user_id'])) {
 	$_SESSION['almax'] = '_yes_';
 	user_goto('alias.php');
 }

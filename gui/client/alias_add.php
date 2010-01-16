@@ -80,7 +80,7 @@ $tpl->assign(
 	)
 );
 
-check_domainalias_permissions($sql, $_SESSION['user_id']);
+check_user_domainalias_permissions($sql, $_SESSION['user_id']);
 
 $err_txt = '_off_';
 if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_alias') {
@@ -95,7 +95,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_alias') {
  * Begin function declaration lines
  */
 
-function check_domainalias_permissions($sql, $user_id) {
+function check_user_domainalias_permissions($sql, $user_id) {
 
 	list($dmn_id,
 		$dmn_name,
