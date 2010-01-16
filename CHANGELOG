@@ -1,6 +1,10 @@
 ispCP ω 1.0.4 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-01-16 Marc Pujol
+	- GUI:
+		* Fixed #2168: Error Message in Browser: HY093 (whats wrong with my database?)
+
 2010-01-13 Marc Pujol
 	- GUI:
 		* Updated spanish language files

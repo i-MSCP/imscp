@@ -104,7 +104,7 @@ $query = "
   FROM
     `reseller_props`
   WHERE
-    `reseller_id` = '?'
+    `reseller_id` = ?
 ";
 
 $rs = exec_query($sql, $query, array($_SESSION['user_id']));
