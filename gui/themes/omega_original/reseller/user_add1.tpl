@@ -72,13 +72,13 @@
                         <td width="25">&nbsp;</td>
                         <td class="content2" width="200">{TR_DOMAIN_EXPIRE}</td>
                         <td class="content"><select name="dmn_expire">
-							<option value="0">{TR_DOMAIN_EXPIRE_NEVER}</option>
-							<option value="1">{TR_DOMAIN_EXPIRE_1_MONTH}</option>
-							<option value="2">{TR_DOMAIN_EXPIRE_2_MONTHS}</option>
-							<option value="3">{TR_DOMAIN_EXPIRE_3_MONTHS}</option>
-							<option value="6">{TR_DOMAIN_EXPIRE_6_MONTHS}</option>
-							<option value="12">{TR_DOMAIN_EXPIRE_1_YEAR}</option>
-							<option value="24">{TR_DOMAIN_EXPIRE_2_YEARS}</option>
+							<option value="0" {EXPIRE_NEVER_SET}>{TR_DOMAIN_EXPIRE_NEVER}</option>
+							<option value="1" {EXPIRE_1_MONTH_SET}>{TR_DOMAIN_EXPIRE_1_MONTH}</option>
+							<option value="2" {EXPIRE_2_MONTH_SET}>{TR_DOMAIN_EXPIRE_2_MONTHS}</option>
+							<option value="3" {EXPIRE_3_MONTH_SET}>{TR_DOMAIN_EXPIRE_3_MONTHS}</option>
+							<option value="6" {EXPIRE_6_MONTH_SET}>{TR_DOMAIN_EXPIRE_6_MONTHS}</option>
+							<option value="12" {EXPIRE_1_YEAR_SET}>{TR_DOMAIN_EXPIRE_1_YEAR}</option>
+							<option value="24" {EXPIRE_2_YEARS_SET}>{TR_DOMAIN_EXPIRE_2_YEARS}</option>
 						</select>
                         </td>
                       </tr>

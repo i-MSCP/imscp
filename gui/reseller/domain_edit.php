@@ -270,7 +270,7 @@ function load_additional_data($user_id, $domain_id) {
  * Show user data
  */
 function gen_editdomain_page(&$tpl) {
-	global $domain_name, $domain_expires, $domain_ip, $php_sup;
+	global $domain_name, $domain_expires, $domain_new_expire, $domain_ip, $php_sup;
 	global $cgi_supp , $sub, $als;
 	global $mail, $ftp, $sql_db;
 	global $sql_user, $traff, $disk;
@@ -323,24 +323,33 @@ function gen_editdomain_page(&$tpl) {
 
 	$tpl->assign(
 		array(
-			'PHP_YES'				=> ($php_sup == 'yes') ? 'selected="selected"' : '',
-			'PHP_NO'				=> ($php_sup != 'yes') ? 'selected="selected"' : '',
-			'CGI_YES'				=> ($cgi_supp == 'yes') ? 'selected="selected"' : '',
-			'CGI_NO'				=> ($cgi_supp != 'yes') ? 'selected="selected"' : '',
-			'DNS_YES'				=> ($dns_supp == 'yes') ? 'selected="selected"' : '',
-			'DNS_NO'				=> ($dns_supp != 'yes') ? 'selected="selected"' : '',
-			'VL_DOMAIN_NAME'		=> $domain_name,
-			'VL_DOMAIN_EXPIRE'		=> $domain_expires,
-			'VL_DOMAIN_IP'			=> $domain_ip,
-			'VL_DOM_SUB'			=> $sub,
-			'VL_DOM_ALIAS'			=> $als,
-			'VL_DOM_MAIL_ACCOUNT'	=> $mail,
-			'VL_FTP_ACCOUNTS'		=> $ftp,
-			'VL_SQL_DB'				=> $sql_db,
-			'VL_SQL_USERS'			=> $sql_user,
-			'VL_TRAFFIC'			=> $traff,
-			'VL_DOM_DISK'			=> $disk,
-			'VL_USER_NAME'			=> $username
+			'PHP_YES'					=> ($php_sup == 'yes') ? 'selected="selected"' : '',
+			'PHP_NO'					=> ($php_sup != 'yes') ? 'selected="selected"' : '',
+			'CGI_YES'					=> ($cgi_supp == 'yes') ? 'selected="selected"' : '',
+			'CGI_NO'					=> ($cgi_supp != 'yes') ? 'selected="selected"' : '',
+			'DNS_YES'					=> ($dns_supp == 'yes') ? 'selected="selected"' : '',
+			'DNS_NO'					=> ($dns_supp != 'yes') ? 'selected="selected"' : '',
+			'VL_DOMAIN_NAME'			=> $domain_name,
+			'VL_DOMAIN_EXPIRE'			=> $domain_expires,
+			'VL_DOMAIN_IP'				=> $domain_ip,
+			'VL_DOM_SUB'				=> $sub,
+			'VL_DOM_ALIAS'				=> $als,
+			'VL_DOM_MAIL_ACCOUNT'		=> $mail,
+			'VL_FTP_ACCOUNTS'			=> $ftp,
+			'VL_SQL_DB'					=> $sql_db,
+			'VL_SQL_USERS'				=> $sql_user,
+			'VL_TRAFFIC'				=> $traff,
+			'VL_DOM_DISK'				=> $disk,
+			'VL_USER_NAME'				=> $username,
+			'EXPIRE_UNCHANGED_SET'		=> ($domain_new_expire === '0') ? ' selected="selected"' : '',
+			'EXPIRE_NEVER_SET'			=> ($domain_new_expire === 'OFF') ? ' selected="selected"' : '',
+			'EXPIRE_1_MIN_MONTH_SET'	=> ($domain_new_expire === '-1') ? ' selected="selected"' : '',
+			'EXPIRE_1_PLUS_MONTH_SET'	=> ($domain_new_expire === '1') ? ' selected="selected"' : '',
+			'EXPIRE_2_PLUS_MONTH_SET'	=> ($domain_new_expire === '2') ? ' selected="selected"' : '',
+			'EXPIRE_3_PLUS_MONTH_SET'	=> ($domain_new_expire === '3') ? ' selected="selected"' : '',
+			'EXPIRE_6_PLUS_MONTH_SET'	=> ($domain_new_expire === '6') ? ' selected="selected"' : '',
+			'EXPIRE_1_PLUS_YEAR_SET'	=> ($domain_new_expire === '12') ? ' selected="selected"' : '',
+			'EXPIRE_2_PLUS_YEARS_SET'	=> ($domain_new_expire === '24') ? ' selected="selected"' : '',
 		)
 	);
 } // End of gen_editdomain_page()

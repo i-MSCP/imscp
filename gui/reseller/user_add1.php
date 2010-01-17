@@ -224,9 +224,16 @@ function get_data_au1_page(&$tpl) {
 
 	$tpl->assign(
 			array(
-				'DMN_NAME_VALUE'	=> $dmn_name,
-				'CHTPL1_VAL'		=> $dmn_pt === "_yes_" ? 'checked="checked"' : '',
-				'CHTPL2_VAL'		=> $dmn_pt === "_yes_" ? '' : 'checked="checked"'
+				'DMN_NAME_VALUE'		=> $dmn_name,
+				'CHTPL1_VAL'			=> $dmn_pt === "_yes_" ? 'checked="checked"' : '',
+				'CHTPL2_VAL'			=> $dmn_pt === "_yes_" ? '' : 'checked="checked"',
+				'EXPIRE_NEVER_SET'		=> ($dmn_expire === '0') ? ' selected="selected"' : '',
+				'EXPIRE_1_MONTH_SET'	=> ($dmn_expire === '1') ? ' selected="selected"' : '',
+				'EXPIRE_2_MONTH_SET'	=> ($dmn_expire === '2') ? ' selected="selected"' : '',
+				'EXPIRE_3_MONTH_SET'	=> ($dmn_expire === '3') ? ' selected="selected"' : '',
+				'EXPIRE_6_MONTH_SET'	=> ($dmn_expire === '6') ? ' selected="selected"' : '',
+				'EXPIRE_1_YEAR_SET'		=> ($dmn_expire === '12') ? ' selected="selected"' : '',
+				'EXPIRE_2_YEARS_SET'	=> ($dmn_expire === '24') ? ' selected="selected"' : '',
 			)
 	);
 } // End of get_data_au1_page()
