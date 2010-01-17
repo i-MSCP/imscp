@@ -133,7 +133,7 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 		while (!$rs->EOF) {
 			$ticket_id		= $rs->fields['ticket_id'];
 			$from			= get_ticket_from($sql, $ticket_id);
-			$to				= get_ticket_to($sql, $ticket_id, $user_id);
+			$to				= get_ticket_to($sql, $ticket_id, $user_id, true);
 			$date			= ticketGetLastDate($sql, $ticket_id);
 			$ticket_urgency = $rs->fields['ticket_urgency'];
 
@@ -153,7 +153,7 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 				array(
 					'ID'		=> $ticket_id,
 					'FROM'		=> htmlspecialchars($from),
-					'TO'		=> htmlspecialchars($to),
+					'TO'		=> $to,
 					'LAST_DATE'	=> $date,
 					'SUBJECT'	=> htmlspecialchars($rs->fields['ticket_subject']),
 					'SUBJECT2'	=> addslashes(clean_html($rs->fields['ticket_subject'])),
@@ -211,7 +211,7 @@ function get_ticket_from(&$sql, $ticket_id) {
 	return $from_name;
 }
 
-function get_ticket_to(&$sql, $ticket_id, $user_id) {
+function get_ticket_to(&$sql, $ticket_id, $user_id, $html = false) {
 	$query = "
 		SELECT
 			`ticket_from`,
@@ -248,6 +248,12 @@ function get_ticket_to(&$sql, $ticket_id, $user_id) {
 	$admin_type = $rs->fields['admin_type'];
 	$to_first_name = $rs->fields['fname'];
 	$to_last_name = $rs->fields['lname'];
+
+	if ($html) {
+		$to_first_name = htmlspecialchars($to_first_name);
+		$to_last_name = htmlspecialchars($to_last_name);
+		$to_user_name = htmlspecialchars($to_user_name);
+	}
 
 	if ($rs->fields['admin_id'] == $user_id) {
 		$to_name = "<b>". $to_first_name . " " . $to_last_name . " (" . $to_user_name . ")</b>";

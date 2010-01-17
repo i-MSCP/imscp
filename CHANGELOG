@@ -1,6 +1,10 @@
 ispCP ω 1.0.4 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-01-17 Thomas Wacker
+	- GUI:
+		* Fixed #2172: Support system - html tag shouldn't displayed
+
 2010-01-17 Benedikt Heintel
 	- GUI:
 		* Fixed #2088: Possibility to add databases w/o db users and db users w/o databases (based on a patch by Sascha Bay)
