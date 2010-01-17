@@ -201,7 +201,7 @@ function check_user_data() {
 		return false;
 	} else if ($_POST['nreseller_max_sql_db_cnt'] == -1
 		&& $_POST['nreseller_max_sql_user_cnt'] != -1) {
-		set_page_message(tr('SQL databases limit is <i>disabled</i>!'));
+		set_page_message(tr('SQL databases limit is <i>disabled</i> but SQL users limit not!'));
 		return false;
 	}
 	if (!ispcp_limit_check($_POST['nreseller_max_sql_user_cnt'], -1)) {
@@ -209,7 +209,7 @@ function check_user_data() {
 		return false;
 	} else if ($_POST['nreseller_max_sql_db_cnt'] != -1
 		&& $_POST['nreseller_max_sql_user_cnt'] == -1) {
-		set_page_message(tr('SQL users limit is <i>disabled</i>!'));
+		set_page_message(tr('SQL users limit is <i>disabled</i> but SQL databases limit not!'));
 		return false;
 	}
 	if (!ispcp_limit_check($_POST['nreseller_max_traffic'], null)) {
