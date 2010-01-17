@@ -49,6 +49,8 @@ $tpl->assign(
 	)
 );
 
+$reseller_id = $_SESSION['user_id'];
+
 /**
  * static page messages.
  */
@@ -91,7 +93,7 @@ if ($rals_max != 0 && $rals_current >= $rals_max) {
 	$_SESSION['almax'] = '_yes_';
 }
 
-if (!check_reseller_domainalias_permissions($_SESSION['user_id']) || 
+if (!check_reseller_domainalias_permissions($reseller_id) || 
 	isset($_SESSION['almax'])) {
 	user_goto('alias.php');
 }
