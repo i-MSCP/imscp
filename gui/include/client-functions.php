@@ -570,6 +570,9 @@ function gen_client_menu(&$tpl, $menu_file) {
 	$tpl->define_dynamic('menu', $menu_file);
 	$tpl->define_dynamic('custom_buttons', 'menu');
 	$tpl->define_dynamic('isactive_update_hp', 'menu');
+	$tpl->define_dynamic('isactive_alias_menu', 'menu');
+	$tpl->define_dynamic('isactive_subdomain_menu', 'menu');
+	$tpl->define_dynamic('isactive_dns_menu', 'menu');
 
 	$tpl->assign(
 		array(
@@ -699,9 +702,10 @@ function gen_client_menu(&$tpl, $menu_file) {
 		$dmn_dns
 	) = get_domain_default_props($sql, $_SESSION['user_id']);
 
-	if ($dmn_mailacc_limit == -1) $tpl->assign('ACTIVE_EMAIL', '');
-
-	if ($dmn_dns != 'yes') $tpl->assign('ISACTIVE_DNS_MENU', '');
+	if ($dmn_mailacc_limit == -1)	$tpl->assign('ACTIVE_EMAIL', '');
+	if ($dmn_als_limit == -1)		$tpl->assign('ISACTIVE_ALIAS_MENU', '');
+	if ($dmn_subd_limit == -1)		$tpl->assign('ISACTIVE_SUBDOMAIN_MENU', '');
+	if ($dmn_dns != 'yes')			$tpl->assign('ISACTIVE_DNS_MENU', '');
 
 	if (Config::get('AWSTATS_ACTIVE') != 'yes') {
 		$tpl->assign('ACTIVE_AWSTATS', '');

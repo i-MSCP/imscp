@@ -311,7 +311,7 @@ function check_user_data(&$tpl) {
 		set_page_message(tr('Incorrect subdomains limit!'));
 	}
 
-	if (!check_reseller_domainalias_permissions($_SESSION['user_id']) == false) {
+	if (!check_reseller_domainalias_permissions($_SESSION['user_id'])) {
 		$hp_als = "-1";
 	} elseif (!ispcp_limit_check($hp_als, -1)) {
 		set_page_message(tr('Incorrect aliases limit!'));
