@@ -429,7 +429,7 @@ sub update_ispcp_cfg {
 # Check for empty values in configuration file
 #
 # Only the configuration settings listed in the
-# exception list may be empty.
+# exception list can be empty.
 #
 # See main::cfg_recovery_process() for more
 # information about the recovery procedure
@@ -515,8 +515,8 @@ sub cfg_recovery_process {
 			chomp($rdata = readline \*STDIN);
 		} while($rdata !~ /^(|y|n)$/i);
 
-		$msg = colored(['bold red'], "\n\tERROR:") .
-			" The program will ends now !\n" .
+		$msg = colored(['bold blue'], "\n\tNOTICE:") .
+			" The program will end now !\n" .
 			"\tPlease, run '$main::cfg{'ROOT_DIR'}/engine/setup/ispcp-setup' instead !\n";
 
 		($rdata !~ /^n$/i) or exit_msg($msg);
@@ -563,9 +563,10 @@ sub cfg_recovery_process {
 			$rs =store_conf(); 
 			return $rs if($rs != 0);
 
-			$msg = colored(['bold red'], "\n\tERROR:") .
+			$msg = colored(['bold red'], "\n\tNOTICE:") .
 				" The setting '$_' can't be handle by the recovery process!\n" .
-				"\tPlease, set it manually and rerun this script.\n";
+				"\tPlease, set it manually and re-run this script.\n" .
+				"\nThe program will end now !\n";
 
 			exit_msg($msg);
 		}
