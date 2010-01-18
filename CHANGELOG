@@ -1,6 +1,13 @@
 ispCP ω 1.0.4 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-01-18 Laurent Declercq
+	- ENGINE:
+		* Fixed possible "Use of uninitialized value..." in store_conf() subroutine when a setting is set to an empty value
+	- SETUP:
+		* Fixed #2140: Validate DEFAULT_ADMIN_ADDRESS before installation/update
+		* Added recovery process for configuration settings in update process
+
 2010-01-18 Sascha Bay
 	- GUI:
 		* Fixed #1717: Domain Alias Screen Needs Cosmetic Changes
