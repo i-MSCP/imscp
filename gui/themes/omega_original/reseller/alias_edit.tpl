@@ -8,6 +8,20 @@
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
+<script type="text/javascript">
+<!--
+function setForwardReadonly(obj){
+	if(obj.value == 1) {
+		document.forms[0].elements['forward'].readOnly = false;
+		document.forms[0].elements['forward_prefix'].disabled = false;
+	} else {
+		document.forms[0].elements['forward'].readOnly = true;
+		document.forms[0].elements['forward'].value = '';
+		document.forms[0].elements['forward_prefix'].disabled = true;
+	}
+}
+//-->
+</script
 </head>
 
 <body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
@@ -18,9 +32,6 @@
       </tr>
     </table>
 	<!-- EDP: logged_from -->
-<!-- ToolTip -->
-<div id="fwd_help" style="background-color:#ffffe0;border: 1px #000000 solid;display:none;margin:5px;padding:5px;font-size:11px;width:200px;position:absolute;">{TR_FWD_HELP}</div>
-<!-- ToolTip end -->
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="height:100%;padding:0;margin:0 auto;">
 <tr>
 <td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" width="195" height="56" border="0" alt="ispCP Logogram" /></td>
@@ -72,16 +83,21 @@
                         <td width="25">&nbsp;</td>
                         <td width="200" class="content2" style="vertical-align:top;">{TR_ENABLE_FWD}</td>
                         <td class="content">
-                            <input type="radio" name="status" {CHECK_EN} value="1" /> {TR_ENABLE}<br />
-                            <input type="radio" name="status" {CHECK_DIS} value="0" /> {TR_DISABLE}
+                            <input type="radio" name="status" {CHECK_EN} value="1" onChange='setForwardReadonly(this);' /> {TR_ENABLE}<br />
+                            <input type="radio" name="status" {CHECK_DIS} value="0" onChange='setForwardReadonly(this);' /> {TR_DISABLE}
                         </td>
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>
-                        <td width="200" class="content2">
-						 {TR_FORWARD} <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onmouseover="showTip('fwd_help', event)" onmouseout="hideTip('fwd_help')" />
+                        <td width="200" class="content2">{TR_FORWARD}</td>
+                        <td class="content">
+							<select name="forward_prefix" style="vertical-align:middle"{DISABLE_FORWARD}>
+								<option value="{TR_PREFIX_HTTP}"{HTTP_YES}>{TR_PREFIX_HTTP}</option>
+								<option value="{TR_PREFIX_HTTPS}"{HTTPS_YES}>{TR_PREFIX_HTTPS}</option>
+								<option value="{TR_PREFIX_FTP}"{FTP_YES}>{TR_PREFIX_FTP}</option>
+							</select>
+							<input name="forward" type="text" class="textinput" id="forward" style="width:170px" value="{FORWARD}"{READONLY_FORWARD} />
 						</td>
-                        <td class="content"><input name="forward" type="text" class="textinput" id="forward" style="width:210px" value="{FORWARD}" /></td>
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>

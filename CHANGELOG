@@ -1,6 +1,11 @@
 ispCP ω 1.0.4 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-01-18 Sascha Bay
+	- GUI:
+		* Fixed #1717: Domain Alias Screen Needs Cosmetic Changes
+		* Partially Fixed #2089: Add Customer with IDN alias domains - (Only first part)
+
 2010-01-17 Sascha Bay
 	- GUI:
 		* Fixed #2170: "Domain expire" value gets lost on failure with Domain name

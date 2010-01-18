@@ -850,7 +850,7 @@ function chk_dname($dname) {
  * @return boolean	false	incorrect syntax
  * 					true	correct syntax
  */
-function chk_forward_url($url) {
+/*function chk_forward_url($url) {
 	$dom_mainpart = '[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]\.';
 	$dom_subpart = '(?:[a-zA-Z0-9][a-zA-Z0-9.-]*\.)*';
 	$dom_tldpart = '[a-zA-Z]{2,5}';
@@ -860,7 +860,7 @@ function chk_forward_url($url) {
 		return false;
 	}
 	return true;
-}
+}*/
 
 /**
  * chk_mountp checks if the mount point is valid
