@@ -1,6 +1,10 @@
 ispCP ω 1.0.4 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-01-18 Benedikt Heintel
+	- ENGINE:
+		* Fixed #2167: Traffic counts wrong
+
 2010-01-18 Sascha Bay
 	- GUI:
 		* Fixed #1717: Domain Alias Screen Needs Cosmetic Changes
