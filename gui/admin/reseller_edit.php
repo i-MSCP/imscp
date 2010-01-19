@@ -347,7 +347,8 @@ function check_reseller_data($reseller_id, $rip_lst, $reseller_ips) {
 function calculate_new_reseller_vals($new_limit, $r, &$rmax, $u, $umax, $unlimited, &$err, $service, $reseller_id) {
 	if ($unlimited == '_off_') {
 		// We have something like that: $u <= ($umax = $r) <= $rmax
-		if ($r != $u && $r > 0) { // ... && $u != unlimited
+		//if ($r != $u && $r > 0) { // ... && $u != unlimited
+		if ($r != $umax && $r > 0) { // We have to check the res current against the sum of all users max - TheCry
 			$err	= tr('Reseller data inconsistency!').' '.$service; //really?
 			$err	.= tr("! Trying to correct!");
 			update_reseller_c_props($reseller_id);
