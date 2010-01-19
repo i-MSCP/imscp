@@ -567,8 +567,8 @@ function get_user_props($user_id) {
 		$where = "`mail_acc` != 'abuse'
 		AND `mail_acc` != 'postmaster'
 		AND `mail_acc` != 'webmaster'
-		AND `domain_id`
-		AND `mail_type` NOT RLIKE '_catchall'";
+		AND `mail_type` NOT RLIKE '_catchall'
+		AND `domain_id`";
 		$mail_current = records_count('mail_users', $where, $user_id);
 	}
 	$mail_max = $data['domain_mailacc_limit'];
