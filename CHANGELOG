@@ -1,6 +1,10 @@
 ispCP ω 1.0.4 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-01-22 Marc Pujol
+	- SETUP:
+		* Fixed small error in the squeeze required packages list
+
 2010-01-18 Benedikt Heintel
 	- ENGINE:
 		* Fixed #2167: Traffic counts wrong
