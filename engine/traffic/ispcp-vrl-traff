@@ -120,6 +120,20 @@ sub gen_log_file {
 		push_el(\@main::el, 'gen_log_file()', "ERROR: Can't open '$src_file' for reading !");
 		return (-1, '');
 	}
+	
+	# Retrieve the current first line
+	my $curLine = <SRC_FILE> || '';
+	$curLine =~ s/\n//;
+	seek(SRC_FILE, 0, SEEK_SET);
+	
+	# If the line is empty, there's no data on the logfile so we can safely skip it this time.
+	# Rotated logfiles will be detected later on, when there's data in the logfile.
+	if (!$curLine) {
+		push_el(\@main::el, 'gen_log_file', "Logfile contains no data, so skip it for now.");
+		close(SRC_FILE);
+		return (0, '_no_');
+	}
+
 	# Open the destination file
 	$rs = open(DST_FILE, '>', $dest_file);
 	if (!defined($rs)) {
@@ -127,11 +141,6 @@ sub gen_log_file {
 		close(SRC_FILE);
 		return (-1, '');
 	}
-	
-	# Retrieve the current first line
-	my $curLine = <SRC_FILE> || '';
-	$curLine =~ s/\n//;
-	seek(SRC_FILE, 0, SEEK_SET);
 
 	# Rotated log detection conditions:
 	#   1. The current logfile is smaller than the previously recorded offset position
@@ -143,6 +152,7 @@ sub gen_log_file {
 			push_el(\@main::el, 'gen_log_file', "Logfile has been rotated, parsing '$old_src_file' from position $recPos.");
 			$rs = open(OLD_SRC_FILE, '<', $old_src_file);
 			if (defined($rs)) {
+				seek(OLD_SRC_FILE, $recPos, SEEK_SET);
 				while(<OLD_SRC_FILE>) {
 					print DST_FILE $_;
 				}
