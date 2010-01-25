@@ -33,368 +33,153 @@ use FindBin;
 use lib "$FindBin::Bin/..";
 require 'ispcp_common_code.pl';
 
+use strict;
+use warnings;
+use File::Basename;
+use Fcntl ":seek";
+
 %main::ftp_traffic = ();
-
 %main::smtp_traffic = ();
-
 %main::po_traffic = ();
-
 %main::sub_id_name= ();
 
-use strict;
-
-use warnings;
-
-use File::Basename;
-
-
 sub zero_traffic_entries {
+	push_el(\@main::el, 'zero_traffic_entries()', 'Starting...');
 
 	my ($key, $value) = (undef, undef);
 
-	push_el(\@main::el, 'zero_traffic_entries()', 'Starting...');
-
 	while (($key, $value) = each %main::domain_name_id) {
-
 		$main::ftp_traffic{$key} = 0;
-
 		$main::smtp_traffic{$key} = 0;
-
 		$main::po_traffic{$key} = 0;
-
 	}
 
 	while (($key, $value) = each %main::als_name_id) {
-
 		$main::ftp_traffic{$key} = 0;
-
 		$main::smtp_traffic{$key} = 0;
-
 		$main::po_traffic{$key} = 0;
-
 	}
 
 	push_el(\@main::el, 'zero_traffic_entries()', 'Ending...');
-
 	return 0;
-
-}
-
-sub diff_command {
-
-	my ($cmd) = @_;
-
-	push_el(\@main::el, 'diff_command()', 'Starting...');
-
-	my $result = system($cmd);
-
-	my $exit_value = $? >> 8;
-
-	my $signal_num = $? & 127;
-
-	my $dumped_core = $? & 128;
-
-	if ($exit_value == 2) {
-
-		push_el(\@main::el, 'diff_command()', "ERORR: '$cmd' returned '$exit_value' !");
-
-		return $exit_value;
-
-	}
-
-	push_el(\@main::el, 'diff_command()', 'Ending...');
-
-	return $exit_value;
-
 }
 
 sub gen_log_file {
-
 	my ($fname, $src_dir, $dest_dir) = @_;
-
-	push_el(\@main::el, 'gen_log_file()', 'Starting...');
+	push_el(\@main::el, 'gen_log_file()', "Starting for logfile $src_dir/$fname");
 
 	my $rs = undef;
-
 	$fname =~ s/\/*//i;
-
 	my $src_file = "$src_dir/$fname";
-
 	my $dest_file = "$dest_dir/".basename($fname);
 
-	my $dest_file_prev = "$dest_dir/".basename($fname).".prev";
-
-	my $log_file = $dest_file;
-
 	if(! -e $src_file){
-
-		push_el(\@main::el, 'gen_log_file()', "WARNING: File '$src_file' do not exists !");
-
+		push_el(\@main::el, 'gen_log_file()', "WARNING: File '$src_file' does not exist !");
 		return (0, '_no_');
-
 	}
 
-	$rs = sys_command("$main::cfg{'CMD_CP'} $src_file $dest_file");
-
-	return ($rs, '') if ($rs != 0);
-
-	#Log Enhancement begin
-
+	# Log enhancement: use a small (file-based) database storing the preivous offset and first line
+	# of each processed logfile.
 	my $logdb_file = "$dest_dir/logdb";
-
 	my %logdb;
+	my ($recPos, $recLine) = (0, '');
 
-	my $pos = 0;
-
-	#Creating the logdb file where the log position for each log reside if not already created
-
+	# Creating the logdb file where the log position for each log reside if not already created
 	if (!-e "$logdb_file") {
-
 		$rs = sys_command("$main::cfg{'CMD_TOUCH'} $logdb_file");
-
-		return ($rs, '') if ($rs != 0);
-
+		if ($rs != 0) {
+			push_el(\@main::el, 'gen_log_file()', "ERROR: Unable to create the lobdb file '$logdb_file' !");
+			return ($rs, '');
+		}
 	}
 
+	# @TODO:
+	# This is unefficient because gen_log_file is called once for every log file to be processed. Therefore, the
+	# *whole* logdb file is read at each call, causing a lot of re-readings. Thus, logdb reading should be done
+	# once at the beggining of this script and, similarly, logdb writting should be done just once at the end.
 	push_el(\@main::el, 'gen_log_file()', "Taking the domain log positions from '$logdb_file'...");
-
-	$rs = open (LOGDB,'+<',"$logdb_file");
-
+	$rs = open (LOGDB,'<',"$logdb_file");
 	if (!defined($rs)) {
-
 		push_el(\@main::el, 'gen_log_file()', "ERROR: Can't open '$logdb_file' for reading !");
-
 		return (-1, '');
-
 	}
-
 	while (<LOGDB>) {
-
-		my ($logdb_key,$logdb_val) = split(' ',$_);
-
+		chomp;
+		my ($logdb_key,$logdb_val) = split(' ', $_, 2);
 		$logdb{$logdb_key} = $logdb_val;
-
+	}
+	close(LOGDB);
+ 	if (exists($logdb{$fname})) {
+		($recPos, $recLine) = split(' ', $logdb{$fname}, 2);
+		$recLine = '' if (!defined($recLine)) ;
 	}
 
-	if (-e $dest_file_prev) {
+	# Open the relevant files
+	$rs = open(SRC_FILE, '<', $src_file);
+	if (!defined($rs)) {
+		push_el(\@main::el, 'gen_log_file()', "ERROR: Can't open '$src_file' for reading !");
+		return (-1, '');
+	}
+	# Open the destination file
+	$rs = open(DST_FILE, '>', $dest_file);
+	if (!defined($rs)) {
+		push_el(\@main::el, 'gen_log_file()', "ERROR: Can't open '$dest_file' for writing !");
+		close(SRC_FILE);
+		return (-1, '');
+	}
+	
+	# Retrieve the current first line
+	my $curLine = <SRC_FILE> || '';
+	$curLine =~ s/\n//;
+	seek(SRC_FILE, 0, SEEK_SET);
 
-		#There is almost no chance two log files to have the same size and not to be identical. However if you find your logs too precious, keep the byte by byte cmp ;)
-
-		if (-s $dest_file == -s $dest_file_prev) {
-
-			$rs = del_file($dest_file);
-
-			push_el(\@main::el, 'gen_log_file()', "No changes in $dest_file , msg: Ending...");
-
-			return ($rs, '') if ($rs != 0);
-
-			return (0, '_no_');
-
-		}
-
-		$log_file = $dest_file.".diff";
-
-		$rs = open(DESTLOG,'<',$dest_file);
-
-		if (!defined($rs)) {
-
-			push_el(\@main::el, 'gen_log_file()', "ERROR: Can't open '$dest_file' for reading !");
-
-			return (-1, '');
-
-		}
-
-		$rs = open(LOGFILE, '>',$log_file);
-
-		if (!defined($rs)) {
-
-			push_el(\@main::el, 'gen_log_file()', "ERROR: Can't open '$log_file' for writing !");
-
-			return (-1, '');
-
-		}
-
-		#We check if we have last saved position for this domain log
-
-		if (exists($logdb{$fname})) {
-
-			$pos = $logdb{$fname};
-
-			#The log is not rotated so we just copy the remaining entries from our last saved position to the end
-
-			if (-s $dest_file > -s $dest_file_prev) {
-
-				push_el(\@main::el, 'gen_log_file'," Parsing for $dest_file begins at position $pos.");
-
-				seek(DESTLOG,$pos,0);
-
-				while (<DESTLOG>) {
-
-					print LOGFILE $_;
-
-					$pos = tell(DESTLOG) if (eof(DESTLOG));
-
+	# Rotated log detection conditions:
+	#   1. The current logfile is smaller than the previously recorded offset position
+	#   2. The first line of the current log is different from the previously recorded first line
+	# If one of these conditions is fullfilled, try to read from the rotated logfile first.
+	if (-s $src_file < $recPos || $curLine ne $recLine) {
+		my $old_src_file = "$src_file.1";
+		if (-e $old_src_file) {
+			push_el(\@main::el, 'gen_log_file', "Logfile has been rotated, parsing '$old_src_file' from position $recPos.");
+			$rs = open(OLD_SRC_FILE, '<', $old_src_file);
+			if (defined($rs)) {
+				while(<OLD_SRC_FILE>) {
+					print DST_FILE $_;
 				}
-
-				$logdb{$fname} = $pos;
-
+				close(OLD_SRC_FILE);
+			} else {
+				push_el(\@main::el, 'gen_log_file',"WARNING: Can't open '$old_src_file' for reading !");
 			}
-
-			#The log was rotated so we need to use the old log and copy the remaining entries and then continue from the new one.
-
-			else {
-
-				my $old_src_file = "$src_file.1";
-
-				my $old_dest_file = "$dest_file.1";
-
-				if (-e $old_src_file) {
-
-					push_el(\@main::el, 'gen_log_file',"$dest_file was rotated. Parsing begins at position $pos in  $old_src_file");
-
-					$rs = sys_command("$main::cfg{'CMD_CP'} $old_src_file $old_dest_file");
-
-					return ($rs, '') if ($rs != 0);
-
-					$rs = open (OLDLOG,'<',$old_dest_file);
-
-					if (!defined($rs)) {
-
-						push_el(\@main::el, 'gen_log_file()', "ERROR: Can't open '$old_dest_file' for reading !");
-
-						return (-1, '');
-
-					}
-
-					seek(OLDLOG,$pos,0);
-
-					while (<OLDLOG>) {
-
-						print LOGFILE $_;
-
-					}
-
-					close OLDLOG;
-
-					$rs = del_file($old_dest_file);
-
-					return ($rs, '') if ($rs != 0);
-
-				}
-
-				else {
-
-					push_el(\@main::el, 'gen_log_file',"$dest_file was rotated but no $old_src_file found!");
-
-				}
-
-				while (<DESTLOG>) {
-
-					print LOGFILE $_;
-
-					$pos = tell(DESTLOG) if (eof(DESTLOG));
-
-				}
-
-				$logdb{$fname} = $pos;
-			}
-
+		} else {
+			push_el(\@main::el, 'gen_log_file',"Logfile has been rotated, but '$old_src_file' doesn't exist.");
 		}
-
-		#We have no entry for this domain log. Lets create one!
-		else {
-
-			if (-s $dest_file > -s $dest_file_prev) {
-
-
-				$rs = open(DESTLOGPREV,'<',$dest_file_prev);
-
-				if (!defined($rs)) {
-
-					push_el(\@main::el, 'gen_log_file()', "ERROR: Can't open '$dest_file' for reading !");
-
-					return (-1, '');
-
-				}
-
-				push_el(\@main::el, 'gen_log_file',"No log db entry for $dest_file. Checking last position in $dest_file_prev.");
-
-				seek(DESTLOGPREV,0,2);
-
-				$pos = tell(DESTLOGPREV);
-
-				close(DESTLOGPREV);
-
-			}
-
-			seek(DESTLOG,$pos,0);
-
-			while (<DESTLOG>) {
-
-				print LOGFILE $_;
-
-				$pos = tell(DESTLOG) if (eof(DESTLOG));
-
-			}
-
-			$logdb{$fname} = $pos;
-
-		}
-
-		close DESTLOG;
-
-		close LOGFILE;
-
-		$rs = sys_command("$main::cfg{'CMD_MV'} $dest_file $dest_file_prev");
-
-		return ($rs, '') if ($rs != 0);
-
-	} else {
-
-		$rs = sys_command("$main::cfg{'CMD_CP'} $dest_file $dest_file_prev");
-
-		return ($rs, '') if ($rs != 0);
-
-		$rs = open(DESTLOG,'<',$dest_file);
-
-		if (!defined($rs)) {
-
-			push_el(\@main::el, 'gen_log_file()', "ERROR: Can't open '$dest_file' for reading !");
-
-			return (-1, '');
-
-		}
-
-		push_el(\@main::el, 'gen_log_file',"We have no .prev file. Parsing the whole '$dest_file'.");
-
-		seek(DESTLOG,0,2);
-
-		$pos = tell(DESTLOG);
-
-
-		$logdb{$fname} = $pos;
-
+		$recPos = 0;
 	}
 
-	#Let's write the new position back to the log db
-
+	# Read the lines from the last position to the end
+	seek(SRC_FILE, $recPos, SEEK_SET);
+	while(<SRC_FILE>) {
+		print DST_FILE $_;
+	}
+	$recPos = tell(SRC_FILE);
+	close(SRC_FILE);
+	close(DST_FILE);
+ 
+	# Let's write the new position back to the log db
+	$logdb{$fname} = "$recPos $curLine";
 	push_el(\@main::el, 'gen_log_file()', "Saving new domain log positions in '$logdb_file'...");
-
-	seek(LOGDB,0,0);
-
-	truncate(LOGDB,0);
-
-	foreach my $logdb_key (keys %logdb) {
-
-		print LOGDB "$logdb_key $logdb{$logdb_key}\n";
-
+	$rs = open (LOGDB,'>',"$logdb_file");
+	if (!defined($rs)) {
+		push_el(\@main::el, 'gen_log_file()', "ERROR: Can't open '$logdb_file' for writing !");
+		return (-1, '');
 	}
-
+	foreach my $logdb_key (keys %logdb) {
+		print LOGDB "$logdb_key $logdb{$logdb_key}\n";
+	}
 	close LOGDB;
 
 	push_el(\@main::el, 'gen_log_file()', 'Ending...');
-
-	return (0, $log_file);
+	return (0, $dest_file);
 }
 
 sub collect_http_traffic_from_log {
