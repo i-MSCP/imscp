@@ -37,6 +37,7 @@ $tpl->define_dynamic('purchase_list', 'page');
 $tpl->define_dynamic('purchase_message', 'page');
 $tpl->define_dynamic('purchase_header', 'page');
 $tpl->define_dynamic('purchase_footer', 'page');
+$tpl->define_dynamic('isenabled', 'page');
 
 /*
  * functions start
@@ -138,6 +139,10 @@ function gen_plan_details(&$tpl, &$sql, $user_id, $plan_id) {
 				'CUSTOM_ORDERPANEL_ID'	=> $coid
 			)
 		);
+		
+		if ($rs->fields['status'] != 1) {
+			$tpl->assign('ISENABLED', '');
+		}
 	}
 }
 
