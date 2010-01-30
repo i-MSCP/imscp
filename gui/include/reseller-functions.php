@@ -1726,9 +1726,10 @@ function client_mail_add_default_accounts($dmn_id, $user_email, $dmn_part, $dmn_
 
 /**
  * Get count from table by given domain_id's
+ * 
  * @param $tablename string database table name
  * @param $ua array domain_ids
- * @return integer count
+ * @return int count
  */
 function get_reseller_detail_count($tablename, $ua) {
 	global $sql;
@@ -1760,10 +1761,12 @@ function get_reseller_detail_count($tablename, $ua) {
 
 /**
  * Recalculate current_ properties of reseller
- * @param $reseller_id integer ID of the reseller
+ *
+ * @param int $reseller_id unique reseller identifiant
  * @return array list of properties
  */
 function recalc_reseller_c_props($reseller_id) {
+
 	global $sql;
  
 	// current_dmn_cnt = domain
@@ -1800,6 +1803,7 @@ function recalc_reseller_c_props($reseller_id) {
 	$res = exec_query($sql, $query, array($reseller_id, $delstatus));
  
 	$current_dmn_cnt = $res -> fields['crn_domains'];
+
 	if ($current_dmn_cnt > 0) {
 		$current_sub_cnt = $res -> fields['current_sub_cnt'];
 		$current_als_cnt = $res -> fields['current_als_cnt'];
@@ -1820,14 +1824,24 @@ function recalc_reseller_c_props($reseller_id) {
 		$current_traff_amnt = 0;
 	}
  
-	return array($current_dmn_cnt, $current_sub_cnt, $current_als_cnt, $current_mail_cnt,
-			$current_ftp_cnt, $current_sql_db_cnt, $current_sql_user_cnt,
-			$current_disk_amnt, $current_traff_amnt);
+	return array(
+		$current_dmn_cnt,
+		$current_sub_cnt,
+		$current_als_cnt,
+		$current_mail_cnt,
+		$current_ftp_cnt,
+		$current_sql_db_cnt,
+		$current_sql_user_cnt,
+		$current_disk_amnt,
+		$current_traff_amnt
+	);
 }
 
 /**
  * Recalculate current_ properties of reseller
- * @param $reseller_id integer ID of the reseller
+ * 
+ * @param int $reseller_id unique reseller identifiant
+ * @return void
  */
 function update_reseller_c_props($reseller_id) {
 	global $sql;
@@ -1859,10 +1873,12 @@ function update_reseller_c_props($reseller_id) {
 /**
  * Get the reseller id of a domain
  * moved from admin/domain_edit.php to reseller-functions.php
- * @param $domain_id integer ID of domain
- * @return integer ID of reseller or 0 in case of error
+ * 
+ * @param int $domain_id unique domain identifiant
+ * @return int unique reseller identifiant or 0 in on error
  */
 function get_reseller_id($domain_id) {
+
 	$sql = Database::getInstance();
 
 	$query = "
@@ -1889,10 +1905,11 @@ function get_reseller_id($domain_id) {
 /**
  * Checks if a reseller has the right to add domain aliases
  * 
- * @param int $reseller_id
+ * @param int $reseller_id unique reseller identifiant
  * @return boolean domain alias permissions  
  */
 function check_reseller_domainalias_permissions($reseller_id) {
+
 	$sql = Database::getInstance();
 	
 	list($rdmn_current, $rdmn_max,
