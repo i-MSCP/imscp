@@ -2803,7 +2803,18 @@ sub alssub_mngr_engine {
 
 		($rs, $rdata) = doSQL($sql);
 		return $rs if ($rs != 0);
-
+	} elsif ($sub_status eq 'dnschange') {    
+		$rs = alssub_change_named_data($entry);
+		$timestamp = time();
+		if ($rs == 0) {
+			$sql = "update subdomain_alias set subdomain_alias_status='ok' where subdomain_alias_id = $sub_id;";
+		} else {
+			my ($sub_name, $msg) = split(/$main::el_sep/, pop_el(\@main::el));
+			$msg =~ s/\'/\\\'/g;
+			$sql = "update subdomain_alias set subdomain_alias_status='$sub_name | $msg' where subdomain_alias_id = $sub_id;";
+		}
+		($rs, $rdata) = doSQL($sql);
+		return $rs if ($rs != 0);
 	} elsif ($sub_status eq 'delete') {
 
 		# Removing domains;

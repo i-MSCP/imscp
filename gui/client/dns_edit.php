@@ -590,7 +590,7 @@ function check_fwd_data(&$tpl, $edit_id) {
  				WHERE
     					`domain`.`domain_id` = ?
    			";
-			exec_query($sql, $query, array(Config::get('ITEM_CHANGE_STATUS'), $dmn_id));
+			exec_query($sql, $query, array(Config::get('ITEM_DNSCHANGE_STATUS'), $dmn_id));
 			$query = "
 				UPDATE
 					`subdomain`
@@ -599,7 +599,7 @@ function check_fwd_data(&$tpl, $edit_id) {
     			WHERE
     				`subdomain`.`domain_id` = ?
 				";
-			exec_query($sql, $query, array(Config::get('ITEM_CHANGE_STATUS'), $dmn_id));
+			exec_query($sql, $query, array(Config::get('ITEM_DNSCHANGE_STATUS'), $dmn_id));
 		} else {
 			$query = "
  				UPDATE

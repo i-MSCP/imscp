@@ -4862,6 +4862,19 @@ sub dmn_mngr_engine {
 		}
 		($rs, $rdata) = doSQL($sql);
 		return $rs if ($rs != 0);
+	} elsif ($dmn_status eq 'dnschange'){
+		#modifiying DNS entry		
+		$rs = dmn_change_named_data($entry);
+		$timestamp = time();
+		if ($rs == 0) {
+			$sql = "update domain set domain_status='ok' where domain_id = $dmn_id;";
+		} else {
+			($sub_name, $msg) = split(/$main::el_sep/, pop_el(\@main::el));
+			$msg =~ s/\'/\\\'/g;
+			$sql = "update domain set domain_status='$sub_name | $msg' where domain_id = $dmn_id;";
+		}
+		($rs, $rdata) = doSQL($sql);
+		return $rs if ($rs != 0);
 	} elsif ($dmn_status eq 'delete') {
 		# Removing domains;
 		$rs = dmn_del_data($entry);
