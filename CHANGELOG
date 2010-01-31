@@ -1,6 +1,10 @@
 ispCP ω 1.0.4 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-01-31 Benedikt Heintel
+	- GUI:
+		* Fixed #2191: TLD .me not accepted
+
 2010-01-31 Sascha Bay
 	- GUI:
 		* Fixed #2152: Wrong limited count in reseller gui
