@@ -4,6 +4,7 @@ ispCP ω 1.0.4 Changelog
 2010-01-31 Sascha Bay
 	- GUI:
 		* Fixed #2152: Wrong limited count in reseller gui
+		* Fixed #2140: Untranslated message {DISK_USAGE} of {DISK_LIMIT} MB
 
 2010-01-27 Marc Pujol
 	- GUI:
