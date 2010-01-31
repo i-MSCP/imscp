@@ -2,7 +2,10 @@ ispCP ω 1.0.4 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2010-01-31 Benedikt Heintel
+	- ENGINE:
+		* Fixed #2086: DNS not working properly
 	- GUI:
+		* Fixed #718: little design error
 		* Fixed #2191: TLD .me not accepted
 
 2010-01-31 Sascha Bay
