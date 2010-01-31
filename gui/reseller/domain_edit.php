@@ -4,7 +4,7 @@
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
+ * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
  *
@@ -554,7 +554,18 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 } // End of check_user_data()
 
 function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, &$err, $obj) {
-	if ($rmax == 0 && $umax == -1) {
+	if ($rmax == -1 && $umax >= 0) {
+		if ($u > 0) {
+			$err .= tr('The <em>%s</em> service cannot be disabled!', $obj) . tr('There are <em>%s</em> records on system!', $obj);
+			return;
+		} else if ($data != -1){
+			$err .= tr('The <em>%s</em> have to be disabled!', $obj) . tr('The admin has <em>%s</em> disabled on this system!', $obj);
+			return;
+		} else {
+			$umax = $data;
+		}
+		return;
+	} else if ($rmax == 0 && $umax == -1) {
 		if ($data == -1) {
 			return;
 		} else if ($data == 0) {
