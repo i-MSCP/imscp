@@ -537,9 +537,9 @@ function _validates_tld($tld) {
 		// FALSE if the TLD syntax is wrong
 		$pattern =
 			'@^(?:
-				(?:a[cdefgilmnoqrstuwxz]|aero|arpa|asia)|
-				(?:b[abdefghijmnorstvwyz]|biz)|
-				(?:c[acdfghiklmnorsuvxyz]|cat|com|coop)|
+				(?:a[cdefgilmnoqrstuwxz]|aero|asia)|
+				(?:b[abdefghijlmnorstvwyz]|biz)|
+				(?:c[acdfghiklmnoruvxyz]|cat|com|coop)|
 				d[ejkmoz]|
 				(?:e[ceghrstu]|edu)|
 				f[ijkmor]|
@@ -549,12 +549,12 @@ function _validates_tld($tld) {
 				(?:j[emop]|jobs)|
 				k[eghimnprwyz]|
 				l[abcikrstuvy]|
-				(?:m[acdghklmnopqrstuvwxyz]|mil|mobi|museum)|
+				(?:m[acdefghklmnopqrstuvwxyz]|mil|mobi|museum)|
 				(?:n[acefgilopruz]|name|net)|
 				(?:om|org)|
 				(?:p[aefghklmnrstwy]|pro)|
 				qa|
-				r[eouw]|
+				r[eosuw]|
 				s[abcdeghijklmnortuvyz]|
 				(?:t[cdfghjklmnoprtvwz]|tel|travel)|
 				u[agkmsyz]|
