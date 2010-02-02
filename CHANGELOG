@@ -1,6 +1,10 @@
 ispCP ω 1.0.4 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-02-02 Benedikt Heintel
+	- GUI:
+		* Fixed #2194: Little design error (part 2)
+
 2010-01-31 Benedikt Heintel
 	- ENGINE:
 		* Fixed #2086: DNS not working properly
