@@ -1,6 +1,10 @@
 ispCP ω 1.0.4 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-02-06 Benedikt Heintel
+	- CONFIGS:
+		* Fixed #2197: ispcp-vrl-traff-correction should be disabled
+
 2010-02-02 Benedikt Heintel
 	- GUI:
 		* Fixed #2194: Little design error (part 2)
