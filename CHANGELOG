@@ -3,6 +3,7 @@ ispCP ω 1.0.4 Changelog
 
 2010-02-06 Benedikt Heintel
 	- CONFIGS:
+		* Fixed #2189: Small patch for opensuse
 		* Fixed #2197: ispcp-vrl-traff-correction should be disabled
 	- GUI:
 		* Fixed #2196: Little design error (part 3)
