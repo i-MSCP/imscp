@@ -1,3 +1,4 @@
+// see ispcp_full.js for full JS code & license
 function sbmt(form,uaction){form.uaction.value=uaction;form.submit();return false;}
 function sbmt_details(form,uaction){form.details.value=uaction;form.submit();return false;}
 function MM_preloadImages(){var d=document;if(d.images){if(!d.MM_p){d.MM_p=[];}

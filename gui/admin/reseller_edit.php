@@ -43,7 +43,7 @@ require '../include/ispcp-lib.php';
  * Return an array of cleaned input data. For performance reasons, the cleanup
  * is performed only once.
  *
- * @author Laurent Declercq <laurent.declercq@ispcp.net>
+ * @author Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
  * @since rxxxx
  * @return array cleaned data
  */
@@ -348,7 +348,7 @@ function check_data(&$errFields) {
  * @param int $new_limit new limit
  * @param int $assigned_by_reseller
  * @param int $used_by_customers
- * @param string unlimited: set to '_on_' if unlimited, '_off' otherwise
+ * @param string unlimited: set to '_on_' if unlimited, '_off_' otherwise
  * @param string service name, like domains subdomains...
  * @return boolean TRUE if no error was occured, FALSE otherwise
  */
@@ -479,7 +479,6 @@ function get_reseller_prop($reseller_id) {
  * @param object &$tpl reference to the temmplate instance
  * @param string reseller IP addresses list
  * @return string reseller list of assigned Ips
- * @Todo Set the checkbox to readonly for used IPs
  */
 function get_servers_ips(&$tpl, $rip_lst) {
 
@@ -705,8 +704,8 @@ function update_reseller() {
  *
  * For performance reason, the data are cached.
  *
- * Note: The templjate instance must always be passed as
- * parameter of this function during the first call in the script
+ * Note: The template instance must always be passed as
+ * parameter of this function during the first call.
  *
  * @author Laurent Declercq (Nuxwin) <laurent.declercq@ispcp.net>
  * @since r2561
@@ -769,12 +768,12 @@ function &get_data(&$tpl = false) {
  * Highlighting erroneous input fields with a appropriate color
  *
  * @author Laurent Declercq (Nuxwin) <laurent.declercq@ispcp.net>
- * @Since rxxxx
+ * @Since r2587
  * @param object &$tpl reference to the template instance
  * @param array &$errFields reference to the array of error fields indicators
  * @return void
  */
-function fields_highlighting(&$tpl, $errFields) {
+function fields_highlighting(&$tpl, &$errFields) {
 
 	$fields = array(
 		'PWD_ERR', 'PWDR_ERR', 'EMAIL_ERR', 'DMN_ERR', 'SUB_ERR', 'ALS_ERR',
@@ -801,7 +800,6 @@ $errFields = array();
  * Script dispatcher - begin
  *
  * Dispatch the request according the state of $_GET || $_POST
- * @todo use only $_POST
  */
 
 if(isset($_REQUEST['edit_id']) && !isset($_POST['Cancel'])) {
@@ -819,7 +817,6 @@ if(isset($_REQUEST['edit_id']) && !isset($_POST['Cancel'])) {
 			// backward compatibility for HTTP/1.0
 			header('Pragma: no-cache');
 			header("HTTP/1.0 200 Ok");
-			/*print_r($_GET);*/
 			echo passgen();
 			exit;
 	}
@@ -939,9 +936,6 @@ if( $rdata['support_system'] == 'yes') {
 
 $tpl->assign(
 	array(
-		#'TR_EMPTY_OR_WORNG_DATA' => tr('Empty data or wrong field!'),
-		#'TR_PASSWORD_NOT_MATCH' => tr("Passwords don't match!"),
-
 		'TR_EDIT_RESELLER' => tr('Edit reseller'),
 		'TR_CORE_DATA' => tr('Core data'),
 		'TR_USERNAME' => tr('Username'),
