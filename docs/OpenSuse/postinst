@@ -180,6 +180,12 @@ case "$1" in
 				echo "  Disable unix socket (we use TCP connection instead)"
 				$CMD_SED -i 's/POSTGREY_CONN_OPTIONS="--unix=\/var\/spool\/postfix\/postgrey\/socket"/#POSTGREY_CONN_OPTIONS="--unix=\/var\/spool\/postfix\/postgrey\/socket"/' /etc/sysconfig/postgrey
 			fi
+			
+			# 
+			# rkhunter 
+			# 
+			echo " Building rkhunter database" 
+			/usr/bin/rkhunter --propupd &
 
 			#
 			# Courier-Authentication Configuration

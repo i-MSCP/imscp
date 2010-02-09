@@ -1,6 +1,18 @@
 ispCP ω 1.0.4 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-02-06 Benedikt Heintel
+	- CONFIGS:
+		* Fixed #2189: Small patch for opensuse
+		* Fixed #2197: ispcp-vrl-traff-correction should be disabled
+	- GUI:
+		* Fixed #2196: Little design error (part 3)
+		* Fixed #2200: Forward mail address not shown in log message
+
+2010-02-02 Benedikt Heintel
+	- GUI:
+		* Fixed #2194: Little design error (part 2)
+
 2010-01-31 Benedikt Heintel
 	- ENGINE:
 		* Fixed #2086: DNS not working properly
