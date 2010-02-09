@@ -1,12 +1,66 @@
 ispCP ω 1.0.4 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-2010-01-18 Laurent Declercq
+2010-02-09 Laurent Declercq
+- GUI:
+	* Ehancement:
+		- Added Jquery v1.4.1 library (both format: full and minify  - Only minify is loaded by client browser's)
+		- Aded Jquery ispCPtooltips plugin (both format: full and minify  - Only minify is loaded by client browser's)
+		- Added a new javascript function in the ispcp js files to handle Jquery XMLHttpRequest errors
+	* admin/reseller_edit.php and related template:
+		* Fixed #2188: Reseller update properties - Inconsistency between...
+		* Re-factoring the code for better lisibility
+		* Removed unnecessary checks
+		* Added pre-check on the first load to prevent inconstancy data during update process
+		* Fixed vertical alignment for password generation button
+		* Ehancement:
+			- Added input fields hightlighting on error(s) (Todo, switch to JQuery form validation for better performances)
+			- Added cached input values on error
+			- Added 'Cancel' button to abort the update process
+			- Added JavaScript events for the rollover effect of several input elements (submit, button)
+			- The password generation is performed via XMLHttpRequest now
+			- When the password is generated, the related input fields are now set to readonly to prevent inconstancy data
+			- Added button to reset the password input fields
+
+2010-02-06 Benedikt Heintel
+	- CONFIGS:
+		* Fixed #2189: Small patch for opensuse
+		* Fixed #2197: ispcp-vrl-traff-correction should be disabled
+	- GUI:
+		* Fixed #2196: Little design error (part 3)
+		* Fixed #2200: Forward mail address not shown in log message
+
+2010-02-02 Benedikt Heintel
+	- GUI:
+		* Fixed #2194: Little design error (part 2)
+
+2010-01-31 Benedikt Heintel
 	- ENGINE:
-		* Fixed possible "Use of uninitialized value..." in store_conf() subroutine when a setting is set to an empty value
+		* Fixed #2086: DNS not working properly
+	- GUI:
+		* Fixed #718: little design error
+		* Fixed #2191: TLD .me not accepted
+
+2010-01-31 Sascha Bay
+	- GUI:
+		* Fixed #2152: Wrong limited count in reseller gui
+		* Fixed #2179: Untranslated message {DISK_USAGE} of {DISK_LIMIT} MB
+
+2010-01-27 Marc Pujol
+	- GUI:
+		* Fixed #2183: Hosting plans not available for purchasing error
+
+2010-01-25 Marc Pujol
+	- ENGINE:
+		* Fixed #2180: /var/log/ispcp/logdb doesn't get properly updated and is causing wrong statistics
+
+2010-01-22 Marc Pujol
 	- SETUP:
-		* Fixed #2140: Validate DEFAULT_ADMIN_ADDRESS before installation/update
-		* Added recovery process for configuration settings in update process
+		* Fixed small error in the squeeze required packages list
+
+2010-01-18 Benedikt Heintel
+	- ENGINE:
+		* Fixed #2167: Traffic counts wrong
 
 2010-01-18 Sascha Bay
 	- GUI:

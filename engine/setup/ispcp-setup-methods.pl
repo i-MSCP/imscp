@@ -3032,7 +3032,7 @@ sub check_sql_connection {
 	# First, we reset db connection
 	$main::db = undef;
 
-	# If we as receive username and password, we redefine the dsn
+	# If we received username and password, we redefine the dsn
 	if(defined $user && defined $password ) {
 		@main::db_connect = (
 			"DBI:mysql:$main::db_name:$main::db_host",

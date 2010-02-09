@@ -4,7 +4,7 @@
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
+ * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
  *
@@ -1007,8 +1007,8 @@ function generate_user_props($user_id) {
 		$where = "`mail_acc` != 'abuse'
 		AND `mail_acc` != 'postmaster'
 		AND `mail_acc` != 'webmaster'
-		AND `domain_id`
-		AND `mail_type` NOT RLIKE '_catchall'";
+		AND `mail_type` NOT RLIKE '_catchall'
+		AND `domain_id`";
 		$mail_current = records_count( 'mail_users', $where, $user_id);
 	}
 	$mail_max = $rs->fields['domain_mailacc_limit'];

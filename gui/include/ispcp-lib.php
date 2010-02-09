@@ -90,6 +90,7 @@ Config::set('ITEM_RESTORE_STATUS', 'restore');
 Config::set('ITEM_TOENABLE_STATUS', 'toenable');
 Config::set('ITEM_TODISABLED_STATUS', 'todisable');
 Config::set('ITEM_ORDERED_STATUS', 'ordered');
+Config::set('ITEM_DNSCHANGE_STATUS', 'dnschange');
 // SQL variables
 Config::set('MAX_SQL_DATABASE_LENGTH', 64);
 Config::set('MAX_SQL_USER_LENGTH', 16);

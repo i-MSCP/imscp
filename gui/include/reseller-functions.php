@@ -4,7 +4,7 @@
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
+ * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
  *
@@ -567,8 +567,8 @@ function get_user_props($user_id) {
 		$where = "`mail_acc` != 'abuse'
 		AND `mail_acc` != 'postmaster'
 		AND `mail_acc` != 'webmaster'
-		AND `domain_id`
-		AND `mail_type` NOT RLIKE '_catchall'";
+		AND `mail_type` NOT RLIKE '_catchall'
+		AND `domain_id`";
 		$mail_current = records_count('mail_users', $where, $user_id);
 	}
 	$mail_max = $data['domain_mailacc_limit'];
@@ -1726,9 +1726,10 @@ function client_mail_add_default_accounts($dmn_id, $user_email, $dmn_part, $dmn_
 
 /**
  * Get count from table by given domain_id's
+ * 
  * @param $tablename string database table name
  * @param $ua array domain_ids
- * @return integer count
+ * @return int count
  */
 function get_reseller_detail_count($tablename, $ua) {
 	global $sql;
@@ -1760,12 +1761,14 @@ function get_reseller_detail_count($tablename, $ua) {
 
 /**
  * Recalculate current_ properties of reseller
- * @param $reseller_id integer ID of the reseller
+ *
+ * @param int $reseller_id unique reseller identifiant
  * @return array list of properties
  */
 function recalc_reseller_c_props($reseller_id) {
-	global $sql;
 
+	global $sql;
+ 
 	// current_dmn_cnt = domain
 	// current_sub_cnt = subdomain
 	// current_als_cnt = domain_aliasses
@@ -1773,14 +1776,23 @@ function recalc_reseller_c_props($reseller_id) {
 	// current_ftp_cnt = ftp_users
 	// current_sql_db_cnt = sql_database
 	// current_sql_user_cnt = sql_user
-
+	// current_disk_amnt = disk_space
+	// current_traff_amnt = traffic
+ 
 	$delstatus = Config::get('ITEM_DELETE_STATUS');
-
+ 
 	// Get all users of reseller:
 	$query = "
 		SELECT
-			`domain_id`,
-			`domain_uid`
+			COUNT(`domain_id`) AS crn_domains,
+			IFNULL(SUM(`domain_subd_limit`), 0) AS current_sub_cnt,
+			IFNULL(SUM(`domain_alias_limit`), 0) AS current_als_cnt,
+			IFNULL(SUM(`domain_mailacc_limit`), 0) AS current_mail_cnt,
+			IFNULL(SUM(`domain_ftpacc_limit`), 0) AS current_ftp_cnt,
+			IFNULL(SUM(`domain_sqld_limit`), 0) AS current_sql_db_cnt,
+			IFNULL(SUM(`domain_sqlu_limit`), 0) AS current_sql_user_cnt,
+			IFNULL(SUM(`domain_disk_limit`), 0) AS current_disk_amnt,
+			IFNULL(SUM(`domain_traffic_limit`), 0) AS current_traff_amnt
 		FROM
 			`domain`
 		WHERE
@@ -1789,46 +1801,51 @@ function recalc_reseller_c_props($reseller_id) {
 			`domain_status` != ?
 	";
 	$res = exec_query($sql, $query, array($reseller_id, $delstatus));
-	$user_array = $systemuser_array = array();
-	while ($data = $res->FetchRow()) {
-		$user_array[] = $data['domain_id'];
-		$systemuser_array[] = $data['domain_uid'];
-	}
-	$current_dmn_cnt = count($user_array);
+ 
+	$current_dmn_cnt = $res -> fields['crn_domains'];
+
 	if ($current_dmn_cnt > 0) {
-		$current_sub_cnt = get_reseller_detail_count('subdomain', $user_array);
-		$current_als_cnt = get_reseller_detail_count('domain_aliasses', $user_array);
-		$current_mail_cnt = get_reseller_detail_count('mail_users', $user_array);
-		$current_ftp_cnt = get_reseller_detail_count('ftp_users', $systemuser_array);
-		$current_sql_db_cnt = get_reseller_detail_count('sql_database', $user_array);
-
-		$query = "SELECT COUNT(*) AS cnt FROM `sql_user`";
-		$query .= " WHERE `sqld_id` IN (";
-		$query .= "SELECT sqld_id FROM sql_database";
-		$query .= " WHERE `domain_id` IN (".implode(',', $user_array)."))";
-		$res = exec_query($sql, $query);
-		$current_sql_user_cnt = $res->fields['cnt'];
+		$current_sub_cnt = $res -> fields['current_sub_cnt'];
+		$current_als_cnt = $res -> fields['current_als_cnt'];
+		$current_mail_cnt = $res -> fields['current_mail_cnt'];
+		$current_ftp_cnt = $res -> fields['current_ftp_cnt'];
+		$current_sql_db_cnt = $res->fields['current_sql_db_cnt'];
+		$current_sql_user_cnt = $res->fields['current_sql_user_cnt'];
+		$current_disk_amnt  = $res->fields['current_disk_amnt'];
+		$current_traff_amnt = $res->fields['current_traff_amnt'];
 	} else {
-		$current_sub_cnt =
-		$current_als_cnt =
-		$current_mail_cnt =
-		$current_ftp_cnt =
-		$current_sql_db_cnt =
+		$current_sub_cnt = 0;
+		$current_als_cnt = 0;
+		$current_mail_cnt = 0;
+		$current_ftp_cnt = 0;
+		$current_sql_db_cnt = 0;
 		$current_sql_user_cnt = 0;
+		$current_disk_amnt  = 0;
+		$current_traff_amnt = 0;
 	}
-
-	return array($current_dmn_cnt, $current_sub_cnt, $current_als_cnt,
-				$current_mail_cnt, $current_ftp_cnt, $current_sql_db_cnt,
-				$current_sql_user_cnt);
+ 
+	return array(
+		$current_dmn_cnt,
+		$current_sub_cnt,
+		$current_als_cnt,
+		$current_mail_cnt,
+		$current_ftp_cnt,
+		$current_sql_db_cnt,
+		$current_sql_user_cnt,
+		$current_disk_amnt,
+		$current_traff_amnt
+	);
 }
 
 /**
  * Recalculate current_ properties of reseller
- * @param $reseller_id integer ID of the reseller
+ * 
+ * @param int $reseller_id unique reseller identifiant
+ * @return void
  */
 function update_reseller_c_props($reseller_id) {
 	global $sql;
-
+ 
 	$query = "
 		UPDATE
 			`reseller_props`
@@ -1839,25 +1856,29 @@ function update_reseller_c_props($reseller_id) {
 			`current_mail_cnt` = ?,
 			`current_ftp_cnt` = ?,
 			`current_sql_db_cnt` = ?,
-			`current_sql_user_cnt` = ?
+			`current_sql_user_cnt` = ?,
+			`current_disk_amnt` = ?,
+			`current_traff_amnt` = ?
 		WHERE
 			`reseller_id` = ?
 	";
-
+ 
 
 	$props = recalc_reseller_c_props($reseller_id);
 	$props[] = $reseller_id;
-
+ 
 	exec_query($sql, $query, $props);
 }
 
 /**
  * Get the reseller id of a domain
  * moved from admin/domain_edit.php to reseller-functions.php
- * @param $domain_id integer ID of domain
- * @return integer ID of reseller or 0 in case of error
+ * 
+ * @param int $domain_id unique domain identifiant
+ * @return int unique reseller identifiant or 0 in on error
  */
 function get_reseller_id($domain_id) {
+
 	$sql = Database::getInstance();
 
 	$query = "
@@ -1884,10 +1905,11 @@ function get_reseller_id($domain_id) {
 /**
  * Checks if a reseller has the right to add domain aliases
  * 
- * @param int $reseller_id
+ * @param int $reseller_id unique reseller identifiant
  * @return boolean domain alias permissions  
  */
 function check_reseller_domainalias_permissions($reseller_id) {
+
 	$sql = Database::getInstance();
 	
 	list($rdmn_current, $rdmn_max,

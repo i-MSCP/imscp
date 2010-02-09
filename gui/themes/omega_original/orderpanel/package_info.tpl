@@ -126,9 +126,11 @@
 	<tr align="center">
 		<td colspan="2">&nbsp;</td>
 	</tr>
+	<!-- BDP: isenabled -->
 	<tr align="center">
 		<td colspan="2"><a href="addon.php?coid={CUSTOM_ORDERPANEL_ID}&amp;id={PACK_ID}&amp;user_id={USER_ID}" class="link"><strong>{TR_PURCHASE}</strong></a></td>
 	</tr>
+	<!-- EDP: isenabled -->
 </table>
 
 <!-- BDP: purchase_footer -->

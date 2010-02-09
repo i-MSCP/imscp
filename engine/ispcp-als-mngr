@@ -3911,7 +3911,19 @@ sub als_mngr_engine {
 
 		($rs, $rdata) = doSQL($sql);
 		return $rs if ($rs != 0);
-
+        } elsif ($als_status eq 'dnschange'){
+			# changing DNS
+			$rs = als_change_named_data($entry);
+			$timestamp = time();
+			if ($rs == 0) {
+				$sql = "update domain_aliasses set alias_status='ok' where alias_id = $als_id;";
+			} else {
+				my ($sub_name, $msg) = split(/$main::el_sep/, pop_el(\@main::el));
+				$msg =~ s/\'/\\\'/g;
+				$sql = "update domain_aliasses set alias_status='$sub_name | $msg' where alias_id = $als_id;";
+			}
+			($rs, $rdata) = doSQL($sql);
+			return $rs if ($rs != 0);
 	} elsif ($als_status eq 'delete') {
 		# Removing domains;
 		$rs = als_del_data($entry);

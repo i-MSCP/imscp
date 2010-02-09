@@ -7,7 +7,7 @@
 # Traffic
 0,30	*	*	*	*  root {TRAFF_ROOT_DIR}/ispcp-srv-traff &>{LOG_DIR}/ispcp-srv-traff.log
 0,30	*	*	*	*  root {TRAFF_ROOT_DIR}/ispcp-vrl-traff &>{LOG_DIR}/ispcp-vrl-traff.log
-15,45	*	* 	*	*  root {TRAFF_ROOT_DIR}/ispcp-vrl-traff-correction &>{LOG_DIR}/ispcp-vrl-traff-correction.log
+#15,45	*	* 	*	*  root {TRAFF_ROOT_DIR}/ispcp-vrl-traff-correction &>{LOG_DIR}/ispcp-vrl-traff-correction.log
 
 # customer logs
 @daily root {TOOLS_ROOT_DIR}/ispcp-httpd-logs-mngr &>{LOG_DIR}/ispcp-httpd-logs-mngr.log

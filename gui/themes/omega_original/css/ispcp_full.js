@@ -1,8 +1,8 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
  *
@@ -20,7 +20,7 @@
  * The Original Code is "ispCP - ISP Control Panel".
  *
  * The Initial Developer of the Original Code is moleSoftware GmbH.
- * Portions created by Initial Developer are Copyright (C) 2006-2009 by
+ * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  */
 
@@ -345,7 +345,34 @@ function showFileTree() {
 	return false; // return false to prevent loading of new main page
 }
 
+/*******************************************************************************
+*
+* Ajax related functions
+*
+* Note: require JQUERY
+*/
 
+/**
+* Jquery XMLHttpRequest Error Handling
+*/
+
+/**
+* Must be documented
+*
+* Note: Should be used as error callback funct of the jquery ajax request
+* @since r2587
+*/
+function ispCPajxError(xhr, settings, exception) {
+
+	switch (xhr.status) {
+		// We receive this status when the session is expired
+		case 403:
+			window.location = '/index.php';
+		break;
+		default:
+			alert('HTTP ERROR: An Unexpected HTTP Error occurred during the request');
+	}
+}
 
 /*
  * here are old moved unused/deprecated functions for archive

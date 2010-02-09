@@ -145,7 +145,7 @@ sub srv_traff_engine {
 
 			$bytes = $2 if ($line =~ /^ *(\d+) *(\d+) */);
 
-			$port = $1 if ($line =~ /(dpt|spt)\:(\d+) *$/);
+			$port = $1 if ($line =~ /[d,s]pt\:(\d+) *$/);
 
 			if (defined($port) && $port > 0) {
 
@@ -185,7 +185,7 @@ sub srv_traff_engine {
 
 			$bytes = $2 if ($line =~ /^ *(\d+) *(\d+) */);
 
-			$port = $1 if ($line =~ /(spt|dpt)\:(\d+) *$/);
+			$port = $1 if ($line =~ /[d,s]pt\:(\d+) *$/);
 
 			if (defined($port) && $port > 0) {
 

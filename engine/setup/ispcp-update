@@ -439,6 +439,7 @@ sub check_ispcp_cfg_file {
 	push_el(\@main::el, 'check_ispcp_cfg_file()', 'Starting...');
 
 	my %exception = map {$_ => undef} qw(
+		DATABASE_PASSWORD
 		SECONDARY_DNS
 		ISPCP_SUPPORT_SYSTEM_TARGET
 		MYSQL_PREFIX_TYPE
@@ -487,7 +488,7 @@ sub cfg_recovery_process {
 
 	my ($rs, $msg, $rdata, $warn_msg) = (undef, undef, undef, undef);
 
-	# Map each setting to appropriate dialog subroutine and main ua key name
+	# Map each setting to appropriate dialog subroutine and mainua key name
 	# TODO: Add a trigger to check database connection if related setting values
 	# are changed
 	my $recovery_dispatcher = {
@@ -498,9 +499,18 @@ sub cfg_recovery_process {
 		DATABASE_HOST => [\&ask_db_host, 'db_host'],
 		DATABASE_NAME => [\&ask_db_name, 'db_name'],
 		DATABASE_USER => [\&ask_db_user, 'db_user'],
-		DATABASE_PASSWORD => [\&ask_db_password, 'db_password'],
 		PHP_FASTCGI => [\&ask_fastcgi, 'php_fastcgi']
 	};
+	
+	# Add trigger for test database connection
+	# Here, if $main::cgf{DATABASE_*} was changed
+	# the check_sql_connection() subroutine will be run
+	ispCP::trigger::add(
+		'%main::cfg',
+		'DATABASE_*',
+		'on_change',
+		\&check_sql_connection
+	);
 
 	# If several parameters are set to an empty value, we ensure
 	# that the user has installed ispCP by asking the question

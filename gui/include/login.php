@@ -4,7 +4,7 @@
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
+ * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
  *
@@ -192,6 +192,12 @@ function check_login($fName = null, $preventExternalLogin = true) {
 
 	// session-type check:
 	if (!check_user_login()) {
+
+		if(is_xhr()) {
+			header('HTTP/1.0 403 Forbidden');
+			exit;
+		}
+
 		user_goto('/index.php');
 	}
 

@@ -7,10 +7,90 @@
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="{THEME_COLOR_PATH}/css/jquery.js"></script>
+<script type="text/javascript" src="{THEME_COLOR_PATH}/css/jquery.ispcpTooltips.js"></script>
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+
+	/*
+ 	 * Global variable - TRUE if a password was generated, FALSE otherwise
+ 	 */
+	gpwd=false;
+
+	$(document).ready(function(){
+		$(':password').each(
+			function(i) {
+				// We ensure's the passwords fields are empty after on load because several
+				// browsers fill them with the cached password (eg. Gecko's based browsers)
+				$(this).val('').
+				// Create text input field to display generated password on mouseover
+				mouseover(
+					function(){
+						if(gpwd){
+							// First, hide the password field
+							$(this).hide();
+							// Now create the text input field
+							$('<input />').attr({type:'text',name:'ipwd'+i}).
+							css({float:'left',width:'210px'}).addClass('textinput').
+							val($(this).val()).
+							insertAfter('input[name=pass'+i+']').select().
+							// Create tooltip linked to the create text input field
+							ispCPtooltips({msg:'{TR_CTRL+C}'}).
+							// Restore input password field on mouseout
+							mouseout(function(){$(this).remove();$(':password').show();
+								}
+							);
+						}
+					}
+				);
+			}
+		);
+
+		// Create and adds the ajax spinner
+		$('<img>').attr({src:'{THEME_COLOR_PATH}/images/ajax/small-spinner.gif'}).
+			addClass('small-spinner').insertAfter($(':password'));
+
+		// Configure the request for password generation
+		$.ajaxSetup({
+			url: $(location).attr('pathname'),
+			type:'POST',
+			data:'edit_id={EDIT_ID}&uaction=genpass',
+			datatype:'text',
+			beforeSend:function(xhr){xhr.setRequestHeader('Accept','text/plain');},
+			success:function(r){$(':password').val(r).attr('readonly',true);gpwd=true;},
+			error:ispCPajxError
+		});
+
+		// Adds event handlers for the ajax spinner
+		$(':password ~ img').ajaxStart(function(){$(this).show()});
+		$(':password ~ img').ajaxStop(function(){$(this).hide()});
+
+		// Adds event handler for the password generation button
+		$('input[name=genpass]').click(function(){$.ajax();}).attr('disabled',false);
+
+		// Adds event handler for the reset button
+		$('input[name=pwdreset]').click(
+			function(){gpwd=false;$(':password').val('').attr('readonly',false);}
+		);
+
+		// Disable the 'Enter' key to prevent multiples validation/updates process
+		$(':input').live('keypress',function(e){
+			if(e.keyCode==13){e.preventDefault();alert('{TR_EVENT_NOTICE}');}
+		});
+
+		// Hover effect on several input elements (type submit and button)
+		$(':submit,:button').hover(
+			function(){$(this).addClass('buttonHover');},
+			function(){$(this).removeClass('buttonHover');}
+		);
+	});
+/*]]>*/
+</script>
 </head>
 
 <body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
+
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="height:100%;padding:0;margin:0 auto;">
 	<tr>
 		<td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" width="195" height="56" border="0" alt="ispCP Logogram" /></td>
@@ -41,8 +121,8 @@
 							</tr>
 							<tr>
 								<td valign="top">
-									<form name="admin_edit_reseller" method="post" action="reseller_edit.php">
-										<table width="100%" cellpadding="5" cellspacing="5">
+									<form name="admin_edit_reseller" method="post" style="margin:0;padding:0;" action="reseller_edit.php">
+										<table width="100%" cellpadding="5" cellspacing="5" style="padding:0;margin:0">
 											<tr>
 												<td width="25">&nbsp;</td>
 												<td colspan="2" class="content3"><b>{TR_CORE_DATA}</b></td>
@@ -56,208 +136,102 @@
 											<tr>
 												<td width="25">&nbsp;</td>
 												<td width="200" class="content2">{TR_USERNAME}</td>
-												<td class="content"> {USERNAME}</td>
+												<td class="content">{USERNAME}</td>
 											</tr>
 											<tr>
 												<td width="25">&nbsp;</td>
 												<td width="200" class="content2">{TR_PASSWORD}</td>
 												<td class="content">
-													<input type="password" name="pass" value="{VAL_PASSWORD}" style="width:210px" class="textinput" />
-													&nbsp;&nbsp;&nbsp;
-													<input name="genpass" type="submit" class="button" value=" {TR_PASSWORD_GENERATE} " />
+ 													<input type="password" name="pass0" value="{VAL_PASSWORD}" class="textinput" style="width:210px;float:left;{PWD_ERR}" />
+ 													<input name="pwdreset" type="button" value="{TR_RESET}" class="button" style="float:right;margin-right:10px;" />
+ 													<input name="genpass" type="button" value="{TR_PASSWORD_GENERATE}" class="button" style="float:right;" />
 												</td>
 											</tr>
 											<tr>
 												<td width="25">&nbsp;</td>
 												<td width="200" class="content2">{TR_PASSWORD_REPEAT}</td>
 												<td class="content">
-													<input type="password" name="pass_rep" value="{VAL_PASSWORD}" style="width:210px" class="textinput" />
+													<input type="password" name="pass1" value="{VAL_PASSWORD}" style="width:210px;float:left;{PWDR_ERR}" class="textinput" />
 												</td>
 											</tr>
 											<tr>
 												<td width="25">&nbsp;</td>
 												<td width="200" class="content2">{TR_EMAIL}</td>
 												<td class="content">
-													<input type="text" name="email" value="{EMAIL}" style="width:210px" class="textinput" />
+													<input type="text" name="email" value="{EMAIL}" style="width:210px;{EMAIL_ERR}" class="textinput" />
 												</td>
 											</tr>
 											<tr>
 												<td width="25">&nbsp;</td>
 												<td class="content2" width="200">{TR_MAX_DOMAIN_COUNT}</td>
 												<td class="content">
-													<input type="text" name="nreseller_max_domain_cnt" value="{MAX_DOMAIN_COUNT}" style="width:140px" class="textinput" />
+													<input type="text" name="nreseller_max_domain_cnt" value="{MAX_DOMAIN_COUNT}" style="width:140px;{DMN_ERR}" class="textinput" />
 												</td>
 											</tr>
 											<tr>
 												<td width="25">&nbsp;</td>
 												<td class="content2" width="200">{TR_MAX_SUBDOMAIN_COUNT}</td>
 												<td class="content">
-													<input type="text" name="nreseller_max_subdomain_cnt" value="{MAX_SUBDOMAIN_COUNT}" style="width:140px" class="textinput" />
+													<input type="text" name="nreseller_max_subdomain_cnt" value="{MAX_SUBDOMAIN_COUNT}" style="width:140px;{SUB_ERR}" class="textinput" />
 												</td>
 											</tr>
 											<tr>
 												<td width="25">&nbsp;</td>
 												<td class="content2" width="200">{TR_MAX_ALIASES_COUNT}</td>
 												<td class="content">
-													<input type="text" name="nreseller_max_alias_cnt" value="{MAX_ALIASES_COUNT}" style="width:140px" class="textinput" />
+													<input type="text" name="nreseller_max_alias_cnt" value="{MAX_ALIASES_COUNT}" style="width:140px;{ALS_ERR}" class="textinput" />
 												</td>
 											</tr>
 											<tr>
 												<td width="25">&nbsp;</td>
 												<td class="content2" width="200">{TR_MAX_MAIL_USERS_COUNT}</td>
 												<td class="content">
-													<input type="text" name="nreseller_max_mail_cnt" value="{MAX_MAIL_USERS_COUNT}" style="width:140px" class="textinput" />
+													<input type="text" name="nreseller_max_mail_cnt" value="{MAX_MAIL_USERS_COUNT}" style="width:140px;{MAIL_ERR}" class="textinput" />
 												</td>
 											</tr>
 											<tr>
 												<td width="25">&nbsp;</td>
 												<td class="content2" width="200">{TR_MAX_FTP_USERS_COUNT}</td>
 												<td class="content">
-													<input type="text" name="nreseller_max_ftp_cnt" value="{MAX_FTP_USERS_COUNT}" style="width:140px" class="textinput" />
+													<input type="text" name="nreseller_max_ftp_cnt" value="{MAX_FTP_USERS_COUNT}" style="width:140px;{FTP_ERR}" class="textinput" />
 												</td>
 											</tr>
 											<tr>
 												<td width="25">&nbsp;</td>
 												<td class="content2" width="200">{TR_MAX_SQLDB_COUNT}</td>
 												<td class="content">
-													<input type="text" name="nreseller_max_sql_db_cnt" value="{MAX_SQLDB_COUNT}" style="width:140px" class="textinput" />
+													<input type="text" name="nreseller_max_sql_db_cnt" value="{MAX_SQLDB_COUNT}" style="width:140px;{SQLD_ERR}" class="textinput" />
 												</td>
 											</tr>
 											<tr>
 												<td width="25">&nbsp;</td>
 												<td class="content2" width="200">{TR_MAX_SQL_USERS_COUNT}</td>
 												<td class="content">
-													<input type="text" name="nreseller_max_sql_user_cnt" value="{MAX_SQL_USERS_COUNT}" style="width:140px" class="textinput" />
+													<input type="text" name="nreseller_max_sql_user_cnt" value="{MAX_SQL_USERS_COUNT}" style="width:140px;{SQLU_ERR}" class="textinput" />
 												</td>
 											</tr>
 											<tr>
 												<td width="25">&nbsp;</td>
 												<td class="content2" width="200">{TR_MAX_TRAFFIC_AMOUNT}</td>
 												<td class="content">
-													<input type="text" name="nreseller_max_traffic" value="{MAX_TRAFFIC_AMOUNT}" style="width:140px" class="textinput" />
+													<input type="text" name="nreseller_max_traffic" value="{MAX_TRAFFIC_AMOUNT}" style="width:140px;{TRF_ERR}" class="textinput" />
 												</td>
 											</tr>
 											<tr>
 												<td width="25">&nbsp;</td>
 												<td class="content2" width="200">{TR_MAX_DISK_AMOUNT}</td>
 												<td class="content">
-													<input type="text" name="nreseller_max_disk" value="{MAX_DISK_AMOUNT}" style="width:140px" class="textinput" />
+													<input type="text" name="nreseller_max_disk" value="{MAX_DISK_AMOUNT}" style="width:140px;{DISK_ERR}" class="textinput" />
 												</td>
 											</tr>
 											<tr>
 												<td width="25">&nbsp;</td>
 												<td class="content2" width="200">{TR_SUPPORT_SYSTEM}</td>
 												<td class="content">
-													<input name="support_system" value="yes" {SUPPORT_YES} type="radio">{TR_YES}
-													<input name="support_system" value="no" {SUPPORT_NO} type="radio">{TR_NO}
+													<input name="support_system" value="yes" {SUPPORT_YES} type="radio" />{TR_YES}
+													<input name="support_system" value="no" {SUPPORT_NO} type="radio" />{TR_NO}
 												</td>
 											</tr>
-									<!--
-											<tr>
-												<td class="content2" width="175">{TR_PHP}</td>
-												<td width="254" class="content3">
-												<input type="radio" name="php" value="yes" checked="checked" />
-												{TR_YES}
-												<input type="radio" name="php" value="no" />
-												{TR_NO}</td>
-											</tr>
-											<tr>
-												<td class="content2" width="175">{TR_PERL_CGI}</td>
-												<td width="254" class="content3">
-												<input type="radio" name="cgi" value="yes" checked="checked" />
-												{TR_YES}
-												<input type="radio" name="cgi" value="no" />
-												{TR_NO}</td>
-											</tr>
-											<tr>
-												<td class="content2" width="175" height="23">{TR_JSP}</td>
-												<td width="254" class="content3" height="23">
-												<input type="radio" name="jsp" value="yes" checked="checked" />
-												{TR_YES}
-												<input type="radio" name="jsp" value="no" />
-												{TR_NO}</td>
-											</tr>
-											<tr>
-												<td class="content2" width="175" height="23">{TR_SSI}</td>
-												<td width="254" class="content3" height="23">
-												<input type="radio" name="ssi" value="yes" checked="checked" />
-												{TR_YES}
-												<input type="radio" name="ssi" value="no" />
-												{TR_NO}</td>
-											</tr>
-											<tr>
-												<td class="content2" width="175">{TR_FRONTPAGE_EXT}</td>
-												<td width="254" class="content3">
-												<input type="radio" name="fp" value="yes" checked="checked" />
-												{TR_YES}
-												<input type="radio" name="fp" value="no" />
-												{TR_NO}</td>
-											</tr>
-											<tr>
-												<td class="content2" width="175">{TR_BACKUP_RESTORE}</td>
-												<td width="254" class="content3">
-												<input type="radio" name="backup_restore" value="yes" checked="checked" />
-												{TR_YES}
-												<input type="radio" name="backup_restore" value="no" />
-												{TR_NO}</td>
-											</tr>
-											<tr>
-												<td class="content2" width="175">{TR_CUSTOM_ERROR_PAGES}</td>
-												<td width="254" class="content3">
-												<input type="radio" name="error_pages" value="yes" checked="checked" />
-												{TR_YES}
-												<input type="radio" name="error_pages" value="no" />
-												{TR_NO}</td>
-											</tr>
-											<tr>
-												<td class="content2" width="175">{TR_PROTECTED_AREAS}</td>
-												<td width="254" class="content3">
-												<input type="radio" name="protected_areas" value="yes" checked="checked" />
-												{TR_YES}
-												<input type="radio" name="protected_areas" value="no" />
-												{TR_NO}</td>
-											</tr>
-											<tr>
-												<td class="content2" width="175">{TR_WEBMAIL}</td>
-												<td width="254" class="content3">
-												<input type="radio" name="webmail" value="yes" checked="checked" />
-												{TR_YES}
-												<input type="radio" name="webmail" value="no" />
-												{TR_NO}</td>
-											</tr>
-											<tr>
-												<td class="content2" width="175">{TR_DIR_LIST}</td>
-												<td width="254" class="content3">
-												<input type="radio" name="directorylisting" value="yes" checked="checked" />
-												{TR_YES}
-												<input type="radio" name="directorylisting" value="no" />
-												{TR_NO}</td>
-											</tr>
-											<tr>
-												<td class="content2" width="175">{TR_APACHE_LOGFILES}</td>
-												<td width="254" class="content3">
-												<input type="radio" name="apachelogfiles" value="yes" checked="checked" />
-												{TR_YES}
-												<input type="radio" name="apachelogfiles" value="no" />
-												{TR_NO}</td>
-											</tr>
-											<tr>
-												<td class="content2" width="175">{TR_AWSTATS}</td>
-												<td width="254" class="content3">
-												<input type="radio" name="awstats" value="yes" checked="checked" />
-												{TR_YES}
-												<input type="radio" name="awstats" value="no" />
-												{TR_NO}</td>
-											</tr>
-											<tr>
-												<td class="content2" width="175">{TR_LOGO_UPLOAD}</td>
-												<td width="254" class="content3">
-												<input type="radio" name="logo_upload" value="yes" checked="checked" />
-												{TR_YES}
-												<input type="radio" name="logo_upload" value="no" />
-												{TR_NO}</td>
-											</tr>
-												-->
 											<tr>
 												<td width="25">&nbsp;</td>
 												<td colspan="2">
@@ -368,9 +342,8 @@
 												<td>&nbsp;</td>
 												<td colspan="2">
 													<input name="Submit" type="submit" class="button" value="{TR_UPDATE}" />
-													&nbsp;&nbsp;&nbsp;
-													<input type="checkbox" name="send_data" checked="checked" />
-													{TR_SEND_DATA}
+													<input name="Cancel" type="submit" class="button" value="{TR_CANCEL}" />
+													<input style="vertical-align:middle" type="checkbox" name="send_data" checked="checked" />{TR_SEND_DATA}
 												</td>
 											</tr>
 										</table>
