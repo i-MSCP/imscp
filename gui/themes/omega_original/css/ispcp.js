@@ -37,3 +37,4 @@ tip.style.left=(x+10)+"px";tip.style.top=(y+10)+"px";tip.style.display="block";}
 function hideTip(id){document.getElementById(id).style.display="none";}
 function showHideBlocks(id){if(document.getElementById(id).style.display=="none"){document.getElementById(id).style.display="block";}else{document.getElementById(id).style.display="none";}}
 function showFileTree(){libwindow=window.open("ftp_choose_dir.php","FileTreeDialogPage","menubar=no,width=470,height=350,scrollbars=yes");return false;}
+function ispCPajxError(xhr,settings,exception){switch(xhr.status){case 403:window.location='/index.php';break;default:alert('HTTP ERROR: An Unexpected HTTP Error occurred during the request');}}

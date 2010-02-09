@@ -1,12 +1,11 @@
 /**
- * ispCP ω (OMEGA) a Virtual Hosting Control System
+ * ispCP ω (OMEGA) a Virtual Hosting Control Panel
+ * Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
  *
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
+ * Version:	$Id$
+ * @link	http://isp-control.net
+ * @author	ispCP Team
  *
- * @license
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
@@ -17,13 +16,17 @@
  * License for the specific language governing rights and limitations
  * under the License.
  *
- * The Original Code is "ispCP - ISP Control Panel".
+ * The Original Code is "ispCP ω (OMEGA) a Virtual Hosting Control Panel".
  *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
- * Portions created by Initial Developer are Copyright (C) 2006-2009 by
+ * The Initial Developer of the Original Code is ispCP Team.
+ * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
+ *
+ * The ispCP ω Home Page is:
+ *
+ *    http://isp-control.net
  */
-  
+
 html, body {
 	height:				100%;
 	margin:				0;
@@ -254,40 +257,49 @@ tr.hl:hover td.content,
 tr.hl:hover td.content2,
 table.hl tr:hover td.content,
 table.hl tr:hover td.content2 {
-	background-color: #a8a8a8;
+	background-color:	#a8a8a8;
 }
 
 .textinput {
-	background-color:	white;
+	background-color:	#fff;
 	border:				1px solid #cccccc;
 	font-family:		Verdana;
-	font-size:			8pt;
+	font-size:			10pt;
 	height:				21px;
 	margin:				2px;
+	vertical-align:		middle;
+	padding:			1px 0 0 2px;
 }
 
 .textinput2 {
 	background-color:	white;
 	border:				1px solid #cccccc;
 	font-family:		Verdana;
-	font-size:			8pt;
+	font-size:			12pt;
 	margin:				2px;
 }
 
 .button {
 	font-family:		Arial, Helvetica, sans-serif;
 	height:				21px;
-	font-size:			12px;
+	font-size:			10pt!important;
+	font-size:			9pt;
 	color:				#ffffff;
 	text-align:			center;
 	background-color:	#323232;
 	background-image:	url(../images/button.jpg);
 	background-repeat:	repeat-x;
-	border-bottom:		1px solid #000000;
-	border-right:		1px solid #000000;
-	border-top:			1px solid #eeeeee;
-	border-left:		1px solid #eeeeee;
+	border: 			1px solid #000;
+	margin:				2px;
+	vertical-align:		middle;
+	padding:			0 .25em 0 .25em;
+	width:				auto;
+	overflow:			visible;
+	cursor:				pointer;
+}
 
+.buttonHover {
+	color:				#f4dc6b;
 }
 
 .login_bottom {
@@ -303,4 +315,57 @@ table.hl tr:hover td.content2 {
 	color:				#99a0b1;
 	font-size:			24px;
 	font-weight:		bold;
+}
+
+/*********************************** Ajax Spinner *****************************/
+
+/* Used for form input element during ajax request */
+.small-spinner {
+	display:			none;
+	width:				16px;
+	height:				16px;
+	margin-left:		5px;
+	vertical-align:		middle;
+	float:				left;
+	margin-top:			5px;
+}
+
+/************************************ ToolTip *********************************/
+
+.tooltip_bg {
+	background-color:	#1284A8;
+	position:			absolute;
+	z-index:			-1;
+}
+
+.tooltip {
+	display:			none;
+	position:			absolute;
+	border: 			2px outset #fff;
+	width:				250px;
+	width:				auto;
+	z-index:			1;
+}
+
+.tooltip span {
+	vertical-align:		middle;
+	display:			inline-block;
+	margin:				3px 0 3px 3px;
+	border:				none;
+}
+
+.tooltip_txt {
+	width:				208px;
+	font-family:		Verdana, sans-serif;
+	font-size:			7.8pt!important;
+	font-size:			6.5pt; /* ie */
+	font-weight:		bold;
+	color:				#fff;
+	margin-right:		3px!important;
+}
+
+.tooltip_notice {
+	background:			url(../images/tooltips/info.png) no-repeat;
+	height:				32px;
+	width:				32px;
 }

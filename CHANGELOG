@@ -1,6 +1,27 @@
 ispCP ω 1.0.4 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-02-09 Laurent Declercq
+- GUI:
+	* Ehancement:
+		- Added Jquery v1.4.1 library (both format: full and minify  - Only minify is loaded by client browser's)
+		- Aded Jquery ispCPtooltips plugin (both format: full and minify  - Only minify is loaded by client browser's)
+		- Added a new javascript function in the ispcp js files to handle Jquery XMLHttpRequest errors
+	* admin/reseller_edit.php and related template:
+		* Fixed #2188: Reseller update properties - Inconsistency between...
+		* Re-factoring the code for better lisibility
+		* Removed unnecessary checks
+		* Added pre-check on the first load to prevent inconstancy data during update process
+		* Fixed vertical alignment for password generation button
+		* Ehancement:
+			- Added input fields hightlighting on error(s) (Todo, switch to JQuery form validation for better performances)
+			- Added cached input values on error
+			- Added 'Cancel' button to abort the update process
+			- Added JavaScript events for the rollover effect of several input elements (submit, button)
+			- The password generation is performed via XMLHttpRequest now
+			- When the password is generated, the related input fields are now set to readonly to prevent inconstancy data
+			- Added button to reset the password input fields
+
 2010-02-06 Benedikt Heintel
 	- CONFIGS:
 		* Fixed #2189: Small patch for opensuse
