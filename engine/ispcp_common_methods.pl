@@ -1846,6 +1846,7 @@ sub store_conf {
 
 	if (scalar(keys(%main::cfg_reg)) > 0) {
 		while (($key, $value) = each %main::cfg_reg) {
+			$value = '' if !defined $value;
 			$rwith = "$key = $value\n";
 			$fline =~ s/^$key *= *([^\n\r]*)[\n\r]/$rwith/gim;
 		}

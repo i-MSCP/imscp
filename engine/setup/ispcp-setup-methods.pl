@@ -3004,6 +3004,45 @@ sub setup_cleanup {
 ## Others subroutines - Begin
 #
 
+# Get and return the fully qualified hostname
+sub get_sys_hostname {
+
+	push_el(\@main::el, 'get_sys_hostname()', 'Starting...');
+
+	my ($rs, $rdata) = (undef, undef);
+
+	my $cmd = "$main::cfg{'CMD_HOSTNAME'} 1>/tmp/ispcp-setup.hostname";
+
+	$rs = sys_command($cmd);
+	return ($rs, '') if ($rs != 0);
+
+	($rs, $rdata) = get_file("/tmp/ispcp-setup.hostname");
+	return ($rs, '') if ($rs != 0);
+
+	chomp($rdata);
+
+	# If hostname contains no dot -> use "hostname -f"
+    if ($rdata !~ /\./) {
+
+		my $cmd = "$main::cfg{'CMD_HOSTNAME'} -f 1>/tmp/ispcp-setup.hostname";
+
+		$rs = sys_command($cmd);
+		return ($rs, '') if ($rs != 0);
+
+		($rs, $rdata) = get_file("/tmp/ispcp-setup.hostname");
+		return ($rs, '') if ($rs != 0);
+
+		chomp($rdata);
+    }
+
+	$rs = del_file("/tmp/ispcp-setup.hostname");
+	return ($rs, '') if ($rs != 0);
+
+	push_el(\@main::el, 'get_sys_hostname()', 'Ending...');
+
+	return (0, $rdata);
+}
+
 # Check ip
 sub check_eth {
 
@@ -3032,7 +3071,7 @@ sub check_sql_connection {
 	# First, we reset db connection
 	$main::db = undef;
 
-	# If we as receive username and password, we redefine the dsn
+	# If we received username and password, we redefine the dsn
 	if(defined $user && defined $password ) {
 		@main::db_connect = (
 			"DBI:mysql:$main::db_name:$main::db_host",

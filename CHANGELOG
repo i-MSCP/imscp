@@ -4,6 +4,11 @@ ispCP ω 1.0.4 Changelog
 2010-02-10 Laurent Declercq
 	- GUI:
 		* Fixed #2205: Fonts in ispcp.css is very big
+	- ENGINE:
+		* Fixed possible "Use of uninitialized value..." in store_conf() subroutine when a setting is set to an empty value
+	- SETUP:
+		* Fixed #2140: Validate DEFAULT_ADMIN_ADDRESS before installation/update
+		* Added recovery process for configuration settings in update process
 
 2010-02-10 Marc Pujol
 	- ENGINE:
