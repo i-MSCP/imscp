@@ -3004,6 +3004,45 @@ sub setup_cleanup {
 ## Others subroutines - Begin
 #
 
+# Get and return the fully qualified hostname
+sub get_sys_hostname {
+
+	push_el(\@main::el, 'get_sys_hostname()', 'Starting...');
+
+	my ($rs, $rdata) = (undef, undef);
+
+	my $cmd = "$main::cfg{'CMD_HOSTNAME'} 1>/tmp/ispcp-setup.hostname";
+
+	$rs = sys_command($cmd);
+	return ($rs, '') if ($rs != 0);
+
+	($rs, $rdata) = get_file("/tmp/ispcp-setup.hostname");
+	return ($rs, '') if ($rs != 0);
+
+	chomp($rdata);
+
+	# If hostname contains no dot -> use "hostname -f"
+    if ($rdata !~ /\./) {
+
+		my $cmd = "$main::cfg{'CMD_HOSTNAME'} -f 1>/tmp/ispcp-setup.hostname";
+
+		$rs = sys_command($cmd);
+		return ($rs, '') if ($rs != 0);
+
+		($rs, $rdata) = get_file("/tmp/ispcp-setup.hostname");
+		return ($rs, '') if ($rs != 0);
+
+		chomp($rdata);
+    }
+
+	$rs = del_file("/tmp/ispcp-setup.hostname");
+	return ($rs, '') if ($rs != 0);
+
+	push_el(\@main::el, 'get_sys_hostname()', 'Ending...');
+
+	return (0, $rdata);
+}
+
 # Check ip
 sub check_eth {
 

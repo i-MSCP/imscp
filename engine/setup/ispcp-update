@@ -328,7 +328,7 @@ sub warn_msg {
 
 	my $rdata = undef;
 
-	my $warning = colored(['bold'], "\n\tNOTICE:") .
+	my $warning = colored(['bold blue'], "\n\tNOTICE:") .
 		" Make sure you have read and performed all steps from\n".
 		"\tdocs/distro/INSTALL document (where distro is your linux " .
 		"distribution).\n\n";
@@ -490,7 +490,8 @@ sub cfg_recovery_process {
 
 	# Map each setting to appropriate dialog subroutine and mainua key name
 	# TODO: Add a trigger to check database connection if related setting values
-	# are changed
+	# are changed && add a subroutine for the 'BASE_SERVER_VHOST' to prevent
+	# errors  if a dns file doesn't exist for him
 	my $recovery_dispatcher = {
 		DEFAULT_ADMIN_ADDRESS => [\&ask_admin_email, 'admin_email'],
 		SERVER_HOSTNAME => [\&ask_hostname, 'hostname'],
@@ -501,22 +502,12 @@ sub cfg_recovery_process {
 		DATABASE_USER => [\&ask_db_user, 'db_user'],
 		PHP_FASTCGI => [\&ask_fastcgi, 'php_fastcgi']
 	};
-	
-	# Add trigger for test database connection
-	# Here, if $main::cgf{DATABASE_*} was changed
-	# the check_sql_connection() subroutine will be run
-	ispCP::trigger::add(
-		'%main::cfg',
-		'DATABASE_*',
-		'on_change',
-		\&check_sql_connection
-	);
 
 	# If several parameters are set to an empty value, we ensure
 	# that the user has installed ispCP by asking the question
 	if(scalar(@$settings) >= 2) {
 
-		print colored(['bold yellow'], "\n\n\tWARNING:"). 
+		print colored(['bold yellow'], "\n\n\tWARNING:").
 			" Your ispCP configuration file has several settings set\n" .
 			"\tto an empty value !\n";
 
@@ -530,7 +521,7 @@ sub cfg_recovery_process {
 			"\tPlease, run '$main::cfg{'ROOT_DIR'}/engine/setup/ispcp-setup' instead !\n";
 
 		($rdata !~ /^n$/i) or exit_msg($msg);
-	} 
+	}
 
 	print STDOUT colored(['bold yellow'], "\n\n\tWARNING:") .
 		" Your ispCP configuration file is not valid!\n" .
@@ -548,7 +539,7 @@ sub cfg_recovery_process {
 		" The recovery process was aborted by user...\n"
 	);
 
-	# For each setting, calls the dialog function if it is available,
+	# For each setting, calls the dialog subroutine if it is available,
 	# OTHERWISE saves the values already changed and stops the program
 	# with an specific message.
 	foreach(@$settings) {
@@ -569,14 +560,22 @@ sub cfg_recovery_process {
 			# Otherwise, the program will end here with an error message
 		} else {
 
-			# Store already changed values before ends
-			$rs =store_conf(); 
+			# Store already changed values in ispcp.conf
+			$rs = store_conf();
 			return $rs if($rs != 0);
+			
+			# Updates the reference file if needed
+			if($main::cfg_file ne $main::ua{'old_cfg_file'}) {
+				$rs = sys_command_rs("$main::cfg{CMD_CP} -f $main::cfg_file $main::ua{'old_cfg_file'} ");
+				return $rs if($rs != 0);
+			}
 
-			$msg = colored(['bold red'], "\n\tNOTICE:") .
-				" The setting '$_' can't be handle by the recovery process!\n" .
-				"\tPlease, set it manually and re-run this script.\n" .
-				"\nThe program will end now !\n";
+			$msg = colored(['bold blue'], "\n\tNOTICE: ") .
+				"The setting '$_' can't be handle by\n" .
+				"\tthe recovery process!\n\n" .
+				"\tPlease, set it manually in your $main::ua{'old_cfg_file'} and\n" .
+				"\tre-run this script.\n\n" .
+				"\tThe program will end now !\n";
 
 			exit_msg($msg);
 		}
@@ -585,6 +584,12 @@ sub cfg_recovery_process {
 	# Store new configuration settings values and reload it
 	$rs = store_conf();
 	return $rs if($rs != 0);
+
+	# Updates the reference file if needed
+	if($main::cfg_file ne $main::ua{'old_cfg_file'}) {
+		$rs = sys_command_rs("$main::cfg{CMD_CP} -f $main::cfg_file $main::ua{'old_cfg_file'} ");
+		return $rs if($rs != 0);
+	}
 
 	print STDOUT colored(['bold blue'], "\n\tNOTICE:") .
 		" The recovery process was end successfully!\n" .

@@ -640,6 +640,17 @@ sub arpl_msgr_engine {
 	push_el(\@main::el, 'arpl_msgr_engine()', 'Starting...');
 
 	my ($sql, $rs, $ref) = (undef, undef, undef);
+	
+	# Cleanup old autoreply log entries
+	$sql = "DELETE FROM 
+			`autoreplies_log`
+		WHERE 
+			ADDTIME(`time`, '24:00:00') < NOW()
+		";
+	print $sql;
+	push_el(\@main::el, 'arpl_msgr_engine()', "sql: |".$sql."|");
+	($rs, $ref) = doSQL($sql);
+	push_el(\@main::el, 'arpl_msgr_engine()', 'Error purging old autoreplies_log entries');
 
 	my $msg_parser = new MIME::Parser;
 
@@ -870,12 +881,29 @@ sub arpl_msgr_engine {
 					else {
 						$mail_to = $to_ma->address;
 					}
-
-
-					my $out = new MIME::Entity;
-
 					$mail_to=~s/\@ispcp-arpl./\@/;
 
+					# Detect duplicates within 24h to avoid autoreplying loops
+					$sql = "SELECT
+							`time`
+						FROM
+							`autoreplies_log` AS al
+						WHERE
+							al.`from` = " . $main::db->quote($mail_to) . "
+						AND
+							al.`to` = " . $main::db->quote($head->get('From')) . "
+						AND
+							ADDTIME(al.`time`, '24:00:00') > NOW()
+						";
+					push_el(\@main::el, 'arpl_msgr_engine()', "sql: |".$sql."|");
+					($rs, $ref) = doSQL($sql);
+					return $rs if ($rs != 0);
+					if ( @$ref > 0 ) {
+						# Loop detected
+						next;
+					}
+
+					my $out = new MIME::Entity;
 					$out -> build(
 								  From => $mail_to,
 								  To => $head -> get('From'),
@@ -884,26 +912,30 @@ sub arpl_msgr_engine {
 								  'X-Autoresponse-From' => $mail_to,
 								  'X-Mailer' => "ispCP $main::cfg{'Version'} Autoreply Manager"
 								);
-
-
 					$out -> attach(
 								  Type => "text/plain; charset=utf-8",
 								  Encoding => "7bit",
 								  Description => "Mail User Autoreply Message",
 								  Data => $auto_message
 								);
-
 					$out -> attach(
 								  Type => "message/rfc822",
 								  Description => "Original Message",
 								  Data => $msg
 								);
-
 					open MAIL, "| /usr/sbin/sendmail -t -oi";
-
 					$out -> print(\*MAIL);
-
 					close MAIL;
+
+					# Log the autoreply
+					$sql = "INSERT INTO `autoreplies_log`
+							(`time`, `from`, `to`)
+						VALUES
+							(NOW(), " . $main::db->quote($mail_to) . ", " . $main::db->quote($head->get('From')) . ")
+						";
+					push_el(\@main::el, 'arpl_msgr_engine()', "sql: |".$sql."|");
+					($rs, $ref) = doSQL($sql);
+					return $rs if ($rs != 0);
 				}
 
 				push_el(\@main::el, 'arpl_msgr_engine()', 'Ending...');

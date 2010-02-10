@@ -1,6 +1,10 @@
 ispCP ω 1.0.4 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-02-10 Marc Pujol
+	- ENGINE:
+		* Fixed #2203: IspCP Autoreply infinite autoreplies loop
+
 2010-02-09 Laurent Declercq
 - GUI:
 	* Ehancement:
