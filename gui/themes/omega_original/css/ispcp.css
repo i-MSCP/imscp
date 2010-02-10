@@ -264,18 +264,18 @@ table.hl tr:hover td.content2 {
 	background-color:	#fff;
 	border:				1px solid #cccccc;
 	font-family:		Verdana;
-	font-size:			10pt;
+	font-size:			8pt;
 	height:				21px;
 	margin:				2px;
 	vertical-align:		middle;
-	padding:			1px 0 0 2px;
+	padding:			3px 0 0 2px;
 }
 
 .textinput2 {
 	background-color:	white;
 	border:				1px solid #cccccc;
 	font-family:		Verdana;
-	font-size:			12pt;
+	font-size:			8pt;
 	margin:				2px;
 }
 
