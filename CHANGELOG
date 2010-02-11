@@ -18,17 +18,17 @@ ispCP ω 1.0.4 Changelog
 
 2010-02-10 Marc Pujol
 	- ENGINE:
-		* Fixed #2203: IspCP Autoreply infinite autoreplies loop
+		* Fixed #2203: ispCP Autoreply infinite autoreplies loop
 
 2010-02-09 Laurent Declercq
 - GUI:
 	* Ehancement:
-		- Added Jquery v1.4.1 library (both format: full and minify  - Only minify is loaded by client browser's)
-		- Aded Jquery ispCPtooltips plugin (both format: full and minify  - Only minify is loaded by client browser's)
-		- Added a new javascript function in the ispcp js files to handle Jquery XMLHttpRequest errors
+		- Added JQuery v1.4.1 library (both format: full and minify - Only minify is loaded by client's browser)
+		- Added JQuery ispCPtooltips plugin (both format: full and minify - Only minify is loaded by client's browser)
+		- Added a new javascript function in the ispcp .js-files to handle JQuery XMLHttpRequest errors
 	* admin/reseller_edit.php and related template:
 		* Fixed #2188: Reseller update properties - Inconsistency between...
-		* Re-factoring the code for better lisibility
+		* Re-factoring the code for better readability
 		* Removed unnecessary checks
 		* Added pre-check on the first load to prevent inconstancy data during update process
 		* Fixed vertical alignment for password generation button
