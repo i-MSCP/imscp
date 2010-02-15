@@ -1,6 +1,12 @@
 ispCP ω 1.0.4 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-02-15 Benedikt Heintel
+	- CONFIGS:
+		* Fixed #2210: FreeBSD: Propose new start/stop script
+	- GUI:
+		* Fixed #2208: Little design error (part 5)	
+
 2010-02-11 Benedikt Heintel
 	- GUI:
 		* Fixed #2159: Reseller can update to small hosting plan even if client use more resources
