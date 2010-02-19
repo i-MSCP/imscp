@@ -1,6 +1,10 @@
 ispCP ω 1.0.4 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-02-19 Benedikt Heintel
+	- DOCS:
+		* Changed FreeBSD INSTALL file
+
 2010-02-15 Benedikt Heintel
 	- CONFIGS:
 		* Fixed #2210: FreeBSD: Propose new start/stop script

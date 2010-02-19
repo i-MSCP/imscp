@@ -15,6 +15,8 @@
 
 #if !defined(__OpenBSD__) && !defined(__FreeBSD__)
 int readlink(char *pathname, char *buf, int bufsize);
+#elif defined(__FreeBSD__)
+ssize_t readlink(const char * __restrict, char * __restrict, size_t);
 #else
 int readlink(const char *pathname, char *buf, int bufsize);
 #endif
@@ -26,9 +28,9 @@ int lr_syntax(int fd, char *buff)
 
 	time_t tim;
 
-        /*
-         OpenBSD or FreeBSD OLD Routine
-         */
+    /*
+     * OpenBSD or FreeBSD OLD Routine
+     */
 	#if !defined(__OpenBSD__) && !defined(__FreeBSD__)
 	#else
 	char qcommand [MAX_MSG_SIZE];
@@ -150,4 +152,3 @@ int lr_syntax(int fd, char *buff)
 	return (NO_ERROR);
 
 }
-

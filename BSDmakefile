@@ -85,7 +85,7 @@ install:
 	rm -rf $(SYSTEM_WEB)/ispcp/gui/reseller
 	rm -rf $(SYSTEM_WEB)/ispcp/gui/*.php
 
-        # Backup ispcp.conf and copy the /etc directory into your system (you may make backups):
+    # Backup ispcp.conf and copy the /etc directory into your system (you may make backups):
 	mv -v /usr/local/etc/ispcp/ispcp.conf /usr/local/etc/ispcp/ispcp.old.conf
 	mv -v /usr/local/etc/proftpd.conf /usr/local/etc/proftpd.old.conf
 
@@ -97,7 +97,6 @@ install:
 .endif
 
 	mkdir -p /usr/local/www/data/scoreboards
-	#
 	#
 	# If Some error occured please read FAQ first and search at forum in http://www.isp-control.net
 	# Go to $(SYSTEM_WEB)/ispcp/engine/setup and type "ispcp-setup" to configure or "ispcp-upgrade"
@@ -123,4 +122,3 @@ uninstall:
 
 clean:
 	cd ./tools/daemon && $(MAKE) clean
-
