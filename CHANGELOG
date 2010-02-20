@@ -1,6 +1,10 @@
 ispCP ω 1.0.4 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-02-20 Jochen Manz
+	- LANGUAGES:
+		* Updates every language .po
+
 2010-02-19 Benedikt Heintel
 	- DOCS:
 		* Changed FreeBSD INSTALL file
