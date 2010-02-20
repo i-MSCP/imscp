@@ -208,7 +208,7 @@
               <tr>
                 <td class="content2" style="width:200px;vertical-align:top;">
 				  {TR_FORWARD_TO} <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onmouseover="showTip('fwd_help', event)" onmouseout="hideTip('fwd_help')" /></td>
-                <td nowrap="nowrap" class="content"><textarea name="forward_list" cols="35" rows="5" style="width:210px">{FORWARD_LIST}</textarea></td>
+                <td nowrap="nowrap" class="content"><textarea name="forward_list" cols="35" rows="10" style="width:400px">{FORWARD_LIST}</textarea></td>
 	          </tr>
               <tr>
              <td colspan="2"><input name="Submit" type="submit" class="button" value=" {TR_ADD} " /></td>
