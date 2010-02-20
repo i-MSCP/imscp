@@ -3,8 +3,8 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
  *
@@ -24,7 +24,7 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
- * Portions created by the ispCP Team are Copyright (C) 2006-2009 by
+ * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  */
 
@@ -76,11 +76,17 @@ $tpl->assign(
 		'TR_DMN_HELP' => tr("You do not need 'www.' ispCP will add it on its own."),
 		'TR_JS_EMPTYDATA' => tr("Empty data or wrong field!"),
 		'TR_JS_WDNAME' => tr("Wrong domain name!"),
-		'TR_JS_MPOINTERROR' => tr("Please write mount point!")
+		'TR_JS_MPOINTERROR' => tr("Please write mount point!"),
+		'TR_ENABLE_FWD' => tr("Enable Forward"),
+		'TR_ENABLE' => tr("Enable"),
+		'TR_DISABLE' => tr("Disable"),
+		'TR_PREFIX_HTTP' => 'http://',
+		'TR_PREFIX_HTTPS' => 'https://',
+		'TR_PREFIX_FTP' => 'ftp://'
 	)
 );
 
-check_domainalias_permissions($sql, $_SESSION['user_id']);
+check_client_domainalias_counts($sql, $_SESSION['user_id']);
 
 $err_txt = '_off_';
 if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_alias') {
@@ -95,7 +101,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_alias') {
  * Begin function declaration lines
  */
 
-function check_domainalias_permissions($sql, $user_id) {
+function check_client_domainalias_counts($sql, $user_id) {
 
 	list($dmn_id,
 		$dmn_name,
@@ -103,6 +109,7 @@ function check_domainalias_permissions($sql, $user_id) {
 		$dmn_uid,
 		$dmn_created_id,
 		$dmn_created,
+		$dmn_expires,
 		$dmn_last_modified,
 		$dmn_mailacc_limit,
 		$dmn_ftpacc_limit,
@@ -116,14 +123,17 @@ function check_domainalias_permissions($sql, $user_id) {
 		$dmn_disk_limit,
 		$dmn_disk_usage,
 		$dmn_php,
-		$dmn_cgi) = get_domain_default_props($sql, $user_id);
+		$dmn_cgi,
+		$allowbackup,
+		$dmn_dns
+	) = get_domain_default_props($sql, $user_id);
 
-		$als_cnt = get_domain_running_als_cnt($sql, $dmn_id);
+	$als_cnt = get_domain_running_als_cnt($sql, $dmn_id);
 
-		if ($dmn_als_limit != 0 && $als_cnt >= $dmn_als_limit) {
-			set_page_message(tr('Domain alias limit reached!'));
-			user_goto('domains_manage.php');
-		}
+	if ($dmn_als_limit != 0 && $als_cnt >= $dmn_als_limit) {
+		set_page_message(tr('Domain alias limit reached!'));
+		user_goto('domains_manage.php');
+	}
 }
 
 function init_empty_data() {
@@ -138,32 +148,78 @@ function init_empty_data() {
  * Show data fields
  */
 function gen_al_page(&$tpl, $reseller_id) {
-	global $cr_user_id, $alias_name, $domain_ip, $forward, $mount_point;
+	global $cr_user_id, $alias_name, $domain_ip, $forward, $forward_prefix, $mount_point;
 
-	if (isset($_POST['forward'])) {
-		$forward = $_POST['forward'];
+	if (isset($_POST['status']) && $_POST['status'] == 1) {
+		$forward_prefix = clean_input($_POST['forward_prefix']);
+		if($_POST['status'] == 1) {
+			$check_en = 'checked="checked"';
+			$check_dis = '';
+			$forward = strtolower(clean_input($_POST['forward']));
+			$tpl->assign(
+					array(
+						'READONLY_FORWARD' => '',
+						'DISABLE_FORWARD' => '',
+						)
+					);
+		} else {
+			$check_en = '';
+			$check_dis = 'checked="checked"';
+			$forward = '';
+			$tpl->assign(
+					array(
+						'READONLY_FORWARD' => ' readonly',
+						'DISABLE_FORWARD' => ' disabled="disabled"',
+						)
+					);
+		}
+		$tpl->assign(
+				array(
+					'HTTP_YES' => ($forward_prefix === 'http://') ? 'selected="selected"' : '',
+					'HTTPS_YES' => ($forward_prefix === 'https://') ? 'selected="selected"' : '',
+					'FTP_YES' => ($forward_prefix === 'ftp://') ? 'selected="selected"' : ''
+					)
+				);
 	} else {
-		$forward = 'no';
+		$check_en = '';
+		$check_dis = 'checked="checked"';
+		$forward = '';
+		$tpl->assign(
+				array(
+					'READONLY_FORWARD' => ' readonly',
+					'DISABLE_FORWARD' => ' disabled="disabled"',
+					)
+				);
 	}
+	
 	$tpl->assign(
 		array(
 			'DOMAIN'	=> decode_idna($alias_name),
 			'MP'		=> decode_idna($mount_point),
-			'FORWARD'	=> $forward
+			'FORWARD'	=> $forward,
+			'CHECK_EN'	=> $check_en,
+			'CHECK_DIS' => $check_dis,
 		)
 	);
 
 } // End of gen_al_page()
 
 function add_domain_alias(&$sql, &$err_al) {
-	global $cr_user_id, $alias_name, $domain_ip, $forward, $mount_point;
+	global $cr_user_id, $alias_name, $domain_ip, $forward, $forward_prefix, $mount_point;
 	global $validation_err_msg;
 
 	$cr_user_id = $domain_id = get_user_domain_id($sql, $_SESSION['user_id']);
 	$alias_name	= strtolower($_POST['ndomain_name']);
 	$mount_point = strtolower($_POST['ndomain_mpoint']);
-	$forward = strtolower(clean_input($_POST['forward']));
-
+	
+	if ($_POST['status'] == 1) {
+		$forward = strtolower(clean_input($_POST['forward']));
+		$forward_prefix = clean_input($_POST['forward_prefix']);
+	} else {
+		$forward = 'no';
+		$forward_prefix = '';
+	}
+	
 	$query = "
 		SELECT
 			`domain_ip_id`
@@ -198,14 +254,17 @@ function add_domain_alias(&$sql, &$err_al) {
 		$err_al = tr("Incorrect mount point syntax");
 	} else if ($alias_name == Config::get('BASE_SERVER_VHOST')) {
 		$err_al = tr('Master domain cannot be used!');
-	} else if ($forward != 'no') {
-		if (!chk_forward_url($forward)) {
-			$err_al = tr("Incorrect forward syntax");
+	} else if ($_POST['status'] == 1) {
+		if(substr_count($forward, '.') <= 2) {
+			$ret = validates_dname($forward);
+		} else {
+			$ret = validates_dname($forward, true);
 		}
-		/** @todo test and remove if no bugs encounter
-		if (!preg_match("/\/$/", $forward) && !preg_match("/\?/", $forward)) {
-			$forward .= "/";
-		}*/
+		if(!$ret) {
+			$err_al = tr("Wrong domain part in forward URL!");
+		} else {
+			$forward = encode_idna($forward_prefix.$forward);
+		}
 	} else {
 		// now let's fix the mountpoint
 		$mount_point = array_decode_idna($mount_point, true);

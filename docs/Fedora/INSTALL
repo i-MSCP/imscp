@@ -145,7 +145,7 @@ Make sure you are logged in as root and MySQL is running.
 ================================================================================
 5) Update
 ---------
-NOTE: ispCP ω can only be updated from 1.0.0, 1.0.1 or 1.0.2. If you have a
+NOTE: ispCP ω can only be updated from post 1.0.0. If you have a
 version prior 1.0.0 (final release) installed, update to ispCP ω 1.0.0 first.
 
 Make sure you are logged in as root and MySQL is running.

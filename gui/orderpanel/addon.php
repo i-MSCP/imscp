@@ -3,8 +3,8 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
  *
@@ -24,7 +24,7 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
- * Portions created by the ispCP Team are Copyright (C) 2006-2009 by
+ * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  */
 
@@ -60,6 +60,36 @@ function addon_domain($dmn_name) {
 	user_goto('address.php');
 }
 
+function is_plan_available(&$sql, $plan_id, $user_id) {
+	if (Config::exists('HOSTING_PLANS_LEVEL')
+                && Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
+                $query = "
+                        SELECT
+                                *
+                        FROM
+                                `hosting_plans`
+                        WHERE
+                                `id` = ?
+                ";
+
+                $rs = exec_query($sql, $query, array($plan_id));
+        } else {
+                $query = "
+                        SELECT
+                                *
+                        FROM
+                                `hosting_plans`
+                        WHERE
+                                `reseller_id` = ?
+                        AND
+                                `id` = ?
+                ";
+
+                $rs = exec_query($sql, $query, array($user_id, $plan_id));
+        }
+	return $rs->RecordCount() > 0 && $rs->fields['status'] != 0;
+}
+
 /**
  * functions end
  */
@@ -75,7 +105,11 @@ if (isset($_SESSION['user_id'])) {
 		$plan_id = $_SESSION['plan_id'];
 	} else if (isset($_GET['id'])) {
 		$plan_id = $_GET['id'];
-		$_SESSION['plan_id'] = $plan_id;
+		if (is_plan_available($sql, $plan_id, $user_id)) {
+			$_SESSION['plan_id'] = $plan_id;
+		} else {
+			system_message(tr('This hosting plan is not available for purchase'));
+		}
 	} else {
 		system_message(tr('You do not have permission to access this interface!'));
 	}

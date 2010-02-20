@@ -3,8 +3,8 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
  *
@@ -24,11 +24,16 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
- * Portions created by the ispCP Team are Copyright (C) 2006-2009 by
+ * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  */
 
 function get_domain_default_props(&$sql, $domain_admin_id, $returnWKeys = false) {
+	
+	// /!\ Note to dev:
+	// Please, when you adds new field here, you must
+	// report it in all scripts that calls this function.
+
 	$query = <<<SQL_QUERY
 		SELECT
 			`domain_id`,
@@ -37,6 +42,7 @@ function get_domain_default_props(&$sql, $domain_admin_id, $returnWKeys = false)
 			`domain_uid`,
 			`domain_created_id`,
 			`domain_created`,
+			`domain_expires`,
 			`domain_last_modified`,
 			`domain_mailacc_limit`,
 			`domain_ftpacc_limit`,
@@ -69,6 +75,7 @@ SQL_QUERY;
 			$rs->fields['domain_uid'],
 			$rs->fields['domain_created_id'],
 			$rs->fields['domain_created'],
+			$rs->fields['domain_expires'],
 			$rs->fields['domain_last_modified'],
 			$rs->fields['domain_mailacc_limit'],
 			$rs->fields['domain_ftpacc_limit'],
@@ -491,18 +498,55 @@ SQL_QUERY;
 	} // end else
 
 	list(
-		$dmn_id, $dmn_name, $dmn_gid, $dmn_uid, $dmn_created_id, $dmn_created,
-		$dmn_last_modified, $dmn_mailacc_limit, $dmn_ftpacc_limit, $dmn_traff_limit,
-		$dmn_sqld_limit, $dmn_sqlu_limit, $dmn_status, $dmn_als_limit,
-		$dmn_subd_limit, $dmn_ip_id, $dmn_disk_limit, $dmn_disk_usage,
-		$dmn_php, $dmn_cgi) = get_domain_default_props($sql, $_SESSION['user_id']);
+		$dmn_id,
+		$dmn_name,
+		$dmn_gid,
+		$dmn_uid,
+		$dmn_created_id,
+		$dmn_created,
+		$domain_expires,
+		$dmn_last_modified,
+		$dmn_mailacc_limit,
+		$dmn_ftpacc_limit,
+		$dmn_traff_limit,
+		$dmn_sqld_limit,
+		$dmn_sqlu_limit,
+		$dmn_status,
+		$dmn_als_limit,
+		$dmn_subd_limit,
+		$dmn_ip_id,
+		$dmn_disk_limit,
+		$dmn_disk_usage,
+		$dmn_php,
+		$dmn_cgi,
+		$allowbackup,
+		$domain_dns
+	) = get_domain_default_props($sql, $_SESSION['user_id']);
 
-	if ($dmn_mailacc_limit == -1) $tpl->assign('ISACTIVE_EMAIL', '');
-	if (($dmn_als_limit == -1) && ($dmn_subd_limit == -1)) $tpl->assign('ISACTIVE_DOMAIN', '');
-	if ($dmn_ftpacc_limit == -1) $tpl->assign('ISACTIVE_FTP', '');
-	if ($dmn_sqld_limit == -1) $tpl->assign('ISACTIVE_SQL', '');
+	if ($dmn_mailacc_limit == -1)
+		$tpl->assign('ISACTIVE_EMAIL', '');
 
-	if (!Config::get('ISPCP_SUPPORT_SYSTEM')) {
+	if ($dmn_als_limit == -1 && $dmn_subd_limit == -1 && $domain_dns != 'yes')
+		$tpl->assign('ISACTIVE_DOMAIN', '');
+
+	if ($dmn_ftpacc_limit == -1)
+		$tpl->assign('ISACTIVE_FTP', '');
+
+	if ($dmn_sqld_limit == -1)
+		$tpl->assign('ISACTIVE_SQL', '');
+
+	$query = "
+	SELECT
+		`support_system`
+	FROM
+		`reseller_props`
+	WHERE
+		`reseller_id` = ?
+	";
+
+	$rs = exec_query($sql, $query, array($_SESSION['user_created_by']));
+  
+	if (!Config::get('ISPCP_SUPPORT_SYSTEM') || $rs->fields['support_system'] == 'no') {
 		$tpl->assign('ISACTIVE_SUPPORT', '');
 	}
 
@@ -526,6 +570,9 @@ function gen_client_menu(&$tpl, $menu_file) {
 	$tpl->define_dynamic('menu', $menu_file);
 	$tpl->define_dynamic('custom_buttons', 'menu');
 	$tpl->define_dynamic('isactive_update_hp', 'menu');
+	$tpl->define_dynamic('isactive_alias_menu', 'menu');
+	$tpl->define_dynamic('isactive_subdomain_menu', 'menu');
+	$tpl->define_dynamic('isactive_dns_menu', 'menu');
 
 	$tpl->assign(
 		array(
@@ -614,19 +661,51 @@ function gen_client_menu(&$tpl, $menu_file) {
 			$i++;
 		} // end while
 	} // end else
-	if (!Config::get('ISPCP_SUPPORT_SYSTEM')) {
+	$query = "
+	SELECT
+		`support_system`
+	FROM
+		`reseller_props`
+	WHERE
+		`reseller_id` = ?
+	";
+
+	$rs = exec_query($sql, $query, array($_SESSION['user_created_by']));
+  
+	if (!Config::get('ISPCP_SUPPORT_SYSTEM') || $rs->fields['support_system'] == 'no') {
 		$tpl->assign('SUPPORT_SYSTEM', '');
 	}
 
 	list(
-		$dmn_id, $dmn_name, $dmn_gid, $dmn_uid, $dmn_created_id, $dmn_created, $dmn_last_modified,
-		$dmn_mailacc_limit, $dmn_ftpacc_limit, $dmn_traff_limit, $dmn_sqld_limit, $dmn_sqlu_limit,
-		$dmn_status, $dmn_als_limit, $dmn_subd_limit, $dmn_ip_id, $dmn_disk_limit, $dmn_disk_usage,
-		$dmn_php, $dmn_cgi, $dmn_dns) = get_domain_default_props($sql, $_SESSION['user_id']);
+		$dmn_id,
+		$dmn_name,
+		$dmn_gid,
+		$dmn_uid,
+		$dmn_created_id,
+		$dmn_created,
+		$dmn_expires,
+		$dmn_last_modified,
+		$dmn_mailacc_limit,
+		$dmn_ftpacc_limit,
+		$dmn_traff_limit,
+		$dmn_sqld_limit,
+		$dmn_sqlu_limit,
+		$dmn_status,
+		$dmn_als_limit,
+		$dmn_subd_limit,
+		$dmn_ip_id,
+		$dmn_disk_limit,
+		$dmn_disk_usage,
+		$dmn_php,
+		$dmn_cgi,
+		$allowbackup,
+		$dmn_dns
+	) = get_domain_default_props($sql, $_SESSION['user_id']);
 
-	if ($dmn_mailacc_limit == -1) $tpl->assign('ACTIVE_EMAIL', '');
-
-	if ($dmn_dns != 'yes') $tpl->assign('ISACTIVE_DNS_MENU', '');
+	if ($dmn_mailacc_limit == -1)	$tpl->assign('ACTIVE_EMAIL', '');
+	if ($dmn_als_limit == -1)		$tpl->assign('ISACTIVE_ALIAS_MENU', '');
+	if ($dmn_subd_limit == -1)		$tpl->assign('ISACTIVE_SUBDOMAIN_MENU', '');
+	if ($dmn_dns != 'yes')			$tpl->assign('ISACTIVE_DNS_MENU', '');
 
 	if (Config::get('AWSTATS_ACTIVE') != 'yes') {
 		$tpl->assign('ACTIVE_AWSTATS', '');
@@ -979,4 +1058,44 @@ function mount_point_exists($dmn_id, $mnt_point) {
 		return true;
 	}
 	return false;
+}
+
+/**
+ * Checks the User rights to add Domain Aliases
+ * 
+ * @param int User ID
+ * @return boolean Client Domain Alias Permissions
+ */
+function check_client_domainalias_permissions($user_id) {
+	$sql = Database::getInstance();
+
+	list($dmn_id,
+		$dmn_name,
+		$dmn_gid,
+		$dmn_uid,
+		$dmn_created_id,
+		$dmn_created,
+		$dmn_expires,
+		$dmn_last_modified,
+		$dmn_mailacc_limit,
+		$dmn_ftpacc_limit,
+		$dmn_traff_limit,
+		$dmn_sqld_limit,
+		$dmn_sqlu_limit,
+		$dmn_status,
+		$dmn_als_limit,
+		$dmn_subd_limit,
+		$dmn_ip_id,
+		$dmn_disk_limit,
+		$dmn_disk_usage,
+		$dmn_php,
+		$dmn_cgi,
+		$allowbackup,
+		$dmn_dns
+	) = get_domain_default_props($sql, $user_id);
+
+	if ($dmn_als_limit == "-1") {
+		return false;
+	}
+	return true;
 }

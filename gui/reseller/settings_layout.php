@@ -3,8 +3,8 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
  *
@@ -24,7 +24,7 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
- * Portions created by the ispCP Team are Copyright (C) 2006-2009 by
+ * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  */
 
@@ -37,9 +37,21 @@ $tpl->define_dynamic('page', Config::get('RESELLER_TEMPLATE_PATH') . '/settings_
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('def_layout', 'page');
+$tpl->define_dynamic('logo_remove_button', 'page');
+
+save_layout();
+
+update_logo();
 
 $theme_color = Config::get('USER_INITIAL_THEME');
 
+gen_def_layout($tpl, $theme_color);
+
+if(get_own_logo($_SESSION['user_id']) !== Config::get('IPS_LOGO_PATH').'/isp_logo.gif') {
+	$tpl->parse('LOGO_REMOVE_BUTTON', '.logo_remove_button');
+} else {
+	$tpl->assign('LOGO_REMOVE_BUTTON', '');
+}
 
 function save_layout() {
 	$sql = Database::getInstance();
@@ -67,7 +79,7 @@ function save_layout() {
 function update_logo() {
 
 	$user_id = $_SESSION['user_id'];
-	if (isset($_POST['delete_logo'])) {
+	if (isset($_POST['uaction']) && $_POST['uaction'] === 'delete_logo') {
 
 		$logo = get_own_logo($user_id);
 		if (basename($logo) != 'isp_logo.gif') { // default logo
@@ -76,7 +88,7 @@ function update_logo() {
 		}
 		return;
 
-	} else if (isset($_POST['upload_logo'])) {
+	} else if (isset($_POST['uaction']) && $_POST['uaction'] === 'upload_logo')  {
 
 		if (empty($_FILES['logo_file']['tmp_name'])) {
 				set_page_message(tr('Upload file error!'));
@@ -116,7 +128,7 @@ function update_logo() {
 			return;
 		}
 
-		$newFName = get_user_name($user_id) . '.' . $fext;
+		$newFName = sha1($fname .'-'. $user_id) .'.'. $fext;
 		$path = substr($_SERVER['SCRIPT_FILENAME'], 0, strpos($_SERVER['SCRIPT_FILENAME'], '/reseller/settings_layout.php') + 1);
 		$logoFile = $path . '/themes/user_logos/' . $newFName;
 		move_uploaded_file($fname, $logoFile);
@@ -141,8 +153,6 @@ function update_user_gui_props($file_name, $user_id) {
 	$rs = exec_query($sql, $query, array($file_name, $user_id));
 }
 
-save_layout();
-gen_def_layout($tpl, $theme_color);
 $tpl->assign(
 	array(
 		'TR_RESELLER_LAYOUT_DATA_PAGE_TITLE'	=> tr('ispCP - Reseller/Change Personal Data'),
@@ -163,7 +173,6 @@ gen_reseller_mainmenu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/main_menu_
 gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_general_information.tpl');
 
 gen_logged_from($tpl);
-update_logo();
 
 $tpl->assign(
 	array(

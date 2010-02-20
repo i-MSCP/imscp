@@ -1,8 +1,8 @@
 #!/usr/bin/make -f
- 
+
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
-# Copyright (C) 2006-2009 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
 #
 # Version: $Id$
 #
@@ -21,7 +21,7 @@
 # The Initial Developer of the Original Code is moleSoftware GmbH.
 # Portions created by Initial Developer are Copyright (C) 2001-2006
 # by moleSoftware GmbH. All Rights Reserved.
-# Portions created by the ispCP Team are Copyright (C) 2006-2009 by
+# Portions created by the ispCP Team are Copyright (C) 2006-2010 by
 # isp Control Panel. All Rights Reserved.
 #
 # The ispCP ω Home Page is:
@@ -85,7 +85,7 @@ install:
 	rm -rf $(SYSTEM_WEB)/ispcp/gui/reseller
 	rm -rf $(SYSTEM_WEB)/ispcp/gui/*.php
 
-        # Backup ispcp.conf and copy the /etc directory into your system (you may make backups):
+    # Backup ispcp.conf and copy the /etc directory into your system (you may make backups):
 	mv -v /usr/local/etc/ispcp/ispcp.conf /usr/local/etc/ispcp/ispcp.old.conf
 	mv -v /usr/local/etc/proftpd.conf /usr/local/etc/proftpd.old.conf
 
@@ -97,7 +97,6 @@ install:
 .endif
 
 	mkdir -p /usr/local/www/data/scoreboards
-	#
 	#
 	# If Some error occured please read FAQ first and search at forum in http://www.isp-control.net
 	# Go to $(SYSTEM_WEB)/ispcp/engine/setup and type "ispcp-setup" to configure or "ispcp-upgrade"
@@ -123,4 +122,3 @@ uninstall:
 
 clean:
 	cd ./tools/daemon && $(MAKE) clean
-

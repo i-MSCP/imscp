@@ -3,8 +3,8 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
  *
@@ -24,7 +24,7 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
- * Portions created by the ispCP Team are Copyright (C) 2006-2009 by
+ * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  */
 
@@ -91,8 +91,18 @@ $tpl->assign(
 );
 
 // dynamic page data.
+$query = "
+  SELECT
+    `support_system`
+  FROM
+    `reseller_props`
+  WHERE
+    `reseller_id` = ?
+";
 
-if (!Config::get('ISPCP_SUPPORT_SYSTEM')) {
+$rs = exec_query($sql, $query, array($_SESSION['user_created_by']));
+
+if (!Config::get('ISPCP_SUPPORT_SYSTEM') || $rs->fields['support_system'] == 'no') {
 	user_goto('index.php');
 }
 
@@ -115,16 +125,16 @@ if (isset($_POST['urgency'])) {
 }
 switch ($userdata['URGENCY']) {
 	case 1:
-		$userdata['OPT_URGENCY_1'] = ' selected="selected"';  
+		$userdata['OPT_URGENCY_1'] = ' selected="selected"';
 		break;
 	case 3:
-		$userdata['OPT_URGENCY_3'] = ' selected="selected"';  
+		$userdata['OPT_URGENCY_3'] = ' selected="selected"';
 		break;
 	case 4:
-		$userdata['OPT_URGENCY_4'] = ' selected="selected"';  
+		$userdata['OPT_URGENCY_4'] = ' selected="selected"';
 		break;
 	default:
-		$userdata['OPT_URGENCY_2'] = ' selected="selected"';  
+		$userdata['OPT_URGENCY_2'] = ' selected="selected"';
 		break;
 }
 $userdata['SUBJECT'] = isset($_POST['subj']) ? clean_input($_POST['subj'], true) : '';

@@ -3,8 +3,8 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
  *
@@ -24,7 +24,7 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
- * Portions created by the ispCP Team are Copyright (C) 2006-2009 by
+ * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  */
 
@@ -90,6 +90,7 @@ Config::set('ITEM_RESTORE_STATUS', 'restore');
 Config::set('ITEM_TOENABLE_STATUS', 'toenable');
 Config::set('ITEM_TODISABLED_STATUS', 'todisable');
 Config::set('ITEM_ORDERED_STATUS', 'ordered');
+Config::set('ITEM_DNSCHANGE_STATUS', 'dnschange');
 // SQL variables
 Config::set('MAX_SQL_DATABASE_LENGTH', 64);
 Config::set('MAX_SQL_USER_LENGTH', 16);

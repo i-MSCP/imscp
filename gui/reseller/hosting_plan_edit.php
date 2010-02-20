@@ -3,8 +3,8 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
  *
@@ -24,7 +24,7 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
- * Portions created by the ispCP Team are Copyright (C) 2006-2009 by
+ * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  */
 
@@ -162,10 +162,10 @@ function restore_form(&$tpl, &$sql) {
 					'TR_CGI_NO'		=> ($_POST['cgi'] == '_no_') ? 'checked="checked"' : '',
 					'TR_DNS_YES'	=> ($_POST['dns'] == '_yes_') ? 'checked="checked"' : '',
 					'TR_DNS_NO'		=> ($_POST['dns'] == '_no_') ? 'checked="checked"' : '',
-					'VL_BACKUPD'	=> ($hp_backup == '_dmn_') ? 'checked="checked"' : '',
-					'VL_BACKUPS'	=> ($hp_backup == '_sql_') ? 'checked="checked"' : '',
-					'VL_BACKUPF'	=> ($hp_backup == '_full_') ? 'checked="checked"' : '',
-					'VL_BACKUPN'	=> ($hp_backup == '_no_') ? 'checked="checked"' : '',
+					'VL_BACKUPD'	=> ($_POST['backup'] == '_dmn_') ? 'checked="checked"' : '',
+					'VL_BACKUPS'	=> ($_POST['backup'] == '_sql_') ? 'checked="checked"' : '',
+					'VL_BACKUPF'	=> ($_POST['backup'] == '_full_') ? 'checked="checked"' : '',
+					'VL_BACKUPN'	=> ($_POST['backup']== '_no_') ? 'checked="checked"' : '',
 					'TR_STATUS_YES'	=> ($_POST['status']) ? 'checked="checked"' : '',
 					'TR_STATUS_NO'	=> (!$_POST['status']) ? 'checked="checked"' : ''
 			)
@@ -227,7 +227,7 @@ function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
 	$value = $data['value'];
 	$payment = $data['payment'];
 	$status = $data['status'];
-	
+
 	list(
 			$hp_php,
 			$hp_cgi,
@@ -243,7 +243,7 @@ function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
 			$hp_dns
 
 	) = explode(";", $props);
-	
+
 	$hp_name = $data['name'];
 
 	if ($description == '')
@@ -328,10 +328,10 @@ function check_data_iscorrect(&$tpl) {
 	{
 		$ahp_error = tr('Undefined reference to data!');
 	}
-	
+
 	// put hosting plan id into session value
 	$_SESSION['hpid'] = $hpid;
-	
+
 	// Get values from previous page and check him correction
 	if (isset($_POST['php'])) {
 		$hp_php = $_POST['php'];
@@ -392,7 +392,7 @@ function save_data_to_db() {
 	global $hp_traff, $hp_disk;
 	global $hpid;
 	global $hp_backup, $hp_dns;
-	
+
 	$sql = Database::getInstance();
 
 	$err_msg		= '';
@@ -439,6 +439,7 @@ function save_data_to_db() {
 
 	} else {
 		set_page_message(tr("Hosting plan values exceed reseller maximum values!"));
+		restore_form($tpl, $sql);
 		return false;
 	}
 } // end of save_data_to_db()

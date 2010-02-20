@@ -3,8 +3,8 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
  *
@@ -24,7 +24,7 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
- * Portions created by the ispCP Team are Copyright (C) 2006-2009 by
+ * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  */
 
@@ -120,9 +120,20 @@ function gen_reseller_mainmenu(&$tpl, $menu_file) {
 			$i++;
 		} // end while
 	} // end else
-	if (!Config::get('ISPCP_SUPPORT_SYSTEM')) {
+	$query = "
+	SELECT
+		`support_system`
+	FROM
+		`reseller_props`
+	WHERE
+		`reseller_id` = ?
+	";
+
+	$rs = exec_query($sql, $query, array($_SESSION['user_id']));
+  
+	if (!Config::get('ISPCP_SUPPORT_SYSTEM') || $rs->fields['support_system'] == 'no') {
 		$tpl->assign('ISACTIVE_SUPPORT', '');
-	}
+ 	}
 
 	$tpl->parse('MAIN_MENU', 'menu');
 } // end of gen_reseller_menu()
@@ -211,7 +222,18 @@ function gen_reseller_menu(&$tpl, $menu_file) {
 			$i++;
 		} // end while
 	} // end else
-	if (!Config::get('ISPCP_SUPPORT_SYSTEM')) {
+	$query = "
+	SELECT
+		`support_system`
+	FROM
+		`reseller_props`
+	WHERE
+		`reseller_id` = ?
+	";
+
+	$rs = exec_query($sql, $query, array($_SESSION['user_id']));
+  
+	if (!Config::get('ISPCP_SUPPORT_SYSTEM') || $rs->fields['support_system'] == 'no') {
 		$tpl->assign('ISACTIVE_SUPPORT', '');
 	}
 	if (Config::exists('HOSTING_PLANS_LEVEL') && strtolower(Config::get('HOSTING_PLANS_LEVEL')) === 'admin') {
@@ -459,6 +481,8 @@ function get_user_traffic($user_id) {
 
 		$query = "
 			SELECT
+				YEAR(FROM_UNIXTIME(`dtraff_time`)) AS `tyear`, 
+				MONTH(FROM_UNIXTIME(`dtraff_time`)) AS `tmonth`,
 				SUM(`dtraff_web`) AS web,
 				SUM(`dtraff_ftp`) AS ftp,
 				SUM(`dtraff_mail`) AS smtp,
@@ -471,11 +495,25 @@ function get_user_traffic($user_id) {
 				`domain_traffic`
 			WHERE
 				`domain_id` = ?
+			GROUP BY
+				`tyear`, `tmonth`
 		";
 
 		$res = exec_query($sql, $query, array($domain_id));
 
-		$data = $res->FetchRow();
+		$max_traffic_month = 
+		$data['web'] = $data['ftp'] = $data['smtp'] = 
+		$data['pop'] = $data['total'] = 0;
+
+		while ($row = $res->FetchRow()) {
+			$data['web'] += $row['web'];
+			$data['ftp'] += $row['ftp'];
+			$data['smtp'] += $row['smtp'];
+			$data['pop'] += $row['total'];
+			if ($row['total'] > $max_traffic_month) {
+				$max_traffic_month = $row['total'];
+			}
+		}
 
 		return array($domain_name,
 			$domain_id,
@@ -486,7 +524,8 @@ function get_user_traffic($user_id) {
 			$data['total'],
 			$domain_disk_usage,
 			$domain_traff_limit,
-			$domain_disk_limit
+			$domain_disk_limit,
+			$max_traffic_month
 		);
 	}
 } // end of get_user_traffic()
@@ -518,17 +557,19 @@ function get_user_props($user_id) {
 	$sub_current = get_domain_running_sub_cnt($sql, $user_id);
 	$sub_max = $data['domain_subd_limit'];
 
-	$als_current = records_count( 'domain_aliasses', 'domain_id', $user_id);
+	$als_current = records_count('domain_aliasses', 'domain_id', $user_id);
 	$als_max = $data['domain_alias_limit'];
 
 	if (Config::get('COUNT_DEFAULT_EMAIL_ADDRESSES')) {
-		$mail_current = records_count( 'mail_users', 'domain_id', $user_id);
+		// Catch all is not a mailbox and haven't to be count - TheCry
+		$mail_current = records_count('mail_users', 'mail_type NOT RLIKE \'_catchall\' AND domain_id', $user_id);
 	} else {
 		$where = "`mail_acc` != 'abuse'
 		AND `mail_acc` != 'postmaster'
 		AND `mail_acc` != 'webmaster'
+		AND `mail_type` NOT RLIKE '_catchall'
 		AND `domain_id`";
-		$mail_current = records_count( 'mail_users', $where, $user_id);
+		$mail_current = records_count('mail_users', $where, $user_id);
 	}
 	$mail_max = $data['domain_mailacc_limit'];
 
@@ -546,7 +587,7 @@ function get_user_props($user_id) {
 
 	$ftp_max = $data['domain_ftpacc_limit'];
 
-	$sql_db_current = records_count( 'sql_database', 'domain_id', $user_id);
+	$sql_db_current = records_count('sql_database', 'domain_id', $user_id);
 	$sql_db_max = $data['domain_sqld_limit'];
 
 	$sql_user_current = get_domain_running_sqlu_acc_cnt($sql, $user_id);
@@ -1382,7 +1423,7 @@ function reseller_limits_check(&$sql, &$err_msg, $reseller_id, $hpid, $newprops 
 
 	if ($dmn_max != 0) {
 		if ($dmn_current + 1 > $dmn_max) {
-			set_page_message(tr('You have reached your domains limit.<br>You cannot add more domains!'));
+			set_page_message(tr('You have reached your domains limit.<br />You cannot add more domains!'));
 			$error = true;
 		}
 	}
@@ -1390,7 +1431,7 @@ function reseller_limits_check(&$sql, &$err_msg, $reseller_id, $hpid, $newprops 
 	if ($sub_max != 0) {
 		if ($sub_new != -1) {
 			if ($sub_new == 0) {
-				set_page_message(tr('You have a subdomains limit!<br>You cannot add an user with unlimited subdomains!'));
+				set_page_message(tr('You have a subdomains limit!<br />You cannot add an user with unlimited subdomains!'));
 				$error = true;
 			} else if ($sub_current + $sub_new > $sub_max) {
 				set_page_message(tr('You are exceeding your subdomains limit!'));
@@ -1402,7 +1443,7 @@ function reseller_limits_check(&$sql, &$err_msg, $reseller_id, $hpid, $newprops 
 	if ($als_max != 0) {
 		if ($als_new != -1) {
 			if ($als_new == 0) {
-				set_page_message(tr('You have an aliases limit!<br>You cannot add an user with unlimited aliases!'));
+				set_page_message(tr('You have an aliases limit!<br />You cannot add an user with unlimited aliases!'));
 				$error = true;
 			} else if ($als_current + $als_new > $als_max) {
 				set_page_message(tr('You Are Exceeding Your Alias Limit!'));
@@ -1413,16 +1454,17 @@ function reseller_limits_check(&$sql, &$err_msg, $reseller_id, $hpid, $newprops 
 
 	if ($mail_max != 0) {
 		if ($mail_new == 0) {
-			set_page_message(tr('You have a mail accounts limit!<br>You cannot add an user with unlimited mail accounts!'));
+			set_page_message(tr('You have a mail accounts limit!<br />You cannot add an user with unlimited mail accounts!'));
 			$error = true;
 		} else if ($mail_current + $mail_new > $mail_max) {
 			set_page_message(tr('You are exceeding your mail accounts limit!'));
+			$error = true;
 		}
 	}
 
 	if ($ftp_max != 0) {
 		if ($ftp_new == 0) {
-			set_page_message(tr('You have a FTP accounts limit!<br>You cannot add an user with unlimited FTP accounts!'));
+			set_page_message(tr('You have a FTP accounts limit!<br />You cannot add an user with unlimited FTP accounts!'));
 			$error = true;
 		} else if ($ftp_current + $ftp_new > $ftp_max) {
 			set_page_message(tr('You are exceeding your FTP accounts limit!'));
@@ -1433,7 +1475,7 @@ function reseller_limits_check(&$sql, &$err_msg, $reseller_id, $hpid, $newprops 
 	if ($sql_db_max != 0) {
 		if ($sql_db_new != -1) {
 			if ($sql_db_new == 0) {
-				set_page_message(tr('You have a SQL databases limit!<br>You cannot add an user with unlimited SQL databases!'));
+				set_page_message(tr('You have a SQL databases limit!<br />You cannot add an user with unlimited SQL databases!'));
 				$error = true;
 			} else if ($sql_db_current + $sql_db_new > $sql_db_max) {
 				set_page_message(tr('You are exceeding your SQL databases limit!'));
@@ -1445,10 +1487,10 @@ function reseller_limits_check(&$sql, &$err_msg, $reseller_id, $hpid, $newprops 
 	if ($sql_user_max != 0) {
 		if ($sql_user_new != -1) {
 			if ($sql_user_new == 0) {
-				set_page_message(tr('You have an SQL users limit!<br>You cannot add an user with unlimited SQL users!'));
+				set_page_message(tr('You have an SQL users limit!<br />You cannot add an user with unlimited SQL users!'));
 				$error = true;
 			} else if ($sql_db_new == -1) {
-				set_page_message(tr('You have disabled SQL databases for this user!<br>You cannot have SQL users here!'));
+				set_page_message(tr('You have disabled SQL databases for this user!<br />You cannot have SQL users here!'));
 				$error = true;
 			} else if ($sql_user_current + $sql_user_new > $sql_user_max) {
 				set_page_message(tr('You are exceeding your SQL database limit!'));
@@ -1459,7 +1501,7 @@ function reseller_limits_check(&$sql, &$err_msg, $reseller_id, $hpid, $newprops 
 
 	if ($traff_max != 0) {
 		if ($traff_new == 0) {
-			set_page_message(tr('You have a traffic limit!<br>You cannot add an user with unlimited traffic!'));
+			set_page_message(tr('You have a traffic limit!<br />You cannot add an user with unlimited traffic!'));
 			$error = true;
 		} else if ($traff_current + $traff_new > $traff_max) {
 			set_page_message(tr('You are exceeding your traffic limit!'));
@@ -1469,7 +1511,7 @@ function reseller_limits_check(&$sql, &$err_msg, $reseller_id, $hpid, $newprops 
 
 	if ($disk_max != 0) {
 		if ($disk_new == 0) {
-			set_page_message(tr('You have a disk limit!<br>You cannot add an user with unlimited disk!'));
+			set_page_message(tr('You have a disk limit!<br />You cannot add an user with unlimited disk!'));
 			$error = true;
 		} else if ($disk_current + $disk_new > $disk_max) {
 			set_page_message(tr('You are exceeding your disk limit!'));
@@ -1477,7 +1519,7 @@ function reseller_limits_check(&$sql, &$err_msg, $reseller_id, $hpid, $newprops 
 		}
 	}
 
-	if ($error == true) {
+	if ($error === true) {
 		return false;
 	}
 
@@ -1684,9 +1726,10 @@ function client_mail_add_default_accounts($dmn_id, $user_email, $dmn_part, $dmn_
 
 /**
  * Get count from table by given domain_id's
+ * 
  * @param $tablename string database table name
  * @param $ua array domain_ids
- * @return integer count
+ * @return int count
  */
 function get_reseller_detail_count($tablename, $ua) {
 	global $sql;
@@ -1718,12 +1761,14 @@ function get_reseller_detail_count($tablename, $ua) {
 
 /**
  * Recalculate current_ properties of reseller
- * @param $reseller_id integer ID of the reseller
+ *
+ * @param int $reseller_id unique reseller identifiant
  * @return array list of properties
  */
 function recalc_reseller_c_props($reseller_id) {
-	global $sql;
 
+	global $sql;
+ 
 	// current_dmn_cnt = domain
 	// current_sub_cnt = subdomain
 	// current_als_cnt = domain_aliasses
@@ -1731,14 +1776,23 @@ function recalc_reseller_c_props($reseller_id) {
 	// current_ftp_cnt = ftp_users
 	// current_sql_db_cnt = sql_database
 	// current_sql_user_cnt = sql_user
-
+	// current_disk_amnt = disk_space
+	// current_traff_amnt = traffic
+ 
 	$delstatus = Config::get('ITEM_DELETE_STATUS');
-
+ 
 	// Get all users of reseller:
 	$query = "
 		SELECT
-			`domain_id`,
-			`domain_uid`
+			COUNT(`domain_id`) AS crn_domains,
+			IFNULL(SUM(`domain_subd_limit`), 0) AS current_sub_cnt,
+			IFNULL(SUM(`domain_alias_limit`), 0) AS current_als_cnt,
+			IFNULL(SUM(`domain_mailacc_limit`), 0) AS current_mail_cnt,
+			IFNULL(SUM(`domain_ftpacc_limit`), 0) AS current_ftp_cnt,
+			IFNULL(SUM(`domain_sqld_limit`), 0) AS current_sql_db_cnt,
+			IFNULL(SUM(`domain_sqlu_limit`), 0) AS current_sql_user_cnt,
+			IFNULL(SUM(`domain_disk_limit`), 0) AS current_disk_amnt,
+			IFNULL(SUM(`domain_traffic_limit`), 0) AS current_traff_amnt
 		FROM
 			`domain`
 		WHERE
@@ -1747,46 +1801,51 @@ function recalc_reseller_c_props($reseller_id) {
 			`domain_status` != ?
 	";
 	$res = exec_query($sql, $query, array($reseller_id, $delstatus));
-	$user_array = $systemuser_array = array();
-	while ($data = $res->FetchRow()) {
-		$user_array[] = $data['domain_id'];
-		$systemuser_array[] = $data['domain_uid'];
-	}
-	$current_dmn_cnt = count($user_array);
+ 
+	$current_dmn_cnt = $res -> fields['crn_domains'];
+
 	if ($current_dmn_cnt > 0) {
-		$current_sub_cnt = get_reseller_detail_count('subdomain', $user_array);
-		$current_als_cnt = get_reseller_detail_count('domain_aliasses', $user_array);
-		$current_mail_cnt = get_reseller_detail_count('mail_users', $user_array);
-		$current_ftp_cnt = get_reseller_detail_count('ftp_users', $systemuser_array);
-		$current_sql_db_cnt = get_reseller_detail_count('sql_database', $user_array);
-
-		$query = "SELECT COUNT(*) AS cnt FROM `sql_user`";
-		$query .= " WHERE `sqld_id` IN (";
-		$query .= "SELECT sqld_id FROM sql_database";
-		$query .= " WHERE `domain_id` IN (".implode(',', $user_array)."))";
-		$res = exec_query($sql, $query);
-		$current_sql_user_cnt = $res->fields['cnt'];
+		$current_sub_cnt = $res -> fields['current_sub_cnt'];
+		$current_als_cnt = $res -> fields['current_als_cnt'];
+		$current_mail_cnt = $res -> fields['current_mail_cnt'];
+		$current_ftp_cnt = $res -> fields['current_ftp_cnt'];
+		$current_sql_db_cnt = $res->fields['current_sql_db_cnt'];
+		$current_sql_user_cnt = $res->fields['current_sql_user_cnt'];
+		$current_disk_amnt  = $res->fields['current_disk_amnt'];
+		$current_traff_amnt = $res->fields['current_traff_amnt'];
 	} else {
-		$current_sub_cnt =
-		$current_als_cnt =
-		$current_mail_cnt =
-		$current_ftp_cnt =
-		$current_sql_db_cnt =
+		$current_sub_cnt = 0;
+		$current_als_cnt = 0;
+		$current_mail_cnt = 0;
+		$current_ftp_cnt = 0;
+		$current_sql_db_cnt = 0;
 		$current_sql_user_cnt = 0;
+		$current_disk_amnt  = 0;
+		$current_traff_amnt = 0;
 	}
-
-	return array($current_dmn_cnt, $current_sub_cnt, $current_als_cnt,
-				$current_mail_cnt, $current_ftp_cnt, $current_sql_db_cnt,
-				$current_sql_user_cnt);
+ 
+	return array(
+		$current_dmn_cnt,
+		$current_sub_cnt,
+		$current_als_cnt,
+		$current_mail_cnt,
+		$current_ftp_cnt,
+		$current_sql_db_cnt,
+		$current_sql_user_cnt,
+		$current_disk_amnt,
+		$current_traff_amnt
+	);
 }
 
 /**
  * Recalculate current_ properties of reseller
- * @param $reseller_id integer ID of the reseller
+ * 
+ * @param int $reseller_id unique reseller identifiant
+ * @return void
  */
 function update_reseller_c_props($reseller_id) {
 	global $sql;
-
+ 
 	$query = "
 		UPDATE
 			`reseller_props`
@@ -1797,25 +1856,29 @@ function update_reseller_c_props($reseller_id) {
 			`current_mail_cnt` = ?,
 			`current_ftp_cnt` = ?,
 			`current_sql_db_cnt` = ?,
-			`current_sql_user_cnt` = ?
+			`current_sql_user_cnt` = ?,
+			`current_disk_amnt` = ?,
+			`current_traff_amnt` = ?
 		WHERE
 			`reseller_id` = ?
 	";
-
+ 
 
 	$props = recalc_reseller_c_props($reseller_id);
 	$props[] = $reseller_id;
-
+ 
 	exec_query($sql, $query, $props);
 }
 
 /**
  * Get the reseller id of a domain
  * moved from admin/domain_edit.php to reseller-functions.php
- * @param $domain_id integer ID of domain
- * @return integer ID of reseller or 0 in case of error
+ * 
+ * @param int $domain_id unique domain identifiant
+ * @return int unique reseller identifiant or 0 in on error
  */
 function get_reseller_id($domain_id) {
+
 	$sql = Database::getInstance();
 
 	$query = "
@@ -1837,4 +1900,31 @@ function get_reseller_id($domain_id) {
 
 	$data = $rs->FetchRow();
 	return $data['created_by'];
+}
+
+/**
+ * Checks if a reseller has the right to add domain aliases
+ * 
+ * @param int $reseller_id unique reseller identifiant
+ * @return boolean domain alias permissions  
+ */
+function check_reseller_domainalias_permissions($reseller_id) {
+
+	$sql = Database::getInstance();
+	
+	list($rdmn_current, $rdmn_max,
+			$rsub_current, $rsub_max,
+			$rals_current, $rals_max,
+			$rmail_current, $rmail_max,
+			$rftp_current, $rftp_max,
+			$rsql_db_current, $rsql_db_max,
+			$rsql_user_current, $rsql_user_max,
+			$rtraff_current, $rtraff_max,
+			$rdisk_current, $rdisk_max
+		) = get_reseller_default_props($sql, $reseller_id);
+
+	if ($rals_max == "-1") {
+		return false;
+	}
+	return true;	
 }

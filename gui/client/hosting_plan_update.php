@@ -3,8 +3,8 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
  *
@@ -24,7 +24,7 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
- * Portions created by the ispCP Team are Copyright (C) 2006-2009 by
+ * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  */
 
@@ -255,7 +255,7 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 
 		$traffic = get_user_traffic($domain_id);
 
-		$curr_value = $traffic[7]; // disk usage
+		$curr_value = $traffic[7] / 1048576; // convert disk usage to MB
 
 		if (!check_update_current_value($curr_value, $hp_disk)) {
 			$error_msgs[] = tr("You have more disk space in use than the new hosting plan limits.");
@@ -263,10 +263,10 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 
 		$hdd_usage = tr('Disk limit') . ": " . translate_limit_value($hp_disk, true) . "<br />";
 
-		$curr_value = $traffic[6]; // total
+		$curr_value = $traffic[10] / 1048576; // convert max. traffic to MB
 
 		if (!check_update_current_value($curr_value, $hp_traff)) {
-			$error_msgs[] = tr("You have more traffic than the new hosting plan limits.");
+			$warning_msgs[] = tr("You did have more traffic than the new hosting plan limits.");
 		}
 
 		$traffic_usage = tr('Traffic limit') . ": " . translate_limit_value($hp_traff, true);
@@ -381,10 +381,10 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 				} else {
 					$warning_text = '';
 				}
-				$warning_text .= '<br /><br /><strong>'.tr('Error:').'</strong><br />'.implode('<br />', $error_msgs);
+				$warning_text .= '<br /><br /><strong>'.tr('Caution:').'</strong><br />'.implode('<br />', $error_msgs);
 			} elseif ($purchase_link == 'order_id' && count($warning_msgs) > 0) {
 				$warning_text = '<br /><br /><strong>'.tr('Warning:').'</strong><br />'.implode('<br />', $warning_msgs);
-				$purchase_text = tr('I know about the warnings - Purchase!');
+				$purchase_text = tr('I understand the warnings - Purchase!');
 			} else {
 				$warning_text = '';
 			}
@@ -407,7 +407,8 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 			$tpl->parse('HP_ORDER', '.hp_order');
 			$i++;
 		}
-
+		$purchase_text = tr('Purchase');
+		$purchase_link = 'order_id';
 		$rs->MoveNext();
 	}
 	if ($i == 0) {
@@ -479,44 +480,39 @@ function add_new_order(&$tpl, &$sql, $order_id, $user_id) {
 
 	$traffic = get_user_traffic($domain_id);
 
-	$curr_value = $traffic[7]; // disk usage
+	$curr_value = $traffic[7] / 1048576; // disk usage
 	if (!check_update_current_value($curr_value, $hp_disk)) {
-		$error_msgs[] = tr("You have more disk space in use than the new hosting plan limits");
-	}
-
-	$curr_value = $traffic[6]; // total
-	if (!check_update_current_value($curr_value, $hp_traff)) {
-		$error_msgs[] = tr("You have more traffic than the new hosting plan limits");
+		$error_msgs[] = tr("You have more disk space in use than the new hosting plan limits.");
 	}
 
 	$curr_value = get_domain_running_als_cnt($sql, $domain_id);
 	if (!check_update_current_value($curr_value, $hp_als)) {
-		$error_msgs[] = tr("You have more aliases in use than the new hosting plan limits");
+		$error_msgs[] = tr("You have more aliases in use than the new hosting plan limits.");
 	}
 
 	$curr_value = get_domain_running_sub_cnt($sql, $domain_id);
 	if (!check_update_current_value($curr_value, $hp_sub)) {
-		$error_msgs[] = tr("You have more subdomains in use than the new hosting plan limits");
+		$error_msgs[] = tr("You have more subdomains in use than the new hosting plan limits.");
 	}
 
 	$curr_value = get_domain_running_mail_acc_cnt($sql, $domain_id);
 	if (!check_update_current_value($curr_value[0], $hp_mail)) {
-		$error_msgs[] = tr("You have more Email addresses in use than the new hosting plan limits");
+		$error_msgs[] = tr("You have more e-mail addresses in use than the new hosting plan limits.");
 	}
 
 	$curr_value = get_domain_running_ftp_acc_cnt($sql, $domain_id);
 	if (!check_update_current_value($curr_value[0], $hp_ftp)) {
-		$error_msgs[] = tr("You have more FTP accounts in use than the new hosting plan limits");
+		$error_msgs[] = tr("You have more FTP accounts in use than the new hosting plan limits.");
 	}
 
 	$curr_value = get_domain_running_sqld_acc_cnt($sql, $domain_id);
 	if (!check_update_current_value($curr_value, $hp_sql_db)) {
-		$error_msgs[] = tr("You have more SQL databases in use than the new hosting plan limits");
+		$error_msgs[] = tr("You have more SQL databases in use than the new hosting plan limits.");
 	}
 
 	$curr_value = get_domain_running_sqlu_acc_cnt($sql, $domain_id);
 	if (!check_update_current_value($curr_value, $hp_sql_user)) {
-		$error_msgs[] = tr("You have more SQL database users in use than the new hosting plan limits");
+		$error_msgs[] = tr("You have more SQL database users in use than the new hosting plan limits.");
 	}
 
 	if (count($error_msgs) > 0) {

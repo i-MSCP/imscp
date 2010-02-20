@@ -2,8 +2,8 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
  *
@@ -20,8 +20,8 @@
  *
  * The Original Code is "ispCP - ISP Control Panel".
  *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
- * Portions created by Initial Developer are Copyright (C) 2006-2009 by
+ * The Initial Developer of the Original Code is ispCP Team.
+ * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  */
 
@@ -827,7 +827,7 @@ SQL_QUERY;
 		$sqlUpd = array();
 
 		// Change all NULL values to decimal 0
-		$sqlUpd[] = "UPDATE `domain_dns` SET `domain_dns`.`alias_id` = '0' ". 
+		$sqlUpd[] = "UPDATE `domain_dns` SET `domain_dns`.`alias_id` = '0' ".
 					"WHERE `domain_dns`.`alias_id`= NULL;";
 		// Remove NULL value for alias_id
 		$sqlUpd[] = "ALTER TABLE `domain_dns` CHANGE `domain_dns`.`alias_id` ".
@@ -837,6 +837,53 @@ SQL_QUERY;
 					"ADD UNIQUE (`domain_id`, `alias_id`, `domain_dns`, ".
 					"`domain_class`, `domain_type`, `domain_text`);";
 
+		return $sqlUpd;
+	}
+	
+	/**
+	 * Adding Support System Control:
+	 * Admin can Enable and Disable Reseller's support system from frontend, 
+	 * belongs to ticket #1121 @see http://isp-control.net/ispcp/ticket/1121
+	 *
+	 * @author		Sebastian Sellmeier
+	 * @copyright	2006-2010 by ispCP | http://isp-control.net
+	 * @version		1.0.1
+	 * @since		r2500
+	 *
+	 * @access		protected
+	 * @return		sql statements to be performed
+	 */
+	protected function _databaseUpdate_27() {
+		$sqlUpd = array();
+		$sqlUpd[] = "ALTER TABLE " .
+				    "`reseller_props` ADD `support_system` ENUM( 'yes', 'no' ) " .
+				    "NOT NULL DEFAULT 'yes' AFTER `max_traff_amnt`";
+		return $sqlUpd;
+	}
+
+	/**
+	 * Adding autoreply loop detection/prevention.
+	 *
+	 * @author		Marc pujol
+	 * @copyright	2006-2010 by ispCP | http://isp-control.net
+	 * @version		1.0.4
+	 * @since		r2592
+	 *
+	 * @access		protected
+	 * @return		sql statements to be performed
+	 */
+	protected function _databaseUpdate_28() {
+		$sqlUpd = array();
+		// Dropping the table is safe enough because the worst thing that may happen is that we
+		// autoreply twice the same sender if the update is re-applied. Not a big deal...
+		$sqlUpd[] = "DROP TABLE IF EXISTS `autoreplies_log`";
+		$sqlUpd[] = "CREATE TABLE `autoreplies_log` ( " .
+				"`time` DATETIME NOT NULL COMMENT 'Date and time of the sent autoreply', " .
+				"`from` VARCHAR( 255 ) NOT NULL COMMENT 'autoreply message sender', " .
+				"`to` VARCHAR( 255 ) NOT NULL COMMENT 'autoreply message recipient', " .
+				"INDEX ( `time` ) " .
+			") ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci COMMENT = 'Sent autoreplies log table';";
+			
 		return $sqlUpd;
 	}
 

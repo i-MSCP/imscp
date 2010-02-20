@@ -3,8 +3,8 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
  *
@@ -24,7 +24,7 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
- * Portions created by the ispCP Team are Copyright (C) 2006-2009 by
+ * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  */
 
@@ -240,29 +240,29 @@ function generate_page_data(&$tpl, $reseller_id, $reseller_name) {
 				? tr('%1$d / %2$d of <b>%3$d</b>', $udmn_current, $rdmn_current, $rdmn_max)
 				: tr('%1$d / %2$d of <b>unlimited</b>', $udmn_current, $rdmn_current),
 
-			'SUB_MSG' => ($rsub_max)
+			'SUB_MSG' => ($rsub_max > 0)
 				? tr('%1$d / %2$d of <b>%3$d</b>', $usub_current, $rsub_current, $rsub_max)
-				: tr('%1$d / %2$d of <b>unlimited</b>', $usub_current, $rsub_current),
+				: (($rsub_max === "-1") ? tr('<b>disabled</b>') : tr('%1$d / %2$d of <b>unlimited</b>', $usub_current, $rsub_current)),
 
-			'ALS_MSG' => ($rals_max)
+			'ALS_MSG' => ($rals_max > 0)
 				? tr('%1$d / %2$d of <b>%3$d</b>', $uals_current, $rals_current, $rals_max)
-				: tr('%1$d / %2$d of <b>unlimited</b>', $uals_current, $rals_current),
+				: (($rals_max === "-1") ? tr('<b>disabled</b>') : tr('%1$d / %2$d of <b>unlimited</b>', $uals_current, $rals_current)),
 
-			'MAIL_MSG' => ($rmail_max)
+			'MAIL_MSG' => ($rmail_max > 0)
 				? tr('%1$d / %2$d of <b>%3$d</b>', $umail_current, $rmail_current, $rmail_max)
-				: tr('%1$d / %2$d of <b>unlimited</b>', $umail_current, $rmail_current),
+				: (($rmail_max === "-1") ? tr('<b>disabled</b>') : tr('%1$d / %2$d of <b>unlimited</b>', $umail_current, $rmail_current)),
 
-			'FTP_MSG' => ($rftp_max)
+			'FTP_MSG' => ($rftp_max > 0)
 				? tr('%1$d / %2$d of <b>%3$d</b>', $uftp_current, $rftp_current, $rftp_max)
-				: tr('%1$d / %2$d of <b>unlimited</b>', $uftp_current, $rftp_current),
+				: (($rftp_max === "-1") ? tr('<b>disabled</b>') : tr('%1$d / %2$d of <b>unlimited</b>', $uftp_current, $rftp_current)),
 
-			'SQL_DB_MSG' => ($rsql_db_max)
+			'SQL_DB_MSG' => ($rsql_db_max > 0)
 				? tr('%1$d / %2$d of <b>%3$d</b>', $usql_db_current, $rsql_db_current, $rsql_db_max)
-				: tr('%1$d / %2$d of <b>unlimited</b>', $usql_db_current, $rsql_db_current),
+				: (($rsql_db_max === "-1") ? tr('<b>disabled</b>') : tr('%1$d / %2$d of <b>unlimited</b>', $usql_db_current, $rsql_db_current)),
 
-			'SQL_USER_MSG' => ($rsql_user_max)
+			'SQL_USER_MSG' => ($rsql_user_max > 0)
 				? tr('%1$d / %2$d of <b>%3$d</b>', $usql_user_current, $rsql_user_current, $rsql_user_max)
-				: tr('%1$d / %2$d of <b>unlimited</b>', $usql_user_current, $rsql_user_current),
+				: (($rsql_user_max === "-1") ? tr('<b>disabled</b>') : tr('%1$d / %2$d of <b>unlimited</b>', $usql_user_current, $rsql_user_current)),
 
 			'EXTRAS' => ''
 		)

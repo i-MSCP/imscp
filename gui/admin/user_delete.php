@@ -3,8 +3,8 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
  *
@@ -24,7 +24,7 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
- * Portions created by the ispCP Team are Copyright (C) 2006-2009 by
+ * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  */
 
@@ -104,11 +104,11 @@ function delete_domain($domain_id) {
 		user_goto('manage_users.php');
 	}
 
-	$domain_admin_id = $data['domain_admin_id'];
-	$domain_name = $data['domain_name'];
-	$domain_uid = $data['domain_uid'];
-	$domain_gid = $data['domain_gid'];
-	$reseller_id = $data['domain_created_id'];
+	$domain_admin_id 	= $data['domain_admin_id'];
+	$domain_name 		= $data['domain_name'];
+	$domain_uid 		= $data['domain_uid'];
+	$domain_gid 		= $data['domain_gid'];
+	$reseller_id 		= $data['domain_created_id'];
 
 	$delete_status = Config::get('ITEM_DELETE_STATUS');
 
@@ -182,7 +182,7 @@ function delete_domain($domain_id) {
 
 	// Delete the quota section:
 	$query = "DELETE FROM `quotalimits` WHERE `name` = ?";
-	exec_query($sql, $query, array($domain_admin_id));
+	exec_query($sql, $query, array($domain_name));
 
 	// Remove support tickets:
 	$query = "DELETE FROM `tickets` WHERE ticket_from = ? OR ticket_to = ?";
@@ -202,8 +202,16 @@ function delete_domain($domain_id) {
  */
 function delete_user($user_id) {
 	global $sql;
-	
-	$query = "SELECT `admin_type` FROM `admin` WHERE `admin_id` = ?";
+
+	$query = "
+		SELECT
+			a.`admin_type`,
+			b.`logo`
+		FROM `admin` AS a
+		LEFT JOIN
+			`user_gui_props` AS b ON b.`user_id` = a.`admin_id`
+		WHERE
+			`admin_id` = ?";
 	$res = exec_query($sql, $query, array($user_id));
 	$data = $res->FetchRow();
 	$type = $data['admin_type'];
@@ -213,12 +221,21 @@ function delete_user($user_id) {
 	}
 
 	if ($type == 'reseller') {
+		$reseller_logo = $data['logo'];
 		// delete reseller props
 		$query = "DELETE FROM `reseller_props` WHERE `reseller_id` = ?";
 		exec_query($sql, $query, array($user_id));
 		// delete hosting plans
 		$query = "DELETE FROM `hosting_plans` WHERE `reseller_id` = ?";
 		exec_query($sql, $query, array($user_id));
+		// delete reseller logo if exists
+		if(!empty($reseller_logo) && $reseller_logo !== 0) {
+			try {
+				unlink(Config::get('IPS_LOGO_PATH') . '/' . $reseller_logo);
+			} catch(Exception $e) {
+				set_page_message(tr('Logo could not be deleted:') . " " . $e->getMessage());
+			}
+		}
 	}
 
 	// Delete ispcp login:
@@ -238,9 +255,9 @@ function delete_user($user_id) {
  */
 function validate_user_deletion($user_id) {
 	global $sql;
-	
+
 	$result = false;
-	
+
 	// check if there are domains created by user
 	$query = "SELECT COUNT(`domain_id`) AS `num_domains` FROM `domain` WHERE `domain_created_id` = ?";
 	$res = exec_query($sql, $query, array($user_id));
@@ -383,7 +400,7 @@ function validate_domain_deletion($domain_id) {
 		$query = "SELECT * FROM `subdomain_alias` WHERE `alias_id` IN (";
 		$query .= implode(',', $alias_a);
 		$query .= ")";
-		$res = exec_query($sql, $query, array($domain_id));
+		$res = exec_query($sql, $query, array());
 		while (!$res->EOF) {
 			$any_sub_found = true;
 			$tpl->assign(array(

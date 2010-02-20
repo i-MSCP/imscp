@@ -26,13 +26,12 @@ function delete_account(url, dmn_name) {
 </head>
 
 <body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
-<!-- BDP: logged_from --><table width="100%" border="0" cellspacing="0" cellpadding="0">
-      <tr>
-        <td height="20" nowrap="nowrap" class="backButton">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /></a> {YOU_ARE_LOGGED_AS}</td>
-      </tr>
-    </table>
-	<!-- EDP: logged_from -->
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="height:100%;padding:0;margin:0 auto;">
+<!-- BDP: logged_from -->
+<tr>
+	<td colspan="3" height="20" nowrap="nowrap" class="backButton">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /></a> {YOU_ARE_LOGGED_AS}</td>
+</tr>
+<!-- EDP: logged_from -->
 <tr>
 <td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" width="195" height="56" border="0" alt="ispCP Logogram" /></td>
 <td style="height: 56px; width:100%; background-color: #0f0f0f"><img src="{THEME_COLOR_PATH}/images/top/top_left_bg.jpg" width="582" height="56" border="0" alt="" /></td>
@@ -111,7 +110,7 @@ function delete_account(url, dmn_name) {
                         <td class="{CLASS_TYPE_ROW}"><img src="{THEME_COLOR_PATH}/images/icons/goto.png" width="16" height="16" border="0" alt="" /> <a href="http://{NAME}/" target="_blank" class="link">{NAME}</a></td>
                         <td class="{CLASS_TYPE_ROW}" width="90" align="center">{CREATION_DATE}</td>
                         <td class="{CLASS_TYPE_ROW}" width="90" align="center">{EXPIRE_DATE}</td>
-						<td class="{CLASS_TYPE_ROW}" width="90" align="center">{DISK_USAGE} of {DISK_LIMIT} MB</td>
+						<td class="{CLASS_TYPE_ROW}" width="90" align="center">{DISK_USAGE}</td>
                         <td nowrap="nowrap" width="80" align="center" class="{CLASS_TYPE_ROW}"><img src="{THEME_COLOR_PATH}/images/icons/identity.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="domain_details.php?domain_id={DOMAIN_ID}" class="link">{TR_DETAILS}</a></td>
                         <!-- BDP: edit_option -->
                         <td nowrap="nowrap" width="80" align="center" class="{CLASS_TYPE_ROW}"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="domain_edit.php?edit_id={DOMAIN_ID}" class="link">{TR_EDIT_DOMAIN}</a></td>

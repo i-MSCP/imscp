@@ -3,8 +3,8 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
  *
@@ -24,7 +24,7 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
- * Portions created by the ispCP Team are Copyright (C) 2006-2009 by
+ * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  */
 
@@ -37,6 +37,8 @@ $tpl->define_dynamic('page', Config::get('RESELLER_TEMPLATE_PATH') . '/user_add3
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('ip_entry', 'page');
+$tpl->define_dynamic('alias_menu', 'page');
+$tpl->define_dynamic('alias_add', 'page');
 
 $theme_color = Config::get('USER_INITIAL_THEME');
 
@@ -115,6 +117,12 @@ if (isset($_POST['uaction'])
 
 gen_user_add3_page($tpl);
 gen_page_message($tpl);
+
+if (!check_reseller_domainalias_permissions($_SESSION['user_id'])) {
+	$tpl->assign('ALIAS_MENU', '');
+	$tpl->assign('ALIAS_ADD', '');
+}
+
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 

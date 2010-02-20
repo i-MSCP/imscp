@@ -10,7 +10,7 @@
   </td>
  </tr>
  <tr>
-				  <td style="width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/menu_bg.jpg); vertical-align: top;">
+<td style="width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/menu_bg.jpg); vertical-align: top;">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td><a href="webtools.php" class="submenu">{TR_MENU_OVERVIEW}</a></td>
@@ -66,12 +66,19 @@
     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
     </tr>
   <!-- EDP: active_awstats -->
-   <tr>
+    <tr>
+    <td>&nbsp;</td>
+  </tr>
+    <tr>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
       <td>&nbsp;</td>
     </tr>
     <tr>
       <td class="logoutbutton"><a href="../index.php?logout"><img src="{THEME_COLOR_PATH}/images/icons/logout_interface.png" width="16" height="16" border="0" alt="" /> {TR_MENU_LOGOUT}</a></td>
     </tr>
+
     <tr>
       <td>&nbsp;</td>
     </tr>

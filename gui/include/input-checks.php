@@ -3,8 +3,8 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
  *
@@ -24,7 +24,7 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
- * Portions created by the ispCP Team are Copyright (C) 2006-2009 by
+ * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  */
 
@@ -537,9 +537,9 @@ function _validates_tld($tld) {
 		// FALSE if the TLD syntax is wrong
 		$pattern =
 			'@^(?:
-				(?:a[cdefgilmnoqrstuwxz]|aero|arpa|asia)|
-				(?:b[abdefghijmnorstvwyz]|biz)|
-				(?:c[acdfghiklmnorsuvxyz]|cat|com|coop)|
+				(?:a[cdefgilmnoqrstuwxz]|aero|asia)|
+				(?:b[abdefghijlmnorstvwyz]|biz)|
+				(?:c[acdfghiklmnoruvxyz]|cat|com|coop)|
 				d[ejkmoz]|
 				(?:e[ceghrstu]|edu)|
 				f[ijkmor]|
@@ -549,12 +549,12 @@ function _validates_tld($tld) {
 				(?:j[emop]|jobs)|
 				k[eghimnprwyz]|
 				l[abcikrstuvy]|
-				(?:m[acdghklmnopqrstuvwxyz]|mil|mobi|museum)|
+				(?:m[acdefghklmnopqrstuvwxyz]|mil|mobi|museum)|
 				(?:n[acefgilopruz]|name|net)|
 				(?:om|org)|
 				(?:p[aefghklmnrstwy]|pro)|
 				qa|
-				r[eouw]|
+				r[eosuw]|
 				s[abcdeghijklmnortuvyz]|
 				(?:t[cdfghjklmnoprtvwz]|tel|travel)|
 				u[agkmsyz]|
@@ -850,7 +850,7 @@ function chk_dname($dname) {
  * @return boolean	false	incorrect syntax
  * 					true	correct syntax
  */
-function chk_forward_url($url) {
+/*function chk_forward_url($url) {
 	$dom_mainpart = '[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]\.';
 	$dom_subpart = '(?:[a-zA-Z0-9][a-zA-Z0-9.-]*\.)*';
 	$dom_tldpart = '[a-zA-Z]{2,5}';
@@ -860,7 +860,7 @@ function chk_forward_url($url) {
 		return false;
 	}
 	return true;
-}
+}*/
 
 /**
  * chk_mountp checks if the mount point is valid
@@ -914,7 +914,7 @@ function chk_mountp($data, $max_char = 50, $min_char = 2) {
  */
 function validates_mpoint($mpoint, $max_token_char = null) {
 
-	$pattern = '@^((:?|(:?[[:alnum:]]|/|/(?:htdocs|backup|cgi-bin|errors|logs)[/]?))|.+/|.*//.*)$@';
+	$pattern = '@^((:?|(:?[[:alnum:]]|/|/(?:htdocs|backups|cgi-bin|errors|logs|phptmp)[/]?))|.+/|.*//.*)$@';
 
 	if (preg_match($pattern, $mpoint)) return false;
 

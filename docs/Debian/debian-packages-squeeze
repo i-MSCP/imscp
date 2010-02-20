@@ -49,7 +49,7 @@ libterm-readkey-perl
 libterm-readpassword-perl
 libhtml-parser-perl
 libtimedate-perl
-libmysqlclient15off
+libmysqlclient16
 locales
 lsb-base
 lsb-release

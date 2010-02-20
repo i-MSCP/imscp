@@ -3,8 +3,8 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
  *
@@ -24,7 +24,7 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
- * Portions created by the ispCP Team are Copyright (C) 2006-2009 by
+ * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  */
 
@@ -39,6 +39,7 @@ $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('add_user', 'page');
 $tpl->define_dynamic('hp_entry', 'page');
 $tpl->define_dynamic('personalize', 'page');
+$tpl->define_dynamic('alias_menu', 'page');
 
 $theme_color = Config::get('USER_INITIAL_THEME');
 
@@ -68,7 +69,6 @@ $tpl->assign(
 			'TR_CORE_DATA'				=> tr('Core data'),
 			'TR_DOMAIN_NAME'			=> tr('Domain name'),
 			'TR_DOMAIN_EXPIRE'			=> tr('Domain expire'),
-			'TR_DOMAIN_EXPIRE'			=> tr('Domain expire'),
 			'TR_DOMAIN_EXPIRE_NEVER'	=> tr('Never'),
 			'TR_DOMAIN_EXPIRE_1_MONTH'	=> tr('1 Month'),
 			'TR_DOMAIN_EXPIRE_2_MONTHS'	=> tr('2 Months'),
@@ -94,8 +94,11 @@ if (isset($_POST['uaction'])) {
 }
 
 get_hp_data_list($tpl, $_SESSION['user_id']);
-
 gen_page_message($tpl);
+
+if (!check_reseller_domainalias_permissions($_SESSION['user_id'])) {
+	$tpl->assign('ALIAS_MENU', '');
+}
 
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
@@ -221,9 +224,16 @@ function get_data_au1_page(&$tpl) {
 
 	$tpl->assign(
 			array(
-				'DMN_NAME_VALUE'	=> $dmn_name,
-				'CHTPL1_VAL'		=> $dmn_pt === "_yes_" ? 'checked="checked"' : '',
-				'CHTPL2_VAL'		=> $dmn_pt === "_yes_" ? '' : 'checked="checked"'
+				'DMN_NAME_VALUE'		=> $dmn_name,
+				'CHTPL1_VAL'			=> $dmn_pt === "_yes_" ? 'checked="checked"' : '',
+				'CHTPL2_VAL'			=> $dmn_pt === "_yes_" ? '' : 'checked="checked"',
+				'EXPIRE_NEVER_SET'		=> ($dmn_expire === '0') ? ' selected="selected"' : '',
+				'EXPIRE_1_MONTH_SET'	=> ($dmn_expire === '1') ? ' selected="selected"' : '',
+				'EXPIRE_2_MONTH_SET'	=> ($dmn_expire === '2') ? ' selected="selected"' : '',
+				'EXPIRE_3_MONTH_SET'	=> ($dmn_expire === '3') ? ' selected="selected"' : '',
+				'EXPIRE_6_MONTH_SET'	=> ($dmn_expire === '6') ? ' selected="selected"' : '',
+				'EXPIRE_1_YEAR_SET'		=> ($dmn_expire === '12') ? ' selected="selected"' : '',
+				'EXPIRE_2_YEARS_SET'	=> ($dmn_expire === '24') ? ' selected="selected"' : '',
 			)
 	);
 } // End of get_data_au1_page()

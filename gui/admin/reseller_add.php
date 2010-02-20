@@ -3,8 +3,8 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
  *
@@ -24,7 +24,7 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
- * Portions created by the ispCP Team are Copyright (C) 2006-2009 by
+ * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  */
 
@@ -259,6 +259,7 @@ function add_reseller(&$tpl, &$sql) {
 			$nreseller_max_traffic = clean_input($_POST['nreseller_max_traffic']);
 			$nreseller_max_disk = clean_input($_POST['nreseller_max_disk']);
 			$customer_id = clean_input($_POST['customer_id']);
+			$support_system = clean_input($_POST['support_system']);
 
 			$query = "
 				INSERT INTO `reseller_props` (
@@ -272,7 +273,7 @@ function add_reseller(&$tpl, &$sql) {
 					`max_sql_user_cnt`, `current_sql_user_cnt`,
 					`max_traff_amnt`, `current_traff_amnt`,
 					`max_disk_amnt`, `current_disk_amnt`,
-					`customer_id`
+					`support_system`, `customer_id`
 				) VALUES (
 					?, ?,
 					?, '0',
@@ -284,7 +285,7 @@ function add_reseller(&$tpl, &$sql) {
 					?, '0',
 					?, '0',
 					?, '0',
-					?
+					?, ?
 				)
 				";
 
@@ -298,6 +299,7 @@ function add_reseller(&$tpl, &$sql) {
 					$nreseller_max_sql_user_cnt,
 					$nreseller_max_traffic,
 					$nreseller_max_disk,
+					$support_system,
 					$customer_id)
 			);
 
@@ -343,6 +345,7 @@ function add_reseller(&$tpl, &$sql) {
 					'MAX_SQLDB_COUNT' => clean_input($_POST['nreseller_max_sql_db_cnt']),
 					'MAX_SQL_USERS_COUNT' => clean_input($_POST['nreseller_max_sql_user_cnt']),
 					'MAX_TRAFFIC_AMOUNT' => clean_input($_POST['nreseller_max_traffic']),
+					'SUPPORT_SYSTEM' => clean_input($_POST['support_system']),
 					'MAX_DISK_AMOUNT' => clean_input($_POST['nreseller_max_disk'])
 				)
 			);
@@ -459,10 +462,20 @@ function check_user_data() {
 		set_page_message(tr('Incorrect SQL databases limit!'));
 
 		return false;
+	} else if ($_POST['nreseller_max_sql_db_cnt'] == -1
+		&& $_POST['nreseller_max_sql_user_cnt'] != -1) {
+		set_page_message(tr('SQL databases limit is <i>disabled</i> but SQL users limit not!'));
+		
+		return false;
 	}
 	if (!ispcp_limit_check($_POST['nreseller_max_sql_user_cnt'], -1)) {
 		set_page_message(tr('Incorrect SQL users limit!'));
 
+		return false;
+	} else if ($_POST['nreseller_max_sql_db_cnt'] != -1
+		&& $_POST['nreseller_max_sql_user_cnt'] == -1) {
+		set_page_message(tr('SQL users limit is <i>disabled</i> but SQL databases limit not!'));
+		
 		return false;
 	}
 	if (!ispcp_limit_check($_POST['nreseller_max_traffic'], null)) {
@@ -528,6 +541,7 @@ $tpl->assign(
 		'TR_LOGO_UPLOAD' => tr('Logo upload'),
 		'TR_YES' => tr('yes'),
 		'TR_NO' => tr('no'),
+		'TR_SUPPORT_SYSTEM' => tr('Support system'),
 
 		'TR_RESELLER_IPS' => tr('Reseller IPs'),
 

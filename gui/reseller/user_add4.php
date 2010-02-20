@@ -3,8 +3,8 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
  *
@@ -24,7 +24,7 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
- * Portions created by the ispCP Team are Copyright (C) 2006-2009 by
+ * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  */
 
@@ -38,6 +38,7 @@ $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('alias_list', 'page');
 $tpl->define_dynamic('alias_entry', 'alias_list');
+$tpl->define_dynamic('alias_menu', 'page');
 
 $theme_color = Config::get('USER_INITIAL_THEME');
 
@@ -131,9 +132,19 @@ $tpl->assign(
 		'TR_DOMAIN_ALIAS' => tr('Domain alias'),
 		'TR_STATUS' => tr('Status'),
 		'TR_ADD_USER' => tr('Add user'),
-		'TR_GO_USERS' => tr('Done')
+		'TR_GO_USERS' => tr('Done'),
+		'TR_ENABLE_FWD' => tr("Enable Forward"),
+		'TR_ENABLE' => tr("Enable"),
+		'TR_DISABLE' => tr("Disable"),
+		'TR_PREFIX_HTTP' => 'http://',
+		'TR_PREFIX_HTTPS' => 'https://',
+		'TR_PREFIX_FTP' => 'ftp://'
 	)
 );
+
+if (!check_reseller_domainalias_permissions($_SESSION['user_id'])) {
+	$tpl->assign('ALIAS_MENU', '');
+}
 
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
@@ -144,15 +155,59 @@ if (Config::get('DUMP_GUI_DEBUG')) {
 // Begin function declaration lines
 
 function init_empty_data() {
-	global $cr_user_id, $alias_name, $domain_ip, $forward, $mount_point, $tpl;
+	global $cr_user_id, $alias_name, $domain_ip, $forward, $forward_prefix, $mount_point, $tpl;
 
 	$cr_user_id = $alias_name = $domain_ip = $forward = $mount_point = '';
-
+	
+	if (isset($_POST['status']) && $_POST['status'] == 1) {
+		$forward_prefix = clean_input($_POST['forward_prefix']);
+		if($_POST['status'] == 1) {
+			$check_en = 'checked="checked"';
+			$check_dis = '';
+			$forward = strtolower(clean_input($_POST['forward']));
+			$tpl->assign(
+					array(
+						'READONLY_FORWARD' => '',
+						'DISABLE_FORWARD' => '',
+						)
+					);
+		} else {
+			$check_en = '';
+			$check_dis = 'checked="checked"';
+			$forward = '';
+			$tpl->assign(
+					array(
+						'READONLY_FORWARD' => ' readonly',
+						'DISABLE_FORWARD' => ' disabled="disabled"',
+						)
+					);
+		}
+		$tpl->assign(
+				array(
+					'HTTP_YES' => ($forward_prefix === 'http://') ? 'selected="selected"' : '',
+					'HTTPS_YES' => ($forward_prefix === 'https://') ? 'selected="selected"' : '',
+					'FTP_YES' => ($forward_prefix === 'ftp://') ? 'selected="selected"' : ''
+					)
+				);
+	} else {
+		$check_en = '';
+		$check_dis = 'checked="checked"';
+		$forward = '';
+		$tpl->assign(
+				array(
+					'READONLY_FORWARD' => ' readonly',
+					'DISABLE_FORWARD' => ' disabled="disabled"',
+					)
+				);
+	}
+	
 	$tpl->assign(
 		array(
-			'DOMAIN' => decode_idna($alias_name),
-			'MP' => decode_idna($mount_point),
-			'FORWARD' => 'no'
+			'DOMAIN' => !empty($_POST) ? strtolower(clean_input($_POST['ndomain_name'])) : '',
+			'MP' => !empty($_POST) ? strtolower(clean_input($_POST['ndomain_mpoint'])) : '',
+			'FORWARD' => $forward,
+			'CHECK_EN' => $check_en,
+			'CHECK_DIS' => $check_dis,
 		)
 	);
 } // End of init_empty_data()
@@ -204,14 +259,21 @@ function gen_al_page(&$tpl, $reseller_id) {
 } // End of gen_al_page()
 
 function add_domain_alias(&$sql, &$err_al) {
-	global $cr_user_id, $alias_name, $domain_ip, $forward, $mount_point, $tpl;
+	global $cr_user_id, $alias_name, $domain_ip, $forward, $forward_prefix, $mount_point, $tpl;
 	global $validation_err_msg;
 
 	$cr_user_id = $dmn_id = $_SESSION['dmn_id'];
 	$alias_name = strtolower(clean_input($_POST['ndomain_name']));
 	$domain_ip = $_SESSION['dmn_ip'];
-	$mount_point = strtolower(clean_input($_POST['ndomain_mpoint']));
-	$forward = strtolower(clean_input($_POST['forward']));
+	$mount_point = array_encode_idna(strtolower($_POST['ndomain_mpoint']), true);
+	
+	if ($_POST['status'] == 1) {
+		$forward = strtolower(clean_input($_POST['forward']));
+		$forward_prefix = clean_input($_POST['forward_prefix']);
+	} else {
+		$forward = 'no';
+		$forward_prefix = '';
+	}
 
 	// Should be perfomed after domain names syntax validation now
 	//$alias_name = encode_idna($alias_name);
@@ -229,14 +291,17 @@ function add_domain_alias(&$sql, &$err_al) {
 		$err_al = tr('Domain with that name already exists on the system!');
 	} else if (!validates_mpoint($mount_point) && $mount_point != '/') {
 		$err_al = tr("Incorrect mount point syntax");
-	} else if ($forward != 'no') {
-		if (!chk_forward_url($forward)) {
-			$err_al = tr("Incorrect forward syntax");
+	} else if ($_POST['status'] == 1) {
+		if(substr_count($forward, '.') <= 2) {
+			$ret = validates_dname($forward);
+		} else {
+			$ret = validates_dname($forward, true);
 		}
-		/** @todo test and remove if no bugs encounter
-		if (!preg_match("/\/$/", $forward) && !preg_match("/\?/", $forward)) {
-			$forward .= "/";
-		}*/
+		if(!$ret) {
+			$err_al = tr("Wrong domain part in forward URL!");
+		} else {
+			$forward = encode_idna($forward_prefix.$forward);
+		}
 	} else {
 		$query = "SELECT `domain_id` FROM `domain_aliasses` WHERE `alias_name` = ?";
 		$res = exec_query($sql, $query, array($alias_name));

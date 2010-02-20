@@ -3,8 +3,8 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
  *
@@ -24,7 +24,7 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
- * Portions created by the ispCP Team are Copyright (C) 2006-2009 by
+ * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  */
 
@@ -67,6 +67,7 @@ $tpl->assign(
 		'TR_DOMAIN_EXPIRE'					=> tr('Domain expire'),
 		'TR_DOMAIN_NEW_EXPIRE'				=> tr('New expire date'),
 		'TR_DOMAIN_EXPIRE_UNCHANGED'		=> tr('Unchanged'),
+		'TR_DOMAIN_EXPIRE_NEVER'			=> tr('Never'), 
 		'TR_DOMAIN_EXPIRE_MIN_1_MONTH'		=> tr('- 1 Month'),
 		'TR_DOMAIN_EXPIRE_PLUS_1_MONTH'		=> tr('+ 1 Month'),
 		'TR_DOMAIN_EXPIRE_PLUS_2_MONTHS'	=> tr('+ 2 Months'),
@@ -269,7 +270,7 @@ function load_additional_data($user_id, $domain_id) {
  * Show user data
  */
 function gen_editdomain_page(&$tpl) {
-	global $domain_name, $domain_expires, $domain_ip, $php_sup;
+	global $domain_name, $domain_expires, $domain_new_expire, $domain_ip, $php_sup;
 	global $cgi_supp , $sub, $als;
 	global $mail, $ftp, $sql_db;
 	global $sql_user, $traff, $disk;
@@ -322,24 +323,33 @@ function gen_editdomain_page(&$tpl) {
 
 	$tpl->assign(
 		array(
-			'PHP_YES'				=> ($php_sup == 'yes') ? 'selected="selected"' : '',
-			'PHP_NO'				=> ($php_sup != 'yes') ? 'selected="selected"' : '',
-			'CGI_YES'				=> ($cgi_supp == 'yes') ? 'selected="selected"' : '',
-			'CGI_NO'				=> ($cgi_supp != 'yes') ? 'selected="selected"' : '',
-			'DNS_YES'				=> ($dns_supp == 'yes') ? 'selected="selected"' : '',
-			'DNS_NO'				=> ($dns_supp != 'yes') ? 'selected="selected"' : '',
-			'VL_DOMAIN_NAME'		=> $domain_name,
-			'VL_DOMAIN_EXPIRE'		=> $domain_expires,
-			'VL_DOMAIN_IP'			=> $domain_ip,
-			'VL_DOM_SUB'			=> $sub,
-			'VL_DOM_ALIAS'			=> $als,
-			'VL_DOM_MAIL_ACCOUNT'	=> $mail,
-			'VL_FTP_ACCOUNTS'		=> $ftp,
-			'VL_SQL_DB'				=> $sql_db,
-			'VL_SQL_USERS'			=> $sql_user,
-			'VL_TRAFFIC'			=> $traff,
-			'VL_DOM_DISK'			=> $disk,
-			'VL_USER_NAME'			=> $username
+			'PHP_YES'					=> ($php_sup == 'yes') ? 'selected="selected"' : '',
+			'PHP_NO'					=> ($php_sup != 'yes') ? 'selected="selected"' : '',
+			'CGI_YES'					=> ($cgi_supp == 'yes') ? 'selected="selected"' : '',
+			'CGI_NO'					=> ($cgi_supp != 'yes') ? 'selected="selected"' : '',
+			'DNS_YES'					=> ($dns_supp == 'yes') ? 'selected="selected"' : '',
+			'DNS_NO'					=> ($dns_supp != 'yes') ? 'selected="selected"' : '',
+			'VL_DOMAIN_NAME'			=> $domain_name,
+			'VL_DOMAIN_EXPIRE'			=> $domain_expires,
+			'VL_DOMAIN_IP'				=> $domain_ip,
+			'VL_DOM_SUB'				=> $sub,
+			'VL_DOM_ALIAS'				=> $als,
+			'VL_DOM_MAIL_ACCOUNT'		=> $mail,
+			'VL_FTP_ACCOUNTS'			=> $ftp,
+			'VL_SQL_DB'					=> $sql_db,
+			'VL_SQL_USERS'				=> $sql_user,
+			'VL_TRAFFIC'				=> $traff,
+			'VL_DOM_DISK'				=> $disk,
+			'VL_USER_NAME'				=> $username,
+			'EXPIRE_UNCHANGED_SET'		=> ($domain_new_expire === '0') ? ' selected="selected"' : '',
+			'EXPIRE_NEVER_SET'			=> ($domain_new_expire === 'OFF') ? ' selected="selected"' : '',
+			'EXPIRE_1_MIN_MONTH_SET'	=> ($domain_new_expire === '-1') ? ' selected="selected"' : '',
+			'EXPIRE_1_PLUS_MONTH_SET'	=> ($domain_new_expire === '1') ? ' selected="selected"' : '',
+			'EXPIRE_2_PLUS_MONTH_SET'	=> ($domain_new_expire === '2') ? ' selected="selected"' : '',
+			'EXPIRE_3_PLUS_MONTH_SET'	=> ($domain_new_expire === '3') ? ' selected="selected"' : '',
+			'EXPIRE_6_PLUS_MONTH_SET'	=> ($domain_new_expire === '6') ? ' selected="selected"' : '',
+			'EXPIRE_1_PLUS_YEAR_SET'	=> ($domain_new_expire === '12') ? ' selected="selected"' : '',
+			'EXPIRE_2_PLUS_YEARS_SET'	=> ($domain_new_expire === '24') ? ' selected="selected"' : '',
 		)
 	);
 } // End of gen_editdomain_page()
@@ -485,12 +495,13 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 		$domain_expires = $_SESSION['domain_expires'];
 
 		if ($domain_expires != 0 && $domain_new_expire != 0) {
-			$domain_new_expire = $domain_expires + ($domain_new_expire * 2635200);
-			update_expire_date($user_id, $domain_new_expire);
+			$domain_expires = $domain_expires + ($domain_new_expire * 2635200);
+		} elseif ($domain_new_expire == "OFF") {
+			$domain_expires = "0";
 		} elseif ($domain_expires == 0 && $domain_new_expire != 0) {
-			$domain_new_expire = time() + ($domain_new_expire * 2635200);
-			update_expire_date($user_id, $domain_new_expire);
+			$domain_expires = time() + ($domain_new_expire * 2635200);
 		}
+		update_expire_date($user_id, $domain_expires);
 
 		$reseller_props = "$rdmn_current;$rdmn_max;";
 		$reseller_props .= "$rsub_current;$rsub_max;";
@@ -543,7 +554,18 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 } // End of check_user_data()
 
 function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, &$err, $obj) {
-	if ($rmax == 0 && $umax == -1) {
+	if ($rmax == -1 && $umax >= 0) {
+		if ($u > 0) {
+			$err .= tr('The <em>%s</em> service cannot be disabled!', $obj) . tr('There are <em>%s</em> records on system!', $obj);
+			return;
+		} else if ($data != -1){
+			$err .= tr('The <em>%s</em> have to be disabled!', $obj) . tr('The admin has <em>%s</em> disabled on this system!', $obj);
+			return;
+		} else {
+			$umax = $data;
+		}
+		return;
+	} else if ($rmax == 0 && $umax == -1) {
 		if ($data == -1) {
 			return;
 		} else if ($data == 0) {

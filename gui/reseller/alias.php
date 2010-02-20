@@ -3,8 +3,8 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
  *
@@ -24,7 +24,7 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
- * Portions created by the ispCP Team are Copyright (C) 2006-2009 by
+ * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  */
 
@@ -264,7 +264,16 @@ function generate_als_list(&$tpl, $reseller_id, &$als_err) {
 		if (isset($_SESSION['search_for'])) {
 			$als_err = tr('Not found user records matching the search criteria!');
 		} else {
-			$als_err = tr('You have no alias records.');
+			if (isset($_SESSION['almax'])) {
+				if ($_SESSION['almax'] === '_yes_')
+					$als_err = tr('Domain alias limit reached!');
+				else
+					$als_err = tr('You have no alias records.');
+					
+				unset($_SESSION['almax']);
+			} else {
+				$als_err = tr('You have no alias records.');
+			}
 		}
 		return;
 	} else {
@@ -421,6 +430,13 @@ function generate_als_messages(&$tpl, $als_err) {
 			$tpl->assign('MESSAGE', tr('Ordered domain alias not activated!'));
 
 		unset($_SESSION['orderalact']);
+	} else if (isset($_SESSION['almax'])) {
+		if ('_yes_' === $_SESSION['almax'])
+			$tpl->assign('MESSAGE', tr('Domain alias limit reached!'));
+		else
+			$tpl->assign('MESSAGE', '');
+
+		unset($_SESSION['almax']);
 	} else {
 		$tpl->assign('MESSAGE', '');
 		$tpl->assign('PAGE_MESSAGE', "");

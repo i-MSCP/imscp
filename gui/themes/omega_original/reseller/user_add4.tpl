@@ -19,18 +19,27 @@ function makeUser() {
 	dname = dname.replace(/�/gi, "ss");
 	document.forms[0].elements['ndomain_mpoint'].value = "/" + dname;
 }
+function setForwardReadonly(obj){
+	if(obj.value == 1) {
+		document.forms[0].elements['forward'].readOnly = false;
+		document.forms[0].elements['forward_prefix'].disabled = false;
+	} else {
+		document.forms[0].elements['forward'].readOnly = true;
+		document.forms[0].elements['forward'].value = '';
+		document.forms[0].elements['forward_prefix'].disabled = true;
+	}
+}
 //-->
 </script>
 </head>
 
 <body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
-<!-- BDP: logged_from --><table width="100%" border="0" cellspacing="0" cellpadding="0">
-      <tr>
-        <td height="20" nowrap="nowrap" class="backButton">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /></a> {YOU_ARE_LOGGED_AS}</td>
-      </tr>
-    </table>
-	<!-- EDP: logged_from -->
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="height:100%;padding:0;margin:0 auto;">
+<!-- BDP: logged_from -->
+<tr>
+ <td colspan="3" height="20" nowrap="nowrap" class="backButton">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /></a> {YOU_ARE_LOGGED_AS}</td>
+</tr>
+<!-- EDP: logged_from -->
 <tr>
 <td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" width="195" height="56" border="0" alt="ispCP Logogram" /></td>
 <td style="height: 56px; width:100%; background-color: #0f0f0f"><img src="{THEME_COLOR_PATH}/images/top/top_left_bg.jpg" width="582" height="56" border="0" alt="" /></td>
@@ -97,10 +106,23 @@ function makeUser() {
                         <td class="content2">{TR_MOUNT_POINT}</td>
                         <td class="content"><input name="ndomain_mpoint" type="text" class="textinput" id="ndomain_mpoint" value='{MP}' style="width:170px" /></td>
                       </tr>
+					  <tr>
+						<td width="25" nowrap="nowrap">&nbsp;</td>
+						<td width="200" nowrap="nowrap" class="content2">{TR_ENABLE_FWD}</td>
+						<td class="content">
+						<input type="radio" name="status" {CHECK_EN} value="1" onChange='setForwardReadonly(this);' /> {TR_ENABLE}<br />
+						<input type="radio" name="status" {CHECK_DIS} value="0" onChange='setForwardReadonly(this);' /> {TR_DISABLE}</td>
+                      </tr>
                       <tr>
                         <td width="25" nowrap="nowrap">&nbsp;</td>
                         <td width="200" nowrap="nowrap" class="content2">{TR_FORWARD}</td>
-                        <td class="content"><input name="forward" type="text" class="textinput" id="forward" style="width:170px" value="{FORWARD}" />
+                        <td class="content">
+							<select name="forward_prefix" style="vertical-align:middle"{DISABLE_FORWARD}>
+								<option value="{TR_PREFIX_HTTP}"{HTTP_YES}>{TR_PREFIX_HTTP}</option>
+								<option value="{TR_PREFIX_HTTPS}"{HTTPS_YES}>{TR_PREFIX_HTTPS}</option>
+								<option value="{TR_PREFIX_FTP}"{FTP_YES}>{TR_PREFIX_FTP}</option>
+							</select>
+							<input name="forward" type="text" class="textinput" id="forward" style="width:170px" value="{FORWARD}"{READONLY_FORWARD} />
                         </td>
                       </tr>
                       <tr>

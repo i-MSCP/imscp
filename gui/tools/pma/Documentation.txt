@@ -1,4 +1,4 @@
-phpMyAdmin 3.2.4 Documentation
+phpMyAdmin 3.2.5 Documentation
 
   * Top
   * Requirements
@@ -20,7 +20,7 @@ phpMyAdmin 3.2.4 Documentation
   * Local documents:
       + Version history: ChangeLog
       + License: LICENSE
-  * Documentation version: $Id: Documentation.html 13140 2009-12-02 18:11:04Z
+  * Documentation version: $Id: Documentation.html 13232 2010-01-10 12:16:33Z
     lem9 $
 
 Requirements
@@ -445,8 +445,8 @@ $cfg['blowfish_secret'] string
     The "cookie" auth_type uses blowfish algorithm to encrypt the password.
     If you are using the "cookie" auth_type, enter here a random passphrase of
     your choice. It will be used internally by the blowfish algorithm: you
-    won?t be prompted for this passphrase. The maximum number of characters for
-    this parameter seems to be 46.
+    won?t be prompted for this passphrase. There is no maximum length for this
+    secret.
 
     Since version 3.1.0 phpMyAdmin can generate this on the fly, but it makes a
     bit weaker security as this generated secret is stored in session and

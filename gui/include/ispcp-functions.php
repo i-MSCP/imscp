@@ -3,8 +3,8 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
  *
@@ -24,7 +24,7 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
- * Portions created by the ispCP Team are Copyright (C) 2006-2009 by
+ * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  */
 
@@ -469,5 +469,27 @@ function unset_messages() {
 		if (array_key_exists($toUnset, $_SESSION)) {
 			unset($_SESSION[$toUnset]);
 		}
+	}
+}
+
+/**
+ * Returns true if the request‘s "X-Requested-With" header
+ * contains "XMLHttpRequest".
+ *
+ * Note: JQUERY and Prototype Javascript libraries sends this
+ * header with every Ajax request.
+ *
+ * @author Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
+ * @Since r2587
+ * @return boolean TRUE if the request‘s "X-Requested-With" header
+ *  contains "XMLHttpRequest", FALSE otherwiser
+ * @todo Move to future Request class
+ */
+function is_xhr() {
+	if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
+		stristr($_SERVER['HTTP_X_REQUESTED_WITH'], 'XMLHttpRequest') !== FALSE) {
+			return true;
+	} else {
+		return false;
 	}
 }

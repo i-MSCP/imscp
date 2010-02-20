@@ -3,8 +3,8 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
  *
@@ -24,7 +24,7 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
- * Portions created by the ispCP Team are Copyright (C) 2006-2009 by
+ * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  */
 
@@ -97,11 +97,11 @@ if ((Config::get('MAINTENANCEMODE')
 			'TR_PASSWORD'				=> tr('Password'),
 			'TR_LOGIN_INFO'				=> tr('Please enter your login information'),
 			// @todo: make this configurable by ispcp-lib
-			'TR_SSL_LINK'				=> isset($_SERVER['HTTPS']) ? 'http://' . htmlentities($_SERVER['HTTP_HOST']) : 'https://' . htmlentities($_SERVER['HTTP_HOST']),
-			'TR_WEBMAIL_SSL_LINK'       => isset($_SERVER['HTTPS']) ? 'http://'.htmlentities($_SERVER['HTTP_HOST'])."/webmail" : 'http://'.htmlentities($_SERVER['HTTP_HOST'])."/webmail",
-            'TR_FTP_SSL_LINK'           => isset($_SERVER['HTTPS']) ? 'http://'.htmlentities($_SERVER['HTTP_HOST'])."/ftp" : 'http://'.htmlentities($_SERVER['HTTP_HOST'])."/ftp",
-            'TR_PMA_SSL_LINK'           => isset($_SERVER['HTTPS']) ? 'http://'.htmlentities($_SERVER['HTTP_HOST'])."/pma" : 'http://'.htmlentities($_SERVER['HTTP_HOST'])."/pma",
-			'TR_SSL_IMAGE'				=> isset($_SERVER['HTTPS']) ? 'lock.png' : 'unlock.png',
+			'TR_SSL_LINK'               => isset($_SERVER['HTTPS']) ? $_SERVER['HTTPS'] . 'http://' . htmlentities($_SERVER['HTTP_HOST']) : 'https://' . htmlentities($_SERVER['HTTP_HOST']),
+			'TR_WEBMAIL_SSL_LINK'       => "webmail",
+			'TR_FTP_SSL_LINK'           => "ftp",
+			'TR_PMA_SSL_LINK'           => "pma",
+			'TR_SSL_IMAGE'              => isset($_SERVER['HTTPS']) ? 'lock.png' : 'unlock.png',
 			'TR_SSL_DESCRIPTION'		=> !isset($_SERVER['HTTPS']) ? tr('Secure Connection') : tr('Normal Connection')
 		)
 	);

@@ -3,8 +3,8 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
  *
@@ -24,7 +24,7 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
- * Portions created by the ispCP Team are Copyright (C) 2006-2009 by
+ * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  */
 
@@ -66,7 +66,9 @@ $tpl->assign(
 		'TR_ENABLE_FWD' => tr("Enable Forward"),
 		'TR_ENABLE' => tr("Enable"),
 		'TR_DISABLE' => tr("Disable"),
-		'TR_FWD_HELP' => tr("A Forward URL has to start with 'http://'")
+		'TR_PREFIX_HTTP' => 'http://',
+		'TR_PREFIX_HTTPS' => 'https://',
+		'TR_PREFIX_FTP' => 'ftp://'
 	)
 );
 
@@ -133,18 +135,39 @@ function gen_editalias_page(&$tpl, $edit_id) {
 	$ip_data = $ipdat['ip_number'] . ' (' . $ipdat['ip_alias'] . ')';
 
 	if (isset($_POST['uaction']) && ($_POST['uaction'] == 'modify')) {
-		$url_forward = decode_idna($_POST['forward']);
+		$url_forward = strtolower(clean_input($_POST['forward']));
 	} else {
-		$url_forward = decode_idna($data['url_forward']);
-	}
+		$url_forward = decode_idna(preg_replace("(ftp://|https://|http://)", "", $data['url_forward']));
 
-	if ($data["url_forward"] == "no") {
-		$check_en = '';
-		$check_dis = 'checked="checked"';
-		$url_forward = '';
-	} else {
-		$check_en = 'checked="checked"';
-		$check_dis = '';
+		if ($data["url_forward"] == "no") {
+			$check_en = '';
+			$check_dis = 'checked="checked"';
+			$url_forward = '';
+			$tpl->assign(
+					array(
+						'READONLY_FORWARD' => ' readonly',
+						'DISABLE_FORWARD' => ' disabled="disabled"'
+						)
+					);
+		} else {
+			$check_en = 'checked="checked"';
+			$check_dis = '';
+			$tpl->assign(
+					array(
+						'READONLY_FORWARD' => '',
+						'DISABLE_FORWARD' => '',
+						'HTTP_YES' => (preg_match("/http:\/\//", $data['url_forward'])) ? 'selected="selected"' : '',
+						'HTTPS_YES' => (preg_match("/https:\/\//", $data['url_forward'])) ? 'selected="selected"' : '',
+						'FTP_YES' => (preg_match("/ftp:\/\//", $data['url_forward'])) ? 'selected="selected"' : ''
+						)
+					);
+		}
+		$tpl->assign(
+				array(
+					'CHECK_EN' => $check_en,
+					'CHECK_DIS' => $check_dis
+				)
+			);
 	}
 	// Fill in the fields
 	$tpl->assign(
@@ -153,8 +176,6 @@ function gen_editalias_page(&$tpl, $edit_id) {
 			'DOMAIN_IP' => $ip_data,
 			'FORWARD' => $url_forward,
 			'MOUNT_POINT' => $data['alias_mount'],
-			'CHECK_EN' => $check_en,
-			'CHECK_DIS' => $check_dis,
 			'ID' => $edit_id
 		)
 	);
@@ -166,27 +187,52 @@ function gen_editalias_page(&$tpl, $edit_id) {
 function check_fwd_data(&$tpl, $alias_id) {
 	$sql = Database::getInstance();
 
-	$forward_url = encode_idna($_POST['forward']);
+	$forward_url = strtolower(clean_input($_POST['forward']));
 	$status = $_POST['status'];
 	// unset errors
 	$ed_error = '_off_';
 	$admin_login = '';
 
-	if ($status != '0') {
-		if (!chk_forward_url($forward_url)) {
-			$ed_error = tr("Incorrect forward syntax");
+	if (isset($_POST['status']) && $_POST['status'] == 1) {
+		$forward_prefix = clean_input($_POST['forward_prefix']);
+		if(substr_count($forward_url, '.') <= 2) {
+			$ret = validates_dname($forward_url);
+		} else {
+			$ret = validates_dname($forward_url, true);
 		}
-		/** @todo test and remove if no bugs encounter
-		if (!preg_match("/\/$/", $forward_url) && !preg_match("/\?/", $forward_url)) {
-			$forward_url .= "/";
-		}*/
+		if(!$ret) {
+			$ed_error = tr("Wrong domain part in forward URL!");
+		} else {
+			$forward_url = encode_idna($forward_prefix.$forward_url);
+		}
+		
+		$check_en = 'checked="checked"';
+		$check_dis = '';
+		$tpl->assign(
+				array(
+					'FORWARD' => $forward_url,
+					'HTTP_YES' => ($forward_prefix === 'http://') ? 'selected="selected"' : '',
+					'HTTPS_YES' => ($forward_prefix === 'https://') ? 'selected="selected"' : '',
+					'FTP_YES' => ($forward_prefix === 'ftp://') ? 'selected="selected"' : '',
+					'CHECK_EN' => $check_en,
+					'CHECK_DIS' => $check_dis,
+				)
+			);
+	} else {
+		$check_en = '';
+		$check_dis = 'checked="checked"';
+		$forward_url = 'no';
+		$tpl->assign(
+				array(
+					'READONLY_FORWARD' => ' readonly',
+					'DISABLE_FORWARD' => ' disabled="disabled"',
+					'CHECK_EN' => $check_en,
+					'CHECK_DIS' => $check_dis,
+				)
+			);
 	}
 
 	if ($ed_error === '_off_') {
-		if ($_POST['status'] == 0) {
-			$forward_url = "no";
-		}
-
 		$query = "
 			UPDATE
 				`domain_aliasses`

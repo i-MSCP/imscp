@@ -3,7 +3,7 @@
 /**
  * Misc functions used all over the scripts.
  *
- * @version $Id: common.lib.php 13118 2009-11-21 13:22:08Z lem9 $
+ * @version $Id: common.lib.php 13169 2009-12-22 18:05:31Z lem9 $
  * @package phpMyAdmin
  */
 
@@ -890,16 +890,20 @@ function PMA_getTableList($db, $tables = null, $limit_offset = 0, $limit_count =
  */
 function PMA_backquote($a_name, $do_it = true)
 {
-    if (! $do_it) {
+    if (is_array($a_name)) {
+        foreach ($a_name as &$data) {
+            $data = PMA_backquote($data, $do_it);
+        }
         return $a_name;
     }
 
-    if (is_array($a_name)) {
-         $result = array();
-         foreach ($a_name as $key => $val) {
-             $result[$key] = PMA_backquote($val);
-         }
-         return $result;
+    if (! $do_it) {
+        global $PMA_SQPdata_forbidden_word;
+        global $PMA_SQPdata_forbidden_word_cnt;
+
+        if(! PMA_STR_binarySearchInArr(strtoupper($a_name), $PMA_SQPdata_forbidden_word, $PMA_SQPdata_forbidden_word_cnt)) {
+            return $a_name;
+        }
     }
 
     // '0' is also empty for php :-(

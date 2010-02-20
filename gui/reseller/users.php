@@ -3,8 +3,8 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
  *
@@ -24,7 +24,7 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
- * Portions created by the ispCP Team are Copyright (C) 2006-2009 by
+ * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  */
 
@@ -44,6 +44,7 @@ $tpl->define_dynamic('scroll_prev', 'page');
 $tpl->define_dynamic('scroll_next_gray', 'page');
 $tpl->define_dynamic('scroll_next', 'page');
 $tpl->define_dynamic('edit_option', 'page');
+$tpl->define_dynamic('alias_menu', 'page');
 
 $theme_color = Config::get('USER_INITIAL_THEME');
 
@@ -56,6 +57,7 @@ $tpl->assign(
 	)
 );
 
+// TODO: comment!
 unset($_SESSION['dmn_name']);
 unset($_SESSION['ch_hpprops']);
 unset($_SESSION['local_data']);
@@ -115,10 +117,12 @@ if (Config::exists('HOSTING_PLANS_LEVEL') && Config::get('HOSTING_PLANS_LEVEL') 
 }
 
 generate_users_list($tpl, $_SESSION['user_id']);
-
 check_externel_events($tpl);
-
 gen_page_message($tpl);
+
+if (!check_reseller_domainalias_permissions($_SESSION['user_id'])) {
+	$tpl->assign('alias_menu', '');
+}
 
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
@@ -309,7 +313,7 @@ function generate_users_list(&$tpl, $admin_id) {
 				$date_formt = Config::get('DATE_FORMAT');
 				$dom_expires = date($date_formt, $dom_expires);
 			}
-			
+
 			$tpl->assign(
 				array(
 					'CREATION_DATE' => $dom_created,
@@ -319,8 +323,9 @@ function generate_users_list(&$tpl, $admin_id) {
 					'ACTION' => tr('Delete'),
 					'USER_ID' => $rs->fields['domain_admin_id'],
 					'CHANGE_INTERFACE' => tr('Switch'),
-					'DISK_LIMIT' => $rs->fields['domain_disk_limit'],
-					'DISK_USAGE' => round($rs->fields['domain_disk_usage'] / 1024 / 1024,1),
+					'DISK_USAGE' => ($rs->fields['domain_disk_limit'])
+						? tr('%1$s of %2$s MB', round($rs->fields['domain_disk_usage'] / 1024 / 1024,1), $rs->fields['domain_disk_limit'])
+						: tr('%1$s of <b>unlimited</b> MB', round($rs->fields['domain_disk_usage'] / 1024 / 1024,1))
 				)
 			);
 

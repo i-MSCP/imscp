@@ -3,8 +3,8 @@
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
  *
@@ -24,7 +24,7 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
- * Portions created by the ispCP Team are Copyright (C) 2006-2009 by
+ * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  */
 
@@ -255,7 +255,18 @@ if (empty($ed_error)) {
 }
 
 function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, &$err, $obj) {
-	if ($rmax == 0 && $umax == -1) {
+	if ($rmax == -1 && $umax >= 0) {
+		if ($u > 0) {
+			$err .= tr('The <em>%s</em> service cannot be disabled!', $obj) . tr('There are <em>%s</em> records on system!', $obj);
+			return;
+		} else if ($data != -1){
+			$err .= tr('The <em>%s</em> have to be disabled!', $obj) . tr('The admin has <em>%s</em> disabled on this system!', $obj);
+			return;
+		} else {
+			$umax = $data;
+		}
+		return;
+	} else if ($rmax == 0 && $umax == -1) {
 		if ($data == -1) {
 			return;
 		} else if ($data == 0) {
