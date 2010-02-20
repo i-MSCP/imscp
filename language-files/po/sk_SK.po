@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sk_SK\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-12-18 12:36+0100\n"
+"POT-Creation-Date: 2010-02-20 10:04+0100\n"
 "PO-Revision-Date: 2009-12-18 14:32+0100\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -66,7 +66,10 @@ msgid "New password could not been sent."
 msgstr ""
 
 #, php-format
-msgid "Your password request has been initiated. You will receive an email with instructions to complete the process. This reset request will expire in %s minutes."
+msgid ""
+"Your password request has been initiated. You will receive an email with "
+"instructions to complete the process. This reset request will expire in %s "
+"minutes."
 msgstr ""
 
 msgid "Back"
@@ -82,8 +85,12 @@ msgstr "Skúsiť znovu"
 msgid "Security code"
 msgstr "Bezpečnostný kód"
 
-msgid "(To avoid abuse, we ask you to write the combination of letters on the above picture into the field \"Security code\")"
-msgstr "(Pre vyhnutie zneužitia Vás žiadame prepísať  kombináciu písmen v obrázku nad do políčka \"Bezpečnostný kód\")"
+msgid ""
+"(To avoid abuse, we ask you to write the combination of letters on the above "
+"picture into the field \"Security code\")"
+msgstr ""
+"(Pre vyhnutie zneužitia Vás žiadame prepísať  kombináciu písmen v obrázku "
+"nad do políčka \"Bezpečnostný kód\")"
 
 msgid "Request password"
 msgstr "Vyžiadať heslo"
@@ -99,7 +106,9 @@ msgid "Incorrect username length or syntax!"
 msgstr "Zlá dľžka alebo syntax užívateľského mena!"
 
 #, php-format
-msgid "The password must be at least %s long and contain letters and numbers to be valid."
+msgid ""
+"The password must be at least %s long and contain letters and numbers to be "
+"valid."
 msgstr ""
 
 #, php-format
@@ -222,6 +231,13 @@ msgstr "Pošli nové prihlasovacie údaje"
 #, fuzzy
 msgid "Generate password"
 msgstr "Zopakovať heslo"
+
+#, fuzzy
+msgid "Password change is disabled!"
+msgstr "Aktualizovať nainštalovaný jazyk!"
+
+msgid "Demo Version!"
+msgstr ""
 
 msgid "ispCP - Admin/Admin Log"
 msgstr "ispCP - Admin/Admin Log"
@@ -468,6 +484,10 @@ msgstr "Podpora CGI"
 msgid "Manual DNS support (EXPERIMENTAL)"
 msgstr ""
 
+#, fuzzy
+msgid "Backup support"
+msgstr "Podpora PHP"
+
 msgid "MySQL support"
 msgstr "Podpora MySQL"
 
@@ -507,6 +527,18 @@ msgstr "Aliasy domén"
 msgid "Submit changes"
 msgstr "Odoslať zmeny"
 
+msgid "Full"
+msgstr ""
+
+msgid "SQL"
+msgstr ""
+
+msgid "Domain"
+msgstr "Doména"
+
+msgid "No"
+msgstr "Nie"
+
 msgid "Enabled"
 msgstr "Povolené"
 
@@ -540,7 +572,8 @@ msgstr "Maximálny počet aliasov<br><i>(-1 zakázané, 0 neobmedzené)</i>"
 
 #, fuzzy
 msgid "Mail accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Maximálny počet E-mailových kont<br><i>(-1 zakázané, 0 neobmedzené)</i>"
+msgstr ""
+"Maximálny počet E-mailových kont<br><i>(-1 zakázané, 0 neobmedzené)</i>"
 
 #, fuzzy
 msgid "FTP accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>"
@@ -565,29 +598,20 @@ msgstr "Limit diskového priestoru [MB]<br><i>(0 neobmedzený)</i>"
 msgid "Backup"
 msgstr "Záloha"
 
-msgid "Domain"
-msgstr "Doména"
-
-msgid "SQL"
-msgstr ""
-
-msgid "Full"
-msgstr ""
-
-msgid "No"
-msgstr "Nie"
-
 msgid "Cancel"
 msgstr "Zrušiť"
 
 msgid "Yes"
 msgstr "Áno"
 
-msgid "In case 'Domain expire' is 'N/A', the expiration date will be set from today."
+msgid ""
+"In case 'Domain expire' is 'N/A', the expiration date will be set from today."
 msgstr ""
 
-msgid "User does not exist or you do not have permission to access this interface!"
-msgstr "Užívateľ neeistuje alebo nemáte oprávnenie na prístup k danému zariadeniu!"
+msgid ""
+"User does not exist or you do not have permission to access this interface!"
+msgstr ""
+"Užívateľ neeistuje alebo nemáte oprávnenie na prístup k danému zariadeniu!"
 
 msgid "N/A"
 msgstr "N/A"
@@ -676,8 +700,10 @@ msgid "The <em>%s</em> service cannot be limited! "
 msgstr "<b>%s</b> Služba nemôže byť limitovaná !<br>"
 
 #, fuzzy, php-format
-msgid "Specified number is smaller than <em>%s</em> records, present on the system!"
-msgstr "Zadané číslo je menšie ako <b>%s</b> záznamov nachádzajúcich sa v systéme!"
+msgid ""
+"Specified number is smaller than <em>%s</em> records, present on the system!"
+msgstr ""
+"Zadané číslo je menšie ako <b>%s</b> záznamov nachádzajúcich sa v systéme!"
 
 #, fuzzy, php-format
 msgid "There are <em>%s</em> records on the system!"
@@ -728,11 +754,54 @@ msgstr "Všetky prenesené dáta"
 msgid "Day"
 msgstr "Deň"
 
-msgid "ispCP - Administrator/Add hosting plan"
-msgstr "ispCP - Administrator/Pridať hostingový plán"
+msgid "ispCP - Administrator/Hosting Plan Management"
+msgstr "ispCP - Administrator/Spravovať hostingový plán"
+
+msgid "Hosting plans"
+msgstr "Hostingový plán"
+
+msgid "Manage hosting plans"
+msgstr "Spravovať hostingový plán"
+
+msgid "Purchasing"
+msgstr "Kúpa"
 
 msgid "Add hosting plan"
 msgstr "Pridať hostingový plán"
+
+msgid "Add new user hosting plan"
+msgstr "Pridať nový užívateľský hostingový plán"
+
+msgid "Return to previous menu"
+msgstr "Návrat do predchádzajúceho menu"
+
+msgid "Hosting plan added!"
+msgstr "Hostingový plán pridaný!"
+
+msgid "Hosting plan deleted!"
+msgstr "Hostingový plán zmazaný!"
+
+msgid "Hosting plan updated!"
+msgstr "Hostingový plán aktualizovaný!"
+
+#, fuzzy
+msgid "Hosting plan can't be deleted, there are orders!"
+msgstr "Hostingový plán so zadaným menom už existuje!"
+
+msgid "Hosting plans not found!"
+msgstr "Hostingový plán nenájdený!"
+
+msgid "No."
+msgstr "Nie"
+
+msgid "Name"
+msgstr "Meno"
+
+msgid "Show hosting plan"
+msgstr "Zobraziť hostingový plán"
+
+msgid "ispCP - Administrator/Add hosting plan"
+msgstr "ispCP - Administrator/Pridať hostingový plán"
 
 msgid "Hosting plan properties"
 msgstr "Nastavenia hostingového plánu"
@@ -747,7 +816,8 @@ msgid "Max aliases<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Maximálny počet aliasov<br><i>(-1 zakázané, 0 neobmedzené)</i>"
 
 msgid "Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Maximálny počet E-mailových kont<br><i>(-1 zakázané, 0 neobmedzené)</i>"
+msgstr ""
+"Maximálny počet E-mailových kont<br><i>(-1 zakázané, 0 neobmedzené)</i>"
 
 msgid "FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Limit FTP kont<br><i>(-1 zakázaný, 0 neobmedzený)</i>"
@@ -851,49 +921,6 @@ msgstr "Nesprávna cena. Napríklad: 9.99"
 
 msgid "Incorrect setup fee. Example: 19.99"
 msgstr "Nesprávny zriaďovací poplatok. Napríklad: 19.99"
-
-msgid "ispCP - Administrator/Hosting Plan Management"
-msgstr "ispCP - Administrator/Spravovať hostingový plán"
-
-msgid "Hosting plans"
-msgstr "Hostingový plán"
-
-msgid "Manage hosting plans"
-msgstr "Spravovať hostingový plán"
-
-msgid "Purchasing"
-msgstr "Kúpa"
-
-msgid "Add new user hosting plan"
-msgstr "Pridať nový užívateľský hostingový plán"
-
-msgid "Return to previous menu"
-msgstr "Návrat do predchádzajúceho menu"
-
-msgid "Hosting plan added!"
-msgstr "Hostingový plán pridaný!"
-
-msgid "Hosting plan deleted!"
-msgstr "Hostingový plán zmazaný!"
-
-msgid "Hosting plan updated!"
-msgstr "Hostingový plán aktualizovaný!"
-
-#, fuzzy
-msgid "Hosting plan can't be deleted, there are orders!"
-msgstr "Hostingový plán so zadaným menom už existuje!"
-
-msgid "Hosting plans not found!"
-msgstr "Hostingový plán nenájdený!"
-
-msgid "No."
-msgstr "Nie"
-
-msgid "Name"
-msgstr "Meno"
-
-msgid "Show hosting plan"
-msgstr "Zobraziť hostingový plán"
 
 #, php-format
 msgid "You have <b>%d</b> new support questions"
@@ -1064,10 +1091,6 @@ msgstr "Dostupné aktualizácie ispCP"
 msgid "No new ispCP updates available"
 msgstr "Žiadné nové aktualizácie ispCP"
 
-#, fuzzy
-msgid "Language was removed!"
-msgstr "Vlastné chybové stránky boli aktulizované!"
-
 msgid "User language updated successfully!"
 msgstr "Jazyk užívateľa úspešne zmenený!"
 
@@ -1081,6 +1104,10 @@ msgstr "Jazyky"
 #, fuzzy
 msgid "Choose your default language"
 msgstr "Vyberte predvolený jazyk"
+
+#, fuzzy
+msgid "Language was removed!"
+msgstr "Vlastné chybové stránky boli aktulizované!"
 
 msgid "Reseller list is empty!"
 msgstr "Zoznam predajcov je prázdny!"
@@ -1129,19 +1156,31 @@ msgid "<b>%1$s</b> has unlimited rights for a <b>%2$s</b> Service !<br>"
 msgstr "<b>%1$s</b> má neobmedzené práva <b>%2$s</b> Služby !<br>"
 
 #, php-format
-msgid "You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits for the <b>%2$s</b> service!"
-msgstr "Nemôžete presunúť <b>%1$s</b> do destinácie predajcu,<br>ktorý má limit pre <b>%2$s</b> službu!"
+msgid ""
+"You cannot move <b>%1$s</b> in a destination reseller,<br>which has limits "
+"for the <b>%2$s</b> service!"
+msgstr ""
+"Nemôžete presunúť <b>%1$s</b> do destinácie predajcu,<br>ktorý má limit pre "
+"<b>%2$s</b> službu!"
 
 #, php-format
-msgid "<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination reseller!<br>"
-msgstr "<b>%1$s</b> prekročil limit pre <b>%2$s</b><br>službu v mieste určenia predajcu!<br>"
+msgid ""
+"<b>%1$s</b> is exceeding limits for a <b>%2$s</b><br>service in destination "
+"reseller!<br>"
+msgstr ""
+"<b>%1$s</b> prekročil limit pre <b>%2$s</b><br>službu v mieste určenia "
+"predajcu!<br>"
 
 msgid "Moving aborted!"
 msgstr "Presun zrušený!"
 
 #, php-format
-msgid "<b>%s</b> has IP address that cannot be managed from the destination reseller !<br>This user cannot be moved!"
-msgstr "<b>%s</b> má IP adresu, ktorá nemože byť spravovaná z miesta pre predajcu !<br>Tento užívateľ nemôže byť presunutý!"
+msgid ""
+"<b>%s</b> has IP address that cannot be managed from the destination "
+"reseller !<br>This user cannot be moved!"
+msgstr ""
+"<b>%s</b> má IP adresu, ktorá nemože byť spravovaná z miesta pre predajcu !"
+"<br>Tento užívateľ nemôže byť presunutý!"
 
 msgid "ispCP - Admin/Manage users/User assignment"
 msgstr "ispCP - Admin/Spravovať užívateľov/Priradenie užívateľov"
@@ -1181,13 +1220,12 @@ msgstr "E-mail aktualizovaný"
 
 #, fuzzy
 msgid "This user has a domain!<br>To delete the user first delete the domain!"
-msgstr "Tento používateľ má doménu !<br>Pre zmazanie užívateľa - najprv zmažte doménu!"
+msgstr ""
+"Tento používateľ má doménu !<br>Pre zmazanie užívateľa - najprv zmažte "
+"doménu!"
 
 msgid "User was disabled"
 msgstr "Užívateľ bol zablokovaný"
-
-msgid "Incorrect data input!"
-msgstr "Nesprávne data!"
 
 msgid "ispCP - Admin/Internationalisation"
 msgstr "ispCP - Admin/Zmedzinárodnenie"
@@ -1249,6 +1287,9 @@ msgstr "Nainštalovať"
 msgid "Export"
 msgstr "Export"
 
+msgid "Incorrect data input!"
+msgstr "Nesprávne data!"
+
 msgid "ispCP - Admin/Change Password"
 msgstr "ispCP - Admin/Zmena hesla"
 
@@ -1276,6 +1317,10 @@ msgstr "Aktualizovať heslo"
 
 msgid "Current password"
 msgstr "Súčasné heslo"
+
+#, fuzzy
+msgid "Password change is deactivated!"
+msgstr "Doménový alias pridaný!"
 
 msgid "ispCP - Admin/Change Personal Data"
 msgstr "ispCP - Admin/Zmeniť osobné údaje"
@@ -1314,6 +1359,14 @@ msgstr "Zlá veľkosť alebo syntax ceny!"
 #, fuzzy
 msgid "Incorrect domains limit!"
 msgstr "Nesprávna syntax mena domény"
+
+#, fuzzy
+msgid "SQL databases limit is <i>disabled</i> but SQL users limit not!"
+msgstr "Limit SQL databáz<br><i>(-1 zakázaný, 0 neobmedzený)</i>"
+
+#, fuzzy
+msgid "SQL users limit is <i>disabled</i> but SQL databases limit not!"
+msgstr "Limit SQL užívateľov<br><i>(-1 zakázaný, 0 neobmedzený)</i>"
 
 msgid "You must assign at least one IP number for a reseller!"
 msgstr "Musíte priradiť aspoň jednu IP adresu pre predajcu!"
@@ -1360,31 +1413,20 @@ msgstr "Výpis adresárov"
 msgid "Logo upload"
 msgstr "Uloženie loga"
 
+msgid "Support system"
+msgstr "Podporný systém"
+
 msgid "Reseller IPs"
 msgstr "Predajove IP adresy"
 
 msgid "Customer ID"
 msgstr "ID zákazníka"
 
-msgid "ispCP - Admin/Manage users/Edit Reseller"
-msgstr "ispCP - Admin/Spravovať užívateľov/Upraviť predajcov"
-
 msgid "Domains"
 msgstr "Domény"
 
-#, php-format
-msgid "Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
-msgstr ""
-
-msgid "! Trying to correct!"
-msgstr ""
-
 msgid "Aliases"
 msgstr "Aliasy"
-
-#, php-format
-msgid "Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
-msgstr ""
 
 msgid "SQL Databases"
 msgstr "SQL databázy"
@@ -1400,31 +1442,52 @@ msgstr "Prenesené dáta cez web"
 msgid "Disk storage"
 msgstr "Využitie diskového priestoru"
 
+#, php-format
+msgid ""
+"This reseller's customers are using/have more/higher <b>%s</b> accounts/"
+"limits than the new limit you entered."
+msgstr ""
+
+#, php-format
+msgid ""
+"This reseller has already assigned more/higher <b>%s</b> accounts/limits "
+"than the new limit you entered."
+msgstr ""
+
+#, fuzzy, php-format
+msgid ""
+"This reseller has customer(s) with unlimited rights for the <b>%s</b> "
+"service!"
+msgstr ""
+"Tento predajca má užívateľa/užívateľov s neobmedzenými právami na <b>%s</b> "
+"službu !<br>"
+
+#, fuzzy
+msgid "If you want to limit the reseller, you must first limit its customers!"
+msgstr ""
+"Ak chcete obmedziť predajcu, najprv musíte limitovat jeho užívateľov!<br>"
+
+#, fuzzy, php-format
+msgid "This reseller has domains assigned to the <b>%s</b> address!"
+msgstr ""
+"Tento predajca má užívateľa/užívateľov s neobmedzenými právami na <b>%s</b> "
+"službu !<br>"
+
+msgid "ERROR: The reseller account you trying to edit does not exist!"
+msgstr ""
+
+msgid "ispCP - Admin/Manage users/Edit Reseller"
+msgstr "ispCP - Admin/Spravovať užívateľov/Upraviť predajcov"
+
+msgid ""
+"ERROR: One or more errors was found! Please, correct them and try again!"
+msgstr ""
+
 #, fuzzy
 msgid "Reseller data inconsistency!"
 msgstr "Tabulka štatistík predajcu"
 
-#, php-format
-msgid "This reseller has already assigned more/higher <b>%s</b> accounts/limits than the new limit you entered."
-msgstr ""
-
-msgid "Edit reseller aborted!"
-msgstr "Upravovanie predajcu zrušené!"
-
-#, php-format
-msgid "This reseller's customers are using/have more/higher <b>%s</b> accounts/limits than the new limit you entered."
-msgstr ""
-
-#, fuzzy, php-format
-msgid "This reseller has customer(s) with unlimited rights for the <b>%s</b> service!<br>"
-msgstr "Tento predajca má užívateľa/užívateľov s neobmedzenými právami na <b>%s</b> službu !<br>"
-
-#, fuzzy
-msgid "If you want to limit the reseller, you must first limit its customers!<br>"
-msgstr "Ak chcete obmedziť predajcu, najprv musíte limitovat jeho užívateľov!<br>"
-
-#, php-format
-msgid "This reseller has domains assigned to the <b>%s</b> address!<br>"
+msgid "Please, read the message(s) above and trying to correct!"
 msgstr ""
 
 msgid "Edit reseller"
@@ -1436,9 +1499,21 @@ msgstr "E-mail"
 msgid "unlimited"
 msgstr "Bez obmedzení"
 
+msgid "Reset"
+msgstr "Reset"
+
 #, fuzzy
-msgid "Domains limit<br><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Maximálny počet subdomén<br><i>(-1 zakázané, 0 neobmedzené)</i>"
+msgid "Generated password:"
+msgstr "Zopakovať heslo"
+
+msgid "Type `CTRL+C` to copy the generated password in the clipboard."
+msgstr ""
+
+#, php-format
+msgid ""
+"ispCP NOTICE:\\n\\nThe `Enter` key is disabled for performance reasons!"
+"\\nInstead, use the %s button to update the data."
+msgstr ""
 
 msgid "ispCP - Reseller statistics"
 msgstr "ispCP - Štatistiky predajcu"
@@ -1536,23 +1611,11 @@ msgstr "%s neexistuje"
 msgid "Anti-Rootkits Tools Log Checker"
 msgstr "Log kontroly Rootkit"
 
-msgid "ispCP - Admin/Server day stats"
-msgstr "ispCP - Admin/Denné štatistiky servra"
+msgid "ispCP - Admin/Server statistics"
+msgstr "ispCP - Admin/Štatistiky servra"
 
-msgid "Server day statistics"
-msgstr "Denné štatistiky servra"
-
-msgid "Month:"
-msgstr "Mesiac:"
-
-msgid "Year:"
-msgstr "Rok:"
-
-msgid "Day:"
-msgstr "Deň:"
-
-msgid "Hour"
-msgstr "Hodina"
+msgid "Server statistics"
+msgstr "Štatistiky servra"
 
 msgid "Web in"
 msgstr "Web prichádzajúce"
@@ -1588,11 +1651,23 @@ msgstr "Všetky prichádzajúce"
 msgid "All out"
 msgstr "Všetky odchádzajúce"
 
-msgid "ispCP - Admin/Server statistics"
-msgstr "ispCP - Admin/Štatistiky servra"
+msgid "ispCP - Admin/Server day stats"
+msgstr "ispCP - Admin/Denné štatistiky servra"
 
-msgid "Server statistics"
-msgstr "Štatistiky servra"
+msgid "Server day statistics"
+msgstr "Denné štatistiky servra"
+
+msgid "Month:"
+msgstr "Mesiac:"
+
+msgid "Year:"
+msgstr "Rok:"
+
+msgid "Day:"
+msgstr "Deň:"
+
+msgid "Hour"
+msgstr "Hodina"
 
 msgid "ispCP Admin / System Tools / Server Status"
 msgstr "ispCP Admin / Systémové nástroje / Status servra"
@@ -1629,6 +1704,150 @@ msgstr "Nastavenia"
 
 msgid "Kill session"
 msgstr "Zrušiť sedenie"
+
+msgid "ispCP - Admin/Settings"
+msgstr "ispCP - Admin/Nastavenia"
+
+msgid "ERROR: Only positive numbers are allowed !"
+msgstr "CHYBA: Iba kladné čísla sú povolené !"
+
+msgid "Settings saved !"
+msgstr "Uložit nastavenia !"
+
+msgid "General settings"
+msgstr "Všeobecné nastavenia"
+
+#, fuzzy
+msgid "Activation link expire time (minutes)"
+msgstr "Platnosť aktivačného odkazu (minúty)"
+
+msgid "Password settings"
+msgstr ""
+
+msgid "Use strong Passwords"
+msgstr ""
+
+msgid "Password length"
+msgstr ""
+
+msgid "Bruteforce detection"
+msgstr "Bruteforce detekcia"
+
+#, fuzzy
+msgid "Block time between logins"
+msgstr "Čas medzi prihláseniami"
+
+#, fuzzy
+msgid "Max number of login attempts"
+msgstr "Počet pokusov prihlásenia"
+
+msgid "Blocktime (minutes)"
+msgstr "Čas zablokovania (minúty)"
+
+#, fuzzy
+msgid "Block time between logins (seconds)"
+msgstr "Čas medzi prihláseniami (minúty)"
+
+#, fuzzy
+msgid "Max number of CAPTCHA validation attempts"
+msgstr "Počet pokusov prihlásenia"
+
+msgid "Other settings"
+msgstr "Ostatné nastavenia"
+
+msgid "E-Mail settings"
+msgstr ""
+
+msgid "Create default E-Mail addresses"
+msgstr ""
+
+msgid "Count default E-Mail addresses"
+msgstr ""
+
+msgid "E-Mail accounts are hard suspended"
+msgstr ""
+
+#, fuzzy
+msgid "Panel default language"
+msgstr "Vyberte predvolený jazyk"
+
+msgid "Apply changes"
+msgstr "Vykonať zmeny"
+
+#, fuzzy
+msgid "Server ports"
+msgstr "Porty servra"
+
+msgid "Hosting plans available for"
+msgstr ""
+
+#, fuzzy
+msgid "Admin"
+msgstr "Pre administrátora"
+
+msgid "Domains per page"
+msgstr "Domén na stránku"
+
+#, fuzzy
+msgid "Log Level"
+msgstr "Úroveň"
+
+msgid "Notices, Warnings and Errors"
+msgstr ""
+
+msgid "Warnings and Errors"
+msgstr ""
+
+#, fuzzy
+msgid "Errors"
+msgstr "Chyba"
+
+#, fuzzy
+msgid "Check for update"
+msgstr "Užívateľ aktualizovaný"
+
+msgid "Show server load"
+msgstr ""
+
+#, fuzzy
+msgid "Prevent external login for admins"
+msgstr "Prosím vyplňte Vaše prihlasovacie údaje"
+
+msgid "Prevent external login for resellers"
+msgstr ""
+
+msgid "Prevent external login for clients"
+msgstr ""
+
+#, fuzzy
+msgid "Custom orderpanel ID"
+msgstr "ID zákazníka"
+
+#, fuzzy
+msgid "Domain names validation"
+msgstr "Meno domény"
+
+msgid "Top Level Domain name strict validation"
+msgstr ""
+
+msgid ""
+"Only Top Level Domains (TLD) listed in IANA root zone database can be used."
+msgstr ""
+
+msgid "Second Level Domain name strict validation"
+msgstr ""
+
+msgid ""
+"Single letter Second Level Domains (SLD) are not allowed under the most Top "
+"Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de."
+msgstr ""
+
+msgid ""
+"Maximal number of labels for domain names<br />(<i>Excluding SLD & TLD</i>)"
+msgstr ""
+
+msgid "Maximal number of labels for subdomains"
+msgstr ""
 
 msgid "You can only upload images!"
 msgstr "Môžete nahrať iba obrázky!"
@@ -1713,9 +1932,6 @@ msgstr "Zabudnuté heslo"
 msgid "Subject"
 msgstr "Predmet"
 
-msgid "Apply changes"
-msgstr "Vykonať zmeny"
-
 msgid "URL to this admin panel"
 msgstr ""
 
@@ -1727,9 +1943,6 @@ msgstr "Protokol"
 msgid "ispCP - Admin/Maintenance mode"
 msgstr "ispCP - Admin/Hlavný zoznam"
 
-msgid "Settings saved !"
-msgstr "Uložit nastavenia !"
-
 #, fuzzy
 msgid "Maintenance mode"
 msgstr "Spravovať objednávky"
@@ -1737,143 +1950,6 @@ msgstr "Spravovať objednávky"
 #, fuzzy
 msgid "Under this mode only administrators can login"
 msgstr "V tomto móde môže byť prihlásený iba administrátor"
-
-msgid "ispCP - Admin/Settings"
-msgstr "ispCP - Admin/Nastavenia"
-
-msgid "ERROR: Only positive numbers are allowed !"
-msgstr "CHYBA: Iba kladné čísla sú povolené !"
-
-msgid "General settings"
-msgstr "Všeobecné nastavenia"
-
-#, fuzzy
-msgid "Activation link expire time (minutes)"
-msgstr "Platnosť aktivačného odkazu (minúty)"
-
-msgid "Password settings"
-msgstr ""
-
-msgid "Use strong Passwords"
-msgstr ""
-
-msgid "Password length"
-msgstr ""
-
-msgid "Bruteforce detection"
-msgstr "Bruteforce detekcia"
-
-#, fuzzy
-msgid "Block time between logins"
-msgstr "Čas medzi prihláseniami"
-
-#, fuzzy
-msgid "Max number of login attempts"
-msgstr "Počet pokusov prihlásenia"
-
-msgid "Blocktime (minutes)"
-msgstr "Čas zablokovania (minúty)"
-
-#, fuzzy
-msgid "Block time between logins (seconds)"
-msgstr "Čas medzi prihláseniami (minúty)"
-
-#, fuzzy
-msgid "Max number of CAPTCHA validation attempts"
-msgstr "Počet pokusov prihlásenia"
-
-msgid "Other settings"
-msgstr "Ostatné nastavenia"
-
-msgid "E-Mail settings"
-msgstr ""
-
-msgid "Create default E-Mail addresses"
-msgstr ""
-
-msgid "Count default E-Mail addresses"
-msgstr ""
-
-msgid "E-Mail accounts are hard suspended"
-msgstr ""
-
-#, fuzzy
-msgid "Panel default language"
-msgstr "Vyberte predvolený jazyk"
-
-msgid "Support system"
-msgstr "Podporný systém"
-
-#, fuzzy
-msgid "Server ports"
-msgstr "Porty servra"
-
-msgid "Hosting plans available for"
-msgstr ""
-
-#, fuzzy
-msgid "Admin"
-msgstr "Pre administrátora"
-
-msgid "Domains per page"
-msgstr "Domén na stránku"
-
-#, fuzzy
-msgid "Log Level"
-msgstr "Úroveň"
-
-msgid "Notices, Warnings and Errors"
-msgstr ""
-
-msgid "Warnings and Errors"
-msgstr ""
-
-#, fuzzy
-msgid "Errors"
-msgstr "Chyba"
-
-#, fuzzy
-msgid "Check for update"
-msgstr "Užívateľ aktualizovaný"
-
-msgid "Show server load"
-msgstr ""
-
-#, fuzzy
-msgid "Prevent external login for admins"
-msgstr "Prosím vyplňte Vaše prihlasovacie údaje"
-
-msgid "Prevent external login for resellers"
-msgstr ""
-
-msgid "Prevent external login for clients"
-msgstr ""
-
-#, fuzzy
-msgid "Custom orderpanel ID"
-msgstr "ID zákazníka"
-
-#, fuzzy
-msgid "Domain names validation"
-msgstr "Meno domény"
-
-msgid "Top Level Domain name strict validation"
-msgstr ""
-
-msgid "Only Top Level Domains (TLD) listed in IANA root zone database can be used."
-msgstr ""
-
-msgid "Second Level Domain name strict validation"
-msgstr ""
-
-msgid "Single letter Second Level Domains (SLD) are not allowed under the most Top Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de."
-msgstr ""
-
-msgid "Maximal number of labels for domain names<br />(<i>Excluding SLD & TLD</i>)"
-msgstr ""
-
-msgid "Maximal number of labels for subdomains"
-msgstr ""
 
 msgid "ERROR: Only Letters, Numbers, Dash and Underscore are allowed!"
 msgstr "CHYBA: Povolené sú iba písmená, čisla, pomlčky a podčiarkovník!"
@@ -2109,6 +2185,10 @@ msgstr "Zlé ID domény!"
 msgid "Invalid user id!"
 msgstr "Zlé časové obdobie!"
 
+#, fuzzy
+msgid "Logo could not be deleted:"
+msgstr "Vlastnosti domény úspešne aktualizované!"
+
 msgid "There are active domains of reseller/admin!"
 msgstr ""
 
@@ -2140,7 +2220,9 @@ msgstr "K hlavnej doméne"
 msgid "Domain databases:"
 msgstr "Aliasy domén"
 
-msgid "Do you really want to delete the entire domain? This operation can not be undone!"
+msgid ""
+"Do you really want to delete the entire domain? This operation can not be "
+"undone!"
 msgstr ""
 
 msgid "Yes, delete the domain."
@@ -2178,6 +2260,16 @@ msgstr "Zlá syntax domény!"
 msgid "Please write mount point!"
 msgstr "Prosím počkajte na aktualizovanie"
 
+#, fuzzy
+msgid "Enable Forward"
+msgstr "Presmerovanie e-mailu"
+
+msgid "Enable"
+msgstr "Zapnúť"
+
+msgid "Disable"
+msgstr "Vypnúť"
+
 msgid "Domain alias limit reached!"
 msgstr "Limit aliasov domény dosiahnutý!"
 
@@ -2191,8 +2283,9 @@ msgstr "Nesprávna syntax prípojného bodu"
 msgid "Master domain cannot be used!"
 msgstr "Doménový alias nepridaný!"
 
-msgid "Incorrect forward syntax"
-msgstr "Nesprávna syntax presmerovania"
+#, fuzzy
+msgid "Wrong domain part in forward URL!"
+msgstr "Zlá syntax domény!"
 
 msgid "Domain with this name already exist"
 msgstr "Doména s rovnakým menom už existuje"
@@ -2210,14 +2303,24 @@ msgid "Alias scheduled for addition!"
 msgstr "Alias načasovaný na pridanie!"
 
 #, fuzzy
-msgid "Domain alias you are trying to remove has subdomains!<br>First remove them!"
-msgstr "Alias domény, ktorý sa snažíte odstrániť má e-mailové kontá!<br>Najpr ich odstránte!"
+msgid ""
+"Domain alias you are trying to remove has subdomains!<br>First remove them!"
+msgstr ""
+"Alias domény, ktorý sa snažíte odstrániť má e-mailové kontá!<br>Najpr ich "
+"odstránte!"
 
-msgid "Domain alias you are trying to remove has email accounts !<br>First remove them!"
-msgstr "Alias domény, ktorý sa snažíte odstrániť má e-mailové kontá!<br>Najpr ich odstránte!"
+msgid ""
+"Domain alias you are trying to remove has email accounts !<br>First remove "
+"them!"
+msgstr ""
+"Alias domény, ktorý sa snažíte odstrániť má e-mailové kontá!<br>Najpr ich "
+"odstránte!"
 
-msgid "Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
-msgstr "Alias domény, ktorý sa snažíte odstrániť má FTP kontá!<br>Najpr ich odstránte!"
+msgid ""
+"Domain alias you are trying to remove has FTP accounts!<br>First remove them!"
+msgstr ""
+"Alias domény, ktorý sa snažíte odstrániť má FTP kontá!<br>Najpr ich "
+"odstránte!"
 
 msgid "Alias scheduled for deletion!"
 msgstr "Alias načasovný na zmazanie!"
@@ -2235,21 +2338,11 @@ msgstr "Meno aliasu"
 msgid "Mount Point"
 msgstr "Bod propojenia"
 
-#, fuzzy
-msgid "Enable Forward"
-msgstr "Presmerovanie e-mailu"
-
-msgid "Enable"
-msgstr "Zapnúť"
-
-msgid "Disable"
-msgstr "Vypnúť"
-
-msgid "A Forward URL has to start with 'http://'"
+msgid ""
+"Subdomain you are trying to remove has email accounts !<br>First remove them!"
 msgstr ""
-
-msgid "Subdomain you are trying to remove has email accounts !<br>First remove them!"
-msgstr "Sub-doména, ktorú sa snažíte odstrániť má e-mailové kontá!<br>Najpr ich odstránte!"
+"Sub-doména, ktorú sa snažíte odstrániť má e-mailové kontá!<br>Najpr ich "
+"odstránte!"
 
 msgid "Subdomain scheduled for deletion!"
 msgstr "Sub-doména načasovaná na zmazanie!"
@@ -2285,7 +2378,8 @@ msgid "Restore backup"
 msgstr "Obnoviť zálohu"
 
 #, fuzzy
-msgid "Click the Restore button and the system will restore the last daily backup"
+msgid ""
+"Click the Restore button and the system will restore the last daily backup"
 msgstr "Kliknutím na tlačidlo obnovenia zálohy obnovíte poslednú dennú zálohu"
 
 msgid "Restore"
@@ -2328,9 +2422,6 @@ msgstr "Mesiace:"
 
 msgid "Weekday(s):"
 msgstr "Týždne:"
-
-msgid "Reset"
-msgstr "Reset"
 
 msgid "Edit Cronjob"
 msgstr "Zmeniť crontab"
@@ -2453,6 +2544,24 @@ msgstr ""
 msgid "Unknown zone type %s!"
 msgstr ""
 
+msgid "ispCP - Client/Domain Statistics"
+msgstr "ispCP - Klient/Štatistiky domény"
+
+msgid "Web Stats"
+msgstr "Štatistiky webu"
+
+msgid "WEB"
+msgstr "WEB"
+
+msgid "SMTP"
+msgstr "SMTP"
+
+msgid "POP3/IMAP"
+msgstr "POP3/IMAP"
+
+msgid "Sum"
+msgstr "Spolu"
+
 #, fuzzy
 msgid "Manual zone's records list is empty!"
 msgstr "Zoznam e-mailových kont je prázdny!"
@@ -2489,24 +2598,6 @@ msgstr "Akcia"
 #, fuzzy
 msgid "Record data"
 msgstr "Základné data"
-
-msgid "ispCP - Client/Domain Statistics"
-msgstr "ispCP - Klient/Štatistiky domény"
-
-msgid "Web Stats"
-msgstr "Štatistiky webu"
-
-msgid "WEB"
-msgstr "WEB"
-
-msgid "SMTP"
-msgstr "SMTP"
-
-msgid "POP3/IMAP"
-msgstr "POP3/IMAP"
-
-msgid "Sum"
-msgstr "Spolu"
 
 msgid "ispCP - Client/Manage Error Custom Pages"
 msgstr "ispCP - Klient/Spravovať vlastné chybové stránky;"
@@ -2585,11 +2676,9 @@ msgstr "FTP konto pridané!"
 msgid "Please enter FTP account username!"
 msgstr "Prosím zadajte užívateľské meo FTP konta!"
 
-msgid "Password data is missing!"
+#, fuzzy
+msgid "Password is missing!"
 msgstr "Chýba hesla!"
-
-msgid "Entered passwords differ from the another!"
-msgstr "Zadané heslá sú rôzne!"
 
 #, fuzzy
 msgid "Subdomain list is empty! You cannot add FTP accounts there!"
@@ -2651,9 +2740,6 @@ msgstr "Vyberať"
 msgid "FTP account deleted successfully!"
 msgstr "FTP konto zmazané úspešne!"
 
-msgid "Entered passwords differ!"
-msgstr "Zadané heslá sú rozdielne!"
-
 msgid "FTP account data updated!"
 msgstr "Informacie o FTP konte aktualizované!"
 
@@ -2687,7 +2773,8 @@ msgstr "PHP podpora: zapnutá"
 msgid "PHP Support: disabled"
 msgstr "PHP podpora: vypnutá"
 
-msgid "You have PHP enabled, but the new hosting plan doesn't has this feature."
+msgid ""
+"You have PHP enabled, but the new hosting plan doesn't has this feature."
 msgstr ""
 
 msgid "CGI Support: enabled"
@@ -2696,7 +2783,8 @@ msgstr "CGI podpora: zapnutá"
 msgid "CGI Support: disabled"
 msgstr "CGI podpora: vypnutá"
 
-msgid "You have CGI enabled, but the new hosting plan doesn't has this feature."
+msgid ""
+"You have CGI enabled, but the new hosting plan doesn't has this feature."
 msgstr ""
 
 #, fuzzy
@@ -2707,7 +2795,8 @@ msgstr "PHP podpora: zapnutá"
 msgid "DNS Support: disabled"
 msgstr "PHP podpora: vypnutá"
 
-msgid "You have DNS enabled, but the new hosting plan doesn't has this feature."
+msgid ""
+"You have DNS enabled, but the new hosting plan doesn't has this feature."
 msgstr ""
 
 msgid "You have more disk space in use than the new hosting plan limits."
@@ -2717,7 +2806,7 @@ msgstr ""
 msgid "Disk limit"
 msgstr "Limit diskového priestoru [MB]"
 
-msgid "You have more traffic than the new hosting plan limits."
+msgid "You did have more traffic than the new hosting plan limits."
 msgstr ""
 
 #, fuzzy
@@ -2745,7 +2834,8 @@ msgstr "FTP kontá"
 msgid "You have more SQL databases in use than the new hosting plan limits."
 msgstr ""
 
-msgid "You have more SQL database users in use than the new hosting plan limits."
+msgid ""
+"You have more SQL database users in use than the new hosting plan limits."
 msgstr ""
 
 msgid "free of charge"
@@ -2757,11 +2847,10 @@ msgstr ""
 msgid "Warning:"
 msgstr ""
 
-#, fuzzy
-msgid "Error:"
-msgstr "Chyba"
+msgid "Caution:"
+msgstr ""
 
-msgid "I know about the warnings - Purchase!"
+msgid "I understand the warnings - Purchase!"
 msgstr ""
 
 msgid "There are no available hosting plans for update"
@@ -2770,28 +2859,7 @@ msgstr "Nie sú dostupné žiadne hostingové plány na update"
 msgid "ispCP - Update hosting plan"
 msgstr "ispCP - Update hostingového plánu"
 
-msgid "You have more disk space in use than the new hosting plan limits"
-msgstr ""
-
-msgid "You have more traffic than the new hosting plan limits"
-msgstr ""
-
-msgid "You have more aliases in use than the new hosting plan limits"
-msgstr ""
-
-msgid "You have more subdomains in use than the new hosting plan limits"
-msgstr ""
-
-msgid "You have more Email addresses in use than the new hosting plan limits"
-msgstr ""
-
-msgid "You have more FTP accounts in use than the new hosting plan limits"
-msgstr ""
-
-msgid "You have more SQL databases in use than the new hosting plan limits"
-msgstr ""
-
-msgid "You have more SQL database users in use than the new hosting plan limits"
+msgid "You have more e-mail addresses in use than the new hosting plan limits."
 msgstr ""
 
 msgid "Your request for hosting pack update was added successfully"
@@ -2831,6 +2899,10 @@ msgstr "Prekračujete Váš limit diskového priestoru!"
 msgid "You have no new support questions!"
 msgstr "Nemáte žiadne nové podporné otázky!"
 
+#, fuzzy
+msgid "This Domain is expired"
+msgstr "Vlastnosti domény"
+
 msgid "ispCP - Client/Main Index"
 msgstr "ispCP - Klient/Hlavný index"
 
@@ -2842,6 +2914,9 @@ msgstr "Názov konta"
 
 msgid "Main domain"
 msgstr "Hlavná doména"
+
+msgid "Manual DNS support"
+msgstr ""
 
 msgid "SQL support"
 msgstr "podpora SQL"
@@ -2885,6 +2960,9 @@ msgstr "E-maily spolu"
 msgid "Show default E-Mail addresses"
 msgstr ""
 
+msgid "Hide default E-Mail Addresses"
+msgstr ""
+
 msgid "Mailformat of an address in your forward list is incorrect!"
 msgstr "Formát e-mailu v zozname presmerovaní je nesprávny!"
 
@@ -2910,6 +2988,12 @@ msgstr "Prosím zadajte meno e-mailového konta!"
 
 msgid "Invalid Mail Localpart Format used!"
 msgstr "Použitý zlý formát lokálnej časti e-mailu"
+
+msgid "Password data is missing!"
+msgstr "Chýba hesla!"
+
+msgid "Entered passwords differ!"
+msgstr "Zadané heslá sú rozdielne!"
 
 #, fuzzy
 msgid "Subdomain alias"
@@ -2975,6 +3059,21 @@ msgstr "Vaša správa"
 msgid "Enable mail auto responder"
 msgstr "Povoliť odpovedajúceho pri automatickej odpovedi e-mailom"
 
+msgid "Delete CatchAll"
+msgstr "Vymazať \"zachytiť všetko\""
+
+msgid "None"
+msgstr "Žiadny"
+
+msgid "Create catch all"
+msgstr "Vytvoriť \"zachytiť všetko\""
+
+msgid "Catch all account"
+msgstr "\"Zachytiť všetko\" konto"
+
+msgid "Catch all"
+msgstr "\"Zachytiť všetko\""
+
 msgid "Catch all account scheduled for creation!"
 msgstr "\"Zachytiť všetko\" konto načasované na pridanie!"
 
@@ -2990,23 +3089,8 @@ msgstr "Vytvoriť \"zachytiť všetko\" konto "
 msgid "Mail accounts list"
 msgstr "Zoznam e-mailových kont"
 
-msgid "Create catch all"
-msgstr "Vytvoriť \"zachytiť všetko\""
-
 msgid "Catch all account scheduled for deletion!"
 msgstr "\"Zachytiť všetko\" konto načasované na zmazanie!"
-
-msgid "Delete CatchAll"
-msgstr "Vymazať \"zachytiť všetko\""
-
-msgid "None"
-msgstr "Žiadny"
-
-msgid "Catch all account"
-msgstr "\"Zachytiť všetko\" konto"
-
-msgid "Catch all"
-msgstr "\"Zachytiť všetko\""
 
 msgid "Please delete first CatchAll account for this email!"
 msgstr "Prosím zmažte najprv \"zachytiť všetko\" konto pre tento e-mail!"
@@ -3028,6 +3112,30 @@ msgstr "ispCP - Klient/Zmeniť heslo"
 
 msgid "ispCP - Client/Change Personal Data"
 msgstr "ispCP - Klient/Zmeniť osobné údaje"
+
+msgid "You do not have protected areas"
+msgstr "Nemáte prístup k chráneným územiam"
+
+msgid "Manage users and groups"
+msgstr "Spravovať užívateľov a skupiny"
+
+msgid "Add user"
+msgstr "Pridať uživateľa"
+
+msgid "Group name"
+msgstr "Názov skupiny"
+
+msgid "Group members"
+msgstr "Členovia skupiny"
+
+msgid "Add group"
+msgstr "Pridať skupinu"
+
+msgid "Group"
+msgstr "Skupina"
+
+msgid "Add new protected area"
+msgstr "Pridať nové chránené územia"
 
 msgid "Please choose user or group"
 msgstr "Prosím vyberte užívateľa a skupinu"
@@ -3085,9 +3193,6 @@ msgstr "Názov oblasti"
 msgid "Unprotect it"
 msgstr "Nechrániť ju"
 
-msgid "Manage users and groups"
-msgstr "Spravovať užívateľov a skupiny"
-
 msgid "Protected area status should be OK if you want to delete it!"
 msgstr "Status chránených oblasté by mal byť OK ak to chcete zmazať"
 
@@ -3096,27 +3201,6 @@ msgstr "Chránené oblasti zmazané úspešne!"
 
 msgid "Permission deny!"
 msgstr "Prístup zamietnutý!"
-
-msgid "You do not have protected areas"
-msgstr "Nemáte prístup k chráneným územiam"
-
-msgid "Add user"
-msgstr "Pridať uživateľa"
-
-msgid "Group name"
-msgstr "Názov skupiny"
-
-msgid "Group members"
-msgstr "Členovia skupiny"
-
-msgid "Add group"
-msgstr "Pridať skupinu"
-
-msgid "Group"
-msgstr "Skupina"
-
-msgid "Add new protected area"
-msgstr "Pridať nové chránené územia"
 
 msgid "Protected area was deleted successful!"
 msgstr "Chránené oblasti boli zmazané úspešne!"
@@ -3263,7 +3347,10 @@ msgid "Login phpMyAdmin"
 msgstr "PhpMyAdmin"
 
 #, php-format
-msgid "This database will be permanently deleted. This process cannot be recovered. All users linked to this database will also be deleted if not linked to another database. Are you sure you want to delete %s?"
+msgid ""
+"This database will be permanently deleted. This process cannot be recovered. "
+"All users linked to this database will also be deleted if not linked to "
+"another database. Are you sure you want to delete %s?"
 msgstr ""
 
 #, fuzzy
@@ -3698,7 +3785,8 @@ msgid ""
 "\n"
 "{DOMAIN}\n"
 "\n"
-"You have to click the following link to continue the domain creation process.\n"
+"You have to click the following link to continue the domain creation "
+"process.\n"
 "\n"
 "{ACTIVATE_LINK}\n"
 "\n"
@@ -3718,7 +3806,8 @@ msgid ""
 "\n"
 "{ALIAS}\n"
 "\n"
-"Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/reseller/alias.php\n"
+"Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}"
+"{BASE_SERVER_VHOST}/reseller/alias.php\n"
 "\n"
 "Thank you for using ispCP services.\n"
 "The ispCP Team\n"
@@ -3804,7 +3893,10 @@ msgstr ""
 msgid "Wrong Second Level Domain syntax: <b>%s</b>"
 msgstr ""
 
-msgid "ERROR: ACE labels are not allowed. Please use the ToUnicode equivalent.<br /><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> instead</small>."
+msgid ""
+"ERROR: ACE labels are not allowed. Please use the ToUnicode equivalent.<br /"
+"><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> "
+"instead</small>."
 msgstr ""
 
 msgid ""
@@ -3828,7 +3920,9 @@ msgstr ""
 
 #, fuzzy
 msgid "System is currently under maintenance! Only administrators can login."
-msgstr "Systém je momentálne v servisnom móde! Teraz sa môžu prihlásiť iba administrátori."
+msgstr ""
+"Systém je momentálne v servisnom móde! Teraz sa môžu prihlásiť iba "
+"administrátori."
 
 #, php-format
 msgid "%s user already logged or session sharing problem! Aborting..."
@@ -3893,53 +3987,94 @@ msgstr "Neznáma chyba"
 msgid "hide aliases"
 msgstr "skovať aliasy"
 
-msgid "You have reached your domains limit.<br>You cannot add more domains!"
+#, fuzzy
+msgid "You have reached your domains limit.<br />You cannot add more domains!"
 msgstr "Dosiahli ste limit domén.<br>Nemôžete pridať viac domény!"
 
-msgid "You have a subdomains limit!<br>You cannot add an user with unlimited subdomains!"
+#, fuzzy
+msgid ""
+"You have a subdomains limit!<br />You cannot add an user with unlimited "
+"subdomains!"
 msgstr "Dosiahli ste limit sub-domén.<br>Nemôžete pridať viac sub-domény!"
 
 msgid "You are exceeding your subdomains limit!"
 msgstr "Prekračujete Váš limit sub-domén!"
 
-msgid "You have an aliases limit!<br>You cannot add an user with unlimited aliases!"
-msgstr "Máte limit aliasov!<br>Nemôžete pridať užívateľa s neomedzeným počtom aliasov!"
+#, fuzzy
+msgid ""
+"You have an aliases limit!<br />You cannot add an user with unlimited "
+"aliases!"
+msgstr ""
+"Máte limit aliasov!<br>Nemôžete pridať užívateľa s neomedzeným počtom "
+"aliasov!"
 
 msgid "You Are Exceeding Your Alias Limit!"
 msgstr "Prekračujete svoj limit aliasov!"
 
-msgid "You have a mail accounts limit!<br>You cannot add an user with unlimited mail accounts!"
-msgstr " Máte limit e-mailovych kont!<br>Nemôžete pridať užívateľa s neobmedzeným počtom e-mailov!"
+#, fuzzy
+msgid ""
+"You have a mail accounts limit!<br />You cannot add an user with unlimited "
+"mail accounts!"
+msgstr ""
+" Máte limit e-mailovych kont!<br>Nemôžete pridať užívateľa s neobmedzeným "
+"počtom e-mailov!"
 
 msgid "You are exceeding your mail accounts limit!"
 msgstr "Prekračujete limit e-mailových kont!"
 
-msgid "You have a FTP accounts limit!<br>You cannot add an user with unlimited FTP accounts!"
-msgstr " Máte limit FTP kont!<br>Nemôžete pridať užívateľa s neobmedzeným počtom FTP kont!"
+#, fuzzy
+msgid ""
+"You have a FTP accounts limit!<br />You cannot add an user with unlimited "
+"FTP accounts!"
+msgstr ""
+" Máte limit FTP kont!<br>Nemôžete pridať užívateľa s neobmedzeným počtom FTP "
+"kont!"
 
 msgid "You are exceeding your FTP accounts limit!"
 msgstr "Prekračujete limit FTP kont!"
 
-msgid "You have a SQL databases limit!<br>You cannot add an user with unlimited SQL databases!"
-msgstr " Máte limit SQL databáz!<br>Nemôžete pridať užívateľa s neobmedzeným počtom SQL databáz!"
+#, fuzzy
+msgid ""
+"You have a SQL databases limit!<br />You cannot add an user with unlimited "
+"SQL databases!"
+msgstr ""
+" Máte limit SQL databáz!<br>Nemôžete pridať užívateľa s neobmedzeným počtom "
+"SQL databáz!"
 
 msgid "You are exceeding your SQL databases limit!"
 msgstr "Prekračujete limit SQL databáz!"
 
-msgid "You have an SQL users limit!<br>You cannot add an user with unlimited SQL users!"
-msgstr " Máte limit SQL kont!<br>Nemôžete pridať užívateľa s neobmedzeným počtom SQL kont!"
+#, fuzzy
+msgid ""
+"You have an SQL users limit!<br />You cannot add an user with unlimited SQL "
+"users!"
+msgstr ""
+" Máte limit SQL kont!<br>Nemôžete pridať užívateľa s neobmedzeným počtom SQL "
+"kont!"
 
-msgid "You have disabled SQL databases for this user!<br>You cannot have SQL users here!"
-msgstr "Zablokovali ste SQL databázu pre tohto užívateľa!<br>Nemôžete mať SQL užívateľa tu!"
+#, fuzzy
+msgid ""
+"You have disabled SQL databases for this user!<br />You cannot have SQL "
+"users here!"
+msgstr ""
+"Zablokovali ste SQL databázu pre tohto užívateľa!<br>Nemôžete mať SQL "
+"užívateľa tu!"
 
 msgid "You are exceeding your SQL database limit!"
 msgstr "Prekračujete limit SQL kont!"
 
-msgid "You have a traffic limit!<br>You cannot add an user with unlimited traffic!"
-msgstr " Máte limit prenesených dát!<br>Nemôžete pridať užívateľa s neobmedzenými prenesenými dátami!"
+#, fuzzy
+msgid ""
+"You have a traffic limit!<br />You cannot add an user with unlimited traffic!"
+msgstr ""
+" Máte limit prenesených dát!<br>Nemôžete pridať užívateľa s neobmedzenými "
+"prenesenými dátami!"
 
-msgid "You have a disk limit!<br>You cannot add an user with unlimited disk!"
-msgstr " Máte limit diskového priestoru!<br>Nemôžete pridať užívateľa s neobmedzeným diskovým priestorom!"
+#, fuzzy
+msgid "You have a disk limit!<br />You cannot add an user with unlimited disk!"
+msgstr ""
+" Máte limit diskového priestoru!<br>Nemôžete pridať užívateľa s neobmedzeným "
+"diskovým priestorom!"
 
 #, fuzzy
 msgid "ispCP Error"
@@ -3973,8 +4108,9 @@ msgstr ""
 msgid "Order confirmation"
 msgstr "Všeobecné informácie"
 
-msgid "Wrong domain name syntax!"
-msgstr "Zlá syntax domény!"
+#, fuzzy
+msgid "This hosting plan is not available for purchase"
+msgstr "Hostingové plány dostupné na update!"
 
 msgid "Add On A Domain"
 msgstr "Pridať na doménu"
@@ -4011,8 +4147,11 @@ msgid "Check Out"
 msgstr "Skontrolovať"
 
 #, fuzzy
-msgid "<strong>Thank you for purchasing.</strong><br />You will receive an e-mail with more details and information."
-msgstr "<b>Dakujeme vám za nakupenie</b><br>Za chviľuobdržíte e-mail s podrobnostami"
+msgid ""
+"<strong>Thank you for purchasing.</strong><br />You will receive an e-mail "
+"with more details and information."
+msgstr ""
+"<b>Dakujeme vám za nakupenie</b><br>Za chviľuobdržíte e-mail s podrobnostami"
 
 msgid "No available hosting packages"
 msgstr "Žiaden hostinhový baliček nie je dostupný"
@@ -4034,9 +4173,6 @@ msgstr "Vlastné chybové stránky"
 
 msgid "Protected Areas"
 msgstr "Chránené oblasti"
-
-msgid "Manual DNS support"
-msgstr ""
 
 msgid "Custom Apache Logs"
 msgstr "Vlastné Apache Logy"
@@ -4061,13 +4197,6 @@ msgstr "Zriaďovací poplatok"
 
 msgid "Performance"
 msgstr "Výkon"
-
-#, fuzzy
-msgid "ispCP Reseller: Add Alias"
-msgstr "ispCP Predajca : Pridať alias"
-
-msgid "There is no user records for this reseller to add an alias for."
-msgstr ""
 
 msgid "ispCP - Manage Domain/Alias"
 msgstr "ispCP - Spravovať doménu/alias"
@@ -4115,6 +4244,13 @@ msgstr "Doménový alias pridaný!"
 msgid "Ordered domain alias not activated!"
 msgstr "Doménový alias nepridaný!"
 
+#, fuzzy
+msgid "ispCP Reseller: Add Alias"
+msgstr "ispCP Predajca : Pridať alias"
+
+msgid "There is no user records for this reseller to add an alias for."
+msgstr ""
+
 msgid "ispCP - Circular"
 msgstr "ispCP- Obežník"
 
@@ -4127,6 +4263,10 @@ msgstr "ispCP - Domána/Upraviť"
 #, fuzzy
 msgid "Unchanged"
 msgstr "Zmeniť"
+
+#, fuzzy
+msgid "Never"
+msgstr "Úroveň"
 
 #, fuzzy
 msgid "- 1 Month"
@@ -4161,12 +4301,26 @@ msgid "The <em>%s</em> service cannot be disabled!"
 msgstr "<b>%s</b> Služba nemôže byť vypnutá !<br>"
 
 #, fuzzy, php-format
+msgid "The <em>%s</em> have to be disabled!"
+msgstr "<b>%s</b> Služba nemôže byť vypnutá !<br>"
+
+#, fuzzy, php-format
+msgid "The admin has <em>%s</em> disabled on this system!"
+msgstr "Tu je <b>%s</b> záznamov v systéme!"
+
+#, fuzzy, php-format
 msgid "The <em>%s</em> service cannot be limited!"
 msgstr "<b>%s</b> Služba nemôže byť limitovaná !<br>"
 
 #, fuzzy, php-format
 msgid "The <em>%s</em> service cannot be unlimited!"
 msgstr "<b>%s</b> Služba nemôže byť nemodzená !<br>"
+
+msgid "ispCP - Reseller/Main Index"
+msgstr "ispCP - Klient/Hlavný index"
+
+msgid "View details"
+msgstr "Zobraziť detaily"
 
 msgid "ispCP - Reseller/Add hosting plan"
 msgstr "ispCP - Predajca/Pridať hostingový plán"
@@ -4185,12 +4339,6 @@ msgstr "ispCP - Predajca/Editovať hostingový plán"
 
 msgid "View hosting plan"
 msgstr "Zobraziť hostingový plán"
-
-msgid "ispCP - Reseller/Main Index"
-msgstr "ispCP - Klient/Hlavný index"
-
-msgid "View details"
-msgstr "Zobraziť detaily"
 
 msgid "User accounts"
 msgstr "Užívateľský účet"
@@ -4231,45 +4379,6 @@ msgstr "Spravovať objednávky"
 msgid "Activation Link"
 msgstr "Aktivačný E-mail"
 
-msgid "Wrong order ID!"
-msgstr "Zlé ID objednávky!"
-
-msgid "Order Canceled: resellers maximum exceeded!"
-msgstr ""
-
-msgid "User added!"
-msgstr "Užívateľ pridaný!"
-
-msgid "Customer order was removed successful!"
-msgstr "Zákazníkova objednávka odstránená úspešne!"
-
-msgid "ispCP - Reseller/Order details"
-msgstr "ispCP - Predajca/Detaily objednávky"
-
-msgid "Order data updated successfully!"
-msgstr "Detaily objednávky úspešne aktualizované!"
-
-msgid "Order date"
-msgstr "Čas objednávky"
-
-msgid "Hosting plan"
-msgstr "Hostingový plán"
-
-msgid "Hosting details"
-msgstr "Hostingové detaily"
-
-msgid "Order details"
-msgstr "Detaily objednávky"
-
-msgid "Customer data"
-msgstr "Data zákazníka"
-
-msgid "Are you sure you want to delete this order?"
-msgstr "Ste si istý, že chcete zmazať objenávku?"
-
-msgid "Add to the system"
-msgstr "Pridať do systému"
-
 msgid "ispCP - Reseller/Order settings"
 msgstr "ispCP - Predajca/Nastavenia objenávok"
 
@@ -4300,11 +4409,56 @@ msgstr "Aktualizovať objednávku"
 msgid "ID"
 msgstr "ID"
 
+msgid "Customer data"
+msgstr "Data zákazníka"
+
 msgid "Order"
 msgstr "Objednávka"
 
+msgid "Hosting plan"
+msgstr "Hostingový plán"
+
+msgid "Are you sure you want to delete this order?"
+msgstr "Ste si istý, že chcete zmazať objenávku?"
+
 msgid "Add/Details"
 msgstr "Pridať/Detaily"
+
+msgid "Wrong order ID!"
+msgstr "Zlé ID objednávky!"
+
+msgid "Order Cancelled: resellers maximum exceeded!"
+msgstr ""
+
+msgid "Wrong domain name syntax!"
+msgstr "Zlá syntax domény!"
+
+msgid "User added!"
+msgstr "Užívateľ pridaný!"
+
+msgid "Customer order was removed successful!"
+msgstr "Zákazníkova objednávka odstránená úspešne!"
+
+msgid "ispCP - Reseller/Order details"
+msgstr "ispCP - Predajca/Detaily objednávky"
+
+msgid "Order data updated successfully!"
+msgstr "Detaily objednávky úspešne aktualizované!"
+
+msgid "Order date"
+msgstr "Čas objednávky"
+
+msgid "Hosting details"
+msgstr "Hostingové detaily"
+
+msgid "Order details"
+msgstr "Detaily objednávky"
+
+msgid "Add to the system"
+msgstr "Pridať do systému"
+
+msgid "Order Canceled: resellers maximum exceeded!"
+msgstr ""
 
 msgid "ispCP - Reseller/Change Password"
 msgstr "ispCP - Predajca/Zmeniť heslo"
@@ -4329,10 +4483,6 @@ msgstr "ispCP - Predajca : Podporný systém: Zobraziť tiket"
 
 msgid "ispCP - Users/Add user"
 msgstr "ispCP - Užívatelia/Pridať užívateľa"
-
-#, fuzzy
-msgid "Never"
-msgstr "Úroveň"
 
 #, fuzzy
 msgid "1 Month"
@@ -4407,6 +4557,9 @@ msgstr "ispCP - Užívateľ/Upraviť"
 msgid "Users list"
 msgstr "Zoznam užívateľov"
 
+msgid "This reseller has no domains yet."
+msgstr "Tento predajca nemá žiadne domény zatiaľ"
+
 msgid "ispCP - Users"
 msgstr "ispCP - Užívatelia"
 
@@ -4431,18 +4584,40 @@ msgstr "zozbraziť aliasy"
 msgid "You have no users."
 msgstr "Nemáte žiadneho užívateľa."
 
+#, fuzzy, php-format
+msgid "%1$s of %2$s MB"
+msgstr ""
+
+#, fuzzy, php-format
+msgid "%1$s of <b>unlimited</b> MB"
+msgstr ""
+
 msgid "User data updated!"
 msgstr "Užívateľské dáta aktualizované!"
 
 msgid "User data not updated!"
 msgstr "Užívateľské dáta neboli aktualizované!"
 
-msgid "This user has domain record !<br>First remove the domain from the system!"
+msgid ""
+"This user has domain record !<br>First remove the domain from the system!"
 msgstr "Užívateľ má doménové záznamy ! <br>Najprv odstráňte domény zo systému!"
 
 msgid "User not terminated!"
 msgstr "Užívateľ nebol zrušený!"
 
-msgid "This reseller has no domains yet."
-msgstr "Tento predajca nemá žiadne domény zatiaľ"
+#~ msgid "Edit reseller aborted!"
+#~ msgstr "Upravovanie predajcu zrušené!"
 
+#, fuzzy
+#~ msgid "Domains limit<br><i>(-1 disabled, 0 unlimited)</i>"
+#~ msgstr "Maximálny počet subdomén<br><i>(-1 zakázané, 0 neobmedzené)</i>"
+
+#~ msgid "Incorrect forward syntax"
+#~ msgstr "Nesprávna syntax presmerovania"
+
+#~ msgid "Entered passwords differ from the another!"
+#~ msgstr "Zadané heslá sú rôzne!"
+
+#, fuzzy
+#~ msgid "Error:"
+#~ msgstr "Chyba"
