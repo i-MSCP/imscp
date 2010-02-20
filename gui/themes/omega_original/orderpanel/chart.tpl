@@ -104,13 +104,22 @@
 		<tr>
 			<td colspan="2" class="imgcapcode_description_text"><p>{TR_IMGCAPCODE_DESCRIPTION}</p></td>
 		</tr>
-
-
+		<!-- BTOS -->
+		<tr>
+			<td width="200" colspan="2" class="content2"><strong>{TR_TOS_PROPS}</strong></td>
+		</tr>
+		<tr>
+			<td colspan="2" class="content"><textarea readonly="true" style="width=400px" cols="50" rows="5">{TOS}</textarea></td>
+		</tr>
+		<tr>
+			<td class="content2" colspan="2"><input type="checkbox" name="tosAccept" value="1" />{TR_TOS_ACCEPT}</td>
+		</tr>
+		<!-- ETOS -->
 		<tr>
 			<td colspan="2">&nbsp;</td>
 		</tr>
 		<tr align="right">
-			<td colspan="2"><input name="Submit" type="submit" class="button" value="  {TR_CONTINUE}  " /></td>
+			<td colspan="2"><input name="Submit" type="submit" id="continueButton" class="button"  value="  {TR_CONTINUE}  " /></td>
 		</tr>
 	</table></form>
 	<br />

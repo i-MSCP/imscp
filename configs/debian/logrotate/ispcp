@@ -1,3 +1,34 @@
+# ispCP ω (OMEGA) a Virtual Hosting Control Panel
+# Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
+# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+#
+# Version: $id$
+#
+# The contents of this file are subject to the Mozilla Public License
+# Version 1.1 (the "License"); you may not use this file except in
+# compliance with the License. You may obtain a copy of the License at
+# http://www.mozilla.org/MPL/
+#
+# Software distributed under the License is distributed on an "AS IS"
+# basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+# License for the specific language governing rights and limitations
+# under the License.
+#
+# The Original Code is "VHCS - Virtual Hosting Control System".
+#
+# The Initial Developer of the Original Code is moleSoftware GmbH.
+# Portions created by Initial Developer are Copyright (C) 2001-2006
+# by moleSoftware GmbH. All Rights Reserved.
+# Portions created by the ispCP Team are Copyright (C) 2006-2010 by
+# isp Control Panel. All Rights Reserved.
+#
+# The ispCP ω Home Page is:
+#
+#    http://isp-control.net
+#
+
+# Rotation for user logs for ispCP traffic count
+#
 /var/log/apache2/users/*.log {
   weekly
   missingok
@@ -11,10 +42,14 @@
     /var/www/ispcp/engine/traffic/ispcp-vrl-traff > /var/log/ispcp/ispcp-vrl-traff.log
   endscript
   postrotate
-    /etc/init.d/apache2 reload > /dev/null
+    if [ -f "`. /etc/apache2/envvars ; echo ${APACHE_PID_FILE:-/var/run/apache2.pid}`" ]; then
+      /etc/init.d/apache2 reload > /dev/null
+    fi
   endscript
 }
 
+# Rotation for user traffic prevs
+#
 /var/log/apache2/backup/*.log.prev {
   size 5M
   missingok
@@ -25,6 +60,31 @@
   create 640 root adm
 }
 
+# Rotation for apache2, launching general statistics if awstats is installed
+#
+/var/log/apache2/*.log {
+  weekly
+  missingok
+  rotate 52
+  compress
+  delaycompress
+  notifempty
+  create 640 root adm
+  sharedscripts
+  prerotate
+    if [ `cat /etc/ispcp/ispcp.conf | grep -c "AWSTATS_ACTIVE = yes"` == 1 ]; then
+          perl /var/www/ispcp/engine/awstats/awstats_updateall.pl now -awstatsprog=/usr/lib/cgi-bin/awstats.pl &> /dev/null
+    fi
+  endscript
+  postrotate
+    if [ -f "`. /etc/apache2/envvars ; echo ${APACHE_PID_FILE:-/var/run/apache2.pid}`" ]; then
+           /etc/init.d/apache2 reload > /dev/null
+    fi
+  endscript
+}
+
+# Transfer rotation for ProFTPd
+#
 /var/log/proftpd/xferlog {
   daily
   rotate 7
@@ -40,6 +100,8 @@
   endscript
 }
 
+# ProFTPd traffic rotation for ispCP traffic count
+#
 /var/log/proftpd/ftp_traff.log {
   daily
   rotate 7

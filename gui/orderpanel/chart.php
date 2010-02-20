@@ -74,7 +74,8 @@ function gen_chart(&$tpl, &$sql, $user_id, $plan_id) {
 		$price = $rs->fields['price'];
 		$setup_fee = $rs->fields['setup_fee'];
 		$total = $price + $setup_fee;
-
+		
+		
 		if ($price == 0 || $price == '') {
 			$price = tr('free of charge');
 		} else {
@@ -99,6 +100,7 @@ function gen_chart(&$tpl, &$sql, $user_id, $plan_id) {
 				'SETUP' => $setup_fee,
 				'TOTAL' => $total,
 				'TR_PACKAGE_NAME' => $rs->fields['name'],
+				'TOS'	=> $rs->fields['tos']
 			)
 		);
 	}
@@ -163,6 +165,7 @@ gen_personal_data($tpl);
 gen_page_message($tpl);
 
 
+
 $tpl->assign(
 	array(
 		'YOUR_CHART' => tr('Your Chart'),
@@ -190,7 +193,9 @@ $tpl->assign(
 		'TR_CAPCODE' => tr('Security code'),
 		'TR_IMGCAPCODE_DESCRIPTION' => tr('(To avoid abuse, we ask you to write the combination of letters on the above picture into the field "Security code")'),
 		'TR_IMGCAPCODE' => '<img src="/imagecode.php" width="' . Config::get('LOSTPASSWORD_CAPTCHA_WIDTH') . '" height="' . Config::get('LOSTPASSWORD_CAPTCHA_HEIGHT') . '" border="0" alt="captcha image">',
-		'THEME_CHARSET' => tr('encoding')
+		'THEME_CHARSET' => tr('encoding'),
+		'TR_TOS_PROPS'	=> tr('Term of Service'),
+		'TR_TOS_ACCEPT' => tr('I Accept The Term of Service')
 	)
 );
 

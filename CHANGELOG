@@ -1,5 +1,13 @@
-ispCP ω 1.0.4 Changelog
+ispCP ω 1.0.5 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2010-02-20 Benedikt Heintel
+	- CONFIGS:
+		* Fixed #2533: There is no log rotation for apache logs
+
+2010-02-20 Franseco Bux
+	- GUI:
+		* Fixed #400: Terms of Service
 
 2010-02-20 Jochen Manz
 	- LANGUAGES:

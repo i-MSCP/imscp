@@ -135,6 +135,10 @@ if (!isset($_POST['capcode']) || $_POST['capcode'] != $_SESSION['image']) {
 	user_goto('chart.php');
 }
 
+if(!isset($_POST['tosAccept']) || $_POST['tosAccept'] != 1 ){
+	system_message(tr('You have to accept the Term of Service!'));
+	user_goto('chart.php');	
+}
 
 if ((isset($_SESSION['fname']) && $_SESSION['fname'] != '')
 	&& (isset($_SESSION['lname']) && $_SESSION['lname'] != '')

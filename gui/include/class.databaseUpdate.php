@@ -886,6 +886,25 @@ SQL_QUERY;
 			
 		return $sqlUpd;
 	}
+	
+	/**
+	 * Adding field for term of service
+	 * 
+	 * @author		Francesco Bux
+	 * @copyright	2006-2010 by ispCP | http://isp-control.net
+	 * @version		1.0.5
+	 * @since		r2614
+	 *
+	 * @access		protected
+	 * @return		sql statements to be performed
+	 */
+	protected function _databaseUpdate_29() {
+		
+		$sqlUpd = array();
+		$sqlUpd[] = "ALTER TABLE " .
+				    "`hosting_plans` ADD `tos` BLOB NOT NULL";
+		return $sqlUpd;
+	}
 
 	/*
 	 * DO NOT CHANGE ANYTHING BELOW THIS LINE!

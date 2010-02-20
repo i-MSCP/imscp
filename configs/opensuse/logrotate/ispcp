@@ -60,6 +60,29 @@
   create 640 root root
 }
 
+# Rotation for apache2, launching general statistics if awstats is installed
+#
+/var/log/apache2/*.log {
+  weekly
+  missingok
+  rotate 52
+  compress
+  delaycompress
+  notifempty
+  create 640 root root
+  sharedscripts
+  prerotate
+    if [ `cat /etc/ispcp/ispcp.conf | grep -c "AWSTATS_ACTIVE = yes"` == 1 ]; then
+          perl /srv/www/ispcp/engine/awstats/awstats_updateall.pl now -awstatsprog=/usr/lib/cgi-bin/awstats.pl &> /dev/null
+    fi
+  endscript
+  postrotate
+    if [ -f "`. /etc/apache2/envvars ; echo ${APACHE_PID_FILE:-/var/run/apache2.pid}`" ]; then
+           /etc/init.d/apache2 reload > /dev/null
+    fi
+  endscript
+}
+
 # Transfer rotation for ProFTPd
 #
 /var/log/proftpd/xferlog {

@@ -97,6 +97,11 @@ $tpl->assign(
 				'TR_STATUS'					=> tr('Available for purchasing'),
 				'TR_TEMPLATE_DESCRIPTON'	=> tr('Description'),
 				'TR_EXAMPLE'				=> tr('(e.g. EUR)'),
+			// BEGIN TOS
+				'TR_TOS_PROPS'				=> tr('Term Of Service'),
+				'TR_TOS_DESCRIPTION'		=> tr('Text Only'),
+		
+			// END TOS
 				'TR_ADD_PLAN'				=> tr('Add plan')
 		)
 );
@@ -155,7 +160,8 @@ function gen_empty_ahp_page(&$tpl) {
 					'TR_DNS_NO'				=> 'checked="checked"',
 					'HP_DISK_VALUE'			=> '',
 					'TR_STATUS_YES'			=> 'checked="checked"',
-					'TR_STATUS_NO'			=> ''
+					'TR_STATUS_NO'			=> '',
+					'HP_TOS_VALUE'			=> ''
 			)
 	);
 
@@ -173,6 +179,7 @@ function gen_data_ahp_page(&$tpl) {
 	global $hp_traff, $hp_disk;
 	global $price, $setup_fee, $value, $payment, $status;
 	global $hp_backup, $hp_dns;
+	global $tos;
 
 	$tpl->assign(
 			array(
@@ -189,7 +196,8 @@ function gen_data_ahp_page(&$tpl) {
 					'HP_PRICE'				=> $price,
 					'HP_SETUPFEE'			=> $setup_fee,
 					'HP_VELUE'				=> $value,
-					'HP_PAYMENT'			=> $payment
+					'HP_PAYMENT'			=> $payment,
+					'HP_TOS_VALUE'			=> $tos
 			)
 	);
 
@@ -223,6 +231,7 @@ function check_data_correction(&$tpl) {
 	global $hp_traff, $hp_disk;
 	global $price, $setup_fee, $value, $payment, $status;
 	global $hp_backup, $hp_dns;
+	global $tos;
 
 	$ahp_error = "_off_";
 
@@ -236,7 +245,9 @@ function check_data_correction(&$tpl) {
 	$hp_traff		= clean_input($_POST['hp_traff'], true);
 	$hp_disk		= clean_input($_POST['hp_disk'], true);
 	$description	= clean_input($_POST['hp_description'], true);
-
+	$tos			= clean_input($_POST['hp_tos'], true);
+	
+	
 	if (empty($_POST['hp_price'])) {
 		$price = 0;
 	} else {
@@ -324,6 +335,7 @@ function save_data_to_db(&$tpl, $admin_id) {
 	global $hp_traff, $hp_disk;
 	global $price, $setup_fee, $value, $payment, $status;
 	global $hp_backup, $hp_dns;
+	global $tos;
 
 	$sql = Database::getInstance();
 	$err_msg = '';
@@ -355,12 +367,13 @@ function save_data_to_db(&$tpl, $admin_id) {
 							`setup_fee`,
 							`value`,
 							`payment`,
-							`status`
+							`status`,
+							`tos`
 						)
-					VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+					VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 				";
 
-				$res = exec_query($sql, $query, array($admin_id, $hp_name, $description, $hp_props, $price, $setup_fee, $value, $payment, $status));
+				$res = exec_query($sql, $query, array($admin_id, $hp_name, $description, $hp_props, $price, $setup_fee, $value, $payment, $status, $tos));
 
 				$_SESSION['hp_added'] = '_yes_';
 				user_goto('hosting_plan.php');

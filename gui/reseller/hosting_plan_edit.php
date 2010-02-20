@@ -93,6 +93,11 @@ $tpl->assign(
 				'TR_STATUS'					=> tr('Available for purchasing'),
 				'TR_TEMPLATE_DESCRIPTON'	=> tr('Description'),
 				'TR_EXAMPLE'				=> tr('(e.g. EUR)'),
+			// TOS
+				'TR_TOS_PROPS'				=> tr('Term Of Service'),
+				'TR_TOS_DESCRIPTION'		=> tr('Text'),
+			// END TOS
+		
 				'TR_EDIT_HOSTING_PLAN'		=> tr('Update plan'),
 				'TR_UPDATE_PLAN'			=> tr('Update plan')
 		)
@@ -150,7 +155,8 @@ function restore_form(&$tpl, &$sql) {
 					'HP_PRICE'				=> clean_input($_POST['hp_price']),
 					'HP_SETUPFEE'			=> clean_input($_POST['hp_setupfee'], true),
 					'HP_CURRENCY'			=> clean_input($_POST['hp_currency'], true),
-					'HP_PAYMENT'			=> clean_input($_POST['hp_payment'], true)
+					'HP_PAYMENT'			=> clean_input($_POST['hp_payment'], true),
+					'HP_TOS_VALUE'			=> clean_input($_POST['hp_tos'], true),
 			)
 	);
 
@@ -227,6 +233,7 @@ function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
 	$value = $data['value'];
 	$payment = $data['payment'];
 	$status = $data['status'];
+	$tos = $data['tos'];
 
 	list(
 			$hp_php,
@@ -248,6 +255,9 @@ function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
 
 	if ($description == '')
 		$description = '';
+		
+	if ($tos == '')
+		$tos = '';	
 
 	if ($payment == '')
 		$payment = '';
@@ -273,7 +283,8 @@ function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
 					'HP_CURRENCY'			=> stripslashes($value),
 					'READONLY'				=> $readonly,
 					'DISBLED'				=> $disabled,
-					'HP_PAYMENT'			=> stripslashes($payment)
+					'HP_PAYMENT'			=> stripslashes($payment),
+					'HP_TOS_VALUE'			=> stripslashes($tos)
 			)
 	);
 
@@ -306,6 +317,7 @@ function check_data_iscorrect(&$tpl) {
 	global $hpid;
 	global $price, $setup_fee;
 	global $hp_backup, $hp_dns;
+	global $tos;
 
 	$ahp_error		= "_off_";
 	$hp_name		= clean_input($_POST['hp_name']);
@@ -392,6 +404,7 @@ function save_data_to_db() {
 	global $hp_traff, $hp_disk;
 	global $hpid;
 	global $hp_backup, $hp_dns;
+	global $tos;
 
 	$sql = Database::getInstance();
 
@@ -402,6 +415,7 @@ function save_data_to_db() {
 	$currency		= clean_input($_POST['hp_currency']);
 	$payment		= clean_input($_POST['hp_payment']);
 	$status			= clean_input($_POST['status']);
+	$tos 			= clean_input($_POST['hp_tos']);
 
 	$hp_props = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;$hp_disk;$hp_backup;$hp_dns";
 
@@ -425,13 +439,14 @@ function save_data_to_db() {
 					`setup_fee` = ?,
 					`value` = ?,
 					`payment` = ?,
-					`status` = ?
+					`status` = ?,
+					`tos` = ?
 				WHERE
 					`id` = ?
 			";
 
 			$res = exec_query($sql, $query, array($hp_name, $description, $hp_props, $price,
-				$setup_fee, $currency, $payment, $status, $hpid));
+				$setup_fee, $currency, $payment, $status, $tos, $hpid));
 
 			$_SESSION['hp_updated'] = '_yes_';
 			user_goto('hosting_plan.php');
