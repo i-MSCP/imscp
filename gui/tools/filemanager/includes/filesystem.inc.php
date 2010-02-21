@@ -2691,12 +2691,12 @@ function checkEmailAddress($email) {
 // Returns true for valid email addresses, false for non-valid email addresses
 // --------------
 
-	if (eregi( "^" .
+	if (preg_match( "/^" .
 	           "[a-z0-9]+([_\.-][a-z0-9]+)*" .    //user
 	           "@" .
 	           "([a-z0-9]+([\.-][a-z0-9]+)*)+" .   //domain
 	           "\\.[a-z]{2,}" .                    //sld, tld 
-	           "$", $email, $regs)) { return true;	}
+	           "$/i", $email, $regs)) { return true;	}
 	else { return false; }
 
 } // end checkEmailAddress
@@ -3064,12 +3064,12 @@ $AttmFiles ... array containing the filenames to attach like array("file1","file
 	}
 
 // Check if the To email address is valid
-	if (!eregi( "^" .
+	if (!preg_match( "/^" .
 	           "[a-zA-Z0-9]+([_\.-][a-zA-Z0-9]+)*" .    //user
 	           "@" .
 	           "([a-zA-Z0-9]+([\.-][a-zA-Z0-9]+)*)+" .  //domain
 	           "\\.[a-zA-Z]{2,}" .                      //sld, tld 
-	           "$", $To, $regs)) { 
+	           "$/i", $To, $regs)) { 
 		$errormessage = __("The email address you have entered (%1\$s) does not seem to be valid.<br />Please enter an address in the format <b>username@domain.com</b>", $To); 
 		setErrorVars(false, $errormessage, debug_backtrace(), __FILE__, __LINE__);
 		return false;

@@ -127,19 +127,19 @@ function getBrowser($what) {
 // !!! If a new browser is added, add is also in the plugin properties
 // Else, functionality will be broken when loading the plugin in printTextareaSelect().
 
-		if (ereg('MSIE ([0-9].[0-9]{1,2})', $http_user_agent, $regs)) {
+		if (preg_match('/MSIE ([0-9].[0-9]{1,2})/', $http_user_agent, $regs)) {
 			$BROWSER_VERSION = $regs[1];
 			$BROWSER_AGENT = 'IE';
 		}
-		elseif (ereg('Safari/([0-9].[0-9]{1,2})', $http_user_agent, $regs)) {
+		elseif (preg_match('/Safari/([0-9].[0-9]{1,2})/', $http_user_agent, $regs)) {
 			$BROWSER_VERSION = $regs[1];
 			$BROWSER_AGENT = 'Safari';
 		}
-		elseif (ereg('Opera ([0-9].[0-9]{1,2})', $http_user_agent, $regs)) {
+		elseif (preg_match('/Opera ([0-9].[0-9]{1,2})/', $http_user_agent, $regs)) {
 			$BROWSER_VERSION = $regs[1];
 			$BROWSER_AGENT = 'Opera';
 		}
-		elseif (ereg('Mozilla/([0-9].[0-9]{1,2})', $http_user_agent, $regs)) {
+		elseif (preg_match('/Mozilla/([0-9].[0-9]{1,2})/', $http_user_agent, $regs)) {
 			$BROWSER_VERSION = $regs[1];
 			$BROWSER_AGENT = 'Mozilla';
 		}

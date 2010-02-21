@@ -251,4 +251,4 @@ if (Config::get('SHOW_SERVERLOAD')) {
 /**
  * Start the output buffering
  */
-ob_start(array(&$GLOBALS['class']['output'], 'output'));
+ob_start(array($GLOBALS['class']['output'], 'output'));

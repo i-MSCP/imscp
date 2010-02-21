@@ -58,7 +58,7 @@ class Net_DNS_RR_HINFO extends Net_DNS_RR
             $data = str_replace('\\\\', chr(1) . chr(1), $data); /* disguise escaped backslash */
             $data = str_replace('\\"', chr(2) . chr(2), $data); /* disguise \" */
 
-            ereg('("[^"]*"|[^ \t]*)[ \t]+("[^"]*"|[^ \t]*)[ \t]*$', $data, $regs);
+            preg_match('@("[^"]*"|[^ \t]*)[ \t]+("[^"]*"|[^ \t]*)[ \t]*$@', $data, $regs);
             foreach($regs as $idx => $value) {
                 $value = str_replace(chr(2) . chr(2), '\\"', $value);
                 $value = str_replace(chr(1) . chr(1), '\\\\', $value);

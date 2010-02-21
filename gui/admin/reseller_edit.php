@@ -663,7 +663,7 @@ function update_reseller() {
 
 	if(!empty($_POST['pass0'])) {
 		$query = str_replace( '`fname`', '`admin_pass` = ?, `fname`', $query);
-		array_unshift(&$qparams, crypt_user_pass($_POST['pass0']));
+		array_unshift($qparams, crypt_user_pass($_POST['pass0']));
 	}
 
 	exec_query($sql, $query, $qparams );

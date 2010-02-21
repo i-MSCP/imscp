@@ -57,7 +57,7 @@ class Net_DNS_RR_TXT extends Net_DNS_RR
             $data = str_replace('\\\\', chr(1) . chr(1), $data); /* disguise escaped backslash */
             $data = str_replace('\\"', chr(2) . chr(2), $data); /* disguise \" */
 
-            ereg('("[^"]*"|[^ \t]*)[ \t]*$', $data, $regs);
+            preg_match('@("[^"]*"|[^ \t]*)[ \t]*$@', $data, $regs);
             $regs[1] = str_replace(chr(2) . chr(2), '\\"', $regs[1]);
             $regs[1] = str_replace(chr(1) . chr(1), '\\\\', $regs[1]);
             $regs[1] = stripslashes($regs[1]);

@@ -53,7 +53,7 @@ function decrypt_db_password($db_pass) {
 	if ($db_pass == '')
 		return '';
 
-	if (extension_loaded('mcrypt') || @dl('mcrypt.' . PHP_SHLIB_SUFFIX)) {
+	if (extension_loaded('mcrypt')) {
 		$text = @base64_decode($db_pass . "\n");
 		// Open the cipher
 		$td = @mcrypt_module_open('blowfish', '', 'cbc', '');
@@ -72,7 +72,7 @@ function decrypt_db_password($db_pass) {
 		return trim($decrypted);
 	} else {
 		system_message("ERROR: The php-extension 'mcrypt' not loaded!");
-		die();
+		die(tr("ERROR: PHP extension 'mcrypt' not loaded!"));
 	}
 }
 
@@ -82,7 +82,7 @@ function decrypt_db_password($db_pass) {
 function encrypt_db_password($db_pass) {
 	global $ispcp_db_pass_key, $ispcp_db_pass_iv;
 
-	if (extension_loaded('mcrypt') || @dl('mcrypt.' . PHP_SHLIB_SUFFIX)) {
+	if (extension_loaded('mcrypt')) {
 		$td = @mcrypt_module_open(MCRYPT_BLOWFISH, '', 'cbc', '');
 		// Create key
 		$key = $ispcp_db_pass_key;
@@ -109,7 +109,7 @@ function encrypt_db_password($db_pass) {
 		// Show encrypted string
 		return trim($text);
 	} else {
-		//system_message("ERROR: The php-extension 'mcrypt' not loaded!");
-		die("ERROR: The php-extension 'mcrypt' not loaded!");
+		system_message("ERROR: The php-extension 'mcrypt' not loaded!");
+		die(tr("ERROR: PHP extension 'mcrypt' not loaded!"));
 	}
 }

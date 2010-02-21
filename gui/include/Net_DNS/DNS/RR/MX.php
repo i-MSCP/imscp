@@ -55,9 +55,9 @@ class Net_DNS_RR_MX extends Net_DNS_RR
                 $this->exchange = $exchange;
             }
         } else {
-            ereg("([0-9]+)[ \t]+(.+)[ \t]*$", $data, $regs);
+            preg_match("@([0-9]+)[ \t]+(.+)[ \t]*$@", $data, $regs);
             $this->preference = $regs[1];
-            $this->exchange = ereg_replace('(.*)\.$', '\\1', $regs[2]);
+            $this->exchange = preg_replace('(.*)\.$', '\\1', $regs[2]);
         }
     }
 

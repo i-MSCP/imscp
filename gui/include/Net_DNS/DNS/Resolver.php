@@ -325,11 +325,11 @@ class Net_DNS_Resolver
         } else {
             while (! feof($f)) {
                 $line = chop(fgets($f, 10240));
-                $line = ereg_replace('(.*)[;#].*', '\\1', $line);
-                if (ereg("^[ \t]*$", $line, $regs)) {
+                $line = preg_replace('(.*)[;#].*', '\\1', $line);
+                if (preg_match("@^[ \t]*$@", $line, $regs)) {
                     continue;
                 }
-                ereg("^[ \t]*([^ \t]+)[ \t]+([^ \t]+)", $line, $regs);
+                preg_match("@^[ \t]*([^ \t]+)[ \t]+([^ \t]+)@", $line, $regs);
                 $option = $regs[1];
                 $value = $regs[2];
 
@@ -341,7 +341,7 @@ class Net_DNS_Resolver
                         $this->searchlist[count($this->searchlist)] = $regs[2];
                         break;
                     case 'nameserver':
-                        foreach (split(' ', $regs[2]) as $ns) {
+                        foreach (preg_split('/ /', $regs[2]) as $ns) {
                             $this->nameservers[count($this->nameservers)] = $ns;
                         }
                         break;
@@ -359,11 +359,11 @@ class Net_DNS_Resolver
     function read_env()
     {
         if (getenv('RES_NAMESERVERS')) {
-            $this->nameservers = split(' ', getenv('RES_NAMESERVERS'));
+            $this->nameservers = preg_split('/ /', getenv('RES_NAMESERVERS'));
         }
 
         if (getenv('RES_SEARCHLIST')) {
-            $this->searchlist = split(' ', getenv('RES_SEARCHLIST'));
+            $this->searchlist = preg_split('/ /', getenv('RES_SEARCHLIST'));
         }
 
         if (getenv('LOCALDOMAIN')) {
@@ -373,7 +373,7 @@ class Net_DNS_Resolver
         if (getenv('RES_OPTIONS')) {
             $env = split(' ', getenv('RES_OPTIONS'));
             foreach ($env as $opt) {
-                list($name, $val) = split(':', $opt);
+                list($name, $val) = preg_split('/:/', $opt);
                 if ($val == '') {
                     $val = 1;
                 }

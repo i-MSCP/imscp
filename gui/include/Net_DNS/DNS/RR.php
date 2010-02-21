@@ -113,7 +113,7 @@ class Net_DNS_RR
         while (count($parts) > 0) {
             $s = array_shift($parts);
             if (!isset($name)) {
-                $name = ereg_replace('\.+$', '', $s);
+                $name = preg_replace('\.+$', '', $s);
             } else if (preg_match('/^\d+$/', $s)) {
                 $ttl = $s;
             } else if (!isset($rrclass) && ! is_null(Net_DNS::classesbyname(strtoupper($s)))) {
