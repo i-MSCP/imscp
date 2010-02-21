@@ -325,7 +325,7 @@ class Net_DNS_Resolver
         } else {
             while (! feof($f)) {
                 $line = chop(fgets($f, 10240));
-                $line = preg_replace('(.*)[;#].*', '\\1', $line);
+                $line = preg_replace('/(.*)[;#].*/', '\\1', $line);
                 if (preg_match("@^[ \t]*$@", $line, $regs)) {
                     continue;
                 }

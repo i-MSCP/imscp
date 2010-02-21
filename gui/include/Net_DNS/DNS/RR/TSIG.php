@@ -142,7 +142,7 @@ class Net_DNS_RR_TSIG extends Net_DNS_RR
 
         if (strlen($this->key)) {
             $key = $this->key;
-            $key = preg_replace(' ', '', $key);
+            $key = preg_replace('/ /', '', $key);
             $key = base64_decode($key);
 
             $newpacket = $packet;

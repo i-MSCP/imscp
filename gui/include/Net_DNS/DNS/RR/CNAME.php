@@ -51,7 +51,7 @@ class Net_DNS_RR_CNAME extends Net_DNS_RR
                 $this->cname = $cname;
             }
         } else {
-            $this->cname = preg_replace("[ \t]+(.+)[\. \t]*$", '\\1', $data);
+            $this->cname = preg_replace("/[ \t]+(.+)[\. \t]*$/", '\\1', $data);
         }
     }
 

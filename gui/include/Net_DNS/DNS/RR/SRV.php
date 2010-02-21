@@ -63,7 +63,7 @@ class Net_DNS_RR_SRV extends Net_DNS_RR
             $this->preference = $regs[1];
             $this->weight = $regs[2];
             $this->port = $regs[3];
-            $this->target = preg_replace('(.*)\.$', '\\1', $regs[4]);
+            $this->target = preg_replace('/(.*)\.$/', '\\1', $regs[4]);
         }
     }
 

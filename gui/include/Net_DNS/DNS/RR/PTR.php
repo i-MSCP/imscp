@@ -52,7 +52,7 @@ class Net_DNS_RR_PTR extends Net_DNS_RR
                 $this->ptrdname = $ptrdname;
             }
         } else {
-            $this->ptrdname = preg_replace("[ \t]+(.+)[ \t]*$", '\\1', $data);
+            $this->ptrdname = preg_replace("/[ \t]+(.+)[ \t]*$/", '\\1', $data);
         }
     }
 
