@@ -208,7 +208,7 @@ Note: For all questions, answer "a" (trust always).
 7. Backup files:
 
 	# cp -v /srv/www/ispcp/engine/ispcp-db-keys.pl /tmp/ispcp/srv/www/ispcp/engine/
-	# cp -v /srv/www/ispcp/engine/messager/ispcp-db-keys.pl /tmp/ispcp/srv/www/ispcp/engine/messenger/
+	# cp -v /srv/www/ispcp/engine/messenger/ispcp-db-keys.pl /tmp/ispcp/srv/www/ispcp/engine/messenger/
 	# cp -v /srv/www/ispcp/gui/include/ispcp-db-keys.php /tmp/ispcp/srv/www/ispcp/gui/include/
 	# cp -v /srv/www/ispcp/gui/themes/user_logos/* /tmp/ispcp/srv/www/ispcp/gui/themes/user_logos/
 	# cp -v /srv/www/ispcp/gui/tools/pma/config.inc.php /tmp/ispcp/srv/www/ispcp/gui/tools/pma/
