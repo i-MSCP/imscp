@@ -25,7 +25,7 @@
 											<form name="frm" action="lostpw.php" method="post">
 												<table width="453" border="0" cellpadding="0" cellspacing="0">
 													<tr>
-														<td width="6" style="background-image:url({THEME_COLOR_PATH}/images/login/content_line.gif);"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="2" height="2" alt=""></td>
+														<td width="6" style="background-image:url({THEME_COLOR_PATH}/images/login/content_line.gif);"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="2" height="2" alt="" /></td>
 														<td width="4">&nbsp;</td>
 														<td width="377"><div class="login_text"><strong>{TR_MESSAGE}</strong></div></td>
 													</tr>
