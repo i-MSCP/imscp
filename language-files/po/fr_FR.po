@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: fr_FR\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-02-20 10:04+0100\n"
-"PO-Revision-Date: 2010-02-23 22:56+0100\n"
+"PO-Revision-Date: 2010-02-23 23:19+0100\n"
 "Last-Translator: Laurent Declercq <laurent.declercq@ispcp.net>\n"
 "Language-Team: French (France) <fr_FR@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -26,7 +26,7 @@ msgid "_: Localised language"
 msgstr "Français (France) - French (France)"
 
 msgid "ispCP Omega a Virtual Hosting Control System"
-msgstr "ispCP Omega un Système de Contrôle d'hébergement Virtuel"
+msgstr "ispCP Omega un Système de Contrôle d'Hébergement Virtuel"
 
 msgid "Administrator login"
 msgstr "Identification Administrateur"
@@ -72,7 +72,7 @@ msgid "Back"
 msgstr "Retour"
 
 msgid "User or security code was incorrect!"
-msgstr "Erreur : Le nom d'utilisateur ou le code de sécurité est incorrecte!"
+msgstr "Erreur: Le nom d'utilisateur ou le code de sécurité est incorrecte!"
 
 msgid "Retry"
 msgstr "Ré-essayer"
@@ -161,7 +161,7 @@ msgid "City"
 msgstr "Ville"
 
 msgid "State/Province"
-msgstr "Région / Département"
+msgstr "Région/Département"
 
 msgid "Country"
 msgstr "Pays"
@@ -191,7 +191,7 @@ msgid "Domain account"
 msgstr "Compte de domaine"
 
 msgid "ispCP - Admin/Manage users/Edit Administrator"
-msgstr "ispCP - Admin/Gestion utilisateurs/Editer l'administrateur"
+msgstr "ispCP - Admin/Gestion utilisateurs/Éditer l'administrateur"
 
 msgid "ispCP - Admin/Manage users/Edit User"
 msgstr "ispCP - Admin - Édition utilisateur"
@@ -263,7 +263,7 @@ msgid "Message"
 msgstr "Message"
 
 msgid "Delete from log:"
-msgstr "Effacer les journaux :"
+msgstr "Effacer les journaux:"
 
 msgid "everything"
 msgstr "tout"
@@ -546,7 +546,7 @@ msgid "SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Nombre max. de bases SQL<br /><i>(-1 désactivé, 0 illimité)</i>"
 
 msgid "SQL users limit <br /><i>(-1 disabled, 0 unlimited)</i>"
-msgstr "Nom max. d'utilisateurs SQL<br /><i>(-1 désactivé, 0 illimité)</i>"
+msgstr "Nombre max. d'utilisateurs SQL<br /><i>(-1 désactivé, 0 illimité)</i>"
 
 msgid "Traffic limit [MB] <br /><i>(0 unlimited)</i>"
 msgstr "Limite de trafic [Mo]<br /><i>(0 illimité)</i>"
@@ -591,7 +591,7 @@ msgid "SQL databases limit is <i>disabled</i>!"
 msgstr "La limite de bases de données SQL est <i>désactivée</i>!"
 
 msgid "Incorrect SQL databases limit!"
-msgstr "Nombre maximum de bases SQL incorrect !"
+msgstr "Nombre maximum de bases SQL incorrect!"
 
 msgid "SQL users limit is <i>disabled</i>!"
 msgstr "La limite d'utilisateurs SQL est <i>désactivée</i>!"
@@ -854,10 +854,10 @@ msgid "Undefined reference to data!"
 msgstr "Référence de données indéfinie"
 
 msgid "Incorrect price. Example: 9.99"
-msgstr "Tarif incorrect. Exemple : 9.99"
+msgstr "Tarif incorrect. Exemple: 9.99"
 
 msgid "Incorrect setup fee. Example: 19.99"
-msgstr "Frais d'installation incorrect. Exemple : 19.99"
+msgstr "Frais d'installation incorrect. Exemple: 19.99"
 
 #, php-format
 msgid "You have <b>%d</b> new support questions"
@@ -893,10 +893,10 @@ msgid "You cannot delete the last active IP address!"
 msgstr "Vous ne pouvez pas supprimer la dernière adresse IP active!"
 
 msgid "Error: we have a domain using this IP!"
-msgstr "Erreur :  Un domaine utilise déjà cette adresse IP!"
+msgstr "Erreur:  Un domaine utilise déjà cette adresse IP!"
 
 msgid "Error: we have a reseller using this IP!"
-msgstr "Erreur : Un revendeur utilise déjà cette adresse IP!"
+msgstr "Erreur: Un revendeur utilise déjà cette adresse IP!"
 
 msgid "IP was deleted!"
 msgstr "L'adresse IP a été supprimée!"
@@ -984,7 +984,7 @@ msgid "Execute requests"
 msgstr "Exécuter une requête"
 
 msgid "Set status to 'change'"
-msgstr "Mettre le statut à : 'change'"
+msgstr "Mettre le statut à: 'change'"
 
 #, php-format
 msgid "Daemon returned %d as status code"
@@ -1091,7 +1091,7 @@ msgstr "Déplacement annulé!"
 
 #, php-format
 msgid "<b>%s</b> has IP address that cannot be managed from the destination reseller !<br>This user cannot be moved!"
-msgstr "<b>%s</b> possède une adresse IP qui ne peut pas être gérée par le revendeur sélectionné !<br />Cet utilisateur ne peut pas être déplacé!"
+msgstr "<b>%s</b> possède une adresse IP qui ne peut pas être gérée par le revendeur sélectionné!<br />Cet utilisateur ne peut pas être déplacé!"
 
 msgid "ispCP - Admin/Manage users/User assignment"
 msgstr "ispCP - Admin/Gestion utilisateurs/Assignement Utilisateur"
@@ -1248,7 +1248,7 @@ msgid "Assign"
 msgstr "Assigner"
 
 msgid "Label"
-msgstr "Nom d'hôte associé"
+msgstr "Label"
 
 msgid "Number"
 msgstr "Nombre"
@@ -1585,7 +1585,7 @@ msgid "ispCP - Admin/Settings"
 msgstr "ispCP - Admin/Paramètres"
 
 msgid "ERROR: Only positive numbers are allowed !"
-msgstr "Erreur : Seuls les nombres positifs sont autorisés!"
+msgstr "Erreur: Seuls les nombres positifs sont autorisés!"
 
 msgid "Settings saved !"
 msgstr "La configuration a été sauvegardée!"
@@ -1714,7 +1714,7 @@ msgid "Images have to be smaller than 195 x 195 pixels!"
 msgstr "Les images ne doivent pas dépasser 195 x 195 pixels!"
 
 msgid "Your logo was successful uploaded!"
-msgstr "Votre logo a bien été envoyé !"
+msgstr "Votre logo a bien été envoyé!"
 
 msgid "Layout settings"
 msgstr "Paramètrage de l'affichage"
@@ -2044,7 +2044,7 @@ msgid "Delete domain"
 msgstr "Suppression du domaine"
 
 msgid "Domain summary:"
-msgstr "Résumé du domaine :"
+msgstr "Résumé du domaine:"
 
 msgid "Domain e-mails:"
 msgstr "Émails du domaine:"
@@ -2068,7 +2068,7 @@ msgid "Yes, delete the domain."
 msgstr "Oui, supprimer définitivement le domaine."
 
 msgid "ispCP Client : Add Alias"
-msgstr "ispCP Client : Ajouter un alias"
+msgstr "ispCP Client: Ajouter un alias"
 
 msgid "Manage domain alias"
 msgstr "Gérer les alias de domaine"
@@ -2342,7 +2342,7 @@ msgstr "Validation de l'enregistrement %s impossible. Raison: '%s'."
 
 #, php-format
 msgid "Unknown zone type %s!"
-msgstr "Type de zone inconnue %s !"
+msgstr "Type de zone inconnue %s!"
 
 msgid "ispCP - Client/Domain Statistics"
 msgstr "ispCP - Client/Statistiques du Domaine"
@@ -2560,25 +2560,25 @@ msgid "There are no available updates"
 msgstr "Il n'y a pas de mise à jour disponible"
 
 msgid "PHP Support: enabled"
-msgstr "Support PHP : activé"
+msgstr "Support PHP: activé"
 
 msgid "PHP Support: disabled"
-msgstr "Support PHP : désactivé"
+msgstr "Support PHP: désactivé"
 
 msgid "You have PHP enabled, but the new hosting plan doesn't has this feature."
 msgstr "Vous avez le support PHP activé mais le nouveau plan d'hébergement ne fournit pas cette fonctionnalité."
 
 msgid "CGI Support: enabled"
-msgstr "Support CGI : activé"
+msgstr "Support CGI: activé"
 
 msgid "CGI Support: disabled"
-msgstr "Support CGI : désactivé"
+msgstr "Support CGI: désactivé"
 
 msgid "You have CGI enabled, but the new hosting plan doesn't has this feature."
 msgstr "Vous avez le support CGI activé mais le nouveau plan d'hébergement ne fournit pas cette fonctionnalité."
 
 msgid "DNS Support: enabled"
-msgstr "Enregistrements DNS personnalisés : Activés"
+msgstr "Enregistrements DNS personnalisés: Activés"
 
 msgid "DNS Support: disabled"
 msgstr "Enregistrements DNS personnalisés - désactivés"
@@ -2629,7 +2629,7 @@ msgid "You can not update to this hosting plan, see notices in text."
 msgstr "Vous de pouvez pas mettre ce plan d'hébergement à jour. Voir la note dans le texte."
 
 msgid "Warning:"
-msgstr "Avertissement :"
+msgstr "Avertissement:"
 
 msgid "Caution:"
 msgstr "Attention:"
@@ -3496,7 +3496,7 @@ msgstr ""
 "Bonjour {NAME},\n"
 "\n"
 "Un nouveau compte ispCP viens d'être créé pour vous.\n"
-"Les information liées à votre compte sont :\n"
+"Les information liées à votre compte sont:\n"
 "\n"
 "Type d'utilisateur : {USERTYPE}\n"
 "Nom d'utilisateur : {USERNAME}\n"
@@ -3537,7 +3537,7 @@ msgstr ""
 "\n"
 
 msgid "Your new ispCP login!"
-msgstr "ispCP - Nouvelles informations d'authentification !"
+msgstr "ispCP - Nouvelles informations d'authentification!"
 
 msgid ""
 "\n"
@@ -3588,7 +3588,7 @@ msgstr ""
 "\n"
 "\n"
 "Cher {NAME},\n"
-"Ceci est une confirmation automatique pour votre commande d'un domaine :\n"
+"Ceci est une confirmation automatique pour votre commande d'un domaine:\n"
 "\n"
 "{DOMAIN}\n"
 "\n"
@@ -4221,7 +4221,7 @@ msgid "ispCP - Reseller/Manage users/Email setup"
 msgstr "ispCP - Revendeur/Gestion utilisateurs/Paramétrage Email"
 
 msgid "ispCP - Reseller: Support System: View Ticket"
-msgstr "ispCP - Revendeur : Système de support: Afficher les demande de support"
+msgstr "ispCP - Revendeur: Système de support: Afficher les demande de support"
 
 msgid "ispCP - Users/Add user"
 msgstr "ispCP - Utilisateurs/Ajout utilisateur"
@@ -4332,7 +4332,7 @@ msgid "User data not updated!"
 msgstr "Les données de l'utilisateur n'ont pas été mises à jour!"
 
 msgid "This user has domain record !<br>First remove the domain from the system!"
-msgstr "Cet utilisateur possède un domaine!<br /> Commencer par le supprimer!"
+msgstr "Cet utilisateur possède un domaine!<br />Commencer par le supprimer!"
 
 msgid "User not terminated!"
 msgstr "L'utilisateur na pas été supprimé!"
