@@ -71,7 +71,7 @@ First, make sure you are logged in as root.
 
 1. Untar or unzip the distribution files to a secure directory:
 
-	# cd /root
+	# cd /usr/local/src
 	# tar xjvf ispcp-omega-1.0.4.tar.bz2
 
 2. Change to the newly created directory:
@@ -164,7 +164,7 @@ Make sure you are logged in as root and MySQL is running.
 
 1. Untar or unzip the distribution files to a secure directory:
 
-	# cd /root
+	# cd /usr/local/src
 	# tar xjvf ispcp-omega-1.0.4.tar.bz2
 
 2. Change to the newly created directory:

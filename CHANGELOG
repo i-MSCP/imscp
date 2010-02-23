@@ -1,6 +1,10 @@
 ispCP ω 1.0.4 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-02-23 Benedikt Heintel
+	- DOCS:
+		* Fixed #2225: The unzip path in the INSTALL-File difference with the path in the Docu.
+
 2010-02-22 Sascha Bay
 	- GUI:
 		* Fixed #2220: Admin General information is not valid HTML
