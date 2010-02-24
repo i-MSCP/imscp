@@ -67,6 +67,19 @@ CREATE TABLE `admin` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `autoreplies_log`
+--
+
+CREATE TABLE `autoreplies_log` (
+  `time` DATETIME NOT NULL COMMENT 'Date and time of the sent autoreply',
+  `from` VARCHAR( 255 ) NOT NULL COMMENT 'autoreply message sender',
+  `to` VARCHAR( 255 ) NOT NULL COMMENT 'autoreply message recipient',
+  INDEX ( `time` )
+) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci COMMENT = 'Sent autoreplies log table';
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `auto_num`
 --
 

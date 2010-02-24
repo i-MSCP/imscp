@@ -1,6 +1,14 @@
 ispCP ω 1.0.4 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-02-24 Benedikt Heintel
+	- DATABASE:
+		* Fixed #2229: omega 1.0.4 - Database Schema should be updated
+	- DOCS:
+		* Fixed #2230: FreeBSD´s Makefile is not up-to-date
+		* Fixed #2231: Updated freebsd-packages
+		* Fixed #2232: Updated the FreeBSD INSTALL
+
 2010-02-23 Laurent Declercq
 	- LANGUAGES:
 		* Updated French language files
