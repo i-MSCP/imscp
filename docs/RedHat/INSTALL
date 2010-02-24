@@ -56,7 +56,7 @@ provides graphic user interfaces for the administrators, resellers and users.
 Make sure you are logged in as root and MySQL is running.
 
 1. Untar or unzip the distribution files to a secure directory:
-	# cd /root
+	# cd /usr/local/src
 	# tar xjvf ispcp-omega-1.0.4.tar.bz2
 
 2. Change to the newly created directory:
@@ -100,7 +100,7 @@ version prior 1.0.0 (final release) installed, update to ispCP ω 1.0.0 first.
 Make sure you are logged in as root and MySQL is running.
 
 1. Untar or unzip the distribution files to a secure directory:
-	# cd /root
+	# cd /usr/local/src
 	# tar xjvf ispcp-omega-1.0.4.tar.bz2
 
 2. Change to the newly created directory:
@@ -116,7 +116,7 @@ Make sure you are logged in as root and MySQL is running.
 
 6. Backup files
 	# cp -v /var/www/ispcp/engine/ispcp-db-keys.pl /tmp/ispcp/var/www/ispcp/engine/
-	# cp -v /var/www/ispcp/engine/messager/ispcp-db-keys.pl /tmp/ispcp/var/www/ispcp/engine/messenger/
+	# cp -v /var/www/ispcp/engine/messenger/ispcp-db-keys.pl /tmp/ispcp/var/www/ispcp/engine/messenger/
 	# cp -v /var/www/ispcp/gui/include/ispcp-db-keys.php /tmp/ispcp/var/www/ispcp/gui/include/
 	# cp -v /var/www/ispcp/gui/themes/user_logos/* /tmp/ispcp/var/www/ispcp/gui/themes/user_logos/
 	# cp -v /var/www/ispcp/gui/tools/pma/config.inc.php /tmp/ispcp/var/www/ispcp/gui/tools/pma/

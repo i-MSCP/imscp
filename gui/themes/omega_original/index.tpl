@@ -31,7 +31,7 @@
 										</tr>
 										<tr>
 											<td width="19">&nbsp;</td>
-											<td width="94" rowspan="4"><div align="center"><img src="{THEME_COLOR_PATH}/images/login/login_lock.jpg" width="53" height="72" alt=""></div></td>
+											<td width="94" rowspan="4"><div align="center"><img src="{THEME_COLOR_PATH}/images/login/login_lock.jpg" width="53" height="72" alt="" /></div></td>
 											<td width="20">&nbsp;</td>
 											<td colspan="4" width="320">&nbsp;</td>
 										</tr>
@@ -68,7 +68,7 @@
 										</tr>
 										<tr>
 											<td colspan="5">&nbsp;</td>
-											<td style="width:151px;text-align:right;"><img src="{THEME_COLOR_PATH}/images/login/{TR_SSL_IMAGE}" style="vertical-align:middle" border="0" alt="lock">&nbsp;&nbsp;<a class="login" href="{TR_SSL_LINK}" title="{TR_SSL_DESCRIPTION}">{TR_SSL_DESCRIPTION}</a></td>
+											<td style="width:151px;text-align:right;"><img src="{THEME_COLOR_PATH}/images/login/{TR_SSL_IMAGE}" style="vertical-align:middle" border="0" alt="lock" />&nbsp;&nbsp;<a class="login" href="{TR_SSL_LINK}" title="{TR_SSL_DESCRIPTION}">{TR_SSL_DESCRIPTION}</a></td>
 											<td>&nbsp;</td>
 										</tr>
 										/* END SSL-Switch */ -->
@@ -81,9 +81,9 @@
       <tr>
        <td width="244" align="right" class="login"><table width="300" border="0" cellspacing="2" cellpadding="2">
   <tr>
-    <td align="center" width="100"><a href="{TR_PMA_SSL_LINK}" target="_self" title="phpMyAdmin"><img src="{THEME_COLOR_PATH}/images/login/phpmyadmin.png" width="28" height="30" border="0" alt="phpMyAdmin"></a></td>
-    <td align="center" width="100"><a href="{TR_FTP_SSL_LINK}" target="_self" title="Filemanager"><img src="{THEME_COLOR_PATH}/images/login/filemanager.png" width="33" height="30" border="0" alt="Filemanager"></a></td>
-    <td align="center" width="100"><a href="{TR_WEBMAIL_SSL_LINK}" target="_self" title="WebMail"><img src="{THEME_COLOR_PATH}/images/login/webmail.png" width="32" height="30" border="0" alt="WebMail"></a></td>
+    <td align="center" width="100"><a href="{TR_PMA_SSL_LINK}" target="_self" title="phpMyAdmin"><img src="{THEME_COLOR_PATH}/images/login/phpmyadmin.png" width="28" height="30" border="0" alt="phpMyAdmin" /></a></td>
+    <td align="center" width="100"><a href="{TR_FTP_SSL_LINK}" target="_self" title="Filemanager"><img src="{THEME_COLOR_PATH}/images/login/filemanager.png" width="33" height="30" border="0" alt="Filemanager" /></a></td>
+    <td align="center" width="100"><a href="{TR_WEBMAIL_SSL_LINK}" target="_self" title="WebMail"><img src="{THEME_COLOR_PATH}/images/login/webmail.png" width="32" height="30" border="0" alt="WebMail" /></a></td>
   </tr>
   <tr>
     <td align="center" width="100"><a class="login" href='{TR_PMA_SSL_LINK}'>phpMyAdmin</a></td>

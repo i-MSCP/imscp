@@ -1,6 +1,21 @@
 ispCP ω 1.0.5 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-02-23 Laurent Declercq
+	- LANGUAGES:
+		* Updated French language files
+
+2010-02-23 Benedikt Heintel
+	- DOCS:
+		* Fixed #2225: The unzip path in the INSTALL-File difference with the path in the Docu.
+
+2010-02-22 Sascha Bay
+	- GUI:
+		* Fixed #2220: Admin General information is not valid HTML
+		* Fixed #2221: Reseller General information is not valid HTML
+		* Fixed #2222: Client General information is not valid HTML
+		* Fixed: Login screens are not valid HTML
+
 2010-02-21 Benedikt Heintel
 	- GUI:
 		* Fixed #2053: Make ispCP ω PHP 5.3 compatible (part I)
