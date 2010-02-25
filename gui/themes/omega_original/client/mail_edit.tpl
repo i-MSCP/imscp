@@ -7,9 +7,18 @@
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css" />
-  <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
+<script type="text/javascript" src="{THEME_COLOR_PATH}/css/jquery.js"></script>
+<script type="text/javascript" src="{THEME_COLOR_PATH}/css/jquery.ispcpTooltips.js"></script>
+<script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
+
 <script type="text/javascript">
-<!--
+/*<![CDATA[*/
+	$(document).ready(function(){
+		// Tooltips - begin
+		$('#fwd_help').ispCPtooltips({msg:"{TR_FWD_HELP}"});
+		// Tooltips - end
+	});
+
 	function begin_js() {
 		if (typeof(document.forms[0].elements['mail_forward']) != 'undefined') {
 			if (document.forms[0].elements['mail_forward'].checked == false) {
@@ -27,14 +36,12 @@
 			}
 		}
 	}
-//-->
+/*]]>*/
 </script>
- </head>
+</head>
 
  <body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/ftp_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/email_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif'); begin_js();">
-  <!-- ToolTip -->
-  <div id="fwd_help" style="background-color:#ffffe0;border: 1px #000000 solid;display:none;margin:5px;padding:5px;font-size:11px;width:200px;position:absolute;">{TR_FWD_HELP}</div>
-  <!-- ToolTip end -->
+
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="height:100%;padding:0;margin:0 auto;">
 <!-- BDP: logged_from -->
 <tr>
@@ -106,7 +113,7 @@
                </tr>
                <tr>
                 <td class="content2" style="width:200px;vertical-align:top;">
-                 <label for="forward_list">{TR_FORWARD_TO}</label> <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onmouseover="showTip('fwd_help', event)" onmouseout="hideTip('fwd_help')" />
+                 <label for="forward_list">{TR_FORWARD_TO}</label> <img id="fwd_help" src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" />
                 </td>
                 <td nowrap="nowrap" class="content">
                  <textarea name="forward_list" id="forward_list" cols="35" rows="10" wrap="virtual" style="width:400px">{FORWARD_LIST}</textarea>
@@ -118,7 +125,7 @@
               <table width="100%" cellpadding="5" cellspacing="5">
                <tr>
                 <td class="content2" style="width:125px;vertical-align:top;">
-                 {TR_FORWARD_TO} <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onmouseover="showTip('fwd_help', event)" onmouseout="hideTip('fwd_help')" />
+                 {TR_FORWARD_TO} <img id="fwd_help" src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" />
                 </td>
                 <td class="content"><textarea name="forward_list" cols="35" rows="5" style="width:210px">{FORWARD_LIST}</textarea></td>
                </tr>

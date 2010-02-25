@@ -61,7 +61,6 @@ function sbmt(form, uaction) {
 	return false;
 }
 
-
 /**
  * @link ../admin/manage_users.tpl
  * @link ../reseller/users.tpl
@@ -74,7 +73,6 @@ function sbmt_details(form, uaction) {
 
 	return false;
 }
-
 
 /**
  * @link ../admin|client|reseller/.*
@@ -97,7 +95,6 @@ function MM_preloadImages() {
 	}
 }
 
-
 /**
  * @link ../admin|client|reseller/main_menu_.*
  *
@@ -109,7 +106,6 @@ function MM_swapImgRestore() {
 		x.src = x.oSrc;
 	}
 }
-
 
 /**
  * @usedby MM_swapImage()
@@ -142,7 +138,6 @@ function MM_findObj(n, d) {
 	return x;
 }
 
-
 /**
  * @uses MM_findObj()
  * @link ../admin|client|reseller/main_menu_.*
@@ -162,7 +157,6 @@ function MM_swapImage() {
 		}
 	}
 }
-
 
 /**
  * @link ../admin/domain_details-tpl
@@ -198,7 +192,6 @@ function MM_goToURL() {
 		window[args[i]].location = String(args[i+1]);
 	}
 }
-
 
 /**
  *
@@ -268,57 +261,6 @@ function sprintf() {
 	return str;
 }
 
-
-/**
- * show tooltip
- *
- * @link ../admin/settings.tpl
- * @link ../client/alias_add.tpl
- * @link ../client/ftp_edit.tpl
- * @link ../client/mail_add.tpl
- * @link ../client/mail_edit.tpl
- * @link ../client/subdomain_edit.tpl
- * @link ../reseller/alias_add.tpl
- * @link ../reseller/alias_edit.tpl
- * @link ../reseller/user_add1.tpl
- *
- * @todo try to merge with hideTip(), eventually with optional parameter
- */
-function showTip(id, e) {
-	var x, y, tip = document.getElementById(id);
-	if (window.event) {
-		x = window.event.x + document.body.scrollLeft;
-		y = window.event.y + document.body.scrollTop;
-	} else {
-		x = e.pageX;
-		y = e.pageY;
-	}
-	tip.style.left = (x + 10) + "px";
-	tip.style.top = (y + 10) + "px";
-	tip.style.display = "block";
-}
-
-
-/**
- * hide tooltip
- *
- * @link ../admin/settings.tpl
- * @link ../client/alias_add.tpl
- * @link ../client/ftp_edit.tpl
- * @link ../client/mail_add.tpl
- * @link ../client/mail_edit.tpl
- * @link ../client/subdomain_edit.tpl
- * @link ../reseller/alias_add.tpl
- * @link ../reseller/alias_edit.tpl
- * @link ../reseller/user_add1.tpl
- *
- * @todo try to merge with showTip(), eventually with optional parameter
- */
-function hideTip(id) {
-	document.getElementById(id).style.display = "none";
-}
-
-
 /**
  * @link ../admin/rootkit_log.tpl
  */
@@ -329,7 +271,6 @@ function showHideBlocks(id) {
 		document.getElementById(id).style.display = "none";
 	}
 }
-
 
 /**
  * show/open file tree dialog pageY
@@ -408,6 +349,27 @@ function checkForm() {
 	} else {
 		document.forms[0].submit();
 	}
+}
+
+
+// @deprecated Deprecated since 1.0.5 - use JQuery ispCPtooltips plugin instead
+function showTip(id, e) {
+	var x, y, tip = document.getElementById(id);
+	if (window.event) {
+		x = window.event.x + document.body.scrollLeft;
+		y = window.event.y + document.body.scrollTop;
+	} else {
+		x = e.pageX;
+		y = e.pageY;
+	}
+	tip.style.left = (x + 10) + "px";
+	tip.style.top = (y + 10) + "px";
+	tip.style.display = "block";
+}
+
+// @deprecated Deprecated since 1.0.5 - use JQuery ispCPtooltips plugin instead
+function hideTip(id) {
+	document.getElementById(id).style.display = "none";
 }
 
 */

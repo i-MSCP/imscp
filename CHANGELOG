@@ -4,6 +4,10 @@ ispCP ω 1.0.5 Changelog
 2010-02-25 Laurent Declercq
 	- GUI:
 		* Fixed: Only minified version of js files should be used
+		* Fixed: Script tags not properly closed in head
+		* Fixed #2234: Switch to new tooltips system (jquery ispCP tooltips plugin)
+		* Moved js functions related to the tooltips in the section of deprecated functions
+		* Rebuilded minified version from ispcp_full.js file
 
 2010-02-23 Laurent Declercq
 	- LANGUAGES:

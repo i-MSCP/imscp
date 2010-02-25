@@ -7,25 +7,33 @@
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="{THEME_COLOR_PATH}/css/jquery.js"></script>
+<script type="text/javascript" src="{THEME_COLOR_PATH}/css/jquery.ispcpTooltips.js"></script>
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
+
 <script type="text/javascript">
-<!--
-function makeUser() {
-    var subname  = document.forms[0].elements['subdomain_name'].value;
-    subname = subname.toLowerCase();
-    document.forms[0].elements['subdomain_mnt_pt'].value = "/" + subname;
-}
-function setRatioAlias(){
-	document.forms[0].elements['dmn_type'][1].checked = true;
-}
-//-->
+/*<![CDATA[*/
+	$(document).ready(function(){
+		// Tooltips - begin
+		$('#dmn_help').ispCPtooltips({msg:"{TR_DMN_HELP}"});
+		// Tooltips - end
+	});
+
+	function makeUser() {
+    	var subname  = document.forms[0].elements['subdomain_name'].value;
+    	subname = subname.toLowerCase();
+    	document.forms[0].elements['subdomain_mnt_pt'].value = "/" + subname;
+	}
+
+	function setRatioAlias(){
+		document.forms[0].elements['dmn_type'][1].checked = true;
+	}
+/*]]>*/
 </script>
 </head>
 
 <body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/ftp_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/email_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif','{THEME_COLOR_PATH}/images/icons/custom_link_a.gif')">
-   <!-- ToolTip -->
-    <div id="dmn_help" style="background-color:#ffffe0;border: 1px #000000 solid;display:none;margin:5px;padding:5px;font-size:9pt;font-family:Verdana, sans-serif;color:#000000;width:200px;position:absolute;">{TR_DMN_HELP}</div>
-    <!-- ToolTip end -->
+
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="height:100%;padding:0;margin:0 auto;">
 <!-- BDP: logged_from -->
 <tr>
@@ -68,7 +76,7 @@ function setRatioAlias(){
                             <!-- EDP: page_message -->
                             <tr>
                               <td width="250" class="content2">
-                               <label for="subdomain_name">{TR_SUBDOMAIN_NAME}</label> <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" alt="" onmouseover="showTip('dmn_help', event)" onmouseout="hideTip('dmn_help')" />
+                               <label for="subdomain_name">{TR_SUBDOMAIN_NAME}</label> <img id="dmn_help" src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" alt="" />
                               </td>
                               <td class="content"><input type="text" name="subdomain_name" id="subdomain_name" value="{SUBDOMAIN_NAME}" style="width:170px" class="textinput" onblur="makeUser();" />
                                 <input type="radio" name="dmn_type" value="dmn" {SUB_DMN_CHECKED} />{DOMAIN_NAME}

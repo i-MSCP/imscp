@@ -7,14 +7,24 @@
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="{THEME_COLOR_PATH}/css/jquery.js"></script>
+<script type="text/javascript" src="{THEME_COLOR_PATH}/css/jquery.ispcpTooltips.js"></script>
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
+
+<script type="text/javascript">
+/*<![CDATA[*/
+	$(document).ready(function(){
+		// Tooltips - begin
+		$('#tld_help').ispCPtooltips({msg:"{TR_TLD_STRICT_VALIDATION_HELP}"});
+		$('#sld_help').ispCPtooltips({msg:"{TR_SLD_STRICT_VALIDATION_HELP}"});
+		// Tooltips - end
+	});
+/*]]>*/
+</script>
 </head>
 
 <body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
-<!-- ToolTip -->
-<div id="tld_help" style="background-color:#ffffe0;border: 1px #000000 solid;display:none;margin:5px;padding:5px;font-size:9pt;font-family:Verdana, sans-serif;color:#000000;width:200px;position:absolute;">{TR_TLD_STRICT_VALIDATION_HELP}</div>
-<div id="sld_help" style="background-color:#ffffe0;border: 1px #000000 solid;display:none;margin:5px;padding:5px;font-size:9pt;font-family:Verdana, sans-serif;color:#000000;width:200px;position:absolute;">{TR_SLD_STRICT_VALIDATION_HELP}</div>
-<!-- ToolTip end -->
+
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="height:100%;padding:0;margin:0 auto;">
 <tr>
 <td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" width="195" height="56" border="0" alt="ispCP Logogram" /></td>
@@ -146,7 +156,7 @@
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
-                              <td class="content2">{TR_TLD_STRICT_VALIDATION} <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" alt="" onmouseover="showTip('tld_help', event)" onmouseout="hideTip('tld_help')" /></td>
+                              <td class="content2">{TR_TLD_STRICT_VALIDATION} <img id="tld_help" src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" alt="" /></td>
                               <td class="content">
                                <select name="tld_strict_validation" id="tld_strict_validation">
                                 <option value="0" {TLD_STRICT_VALIDATION_OFF}>{TR_DISABLED}</option>
@@ -156,7 +166,8 @@
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
-                              <td class="content2">{TR_SLD_STRICT_VALIDATION} <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" alt="" onmouseover="showTip('sld_help', event)" onmouseout="hideTip('sld_help')" /></td>
+                              <td class="content2">{TR_SLD_STRICT_VALIDATION} <img id="sld_help" src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" alt="" />
+                              </td>
                               <td class="content">
                                <select name="sld_strict_validation" id="sld_strict_validation">
                                 <option value="0" {SLD_STRICT_VALIDATION_OFF}>{TR_DISABLED}</option>
