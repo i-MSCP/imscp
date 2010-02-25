@@ -1,15 +1,20 @@
 ispCP ω 1.0.4 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-02-25 Benedikt Heintel
+	- CONFIGS:
+		* Fixed #2233: FreeBSD GUI Makefile correction
+
 2010-02-25 Laurent Declercq
 	- GUI:
 		* Fixed: Script tags not properly closed in head
 
 2010-02-24 Benedikt Heintel
+	- CONFIGS:
+		* Fixed #2230: FreeBSD´s Makefile is not up-to-date		
 	- DATABASE:
 		* Fixed #2229: omega 1.0.4 - Database Schema should be updated
 	- DOCS:
-		* Fixed #2230: FreeBSD´s Makefile is not up-to-date
 		* Fixed #2231: Updated freebsd-packages
 		* Fixed #2232: Updated the FreeBSD INSTALL
 
