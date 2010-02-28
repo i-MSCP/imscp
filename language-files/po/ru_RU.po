@@ -178,10 +178,10 @@ msgid "Country"
 msgstr "Страна"
 
 msgid "Street 1"
-msgstr "Основной адрес (улица, дом, квартира)"
+msgstr "Основной адрес"
 
 msgid "Street 2"
-msgstr "Дополнительный адрес (улица, дом, квартира)"
+msgstr "Дополнительный адрес"
 
 msgid "Phone"
 msgstr "Телефон"
@@ -226,12 +226,11 @@ msgstr "Отправить новую информацию для входа"
 msgid "Generate password"
 msgstr "Сгенерировать пароль"
 
-#, fuzzy
 msgid "Password change is disabled!"
-msgstr "Проверка обновлений отключена!"
+msgstr "Изменение пароля отключено!"
 
 msgid "Demo Version!"
-msgstr ""
+msgstr "Демоверсия!"
 
 msgid "ispCP - Admin/Admin Log"
 msgstr "ispCP - Администратор / Лог администратора"
@@ -468,13 +467,11 @@ msgstr "Поддержка PHP"
 msgid "CGI support"
 msgstr "Поддержка CGI"
 
-#, fuzzy
 msgid "Manual DNS support (EXPERIMENTAL)"
-msgstr "Поддержка управления DNS"
+msgstr "Поддержка управления DNS (ТЕСТ)"
 
-#, fuzzy
 msgid "Backup support"
-msgstr "Поддержка PHP"
+msgstr "Поддержка бэкапа"
 
 msgid "MySQL support"
 msgstr "Поддержка MySQL"
@@ -516,7 +513,7 @@ msgid "Submit changes"
 msgstr "Применить изменения"
 
 msgid "Full"
-msgstr "Полный"
+msgstr "Домен + SQL"
 
 msgid "SQL"
 msgstr "SQL"
@@ -593,7 +590,7 @@ msgstr ""
 "Пользователь не существует или Вы не имеете доступа к этому интерфейсу!"
 
 msgid "N/A"
-msgstr "Отсутствует"
+msgstr "Недоступно"
 
 msgid "Incorrect subdomains limit!"
 msgstr "Некорректный лимит поддоменов!"
@@ -690,10 +687,10 @@ msgid "You are exceeding reseller limits for the <em>%s</em> service!"
 msgstr "Вы превысили лимит реселлера для сервиса <em>%s</em>"
 
 msgid "ispCP - Domain Statistics Data"
-msgstr "ispCP - Данные статистики доменов"
+msgstr "ispCP - Данные статистики домена"
 
 msgid "Domain statistics"
-msgstr "Статистика доменов"
+msgstr "Статистика домена"
 
 msgid "Month"
 msgstr "Месяц"
@@ -806,9 +803,8 @@ msgstr "PHP"
 msgid "CGI / Perl"
 msgstr "CGI / Perl"
 
-#, fuzzy
 msgid "Allow adding records to DNS zone (EXPERIMENTAL)"
-msgstr "Разрешено добавление записей в зону DNS"
+msgstr "Разрешено добавление записей в зону DNS (ТЕСТ)"
 
 msgid "Apache logfiles"
 msgstr "Файлы журнала Apache"
@@ -856,10 +852,10 @@ msgid "Incorrect template description length!"
 msgstr "Некорректная длина описания шаблона!"
 
 msgid "Incorrect price syntax!"
-msgstr "Некорректный синтакс стоимости!"
+msgstr "Некорректный синтаксис стоимости!"
 
 msgid "Incorrect setup fee syntax!"
-msgstr "Некорректный синтакс стоимости подключения!"
+msgstr "Некорректный синтаксис стоимости подключения!"
 
 msgid "Hosting plan with entered name already exists!"
 msgstr "Хостинг-план с введённым именем уже существует!"
@@ -919,10 +915,10 @@ msgid "You cannot delete the last active IP address!"
 msgstr "Вы не можете удалить последний активный IP!"
 
 msgid "Error: we have a domain using this IP!"
-msgstr "Ошибка: у нас есть домен использующий этот IP!"
+msgstr "ОШИБКА: У нас есть домен использующий этот IP!"
 
 msgid "Error: we have a reseller using this IP!"
-msgstr "Ошибка: у нас есть реселлер использующий этот IP!"
+msgstr "ОШИБКА: У нас есть реселлер использующий этот IP!"
 
 msgid "IP was deleted!"
 msgstr "IP удалён!"
@@ -974,13 +970,13 @@ msgid "No domain system errors"
 msgstr "Нет ошибок системы доменов"
 
 msgid "No domain alias system errors"
-msgstr "Нет ошибок системы алиасов для доменов"
+msgstr "Нет ошибок системы алиасов доменов"
 
 msgid "No subdomain system errors"
 msgstr "Нет ошибок системы поддоменов"
 
 msgid "No alias subdomain system errors"
-msgstr "Нет ошибок системы алиасов для поддоменов"
+msgstr "Нет ошибок системы алиасов поддоменов"
 
 msgid "No email account system errors"
 msgstr "Нет ошибок системы почтовых ящиков"
@@ -1262,9 +1258,8 @@ msgstr "Изменить пароль"
 msgid "Current password"
 msgstr "Текущий пароль"
 
-#, fuzzy
 msgid "Password change is deactivated!"
-msgstr "Заказанный алиас домена активирован!"
+msgstr "Изменение пароля отключено!"
 
 msgid "ispCP - Admin/Change Personal Data"
 msgstr "ispCP - Администратор / Изменить персональные данные"
@@ -1302,13 +1297,11 @@ msgstr "Некорректный синтаксис email!"
 msgid "Incorrect domains limit!"
 msgstr "Некорректный синтаксис лимита доменов!"
 
-#, fuzzy
 msgid "SQL databases limit is <i>disabled</i> but SQL users limit not!"
-msgstr "Лимит баз данных SQL <i>отключен</i>!"
+msgstr "Лимит баз данных SQL <i>отключен</i>, но лимит пользователей SQL нет!"
 
-#, fuzzy
 msgid "SQL users limit is <i>disabled</i> but SQL databases limit not!"
-msgstr "Лимит пользователей SQL <i>отключен</i>"
+msgstr "Лимит пользователей SQL <i>отключен</i>, но лимит баз данных SQL нет!"
 
 msgid "You must assign at least one IP number for a reseller!"
 msgstr "Вы должны дать хотя бы один IP адрес для реселлера!"
@@ -1335,7 +1328,7 @@ msgid "Frontpage extensions"
 msgstr "Расширения Frontpage"
 
 msgid "Backup and restore"
-msgstr "Резервное копирование и восстановление"
+msgstr "Бэкап и восстановление"
 
 msgid "Custom error pages"
 msgstr "Персональные страницы ошибок"
@@ -1395,26 +1388,27 @@ msgstr ""
 "У этого реселлера больше <b>%s</b> учётных записей чем новый лимит введённый "
 "вами."
 
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "This reseller has customer(s) with unlimited rights for the <b>%s</b> "
 "service!"
 msgstr ""
-"У этого реселлера есть клиент с неограниченными правами на сервис <b>%s</b>!"
+"У этого реселлера есть клиент(ы) с неограниченными правами на сервис <b>%s</b>!"
 "<br>"
 
-#, fuzzy
 msgid "If you want to limit the reseller, you must first limit its customers!"
 msgstr ""
 "Если вы хотите ограничить реселлера, вы должны сперва ограничить его "
-"заказчиков!<br>"
+"клиентов!<br>"
 
-#, fuzzy, php-format
+#, php-format
 msgid "This reseller has domains assigned to the <b>%s</b> address!"
 msgstr "У этого реселлера есть домены привязанные к адресам <b>%s</b>!"
 
 msgid "ERROR: The reseller account you trying to edit does not exist!"
 msgstr ""
+"ОШИБКА: Учетная запись реселлера которую вы пытаетесь редактировать "
+"не существует!"
 
 msgid "ispCP - Admin/Manage users/Edit Reseller"
 msgstr ""
@@ -1423,12 +1417,14 @@ msgstr ""
 msgid ""
 "ERROR: One or more errors was found! Please, correct them and try again!"
 msgstr ""
+"ОШИБКА: Возникла одна или более ошибок! Пожалуйста исправьте их и "
+"попробуйте снова!"
 
 msgid "Reseller data inconsistency!"
 msgstr "Несовместимость данных реселлера!"
 
 msgid "Please, read the message(s) above and trying to correct!"
-msgstr ""
+msgstr "Пожалуйста прочитайте сообщение(я) выше и попытайтесь исправить!"
 
 msgid "Edit reseller"
 msgstr "Редактировать реселлера"
@@ -1442,18 +1438,21 @@ msgstr "неограниченно"
 msgid "Reset"
 msgstr "Сбросить"
 
-#, fuzzy
 msgid "Generated password:"
-msgstr "Сгенерировать пароль"
+msgstr "Сгенерированный пароль:"
 
 msgid "Type `CTRL+C` to copy the generated password in the clipboard."
 msgstr ""
+"Нажмите `CTRL+C` чтобы скопировать сгенерированный пароль в "
+"буфер обмена."
 
 #, php-format
 msgid ""
 "ispCP NOTICE:\\n\\nThe `Enter` key is disabled for performance reasons!"
 "\\nInstead, use the %s button to update the data."
 msgstr ""
+"Замечание:\\n\\nКлавиша `Enter` отключена из соображений производительности!"
+"\\nВместо нее используйте клавишу %s для обновления данных."
 
 msgid "ispCP - Reseller statistics"
 msgstr "ispCP - Статистика реселлеров"
@@ -1745,31 +1744,35 @@ msgstr "Запрет внешних логинов для клиентов"
 msgid "Custom orderpanel ID"
 msgstr "ID заказчика"
 
-#, fuzzy
 msgid "Domain names validation"
-msgstr "Имя домена"
+msgstr "Проверка имен доменов"
 
 msgid "Top Level Domain name strict validation"
-msgstr ""
+msgstr "Строгая проверка имен доменов верхнего уровня (TLD)"
 
 msgid ""
 "Only Top Level Domains (TLD) listed in IANA root zone database can be used."
 msgstr ""
+"Только TLD перечисленные в базе корневых зон IANA допустимо использовать."
 
 msgid "Second Level Domain name strict validation"
-msgstr ""
+msgstr "Строгая проверка имен доменов второго уровня (SLD)"
 
 msgid ""
 "Single letter Second Level Domains (SLD) are not allowed under the most Top "
 "Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de."
 msgstr ""
+"Однобуквенные домены второго уровня (SLD) не разрешены для большинства "
+"доменов верхнего уровня (TLD). Существует небольшое количество исключений, "
+"например для домена верхнего уровня .de."
 
 msgid ""
 "Maximal number of labels for domain names<br />(<i>Excluding SLD & TLD</i>)"
 msgstr ""
+"Максимальное количество меток для имен доменов<br />(<i>за исключением SLD и TLD</i>)"
 
 msgid "Maximal number of labels for subdomains"
-msgstr ""
+msgstr "Максимальное количество меток для поддоменов"
 
 msgid "You can only upload images!"
 msgstr "Вы можете закачивать только изображения!"
@@ -1956,16 +1959,16 @@ msgid "Number of CPU Cores"
 msgstr "Количество ядер CPU"
 
 msgid "CPU MHz"
-msgstr "Частота CPU"
+msgstr "Частота CPU (MHz)"
 
 msgid "CPU cache"
-msgstr "CPU кеш"
+msgstr "Кэш CPU"
 
 msgid "CPU bogomips"
 msgstr "Производительность CPU (bogomips)"
 
 msgid "Memory system info"
-msgstr "Информация системной памяти"
+msgstr "Системная информация памяти"
 
 msgid "RAM"
 msgstr "Память RAM"
@@ -2025,7 +2028,7 @@ msgid "Priority"
 msgstr "Приоритет"
 
 msgid "Last reply"
-msgstr "Последняя цитата"
+msgstr "Последний ответ"
 
 msgid "Delete all"
 msgstr "Удалить всё"
@@ -2099,9 +2102,8 @@ msgstr "Неверный ID домена!"
 msgid "Invalid user id!"
 msgstr "Неправильный ID учётной записи!"
 
-#, fuzzy
 msgid "Logo could not be deleted:"
-msgstr "Настройки домена не могут быть изменены!"
+msgstr "Логотип не может быть удален:"
 
 msgid "There are active domains of reseller/admin!"
 msgstr "Существуют действующие домены реселлера/администратора!"
@@ -2159,7 +2161,7 @@ msgid "Add alias"
 msgstr "Добавить алиас"
 
 msgid "You do not need 'www.' ispCP will add it on its own."
-msgstr "Не вводите 'www.' система добавит его сама."
+msgstr "Не вводите 'www.', система добавит его сама."
 
 msgid "Wrong domain name!"
 msgstr "Неправильный синтаксис доменного имени!"
@@ -2188,9 +2190,8 @@ msgstr "Некорректный синтаксис <i>точки монтиро
 msgid "Master domain cannot be used!"
 msgstr "Невозможно использовать главный домен!"
 
-#, fuzzy
 msgid "Wrong domain part in forward URL!"
-msgstr "Неправильный синтаксис доменного имени!"
+msgstr "Неправильная часть домена в URL перенаправления!"
 
 msgid "Domain with this name already exist"
 msgstr "Домен с этим именем уже существует"
@@ -2333,13 +2334,11 @@ msgstr "ispCP - Управление алиасами / Добавить зап�
 msgid "ispCP - Manage Domain Alias/Edit DNS zone's record"
 msgstr "ispCP - Управление алиасами / Редактировать запись зоны DNS"
 
-#, fuzzy
 msgid "Add DNS zone's record (EXPERIMENTAL)"
-msgstr "Добавить запись зоны DNS"
+msgstr "Добавить запись зоны DNS (ТЕСТ)"
 
-#, fuzzy
 msgid "Edit DNS zone's record (EXPERIMENTAL)"
-msgstr "Редактировать запись зоны DNS"
+msgstr "Редактировать запись зоны DNS (ТЕСТ)"
 
 msgid "DNS zone's records"
 msgstr "Записи зоны DNS"
@@ -2377,9 +2376,8 @@ msgstr "Каноническое имя"
 msgid "Plain record data"
 msgstr "Данные пустой записи"
 
-#, fuzzy
 msgid "DNS zone's records (EXPERIMENTAL)"
-msgstr "Записи зоны DNS"
+msgstr "Записи зоны DNS (ТЕСТ)"
 
 #, php-format
 msgid "Use of disallowed char(\"%s\") in CNAME"
@@ -2561,9 +2559,8 @@ msgstr "Учётная запись FTP добавлена!"
 msgid "Please enter FTP account username!"
 msgstr "Пожалуйста, введите имя учётной записи FTP!"
 
-#, fuzzy
 msgid "Password is missing!"
-msgstr "Пароль не указан!"
+msgstr "Пароль отсутствует!"
 
 msgid "Subdomain list is empty! You cannot add FTP accounts there!"
 msgstr "Список поддоменов пуст! Вы не можете добавить туда учётные записи FTP!"
@@ -2693,9 +2690,8 @@ msgstr ""
 msgid "Disk limit"
 msgstr "Лимит дискового пространства"
 
-#, fuzzy
 msgid "You did have more traffic than the new hosting plan limits."
-msgstr "У Вас используется больше трафика чем доступно в новом хостинг-плане."
+msgstr "У Вас было использовано больше трафика чем доступно в новом хостинг-плане."
 
 msgid "Traffic limit"
 msgstr "Лимит трафика"
@@ -2740,11 +2736,10 @@ msgid "Warning:"
 msgstr "Предупреждение:"
 
 msgid "Caution:"
-msgstr ""
+msgstr "Предостережение:"
 
-#, fuzzy
 msgid "I understand the warnings - Purchase!"
-msgstr "Я знаю о предупреждениях - Заказать!"
+msgstr "Я понимаю предупреждения - Заказать!"
 
 msgid "There are no available hosting plans for update"
 msgstr "Нет доступных хостинг планов для обновления"
@@ -2752,7 +2747,6 @@ msgstr "Нет доступных хостинг планов для обнов�
 msgid "ispCP - Update hosting plan"
 msgstr "ispCP - Обновить хостинг-план"
 
-#, fuzzy
 msgid "You have more e-mail addresses in use than the new hosting plan limits."
 msgstr ""
 "У Вас используется больше адресов email чем доступно в новом хостинг-плане."
@@ -2797,9 +2791,8 @@ msgstr "Вы превысили Ваш лимит дискового прост�
 msgid "You have no new support questions!"
 msgstr "Нет новых ответов на тикет!"
 
-#, fuzzy
 msgid "This Domain is expired"
-msgstr "Домен истекает"
+msgstr "Этот домен истек"
 
 msgid "ispCP - Client/Main Index"
 msgstr "ispCP - Клиент / Главная"
@@ -2858,9 +2851,8 @@ msgstr "Ящиков всего"
 msgid "Show default E-Mail addresses"
 msgstr "Показывать email адреса по умолчанию"
 
-#, fuzzy
 msgid "Hide default E-Mail Addresses"
-msgstr "Создать email адреса по умолчанию"
+msgstr "Скрывать email адреса по умолчанию"
 
 msgid "Mailformat of an address in your forward list is incorrect!"
 msgstr "Некорректный формат email адреса в вашем списке перенаправления!"
@@ -3785,59 +3777,58 @@ msgstr "Приоритет: %s\n"
 msgid "Log in to answer"
 msgstr "Введите логин и пароль чтобы ответить"
 
-#, fuzzy
 msgid "Wrong domain name syntax or number of labels"
-msgstr "Неправильный синтаксис доменного имени!"
+msgstr "Неправильный синтаксис доменного имени или количество меток!"
 
-#, fuzzy
 msgid "Wrong domain name lenght!"
-msgstr "Неправильный синтаксис доменного имени!"
+msgstr "Неправильная длина доменного имени!"
 
-#, fuzzy
 msgid "Wrong subdomain syntax or number of labels!"
-msgstr "Неправильный синтаксис поддомена!"
+msgstr "Неправильный синтаксис поддомена или количество меток!"
 
-#, fuzzy
 msgid "Wrong subdomain lenght!"
-msgstr "Неправильный синтаксис поддомена!"
+msgstr "Неправильная длина поддомена!"
 
 #, php-format
 msgid "Label not allowed: <b>%s</b>"
-msgstr ""
+msgstr "Метка запрещена: <b>%s</b>"
 
 #, php-format
 msgid "Wrong label syntax: <b>%s</b>"
-msgstr ""
+msgstr "Неправильный синтаксис метки: <b>%s</b>"
 
 #, php-format
 msgid "Wrong label lenght: <b>%s</b>"
-msgstr ""
+msgstr "Неправильная длина метки: <b>%s</b>"
 
 #, php-format
 msgid "Wrong Top Level Domain syntax: <b>%s</b>"
-msgstr ""
+msgstr "Неправильный синтаксис домена верхнего уровня (TLD): <b>%s</b>"
 
 #, php-format
 msgid "Wrong Top Level Domain lenght: <b>%s</b>"
-msgstr ""
+msgstr "Неправильная длина домена верхнего уровня (TLD): <b>%s</b>"
 
 #, php-format
 msgid "Wrong Second Level Domain lenght: <b>%s</b>"
-msgstr ""
+msgstr "Неправильная длина домена второго уровня (SLD): <b>%s</b>"
 
 #, php-format
 msgid "Wrong domain name: <b>%s</b> is reserved!"
-msgstr ""
+msgstr "Неправильное имя домена: <b>%s</b> зарезервировано!"
 
 #, php-format
 msgid "Wrong Second Level Domain syntax: <b>%s</b>"
-msgstr ""
+msgstr "Неправильный синтаксис домена второго уровня (SLD): <b>%s</b>"
 
 msgid ""
 "ERROR: ACE labels are not allowed. Please use the ToUnicode equivalent.<br /"
 "><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> "
 "instead</small>."
 msgstr ""
+"ОШИБКА: Метки ACE запрещены. Пожалуйста используйте ToUnicode эквивалент.<br /"
+"><small>Пример: для метки ACE <b>xn--bcher-kva</b> используйте <b>bücher</b> "
+"вместо нее</small>."
 
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
@@ -3847,7 +3838,7 @@ msgstr ""
 "Попробуйте зайти позднее."
 
 msgid "Could not get config from database"
-msgstr "Не получается получить конфиг с базы данных"
+msgstr "Не получается получить конфиг из базы данных"
 
 #, php-format
 msgid "You have to wait %d seconds."
@@ -3925,11 +3916,9 @@ msgstr "Неизвестная ошибка"
 msgid "hide aliases"
 msgstr "скрыть псевдонимы"
 
-#, fuzzy
 msgid "You have reached your domains limit.<br />You cannot add more domains!"
 msgstr "Достигнут лимит доменов.<br>Вы не можете добавить больше доменов!"
 
-#, fuzzy
 msgid ""
 "You have a subdomains limit!<br />You cannot add an user with unlimited "
 "subdomains!"
@@ -3940,18 +3929,16 @@ msgstr ""
 msgid "You are exceeding your subdomains limit!"
 msgstr "Вы привысили лимит поддоменов!"
 
-#, fuzzy
 msgid ""
 "You have an aliases limit!<br />You cannot add an user with unlimited "
 "aliases!"
 msgstr ""
 "У вас есть лимит на алиасы!<br>Вы не можете добавить пользователя с "
-"неограниченными псевдонимами!"
+"неограниченными алиасами!"
 
 msgid "You Are Exceeding Your Alias Limit!"
 msgstr "Вы привысили лимит алиасов!"
 
-#, fuzzy
 msgid ""
 "You have a mail accounts limit!<br />You cannot add an user with unlimited "
 "mail accounts!"
@@ -3962,7 +3949,6 @@ msgstr ""
 msgid "You are exceeding your mail accounts limit!"
 msgstr "Вы привысили лимит почтовых ящиков!"
 
-#, fuzzy
 msgid ""
 "You have a FTP accounts limit!<br />You cannot add an user with unlimited "
 "FTP accounts!"
@@ -3973,7 +3959,6 @@ msgstr ""
 msgid "You are exceeding your FTP accounts limit!"
 msgstr "Вы привысили лимит учётных записей FTP!"
 
-#, fuzzy
 msgid ""
 "You have a SQL databases limit!<br />You cannot add an user with unlimited "
 "SQL databases!"
@@ -3984,7 +3969,6 @@ msgstr ""
 msgid "You are exceeding your SQL databases limit!"
 msgstr "Вы привысили лимит баз данных SQL!"
 
-#, fuzzy
 msgid ""
 "You have an SQL users limit!<br />You cannot add an user with unlimited SQL "
 "users!"
@@ -3992,7 +3976,6 @@ msgstr ""
 "У вас есть лимит на учётные записи SQL!<br>Вы не можете добавить "
 "пользователя с неограниченными учётными записями SQL!"
 
-#, fuzzy
 msgid ""
 "You have disabled SQL databases for this user!<br />You cannot have SQL "
 "users here!"
@@ -4003,14 +3986,12 @@ msgstr ""
 msgid "You are exceeding your SQL database limit!"
 msgstr "Вы привысили лимит баз данных SQL!"
 
-#, fuzzy
 msgid ""
 "You have a traffic limit!<br />You cannot add an user with unlimited traffic!"
 msgstr ""
 "У вас лимит трафика!<br>Вы не можете добавить пользователя с неограниченным "
 "трафиком!"
 
-#, fuzzy
 msgid "You have a disk limit!<br />You cannot add an user with unlimited disk!"
 msgstr ""
 "У вас лимит дискового пространства!<br>Вы не можете добавить пользователя с "
@@ -4025,7 +4006,6 @@ msgstr "Сообщение об ошибке"
 msgid "You have a new order"
 msgstr "У вас новый заказ"
 
-#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -4054,9 +4034,8 @@ msgstr "Ошибка создания заказа! Возможно уже ак
 msgid "Order confirmation"
 msgstr "Подтверждение заказа"
 
-#, fuzzy
 msgid "This hosting plan is not available for purchase"
-msgstr "Хостинг-планы доступные для обновления"
+msgstr "Этот хостинг-план не доступен для заказа"
 
 msgid "Add On A Domain"
 msgstr "Добавить домен"
@@ -4111,7 +4090,7 @@ msgid "Package Features"
 msgstr "Параметры пакета"
 
 msgid "Backup and Restore"
-msgstr "Резервное копирование и восстановление"
+msgstr "Бэкап и восстановление"
 
 msgid "Custom Error Pages"
 msgstr "Персональные страницы ошибок"
@@ -4185,12 +4164,13 @@ msgstr "Заказанный алиас домена активирован!"
 msgid "Ordered domain alias not activated!"
 msgstr "Заказанный алиас домена не активирован!"
 
-#, fuzzy
 msgid "ispCP Reseller: Add Alias"
 msgstr "ispCP - Реселлер / Добавить алиас"
 
 msgid "There is no user records for this reseller to add an alias for."
 msgstr ""
+"У этого реселлера нет учетных записей пользователей чтобы "
+"добавить алиас."
 
 msgid "ispCP - Circular"
 msgstr "ispCP - Почтовая рассылка"
@@ -4357,7 +4337,6 @@ msgstr "Добавить / Детали"
 msgid "Wrong order ID!"
 msgstr "Неверный ID заказа!"
 
-#, fuzzy
 msgid "Order Cancelled: resellers maximum exceeded!"
 msgstr "Заказ отменен: достигнут максимум!"
 
@@ -4506,13 +4485,13 @@ msgstr "Смотреть алиасы"
 msgid "You have no users."
 msgstr "У вас нет пользователей."
 
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s of %2$s MB"
-msgstr ""
+msgstr "%1$s из %2$s Мб"
 
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s of <b>unlimited</b> MB"
-msgstr ""
+msgstr "%1$s из <b>неограниченно</b> Мб"
 
 msgid "User data updated!"
 msgstr "Данные пользователя изменены!"
