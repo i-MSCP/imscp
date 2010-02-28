@@ -1,6 +1,17 @@
 ispCP ω 1.0.5 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-02-28 Jochen Manz
+	- RELEASE ispCP ω Omega 1.0.4
+	- Languages:
+		* Updated all available language files
+	- CONFIGS:
+		* Updated the BuildDate for every distribution
+
+2010-02-25 Benedikt Heintel
+	- CONFIGS:
+		* Fixed #2233: FreeBSD GUI Makefile correction
+
 2010-02-25 Laurent Declercq
 	- GUI:
 		* Fixed: Only minified version of js files should be used
@@ -8,6 +19,15 @@ ispCP ω 1.0.5 Changelog
 		* Fixed #2234: Switch to new tooltips system (jquery ispCP tooltips plugin)
 		* Moved js functions related to the tooltips in the section of deprecated functions
 		* Rebuilded minified version from ispcp_full.js file
+
+2010-02-24 Benedikt Heintel
+	- CONFIGS:
+		* Fixed #2230: FreeBSD´s Makefile is not up-to-date		
+	- DATABASE:
+		* Fixed #2229: omega 1.0.4 - Database Schema should be updated
+	- DOCS:
+		* Fixed #2231: Updated freebsd-packages
+		* Fixed #2232: Updated the FreeBSD INSTALL
 
 2010-02-23 Laurent Declercq
 	- LANGUAGES:

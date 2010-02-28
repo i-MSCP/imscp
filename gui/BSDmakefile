@@ -38,22 +38,25 @@
 SYSTEM_GUI_ROOT=$(SYSTEM_ROOT)/gui
 
 install:
-	$(SYSTEM_MAKE_DIRS) $(SYSTEM_GUI_ROOT)
-	cp ./index.php $(SYSTEM_GUI_ROOT)/index.php
-	cp ./lostpassword.php $(SYSTEM_GUI_ROOT)/lostpassword.php
-	cp ./imagecode.php $(SYSTEM_GUI_ROOT)/imagecode.php
-	cp ./robots.txt $(SYSTEM_GUI_ROOT)/robots.txt
-	cp -R ./admin $(SYSTEM_GUI_ROOT)
-	cp -R ./reseller $(SYSTEM_GUI_ROOT)
-	cp -R ./client $(SYSTEM_GUI_ROOT)
-	cp -R ./include $(SYSTEM_GUI_ROOT)
-	cp -R ./domain_default_page $(SYSTEM_GUI_ROOT)
-	cp -R ./errordocs $(SYSTEM_GUI_ROOT)
-	cp -R ./themes $(SYSTEM_GUI_ROOT)
-	cp -R ./tools $(SYSTEM_GUI_ROOT)
-	cp -R ./orderpanel $(SYSTEM_GUI_ROOT)
-	cp -R ./phptmp $(SYSTEM_GUI_ROOT)
+		$(SYSTEM_MAKE_DIRS) $(SYSTEM_GUI_ROOT)
+		cp ./index.php $(SYSTEM_GUI_ROOT)/index.php
+		cp ./lostpassword.php $(SYSTEM_GUI_ROOT)/lostpassword.php
+		cp ./imagecode.php $(SYSTEM_GUI_ROOT)/imagecode.php
+		cp ./robots.txt $(SYSTEM_GUI_ROOT)/robots.txt
+		cp ./favicon.ico $(SYSTEM_GUI_ROOT)/favicon.ico
+		cp -R ./admin $(SYSTEM_GUI_ROOT)
+		cp -R ./reseller $(SYSTEM_GUI_ROOT)
+		cp -R ./client $(SYSTEM_GUI_ROOT)
+		cp -R ./include $(SYSTEM_GUI_ROOT)
+		cp -R ./domain_default_page $(SYSTEM_GUI_ROOT)
+		cp -R ./domain_disable_page $(SYSTEM_GUI_ROOT)
+		cp -R ./errordocs $(SYSTEM_GUI_ROOT)
+		cp -R ./themes $(SYSTEM_GUI_ROOT)
+		cp -R ./tools $(SYSTEM_GUI_ROOT)
+		cp -R ./orderpanel $(SYSTEM_GUI_ROOT)
+		cp -R ./phptmp $(SYSTEM_GUI_ROOT)	
+
 uninstall:
-	rm -rf $(SYSTEM_GUI_ROOT)
+		rm -rf $(SYSTEM_GUI_ROOT)
 
 .PHONY: install uninstall

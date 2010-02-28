@@ -1,7 +1,7 @@
 ispcp_table = Arabic
 ispcp_language = العربية - Arabic
 ispcp_languageSetlocaleValue = ar_AE
-ispcp_languageRevision = 200912181459
+ispcp_languageRevision = 201002271600
 encoding = UTF-8
 Login = دخول
 Username = إسم المستخدم
@@ -33,8 +33,8 @@ Generate password = توليد كلمة مرور
 Send message to = أرسل رسالة إلى
 Database updates = تحديثات قاعدة البيانات
 Domain name = إسم النطاق
-Enabled = مفعّل
 No = لا
+Enabled = مفعّل
 Cancel = إلغ
 Yes = نعم
 Mail = e-mail
@@ -72,6 +72,7 @@ Update password = تحديث كلمة المرور
 Current password = كلمة المرور الحالية
 Personal data = البيانات الشخصية
 Update data = تحديث البيانات
+Support system = نظام الدعم الفني
 Domains = نطاقات
 SQL Databases = قواعد بيانات SQL
 SQL Users = مستخدمي SQL
@@ -79,21 +80,20 @@ Disk storage = تخزين
 unlimited = غير محدود
 SQL database = قاعدة بيانات SQL
 SQL user = مستخدم SQL
+Server statistics = إحصاءات الخادم
 Month: = شهر:
 Year: = سنة:
 Day: = يوم:
 Hour = ساعة:
-Server statistics = إحصاءات الخادم
 User type = نوع المستخدم
 Last access = آخر دخول
 Options = خيارات
-Settings saved ! = تم تخزين الإعدادات
 ERROR: Only positive numbers are allowed ! = خطأ: لا يسمح بإستخدام إلا أرقم موجبة !
+Settings saved ! = تم تخزين الإعدادات
 General settings = إعدادات عامة
 Password settings = إعدادات كلمة المرور
 Password length = طول كلمة المرور
 Other settings = إعدادات اخرى
-Support system = نظام الدعم الفني
 Domains per page = نطاقات في كل صفحة
 Email setup = إعداد البريد الإلكتروني
 User real (first and last) name = الإسم الحقيقي للمستخدم(الإسم الأول وإسم العائلة)
@@ -116,9 +116,9 @@ Yes, delete the domain. = نعم، إمسح النطاق.
 User account = حساب المستخدم
 You do not need 'www.' ispCP will add it on its own. = لا تحتاج إلى سابقة 'www.' ispCP سيقوم بإضافتها بنفسه.
 Wrong domain name! = إسم نطاق خاطئ
-Domain with this name already exist = هناك نطاق بذات الإسم قبلا
 Enable = تفعيل
 Disable = تعطيل
+Domain with this name already exist = هناك نطاق بذات الإسم قبلا
 Daily backup = النسخ الإحتياطي اليومي
 Restore backup = إسترجاع نسخة إحتياطية
 Restore = إسترجاع
@@ -130,9 +130,9 @@ Day(s): = يوم
 Month(s): = شهر
 Weekday(s): = أيام الإسبوع
 IP address = عنوان IP
-Manage domains = أدر النطاقات
 Web Stats = إحصائيات الويب
 Sum = مجموع
+Manage domains = أدر النطاقات
 Edit error page = عدّل صفحة الخطأ
 Manage users = إدارة المستخدمين
 Add mail user = أضف بريد إلكتروني
@@ -159,6 +159,7 @@ Your order has been successfully created. = تم انشاء الطلب بنجا�
 Enter Address = أدخل العنوان
 Personal Data = البانات الشخصية
 Performance = الأداء
+Never = أبدا
 - 1 Month = - شهر
 + 1 Month = + شهر
 + 2 Months = + شهرين
@@ -173,7 +174,6 @@ Activation Link = وصلة التفعيل
 Header = ترويسة
 Footer = تذييل
 New order = طلب جديد
-Never = أبدا
 1 Month = شهر
 2 Months = شهرين
 3 Months = 3 أشهر
