@@ -1,8 +1,7 @@
 ispcp_table = EnglishBritain
 ispcp_language = English - English
 ispcp_languageSetlocaleValue = en_GB
-ispcp_languageRevision = 200912181500
+ispcp_languageRevision = 201002271600
 encoding = UTF-8
 Mail = e-mail
 Incorrect mount point syntax = Incorrect <i>mount point</i> syntax!
-Incorrect forward syntax = Incorrect <i>forward</i> syntax!
