@@ -1,6 +1,14 @@
 ispCP ω 1.0.5 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-02-28 Benedikt Heintel
+	- ENGINE:
+		* Changed: Permissions for fcgi folders php.ini
+
+2010-02-28 Sascha Bay 
+	- GUI:
+		* Fixed #2243: White site after updating a hosting plan of the admin
+
 2010-02-28 Jochen Manz
 	- RELEASE ispCP ω Omega 1.0.4
 	- Languages:

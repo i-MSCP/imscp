@@ -1787,7 +1787,7 @@ sub dmn_add_httpd_file_data {
 			"$starter_dir/$dmn_name",
 			$sys_user,
 			$sys_group,
-			0755
+			0555
 		);
 		return $rs if ($rs != 0);
 	}
@@ -1797,7 +1797,7 @@ sub dmn_add_httpd_file_data {
 			"$starter_dir/$dmn_name/php5",
 			$sys_user,
 			$sys_group,
-			0750
+			0550
 		);
 		return $rs if ($rs != 0);
 	}
@@ -2107,7 +2107,7 @@ sub dmn_add_httpd_file_data {
 			$cfg,
 			$sys_user,
 			$sys_group,
-			0640
+			0440
 		);
 		return $rs if ($rs != 0);
 	}
@@ -2138,7 +2138,7 @@ sub dmn_add_httpd_file_data {
 			$cfg,
 			$sys_user,
 			$sys_group,
-			0750
+			0550
 		);
 		return $rs if ($rs != 0);
 	}
@@ -2196,7 +2196,7 @@ sub dmn_change_httpd_file_data {
 			"$starter_dir/$dmn_name/php5",
 			$sys_user,
 			$sys_group,
-			0750
+			0550
 		);
 		return $rs if ($rs != 0);
 	}
@@ -2211,7 +2211,7 @@ sub dmn_change_httpd_file_data {
 				"$www_dir/$dmn_name/statistics",
 				$sys_user,
 				$sys_group,
-				0755
+				0555
 			);
 			return $rs if ($rs != 0);
 		}
@@ -2322,7 +2322,7 @@ sub dmn_change_httpd_file_data {
 			$cfg,
 			$sys_user,
 			$sys_group,
-			0640
+			0440
 		);
 		return $rs if ($rs != 0);
 	}
@@ -2353,7 +2353,7 @@ sub dmn_change_httpd_file_data {
 			$cfg,
 			$sys_user,
 			$sys_group,
-			0750
+			0550
 		);
 		return $rs if ($rs != 0);
 	}
