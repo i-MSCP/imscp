@@ -142,13 +142,13 @@
                                               <img src="{THEME_COLOR_PATH}/images/icons/flip/prev_gray.gif" width="20" height="20" border="0" alt="" />
                                               <!-- EDP: scroll_prev_gray -->
                                               <!-- BDP: scroll_prev -->
-                                              <a href="user_statistics.php?psi={PREV_PSI}&amp;rid={VALUE_RID}&amp;name={VALUE_NAME}&amp;month={MONTH}&amp;year={YEAR}"><img src="{THEME_COLOR_PATH}/images/icons/flip/prev.gif" width="20" height="20" border="0" alt="" /></a>
+                                              <a href="reseller_user_statistics.php?psi={PREV_PSI}&amp;rid={VALUE_RID}&amp;name={VALUE_NAME}&amp;month={MONTH}&amp;year={YEAR}"><img src="{THEME_COLOR_PATH}/images/icons/flip/prev.gif" width="20" height="20" border="0" alt="" /></a>
                                               <!-- EDP: scroll_prev -->
                                               <!-- BDP: scroll_next_gray -->
                                         &nbsp;<img src="{THEME_COLOR_PATH}/images/icons/flip/next_gray.gif" width="20" height="20" border="0" alt="" />
                                         <!-- EDP: scroll_next_gray -->
                                         <!-- BDP: scroll_next -->
-                                        &nbsp;<a href="user_statistics.php?psi={NEXT_PSI}&amp;rid={VALUE_RID}&amp;name={VALUE_NAME}&amp;month={MONTH}&amp;year={YEAR}"><img src="{THEME_COLOR_PATH}/images/icons/flip/next.gif" width="20" height="20" border="0" alt="" /></a>
+                                        &nbsp;<a href="reseller_user_statistics.php?psi={NEXT_PSI}&amp;rid={VALUE_RID}&amp;name={VALUE_NAME}&amp;month={MONTH}&amp;year={YEAR}"><img src="{THEME_COLOR_PATH}/images/icons/flip/next.gif" width="20" height="20" border="0" alt="" /></a>
                                         <!-- EDP: scroll_next -->
                                       </div></td>
                                       <td><div align="right"><br />
@@ -156,13 +156,13 @@
                                               <img src="{THEME_COLOR_PATH}/images/icons/flip/prev_gray.gif" width="20" height="20" border="0" alt="" />
                                               <!-- EDP: scroll_prev_gray -->
                                               <!-- BDP: scroll_prev -->
-                                              <a href="user_statistics.php?psi={PREV_PSI}&amp;rid={VALUE_RID}&amp;name={VALUE_NAME}&amp;month={MONTH}&amp;year={YEAR}"><img src="{THEME_COLOR_PATH}/images/icons/flip/prev.gif" width="20" height="20" border="0" alt="" /></a>
+                                              <a href="reseller_user_statistics.php?psi={PREV_PSI}&amp;rid={VALUE_RID}&amp;name={VALUE_NAME}&amp;month={MONTH}&amp;year={YEAR}"><img src="{THEME_COLOR_PATH}/images/icons/flip/prev.gif" width="20" height="20" border="0" alt="" /></a>
                                               <!-- EDP: scroll_prev -->
                                               <!-- BDP: scroll_next_gray -->
                                         &nbsp;<img src="{THEME_COLOR_PATH}/images/icons/flip/next_gray.gif" width="20" height="20" border="0" alt="" />
                                         <!-- EDP: scroll_next_gray -->
                                         <!-- BDP: scroll_next -->
-                                        &nbsp;<a href="user_statistics.php?psi={NEXT_PSI}&amp;rid={VALUE_RID}&amp;name={VALUE_NAME}&amp;month={MONTH}&amp;year={YEAR}"><img src="{THEME_COLOR_PATH}/images/icons/flip/next.gif" width="20" height="20" border="0" alt="" /></a>
+                                        &nbsp;<a href="reseller_user_statistics.php?psi={NEXT_PSI}&amp;rid={VALUE_RID}&amp;name={VALUE_NAME}&amp;month={MONTH}&amp;year={YEAR}"><img src="{THEME_COLOR_PATH}/images/icons/flip/next.gif" width="20" height="20" border="0" alt="" /></a>
                                         <!-- EDP: scroll_next -->
                                       </div></td>
                                     </tr>
