@@ -2994,8 +2994,7 @@ sub setup_rkhunter {
 		return $rs if($rs != 0);
 	}
 
-	# Updates rkhunter database files ()Only during setup process)
-	# FIXME: Check if it true for all dists
+	# Updates rkhunter database files (Only during setup process)
 	if(!defined &update_engine) {
 		if (sys_command_rs("which rkhunter > /dev/null") == 0 ) {
 			# Here, we run the command with `--nolog` option to avoid creation
