@@ -2945,34 +2945,65 @@ sub setup_gui_named_db_data {
 	0;
 }
 
-# If the /etc/default/rkhunter file exists :
-# During update, remove the old log files
-# For both, disable the daily runs of the default rkhunter cron task
+# Setup/updates rkhunter
+# - update rkhunter database files (only during setup process)
+# - Debian specific: Updates the configuration file and cron task, and
+#  remove default unreadable created log file
 sub setup_rkhunter {
 
 	push_el(\@main::el, 'setup_rkhunter()', 'Starting...');
 
-	my ($rs, $rdata, $cmd) = (undef, undef, undef);
+	my ($rs, $cmd, $rdata) = (undef, undef, undef);
 
+	# Deleting any existant log files
+	$cmd = "$main::cfg{'CMD_RM'} -f $main::cfg{'RKHUNTER_LOG'}*";
+	$rs = sys_command_rs($cmd);
+	return $rs if($rs != 0);
+
+	# Updates the rkhunter configuration provided by Debian package
+	# to disable the default cron task (ispCP provides its own cron job for rkhunter)
 	if(-e '/etc/default/rkhunter') {
 
-		if(defined &update_engine) {
-
-			# Deleting files that can cause problems
-			$cmd = "$main::cfg{'CMD_RM'} -f $main::cfg{'RKHUNTER_LOG'}*";
-			$rs = sys_command_rs($cmd);
-			return $rs if($rs != 0);
-		}
-
+		# Get the file as a string
 		($rs, $rdata) = get_file('/etc/default/rkhunter');
 		return $rs if($rs != 0);
 
-		# Disable the daily runs of the default rkhunter cron task
-		$rdata =~ s/CRON_DAILY_RUN="yes"/CRON_DAILY_RUN="no"/gmi;
+		# Disable cron task default
+		$rdata =~ s@CRON_DAILY_RUN="yes"@CRON_DAILY_RUN="no"@gmi;
 
 		# Saving the modified file
 		$rs = save_file('/etc/default/rkhunter', $rdata);
 		return $rs if($rs != 0);
+	}
+
+	# Update weekly cron task provided with the debian package
+	# to avoid creation of unreadable log file
+	if(-e '/etc/cron.weekly/rkhunter') {
+		# Get the configuration file as a string
+		($rs, $rdata) = get_file('/etc/cron.weekly/rkhunter');
+		return $rs if($rs != 0);
+
+		# Adds `--nolog`option to avoid unreadable log file
+		$rdata =~ s@\$RKHUNTER --versioncheck --nocolors$@\$RKHUNTER --versioncheck --nocolors --nolog@gmi;
+		$rdata =~ s@\$RKHUNTER --update --nocolors$@\$RKHUNTER --update --nocolors --nolog@gmi;
+		$rdata =~ s@\$RKHUNTER --versioncheck 1>/dev/null 2>\$OUTFILE@\$RKHUNTER --versioncheck --nolog 1>/dev/null 2>\$OUTFILE@gmi;
+		$rdata =~ s@\$RKHUNTER --update 1>/dev/null 2>>\$OUTFILE@\$RKHUNTER --update --nolog 1>/dev/null 2>>\$OUTFILE@gmi;
+
+		# Saving the modified file
+		$rs = save_file('/etc/cron.weekly/rkhunter', $rdata);
+		return $rs if($rs != 0);
+	}
+
+	# Updates rkhunter database files ()Only during setup process)
+	# FIXME: Check if it true for all dists
+	if(!defined &update_engine) {
+		if (sys_command_rs("which rkhunter > /dev/null") == 0 ) {
+			# Here, we run the command with `--nolog` option to avoid creation
+			# of unreadable log file. The log file will be created later by an
+			# ispCP cron task
+			$rs = sys_command_rs("rkhunter --update --nolog");
+			return $rs if($rs != 0);
+		}
 	}
 
 	push_el(\@main::el, 'setup_rkhunter()', 'Ending...');

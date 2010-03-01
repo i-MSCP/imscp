@@ -226,6 +226,19 @@ sub update_engine {
 	exit_msg(str_to_right('[failed]', length($print)+11), $rs) if($rs != 0);
 	print STDOUT BOLD GREEN str_to_right('[done]', length($print) + 11);
 
+	#
+	# Rkhunter - Begin
+	#
+
+	$print = 'Starting Rkhunter setup:';
+	print STDOUT "\n\t" . $print;
+	$rs = setup_rkhunter();
+	exit_msg('Failed!', $rs) if($rs != 0);
+
+	#
+	# Rkhunter - End
+	#
+
 	# Starting Post installation script if it exists
 	if(-e "$main::cfg{'ROOT_DIR'}/engine/setup/postinst") {
 
@@ -835,20 +848,6 @@ sub set_permissions {
 
 update_startup();
 update_engine();
-
-# TODO: Should be modified
-my $rs = setup_rkhunter();
-
-if ($rs != 0) {
-
-	my $el_data = pop_el(\@main::el);
-	my ($sub_name, $msg) = split(/\t#\t/, $el_data);
-
-	print STDERR "$msg\n";
-
-	exit 1;
-}
-
 update_shutdown();
 
 exit 0;
