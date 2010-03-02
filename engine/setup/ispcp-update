@@ -208,6 +208,17 @@ sub update_engine {
 	#
 
 	#
+	## Additional tasks - Begin
+	#
+
+	print STDOUT BOLD "\n\tAdditional tasks\n";
+	$rs = additional_tasks();
+
+	#
+	## Additional tasks - End
+	#
+
+	#
 	## IspCP files permissions - Begin
 	#
 
@@ -225,19 +236,6 @@ sub update_engine {
 	$rs = start_services();
 	exit_msg(str_to_right('[failed]', length($print)+11), $rs) if($rs != 0);
 	print STDOUT BOLD GREEN str_to_right('[done]', length($print) + 11);
-
-	#
-	# Rkhunter - Begin
-	#
-
-	$print = 'Starting Rkhunter setup:';
-	print STDOUT "\n\t" . $print;
-	$rs = setup_rkhunter();
-	exit_msg('Failed!', $rs) if($rs != 0);
-
-	#
-	# Rkhunter - End
-	#
 
 	# Starting Post installation script if it exists
 	if(-e "$main::cfg{'ROOT_DIR'}/engine/setup/postinst") {
@@ -805,6 +803,24 @@ sub rebuild_customers_cfg {
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'rebuild_customers_cfg()', 'Ending...');
+
+	0;
+}
+
+# Run all update additional task such a rkhunter configuration
+sub additional_tasks() {
+
+	push_el(\@main::el, 'additional_tasks()', 'Starting...');
+
+	my ($rs, $print) = (undef, '');
+
+	$print = ' Rkhunter configuration:';
+	print STDOUT "\t" . $print;
+	$rs = setup_rkhunter();
+	exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
+	print STDOUT BOLD GREEN str_to_right('[done]', length($print));
+
+	push_el(\@main::el, 'additional_tasks()', 'Ending...');
 
 	0;
 }

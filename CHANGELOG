@@ -1,6 +1,10 @@
 ispCP ω 1.0.5 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-03-02 Laurent Declercq
+	- SETUP:
+		* Rkhunter: Improved readability
+
 2010-03-01 Benedikt Heintel
 	- GUI:
 		* Fixed: Wrong Link in reseller_user_statistics.php
