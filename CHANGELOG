@@ -1,6 +1,14 @@
 ispCP ω 1.0.5 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-03-03 Benedikt Heintel
+	- CONFIGS:
+		* Fixed #2248: FreeBSD Buildate is old
+	- ENGINE:
+		* Fixed #2250: Domain disable not working on already existing domains
+	- GUI:
+		* Fixed #2249: Customer does not get a Password on Domain Creation
+
 2010-03-03 Laurent Declercq
 	- SETUP:
 		* Fixed #2247: Ubuntu Persmission Script
