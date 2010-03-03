@@ -1,6 +1,10 @@
 ispCP ω 1.0.5 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-03-03 Laurent Declercq
+	- SETUP:
+		* Fixed #2247: Ubuntu Persmission Script
+
 2010-03-02 Laurent Declercq
 	- SETUP:
 		* Rkhunter: Improved readability
