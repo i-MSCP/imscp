@@ -1,5 +1,38 @@
-ispCP ω 1.0.4 Changelog
+ispCP ω 1.0.5 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2010-03-03 Benedikt Heintel
+	- CONFIGS:
+		* Fixed #2248: FreeBSD Buildate is old
+	- ENGINE:
+		* Fixed #2250: Domain disable not working on already existing domains
+	- GUI:
+		* Fixed #2249: Customer does not get a Password on Domain Creation
+
+2010-03-03 Laurent Declercq
+	- SETUP:
+		* Fixed #2247: Ubuntu Persmission Script
+
+2010-03-02 Laurent Declercq
+	- SETUP:
+		* Rkhunter: Improved readability
+
+2010-03-01 Benedikt Heintel
+	- GUI:
+		* Fixed: Wrong Link in reseller_user_statistics.php
+
+2010-03-01 Laurent Declercq
+	- SETUP:
+		* Fixed (AGAIN) #1725: /var/log/rkhunter.log not readable
+		* Merged Rkhunter setup/update tasks
+
+2010-02-28 Benedikt Heintel
+	- ENGINE:
+		* Changed: Permissions for fcgi folders php.ini
+
+2010-02-28 Sascha Bay 
+	- GUI:
+		* Fixed #2243: White site after updating a hosting plan of the admin
 
 2010-02-28 Jochen Manz
 	- RELEASE ispCP ω Omega 1.0.4

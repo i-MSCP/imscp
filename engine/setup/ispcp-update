@@ -208,6 +208,17 @@ sub update_engine {
 	#
 
 	#
+	## Additional tasks - Begin
+	#
+
+	print STDOUT BOLD "\n\tAdditional tasks\n";
+	$rs = additional_tasks();
+
+	#
+	## Additional tasks - End
+	#
+
+	#
 	## IspCP files permissions - Begin
 	#
 
@@ -796,6 +807,24 @@ sub rebuild_customers_cfg {
 	0;
 }
 
+# Run all update additional task such a rkhunter configuration
+sub additional_tasks() {
+
+	push_el(\@main::el, 'additional_tasks()', 'Starting...');
+
+	my ($rs, $print) = (undef, '');
+
+	$print = ' Rkhunter configuration:';
+	print STDOUT "\t" . $print;
+	$rs = setup_rkhunter();
+	exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
+	print STDOUT BOLD GREEN str_to_right('[done]', length($print));
+
+	push_el(\@main::el, 'additional_tasks()', 'Ending...');
+
+	0;
+}
+
 # Set engine and gui permissions
 # TODO: Move it into ispcp-setup-methods.pl and call it into ispcp-setup
 sub set_permissions {
@@ -835,20 +864,6 @@ sub set_permissions {
 
 update_startup();
 update_engine();
-
-# TODO: Should be modified
-my $rs = setup_rkhunter();
-
-if ($rs != 0) {
-
-	my $el_data = pop_el(\@main::el);
-	my ($sub_name, $msg) = split(/\t#\t/, $el_data);
-
-	print STDERR "$msg\n";
-
-	exit 1;
-}
-
 update_shutdown();
 
 exit 0;

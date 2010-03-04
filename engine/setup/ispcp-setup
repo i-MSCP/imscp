@@ -256,9 +256,6 @@ sub setup_host_system {
 	$rs = setup_crontab();
 	return $rs if ($rs != 0);
 
-	$rs = setup_rkhunter();
-	return $rs if ($rs != 0);
-
 	$rs = setup_hosts();
 	return $rs if ($rs != 0);
 
@@ -365,13 +362,9 @@ sub setup_shut_down {
 
 	print STDOUT $shut_down_message, $login_message;
 
-	if (sys_command_rs("which rkhunter > /dev/null") == 0 ) {
-
-	   print STDOUT "\tSetup is now updating rkhunter:\n";
-	   sys_command("rkhunter --update");
-	   print STDOUT "\n\n";
-
-	}
+	# Setup rkhunter
+	$rs = setup_rkhunter();
+	return $rs if($rs !=0);
 
 	push_el(\@main::el, 'setup_shut_down()', 'Ending...');
 

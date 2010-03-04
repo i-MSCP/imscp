@@ -147,7 +147,6 @@ function restore_form(&$tpl) {
 					'HP_TRAFF_VALUE'		=> clean_input($_POST['hp_traff'], true),
 					'HP_TRAFF'				=> clean_input($_POST['hp_traff'], true),
 					'HP_DISK_VALUE'			=> clean_input($_POST['hp_disk'], true),
-					'HP_PRICE_STYLE'		=> format_price(clean_input($_POST['hp_style'], true)),
 					'HP_PRICE'				=> clean_input($_POST['hp_price'], true),
 					'HP_SETUPFEE'			=> clean_input($_POST['hp_setupfee'], true),
 					'HP_CURRENCY'			=> clean_input($_POST['hp_currency'], true),

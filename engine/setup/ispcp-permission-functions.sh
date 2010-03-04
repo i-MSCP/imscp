@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
@@ -57,7 +57,7 @@ PANEL_GROUP="$APACHE_SUEXEC_USER_PREF$APACHE_SUEXEC_MIN_GID"
 # (3) Group of the folder and all its contents
 # (4) Directory and subdirectories permissions
 # (5) File permissions
-function recursive_set_permissions {
+recursive_set_permissions() {
 	if [ $DEBUG -eq 1 ]; then
 		find $1 -type d -print0 | ${XARGS} -0 ${CMD_CHMOD} -v $4
 		find $1 -type f -print0 | ${XARGS} -0 ${CMD_CHMOD} -v $5
@@ -74,7 +74,7 @@ function recursive_set_permissions {
 # (2) User that will own the folder and all its contents
 # (3) Group of the folder and all its contents
 # (4) Permissions
-function set_permissions {
+set_permissions() {
 	if [ $DEBUG -eq 1 ]; then
 		echo "$4 $2:$3 [$1]";
 	else
