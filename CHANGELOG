@@ -1,6 +1,10 @@
 ispCP ω 1.0.5 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-03-07 Christian Hernmarck
+	- CONFIGS:
+		* Fixed: missing " in configs/centos/init.d/ispcp_network
+
 2010-03-04 Laurent Declercq
 	- DATABASE Fixed #2251: Frontend still under maintenance after a new installation
 

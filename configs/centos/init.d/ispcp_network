@@ -63,7 +63,7 @@ SERVICES="80 443 110 143 25 465 587 995 993"
 # (mail, etc.)
 #
 # MAIL(S): 25 465 587
-SERVICES_OUT="25 465 587
+SERVICES_OUT="25 465 587"
 
 # Read config file if it is present.
 if [ -r /etc/default/$NAME ]; then
