@@ -1,6 +1,10 @@
 ispCP ω 1.0.5 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-03-07 Christian Hernmarck
+	- CONFIGS:
+		* Fixed: missing " in configs/centos/init.d/ispcp_network
+
 2010-03-03 Benedikt Heintel
 	- CONFIGS:
 		* Fixed #2248: FreeBSD Buildate is old
