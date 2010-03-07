@@ -1,12 +1,17 @@
 ispCP ω 1.0.5 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-03-07 Laurent Declercq
+	- GUI:
+		* Fixed #2252: Data related to the subdomains not deleted during domain deletion
+
 2010-03-07 Christian Hernmarck
 	- CONFIGS:
 		* Fixed: missing " in configs/centos/init.d/ispcp_network
 
 2010-03-04 Laurent Declercq
-	- DATABASE Fixed #2251: Frontend still under maintenance after a new installation
+	- DATABASE:
+		* Fixed #2251: Frontend still under maintenance after a new installation
 
 2010-03-03 Benedikt Heintel
 	- CONFIGS:
