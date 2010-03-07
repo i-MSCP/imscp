@@ -4,6 +4,8 @@ ispCP ω 1.0.5 Changelog
 2010-03-07 Laurent Declercq
 	- GUI:
 		* Fixed #2252: Data related to the subdomains not deleted during domain deletion
+	- SETUP:
+		* Fixed #2262: Configuration of domains disabled before update is not regenerated
 
 2010-03-07 Christian Hernmarck
 	- CONFIGS:

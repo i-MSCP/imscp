@@ -45,6 +45,11 @@ use warnings;
 use Net::LibIDN ':all';
 $main::dmn_task_id = undef;
 
+
+# Default status set after domain name change action
+$main::after_change_status = 'ok';
+
+
 ################################################################################
 ##                                SUBROUTINES                                 ##
 ################################################################################
@@ -2365,6 +2370,13 @@ sub dmn_change_httpd_file_data {
 			);
 			return $rs if ($rs != 0);
 		}
+	}
+
+	# Workaround to recover the initial status of the domain
+	# and restore it after changes.
+	# See #2262 for more information about this issue.
+	if(-e "$www_dir/$dmn_name/htdocs.disabled") {
+		$main::after_change_status = 'disabled';
 	}
 
 	#
@@ -4912,7 +4924,7 @@ sub dmn_mngr_engine {
 				UPDATE
 					domain
 				SET
-					domain_status = 'ok'
+					domain_status = '$main::after_change_status'
 				WHERE
 					domain_id = $dmn_id
 				;
