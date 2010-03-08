@@ -870,7 +870,7 @@ sub make_dir {
 
 sub del_dir {
 
-	push_el(\@main::el, 'make_dir()', 'Starting...');
+	push_el(\@main::el, 'del_dir()', 'Starting...');
 
 	my ($dname) = @_;
 
@@ -888,7 +888,7 @@ sub del_dir {
 
 	return -1 if (sys_command("rm -rf $dname") != 0);
 
-	push_el(\@main::el, 'make_dir()', 'Ending...');
+	push_el(\@main::el, 'del_dir()', 'Ending...');
 
 	0;
 }
