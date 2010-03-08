@@ -2896,7 +2896,7 @@ sub dmn_add_mta_file_data {
 
 ################################################################################
 ##
-## Delele MTA File Data
+## Delete MTA File Data
 ##
 sub dmn_del_mta_file_data {
 
