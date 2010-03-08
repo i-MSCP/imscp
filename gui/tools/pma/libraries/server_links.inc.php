@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: server_links.inc.php 12163 2009-01-01 21:39:21Z lem9 $
+ * @version $Id: server_links.inc.php 12952 2009-09-12 11:17:56Z lem9 $
  * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
@@ -64,6 +64,10 @@ if ($is_superuser) {
     $tabs['rights']['icon'] = 's_rights.png';
     $tabs['rights']['link'] = 'server_privileges.php';
     $tabs['rights']['text'] = $strPrivileges;
+
+    $tabs['replication']['icon'] = 's_replication.png';
+    $tabs['replication']['link'] = 'server_replication.php';
+    $tabs['replication']['text'] = $strReplication;
 }
 
 if (! empty($binary_logs)) {
@@ -83,7 +87,11 @@ $tabs['import']['icon'] = 'b_import.png';
 $tabs['import']['link'] = 'server_import.php';
 $tabs['import']['text'] = $strImport;
 
-echo PMA_getTabs($tabs, array());
+$tabs['import']['icon'] = 's_sync.png';
+$tabs['import']['link'] = 'server_synchronize.php';
+$tabs['import']['text'] = $strSynchronize;
+
+echo PMA_generate_html_tabs($tabs, array());
 unset($tabs);
 
 

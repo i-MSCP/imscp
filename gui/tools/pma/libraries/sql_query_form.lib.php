@@ -3,11 +3,12 @@
 /**
  * functions for displaying the sql query form
  *
- * @version $Id: sql_query_form.lib.php 12280 2009-03-03 15:19:48Z lem9 $
+ * @version $Id: sql_query_form.lib.php 12837 2009-08-20 13:39:02Z nijel $
  * @usedby  server_sql.php
  * @usedby  db_sql.php
  * @usedby  tbl_sql.php
  * @usedby  tbl_structure.php
+ * @usedby  tbl_tracking.php
  * @usedby  querywindow.php
  * @package phpMyAdmin
  */
@@ -28,6 +29,7 @@ require_once './libraries/bookmark.lib.php'; // used for file listing
  * @usedby  db_sql.php
  * @usedby  tbl_sql.php
  * @usedby  tbl_structure.php
+ * @usedby  tbl_tracking.php
  * @usedby  querywindow.php
  * @uses    $GLOBALS['table']
  * @uses    $GLOBALS['db']

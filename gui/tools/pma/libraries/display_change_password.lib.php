@@ -3,7 +3,7 @@
 /**
  * Displays form for password change
  *
- * @version $Id: display_change_password.lib.php 12391 2009-05-04 16:32:16Z lem9 $
+ * @version $Id: display_change_password.lib.php 12642 2009-07-12 12:13:11Z helmo $
  * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
@@ -72,7 +72,7 @@ $chg_evt_handler = (PMA_USR_BROWSER_AGENT == 'IE' && PMA_USR_BROWSER_VER >= 5)
             <?php echo $strGeneratePassword; ?>
         </td>
         <td>
-            <input type="button" id="button_generate_password" value="<?php echo $strGenerate; ?>" onclick="suggestPassword()" />
+            <input type="button" id="button_generate_password" value="<?php echo $strGenerate; ?>" onclick="suggestPassword(this.form)" />
             <input type="text" name="generated_pw" id="generated_pw" />
         </td>
         </tr>

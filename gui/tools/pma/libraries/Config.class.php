@@ -3,7 +3,7 @@
 /**
  *
  *
- * @version $Id: Config.class.php 13232 2010-01-10 12:16:33Z lem9 $
+ * @version $Id: Config.class.php 13448 2010-03-07 23:41:30Z lem9 $
  * @package phpMyAdmin
  */
 
@@ -92,7 +92,7 @@ class PMA_Config
      */
     function checkSystem()
     {
-        $this->set('PMA_VERSION', '3.2.5');
+        $this->set('PMA_VERSION', '3.3.0');
         /**
          * @deprecated
          */
@@ -554,7 +554,7 @@ class PMA_Config
      */
     function getThemeUniqueValue()
     {
-        return intval((null !== $_SESSION['PMA_Config']->get('fontsize') ? $_SESSION['PMA_Config']->get('fontsize') : (isset($_COOKIE['pma_fontsize']) ? $_COOKIE['pma_fontsize'] : 0))) + ($this->source_mtime + $this->default_source_mtime + $_SESSION['PMA_Theme']->mtime_info + $_SESSION['PMA_Theme']->filesize_info) . (isset($_SESSION['userconf']['custom_color']) ? substr($_SESSION['userconf']['custom_color'],1,6) : '');
+        return intval((null !== $_SESSION['PMA_Config']->get('fontsize') ? $_SESSION['PMA_Config']->get('fontsize') : (isset($_COOKIE['pma_fontsize']) ? $_COOKIE['pma_fontsize'] : 0))) + ($this->source_mtime + $this->default_source_mtime + $_SESSION['PMA_Theme']->mtime_info + $_SESSION['PMA_Theme']->filesize_info) . (isset($_SESSION['tmp_user_values']['custom_color']) ? substr($_SESSION['tmp_user_values']['custom_color'],1,6) : '');
     }
 
     /**
@@ -675,6 +675,11 @@ class PMA_Config
                 } else {
                     $path = dirname(dirname($path));
                 }
+            }
+
+            // PHP's dirname function would have returned a dot when $path contains no slash
+            if ($path == '.') {
+                $path = '';
             }
             // in vhost situations, there could be already an ending slash
             if (substr($path, -1) != '/') {

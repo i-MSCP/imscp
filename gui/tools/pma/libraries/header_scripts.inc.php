@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: header.inc.php 10719 2007-10-04 15:03:44Z cybot_tm $
+ * @version $Id: header_scripts.inc.php 13189 2009-12-29 17:45:15Z lem9 $
  * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
@@ -19,6 +19,7 @@ require_once './libraries/common.inc.php';
 if ( false === $GLOBALS['cfg']['AllowThirdPartyFraming']) {
 ?>
 <script type="text/javascript">
+//<![CDATA[
 try {
     // can't access this if on a different domain
     var topdomain = top.document.domain;
@@ -32,6 +33,7 @@ catch(e) {
     alert("Redirecting... (error: " + e);
     top.location.replace(self.document.URL.substring(0, self.document.URL.lastIndexOf("/")+1));
 }
+//]]>
 </script>
 <?php
 }
@@ -66,6 +68,8 @@ $is_superuser    = function_exists('PMA_isSuperuser') && PMA_isSuperuser();
 if (in_array('functions.js', $GLOBALS['js_include'])) {
     $GLOBALS['js_messages']['strFormEmpty'] = $GLOBALS['strFormEmpty'];
     $GLOBALS['js_messages']['strNotNumber'] = $GLOBALS['strNotNumber'];
+    $GLOBALS['js_messages']['strClickToSelect'] = $GLOBALS['strClickToSelect'];
+    $GLOBALS['js_messages']['strClickToUnselect'] = $GLOBALS['strClickToUnselect'];
 
     if (!$is_superuser && !$GLOBALS['cfg']['AllowUserDropDatabase']) {
         $GLOBALS['js_messages']['strNoDropDatabases'] = $GLOBALS['strNoDropDatabases'];

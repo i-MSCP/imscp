@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: tbl_links.inc.php 12163 2009-01-01 21:39:21Z lem9 $
+ * @version $Id: tbl_links.inc.php 12936 2009-09-07 12:25:55Z lem9 $
  * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
@@ -62,6 +62,13 @@ $tabs['sql']['text'] = $strSQL;
 $tabs['search']['icon'] = 'b_search.png';
 $tabs['search']['text'] = $strSearch;
 $tabs['search']['link'] = 'tbl_select.php';
+
+if(PMA_Tracker::isActive())
+{
+    $tabs['tracking']['icon'] = 'eye.png';
+    $tabs['tracking']['text'] = $strTracking;
+    $tabs['tracking']['link'] = 'tbl_tracking.php';
+}
 
 if (! (isset($db_is_information_schema) && $db_is_information_schema)) {
     $tabs['insert']['icon'] = 'b_insrow.png';
@@ -124,8 +131,14 @@ if ($table_info_num_rows == 0 && !$tbl_is_view) {
     $tabs['search']['warning'] = $strTableIsEmpty;
 }
 
-echo PMA_getTabs($tabs, $url_params);
+echo PMA_generate_html_tabs($tabs, $url_params);
 unset($tabs);
+
+if(PMA_Tracker::isActive() and PMA_Tracker::isTracked($GLOBALS["db"], $GLOBALS["table"]))
+{
+    $msg = PMA_Message::notice('<a href="tbl_tracking.php?'.$url_query.'">'.sprintf($strTrackingActivated, $GLOBALS["db"], $GLOBALS["table"]).'</a>');
+    $msg->display();
+}
 
 /**
  * Displays a message

@@ -193,7 +193,6 @@ if ($abort == false) {
     $show_create_table = PMA_DBI_fetch_value('SHOW CREATE TABLE ' . PMA_backquote($db) . '.' . PMA_backquote($table), 0, 1);
     $analyzed_sql = PMA_SQP_analyze(PMA_SQP_parse($show_create_table));
     unset($show_create_table);
-
     /**
      * Form for changing properties.
      */

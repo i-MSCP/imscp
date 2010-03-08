@@ -4,7 +4,7 @@
  * Ensure the database and the table exist (else move to the "parent" script)
  * and display headers
  *
- * @version $Id: db_table_exists.lib.php 12274 2009-03-03 12:11:20Z helmo $
+ * @version $Id: db_table_exists.lib.php 13183 2009-12-27 21:52:21Z lem9 $
  * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
@@ -44,7 +44,7 @@ if (empty($is_db)) {
     }
 } // end if (ensures db exists)
 
-if (empty($is_table) && !defined('PMA_SUBMIT_MULT')) {
+if (empty($is_table) && !defined('PMA_SUBMIT_MULT') && ! defined('TABLE_MAY_BE_ABSENT')) {
     // Not a valid table name -> back to the db_sql.php
 
     if (strlen($table)) {

@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * @author  Ivan A Kirillov (Ivan.A.Kirillov@gmail.com)
- * @version $Id: pmd_display_field.php 10149 2007-03-20 15:11:15Z cybot_tm $
+ * @version $Id: pmd_display_field.php 12596 2009-06-24 11:34:56Z lem9 $
  * @package phpMyAdmin-Designer
  */
 
@@ -40,7 +40,7 @@ if ($cfgRelation['displaywork']) {
     }
 
     if (isset($upd_query)) {
-        $upd_rs    = PMA_query_as_cu($upd_query);
+        $upd_rs    = PMA_query_as_controluser($upd_query);
     }
 } // end if
 

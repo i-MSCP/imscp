@@ -1,4 +1,4 @@
-phpMyAdmin 3.2.5 Documentation
+phpMyAdmin 3.3.0 Documentation
 
   * Top
   * Requirements
@@ -20,8 +20,8 @@ phpMyAdmin 3.2.5 Documentation
   * Local documents:
       + Version history: ChangeLog
       + License: LICENSE
-  * Documentation version: $Id: Documentation.html 13232 2010-01-10 12:16:33Z
-    lem9 $
+  * Documentation version:
+    $Id: Documentation.html 13448 2010-03-07 23:41:30Z lem9 $
 
 Requirements
 
@@ -37,6 +37,7 @@ Requirements
         strongly suggested for most users and is required for 64?bit machines.
         Not using mcrypt will cause phpMyAdmin to load pages significantly
         slower.
+      + To support upload progress bars, see FAQ 2.9.
   * MySQL 5.0 or newer (details);
   * Web browser with cookies enabled.
 
@@ -58,6 +59,8 @@ Currently phpMyAdmin can:
   * create^1 and read dumps of tables
   * export^1 data to various formats: CSV, XML, PDF, ISO/IEC 26300 -
     OpenDocument Text and Spreadsheet, Word, Excel and L^AT[E]X formats
+  * import data and MySQL structures from Microsoft Excel and OpenDocument
+    spreadsheets, as well as XML, CSV, and SQL files
   * administer multiple servers
   * manage MySQL users and privileges
   * check referential integrity in MyISAM tables
@@ -67,9 +70,12 @@ Currently phpMyAdmin can:
   * search globally in a database or a subset of it
   * transform stored data into any format using a set of predefined functions,
     like displaying BLOB-data as image or download-link
+  * track changes on databases, tables and views
   * support InnoDB tables and foreign keys (see FAQ 3.6)
   * support mysqli, the improved MySQL extension (see FAQ 1.17)
   * communicate in 57 different languages
+  * synchronize two databases residing on the same as well as remote servers
+    (see FAQ 9.1)
 
 A word about users:
 
@@ -212,11 +218,12 @@ Quick Install
 
 Linked-tables infrastructure
 
-For a whole set of new features (bookmarks, comments, SQL-history,
-PDF-generation, field contents transformation, etc.) you need to create a set
-of special tables. Those tables can be located in your own database, or in a
-central database for a multi-user installation (this database would then be
-accessed by the controluser, so no other user should have rights to it).
+For a whole set of new features (bookmarks, comments, SQL-history, tracking
+mechanism, PDF-generation, field contents transformation, etc.) you need to
+create a set of special tables. Those tables can be located in your own
+database, or in a central database for a multi-user installation (this database
+would then be accessed by the controluser, so no other user should have rights
+to it).
 
 Please look at your ./scripts/ directory, where you should find a file called
 create_tables.sql. (If you are using a Windows server, pay special attention to
@@ -714,6 +721,58 @@ $cfg['Servers'][$i]['history'] string
     To allow the usage of this functionality:
       + set up pmadb and the linked-tables infrastructure
       + put the table name in $cfg['Servers'][$i]['history']
+$cfg['Servers'][$i]['tracking'] string
+    Since release 3.3.x a tracking mechanism is available. It helps you to
+    track every SQL command which is executed by phpMyAdmin. The mechanism
+    supports logging of data manipulation and data definition statements. After
+    enabling it you can create versions of tables.
+
+    The creation of a version has two effects:
+      + phpMyAdmin saves a snapshot of the table, including structure and
+        indexes.
+      + phpMyAdmin logs all commands which change the structure and/or data of
+        the table and links these commands with the version number.
+    Of course you can view the tracked changes. On the "Tracking" page a
+    complete report is available for every version. For the report you can use
+    filters, for example you can get a list of statements within a date range.
+    When you want to filter usernames you can enter * for all names or you
+    enter a list of names separated by ','. In addition you can export the
+    (filtered) report to a file or to a temporary database.
+
+    To allow the usage of this functionality:
+      + set up pmadb and the linked-tables infrastructure
+      + put the table name in $cfg['Servers'][$i]['tracking']
+$cfg['Servers'][$i]['tracking_version_auto_create'] boolean
+    Whether the tracking mechanism creates versions for tables and views
+    automatically. Default value is false.
+
+    If this is set to true and you create a table or view with
+      + CREATE TABLE ...
+      + CREATE VIEW ...
+    and no version exists for it, the mechanism will create a version for you
+    automatically.
+$cfg['Servers'][$i]['tracking_default_statements'] string
+    Defines the list of statements the auto-creation uses for new versions.
+    Default value is
+
+    CREATE TABLE,ALTER TABLE,DROP TABLE,RENAME TABLE,
+    CREATE INDEX,DROP INDEX,
+    INSERT,UPDATE,DELETE,TRUNCATE,REPLACE,
+    CREATE VIEW,ALTER VIEW,DROP VIEW,
+    CREATE DATABASE,ALTER DATABASE,DROP DATABASE
+
+$cfg['Servers'][$i]['tracking_version_drop_view'] boolean
+    Whether a DROP VIEW IF EXISTS statement will added as first line to the log
+    when creating a view. Default value is true.
+
+$cfg['Servers'][$i]['tracking_version_drop_table'] boolean
+    Whether a DROP TABLE IF EXISTS statement will added as first line to the
+    log when creating a table. Default value is true.
+
+$cfg['Servers'][$i]['tracking_version_drop_database'] boolean
+    Whether a DROP DATABASE IF EXISTS statement will added as first line to the
+    log when creating a database. Default value is true.
+
 $cfg['Servers'][$i]['designer_coords'] string
     Since release 2.10.0 a Designer interface is available; it permits to
     visually manage the relations.
@@ -845,8 +904,8 @@ $cfg['ForceSSL'] boolean
 $cfg['ExecTimeLimit'] integer [number of seconds]
     Set the number of seconds a script is allowed to run. If seconds is set to
     zero, no time limit is imposed.
-    This setting is used while importing/exporting dump files but has no effect
-    when PHP is running in safe mode.
+    This setting is used while importing/exporting dump files and in the
+    Synchronize feature but has no effect when PHP is running in safe mode.
 $cfg['MemoryLimit'] integer [number of bytes]
     Set the number of bytes a script is allowed to allocate. If set to zero, no
     limit is imposed.
@@ -1010,6 +1069,9 @@ $cfg['Order'] string [DESC|ASC|SMART]
     descending (DESC) order or in a "smart" (SMART) order - I.E. descending
     order for fields of type TIME, DATE, DATETIME and TIMESTAMP, ascending
     order else- by default.
+$cfg['DisplayBinaryAsHex'] boolean
+    Defines whether the "Show binary contents as HEX" browse option is ticked
+    by default.
 $cfg['ProtectBinary'] boolean or string
     Defines whether BLOB or BINARY fields are protected from editing when
     browsing a table's content. Valid values are:
@@ -1162,6 +1224,10 @@ $cfg['CheckConfigurationPermissions'] boolean
     filesystem mounted on a non-Windows server, in which case the permissions
     seems wrong but in fact cannot be detected. In this case a sysadmin would
     set this parameter to FALSE. Default is TRUE.
+$cfg['LinkLengthLimit'] integer
+    Limit for length of URL in links. When length would be above this limit, it
+    is replaced by form with button. This is required as some web servers (IIS)
+    have problems with long URLs. Default is 1000.
 $cfg['NaviWidth'] integer
     Navi frame width in pixels. See themes/themename/layout.inc.php.
 $cfg['NaviBackground'] string [valid css code for background]
@@ -1791,6 +1857,7 @@ FAQ - Frequently Asked Questions
  6. Using phpMyAdmin
  7. phpMyAdmin project
  8. Security
+ 9. Synchronization
 
 Please have a look at our Link section on the official phpMyAdmin homepage for
 in-depth coverage of phpMyAdmin's features and or interface.
@@ -1949,11 +2016,11 @@ provider is unwilling to change the settings:
 
 1.17 Which MySQL versions does phpMyAdmin support?
 
-In phpMyAdmin 3.0.x, versions starting with MySQL 5.0.1 are fully supported.
-phpMyAdmin may connect to your MySQL server using PHP's classic MySQL extension
-as well as the improved MySQL extension (MySQLi) that is available in php 5.0.
-Either way, the developers of both extensions recommend to use the classic
-extension for MySQL 4.0 and below and MySQLi for MySQL 4.1 and newer.
+Since phpMyAdmin 3.0.x, only MySQL 5.0.1 and newer are supported. For older
+MySQL versions, you need to use 2.8.x branch. phpMyAdmin can connect to your
+MySQL server using PHP's classic MySQL extension as well as the improved MySQL
+extension (MySQLi) that is available in php 5.0. The latter one should be used
+unless you have good reason not to do so.
 When compiling php, we strongly recommend that you manually link the MySQL
 extension of your choice to a MySQL client library of at least the same minor
 version since the one that is bundled with some PHP distributions is rather old
@@ -2347,6 +2414,14 @@ Here are a few points to check:
   * The directory specified in the php.ini directive session.save_path does not
     exist or is read-only.
 
+2.9 Seeing an upload progress bar
+
+To be able to see a progress bar during your uploads, your server must have
+either the APC extension or the uploadprogress one. Moreover, the JSON
+extension has to be enabled in your PHP.
+
+If using APC, you must set apc.rfc1867 to on in your php.ini.
+
 Known limitations
 
 3.1 When using HTTP authentication, an user who logged out can not log in again
@@ -2468,6 +2543,48 @@ of the columns.
 
 This has been a known limitation of phpMyAdmin since the beginning and it's not
 likely to be solved in the future.
+
+3.15 When I import an Excel spreadsheet, some cells with calculations do not
+display correctly.
+
+phpMyAdmin uses the PHPExcel library to parse Excel XLS and XLSX spreadsheets.
+Therefore, any limitations that are listed on their page regarding Excel
+calculations will also apply here.
+
+PHPExcel will be kept up to date so as to make all improvements available to
+phpMyAdmin users.
+
+3.16 When I compress (gzip, bzip2, zip) an Excel workbook and attempt to import
+it, nothing happens.
+
+Since Excel XLSX workbooks are already compressed, there is often times only a
+small benefit from compressing them yet again. Support for compressed Excel
+XLSX and XLS workbooks may be added in the future.
+
+3.17 When I import an Excel spreadsheet, my custom cell types are not
+represented as they are in Excel.
+
+Excel's internal representation of custom cell types is rather muddled
+(especially in Excel 97-2003 binary XLS files). If possible, consider using a
+built-in type. These are almost always guarenteed to import correctly.
+
+3.18 When I import a CSV file that contains multiple tables, they are lumped
+together into a single table.
+
+There is no reliable way to differetiate tables in CSV format. For the time
+being, you will have to break apart CSV files containing multiple tables.
+
+3.19 When I import a file and have phpMyAdmin determine the appropriate data
+structure it only uses int, decimal, and varchar types.
+
+Currently, the import type-detection system can only assign these MySQL types
+to columns. In future, more will likely be added but for the time being you
+will have to edit the structure to your liking post-import.
+
+Also, you should note the fact that phpMyAdmin will use the size of the largest
+item in any given column as the column size for the appropriate type. If you
+know you will be adding larger items to that column then you should manually
+adjust the column sizes accordingly. This is done for the sake of efficiency.
 
 ISPs, multi-user installations
 
@@ -3149,7 +3266,19 @@ LogFormat directive for Apache can look like following:
 LogFormat "%h %l %u %t \"%r\" %>s %b \
 \"%{Referer}i\" \"%{User-Agent}i\" %{userID}n %{userStatus}n"   pma_combined
 
-You can then use any log analyzing tools to detect possible break in attempts.
+You can then use any log analyzing tools to detect possible break-in attempts.
+
+Synchronization
+
+9.1 How can I synchronize two databases/tables in phpMyAdmin?
+
+You can now synchronize databases/tables in phpMyAdmin using the Synchronize
+feature. It allows you to connect to local as well as remote servers.This
+requires you to enter server host name, username, password, port and the name
+of the database. Therefore you can now synchronize your databases placed on the
+same server or some remote server.
+
+For more details see How to synchronize
 
 Developers Information
 
@@ -3198,223 +3327,196 @@ Copyright (C) 2001-2009 Marc Delisle <marc_at_infomarc.info>
                         Sebastian Mendel <cybot_tm_at_users.sourceforge.net>
                         [check credits for more details]
 
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License version 2,
-as published by the Free Software Foundation.
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU General Public License version 2, as published by the Free
+Software Foundation.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+You should have received a copy of the GNU General Public License along with
+this program; if not, write to the Free Software Foundation, Inc., 51 Franklin
+St, Fifth Floor, Boston, MA 02110-1301 USA
 
 Credits
 
-phpMyAdmin - Credits
-====================
+Credits, in chronological order
 
-CREDITS, in chronological order
--------------------------------
-
-- Tobias Ratschiller <tobias_at_ratschiller.com>
-    * creator of the phpmyadmin project
-    * maintainer from 1998 to summer 2000
-
-- Marc Delisle <marc_at_infomarc.info>
-    * multi-language version
-    * various fixes and improvements
-    * SQL analyser (most of it)
-    * current project maintainer
-
-- Olivier M?ller <om_at_omnis.ch>
-    * started SourceForge phpMyAdmin project in March 2001
-    * sync'ed different existing CVS trees with new features and bugfixes
-    * multi-language improvements, dynamic language selection
-    * current project maintainer
-    * many bugfixes and improvements
-
-- Lo?c Chapeaux <lolo_at_phpheaven.net>
-    * rewrote and optimized javascript, DHTML and DOM stuff
-    * rewrote the scripts so they fit the PEAR coding standards and
-      generate XHTML1.0 and CSS2 compliant codes
-    * improved the language detection system
-    * many bugfixes and improvements
-
-- Robin Johnson <robbat2_at_users.sourceforge.net>
-    * database maintenance controls
-    * table type code
-    * Host authentication IP Allow/Deny
-    * DB-based configuration (Not completed)
-    * SQL parser and pretty-printer
-    * SQL validator
-    * many bugfixes and improvements
-
-- Armel Fauveau <armel.fauveau_at_globalis-ms.com>
-    * bookmarks feature
-    * multiple dump feature
-    * gzip dump feature
-    * zip dump feature
-
-- Geert Lund <glund_at_silversoft.dk>
-    * various fixes
-    * moderator of the phpMyAdmin former users forum at phpwizard.net
-
-- Korakot Chaovavanich <korakot_at_iname.com>
-    * "insert as new row" feature
-
-- Pete Kelly <webmaster_at_trafficg.com>
-    * rewrote and fix dump code
-    * bugfixes
-
-- Steve Alberty <alberty_at_neptunlabs.de>
-    * rewrote dump code for PHP4
-    * mySQL table statistics
-    * bugfixes
-
-- Benjamin Gandon <gandon_at_isia.cma.fr>
-    * main author of the version 2.1.0.1
-    * bugfixes
-
-- Alexander M. Turek <me_at_derrabus.de>
-    * MySQL 4.0 / 4.1 / 5.0 compatibility
-    * abstract database interface (PMA_DBI) with MySQLi support
-    * privileges administration
-    * XML exports
-    * various features and fixes
-    * German language file updates
-
-- Mike Beck <mike.beck_at_web.de>
-    * automatic joins in QBE
-    * links column in printview
-    * Relation view
-
-- Michal ?iha? <michal_at_cihar.com>
-    * enhanced index creation/display feature
-    * feature to use a different charset for HTML than for MySQL
-    * improvements of export feature
-    * various features and fixes
-    * Czech language file updates
-
-- Christophe Gesch? from the "MySQL Form Generator for PHPMyAdmin"
-  (http://sf.net/projects/phpmysqlformgen/)
-    * suggested the patch for multiple table printviews
-
-- Garvin Hicking <me_at_supergarv.de>
-    * built the patch for vertical display of table rows
-    * built the Javascript based Query window + SQL history
-    * Improvement of column/db comments
-    * (MIME)-Transformations for columns
-    * Use custom alias names for Databases in left frame
-    * hierarchical/nested table display
-    * PDF-scratchboard for WYSIWYG-distribution of PDF relations
-    * new icon sets
-    * vertical display of column properties page
-    * some bugfixes, features, support, German language additions
-
-- Yukihiro Kawada <kawada_at_den.fujifilm.co.jp>
-    * japanese kanji encoding conversion feature
-
-- Piotr Roszatycki <d3xter_at_users.sourceforge.net> and Dan Wilson
-    * the Cookie authentication mode
-
-- Axel Sander <n8falke_at_users.sourceforge.net>
-    * table relation-links feature
-
-- Maxime Delorme <delorme.maxime_at_free.fr>
-    * PDF schema output, thanks also to Olivier Plathey for the
-      "FPDF" library (see http://www.fpdf.org/) and Steven Wittens
-      for the "UFPDF" library (see http://www.acko.net/node/56).
-
-- Olof Edlund <olof.edlund_at_upright.se>
-    * SQL validator server
-
-- Ivan R. Lanin <ivanlanin_at_users.sourceforge.net>
-    * phpMyAdmin logo (until June 2004)
-
-- Mike Cochrane <mike_at_graftonhall.co.nz>
-    * blowfish library from the Horde project
-
-- Marcel Tschopp <ne0x_at_users.sourceforge.net>
-    * mysqli support
-    * many bugfixes and improvements
-
-- Michael Keck <mkkeck_at_users.sourceforge.net>
-    * redesign for 2.6.0
-    * phpMyAdmin sailboat logo (June 2004)
-
-- Mathias Landh?u?er
-    * Representation at conferences
-
-- Sebastian Mendel <cybot_tm_at_users.sourceforge.net>
-    * interface improvements
-    * various bugfixes
-
-- Ivan A Kirillov
-    * new relations Designer
-
-- Raj Kissu Rajandran (Google Summer of Code 2008)
-    * BLOBstreaming support
-
-- Piotr Przybylski (Google Summer of Code 2008)
-    * improved setup script
+  * Tobias Ratschiller <tobias_at_ratschiller.com>
+      + creator of the phpmyadmin project
+      + maintainer from 1998 to summer 2000
+  * Marc Delisle <marc_at_infomarc.info>
+      + multi-language version
+      + various fixes and improvements
+      + SQL analyser (most of it)
+      + current project maintainer
+  * Olivier M?ller <om_at_omnis.ch>
+      + started SourceForge phpMyAdmin project in March 2001
+      + sync'ed different existing CVS trees with new features and bugfixes
+      + multi-language improvements, dynamic language selection
+      + current project maintainer
+      + many bugfixes and improvements
+  * Lo?c Chapeaux <lolo_at_phpheaven.net>
+      + rewrote and optimized javascript, DHTML and DOM stuff
+      + rewrote the scripts so they fit the PEAR coding standards and generate
+        XHTML1.0 and CSS2 compliant codes
+      + improved the language detection system
+      + many bugfixes and improvements
+  * Robin Johnson <robbat2_at_users.sourceforge.net>
+      + database maintenance controls
+      + table type code
+      + Host authentication IP Allow/Deny
+      + DB-based configuration (Not completed)
+      + SQL parser and pretty-printer
+      + SQL validator
+      + many bugfixes and improvements
+  * Armel Fauveau <armel.fauveau_at_globalis-ms.com>
+      + bookmarks feature
+      + multiple dump feature
+      + gzip dump feature
+      + zip dump feature
+  * Geert Lund <glund_at_silversoft.dk>
+      + various fixes
+      + moderator of the phpMyAdmin former users forum at phpwizard.net
+  * Korakot Chaovavanich <korakot_at_iname.com>
+      + "insert as new row" feature
+  * Pete Kelly <webmaster_at_trafficg.com>
+      + rewrote and fix dump code
+      + bugfixes
+  * Steve Alberty <alberty_at_neptunlabs.de>
+      + rewrote dump code for PHP4
+      + mySQL table statistics
+      + bugfixes
+  * Benjamin Gandon <gandon_at_isia.cma.fr>
+      + main author of the version 2.1.0.1
+      + bugfixes
+  * Alexander M. Turek <me_at_derrabus.de>
+      + MySQL 4.0 / 4.1 / 5.0 compatibility
+      + abstract database interface (PMA_DBI) with MySQLi support
+      + privileges administration
+      + XML exports
+      + various features and fixes
+      + German language file updates
+  * Mike Beck <mike.beck_at_web.de>
+      + automatic joins in QBE
+      + links column in printview
+      + Relation view
+  * Michal ?iha? <michal_at_cihar.com>
+      + enhanced index creation/display feature
+      + feature to use a different charset for HTML than for MySQL
+      + improvements of export feature
+      + various features and fixes
+      + Czech language file updates
+  * Christophe Gesch? from the "MySQL Form Generator for PHPMyAdmin" (http://
+    sf.net/projects/phpmysqlformgen/)
+      + suggested the patch for multiple table printviews
+  * Garvin Hicking <me_at_supergarv.de>
+      + built the patch for vertical display of table rows
+      + built the Javascript based Query window + SQL history
+      + Improvement of column/db comments
+      + (MIME)-Transformations for columns
+      + Use custom alias names for Databases in left frame
+      + hierarchical/nested table display
+      + PDF-scratchboard for WYSIWYG-distribution of PDF relations
+      + new icon sets
+      + vertical display of column properties page
+      + some bugfixes, features, support, German language additions
+  * Yukihiro Kawada <kawada_at_den.fujifilm.co.jp>
+      + japanese kanji encoding conversion feature
+  * Piotr Roszatycki <d3xter_at_users.sourceforge.net> and Dan Wilson
+      + the Cookie authentication mode
+  * Axel Sander <n8falke_at_users.sourceforge.net>
+      + table relation-links feature
+  * Maxime Delorme <delorme.maxime_at_free.fr>
+      + PDF schema output, thanks also to Olivier Plathey for the "FPDF"
+        library (see http://www.fpdf.org/) and Steven Wittens for the "UFPDF"
+        library (see http://www.acko.net/node/56).
+  * Olof Edlund <olof.edlund_at_upright.se>
+      + SQL validator server
+  * Ivan R. Lanin <ivanlanin_at_users.sourceforge.net>
+      + phpMyAdmin logo (until June 2004)
+  * Mike Cochrane <mike_at_graftonhall.co.nz>
+      + blowfish library from the Horde project
+  * Marcel Tschopp <ne0x_at_users.sourceforge.net>
+      + mysqli support
+      + many bugfixes and improvements
+  * Michael Keck <mkkeck_at_users.sourceforge.net>
+      + redesign for 2.6.0
+      + phpMyAdmin sailboat logo (June 2004)
+  * Mathias Landh?u?er
+      + Representation at conferences
+  * Sebastian Mendel <cybot_tm_at_users.sourceforge.net>
+      + interface improvements
+      + various bugfixes
+  * Ivan A Kirillov
+      + new relations Designer
+  * Raj Kissu Rajandran (Google Summer of Code 2008)
+      + BLOBstreaming support
+  * Piotr Przybylski (Google Summer of Code 2008)
+      + improved setup script
+  * Derek Schaefer (Google Summer of Code 2009)
+      + Improved the import system
+  * Alexander Rutkowski (Google Summer of Code 2009)
+      + Tracking mechanism
+  * Zahra Naeem (Google Summer of Code 2009)
+      + Synchronization feature
+  * Tom?? Srnka (Google Summer of Code 2009)
+      + Replication support
 
 And also to the following people who have contributed minor changes,
 enhancements, bugfixes or support for a new language since version 2.1.0:
 
-Bora Alioglu, Ricardo ?, Sven-Erik Andersen, Alessandro Astarita,
-P?ter Bakondy, Borges Botelho, Olivier Bussier, Neil Darlow,
-Mats Engstrom, Ian Davidson, Laurent Dhima, Kristof Hamann, Thomas Kl?ger,
-Lubos Klokner, Martin Marconcini, Girish Nair, David Nordenberg, Andreas Pauley,
-Bernard M. Piller, Laurent Haas, "Sakamoto", Yuval Sarna,
-www.securereality.com.au, Alexis Soulard, Alvar Soome, Siu Sun, Peter Svec,
-Michael Tacelosky, Rachim Tamsjadi, Kositer Uros,
-Lu?s V., Martijn W. van der Lee,
-Algis Vainauskas, Daniel Villanueva, Vinay, Ignacio Vazquez-Abrams, Chee Wai,
-Jakub Wilk, Thomas Michael Winningham, Vilius Zigmantas, "Manuzhai".
-
+Bora Alioglu, Ricardo ?, Sven-Erik Andersen, Alessandro Astarita, P?ter
+Bakondy, Borges Botelho, Olivier Bussier, Neil Darlow, Mats Engstrom, Ian
+Davidson, Laurent Dhima, Kristof Hamann, Thomas Kl?ger, Lubos Klokner, Martin
+Marconcini, Girish Nair, David Nordenberg, Andreas Pauley, Bernard M. Piller,
+Laurent Haas, "Sakamoto", Yuval Sarna, www.securereality.com.au, Alexis
+Soulard, Alvar Soome, Siu Sun, Peter Svec, Michael Tacelosky, Rachim Tamsjadi,
+Kositer Uros, Lu?s V., Martijn W. van der Lee, Algis Vainauskas, Daniel
+Villanueva, Vinay, Ignacio Vazquez-Abrams, Chee Wai, Jakub Wilk, Thomas Michael
+Winningham, Vilius Zigmantas, "Manuzhai".
 
 Original Credits of Version 2.1.0
----------------------------------
 
-    This work is based on Peter Kuppelwieser's MySQL-Webadmin. It was his idea
-    to create a web-based interface to MySQL using PHP3. Although I have not
-    used any of his source-code, there are some concepts I've borrowed from
-    him. phpMyAdmin was created because Peter told me he wasn't going to
-    further develop his (great) tool.
-    Thanks go to
-    - Amalesh Kempf <ak-lsml_at_living-source.com> who contributed the
-      code for the check when dropping a table or database. He also suggested
-      that you should be able to specify the primary key on tbl_create.php3. To
-      version 1.1.1 he contributed the ldi_*.php3-set (Import text-files) as
-      well as a bug-report. Plus many smaller improvements.
-    - Jan Legenhausen <jan_at_nrw.net>: He made many of the changes that
-      were introduced in 1.3.0 (including quite significant ones like the
-      authentication). For 1.4.1 he enhanced the table-dump feature. Plus
-      bug-fixes and help.
-    - Marc Delisle <DelislMa_at_CollegeSherbrooke.qc.ca> made phpMyAdmin
-      language-independent by outsourcing the strings to a separate file. He
-      also contributed the French translation.
-    - Alexandr Bravo <abravo_at_hq.admiral.ru> who contributed
-      tbl_select.php3, a feature to display only some fields from a table.
-    - Chris Jackson <chrisj_at_ctel.net> added support for MySQL
-      functions in tbl_change.php3. He also added the
-      "Query by Example" feature in 2.0.
-    - Dave Walton <walton_at_nordicdms.com> added support for multiple
-      servers and is a regular contributor for bug-fixes.
-    - Gabriel Ash <ga244_at_is8.nyu.edu> contributed the random access
-      features for 2.0.6.
-    The following people have contributed minor changes, enhancements, bugfixes
-    or support for a new language:
-    Jim Kraai, Jordi Bruguera, Miquel Obrador, Geert Lund, Thomas Kleemann,
-    Alexander Leidinger, Kiko Albiol, Daniel C. Chao, Pavel Piankov,
-    Sascha Kettler, Joe Pruett, Renato Lins, Mark Kronsbein, Jannis Hermanns,
-    G. Wieggers.
+This work is based on Peter Kuppelwieser's MySQL-Webadmin. It was his idea to
+create a web-based interface to MySQL using PHP3. Although I have not used any
+of his source-code, there are some concepts I've borrowed from him. phpMyAdmin
+was created because Peter told me he wasn't going to further develop his
+(great) tool.
 
-    And thanks to everyone else who sent me email with suggestions, bug-reports
-    and or just some feedback.
+Thanks go to
+
+  * Amalesh Kempf <ak-lsml_at_living-source.com> who contributed the code for
+    the check when dropping a table or database. He also suggested that you
+    should be able to specify the primary key on tbl_create.php3. To version
+    1.1.1 he contributed the ldi_*.php3-set (Import text-files) as well as a
+    bug-report. Plus many smaller improvements.
+  * Jan Legenhausen <jan_at_nrw.net>: He made many of the changes that were
+    introduced in 1.3.0 (including quite significant ones like the
+    authentication). For 1.4.1 he enhanced the table-dump feature. Plus
+    bug-fixes and help.
+  * Marc Delisle <DelislMa_at_CollegeSherbrooke.qc.ca> made phpMyAdmin
+    language-independent by outsourcing the strings to a separate file. He also
+    contributed the French translation.
+  * Alexandr Bravo <abravo_at_hq.admiral.ru> who contributed tbl_select.php3, a
+    feature to display only some fields from a table.
+  * Chris Jackson <chrisj_at_ctel.net> added support for MySQL functions in
+    tbl_change.php3. He also added the "Query by Example" feature in 2.0.
+  * Dave Walton <walton_at_nordicdms.com> added support for multiple servers
+    and is a regular contributor for bug-fixes.
+  * Gabriel Ash <ga244_at_is8.nyu.edu> contributed the random access features
+    for 2.0.6.
+
+The following people have contributed minor changes, enhancements, bugfixes or
+support for a new language:
+
+Jim Kraai, Jordi Bruguera, Miquel Obrador, Geert Lund, Thomas Kleemann,
+Alexander Leidinger, Kiko Albiol, Daniel C. Chao, Pavel Piankov, Sascha
+Kettler, Joe Pruett, Renato Lins, Mark Kronsbein, Jannis Hermanns, G. Wieggers.
+
+And thanks to everyone else who sent me email with suggestions, bug-reports and
+or just some feedback.
 
 Glossary
 

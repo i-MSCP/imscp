@@ -304,7 +304,7 @@ while (list($operator) = each($GLOBALS['cfg']['UnaryOperators'])) {
         'ASC'  => $strAscending,
         'DESC' => $strDescending
     );
-    PMA_generate_html_radio('order', $choices, 'ASC', false, true, "formelement");
+    PMA_display_html_radio('order', $choices, 'ASC', false, true, "formelement");
     unset($choices);
 ?>
 </fieldset>
@@ -339,7 +339,7 @@ else {
         $param = PMA_backquote($param);
         $sql_query .= implode(', ', $param);
     } // end if
-
+     
     // avoid a loop, for example when $cfg['DefaultTabTable'] is set 
     // to 'tbl_select.php'
     unset($param);

@@ -3,7 +3,7 @@
 /**
  * dumps a database
  *
- * @version $Id: db_export.php 11982 2008-11-24 10:32:56Z nijel $
+ * @version $Id: db_export.php 13180 2009-12-27 13:59:08Z helmo $
  * @uses    libraries/db_common.inc.php
  * @uses    libraries/db_info.inc.php
  * @uses    libraries/display_export.lib.php
@@ -44,18 +44,16 @@ $multi_values .= '<a href="' . $checkall_url . '" onclick="setSelectOptions(\'du
         /
         <a href="' . $checkall_url . '&amp;unselectall=1" onclick="setSelectOptions(\'dump\', \'table_select[]\', false); return false;">' . $strUnselectAll . '</a><br />';
 
-$multi_values .= '<select name="table_select[]" size="6" multiple="multiple">';
+$multi_values .= '<select name="table_select[]" size="10" multiple="multiple">';
 $multi_values .= "\n";
 
+if (!empty($selected_tbl) && empty($table_select)) {
+    $table_select = $selected_tbl;
+}
+
 foreach ($tables as $each_table) {
-    // ok we show also views
-    //if (is_null($each_table['Engine'])) {
-        // Don't offer to export views yet.
-    //    continue;
-    //}
-    if (! empty($unselectall)
-      || (isset($tmp_select)
-           && false !== strpos($tmp_select, '|' . $each_table['Name'] . '|'))) {
+    if (! empty($unselectall) 
+            || (! empty($table_select) && !in_array($each_table['Name'], $table_select))) {
         $is_selected = '';
     } else {
         $is_selected = ' selected="selected"';
@@ -65,6 +63,7 @@ foreach ($tables as $each_table) {
         . $is_selected . '>'
         . str_replace(' ', '&nbsp;', $table_html) . '</option>' . "\n";
 } // end for
+
 $multi_values .= "\n";
 $multi_values .= '</select></div><br />';
 

@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: tbl_export.php 11994 2008-11-24 11:22:44Z nijel $
+ * @version $Id: tbl_export.php 13195 2009-12-30 15:27:27Z lem9 $
  * @package phpMyAdmin
  */
 
@@ -31,8 +31,8 @@ if (! empty($sql_query)) {
     $analyzed_sql = PMA_SQP_analyze($parsed_sql);
 
     // Need to generate WHERE clause?
-    if (isset($primary_key)) {
-        // Yes => rebuild query from scracts, this doesn't work with nested
+    if (isset($where_clause)) {
+        // Yes => rebuild query from scratch; this doesn't work with nested
         // selects :-(
         $sql_query = 'SELECT ';
 
@@ -48,9 +48,9 @@ if (! empty($sql_query)) {
 
         $wheres = array();
 
-        if (isset($primary_key) && is_array($primary_key)
-         && count($primary_key) > 0) {
-            $wheres[] = '(' . implode(') OR (',$primary_key) . ')';
+        if (isset($where_clause) && is_array($where_clause)
+         && count($where_clause) > 0) {
+            $wheres[] = '(' . implode(') OR (',$where_clause) . ')';
         }
 
         if (!empty($analyzed_sql[0]['where_clause']))  {

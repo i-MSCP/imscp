@@ -2,56 +2,115 @@
 phpMyAdmin - ChangeLog
 ----------------------
 
-$Id: ChangeLog 13232 2010-01-10 12:16:33Z lem9 $
+$Id: ChangeLog 13448 2010-03-07 23:41:30Z lem9 $
 $HeadURL: https://phpmyadmin.svn.sourceforge.net/svnroot/phpmyadmin/trunk/phpMyAdmin/ChangeLog $
+
+3.3.0.0 (2010-03-07)
++ rfe #2308632 [edit] Use hex for (var)binary fields,
+  thanks to Maarten Dieleman - maartendieleman
++ patch #2794819 [navi] Filter for displayed table names,
+  thanks to Michael Valushko - dylfin
+- bug #2794840 [core] Cannot redeclare pma_tableheader() 
+- rfe #2726479 [core] configurable maximal length of URL
++ patch #2724755 [display] Full/partial text links (big T) are back,
+  thanks to nullbarriere - nullbarriere 
+- bug [display] handle NavigationBarIconic as documented for navi buttons
++ rfe #2726479 [export] Export tables preselect
++ patch #2805828 [export] PHP array export plugin, 
+  thanks to Geoffray Warnants - amnsk
++ patch #2798592 [import] Progress bar, 
+  thanks to Tomas Srnka - tomassrnka
+- bug [gui] Generate Password not working for 'Change Login Information', only for 'Change password'
++ [lang] Arabic update, thanks to Meno25 - meno25 
++ rfe #2822190 [structure] BOOLEAN is standard SQL 
++ [lang] German update, thanks to knittl
++ [lang] German update, thanks to virsacer
++ rfe #2813867 [structure] Default sorting order in list of tables
++ [import] Added MySQL type-detection functionality to import library,
+  thanks to Derek Schaefer
++ [import] Added ODS, Excel XLS, Excel XLSX, and XML import modules,
+  thanks to Derek Schaefer
++ [export] Added Excel XLSX export module,
+  thanks to Derek Schaefer
++ [core] Added ability for tracking changes made through phpMyAdmin
++ rfe #2839504 [engines] Support InnoDB plugin's new row formats 
++ [core] Added ability for synchronizing databases among servers.
++ [lang] #2843101 Dutch update, thanks to scavenger2008
++ [lang] Galician update, thanks to Xosé Calvo - xosecalvo
++ [export] Added MediaWiki export module,
+  thanks to Derek Schaefer - drummingds1
++ [lang] Turkish update, thanks to Burak Yavuz
++ [auth] Add custom port configuration in signon, thanks to Gary Smith
+- [core] Removed context from the error handler 
+- bug #2883633 [export] Export of InnoDB table is incomplete 
++ rfe #2862575 [status] Order query statistics by % desc, skip rows with 0 
++ rfe #2823686 [interface] Increase default height of query window 
++ rfe #2129902 [structure] Don't hide indexes 
++ patch #2812070 [interface] Allow selecting a range of rows by holding shift, thanks to Joolee
++ [lang] Russian update, thanks to Victor Volkov
++ [lang] Greek update, thanks to Panagiotis Papazoglou
++ [lang] Norwegian update, thanks to Sven-Erik Andersen 
+- bug #2929958 [import] Cannot import (French interface) 
+- [security] Use X-Frame-Options header to protect against ClickJacking.
++ [lang] Finnish update, thanks to Jouni Kahkonen
++ [lang] Lithuanian update, thanks to Rytis Slatkevicius - rytis_s 
+- bug #2931939 [status] Seeing "m" as unit is confusing 
+- bug #2926613 [edit] Copy database shows errors when DB has foreign key
++ [lang] Catalan update, thanks to Xavier Navarro
+
+3.2.6.0 (not released)
+- bug #2938492 [display] information_schema sorting order 
+- bug #2941101 [import] import timeout when table already created and
+  several data lines
+- bug #2944069 [config] Extraneus dot from dirname() when installed in root, thanks to ayanamist
 
 3.2.5.0 (2010-01-10)
 - patch #2903400 [bookmarks] Status of bookmark table, 
-  thanks to Virsacer - virsacer
+  thanks to Virsacer - virsacer 
 - bug [history] QueryHistoryDB is not respected
-- bug #2905629 [auth] Blowfish secret is not hashed 
-- bug #2910000 [gui] ShowServerInfo should hide all server info from main page 
+- bug #2905629 [auth] Blowfish secret is not hashed
+- bug #2910000 [gui] ShowServerInfo should hide all server info from main page
 - bug #2910568 [structure] Table size for ARCHIVE tables is not displayed 
 - patch #2899969 [core] Session lock blocks working from a second window,
   thanks to Greg Roach - fisharebest
 - patch #2915168 [import] Incorrect parsing of DELIMITER keyword,
   thanks to Greg Roach - fisharebest
 - patch #2918831 [export] Missing backquotes on reserved words, 
-  thanks to Virsacer - virsacer
+  thanks to Virsacer - virsacer 
 - [core] Fix broken cleanup of $_GET
 - bug #2924357 [operations] Cannot rename a database that has foreign key
   constraints
 - bug #869006 [structure] Ignore number of records for MRG_MyISAM tables
 - bug [browse] "Show BLOB contents" should display HTML code that is present
   in a BLOB, thanks to Vincent van der Tuin
-- [privileges] Improve escaping of hostname
+- [privileges] Improve Proper escaping of hostname
 
 3.2.4.0 (2009-12-02)
-- bug [engines] Innodb_buffer_pool_pages_latched no longer returned in status 
-- bug #2890451 [setup] Inconsistent generated "designer_coords" 
+- bug [engines] Innodb_buffer_pool_pages_latched no longer returned in status
+- bug #2890451 [setup] Inconsistent generated "designer_coords"
 - bug #2890443 [mysqli] "No index used in query" exception is reported 
-- bug #2891250 [ob] Garbled data in navi frame (PHP 5.2.11 bug) 
-- bug #2887357 [core] Slow loading times with large databases (partial fix) 
-- bug #2893931 [lang] Typo and empty message 
-+ [lang] Russian update, thanks to Victor Volkov 
+- bug #2891250 [ob] Garbled data in navi frame (PHP 5.2.11 bug)
+- bug #2887357 [core] Slow loading times with large databases (partial fix)
+- bug #2893931 [lang] Typo and empty message
++ [lang] Russian update, thanks to Victor Volkov
 - bug #2823599 [edit] UUID Primary Key wrongly updated
-- bug #2895894 [structure] Empty default value not set properly 
-- bug #2897536 [parser] Copying table with bit field with default 
-- bug #2893221 [core] Statement may not be safe to log in statement format 
+- bug #2895894 [structure] Empty default value not set properly
+- bug #2897536 [parser] Copying table with bit field with default
+- bug #2893221 [core] Statement may not be safe to log in statement format
 
 3.2.3.0 (2009-10-30)
 - patch #2856664 [export] Date, time, and datetime column types now export correctly to
   OpenOffice Spreadsheet, thanks to Thomas Pulickal - jemajoign
 - patch #2859788 [parser] Double-character delimiters (bug #2846239), 
   thanks to Thomas Pulickal - jemajoign
-- bug #2832600 [export] Slow export when having lots of databases 
+- bug #2832600 [export] Slow export when having lots of databases
 - bug #2537766 [import] Comments are stripped when editing store procedures 
 - bug #2852370 [operations] Renaming database deletes triggers 
 - bug #2872247 [interface] Failed opening required 'mysql_charsets.lib.php', thanks to CyberLeo Kitsana - cyberleo
 - bug [structure] "In use" table incorrectly reported as "view" 
 - bug #2879909 [interface] Removed double htmlspecialchars when editing enum column
-- bug #2868328 [relations] Adding foreign key when table name contains a dot 
-- bug #2883381 [doc] Side effects of MemoryLimit setting 
+- bug #2868328 [relations] Adding foreign key when table name contains a dot
+- bug #2883381 [doc] Side effects of MemoryLimit setting
 - bug #2826128 [display] Inverting sort order when expression contains a function name
 
 3.2.2.1 (2009-10-12)

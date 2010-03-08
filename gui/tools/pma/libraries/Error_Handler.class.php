@@ -3,7 +3,7 @@
 /**
  * Holds class PMA_Error_Handler
  *
- * @version $Id: Error_Handler.class.php 12298 2009-03-22 12:25:17Z lem9 $
+ * @version $Id: Error_Handler.class.php 13031 2009-10-11 12:27:21Z lem9 $
  * @package phpMyAdmin
  */
 
@@ -88,6 +88,9 @@ class PMA_Error_Handler
      * E_COMPILE_WARNING,
      * and most of E_STRICT raised in the file where set_error_handler() is called.
      *
+     * Do not use the context parameter as we want to avoid storing the
+     * complete $GLOBALS inside $_SESSION['errors']
+     *
      * @uses    E_USER_NOTICE
      * @uses    E_USER_WARNING
      * @uses    E_STRICT
@@ -110,12 +113,11 @@ class PMA_Error_Handler
      * @param   string  $errstr
      * @param   string  $errfile
      * @param   integer $errline
-     * @param   array   $errcontext
      */
-    public function handleError($errno, $errstr, $errfile, $errline, $errcontext)
+    public function handleError($errno, $errstr, $errfile, $errline)
     {
         // create error object
-        $error = new PMA_Error($errno, $errstr, $errfile, $errline, $errcontext);
+        $error = new PMA_Error($errno, $errstr, $errfile, $errline);
 
         // do not repeat errors
         $this->_errors[$error->getHash()] = $error;

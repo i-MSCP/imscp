@@ -28,7 +28,7 @@
  * - db connection
  * - authentication work
  *
- * @version $Id: common.inc.php 12397 2009-05-08 14:15:55Z lem9 $
+ * @version $Id: common.inc.php 13106 2009-11-07 12:00:19Z lem9 $
  * @package phpMyAdmin
  */
 
@@ -100,6 +100,16 @@ require_once './libraries/Theme_Manager.class.php';
  * the PMA_Config class
  */
 require_once './libraries/Config.class.php';
+
+/**
+ * the relation lib, tracker needs it
+ */
+require_once './libraries/relation.lib.php';
+
+/**
+ * the PMA_Tracker class
+ */
+require_once './libraries/Tracker.class.php';
 
 /**
  * the PMA_Table class
@@ -653,11 +663,11 @@ unset($default_server);
 /* setup themes                                          LABEL_theme_setup    */
 
 if (isset($_REQUEST['custom_color_reset'])) {
-    unset($_SESSION['userconf']['custom_color']);
-    unset($_SESSION['userconf']['custom_color_rgb']);
+    unset($_SESSION['tmp_user_values']['custom_color']);
+    unset($_SESSION['tmp_user_values']['custom_color_rgb']);
 } elseif (isset($_REQUEST['custom_color'])) {
-    $_SESSION['userconf']['custom_color'] = $_REQUEST['custom_color'];
-    $_SESSION['userconf']['custom_color_rgb'] = $_REQUEST['custom_color_rgb'];
+    $_SESSION['tmp_user_values']['custom_color'] = $_REQUEST['custom_color'];
+    $_SESSION['tmp_user_values']['custom_color_rgb'] = $_REQUEST['custom_color_rgb'];
 }
 /**
  * @global PMA_Theme_Manager $_SESSION['PMA_Theme_Manager']
@@ -943,10 +953,10 @@ if (! defined('PMA_MINIMUM_COMMON')) {
         /**
          * some resetting has to be done when switching servers
          */
-        if (isset($_SESSION['userconf']['previous_server']) && $_SESSION['userconf']['previous_server'] != $GLOBALS['server']) {
-            unset($_SESSION['userconf']['navi_limit_offset']);
+        if (isset($_SESSION['tmp_user_values']['previous_server']) && $_SESSION['tmp_user_values']['previous_server'] != $GLOBALS['server']) {
+            unset($_SESSION['tmp_user_values']['navi_limit_offset']);
         }
-        $_SESSION['userconf']['previous_server'] = $GLOBALS['server'];
+        $_SESSION['tmp_user_values']['previous_server'] = $GLOBALS['server'];
 
     } // end server connecting
 
@@ -966,14 +976,18 @@ if (! defined('PMA_MINIMUM_COMMON')) {
 
     // rajk - checks for blobstreaming plugins and databases that support
     // blobstreaming (by having the necessary tables for blobstreaming)
-    if (checkBLOBStreamingPlugins())
+    if (checkBLOBStreamingPlugins()) {
         checkBLOBStreamableDatabases();
+    }
 } // end if !defined('PMA_MINIMUM_COMMON')
 
 // remove sensitive values from session
 $_SESSION['PMA_Config']->set('blowfish_secret', '');
 $_SESSION['PMA_Config']->set('Servers', '');
 $_SESSION['PMA_Config']->set('default_server', '');
+
+/* Tell tracker that it can actually work */
+PMA_Tracker::enable();
 
 if (!empty($__redirect) && in_array($__redirect, $goto_whitelist)) {
     /**

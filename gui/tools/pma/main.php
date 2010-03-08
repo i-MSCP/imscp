@@ -182,6 +182,7 @@ echo '</div>';
 echo '</div>';
 echo '<div id="main_pane_right">';
 
+
 if ($server > 0 && $GLOBALS['cfg']['ShowServerInfo']) {
     echo '<div class="group">';
     echo '<h2>MySQL</h2>';

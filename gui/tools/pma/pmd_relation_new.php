@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: pmd_relation_new.php 11979 2008-11-24 10:10:36Z nijel $
+ * @version $Id: pmd_relation_new.php 12596 2009-06-24 11:34:56Z lem9 $
  * @package phpMyAdmin-Designer
  */
 
@@ -82,7 +82,7 @@ if (PMA_foreignkey_supported($type_T1) && PMA_foreignkey_supported($type_T2) && 
                             . '\'' . PMA_sqlAddslashes($T1) . '\','
                             . '\'' . PMA_sqlAddslashes($F1) . '\')';
 
-        if (PMA_query_as_cu($q , false, PMA_DBI_QUERY_STORE)) {
+        if (PMA_query_as_controluser($q , false, PMA_DBI_QUERY_STORE)) {
             PMD_return_new(1, 'strInternalRelationAdded');
         } else {
             PMD_return_new(0, 'strErrorRelationAdded');

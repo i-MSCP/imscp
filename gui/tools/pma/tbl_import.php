@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: tbl_import.php 11994 2008-11-24 11:22:44Z nijel $
+ * @version $Id: tbl_import.php 12620 2009-07-02 12:12:06Z lem9 $
  * @package phpMyAdmin
  */
 
@@ -10,6 +10,11 @@
  *
  */
 require_once './libraries/common.inc.php';
+
+/**
+  * Load mootools for upload progress bar
+  */
+$GLOBALS['js_include'][] = 'mootools.js'; 
 
 /**
  * Gets tables informations and displays top links

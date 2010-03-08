@@ -2,7 +2,7 @@
 /**
  * function used in server privilege pages
  *
- * @version $Id: server_privileges.js 12391 2009-05-04 16:32:16Z lem9 $
+ * @version $Id: server_privileges.js 12642 2009-07-12 12:13:11Z helmo $
  */
 
 /**
@@ -73,23 +73,23 @@ function checkAddUser(the_form)
 /**
  * Generate a new password and copy it to the password input areas
  *
- * @param   string   the form name
+ * @param   object   the form that holds the password fields
  *
  * @return  boolean  always true
  */
-function suggestPassword() {
+function suggestPassword(passwd_form) {
     // restrict the password to just letters and numbers to avoid problems:
     // "editors and viewers regard the password as multiple words and
     // things like double click no longer work"
     var pwchars = "abcdefhjmnpqrstuvwxyz23456789ABCDEFGHJKLMNPQRSTUVWYXZ";
     var passwordlength = 16;    // do we want that to be dynamic?  no, keep it simple :)
-    var passwd = document.getElementById('generated_pw');
+    var passwd = passwd_form.generated_pw;
     passwd.value = '';
 
     for ( i = 0; i < passwordlength; i++ ) {
         passwd.value += pwchars.charAt( Math.floor( Math.random() * pwchars.length ) )
     }
-    document.getElementById('text_pma_pw').value = passwd.value;
-    document.getElementById('text_pma_pw2').value = passwd.value;
+    passwd_form.text_pma_pw.value = passwd.value;
+    passwd_form.text_pma_pw2.value = passwd.value;
     return true;
 }

@@ -1,4 +1,4 @@
-/* $Id: docs.css 12187 2009-01-13 16:55:53Z nijel $ */
+/* $Id: docs.css 12854 2009-08-21 09:29:29Z nijel $ */
 /* Stylesheet for phpMyAdmin documentation */
 /* vim: expandtab ts=4 sw=4 sts=4 tw=78
 */
@@ -248,4 +248,9 @@ p.footnote {
 
 p.footnote:first-line {
     margin-left: -2%;
+}
+
+/* Block to mark separate translation string */
+div.l10n {
+    display: inline;
 }

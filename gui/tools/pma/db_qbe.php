@@ -3,7 +3,7 @@
 /**
  * query by example the whole database
  *
- * @version $Id: db_qbe.php 12190 2009-01-13 22:55:44Z lem9 $
+ * @version $Id: db_qbe.php 13061 2009-10-23 10:02:09Z lem9 $
  * @package phpMyAdmin
  */
 
@@ -802,7 +802,7 @@ if (isset($Field) && count($Field) > 0) {
                 $checked_tables = $col_cand;
                 foreach ($col_cand as $tab) {
                     if ($checked_tables[$tab] != 1) {
-                        $tsize[$tab] = PMA_Table::countRecords($db, $tab, true, false);
+                        $tsize[$tab] = PMA_Table::countRecords($db, $tab, false);
                         $checked_tables[$tab] = 1;
                     }
                     $csize[$tab] = $tsize[$tab];

@@ -3,7 +3,7 @@
 /**
  * main css file from theme Original
  *
- * @version $Id: theme_right.css.php 12031 2008-11-28 23:22:27Z nijel $
+ * @version $Id: theme_right.css.php 12881 2009-08-24 20:57:51Z tomassrnka $
  * @package phpMyAdmin-theme
  * @subpackage Original
  */
@@ -31,7 +31,7 @@ body {
     padding:            0;
     margin:             0.5em;
     color:              <?php echo $GLOBALS['cfg']['MainColor']; ?>;
-    background:         <?php echo (isset($_SESSION['userconf']['custom_color']) ? $_SESSION['userconf']['custom_color'] : $GLOBALS['cfg']['MainBackground']); ?>;
+    background:         <?php echo (isset($_SESSION['tmp_user_values']['custom_color']) ? $_SESSION['tmp_user_values']['custom_color'] : $GLOBALS['cfg']['MainBackground']); ?>;
 }
 
 <?php if (! empty($GLOBALS['cfg']['FontFamilyFixed'])) { ?>
@@ -1177,4 +1177,28 @@ code.sql {
     padding-bottom:     0.3em;
     border-bottom:      0.3em solid <?php echo $GLOBALS['cfg']['ThBackground']; ?>;
     margin-bottom:      0.3em;
+}
+
+/**
+  *  Progress bar styles
+  */
+div.upload_progress_bar_outer
+{
+    border: 1px solid black; 
+    width: 202px;
+}
+
+div.upload_progress_bar_inner
+{
+    background-color: <?php echo (isset($_SESSION['userconf']['custom_color']) ? $_SESSION['userconf']['custom_color'] : $GLOBALS['cfg']['NaviBackground']); ?>; 
+    width: 0px; 
+    height: 12px; 
+    margin: 1px;
+}
+
+table#serverconnection_src_remote, 
+table#serverconnection_trg_remote,
+table#serverconnection_src_local, 
+table#serverconnection_trg_local  {
+  float:left;
 }

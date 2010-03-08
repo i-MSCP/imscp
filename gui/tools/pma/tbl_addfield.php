@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: tbl_addfield.php 12339 2009-04-09 10:03:03Z helmo $
+ * @version $Id: tbl_addfield.php 13377 2010-02-03 10:55:03Z helmo $
  * @package phpMyAdmin
  */
 
@@ -13,6 +13,7 @@ require_once './libraries/common.inc.php';
 require_once './libraries/Table.class.php';
 
 $GLOBALS['js_include'][] = 'functions.js';
+$GLOBALS['js_include'][] = 'mootools-more.js';
 require_once './libraries/header.inc.php';
 
 // Check parameters

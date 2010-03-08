@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: transformation_wrapper.php 11994 2008-11-24 11:22:44Z nijel $
+ * @version $Id: transformation_wrapper.php 13195 2009-12-30 15:27:27Z lem9 $
  * @package phpMyAdmin
  */
 
@@ -30,8 +30,8 @@ require_once './libraries/db_table_exists.lib.php';
  */
 PMA_DBI_select_db($db);
 $table_def = PMA_DBI_query('SHOW FIELDS FROM ' . PMA_backquote($table), null, PMA_DBI_QUERY_STORE);
-if (isset($primary_key)) {
-    $result      = PMA_DBI_query('SELECT * FROM ' . PMA_backquote($table) . ' WHERE ' . $primary_key . ';', null, PMA_DBI_QUERY_STORE);
+if (isset($where_clause)) {
+    $result      = PMA_DBI_query('SELECT * FROM ' . PMA_backquote($table) . ' WHERE ' . $where_clause . ';', null, PMA_DBI_QUERY_STORE);
     $row         = PMA_DBI_fetch_assoc($result);
 } else {
     $result      = PMA_DBI_query('SELECT * FROM ' . PMA_backquote($table) . ' LIMIT 1;', null, PMA_DBI_QUERY_STORE);

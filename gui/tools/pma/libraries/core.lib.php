@@ -5,7 +5,7 @@
  * This script is distinct from libraries/common.inc.php because this
  * script is called from /test.
  *
- * @version $Id: core.lib.php 11982 2008-11-24 10:32:56Z nijel $
+ * @version $Id: core.lib.php 13050 2009-10-16 08:10:26Z helmo $
  * @package phpMyAdmin
  */
 
@@ -30,7 +30,6 @@
  * echo PMA_ifSetOr($cfg['ForceSSL'], false, 'boolean'); // true
  * </code>
  *
- * @todo create some testsuites
  * @uses    PMA_isValid()
  * @see     PMA_isValid()
  * @param   mixed   $var        param to check

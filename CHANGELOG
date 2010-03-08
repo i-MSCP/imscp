@@ -1,6 +1,10 @@
 ispCP ω 1.0.5 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-03-08 Benedikt Heintel
+	- GUI:
+		* Updated PHPmyAdmin to version 3.3.0
+
 2010-03-08 Laurent Declercq
 	- ENGINE:
 		* Removed some unused variables

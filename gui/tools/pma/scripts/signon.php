@@ -7,7 +7,7 @@
  * not intended to be perfect code and look, only shows how you can
  * integrate this functionality in your application.
  *
- * @version $Id: signon.php 11988 2008-11-24 11:07:36Z nijel $
+ * @version $Id: signon.php 13030 2009-10-10 11:33:03Z lem9 $
  * @package phpMyAdmin
  * @subpackage Example
  */
@@ -24,6 +24,7 @@ if (isset($_POST['user'])) {
     $_SESSION['PMA_single_signon_user'] = $_POST['user'];
     $_SESSION['PMA_single_signon_password'] = $_POST['password'];
     $_SESSION['PMA_single_signon_host'] = $_POST['host'];
+    $_SESSION['PMA_single_signon_port'] = $_POST['port'];
     $id = session_id();
     /* Close that session */
     session_write_close();
@@ -47,6 +48,7 @@ if (isset($_POST['user'])) {
 Username: <input type="text" name="user" /><br />
 Password: <input type="password" name="password" /><br />
 Host: (will use the one from config.inc.php by default) <input type="text" name="host" /><br />
+Port: (will use the one from config.inc.php by default) <input type="text" name="port" /><br />
 <input type="submit" />
 </form>
 </body>

@@ -1,5 +1,5 @@
 #!/bin/bash
-# $Id: remove_message.sh 5152 2003-11-18 15:20:45Z nijel $
+# $Id: remove_message.sh 13133 2009-11-26 09:23:33Z tomassrnka $
 #
 # Shell script that removes a message from all message files (Lem9)
 # it checks for the message, followed by a space
