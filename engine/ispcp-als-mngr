@@ -2179,7 +2179,7 @@ sub als_del_httpd_file_data {
 	# Domain WWW directories;
 	#
 
-	($rs, $rdata) = del_dir("$www_dir/$als_dir");
+	$rs = del_dir("$www_dir/$als_dir");
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'als_del_httpd_file_data()', 'Ending...');

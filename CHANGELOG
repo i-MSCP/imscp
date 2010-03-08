@@ -1,6 +1,11 @@
 ispCP ω 1.0.5 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-03-08 Laurent Declercq
+	- ENGINE:
+		* Removed some unused variables
+		* Typo
+
 2010-03-07 Laurent Declercq
 	- GUI:
 		* Fixed #2252: Data related to the subdomains not deleted during domain deletion
