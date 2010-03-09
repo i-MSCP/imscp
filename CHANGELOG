@@ -3,8 +3,11 @@ ispCP ω 1.0.5 Changelog
 
 2010-03-09 Benedikt Heintel
 	- TOOLS:
-		* Fixed #2256: Update Squirrelmail Plugin's to the newest Version
+		* Fixed #2256: Update Squirrelmail Plugins to the newest Version
 		* Fixed #2261: Squirrelmail update to version 1.4.20
+		
+2010-03-08 Benedikt Heintel
+	- TOOLS:
 		* Updated phpMyAdmin to version 3.3.0
 
 2010-03-08 Laurent Declercq
