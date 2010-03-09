@@ -115,17 +115,24 @@ function delete_domain($domain_id) {
 	// Mail users:
 	exec_query($sql, "UPDATE `mail_users` SET `status` = '" . $delete_status . "' WHERE `domain_id` = ?", array($domain_id));
 
-	// Protected areas:
-	$query = "UPDATE `htaccess` SET `status` = '$delete_status' WHERE `dmn_id` = ?";
-	exec_query($sql, $query, array($domain_id));
+	// Delete all protected areas related data (areas, groups and users)
+	$query = "
+		DELETE
+			`areas`, `users`, `groups`
+		FROM
+			`domain` as `customer`
+		LEFT JOIN
+			`htaccess` AS `areas` ON `areas`.`dmn_id` = `customer`.`domain_id`
+		LEFT JOIN
+			`htaccess_users` AS `users` ON `users`.`dmn_id` = `customer`.`domain_id`
+		LEFT JOIN
+			`htaccess_groups` AS `groups` ON `groups`.`dmn_id` = `customer`.`domain_id`
+		WHERE
+			`customer`.`domain_id` = ?
+		;
+	";
 
-	// Protected area groups:
-	$query = "UPDATE `htaccess_groups` SET `status` = '$delete_status' WHERE `dmn_id` = ?";
-	exec_query($sql, $query, array($domain_id));
-
-	// Protected area users
-	$query = "UPDATE `htaccess_users` SET `status` = '$delete_status' WHERE `dmn_id` = ?";
-	exec_query($sql, $query, array($domain_id));
+	exec_query($sql, $query, $domain_id);
 
 	// Delete subdomain aliases:
 	$alias_a = array();
