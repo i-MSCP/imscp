@@ -11,7 +11,7 @@
  *    - Send mail
  *    - Save As Draft
  *
- * @copyright &copy; 1999-2009 The SquirrelMail Project Team
+ * @copyright 1999-2010 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version $Id$
  * @package squirrelmail
@@ -688,7 +688,7 @@ function newMail ($mailbox='', $passed_id='', $passed_ent_id='', $action='', $se
     global $editor_size, $default_use_priority, $body, $idents,
         $use_signature, $composesession, $data_dir, $username,
         $username, $key, $imapServerAddress, $imapPort, 
-        $composeMessage, $body_quote;
+        $composeMessage, $body_quote, $strip_sigs;
     global $languages, $squirrelmail_language, $default_charset;
 
     /*
@@ -892,6 +892,9 @@ function newMail ($mailbox='', $passed_id='', $passed_ent_id='', $action='', $se
                 $body = '';
                 $cnt = count($rewrap_body);
                 for ($i=0;$i<$cnt;$i++) {
+                    if ($strip_sigs && $rewrap_body[$i] == '-- ') {
+                        break;
+                    }
                     sqWordWrap($rewrap_body[$i], $editor_size, $default_charset);
                     if (preg_match("/^(>+)/", $rewrap_body[$i], $matches)) {
                         $gt = $matches[1];
@@ -1525,7 +1528,7 @@ function deliverMessage(&$composeMessage, $draft=false) {
     if (!$rfc822_header->from[0]->host) $rfc822_header->from[0]->host = $domain;
     if ($full_name) {
         $from = $rfc822_header->from[0];
-        $full_name_encoded = encodeHeader($full_name);
+        $full_name_encoded = encodeHeader('"' . $full_name . '"');
         if ($full_name_encoded != $full_name) {
             $from_addr = $full_name_encoded .' <'.$from->mailbox.'@'.$from->host.'>';
         } else {

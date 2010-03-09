@@ -7,9 +7,9 @@
  * Don't do it unless you know what you're doing.
  * Use standard PHP syntax, see config.php for examples.
  *
- * @copyright &copy; 2002-2009 The SquirrelMail Project Team
+ * @copyright 2002-2010 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: config_local.php 13549 2009-04-15 22:00:49Z jervfors $
+ * @version $Id: config_local.php 13893 2010-01-25 02:47:41Z pdontthink $
  * @package squirrelmail
  * @subpackage config
  *

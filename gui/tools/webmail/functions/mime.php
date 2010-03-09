@@ -6,9 +6,9 @@
  * This contains the functions necessary to detect and decode MIME
  * messages.
  *
- * @copyright &copy; 1999-2009 The SquirrelMail Project Team
+ * @copyright 1999-2010 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: mime.php 13806 2009-07-31 10:12:46Z avel $
+ * @version $Id: mime.php 13899 2010-01-30 16:14:53Z pdontthink $
  * @package squirrelmail
  */
 
@@ -789,6 +789,7 @@ function encodeHeader ($string) {
     for($i = 0; $i < $j; ++$i) {
         switch($string{$i})
         {
+            case '"':
             case '=':
             case '<':
             case '>':

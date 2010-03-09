@@ -5,7 +5,7 @@
  *
  * Manage personal address book.
  *
- * @copyright &copy; 1999-2009 The SquirrelMail Project Team
+ * @copyright 1999-2010 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version $Id$
  * @package squirrelmail
@@ -48,7 +48,7 @@ sqgetGlobalVar('deladdr',    $deladdr,    SQ_POST);
 sqgetGlobalVar('compose_to', $compose_to, SQ_POST);
 sqgetGlobalVar('sel',        $sel,        SQ_POST);
 // renumber $sel array
-if (!empty($sel)) $sel = array_merge($sel);
+if (!empty($sel)) $sel = array_merge($sel, array());
 sqgetGlobalVar('oldnick',    $oldnick,    SQ_POST);
 sqgetGlobalVar('backend',    $backend,    SQ_POST);
 sqgetGlobalVar('doedit',     $doedit,     SQ_POST);

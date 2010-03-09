@@ -5,7 +5,7 @@
  *
  * Deletes a meesage from the IMAP server
  *
- * @copyright &copy; 1999-2009 The SquirrelMail Project Team
+ * @copyright 1999-2010 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version $Id$
  * @package squirrelmail
@@ -78,6 +78,7 @@ $location = get_location();
 
 if (isset($where) && isset($what)) {
     header("Location: $location/search.php?where=" . $where .
+           '&smtoken=' . sm_generate_security_token() .
            '&what=' . $what . '&mailbox=' . urlencode($mailbox));
 } else {
     if (!empty($saved_draft) || !empty($mail_sent)) {

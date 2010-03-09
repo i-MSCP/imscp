@@ -10,7 +10,7 @@
   *
   * string  $note  The confirmation text to be displayed
   *
-  * Copyright (c) 2008-2009 Paul Lesniewski <paul@squirrelmail.org>,
+  * Copyright (c) 2008-2010 Paul Lesniewski <paul@squirrelmail.org>,
   * Licensed under the GNU GPL. For full terms see the file COPYING.
   *
   * @package plugins

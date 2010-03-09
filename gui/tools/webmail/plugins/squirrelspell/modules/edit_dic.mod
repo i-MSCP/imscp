@@ -4,7 +4,7 @@
  * -------------
  * Squirrelspell module
  *
- * Copyright (c) 1999-2009 The SquirrelMail Project Team
+ * Copyright (c) 1999-2010 The SquirrelMail Project Team
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
  * This module lets the user edit his/her personal dictionary.
@@ -96,7 +96,7 @@ if (!$words){
   /**
    * Check if all dictionaries were empty.
    */
-  if (!$msg) {
+  if (empty($msg)) {
     $msg = '<p>' . _("No words in your personal dictionary.") . '</p>';
   } else {
     $msg .= '</table>';
@@ -112,4 +112,3 @@ if (!$words){
  * vim: syntax=php
  */
 
-?>

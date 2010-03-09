@@ -3,7 +3,7 @@
 /**
   * SquirrelMail Add Address Plugin
   * Copyright (c) 1999-2008 The SquirrelMail Project Team
-  * Copyright (c) 2008-2009 Paul Lesniewski <paul@squirrelmail.org>,
+  * Copyright (c) 2008-2010 Paul Lesniewski <paul@squirrelmail.org>,
   * Licensed under the GNU GPL. For full terms see the file COPYING.
   *
   * @package plugins
@@ -77,7 +77,7 @@ function add_address_info()
                        'sm_site_username' => 'pdontthink',
                     ),
                  ),
-                 'version' => '1.0.2',
+                 'version' => '1.0.3',
                  'required_sm_version' => '1.4.0',
                  'requires_source_patch' => 0,
                  'requires_configuration' => 0,

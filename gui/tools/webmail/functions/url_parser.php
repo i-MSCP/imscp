@@ -6,9 +6,9 @@
  * This code provides various string manipulation functions that are
  * used by the rest of the SquirrelMail code.
  *
- * @copyright &copy; 1999-2009 The SquirrelMail Project Team
+ * @copyright 1999-2010 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: url_parser.php 13796 2009-07-29 00:01:19Z pdontthink $
+ * @version $Id: url_parser.php 13893 2010-01-25 02:47:41Z pdontthink $
  * @package squirrelmail
  */
 
@@ -128,11 +128,16 @@ function parseUrl (&$body) {
 
             global $MailTo_PReg_Match;
             if ((preg_match($MailTo_PReg_Match, $mailto, $regs)) && ($regs[0] != '')) {
-                //sm_print_r($regs);
                 $mailto_before = $target_token . $regs[0];
-                $mailto_params = $regs[10];
+                /**
+                 * '+' characters in a mailto URI don't need to be percent-encoded.
+                 * However, when mailto URI data is transported via HTTP, '+' must
+                 * be percent-encoded as %2B so that when the HTTP data is
+                 * percent-decoded, you get '+' back and not a space.
+                 */
+                $mailto_params = str_replace("+", "%2B", $regs[10]);
                 if ($regs[1]) {    //if there is an email addr before '?', we need to merge it with the params
-                    $to = 'to=' . $regs[1];
+                    $to = 'to=' . str_replace("+", "%2B", $regs[1]);
                     if (strpos($mailto_params, 'to=') > -1)    //already a 'to='
                         $mailto_params = str_replace('to=', $to . '%2C%20', $mailto_params);
                     else {

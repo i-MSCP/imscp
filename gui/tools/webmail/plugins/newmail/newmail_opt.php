@@ -3,7 +3,7 @@
 /**
  * newmails_opt.php
  *
- * Copyright (c) 1999-2009 The SquirrelMail Project Team
+ * Copyright (c) 1999-2010 The SquirrelMail Project Team
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
  * Displays all options relating to new mail sounds
@@ -71,6 +71,7 @@ echo '</td></tr>' .
             html_tag( 'td', '', 'center', $color[4] ) . "\n" . '<hr style="width: 25%; height: 1px;" />' . "\n";
 
 echo '<form action="'.sqm_baseuri().'src/options.php" method="post">' . "\n" .
+        '<input type="hidden" name="smtoken" value="' . sm_generate_security_token() . '">' . "\n" .
         html_tag( 'table', '', '', '', 'width="100%" cellpadding="5" cellspacing="0" border="0"' ) . "\n";
 
 // Option: media_allbox
@@ -182,6 +183,7 @@ echo html_tag( 'tr', "\n" .
         html_tag( 'td',
             '<input type="hidden" name="optmode" value="submit" />' .
             '<input type="hidden" name="optpage" value="newmail" />' .
+        	'<input type="hidden" name="smtoken" value="' . sm_generate_security_token() . '" />' .
             '<input type="submit" value="' . _("Submit") . '" name="submit_newmail" />',
         'left' )
      ) . "\n";

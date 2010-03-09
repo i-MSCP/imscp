@@ -18,9 +18,9 @@
                    K.D. Chang    <a-kchang@microsoft.com>
     The entries are in cp866_DOSCyrillicRussian order
  *
- * @copyright &copy; 2003-2009 The SquirrelMail Project Team
+ * @copyright 2003-2010 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: cp866.php 13549 2009-04-15 22:00:49Z jervfors $
+ * @version $Id: cp866.php 13893 2010-01-25 02:47:41Z pdontthink $
  * @package squirrelmail
  * @subpackage decode
 */

@@ -3,9 +3,9 @@
 /**
  * Script provides form to decode encrypted header information.
  *
- * @copyright &copy; 2005-2009 The SquirrelMail Project Team
+ * @copyright 2005-2010 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: decrypt_headers.php 13672 2009-05-11 22:04:44Z pdontthink $
+ * @version $Id: decrypt_headers.php 13893 2010-01-25 02:47:41Z pdontthink $
  * @package squirrelmail
  */
 

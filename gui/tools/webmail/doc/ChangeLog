@@ -2,6 +2,28 @@
 *** SquirrelMail Stable Series 1.4 ***
 **************************************
 
+Version 1.4.20 - 06 Mar 2010
+---------------------------
+  - Fixed issue with search not using literals correctly (#2846511).
+  - Fixed issue with returning to search results due to new security token code.
+  - Fixed issue with multi-part related messages not showing all attachments (#2830140).
+  - Fixed for security token missing in newmail plugin (#2919418).
+  - Fixed sort in Sent folder to sort by "To" field instead of "From" field (#2907412).
+  - Fixed mailto: urls containing + characters.  Thanks to Michael Puls II for the 
+    patch.
+  - Made base URL autodetection more robust; fixes some lighttpd issues
+    (probably #1741469).
+  - Encoded From headers are now properly quoted (#2830141).
+  - Multibyte strings (notably subjects) are now handled correctly (#2824813,
+    #2925731).
+  - X-DNS-Prefetch-Control: off header is now sent to browsers to prevent information
+    leakage when Firefox does DNS prefetching for URLs contained in emails.
+  - Added unread links in message view.
+  - Added the ability to configure Google Mail (Gmail) as the mail server
+    behind SquirrelMail.
+  - Added option in display preferences that allows the signature to be stripped
+    from the original message when replying (#2952876).  Thanks to Sven Strickroth.
+
 Version 1.4.20 RC2 - 17 Aug 2009
 --------------------------------
   - Protect message deletion with security token system. (Secunia Advisory SA34627)

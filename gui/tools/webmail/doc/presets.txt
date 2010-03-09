@@ -1,4 +1,4 @@
-$Date: 2008-06-18 00:25:11 -0700 (Wed, 18 Jun 2008) $
+$Date: 2010-02-13 15:06:30 -0800 (Sat, 13 Feb 2010) $
 
 This file lists the SquirrelMail settings set by option D in conf.pl
 
@@ -231,3 +231,64 @@ show_contain_subfolders_option = false
 
 
 * Configuration with Maildir++ depot and . delimiter - use courier preset.
+
+
+---------------------
+'gmail' settings:
+---------------------
+Support for using SquirrelMail as a front end for Google Mail (Gmail)
+accounts was added in SquirrelMail versions 1.4.20 and 1.5.2 and is
+currently experimental.
+
+CAPABILITY IMAP4rev1 UNSELECT LITERAL+ IDLE NAMESPACE QUOTA ID XLIST CHILDREN
+X-GM-EXT-1 UIDPLUS COMPRESS=DEFLATE 
+
+Notes:
+* Might want to remove "All Mail" from folder drop-down lists (such as the
+  ones for moving mail to folders... "All Mail" is not a folder in Gmail
+  (it is a super-folder that shows mail from all folders)
+* Might want to remove the whole folder list drop-down from Create Folder
+  section, since labels/folders are usually just created as children of <none>
+* Might want to remove any folders prefixed with [Gmail]/ from the rename
+  and delete folders drop down selectors, since those are Gmail system folders
+* Might want to tweak what's included in the (un)subscribe menus too(?)
+* The folder list order is slightly strange, with the Gmail system folders
+  listed below the user labels/folders and away from the other system folders
+  (drafts/sent/trash)
+* When a user changes languages in Gmail's interface, the Drafts, Sent and
+  Trash folder names are changed to localized versions thereof.  To see those
+  folders correctly in SquirrelMail, the user should change the SquirrelMail
+  language to match.  Moreover, SquirrelMail then needs to be told what
+  folders to use for Drafts, Sent and Trash in Options --> Folder Preferences.
+  These default settings will only correctly find the Sent, Trash and Drafts
+  folders if both Gmail and SquirrelMail languages are set to English.
+  (This could be solved with implementation of extended LIST command support.)
+* In some places (Europe?), the "[Gmail]" prefix should be "[Google Mail]"
+  and "Trash" might be called "Bin"
+
+              imap_server_type = gmail
+         default_folder_prefix = <none> (is set to empty string)
+                  trash_folder = [Gmail]/Trash
+         default_move_to_trash = true
+                   sent_folder = [Gmail]/Sent Mail
+                  draft_folder = [Gmail]/Drafts
+           auto_create_special = false
+            show_prefix_option = false
+          default_sub_of_inbox = false
+show_contain_subfolders_option = false
+            optional_delimiter = /
+                 delete_folder = true
+      force_username_lowercase = false
+                        domain = gmail.com
+             imapServerAddress = imap.gmail.com
+                      imapPort = 993
+                  use_imap_tls = true
+                imap_auth_mech = login
+             smtpServerAddress = smtp.gmail.com
+                      smtpPort = 465
+                  use_smtp_tls = true
+                smtp_auth_mech = login
+               pop_before_smtp = false
+                   useSendmail = false
+
+-------------------

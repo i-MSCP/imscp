@@ -6,9 +6,9 @@
  * This file contains functions needed to extract email address headers from
  * mime messages.
  *
- * @copyright &copy; 2003-2009 The SquirrelMail Project Team
+ * @copyright 2003-2010 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: AddressStructure.class.php 13549 2009-04-15 22:00:49Z jervfors $
+ * @version $Id: AddressStructure.class.php 13899 2010-01-30 16:14:53Z pdontthink $
  * @package squirrelmail
  * @subpackage mime
  * @since 1.3.2
@@ -60,12 +60,13 @@ class AddressStructure {
                                   : $this->mailbox);
             $personal = trim($this->personal);
             $is_encoded = false;
+            // FIXME: I don't think the U modifier below does anything at all
             if (preg_match('/(=\?([^?]*)\?(Q|B)\?([^?]*)\?=)(.*)/Ui',$personal,$reg)) {
                 $is_encoded = true;
             }
             if ($personal) {
                 if ($encoded && !$is_encoded) {
-                    $personal_encoded = encodeHeader($personal);
+                    $personal_encoded = encodeHeader('"' . $personal . '"');
                     if ($personal !== $personal_encoded) {
                         $personal = $personal_encoded;
                     } else {

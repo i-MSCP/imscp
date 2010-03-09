@@ -2,7 +2,7 @@
    /** 
     **  spamcop.php -- SpamCop plugin           
     **
-    **  Copyright (c) 1999-2009 The SquirrelMail Project Team
+    **  Copyright (c) 1999-2010 The SquirrelMail Project Team
     **  Licensed under the GNU GPL. For full terms see the file COPYING.
     **  
     **  $Id$                                                         
@@ -153,6 +153,7 @@ echo "</p>";
       $report_email = 'quick.' . $spamcop_id . '@spam.spamcop.net';
    $form_action = sqm_baseuri() . 'src/compose.php';
 ?>  <form method="post" action="<?php echo $form_action?>">
+  <input type="hidden" name="smtoken" value="<?php echo sm_generate_security_token(); ?>" />
   <input type="hidden" name="mailbox" value="<?php echo htmlspecialchars($mailbox) ?>" />
   <input type="hidden" name="spamcop_is_composing" value="<?php echo htmlspecialchars($passed_id) ?>" />
   <input type="hidden" name="send_to" value="<?php echo htmlspecialchars($report_email)?>" />

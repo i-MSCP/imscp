@@ -5,7 +5,7 @@
  *
  * Displays all optinos about display preferences
  *
- * @copyright &copy; 1999-2009 The SquirrelMail Project Team
+ * @copyright 1999-2010 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version $Id$
  * @package squirrelmail
@@ -326,6 +326,13 @@ function load_optpage_data_display() {
     $optvals[SMOPT_GRP_MESSAGE][] = array(
         'name'    => 'sig_first',
         'caption' => _("Prepend Signature before Reply/Forward Text"),
+        'type'    => SMOPT_TYPE_BOOLEAN,
+        'refresh' => SMOPT_REFRESH_NONE
+    );
+
+    $optvals[SMOPT_GRP_MESSAGE][] = array(
+        'name'    => 'strip_sigs',
+        'caption' => _("Strip signature when replying"),
         'type'    => SMOPT_TYPE_BOOLEAN,
         'refresh' => SMOPT_REFRESH_NONE
     );

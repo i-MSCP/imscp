@@ -7,7 +7,7 @@
  * shown can be given as parameters. If the user is not logged in
  * this file will verify username and password.
  *
- * @copyright &copy; 1999-2009 The SquirrelMail Project Team
+ * @copyright 1999-2010 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version $Id$
  * @package squirrelmail
@@ -47,8 +47,6 @@ if(sqgetGlobalVar('mailtodata', $mailtodata)) {
 } else {
     $mailtourl = '';
 }
-
-is_logged_in();
 
 // this value may be changed by a plugin, but initialize
 // it first to avoid register_globals headaches

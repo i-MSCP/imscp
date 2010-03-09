@@ -5,9 +5,9 @@
  *
  * This file contains functions needed to handle mime messages.
  *
- * @copyright &copy; 2003-2009 The SquirrelMail Project Team
+ * @copyright 2003-2010 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: Message.class.php 13549 2009-04-15 22:00:49Z jervfors $
+ * @version $Id: Message.class.php 13893 2010-01-25 02:47:41Z pdontthink $
  * @package squirrelmail
  * @subpackage mime
  * @since 1.3.2
@@ -1059,8 +1059,7 @@ class Message {
                 }
 
                 if (!$exclude) {
-                    if (($entity->type0 == 'multipart') &&
-                        ($entity->type1 != 'related')) {
+                    if ($entity->type0 == 'multipart') {
                         $result = $entity->getAttachments($exclude_id, $result);
                     } else if ($entity->type0 != 'multipart') {
                         $result[] = $entity;

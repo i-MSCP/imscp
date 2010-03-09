@@ -10,9 +10,9 @@
  * Original code is taken from www.php.net manual comments
  * Original author: ronen at greyzone dot com
  *
- * @copyright &copy; 2004-2009 The SquirrelMail Project Team
+ * @copyright 2004-2010 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: utf_8.php 13549 2009-04-15 22:00:49Z jervfors $
+ * @version $Id: utf_8.php 13893 2010-01-25 02:47:41Z pdontthink $
  * @package squirrelmail
  * @subpackage encode
  */

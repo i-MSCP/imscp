@@ -6,9 +6,9 @@
  * This implements functions that manipulate messages
  * NOTE: Quite a few functions in this file are obsolete
  *
- * @copyright &copy; 1999-2009 The SquirrelMail Project Team
+ * @copyright 1999-2010 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: imap_messages.php 13800 2009-07-29 02:21:06Z pdontthink $
+ * @version $Id: imap_messages.php 13893 2010-01-25 02:47:41Z pdontthink $
  * @package squirrelmail
  * @subpackage imap
  */
@@ -930,19 +930,27 @@ function sqimap_get_small_header_list($imap_stream, $msg_list, $show_num=false) 
 
         /* non server sort stuff */
         if (!$allow_server_sort) {
-           $from = parseAddress($from);
-           if ($from[0][1]) {
-              $from = decodeHeader($from[0][1], true, false);
-           } else {
-              $from = $from[0][0];
-           }
-           $messages[$msgi]['FROM-SORT'] = $from;
-           $subject_sort = strtolower(decodeHeader($subject, true, false));
-           if (preg_match("/^(?:(?:vedr|sv|re|aw|fw|fwd|\[\w\]):\s*)*\s*(.*)$/si", $subject_sort, $matches)){
+            $from = parseAddress($from);
+            if ($from[0][1]) {
+                $from = decodeHeader($from[0][1], true, false);
+            } else {
+                $from = $from[0][0];
+            }
+            $messages[$msgi]['FROM-SORT'] = $from;
+            $subject_sort = strtolower(decodeHeader($subject, true, false));
+            if (preg_match("/^(?:(?:vedr|sv|re|aw|fw|fwd|\[\w\]):\s*)*\s*(.*)$/si", $subject_sort, $matches)){
                 $messages[$msgi]['SUBJECT-SORT'] = $matches[1];
-           } else {
-               $messages[$msgi]['SUBJECT-SORT'] = $subject_sort;
-           }
+            } else {
+                $messages[$msgi]['SUBJECT-SORT'] = $subject_sort;
+            }
+            
+            $to = parseAddress($to);
+            if ($to[0][1]) {
+           	    $to = decodeHeader($to[0][1], true, false);
+            } else {
+                $to = $to[0][0];
+            }
+            $messages[$msgi]['TO-SORT'] = $to;
         }
         ++$msgi;
     }

@@ -9,9 +9,9 @@
  * Internally the output character set is used. Other characters are
  * encoded using Unicode entities according to HTML 4.0.
  *
- * @copyright &copy; 1999-2009 The SquirrelMail Project Team
+ * @copyright 1999-2010 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: i18n.php 13800 2009-07-29 02:21:06Z pdontthink $
+ * @version $Id: i18n.php 13893 2010-01-25 02:47:41Z pdontthink $
  * @package squirrelmail
  * @subpackage i18n
  */
@@ -675,7 +675,7 @@ function japanese_charset_xtra() {
             break;
         case 'decodeheader':
             $ret = str_replace("\t", "", $ret);
-            if (preg_match('/=\?([^?]+)\?(q|b)\?([^?]+)\?=/', $ret))
+            if (preg_match('/=\?([^?]+)\?(q|b)\?([^?]+)\?=/i', $ret))
                 $ret = @mb_decode_mimeheader($ret);
             $ret = @mb_convert_encoding($ret, 'EUC-JP', 'AUTO');
             break;

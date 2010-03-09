@@ -1,12 +1,12 @@
 #!/usr/bin/env perl
 # conf.pl
 #
-# Copyright (c) 1999-2009 The SquirrelMail Project Team
+# Copyright (c) 1999-2010 The SquirrelMail Project Team
 # Licensed under the GNU GPL. For full terms see COPYING.
 #
 # A simple configure script to configure SquirrelMail
 #
-# $Id: conf.pl 13820 2009-08-12 08:32:10Z pdontthink $
+# $Id: conf.pl 13906 2010-02-13 23:06:30Z pdontthink $
 ############################################################              
 $conf_pl_version = "1.4.0";
 
@@ -396,7 +396,8 @@ $list_supported_imap_servers =
     "    hmailserver = hMailServer\n" .
     "    macosx      = Mac OS X Mailserver\n" .
     "    mercury32   = Mercury/32\n" .
-    "    uw          = University of Washington's IMAP server\n";
+    "    uw          = University of Washington's IMAP server\n" .
+    "    gmail       = IMAP access to Google mail (Gmail) accounts\n";
 
 #####################################################################################
 if ( $config_use_color == 1 ) {
@@ -3751,6 +3752,50 @@ sub set_defaults {
             $message = "\nIf you use IMAPdir depot, you must set default folder prefix to empty string.\n";
 
             $continue = 1;
+        } elsif ( $server eq "gmail" ) {
+            $imap_server_type               = "gmail";
+            $default_folder_prefix          = "";
+            $trash_folder                   = "[Gmail]/Trash";
+            $default_move_to_trash          = true;
+            $sent_folder                    = "[Gmail]/Sent Mail";
+            $draft_folder                   = "[Gmail]/Drafts";
+            $auto_create_special            = false;
+            $show_prefix_option             = false;
+            $default_sub_of_inbox           = false;
+            $show_contain_subfolders_option = false;
+            $delete_folder                  = true;
+            $force_username_lowercase       = false;
+            $optional_delimiter             = "/";
+            $disp_default_folder_prefix     = "<none>";
+            $domain                         = "gmail.com";
+            $imapServerAddress              = "imap.gmail.com";
+            $imapPort                       = 993;
+            $use_imap_tls                   = true;
+            $imap_auth_mech                 = "login";
+            $smtpServerAddress              = "smtp.gmail.com";
+            $smtpPort                       = 465;
+            $pop_before_smtp                = false;
+            $useSendmail                    = false;
+            $use_smtp_tls                   = true;
+            $smtp_auth_mech                 = "login";
+            $continue = 1;
+
+            # Gmail changes system folder names (Drafts, Sent, Trash) out
+            # from under you when the user changes language settings
+            $message = "\nNOTE!  When a user changes languages in Gmail's interface, the\n"
+                     . "Drafts, Sent and Trash folder names are changed to localized\n"
+                     . "versions thereof.  To see those folders correctly in SquirrelMail,\n"
+                     . "the user should change the SquirrelMail language to match.\n"
+                     . "Moreover, SquirrelMail then needs to be told what folders to use\n"
+                     . "for Drafts, Sent and Trash in Options --> Folder Preferences.\n"
+                     . "These default settings will only correctly find the Sent, Trash\n"
+                     . "and Drafts folders if both Gmail and SquirrelMail languages are\n"
+                     . "set to English.\n\n"
+                     . "Also note that in some regions (Europe?), the default folder\n"
+                     . "names (see main menu selection 3. Folder Defaults) are different\n"
+                     . "(they may need to have the prefix \"[Google Mail]\" instead of\n" 
+                     . "\"[Gmail]\") and \"Trash\" may be called \"Bin\" instead.\n";
+
         } elsif ( $server eq "quit" ) {
             $continue = 1;
         } else {

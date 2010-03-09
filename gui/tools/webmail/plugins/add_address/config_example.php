@@ -3,7 +3,7 @@
 /**
   * SquirrelMail Add Address Plugin
   * Copyright (c) 1999-2008 The SquirrelMail Project Team
-  * Copyright (c) 2008-2009 Paul Lesniewski <paul@squirrelmail.org>,
+  * Copyright (c) 2008-2010 Paul Lesniewski <paul@squirrelmail.org>,
   * Licensed under the GNU GPL. For full terms see the file COPYING.
   *
   * @package plugins

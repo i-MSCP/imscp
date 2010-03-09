@@ -6,7 +6,7 @@
  * This file is used for reading the msgs array and displaying
  * the resulting emails in the right frame.
  *
- * @copyright &copy; 1999-2009 The SquirrelMail Project Team
+ * @copyright 1999-2010 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version $Id$
  * @package squirrelmail
@@ -533,7 +533,7 @@ function formatMenubar($mailbox, $passed_id, $passed_ent_id, $message, $mbx_resp
 
     $msgs_url = $base_uri . 'src/';
     if (isset($where) && isset($what)) {
-        $msgs_url .= 'search.php?where=' . urlencode($where) .
+        $msgs_url .= 'search.php?smtoken=' . sm_generate_security_token() . '&amp;where=' . urlencode($where) .
                      '&amp;what=' . urlencode($what) . '&amp;mailbox=' . $urlMailbox;
         $msgs_str  = _("Search Results");
     } else {
@@ -545,7 +545,16 @@ function formatMenubar($mailbox, $passed_id, $passed_ent_id, $message, $mbx_resp
 
     $delete_url = $base_uri . 'src/delete_message.php?mailbox=' . $urlMailbox .
                   '&amp;message=' . $passed_id . '&amp;smtoken=' . sm_generate_security_token() . '&amp;';
+    $unread_url = $base_uri . 'src/';
     if (!(isset($passed_ent_id) && $passed_ent_id)) {
+        if ($where && $what) {
+            $unread_url .= 'search.php?unread_passed_id=' . $passed_id . '&amp;smtoken=' . sm_generate_security_token() . '&amp;where=' . urlencode($where) . '&amp;what=' . urlencode($what) . '&amp;mailbox=' . $urlMailbox;
+        } else {
+            $unread_url .= 'right_main.php?unread_passed_id=' . $passed_id . '&amp;sort=' . $sort . '&amp;startMessage=' . $startMessage . '&amp;mailbox=' . $urlMailbox;
+        }
+        $s .= $topbar_delimiter;
+        $s .= '<a href="' . $unread_url . '">' . _("Unread") . '</a>';
+
         if ($where && $what) {
             $delete_url .= 'where=' . urlencode($where) . '&amp;what=' . urlencode($what);
         } else {
@@ -800,6 +809,15 @@ if (isset($passed_ent_id) && $passed_ent_id) {
     $passed_ent_id = 0;
 }
 $header = $message->header;
+
+// gmail does not mark messages as read when retrieving the message body
+// even though RFC 3501, section 6.4.5 (FETCH Command) says:
+// "The \Seen flag is implicitly set; if this causes the flags to change,
+// they SHOULD be included as part of the FETCH responses."
+//
+if ($imap_server_type == 'gmail') {
+    sqimap_toggle_flag($imapConnection, $passed_id, '\\Seen', true, true);
+}
 
 do_hook('html_top');
 

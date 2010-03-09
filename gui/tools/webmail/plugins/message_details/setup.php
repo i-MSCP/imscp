@@ -6,8 +6,8 @@
  * Plugin to view the RFC822 raw message output and the bodystructure of a message
  *
  * @author Marc Groot Koerkamp
- * @copyright &copy; 2002 Marc Groot Koerkamp, The Netherlands
- * @copyright &copy; 2002-2009 The SquirrelMail Project Team
+ * @copyright 2002 Marc Groot Koerkamp, The Netherlands
+ * @copyright 2002-2010 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version $Id$
  * @package plugins

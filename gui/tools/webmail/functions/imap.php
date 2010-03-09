@@ -6,9 +6,9 @@
  * This just includes the different sections of the imap functions.
  * They have been organized into these sections for simplicity sake.
  *
- * @copyright &copy; 1999-2009 The SquirrelMail Project Team
+ * @copyright 1999-2010 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: imap.php 13549 2009-04-15 22:00:49Z jervfors $
+ * @version $Id: imap.php 13893 2010-01-25 02:47:41Z pdontthink $
  * @package squirrelmail
  * @subpackage imap
  */

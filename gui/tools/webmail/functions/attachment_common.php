@@ -5,9 +5,9 @@
  *
  * This file provides the handling of often-used attachment types.
  *
- * @copyright &copy; 1999-2009 The SquirrelMail Project Team
+ * @copyright 1999-2010 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: attachment_common.php 13798 2009-07-29 01:35:45Z pdontthink $
+ * @version $Id: attachment_common.php 13893 2010-01-25 02:47:41Z pdontthink $
  * @package squirrelmail
  */
 
@@ -205,10 +205,9 @@ function attachment_common_octet_stream(&$Args) {
 
     $Ext = '';
     if (is_array($Regs) && isset($Regs[1])) {
-    	$Ext = $Regs[1];
+        $Ext = $Regs[1];
+        $Ext = strtolower($Regs[1]);
     }
-    
-    $Ext = strtolower($Regs[1]);
 
     if ($Ext == '' || ! isset($FileExtensionToMimeType[$Ext]))
         return;

@@ -3,9 +3,9 @@
 /**
  * global.php
  *
- * @copyright &copy; 1999-2009 The SquirrelMail Project Team
+ * @copyright 1999-2010 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: global.php 13788 2009-07-16 21:33:48Z pdontthink $
+ * @version $Id: global.php 13896 2010-01-27 23:35:26Z pdontthink $
  * @package squirrelmail
  */
 
@@ -96,6 +96,12 @@ if (isset($_SERVER['PHP_SELF'])) {
  */
 if (isset($_SERVER['QUERY_STRING'])) {
     $_SERVER['QUERY_STRING'] = htmlspecialchars($_SERVER['QUERY_STRING']);
+}
+/*
+ * same needed for REQUEST_URI because it's used in php_self()
+ */
+if (isset($_SERVER['REQUEST_URI'])) {
+    $_SERVER['REQUEST_URI'] = htmlspecialchars($_SERVER['REQUEST_URI']);
 }
 
 /**
