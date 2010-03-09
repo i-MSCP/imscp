@@ -5,7 +5,7 @@
   compress
   delaycompress
   notifempty
-  create 640 root adm
+  create 640 root wheel
   sharedscripts
   prerotate
     /usr/local/www/ispcp/engine/traffic/ispcp-vrl-traff > /var/log/ispcp/ispcp-vrl-traff.log
@@ -32,7 +32,7 @@
   compress
   delaycompress
   postrotate
-    if [ -e /var/run/syslogd.pid ]; then
+    if [ -e /var/run/syslog.pid ]; then
       /usr/bin/killall -HUP syslogd
     elif [ -e /var/run/rsyslogd.pid ]; then
       /usr/bin/killall -HUP rsyslogd
@@ -47,10 +47,10 @@
   compress
   delaycompress
   prerotate
-    /var/www/ispcp/engine/traffic/ispcp-vrl-traff > /var/log/ispcp/ispcp-vrl-traff.log
+    /usr/local/www/ispcp/engine/traffic/ispcp-vrl-traff > /var/log/ispcp/ispcp-vrl-traff.log
   endscript
   postrotate
-    if [ -e /var/run/syslogd.pid ]; then
+    if [ -e /var/run/syslog.pid ]; then
       /usr/bin/killall -HUP syslogd
     elif [ -e /var/run/rsyslogd.pid ]; then
       /usr/bin/killall -HUP rsyslogd

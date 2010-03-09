@@ -7,6 +7,12 @@ ispCP ω 1.0.5 Changelog
 		* Domain deletion - protected areas data: Merged SQL queries
 
 2010-03-09 Benedikt Heintel
+	- CONFIGS:
+		* Fixed:  The folder "disabled" is missing in the root_domain.conf
+	- DISTS:
+		* Fixed #2253: Porting logrotate to FreeBSD
+		* Fixed #2254: (FreeBSD) The folder "disabled" is missing in the root_domain.conf
+		* Fixed #2255: Update the FreeBSD packages
 	- TOOLS:
 		* Fixed #2256: Update Squirrelmail Plugins to the newest Version
 		* Fixed #2261: Squirrelmail update to version 1.4.20
