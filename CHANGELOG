@@ -1,6 +1,11 @@
 ispCP ω 1.0.5 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-03-10 Benedikt Heintel
+	- DISTS:
+		* Fixed #2271: [FreeBSD] Updated AWStats Path in ispcp.conf
+		* Fixed #2270: [FreeBSD] Updated Postfix's master.cf
+
 2010-03-10 Laurent Declercq
 	- SETUP
 		* Added a specific note for the installation of the fcgid module on Etch
