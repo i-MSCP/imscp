@@ -59,7 +59,7 @@ as follow:
 	# aptitude install debian-backports-keyring
 
 5. Install the new Apache fcgid module version:
-	# aptitude install libapache2-mod-fcgid
+	# aptitude -t etch-backports install libapache2-mod-fcgid
 
 Note: Since Debian Etch is officialy discontinued on Februrary 15th, we
 encourage you to migrate now to Debian Lenny.
