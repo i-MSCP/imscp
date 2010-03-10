@@ -46,7 +46,7 @@ with ispCP due to the absence of a configuration directive. To use the fcgid
 module with ispCP on Debian Etch, you should install it from Debian backports
 as follow:
 
-1. Install all required normally as described below in step 3 of section 4.
+1. Install all required packages as described below in step 3 of section 4.
 
 2. Edit your '/etc/apt/source.list' to add the following repository:
 
