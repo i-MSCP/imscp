@@ -36,7 +36,7 @@
   compress
   delaycompress
   notifempty
-  create 640 root adm
+  create 640 root wheel
   sharedscripts
   prerotate
     /usr/local/www/ispcp/engine/traffic/ispcp-vrl-traff > /var/log/ispcp/ispcp-vrl-traff.log
@@ -55,7 +55,7 @@
   compress
   delaycompress
   notifempty
-  create 640 root adm
+  create 640 root wheel
 }
 
 # Rotation for apache2, launching general statistics if awstats is installed
@@ -67,16 +67,16 @@
   compress
   delaycompress
   notifempty
-  create 640 root adm
+  create 640 root wheel
   sharedscripts
   prerotate
-    if [ `cat /etc/ispcp/ispcp.conf | grep -c "AWSTATS_ACTIVE = yes"` == 1 ]; then
-          perl /var/www/ispcp/engine/awstats/awstats_updateall.pl now -awstatsprog=/usr/lib/cgi-bin/awstats.pl &> /dev/null
+    if [ `cat /usr/local/etc/ispcp/ispcp.conf | grep -c "AWSTATS_ACTIVE = yes"` == 1 ]; then
+          perl /usr/local/www/ispcp/engine/awstats/awstats_updateall.pl now -awstatsprog=/usr/local/www/awstats/cgi-bin/awstats.pl &> /dev/null
     fi
   endscript
   postrotate
-    if [ -f "`. /etc/apache2/envvars ; echo ${APACHE_PID_FILE:-/var/run/apache2.pid}`" ]; then
-           /etc/init.d/apache2 reload > /dev/null
+    if [ -f "`. /usr/local/sbin/envvars ; echo ${APACHE_PID_FILE:-/var/run/httpd.pid}`" ]; then
+           /usr/local/etc/rc.d/apache22 reload > /dev/null
     fi
   endscript
 }
@@ -90,7 +90,7 @@
   compress
   delaycompress
   postrotate
-    if [ -e /var/run/syslogd.pid ]; then
+    if [ -e /var/run/syslog.pid ]; then
       /usr/bin/killall -HUP syslogd
     elif [ -e /var/run/rsyslogd.pid ]; then
       /usr/bin/killall -HUP rsyslogd
@@ -107,10 +107,10 @@
   compress
   delaycompress
   prerotate
-    /var/www/ispcp/engine/traffic/ispcp-vrl-traff > /var/log/ispcp/ispcp-vrl-traff.log
+    /usr/local/www/ispcp/engine/traffic/ispcp-vrl-traff > /var/log/ispcp/ispcp-vrl-traff.log
   endscript
   postrotate
-    if [ -e /var/run/syslogd.pid ]; then
+    if [ -e /var/run/syslog.pid ]; then
       /usr/bin/killall -HUP syslogd
     elif [ -e /var/run/rsyslogd.pid ]; then
       /usr/bin/killall -HUP rsyslogd

@@ -1,6 +1,10 @@
 ispCP ω 1.0.5 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-03-10 Benedikt Heintel
+	- DISTS:
+		* Fixed #2253: Porting logrotate to FreeBSD
+
 2010-03-07 Christian Hernmarck
 	- CONFIGS:
 		* Fixed: missing " in configs/centos/init.d/ispcp_network
