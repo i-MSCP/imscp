@@ -7,8 +7,8 @@ Table of Content
 ================
 1) Version Info
 2) Requirements
-3) Specific note
-4) Introduction
+3) Introduction
+4) Etch Specific Note
 5) Installation
 6) Update
 7) Uninstall
@@ -38,15 +38,27 @@ All Lenny required packages are listed in ./docs/Debian/debian-packages-lenny
 All Squeeze required packages are listed in ./docs/Debian/debian-packages-squeeze
 
 ================================================================================
-3) Specific note
-----------------
+3) Introduction
+---------------
+ispCP ω delivers a complete hosting automation appliance by offering significant
+security, total-cost-of-ownership, and performance advantages over competing
+commercial solutions.
 
-Debian Etch provides a version of the Apache fcgid module that is not compatible
-with ispCP due to the absence of a configuration directive. To use the fcgid
-module with ispCP on Debian Etch, you should install it from Debian backports
-as follow:
+With ispCP ω you can configure your server and applications, create user with
+domains with a few point-and-click operations that take less than a minute.
+There is no limit to the number of resellers, users and domains that can be
+created. The core of ispCP ω are 3 easy-to-use, web-based control panels. ispCP
+provides graphic user interfaces for the administrators, resellers and users.
 
-1. Install all required packages as described below in step 3 of section 4.
+================================================================================
+4) Etch Specific Note
+---------------------
+
+Debian Etch provides a version of the Apache fcgid module not compatible with 
+ispCP due to the absence of a configuration directive. To use the fcgid with 
+ispCP on Debian Etch, you should install it from Debian backports as follows:
+
+1. Install all required packages as described below in step 3 of section 5.
 
 2. Edit your '/etc/apt/source.list' to add the following repository:
 
@@ -61,21 +73,8 @@ as follow:
 5. Install the new Apache fcgid module version:
 	# aptitude -t etch-backports install libapache2-mod-fcgid
 
-Note: Since Debian Etch is officialy discontinued on Februrary 15th, we
-encourage you to migrate now to Debian Lenny.
-
-================================================================================
-4) Introduction
----------------
-ispCP ω delivers a complete hosting automation appliance by offering significant
-security, total-cost-of-ownership, and performance advantages over competing
-commercial solutions.
-
-With ispCP ω you can configure your server and applications, create user with
-domains with a few point-and-click operations that take less than a minute.
-There is no limit to the number of resellers, users and domains that can be
-created. The core of ispCP ω are 3 easy-to-use, web-based control panels. ispCP
-provides graphic user interfaces for the administrators, resellers and users.
+Note: Since Debian Etch is officially discontinued on February 15th, we
+encourage you to migrate to Debian Lenny now.
 
 ================================================================================
 5) Installation
@@ -101,11 +100,11 @@ Make sure you are logged in as root and MySQL is running.
    deb     http://ftp.debian.org/debian/            lenny         main contrib non-free
    deb     http://security.debian.org/              lenny/updates main contrib non-free
 
-	(if you get to the proftpd screen, select 'standalone')
+	(if you get to the courier screen select 'no' to web directories)
 	(if you get to the postfix screen select 'internet site'. 'mail name' should be
 	the server's domain. If you've set debian up correctly on install your domain
 	should be already shown.)
-	(if you get to the courier screen select 'no' to web directories)
+	(if you get to the proftpd screen, select 'standalone')
 
 4. (optional) Check the ispcp.conf and adapt it to your requirements.
 
