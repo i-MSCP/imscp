@@ -1,6 +1,10 @@
 ispCP ω 1.0.5 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-03-10 Laurent Declercq
+	- SETUP
+		* Added a specific note for the installation of the fcgid module on Etch
+
 2010-03-09 Laurent Declercq
 	- GUI:
 		* Domain deletion: It's useless to delegate the deletion tasks for protected areas files.
