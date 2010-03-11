@@ -385,13 +385,7 @@ Make sure you are logged in as root and MySQL is running.
     # cp -v /var/www/ispcp/gui/tools/webmail/data/* /tmp/ispcp/var/www/ispcp/gui/tools/webmail/data/
 
 7.  Delete old files to avoid security risks:
-    # rm -fR /usr/local/www/ispcp/gui/admin/
-    # rm -fR /usr/local/www/ispcp/gui/client/
-    # rm -fR /usr/local/www/ispcp/gui/include/
-    # rm -fR /usr/local/www/ispcp/gui/orderpanel/
-    # rm -fR /usr/local/www/ispcp/gui/themes/
-    # rm -fR /usr/local/www/ispcp/gui/reseller/
-	# rm -f /usr/local/www/ispcp/gui/*.php
+	# rm -Rf /usr/local/www/ispcp/{engine,gui}
 
 8.  Copy /usr and /var directories into your system (you may make backups)
     # cp -Rv /tmp/ispcp/usr/* /usr/

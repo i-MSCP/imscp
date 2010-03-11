@@ -216,9 +216,7 @@ Note: For all questions, answer "a" (trust always).
 
 8. Delete old files to avoid security risks:
 
-	# rm -fR /srv/www/ispcp/engine/messager/
-	# rm -Rf /srv/www/ispcp/gui/{admin,client,include,orderpanel,themes,reseller}/
-	# rm -Rf /srv/www/ispcp/gui/*.php
+	# rm -Rf /srv/www/ispcp/{engine,gui}
 
 9. Copy /usr, /var and /srv directories into your system (you may make backups):
 
