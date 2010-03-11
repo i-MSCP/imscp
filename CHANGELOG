@@ -1,6 +1,14 @@
 ispCP ω 1.0.5 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-03-11 Benedikt Heintel
+	- DISTS:
+		* Fixed #2274: [FreeBSD] Added AWStats Icons Directory in ApacheConfig
+		* Fixed #2275: [FreeBSD] Updated INSTALL Docu
+	- GUI:
+		* Fixed #2244: Undefined variable in hosting_plan_edit.php of the admin
+		* Fixed: All occurred errors are now shown in Hosting Plans
+
 2010-03-10 Benedikt Heintel
 	- DISTS:
 		* Fixed #2270: [FreeBSD] Updated Postfix's master.cf

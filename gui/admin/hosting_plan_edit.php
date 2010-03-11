@@ -95,7 +95,7 @@ $tpl->assign(
 				'TR_STATUS'					=> tr('Available for purchasing'),
 				'TR_TEMPLATE_DESCRIPTON'	=> tr('Description'),
 				'TR_EXAMPLE'				=> tr('(e.g. EUR)'),
-				'TR_UPDATE_PLAN'			=> tr('Update plan')
+				'TR_EDIT_HOSTING_PLAN'		=> tr('Update plan')
 		)
 );
 
@@ -160,10 +160,10 @@ function restore_form(&$tpl) {
 					'TR_PHP_NO'		=> ($_POST['php'] == '_no_') ? 'checked="checked"' : '',
 					'TR_CGI_YES'	=> ($_POST['cgi'] == '_yes_') ? 'checked="checked"' : '',
 					'TR_CGI_NO'		=> ($_POST['cgi'] == '_no_') ? 'checked="checked"' : '',
-					'VL_BACKUPD'	=> ($hp_backup == '_dmn_') ? 'checked="checked"' : '',
-					'VL_BACKUPS'	=> ($hp_backup == '_sql_') ? 'checked="checked"' : '',
-					'VL_BACKUPF'	=> ($hp_backup == '_full_') ? 'checked="checked"' : '',
-					'VL_BACKUPN'	=> ($hp_backup == '_no_') ? 'checked="checked"' : '',
+					'VL_BACKUPD'	=> ($_POST['backup'] == '_dmn_') ? 'checked="checked"' : '',
+					'VL_BACKUPS'	=> ($_POST['backup'] == '_sql_') ? 'checked="checked"' : '',
+					'VL_BACKUPF'	=> ($_POST['backup'] == '_full_') ? 'checked="checked"' : '',
+					'VL_BACKUPN'	=> ($_POST['backup'] == '_no_') ? 'checked="checked"' : '',
 					'TR_DNS_YES'	=> ($_POST['dns'] == '_yes_') ? 'checked="checked"' : '',
 					'TR_DNS_NO'		=> ($_POST['dns'] == '_no_') ? 'checked="checked"' : '',
 					'TR_STATUS_YES'	=> ($_POST['status']) ? 'checked="checked"' : '',
@@ -287,7 +287,7 @@ function check_data_iscorrect(&$tpl) {
 	global $hpid;
 	global $hp_backup, $hp_dns;
 
-	$ahp_error		= '_off_';
+	$ahp_error		= array();
 	$hp_name		= clean_input($_POST['hp_name']);
 	$hp_sub			= clean_input($_POST['hp_sub']);
 	$hp_als			= clean_input($_POST['hp_als']);
@@ -298,70 +298,68 @@ function check_data_iscorrect(&$tpl) {
 	$hp_traff		= clean_input($_POST['hp_traff']);
 	$hp_disk		= clean_input($_POST['hp_disk']);
 
-	if (isset($_SESSION['hpid']))
-	{
+	if (isset($_SESSION['hpid'])) {
 		$hpid = $_SESSION['hpid'];
-	}
-	else
-	{
-		$ahp_error = tr('Undefined reference to data!');
+	} else {
+		$ahp_error[] = tr('Undefined reference to data!');
 	}
 
 	// put hosting plan id into session value
 	$_SESSION['hpid'] = $hpid;
 
 	// Get values from previous page and check him correction
-	if (isset($_POST['php']))
-	{
+	if (isset($_POST['php'])) {
 		$hp_php = $_POST['php'];
 	}
 
-	if (isset($_POST['cgi']))
-	{
+	if (isset($_POST['cgi'])) {
 		$hp_cgi = $_POST['cgi'];
 	}
 
-        if (isset($_POST['backup']))
-	{
-                $hp_backup = $_POST['backup'];
-        }
+	if (isset($_POST['backup'])) {
+		$hp_backup = $_POST['backup'];
+    }
 
-	if (isset($_POST['dns']))
-	{
+	if (isset($_POST['dns'])) {
 		$hp_dns = $_POST['dns'];
 	}
 
 	if (!is_numeric($_POST['hp_price'])) {
-		$ahp_error = tr('Incorrect price. Example: 9.99');
+		$ahp_error[] = tr('Incorrect price. Example: 9.99');
 	}
-
 	if (!is_numeric($_POST['hp_setupfee'])) {
-		$ahp_error = tr('Incorrect setup fee. Example: 19.99');
+		$ahp_error[] = tr('Incorrect setup fee. Example: 19.99');
 	}
-
 	if (!ispcp_limit_check($hp_sub, -1)) {
-		$ahp_error = tr('Incorrect subdomains limit!');
-	} else if (!ispcp_limit_check($hp_als, -1)) {
-		$ahp_error = tr('Incorrect aliases limit!');
-	} else if (!ispcp_limit_check($hp_mail, -1)) {
-		$ahp_error = tr('Incorrect mail accounts limit!');
-	} else if (!ispcp_limit_check($hp_ftp, -1)) {
-		$ahp_error = tr('Incorrect FTP accounts limit!');
-	} else if (!ispcp_limit_check($hp_sql_user, -1)) {
-		$ahp_error = tr('Incorrect SQL databases limit!');
-	} else if (!ispcp_limit_check($hp_sql_db, -1)) {
-		$ahp_error = tr('Incorrect SQL users limit!');
-	} else if (!ispcp_limit_check($hp_traff, null)) {
-		$ahp_error = tr('Incorrect traffic limit!');
-	} else if (!ispcp_limit_check($hp_disk, null)) {
-		$ahp_error = tr('Incorrect disk quota limit!');
+		$ahp_error[] = tr('Incorrect subdomains limit!');
+	}
+	if (!ispcp_limit_check($hp_als, -1)) {
+		$ahp_error[] = tr('Incorrect aliases limit!');
+	}
+	if (!ispcp_limit_check($hp_mail, -1)) {
+		$ahp_error[] = tr('Incorrect mail accounts limit!');
+	} 
+	if (!ispcp_limit_check($hp_ftp, -1)) {
+		$ahp_error[] = tr('Incorrect FTP accounts limit!');
+	} 
+	if (!ispcp_limit_check($hp_sql_user, -1)) {
+		$ahp_error[] = tr('Incorrect SQL databases limit!');
+	} 
+	if (!ispcp_limit_check($hp_sql_db, -1)) {
+		$ahp_error[] = tr('Incorrect SQL users limit!');
+	} 
+	if (!ispcp_limit_check($hp_traff, null)) {
+		$ahp_error[] = tr('Incorrect traffic limit!');
+	} 
+	if (!ispcp_limit_check($hp_disk, null)) {
+		$ahp_error[] = tr('Incorrect disk quota limit!');
 	}
 
-	if ($ahp_error == '_off_') {
+	if (!isset($ahp_error)) {
 		$tpl->assign('MESSAGE', '');
 		return true;
 	} else {
-		set_page_message($ahp_error);
+		set_page_message(format_message($ahp_error));
 		return false;
 	}
 } // end of check_data_iscorrect()
@@ -410,5 +408,3 @@ SQL_QUERY;
 	user_goto('hosting_plan.php');
 
 } // end of save_data_to_db()
-
-die();

@@ -249,7 +249,7 @@ function check_user_data(&$tpl) {
 
 	//$sql = Database::getInstance();
 
-	$ehp_error = '';
+	$ehp_error = array();
 
 	// Get data for fields from previous page
 	if (isset($_POST['template'])) {
@@ -271,6 +271,7 @@ function check_user_data(&$tpl) {
 	if (isset($_POST['nreseller_max_mail_cnt'])) {
 		$hp_mail = clean_input($_POST['nreseller_max_mail_cnt']);
 	}
+
 	if (isset($_POST['nreseller_max_ftp_cnt']) || $hp_ftp == -1) {
 		$hp_ftp = clean_input($_POST['nreseller_max_ftp_cnt']);
 	}
@@ -282,6 +283,7 @@ function check_user_data(&$tpl) {
 	if (isset($_POST['nreseller_max_sql_user_cnt'])) {
 		$hp_sql_user = clean_input($_POST['nreseller_max_sql_user_cnt']);
 	}
+
 	if (isset($_POST['nreseller_max_traffic'])) {
 		$hp_traff = clean_input($_POST['nreseller_max_traffic']);
 	}
@@ -308,41 +310,40 @@ function check_user_data(&$tpl) {
 
 	// Begin checking...
 	if (!ispcp_limit_check($hp_sub, -1)) {
-		set_page_message(tr('Incorrect subdomains limit!'));
+		$ehp_error[] = tr('Incorrect subdomains limit!');
 	}
-
 	if (!check_reseller_domainalias_permissions($_SESSION['user_id'])) {
 		$hp_als = "-1";
 	} elseif (!ispcp_limit_check($hp_als, -1)) {
-		set_page_message(tr('Incorrect aliases limit!'));
+		$ehp_error[] = tr('Incorrect aliases limit!');
 	}
 
 	if (!ispcp_limit_check($hp_mail, -1)) {
-		set_page_message(('Incorrect mail accounts limit!'));
+		$ehp_error[] = tr('Incorrect mail accounts limit!');
 	}
 
 	if (!ispcp_limit_check($hp_ftp, -1)) {
-		set_page_message(tr('Incorrect FTP accounts limit!'));
+		$ehp_error[] = tr('Incorrect FTP accounts limit!');
 	}
 
 	if (!ispcp_limit_check($hp_sql_db, -1)) {
-		set_page_message(tr('Incorrect SQL databases limit!'));
+		$ehp_error[] = tr('Incorrect SQL databases limit!');
 	} else if ($hp_sql_user != -1 && $hp_sql_db == -1) {
-		set_page_message(tr('SQL users limit is <i>disabled</i>!'));
+		$ehp_error[] = tr('SQL users limit is <i>disabled</i>!');
 	}
 
 	if (!ispcp_limit_check($hp_sql_user, -1)) {
-		set_page_message(tr('Incorrect SQL users limit!'));
+		$ehp_error[] = tr('Incorrect SQL users limit!');
 	} else if ($hp_sql_user == -1 && $hp_sql_db != -1) {
-		set_page_message(tr('SQL databases limit is not <i>disabled</i>!'));
+		$ehp_error[] = tr('SQL databases limit is not <i>disabled</i>!');
 	}
 
 	if (!ispcp_limit_check($hp_traff, null)) {
-		set_page_message(tr('Incorrect traffic limit!'));
+		$ehp_error[] = tr('Incorrect traffic limit!');
 	}
 
 	if (!ispcp_limit_check($hp_disk, null)) {
-		set_page_message(tr('Incorrect disk quota limit!'));
+		$ehp_error[] = tr('Incorrect disk quota limit!');
 	}
 
 	if (empty($ehp_error) && empty($_SESSION['user_page_message'])) {
@@ -350,7 +351,7 @@ function check_user_data(&$tpl) {
 		// send data through session
 		return true;
 	} else {
-		$tpl->assign('MESSAGE', $ehp_error);
+		set_page_message(format_message($ehp_error));
 		return false;
 	}
 } // End of check_user_data()
