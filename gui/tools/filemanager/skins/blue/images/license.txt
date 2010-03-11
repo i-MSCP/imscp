@@ -1,0 +1,13 @@
+
+The images within this directory are released under the LGPL license.
+They come from 2 different iconsets, originally developed for KDE.
+
+For more information, refer to the links below.
+
+Noia for KDE 1.00:
+http://www.kde-look.org/content/show.php?content=3883
+http://www.carlitus.net/
+
+Nuvola 1.0:
+http://www.kde-look.org/content/show.php?content=5358
+http://www.icon-king.com/
