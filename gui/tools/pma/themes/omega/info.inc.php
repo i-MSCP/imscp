@@ -1,6 +1,15 @@
 <?php
-/* Theme information */
-$theme_name = 'omega';
-$theme_version = 2;
-$theme_generation = 2;
+/* vim: set expandtab sw=4 ts=4 sts=4: */
+/**
+ * Theme information
+ *
+ *
+ * @version $Id$
+ * @package phpMyAdmin-theme
+ * @subpackage ispCP_Omega
+ */
+
+$theme_name = 'ispCP';
+$theme_version = 3;
+$theme_generation = 3;
 ?>
