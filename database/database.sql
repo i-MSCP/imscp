@@ -3,7 +3,7 @@
 -- Copyright (c) 2001-2006 by moleSoftware GmbH
 -- Copyright (c) 2006-2010 by ispCP | http://isp-control.net
 --
--- Version: $Id
+-- Version: $Id$
 --
 -- The contents of this file are subject to the Mozilla Public License
 -- Version 1.1 (the "License"); you may not use this file except in
@@ -126,7 +126,7 @@ INSERT INTO `config` (`name`, `value`) VALUES
 ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
 ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
 ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-('DATABASE_REVISION', '27'),
+('DATABASE_REVISION', '28'),
 ('CRITICAL_UPDATE_REVISION', '5');
 
 -- --------------------------------------------------------

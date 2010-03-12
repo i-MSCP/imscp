@@ -45,6 +45,11 @@ use warnings;
 use Net::LibIDN ':all';
 $main::dmn_task_id = undef;
 
+
+# Default status set after domain name change action
+$main::after_change_status = 'ok';
+
+
 ################################################################################
 ##                                SUBROUTINES                                 ##
 ################################################################################
@@ -2367,6 +2372,13 @@ sub dmn_change_httpd_file_data {
 		}
 	}
 
+	# Workaround to recover the initial status of the domain
+	# and restore it after changes.
+	# See #2262 for more information about this issue.
+	if(-e "$www_dir/$dmn_name/htdocs.disabled") {
+		$main::after_change_status = 'disabled';
+	}
+
 	#
 	# php.ini for the domain
 	#
@@ -2463,16 +2475,16 @@ sub dmn_del_httpd_file_data {
 	# Starter directory
 	#
 	if ( -e "$starter_dir/$dmn_name" ) {
-		($rs, $rdata) = del_dir("$starter_dir/$dmn_name");
+		$rs = del_dir("$starter_dir/$dmn_name");
 	}
 
 	#
 	# Domain WWW directories;
 	#
 	if ( -e "$www_dir/$dmn_name" ) {
-		($rs, $rdata) = del_dir("$www_dir/$dmn_name");
+		$rs = del_dir("$www_dir/$dmn_name");
 	} elsif ( -e "$www_dir/$dmn_name.disabled" ) {
-		($rs, $rdata) = del_dir("$www_dir/$dmn_name.disabled");
+		$rs = del_dir("$www_dir/$dmn_name.disabled");
 	}
 	return $rs if ($rs != 0);
 
@@ -2884,14 +2896,14 @@ sub dmn_add_mta_file_data {
 
 ################################################################################
 ##
-## Add MTA File Data
+## Delete MTA File Data
 ##
 sub dmn_del_mta_file_data {
 
 	push_el(\@main::el, 'dmn_del_mta_file_data()', 'Starting...');
 
 	my ($dmn_data) = @_;
-	my ($rs, $rdata) = (undef, undef);
+	my $rs = undef;
 
 	if (!defined($dmn_data) || $dmn_data eq '') {
 		push_el(
@@ -2905,8 +2917,6 @@ sub dmn_del_mta_file_data {
 
 	my $dmn_name = @$dmn_data[1];
 	my $virtual_mail_dir = $main::cfg{'MTA_VIRTUAL_MAIL_DIR'};
-	my $mailbox_uid_name = $main::cfg{'MTA_MAILBOX_UID_NAME'};
-	my $mailbox_gid_name = $main::cfg{'MTA_MAILBOX_GID_NAME'};
 
 	$rs = del_dir("$virtual_mail_dir/$dmn_name");
 	return $rs if ($rs != 0);
@@ -4912,7 +4922,7 @@ sub dmn_mngr_engine {
 				UPDATE
 					domain
 				SET
-					domain_status = 'ok'
+					domain_status = '$main::after_change_status'
 				WHERE
 					domain_id = $dmn_id
 				;

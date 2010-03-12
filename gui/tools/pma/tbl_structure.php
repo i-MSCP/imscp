@@ -3,7 +3,7 @@
 /**
  * Displays table structure infos like fields/columns, indexes, size, rows
  * and allows manipulation of indexes and columns/fields
- * @version $Id: tbl_structure.php 12700 2009-07-22 21:13:11Z lem9 $
+ * @version $Id: tbl_structure.php 13096 2009-11-01 13:12:10Z lem9 $
  * @package phpMyAdmin
  */
 
@@ -503,7 +503,21 @@ if (! $tbl_is_view && ! $db_is_information_schema) {
     echo $strStructPropose;
     ?></a><?php
     echo PMA_showMySQLDocu('Extending_MySQL', 'procedure_analyse') . "\n";
-    ?><br />
+    
+    
+    if(PMA_Tracker::isActive())
+    {
+        echo '<a href="tbl_tracking.php?' . $url_query . '">';
+        
+        if ($cfg['PropertiesIconic']) 
+        {
+            echo '<img class="icon" src="' . $pmaThemeImage . 'eye.png" width="16" height="16" alt="' . $strTrackingTrackTable . '" /> ';
+        }
+        echo $strTrackingTrackTable . '</a>';
+    }
+    ?>
+    
+    <br />
 <form method="post" action="tbl_addfield.php"
     onsubmit="return checkFormElementInRange(this, 'num_fields', '<?php echo str_replace('\'', '\\\'', $GLOBALS['strInvalidFieldAddCount']); ?>', 1)">
     <?php
@@ -527,7 +541,7 @@ if (! $tbl_is_view && ! $db_is_information_schema) {
         'first' => $strAtBeginningOfTable,
         'after' => sprintf($strAfter, '')
     );
-    PMA_generate_html_radio('field_where', $choices, 'last', false);
+    PMA_display_html_radio('field_where', $choices, 'last', false);
     echo $fieldOptions;
     unset($fieldOptions, $choices);
     ?>
@@ -548,7 +562,6 @@ if ($fields_cnt > 20) {
 /**
  * Displays indexes
  */
-PMA_generate_slider_effect('tablestatistics_indexes', $strDetails);
 
 if (! $tbl_is_view && ! $db_is_information_schema && 'ARCHIVE' !=  $tbl_type) {
     /**
@@ -577,7 +590,8 @@ if (! $tbl_is_view && ! $db_is_information_schema && 'ARCHIVE' !=  $tbl_type) {
 <br />
     <?php
 }
-echo '<div id="tablestatistics">' . "\n";
+
+PMA_generate_slider_effect('tablestatistics', $strDetails);
 
 /**
  * Displays Space usage and row statistics
@@ -812,8 +826,6 @@ if ($cfg['ShowStats']) {
 require './libraries/tbl_triggers.lib.php';
 
 echo '<div class="clearfloat"></div>' . "\n";
-echo '</div>' . "\n";
-echo '</div>' . "\n";
 
 /**
  * Displays the footer

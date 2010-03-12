@@ -167,7 +167,7 @@ if (isset($destination) && $cfgRelation['relwork']) {
                             . ' AND master_field = \'' . PMA_sqlAddslashes($master_field) . '\'';
         } // end if... else....
         if ($upd_query) {
-            PMA_query_as_cu($upd_query);
+            PMA_query_as_controluser($upd_query);
         }
     } // end while
 } // end if (updates for internal relations)
@@ -319,7 +319,7 @@ if ($cfgRelation['displaywork'] && isset($display_field)) {
     }
 
     if ($upd_query) {
-        PMA_query_as_cu($upd_query);
+        PMA_query_as_controluser($upd_query);
     }
 } // end if
 
@@ -377,8 +377,9 @@ if ($cfgRelation['relwork'] || PMA_foreignkey_supported($tbl_type)) {
         if (PMA_foreignkey_supported($tbl_type)
          && isset($curr_table[1])
          && strtoupper($curr_table[1]) == $tbl_type) {
-             // need to obtain backquoted values to support dots inside values  
-            $selectboxall_foreign = array_merge($selectboxall_foreign, $current_table->getIndexedColumns($backquoted = true));
+             // explicitely ask for non-quoted list of indexed columns
+             // need to obtain backquoted values to support dots inside values 
+             $selectboxall_foreign = array_merge($selectboxall_foreign, $current_table->getIndexedColumns($backquoted = true));
         }
     } // end while over tables
 } // end if

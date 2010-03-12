@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: tbl_operations.php 12297 2009-03-22 12:05:21Z lem9 $
+ * @version $Id: tbl_operations.php 12868 2009-08-23 11:56:42Z lem9 $
  * @package phpMyAdmin
  */
 
@@ -428,12 +428,41 @@ if (isset($auto_increment) && strlen($auto_increment) > 0
     <?php
 } // end if (MYISAM|INNODB)
 
+// the outer array is for engines, the inner array contains the dropdown
+// option values as keys then the dropdown option labels
+
 $possible_row_formats = array(
-    'MARIA'  => array('FIXED','DYNAMIC','PAGE'),
-    'MYISAM' => array('FIXED','DYNAMIC'),
-    'PBXT'   => array('FIXED','DYNAMIC'),
-    'INNODB' => array('COMPACT','REDUNDANT')
+     'MARIA'  => array(
+        'FIXED'     => 'FIXED',
+        'DYNAMIC'   => 'DYNAMIC',
+        'PAGE'      => 'PAGE'
+            ),
+     'MYISAM' => array(
+         'FIXED'    => 'FIXED',
+         'DYNAMIC'  => 'DYNAMIC'
+     ),
+     'PBXT'   => array(
+         'FIXED'    => 'FIXED',
+         'DYNAMIC'  => 'DYNAMIC'
+     ),
+     'INNODB' => array(
+         'COMPACT'  => 'COMPACT',
+         'REDUNDANT' => 'REDUNDANT')
 );
+
+$innodb_engine_plugin = PMA_StorageEngine::getEngine('innodb');
+$innodb_plugin_version = $innodb_engine_plugin->getInnodbPluginVersion();
+if (!empty($innodb_plugin_version)) {
+    $innodb_file_format = $innodb_engine_plugin->getInnodbFileFormat();
+}  else {
+    $innodb_file_format = '';
+}
+if ('Barracuda' == $innodb_file_format && $innodb_engine_plugin->supportsFilePerTable()) {
+    $possible_row_formats['INNODB']['DYNAMIC'] = 'DYNAMIC';
+    $possible_row_formats['INNODB']['COMPRESSED'] = 'COMPRESSED';
+}
+unset($innodb_engine_plugin, $innodb_plugin_version, $innodb_file_format);
+
 // for MYISAM there is also COMPRESSED but it can be set only by the
 // myisampack utility, so don't offer here the choice because if we
 // try it inside an ALTER TABLE, MySQL (at least in 5.1.23-maria)
@@ -444,7 +473,7 @@ if (isset($possible_row_formats[$tbl_type])) {
     $current_row_format = strtoupper($showtable['Row_format']);
     echo '<tr><td><label for="new_row_format">ROW_FORMAT</label></td>';
     echo '<td>';
-    PMA_generate_html_dropdown('new_row_format', $possible_row_formats[$tbl_type], $current_row_format);
+    echo PMA_generate_html_dropdown('new_row_format', $possible_row_formats[$tbl_type], $current_row_format, 'new_row_format');
     unset($possible_row_formats, $current_row_format);
     echo '</td>';
     echo '</tr>';
@@ -485,7 +514,7 @@ if (isset($possible_row_formats[$tbl_type])) {
             'structure' => $strStrucOnly,
             'data'      => $strStrucData,
             'dataonly'  => $strDataOnly);
-        PMA_generate_html_radio('what', $choices, 'data', true);
+        PMA_display_html_radio('what', $choices, 'data', true);
         unset($choices);
 ?>
 
@@ -621,7 +650,7 @@ $this_url_params = array_merge($url_params,
             'OPTIMIZE' => $strOptimize,
             'REBUILD' => $strRebuild,
             'REPAIR' => $strRepair);
-        PMA_generate_html_radio('partition_operation', $choices, '', false);
+        PMA_display_html_radio('partition_operation', $choices, '', false);
         unset($choices);
         echo PMA_showMySQLDocu('partitioning_maintenance', 'partitioning_maintenance');
         // I'm not sure of the best way to display that; this link does

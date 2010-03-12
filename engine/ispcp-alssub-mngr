@@ -1729,7 +1729,7 @@ sub alssub_del_httpd_file_data {
 	# Removing subdomain entry support directories;
 	#
 
-	($rs, $rdata) = del_dir($sub_dir);
+	$rs = del_dir($sub_dir);
 
 	push_el(\@main::el, 'alssub_del_httpd_file_data()', 'Ending...');
 

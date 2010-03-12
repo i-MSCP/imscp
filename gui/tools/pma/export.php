@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * @todo    too much die here, or?
- * @version $Id: export.php 12897 2009-08-30 12:43:07Z lem9 $
+ * @version $Id: export.php 13064 2009-10-23 16:50:39Z lem9 $
  * @package phpMyAdmin
  */
 
@@ -517,8 +517,8 @@ if ($export_type == 'server') {
         break;
     }
     // We export just one table
-
-    if ($limit_to > 0 && $limit_from >= 0) {
+    // $allrows comes from the form when "Dump all rows" has been selected
+    if ($allrows == '0' && $limit_to > 0 && $limit_from >= 0) {
         $add_query  = ' LIMIT '
                     . (($limit_from > 0) ? $limit_from . ', ' : '')
                     . $limit_to;

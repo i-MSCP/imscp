@@ -164,6 +164,10 @@ function delete_domain($domain_id) {
 	// Set domain deletion status
 	$query = "UPDATE `domain` SET `domain_status` = 'delete' WHERE `domain_id` = ?";
 	exec_query($sql, $query, array($domain_id));
+	
+	// Set domain subdomains deletion status
+	$query = "UPDATE `subdomain` SET `subdomain_status` = '$delete_status' WHERE `domain_id` = ?;";
+	exec_query($sql, $query, $domain_id);
 
 	// --- Activate daemon ---
 	send_request();

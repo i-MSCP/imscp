@@ -5,7 +5,7 @@
  *
  * usally called as form action from tbl_change.php to insert or update table rows
  *
- * @version $Id: tbl_replace.php 13118 2009-11-21 13:22:08Z lem9 $
+ * @version $Id: tbl_replace.php 13195 2009-12-30 15:27:27Z lem9 $
  *
  * @todo 'edit_next' tends to not work as expected if used ... at least there is no order by
  *       it needs the original query and the row number and than replace the LIMIT clause
@@ -54,6 +54,7 @@ if (! defined('PMA_NO_VARIABLES_IMPORT')) {
  * Gets some core libraries
  */
 require_once './libraries/common.inc.php';
+$blob_streaming_active = $_SESSION['PMA_Config']->get('BLOBSTREAMING_PLUGINS_EXIST');
 
 // Check parameters
 PMA_checkParameters(array('db', 'table', 'goto'));
@@ -79,15 +80,15 @@ if (isset($_REQUEST['after_insert'])
     //$GLOBALS['goto'] = 'tbl_change.php';
     $goto_include = 'tbl_change.php';
 
-    if (isset($_REQUEST['primary_key'])) {
+    if (isset($_REQUEST['where_clause'])) {
         if ($_REQUEST['after_insert'] == 'same_insert') {
-            foreach ($_REQUEST['primary_key'] as $pk) {
-                $url_params['primary_key'][] = $pk;
+            foreach ($_REQUEST['where_clause'] as $one_where_clause) {
+                $url_params['where_clause'][] = $one_where_clause;
             }
         } elseif ($_REQUEST['after_insert'] == 'edit_next') {
-            foreach ($_REQUEST['primary_key'] as $pk) {
+            foreach ($_REQUEST['where_clause'] as $one_where_clause) {
                 $local_query    = 'SELECT * FROM ' . PMA_backquote($GLOBALS['db']) . '.' . PMA_backquote($GLOBALS['table'])
-                                . ' WHERE ' . str_replace('` =', '` >', $pk)
+                                . ' WHERE ' . str_replace('` =', '` >', $one_where_clause)
                                 . ' LIMIT 1;';
                 $res            = PMA_DBI_query($local_query);
                 $row            = PMA_DBI_fetch_row($res);
@@ -95,7 +96,7 @@ if (isset($_REQUEST['after_insert'])
                 // must find a unique condition based on unique key,
                 // not a combination of all fields
                 list($unique_condition, $clause_is_unique) = PMA_getUniqueCondition($res, count($meta), $meta, $row, true);
-                if (! empty($unique_condition)) {
+                if (! empty($unique_condition)) { 
                     $_SESSION['edit_next'] = $unique_condition;
                 }
                 unset($unique_condition, $clause_is_unique);
@@ -133,9 +134,9 @@ if (isset($_REQUEST['err_url'])) {
 /**
  * Prepares the update/insert of a row
  */
-if (isset($_REQUEST['primary_key'])) {
-    // we were editing something => use primary key
-    $loop_array = (is_array($_REQUEST['primary_key']) ? $_REQUEST['primary_key'] : array($_REQUEST['primary_key']));
+if (isset($_REQUEST['where_clause'])) {
+    // we were editing something => use the WHERE clause
+    $loop_array = (is_array($_REQUEST['where_clause']) ? $_REQUEST['where_clause'] : array($_REQUEST['where_clause']));
     $using_key  = true;
     $is_insert  = ($_REQUEST['submit_type'] == $GLOBALS['strInsertAsNewRow']);
 } else {
@@ -165,9 +166,9 @@ $func_no_param = array(
     'CURRENT_USER',
 );
 
-foreach ($loop_array as $rowcount => $primary_key) {
+foreach ($loop_array as $rowcount => $where_clause) {
     // skip fields to be ignored
-    if (! $using_key && isset($_REQUEST['insert_ignore_' . $primary_key])) {
+    if (! $using_key && isset($_REQUEST['insert_ignore_' . $where_clause])) {
         continue;
     }
 
@@ -208,17 +209,14 @@ foreach ($loop_array as $rowcount => $primary_key) {
         ? $_REQUEST['auto_increment']['multi_edit'][$rowcount]
         : null;
 
-	$primary_field = PMA_BS_GetPrimaryField($GLOBALS['db'], $GLOBALS['table']);
+    if ($blob_streaming_active) {
+        $primary_field = PMA_BS_GetPrimaryField($GLOBALS['db'], $GLOBALS['table']);
+    }
 
     // Fetch the current values of a row to use in case we have a protected field
     // @todo possibly move to ./libraries/tbl_replace_fields.inc.php
-    if ($is_insert && $using_key && isset($me_fields_type) &&
-        is_array($me_fields_type) && isset($primary_key)) {
-        $prot_result = PMA_DBI_query('SELECT * FROM ' .
-                PMA_backquote($table) . ' WHERE ' . $primary_key . ';');
-        $prot_row = PMA_DBI_fetch_assoc($prot_result);
-        PMA_DBI_free_result($prot_result);
-        unset($prot_result);
+    if ($is_insert && $using_key && isset($me_fields_type) && is_array($me_fields_type) && isset($where_clause)) {
+        $prot_row = PMA_DBI_fetch_single_row('SELECT * FROM ' . PMA_backquote($table) . ' WHERE ' . $where_clause . ';');
     }
     foreach ($me_fields as $key => $val) {
 
@@ -227,32 +225,28 @@ foreach ($loop_array as $rowcount => $primary_key) {
         require './libraries/tbl_replace_fields.inc.php';
 
         // rajk - for blobstreaming
-	if (NULL != $primary_field || strlen($primary_field) > 0)
-	{
-		$remove_blob_repo = isset($_REQUEST['remove_blob_repo_' . $key]) ? $_REQUEST['remove_blob_repo_' . $key] : NULL;
-		$upload_blob_repo = isset($_REQUEST['upload_blob_repo_' . $key]) ? $_REQUEST['upload_blob_repo_' . $key] : NULL;
+	if ($blob_streaming_active && (NULL != $primary_field || strlen($primary_field) > 0)) {
+            $remove_blob_repo = isset($_REQUEST['remove_blob_repo_' . $key]) ? $_REQUEST['remove_blob_repo_' . $key] : NULL;
+            $upload_blob_repo = isset($_REQUEST['upload_blob_repo_' . $key]) ? $_REQUEST['upload_blob_repo_' . $key] : NULL;
 
-		// checks if an existing blob repository reference should be removed
-		if (isset($remove_blob_repo) && !isset($upload_blob_repo))
-		{
-			$remove_blob_reference = $_REQUEST['remove_blob_ref_' . $key];
-
-			if (isset($remove_blob_reference))
-				$val = "''";
+            // checks if an existing blob repository reference should be removed
+            if (isset($remove_blob_repo) && !isset($upload_blob_repo)) {
+		$remove_blob_reference = $_REQUEST['remove_blob_ref_' . $key];
+		if (isset($remove_blob_reference)) {
+                    $val = "''";
 		}
 
 		// checks if this field requires a bs reference attached to it
-		$requires_bs_reference = isset($upload_blob_repo);
-
-		if ($requires_bs_reference)
-		{
+		if (isset($upload_blob_repo)) {
 			// get the most recent BLOB reference
-			$bs_reference = PMA_File::getRecentBLOBReference();
+                    $bs_reference = PMA_File::getRecentBLOBReference();
 
-			// if the most recent BLOB reference exists, set it as a field value
-			if (!is_null($bs_reference))
-				$val = "'" . PMA_sqlAddslashes($bs_reference) . "'";
+                    // if the most recent BLOB reference exists, set it as a field value
+                    if (!is_null($bs_reference)) {
+			$val = "'" . PMA_sqlAddslashes($bs_reference) . "'";
+                    }
 		}
+            }
 	}
 
         if (empty($me_funcs[$key])) {
@@ -304,13 +298,13 @@ foreach ($loop_array as $rowcount => $primary_key) {
         } else {
             // build update query
             $query[] = 'UPDATE ' . PMA_backquote($GLOBALS['db']) . '.' . PMA_backquote($GLOBALS['table'])
-                . ' SET ' . implode(', ', $query_values) . ' WHERE ' . $primary_key . ($_REQUEST['clause_is_unique'] ? '' : ' LIMIT 1');
+                . ' SET ' . implode(', ', $query_values) . ' WHERE ' . $where_clause . ($_REQUEST['clause_is_unique'] ? '' : ' LIMIT 1');
 
         }
     }
-} // end foreach ($loop_array as $primary_key)
+} // end foreach ($loop_array as $where_clause)
 unset($me_fields_name, $me_fields_prev, $me_funcs, $me_fields_type, $me_fields_null, $me_fields_null_prev,
-    $me_auto_increment, $cur_value, $key, $val, $loop_array, $primary_key, $using_key,
+    $me_auto_increment, $cur_value, $key, $val, $loop_array, $where_clause, $using_key,
     $func_no_param);
 
 
@@ -363,9 +357,11 @@ foreach ($query as $single_query) {
     if (! $result) {
         $error_messages[] = PMA_DBI_getError();
     } else {
-        if (@PMA_DBI_affected_rows()) {
-            $total_affected_rows += @PMA_DBI_affected_rows();
+        // the following is a real assignment:
+        if ($tmp = @PMA_DBI_affected_rows()) {
+            $total_affected_rows += $tmp;
         }
+        unset($tmp);
 
         $insert_id = PMA_DBI_insert_id();
         if ($insert_id != 0) {
@@ -424,11 +420,11 @@ $active_page = $goto_include;
 
 /**
  * If user asked for "and then Insert another new row" we have to remove
- * primary key information so that tbl_change.php does not go back
+ * WHERE clause information so that tbl_change.php does not go back
  * to the current record
  */
 if (isset($_REQUEST['after_insert']) && 'new_insert' == $_REQUEST['after_insert']) {
-        unset($_REQUEST['primary_key']);
+        unset($_REQUEST['where_clause']);
 }
 
 /**

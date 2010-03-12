@@ -4,7 +4,7 @@
  * Holds class PMA_Message
  *
  * @author Sebastian Mendel <info@sebastianmendel.de>
- * @version $Id: Error.class.php 10738 2007-10-08 16:02:58Z cybot_tm $
+ * @version $Id: Message.class.php 12848 2009-08-21 07:38:43Z nijel $
  * @package phpMyAdmin
  */
 
@@ -31,7 +31,7 @@
  * // create a localized success message
  * $message = PMA_Message::success('strSomeLocaleMessage');
  *
- * // create another message, a hint, whith a localized string which expects
+ * // create another message, a hint, with a localized string which expects
  * // two parameters: $strSomeFootnote = 'Read the %smanual%s'
  * $hint = PMA_Message::notice('strSomeFootnote');
  * // replace %d with the following params
@@ -49,7 +49,7 @@
  * $more->addParam('parameter for strSomeMoreLocale');
  * $more->addParam('more parameter for strSomeMoreLocale');
  *
- * // and add it also to the orignal message
+ * // and add it also to the original message
  * $message->addMessage($more);
  * // finally add another raw message
  * $message->addMessage('some final words', ' - ');
@@ -102,7 +102,7 @@ class PMA_Message
     protected $_string = '';
 
     /**
-     * The formated message
+     * The formatted message
      *
      * @access  protected
      * @var     string
@@ -183,7 +183,7 @@ class PMA_Message
      * @static
      * @uses    PMA_Message as returned object
      * @uses    PMA_Message::SUCCESS
-     * @param   string $string
+     * @param   string $string a localized string e.g. 'strSuccess'
      * @return  PMA_Message
      */
     static public function success($string = '')
@@ -203,7 +203,7 @@ class PMA_Message
      * @static
      * @uses    PMA_Message as returned object
      * @uses    PMA_Message::ERROR
-     * @param   string $string
+     * @param   string $string a localized string e.g. 'strError'
      * @return  PMA_Message
      */
     static public function error($string = '')
@@ -223,7 +223,7 @@ class PMA_Message
      * @static
      * @uses    PMA_Message as returned object
      * @uses    PMA_Message::WARNING
-     * @param   string $string
+     * @param   string $string a localized string e.g. 'strSetupWarning'
      * @return  PMA_Message
      */
     static public function warning($string)
@@ -239,7 +239,7 @@ class PMA_Message
      * @static
      * @uses    PMA_Message as returned object
      * @uses    PMA_Message::NOTICE
-     * @param   string  $string
+     * @param   string  $string a localized string e.g. 'strRelationNotWorking'
      * @return  PMA_Message
      */
     static public function notice($string)
@@ -351,7 +351,7 @@ class PMA_Message
 
     /**
      * returns whether this message is a notice message or not
-     * and optionaly makes this message a notice message
+     * and optionally makes this message a notice message
      *
      * @uses    PMA_Message::NOTICE
      * @uses    PMA_Message::setNumber()
@@ -370,7 +370,7 @@ class PMA_Message
 
     /**
      * returns whether this message is a warning message or not
-     * and optionaly makes this message a warning message
+     * and optionally makes this message a warning message
      *
      * @uses    PMA_Message::WARNING
      * @uses    PMA_Message::setNumber()
@@ -389,7 +389,7 @@ class PMA_Message
 
     /**
      * returns whether this message is an error message or not
-     * and optionaly makes this message an error message
+     * and optionally makes this message an error message
      *
      * @uses    PMA_Message::ERROR
      * @uses    PMA_Message::setNumber()
@@ -455,7 +455,7 @@ class PMA_Message
      * usage
      * <code>
      * $message->addParam('strLocale', false);
-     * $message->addParam('[em]somes tring[/em]');
+     * $message->addParam('[em]some string[/em]');
      * $message->addParam('<img src="img" />', false);
      * </code>
      *
@@ -661,7 +661,7 @@ class PMA_Message
      * @uses    is_array()
      * @uses    array_unshift()
      * @uses    call_user_func_array()
-     * @return  string formated
+     * @return  string formatted
      */
     static public function format()
     {

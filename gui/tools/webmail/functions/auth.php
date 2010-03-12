@@ -5,9 +5,9 @@
  *
  * Contains functions used to do authentication.
  *
- * @copyright &copy; 1999-2009 The SquirrelMail Project Team
+ * @copyright 1999-2010 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: auth.php 13815 2009-08-12 08:19:16Z pdontthink $
+ * @version $Id: auth.php 13893 2010-01-25 02:47:41Z pdontthink $
  * @package squirrelmail
  */
 
@@ -63,13 +63,13 @@ function is_logged_in() {
     if ($check_referrer == '###DOMAIN###') $check_referrer = $domain;
     if (!empty($check_referrer)) {
         $ssl_check_referrer = 'https://' . $check_referrer;
-        $check_referrer = 'http://' . $check_referrer;
+        $plain_check_referrer = 'http://' . $check_referrer;
     }
     if (!sqgetGlobalVar('HTTP_REFERER', $referrer, SQ_SERVER)) $referrer = '';
     if (sqsession_is_registered('user_is_logged_in') 
      && (!$check_referrer || empty($referrer)
       || ($check_referrer && !empty($referrer)
-       && (strpos(strtolower($referrer), strtolower($check_referrer)) === 0
+       && (strpos(strtolower($referrer), strtolower($plain_check_referrer)) === 0
         || strpos(strtolower($referrer), strtolower($ssl_check_referrer)) === 0)))) {
         return;
     } else {

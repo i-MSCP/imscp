@@ -5,9 +5,9 @@
  *
  * This implements all functions that do general IMAP functions.
  *
- * @copyright &copy; 1999-2009 The SquirrelMail Project Team
+ * @copyright 1999-2010 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: imap_general.php 13789 2009-07-27 01:40:44Z jangliss $
+ * @version $Id: imap_general.php 13893 2010-01-25 02:47:41Z pdontthink $
  * @package squirrelmail
  * @subpackage imap
  */

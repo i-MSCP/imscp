@@ -788,7 +788,7 @@ sub rebuild_customers_cfg {
 				SET
 					$field = 'change'
 				WHERE
-					$field = 'ok'
+					($field = 'ok' OR $field = 'disabled') 
 				;
 			"
 		);

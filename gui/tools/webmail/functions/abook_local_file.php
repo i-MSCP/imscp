@@ -3,9 +3,9 @@
 /**
  * abook_local_file.php
  *
- * @copyright &copy; 1999-2009 The SquirrelMail Project Team
+ * @copyright 1999-2010 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: abook_local_file.php 13814 2009-08-10 23:19:04Z pdontthink $
+ * @version $Id: abook_local_file.php 13893 2010-01-25 02:47:41Z pdontthink $
  * @package squirrelmail
  * @subpackage addressbook
  */

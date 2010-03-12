@@ -27,7 +27,7 @@ if (! defined('PHPMYADMIN')) {
 }
 
 if (! isset($GLOBALS['sql_delimiter'])) {
-    $GLOBALS['sql_delimiter'] = ';';
+        $GLOBALS['sql_delimiter'] = ';';
 }
 
 /**

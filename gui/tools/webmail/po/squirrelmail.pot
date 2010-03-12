@@ -1,8 +1,8 @@
 # LANGUAGE (xx_XX) SquirrelMail Translation
-# Copyright (c) 1999-2009 The SquirrelMail Project Team
+# Copyright (c) 1999-2010 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# $Id: squirrelmail.pot 13772 2009-05-29 10:55:17Z jervfors $
+# $Id: squirrelmail.pot 13893 2010-01-25 02:47:41Z pdontthink $
 #, fuzzy
 msgid ""
 msgstr ""

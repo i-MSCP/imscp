@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: header_http.inc.php 11986 2008-11-24 11:05:40Z nijel $
+ * @version $Id: header_http.inc.php 13239 2010-01-13 13:03:56Z nijel $
  * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
@@ -20,6 +20,10 @@ if (isset($_REQUEST['GLOBALS']) || isset($_FILES['GLOBALS'])) {
  * Sends http headers
  */
 $GLOBALS['now'] = gmdate('D, d M Y H:i:s') . ' GMT';
+/* Prevent against ClickJacking by allowing frames only from same origin */
+if (!$GLOBALS['cfg']['AllowThirdPartyFraming']) {
+    header('X-Frame-Options: SAMEORIGIN');
+}
 header('Expires: ' . $GLOBALS['now']); // rfc2616 - Section 14.21
 header('Last-Modified: ' . $GLOBALS['now']);
 header('Cache-Control: no-store, no-cache, must-revalidate, pre-check=0, post-check=0, max-age=0'); // HTTP/1.1

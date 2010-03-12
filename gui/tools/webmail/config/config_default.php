@@ -15,9 +15,9 @@
  * passwords being leaked to e.g. other system users. Take extra care when
  * the webserver is shared with untrusted users.
  *
- * @copyright &copy; 2000-2009 The SquirrelMail Project Team
+ * @copyright 2000-2010 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: config_default.php 13537 2009-04-13 16:52:57Z jervfors $
+ * @version $Id: config_default.php 13893 2010-01-25 02:47:41Z pdontthink $
  * @package squirrelmail
  * @subpackage config
  */

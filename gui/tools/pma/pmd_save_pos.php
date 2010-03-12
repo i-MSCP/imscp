@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: pmd_save_pos.php 11106 2008-02-07 14:54:43Z cybot_tm $
+ * @version $Id: pmd_save_pos.php 12596 2009-06-24 11:34:56Z lem9 $
  * @package phpMyAdmin-Designer
  */
 
@@ -21,11 +21,11 @@ if (! $cfgRelation['designerwork']) {
 foreach ($t_x as $key => $value) {
     $KEY = empty($IS_AJAX) ? urldecode($key) : $key; // table name decode (post PDF exp/imp)
     list($DB,$TAB) = explode(".", $KEY);
-    PMA_query_as_cu('DELETE FROM ' . PMA_backquote($GLOBALS['cfgRelation']['db']) . '.' . PMA_backquote($GLOBALS['cfgRelation']['designer_coords']) . '
+    PMA_query_as_controluser('DELETE FROM ' . PMA_backquote($GLOBALS['cfgRelation']['db']) . '.' . PMA_backquote($GLOBALS['cfgRelation']['designer_coords']) . '
                       WHERE `db_name` = \'' . PMA_sqlAddslashes($DB) . '\'
                         AND `table_name` = \'' . PMA_sqlAddslashes($TAB) . '\'', true, PMA_DBI_QUERY_STORE);
 
-    PMA_query_as_cu('INSERT INTO ' . PMA_backquote($GLOBALS['cfgRelation']['db']) . '.' . PMA_backquote($GLOBALS['cfgRelation']['designer_coords']) . '
+    PMA_query_as_controluser('INSERT INTO ' . PMA_backquote($GLOBALS['cfgRelation']['db']) . '.' . PMA_backquote($GLOBALS['cfgRelation']['designer_coords']) . '
                          (db_name, table_name, x, y, v, h)
                   VALUES ('
                   . '\'' . PMA_sqlAddslashes($DB) . '\', '

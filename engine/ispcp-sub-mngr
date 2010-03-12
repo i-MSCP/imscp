@@ -1678,7 +1678,7 @@ sub sub_del_httpd_file_data {
 	# Removing subdomain entry support directories;
 	#
 
-	($rs, $rdata) = del_dir($sub_dir);
+	$rs = del_dir($sub_dir);
 
 	push_el(\@main::el, 'sub_del_httpd_file_data()', 'Ending...');
 
@@ -2059,8 +2059,6 @@ sub sub_del_mta_file_data {
 	my $sub_name = "$sub_pref.$dmn_name";
 
 	my $virtual_mail_dir = $main::cfg{'MTA_VIRTUAL_MAIL_DIR'};
-	my $mailbox_uid_name = $main::cfg{'MTA_MAILBOX_UID_NAME'};
-	my $mailbox_gid_name = $main::cfg{'MTA_MAILBOX_GID_NAME'};
 
 	$rs = del_dir("$virtual_mail_dir/$sub_name");
 	return $rs if ($rs != 0);

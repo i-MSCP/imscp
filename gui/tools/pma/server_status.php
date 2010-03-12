@@ -4,7 +4,7 @@
  * displays status variables with descriptions and some hints an optmizing
  *  + reset status variables
  *
- * @version $Id: server_status.php 12727 2009-07-26 11:39:39Z helmo $
+ * @version $Id: server_status.php 13259 2010-01-19 19:40:20Z lem9 $
  * @package phpMyAdmin
  */
 
@@ -28,6 +28,11 @@ require './libraries/server_common.inc.php';
  */
 require './libraries/server_links.inc.php';
 
+/**
+ * Replication library
+ */
+require './libraries/replication.inc.php';
+require_once './libraries/replication_gui.lib.php';
 
 /**
  * Displays the sub-page heading
@@ -63,17 +68,6 @@ if (isset($_REQUEST['flush'])) {
  * get status from server
  */
 $server_status = PMA_DBI_fetch_result('SHOW GLOBAL STATUS', 0, 1);
-
-/**
- * get master status from server
- */
-$server_master_status = PMA_DBI_fetch_result('SHOW MASTER STATUS'); 
-
-/**
- * get slave status from server
- */
-$server_slave_status = PMA_DBI_fetch_result('SHOW SLAVE STATUS'); 
-
 
 /**
  * for some calculations we require also some server settings
@@ -263,70 +257,6 @@ $sections = array(
     'tc'            => array('title' => $strTransactionCoordinator),
 );
 
-/** 
-  * replication types
-  */
-$replication_types = array('master', 'slave');
-
-/**
-  * define variables for master status
-  */
-$master_variables = array(
-		      'File',
-		      'Position',
-		      'Binlog_Do_DB',
-		      'Binlog_Ignore_DB'
-);
-
-/**
-  * Define variables for slave status
-  */
-$slave_variables  = array(
-		      'Slave_IO_State',
-		      'Master_Host',
-		      'Master_User',
-		      'Master_Port',
-		      'Connect_Retry',
-		      'Master_Log_File',
-		      'Read_Master_Log_Pos',
-		      'Relay_Log_File',
-		      'Relay_Log_Pos',
-		      'Relay_Master_Log_File',
-		      'Slave_IO_Running',
-		      'Slave_SQL_Running',
-		      'Replicate_Do_DB',
-		      'Replicate_Ignore_DB',
-		      'Replicate_Do_Table',
-		      'Replicate_Ignore_Table',
-		      'Replicate_Wild_Do_Table',
-		      'Replicate_Wild_Ignore_Table',
-		      'Last_Errno',
-		      'Last_Error',
-		      'Skip_Counter',
-		      'Exec_Master_Log_Pos',
-		      'Relay_Log_Space',
-		      'Until_Condition',
-		      'Until_Log_File',
-		      'Until_Log_Pos',
-		      'Master_SSL_Allowed',
-		      'Master_SSL_CA_File',
-		      'Master_SSL_CA_Path',
-		      'Master_SSL_Cert',
-		      'Master_SSL_Cipher',
-		      'Master_SSL_Key',
-		      'Seconds_Behind_Master'
-);
-/**
-  * define important variables, which need to be watched for correct running of replication in slave mode
-  */
-$slave_variables_alerts = array(
-			    'Slave_IO_Running' => 'No',
-			    'Slave_SQL_Running' => 'No'
-			 );
-$slave_variables_oks = array(
-			    'Slave_IO_Running' => 'Yes',
-			    'Slave_SQL_Running' => 'Yes'
-			 );
 /**
  * define some needfull links/commands
  */
@@ -339,12 +269,16 @@ $links['table'][$strShowOpenTables]
     = 'sql.php?sql_query=' . urlencode('SHOW OPEN TABLES') .
       '&amp;goto=server_status.php&amp;' . PMA_generate_common_url();
 
-$links['repl'][$strShowSlaveHosts]
+if ($server_master_status) {
+  $links['repl'][$strShowSlaveHosts]
     = 'sql.php?sql_query=' . urlencode('SHOW SLAVE HOSTS') .
       '&amp;goto=server_status.php&amp;' . PMA_generate_common_url();
-$links['repl'][$strShowSlaveStatus]
-    = 'sql.php?sql_query=' . urlencode('SHOW SLAVE STATUS') .
-      '&amp;goto=server_status.php&amp;' . PMA_generate_common_url();
+  $links['repl'][$strShowMasterStatus] = '#replication_master';
+}
+if ($server_slave_status) {
+  $links['repl'][$strShowSlaveStatus] = '#replication_slave';
+}
+      
 $links['repl']['doc'] = 'replication';
 
 $links['qcache'][$strFlushQueryCache]
@@ -387,14 +321,6 @@ foreach ($server_status as $name => $value) {
 }
 unset($name, $value, $filter, $section, $allocations);
 
-// check which replication is available
-foreach ($replication_types as $type)
-{
-  if (count(${"server_{$type}_status"}) > 0)
-    ${"server_{$type}_status_run"} = true;
-  else 
-    ${"server_{$type}_status_run"} = false;
-}
 // rest
 $sections['all']['vars'] =& $server_status;
 
@@ -423,14 +349,16 @@ echo sprintf($strServerStatusUptime,
 </p>
 
 <?php
-if ($server_master_status_run || $server_slave_status_run) {
+if ($server_master_status || $server_slave_status)
+{
     $replicationOut = "";
-    foreach ($replication_types as $type) {
-        if (${"server_{$type}_status_run"}) {
-            if ($replicationOut != "") {
+    foreach ($replication_types as $type)
+    {
+        if (${"server_{$type}_status"})
+        {
+            if ($replicationOut != "")
                 $replicationOut .= $strAndSmall . ' ';
-            }
-        $replicationOut .= '<b>' . $type . '</b> ';
+            $replicationOut .= '<b>' . $type . '</b> ';
         }
     }
     echo sprintf('<p>' . $strReplicationStatusInfo . '</p>', $replicationOut);
@@ -589,20 +517,31 @@ foreach ($sections as $section_name => $section) {
 
 <div id="serverstatusqueriesdetails">
 <?php
+
+$used_queries = $sections['com']['vars'];
+// reverse sort by value to show most used statements first
+arsort($used_queries);
+// remove all zero values from the end
+while (end($used_queries) == 0) {
+    array_pop($used_queries);
+}
+
 // number of tables to split values into
-$tables         = 2;
-$rows_per_table = (int) ceil(count($sections['com']['vars']) / $tables);
+$tables         = 3;
+$max_rows_per_table = (int) ceil(count($used_queries) / $tables);
 $current_table  = 0;
 $odd_row        = true;
-$countRows      = 0;
+$count_displayed_rows      = 0;
 $perc_factor    = 100 / ($server_status['Questions'] - $server_status['Connections']);
-foreach ($sections['com']['vars'] as $name => $value) {
+
+foreach ($used_queries as $name => $value) {
     $current_table++;
-    if ($countRows === 0 || $countRows === $rows_per_table) {
+    if ($count_displayed_rows === 0 || $count_displayed_rows === $max_rows_per_table) {
         $odd_row = true;
-        if ($countRows === $rows_per_table) {
+        if ($count_displayed_rows === $max_rows_per_table) {
             echo '    </tbody>' . "\n";
             echo '    </table>' . "\n";
+            $count_displayed_rows = 0;
         }
 ?>
     <table id="serverstatusqueriesdetails<?php echo $current_table; ?>" class="data">
@@ -619,7 +558,7 @@ foreach ($sections['com']['vars'] as $name => $value) {
     } else {
         $odd_row = !$odd_row;
     }
-    $countRows++;
+    $count_displayed_rows++;
 
 // For the percentage column, use Questions - Connections, because
 // the number of connections is not an item of the Query types
@@ -631,7 +570,7 @@ foreach ($sections['com']['vars'] as $name => $value) {
             <th class="name"><?php echo htmlspecialchars($name); ?></th>
             <td class="value"><?php echo PMA_formatNumber($value, 4, 0); ?></td>
             <td class="value"><?php echo
-                PMA_formatNumber($value * $hour_factor, 4, 2); ?></td>
+                PMA_formatNumber($value * $hour_factor, 3, 3); ?></td>
             <td class="value"><?php echo
                 PMA_formatNumber($value * $perc_factor, 0, 2); ?>%</td>
         </tr>
@@ -646,12 +585,13 @@ foreach ($sections['com']['vars'] as $name => $value) {
 <?php
 //Unset used variables
 unset(
-    $tables, $rows_per_table, $current_table, $countRows, $perc_factor,
+    $tables, $max_rows_per_table, $current_table, $count_displayed_rows, $perc_factor,
     $hour_factor, $sections['com'],
     $server_status['Aborted_clients'], $server_status['Aborted_connects'],
     $server_status['Max_used_connections'], $server_status['Bytes_received'],
     $server_status['Bytes_sent'], $server_status['Connections'],
-    $server_status['Questions'], $server_status['Uptime']
+    $server_status['Questions'], $server_status['Uptime'],
+    $used_queries
 );
 
 foreach ($sections as $section_name => $section) {
@@ -770,68 +710,21 @@ unset($section_name, $section, $sections, $server_status, $odd_row, $alerts);
 </div> 
 <?php
 /* if the server works as master or slave in replication process, display useful information */
-if ($server_master_status_run || $server_slave_status_run)
+if ($server_master_status || $server_slave_status)
 {
-  ?>
+?>
   <hr class="clearfloat" />
 
   <h3><a name="replication"></a><?php echo $strReplicationStatus; ?></h3>
-  <?php 
-  
-  foreach ($replication_types as $type)
-  {
-    if (${"server_{$type}_status_run"})
-    {
-    ?>
-    <h4><?php echo ${"strReplicationStatus_{$type}"}; ?></h4>
-    <?php 
-    ?>
-    <table id="server<?php echo $type; ?>replicationsummary" class="data"> 
-    
-    <thead>
-    <tr>
-	<th><?php echo $strVar; ?></th>
-	<th><?php echo $strValue; ?></th>
-    </tr>
-    </thead>
-    <tbody>
-    <?php
-    $odd_row = true;
-    foreach(${"{$type}_variables"} as $variable)
-    {
-    ?>
-    <tr class="<?php echo $odd_row ? 'odd' : 'even'; ?>">
-      <td class="name">
-	<?php echo $variable; ?>
-      </td>
-      <td class="value">
-	<?php 
-	if (isset(${"{$type}_variables_alerts"}[$variable])
-	    && ${"{$type}_variables_alerts"}[$variable] == ${"server_{$type}_status"}[0][$variable]) {
-        echo '<span class="attention">';
+<?php 
 
-	} elseif (isset(${"{$type}_variables_oks"}[$variable])
-	    && ${"{$type}_variables_oks"}[$variable] == ${"server_{$type}_status"}[0][$variable]) {
-	    echo '<span class="allfine">';
-	} else {
-	    echo '<span>';
-	}
-	echo ${"server_{$type}_status"}[0][$variable]; 
-	echo '</span>';
-	?>
-      </td>
-    </tr>
-    <?php
-    $odd_row = ! $odd_row;
+    foreach ($replication_types as $type)
+    {
+        if (${"server_{$type}_status"}) {
+            PMA_replication_print_status_table($type);
+        }
     }
-    unset(${"server_{$type}_status"});
-    ?>
-    </tbody>
-    </table>
-    <?php
-    }
-  }
-  unset($types);
+    unset($types);
 }
 ?>
 

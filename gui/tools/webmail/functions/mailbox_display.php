@@ -6,9 +6,9 @@
  * This contains functions that display mailbox information, such as the
  * table row that has sender, date, subject, etc...
  *
- * @copyright &copy; 1999-2009 The SquirrelMail Project Team
+ * @copyright 1999-2010 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: mailbox_display.php 13818 2009-08-12 08:29:53Z pdontthink $
+ * @version $Id: mailbox_display.php 13902 2010-02-04 20:13:23Z pdontthink $
  * @package squirrelmail
  */
 
@@ -201,7 +201,7 @@ function printMessageInfo($imapConnection, $t, $not_last=true, $key, $mailbox,
     $col = 0;
     $msg['SUBJECT'] = decodeHeader($msg['SUBJECT']);
 //    $subject = processSubject($msg['SUBJECT'], $indent_array[$msg['ID']]);
-    $subject = truncateWithEntities(str_replace('&nbsp;',' ',$msg['SUBJECT']), $truncate_subject);
+    $subject = sm_truncate_string(str_replace('&nbsp;',' ',$msg['SUBJECT']), $truncate_subject, '...', TRUE);
     if (sizeof($index_order)) {
         foreach ($index_order as $index_order_part) {
             switch ($index_order_part) {
@@ -217,7 +217,7 @@ function printMessageInfo($imapConnection, $t, $not_last=true, $key, $mailbox,
                 $from_xtra = 'title="' . $senderFrom . '"';
                 echo html_tag( 'td',
                     html_tag('label',
-                               $italic . $bold . $flag . $fontstr . truncateWithEntities($senderName, $truncate_sender) .
+                               $italic . $bold . $flag . $fontstr . sm_truncate_string($senderName, $truncate_sender, '...', TRUE) .
                                $fontstr_end . $flag_end . $bold_end . $italic_end,
                            '','','for="msg'.$msg['ID'].'"'),
                            'left',
@@ -487,7 +487,7 @@ function showMessagesForMailbox($imapConnection, $mailbox, $num_msgs,
                 if (!$use_cache) {
                     $msgs = getSelfSortMessages($imapConnection, $start_msg, $show_num,
                                                 $num_msgs, $sort, $mbxresponse);
-                    $msort = calc_msort($msgs, $sort);
+                    $msort = calc_msort($msgs, $sort, $mailbox);
                 } /* !use cache */
                 break;
         } // switch
@@ -545,7 +545,7 @@ function showMessagesForMailbox($imapConnection, $mailbox, $num_msgs,
     //echo("elapsed time = $t seconds\n");
 }
 
-function calc_msort($msgs, $sort) {
+function calc_msort($msgs, $sort, $mailbox = 'INBOX') {
 
     /*
      * 0 = Date (up)
@@ -565,8 +565,9 @@ function calc_msort($msgs, $sort) {
             $msort[] = $item['TIME_STAMP'];
         }
     } elseif (($sort == 2) || ($sort == 3)) {
+        $fld_sort = (handleAsSent($mailbox)?'TO-SORT':'FROM-SORT');
         foreach ($msgs as $item) {
-            $msort[] = $item['FROM-SORT'];
+            $msort[] = $item[$fld_sort];
         }
     } elseif (($sort == 4) || ($sort == 5)) {
         foreach ($msgs as $item) {

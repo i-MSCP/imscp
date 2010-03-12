@@ -7,8 +7,8 @@
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
  * @author Marc Groot Koerkamp
- * @copyright Copyright &copy; 2002 Marc Groot Koerkamp, The Netherlands
- * @copyright Copyright &copy; 2004-2009 The SquirrelMail Project Team
+ * @copyright 2002 Marc Groot Koerkamp, The Netherlands
+ * @copyright 2004-2010 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version $Id$
  * @package plugins

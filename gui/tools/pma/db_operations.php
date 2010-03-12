@@ -9,7 +9,7 @@
  *  - adding tables
  *  - viewing PDF schemas
  *
- * @version $Id: db_operations.php 13203 2010-01-01 22:41:29Z lem9 $
+ * @version $Id: db_operations.php 13260 2010-01-20 08:00:47Z helmo $
  * @package phpMyAdmin
  */
 
@@ -53,7 +53,13 @@ if (strlen($db) && (! empty($db_rename) || ! empty($db_copy))) {
             }
             $local_query .= ';';
             $sql_query = $local_query;
+            // save the original db name because Tracker.class.php which
+            // may be called under PMA_DBI_query() changes $GLOBALS['db']
+            // for some statements, one of which being CREATE DATABASE
+            $original_db = $db;
             PMA_DBI_query($local_query);
+            $db = $original_db;
+            unset($original_db);
 
             // rebuild the database list because PMA_Table::moveCopy
             // checks in this list if the target db exists
@@ -73,7 +79,7 @@ if (strlen($db) && (! empty($db_rename) || ! empty($db_copy))) {
             $sql_constraints = '';
             $sql_drop_foreign_keys = '';
             $sql_structure = PMA_getTableDef($db, $each_table, "\n", '', false, false);
-            if (! empty($sql_drop_foreign_keys)) {
+            if ($move && ! empty($sql_drop_foreign_keys)) {
                 PMA_DBI_query($sql_drop_foreign_keys);
             }
             // keep the constraint we just dropped
@@ -138,7 +144,7 @@ if (strlen($db) && (! empty($db_rename) || ! empty($db_copy))) {
                 unset($triggers); 
 
                 // this does not apply to a rename operation
-                if (isset($GLOBALS['add_constraints'])) {
+                if (isset($GLOBALS['add_constraints']) && !empty($GLOBALS['sql_constraints_query'])) {
                     $GLOBALS['sql_constraints_query_full_db'][] = $GLOBALS['sql_constraints_query'];
                     unset($GLOBALS['sql_constraints_query']);
                 }
@@ -452,7 +458,7 @@ if (!$is_information_schema) {
             'structure' => $strStrucOnly,
             'data'      => $strStrucData,
             'dataonly'  => $strDataOnly);
-        PMA_generate_html_radio('what', $choices, 'data', true);
+        PMA_display_html_radio('what', $choices, 'data', true);
         unset($choices);
 ?>
         <input type="checkbox" name="create_database_before_copying" value="1"
@@ -527,7 +533,7 @@ if (!$is_information_schema) {
                     <?php echo PMA_getIcon('b_edit.png', $strBLOBRepository, false, true); ?>
                     </legend>
 
-                    <?php echo $strBLOBRepositoryStatus; ?>:
+                    <?php echo $strStatus; ?>:
 
                     <?php
 
@@ -623,7 +629,7 @@ if ($cfgRelation['pdfwork'] && $num_tables > 0) { ?>
          SELECT *
            FROM ' . PMA_backquote($GLOBALS['cfgRelation']['db']) . '.' . PMA_backquote($cfgRelation['pdf_pages']) . '
           WHERE db_name = \'' . PMA_sqlAddslashes($db) . '\'';
-    $test_rs    = PMA_query_as_cu($test_query, null, PMA_DBI_QUERY_STORE);
+    $test_rs    = PMA_query_as_controluser($test_query, null, PMA_DBI_QUERY_STORE);
 
     if ($test_rs && PMA_DBI_num_rows($test_rs) > 0) { ?>
     <!-- PDF schema -->

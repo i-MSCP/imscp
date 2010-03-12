@@ -2,7 +2,7 @@
 /**
  * common functions used for communicating between main, navigation and querywindow
  *
- * @version $Id: common.js 12022 2008-11-28 14:35:17Z nijel $
+ * @version $Id: common.js 13378 2010-02-03 14:26:37Z helmo $
  */
 
 /**
@@ -437,7 +437,7 @@ function openDb(new_db) {
 
 function updateTableTitle( table_link_id, new_title ) {
     //alert('updateTableTitle');
-    if ( window.parent.frame_navigation.document.getElementById(table_link_id) ) {
+    if ( window.parent.frame_navigation.document && window.parent.frame_navigation.document.getElementById(table_link_id) ) {
         var left = window.parent.frame_navigation.document;
 
         var link = left.getElementById(table_link_id);

@@ -1,0 +1,186 @@
+Message Flags & Icons plugin for SquirrelMail
+=============================================
+Ver 1.4.20, 2009/09/05
+
+
+Copyright (c) 2002-2007 Robert Jaakke <robert@jaakke.com>
+Copyright (c) 2003-2009 Paul Lesniewski <paul@squirrelmail.org>
+
+
+
+Description
+===========
+
+This plugin/modification provides several visual enhancements for the
+SquirrelMail interface, such as using small envelope icons to indicate
+new and read messages, as well as which messages have been replied to,
+forwarded, etc.  The folder list also has a few icons added to it.
+
+Additionally, this plugin adds functionality that allows users to flag
+their messages (by adding "Flag"/"Unflag" buttons to the message list
+screen).
+
+PLEASE NOTE that this plugin comes integrated with SquirrelMail as of
+version 1.5.0, and should not be installed separately therein.
+
+
+
+License
+=======
+
+This plugin is released under the GNU General Public
+License (see the file COPYING for details).
+
+
+
+Donations
+=========
+
+If you or your company make regular use of this software, please
+consider supporting Open Source development by donating to the authors
+or inquire about hiring them to consult on other projects.  Donation/
+wish list links for the author(s) are as follows:
+
+Paul Lesniewski: https://sourceforge.net/donate/index.php?user_id=508228
+
+
+
+Requirements
+============
+
+  * SquirrelMail version 1.4.3 or above
+
+  * Compatibility plugin version 2.0.7 or above, unless
+    using SquirrelMail 1.4.10+
+
+
+
+Help Requests
+=============
+
+Before looking for help elsewhere, please try to help yourself:
+
+  * Look to see if others have already asked about the same issue.
+    There are tips and links for the best places to do this in
+    the SquirrelMail mailing list posting guidelines:
+    http://squirrelmail.org/wiki/MailingListPostingGuidelines
+    You should also try Google or some other search engine.
+
+  * If you cannot find any information about your issue, please
+    first mail your help request to the squirrelmail-plugins
+    mailing list.  Information about it can be found here:
+    http://lists.sourceforge.net/mailman/listinfo/squirrelmail-plugins
+    You MUST read the mailing list posting guidelines (see above)
+    and include as much information about your issue (and your
+    system) as possible.  Including configtest output, any debug
+    output, the plugin configuration settings you've made and
+    anything else you can think of to make it easier to diagnose
+    your problem will get you the most useful responses.  Inquiries
+    that do not comply with the posting guidelines are liable to
+    be ignored.
+
+  * If you don't get any replies on the mailing list, you are
+    welcome to send a help request to the authors' personal
+    address(es), but please be patient with the mailing list.
+
+
+
+Change Log
+==========
+
+  v1.4.20  2009/09/05  Paul Lesniewski <paul@squirrelmail.org>
+    * Added patch for SquirrelMail 1.4.20 (also works with 1.4.20-RC 1
+      and 1.4.20-RC 2)
+
+  v1.4.15a  2008/07/18  Paul Lesniewski <paul@squirrelmail.org>
+    * Fix PHP error when plugin is activated (there is not
+      much reason to do so, unless using the Plugin Updates
+      plugin)
+
+  v1.4.15  2008/06/11  Paul Lesniewski <paul@squirrelmail.org>
+    * Added patch for SquirrelMail 1.4.13
+    * Added patch for SquirrelMail 1.4.15
+
+  v1.4.10  2007/08/13  Paul Lesniewski <paul@squirrelmail.org>
+    * Added patch for SquirrelMail 1.4.10+; the patch
+      for 1.4.3a should work for versions up to 1.4.9
+    * Miscellaneous cleanup and updating for compliance
+      with newest SquirrelMail plugin standards
+    * Removed source file replacements
+
+90/22/04 - ver 1.4.3.1
+- Fixed README
+- Fixed tarball naming
+- Added space between icons and text in folder list
+- Cleaned up code, removed Windows formatting
+- Fixed patch file, now substantially smaller
+
+01/06/04 - ver 1.4.3
+- Updated the plugin for SM 1.4.3 stable.
+- Folders have graphical images now.
+- All text strings are ready for localization.
+
+09/07/03 - ver 1.0.2
+- Updated the plugin for SM 1.4.1 stable.
+- Finally included a diff patch to apply the changes. Thnx Paul ;-)
+- Removed old images dir.
+
+07/03/03 - ver 1.0.1
+- Reduced the image size a little, they have a fixed width and height now which should improve speed a little
+  when loading the page.
+
+07/03/03 - ver 1.0
+- Updated the plugin for SM 1.4 stable.
+- New Images! Thnx to Joris Bruring. The old (smaller size) images are also included.
+- Thnx to Paul Kremer for sending me de modified files for 1.4 stable. Saved me some time :-)
+
+20/03/03 - ver 0.9
+- I finally updated the plugin to work with SM 1.4.0rc2a :-)
+- Removed the setup.php and moved the code into move_messages.php.
+- Sorry for not updating for a long time. I was very busy with school but i finally got my Bachalor's Degree :-)
+
+17/09/02 - ver 0.8
+- I updated the plugin to work with SM 1.2.8 and it works with the register_globals set to off.
+- Note! If you're using a version before SM 1.2.8 there is no reason to upgrade this plugin.
+
+26/06/02 - ver 0.7
+- I updated the plugin to work with SM 1.2.7.
+  First off all, my desktop died :-( so i had to work on my server and that delayed
+  the work on Msg_Flags. But here it is :-)
+- If you're using SM 1.2.6 there is no reason to upgrade this plugin since it's the same
+  except the code might be a little different.
+- The SM 1.2.7 tarball has the + and - images included in the image dir. This version of the 
+  plugin uses them. If they're missing for some reason then copy the + and - img from the 
+  Msg_flags dir to the SM image dir.
+
+14/06/02 - ver 0.6
+- After 1816 downloads someone noticed that the priority images were wrong.
+  High prio was shown with a low prio image and low prio with the high prio image.
+  Anyway this is what's fixed in this verion. If you are upgrading from ver 0.5 
+  you can simply copy the mailbox_display.php from the archive since the rest is still the same.
+  
+08/05/02 - ver 0.5
+- Folder collapse wouldn't work after installing msg_flags 0.4, sorry for that, this version fixes it.
+
+08/05/02 - ver 0.4
+- I had a bug reported and noticed that the case5 wasn't the same as included in SM 1.2.6
+  So i took the fresh mailbox_display.php and move_messages.php from the SM 1.2.6 src and 
+  modified these, so hopefully no more bugs now.
+- Replaced the + and - in the folder list with images.
+- Modified the envelope images. They now have the same width for better vertical alignment.
+ 
+07/05/02 - ver 0.3
+- Moved the envelope icon to the flags cell instead of the subject line cell.
+- Aligned the flags cell LEFT
+- If a flag is not set a transparent image of the same width is placed instead to 
+  align the flags vertically.
+- Updated README -> Do it your self instructions.
+
+02/05/02 - ver 0.2
+- Updated readme for SM 1.2.6
+- Added mailbox_display.php and move_messages.php for SM 1.2.6
+- Removed mailbox_display.php and move_messages.php for SM 1.2.5
+
+09/04/02 - ver 0.1
+- initial release
+

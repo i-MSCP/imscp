@@ -6,7 +6,7 @@
  * @todo should be handled by class Table
  * @todo this should be recoded as functions, to avoid messing with global variables
  *
- * @version $Id: tbl_info.inc.php 12121 2008-12-10 09:23:07Z cybot_tm $
+ * @version $Id: tbl_info.inc.php 13061 2009-10-23 10:02:09Z lem9 $
  * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
@@ -86,7 +86,7 @@ if ($showtable) {
 
     if (null === $showtable['Rows']) {
         $showtable['Rows']   = PMA_Table::countRecords($GLOBALS['db'],
-            $showtable['Name'], true, true);
+            $showtable['Name'], true);
     }
     $table_info_num_rows = isset($showtable['Rows']) ? $showtable['Rows'] : 0;
     $row_format = isset($showtable['Row_format']) ? $showtable['Row_format'] : '';

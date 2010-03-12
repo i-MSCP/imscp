@@ -24,7 +24,14 @@ if (empty($is_info)) {
       || isset($mult_btn)) {
         $action = 'db_structure.php';
         $err_url = 'db_structure.php?'. PMA_generate_common_url($db);
-        require './libraries/mult_submits.inc.php';
+
+        // see bug #2794840; in this case, code path is:
+        // db_structure.php -> libraries/mult_submits.inc.php -> sql.php
+        // -> db_structure.php and if we got an error on the multi submit,
+        // we must display it here and not call again mult_submits.inc.php
+        if (! isset($error) || FALSE === $error) {
+            require './libraries/mult_submits.inc.php';
+        }
         if (empty($message)) {
             $message = PMA_Message::success();
         }
@@ -35,6 +42,8 @@ if (empty($is_info)) {
     // Gets the database structure
     $sub_part = '_structure';
     require './libraries/db_info.inc.php';
+
+    require_once './libraries/replication.inc.php';
 }
 
 // 1. No tables
@@ -60,121 +69,8 @@ require_once './libraries/bookmark.lib.php';
 require_once './libraries/mysql_charsets.lib.php';
 $db_collation = PMA_getDbCollation($db);
 
-// Display function
-/**
- * void PMA_TableHeader([bool $db_is_information_schema = false])
- * display table header (<table><thead>...</thead><tbody>)
- *
- * @uses    PMA_showHint()
- * @uses    $GLOBALS['cfg']['PropertiesNumColumns']
- * @uses    $GLOBALS['is_show_stats']
- * @uses    $GLOBALS['strTable']
- * @uses    $GLOBALS['strAction']
- * @uses    $GLOBALS['strRecords']
- * @uses    $GLOBALS['strApproximateCount']
- * @uses    $GLOBALS['strType']
- * @uses    $GLOBALS['strCollation']
- * @uses    $GLOBALS['strSize']
- * @uses    $GLOBALS['strOverhead']
- * @uses    $GLOBALS['structure_tbl_col_cnt']
- * @uses    PMA_SortableTableHeader()
- * @param   boolean $db_is_information_schema
- */
-function PMA_TableHeader($db_is_information_schema = false)
-{
-    $cnt = 0; // Let's count the columns...
-
-    if ($db_is_information_schema) {
-        $action_colspan = 3;
-    } else {
-        $action_colspan = 6;
-    }
-
-    echo '<table class="data" style="float: left;">' . "\n"
-        .'<thead>' . "\n"
-        .'<tr><th></th>' . "\n"
-        .'    <th>' . PMA_SortableTableHeader($GLOBALS['strTable'], 'table') . '</th>' . "\n"
-        .'    <th colspan="' . $action_colspan . '">' . "\n"
-        .'        ' . $GLOBALS['strAction'] . "\n"
-        .'    </th>'
-        .'    <th>' . PMA_SortableTableHeader($GLOBALS['strRecords'], 'records')
-        .PMA_showHint(PMA_sanitize($GLOBALS['strApproximateCount'])) . "\n"
-        .'    </th>' . "\n";
-    if (!($GLOBALS['cfg']['PropertiesNumColumns'] > 1)) {
-        echo '    <th>' . PMA_SortableTableHeader($GLOBALS['strType'], 'type') . '</th>' . "\n";
-        $cnt++;
-        echo '    <th>' . PMA_SortableTableHeader($GLOBALS['strCollation'], 'collation') . '</th>' . "\n";
-        $cnt++;
-    }
-    if ($GLOBALS['is_show_stats']) {
-        echo '    <th>' . PMA_SortableTableHeader($GLOBALS['strSize'], 'size') . '</th>' . "\n"
-           . '    <th>' . PMA_SortableTableHeader($GLOBALS['strOverhead'], 'overhead') . '</th>' . "\n";
-        $cnt += 2;
-    }
-    echo '</tr>' . "\n";
-    echo '</thead>' . "\n";
-    echo '<tbody>' . "\n";
-    $GLOBALS['structure_tbl_col_cnt'] = $cnt + $action_colspan + 3;
-} // end function PMA_TableHeader()
-
-/**
- * Creates a clickable column header for table information
- *
- * @param   string  title to use for the link
- * @param   string  corresponds to sortable data name mapped in libraries/db_info.inc.php  
- * @returns string  link to be displayed in the table header
- */
-function PMA_SortableTableHeader($title, $sort)
-{
-    // Set some defaults
-    $requested_sort = 'table';
-    $requested_sort_order = 'ASC';
-    $future_sort_order = 'ASC';
-    
-    // If the user requested a sort
-    if (isset($_REQUEST['sort'])) {
-        $requested_sort = $_REQUEST['sort'];
-
-        if (isset($_REQUEST['sort_order'])) {
-            $requested_sort_order = $_REQUEST['sort_order'];
-        }
-    }
-
-    $order_img = '';
-    $order_link_params = array();
-    $order_link_params['title'] = $GLOBALS['strSort'];
-
-    // If this column was requested to be sorted.
-    if ($requested_sort == $sort) {
-        if ($requested_sort_order == 'ASC') {
-            $future_sort_order = 'DESC';
-            // current sort order is ASC
-            $order_img  = ' <img class="icon" src="' . $GLOBALS['pmaThemeImage'] . 's_asc.png" width="11" height="9" alt="'. $GLOBALS['strAscending'] . '" title="'. $GLOBALS['strAscending'] . '" id="sort_arrow" />';
-            // but on mouse over, show the reverse order (DESC)
-            $order_link_params['onmouseover'] = 'if(document.getElementById(\'sort_arrow\')){ document.getElementById(\'sort_arrow\').src=\'' . $GLOBALS['pmaThemeImage'] . 's_desc.png\'; }';
-            // on mouse out, show current sort order (ASC)
-            $order_link_params['onmouseout']  = 'if(document.getElementById(\'sort_arrow\')){ document.getElementById(\'sort_arrow\').src=\'' . $GLOBALS['pmaThemeImage'] . 's_asc.png\'; }';
-        } else {
-            // current sort order is DESC
-            $order_img  = ' <img class="icon" src="' . $GLOBALS['pmaThemeImage'] . 's_desc.png" width="11" height="9" alt="'. $GLOBALS['strDescending'] . '" title="'. $GLOBALS['strDescending'] . '" id="sort_arrow" />';
-            // but on mouse over, show the reverse order (ASC)
-            $order_link_params['onmouseover'] = 'if(document.getElementById(\'sort_arrow\')){ document.getElementById(\'sort_arrow\').src=\'' . $GLOBALS['pmaThemeImage'] . 's_asc.png\'; }';
-            // on mouse out, show current sort order (DESC)
-            $order_link_params['onmouseout']  = 'if(document.getElementById(\'sort_arrow\')){ document.getElementById(\'sort_arrow\').src=\'' . $GLOBALS['pmaThemeImage'] . 's_desc.png\'; }';
-        }
-    }
-
-    $_url_params = array(
-        'db' => $_REQUEST['db'],
-    );
-
-    $url = 'db_structure.php'.PMA_generate_common_url($_url_params);
-    // We set the position back to 0 every time they sort.
-    $url .= "&amp;pos=0&amp;sort=$sort&amp;sort_order=$future_sort_order";
-
-    return PMA_linkOrButton($url, $title . $order_img, $order_link_params);
-} // end function PMA_SortableTableHeader()
-
+// in a separate file to avoid redeclaration of functions in some code paths
+require_once './libraries/db_structure.lib.php';
 
 $titles = array();
 if (true == $cfg['PropertiesIconic']) {
@@ -240,7 +136,7 @@ PMA_listNavigator($total_num_tables, $pos, $_url_params, 'db_structure.php', 'fr
 <?php
 echo PMA_generate_common_hidden_inputs($db);
 
-PMA_TableHeader($db_is_information_schema);
+PMA_TableHeader($db_is_information_schema, $server_slave_status);
 
 $i = $sum_entries = 0;
 $sum_size       = (double) 0;
@@ -297,7 +193,7 @@ foreach ($tables as $keyname => $each_table) {
         case 'ARCHIVE' :
             if ($db_is_information_schema) {
                 $each_table['Rows'] = PMA_Table::countRecords($db,
-                    $each_table['Name'], $return = true);
+                    $each_table['Name']);
             }
                 
             if ($is_show_stats) {
@@ -317,7 +213,7 @@ foreach ($tables as $keyname => $each_table) {
             if ($each_table['TABLE_ROWS'] < $GLOBALS['cfg']['MaxExactCount']) {
                 $each_table['COUNTED'] = true;
                 $each_table['TABLE_ROWS'] = PMA_Table::countRecords($db,
-                    $each_table['TABLE_NAME'], $return = true, $force_exact = true,
+                    $each_table['TABLE_NAME'], $force_exact = true,
                     $is_view = false);
             } else {
                 $each_table['COUNTED'] = false;
@@ -339,14 +235,14 @@ foreach ($tables as $keyname => $each_table) {
             }
             break;
             // for a view, the ENGINE is sometimes reported as null,
-            // or on some servers it's reported as "SYSTEM VIEW" 
+            // or on some servers it's reported as "SYSTEM VIEW"
         case null :
         case 'SYSTEM VIEW' :
-            // if table is broken, Engine is reported as null, so one more test 
+            // if table is broken, Engine is reported as null, so one more test
             if ($each_table['TABLE_TYPE'] == 'VIEW') {
                 // countRecords() takes care of $cfg['MaxExactCountViews']
                 $each_table['TABLE_ROWS'] = PMA_Table::countRecords($db,
-                    $each_table['TABLE_NAME'], $return = true, $force_exact = true,
+                    $each_table['TABLE_NAME'], $force_exact = true,
                     $is_view = true);
                 $table_is_view = true;
             }
@@ -426,6 +322,15 @@ foreach ($tables as $keyname => $each_table) {
             str_replace(' ', '&nbsp;', htmlspecialchars($each_table['TABLE_NAME'])));
     }
 
+    $tracking_icon = '';
+    if (PMA_Tracker::isActive()) {
+        if (PMA_Tracker::isTracked($GLOBALS["db"], $truename)) {
+            $tracking_icon = '<a href="tbl_tracking.php?' . $url_query.'&amp;table=' . $truename . '"><img class="icon" width="14" height="14" src="' . $pmaThemeImage . 'eye.png" alt="' . $strTrackingIsActive . '" title="' . $strTrackingIsActive . '" /></a>';
+        } elseif (PMA_Tracker::getVersion($GLOBALS["db"], $truename) > 0) {
+            $tracking_icon = '<a href="tbl_tracking.php?' . $url_query . '&amp;table=' . $truename . '"><img class="icon" width="14" height="14" src="' . $pmaThemeImage . 'eye_grey.png" alt="' . $strTrackingIsNotActive . '" title="' . $strTrackingIsNotActive . '" /></a>';
+        }
+    }
+
     if ($num_columns > 0 && $num_tables > $num_columns
       && (($row_count % $num_columns) == 0)) {
         $row_count = 1;
@@ -435,8 +340,39 @@ foreach ($tables as $keyname => $each_table) {
 </tbody>
 </table>
         <?php
-        PMA_TableHeader();
+        PMA_TableHeader(false, $server_slave_status);
     }
+    
+    $ignored = false;
+    $do = false;
+    
+    if ($server_slave_status) {
+        ////////////////////////////////////////////////////////////////
+
+        if ((strlen(array_search($truename, $server_slave_Do_Table)) > 0) 
+            || (strlen(array_search($db, $server_slave_Do_DB))>0) 
+            || (count($server_slave_Do_DB)==1 && count($server_slave_Ignore_DB)==1)
+        ) {
+            $do = true;
+        }
+        foreach ($server_slave_Wild_Do_Table as $table) {
+            if (($db == PMA_replication_strout($table)) && (ereg("^".substr(PMA_replication_strout($table, true), 0, strlen(PMA_replication_strout($table, true))-1), $truename)))
+                $do = true;
+        }
+        ////////////////////////////////////////////////////////////////////
+        if ((strlen(array_search($truename, $server_slave_Ignore_Table))>0)  || (strlen(array_search($db, $server_slave_Ignore_DB))>0)) {
+            $ignored = true;
+        }
+        foreach ($server_slave_Wild_Ignore_Table as $table) {
+            if (($db == PMA_replication_strout($table)) && (ereg("^".substr(PMA_replication_strout($table, true), 0, strlen(PMA_replication_strout($table, true))-1), $truename)))
+                $ignored = true;
+        }
+    }/* elseif ($server_master_status) {
+        if ((strlen(array_search($db, $server_master_Do_DB))>0) || count($server_master_Do_DB)==1)
+            $do = true;
+        elseif ((strlen(array_search($db, $server_master_Ignore_DB))>0) || count($server_master_Ignore_DB)==1)
+            $ignored = true;
+    }*/
     ?>
 <tr class="<?php echo $odd_row ? 'odd' : 'even'; $odd_row = ! $odd_row; ?>">
     <td align="center">
@@ -444,8 +380,10 @@ foreach ($tables as $keyname => $each_table) {
             value="<?php echo htmlspecialchars($each_table['TABLE_NAME']); ?>"
             id="checkbox_tbl_<?php echo $i; ?>"<?php echo $checked; ?> /></td>
     <th><label for="checkbox_tbl_<?php echo $i; ?>"
-            title="<?php echo $alias; ?>"><?php echo $truename; ?></label>
+            title="<?php echo $alias; ?>" style="<?php echo $ignored ? ' ignored' : ''; ?>"><?php echo $truename; ?></label>
+        <label><?php echo $tracking_icon; ?></label>
     </th>
+   <?php if ($server_slave_status) { ?><td align="center"><?php echo $ignored ? ' <img class="icon" src="' . $pmaThemeImage . 's_cancel.png" width="16" height="16"  alt="NOT REPLICATED" />' : ''. $do ? ' <img class="icon" src="' . $pmaThemeImage . 's_success.png" width="16" height="16"  alt="REPLICATED" />' : ''; ?></td><?php } ?>
     <td align="center"><?php echo $browse_table; ?></td>
     <td align="center">
         <a href="tbl_structure.php?<?php echo $tbl_url_query; ?>">
@@ -538,6 +476,11 @@ if ($is_show_stats) {
             echo sprintf($strTables, PMA_formatNumber($num_tables - $tableReductionCount, 0));
         ?>
     </th>
+    <?php
+        if ($server_slave_status) {
+            echo '    <th>' . $GLOBALS['strReplication'] . '</th>' . "\n";
+        }
+    ?>
     <th colspan="<?php echo ($db_is_information_schema ? 3 : 6) ?>" align="center">
         <?php echo $strSum; ?></th>
     <th class="value"><?php echo $sum_row_count_pre . PMA_formatNumber($sum_entries, 0); ?></th>
@@ -607,6 +550,8 @@ echo '    <option value="' . $strRepairTable . '" >'
      . $strRepairTable . '</option>' . "\n";
 echo '    <option value="' . $strAnalyzeTable . '" >'
      . $strAnalyzeTable . '</option>' . "\n";
+echo '    <option value="' . $strExport . '" >'
+     . $strExport . '</option>' . "\n";
 ?>
 </select>
 <script type="text/javascript">

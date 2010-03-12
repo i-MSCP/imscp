@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: display_export.lib.php 12302 2009-03-24 08:55:07Z nijel $
+ * @version $Id: display_export.lib.php 13180 2009-12-27 13:59:08Z helmo $
  * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
@@ -107,12 +107,17 @@ echo PMA_pluginGetJavascript($export_list);
 <?php if (strlen($table) && ! isset($num_tables)) { ?>
     <div class="formelementrow">
         <?php
+        echo '<input type="radio" name="allrows" value="0" id="radio_allrows_0" checked="checked" />';
+
         echo sprintf($strDumpXRows,
             '<input type="text" name="limit_to" size="5" value="'
-            . (isset($unlim_num_rows) ? $unlim_num_rows : PMA_Table::countRecords($db, $table, TRUE))
+            . (isset($unlim_num_rows) ? $unlim_num_rows : PMA_Table::countRecords($db, $table))
             . '" onfocus="this.select()" />',
             '<input type="text" name="limit_from" value="0" size="5"'
             .' onfocus="this.select()" /> ');
+
+        echo '<input type="radio" name="allrows" value="1" id="radio_allrows_1" />';
+        echo '<label for="radio_allrows_1">' . $strDumpAllRows . '</label>';
         ?>
     </div>
 <?php } ?>
@@ -190,8 +195,9 @@ echo PMA_pluginGetJavascript($export_list);
                 echo $GLOBALS['cfg']['Export']['file_template_server'];
             }
         }
-        echo '" />';
+        echo '"';
     ?>
+    />
 
     (
     <input type="checkbox" name="remember_template"

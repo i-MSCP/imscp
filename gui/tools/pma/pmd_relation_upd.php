@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: pmd_relation_upd.php 11979 2008-11-24 10:10:36Z nijel $
+ * @version $Id: pmd_relation_upd.php 12596 2009-06-24 11:34:56Z lem9 $
  * @package phpMyAdmin-Designer
  */
 
@@ -35,7 +35,7 @@ if (PMA_foreignkey_supported($type_T1) && PMA_foreignkey_supported($type_T2) && 
     }
 } else {
     // internal relations
-    PMA_query_as_cu('DELETE FROM '
+    PMA_query_as_controluser('DELETE FROM '
               . PMA_backquote($GLOBALS['cfgRelation']['db']) . '.'
               . $cfg['Server']['relation'].' WHERE '
               . 'master_db = \'' . PMA_sqlAddslashes($DB2) . '\''

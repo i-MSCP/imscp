@@ -3,7 +3,7 @@
 /**
  * Set of functions used to build YAML dumps of tables
  *
- * @version $Id: yaml.php 12133 2008-12-12 13:03:43Z lem9 $
+ * @version $Id: yaml.php 13194 2009-12-30 13:46:17Z lem9 $
  * @package phpMyAdmin-Export-YAML
  */
 if (! defined('PHPMYADMIN')) {
@@ -174,7 +174,7 @@ function PMA_exportData($db, $table, $crlf, $error_url, $sql_query)
             $buffer .= '  ' . $column . ': ' . $record[$i] . $crlf;
         }
 
-        if (!PMA_exportOutputHandler($buffer)) {
+        if (! PMA_exportOutputHandler($buffer)) {
             return FALSE;
         }
     }

@@ -5,9 +5,9 @@
  *
  * This implements all functions that manipulate mailboxes
  *
- * @copyright &copy; 1999-2009 The SquirrelMail Project Team
+ * @copyright 1999-2010 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: imap_mailbox.php 13801 2009-07-29 02:52:32Z pdontthink $
+ * @version $Id: imap_mailbox.php 13893 2010-01-25 02:47:41Z pdontthink $
  * @package squirrelmail
  * @subpackage imap
  */
@@ -755,8 +755,8 @@ function sqimap_mailbox_list_all($imap_stream) {
             $boxesallbyname[$mailbox] = $g;
             $parentfolder = readMailboxParent($mailbox, $delimiter);
 			/* @FIXME shouldn't use preg_match for simple string matching */
-            if((preg_match('/^inbox'.quotemeta($delimiter).'/i', $mailbox)) ||
-               (preg_match('/^'.$folder_prefix.'/', $mailbox)) ||
+            if((preg_match('|^inbox'.quotemeta($delimiter).'|i', $mailbox)) ||
+               (preg_match('|^'.$folder_prefix.'|', $mailbox)) ||
                ( isset($boxesallbyname[$parentfolder]) && (strlen($parentfolder) > 0) ) ) {
                 if ($dm_count) {
                     $boxes[$g]['formatted']  = str_repeat('&nbsp;&nbsp;', $dm_count);

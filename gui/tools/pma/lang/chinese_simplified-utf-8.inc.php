@@ -1,5 +1,5 @@
 <?php
-/* $Id: chinese_simplified-utf-8.inc.php 12640 2009-07-11 09:11:20Z lem9 $ */
+/* $Id: chinese_simplified-utf-8.inc.php 13370 2010-01-29 12:58:58Z helmo $ */
 
 /**
  * Translation by: Funda Wang <fundawang@en2china.com>
@@ -104,7 +104,6 @@ $strBLOBRepositoryEnabled = '已启用';
 $strBLOBRepositoryEnable = '启用';
 $strBLOBRepositoryRemove = '删除 BLOB 容器功能';
 $strBLOBRepositoryRepair = '修复';
-$strBLOBRepositoryStatus = '状态';
 $strBLOBRepositoryUpload = '上传到 BLOB 容器';
 $strBookmarkAllUsers = '让所有用户均可访问此书签';
 $strBookmarkCreated = '已创建书签 %s';
@@ -298,7 +297,6 @@ $strErrorRelationExists = '错误：关系已存在';
 $strErrorRenamingTable = '将表 %1$s 改名为 %2$s 时发生错误';
 $strErrorSaveTable = '保存设计器坐标时出错。';
 $strError = '错误';
-$strRemoveCRLF = '删除字段中的换行符';
 $strEscapeWildcards = '要使用通配符 _ 和 % 本身，应使用用 \ 转义';
 $strEsperanto = '世界语';
 $strEstonian = '爱沙尼亚语';
@@ -718,6 +716,7 @@ $strRelationView = '关系查看';
 $strReloadingThePrivileges = '重新载入权限';
 $strReloadPrivileges = '重新载入权限';
 $strReload = '重新载入';
+$strRemoveCRLF = '删除字段中的换行符';
 $strRemovePartitioning = '删除分区';
 $strRemoveSelectedUsers = '删除选中的用户';
 $strRenameDatabaseOK = '已将数据库 %s 改名为 %s';
@@ -1468,4 +1467,177 @@ $strYes = '是';
 $strZeroRemovesTheLimit = '注意：若将这些选项设为 0(零) 即不限制。';
 $strZip = 'zip 压缩';
 
+// To translate:
+$strApplyChanges = 'Apply Selected Changes';  //to translate
+
+$strClickToSelect = 'Click to select';  //to translate
+$strClickToUnselect = 'Click to unselect';  //to translate
+$strCouldNotConnectSource = 'Could not connect to the source';  //to translate
+$strCouldNotConnectTarget = 'Could not connect to the target';  //to translate
+$strCurrentServer = 'Current server';  //to translate
+
+$strDatabaseNotExisting = '\'%s\' database does not exist.';  //to translate 
+$strDatabase_src = 'Source database';  //to translate
+$strDatabase_trg = 'Target database';  //to translate
+$strDataDiff = 'Data Difference';  //to translate
+$strDataSyn = 'Data Synchronization';  //to translate
+$strDifference = 'Difference';  //to translate
+$strDumpAllRows = 'Dump all rows';  //to translate
+
+$strFullStart = 'Full start';  //to translate
+$strFullStop = 'Full stop';  //to translate
+
+$strGoToDatabase = 'Go to database';  //to translate
+$strGoToTable = 'Go to table';  //to translate
+$strGoToView = 'Go to view';  //to translate
+
+$strHaveBeenSynchronized = 'Selected target tables have been synchronized with source tables.';  //to translate
+
+$strImportColNames = 'Column names in first row';  //to translate
+$strImportEmptyRows = 'Do not import empty rows';  //to translate
+$strImportLargeFileUploading = 'The file being uploaded is probably larger than the maximum allowed size or this is a known bug in webkit based (Safari, Google Chrome, Arora etc.) browsers.';  //to translate
+$strImportNoticePt1 = 'The following structures have either been created or altered. Here you can:';  //to translate
+$strImportNoticePt2 = 'View a structure`s contents by clicking on its name';  //to translate
+$strImportNoticePt3 = 'Change any of its settings by clicking the corresponding "Options" link';  //to translate
+$strImportNoticePt4 = 'Edit its structure by following the "Structure" link';  //to translate
+$strImportODSCurrency = 'Import currencies ($5.00 to 5.00)';  //to translate
+$strImportODS = 'Open Document Spreadsheet';  //to translate
+$strImportODSPercents = 'Import percentages as proper decimals (12.00% to .12)';  //to translate
+$strImportProceedingFile = 'The file is being processed, please be patient.';  //to translate
+$strImportUploadInfoNotAvailable = 'Please be patient, the file is being uploaded. Details about the upload are not available.';  //to translate
+$strImportXLS = 'Excel 97-2003 XLS Workbook';  //to translate
+$strImportXLSX = 'Excel 2007 XLSX Workbook';  //to translate
+
+$strMediaWiki = 'MediaWiki Table';  //to translate
+
+$strNavTableFilter = 'Filter';  //to translate
+$strNotPresent = 'not present';  //to translate
+
+$strPhpArray = 'PHP array';  //to translate
+$strPort = 'Port';  //to translate
+
+$strQueriesExecuted = 'The following queries have been executed:';  //to translate
+
+$strRemoteServer = 'Remote server';  //to translate
+$strReplicationAddLines = 'Now, add the following lines at the end of your my.cnf and please restart the MySQL server afterwards.';  //to translate
+$strReplicationAddSlaveUser = 'Add slave replication user';  //to translate
+$strReplicationChangedSuccesfully = 'Master server changed succesfully to %s';  //to translate
+$strReplicationConfiguredMaster = 'This server is configured as master in a replication process.';  //to translate
+$strReplicationControlSlave = 'Control slave:';  //to translate
+$strReplicationErrorGetPosition = 'Unable to read master log position. Possible privilege problem on master.';  //to translate
+$strReplicationErrorMasterConnect = 'Unable to connect to master %s.';  //to translate
+$strReplicationMasterChooseAll = 'Replicate all databases; Ignore:';  //to translate
+$strReplicationMasterChooseIgn = 'Ignore all databases; Replicate:';  //to translate
+$strReplicationMasterChooseMode = 'This server is not configured as master server in a replication process. You can choose from either replicating all databases and ignoring certain (useful if you want to replicate majority of databases) or you can choose to ignore all databases by default and allow only certain databases to be replicated. Please select the mode:';  //to translate
+$strReplicationMasterConfiguration = 'Master configuration';  //to translate
+$strReplicationMaster = 'Master replication';  //to translate
+$strReplicationRestartServer = 'Once you restarted MySQL server, please click on Go button. Afterwards, you should see a message informing you, that this server <b>is</b> configured as master';  //to translate
+$strReplicationSelectDatabases = 'Please select databases:';  //to translate
+$strReplicationServernConfiguredMaster = 'This server is not configured as master in a replication process. Would you like to <a href="%s">configure</a> it?';  //to translate
+$strReplicationShowConnectedSlavesNote = 'Only slaves started with the --report-host=host_name option are visible in this list.';  //to translate
+$strReplicationShowConnectedSlaves = 'Show connected slaves';  //to translate
+$strReplicationShowMasterStatus = 'Show master status';  //to translate
+$strReplicationSkippingErrorWarn = 'Skipping error(s) might lead into unsynchronized master and slave!';  //to translate
+$strReplicationSlaveChangeMaster = 'Change or reconfigure master server';  //to translate
+$strReplicationSlaveConfiguration = 'Slave configuration';  //to translate
+$strReplicationSlaveConfigured = 'Server is configured as slave in a replication process. Would you like to:';  //to translate
+$strReplicationSlaveErrorManagement = 'Error management:';  //to translate
+$strReplicationSlaveIOThread = 'IO Thread %s only';  //to translate
+$strReplicationSlaveNotConfigured = 'This server is not configured as slave in a replication process. Would you like to <a href="%s">configure</a> it?';  //to translate
+$strReplicationSlaveReset = 'Reset slave';  //to translate
+$strReplicationSlaveSeeStatus = 'See slave status table';  //to translate
+$strReplicationSlaveSkipCurrentError = 'Skip current error';  //to translate
+$strReplicationSlaveSkipNextErrors = 'errors.';  //to translate
+$strReplicationSlaveSkipNext = 'Skip next';  //to translate
+$strReplicationSlave = 'Slave replication';  //to translate
+$strReplicationSlaveSQLThread = 'SQL Thread %s only';  //to translate
+$strReplicationSynchronize = 'Synchronize databases with master';  //to translate
+$strReplicationUnableToChange = 'Unable to change master';  //to translate
+$strReplicationUnknownError = 'Unknown error';  //to translate
+
+$strSettings = 'settings';  //to translate
+$strShowBinaryContentsAsHex = 'Show binary contents as HEX';  //to translate
+$strShowMasterStatus = 'Show master status';  //to translate
+$strSlaveConfigure = 'Make sure, you have unique server-id in your configuration file (my.cnf). If not, please add the following line into [mysqld] section:';  //to translate
+$strSocket = 'Socket';  //to translate
+$strStart = 'Start';  //to translate
+$strStop = 'Stop';  //to translate
+$strStructureDiff = 'Structure Difference' ;  //to translate
+$strStructureLC = 'structure';  //to translate
+$strStructureSyn = 'Structure Synchronization';  //to translate
+$strSynchronizationNote = 'Target database will be completely synchronized with source database. Source database will remain unchanged.';  //to translate
+$strSynchronizeDb =  'Synchronize Databases';  //to translate
+$strSynchronize = 'Synchronize';  //to translate
+
+$strTableAddColumn = 'Add column(s)';  //to translate
+$strTableAlterColumn = 'Alter column(s)';  //to translate
+$strTableAlterIndex = 'Alter index(s)';  //to translate
+$strTableApplyIndex = 'Apply index(s)';  //to translate
+$strTableDeleteRows = 'Would you like to delete all the previous rows from target tables?';  //to translate
+$strTableInsertRow = 'Insert row(s)';  //to translate
+$strTableRemoveColumn = 'Remove column(s)';  //to translate
+$strTableRemoveIndex = 'Remove index(s)';  //to translate
+$strTableUpdateRow = 'Update row(s)';  //to translate
+$strTargetDatabaseHasBeenSynchronized = 'Target database has been synchronized with source database';  //to translate
+$strTrackingActivated = 'Tracking of %s.%s is activated.';  //to translate
+$strTrackingActivateNow = 'Activate now';  //to translate
+$strTrackingActivateTrackingFor = 'Activate tracking for %s.%s';  //to translate
+$strTrackingCreateVersion = 'Create version';  //to translate
+$strTrackingCreateVersionOf = 'Create version %s of %s.%s';  //to translate
+$strTrackingDatabaseLog = 'Database Log';  //to translate
+$strTrackingDataDefinitionStatement = 'Data definition statement';  //to translate
+$strTrackingDataManipulationStatement = 'Data manipulation statement';  //to translate
+$strTrackingDate = 'Date';  //to translate
+$strTrackingDeactivateNow = 'Deactivate now';  //to translate
+$strTrackingDeactivateTrackingFor = 'Deactivate tracking for %s.%s';  //to translate
+$strTrackingExportAs = 'Export as %s';  //to translate
+$strTrackingIsActive = 'Tracking is active.';  //to translate
+$strTrackingIsNotActive = 'Tracking is not active.';  //to translate
+$strTrackingMechanism = 'Tracking Mechanism';  //to translate
+$strTrackingReportClose = 'Close';  //to translate
+$strTrackingReport = 'Tracking report';  //to translate
+$strTrackingShowLogDateUsers = 'Show %s with dates from %s to %s by user %s %s';  //to translate
+$strTrackingShowVersions = 'Show versions';  //to translate
+$strTrackingSQLDumpFile = 'SQL dump (file download)';  //to translate
+$strTrackingSQLDump = 'SQL dump';  //to translate
+$strTrackingSQLExecuted = 'SQL statements executed.';  //to translate
+$strTrackingSQLExecutionAlert = 'This option will replace your table and contained data.';  //to translate
+$strTrackingSQLExecution = 'SQL execution';  //to translate
+$strTrackingSQLExported = 'SQL statements exported. Please copy the dump or execute it.';  //to translate
+$strTrackingStatements = 'Tracking statements';  //to translate
+$strTrackingStatusActive = 'active';  //to translate
+$strTrackingStatusNotActive = 'not active';  //to translate
+$strTrackingStructureSnapshot = 'Structure snapshot';  //to translate
+$strTrackingThCreated = 'Created';  //to translate
+$strTrackingThLastVersion = 'Last version';  //to translate
+$strTrackingThUpdated = 'Updated';  //to translate
+$strTrackingThVersion = 'Version';  //to translate
+$strTrackingTrackDDStatements = 'Track these data definition statements:';  //to translate
+$strTrackingTrackDMStatements = 'Track these data manipulation statements:';  //to translate
+$strTrackingTrackedTables = 'Tracked tables';  //to translate
+$strTracking = 'Tracking';  //to translate
+$strTrackingTrackTable = 'Track table';  //to translate
+$strTrackingUntrackedTables = 'Untracked tables';  //to translate
+$strTrackingUsername = 'Username';  //to translate
+$strTrackingVersionActivated = 'Tracking for %s.%s , version %s is activated.';  //to translate
+$strTrackingVersionCreated = 'Version %s is created, tracking for %s.%s is activated.';  //to translate
+$strTrackingVersionDeactivated = 'Tracking for %s.%s , version %s is deactivated.';  //to translate
+$strTrackingVersionSnapshotSQL = 'Version %s snapshot (SQL code)';  //to translate
+$strTrackingVersions = 'Versions';  //to translate
+
+$strXMLError = 'The XML file specified was either malformed or incomplete. Please correct the issue and try again.';  //to translate
+$strXMLExportContents = 'Export contents';  //to translate
+$strXMLExportFunctions = 'Export functions';  //to translate
+$strXMLExportProcedures = 'Export procedures';  //to translate
+$strXMLExportStructs = 'Export Structure Schemas (recommended)';  //to translate
+$strXMLExportTables = 'Export tables';  //to translate
+$strXMLExportTriggers = 'Export triggers';  //to translate
+$strXMLExportViews = 'Export views';  //to translate
+
+$strTrackingYouCanExecute = 'You can execute the dump by creating and using a temporary database. Please ensure that you have the privileges to do so.';  //to translate
+$strTrackingCommentOut = 'Comment out these two lines if you do not need them.';  //to translate
+$strTrackingReportForTable = 'Tracking report for table `%s`';  //to translate
+$strDeleteTrackingData = 'Delete tracking data for this table';  //to translate
+$strReplicationSlaveSQLThreadNotRunning = 'Slave SQL Thread not running!';  //to translate
+$strReplicationSlaveIOThreadNotRunning = 'Slave IO Thread not running!';  //to translate
 ?>

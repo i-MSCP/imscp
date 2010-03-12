@@ -3,7 +3,7 @@
 /**
   * SquirrelMail Message Flags & Icons Plugin
   * Copyright (c) 2002-2007 Robert Jaakke <robert@jaakke.com>
-  * Copyright (c) 2003-2008 Paul Lesniewski <paul@squirrelmail.org>
+  * Copyright (c) 2003-2009 Paul Lesniewski <paul@squirrelmail.org>
   * Licensed under the GNU GPL. For full terms see the file COPYING.
   *
   * @package plugins
@@ -41,7 +41,7 @@ function msg_flags_info()
                        'email' => 'robert@jaakke.com',
                     ),
                  ),
-                 'version' => '1.4.15a',
+                 'version' => '1.4.20',
                  'required_sm_version' => '1.4.3',
                  'requires_configuration' => 0,
                  'requires_source_patch' => 1,

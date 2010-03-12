@@ -6,7 +6,7 @@
  * Loads preferences from the $username.pref file used by almost
  * every other script in the source directory and alswhere.
  *
- * @copyright &copy; 1999-2009 The SquirrelMail Project Team
+ * @copyright 1999-2010 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version $Id$
  * @package squirrelmail
@@ -255,6 +255,9 @@ $compose_width = getPref($data_dir, $username, 'compose_width', 640);
 
 /* signature placement settings */
 $sig_first = getPref($data_dir, $username, 'sig_first', 0);
+
+/* strip signature from replies setting */
+$strip_sigs = getPref($data_dir, $username, 'strip_sigs', 0);
 
 /* use the internal date of the message for sorting instead of the supplied header date */
 $internal_date_sort = getPref($data_dir, $username, 'internal_date_sort', SMPREF_ON);

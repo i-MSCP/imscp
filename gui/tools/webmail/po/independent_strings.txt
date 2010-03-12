@@ -4,14 +4,14 @@
 /**
  * independent_strings.php
  *
- * Copyright (c) 1999-2009 The SquirrelMail Project Team
+ * Copyright (c) 1999-2010 The SquirrelMail Project Team
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
  * The purpose of this module is to store translation strings that
  * are not into the code. For example strings that can come
  * through an external source like emails.
  *
- * $Id: independent_strings.txt 13549 2009-04-15 22:00:49Z jervfors $
+ * $Id: independent_strings.txt 13893 2010-01-25 02:47:41Z pdontthink $
  */
 
 

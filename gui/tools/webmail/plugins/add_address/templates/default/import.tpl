@@ -32,7 +32,7 @@ FIXME: sync the $color array with 1.5.2 if it is no longer available(?)
   * boolean $default_all_checked Indicates if the checkboxes should be
   *                              checked by default or not.
   *
-  * Copyright (c) 2008-2009 Paul Lesniewski <paul@squirrelmail.org>,
+  * Copyright (c) 2008-2010 Paul Lesniewski <paul@squirrelmail.org>,
   * Licensed under the GNU GPL. For full terms see the file COPYING.
   *
   * @package plugins

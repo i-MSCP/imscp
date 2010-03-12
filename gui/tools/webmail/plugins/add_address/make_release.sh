@@ -3,7 +3,7 @@
 
 # Generic shell script for building SquirrelMail plugin release
 #
-# Copyright (c) 2004-2009 Paul Lesniewski <paul@squirrelmail.org>
+# Copyright (c) 2004-2010 Paul Lesniewski <paul@squirrelmail.org>
 # Licensed under the GNU GPL. For full terms see the file COPYING.
 #
 

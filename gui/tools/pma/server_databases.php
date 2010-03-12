@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: server_databases.php 12242 2009-02-20 09:22:20Z lem9 $
+ * @version $Id: server_databases.php 13011 2009-09-24 13:10:25Z helmo $
  * @package phpMyAdmin
  */
 
@@ -14,6 +14,7 @@ require_once './libraries/common.inc.php';
 
 $GLOBALS['js_include'][] = 'functions.js';
 require './libraries/server_common.inc.php';
+require './libraries/replication.inc.php';
 
 /**
  * avoids 'undefined index' errors
@@ -34,7 +35,7 @@ if (isset($_REQUEST['sort_order'])
 $dbstats    = empty($_REQUEST['dbstats']) ? 0 : 1;
 $pos        = empty($_REQUEST['pos']) ? 0 : (int) $_REQUEST['pos'];
 
-
+           
 /**
  * Drops multiple databases
  */
@@ -187,6 +188,17 @@ if ($databases_count > 0) {
                 .'        </a></th>' . "\n";
         }
     }
+    
+    foreach ($replication_types as $type) 
+    {
+      if ($type=="master")
+	$name = "strReplicationMaster";
+      elseif($type == "slave")
+	$name = "strReplicationSlave";
+      if (${"server_{$type}_status"})  
+        echo '    <th>'.$GLOBALS[$name].'</th>' . "\n";
+    }
+    
     if ($is_superuser) {
         echo '    <th>' . ($cfg['PropertiesIconic'] ? '' : $strAction) . "\n"
            . '    </th>' . "\n";
@@ -247,6 +259,26 @@ if ($databases_count > 0) {
                 }
             }
         }
+        foreach ($replication_types as $type) {
+            if (${"server_{$type}_status"}) {
+                echo '<td class="tool" style="text-align: center;">' . "\n";
+
+                if (strlen(array_search($current["SCHEMA_NAME"], ${"server_{$type}_Ignore_DB"}))>0) {
+                    echo '<img class="icon" src="' . $pmaThemeImage . 's_cancel.png" width="16" height="16"  alt="NOT REPLICATED" />' . "\n";
+                } else {
+                    $key = array_search($current["SCHEMA_NAME"], ${"server_{$type}_Do_DB"});
+
+                    if (strlen($key) > 0 || (${"server_{$type}_Do_DB"}[0] == "" && count(${"server_{$type}_Do_DB"}) == 1)) {
+                        // if ($key != null) did not work for index "0"
+                        echo '<img class="icon" src="' . $pmaThemeImage . 's_success.png" width="16" height="16"  alt="REPLICATED" />' . "\n";
+                    } else {
+                        echo '';
+                    }
+                }
+
+                echo '</td>';
+            }
+        }
 
         if ($is_superuser) {
             echo '    <td class="tool">' . "\n"
@@ -294,6 +326,13 @@ if ($databases_count > 0) {
             }
         }
     }
+    
+    foreach ($replication_types as $type) 
+    {
+      if (${"server_{$type}_status"})  
+        echo '    <th></th>' . "\n";
+    }
+
     if ($is_superuser) {
         echo '    <th></th>' . "\n";
     }

@@ -5,7 +5,7 @@
  *
  * IMAP search page
  *
- * @copyright &copy; 1999-2009 The SquirrelMail Project Team
+ * @copyright 1999-2010 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version $Id$
  * @package squirrelmail
@@ -221,12 +221,12 @@ function save_recent($save_index, $username, $data_dir) {
 
 function printSearchMessages($msgs,$mailbox, $cnt, $imapConnection, $where, $what, $usecache = false, $newsort = false) {
     global $sort, $color, $allow_server_sort, $allow_server_thread;
-    
+
     if ($cnt > 0) {
         if ((!empty($allow_server_sort) && $allow_server_sort) || (!empty($allow_server_thread) && $allow_server_thread)) {
             $msort = $msgs;
         } else {
-            $msort = calc_msort($msgs, $sort);
+            $msort = calc_msort($msgs, $sort, $mailbox);
         }
 
         if ( $mailbox == 'INBOX' ) {
@@ -234,12 +234,12 @@ function printSearchMessages($msgs,$mailbox, $cnt, $imapConnection, $where, $wha
         } else {
             $showbox = imap_utf7_decode_local($mailbox);
         }
-        echo html_tag( 'div', '<b><big>' . _("Folder:") . ' '. 
+        echo html_tag( 'div', '<b><big>' . _("Folder:") . ' '.
             htmlspecialchars($showbox) .'</big></b>','center') . "\n";
 
         $msg_cnt_str = get_msgcnt_str(1, $cnt, $cnt);
         $toggle_all = get_selectall_link(1, $sort);
-    
+
         $safe_name = preg_replace("/[^0-9A-Za-z_]/", '_', $mailbox);
         $form_name = "FormMsgs" . $safe_name;
         echo '<form name="' . $form_name . '" method="post" action="move_messages.php">' ."\n" .
@@ -250,11 +250,11 @@ function printSearchMessages($msgs,$mailbox, $cnt, $imapConnection, $where, $wha
         echo '<table border="0" width="100%" cellpadding="0" cellspacing="0">';
         echo '<tr><td>';
 
-        mail_message_listing_beginning($imapConnection, $mailbox, $sort, 
+        mail_message_listing_beginning($imapConnection, $mailbox, $sort,
                                        $msg_cnt_str, $toggle_all, 1);
 
         echo '</td></tr>';
-        echo '<tr><td height="5" bgcolor="'.$color[4].'"></td></tr>';  
+        echo '<tr><td height="5" bgcolor="'.$color[4].'"></td></tr>';
         echo '<tr><td>';
         echo '    <table width="100%" cellpadding="1" cellspacing="0" align="center"'.' border="0" bgcolor="'.$color[9].'">';
         echo '     <tr><td>';
@@ -263,11 +263,11 @@ function printSearchMessages($msgs,$mailbox, $cnt, $imapConnection, $where, $wha
 
         printHeader($mailbox, 6, $color, false);
 
-        displayMessageArray($imapConnection, $cnt, 1, 
+        displayMessageArray($imapConnection, $cnt, 1,
             $msort, $mailbox, $sort, $color, $cnt, $where, $what);
 
         echo '</td></tr></table></td></tr></table>';
-        mail_message_listing_end($cnt, '', $msg_cnt_str, $color); 
+        mail_message_listing_end($cnt, '', $msg_cnt_str, $color);
         echo "\n</table></form>\n\n";
     }
 }
@@ -292,6 +292,14 @@ if ( !isset($mailbox) || $mailbox == 'None' || $mailbox == '' ) {
 }
 if ($mailbox == 'All Folders') {
     $search_all = 'all';
+}
+
+// the preg_match() is a fix for Dovecot wherein UIDs can be bigger than
+// normal integers - this isn't in 1.4 yet, but when adding new code, why not...
+if (sqgetGlobalVar('unread_passed_id', $unread_passed_id, SQ_GET)
+ && preg_match('/^[0-9]+$/', $unread_passed_id)) {
+    sqimap_mailbox_select($imapConnection, $mailbox);
+    sqimap_toggle_flag($imapConnection, $unread_passed_id, '\\Seen', false, true);
 }
 
 if (isset($composenew) && $composenew) {
@@ -368,6 +376,7 @@ if ($saved_count > 0) {
         .     '?mailbox=' . urlencode($saved_attributes['saved_folder'][$i + 1])
         .     '&amp;what=' . urlencode($saved_attributes['saved_what'][$i + 1])
         .     '&amp;where=' . urlencode($saved_attributes['saved_where'][$i + 1])
+        .     '&amp;smtoken=' . sm_generate_security_token()
         .   '">' . _("edit") . '</a>'
         .   '&nbsp;|&nbsp;'
         .   '<a href="search.php'
@@ -375,9 +384,10 @@ if ($saved_count > 0) {
         .     '&amp;what=' . urlencode($saved_attributes['saved_what'][$i + 1])
         .     '&amp;where=' . urlencode($saved_attributes['saved_where'][$i + 1])
         .     '&amp;submit=Search_no_update'
+        .     '&amp;smtoken=' . sm_generate_security_token()
         .   '">' . _("search") . '</a>'
         .   '&nbsp;|&nbsp;'
-        .   "<a href=\"search.php?count=$i&amp;submit=delete\">"
+        .   "<a href=\"search.php?count=$i&amp;submit=delete&amp;smtoken=" . sm_generate_security_token() .'">'
         .     _("delete")
         .   '</a>'
         . '</td></tr>';
@@ -395,7 +405,7 @@ if ($recent_count > 0) {
        . html_tag( 'td' )
        . html_tag( 'table', '', 'center', '', 'width="100%" cellpadding="0" cellspacing="0" border="0"' );
     for ($i=1; $i <= $recent_count; ++$i) {
-            if (isset($attributes['search_folder'][$i])) { 
+            if (isset($attributes['search_folder'][$i])) {
             if ($attributes['search_folder'][$i] == "") {
                 $attributes['search_folder'][$i] = "INBOX";
             }
@@ -411,7 +421,7 @@ if ($recent_count > 0) {
                . html_tag( 'td', htmlspecialchars($attributes['search_what'][$i]), 'left' )
                . html_tag( 'td', htmlspecialchars($attributes['search_where'][$i]), 'center' )
                . html_tag( 'td', '', 'right' )
-               .   "<a href=\"search.php?count=$i&amp;submit=save\">"
+               .   "<a href=\"search.php?count=$i&amp;submit=save&amp;smtoken=" . sm_generate_security_token() . '">'
                .     _("save")
                .   '</a>'
                .   '&nbsp;|&nbsp;'
@@ -420,9 +430,10 @@ if ($recent_count > 0) {
                .     '&amp;what=' . urlencode($attributes['search_what'][$i])
                .     '&amp;where=' . urlencode($attributes['search_where'][$i])
                .     '&amp;submit=Search_no_update'
+               .     '&amp;smtoken=' . sm_generate_security_token()
                .   '">' . _("search") . '</a>'
                .   '&nbsp;|&nbsp;'
-               .   "<a href=\"search.php?count=$i&amp;submit=forget\">"
+               .   "<a href=\"search.php?count=$i&amp;submit=forget&amp;smtoken=" . sm_generate_security_token() . '">'
                .     _("forget")
                .   '</a>'
                . '</td></tr>';
@@ -527,7 +538,7 @@ if ($search_all == 'all') {
                 sqimap_mailbox_select($imapConnection, $mailbox);
                 $msgs = sqimap_search($imapConnection, $where, $what, $mailbox, $color, 0, $search_all, $count_all);
                 $count_all = count($msgs);
-                printSearchMessages($msgs, $mailbox, $count_all, $imapConnection, 
+                printSearchMessages($msgs, $mailbox, $count_all, $imapConnection,
                                     $where, $what, false, false);
                 array_push($perbox_count, $count_all);
             }

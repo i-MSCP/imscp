@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: mult_submits.inc.php 11986 2008-11-24 11:05:40Z nijel $
+ * @version $Id: mult_submits.inc.php 12572 2009-06-12 12:35:18Z helmo $
  * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
@@ -58,6 +58,11 @@ if (! empty($submit_mult)
                    unset($submit_mult);
                    $query_type = 'analyze_tbl';
                    $mult_btn   = $strYes;
+                   break;
+               case $strExport:
+                   unset($submit_mult);
+                   require('db_export.php');
+                   exit;
                    break;
            } // end switch
         }

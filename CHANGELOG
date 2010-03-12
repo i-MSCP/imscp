@@ -5,9 +5,33 @@ ispCP ω 1.0.5 Changelog
 	- DISTS:
 		* Fixed #2253: Porting logrotate to FreeBSD
 
+2010-03-09 Benedikt Heintel
+	- TOOLS:
+		* Fixed #2256: Update Squirrelmail Plugins to the newest Version
+		* Fixed #2261: Squirrelmail update to version 1.4.20
+		
+2010-03-08 Benedikt Heintel
+	- TOOLS:
+		* Updated phpMyAdmin to version 3.3.0
+
+2010-03-08 Laurent Declercq
+	- ENGINE:
+		* Removed some unused variables
+		* Typo
+
+2010-03-07 Laurent Declercq
+	- GUI:
+		* Fixed #2252: Data related to the subdomains not deleted during domain deletion
+	- SETUP:
+		* Fixed #2262: Configuration of domains disabled before update is not regenerated
+
 2010-03-07 Christian Hernmarck
 	- CONFIGS:
 		* Fixed: missing " in configs/centos/init.d/ispcp_network
+
+2010-03-04 Laurent Declercq
+	- DATABASE:
+		* Fixed #2251: Frontend still under maintenance after a new installation
 
 2010-03-03 Benedikt Heintel
 	- CONFIGS:

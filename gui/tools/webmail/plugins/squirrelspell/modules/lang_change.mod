@@ -4,7 +4,7 @@
  * ----------------
  * Squirrelspell module
  *
- * Copyright (c) 1999-2009 The SquirrelMail Project Team
+ * Copyright (c) 1999-2010 The SquirrelMail Project Team
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
  * This module changes the international dictionaries selection
@@ -15,6 +15,11 @@
  * @package plugins
  * @subpackage squirrelspell
  */
+
+if (!sqgetGlobalVar('smtoken',$submitted_token, SQ_POST)) {
+    $submitted_token = '';
+}
+sm_validate_security_token($submitted_token, 3600, TRUE);
 
 global $SQSPELL_APP_DEFAULT;
 
@@ -101,4 +106,4 @@ sqspell_makePage(_("International Dictionaries Preferences Updated"),
  * End:
  * vim: syntax=php
  */
-?>
+

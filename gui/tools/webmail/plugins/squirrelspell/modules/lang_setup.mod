@@ -4,7 +4,7 @@
  * ---------------
  * Squirrelspell module
  *
- * Copyright (c) 1999-2009 The SquirrelMail Project Team
+ * Copyright (c) 1999-2010 The SquirrelMail Project Team
  * Licensed under the GNU GPL. For full terms see the file COPYING.
  *
  * This module displays available dictionaries to the user and lets
@@ -23,6 +23,7 @@ $msg = '<p>'
   . '</p>'
   . '<form method="post">'
   . '<input type="hidden" name="MOD" value="lang_change" />'
+  . '<input type="hidden" name="smtoken" value="' . sm_generate_security_token() . '" />'
   . '<blockquote><p>';
 /**
  * Present a nice listing.

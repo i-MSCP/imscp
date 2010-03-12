@@ -3,7 +3,7 @@
 /**
  * mail_fetch/setup.php
  *
- * Copyright (c) 1999-2009 CDI (cdi@thewebmasters.net) All Rights Reserved
+ * Copyright (c) 1999-2010 CDI (cdi@thewebmasters.net) All Rights Reserved
  * Modified by Philippe Mingo 2001-2009 mingo@rotedic.com
  * An RFC 1939 compliant wrapper class for the POP3 protocol.
  *
@@ -11,7 +11,7 @@
  *
  * POP3 class
  *
- * @copyright &copy; 1999-2009 The SquirrelMail Project Team
+ * @copyright 1999-2010 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @version $Id$
  * @package plugins
@@ -604,7 +604,7 @@ class POP3 {
         if( empty($cmd) )
             return false;
         else
-            return( stripos('+OK', $cmd ) !== false );
+            return( stripos($cmd, '+OK') !== false );
     }
 
     function strip_clf ($text = "") {
@@ -645,3 +645,12 @@ class POP3 {
     }
 
 }   // End class
+
+// For php4 compatibility
+if (!function_exists("stripos")) {
+    function stripos($haystack, $needle){
+        return strpos($haystack, stristr( $haystack, $needle ));
+    }
+}
+
+
