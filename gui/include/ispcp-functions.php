@@ -172,6 +172,7 @@ function update_user_props($user_id, $props) {
 		$disk_max,
 		$domain_php,
 		$domain_cgi,
+		$domain_backup,
 		$domain_dns
 	) = explode (";", $props);
 

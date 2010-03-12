@@ -1,6 +1,10 @@
 ispCP ω 1.0.5 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-03-12 Sascha Bay
+	- GUI:
+		* Fixed #2239: function update_user_props counts wrong items
+
 2010-03-11 Laurent Declercq
 	- DISTS:
 		* Updated Debian INSTALL file:
