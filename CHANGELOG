@@ -1,6 +1,11 @@
 ispCP ω 1.0.5 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-03-12 Laurent Declercq
+	- ENGINE:
+		* Fixed #2281: Avoid to recreate 'disabled' layout directory for domains
+			that are disabled
+
 2010-03-12 Benedikt Heintel
 	- TOOLS:
 		* Updated PMA Omega Theme

@@ -2305,8 +2305,8 @@ sub dmn_change_httpd_file_data {
 
     # Default disable page template;
 	#
-	# check if disable folder does not exist
-	if (!(-e "$www_dir/$dmn_name/disabled")) {
+	# check if disable folder does not exist and the domain is not disabled
+	if (!-e "$www_dir/$dmn_name/disabled" && !-e "$www_dir/$dmn_name/htdocs.disabled") {
 		$rs = make_dir(
 			"$www_dir/$dmn_name/disabled",
 			$httpd_uid,
