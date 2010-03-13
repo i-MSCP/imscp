@@ -1,6 +1,6 @@
-ispCP ω (OMEGA) HowTo Install for FreeBSD 8.0-RELEASE
+ispCP ω (OMEGA) HowTo Install for FreeBSD 8.0-RELEASE-p2
 ================================================================================
-For other Linux distributions please check the other INSTALL files.
+For other Linux/BSD distributions please check the other INSTALL files.
 ================================================================================
 
 Table of Content
@@ -17,7 +17,7 @@ Table of Content
 1) Version Info
 ---------------
 ispCP ω Version	: 1.0.5
-INSTALL Script	: 4.3
+INSTALL Script	: 4.4
 Maintainer		: Blocker
 Homepage		: http://www.isp-contol.net
 Distros			: FreeBSD
@@ -57,6 +57,7 @@ Make sure you are logged in as root and Nameserver rndc.key has been setup.
 	# tar xjvf ispcp-omega-1.0.5.tar.bz2
 
 2. Install the required modules with portmaster
+	# portsnap fetch extract
 	# cd /usr/ports/ports-mgmt/portmaster
 	# make install clean
 	# rehash
@@ -65,39 +66,22 @@ Make sure you are logged in as root and Nameserver rndc.key has been setup.
 
 	apache 2.2.14_5 Options
 
-	x threads
- 	x mysql
+	x THREADS
  	x IPV6
- 	x BDB
  	x AUTH_BASIC
- 	x AUTH_DIGEST
  	x AUTHN_FILE
- 	x AUTHN_DBD
- 	x AUTHN_DBM
- 	x AUTHN_ANON
  	x AUTHN_DEFAULT
- 	x AUTHN_ALIAS
  	x AUTHZ_HOST
  	x AUTHZ_GROUPFILE
- 	x AUTHZ_USER
- 	x AUTHZ_DBM
  	x AUTHZ_OWNER
  	x AUTHZ_DEFAULT
- 	x CACHE
- 	x DISK_CACHE
- 	x FILE_CACHE
  	x ACTIONS
  	x ALIAS
- 	x ASIS
  	x AUTOINDEX
- 	x CERN_LDAP
- 	x DBD
  	x DEFLATE
  	x DIR
- 	x DUMPIO
  	x ENV
  	x EXPIRES
- 	x HEADERS
  	x INFO
  	x LOG_CONFIG
  	x LOGIO
@@ -106,19 +90,18 @@ Make sure you are logged in as root and Nameserver rndc.key has been setup.
  	x NEGOTIATION
  	x REWRITE
  	x SETENVIF
- 	x SPELING
  	x STATUS
- 	x UNIQUE_ID
- 	x USERDIR
- 	x USERTRACK
  	x VHOST_ALIAS
- 	x FILTER
+	x PROXY
+	x PROXY_CONNECT
+	x PATCH_PROXY_CONNECT
+	x PROXY_HTTP
  	x VERSION
- 	x PROXY
  	x SSL
  	x SUEXEC
+	x CGID
 
-	proftpd 1.3.2d Options
+	proftpd 1.3.2e Options
 
 	x CTRLS
 	x IFSESSION
@@ -132,15 +115,33 @@ Make sure you are logged in as root and Nameserver rndc.key has been setup.
 	x WRAP
 	x MYSQL
 	
-	postfix 2.6.5,1 Options
+	postfix 2.7.0,1 Options
 	
 	x PCRE
+	x SASL2
+	x TLS
+	x MYSQL
+	x CDB
+	x VDA
 
 	p5-Net-DNS 0.66 Options
 	
 	x IPV6
 	
 	courier-imap 4.7.0,2 Options
+	
+	x IPV6
+	x AUTH_USERDB
+	
+	cyrus-sasl 2.1.23 Options
+	
+	x BDB
+	x MYSQL
+	x AUTHDAEMOND
+	x LOGIN
+	x PLAIN
+	x CRAM
+	x DIGEST
 
 	x IPV6
 	x AUTH_MYQL
@@ -148,7 +149,6 @@ Make sure you are logged in as root and Nameserver rndc.key has been setup.
 
 	courier-authlib 0.63.0 Options
 
-	x AUTH_MYQL
 	x AUTH_USERDB
 
 	perl 5.10.1  Options
@@ -161,7 +161,6 @@ Make sure you are logged in as root and Nameserver rndc.key has been setup.
 
 	x CLI
 	x CGI
-	x APACHE
 	x SUHOSIN
 	x IPV6
 	x FASTCGI
@@ -186,6 +185,8 @@ Make sure you are logged in as root and Nameserver rndc.key has been setup.
 	x MCRYPT
 	x MHASH
 	x MYSQL
+	x MYSQLI
+	x PCRE
 	x PDO
 	x PDO_SQLITE
 	x POSIX
@@ -202,23 +203,23 @@ Make sure you are logged in as root and Nameserver rndc.key has been setup.
 	x XMLRPC
 	x XMLWRITER
 	x ZIP
+	x ZLIB
 	
-	PHP5-MBString Options
+	PHP5-MBString 5.2.12 Options
 	
 	x REGEX
 	
-	PHP5-DBA Options
+	PHP5-DBA 5.12 Options
 	
 	x CDB
-	x DB4
 	x INIFILE
 	x FLATFILE
 	
-	PHP5-SQL-lite Options
+	PHP5-SQL-lite 5.2.12 Options
 	
 	x UTF8
 	
-	PHP5-PCRE Options
+	PHP5-PCRE 5.2.12 Options
 	
 	x BUNDLED_PCRE
 	
@@ -232,7 +233,11 @@ Make sure you are logged in as root and Nameserver rndc.key has been setup.
 	x OPENSSL
 	x PROXY
 	
-	php5-gd 5.2.12  Options
+	ca_root_nss 3.12.4 Options
+	
+	x ETCSYMLINK
+	
+	php5-gd 5.2.12 Options
 	
 	x T1LIB
 	x TRUETYPE
@@ -241,7 +246,7 @@ Make sure you are logged in as root and Nameserver rndc.key has been setup.
 	
 	x CRYPTO
 	
-	rkhunter 1.3.6  Options
+	rkhunter 1.3.6 Options
 	
 	x LSOF
 	
@@ -256,8 +261,6 @@ Make sure you are logged in as root and Nameserver rndc.key has been setup.
 	x IDN
 
 3. Configure the system.
-	# cpan upgrade
-	# cpan DBI DBD::mysql MIME::Entity MIME::Parser MimeInfo::Magic File::MimeInfo::Magic Crypt::CBC Crypt::Blowfish Crypt::PasswdMD5 Crypt::DES Crypt::SSLeay Term::ReadPassword HTML::Entities HTML::Parser Term::ReadKey HTML::Tagset YAML Compress::Zlib URI
     # rehash
 	
     Edit /etc/rc.conf and add
@@ -317,31 +320,21 @@ Make sure you are logged in as root and Nameserver rndc.key has been setup.
 	LoadModule fcgid_module libexec/apache22/mod_fcgid.so
 	Include etc/apache22/extra/fcgid_ispcp.conf
 	
-	Add a '#' to the php5_module:
-	# LoadModule php5_module libexec/apache22/libphp5.so
-
 12. Set FastCGI permissions
+	# /usr/local/etc/rc.d/apache22 restart
 	# chown -R www:www /var/run/fastcgi
 	# chmod -R 777 /var/run/fastcgi
+	# /usr/local/etc/rc.d/apache22 start
 	
-13. Correct Proftpd Config
-	# vi /usr/local/etc/proftpd.conf
-	Comment out the AuthOrder for mod_sql and mod_ratios
-	
-	#AuthOrder mod_sql.c
-	#<IfModule mod_ratio.c>
-	# Ratios on
-	#</IfModule>
-
-14. Correct the Master PHP.ini
+13. Correct the Master PHP.ini
 	# vi /usr/local/www/data/fcgi/master/php5/php.ini
 	Change the open_base_dir to this:
 	open_basedir = "/usr/local/www/ispcp/gui/:/usr/local/etc/ispcp/:/var/run/ispcp.lock:/var/run/dmesg.boot:/proc/:/bin/df:/bin/:/sbin/:/usr/bin/:/usr/sbin/:/usr/local/bin/:/usr/local/sbin/:/var/log/rkhunter.log:/var/log/chkrootkit.log:/usr/local/lib/php/20060613/"
 	
-15. Log into ispCP and change: 
+14. Log into ispCP and change: 
 	"Settings"->"Server Ports" "POSTGREY Port" to 10023.
 	
-16. Change smtpd.conf
+15. Change smtpd.conf
 	File /usr/local/etc/sasl2/smtpd.conf must look like:
 	pwcheck_method: auxprop
 	auxprop_plugin: sasldb
@@ -392,13 +385,10 @@ Make sure you are logged in as root and MySQL is running.
     # cp -v /var/www/ispcp/gui/tools/webmail/data/* /tmp/ispcp/var/www/ispcp/gui/tools/webmail/data/
 
 7.  Delete old files to avoid security risks:
-    # rm -fR /usr/local/www/ispcp/gui/admin/
-    # rm -fR /usr/local/www/ispcp/gui/client/
-    # rm -fR /usr/local/www/ispcp/gui/include/
-    # rm -fR /usr/local/www/ispcp/gui/orderpanel/
-    # rm -fR /usr/local/www/ispcp/gui/themes/
-    # rm -fR /usr/local/www/ispcp/gui/reseller/
-	# rm -f /usr/local/www/ispcp/gui/*.php
+	# rm -Rf /usr/local/www/ispcp/engine/
+	# rm -Rf /usr/local/www/ispcp/gui/{admin,client,include,orderpanel,themes,reseller}/
+	# rm -Rf /usr/local/www/ispcp/gui/tools/{pma/,filemanager/,webmail/,index.php}
+	# rm -Rf /usr/local/www/ispcp/gui/{*.php,favicon.ico,robot.txt}
 
 8.  Copy /usr and /var directories into your system (you may make backups)
     # cp -Rv /tmp/ispcp/usr/* /usr/

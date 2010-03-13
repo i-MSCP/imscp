@@ -20,7 +20,7 @@ Table of Content
 ---------------
 
 ispCP Version:         1.0.5
-INSTALL Script:        1.6
+INSTALL Script:        1.7
 Maintainer:            motokochan
 Homepage:              http://isp-contol.net
 Linux Distros:         CentOS 5.4
@@ -328,9 +328,10 @@ Make sure you are logged in as root and MySQL is running.
 	# cp -v /var/www/ispcp/gui/tools/webmail/data/* /tmp/ispcp/var/www/ispcp/gui/tools/webmail/data/
 
 6. Delete old files to avoid security risks:
-	# rm -fR /var/www/ispcp/engine/
-	# rm -fR /var/www/ispcp/gui/{admin,client,include,orderpanel,themes,reseller}/
-	# rm -fR /var/www/ispcp/gui/*.php
+	# rm -Rf /var/www/ispcp/engine/
+	# rm -Rf /var/www/ispcp/gui/{admin,client,include,orderpanel,themes,reseller}/
+	# rm -Rf /var/www/ispcp/gui/tools/{pma/,filemanager/,webmail/,index.php}
+	# rm -Rf /var/www/ispcp/gui/{*.php,favicon.ico,robot.txt}
 
 7. Copy /usr and /var directories into your system (you may make backups)
 	# cp -RLf /tmp/ispcp/usr/* /usr/

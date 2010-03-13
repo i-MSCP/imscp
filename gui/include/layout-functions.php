@@ -85,10 +85,25 @@ function check_language_exist($lang_table) {
 
 function set_page_message($message) {
 	if (isset($_SESSION['user_page_message'])) {
-		$_SESSION['user_page_message'] .= "<br />$message\n";
+		$_SESSION['user_page_message'] .= "\n<br />$message";
 	} else {
 		$_SESSION['user_page_message'] = $message;
 	}
+}
+
+/**
+ * Converts a Array of Strings to a single <br />-separated String
+ * @since r2684
+ * 
+ * @param	String[]	Array of message strings	
+ * @return	String		a single string with <br /> tags
+ */
+function format_message($message) {
+	$string = "";
+	foreach ($message as $msg) {
+		$string .= $message . "<br />\n";
+	}
+	return $string;
 }
 
 /**

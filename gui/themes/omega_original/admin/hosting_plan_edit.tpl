@@ -180,7 +180,7 @@
                             <tr>
                               <td>&nbsp;</td>
                               <td colspan="2"><!-- BDP: form -->
-                                  <input name="Submit" type="submit" class="button" value=" {TR_UPDATE_PLAN} " /></td>
+                                  <input name="Submit" type="submit" class="button" value=" {TR_EDIT_HOSTING_PLAN} " /></td>
                               <!-- EDP: form -->
                             </tr>
                             <tr>

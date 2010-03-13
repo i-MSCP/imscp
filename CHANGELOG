@@ -1,15 +1,67 @@
 ispCP ω 1.0.5 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-03-12 Laurent Declercq
+	- ENGINE:
+		* Fixed #2281: Avoid to recreate 'disabled' layout directory for domains
+			that are disabled
+
+2010-03-12 Benedikt Heintel
+	- TOOLS:
+		* Updated PMA Omega Theme
+
+2010-03-12 Sascha Bay
+	- GUI:
+		* Fixed #2239: function update_user_props counts wrong items
+
+2010-03-11 Laurent Declercq
+	- DISTS:
+		* Updated Debian INSTALL file:
+		 - Update command is not the same for all versions
+		 - Added repository for each version (to prevent stupid user errors)
+		 - Changing sources.list should be done before the installation packages
+	- SETUP:
+		* Fixed #2276: Wrong instructions for removing old files during an update
+
+2010-03-11 Benedikt Heintel
+	- DISTS:
+		* Fixed #2274: [FreeBSD] Added AWStats Icons Directory in ApacheConfig
+		* Fixed #2275: [FreeBSD] Updated INSTALL Docu
+	- GUI:
+		* Fixed #2244: Undefined variable in hosting_plan_edit.php of the admin
+		* Fixed: All occurred errors are now shown in Hosting Plans
+	- TOOLS:
+		* Fixed possible vulnerability. See: 
+			http://packetstormsecurity.org/1003-exploits/ispcp-rfi.txt
+
 2010-03-10 Benedikt Heintel
 	- DISTS:
 		* Fixed #2253: Porting logrotate to FreeBSD
+		* Fixed #2270: [FreeBSD] Updated Postfix's master.cf
+		* Fixed #2271: [FreeBSD] Updated AWStats Path in ispcp.conf
+		* Fixed #2272: [FreeBSD] Updated AWStats-Icon path
+		* Fixed #2272: [FreeBSD] Updated proftpd.conf -> disable auth_order
+
+2010-03-10 Laurent Declercq
+	- SETUP
+		* Added a specific note for the installation of the fcgid module on Etch
+
+2010-03-09 Laurent Declercq
+	- GUI:
+		* Domain deletion: It's useless to delegate the deletion tasks for protected areas files.
+		* Domain deletion - protected areas data: Merged SQL queries
 
 2010-03-09 Benedikt Heintel
+	- CONFIGS:
+		* Fixed:  The folder "disabled" is missing in the root_domain.conf
+	- DISTS:
+		* Fixed #2253: Porting logrotate to FreeBSD
+		* Fixed #2254: (FreeBSD) The folder "disabled" is missing in the root_domain.conf
+		* Fixed #2255: Update the FreeBSD packages
 	- TOOLS:
 		* Fixed #2256: Update Squirrelmail Plugins to the newest Version
 		* Fixed #2261: Squirrelmail update to version 1.4.20
-		
+	
 2010-03-08 Benedikt Heintel
 	- TOOLS:
 		* Updated phpMyAdmin to version 3.3.0

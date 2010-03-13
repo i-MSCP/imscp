@@ -233,7 +233,7 @@ function check_data_correction(&$tpl) {
 	global $hp_backup, $hp_dns;
 	global $tos;
 
-	$ahp_error = "_off_";
+	$ahp_error 		= array();
 
 	$hp_name		= clean_input($_POST['hp_name'], true);
 	$hp_sub			= clean_input($_POST['hp_sub'], true);
@@ -281,45 +281,47 @@ function check_data_correction(&$tpl) {
 	}
 
 	if ($hp_name == '') {
-		$ahp_error = tr('Incorrect template name length!');
+		$ahp_error[] = tr('Incorrect template name length!');
 	}
-
 	if ($description == '') {
-		$ahp_error = tr('Incorrect template description length!');
+		$ahp_error[] = tr('Incorrect template description length!');
 	}
-
 	if (!is_numeric($price)) {
-		$ahp_error = tr('Price must be a number!');
+		$ahp_error[] = tr('Price must be a number!');
 	}
-
 	if (!is_numeric($setup_fee)) {
-		$ahp_error = tr('Setup fee must be a number!');
+		$ahp_error[] = tr('Setup fee must be a number!');
 	}
-
 	if (!ispcp_limit_check($hp_sub, -1)) {
-		$ahp_error = tr('Incorrect subdomains limit!');
-	} elseif(!ispcp_limit_check($hp_als, -1)) {
-		$ahp_error = tr('Incorrect aliases limit!');
-	} elseif (!ispcp_limit_check($hp_mail, -1)) {
-		$ahp_error = tr('Incorrect mail accounts limit!');
-	} elseif(!ispcp_limit_check($hp_ftp, -1)) {
-		$ahp_error = tr('Incorrect FTP accounts limit!');
-	} elseif(!ispcp_limit_check($hp_sql_user, -1)) {
-		$ahp_error = tr('Incorrect SQL databases limit!');
-	} elseif(!ispcp_limit_check($hp_sql_db, -1)) {
-		$ahp_error = tr('Incorrect SQL users limit!');
-	} elseif(!ispcp_limit_check($hp_traff, null)) {
-		$ahp_error = tr('Incorrect traffic limit!');
-	} elseif(!ispcp_limit_check($hp_disk, null)) {
-		$ahp_error = tr('Incorrect disk quota limit!');
+		$ahp_error[] = tr('Incorrect subdomains limit!');
+	} 
+	if(!ispcp_limit_check($hp_als, -1)) {
+		$ahp_error[] = tr('Incorrect aliases limit!');
+	} 
+	if (!ispcp_limit_check($hp_mail, -1)) {
+		$ahp_error[] = tr('Incorrect mail accounts limit!');
+	} 
+	if(!ispcp_limit_check($hp_ftp, -1)) {
+		$ahp_error[] = tr('Incorrect FTP accounts limit!');
+	} 
+	if(!ispcp_limit_check($hp_sql_user, -1)) {
+		$ahp_error[] = tr('Incorrect SQL databases limit!');
+	} 
+	if(!ispcp_limit_check($hp_sql_db, -1)) {
+		$ahp_error[] = tr('Incorrect SQL users limit!');
+	} 
+	if(!ispcp_limit_check($hp_traff, null)) {
+		$ahp_error[] = tr('Incorrect traffic limit!');
+	} 
+	if(!ispcp_limit_check($hp_disk, null)) {
+		$ahp_error[] = tr('Incorrect disk quota limit!');
 	}
 
-	if ($ahp_error == '_off_') {
+	if (empty($ahp_error)) {
 		$tpl->assign('MESSAGE', '');
 		return true;
 	} else {
-		set_page_message($ahp_error);
-		// $tpl->assign('MESSAGE', $ahp_error);
+		set_page_message(format_message($ahp_error));
 		return false;
 	}
 } // end of check_data_correction()

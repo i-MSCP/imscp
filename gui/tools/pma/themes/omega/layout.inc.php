@@ -1,111 +1,33 @@
 <?php
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * configures general layout
- * for detailed layout configuration please refer to the css files
  *
- * @version $Id: layout.inc.php 10515 2007-07-22 16:22:54Z lem9 $
+ * @version $Id$
  * @package phpMyAdmin-theme
- * @subpackage Original
+ * @subpackage ispCP_Omega
  */
 
 /**
- * We don't need these values, but let's define them, 
- * so PHP doesn't complain... 
- */ 
- $GLOBALS['cfg']['BgcolorOne']               = '';
- $GLOBALS['cfg']['BgcolorTwo']               = '';
- $GLOBALS['cfg']['LeftBgColor']              = '';
- $GLOBALS['cfg']['LeftPointerColor']         = '';
- $GLOBALS['cfg']['RightBgColor']             = '';
- $GLOBALS['cfg']['ThBgcolor']                = '';
-
-/** 
- * navi frame
+ * for older versions
  */
-// navi frame width
-$GLOBALS['cfg']['NaviWidth']                = 250;
-
-// foreground (text) color for the navi frame
-$GLOBALS['cfg']['NaviColor']                = '#FFFFFF';
-
-// foreground (text) color for the navi frame
-$GLOBALS['cfg']['NaviBorderColor']          = '#535353';
-
-// background for the navi frame
-$GLOBALS['cfg']['NaviBackground']           = '';
-
-// foreground (text) color of the pointer in navi frame
-$GLOBALS['cfg']['NaviPointerColor']         = '#f4dc6b';
-// background of the pointer in navi frame
-$GLOBALS['cfg']['NaviPointerBackground']    = '';
-// text color of the selected database name (when showing the table list)
-$GLOBALS['cfg']['NaviDatabaseNameColor']    = '#f4dc6b';
-
-/**
- * main frame
- */
-// foreground (text) color for the main frame
-$GLOBALS['cfg']['MainColor']                = '#000000';
-
-// background for the main frame
-$GLOBALS['cfg']['MainBackground']           = '#F5F5F5';
-//$GLOBALS['cfg']['MainBackground']       = '#F5F5F5 url(' . $_SESSION['PMA_Theme']->getImgPath() . 'vertical_line.png) repeat-y';
-
-// foreground (text) color of the pointer in browse mode
-$GLOBALS['cfg']['BrowsePointerColor']       = '#000000';
-
-// background of the pointer in browse mode
-$GLOBALS['cfg']['BrowsePointerBackground']  = '#CCFFCC';
-
-// foreground (text) color of the marker (visually marks row by clicking on it) in browse mode
-$GLOBALS['cfg']['BrowseMarkerColor']        = '#000000';
-
-// background of the marker (visually marks row by clicking on it) in browse mode
-$GLOBALS['cfg']['BrowseMarkerBackground']   = '#FFCC99';
-
-/**
- * fonts
- */
-/**
- * the font family as a valid css font family value,
- * if not set the browser default will be used
- * (depending on browser, DTD and system settings)
- */
-$GLOBALS['cfg']['FontFamily']           = 'sans-serif';
-/**
- * fixed width font family, used in textarea
- */
-$GLOBALS['cfg']['FontFamilyFixed']      = 'monospace';
-
-/**
- * tables
- */
-// border
-$GLOBALS['cfg']['Border']               = 0;
-// table header and footer color
-$GLOBALS['cfg']['ThBackground']         = '#444444';
-// table header and footer background
-$GLOBALS['cfg']['ThColor']              = '#000000';
-// table data row background
-$GLOBALS['cfg']['BgOne']                = '';
-// table data row background, alternate
-$GLOBALS['cfg']['BgTwo']                = '';
-
-/**
- * query window
- */
-// Width of Query window
-$GLOBALS['cfg']['QueryWindowWidth']     = 600;
-// Height of Query window
-$GLOBALS['cfg']['QueryWindowHeight']    = 400;
-
-/**
- * SQL Parser Settings
- * Syntax colouring data
- */
-$GLOBALS['cfg']['SQP']['fmtColor']      = array(
-    'comment'            => '#808000',
+$cfg['LeftPointerEnable']   = false;
+$cfg['LeftWidth']           = 250;          						// left frame width
+$cfg['LeftBgColor']         = '';    						// background color for the left frame
+$cfg['RightBgColor']        = '#ffffff';    						// background color for the right frame
+$cfg['RightBgImage']        = '';                                   // path to a background image for the right frame
+                                            						// (leave blank for no background image)
+$cfg['LeftPointerColor']    = '#b4cae9';    						// color of the pointer in left frame
+$cfg['Border']              = 0;            						// border width on tables
+$cfg['ThBgcolor']           = '#e5e5e5';    						// table header row colour
+$cfg['BgcolorOne']          = '#e6f0ff';    						// table data row colour
+$cfg['BgcolorTwo']          = '#dbe7f9';    						// table data row colour, alternate
+$cfg['BrowsePointerColor']  = '#b4cae9';    						// color of the pointer in browse mode
+$cfg['BrowseMarkerColor']   = '#e9c7b4';    						// color of the marker (visually marks row
+                                            						// by clicking on it) in browse mode
+$cfg['QueryWindowWidth']    = 600;          						// Width of Query window
+$cfg['QueryWindowHeight']   = 400;          						// Height of Query window
+$cfg['SQP']['fmtColor']     = array(        						// Syntax colouring data
+    'comment'            => '#999999',
     'comment_mysql'      => '',
     'comment_ansi'       => '',
     'comment_c'          => '',
@@ -113,13 +35,80 @@ $GLOBALS['cfg']['SQP']['fmtColor']      = array(
     'digit_hex'          => 'teal',
     'digit_integer'      => 'teal',
     'digit_float'        => 'aqua',
-    'punct'              => 'fuchsia',
+    'punct'              => '#cc0000',
     'alpha'              => '',
     'alpha_columnType'   => '#FF9900',
     'alpha_columnAttrib' => '#0000FF',
+    'alpha_reservedWord' => '#cc0000',
+    'alpha_functionName' => '#000099',
+    'alpha_identifier'   => 'black',
+    'alpha_charset'      => '#6495ed',
+    'alpha_variable'     => '#800000',
+    'quote'              => '#008000',
+    'quote_double'       => '#000000',
+    'quote_single'       => '#000000',
+    'quote_backtick'     => ''
+);
+
+/**
+ * for current version
+ */
+// NAVI FRAME
+$GLOBALS['cfg']['LeftPointerEnable']        = false;
+$GLOBALS['cfg']['NaviWidth']                = 250;       // width
+$GLOBALS['cfg']['NaviColor']                = '#FFFFFF'; // foreground (text) color
+$GLOBALS['cfg']['NaviBackground']           = ''; // background
+$GLOBALS['cfg']['NaviPointerColor']         = '#000000'; // foreground (text) color of the pointer
+$GLOBALS['cfg']['NaviPointerBackground']    = '#b4cae9'; // background of the pointer
+
+// MAIN FRAME
+$GLOBALS['cfg']['MainColor']                = '#333333'; // foreground (text) color for the main frame
+$GLOBALS['cfg']['MainBackground']           = '#ffffff'; // background for the main frame
+// for a solid vertical line, uncomment this:
+//$GLOBALS['cfg']['MainBackground']           = '#ffffff url(../' . $_SESSION['PMA_Theme']->getImgPath() . 'vertical_line.png) repeat-y';
+$GLOBALS['cfg']['BrowsePointerColor']       = '#000000'; // foreground (text) color of the pointer in browse mode
+$GLOBALS['cfg']['BrowsePointerBackground']  = '#b4cae9'; // background of the pointer in browse mode
+$GLOBALS['cfg']['BrowseMarkerColor']        = '#000000'; // foreground (text) color of the marker (visually marks row by clicking on it) in browse mode
+$GLOBALS['cfg']['BrowseMarkerBackground']   = '#e9c7b4'; // background of the marker (visually marks row by clicking on it) in browse mode
+
+// FONTS
+// the font family as a valid css font family value,
+// if not set the browser default will be used
+// (depending on browser, DTD and system settings)
+$GLOBALS['cfg']['FontFamily']               = 'Tahoma, Arial, Helvetica, sans-serif';
+$GLOBALS['cfg']['FontFamilyFixed']          = '\'Courier New\', Courier, monospace'; // fixed width font family, used in textarea
+$GLOBALS['cfg']['FontSize']                 = '10'; // default width of the font
+$GLOBALS['cfg']['FontSizePrefix']           = 'pt'; // pt (Points) | px (Pixel), default is 'pt'
+
+// TABLES
+$GLOBALS['cfg']['Border']                   = 0;         // border
+$GLOBALS['cfg']['ThBackground']             = '#e5e5e5'; // table header and footer color
+$GLOBALS['cfg']['ThColor']                  = '#000000'; // table header and footer background
+$GLOBALS['cfg']['BgOne']                    = '#e6f0ff'; // table data row background
+$GLOBALS['cfg']['BgTwo']                    = '#dbe7f9'; // table data row background, alternate
+
+// QUERY WINDOW
+$GLOBALS['cfg']['QueryWindowWidth']         = 600;       // width of Query window
+$GLOBALS['cfg']['QueryWindowHeight']        = 400;       // height of Query window
+
+// SQL PARSER SETTINGS
+// Syntax colouring data
+$GLOBALS['cfg']['SQP']['fmtColor']          = array(
+    'comment'            => '#808000',
+    'comment_mysql'      => '#999999',
+    'comment_ansi'       => '#999999',
+    'comment_c'          => '#999999',
+    'digit'              => '#999999',
+    'digit_hex'          => 'teal',
+    'digit_integer'      => 'teal',
+    'digit_float'        => 'aqua',
+    'punct'              => 'fuchsia',
+    'alpha'              => '#cc0000',
+    'alpha_columnType'   => '#ff9900',
+    'alpha_columnAttrib' => '#0000ff',
     'alpha_reservedWord' => '#990099',
     'alpha_functionName' => '#FF0000',
-    'alpha_identifier'   => 'black',
+    'alpha_identifier'   => '#000000',
     'alpha_charset'      => '#6495ed',
     'alpha_variable'     => '#800000',
     'quote'              => '#008000',

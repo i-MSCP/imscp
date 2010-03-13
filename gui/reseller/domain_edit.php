@@ -489,6 +489,7 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 		// $user_props .= "$domain_ip;";
 		$user_props .= "$domain_php;";
 		$user_props .= "$domain_cgi;";
+		$user_props .= "$allowbackup;";
 		$user_props .= "$domain_dns";
 		update_user_props($user_id, $user_props);
 

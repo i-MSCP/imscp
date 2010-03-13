@@ -18,7 +18,7 @@ Table of Content
 1) Version Info
 ---------------
 ispCP ω Version: 1.0.5
-INSTALL Script:	1.9
+INSTALL Script:	2.0
 postinst Script:	1.1
 Maintainer:		Laurent Declercq (Nuxwin) <laurent.declercq@ispcp.net>
 Homepage:		http://isp-contol.net
@@ -216,9 +216,10 @@ Note: For all questions, answer "a" (trust always).
 
 8. Delete old files to avoid security risks:
 
-	# rm -fR /srv/www/ispcp/engine/messager/
+	# rm -Rf /srv/www/ispcp/engine/
 	# rm -Rf /srv/www/ispcp/gui/{admin,client,include,orderpanel,themes,reseller}/
-	# rm -Rf /srv/www/ispcp/gui/*.php
+	# rm -Rf /srv/www/ispcp/gui/tools/{pma/,filemanager/,webmail/,index.php}
+	# rm -Rf /srv/www/ispcp/gui/{*.php,favicon.ico,robot.txt}
 
 9. Copy /usr, /var and /srv directories into your system (you may make backups):
 

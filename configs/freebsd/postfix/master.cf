@@ -54,7 +54,7 @@ scache	  unix	-	-	-	-	1	scache
 # @link			http://isp-control.net
 # @author		ispCP Team
 # ====================================================================
-# for AMaViS and spam filter support
+# for AMaViS and SPAM filter support
 amavis    unix  -       -       n       -       2       smtp
    -o smtp_data_done_timeout=1200
    -o smtp_send_xforward_command=yes
@@ -75,7 +75,7 @@ localhost:10025 inet  n -       n       -      -        smtpd
 
 # ispCP autoresponder
 ispcp-arpl unix  -      n       n       -       -       pipe
-  flags=O user=vmail argv=/var/www/ispcp/engine/messenger/ispcp-arpl-msgr
+  flags=O user=vmail argv=/usr/local/www/ispcp/engine/messenger/ispcp-arpl-msgr
 
 # TLS - Activate, if TLS is avaiable/used
 smtps     inet  n       -       -       -       -       smtpd
@@ -96,7 +96,7 @@ smtps     inet  n       -       -       -       -       smtpd
 # Also specify in main.cf: maildrop_destination_recipient_limit=1
 #
 maildrop  unix  -       n       n       -       -       pipe
-  flags=DRhu user=vmail argv=/usr/bin/maildrop -d ${recipient}
+  flags=DRhu user=vmail argv=/usr/local/bin/maildrop -d ${recipient}
 #
 # See the Postfix UUCP_README file for configuration details.
 #
