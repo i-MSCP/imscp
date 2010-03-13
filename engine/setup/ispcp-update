@@ -211,17 +211,6 @@ sub update_engine {
 	#
 
 	#
-	## Additional tasks - Begin
-	#
-
-	print STDOUT BOLD "\n\tAdditional tasks\n";
-	$rs = additional_tasks();
-
-	#
-	## Additional tasks - End
-	#
-
-	#
 	## IspCP files permissions - Begin
 	#
 
@@ -231,6 +220,17 @@ sub update_engine {
 
 	#
 	## IspCP files permissions - End
+	#
+
+	#
+	## Additional tasks - Begin
+	#
+
+	print STDOUT BOLD "\n\tAdditional tasks\n";
+	$rs = additional_tasks();
+
+	#
+	## Additional tasks - End
 	#
 
 	# Starting services
@@ -823,6 +823,11 @@ sub additional_tasks() {
 	exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
 	print STDOUT BOLD GREEN str_to_right('[done]', length($print));
 
+	$print = ' Log cleanup:';
+	print STDOUT "\t" . $print;
+	cleanup();
+	print STDOUT BOLD GREEN str_to_right('[done]', length($print));
+
 	push_el(\@main::el, 'additional_tasks()', 'Ending...');
 
 	0;
@@ -979,6 +984,16 @@ sub update_old_disabled_dmn_layout {
 	push_el(\@main::el, 'update_old_disabled_dmn_layout()', 'Ending...');
 
 	0;
+}
+
+# Cleanup
+sub cleanup {
+	
+	push_el(\@main::el, 'cleanup()', 'Ending...');
+
+	sys_command("$main::cfg{'CMD_RM'} -f /tmp/ispcp-update-*");
+
+	push_el(\@main::el, 'cleanup()', 'Ending...');
 }
 
 #

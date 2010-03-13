@@ -4,6 +4,7 @@ ispCP ω 1.0.5 Changelog
 2010-03-13 Laurent Declercq
 	- SETUP:
 		* Fixed #2279: Update Old disabled domain style to the new
+		* Added a new subroutine to clean the log after a successful update process
 
 2010-03-12 Laurent Declercq
 	- ENGINE:
