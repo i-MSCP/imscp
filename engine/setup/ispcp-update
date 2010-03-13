@@ -866,7 +866,7 @@ sub update_old_disabled_dmn_layout {
 
 	push_el(\@main::el, 'update_old_disabled_dmn_layout()', 'Starting...');
 
-	my ($rs, $rdata) = (undef, undef, undef);
+	my ($rs, $rdata) = (undef, undef);
 
 	my $httpd_uid = getpwnam $main::cfg{'APACHE_USER'};
 	my $httpd_gid = getgrnam $main::cfg{'APACHE_GROUP'};
