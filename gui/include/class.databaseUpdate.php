@@ -896,7 +896,7 @@ SQL_QUERY;
 	 *
 	 * @author Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
 	 * @copyright 2006-2010 by ispCP | http://isp-control.net
-	 * @since rxxxx
+	 * @since r2698
 	 *
 	 * @access protected
 	 * @return string sql statements to be performed
