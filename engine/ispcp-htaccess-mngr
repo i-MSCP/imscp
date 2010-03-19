@@ -29,619 +29,546 @@
 #    http://isp-control.net
 #
 
+################################################################################
+## Program Short Desciption:                                                  ##
+##  htaccess Manager - Create, Update or Delete a protected area              ##
+################################################################################
+
+use strict;
+use warnings;
+
+# Ignore the warning of this kind:
+# Name "varname" used only once: possible typo at ...
+no warnings 'once';
+
 use FindBin;
 use lib "$FindBin::Bin/";
 require 'ispcp_common_code.pl';
 
-use strict;
-
-use warnings;
-
+# Unique identifier of a database record related to a protected area
 $main::htuser_task_id = undef;
 
-sub htuser_mngr_start_up {
+################################################################################
+##                                SUBROUTINES                                 ##
+################################################################################
+
+################################################################################
+##
+## Start Up!
+##
+sub htaccess_mngr_start_up {
+
+	push_el(\@main::el, 'htaccess_mngr_start_up()', 'Starting...');
 
 	my ($rs, $rdata) = (undef, undef);
 
-	push_el(\@main::el, 'htuser_mngr_start_up()', 'Starting...');
-
-	# checking for master process;
+	# Checking for master process;
 	$rs = check_master();
 	return $rs if ($rs != 0);
 
 	# Let's clear Execution Logs, if any.
-
 	if (-e $main::ispcp_htaccess_mngr_el) {
-
 		$rs = del_file($main::ispcp_htaccess_mngr_el);
-
 		return $rs if ($rs != 0);
-
 	}
 
-	# config check;
-
-	$rs = get_conf();
-
-	return $rs if ($rs != 0);
-
-	# sql check;
-
-	#
-	# getting initial data also must be done here;
-	#
-
+	# Sql check:
+	# FIXME Really required ?
 	my $sql = "
-	SELECT
-		domain_id,
-		domain_name,
-		domain_gid,
-		domain_uid,
-		domain_admin_id,
-		domain_created_id,
-		domain_created,
-		domain_last_modified,
-		domain_mailacc_limit,
-		domain_ftpacc_limit,
-		domain_traffic_limit,
-		domain_sqld_limit,
-		domain_sqlu_limit,
-		domain_status,
-		domain_alias_limit,
-		domain_subd_limit,
-		domain_ip_id,
-		domain_disk_limit,
-		domain_disk_usage,
-		domain_php,
-		domain_cgi
-	FROM
-		domain
-	LIMIT 0,1";
+		SELECT
+			`admin_id`
+		FROM
+			`admin`
+		WHERE
+			`admin_id` = 1
+		;
+	";
 
 	($rs, $rdata) = doSQL($sql);
-
 	return $rs if ($rs != 0);
 
-	#
-	# getting task id and domain record id;
-	#
-
+	# Getting task id
 	$main::htuser_task_id = $ARGV[0];
 
-	push_el(\@main::el, 'htuser_mngr_start_up()', 'Ending...');
+	push_el(\@main::el, 'htaccess_mngr_start_up()', 'Ending...');
 
-	return 0;
-
+	0;
 }
 
-sub htuser_mngr_shut_down {
+################################################################################
+##
+## Shut Down!
+##
+sub htaccess_mngr_shut_down {
 
-	my $rs = undef;
+	push_el(\@main::el, 'htaccess_mngr_shut_down()', 'Starting...');
 
-	push_el(\@main::el, 'htuser_mngr_shut_down()', 'Starting...');
+	# Nothing todo here !
 
-	push_el(\@main::el, 'htuser_mngr_shut_down()', 'Ending...');
+	push_el(\@main::el, 'htaccess_mngr_shut_down()', 'Ending...');
 
-	return 0;
-
+	0;
 }
 
-sub htuser_add_user_system_data {
-
-	my ($htuser_data) = @_;
-
-	my ($rs, $rdata, $sql) = (undef, undef, undef);
+################################################################################
+##
+## Create a protected area where the authentication is made by user
+##
+## Here, a protected area is represented by an directory wich contain a
+## `.htaccess` file. The `.htaccess` file must contain the following data:
+##
+## - The type of authentication - Only Basic authentication is supported
+## - The name of the protected area
+## - The file path wich contain the users authentication data (login/password)
+## - A list of one or more valid users
+##
+## See rfc 2617 for more information about http authentication specifications
+##
+sub htaccess_add_user_system_data {
 
 	push_el(\@main::el, 'htuser_add_user_system_data()', 'Starting...');
 
-	if (!defined($htuser_data) || $htuser_data eq '') {
+	my ($htuser_data) = @_;
 
-		push_el(\@main::el, 'htuser_add_user_system_data()', 'ERROR: Undefined Input Data...');
+	if (!defined($htuser_data) || $htuser_data eq '') {
+		push_el(
+			\@main::el,
+			'htaccess_add_user_system_data()',
+			'ERROR: Undefined Input Data...'
+		);
 
 		return -1;
-
 	}
 
-	my ($dmn_id, $dmn_name, $user_ids, $auth_type, $auth_name, $path, $status, $domain_uid, $domain_gid) =
-		(@$htuser_data[0], @$htuser_data[1], @$htuser_data[2], @$htuser_data[3], @$htuser_data[4],
-		 @$htuser_data[5], @$htuser_data[6], @$htuser_data[7], @$htuser_data[8]);
+	my ($rs, $rdata, $sql) = (undef, undef, undef);
 
-	my $apache_www_dir = $main::cfg{'APACHE_WWW_DIR'};
+	my (
+		$dmn_name,
+		$user_ids,
+		undef,
+		$auth_type,
+		$auth_name,
+		$path,
+		$status,
+		$domain_uid,
+		$domain_gid
+	) = @$htuser_data;
 
+	my $www_dir = $main::cfg{'APACHE_WWW_DIR'};
 	my $htaccess_users_file_name = $main::cfg{'HTACCESS_USERS_FILE_NAME'};
+	my $htaccess_users_file = "$www_dir/$dmn_name/$htaccess_users_file_name";
 
-	my $htaccess_users_file = "$apache_www_dir/$dmn_name/$htaccess_users_file_name";
-
-	my $htaccess_file = "$apache_www_dir/$dmn_name/$path/.htaccess";
+	# See ticket #2265 for the reason of this!
+	if(-e "$www_dir/$dmn_name/htdocs.disabled" && $path =~ m@^/htdocs(/.*)?$@) {
+		$path = defined $1 ? "/htdocs.disabled$1" : '/htdocs.disabled';
+	}
+	
+	my $htaccess_file = "$www_dir/$dmn_name$path/.htaccess";
 
 	my $unames = '';
 
 	foreach (split(',', $user_ids)) {
-
-		my $id = $_;
-
-		$sql = "SELECT uname FROM htaccess_users WHERE id = '$id'";
+		$sql = "
+			SELECT
+				`uname`
+			FROM
+				`htaccess_users`
+			WHERE
+				`id` = $_
+			;
+		";
 
 		($rs, $rdata) = doSQL($sql);
-
 		return $rs if ($rs != 0);
 
-		$rdata = @$rdata[0];
-
-		$unames .= @$rdata[0]." ";
-
+		$unames .= $rdata->[0]->[0] . ' ';
 	}
 
-	my $hfile = (get_file($htaccess_file))[1];
-	if(!defined($hfile)) {
-		$hfile = "";
+	# Remove trailing space
+	$unames =~ s/\s$//;
+
+	if(-e $htaccess_file) {
+		($rs, $rdata) = get_file($htaccess_file);
+		return $rs if($rs !=0);
+	} else {
+		$rdata = '';
 	}
 
-	my $htaccess_content =
-        set_zone($hfile, "
-        AuthType $auth_type
-        AuthName \"$auth_name\"
-        AuthUserFile $htaccess_users_file
-        Require user $unames
-        ", "PROTECTION", "#" );
+	$rdata = set_zone(
+		$rdata,
+		"\t\tAuthType $auth_type
+		AuthName \"$auth_name\"
+		AuthUserFile $htaccess_users_file
+		Require user $unames",
+		'PROTECTION',
+		'#'
+	);
 
-	if (-e "$apache_www_dir/$dmn_name/$path/") {
-		$rs = store_file($htaccess_file, $htaccess_content, $domain_uid, $domain_gid, 0644);
+	if (-e "$www_dir/$dmn_name/$path") {
+		$rs = store_file(
+			$htaccess_file, $rdata, $domain_uid, $domain_gid, 0644
+		);
+
 		return $rs if ($rs != 0);
-	}
-
-	push_el(\@main::el, 'htuser_add_user_system_data()', 'Ending...');
-
-	return 0;
-
-}
-
-sub htuser_del_user_system_data {
-
-	my ($htuser_data) = @_;
-
-	my ($rs, $rdata, $sql) = (undef, undef, undef);
-
-	push_el(\@main::el, 'htuser_del_user_system_data()', 'Starting...');
-
-	if (!defined($htuser_data) || $htuser_data eq '') {
-
-		push_el(\@main::el, 'htuser_del_user_system_data()', 'ERROR: Undefined Input Data...');
+	} else {
+		push_el(
+			\@main::el,
+			'htaccess_add_user_system_data()',
+			"ERROR: The path $www_dir/$dmn_name/$path doesn't exists!"
+		);
 
 		return -1;
-
 	}
 
-	my ($dmn_id, $dmn_name, $user_ids, $auth_type, $auth_name, $path, $status, $domain_uid, $domain_gid) =
-		(@$htuser_data[0], @$htuser_data[1], @$htuser_data[2], @$htuser_data[3], @$htuser_data[4],
-		 @$htuser_data[5], @$htuser_data[6], @$htuser_data[7], @$htuser_data[8]);
+	push_el(\@main::el, 'htaccess_add_user_system_data()', 'Ending...');
 
-	my $apache_www_dir = $main::cfg{'APACHE_WWW_DIR'};
-	my $htaccess_users_file_name = $main::cfg{'HTACCESS_USERS_FILE_NAME'};
-	my $htaccess_users_file = "$apache_www_dir/$dmn_name/$htaccess_users_file_name";
-	my $htaccess_file = "$apache_www_dir/$dmn_name/$path/.htaccess";
-
-	foreach (split(',', $dmn_id)) {
-
-		my $id = $_;
-
-		$sql = "SELECT count(dmn_id) FROM htaccess WHERE dmn_id = '$id' AND path = '$path'";
-
-		($rs, $rdata) = doSQL($sql);
-
-		return $rs if ($rs != 0);
-
-		$rdata = @$rdata[0];
-
-		my ($rcounter) = (@$rdata[0]);
-
-		if($rcounter eq '1') {
-
-			if (-e $htaccess_file) {
-
-				my $htaccess_content = del_zone( (get_file($htaccess_file))[1],  "PROTECTION", "#" );
-
-				$rs = store_file($htaccess_file, $htaccess_content, $domain_uid, $domain_gid, 0644);
-
-				return $rs if ($rs != 0);
-
-				my $cmd_wc = $main::cfg{'CMD_WC'};
-
-				my $size = `$cmd_wc -c < $htaccess_file`;
-
-				if ($size < 2) {
-					del_file($htaccess_file);
-				}
-			}
-		}
-	}
-
-	return $rs if ($rs != 0);
-
-	push_el(\@main::el, 'htuser_del_user_system_data()', 'Ending...');
-
-	return 0;
-
+	0;
 }
 
-sub htuser_add_group_system_data {
-
-	my ($htuser_data) = @_;
-
-	my ($rs, $rdata, $sql) = (undef, undef, undef);
+################################################################################
+##
+## Create a protected area where the authentication is made by group
+##
+## Here, a protected area is represented by an directory wich contain a
+## `.htaccess` file. The `.htaccess` file must contain the following data:
+##
+## - The type of authentication - Only Basic authentication is supported
+## - The name of the protected area
+## - The file path wich contain the users authentication data
+## - The file path wich contain the groups authentication data
+## - A list of one or more valid groups
+##
+## See rfc 2617 for more information about http authentication specifications
+##
+sub htaccess_add_group_system_data {
 
 	push_el(\@main::el, 'htuser_add_group_system_data()', 'Starting...');
 
-	if (!defined($htuser_data) || $htuser_data eq '') {
+	my ($htgroup_data) = @_;
 
+	if (!defined($htgroup_data) || $htgroup_data eq '') {
 		push_el(
 				\@main::el,
-				'htuser_add_group_system_data()', 'ERROR: Undefined Input Data...'
-			   );
+				'htaccess_add_group_system_data()',
+				'ERROR: Undefined Input Data...'
+		);
 
 		return -1;
-
 	}
 
-	my ($dmn_id, $dmn_name,	$group_ids, $auth_type, $auth_name, $path, $status,	$domain_uid, $domain_gid) =
-		(@$htuser_data[0], @$htuser_data[1], @$htuser_data[2], @$htuser_data[3], @$htuser_data[4],
-		 @$htuser_data[5], @$htuser_data[6], @$htuser_data[7], @$htuser_data[8]);
+	my ($rs, $rdata, $sql) = (undef, undef, undef);
+
+	my (
+		$dmn_name,
+		undef,
+		$group_ids,
+		$auth_type,
+		$auth_name,
+		$path,
+		$status,
+		$domain_uid,
+		$domain_gid
+	) = @$htgroup_data;
+
+	my $www_dir = $main::cfg{'APACHE_WWW_DIR'};
+	my $htaccess_users_file_name = $main::cfg{'HTACCESS_USERS_FILE_NAME'};
+	my $htaccess_groups_file_name = $main::cfg{'HTACCESS_GROUPS_FILE_NAME'};
+	my $htaccess_users_file = "$www_dir/$dmn_name/$htaccess_users_file_name";
+	my $htaccess_groups_file = "$www_dir/$dmn_name/$htaccess_groups_file_name";
+
+	# See ticket #2265 for the reason of this!
+	if(-e "$www_dir/$dmn_name/htdocs.disabled" && $path =~ m@^/htdocs(/.*)?$@) {
+		$path = defined $1 ? "/htdocs.disabled$1" : '/htdocs.disabled';
+	}
+	
+	my $htaccess_file = "$www_dir/$dmn_name$path/.htaccess";
 
 	my $ugroups = '';
 
 	foreach (split(',', $group_ids)) {
-
-		my $group_id = $_;
-
 		$sql = "
 			SELECT
-				ugroup
+				`ugroup`
 			FROM
-				htaccess_groups
+				`htaccess_groups`
 			WHERE
-				id = '$group_id'
-			AND
-				dmn_id = '$dmn_id'";
+				`id` = $_
+			;
+		";
 
 		($rs, $rdata) = doSQL($sql);
+		return $rs if($rs != 0);
 
-		$rdata = @$rdata[0];
+		$ugroups .= $rdata->[0]->[0] . ' ';
+	}
+	
+	# Remove trailing space
+	$ugroups =~ s/\s$//;
 
-		my $ugroup = @$rdata[0];
-
-		$ugroups .= "$ugroup ";
-
+	if(-e $htaccess_file) {
+		($rs, $rdata) = get_file($htaccess_file);
+		return $rs if($rs != 0);
+	} else {
+		$rdata = '';
 	}
 
-	my $htaccess_users_file_name = $main::cfg{'HTACCESS_USERS_FILE_NAME'};
-	my $htaccess_groups_file_name = $main::cfg{'HTACCESS_GROUPS_FILE_NAME'};
-	my $apache_www_dir = $main::cfg{'APACHE_WWW_DIR'};
-	my $htaccess_users_file = "$apache_www_dir/$dmn_name/$htaccess_users_file_name";
-	my $htaccess_groups_file = "$apache_www_dir/$dmn_name/$htaccess_groups_file_name";
-	my $htaccess_file = "$apache_www_dir/$dmn_name/$path/.htaccess";
+	$rdata = set_zone(
+		$rdata,
+		"\t\tAuthType $auth_type
+		AuthName \"$auth_name\"
+		AuthUserFile $htaccess_users_file
+		AuthGroupFile $htaccess_groups_file
+		Require group $ugroups",
+		'PROTECTION',
+		'#'
+	);
 
-	my $hfile = (get_file($htaccess_file))[1];
-	if(!defined($hfile)) {
-		$hfile = "";
-	}
-	my $htaccess_content =
-        set_zone($hfile, "
-        AuthType $auth_type
-        AuthName \"$auth_name\"
-        AuthUserFile $htaccess_users_file
-        AuthGroupFile $htaccess_groups_file
-        Require group $ugroups
-	", "PROTECTION", "#" );
-
-	$rs = store_file($htaccess_file, $htaccess_content, $domain_uid, $domain_gid, 0644);
-
-	return $rs if ($rs != 0);
-
-	push_el(\@main::el, 'htuser_add_group_system_data()', 'Ending...');
-
-	return 0;
-
-}
-
-sub htuser_del_group_system_data {
-
-	my ($htuser_data) = @_;
-
-	my ($rs, $rdata, $sql) = (undef, undef, undef);
-
-	push_el(\@main::el, 'htuser_del_group_system_data()', 'Starting...');
-
-	if (!defined($htuser_data) || $htuser_data eq '') {
-
-		push_el(\@main::el, 'htuser_del_group_system_data()', 'ERROR: Undefined Input Data...');
+	if (-e "$www_dir/$dmn_name/$path") {
+		$rs = store_file($htaccess_file, $rdata, $domain_uid, $domain_gid, 0644);
+		return $rs if ($rs != 0);
+	} else {
+		push_el(
+			\@main::el,
+			'htaccess_add_user_system_data()',
+			"ERROR: The path $www_dir/$dmn_name/$path doesn't exists!"
+		);
 
 		return -1;
-
 	}
 
-	my ($dmn_id, $dmn_name, $group_ids, $auth_type, $auth_name, $path, $status, $domain_uid, $domain_gid) =
-		(@$htuser_data[0], @$htuser_data[1], @$htuser_data[2], @$htuser_data[3], @$htuser_data[4],
-		 @$htuser_data[5], @$htuser_data[6], @$htuser_data[7], @$htuser_data[8]);
+	push_el(\@main::el, 'htaccess_add_group_system_data()', 'Ending...');
 
-	my $htaccess_users_file_name = $main::cfg{'HTACCESS_USERS_FILE_NAME'};
-	my $htaccess_groups_file_name = $main::cfg{'HTACCESS_GROUPS_FILE_NAME'};
-	my $apache_www_dir = $main::cfg{'APACHE_WWW_DIR'};
-	my $htaccess_users_file = "$apache_www_dir/$dmn_name/$htaccess_users_file_name";
-	my $htaccess_groups_file = "$apache_www_dir/$dmn_name/$htaccess_groups_file_name";
-	my $htaccess_file = "$apache_www_dir/$dmn_name/$path/.htaccess";
-
-	foreach (split(',', $dmn_id)) {
-
-		my $id = $_;
-
-		$sql = "SELECT COUNT(dmn_id) FROM htaccess WHERE dmn_id = '$id' AND path = '$path'";
-
-		($rs, $rdata) = doSQL($sql);
-		return $rs if ($rs != 0);
-
-		$rdata = @$rdata[0];
-
-		my ($rcounter) = (@$rdata[0]);
-
-		if($rcounter eq '1') {
-
-			if (-e $htaccess_file) {
-
-				my $htaccess_content = del_zone( (get_file($htaccess_file))[1],  "PROTECTION", "#" );
-
-				$rs = store_file($htaccess_file, $htaccess_content, $domain_uid, $domain_gid, 0644);
-				return $rs if ($rs != 0);
-
-				my $cmd_wc = $main::cfg{'CMD_WC'};
-
-				my $size = `$cmd_wc -c < $htaccess_file`;
-
-				if ($size < 2) {
-					del_file($htaccess_file);
-				}
-			}
-		}
-	}
-	return $rs if ($rs != 0);
-
-	push_el(\@main::el, 'htuser_del_group_system_data()', 'Ending...');
-
-	return 0;
-
+	0;
 }
 
-sub htuser_mngr_engine {
+################################################################################
+##
+## Delete a protected area
+##
+sub htaccess_del_protected_area_data {
 
-	my ($rs, $rows, $rdata) = (undef, undef, undef);
+	push_el(\@main::el, 'htaccess_del_protected_area_data()', 'Starting...');
 
-	push_el(\@main::el, 'htuser_mngr_engine()', 'Starting...');
+	if (!@_) {
+		push_el(
+			\@main::el,
+			'htaccess_del_protected_area_data()',
+			'ERROR: Undefined Input Data...'
+		);
 
-	my $id = $main::htuser_task_id;
+		return -1;
+	}
+
+	my ($rs, $rdata) = (undef, undef);
+	my($dmn_name, $path, $domain_uid, $domain_gid) = @_;
+	my $www_dir = $main::cfg{'APACHE_WWW_DIR'};
+	my $htaccess_file = "$www_dir/$dmn_name/$path/.htaccess";
+
+	if(-e $htaccess_file) {
+		($rs, $rdata) = get_file($htaccess_file);
+		return $rs if($rs != 0);
+
+		$rdata = del_zone($rdata, 'PROTECTION', '#');
+
+		if(length $rdata < 2) {
+			$rs = del_file($htaccess_file);
+			return $rs if($rs != 0);
+		} else {
+			$rs = store_file(
+				$htaccess_file, $rdata, $domain_uid, $domain_gid, 0644
+			);
+
+			return $rs if ($rs != 0);
+		}
+	}
+
+	push_el(\@main::el, 'htaccess_del_protected_area_data()', 'Ending...');
+
+	0;
+}
+
+################################################################################
+## Create a protected area
+##
+## A protected area is represented by a directory that contain a `.htaccess`
+## file. The authentification can be made by user or group.
+##
+## See htuser_add_user_system_data() and htuser_add_group_system_data()
+## subroutines for more information about the possible content of the `.htaccess`
+## file.
+##
+sub htaccess_mngr_engine {
+
+	push_el(\@main::el, 'htaccess_mngr_engine()', 'Starting...');
+
+	my ($rs, $rows) = (undef, undef);
+
+	#
+	# Get needed data from the database - Begin
+	#
+
 	my $sql = "
 		SELECT
-			t1.dmn_id,
-			t2.domain_name,
-			t1.user_id,
-			t1.auth_type,
-			t1.auth_name,
-			t1.path,
-			t1.status,
-			t2.domain_uid,
-			t2.domain_gid
+			`domain_name`,
+			`user_id`,
+			`group_id`,
+			`auth_type`,
+			`auth_name`,
+			`path`,
+			`status`,
+			`domain_uid`,
+			`domain_gid`
 		FROM
-			htaccess as t1,
-			domain as t2
+			`domain`
+		LEFT JOIN
+			`htaccess` ON `id` =  $main::htuser_task_id
 		WHERE
-			t1.id = '$id'
-		AND
-			t1.user_id != 0
-		AND
-			t1.dmn_id = t2.domain_id
+			`domain_id` = `dmn_id`
+		;
 	";
 
 	($rs, $rows) = doSQL($sql);
-
 	return $rs if ($rs != 0);
 
-	if (scalar(@$rows) == 0) {
+	#
+	# Get needed data from the database - End
+	#
+
+	# The record exists in the database ?
+	if (scalar(@$rows) != 0) {
+		my $entries = @$rows[0];
+
+		my $action = undef;
+		# Protected area by user(s)
+		if(@$entries[1] ne '0') {
+			$action = \&htaccess_add_user_system_data;
+		# protected area by group(s)
+		} elsif(@$entries[2] ne '0') {
+			$action = \&htaccess_add_group_system_data;
+		} else {
+			push_el(
+				\@main::el,
+				'htaccess_mngr_engine()',
+				'ERROR: The data are corrupted...'
+			);
+
+			return -1;
+		}
 
 		#
-		# protect with group;
+		# Perform needed action - Begin
 		#
 
-		$id = $main::htuser_task_id;
-		$sql = "
-			SELECT
-				t1.dmn_id,
-				t2.domain_name,
-				t1.group_id,
-				t1.auth_type,
-				t1.auth_name,
-				t1.path,
-				t1.status,
-				t2.domain_uid,
-				t2.domain_gid
-			FROM
-				htaccess as t1,
-				domain as t2
-			WHERE
-				t1.id = '$id'
-			AND
-				t1.group_id != 0
-			AND
-				t1.dmn_id = t2.domain_id
-		";
+		# Add or update a protected area
+		if(@$entries[6] eq 'toadd' || @$entries[6] eq 'change') {
+			$rs = &$action($entries);
+		# Deleting a protected area
+		} elsif(@$entries[6] eq 'delete') {
+			$rs = htaccess_del_protected_area_data(
+				@$entries[0], @$entries[5], @$entries[7], @$entries[8]
+			);
+		} else {
+				push_el(
+					\@main::el,
+					'htaccess_mngr_engine()',
+					'ERROR: Unknown action requested...'
+				);
 
-		($rs, $rows) = doSQL($sql);
+			return -1;
+		}
 
+		#
+		# Perform needed action - End
+		#
+
+		#
+		# Update database - Begin
+		#
+
+		if($rs == 0) {
+			if(@$entries[6] ne 'delete') {
+				$sql = "
+					UPDATE
+						`htaccess`
+					SET
+						`status` = 'ok'
+					WHERE
+						`id` = $main::htuser_task_id
+					;
+				";
+			} else {
+				$sql = "
+					DELETE FROM
+						`htaccess`
+					WHERE
+						`id` = $main::htuser_task_id
+					;
+				";
+			}
+		# An error was occured during action process
+		} else {
+			my ($sub_name, $msg) = split(/$main::el_sep/, pop_el(\@main::el));
+			$msg =~ s/\'/\\\'/g;
+
+			$sql = "
+				UPDATE
+					`htaccess`
+				SET
+					`status` = '$sub_name | $msg'
+				WHERE
+					`id` = $main::htuser_task_id
+				;
+			";
+		}
+
+		# Execute SQL statement now
+		($rs, undef) = doSQL($sql);
 		return $rs if ($rs != 0);
 
-		if (scalar(@$rows) != 0) {
-
-			my $entry = @$rows[0];
-
-			my ($htuser_status,
-				$htuser_id,
-				$dmn_name,
-				$path,
-				$dmn_id) = (@$entry[6],
-						   $main::htuser_task_id,
-						   @$entry[1],
-						   @$entry[5],
-						   @$entry[0]);
-
-			if ($htuser_status eq 'toadd' || $htuser_status eq 'change') {
-
-				$rs = htuser_add_group_system_data($entry);
-
-				if ($rs == 0) {
-
-					$sql = "UPDATE htaccess SET status = 'ok' WHERE id = $htuser_id";
-
-				} else {
-
-					my ($sub_name, $msg) = split(/$main::el_sep/, pop_el(\@main::el));
-
-					$msg =~ s/\'/\\\'/g;
-
-					$sql = "UPDATE htaccess SET status= '$sub_name | $msg' WHERE id = '$htuser_id';";
-
-				}
-
-				($rs, $rdata) = doSQL($sql);
-
-				return $rs if ($rs != 0);
-
-			} elsif ($htuser_status eq 'delete') {
-
-				$rs = htuser_del_group_system_data($entry);
-
-				if ($rs == 0) {
-
-					$sql = "DELETE FROM htaccess WHERE id = '$htuser_id'";
-
-				} else {
-
-					my ($sub_name, $msg) = split(/$main::el_sep/, pop_el(\@main::el));
-
-					$msg =~ s/\'/\\\'/g;
-
-					$sql = "UPDATE htaccess SET status = '$sub_name | $msg' WHERE id = $htuser_id;";
-
-				}
-
-				($rs, $rdata) = doSQL($sql);
-
-				return $rs if ($rs != 0);
-
-				$rs = htuser_del_user_system_data($entry);
-
-			}
-
-		}
+		#
+		# Update database - End
+		#
 
 	} else {
+		push_el(
+			\@main::el,
+			'htaccess_mngr_engine()',
+			"ERROR: No data found for task $main::htuser_task_id ..."
+		);
 
-		#
-		# continue with single user;
-		#
-
-		my $entry = @$rows[0];
-
-		my ($htuser_status, $htuser_id, $dmn_name, $path) =
-
-			(@$entry[6], $main::htuser_task_id, @$entry[1], @$entry[5]);
-
-		if ($htuser_status eq 'toadd' || $htuser_status eq 'change') {
-
-			$rs = htuser_add_user_system_data($entry);
-
-			if ($rs == 0) {
-
-				$sql = "UPDATE htaccess SET status = 'ok' WHERE id = '$htuser_id';";
-
-			} else {
-
-				my ($sub_name, $msg) = split(/$main::el_sep/, pop_el(\@main::el));
-
-				$msg =~ s/\'/\\\'/g;
-
-				$sql = "UPDATE htaccess SET status = '$sub_name | $msg' WHERE id = '$htuser_id';";
-
-			}
-
-			($rs, $rdata) = doSQL($sql);
-
-			return $rs if ($rs != 0);
-
-		} elsif ($htuser_status eq 'delete') {
-
-			$rs = htuser_del_user_system_data($entry);
-
-			if ($rs == 0) {
-
-				$sql = "DELETE FROM htaccess WHERE id = '$htuser_id';";
-
-			} else {
-
-				my ($sub_name, $msg) = split(/$main::el_sep/, pop_el(\@main::el));
-
-				$msg =~ s/\'/\\\'/g;
-
-				$sql = "UPDATE htaccess SET status = '$sub_name | $msg' WHERE id = '$htuser_id';";
-
-			}
-
-			($rs, $rdata) = doSQL($sql);
-
-			return $rs if ($rs != 0);
-
-		}
-
+		return -1;
 	}
 
-	sleep(1);
+	push_el(\@main::el, 'htaccess_mngr_engine()', 'Ending...');
 
-	push_el(\@main::el, 'htuser_mngr_engine()', 'Ending...');
-
-	return 0;
-
+	0;
 }
 
-my $rs = undef;
+################################################################################
+##                               MAIN PROGRAM                                 ##
+################################################################################
 
-$rs = htuser_mngr_start_up();
+my $rs = htaccess_mngr_start_up();
 
 if ($rs != 0) {
-
-    dump_el(\@main::el, $main::ispcp_htaccess_mngr_el);
-
-    htuser_mngr_shut_down();
-
-    exit 1;
-
+	pop_el(\@main::el, $main::ispcp_htaccess_mngr_el);
+	htaccess_mngr_shut_down();
+	exit 1;
 }
 
-$rs = htuser_mngr_engine();
+$rs = htaccess_mngr_engine();
 
 if ($rs != 0) {
-
-    dump_el(\@main::el, $main::ispcp_htaccess_mngr_el);
-
-    htuser_mngr_shut_down();
-
-    exit 1;
-
+	pop_el(\@main::el, $main::ispcp_htaccess_mngr_el);
+	htaccess_mngr_shut_down();
+	exit 1;
 }
 
-$rs = htuser_mngr_shut_down();
+$rs = htaccess_mngr_shut_down();
 
 if ($rs != 0) {
-
-    dump_el(\@main::el, $main::ispcp_htaccess_mngr_el);
-
-    exit 1;
-
+	pop_el(\@main::el, $main::ispcp_htaccess_mngr_el);
+	exit 1;
 }
 
 exit 0;
