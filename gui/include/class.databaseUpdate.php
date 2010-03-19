@@ -888,24 +888,22 @@ SQL_QUERY;
 	}
 	
 	/**
-	 * Adding field for term of service
+	 * Transitional issue (Fix database update conflict)
 	 * 
-	 * @author		Francesco Bux
-	 * @copyright	2006-2010 by ispCP | http://isp-control.net
-	 * @version		1.0.5
-	 * @since		r2614
-	 *
-	 * @access		protected
-	 * @return		sql statements to be performed
+	 * @author Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
+	 * @copyright 2006-2010 by ispCP | http://isp-control.net
+	 * @since r2701
+	 * 
+	 * @access protected
+	 * @return string sql statements to be performed
 	 */
 	protected function _databaseUpdate_29() {
-		
 		$sqlUpd = array();
-		$sqlUpd[] = "ALTER TABLE " .
-				    "`hosting_plans` ADD `tos` BLOB NOT NULL";
+		// old SQL statements was moved to 31 to
+		// resolve conflict created under 1.0.5
 		return $sqlUpd;
 	}
-
+	
 	/**
 	 * Fix for ticket #2265 http://www.isp-control.net/ispcp/ticket/2265
 	 *
@@ -920,7 +918,7 @@ SQL_QUERY;
 	 * @access protected
 	 * @return string sql statements to be performed
 	 */
-	protected function _databaseUpdate_29() {
+	protected function _databaseUpdate_30() {
 
 		$sqlUpd = array();
 		$sql = Database::getInstance();
@@ -965,6 +963,46 @@ SQL_QUERY;
 		}
 
 		return $sqlUpd;
+	}
+	
+	/**
+	 * Adding field for term of service
+	 * 
+	 * @author		Francesco Bux
+	 * @copyright	2006-2010 by ispCP | http://isp-control.net
+	 * @version		1.0.5
+	 * @since		r2614
+	 *
+	 * @access		protected
+	 * @return		sql statements to be performed
+	 */
+	protected function _databaseUpdate_31() {
+
+		$sql = Database::getInstance();
+
+		// Test added to prevent error if old version of
+		// database _databaseUpdate_29 was already applyed
+		$query= "
+				SHOW COLUMNS FROM
+					`hosting_plans`
+				LIKE
+					'tos'
+				;
+		";
+		
+		$rs = exec_query($sql, $query);
+		
+		// Create the new columns only if doesn't already exists
+		if ($rs->RecordCount() == 0) {
+			$sqlUpd = array();
+			
+				$sqlUpd[] = "
+					ALTER TABLE
+				    	`hosting_plans` ADD `tos` BLOB NOT NULL
+				    ;
+				";
+			return $sqlUpd;
+		}
 	}
 
 	/*

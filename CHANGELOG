@@ -26,6 +26,7 @@ ispCP ω 1.0.5 Changelog
 			during update:
 			- Added an database update to clean all `.htaccess` destdir paths
 			- Added code to cleanup  the submitted `.htaccess` destdir path
+		* Fixed: Database update conflict
 
 2010-03-13 Laurent Declercq
 	- SETUP:
