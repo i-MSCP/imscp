@@ -1,6 +1,37 @@
 ispCP ω 1.0.5 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-03-19 Laurent Declercq
+	- ENGINE:
+		* Fixed #2265: Protected area's files are regenerated in wrong place
+			during update
+		* Refactoring and some others changes in the ispcp-htaccess-mngr manager:
+			- Added code documentation
+			- Changed `dump_el()` to `pop_el()` in main section to avoid log
+				repetition on error
+			- Changed prefixes of all subroutines names according the script
+				name
+			- Merged 'htuser_del_user_system_data()' with
+				'htuser_del_group_system_data()'
+			- Removed useless variables
+			- Removed useless call of `get_conf()` (already performed in common
+				file)
+			- Removed useless conditions in SQL statements
+			- Removed useless `wc` command to improve performances
+			- Removed useless sleep statement
+			- Rewritten the `htuser_mngr_engine()` subroutine to avoid code
+				repetition
+	- GUI:
+		* Fixed #2265: Protected area's files are regenerated in wrong place
+			during update:
+			- Added an database update to clean all `.htaccess` destdir paths
+			- Added code to cleanup  the submitted `.htaccess` destdir path
+
+2010-03-13 Laurent Declercq
+	- SETUP:
+		* Fixed #2279: Update Old disabled domain style to the new
+		* Added a new subroutine to clean the log after a successful update process
+
 2010-03-12 Laurent Declercq
 	- ENGINE:
 		* Fixed #2281: Avoid to recreate 'disabled' layout directory for domains

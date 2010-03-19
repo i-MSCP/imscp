@@ -76,9 +76,28 @@ function protect_area(&$tpl, &$sql, $dmn_id) {
 		set_page_message(tr('Please enter area path'));
 		return;
 	}
-	// Check for existing directory
+
 	$path = clean_input($_POST['other_dir'], false);
+
+	// Cleanup path:
+	// Adds a slash as a first char of the path if it doesn't exists
+	// Removes the double slashes 
+	// Remove the trailing slash if it exists
+	if($path != '/') {
+		$clean_path = array();
+
+		foreach(explode(DIRECTORY_SEPARATOR, $path) as $dir) {
+			if($dir != '') {
+				$clean_path[] = $dir;
+			}
+		}
+	
+		$path = '/' . implode(DIRECTORY_SEPARATOR, $clean_path);
+	}
+
 	$domain = $_SESSION['user_logged'];
+
+	// Check for existing directory
 	// We need to use the virtual file system
 	$vfs = new vfs($domain, $sql);
 	$res = $vfs->exists($path);

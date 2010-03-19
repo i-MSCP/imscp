@@ -906,6 +906,67 @@ SQL_QUERY;
 		return $sqlUpd;
 	}
 
+	/**
+	 * Fix for ticket #2265 http://www.isp-control.net/ispcp/ticket/2265
+	 *
+	 * This update adding slash as first char if doesn't exists and remove
+	 * double and trailling slash in the relative paths of `.htaccess` files
+	 * for convenience reasons in the ispcp-htaccess-mngr engine script.
+	 *
+	 * @author Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
+	 * @copyright 2006-2010 by ispCP | http://isp-control.net
+	 * @since r2698
+	 *
+	 * @access protected
+	 * @return string sql statements to be performed
+	 */
+	protected function _databaseUpdate_29() {
+
+		$sqlUpd = array();
+		$sql = Database::getInstance();
+
+		$query = "
+			SELECT
+				`id`,
+				`path`
+			FROM
+				`htaccess`
+			;
+		";
+
+		$rs = exec_query($sql, $query);
+
+		if ($rs->RecordCount() != 0) {
+			while (!$rs->EOF) {
+				$path = $rs->fields['path'];
+
+				$clean_path = array();
+
+				foreach(explode(DIRECTORY_SEPARATOR, $path) as $dir) {
+					if($dir != '') {
+						$clean_path[] = $dir;
+					}
+				}
+	
+				$path = '/' . implode(DIRECTORY_SEPARATOR, $clean_path);
+
+				$sqlUpd[] = "
+					UPDATE
+						`htaccess`
+					SET
+						`path` = '$path'
+					WHERE
+						`id`= '{$rs->fields['id']}'
+					;
+				";
+
+				$rs->MoveNext();
+			}
+		}
+
+		return $sqlUpd;
+	}
+
 	/*
 	 * DO NOT CHANGE ANYTHING BELOW THIS LINE!
 	 */

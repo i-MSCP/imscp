@@ -45,13 +45,9 @@
 use strict;
 use warnings;
 
-# FIXME: Check if it ok for all dist
 use Term::ReadKey;
-
-# Todo Add this package to package files
-# (i.e. Debian: libfile-mimeinfo-perl)
+use Net::LibIDN ':all';
 use File::MimeInfo::Magic;
-
 use Term::ANSIColor qw(:constants colored);
 $Term::ANSIColor::AUTORESET = 1;
 
@@ -199,23 +195,19 @@ sub update_engine {
 	print STDOUT BOLD "\n\tRebuilding all customer configuration files";
 	$print = ' Please wait, this may take some time:';
 	print STDOUT "\n\t" . $print;
+
+	# First, we update old disabled domain style to new
+	if($main::cfg{'BuildDate'} <= 20100228) {
+		$rs = update_old_disabled_dmn_layout();
+		exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
+	}
+
 	$rs = rebuild_customers_cfg();
 	exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
 	print STDOUT BOLD GREEN str_to_right('[done]', length($print));
 
 	#
 	## IspCP customers configuration files - End
-	#
-
-	#
-	## Additional tasks - Begin
-	#
-
-	print STDOUT BOLD "\n\tAdditional tasks\n";
-	$rs = additional_tasks();
-
-	#
-	## Additional tasks - End
 	#
 
 	#
@@ -228,6 +220,17 @@ sub update_engine {
 
 	#
 	## IspCP files permissions - End
+	#
+
+	#
+	## Additional tasks - Begin
+	#
+
+	print STDOUT BOLD "\n\tAdditional tasks\n";
+	$rs = additional_tasks();
+
+	#
+	## Additional tasks - End
 	#
 
 	# Starting services
@@ -820,6 +823,11 @@ sub additional_tasks() {
 	exit_msg(str_to_right('[failed]', length($print)), $rs) if($rs != 0);
 	print STDOUT BOLD GREEN str_to_right('[done]', length($print));
 
+	$print = ' Log cleanup:';
+	print STDOUT "\t" . $print;
+	cleanup();
+	print STDOUT BOLD GREEN str_to_right('[done]', length($print));
+
 	push_el(\@main::el, 'additional_tasks()', 'Ending...');
 
 	0;
@@ -852,6 +860,140 @@ sub set_permissions {
 	push_el(\@main::el, 'set_permissions()', 'Ending...');
 
 	0;
+}
+
+# Update old disabled domain style to new
+#
+# This method is called only if the BuildDate of the current
+# ispCP version installed is less than or equal to 20100228
+# @Since 1.0.5
+sub update_old_disabled_dmn_layout {
+
+	push_el(\@main::el, 'update_old_disabled_dmn_layout()', 'Starting...');
+
+	my ($rs, $rdata) = (undef, undef);
+
+	my $httpd_uid = getpwnam $main::cfg{'APACHE_USER'};
+	my $httpd_gid = getgrnam $main::cfg{'APACHE_GROUP'};
+	my $log_file = '/tmp/ispcp-update-disabled_layout.log';
+
+	my $dsd_dmn_skel_dir = "$main::cfg{'GUI_ROOT_DIR'}/domain_disable_page";
+
+	# Find all domains disabled and update the layout
+	# (eg /var/www/virtual/domain.tld.disabled)
+	foreach(map{m@(.*\.disabled)$@} glob "$main::cfg{'APACHE_WWW_DIR'}/*") {
+
+		#Disabling the DocumentRoot.
+		#Here, we verify that it has not already been done to allow the error
+		# recovery if the process fail
+		if(-e "$_/htdocs" && !-e "$_/htdocs.disabled") {
+			$rs = sys_command_rs(
+				"$main::cfg{'CMD_MV'} $_/htdocs $_/htdocs.disabled &> $log_file"
+			);
+			return $rs if($rs != 0);
+		}
+
+		# Copy the directory that contain the layout for disabled domains
+		$rs = sys_command_rs(
+			"$main::cfg{CMD_CP} -TRfp $dsd_dmn_skel_dir $_/htdocs &> $log_file"
+		);
+		return $rs if($rs != 0);
+
+		# Building the disabled page - Begin
+
+		# Get toUnicode domain name
+		my $unicode_dmn_name = undef;
+		if(m@.*/(.*)\.disabled$@) {
+			$unicode_dmn_name = idn_to_unicode($1, 'utf-8');
+		} else {
+			push_el(
+				\@main::el,
+				'update_old_disabled_dmn_layout()',
+				"ERROR: Unable to retrieve the domain name from the path!"
+			);
+
+			return -1;
+		}
+
+		# Get the disabled raw page
+		($rs, $rdata) = get_file("$_/htdocs/index.html");
+		return $rs if ($rs != 0);
+
+		# Prepare tags
+		my %tag_hash = (
+			'{DOMAIN_NAME}' => $unicode_dmn_name,
+			'{BASE_SERVER_VHOST}' => $main::cfg{'BASE_SERVER_VHOST'}
+		);
+
+		# Replace tags
+		($rs, $rdata) = prep_tpl(\%tag_hash, $rdata);
+		return $rs if ($rs != 0);
+
+		# Store the file with proper permissions
+		$rs = store_file(
+			"$_/htdocs/index.html",
+			$rdata,
+			$main::cfg{'APACHE_USER'},
+			$main::cfg{'APACHE_GROUP'},
+			0644
+		);
+		return $rs if ($rs != 0);
+
+		# Building of the disabled page - End
+
+		# Set permissions for the new DocumentRoot
+		$rs = setfmode(
+			"$_/htdocs",
+			$main::cfg{'APACHE_USER'},
+			$main::cfg{'APACHE_GROUP'},
+			0755
+		);
+		return $rs if ($rs != 0);
+
+		# Set permissions for htdocs/images directory
+		$rs = setfmode(
+			"$_/htdocs/images",
+			$main::cfg{'APACHE_USER'},
+			$main::cfg{'APACHE_GROUP'},
+			0755
+		);
+		return $rs if ($rs != 0);
+
+		# Set permissions for all files under .../htdocs/images
+		chmod 0644, glob "$_/htdocs/images/*";
+		chown $httpd_uid, $httpd_gid, glob "$_/htdocs/images/*";
+
+		# Move (eg /var/www/virtual/domain.tld.disabled)
+		# To (eg /var/www/virtual/domain.tld)
+		if(m@(.*)\.disabled$@) {
+			$rs = sys_command_rs(
+				"$main::cfg{'CMD_MV'} $_ $1 &> $log_file"
+			);
+			return $rs if($rs != 0);
+		} else {
+			push_el(
+				\@main::el,
+				'update_old_disabled_dmn_layout()',
+				"ERROR: Unable to retrieve the domain name path!"
+			);
+
+			return -1;
+		}
+	}
+
+	push_el(\@main::el, 'update_old_disabled_dmn_layout()', 'Ending...');
+
+	0;
+}
+
+# Cleanup
+sub cleanup {
+	
+	push_el(\@main::el, 'cleanup()', 'Ending...');
+
+	sys_command("$main::cfg{'CMD_RM'} -f /tmp/ispcp-update-*");
+
+	push_el(\@main::el, 'cleanup()', 'Ending...');
 }
 
 #
