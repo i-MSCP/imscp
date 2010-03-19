@@ -978,31 +978,33 @@ SQL_QUERY;
 	 */
 	protected function _databaseUpdate_31() {
 
+		$sqlUpd = array();
 		$sql = Database::getInstance();
 
 		// Test added to prevent error if old version of
-		// database _databaseUpdate_29 was already applyed
+		// self::database_databaseUpdate_29() was already applyed
 		$query= "
-				SHOW COLUMNS FROM
-					`hosting_plans`
-				LIKE
-					'tos'
-				;
+			SHOW COLUMNS FROM
+				`hosting_plans`
+			LIKE
+				'tos'
+			;
 		";
-		
+
 		$rs = exec_query($sql, $query);
 		
 		// Create the new columns only if doesn't already exists
 		if ($rs->RecordCount() == 0) {
-			$sqlUpd = array();
-			
-				$sqlUpd[] = "
-					ALTER TABLE
-				    	`hosting_plans` ADD `tos` BLOB NOT NULL
-				    ;
-				";
-			return $sqlUpd;
+			$sqlUpd[] = "
+				ALTER TABLE
+				    `hosting_plans`
+				ADD
+					`tos` BLOB NOT NULL
+				;
+			";
 		}
+		
+		return $sqlUpd;
 	}
 
 	/*
