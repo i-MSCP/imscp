@@ -9,6 +9,7 @@ ispCP ω 1.0.5 Changelog
 	- CONFIGS:
 		* Removed wc Command
 	- DISTS:
+		* Fixed #2246: FreeBSD improvements
 		* Fixed #2285: [FreeBSD] Add needed packages to freebsd-packages
 		* Fixed #2286: [FreeBSD] Correct ispcp.conf -> Local Alias
 	- LANGUAGE:
