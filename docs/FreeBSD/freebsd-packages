@@ -27,12 +27,14 @@
 /usr/ports/databases/php5-pdo_mysql 
 /usr/ports/databases/p5-DBD-mysql50
 /usr/ports/databases/p5-Class-DBI-mysql
-/usr/ports/archivers/p5-Compress-Zlib 
+/usr/ports/archivers/p5-Compress-Zlib
+/usr/ports/security/cyrus-sasl2
+/usr/ports/security/cyrus-sasl2-saslauthd 
 /usr/ports/security/p5-Crypt-Blowfish 
 /usr/ports/security/p5-Crypt-CBC
 /usr/ports/security/p5-Crypt-DES 
 /usr/ports/security/p5-Crypt-PasswdMD5 
-/usr/ports/security/p5-Crypt-SSLeay 
+/usr/ports/security/p5-Crypt-SSLeay
 /usr/ports/textproc/p5-HTML-Entities-Numbered
 /usr/ports/www/p5-HTML-Parser 
 /usr/ports/www/p5-HTML-Tagset 

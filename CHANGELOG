@@ -1,11 +1,20 @@
 ispCP ω 1.0.5 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-03-20 Benedikt Heintel
+	- CONFIGS:
+		* Removed wc Command
+	- DISTS:
+		* Fixed #2285: [FreeBSD] Add needed packages to freebsd-packages
+		* Fixed #2286: [FreeBSD] Correct ispcp.conf -> Local Alias
+	- LANGUAGE:
+		* Fixed #2278: dutch translation for 1.05
+
 2010-03-19 Laurent Declercq
 	- ENGINE:
 		* Fixed #2265: Protected area's files are regenerated in wrong place
 			during update
-		* Refactoring and some others changes in the ispcp-htaccess-mngr manager:
+		* Re-factoring and some others changes in the ispcp-htaccess-mngr manager:
 			- Added code documentation
 			- Changed `dump_el()` to `pop_el()` in main section to avoid log
 				repetition on error

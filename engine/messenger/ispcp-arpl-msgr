@@ -868,7 +868,6 @@ sub arpl_msgr_engine {
 
 				return $rs if ($rs != 0);
 
-
 				$ref = @$ref[0];
 				my $auto_message = @$ref[0];
 
@@ -940,9 +939,7 @@ sub arpl_msgr_engine {
 
 				push_el(\@main::el, 'arpl_msgr_engine()', 'Ending...');
 
-			}
-			else
-			{
+			} else {
 				$buffer = $to_ma->address;
 				$buffer =~ s/"//g;
 			}
