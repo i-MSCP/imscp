@@ -13,6 +13,9 @@ ispCP ω 1.0.5 Changelog
 		* Fixed #2286: [FreeBSD] Correct ispcp.conf -> Local Alias
 	- LANGUAGE:
 		* Fixed #2278: dutch translation for 1.05
+	- TOOLS:
+		* Fixed possible vulnerability. See: 
+			http://packetstormsecurity.org/1003-exploits/ispcp-rfi.txt
 
 2010-03-19 Laurent Declercq
 	- ENGINE:
@@ -74,9 +77,6 @@ ispCP ω 1.0.5 Changelog
 	- GUI:
 		* Fixed #2244: Undefined variable in hosting_plan_edit.php of the admin
 		* Fixed: All occurred errors are now shown in Hosting Plans
-	- TOOLS:
-		* Fixed possible vulnerability. See: 
-			http://packetstormsecurity.org/1003-exploits/ispcp-rfi.txt
 
 2010-03-10 Benedikt Heintel
 	- DISTS:
