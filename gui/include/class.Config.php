@@ -79,7 +79,6 @@ final class Config {
 		'CMD_TOUCH' => null,
 		'CMD_USERADD' => null,
 		'CMD_USERDEL' => null,
-		'CMD_WC' => null,
 		'PEAR_DIR' => null,
 		'DATABASE_TYPE' => null,
 		'DATABASE_HOST' => null,
