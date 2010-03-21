@@ -199,6 +199,10 @@ function delete_domain($domain_id) {
 	$query = "DELETE FROM `tickets` WHERE ticket_from = ? OR ticket_to = ?";
 	exec_query($sql, $query, array($domain_admin_id, $domain_admin_id));
 
+	// Delete user gui properties
+	$query = "DELETE FROM `user_gui_props` WHERE `user_id` = ?;";
+	exec_query($sql, $query, $domain_admin_id);
+
 	write_log($_SESSION['user_logged'] .": deletes domain " . $domain_name);
 
 	update_reseller_c_props($reseller_id);

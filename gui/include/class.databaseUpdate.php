@@ -1007,6 +1007,70 @@ SQL_QUERY;
 		return $sqlUpd;
 	}
 
+	/**
+	 * Fix for ticket #2195 http://www.isp-control.net/ispcp/ticket/2195
+	 *
+	 * Remove all user gui properties that are orphan in the
+	 * 'user_gui_props' database table
+	 *
+	 * @author Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
+	 * @copyright 2006-2010 by ispCP | http://isp-control.net
+	 * @since r2712
+	 *
+	 * @access protected
+	 * @return array sql statements to be performed
+	 */
+	protected function _databaseUpdate_32() {
+
+		$sqlUpd = array();
+		$sql = Database::getInstance();
+
+		$query = "
+			SELECT 
+				`user_id`
+			FROM
+				`user_gui_props`
+			WHERE
+				(SELECT
+					count(`admin_id`)
+				FROM
+					`admin`
+				WHERE
+					`admin_id` = `user_id`
+				)  = 0
+			;
+		";
+
+		// Get PDO statement object
+		$stmt = exec_query($sql, $query);
+
+		// Get a list of ids where each id represent an
+		// user  gui property that should be deleted
+
+		if($stmt->RecordCount()) {
+			$list_ids = array();
+
+			while($row = $stmt->FetchRow()) {
+				$list_ids[] = $row['user_id'];
+			}
+
+			// Prepares the list of ids comma separated
+			$list_ids = implode(',', $list_ids);
+
+			// SQL statement to delete all the user properties that are orphan
+			$sqlUpd[] = "
+				DELETE FROM
+					`user_gui_props`
+				WHERE
+					`user_id` IN ($list_ids)
+				;
+			";
+		}
+
+		// Returns the pool of queries to be executed
+		return $sqlUpd;
+	}
+
 	/*
 	 * DO NOT CHANGE ANYTHING BELOW THIS LINE!
 	 */

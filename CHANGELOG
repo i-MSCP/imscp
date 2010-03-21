@@ -1,6 +1,10 @@
 ispCP ω 1.0.5 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-03-21 Laurent Declercq
+	- GUI
+		* Fixed #2195: Users gui properties not deleted
+
 2010-03-20 Laurent Declercq
 	- DATABASE:
 		* Updated database revision
