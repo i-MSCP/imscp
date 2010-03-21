@@ -29,7 +29,7 @@
  */
 
 function get_domain_default_props(&$sql, $domain_admin_id, $returnWKeys = false) {
-	
+
 	// /!\ Note to dev:
 	// Please, when you adds new field here, you must
 	// report it in all scripts that calls this function.
@@ -545,7 +545,7 @@ SQL_QUERY;
 	";
 
 	$rs = exec_query($sql, $query, array($_SESSION['user_created_by']));
-  
+
 	if (!Config::get('ISPCP_SUPPORT_SYSTEM') || $rs->fields['support_system'] == 'no') {
 		$tpl->assign('ISACTIVE_SUPPORT', '');
 	}
@@ -671,7 +671,7 @@ function gen_client_menu(&$tpl, $menu_file) {
 	";
 
 	$rs = exec_query($sql, $query, array($_SESSION['user_created_by']));
-  
+
 	if (!Config::get('ISPCP_SUPPORT_SYSTEM') || $rs->fields['support_system'] == 'no') {
 		$tpl->assign('SUPPORT_SYSTEM', '');
 	}
@@ -875,14 +875,14 @@ SQL_QUERY;
 SQL_QUERY;
 		$rs = exec_query($sql, $query, array());
 	} else {
-		$new_db_name = str_replace("_", "\\_", $db_name);
 		$query = <<<SQL_QUERY
-			REVOKE ALL ON $new_db_name.* FROM ?@'%'
+			REVOKE ALL ON $db_name.* FROM ?@'%'
 SQL_QUERY;
+
 		$rs = exec_query($sql, $query, array($db_user_name));
 
 		$query = <<<SQL_QUERY
-			REVOKE ALL ON $new_db_name.* FROM ?@localhost
+			REVOKE ALL ON $db_name.* FROM ?@localhost
 SQL_QUERY;
 		$rs = exec_query($sql, $query, array($db_user_name));
 	}
@@ -1062,7 +1062,7 @@ function mount_point_exists($dmn_id, $mnt_point) {
 
 /**
  * Checks the User rights to add Domain Aliases
- * 
+ *
  * @param int User ID
  * @return boolean Client Domain Alias Permissions
  */
