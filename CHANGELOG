@@ -1,14 +1,22 @@
 ispCP ω 1.0.5 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-03-20 Laurent Declercq
+	- DATABASE:
+		* Updated database revision
+
 2010-03-20 Benedikt Heintel
 	- CONFIGS:
 		* Removed wc Command
 	- DISTS:
+		* Fixed #2246: FreeBSD improvements
 		* Fixed #2285: [FreeBSD] Add needed packages to freebsd-packages
 		* Fixed #2286: [FreeBSD] Correct ispcp.conf -> Local Alias
 	- LANGUAGE:
 		* Fixed #2278: dutch translation for 1.05
+	- TOOLS:
+		* Fixed possible vulnerability. See: 
+			http://packetstormsecurity.org/1003-exploits/ispcp-rfi.txt
 
 2010-03-19 Laurent Declercq
 	- ENGINE:
@@ -71,9 +79,6 @@ ispCP ω 1.0.5 Changelog
 	- GUI:
 		* Fixed #2244: Undefined variable in hosting_plan_edit.php of the admin
 		* Fixed: All occurred errors are now shown in Hosting Plans
-	- TOOLS:
-		* Fixed possible vulnerability. See: 
-			http://packetstormsecurity.org/1003-exploits/ispcp-rfi.txt
 
 2010-03-10 Benedikt Heintel
 	- DISTS:
