@@ -57,45 +57,43 @@ $tpl->assign(
  */
 
 if (isset($_SESSION['dmn_id']) && $_SESSION['dmn_id'] !== '') {
-	$reseller_id = $_SESSION['user_id'];
+
 	$domain_id = $_SESSION['dmn_id'];
+	$reseller_id = $_SESSION['user_id'];
 
 	$query = "
 		SELECT
-			`domain_id`
+			`domain_id`, `domain_status`
 		FROM
 			`domain`
 		WHERE
 			`domain_id` = ?
 		AND
 			`domain_created_id` = ?
+		;
 	";
 
-	$rs = exec_query($sql, $query, array($domain_id, $reseller_id));
+	$result = exec_query($sql, $query, array($domain_id, $reseller_id));
 
-	if ($rs->RecordCount() == 0) {
-		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
+	if($result->RecordCount() == 0) {
+		set_page_message(
+			tr('User does not exist or you do not have permission to access this interface!')
+		);
+
+		// Back to the users page
 		user_goto('users.php');
-	}
-	// check main domain status
-	$ok_status = Config::get('ITEM_OK_STATUS');
-	$add_status = Config::get('ITEM_ADD_STATUS');
+	} else {
+		$row = $result->FetchRow();
+		$dmn_status = $row['domain_status'];
+	
+		if($dmn_status != Config::get('ITEM_OK_STATUS') &&
+			$dmn_status != Config::get('ITEM_ADD_STATUS')) {
 
-	$query = "
-		SELECT
-			`domain_id`
-		FROM
-			`domain`
-		WHERE
-			`domain_id` = ?
-		AND
-			(`domain_status` = ? OR `domain_status` = ?)
-	";
-
-	$rs = exec_query($sql, $query, array($domain_id, $ok_status, $add_status));
-	if ($rs->RecordCount() == 0) {
-		set_page_message(tr('System error with Domain ID ') . "$domain_id");
-		user_goto('users.php');
+			set_page_message(tr('System error with Domain ID ').$domain_id);
+			
+			// Back to the users page
+			user_goto('users.php');
+		}
 	}
 } else {
 	set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
