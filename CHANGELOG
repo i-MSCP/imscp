@@ -5,6 +5,8 @@ ispCP ω 1.0.5 Changelog
 	- GUI
 		* Improvement: Removed an useless SQL statement in reseller/user_add4.php
 		* Fixed: Wrong Internationalization method in reseller/user_add4.php
+	- TOOLS:
+		* Fixed: Wrong regexp in filemanager/include/html.inc.php
 
 2010-03-21 Laurent Declercq
 	- GUI

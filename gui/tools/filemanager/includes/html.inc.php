@@ -131,7 +131,7 @@ function getBrowser($what) {
 			$BROWSER_VERSION = $regs[1];
 			$BROWSER_AGENT = 'IE';
 		}
-		elseif (preg_match('/Safari/([0-9].[0-9]{1,2})/', $http_user_agent, $regs)) {
+		elseif (preg_match('/Safari\/([0-9].[0-9]{1,2})/', $http_user_agent, $regs)) {
 			$BROWSER_VERSION = $regs[1];
 			$BROWSER_AGENT = 'Safari';
 		}
@@ -139,7 +139,7 @@ function getBrowser($what) {
 			$BROWSER_VERSION = $regs[1];
 			$BROWSER_AGENT = 'Opera';
 		}
-		elseif (preg_match('/Mozilla/([0-9].[0-9]{1,2})/', $http_user_agent, $regs)) {
+		elseif (preg_match('/Mozilla\/([0-9].[0-9]{1,2})/', $http_user_agent, $regs)) {
 			$BROWSER_VERSION = $regs[1];
 			$BROWSER_AGENT = 'Mozilla';
 		}
