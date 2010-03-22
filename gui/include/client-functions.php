@@ -164,7 +164,6 @@ function get_domain_running_mail_acc_cnt(&$sql, $domain_id) {
 			`mail_type` NOT LIKE 'normal_catchall'
 		AND
 			`domain_id` = ?
-		;
 	";
 
 	$qr_als = "
@@ -178,7 +177,6 @@ function get_domain_running_mail_acc_cnt(&$sql, $domain_id) {
 			`mail_type` NOT LIKE 'alias_catchall'
 		AND
 			`domain_id` = ?
-		;
 	";
 
 	$qr_sub = "
@@ -192,7 +190,6 @@ function get_domain_running_mail_acc_cnt(&$sql, $domain_id) {
 			`mail_type` NOT LIKE 'subdom_catchall'
 		AND
 			`domain_id` = ?
-		;
 	";
 
 	$qr_alssub = "
@@ -206,25 +203,48 @@ function get_domain_running_mail_acc_cnt(&$sql, $domain_id) {
 			`mail_type` NOT LIKE 'alssub_catchall'
 		AND
 			`domain_id` = ?
-		;
 	";
 
 	if (Config::get('COUNT_DEFAULT_EMAIL_ADDRESSES') == 0) {
-		$qr_dmn .= " AND `mail_acc` != 'abuse'
-			AND `mail_acc` != 'postmaster'
-			AND `mail_acc` != 'webmaster'";
+		$qr_dmn .= "
+			AND
+				`mail_acc` != 'abuse'
+			AND
+				`mail_acc` != 'postmaster'
+			AND
+				`mail_acc` != 'webmaster'
+			;
+		";
 
-		$qr_als .= " AND `mail_acc` != 'abuse'
-			AND `mail_acc` != 'postmaster'
-			AND `mail_acc` != 'webmaster'";
+		$qr_als .= "
+			AND
+				`mail_acc` != 'abuse'
+			AND
+				`mail_acc` != 'postmaster'
+			AND
+				`mail_acc` != 'webmaster'
+			;
+		";
 
-		$qr_sub .= " AND `mail_acc` != 'abuse'
-			AND `mail_acc` != 'postmaster'
-			AND `mail_acc` != 'webmaster'";
+		$qr_sub .= "
+			AND
+				`mail_acc` != 'abuse'
+			AND
+				`mail_acc` != 'postmaster'
+			AND
+				`mail_acc` != 'webmaster'
+			;
+		";
 
-		$qr_alssub .= " AND `mail_acc` != 'abuse'
-			AND `mail_acc` != 'postmaster'
-			AND `mail_acc` != 'webmaster'";
+		$qr_alssub .= "
+			AND
+				`mail_acc` != 'abuse'
+			AND
+				`mail_acc` != 'postmaster'
+			AND
+				`mail_acc` != 'webmaster'
+			;
+		";
 	}
 
 	$rs = exec_query($sql, $qr_dmn, array($domain_id));
