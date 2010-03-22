@@ -4,6 +4,7 @@ ispCP ω 1.0.5 Changelog
 2010-03-22 Laurent Declercq
 	- GUI
 		* Improvement: Removed an useless SQL statement in reseller/user_add4.php
+		* Fixed: Wrong Internationalization method in reseller/user_add4.php
 
 2010-03-21 Laurent Declercq
 	- GUI

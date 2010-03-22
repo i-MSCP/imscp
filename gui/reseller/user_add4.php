@@ -89,7 +89,7 @@ if (isset($_SESSION['dmn_id']) && $_SESSION['dmn_id'] !== '') {
 		if($dmn_status != Config::get('ITEM_OK_STATUS') &&
 			$dmn_status != Config::get('ITEM_ADD_STATUS')) {
 
-			set_page_message(tr('System error with Domain ID ').$domain_id);
+			set_page_message(tr('System error with Domain Id: %d', $domain_id));
 			
 			// Back to the users page
 			user_goto('users.php');
