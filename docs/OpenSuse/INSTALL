@@ -18,8 +18,8 @@ Table of Content
 1) Version Info
 ---------------
 ispCP ω Version: 1.0.5
-INSTALL Script:	2.0
-postinst Script:	1.1
+INSTALL Script:	2.1
+postinst Script:	1.3
 Maintainer:		Laurent Declercq (Nuxwin) <laurent.declercq@ispcp.net>
 Homepage:		http://isp-contol.net
 Linux Distros:		OpenSuse 11.1 && 11.2
@@ -141,20 +141,16 @@ Note: For all questions, answer "a" (trust always).
 	# cd /srv/www/ispcp/engine/setup
 	# perl ispcp-setup
 
-13. Process to specific OpenSuse post installation tasks:
-
-	# sh postinst configure
-
-14. Restore /etc/skel:
+13. Restore /etc/skel:
 
 	# rm -r /etc/skel && mv /etc/skel.bkp /etc/skel
 
-15. Install ispCP ω step-by-step
+14. Install ispCP ω step-by-step
 
 	If you get no error, all went good; if you get one, look at
 	http://isp-control.net to solve the problem.
 
-16. Clean the temporary folders:
+15. Clean the temporary folders:
 	# rm -Rf /tmp/ispcp
 
 ================================================================================

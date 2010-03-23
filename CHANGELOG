@@ -6,6 +6,7 @@ ispCP ω 1.0.5 Changelog
 		* [OpenSuse] Removed several useless information displayed on STDIN 
 		* [OpenSuse] Removed useless tasks in the postinst script
 		* [OpenSuse] Removed useless 'update' argument for postinst script
+		* [OpenSuse] Updated INSTALL file
 	- SETUP:
 		* Added automatic call for maintainer's postinst scripts in ispcp-setup
 		* Moved call of postinst script in ispcp-update (restarting services
