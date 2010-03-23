@@ -33,14 +33,16 @@ Penitum III or K6-4 with 500 MHz
 512 MB RAM
 100 MB disk space (only for install of ispCP ω)
 
-All OpenSuSE 11.1 required packages are listed in ./docs/OpenSuse/opensuse111-packages
-All OpenSuSE 11.2 required packages are listed in ./docs/OpenSuse/opensuse112-packages
+All OpenSuSE 11.1 required packages are listed in :
+	./docs/OpenSuse/opensuse111-packages
+All OpenSuSE 11.2 required packages are listed in :
+	./docs/OpenSuse/opensuse112-packages
 
 ================================================================================
 3) Specific Note
 ----------------
 PHP4 related packages are removed because they are not available! Therefore PHP4
-is not available in ispCP!!! If you want to use PHP4 compile it by yourself!!!
+is not available in ispCP. If you want to use PHP4 compile it by yourself!
 
 For OpenSuse, the "apache2-mod_cband" package has been removed because it is
 not available. If you want to use, you must compile it yourself.
@@ -122,12 +124,13 @@ Note: For all questions, answer "a" (trust always).
 	# rcmysql restart
 
 10. Change or create MySQL root password, remove anonymous users, disallow root
-	login remotely, remove test database (and access to it), reload privilege tables:
+	login remotely, remove test database (and access to it), reload privilege
+	tables:
 
 	# mysql_secure_installation
 
-11. Maybe empty the folder /etc/skel - otherwise you'll have all the files/folders
-	in the home folders:
+11. Maybe empty the folder /etc/skel - otherwise you'll have all the
+	files/folders in the home folders:
 
 	# cp -a /etc/skel /etc/skel.bkp
 	# rm -r /etc/skel && mkdir /etc/skel

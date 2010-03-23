@@ -1,11 +1,11 @@
 #!/bin/sh
 #
-# ispCP required repositories install script for OpenSuse 11.1, 11.2
+# ispCP post installation script for OpenSuse 11.1, 11.2
 #
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2006-2009 by isp Control Panel - http://ispcp.net
 # author        Laurent Declercq <laurent.declercq@ispcp.net>
-# version		1.1
+# version		1.2
 #
 # SVN: $Id$
 #
@@ -199,12 +199,6 @@ case "$1" in
 			fi
 
 			#
-			# Named (bind9) Configuration
-			#
-
-			# FIXME: configure as DNS for host ?
-
-			#
 			# System Init Configuration
 			#
 			echo " System Init configuration"
@@ -221,7 +215,7 @@ case "$1" in
 			[ -f /etc/init.d/ispcp_network ] && /etc/init.d/ispcp_network restart
 
 			# Restart all services
-			sleep 2
+			sleep 1
 
 			echo " Restart all services"
 			for service in $SERVICES ; do
