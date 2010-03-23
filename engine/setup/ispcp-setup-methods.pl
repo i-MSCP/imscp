@@ -3154,7 +3154,7 @@ sub preinst {
 	0;
 }
 
-# Starting postinstallation script
+# Starting distribution maintainer postinst script
 # The postinst is the ideal place to perform tasks Post Installation.
 # For example, the script 'postinst' who's provided for the openSUSE
 # distribution can perform administrative tasks that are not supported

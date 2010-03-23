@@ -233,21 +233,19 @@ sub update_engine {
 	## Additional tasks - End
 	#
 
+	# Starting Post installation script if it exists
+	if(-e "$main::cfg{'ROOT_DIR'}/engine/setup/postinst") {
+		print STDOUT BOLD "\n\tStarting dist maintainer postinst script:\n\n";
+		$rs = postinst('configure');
+		exit_msg('Failed!', $rs) if($rs != 0);
+	}
+
 	# Starting services
 	$print = 'Starting services:';
 	print STDOUT "\n\t" . $print;
 	$rs = start_services();
 	exit_msg(str_to_right('[failed]', length($print)+11), $rs) if($rs != 0);
 	print STDOUT BOLD GREEN str_to_right('[done]', length($print) + 11);
-
-	# Starting Post installation script if it exists
-	if(-e "$main::cfg{'ROOT_DIR'}/engine/setup/postinst") {
-
-	print STDOUT "\n\tStarting post installation / update script:\n\n";
-	$rs = postinst('update');
-	exit_msg('Failed!', $rs) if($rs != 0);
-
-	}
 
 	push_el(\@main::el, 'update_engine()', 'Ending...');
 
