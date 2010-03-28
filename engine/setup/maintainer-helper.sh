@@ -88,18 +88,17 @@ set_errmsg() {
 	fi
 }
 
-# Function that allow to mange the  next action when a command was failed
+# Function that allow to mange the next action when a command was failed
 #
 # If an exit status is set, the program will end up with it.
+#
+# Special note about the exit status:
+#
 # If the exit status is set to 1, only the hook script will end up, otherwise,
 # if the exit status is set to 2, the both maintainer script and master script
-# (eg. ispcp-setup/ispcp/update) will end up.
-#
-# The default error message can be overloaded by a new as second
-# argument
+# (eg. ispcp-setup / ispcp-update) will end up.
 #
 # $1: Optional exit status
-# $2: Optional error message to override the default.
 failed() {
 	ISPCP_STATE="\033[1;31mFailed\033[0m"
 
