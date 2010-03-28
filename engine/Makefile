@@ -109,6 +109,7 @@ install:
 	$(CMD_INSTALL) ./setup/ispcp-update $(SYSTEM_ENGINE_ROOT)/setup
 	$(CMD_INSTALL) ./setup/ispcp-uninstall $(SYSTEM_ENGINE_ROOT)/setup
 	$(CMD_INSTALL) ./setup/updDB.php $(SYSTEM_ENGINE_ROOT)/setup
+	$(CMD_INSTALL) ./setup/maintainer-helper.sh $(SYSTEM_ENGINE_ROOT)/setup
 
 
 	$(CMD_INSTALL) ./tools/ispcp-httpd-logs-mngr $(SYSTEM_ENGINE_ROOT)/tools/ispcp-httpd-logs-mngr
