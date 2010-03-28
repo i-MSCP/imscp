@@ -6,7 +6,9 @@ ispCP ω 1.0.5 Changelog
 		* Added `wc`command (Required by maintainer-helper.sh script)
 	- DISTS:
 		* Fixed #2302: [FreeBSD] scoreboard dir not created && empty file for
-			courier
+			courier (Thank to Bene for the patch)
+		* Fixed #2295: [FreeBSD] New variables in ispcp.conf and smtpd.conf
+			(Thank to Bene for the patch)
 	- SETUP
 		* Added new maintainer-helper.sh script (Functions that can be used 
 			in maintainers shell scripts) 
