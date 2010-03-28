@@ -2511,7 +2511,7 @@ msgid "Error 500 (internal server error)"
 msgstr "Ошибка 500 (внутренняя ошибка сервера)"
 
 msgid "Error 503 (service unavailable)"
-msgstr "Error 503 (сервис не доступен)"
+msgstr "Ошибка 503 (сервис не доступен)"
 
 msgid "Error pages"
 msgstr "Страницы ошибок"
@@ -2650,7 +2650,7 @@ msgid "PHP Support: enabled"
 msgstr "Поддержка PHP: включена"
 
 msgid "PHP Support: disabled"
-msgstr "поддержка PHP: выключена"
+msgstr "Поддержка PHP: выключена"
 
 msgid ""
 "You have PHP enabled, but the new hosting plan doesn't has this feature."
@@ -2727,7 +2727,7 @@ msgstr ""
 "плане."
 
 msgid "free of charge"
-msgstr "бесплатное подключение"
+msgstr "бесплатно"
 
 msgid "You can not update to this hosting plan, see notices in text."
 msgstr "Вы не можете обновить хостинг-план, смотрите замечания."
@@ -3159,13 +3159,13 @@ msgid "Change"
 msgstr "Изменить"
 
 msgid "Please type database name!"
-msgstr "Укажите имя базы данных"
+msgstr "Укажите имя базы данных!"
 
 msgid "Database name is too long!"
 msgstr "Имя базы данных слишком длинное!"
 
 msgid "Specified database name already exists!"
-msgstr "Такое имя базы данных уже существует"
+msgstr "Такое имя базы данных уже существует!"
 
 #, php-format
 msgid "Wildcards such as %% and ? are not allowed!"
@@ -3175,7 +3175,7 @@ msgid "SQL database created successfully!"
 msgstr "База данных SQL успешно создана!"
 
 msgid "SQL accounts limit reached!"
-msgstr "Достигнут лимит пользователей SQL"
+msgstr "Достигнут лимит пользователей SQL!"
 
 msgid "ispCP - Client/Add SQL Database"
 msgstr "ispCP - Клиент / Добавить базу данных SQL"
@@ -4212,13 +4212,13 @@ msgstr "+2 года"
 msgid "The <em>%s</em> service cannot be disabled!"
 msgstr "Сервис <em>%s</em> не может быть отключен!"
 
-#, fuzzy, php-format
+#, php-format
 msgid "The <em>%s</em> have to be disabled!"
-msgstr "Сервис <em>%s</em> не может быть отключен!"
+msgstr "Сервис <em>%s</em> должен быть отключен!"
 
-#, fuzzy, php-format
+#, php-format
 msgid "The admin has <em>%s</em> disabled on this system!"
-msgstr "В системе <em>%s</em> записей!"
+msgstr "У администратора отключен сервис <em>%s</em> в системе!"
 
 #, php-format
 msgid "The <em>%s</em> service cannot be limited!"

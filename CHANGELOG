@@ -1,6 +1,11 @@
 ispCP ω 1.0.5 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-03-28 Jochen Manz
+	- LANGUAGE:
+		* Fixed #2301: 1.0.5 Japanese translation
+		* Fixed #2288: Russian Translation for 1.0.5
+
 2010-03-28 Laurent Declercq
 	- CONFIGS:
 		* Added `wc`command (Required by maintainer-helper.sh script)
