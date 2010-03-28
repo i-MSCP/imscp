@@ -9,6 +9,7 @@ ispCP ω 1.0.5 Changelog
 			courier (Thank to Bene for the patch)
 		* Fixed #2295: [FreeBSD] New variables in ispcp.conf and smtpd.conf
 			(Thank to Bene for the patch)
+		* Fixed #2297 Typo in \configs\opensuse\logrotate\ispcp
 	- SETUP
 		* Added new maintainer-helper.sh script (Functions that can be used 
 			in maintainers shell scripts) 
