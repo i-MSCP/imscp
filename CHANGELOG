@@ -1,6 +1,10 @@
 ispCP ω 1.0.5 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-03-28 Laurent Declercq
+	- DATABASE:
+		* Updated database update number in database.sql file (32)
+
 2010-03-23 Laurent Declercq
 	- DISTS:
 		* [OpenSuse] Removed several useless information displayed on STDIN 
