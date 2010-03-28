@@ -30,9 +30,6 @@
 #
 
 # This is a TODO list:
-# CLOSE:	there is no /etc/cron.d/ispcp is freebsd
-# CLOSE: 	wrong path and format awstats cronjob
-# OPEN:		scoreboard dir not created
 # OPEN:		Under jail, system still in heavy testing
 
 .ifdef $(OSTYPE)==FreeBSD
@@ -96,7 +93,12 @@ install:
 	cd ${INST_PREF} && cp -R * /
 .endif
 
-	mkdir -p /usr/local/www/data/scoreboards
+
+	# Create an empty file for courier
+	touch /usr/local/etc/ispcp/courier/backup/authdaemonrc.system
+
+	$(SYSTEM_MAKE_DIRS) /usr/local/www/data/scoreboards
+
 	#
 	# If Some error occured please read FAQ first and search at forum in http://www.isp-control.net
 	# Go to $(SYSTEM_WEB)/ispcp/engine/setup and type "ispcp-setup" to configure or "ispcp-upgrade"
@@ -118,7 +120,6 @@ uninstall:
 	rm -rf $(SYSTEM_MAIL_VIRTUAL)
 	rm -rf $(SYSTEM_APACHE_BACK_LOG)
 	rm -rf ./*~
-
 
 clean:
 	cd ./tools/daemon && $(MAKE) clean
