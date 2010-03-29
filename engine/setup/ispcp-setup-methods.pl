@@ -3132,12 +3132,11 @@ sub check_sql_connection {
 #
 # Hook that can be used by maintainers to perform any required tasks before the
 # common SETUP/UPDATE process via a dedicated `preinst` script. This hook is
-# automatically called after stopping service.
+# automatically called after stopping services action.
 #
 # Note: the `preinst` script can be written in SHELL, PERL or PHP, and should
 # live in the engine/setup directory. A shared library to the scripts that are
-# written in SHELL is available in the
-# engine/setup directory.
+# written in SHELL is available in the engine/setup directory.
 #
 # Argument that will be be passed to the maintainer script
 sub preinst {
@@ -3169,12 +3168,11 @@ sub preinst {
 #
 # Hook that can be used by maintainers to perform any required tasks before the
 # common SETUP/UPDATE process via a dedicated `postinst` script. This hook is
-# automatically called after stopping service.
+# automatically called after stopping services action.
 #
 # Note: the `postinst` script can be written in SHELL, PERL or PHP, and should
 # live in the engine/setup directory. A shared library to the scripts that are
-# written in SHELL is available in the
-# engine/setup directory.
+# written in SHELL is available in the engine/setup directory.
 #
 # Argument that will be be passed to the maintainer script
 sub postinst {
@@ -3202,12 +3200,37 @@ sub postinst {
 	0;
 }
 
+# Print a title
+sub title {
+        my $title = shift;
+        print STDOUT colored(['bold'], "\t$title\n");
+}
+
+# Print a subtitle
+sub subtitle {
+        my $subtitle = shift;
+        print STDOUT "\t $subtitle";
+        $main::subtitle_length = length $subtitle;
+}
+
+# Insert a blanc line
+sub spacer {
+        print "\n";
+}
+
+# Can be used in a loop to reflect the action progression
+sub progress {
+        print '.';
+        $main::dyn_length++;
+}
+
 # Print status string
 #
 # Note: Should be always called after the subtitle subroutine
 #
 # Param: int action status
-# [Param: string If set to 'exit_on_error', the program will end up]
+# [Param: string If set to 'exit_on_error', the program will end up] if the exit
+# status is a non-zero value
 sub print_status {
 
 	my ($status, $exit_on_error) = @_;
@@ -3222,9 +3245,9 @@ sub print_status {
 	my $status_string = ($status ==0) ? colored(['green'], 'Done') :
 		colored(['red'], 'Failed');
 
-	$status_string = sprintf('%'.($term_width-($length+1)). 's',$status_string);
+	$status_string = sprintf('%'.($term_width-($length+1)).'s', $status_string);
 
-	print BOLD "$status_string\n";
+	print STDOUT colored(['bold'], "$status_string\n");
 
 	if(defined $exit_on_error && $exit_on_error eq 'exit_on_error'
 		 && $status != 0) {

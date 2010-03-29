@@ -287,10 +287,6 @@ sub update_engine {
 	spacer();
 
 	#
-	## Post Installation hook - End
-	#
-
-	#
 	## Stating services - Begin
 	#
 
