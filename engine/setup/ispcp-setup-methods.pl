@@ -28,11 +28,14 @@
 
 use strict;
 use warnings;
+
+# Hide the "used only once: possible typo" warnings
 no warnings 'once';
 
 #
 ## Ask subroutines - Begin
 #
+
 sub ask_hostname {
 
 	push_el(\@main::el, 'ask_hostname()', 'Starting...');
@@ -3201,12 +3204,15 @@ sub postinst {
 }
 
 # Print a title
+# Param: string title to be displayed
 sub title {
         my $title = shift;
         print STDOUT colored(['bold'], "\t$title\n");
 }
 
 # Print a subtitle
+#
+# Param: string subtitle to be displayed
 sub subtitle {
         my $subtitle = shift;
         print STDOUT "\t $subtitle";
@@ -3236,7 +3242,7 @@ sub print_status {
 	my ($status, $exit_on_error) = @_;
 	my $length = $main::subtitle_length;
 
-	if(defined $main::dyn_length && $main::dyn_length  !=0) {
+	if(defined $main::dyn_length && $main::dyn_length != 0) {
 		$length = $length+$main::dyn_length;
 		$main::dyn_length = 0;
 	}
