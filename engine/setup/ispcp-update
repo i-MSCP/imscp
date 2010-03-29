@@ -149,7 +149,7 @@ sub update_engine {
 	print_status($rs, 'exit_on_error');
 
 	# Update ispCP configuration file
-	subtitle('Update ispCP configuration files:');
+	subtitle('Update ispCP configuration file:');
 	$rs = update_ispcp_cfg();
 	print_status($rs, 'exit_on_error');
 
@@ -186,7 +186,7 @@ sub update_engine {
 	## IspCP Services configuration files - Begin
 	#
 
-	title('Rebuilding all service configuration files');
+	title('Rebuilding all services configuration files');
 
 	# Rebuilding all services configuration files
 	rebuild_services_cfg();
@@ -216,7 +216,7 @@ sub update_engine {
 	## IspCP customers configuration files - Begin
 	#
 
-	title('Rebuilding all customer configuration files');
+	title('Rebuilding all customers configuration files');
 	subtitle('Please wait, this may take some time:');
 
 	# First, we update old disabled domain style to new
