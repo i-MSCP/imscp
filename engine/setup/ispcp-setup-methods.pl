@@ -28,6 +28,7 @@
 
 use strict;
 use warnings;
+no warnings 'once';
 
 #
 ## Ask subroutines - Begin
@@ -3127,11 +3128,18 @@ sub check_sql_connection {
 	0;
 }
 
-# Starting preinstallation script
-# Note : In the future, a preinst script will automatically
-# install the required packages and will also perform other
-# tasks as rename, move directories that may be helpful as
-# part of an update.
+# Implements the hook for the pre-installation scripts
+#
+# Hook that can be used by maintainers to perform any required tasks before the
+# common SETUP/UPDATE process via a dedicated `preinst` script. This hook is
+# automatically called after stopping service.
+#
+# Note: the `preinst` script can be written in SHELL, PERL or PHP, and should
+# live in the engine/setup directory. A shared library to the scripts that are
+# written in SHELL is available in the
+# engine/setup directory.
+#
+# Argument that will be be passed to the maintainer script
 sub preinst {
 
 	push_el(\@main::el, 'preinst()', 'Starting...');
@@ -3143,7 +3151,10 @@ sub preinst {
 	my $mime_type = mimetype("$main::cfg{'ROOT_DIR'}/engine/setup/preinst");
 
 	($mime_type =~ /(shell|perl|php)/) ||
-		exit_msg('ERROR: Unable to determine the mimetype of preinstallation script.');
+		exit_msg(
+			1,
+			'ERROR: Unable to determine the mimetype of the `preinst` script!'
+		);
 
 	$cmd = "$main::cfg{'CMD_'.uc($1)} preinst $task";
 	$rs = sys_command_rs($cmd);
@@ -3154,11 +3165,18 @@ sub preinst {
 	0;
 }
 
-# Starting postinstallation script
-# The postinst is the ideal place to perform tasks Post Installation.
-# For example, the script 'postinst' who's provided for the openSUSE
-# distribution can perform administrative tasks that are not supported
-# by the scripts that are common to all distributions.
+# Implements the hook for the post-installation scripts
+#
+# Hook that can be used by maintainers to perform any required tasks before the
+# common SETUP/UPDATE process via a dedicated `postinst` script. This hook is
+# automatically called after stopping service.
+#
+# Note: the `postinst` script can be written in SHELL, PERL or PHP, and should
+# live in the engine/setup directory. A shared library to the scripts that are
+# written in SHELL is available in the
+# engine/setup directory.
+#
+# Argument that will be be passed to the maintainer script
 sub postinst {
 
 	push_el(\@main::el, 'postinst()', 'Starting...');
@@ -3170,7 +3188,10 @@ sub postinst {
 	my $mime_type = mimetype("$main::cfg{'ROOT_DIR'}/engine/setup/postinst");
 
 	($mime_type =~ /(shell|perl|php)/) ||
-		exit_msg('ERROR: Unable to determine the mimetype of postinstallation script.');
+		exit_msg(
+			1,
+			'ERROR: Unable to determine the mimetype of the `postinst` script!'
+		);
 
 	$cmd = "$main::cfg{'CMD_'.uc($1)} postinst $task";
 	$rs = sys_command_rs($cmd);
@@ -3181,64 +3202,65 @@ sub postinst {
 	0;
 }
 
-# Format a string for it to be placed on the right
-# of another string. The first string should not end
-# with EOL.
+# Print status string
 #
-# param: string $msg the message to be placed on right
-# param: int $left_msg_lenght: lenght of left message
-# return: string right formated message
-sub str_to_right {
+# Note: Should be always called after the subtitle subroutine
+#
+# Param: int action status
+# [Param: string If set to 'exit_on_error', the program will end up]
+sub print_status {
 
-	my ($msg, $left_msg_lenght) = @_;
+	my ($status, $exit_on_error) = @_;
+	my $length = $main::subtitle_length;
 
-	my ($wchar) = GetTerminalSize();
+	if(defined $main::dyn_length && $main::dyn_length  !=0) {
+		$length = $length+$main::dyn_length;
+		$main::dyn_length = 0;
+	}
 
-	# 8 chars are a normal tabwidht in bash
-	my $sep = ($wchar - ($left_msg_lenght + 8));
+	my ($term_width) = GetTerminalSize();
+	my $status_string = ($status ==0) ? colored(['green'], 'Done') :
+		colored(['red'], 'Failed');
 
-	return sprintf('%'.$sep."s\n", $msg);
+	$status_string = sprintf('%'.($term_width-($length+1)). 's',$status_string);
+
+	print BOLD "$status_string\n";
+
+	if(defined $exit_on_error && $exit_on_error eq 'exit_on_error'
+		 && $status != 0) {
+		exit_msg($status);
+	}
 }
 
-# Exit with an optional error message
+# Exit with an error message
 #
-# If the message is the '[failed]' string, it will be
-# re-formatted and an additional message will be displayed.
-#
-# [param: string error message]
 # [param: int exit code]
-#
+# [param: string optional user message]
 sub exit_msg {
 
 	push_el(\@main::el, 'exit_msg()', 'Starting...');
 
-	my ($msg, $code) = @_;
+	my ($exit_code, $user_msg) = @_;
 
-	if (!defined($code) || $code <= 0 ) {
-		$code = 1;
+	if (!defined $exit_code || $exit_code <= 0 ) {
+		$exit_code = 1;
 	}
 
-	if (defined($msg) && $msg ne '' ) {
-
-		if($msg =~ /\[failed\]/) {
-
-		$msg = colored(['bold red'], $msg) . "\n";
-
-		my $final_msg = "\n\t" . colored(['red'], 'FATAL:')  .
-			" An error was occured during update process!\n" .
-			"\tCorrect it and re-run this program." .
-			"\n\n\tYou can find help at http://isp-control.net/forum\n\n";
-
-		print STDERR $msg, $final_msg;
-
-		} else {
-			print STDERR "\n\t$msg\n";
-		}
+	my $msg = "\n\t" . colored(['red'], 'FATAL:')  .
+		" An error was occured during update process!\n" .
+		"\tCorrect it and re-run this program." .
+		"\n\n\tYou can find help at http://isp-control.net/forum\n\n";
+		
+	if(defined $user_msg && $user_msg ne '') {
+		
+		$msg = "\n\t$user_msg\n" . $msg;
 	}
+
+	print STDERR $msg;
 
 	push_el(\@main::el, 'exit_msg()', 'Ending...');
 
-	exit $code;
+	exit $exit_code;
 }
 
 # Starting services
@@ -3255,9 +3277,8 @@ sub start_services {
 		CMD_IMAP CMD_IMAP_SSL/
 	) {
 		if( $main::cfg{$_} !~ /^no$/i && -e $main::cfg{$_}) {
-
 			sys_command("$main::cfg{$_} start &>/tmp/ispcp-update-services.log");
-			print STDOUT BOLD BLACK '.' if(defined &update_engine);
+			progress() if(defined &update_engine);
 			sleep 1;
 		}
 	}
@@ -3284,7 +3305,7 @@ sub stop_services {
 		if( $main::cfg{$_} !~ /^no$/i && -e $main::cfg{$_}) {
 
 			sys_command("$main::cfg{$_} stop &>/tmp/ispcp-update-services.log");
-			print STDOUT BOLD BLACK '.' if(defined &update_engine);
+			progress() if(defined &update_engine);
 			sleep 1;
 		}
 	}

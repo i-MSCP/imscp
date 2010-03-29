@@ -1,6 +1,19 @@
 ispCP ω 1.0.5 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-03-29 Laurent Declercq
+	- SETUP:
+		* Re-factoring:
+			- Added a new set of functions to facilitate the output handling and
+				improve code readability
+		* Removed deprecated subroutine (str_to_right)
+		* Pre/Post installation hooks:
+			- Added automatic call of the post installation hook in the
+				ispcp-setup script
+			- Moved automatic call of the post installation before the
+				restarting services action in the ispcp-update script
+			- Changed documentation
+
 2010-03-28 Jochen Manz
 	- LANGUAGE:
 		* Fixed #2301: 1.0.5 Japanese translation
@@ -14,7 +27,7 @@ ispCP ω 1.0.5 Changelog
 			courier (Thank to Bene for the patch)
 		* Fixed #2295: [FreeBSD] New variables in ispcp.conf and smtpd.conf
 			(Thank to Bene for the patch)
-		* Fixed #2297 Typo in \configs\opensuse\logrotate\ispcp
+		* Fixed #2297: Typo in \configs\opensuse\logrotate\ispcp
 	- SETUP
 		* Added new maintainer-helper.sh script (Functions that can be used 
 			in maintainers shell scripts) 

@@ -349,6 +349,19 @@ sub setup_shut_down {
 	$rs = setup_cleanup();
 	return $rs if($rs != 0);
 
+	# Running distribution maintainer postinst script if it exists
+	if(-e "$main::cfg{'ROOT_DIR'}/engine/setup/postinst") {
+		print STDOUT BOLD "\n\tStarting dist maintainer post-installation script:\n\n";
+
+		$rs = postinst('configure');
+		
+		# The script should end up only if the maintainer
+		# was set the exit status to 2
+		exit_msg(	
+			$rs, 'FATAL: An error was returned by the postinst script!'
+		) if($rs == 2);
+	}
+
 	start_services();
 
 	push_el(\@main::el, 'setup_shut_down()', 'Starting...');
