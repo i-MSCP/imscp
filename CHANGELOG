@@ -13,6 +13,7 @@ ispCP ω 1.0.5 Changelog
 			- Moved automatic call of the post installation before the
 				restarting services action in the ispcp-update script
 			- Changed documentation
+		* Added documentation for the maintainer-helper.sh script
 
 2010-03-28 Jochen Manz
 	- LANGUAGE:

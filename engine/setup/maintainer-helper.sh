@@ -1,11 +1,11 @@
 #!/bin/sh
 
-# ispCP helper functions for maintainers scripts
+# ispCP helper functions for dits maintainers scripts
 #
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
 # author	Laurent Declercq <laurent.declercq@ispcp.net>
-# version	1.0
+# version	1.1
 #
 # SVN: $Id$
 #
@@ -30,7 +30,26 @@
 #    http://isp-control.net
 #
 
-# Retrieve the isCP main configuration file
+# Note to ispCP dists maintainers:
+#
+# This script provide a set of functions that can be used in your maintainers
+# scripts (eg. preinst, postinst...).
+#
+# Currently, only a few helper functions to display the titles and error
+# messages are provided.
+#
+# Also, when you include this file into your script, some ispCP configuration
+# variables obtained from the 'ispcp.conf' file will be exported in your script.
+#
+# To use these functions, you must include this script at the beginning of your
+# script like this:
+#
+# . $(dirname "$0")/maintainer-helper.sh
+#
+# See the docs/OpenSuse/postinst script for an usage example.
+#
+
+# Retrieve the isCP main configuration file path
 if [ -f "/etc/ispcp/ispcp.conf" ] ; then
     ISPCP_CONF_FILE=/etc/ispcp/ispcp.conf
 elif [ -f "/usr/local/etc/ispcp/ispcp.conf" ] ; then
@@ -45,6 +64,9 @@ for a in `grep -E '(^Version|APACHE_|MTA_|ROOT_|^PHP_FASTCGI|^CMD_|^DEBUG)' \
 $ISPCP_CONF_FILE | sed -e 's/ //g'`; do
     export $a
 done
+
+# Get ispCP version
+ISPCP_VERS=`echo $Version | sed -e 's/[A-Z]//g'`
 
 # Enable debugg mode (see ispcp.conf)
 if [ $DEBUG -eq 1 ]; then
@@ -63,19 +85,27 @@ ISPCP_DYN_LENGTH=0
 ISPCP_EXIT=0
 
 # Print section title
+#
+# Param: string A title to be displayed
 print_title() {
 	ISPCP_PRINT=$1
 	printf "\t $ISPCP_PRINT"
 	printf "[$ISPCP_PRINT]\n" >> $ISPCP_LOGFILE
 }
 
-# Should be documented
+# Can be used in a loop to reflect the action progression
 progress() {
     printf '.'
     ISPCP_DYN_LENGTH=$(($ISPCP_DYN_LENGTH+1))
 }
 
-# Should be documented
+# Set an error message
+#
+# Function that can be used to override the default error message that
+# displayed when an error occur (after the call of the failed() function).
+#
+# Param: string Type of error. Can be 'notice', warning or 'error'.
+# Param: string The error message
 set_errmsg() {
 	if [ "$1" = "notice" ] ; then
 		ISPCP_ERRMSG="\n\t  \033[1;34m[Notice]\033[0m $2\n\n"
@@ -88,11 +118,11 @@ set_errmsg() {
 	fi
 }
 
-# Function that allow to mange the next action when a command was failed
+# Sets the status string to 'Failed' and an error message when a command fail
 #
-# If an exit status is set, the program will end up with it.
-#
-# Special note about the exit status:
+# This function allow also to manage the action to be performed when a command
+# fail. If an exit status is set, the program will end up with it according the
+# following rules:
 #
 # If the exit status is set to 1, only the hook script will end up, otherwise,
 # if the exit status is set to 2, the both maintainer script and master script
@@ -109,11 +139,12 @@ failed() {
 	ISPCP_MSG="$ISPCP_ERRMSG"
 }
 
-# Print the status string to the right
-# Display the status string  and the error message
-# If the exist status was set via the 'failed' function,
-# the script will end with this exit status. See the failed
-# function for more information about posibility.
+# Display the status string and the error message
+#
+# If the exist status was set via the 'failed()' function, the script will end
+# up with this exit status.
+#
+# See the failed function for more information about posibility.
 print_status() {
 	ISPCP_TERM_WIDTH=`stty size | cut -d' ' -f2`
 	ISPCP_MSG_LENGTH=`echo "$ISPCP_PRINT" | $CMD_WC -c`
@@ -131,11 +162,11 @@ $ISPCP_STATE`
 		exit $ISPCP_EXIT
 	fi
 
-	# Reset the status string and error message
+	# Reset the status string and the error message
 	reset
 }
 
-# Reset status string and error msg to the default: [done]
+# Reset the status string and the error message to they default values
 reset() {
         ISPCP_STATE="\033[1;32mDone\033[0m"
         ISPCP_ERRMSG="\n\t  \033[1;34m[Notice]\033[0m See the $ISPCP_LOGFILE \
