@@ -70,7 +70,6 @@ case "$1" in
 
 	# Disabling OpenSuse firewall  (ispCP provides its own)
 	if [ -x "/sbin/SuSEfirewall2" ] ; then
-		set_errmsg warning "Attention à ton gros cul!"
 		/sbin/SuSEfirewall2 off >> $ISPCP_LOGFILE 2>&1 || failed
 	fi
 
