@@ -433,6 +433,10 @@ sub load_old_ispcp_cfg {
 
 	my ($rs, $old_ispcp_cfg_file) = (undef, '/etc/ispcp/ispcp.old.conf');
 
+	if(-f '/usr/local/etc/ispcp/ispcp.old.conf') {
+		$old_ispcp_cfg_file = '/usr/local/etc/ispcp/ispcp.old.conf';
+	}
+
 	if (get_conf($old_ispcp_cfg_file)) {
 
 		do {
