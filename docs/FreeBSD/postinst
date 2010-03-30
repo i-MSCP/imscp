@@ -7,7 +7,7 @@
 # author	BeNe
 # version	1.0
 #
-# SVN: $Id:$
+# SVN: $Id$
 #
 # The contents of this file are subject to the Mozilla Public License
 # Version 1.1 (the "License"); you may not use this file except in
@@ -56,6 +56,55 @@ case "$1" in
 
 	# Remove old ISPCP_LOGFILE if it exists
 	rm -f $ISPCP_LOGFILE
+
+	#
+	## System Init Configuration - Begin
+	#
+
+	print_title "System Init configuration:"
+
+	# Add the needed ispCP Services to /etc/rc.conf for autoboot
+	# and check if the ispCP Part exist
+	if [ -f "/etc/rc.conf" ] ; then
+		# Get the current /etc/rc.conf content without the ispCP configuration
+		# part if it exists 
+		CUR_CONF=$(sed -e '/^# Needed ispCP Services - Begin/,/^# Needed ispCP Services - End/d' /etc/rc.conf)
+		printf "$CUR_CONF\n" > /etc/rc.conf	
+	fi
+
+cat << EOF >> /etc/rc.conf
+# Needed ispCP Services - Begin
+proftpd_enable="YES"
+mysql_enable="YES"
+apache22_http_accept_enable="YES"
+apache22_enable="YES"
+Cron_enable="YES"
+named_enable="YES"
+courier_authdaemond_enable="YES"
+courier_imap_imapd_enable="YES"
+courier_imap_imapd_ssl_enable="NO"
+courier_imap_pop3d_enable="YES"
+courier_imap_pop3d_ssl_enable="NO"
+postfix_enable="YES"
+policyd_weight_enable="YES"
+postgrey_enable="YES"
+saslauthd_enable="YES"
+spamd_enable="NO"
+amavisd_enable="NO"
+ispcp_daemon_enable="YES"
+# Disable Sendmail, because of Postfix
+sendmail_enable="NO"
+sendmail_submit_enable="NO"
+sendmail_outbound_enable="NO"
+sendmail_msp_queue_enable="NO"
+# Needed ispCP Services - End 
+EOF
+
+	print_status
+
+	#
+	## System Init Configuration - End
+	#
 
 	#
 	## FastCGI Apache module Configuration - Begin
@@ -214,55 +263,6 @@ case "$1" in
 
 	#
 	## Install Cron - End
-	#
-
-	#
-	## System Init Configuration - Begin
-	#
-
-	print_title "System Init configuration:"
-
-	# Add the needed ispCP Services to /etc/rc.conf for autoboot
-	# and check if the ispCP Part exist
-	if [ -f "/etc/rc.conf" ] ; then
-		# Get the current /etc/rc.conf content without the ispCP configuration
-		# part if it exists 
-		CUR_CONF=$(sed -e '/^# Needed ispCP Services - Begin/,/^# Needed ispCP Services - End/d' /etc/rc.conf)
-		printf "$CUR_CONF\n" > /etc/rc.conf	
-	fi
-
-cat << EOF >> /etc/rc.conf
-# Needed ispCP Services - Begin
-proftpd_enable="YES"
-mysql_enable="YES"
-apache22_http_accept_enable="YES"
-apache22_enable="YES"
-Cron_enable="YES"
-named_enable="YES"
-courier_authdaemond_enable="YES"
-courier_imap_imapd_enable="YES"
-courier_imap_imapd_ssl_enable="NO"
-courier_imap_pop3d_enable="YES"
-courier_imap_pop3d_ssl_enable="NO"
-postfix_enable="YES"
-policyd_weight_enable="YES"
-postgrey_enable="YES"
-saslauthd_enable="YES"
-spamd_enable="NO"
-amavisd_enable="NO"
-ispcp_daemon_enable="YES"
-# Disable Sendmail, because of Postfix
-sendmail_enable="NO"
-sendmail_submit_enable="NO"
-sendmail_outbound_enable="NO"
-sendmail_msp_queue_enable="NO"
-# Needed ispCP Services - End 
-EOF
-
-	print_status
-
-	#
-	## System Init Configuration - End
 	#
 
 	;;

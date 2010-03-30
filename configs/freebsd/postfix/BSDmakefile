@@ -42,6 +42,7 @@ install:
 
 	cp ./main.cf $(SYSTEM_CONF)/postfix/main.cf
 	cp ./master.cf $(SYSTEM_CONF)/postfix/master.cf
+	cp ./smtpd.conf $(SYSTEM_CONF)/postfix/smtpd.conf
 
 	cp -R ./backup $(SYSTEM_CONF)/postfix
 	cp -R ./parts $(SYSTEM_CONF)/postfix
