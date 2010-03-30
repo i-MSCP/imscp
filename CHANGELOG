@@ -11,6 +11,7 @@ ispCP ω 1.0.5 Changelog
 				after if at boot
 			- Disable proftpd xinetd (Should be only in standalone mode
 			- Rebuild the services list
+		* [OpenSuse] Updated INSTALL file
 
 2010-03-29 Benedikt Heintel
 	- GUI:
