@@ -1,6 +1,10 @@
 ispCP ω 1.0.5 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-03-29 Laurent Declercq
+	- DISTS:
+		* [FreeBSD] Added post installation script (Thank to Bene)
+
 2010-03-29 Benedikt Heintel
 	- GUI:
 		* Fixed #2308: Order - The password field of the customer is empty in 

@@ -56,6 +56,7 @@ install:
 	cd ./gui && $(MAKE) install
 	cd ./keys && $(MAKE) install
 	cd ./database && $(MAKE) install
+	cp ./docs/FreeBSD/postinst $(SYSTEM_ROOT)/engine/setup
 
 	#
 	# Patch some variable
