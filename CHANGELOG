@@ -15,6 +15,7 @@ ispCP ω 1.0.5 Changelog
 			- Disable proftpd xinetd (Should be only in standalone mode
 			- Rebuild the services list
 		* [FreeBSD] Fixed: Wrong php cli path
+		* [FreeBSD] Fixed: open_basedir restriction in effect
 		* [OpenSuse] Updated INSTALL file
 	- SETUP
 		* Added conditional statement to test existence of ispcp.conf file in
