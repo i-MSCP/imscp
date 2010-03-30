@@ -212,7 +212,7 @@ EOF
 		mkdir -p /var/spool/postfix/etc >> $ISPCP_LOGFILE 2>&1 || failed
 		$CMD_CHMOD -R 755 /var/spool/postfix/etc >> $ISPCP_LOGFILE 2>&1 || failed
 		cd /etc
-		$CMD_CP host.conf localtime services resolv.conf /var/spool/postfix/etc >> $ISPCP_LOGFILE 2>&1 failed
+		$CMD_CP host.conf localtime services resolv.conf /var/spool/postfix/etc >> $ISPCP_LOGFILE 2>&1 || failed
 	fi
 
 	# Move the sasldb2 into the chroot enviroment and create a symlink back
