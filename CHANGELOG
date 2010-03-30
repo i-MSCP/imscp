@@ -4,6 +4,13 @@ ispCP ω 1.0.5 Changelog
 2010-03-30 Laurent Declercq
 	- DISTS:
 		* [FreeBSD] Added post installation script (Thank to Bene)
+		* [OpenSuse] Fixed #2298: OpenSuSe - Maintainer tasks (ispCP 1.0.5):
+			- Replace insserv by the frontend chkconfig in the post installation
+				script to ensure that all services are started at level 3 and 5
+			- Ensure that mysql is running before ispcp_network and disabled
+				after if at boot
+			- Disable proftpd xinetd (Should be only in standalone mode
+			- Rebuild the services list
 
 2010-03-29 Benedikt Heintel
 	- GUI:

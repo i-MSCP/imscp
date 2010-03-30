@@ -31,8 +31,8 @@
 # Required-Start:       $network $local_fs $remote_fs
 # Required-Stop:
 # Should-Stop:          $local_fs
-# Default-Start:        2 3 4 5
-# Default-Stop:         0 1 6
+# Default-Start:        3 5
+# Default-Stop:         0 1 2 6
 # Short-Description:    ispCP GUI-Backend communication Daemon
 ### END INIT INFO
 # Note: do not modify any of these vars here, use /etc/default/$NAME instead
