@@ -5,7 +5,7 @@
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
 # author        Laurent Declercq <laurent.declercq@ispcp.net>
-# version		1.3
+# version		1.4
 #
 # SVN: $Id$
 #
@@ -190,18 +190,18 @@ case "$1" in
 		s/{MTA_SASL_LOG_LEVEL}/$MTA_SASL_LOG_LEVEL/
 		s/{MTA_SASL_PWCHECK_METHOD}/$MTA_SASL_PWCHECK_METHOD/
 		s/{MTA_SASL_MECH_LIST}/$(echo $MTA_SASL_MECH_LIST | sed 's/,/ /g')/
-	" >/tmp/smtpd.conf.tmp || set_status 'failed'
+	" >/tmp/smtpd.conf.tmp || failed
 
 	# If the user was defined an auxprop plugin in the ispcp.conf file,
 	# we should set it in the smtpd.conf file
 	if [ "$MTA_SASL_AUXPROP_PLUGIN" != "sasldb" ]; then
 		$CMD_SED -i "s/{MTA_SASL_AUXPROP_PLUGIN}/$MTA_SASL_AUXPROP_PLUGIN/" \
-			/tmp/smtpd.conf.tmp || set_status failed
+			/tmp/smtpd.conf.tmp || failed
 
 	# Otherwise, we should clean the file by remove the replacement variable
 	else
 		$CMD_SED -i '/auxprop_plugin: {MTA_SASL_AUXPROP_PLUGIN}/d' \
-		/tmp/smtpd.conf.tmp || set_status failed
+		/tmp/smtpd.conf.tmp || failed
 	fi
 
 	# Now, we replace the current production file if the new builded file
