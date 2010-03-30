@@ -41,6 +41,8 @@ set_permissions "/etc/ispcp/ispcp.conf" $ROOT_USER $ROOT_GROUP 0644
 if [ -f /usr/local/etc/ispcp/ispcp.conf ]; then
 	set_permissions "/usr/local/etc/ispcp/ispcp.conf" \
 		$ROOT_USER $ROOT_GROUP 0644
+else
+	set_permissions "/etc/ispcp/ispcp.conf" $ROOT_USER $ROOT_GROUP 0644
 fi
 
 # The panel must be able to read rkhunter log to display it.
