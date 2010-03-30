@@ -123,7 +123,14 @@ EOF
 
 			# ... and fastcgi *is*
 			if ! grep -q "^[^#]*LoadModule.*mod_fastcgi.so" $HTTPDCONF; then
+
+				# The LoadModule statement should be included before the 
+				# following Include statement:
+				# Include etc/apache22/Includes/*.conf
+				sed -i'.bak' '/Include etc\/apache22\/Includes\/\*\.conf/d' $HTTPDCONF
+
 				echo 'LoadModule fastcgi_module libexec/apache22/mod_fastcgi.so' >> $HTTPDCONF
+				echo 'Include etc/apache22/Includes/*.conf' >> $HTTPDCONF
 			fi
 
 			if ! grep -q "^[^#]*Include.*etc/apache22/extra/fastcgi_ispcp.conf" $HTTPDCONF; then
