@@ -10,6 +10,7 @@ ispCP ω 1.0.5 Changelog
 			script
 		* [FreeBSD] Fixed #2311: Add "screen" to Packages list
 		* [FreeBSD] Fixed #2309: Updated INSTALL File
+		* [freeBSD] Fixed: Bind don't start automatically
 		* [OpenSuse] /etc/apache2/sysconfig.d/include.conf not created by
 			/usr/sbin/httpd2
 	- SETUP:
