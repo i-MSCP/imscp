@@ -1,12 +1,27 @@
 ispCP ω 1.0.5 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-03-31 Laurent Declercq
+	- DISTS:
+		* [FreeBSD] Fixed: unable to hide rkhunter output with common 
+			I/O redirections in the `postinst` script
+		* [FreeBSD] The make process must copy the files in /tmp by default
+	- SETUP:
+		* Fixed: /usr/local/etc/postfix/ispcp/{aliases,domains,mailboxes,
+			transport,sender-access}: No such file or directory (On freeBSD)
+		* Make some I/O redirections FreeBSD compatible
+
 2010-03-30 Laurent Declercq
 	- DISTS:
 		* [FreeBSD] Added post installation script (Thank to Bene)
 		* [FreeBSD] Added post installation script (Thank to Bene)
 		* [FreeBSD] Missing instructions in the
 			configs/freebsd/postfix/BSDmakefile file (Thank to Bene)
+		* [FreeBSD] Fixed: Wrong php cli path
+		* [FreeBSD] Fixed: open_basedir restriction in effect
+		* [FreeBSD] Fixed: The make process must copy the files in / tmp by
+			default
+		* [OpenSuse] Updated INSTALL file
 		* [OpenSuse] Fixed #2298: OpenSuSe - Maintainer tasks (ispCP 1.0.5):
 			- Replace insserv by the frontend chkconfig in the post installation
 				script to ensure that all services are started at level 3 and 5
@@ -14,19 +29,10 @@ ispCP ω 1.0.5 Changelog
 				after if at boot
 			- Disable proftpd xinetd (Should be only in standalone mode
 			- Rebuild the services list
-		* [FreeBSD] Fixed: Wrong php cli path
-		* [FreeBSD] Fixed: open_basedir restriction in effect
-		* [FreeBSD] Fixed: unable to hide rkhunter output with common 
-			I/O redirections in the `postinst` script
-		* [OpenSuse] Updated INSTALL file
 	- SETUP
 		* Added conditional statement to test existence of ispcp.conf file in
 			set-engine-permissions.sh script
 		* Added conditional statement to retrieve the ispcp.old.conf file
-		* Fixed: /usr/local/etc/postfix/ispcp/{aliases,domains,mailboxes,
-			transport,sender-access}: No such file or directory (On freeBSD)
-		* Make some I/O redirections FreeBSD compatible
-
 
 2010-03-29 Benedikt Heintel
 	- GUI:
