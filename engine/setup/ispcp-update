@@ -220,7 +220,7 @@ sub update_engine {
 	subtitle('Please wait, this may take some time:');
 
 	# First, we update old disabled domain style to new
-	if($main::cfg{'BuildDate'} <= 20100228) {
+	if($main::cfg{'BuildDate'} <= 20100331) {
 		$rs = update_old_disabled_dmn_layout();
 		# Acts only if action was failed
 		print_status($rs, 'exit_on_error') if($rs != 0);
