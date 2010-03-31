@@ -233,7 +233,7 @@ Make sure you are logged in as root and MySQL is running.
 	# rm -Rf /var/www/ispcp/engine/
 	# rm -Rf /var/www/ispcp/gui/{admin,client,include,orderpanel,themes,reseller}/
 	# rm -Rf /var/www/ispcp/gui/tools/{pma/,filemanager/,webmail/,index.php}
-	# rm -Rf /var/www/ispcp/gui/{*.php,favicon.ico,robot.txt}
+	# rm -Rf /var/www/ispcp/gui/{*.php,favicon.ico,robots.txt}
 
 8. Copy /usr and /var directories into your system (you may make backups)
 	# cp -Rv /tmp/ispcp/usr/* /usr/

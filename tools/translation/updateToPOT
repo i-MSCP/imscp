@@ -50,3 +50,5 @@ for i in *.po; do
 	echo $i
 	msgmerge -U $i ispCP.pot
 done
+
+exit 0

@@ -64,6 +64,7 @@ final class Config {
 		'CMD_GREP' => null,
 		'CMD_GROUPADD' => null,
 		'CMD_GROUPDEL' => null,
+		'CMD_WC' => null,
 		'CMD_HOSTNAME' => null,
 		'CMD_IFCONFIG' => null,
 		'CMD_IPTABLES' => null,

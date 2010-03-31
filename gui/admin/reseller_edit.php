@@ -364,18 +364,30 @@ function _check_new_limit($new_limit, $assigned_by_reseller, $used_by_customers,
 		if($unlimited == '_off_') {
 
 			// If the new limit is < to the already used accounts/limits by users
-			if($new_limit < $used_by_customers) {
+			if($new_limit < $used_by_customers && $new_limit != -1) {
 				set_page_message(
 					tr("This reseller's customers are using/have more/higher <b>%s</b> accounts/limits than the new limit you entered.", $service_name)
 				);
 
 			// If the new limit is < to the already assigned accounts/limits by reseller
-			} elseif($new_limit < $assigned_by_reseller) {
+			} elseif($new_limit < $assigned_by_reseller && $new_limit != -1) {
+				set_page_message(
+					tr('This reseller has already assigned more/higher <b>%s</b> accounts/limits than the new limit you entered.', $service_name)
+				); 
+			
+			// If the new limit is -1 (disabled) and the already used accounts/limits by users is greater 0
+			} elseif($new_limit == -1 && $used_by_customers > 0) {
+				set_page_message(
+					tr("This reseller's customers are using/have more/higher <b>%s</b> accounts/limits than the new limit you entered.", $service_name)
+				);
+			
+			// If the new limit is -1 (disabled) and the already assigned accounts/limits by reseller is greater 0
+			} elseif($new_limit == -1 && $assigned_by_reseller > 0) {
 				set_page_message(
 					tr('This reseller has already assigned more/higher <b>%s</b> accounts/limits than the new limit you entered.', $service_name)
 				);
-			}
-
+			} 
+			
 		// One or more reseller's customers have unlimited rights
 		} elseif($new_limit != 0) {
 			set_page_message(

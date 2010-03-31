@@ -125,7 +125,8 @@ $php = preg_replace("/\_/", "", $php);
 $cgi = preg_replace("/\_/", "", $cgi);
 $dns = preg_replace("/\_/", "", $dns);
 
-$inpass = crypt_user_pass(passgen(), true);
+$password = passgen();
+$inpass = crypt_user_pass($password, true);
 
 // Should be performed after domain name validation now
 $dmn_user_name = decode_idna($dmn_user_name);
@@ -161,9 +162,9 @@ $query = "
 ";
 
 $res = exec_query($sql, $query, array(
-	$dmn_user_name, $inpass, $reseller_id, $first_name, $last_name, $firm,
-	$zip, $city, $state, $country, $user_email, $phone, $fax, $street_one,
-	$street_two, $customer_id)
+		$dmn_user_name, $inpass, $reseller_id, $first_name, $last_name, $firm,
+		$zip, $city, $state, $country, $user_email, $phone, $fax, $street_one,
+		$street_two, $customer_id)
 );
 
 print $sql->ErrorMsg();
@@ -208,23 +209,9 @@ $query = "
 	)
 ";
 
-$res = exec_query($sql, $query, array($dmn_user_name,
-		$record_id,
-		$reseller_id,
-		$mail,
-		$ftp,
-		$traff,
-		$sql_db,
-		$sql_user,
-		$status,
-		$sub,
-		$als,
-		$domain_ip,
-		$disk,
-		$php,
-		$cgi,
-		$backup,
-		$dns)
+$res = exec_query($sql, $query, array($dmn_user_name, $record_id, $reseller_id,
+		$mail, $ftp, $traff, $sql_db, $sql_user, $status, $sub, $als, $domain_ip,
+		$disk, $php, $cgi, $backup,	$dns)
 );
 $dmn_id = $sql->Insert_ID();
 
@@ -235,7 +222,8 @@ $query = "
 	VALUES
 		(?, ?, ?, ?)
 ";
-$rs = exec_query($sql, $query, array($dmn_id, $dmn_user_name, crypt_user_pass_with_salt($pure_user_pass), $status));
+$rs = exec_query($sql, $query, array($dmn_id, $dmn_user_name,
+	 	crypt_user_pass_with_salt($password), $status));
 
 $user_id = $sql->Insert_ID();
 
@@ -256,17 +244,10 @@ if (Config::get('CREATE_DEFAULT_EMAIL_ADDRESSES'))
 // Added to send the msg with the domain name in idna form
 $dmn_user_name = encode_idna($dmn_user_name);
 
-// ispcp 2.5 feature
 // add_domain_extras($dmn_id, $record_id, $sql);
 // let's send mail to user
-send_add_user_auto_msg($reseller_id,
-	$dmn_user_name,
-	$pure_user_pass,
-	$user_email,
-	$first_name,
-	$last_name,
-	tr('Domain account')
-);
+send_add_user_auto_msg($reseller_id, $dmn_user_name, $password, $user_email,
+	$first_name, $last_name, tr('Domain account'));
 
 // add user into user_gui_props => domain looser needs language and skin too :-)
 $user_def_lang = $_SESSION['user_def_lang'];
@@ -279,8 +260,7 @@ $query = "
 		(?, ?, ?)
 ";
 
-$res = exec_query($sql, $query, array($record_id,
-		$user_def_lang,
+$res = exec_query($sql, $query, array($record_id, $user_def_lang, 
 		$user_theme_color));
 
 // send query to the ispcp daemon

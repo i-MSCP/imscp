@@ -218,7 +218,7 @@ Note: For all questions, answer "a" (trust always).
 	# rm -Rf /srv/www/ispcp/engine/
 	# rm -Rf /srv/www/ispcp/gui/{admin,client,include,orderpanel,themes,reseller}/
 	# rm -Rf /srv/www/ispcp/gui/tools/{pma/,filemanager/,webmail/,index.php}
-	# rm -Rf /srv/www/ispcp/gui/{*.php,favicon.ico,robot.txt}
+	# rm -Rf /srv/www/ispcp/gui/{*.php,favicon.ico,robots.txt}
 
 9. Copy /usr, /var and /srv directories into your system (you may make backups):
 

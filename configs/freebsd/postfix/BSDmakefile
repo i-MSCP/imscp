@@ -32,6 +32,7 @@
 .include <../../../Makefile.fbsd>
 
 ROOT_POSTFIX_CONF=$(ROOT_CONF)/postfix
+ROOT_SASL2_CONF=/usr/local/lib/sasl2
 
 install:
 
@@ -41,11 +42,13 @@ install:
 
 	cp ./main.cf $(SYSTEM_CONF)/postfix/main.cf
 	cp ./master.cf $(SYSTEM_CONF)/postfix/master.cf
+	cp ./smtpd.conf $(SYSTEM_CONF)/postfix/smtpd.conf
 
 	cp -R ./backup $(SYSTEM_CONF)/postfix
 	cp -R ./parts $(SYSTEM_CONF)/postfix
 	cp -R ./working $(SYSTEM_CONF)/postfix
 	cp -R ./ispcp $(SYSTEM_CONF)/postfix
+	cp ./smtpd.conf $(ROOT_SASL2_CONF)
 
 #	DISABLE: Should be Installed by postfix package/ports;
 #	@TODO: Delete, if not needed

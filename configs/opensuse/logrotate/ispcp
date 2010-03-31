@@ -39,7 +39,7 @@
   create 640 root root
   sharedscripts
   prerotate
-    /srv/www/ispcp/engine/traffic/ispcp-srv-traff-SUSE &>/var/log/ispcp/ispcp-srv-traff.log
+    /srv/www/ispcp/engine/traffic/ispcp-srv-traff &>/var/log/ispcp/ispcp-srv-traff.log
   endscript
   postrotate
     if [ -f "`. /etc/apache2/envvars ; echo ${APACHE_PID_FILE:-/var/run/apache2.pid}`" ]; then

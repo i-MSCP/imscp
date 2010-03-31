@@ -37,10 +37,11 @@ if [ $DEBUG -eq 1 ]; then
 fi
 
 # ispcp.conf must be world readable because user "vmail" needs to access it.
-set_permissions "/etc/ispcp/ispcp.conf" $ROOT_USER $ROOT_GROUP 0644
 if [ -f /usr/local/etc/ispcp/ispcp.conf ]; then
 	set_permissions "/usr/local/etc/ispcp/ispcp.conf" \
 		$ROOT_USER $ROOT_GROUP 0644
+else
+	set_permissions "/etc/ispcp/ispcp.conf" $ROOT_USER $ROOT_GROUP 0644
 fi
 
 # The panel must be able to read rkhunter log to display it.

@@ -59,4 +59,4 @@ fi
 
 sed --in-place 's/msgid "encoding"/#. Please ignore this entry\nmsgid "encoding"/' ${GUI}../language-files/po/ispCP.pot
 
-exit 1
+exit 0
