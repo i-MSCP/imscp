@@ -3296,6 +3296,12 @@ sub start_services {
 
 	push_el(\@main::el, 'start_services()', 'Starting...');
 
+	my $log_path = '/tmp/ispcp-setup-services.log';
+	
+	if(defined &update_engine) {
+		$log_path = '/tmp/ispcp-update-services.log';
+	}
+
 	foreach(
 		qw/CMD_ISPCPN CMD_ISPCPD
 		CMD_NAMED
@@ -3306,9 +3312,9 @@ sub start_services {
 	) {
 		if( $main::cfg{$_} !~ /^no$/i && -e $main::cfg{$_}) {
 			sys_command(
-				"$main::cfg{$_} start >> /tmp/ispcp-update-services.log 2>&1"
+				"$main::cfg{$_} start >> $log_path 2>&1"
 			);
-			#progress() if(defined &update_engine);
+
 			progress();
 			sleep 1;
 		}
@@ -3324,6 +3330,12 @@ sub start_services {
 sub stop_services {
 
 	push_el(\@main::el, 'stop_services()', 'Starting...');
+	
+	my $log_path = '/tmp/ispcp-setup-services.log';
+	
+	if(defined &update_engine) {
+		$log_path = '/tmp/ispcp-update-services.log';
+	}
 
 	foreach(
 		qw/CMD_ISPCPN CMD_ISPCPD
@@ -3335,10 +3347,10 @@ sub stop_services {
 	) {
 		if( $main::cfg{$_} !~ /^no$/i && -e $main::cfg{$_}) {
 			sys_command(
-				"$main::cfg{$_} stop >> /tmp/ispcp-update-services.log 2>&1"
+				"$main::cfg{$_} stop >> $log_path 2>&1"
 			);
+
 			progress();
-			#progress() if(defined &update_engine);
 			sleep 1;
 		}
 	}

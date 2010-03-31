@@ -200,8 +200,6 @@ sub user_dialog {
 	}
 
 	title('Starting Installation');
-	#$qmsg = "\n\tStarting Installation...\n";
-	#print STDOUT $qmsg;
 
 	push_el(\@main::el, 'user_dialog()', 'Ending...');
 
@@ -353,8 +351,7 @@ sub setup_shut_down {
 
 	# Running distribution maintainer postinst script if it exists
 	if(-e "$main::cfg{'ROOT_DIR'}/engine/setup/postinst") {
-		title('Starting dist maintainer post-installation script:')
-		#print STDOUT BOLD "\n\tStarting dist maintainer post-installation script:\n\n";
+		title('Starting dist maintainer post-installation script');
 
 		$rs = postinst('configure');
 		
@@ -365,7 +362,7 @@ sub setup_shut_down {
 		) if($rs == 2);
 	}
 
-	subtitle('Starting services');
+	subtitle('Starting services: ');
 	start_services();
 
 	my $shut_down_message = colored(['bold underline'],
