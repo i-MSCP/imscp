@@ -3308,7 +3308,8 @@ sub start_services {
 			sys_command(
 				"$main::cfg{$_} start >> /tmp/ispcp-update-services.log 2>&1"
 			);
-			progress() if(defined &update_engine);
+			#progress() if(defined &update_engine);
+			progress();
 			sleep 1;
 		}
 	}
@@ -3336,7 +3337,8 @@ sub stop_services {
 			sys_command(
 				"$main::cfg{$_} stop >> /tmp/ispcp-update-services.log 2>&1"
 			);
-			progress() if(defined &update_engine);
+			progress();
+			#progress() if(defined &update_engine);
 			sleep 1;
 		}
 	}

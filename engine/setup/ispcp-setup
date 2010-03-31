@@ -199,9 +199,9 @@ sub user_dialog {
 		$main::ua{'awstats_dyn'} = 0;
 	}
 
-	$qmsg = "\n\tStarting Installation...\n";
-
-	print STDOUT $qmsg;
+	title('Starting Installation');
+	#$qmsg = "\n\tStarting Installation...\n";
+	#print STDOUT $qmsg;
 
 	push_el(\@main::el, 'user_dialog()', 'Ending...');
 
@@ -336,6 +336,8 @@ sub setup_gui_cfg {
 # End of the installation process
 sub setup_shut_down {
 
+	push_el(\@main::el, 'setup_shut_down()', 'Starting...');
+
 	my $rs = undef;
 
 	my $cmd = "$main::cfg{'CMD_SHELL'} $main::cfg{'ROOT_DIR'}/engine/setup/set-gui-permissions.sh";
@@ -351,7 +353,8 @@ sub setup_shut_down {
 
 	# Running distribution maintainer postinst script if it exists
 	if(-e "$main::cfg{'ROOT_DIR'}/engine/setup/postinst") {
-		print STDOUT BOLD "\n\tStarting dist maintainer post-installation script:\n\n";
+		title('Starting dist maintainer post-installation script:')
+		#print STDOUT BOLD "\n\tStarting dist maintainer post-installation script:\n\n";
 
 		$rs = postinst('configure');
 		
@@ -362,9 +365,8 @@ sub setup_shut_down {
 		) if($rs == 2);
 	}
 
+	subtitle('Starting services');
 	start_services();
-
-	push_el(\@main::el, 'setup_shut_down()', 'Starting...');
 
 	my $shut_down_message = colored(['bold underline'],
 		"\n\tCongratulations you installed ispCP '$main::cfg{'Version'}' successfully!\n\n");
