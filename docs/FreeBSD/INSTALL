@@ -17,7 +17,7 @@ Table of Content
 1) Version Info
 ---------------
 ispCP ω Version	: 1.0.5
-INSTALL Script	: 4.4
+INSTALL Script	: 4.5
 Maintainer		: BeNe
 Homepage		: http://www.isp-contol.net
 Distros			: FreeBSD
@@ -313,19 +313,28 @@ If not create a rndc.key file:
    time to make backups of your server. The following steps do fundamental
    changes to your system configuration.
 	# cp -R /tmp/ispcp/* /
-	
-10. Now it's time to set up the frontend. Change into the engine directory:
+
+10.  Copy /usr and /var directories into your system (you may make backups)
+    # cp -Rv /tmp/ispcp/usr/* /usr/
+    # cp -Rv /tmp/ispcp/var/* /var/
+
+11.	Maybe empty the folder /etc/skel - otherwise you'll have all the files/folders
+	in the home folders:
+	# cp -a /usr/share/skel /usr/share/skel.bkp
+	# rm -r /usr/share/skel && mkdir /usr/share/skel
+
+12. Now it's time to set up the frontend. Change into the engine directory:
 	# cd /usr/local/www/ispcp/engine/setup
 
-11. Start the engine setup. (Please choose FastCGI and NOT fcgid)
+13. Start the engine setup. (Please choose FastCGI and NOT fcgid)
 	# perl ./ispcp-setup
 
-12. Install ispCP ω step-by-step
+14. Install ispCP ω step-by-step
 
 	If you get no error, all went good; if you get one, look at
 	http://isp-control.net to solve the problem.
 		
-13. Log into ispCP and change: 
+15. Log into ispCP and change: 
 	"Settings"->"Server Ports" "POSTGREY Port" to 10023.
 
 UNDER JAIL:
@@ -376,30 +385,21 @@ Make sure you are logged in as root and MySQL is running.
 8.	Backup the current ispcp.conf (you may make backups):
 	# mv -v /usr/local/etc/ispcp/ispcp.conf /usr/local/etc/ispcp/ispcp.old.conf
 
-9.  Copy /usr and /var directories into your system (you may make backups)
-    # cp -Rv /tmp/ispcp/usr/* /usr/
-    # cp -Rv /tmp/ispcp/var/* /var/
-
-10.	Maybe empty the folder /etc/skel - otherwise you'll have all the files/folders
-	in the home folders:
-	# cp -a /usr/share/skel /usr/share/skel.bkp
-	# rm -r /usr/share/skel && mkdir /usr/share/skel
-
-11. Now it's time to update your installation. Change into the engine directory:
+9. Now it's time to update your installation. Change into the engine directory:
     # cd /usr/local/www/ispcp/engine/setup
 
-12. Start the engine update:
+10. Start the engine update:
     # perl ./ispcp-update
 
-13 Restore /etc/skel:
+11. Restore /etc/skel:
 	# rm -r /usr/share/skel && mv /usr/share/skel.bkp /usr/share/skel
 
-14. Update ispCP ω step-by-step
+12. Update ispCP ω step-by-step
 
     If you get no error, all went good; if you get one, look at
     http://isp-control.net to solve the problem.
 
-15. Clean the temporary folders:
+13. Clean the temporary folders:
 	# rm -fR /tmp/ispcp/
 
 ================================================================================
