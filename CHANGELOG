@@ -3,36 +3,36 @@ ispCP ω 1.0.5 Changelog
 
 2010-03-31 Laurent Declercq
 	- DISTS:
-		* [FreeBSD] Fixed: unable to hide rkhunter output with common 
+		* [FreeBSD] Fixed: Unable to hide `rkhunter` output with common 
 			I/O redirections in the `postinst` script
-		* [FreeBSD] The make process must copy the files in /tmp by default
+		* [FreeBSD] The make process must copy the files in `/tmp` by default
+		* [FreeBSD] Removed useless code and some other changes in the `postinst`
+			script
 	- SETUP:
-		* Fixed: /usr/local/etc/postfix/ispcp/{aliases,domains,mailboxes,
-			transport,sender-access}: No such file or directory (On freeBSD)
+		* Fixed: '/usr/local/etc/postfix/ispcp/{aliases,domains,mailboxes,
+			transport,sender-access}: No such file or directory' (On freeBSD)
 		* Make some I/O redirections FreeBSD compatible
 
 2010-03-30 Laurent Declercq
 	- DISTS:
 		* [FreeBSD] Added post installation script (Thank to Bene)
-		* [FreeBSD] Added post installation script (Thank to Bene)
-		* [FreeBSD] Missing instructions in the
-			configs/freebsd/postfix/BSDmakefile file (Thank to Bene)
-		* [FreeBSD] Fixed: Wrong php cli path
-		* [FreeBSD] Fixed: open_basedir restriction in effect
-		* [FreeBSD] Fixed: The make process must copy the files in / tmp by
-			default
+		* [FreeBSD] Missing instructions in the postfix/BSDmakefile file
+		* [FreeBSD] Fixed: Wrong php cli binary path
+		* [FreeBSD] Fixed: open_basedir restriction in effect (GUI)
 		* [OpenSuse] Updated INSTALL file
 		* [OpenSuse] Fixed #2298: OpenSuSe - Maintainer tasks (ispCP 1.0.5):
-			- Replace insserv by the frontend chkconfig in the post installation
-				script to ensure that all services are started at level 3 and 5
-			- Ensure that mysql is running before ispcp_network and disabled
+			- Replaced insserv by the frontend `chkconfig` in the post
+				installation script to ensure that all services are started at
+				level 3 and 5
+			- Ensured that `mysql` is running before `ispcp_network` and disabled
 				after if at boot
-			- Disable proftpd xinetd (Should be only in standalone mode
-			- Rebuild the services list
+			- Disabled proftpd xinetd (Should be only in standalone mode
+			- Re-builded the services list used by IspCP in the `postinst` script
 	- SETUP
 		* Added conditional statement to test existence of ispcp.conf file in
-			set-engine-permissions.sh script
-		* Added conditional statement to retrieve the ispcp.old.conf file
+			the set-engine-permissions.sh script
+		* Added conditional statement to retrieve the ispcp.old.conf file in the
+			ispcp-update script
 
 2010-03-29 Benedikt Heintel
 	- GUI:
