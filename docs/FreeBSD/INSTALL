@@ -305,7 +305,7 @@ If not create a rndc.key file:
 	# /usr/local/etc/rc.d/mysql-server onestart
 	# mysqladmin -u root password 'YOUR_PASSWORD'
 	
-8. Build the System by using make. The BSDMakefile will direct install ispCP to "/"
+8. Build the System by using make:
 	# cd /usr/local/src/ispcp-omega-1.0.5
 	# make -f BSDmakefile install
 	
