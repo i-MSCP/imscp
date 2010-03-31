@@ -9,6 +9,7 @@ ispCP ω 1.0.5 Changelog
 		* [FreeBSD] Removed useless code and some other changes in the `postinst`
 			script
 		* [FreeBSD] Fixed #2311: Add "screen" to Packages list
+		* [FreeBSD] Fixed #2309: Updated INSTALL File
 		* [OpenSuse] /etc/apache2/sysconfig.d/include.conf not created by
 			/usr/sbin/httpd2
 	- SETUP:
