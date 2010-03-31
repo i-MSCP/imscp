@@ -441,7 +441,7 @@ sub load_old_ispcp_cfg {
 
 		do {
 			print STDOUT "\tPlease enter path to your ispcp.old.conf " .
-				"[/etc/ispcp/ispcp.old.conf]: ";
+				"[[/usr/local]/etc/ispcp/ispcp.old.conf]: ";
 
 			chomp($old_ispcp_cfg_file = readline \*STDIN);
 
@@ -466,7 +466,7 @@ sub update_ispcp_cfg {
 	($rs, $rdata) = get_file($main::ua{'old_cfg_file'});
 	return $rs if($rs != 0);
 
-	# Loading new configuration from /etc/ispcp/ispcp.conf
+	# Loading new configuration from [/usr/local]/etc/ispcp/ispcp.conf
 	$rs = get_conf();
 	return $rs if($rs != 0);
 
@@ -872,7 +872,7 @@ sub set_permissions {
 		$cmd =
 			"$main::cfg{'CMD_SHELL'} " .
 			"$main::cfg{'ROOT_DIR'}/engine/setup/set-$_-permissions.sh " .
-			"&>/tmp/ispcp-update-permissions.log";
+			">> /tmp/ispcp-update-permissions.log 2>&1";
 
 		$rs = sys_command_rs($cmd);
 		print_status($rs, 'exit_on_error');

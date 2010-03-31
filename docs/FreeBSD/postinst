@@ -245,8 +245,8 @@ EOF
 	echo 'daily_status_include_submit_mailq="NO"' >> /etc/periodic.conf
 	echo 'daily_submit_queuerun="NO"' >> /etc/periodic.conf	
  
- 	# TODO: added check to avoid multiple process
-	/usr/local/bin/rkhunter --propupd > /dev/null & 
+	# Here, we use screen as a workaround to hide the rkhunter output      
+	/usr/local/bin/screen -qd -m /usr/local/bin/rkhunter --propupd --nolog -q 
 
 	print_status
 

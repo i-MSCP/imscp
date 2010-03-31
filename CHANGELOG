@@ -16,11 +16,16 @@ ispCP ω 1.0.5 Changelog
 			- Rebuild the services list
 		* [FreeBSD] Fixed: Wrong php cli path
 		* [FreeBSD] Fixed: open_basedir restriction in effect
+		* [FreeBSD] Fixed: unable to hide rkhunter output with common 
+			I/O redirections in the `postinst` script
 		* [OpenSuse] Updated INSTALL file
 	- SETUP
 		* Added conditional statement to test existence of ispcp.conf file in
 			set-engine-permissions.sh script
 		* Added conditional statement to retrieve the ispcp.old.conf file
+		* Fixed: /usr/local/etc/postfix/ispcp/{aliases,domains,mailboxes,
+			transport,sender-access}: No such file or directory (On freeBSD)
+		* Make some I/O redirections FreeBSD compatible
 
 
 2010-03-29 Benedikt Heintel
