@@ -114,4 +114,3 @@ userdel vmail
 
 * Wed Apr 1 2009 George Machitidze <giomac@gmail.com> 1.0.0-0.fc10
 - First test build
-

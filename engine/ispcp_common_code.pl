@@ -31,6 +31,7 @@
 
 use strict;
 use warnings;
+no warnings 'once';
 
 $main::engine_debug = undef;
 
