@@ -441,7 +441,7 @@ sub load_old_ispcp_cfg {
 
 		do {
 			print STDOUT "\tPlease enter path to your ispcp.old.conf " .
-				"[[/usr/local]/etc/ispcp/ispcp.old.conf]: ";
+				"[/etc/ispcp/ispcp.old.conf]: ";
 
 			chomp($old_ispcp_cfg_file = readline \*STDIN);
 
