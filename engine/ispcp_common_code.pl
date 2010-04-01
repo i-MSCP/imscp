@@ -40,7 +40,11 @@ require 'ispcp-db-keys.pl';
 
 my $rs;
 
-$main::cfg_file = '/etc/ispcp/ispcp.conf';
+if(-e '/usr/local/etc/ispcp/ispcp.conf'){
+	$main::cfg_file = '/usr/local/etc/ispcp/ispcp.conf';
+} else {
+	$main::cfg_file = '/etc/ispcp/ispcp.conf';
+}
 
 $rs = get_conf($main::cfg_file);
 die("FATAL: Can't load the ispcp.conf file") if($rs !=0);
@@ -48,7 +52,9 @@ die("FATAL: Can't load the ispcp.conf file") if($rs !=0);
 if ($main::cfg{'DEBUG'} != 0) {
 	$main::engine_debug = '_on_';
 }
-
+if($rs){
+	print '';
+}
 if ($main::db_pass_key eq '{KEY}' || $main::db_pass_iv eq '{IV}') {
 
 	print STDOUT "\tGenerating database keys, it may take some time, please ".

@@ -58,9 +58,8 @@ install:
 	cp ./docs/FreeBSD/postinst $(SYSTEM_ROOT)/engine/setup
 
 	#
-	# Patch some variable
-	#
-	/usr/bin/sed s/"\/etc\/ispcp\/ispcp.conf"/"\/usr\/local\/etc\/ispcp\/ispcp.conf"/g ./engine/ispcp_common_code.pl > $(SYSTEM_ROOT)/engine/ispcp_common_code.pl
+	# Patch default awstats directory path
+	# @Todo: move this statement in the post installation script (preinst ?)
 	/usr/bin/sed s/"\/etc\/awstats"/"\/usr\/local\/etc\/awstats"/g ./engine/awstats/awstats_updateall.pl > $(SYSTEM_ROOT)/engine/awstats/awstats_updateall.pl
 
 	# Create an empty file for courier

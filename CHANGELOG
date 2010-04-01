@@ -2,8 +2,12 @@ ispCP ω 1.0.5 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2010-04-01 Laurent Declercq
+	- DISTS:
+		* [FreeBSD] Removed useless statement in the  main BSDmakefile file
 	- GUI:
 		* Fixed #2313: adding hosting plan is broken
+	- ENGINE:
+		* Added conditional statement to retrieve the ispcp.conf path
 
 2010-03-31 Jochen Manz
 	- RELEASE ispCP ω Omega 1.0.5
