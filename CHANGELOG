@@ -1,6 +1,10 @@
 ispCP ω 1.0.6 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-04-02 Laurent Declercq
+	- GUI:
+		* Fixed (AGAIN) #2313: Adding hosting plan is broken
+
 2010-04-01 Laurent Declercq
 	- DISTS:
 		* [FreeBSD] Removed useless statement in the main BSDmakefile file

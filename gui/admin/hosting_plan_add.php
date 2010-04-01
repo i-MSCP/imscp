@@ -293,7 +293,7 @@ function check_data_correction(&$tpl) {
 		$ahp_error[] = tr('Incorrect disk quota limit!');
 	}
 
-	if ($ahp_error == '_off_') {
+	if (empty($ahp_error)) {
 		$tpl->assign('MESSAGE', '');
 		return true;
 	} else {
