@@ -101,7 +101,7 @@ function set_page_message($message) {
 function format_message($message) {
 	$string = "";
 	foreach ($message as $msg) {
-		$string .= $message . "<br />\n";
+		$string .= $msg . "<br />\n";
 	}
 	return $string;
 }

@@ -1,6 +1,10 @@
 ispCP ω 1.0.5 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-04-01 Laurent Declercq
+	- GUI:
+		* Fixed #2313: adding hosting plan is broken
+
 2010-03-31 Jochen Manz
 	- RELEASE ispCP ω Omega 1.0.5
 	- CONFIGS:
