@@ -3,16 +3,16 @@ ispCP ω 1.0.5 Changelog
 
 2010-04-01 Laurent Declercq
 	- DISTS:
-		* [FreeBSD] Removed useless statement in the  main BSDmakefile file
+		* [FreeBSD] Removed useless statement in the main BSDmakefile file
 	- GUI:
-		* Fixed #2313: adding hosting plan is broken
+		* Fixed #2313: Adding hosting plan is broken
 	- ENGINE:
 		* Added conditional statement to retrieve the ispcp.conf path
 
 2010-03-31 Jochen Manz
 	- RELEASE ispCP ω Omega 1.0.5
 	- CONFIGS:
-		* Updated the BuildDate for every distributio
+		* Updated the BuildDate for every distributions
 
 2010-03-31 Benedikt Heintel
 	- CONFIGS:
@@ -27,7 +27,7 @@ ispCP ω 1.0.5 Changelog
 			script
 		* [FreeBSD] Fixed #2311: Add "screen" to Packages list
 		* [FreeBSD] Fixed #2309: Updated INSTALL File
-		* [freeBSD] Fixed: Bind don't start automatically
+		* [FreeBSD] Fixed: Bind don't start automatically
 		* [OpenSuse] /etc/apache2/sysconfig.d/include.conf not created by
 			/usr/sbin/httpd2
 	- SETUP:

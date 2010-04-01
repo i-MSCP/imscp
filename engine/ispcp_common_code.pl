@@ -52,9 +52,7 @@ die("FATAL: Can't load the ispcp.conf file") if($rs !=0);
 if ($main::cfg{'DEBUG'} != 0) {
 	$main::engine_debug = '_on_';
 }
-if($rs){
-	print '';
-}
+
 if ($main::db_pass_key eq '{KEY}' || $main::db_pass_iv eq '{IV}') {
 
 	print STDOUT "\tGenerating database keys, it may take some time, please ".
