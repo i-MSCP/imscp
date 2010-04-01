@@ -17,7 +17,7 @@ Table of Content
 ================================================================================
 1) Version Info
 ---------------
-ispCP ω Version	: 1.0.5
+ispCP ω Version	: 1.0.6
 INSTALL Script	: 4.7
 Maintainer		: BeNe
 Homepage		: http://www.isp-contol.net
@@ -57,7 +57,7 @@ If not create a rndc.key file:
 
 1. Untar or unzip the distribution files to a secure directory:
 	# cd /usr/local/src
-	# tar xjvf ispcp-omega-1.0.5.tar.bz2
+	# tar xjvf ispcp-omega-1.0.6.tar.bz2
 
 2. Install Ports and Portmaster:
 	# portsnap fetch extract
@@ -307,7 +307,7 @@ If not create a rndc.key file:
 	 # mysqladmin -u root password 'YOUR_PASSWORD'
 	
 8.  Build the System by using make:
-	 # cd /usr/local/src/ispcp-omega-1.0.5
+	 # cd /usr/local/src/ispcp-omega-1.0.6
 	 # make -f BSDmakefile install
 	
 9.  Copy all the directories into your system. 
@@ -358,10 +358,10 @@ Make sure you are logged in as root and MySQL is running.
 
 1.  Untar or unzip the distribution files to a secure directory:
 	 # cd /root
-	 # tar xjvf ispcp-omega-1.0.5.tar.bz2
+	 # tar xjvf ispcp-omega-1.0.6.tar.bz2
 
 2.  Change to the newly created directory:
-	 # cd ./ispcp-omega-1.0.5
+	 # cd ./ispcp-omega-1.0.6
 
 3.  Install the required modules:
 	see: ./docs/FreeBSD/freebsd-packages

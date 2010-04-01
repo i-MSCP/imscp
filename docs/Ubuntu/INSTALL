@@ -16,7 +16,7 @@ Table of Content
 ================================================================================
 1) Version Info
 ---------------
-ispCP ω Version: 1.0.5
+ispCP ω Version: 1.0.6
 INSTALL Script:		1.6
 Maintainer:
 Homepage:			http://isp-contol.net
@@ -56,10 +56,10 @@ provides graphic user interfaces for the administrators, resellers and users.
 
 1. Untar or unzip the distribution files to a secure directory:
 	# cd /usr/local/src
-	# tar xjvf ispcp-omega-1.0.5.tar.bz2
+	# tar xjvf ispcp-omega-1.0.6.tar.bz2
 
 2. Change to the newly created directory:
-	# cd ./ispcp-omega-1.0.5
+	# cd ./ispcp-omega-1.0.6
 
 3. Install the required modules
    First update your system:
@@ -118,10 +118,10 @@ Make sure you are logged in as root and MySQL is running.
 
 1. Untar or unzip the distribution files to a secure directory:
 	# cd /usr/local/src
-	# tar xjvf ispcp-omega-1.0.5.tar.bz2
+	# tar xjvf ispcp-omega-1.0.6.tar.bz2
 
 2. Change to the newly created directory:
-	# cd ./ispcp-omega-1.0.5
+	# cd ./ispcp-omega-1.0.6
 
 3. Install the required modules
    first update your system:

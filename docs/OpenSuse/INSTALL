@@ -17,7 +17,7 @@ Table of Content
 ================================================================================
 1) Version Info
 ---------------
-ispCP ω Version: 1.0.5
+ispCP ω Version: 1.0.6
 INSTALL Script:	2.1
 postinst Script:	1.3
 Maintainer:		Laurent Declercq (Nuxwin) <laurent.declercq@ispcp.net>
@@ -50,7 +50,7 @@ not available. If you want to use, you must compile it yourself.
 Postfix note: Currently, Postfix does not run in a chroot jail. See the CHANGELOG
 for more information.
 
-For ispCP 1.0.5 , we recommand to use OpenSuSE 11.1 due to several issues
+For ispCP 1.0.6 , we recommand to use OpenSuSE 11.1 due to several issues
 related to PHP5.3
 
 ================================================================================
@@ -74,15 +74,15 @@ First, make sure you are logged in as root.
 1. Untar or unzip the distribution files to a secure directory:
 
 	# cd /usr/local/src
-	# tar xjvf ispcp-omega-1.0.5.tar.bz2
+	# tar xjvf ispcp-omega-1.0.6.tar.bz2
 
 2. Change to the newly created directory:
 
-	# cd ./ispcp-omega-1.0.5
+	# cd ./ispcp-omega-1.0.6
 
 3. Install the required repositories:
 
-	For OpenSuse 11.1 (Recommended for ispCP 1.0.5):
+	For OpenSuse 11.1 (Recommended for ispCP 1.0.6):
 	# sh ./docs/OpenSuse/opensuse111-repositories add
 
 	For OpenSuse 11.2:
@@ -92,7 +92,7 @@ Note: For all questions, answer "a" (trust always).
 
 4. Install the required packages:
 
-	For OpenSuse 11.1 (Recommended for ispCP 1.0.5):
+	For OpenSuse 11.1 (Recommended for ispCP 1.0.6):
 	# zypper in $(cat ./docs/OpenSuse/opensuse111-packages)
 
 	For OpenSuse 11.2:
@@ -103,7 +103,7 @@ Note: For all questions, answer "a" (trust always).
 	First, update CPAN:
 	# cpan CPAN
 
-	For OpenSuse 11.1 (Recommended for ispCP 1.0.5)
+	For OpenSuse 11.1 (Recommended for ispCP 1.0.6)
 	# cpan $(cat ./docs/OpenSuse/opensuse111-perl-packages)
 
 	For OpenSuse 11.2:
@@ -164,15 +164,15 @@ Make sure you are logged in as root and MySQL is running.
 1. Untar or unzip the distribution files to a secure directory:
 
 	# cd /usr/local/src
-	# tar xjvf ispcp-omega-1.0.5.tar.bz2
+	# tar xjvf ispcp-omega-1.0.6.tar.bz2
 
 2. Change to the newly created directory:
 
-	# cd ./ispcp-omega-1.0.5
+	# cd ./ispcp-omega-1.0.6
 
 3. Install the required repositories:
 
-	For OpenSuse 11.1 (Recommended for ispCP 1.0.5):
+	For OpenSuse 11.1 (Recommended for ispCP 1.0.6):
 	# sh ./docs/OpenSuse/opensuse111-repositories add
 
 	For OpenSuse 11.2:
@@ -182,7 +182,7 @@ Note: For all questions, answer "a" (trust always).
 
 4. Install the required packages:
 
-	For OpenSuse 11.1 (Recommended for ispCP 1.0.5):
+	For OpenSuse 11.1 (Recommended for ispCP 1.0.6):
 	# zypper in $(cat ./docs/OpenSuse/opensuse111-packages)
 
 	For OpenSuse 11.2:
@@ -193,7 +193,7 @@ Note: For all questions, answer "a" (trust always).
 	First, update CPAN:
 	# cpan CPAN
 
-	For OpenSuse 11.1 (Recommended for ispCP 1.0.5):
+	For OpenSuse 11.1 (Recommended for ispCP 1.0.6):
 	# cpan $(cat ./docs/OpenSuse/opensuse111-perl-packages)
 
 	For OpenSuse 11.2:
