@@ -71,13 +71,12 @@ php5-cgi
 php5-cli
 php5-gd
 php5-mcrypt
-php5-mhash
 php5-mysql
 policyd-weight
 postfix
 postgrey
 procmail
-proftpd
+proftpd-basic
 proftpd-mod-mysql
 rkhunter
 sasl2-bin
