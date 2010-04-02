@@ -29,9 +29,6 @@
 #    http://isp-control.net
 #
 
-# This is a TODO list:
-# OPEN:		Under jail, system still in heavy testing
-
 .ifdef $(OSTYPE)==FreeBSD
 .include <Makefile.fbsd>
 .else
@@ -56,12 +53,8 @@ install:
 	cd ./keys && $(MAKE) install
 	cd ./database && $(MAKE) install
 	cp ./docs/FreeBSD/postinst $(SYSTEM_ROOT)/engine/setup
-
-	#
-	# Patch default awstats directory path
-	# @Todo: move this statement in the post installation script (preinst ?)
-	/usr/bin/sed s/"\/etc\/awstats"/"\/usr\/local\/etc\/awstats"/g ./engine/awstats/awstats_updateall.pl > $(SYSTEM_ROOT)/engine/awstats/awstats_updateall.pl
-
+	
+	# @TODO: Move this touch part here to pre-installation script
 	# Create an empty file for courier
 	touch $(SYSTEM_CONF)/courier/backup/authdaemonrc.system
 

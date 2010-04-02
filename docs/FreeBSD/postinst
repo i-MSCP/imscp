@@ -46,6 +46,7 @@ set -e
 . $(dirname "$0")/maintainer-helper.sh
 
 CMD_MD5=/sbin/md5
+CMD_SCREEN=/usr/local/bin/screen
 
 case "$1" in
 
@@ -65,7 +66,7 @@ case "$1" in
 	if [ -f "/etc/rc.conf" ] ; then
 		# Get the current /etc/rc.conf content without the ispCP configuration
 		# part if it exists 
-		CUR_CONF=$(sed -e '/^# Needed ispCP Services - Begin/,/^# Needed ispCP Services - End/d' /etc/rc.conf)
+		CUR_CONF=$($CMD_SED -e '/^# Needed ispCP Services - Begin/,/^# Needed ispCP Services - End/d' /etc/rc.conf)
 		printf "$CUR_CONF\n" > /etc/rc.conf	
 	fi
 
@@ -102,6 +103,22 @@ EOF
 	#
 	## System Init Configuration - End
 	#
+	
+	#
+	## Patch AWStats & PHP Temp-Script - Begin 
+	#
+
+	print_title "Patch AWStats & PHP Temp-Script:"
+	
+	$CMD_SED s/"\/etc\/awstats"/"\/usr\/local\/etc\/awstats"/g $ROOT_DIR/engine/awstats/awstats_updateall.pl > $ROOT_DIR/engine/awstats/awstats_updateall.pl
+	$CMD_SED -i'.bak' -e s"/bin\/bash/usr\/local\/bin\/bash"/ $ROOT_DIR/engine/tools/ispcpphptemp.sh
+	
+	print_status
+	
+	#
+	## Patch AWStats & PHP Temp-Script
+	#
+	
 
 	#
 	## FastCGI Apache module Configuration - Begin
@@ -115,40 +132,40 @@ EOF
 
 		if [ "$PHP_FASTCGI" = "fastcgi" ]; then
 			# Ensure that fcgid is *not* enabled
-			sed -i'.bak' '/[^#]*LoadModule.*mod_fcgid.so/d' $HTTPDCONF
-			sed -i'.bak' '/[^#]*Include.*etc\/apache22\/extra\/fcgid_ispcp.conf/d' $HTTPDCONF
+			$CMD_SED -i'.bak' '/[^#]*LoadModule.*mod_fcgid.so/d' $HTTPDCONF
+			$CMD_SED -i'.bak' '/[^#]*Include.*etc\/apache22\/extra\/fcgid_ispcp.conf/d' $HTTPDCONF
 
-			# ... and fastcgi *is*
-			if ! grep -q "^[^#]*LoadModule.*mod_fastcgi.so" $HTTPDCONF; then
+			# ... and fastcgi *is* enabled
+			if ! $CMD_GREP -q "^[^#]*LoadModule.*mod_fastcgi.so" $HTTPDCONF; then
 
 				# The LoadModule statement should be included before the 
 				# following Include statement:
 				# Include etc/apache22/Includes/*.conf
-				sed -i'.bak' '/Include etc\/apache22\/Includes\/\*\.conf/d' $HTTPDCONF
+				$CMD_SED -i'.bak' '/Include etc\/apache22\/Includes\/\*\.conf/d' $HTTPDCONF
 
 				echo 'LoadModule fastcgi_module libexec/apache22/mod_fastcgi.so' >> $HTTPDCONF
 				echo 'Include etc/apache22/Includes/*.conf' >> $HTTPDCONF
 			fi
 
-			if ! grep -q "^[^#]*Include.*etc/apache22/extra/fastcgi_ispcp.conf" $HTTPDCONF; then
+			if ! $CMD_GREP -q "^[^#]*Include.*etc/apache22/extra/fastcgi_ispcp.conf" $HTTPDCONF; then
 				echo 'Include etc/apache22/extra/fastcgi_ispcp.conf' >> $HTTPDCONF
 			fi
 
 			# Create needed Folder for FastCGI-Socket and set correct Permissions
 			mkdir -p /var/run/fastcgi
-			$CMD_CHOWN -R $APACHE_USER:$APACHE_GROUP /var/run/fastcgi
-			$CMD_CHMOD -R 0777 /var/run/fastcgi
+			$CMD_CHOWN -R $APACHE_USER:$APACHE_GROUP /var/run/fastcgi >> $ISPCP_LOGFILE 2>&1 || failed
+			$CMD_CHMOD -R 0777 /var/run/fastcgi >> $ISPCP_LOGFILE 2>&1 || failed
 		else
 			# Ensure that fastcgi is *not* enabled
-			sed -i'.bak' '/[^#]*LoadModule.*mod_fastcgi.so/d' $HTTPDCONF
-			sed -i'.bak' '/[^#]*Include.*etc\/apache22\/extra\/fastcgi_ispcp.conf/d' $HTTPDCONF
+			$CMD_SED -i'.bak' '/[^#]*LoadModule.*mod_fastcgi.so/d' $HTTPDCONF
+			$CMD_SED -i'.bak' '/[^#]*Include.*etc\/apache22\/extra\/fastcgi_ispcp.conf/d' $HTTPDCONF
 
 			# ... and fcgid *is*
-			if ! grep -q "^[^#]*LoadModule.*mod_fcgid.so" $HTTPDCONF; then
+			if ! $CMD_GREP -q "^[^#]*LoadModule.*mod_fcgid.so" $HTTPDCONF; then
 				echo 'LoadModule fcgid_module libexec/apache22/mod_fcgid.so' >> $HTTPDCONF
 			fi
 
-			if ! grep -q "^[^#]*Include.*etc/apache22/extra/fcgid_ispcp.conf" $HTTPDCONF; then
+			if ! $CMD_GREP -q "^[^#]*Include.*etc/apache22/extra/fcgid_ispcp.conf" $HTTPDCONF; then
 				echo 'Include etc/apache22/extra/fcgid_ispcp.conf' >> $HTTPDCONF
 			fi
 
@@ -212,7 +229,7 @@ EOF
 		$CMD_CP host.conf localtime services resolv.conf /var/spool/postfix/etc >> $ISPCP_LOGFILE 2>&1 || failed
 	fi
 
-	# Move the sasldb2 into the chroot enviroment and create a symlink back
+	# Move the sasldb2 into the chroot enviroment and create a symlink back to /etc/
 	if [ ! -d /var/spool/postfix/usr/local/etc ]; then
 		mkdir -p /var/spool/postfix/usr/local/etc/ >> $ISPCP_LOGFILE 2>&1 || failed
 		mv /usr/local/etc/sasldb2 /var/spool/postfix/usr/local/etc/sasldb2 >> $ISPCP_LOGFILE 2>&1 || failed
@@ -229,7 +246,7 @@ EOF
 	## Rkhunter & Sendmail - Begin
 	# 
 
-	print_title "Rkhunter & Sendmail configuration:"
+	print_title "Enable Rkhunter & disable Sendmail:"
 	
 	# Add rkhunter to periodic for daily updates and disable sendmail
 	if [ ! -f "/etc/periodic.conf" ] ; then
@@ -243,7 +260,7 @@ EOF
 	echo 'daily_submit_queuerun="NO"' >> /etc/periodic.conf	
  
 	# Here, we use screen as a workaround to hide the rkhunter output      
-	/usr/local/bin/screen -qd -m /usr/local/bin/rkhunter --propupd --nolog -q 
+	$CMD_SCREEN -qd -m /usr/local/bin/rkhunter --propupd --nolog -q 
 
 	print_status
 

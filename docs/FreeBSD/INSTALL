@@ -109,7 +109,7 @@ If not create a rndc.key file:
  	x SUEXEC
 	x CGID
 
-	proftpd 1.3.2e Options
+	proftpd 1.3.3 Options
 
 	x CTRLS
 	x IFSESSION
@@ -343,7 +343,8 @@ If not create a rndc.key file:
 ================================================================================
 5) ispCP ω in a Jail
 --------------------
-	Enable SystemV IPC in the /etc/rc.conf on the Hostsystem
+	We test ispCP still in a Jail! If you want to use it anyway be sure you have
+	enable SystemV IPC in the /etc/rc.conf on the Hostsystem.
 	 jail_sysvipc_allow="YES"
 	If you are unsure check with:
 	 sysctl security.jail.sysvipc_allowed
