@@ -1150,8 +1150,8 @@ sub setup_php {
 	if(-e '/usr/sbin/a2enmod' && -e '/usr/sbin/a2dismod' ) {
 
 		# Disable php4/5 modules
-		sys_command_rs("/usr/sbin/a2dismod php4 &> $services_log_path");
-		sys_command_rs("/usr/sbin/a2dismod php5 &> $services_log_path");
+		sys_command_rs("/usr/sbin/a2dismod php4 >> $services_log_path 2>&1");
+		sys_command_rs("/usr/sbin/a2dismod php5 >> $services_log_path 2>&1");
 
 		# Enable actions modules
 		sys_command_rs("/usr/sbin/a2enmod actions &> $services_log_path");
@@ -1161,7 +1161,9 @@ sub setup_php {
 			if ($main::cfg{'PHP_FASTCGI'} eq 'fastcgi') {
 
 				# Ensures that the unused ispcp fcgid module loader is disabled
-				sys_command_rs("/usr/sbin/a2dismod ispcp_fcgid &> $services_log_path");
+				sys_command_rs(
+					"/usr/sbin/a2dismod ispcp_fcgid >> $services_log_path 2>&1"
+				);
 
 				# Enable fastcgi module
 				sys_command_rs("/usr/sbin/a2enmod fastcgi_ispcp &> $services_log_path");
@@ -1169,16 +1171,23 @@ sub setup_php {
 			} else {
 
 				# Ensures that the unused ispcp fastcgi ispcp module loader is disabled
-				sys_command_rs("/usr/sbin/a2dismod ispcp_fastcgi &> $services_log_path");
+				sys_command_rs(
+					"/usr/sbin/a2dismod ispcp_fastcgi >> $services_log_path 2>&1"
+				);
 
 				# Enable ispcp fastcgi loader
-				sys_command_rs("/usr/sbin/a2enmod fcgid_ispcp &> $services_log_path");
+				sys_command_rs(
+					"/usr/sbin/a2enmod fcgid_ispcp >> $services_log_path 2>&1"
+				);
 			}
 
 			# Disable default  fastcgi/fcgid modules loaders to avoid conflicts with ispcp loaders
-			sys_command_rs("/usr/sbin/a2dismod fastcgi &> $services_log_path");
-			sys_command_rs("/usr/sbin/a2dismod fcgid &> $services_log_path");
-
+			sys_command_rs(
+				"/usr/sbin/a2dismod fastcgi >> $services_log_path 2>&1"
+			);
+			sys_command_rs(
+				"/usr/sbin/a2dismod fcgid >> $services_log_path 2>&1"
+			);
 		}
 	}
 
@@ -1274,10 +1283,10 @@ sub setup_httpd_main_vhost {
 
 		# We use cgid instead of cgi because we working with MPM.
 		# FIXME: Check if it's ok for all dists. (Lenny, opensuse OK)
-		sys_command("/usr/sbin/a2enmod cgid &> $services_log_path");
+		sys_command("/usr/sbin/a2enmod cgid >> $services_log_path 2>&1");
 
-		sys_command("/usr/sbin/a2enmod rewrite &> $services_log_path");
-		sys_command("/usr/sbin/a2enmod suexec &> $services_log_path");
+		sys_command("/usr/sbin/a2enmod rewrite >> $services_log_path 2>&1");
+		sys_command("/usr/sbin/a2enmod suexec >> $services_log_path 2>&1");
 	}
 
 	# Enable required modules - End
@@ -1285,7 +1294,7 @@ sub setup_httpd_main_vhost {
 	# Enable main vhost configuration file - Begin
 
 	if(-e "/usr/sbin/a2ensite") {
-		sys_command("/usr/sbin/a2ensite ispcp.conf &> $services_log_path");
+		sys_command("/usr/sbin/a2ensite ispcp.conf >> $services_log_path 2>&1");
 	}
 
 	# Enable main vhost configuration file - End
@@ -1430,8 +1439,10 @@ sub setup_awstats_vhost {
 
 		# Enable required modules
 		if(-e '/usr/sbin/a2enmod') {
-			sys_command_rs("/usr/sbin/a2enmod proxy &> $services_log_path");
-			sys_command_rs("/usr/sbin/a2enmod proxy_http &> $services_log_path");
+			sys_command_rs("/usr/sbin/a2enmod proxy >> $services_log_path 2>&1");
+			sys_command_rs(
+				"/usr/sbin/a2enmod proxy_http >> $services_log_path 2>&1"
+			);
 		}
 
 		# Change and enable required proxy module - End
@@ -1440,7 +1451,9 @@ sub setup_awstats_vhost {
 
 		if(-e '/usr/sbin/a2ensite') {
 
-			sys_command("/usr/sbin/a2ensite 01_awstats.conf &> $services_log_path");
+			sys_command(
+				"/usr/sbin/a2ensite 01_awstats.conf >> $services_log_path 2>&1"
+			);
 		}
 
 		# Enable awstats vhost - End
@@ -1637,7 +1650,7 @@ sub setup_mta {
 		return $rs if ($rs != 0);
 
 		# Create / update Btree databases for all lookup tables
-		$cmd = "$main::cfg{'CMD_POSTMAP'} $main::cfg{'MTA_VIRTUAL_CONF_DIR'}/$_ &> $services_log_path";
+		$cmd = "$main::cfg{'CMD_POSTMAP'} $main::cfg{'MTA_VIRTUAL_CONF_DIR'}/$_ >> $services_log_path 2>&1";
 		$rs = sys_command($cmd);
 		return $rs if ($rs != 0);
 	}
@@ -2071,11 +2084,13 @@ sub setup_ispcp_daemon_network {
 		($filename) = /.*\/(.*)$/;
 
 		$rs = sys_command_rs(
-			"$main::cfg{'CMD_CHOWN'} $main::cfg{'ROOT_USER'}:$main::cfg{'ROOT_GROUP'} $_ &> $services_log"
+			"$main::cfg{'CMD_CHOWN'} $main::cfg{'ROOT_USER'}:$main::cfg{'ROOT_GROUP'} $_ >> $services_log 2>&1"
 		);
 		return $rs if($rs != 0);
 
-		$rs = sys_command_rs("$main::cfg{'CMD_CHMOD'} 0755 $_ &> $services_log");
+		$rs = sys_command_rs("
+			$main::cfg{'CMD_CHMOD'} 0755 $_ >> $services_log 2>&1"
+		);
 		return $rs if($rs != 0);
 
 		# Services installation / update (Debian, Ubuntu)
@@ -2085,7 +2100,7 @@ sub setup_ispcp_daemon_network {
 			# Update task - The links should be removed first to be updated
 			if(defined &update_engine) {
 				sys_command_rs(
-					"/usr/sbin/update-rc.d -f $filename remove &> $services_log"
+					"/usr/sbin/update-rc.d -f $filename remove >> $services_log 2>&1"
 				);
 			}
 
@@ -2093,11 +2108,11 @@ sub setup_ispcp_daemon_network {
 			# interfaces deletion process)
 			if($filename eq 'ispcp_network') {
 				sys_command_rs(
-					"/usr/sbin/update-rc.d $filename defaults 99 20 &> $services_log"
+					"/usr/sbin/update-rc.d $filename defaults 99 20 >> $services_log 2>&1"
 				);
 			} else {
 				sys_command_rs(
-					"/usr/sbin/update-rc.d $filename defaults 99 &> $services_log"
+					"/usr/sbin/update-rc.d $filename defaults 99 >> $services_log 2>&1"
 				);
 			}
 
@@ -2106,10 +2121,14 @@ sub setup_ispcp_daemon_network {
 
 			# Update task
 			if(-x '/usr/lib/lsb/remove_initd' && defined &update_engine) {
-				sys_command_rs("/usr/lib/lsb/remove_initd $_ &> $services_log");
+				sys_command_rs(
+					"/usr/lib/lsb/remove_initd $_ >> $services_log 2>&1"
+				);
 			}
 
-			sys_command_rs("/usr/lib/lsb/install_initd $_ &> $services_log");
+			sys_command_rs(
+				"/usr/lib/lsb/install_initd $_ >> $services_log 2>&1"
+			);
 			return $rs if ($rs != 0);
 		}
 	}
@@ -2215,7 +2234,9 @@ sub setup_gui_httpd {
 	# Disable 000-default vhost  - Begin
 
 	if (-e "/usr/sbin/a2dissite") {
-		sys_command_rs("/usr/sbin/a2dissite 000-default &> $services_log_path");
+		sys_command_rs(
+			"/usr/sbin/a2dissite 000-default >> $services_log_path 2>&1"
+		);
 	}
 
 	# Disable 000-default vhost  - End
@@ -2247,7 +2268,9 @@ sub setup_gui_httpd {
 	# Enable GUI vhost - Begin
 
 	if (-e "/usr/sbin/a2ensite") {
-		sys_command("/usr/sbin/a2ensite 00_master.conf &> $services_log_path");
+		sys_command(
+			"/usr/sbin/a2ensite 00_master.conf >> $services_log_path 2>&1"
+		);
 	}
 
 	# Enable GUI vhost - End

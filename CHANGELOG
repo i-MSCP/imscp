@@ -4,6 +4,7 @@ ispCP ω 1.0.6 Changelog
 2010-04-02 Laurent Declercq
 	- Dists:
 		* [Debian Squeeze] Updated packages file
+		* [Debian Squeeze] False errors reported during setup must be hidden
 		* Fixed #2314: [FreeBSD] Changed BSDMakefile, postinst and INSTALL
 		* Fixed #2315: [FreeBSD] Patch ispcpphptemp.sh during postinst
 		* Fixed #2316: [FreeBSD] Crontab corrected
