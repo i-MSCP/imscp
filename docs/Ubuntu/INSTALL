@@ -17,7 +17,7 @@ Table of Content
 1) Version Info
 ---------------
 ispCP ω Version: 1.0.6
-INSTALL Script:		1.6
+INSTALL Script:		1.7
 Maintainer:
 Homepage:			http://isp-contol.net
 Linux Distros:		Ubuntu
@@ -141,7 +141,7 @@ Make sure you are logged in as root and MySQL is running.
 
 4. Stop the ispcp_deamon and build the Software by using make:
 	# /etc/init.d/ispcp_daemon stop
-	# make install
+	# make -f Makefile.ubuntu  install
 
 5. Backup files
 	# sudo cp -v /var/www/ispcp/engine/ispcp-db-keys.pl /tmp/ispcp/var/www/ispcp/engine/
