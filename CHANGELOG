@@ -1,6 +1,10 @@
 ispCP ω 1.0.6 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-04-02 Benedikt Heintel
+	- GUI:
+		* Removed .yu TLD - not longer available in Root Zone
+
 2010-04-02 Laurent Declercq
 	- DISTS:
 		* [Debian Squeeze] Updated packages file

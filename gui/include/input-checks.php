@@ -560,7 +560,7 @@ function _validates_tld($tld) {
 				u[agkmsyz]|
 				v[aceginu]|
 				w[fs]|
-				y[etu]|
+				y[et]|
 				z[amw]|
 				([a-z]|[a-z]{7,})
 			)$@ix';
