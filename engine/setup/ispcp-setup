@@ -382,8 +382,10 @@ sub setup_shut_down {
 	
 	spacer();
 
-	my $shut_down_message = colored(['bold underline'],
-		"\n\tCongratulations you installed ispCP '$main::cfg{'Version'}' successfully!\n\n");
+	my $shut_down_message = colored(
+		['bold underline'],
+		"\n\tCongratulations you installed ispCP '$main::cfg{'Version'}' successfully!\n\n"
+	);
 
 	my $login_message =
 		"\tPlease type http://$main::ua{'admin_vhost'} in your browser and\n".
@@ -393,7 +395,7 @@ sub setup_shut_down {
 
 	# Setup rkhunter
 	$rs = setup_rkhunter();
-	return $rs if($rs !=0);
+	return $rs if($rs != 0);
 
 	push_el(\@main::el, 'setup_shut_down()', 'Ending...');
 
@@ -407,8 +409,10 @@ sub welcome_note {
 
 	push_el(\@main::el, 'welcome_note()', 'Starting...');
 
-	my $welcome = colored(['bold underline'],
-		"\n\tWelcome to ispCP '$main::cfg{'Version'}' Setup Dialog.\n\n");
+	my $welcome = colored(
+		['bold underline'],
+		"\n\tWelcome to ispCP '$main::cfg{'Version'}' Setup Dialog.\n\n"
+	);
 
 	my $welcome_message =
 		"\tThis program will set up ispCP OMEGA system on your server.\n";

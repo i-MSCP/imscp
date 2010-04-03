@@ -3039,7 +3039,7 @@ sub setup_rkhunter {
 # Remove all's empty files in ispCP configuration directories
 sub setup_cleanup {
 
-	push_el(\@main::el, 'setup_cleanup()', 'Ending...');
+	push_el(\@main::el, 'setup_cleanup()', 'Starting...');
 
 	my ($rs, $cmd) = (undef, undef);
 
@@ -3303,7 +3303,6 @@ sub exit_msg {
 		"\n\n\tYou can find help at http://isp-control.net/forum\n\n";
 		
 	if(defined $user_msg && $user_msg ne '') {
-		
 		$msg = "\n\t$user_msg\n" . $msg;
 	}
 
@@ -3334,9 +3333,7 @@ sub start_services {
 		CMD_IMAP CMD_IMAP_SSL/
 	) {
 		if( $main::cfg{$_} !~ /^no$/i && -e $main::cfg{$_}) {
-			sys_command(
-				"$main::cfg{$_} start >> $log_path 2>&1"
-			);
+			sys_command("$main::cfg{$_} start >> $log_path 2>&1");
 
 			progress();
 			sleep 1;
@@ -3369,9 +3366,7 @@ sub stop_services {
 		CMD_IMAP CMD_IMAP_SSL/
 	) {
 		if( $main::cfg{$_} !~ /^no$/i && -e $main::cfg{$_}) {
-			sys_command(
-				"$main::cfg{$_} stop >> $log_path 2>&1"
-			);
+			sys_command("$main::cfg{$_} stop >> $log_path 2>&1");
 
 			progress();
 			sleep 1;
