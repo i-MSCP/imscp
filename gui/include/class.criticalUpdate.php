@@ -32,7 +32,10 @@
  * @copyright	2006-2009 by ispCP | http://isp-control.net
  * @version		1.0
  * @since		r1355
- * @todo		use db prepared statements
+ * @deprecated	since Mrz 2010 - use {@see class.databaseUpdate.php} instead.
+ * 
+ * @todo		Merge back to {@see class.databaseUpdate.php} and remove 
+ * 				constant CRITICAL_UPDATE_REVISION
  */
 class criticalUpdate extends ispcpUpdate {
 
@@ -76,7 +79,6 @@ class criticalUpdate extends ispcpUpdate {
 	 * Encrypt email and sql users password in database
 	 *
 	 * @author		Daniel Andreca <sci2tech@gmail.com>
-	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.0
 	 * @since		r1355
 	 *
@@ -122,7 +124,6 @@ class criticalUpdate extends ispcpUpdate {
 	 * Fix for ticket #1571 http://www.isp-control.net/ispcp/ticket/1571.
 	 *
 	 * @author		Daniel Andreca <sci2tech@gmail.com>
-	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.0
 	 * @since		r1417
 	 *
@@ -157,7 +158,6 @@ class criticalUpdate extends ispcpUpdate {
 	 * Fix for ticket #1571 http://www.isp-control.net/ispcp/ticket/1571.
 	 *
 	 * @author		Daniel Andreca <sci2tech@gmail.com>
-	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.0
 	 * @since		r1725
 	 *
@@ -188,7 +188,6 @@ class criticalUpdate extends ispcpUpdate {
 	 * Fix for ticket #1971 http://www.isp-control.net/ispcp/ticket/1971.
 	 *
 	 * @author		Laurent Declercq <l.declercq@nuxwin.com>
-	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.1
 	 * @since		r1986
 	 *
@@ -206,7 +205,6 @@ class criticalUpdate extends ispcpUpdate {
 	 * Fix for ticket #1980 http://www.isp-control.net/ispcp/ticket/1980.
 	 *
 	 * @author		Laurent Declercq <l.declercq@nuxwin.com>
-	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.2
 	 * @since		r1986
 	 *

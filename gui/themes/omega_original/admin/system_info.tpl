@@ -183,21 +183,21 @@
         <td class="content3" nowrap="nowrap"><b>{TR_MOUNT}</b></td>
         <td class="content3" nowrap="nowrap"><b>{TR_TYPE}</b></td>
         <td class="content3" nowrap="nowrap"><b>{TR_PARTITION}</b></td>
-        <td align="center" nowrap="nowrap" class="content3"><b>{TR_PERCENT}</b></td>
-        <td align="right" nowrap="nowrap" class="content3"><b>{TR_FREE}</b></td>
-        <td align="right" nowrap="nowrap" class="content3"><b>{TR_USED}</b></td>
-        <td align="right" nowrap="nowrap" class="content3"><b>{TR_SIZE}</b></td>
+        <td nowrap="nowrap" class="content3"><b>{TR_PERCENT}</b></td>
+        <td nowrap="nowrap" class="content3"><b>{TR_FREE}</b></td>
+        <td nowrap="nowrap" class="content3"><b>{TR_USED}</b></td>
+        <td nowrap="nowrap" class="content3"><b>{TR_SIZE}</b></td>
       </tr>
       <!-- BDP: disk_list_item -->
       <tr>
         <td nowrap="nowrap">&nbsp;</td>
-        <td class="{ITEM_CLASS}" nowrap="nowrap">{MOUNT}</td>
-        <td class="{ITEM_CLASS}" nowrap="nowrap">{TYPE}</td>
-        <td class="{ITEM_CLASS}" nowrap="nowrap">{PARTITION}</td>
-        <td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{PERCENT} %</td>
-        <td class="{ITEM_CLASS}" nowrap="nowrap" align="right">{FREE}</td>
-        <td class="{ITEM_CLASS}" nowrap="nowrap" align="right">{USED}</td>
-        <td class="{ITEM_CLASS}" nowrap="nowrap" align="right">{SIZE}</td>
+        <td nowrap="nowrap">{MOUNT}</td>
+        <td nowrap="nowrap">{TYPE}</td>
+        <td nowrap="nowrap">{PARTITION}</td>
+        <td nowrap="nowrap" align="center">{PERCENT}</td>
+        <td nowrap="nowrap" align="right">{FREE}</td>
+        <td nowrap="nowrap" align="right">{USED}</td>
+        <td nowrap="nowrap" align="right">{SIZE}</td>
       </tr>
       <!-- EDP: disk_list_item -->
       <!-- EDP: disk_list -->

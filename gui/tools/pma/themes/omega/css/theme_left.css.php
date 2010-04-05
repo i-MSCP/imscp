@@ -244,7 +244,7 @@ ul#databaseList li {
 }
 ul#databaseList li ul li {
     border-bottom:               none;
-    margin:                      0px 0px 0px 0px;
+    margin:                      0px 0px 0px 10px;
     padding:                     0px 0px 0px 0px;
 }
 ul#databaseList {

@@ -1,6 +1,19 @@
 ispCP ω 1.0.6 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-04-05 Benedikt Heintel
+	- CONFIGS:
+		* Added `df` command
+	- DISTS:
+		* [FreeBSD, OpenBSD]: Added `sysctl`
+		* [FreeBSD]: Added `swapctl`
+	- GUI:
+		* Added SystemInfo class for removed phpSysInfo (part of #2053)
+	- TOOLS:
+		* Fixed #2324: Grouping Databases in new PMA Theme
+		* Renamed ispCP phpMyAdmin Themes
+		* Removed phpSysInfo Support (#2307)
+
 2010-04-05 Laurent Declercq
 	- GUI:
 		* Added missing class `message` in ispcp_orderpanel.css file

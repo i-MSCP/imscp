@@ -68,15 +68,15 @@ class databaseUpdate extends ispcpUpdate {
 	}
 
 	/*
-	 * Insert the update functions below this entry. The revision has to be ascending and unique.
-	 * Each databaseUpdate function has to return a array. Even if the array contains only one entry.
+	 * Insert the update functions below this entry. The revision has to be 
+	 * ascending and unique. Each databaseUpdate function has to return a array,
+	 * even if the array contains only one entry.
 	 */
 
 	/**
 	 * Initital Update. Insert the first Revision.
 	 *
 	 * @author		Jochen Manz <zothos@zothos.net>
-	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.0
 	 * @since		r1355
 	 *
@@ -96,7 +96,6 @@ class databaseUpdate extends ispcpUpdate {
 	 * Updates the database fields ispcp.mail_users.mail_addr to the right mail address.
 	 *
 	 * @author		Christian Hernmarck
-	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.0
 	 * @since		r1355
 	 *
@@ -152,7 +151,6 @@ class databaseUpdate extends ispcpUpdate {
 	 * Fix for ticket #1139 http://www.isp-control.net/ispcp/ticket/1139.
 	 *
 	 * @author		Benedikt Heintel
-	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.0
 	 * @since		r1355
 	 *
@@ -172,7 +170,6 @@ class databaseUpdate extends ispcpUpdate {
 	 * Fix for ticket #1196 http://www.isp-control.net/ispcp/ticket/1196.
 	 *
 	 * @author		Benedikt Heintel
-	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.0
 	 * @since		r1355
 	 *
@@ -194,7 +191,6 @@ class databaseUpdate extends ispcpUpdate {
 	 * Fix for ticket #1346 http://www.isp-control.net/ispcp/ticket/1346.
 	 *
 	 * @author		Benedikt Heintel
-	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.0
 	 * @since		r1355
 	 *
@@ -215,7 +211,6 @@ class databaseUpdate extends ispcpUpdate {
 	 * Fix for ticket #755 http://www.isp-control.net/ispcp/ticket/755.
 	 *
 	 * @author		Markus Milkereit
-	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.0
 	 * @since		r1355
 	 *
@@ -237,7 +232,6 @@ class databaseUpdate extends ispcpUpdate {
 	 * Fix for ticket #1509 http://www.isp-control.net/ispcp/ticket/1509.
 	 *
 	 * @author		Benedikt Heintel
-	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.0
 	 * @since		r1356
 	 *
@@ -265,7 +259,6 @@ class databaseUpdate extends ispcpUpdate {
 	 * Fix for ticket #1571 http://www.isp-control.net/ispcp/ticket/1571.
 	 *
 	 * @author		Daniel Andreca
-	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.0
 	 * @since		r1417
 	 * @removed		r1418
@@ -285,7 +278,6 @@ class databaseUpdate extends ispcpUpdate {
 	 * Fix for ticket #1610 http://www.isp-control.net/ispcp/ticket/1610.
 	 *
 	 * @author		Daniel Andreca
-	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.0
 	 * @since		r1462
 	 *
@@ -310,7 +302,6 @@ class databaseUpdate extends ispcpUpdate {
 	 * Fix for ticket #1664 http://www.isp-control.net/ispcp/ticket/1664.
 	 *
 	 * @author		Daniel Andreca
-	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.0
 	 * @since		r1508
 	 *
@@ -331,7 +322,6 @@ class databaseUpdate extends ispcpUpdate {
 	 * Fix for ticket #1620 http://www.isp-control.net/ispcp/ticket/1620.
 	 *
 	 * @author		Daniel Andreca
-	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.0
 	 * @since		r1550
 	 *
@@ -352,7 +342,6 @@ class databaseUpdate extends ispcpUpdate {
 	 * add variable SHOW_SERVERLOAD to config table
 	 *
 	 * @author		Thomas Häber
-	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.0.1
 	 * @since		r1614
 	 *
@@ -372,7 +361,6 @@ class databaseUpdate extends ispcpUpdate {
 	 * add variables PREVENT_EXTERNAL_LOGIN for each user type to config table
 	 *
 	 * @author		Thomas Häber
-	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.0.1
 	 * @since		r1659
 	 *
@@ -394,7 +382,6 @@ class databaseUpdate extends ispcpUpdate {
 	 * Fixed #1761: Hosting plan description (to short field description in SQL table hosting_plan)
 	 *
 	 * @author		Thomas Häber
-	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.0.1
 	 * @since		r1663
 	 *
@@ -414,7 +401,6 @@ class databaseUpdate extends ispcpUpdate {
 	 * missing db updates for per-domain backup
 	 *
 	 * @author		Jochen Manz
-	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.0.1
 	 * @since		r1663
 	 *
@@ -435,7 +421,6 @@ class databaseUpdate extends ispcpUpdate {
 	 * http://www.isp-control.net/ispcp/ticket/1806.
 	 *
 	 * @author		Christian Hernmarck
-	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.0.1
 	 * @since		r1714 (ca)
 	 *
@@ -456,7 +441,6 @@ class databaseUpdate extends ispcpUpdate {
 	 * Related to ticket #1721 http://www.isp-control.net/ispcp/ticket/1721.
 	 *
 	 * @author		Thomas Wacker
-	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.0.1
 	 * @since		r1718
 	 *
@@ -496,7 +480,6 @@ class databaseUpdate extends ispcpUpdate {
 	 * Fix for ticket #1810 http://www.isp-control.net/ispcp/ticket/1810.
 	 *
 	 * @author		Daniel Andreca
-	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.0.1
 	 * @since		r1726
 	 *
@@ -515,7 +498,6 @@ class databaseUpdate extends ispcpUpdate {
 	 * Add suport for DNS management.
 	 *
 	 * @author		Daniel Andreca
-	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.0.1
 	 * @since		r1727
 	 *
@@ -548,7 +530,6 @@ class databaseUpdate extends ispcpUpdate {
 	 * Correct some reseller properties
 	 *
 	 * @author		Thomas Wacker
-	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.0.1
 	 * @since		r1834
 	 *
@@ -590,7 +571,6 @@ class databaseUpdate extends ispcpUpdate {
 	 * Try to correct E-Mail-Template after-order-msg
 	 *
 	 * @author		Thomas Wacker
-	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.0.1
 	 * @since		r1848
 	 *
@@ -634,7 +614,6 @@ SQL_QUERY;
 	 * Thanks to alecksievici
 	 *
 	 * @author		Thomas Wacker
-	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.0.1
 	 * @since		r1849
 	 *
@@ -654,7 +633,6 @@ SQL_QUERY;
 	 * Add domain expiration field
 	 *
 	 * @author		Daniel Andreca
-	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.0.2
 	 * @since		r1955
 	 *
@@ -685,7 +663,6 @@ SQL_QUERY;
 	 *  - Change the naming convention for option 'domain' related to the backup feature
 	 *
 	 * @author		Laurent Declercq <l.declercq@nuxwin.com>
-	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.0.2
 	 * @since		r1998
 	 *
@@ -791,7 +768,6 @@ SQL_QUERY;
 	 * Fixes for ticket #2000 http://www.isp-control.net/ispcp/ticket/1985.
 	 *
 	 * @author		Laurent Declercq <l.declercq@nuxwin.com>
-	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.0.2
 	 * @since		r2013
 	 *
@@ -815,7 +791,6 @@ SQL_QUERY;
 	 * Fixes for ticket #2047 http://www.isp-control.net/ispcp/ticket/2047.
 	 *
 	 * @author		Benedikt Heintel
-	 * @copyright	2006-2009 by ispCP | http://isp-control.net
 	 * @version		1.0.2
 	 * @since		r2173
 	 *
@@ -846,7 +821,6 @@ SQL_QUERY;
 	 * belongs to ticket #1121 @see http://isp-control.net/ispcp/ticket/1121
 	 *
 	 * @author		Sebastian Sellmeier
-	 * @copyright	2006-2010 by ispCP | http://isp-control.net
 	 * @version		1.0.1
 	 * @since		r2500
 	 *
@@ -865,7 +839,6 @@ SQL_QUERY;
 	 * Adding autoreply loop detection/prevention.
 	 *
 	 * @author		Marc pujol
-	 * @copyright	2006-2010 by ispCP | http://isp-control.net
 	 * @version		1.0.4
 	 * @since		r2592
 	 *
@@ -891,7 +864,6 @@ SQL_QUERY;
 	 * Transitional issue (Fix database update conflict)
 	 * 
 	 * @author Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
-	 * @copyright 2006-2010 by ispCP | http://isp-control.net
 	 * @since r2701
 	 * 
 	 * @access protected
@@ -969,7 +941,6 @@ SQL_QUERY;
 	 * Adding field for term of service
 	 * 
 	 * @author		Francesco Bux
-	 * @copyright	2006-2010 by ispCP | http://isp-control.net
 	 * @version		1.0.5
 	 * @since		r2614
 	 *
@@ -1014,7 +985,6 @@ SQL_QUERY;
 	 * 'user_gui_props' database table
 	 *
 	 * @author Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
-	 * @copyright 2006-2010 by ispCP | http://isp-control.net
 	 * @since r2712
 	 *
 	 * @access protected

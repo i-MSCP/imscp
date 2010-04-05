@@ -9,7 +9,7 @@
  * @subpackage ispCP_Omega
  */
 
-$theme_name = 'ispCP';
+$theme_name = 'ispCP Omega';
 $theme_version = 3;
 $theme_generation = 3;
 ?>
