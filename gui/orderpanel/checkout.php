@@ -112,8 +112,6 @@ function gen_checkout(&$tpl, &$sql, $user_id, $plan_id) {
 	unset($_SESSION['phone']);
 	unset($_SESSION['fax']);
 	unset($_SESSION['plan_id']);
-
-// Added by nxw
 	unset($_SESSION['image']);
 	unset($_SESSION['tos']);
 }

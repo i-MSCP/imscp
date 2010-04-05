@@ -180,9 +180,6 @@ gen_personal_data($tpl);
 
 gen_page_message($tpl);
 
-// Ensure the code is rebuild every time
-//unset($_SESSION['image']);
-
 $tpl->assign(
 	array(
 		'YOUR_CHART' => tr('Your Chart'),
