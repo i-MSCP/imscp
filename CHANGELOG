@@ -5,6 +5,7 @@ ispCP ω 1.0.6 Changelog
 	- GUI:
 		* Added missing class `message` in ispcp_orderpanel.css file
 		* Added missing term of service field in admin/hosting_plan_add.{php,tpl}
+		* Added missing term of service field in admin/hosting_plan_edit.{php,tpl}
 		* Added note for the term of service field
 		* Changed some system_message() call to set_page_message() (linked to a
 			security code regeneration issue) in some order panel files
