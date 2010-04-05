@@ -61,20 +61,20 @@ function addon_domain($dmn_name) {
 }
 
 function is_plan_available(&$sql, $plan_id, $user_id) {
-	if (Config::exists('HOSTING_PLANS_LEVEL')
-                && Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
-                $query = "
-                        SELECT
-                                *
-                        FROM
-                                `hosting_plans`
-                        WHERE
-                                `id` = ?
-                ";
+	if (Config::exists('HOSTING_PLANS_LEVEL') &&
+		Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
+		$query = "
+			SELECT
+				*
+			FROM
+				`hosting_plans`
+			WHERE
+				`id` = ?
+			";
 
-                $rs = exec_query($sql, $query, array($plan_id));
+			$rs = exec_query($sql, $query, array($plan_id));
         } else {
-                $query = "
+			$query = "
                         SELECT
                                 *
                         FROM
@@ -144,4 +144,5 @@ $tpl->prnt();
 if (Config::get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
 }
+
 unset_messages();

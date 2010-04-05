@@ -52,6 +52,10 @@ a.linkdark:hover, a.linkdark:active, a.linkdark:focus {
 	text-decoration: none;
 }
 
+.message {
+	color:	#ff0000;
+}
+
 td {
 	font-family: Geneva, Arial, Helvetica, sans-serif;
 	font-size: 12px;

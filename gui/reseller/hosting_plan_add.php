@@ -32,7 +32,7 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-if (Config::exists('HOSTING_PLANS_LEVEL') && 
+if (Config::exists('HOSTING_PLANS_LEVEL') &&
 	strtolower(Config::get('HOSTING_PLANS_LEVEL')) == 'admin') {
 	user_goto('hosting_plan.php');
 }
@@ -99,8 +99,9 @@ $tpl->assign(
 				'TR_EXAMPLE'				=> tr('(e.g. EUR)'),
 			// BEGIN TOS
 				'TR_TOS_PROPS'				=> tr('Term Of Service'),
+				'TR_TOS_NOTE'				=> tr('<b>Optional:</b> Leave this field empty if you do not want term of service for this hosting plan.'),
 				'TR_TOS_DESCRIPTION'		=> tr('Text Only'),
-		
+
 			// END TOS
 				'TR_ADD_PLAN'				=> tr('Add plan')
 		)
@@ -246,8 +247,8 @@ function check_data_correction(&$tpl) {
 	$hp_disk		= clean_input($_POST['hp_disk'], true);
 	$description	= clean_input($_POST['hp_description'], true);
 	$tos			= clean_input($_POST['hp_tos'], true);
-	
-	
+
+
 	if (empty($_POST['hp_price'])) {
 		$price = 0;
 	} else {
@@ -294,25 +295,25 @@ function check_data_correction(&$tpl) {
 	}
 	if (!ispcp_limit_check($hp_sub, -1)) {
 		$ahp_error[] = tr('Incorrect subdomains limit!');
-	} 
+	}
 	if(!ispcp_limit_check($hp_als, -1)) {
 		$ahp_error[] = tr('Incorrect aliases limit!');
-	} 
+	}
 	if (!ispcp_limit_check($hp_mail, -1)) {
 		$ahp_error[] = tr('Incorrect mail accounts limit!');
-	} 
+	}
 	if(!ispcp_limit_check($hp_ftp, -1)) {
 		$ahp_error[] = tr('Incorrect FTP accounts limit!');
-	} 
+	}
 	if(!ispcp_limit_check($hp_sql_user, -1)) {
 		$ahp_error[] = tr('Incorrect SQL databases limit!');
-	} 
+	}
 	if(!ispcp_limit_check($hp_sql_db, -1)) {
 		$ahp_error[] = tr('Incorrect SQL users limit!');
-	} 
+	}
 	if(!ispcp_limit_check($hp_traff, null)) {
 		$ahp_error[] = tr('Incorrect traffic limit!');
-	} 
+	}
 	if(!ispcp_limit_check($hp_disk, null)) {
 		$ahp_error[] = tr('Incorrect disk quota limit!');
 	}

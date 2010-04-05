@@ -169,6 +169,21 @@
                                 <input type="radio" name="status" value="0" {TR_STATUS_NO} />
                                 {TR_NO}</td>
                             </tr>
+                      <!-- TOS -->
+                      <tr>
+                        <td>&nbsp;</td>
+                        <td colspan="2" class="content3"><b>{TR_TOS_PROPS}</b></td>
+                      </tr>
+                      <tr>
+                      <td>&nbsp;</td>
+                      <td colspan="2" class="content4">&nbsp;{TR_TOS_NOTE}</td>
+                      </tr>
+                       <tr>
+                        <td>&nbsp;</td>
+                        <td class="content2">{TR_TOS_DESCRIPTION}</td>
+                        <td class="content"><textarea class="textinput2" name="hp_tos" style="width:410px" cols="70" rows="8">{HP_TOS_VALUE}</textarea></td>
+                      </tr>
+                      <!-- TOS END -->
                             <tr>
                               <td><input type="hidden" name="uaction" value="add_plan" />
                               </td>

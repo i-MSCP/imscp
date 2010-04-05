@@ -36,6 +36,7 @@ $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('purchase_header', 'page');
 $tpl->define_dynamic('purchase_footer', 'page');
 
+
 /*
  * functions start
  */
@@ -90,10 +91,11 @@ function gen_checkout(&$tpl, &$sql, $user_id, $plan_id) {
 	";
 
 	$rs = exec_query($sql, $query, array($user_id, $plan_id, $date, $domain_name, $fname, $lname, $gender, $firm, $zip, $city, $state, $country, $email, $phone, $fax, $street1, $street2, $status));
-	//print $sql->ErrorMsg();
+
 	$order_id = $sql->Insert_ID();
 	send_order_emails($user_id, $domain_name, $fname, $lname, $email, $order_id);
 
+	// Remove useless data
 	unset($_SESSION['details']);
 	unset($_SESSION['domainname']);
 	unset($_SESSION['fname']);
@@ -110,6 +112,10 @@ function gen_checkout(&$tpl, &$sql, $user_id, $plan_id) {
 	unset($_SESSION['phone']);
 	unset($_SESSION['fax']);
 	unset($_SESSION['plan_id']);
+
+// Added by nxw
+	unset($_SESSION['image']);
+	unset($_SESSION['tos']);
 }
 
 /*
@@ -122,7 +128,6 @@ function gen_checkout(&$tpl, &$sql, $user_id, $plan_id) {
  *
  */
 
-
 if (isset($_SESSION['user_id']) && isset($_SESSION['plan_id'])) {
 	$user_id = $_SESSION['user_id'];
 	$plan_id = $_SESSION['plan_id'];
@@ -131,13 +136,17 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['plan_id'])) {
 }
 
 if (!isset($_POST['capcode']) || $_POST['capcode'] != $_SESSION['image']) {
-	system_message(tr('Security code was incorrect!'));
+	set_page_message(tr('Security code was incorrect!'));
 	user_goto('chart.php');
 }
 
-if(!isset($_POST['tosAccept']) || $_POST['tosAccept'] != 1 ){
-	system_message(tr('You have to accept the Term of Service!'));
-	user_goto('chart.php');	
+
+// If term of service field was set (not empty value)
+if(isset($_SESSION['tos']) && $_SESSION['tos'] == true) {
+	if(!isset($_POST['tosAccept']) or $_POST['tosAccept'] != 1 ){
+		set_page_message(tr('You have to accept the Term of Service!'));
+		user_goto('chart.php');
+	}
 }
 
 if ((isset($_SESSION['fname']) && $_SESSION['fname'] != '')

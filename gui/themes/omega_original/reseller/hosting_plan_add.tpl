@@ -178,6 +178,10 @@
                         <td>&nbsp;</td>
                         <td colspan="2" class="content3"><b>{TR_TOS_PROPS}</b></td>
                       </tr>
+                      <tr>
+                      <td>&nbsp;</td>
+                      <td colspan="2" class="content4">&nbsp;{TR_TOS_NOTE}</td>
+                      </tr>
                        <tr>
                         <td>&nbsp;</td>
                         <td class="content2">{TR_TOS_DESCRIPTION}</td>

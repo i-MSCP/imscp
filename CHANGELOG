@@ -1,9 +1,21 @@
 ispCP ω 1.0.6 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-04-05 Laurent Declercq
+	- GUI:
+		* Added missing class `message` in ispcp_orderpanel.css file
+		* Added missing term of service field in admin/hosting_plan_add.{php,tpl}
+		* Added note for the term of service field
+		* Changed some system_message() call to set_page_message() (linked to a
+			security code regeneration issue) in some order panel files
+		* Fixed #2322: Term of Service should be hidden if it was not set for a
+			hosting plan
+		* Fixed: Order panel - The security code image must be regenerated if
+			the code validation was failed
+
 2010-04-04 Laurent Declercq
 	- DATABASE:
-		* Fixed Unknown column `tos` after new install
+		* Fixed: Unknown column `tos` after a new install
 
 2010-04-02 Benedikt Heintel
 	- DOCS:
