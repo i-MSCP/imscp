@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: v1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-20 10:04+0100\n"
+"POT-Creation-Date: 2010-04-05 16:20+0200\n"
 "PO-Revision-Date: 2009-12-15 01:27+0100\n"
 "Last-Translator: Takashi <takashi@elekta.lt>\n"
 "Language-Team: Lithuanian <lt_LT@li.org>\n"
@@ -839,6 +839,18 @@ msgstr "Apraðymas"
 msgid "(e.g. EUR)"
 msgstr "(pvz. LTL)"
 
+#, fuzzy
+msgid "Term Of Service"
+msgstr "Paslauga"
+
+msgid ""
+"<b>Optional:</b> Leave this field empty if you do not want term of service "
+"for this hosting plan."
+msgstr ""
+
+msgid "Text Only"
+msgstr ""
+
 msgid "Add plan"
 msgstr "Pridëti planà"
 
@@ -862,6 +874,9 @@ msgstr "ispCP - Administratorius/Redaguoti hostingo planà"
 
 msgid "Price Style"
 msgstr "Kainos tipas"
+
+msgid "Text"
+msgstr ""
 
 msgid "Update plan"
 msgstr "Atnaujinti planà"
@@ -3725,6 +3740,9 @@ msgid ""
 "instead</small>."
 msgstr ""
 
+msgid "ERROR: PHP extension 'mcrypt' not loaded!"
+msgstr ""
+
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
 "Please try again later."
@@ -3920,6 +3938,13 @@ msgstr ""
 msgid "* denotes mandatory field."
 msgstr ""
 
+#, fuzzy
+msgid "Term of Service"
+msgstr "Paslauga"
+
+msgid "I Accept The Term of Service"
+msgstr ""
+
 msgid "Your Chart"
 msgstr ""
 
@@ -3930,6 +3955,9 @@ msgid "Personal Data"
 msgstr ""
 
 msgid "Security code was incorrect!"
+msgstr ""
+
+msgid "You have to accept the Term of Service!"
 msgstr ""
 
 msgid "Check Out"
@@ -4309,7 +4337,8 @@ msgstr ""
 msgid "Add other domains to this account"
 msgstr ""
 
-msgid "System error with Domain ID "
+#, php-format
+msgid "System error with Domain Id: %d"
 msgstr ""
 
 msgid "User terminated!"
@@ -4346,7 +4375,7 @@ msgstr ""
 msgid "You have no users."
 msgstr ""
 
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s of %2$s MB"
 msgstr ""
 

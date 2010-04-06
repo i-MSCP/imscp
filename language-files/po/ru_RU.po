@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ru_RU\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-20 10:04+0100\n"
+"POT-Creation-Date: 2010-04-05 16:20+0200\n"
 "PO-Revision-Date: 2009-12-18 14:32+0100\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Russian <ru_RU@li.org>\n"
@@ -842,6 +842,18 @@ msgstr "Описание"
 msgid "(e.g. EUR)"
 msgstr "(например EUR)"
 
+#, fuzzy
+msgid "Term Of Service"
+msgstr "Служба"
+
+msgid ""
+"<b>Optional:</b> Leave this field empty if you do not want term of service "
+"for this hosting plan."
+msgstr ""
+
+msgid "Text Only"
+msgstr ""
+
 msgid "Add plan"
 msgstr "Добавить план"
 
@@ -865,6 +877,9 @@ msgstr "ispCP - Администратор / Редактировать хост
 
 msgid "Price Style"
 msgstr "Стиль цены"
+
+msgid "Text"
+msgstr ""
 
 msgid "Update plan"
 msgstr "Изменить план"
@@ -1393,8 +1408,8 @@ msgid ""
 "This reseller has customer(s) with unlimited rights for the <b>%s</b> "
 "service!"
 msgstr ""
-"У этого реселлера есть клиент(ы) с неограниченными правами на сервис <b>%s</b>!"
-"<br>"
+"У этого реселлера есть клиент(ы) с неограниченными правами на сервис <b>%s</"
+"b>!<br>"
 
 msgid "If you want to limit the reseller, you must first limit its customers!"
 msgstr ""
@@ -1407,8 +1422,8 @@ msgstr "У этого реселлера есть домены привязан�
 
 msgid "ERROR: The reseller account you trying to edit does not exist!"
 msgstr ""
-"ОШИБКА: Учетная запись реселлера которую вы пытаетесь редактировать "
-"не существует!"
+"ОШИБКА: Учетная запись реселлера которую вы пытаетесь редактировать не "
+"существует!"
 
 msgid "ispCP - Admin/Manage users/Edit Reseller"
 msgstr ""
@@ -1417,8 +1432,8 @@ msgstr ""
 msgid ""
 "ERROR: One or more errors was found! Please, correct them and try again!"
 msgstr ""
-"ОШИБКА: Возникла одна или более ошибок! Пожалуйста исправьте их и "
-"попробуйте снова!"
+"ОШИБКА: Возникла одна или более ошибок! Пожалуйста исправьте их и попробуйте "
+"снова!"
 
 msgid "Reseller data inconsistency!"
 msgstr "Несовместимость данных реселлера!"
@@ -1443,8 +1458,7 @@ msgstr "Сгенерированный пароль:"
 
 msgid "Type `CTRL+C` to copy the generated password in the clipboard."
 msgstr ""
-"Нажмите `CTRL+C` чтобы скопировать сгенерированный пароль в "
-"буфер обмена."
+"Нажмите `CTRL+C` чтобы скопировать сгенерированный пароль в буфер обмена."
 
 #, php-format
 msgid ""
@@ -1769,7 +1783,8 @@ msgstr ""
 msgid ""
 "Maximal number of labels for domain names<br />(<i>Excluding SLD & TLD</i>)"
 msgstr ""
-"Максимальное количество меток для имен доменов<br />(<i>за исключением SLD и TLD</i>)"
+"Максимальное количество меток для имен доменов<br />(<i>за исключением SLD и "
+"TLD</i>)"
 
 msgid "Maximal number of labels for subdomains"
 msgstr "Максимальное количество меток для поддоменов"
@@ -2691,7 +2706,8 @@ msgid "Disk limit"
 msgstr "Лимит дискового пространства"
 
 msgid "You did have more traffic than the new hosting plan limits."
-msgstr "У Вас было использовано больше трафика чем доступно в новом хостинг-плане."
+msgstr ""
+"У Вас было использовано больше трафика чем доступно в новом хостинг-плане."
 
 msgid "Traffic limit"
 msgstr "Лимит трафика"
@@ -3826,9 +3842,12 @@ msgid ""
 "><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> "
 "instead</small>."
 msgstr ""
-"ОШИБКА: Метки ACE запрещены. Пожалуйста используйте ToUnicode эквивалент.<br /"
-"><small>Пример: для метки ACE <b>xn--bcher-kva</b> используйте <b>bücher</b> "
-"вместо нее</small>."
+"ОШИБКА: Метки ACE запрещены. Пожалуйста используйте ToUnicode эквивалент."
+"<br /><small>Пример: для метки ACE <b>xn--bcher-kva</b> используйте "
+"<b>bücher</b> вместо нее</small>."
+
+msgid "ERROR: PHP extension 'mcrypt' not loaded!"
+msgstr ""
 
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
@@ -4055,6 +4074,13 @@ msgstr "Введите адрес"
 msgid "* denotes mandatory field."
 msgstr "* обозначены обязательные для заполнения поля."
 
+#, fuzzy
+msgid "Term of Service"
+msgstr "Служба"
+
+msgid "I Accept The Term of Service"
+msgstr ""
+
 msgid "Your Chart"
 msgstr "Ваш заказ"
 
@@ -4066,6 +4092,9 @@ msgstr "Персональные данные"
 
 msgid "Security code was incorrect!"
 msgstr "Неверный код безопасности!"
+
+msgid "You have to accept the Term of Service!"
+msgstr ""
 
 msgid "Check Out"
 msgstr "Подтверждение"
@@ -4169,8 +4198,7 @@ msgstr "ispCP - Реселлер / Добавить алиас"
 
 msgid "There is no user records for this reseller to add an alias for."
 msgstr ""
-"У этого реселлера нет учетных записей пользователей чтобы "
-"добавить алиас."
+"У этого реселлера нет учетных записей пользователей чтобы добавить алиас."
 
 msgid "ispCP - Circular"
 msgstr "ispCP - Почтовая рассылка"
@@ -4448,8 +4476,9 @@ msgstr "ispCP - Пользователь / Добавить пользовате
 msgid "Add other domains to this account"
 msgstr "Добавить другие домены в эту учетную запись"
 
-msgid "System error with Domain ID "
-msgstr "Системная ошибка с ID домена"
+#, fuzzy, php-format
+msgid "System error with Domain Id: %d"
+msgstr ""
 
 msgid "User terminated!"
 msgstr "Пользователь завершил работу!"

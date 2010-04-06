@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: da_DK\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-20 10:04+0100\n"
+"POT-Creation-Date: 2010-04-05 16:20+0200\n"
 "PO-Revision-Date: 2009-12-18 14:27+0100\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Danish <da_DK@li.org>\n"
@@ -840,6 +840,18 @@ msgstr "Beskrivelse"
 msgid "(e.g. EUR)"
 msgstr "(f.eks.: DKK, Kr. eller EUR)"
 
+#, fuzzy
+msgid "Term Of Service"
+msgstr "Service"
+
+msgid ""
+"<b>Optional:</b> Leave this field empty if you do not want term of service "
+"for this hosting plan."
+msgstr ""
+
+msgid "Text Only"
+msgstr ""
+
 msgid "Add plan"
 msgstr "Tilføj produkt"
 
@@ -863,6 +875,9 @@ msgstr "ispCP - Administrator/Rediger hosting plan"
 
 msgid "Price Style"
 msgstr "Pris udseende"
+
+msgid "Text"
+msgstr ""
 
 msgid "Update plan"
 msgstr "Opdater plan"
@@ -3814,6 +3829,9 @@ msgstr ""
 "><small>Eksempel: for ACE label <b>xn--bcher-kva</b> brug  <b>bücher</b> "
 "istedet</small>."
 
+msgid "ERROR: PHP extension 'mcrypt' not loaded!"
+msgstr ""
+
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
 "Please try again later."
@@ -4051,6 +4069,13 @@ msgstr "Indtast Adresse"
 msgid "* denotes mandatory field."
 msgstr "* -markeret felter skal udfyldes."
 
+#, fuzzy
+msgid "Term of Service"
+msgstr "Service"
+
+msgid "I Accept The Term of Service"
+msgstr ""
+
 msgid "Your Chart"
 msgstr "Din tabel"
 
@@ -4062,6 +4087,9 @@ msgstr "Personlig Data!"
 
 msgid "Security code was incorrect!"
 msgstr "Sikkerhedskoden var ikke korrekt."
+
+msgid "You have to accept the Term of Service!"
+msgstr ""
 
 msgid "Check Out"
 msgstr "Afslut Bestilling"
@@ -4444,8 +4472,9 @@ msgstr "ispCP - Bruger/Tilføj bruger"
 msgid "Add other domains to this account"
 msgstr "Tilføj andre domæner til denne konto"
 
-msgid "System error with Domain ID "
-msgstr "System fejl med Domæne ID "
+#, fuzzy, php-format
+msgid "System error with Domain Id: %d"
+msgstr ""
 
 msgid "User terminated!"
 msgstr "Bruger slettet!"
@@ -4481,11 +4510,11 @@ msgstr "Vis aliaser"
 msgid "You have no users."
 msgstr "Du har ingen brugere."
 
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s of %2$s MB"
 msgstr ""
 
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s of <b>unlimited</b> MB"
 msgstr ""
 

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pt_BR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-20 10:04+0100\n"
+"POT-Creation-Date: 2010-04-05 16:20+0200\n"
 "PO-Revision-Date: 2009-12-18 14:31+0100\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Portugues Brazil <pt_BR@li.org>\n"
@@ -866,6 +866,18 @@ msgstr "Descrição"
 msgid "(e.g. EUR)"
 msgstr "(Ex. R$)"
 
+#, fuzzy
+msgid "Term Of Service"
+msgstr "Serviço"
+
+msgid ""
+"<b>Optional:</b> Leave this field empty if you do not want term of service "
+"for this hosting plan."
+msgstr ""
+
+msgid "Text Only"
+msgstr ""
+
 msgid "Add plan"
 msgstr "Adicionar plano"
 
@@ -892,6 +904,9 @@ msgstr "ispCP - Administrador/Alterar plano de hospedagem"
 #, fuzzy
 msgid "Price Style"
 msgstr "Preço"
+
+msgid "Text"
+msgstr ""
 
 msgid "Update plan"
 msgstr "Alterar plano"
@@ -1441,7 +1456,7 @@ msgstr ""
 "Se você quer limitar os direitos desse representante, primeiro limite os "
 "clientes dele!<br>"
 
-#, fuzzy, php-format
+#, php-format
 msgid "This reseller has domains assigned to the <b>%s</b> address!"
 msgstr ""
 
@@ -3842,6 +3857,9 @@ msgid ""
 "instead</small>."
 msgstr ""
 
+msgid "ERROR: PHP extension 'mcrypt' not loaded!"
+msgstr ""
+
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
 "Please try again later."
@@ -4056,6 +4074,13 @@ msgstr "Informe o Endereço"
 msgid "* denotes mandatory field."
 msgstr "* denota campo obrigatório."
 
+#, fuzzy
+msgid "Term of Service"
+msgstr "Serviço"
+
+msgid "I Accept The Term of Service"
+msgstr ""
+
 msgid "Your Chart"
 msgstr "Seu Quadro"
 
@@ -4068,6 +4093,9 @@ msgstr "Dados pessoais"
 #, fuzzy
 msgid "Security code was incorrect!"
 msgstr "ERRO: Código de segurança não estava correto!"
+
+msgid "You have to accept the Term of Service!"
+msgstr ""
 
 msgid "Check Out"
 msgstr "Finalizar"
@@ -4465,7 +4493,8 @@ msgstr "ispCP - Usuário/Adicionar usuário"
 msgid "Add other domains to this account"
 msgstr "Adicionar outros domínios a esta conta"
 
-msgid "System error with Domain ID "
+#, php-format
+msgid "System error with Domain Id: %d"
 msgstr ""
 
 msgid "User terminated!"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-20 10:04+0100\n"
+"POT-Creation-Date: 2010-04-05 16:20+0200\n"
 "PO-Revision-Date: 2009-12-18 14:31+0100\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Norwegian (Norway) <no_NO@li.org>\n"
@@ -842,6 +842,18 @@ msgstr "Beskrivelse"
 msgid "(e.g. EUR)"
 msgstr "(feks. NOK)"
 
+#, fuzzy
+msgid "Term Of Service"
+msgstr "Service"
+
+msgid ""
+"<b>Optional:</b> Leave this field empty if you do not want term of service "
+"for this hosting plan."
+msgstr ""
+
+msgid "Text Only"
+msgstr ""
+
 msgid "Add plan"
 msgstr "Legg til løsning"
 
@@ -865,6 +877,9 @@ msgstr "ispCP - Administrator/Endre betalingsplan"
 
 msgid "Price Style"
 msgstr "Pris Stil"
+
+msgid "Text"
+msgstr ""
 
 msgid "Update plan"
 msgstr "Oppdater plan"
@@ -1389,7 +1404,7 @@ msgid ""
 "than the new limit you entered."
 msgstr ""
 
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "This reseller has customer(s) with unlimited rights for the <b>%s</b> "
 "service!"
@@ -1401,7 +1416,7 @@ msgstr ""
 "Om du vil sette begrensninger for en forhandler, må du først sette "
 "begrensninger for brukerene til forhandleren!"
 
-#, fuzzy, php-format
+#, php-format
 msgid "This reseller has domains assigned to the <b>%s</b> address!"
 msgstr ""
 
@@ -3840,6 +3855,9 @@ msgid ""
 "instead</small>."
 msgstr ""
 
+msgid "ERROR: PHP extension 'mcrypt' not loaded!"
+msgstr ""
+
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
 "Please try again later."
@@ -4072,6 +4090,13 @@ msgstr "Skriv inn Adresse"
 msgid "* denotes mandatory field."
 msgstr "* markerer påkrevde felt."
 
+#, fuzzy
+msgid "Term of Service"
+msgstr "Service"
+
+msgid "I Accept The Term of Service"
+msgstr ""
+
 msgid "Your Chart"
 msgstr "Din Handlevogn"
 
@@ -4084,6 +4109,9 @@ msgstr "Persjonlig Informasjon"
 #, fuzzy
 msgid "Security code was incorrect!"
 msgstr "ERROR: Sikkerhetskoden var feil!"
+
+msgid "You have to accept the Term of Service!"
+msgstr ""
 
 #, fuzzy
 msgid "Check Out"
@@ -4491,8 +4519,9 @@ msgstr "ispCP - Bruker/Legg til bruker"
 msgid "Add other domains to this account"
 msgstr "Legg flere domener til denne kontoen"
 
-msgid "System error with Domain ID "
-msgstr "Systemfeil med Domene ID"
+#, fuzzy, php-format
+msgid "System error with Domain Id: %d"
+msgstr ""
 
 #, fuzzy
 msgid "User terminated!"
@@ -4529,11 +4558,11 @@ msgstr "Vis identiteter"
 msgid "You have no users."
 msgstr "Du har ingen brukere."
 
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s of %2$s MB"
 msgstr ""
 
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s of <b>unlimited</b> MB"
 msgstr ""
 

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: hu_HU\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-20 10:04+0100\n"
+"POT-Creation-Date: 2010-04-05 16:20+0200\n"
 "PO-Revision-Date: 2009-12-18 14:31+0100\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Hungarian <hu_HU@li.org>\n"
@@ -844,6 +844,18 @@ msgstr "Leírás"
 msgid "(e.g. EUR)"
 msgstr "(Pl. EUR)"
 
+#, fuzzy
+msgid "Term Of Service"
+msgstr "Szolgáltatás"
+
+msgid ""
+"<b>Optional:</b> Leave this field empty if you do not want term of service "
+"for this hosting plan."
+msgstr ""
+
+msgid "Text Only"
+msgstr ""
+
 msgid "Add plan"
 msgstr "Csomag hozzáadása"
 
@@ -867,6 +879,9 @@ msgstr "ispCP - Adminisztrátor/Szolgáltatási csomag módosítás"
 
 msgid "Price Style"
 msgstr "Ár stílus"
+
+msgid "Text"
+msgstr ""
 
 msgid "Update plan"
 msgstr "Csomag módosítás"
@@ -3864,6 +3879,9 @@ msgid ""
 "instead</small>."
 msgstr ""
 
+msgid "ERROR: PHP extension 'mcrypt' not loaded!"
+msgstr ""
+
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
 "Please try again later."
@@ -4105,6 +4123,13 @@ msgstr "Cím megadás"
 msgid "* denotes mandatory field."
 msgstr "* kötelezően kitöltendő mező."
 
+#, fuzzy
+msgid "Term of Service"
+msgstr "Szolgáltatás"
+
+msgid "I Accept The Term of Service"
+msgstr ""
+
 msgid "Your Chart"
 msgstr "A grafikonod"
 
@@ -4117,6 +4142,9 @@ msgstr "Személyes Adatok"
 #, fuzzy
 msgid "Security code was incorrect!"
 msgstr "HIBA: A biztonsági kód nem megfelelő!"
+
+msgid "You have to accept the Term of Service!"
+msgstr ""
 
 msgid "Check Out"
 msgstr "Kilépés"
@@ -4520,8 +4548,9 @@ msgstr "ispCP - Felhasználó/Új felhasználó"
 msgid "Add other domains to this account"
 msgstr "Domainek hozzáadása ehhez a hozzáféréshez"
 
-msgid "System error with Domain ID "
-msgstr "Rendszerhiba a Domain ID-vel"
+#, fuzzy, php-format
+msgid "System error with Domain Id: %d"
+msgstr ""
 
 msgid "User terminated!"
 msgstr "Felhasználó törölve!"
@@ -4557,11 +4586,11 @@ msgstr "Aliasok mutatása"
 msgid "You have no users."
 msgstr "Nincs felhasználód."
 
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s of %2$s MB"
 msgstr ""
 
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s of <b>unlimited</b> MB"
 msgstr ""
 

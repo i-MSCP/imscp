@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-28 18:14+0200\n"
+"POT-Creation-Date: 2010-04-06 10:25+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -818,6 +818,15 @@ msgstr ""
 msgid "(e.g. EUR)"
 msgstr ""
 
+msgid "Term Of Service"
+msgstr ""
+
+msgid "<b>Optional:</b> Leave this field empty if you do not want term of service for this hosting plan."
+msgstr ""
+
+msgid "Text Only"
+msgstr ""
+
 msgid "Add plan"
 msgstr ""
 
@@ -840,6 +849,9 @@ msgid "ispCP - Administrator/Edit hosting plan"
 msgstr ""
 
 msgid "Price Style"
+msgstr ""
+
+msgid "Text"
 msgstr ""
 
 msgid "Update plan"
@@ -3622,6 +3634,9 @@ msgstr ""
 msgid "ERROR: ACE labels are not allowed. Please use the ToUnicode equivalent.<br /><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> instead</small>."
 msgstr ""
 
+msgid "ERROR: PHP extension 'mcrypt' not loaded!"
+msgstr ""
+
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
 "Please try again later."
@@ -3801,6 +3816,12 @@ msgstr ""
 msgid "* denotes mandatory field."
 msgstr ""
 
+msgid "Term of Service"
+msgstr ""
+
+msgid "I Accept The Term of Service"
+msgstr ""
+
 msgid "Your Chart"
 msgstr ""
 
@@ -3811,6 +3832,9 @@ msgid "Personal Data"
 msgstr ""
 
 msgid "Security code was incorrect!"
+msgstr ""
+
+msgid "You have to accept the Term of Service!"
 msgstr ""
 
 msgid "Check Out"
@@ -4188,7 +4212,8 @@ msgstr ""
 msgid "Add other domains to this account"
 msgstr ""
 
-msgid "System error with Domain ID "
+#, php-format
+msgid "System error with Domain Id: %d"
 msgstr ""
 
 msgid "User terminated!"

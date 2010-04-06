@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: it_IT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-20 10:04+0100\n"
+"POT-Creation-Date: 2010-04-05 16:20+0200\n"
 "PO-Revision-Date: 2009-12-18 14:31+0100\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Italian (Italy) <it_IT@li.org>\n"
@@ -848,6 +848,18 @@ msgstr "Descrizione"
 msgid "(e.g. EUR)"
 msgstr "(Ex. EUR)"
 
+#, fuzzy
+msgid "Term Of Service"
+msgstr "Servizio"
+
+msgid ""
+"<b>Optional:</b> Leave this field empty if you do not want term of service "
+"for this hosting plan."
+msgstr ""
+
+msgid "Text Only"
+msgstr ""
+
 msgid "Add plan"
 msgstr "Aggiungi piano"
 
@@ -871,6 +883,9 @@ msgstr "ispCP - Amministratore/Modifica piano di hosting"
 
 msgid "Price Style"
 msgstr "Stile Prezzo"
+
+msgid "Text"
+msgstr ""
 
 msgid "Update plan"
 msgstr "Aggiorna il piano"
@@ -3878,6 +3893,9 @@ msgid ""
 "instead</small>."
 msgstr ""
 
+msgid "ERROR: PHP extension 'mcrypt' not loaded!"
+msgstr ""
+
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
 "Please try again later."
@@ -4122,6 +4140,13 @@ msgstr "Inserisci l`indirizzo"
 msgid "* denotes mandatory field."
 msgstr "* indica campi obbligatori."
 
+#, fuzzy
+msgid "Term of Service"
+msgstr "Servizio"
+
+msgid "I Accept The Term of Service"
+msgstr ""
+
 msgid "Your Chart"
 msgstr "Il tuo carrello"
 
@@ -4134,6 +4159,9 @@ msgstr "Dati personali"
 #, fuzzy
 msgid "Security code was incorrect!"
 msgstr "ERRORE: Il codice di sicurezza non è corretto!"
+
+msgid "You have to accept the Term of Service!"
+msgstr ""
 
 msgid "Check Out"
 msgstr "Conferma"
@@ -4520,8 +4548,9 @@ msgstr "ispCP - Utente/Aggiunta utente"
 msgid "Add other domains to this account"
 msgstr "Aggiungi altri domini a questo account"
 
-msgid "System error with Domain ID "
-msgstr "Errore del sistema con il Dominio ID"
+#, fuzzy, php-format
+msgid "System error with Domain Id: %d"
+msgstr ""
 
 msgid "User terminated!"
 msgstr "Utente disabilitato!"
@@ -4557,11 +4586,11 @@ msgstr "visualizza aliases"
 msgid "You have no users."
 msgstr "Non hai utenti."
 
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s of %2$s MB"
 msgstr ""
 
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s of <b>unlimited</b> MB"
 msgstr ""
 

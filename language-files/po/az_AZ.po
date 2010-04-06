@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: az_AZ\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-20 10:04+0100\n"
+"POT-Creation-Date: 2010-04-05 16:20+0200\n"
 "PO-Revision-Date: 2009-12-18 14:26+0100\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Azerbaijani <az_AZ@li.org>\n"
@@ -831,6 +831,17 @@ msgstr ""
 msgid "(e.g. EUR)"
 msgstr ""
 
+msgid "Term Of Service"
+msgstr ""
+
+msgid ""
+"<b>Optional:</b> Leave this field empty if you do not want term of service "
+"for this hosting plan."
+msgstr ""
+
+msgid "Text Only"
+msgstr ""
+
 msgid "Add plan"
 msgstr ""
 
@@ -853,6 +864,9 @@ msgid "ispCP - Administrator/Edit hosting plan"
 msgstr ""
 
 msgid "Price Style"
+msgstr ""
+
+msgid "Text"
 msgstr ""
 
 msgid "Update plan"
@@ -3676,6 +3690,9 @@ msgid ""
 "instead</small>."
 msgstr ""
 
+msgid "ERROR: PHP extension 'mcrypt' not loaded!"
+msgstr ""
+
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
 "Please try again later."
@@ -3870,6 +3887,12 @@ msgstr ""
 msgid "* denotes mandatory field."
 msgstr ""
 
+msgid "Term of Service"
+msgstr ""
+
+msgid "I Accept The Term of Service"
+msgstr ""
+
 msgid "Your Chart"
 msgstr ""
 
@@ -3880,6 +3903,9 @@ msgid "Personal Data"
 msgstr ""
 
 msgid "Security code was incorrect!"
+msgstr ""
+
+msgid "You have to accept the Term of Service!"
 msgstr ""
 
 msgid "Check Out"
@@ -4259,7 +4285,8 @@ msgstr ""
 msgid "Add other domains to this account"
 msgstr ""
 
-msgid "System error with Domain ID "
+#, php-format
+msgid "System error with Domain Id: %d"
 msgstr ""
 
 msgid "User terminated!"

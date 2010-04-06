@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zh_CN\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-20 10:04+0100\n"
+"POT-Creation-Date: 2010-04-05 16:20+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Chinese (China) <zh_CN@li.org>\n"
@@ -836,6 +836,18 @@ msgstr "描述"
 msgid "(e.g. EUR)"
 msgstr "(例:RMB)"
 
+#, fuzzy
+msgid "Term Of Service"
+msgstr "服务"
+
+msgid ""
+"<b>Optional:</b> Leave this field empty if you do not want term of service "
+"for this hosting plan."
+msgstr ""
+
+msgid "Text Only"
+msgstr ""
+
 msgid "Add plan"
 msgstr "添加项目"
 
@@ -859,6 +871,9 @@ msgstr "ispCP - 管理员/编辑主机项目"
 
 msgid "Price Style"
 msgstr "价格样式"
+
+msgid "Text"
+msgstr ""
 
 msgid "Update plan"
 msgstr "更新项目"
@@ -3824,6 +3839,9 @@ msgid ""
 "instead</small>."
 msgstr ""
 
+msgid "ERROR: PHP extension 'mcrypt' not loaded!"
+msgstr ""
+
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
 "Please try again later."
@@ -4043,6 +4061,13 @@ msgstr "输入地址"
 msgid "* denotes mandatory field."
 msgstr "* 表示必填项。"
 
+#, fuzzy
+msgid "Term of Service"
+msgstr "服务"
+
+msgid "I Accept The Term of Service"
+msgstr ""
+
 msgid "Your Chart"
 msgstr "你的购买清单"
 
@@ -4055,6 +4080,9 @@ msgstr "个人资料"
 #, fuzzy
 msgid "Security code was incorrect!"
 msgstr "错误：验证码不正确"
+
+msgid "You have to accept the Term of Service!"
+msgstr ""
 
 msgid "Check Out"
 msgstr "结算"
@@ -4437,8 +4465,9 @@ msgstr "ispCP - 用户/添加"
 msgid "Add other domains to this account"
 msgstr "添加域名到此账号"
 
-msgid "System error with Domain ID "
-msgstr "系统域名 ID 错误"
+#, fuzzy, php-format
+msgid "System error with Domain Id: %d"
+msgstr ""
 
 msgid "User terminated!"
 msgstr "用户已到期！"
@@ -4474,11 +4503,11 @@ msgstr "查看别名"
 msgid "You have no users."
 msgstr "您还没有用户。"
 
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s of %2$s MB"
 msgstr ""
 
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s of <b>unlimited</b> MB"
 msgstr ""
 

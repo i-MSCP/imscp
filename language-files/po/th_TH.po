@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: th_TH\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-20 10:04+0100\n"
+"POT-Creation-Date: 2010-04-05 16:20+0200\n"
 "PO-Revision-Date: 2009-12-18 14:32+0100\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Thai <th_TH@li.org>\n"
@@ -827,6 +827,17 @@ msgstr ""
 msgid "(e.g. EUR)"
 msgstr "(เช่น : EUR)"
 
+msgid "Term Of Service"
+msgstr ""
+
+msgid ""
+"<b>Optional:</b> Leave this field empty if you do not want term of service "
+"for this hosting plan."
+msgstr ""
+
+msgid "Text Only"
+msgstr ""
+
 msgid "Add plan"
 msgstr "เพิ่ม plan"
 
@@ -849,6 +860,9 @@ msgid "ispCP - Administrator/Edit hosting plan"
 msgstr ""
 
 msgid "Price Style"
+msgstr ""
+
+msgid "Text"
 msgstr ""
 
 msgid "Update plan"
@@ -3696,6 +3710,9 @@ msgid ""
 "instead</small>."
 msgstr ""
 
+msgid "ERROR: PHP extension 'mcrypt' not loaded!"
+msgstr ""
+
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
 "Please try again later."
@@ -3891,6 +3908,12 @@ msgstr ""
 msgid "* denotes mandatory field."
 msgstr "* หมายถึงข้อมูลที่ต้องกรอก"
 
+msgid "Term of Service"
+msgstr ""
+
+msgid "I Accept The Term of Service"
+msgstr ""
+
 msgid "Your Chart"
 msgstr "แผนภูมิของคุณ"
 
@@ -3901,6 +3924,9 @@ msgid "Personal Data"
 msgstr ""
 
 msgid "Security code was incorrect!"
+msgstr ""
+
+msgid "You have to accept the Term of Service!"
 msgstr ""
 
 msgid "Check Out"
@@ -4287,7 +4313,8 @@ msgstr ""
 msgid "Add other domains to this account"
 msgstr "เพิ่มโดเมนอื่นให้บัญชีนี้"
 
-msgid "System error with Domain ID "
+#, php-format
+msgid "System error with Domain Id: %d"
 msgstr ""
 
 msgid "User terminated!"

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ro_RO\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-20 10:04+0100\n"
+"POT-Creation-Date: 2010-04-05 16:20+0200\n"
 "PO-Revision-Date: 2009-12-18 14:32+0100\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Romanian <ro_RO@li.org>\n"
@@ -845,6 +845,18 @@ msgstr "Descriere"
 msgid "(e.g. EUR)"
 msgstr "(ex. EUR)"
 
+#, fuzzy
+msgid "Term Of Service"
+msgstr "Serviciu"
+
+msgid ""
+"<b>Optional:</b> Leave this field empty if you do not want term of service "
+"for this hosting plan."
+msgstr ""
+
+msgid "Text Only"
+msgstr ""
+
 msgid "Add plan"
 msgstr "Adauga plan"
 
@@ -868,6 +880,9 @@ msgstr "ispCP - Administrator/Editare plan hosting"
 
 msgid "Price Style"
 msgstr "Stil pret"
+
+msgid "Text"
+msgstr ""
 
 msgid "Update plan"
 msgstr "Actualizeaza plan"
@@ -3863,6 +3878,9 @@ msgid ""
 "instead</small>."
 msgstr ""
 
+msgid "ERROR: PHP extension 'mcrypt' not loaded!"
+msgstr ""
+
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
 "Please try again later."
@@ -4106,6 +4124,13 @@ msgstr "Introdu adresa"
 msgid "* denotes mandatory field."
 msgstr "* semnifica campuri obligatorii"
 
+#, fuzzy
+msgid "Term of Service"
+msgstr "Serviciu"
+
+msgid "I Accept The Term of Service"
+msgstr ""
+
 msgid "Your Chart"
 msgstr "Cosul Tau"
 
@@ -4118,6 +4143,9 @@ msgstr "Date Personale"
 #, fuzzy
 msgid "Security code was incorrect!"
 msgstr "EROARE: Cod de securitate incorect"
+
+msgid "You have to accept the Term of Service!"
+msgstr ""
 
 msgid "Check Out"
 msgstr "Verifica"
@@ -4519,8 +4547,9 @@ msgstr "ispCP - Utilizator/Adauga utilizator"
 msgid "Add other domains to this account"
 msgstr "Adauga alte domenii acestui cont"
 
-msgid "System error with Domain ID "
-msgstr "Eroare sistem cu Id Domeniu"
+#, fuzzy, php-format
+msgid "System error with Domain Id: %d"
+msgstr ""
 
 msgid "User terminated!"
 msgstr "Utilizator sters"
@@ -4556,11 +4585,11 @@ msgstr "Alias-e"
 msgid "You have no users."
 msgstr "Nu aveti nici un utilizator."
 
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s of %2$s MB"
 msgstr ""
 
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s of <b>unlimited</b> MB"
 msgstr ""
 

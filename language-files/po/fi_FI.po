@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fi_FI\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-20 10:04+0100\n"
+"POT-Creation-Date: 2010-04-05 16:20+0200\n"
 "PO-Revision-Date: 2009-12-18 14:29+0100\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Finnish <fi_FI@li.org>\n"
@@ -838,6 +838,18 @@ msgstr "Kuvaus"
 msgid "(e.g. EUR)"
 msgstr "(esim. EUR)"
 
+#, fuzzy
+msgid "Term Of Service"
+msgstr "Palvelu"
+
+msgid ""
+"<b>Optional:</b> Leave this field empty if you do not want term of service "
+"for this hosting plan."
+msgstr ""
+
+msgid "Text Only"
+msgstr ""
+
 msgid "Add plan"
 msgstr "Lisää paketti"
 
@@ -861,6 +873,9 @@ msgstr "ispCP - Ylläpito / Muokkaa hosting-pakettia"
 
 msgid "Price Style"
 msgstr "Hinnan tyyli"
+
+msgid "Text"
+msgstr ""
 
 msgid "Update plan"
 msgstr "Päivitä paketti"
@@ -3834,6 +3849,9 @@ msgid ""
 "instead</small>."
 msgstr ""
 
+msgid "ERROR: PHP extension 'mcrypt' not loaded!"
+msgstr ""
+
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
 "Please try again later."
@@ -4071,6 +4089,13 @@ msgstr "Osoite"
 msgid "* denotes mandatory field."
 msgstr "* voi tarkoittaa mitä tahansa merkkiä"
 
+#, fuzzy
+msgid "Term of Service"
+msgstr "Palvelu"
+
+msgid "I Accept The Term of Service"
+msgstr ""
+
 msgid "Your Chart"
 msgstr "Tietueesi"
 
@@ -4082,6 +4107,9 @@ msgstr "Henkiläkohtaiset tiedot"
 
 msgid "Security code was incorrect!"
 msgstr "Tarkistuskoodi on virheellinen!"
+
+msgid "You have to accept the Term of Service!"
+msgstr ""
 
 msgid "Check Out"
 msgstr "Kuittaus"
@@ -4465,8 +4493,9 @@ msgstr "ispCP - Käyttäjät / Lisää käyttäjä"
 msgid "Add other domains to this account"
 msgstr "Lisää muita domaineja tälle tunnukselle"
 
-msgid "System error with Domain ID "
-msgstr "Järjestelmävirhe Domain ID:n kanssa"
+#, fuzzy, php-format
+msgid "System error with Domain Id: %d"
+msgstr ""
 
 msgid "User terminated!"
 msgstr "Käyttäjä poistettu!"
@@ -4502,11 +4531,11 @@ msgstr "Näytä aliakset"
 msgid "You have no users."
 msgstr "Sinulla ei ole käyttäjiä."
 
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s of %2$s MB"
 msgstr ""
 
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s of <b>unlimited</b> MB"
 msgstr ""
 

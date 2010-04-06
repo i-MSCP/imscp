@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pt_PT\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-28 18:14+0200\n"
+"POT-Creation-Date: 2010-04-05 16:20+0200\n"
 "PO-Revision-Date: 2010-02-25 00:42+0000\n"
 "Last-Translator: Bruno Carvalho <bruno.carvalho@xcla.net>\n"
 "Language-Team: Portuguese <>\n"
@@ -844,6 +844,18 @@ msgstr "Descrição"
 msgid "(e.g. EUR)"
 msgstr "(e.g. EUR)"
 
+#, fuzzy
+msgid "Term Of Service"
+msgstr "Serviço"
+
+msgid ""
+"<b>Optional:</b> Leave this field empty if you do not want term of service "
+"for this hosting plan."
+msgstr ""
+
+msgid "Text Only"
+msgstr ""
+
 msgid "Add plan"
 msgstr "Adicionar plano"
 
@@ -867,6 +879,9 @@ msgstr "ispCP - Administrador/Editar plano de alojamento"
 
 msgid "Price Style"
 msgstr "Estilo de Preço"
+
+msgid "Text"
+msgstr ""
 
 msgid "Update plan"
 msgstr "Actualizar plano"
@@ -3856,6 +3871,9 @@ msgstr ""
 "<br /><small>Exemplo: para a etiqueta ACE <b>xn--bcher-kva</b> use "
 "<b>bücher</b></small>."
 
+msgid "ERROR: PHP extension 'mcrypt' not loaded!"
+msgstr ""
+
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
 "Please try again later."
@@ -4095,6 +4113,13 @@ msgstr "Introduzir endereço"
 msgid "* denotes mandatory field."
 msgstr "* é um campo obrigatório."
 
+#, fuzzy
+msgid "Term of Service"
+msgstr "Serviço"
+
+msgid "I Accept The Term of Service"
+msgstr ""
+
 msgid "Your Chart"
 msgstr "A sua conta"
 
@@ -4106,6 +4131,9 @@ msgstr "Dados Pessoais"
 
 msgid "Security code was incorrect!"
 msgstr "Código de segurança é incorrecto!"
+
+msgid "You have to accept the Term of Service!"
+msgstr ""
 
 msgid "Check Out"
 msgstr "Verificar"
@@ -4492,8 +4520,9 @@ msgstr "ispCP - Utilizador/Adicionar utilizador"
 msgid "Add other domains to this account"
 msgstr "Adicionar outros domínios para esta conta"
 
-msgid "System error with Domain ID "
-msgstr "Erro do sistema com este ID de domínio"
+#, fuzzy, php-format
+msgid "System error with Domain Id: %d"
+msgstr ""
 
 msgid "User terminated!"
 msgstr "Utilizador terminado!"
@@ -4529,13 +4558,13 @@ msgstr "Ver aliases"
 msgid "You have no users."
 msgstr "Não têm nenhuns utilizadores."
 
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s of %2$s MB"
-msgstr "%1$d%% [%2$s de %3$s]"
+msgstr ""
 
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s of <b>unlimited</b> MB"
-msgstr "%1$s / %2$s de <b>ilimitado</b>"
+msgstr ""
 
 msgid "User data updated!"
 msgstr "Informação de utilizador actualizada!"

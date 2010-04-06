@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eu_ES\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-20 10:04+0100\n"
+"POT-Creation-Date: 2010-04-05 16:20+0200\n"
 "PO-Revision-Date: 2009-12-18 14:29+0100\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Basque (Spain) <eu@li.org>\n"
@@ -848,6 +848,18 @@ msgstr "Deskribapena"
 msgid "(e.g. EUR)"
 msgstr "(adib. EUR)"
 
+#, fuzzy
+msgid "Term Of Service"
+msgstr "Zerbitzua"
+
+msgid ""
+"<b>Optional:</b> Leave this field empty if you do not want term of service "
+"for this hosting plan."
+msgstr ""
+
+msgid "Text Only"
+msgstr ""
+
 msgid "Add plan"
 msgstr "Gehitu plana"
 
@@ -871,6 +883,9 @@ msgstr "ispCP - Administraria/Aldatu hostatze plana"
 
 msgid "Price Style"
 msgstr "Salneurri mota"
+
+msgid "Text"
+msgstr ""
 
 msgid "Update plan"
 msgstr "Eguneratu plana"
@@ -3840,6 +3855,9 @@ msgstr ""
 "<br /><small>Adibidez: <b>xn--bcher-kva</b> etiketa erabili <b>bücher</b> "
 "ordez ACE etiketan</small>"
 
+msgid "ERROR: PHP extension 'mcrypt' not loaded!"
+msgstr ""
+
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
 "Please try again later."
@@ -4076,6 +4094,13 @@ msgstr "Sartu Helbideak"
 msgid "* denotes mandatory field."
 msgstr "* beharrezkoa esan nahi du."
 
+#, fuzzy
+msgid "Term of Service"
+msgstr "Zerbitzua"
+
+msgid "I Accept The Term of Service"
+msgstr ""
+
 msgid "Your Chart"
 msgstr "Zure grafikoa"
 
@@ -4087,6 +4112,9 @@ msgstr "Datu Pertsonalak"
 
 msgid "Security code was incorrect!"
 msgstr "Segurtasun kodea ez da zuzena!"
+
+msgid "You have to accept the Term of Service!"
+msgstr ""
 
 msgid "Check Out"
 msgstr "Atera"
@@ -4474,8 +4502,9 @@ msgstr "ispCP - Erabiltzailea/Gehitu erabiltzailea"
 msgid "Add other domains to this account"
 msgstr "Gehitu beste domeinuak kontu honetara"
 
-msgid "System error with Domain ID "
-msgstr "Sistema akatsa ID domeinuarekin "
+#, fuzzy, php-format
+msgid "System error with Domain Id: %d"
+msgstr ""
 
 msgid "User terminated!"
 msgstr "Erabiltzaile amaitua!"
@@ -4511,11 +4540,11 @@ msgstr "Ikusi ezizenal"
 msgid "You have no users."
 msgstr "Ez daukazu erabiltzailerik."
 
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s of %2$s MB"
 msgstr ""
 
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s of <b>unlimited</b> MB"
 msgstr ""
 

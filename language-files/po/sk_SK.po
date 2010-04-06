@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: sk_SK\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-20 10:04+0100\n"
+"POT-Creation-Date: 2010-04-05 16:20+0200\n"
 "PO-Revision-Date: 2009-12-18 14:32+0100\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -879,6 +879,18 @@ msgstr "Popis"
 msgid "(e.g. EUR)"
 msgstr "(napr. EURO)"
 
+#, fuzzy
+msgid "Term Of Service"
+msgstr "Služba"
+
+msgid ""
+"<b>Optional:</b> Leave this field empty if you do not want term of service "
+"for this hosting plan."
+msgstr ""
+
+msgid "Text Only"
+msgstr ""
+
 msgid "Add plan"
 msgstr "Pridať plán"
 
@@ -906,6 +918,9 @@ msgstr "ispCP - Administrátor/Upraviť hostingový plán"
 
 msgid "Price Style"
 msgstr "Cenový štýl"
+
+msgid "Text"
+msgstr ""
 
 msgid "Update plan"
 msgstr "Aktualizovať plán"
@@ -3899,6 +3914,9 @@ msgid ""
 "instead</small>."
 msgstr ""
 
+msgid "ERROR: PHP extension 'mcrypt' not loaded!"
+msgstr ""
+
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
 "Please try again later."
@@ -4130,6 +4148,13 @@ msgstr "Zadajte adresu"
 msgid "* denotes mandatory field."
 msgstr "* označuje povinnú položku"
 
+#, fuzzy
+msgid "Term of Service"
+msgstr "Služba"
+
+msgid "I Accept The Term of Service"
+msgstr ""
+
 msgid "Your Chart"
 msgstr "Vaša schéma"
 
@@ -4142,6 +4167,9 @@ msgstr "Osobné údaje"
 #, fuzzy
 msgid "Security code was incorrect!"
 msgstr "CHYBA: Bezpečnostný kód nebol správny!"
+
+msgid "You have to accept the Term of Service!"
+msgstr ""
 
 msgid "Check Out"
 msgstr "Skontrolovať"
@@ -4545,8 +4573,9 @@ msgstr "ispCP - Užívateľ/Pridať užívateľa"
 msgid "Add other domains to this account"
 msgstr "Pridaž ostatné domény k tomuto kontu"
 
-msgid "System error with Domain ID "
-msgstr "Systémová chyba s doménovým ID"
+#, fuzzy, php-format
+msgid "System error with Domain Id: %d"
+msgstr ""
 
 msgid "User terminated!"
 msgstr "Užívateľ zrušený!"
@@ -4584,11 +4613,11 @@ msgstr "zozbraziť aliasy"
 msgid "You have no users."
 msgstr "Nemáte žiadneho užívateľa."
 
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s of %2$s MB"
 msgstr ""
 
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s of <b>unlimited</b> MB"
 msgstr ""
 

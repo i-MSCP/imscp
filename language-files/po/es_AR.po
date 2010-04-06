@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es_AR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-20 10:04+0100\n"
+"POT-Creation-Date: 2010-04-05 16:20+0200\n"
 "PO-Revision-Date: 2009-12-18 14:29+0100\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Spanish Argentina <es_AR@li.org>\n"
@@ -865,6 +865,18 @@ msgstr "Descripcion"
 msgid "(e.g. EUR)"
 msgstr "(Ej. EUR)"
 
+#, fuzzy
+msgid "Term Of Service"
+msgstr "Servicio"
+
+msgid ""
+"<b>Optional:</b> Leave this field empty if you do not want term of service "
+"for this hosting plan."
+msgstr ""
+
+msgid "Text Only"
+msgstr ""
+
 msgid "Add plan"
 msgstr "Añadir Plan"
 
@@ -891,6 +903,9 @@ msgstr "ispCP - Administrator/Modificar plan de hosting"
 #, fuzzy
 msgid "Price Style"
 msgstr "Precio"
+
+msgid "Text"
+msgstr ""
 
 msgid "Update plan"
 msgstr "Actualizar plan"
@@ -1438,7 +1453,7 @@ msgstr ""
 msgid "If you want to limit the reseller, you must first limit its customers!"
 msgstr "Si quiere limitar al reseller, primero debe limitar sus usuarios!<br>"
 
-#, fuzzy, php-format
+#, php-format
 msgid "This reseller has domains assigned to the <b>%s</b> address!"
 msgstr ""
 
@@ -3851,6 +3866,9 @@ msgid ""
 "instead</small>."
 msgstr ""
 
+msgid "ERROR: PHP extension 'mcrypt' not loaded!"
+msgstr ""
+
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
 "Please try again later."
@@ -4064,6 +4082,13 @@ msgstr "Ingrese dirección"
 msgid "* denotes mandatory field."
 msgstr "* indica campo obligatorio."
 
+#, fuzzy
+msgid "Term of Service"
+msgstr "Servicio"
+
+msgid "I Accept The Term of Service"
+msgstr ""
+
 msgid "Your Chart"
 msgstr "Su gráfico"
 
@@ -4076,6 +4101,9 @@ msgstr "Datos personales"
 #, fuzzy
 msgid "Security code was incorrect!"
 msgstr "Código de seguridad"
+
+msgid "You have to accept the Term of Service!"
+msgstr ""
 
 msgid "Check Out"
 msgstr "Verificar"
@@ -4480,7 +4508,8 @@ msgstr "ispCP - Usuario/Añadir usuario"
 msgid "Add other domains to this account"
 msgstr "Añadir otros dominios a esta cuenta"
 
-msgid "System error with Domain ID "
+#, php-format
+msgid "System error with Domain Id: %d"
 msgstr ""
 
 msgid "User terminated!"

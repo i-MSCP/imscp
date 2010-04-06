@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: uk_UA\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-20 10:04+0100\n"
+"POT-Creation-Date: 2010-04-05 16:20+0200\n"
 "PO-Revision-Date: 2009-12-18 14:32+0100\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Ukrainian <uk_UA@li.org>\n"
@@ -868,6 +868,18 @@ msgstr "Опис"
 msgid "(e.g. EUR)"
 msgstr "(Наприклад, UAH)"
 
+#, fuzzy
+msgid "Term Of Service"
+msgstr "Сервіс"
+
+msgid ""
+"<b>Optional:</b> Leave this field empty if you do not want term of service "
+"for this hosting plan."
+msgstr ""
+
+msgid "Text Only"
+msgstr ""
+
 msgid "Add plan"
 msgstr "Додати план"
 
@@ -894,6 +906,9 @@ msgstr "ispCP - Адміністратор/Редагування хостінг
 #, fuzzy
 msgid "Price Style"
 msgstr "Ціна"
+
+msgid "Text"
+msgstr ""
 
 msgid "Update plan"
 msgstr "Оновити план"
@@ -3850,6 +3865,9 @@ msgid ""
 "instead</small>."
 msgstr ""
 
+msgid "ERROR: PHP extension 'mcrypt' not loaded!"
+msgstr ""
+
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
 "Please try again later."
@@ -4064,6 +4082,13 @@ msgstr "Введіть адресу"
 msgid "* denotes mandatory field."
 msgstr "* позначені обов'язкові для заповнення поля"
 
+#, fuzzy
+msgid "Term of Service"
+msgstr "Сервіс"
+
+msgid "I Accept The Term of Service"
+msgstr ""
+
 msgid "Your Chart"
 msgstr "Ваша схема"
 
@@ -4076,6 +4101,9 @@ msgstr "Персональні дані"
 #, fuzzy
 msgid "Security code was incorrect!"
 msgstr "ПОМИЛКА: Невірний код безпеки!"
+
+msgid "You have to accept the Term of Service!"
+msgstr ""
 
 msgid "Check Out"
 msgstr "Перевірено"
@@ -4480,7 +4508,8 @@ msgstr "ispCP - Користувач/Додавання користувача"
 msgid "Add other domains to this account"
 msgstr "Додати інші домени до цього облікового запису"
 
-msgid "System error with Domain ID "
+#, php-format
+msgid "System error with Domain Id: %d"
 msgstr ""
 
 msgid "User terminated!"

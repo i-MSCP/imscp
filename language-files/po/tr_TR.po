@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: v1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-20 10:04+0100\n"
+"POT-Creation-Date: 2010-04-05 16:20+0200\n"
 "PO-Revision-Date: 2009-12-15 01:27+0100\n"
 "Last-Translator: Seviye Kaloğlu <seviye@gmail.com>\n"
 "Language-Team: Turkish <tr_TR@li.org>\n"
@@ -839,6 +839,18 @@ msgstr "Tanımlama"
 msgid "(e.g. EUR)"
 msgstr "(örn. EUR)"
 
+#, fuzzy
+msgid "Term Of Service"
+msgstr "Servis"
+
+msgid ""
+"<b>Optional:</b> Leave this field empty if you do not want term of service "
+"for this hosting plan."
+msgstr ""
+
+msgid "Text Only"
+msgstr ""
+
 msgid "Add plan"
 msgstr "Plan ekle"
 
@@ -862,6 +874,9 @@ msgstr "ispCP - Yönetici/Hosting planı düzenle"
 
 msgid "Price Style"
 msgstr "Ücret tipi"
+
+msgid "Text"
+msgstr ""
 
 msgid "Update plan"
 msgstr "Planı güncelle"
@@ -3808,6 +3823,9 @@ msgstr ""
 "formatında yazınız.<br /><small>Örnek: <strong>xn--bcher-kva.de</strong> "
 "yerine <strong>bücher.de</strong>.</small>"
 
+msgid "ERROR: PHP extension 'mcrypt' not loaded!"
+msgstr ""
+
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
 "Please try again later."
@@ -4045,6 +4063,13 @@ msgstr "Adres giriniz"
 msgid "* denotes mandatory field."
 msgstr "* zorunlu alanları gösterir."
 
+#, fuzzy
+msgid "Term of Service"
+msgstr "Servis"
+
+msgid "I Accept The Term of Service"
+msgstr ""
+
 msgid "Your Chart"
 msgstr "Grafiğiniz"
 
@@ -4056,6 +4081,9 @@ msgstr "Kişisel Bilgi"
 
 msgid "Security code was incorrect!"
 msgstr "HATA: Güvenlik kodu doğru değil!"
+
+msgid "You have to accept the Term of Service!"
+msgstr ""
 
 msgid "Check Out"
 msgstr "Ödeme"
@@ -4437,8 +4465,9 @@ msgstr "ispCP - Kullanıcı/Kullanıcı Ekle"
 msgid "Add other domains to this account"
 msgstr "Bu hesaba başka domain ekle"
 
-msgid "System error with Domain ID "
-msgstr "Domain ID ile ilgili bir sistem hatası oluştu"
+#, fuzzy, php-format
+msgid "System error with Domain Id: %d"
+msgstr ""
 
 msgid "User terminated!"
 msgstr "Kullanıcı sona erdirildi."
@@ -4474,11 +4503,11 @@ msgstr "Aliasları göster"
 msgid "You have no users."
 msgstr "Kullanıcınız yok."
 
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s of %2$s MB"
 msgstr ""
 
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s of <b>unlimited</b> MB"
 msgstr ""
 

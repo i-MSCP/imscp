@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bg_BG\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-20 10:04+0100\n"
+"POT-Creation-Date: 2010-04-05 16:20+0200\n"
 "PO-Revision-Date: 2009-12-18 14:26+0100\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Bulgarian <bg_BG@li.org>\n"
@@ -853,6 +853,18 @@ msgstr "Описание"
 msgid "(e.g. EUR)"
 msgstr "(например EUR)"
 
+#, fuzzy
+msgid "Term Of Service"
+msgstr "Служба"
+
+msgid ""
+"<b>Optional:</b> Leave this field empty if you do not want term of service "
+"for this hosting plan."
+msgstr ""
+
+msgid "Text Only"
+msgstr ""
+
 msgid "Add plan"
 msgstr "Добави план"
 
@@ -876,6 +888,9 @@ msgstr "ispCP - Администратор/Редакция на хостинг-
 
 msgid "Price Style"
 msgstr "Стил цени"
+
+msgid "Text"
+msgstr ""
 
 msgid "Update plan"
 msgstr "Промяна план"
@@ -3896,6 +3911,9 @@ msgid ""
 "instead</small>."
 msgstr ""
 
+msgid "ERROR: PHP extension 'mcrypt' not loaded!"
+msgstr ""
+
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
 "Please try again later."
@@ -4140,6 +4158,13 @@ msgstr "Въведете Адрес"
 msgid "* denotes mandatory field."
 msgstr "* обозначава задължителните полета."
 
+#, fuzzy
+msgid "Term of Service"
+msgstr "Служба"
+
+msgid "I Accept The Term of Service"
+msgstr ""
+
 msgid "Your Chart"
 msgstr "Вашия График"
 
@@ -4152,6 +4177,9 @@ msgstr "Персоналниданни"
 #, fuzzy
 msgid "Security code was incorrect!"
 msgstr "Грешка: Секретният код е неправилен!"
+
+msgid "You have to accept the Term of Service!"
+msgstr ""
 
 msgid "Check Out"
 msgstr "Плащане"
@@ -4551,8 +4579,9 @@ msgstr "ispCP - Потребитеи/Добави потребител"
 msgid "Add other domains to this account"
 msgstr "Добавите другие домейн  към този акаунт"
 
-msgid "System error with Domain ID "
-msgstr "Системна Грешка с Домайн ID "
+#, fuzzy, php-format
+msgid "System error with Domain Id: %d"
+msgstr ""
 
 msgid "User terminated!"
 msgstr "Потребителя е закрит!"
@@ -4588,11 +4617,11 @@ msgstr "Преглед псевдоними"
 msgid "You have no users."
 msgstr "Нямате потребители."
 
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s of %2$s MB"
 msgstr ""
 
-#, fuzzy, php-format
+#, php-format
 msgid "%1$s of <b>unlimited</b> MB"
 msgstr ""
 
