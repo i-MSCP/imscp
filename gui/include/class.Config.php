@@ -127,7 +127,6 @@ final class Config {
 			}
 		}
 
-		print_r(self::$_values);
 		return true;
 	}
 }
