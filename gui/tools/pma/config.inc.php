@@ -103,4 +103,6 @@ $cfg['GD2Available'] 					= 'yes';
 $cfg['BrowseMIME'] 						= true;
 /* Changes the default Theme */
 $cfg['ThemeDefault'] 					= 'omega';
+/* switch off new 'hex as binaray' mode */
+$cfg['DisplayBinaryAsHex'] 				= false;
 ?>
