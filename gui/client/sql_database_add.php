@@ -33,7 +33,7 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::get('CLIENT_TEMPLATE_PATH') . '/sql_database_add.tpl');
+$tpl->define_dynamic('page', Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/sql_database_add.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('mysql_prefix_no', 'page');
@@ -45,9 +45,9 @@ $tpl->define_dynamic('mysql_prefix_all', 'page');
 // page functions.
 
 function gen_page_post_data(&$tpl) {
-	if (Config::get('MYSQL_PREFIX') === 'yes') {
+	if (Config::getInstance()->get('MYSQL_PREFIX') === 'yes') {
 		$tpl->assign('MYSQL_PREFIX_YES', '');
-		if (Config::get('MYSQL_PREFIX_TYPE') === 'behind') {
+		if (Config::getInstance()->get('MYSQL_PREFIX_TYPE') === 'behind') {
 			$tpl->assign('MYSQL_PREFIX_INFRONT', '');
 			$tpl->parse('MYSQL_PREFIX_BEHIND', 'mysql_prefix_behind');
 			$tpl->assign('MYSQL_PREFIX_ALL', '');
@@ -121,7 +121,7 @@ function add_sql_database(&$sql, $user_id) {
 		$db_name = clean_input($_POST['db_name']);
 	}
 
-	if (strlen($db_name) > Config::get('MAX_SQL_DATABASE_LENGTH')) {
+	if (strlen($db_name) > Config::getInstance()->get('MAX_SQL_DATABASE_LENGTH')) {
 		set_page_message(tr('Database name is too long!'));
 		return;
 	}
@@ -199,7 +199,7 @@ function check_sql_permissions($sql, $user_id) {
 	}
 }
 
-$theme_color = Config::get('USER_INITIAL_THEME');
+$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
 $tpl->assign(
 	array(
@@ -218,8 +218,8 @@ gen_page_post_data($tpl);
 
 add_sql_database($sql, $_SESSION['user_id']);
 
-gen_client_mainmenu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/main_menu_manage_sql.tpl');
-gen_client_menu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/menu_manage_sql.tpl');
+gen_client_mainmenu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/main_menu_manage_sql.tpl');
+gen_client_menu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/menu_manage_sql.tpl');
 
 gen_logged_from($tpl);
 
@@ -241,6 +241,6 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) {
+if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
 }

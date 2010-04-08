@@ -102,7 +102,7 @@ $query = "
 		`ip_id` = ?
 	LIMIT 1
 ";
-$rs = exec_query($sql, $query, array(Config::get('ITEM_DELETE_STATUS'), $delete_id));
+$rs = exec_query($sql, $query, array(Config::getInstance()->get('ITEM_DELETE_STATUS'), $delete_id));
 
 send_request();
 

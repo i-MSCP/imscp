@@ -32,7 +32,7 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-if (strtolower(Config::get('HOSTING_PLANS_LEVEL')) != 'admin') {
+if (strtolower(Config::getInstance()->get('HOSTING_PLANS_LEVEL')) != 'admin') {
 	user_goto('index.php');
 }
 

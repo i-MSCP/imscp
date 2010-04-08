@@ -89,7 +89,7 @@ class vfs {
 		$this->_db = &$db;
 
 		if (!defined("VFS_TMP_DIR")) {
-			define("VFS_TMP_DIR", Config::get('GUI_ROOT_DIR') . '/phptmp');
+			define("VFS_TMP_DIR", Config::getInstance()->get('GUI_ROOT_DIR') . '/phptmp');
 		}
 		$_ENV['PHP_TMPDIR'] = VFS_TMP_DIR;
 		$_ENV['TMPDIR'] = VFS_TMP_DIR;
@@ -143,7 +143,7 @@ class vfs {
 			VALUES
 				(?, ?, ?, ?, ?, ?);";
 		$rs = exec_query($this->_db, $query, array($user, $passwd, $rs->fields['domain_uid'], $rs->fields['domain_gid'],
-				Config::get('CMD_SHELL'), Config::get('FTP_HOMEDIR') . '/' . $this->_domain
+				Config::getInstance()->get('CMD_SHELL'), Config::getInstance()->get('FTP_HOMEDIR') . '/' . $this->_domain
 				));
 		if (!$rs) {
 			return false;

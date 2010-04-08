@@ -117,7 +117,7 @@ function is_userdomain_ok($username) {
 
 	$row = $res->FetchRow();
 
-	return ($row['domain_status'] == Config::get('ITEM_OK_STATUS'));
+	return ($row['domain_status'] == Config::getInstance()->get('ITEM_OK_STATUS'));
 }
 
 /**
@@ -130,7 +130,7 @@ function unblock($timeout = null, $type = 'bruteforce') {
 	$sql = Database::getInstance();
 
 	if ($timeout === null) {
-		$timeout = Config::get('BRUTEFORCE_BLOCK_TIME');
+		$timeout = Config::getInstance()->get('BRUTEFORCE_BLOCK_TIME');
 	}
 
 	$max = 0;
@@ -140,11 +140,11 @@ function unblock($timeout = null, $type = 'bruteforce') {
 	switch ($type) {
 		case 'bruteforce':
 			$query = "UPDATE `login` SET `login_count` = '1' WHERE `login_count` >= ? AND `lastaccess` < ? AND `user_name` is NULL";
-			$max = Config::get('BRUTEFORCE_MAX_LOGIN');
+			$max = Config::getInstance()->get('BRUTEFORCE_MAX_LOGIN');
 			break;
 		case 'captcha':
 			$query = "UPDATE `login` SET `captcha_count` = '1' WHERE `captcha_count` >= ? AND `lastaccess` < ? AND `user_name` is NULL";
-			$max = Config::get('BRUTEFORCE_MAX_CAPTCHA');
+			$max = Config::getInstance()->get('BRUTEFORCE_MAX_CAPTCHA');
 			break;
 		default:
 			write_log(sprintf('FIXME: %s:%d' . "\n" . 'Unknown unblock reason %s',__FILE__, __LINE__, $type));
@@ -175,11 +175,11 @@ function is_ipaddr_blocked($ipaddr = null, $type = 'bruteforce', $autodeny = fal
 	switch ($type) {
 		case 'bruteforce':
 			$query = "SELECT * FROM `login` WHERE `ipaddr` = ? AND `login_count` = ?";
-			$max = Config::get('BRUTEFORCE_MAX_LOGIN');
+			$max = Config::getInstance()->get('BRUTEFORCE_MAX_LOGIN');
 			break;
 		case 'captcha':
 			$query = "SELECT * FROM `login` WHERE `ipaddr` = ? AND `captcha_count` = ?";
-			$max = Config::get('BRUTEFORCE_MAX_CAPTCHA');
+			$max = Config::getInstance()->get('BRUTEFORCE_MAX_CAPTCHA');
 			break;
 		default:
 			write_log(sprintf('FIXME: %s:%d' . "\n" . 'Unknown block reason %s',__FILE__, __LINE__, $type));
@@ -207,7 +207,7 @@ function is_ipaddr_blocked($ipaddr = null, $type = 'bruteforce', $autodeny = fal
 function shall_user_wait($ipaddr = null, $displayMessage = true) {
 	$sql = Database::getInstance();
 
-	if (!Config::get('BRUTEFORCE')) {
+	if (!Config::getInstance()->get('BRUTEFORCE')) {
 		return false;
 	}
 	if ($ipaddr === null) {
@@ -225,15 +225,15 @@ function shall_user_wait($ipaddr = null, $displayMessage = true) {
 
 	$lastaccess = $data['lastaccess'];
 
-	if (Config::get('BRUTEFORCE_BETWEEN')) {
-		$btime = $lastaccess + Config::get('BRUTEFORCE_BETWEEN_TIME');
+	if (Config::getInstance()->get('BRUTEFORCE_BETWEEN')) {
+		$btime = $lastaccess + Config::getInstance()->get('BRUTEFORCE_BETWEEN_TIME');
 	} else {
 		return false;
 	}
 
 	if ($btime > time()) {
 		if ($displayMessage) {
-			$backButtonDestination = Config::get('BASE_SERVER_VHOST_PREFIX') . Config::get('BASE_SERVER_VHOST');
+			$backButtonDestination = Config::getInstance()->get('BASE_SERVER_VHOST_PREFIX') . Config::getInstance()->get('BASE_SERVER_VHOST');
 			system_message(tr('You have to wait %d seconds.', $btime - time()), $backButtonDestination);
 		}
 		return true;
@@ -272,18 +272,18 @@ function check_ipaddr($ipaddr = null, $type = "bruteforce") {
 	$logincount = $data['login_count'];
 	$captchacount = $data['captcha_count'];
 
-	if ($type == 'bruteforce' && Config::get('BRUTEFORCE')
-		&& $logincount > Config::get('BRUTEFORCE_MAX_LOGIN')) {
+	if ($type == 'bruteforce' && Config::getInstance()->get('BRUTEFORCE')
+		&& $logincount > Config::getInstance()->get('BRUTEFORCE_MAX_LOGIN')) {
 		block_ipaddr($ipaddr, 'Login');
 	}
 
-	if ($type == 'captcha' && Config::get('BRUTEFORCE')
-		&& $captchacount > Config::get('BRUTEFORCE_MAX_CAPTCHA') && Config::get('BRUTEFORCE')) {
+	if ($type == 'captcha' && Config::getInstance()->get('BRUTEFORCE')
+		&& $captchacount > Config::getInstance()->get('BRUTEFORCE_MAX_CAPTCHA') && Config::getInstance()->get('BRUTEFORCE')) {
 		block_ipaddr($ipaddr, 'CAPTCHA');
 	}
 
-	if (Config::get('BRUTEFORCE_BETWEEN')) {
-		$btime = $lastaccess + Config::get('BRUTEFORCE_BETWEEN_TIME');
+	if (Config::getInstance()->get('BRUTEFORCE_BETWEEN')) {
+		$btime = $lastaccess + Config::getInstance()->get('BRUTEFORCE_BETWEEN_TIME');
 	} else {
 		$btime = 0;
 	}
@@ -298,7 +298,7 @@ function check_ipaddr($ipaddr = null, $type = "bruteforce") {
 		exec_query($sql, $query, $ipaddr);
 		return false;
 	} else {
-		$backButtonDestination = Config::get('BASE_SERVER_VHOST_PREFIX') . Config::get('BASE_SERVER_VHOST');
+		$backButtonDestination = Config::getInstance()->get('BASE_SERVER_VHOST_PREFIX') . Config::getInstance()->get('BASE_SERVER_VHOST');
 
 		write_log("Login error, <b><i>$ipaddr</i></b> wait " . ($btime - time()) . " seconds", E_USER_NOTICE);
 		system_message(tr('You have to wait %d seconds.', $btime - time()), $backButtonDestination);
@@ -316,7 +316,7 @@ function check_ipaddr($ipaddr = null, $type = "bruteforce") {
  * @param  String	$type
  */
 function block_ipaddr($ipaddr, $type = 'General') {
-	write_log("$type protection, <b><i> " . htmlspecialchars($ipaddr, ENT_QUOTES, "UTF-8") . "</i></b> blocked for " . Config::get('BRUTEFORCE_BLOCK_TIME') . " minutes.");
+	write_log("$type protection, <b><i> " . htmlspecialchars($ipaddr, ENT_QUOTES, "UTF-8") . "</i></b> blocked for " . Config::getInstance()->get('BRUTEFORCE_BLOCK_TIME') . " minutes.");
 	deny_access();
 }
 
@@ -324,8 +324,8 @@ function block_ipaddr($ipaddr, $type = 'General') {
  * @todo describe function
  */
 function deny_access() {
-	$backButtonDestination =Config::get('BASE_SERVER_VHOST_PREFIX') . Config::get('BASE_SERVER_VHOST');
-	system_message(tr('You have been blocked for %d minutes.', Config::get('BRUTEFORCE_BLOCK_TIME')), $backButtonDestination);
+	$backButtonDestination =Config::getInstance()->get('BASE_SERVER_VHOST_PREFIX') . Config::getInstance()->get('BASE_SERVER_VHOST');
+	system_message(tr('You have been blocked for %d minutes.', Config::getInstance()->get('BRUTEFORCE_BLOCK_TIME')), $backButtonDestination);
 }
 
 /**
@@ -343,7 +343,7 @@ function getipaddr() {
 function do_session_timeout() {
 	$sql = Database::getInstance();
 
-	$ttl = time() - Config::get('SESSION_TIMEOUT') * 60;
+	$ttl = time() - Config::getInstance()->get('SESSION_TIMEOUT') * 60;
 
 	$query = "DELETE FROM `login` WHERE `lastaccess` < ?";
 	exec_query($sql, $query, array($ttl));

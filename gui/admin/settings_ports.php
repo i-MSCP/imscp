@@ -40,12 +40,12 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/settings_ports.tpl');
+$tpl->define_dynamic('page', Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/settings_ports.tpl');
 $tpl->define_dynamic('service_ports', 'page');
 $tpl->define_dynamic('port_delete_link', 'service_ports');
 $tpl->define_dynamic('port_delete_show', 'service_ports');
 
-$theme_color = Config::get('USER_INITIAL_THEME');
+$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
 $tpl->assign(
 	array(
@@ -237,7 +237,7 @@ function show_services(&$tpl, &$sql) {
 				array(
 					'CUSTOM'		=> $custom,
 					'VAR_NAME'		=> $rs->fields['name'],
-					'IP'			=> (($ip == '127.0.0.1') ? 'localhost' : (empty($ip) ? Config::get('BASE_SERVER_IP') : $ip)),
+					'IP'			=> (($ip == '127.0.0.1') ? 'localhost' : (empty($ip) ? Config::getInstance()->get('BASE_SERVER_IP') : $ip)),
 					'PORT'			=> $port,
 					'SELECTED_UDP'	=> $selected_udp,
 					'SELECTED_TCP'	=> $selected_tcp,
@@ -263,8 +263,8 @@ if (isset($_GET['delete'])) {
 
 update_services($sql);
 
-gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_settings.tpl');
-gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_settings.tpl');
+gen_admin_mainmenu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/main_menu_settings.tpl');
+gen_admin_menu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/menu_settings.tpl');
 
 show_services($tpl, $sql);
 
@@ -295,7 +295,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) {
+if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
 }
 unset_messages();

@@ -32,7 +32,7 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-$theme_color = Config::get('USER_INITIAL_THEME');
+$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
 if (isset($_GET['del_id']))
 	$del_id = $_GET['del_id'];
@@ -64,7 +64,7 @@ if ($rs->RecordCount() == 0) {
 }
 
 $alias_name = $rs->fields['alias_name'];
-$delete_status = Config::get('ITEM_DELETE_STATUS');
+$delete_status = Config::getInstance()->get('ITEM_DELETE_STATUS');
 
 /* check for mail acc in ALIAS domain (ALIAS MAIL) and delete them */
 $query = <<<SQL_QUERY
@@ -88,8 +88,8 @@ exec_query($sql, $query, array($delete_status, $del_id, $del_id));
 $res = exec_query($sql, "SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id` = ?", array($del_id));
 $dat = $res->FetchRow();
 
-exec_query($sql, "UPDATE `subdomain_alias` SET `subdomain_alias_status` = '" . Config::get('ITEM_DELETE_STATUS') . "' WHERE `alias_id` = ?", array($del_id));
-exec_query($sql, "UPDATE `domain_aliasses` SET `alias_status` = '" . Config::get('ITEM_DELETE_STATUS') . "' WHERE `alias_id` = ?", array($del_id));
+exec_query($sql, "UPDATE `subdomain_alias` SET `subdomain_alias_status` = '" . Config::getInstance()->get('ITEM_DELETE_STATUS') . "' WHERE `alias_id` = ?", array($del_id));
+exec_query($sql, "UPDATE `domain_aliasses` SET `alias_status` = '" . Config::getInstance()->get('ITEM_DELETE_STATUS') . "' WHERE `alias_id` = ?", array($del_id));
 
 update_reseller_c_props($reseller_id);
 

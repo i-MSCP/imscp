@@ -31,7 +31,7 @@
 require '../include/ispcp-lib.php';
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::get('PURCHASE_TEMPLATE_PATH') . '/chart.tpl');
+$tpl->define_dynamic('page', Config::getInstance()->get('PURCHASE_TEMPLATE_PATH') . '/chart.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('purchase_header', 'page');
 $tpl->define_dynamic('tos_field', 'page');
@@ -43,8 +43,8 @@ $tpl->define_dynamic('purchase_footer', 'page');
  */
 
 function gen_chart(&$tpl, &$sql, $user_id, $plan_id) {
-	if (Config::exists('HOSTING_PLANS_LEVEL')
-		&& Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
+	if (Config::getInstance()->exists('HOSTING_PLANS_LEVEL')
+		&& Config::getInstance()->get('HOSTING_PLANS_LEVEL') === 'admin') {
 		$query = "
 			SELECT
 				*
@@ -206,7 +206,7 @@ $tpl->assign(
 		'TR_PERSONAL_DATA' => tr('Personal Data'),
 		'TR_CAPCODE' => tr('Security code'),
 		'TR_IMGCAPCODE_DESCRIPTION' => tr('(To avoid abuse, we ask you to write the combination of letters on the above picture into the field "Security code")'),
-		'TR_IMGCAPCODE' => '<img src="/imagecode.php" width="' . Config::get('LOSTPASSWORD_CAPTCHA_WIDTH') . '" height="' . Config::get('LOSTPASSWORD_CAPTCHA_HEIGHT') . '" border="0" alt="captcha image">',
+		'TR_IMGCAPCODE' => '<img src="/imagecode.php" width="' . Config::getInstance()->get('LOSTPASSWORD_CAPTCHA_WIDTH') . '" height="' . Config::getInstance()->get('LOSTPASSWORD_CAPTCHA_HEIGHT') . '" border="0" alt="captcha image">',
 		'THEME_CHARSET' => tr('encoding'),
 	)
 );
@@ -214,7 +214,7 @@ $tpl->assign(
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) {
+if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
 }
 

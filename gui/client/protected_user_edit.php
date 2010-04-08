@@ -37,7 +37,7 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::get('CLIENT_TEMPLATE_PATH') . '/puser_edit.tpl');
+$tpl->define_dynamic('page', Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/puser_edit.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('usr_msg', 'page');
 $tpl->define_dynamic('grp_msg', 'page');
@@ -45,7 +45,7 @@ $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('pusres', 'page');
 $tpl->define_dynamic('pgroups', 'page');
 
-$theme_color = Config::get('USER_INITIAL_THEME');
+$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
 $tpl->assign(
 	array(
@@ -61,10 +61,10 @@ function pedit_user(&$tpl, &$sql, &$dmn_id, &$uuser_id) {
 		// we have to add the user
 		if (isset($_POST['pass']) && isset($_POST['pass_rep'])) {
 			if (!chk_password($_POST['pass'])) {
-				if (Config::get('PASSWD_STRONG')) {
-					set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), Config::get('PASSWD_CHARS')));
+				if (Config::getInstance()->get('PASSWD_STRONG')) {
+					set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), Config::getInstance()->get('PASSWD_CHARS')));
 				} else {
-					set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), Config::get('PASSWD_CHARS')));
+					set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), Config::getInstance()->get('PASSWD_CHARS')));
 				}
 				return;
 			}
@@ -75,7 +75,7 @@ function pedit_user(&$tpl, &$sql, &$dmn_id, &$uuser_id) {
 
 			$nadmin_password = crypt_user_pass_with_salt($_POST['pass']);
 
-			$change_status = Config::get('ITEM_CHANGE_STATUS');
+			$change_status = Config::getInstance()->get('ITEM_CHANGE_STATUS');
 
 			$query = "
 				UPDATE
@@ -128,8 +128,8 @@ function check_get(&$get_input) {
  *
  */
 
-gen_client_mainmenu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/main_menu_webtools.tpl');
-gen_client_menu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/menu_webtools.tpl');
+gen_client_mainmenu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/main_menu_webtools.tpl');
+gen_client_menu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/menu_webtools.tpl');
 
 gen_logged_from($tpl);
 
@@ -231,7 +231,7 @@ $tpl->parse('PAGE', 'page');
 
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) {
+if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
 }
 unset_messages();

@@ -52,7 +52,7 @@ function curlang($newlang = null, $force = false) {
 			) {
 			$newlang = (isset($_SESSION['user_def_lang']))
 				? $_SESSION['user_def_lang']
-				: Config::get('USER_INITIAL_LANG');
+				: Config::getInstance()->get('USER_INITIAL_LANG');
 		}
 
 		if ($newlang !== false) {

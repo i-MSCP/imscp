@@ -36,13 +36,13 @@ $tpl = new pTemplate();
 
 $tpl->define_dynamic(
 	'page',
-	 Config::get('RESELLER_TEMPLATE_PATH') . '/hosting_plan_edit.tpl'
+	 Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/hosting_plan_edit.tpl'
 );
 
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 
-$theme_color = Config::get('USER_INITIAL_THEME');
+$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
 /**
  * static page messages.
@@ -53,12 +53,12 @@ global $hpid;
 // Show main menu
 gen_reseller_mainmenu(
 	$tpl,
-	Config::get('RESELLER_TEMPLATE_PATH') . '/main_menu_hosting_plan.tpl'
+	Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/main_menu_hosting_plan.tpl'
 );
 
 gen_reseller_menu(
 	$tpl,
-	Config::get('RESELLER_TEMPLATE_PATH') . '/menu_hosting_plan.tpl'
+	Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/menu_hosting_plan.tpl'
 );
 
 gen_logged_from($tpl);
@@ -154,7 +154,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) {
+if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
 }
 
@@ -208,8 +208,8 @@ function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
 
 	$_SESSION['hpid'] = $hpid;
 
-	if (Config::exists('HOSTING_PLANS_LEVEL') &&
-		Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
+	if (Config::getInstance()->exists('HOSTING_PLANS_LEVEL') &&
+		Config::getInstance()->get('HOSTING_PLANS_LEVEL') === 'admin') {
 		$query = "
 			SELECT
 				*

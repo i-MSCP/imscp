@@ -40,7 +40,7 @@ if (!isset($_GET['delete_lang'])) {
 $delete_lang = $_GET['delete_lang'];
 
 /* ERROR - we have domains that use this IP */
-if ($delete_lang == Config::get('USER_INITIAL_LANG')) {
+if ($delete_lang == Config::getInstance()->get('USER_INITIAL_LANG')) {
 	set_page_message('Error we can\'t delete system default language!');
 
 	user_goto('multilanguage.php');

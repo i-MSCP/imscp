@@ -33,7 +33,7 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::get('CLIENT_TEMPLATE_PATH') . '/backup.tpl');
+$tpl->define_dynamic('page', Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/backup.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 
@@ -61,7 +61,7 @@ SQL_QUERY;
 
 // common page data.
 
-$theme_color = Config::get('USER_INITIAL_THEME');
+$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
 $tpl->assign(
 	array(
@@ -78,18 +78,18 @@ send_backup_restore_request($sql, $_SESSION['user_id']);
 
 // static page messages.
 
-gen_client_mainmenu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/main_menu_webtools.tpl');
-gen_client_menu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/menu_webtools.tpl');
+gen_client_mainmenu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/main_menu_webtools.tpl');
+gen_client_menu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/menu_webtools.tpl');
 
 gen_logged_from($tpl);
 
 check_permissions($tpl);
 
-if (Config::get('ZIP') == "gzip") {
+if (Config::getInstance()->get('ZIP') == "gzip") {
 	$name = "backup_YYYY_MM_DD.tar.gz";
-} else if (Config::get('ZIP') == "bzip2") {
+} else if (Config::getInstance()->get('ZIP') == "bzip2") {
 	$name = "backup_YYYY_MM_DD.tar.bz2";
-} else { // Config::get('ZIP') == "lzma"
+} else { // Config::getInstance()->get('ZIP') == "lzma"
 	$name = "backup_YYYY_MM_DD.tar.lzma";
 }
 
@@ -114,7 +114,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) {
+if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
 }
 unset_messages();

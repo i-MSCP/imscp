@@ -241,7 +241,7 @@ $GLOBALS['class']['output'] = new spOutput('auto', false);
 
 
 // look in config if enable/disable extra (server load) informations
-if (Config::get('SHOW_SERVERLOAD')) {
+if (Config::getInstance()->get('SHOW_SERVERLOAD')) {
 	$GLOBALS['class']['output']->showSize = true;
 } else {
 	$GLOBALS['class']['output']->showSize = false;

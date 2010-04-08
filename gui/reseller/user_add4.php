@@ -33,14 +33,14 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::get('RESELLER_TEMPLATE_PATH') . '/user_add4.tpl');
+$tpl->define_dynamic('page', Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/user_add4.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('alias_list', 'page');
 $tpl->define_dynamic('alias_entry', 'alias_list');
 $tpl->define_dynamic('alias_menu', 'page');
 
-$theme_color = Config::get('USER_INITIAL_THEME');
+$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
 $tpl->assign(
 	array(
@@ -86,8 +86,8 @@ if (isset($_SESSION['dmn_id']) && $_SESSION['dmn_id'] !== '') {
 		$row = $result->FetchRow();
 		$dmn_status = $row['domain_status'];
 	
-		if($dmn_status != Config::get('ITEM_OK_STATUS') &&
-			$dmn_status != Config::get('ITEM_ADD_STATUS')) {
+		if($dmn_status != Config::getInstance()->get('ITEM_OK_STATUS') &&
+			$dmn_status != Config::getInstance()->get('ITEM_ADD_STATUS')) {
 
 			set_page_message(tr('System error with Domain Id: %d', $domain_id));
 			
@@ -111,8 +111,8 @@ gen_al_page($tpl, $_SESSION['user_id']);
 
 gen_page_message($tpl);
 
-gen_reseller_mainmenu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/main_menu_users_manage.tpl');
-gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_users_manage.tpl');
+gen_reseller_mainmenu($tpl, Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/main_menu_users_manage.tpl');
+gen_reseller_menu($tpl, Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/menu_users_manage.tpl');
 
 gen_logged_from($tpl);
 
@@ -147,7 +147,7 @@ if (!check_reseller_domainalias_permissions($_SESSION['user_id'])) {
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) {
+if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
 }
 // Begin function declaration lines
@@ -320,7 +320,7 @@ function add_domain_alias(&$sql, &$err_al) {
 		return;
 	}
 	// Begin add new alias domain
-	$status = Config::get('ITEM_ADD_STATUS');
+	$status = Config::getInstance()->get('ITEM_ADD_STATUS');
 
 	$query = "INSERT INTO `domain_aliasses` (" .
 			"`domain_id`, `alias_name`, `alias_mount`, `alias_status`, " .

@@ -36,7 +36,7 @@ $tpl = new pTemplate();
 
 $interfaces=new networkCard();
 
-$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/ip_manage.tpl');
+$tpl->define_dynamic('page', Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/ip_manage.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('hosting_plans', 'page');
 $tpl->define_dynamic('ip_row', 'page');
@@ -44,7 +44,7 @@ $tpl->define_dynamic('card_list', 'page');
 $tpl->define_dynamic('ip_delete_show', 'ip_row');
 $tpl->define_dynamic('ip_delete_link', 'ip_row');
 
-$theme_color = Config::get('USER_INITIAL_THEME');
+$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
 $tpl->assign(
 	array(
@@ -56,7 +56,7 @@ $tpl->assign(
 );
 
 function gen_ip_action($ip_id, $status) {
-	if ($status === Config::get('ITEM_OK_STATUS')) {
+	if ($status === Config::getInstance()->get('ITEM_OK_STATUS')) {
 		return array(tr('Remove IP'), 'ip_delete.php?delete_id=' . $ip_id);
 	} else {
 		return array(tr('N/A'), '#');
@@ -105,8 +105,8 @@ function show_IPs(&$tpl, &$sql) {
 			$tpl->assign(
 				array(
 					'IP_DELETE_SHOW'	=> '',
-					'IP_ACTION'			=> (Config::get('BASE_SERVER_IP') == $rs->fields['ip_number']) ? tr('N/A') : $ip_action,
-					'IP_ACTION_SCRIPT'	=> (Config::get('BASE_SERVER_IP') == $rs->fields['ip_number']) ? '#' : $ip_action_script
+					'IP_ACTION'			=> (Config::getInstance()->get('BASE_SERVER_IP') == $rs->fields['ip_number']) ? tr('N/A') : $ip_action,
+					'IP_ACTION_SCRIPT'	=> (Config::getInstance()->get('BASE_SERVER_IP') == $rs->fields['ip_number']) ? '#' : $ip_action_script
 				)
 			);
 			$tpl->parse('IP_DELETE_LINK', 'ip_delete_link');
@@ -132,7 +132,7 @@ function add_ip(&$tpl, &$sql) {
 					(?, ?, ?, ?, ?, ?)
 			";
 			$rs = exec_query($sql, $query, array($ip_number, htmlspecialchars($domain, ENT_QUOTES, "UTF-8"),
-			htmlspecialchars($alias, ENT_QUOTES, "UTF-8"), htmlspecialchars($ip_card, ENT_QUOTES, "UTF-8"), NULL, Config::get('ITEM_ADD_STATUS')));
+			htmlspecialchars($alias, ENT_QUOTES, "UTF-8"), htmlspecialchars($ip_card, ENT_QUOTES, "UTF-8"), NULL, Config::getInstance()->get('ITEM_ADD_STATUS')));
 
 			send_request();
 
@@ -255,8 +255,8 @@ function show_Network_Cards(&$tpl, &$interfaces) {
  * static page messages.
  *
  */
-gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_settings.tpl');
-gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_settings.tpl');
+gen_admin_mainmenu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/main_menu_settings.tpl');
+gen_admin_menu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/menu_settings.tpl');
 
 show_Network_Cards($tpl, $interfaces);
 
@@ -284,7 +284,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) {
+if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
 }
 unset_messages();

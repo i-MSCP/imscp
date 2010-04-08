@@ -88,7 +88,7 @@ class criticalUpdate extends ispcpUpdate {
 	 */
 	protected function _criticalUpdate_1(&$engine_run_request) {
 
-		$status = Config::get('ITEM_CHANGE_STATUS');
+		$status = Config::getInstance()->get('ITEM_CHANGE_STATUS');
 		$sql = Database::getInstance();
 		setConfig_Value('CRITICAL_UPDATE_REVISION', 1);
 
@@ -135,8 +135,8 @@ class criticalUpdate extends ispcpUpdate {
 
 		$sqlUpd = array();
 
-		$status = Config::get('ITEM_ADD_STATUS');
-		$statsgroup = Config::get('AWSTATS_GROUP_AUTH');
+		$status = Config::getInstance()->get('ITEM_ADD_STATUS');
+		$statsgroup = Config::getInstance()->get('AWSTATS_GROUP_AUTH');
 		$sql = Database::getInstance();
 
 		$query = "SELECT `domain_id` FROM `domain` WHERE `domain_id` NOT IN (SELECT `dmn_id` FROM `htaccess_groups` WHERE `ugroup` = '{$statsgroup}')";
@@ -171,13 +171,13 @@ class criticalUpdate extends ispcpUpdate {
 
 		$sql = Database::getInstance();
 		$interfaces=new networkCard();
-		$card = $interfaces->ip2NetworkCard(Config::get('BASE_SERVER_IP'));
+		$card = $interfaces->ip2NetworkCard(Config::getInstance()->get('BASE_SERVER_IP'));
 
 		$sqlUpd[] = "ALTER TABLE `server_ips`
 					ADD `ip_card` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL,
 					ADD `ip_ssl_domain_id` INT( 10 ) NULL,
 					ADD `ip_status` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL";
-		$sqlUpd[] = "UPDATE `server_ips` SET `ip_card` = '" . $card . "', `ip_status` = '" . Config::get('ITEM_CHANGE_STATUS') . "'";
+		$sqlUpd[] = "UPDATE `server_ips` SET `ip_card` = '" . $card . "', `ip_status` = '" . Config::getInstance()->get('ITEM_CHANGE_STATUS') . "'";
 
 		$engine_run_request = true;
 		return $sqlUpd;

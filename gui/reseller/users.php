@@ -33,7 +33,7 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::get('RESELLER_TEMPLATE_PATH') . '/users.tpl');
+$tpl->define_dynamic('page', Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/users.tpl');
 $tpl->define_dynamic('users_list', 'page');
 $tpl->define_dynamic('user_entry', 'users_list');
 $tpl->define_dynamic('user_details', 'users_list');
@@ -46,7 +46,7 @@ $tpl->define_dynamic('scroll_next', 'page');
 $tpl->define_dynamic('edit_option', 'page');
 $tpl->define_dynamic('alias_menu', 'page');
 
-$theme_color = Config::get('USER_INITIAL_THEME');
+$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
 $tpl->assign(
 	array(
@@ -77,8 +77,8 @@ unset($GLOBALS['dmn_id']);
  *
  */
 
-gen_reseller_mainmenu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/main_menu_users_manage.tpl');
-gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_users_manage.tpl');
+gen_reseller_mainmenu($tpl, Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/main_menu_users_manage.tpl');
+gen_reseller_menu($tpl, Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/menu_users_manage.tpl');
 
 gen_logged_from($tpl);
 
@@ -112,7 +112,7 @@ $tpl->assign(
 	)
 );
 
-if (Config::exists('HOSTING_PLANS_LEVEL') && Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
+if (Config::getInstance()->exists('HOSTING_PLANS_LEVEL') && Config::getInstance()->get('HOSTING_PLANS_LEVEL') === 'admin') {
 	$tpl->assign('EDIT_OPTION', '');
 }
 
@@ -127,7 +127,7 @@ if (!check_reseller_domainalias_permissions($_SESSION['user_id'])) {
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) {
+if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
 }
 unset_messages();
@@ -140,7 +140,7 @@ function generate_users_list(&$tpl, $admin_id) {
 
 	$start_index = 0;
 
-	$rows_per_page = Config::get('DOMAIN_ROWS_PER_PAGE');
+	$rows_per_page = Config::getInstance()->get('DOMAIN_ROWS_PER_PAGE');
 
 	if (isset($_POST['details']) && !empty($_POST['details'])) {
 		$_SESSION['details'] = $_POST['details'];
@@ -265,16 +265,16 @@ function generate_users_list(&$tpl, $admin_id) {
 		$i = 1;
 
 		while (!$rs->EOF) {
-			if ($rs->fields['domain_status'] == Config::get('ITEM_OK_STATUS')) {
+			if ($rs->fields['domain_status'] == Config::getInstance()->get('ITEM_OK_STATUS')) {
 				$status_icon = "ok.png";
-			} else if ($rs->fields['domain_status'] == Config::get('ITEM_DISABLED_STATUS')) {
+			} else if ($rs->fields['domain_status'] == Config::getInstance()->get('ITEM_DISABLED_STATUS')) {
 				$status_icon = "disabled.png";
-			} else if ($rs->fields['domain_status'] == Config::get('ITEM_ADD_STATUS')
-				|| $rs->fields['domain_status'] == Config::get('ITEM_CHANGE_STATUS')
-				|| $rs->fields['domain_status'] == Config::get('ITEM_TOENABLE_STATUS')
-				|| $rs->fields['domain_status'] == Config::get('ITEM_RESTORE_STATUS')
-				|| $rs->fields['domain_status'] == Config::get('ITEM_TODISABLED_STATUS')
-				|| $rs->fields['domain_status'] == Config::get('ITEM_DELETE_STATUS')) {
+			} else if ($rs->fields['domain_status'] == Config::getInstance()->get('ITEM_ADD_STATUS')
+				|| $rs->fields['domain_status'] == Config::getInstance()->get('ITEM_CHANGE_STATUS')
+				|| $rs->fields['domain_status'] == Config::getInstance()->get('ITEM_TOENABLE_STATUS')
+				|| $rs->fields['domain_status'] == Config::getInstance()->get('ITEM_RESTORE_STATUS')
+				|| $rs->fields['domain_status'] == Config::getInstance()->get('ITEM_TODISABLED_STATUS')
+				|| $rs->fields['domain_status'] == Config::getInstance()->get('ITEM_DELETE_STATUS')) {
 				$status_icon = "reload.png";
 			} else {
 				$status_icon = "error.png";
@@ -303,14 +303,14 @@ function generate_users_list(&$tpl, $admin_id) {
 			if ($dom_created == 0) {
 				$dom_created = tr('N/A');
 			} else {
-				$date_formt = Config::get('DATE_FORMAT');
+				$date_formt = Config::getInstance()->get('DATE_FORMAT');
 				$dom_created = date($date_formt, $dom_created);
 			}
 
 			if ($dom_expires == 0) {
 				$dom_expires = tr('N/A');
 			} else {
-				$date_formt = Config::get('DATE_FORMAT');
+				$date_formt = Config::getInstance()->get('DATE_FORMAT');
 				$dom_expires = date($date_formt, $dom_expires);
 			}
 

@@ -82,7 +82,7 @@ if (isset($_GET['edit_id']) && $_GET['edit_id'] !== '') {
 			WHERE
    				`domain`.`domain_id` = ?
   			";
-		exec_query($sql, $query, array(Config::get('ITEM_CHANGE_STATUS'), $dmn_id));
+		exec_query($sql, $query, array(Config::getInstance()->get('ITEM_CHANGE_STATUS'), $dmn_id));
 		$query = "
 				UPDATE
 					`subdomain`
@@ -91,7 +91,7 @@ if (isset($_GET['edit_id']) && $_GET['edit_id'] !== '') {
     			WHERE
     				`subdomain`.`domain_id` = ?
 				";
-		exec_query($sql, $query, array(Config::get('ITEM_CHANGE_STATUS'), $dmn_id));
+		exec_query($sql, $query, array(Config::getInstance()->get('ITEM_CHANGE_STATUS'), $dmn_id));
 	} else {
 		$query = "
  				UPDATE
@@ -102,7 +102,7 @@ if (isset($_GET['edit_id']) && $_GET['edit_id'] !== '') {
 					`domain_aliasses`.`domain_id` = ?
 				AND	`domain_aliasses`.`alias_id` = ?
 			";
-		exec_query($sql, $query, array(Config::get('ITEM_CHANGE_STATUS'), $dmn_id, $alias_id));
+		exec_query($sql, $query, array(Config::getInstance()->get('ITEM_CHANGE_STATUS'), $dmn_id, $alias_id));
 
 		$query = "
  				UPDATE
@@ -112,7 +112,7 @@ if (isset($_GET['edit_id']) && $_GET['edit_id'] !== '') {
  				WHERE
 					`subdomain_alias`.`alias_id` = ?
 			";
-		exec_query($sql, $query, array(Config::get('ITEM_CHANGE_STATUS'), $alias_id));
+		exec_query($sql, $query, array(Config::getInstance()->get('ITEM_CHANGE_STATUS'), $alias_id));
 	}
 
 	send_request();

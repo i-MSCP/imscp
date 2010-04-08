@@ -200,7 +200,7 @@ abstract class ispcpUpdate {
 				$errorMessage =  tr($this->errorMessage, $newVersion);
 
 				// Extended error message
-				if (Config::get('DEBUG')) {
+				if (Config::getInstance()->get('DEBUG')) {
 					$errorMessage .= "<br />" . $e->getMessage();
 					$errorMessage .=  "<br />Sql Statement was failed: $query";
 				}

@@ -35,7 +35,7 @@ check_login(__FILE__);
 $tpl = new pTemplate();
 $tpl->define_dynamic(
 	'page',
-	Config::get('CLIENT_TEMPLATE_PATH') . '/mail_accounts.tpl'
+	Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/mail_accounts.tpl'
 );
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
@@ -46,7 +46,7 @@ $tpl->define_dynamic('default_mails_form', 'page');
 $tpl->define_dynamic('mails_total', 'page');
 $tpl->define_dynamic('no_mails', 'page');
 
-$theme_color = Config::get('USER_INITIAL_THEME');
+$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
 $tpl->assign(
 	array(
@@ -68,7 +68,7 @@ $tpl->assign(
  */
 function gen_user_mail_action($mail_id, $mail_status) {
 
-	if ($mail_status === Config::get('ITEM_OK_STATUS')) {
+	if ($mail_status === Config::getInstance()->get('ITEM_OK_STATUS')) {
 		return array(
 			tr('Delete'),
 			"mail_delete.php?id=$mail_id",
@@ -94,7 +94,7 @@ function gen_user_mail_auto_respond(
 	&$tpl, $mail_id, $mail_type, $mail_status, $mail_auto_respond
 ) {
 
-	if ($mail_status === Config::get('ITEM_OK_STATUS')) {
+	if ($mail_status === Config::getInstance()->get('ITEM_OK_STATUS')) {
 		if ($mail_auto_respond == false) {
 			$tpl->assign(
 				array(
@@ -723,7 +723,7 @@ function gen_page_lists(&$tpl, &$sql, $user_id) {
 
 	$default_mails = count_default_mails($sql, $dmn_id);
 
-	if (Config::get('COUNT_DEFAULT_EMAIL_ADDRESSES') == 0) {
+	if (Config::getInstance()->get('COUNT_DEFAULT_EMAIL_ADDRESSES') == 0) {
 		if(isset($_POST['uaction']) && $_POST['uaction'] == 'show') {
 			$counted_mails -= $default_mails;
 		}
@@ -819,12 +819,12 @@ gen_page_lists($tpl, $sql, $_SESSION['user_id']);
 
 gen_client_mainmenu(
 	$tpl,
-	Config::get('CLIENT_TEMPLATE_PATH') . '/main_menu_email_accounts.tpl'
+	Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/main_menu_email_accounts.tpl'
 );
 
 gen_client_menu(
 	$tpl,
-	Config::get('CLIENT_TEMPLATE_PATH') . '/menu_email_accounts.tpl'
+	Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/menu_email_accounts.tpl'
 );
 
 gen_logged_from($tpl);
@@ -878,7 +878,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) {
+if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
 }
 unset_messages();

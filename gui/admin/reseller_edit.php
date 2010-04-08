@@ -107,17 +107,17 @@ function check_data(&$errFields) {
 
 		if (!chk_password($_POST['pass0'])) {
 
-			if (Config::get('PASSWD_STRONG')) {
+			if (Config::getInstance()->get('PASSWD_STRONG')) {
 				set_page_message(
 					sprintf(
-						tr('The password must be at least %s long and contain letters and numbers to be valid.'),Config::get('PASSWD_CHARS'))
+						tr('The password must be at least %s long and contain letters and numbers to be valid.'),Config::getInstance()->get('PASSWD_CHARS'))
 				);
 
 			} else {
 
 				set_page_message(
 					sprintf(
-						tr('Password data is shorter than %s signs or includes not permitted signs!'),Config::get('PASSWD_CHARS'))
+						tr('Password data is shorter than %s signs or includes not permitted signs!'),Config::getInstance()->get('PASSWD_CHARS'))
 				);
 			}
 
@@ -834,14 +834,14 @@ if(isset($_REQUEST['edit_id']) && !isset($_POST['Cancel'])) {
 	}
 
 	$tpl = new pTemplate();
-	$tpl->define_dynamic('page',Config::get('ADMIN_TEMPLATE_PATH') .'/reseller_edit.tpl');
+	$tpl->define_dynamic('page',Config::getInstance()->get('ADMIN_TEMPLATE_PATH') .'/reseller_edit.tpl');
 	$tpl->define_dynamic('page_message', 'page');
 	$tpl->define_dynamic('hosting_plans', 'page');
 	$tpl->define_dynamic('rsl_ip_message', 'page');
 	$tpl->define_dynamic('rsl_ip_list', 'page');
 	$tpl->define_dynamic('rsl_ip_item', 'rsl_ip_list');
 
-	$theme_color = Config::get('USER_INITIAL_THEME');
+	$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
 	$tpl->assign(
 		array(
@@ -853,8 +853,8 @@ if(isset($_REQUEST['edit_id']) && !isset($_POST['Cancel'])) {
 		)
 	);
 
-	gen_admin_mainmenu($tpl,Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_users_manage.tpl');
-	gen_admin_menu($tpl,Config::get('ADMIN_TEMPLATE_PATH') . '/menu_users_manage.tpl');
+	gen_admin_mainmenu($tpl,Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/main_menu_users_manage.tpl');
+	gen_admin_menu($tpl,Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/menu_users_manage.tpl');
 
 	// First, we get needed data
 	$rdata =& get_data($tpl);
@@ -1057,7 +1057,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) {
+if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
 }
 

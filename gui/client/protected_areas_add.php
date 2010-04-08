@@ -36,14 +36,14 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::get('CLIENT_TEMPLATE_PATH') . '/protect_it.tpl');
+$tpl->define_dynamic('page', Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/protect_it.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('group_item', 'page');
 $tpl->define_dynamic('user_item', 'page');
 $tpl->define_dynamic('unprotect_it', 'page');
 
-$theme_color = Config::get('USER_INITIAL_THEME');
+$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
 $tpl->assign(
 	array(
@@ -159,8 +159,8 @@ function protect_area(&$tpl, &$sql, $dmn_id) {
 SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($dmn_id, $path, $alt_path));
-	$toadd_status = Config::get('ITEM_ADD_STATUS');
-	$tochange_status = Config::get('ITEM_CHANGE_STATUS');
+	$toadd_status = Config::getInstance()->get('ITEM_ADD_STATUS');
+	$tochange_status = Config::getInstance()->get('ITEM_CHANGE_STATUS');
 
 	if ($rs->RecordCount() !== 0) {
 		$update_id = $rs->fields['id'];
@@ -238,7 +238,7 @@ SQL_QUERY;
 		$status = $rs->fields['status'];
 		$path = $rs->fields['path'];
 		$auth_name = $rs->fields['auth_name'];
-		$ok_status = Config::get('ITEM_OK_STATUS');
+		$ok_status = Config::getInstance()->get('ITEM_OK_STATUS');
 		if ($status !== $ok_status) {
 			set_page_message(tr('Protected area status should be OK if you want to edit it!'));
 			user_goto('protected_areas.php');
@@ -382,8 +382,8 @@ SQL_QUERY;
  *
  */
 
-gen_client_mainmenu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/main_menu_webtools.tpl');
-gen_client_menu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/menu_webtools.tpl');
+gen_client_mainmenu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/main_menu_webtools.tpl');
+gen_client_menu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/menu_webtools.tpl');
 
 gen_logged_from($tpl);
 
@@ -420,7 +420,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) {
+if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
 }
 unset_messages();

@@ -33,12 +33,12 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/rootkit_log.tpl');
+$tpl->define_dynamic('page', Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/rootkit_log.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('service_status', 'page');
 $tpl->define_dynamic('props_list', 'page');
 
-$theme_color = Config::get('USER_INITIAL_THEME');
+$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
 $tpl->assign(
 	array(
@@ -56,11 +56,11 @@ $blocksCount = 0;
 $config_entries = array('RKHUNTER_LOG', 'CHKROOTKIT_LOG', 'OTHER_ROOTKIT_LOG');
 
 foreach ($config_entries as $config_entry) {
-	if (empty($config_entry) || !Config::exists($config_entry) || !Config::get($config_entry)) {
+	if (empty($config_entry) || !Config::getInstance()->exists($config_entry) || !Config::getInstance()->get($config_entry)) {
 		continue;
 	}
 
-	$filename = Config::get($config_entry);
+	$filename = Config::getInstance()->get($config_entry);
 	$contents = '';
 
 	if (@file_exists($filename) && is_readable($filename) && filesize($filename)>0) {
@@ -136,8 +136,8 @@ foreach ($config_entries as $config_entry) {
  * static page messages.
  *
  */
-gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_system_tools.tpl');
-gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_system_tools.tpl');
+gen_admin_mainmenu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/main_menu_system_tools.tpl');
+gen_admin_menu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/menu_system_tools.tpl');
 
 $tpl->assign(
 	array(
@@ -150,7 +150,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) {
+if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
 }
 unset_messages();

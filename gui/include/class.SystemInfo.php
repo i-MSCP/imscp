@@ -244,7 +244,7 @@ class SystemInfo {
 		//		10.0.100.10:/path/to/mount/point
         //			976428116 150249136 826178980  16% /var/www/virtual/<domain>/htdocs/data
         //		if solved, we can savely remove l-argument
-		$proc = proc_open(Config::get('CMD_DF') . ' -Tl', $descriptorspec, $pipes);
+		$proc = proc_open(Config::getInstance()->get('CMD_DF') . ' -Tl', $descriptorspec, $pipes);
 		if (is_resource($proc)) {
 			// Read data from stream (Pipe 1)
 			$fs_raw = stream_get_contents($pipes[1]);
@@ -356,7 +356,7 @@ class SystemInfo {
 					2 => array('pipe', 'a')	 // stderr is a pipe that he cild will write to
 				);
 
-				$proc = proc_open(Config::get('CMD_VMSTAT'), $descriptorspec, $pipes);
+				$proc = proc_open(Config::getInstance()->get('CMD_VMSTAT'), $descriptorspec, $pipes);
 				if (is_resource($proc)) {
 					// Read data from stream (Pipe 1)
 					$raw = stream_get_contents($pipes[1]);
@@ -423,7 +423,7 @@ class SystemInfo {
 			}
 
 			$proc = proc_open(
-				Config::get('CMD_SWAPCTL') . $args,
+				Config::getInstance()->get('CMD_SWAPCTL') . $args,
 				$descriptorspec,
 				$pipes
 			);
@@ -571,7 +571,7 @@ class SystemInfo {
 			2 => array('pipe', 'a')	 // stderr is a pipe that he cild will write to
 		);
 
-		$proc = proc_open(Config::get('CMD_SYSCTL') . ' -n ' . $args,
+		$proc = proc_open(Config::getInstance()->get('CMD_SYSCTL') . ' -n ' . $args,
 			$descriptorspec, $pipes);
 		if (is_resource($proc)) {
 			// Read data from stream (Pipe 1)

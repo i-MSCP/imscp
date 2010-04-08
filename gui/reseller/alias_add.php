@@ -33,13 +33,13 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::get('RESELLER_TEMPLATE_PATH') . '/alias_add.tpl');
+$tpl->define_dynamic('page', Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/alias_add.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('user_entry', 'page');
 $tpl->define_dynamic('ip_entry', 'page');
 
-$theme_color = Config::get('USER_INITIAL_THEME');
+$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
 $tpl->assign(
 	array(
@@ -55,8 +55,8 @@ $reseller_id = $_SESSION['user_id'];
  * static page messages.
  */
 
-gen_reseller_mainmenu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/main_menu_users_manage.tpl');
-gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_users_manage.tpl');
+gen_reseller_mainmenu($tpl, Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/main_menu_users_manage.tpl');
+gen_reseller_menu($tpl, Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/menu_users_manage.tpl');
 
 gen_logged_from($tpl);
 
@@ -120,7 +120,7 @@ $tpl->parse('PAGE', 'page');
 
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) {
+if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
 }
 // Begin function declaration lines
@@ -240,7 +240,7 @@ function add_domain_alias(&$sql, &$err_al) {
 		$err_al = tr('Domain with that name already exists on the system!');
 	} else if (!validates_mpoint($mount_point) && $mount_point != '/') {
 		$err_al = tr("Incorrect mount point syntax");
-	} else if ($alias_name == Config::get('BASE_SERVER_VHOST')) {
+	} else if ($alias_name == Config::getInstance()->get('BASE_SERVER_VHOST')) {
 		$err_al = tr('Master domain cannot be used!');
 	} else if ($_POST['status'] == 1) {
 		if(substr_count($forward, '.') <= 2) {
@@ -282,7 +282,7 @@ function add_domain_alias(&$sql, &$err_al) {
 	// Begin add new alias domain
 	$alias_name = htmlspecialchars($alias_name, ENT_QUOTES, "UTF-8");
 	check_for_lock_file();
-	$status = Config::get('ITEM_ADD_STATUS');
+	$status = Config::getInstance()->get('ITEM_ADD_STATUS');
 
 	exec_query($sql,
 		"INSERT INTO `domain_aliasses` (`domain_id`, `alias_name`, `alias_mount`, ".
@@ -298,7 +298,7 @@ function add_domain_alias(&$sql, &$err_al) {
 	$user_email = $rs->fields['email'];
 
 	// Create the 3 default addresses if wanted
-	if (Config::get('CREATE_DEFAULT_EMAIL_ADDRESSES'))
+	if (Config::getInstance()->get('CREATE_DEFAULT_EMAIL_ADDRESSES'))
 		client_mail_add_default_accounts($cr_user_id, $user_email, $alias_name, 'alias', $als_id);
 
 	send_request();

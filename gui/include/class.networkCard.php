@@ -93,7 +93,7 @@ class networkCard {
 
 	private function _populateInterfaces() {
 		$err = '';
-		$message = $this->executeExternal(config::Get('CMD_IFCONFIG'), $err);
+		$message = $this->executeExternal(Config::getInstance()->Get('CMD_IFCONFIG'), $err);
 
 		if (!$message) {
 			$this->errors .= tr("Error while trying to obtain list of network cards!") . $err;

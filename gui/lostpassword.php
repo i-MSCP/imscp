@@ -30,7 +30,7 @@
 
 require 'include/ispcp-lib.php';
 
-if (!Config::get('LOSTPASSWORD')) {
+if (!Config::getInstance()->get('LOSTPASSWORD')) {
 	system_message(tr('Retrieving lost passwords is currently not possible'));
 	die();
 }
@@ -45,12 +45,12 @@ if (!captcha_fontfile_exists()) {
 }
 
 // remove old uniqkeys
-removeOldKeys(Config::get('LOSTPASSWORD_TIMEOUT'));
+removeOldKeys(Config::getInstance()->get('LOSTPASSWORD_TIMEOUT'));
 
 if (isset($_SESSION['user_theme'])) {
 	$theme_color = $_SESSION['user_theme'];
 } else {
-	$theme_color = Config::get('USER_INITIAL_THEME');
+	$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 }
 
 if (isset($_GET['key'])) {
@@ -58,7 +58,7 @@ if (isset($_GET['key'])) {
 		check_input($_GET['key']);
 
 		$tpl = new pTemplate();
-		$tpl->define('page', Config::get('LOGIN_TEMPLATE_PATH') . '/lostpassword_message.tpl');
+		$tpl->define('page', Config::getInstance()->get('LOGIN_TEMPLATE_PATH') . '/lostpassword_message.tpl');
 		$tpl->assign(
 			array(
 				'TR_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Virtual Hosting Control System'),
@@ -86,7 +86,7 @@ if (isset($_GET['key'])) {
 		$tpl->parse('PAGE', 'page');
 		$tpl->prnt();
 
-		if (Config::get('DUMP_GUI_DEBUG')) {
+		if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
 			dump_gui_debug();
 		}
 		die();
@@ -101,7 +101,7 @@ if (isset($_POST['uname'])) {
 		check_input($_POST['capcode']);
 
 		$tpl = new pTemplate();
-		$tpl->define('page', Config::get('LOGIN_TEMPLATE_PATH') . '/lostpassword_message.tpl');
+		$tpl->define('page', Config::getInstance()->get('LOGIN_TEMPLATE_PATH') . '/lostpassword_message.tpl');
 		$tpl->assign(
 			array(
 				'TR_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Virtual Hosting Control System'),
@@ -113,7 +113,7 @@ if (isset($_POST['uname'])) {
 		if ($_SESSION['image'] == $_POST['capcode'] && requestpassword($_POST['uname'])) {
 			$tpl->assign(
 				array(
-					'TR_MESSAGE' => tr('Your password request has been initiated. You will receive an email with instructions to complete the process. This reset request will expire in %s minutes.', Config::get('LOSTPASSWORD_TIMEOUT')),
+					'TR_MESSAGE' => tr('Your password request has been initiated. You will receive an email with instructions to complete the process. This reset request will expire in %s minutes.', Config::getInstance()->get('LOSTPASSWORD_TIMEOUT')),
 					'TR_LINK' => '<a class="link" href="index.php">' . tr('Back') . '</a>'
 				)
 			);
@@ -129,26 +129,26 @@ if (isset($_POST['uname'])) {
 		$tpl->parse('PAGE', 'page');
 		$tpl->prnt();
 
-		if (Config::get('DUMP_GUI_DEBUG')) {
+		if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
 			dump_gui_debug();
 		}
 		die();
 	}
 }
 
-unblock(Config::get('BRUTEFORCE_BLOCK_TIME'), 'captcha');
+unblock(Config::getInstance()->get('BRUTEFORCE_BLOCK_TIME'), 'captcha');
 is_ipaddr_blocked(null, 'captcha', true);
 
 $tpl = new pTemplate();
-$tpl->define('page', Config::get('LOGIN_TEMPLATE_PATH') . '/lostpassword.tpl');
+$tpl->define('page', Config::getInstance()->get('LOGIN_TEMPLATE_PATH') . '/lostpassword.tpl');
 $tpl->assign(
 	array(
 		'TR_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Virtual Hosting Control System'),
-		'THEME_COLOR_PATH' => Config::get('LOGIN_TEMPLATE_PATH'),
+		'THEME_COLOR_PATH' => Config::getInstance()->get('LOGIN_TEMPLATE_PATH'),
 		'THEME_CHARSET' => tr('encoding'),
 		'TR_CAPCODE' => tr('Security code'),
 		'TR_IMGCAPCODE_DESCRIPTION' => tr('(To avoid abuse, we ask you to write the combination of letters on the above picture into the field "Security code")'),
-		'TR_IMGCAPCODE' => '<img src="imagecode.php" width="' . Config::get('LOSTPASSWORD_CAPTCHA_WIDTH') . '" height="' . Config::get('LOSTPASSWORD_CAPTCHA_HEIGHT') . '" border="0" alt="captcha image">',
+		'TR_IMGCAPCODE' => '<img src="imagecode.php" width="' . Config::getInstance()->get('LOSTPASSWORD_CAPTCHA_WIDTH') . '" height="' . Config::getInstance()->get('LOSTPASSWORD_CAPTCHA_HEIGHT') . '" border="0" alt="captcha image">',
 		'TR_USERNAME' => tr('Username'),
 		'TR_SEND' => tr('Request password'),
 		'TR_BACK' => tr('Back')
@@ -158,6 +158,6 @@ $tpl->assign(
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) {
+if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
 }

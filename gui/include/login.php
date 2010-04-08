@@ -30,9 +30,9 @@
 
 function init_login() {
 	// just make sure to expire counters in case BRUTEFORCE is turned off
-	unblock(Config::get('BRUTEFORCE_BLOCK_TIME'));
+	unblock(Config::getInstance()->get('BRUTEFORCE_BLOCK_TIME'));
 
-	if (Config::get('BRUTEFORCE')) {
+	if (Config::getInstance()->get('BRUTEFORCE')) {
 		is_ipaddr_blocked(null, 'bruteforce', true);
 	}
 }
@@ -42,7 +42,7 @@ function init_login() {
  */
 function register_user($uname, $upass) {
 	$sql = Database::getInstance();
-	$backButtonDestination = Config::get('BASE_SERVER_VHOST_PREFIX') . Config::get('BASE_SERVER_VHOST');
+	$backButtonDestination = Config::getInstance()->get('BASE_SERVER_VHOST_PREFIX') . Config::getInstance()->get('BASE_SERVER_VHOST');
 
 	check_ipaddr();
 
@@ -58,7 +58,7 @@ function register_user($uname, $upass) {
 	if ((
 		criticalUpdate::getInstance()->checkUpdateExists()
 		|| databaseUpdate::getInstance()->checkUpdateExists()
-		|| (Config::get('MAINTENANCEMODE'))
+		|| (Config::getInstance()->get('MAINTENANCEMODE'))
 		) && $udata['admin_type'] != 'admin') {
 		write_log("Login error, <b><i>".$uname."</i></b> system currently in maintenance mode");
 		system_message(tr('System is currently under maintenance! Only administrators can login.'));
@@ -161,7 +161,7 @@ SQL_QUERY;
 		return false;
 	}
 
-	if (( criticalUpdate::getInstance()->checkUpdateExists() || databaseUpdate::getInstance()->checkUpdateExists() || (Config::get('MAINTENANCEMODE')) ) && $user_type != 'admin') {
+	if (( criticalUpdate::getInstance()->checkUpdateExists() || databaseUpdate::getInstance()->checkUpdateExists() || (Config::getInstance()->get('MAINTENANCEMODE')) ) && $user_type != 'admin') {
 		unset_user_login_data(true);
 		write_log("System is currently in maintenance mode. Logging out <b><i>".$user_logged."</i></b>");
 		user_goto('/index.php');

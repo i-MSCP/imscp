@@ -29,61 +29,68 @@
  * This class will parse the config file ispcp.conf and save the variables
  * in a stratic array.
  * 
- * @version	2.0
  * @since 	r154
  */
-final class Config {
-	
+class Config {
+    private static $config;
+
+    public static function getInstance() {
+        if(!self::$config) {
+            self::$config = new ConfigHandler();
+        }
+        return self::$config;
+    }
+}
+ 
+class ConfigHandler {	
 	/**
 	 * Config filename.
 	 * 
 	 * @var String file name
 	 */
-	private static $_file;
-
+	private $file;
+	
 	/**
 	 * Array with all options parsed from config file.
 	 * 
 	 * @var Array key - value pair
 	 */
-	private static $_values = array();
-
-	/**
-	 * Set to true if class is inizialized
-	 * 
-	 * @var boolean Status
-	 */
-	private static $_status = false;
+	private $values;
 
 	/**
 	 * Loads the ispCP config file (default directory: /etc/ispcp/ispcp.conf)
 	 * 
 	 * @param String $cfg path to ispcp.conf
 	 */
-	public static function load($cfg = '/etc/ispcp/ispcp.conf') {
-		self::$_file = $cfg;
-
-		if (self::$_status === false) {
-			if (!self::_parseFile()) {
-				throw new Exception('Cannot open the ispcp.conf config file!');
-			}
+	public function __construct() {
+		switch (PHP_OS) {
+			case 'FreeBSD':
+			case 'OpenBSD':
+			case 'NetBSD':
+				$path = '/usr/local/etc/ispcp/ispcp.conf';
+				break;
+				
+			default: 
+				$path = '/etc/ispcp/ispcp.conf';
+				break;
 		}
-
-		self::$_status = true;
+		$this->file = $path;
+	
+		if (!$this->parseFile()) {
+			throw new Exception('Cannot open the ispcp.conf config file!');
+		}
 	}
 
 	/**
 	 * 
 	 * @param unknown_type $param
 	 */
-	public static function get($param) {
-		if (!isset(self::$_values[$param]))
+	public function get($param) {
+		if (!$this->exists($param)) {
 			throw new Exception("Config variable '".$param."' is missing!");
+		}
 
-		if (!self::$_status)
-			throw new Exception('Config not loaded!');
-
-		return self::$_values[$param];
+		return $this->values[$param];
 	}
 
 	/**
@@ -91,8 +98,8 @@ final class Config {
 	 * @param unknown_type $param
 	 * @param unknown_type $value
 	 */
-	public static function set($param, $value) {
-		self::$_values[$param] = $value;
+	public function set($param, $value) {
+		$this->values[$param] = $value;
 	}
 
 	/**
@@ -101,8 +108,8 @@ final class Config {
 	 * @param String $param
 	 * @return boolean
 	 */
-	public static function exists($param) {
-		return isset(self::$_values[$param]);
+	public function exists($param) {
+		return isset($this->values[$param]);
 	}
 
 	/**
@@ -111,19 +118,18 @@ final class Config {
 	 * 
 	 * @return boolean true on success
 	 */
-	private static function _parseFile() {
-		$fd = file_get_contents(self::$_file);
+	private function parseFile() {
+		$fd = @file_get_contents($this->file);
 		if ($fd === false) {
 			return false;
 		}
 
 		$lines = explode("\n", $fd);
 		foreach ($lines as $line) {
-			trim($line);
 			if (!empty($line) && $line[0] != '#' && strpos($line, '=')) {
 				list($key, $value) = explode('=', $line, 2);
 
-				self::$_values[trim($key)] = trim($value);
+				$this->values[trim($key)] = trim($value);
 			}
 		}
 

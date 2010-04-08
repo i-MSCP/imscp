@@ -30,11 +30,11 @@
 
 require '../include/ispcp-lib.php';
 
-check_login(__FILE__, Config::get('PREVENT_EXTERNAL_LOGIN_CLIENT'));
+check_login(__FILE__, Config::getInstance()->get('PREVENT_EXTERNAL_LOGIN_CLIENT'));
 
 $tpl = new pTemplate();
 
-$tpl->define_dynamic('page', Config::get('CLIENT_TEMPLATE_PATH') . '/index.tpl');
+$tpl->define_dynamic('page', Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/index.tpl');
 $tpl->define_dynamic('def_language', 'page');
 $tpl->define_dynamic('def_layout', 'page');
 $tpl->define_dynamic('no_messages', 'page');
@@ -328,7 +328,7 @@ function gen_remain_time($dbtime){
  *
  */
 
-$theme_color = Config::get('USER_INITIAL_THEME');
+$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
 if (isset($_POST['uaction']) && $_POST['uaction'] === 'save_layout') {
 	$user_id = $_SESSION['user_id'];
@@ -407,7 +407,7 @@ $account_name = decode_idna($_SESSION['user_logged']);
 if ($dmn_expires == 0) {
 	$dmn_expires_date = tr('N/A');
 } else {
-	$date_formt = Config::get('DATE_FORMAT');
+	$date_formt = Config::getInstance()->get('DATE_FORMAT');
 	$dmn_expires_date = date($date_formt, $dmn_expires);
 }
 
@@ -463,8 +463,8 @@ $tpl->assign(
  *
  */
 
-gen_client_mainmenu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/main_menu_general_information.tpl');
-gen_client_menu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/menu_general_information.tpl');
+gen_client_mainmenu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/main_menu_general_information.tpl');
+gen_client_menu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/menu_general_information.tpl');
 
 gen_logged_from($tpl);
 
@@ -509,6 +509,6 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) {
+if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
 }

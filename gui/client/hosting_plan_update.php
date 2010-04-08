@@ -33,7 +33,7 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::get('CLIENT_TEMPLATE_PATH') . '/hosting_plan_update.tpl');
+$tpl->define_dynamic('page', Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/hosting_plan_update.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('def_language', 'page');
 $tpl->define_dynamic('logged_from', 'page');
@@ -126,7 +126,7 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 		$hp_title = tr('Your order');
 	} else {
 		// generate all hosting plans available for purchasing
-		if (Config::exists('HOSTING_PLANS_LEVEL') && Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
+		if (Config::getInstance()->exists('HOSTING_PLANS_LEVEL') && Config::getInstance()->get('HOSTING_PLANS_LEVEL') === 'admin') {
 			$query = "
 				SELECT
 					t1.*,
@@ -425,7 +425,7 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 	}
 }
 
-$theme_color = Config::get('USER_INITIAL_THEME');
+$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 $tpl->assign(
 		array(
 			'TR_CLIENT_UPDATE_HP'	=> tr('ispCP - Update hosting plan'),
@@ -579,7 +579,7 @@ function add_new_order(&$tpl, &$sql, $order_id, $user_id) {
 	$message = tr("You have an update order for the account %s\n\nPlease login into your ispCP control panel at %s for more details",
 		true,
 		$_SESSION['user_logged'],
-		Config::get('BASE_SERVER_VHOST_PREFIX') . Config::get('BASE_SERVER_VHOST'));
+		Config::getInstance()->get('BASE_SERVER_VHOST_PREFIX') . Config::getInstance()->get('BASE_SERVER_VHOST'));
 
 	$mail_result = mail($to, $subject, $message, $headers);
 }
@@ -615,8 +615,8 @@ if (isset($_GET['order_id']) && is_numeric($_GET['order_id'])) {
 
 gen_hp($tpl, $sql, $_SESSION['user_id']);
 
-gen_client_mainmenu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/main_menu_general_information.tpl');
-gen_client_menu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/menu_general_information.tpl');
+gen_client_mainmenu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/main_menu_general_information.tpl');
+gen_client_menu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/menu_general_information.tpl');
 
 gen_logged_from($tpl);
 
@@ -635,7 +635,7 @@ $tpl->parse('PAGE', 'page');
 
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) {
+if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
 }
 unset_messages();

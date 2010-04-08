@@ -34,7 +34,7 @@
 function system_message($msg, $backButtonDestination = "") {
 	$theme_color = (isset($_SESSION['user_theme']))
 		? $_SESSION['user_theme']
-		: Config::get('USER_INITIAL_THEME');
+		: Config::getInstance()->get('USER_INITIAL_THEME');
 
 	if (empty($backButtonDestination)) {
 		$backButtonDestination = "javascript:history.go(-1)";
@@ -43,11 +43,11 @@ function system_message($msg, $backButtonDestination = "") {
 	$tpl = new pTemplate();
 
 	// If we are on the login page, path will be like this
-	$template = Config::get('LOGIN_TEMPLATE_PATH') . '/system-message.tpl';
+	$template = Config::getInstance()->get('LOGIN_TEMPLATE_PATH') . '/system-message.tpl';
 
 	if (!is_file($template)) {
 		// But if we're inside the panel it will be like this
-		$template = '../' . Config::get('LOGIN_TEMPLATE_PATH') . '/system-message.tpl';
+		$template = '../' . Config::getInstance()->get('LOGIN_TEMPLATE_PATH') . '/system-message.tpl';
 	}
 
 	if (!is_file($template)) {

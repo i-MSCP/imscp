@@ -28,30 +28,24 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-Config::set('DB_TYPE', Config::get('DATABASE_TYPE'));
-Config::set('DB_HOST', Config::get('DATABASE_HOST'));
-Config::set('DB_USER', Config::get('DATABASE_USER'));
-Config::set('DB_PASS', decrypt_db_password(Config::get('DATABASE_PASSWORD')));
-Config::set('DB_NAME', Config::get('DATABASE_NAME'));
-
 // Get an Database instance
-@$sql = Database::connect(Config::get('DB_USER'), Config::get('DB_PASS'), Config::get('DB_TYPE'), Config::get('DB_HOST'), Config::get('DB_NAME'))
-	or system_message('ERROR: Unable to connect to SQL server !<br />SQL returned: ' . $sql->ErrorMsg());
+@$sql = Database::connect(
+	Config::getInstance()->get('DATABASE_USER'),
+	ecrypt_db_password(Config::getInstance()->get('DATABASE_PASSWORD')),
+	Config::getInstance()->get('DATABASE_TYPE'),
+	Config::getInstance()->get('DATABASE_HOST'),
+	Config::getInstance()->get('DATABASE_NAME')
+) or system_message('ERROR: Unable to connect to SQL server !<br />SQL returned: ' . $sql->ErrorMsg());
 
 // switch optionally to utf8 based communication with the database
-if (Config::exists('DATABASE_UTF8') && Config::get('DATABASE_UTF8') == 'yes') {
+if (Config::getInstance()->exists('DATABASE_UTF8') && Config::getInstance()->get('DATABASE_UTF8') == 'yes') {
 	@$sql->Execute("SET NAMES 'utf8'");
 }
-
-// No longer needed - unset for safety
-Config::set('DB_USER', null);
-Config::set('DB_PASS', null);
 
 /**
  * @todo Please describe this function!
  */
 function execute_query(&$sql, $query) {
-
 	$rs = $sql->Execute($query);
 	if (!$rs) system_message($sql->ErrorMsg());
 
@@ -62,12 +56,10 @@ function execute_query(&$sql, $query) {
  * @todo Please describe this function!
  */
 function exec_query(&$sql, $query, $data = array(), $failDie = true) {
-
 	$query = $sql->Prepare($query);
 	$rs = $sql->Execute($query, $data);
 
 	if (!$rs && $failDie) {
-
 		$msg = ($query instanceof PDOStatement) ? $query->errorInfo() : $sql->errorInfo();
 		$backtrace = debug_backtrace();
 		$output = isset($msg[2]) ? $msg[2] : $msg;
@@ -79,12 +71,12 @@ function exec_query(&$sql, $query, $data = array(), $failDie = true) {
 		}
 
 		// Send error output via email to admin
-		$admin_email = Config::get('DEFAULT_ADMIN_ADDRESS');
+		$admin_email = Config::getInstance()->get('DEFAULT_ADMIN_ADDRESS');
 
 		if (!empty($admin_email)) {
-			$default_hostname = Config::get('SERVER_HOSTNAME');
-			$default_base_server_ip = Config::get('BASE_SERVER_IP');
-			$Version = Config::get('Version');
+			$default_hostname = Config::getInstance()->get('SERVER_HOSTNAME');
+			$default_base_server_ip = Config::getInstance()->get('BASE_SERVER_IP');
+			$Version = Config::getInstance()->get('Version');
 			$headers = "From: \"ispCP Logging Daemon\" <" . $admin_email . ">\n";
 			$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 7bit\n";
 			$headers .= "X-Mailer: ispCP $Version Logging Mailer";

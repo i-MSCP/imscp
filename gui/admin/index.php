@@ -30,12 +30,12 @@
 
 require '../include/ispcp-lib.php';
 
-check_login(__FILE__, Config::get('PREVENT_EXTERNAL_LOGIN_ADMIN'));
+check_login(__FILE__, Config::getInstance()->get('PREVENT_EXTERNAL_LOGIN_ADMIN'));
 
-$theme_color = Config::get('USER_INITIAL_THEME');
+$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/index.tpl');
+$tpl->define_dynamic('page', Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/index.tpl');
 $tpl->define_dynamic('def_language', 'page');
 $tpl->define_dynamic('def_layout', 'page');
 $tpl->define_dynamic('no_messages', 'page');
@@ -100,7 +100,7 @@ function get_update_infos(&$tpl) {
 		$tpl->assign(array('DATABASE_UPDATE_MESSAGE' => ''));
 	}
 
-	if (!Config::get('CHECK_FOR_UPDATES')) {
+	if (!Config::getInstance()->get('CHECK_FOR_UPDATES')) {
 		$tpl->assign(array('UPDATE' => tr('Update checking is disabled!')));
 		$tpl->parse('UPDATE_MESSAGE', 'update_message');
 		return false;
@@ -195,8 +195,8 @@ $tpl->assign(
 	)
 );
 
-gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_general_information.tpl');
-gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_general_information.tpl');
+gen_admin_mainmenu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/main_menu_general_information.tpl');
+gen_admin_menu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/menu_general_information.tpl');
 
 get_admin_general_info($tpl, $sql);
 
@@ -211,7 +211,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) {
+if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
 }
 unset_messages();

@@ -33,11 +33,11 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/server_status.tpl');
+$tpl->define_dynamic('page', Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/server_status.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('service_status', 'page');
 
-$theme_color = Config::get('USER_INITIAL_THEME');
+$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
 $tpl->assign(
 	array(
@@ -175,7 +175,7 @@ SQL_QUERY;
 			: $rs->fields['value'];
 		list($port, $protocol, $name, $status, $custom, $ip) = explode(";", $value);
 		if ($status) {
-			$ispcp_status->AddService(($ip == '127.0.0.1' ? 'localhost' : (empty($ip) ? Config::get('BASE_SERVER_IP') : $ip)), (int)$port, $name, $protocol);
+			$ispcp_status->AddService(($ip == '127.0.0.1' ? 'localhost' : (empty($ip) ? Config::getInstance()->get('BASE_SERVER_IP') : $ip)), (int)$port, $name, $protocol);
 		}
 
 		$rs->MoveNext();
@@ -224,8 +224,8 @@ SQL_QUERY;
  * static page messages.
  *
  */
-gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_general_information.tpl');
-gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_general_information.tpl');
+gen_admin_mainmenu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/main_menu_general_information.tpl');
+gen_admin_menu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/menu_general_information.tpl');
 
 $tpl->assign(
 	array(
@@ -243,7 +243,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) {
+if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
 }
 unset_messages();

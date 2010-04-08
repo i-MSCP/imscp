@@ -56,7 +56,7 @@ $query = "
 $rs = exec_query($sql, $query, array($dmn_id, $uuser_id));
 $uname = $rs->fields['uname'];
 
-$change_status = Config::get('ITEM_DELETE_STATUS');
+$change_status = Config::getInstance()->get('ITEM_DELETE_STATUS');
 // let's delete the user from the SQL
 $query = "
 	UPDATE
@@ -92,7 +92,7 @@ $rs = exec_query($sql, $query, array($dmn_id));
 		if ($key !== false) {
 			unset($members[$key]);
 			$members = implode(",", $members);
-			$change_status = Config::get('ITEM_CHANGE_STATUS');
+			$change_status = Config::getInstance()->get('ITEM_CHANGE_STATUS');
 			$update_query = "
 				UPDATE
 					`htaccess_groups`
@@ -130,10 +130,10 @@ while (!$rs->EOF) {
 	if ($key !== false) {
 		unset($usr_id_splited[$key]);
 		if (count($usr_id_splited) == 0) {
-			$status = Config::get('ITEM_DELETE_STATUS');
+			$status = Config::getInstance()->get('ITEM_DELETE_STATUS');
 		} else {
 			$usr_id = implode(",", $usr_id_splited);
-			$status = Config::get('ITEM_CHANGE_STATUS');
+			$status = Config::getInstance()->get('ITEM_CHANGE_STATUS');
 		}
 		$update_query = "
 			UPDATE

@@ -36,17 +36,17 @@ function check_gd() {
  * @todo use file_exists in try-catch block
  */
 function captcha_fontfile_exists() {
-	return file_exists(Config::get('LOSTPASSWORD_CAPTCHA_FONT'));
+	return file_exists(Config::getInstance()->get('LOSTPASSWORD_CAPTCHA_FONT'));
 }
 
 function createImage($strSessionVar) {
-	$rgBgColor = Config::get('LOSTPASSWORD_CAPTCHA_BGCOLOR');
-	$rgTextColor = Config::get('LOSTPASSWORD_CAPTCHA_TEXTCOLOR');
+	$rgBgColor = Config::getInstance()->get('LOSTPASSWORD_CAPTCHA_BGCOLOR');
+	$rgTextColor = Config::getInstance()->get('LOSTPASSWORD_CAPTCHA_TEXTCOLOR');
 
-	$x = Config::get('LOSTPASSWORD_CAPTCHA_WIDTH');
-	$y = Config::get('LOSTPASSWORD_CAPTCHA_HEIGHT');
+	$x = Config::getInstance()->get('LOSTPASSWORD_CAPTCHA_WIDTH');
+	$y = Config::getInstance()->get('LOSTPASSWORD_CAPTCHA_HEIGHT');
 
-	$font = Config::get('LOSTPASSWORD_CAPTCHA_FONT');
+	$font = Config::getInstance()->get('LOSTPASSWORD_CAPTCHA_FONT');
 
 	$iRandVal = strrand(8, $strSessionVar);
 
@@ -252,9 +252,9 @@ SQL_QUERY;
 
 		$message = $data['message'];
 
-		$base_vhost = Config::get('BASE_SERVER_VHOST');
+		$base_vhost = Config::getInstance()->get('BASE_SERVER_VHOST');
 
-		$base_vhost_prefix = Config::get('BASE_SERVER_VHOST_PREFIX');
+		$base_vhost_prefix = Config::getInstance()->get('BASE_SERVER_VHOST_PREFIX');
 
 		if ($from_name) {
 			$from = '"' . $from_name . '" <' . $from_email . '>';
@@ -337,8 +337,8 @@ SQL_QUERY;
 	$subject = $data['subject'];
 	$message = $data['message'];
 
-	$base_vhost = Config::get('BASE_SERVER_VHOST');
-	$base_vhost_prefix = Config::get('BASE_SERVER_VHOST_PREFIX');
+	$base_vhost = Config::getInstance()->get('BASE_SERVER_VHOST');
+	$base_vhost_prefix = Config::getInstance()->get('BASE_SERVER_VHOST_PREFIX');
 
 	if ($from_name) {
 		$from = '"' . $from_name . "\" <" . $from_email . ">";

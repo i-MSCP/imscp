@@ -41,7 +41,7 @@ if (!isset($_GET['cdir'])) {
 $domain_name = $_SESSION['user_logged'];
 $cdir = $_GET['cdir'];
 
-unlink(Config::get('FTP_HOMEDIR') . '/' . $domain_name . $cdir . '.htaccess');
+unlink(Config::getInstance()->get('FTP_HOMEDIR') . '/' . $domain_name . $cdir . '.htaccess');
 
 set_page_message(tr('Protected area was deleted successful!'));
 

@@ -41,8 +41,8 @@ if (isset($_GET['order_id']) && is_numeric($_GET['order_id'])) {
 	user_goto('orders.php');
 }
 
-if (Config::exists('HOSTING_PLANS_LEVEL')
-	&& Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
+if (Config::getInstance()->exists('HOSTING_PLANS_LEVEL')
+	&& Config::getInstance()->get('HOSTING_PLANS_LEVEL') === 'admin') {
 	$query = "
 		SELECT
 			*
@@ -83,8 +83,8 @@ $dmn_id = get_user_domain_id($sql, $customer_id);
 // let's check the reseller limits
 $err_msg = '';
 
-if (Config::exists('HOSTING_PLANS_LEVEL')
-	&& Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
+if (Config::getInstance()->exists('HOSTING_PLANS_LEVEL')
+	&& Config::getInstance()->get('HOSTING_PLANS_LEVEL') === 'admin') {
 	$query = "SELECT `props` FROM `hosting_plans` WHERE `id` = ?";
 	$res = exec_query($sql, $query, $hpid);
 } else {
@@ -117,7 +117,7 @@ $domain_php = preg_replace("/\_/", "", $domain_php);
 $domain_cgi = preg_replace("/\_/", "", $domain_cgi);
 $domain_dns = preg_replace("/\_/", "", $domain_dns);
 
-if (Config::get('COUNT_DEFAULT_EMAIL_ADDRESSES') == 0) {
+if (Config::getInstance()->get('COUNT_DEFAULT_EMAIL_ADDRESSES') == 0) {
 	$query = "SELECT COUNT(`mail_id`) AS cnt
 		FROM `mail_users`
 		WHERE `domain_id` = ?
@@ -190,7 +190,7 @@ if (empty($ed_error)) {
 }
 
 if (empty($ed_error)) {
-	if (Config::get('COUNT_DEFAULT_EMAIL_ADDRESSES') == 0) {
+	if (Config::getInstance()->get('COUNT_DEFAULT_EMAIL_ADDRESSES') == 0) {
 		$umail_max -= $default_mails;
 	}
 

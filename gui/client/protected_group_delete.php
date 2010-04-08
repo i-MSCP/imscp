@@ -43,8 +43,8 @@ if (isset($_GET['gname'])
 	user_goto('protected_areas.php');
 }
 
-$change_status = Config::get('ITEM_DELETE_STATUS');
-$awstats_auth = Config::get('AWSTATS_GROUP_AUTH');
+$change_status = Config::getInstance()->get('ITEM_DELETE_STATUS');
+$awstats_auth = Config::getInstance()->get('AWSTATS_GROUP_AUTH');
 
 $query = "
 	UPDATE
@@ -84,10 +84,10 @@ while (!$rs->EOF) {
 	if ($key !== false) {
 		unset($grp_id_splited[$key]);
 		if (count($grp_id_splited) == 0) {
-			$status = Config::get('ITEM_DELETE_STATUS');
+			$status = Config::getInstance()->get('ITEM_DELETE_STATUS');
 		} else {
 			$grp_id = implode(",", $grp_id_splited);
-			$status = Config::get('ITEM_CHANGE_STATUS');
+			$status = Config::getInstance()->get('ITEM_CHANGE_STATUS');
 		}
 		$update_query = "
 			UPDATE

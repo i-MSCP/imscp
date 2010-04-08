@@ -34,20 +34,20 @@ check_login(__FILE__);
 
 function count_requests(&$sql, $id_name, $table) {
 	$query = "SELECT `$id_name` FROM `$table` WHERE `$id_name` NOT IN (?, ?, ?)";
-	$rs = exec_query($sql, $query, array(Config::get('ITEM_OK_STATUS'), Config::get('ITEM_DISABLED_STATUS'), Config::get('ITEM_ORDERED_STATUS')));
+	$rs = exec_query($sql, $query, array(Config::getInstance()->get('ITEM_OK_STATUS'), Config::getInstance()->get('ITEM_DISABLED_STATUS'), Config::getInstance()->get('ITEM_ORDERED_STATUS')));
 	$count = $rs->RecordCount();
 	return $count;
 }
 
 function get_error_domains(&$sql, &$tpl) {
-	$ok_status = Config::get('ITEM_OK_STATUS');
-	$disabled_status = Config::get('ITEM_DISABLED_STATUS');
-	$delete_status = Config::get('ITEM_DELETE_STATUS');
-	$add_status = Config::get('ITEM_ADD_STATUS');
-	$restore_status = Config::get('ITEM_RESTORE_STATUS');
-	$change_status = Config::get('ITEM_CHANGE_STATUS');
-	$toenable_status = Config::get('ITEM_TOENABLE_STATUS');
-	$todisable_status = Config::get('ITEM_TODISABLED_STATUS');
+	$ok_status = Config::getInstance()->get('ITEM_OK_STATUS');
+	$disabled_status = Config::getInstance()->get('ITEM_DISABLED_STATUS');
+	$delete_status = Config::getInstance()->get('ITEM_DELETE_STATUS');
+	$add_status = Config::getInstance()->get('ITEM_ADD_STATUS');
+	$restore_status = Config::getInstance()->get('ITEM_RESTORE_STATUS');
+	$change_status = Config::getInstance()->get('ITEM_CHANGE_STATUS');
+	$toenable_status = Config::getInstance()->get('ITEM_TOENABLE_STATUS');
+	$todisable_status = Config::getInstance()->get('ITEM_TODISABLED_STATUS');
 
 	$dmn_query = "SELECT `domain_name`, `domain_status`, `domain_id` FROM `domain` WHERE `domain_status` NOT IN (?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -87,15 +87,15 @@ function get_error_domains(&$sql, &$tpl) {
 }
 
 function get_error_aliases(&$sql, &$tpl) {
-	$ok_status = Config::get('ITEM_OK_STATUS');
-	$disabled_status = Config::get('ITEM_DISABLED_STATUS');
-	$delete_status = Config::get('ITEM_DELETE_STATUS');
-	$add_status = Config::get('ITEM_ADD_STATUS');
-	$restore_status = Config::get('ITEM_RESTORE_STATUS');
-	$change_status = Config::get('ITEM_CHANGE_STATUS');
-	$toenable_status = Config::get('ITEM_TOENABLE_STATUS');
-	$todisable_status = Config::get('ITEM_TODISABLED_STATUS');
-	$ordered_status = Config::get('ITEM_ORDERED_STATUS');
+	$ok_status = Config::getInstance()->get('ITEM_OK_STATUS');
+	$disabled_status = Config::getInstance()->get('ITEM_DISABLED_STATUS');
+	$delete_status = Config::getInstance()->get('ITEM_DELETE_STATUS');
+	$add_status = Config::getInstance()->get('ITEM_ADD_STATUS');
+	$restore_status = Config::getInstance()->get('ITEM_RESTORE_STATUS');
+	$change_status = Config::getInstance()->get('ITEM_CHANGE_STATUS');
+	$toenable_status = Config::getInstance()->get('ITEM_TOENABLE_STATUS');
+	$todisable_status = Config::getInstance()->get('ITEM_TODISABLED_STATUS');
+	$ordered_status = Config::getInstance()->get('ITEM_ORDERED_STATUS');
 
 	$dmn_query = <<<SQL_QUERY
 		SELECT
@@ -157,14 +157,14 @@ SQL_QUERY;
 }
 
 function get_error_subdomains(&$sql, &$tpl) {
-	$ok_status = Config::get('ITEM_OK_STATUS');
-	$disabled_status = Config::get('ITEM_DISABLED_STATUS');
-	$delete_status = Config::get('ITEM_DELETE_STATUS');
-	$add_status = Config::get('ITEM_ADD_STATUS');
-	$restore_status = Config::get('ITEM_RESTORE_STATUS');
-	$change_status = Config::get('ITEM_CHANGE_STATUS');
-	$toenable_status = Config::get('ITEM_TOENABLE_STATUS');
-	$todisable_status = Config::get('ITEM_TODISABLED_STATUS');
+	$ok_status = Config::getInstance()->get('ITEM_OK_STATUS');
+	$disabled_status = Config::getInstance()->get('ITEM_DISABLED_STATUS');
+	$delete_status = Config::getInstance()->get('ITEM_DELETE_STATUS');
+	$add_status = Config::getInstance()->get('ITEM_ADD_STATUS');
+	$restore_status = Config::getInstance()->get('ITEM_RESTORE_STATUS');
+	$change_status = Config::getInstance()->get('ITEM_CHANGE_STATUS');
+	$toenable_status = Config::getInstance()->get('ITEM_TOENABLE_STATUS');
+	$todisable_status = Config::getInstance()->get('ITEM_TODISABLED_STATUS');
 
 	$dmn_query = <<<SQL_QUERY
 		SELECT
@@ -221,14 +221,14 @@ SQL_QUERY;
 }
 
 function get_error_alias_subdomains(&$sql, &$tpl) {
-	$ok_status = Config::get('ITEM_OK_STATUS');
-	$disabled_status = Config::get('ITEM_DISABLED_STATUS');
-	$delete_status = Config::get('ITEM_DELETE_STATUS');
-	$add_status = Config::get('ITEM_ADD_STATUS');
-	$restore_status = Config::get('ITEM_RESTORE_STATUS');
-	$change_status = Config::get('ITEM_CHANGE_STATUS');
-	$toenable_status = Config::get('ITEM_TOENABLE_STATUS');
-	$todisable_status = Config::get('ITEM_TODISABLED_STATUS');
+	$ok_status = Config::getInstance()->get('ITEM_OK_STATUS');
+	$disabled_status = Config::getInstance()->get('ITEM_DISABLED_STATUS');
+	$delete_status = Config::getInstance()->get('ITEM_DELETE_STATUS');
+	$add_status = Config::getInstance()->get('ITEM_ADD_STATUS');
+	$restore_status = Config::getInstance()->get('ITEM_RESTORE_STATUS');
+	$change_status = Config::getInstance()->get('ITEM_CHANGE_STATUS');
+	$toenable_status = Config::getInstance()->get('ITEM_TOENABLE_STATUS');
+	$todisable_status = Config::getInstance()->get('ITEM_TODISABLED_STATUS');
 
 	$dmn_query = <<<SQL_QUERY
 		SELECT
@@ -285,15 +285,15 @@ SQL_QUERY;
 }
 
 function get_error_mails(&$sql, &$tpl) {
-	$ok_status = Config::get('ITEM_OK_STATUS');
-	$disabled_status = Config::get('ITEM_DISABLED_STATUS');
-	$delete_status = Config::get('ITEM_DELETE_STATUS');
-	$add_status = Config::get('ITEM_ADD_STATUS');
-	$restore_status = Config::get('ITEM_RESTORE_STATUS');
-	$change_status = Config::get('ITEM_CHANGE_STATUS');
-	$toenable_status = Config::get('ITEM_TOENABLE_STATUS');
-	$todisable_status = Config::get('ITEM_TODISABLED_STATUS');
-	$ordered_status = Config::get('ITEM_ORDERED_STATUS');
+	$ok_status = Config::getInstance()->get('ITEM_OK_STATUS');
+	$disabled_status = Config::getInstance()->get('ITEM_DISABLED_STATUS');
+	$delete_status = Config::getInstance()->get('ITEM_DELETE_STATUS');
+	$add_status = Config::getInstance()->get('ITEM_ADD_STATUS');
+	$restore_status = Config::getInstance()->get('ITEM_RESTORE_STATUS');
+	$change_status = Config::getInstance()->get('ITEM_CHANGE_STATUS');
+	$toenable_status = Config::getInstance()->get('ITEM_TOENABLE_STATUS');
+	$todisable_status = Config::getInstance()->get('ITEM_TODISABLED_STATUS');
+	$ordered_status = Config::getInstance()->get('ITEM_ORDERED_STATUS');
 
 	$dmn_query = <<<SQL_QUERY
 		SELECT
@@ -392,7 +392,7 @@ $exec_count = $exec_count + count_requests($sql, 'status', 'htaccess_users');
 
 $tpl = new pTemplate();
 
-$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/ispcp_debugger.tpl');
+$tpl->define_dynamic('page', Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/ispcp_debugger.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('hosting_plans', 'page');
 $tpl->define_dynamic('domain_message', 'page');
@@ -406,7 +406,7 @@ $tpl->define_dynamic('subdomain_list', 'page');
 $tpl->define_dynamic('subdomain_alias_list', 'page');
 $tpl->define_dynamic('mail_list', 'page');
 
-$theme_color = Config::get('USER_INITIAL_THEME');
+$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
 $tpl->assign(
 	array(
@@ -422,8 +422,8 @@ $tpl->assign(
  * static page messages.
  *
  */
-gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_system_tools.tpl');
-gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_system_tools.tpl');
+gen_admin_mainmenu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/main_menu_system_tools.tpl');
+gen_admin_menu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/menu_system_tools.tpl');
 
 $tpl->assign(
 	array(
@@ -496,7 +496,7 @@ get_error_mails($sql, $tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) {
+if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
 }
 unset_messages();

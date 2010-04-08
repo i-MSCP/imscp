@@ -33,14 +33,14 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::get('RESELLER_TEMPLATE_PATH') . '/user_add3.tpl');
+$tpl->define_dynamic('page', Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/user_add3.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('ip_entry', 'page');
 $tpl->define_dynamic('alias_menu', 'page');
 $tpl->define_dynamic('alias_add', 'page');
 
-$theme_color = Config::get('USER_INITIAL_THEME');
+$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
 $tpl->assign(
 		array(
@@ -56,8 +56,8 @@ $tpl->assign(
  * static page messages.
  *
  */
-gen_reseller_mainmenu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/main_menu_users_manage.tpl');
-gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_users_manage.tpl');
+gen_reseller_mainmenu($tpl, Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/main_menu_users_manage.tpl');
+gen_reseller_menu($tpl, Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/menu_users_manage.tpl');
 
 gen_logged_from($tpl);
 
@@ -126,7 +126,7 @@ if (!check_reseller_domainalias_permissions($_SESSION['user_id'])) {
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) {
+if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
 }// unset_messages();
 
@@ -271,8 +271,8 @@ function add_user_data($reseller_id) {
 		unset($_SESSION["ch_hpprops"]);
 	} else {
 
-		if (Config::exists('HOSTING_PLANS_LEVEL')
-			&& strtolower(Config::get('HOSTING_PLANS_LEVEL')) == 'admin') {
+		if (Config::getInstance()->exists('HOSTING_PLANS_LEVEL')
+			&& strtolower(Config::getInstance()->get('HOSTING_PLANS_LEVEL')) == 'admin') {
 			$query = 'SELECT `props` FROM `hosting_plans` WHERE `id` = ?';
 			$res = exec_query($sql, $query, array($hpid));
 		} else {
@@ -360,7 +360,7 @@ function add_user_data($reseller_id) {
 
 	$record_id = $sql->Insert_ID();
 
-	$status = Config::get('ITEM_ADD_STATUS');
+	$status = Config::getInstance()->get('ITEM_ADD_STATUS');
 
 	$expire = $dmn_expire * 2635200; // months * 30.5 days
 
@@ -424,7 +424,7 @@ function add_user_data($reseller_id) {
 
 	$user_id = $sql->Insert_ID();
 
-	$awstats_auth = Config::get('AWSTATS_GROUP_AUTH');
+	$awstats_auth = Config::getInstance()->get('AWSTATS_GROUP_AUTH');
 
 	$query = "
 		INSERT INTO `htaccess_groups`
@@ -436,7 +436,7 @@ function add_user_data($reseller_id) {
 	$rs = exec_query($sql, $query, array($dmn_id, $awstats_auth, $user_id, $status));
 
 	// Create the 3 default addresses if wanted
-	if (Config::get('CREATE_DEFAULT_EMAIL_ADDRESSES'))
+	if (Config::getInstance()->get('CREATE_DEFAULT_EMAIL_ADDRESSES'))
 	{
 		client_mail_add_default_accounts($dmn_id, $user_email, $dmn_name); // 'domain', 0
 	}

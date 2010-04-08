@@ -32,10 +32,10 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-$theme_color = Config::get('USER_INITIAL_THEME');
+$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/ispcp_updates.tpl');
+$tpl->define_dynamic('page', Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/ispcp_updates.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('hosting_plans', 'page');
 $tpl->define_dynamic('update_message', 'page');
@@ -53,7 +53,7 @@ $tpl->assign(
 /* BEGIN common functions */
 function get_update_infos(&$tpl) {
 
-	if (!Config::get('CHECK_FOR_UPDATES')) {
+	if (!Config::getInstance()->get('CHECK_FOR_UPDATES')) {
 		$tpl->assign(
 			array(
 				'UPDATE_MESSAGE'	=> '',
@@ -90,8 +90,8 @@ function get_update_infos(&$tpl) {
  *
  */
 
-gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_system_tools.tpl');
-gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_system_tools.tpl');
+gen_admin_mainmenu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/main_menu_system_tools.tpl');
+gen_admin_menu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/menu_system_tools.tpl');
 
 $tpl->assign(
 	array(
@@ -110,7 +110,7 @@ get_update_infos($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) {
+if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
 }
 unset_messages();

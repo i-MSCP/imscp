@@ -33,7 +33,7 @@
  */
 function check_for_lock_file() {
 
-    $fh = fopen(Config::get('MR_LOCK_FILE'),'r');
+    $fh = fopen(Config::getInstance()->get('MR_LOCK_FILE'),'r');
     if (!$fh) {
         return false;
     }
@@ -200,7 +200,7 @@ function update_user_props($user_id, $props) {
 		// mama mia, we have to rebuild the system entry for this domain
 		// and also all domain alias and subdomains
 
-		$update_status = Config::get('ITEM_CHANGE_STATUS');
+		$update_status = Config::getInstance()->get('ITEM_CHANGE_STATUS');
 
 		// check if we have to wait some system update
 		check_for_lock_file();

@@ -33,7 +33,7 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/multilanguage.tpl');
+$tpl->define_dynamic('page', Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/multilanguage.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('lang_row', 'page');
 $tpl->define_dynamic('lang_delete_link', 'lang_row');
@@ -41,7 +41,7 @@ $tpl->define_dynamic('lang_delete_show', 'lang_row');
 $tpl->define_dynamic('lang_radio', 'lang_row');
 $tpl->define_dynamic('lang_def', 'lang_row');
 
-$theme = Config::get('USER_INITIAL_THEME');
+$theme = Config::getInstance()->get('USER_INITIAL_THEME');
 
 $tpl->assign(
 	array(
@@ -210,7 +210,7 @@ function show_lang(&$tpl, &$sql) {
 
 		$tpl->assign('LANG_CLASS', ($row++ % 2 == 0) ? 'content2' : 'content');
 
-		if (Config::get('USER_INITIAL_LANG') == 'lang_' . $dat[1]
+		if (Config::getInstance()->get('USER_INITIAL_LANG') == 'lang_' . $dat[1]
 			|| $usr_def_lng[1] == $dat[1]) {
 			$tpl->assign(
 				array(
@@ -252,8 +252,8 @@ function show_lang(&$tpl, &$sql) {
  *
  */
 
-gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_settings.tpl');
-gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_settings.tpl');
+gen_admin_mainmenu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/main_menu_settings.tpl');
+gen_admin_menu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/menu_settings.tpl');
 
 install_lang();
 
@@ -283,7 +283,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) {
+if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
 }
 unset_messages();

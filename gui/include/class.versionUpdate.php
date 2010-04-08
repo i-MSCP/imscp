@@ -62,7 +62,7 @@ class versionUpdate extends ispcpUpdate {
 	 * @todo Please descibe this method!
 	 */
 	protected function getCurrentVersion() {
-		return (int)Config::get('BuildDate');
+		return (int)Config::getInstance()->get('BuildDate');
 	}
 
 	/**

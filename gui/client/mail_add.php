@@ -34,7 +34,7 @@ check_login(__FILE__);
 
 $tpl = new pTemplate();
 
-$tpl->define_dynamic('page', Config::get('CLIENT_TEMPLATE_PATH') . '/mail_add.tpl');
+$tpl->define_dynamic('page', Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/mail_add.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('als_list', 'page');
@@ -89,7 +89,7 @@ function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
 }
 
 function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
-	$ok_status = Config::get('ITEM_OK_STATUS');
+	$ok_status = Config::getInstance()->get('ITEM_OK_STATUS');
 
 	$query = "
 		SELECT
@@ -156,7 +156,7 @@ function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 }
 
 function gen_dmn_sub_list(&$tpl, &$sql, $dmn_id, $dmn_name, $post_check) {
-	$ok_status = Config::get('ITEM_OK_STATUS');
+	$ok_status = Config::getInstance()->get('ITEM_OK_STATUS');
 
 	$query = "
 		SELECT
@@ -226,7 +226,7 @@ function gen_dmn_sub_list(&$tpl, &$sql, $dmn_id, $dmn_name, $post_check) {
 }
 
 function gen_dmn_als_sub_list(&$tpl, &$sql, $dmn_id, $post_check) {
-	$ok_status = Config::get('ITEM_OK_STATUS');
+	$ok_status = Config::getInstance()->get('ITEM_OK_STATUS');
 
 	$query = "
 		SELECT
@@ -427,7 +427,7 @@ function schedule_mail_account(&$sql, $domain_id, $dmn_name, $mail_acc) {
 			$domain_id,
 			$mail_type,
 			$sub_id,
-			Config::get('ITEM_ADD_STATUS'),
+			Config::getInstance()->get('ITEM_ADD_STATUS'),
 			$mail_auto_respond,
 			$mail_auto_respond_text,
 			$mail_addr));
@@ -475,10 +475,10 @@ function check_mail_acc_data(&$sql, $dmn_id, $dmn_name) {
 			return false;
 		} else if (!chk_password($pass, 50, "/[`\xb4'\"\\\\\x01-\x1f\015\012|<>^$]/i")) {
 			// Not permitted chars
-			if (Config::get('PASSWD_STRONG')) {
-				set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), Config::get('PASSWD_CHARS')));
+			if (Config::getInstance()->get('PASSWD_STRONG')) {
+				set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), Config::getInstance()->get('PASSWD_CHARS')));
 			} else {
-				set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), Config::get('PASSWD_CHARS')));
+				set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), Config::getInstance()->get('PASSWD_CHARS')));
 			}
 			return false;
 		}
@@ -603,7 +603,7 @@ if (isset($_SESSION['email_support']) && $_SESSION['email_support'] == "no") {
 	header("Location: index.php");
 }
 
-$theme_color = Config::get('USER_INITIAL_THEME');
+$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
 $tpl->assign(
 	array(
@@ -620,8 +620,8 @@ gen_page_mail_acc_props($tpl, $sql, $_SESSION['user_id']);
 
 // static page messages.
 
-gen_client_mainmenu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/main_menu_email_accounts.tpl');
-gen_client_menu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/menu_email_accounts.tpl');
+gen_client_mainmenu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/main_menu_email_accounts.tpl');
+gen_client_menu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/menu_email_accounts.tpl');
 
 gen_logged_from($tpl);
 
@@ -650,6 +650,6 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) {
+if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
 }

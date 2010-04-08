@@ -76,8 +76,8 @@ function gen_admin_mainmenu(&$tpl, $menu_file) {
 			'TR_MENU_SYSTEM_TOOLS' => tr('System tools'),
 			'TR_MENU_MANAGE_USERS' => tr('Manage users'),
 			'TR_MENU_STATISTICS' => tr('Statistics'),
-			'SUPPORT_SYSTEM_PATH' => Config::get('ISPCP_SUPPORT_SYSTEM_PATH'),
-			'SUPPORT_SYSTEM_TARGET' => Config::get('ISPCP_SUPPORT_SYSTEM_TARGET'),
+			'SUPPORT_SYSTEM_PATH' => Config::getInstance()->get('ISPCP_SUPPORT_SYSTEM_PATH'),
+			'SUPPORT_SYSTEM_TARGET' => Config::getInstance()->get('ISPCP_SUPPORT_SYSTEM_TARGET'),
 			'TR_MENU_SUPPORT_SYSTEM' => tr('Support system'),
 			'TR_MENU_SETTINGS' => tr('Settings'),
 			'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
@@ -85,8 +85,8 @@ function gen_admin_mainmenu(&$tpl, $menu_file) {
 			'TR_MENU_SYSTEM_TOOLS' => tr('System tools'),
 			'TR_MENU_MANAGE_USERS' => tr('Manage users'),
 			'TR_MENU_STATISTICS' => tr('Statistics'),
-			'SUPPORT_SYSTEM_PATH' => Config::get('ISPCP_SUPPORT_SYSTEM_PATH'),
-			'SUPPORT_SYSTEM_TARGET' => Config::get('ISPCP_SUPPORT_SYSTEM_TARGET'),
+			'SUPPORT_SYSTEM_PATH' => Config::getInstance()->get('ISPCP_SUPPORT_SYSTEM_PATH'),
+			'SUPPORT_SYSTEM_TARGET' => Config::getInstance()->get('ISPCP_SUPPORT_SYSTEM_TARGET'),
 			'TR_MENU_SUPPORT_SYSTEM' => tr('Support system'),
 			'TR_MENU_SETTINGS' => tr('Settings'),
 			'TR_MENU_CHANGE_PASSWORD' => tr('Change password'),
@@ -162,11 +162,11 @@ function gen_admin_mainmenu(&$tpl, $menu_file) {
 			$i++;
 		} // end while
 	} // end else
-	if (!Config::get('ISPCP_SUPPORT_SYSTEM')) {
+	if (!Config::getInstance()->get('ISPCP_SUPPORT_SYSTEM')) {
 		$tpl->assign('ISACTIVE_SUPPORT', '');
 	}
 
-	if (strtolower(Config::get('HOSTING_PLANS_LEVEL')) != 'admin') {
+	if (strtolower(Config::getInstance()->get('HOSTING_PLANS_LEVEL')) != 'admin') {
 		$tpl->assign('HOSTING_PLANS', '');
 	}
 
@@ -214,16 +214,16 @@ function gen_admin_menu(&$tpl, $menu_file) {
 			'TR_CUSTOM_MENUS' => tr('Custom menus'),
 			'TR_MENU_OVERVIEW' => tr('Overview'),
 			'TR_MENU_MANAGE_SESSIONS' => tr('User sessions'),
-			'SUPPORT_SYSTEM_PATH' => Config::get('ISPCP_SUPPORT_SYSTEM_PATH'),
-			'SUPPORT_SYSTEM_TARGET' => Config::get('ISPCP_SUPPORT_SYSTEM_TARGET'),
+			'SUPPORT_SYSTEM_PATH' => Config::getInstance()->get('ISPCP_SUPPORT_SYSTEM_PATH'),
+			'SUPPORT_SYSTEM_TARGET' => Config::getInstance()->get('ISPCP_SUPPORT_SYSTEM_TARGET'),
 			'TR_MENU_LOSTPW_EMAIL' => tr('Lostpw email setup'),
 			'TR_MAINTENANCEMODE' => tr('Maintenance mode'),
 			'TR_MENU_SETTINGS' => tr('Settings'),
 			'TR_GENERAL_SETTINGS' => tr('General settings'),
 			'TR_SERVERPORTS' => tr('Server ports'),
-			'VERSION' => Config::get('Version'),
-			'BUILDDATE' => Config::get('BuildDate'),
-			'CODENAME' => Config::get('CodeName')
+			'VERSION' => Config::getInstance()->get('Version'),
+			'BUILDDATE' => Config::getInstance()->get('BuildDate'),
+			'CODENAME' => Config::getInstance()->get('CodeName')
 		)
 	);
 	$query = "
@@ -264,11 +264,11 @@ function gen_admin_menu(&$tpl, $menu_file) {
 			$i++;
 		} // end while
 	} // end else
-	if (!Config::get('ISPCP_SUPPORT_SYSTEM')) {
+	if (!Config::getInstance()->get('ISPCP_SUPPORT_SYSTEM')) {
 		$tpl->assign('SUPPORT_SYSTEM', '');
 	}
 
-	if (strtolower(Config::get('HOSTING_PLANS_LEVEL')) != 'admin') {
+	if (strtolower(Config::getInstance()->get('HOSTING_PLANS_LEVEL')) != 'admin') {
 		$tpl->assign('HOSTING_PLANS', '');
 	}
 
@@ -316,7 +316,7 @@ function get_admin_general_info(&$tpl, &$sql) {
 
 	// If COUNT_DEFAULT_EMAIL_ADDRESSES = false, admin total emails show [total - default_emails]/[total_emails]
 	$retrieve_total_emails = records_count('mail_users', 'mail_type NOT RLIKE \'_catchall\'', '');
-	if (Config::get('COUNT_DEFAULT_EMAIL_ADDRESSES')) {
+	if (Config::getInstance()->get('COUNT_DEFAULT_EMAIL_ADDRESSES')) {
 		$show_total_emails = $retrieve_total_emails;
 	} else {
 		$retrieve_total_default_emails = records_count('mail_users', 'mail_acc', 'abuse');
@@ -392,7 +392,7 @@ function gen_admin_list(&$tpl, &$sql) {
 			if ($admin_created == 0) {
 				$admin_created = tr('N/A');
 			} else {
-				$date_formt = Config::get('DATE_FORMAT');
+				$date_formt = Config::getInstance()->get('DATE_FORMAT');
 				$admin_created = date($date_formt, $admin_created);
 			}
 
@@ -504,7 +504,7 @@ function gen_reseller_list(&$tpl, &$sql) {
 			if ($reseller_created == 0) {
 				$reseller_created = tr('N/A');
 			} else {
-				$date_formt = Config::get('DATE_FORMAT');
+				$date_formt = Config::getInstance()->get('DATE_FORMAT');
 				$reseller_created = date($date_formt, $reseller_created);
 			}
 
@@ -531,7 +531,7 @@ function gen_reseller_list(&$tpl, &$sql) {
 function gen_user_list(&$tpl, &$sql) {
 	$start_index = 0;
 
-	$rows_per_page = Config::get('DOMAIN_ROWS_PER_PAGE');
+	$rows_per_page = Config::getInstance()->get('DOMAIN_ROWS_PER_PAGE');
 
 	if (isset($_GET['psi'])) $start_index = $_GET['psi'];
 	// Search request generated ?!
@@ -699,13 +699,13 @@ function gen_user_list(&$tpl, &$sql) {
 				$tpl->parse('USR_DELETE_LINK', 'usr_delete_link');
 			}
 
-			if ($rs->fields['domain_status'] == Config::get('ITEM_OK_STATUS')) {
+			if ($rs->fields['domain_status'] == Config::getInstance()->get('ITEM_OK_STATUS')) {
 				$status_icon = "ok.png";
 				$status_url = "domain_status_change.php?domain_id=" . $rs->fields['domain_id'];
-			} else if ($rs->fields['domain_status'] == Config::get('ITEM_DISABLED_STATUS')) {
+			} else if ($rs->fields['domain_status'] == Config::getInstance()->get('ITEM_DISABLED_STATUS')) {
 				$status_icon = "disabled.png";
 				$status_url = "domain_status_change.php?domain_id=" . $rs->fields['domain_id'];
-			} else if ($rs->fields['domain_status'] == Config::get('ITEM_ADD_STATUS') || $rs->fields['domain_status'] == Config::get('ITEM_RESTORE_STATUS') || $rs->fields['domain_status'] == Config::get('ITEM_CHANGE_STATUS') || $rs->fields['domain_status'] == Config::get('ITEM_TOENABLE_STATUS') || $rs->fields['domain_status'] == Config::get('ITEM_TODISABLED_STATUS') || $rs->fields['domain_status'] == Config::get('ITEM_DELETE_STATUS')) {
+			} else if ($rs->fields['domain_status'] == Config::getInstance()->get('ITEM_ADD_STATUS') || $rs->fields['domain_status'] == Config::getInstance()->get('ITEM_RESTORE_STATUS') || $rs->fields['domain_status'] == Config::getInstance()->get('ITEM_CHANGE_STATUS') || $rs->fields['domain_status'] == Config::getInstance()->get('ITEM_TOENABLE_STATUS') || $rs->fields['domain_status'] == Config::getInstance()->get('ITEM_TODISABLED_STATUS') || $rs->fields['domain_status'] == Config::getInstance()->get('ITEM_DELETE_STATUS')) {
 				$status_icon = "reload.png";
 				$status_url = "#";
 			} else {
@@ -727,7 +727,7 @@ function gen_user_list(&$tpl, &$sql) {
 			if ($domain_created == 0) {
 				$domain_created = tr('N/A');
 			} else {
-				$date_formt = Config::get('DATE_FORMAT');
+				$date_formt = Config::getInstance()->get('DATE_FORMAT');
 				$domain_created = date($date_formt, $domain_created);
 			}
 
@@ -736,7 +736,7 @@ function gen_user_list(&$tpl, &$sql) {
 			if ($domain_expires == 0) {
 				$domain_expires = tr('N/A');
 			} else {
-				$date_formt = Config::get('DATE_FORMAT');
+				$date_formt = Config::getInstance()->get('DATE_FORMAT');
 				$domain_expires = date($date_formt, $domain_expires);
 			}
 
@@ -1001,7 +1001,7 @@ function generate_user_props($user_id) {
 	$als_current = records_count('domain_aliasses', 'domain_id', $user_id);
 	$als_max = $rs->fields['domain_alias_limit'];
 	//This works with the admin option(Count default E-Mail addresses) is working - TheCry
-	if (Config::get('COUNT_DEFAULT_EMAIL_ADDRESSES')) {
+	if (Config::getInstance()->get('COUNT_DEFAULT_EMAIL_ADDRESSES')) {
 		$mail_current = records_count('mail_users', 'mail_type NOT RLIKE \'_catchall\' AND domain_id', $user_id);
 	} else {
 		$where = "`mail_acc` != 'abuse'
@@ -1312,7 +1312,7 @@ function get_logo($user_id) {
 	if ($rs->fields['admin_type'] == 'admin') {
 		return get_admin_logo($user_id);
 	} else {
-		if(get_admin_logo($rs->fields['created_by']) === Config::get('IPS_LOGO_PATH').'/isp_logo.gif') {
+		if(get_admin_logo($rs->fields['created_by']) === Config::getInstance()->get('IPS_LOGO_PATH').'/isp_logo.gif') {
 			return get_admin_logo($user_id);
 		} else {
 			return get_admin_logo($rs->fields['created_by']);
@@ -1338,9 +1338,9 @@ function get_admin_logo($user_id) {
 	$user_logo = $rs->fields['logo'];
 
 	if (empty($user_logo)) { // default logo
-		return Config::get('IPS_LOGO_PATH') . '/isp_logo.gif';
+		return Config::getInstance()->get('IPS_LOGO_PATH') . '/isp_logo.gif';
 	} else {
-		return Config::get('IPS_LOGO_PATH') . '/' . $user_logo;
+		return Config::getInstance()->get('IPS_LOGO_PATH') . '/' . $user_logo;
 	}
 }
 
@@ -1376,17 +1376,17 @@ function write_log($msg, $level = E_USER_WARNING) {
 
 	$msg = strip_tags(str_replace('<br />', "\n", $msg));
 
-	$send_log_to = Config::get('DEFAULT_ADMIN_ADDRESS');
+	$send_log_to = Config::getInstance()->get('DEFAULT_ADMIN_ADDRESS');
 
 	// now send email if DEFAULT_ADMIN_ADDRESS != ''
-	if ($send_log_to != '' && $level <= Config::get('LOG_LEVEL')) {
+	if ($send_log_to != '' && $level <= Config::getInstance()->get('LOG_LEVEL')) {
 		global $default_hostname, $default_base_server_ip, $Version, $BuildDate, $admin_login;
 
-		$admin_email = Config::get('DEFAULT_ADMIN_ADDRESS');
-		$default_hostname = Config::get('SERVER_HOSTNAME');
-		$default_base_server_ip = Config::get('BASE_SERVER_IP');
-		$Version = Config::get('Version');
-		$BuildDate = Config::get('BuildDate');
+		$admin_email = Config::getInstance()->get('DEFAULT_ADMIN_ADDRESS');
+		$default_hostname = Config::getInstance()->get('SERVER_HOSTNAME');
+		$default_base_server_ip = Config::getInstance()->get('BASE_SERVER_IP');
+		$Version = Config::getInstance()->get('Version');
+		$BuildDate = Config::getInstance()->get('BuildDate');
 
 		$subject = "ispCP $Version on $default_hostname ($default_base_server_ip)";
 
@@ -1434,7 +1434,7 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ul
 	$from_email = $data['sender_email'];
 	$message = $data['message'];
 
-	$base_vhost = Config::get('BASE_SERVER_VHOST');
+	$base_vhost = Config::getInstance()->get('BASE_SERVER_VHOST');
 
 	if ($from_name) {
 		$from = '"' . encode($from_name) . "\" <" . $from_email . ">";
@@ -1468,7 +1468,7 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ul
 	$search [] = '{BASE_SERVER_VHOST}';
 	$replace[] = $base_vhost;
 	$search [] = '{BASE_SERVER_VHOST_PREFIX}';
-	$replace[] = Config::get('BASE_SERVER_VHOST_PREFIX');
+	$replace[] = Config::getInstance()->get('BASE_SERVER_VHOST_PREFIX');
 
 	$subject = str_replace($search, $replace, $subject);
 	$message = str_replace($search, $replace, $message);
@@ -1479,7 +1479,7 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ul
 
 	$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 8bit\n";
 
-	$headers .= "X-Mailer: ispCP " . Config::get('Version') . " Service Mailer";
+	$headers .= "X-Mailer: ispCP " . Config::getInstance()->get('Version') . " Service Mailer";
 
 	$mail_result = mail($to, $subject, $message, $headers);
 
@@ -1572,9 +1572,9 @@ function gen_logged_from(&$tpl) {
 function change_domain_status(&$sql, $domain_id, $domain_name, $action, $location) {
 
 	if ($action == 'disable') {
-		$new_status = Config::get('ITEM_TODISABLED_STATUS');
+		$new_status = Config::getInstance()->get('ITEM_TODISABLED_STATUS');
 	} else if ($action == 'enable') {
-		$new_status = Config::get('ITEM_TOENABLE_STATUS');
+		$new_status = Config::getInstance()->get('ITEM_TOENABLE_STATUS');
 	} else {
 		return;
 	}
@@ -1598,7 +1598,7 @@ function change_domain_status(&$sql, $domain_id, $domain_name, $action, $locatio
 		$mail_pass = $rs->fields['mail_pass'];
 		$mail_type = $rs->fields['mail_type'];
 
-		if (Config::get('HARD_MAIL_SUSPENSION')) {
+		if (Config::getInstance()->get('HARD_MAIL_SUSPENSION')) {
 			$mail_status = $new_status;
 		} else {
 			if ($action == 'disable') {
@@ -1624,7 +1624,7 @@ function change_domain_status(&$sql, $domain_id, $domain_name, $action, $locatio
 			} else {
 				return;
 			}
-			$mail_status = Config::get('ITEM_CHANGE_STATUS');
+			$mail_status = Config::getInstance()->get('ITEM_CHANGE_STATUS');
 		}
 
 		$query = "UPDATE `mail_users` SET `mail_pass` = ?, `status` = ? WHERE `mail_id` = ?";
@@ -1904,12 +1904,12 @@ function rm_rf_user_account($id_user) {
 	$rs = exec_query($sql, $query, array($domain_gid));
 
 	// let's delete all subdomains for this user
-	$delete_status = Config::get('ITEM_DELETE_STATUS');
+	$delete_status = Config::getInstance()->get('ITEM_DELETE_STATUS');
 	$query = "UPDATE `subdomain` SET `subdomain_status` = ? WHERE `domain_id` = ?";
 	$rs = exec_query($sql, $query, array($delete_status, $domain_id));
 
 	// let's delete all alises subdomains for this user
-	$delete_status = Config::get('ITEM_DELETE_STATUS');
+	$delete_status = Config::getInstance()->get('ITEM_DELETE_STATUS');
 	$query = "UPDATE `subdomain_alias` SET `subdomain_alias_status` = ? WHERE `alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)";
 	$rs = exec_query($sql, $query, array($delete_status, $domain_id));
 
@@ -2060,7 +2060,7 @@ function gen_purchase_haf(&$tpl, &$sql, $user_id, $encode = false) {
 	if (isset($_SESSION['user_theme'])) {
 		$theme = $_SESSION['user_theme'];
 	} else {
-		$theme = Config::get('USER_INITIAL_THEME');
+		$theme = Config::getInstance()->get('USER_INITIAL_THEME');
 	}
 
 	$rs = exec_query($sql, $query, array($user_id));
@@ -2126,7 +2126,7 @@ function setConfig_Value($name, $value) {
 		$res = exec_query($sql, $query, array($value, $name));
 	}
 
-	Config::set($name, $value);
+	Config::getInstance()->set($name, $value);
 
 	return true;
 }

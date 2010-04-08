@@ -32,7 +32,7 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::get('ADMIN_TEMPLATE_PATH') . '/user_delete.tpl');
+$tpl->define_dynamic('page', Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/user_delete.tpl');
 
 $tpl->define_dynamic('mail_list', 'page');
 $tpl->define_dynamic('ftp_list', 'page');
@@ -49,7 +49,7 @@ $tpl->define_dynamic('db_item', 'db_list');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 
-$theme_color = Config::get('USER_INITIAL_THEME');
+$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
 $tpl->assign(
 	array(
@@ -76,15 +76,15 @@ if (isset($_GET['delete_id']) && is_numeric($_GET['delete_id'])) {
 	user_goto('manage_users.php');
 }
 
-gen_admin_mainmenu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/main_menu_users_manage.tpl');
-gen_admin_menu($tpl, Config::get('ADMIN_TEMPLATE_PATH') . '/menu_users_manage.tpl');
+gen_admin_mainmenu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/main_menu_users_manage.tpl');
+gen_admin_menu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/menu_users_manage.tpl');
 
 gen_page_message($tpl);
 
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) {
+if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
 }
 
@@ -110,7 +110,7 @@ function delete_domain($domain_id) {
 	$domain_gid 		= $data['domain_gid'];
 	$reseller_id 		= $data['domain_created_id'];
 
-	$delete_status = Config::get('ITEM_DELETE_STATUS');
+	$delete_status = Config::getInstance()->get('ITEM_DELETE_STATUS');
 
 	// Mail users:
 	exec_query($sql, "UPDATE `mail_users` SET `status` = '" . $delete_status . "' WHERE `domain_id` = ?", array($domain_id));
@@ -246,7 +246,7 @@ function delete_user($user_id) {
 		// delete reseller logo if exists
 		if(!empty($reseller_logo) && $reseller_logo !== 0) {
 			try {
-				unlink(Config::get('IPS_LOGO_PATH') . '/' . $reseller_logo);
+				unlink(Config::getInstance()->get('IPS_LOGO_PATH') . '/' . $reseller_logo);
 			} catch(Exception $e) {
 				set_page_message(tr('Logo could not be deleted:') . " " . $e->getMessage());
 			}

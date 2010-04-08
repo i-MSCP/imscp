@@ -43,7 +43,7 @@ $query = "
 
 $rs = exec_query($sql, $query, array($_SESSION['user_id']));
 
-if (!Config::get('ISPCP_SUPPORT_SYSTEM') || $rs->fields['support_system'] == 'no') {
+if (!Config::getInstance()->get('ISPCP_SUPPORT_SYSTEM') || $rs->fields['support_system'] == 'no') {
 	user_goto('index.php');
 }
 

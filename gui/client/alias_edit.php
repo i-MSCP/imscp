@@ -33,47 +33,43 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::get('CLIENT_TEMPLATE_PATH') . '/alias_edit.tpl');
+$tpl->define_dynamic('page', Config::getInstance()->getInstance()->get('CLIENT_TEMPLATE_PATH') . '/alias_edit.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 
-$theme_color = Config::get('USER_INITIAL_THEME');
+$theme_color = Config::getInstance()->getInstance()->get('USER_INITIAL_THEME');
 
-$tpl->assign(
-	array(
-		'TR_EDIT_ALIAS_PAGE_TITLE' => tr('ispCP - Manage Domain Alias/Edit Alias'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
-		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => get_logo($_SESSION['user_id'])
-	)
-);
+$tpl->assign(array(
+	'TR_EDIT_ALIAS_PAGE_TITLE' => tr('ispCP - Manage Domain Alias/Edit Alias'),
+	'THEME_COLOR_PATH' => "../themes/$theme_color",
+	'THEME_CHARSET' => tr('encoding'),
+	'ISP_LOGO' => get_logo($_SESSION['user_id'])
+));
 
 /*
  *
  * static page messages.
  *
  */
-$tpl->assign(
-	array(
-		'TR_MANAGE_DOMAIN_ALIAS' => tr('Manage domain alias'),
-		'TR_EDIT_ALIAS' => tr('Edit domain alias'),
-		'TR_ALIAS_NAME' => tr('Alias name'),
-		'TR_DOMAIN_IP' => tr('Domain IP'),
-		'TR_FORWARD' => tr('Forward to URL'),
-		'TR_MOUNT_POINT' => tr('Mount Point'),
-		'TR_MODIFY' => tr('Modify'),
-		'TR_CANCEL' => tr('Cancel'),
-		'TR_ENABLE_FWD' => tr("Enable Forward"),
-		'TR_ENABLE' => tr("Enable"),
-		'TR_DISABLE' => tr("Disable"),
-		'TR_PREFIX_HTTP' => 'http://',
-		'TR_PREFIX_HTTPS' => 'https://',
-		'TR_PREFIX_FTP' => 'ftp://'
-	)
-);
+$tpl->assign(array(
+	'TR_MANAGE_DOMAIN_ALIAS' => tr('Manage domain alias'),
+	'TR_EDIT_ALIAS' => tr('Edit domain alias'),
+	'TR_ALIAS_NAME' => tr('Alias name'),
+	'TR_DOMAIN_IP' => tr('Domain IP'),
+	'TR_FORWARD' => tr('Forward to URL'),
+	'TR_MOUNT_POINT' => tr('Mount Point'),
+	'TR_MODIFY' => tr('Modify'),
+	'TR_CANCEL' => tr('Cancel'),
+	'TR_ENABLE_FWD' => tr("Enable Forward"),
+	'TR_ENABLE' => tr("Enable"),
+	'TR_DISABLE' => tr("Disable"),
+	'TR_PREFIX_HTTP' => 'http://',
+	'TR_PREFIX_HTTPS' => 'https://',
+	'TR_PREFIX_FTP' => 'ftp://'
+));
 
-gen_client_mainmenu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/main_menu_manage_domains.tpl');
-gen_client_menu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/menu_manage_domains.tpl');
+gen_client_mainmenu($tpl, Config::getInstance()->getInstance()->get('CLIENT_TEMPLATE_PATH') . '/main_menu_manage_domains.tpl');
+gen_client_menu($tpl, Config::getInstance()->getInstance()->get('CLIENT_TEMPLATE_PATH') . '/menu_manage_domains.tpl');
 
 gen_logged_from($tpl);
 
@@ -108,7 +104,7 @@ gen_editalias_page($tpl, $editid);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) {
+if (Config::getInstance()->getInstance()->get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
 }
 unset_messages();
@@ -143,42 +139,34 @@ function gen_editalias_page(&$tpl, $edit_id) {
 			$check_en = '';
 			$check_dis = 'checked="checked"';
 			$url_forward = '';
-			$tpl->assign(
-					array(
-						'READONLY_FORWARD' => ' readonly',
-						'DISABLE_FORWARD' => ' disabled="disabled"'
-						)
-					);
+			$tpl->assign(array(
+				'READONLY_FORWARD' => ' readonly',
+				'DISABLE_FORWARD' => ' disabled="disabled"'
+			));
 		} else {
 			$check_en = 'checked="checked"';
 			$check_dis = '';
-			$tpl->assign(
-					array(
-						'READONLY_FORWARD' => '',
-						'DISABLE_FORWARD' => '',
-						'HTTP_YES' => (preg_match("/http:\/\//", $data['url_forward'])) ? 'selected="selected"' : '',
-						'HTTPS_YES' => (preg_match("/https:\/\//", $data['url_forward'])) ? 'selected="selected"' : '',
-						'FTP_YES' => (preg_match("/ftp:\/\//", $data['url_forward'])) ? 'selected="selected"' : ''
-						)
-					);
+			$tpl->assign(array(
+				'READONLY_FORWARD' => '',
+				'DISABLE_FORWARD' => '',
+				'HTTP_YES' => (preg_match("/http:\/\//", $data['url_forward'])) ? 'selected="selected"' : '',
+				'HTTPS_YES' => (preg_match("/https:\/\//", $data['url_forward'])) ? 'selected="selected"' : '',
+				'FTP_YES' => (preg_match("/ftp:\/\//", $data['url_forward'])) ? 'selected="selected"' : ''
+			));
 		}
-		$tpl->assign(
-				array(
-					'CHECK_EN' => $check_en,
-					'CHECK_DIS' => $check_dis
-				)
-			);
+		$tpl->assign(array(
+			'CHECK_EN' => $check_en,
+			'CHECK_DIS' => $check_dis
+		));
 	}
 	// Fill in the fields
-	$tpl->assign(
-		array(
-			'ALIAS_NAME' => decode_idna($data['alias_name']),
-			'DOMAIN_IP' => $ip_data,
-			'FORWARD' => $url_forward,
-			'MOUNT_POINT' => $data['alias_mount'],
-			'ID' => $edit_id
-		)
-	);
+	$tpl->assign(array(
+		'ALIAS_NAME' => decode_idna($data['alias_name']),
+		'DOMAIN_IP' => $ip_data,
+		'FORWARD' => $url_forward,
+		'MOUNT_POINT' => $data['alias_mount'],
+		'ID' => $edit_id
+	));
 } // End of gen_editalias_page()
 
 /**
@@ -208,28 +196,24 @@ function check_fwd_data(&$tpl, $alias_id) {
 		
 		$check_en = 'checked="checked"';
 		$check_dis = '';
-		$tpl->assign(
-				array(
-					'FORWARD' => $forward_url,
-					'HTTP_YES' => ($forward_prefix === 'http://') ? 'selected="selected"' : '',
-					'HTTPS_YES' => ($forward_prefix === 'https://') ? 'selected="selected"' : '',
-					'FTP_YES' => ($forward_prefix === 'ftp://') ? 'selected="selected"' : '',
-					'CHECK_EN' => $check_en,
-					'CHECK_DIS' => $check_dis,
-				)
-			);
+		$tpl->assign(array(
+			'FORWARD' => $forward_url,
+			'HTTP_YES' => ($forward_prefix === 'http://') ? 'selected="selected"' : '',
+			'HTTPS_YES' => ($forward_prefix === 'https://') ? 'selected="selected"' : '',
+			'FTP_YES' => ($forward_prefix === 'ftp://') ? 'selected="selected"' : '',
+			'CHECK_EN' => $check_en,
+			'CHECK_DIS' => $check_dis,
+		));
 	} else {
 		$check_en = '';
 		$check_dis = 'checked="checked"';
 		$forward_url = 'no';
-		$tpl->assign(
-				array(
-					'READONLY_FORWARD' => ' readonly',
-					'DISABLE_FORWARD' => ' disabled="disabled"',
-					'CHECK_EN' => $check_en,
-					'CHECK_DIS' => $check_dis,
-				)
-			);
+		$tpl->assign(array(
+			'READONLY_FORWARD' => ' readonly',
+			'DISABLE_FORWARD' => ' disabled="disabled"',
+			'CHECK_EN' => $check_en,
+			'CHECK_DIS' => $check_dis,
+		));
 	}
 
 	if ($ed_error === '_off_') {
@@ -242,7 +226,7 @@ function check_fwd_data(&$tpl, $alias_id) {
 			WHERE
 				`alias_id` = ?
 		";
-		exec_query($sql, $query, array($forward_url, Config::get('ITEM_CHANGE_STATUS'), $alias_id));
+		exec_query($sql, $query, array($forward_url, Config::getInstance()->getInstance()->get('ITEM_CHANGE_STATUS'), $alias_id));
 
 		$query = "
 			UPDATE
@@ -252,7 +236,7 @@ function check_fwd_data(&$tpl, $alias_id) {
 			WHERE
 				`alias_id` = ?
 		";
-		exec_query($sql, $query, array(Config::get('ITEM_CHANGE_STATUS'), $alias_id));
+		exec_query($sql, $query, array(Config::getInstance()->getInstance()->get('ITEM_CHANGE_STATUS'), $alias_id));
 
 		send_request();
 

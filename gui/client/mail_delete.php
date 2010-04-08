@@ -107,7 +107,7 @@ if ($num > 0) {
 /**
  * @todo useDB prepared statements
  */
-$query = "UPDATE `mail_users` SET `status` = '" . Config::get('ITEM_DELETE_STATUS') . "' WHERE `mail_id` = ?";
+$query = "UPDATE `mail_users` SET `status` = '" . Config::getInstance()->get('ITEM_DELETE_STATUS') . "' WHERE `mail_id` = ?";
 exec_query($sql, $query, array($delete_id));
 
 update_reseller_c_props(get_reseller_id($data['domain_id']));

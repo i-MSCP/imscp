@@ -33,7 +33,7 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::get('CLIENT_TEMPLATE_PATH') . '/mail_catchall_add.tpl');
+$tpl->define_dynamic('page', Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/mail_catchall_add.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('mail_list', 'page');
@@ -89,7 +89,7 @@ function gen_dynamic_page_data(&$tpl, &$sql, $id) {
 		user_goto('mail_catchall.php');
 	}
 
-	$ok_status = Config::get('ITEM_OK_STATUS');
+	$ok_status = Config::getInstance()->get('ITEM_OK_STATUS');
 	$match = array();
 	if (preg_match("/(\d+);(normal|alias|subdom|alssub)/", $id, $match) == 1) {
 		$item_id = $match[1];
@@ -319,7 +319,7 @@ function create_catchall_mail_account(&$sql, $id) {
 				$rs = exec_query($sql, $query, array($mail_id));
 				$domain_id = $rs->fields['domain_id'];
 				$sub_id = $rs->fields['sub_id'];
-				$status = Config::get('ITEM_ADD_STATUS');
+				$status = Config::getInstance()->get('ITEM_ADD_STATUS');
 
 				// find the mail_addr (catchall -> "@(sub/alias)domain.tld", should be domain part of mail_acc
 				$match = explode('@', $mail_acc);
@@ -415,7 +415,7 @@ function create_catchall_mail_account(&$sql, $id) {
 				$mail_acc[] = $value;
 			}
 
-			$status = Config::get('ITEM_ADD_STATUS');
+			$status = Config::getInstance()->get('ITEM_ADD_STATUS');
 
 			$query = "
 				INSERT INTO `mail_users`
@@ -447,7 +447,7 @@ function create_catchall_mail_account(&$sql, $id) {
 
 // common page data.
 
-$theme_color = Config::get('USER_INITIAL_THEME');
+$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
 $tpl->assign(
 	array(
@@ -466,8 +466,8 @@ $tpl->assign('ID', $item_id);
 
 // static page messages.
 
-gen_client_mainmenu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/main_menu_email_accounts.tpl');
-gen_client_menu($tpl, Config::get('CLIENT_TEMPLATE_PATH') . '/menu_email_accounts.tpl');
+gen_client_mainmenu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/main_menu_email_accounts.tpl');
+gen_client_menu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/menu_email_accounts.tpl');
 
 gen_logged_from($tpl);
 
@@ -488,7 +488,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::get('DUMP_GUI_DEBUG')) {
+if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
 }
 unset_messages();

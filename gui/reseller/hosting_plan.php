@@ -34,7 +34,7 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::get('RESELLER_TEMPLATE_PATH') . '/hosting_plan.tpl');
+$tpl->define_dynamic('page', Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/hosting_plan.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 // Table with hosting plans
@@ -43,7 +43,7 @@ $tpl->define_dynamic('hp_entry', 'hp_table');
 $tpl->define_dynamic('hp_delete', 'page');
 $tpl->define_dynamic('hp_menu_add', 'page');
 
-$theme_color = Config::get('USER_INITIAL_THEME');
+$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
 $tpl->assign(
 		array(
@@ -60,8 +60,8 @@ $tpl->assign(
  *
  */
 
-gen_reseller_mainmenu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/main_menu_hosting_plan.tpl');
-gen_reseller_menu($tpl, Config::get('RESELLER_TEMPLATE_PATH') . '/menu_hosting_plan.tpl');
+gen_reseller_mainmenu($tpl, Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/main_menu_hosting_plan.tpl');
+gen_reseller_menu($tpl, Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/menu_hosting_plan.tpl');
 
 gen_logged_from($tpl);
 
@@ -129,8 +129,8 @@ function gen_hp_table(&$tpl, $reseller_id) {
 
 	$sql = Database::getInstance();
 
-	if (Config::exists('HOSTING_PLANS_LEVEL')
-		&& Config::get('HOSTING_PLANS_LEVEL') === 'admin') {
+	if (Config::getInstance()->exists('HOSTING_PLANS_LEVEL')
+		&& Config::getInstance()->get('HOSTING_PLANS_LEVEL') === 'admin') {
 		$query = <<<SQL_QUERY
 			SELECT
 				t1.`id`, t1.`reseller_id`, t1.`name`, t1.`props`, t1.`status`,
@@ -186,7 +186,7 @@ SQL_QUERY;
 				)
 		);
 
-		$coid = Config::exists('CUSTOM_ORDERPANEL_ID') ? Config::get('CUSTOM_ORDERPANEL_ID'): '';
+		$coid = Config::getInstance()->exists('CUSTOM_ORDERPANEL_ID') ? Config::getInstance()->get('CUSTOM_ORDERPANEL_ID'): '';
 
 		$i = 1;
 		while ($data = $rs->FetchRow()) {
@@ -220,7 +220,7 @@ SQL_QUERY;
 // ******************************
 // END OF FUNCTION DECLARE PATH
 // *****************************
-if (Config::get('DUMP_GUI_DEBUG')) {
+if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
 }
 unset_messages();
