@@ -1,6 +1,12 @@
 ispCP ω 1.0.6 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-04-08 Benedikt Heintel
+	- GUI:
+		* Fixed #2326: Missing Variable in r2796
+	- TOOLS:
+		* Updated phpMyAdmin Configuration
+
 2010-04-05 Benedikt Heintel
 	- CONFIGS:
 		* Added `df` command
