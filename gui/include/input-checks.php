@@ -173,7 +173,7 @@ function chk_password($password, $num = 50, $permitted = "") {
 	}
 
 	$len = strlen($password);
-	if ($len < Config::getInstance()->getInstance()->get('PASSWD_CHARS') || $len > $num) {
+	if ($len < Config::getInstance()->get('PASSWD_CHARS') || $len > $num) {
 		return false;
 	}
 
@@ -181,7 +181,7 @@ function chk_password($password, $num = 50, $permitted = "") {
 		return false;
 	}
 
-	if (Config::getInstance()->getInstance()->get('PASSWD_STRONG')) {
+	if (Config::getInstance()->get('PASSWD_STRONG')) {
 		return (bool)(preg_match("/[0-9]/", $password)
 			&& preg_match("/[a-zA-Z]/", $password));
 	} else {
@@ -333,7 +333,7 @@ function validates_dname($dname, $subdname_process = false) {
 	global $validation_err_msg;
 	$validation_err_msg = tr('Wrong domain name syntax or number of labels');
 
-	$max_labels = ($subdname_process) ? 99 : Config::getInstance()->getInstance()->get('MAX_DNAMES_LABELS');
+	$max_labels = ($subdname_process) ? 99 : Config::getInstance()->get('MAX_DNAMES_LABELS');
 
 	if(!$subdname_process) {
 
@@ -411,7 +411,7 @@ function validates_subdname($subdname, $dname) {
 	$dname_nb_labels = count(explode('.', $dname)) -1;
 
 	// Retrieves the maximum number of labels for the subdomain
-	$subdname_nb_labels = Config::getInstance()->getInstance()->get('MAX_SUBDNAMES_LABELS');
+	$subdname_nb_labels = Config::getInstance()->get('MAX_SUBDNAMES_LABELS');
 
 	$matches = array();
 
@@ -528,7 +528,7 @@ function _validates_tld($tld) {
 
 	$matches = array();
 
-	if(Config::getInstance()->getInstance()->get('TLD_STRICT_VALIDATION')) {
+	if(Config::getInstance()->get('TLD_STRICT_VALIDATION')) {
 
 		// This pattern Matches only Top Level Domain listed in Iana root database
 		// ( only ccTLDs and gTLDs, not IDNs )
@@ -610,7 +610,7 @@ function _validates_sld($sld) {
 
 	global $validation_err_msg;
 
-	if(Config::getInstance()->getInstance()->get('SLD_STRICT_VALIDATION')) {
+	if(Config::getInstance()->get('SLD_STRICT_VALIDATION')) {
 
 		// Single-Character SLD
 		// Note: All another SC SLD are presently reserved in

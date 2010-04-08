@@ -3,7 +3,7 @@ ispCP ω 1.0.6 Changelog
 
 2010-04-09 Jochen Manz
 	- GUI:
-		* Simplified config handling with a singleton class
+		* Simplified config handling with singleton class
 
 2010-04-08 Sascha Bay
 	- GUI:

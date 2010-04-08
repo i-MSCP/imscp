@@ -33,11 +33,11 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->getInstance()->get('CLIENT_TEMPLATE_PATH') . '/alias_edit.tpl');
+$tpl->define_dynamic('page', Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/alias_edit.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 
-$theme_color = Config::getInstance()->getInstance()->get('USER_INITIAL_THEME');
+$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
 $tpl->assign(array(
 	'TR_EDIT_ALIAS_PAGE_TITLE' => tr('ispCP - Manage Domain Alias/Edit Alias'),
@@ -68,8 +68,8 @@ $tpl->assign(array(
 	'TR_PREFIX_FTP' => 'ftp://'
 ));
 
-gen_client_mainmenu($tpl, Config::getInstance()->getInstance()->get('CLIENT_TEMPLATE_PATH') . '/main_menu_manage_domains.tpl');
-gen_client_menu($tpl, Config::getInstance()->getInstance()->get('CLIENT_TEMPLATE_PATH') . '/menu_manage_domains.tpl');
+gen_client_mainmenu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/main_menu_manage_domains.tpl');
+gen_client_menu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/menu_manage_domains.tpl');
 
 gen_logged_from($tpl);
 
@@ -104,7 +104,7 @@ gen_editalias_page($tpl, $editid);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->getInstance()->get('DUMP_GUI_DEBUG')) {
+if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
 	dump_gui_debug();
 }
 unset_messages();
@@ -226,7 +226,7 @@ function check_fwd_data(&$tpl, $alias_id) {
 			WHERE
 				`alias_id` = ?
 		";
-		exec_query($sql, $query, array($forward_url, Config::getInstance()->getInstance()->get('ITEM_CHANGE_STATUS'), $alias_id));
+		exec_query($sql, $query, array($forward_url, Config::getInstance()->get('ITEM_CHANGE_STATUS'), $alias_id));
 
 		$query = "
 			UPDATE
@@ -236,7 +236,7 @@ function check_fwd_data(&$tpl, $alias_id) {
 			WHERE
 				`alias_id` = ?
 		";
-		exec_query($sql, $query, array(Config::getInstance()->getInstance()->get('ITEM_CHANGE_STATUS'), $alias_id));
+		exec_query($sql, $query, array(Config::getInstance()->get('ITEM_CHANGE_STATUS'), $alias_id));
 
 		send_request();
 
