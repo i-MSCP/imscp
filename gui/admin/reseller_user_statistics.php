@@ -310,11 +310,15 @@ function generate_domain_entry(&$tpl, $user_id, $row) {
 				: tr('%d <br/>of<br/> <b>unlimited</b>', sizeit($uals_current)),
 
 			'MAIL_MSG' => ($umail_max)
-				? tr('%1$d <br/>of<br/> <b>%2$d</b>', $umail_current, $umail_max)
+				? (($umail_max > 0) 
+					? tr('%1$d <br/>of<br/> <b>%2$d</b>', $umail_current, $umail_max)
+					: tr('<b>disabled</b>'))
 				: tr('%d <br/>of<br/> <b>unlimited</b>', $umail_current),
 
 			'FTP_MSG' => ($uftp_max)
-				? tr('%1$d <br/>of<br/> <b>%2$d</b>', $uftp_current, $uftp_max)
+				? (($uftp_max > 0)
+					? tr('%1$d <br/>of<br/> <b>%2$d</b>', $uftp_current, $uftp_max)
+					: tr('<b>disabled</b>'))
 				: tr('%d <br/>of<br/> <b>unlimited</b>', $uftp_current),
 
 			'SQL_DB_MSG' => ($usql_db_max)

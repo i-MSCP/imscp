@@ -261,29 +261,29 @@ function generate_reseller_entry(&$tpl, $reseller_id, $reseller_name, $row) {
 				? tr('%1$d / %2$d <br/>of<br/> <b>%3$d</b>', $udmn_current, $rdmn_current, $rdmn_max)
 				: tr('%1$d / %2$d <br/>of<br/> <b>unlimited</b>', $udmn_current, $rdmn_current),
 
-			'SUB_MSG' => ($rsub_max)
+			'SUB_MSG' => ($rsub_max > 0)
 				? tr('%1$d / %2$d <br/>of<br/> <b>%3$d</b>', $usub_current, $rsub_current, $rsub_max)
-				: tr('%1$d / %2$d <br/>of<br/> <b>unlimited</b>', $usub_current, $rsub_current),
+				: (($rsub_max === "-1") ? tr('<b>disabled</b>') : tr('%1$d / %2$d <br/>of<br/> <b>unlimited</b>', $usub_current, $rsub_current)),
 
-			'ALS_MSG' => ($rals_max)
+			'ALS_MSG' => ($rals_max > 0)
 				? tr('%1$d / %2$d <br/>of<br/> <b>%3$d</b>', $uals_current, $rals_current, $rals_max)
-				: tr('%1$d / %2$d <br/>of<br/> <b>unlimited</b>', $uals_current, $rals_current),
+				: (($rals_max === "-1") ? tr('<b>disabled</b>') : tr('%1$d / %2$d <br/>of<br/> <b>unlimited</b>', $uals_current, $rals_current)),
 
-			'MAIL_MSG' => ($rmail_max)
+			'MAIL_MSG' => ($rmail_max > 0)
 				? tr('%1$d / %2$d <br/>of<br/> <b>%3$d</b>', $umail_current, $rmail_current, $rmail_max)
-				: tr('%1$d / %2$d <br/>of<br/> <b>unlimited</b>', $umail_current, $rmail_current),
+				: (($rmail_max === "-1") ? tr('<b>disabled</b>') : tr('%1$d / %2$d <br/>of<br/> <b>unlimited</b>', $umail_current, $rmail_current)),
 
-			'FTP_MSG' => ($rftp_max)
+			'FTP_MSG' => ($rftp_max > 0)
 				? tr('%1$d / %2$d <br/>of<br/> <b>%3$d</b>', $uftp_current, $rftp_current, $rftp_max)
-				: tr('%1$d / %2$d <br/>of<br/> <b>unlimited</b>', $uftp_current, $rftp_current),
+				: (($rftp_max === "-1") ? tr('<b>disabled</b>') : tr('%1$d / %2$d <br/>of<br/> <b>unlimited</b>', $uftp_current, $rftp_current)),
 
-			'SQL_DB_MSG' => ($rsql_db_max)
+			'SQL_DB_MSG' => ($rsql_db_max > 0)
 				? tr('%1$d / %2$d <br/>of<br/> <b>%3$d</b>', $usql_db_current, $rsql_db_current, $rsql_db_max)
-				: tr('%1$d / %2$d <br/>of<br/> <b>unlimited</b>', $usql_db_current, $rsql_db_current),
+				: (($rsql_db_max === "-1") ? tr('<b>disabled</b>') : tr('%1$d / %2$d <br/>of<br/> <b>unlimited</b>', $usql_db_current, $rsql_db_current)),
 
-			'SQL_USER_MSG' => ($rsql_user_max)
+			'SQL_USER_MSG' => ($rsql_user_max > 0)
 				? tr('%1$d / %2$d <br/>of<br/> <b>%3$d</b>', $usql_user_current, $rsql_user_current, $rsql_user_max)
-				: tr('%1$d / %2$d <br/>of<br/> <b>unlimited</b>', $usql_user_current, $rsql_user_current)
+				: (($rsql_user_max === "-1") ? tr('<b>disabled</b>') : tr('%1$d / %2$d <br/>of<br/> <b>unlimited</b>', $usql_user_current, $rsql_user_current))
 		)
 	);
 

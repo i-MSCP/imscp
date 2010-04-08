@@ -1,6 +1,13 @@
 ispCP ω 1.0.6 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-04-08 Sascha Bay
+	- GUI:
+		* Fixed #2162: Hide "Subdomain add" and/or "Alias add" from 
+			./client/domains_manage.php menu when disabled
+		* Fixed #2212: Wrong mail counts at reseller user statistics page
+		* Fixed #2329: Reseller statistic shows 0 / 0 of -1 if disabled
+
 2010-04-08 Benedikt Heintel
 	- GUI:
 		* Fixed #2326: Missing Variable in r2796
