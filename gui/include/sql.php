@@ -31,7 +31,7 @@
 // Get an Database instance
 @$sql = Database::connect(
 	Config::getInstance()->get('DATABASE_USER'),
-	ecrypt_db_password(Config::getInstance()->get('DATABASE_PASSWORD')),
+	decrypt_db_password(Config::getInstance()->get('DATABASE_PASSWORD')),
 	Config::getInstance()->get('DATABASE_TYPE'),
 	Config::getInstance()->get('DATABASE_HOST'),
 	Config::getInstance()->get('DATABASE_NAME')
