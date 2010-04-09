@@ -1,6 +1,10 @@
 ispCP ω 1.0.6 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-04-09 Sascha Bay
+	- GUI:
+		* Fixed #2184: Blocking special chars in sqluser password (changing RegExp)
+
 2010-04-09 Laurent Declercq
 	- GUI:
 		* Code re-factoring for better readability

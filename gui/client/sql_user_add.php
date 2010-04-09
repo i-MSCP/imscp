@@ -242,7 +242,7 @@ function add_sql_user(&$sql, $user_id, $db_id) {
 	}
 	
 	if (isset($_POST['pass'])
-		&& !preg_match('/^[A-Z0-9a-z_.:;!\-\*\+\#]*$/is', $_POST['pass'])) {
+		&& !preg_match('/^[[:alnum:]:!\*\+\#_.-]+$/', $_POST['pass'])) {
 		set_page_message(tr('Don\'t use special chars like "@, $, %..." in the password!'));
 		return;
 	}
