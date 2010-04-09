@@ -64,7 +64,7 @@ $user_initial_theme = Config::getInstance()->get('USER_INITIAL_THEME');
 // Set the login templates path
 Config::getInstance()->set(
 	'LOGIN_TEMPLATE_PATH',
-	$root_tpl.$user_initial_theme
+	$root_tpl_path . $user_initial_theme
 );
 
 // Set the GUI admin level templates path
