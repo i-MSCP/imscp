@@ -35,13 +35,44 @@
  */
 class SystemInfo {
 
+	/**
+	 * @var Should be documented
+	 */
 	public $cpu;
+
+	/**
+	 * @var Should be documented
+	 */
 	public $filesystem;
+
+	/**
+	 * @var Should be documented
+	 */
 	public $kernel;
+
+	/**
+	 * @var Should be documented
+	 */
 	public $load;
+
+	/**
+	 * @var Should be documented
+	 */
 	public $ram;
+
+	/**
+	 * @var Should be documented
+	 */
 	public $swap;
+
+	/**
+	 * @var Should be documented
+	 */
 	public $uptime;
+
+	/**
+	 * @var Should be documented
+	 */
 	protected $error = '';
 
 	/**
@@ -87,7 +118,7 @@ class SystemInfo {
 				$dmesg = $this->read('/var/run/dmesg.boot');
 
 				if (empty($this->error)) {
-					$dmesg_arr = explode("rebooting", $dmesg);
+					$dmesg_arr = explode('rebooting', $dmesg);
         			$dmesg_info = explode("\n", $dmesg_arr[count($dmesg_arr)-1]);
 
 					foreach ($dmesg_info as $di) {
@@ -112,9 +143,10 @@ class SystemInfo {
 				foreach ($cpu_info as $ci) {
 					$line = preg_split('/\s+:\s+/', trim($ci));
 
-					// Every architecture has its own scheme, it's not granted that
-					// this list is complete. If there are any values missing, let
-					// us know about them. They will be added in a upcoming release.
+					// Every architecture has its own scheme, it's not granted
+					// that this list is complete. If there are any values
+					// missing, let us know about them. They will be added in a
+					// upcoming release.
 					switch($line[0]) {
 						case 'model name':
 							$cpu['model'] = $line[1];
@@ -174,8 +206,8 @@ class SystemInfo {
 				}
 
 				// sparc64 specific implementation
-				// Originally made by Sven Blumenstein <bazik@gentoo.org> in 2004
-				// Modified by Tom Weustink <freshy98@gmx.net> in 2004
+				// Originally made by Sven Blumenstein <bazik@gentoo.org> in
+				// 2004 Modified by Tom Weustink <freshy98@gmx.net> in 2004
 				$sparclist = array(
 					'SUNW,UltraSPARC@0,0',
 					'SUNW,UltraSPARC-II@0,0',
@@ -186,7 +218,10 @@ class SystemInfo {
 				);
 
 				foreach ($sparclist as $sparc) {
-					$raw = $this->read('/proc/openprom/' . $sparc . '/ecache-size');
+					$raw = $this->read(
+						'/proc/openprom/' . $sparc . '/ecache-size'
+					);
+
 					if(empty($this->error) && !empty($raw)) {
 						$cpu['cache'] = base_convert($raw, 16, 10)/1024 . ' KB';
 					}
@@ -202,8 +237,9 @@ class SystemInfo {
 								$cpu['cpus'] += 1;
 								$cpu['model'] = $line[1];
 								break;
-							// Wrong description for CPU speed; no bogoMIPS available
-							case 'BogoMIPS': 
+							// Wrong description for CPU speed; no bogoMIPS
+							// available
+							case 'BogoMIPS':
 								$cpu['cpuspeed'] = $line[1];
 								break;
 							case 'I size':
@@ -242,12 +278,19 @@ class SystemInfo {
 		//	l: Show only local filesystem
 		// TODO: possibility to handle line breaks on long lines e.g.:
 		//		10.0.100.10:/path/to/mount/point
-        //			976428116 150249136 826178980  16% /var/www/virtual/<domain>/htdocs/data
-        //		if solved, we can savely remove l-argument
-		$proc = proc_open(Config::getInstance()->get('CMD_DF') . ' -Tl', $descriptorspec, $pipes);
+        //		976428116 150249136 826178980  16%
+        //		/var/www/virtual/<domain>/htdocs/data
+        // if solved, we can savely remove l- argument
+		$proc = proc_open(
+			Config::getInstance()->get('CMD_DF') . ' -Tl',
+			$descriptorspec,
+			$pipes
+		);
+
 		if (is_resource($proc)) {
 			// Read data from stream (Pipe 1)
 			$fs_raw = stream_get_contents($pipes[1]);
+
 			// Close pipe and stream
 			fclose($pipes[1]);
 			proc_close($proc);
@@ -260,7 +303,7 @@ class SystemInfo {
 			foreach ($fs_info as $fs) {
 				if (!empty($fs)) {
 					$line = preg_split('/\s+/', trim($fs));
-	
+
 					$i++;
 
 					$filesystem[$i]['mount'] 	= $line[0];
@@ -288,7 +331,7 @@ class SystemInfo {
 
 		if (PHP_OS == 'FreeBSD' || PHP_OS == 'OpenBSD' || PHP_OS == 'NetBSD') {
 			if ($kernel_raw = $this->sysctl('kern.version')) {
-				$kernel_arr = explode(":", $kernel_raw);
+				$kernel_arr = explode(':', $kernel_raw);
 
    				$kernel = $kernel_arr[0] . $kernel_arr[1] . ':' . $kernel_arr[2];
 			}
@@ -356,7 +399,12 @@ class SystemInfo {
 					2 => array('pipe', 'a')	 // stderr is a pipe that he cild will write to
 				);
 
-				$proc = proc_open(Config::getInstance()->get('CMD_VMSTAT'), $descriptorspec, $pipes);
+				$proc = proc_open(
+					Config::getInstance()->get('CMD_VMSTAT'),
+					$descriptorspec,
+					$pipes
+				);
+
 				if (is_resource($proc)) {
 					// Read data from stream (Pipe 1)
 					$raw = stream_get_contents($pipes[1]);
@@ -503,8 +551,10 @@ class SystemInfo {
 			}
 		} else {
 			$uptime_raw = $this->read('/proc/uptime');
+
 			if (empty($this->error)) {
 				$uptime = split(' ', $uptime_raw);
+
 				// $uptime[0] - Total System Uptime
 				// $uptime[1] - System Idle Time
 				$up = trim($uptime[0]);
@@ -517,7 +567,7 @@ class SystemInfo {
 		$upHours = floor($upHours - ($upDays * 24));
 		$upMins  = floor($upMins - ($upHours * 60) - ($upDays * 24 * 60));
 
-		$uptime_str  = ($upDays != 0)  ? $upDays  . ' ' . tr('Days')  . ' ' : '';
+		$uptime_str = ($upDays != 0)  ? $upDays . ' ' . tr('Days')  . ' ' : '';
 		$uptime_str .= ($upHours != 0) ? $upHours . ' ' . tr('Hours') . ' ' : '';
 		$uptime_str .= $upMins  . ' ' . tr('Minutes');
 
@@ -555,7 +605,7 @@ class SystemInfo {
 	 * @param mixed $needle
 	 */
 	protected function strstrb($haystack, $needle) {
-		return array_shift(explode($needle, $haystack, 2));
+		return array_shift((explode($needle, $haystack, 2)));
 	}
 
 	/**
@@ -571,8 +621,11 @@ class SystemInfo {
 			2 => array('pipe', 'a')	 // stderr is a pipe that he cild will write to
 		);
 
-		$proc = proc_open(Config::getInstance()->get('CMD_SYSCTL') . ' -n ' . $args,
-			$descriptorspec, $pipes);
+		$proc = proc_open(
+			Config::getInstance()->get('CMD_SYSCTL') . ' -n ' . $args,
+			$descriptorspec, $pipes
+		);
+
 		if (is_resource($proc)) {
 			// Read data from stream (Pipe 1)
 			$raw = stream_get_contents($pipes[1]);

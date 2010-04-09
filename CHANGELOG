@@ -2,8 +2,11 @@ ispCP ω 1.0.6 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2010-04-09 Laurent Declercq
-	- GUI
+	- GUI:
+		* Code re-factoring for better readability
 		* Fixed: White page after a new installation
+		* Fixed: Only variables should be passed by reference... in
+			class.SystemInfo.php (line 558)
 
 2010-04-09 Christian Hernmarck
         - CONFIGS:
