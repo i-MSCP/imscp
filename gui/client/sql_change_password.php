@@ -65,6 +65,12 @@ function change_sql_user_pass(&$sql, $db_user_id, $db_user_name) {
 		set_page_message(tr('Too long user password!'));
 		return;
 	}
+	
+	if (isset($_POST['pass'])
+		&& !preg_match('/^[A-Z0-9a-z_.:;!\-\*\+\#]*$/is', $_POST['pass'])) {
+		set_page_message(tr('Don\'t use special chars like "@, $, %..." in the password!'));
+		return;
+	}
 
 	if (!chk_password($_POST['pass'])) {
 		if (Config::getInstance()->get('PASSWD_STRONG')) {

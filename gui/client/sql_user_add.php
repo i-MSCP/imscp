@@ -240,6 +240,12 @@ function add_sql_user(&$sql, $user_id, $db_id) {
 		set_page_message(tr('Too user long password!'));
 		return;
 	}
+	
+	if (isset($_POST['pass'])
+		&& !preg_match('/^[A-Z0-9a-z_.:;!\-\*\+\#]*$/is', $_POST['pass'])) {
+		set_page_message(tr('Don\'t use special chars like "@, $, %..." in the password!'));
+		return;
+	}
 
 	if (isset($_POST['pass'])
 		&& !chk_password($_POST['pass'])
