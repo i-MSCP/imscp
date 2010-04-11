@@ -3,7 +3,7 @@
 # Launch awstats with -staticlinks option to build all static pages.
 # See COPYING.TXT file about AWStats GNU General Public License.
 #------------------------------------------------------------------------------
-# $Revision: 1.37 $ - $Author: eldy $ - $Date: 2008/09/25 17:08:25 $
+# $Revision: 1.38 $ - $Author: eldy $ - $Date: 2009/09/05 14:35:29 $
 
 #$|=1;
 #use warnings;		# Must be used in test mode only. This reduce a little process speed
@@ -15,7 +15,7 @@ use Time::Local;	# use Time::Local 'timelocal_nocheck' is faster but not support
 #------------------------------------------------------------------------------
 # Defines
 #------------------------------------------------------------------------------
-my $REVISION='$Revision: 1.37 $'; $REVISION =~ /\s(.*)\s/; $REVISION=$1;
+my $REVISION='$Revision: 1.38 $'; $REVISION =~ /\s(.*)\s/; $REVISION=$1;
 my $VERSION="1.2 (build $REVISION)";
 
 # ---------- Init variables --------
@@ -56,8 +56,10 @@ $ShowOSStats $ShowBrowsersStats $ShowOriginStats
 $ShowKeyphrasesStats $ShowKeywordsStats $ShowMiscStats $ShowHTTPErrorsStats
 $BuildReportFormat
 @ExtraName
+@PluginsToLoad
 /;
 @ExtraName = ();
+@PluginsToLoad = ();
 # ----- Time vars -----
 use vars qw/
 $starttime
@@ -228,6 +230,9 @@ sub Parse_Config {
 		# Extra parameters
  		if ($param =~ /^ExtraSectionName(\d+)/)			{ $ExtraName[$1]=$value; next; }
 
+		# Plugins
+		if ( $param =~ /^LoadPlugin/ ) { push @PluginsToLoad, $value; next; }
+
 		# If parameters was not found previously, defined variable with name of param to value
 		$$param=$value;
 	}
@@ -362,6 +367,11 @@ if ($ShowHTTPErrorsStats) {
 foreach my $extranum (1..@ExtraName-1) {
 	push @OutputList,'allextra'.$extranum;
 }
+#Add plugins
+foreach ( @PluginsToLoad ) {
+	if ($_ =~ /^(geoip_[_a-z]+)\s/) { push @OutputList,'plugin_'.$1; }	# Add geoip maxmind subpages
+}
+
 
 # Launch awstats update
 if ($Update) {

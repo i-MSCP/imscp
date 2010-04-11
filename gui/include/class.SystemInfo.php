@@ -36,47 +36,47 @@
 class SystemInfo {
 
 	/**
-	 * @var Should be documented
+	 * @var Array() CPU info
 	 */
 	public $cpu;
 
 	/**
-	 * @var Should be documented
+	 * @var Array() file system info
 	 */
 	public $filesystem;
 
 	/**
-	 * @var Should be documented
+	 * @var String Kernel version
 	 */
 	public $kernel;
 
 	/**
-	 * @var Should be documented
+	 * @var Array() system load info
 	 */
 	public $load;
 
 	/**
-	 * @var Should be documented
+	 * @var Array() RAM info
 	 */
 	public $ram;
 
 	/**
-	 * @var Should be documented
+	 * @var Array() Swap info
 	 */
 	public $swap;
 
 	/**
-	 * @var Should be documented
+	 * @var String System uptime
 	 */
 	public $uptime;
 
 	/**
-	 * @var Should be documented
+	 * @var String Error message
 	 */
 	protected $error = '';
 
 	/**
-	 * Constructor
+	 * Constructor.
 	 */
 	public function __construct() {
 		$this->cpu 			= $this->_getCPUInfo();
@@ -272,15 +272,16 @@ class SystemInfo {
 			2 => array('pipe', 'a')	 // stderr is a pipe that he cild will write to
 		);
 
-		// Read output of df command from stdout
-		// Args:
-		//	T: Show File System type
-		//	l: Show only local filesystem
+		/* Read output of df command from stdout
+		 * Args:
+		 *	T: Show File System type
+		 *	l: Show only local filesystem
+		 */
 		// TODO: possibility to handle line breaks on long lines e.g.:
 		//		10.0.100.10:/path/to/mount/point
         //		976428116 150249136 826178980  16%
         //		/var/www/virtual/<domain>/htdocs/data
-        // if solved, we can savely remove l- argument
+        // if solved, we can savely remove the l-argument
 		$proc = proc_open(
 			Config::getInstance()->get('CMD_DF') . ' -Tl',
 			$descriptorspec,
@@ -599,7 +600,7 @@ class SystemInfo {
 
 	/**
 	 * This function emulates PHP 5.3's strstr behavior if used as
-	 * 	strstr($haystack, $needle, true)
+	 * strstr($haystack, $needle, true)
 	 *
 	 * @param string $haystack
 	 * @param mixed $needle

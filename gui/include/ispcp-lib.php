@@ -29,6 +29,8 @@
  */
 
 define('INCLUDEPATH', realpath(dirname(__FILE__)));
+define('ENABLE', true);
+define('DISABLE', false);
 
 function autoload_class($className) {
 	require_once(INCLUDEPATH . "/class.$className.php");
@@ -45,8 +47,7 @@ if (!isset($_SESSION)) {
 }
 
 // Error handling and debug
-// error_reporting(0);
-// setting for development edition - see all error messages
+// Not only in Development E_ALL & E_STRICT should not throw any errors
 error_reporting(E_ALL|E_STRICT);
 
 require_once(INCLUDEPATH . '/i18n.php');
@@ -101,19 +102,11 @@ require_once(INCLUDEPATH . '/system-message.php');
 require_once(INCLUDEPATH . '/ispcp-db-keys.php');
 require_once(INCLUDEPATH . '/sql.php');
 
-// What is it ?
-define('E_USER_OFF', 0);
+// variable for development edition => shows all php variables t page's end
+Config::getInstance()->set('DUMP_GUI_DEBUG', DISABLE);
 
-// variable for development edition => shows all php variables under the pages
-// false = disable, true = enable
-Config::getInstance()->set('DUMP_GUI_DEBUG', false);
-
-// show extra (server load) information in HTML as comment
-// will get overwritten by db config table entry
-// (true = show, false = hide)
-// NXW comment: I think that should be disabled on production
-Config::getInstance()->set('SHOW_SERVERLOAD', true);
-
+// show server load information in spGZIP HTML output
+Config::getInstance()->set('SHOW_SERVERLOAD', DISABLE);
 
 // Session timeout in minutes
 Config::getInstance()->set('SESSION_TIMEOUT', 30);
@@ -148,11 +141,11 @@ Config::getInstance()->set('DOMAIN_ROWS_PER_PAGE', 10);
 Config::getInstance()->set('HOSTING_PLANS_LEVEL', 'reseller');
 
 
-// TlD strict validation (according Iana database)
-Config::getInstance()->set('TLD_STRICT_VALIDATION', true);
+// TLD strict validation (according IANA database)
+Config::getInstance()->set('TLD_STRICT_VALIDATION', ENABLE);
 
 // SLD strict validation
-Config::getInstance()->set('SLD_STRICT_VALIDATION', true);
+Config::getInstance()->set('SLD_STRICT_VALIDATION', ENABLE);
 
 // Maximum number of labels for the domain names
 // and subdomains (excluding SLD and TLD)
@@ -163,12 +156,10 @@ Config::getInstance()->set('MAX_SUBDNAMES_LABELS', 1);
 
 
 // Enable or disable support system
-// false = disable, true = enable
-Config::getInstance()->set('ISPCP_SUPPORT_SYSTEM', true);
+Config::getInstance()->set('ISPCP_SUPPORT_SYSTEM', ENABLE);
 
 // Enable or disable lost password support
-// false = disable, true = enable
-Config::getInstance()->set('LOSTPASSWORD', true);
+Config::getInstance()->set('LOSTPASSWORD', ENABLE);
 
 // Uniqkeytimeout in minutes
 Config::getInstance()->set('LOSTPASSWORD_TIMEOUT', 30);
@@ -203,8 +194,7 @@ Config::getInstance()->set(
 );
 
 // Enable or disable bruteforcedetection
-// false = disable, true = enable
-Config::getInstance()->set('BRUTEFORCE', true);
+Config::getInstance()->set('BRUTEFORCE', ENABLE);
 
 // Blocktime in minutes
 Config::getInstance()->set('BRUTEFORCE_BLOCK_TIME', 30);
@@ -216,15 +206,13 @@ Config::getInstance()->set('BRUTEFORCE_MAX_LOGIN', 3);
 Config::getInstance()->set('BRUTEFORCE_MAX_CAPTCHA', 5);
 
 // Enable or disable time between logins
-// true = disable, false = enable
-Config::getInstance()->set('BRUTEFORCE_BETWEEN', true);
+Config::getInstance()->set('BRUTEFORCE_BETWEEN', ENABLE);
 
 // Time between logins in seconds
 Config::getInstance()->set('BRUTEFORCE_BETWEEN_TIME', 30);
 
 // Enable or disable maintenance mode
-// true = disable, false = enable
-Config::getInstance()->set('MAINTENANCEMODE', false);
+Config::getInstance()->set('MAINTENANCEMODE', DISABLE);
 
 // Servicemode message
 Config::getInstance()->set(
@@ -239,8 +227,7 @@ curlang(null, true);
 Config::getInstance()->set('PASSWD_CHARS', 6);
 
 // Enable or disable strong passwords
-// false = disable, true = enable
-Config::getInstance()->set('PASSWD_STRONG', true);
+Config::getInstance()->set('PASSWD_STRONG', ENABLE);
 
 // The virtual host file from Apache which contains our virtual host entries
 Config::getInstance()->set(
@@ -255,31 +242,32 @@ Config::getInstance()->set(
 // E_USER_ERROR: "admin MUST know" messages
 Config::getInstance()->set('LOG_LEVEL', E_USER_NOTICE);
 
-// Set to false to disable creation of webmaster, postmaster and abuse
-// forwarders when domain/alias/subdomain is created
-Config::getInstance()->set('CREATE_DEFAULT_EMAIL_ADDRESSES', true);
+// Creation of webmaster, postmaster and abuse forwarders when domain/alias/
+// subdomain is created
+Config::getInstance()->set('CREATE_DEFAULT_EMAIL_ADDRESSES', ENABLE);
 
 // Count default e-mail addresses (abuse,postmaster,webmaster) in user limit
-// true: default e-mail are counted
-// false: default e-mail are NOT counted
-Config::getInstance()->set('COUNT_DEFAULT_EMAIL_ADDRESSES', false);
+// ENABLE: default e-mail are counted
+// DISABLE: default e-mail are NOT counted
+Config::getInstance()->set('COUNT_DEFAULT_EMAIL_ADDRESSES', ENABLE);
 
 // Use hard mail suspension when suspending a domain:
-// true: email accounts are hard suspended (completely unreachable)
-// false: email accounts are soft suspended (passwords are modified so user
+// ENABLE: email accounts are hard suspended (completely unreachable)
+// DISABLE: email accounts are soft suspended (passwords are modified so user
 // can't access the accounts)
-Config::getInstance()->set('HARD_MAIL_SUSPENSION', true);
+Config::getInstance()->set('HARD_MAIL_SUSPENSION', ENABLE);
 
-// Prevent external login (ie. check for valid local referer)
+// Prevent external login (i.e. check for valid local referer)
 // separated in admin, reseller and client
-// true = prevent external login, check for referer, more secure
-// false = allow external login, do not check for referere, less security (risky)
-Config::getInstance()->set('PREVENT_EXTERNAL_LOGIN_ADMIN', true);
-Config::getInstance()->set('PREVENT_EXTERNAL_LOGIN_RESELLER', true);
-Config::getInstance()->set('PREVENT_EXTERNAL_LOGIN_CLIENT', true);
+// This option allows to use external login scripts
+// ENABLE: prevent external login, check for referer, more secure
+// DISABLE: allow external login, do not check for referere, less security (risky)
+Config::getInstance()->set('PREVENT_EXTERNAL_LOGIN_ADMIN', ENABLE);
+Config::getInstance()->set('PREVENT_EXTERNAL_LOGIN_RESELLER', ENABLE);
+Config::getInstance()->set('PREVENT_EXTERNAL_LOGIN_CLIENT', ENABLE);
 
-// false: disable automatic search for new version
-Config::getInstance()->set('CHECK_FOR_UPDATES', true);
+// Automatic search for new version
+Config::getInstance()->set('CHECK_FOR_UPDATES', ENABLE);
 
 Config::getInstance()->set('CRITICAL_UPDATE_REVISION', 0);
 
@@ -327,5 +315,11 @@ if (!$res = exec_query($sql, $query, array())) {
 	}
 }
 
-// Compress/gzip output for less traffic
-require_once(INCLUDEPATH . '/spGzip.php');
+// Compress/gzip Class
+require_once(INCLUDEPATH . '/class.spGzip.php');
+// Check if server load information is enabled
+$showSize = (Config::getInstance()->get('SHOW_SERVERLOAD')) ? true : false;
+// construct the object
+$GLOBALS['class']['output'] = new spOutput('auto', false, $showSize);
+// Start the output buffering
+ob_start(array($GLOBALS['class']['output'], 'output'));
