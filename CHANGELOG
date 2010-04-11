@@ -1,6 +1,10 @@
 ispCP ω 1.0.6 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-04-09 Sascha Bay
+	- GUI:
+		* Fixed #2335: dd and existent user for assign to new db have issues
+		
 2010-04-11 Benedikt Heintel
 	- DISTS:
 		* Updated needed Gentoo Sources
