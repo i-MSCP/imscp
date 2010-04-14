@@ -161,7 +161,7 @@ if ($verbose){
 
 	Note: The directories/files corresponding to the following pattern:
 
-		/^.*\.(gif|ico|jpg|mo|png|po|project|svn|swf|ttf|wav|z)|filemanager|pma|webmail\$/
+		/^.*\.(gif|ico|jpg|mo|png|po|project|svn|sfd|swf|ttf|wav|z)|filemanager|pma|webmail\$/
 
 	were not processed by this program.
 RESUME
