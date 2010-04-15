@@ -4,6 +4,8 @@ ispCP ω 1.0.6 Changelog
 2010-04-05 Laurent Declercq
 	- CONTRIB:
 		* Add new script to fix bad/missing EOL
+	- PACKAGE:
+		* Fixed several bad/missing EOL
 
 2010-04-11 Sascha Bay
 	- GUI:

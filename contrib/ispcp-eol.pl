@@ -31,7 +31,7 @@ use warnings;
 #
 
 # Directories and files that should be ignored
-my $discard_files = '^.*\.(gif|ico|jpg|mo|png|po|project|sfd|svn|swf|ttf|wav|z)|filemanager|pma|webmail$';
+my $discard_files = '^.*\.(gif|ico|jpg|mo|png|po|project|ser|sfd|svn|swf|ttf|wav|z)|filemanager|pma|webmail$';
 
 # Counters
 our ($files, $crlf, $eol) = (0, 0, 0);
@@ -161,7 +161,7 @@ if ($verbose){
 
 	Note: The directories/files corresponding to the following pattern:
 
-		/^.*\.(gif|ico|jpg|mo|png|po|project|svn|sfd|swf|ttf|wav|z)|filemanager|pma|webmail\$/
+		/^.*\.(gif|ico|jpg|mo|png|po|project|svn|ser|sfd|swf|ttf|wav|z)|filemanager|pma|webmail\$/
 
 	were not processed by this program.
 RESUME
