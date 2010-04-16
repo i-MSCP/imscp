@@ -28,9 +28,6 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-/**
- * @todo use of @ is problematic, instead use try-catch
- */
 function check_for_lock_file() {
 
     $fh = fopen(Config::getInstance()->get('MR_LOCK_FILE'),'r');
@@ -79,7 +76,7 @@ function send_request() {
 		return $errno;
 	}
 
-	/* read one line with welcome string */
+	// read one line with welcome string
 	$out = read_line($socket);
 
 	list($code) = explode(' ', $out);
@@ -400,7 +397,7 @@ function is_basicString($string) {
 }
 
 /**
- * @todo please add a descrition for this function
+ * @todo please add a description for this function
  */
 function unset_messages() {
 
@@ -484,6 +481,7 @@ function unset_messages() {
  * @Since r2587
  * @return boolean TRUE if the request‘s "X-Requested-With" header
  *  contains "XMLHttpRequest", FALSE otherwiser
+ * 
  * @todo Move to future Request class
  */
 function is_xhr() {

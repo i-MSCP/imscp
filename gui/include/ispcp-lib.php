@@ -31,6 +31,8 @@
 define('INCLUDEPATH', realpath(dirname(__FILE__)));
 define('ENABLE', true);
 define('DISABLE', false);
+// Define Error Level off
+define('E_USER_OFF', 0);
 
 function autoload_class($className) {
 	require_once(INCLUDEPATH . "/class.$className.php");

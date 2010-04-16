@@ -42,13 +42,17 @@ function init_login() {
  */
 function register_user($uname, $upass) {
 	$sql = Database::getInstance();
-	$backButtonDestination = Config::getInstance()->get('BASE_SERVER_VHOST_PREFIX') . Config::getInstance()->get('BASE_SERVER_VHOST');
+	$backButtonDestination = Config::getInstance()->get('BASE_SERVER_VHOST_PREFIX') . 
+		Config::getInstance()->get('BASE_SERVER_VHOST');
 
 	check_ipaddr();
 
 	if (!username_exists($uname)) {
 		write_log("Login error, <b><i>".$uname."</i></b> unknown username");
-		system_message(tr('You entered an incorrect username/password.'), $backButtonDestination);
+		system_message(
+			tr('You entered an incorrect username/password.'), 
+			$backButtonDestination
+		);
 		return false;
 	}
 
@@ -60,7 +64,7 @@ function register_user($uname, $upass) {
 		|| databaseUpdate::getInstance()->checkUpdateExists()
 		|| (Config::getInstance()->get('MAINTENANCEMODE'))
 		) && $udata['admin_type'] != 'admin') {
-		write_log("Login error, <b><i>".$uname."</i></b> system currently in maintenance mode");
+		write_log("Login error, <b><i>" . $uname . "</i></b> system currently in maintenance mode");
 		system_message(tr('System is currently under maintenance! Only administrators can login.'));
 		return false;
 	}
@@ -123,7 +127,7 @@ function check_user_login() {
 	$sql = Database::getInstance();
 
 	$sess_id = session_id();
-	/* kill timed out sessions */
+	// kill timed out sessions
 	do_session_timeout();
 	$user_logged = isset($_SESSION['user_logged']) ? $_SESSION['user_logged'] : false;
 
@@ -166,7 +170,7 @@ SQL_QUERY;
 		write_log("System is currently in maintenance mode. Logging out <b><i>".$user_logged."</i></b>");
 		user_goto('/index.php');
 	}
-	/* if user login data correct - update session and lastaccess */
+	// if user login data correct - update session and lastaccess
 	$_SESSION['user_login_time'] = time();
 
 	$query = <<<SQL_QUERY
@@ -388,12 +392,8 @@ function redirect_to_level_page($file = null, $force = false) {
 		case 'reseller':
 			header('Location: /' . $user_type . '/' . $file);
 			break;
-		case '':
-			header('Location: /index.php');
-			break;
 		default:
-			die("FIXME! " . __FILE__ . ":" . __LINE__);
-			break;
+			header('Location: /index.php');
 	}
-	die();
+	exit();
 }
