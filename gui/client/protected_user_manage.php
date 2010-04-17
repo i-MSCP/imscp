@@ -41,6 +41,7 @@ $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('pusres', 'page');
 $tpl->define_dynamic('pgroups', 'page');
 $tpl->define_dynamic('group_members', 'page');
+$tpl->define_dynamic('table_list', 'page');
 
 $theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
@@ -85,8 +86,13 @@ function gen_pusres(&$tpl, &$sql, &$dmn_id) {
 	$rs = exec_query($sql, $query, array($dmn_id));
 
 	if ($rs->RecordCount() == 0) {
-		$tpl->assign('PUSRES', '');
-		$tpl->assign('USER_MESSAGE', tr('You have no users!'));
+		$tpl->assign(
+				array(
+					'PUSRES'		=>	'',
+					'USER_MESSAGE'	=>	tr('You have no users!'),
+					'TABLE_LIST'	=>	''
+				)
+			);
 		$tpl->parse('USR_MSG', 'usr_msg');
 	} else {
 		$tpl->assign('USR_MSG', '');

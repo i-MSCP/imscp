@@ -51,6 +51,7 @@ function delete_account(url, name) {
               </tr>
               <tr>
                 <td valign="top"><table width="100%" cellpadding="5" cellspacing="5">
+                	<!-- BDP: table_list -->
                     <tr>
                       <td height="25" colspan="6" nowrap="nowrap"><!-- search starts here-->
                           <form name="search_alias_frm" method="post" action="alias.php?psi={PSI}">
@@ -80,6 +81,7 @@ function delete_account(url, name) {
                       <td width="80" height="25" align="center" nowrap="nowrap" class="content3"><b>{TR_STATUS}</b></td>
                       <td width="80" height="25" align="center" nowrap="nowrap" class="content3"><b>{TR_ACTION}</b></td>
                     </tr>
+                    <!-- EDP: table_list -->
                     <!-- BDP: page_message -->
                     <tr>
                       <td width="25">&nbsp;</td>

@@ -37,7 +37,6 @@ $theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 $tpl = new pTemplate();
 $tpl->define_dynamic('page', Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/ispcp_updates.tpl');
 $tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('hosting_plans', 'page');
 $tpl->define_dynamic('update_message', 'page');
 $tpl->define_dynamic('update_infos', 'page');
 

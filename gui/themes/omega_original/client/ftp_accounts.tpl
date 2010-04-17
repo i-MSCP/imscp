@@ -59,10 +59,12 @@ function action_delete(url, name) {
                             <td colspan="3" nowrap="nowrap" class="title"><span class="message">{MESSAGE}</span></td>
                           </tr>
                           <!-- EDP: page_message -->
+                          <!-- BDP: table_list -->
                           <tr>
                             <td nowrap="nowrap" class="content3"><b>{TR_FTP_ACCOUNT}</b></td>
                             <td nowrap="nowrap" class="content3" align="center" colspan="2"><b>{TR_FTP_ACTION}</b></td>
                           </tr>
+                          <!-- EDP: table_list -->
                           <!-- BDP: ftp_message -->
                           <tr>
                             <td colspan="3" class="title"><span class="message">{FTP_MSG}</span></td>

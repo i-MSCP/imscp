@@ -55,13 +55,13 @@ function action_delete(url, subject) {
                             <td colspan="4" class="title"><span class="message">{MESSAGE}</span></td>
                           </tr>
                           <!-- EDP: page_message -->
+                          <!-- BDP: button_list -->
                           <tr>
                             <td width="25">&nbsp;</td>
                             <td class="content3"><b>{TR_MENU_NAME}</b></td>
                             <td class="content3" align="center"><b>{TR_LEVEL}</b></td>
                             <td colspan="2" align="center" class="content3"><b>{TR_ACTON}</b></td>
                           </tr>
-                          <!-- BDP: button_list -->
                           <tr>
                             <td>&nbsp;</td>
                             <td class="{CONTENT}"><a href="{LINK}" class="link" target="_blank"><strong>{MENU_NAME}</strong></a><br />

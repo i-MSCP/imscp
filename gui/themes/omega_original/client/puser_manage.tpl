@@ -54,16 +54,18 @@ function action_delete(url, mailacc) {
   </tr>
   <tr>
     <td valign="top"><table width="100%" cellpadding="5" cellspacing="5">
+      <!-- BDP: table_list -->
       <tr>
         <td width="25" align="center" nowrap="nowrap">&nbsp;</td>
         <td nowrap="nowrap" class="content3" colspan="2"><b>{TR_USERNAME}</b></td>
         <td width="80" nowrap="nowrap" align="center" class="content3"><b>{TR_STATUS}</b></td>
         <td colspan="3" align="center" nowrap="nowrap" class="content3"><b>{TR_ACTION}</b></td>
       </tr>
+      <!-- EDP: table_list -->
       <!-- BDP: usr_msg -->
       <tr>
-        <td nowrap="nowrap">&nbsp;</td>
-        <td colspan="5" nowrap="nowrap" class="title"><span class="message">{USER_MESSAGE}</span></td>
+        <td width="25" align="center" nowrap="nowrap">&nbsp;</td>
+        <td class="title"><span class="message">{USER_MESSAGE}</span></td>
       </tr>
       <!-- EDP: usr_msg -->
       <!-- BDP: pusres -->

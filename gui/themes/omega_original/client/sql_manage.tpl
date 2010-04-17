@@ -70,7 +70,6 @@ function action_delete(url, sql) {
                 <td width="60%" class="content3">&nbsp;&nbsp;<b>{TR_DATABASE}</b></td>
                 <td colspan="3" align="center" class="content3"><b>{TR_ACTION}</b></td>
                </tr>
-               <!-- BDP: db_list -->
                <tr>
                 <td height="48" align="left" class="content4">&nbsp;&nbsp;&nbsp;<strong><img src="{THEME_COLOR_PATH}/images/icons/database_small.png" width="16" height="16" style="vertical-align:middle" alt="" />&nbsp;{DB_NAME}</strong></td>
                 <td colspan="2" width="16%" align="left" class="content4">&nbsp;&nbsp;<img src="{THEME_COLOR_PATH}/images/icons/add_user.gif" width="26" height="16" border="0" style="vertical-align:middle" alt="" />&nbsp;<a href="sql_user_add.php?id={DB_ID}" class="link">{TR_ADD_USER}</a></td>

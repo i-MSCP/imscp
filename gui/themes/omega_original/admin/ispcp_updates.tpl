@@ -41,10 +41,12 @@
   <tr>
     <td valign="top"><!-- BDP: props_list -->
         <table width="100%" cellpadding="5" cellspacing="5">
+          <!-- BDP: update_infos -->
           <tr>
             <td width="25">&nbsp;</td>
             <td colspan="2" class="content3"><b>{TR_AVAILABLE_UPDATES}</b></td>
           </tr>
+          <!-- EDP: update_infos -->
           <!-- BDP: update_message -->
           <tr>
             <td width="25">&nbsp;</td>

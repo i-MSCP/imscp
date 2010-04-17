@@ -35,7 +35,6 @@ check_login(__FILE__);
 $tpl = new pTemplate();
 $tpl->define_dynamic('page', Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/database_update.tpl');
 $tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('hosting_plans', 'page');
 $tpl->define_dynamic('database_update_message', 'page');
 $tpl->define_dynamic('database_update_infos', 'page');
 

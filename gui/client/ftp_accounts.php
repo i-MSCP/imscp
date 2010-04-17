@@ -36,15 +36,9 @@ $tpl = new pTemplate();
 $tpl->define_dynamic('page', Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/ftp_accounts.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
-$tpl->define_dynamic('mail_message', 'page');
-$tpl->define_dynamic('mail_item', 'page');
-$tpl->define_dynamic('mail_auto_respond', 'mail_item');
-$tpl->define_dynamic('mails_total', 'page');
-$tpl->define_dynamic('catchall_message', 'page');
-$tpl->define_dynamic('catchall_item', 'page');
 $tpl->define_dynamic('ftp_message', 'page');
 $tpl->define_dynamic('ftp_item', 'page');
-$tpl->define_dynamic('no_mails', 'page');
+$tpl->define_dynamic('table_list', 'page');
 
 // page functions.
 
@@ -66,7 +60,8 @@ function gen_page_ftp_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 			array(
 				'FTP_MSG' => tr('FTP list is empty!'),
 				'FTP_ITEM' => '',
-				'FTPS_TOTAL' => ''
+				'FTPS_TOTAL' => '',
+				'TABLE_LIST' => ''
 			)
 		);
 
@@ -143,9 +138,6 @@ $tpl->assign(
 
 // dynamic page data.
 
-if (isset($_SESSION['email_support']) && $_SESSION['email_support'] == "no") {
-	$tpl->assign('NO_MAILS', '');
-}
 
 gen_page_lists($tpl, $sql, $_SESSION['user_id']);
 

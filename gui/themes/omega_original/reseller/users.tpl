@@ -93,6 +93,7 @@ function delete_account(url, dmn_name) {
                         <td colspan="5" align="right"><input type="hidden" name="details" value="" />
                             <img src="{THEME_COLOR_PATH}/images/icons/show_alias.png" width="16" height="16" style="vertical-align:middle" alt="" /> <a href="#" class="link" onclick="return sbmt_details(document.forms[0],'{SHOW_DETAILS}');">{TR_VIEW_DETAILS}</a></td>
                       </tr>
+                      <!-- BDP: users_list -->
                       <tr>
                         <td width="25">&nbsp;</td>
                         <td class="content3" width="20" align="center"><b>{TR_USER_STATUS}</b></td>
@@ -102,7 +103,6 @@ function delete_account(url, dmn_name) {
                         <td class="content3" width="90" align="center"><b>{TR_DISK_USAGE}</b></td>
                         <td colspan="6" align="center" class="content3"><b>{TR_ACTION}</b></td>
                       </tr>
-                      <!-- BDP: users_list -->
                       <!-- BDP: user_entry -->
                       <tr class="hl">
                         <td align="center">&nbsp;</td>

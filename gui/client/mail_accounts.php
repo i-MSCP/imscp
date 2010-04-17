@@ -45,6 +45,7 @@ $tpl->define_dynamic('mail_auto_respond', 'mail_item');
 $tpl->define_dynamic('default_mails_form', 'page');
 $tpl->define_dynamic('mails_total', 'page');
 $tpl->define_dynamic('no_mails', 'page');
+$tpl->define_dynamic('table_list', 'page');
 
 $theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
@@ -747,6 +748,13 @@ function gen_page_lists(&$tpl, &$sql, $user_id) {
 			)
 		);
 	} else {
+		if(!isset($_POST['uaction']) || $_POST['uaction'] == 'hide') {
+			$tpl->assign(
+				array(
+					'TABLE_LIST' => ''
+				)
+			);
+		}
 		$tpl->assign(
 			array(
 				'MAIL_MSG' => tr('Mail accounts list is empty!'),
