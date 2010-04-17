@@ -1,6 +1,10 @@
 ispCP ω 1.0.6 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-04-17 Sascha Bay
+	- GUI:
+		* Fixed #2336: minor html fix in gui trunk
+
 2010-04-05 Laurent Declercq
 	- CONTRIB:
 		* Add new script to fix bad/missing EOL

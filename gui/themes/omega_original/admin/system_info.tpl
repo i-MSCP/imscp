@@ -191,13 +191,13 @@
       <!-- BDP: disk_list_item -->
       <tr>
         <td nowrap="nowrap">&nbsp;</td>
-        <td nowrap="nowrap">{MOUNT}</td>
-        <td nowrap="nowrap">{TYPE}</td>
-        <td nowrap="nowrap">{PARTITION}</td>
-        <td nowrap="nowrap" align="center">{PERCENT}</td>
-        <td nowrap="nowrap" align="right">{FREE}</td>
-        <td nowrap="nowrap" align="right">{USED}</td>
-        <td nowrap="nowrap" align="right">{SIZE}</td>
+        <td nowrap="nowrap" class="content">{MOUNT}</td>
+        <td nowrap="nowrap" class="content">{TYPE}</td>
+        <td nowrap="nowrap" class="content">{PARTITION}</td>
+        <td nowrap="nowrap" align="center" class="content">{PERCENT}</td>
+        <td nowrap="nowrap" align="right" class="content">{FREE}</td>
+        <td nowrap="nowrap" align="right" class="content">{USED}</td>
+        <td nowrap="nowrap" align="right" class="content">{SIZE}</td>
       </tr>
       <!-- EDP: disk_list_item -->
       <!-- EDP: disk_list -->
