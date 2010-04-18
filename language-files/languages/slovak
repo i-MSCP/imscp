@@ -1,7 +1,6 @@
 ispcp_table = Slovak
 ispcp_language = slovenčina - Slovak
 ispcp_languageSetlocaleValue = sk_SK
-ispcp_languageRevision = 201002271600
 encoding = UTF-8 
 Administrator login = Prihlásennie administrátora
 Login = Prihlásenie
@@ -849,7 +848,6 @@ Apache logs = Apachelohy
 Awstats = Aw štatistiky
 ispCP - User/Add user = ispCP - Užívateľ/Pridať užívateľa
 Add other domains to this account = Pridaž ostatné domény k tomuto kontu
-System error with Domain ID  = Systémová chyba s doménovým ID
 User terminated! = Užívateľ zrušený!
 ispCP - Users/Edit = ispCP - Užívateľ/Upraviť
 Users list = Zoznam užívateľov
