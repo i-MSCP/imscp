@@ -13,7 +13,7 @@
     DocumentRoot    {WWW_DIR}/{DMN_NAME}{MOUNT_POINT}/htdocs
 
     ServerName      {SUB_NAME}
-    ServerAlias     www.{SUB_NAME} {SUB_NAME} *.{SUB_NAME}
+    ServerAlias     www.{SUB_NAME} {SUB_NAME}
 
     Alias /errors {WWW_DIR}/{DMN_NAME}/errors/
 
