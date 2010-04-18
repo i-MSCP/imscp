@@ -1,6 +1,12 @@
 ispCP ω 1.0.6 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-04-18 Sascha Bay
+	- GUI:
+		* Fixed #2342: Some not correct replaced template vars
+		* Some small design fixes
+		* Little Bugfix for ticket #2330
+
 2010-04-17 Sascha Bay
 	- GUI:
 		* Fixed #2330: Hide table headers if feature not un-used

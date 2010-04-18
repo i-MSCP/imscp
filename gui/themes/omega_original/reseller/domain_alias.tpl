@@ -51,7 +51,7 @@ function delete_account(url, name) {
               </tr>
               <tr>
                 <td valign="top"><table width="100%" cellpadding="5" cellspacing="5">
-                	<!-- BDP: table_list -->
+                	<!-- BDP: table_header -->
                     <tr>
                       <td height="25" colspan="6" nowrap="nowrap"><!-- search starts here-->
                           <form name="search_alias_frm" method="post" action="alias.php?psi={PSI}">
@@ -60,8 +60,8 @@ function delete_account(url, name) {
                                 <td width="40" nowrap="nowrap">&nbsp;</td>
                                 <td width="300" nowrap="nowrap" class="content"><input name="search_for" type="text" class="textinput" value="{SEARCH_FOR}" style="width:140px" />
                                     <select name="search_common" class="textinput">
-                                      <option value="alias_name" {M_DOMAIN_NAME_SELECTED}>{M_ALIAS_NAME}</option>
-                                      <option value="account_name" {M_ACCOUN_NAME_SELECTED}>{M_ACCOUNT_NAME}</option>
+                                      <option value="alias_name"{M_DOMAIN_NAME_SELECTED}>{M_ALIAS_NAME}</option>
+                                      <option value="account_name"{M_ACCOUN_NAME_SELECTED}>{M_ACCOUNT_NAME}</option>
                                     </select>
                                 </td>
                                 <td nowrap="nowrap" class="content"><input name="Submit" type="submit" class="button" value="  {TR_SEARCH}  " />
@@ -81,7 +81,7 @@ function delete_account(url, name) {
                       <td width="80" height="25" align="center" nowrap="nowrap" class="content3"><b>{TR_STATUS}</b></td>
                       <td width="80" height="25" align="center" nowrap="nowrap" class="content3"><b>{TR_ACTION}</b></td>
                     </tr>
-                    <!-- EDP: table_list -->
+                    <!-- EDP: table_header -->
                     <!-- BDP: page_message -->
                     <tr>
                       <td width="25">&nbsp;</td>

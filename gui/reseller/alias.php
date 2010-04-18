@@ -38,6 +38,7 @@ $tpl->define_dynamic('page', Config::getInstance()->get('RESELLER_TEMPLATE_PATH'
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('table_list', 'page');
+$tpl->define_dynamic('table_header', 'page');
 $tpl->define_dynamic('table_item', 'table_list');
 $tpl->define_dynamic('scroll_prev', 'page');
 $tpl->define_dynamic('scroll_next_gray', 'page');
@@ -252,14 +253,28 @@ function generate_als_list(&$tpl, $reseller_id, &$als_err) {
 	$rs = exec_query($sql, $query, array($reseller_id));
 
 	if ($records_count == 0) {
-		$tpl->assign(
-			array(
-				'TABLE_LIST'	=> '',
-				'USERS_LIST'	=> '',
-				'SCROLL_PREV'	=> '',
-				'SCROLL_NEXT'	=> '',
-			)
-		);
+		if (isset($_SESSION['search_for']) && $_SESSION['search_for'] != '') {
+			$tpl->assign(
+				array(
+					'TABLE_LIST'				=> '',
+					'USERS_LIST'				=> '',
+					'SCROLL_PREV'				=> '',
+					'SCROLL_NEXT'				=> '',
+					'M_DOMAIN_NAME_SELECTED'	=> '',
+					'M_ACCOUN_NAME_SELECTED'	=> ''
+				)
+			);
+		} else {
+			$tpl->assign(
+				array(
+					'TABLE_LIST'	=> '',
+					'TABLE_HEADER'	=> '',
+					'USERS_LIST'	=> '',
+					'SCROLL_PREV'	=> '',
+					'SCROLL_NEXT'	=> '',
+				)
+			);
+		}
 
 		if (isset($_SESSION['search_for'])) {
 			$als_err = tr('Not found user records matching the search criteria!');
@@ -353,9 +368,9 @@ function generate_als_list(&$tpl, $reseller_id, &$als_err) {
 		if (isset($_SESSION['search_common'])
 			&& $_SESSION['search_common'] === 'account_name') {
 			$domain_name_selected = '';
-			$account_name_selected = "selected=\"selected\"";
+			$account_name_selected = " selected=\"selected\"";
 		} else {
-			$domain_name_selected = "selected=\"selected\"";
+			$domain_name_selected = " selected=\"selected\"";
 			$account_name_selected = '';
 		}
 

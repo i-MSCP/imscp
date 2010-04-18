@@ -145,8 +145,8 @@ function gen_al_page(&$tpl, $reseller_id) {
 			$forward = strtolower(clean_input($_POST['forward']));
 			$tpl->assign(
 					array(
-						'READONLY_FORWARD' => '',
-						'DISABLE_FORWARD' => '',
+						'READONLY_FORWARD'	=> '',
+						'DISABLE_FORWARD'	=> ''
 						)
 					);
 		} else {
@@ -155,16 +155,16 @@ function gen_al_page(&$tpl, $reseller_id) {
 			$forward = '';
 			$tpl->assign(
 					array(
-						'READONLY_FORWARD' => ' readonly',
-						'DISABLE_FORWARD' => ' disabled="disabled"',
+						'READONLY_FORWARD'	=> ' readonly',
+						'DISABLE_FORWARD'	=> ' disabled="disabled"'
 						)
 					);
 		}
 		$tpl->assign(
 				array(
-					'HTTP_YES' => ($forward_prefix === 'http://') ? 'selected="selected"' : '',
-					'HTTPS_YES' => ($forward_prefix === 'https://') ? 'selected="selected"' : '',
-					'FTP_YES' => ($forward_prefix === 'ftp://') ? 'selected="selected"' : ''
+					'HTTP_YES'	=> ($forward_prefix === 'http://') ? ' selected="selected"' : '',
+					'HTTPS_YES'	=> ($forward_prefix === 'https://') ? ' selected="selected"' : '',
+					'FTP_YES'	=> ($forward_prefix === 'ftp://') ? ' selected="selected"' : ''
 					)
 				);
 	} else {
@@ -173,8 +173,11 @@ function gen_al_page(&$tpl, $reseller_id) {
 		$forward = '';
 		$tpl->assign(
 				array(
-					'READONLY_FORWARD' => ' readonly',
-					'DISABLE_FORWARD' => ' disabled="disabled"',
+					'READONLY_FORWARD'	=> ' readonly',
+					'DISABLE_FORWARD'	=> ' disabled="disabled"',
+					'HTTP_YES'			=>	'',
+					'HTTPS_YES'			=>	'',
+					'FTP_YES'			=>	''
 					)
 				);
 	}

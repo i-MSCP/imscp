@@ -172,8 +172,11 @@ function gen_editalias_page(&$tpl, $edit_id) {
 			$url_forward = '';
 			$tpl->assign(
 					array(
-						'READONLY_FORWARD' => ' readonly',
-						'DISABLE_FORWARD' => ' disabled="disabled"'
+						'READONLY_FORWARD'	=>	' readonly',
+						'DISABLE_FORWARD'	=>	' disabled="disabled"',
+						'HTTP_YES'			=>	'',
+						'HTTPS_YES'			=>	'',
+						'FTP_YES'			=>	''
 						)
 					);
 		} else {
@@ -183,9 +186,9 @@ function gen_editalias_page(&$tpl, $edit_id) {
 					array(
 						'READONLY_FORWARD' => '',
 						'DISABLE_FORWARD' => '',
-						'HTTP_YES' => (preg_match("/http:\/\//", $data['url_forward'])) ? 'selected="selected"' : '',
-						'HTTPS_YES' => (preg_match("/https:\/\//", $data['url_forward'])) ? 'selected="selected"' : '',
-						'FTP_YES' => (preg_match("/ftp:\/\//", $data['url_forward'])) ? 'selected="selected"' : ''
+						'HTTP_YES' => (preg_match("/http:\/\//", $data['url_forward'])) ? ' selected="selected"' : '',
+						'HTTPS_YES' => (preg_match("/https:\/\//", $data['url_forward'])) ? ' selected="selected"' : '',
+						'FTP_YES' => (preg_match("/ftp:\/\//", $data['url_forward'])) ? ' selected="selected"' : ''
 						)
 					);
 		}
@@ -235,12 +238,14 @@ function check_fwd_data(&$tpl, $alias_id) {
 		$check_dis = '';
 		$tpl->assign(
 				array(
-					'FORWARD' => $forward_url,
-					'HTTP_YES' => ($forward_prefix === 'http://') ? 'selected="selected"' : '',
-					'HTTPS_YES' => ($forward_prefix === 'https://') ? 'selected="selected"' : '',
-					'FTP_YES' => ($forward_prefix === 'ftp://') ? 'selected="selected"' : '',
-					'CHECK_EN' => $check_en,
-					'CHECK_DIS' => $check_dis,
+					'FORWARD'			=> $forward_url,
+					'HTTP_YES'			=> ($forward_prefix === 'http://') ? ' selected="selected"' : '',
+					'HTTPS_YES'			=> ($forward_prefix === 'https://') ? ' selected="selected"' : '',
+					'FTP_YES'			=> ($forward_prefix === 'ftp://') ? ' selected="selected"' : '',
+					'CHECK_EN'			=> $check_en,
+					'CHECK_DIS'			=> $check_dis,
+					'DISABLE_FORWARD'	=>	'',
+					'READONLY_FORWARD'	=>	''
 				)
 			);
 	} else {

@@ -203,9 +203,16 @@ function get_empty_au1_page(&$tpl) {
 
 	$tpl->assign(
 			array(
-				'DMN_NAME_VALUE'	=> '',
-				'CHTPL1_VAL'		=> '',
-				'CHTPL2_VAL'		=> 'checked="checked"'
+				'DMN_NAME_VALUE'		=> '',
+				'CHTPL1_VAL'			=> '',
+				'CHTPL2_VAL'			=> 'checked="checked"',
+				'EXPIRE_NEVER_SET'		=> ' selected="selected"',
+				'EXPIRE_1_MONTH_SET'	=> '',
+				'EXPIRE_2_MONTH_SET'	=> '',
+				'EXPIRE_3_MONTH_SET'	=> '',
+				'EXPIRE_6_MONTH_SET'	=> '',
+				'EXPIRE_1_YEAR_SET'		=> '',
+				'EXPIRE_2_YEARS_SET'	=> ''
 			)
 	);
 
