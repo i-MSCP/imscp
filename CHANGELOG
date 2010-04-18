@@ -5,9 +5,6 @@ ispCP ω 1.0.6 Changelog
 	- GUI:
 		* Fixed #2330: Hide table headers if feature not un-used
 		* Removed some unused variables in client/ftp_accounts.php
-
-2010-04-17 Sascha Bay
-	- GUI:
 		* Fixed #2336: minor html fix in gui trunk
 
 2010-04-05 Laurent Declercq
