@@ -1,6 +1,16 @@
 ispCP ω 1.0.6 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-04-18 Benedikt Heintel
+	- CONFIGS:
+		* Fixed #2257: subdomain.domain.tld aliasdomain doesn't work if another 
+			user's main domain is domain.tld
+	- LANGUAGES:
+		* Updated Polish (#2348)
+		* Updated Swedish (#2340)
+	- TOOLS:
+		* Fixed #2344: [PMA] New release 3.3.2 available
+
 2010-04-18 Sascha Bay
 	- GUI:
 		* Fixed #2342: Some not correct replaced template vars
