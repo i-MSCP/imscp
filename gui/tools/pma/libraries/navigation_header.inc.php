@@ -3,7 +3,7 @@
 /**
  * displays the pma logo, links and db and server selection in left frame
  *
- * @version $Id: navigation_header.inc.php 11986 2008-11-24 11:05:40Z nijel $
+ * @version $Id$
  * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {

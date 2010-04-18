@@ -4,7 +4,7 @@
  * Ensure the database and the table exist (else move to the "parent" script)
  * and display headers
  *
- * @version $Id: db_table_exists.lib.php 13183 2009-12-27 21:52:21Z lem9 $
+ * @version $Id$
  * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {

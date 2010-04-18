@@ -7,7 +7,7 @@
  * @uses    PMA_DBI_fetch_result()
  * @uses    PMA_DBI_QUERY_STORE
  * @uses    $userlink
- * @version $Id: server_common.inc.php 11986 2008-11-24 11:05:40Z nijel $
+ * @version $Id$
  * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {

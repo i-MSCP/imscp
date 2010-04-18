@@ -25,7 +25,7 @@
  * @uses    PMA_blowfish_encrypt()
  * @uses    PMA_showMessage()
  * @uses    define()
- * @version $Id: user_password.php 11994 2008-11-24 11:22:44Z nijel $
+ * @version $Id$
  * @package phpMyAdmin
  */
 

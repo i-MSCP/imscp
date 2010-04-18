@@ -38,7 +38,7 @@
  * @uses    strlen()
  * @uses    preg_replace()
  * @uses    htmlspecialchars()
- * @version $Id: querywindow.php 12542 2009-06-07 11:09:13Z lem9 $
+ * @version $Id$
  * @package phpMyAdmin
  */
 

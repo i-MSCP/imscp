@@ -1,7 +1,7 @@
 <?php
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * @version $Id: innodb.lib.php 13093 2009-10-31 18:53:56Z lem9 $
+ * @version $Id$
  * @package phpMyAdmin-Engines
  */
 

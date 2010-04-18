@@ -1,7 +1,7 @@
 <?php
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * @version $Id: berkeleydb.lib.php 11981 2008-11-24 10:18:44Z nijel $
+ * @version $Id$
  * @package phpMyAdmin-Engines
  */
 

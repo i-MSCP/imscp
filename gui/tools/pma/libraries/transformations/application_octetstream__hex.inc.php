@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * @package phpMyAdmin-Transformation
- * @version $Id: application_octetstream__hex.inc.php 11973 2008-11-24 09:30:37Z nijel $
+ * @version $Id$
  */
 
 /**

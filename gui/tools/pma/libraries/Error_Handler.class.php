@@ -3,7 +3,7 @@
 /**
  * Holds class PMA_Error_Handler
  *
- * @version $Id: Error_Handler.class.php 13031 2009-10-11 12:27:21Z lem9 $
+ * @version $Id$
  * @package phpMyAdmin
  */
 

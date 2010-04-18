@@ -1,4 +1,4 @@
-phpMyAdmin 3.3.0 Documentation
+phpMyAdmin 3.3.2 Documentation
 
   * Top
   * Requirements
@@ -21,7 +21,7 @@ phpMyAdmin 3.3.0 Documentation
       + Version history: ChangeLog
       + License: LICENSE
   * Documentation version:
-    $Id: Documentation.html 13448 2010-03-07 23:41:30Z lem9 $
+    $Id$
 
 Requirements
 
@@ -762,16 +762,16 @@ $cfg['Servers'][$i]['tracking_default_statements'] string
     CREATE DATABASE,ALTER DATABASE,DROP DATABASE
 
 $cfg['Servers'][$i]['tracking_version_drop_view'] boolean
-    Whether a DROP VIEW IF EXISTS statement will added as first line to the log
-    when creating a view. Default value is true.
+    Whether a DROP VIEW IF EXISTS statement will be added as first line to the
+    log when creating a view. Default value is true.
 
 $cfg['Servers'][$i]['tracking_version_drop_table'] boolean
-    Whether a DROP TABLE IF EXISTS statement will added as first line to the
+    Whether a DROP TABLE IF EXISTS statement will be added as first line to the
     log when creating a table. Default value is true.
 
 $cfg['Servers'][$i]['tracking_version_drop_database'] boolean
-    Whether a DROP DATABASE IF EXISTS statement will added as first line to the
-    log when creating a database. Default value is true.
+    Whether a DROP DATABASE IF EXISTS statement will be added as first line to
+    the log when creating a database. Default value is true.
 
 $cfg['Servers'][$i]['designer_coords'] string
     Since release 2.10.0 a Designer interface is available; it permits to
@@ -966,6 +966,10 @@ $cfg['AllowArbitraryServer'] boolean
 
     NOTE: Please use this carefully, as this may allow users access to MySQL
     servers behind the firewall where your HTTP server is placed.
+$cfg['Error_Handler']['display'] boolean
+    Whether to display errors from PHP or not.
+$cfg['Error_Handler']['gather'] boolean
+    Whether to gather errors from PHP or not.
 $cfg['LeftFrameLight'] boolean
     Defines whether to use a select-based menu and display only the current
     tables in the left frame (smaller page). Only in Non-Lightmode you can use
@@ -2236,9 +2240,29 @@ this case.
 
 Yes but the default configuration values of Suhosin are known to cause problems
 with some operations, for example editing a table with many columns and no
-primary key. Tuning information is available at http://www.hardened-php.net/
-hphp/troubleshooting.html, although the parameter names have changed (suhosin
-instead of hphp). See also the SuhosinDisableWarning directive.
+primary key or with textual primary key.
+
+Suhosin configuration might lead to malfunction in some cases and it can not be
+fully avoided as phpMyAdmin is kind of application which needs to transfer big
+amounts of fields in single HTTP request, what is something what Suhosin tries
+to prevent. Generally all suhosin.request.*, suhosin.post.* and suhosin.get.*
+directives can have negative effect on phpMyAdmin usability. You can always
+find in your error logs which limit did cause dropping of variable, so you can
+diagnose the problem and adjust matching configuration variable.
+
+The default values for most Suhosin configuration options will work in most
+scenarios, however you might want to adjust at least following parameters:
+
+  * suhosin.request.max_vars should be increased (eg. 2048)
+  * suhosin.post.max_vars should be increased (eg. 2048)
+  * suhosin.request.max_array_index_length should be increased (eg. 256)
+  * suhosin.post.max_array_index_length should be increased (eg. 256)
+  * suhosin.request.max_totalname_length should be increased (eg. 8192)
+  * suhosin.post.max_totalname_length should be increased (eg. 8192)
+  * suhosin.sql.bailout_on_error needs to be disabled (the default)
+  * suhosin.log.* should not include SQL, otherwise you get big slowdown
+
+You can also disable the warning using the SuhosinDisableWarning directive.
 
 1.39 When I try to connect via https, I can log in, but then my connection is
 redirected back to http. What can cause this behavior?
@@ -3229,15 +3253,17 @@ proceed?
 
 The following method is preferred for new developers:
 
- 1. fetch the current SVN tree over anonymous SVN:
-    svn co https://phpmyadmin.svn.sourceforge.net/svnroot/phpmyadmin/trunk/
-    phpMyAdmin
+ 1. fetch the current git repository over anonymous git:
+    git clone git://phpmyadmin.git.sourceforge.net/gitroot/phpmyadmin/
+    phpmyadmin
  2. add your stuff
- 3. generate patch with your changes: svn diff
- 4. put the patch inside the patch tracker of the phpMyAdmin project.
+ 3. generate patch with your changes: git diff > xxx.diff
+ 4. submit your patch via the patch tracker of the phpMyAdmin project.
 
-Write access to the SVN tree is granted only to experienced developers who have
-already contributed something useful to phpMyAdmin.
+More details on git are available on our wiki.
+
+Write access to the repository is granted only to experienced developers who
+have already contributed something useful to phpMyAdmin.
 Also, have a look at the Developers section.
 
 Security
@@ -3301,6 +3327,8 @@ If you're planning to contribute source, please read the following information:
     As far as possible, we want the scripts to be XHTML1.0 and CSS2 compliant
     on one hand, they fit the PEAR coding standards on the other hand. Please
     pay attention to this.
+  * Please enable showing PHP errors and warnings by the $cfg['Error_Handler']
+    ['display'] configuration directive.
   * Please try to keep up the file-naming conventions. Table-related stuff goes
     to tbl_*.php, db-related code to db_*.php, server-related tools to
     server_*.php and so on.

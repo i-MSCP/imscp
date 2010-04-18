@@ -4,7 +4,7 @@
  * Set of functions used to build CSV dumps of tables
  *
  * @package phpMyAdmin-Export-CSV
- * @version $Id: excel.php 12494 2009-05-25 08:11:32Z helmo $
+ * @version $Id$
  */
 if (! defined('PHPMYADMIN')) {
     exit;

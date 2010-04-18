@@ -6,7 +6,7 @@
  * linked from table_structure, uses libraries/tbl_properties.inc.php to display
  * form and handles this form data
  *
- * @version $Id: tbl_alter.php 13116 2009-11-13 11:14:10Z lem9 $
+ * @version $Id$
  * @package phpMyAdmin
  */
 

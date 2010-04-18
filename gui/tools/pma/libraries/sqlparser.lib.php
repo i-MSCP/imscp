@@ -27,7 +27,7 @@
  * page for it to work, I recommend '<link rel="stylesheet" type="text/css"
  * href="syntax.css.php" />' at the moment.)
  *
- * @version $Id: sqlparser.lib.php 13117 2009-11-15 13:50:32Z lem9 $
+ * @version $Id$
  * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
@@ -158,7 +158,7 @@ if (! defined('PMA_MINIMUM_COMMON')) {
     {
         global $SQP_errorString;
         $debugstr = 'ERROR: ' . $message . "\n";
-        $debugstr .= 'SVN: $Id: sqlparser.lib.php 13117 2009-11-15 13:50:32Z lem9 $' . "\n";
+        $debugstr .= 'SVN: $Id$' . "\n";
         $debugstr .= 'MySQL: '.PMA_MYSQL_STR_VERSION . "\n";
         $debugstr .= 'USR OS, AGENT, VER: ' . PMA_USR_OS . ' ' . PMA_USR_BROWSER_AGENT . ' ' . PMA_USR_BROWSER_VER . "\n";
         $debugstr .= 'PMA: ' . PMA_VERSION . "\n";

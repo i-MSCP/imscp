@@ -3,7 +3,7 @@
 /**
  * Get user's global privileges and some db-specific privileges
  *
- * @version $Id: check_user_privileges.lib.php 11982 2008-11-24 10:32:56Z nijel $
+ * @version $Id$
  * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {

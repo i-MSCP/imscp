@@ -3,7 +3,7 @@
 /**
  * forms frameset
  *
- * @version $Id: index.php 13185 2009-12-28 15:50:36Z helmo $
+ * @version $Id$
  * @uses    $GLOBALS['strNoFrames']
  * @uses    $GLOBALS['cfg']['QueryHistoryDB']
  * @uses    $GLOBALS['cfg']['Server']['user']

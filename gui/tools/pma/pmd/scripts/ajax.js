@@ -1,7 +1,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: ajax.js 10385 2007-05-14 07:49:56Z cybot_tm $
+ * @version $Id$
  * @package phpMyAdmin-Designer
  */
 

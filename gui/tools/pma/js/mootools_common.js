@@ -2,7 +2,7 @@
 /**
  *  Used for replication support
  *
- * @version $Id: mootools_common.js 12905 2009-08-30 17:06:12Z lem9 $
+ * @version $Id$
  */
 
 function divShowHideFunc(ahref, id) {

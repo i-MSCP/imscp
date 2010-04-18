@@ -3,7 +3,7 @@
 /**
  * holds the PMA_List_Database class
  *
- * @version $Id: List_Database.class.php 13343 2010-01-24 10:52:30Z lem9 $
+ * @version $Id$
  * @package phpMyAdmin
  */
 

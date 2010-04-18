@@ -3,7 +3,7 @@
 /**
  * URL/hidden inputs generating.
  *
- * @version $Id: url_generating.lib.php 11994 2008-11-24 11:22:44Z nijel $
+ * @version $Id$
  * @package phpMyAdmin
  */
 

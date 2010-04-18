@@ -5,7 +5,7 @@
  * @package    phpMyAdmin-setup
  * @author     Piotr Przybylski <piotrprz@gmail.com>
  * @license    http://www.gnu.org/licenses/gpl.html GNU GPL 2.0
- * @version    $Id: common.inc.php 12195 2009-01-18 18:55:00Z crackpl $
+ * @version    $Id$
  */
 
 /**

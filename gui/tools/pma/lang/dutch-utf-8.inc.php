@@ -1,5 +1,5 @@
 <?php
-/* $Id: dutch-utf-8.inc.php 13371 2010-01-29 13:14:52Z helmo $ */
+/* $Id$ */
 
 /*
  * Updated by "CaliMonk" <calimonk at gmx.net> on 2005/01/04.

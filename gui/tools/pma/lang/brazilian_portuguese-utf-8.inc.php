@@ -1,5 +1,5 @@
 <?php
-/* $Id: brazilian_portuguese-utf-8.inc.php 13370 2010-01-29 12:58:58Z helmo $ */
+/* $Id$ */
 /* translated by: Airon Luis Pereira <airon(dot)pereira(at)gmail(dot)com> */
 /* contribution by: Fabio Bucior <fabio(at)bucior(dot)com(dot)br> */
 

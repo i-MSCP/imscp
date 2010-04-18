@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: import_status.php 13427 2010-03-03 09:02:12Z helmo $
+ * @version $Id$
  * @package phpMyAdmin
  */
 

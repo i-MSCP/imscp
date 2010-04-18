@@ -3,7 +3,7 @@
 /**
  * dumps a database
  *
- * @version $Id: db_export.php 13180 2009-12-27 13:59:08Z helmo $
+ * @version $Id$
  * @uses    libraries/db_common.inc.php
  * @uses    libraries/db_info.inc.php
  * @uses    libraries/display_export.lib.php

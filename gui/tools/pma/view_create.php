@@ -5,7 +5,7 @@
  *
  * @todo js error when view name is empty (strFormEmpty)
  * @todo (also validate if js is disabled, after form submission?)
- * @version $Id: view_create.php 13180 2009-12-27 13:59:08Z helmo $
+ * @version $Id$
  * @package phpMyAdmin
  */
 

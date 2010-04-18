@@ -4,7 +4,7 @@
  * Interface to the improved MySQL extension (MySQLi)
  *
  * @package phpMyAdmin-DBI-MySQLi
- * @version $Id: mysqli.dbi.lib.php 13170 2009-12-24 12:18:31Z lem9 $
+ * @version $Id$
  */
 if (! defined('PHPMYADMIN')) {
     exit;

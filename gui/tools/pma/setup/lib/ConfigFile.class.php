@@ -4,7 +4,7 @@
  *
  * @author     Piotr Przybylski <piotrprz@gmail.com>
  * @license    http://www.gnu.org/licenses/gpl.html GNU GPL 2.0
- * @version    $Id: ConfigFile.class.php 12589 2009-06-21 22:49:57Z helmo $
+ * @version    $Id$
  * @package    phpMyAdmin-setup
  */
 

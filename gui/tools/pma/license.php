@@ -6,7 +6,7 @@
  * Note: please do not fold this script into a general script
  * that would read any file using a GET parameter, it would open a hole
  *
- * @version $Id: license.php 12040 2008-11-30 12:58:55Z nijel $
+ * @version $Id$
  * @package phpMyAdmin
  */
 

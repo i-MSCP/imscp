@@ -3,7 +3,7 @@
 /**
  *
  * @author Alexander Rutkowski
- * @version $Id: Tracker.class.php 13184 2009-12-27 23:05:45Z lem9 $
+ * @version $Id$
  * @package phpMyAdmin
  */
 

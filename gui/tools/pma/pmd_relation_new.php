@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: pmd_relation_new.php 12596 2009-06-24 11:34:56Z lem9 $
+ * @version $Id$
  * @package phpMyAdmin-Designer
  */
 

@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: translatecount.sh 13133 2009-11-26 09:23:33Z tomassrnka $
+# $Id$
 ##
 # Shell script to produce counts of just how out of date the translations are!
 ##

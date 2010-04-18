@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
 *
-* @version $Id: uploadprogress.php 13193 2009-12-30 13:28:30Z lem9 $
+* @version $Id$
 * @package phpMyAdmin
 */
 if (! defined('PHPMYADMIN')) {

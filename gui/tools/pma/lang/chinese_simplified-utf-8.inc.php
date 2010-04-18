@@ -1,5 +1,5 @@
 <?php
-/* $Id: chinese_simplified-utf-8.inc.php 13370 2010-01-29 12:58:58Z helmo $ */
+/* $Id$ */
 
 /**
  * Translation by: Funda Wang <fundawang@en2china.com>

@@ -1,5 +1,5 @@
 #!/bin/bash
-# $Id: add_message_file.sh 13133 2009-11-26 09:23:33Z tomassrnka $
+# $Id$
 #
 # Shell script that adds a message file to all message files
 # adding "//to translate" on each line

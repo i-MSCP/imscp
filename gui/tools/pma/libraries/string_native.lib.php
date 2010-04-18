@@ -12,7 +12,7 @@
  *
  * The SQL Parser code relies heavily on these functions.
  *
- * @version $Id: string_native.lib.php 11974 2008-11-24 09:31:30Z nijel $
+ * @version $Id$
  * @package phpMyAdmin-String-Native
  */
 

@@ -3,7 +3,7 @@
 /**
  * Displays form for password change
  *
- * @version $Id: display_change_password.lib.php 12642 2009-07-12 12:13:11Z helmo $
+ * @version $Id$
  * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {

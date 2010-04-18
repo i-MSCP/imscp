@@ -3,7 +3,7 @@
 /**
  * Generic plugin interface.
  *
- * @version $Id: plugin_interface.lib.php 12572 2009-06-12 12:35:18Z helmo $
+ * @version $Id$
  * @package phpMyAdmin
  */
 

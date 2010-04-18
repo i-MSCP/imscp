@@ -1,5 +1,5 @@
 <?php
-/* $Id: arabic-utf-8.inc.php 13370 2010-01-29 12:58:58Z helmo $ */
+/* $Id$ */
 
 /**
  * Original translation to Arabic by Fisal <fisal77 at hotmail.com>

@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * @todo    too much die here, or?
- * @version $Id: export.php 13064 2009-10-23 16:50:39Z lem9 $
+ * @version $Id$
  * @package phpMyAdmin
  */
 
@@ -438,7 +438,8 @@ if ($export_type == 'server') {
                         break 3;
                     }
                 }
-                if (isset($GLOBALS[$what . '_data']) && ! $is_view) {
+                // if this is a view or a merge table, don't export data
+                if (isset($GLOBALS[$what . '_data']) && !($is_view || PMA_Table::isMerge($current_db, $table))) {
                     $local_query  = 'SELECT * FROM ' . PMA_backquote($current_db) . '.' . PMA_backquote($table);
                     if (!PMA_exportData($current_db, $table, $crlf, $err_url, $local_query)) {
                         break 3;
@@ -486,7 +487,8 @@ if ($export_type == 'server') {
                 break 2;
             }
         }
-        if (isset($GLOBALS[$what . '_data']) && ! $is_view) {
+        // if this is a view or a merge table, don't export data
+        if (isset($GLOBALS[$what . '_data']) && !($is_view || PMA_Table::isMerge($db, $table))) {
             $local_query  = 'SELECT * FROM ' . PMA_backquote($db) . '.' . PMA_backquote($table);
             if (!PMA_exportData($db, $table, $crlf, $err_url, $local_query)) {
                 break 2;
@@ -534,7 +536,8 @@ if ($export_type == 'server') {
     }
     // If this is an export of a single view, we have to export data;
     // for example, a PDF report
-    if (isset($GLOBALS[$what . '_data'])) {
+    // if it is a merge table, no data is exported
+    if (isset($GLOBALS[$what . '_data']) && ! PMA_Table::isMerge($db, $table)) {
         if (!empty($sql_query)) {
             // only preg_replace if needed
             if (!empty($add_query)) {

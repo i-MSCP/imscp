@@ -1,7 +1,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: iecanvas.js 10149 2007-03-20 15:11:15Z cybot_tm $
+ * @version $Id$
  * @package phpMyAdmin-Designer
  */
 

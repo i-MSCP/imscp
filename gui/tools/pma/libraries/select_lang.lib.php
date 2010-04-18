@@ -3,7 +3,7 @@
 /**
  * phpMyAdmin Language Loading File
  *
- * @version $Id: select_lang.lib.php 12624 2009-07-05 12:49:44Z lem9 $
+ * @version $Id$
  * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
@@ -129,7 +129,7 @@ function PMA_langSet(&$lang)
  *
  * @access  private
  */
-function PMA_langDetect(&$str, $envType)
+function PMA_langDetect($str, $envType)
 {
     if (empty($str)) {
         return false;

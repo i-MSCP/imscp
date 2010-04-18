@@ -3,7 +3,7 @@
 /**
  * hold PMA_Theme class
  *
- * @version $Id: Theme.class.php 11994 2008-11-24 11:22:44Z nijel $
+ * @version $Id$
  * @package phpMyAdmin
  */
 

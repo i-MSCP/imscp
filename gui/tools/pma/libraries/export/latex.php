@@ -4,7 +4,7 @@
  * Set of functions used to build dumps of tables
  *
  * @package phpMyAdmin-Export-Latex
- * @version $Id: latex.php 12349 2009-04-14 13:34:20Z helmo $
+ * @version $Id$
  */
 if (! defined('PHPMYADMIN')) {
     exit;

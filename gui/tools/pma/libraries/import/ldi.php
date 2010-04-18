@@ -3,7 +3,7 @@
 /**
  * CSV import plugin for phpMyAdmin
  *
- * @version $Id: ldi.php 12047 2008-11-30 14:20:25Z nijel $
+ * @version $Id$
  * @package phpMyAdmin-Import
  */
 if (! defined('PHPMYADMIN')) {

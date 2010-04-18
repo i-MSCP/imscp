@@ -7,7 +7,7 @@
  * - reversed the right modify links: 1. drop, 2. edit, 3. checkbox
  * - also changes made in js/functions.js
  *
- * @version $Id: display_tbl_links.lib.php 13118 2009-11-21 13:22:08Z lem9 $
+ * @version $Id$
  * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {

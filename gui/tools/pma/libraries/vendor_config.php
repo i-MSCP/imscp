@@ -7,7 +7,7 @@
  * For changing this file you should know what you are doing. For this reason
  * options here are not part of normal configuration.
  *
- * @version $Id: vendor_config.php 12081 2008-12-05 00:25:59Z lem9 $
+ * @version $Id$
  * @package phpMyAdmin
  */
 

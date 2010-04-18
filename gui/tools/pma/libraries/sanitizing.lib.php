@@ -3,7 +3,7 @@
 /**
  * This is in a separate script because it's called from a number of scripts
  *
- * @version $Id: sanitizing.lib.php 11986 2008-11-24 11:05:40Z nijel $
+ * @version $Id$
  * @package phpMyAdmin
  */
 

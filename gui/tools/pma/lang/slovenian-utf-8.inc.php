@@ -1,5 +1,5 @@
 <?php
-/* $Id: slovenian-utf-8.inc.php 13370 2010-01-29 12:58:58Z helmo $ */
+/* $Id$ */
 
 /* By: urska.colner, agenda d.o.o. <urska.colner@agenda.si>, uros kositer, agenda d.o.o. <urosh@agenda.si> */
 

@@ -4,7 +4,7 @@
  * Functions for listing directories
  *
  * @todo rename to file_listing.lib.php
- * @version $Id: file_listing.php 11986 2008-11-24 11:05:40Z nijel $
+ * @version $Id$
  * @package phpMyAdmin
  */
 

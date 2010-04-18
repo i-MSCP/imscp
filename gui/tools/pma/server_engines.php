@@ -3,7 +3,7 @@
 /**
  * display list of server enignes and additonal information about them
  *
- * @version $Id: server_engines.php 11986 2008-11-24 11:05:40Z nijel $
+ * @version $Id$
  * @todo falcon storage enginge is not listed under dev.mysql.com/doc/refman but dev.mysql.com/doc/falcon/
  * @package phpMyAdmin
  */

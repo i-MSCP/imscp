@@ -5,7 +5,7 @@
  * @package    phpMyAdmin-setup
  * @author     Piotr Przybylski <piotrprz@gmail.com>
  * @license    http://www.gnu.org/licenses/gpl.html GNU GPL 2.0
- * @version    $Id: FormDisplay.tpl.php 11874 2008-11-13 19:21:34Z crackpl $
+ * @version    $Id$
  */
 
 /**

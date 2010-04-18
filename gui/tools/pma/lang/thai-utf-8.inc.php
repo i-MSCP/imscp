@@ -1,5 +1,5 @@
 <?php
-/* $Id: thai-utf-8.inc.php 13370 2010-01-29 12:58:58Z helmo $ */
+/* $Id$ */
 
 // first created 2002/04/29 Arthit Suriyawongkul & Warit Wanasathian
 // last modified 2004/08/22 Arthit Suriyawongkul

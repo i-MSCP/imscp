@@ -4,7 +4,7 @@
  * configures general layout
  * for detailed layout configuration please refer to the css files
  *
- * @version $Id: layout.inc.php 10515 2007-07-22 16:22:54Z lem9 $
+ * @version $Id$
  * @package phpMyAdmin-theme
  * @subpackage Original
  */

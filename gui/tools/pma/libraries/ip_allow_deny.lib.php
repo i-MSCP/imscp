@@ -4,7 +4,7 @@
  * This library is used with the server IP allow/deny host authentication
  * feature
  *
- * @version $Id: ip_allow_deny.lib.php 12290 2009-03-10 13:19:55Z helmo $
+ * @version $Id$
  * @package phpMyAdmin
  */
 

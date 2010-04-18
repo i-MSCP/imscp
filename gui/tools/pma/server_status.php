@@ -4,7 +4,7 @@
  * displays status variables with descriptions and some hints an optmizing
  *  + reset status variables
  *
- * @version $Id: server_status.php 13259 2010-01-19 19:40:20Z lem9 $
+ * @version $Id$
  * @package phpMyAdmin
  */
 
@@ -143,6 +143,10 @@ if (isset($server_status['Threads_created'])
       * 100;
 }
 
+// Format Uptime_since_flush_status : show as days, hours, minutes, seconds
+if (isset($server_status['Uptime_since_flush_status'])) {
+    $server_status['Uptime_since_flush_status'] = PMA_timespanFormat($server_status['Uptime_since_flush_status']);
+}
 
 /**
  * define some alerts

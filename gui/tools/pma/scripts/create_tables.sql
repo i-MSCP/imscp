@@ -11,7 +11,7 @@
 --                                                  
 -- Please don't forget to set up the tablenames in config.inc.php                                 
 -- 
--- $Id: create_tables.sql 12837 2009-08-20 13:39:02Z nijel $
+-- $Id$
 
 -- --------------------------------------------------------
 

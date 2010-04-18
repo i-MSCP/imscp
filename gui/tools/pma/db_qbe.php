@@ -3,7 +3,7 @@
 /**
  * query by example the whole database
  *
- * @version $Id: db_qbe.php 13061 2009-10-23 10:02:09Z lem9 $
+ * @version $Id$
  * @package phpMyAdmin
  */
 

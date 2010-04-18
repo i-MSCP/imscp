@@ -31,7 +31,7 @@
  * @uses    strnatcasecmp()
  * @uses    count()
  * @uses    addslashes()
- * @version $Id: db_info.inc.php 12588 2009-06-20 16:36:58Z lem9 $
+ * @version $Id$
  * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {

@@ -5,7 +5,7 @@
  *
  * usally called as form action from tbl_change.php to insert or update table rows
  *
- * @version $Id: tbl_replace.php 13195 2009-12-30 15:27:27Z lem9 $
+ * @version $Id$
  *
  * @todo 'edit_next' tends to not work as expected if used ... at least there is no order by
  *       it needs the original query and the row number and than replace the LIMIT clause

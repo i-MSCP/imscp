@@ -31,7 +31,7 @@
  * @uses    strlen()
  * @uses    sprintf()
  * @uses    htmlspecialchars()
- * @version $Id: tbl_create.php 12157 2008-12-25 14:33:16Z lem9 $
+ * @version $Id$
  * @package phpMyAdmin
  */
 

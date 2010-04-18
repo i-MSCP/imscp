@@ -4,7 +4,7 @@
  * Set of functions used to run config authentication (ie no authentication).
  *
  * @package phpMyAdmin-Auth-Config
- * @version $Id: config.auth.lib.php 11972 2008-11-24 09:14:31Z nijel $
+ * @version $Id$
  */
 
 

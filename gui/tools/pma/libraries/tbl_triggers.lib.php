@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: tbl_triggers.lib.php 11994 2008-11-24 11:22:44Z nijel $
+ * @version $Id$
  * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
@@ -41,7 +41,7 @@ if ($triggers) {
                          </tr>',
                          ($ct%2 == 0) ? 'even' : 'odd',
                          $trigger['name'],
-                         '<a href="tbl_sql.php?' . $url_query . '&amp;sql_query=' . urlencode($drop_and_create) . '&amp;show_query=1&amp;delimiter=' . urlencode($delimiter) . '">' . $titles['Change'] . '</a>',
+                         PMA_linkOrButton('tbl_sql.php?' . $url_query . '&amp;sql_query=' . urlencode($drop_and_create) . '&amp;show_query=1&amp;delimiter=' . urlencode($delimiter), $titles['Change']),
                          '<a href="sql.php?' . $url_query . '&sql_query=' . urlencode($trigger['drop']) . '" onclick="return confirmLink(this, \'' . PMA_jsFormat($trigger['drop'], false) . '\')">' . $titles['Drop'] . '</a>',
                          $trigger['action_timing'],
                          $trigger['event_manipulation']);

@@ -19,7 +19,7 @@
  *
  * Please provide a comment for your function, what it does and what parameters are available.
  *
- * @version $Id: global.inc.php 11986 2008-11-24 11:05:40Z nijel $
+ * @version $Id$
  * @package phpMyAdmin-Transformation
  */
 

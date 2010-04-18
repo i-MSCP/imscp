@@ -3,7 +3,7 @@
 /**
  * session handling
  *
- * @version $Id: session.inc.php 12620 2009-07-02 12:12:06Z lem9 $
+ * @version $Id$
  * @todo    add failover or warn if sessions are not configured properly
  * @todo    add an option to use mm-module for session handler
  * @see     http://www.php.net/session

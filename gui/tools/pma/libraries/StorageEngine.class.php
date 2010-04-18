@@ -3,7 +3,7 @@
 /**
  * Library for extracting information about the available storage engines
  *
- * @version $Id: StorageEngine.class.php 11992 2008-11-24 11:14:37Z nijel $
+ * @version $Id$
  * @package phpMyAdmin
  */
 

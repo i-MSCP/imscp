@@ -4,7 +4,7 @@
  * Display form for changing/adding table fields/columns
  *
  * included by tbl_addfield.php, -_alter.php, -_create.php
- * @version $Id: tbl_properties.inc.php 13116 2009-11-13 11:14:10Z lem9 $
+ * @version $Id$
  * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {

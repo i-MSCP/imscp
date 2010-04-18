@@ -3,7 +3,7 @@
 /**
  * holds the datasbe index class
  *
- * @version $Id: Index.class.php 11986 2008-11-24 11:05:40Z nijel $
+ * @version $Id$
  * @package phpMyAdmin
  */
 

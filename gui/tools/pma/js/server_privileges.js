@@ -2,7 +2,7 @@
 /**
  * function used in server privilege pages
  *
- * @version $Id: server_privileges.js 12642 2009-07-12 12:13:11Z helmo $
+ * @version $Id$
  */
 
 /**

@@ -2,7 +2,7 @@
 /**
  * common functions used for communicating between main, navigation and querywindow
  *
- * @version $Id: common.js 13378 2010-02-03 14:26:37Z helmo $
+ * @version $Id$
  */
 
 /**

@@ -8,7 +8,7 @@
  * Bei Verbesserungsvorschlägen diese Datei betreffend wenden Sie sich bitte an
  *     https://sourceforge.net/tracker/?group_id=23067&atid=387645
  *
- * $Id: german-utf-8.inc.php 13370 2010-01-29 12:58:58Z helmo $
+ * $Id$
  */
 
 $charset = 'utf-8';

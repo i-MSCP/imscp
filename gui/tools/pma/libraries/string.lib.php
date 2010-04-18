@@ -12,7 +12,7 @@
  *
  * The SQL Parser code relies heavily on these functions.
  *
- * @version $Id: string.lib.php 12023 2008-11-28 14:47:09Z nijel $
+ * @version $Id$
  * @uses    extension_loaded()
  * @uses    substr()
  * @uses    function_exists()

@@ -4,7 +4,7 @@
  * Set of functions used to build NHibernate dumps of tables
  *
  * @package phpMyAdmin-Export-Codegen
- * @version $Id: codegen.php 11982 2008-11-24 10:32:56Z nijel $
+ * @version $Id$
  */
 if (! defined('PHPMYADMIN')) {
     exit;

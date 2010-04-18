@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: tbl_printview.php 12223 2009-02-08 13:46:53Z lem9 $
+ * @version $Id$
  * @package phpMyAdmin
  */
 
@@ -279,10 +279,9 @@ foreach ($the_tables as $key => $table) {
             }
             if ($nonisam == false) {
                 // Gets some sizes
-                $mergetable     = false;
-                if (isset($showtable['Type']) && $showtable['Type'] == 'MRG_MyISAM') {
-                    $mergetable = true;
-                }
+
+		$mergetable = PMA_Table::isMerge($db, $table);
+
                 list($data_size, $data_unit)         = PMA_formatByteDown($showtable['Data_length']);
                 if ($mergetable == false) {
                     list($index_size, $index_unit)   = PMA_formatByteDown($showtable['Index_length']);

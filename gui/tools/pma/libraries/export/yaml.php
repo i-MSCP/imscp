@@ -3,7 +3,7 @@
 /**
  * Set of functions used to build YAML dumps of tables
  *
- * @version $Id: yaml.php 13194 2009-12-30 13:46:17Z lem9 $
+ * @version $Id$
  * @package phpMyAdmin-Export-YAML
  */
 if (! defined('PHPMYADMIN')) {

@@ -3,7 +3,7 @@
 /**
  * print css file from theme Original
  *
- * @version $Id: theme_print.css.php 10145 2007-03-20 13:39:12Z cybot_tm $
+ * @version $Id$
  * @package phpMyAdmin-theme
  * @subpackage Original
  */

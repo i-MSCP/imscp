@@ -28,7 +28,7 @@
  * - db connection
  * - authentication work
  *
- * @version $Id: common.inc.php 13106 2009-11-07 12:00:19Z lem9 $
+ * @version $Id$
  * @package phpMyAdmin
  */
 

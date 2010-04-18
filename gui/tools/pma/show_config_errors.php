@@ -3,7 +3,7 @@
 /**
  * Simple wrapper just to enable error reporting and include config
  *
- * @version $Id: show_config_errors.php 11986 2008-11-24 11:05:40Z nijel $
+ * @version $Id$
  * @package phpMyAdmin
  */
 

@@ -1,7 +1,7 @@
 /**
  * functions used in setup script
  * 
- * @version $Id: scripts.js 11561 2008-09-04 13:50:10Z crackpl $
+ * @version $Id$
  */
 
 // show this window in top frame

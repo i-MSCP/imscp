@@ -2,7 +2,7 @@
 /**
  * function used for index manipulation pages
  *
- * @version $Id: indexes.js 10719 2007-10-04 15:03:44Z cybot_tm $
+ * @version $Id$
  */
 
 /**

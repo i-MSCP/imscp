@@ -1,5 +1,5 @@
 <?php
-/* $Id: indonesian-utf-8.inc.php 13370 2010-01-29 12:58:58Z helmo $ */
+/* $Id$ */
 
 $charset = 'utf-8';
 $text_dir = 'ltr'; // ('ltr' for left to right, 'rtl' for right to left)

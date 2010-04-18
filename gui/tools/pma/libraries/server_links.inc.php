@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: server_links.inc.php 12952 2009-09-12 11:17:56Z lem9 $
+ * @version $Id$
  * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
@@ -87,9 +87,9 @@ $tabs['import']['icon'] = 'b_import.png';
 $tabs['import']['link'] = 'server_import.php';
 $tabs['import']['text'] = $strImport;
 
-$tabs['import']['icon'] = 's_sync.png';
-$tabs['import']['link'] = 'server_synchronize.php';
-$tabs['import']['text'] = $strSynchronize;
+$tabs['synchronize']['icon'] = 's_sync.png';
+$tabs['synchronize']['link'] = 'server_synchronize.php';
+$tabs['synchronize']['text'] = $strSynchronize;
 
 echo PMA_generate_html_tabs($tabs, array());
 unset($tabs);

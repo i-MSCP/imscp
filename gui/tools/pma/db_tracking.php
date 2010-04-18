@@ -1,7 +1,7 @@
 <?php
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * @version $Id: db_tracking.php 13184 2009-12-27 23:05:45Z lem9 $
+ * @version $Id$
  * @author Alexander Rutkowski
  * @package phpMyAdmin
  */

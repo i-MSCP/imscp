@@ -1,5 +1,5 @@
 <?php
-/* $Id: hungarian-utf-8.inc.php 13370 2010-01-29 12:58:58Z helmo $ */
+/* $Id$ */
 // Peter Bakondy <bakondyp@freemail.hu>
 // Mihály Mészáros <poizon at sth dot sze dot hu>
 // József Tamás Herczeg <localicer @NOSPAM@ gmail DOT com>

@@ -1,5 +1,5 @@
 <?php
-/* $Id: latvian-utf-8.inc.php 13370 2010-01-29 12:58:58Z helmo $ */
+/* $Id$ */
 
 /**
  * Latvian language file by Sandis Jērics <sandisj at parks.lv>

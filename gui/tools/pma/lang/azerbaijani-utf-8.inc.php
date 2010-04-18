@@ -1,5 +1,5 @@
 <?php
-/* $Id: azerbaijani-utf-8.inc.php 13370 2010-01-29 12:58:58Z helmo $ */
+/* $Id$ */
 
 // tercümedeki eksiklerimi ve ya sehv olduğunu düşündüyünüz yerleri shehriyari@trcomm.net adresine göndere bilersiniz...
 // Şehriyar İmanov 30 Avqust 2003... Shehi

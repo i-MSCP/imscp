@@ -3,7 +3,7 @@
 /**
  * handle row specifc actions like edit, delete, export
  *
- * @version $Id: tbl_row_action.php 13195 2009-12-30 15:27:27Z lem9 $
+ * @version $Id$
  * @package phpMyAdmin
  */
 
@@ -43,7 +43,7 @@ if (isset($_REQUEST['submit_mult'])) {
     $submit_mult = 'row_export';
 }
 
-// garvin: If the 'Ask for confirmation' button was pressed, this can only come
+// If the 'Ask for confirmation' button was pressed, this can only come
 // from 'delete' mode, so we set it straight away.
 if (isset($_REQUEST['mult_btn'])) {
     $submit_mult = 'row_delete';

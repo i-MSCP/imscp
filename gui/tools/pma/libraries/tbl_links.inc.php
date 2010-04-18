@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: tbl_links.inc.php 12936 2009-09-07 12:25:55Z lem9 $
+ * @version $Id$
  * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
@@ -114,6 +114,7 @@ if (! $tbl_is_view && ! (isset($db_is_information_schema) && $db_is_information_
 if (! (isset($db_is_information_schema) && $db_is_information_schema)) {
     $tabs['drop']['icon'] = 'b_deltbl.png';
     $tabs['drop']['link'] = 'sql.php';
+    $tabs['drop']['url_params'] = array('table' => NULL);
     $tabs['drop']['text'] = $strDrop;
     $tabs['drop']['args']['reload']     = 1;
     $tabs['drop']['args']['purge']      = 1;

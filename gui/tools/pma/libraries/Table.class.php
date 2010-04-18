@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: Table.class.php 13107 2009-11-08 10:35:00Z lem9 $
+ * @version $Id$
  * @package phpMyAdmin
  */
 
@@ -238,6 +238,31 @@ class PMA_Table
         return $type == 'VIEW';
     }
 
+    /**
+     * Checks if this is a merge table
+     *
+     * If the ENGINE of the table is MERGE or MRG_MYISAM (alias), this is a merge table.
+     *
+     * @param   string   the database name
+     * @param   string   the table name
+     * @return  boolean  true if it is a merge table 
+     * @access  public
+     */
+    static public function isMerge($db = null, $table = null)
+    {
+        // if called static, with parameters
+        if (! empty($db) && ! empty($table)) {
+            $engine = PMA_Table::sGetStatusInfo($db, $table, 'ENGINE', null, true);
+        }
+        // if called as an object
+        // does not work yet, because $this->settings[] is not filled correctly
+        else if (! empty($this)) {
+            $engine = $this->get('ENGINE');
+        }
+
+        return (! empty($engine) && ((strtoupper($engine) == 'MERGE') || (strtoupper($engine) == 'MRG_MYISAM')));
+    }
+
     static public function sGetToolTip($db, $table)
     {
         return PMA_Table::sGetStatusInfo($db, $table, 'Comment')
@@ -254,9 +279,10 @@ class PMA_Table
      * @param string $table
      * @param string $info
      * @param boolean $force_read
+     * @param boolean if true, disables error message
      * @return mixed
      */
-    static public function sGetStatusInfo($db, $table, $info = null, $force_read = false)
+    static public function sGetStatusInfo($db, $table, $info = null, $force_read = false, $disable_error = false)
     {
         if (! isset(PMA_Table::$cache[$db][$table]) || $force_read) {
             PMA_DBI_get_tables_full($db, $table);
@@ -274,7 +300,9 @@ class PMA_Table
         }
 
         if (! isset(PMA_Table::$cache[$db][$table][$info])) {
-            trigger_error('unknown table status: ' . $info, E_USER_WARNING);
+            if (! $disable_error) {
+                trigger_error('unknown table status: ' . $info, E_USER_WARNING);
+            }
             return false;
         }
 
@@ -423,7 +451,8 @@ class PMA_Table
 
             if (! $force_exact) {
                 if (! isset(PMA_Table::$cache[$db][$table]['Rows']) && ! $is_view) {
-                    PMA_Table::$cache[$db][$table] = PMA_DBI_fetch_single_row('SHOW TABLE STATUS FROM ' . PMA_backquote($db) . ' LIKE \'' . PMA_sqlAddslashes($table, true) . '\'');
+                    $tmp_tables = PMA_DBI_get_tables_full($db, $table);
+                    PMA_Table::$cache[$db][$table] = $tmp_tables[$table];
                 }
                 $row_count = PMA_Table::$cache[$db][$table]['Rows'];
             }

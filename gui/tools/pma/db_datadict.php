@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: db_datadict.php 12120 2008-12-10 09:22:29Z cybot_tm $
+ * @version $Id$
  * @package phpMyAdmin
  */
 

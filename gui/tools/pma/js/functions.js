@@ -2,7 +2,7 @@
 /**
  * general function, usally for data manipulation pages
  *
- * @version $Id: functions.js 13182 2009-12-27 19:01:59Z helmo $
+ * @version $Id$
  */
 
 /**

@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
 *
-* @version $Id: display_import_ajax.lib.php 13147 2009-12-06 18:27:44Z lem9 $
+* @version $Id$
 * @package phpMyAdmin
 */
 
@@ -31,7 +31,7 @@ $plugins = array(
 	   "uploadprogress",
 	   "apc",
 	   "noplugin"
-	   ); // available plugins. Each plugin has own checkfunction in upload_functions.php and own file with functions in upload_#KEY#.php
+	   ); // available plugins. Each plugin has own checkfunction in display_import_ajax.lib.php and own file with functions in upload_#KEY#.php
 
 // select available plugin
 foreach ($plugins as $plugin) {
@@ -40,8 +40,8 @@ foreach ($plugins as $plugin) {
     if ($check()) {
         $_SESSION[$SESSION_KEY]["handler"] = $plugin;
         include_once("import/upload/" . $plugin . ".php");
-    break;
-  } 
+        break;
+    } 
 }
 
 /**

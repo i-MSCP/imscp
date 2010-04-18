@@ -2,7 +2,7 @@
 /**
  * function used in table data manipulation pages
  *
- * @version $Id: tbl_change.js 12489 2009-05-23 12:29:54Z helmo $
+ * @version $Id$
  */
 
 /**

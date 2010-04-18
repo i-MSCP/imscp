@@ -4,7 +4,7 @@
  * Holds class PMA_Message
  *
  * @author Sebastian Mendel <info@sebastianmendel.de>
- * @version $Id: Message.class.php 12848 2009-08-21 07:38:43Z nijel $
+ * @version $Id$
  * @package phpMyAdmin
  */
 

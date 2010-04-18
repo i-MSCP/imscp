@@ -1,5 +1,5 @@
 <?php
-/* $Id: hindi-utf-8.inc.php 13370 2010-01-29 12:58:58Z helmo $ */
+/* $Id$ */
 
 // Hindi translation
 // 1st release   :   by Girish Nair <girishn@nagpur.dot.net.in(outdated)> : 08-Aug-2002

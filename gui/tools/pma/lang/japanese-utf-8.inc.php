@@ -1,5 +1,5 @@
 <?php
-/* $Id: japanese-utf-8.inc.php 13370 2010-01-29 12:58:58Z helmo $ */
+/* $Id$ */
 
 /**
  * Translated by Yukihiro Kawada <kawada at den.fujifilm.co.jp>

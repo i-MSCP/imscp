@@ -1,5 +1,5 @@
 <?php
-/* $Id: greek-utf-8.inc.php 13370 2010-01-29 12:58:58Z helmo $ */
+/* $Id$ */
 
 /* Translated by Kyriakos Xagoraris <theremon at users.sourceforge.net> */
 /* Translated by Panagiotis Papazoglou <papaz_p at yahoo.com> */

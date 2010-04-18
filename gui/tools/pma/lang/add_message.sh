@@ -1,5 +1,5 @@
 #!/bin/bash
-# $Id: add_message.sh 13133 2009-11-26 09:23:33Z tomassrnka $
+# $Id$
 #
 # Shell script that adds a message to all message files (Lem9)
 #

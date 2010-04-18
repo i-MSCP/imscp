@@ -7,7 +7,7 @@
  * All directives are explained in Documentation.html and on phpMyAdmin
  * wiki <http://wiki.phpmyadmin.net>.
  *
- * @version $Id: config.sample.inc.php 13111 2009-11-09 15:02:21Z lem9 $
+ * @version $Id$
  * @package phpMyAdmin
  */
 

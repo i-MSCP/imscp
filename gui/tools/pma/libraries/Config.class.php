@@ -3,7 +3,7 @@
 /**
  *
  *
- * @version $Id: Config.class.php 13448 2010-03-07 23:41:30Z lem9 $
+ * @version $Id$
  * @package phpMyAdmin
  */
 
@@ -92,7 +92,7 @@ class PMA_Config
      */
     function checkSystem()
     {
-        $this->set('PMA_VERSION', '3.3.0');
+        $this->set('PMA_VERSION', '3.3.2');
         /**
          * @deprecated
          */
@@ -662,6 +662,7 @@ class PMA_Config
             // Backslashes returned by Windows have to be changed.
             // Only replace backslashes by forward slashes if on Windows,
             // as the backslash could be valid on a non-Windows system.
+            $this->checkWebServerOs();
             if ($this->get('PMA_IS_WINDOWS') == 1) {
                 $path = str_replace("\\", "/", dirname($url['path'] . 'a'));
             } else {

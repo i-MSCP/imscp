@@ -4,7 +4,7 @@
 /**
  * Interface for the zip extension
  * @package    phpMyAdmin
- * @version    $Id: zip_extension.lib.php 12824 2009-08-19 17:58:42Z drummingds1 $
+ * @version    $Id$
  */
 
 /**

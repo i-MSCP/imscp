@@ -5,7 +5,7 @@
  * @package    phpMyAdmin-setup
  * @author     Piotr Przybylski <piotrprz@gmail.com>
  * @license    http://www.gnu.org/licenses/gpl.html GNU GPL 2.0
- * @version    $Id: form_processing.lib.php 11650 2008-10-14 10:31:07Z crackpl $
+ * @version    $Id$
  */
 
 /**

@@ -19,7 +19,7 @@
  * It's easier to use only uppercase for proper sorting. In case of
  * doubt, use the DEBUG code after this function's definition.
  *
- * @version $Id: sqlparser.data.php 13068 2009-10-24 12:25:48Z lem9 $
+ * @version $Id$
  * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
@@ -447,7 +447,6 @@ $PMA_SQPdata_reserved_word = array (
     'CREATE',
     'CROSS',
     'CURRENT_TIMESTAMP',
-    'DATA',
     'DATABASE',
     'DATABASES',
     'DAY',
@@ -699,7 +698,7 @@ $PMA_SQPdata_reserved_word = array (
  *
  * @global integer MySQL reserved words count
  */
-$PMA_SQPdata_reserved_word_cnt = 289;
+$PMA_SQPdata_reserved_word_cnt = 288;
 /**
  * The previous array must be sorted so that the binary search work.
  * Sometimes a word is not added in the correct order, so

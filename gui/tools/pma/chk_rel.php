@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: chk_rel.php 12278 2009-03-03 13:54:37Z nijel $
+ * @version $Id$
  * @package phpMyAdmin
  */
 

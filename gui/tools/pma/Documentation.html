@@ -5,12 +5,12 @@ vim: expandtab ts=4 sw=4 sts=4 tw=78
 -->
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US"
     version="-//W3C//DTD XHTML 1.1//EN" dir="ltr">
-<!-- $Id: Documentation.html 13448 2010-03-07 23:41:30Z lem9 $ -->
+<!-- $Id$ -->
 <head>
     <link rel="icon" href="./favicon.ico" type="image/x-icon" />
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>phpMyAdmin 3.3.0 - Documentation</title>
+    <title>phpMyAdmin 3.3.2 - Documentation</title>
     <link rel="stylesheet" type="text/css" href="docs.css" />
 </head>
 
@@ -18,7 +18,7 @@ vim: expandtab ts=4 sw=4 sts=4 tw=78
 <div id="header">
     <h1>
         <a href="http://www.phpmyadmin.net/">php<span class="myadmin">MyAdmin</span></a>
-        3.3.0
+        3.3.2 
         Documentation
     </h1>
 </div>
@@ -54,7 +54,7 @@ vim: expandtab ts=4 sw=4 sts=4 tw=78
         </ul>
     </li>
     <li><div class="l10n">Documentation version:</div>
-        <i>$Id: Documentation.html 13448 2010-03-07 23:41:30Z lem9 $</i>
+        <i>$Id$</i>
     </li>
 </ul>
 
@@ -1103,7 +1103,7 @@ CREATE DATABASE,ALTER DATABASE,DROP DATABASE</pre>
         <span id="cfg_Servers_tracking_drop_view">$cfg['Servers'][$i]['tracking_version_drop_view']</span> boolean
     </dt>
     <dd>
-        Whether a DROP VIEW IF EXISTS statement will added as first line to the log when creating a view. Default value is true.
+        Whether a DROP VIEW IF EXISTS statement will be added as first line to the log when creating a view. Default value is true.
         <br/><br/>       
     </dd>
 
@@ -1112,7 +1112,7 @@ CREATE DATABASE,ALTER DATABASE,DROP DATABASE</pre>
         <span id="cfg_Servers_tracking_drop_table">$cfg['Servers'][$i]['tracking_version_drop_table']</span> boolean
     </dt>
     <dd>
-        Whether a DROP TABLE IF EXISTS statement will added as first line to the log when creating a table. Default value is true.
+        Whether a DROP TABLE IF EXISTS statement will be added as first line to the log when creating a table. Default value is true.
         <br/><br/>
     </dd>
 
@@ -1120,7 +1120,7 @@ CREATE DATABASE,ALTER DATABASE,DROP DATABASE</pre>
         <span id="cfg_Servers_tracking_drop_database">$cfg['Servers'][$i]['tracking_version_drop_database']</span> boolean
     </dt>
     <dd>
-        Whether a DROP DATABASE IF EXISTS statement will added as first line to the log when creating a database. Default value is true.
+        Whether a DROP DATABASE IF EXISTS statement will be added as first line to the log when creating a database. Default value is true.
         <br/><br/>
     </dd>
 
@@ -1378,6 +1378,12 @@ CREATE DATABASE,ALTER DATABASE,DROP DATABASE</pre>
         MySQL servers behind the firewall where your
         <abbr title="HyperText Transfer Protocol">HTTP</abbr> server is placed.
     </dd>
+
+    <dt id ="cfg_Error_Handler_display">$cfg['Error_Handler']['display'] boolean</dt>
+    <dd>Whether to display errors from PHP or not.</dd>
+
+    <dt id ="cfg_Error_Handler_gather">$cfg['Error_Handler']['gather'] boolean</dt>
+    <dd>Whether to gather errors from PHP or not.</dd>
 
     <dt id="cfg_LeftFrameLight">$cfg['LeftFrameLight'] boolean</dt>
     <dd>Defines whether to use a select-based menu and display only the current
@@ -1883,20 +1889,20 @@ $cfg['TrustedProxies'] =
         name of the field. The comment is shown as a tool-tip for that field.
     </dd>
 
-    <dt id ="cfb_SQLQuery_Edit">$cfg['SQLQuery']['Edit'] boolean</dt>
+    <dt id ="cfg_SQLQuery_Edit">$cfg['SQLQuery']['Edit'] boolean</dt>
     <dd>Whether to display an edit link to change a query in any SQL Query box.</dd>
 
-    <dt id ="cfb_SQLQuery_Explain">$cfg['SQLQuery']['Explain'] boolean</dt>
+    <dt id ="cfg_SQLQuery_Explain">$cfg['SQLQuery']['Explain'] boolean</dt>
     <dd>Whether to display a link to explain a SELECT query in any SQL Query box.</dd>
 
-    <dt id ="cfb_SQLQuery_ShowAsPHP">$cfg['SQLQuery']['ShowAsPHP'] boolean</dt>
+    <dt id ="cfg_SQLQuery_ShowAsPHP">$cfg['SQLQuery']['ShowAsPHP'] boolean</dt>
     <dd>Whether to display a link to wrap a query in PHP code in any SQL Query box.</dd>
 
-    <dt id ="cfb_SQLQuery_Validate">$cfg['SQLQuery']['Validate'] boolean</dt>
+    <dt id ="cfg_SQLQuery_Validate">$cfg['SQLQuery']['Validate'] boolean</dt>
     <dd>Whether to display a link to validate a query in any SQL Query box.
         See also <tt><a href="#cfg_SQLValidator">$cfg_SQLValidator</a></tt>.</dd>
 
-    <dt id ="cfb_SQLQuery_Refresh">$cfg['SQLQuery']['Refresh'] boolean</dt>
+    <dt id ="cfg_SQLQuery_Refresh">$cfg['SQLQuery']['Refresh'] boolean</dt>
     <dd>Whether to display a link to refresh a query in any SQL Query box.</dd>
 
     <dt id="cfg_UploadDir">$cfg['UploadDir'] string</dt>
@@ -3055,11 +3061,37 @@ RewriteRule .* - [E=REMOTE_USER:%{HTTP:Authorization},L]
 
 <p> Yes but the default configuration values of Suhosin are known to cause 
     problems with some operations, for example editing a table with many
-    columns and no primary key. Tuning information is available at 
-    <a href="http://www.hardened-php.net/hphp/troubleshooting.html">
-	    http://www.hardened-php.net/hphp/troubleshooting.html</a>,
-    although the parameter names have changed (<tt>suhosin</tt> instead
-    of <tt>hphp</tt>). See also the <a href="#cfg_SuhosinDisableWarning">
+    columns and no primary key or with textual primary key.
+</p>
+<p>
+    Suhosin configuration might lead to malfunction in some cases and it can
+    not be fully avoided as phpMyAdmin is kind of application which needs to
+    transfer big amounts of fields in single HTTP request, what is something
+    what Suhosin tries to prevent. Generally all
+    <code>suhosin.request.*</code>, <code>suhosin.post.*</code> and
+    <code>suhosin.get.*</code> directives can have negative effect on
+    phpMyAdmin usability. You can always find in your error logs which limit
+    did cause dropping of variable, so you can diagnose the problem and adjust
+    matching configuration variable.
+</p>
+<p>
+    The default values for most Suhosin configuration options will work in most 
+    scenarios, however you might want to adjust at least following parameters:
+</p>
+
+<ul>
+    <li><a href="http://www.hardened-php.net/suhosin/configuration.html#suhosin.request.max_vars">suhosin.request.max_vars</a> should be increased (eg. 2048)</li>
+    <li><a href="http://www.hardened-php.net/suhosin/configuration.html#suhosin.post.max_vars">suhosin.post.max_vars</a> should be increased (eg. 2048)</li>
+    <li><a href="http://www.hardened-php.net/suhosin/configuration.html#suhosin.request.max_array_index_length">suhosin.request.max_array_index_length</a> should be increased (eg. 256)</li>
+    <li><a href="http://www.hardened-php.net/suhosin/configuration.html#suhosin.post.max_array_index_length">suhosin.post.max_array_index_length</a> should be increased (eg. 256)</li>
+    <li><a href="http://www.hardened-php.net/suhosin/configuration.html#suhosin.request.max_totalname_length">suhosin.request.max_totalname_length</a> should be increased (eg. 8192)</li>
+    <li><a href="http://www.hardened-php.net/suhosin/configuration.html#suhosin.post.max_totalname_length">suhosin.post.max_totalname_length</a> should be increased (eg. 8192)</li>
+    <li><a href="http://www.hardened-php.net/suhosin/configuration.html#suhosin.sql.bailout_on_error">suhosin.sql.bailout_on_error</a> needs to be disabled (the default)</li>
+    <li><a href="http://www.hardened-php.net/suhosin/configuration.html#logging_configuration">suhosin.log.*</a> should not include SQL, otherwise you get big slowdown</li>
+</ul>
+
+    <p>
+        You can also disable the warning using the <a href="#cfg_SuhosinDisableWarning">
 	    <tt>SuhosinDisableWarning</tt> directive</a>.
     </p>
 
@@ -4326,20 +4358,23 @@ chmod o+rwx tmp
 
 <p> The following method is preferred for new developers:</p>
 
-<ol><li>fetch the current SVN tree over anonymous SVN:<br />
-    <tt>svn co https://phpmyadmin.svn.sourceforge.net/svnroot/phpmyadmin/trunk/phpMyAdmin</tt><br />
+<ol><li>fetch the current git repository over anonymous git:<br />
+    <tt>git clone
+        git://phpmyadmin.git.sourceforge.net/gitroot/phpmyadmin/phpmyadmin</tt><br />
     </li>
     <li>add your stuff</li>
     <li>generate patch with your changes:
-    <tt>svn diff</tt><br />
+    <tt>git diff &gt; xxx.diff</tt><br />
     </li>
-    <li>put the patch inside the <a
+    <li>submit your patch via the <a
         href="https://sourceforge.net/tracker/?group_id=23067&amp;atid=377410">patch
         tracker of the phpMyAdmin project</a>.
     </li>
 </ol>
 
-<p> Write access to the SVN tree is granted only to experienced developers who
+<p>More details on git are available on <a href="http://wiki.phpmyadmin.net/pma/Devel:Git">our wiki</a>.</p>
+
+<p> Write access to the repository is granted only to experienced developers who
     have already contributed something useful to phpMyAdmin.<br />
     Also, have a look at the <a href="#developers">Developers section</a>.</p>
 
@@ -4392,7 +4427,7 @@ server host name, username, password, port and the name of the database. Therefo
 now synchronize your databases placed on the same server or some remote server.
 </p>
 
-<p>For more details see <a href="./documentation-gsoc/Synchronization_User%20Manual.htm">How to synchronize</a>
+<p>For more details see <a href="./documentation-gsoc/Synchronization_User_Manual.htm">How to synchronize</a>
 </p>
 
 <!-- DEVELOPERS -->
@@ -4422,6 +4457,9 @@ now synchronize your databases placed on the same server or some remote server.
         <abbr title="PHP Extension and Application Repository">PEAR</abbr>
         coding standards</a>
         on the other hand. Please pay attention to this.</li>
+    <li>Please enable showing PHP errors and warnings by the
+        <code><a href="#cfg_Error_Handler_display">$cfg['Error_Handler']['display']</a></code>
+        configuration directive.</li>
     <li>Please try to keep up the file-naming conventions. Table-related stuff
         goes to <i>tbl_*.php</i>, db-related code to <i>db_*.php</i>,
         server-related tools to <i>server_*.php</i> and so on.</li>

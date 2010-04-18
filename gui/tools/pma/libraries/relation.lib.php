@@ -3,7 +3,7 @@
 /**
  * Set of functions used with the relation and pdf feature
  *
- * @version $Id: relation.lib.php 13265 2010-01-20 18:10:37Z lem9 $
+ * @version $Id$
  * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {

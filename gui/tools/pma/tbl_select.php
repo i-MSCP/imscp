@@ -7,7 +7,7 @@
  * and include sql.php to execute it
  *
  * @todo display search form again if no results from previous search
- * @version $Id: tbl_select.php 12627 2009-07-06 12:05:06Z lem9 $
+ * @version $Id$
  * @package phpMyAdmin
  */
 
@@ -308,6 +308,7 @@ while (list($operator) = each($GLOBALS['cfg']['UnaryOperators'])) {
     unset($choices);
 ?>
 </fieldset>
+<br style="clear: both;"/>
 </div>
 </fieldset>
 <fieldset class="tblFooters">

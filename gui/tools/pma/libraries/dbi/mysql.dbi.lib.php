@@ -4,7 +4,7 @@
  * Interface to the classic MySQL extension
  *
  * @package phpMyAdmin-DBI-MySQL
- * @version $Id: mysql.dbi.lib.php 13170 2009-12-24 12:18:31Z lem9 $
+ * @version $Id$
  */
 if (! defined('PHPMYADMIN')) {
     exit;

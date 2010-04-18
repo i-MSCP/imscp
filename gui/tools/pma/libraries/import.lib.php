@@ -3,7 +3,7 @@
 /**
  * Library that provides common import functions that are used by import plugins
  *
- * @version $Id: import.lib.php 13188 2009-12-29 15:21:05Z lem9 $
+ * @version $Id$
  * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
@@ -947,7 +947,7 @@ function PMA_buildSQL($db_name, &$tables, &$analyses = NULL, &$additional_sql = 
                     $tempSQLStr .= ", ";
                 }
             }
-            $tempSQLStr .= ") ENGINE=MyISAM;";
+            $tempSQLStr .= ") ENGINE=MyISAM DEFAULT CHARACTER SET " . $charset . " COLLATE " . $collation . ";";
             
             /**
              * Each SQL statement is executed immediately

@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: calendar.php 12388 2009-04-30 17:11:42Z lem9 $
+ * @version $Id$
  * @package phpMyAdmin
  */
 

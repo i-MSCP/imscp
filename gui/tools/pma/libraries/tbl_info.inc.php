@@ -6,7 +6,7 @@
  * @todo should be handled by class Table
  * @todo this should be recoded as functions, to avoid messing with global variables
  *
- * @version $Id: tbl_info.inc.php 13061 2009-10-23 10:02:09Z lem9 $
+ * @version $Id$
  * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {

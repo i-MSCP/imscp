@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: server_privileges.php 13222 2010-01-06 08:08:42Z helmo $
+ * @version $Id$
  * @package phpMyAdmin
  */
 

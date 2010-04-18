@@ -3,7 +3,7 @@
 /**
  * navigation css file from theme Original
  *
- * @version $Id: theme_left.css.php 12588 2009-06-20 16:36:58Z lem9 $
+ * @version $Id$
  * @package phpMyAdmin-theme
  * @subpackage Original
  */

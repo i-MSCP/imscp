@@ -1,5 +1,5 @@
 <?php
-/* $Id: russian-utf-8.inc.php 13370 2010-01-29 12:58:58Z helmo $ */
+/* $Id$ */
 
 /**
  * Translated by Gosha Sakovich <gt2 at users.sourceforge.net>

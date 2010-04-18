@@ -3,7 +3,7 @@
 /**
  * main css file from theme Original
  *
- * @version $Id: theme_right.css.php 12881 2009-08-24 20:57:51Z tomassrnka $
+ * @version $Id$
  * @package phpMyAdmin-theme
  * @subpackage Original
  */

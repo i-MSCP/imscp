@@ -1,5 +1,5 @@
 <?php
-/* $Id: danish-utf-8.inc.php 13370 2010-01-29 12:58:58Z helmo $ */ /* danish - Dansk v 2.20 (based on english rev. 10226) 2007/04/03 01:23:45 - oversætter AlleyKat kan kontaktes på < phpmyadmin (at) phpbb2.dk > */
+/* $Id$ */ /* danish - Dansk v 2.20 (based on english rev. 10226) 2007/04/03 01:23:45 - oversætter AlleyKat kan kontaktes på < phpmyadmin (at) phpbb2.dk > */
 
 $charset = 'utf-8';
 $text_dir = 'ltr';

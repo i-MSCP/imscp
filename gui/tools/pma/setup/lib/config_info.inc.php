@@ -9,7 +9,7 @@
  * @package    phpMyAdmin-setup
  * @author     Piotr Przybylski <piotrprz@gmail.com>
  * @license    http://www.gnu.org/licenses/gpl.html GNU GPL 2.0
- * @version    $Id: config_info.inc.php 12040 2008-11-30 12:58:55Z nijel $
+ * @version    $Id$
  */
 
 if (!defined('PHPMYADMIN')) {

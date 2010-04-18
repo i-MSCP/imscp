@@ -1,5 +1,5 @@
 <?php
-/* $Id: italian-utf-8.inc.php 13370 2010-01-29 12:58:58Z helmo $ */
+/* $Id$ */
 
 /**
  * translated by: Pietro Danesi <danone at users.sourceforge.net>  2002-03-29

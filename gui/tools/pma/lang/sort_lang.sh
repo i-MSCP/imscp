@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: sort_lang.sh 13133 2009-11-26 09:23:33Z tomassrnka $
+# $Id$
 ##
 # Shell script to make each language file neat and tidy
 #
@@ -30,7 +30,7 @@ sortlang()
     TRANSLATIONSTRING='//.*translate.*$'
     STRINGSTRING='^\$str[[:alnum:]_]+'
     WHITESPACE='^[[:blank:]]*$'
-    CVSID='/\* \$Id: sort_lang.sh 13133 2009-11-26 09:23:33Z tomassrnka $ \*/'
+    CVSID='/\* \$Id$ \*/'
 
     echo -n "Extracting:"
     echo -n " head"

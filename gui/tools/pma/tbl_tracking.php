@@ -3,7 +3,7 @@
 /**
  *
  * @author Alexander Rutkowski
- * @version $Id: tbl_tracking.php 13183 2009-12-27 21:52:21Z lem9 $
+ * @version $Id$
  * @package phpMyAdmin
  */
 

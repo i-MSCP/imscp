@@ -6,7 +6,7 @@
  * variables from them. It does the same work for $HTTP_ACCEPT_LANGUAGE and
  * $HTTP_AUTHORIZATION.
  *
- * @version $Id: grab_globals.lib.php 11986 2008-11-24 11:05:40Z nijel $
+ * @version $Id$
  * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {

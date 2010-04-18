@@ -4,7 +4,7 @@
  * Set of functions used to build OpenDocument Spreadsheet dumps of tables
  *
  * @package phpMyAdmin-Export-ODS
- * @version $Id: ods.php 12972 2009-09-14 06:21:04Z drummingds1 $
+ * @version $Id$
  */
 if (! defined('PHPMYADMIN')) {
     exit;

@@ -3,7 +3,7 @@
 /**
  * Charset conversion functions.
  *
- * @version $Id: charset_conversion.lib.php 11982 2008-11-24 10:32:56Z nijel $
+ * @version $Id$
  * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {

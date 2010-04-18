@@ -1,6 +1,6 @@
 <?php
 
-/* $Id: persian-utf-8.inc.php 13370 2010-01-29 12:58:58Z helmo $ */
+/* $Id$ */
 /*
 Persian(Farsi) translation by : Bornis Group
 www.BornisGroup.com

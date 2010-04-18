@@ -4,7 +4,7 @@
  * CSV import plugin for phpMyAdmin
  *
  * @todo    add an option for handling NULL values
- * @version $Id: csv.php 12824 2009-08-19 17:58:42Z drummingds1 $
+ * @version $Id$
  * @package phpMyAdmin-Import
  */
 if (! defined('PHPMYADMIN')) {

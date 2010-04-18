@@ -3,7 +3,7 @@
 /**
  * Common Option Constants For DBI Functions
  *
- * @version $Id: database_interface.lib.php 13180 2009-12-27 13:59:08Z helmo $
+ * @version $Id$
  * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {
@@ -263,19 +263,19 @@ function PMA_DBI_get_tables_full($database, $table = false, $tbl_is_group = fals
 
     if (! $GLOBALS['cfg']['Server']['DisableIS']) {
       // get table information from information_schema
-      if ($table) {
-          if (true === $tbl_is_group) {
-              $sql_where_table = 'AND `TABLE_NAME` LIKE \''
+        if ($table) {
+            if (true === $tbl_is_group) {
+                $sql_where_table = 'AND `TABLE_NAME` LIKE \''
                   . PMA_escape_mysql_wildcards(addslashes($table)) . '%\'';
-          } elseif ('comment' === $tbl_is_group) {
-              $sql_where_table = 'AND `TABLE_COMMENT` LIKE \''
+            } elseif ('comment' === $tbl_is_group) {
+                $sql_where_table = 'AND `TABLE_COMMENT` LIKE \''
                   . PMA_escape_mysql_wildcards(addslashes($table)) . '%\'';
-          } else {
-              $sql_where_table = 'AND `TABLE_NAME` = \'' . addslashes($table) . '\'';
-          }
-      } else {
-          $sql_where_table = '';
-      }
+            } else {
+                $sql_where_table = 'AND `TABLE_NAME` = \'' . addslashes($table) . '\'';
+            }
+        } else {
+            $sql_where_table = '';
+        }
 
       // for PMA bc:
       // `SCHEMA_FIELD_NAME` AS `SHOW_TABLE_STATUS_FIELD_NAME`
@@ -284,12 +284,13 @@ function PMA_DBI_get_tables_full($database, $table = false, $tbl_is_group = fals
       // added BINARY in the WHERE clause to force a case sensitive
       // comparison (if we are looking for the db Aa we don't want
       // to find the db aa)
-      $this_databases = array_map('PMA_sqlAddslashes', $databases);
+        $this_databases = array_map('PMA_sqlAddslashes', $databases);
 
-      $sql = '
+        $sql = '
            SELECT *,
                   `TABLE_SCHEMA`       AS `Db`,
                   `TABLE_NAME`         AS `Name`,
+                  `TABLE_TYPE`         ÀS `TABLE_TYPE`,
                   `ENGINE`             AS `Engine`,
                   `ENGINE`             AS `Type`,
                   `VERSION`            AS `Version`,
@@ -312,41 +313,28 @@ function PMA_DBI_get_tables_full($database, $table = false, $tbl_is_group = fals
             WHERE ' . (PMA_IS_WINDOWS ? '' : 'BINARY') . ' `TABLE_SCHEMA` IN (\'' . implode("', '", $this_databases) . '\')
               ' . $sql_where_table;
 
-      // Sort the tables
-      if ($sort_by == 'Name' && $GLOBALS['cfg']['NaturalOrder']) {
-          // This crazy bit of SQL was inspired by a post here:
-          // http://forums.mysql.com/read.php?10,34908,35959#msg-35959
+        // Sort the tables
+        $sql .= " ORDER BY $sort_by $sort_order";
 
-          // Find the longest table name
-          $max_name_sql = "SELECT MAX(LENGTH(TABLE_NAME)) FROM `information_schema`.`TABLES`
-                           WHERE `TABLE_SCHEMA` IN ('" . implode("', '", $this_databases) . "')"; 
-          $max_name_array = PMA_DBI_fetch_result($max_name_sql);
-          $max_name_length = $max_name_array[0];
+        if ($limit_count) {
+            $sql .= ' LIMIT ' . $limit_count . ' OFFSET ' . $limit_offset;
+        }
 
-          // Put the CASE statement SQL together.
-          $sql_case = '';
-          for ($i = 1; $i < $max_name_length; $i++) {
-              $sql_case .= " when substr(Name, $i) between '0' and '9' then $i";
-          }
-          $sql_case .= " ELSE $max_name_length end) ";
-
-          // Add the CASE statement to the main SQL
-          $sql .= " ORDER BY left(Name, (CASE ";
-          $sql .= $sql_case . "-1) $sort_order, 0+substr(Name, CASE";
-          $sql .= $sql_case . $sort_order;
-      } else {
-          // Just let MySQL sort as it normally does
-          $sql .= " ORDER BY $sort_by $sort_order";
-      }
-
-      if ($limit_count) {
-          $sql .= ' LIMIT ' . $limit_count . ' OFFSET ' . $limit_offset;
-      }
-
-      $tables = PMA_DBI_fetch_result($sql, array('TABLE_SCHEMA', 'TABLE_NAME'),
+        $tables = PMA_DBI_fetch_result($sql, array('TABLE_SCHEMA', 'TABLE_NAME'),
           null, $link);
-      unset($sql_where_table, $sql);
-    }
+        unset($sql_where_table, $sql);
+        if ($sort_by == 'Name' && $GLOBALS['cfg']['NaturalOrder']) {
+            // here, the array's first key is by schema name
+            foreach($tables as $one_database_name => $one_database_tables) {
+                uksort($one_database_tables, 'strnatcasecmp');
+
+                if ($sort_order == 'DESC') {
+                    $one_database_tables = array_reverse($one_database_tables);
+                }
+                $tables[$one_database_name] = $one_database_tables;
+            }
+        }
+    } // end (get information from table schema)
 
     // If permissions are wrong on even one database directory,
     // information_schema does not return any table info for any database
@@ -459,7 +447,14 @@ function PMA_DBI_get_tables_full($database, $table = false, $tbl_is_group = fals
     // Note 2: Instead of array_merge(), simply use the + operator because
     //  array_merge() renumbers numeric keys starting with 0, therefore
     //  we would lose a db name thats consists only of numbers
-    PMA_Table::$cache = PMA_Table::$cache + $tables;
+    foreach($tables as $one_database => $its_tables) {
+        if (isset(PMA_Table::$cache[$one_database])) {
+            PMA_Table::$cache[$one_database] = PMA_Table::$cache[$one_database] + $tables[$one_database];
+        } else {
+            PMA_Table::$cache[$one_database] = $tables[$one_database];
+        }
+    }
+    unset($one_database, $its_tables);
 
     if (! is_array($database)) {
         if (isset($tables[$database])) {

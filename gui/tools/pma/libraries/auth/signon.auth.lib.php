@@ -4,7 +4,7 @@
  * Set of functions used to run single signon authentication.
  *
  * @package phpMyAdmin-Auth-Signon
- * @version $Id: signon.auth.lib.php 13030 2009-10-10 11:33:03Z lem9 $
+ * @version $Id$
  */
 
 

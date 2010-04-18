@@ -5,7 +5,7 @@
  * This script is distinct from libraries/common.inc.php because this
  * script is called from /test.
  *
- * @version $Id: core.lib.php 13050 2009-10-16 08:10:26Z helmo $
+ * @version $Id$
  * @package phpMyAdmin
  */
 

@@ -41,7 +41,7 @@
  * @uses    PMA_generate_common_url()
  * @uses    basename()
  * @uses    file_exists()
- * @version $Id: footer.inc.php 11986 2008-11-24 11:05:40Z nijel $
+ * @version $Id$
  * @package phpMyAdmin
  */
 if (! defined('PHPMYADMIN')) {

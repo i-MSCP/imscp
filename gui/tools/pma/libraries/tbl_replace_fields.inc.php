@@ -17,7 +17,7 @@
  *
  * note: grab_globals has extracted the fields from _FILES or HTTP_POST_FILES
  *
- * @version $Id: tbl_replace_fields.inc.php 12245 2009-02-23 08:36:34Z lem9 $
+ * @version $Id$
  *
  * @uses $_REQUEST
  * @uses defined()

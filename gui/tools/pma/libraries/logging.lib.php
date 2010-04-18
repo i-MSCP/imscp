@@ -5,7 +5,7 @@
  *
  * This includes web server specific code to log some information.
  *
- * @version $Id: logging.lib.php 12285 2009-03-03 16:44:33Z nijel $
+ * @version $Id$
  * @package phpMyAdmin
  */
 

@@ -15,7 +15,7 @@
  * @package    phpMyAdmin-setup
  * @author     Piotr Przybylski <piotrprz@gmail.com>
  * @license    http://www.gnu.org/licenses/gpl.html GNU GPL 2.0
- * @version    $Id: forms.inc.php 13098 2009-11-02 00:18:07Z lem9 $
+ * @version    $Id$
  */
 
 $forms = array();

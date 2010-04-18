@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  *
- * @version $Id: db_structure.php 13209 2010-01-03 16:27:46Z lem9 $
+ * @version $Id$
  * @package phpMyAdmin
  */
 
@@ -226,7 +226,11 @@ foreach ($tables as $keyname => $each_table) {
             }
             //$display_rows                   =  ' - ';
             break;
+	    // Mysql 5.0.x (and lower) uses MRG_MyISAM and MySQL 5.1.x (and higher) uses MRG_MYISAM
+        // Both are aliases for MERGE
+        case 'MRG_MyISAM' :
         case 'MRG_MYISAM' :
+        case 'MERGE' :
         case 'BerkeleyDB' :
             // Merge or BerkleyDB table: Only row count is accurate.
             if ($is_show_stats) {
@@ -255,7 +259,7 @@ foreach ($tables as $keyname => $each_table) {
             }
     } // end switch
 
-    if ('MRG_MYISAM' != $each_table['ENGINE']) {
+    if (! PMA_Table::isMerge($db, $each_table['TABLE_NAME'])) {
         $sum_entries += $each_table['TABLE_ROWS'];
     }
 
@@ -381,7 +385,7 @@ foreach ($tables as $keyname => $each_table) {
             id="checkbox_tbl_<?php echo $i; ?>"<?php echo $checked; ?> /></td>
     <th><label for="checkbox_tbl_<?php echo $i; ?>"
             title="<?php echo $alias; ?>" style="<?php echo $ignored ? ' ignored' : ''; ?>"><?php echo $truename; ?></label>
-        <label><?php echo $tracking_icon; ?></label>
+        <?php echo (! empty($tracking_icon) ? $tracking_icon : ''); ?>
     </th>
    <?php if ($server_slave_status) { ?><td align="center"><?php echo $ignored ? ' <img class="icon" src="' . $pmaThemeImage . 's_cancel.png" width="16" height="16"  alt="NOT REPLICATED" />' : ''. $do ? ' <img class="icon" src="' . $pmaThemeImage . 's_success.png" width="16" height="16"  alt="REPLICATED" />' : ''; ?></td><?php } ?>
     <td align="center"><?php echo $browse_table; ?></td>

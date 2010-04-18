@@ -2,7 +2,7 @@
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * @author  Ivan A Kirillov (Ivan.A.Kirillov@gmail.com)
- * @version $Id: pmd_general.php 12333 2009-04-04 12:41:02Z helmo $
+ * @version $Id$
  * @package phpMyAdmin-Designer
  */
 

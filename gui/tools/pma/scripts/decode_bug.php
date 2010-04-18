@@ -8,7 +8,7 @@
  *
  * Copyright 2002 Robin Johnson <robbat2@users.sourceforge.net>
  *
- * @version $Id: decode_bug.php 12137 2008-12-14 13:58:06Z lem9 $
+ * @version $Id$
  * @package phpMyAdmin-debug
  */
 
