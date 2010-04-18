@@ -1,6 +1,7 @@
 ispcp_table = Polish
 ispcp_language = Polski - Polish
 ispcp_languageSetlocaleValue = pl_PL
+ispcp_languageRevision = 201002271600
 encoding = UTF-8
 ispCP Omega a Virtual Hosting Control System = ispCP Omega - System Kontroli Wirtualnym Hostingiem
 Administrator login = Login administratora

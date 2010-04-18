@@ -1,7 +1,8 @@
 ispcp_table = Slovak
 ispcp_language = slovenčina - Slovak
 ispcp_languageSetlocaleValue = sk_SK
-encoding = UTF-8 
+ispcp_languageRevision = 201002271600
+encoding = UTF-8
 Administrator login = Prihlásennie administrátora
 Login = Prihlásenie
 Username = Užívateľské meno
