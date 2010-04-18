@@ -7,6 +7,7 @@ ispCP ω 1.0.6 Changelog
 			user's main domain is domain.tld
 	- LANGUAGES:
 		* Updated Polish (#2348)
+		* Updated Slovak
 		* Updated Swedish (#2340)
 	- TOOLS:
 		* Fixed #2344: [PMA] New release 3.3.2 available
