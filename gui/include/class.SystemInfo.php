@@ -568,9 +568,25 @@ class SystemInfo {
 		$upHours = floor($upHours - ($upDays * 24));
 		$upMins  = floor($upMins - ($upHours * 60) - ($upDays * 24 * 60));
 
-		$uptime_str = ($upDays != 0)  ? $upDays . ' ' . tr('Days')  . ' ' : '';
-		$uptime_str .= ($upHours != 0) ? $upHours . ' ' . tr('Hours') . ' ' : '';
-		$uptime_str .= $upMins  . ' ' . tr('Minutes');
+		$uptime_str = '';
+		
+		if ($upDays == 1) {
+			$uptime_str .= $upDays . tr('Day') . ' ';
+		} else if ($upDays > 1) {
+			$uptime_str .= $upDays . tr('Days') . ' ';
+		}
+		
+		if ($upHours == 1) {
+			$uptime_str .= ' ' . $upHours . tr('Hour') . ' ';
+		} else if ($upHours > 1) {
+			$uptime_str .= ' ' . $upHours . tr('Hours') . ' ';
+		}
+		
+		if ($upMins == 1) {
+			$uptime_str .= ' ' . $upMins . tr('Minute');
+		} else if ($upMins > 1) {
+			$uptime_str .= ' ' . $upMins . tr('Minutes');
+		}
 
 		return $uptime_str;
 	}

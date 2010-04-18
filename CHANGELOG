@@ -5,6 +5,8 @@ ispCP ω 1.0.6 Changelog
 	- CONFIGS:
 		* Fixed #2257: subdomain.domain.tld aliasdomain doesn't work if another 
 			user's main domain is domain.tld
+	- GUI:
+		* Fixed #2339: some confusing singular/plural translation
 	- LANGUAGES:
 		* Updated Polish (#2348)
 		* Updated Slovak
