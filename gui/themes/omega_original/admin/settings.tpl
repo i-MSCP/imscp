@@ -296,7 +296,7 @@
                             <tr>
                               <td>&nbsp;</td>
                               <td class="content2">{TR_CUSTOM_ORDERPANEL_ID}</td>
-                              <td class="content"><input name="coid" id="coid" type="text" class="textinput" maxwidth="20" size="20" value="{CUSTOM_ORDERPANEL_ID}" /></td>
+                              <td class="content"><input name="coid" id="coid" type="text" class="textinput" maxlength="20" size="20" value="{CUSTOM_ORDERPANEL_ID}" /></td>
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
