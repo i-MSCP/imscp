@@ -1868,6 +1868,15 @@ msgstr ""
 msgid "User type (admin, reseller, user)"
 msgstr ""
 
+msgid "day"
+msgstr ""
+
+msgid "hour"
+msgstr ""
+
+msgid "minute"
+msgstr ""
+
 msgid "days"
 msgstr ""
 
