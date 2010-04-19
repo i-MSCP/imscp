@@ -47,9 +47,9 @@
 								<tr>
 									<td valign="top">
 										<form method="post" action="pay.php" name="client_info" onsubmit="return validateForm(client_info);">
+											<input type="hidden" name="reseller_id" value="{RESELLER_ID}" />
+											<input type="hidden" name="purchase_id" value="{PURCHASE_ID}" />
 											<table width="100%" cellpadding="5" cellspacing="5">
-												<input type="hidden" name="reseller_id" value="{RESELLER_ID}" />
-												<input type="hidden" name="purchase_id" value="{PURCHASE_ID}" />
 												<tr>
 													<td>
 														{TR_CLIENT_NAME}
