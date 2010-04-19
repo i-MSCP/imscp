@@ -107,8 +107,8 @@
 						<td width="25" nowrap="nowrap">&nbsp;</td>
 						<td width="200" nowrap="nowrap" class="content2">{TR_ENABLE_FWD}</td>
 						<td class="content">
-						<input type="radio" name="status" {CHECK_EN} value="1" onChange='setForwardReadonly(this);' /> {TR_ENABLE}<br />
-						<input type="radio" name="status" {CHECK_DIS} value="0" onChange='setForwardReadonly(this);' /> {TR_DISABLE}</td>
+						<input type="radio" name="status" {CHECK_EN} value="1" onchange='setForwardReadonly(this);' /> {TR_ENABLE}<br />
+						<input type="radio" name="status" {CHECK_DIS} value="0" onchange='setForwardReadonly(this);' /> {TR_DISABLE}</td>
                       </tr>
                       <tr>
                         <td width="25" nowrap="nowrap">&nbsp;</td>

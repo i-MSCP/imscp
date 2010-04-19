@@ -175,7 +175,7 @@ function init_empty_data() {
 			$forward = '';
 			$tpl->assign(
 					array(
-						'READONLY_FORWARD' => ' readonly',
+						'READONLY_FORWARD' => ' readonly="readonly"',
 						'DISABLE_FORWARD' => ' disabled="disabled"',
 						)
 					);
@@ -193,7 +193,7 @@ function init_empty_data() {
 		$forward = '';
 		$tpl->assign(
 				array(
-					'READONLY_FORWARD' => ' readonly',
+					'READONLY_FORWARD' => ' readonly="readonly"',
 					'DISABLE_FORWARD' => ' disabled="disabled"',
 					)
 				);

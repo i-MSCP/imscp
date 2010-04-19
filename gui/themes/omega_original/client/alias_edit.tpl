@@ -81,8 +81,8 @@ function setForwardReadonly(obj){
                         <td width="25">&nbsp;</td>
                         <td width="200" class="content2" style="vertical-align:top;">{TR_ENABLE_FWD}</td>
                         <td class="content">
-							<input type="radio" name="status" {CHECK_EN} value="1" onChange='setForwardReadonly(this);' /> {TR_ENABLE}<br />
-							<input type="radio" name="status" {CHECK_DIS} value="0" onChange='setForwardReadonly(this);' /> {TR_DISABLE}
+							<input type="radio" name="status" {CHECK_EN} value="1" onchange='setForwardReadonly(this);' /> {TR_ENABLE}<br />
+							<input type="radio" name="status" {CHECK_DIS} value="0" onchange='setForwardReadonly(this);' /> {TR_DISABLE}
                         </td>
                       </tr>
                       <tr>

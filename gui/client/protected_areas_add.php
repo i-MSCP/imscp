@@ -311,7 +311,7 @@ SQL_QUERY;
 			for ($i = 0, $cnt_usr_id = count($usr_id); $i < $cnt_usr_id; $i++) {
 				if ($edit == 'yes' && $usr_id[$i] == $rs->fields['id']) {
 					$i = $cnt_usr_id + 1;
-					$usr_selected = " selected ";
+					$usr_selected = ' selected="selected"';
 				} else {
 					$usr_selected = '';
 				}

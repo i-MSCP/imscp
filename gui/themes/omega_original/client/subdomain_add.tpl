@@ -82,7 +82,7 @@
                                 <input type="radio" name="dmn_type" value="dmn" {SUB_DMN_CHECKED} />{DOMAIN_NAME}
                                 <!-- BDP: to_alias_domain -->
                                 <input type="radio" name="dmn_type" value="als" {SUB_ALS_CHECKED} />
-                                <select name="als_id" onFocus='setRatioAlias();'>
+                                <select name="als_id" onfocus='setRatioAlias();'>
                                     <!-- BDP: als_list -->
                                     <option value="{ALS_ID}" {ALS_SELECTED}>.{ALS_NAME}</option>
                                     <!-- EDP: als_list -->

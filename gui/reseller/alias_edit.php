@@ -172,7 +172,7 @@ function gen_editalias_page(&$tpl, $edit_id) {
 			$url_forward = '';
 			$tpl->assign(
 					array(
-						'READONLY_FORWARD'	=>	' readonly',
+						'READONLY_FORWARD'	=>	' readonly="readonly"',
 						'DISABLE_FORWARD'	=>	' disabled="disabled"',
 						'HTTP_YES'			=>	'',
 						'HTTPS_YES'			=>	'',
@@ -254,7 +254,7 @@ function check_fwd_data(&$tpl, $alias_id) {
 		$forward_url = 'no';
 		$tpl->assign(
 				array(
-					'READONLY_FORWARD' => ' readonly',
+					'READONLY_FORWARD' => ' readonly="readonly"',
 					'DISABLE_FORWARD' => ' disabled="disabled"',
 					'CHECK_EN' => $check_en,
 					'CHECK_DIS' => $check_dis,

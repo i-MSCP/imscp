@@ -528,7 +528,7 @@ class SystemInfo {
 
 	/**
 	 * Reads /proc/uptime, parses its content and makes it human readable in
-	 * the format # Days # Hours # Minutes.
+	 * the format # Day/s # Hour/s # Minute/s.
 	 *
 	 * @return Parsed System Uptime
 	 */
@@ -571,21 +571,21 @@ class SystemInfo {
 		$uptime_str = '';
 		
 		if ($upDays == 1) {
-			$uptime_str .= $upDays . tr('Day') . ' ';
+			$uptime_str .= $upDays . ' ' . tr('Day') . ' ';
 		} else if ($upDays > 1) {
-			$uptime_str .= $upDays . tr('Days') . ' ';
+			$uptime_str .= $upDays . ' ' . tr('Days') . ' ';
 		}
 		
 		if ($upHours == 1) {
-			$uptime_str .= ' ' . $upHours . tr('Hour') . ' ';
+			$uptime_str .= ' ' . $upHours . ' ' . tr('Hour') . ' ';
 		} else if ($upHours > 1) {
-			$uptime_str .= ' ' . $upHours . tr('Hours') . ' ';
+			$uptime_str .= ' ' . $upHours . ' ' . tr('Hours') . ' ';
 		}
 		
 		if ($upMins == 1) {
-			$uptime_str .= ' ' . $upMins . tr('Minute');
+			$uptime_str .= ' ' . $upMins . ' ' . tr('Minute');
 		} else if ($upMins > 1) {
-			$uptime_str .= ' ' . $upMins . tr('Minutes');
+			$uptime_str .= ' ' . $upMins . ' ' . tr('Minutes');
 		}
 
 		return $uptime_str;

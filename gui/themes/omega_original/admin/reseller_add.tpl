@@ -130,8 +130,8 @@
 								<td width="25">&nbsp;</td>
 								<td class="content2" width="200">{TR_SUPPORT_SYSTEM}</td>
 								<td class="content">
-									<input name="support_system" value="yes" checked="checked" type="radio">{TR_YES}
-									<input name="support_system" value="no"  type="radio">{TR_NO}
+									<input name="support_system" value="yes" checked="checked" type="radio" />{TR_YES}
+									<input name="support_system" value="no" type="radio" />{TR_NO}
 								</td>
 							</tr>
                             <tr>

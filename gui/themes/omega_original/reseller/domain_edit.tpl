@@ -69,7 +69,7 @@
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>
-                        <td class="content2" width="193">{TR_DOMAIN_NEW_EXPIRE} <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onmouseover="showTip('dmn_exp_help', event)" onmouseout="hideTip('dmn_exp_help')" /></td>
+                        <td class="content2" width="193">{TR_DOMAIN_NEW_EXPIRE} <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onmouseover="showTip('dmn_exp_help', event)" onmouseout="hideTip('dmn_exp_help')" alt="" /></td>
                         <td class="content"><select name="dmn_expire">
 							<option value="0" {EXPIRE_UNCHANGED_SET}>{TR_DOMAIN_EXPIRE_UNCHANGED}</option>
 							<option value="OFF" {EXPIRE_NEVER_SET}>{TR_DOMAIN_EXPIRE_NEVER}</option>

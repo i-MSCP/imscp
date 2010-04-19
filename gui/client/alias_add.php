@@ -173,7 +173,7 @@ function gen_al_page(&$tpl, $reseller_id) {
 
 		$tpl->assign(
 			array(
-				'READONLY_FORWARD' => ' readonly',
+				'READONLY_FORWARD' => ' readonly="readonly"',
 				'DISABLE_FORWARD' => ' disabled="disabled"',
 				)
 			);

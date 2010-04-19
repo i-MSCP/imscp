@@ -215,7 +215,7 @@
               </tr>
               <tr>
                 <td class="content2" style="width:200px;vertical-align:top;">
-				  {TR_FORWARD_TO} <img id="fwd_help" src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" /></td>
+				  {TR_FORWARD_TO} <img id="fwd_help" src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" alt="" /></td>
                 <td nowrap="nowrap" class="content"><textarea name="forward_list" cols="35" rows="10" style="width:400px">{FORWARD_LIST}</textarea></td>
 	          </tr>
               <tr>

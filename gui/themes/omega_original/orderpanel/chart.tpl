@@ -109,7 +109,7 @@
 			<td width="200" colspan="2" class="content2"><strong>{TR_TOS_PROPS}</strong></td>
 		</tr>
 		<tr>
-			<td colspan="2" class="content"><textarea readonly="true" style="width=400px" cols="50" rows="5">{TOS}</textarea></td>
+			<td colspan="2" class="content"><textarea readonly="readonly" style="width=400px" cols="50" rows="5">{TOS}</textarea></td>
 		</tr>
 		<tr>
 			<td class="content2" colspan="2"><input type="checkbox" name="tosAccept" value="1" />{TR_TOS_ACCEPT}</td>
