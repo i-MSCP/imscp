@@ -1,10 +1,11 @@
 ispCP ω 1.0.6 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-2010-04-18 Sascha Bay
+2010-04-20 Sascha Bay
 	- GUI:
 		* Fixed #2355: Some HTML errors and not correct replaced template variables
 		* Little Bugfix for ticket #2330
+		* Fixed #2332: Alias coun't wont work if reseller adds alias
 
 2010-04-18 Benedikt Heintel
 	- CONFIGS:

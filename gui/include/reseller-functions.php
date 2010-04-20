@@ -382,12 +382,18 @@ function generate_reseller_user_props($reseller_id) {
 			$rsub_max += $sub_max;
 		}
 
-		if ($als_max != -1) {
+		/*We always have to count aliases, because a reseller can add aliase for an user wheter the alias function for the user is disabled - TheCry
+		/*if ($als_max != -1) {
 			if ($als_max == 0) $rals_uf = '_on_';
 
 			$rals_current += $als_current;
 			$rals_max += $als_max;
-		}
+		}*/
+		if ($als_max == 0) $rals_uf = '_on_';
+
+		$rals_current += $als_current;
+		$rals_max += $als_max;
+
 
 		if ($mail_max != -1) {
 			if ($mail_max == 0) $rmail_uf = '_on_';

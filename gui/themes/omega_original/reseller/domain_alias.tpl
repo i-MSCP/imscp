@@ -106,8 +106,7 @@ function delete_account(url, name) {
                     <table width="100%" border="0" cellspacing="3" cellpadding="0">
                       <tr>
                         <td width="30">&nbsp;</td>
-                        <td><input name="Submit" type="submit" class="button" onclick="MM_goToURL('parent','alias_add.php');return document.MM_returnValue" value="   {TR_ADD_ALIAS}   " />
-                        </td>
+                        <!-- BDP: als_add_button --><td><input name="Submit" type="submit" class="button" onclick="MM_goToURL('parent','alias_add.php');return document.MM_returnValue" value="   {TR_ADD_ALIAS}   " /></td><!-- EDP: als_add_button -->
                         <td><div align="right">
                             <!-- BDP: scroll_prev_gray -->
                             <img src="{THEME_COLOR_PATH}/images/icons/flip/prev_gray.gif" width="20" height="20" border="0" alt="" />

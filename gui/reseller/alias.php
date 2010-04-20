@@ -43,6 +43,7 @@ $tpl->define_dynamic('table_item', 'table_list');
 $tpl->define_dynamic('scroll_prev', 'page');
 $tpl->define_dynamic('scroll_next_gray', 'page');
 $tpl->define_dynamic('scroll_next', 'page');
+$tpl->define_dynamic('als_add_button', 'page');
 
 $theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
@@ -101,7 +102,33 @@ unset_messages();
  */
 function generate_als_list(&$tpl, $reseller_id, &$als_err) {
 	$sql = Database::getInstance();
-
+	
+	list($udmn_current, $udmn_max, $udmn_uf,
+		$usub_current, $usub_max, $usub_uf,
+		$uals_current, $uals_max, $uals_uf,
+		$umail_current, $umail_max, $umail_uf,
+		$uftp_current, $uftp_max, $uftp_uf,
+		$usql_db_current, $usql_db_max, $usql_db_uf,
+		$usql_user_current, $usql_user_max, $usql_user_uf,
+		$utraff_current, $utraff_max, $utraff_uf,
+		$udisk_current, $udisk_max, $udisk_uf
+	) = generate_reseller_user_props($reseller_id);
+	
+	list($rdmn_current, $rdmn_max,
+		$rsub_current, $rsub_max,
+		$rals_current, $rals_max,
+		$rmail_current, $rmail_max,
+		$rftp_current, $rftp_max,
+		$rsql_db_current, $rsql_db_max,
+		$rsql_user_current, $rsql_user_max,
+		$rtraff_current, $rtraff_max,
+		$rdisk_current, $rdisk_max
+	) = get_reseller_default_props($sql, $reseller_id);
+	
+	if ($uals_current >= $rals_max && $rals_max != "0") {
+		$tpl->assign('ALS_ADD_BUTTON', '');
+	} 
+	
 	$have_aliases = '_no_';
 
 	$start_index = 0;
