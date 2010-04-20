@@ -40,13 +40,14 @@
   </tr>
   <tr>
     <td valign="top"><!-- BDP: props_list -->
-        <table width="100%" cellpadding="5" cellspacing="5">
-          <!-- BDP: database_update_infos -->
+	<form name='database_update' action='database_update.php' method='post' enctype='application/x-www-form-urlencoded'>
+	<table width="100%" cellpadding="5" cellspacing="5">
+          <!-- BDP: table_header -->
           <tr>
             <td width="25">&nbsp;</td>
             <td colspan="2" class="content3"><b>{TR_AVAILABLE_UPDATES}</b></td>
           </tr>
-          <!-- EDP: database_update_infos -->
+          <!-- EDP: table_header -->
           <!-- BDP: database_update_message -->
           <tr>
             <td width="25">&nbsp;</td>
@@ -66,14 +67,12 @@
           </tr>
           <tr>
            <td width="25">&nbsp;</td>
- 	   <form name='database_update' action='database_update.php' method='POST' enctype='application/x-www-form-urlencoded'>
-	    <input type='hidden' name='execute' id='execute' value='true' />
-	    <td class="content">&nbsp;</td>
-    	    <td class="content2" align='left'><input type='submit' name='submit' value='{TR_EXECUTE_UPDATE}' /></td>
-	   </form>
+	       <td class="content">&nbsp;</td>
+		   <td class="content2" align='left'><input type='submit' name='submit' value='{TR_EXECUTE_UPDATE}' /><input type='hidden' name='execute' id='execute' value='true' /></td>
           </tr>
-      <!-- EDP: database_update_infos -->
-      </table>
+		<!-- EDP: database_update_infos -->
+	</table>
+	</form>
       <br />
         <!-- EDP: props_list --></td>
     <td>&nbsp;</td>

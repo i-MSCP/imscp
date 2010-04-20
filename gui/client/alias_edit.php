@@ -137,21 +137,24 @@ function gen_editalias_page(&$tpl, $edit_id) {
 
 		if ($data["url_forward"] == "no") {
 			$check_en = '';
-			$check_dis = 'checked="checked"';
+			$check_dis = ' checked="checked"';
 			$url_forward = '';
 			$tpl->assign(array(
-				'READONLY_FORWARD' => ' readonly="readonly"',
-				'DISABLE_FORWARD' => ' disabled="disabled"'
+				'READONLY_FORWARD'	=> ' readonly="readonly"',
+				'DISABLE_FORWARD'	=> ' disabled="disabled"',
+				'HTTP_YES'			=> '',
+				'HTTPS_YES'			=> '',
+				'FTP_YES'			=> ''
 			));
 		} else {
-			$check_en = 'checked="checked"';
+			$check_en = ' checked="checked"';
 			$check_dis = '';
 			$tpl->assign(array(
-				'READONLY_FORWARD' => '',
-				'DISABLE_FORWARD' => '',
-				'HTTP_YES' => (preg_match("/http:\/\//", $data['url_forward'])) ? ' selected="selected"' : '',
-				'HTTPS_YES' => (preg_match("/https:\/\//", $data['url_forward'])) ? ' selected="selected"' : '',
-				'FTP_YES' => (preg_match("/ftp:\/\//", $data['url_forward'])) ? ' selected="selected"' : ''
+				'READONLY_FORWARD'	=> '',
+				'DISABLE_FORWARD'	=> '',
+				'HTTP_YES'			=> (preg_match("/http:\/\//", $data['url_forward'])) ? ' selected="selected"' : '',
+				'HTTPS_YES'			=> (preg_match("/https:\/\//", $data['url_forward'])) ? ' selected="selected"' : '',
+				'FTP_YES'			=> (preg_match("/ftp:\/\//", $data['url_forward'])) ? ' selected="selected"' : ''
 			));
 		}
 		$tpl->assign(array(
@@ -194,19 +197,22 @@ function check_fwd_data(&$tpl, $alias_id) {
 			$forward_url = encode_idna($forward_prefix.$forward_url);
 		}
 		
-		$check_en = 'checked="checked"';
+		$check_en = ' checked="checked"';
 		$check_dis = '';
 		$tpl->assign(array(
-			'FORWARD' => $forward_url,
-			'HTTP_YES' => ($forward_prefix === 'http://') ? ' selected="selected"' : '',
-			'HTTPS_YES' => ($forward_prefix === 'https://') ? ' selected="selected"' : '',
-			'FTP_YES' => ($forward_prefix === 'ftp://') ? ' selected="selected"' : '',
-			'CHECK_EN' => $check_en,
-			'CHECK_DIS' => $check_dis,
+						'FORWARD'			=> $forward_url,
+						'HTTP_YES'			=> ($forward_prefix === 'http://') ? ' selected="selected"' : '',
+						'HTTPS_YES'			=> ($forward_prefix === 'https://') ? ' selected="selected"' : '',
+						'FTP_YES'			=> ($forward_prefix === 'ftp://') ? ' selected="selected"' : '',
+						'CHECK_EN'			=> $check_en,
+						'CHECK_DIS'			=> $check_dis,
+						'DISABLE_FORWARD'	=>	'',
+						'READONLY_FORWARD'	=>	''
+			
 		));
 	} else {
 		$check_en = '';
-		$check_dis = 'checked="checked"';
+		$check_dis = ' checked="checked"';
 		$forward_url = 'no';
 		$tpl->assign(array(
 			'READONLY_FORWARD' => ' readonly="readonly"',

@@ -37,6 +37,7 @@ $tpl->define_dynamic('page', Config::getInstance()->get('ADMIN_TEMPLATE_PATH') .
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('database_update_message', 'page');
 $tpl->define_dynamic('database_update_infos', 'page');
+$tpl->define_dynamic('table_header', 'page');
 
 $tpl->assign(
 	array(
@@ -83,7 +84,8 @@ if (databaseUpdate::getInstance()->checkUpdateExists()) {
 	$tpl->assign(
 		array(
 			'TR_UPDATE_MESSAGE'		=> tr('No database updates available'),
-			'DATABASE_UPDATE_INFOS'	=> ''
+			'DATABASE_UPDATE_INFOS'	=> '',
+			'TABLE_HEADER'			=> ''
 		)
 	);
 	$tpl->parse('DATABASE_UPDATE_MESSAGE', 'database_update_message');

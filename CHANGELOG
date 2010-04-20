@@ -1,6 +1,11 @@
 ispCP ω 1.0.6 Changelog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-04-18 Sascha Bay
+	- GUI:
+		* Fixed #2355: Some HTML errors and not correct replaced template variables
+		* Little Bugfix for ticket #2330
+
 2010-04-18 Benedikt Heintel
 	- CONFIGS:
 		* Fixed #2257: subdomain.domain.tld aliasdomain doesn't work if another 

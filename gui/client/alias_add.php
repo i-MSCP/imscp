@@ -153,28 +153,31 @@ function gen_al_page(&$tpl, $reseller_id) {
 	if (isset($_POST['status']) && $_POST['status'] == 1) {
 		$forward_prefix = clean_input($_POST['forward_prefix']);
 
-			$check_en = 'checked="checked"';
+			$check_en = ' checked="checked"';
 			$check_dis = '';
 			$forward = strtolower(clean_input($_POST['forward']));
 
 			$tpl->assign(
 				array(
-					'READONLY_FORWARD' => '',
-					'DISABLE_FORWARD' => '',
-					'HTTP_YES' => ($forward_prefix === 'http://') ? 'selected="selected"' : '',
-					'HTTPS_YES' => ($forward_prefix === 'https://') ? 'selected="selected"' : '',
-					'FTP_YES' => ($forward_prefix === 'ftp://') ? 'selected="selected"' : ''
+					'READONLY_FORWARD'	=> '',
+					'DISABLE_FORWARD'	=> '',
+					'HTTP_YES'			=> ($forward_prefix === 'http://') ? ' selected="selected"' : '',
+					'HTTPS_YES'			=> ($forward_prefix === 'https://') ? ' selected="selected"' : '',
+					'FTP_YES'			=> ($forward_prefix === 'ftp://') ? ' selected="selected"' : ''
 				)
 			);
 	} else {
 		$check_en = '';
-		$check_dis = 'checked="checked"';
+		$check_dis = ' checked="checked"';
 		$forward = '';
 
 		$tpl->assign(
 			array(
-				'READONLY_FORWARD' => ' readonly="readonly"',
-				'DISABLE_FORWARD' => ' disabled="disabled"',
+				'READONLY_FORWARD'	=> ' readonly="readonly"',
+				'DISABLE_FORWARD'	=> ' disabled="disabled"',
+				'HTTP_YES'			=> '',
+				'HTTPS_YES'			=> '',
+				'FTP_YES'			=> ''
 				)
 			);
 	}

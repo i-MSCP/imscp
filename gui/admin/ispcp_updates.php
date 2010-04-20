@@ -39,6 +39,7 @@ $tpl->define_dynamic('page', Config::getInstance()->get('ADMIN_TEMPLATE_PATH') .
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('update_message', 'page');
 $tpl->define_dynamic('update_infos', 'page');
+$tpl->define_dynamic('table_header', 'page');
 
 $tpl->assign(
 	array(
@@ -77,6 +78,8 @@ function get_update_infos(&$tpl) {
 	} else {
 		if (versionUpdate::getInstance()->getErrorMessage() != "") {
 			$tpl->assign(array('TR_MESSAGE' => versionUpdate::getInstance()->getErrorMessage()));
+		} else {
+			$tpl->assign('TABLE_HEADER', '');
 		}
 		$tpl->assign('UPDATE_INFOS', '');
 	}
