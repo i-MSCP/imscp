@@ -76,7 +76,7 @@ function action_delete(url, subject) {
 			document.write('<a href="ticket_view.php?ticket_id={ID}&screenwidth='+screen.width+'" class="link">{SUBJECT2}</a>');
 //-->
 			</script>
-			<noscript><a href="ticket_view.php?ticket_id={ID}&amp;screenwidth='800'" class="link"> {SUBJECT}</a></noscript>
+			<noscript><a href="ticket_view.php?ticket_id={ID}&amp;screenwidth=800" class="link"> {SUBJECT}</a></noscript>
 			</td>
             <td class="{CONTENT}" nowrap="nowrap" align="center">{URGENCY}</td>
             <td class="{CONTENT}" nowrap="nowrap" align="center">{LAST_DATE}</td>

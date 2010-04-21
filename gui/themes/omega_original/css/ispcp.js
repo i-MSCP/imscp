@@ -34,4 +34,4 @@ str=leftpart+subst+rightPart;}
 return str;}
 function showHideBlocks(id){if(document.getElementById(id).style.display=="none"){document.getElementById(id).style.display="block";}else{document.getElementById(id).style.display="none";}}
 function showFileTree(){libwindow=window.open("ftp_choose_dir.php","FileTreeDialogPage","menubar=no,width=470,height=350,scrollbars=yes");return false;}
-function ispCPajxError(xhr,settings,exception){switch(xhr.status){case 403:window.location='/index.php';break;default:alert('HTTP ERROR: An Unexpected HTTP Error occurred during the request');}}
+function ispCPajxError(xhr,settings,exception){if(xhr.status==403){window.location='/index.php';}else{alert('HTTP ERROR: An Unexpected HTTP Error occurred during the request');}}

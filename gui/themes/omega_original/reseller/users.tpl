@@ -13,7 +13,7 @@
 function change_status(dom_id, dmn_name) {
 	if (!confirm(sprintf("{TR_MESSAGE_CHANGE_STATUS}", dmn_name)))
 		return false;
-	location = ('domain_status_change.php?domain_id=' + dom_id);
+	location = ("domain_status_change.php?domain_id=" + dom_id);
 }
 
 function delete_account(url, dmn_name) {

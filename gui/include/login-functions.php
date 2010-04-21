@@ -329,9 +329,9 @@ function deny_access() {
 }
 
 /**
- * Returns the user's IP address
+ * Returns the users IP address
  *
- * @return String				user's IP address
+ * @return String				users IP address
  */
 function getipaddr() {
 	return $_SERVER['REMOTE_ADDR'];

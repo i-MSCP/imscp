@@ -9,7 +9,7 @@
 		<link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
 	</head>
 
-	<body onLoad="document.frm.uname.focus()">
+	<body onload="document.frm.uname.focus()">
 		<table cellpadding="0" cellspacing="0" width="100%" style="height:100%">
 			<tr>
 				<td style="vertical-align:middle; text-align:center;">
@@ -83,12 +83,12 @@
   <tr>
     <td align="center" width="100"><a href="{TR_PMA_SSL_LINK}" target="_self" title="phpMyAdmin"><img src="{THEME_COLOR_PATH}/images/login/phpmyadmin.png" width="28" height="30" border="0" alt="phpMyAdmin" /></a></td>
     <td align="center" width="100"><a href="{TR_FTP_SSL_LINK}" target="_self" title="Filemanager"><img src="{THEME_COLOR_PATH}/images/login/filemanager.png" width="33" height="30" border="0" alt="Filemanager" /></a></td>
-    <td align="center" width="100"><a href="{TR_WEBMAIL_SSL_LINK}" target="_self" title="WebMail"><img src="{THEME_COLOR_PATH}/images/login/webmail.png" width="32" height="30" border="0" alt="WebMail" /></a></td>
+    <td align="center" width="100"><a href="{TR_WEBMAIL_SSL_LINK}" target="_self" title="Webmail"><img src="{THEME_COLOR_PATH}/images/login/webmail.png" width="32" height="30" border="0" alt="Webmail" /></a></td>
   </tr>
   <tr>
-    <td align="center" width="100"><a class="login" href='{TR_PMA_SSL_LINK}'>phpMyAdmin</a></td>
-    <td align="center" width="100"><a class="login" href='{TR_FTP_SSL_LINK}'>Filemanager</a></td>
-    <td align="center" width="100"><a class="login" href='{TR_WEBMAIL_SSL_LINK}'>WebMail</a></td>
+    <td align="center" width="100"><a class="login" href="{TR_PMA_SSL_LINK}">phpMyAdmin</a></td>
+    <td align="center" width="100"><a class="login" href="{TR_FTP_SSL_LINK}">Filemanager</a></td>
+    <td align="center" width="100"><a class="login" href="{TR_WEBMAIL_SSL_LINK}">Webmail</a></td>
   </tr>
 </table></td>
        <td width="197" align="right" class="login" style="vertical-align:top;">Powered by <a class="login" href="http://www.isp-control.net" target="_blank">ispCP Omega</a></td>

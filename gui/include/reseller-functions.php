@@ -382,7 +382,7 @@ function generate_reseller_user_props($reseller_id) {
 			$rsub_max += $sub_max;
 		}
 
-		/*We always have to count aliases, because a reseller can add aliase for an user wheter the alias function for the user is disabled - TheCry
+		// We always have to count aliases, because a reseller can add aliase for an user wheter the alias function for the user is disabled - TheCry
 		/*if ($als_max != -1) {
 			if ($als_max == 0) $rals_uf = '_on_';
 
@@ -537,7 +537,7 @@ function get_user_traffic($user_id) {
 } // end of get_user_traffic()
 
 /**
- * Get user's probs info from db via sql
+ * Get users probs info from db via sql
  */
 function get_user_props($user_id) {
 
@@ -1226,7 +1226,7 @@ function gen_def_language(&$tpl, &$sql, &$user_def_language) {
 					$lang_table
 				WHERE
 					`msgid` = 'ispcp_language'
-		";
+			";
 
 			$res2 = exec_query($sql, $query, array());
 

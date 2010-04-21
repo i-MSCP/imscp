@@ -290,28 +290,25 @@ function showFileTree() {
 *
 * Ajax related functions
 *
-* Note: require JQUERY
+* Note: requires jQuery
 */
 
 /**
-* Jquery XMLHttpRequest Error Handling
+* jQuery XMLHttpRequest Error Handling
 */
 
 /**
 * Must be documented
 *
-* Note: Should be used as error callback funct of the jquery ajax request
+* Note: Should be used as error callback function of the jQuery ajax request
 * @since r2587
 */
 function ispCPajxError(xhr, settings, exception) {
-
-	switch (xhr.status) {
+	if (xhr.status == 403) {
 		// We receive this status when the session is expired
-		case 403:
-			window.location = '/index.php';
-		break;
-		default:
-			alert('HTTP ERROR: An Unexpected HTTP Error occurred during the request');
+		window.location = '/index.php';
+	} else {
+		alert('HTTP ERROR: An Unexpected HTTP Error occurred during the request');
 	}
 }
 
@@ -352,7 +349,7 @@ function checkForm() {
 }
 
 
-// @deprecated Deprecated since 1.0.5 - use JQuery ispCPtooltips plugin instead
+// @deprecated Deprecated since 1.0.5 - use jQuery ispCPtooltips plugin instead
 function showTip(id, e) {
 	var x, y, tip = document.getElementById(id);
 	if (window.event) {
@@ -367,7 +364,7 @@ function showTip(id, e) {
 	tip.style.display = "block";
 }
 
-// @deprecated Deprecated since 1.0.5 - use JQuery ispCPtooltips plugin instead
+// @deprecated Deprecated since 1.0.5 - use jQuery ispCPtooltips plugin instead
 function hideTip(id) {
 	document.getElementById(id).style.display = "none";
 }

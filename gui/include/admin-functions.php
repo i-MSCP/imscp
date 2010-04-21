@@ -233,7 +233,7 @@ function gen_admin_menu(&$tpl, $menu_file) {
 			`custom_menus`
 		WHERE
 			`menu_level` = 'admin1'
-";
+	";
 
 	$rs = exec_query($sql, $query, array());
 	if ($rs->RecordCount() == 0) {
@@ -344,18 +344,18 @@ function get_admin_general_info(&$tpl, &$sql) {
 
 function gen_admin_list(&$tpl, &$sql) {
 	$query = "
-			SELECT
-				t1.`admin_id`, t1.`admin_name`, t1.`domain_created`,
-				IFNULL(t2.`admin_name`, '') AS created_by
-			FROM
-				`admin` AS t1
-			LEFT JOIN
-				`admin` AS t2 ON t1.created_by = t2.`admin_id`
-			WHERE
-				t1.`admin_type` = 'admin'
-			ORDER BY
-				t1.`admin_name`
-			ASC
+		SELECT
+			t1.`admin_id`, t1.`admin_name`, t1.`domain_created`,
+			IFNULL(t2.`admin_name`, '') AS created_by
+		FROM
+			`admin` AS t1
+		LEFT JOIN
+			`admin` AS t2 ON t1.created_by = t2.`admin_id`
+		WHERE
+			t1.`admin_type` = 'admin'
+		ORDER BY
+			t1.`admin_name`
+		ASC
 	";
 
 	$rs = exec_query($sql, $query, array());

@@ -8,7 +8,7 @@
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
   <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css" />
   <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
-  <style type='text/css'>
+  <style type="text/css">
       td.down {
 	color: #FF0000;
       }
