@@ -35,23 +35,23 @@ html, body {
 }
 
 body {
-	background-color:	#ffffff;
+	background-color:	#fff;
 }
 
 /*********************************** LINKS ************************************/
 a.link, a.link:link, a.link:visited {
-	color:				#000099;
+	color:				#009;
 	text-decoration:	underline;
 	font-weight:		normal;
 }
 
 a.link:hover, a.link:active, a.link:focus {
-	color:				#000000;
+	color:				#000;
 	text-decoration:	none;
 }
 
 a.linkdark, a.linkdark:link, a.linkdark:visited {
-	color:				#cccccc;
+	color:				#ccc;
 	text-decoration:	underline;
 	font-weight:		normal;
 }
@@ -64,37 +64,37 @@ a.linkdark:hover, a.linkdark:active, a.linkdark:focus {
 a.menu, a.menu:link, a.menu:visited {
 	font-family:		Arial, Helvetica, sans-serif;
 	font-size:			9pt;
-	color:				#000000;
+	color:				#000;
 	font-weight:		bold;
 	font-variant:		small-caps;
 }
 
 a.menu:hover, a.menu:active, a.menu:focus {
-	color:				#333333;
+	color:				#333;
 	text-decoration:	none;
 }
 
 a.menu_active, a.menu_active:link, a.menu_active:visited {
 	font-family:		Arial, Helvetica, sans-serif;
 	font-size:			9pt;
-	color:				#000000;
+	color:				#000;
 	font-weight:		bold;
 	font-variant:		small-caps;
 }
 
 a.menu_active:hover, a.menu_active:active, a.menu_active:focus {
-	color:				#333333;
+	color:				#333;
 	text-decoration:	none;
 }
 
 a.submenu {
-	margin-top:			0px;
+	margin-top:			0;
 	display:			block;
 	font-family:		Geneva, Arial, Helvetica, sans-serif;
 	font-weight:		bold;
 	font-size:			11px;
 	vertical-align:		middle;
-	color:				#ffffff;
+	color:				#fff;
 	height:				25px;
 	padding:			2px;
 	padding-left:		20px;
@@ -103,7 +103,7 @@ a.submenu {
 }
 
 a.submenu:link, a.submenu:visited {
-	color:				#ffffff;
+	color:				#fff;
 	background-image:	url(../images/top/link_bg.jpg);
 	vertical-align:		middle;
 }
@@ -118,7 +118,7 @@ a.submenu:hover, a.submenu:active, a.submenu:focus {
 	font-family:		Arial, Helvetica, sans-serif;
 	font-weight:		bold;
 	font-size:			10px;
-	color:				#ffffff;
+	color:				#fff;
 	height:				24px;
 	padding:			1px;
 	white-space:		nowrap;
@@ -151,7 +151,7 @@ a.login, a.login:link, a.login:visited {
 }
 
 a.login:hover, a.login:active, a.login:hover {
-	color:				#000000;
+	color:				#000;
 	text-decoration:	none;
 }
 
@@ -167,7 +167,7 @@ a.login:hover, a.login:active, a.login:hover {
 	font-weight:		bold;
 	font-variant:		small-caps;
 	text-decoration:	none;
-	border-bottom:		#cccccc solid 1px;
+	border-bottom:		#ccc solid 1px;
 }
 
 .titlemenu {
@@ -175,20 +175,20 @@ a.login:hover, a.login:active, a.login:hover {
 	font-size:			11pt;
 	font-weight:		bold;
 	font-variant:		small-caps;
-	color:				#ffffff;
+	color:				#fff;
 	padding-left:		5px;
 	vertical-align:		text-top;
 }
 
 .bottom {
-	color:				#ffffff;
+	color:				#fff;
 	font-family:		Arial, Helvetica, sans-serif;
 	font-size:			7pt;
 	background-image:	url(../images/top/menu_bg.jpg);
 }
 
 .message {
-	color:				#ff0000;
+	color:				#f00;
 }
 
 td {
@@ -211,7 +211,7 @@ td.statsBar {
 
 td.content {
 	font-size:			12px;
-	color:				#000000;
+	color:				#000;
 	white-space:		nowrap;
 	background:			#efefef;
 	height:				22px;
@@ -220,7 +220,7 @@ td.content {
 
 td.content2 {
 	font-size:			12px;
-	color:				#000000;
+	color:				#000;
 	white-space:		nowrap;
 	background:			#efefef;
 	height:				22px;
@@ -229,25 +229,25 @@ td.content2 {
 
 td.content3 {
 	font-size:			12px;
-	color:				#ffffff;
+	color:				#fff;
 	white-space:		nowrap;
-	background:			#000000;
+	background:			#000;
 	line-height:		24px;
 	padding:			2px;
 	padding-left:		5px;
-	border-bottom:		2px solid #000000;
-	border-right:		2px solid #000000;
-	border-top:			2px solid #eeeeee;
-	border-left:		2px solid #eeeeee;
+	border-bottom:		2px solid #000;
+	border-right:		2px solid #000;
+	border-top:			2px solid #eee;
+	border-left:		2px solid #eee;
 	background-image:	url(../images/content/tableheader.jpg);
 	background-repeat:	repeat-x;
 }
 
 td.content4 {
 	font-size:			12px;
-	color:				#333333;
+	color:				#333;
 	white-space:		nowrap;
-	background:			#dddddd;
+	background:			#ddd;
 	height:				22px;
 	padding:			2px;
 }
@@ -262,7 +262,7 @@ table.hl tr:hover td.content2 {
 
 .textinput {
 	background-color:	#fff;
-	border:				1px solid #cccccc;
+	border:				1px solid #ccc;
 	font-family:		Verdana;
 	font-size:			8pt;
 	height:				21px;
@@ -272,8 +272,8 @@ table.hl tr:hover td.content2 {
 }
 
 .textinput2 {
-	background-color:	white;
-	border:				1px solid #cccccc;
+	background-color:	#fff;
+	border:				1px solid #ccc;
 	font-family:		Verdana;
 	font-size:			8pt;
 	margin:				2px;
@@ -284,7 +284,7 @@ table.hl tr:hover td.content2 {
 	height:				21px;
 	font-size:			10pt!important;
 	font-size:			9pt;
-	color:				#ffffff;
+	color:				#fff;
 	text-align:			center;
 	background-color:	#323232;
 	background-image:	url(../images/button.jpg);
@@ -292,7 +292,7 @@ table.hl tr:hover td.content2 {
 	border: 			1px solid #000;
 	margin:				2px;
 	vertical-align:		middle;
-	padding:			0 .25em 0 .25em;
+	padding:			0 .25em;
 	width:				auto;
 	overflow:			visible;
 	cursor:				pointer;

@@ -12,7 +12,7 @@
 		<table cellpadding="0" cellspacing="0" width="100%" style="height:100%">
 			<tr>
 				<td style="vertical-align:middle; text-align:center;">
-					<table width="453" align="center" style="border:solid 1px #CCCCCC;" cellpadding="0" cellspacing="0">
+					<table width="453" align="center" style="border:solid 1px #ccc;" cellpadding="0" cellspacing="0">
 						<tr>
 							<td colspan="7" width="453" height="69" class="loginTop">&nbsp;</td>
 						</tr>

@@ -10,7 +10,7 @@
   <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
   <style type="text/css">
       td.down {
-	color: #FF0000;
+	color: #f00;
       }
       td.up {
 	color: #008000;

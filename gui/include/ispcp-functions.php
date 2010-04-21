@@ -474,7 +474,7 @@ function unset_messages() {
  * Returns true if the request‘s "X-Requested-With" header
  * contains "XMLHttpRequest".
  *
- * Note: JQuery and Prototype Javascript libraries sends this
+ * Note: jQuery and Prototype Javascript libraries sends this
  * header with every Ajax request.
  *
  * @author Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
@@ -486,7 +486,7 @@ function unset_messages() {
  */
 function is_xhr() {
 	if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
-		stristr($_SERVER['HTTP_X_REQUESTED_WITH'], 'XMLHttpRequest') !== FALSE) {
+		stristr($_SERVER['HTTP_X_REQUESTED_WITH'], 'XMLHttpRequest') !== false) {
 		return true;
 	} else {
 		return false;

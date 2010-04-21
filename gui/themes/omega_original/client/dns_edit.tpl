@@ -96,7 +96,7 @@ function action_delete(url, alias_or_subdomain) {
 /* ]]> */
 </script>
 <!-- ToolTip -->
-<div id="fwd_help" style="background-color:#ffffe0;border: 1px #000000 solid;display:none;margin:5px;padding:5px;font-size:11px;width:200px;position:absolute;">{TR_FWD_HELP}</div>
+<div id="fwd_help" style="background-color:#ffffe0;border: 1px #000 solid;display:none;margin:5px;padding:5px;font-size:11px;width:200px;position:absolute;">{TR_FWD_HELP}</div>
 <!-- ToolTip end -->
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="height:100%;padding:0;margin:0 auto;">
 <!-- BDP: logged_from -->

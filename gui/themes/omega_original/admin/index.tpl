@@ -111,19 +111,19 @@
           <!-- BDP: update_message -->
           <tr>
             <td width="25">&nbsp;</td>
-            <td colspan="2" style="color:#ff0000"><b>{UPDATE}</b></td>
+            <td colspan="2" style="color:#f00"><b>{UPDATE}</b></td>
           </tr>
           <!-- EDP: update_message -->
           <!-- BDP: database_update_message -->
           <tr>
             <td width="25">&nbsp;</td>
-            <td colspan="2" style="color:#ff0000"><b>{DATABASE_UPDATE}</b></td>
+            <td colspan="2" style="color:#f00"><b>{DATABASE_UPDATE}</b></td>
           </tr>
           <!-- EDP: database_update_message -->
           <!-- BDP: critical_update_message -->
           <tr>
             <td width="25">&nbsp;</td>
-            <td colspan="2" style="color:#ff0000"><b>{CRITICAL_MESSAGE}</b></td>
+            <td colspan="2" style="color:#f00"><b>{CRITICAL_MESSAGE}</b></td>
           </tr>
           <!-- EDP: critical_update_message -->
         </table>

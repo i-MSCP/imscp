@@ -1,8 +1,8 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
  *
@@ -41,7 +41,7 @@ body {
 
 #content {
 	text-align:			center;
-	border:				1px solid #CCCCCC;
+	border:				1px solid #ccc;
 	margin-left:		-227px;
 	top:				-94px;
 	width:				453px;
@@ -55,7 +55,7 @@ body {
 }
 
 h2 {
-	color:				#FF0000;
+	color:				#f00;
 	margin:				0;
 	padding:			0;
 }
@@ -68,5 +68,5 @@ h3 {
 
 .path {
 	font-weight:		bold;
-	color:				#666666;
+	color:				#666;
 }

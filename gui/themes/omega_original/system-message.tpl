@@ -8,11 +8,11 @@
 		<link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
 	</head>
 
-	<body style="color:#000000">
+	<body style="color:#000">
 		<table cellpadding="0" cellspacing="0" width="100%" style="height:100%">
 			<tr>
 				<td style="vertical-align:middle; text-align:center;">
-					<table width="453" align="center" style="border:solid 1px #CCCCCC;" cellpadding="0" cellspacing="0">
+					<table width="453" align="center" style="border:solid 1px #ccc;" cellpadding="0" cellspacing="0">
 						<tr>
 							<td>
 								<table width="453" border="0" align="center" cellpadding="0" cellspacing="0">

@@ -1,8 +1,8 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2006-2008 by ispCP | http://isp-control.net
- * @version 	SVN: $ID$
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @version 	SVN: $Id$
  * @link 		http://isp-control.net
  * @author 		ispCP Team
  *
@@ -25,17 +25,17 @@
  */
 
 body {
-	margin: 0px;
-	background-color: #FFFFFF;
+	margin: 0;
+	background-color: #fff;
 }
 
-a.link {color:#000099; text-decoration:underline; font-weight:normal;}
-a.link:link {color:#000099; text-decoration:underline; font-weight:normal;}
-a.link:visited {color:#000099; text-decoration:underline; font-weight:normal}
-a.link:hover {color:#000000; text-decoration:none;}
-a.link:active {color:#000000; text-decoration:none;}
+a.link {color:#009; text-decoration:underline; font-weight:normal;}
+a.link:link {color:#009; text-decoration:underline; font-weight:normal;}
+a.link:visited {color:#009; text-decoration:underline; font-weight:normal}
+a.link:hover {color:#000; text-decoration:none;}
+a.link:active {color:#000; text-decoration:none;}
 a.linkdark, a.linkdark:link, a.linkdark:visited {
-	color:				#cccccc;
+	color:				#ccc;
 	text-decoration:	underline;
 	font-weight:		normal;
 }
@@ -53,7 +53,7 @@ a.linkdark:hover, a.linkdark:active, a.linkdark:focus {
 }
 
 .message {
-	color:	#ff0000;
+	color:	#f00;
 }
 
 td {
@@ -63,7 +63,7 @@ td {
 
 td.content {
 	font-size: 12px;
-	color: #333333;
+	color: #333;
 	white-space: nowrap;
 	background: #e6e3e3;
 	border: 1px solid #efefef;
@@ -79,7 +79,7 @@ div.contentdiv {
 
 td.content2 {
 	font-size: 12px;
-	color: #333333;
+	color: #333;
 	white-space: nowrap;
 	background: #e2dfdf;
 	border: 1px solid #eff0f7;
@@ -89,14 +89,14 @@ td.content2 {
 
 td.content3 {
 	font-size: 12px;
-	color: #FFFFFF;
+	color: #fff;
 	white-space: nowrap;
 	background-image:	url(../images/content/tableheader.jpg);
 	background-repeat:	repeat-x;
-	border-bottom:		2px solid #000000;
-	border-right:		2px solid #000000;
-	border-top:			2px solid #eeeeee;
-	border-left:		2px solid #eeeeee;
+	border-bottom:		2px solid #000;
+	border-right:		2px solid #000;
+	border-top:			2px solid #eee;
+	border-left:		2px solid #eee;
 	height: 26px;
 
 }
@@ -105,7 +105,7 @@ td.content3 {
 	font-family: Geneva, Arial, Helvetica, sans-serif;
 	height: 22px;
 	font-size: 12px;
-	color: #ffffff;
+	color: #fff;
 	text-align: center;
 	background-image: url(../images/button.jpg);
 	background-repeat: repeat-x;
