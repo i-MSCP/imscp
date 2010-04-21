@@ -319,7 +319,7 @@ table.hl tr:hover td.content2 {
 
 /*********************************** Ajax Spinner *****************************/
 
-/* Used for form input element during ajax request */
+/* Used for form input element during Ajax request */
 .small-spinner {
 	display:			none;
 	width:				16px;

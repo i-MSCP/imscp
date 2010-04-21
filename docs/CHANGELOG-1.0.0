@@ -2213,7 +2213,7 @@ ispCP ω 1.0.0 Changelog
 
 2007-10-13 Benedikt Heintel
 	- CONFIGS:
-		* Updated php-fcgi-starter for Gentoo und Debian
+		* Updated php-fcgi-starter for Gentoo and Debian
 		* Fixed #763: Patch for all applicable differences between debian and gentoo config files
 		* Added CentOS
 	- DOCS:
