@@ -36,7 +36,7 @@ if (isset($_GET['ticket_id']) && $_GET['ticket_id'] !== '') {
 
 	$ticket_id = $_GET['ticket_id'];
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`ticket_status`
 		FROM
@@ -45,7 +45,7 @@ if (isset($_GET['ticket_id']) && $_GET['ticket_id'] !== '') {
 			`ticket_id` = ?
 		ORDER BY
 			`ticket_date` ASC
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($ticket_id));
 	$ticket_status = $rs->fields['ticket_status'];
@@ -55,14 +55,14 @@ SQL_QUERY;
 	$ticket_id = $_GET['ticket_id'];
 
 
-	$query = <<<SQL_QUERY
+	$query = "
 		DELETE FROM
 			`tickets`
 		WHERE
 			`ticket_id` = ?
 		OR
 			`ticket_reply` = ?
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($ticket_id, $ticket_id));
 
@@ -78,14 +78,14 @@ SQL_QUERY;
 
 	$user_id = $_SESSION['user_id'];
 
-	$query = <<<SQL_QUERY
+	$query = "
 		DELETE FROM
 			`tickets`
 		WHERE
 			(`ticket_from` = ? OR `ticket_to` = ?)
 		AND
 			`ticket_status` != '0'
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($user_id, $user_id));
 
@@ -100,14 +100,14 @@ SQL_QUERY;
 
 	$user_id = $_SESSION['user_id'];
 
-	$query = <<<SQL_QUERY
+	$query = "
 		DELETE FROM
 			`tickets`
 		WHERE
 			(`ticket_from` = ? OR `ticket_to` = ?)
 		AND
 			`ticket_status` = '0'
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($user_id, $user_id));
 

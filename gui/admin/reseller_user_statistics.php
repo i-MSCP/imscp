@@ -103,7 +103,7 @@ function generate_page(&$tpl, $reseller_id, $reseller_name) {
 	);
 
 	// count query
-	$count_query = <<<SQL_QUERY
+	$count_query = "
 		SELECT
 			COUNT(`admin_id`) AS cnt
 		FROM
@@ -112,7 +112,7 @@ function generate_page(&$tpl, $reseller_id, $reseller_name) {
 			`admin_type` = 'user'
 		AND
 			`created_by` = ?
-SQL_QUERY;
+	";
 
 	$query = <<<SQL_QUERY
 		SELECT
@@ -180,25 +180,24 @@ SQL_QUERY;
 
 		$tpl->assign(
 			array(
-				'PAGE_MESSAGE' => ''
+				'PAGE_MESSAGE'	=> '',
+				'NO_DOMAINS'	=> ''
 			)
 		);
-
-		$tpl->assign('NO_DOMAINS', '');
 
 		$row = 1;
 
 		while (!$rs->EOF) {
 			$admin_id = $rs->fields['admin_id'];
 
-			$query = <<<SQL_QUERY
+			$query = "
 				SELECT
 					`domain_id`
 				FROM
 					`domain`
 				WHERE
 					`domain_admin_id` = ?
-SQL_QUERY;
+			";
 
 			$dres = exec_query ($sql, $query, array($admin_id));
 

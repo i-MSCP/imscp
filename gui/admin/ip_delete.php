@@ -32,7 +32,7 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-/* Do we have a proper delete_id? */
+// Test if we have a proper delete_id.
 if (!isset($_GET['delete_id'])) {
 	user_goto('ip_manage.php');
 }
@@ -44,7 +44,7 @@ if (!is_numeric($_GET['delete_id'])) {
 
 $delete_id = $_GET['delete_id'];
 
-/* check for domains that use this IP */
+// check for domains that use this IP
 $query = "
 	SELECT
 		COUNT(`domain_id`) AS dcnt
@@ -57,7 +57,7 @@ $query = "
 $rs = exec_query($sql, $query, array($delete_id));
 
 if ($rs->fields['dcnt'] > 0) {
-	/* ERROR - we have domain(s) that use this IP */
+	// ERROR - we have domain(s) that use this IP
 
 	set_page_message(tr('Error: we have a domain using this IP!'));
 
@@ -92,7 +92,7 @@ $ip_number = $rs->fields['ip_number'];
 
 write_log("$user_logged: deletes IP address $ip_number");
 
-/* delete it ! */
+// delete it !
 $query = "
 	UPDATE
 		`server_ips`

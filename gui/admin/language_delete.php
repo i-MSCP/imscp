@@ -32,21 +32,21 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-/* Do we have a proper delete_id? */
+// Test if we have a proper delete_id.
 if (!isset($_GET['delete_lang'])) {
 	user_goto('multilanguage.php');
 }
 
 $delete_lang = $_GET['delete_lang'];
 
-/* ERROR - we have domains that use this IP */
+// ERROR - we have domains that use this IP
 if ($delete_lang == Config::getInstance()->get('USER_INITIAL_LANG')) {
 	set_page_message('Error we can\'t delete system default language!');
 
 	user_goto('multilanguage.php');
 }
 
-/* check if someone still uses that lang */
+// check if someone still uses that lang
 $query = "
 	SELECT
 		*
@@ -58,7 +58,7 @@ $query = "
 
 $rs = exec_query($sql, $query, array($delete_lang));
 
-/* ERROR - we have domains that use this IP */
+// ERROR - we have domains that use this IP
 if ($rs->RecordCount () > 0) {
 	set_page_message('Error we have user that uses that language!');
 

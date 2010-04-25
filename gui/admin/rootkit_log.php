@@ -51,7 +51,7 @@ $tpl->assign(
 
 $blocksCount = 0;
 
-/* Check Log File */
+// Check Log File
 
 $config_entries = array('RKHUNTER_LOG', 'CHKROOTKIT_LOG', 'OTHER_ROOTKIT_LOG');
 

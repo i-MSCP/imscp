@@ -47,7 +47,7 @@ $tpl->define_dynamic('subdomain_add', 'page');
 $tpl->define_dynamic('isactive_dns', 'page');
 $tpl->define_dynamic('dns_message', 'page');
 $tpl->define_dynamic('dns_list', 'page');
-$tpl->define_dynamic('dns_item','dns_list');
+$tpl->define_dynamic('dns_item', 'dns_list');
 
 
 // page functions.

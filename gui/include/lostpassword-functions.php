@@ -117,7 +117,7 @@ function removeOldKeys($ttl) {
 
 	$boundary = date('Y-m-d H:i:s', time() - $ttl * 60);
 
-	$query = <<<SQL_QUERY
+	$query = "
 		UPDATE
 			`admin`
 		SET
@@ -125,7 +125,7 @@ function removeOldKeys($ttl) {
 			`uniqkey_time` = NULL
 		WHERE
 			`uniqkey_time` < ?
-SQL_QUERY;
+	";
 
 	exec_query($sql, $query, array($boundary));
 }
@@ -135,7 +135,7 @@ function setUniqKey($admin_name, $uniqkey) {
 
 	$timestamp = date('Y-m-d H:i:s', time());
 
-	$query = <<<SQL_QUERY
+	$query = "
 		UPDATE
 			`admin`
 		SET
@@ -143,7 +143,7 @@ function setUniqKey($admin_name, $uniqkey) {
 			`uniqkey_time` = ?
 		WHERE
 			`admin_name` = ?
-SQL_QUERY;
+	";
 
 	exec_query($sql, $query, array($uniqkey, $timestamp, $admin_name));
 }
@@ -155,14 +155,14 @@ function setPassword($uniqkey, $upass) {
 		die();
 	}
 
-	$query = <<<SQL_QUERY
+	$query = "
 		UPDATE
 			`admin`
 		SET
 			`admin_pass` = ?
 		WHERE
 			`uniqkey` = ?
-SQL_QUERY;
+	";
 
 	exec_query($sql, $query, array(crypt_user_pass($upass), $uniqkey));
 }
@@ -170,14 +170,14 @@ SQL_QUERY;
 function uniqkeyexists($uniqkey) {
 	$sql = Database::getInstance();
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`uniqkey`
 		FROM
 			`admin`
 		WHERE
 			`uniqkey` = ?
-SQL_QUERY;
+	";
 
 	$res = exec_query($sql, $query, array($uniqkey));
 
@@ -200,14 +200,14 @@ function uniqkeygen() {
 function sendpassword($uniqkey) {
 	$sql = Database::getInstance();
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`admin_name`, `created_by`, `fname`, `lname`, `email`
 		FROM
 			`admin`
 		WHERE
 			`uniqkey` = ?
-SQL_QUERY;
+	";
 
 	$res = exec_query($sql, $query, array($uniqkey));
 
@@ -228,7 +228,7 @@ SQL_QUERY;
 
 		write_log('Lostpassword: ' . $admin_name . ': password updated');
 
-		$query = <<<SQL_QUERY
+		$query = "
 			UPDATE
 				`admin`
 			SET
@@ -236,7 +236,7 @@ SQL_QUERY;
 				`uniqkey_time` = ?
 			WHERE
 				`uniqkey` = ?
-SQL_QUERY;
+		";
 
 		$rs = exec_query($sql, $query, array('', '', $uniqkey));
 
@@ -300,14 +300,14 @@ SQL_QUERY;
 function requestpassword($admin_name) {
 	$sql = Database::getInstance();
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`created_by`, `fname`, `lname`, `email`
 		FROM
 			`admin`
 		WHERE
 			`admin_name` = ?
-SQL_QUERY;
+	";
 
 	$res = exec_query($sql, $query, array($admin_name));
 

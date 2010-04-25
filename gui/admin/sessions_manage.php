@@ -53,12 +53,12 @@ function kill_session($sql) {
 	if (isset($_GET['kill']) && $_GET['kill'] !== ''
 		&& $_GET['kill'] !== $_SESSION['user_logged']) {
 		$admin_name = $_GET['kill'];
-		$query = <<<SQL_QUERY
-		DELETE FROM
-			`login`
-		WHERE
-			`session_id` = ?
-SQL_QUERY;
+		$query = "
+			DELETE FROM
+				`login`
+			WHERE
+				`session_id` = ?
+		";
 
 		$rs = exec_query($sql, $query, array($admin_name));
 		set_page_message(tr('User session was killed!'));
@@ -67,12 +67,12 @@ SQL_QUERY;
 }
 
 function gen_user_sessions(&$tpl, &$sql) {
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			*
 		FROM
 			`login`
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array());
 

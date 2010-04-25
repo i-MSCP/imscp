@@ -526,7 +526,7 @@ class databaseUpdate extends ispcpUpdate {
 					) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
 
 		$sqlUpd[] = "ALTER IGNORE TABLE `domain` ADD `domain_dns` VARCHAR( 15 ) NOT NULL DEFAULT 'no';";
-		$sqlUpd[] = "UPDATE `hosting_plans` SET `props`=CONCAT(`props`,'_no_;') ";
+		$sqlUpd[] = "UPDATE `hosting_plans` SET `props` = CONCAT(`props`,'_no_;') ";
 		$sqlUpd[] = "UPDATE `config` SET `value` = '465;tcp;SMTP-SSL;1;0;' WHERE `name` = 'PORT_SMTP-SSL';";
 
 		return $sqlUpd;

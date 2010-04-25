@@ -67,7 +67,7 @@ if (isset($_GET['month']) && isset($_GET['year'])) {
 function get_server_trafic($from, $to) {
 	$sql = Database::getInstance();
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			IFNULL(SUM(`bytes_in`), 0) AS sbin,
 			IFNULL(SUM(`bytes_out`), 0) AS sbout,
@@ -81,7 +81,7 @@ function get_server_trafic($from, $to) {
 			`server_traffic`
 		WHERE
 			`traff_time` > ? AND `traff_time` < ?
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($from, $to));
 
@@ -124,14 +124,14 @@ function generate_page(&$tpl) {
 		$ftm = mktime(0, 0, 0, $month, $i, $year);
 		$ltm = mktime(23, 59, 59, $month, $i, $year);
 
-		$query = <<<SQL_QUERY
+		$query = "
 			SELECT
 				COUNT(`bytes_in`) AS cnt
 			FROM
 				`server_traffic`
 			WHERE
 				`traff_time` > ? AND `traff_time` < ?
-SQL_QUERY;
+		";
 
 		$rs = exec_query($sql, $query, array($ftm, $ltm));
 		$has_data = false;

@@ -77,14 +77,14 @@ function get_domain_trafic($from, $to, $domain_id) {
 
 	$sql = Database::getInstance();
 	$reseller_id = $_SESSION['user_id'];
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`domain_id`
 		FROM
 			`domain`
 		WHERE
 			`domain_id` = ? AND `domain_created_id` = ?
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($domain_id, $reseller_id));
 	if ($rs->RecordCount() == 0) {
@@ -92,7 +92,7 @@ SQL_QUERY;
 		user_goto('user_statistics.php');
 	}
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			IFNULL(SUM(`dtraff_web`), 0) AS web_dr,
 			IFNULL(SUM(`dtraff_ftp`), 0) AS ftp_dr,
@@ -102,7 +102,7 @@ SQL_QUERY;
 			`domain_traffic`
 		WHERE
 			`domain_id` = ? AND `dtraff_time` >= ? AND `dtraff_time` <= ?
-SQL_QUERY;
+	";
 	$rs = exec_query($sql, $query, array($domain_id, $from, $to));
 
 	if ($rs->RecordCount() == 0) {
@@ -150,14 +150,14 @@ function generate_page(&$tpl, $domain_id) {
 		$ftm = mktime(0, 0, 0, $month, $i, $year);
 		$ltm = mktime(23, 59, 59, $month, $i, $year);
 
-		$query = <<<SQL_QUERY
+		$query = "
 			SELECT
 				`dtraff_web`, `dtraff_ftp`, `dtraff_mail`, `dtraff_pop`, `dtraff_time`
 			FROM
 				`domain_traffic`
 			WHERE
 				`domain_id` = ? AND `dtraff_time` >= ? AND `dtraff_time` <= ?
-SQL_QUERY;
+		";
 		$rs = exec_query($sql, $query, array($domain_id, $ftm, $ltm));
 
 		$has_data = false;

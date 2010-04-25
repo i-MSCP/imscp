@@ -28,7 +28,7 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-/* for mail types */
+// for mail types:
 define('MT_NORMAL_MAIL', 'normal_mail');
 define('MT_NORMAL_FORWARD', 'normal_forward');
 define('MT_ALIAS_MAIL', 'alias_mail');

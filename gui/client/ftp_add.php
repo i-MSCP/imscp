@@ -50,14 +50,14 @@ $tpl->define_dynamic('js_not_domain', 'page');
 // page functions.
 
 function get_alias_mount_point(&$sql, $alias_name) {
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`alias_mount`
 		FROM
 			`domain_aliasses`
 		WHERE
 			`alias_name` = ?
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($alias_name));
 	return $rs->fields['alias_mount'];
@@ -95,7 +95,7 @@ function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
 function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 	$ok_status = Config::getInstance()->get('ITEM_OK_STATUS');
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`alias_id`, `alias_name`
 		FROM
@@ -106,7 +106,7 @@ function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 			`alias_status` = ?
 		ORDER BY
 			`alias_name`
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($dmn_id, $ok_status));
 	if ($rs->RecordCount() == 0) {
@@ -152,7 +152,7 @@ SQL_QUERY;
 
 function gen_dmn_sub_list(&$tpl, &$sql, $dmn_id, $dmn_name, $post_check) {
 	$ok_status = Config::getInstance()->get('ITEM_OK_STATUS');
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`subdomain_id` AS sub_id, `subdomain_name` AS sub_name
 		FROM
@@ -163,7 +163,7 @@ function gen_dmn_sub_list(&$tpl, &$sql, $dmn_id, $dmn_name, $post_check) {
 			`subdomain_status` = ?
 		ORDER BY
 			`subdomain_name`
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($dmn_id, $ok_status));
 
@@ -241,17 +241,17 @@ function get_ftp_user_gid(&$sql, $dmn_name, $ftp_user) {
 			$dmn_dns
 		) = get_domain_default_props($sql, $_SESSION['user_id']);
 
-		$query = <<<SQL_QUERY
+		$query = "
 			INSERT INTO ftp_group
 				(`groupname`, `gid`, `members`)
 			VALUES
 				(?, ?, ?)
-SQL_QUERY;
+		";
 
 		$rs = exec_query($sql, $query, array($dmn_name, $temp_dmn_gid, $ftp_user));
 		// add entries in the quota tables
 		// first check if we have it by one or other reason
-		$query = "SELECT COUNT(`name`) as cnt FROM `quotalimits` WHERE `name` = ?";
+		$query = "SELECT COUNT(`name`) AS cnt FROM `quotalimits` WHERE `name` = ?";
 		$rs = exec_query($sql, $query, array($temp_dmn_name));
 		if ($rs->fields['cnt'] == 0) {
 			// ok insert it
@@ -261,14 +261,14 @@ SQL_QUERY;
 				$dlim = $temp_dmn_disk_limit * 1024 * 1024;
 			}
 
-			$query = <<<SQL_QUERY
+			$query = "
 				INSERT INTO `quotalimits`
 					(`name`, `quota_type`, `per_session`, `limit_type`,
 					`bytes_in_avail`, `bytes_out_avail`, `bytes_xfer_avail`,
 					`files_in_avail`, `files_out_avail`, `files_xfer_avail`)
 				VALUES
 					(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-SQL_QUERY;
+			";
 
 			$rs = exec_query($sql, $query, array($temp_dmn_name, 'group', 'false', 'hard', $dlim, 0, 0, 0, 0, 0));
 		}
@@ -282,7 +282,7 @@ SQL_QUERY;
 			$members .= ",$ftp_user";
 		}
 
-		$query = <<<SQL_QUERY
+		$query = "
 			UPDATE
 				`ftp_group`
 			SET
@@ -291,7 +291,7 @@ SQL_QUERY;
 				`gid` = ?
 			AND
 				`groupname` = ?
-SQL_QUERY;
+		";
 
 		$rs = exec_query($sql, $query, array($members, $ftp_gid, $dmn_name));
 		return $ftp_gid;
@@ -301,7 +301,7 @@ SQL_QUERY;
 function get_ftp_user_uid(&$sql, $dmn_name, $ftp_user, $ftp_user_gid) {
 	global $max_uid;
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`uid`
 		FROM
@@ -310,7 +310,7 @@ function get_ftp_user_uid(&$sql, $dmn_name, $ftp_user, $ftp_user_gid) {
 			`userid` = ?
 		AND
 			`gid` = ?
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($ftp_user, $ftp_user_gid));
 	if ($rs->RecordCount() > 0) {
@@ -413,12 +413,12 @@ function add_ftp_user(&$sql, $dmn_name) {
 	$ftp_shell = Config::getInstance()->get('CMD_SHELL');
 	$ftp_passwd = crypt_user_pass_with_salt($_POST['pass']);
 
-	$query = <<<SQL_QUERY
+	$query = "
 		INSERT INTO ftp_users
 			(`userid`, `passwd`, `uid`, `gid`, `shell`, `homedir`)
 		VALUES
 			(?, ?, ?, ?, ?, ?)
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($ftp_user, $ftp_passwd, $ftp_uid, $ftp_gid, $ftp_shell, $ftp_home));
 

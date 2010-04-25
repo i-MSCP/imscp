@@ -83,20 +83,20 @@ function generate_page(&$tpl) {
 	$ftm = mktime(0, 0, 0, $month, $day, $year);
 	$ltm = mktime(23, 59, 59, $month, $day, $year);
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			COUNT(`bytes_in`) AS cnt
 		FROM
 			`server_traffic`
 		WHERE
 			`traff_time` > ? AND `traff_time` < ?
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($ftm, $ltm));
 
 	$dnum = $rs->fields['cnt'];
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`traff_time` AS ttime,
 			`bytes_in` AS sbin,
@@ -111,7 +111,7 @@ SQL_QUERY;
 			`server_traffic`
 		WHERE
 			`traff_time` > ? AND `traff_time` < ?
-SQL_QUERY;
+	";
 
 	$rs1 = exec_query($sql, $query, array($ftm, $ltm));
 
@@ -119,10 +119,10 @@ SQL_QUERY;
 
 	if ($dnum != 0) {
 		for ($i = 0; $i < $dnum; $i++) {
-			/* make it in kb mb or bytes :) */
+			// make it in kb mb or bytes :)
 			$ttime = date('H:i', $rs1->fields['ttime']);
 
-			/* make other traffic */
+			// make other traffic
 			$other_in = $rs1->fields['sbin'] - ($rs1->fields['swbin'] + $rs1->fields['smbin'] + $rs1->fields['spbin']);
 			$other_out = $rs1->fields['sbout'] - ($rs1->fields['swbout'] + $rs1->fields['smbout'] + $rs1->fields['spbout']);
 
@@ -164,8 +164,7 @@ SQL_QUERY;
 		} // end for
 		$all_other_in = $all[6] - ($all[0] + $all[2] + $all[4]);
 		$all_other_out = $all[7] - ($all[1] + $all[3] + $all[5]);
-	} // if dnum
-	else {
+	} else { // if dnum
 		$tpl->assign('HOUR_LIST', '');
 	}
 	$tpl->assign(

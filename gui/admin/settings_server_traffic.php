@@ -80,26 +80,26 @@ function update_server_settings(&$sql) {
 		$traffic_warning = 0;
 	}
 
-	$query = <<<SQL_QUERY
+	$query = "
 		UPDATE
 			`straff_settings`
 		SET
 			`straff_max` = ?,
 			`straff_warn` = ?
-SQL_QUERY;
+	";
 	$rs = exec_query($sql, $query, array($max_traffic, $traffic_warning));
 
 	set_page_message(tr('Server traffic settings updated successfully!'));
 }
 
 function generate_server_data(&$tpl, &$sql) {
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`straff_max`,
 			`straff_warn`
 		FROM
 			`straff_settings`
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array());
 

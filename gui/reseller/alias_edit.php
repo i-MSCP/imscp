@@ -132,8 +132,8 @@ function gen_editalias_page(&$tpl, $edit_id) {
 			t2.`domain_id`,
 			t2.`domain_created_id`
 		FROM
-			`domain_aliasses` as t1,
-			`domain` as t2
+			`domain_aliasses` AS t1,
+			`domain` AS t2
 		WHERE
 			t1.`alias_id` = ?
 		AND

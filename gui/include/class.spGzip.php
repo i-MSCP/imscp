@@ -189,7 +189,7 @@ class spOutput {
 			$saving			= $uncompressed > '0' ? 
 								@round($savingkb/$uncompressed*100, 0) : '0';
 
-			/* Shows some informations */
+			// Show some information
 			$this->contents .= "\n<!--\n\tCompression level: " . $this->level . 
 				"\n\tOriginal size: " . $uncompressed . " kb\n\tNew size: " . 
 				$compressed . " kb\n\tSaving: " . $savingkb . " kb (" . $saving .

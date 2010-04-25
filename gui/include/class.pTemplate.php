@@ -305,7 +305,7 @@ class pTemplate {
 
 					if ($this->sp > 0) {
 						$curl = $this->stack [--$this->sp];
-						/* CHECK for empty stack must be done HERE ! */
+						// CHECK for empty stack must be done HERE !
 
 						$curl_b = $curl[1];
 
@@ -318,23 +318,23 @@ class pTemplate {
 									$data = substr_replace($data, $this->namespace[$var_name], $curl_b, $curl_e - $curl_b + 1);
 
 									$start_from = $curl_b - 1;
-									/* new value may also begin with '{' */
+									// new value may also begin with '{'
 
 								} else if (isset($this->dtpl_data[$var_name])) {
 									$data = substr_replace($data, $this->dtpl_data[$var_name], $curl_b, $curl_e - $curl_b + 1);
 									$start_from = $curl_b - 1;
-									/* new value may also begin with '{' */
+									// new value may also begin with '{'
 								} else {
 									$start_from = $curl_b;
-									/* no suitable value found -> go forward */
+									// no suitable value found -> go forward
 								}
 							} else {
 								$start_from = $curl_b;
-								/* go forward, we have {no variable} here :) */
+								// go forward, we have {no variable} here :)
 							}
 						} else {
 							$start_from = $curl_e;
-							/* go forward, we have {} here :) */
+							// go forward, we have {} here :)
 						}
 					} else {
 						$start_from = $curl_e;
@@ -347,7 +347,7 @@ class pTemplate {
 			return $data;
 		} else {
 			return $data;
-			/* there is nothing to substitute in $data */
+			// there is nothing to substitute in $data
 		}
 	}
 
@@ -475,7 +475,7 @@ class pTemplate {
 
 		if (@$this->tpl_name[$tname] == '_no_file_'
 			|| preg_match('/\.[Tt][Pp][Ll]/', @$this->tpl_name[$tname])) {
-			/* static NO FILE *//* static FILE */
+			// static NO FILE - static FILE
 
 			if (@$this->tpl_data[$tname] == '') {
 				$this->tpl_data[$tname] = $this->get_file($this->tpl_name[$tname]);
@@ -491,7 +491,7 @@ class pTemplate {
 		} else if (@$this->dtpl_name[$tname] == '_no_file_'
 			|| preg_match('/\.[Tt][Pp][Ll]/', @$this->dtpl_name[$tname])
 			|| $this->find_origin($tname)) {
-			/* dynamic NO FILE *//* dynamic FILE */
+			// dynamic NO FILE - dynamic FILE
 
 			$dres = $this->parse_dynamic($pname, $tname, $ADD_FLAG);
 

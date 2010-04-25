@@ -48,14 +48,14 @@ $tpl->define_dynamic('logged_from', 'page');
 // page functions.
 
 function gen_page_dynamic_data(&$tpl, &$sql, $ftp_acc) {
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`homedir`
 		FROM
 			`ftp_users`
 		WHERE
 			`userid` = ?
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($ftp_acc));
 
@@ -119,7 +119,7 @@ function update_ftp_account(&$sql, $ftp_acc, $dmn_name) {
 				$other_dir = Config::getInstance()->get('FTP_HOMEDIR') . "/" . $_SESSION['user_logged']
 							. clean_input($_POST['other_dir']);
 
-				$query = <<<SQL_QUERY
+				$query = "
 					UPDATE
 						`ftp_users`
 					SET
@@ -127,18 +127,18 @@ function update_ftp_account(&$sql, $ftp_acc, $dmn_name) {
 						`homedir` = ?
 					WHERE
 						`userid` = ?
-SQL_QUERY;
+				";
 
 				$rs = exec_query($sql, $query, array($pass, $other_dir, $ftp_acc));
 			} else {
-				$query = <<<SQL_QUERY
+				$query = "
 					UPDATE
 						`ftp_users`
 					SET
 						`passwd` = ?
 					WHERE
 						`userid` = ?
-SQL_QUERY;
+				";
 				$rs = exec_query($sql, $query, array($pass, $ftp_acc));
 			}
 
@@ -174,14 +174,14 @@ SQL_QUERY;
 				$other_dir = Config::getInstance()->get('FTP_HOMEDIR') . "/" . $_SESSION['user_logged'];
 
 			}
-			$query = <<<SQL_QUERY
+			$query = "
 				UPDATE
 					`ftp_users`
 				SET
 					`homedir` = ?
 				WHERE
 					`userid` = ?
-SQL_QUERY;
+			";
 
 			$rs = exec_query($sql, $query, array($other_dir, $ftp_acc));
 			set_page_message(tr('FTP account data updated!'));
@@ -206,14 +206,14 @@ $tpl->assign(
 // dynamic page data.
 
 
-$query = <<<SQL_QUERY
+$query = "
 	SELECT
 		`domain_name`
 	FROM
 		`domain`
 	WHERE
 		`domain_admin_id` = ?
-SQL_QUERY;
+";
 
 $rs = exec_query($sql, $query, array($_SESSION['user_id']));
 

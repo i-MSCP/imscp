@@ -43,7 +43,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	$dmn_id = get_user_domain_id($sql, $_SESSION['user_id']);
 
 	// let's see the status of this thing
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`status`
 		FROM
@@ -52,7 +52,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 			`id` = ?
 		AND
 			`dmn_id` = ?
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($id, $dmn_id));
 	$status = $rs->fields['status'];
@@ -62,6 +62,7 @@ SQL_QUERY;
 		user_goto('protected_areas.php');
 	}
 
+	// TODO use prepared statement for $delete_status
 	$query = <<<SQL_QUERY
 		UPDATE
 			`htaccess`

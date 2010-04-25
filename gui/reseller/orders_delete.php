@@ -42,7 +42,7 @@ if (isset($_GET['order_id']) && is_numeric($_GET['order_id'])) {
 	user_goto('orders.php');
 }
 
-$query = <<<SQL_QUERY
+$query = "
 	SELECT
 		`id`
 	FROM
@@ -51,7 +51,7 @@ $query = <<<SQL_QUERY
 		`id` = ?
 	AND
 		`user_id` = ?
-SQL_QUERY;
+";
 
 $rs = exec_query($sql, $query, array($order_id, $reseller_id));
 
@@ -61,12 +61,12 @@ if ($rs->RecordCount() == 0) {
 }
 
 // delete all FTP Accounts
-$query = <<<SQL_QUERY
+$query = "
 	DELETE FROM
 		`orders`
 	WHERE
 		`id` = ?
-SQL_QUERY;
+";
 $rs = exec_query($sql, $query, array($order_id));
 
 set_page_message(tr('Customer order was removed successful!'));

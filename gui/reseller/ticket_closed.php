@@ -49,9 +49,11 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 
 	$rows_per_page = Config::getInstance()->get('DOMAIN_ROWS_PER_PAGE');
 
-	if (isset($_GET['psi'])) $start_index = $_GET['psi'];
+	if (isset($_GET['psi'])) {
+		$start_index = $_GET['psi'];	
+	}
 
-	$count_query = <<<SQL_QUERY
+	$count_query = "
 		SELECT
 			COUNT(`ticket_id`) AS cnt
 		FROM
@@ -62,7 +64,7 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 			`ticket_status` = 0
 		AND
 			`ticket_reply` = 0
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $count_query, array($user_id, $user_id));
 	$records_count = $rs->fields['cnt'];

@@ -46,7 +46,7 @@ $tpl->define_dynamic('dst_reseller_option', 'dst_reseller');
 $theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
 function gen_user_table(&$tpl, &$sql) {
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`admin_id`, `admin_name`
 		FROM
@@ -55,7 +55,7 @@ function gen_user_table(&$tpl, &$sql) {
 			`admin_type` = 'reseller'
 		ORDER BY
 			`admin_name`
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array());
 
@@ -101,7 +101,7 @@ SQL_QUERY;
 		$rs->MoveNext();
 	}
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`admin_id`, `admin_name`
 		FROM
@@ -112,7 +112,7 @@ SQL_QUERY;
 			`created_by` = ?
 		ORDER BY
 			`admin_name`
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($reseller_id));
 
@@ -131,7 +131,7 @@ SQL_QUERY;
 
 			$admin_id = $rs->fields['admin_id'];
 
-			$admin_id_var_name = "admin_id_$admin_id";
+			$admin_id_var_name = 'admin_id_' . $admin_id;
 
 			$show_admin_name = decode_idna($rs->fields['admin_name']);
 
@@ -163,7 +163,7 @@ function update_reseller_user($sql) {
 function check_user_data() {
 	$sql = Database::getInstance();
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`admin_id`
 		FROM
@@ -172,7 +172,7 @@ function check_user_data() {
 			`admin_type` = 'user'
 		ORDER BY
 			`admin_name`
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array());
 
@@ -181,9 +181,10 @@ SQL_QUERY;
 	while (!$rs->EOF) {
 		$admin_id = $rs->fields['admin_id'];
 
-		$admin_id_var_name = "admin_id_$admin_id";
+		$admin_id_var_name = 'admin_id_' . $admin_id;
 
-		if (isset($_POST[$admin_id_var_name]) && $_POST[$admin_id_var_name] === 'on') {
+		if (isset($_POST[$admin_id_var_name])
+			&& $_POST[$admin_id_var_name] === 'on') {
 			$selected_users .= $rs->fields['admin_id'] . ';';
 		}
 
@@ -202,14 +203,14 @@ SQL_QUERY;
 
 	$dst_reseller = $_POST['dst_reseller'];
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`reseller_ips`
 		FROM
 			`reseller_props`
 		WHERE
 			`reseller_id` = ?
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($dst_reseller));
 
@@ -260,14 +261,14 @@ function manage_reseller_limits($dest_reseller, $src_reseller, $users, &$err) {
 	$users_array = explode(";", $users);
 
 	for ($i = 0, $cnt_users_array = count($users_array) - 1; $i < $cnt_users_array; $i++) {
-		$query = <<<SQL_QUERY
+		$query = "
 			SELECT
 				`domain_id`, `domain_name`
 			FROM
 				`domain`
 			WHERE
 				`domain_admin_id` = ?
-SQL_QUERY;
+		";
 
 		$rs = exec_query($sql, $query, array($users_array[$i]));
 
@@ -282,7 +283,7 @@ SQL_QUERY;
 			$sql_db_current, $sql_db_max,
 			$sql_user_current, $sql_user_max,
 			$traff_max, $disk_max
-			) = generate_user_props($domain_id);
+		) = generate_user_props($domain_id);
 
 		calculate_reseller_dvals($dest_dmn_current, $dest_dmn_max, $src_dmn_current, $src_dmn_max, 1, $err, 'Domain', $domain_name);
 
@@ -416,14 +417,14 @@ function check_ip_sets($dest, $users, &$err) {
 	$users_array = explode(";", $users);
 
 	for ($i = 0, $cnt_users_array = count($users_array); $i < $cnt_users_array; $i++) {
-		$query = <<<SQL_QUERY
+		$query = "
 			SELECT
 				`domain_name`, `domain_ip_id`
 			FROM
 				`domain`
 			WHERE
 				`domain_admin_id` = ?
-SQL_QUERY;
+		";
 
 		$rs = exec_query($sql, $query, array($users_array[$i]));
 

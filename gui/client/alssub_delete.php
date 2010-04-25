@@ -36,7 +36,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	$sub_id = $_GET['id'];
 	$dmn_id = get_user_domain_id($sql, $_SESSION['user_id']);
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`subdomain_alias_id`,
 			`subdomain_alias_name`
@@ -48,7 +48,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 			`domain_id` = ?
 		AND
 			`subdomain_alias_id` = ?
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($dmn_id, $sub_id));
 	$sub_name = $rs->fields['subdomain_alias_name'];
@@ -58,6 +58,7 @@ SQL_QUERY;
 	}
 
 	// check for mail accounts
+	// TODO use prepared statement for constants
 	$query = "SELECT COUNT(`mail_id`) AS cnt FROM `mail_users` WHERE (`mail_type` LIKE '".MT_ALSSUB_MAIL."%' OR `mail_type` = '".MT_ALSSUB_FORWARD."') AND `sub_id` = ?";
 	$rs = exec_query($sql, $query, array($sub_id));
 
@@ -66,14 +67,14 @@ SQL_QUERY;
 		user_goto('domains_manage.php');
 	}
 
-	$query = <<<SQL_QUERY
+	$query = "
 		UPDATE
 			`subdomain_alias`
 		SET
 			`subdomain_alias_status` = 'delete'
 		WHERE
 			`subdomain_alias_id` = ?
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($sub_id));
 	send_request();

@@ -63,19 +63,19 @@ function save_haf(&$tpl, &$sql) {
 	$header = $_POST['header'];
 	$footer = $_POST['footer'];
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`id`
 		FROM
 			`orders_settings`
 		WHERE
 			`user_id` = ?
-SQL_QUERY;
+	";
 	$rs = exec_query($sql, $query, array($user_id));
 
 	if ($rs->RecordCount() !== 0) {
 		// update query
-		$query = <<<SQL_QUERY
+		$query = "
 			UPDATE
 				`orders_settings`
 			SET
@@ -83,17 +83,17 @@ SQL_QUERY;
 				`footer` = ?
 			WHERE
 				`user_id` = ?
-SQL_QUERY;
+		";
 
 		$rs = exec_query($sql, $query, array($header, $footer, $user_id));
 	} else {
 		// create query
-		$query = <<<SQL_QUERY
+		$query = "
 			INSERT INTO
 				`orders_settings`(`user_id`, `header`, `footer`)
 			VALUES
 				(?, ?, ?)
-SQL_QUERY;
+		";
 
 		$rs = exec_query($sql, $query, array($user_id, $header, $footer));
 	}

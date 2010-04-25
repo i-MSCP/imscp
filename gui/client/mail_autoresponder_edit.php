@@ -43,7 +43,7 @@ function check_email_user(&$sql) {
 	$dmn_name = $_SESSION['user_logged'];
 	$mail_id = $_GET['id'];
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			t1.*,
 			t2.`domain_id`,
@@ -57,7 +57,7 @@ function check_email_user(&$sql) {
 			t2.`domain_id` = t1.`domain_id`
 		AND
 			t2.`domain_name` = ?
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($mail_id, $dmn_name));
 
@@ -70,14 +70,14 @@ SQL_QUERY;
 function gen_page_dynamic_data(&$tpl, &$sql, $mail_id, $read_from_db) {
 	// Get Message
 	if ($read_from_db) {
-		$query = <<<SQL_QUERY
+		$query = "
 			SELECT
 				`mail_auto_respond_text`, `mail_acc`
 			FROM
 				`mail_users`
 			WHERE
 				`mail_id` = ?
-SQL_QUERY;
+		";
 		$rs = exec_query($sql, $query, array($mail_id));
 		$mail_name = $rs->fields['mail_acc'];
 
@@ -96,7 +96,7 @@ SQL_QUERY;
 			return;
 		}
 
-		$query = <<<SQL_QUERY
+		$query = "
 			UPDATE
 				`mail_users`
 			SET
@@ -104,7 +104,7 @@ SQL_QUERY;
 				`mail_auto_respond_text` = ?
 			WHERE
 				`mail_id` = ?
-SQL_QUERY;
+		";
 
 		$rs = exec_query($sql, $query, array($item_change_status, $arsp_message, $mail_id));
 

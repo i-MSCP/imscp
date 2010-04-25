@@ -69,14 +69,14 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_pass') {
 
 		$user_id = $_SESSION['user_id'];
 
-		$query = <<<SQL_QUERY
+		$query = "
 			UPDATE
 				`admin`
 			SET
 				`admin_pass` = ?
 			WHERE
 				`admin_id` = ?
-SQL_QUERY;
+		";
 
 		$rs = exec_query($sql, $query, array($upass, $user_id));
 		write_log($_SESSION['user_logged'] . ": update password!");
@@ -87,7 +87,7 @@ SQL_QUERY;
 function check_udata($id, $pass) {
 	$sql = Database::getInstance();
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`admin_id`, `admin_pass`
 		FROM
@@ -96,7 +96,7 @@ function check_udata($id, $pass) {
 			`admin_id` = ?
 		AND
 			`admin_pass` = ?
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($id, md5($pass)));
 

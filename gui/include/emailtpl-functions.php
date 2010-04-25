@@ -32,14 +32,14 @@ function get_email_tpl_data($admin_id, $tpl_name) {
 
 	$sql = Database::getInstance();
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`fname`, `lname`, `firm`, `email`
 		FROM
 			`admin`
 		WHERE
 			`admin_id` = ?
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($admin_id));
 
@@ -63,7 +63,7 @@ SQL_QUERY;
 
 	$data['sender_email'] = $rs->fields('email');
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`subject`, `message`
 		FROM
@@ -72,7 +72,7 @@ SQL_QUERY;
 			`owner_id` = ?
 		AND
 			`name` = ?
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($admin_id, $tpl_name));
 
@@ -91,7 +91,7 @@ function set_email_tpl_data($admin_id, $tpl_name, $data) {
 
 	$sql = Database::getInstance();
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`subject`, `message`
 		FROM
@@ -100,22 +100,22 @@ function set_email_tpl_data($admin_id, $tpl_name, $data) {
 			`owner_id` = ?
 		AND
 			`name` = ?
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($admin_id, $tpl_name));
 
 	if ($rs->RowCount() == 0) {
 
-		$query = <<<SQL_QUERY
+		$query = "
 			INSERT INTO `email_tpls`
 				(`subject`, `message`, `owner_id`, `name`)
 			VALUES
 				(?, ?, ?, ?)
-SQL_QUERY;
+		";
 
 	} else {
 
-		$query = <<<SQL_QUERY
+		$query = "
 			UPDATE
 				`email_tpls`
 			SET
@@ -125,7 +125,7 @@ SQL_QUERY;
 				`owner_id` = ?
 			AND
 				`name` = ?
-SQL_QUERY;
+		";
 
 	}
 

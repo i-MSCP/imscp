@@ -114,7 +114,7 @@ function clean_html($text) {
 		chr(162),
 		chr(163),
 		chr(169),
-		/*'chr(\1)'*/
+		//'chr(\1)'
 	);
 
 	$text = preg_replace($search, $replace, $text);
@@ -689,7 +689,7 @@ function isACE($label) {
 	global $validation_err_msg;
 
 	// Check if the input is an ACE label
-	if (strpos($label, 'xn--' ) === 0) {
+	if (strpos($label, 'xn--') === 0) {
 
 		$validation_err_msg = tr(
 			"ERROR: ACE labels are not allowed. Please use the ToUnicode equivalent.<br />".

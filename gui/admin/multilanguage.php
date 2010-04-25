@@ -172,7 +172,7 @@ function show_lang(&$tpl, &$sql) {
 		$data = $tables[$i];
 		$pos = strpos($data, "lang_");
 		if ($pos === false) {
-			/* not found... ... next :) */
+			// not found... ... next :)
 			continue;
 		}
 		$dat = explode('_', $data);

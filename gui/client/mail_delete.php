@@ -39,7 +39,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	user_goto('mail_accounts.php');
 }
 
-/* Do we have a proper delete_id? */
+// Test if we have a proper delete_id.
 if (!isset($delete_id)) {
 	user_goto('mail_accounts.php');
 }
@@ -69,27 +69,27 @@ if ($rs->RecordCount() == 0) {
 	user_goto('mail_accounts.php');
 }
 
-/* check for catchall assigment !! */
+// check for catchall assigment !!
 $query = "SELECT `mail_acc`, `domain_id`, `sub_id`, `mail_type` FROM `mail_users` WHERE `mail_id` = ?";
 $res = exec_query($sql, $query, array($delete_id));
 $data = $res->FetchRow();
 
 if (preg_match("/".MT_NORMAL_MAIL."/", $data['mail_type']) || preg_match("/".MT_NORMAL_FORWARD."/", $data['mail_type'])) {
-	/* mail to normal domain */
+	// mail to normal domain
 	// global $domain_name;
 	$mail_name = $data['mail_acc'] . '@' . $_SESSION['user_logged']; //$domain_name;
 } else if (preg_match("/".MT_ALIAS_MAIL."/", $data['mail_type']) || preg_match("/".MT_ALIAS_FORWARD."/", $data['mail_type'])) {
-	/* mail to domain alias*/
+	// mail to domain alias
 	$res_tmp = exec_query($sql, "SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id` = ?", array($data['sub_id']));
 	$dat_tmp = $res_tmp->FetchRow();
 	$mail_name = $data['mail_acc'] . '@' . $dat_tmp['alias_name'];
 } else if (preg_match("/".MT_SUBDOM_MAIL."/", $data['mail_type']) || preg_match("/".MT_SUBDOM_FORWARD."/", $data['mail_type'])) {
-	/* mail to subdomain*/
+	// mail to subdomain
 	$res_tmp = exec_query($sql, "SELECT `subdomain_name` FROM `subdomain` WHERE `subdomain_id` = ?", array($data['sub_id']));
 	$dat_tmp = $res_tmp->FetchRow();
 	$mail_name = $data['mail_acc'] . '@' . $dat_tmp['subdomain_name'].'.'.$dmn_name;
 } else if (preg_match("/".MT_ALSSUB_MAIL."/", $data['mail_type']) || preg_match("/".MT_ALSSUB_FORWARD."/", $data['mail_type'])) {
-	/* mail to subdomain*/
+	// mail to subdomain
 	$res_tmp = exec_query($sql, "SELECT `subdomain_alias_name`, `alias_name` FROM `subdomain_alias` AS t1, `domain_aliasses` AS t2 WHERE t1.`alias_id` = t2.`alias_id` AND `subdomain_alias_id` = ?", array($data['sub_id']));
 	$dat_tmp = $res_tmp->FetchRow();
 	$mail_name = $data['mail_acc'] . '@' . $dat_tmp['subdomain_alias_name'].'.'.$dat_tmp['alias_name'];

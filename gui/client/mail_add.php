@@ -358,7 +358,7 @@ function schedule_mail_account(&$sql, $domain_id, $dmn_name, $mail_acc) {
 		foreach ($farray as $value) {
 			$value = trim($value);
 			if (!chk_email($value) && $value !== '') {
-				/* ERROR .. strange :) not email in this line - warning */
+				// @todo ERROR .. strange :) not email in this line - warning
 				set_page_message(tr("Mailformat of an address in your forward list is incorrect!"));
 				return false;
 			} else if ($value === '') {

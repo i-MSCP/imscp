@@ -91,14 +91,14 @@ function generate_page(&$tpl) {
 	);
 
 	// count query
-	$count_query = <<<SQL_QUERY
+	$count_query = "
 		SELECT
 			COUNT(`admin_id`) AS cnt
 		FROM
 			`admin`
 		WHERE
 			`admin_type` = 'reseller'
-SQL_QUERY;
+	";
 
 	$query = <<<SQL_QUERY
 		SELECT

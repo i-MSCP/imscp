@@ -113,6 +113,7 @@ function delete_domain($domain_id) {
 	$delete_status = Config::getInstance()->get('ITEM_DELETE_STATUS');
 
 	// Mail users:
+	// TODO use prepared statement for $delete_status
 	exec_query($sql, "UPDATE `mail_users` SET `status` = '" . $delete_status . "' WHERE `domain_id` = ?", array($domain_id));
 
 	// Delete all protected areas related data (areas, groups and users)
@@ -120,7 +121,7 @@ function delete_domain($domain_id) {
 		DELETE
 			`areas`, `users`, `groups`
 		FROM
-			`domain` as `customer`
+			`domain` AS `customer`
 		LEFT JOIN
 			`htaccess` AS `areas` ON `areas`.`dmn_id` = `customer`.`domain_id`
 		LEFT JOIN
@@ -143,6 +144,7 @@ function delete_domain($domain_id) {
 		$res->MoveNext();
 	}
 	if (count($alias_a) > 0) {
+		// TODO use prepared statement for $delete_status
 		$query = "UPDATE `subdomain_alias` SET `subdomain_alias_status` = '" . $delete_status . "' WHERE `alias_id` IN (";
 		$query .= implode(',', $alias_a);
 		$query .= ")";
@@ -158,6 +160,7 @@ function delete_domain($domain_id) {
 	}
 
 	// Domain aliases:
+	// TODO use prepared statement for $delete_status
 	exec_query($sql, "UPDATE `domain_aliasses` SET `alias_status` = '" . $delete_status . "' WHERE `domain_id` = ?", array($domain_id));
 
 	// Remove domain traffic
@@ -173,6 +176,7 @@ function delete_domain($domain_id) {
 	exec_query($sql, $query, array($domain_id));
 	
 	// Set domain subdomains deletion status
+	// TODO use prepared statement for $delete_status
 	$query = "UPDATE `subdomain` SET `subdomain_status` = '$delete_status' WHERE `domain_id` = ?;";
 	exec_query($sql, $query, $domain_id);
 
@@ -301,7 +305,7 @@ function validate_user_deletion($user_id) {
 function validate_domain_deletion($domain_id) {
 	global $tpl, $sql;
 
-	/* check for domain owns */
+	// check for domain owns
 	$query = "SELECT `domain_id`, `domain_name`, `domain_created_id` FROM `domain` WHERE `domain_id` = ?";
 	$res = exec_query($sql, $query, array($domain_id));
 	$data = $res->FetchRow();
@@ -329,7 +333,7 @@ function validate_domain_deletion($domain_id) {
 		)
 	);
 
-	/* check for mail acc in MAIN domain */
+	// check for mail acc in MAIN domain
 	$query = "SELECT * FROM `mail_users` WHERE `domain_id` = ?";
 	$res = exec_query($sql, $query, array($domain_id));
 	if (!$res->EOF) {
@@ -357,7 +361,7 @@ function validate_domain_deletion($domain_id) {
 		$tpl->assign('MAIL_LIST', '');
 	}
 
-	/* check for ftp acc in MAIN domain */
+	// check for ftp acc in MAIN domain
 	$query = "SELECT `ftp_users`.* FROM `ftp_users`, `domain` WHERE `domain`.`domain_id` = ? AND `ftp_users`.`uid` = `domain`.`domain_uid`";
 	$res = exec_query($sql, $query, array($domain_id));
 	if (!$res->EOF) {
@@ -377,7 +381,7 @@ function validate_domain_deletion($domain_id) {
 		$tpl->assign('FTP_LIST', '');
 	}
 
-	/* check for alias domains */
+	// check for alias domains
 	$alias_a = array();
 	$query = "SELECT * FROM `domain_aliasses` WHERE `domain_id` = ?";
 	$res = exec_query($sql, $query, array($domain_id));
@@ -399,7 +403,7 @@ function validate_domain_deletion($domain_id) {
 		$tpl->assign('ALS_LIST', '');
 	}
 
-	/* check for subdomains */
+	// check for subdomains
 	$any_sub_found = false;
 	$query = "SELECT * FROM `subdomain` WHERE `domain_id` = ?";
 	$res = exec_query($sql, $query, array($domain_id));
@@ -440,7 +444,7 @@ function validate_domain_deletion($domain_id) {
 		}
 	}
 
-	/* Check for databases and -users */
+	// Check for databases and -users
 	$query = "SELECT * FROM `sql_database` WHERE `domain_id` = ?";
 	$res = exec_query($sql, $query, array($domain_id));
 	if (!$res->EOF) {

@@ -1733,8 +1733,8 @@ function gen_admin_domain_query(&$search_query, &$count_query, $start_index,
 			SELECT
 				t1.`admin_id`, t2.*
 			FROM
-				`admin` as t1,
-				`domain` as t2
+				`admin` AS t1,
+				`domain` AS t2
 				$add_query
 			AND
 				t1.`admin_id` = t2.`domain_admin_id`

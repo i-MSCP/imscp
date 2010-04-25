@@ -30,7 +30,7 @@
 
 function check_for_lock_file() {
 
-    $fh = fopen(Config::getInstance()->get('MR_LOCK_FILE'),'r');
+    $fh = fopen(Config::getInstance()->get('MR_LOCK_FILE'), 'r');
     if (!$fh) {
         return false;
     }
@@ -84,11 +84,11 @@ function send_request() {
 		return $out;
 	}
 
-	/* send hello query */
+	// send hello query
 	$query = "helo  $Version\r\n";
 	socket_write($socket, $query, strlen ($query));
 
-	/* read one line with helo answer */
+	// read one line with helo answer
 	$out = read_line($socket);
 
 	list($code) = explode(' ', $out);
@@ -96,10 +96,10 @@ function send_request() {
 		return $out;
 	}
 
-	/* send reg check query */
+	// send reg check query
 	$query = "execute query\r\n";
 	socket_write ($socket, $query, strlen ($query));
-	/* read one line key replay */
+	// read one line key replay
 	$execute_reply = read_line($socket);
 
 	list($code) = explode(' ', $execute_reply);
@@ -107,10 +107,10 @@ function send_request() {
 		return $out;
 	}
 
-	/* send quit query */
+	// send quit query
 	$quit_query = "bye\r\n";
 	socket_write ($socket, $quit_query, strlen ($quit_query));
-	/* read quit answer */
+	// read quit answer
 	$quit_reply = read_line($socket);
 
 	list($code) = explode(' ', $quit_reply);
@@ -130,22 +130,22 @@ function update_expire_date ( $user_id, $domain_new_expire ) {
 	$sql = Database::getInstance();
 
 	$query = "
-			UPDATE
-				`domain`
-			SET
-				`domain_expires` = ?
-			WHERE
-				`domain_id` = ?
-		";
+		UPDATE
+			`domain`
+		SET
+			`domain_expires` = ?
+		WHERE
+			`domain_id` = ?
+	";
 
-		$rs = exec_query(
-			$sql,
-			$query,
-			array(
-				$domain_new_expire,
-				$user_id
-			)
-		);
+	$rs = exec_query(
+		$sql,
+		$query,
+		array(
+			$domain_new_expire,
+			$user_id
+		)
+	);
 }
 
 function update_user_props($user_id, $props) {
@@ -323,7 +323,6 @@ function update_user_props($user_id, $props) {
 	}
 }
 
-/* end */
 
 function escape_user_data($data) {
 

@@ -37,14 +37,15 @@ $tpl->define_dynamic('logged_from', 'page');
 
 $theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
-$DNS_allowed_types = array('A','AAAA','SRV','CNAME','MX');
+$DNS_allowed_types = array('A', 'AAAA', 'SRV', 'CNAME', 'MX');
 
 $add_mode = preg_match('~dns_add.php~', $_SERVER['REQUEST_URI']);
 
 $tpl->assign(
 	array(
-		'TR_EDIT_DNS_PAGE_TITLE'	=> ($add_mode) ? tr("ispCP - Manage Domain Alias/Add DNS zone's record") :
-													tr("ispCP - Manage Domain Alias/Edit DNS zone's record"),
+		'TR_EDIT_DNS_PAGE_TITLE'	=> ($add_mode)
+			? tr("ispCP - Manage Domain Alias/Add DNS zone's record")
+			: tr("ispCP - Manage Domain Alias/Edit DNS zone's record"),
 		'THEME_COLOR_PATH'			=> "../themes/$theme_color",
 		'THEME_CHARSET'				=> tr('encoding'),
 		'ISP_LOGO'					=> get_logo($_SESSION['user_id']),
@@ -263,7 +264,7 @@ function gen_editdns_page(&$tpl, $edit_id) {
 			AND `alias_status` <> :state
 		";
 
-		$res = exec_query($sql, $query, array('domain_id' => $dmn_id,'state' => Config::getInstance()->get('ITEM_ORDERED_STATUS')));
+		$res = exec_query($sql, $query, array('domain_id' => $dmn_id, 'state' => Config::getInstance()->get('ITEM_ORDERED_STATUS')));
 		$sel = '';
 		while ($row = $res->FetchRow()) {
 			$sel.= '<option value="'.$row['alias_id'].'">'.$row['domain_name'].'</option>';
@@ -275,7 +276,7 @@ function gen_editdns_page(&$tpl, $edit_id) {
 		if ( $res->RecordCount() <= 0)
 		not_allowed();
 		$data = $res->FetchRow();
-		$tpl->assign('ADD_RECORD','');
+		$tpl->assign('ADD_RECORD', '');
 	}
 
 	list(
@@ -303,7 +304,7 @@ function gen_editdns_page(&$tpl, $edit_id) {
 			'DNS_NAME'					=> $name,
 			'DNS_ADDRESS'				=> tryPost('dns_A_address', $address),
 			'DNS_ADDRESS_V6'			=> tryPost('dns_AAAA_address', $addressv6),
-			'SELECT_DNS_SRV_PROTOCOL'	=> create_options(array('tcp','udp'), tryPost('srv_proto', $srv_proto)),
+			'SELECT_DNS_SRV_PROTOCOL'	=> create_options(array('tcp', 'udp'), tryPost('srv_proto', $srv_proto)),
 			'DNS_SRV_NAME'				=> tryPost('dns_srv_name', $srv_name),
 			'DNS_SRV_TTL'				=> tryPost('dns_srv_ttl', $srv_ttl),
 			'DNS_SRV_PRIO'				=> tryPost('dns_srv_prio', $srv_prio),
@@ -410,7 +411,7 @@ function validate_MX($record, &$err, &$text) {
 function check_CNAME_conflict($domain,&$err) {
 	$resolver = new Net_DNS_resolver();
 	$resolver->nameservers = array('localhost');
-	$res = $resolver->query($domain,'CNAME');
+	$res = $resolver->query($domain, 'CNAME');
 	if ($res === false) {
 		return true;
 	}

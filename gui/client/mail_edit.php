@@ -247,7 +247,7 @@ function update_email_forward(&$tpl, &$sql) {
 		foreach ($faray as $value) {
 			$value = trim($value);
 			if (!chk_email($value) && $value !== '') {
-				/* ERROR .. strange :) not email in this line - warning */
+				// @todo ERROR .. strange :) not email in this line - warning
 				set_page_message(tr("Mail forward list error!"));
 				return false;
 			} else if ($value === '') {

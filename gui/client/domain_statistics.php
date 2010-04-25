@@ -78,7 +78,7 @@ function gen_page_post_data(&$tpl, $current_month, $current_year) {
 function get_domain_trafic($from, $to, $domain_id) {
 	$sql = Database::getInstance();
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			IFNULL(SUM(`dtraff_web`), 0) AS web_dr,
 			IFNULL(SUM(`dtraff_ftp`), 0) AS ftp_dr,
@@ -92,7 +92,7 @@ function get_domain_trafic($from, $to, $domain_id) {
 			`dtraff_time` >= ?
 		AND
 			`dtraff_time` <= ?
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($domain_id, $from, $to));
 
@@ -116,14 +116,14 @@ function gen_dmn_traff_list(&$tpl, &$sql, $month, $year, $user_id) {
 	$sum_web, $sum_ftp, $sum_mail, $sum_pop;
 
 	$domain_admin_id = $_SESSION['user_id'];
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`domain_id`
 		FROM
 			`domain`
 		WHERE
 			`domain_admin_id` = ?
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($domain_admin_id));
 	$domain_id = $rs->fields('domain_id');
@@ -152,7 +152,7 @@ SQL_QUERY;
 	for ($i = 1; $i <= $curday; $i++) {
 		$ftm = mktime(0, 0, 0, $month, $i, $year);
 		$ltm = mktime(23, 59, 59, $month, $i, $year);
-		$query = <<<SQL_QUERY
+		$query = "
 			SELECT
 				`dtraff_web`, `dtraff_ftp`, `dtraff_mail`, `dtraff_pop`, `dtraff_time`
 			FROM
@@ -163,7 +163,7 @@ SQL_QUERY;
 				`dtraff_time` >= ?
 			AND
 				`dtraff_time` <= ?
-SQL_QUERY;
+		";
 
 		$rs = exec_query($sql, $query, array($domain_id, $ftm, $ltm));
 
@@ -217,7 +217,7 @@ SQL_QUERY;
 	$start_date = mktime(0,0,0, $month, 1, $year);
 	$end_date = mktime(0,0,0, $month + 1, 1, $year);
 	$dmn_id = get_user_domain_id($sql, $user_id);
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`dtraff_time` AS traff_date,
 			`dtraff_web` AS web_traff,
@@ -235,7 +235,7 @@ SQL_QUERY;
 			`dtraff_time` < '$end_date'
 		ORDER BY
 			`dtraff_time`
-SQL_QUERY;
+	";
 
 	$rs = execute_query($sql, $query);
 

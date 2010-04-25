@@ -71,14 +71,14 @@ function update_password() {
 
 			$user_id = $_SESSION['user_id'];
 
-			$query = <<<SQL_QUERY
+			$query = "
 				UPDATE
 					`admin`
 				SET
 					`admin_pass` = ?
 				WHERE
 					`admin_id` = ?
-SQL_QUERY;
+			";
 			$rs = exec_query($sql, $query, array($upass, $user_id));
 
 			set_page_message(tr('User password updated successfully!'));
@@ -89,14 +89,14 @@ SQL_QUERY;
 function check_udata($id, $pass) {
 	$sql = Database::getInstance();
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`admin_name`, `admin_pass`
 		FROM
 			`admin`
 		WHERE
 			`admin_id` = ?
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($id));
 

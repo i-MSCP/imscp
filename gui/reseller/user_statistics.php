@@ -96,7 +96,7 @@ function generate_page(&$tpl, $reseller_id, $reseller_name) {
 
 	$tpl->assign(array('POST_PREV_PSI' => $start_index));
 	// count query
-	$count_query = <<<SQL_QUERY
+	$count_query = "
 		SELECT
 			COUNT(`admin_id`) AS cnt
 		FROM
@@ -105,7 +105,7 @@ function generate_page(&$tpl, $reseller_id, $reseller_name) {
 			`admin_type` = 'user'
 		AND
 			`created_by` = ?
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $count_query, array($reseller_id));
 	$records_count = $rs->fields['cnt'];
@@ -171,14 +171,14 @@ SQL_QUERY;
 
 		while (!$rs->EOF) {
 			$admin_id = $rs->fields['admin_id'];
-			$query = <<<SQL_QUERY
+			$query = "
 				SELECT
 					`domain_id`
 				FROM
 					`domain`
 				WHERE
 					`domain_admin_id` = ?
-SQL_QUERY;
+			";
 
 			$dres = exec_query ($sql, $query, array($admin_id));
 			generate_domain_entry($tpl, $dres->fields['domain_id'], $row++);
