@@ -77,7 +77,7 @@ if (!is_numeric($domain_id) || !is_numeric($month) || !is_numeric($year)) {
 
 function get_domain_trafic($from, $to, $domain_id) {
 	$sql = Database::getInstance();
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			IFNULL(SUM(`dtraff_web`), 0) AS web_dr,
 			IFNULL(SUM(`dtraff_ftp`), 0) AS ftp_dr,
@@ -87,7 +87,7 @@ function get_domain_trafic($from, $to, $domain_id) {
 			`domain_traffic`
 		WHERE
 			`domain_id` = ? AND `dtraff_time` >= ? AND `dtraff_time` <= ?
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($domain_id, $from, $to));
 
@@ -137,14 +137,14 @@ function generate_page(&$tpl, $domain_id) {
 
 		$ltm = mktime(23, 59, 59, $month, $i, $year);
 
-		$query = <<<SQL_QUERY
+		$query = "
 			SELECT
 				`dtraff_web`, `dtraff_ftp`, `dtraff_mail`, `dtraff_pop`, `dtraff_time`
 			FROM
 				`domain_traffic`
 			WHERE
 				`domain_id` = ? AND `dtraff_time` >= ? AND `dtraff_time` <= ?
-SQL_QUERY;
+		";
 
 		$rs = exec_query($sql, $query, array($domain_id, $ftm, $ltm));
 

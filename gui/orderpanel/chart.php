@@ -105,7 +105,7 @@ function gen_chart(&$tpl, &$sql, $user_id, $plan_id) {
 			)
 		);
 
-		if($rs->fields['tos'] != '') {
+		if ($rs->fields['tos'] != '') {
 			$tpl->assign(
 				array(
 					'TR_TOS_PROPS'	=> tr('Term of Service'),

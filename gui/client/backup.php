@@ -42,14 +42,14 @@ $tpl->define_dynamic('logged_from', 'page');
 function send_backup_restore_request(&$sql, $user_id) {
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'bk_restore') {
 
-		$query = <<<SQL_QUERY
+		$query = "
 			UPDATE
 				`domain`
 			SET
 				`domain_status` = 'restore'
 			WHERE
 				`domain_admin_id` = ?
-SQL_QUERY;
+		";
 
 		$rs = exec_query($sql, $query, array($user_id));
 

@@ -52,14 +52,14 @@ $tpl->assign(
 );
 
 function gen_htaccess_entries(&$tpl, &$sql, &$dmn_id) {
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			*
 		FROM
 			`htaccess`
 		WHERE
 			`dmn_id` = ?
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($dmn_id));
 

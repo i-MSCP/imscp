@@ -171,26 +171,26 @@ function gen_editalias_page(&$tpl, $edit_id) {
 			$check_dis = 'checked="checked"';
 			$url_forward = '';
 			$tpl->assign(
-					array(
-						'READONLY_FORWARD'	=>	' readonly="readonly"',
-						'DISABLE_FORWARD'	=>	' disabled="disabled"',
-						'HTTP_YES'			=>	'',
-						'HTTPS_YES'			=>	'',
-						'FTP_YES'			=>	''
-						)
-					);
+				array(
+					'READONLY_FORWARD'	=>	' readonly="readonly"',
+					'DISABLE_FORWARD'	=>	' disabled="disabled"',
+					'HTTP_YES'			=>	'',
+					'HTTPS_YES'			=>	'',
+					'FTP_YES'			=>	''
+				)
+			);
 		} else {
 			$check_en = 'checked="checked"';
 			$check_dis = '';
 			$tpl->assign(
-					array(
-						'READONLY_FORWARD' => '',
-						'DISABLE_FORWARD' => '',
-						'HTTP_YES' => (preg_match("/http:\/\//", $data['url_forward'])) ? ' selected="selected"' : '',
-						'HTTPS_YES' => (preg_match("/https:\/\//", $data['url_forward'])) ? ' selected="selected"' : '',
-						'FTP_YES' => (preg_match("/ftp:\/\//", $data['url_forward'])) ? ' selected="selected"' : ''
-						)
-					);
+				array(
+					'READONLY_FORWARD' => '',
+					'DISABLE_FORWARD' => '',
+					'HTTP_YES' => (preg_match("/http:\/\//", $data['url_forward'])) ? ' selected="selected"' : '',
+					'HTTPS_YES' => (preg_match("/https:\/\//", $data['url_forward'])) ? ' selected="selected"' : '',
+					'FTP_YES' => (preg_match("/ftp:\/\//", $data['url_forward'])) ? ' selected="selected"' : ''
+				)
+			);
 		}
 		$tpl->assign(
 				array(
@@ -223,12 +223,12 @@ function check_fwd_data(&$tpl, $alias_id) {
 
 	if (isset($_POST['status']) && $_POST['status'] == 1) {
 		$forward_prefix = clean_input($_POST['forward_prefix']);
-		if(substr_count($forward_url, '.') <= 2) {
+		if (substr_count($forward_url, '.') <= 2) {
 			$ret = validates_dname($forward_url);
 		} else {
 			$ret = validates_dname($forward_url, true);
 		}
-		if(!$ret) {
+		if (!$ret) {
 			$ed_error = tr("Wrong domain part in forward URL!");
 		} else {
 			$forward_url = encode_idna($forward_prefix.$forward_url);
@@ -237,29 +237,29 @@ function check_fwd_data(&$tpl, $alias_id) {
 		$check_en = 'checked="checked"';
 		$check_dis = '';
 		$tpl->assign(
-				array(
-					'FORWARD'			=> $forward_url,
-					'HTTP_YES'			=> ($forward_prefix === 'http://') ? ' selected="selected"' : '',
-					'HTTPS_YES'			=> ($forward_prefix === 'https://') ? ' selected="selected"' : '',
-					'FTP_YES'			=> ($forward_prefix === 'ftp://') ? ' selected="selected"' : '',
-					'CHECK_EN'			=> $check_en,
-					'CHECK_DIS'			=> $check_dis,
-					'DISABLE_FORWARD'	=>	'',
-					'READONLY_FORWARD'	=>	''
-				)
-			);
+			array(
+				'FORWARD'			=> $forward_url,
+				'HTTP_YES'			=> ($forward_prefix === 'http://') ? ' selected="selected"' : '',
+				'HTTPS_YES'			=> ($forward_prefix === 'https://') ? ' selected="selected"' : '',
+				'FTP_YES'			=> ($forward_prefix === 'ftp://') ? ' selected="selected"' : '',
+				'CHECK_EN'			=> $check_en,
+				'CHECK_DIS'			=> $check_dis,
+				'DISABLE_FORWARD'	=>	'',
+				'READONLY_FORWARD'	=>	''
+			)
+		);
 	} else {
 		$check_en = 'checked="checked"';
 		$check_dis = '';
 		$forward_url = 'no';
 		$tpl->assign(
-				array(
-					'READONLY_FORWARD' => ' readonly="readonly"',
-					'DISABLE_FORWARD' => ' disabled="disabled"',
-					'CHECK_EN' => $check_en,
-					'CHECK_DIS' => $check_dis,
-				)
-			);
+			array(
+				'READONLY_FORWARD' => ' readonly="readonly"',
+				'DISABLE_FORWARD' => ' disabled="disabled"',
+				'CHECK_EN' => $check_en,
+				'CHECK_DIS' => $check_dis,
+			)
+		);
 	}
 
 	if ($ed_error === '_off_') {

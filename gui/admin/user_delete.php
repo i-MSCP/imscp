@@ -244,7 +244,7 @@ function delete_user($user_id) {
 		$query = "DELETE FROM `hosting_plans` WHERE `reseller_id` = ?";
 		exec_query($sql, $query, array($user_id));
 		// delete reseller logo if exists
-		if(!empty($reseller_logo) && $reseller_logo !== 0) {
+		if (!empty($reseller_logo) && $reseller_logo !== 0) {
 			try {
 				unlink(Config::getInstance()->get('IPS_LOGO_PATH') . '/' . $reseller_logo);
 			} catch(Exception $e) {
@@ -312,20 +312,22 @@ function validate_domain_deletion($domain_id) {
 
 	$reseller = $data['domain_created_id'];
 
-	$tpl->assign(array(
-		'TR_DELETE_DOMAIN'=>tr('Delete domain'),
-		'TR_DOMAIN_SUMMARY'=>tr('Domain summary:'),
-		'TR_DOMAIN_EMAILS'=>tr('Domain e-mails:'),
-		'TR_DOMAIN_FTPS'=>tr('Domain FTP accounts:'),
-		'TR_DOMAIN_ALIASES'=>tr('Domain aliases:'),
-		'TR_DOMAIN_SUBS'=>tr('Domain subdomains:'),
-		'TR_DOMAIN_DBS'=>tr('Domain databases:'),
-		'TR_REALLY_WANT_TO_DELETE_DOMAIN'=>tr('Do you really want to delete the entire domain? This operation can not be undone!'),
-		'TR_BUTTON_DELETE'=>tr('Delete domain'),
-		'TR_YES_DELETE_DOMAIN'=>tr('Yes, delete the domain.'),
-		'DOMAIN_NAME'=>$data['domain_name'],
-		'DOMAIN_ID'=>$data['domain_id']
-	));
+	$tpl->assign(
+		array(
+			'TR_DELETE_DOMAIN'	=> tr('Delete domain'),
+			'TR_DOMAIN_SUMMARY'	=> tr('Domain summary:'),
+			'TR_DOMAIN_EMAILS'	=> tr('Domain e-mails:'),
+			'TR_DOMAIN_FTPS'	=> tr('Domain FTP accounts:'),
+			'TR_DOMAIN_ALIASES'	=> tr('Domain aliases:'),
+			'TR_DOMAIN_SUBS'	=> tr('Domain subdomains:'),
+			'TR_DOMAIN_DBS'		=> tr('Domain databases:'),
+			'TR_REALLY_WANT_TO_DELETE_DOMAIN'	=> tr('Do you really want to delete the entire domain? This operation can not be undone!'),
+			'TR_BUTTON_DELETE'	=> tr('Delete domain'),
+			'TR_YES_DELETE_DOMAIN'	=> tr('Yes, delete the domain.'),
+			'DOMAIN_NAME'		=> $data['domain_name'],
+			'DOMAIN_ID'			=> $data['domain_id']
+		)
+	);
 
 	/* check for mail acc in MAIN domain */
 	$query = "SELECT * FROM `mail_users` WHERE `domain_id` = ?";
@@ -341,10 +343,12 @@ function validate_domain_deletion($domain_id) {
 			}
 			$mdisplay_txt = implode(', ', $mdisplay_a);
 
-			$tpl->assign(array(
-				'MAIL_ADDR'=>$res->fields['mail_addr'],
-				'MAIL_TYPE'=>$mdisplay_txt
-			));
+			$tpl->assign(
+				array(
+					'MAIL_ADDR' => $res->fields['mail_addr'],
+					'MAIL_TYPE' => $mdisplay_txt
+				)
+			);
 
 			$tpl->parse('MAIL_ITEM', '.mail_item');
 			$res->MoveNext();
@@ -359,10 +363,12 @@ function validate_domain_deletion($domain_id) {
 	if (!$res->EOF) {
 		while (!$res->EOF) {
 
-			$tpl->assign(array(
-				'FTP_USER'=>$res->fields['userid'],
-				'FTP_HOME'=>$res->fields['homedir']
-			));
+			$tpl->assign(
+				array(
+					'FTP_USER' => $res->fields['userid'],
+					'FTP_HOME' => $res->fields['homedir']
+				)
+			);
 
 			$tpl->parse('FTP_ITEM', '.ftp_item');
 			$res->MoveNext();
@@ -379,10 +385,12 @@ function validate_domain_deletion($domain_id) {
 		while (!$res->EOF) {
 			$alias_a[] = $res->fields['alias_id'];
 
-			$tpl->assign(array(
-				'ALS_NAME'=>$res->fields['alias_name'],
-				'ALS_MNT'=>$res->fields['alias_mount']
-			));
+			$tpl->assign(
+				array(
+					'ALS_NAME' => $res->fields['alias_name'],
+					'ALS_MNT' => $res->fields['alias_mount']
+				)
+			);
 
 			$tpl->parse('ALS_ITEM', '.als_item');
 			$res->MoveNext();
@@ -397,10 +405,12 @@ function validate_domain_deletion($domain_id) {
 	$res = exec_query($sql, $query, array($domain_id));
 	while (!$res->EOF) {
 		$any_sub_found = true;
-		$tpl->assign(array(
-			'SUB_NAME'=>$res->fields['subdomain_name'],
-			'SUB_MNT'=>$res->fields['subdomain_mount']
-		));
+		$tpl->assign(
+			array(
+				'SUB_NAME' => $res->fields['subdomain_name'],
+				'SUB_MNT' => $res->fields['subdomain_mount']
+			)
+		);
 
 		$tpl->parse('SUB_ITEM', '.sub_item');
 		$res->MoveNext();
@@ -418,10 +428,12 @@ function validate_domain_deletion($domain_id) {
 		$res = exec_query($sql, $query, array());
 		while (!$res->EOF) {
 			$any_sub_found = true;
-			$tpl->assign(array(
-				'SUB_NAME'=>$res->fields['subdomain_alias_name'],
-				'SUB_MNT'=>$res->fields['subdomain_alias_mount']
-			));
+			$tpl->assign(
+				array(
+					'SUB_NAME' => $res->fields['subdomain_alias_name'],
+					'SUB_MNT' => $res->fields['subdomain_alias_mount']
+				)
+			);
 
 			$tpl->parse('SUB_ITEM', '.sub_item');
 			$res->MoveNext();
@@ -445,10 +457,12 @@ function validate_domain_deletion($domain_id) {
 			}
 			$users_txt = implode(', ', $users_a);
 
-			$tpl->assign(array(
-				'DB_NAME'=>$res->fields['sqld_name'],
-				'DB_USERS'=>$users_txt
-			));
+			$tpl->assign(
+				array(
+					'DB_NAME' => $res->fields['sqld_name'],
+					'DB_USERS' => $users_txt
+				)
+			);
 
 			$tpl->parse('DB_ITEM', '.db_item');
 			$res->MoveNext();

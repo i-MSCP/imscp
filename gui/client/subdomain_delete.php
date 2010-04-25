@@ -36,7 +36,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	$sub_id = $_GET['id'];
 	$dmn_id = get_user_domain_id($sql, $_SESSION['user_id']);
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`subdomain_id`,
 			`subdomain_name`
@@ -46,7 +46,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 			`domain_id` = ?
 		AND
 			`subdomain_id` = ?
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($dmn_id, $sub_id));
 	$sub_name = $rs->fields['subdomain_name'];
@@ -64,14 +64,14 @@ SQL_QUERY;
 		user_goto('domains_manage.php');
 	}
 
-	$query = <<<SQL_QUERY
+	$query = "
 		UPDATE
 			`subdomain`
 		SET
 			`subdomain_status` = 'delete'
 		WHERE
 			`subdomain_id` = ?
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($sub_id));
 

@@ -245,12 +245,12 @@ function add_domain_alias(&$sql, &$err_al) {
 	} else if ($alias_name == Config::getInstance()->get('BASE_SERVER_VHOST')) {
 		$err_al = tr('Master domain cannot be used!');
 	} else if ($_POST['status'] == 1) {
-		if(substr_count($forward, '.') <= 2) {
+		if (substr_count($forward, '.') <= 2) {
 			$ret = validates_dname($forward);
 		} else {
 			$ret = validates_dname($forward, true);
 		}
-		if(!$ret) {
+		if (!$ret) {
 			$err_al = tr("Wrong domain part in forward URL!");
 		} else {
 			$forward = encode_idna($forward_prefix.$forward);

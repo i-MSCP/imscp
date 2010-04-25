@@ -222,7 +222,7 @@ class SystemInfo {
 						'/proc/openprom/' . $sparc . '/ecache-size'
 					);
 
-					if(empty($this->error) && !empty($raw)) {
+					if (empty($this->error) && !empty($raw)) {
 						$cpu['cache'] = base_convert($raw, 16, 10)/1024 . ' KB';
 					}
 				}
@@ -528,7 +528,7 @@ class SystemInfo {
 
 	/**
 	 * Reads /proc/uptime, parses its content and makes it human readable in
-	 * the format # Day/s # Hour/s # Minute/s.
+	 * the format: # [[Day[s]] # Hour[s]] # Minute[s].
 	 *
 	 * @return Parsed System Uptime
 	 */
@@ -663,4 +663,5 @@ class SystemInfo {
 	public function getError() {
 		return $this->error;
 	}
+
 }

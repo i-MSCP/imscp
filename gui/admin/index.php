@@ -85,7 +85,7 @@ function get_update_infos(&$tpl) {
 
 	if (criticalUpdate::getInstance()->checkUpdateExists()) {
 		criticalUpdate::getInstance()->executeUpdates();
-		if (criticalUpdate::getInstance()->getErrorMessage()!="")
+		if (criticalUpdate::getInstance()->getErrorMessage() != "")
 			system_message(criticalUpdate::getInstance()->getErrorMessage());
 		$tpl->assign(array('CRITICAL_MESSAGE' => 'Critical update has been performed'));
 		$tpl->parse('CRITICAL_UPDATE_MESSAGE', 'critical_update_message');

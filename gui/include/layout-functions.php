@@ -40,14 +40,14 @@ if (isset($_SESSION['user_id'])
 // THEME_COLOR management stuff.
 
 function get_user_gui_props(&$sql, $user_id) {
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`lang`, `layout`
 		FROM
 			`user_gui_props`
 		WHERE
 			`user_id` = ?
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($user_id));
 
@@ -162,14 +162,14 @@ function get_menu_vars($menu_link) {
 	$search [] = '{street2}';
 	$replace[] = $rs->fields['street2'];
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`domain_name`, `domain_admin_id`
 		FROM
 			`domain`
 		WHERE
 			`domain_admin_id` = ?
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($user_id));
 

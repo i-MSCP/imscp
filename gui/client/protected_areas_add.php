@@ -83,11 +83,11 @@ function protect_area(&$tpl, &$sql, $dmn_id) {
 	// Adds a slash as a first char of the path if it doesn't exists
 	// Removes the double slashes 
 	// Remove the trailing slash if it exists
-	if($path != '/') {
+	if ($path != '/') {
 		$clean_path = array();
 
-		foreach(explode(DIRECTORY_SEPARATOR, $path) as $dir) {
-			if($dir != '') {
+		foreach (explode(DIRECTORY_SEPARATOR, $path) as $dir) {
+			if ($dir != '') {
 				$clean_path[] = $dir;
 			}
 		}
@@ -108,12 +108,12 @@ function protect_area(&$tpl, &$sql, $dmn_id) {
 
 	$ptype = $_POST['ptype'];
 
-	if (isset($_POST['users']))
+	if (isset($_POST['users'])) {
 		$users = $_POST['users'];
-
-	if (isset($_POST['groups']))
+	}
+	if (isset($_POST['groups'])) {
 		$groups = $_POST['groups'];
-
+	}
 	$area_name = $_POST['paname'];
 
 	$user_id = '';
@@ -147,7 +147,7 @@ function protect_area(&$tpl, &$sql, $dmn_id) {
 	}
 	// let's check if we have to update or to make new enrie
 	$alt_path = $path . "/";
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`id`
 		FROM
@@ -156,7 +156,7 @@ function protect_area(&$tpl, &$sql, $dmn_id) {
 			`dmn_id` = ?
 		AND
 			(`path` = ? OR `path` = ?)
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($dmn_id, $path, $alt_path));
 	$toadd_status = Config::getInstance()->get('ITEM_ADD_STATUS');
@@ -164,6 +164,7 @@ SQL_QUERY;
 
 	if ($rs->RecordCount() !== 0) {
 		$update_id = $rs->fields['id'];
+		// @todo Can we move $update_id to the prepared statement variables?
 		$query = <<<SQL_QUERY
 			UPDATE
 				`htaccess`
@@ -181,12 +182,12 @@ SQL_QUERY;
 		send_request();
 		set_page_message(tr('Protected area updated successfully!'));
 	} else {
-		$query = <<<SQL_QUERY
+		$query = "
 			INSERT INTO `htaccess`
 				(`dmn_id`, `user_id`, `group_id`, `auth_type`, `auth_name`, `path`, `status`)
 			VALUES
 				(?, ?, ?, ?, ?, ?, ?);
-SQL_QUERY;
+		";
 
 		$rs = exec_query($sql, $query, array($dmn_id, $user_id, $group_id, 'Basic' , $area_name, $path, $toadd_status));
 		send_request();
@@ -216,7 +217,7 @@ function gen_protect_it(&$tpl, &$sql, &$dmn_id) {
 		$tpl->assign('CDIR', $ht_id);
 		$tpl->parse('UNPROTECT_IT', 'unprotect_it');
 
-		$query = <<<SQL_QUERY
+		$query = "
 			SELECT
 				*
 			FROM
@@ -225,7 +226,7 @@ function gen_protect_it(&$tpl, &$sql, &$dmn_id) {
 				`dmn_id` = ?
 			AND
 				`id` = ?;
-SQL_QUERY;
+		";
 
 		$rs = exec_query($sql, $query, array($dmn_id, $ht_id));
 
@@ -285,14 +286,14 @@ SQL_QUERY;
 		);
 	}
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			*
 		FROM
 			`htaccess_users`
 		WHERE
 			`dmn_id` = ?;
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($dmn_id));
 
@@ -331,14 +332,14 @@ SQL_QUERY;
 		}
 	}
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			*
 		FROM
 			`htaccess_groups`
 		WHERE
 			`dmn_id` = ?
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($dmn_id));
 

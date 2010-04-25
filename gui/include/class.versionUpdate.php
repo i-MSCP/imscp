@@ -34,9 +34,16 @@
  * @version		1.0
  * @see			Other Functions (in other Files)
  * @since		r1355
+ * @todo No complete Singleton (missing private constructor, clone)
  */
 class versionUpdate extends ispcpUpdate {
 
+	/**
+	 * create instance
+	 * @var object versionUpdate
+	 */
+	private static $instance = NULL;
+	
 	/**
 	 * Database variable name for the update version
 	 * @var string
@@ -52,9 +59,9 @@ class versionUpdate extends ispcpUpdate {
 	 * @todo Please descibe this method!
 	 */
 	public static function getInstance() {
-		static $instance = null;
-		if ($instance === null) $instance = new self();
-
+		if ($instance === NULL) {
+			$instance = new self();	
+		}
 		return $instance;
 	}
 

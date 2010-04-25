@@ -209,7 +209,7 @@ function chk_username($username, $max_char = null, $min_char = 2) {
 	}
 	$pattern = '/^[A-Za-z0-9]([A-Za-z0-9]|[_.]{1,1}|[-]{1,2}){'.(int) ($min_char-2).','.$max_char.'}[A-Za-z0-9]?$/';
 
-	if(preg_match($pattern, $username)) {
+	if (preg_match($pattern, $username)) {
 		return true;
 	}
 
@@ -335,11 +335,10 @@ function validates_dname($dname, $subdname_process = false) {
 
 	$max_labels = ($subdname_process) ? 99 : Config::getInstance()->get('MAX_DNAMES_LABELS');
 
-	if(!$subdname_process) {
+	if (!$subdname_process) {
 
 		// Check lenght according RFC 1123 (Max of 255 chars)
-		if(strlen($dname) >255)
-		{
+		if (strlen($dname) > 255) {
 			$validation_err_msg = tr('Wrong domain name lenght!');
 			return false;
 		}
@@ -349,19 +348,19 @@ function validates_dname($dname, $subdname_process = false) {
 
 	$matches = array();
 
-	if( ($ret = preg_match($pattern, $dname, $matches)) ) {
+	if ( ($ret = preg_match($pattern, $dname, $matches)) ) {
 
 		$labels = preg_split('/\./', $matches[1], -1, PREG_SPLIT_NO_EMPTY);
 
 		// Validates label[s]
-		foreach($labels as $label) {
-			if(!_validates_dname_label($label)) {
+		foreach ($labels as $label) {
+			if (!_validates_dname_label($label)) {
 				$ret = false;
 				break;
 			}
 		}
 
-		if($ret && _validates_sld($matches[2] . '.' . $matches[3]) &&
+		if ($ret && _validates_sld($matches[2] . '.' . $matches[3]) &&
 			_validates_tld($matches[3])) {
 			return true;
 		}
@@ -402,7 +401,7 @@ function validates_subdname($subdname, $dname) {
 	$validation_err_msg = tr('Wrong subdomain syntax or number of labels!');
 
 	// Check lenght according RFC 1123 (Max of 255 chars)
-	if(strlen($subdname . '.' . $dname) > 255){
+	if (strlen($subdname . '.' . $dname) > 255){
 		$validation_err_msg = tr('Wrong subdomain lenght!');
 		return false;
 	}
@@ -428,16 +427,18 @@ function validates_subdname($subdname, $dname) {
 		([^.]+)
 	$@x";
 
-	if(($ret = preg_match($pattern, $subdname . '.' . $dname , $matches)) && !empty($matches[1])) {
+	if (($ret = preg_match($pattern, $subdname . '.' . $dname , $matches)) && !empty($matches[1])) {
 		$validation_err_msg = tr('Label not allowed: <b>%s</b>', $matches[1]);
 		$ret = false;
 	}
 
-	if( $ret && $sub_labels = preg_split('/\./', $matches[2], -1, PREG_SPLIT_NO_EMPTY)) {
+	if ($ret && $sub_labels = preg_split('/\./', $matches[2], -1, PREG_SPLIT_NO_EMPTY)) {
 
 		// Validates subdomains label[s]
-		foreach($sub_labels as $label) {
-			if(!_validates_dname_label($label) && !$ret = false) break;
+		foreach ($sub_labels as $label) {
+			if (!_validates_dname_label($label) && !$ret = false) {
+				break;
+			}
 		}
 	}
 
@@ -474,7 +475,7 @@ function _validates_dname_label($label) {
 
 	mb_internal_encoding('UTF-8');
 
-	if(!isACE($label) &&
+	if (!isACE($label) &&
 		mb_strpos($label, '-') !== 0 &&
 		(mb_strrpos($label, '-') !== (mb_strlen($label)-1)) &&
 		mb_substr($label, 2, 2, 'utf-8') !== '--') {
@@ -488,7 +489,7 @@ function _validates_dname_label($label) {
 		// FALSE if the label syntax is wrong
 		$pattern = '@^(?:[a-z0-9][-a-z0-9]{0,61}[a-z0-9]?(?<!-)|([-a-z0-9]{64,}))$@i';
 
-		if(($ret = preg_match($pattern, $label, $matches)) && array_key_exists(1, $matches) ) {
+		if (($ret = preg_match($pattern, $label, $matches)) && array_key_exists(1, $matches) ) {
 			$validation_err_msg = tr('Wrong label lenght: <b>%s</b>', $label);
 			$ret = false;
 		}
@@ -528,7 +529,7 @@ function _validates_tld($tld) {
 
 	$matches = array();
 
-	if(Config::getInstance()->get('TLD_STRICT_VALIDATION')) {
+	if (Config::getInstance()->get('TLD_STRICT_VALIDATION')) {
 
 		// This pattern Matches only Top Level Domain listed in Iana root database
 		// ( only ccTLDs and gTLDs, not IDNs )
@@ -573,7 +574,7 @@ function _validates_tld($tld) {
 		$pattern = '@^(?:[a-z]{2,6}|([a-z]|[a-z]{7,}))$@';
 	}
 
-	if(($ret = preg_match($pattern, $tld, $matches)) && array_key_exists(1, $matches)) {
+	if (($ret = preg_match($pattern, $tld, $matches)) && array_key_exists(1, $matches)) {
 		$validation_err_msg = tr('Wrong Top Level Domain lenght: <b>%s</b>', $tld);
 		$ret = false;
 	}
@@ -610,7 +611,7 @@ function _validates_sld($sld) {
 
 	global $validation_err_msg;
 
-	if(Config::getInstance()->get('SLD_STRICT_VALIDATION')) {
+	if (Config::getInstance()->get('SLD_STRICT_VALIDATION')) {
 
 		// Single-Character SLD
 		// Note: All another SC SLD are presently reserved in
@@ -637,18 +638,18 @@ function _validates_sld($sld) {
 
 		$matches = array();
 
-		if(!isACE($sld)) {
+		if (!isACE($sld)) {
 
 			mb_internal_encoding('UTF-8');
 
-			if( mb_strpos( $only_sld_part = mb_substr($sld, 0, mb_strpos($sld, '.')), '-') !== 0 &&
+			if (mb_strpos($only_sld_part = mb_substr($sld, 0, mb_strpos($sld, '.')), '-') !== 0 &&
 				(mb_strrpos($only_sld_part, '-') !== (mb_strlen($only_sld_part)-1)) &&
 				mb_substr($sld, 2, 2, 'utf-8') !== '--' &&
 				preg_match($pattern, encode_idna($sld), $matches)) {
 
-				if(array_key_exists(2, $matches)) {
+				if (array_key_exists(2, $matches)) {
 					$validation_err_msg = tr('Wrong Second Level Domain lenght: <b>%s</b>', $only_sld_part);
-				} elseif(array_key_exists(1, $matches)) {
+				} elseif (array_key_exists(1, $matches)) {
 					$validation_err_msg = tr('Wrong domain name: <b>%s</b> is reserved!', $sld);
 				}
 
@@ -688,7 +689,7 @@ function isACE($label) {
 	global $validation_err_msg;
 
 	// Check if the input is an ACE label
-	if(strpos($label, 'xn--' ) === 0) {
+	if (strpos($label, 'xn--' ) === 0) {
 
 		$validation_err_msg = tr(
 			"ERROR: ACE labels are not allowed. Please use the ToUnicode equivalent.<br />".
@@ -916,13 +917,16 @@ function validates_mpoint($mpoint, $max_token_char = null) {
 
 	$pattern = '@^((:?|(:?[[:alnum:]]|/|/(?:htdocs|backups|cgi-bin|errors|logs|phptmp)[/]?))|.+/|.*//.*)$@';
 
-	if (preg_match($pattern, $mpoint)) return false;
+	if (preg_match($pattern, $mpoint)) {
+		return false;
+	}
 
 	$tokens = preg_split('@/@', $mpoint, -1, PREG_SPLIT_NO_EMPTY);
 
-	foreach($tokens as $token) {
-		if (!_validates_mpoint_token($token, $max_token_char))
+	foreach ($tokens as $token) {
+		if (!_validates_mpoint_token($token, $max_token_char)) {
 			return false;
+		}
 	}
 
 	return true;

@@ -420,20 +420,20 @@ list(
 	$seconds
 		) = gen_remain_time($dmn_expires);
 
-if(time() < $dmn_expires) {
+if (time() < $dmn_expires) {
 	if (($years > 0) && ($month > 0) && ($days <= 14)) {
 		$tpl->assign(
 			array('DMN_EXPIRES' => $years." Years, ".$month." Month, ".$days." Days")
 		);
 	} else {
 		$tpl->assign(
-			array('DMN_EXPIRES' => "<span style=\"color:red\">".$years." Years, ".
+			array('DMN_EXPIRES' => '<span style="color:red">'.$years." Years, " .
 									$month." Month, ".$days." Days</span>")
 		);
 	}
-} else if($dmn_expires != 0) {
+} else if ($dmn_expires != 0) {
 	$tpl->assign(
-		array('DMN_EXPIRES' => "<span style=\"color:red\">".
+		array('DMN_EXPIRES' => '<span style="color:red">' .
 								tr("This Domain is expired")."</span> ")
 	);
 } else {

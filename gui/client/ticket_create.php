@@ -60,14 +60,14 @@ function send_user_message(&$sql, $user_id, $reseller_id) {
 	$ticket_reply = 0;
 	$ticket_level = 1;
 
-	$query = <<<SQL_QUERY
+	$query = "
 		INSERT INTO `tickets`
 			(`ticket_level`, `ticket_from`, `ticket_to`,
 			 `ticket_status`, `ticket_reply`, `ticket_urgency`,
 			 `ticket_date`, `ticket_subject`, `ticket_message`)
 		VALUES
 			(?, ?, ?, ?, ?, ?, ?, ?, ?)
-SQL_QUERY;
+	";
 
 	exec_query($sql, $query, array($ticket_level, $user_id, $reseller_id,
 			$ticket_status, $ticket_reply, $urgency, $ticket_date, $subject, $user_message));
@@ -117,7 +117,12 @@ gen_logged_from($tpl);
 
 check_permissions($tpl);
 
-$userdata = array('OPT_URGENCY_1'=>'', 'OPT_URGENCY_2'=>'', 'OPT_URGENCY_3'=>'', 'OPT_URGENCY_4'=>'');
+$userdata = array(
+	'OPT_URGENCY_1' => '',
+	'OPT_URGENCY_2' => '',
+	'OPT_URGENCY_3' => '',
+	'OPT_URGENCY_4' => ''
+);
 if (isset($_POST['urgency'])) {
 	$userdata['URGENCY'] = intval($_POST['urgency']);
 } else {

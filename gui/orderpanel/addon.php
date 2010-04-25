@@ -51,7 +51,7 @@ function addon_domain($dmn_name) {
 	// Should be performed after domain name validation now
 	$dmn_name = encode_idna(strtolower($dmn_name));
 
-	if(ispcp_domain_exists($dmn_name, 0)) {
+	if (ispcp_domain_exists($dmn_name, 0)) {
 		set_page_message(tr('Domain with that name already exists on the system!'));
 		return;
 	}
@@ -72,21 +72,22 @@ function is_plan_available(&$sql, $plan_id, $user_id) {
 				`id` = ?
 			";
 
-			$rs = exec_query($sql, $query, array($plan_id));
-        } else {
-			$query = "
-                        SELECT
-                                *
-                        FROM
-                                `hosting_plans`
-                        WHERE
-                                `reseller_id` = ?
-                        AND
-                                `id` = ?
-                ";
+		$rs = exec_query($sql, $query, array($plan_id));
+	} else {
+		$query = "
+			SELECT
+				*
+			FROM
+				`hosting_plans`
+			WHERE
+				`reseller_id` = ?
+			AND
+				`id` = ?
+		";
 
-                $rs = exec_query($sql, $query, array($user_id, $plan_id));
-        }
+		$rs = exec_query($sql, $query, array($user_id, $plan_id));
+	}
+
 	return $rs->RecordCount() > 0 && $rs->fields['status'] != 0;
 }
 

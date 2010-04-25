@@ -149,7 +149,7 @@ class status {
 }
 
 function get_server_status(&$tpl, &$sql) {
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			*
 		FROM
@@ -158,7 +158,7 @@ function get_server_status(&$tpl, &$sql) {
 			`name` LIKE 'PORT_%'
 		ORDER BY
 			`name` ASC
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array());
 

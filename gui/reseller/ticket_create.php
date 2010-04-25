@@ -61,7 +61,7 @@ function send_user_message(&$sql, $user_id, $user_created_by) {
 	$ticket_reply = 0;
 	$ticket_level = 2;
 
-	$query = <<<SQL_QUERY
+	$query = "
 		INSERT INTO `tickets`
 			(`ticket_level`,
 			`ticket_from`,
@@ -74,7 +74,7 @@ function send_user_message(&$sql, $user_id, $user_created_by) {
 			`ticket_message`)
 		VALUES
 			(?, ?, ?, ?, ?, ?, ?, ?, ?)
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($ticket_level,	$user_id, $user_created_by,
 			$ticket_status,	$ticket_reply, $urgency, $ticket_date, $subject, $user_message));
@@ -99,12 +99,12 @@ $tpl->assign(
 
 // dynamic page data.
 $query = "
-  SELECT
-    `support_system`
-  FROM
-    `reseller_props`
-  WHERE
-    `reseller_id` = ?
+	SELECT
+		`support_system`
+	FROM
+		`reseller_props`
+	WHERE
+		`reseller_id` = ?
 ";
 
 $rs = exec_query($sql, $query, array($_SESSION['user_id']));
@@ -122,7 +122,12 @@ gen_reseller_menu($tpl, Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '
 
 gen_logged_from($tpl);
 
-$userdata = array('OPT_URGENCY_1'=>'', 'OPT_URGENCY_2'=>'', 'OPT_URGENCY_3'=>'', 'OPT_URGENCY_4'=>'');
+$userdata = array(
+	'OPT_URGENCY_1' => '',
+	'OPT_URGENCY_2' => '',
+	'OPT_URGENCY_3' => '',
+	'OPT_URGENCY_4' => ''
+);
 if (isset($_POST['urgency'])) {
 	$userdata['URGENCY'] = intval($_POST['urgency']);
 } else {

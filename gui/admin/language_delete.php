@@ -47,14 +47,14 @@ if ($delete_lang == Config::getInstance()->get('USER_INITIAL_LANG')) {
 }
 
 /* check if someone still uses that lang */
-$query = <<<SQL_QUERY
+$query = "
 	SELECT
 		*
 	FROM
 		`user_gui_props`
 	WHERE
 		`lang` = ?
-SQL_QUERY;
+";
 
 $rs = exec_query($sql, $query, array($delete_lang));
 

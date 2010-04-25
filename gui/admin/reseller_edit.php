@@ -51,7 +51,7 @@ function get_clean_input_data() {
 
 	static $cdata = array();
 
-	if(empty($cdata) && !empty($_POST)) {
+	if (empty($cdata) && !empty($_POST)) {
 
 		$cdata = array(
 			'customer_id' => clean_input($_POST['customer_id'], true),
@@ -173,8 +173,9 @@ function check_data(&$errFields) {
 		$rs = false;
 	}
 
-	if(!$rs)
+	if (!$rs) {
 		$errFields[] = 'DMN_ERR';
+	}
 
 	/**
 	 * Check for new subdomains limit
@@ -190,8 +191,9 @@ function check_data(&$errFields) {
 		$rs = false;
 	}
 
-	if(!$rs)
+	if (!$rs) {
 		$errFields[] = 'SUB_ERR';
+	}
 
 	/**
 	 * Check for new domain alias limit
@@ -207,8 +209,9 @@ function check_data(&$errFields) {
 		$rs = false;
 	}
 
-	if(!$rs)
+	if (!$rs) {
 		$errFields[] = 'ALS_ERR';
+	}
 
 	/**
 	 * Check for new mail accounts limit
@@ -224,8 +227,9 @@ function check_data(&$errFields) {
 		$rs = false;
 	}
 
-	if(!$rs)
+	if (!$rs) {
 		$errFields[] = 'MAIL_ERR';
+	}
 
 	/**
 	 * Check for new Ftp accounts limit
@@ -241,8 +245,9 @@ function check_data(&$errFields) {
 		$rs = false;
 	}
 
-	if(!$rs)
+	if (!$rs) {
 		$errFields[] = 'FTP_ERR';
+	}
 
 	/**
 	 * Check for new Sql databases limit
@@ -262,8 +267,9 @@ function check_data(&$errFields) {
 		);
 	}
 
-	if(!$rs)
+	if (!$rs) {
 		$errFields[] = 'SQLD_ERR';
+	}
 
 	/**
 	 * Check for new Sql users limit
@@ -284,8 +290,9 @@ function check_data(&$errFields) {
 		);
 	}
 
-	if(!$rs)
+	if (!$rs) {
 		$errFields[] = 'SQLU_ERR';
+	}
 
 	/**
 	 * Check for new traffic limit
@@ -302,8 +309,9 @@ function check_data(&$errFields) {
 		$rs = false;
 	}
 
-	if(!$rs)
+	if (!$rs) {
 		$errFields[] = 'TRF_ERR';
+	}
 
 	/**
 	 * Check for new diskspace limit
@@ -320,8 +328,9 @@ function check_data(&$errFields) {
 		$rs = false;
 	}
 
-	if(!$rs)
+	if (!$rs) {
 		$errFields[] = 'DISK_ERR';
+	}
 
 	/**
 	 * Check for IP adresses
@@ -358,38 +367,38 @@ function _check_new_limit($new_limit, $assigned_by_reseller, $used_by_customers,
 	$err_state = isset($_SESSION['user_page_message']) ?
 		strlen($_SESSION['user_page_message']) : 0;
 
-	if($new_limit != 0) {
+	if ($new_limit != 0) {
 
 		// The service is limited for all customers
-		if($unlimited == '_off_') {
+		if ($unlimited == '_off_') {
 
 			// If the new limit is < to the already used accounts/limits by users
-			if($new_limit < $used_by_customers && $new_limit != -1) {
+			if ($new_limit < $used_by_customers && $new_limit != -1) {
 				set_page_message(
 					tr("This reseller's customers are using/have more/higher <b>%s</b> accounts/limits than the new limit you entered.", $service_name)
 				);
 
 			// If the new limit is < to the already assigned accounts/limits by reseller
-			} elseif($new_limit < $assigned_by_reseller && $new_limit != -1) {
+			} elseif ($new_limit < $assigned_by_reseller && $new_limit != -1) {
 				set_page_message(
 					tr('This reseller has already assigned more/higher <b>%s</b> accounts/limits than the new limit you entered.', $service_name)
 				); 
 			
 			// If the new limit is -1 (disabled) and the already used accounts/limits by users is greater 0
-			} elseif($new_limit == -1 && $used_by_customers > 0) {
+			} elseif ($new_limit == -1 && $used_by_customers > 0) {
 				set_page_message(
 					tr("This reseller's customers are using/have more/higher <b>%s</b> accounts/limits than the new limit you entered.", $service_name)
 				);
 			
 			// If the new limit is -1 (disabled) and the already assigned accounts/limits by reseller is greater 0
-			} elseif($new_limit == -1 && $assigned_by_reseller > 0) {
+			} elseif ($new_limit == -1 && $assigned_by_reseller > 0) {
 				set_page_message(
 					tr('This reseller has already assigned more/higher <b>%s</b> accounts/limits than the new limit you entered.', $service_name)
 				);
 			} 
 			
 		// One or more reseller's customers have unlimited rights
-		} elseif($new_limit != 0) {
+		} elseif ($new_limit != 0) {
 			set_page_message(
 				tr('This reseller has customer(s) with unlimited rights for the <b>%s</b> service!', $service_name)
 			);
@@ -400,9 +409,10 @@ function _check_new_limit($new_limit, $assigned_by_reseller, $used_by_customers,
 		}
 	}
 
-	if(isset($_SESSION['user_page_message']) &&
-		$err_state < strlen($_SESSION['user_page_message']))
+	if (isset($_SESSION['user_page_message']) &&
+		$err_state < strlen($_SESSION['user_page_message'])) {
 		return false;
+	}
 
 	return true;
 }
@@ -417,7 +427,7 @@ function _check_new_limit($new_limit, $assigned_by_reseller, $used_by_customers,
  */
 function check_user_ip_data($reseller_id, $r_ips, $u_ips) {
 
-	if($r_ips != $u_ips) {
+	if ($r_ips != $u_ips) {
 		$rip_array = explode(';', $r_ips);
 
 		for ($i = 0, $cnt_rip_array = count($rip_array) - 1; $i < $cnt_rip_array; $i++) {
@@ -477,9 +487,10 @@ function get_reseller_prop($reseller_id) {
 			user_goto('manage_users.php');
 	}
 
-	foreach($rs->fields as $fname => $value){
-		if(!is_int($fname))
+	foreach ($rs->fields as $fname => $value){
+		if (!is_int($fname)) {
 			$rdata[$fname] = $value;
+		}
 	}
 
 	return $rdata;
@@ -583,7 +594,7 @@ function get_servers_ips(&$tpl, $rip_lst) {
 } // End get_servers_ips()
 
 /**
- * Must be documented
+ * @todo Must be documented
  */
 function have_reseller_ip_users($reseller_id, $ip, &$ip_num, &$ip_name) {
 
@@ -673,7 +684,7 @@ function update_reseller() {
 			$rdata['gender'], $rdata['edit_id']
 		);
 
-	if(!empty($_POST['pass0'])) {
+	if (!empty($_POST['pass0'])) {
 		$query = str_replace( '`fname`', '`admin_pass` = ?, `fname`', $query);
 		array_unshift($qparams, crypt_user_pass($_POST['pass0']));
 	}
@@ -728,14 +739,14 @@ function &get_data(&$tpl = false) {
 
 	static $rdata = array();
 
-	if(empty($rdata) && $tpl !== false) {
+	if (empty($rdata) && $tpl !== false) {
 
 		$sql = Database::getInstance();
 
 		// Update action
-		if(isset($_POST['uaction']) && $_POST['uaction'] == 'update_reseller') {
+		if (isset($_POST['uaction']) && $_POST['uaction'] == 'update_reseller') {
 
-			# Get clean input data
+			// Get clean input data
 			$rdata = get_clean_input_data();
 
 			$query = "
@@ -749,14 +760,13 @@ function &get_data(&$tpl = false) {
 
 			$rs = exec_query($sql, $query, array($rdata['edit_id']));
 
-			if ($rs->RecordCount() <= 0)
+			if ($rs->RecordCount() <= 0) {
 				user_goto('manage_users.php');
-
+			}
 			$rdata['admin_name'] = $rs->fields['admin_name'];
 			$rdata['rip_lst'] = $rs->fields['reseller_ips'];
 
-		// Default action
-		} else {
+		} else { // Default action
 
 			// get clean reseller unique identifier
 			$edit_id = clean_input($_GET['edit_id'], true);
@@ -794,7 +804,7 @@ function fields_highlighting(&$tpl, &$errFields) {
 
 	$l1 = 'border:1px rgb(233,0,0) solid;';
 
-	foreach($fields as $field) {
+	foreach ($fields as $field) {
 			$tpl->assign($field, (in_array($field, $errFields)) ? $l1 : '' );
 	}
 }
@@ -814,7 +824,7 @@ $errFields = array();
  * Dispatch the request according the state of $_GET || $_POST
  */
 
-if(isset($_REQUEST['edit_id']) && !isset($_POST['Cancel'])) {
+if (isset($_REQUEST['edit_id']) && !isset($_POST['Cancel'])) {
 
 	// Ajax request
 	// TODO: move Header handler in future responses class
@@ -859,7 +869,7 @@ if(isset($_REQUEST['edit_id']) && !isset($_POST['Cancel'])) {
 	// First, we get needed data
 	$rdata =& get_data($tpl);
 
-	# Update action
+	// Update action
 	if (isset($_POST['uaction']) && $_POST['uaction'] == 'update_reseller') {
 
 		// Checking for the submitted data
@@ -895,21 +905,19 @@ if(isset($_REQUEST['edit_id']) && !isset($_POST['Cancel'])) {
 			// Back to the parent page after a successfull updates
 			user_goto('manage_users.php');
 
-		// An error was occured during data checking
-		} else {
+		} else { // An error was occured during data checking
 			set_page_message(
 				'<br />' .
 				tr('ERROR: One or more errors was found! Please, correct them and try again!')
 			);
 		}
 
-	// Default action
-	} else {
+	} else { // Default action
 
 		// Pre-check - possible inconsistency data
 		check_data($errFields);
 
-		if(isset($_SESSION['user_page_message'])) {
+		if (isset($_SESSION['user_page_message'])) {
 			set_page_message(
 				'<br />' .
 				tr('Reseller data inconsistency!') . ' ' .
@@ -918,12 +926,11 @@ if(isset($_REQUEST['edit_id']) && !isset($_POST['Cancel'])) {
 		}
 	}
 
-// Not reseller id provided or cancel action
-} else {
+} else { // Not reseller id provided or cancel action
 	// Prevent the 'update' message on the parent page after cancel action
-	if(isset($_POST['Cancel']) && isset($_SESSION['user_updated']))
+	if (isset($_POST['Cancel']) && isset($_SESSION['user_updated'])) {
 		unset($_SESSION['user_updated']);
-
+	}
 	user_goto('manage_users.php');
 }
 
@@ -938,7 +945,7 @@ if(isset($_REQUEST['edit_id']) && !isset($_POST['Cancel'])) {
 // Input Fields Errors Highlighting
 fields_highlighting($tpl, $errFields);
 
-if( $rdata['support_system'] == 'yes') {
+if ($rdata['support_system'] == 'yes') {
 	$support_yes = 'checked="checked"';
 	$support_no = '';
 } else {

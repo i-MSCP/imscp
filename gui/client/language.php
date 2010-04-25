@@ -47,14 +47,14 @@ $tpl->define_dynamic('logged_from', 'page');
 if (isset($_POST['uaction']) && $_POST['uaction'] === 'save_lang') {
 	$user_id = $_SESSION['user_id'];
 	$user_lang = $_POST['def_language'];
-	$query = <<<SQL_QUERY
+	$query = "
 		UPDATE
 			`user_gui_props`
 		SET
 			`lang` = ?
 		WHERE
 			`user_id` = ?
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($user_lang, $user_id));
 	unset($_SESSION['user_def_lang']);

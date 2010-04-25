@@ -44,12 +44,12 @@ $tpl->define_dynamic('alias_menu', 'page');
 $theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
 $tpl->assign(
-		array(
-				'TR_CLIENT_CHANGE_PERSONAL_DATA_PAGE_TITLE'	=> tr('ispCP - Users/Add user'),
-				'THEME_COLOR_PATH'							=> "../themes/$theme_color",
-				'THEME_CHARSET'								=> tr('encoding'),
-				'ISP_LOGO'									=> get_logo($_SESSION['user_id']),
-		)
+	array(
+		'TR_CLIENT_CHANGE_PERSONAL_DATA_PAGE_TITLE'	=> tr('ispCP - Users/Add user'),
+		'THEME_COLOR_PATH'							=> "../themes/$theme_color",
+		'THEME_CHARSET'								=> tr('encoding'),
+		'ISP_LOGO'									=> get_logo($_SESSION['user_id']),
+	)
 );
 
 /*
@@ -64,25 +64,25 @@ gen_reseller_menu($tpl, Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '
 gen_logged_from($tpl);
 
 $tpl->assign(
-		array(
-			'TR_ADD_USER'				=> tr('Add user'),
-			'TR_CORE_DATA'				=> tr('Core data'),
-			'TR_DOMAIN_NAME'			=> tr('Domain name'),
-			'TR_DOMAIN_EXPIRE'			=> tr('Domain expire'),
-			'TR_DOMAIN_EXPIRE_NEVER'	=> tr('Never'),
-			'TR_DOMAIN_EXPIRE_1_MONTH'	=> tr('1 Month'),
-			'TR_DOMAIN_EXPIRE_2_MONTHS'	=> tr('2 Months'),
-			'TR_DOMAIN_EXPIRE_3_MONTHS'	=> tr('3 Months'),
-			'TR_DOMAIN_EXPIRE_6_MONTHS'	=> tr('6 Months'),
-			'TR_DOMAIN_EXPIRE_1_YEAR'	=> tr('1 Year'),
-			'TR_DOMAIN_EXPIRE_2_YEARS'	=> tr('2 Years'),
-			'TR_CHOOSE_HOSTING_PLAN'	=> tr('Choose hosting plan'),
-			'TR_PERSONALIZE_TEMPLATE'	=> tr('Personalise template'),
-			'TR_YES'					=> tr('yes'),
-			'TR_NO'						=> tr('no'),
-			'TR_NEXT_STEP'				=> tr('Next step'),
-			'TR_DMN_HELP'				=> tr("You do not need 'www.' ispCP will add it on its own.")
-		)
+	array(
+		'TR_ADD_USER'				=> tr('Add user'),
+		'TR_CORE_DATA'				=> tr('Core data'),
+		'TR_DOMAIN_NAME'			=> tr('Domain name'),
+		'TR_DOMAIN_EXPIRE'			=> tr('Domain expire'),
+		'TR_DOMAIN_EXPIRE_NEVER'	=> tr('Never'),
+		'TR_DOMAIN_EXPIRE_1_MONTH'	=> tr('1 Month'),
+		'TR_DOMAIN_EXPIRE_2_MONTHS'	=> tr('2 Months'),
+		'TR_DOMAIN_EXPIRE_3_MONTHS'	=> tr('3 Months'),
+		'TR_DOMAIN_EXPIRE_6_MONTHS'	=> tr('6 Months'),
+		'TR_DOMAIN_EXPIRE_1_YEAR'	=> tr('1 Year'),
+		'TR_DOMAIN_EXPIRE_2_YEARS'	=> tr('2 Years'),
+		'TR_CHOOSE_HOSTING_PLAN'	=> tr('Choose hosting plan'),
+		'TR_PERSONALIZE_TEMPLATE'	=> tr('Personalise template'),
+		'TR_YES'					=> tr('yes'),
+		'TR_NO'						=> tr('no'),
+		'TR_NEXT_STEP'				=> tr('Next step'),
+		'TR_DMN_HELP'				=> tr("You do not need 'www.' ispCP will add it on its own.")
+	)
 );
 
 if (isset($_POST['uaction'])) {
@@ -202,18 +202,18 @@ function check_user_data() {
 function get_empty_au1_page(&$tpl) {
 
 	$tpl->assign(
-			array(
-				'DMN_NAME_VALUE'		=> '',
-				'CHTPL1_VAL'			=> '',
-				'CHTPL2_VAL'			=> 'checked="checked"',
-				'EXPIRE_NEVER_SET'		=> ' selected="selected"',
-				'EXPIRE_1_MONTH_SET'	=> '',
-				'EXPIRE_2_MONTH_SET'	=> '',
-				'EXPIRE_3_MONTH_SET'	=> '',
-				'EXPIRE_6_MONTH_SET'	=> '',
-				'EXPIRE_1_YEAR_SET'		=> '',
-				'EXPIRE_2_YEARS_SET'	=> ''
-			)
+		array(
+			'DMN_NAME_VALUE'		=> '',
+			'CHTPL1_VAL'			=> '',
+			'CHTPL2_VAL'			=> 'checked="checked"',
+			'EXPIRE_NEVER_SET'		=> ' selected="selected"',
+			'EXPIRE_1_MONTH_SET'	=> '',
+			'EXPIRE_2_MONTH_SET'	=> '',
+			'EXPIRE_3_MONTH_SET'	=> '',
+			'EXPIRE_6_MONTH_SET'	=> '',
+			'EXPIRE_1_YEAR_SET'		=> '',
+			'EXPIRE_2_YEARS_SET'	=> ''
+		)
 	);
 
 	$tpl->assign('MESSAGE', '');
@@ -230,18 +230,18 @@ function get_data_au1_page(&$tpl) {
 	global $dmn_pt; // personal template
 
 	$tpl->assign(
-			array(
-				'DMN_NAME_VALUE'		=> $dmn_name,
-				'CHTPL1_VAL'			=> $dmn_pt === "_yes_" ? 'checked="checked"' : '',
-				'CHTPL2_VAL'			=> $dmn_pt === "_yes_" ? '' : 'checked="checked"',
-				'EXPIRE_NEVER_SET'		=> ($dmn_expire === '0') ? ' selected="selected"' : '',
-				'EXPIRE_1_MONTH_SET'	=> ($dmn_expire === '1') ? ' selected="selected"' : '',
-				'EXPIRE_2_MONTH_SET'	=> ($dmn_expire === '2') ? ' selected="selected"' : '',
-				'EXPIRE_3_MONTH_SET'	=> ($dmn_expire === '3') ? ' selected="selected"' : '',
-				'EXPIRE_6_MONTH_SET'	=> ($dmn_expire === '6') ? ' selected="selected"' : '',
-				'EXPIRE_1_YEAR_SET'		=> ($dmn_expire === '12') ? ' selected="selected"' : '',
-				'EXPIRE_2_YEARS_SET'	=> ($dmn_expire === '24') ? ' selected="selected"' : '',
-			)
+		array(
+			'DMN_NAME_VALUE'		=> $dmn_name,
+			'CHTPL1_VAL'			=> $dmn_pt === "_yes_" ? 'checked="checked"' : '',
+			'CHTPL2_VAL'			=> $dmn_pt === "_yes_" ? '' : 'checked="checked"',
+			'EXPIRE_NEVER_SET'		=> ($dmn_expire === '0') ? ' selected="selected"' : '',
+			'EXPIRE_1_MONTH_SET'	=> ($dmn_expire === '1') ? ' selected="selected"' : '',
+			'EXPIRE_2_MONTH_SET'	=> ($dmn_expire === '2') ? ' selected="selected"' : '',
+			'EXPIRE_3_MONTH_SET'	=> ($dmn_expire === '3') ? ' selected="selected"' : '',
+			'EXPIRE_6_MONTH_SET'	=> ($dmn_expire === '6') ? ' selected="selected"' : '',
+			'EXPIRE_1_YEAR_SET'		=> ($dmn_expire === '12') ? ' selected="selected"' : '',
+			'EXPIRE_2_YEARS_SET'	=> ($dmn_expire === '24') ? ' selected="selected"' : '',
+		)
 	);
 } // End of get_data_au1_page()
 

@@ -90,7 +90,7 @@ function update_services(&$sql) {
 				} elseif (!is_basicString($name)) {
 					set_page_message(tr('ERROR: Only Letters, Numbers, Dash and Underscore are allowed!'));
 					return;
-				} elseif (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)===false) {
+				} elseif (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === false) {
 					set_page_message(tr('Wrong IP number!'));
 					return;
 				} else {

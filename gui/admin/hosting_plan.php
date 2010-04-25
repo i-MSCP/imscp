@@ -126,7 +126,7 @@ function gen_hp_table(&$tpl, $reseller_id) {
 
 	$sql = Database::getInstance();
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			t1.`id`, t1.`reseller_id`, t1.`name`, t1.`props`, t1.`status`,
 			t2.`admin_id`, t2.`admin_type`
@@ -139,7 +139,7 @@ function gen_hp_table(&$tpl, $reseller_id) {
 			t1.`reseller_id` = t2.`admin_id`
 		ORDER BY
 			t1.`name`
-SQL_QUERY;
+	";
 	$rs = exec_query($sql, $query, array('admin'));
 	$tr_edit = tr('Edit');
 

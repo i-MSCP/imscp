@@ -1051,7 +1051,7 @@ function records_count($table, $where, $value) {
 	$sql = Database::getInstance();
 
 	if ($where != '') {
-		if($value != '') {
+		if ($value != '') {
 			$query = "SELECT COUNT(*) AS cnt FROM $table WHERE $where = ?";
 			$rs = exec_query($sql, $query, array($value));
 		} else {
@@ -1312,7 +1312,7 @@ function get_logo($user_id) {
 	if ($rs->fields['admin_type'] == 'admin') {
 		return get_admin_logo($user_id);
 	} else {
-		if(get_admin_logo($rs->fields['created_by']) === Config::getInstance()->get('IPS_LOGO_PATH').'/isp_logo.gif') {
+		if (get_admin_logo($rs->fields['created_by']) === Config::getInstance()->get('IPS_LOGO_PATH').'/isp_logo.gif') {
 			return get_admin_logo($user_id);
 		} else {
 			return get_admin_logo($rs->fields['created_by']);

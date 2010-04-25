@@ -263,7 +263,7 @@ function gen_editdns_page(&$tpl, $edit_id) {
 			AND `alias_status` <> :state
 		";
 
-		$res = exec_query($sql, $query, array('domain_id'=>$dmn_id,'state'=>Config::getInstance()->get('ITEM_ORDERED_STATUS')));
+		$res = exec_query($sql, $query, array('domain_id' => $dmn_id,'state' => Config::getInstance()->get('ITEM_ORDERED_STATUS')));
 		$sel = '';
 		while ($row = $res->FetchRow()) {
 			$sel.= '<option value="'.$row['alias_id'].'">'.$row['domain_name'].'</option>';

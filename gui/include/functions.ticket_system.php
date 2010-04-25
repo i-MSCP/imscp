@@ -42,7 +42,7 @@
  * @return	date					last date
  */
 function ticketGetLastDate(&$sql, $ticket_id) {
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`ticket_date`
 		FROM
@@ -53,7 +53,7 @@ function ticketGetLastDate(&$sql, $ticket_id) {
 			`ticket_reply` = ?
 		ORDER BY
 			`ticket_date` DESC
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($ticket_id, $ticket_id));
 

@@ -39,7 +39,7 @@ require '../include/ispcp-lib.php';
 function validate_order_key($order_id, $key) {
 	$result = false;
 	$sql = Database::getInstance();
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			*
 		FROM
@@ -48,11 +48,11 @@ function validate_order_key($order_id, $key) {
 			`id` = ?
 		AND
 			`status` = ?
-SQL_QUERY;
+	";
 	$rs = exec_query($sql, $query, array($order_id, 'unconfirmed'));
 	if ($rs->RecordCount() == 1) {
-		$domain_name 	= $rs->fields['domain_name'];
-		$admin_id 		= $rs->fields['user_id'];
+		$domain_name	= $rs->fields['domain_name'];
+		$admin_id		= $rs->fields['user_id'];
 		$coid = Config::getInstance()->exists('CUSTOM_ORDERPANEL_ID') ? Config::getInstance()->get('CUSTOM_ORDERPANEL_ID'): '';
 		$ckey = sha1($order_id.'-'.$domain_name.'-'.$admin_id.'-'.$coid);
 		if ($ckey == $key)
@@ -68,24 +68,24 @@ SQL_QUERY;
 function confirm_order($order_id) {
 
 	$sql = Database::getInstance();
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			*
 		FROM
 			`orders`
 		WHERE
 			`id` = ?
-SQL_QUERY;
+	";
 	$rs = exec_query($sql, $query, array($order_id));
 	if ($rs->RecordCount() == 1) {
 
-		$query = <<<SQL_QUERY
-		UPDATE `orders` SET `status`=? WHERE `id`=?
-SQL_QUERY;
+		$query = "
+			UPDATE `orders` SET `status` = ? WHERE `id` = ?
+		";
 		exec_query($sql, $query, array('new', $order_id));
 
-		$admin_id 		= $rs->fields['user_id'];
-		$domain_name 	= $rs->fields['domain_name'];
+		$admin_id		= $rs->fields['user_id'];
+		$domain_name	= $rs->fields['domain_name'];
 		$ufname			= $rs->fields['fname'];
 		$ulname			= $rs->fields['lname'];
 		$uemail			= $rs->fields['email'];

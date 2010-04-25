@@ -181,9 +181,8 @@ abstract class ispcpUpdate {
 			$sql->StartTrans();
 
 			try {
-
 					// We execute every Sql statements
-					foreach($queryArray as $query) {
+					foreach ($queryArray as $query) {
 						$sql->execute($query);
 					}
 
@@ -191,7 +190,7 @@ abstract class ispcpUpdate {
 					// the changes
 					$sql->CompleteTrans();
 
-			} catch(PDOException $e) {
+			} catch (PDOException $e) {
 
 				// Perform a rollback if a Sql statement was failed
 				$sql->RollbackTrans();

@@ -110,14 +110,14 @@ function change_sql_user_pass(&$sql, $db_user_id, $db_user_name) {
 }
 
 function gen_page_data(&$tpl, &$sql, $db_user_id) {
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`sqlu_name`
 		FROM
 			`sql_user`
 		WHERE
 			`sqlu_id` = ?
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($db_user_id));
 	$tpl->assign(

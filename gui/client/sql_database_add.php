@@ -140,12 +140,12 @@ function add_sql_database(&$sql, $user_id) {
 	$query = 'create database ' . quoteIdentifier($db_name);
 	$rs = exec_query($sql, $query, array());
 
-	$query = <<<SQL_QUERY
+	$query = "
 		INSERT INTO `sql_database`
 			(`domain_id`, `sqld_name`)
 		VALUES
 			(?, ?)
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($dmn_id, $db_name));
 

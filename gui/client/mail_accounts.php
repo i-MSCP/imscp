@@ -647,7 +647,7 @@ function gen_page_als_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 					'MAIL_TYPE' => $mail_type,
 					'MAIL_STATUS' => translate_dmn_status($rs->fields['status']),
 					'MAIL_DELETE' => $mail_delete,
-					'MAIL_DELETE_SCRIPT'=> $mail_delete_script,
+					'MAIL_DELETE_SCRIPT' => $mail_delete_script,
 					'MAIL_EDIT' => $mail_edit,
 					'MAIL_EDIT_SCRIPT' => $mail_edit_script
 				)
@@ -725,11 +725,11 @@ function gen_page_lists(&$tpl, &$sql, $user_id) {
 	$default_mails = count_default_mails($sql, $dmn_id);
 
 	if (Config::getInstance()->get('COUNT_DEFAULT_EMAIL_ADDRESSES') == 0) {
-		if(isset($_POST['uaction']) && $_POST['uaction'] == 'show') {
+		if (isset($_POST['uaction']) && $_POST['uaction'] == 'show') {
 			$counted_mails -= $default_mails;
 		}
 	} else {
-		if(!isset($_POST['uaction']) || $_POST['uaction'] == 'hide') {
+		if (!isset($_POST['uaction']) || $_POST['uaction'] == 'hide') {
 			$counted_mails += $default_mails;
 		}
 	}
@@ -748,7 +748,7 @@ function gen_page_lists(&$tpl, &$sql, $user_id) {
 			)
 		);
 	} else {
-		if(!isset($_POST['uaction']) || $_POST['uaction'] == 'hide') {
+		if (!isset($_POST['uaction']) || $_POST['uaction'] == 'hide') {
 			$tpl->assign(
 				array(
 					'TABLE_LIST' => ''
@@ -790,7 +790,7 @@ function count_default_mails(&$sql, $dmn_id) {
 
 	static $count_default_mails;
 
-	if(!is_int($count_default_mails)) {
+	if (!is_int($count_default_mails)) {
 
 		$query = "
 			SELECT COUNT(`mail_id`) AS cnt
@@ -808,8 +808,8 @@ function count_default_mails(&$sql, $dmn_id) {
 				)
 		";
 
-			$rs = exec_query($sql, $query, array($dmn_id));
-			$count_default_mails = (int) $rs->fields['cnt'];
+		$rs = exec_query($sql, $query, array($dmn_id));
+		$count_default_mails = (int) $rs->fields['cnt'];
 	}
 
 	return $count_default_mails;
@@ -860,7 +860,7 @@ $tpl->assign(
 
 // Displays the "show/hide" button for default emails
 // only if default mail address exists
-if(count_default_mails($sql, $dmn_id) > 0) {
+if (count_default_mails($sql, $dmn_id) > 0) {
 
 	$tpl->assign(
 		array(

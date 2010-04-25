@@ -30,15 +30,16 @@
  * in a stratic array.
  * 
  * @since 	r154
+ * @todo no complete Singleton (missing private constructor, clone)
  */
 class Config {
-    private static $config;
+    private static $instance = NULL;
 
     public static function getInstance() {
-        if(!self::$config) {
-            self::$config = new ConfigHandler();
+        if (self::$instance === NULL) {
+            self::$instance = new ConfigHandler();
         }
-        return self::$config;
+        return self::$instance;
     }
 }
  

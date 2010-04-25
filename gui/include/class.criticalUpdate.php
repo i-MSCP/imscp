@@ -104,7 +104,7 @@ class criticalUpdate extends ispcpUpdate {
 			}
 		}
 
-		$query ="SELECT `sqlu_id`, `sqlu_pass` FROM `sql_user`";
+		$query = "SELECT `sqlu_id`, `sqlu_pass` FROM `sql_user`";
 		$rs = exec_query($sql, $query);
 
 		if ($rs->RecordCount() != 0) {

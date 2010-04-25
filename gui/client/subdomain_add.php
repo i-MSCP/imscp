@@ -372,7 +372,7 @@ function check_subdomain_data(&$tpl, &$sql, $user_id, $dmn_name) {
 		}
 
 		// First check if input string is a valid domain names
-		if(!validates_subdname($sub_name, decode_idna($dmn_name))) {
+		if (!validates_subdname($sub_name, decode_idna($dmn_name))) {
 			set_page_message($validation_err_msg);
 			return;
 		}

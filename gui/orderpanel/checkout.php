@@ -140,8 +140,8 @@ if (!isset($_POST['capcode']) || $_POST['capcode'] != $_SESSION['image']) {
 
 
 // If term of service field was set (not empty value)
-if(isset($_SESSION['tos']) && $_SESSION['tos'] == true) {
-	if(!isset($_POST['tosAccept']) or $_POST['tosAccept'] != 1 ){
+if (isset($_SESSION['tos']) && $_SESSION['tos'] == true) {
+	if (!isset($_POST['tosAccept']) || $_POST['tosAccept'] != 1) {
 		set_page_message(tr('You have to accept the Term of Service!'));
 		user_goto('chart.php');
 	}

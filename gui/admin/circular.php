@@ -62,7 +62,7 @@ function gen_page_data(&$tpl, &$sql) {
 	} else {
 		$user_id = $_SESSION['user_id'];
 
-		$query = <<<SQL_QUERY
+		$query = "
 			SELECT
 				`fname`, `lname`, `email`
 			FROM
@@ -71,7 +71,7 @@ function gen_page_data(&$tpl, &$sql) {
 				`admin_id` = ?
 			GROUP BY
 				`email`
-SQL_QUERY;
+		";
 
 		$rs = exec_query($sql, $query, array($user_id));
 
@@ -139,7 +139,7 @@ function send_reseller_message(&$sql) {
 	$sender_email = clean_input($_POST['sender_email'], false);
 	$sender_name = clean_input($_POST['sender_name'], false);
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`admin_id`, `fname`, `lname`, `email`
 		FROM
@@ -148,7 +148,7 @@ function send_reseller_message(&$sql) {
 			`admin_type` = 'reseller' AND `created_by` = ?
 		GROUP BY
 			`email`
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($user_id));
 
@@ -187,7 +187,7 @@ function send_reseller_users_message(&$sql, $admin_id) {
 	$sender_email = clean_input($_POST['sender_email'], false);
 	$sender_name = clean_input($_POST['sender_name'], false);
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`fname`, `lname`, `email`
 		FROM
@@ -196,7 +196,7 @@ function send_reseller_users_message(&$sql, $admin_id) {
 			`admin_type` = 'user' AND `created_by` = ?
 		GROUP BY
 			`email`
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($admin_id));
 

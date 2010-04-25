@@ -33,9 +33,16 @@
  * @copyright	2006-2009 by ispCP | http://isp-control.net
  * @version		1.0
  * @since		r1355
+ * @todo No complete Singleton (missing private constructor, clone)
  */
 class databaseUpdate extends ispcpUpdate {
 
+	/**
+	 * create instance
+	 * @var object databaseUpdate
+	 */
+	private static $instance = NULL;
+	
 	/**
 	 * The database variable name for the update version
 	 * @var string
@@ -60,10 +67,9 @@ class databaseUpdate extends ispcpUpdate {
 	 * return object databaseUpdate instance
 	 */
 	public static function getInstance() {
-
-		static $instance = null;
-		if ($instance === null) $instance = new self();
-
+		if ($instance === NULL) {
+			$instance = new self();	
+		}
 		return $instance;
 	}
 
@@ -508,7 +514,7 @@ class databaseUpdate extends ispcpUpdate {
 
 		$sqlUpd = array();
 
-		$sqlUpd[]	= "CREATE TABLE IF NOT EXISTS `domain_dns` (
+		$sqlUpd[] = "CREATE TABLE IF NOT EXISTS `domain_dns` (
 					`domain_dns_id` int(11) NOT NULL auto_increment,
 					`domain_id` int(11) NOT NULL,
 					`alias_id` int(11) default NULL,
@@ -519,9 +525,9 @@ class databaseUpdate extends ispcpUpdate {
 					PRIMARY KEY  (`domain_dns_id`)
 					) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
 
-		$sqlUpd[]	= "ALTER IGNORE TABLE `domain` ADD `domain_dns` VARCHAR( 15 ) NOT NULL DEFAULT 'no';";
-		$sqlUpd[]	= "UPDATE `hosting_plans` SET `props`=CONCAT(`props`,'_no_;') ";
-		$sqlUpd[]	= "UPDATE `config` SET `value` = '465;tcp;SMTP-SSL;1;0;' WHERE `name` = 'PORT_SMTP-SSL';";
+		$sqlUpd[] = "ALTER IGNORE TABLE `domain` ADD `domain_dns` VARCHAR( 15 ) NOT NULL DEFAULT 'no';";
+		$sqlUpd[] = "UPDATE `hosting_plans` SET `props`=CONCAT(`props`,'_no_;') ";
+		$sqlUpd[] = "UPDATE `config` SET `value` = '465;tcp;SMTP-SSL;1;0;' WHERE `name` = 'PORT_SMTP-SSL';";
 
 		return $sqlUpd;
 	}
@@ -558,7 +564,7 @@ class databaseUpdate extends ispcpUpdate {
 				$sql .= "`current_ftp_cnt` = '".$props[4]."',";
 				$sql .= "`current_sql_db_cnt` = '".$props[5]."',";
 				$sql .= "`current_sql_user_cnt` = '".$props[6]."'";
-				$sql .= " WHERE `reseller_id`=".$rs->fields['reseller_id'];
+				$sql .= " WHERE `reseller_id` = ".$rs->fields['reseller_id'];
 				$sqlUpd[] = $sql;
 				$rs->MoveNext();
 			}
@@ -585,14 +591,14 @@ class databaseUpdate extends ispcpUpdate {
 
 		$add = "\n\nYou have to click the following link to continue the domain creation process.\n\n{ACTIVATE_LINK}\n";
 
-		$query = <<<SQL_QUERY
-		SELECT
-			`id`, `message`
-		FROM
-			`email_tpls`
-		WHERE
-			`name` = ?
-SQL_QUERY;
+		$query = "
+			SELECT
+				`id`, `message`
+			FROM
+				`email_tpls`
+			WHERE
+				`name` = ?
+		";
 
 		$res = exec_query($sql, $query, array('after-order-msg'));
 
@@ -602,7 +608,7 @@ SQL_QUERY;
 			if ($n !== false) {
 				$msg = substr($msg, 0, $n+8).$add.substr($msg, $n+8);
 				$sqlUpd[] = "UPDATE `email_tpls` SET `message`='".addslashes($msg)."'"
-						  . " WHERE `id`=".$data['id'];
+						  . " WHERE `id` = ".$data['id'];
 			}
 		}
 
@@ -695,12 +701,12 @@ SQL_QUERY;
 					) = explode(';', $rs->fields['props']);
 
 				// Possible missing of backup property
-				if($l == '') {
+				if ($l == '') {
 
 					$new_props = "$a;$b;$c;$d;$e;$f;$g;$h;$i;$j;_full_;$k";
 
 				// Possible inversion between backup and dns properties
-				} elseif( ($l != '_no_') && ($l != '_yes_') ) {
+				} elseif ( ($l != '_no_') && ($l != '_yes_') ) {
 
 					$new_props = "$a;$b;$c;$d;$e;$f;$g;$h;$i;$j;$l;$k";
 
@@ -912,8 +918,8 @@ SQL_QUERY;
 
 				$clean_path = array();
 
-				foreach(explode(DIRECTORY_SEPARATOR, $path) as $dir) {
-					if($dir != '') {
+				foreach (explode(DIRECTORY_SEPARATOR, $path) as $dir) {
+					if ($dir != '') {
 						$clean_path[] = $dir;
 					}
 				}
@@ -926,7 +932,7 @@ SQL_QUERY;
 					SET
 						`path` = '$path'
 					WHERE
-						`id`= '{$rs->fields['id']}'
+						`id` = '{$rs->fields['id']}'
 					;
 				";
 
@@ -954,7 +960,7 @@ SQL_QUERY;
 
 		// Test added to prevent error if old version of
 		// self::database_databaseUpdate_29() was already applyed
-		$query= "
+		$query = "
 			SHOW COLUMNS FROM
 				`hosting_plans`
 			LIKE
@@ -1007,7 +1013,7 @@ SQL_QUERY;
 					`admin`
 				WHERE
 					`admin_id` = `user_id`
-				)  = 0
+				) = 0
 			;
 		";
 
@@ -1017,10 +1023,10 @@ SQL_QUERY;
 		// Get a list of ids where each id represent an
 		// user  gui property that should be deleted
 
-		if($stmt->RecordCount()) {
+		if ($stmt->RecordCount()) {
 			$list_ids = array();
 
-			while($row = $stmt->FetchRow()) {
+			while ($row = $stmt->FetchRow()) {
 				$list_ids[] = $row['user_id'];
 			}
 

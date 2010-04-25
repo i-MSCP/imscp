@@ -43,7 +43,7 @@ if (isset($_GET['id'])) {
 
 $reseller_id = $_SESSION['user_id'];
 
-$query = <<<SQL_QUERY
+$query = "
 	SELECT
 		`domain_id`
 	FROM
@@ -52,7 +52,7 @@ $query = <<<SQL_QUERY
 		`domain_admin_id` = ?
 	AND
 		`domain_created_id` = ?
-SQL_QUERY;
+";
 $res = exec_query($sql, $query, array($usid, $reseller_id));
 
 if ($res->RowCount() !== 1) {

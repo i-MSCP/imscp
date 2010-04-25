@@ -30,12 +30,12 @@
 
 // site functions
 function gen_button_list(&$tpl, &$sql) {
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			*
 		FROM
 			`custom_menus`
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array());
 	if ($rs->RecordCount() == 0) {
@@ -135,12 +135,12 @@ function delete_button(&$sql) {
 	} else {
 		$delete_id = $_GET['delete_id'];
 
-		$query = <<<SQL_QUERY
+		$query = "
 			DELETE FROM
 				`custom_menus`
 			WHERE
 				`menu_id` = ?
-SQL_QUERY;
+		";
 
 		$rs = exec_query($sql, $query, array($delete_id));
 

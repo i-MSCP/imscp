@@ -104,8 +104,9 @@ class spOutput {
  		 * 0.00 KB files grow up to 0.01 kB gzipped files, this means more load
  		 * and more traffic) 
  		 */
-		if (count($buffer) == 0)
+		if (count($buffer) == 0) {
 			return $buffer;
+		}
 
 		$this->contents = $buffer;
 

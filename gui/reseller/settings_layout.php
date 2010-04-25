@@ -47,7 +47,7 @@ $theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
 gen_def_layout($tpl, $theme_color);
 
-if(get_own_logo($_SESSION['user_id']) !== Config::getInstance()->get('IPS_LOGO_PATH').'/isp_logo.gif') {
+if (get_own_logo($_SESSION['user_id']) !== Config::getInstance()->get('IPS_LOGO_PATH').'/isp_logo.gif') {
 	$tpl->parse('LOGO_REMOVE_BUTTON', '.logo_remove_button');
 } else {
 	$tpl->assign('LOGO_REMOVE_BUTTON', '');

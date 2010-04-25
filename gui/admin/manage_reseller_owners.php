@@ -47,7 +47,7 @@ $theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
  * @todo check if it's useful to have the table admin two times in the same query
  */
 function gen_reseller_table(&$tpl, &$sql) {
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			t1.`admin_id`, t1.`admin_name`, t2.`admin_name` AS created_by
 		FROM
@@ -60,7 +60,7 @@ function gen_reseller_table(&$tpl, &$sql) {
 		ORDER BY
 			`created_by`,
 			`admin_id`
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array());
 
@@ -109,7 +109,7 @@ SQL_QUERY;
 		$tpl->assign('PAGE_MESSAGE', '');
 	}
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`admin_id`, `admin_name`
 		FROM
@@ -118,7 +118,7 @@ SQL_QUERY;
 			`admin_type` = 'admin'
 		ORDER BY
 			`admin_name`
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array());
 
@@ -154,7 +154,7 @@ SQL_QUERY;
 
 function update_reseller_owner($sql) {
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'reseller_owner') {
-		$query = <<<SQL_QUERY
+		$query = "
 			SELECT
 				`admin_id`
 			FROM
@@ -163,7 +163,7 @@ function update_reseller_owner($sql) {
 				`admin_type` = 'reseller'
 			ORDER BY
 				`admin_name`
-SQL_QUERY;
+		";
 
 		$rs = execute_query($sql, $query);
 
@@ -175,14 +175,14 @@ SQL_QUERY;
 			if (isset($_POST[$admin_id_var_name]) && $_POST[$admin_id_var_name] === 'on') {
 				$dest_admin = $_POST['dest_admin'];
 
-				$query = <<<SQL_QUERY
+				$query = "
 					UPDATE
 						`admin`
 					SET
 						`created_by` = ?
 					WHERE
 						`admin_id` = ?
-SQL_QUERY;
+				";
 
 				$up = exec_query($sql, $query, array($dest_admin, $admin_id));
 			}

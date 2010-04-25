@@ -97,7 +97,7 @@ function get_error_aliases(&$sql, &$tpl) {
 	$todisable_status = Config::getInstance()->get('ITEM_TODISABLED_STATUS');
 	$ordered_status = Config::getInstance()->get('ITEM_ORDERED_STATUS');
 
-	$dmn_query = <<<SQL_QUERY
+	$dmn_query = "
 		SELECT
 			`alias_name`, `alias_status`, `alias_id`
 		FROM
@@ -106,7 +106,7 @@ function get_error_aliases(&$sql, &$tpl) {
 			`alias_status`
 		NOT IN
 			(?, ?, ?, ?, ?, ?, ?, ?, ?)
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $dmn_query, array(
 			$ok_status,
@@ -166,7 +166,7 @@ function get_error_subdomains(&$sql, &$tpl) {
 	$toenable_status = Config::getInstance()->get('ITEM_TOENABLE_STATUS');
 	$todisable_status = Config::getInstance()->get('ITEM_TODISABLED_STATUS');
 
-	$dmn_query = <<<SQL_QUERY
+	$dmn_query = "
 		SELECT
 			`subdomain_name`, `subdomain_status`, `subdomain_id`
 		FROM
@@ -175,7 +175,7 @@ function get_error_subdomains(&$sql, &$tpl) {
 			`subdomain_status`
 		NOT IN
 			(?, ?, ?, ?, ?, ?, ?, ?)
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $dmn_query, array(
 			$ok_status,
@@ -230,7 +230,7 @@ function get_error_alias_subdomains(&$sql, &$tpl) {
 	$toenable_status = Config::getInstance()->get('ITEM_TOENABLE_STATUS');
 	$todisable_status = Config::getInstance()->get('ITEM_TODISABLED_STATUS');
 
-	$dmn_query = <<<SQL_QUERY
+	$dmn_query = "
 		SELECT
 			`subdomain_alias_name`, `subdomain_alias_status`, `subdomain_alias_id`
 		FROM
@@ -239,7 +239,7 @@ function get_error_alias_subdomains(&$sql, &$tpl) {
 			`subdomain_alias_status`
 		NOT IN
 			(?, ?, ?, ?, ?, ?, ?, ?)
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $dmn_query, array(
 			$ok_status,
@@ -295,7 +295,7 @@ function get_error_mails(&$sql, &$tpl) {
 	$todisable_status = Config::getInstance()->get('ITEM_TODISABLED_STATUS');
 	$ordered_status = Config::getInstance()->get('ITEM_ORDERED_STATUS');
 
-	$dmn_query = <<<SQL_QUERY
+	$dmn_query = "
 		SELECT
 			`mail_acc`, `domain_id`, `mail_type`, `status`, `mail_id`
 		FROM
@@ -304,7 +304,7 @@ function get_error_mails(&$sql, &$tpl) {
 			`status`
 		NOT IN
 			(?, ?, ?, ?, ?, ?, ?, ?, ?)
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $dmn_query, array(
 			$ok_status,

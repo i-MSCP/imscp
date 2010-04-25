@@ -75,7 +75,7 @@ if (isset($_SESSION['dmn_id']) && $_SESSION['dmn_id'] !== '') {
 
 	$result = exec_query($sql, $query, array($domain_id, $reseller_id));
 
-	if($result->RecordCount() == 0) {
+	if ($result->RecordCount() == 0) {
 		set_page_message(
 			tr('User does not exist or you do not have permission to access this interface!')
 		);
@@ -86,7 +86,7 @@ if (isset($_SESSION['dmn_id']) && $_SESSION['dmn_id'] !== '') {
 		$row = $result->FetchRow();
 		$dmn_status = $row['domain_status'];
 	
-		if($dmn_status != Config::getInstance()->get('ITEM_OK_STATUS') &&
+		if ($dmn_status != Config::getInstance()->get('ITEM_OK_STATUS') &&
 			$dmn_status != Config::getInstance()->get('ITEM_ADD_STATUS')) {
 
 			set_page_message(tr('System error with Domain Id: %d', $domain_id));
@@ -159,44 +159,44 @@ function init_empty_data() {
 	
 	if (isset($_POST['status']) && $_POST['status'] == 1) {
 		$forward_prefix = clean_input($_POST['forward_prefix']);
-		if($_POST['status'] == 1) {
+		if ($_POST['status'] == 1) {
 			$check_en = 'checked="checked"';
 			$check_dis = '';
 			$forward = strtolower(clean_input($_POST['forward']));
 			$tpl->assign(
-					array(
-						'READONLY_FORWARD' => '',
-						'DISABLE_FORWARD' => '',
-						)
-					);
+				array(
+					'READONLY_FORWARD' => '',
+					'DISABLE_FORWARD' => '',
+				)
+			);
 		} else {
 			$check_en = '';
 			$check_dis = 'checked="checked"';
 			$forward = '';
 			$tpl->assign(
-					array(
-						'READONLY_FORWARD' => ' readonly="readonly"',
-						'DISABLE_FORWARD' => ' disabled="disabled"',
-						)
-					);
+				array(
+					'READONLY_FORWARD' => ' readonly="readonly"',
+					'DISABLE_FORWARD' => ' disabled="disabled"',
+				)
+			);
 		}
 		$tpl->assign(
-				array(
-					'HTTP_YES' => ($forward_prefix === 'http://') ? 'selected="selected"' : '',
-					'HTTPS_YES' => ($forward_prefix === 'https://') ? 'selected="selected"' : '',
-					'FTP_YES' => ($forward_prefix === 'ftp://') ? 'selected="selected"' : ''
-					)
-				);
+			array(
+				'HTTP_YES' => ($forward_prefix === 'http://') ? 'selected="selected"' : '',
+				'HTTPS_YES' => ($forward_prefix === 'https://') ? 'selected="selected"' : '',
+				'FTP_YES' => ($forward_prefix === 'ftp://') ? 'selected="selected"' : ''
+			)
+		);
 	} else {
 		$check_en = '';
 		$check_dis = 'checked="checked"';
 		$forward = '';
 		$tpl->assign(
-				array(
-					'READONLY_FORWARD' => ' readonly="readonly"',
-					'DISABLE_FORWARD' => ' disabled="disabled"',
-					)
-				);
+			array(
+				'READONLY_FORWARD' => ' readonly="readonly"',
+				'DISABLE_FORWARD' => ' disabled="disabled"',
+			)
+		);
 	}
 	
 	$tpl->assign(
@@ -290,12 +290,12 @@ function add_domain_alias(&$sql, &$err_al) {
 	} else if (!validates_mpoint($mount_point) && $mount_point != '/') {
 		$err_al = tr("Incorrect mount point syntax");
 	} else if ($_POST['status'] == 1) {
-		if(substr_count($forward, '.') <= 2) {
+		if (substr_count($forward, '.') <= 2) {
 			$ret = validates_dname($forward);
 		} else {
 			$ret = validates_dname($forward, true);
 		}
-		if(!$ret) {
+		if (!$ret) {
 			$err_al = tr("Wrong domain part in forward URL!");
 		} else {
 			$forward = encode_idna($forward_prefix.$forward);
@@ -303,7 +303,7 @@ function add_domain_alias(&$sql, &$err_al) {
 	} else {
 		$query = "SELECT `domain_id` FROM `domain_aliasses` WHERE `alias_name` = ?";
 		$res = exec_query($sql, $query, array($alias_name));
-		$query="SELECT `domain_id` FROM `domain` WHERE `domain_name` = ?";
+		$query = "SELECT `domain_id` FROM `domain` WHERE `domain_name` = ?";
 		$res2 = exec_query($sql, $query, array($alias_name));
 		if ($res->RowCount() > 0 || $res2->RowCount() > 0) {
 			// we already have a domain with this name

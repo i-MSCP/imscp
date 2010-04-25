@@ -38,14 +38,14 @@ function save_layout(&$sql) {
 
 		$user_layout = $_POST['def_layout'];
 
-		$query = <<<SQL_QUERY
+		$query = "
 			UPDATE
 				`user_gui_props`
 			SET
 				`layout` = ?
 			WHERE
 				`user_id` = ?
-SQL_QUERY;
+		";
 		$rs = exec_query($sql, $query, array($user_layout, $user_id));
 		$_SESSION['user_theme_color'] = $user_layout;
 		$theme_color = $user_layout;
@@ -123,14 +123,14 @@ function update_logo() {
 function update_user_logo($file_name, $user_id) {
 	$sql = Database::getInstance();
 
-	$query = <<<SQL_QUERY
+	$query = "
 		UPDATE
 			`user_gui_props`
 		SET
 			`logo` = ?
 		WHERE
 			`user_id` = ?
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($file_name, $user_id));
 }
@@ -150,7 +150,7 @@ $theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
 gen_def_layout($tpl, $_SESSION['user_theme']);
 
-if(get_own_logo($_SESSION['user_id']) !== Config::getInstance()->get('IPS_LOGO_PATH').'/isp_logo.gif') {
+if (get_own_logo($_SESSION['user_id']) !== Config::getInstance()->get('IPS_LOGO_PATH').'/isp_logo.gif') {
 	$tpl->parse('LOGO_REMOVE_BUTTON', '.logo_remove_button');
 } else {
 	$tpl->assign('LOGO_REMOVE_BUTTON', '');

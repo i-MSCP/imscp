@@ -166,47 +166,47 @@ function gen_al_page(&$tpl, $reseller_id) {
 	}
 	if (isset($_POST['status']) && $_POST['status'] == 1) {
 		$forward_prefix = clean_input($_POST['forward_prefix']);
-		if($_POST['status'] == 1) {
+		if ($_POST['status'] == 1) {
 			$check_en = 'checked="checked"';
 			$check_dis = '';
 			$forward = strtolower(clean_input($_POST['forward']));
 			$tpl->assign(
-					array(
-						'READONLY_FORWARD'	=> '',
-						'DISABLE_FORWARD'	=> ''
-						)
-					);
+				array(
+					'READONLY_FORWARD'	=> '',
+					'DISABLE_FORWARD'	=> ''
+				)
+			);
 		} else {
 			$check_en = '';
 			$check_dis = 'checked="checked"';
 			$forward = '';
 			$tpl->assign(
-					array(
-						'READONLY_FORWARD'	=> ' readonly="readonly"',
-						'DISABLE_FORWARD'	=> ' disabled="disabled"'
-						)
-					);
+				array(
+					'READONLY_FORWARD'	=> ' readonly="readonly"',
+					'DISABLE_FORWARD'	=> ' disabled="disabled"'
+				)
+			);
 		}
 		$tpl->assign(
-				array(
-					'HTTP_YES'	=> ($forward_prefix === 'http://') ? ' selected="selected"' : '',
-					'HTTPS_YES'	=> ($forward_prefix === 'https://') ? ' selected="selected"' : '',
-					'FTP_YES'	=> ($forward_prefix === 'ftp://') ? ' selected="selected"' : ''
-					)
-				);
+			array(
+				'HTTP_YES'	=> ($forward_prefix === 'http://') ? ' selected="selected"' : '',
+				'HTTPS_YES'	=> ($forward_prefix === 'https://') ? ' selected="selected"' : '',
+				'FTP_YES'	=> ($forward_prefix === 'ftp://') ? ' selected="selected"' : ''
+			)
+		);
 	} else {
 		$check_en = '';
 		$check_dis = 'checked="checked"';
 		$forward = '';
 		$tpl->assign(
-				array(
-					'READONLY_FORWARD'	=> ' readonly="readonly"',
-					'DISABLE_FORWARD'	=> ' disabled="disabled"',
-					'HTTP_YES'			=>	'',
-					'HTTPS_YES'			=>	'',
-					'FTP_YES'			=>	''
-					)
-				);
+			array(
+				'READONLY_FORWARD'	=> ' readonly="readonly"',
+				'DISABLE_FORWARD'	=> ' disabled="disabled"',
+				'HTTP_YES'			=>	'',
+				'HTTPS_YES'			=>	'',
+				'FTP_YES'			=>	''
+			)
+		);
 	}
 	
 	$tpl->assign(
@@ -273,12 +273,12 @@ function add_domain_alias(&$sql, &$err_al) {
 	} else if ($alias_name == Config::getInstance()->get('BASE_SERVER_VHOST')) {
 		$err_al = tr('Master domain cannot be used!');
 	} else if ($_POST['status'] == 1) {
-		if(substr_count($forward, '.') <= 2) {
+		if (substr_count($forward, '.') <= 2) {
 			$ret = validates_dname($forward);
 		} else {
 			$ret = validates_dname($forward, true);
 		}
-		if(!$ret) {
+		if (!$ret) {
 			$err_al = tr("Wrong domain part in forward URL!");
 		} else {
 			$forward = encode_idna($forward_prefix.$forward);
@@ -343,7 +343,7 @@ function gen_users_list(&$tpl, $reseller_id) {
 	$sql = Database::getInstance();
 	global $cr_user_id;
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`admin_id`
 		FROM
@@ -354,7 +354,7 @@ function gen_users_list(&$tpl, $reseller_id) {
 			`created_by` = ?
 		ORDER BY
 			`admin_name`
-SQL_QUERY;
+	";
 
 	$ar = exec_query($sql, $query, array($reseller_id));
 
@@ -370,7 +370,7 @@ SQL_QUERY;
 		$admin_id = $ad['admin_id'];
 		$selected = '';
 		// Get domain data
-		$query = <<<SQL_QUERY
+		$query = "
 			SELECT
 				`domain_id`,
 				IFNULL(`domain_name`, '') AS domain_name
@@ -378,7 +378,7 @@ SQL_QUERY;
 				`domain`
 			WHERE
 				`domain_admin_id` = ?
-SQL_QUERY;
+		";
 
 		$dr = exec_query($sql, $query, array($admin_id));
 		$dd = $dr->FetchRow();
@@ -386,10 +386,11 @@ SQL_QUERY;
 		$domain_id = $dd['domain_id'];
 		$domain_name = $dd['domain_name'];
 
-		if (('' == $cr_user_id) && ($i == 1))
+		if (('' == $cr_user_id) && ($i == 1)) {
 			$selected = 'selected="selected"';
-		else if ($cr_user_id == $domain_id)
+		} else if ($cr_user_id == $domain_id) {
 			$selected = 'selected="selected"';
+		}
 
 		$domain_name = decode_idna($domain_name);
 

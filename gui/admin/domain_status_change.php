@@ -41,7 +41,7 @@ if (!is_numeric($_GET['domain_id'])) {
 
 $domain_id = $_GET['domain_id'];
 
-$query = <<<SQL_QUERY
+$query = "
 	SELECT
 		`domain_name`,
 		`domain_status`
@@ -49,7 +49,7 @@ $query = <<<SQL_QUERY
 		`domain`
 	WHERE
 		`domain_id` = ?
-SQL_QUERY;
+";
 
 $rs = exec_query($sql, $query, array($domain_id));
 

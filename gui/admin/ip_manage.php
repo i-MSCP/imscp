@@ -96,7 +96,7 @@ function show_IPs(&$tpl, &$sql) {
 		if ($single == true) {
 			$tpl->assign(
 				array(
-					'IP_DELETE_LINK' =>'',
+					'IP_DELETE_LINK' => '',
 					'IP_ACTION' => tr('N/A')
 				)
 			);

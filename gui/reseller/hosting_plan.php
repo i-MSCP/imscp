@@ -46,12 +46,12 @@ $tpl->define_dynamic('hp_menu_add', 'page');
 $theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
 $tpl->assign(
-		array(
-				'TR_RESELLER_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Reseller/Main Index'),
-				'THEME_COLOR_PATH' => "../themes/$theme_color",
-				'THEME_CHARSET' => tr('encoding'),
-				'ISP_LOGO' => get_logo($_SESSION['user_id'])
-		)
+	array(
+		'TR_RESELLER_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Reseller/Main Index'),
+		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+	)
 );
 
 /*
@@ -68,16 +68,16 @@ gen_logged_from($tpl);
 gen_hp_table($tpl, $_SESSION['user_id']);
 
 $tpl->assign(
-		array(
-			'TR_HOSTING_PLANS' => tr('Hosting plans'),
-			'TR_PAGE_MENU' => tr('Manage hosting plans'),
-			'TR_PURCHASING' => tr('Purchasing'),
-			'TR_ADD_HOSTING_PLAN' => tr('Add hosting plan'),
-			'TR_TITLE_ADD_HOSTING_PLAN' => tr('Add new user hosting plan'),
-			'TR_BACK' => tr('Back'),
-			'TR_TITLE_BACK' => tr('Return to previous menu'),
-			'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s')
-		)
+	array(
+		'TR_HOSTING_PLANS' => tr('Hosting plans'),
+		'TR_PAGE_MENU' => tr('Manage hosting plans'),
+		'TR_PURCHASING' => tr('Purchasing'),
+		'TR_ADD_HOSTING_PLAN' => tr('Add hosting plan'),
+		'TR_TITLE_ADD_HOSTING_PLAN' => tr('Add new user hosting plan'),
+		'TR_BACK' => tr('Back'),
+		'TR_TITLE_BACK' => tr('Return to previous menu'),
+		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s')
+	)
 );
 
 gen_hp_message($tpl);
@@ -131,7 +131,7 @@ function gen_hp_table(&$tpl, $reseller_id) {
 
 	if (Config::getInstance()->exists('HOSTING_PLANS_LEVEL')
 		&& Config::getInstance()->get('HOSTING_PLANS_LEVEL') === 'admin') {
-		$query = <<<SQL_QUERY
+		$query = "
 			SELECT
 				t1.`id`, t1.`reseller_id`, t1.`name`, t1.`props`, t1.`status`,
 				t2.`admin_id`, t2.`admin_type`
@@ -146,13 +146,13 @@ function gen_hp_table(&$tpl, $reseller_id) {
 				t1.`status` = 1
 			ORDER BY
 				t1.`name`
-SQL_QUERY;
+		";
 
 		$rs = exec_query($sql, $query, array('admin'));
 		$tr_edit = tr('View details');
 		$tpl->assign('HP_MENU_ADD', '');
 	} else {
-		$query = <<<SQL_QUERY
+		$query = "
 			SELECT
 				`id`, `name`, `props`, `status`
 			FROM
@@ -161,7 +161,7 @@ SQL_QUERY;
 				`reseller_id` = ?
 			ORDER BY
 				`name`
-SQL_QUERY;
+		";
 		$rs = exec_query($sql, $query, array($reseller_id));
 		$tr_edit = tr('Edit');
 	}
@@ -177,16 +177,18 @@ SQL_QUERY;
 		}
 
 		$tpl->assign(
-				array(
-					'TR_HOSTING_PLANS' 	=> tr('Hosting plans'),
-					'TR_NOM' 			=> tr('No.'),
-					'TR_EDIT' 			=> $tr_edit,
-					'TR_PLAN_NAME' 		=> tr('Name'),
-					'TR_ACTION' 		=> tr('Actions')
-				)
+			array(
+				'TR_HOSTING_PLANS' 	=> tr('Hosting plans'),
+				'TR_NOM' 			=> tr('No.'),
+				'TR_EDIT' 			=> $tr_edit,
+				'TR_PLAN_NAME' 		=> tr('Name'),
+				'TR_ACTION' 		=> tr('Actions')
+			)
 		);
 
-		$coid = Config::getInstance()->exists('CUSTOM_ORDERPANEL_ID') ? Config::getInstance()->get('CUSTOM_ORDERPANEL_ID'): '';
+		$coid = Config::getInstance()->exists('CUSTOM_ORDERPANEL_ID')
+			? Config::getInstance()->get('CUSTOM_ORDERPANEL_ID')
+			: '';
 
 		$i = 1;
 		while ($data = $rs->FetchRow()) {
@@ -196,17 +198,17 @@ SQL_QUERY;
 			$status = ($data['status']) ? tr('Enabled') : tr('Disabled');
 
 			$tpl->assign(
-					array(
-						'PLAN_NOM' => $i++,
-						'PLAN_NAME' => $data['name'],
-						'PLAN_NAME2' => addslashes(clean_html($data['name'])),
-						'PLAN_ACTION' => tr('Delete'),
-						'PLAN_SHOW' => tr('Show hosting plan'),
-						'PURCHASING' => $status,
-						'CUSTOM_ORDERPANEL_ID' => $coid,
-						'HP_ID' => $data['id'],
-						'RESELLER_ID' => $_SESSION['user_id']
-					)
+				array(
+					'PLAN_NOM' => $i++,
+					'PLAN_NAME' => $data['name'],
+					'PLAN_NAME2' => addslashes(clean_html($data['name'])),
+					'PLAN_ACTION' => tr('Delete'),
+					'PLAN_SHOW' => tr('Show hosting plan'),
+					'PURCHASING' => $status,
+					'CUSTOM_ORDERPANEL_ID' => $coid,
+					'HP_ID' => $data['id'],
+					'RESELLER_ID' => $_SESSION['user_id']
+				)
 			);
 
 			$tpl->parse('HP_ENTRY', '.hp_entry');

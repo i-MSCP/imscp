@@ -93,7 +93,7 @@ function register_user($uname, $upass) {
 
 		$sess_id = session_id();
 
-		$query = <<<SQL_QUERY
+		$query = "
 			UPDATE
 				`login`
 			SET
@@ -101,7 +101,7 @@ function register_user($uname, $upass) {
 				`lastaccess` = ?
 			WHERE
 				`session_id` = ?
-SQL_QUERY;
+		";
 
 		exec_query($sql, $query, array($uname, time(), $sess_id));
 
@@ -140,7 +140,7 @@ function check_user_login() {
 	$user_id = $_SESSION['user_id'];
 
 	// verify session data with database
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			*
 		FROM
@@ -155,7 +155,7 @@ function check_user_login() {
 			admin.`admin_id` = ?
 		AND
 			login.`session_id` = ?
-SQL_QUERY;
+	";
 
 	$rs = exec_query($sql, $query, array($user_logged, $user_pass, $user_type, $user_id, $sess_id));
 
@@ -173,14 +173,14 @@ SQL_QUERY;
 	// if user login data correct - update session and lastaccess
 	$_SESSION['user_login_time'] = time();
 
-	$query = <<<SQL_QUERY
+	$query = "
 		UPDATE
 			`login`
 		SET
 			`lastaccess` = ?
 		WHERE
 			`session_id` = ?
-SQL_QUERY;
+	";
 
 	exec_query($sql, $query, array(time(), $sess_id));
 	return true;
@@ -197,7 +197,7 @@ function check_login($fName = null, $preventExternalLogin = true) {
 	// session-type check:
 	if (!check_user_login()) {
 
-		if(is_xhr()) {
+		if (is_xhr()) {
 			header('HTTP/1.0 403 Forbidden');
 			exit;
 		}
@@ -340,14 +340,14 @@ function unset_user_login_data($ignorePreserve = false) {
 
 		$admin_name = $_SESSION['user_logged'];
 
-		$query = <<<SQL_QUERY
+		$query = "
 			DELETE FROM
 				`login`
 			WHERE
 				`session_id` = ?
 			AND
 				`user_name` = ?
-SQL_QUERY;
+		";
 
 		$rs = exec_query($sql, $query, array($sess_id, $admin_name));
 
