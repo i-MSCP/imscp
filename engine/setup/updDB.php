@@ -40,7 +40,6 @@ if (criticalUpdate::getInstance()->checkUpdateExists()) {
 
 	criticalUpdate::getInstance()->executeUpdates();
 
-	// TODO check if this condition or ...
 	if ( ($msg = criticalUpdate::getInstance()->getErrorMessage()) != '') {
 		print $msg;
 		exit(1);
@@ -53,7 +52,6 @@ if (databaseUpdate::getInstance()->checkUpdateExists()) {
 
 	databaseUpdate::getInstance()->executeUpdates();
 
-	// TODO ... this condition has right bracket syntax
 	if ( ($msg = databaseUpdate::getInstance()->getErrorMessage() != '')) {
 		print $msg;
 		exit(1);
