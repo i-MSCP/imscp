@@ -324,14 +324,19 @@ function block_ipaddr($ipaddr, $type = 'General') {
  * @todo describe function
  */
 function deny_access() {
-	$backButtonDestination =Config::getInstance()->get('BASE_SERVER_VHOST_PREFIX') . Config::getInstance()->get('BASE_SERVER_VHOST');
-	system_message(tr('You have been blocked for %d minutes.', Config::getInstance()->get('BRUTEFORCE_BLOCK_TIME')), $backButtonDestination);
+	$backButtonDestination = Config::getInstance()->get('BASE_SERVER_VHOST_PREFIX') . 
+		Config::getInstance()->get('BASE_SERVER_VHOST');
+	system_message(
+		tr('You have been blocked for %d minutes.', 
+		Config::getInstance()->get('BRUTEFORCE_BLOCK_TIME')), 
+		$backButtonDestination
+	);
 }
 
 /**
- * Returns the users IP address
+ * Returns the user's IP address
  *
- * @return String				users IP address
+ * @return String	user's IP address
  */
 function getipaddr() {
 	return $_SERVER['REMOTE_ADDR'];

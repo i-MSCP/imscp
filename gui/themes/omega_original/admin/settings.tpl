@@ -240,10 +240,10 @@
                             </tr>
                             <tr>
                               <td>&nbsp;</td>
-                              <td class="content2">{TR_SHOW_SERVERLOAD}</td>
-                              <td class="content"><select name="show_serverload" id="show_serverload">
-                                  <option value="0" {SHOW_SERVERLOAD_SELECTED_OFF}>{TR_DISABLED}</option>
-                                  <option value="1" {SHOW_SERVERLOAD_SELECTED_ON}>{TR_ENABLED}</option>
+                              <td class="content2">{TR_SHOW_COMPRESSION_SIZE}</td>
+                              <td class="content"><select name="show_compression_size" id="show_compression_size">
+                                  <option value="0" {SHOW_COMPRESSION_SIZE_SELECTED_OFF}>{TR_DISABLED}</option>
+                                  <option value="1" {SHOW_COMPRESSION_SIZE_SELECTED_ON}>{TR_ENABLED}</option>
                                 </select></td>
                             </tr>
                             <tr>

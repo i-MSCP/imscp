@@ -59,7 +59,6 @@ class spOutput {
 	private $crc;
 	private $size;
 	private $gzsize;
-	private $serverload;
 	/**
 	 * @var $level compession level
 	 */
@@ -69,17 +68,17 @@ class spOutput {
 	 */
 	private $debug;
 	/**
-	 * @var $showSize HTML output (as comment)
+	 * @var $showCompression HTML output (as comment)
 	 */
-	private $showSize;
+	private $showCompression;
 
 	/**
 	 * constructor
-	 * @param int 		$level 		the compression level
-	 * @param boolean 	$debug 		use debug mode (no compression)
-	 * @param boolean 	$showSize 	show the compression in HTML
+	 * @param int 		$level 				the compression level
+	 * @param boolean 	$debug 				use debug mode (no compression)
+	 * @param boolean 	$showCompression 	show the compression in HTML
 	 */
-	public function __construct($level = '3', $debug = false, $showSize = true) {
+	public function __construct($level = '3', $debug = false, $showCompression = true) {
 		if ($level < $this->MinCompression) {
 			$this->level = $this->MinCompression;
 		} else if ($level > $this->MaxCompression) {
@@ -89,7 +88,7 @@ class spOutput {
 		}
 
 		$this->debug = (boolean) $debug;
-		$this->showSize = (boolean) $showSize;
+		$this->showCompression = (boolean) $showCompression;
 	}
 
 	/**
@@ -173,7 +172,7 @@ class spOutput {
 		 * show some extra information
 		 * this means compress the content two times
 		 */
-		if ($this->showSize) {
+		if ($this->showCompression) {
 			// We need some vars for the information
 			$uncompressed	= round(strlen($this->contents)/1024, 2);
 			$start			= $this->getMicrotime();
@@ -189,12 +188,11 @@ class spOutput {
 			$saving			= $uncompressed > '0' ? 
 								@round($savingkb/$uncompressed*100, 0) : '0';
 
-			// Show some information
+			// Shows some information
 			$this->contents .= "\n<!--\n\tCompression level: " . $this->level . 
 				"\n\tOriginal size: " . $uncompressed . " kb\n\tNew size: " . 
 				$compressed . " kb\n\tSaving: " . $savingkb . " kb (" . $saving .
-				" %)\n\tTime: " . $time . " ms\n\tServerload: " . 
-				round($this->serverload, 2) . "\n-->";
+				" %)\n\tTime: " . $time . " ms\n-->";
 		}
 
 		// create & concat the full output

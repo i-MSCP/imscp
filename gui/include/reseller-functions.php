@@ -28,7 +28,7 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-// for mail types:
+// avaiable mail types
 define('MT_NORMAL_MAIL', 'normal_mail');
 define('MT_NORMAL_FORWARD', 'normal_forward');
 define('MT_ALIAS_MAIL', 'alias_mail');
@@ -470,7 +470,8 @@ function get_user_traffic($user_id) {
 	$res = exec_query($sql, $query, array($user_id));
 
 	if ($res->RowCount() == 0 || $res->RowCount() > 1) {
-		// write_log("TRAFFIC WARNING: >$user_id< manages incorrect number of domains >".$res->RowCount()."<");
+		// write_log("TRAFFIC WARNING: >$user_id< manages incorrect number of 
+		// domains >".$res->RowCount()."<");
 		return array('n/a', 0, 0, 0, 0, 0, 0, 0, 0, 0);
 	} else {
 		$data = $res->FetchRow();
@@ -537,7 +538,10 @@ function get_user_traffic($user_id) {
 } // end of get_user_traffic()
 
 /**
- * Get users probs info from db via sql
+ * Get user's properties from Database
+ * 
+ * @param int		$user_id	user's ID
+ * @return Array				user's properies
  */
 function get_user_props($user_id) {
 
@@ -567,7 +571,7 @@ function get_user_props($user_id) {
 	$als_max = $data['domain_alias_limit'];
 
 	if (Config::getInstance()->get('COUNT_DEFAULT_EMAIL_ADDRESSES')) {
-		// Catch all is not a mailbox and haven't to be count - TheCry
+		// Catch all is not a mailbox and haven't to be count
 		$mail_current = records_count('mail_users', 'mail_type NOT RLIKE \'_catchall\' AND domain_id', $user_id);
 	} else {
 		$where = "`mail_acc` != 'abuse'

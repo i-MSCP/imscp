@@ -66,7 +66,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	$hosting_plan_level				= $_POST['hosting_plan_level'];
 	$domain_rows_per_page			= clean_input($_POST['domain_rows_per_page']);
 	$checkforupdate					= $_POST['checkforupdate'];
-	$show_serverload				= $_POST['show_serverload'];
+	$show_compression_size			= $_POST['show_compression_size'];
 	$prevent_external_login_admin	= $_POST['prevent_external_login_admin'];
 	$prevent_external_login_reseller= $_POST['prevent_external_login_reseller'];
 	$prevent_external_login_client	= $_POST['prevent_external_login_client'];
@@ -127,7 +127,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 		setConfig_Value('DOMAIN_ROWS_PER_PAGE', $domain_rows_per_page);
 		setConfig_Value('LOG_LEVEL', $log_level);
 		setConfig_Value('CHECK_FOR_UPDATES', $checkforupdate);
-		setConfig_Value('SHOW_SERVERLOAD', $show_serverload);
+		setConfig_Value('SHOW_COMPRESSION_SIZE', $show_compression_size);
 		setConfig_Value('PREVENT_EXTERNAL_LOGIN_ADMIN', $prevent_external_login_admin);
 		setConfig_Value('PREVENT_EXTERNAL_LOGIN_RESELLER', $prevent_external_login_reseller);
 		setConfig_Value('PREVENT_EXTERNAL_LOGIN_CLIENT', $prevent_external_login_client);
@@ -256,12 +256,12 @@ if (Config::getInstance()->get('CHECK_FOR_UPDATES')) {
 	$tpl->assign('CHECK_FOR_UPDATES_SELECTED_OFF', 'selected="selected"');
 }
 
-if (Config::getInstance()->get('SHOW_SERVERLOAD')) {
-	$tpl->assign('SHOW_SERVERLOAD_SELECTED_ON', 'selected="selected"');
-	$tpl->assign('SHOW_SERVERLOAD_SELECTED_OFF', '');
+if (Config::getInstance()->get('SHOW_COMPRESSION_SIZE')) {
+	$tpl->assign('SHOW_COMPRESSION_SIZE_SELECTED_ON', 'selected="selected"');
+	$tpl->assign('SHOW_COMPRESSION_SIZE_SELECTED_OFF', '');
 } else {
-	$tpl->assign('SHOW_SERVERLOAD_SELECTED_ON', '');
-	$tpl->assign('SHOW_SERVERLOAD_SELECTED_OFF', 'selected="selected"');
+	$tpl->assign('SHOW_COMPRESSION_SIZE_SELECTED_ON', '');
+	$tpl->assign('SHOW_COMPRESSION_SIZE_SELECTED_OFF', 'selected="selected"');
 }
 
 if (Config::getInstance()->get('PREVENT_EXTERNAL_LOGIN_ADMIN')) {
@@ -359,7 +359,7 @@ $tpl->assign(
 		'TR_E_USER_WARNING' 				=> tr('Warnings and Errors'),
 		'TR_E_USER_ERROR' 					=> tr('Errors'),
 		'TR_CHECK_FOR_UPDATES' 				=> tr('Check for update'),
-		'TR_SHOW_SERVERLOAD' 				=> tr('Show server load'),
+		'TR_SHOW_COMPRESSION_SIZE' 			=> tr('Show compression size comment'),
 		'TR_PREVENT_EXTERNAL_LOGIN_ADMIN' 	=> tr('Prevent external login for admins'),
 		'TR_PREVENT_EXTERNAL_LOGIN_RESELLER' => tr('Prevent external login for resellers'),
 		'TR_PREVENT_EXTERNAL_LOGIN_CLIENT' 	=> tr('Prevent external login for clients'),

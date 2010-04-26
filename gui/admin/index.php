@@ -42,7 +42,6 @@ $tpl->define_dynamic('no_messages', 'page');
 $tpl->define_dynamic('msg_entry', 'page');
 $tpl->define_dynamic('update_message', 'page');
 $tpl->define_dynamic('database_update_message', 'page');
-$tpl->define_dynamic('critical_update_message', 'page');
 $tpl->define_dynamic('traff_warn', 'page');
 
 function gen_system_message(&$tpl, &$sql) {
@@ -82,16 +81,6 @@ function gen_system_message(&$tpl, &$sql) {
 function get_update_infos(&$tpl) {
 
 	$sql = Database::getInstance();
-
-	if (criticalUpdate::getInstance()->checkUpdateExists()) {
-		criticalUpdate::getInstance()->executeUpdates();
-		if (criticalUpdate::getInstance()->getErrorMessage() != "")
-			system_message(criticalUpdate::getInstance()->getErrorMessage());
-		$tpl->assign(array('CRITICAL_MESSAGE' => 'Critical update has been performed'));
-		$tpl->parse('CRITICAL_UPDATE_MESSAGE', 'critical_update_message');
-	} else {
-		$tpl->assign(array('CRITICAL_UPDATE_MESSAGE' => ''));
-	}
 
 	if (databaseUpdate::getInstance()->checkUpdateExists()) {
 		$tpl->assign(array('DATABASE_UPDATE' => '<a href="database_update.php" class="link">' . tr('A database update is available') . '</a>'));

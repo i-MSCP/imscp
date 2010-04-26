@@ -1,5 +1,10 @@
-ispCP ω 1.0.6 Changelog
+ispCP ω 1.0.6 Change Log
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2010-04-26 Benedikt Heintel
+	- GUI:
+        * Merged Critical Udapte with Database Update
+		* Fixed #2345: Delete "Show Server Load"
 
 2010-04-22 Thomas Häber
 	- GUI:
@@ -7,7 +12,7 @@ ispCP ω 1.0.6 Changelog
 
 2010-04-21 Thomas Häber
 	- GUI:
-		* [GUI] Fixed screenwidth problem in noscript context
+		* Fixed screenwidth problem in noscript context
 
 2010-04-20 Sascha Bay
 	- GUI:
@@ -38,7 +43,7 @@ ispCP ω 1.0.6 Changelog
 	- GUI:
 		* Fixed #2330: Hide table headers if feature not un-used
 		* Removed some unused variables in client/ftp_accounts.php
-		* Fixed #2336: minor html fix in gui trunk
+		* Fixed #2336: minor HTML fix in GUI trunk
 
 2010-04-05 Laurent Declercq
 	- CONTRIB:

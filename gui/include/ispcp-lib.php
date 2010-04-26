@@ -107,8 +107,8 @@ require_once(INCLUDEPATH . '/sql.php');
 // variable for development edition => shows all php variables t page's end
 Config::getInstance()->set('DUMP_GUI_DEBUG', DISABLE);
 
-// show server load information in spGZIP HTML output
-Config::getInstance()->set('SHOW_SERVERLOAD', DISABLE);
+// show spGZIP compression information in HTML output
+Config::getInstance()->set('SHOW_COMPRESSION_SIZE', ENABLE);
 
 // Session timeout in minutes
 Config::getInstance()->set('SESSION_TIMEOUT', 30);
@@ -271,8 +271,6 @@ Config::getInstance()->set('PREVENT_EXTERNAL_LOGIN_CLIENT', ENABLE);
 // Automatic search for new version
 Config::getInstance()->set('CHECK_FOR_UPDATES', ENABLE);
 
-Config::getInstance()->set('CRITICAL_UPDATE_REVISION', 0);
-
 if (!Config::getInstance()->get('ISPCP_SUPPORT_SYSTEM_TARGET')) {
 	Config::getInstance()->set('ISPCP_SUPPORT_SYSTEM_TARGET', '_self');
 }
@@ -319,9 +317,10 @@ if (!$res = exec_query($sql, $query, array())) {
 
 // Compress/gzip Class
 require_once(INCLUDEPATH . '/class.spGzip.php');
-// Check if server load information is enabled
-$showSize = (Config::getInstance()->get('SHOW_SERVERLOAD')) ? true : false;
+// Check if server information is enabled
+$showCompression =
+    (Config::getInstance()->get('SHOW_COMPRESSION_SIZE')) ? true : false;
 // construct the object
-$GLOBALS['class']['output'] = new spOutput('auto', false, $showSize);
+$GLOBALS['class']['output'] = new spOutput('auto', false, $showCompression);
 // Start the output buffering
 ob_start(array($GLOBALS['class']['output'], 'output'));

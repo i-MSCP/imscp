@@ -67,7 +67,7 @@ class databaseUpdate extends ispcpUpdate {
 	 * return object databaseUpdate instance
 	 */
 	public static function getInstance() {
-		if ($instance === NULL) {
+		if (!isset($instance) || $instance === NULL) {
 			$instance = new self();	
 		}
 		return $instance;
@@ -1042,6 +1042,152 @@ class databaseUpdate extends ispcpUpdate {
 				;
 			";
 		}
+
+		// Returns the pool of queries to be executed
+		return $sqlUpd;
+	}
+	
+	/**
+	 * Old "criticalUpdate" functions moved here due to removal of critical 
+	 * updates, they will be executed if not done so far, thereafter, the 
+	 * constant CRITICAL_UPDATE_REVISION will be removed
+	 *
+	 * @author Benedikt Heintel
+	 * @since r2876
+	 *
+	 * @access protected
+	 * @return array sql statements to be performed
+	 */
+	protected function _databaseUpdate_33() {
+		$sqlUpd = array();
+		$sql = Database::getInstance();
+        if (Config::getInstance()->exists('CRITICAL_UPDATE_REVISION')) {
+            $critical_update = Config::getInstance()->get('CRITICAL_UPDATE_REVISION');
+        }
+		
+		if (!isset($critical_update) || $critical_update < 3) {
+			
+			/**
+			 * Old Critical Update #1
+			 * 
+			 * Encrypt email and sql users password in database
+			 *
+			 * @author		Daniel Andreca <sci2tech@gmail.com>
+			 * @version		1.0
+			 * @since		r1355
+			 *
+			 * @access		protected
+			 * @param		Type $engine_run_request Set to true if is needed to perform an engine request
+			 * @return		Type $sqlUpd Sql statements to be performed
+			 */
+			if (!isset($critical_update)) {
+				$status = Config::getInstance()->get('ITEM_CHANGE_STATUS');
+				
+				$query = "SELECT `mail_id`, `mail_pass` FROM `mail_users` WHERE `mail_type` RLIKE '^normal_mail' OR `mail_type` RLIKE '^alias_mail' OR `mail_type` RLIKE '^subdom_mail'";
+				$rs = exec_query($sql, $query);
+
+				if ($rs->RecordCount() != 0) {
+					while (!$rs->EOF) {
+						$sqlUpd[] = "UPDATE `mail_users` SET `mail_pass`= '". encrypt_db_password($rs->fields['mail_pass']). "', `status` = '$status' WHERE `mail_id` = '". $rs->fields['mail_id'] ."'";
+						$rs->MoveNext();
+					}
+				}
+
+				$query ="SELECT `sqlu_id`, `sqlu_pass` FROM `sql_user`";
+				$rs = exec_query($sql, $query);
+
+				if ($rs->RecordCount() != 0) {
+					while (!$rs->EOF) {
+						$sqlUpd[] = "UPDATE `sql_user` SET `sqlu_pass` = '". encrypt_db_password($rs->fields['sqlu_pass']). "' WHERE `sqlu_id` = '". $rs->fields['sqlu_id'] ."'";
+						$rs->MoveNext();
+					}
+				}
+
+			}
+
+			/**
+			 * Old Critical Update #2
+			 * 
+			 * Create default group for statistics
+			 * Fix for ticket #1571 http://www.isp-control.net/ispcp/ticket/1571.
+			 *
+			 * @author		Daniel Andreca <sci2tech@gmail.com>
+			 * @version		1.0
+			 * @since		r1417
+			 *
+			 * @access		protected
+			 * @param		Type $engine_run_request Set to true if is needed to perform an engine request
+			 * @return		Type $sqlUpd Sql statements to be performed
+			 */
+			if ($critical_update < 2) {
+				$status = Config::getInstance()->get('ITEM_ADD_STATUS');
+				$statsgroup = Config::getInstance()->get('AWSTATS_GROUP_AUTH');
+				$sql = Database::getInstance();
+		
+				$query = "SELECT `domain_id` FROM `domain` WHERE `domain_id` NOT IN (SELECT `dmn_id` FROM `htaccess_groups` WHERE `ugroup` = '{$statsgroup}')";
+				$rs = exec_query($sql, $query);
+		
+				if ($rs->RecordCount() != 0) {
+					while (!$rs->EOF) {
+						$sqlUpd[] = "INSERT INTO htaccess_groups (`dmn_id`, `ugroup`,`status`) VALUES ('{$rs->fields['domain_id']}', '{$statsgroup}', '{$status}')";
+						$rs->MoveNext();
+					}
+				}
+			}
+			
+			/**
+			 * Old Critical Update #3
+			 * 
+			 * Create default group for statistics
+			 * Fix for ticket #1571 http://www.isp-control.net/ispcp/ticket/1571.
+			 *
+			 * @author		Daniel Andreca <sci2tech@gmail.com>
+			 * @version		1.0
+			 * @since		r1725
+			 *
+			 * @access		protected
+			 * @param		Type	$engine_run_request	Set to true if is needed to perform an engine request
+			 * @return		Type	$sqlUpd	Sql statements to be performed
+			 */
+			$sql = Database::getInstance();
+			$interfaces = new networkCard();
+			$card = $interfaces->ip2NetworkCard(Config::getInstance()->get('BASE_SERVER_IP'));
+	
+			$sqlUpd[] = "ALTER TABLE `server_ips`
+						ADD `ip_card` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL,
+						ADD `ip_ssl_domain_id` INT( 10 ) NULL,
+						ADD `ip_status` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL";
+			$sqlUpd[] = "UPDATE `server_ips` SET `ip_card` = '" . $card . "', `ip_status` = '" . Config::getInstance()->get('ITEM_CHANGE_STATUS') . "'";
+			
+			/**
+			 * Old Critical Updates #4 and #5 moved to {@see _databaseUpdate_24}
+			 */
+		}
+		
+		if (isset($critical_update)) {
+			$sqlUpd[] = "DELETE FROM `ispcp`.`config` WHERE `config`.`name` = 'CRITICAL_UPDATE_REVISION'";
+		}
+		
+		// Returns the pool of queries to be executed
+		return $sqlUpd;
+	}
+
+	/**
+	 * Fix for ticket #2345 http://www.isp-control.net/ispcp/ticket/2345
+	 *
+	 * Deletes the "Show Server Load" Option and the related variable
+	 *
+	 * @author Benedikt Heintel
+	 * @since r2876
+	 *
+	 * @access protected
+	 * @return array sql statements to be performed
+	 */
+	protected function _databaseUpdate_34() {
+		$sqlUpd = array();
+		$sql = Database::getInstance();
+
+		$sqlUpd[] = "DELETE FROM `ispcp`.`config` WHERE `config`.`name` = 'SHOW_SERVERLOAD'";	
 
 		// Returns the pool of queries to be executed
 		return $sqlUpd;

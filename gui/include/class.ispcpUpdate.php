@@ -33,7 +33,7 @@
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
  * @copyright	2006-2009 by ispCP | http://isp-control.net
  * @version		1.2
- * @see			class.criticalUpdate.php, class.databaseUpdate.php
+ * @see			class.databaseUpdate.php
  * @since		r1355
  */
 abstract class ispcpUpdate {

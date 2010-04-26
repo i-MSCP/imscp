@@ -122,12 +122,11 @@ INSERT INTO `config` (`name`, `value`) VALUES
 ('PORT_AMAVIS', '10024;tcp;AMaVis;1;1;localhost'),
 ('PORT_SPAMASSASSIN', '783;tcp;SPAMASSASSIN;1;1;localhost'),
 ('PORT_POLICYD-WEIGHT', '12525;tcp;POLICYD-WEIGHT;1;1;localhost'),
-('SHOW_SERVERLOAD', '1'),
+('SHOW_COMPRESSION_SIZE', '1'),
 ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
 ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
 ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-('DATABASE_REVISION', '32'),
-('CRITICAL_UPDATE_REVISION', '5');
+('DATABASE_REVISION', '34');
 
 -- --------------------------------------------------------
 

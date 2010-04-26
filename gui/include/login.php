@@ -60,8 +60,7 @@ function register_user($uname, $upass) {
 	$udata = get_userdata($uname);
 
 	if ((
-		criticalUpdate::getInstance()->checkUpdateExists()
-		|| databaseUpdate::getInstance()->checkUpdateExists()
+		databaseUpdate::getInstance()->checkUpdateExists()
 		|| (Config::getInstance()->get('MAINTENANCEMODE'))
 		) && $udata['admin_type'] != 'admin') {
 		write_log("Login error, <b><i>" . $uname . "</i></b> system currently in maintenance mode");
@@ -165,7 +164,10 @@ function check_user_login() {
 		return false;
 	}
 
-	if (( criticalUpdate::getInstance()->checkUpdateExists() || databaseUpdate::getInstance()->checkUpdateExists() || (Config::getInstance()->get('MAINTENANCEMODE')) ) && $user_type != 'admin') {
+	if ((
+			databaseUpdate::getInstance()->checkUpdateExists()
+			|| (Config::getInstance()->get('MAINTENANCEMODE')) )
+			&& $user_type != 'admin') {
 		unset_user_login_data(true);
 		write_log("System is currently in maintenance mode. Logging out <b><i>".$user_logged."</i></b>");
 		user_goto('/index.php');
