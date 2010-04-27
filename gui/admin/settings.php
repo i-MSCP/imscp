@@ -161,157 +161,157 @@ $language = Config::getInstance()->get('USER_INITIAL_LANG');
 gen_def_language($tpl, $sql, $language);
 
 if (Config::getInstance()->get('LOSTPASSWORD')) {
-	$tpl->assign('LOSTPASSWORD_SELECTED_ON', 'selected="selected"');
+	$tpl->assign('LOSTPASSWORD_SELECTED_ON', Config::getInstance()->get('HTML_SELECTED'));
 	$tpl->assign('LOSTPASSWORD_SELECTED_OFF', '');
 } else {
 	$tpl->assign('LOSTPASSWORD_SELECTED_ON', '');
-	$tpl->assign('LOSTPASSWORD_SELECTED_OFF', 'selected="selected"');
+	$tpl->assign('LOSTPASSWORD_SELECTED_OFF', Config::getInstance()->get('HTML_SELECTED'));
 }
 
 if (Config::getInstance()->get('PASSWD_STRONG')) {
-	$tpl->assign('PASSWD_STRONG_ON', 'selected="selected"');
+	$tpl->assign('PASSWD_STRONG_ON', Config::getInstance()->get('HTML_SELECTED'));
 	$tpl->assign('PASSWD_STRONG_OFF', '');
 } else {
 	$tpl->assign('PASSWD_STRONG_ON', '');
-	$tpl->assign('PASSWD_STRONG_OFF', 'selected="selected"');
+	$tpl->assign('PASSWD_STRONG_OFF', Config::getInstance()->get('HTML_SELECTED'));
 }
 
 if (Config::getInstance()->get('BRUTEFORCE')) {
-	$tpl->assign('BRUTEFORCE_SELECTED_ON', 'selected="selected"');
+	$tpl->assign('BRUTEFORCE_SELECTED_ON', Config::getInstance()->get('HTML_SELECTED'));
 	$tpl->assign('BRUTEFORCE_SELECTED_OFF', '');
 } else {
 	$tpl->assign('BRUTEFORCE_SELECTED_ON', '');
-	$tpl->assign('BRUTEFORCE_SELECTED_OFF', 'selected="selected"');
+	$tpl->assign('BRUTEFORCE_SELECTED_OFF', Config::getInstance()->get('HTML_SELECTED'));
 }
 
 if (Config::getInstance()->get('BRUTEFORCE_BETWEEN')) {
-	$tpl->assign('BRUTEFORCE_BETWEEN_SELECTED_ON', 'selected="selected"');
+	$tpl->assign('BRUTEFORCE_BETWEEN_SELECTED_ON', Config::getInstance()->get('HTML_SELECTED'));
 	$tpl->assign('BRUTEFORCE_BETWEEN_SELECTED_OFF', '');
 } else {
 	$tpl->assign('BRUTEFORCE_BETWEEN_SELECTED_ON', '');
-	$tpl->assign('BRUTEFORCE_BETWEEN_SELECTED_OFF', 'selected="selected"');
+	$tpl->assign('BRUTEFORCE_BETWEEN_SELECTED_OFF', Config::getInstance()->get('HTML_SELECTED'));
 }
 
 if (Config::getInstance()->get('ISPCP_SUPPORT_SYSTEM')) {
-	$tpl->assign('SUPPORT_SYSTEM_SELECTED_ON', 'selected="selected"');
+	$tpl->assign('SUPPORT_SYSTEM_SELECTED_ON', Config::getInstance()->get('HTML_SELECTED'));
 	$tpl->assign('SUPPORT_SYSTEM_SELECTED_OFF', '');
 } else {
 	$tpl->assign('SUPPORT_SYSTEM_SELECTED_ON', '');
-	$tpl->assign('SUPPORT_SYSTEM_SELECTED_OFF', 'selected="selected"');
+	$tpl->assign('SUPPORT_SYSTEM_SELECTED_OFF', Config::getInstance()->get('HTML_SELECTED'));
 }
 
 if (Config::getInstance()->get('TLD_STRICT_VALIDATION')) {
-	$tpl->assign('TLD_STRICT_VALIDATION_ON', 'selected="selected"');
+	$tpl->assign('TLD_STRICT_VALIDATION_ON', Config::getInstance()->get('HTML_SELECTED'));
 	$tpl->assign('TLD_STRICT_VALIDATION_OFF', '');
 } else {
 	$tpl->assign('TLD_STRICT_VALIDATION_ON', '');
-	$tpl->assign('TLD_STRICT_VALIDATION_OFF', 'selected="selected"');
+	$tpl->assign('TLD_STRICT_VALIDATION_OFF', Config::getInstance()->get('HTML_SELECTED'));
 }
 
 if (Config::getInstance()->get('SLD_STRICT_VALIDATION')) {
-	$tpl->assign('SLD_STRICT_VALIDATION_ON', 'selected="selected"');
+	$tpl->assign('SLD_STRICT_VALIDATION_ON', Config::getInstance()->get('HTML_SELECTED'));
 	$tpl->assign('SLD_STRICT_VALIDATION_OFF', '');
 } else {
 	$tpl->assign('SLD_STRICT_VALIDATION_ON', '');
-	$tpl->assign('SLD_STRICT_VALIDATION_OFF', 'selected="selected"');
+	$tpl->assign('SLD_STRICT_VALIDATION_OFF', Config::getInstance()->get('HTML_SELECTED'));
 }
 
 if (Config::getInstance()->get('CREATE_DEFAULT_EMAIL_ADDRESSES')) {
-	$tpl->assign('CREATE_DEFAULT_EMAIL_ADDRESSES_ON', 'selected="selected"');
+	$tpl->assign('CREATE_DEFAULT_EMAIL_ADDRESSES_ON', Config::getInstance()->get('HTML_SELECTED'));
 	$tpl->assign('CREATE_DEFAULT_EMAIL_ADDRESSES_OFF', '');
 } else {
 	$tpl->assign('CREATE_DEFAULT_EMAIL_ADDRESSES_ON', '');
-	$tpl->assign('CREATE_DEFAULT_EMAIL_ADDRESSES_OFF', 'selected="selected"');
+	$tpl->assign('CREATE_DEFAULT_EMAIL_ADDRESSES_OFF', Config::getInstance()->get('HTML_SELECTED'));
 }
 
 if (Config::getInstance()->get('COUNT_DEFAULT_EMAIL_ADDRESSES')) {
-	$tpl->assign('COUNT_DEFAULT_EMAIL_ADDRESSES_ON', 'selected="selected"');
+	$tpl->assign('COUNT_DEFAULT_EMAIL_ADDRESSES_ON', Config::getInstance()->get('HTML_SELECTED'));
 	$tpl->assign('COUNT_DEFAULT_EMAIL_ADDRESSES_OFF', '');
 } else {
 	$tpl->assign('COUNT_DEFAULT_EMAIL_ADDRESSES_ON', '');
-	$tpl->assign('COUNT_DEFAULT_EMAIL_ADDRESSES_OFF', 'selected="selected"');
+	$tpl->assign('COUNT_DEFAULT_EMAIL_ADDRESSES_OFF', Config::getInstance()->get('HTML_SELECTED'));
 }
 
 if (Config::getInstance()->get('HARD_MAIL_SUSPENSION')) {
-	$tpl->assign('HARD_MAIL_SUSPENSION_ON', 'selected="selected"');
+	$tpl->assign('HARD_MAIL_SUSPENSION_ON', Config::getInstance()->get('HTML_SELECTED'));
 	$tpl->assign('HARD_MAIL_SUSPENSION_OFF', '');
 } else {
 	$tpl->assign('HARD_MAIL_SUSPENSION_ON', '');
-	$tpl->assign('HARD_MAIL_SUSPENSION_OFF', 'selected="selected"');
+	$tpl->assign('HARD_MAIL_SUSPENSION_OFF', Config::getInstance()->get('HTML_SELECTED'));
 }
 
 if (Config::getInstance()->get('HOSTING_PLANS_LEVEL') == "admin") {
-	$tpl->assign('HOSTING_PLANS_LEVEL_ADMIN', 'selected="selected"');
+	$tpl->assign('HOSTING_PLANS_LEVEL_ADMIN', Config::getInstance()->get('HTML_SELECTED'));
 	$tpl->assign('HOSTING_PLANS_LEVEL_RESELLER', '');
 } else {
 	$tpl->assign('HOSTING_PLANS_LEVEL_ADMIN', '');
-	$tpl->assign('HOSTING_PLANS_LEVEL_RESELLER', 'selected="selected"');
+	$tpl->assign('HOSTING_PLANS_LEVEL_RESELLER', Config::getInstance()->get('HTML_SELECTED'));
 }
 
 if (Config::getInstance()->get('CHECK_FOR_UPDATES')) {
-	$tpl->assign('CHECK_FOR_UPDATES_SELECTED_ON', 'selected="selected"');
+	$tpl->assign('CHECK_FOR_UPDATES_SELECTED_ON', Config::getInstance()->get('HTML_SELECTED'));
 	$tpl->assign('CHECK_FOR_UPDATES_SELECTED_OFF', '');
 } else {
 	$tpl->assign('CHECK_FOR_UPDATES_SELECTED_ON', '');
-	$tpl->assign('CHECK_FOR_UPDATES_SELECTED_OFF', 'selected="selected"');
+	$tpl->assign('CHECK_FOR_UPDATES_SELECTED_OFF', Config::getInstance()->get('HTML_SELECTED'));
 }
 
 if (Config::getInstance()->get('SHOW_COMPRESSION_SIZE')) {
-	$tpl->assign('SHOW_COMPRESSION_SIZE_SELECTED_ON', 'selected="selected"');
+	$tpl->assign('SHOW_COMPRESSION_SIZE_SELECTED_ON', Config::getInstance()->get('HTML_SELECTED'));
 	$tpl->assign('SHOW_COMPRESSION_SIZE_SELECTED_OFF', '');
 } else {
 	$tpl->assign('SHOW_COMPRESSION_SIZE_SELECTED_ON', '');
-	$tpl->assign('SHOW_COMPRESSION_SIZE_SELECTED_OFF', 'selected="selected"');
+	$tpl->assign('SHOW_COMPRESSION_SIZE_SELECTED_OFF', Config::getInstance()->get('HTML_SELECTED'));
 }
 
 if (Config::getInstance()->get('PREVENT_EXTERNAL_LOGIN_ADMIN')) {
-	$tpl->assign('PREVENT_EXTERNAL_LOGIN_ADMIN_SELECTED_ON', 'selected="selected"');
+	$tpl->assign('PREVENT_EXTERNAL_LOGIN_ADMIN_SELECTED_ON', Config::getInstance()->get('HTML_SELECTED'));
 	$tpl->assign('PREVENT_EXTERNAL_LOGIN_ADMIN_SELECTED_OFF', '');
 } else {
 	$tpl->assign('PREVENT_EXTERNAL_LOGIN_ADMIN_SELECTED_ON', '');
-	$tpl->assign('PREVENT_EXTERNAL_LOGIN_ADMIN_SELECTED_OFF', 'selected="selected"');
+	$tpl->assign('PREVENT_EXTERNAL_LOGIN_ADMIN_SELECTED_OFF', Config::getInstance()->get('HTML_SELECTED'));
 }
 
 if (Config::getInstance()->get('PREVENT_EXTERNAL_LOGIN_RESELLER')) {
-	$tpl->assign('PREVENT_EXTERNAL_LOGIN_RESELLER_SELECTED_ON', 'selected="selected"');
+	$tpl->assign('PREVENT_EXTERNAL_LOGIN_RESELLER_SELECTED_ON', Config::getInstance()->get('HTML_SELECTED'));
 	$tpl->assign('PREVENT_EXTERNAL_LOGIN_RESELLER_SELECTED_OFF', '');
 } else {
 	$tpl->assign('PREVENT_EXTERNAL_LOGIN_RESELLER_SELECTED_ON', '');
-	$tpl->assign('PREVENT_EXTERNAL_LOGIN_RESELLER_SELECTED_OFF', 'selected="selected"');
+	$tpl->assign('PREVENT_EXTERNAL_LOGIN_RESELLER_SELECTED_OFF', Config::getInstance()->get('HTML_SELECTED'));
 }
 
 if (Config::getInstance()->get('PREVENT_EXTERNAL_LOGIN_CLIENT')) {
-	$tpl->assign('PREVENT_EXTERNAL_LOGIN_CLIENT_SELECTED_ON', 'selected="selected"');
+	$tpl->assign('PREVENT_EXTERNAL_LOGIN_CLIENT_SELECTED_ON', Config::getInstance()->get('HTML_SELECTED'));
 	$tpl->assign('PREVENT_EXTERNAL_LOGIN_CLIENT_SELECTED_OFF', '');
 } else {
 	$tpl->assign('PREVENT_EXTERNAL_LOGIN_CLIENT_SELECTED_ON', '');
-	$tpl->assign('PREVENT_EXTERNAL_LOGIN_CLIENT_SELECTED_OFF', 'selected="selected"');
+	$tpl->assign('PREVENT_EXTERNAL_LOGIN_CLIENT_SELECTED_OFF', Config::getInstance()->get('HTML_SELECTED'));
 }
 
 switch (Config::getInstance()->get('LOG_LEVEL')) {
 	case E_USER_OFF:
-		$tpl->assign('LOG_LEVEL_SELECTED_OFF', 'selected="selected"');
+		$tpl->assign('LOG_LEVEL_SELECTED_OFF', Config::getInstance()->get('HTML_SELECTED'));
 		$tpl->assign('LOG_LEVEL_SELECTED_NOTICE', '');
 		$tpl->assign('LOG_LEVEL_SELECTED_WARNING', '');
 		$tpl->assign('LOG_LEVEL_SELECTED_ERROR', '');
 		break;
 	case E_USER_NOTICE:
 		$tpl->assign('LOG_LEVEL_SELECTED_OFF', '');
-		$tpl->assign('LOG_LEVEL_SELECTED_NOTICE', 'selected="selected"');
+		$tpl->assign('LOG_LEVEL_SELECTED_NOTICE', Config::getInstance()->get('HTML_SELECTED'));
 		$tpl->assign('LOG_LEVEL_SELECTED_WARNING', '');
 		$tpl->assign('LOG_LEVEL_SELECTED_ERROR', '');
 		break;
 	case E_USER_WARNING:
 		$tpl->assign('LOG_LEVEL_SELECTED_OFF', '');
 		$tpl->assign('LOG_LEVEL_SELECTED_NOTICE', '');
-		$tpl->assign('LOG_LEVEL_SELECTED_WARNING', 'selected="selected"');
+		$tpl->assign('LOG_LEVEL_SELECTED_WARNING', Config::getInstance()->get('HTML_SELECTED'));
 		$tpl->assign('LOG_LEVEL_SELECTED_ERROR', '');
 		break;
 	default:
 		$tpl->assign('LOG_LEVEL_SELECTED_OFF', '');
 		$tpl->assign('LOG_LEVEL_SELECTED_NOTICE', '');
 		$tpl->assign('LOG_LEVEL_SELECTED_WARNING', '');
-		$tpl->assign('LOG_LEVEL_SELECTED_ERROR', 'selected="selected"');
+		$tpl->assign('LOG_LEVEL_SELECTED_ERROR', Config::getInstance()->get('HTML_SELECTED'));
 } // end switch
 
 /*

@@ -179,25 +179,25 @@ function edit_button(&$tpl, &$sql) {
 			$button_view = $rs->fields['menu_level'];
 
 			if ($button_view === 'admin') {
-				$admin_view = 'selected="selected"';
+				$admin_view = Config::getInstance()->get('HTML_SELECTED');
 				$reseller_view = '';
 				$user_view = '';
 				$all_view = '';
 			} else if ($button_view === 'reseller') {
 				$admin_view = '';
-				$reseller_view = 'selected="selected"';
+				$reseller_view = Config::getInstance()->get('HTML_SELECTED');
 				$user_view = '';
 				$all_view = '';
 			} else if ($button_view === 'user') {
 				$admin_view = '';
 				$reseller_view = '';
-				$user_view = 'selected="selected"';
+				$user_view = Config::getInstance()->get('HTML_SELECTED');
 				$all_view = '';
 			} else {
 				$admin_view = '';
 				$reseller_view = '';
 				$user_view = '';
-				$all_view = 'selected="selected"';
+				$all_view = Config::getInstance()->get('HTML_SELECTED');
 			}
 
 			$tpl->assign(

@@ -67,7 +67,7 @@ function gen_page_dynamic_data(&$tpl, &$sql, $ftp_acc) {
 		$odir = '';
 		$oins = '';
 	} else {
-		$odir = 'checked="checked"';
+		$odir = Config::getInstance()->get('HTML_CHECKED');
 		$oins = substr($homedir, strlen($nftp_dir));
 	}
 

@@ -209,8 +209,8 @@ function show_services(&$tpl, &$sql) {
 				$tpl->assign(array('SERVICE' => $name . "<input name=\"name[]\" type=\"hidden\" id=\"name" . $row . "\" value=\"" . $name . "\" />"));
 				$tpl->assign(
 					array(
-						'PORT_READONLY'		=> 'readonly="readonly"',
-						'PROTOCOL_READONLY'	=> 'disabled="disabled"',
+						'PORT_READONLY'		=> Config::getInstance()->get('HTML_READONLY'),
+						'PROTOCOL_READONLY'	=> Config::getInstance()->get('HTML_DISABLED'),
 						'TR_DELETE'			=> '-',
 						'PORT_DELETE_LINK'	=> '',
 						'NUM'				=> $row

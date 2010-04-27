@@ -142,9 +142,9 @@ function gen_order_details(&$tpl, &$sql, $user_id, $order_id) {
 			'FAX'			=> $fax,
 			'STREET1'		=> $street1,
 			'STREET2'		=> $street2,
-			'VL_MALE'		=> (($gender == 'M') ? 'selected="selected"' : ''),
-			'VL_FEMALE'		=> (($gender == 'F') ? 'selected="selected"' : ''),
-			'VL_UNKNOWN'	=> ((($gender == 'U') || (empty($gender))) ? 'selected="selected"' : '')
+			'VL_MALE'		=> (($gender == 'M') ? Config::getInstance()->get('HTML_SELECTED') : ''),
+			'VL_FEMALE'		=> (($gender == 'F') ? Config::getInstance()->get('HTML_SELECTED') : ''),
+			'VL_UNKNOWN'	=> ((($gender == 'U') || (empty($gender))) ? Config::getInstance()->get('HTML_SELECTED') : '')
 		)
 	);
 }

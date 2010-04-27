@@ -149,7 +149,7 @@ function create_options($data, $value = null) {
 	$res = '';
 	reset($data);
 	foreach ($data as $item) {
-		$res .= '<option value="'.$item.'"'.(($item == $value) ? ' selected="selected"' : '') . '>' . $item . '</option>';
+		$res .= '<option value="'.$item.'"'.(($item == $value) ? Config::getInstance()->get('HTML_SELECTED') : '') . '>' . $item . '</option>';
 	}
 	return $res;
 }

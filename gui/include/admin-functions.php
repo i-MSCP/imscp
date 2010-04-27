@@ -1259,7 +1259,7 @@ function gen_select_lists(&$tpl, $user_month, $user_year) {
 	}
 
 	for ($i = 1; $i <= 12; $i++) {
-		$selected = ($i == $crnt_month) ? 'selected="selected"' : '';
+		$selected = ($i == $crnt_month) ? Config::getInstance()->get('HTML_SELECTED') : '';
 
 		$tpl->assign(
 			array(
@@ -1272,7 +1272,7 @@ function gen_select_lists(&$tpl, $user_month, $user_year) {
 	}
 
 	for ($i = $crnt_year - 1; $i <= $crnt_year + 1; $i++) {
-		$selected = ($i == $crnt_year) ? 'selected="selected"' : '';
+		$selected = ($i == $crnt_year) ? Config::getInstance()->get('HTML_SELECTED') : '';
 
 		$tpl->assign(
 			array(
@@ -1750,19 +1750,19 @@ function gen_admin_domain_search_options(&$tpl, $search_for, $search_common,
 	$search_status) {
 	if ($search_for === 'n/a' && $search_common === 'n/a' && $search_status === 'n/a') {
 		// we have no search and let's genarate search fields empty
-		$domain_selected = 'selected="selected"';
+		$domain_selected = Config::getInstance()->get('HTML_SELECTED');
 		$customerid_selected = '';
 		$lastname_selected = '';
 		$company_selected = '';
 		$city_selected = '';
 		$state_selected = '';
 		$country_selected = '';
-		$all_selected = 'selected="selected"';
+		$all_selected = Config::getInstance()->get('HTML_SELECTED');
 		$ok_selected = '';
 		$suspended_selected = '';
 	}
 	if ($search_common === 'domain_name') {
-		$domain_selected = 'selected="selected"';
+		$domain_selected = Config::getInstance()->get('HTML_SELECTED');
 		$customerid_selected = '';
 		$lastname_selected = '';
 		$company_selected = '';
@@ -1771,7 +1771,7 @@ function gen_admin_domain_search_options(&$tpl, $search_for, $search_common,
 		$country_selected = '';
 	} else if ($search_common === 'customer_id') {
 		$domain_selected = '';
-		$customerid_selected = 'selected="selected"';
+		$customerid_selected = Config::getInstance()->get('HTML_SELECTED');
 		$lastname_selected = '';
 		$company_selected = '';
 		$city_selected = '';
@@ -1780,7 +1780,7 @@ function gen_admin_domain_search_options(&$tpl, $search_for, $search_common,
 	} else if ($search_common === 'lname') {
 		$domain_selected = '';
 		$customerid_selected = '';
-		$lastname_selected = 'selected="selected"';
+		$lastname_selected = Config::getInstance()->get('HTML_SELECTED');
 		$company_selected = '';
 		$city_selected = '';
 		$state_selected = '';
@@ -1789,7 +1789,7 @@ function gen_admin_domain_search_options(&$tpl, $search_for, $search_common,
 		$domain_selected = '';
 		$customerid_selected = '';
 		$lastname_selected = '';
-		$company_selected = 'selected="selected"';
+		$company_selected = Config::getInstance()->get('HTML_SELECTED');
 		$city_selected = '';
 		$state_selected = '';
 		$country_selected = '';
@@ -1798,7 +1798,7 @@ function gen_admin_domain_search_options(&$tpl, $search_for, $search_common,
 		$customerid_selected = '';
 		$lastname_selected = '';
 		$company_selected = '';
-		$city_selected = 'selected="selected"';
+		$city_selected = Config::getInstance()->get('HTML_SELECTED');
 		$state_selected = '';
 		$country_selected = '';
 	} else if ($search_common === 'state') {
@@ -1807,7 +1807,7 @@ function gen_admin_domain_search_options(&$tpl, $search_for, $search_common,
 		$lastname_selected = '';
 		$company_selected = '';
 		$city_selected = '';
-		$state_selected = 'selected="selected"';
+		$state_selected = Config::getInstance()->get('HTML_SELECTED');
 		$country_selected = '';
 	} else if ($search_common === 'country') {
 		$domain_selected = '';
@@ -1816,20 +1816,20 @@ function gen_admin_domain_search_options(&$tpl, $search_for, $search_common,
 		$company_selected = '';
 		$city_selected = '';
 		$state_selected = '';
-		$country_selected = 'selected="selected"';
+		$country_selected = Config::getInstance()->get('HTML_SELECTED');
 	}
 	if ($search_status === 'all') {
-		$all_selected = 'selected="selected"';
+		$all_selected = Config::getInstance()->get('HTML_SELECTED');
 		$ok_selected = '';
 		$suspended_selected = '';
 	} else if ($search_status === 'ok') {
 		$all_selected = '';
-		$ok_selected = 'selected="selected"';
+		$ok_selected = Config::getInstance()->get('HTML_SELECTED');
 		$suspended_selected = '';
 	} else if ($search_status === 'disabled') {
 		$all_selected = '';
 		$ok_selected = '';
-		$suspended_selected = 'selected="selected"';
+		$suspended_selected = Config::getInstance()->get('HTML_SELECTED');
 	}
 
 	if ($search_for === "n/a" || $search_for === '') {

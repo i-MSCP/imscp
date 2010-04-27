@@ -155,7 +155,7 @@ function edit_mail_account(&$tpl, &$sql) {
 				array(
 					'ACTION'				=> 'update_pass,update_forward',
 					'FORWARD_MAIL'			=> '',
-					'FORWARD_MAIL_CHECKED'	=> 'checked="checked"',
+					'FORWARD_MAIL_CHECKED'	=> Config::getInstance()->get('HTML_CHECKED'),
 					'FORWARD_LIST_DISABLED'	=> 'false'
 				)
 			);

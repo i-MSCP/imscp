@@ -556,14 +556,14 @@ function get_servers_ips(&$tpl, $rip_lst) {
 				$_POST['uaction'] == 'update_reseller') {
 				if (isset($_POST[$ip_var_name]) &&
 					$_POST[$ip_var_name] == 'asgned') {
-					$ip_item_assigned = 'checked="checked"';
+					$ip_item_assigned = Config::getInstance()->get('HTML_CHECKED');
 					$reseller_ips .= "$ip_id;";
 				} else {
 					$ip_item_assigned = '';
 				}
 			} else {
 				if (preg_match("/$ip_id\;/", $rip_lst) == 1) {
-					$ip_item_assigned = 'checked="checked"';
+					$ip_item_assigned = Config::getInstance()->get('HTML_CHECKED');
 					$reseller_ips .= "$ip_id;";
 				}
 			}
@@ -946,10 +946,10 @@ if (isset($_REQUEST['edit_id']) && !isset($_POST['Cancel'])) {
 fields_highlighting($tpl, $errFields);
 
 if ($rdata['support_system'] == 'yes') {
-	$support_yes = 'checked="checked"';
+	$support_yes = Config::getInstance()->get('HTML_CHECKED');
 	$support_no = '';
 } else {
-	$support_no = 'checked="checked"';
+	$support_no = Config::getInstance()->get('HTML_CHECKED');
 	$support_yes = '';
 }
 
@@ -1030,11 +1030,11 @@ $tpl->assign(
 		'CUSTOMER_ID' => $rdata['customer_id'],
 		'FIRST_NAME' => $rdata['fname'],
 		'LAST_NAME' => $rdata['lname'],
-		'VL_MALE' => (($rdata['gender'] == 'M') ? 'selected="selected"' : ''),
-		'VL_FEMALE' => (($rdata['gender'] == 'F') ? 'selected="selected"' : ''),
+		'VL_MALE' => (($rdata['gender'] == 'M') ? Config::getInstance()->get('HTML_SELECTED') : ''),
+		'VL_FEMALE' => (($rdata['gender'] == 'F') ? Config::getInstance()->get('HTML_SELECTED') : ''),
 		'VL_UNKNOWN' =>
 			(($rdata['gender'] == 'U') || (empty($rdata['gender'])) ?
-				'selected="selected"' : ''),
+				Config::getInstance()->get('HTML_SELECTED') : ''),
 		'FIRM' => $rdata['firm'],
 		'ZIP' => $rdata['zip'],
 		'CITY' => $rdata['city'],

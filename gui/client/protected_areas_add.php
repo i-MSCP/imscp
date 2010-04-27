@@ -267,7 +267,7 @@ function gen_protect_it(&$tpl, &$sql, &$dmn_id) {
 	if ($edit = 'no' || $rs->RecordCount() == 0 || $type == 'user') {
 		$tpl->assign(
 			array(
-				'USER_CHECKED' => 'checked="checked"',
+				'USER_CHECKED' => Config::getInstance()->get('HTML_CHECKED'),
 				'GROUP_CHECKED' => "",
 				'USER_FORM_ELEMENS' => "false",
 				'GROUP_FORM_ELEMENS' => "true",
@@ -279,7 +279,7 @@ function gen_protect_it(&$tpl, &$sql, &$dmn_id) {
 		$tpl->assign(
 			array(
 				'USER_CHECKED' => "",
-				'GROUP_CHECKED' => 'checked="checked"',
+				'GROUP_CHECKED' => Config::getInstance()->get('HTML_CHECKED'),
 				'USER_FORM_ELEMENS' => "true",
 				'GROUP_FORM_ELEMENS' => "false",
 			)
@@ -312,7 +312,7 @@ function gen_protect_it(&$tpl, &$sql, &$dmn_id) {
 			for ($i = 0, $cnt_usr_id = count($usr_id); $i < $cnt_usr_id; $i++) {
 				if ($edit == 'yes' && $usr_id[$i] == $rs->fields['id']) {
 					$i = $cnt_usr_id + 1;
-					$usr_selected = ' selected="selected"';
+					$usr_selected = Config::getInstance()->get('HTML_SELECTED');
 				} else {
 					$usr_selected = '';
 				}
@@ -358,7 +358,7 @@ function gen_protect_it(&$tpl, &$sql, &$dmn_id) {
 			for ($i = 0, $cnt_grp_id = count($grp_id); $i < $cnt_grp_id; $i++) {
 				if ($edit == 'yes' && $grp_id[$i] == $rs->fields['id']) {
 					$i = $cnt_grp_id + 1;
-					$grp_selected = 'selected="selected"';
+					$grp_selected = Config::getInstance()->get('HTML_SELECTED');
 				} else {
 					$grp_selected = '';
 				}

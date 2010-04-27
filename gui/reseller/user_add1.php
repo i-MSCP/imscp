@@ -205,8 +205,8 @@ function get_empty_au1_page(&$tpl) {
 		array(
 			'DMN_NAME_VALUE'		=> '',
 			'CHTPL1_VAL'			=> '',
-			'CHTPL2_VAL'			=> 'checked="checked"',
-			'EXPIRE_NEVER_SET'		=> ' selected="selected"',
+			'CHTPL2_VAL'			=> Config::getInstance()->get('HTML_CHECKED'),
+			'EXPIRE_NEVER_SET'		=> Config::getInstance()->get('HTML_SELECTED'),
 			'EXPIRE_1_MONTH_SET'	=> '',
 			'EXPIRE_2_MONTH_SET'	=> '',
 			'EXPIRE_3_MONTH_SET'	=> '',
@@ -232,15 +232,15 @@ function get_data_au1_page(&$tpl) {
 	$tpl->assign(
 		array(
 			'DMN_NAME_VALUE'		=> $dmn_name,
-			'CHTPL1_VAL'			=> $dmn_pt === "_yes_" ? 'checked="checked"' : '',
-			'CHTPL2_VAL'			=> $dmn_pt === "_yes_" ? '' : 'checked="checked"',
-			'EXPIRE_NEVER_SET'		=> ($dmn_expire === '0') ? ' selected="selected"' : '',
-			'EXPIRE_1_MONTH_SET'	=> ($dmn_expire === '1') ? ' selected="selected"' : '',
-			'EXPIRE_2_MONTH_SET'	=> ($dmn_expire === '2') ? ' selected="selected"' : '',
-			'EXPIRE_3_MONTH_SET'	=> ($dmn_expire === '3') ? ' selected="selected"' : '',
-			'EXPIRE_6_MONTH_SET'	=> ($dmn_expire === '6') ? ' selected="selected"' : '',
-			'EXPIRE_1_YEAR_SET'		=> ($dmn_expire === '12') ? ' selected="selected"' : '',
-			'EXPIRE_2_YEARS_SET'	=> ($dmn_expire === '24') ? ' selected="selected"' : '',
+			'CHTPL1_VAL'			=> $dmn_pt === "_yes_" ? Config::getInstance()->get('HTML_CHECKED') : '',
+			'CHTPL2_VAL'			=> $dmn_pt === "_yes_" ? '' : Config::getInstance()->get('HTML_CHECKED'),
+			'EXPIRE_NEVER_SET'		=> ($dmn_expire === '0') ? Config::getInstance()->get('HTML_SELECTED') : '',
+			'EXPIRE_1_MONTH_SET'	=> ($dmn_expire === '1') ? Config::getInstance()->get('HTML_SELECTED') : '',
+			'EXPIRE_2_MONTH_SET'	=> ($dmn_expire === '2') ? Config::getInstance()->get('HTML_SELECTED') : '',
+			'EXPIRE_3_MONTH_SET'	=> ($dmn_expire === '3') ? Config::getInstance()->get('HTML_SELECTED') : '',
+			'EXPIRE_6_MONTH_SET'	=> ($dmn_expire === '6') ? Config::getInstance()->get('HTML_SELECTED') : '',
+			'EXPIRE_1_YEAR_SET'		=> ($dmn_expire === '12') ? Config::getInstance()->get('HTML_SELECTED') : '',
+			'EXPIRE_2_YEARS_SET'	=> ($dmn_expire === '24') ? Config::getInstance()->get('HTML_SELECTED') : '',
 		)
 	);
 } // End of get_data_au1_page()
@@ -312,7 +312,7 @@ function get_hp_data_list(&$tpl, $reseller_id) {
 					array(
 						'HP_NAME'			=> $data['name'],
 						'CHN'				=> $data['id'],
-						'CH'.$data['id']	=> ($data['id'] == $dmn_chp) ? 'selected="selected"' : ''
+						'CH'.$data['id']	=> ($data['id'] == $dmn_chp) ? Config::getInstance()->get('HTML_SELECTED') : ''
 					)
 			);
 

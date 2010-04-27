@@ -153,7 +153,7 @@ function gen_al_page(&$tpl, $reseller_id) {
 	if (isset($_POST['status']) && $_POST['status'] == 1) {
 		$forward_prefix = clean_input($_POST['forward_prefix']);
 
-			$check_en = ' checked="checked"';
+			$check_en = Config::getInstance()->get('HTML_CHECKED');
 			$check_dis = '';
 			$forward = strtolower(clean_input($_POST['forward']));
 
@@ -161,20 +161,20 @@ function gen_al_page(&$tpl, $reseller_id) {
 				array(
 					'READONLY_FORWARD'	=> '',
 					'DISABLE_FORWARD'	=> '',
-					'HTTP_YES'			=> ($forward_prefix === 'http://') ? ' selected="selected"' : '',
-					'HTTPS_YES'			=> ($forward_prefix === 'https://') ? ' selected="selected"' : '',
-					'FTP_YES'			=> ($forward_prefix === 'ftp://') ? ' selected="selected"' : ''
+					'HTTP_YES'			=> ($forward_prefix === 'http://') ? Config::getInstance()->get('HTML_SELECTED') : '',
+					'HTTPS_YES'			=> ($forward_prefix === 'https://') ? Config::getInstance()->get('HTML_SELECTED') : '',
+					'FTP_YES'			=> ($forward_prefix === 'ftp://') ? Config::getInstance()->get('HTML_SELECTED') : ''
 				)
 			);
 	} else {
 		$check_en = '';
-		$check_dis = ' checked="checked"';
+		$check_dis = Config::getInstance()->get('HTML_CHECKED');
 		$forward = '';
 
 		$tpl->assign(
 			array(
-				'READONLY_FORWARD'	=> ' readonly="readonly"',
-				'DISABLE_FORWARD'	=> ' disabled="disabled"',
+				'READONLY_FORWARD'	=> Config::getInstance()->get('HTML_READONLY'),
+				'DISABLE_FORWARD'	=> Config::getInstance()->get('HTML_DISABLED'),
 				'HTTP_YES'			=> '',
 				'HTTPS_YES'			=> '',
 				'FTP_YES'			=> ''

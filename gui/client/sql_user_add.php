@@ -166,7 +166,7 @@ function gen_sql_user_list(&$sql, &$tpl, $user_id, $db_id) {
 	while (!$rs->EOF) {
 		// Checks if it's the first element of the combobox and set it as selected
 		if ($first_passed) {
-			$select = 'selected="selected"';
+			$select = Config::getInstance()->get('HTML_SELECTED');
 			$first_passed = false;
 		} else {
 			$select = '';
@@ -374,9 +374,9 @@ function gen_page_post_data(&$tpl, $db_id) {
 		$tpl->assign(
 			array(
 				'USER_NAME' => (isset($_POST['user_name'])) ? $_POST['user_name'] : '',
-				'USE_DMN_ID' => (isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on') ? 'checked="checked"' : '',
-				'START_ID_POS_CHECKED' => (isset($_POST['id_pos']) && $_POST['id_pos'] !== 'end') ? 'checked="checked"' : '',
-				'END_ID_POS_CHECKED' => (isset($_POST['id_pos']) && $_POST['id_pos'] === 'end') ? 'checked="checked"' : ''
+				'USE_DMN_ID' => (isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on') ? Config::getInstance()->get('HTML_CHECKED') : '',
+				'START_ID_POS_CHECKED' => (isset($_POST['id_pos']) && $_POST['id_pos'] !== 'end') ? Config::getInstance()->get('HTML_CHECKED') : '',
+				'END_ID_POS_CHECKED' => (isset($_POST['id_pos']) && $_POST['id_pos'] === 'end') ? Config::getInstance()->get('HTML_CHECKED') : ''
 			)
 		);
 	} else {
@@ -385,7 +385,7 @@ function gen_page_post_data(&$tpl, $db_id) {
 				'USER_NAME' => '',
 				'USE_DMN_ID' => '',
 				'START_ID_POS_CHECKED' => '',
-				'END_ID_POS_CHECKED' => 'checked="checked"'
+				'END_ID_POS_CHECKED' => Config::getInstance()->get('HTML_CHECKED')
 			)
 		);
 	}

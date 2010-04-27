@@ -286,7 +286,7 @@ function gen_editdomain_page(&$tpl) {
 	if ($allowbackup === 'dmn') {
 		$tpl->assign(
 			array(
-				'BACKUP_DOMAIN' => 'selected="selected"',
+				'BACKUP_DOMAIN' => Config::getInstance()->get('HTML_SELECTED'),
 				'BACKUP_SQL' 	=> '',
 				'BACKUP_FULL' 	=> '',
 				'BACKUP_NO' 	=> '',
@@ -296,7 +296,7 @@ function gen_editdomain_page(&$tpl) {
 		$tpl->assign(
 			array(
 				'BACKUP_DOMAIN' => '',
-				'BACKUP_SQL' 	=> 'selected="selected"',
+				'BACKUP_SQL' 	=> Config::getInstance()->get('HTML_SELECTED'),
 				'BACKUP_FULL' 	=> '',
 				'BACKUP_NO' 	=> '',
 			)
@@ -306,7 +306,7 @@ function gen_editdomain_page(&$tpl) {
 			array(
 				'BACKUP_DOMAIN' => '',
 				'BACKUP_SQL' 	=> '',
-				'BACKUP_FULL' 	=> 'selected="selected"',
+				'BACKUP_FULL' 	=> Config::getInstance()->get('HTML_SELECTED'),
 				'BACKUP_NO' 	=> '',
 			)
 		);
@@ -316,19 +316,19 @@ function gen_editdomain_page(&$tpl) {
 				'BACKUP_DOMAIN' => '',
 				'BACKUP_SQL' 	=> '',
 				'BACKUP_FULL' 	=> '',
-				'BACKUP_NO' 	=> 'selected="selected"',
+				'BACKUP_NO' 	=> Config::getInstance()->get('HTML_SELECTED'),
 			)
 		);
 	}
 
 	$tpl->assign(
 		array(
-			'PHP_YES'					=> ($php_sup == 'yes') ? 'selected="selected"' : '',
-			'PHP_NO'					=> ($php_sup != 'yes') ? 'selected="selected"' : '',
-			'CGI_YES'					=> ($cgi_supp == 'yes') ? 'selected="selected"' : '',
-			'CGI_NO'					=> ($cgi_supp != 'yes') ? 'selected="selected"' : '',
-			'DNS_YES'					=> ($dns_supp == 'yes') ? 'selected="selected"' : '',
-			'DNS_NO'					=> ($dns_supp != 'yes') ? 'selected="selected"' : '',
+			'PHP_YES'					=> ($php_sup == 'yes') ? Config::getInstance()->get('HTML_SELECTED') : '',
+			'PHP_NO'					=> ($php_sup != 'yes') ? Config::getInstance()->get('HTML_SELECTED') : '',
+			'CGI_YES'					=> ($cgi_supp == 'yes') ? Config::getInstance()->get('HTML_SELECTED') : '',
+			'CGI_NO'					=> ($cgi_supp != 'yes') ? Config::getInstance()->get('HTML_SELECTED') : '',
+			'DNS_YES'					=> ($dns_supp == 'yes') ? Config::getInstance()->get('HTML_SELECTED') : '',
+			'DNS_NO'					=> ($dns_supp != 'yes') ? Config::getInstance()->get('HTML_SELECTED') : '',
 			'VL_DOMAIN_NAME'			=> $domain_name,
 			'VL_DOMAIN_EXPIRE'			=> $domain_expires,
 			'VL_DOMAIN_IP'				=> $domain_ip,
@@ -341,15 +341,15 @@ function gen_editdomain_page(&$tpl) {
 			'VL_TRAFFIC'				=> $traff,
 			'VL_DOM_DISK'				=> $disk,
 			'VL_USER_NAME'				=> $username,
-			'EXPIRE_UNCHANGED_SET'		=> ($domain_new_expire === '0') ? ' selected="selected"' : '',
-			'EXPIRE_NEVER_SET'			=> ($domain_new_expire === 'OFF') ? ' selected="selected"' : '',
-			'EXPIRE_1_MIN_MONTH_SET'	=> ($domain_new_expire === '-1') ? ' selected="selected"' : '',
-			'EXPIRE_1_PLUS_MONTH_SET'	=> ($domain_new_expire === '1') ? ' selected="selected"' : '',
-			'EXPIRE_2_PLUS_MONTH_SET'	=> ($domain_new_expire === '2') ? ' selected="selected"' : '',
-			'EXPIRE_3_PLUS_MONTH_SET'	=> ($domain_new_expire === '3') ? ' selected="selected"' : '',
-			'EXPIRE_6_PLUS_MONTH_SET'	=> ($domain_new_expire === '6') ? ' selected="selected"' : '',
-			'EXPIRE_1_PLUS_YEAR_SET'	=> ($domain_new_expire === '12') ? ' selected="selected"' : '',
-			'EXPIRE_2_PLUS_YEARS_SET'	=> ($domain_new_expire === '24') ? ' selected="selected"' : '',
+			'EXPIRE_UNCHANGED_SET'		=> ($domain_new_expire === '0') ? Config::getInstance()->get('HTML_SELECTED') : '',
+			'EXPIRE_NEVER_SET'			=> ($domain_new_expire === 'OFF') ? Config::getInstance()->get('HTML_SELECTED') : '',
+			'EXPIRE_1_MIN_MONTH_SET'	=> ($domain_new_expire === '-1') ? Config::getInstance()->get('HTML_SELECTED') : '',
+			'EXPIRE_1_PLUS_MONTH_SET'	=> ($domain_new_expire === '1') ? Config::getInstance()->get('HTML_SELECTED') : '',
+			'EXPIRE_2_PLUS_MONTH_SET'	=> ($domain_new_expire === '2') ? Config::getInstance()->get('HTML_SELECTED') : '',
+			'EXPIRE_3_PLUS_MONTH_SET'	=> ($domain_new_expire === '3') ? Config::getInstance()->get('HTML_SELECTED') : '',
+			'EXPIRE_6_PLUS_MONTH_SET'	=> ($domain_new_expire === '6') ? Config::getInstance()->get('HTML_SELECTED') : '',
+			'EXPIRE_1_PLUS_YEAR_SET'	=> ($domain_new_expire === '12') ? Config::getInstance()->get('HTML_SELECTED') : '',
+			'EXPIRE_2_PLUS_YEARS_SET'	=> ($domain_new_expire === '24') ? Config::getInstance()->get('HTML_SELECTED') : '',
 		)
 	);
 } // End of gen_editdomain_page()

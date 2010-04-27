@@ -179,16 +179,16 @@ function get_init_au2_page(&$tpl) {
 				'VL_MAX_SQL_USERS'	=> $hp_sql_user,
 				'VL_MAX_TRAFFIC'	=> $hp_traff,
 				'VL_MAX_DISK_USAGE'	=> $hp_disk,
-				'VL_PHPY'			=> ($hp_php === '_yes_') ? 'checked="checked"' : '',
-				'VL_PHPN'			=> ($hp_php === '_no_') ? 'checked="checked"' : '',
-				'VL_CGIY'			=> ($hp_cgi === '_yes_') ? 'checked="checked"' : '',
-				'VL_CGIN'			=> ($hp_cgi === '_no_') ? 'checked="checked"' : '',
-				'VL_BACKUPD'		=> ($hp_backup === '_dmn_') ? 'checked="checked"' : '',
-				'VL_BACKUPS'		=> ($hp_backup === '_sql_') ? 'checked="checked"' : '',
-				'VL_BACKUPF'		=> ($hp_backup === '_full_') ? 'checked="checked"' : '',
-				'VL_BACKUPN'		=> ($hp_backup === '_no_') ? 'checked="checked"' : '',
-				'VL_DNSY'			=> ($hp_dns === '_yes_') ? 'checked="checked"' : '',
-				'VL_DNSN'			=> ($hp_dns === '_no_') ? 'checked="checked"' : ''
+				'VL_PHPY'			=> ($hp_php === '_yes_') ? Config::getInstance()->get('HTML_CHECKED') : '',
+				'VL_PHPN'			=> ($hp_php === '_no_') ? Config::getInstance()->get('HTML_CHECKED') : '',
+				'VL_CGIY'			=> ($hp_cgi === '_yes_') ? Config::getInstance()->get('HTML_CHECKED') : '',
+				'VL_CGIN'			=> ($hp_cgi === '_no_') ? Config::getInstance()->get('HTML_CHECKED') : '',
+				'VL_BACKUPD'		=> ($hp_backup === '_dmn_') ? Config::getInstance()->get('HTML_CHECKED') : '',
+				'VL_BACKUPS'		=> ($hp_backup === '_sql_') ? Config::getInstance()->get('HTML_CHECKED') : '',
+				'VL_BACKUPF'		=> ($hp_backup === '_full_') ? Config::getInstance()->get('HTML_CHECKED') : '',
+				'VL_BACKUPN'		=> ($hp_backup === '_no_') ? Config::getInstance()->get('HTML_CHECKED') : '',
+				'VL_DNSY'			=> ($hp_dns === '_yes_') ? Config::getInstance()->get('HTML_CHECKED') : '',
+				'VL_DNSN'			=> ($hp_dns === '_no_') ? Config::getInstance()->get('HTML_CHECKED') : ''
 			)
 	);
 

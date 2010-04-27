@@ -130,16 +130,16 @@ if (isset($_POST['urgency'])) {
 }
 switch ($userdata['URGENCY']) {
 	case 1:
-		$userdata['OPT_URGENCY_1'] = ' selected="selected"';
+		$userdata['OPT_URGENCY_1'] = Config::getInstance()->get('HTML_SELECTED');
 		break;
 	case 3:
-		$userdata['OPT_URGENCY_3'] = ' selected="selected"';
+		$userdata['OPT_URGENCY_3'] = Config::getInstance()->get('HTML_SELECTED');
 		break;
 	case 4:
-		$userdata['OPT_URGENCY_4'] = ' selected="selected"';
+		$userdata['OPT_URGENCY_4'] = Config::getInstance()->get('HTML_SELECTED');
 		break;
 	default:
-		$userdata['OPT_URGENCY_2'] = ' selected="selected"';
+		$userdata['OPT_URGENCY_2'] = Config::getInstance()->get('HTML_SELECTED');
 		break;
 }
 $userdata['SUBJECT'] = isset($_POST['subj']) ? clean_input($_POST['subj'], true) : '';

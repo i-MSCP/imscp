@@ -47,7 +47,7 @@ function gen_page_date(&$tpl, $month, $year) {
 	for ($i = 1; $i <= 12; $i++) {
 		$tpl->assign(
 			array(
-				'MONTH_SELECTED' => ($i == $month) ? 'selected="selected"' : '',
+				'MONTH_SELECTED' => ($i == $month) ? Config::getInstance()->get('HTML_SELECTED') : '',
 				'MONTH' => $i
 			)
 		);
@@ -57,7 +57,7 @@ function gen_page_date(&$tpl, $month, $year) {
 	for ($i = $year - 1; $i <= $year + 1; $i++) {
 		$tpl->assign(
 			array(
-				'YEAR_SELECTED' => ($i == $year) ? 'selected="selected"' : '',
+				'YEAR_SELECTED' => ($i == $year) ? Config::getInstance()->get('HTML_SELECTED') : '',
 				'YEAR' => $i
 			)
 		);

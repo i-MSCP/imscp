@@ -255,8 +255,8 @@ function gen_edituser_page(&$tpl) {
 			'VL_COUNTRY'		=> empty($country) ? '' : $country,
 			'VL_STREET1'		=> empty($street_one) ? '' : $street_one,
 			'VL_STREET2'		=> empty($street_two) ? '' : $street_two,
-			'VL_MALE'			=> ($gender == 'M') ? 'checked="checked"' : '',
-			'VL_FEMALE'			=> ($gender == 'F') ? 'checked="checked"' : '',
+			'VL_MALE'			=> ($gender == 'M') ? Config::getInstance()->get('HTML_CHECKED') : '',
+			'VL_FEMALE'			=> ($gender == 'F') ? Config::getInstance()->get('HTML_CHECKED') : '',
 			'VL_PHONE'			=> empty($phone) ? '' : $phone,
 			'VL_FAX'			=> empty($fax) ? '' : $fax
 		)

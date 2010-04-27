@@ -91,9 +91,9 @@ function gen_user_personal_data(&$tpl, &$sql, $user_id) {
 			'EMAIL'			=> empty($rs->fields['email']) ? '' : $rs->fields['email'],
 			'PHONE'			=> empty($rs->fields['phone']) ? '' : $rs->fields['phone'],
 			'FAX'			=> empty($rs->fields['fax']) ? '' : $rs->fields['fax'],
-			'VL_MALE'		=> (($rs->fields['gender'] == 'M') ? 'selected="selected"' : ''),
-			'VL_FEMALE'		=> (($rs->fields['gender'] == 'F') ? 'selected="selected"' : ''),
-			'VL_UNKNOWN'	=> ((($rs->fields['gender'] == 'U') || (empty($rs->fields['gender']))) ? 'selected="selected"' : '')
+			'VL_MALE'		=> (($rs->fields['gender'] == 'M') ? Config::getInstance()->get('HTML_SELECTED') : ''),
+			'VL_FEMALE'		=> (($rs->fields['gender'] == 'F') ? Config::getInstance()->get('HTML_SELECTED') : ''),
+			'VL_UNKNOWN'	=> ((($rs->fields['gender'] == 'U') || (empty($rs->fields['gender']))) ? Config::getInstance()->get('HTML_SELECTED') : '')
 		)
 	);
 }

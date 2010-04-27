@@ -61,9 +61,9 @@ if (isset($_POST['uaction']) AND $_POST['uaction'] == 'apply') {
 }
 
 if (Config::getInstance()->get('MAINTENANCEMODE')) {
-	$selected_on = 'selected="selected"';
+	$selected_on = Config::getInstance()->get('HTML_SELECTED');
 } else {
-	$selected_off = 'selected="selected"';
+	$selected_off = Config::getInstance()->get('HTML_SELECTED');
 }
 
 /*

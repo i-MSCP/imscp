@@ -85,7 +85,7 @@ function gen_user_add_subdomain_data(&$tpl, &$sql, $user_id) {
 	$tpl->assign(
 		array(
 			'DOMAIN_NAME'		=> '.' . $domainname,
-			'SUB_DMN_CHECKED'	=> 'checked="checked"',
+			'SUB_DMN_CHECKED'	=> Config::getInstance()->get('HTML_CHECKED'),
 			'SUB_ALS_CHECKED'	=> ''
 		)
 	);
@@ -131,7 +131,7 @@ function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 		$tpl->assign(
 			array(
 				'ALS_ID' => '0',
-				'ALS_SELECTED' => 'selected="selected"',
+				'ALS_SELECTED' => Config::getInstance()->get('HTML_SELECTED'),
 				'ALS_NAME' => tr('Empty list')
 			)
 		);
@@ -143,9 +143,9 @@ function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 		while (!$rs->EOF) {
 			if ($post_check === 'yes') {
 				$als_id = (!isset($_POST['als_id'])) ? '' : $_POST['als_id'];
-				$als_selected = ($als_id == $rs->fields['alias_id']) ? 'selected="selected"' : '';
+				$als_selected = ($als_id == $rs->fields['alias_id']) ? Config::getInstance()->get('HTML_SELECTED') : '';
 			} else {
-				$als_selected = (!$first_passed) ? 'selected="selected"' : '';
+				$als_selected = (!$first_passed) ? Config::getInstance()->get('HTML_SELECTED') : '';
 			}
 
 			$alias_name = decode_idna($rs->fields['alias_name']);

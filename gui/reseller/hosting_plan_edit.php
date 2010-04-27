@@ -185,18 +185,18 @@ function restore_form(&$tpl, &$sql) {
 			'HP_PAYMENT' => clean_input($_POST['hp_payment'], true),
 			'HP_TOS_VALUE' => clean_input($_POST['hp_tos'], true),
 
-			'TR_PHP_YES' => ($_POST['php'] == '_yes_') ? 'checked="checked"' : '',
-			'TR_PHP_NO' => ($_POST['php'] == '_no_') ? 'checked="checked"' : '',
-			'TR_CGI_YES' => ($_POST['cgi'] == '_yes_') ? 'checked="checked"' : '',
-			'TR_CGI_NO' => ($_POST['cgi'] == '_no_') ? 'checked="checked"' : '',
-			'TR_DNS_YES' => ($_POST['dns'] == '_yes_') ? 'checked="checked"' : '',
-			'TR_DNS_NO' => ($_POST['dns'] == '_no_') ? 'checked="checked"' : '',
-			'VL_BACKUPD' => ($_POST['backup'] == '_dmn_') ? 'checked="checked"' : '',
-			'VL_BACKUPS' => ($_POST['backup'] == '_sql_') ? 'checked="checked"' : '',
-			'VL_BACKUPF' => ($_POST['backup'] == '_full_') ? 'checked="checked"' : '',
-			'VL_BACKUPN' => ($_POST['backup']== '_no_') ? 'checked="checked"' : '',
-			'TR_STATUS_YES' => ($_POST['status']) ? 'checked="checked"' : '',
-			'TR_STATUS_NO' => (!$_POST['status']) ? 'checked="checked"' : ''
+			'TR_PHP_YES' => ($_POST['php'] == '_yes_') ? Config::getInstance()->get('HTML_CHECKED') : '',
+			'TR_PHP_NO' => ($_POST['php'] == '_no_') ? Config::getInstance()->get('HTML_CHECKED') : '',
+			'TR_CGI_YES' => ($_POST['cgi'] == '_yes_') ? Config::getInstance()->get('HTML_CHECKED') : '',
+			'TR_CGI_NO' => ($_POST['cgi'] == '_no_') ? Config::getInstance()->get('HTML_CHECKED') : '',
+			'TR_DNS_YES' => ($_POST['dns'] == '_yes_') ? Config::getInstance()->get('HTML_CHECKED') : '',
+			'TR_DNS_NO' => ($_POST['dns'] == '_no_') ? Config::getInstance()->get('HTML_CHECKED') : '',
+			'VL_BACKUPD' => ($_POST['backup'] == '_dmn_') ? Config::getInstance()->get('HTML_CHECKED') : '',
+			'VL_BACKUPS' => ($_POST['backup'] == '_sql_') ? Config::getInstance()->get('HTML_CHECKED') : '',
+			'VL_BACKUPF' => ($_POST['backup'] == '_full_') ? Config::getInstance()->get('HTML_CHECKED') : '',
+			'VL_BACKUPN' => ($_POST['backup']== '_no_') ? Config::getInstance()->get('HTML_CHECKED') : '',
+			'TR_STATUS_YES' => ($_POST['status']) ? Config::getInstance()->get('HTML_CHECKED') : '',
+			'TR_STATUS_NO' => (!$_POST['status']) ? Config::getInstance()->get('HTML_CHECKED') : ''
 		)
 	);
 } // end of function restore_form()
@@ -222,8 +222,8 @@ function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
 
 		$res = exec_query($sql, $query, array($hpid));
 
-		$readonly = 'readonly="readonly"';
-		$disabled = 'disabled="disabled"';
+		$readonly = Config::getInstance()->get('HTML_READONLY');
+		$disabled = Config::getInstance()->get('HTML_DISABLED');
 		$edit_hp = tr('View hosting plan');
 
 		$tpl->assign('FORM', '');
@@ -305,18 +305,18 @@ function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
 			'HP_PAYMENT' => stripslashes($payment),
 			'HP_TOS_VALUE' => stripslashes($tos),
 
-			'TR_PHP_YES' => ($hp_php == '_yes_') ? 'checked="checked"' : '',
-			'TR_PHP_NO' => ($hp_php == '_no_')	? 'checked="checked"' : '',
-			'TR_CGI_YES' => ($hp_cgi == '_yes_') ? 'checked="checked"' : '',
-			'TR_CGI_NO' => ($hp_cgi == '_no_') ? 'checked="checked"' : '',
-			'TR_DNS_YES' => ($hp_dns == '_yes_') ? 'checked="checked"' : '',
-			'TR_DNS_NO' => ($hp_dns == '_no_') ? 'checked="checked"' : '',
-			'VL_BACKUPD' => ($hp_backup == '_dmn_') ? 'checked="checked"' : '',
-			'VL_BACKUPS' => ($hp_backup == '_sql_') ? 'checked="checked"' : '',
-			'VL_BACKUPF' => ($hp_backup == '_full_') ? 'checked="checked"' : '',
-			'VL_BACKUPN' => ($hp_backup == '_no_') ? 'checked="checked"' : '',
-			'TR_STATUS_YES' => ($status) ? 'checked="checked"' : '',
-			'TR_STATUS_NO' => (!$status) ? 'checked="checked"' : '',
+			'TR_PHP_YES' => ($hp_php == '_yes_') ? Config::getInstance()->get('HTML_CHECKED') : '',
+			'TR_PHP_NO' => ($hp_php == '_no_')	? Config::getInstance()->get('HTML_CHECKED') : '',
+			'TR_CGI_YES' => ($hp_cgi == '_yes_') ? Config::getInstance()->get('HTML_CHECKED') : '',
+			'TR_CGI_NO' => ($hp_cgi == '_no_') ? Config::getInstance()->get('HTML_CHECKED') : '',
+			'TR_DNS_YES' => ($hp_dns == '_yes_') ? Config::getInstance()->get('HTML_CHECKED') : '',
+			'TR_DNS_NO' => ($hp_dns == '_no_') ? Config::getInstance()->get('HTML_CHECKED') : '',
+			'VL_BACKUPD' => ($hp_backup == '_dmn_') ? Config::getInstance()->get('HTML_CHECKED') : '',
+			'VL_BACKUPS' => ($hp_backup == '_sql_') ? Config::getInstance()->get('HTML_CHECKED') : '',
+			'VL_BACKUPF' => ($hp_backup == '_full_') ? Config::getInstance()->get('HTML_CHECKED') : '',
+			'VL_BACKUPN' => ($hp_backup == '_no_') ? Config::getInstance()->get('HTML_CHECKED') : '',
+			'TR_STATUS_YES' => ($status) ? Config::getInstance()->get('HTML_CHECKED') : '',
+			'TR_STATUS_NO' => (!$status) ? Config::getInstance()->get('HTML_CHECKED') : '',
 		)
 	);
 } // end of gen_load_ehp_page()

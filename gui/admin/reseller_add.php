@@ -101,7 +101,7 @@ function get_server_ip(&$tpl, &$sql) {
 			$ip_var_name = "ip_$ip_id";
 
 			if (isset($_POST[$ip_var_name]) && $_POST[$ip_var_name] == 'asgned') {
-				$ip_item_assigned = 'checked="checked"';
+				$ip_item_assigned = Config::getInstance()->get('HTML_CHECKED');
 
 				$reseller_ips .= "$ip_id;";
 			} else {
@@ -333,9 +333,9 @@ function add_reseller(&$tpl, &$sql) {
 					'STREET_2' => clean_input($_POST['street2'], true),
 					'PHONE' => clean_input($_POST['phone'], true),
 					'FAX' => clean_input($_POST['fax'], true),
-					'VL_MALE' => (($_POST['gender'] == 'M') ? 'selected="selected"' : ''),
-					'VL_FEMALE' => (($_POST['gender'] == 'F') ? 'selected="selected"' : ''),
-					'VL_UNKNOWN' => ((($_POST['gender'] == 'U') || (empty($_POST['gender']))) ? 'selected="selected"' : ''),
+					'VL_MALE' => (($_POST['gender'] == 'M') ? Config::getInstance()->get('HTML_SELECTED') : ''),
+					'VL_FEMALE' => (($_POST['gender'] == 'F') ? Config::getInstance()->get('HTML_SELECTED') : ''),
+					'VL_UNKNOWN' => ((($_POST['gender'] == 'U') || (empty($_POST['gender']))) ? Config::getInstance()->get('HTML_SELECTED') : ''),
 
 					'MAX_DOMAIN_COUNT' => clean_input($_POST['nreseller_max_domain_cnt']),
 					'MAX_SUBDOMAIN_COUNT' => clean_input($_POST['nreseller_max_subdomain_cnt']),
@@ -371,7 +371,7 @@ function add_reseller(&$tpl, &$sql) {
 				'FAX' => '',
 				'VL_MALE' => '',
 				'VL_FEMALE' => '',
-				'VL_UNKNOWN' => 'selected="selected"',
+				'VL_UNKNOWN' => Config::getInstance()->get('HTML_SELECTED'),
 
 				'MAX_DOMAIN_COUNT' => '',
 				'MAX_SUBDOMAIN_COUNT' => '',

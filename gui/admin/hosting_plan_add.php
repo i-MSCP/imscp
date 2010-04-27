@@ -147,16 +147,16 @@ function gen_empty_ahp_page(&$tpl) {
 					'HP_DESCRIPTION_VALUE'	=> '',
 					'HP_DISK_VALUE'			=> '',
 					'TR_PHP_YES'			=> '',
-					'TR_PHP_NO'				=> 'checked="checked"',
+					'TR_PHP_NO'				=> Config::getInstance()->get('HTML_CHECKED'),
 					'TR_CGI_YES'			=> '',
-					'TR_CGI_NO'				=> 'checked="checked"',
+					'TR_CGI_NO'				=> Config::getInstance()->get('HTML_CHECKED'),
 					'VL_BACKUPD'			=> '',
 					'VL_BACKUPS'			=> '',
 					'VL_BACKUPF'			=> '',
-					'VL_BACKUPN'			=> 'checked="checked"',
+					'VL_BACKUPN'			=> Config::getInstance()->get('HTML_CHECKED'),
 					'TR_DNS_YES'			=> '',
-					'TR_DNS_NO'				=> 'checked="checked"',
-					'TR_STATUS_YES'			=> 'checked="checked"',
+					'TR_DNS_NO'				=> Config::getInstance()->get('HTML_CHECKED'),
+					'TR_STATUS_YES'			=> Config::getInstance()->get('HTML_CHECKED'),
 					'TR_STATUS_NO'			=> '',
 					'HP_TOS_VALUE'			=> ''
 			)
@@ -201,18 +201,18 @@ function gen_data_ahp_page(&$tpl) {
 
 	$tpl->assign(
 			array(
-					'TR_PHP_YES'	=> ($hp_php == '_yes_') ? 'checked="checked"' : '',
-					'TR_PHP_NO'		=> ($hp_php == '_no_') ? 'checked="checked"' : '',
-					'TR_CGI_YES'	=> ($hp_cgi == '_yes_') ? 'checked="checked"' : '',
-					'TR_CGI_NO'		=> ($hp_cgi == '_no_') ? 'checked="checked"' : '',
-					'VL_BACKUPD'	=> ($hp_backup == '_dmn_') ? 'checked="checked"' : '',
-					'VL_BACKUPS'	=> ($hp_backup == '_sql_') ? 'checked="checked"' : '',
-					'VL_BACKUPF'	=> ($hp_backup == '_full_') ? 'checked="checked"' : '',
-					'VL_BACKUPN'	=> ($hp_backup == '_no_') ? 'checked="checked"' : '',
-					'TR_DNS_YES'	=> ($hp_dns == '_yes_') ? 'checked="checked"' : '',
-					'TR_DNS_NO'		=> ($hp_dns == '_no_') ? 'checked="checked"' : '',
-					'TR_STATUS_YES'	=> ($status) ? 'checked="checked"' : '',
-					'TR_STATUS_NO'	=> (!$status) ? 'checked="checked"' : ''
+					'TR_PHP_YES'	=> ($hp_php == '_yes_') ? Config::getInstance()->get('HTML_CHECKED') : '',
+					'TR_PHP_NO'		=> ($hp_php == '_no_') ? Config::getInstance()->get('HTML_CHECKED') : '',
+					'TR_CGI_YES'	=> ($hp_cgi == '_yes_') ? Config::getInstance()->get('HTML_CHECKED') : '',
+					'TR_CGI_NO'		=> ($hp_cgi == '_no_') ? Config::getInstance()->get('HTML_CHECKED') : '',
+					'VL_BACKUPD'	=> ($hp_backup == '_dmn_') ? Config::getInstance()->get('HTML_CHECKED') : '',
+					'VL_BACKUPS'	=> ($hp_backup == '_sql_') ? Config::getInstance()->get('HTML_CHECKED') : '',
+					'VL_BACKUPF'	=> ($hp_backup == '_full_') ? Config::getInstance()->get('HTML_CHECKED') : '',
+					'VL_BACKUPN'	=> ($hp_backup == '_no_') ? Config::getInstance()->get('HTML_CHECKED') : '',
+					'TR_DNS_YES'	=> ($hp_dns == '_yes_') ? Config::getInstance()->get('HTML_CHECKED') : '',
+					'TR_DNS_NO'		=> ($hp_dns == '_no_') ? Config::getInstance()->get('HTML_CHECKED') : '',
+					'TR_STATUS_YES'	=> ($status) ? Config::getInstance()->get('HTML_CHECKED') : '',
+					'TR_STATUS_NO'	=> (!$status) ? Config::getInstance()->get('HTML_CHECKED') : ''
 			)
 	);
 

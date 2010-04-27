@@ -168,27 +168,27 @@ function gen_editalias_page(&$tpl, $edit_id) {
 
 		if ($data["url_forward"] == "no") {
 			$check_en = '';
-			$check_dis = 'checked="checked"';
+			$check_dis = Config::getInstance()->get('HTML_CHECKED');
 			$url_forward = '';
 			$tpl->assign(
 				array(
-					'READONLY_FORWARD'	=>	' readonly="readonly"',
-					'DISABLE_FORWARD'	=>	' disabled="disabled"',
+					'READONLY_FORWARD'	=>	Config::getInstance()->get('HTML_READONLY'),
+					'DISABLE_FORWARD'	=>	Config::getInstance()->get('HTML_DISABLED'),
 					'HTTP_YES'			=>	'',
 					'HTTPS_YES'			=>	'',
 					'FTP_YES'			=>	''
 				)
 			);
 		} else {
-			$check_en = 'checked="checked"';
+			$check_en = Config::getInstance()->get('HTML_CHECKED');
 			$check_dis = '';
 			$tpl->assign(
 				array(
 					'READONLY_FORWARD' => '',
 					'DISABLE_FORWARD' => '',
-					'HTTP_YES' => (preg_match("/http:\/\//", $data['url_forward'])) ? ' selected="selected"' : '',
-					'HTTPS_YES' => (preg_match("/https:\/\//", $data['url_forward'])) ? ' selected="selected"' : '',
-					'FTP_YES' => (preg_match("/ftp:\/\//", $data['url_forward'])) ? ' selected="selected"' : ''
+					'HTTP_YES' => (preg_match("/http:\/\//", $data['url_forward'])) ? Config::getInstance()->get('HTML_SELECTED') : '',
+					'HTTPS_YES' => (preg_match("/https:\/\//", $data['url_forward'])) ? Config::getInstance()->get('HTML_SELECTED') : '',
+					'FTP_YES' => (preg_match("/ftp:\/\//", $data['url_forward'])) ? Config::getInstance()->get('HTML_SELECTED') : ''
 				)
 			);
 		}
@@ -234,14 +234,14 @@ function check_fwd_data(&$tpl, $alias_id) {
 			$forward_url = encode_idna($forward_prefix.$forward_url);
 		}
 		
-		$check_en = 'checked="checked"';
+		$check_en = Config::getInstance()->get('HTML_CHECKED');
 		$check_dis = '';
 		$tpl->assign(
 			array(
 				'FORWARD'			=> $forward_url,
-				'HTTP_YES'			=> ($forward_prefix === 'http://') ? ' selected="selected"' : '',
-				'HTTPS_YES'			=> ($forward_prefix === 'https://') ? ' selected="selected"' : '',
-				'FTP_YES'			=> ($forward_prefix === 'ftp://') ? ' selected="selected"' : '',
+				'HTTP_YES'			=> ($forward_prefix === 'http://') ? Config::getInstance()->get('HTML_SELECTED') : '',
+				'HTTPS_YES'			=> ($forward_prefix === 'https://') ? Config::getInstance()->get('HTML_SELECTED') : '',
+				'FTP_YES'			=> ($forward_prefix === 'ftp://') ? Config::getInstance()->get('HTML_SELECTED') : '',
 				'CHECK_EN'			=> $check_en,
 				'CHECK_DIS'			=> $check_dis,
 				'DISABLE_FORWARD'	=>	'',
@@ -249,13 +249,13 @@ function check_fwd_data(&$tpl, $alias_id) {
 			)
 		);
 	} else {
-		$check_en = 'checked="checked"';
+		$check_en = Config::getInstance()->get('HTML_CHECKED');
 		$check_dis = '';
 		$forward_url = 'no';
 		$tpl->assign(
 			array(
-				'READONLY_FORWARD' => ' readonly="readonly"',
-				'DISABLE_FORWARD' => ' disabled="disabled"',
+				'READONLY_FORWARD' => Config::getInstance()->get('HTML_READONLY'),
+				'DISABLE_FORWARD' => Config::getInstance()->get('HTML_DISABLED'),
 				'CHECK_EN' => $check_en,
 				'CHECK_DIS' => $check_dis,
 			)

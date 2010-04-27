@@ -70,7 +70,7 @@ function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
 			array(
 				'USERNAME' => '',
 				'DOMAIN_NAME' => $dmn_name,
-				'DMN_TYPE_CHECKED' => 'checked="checked"',
+				'DMN_TYPE_CHECKED' => Config::getInstance()->get('HTML_CHECKED'),
 				'ALS_TYPE_CHECKED' => '',
 				'SUB_TYPE_CHECKED' => '',
 				'OTHER_DIR' => '',
@@ -82,11 +82,11 @@ function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
 			array(
 				'USERNAME' => clean_input($_POST['username'], true),
 				'DOMAIN_NAME' => $dmn_name,
-				'DMN_TYPE_CHECKED' => ($_POST['dmn_type'] === 'dmn') ? 'checked="checked"' : '',
-				'ALS_TYPE_CHECKED' => ($_POST['dmn_type'] === 'als') ? 'checked="checked"' : '',
-				'SUB_TYPE_CHECKED' => ($_POST['dmn_type'] === 'sub') ? 'checked="checked"' : '',
+				'DMN_TYPE_CHECKED' => ($_POST['dmn_type'] === 'dmn') ? Config::getInstance()->get('HTML_CHECKED') : '',
+				'ALS_TYPE_CHECKED' => ($_POST['dmn_type'] === 'als') ? Config::getInstance()->get('HTML_CHECKED') : '',
+				'SUB_TYPE_CHECKED' => ($_POST['dmn_type'] === 'sub') ? Config::getInstance()->get('HTML_CHECKED') : '',
 				'OTHER_DIR' => clean_input($_POST['other_dir'], true),
-				'USE_OTHER_DIR_CHECKED' => (isset($_POST['use_other_dir']) && $_POST['use_other_dir'] === 'on') ? 'checked="checked"' : ''
+				'USE_OTHER_DIR_CHECKED' => (isset($_POST['use_other_dir']) && $_POST['use_other_dir'] === 'on') ? Config::getInstance()->get('HTML_CHECKED') : ''
 			)
 		);
 	}
@@ -113,7 +113,7 @@ function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 		$tpl->assign(
 			array(
 				'ALS_ID' => 'n/a',
-				'ALS_SELECTED' => 'selected="selected"',
+				'ALS_SELECTED' => Config::getInstance()->get('HTML_SELECTED'),
 				'ALS_NAME' => tr('Empty List')
 			)
 		);
@@ -126,10 +126,10 @@ function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 			if ($post_check === 'yes') {
 				$als_id = (!isset($_POST['als_id'])) ? '' : $_POST['als_id'];
 				$als_selected = ($als_id == $rs->fields['alias_name'])
-					? 'selected="selected"'
+					? Config::getInstance()->get('HTML_SELECTED')
 					: '';
 			} else {
-				$als_selected = (!$first_passed) ? 'selected="selected"' : '';
+				$als_selected = (!$first_passed) ? Config::getInstance()->get('HTML_SELECTED') : '';
 			}
 
 			$als_menu_name = decode_idna($rs->fields['alias_name']);
@@ -171,7 +171,7 @@ function gen_dmn_sub_list(&$tpl, &$sql, $dmn_id, $dmn_name, $post_check) {
 		$tpl->assign(
 			array(
 				'SUB_ID' => 'n/a',
-				'SUB_SELECTED' => 'selected="selected"',
+				'SUB_SELECTED' => Config::getInstance()->get('HTML_SELECTED'),
 				'SUB_NAME' => tr('Empty list')
 			)
 		);
@@ -185,10 +185,10 @@ function gen_dmn_sub_list(&$tpl, &$sql, $dmn_id, $dmn_name, $post_check) {
 			if ($post_check === 'yes') {
 				$sub_id = (!isset($_POST['sub_id'])) ? '' : $_POST['sub_id'];
 				$sub_selected = ($sub_id == $rs->fields['sub_name'])
-					? 'selected="selected"'
+					? Config::getInstance()->get('HTML_SELECTED')
 					: '';
 			} else {
-				$sub_selected = (!$first_passed) ? 'selected="selected"' : '';
+				$sub_selected = (!$first_passed) ? Config::getInstance()->get('HTML_SELECTED') : '';
 			}
 
 			$sub_menu_name = decode_idna($rs->fields['sub_name']);

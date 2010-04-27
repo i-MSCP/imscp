@@ -328,9 +328,9 @@ $tpl->assign(
 		'FAX'							=> empty($rs->fields['fax']) ? '' : $rs->fields['fax'],
 		'USERNAME'						=> $admin_name,
 		'EMAIL'							=> $rs->fields['email'],
-		'VL_MALE'						=> (($rs->fields['gender'] === 'M') ? 'selected="selected"' : ''),
-		'VL_FEMALE'						=> (($rs->fields['gender'] === 'F') ? 'selected="selected"' : ''),
-		'VL_UNKNOWN'					=> ((($rs->fields['gender'] === 'U') || (empty($rs->fields['gender']))) ? 'selected="selected"' : ''),
+		'VL_MALE'						=> (($rs->fields['gender'] === 'M') ? Config::getInstance()->get('HTML_SELECTED') : ''),
+		'VL_FEMALE'						=> (($rs->fields['gender'] === 'F') ? Config::getInstance()->get('HTML_SELECTED') : ''),
+		'VL_UNKNOWN'					=> ((($rs->fields['gender'] === 'U') || (empty($rs->fields['gender']))) ? Config::getInstance()->get('HTML_SELECTED') : ''),
 		'EDIT_ID'						=> $edit_id,
 		// The entries below are for Demo versions only
 		'PASSWORD_DISABLED'				=> tr('Password change is disabled!'),

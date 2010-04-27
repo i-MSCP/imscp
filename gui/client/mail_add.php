@@ -55,11 +55,11 @@ function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
 			array(
 				'USERNAME'				=> "",
 				'DOMAIN_NAME'			=> $dmn_name,
-				'MAIL_DMN_CHECKED'		=> 'checked="checked"',
+				'MAIL_DMN_CHECKED'		=> Config::getInstance()->get('HTML_CHECKED'),
 				'MAIL_ALS_CHECKED'		=> "",
 				'MAIL_SUB_CHECKED'		=> "",
 				'MAIL_ALS_SUB_CHECKED'	=> "",
-				'NORMAL_MAIL_CHECKED'	=> 'checked="checked"',
+				'NORMAL_MAIL_CHECKED'	=> Config::getInstance()->get('HTML_CHECKED'),
 				'FORWARD_MAIL_CHECKED'	=> "",
 				'FORWARD_LIST'			=> ""
 			)
@@ -76,12 +76,12 @@ function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
 			array(
 				'USERNAME'				=> clean_input($_POST['username'], true),
 				'DOMAIN_NAME'			=> $dmn_name,
-				'MAIL_DMN_CHECKED'		=> ($_POST['dmn_type'] === 'dmn') ? 'checked="checked"' : "",
-				'MAIL_ALS_CHECKED'		=> ($_POST['dmn_type'] === 'als') ? 'checked="checked"' : "",
-				'MAIL_SUB_CHECKED'		=> ($_POST['dmn_type'] === 'sub') ? 'checked="checked"' : "",
-				'MAIL_ALS_SUB_CHECKED'	=> ($_POST['dmn_type'] === 'als_sub') ? 'checked="checked"' : "",
-				'NORMAL_MAIL_CHECKED'	=> (isset($_POST['mail_type_normal'])) ? 'checked="checked"' : "",
-				'FORWARD_MAIL_CHECKED'	=> (isset($_POST['mail_type_forward'])) ? 'checked="checked"' : "",
+				'MAIL_DMN_CHECKED'		=> ($_POST['dmn_type'] === 'dmn') ? Config::getInstance()->get('HTML_CHECKED') : "",
+				'MAIL_ALS_CHECKED'		=> ($_POST['dmn_type'] === 'als') ? Config::getInstance()->get('HTML_CHECKED') : "",
+				'MAIL_SUB_CHECKED'		=> ($_POST['dmn_type'] === 'sub') ? Config::getInstance()->get('HTML_CHECKED') : "",
+				'MAIL_ALS_SUB_CHECKED'	=> ($_POST['dmn_type'] === 'als_sub') ? Config::getInstance()->get('HTML_CHECKED') : "",
+				'NORMAL_MAIL_CHECKED'	=> (isset($_POST['mail_type_normal'])) ? Config::getInstance()->get('HTML_CHECKED') : "",
+				'FORWARD_MAIL_CHECKED'	=> (isset($_POST['mail_type_forward'])) ? Config::getInstance()->get('HTML_CHECKED') : "",
 				'FORWARD_LIST'			=> $f_list
 			)
 		);
@@ -109,7 +109,7 @@ function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 		$tpl->assign(
 			array(
 				'ALS_ID'		=> '0',
-				'ALS_SELECTED'	=> 'selected="selected"',
+				'ALS_SELECTED'	=> Config::getInstance()->get('HTML_SELECTED'),
 				'ALS_NAME'		=> tr('Empty list')
 			)
 		);
@@ -126,13 +126,13 @@ function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 				}
 
 				if ($als_id == $rs->fields['alias_id']) {
-					$als_selected = 'selected="selected"';
+					$als_selected = Config::getInstance()->get('HTML_SELECTED');
 				} else {
 					$als_selected = '';
 				}
 			} else {
 				if (!$first_passed) {
-					$als_selected = 'selected="selected"';
+					$als_selected = Config::getInstance()->get('HTML_SELECTED');
 				} else {
 					$als_selected = '';
 				}
@@ -177,7 +177,7 @@ function gen_dmn_sub_list(&$tpl, &$sql, $dmn_id, $dmn_name, $post_check) {
 		$tpl->assign(
 			array(
 				'SUB_ID'		=> '0',
-				'SUB_SELECTED'	=> 'selected="selected"',
+				'SUB_SELECTED'	=> Config::getInstance()->get('HTML_SELECTED'),
 				'SUB_NAME'		=> tr('Empty list')
 			)
 		);
@@ -195,13 +195,13 @@ function gen_dmn_sub_list(&$tpl, &$sql, $dmn_id, $dmn_name, $post_check) {
 				}
 
 				if ($sub_id == $rs->fields['sub_id']) {
-					$sub_selected = 'selected="selected"';
+					$sub_selected = Config::getInstance()->get('HTML_SELECTED');
 				} else {
 					$sub_selected = '';
 				}
 			} else {
 				if (!$first_passed) {
-					$sub_selected = 'selected="selected"';
+					$sub_selected = Config::getInstance()->get('HTML_SELECTED');
 				} else {
 					$sub_selected = '';
 				}
@@ -250,7 +250,7 @@ function gen_dmn_als_sub_list(&$tpl, &$sql, $dmn_id, $post_check) {
 		$tpl->assign(
 			array(
 				'ALS_SUB_ID'		=> '0',
-				'ALS_SUB_SELECTED'	=> 'selected="selected"',
+				'ALS_SUB_SELECTED'	=> Config::getInstance()->get('HTML_SELECTED'),
 				'ALS_SUB_NAME'		=> tr('Empty list')
 			)
 		);
@@ -268,13 +268,13 @@ function gen_dmn_als_sub_list(&$tpl, &$sql, $dmn_id, $post_check) {
 				}
 
 				if ($als_sub_id == $rs->fields['als_sub_id']) {
-					$als_sub_selected = 'selected="selected"';
+					$als_sub_selected = Config::getInstance()->get('HTML_SELECTED');
 				} else {
 					$als_sub_selected = '';
 				}
 			} else {
 				if (!$first_passed) {
-					$als_sub_selected = 'selected="selected"';
+					$als_sub_selected = Config::getInstance()->get('HTML_SELECTED');
 				} else {
 					$als_sub_selected = '';
 				}

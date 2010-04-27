@@ -186,9 +186,9 @@ function add_user(&$tpl, &$sql) {
 					'STREET_2' => clean_input($_POST['street2'], true),
 					'PHONE' => clean_input($_POST['phone'], true),
 					'FAX' => clean_input($_POST['fax'], true),
-					'VL_MALE' => (($_POST['gender'] == 'M') ? 'selected="selected"' : ''),
-					'VL_FEMALE' => (($_POST['gender'] == 'F') ? 'selected="selected"' : ''),
-					'VL_UNKNOWN' => ((($_POST['gender'] == 'U') || (empty($_POST['gender']))) ? 'selected="selected"' : '')
+					'VL_MALE' => (($_POST['gender'] == 'M') ? Config::getInstance()->get('HTML_SELECTED') : ''),
+					'VL_FEMALE' => (($_POST['gender'] == 'F') ? Config::getInstance()->get('HTML_SELECTED') : ''),
+					'VL_UNKNOWN' => ((($_POST['gender'] == 'U') || (empty($_POST['gender']))) ? Config::getInstance()->get('HTML_SELECTED') : '')
 				)
 			);
 		}
@@ -210,7 +210,7 @@ function add_user(&$tpl, &$sql) {
 				'FAX' => '',
 				'VL_MALE' => '',
 				'VL_FEMALE' => '',
-				'VL_UNKNOWN' => 'selected="selected"'
+				'VL_UNKNOWN' => Config::getInstance()->get('HTML_SELECTED')
 			)
 		);
 	} // end else

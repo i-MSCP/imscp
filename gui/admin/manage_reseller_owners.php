@@ -127,7 +127,7 @@ function gen_reseller_table(&$tpl, &$sql) {
 		if ((isset($_POST['uaction']) && $_POST['uaction'] === 'reseller_owner')
 			&& (isset($_POST['dest_admin'])
 				&& $_POST['dest_admin'] == $rs->fields['admin_id'])) {
-			$selected = 'selected="selected"';
+			$selected = Config::getInstance()->get('HTML_SELECTED');
 		} else {
 			$selected = '';
 		}

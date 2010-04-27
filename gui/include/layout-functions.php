@@ -187,7 +187,7 @@ function gen_def_layout(&$tpl, $user_def_layout) {
 	$layouts = array('blue', 'green', 'red', 'yellow');
 
 	foreach ($layouts as $layout) {
-		$selected = ($layout === $user_def_layout) ? 'selected="selected"' : '';
+		$selected = ($layout === $user_def_layout) ? Config::getInstance()->get('HTML_SELECTED') : '';
 
 		$tpl->assign(
 			array(

@@ -159,9 +159,9 @@ function gen_address(&$tpl, &$sql, $user_id, $plan_id) {
 			'VL_STREET2'		=> $street2,
 			'VL_PHONE'			=> $phone,
 			'VL_FAX'			=> $fax,
-			'VL_MALE'			=> (($gender === 'M') ? 'selected="selected"' : ''),
-			'VL_FEMALE'			=> (($gender === 'F') ? 'selected="selected"' : ''),
-			'VL_UNKNOWN'		=> (($gender == 'U') ? 'selected="selected"' : '')
+			'VL_MALE'			=> (($gender === 'M') ? Config::getInstance()->get('HTML_SELECTED') : ''),
+			'VL_FEMALE'			=> (($gender === 'F') ? Config::getInstance()->get('HTML_SELECTED') : ''),
+			'VL_UNKNOWN'		=> (($gender == 'U') ? Config::getInstance()->get('HTML_SELECTED') : '')
 		)
 	);
 }
