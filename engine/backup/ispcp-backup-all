@@ -264,7 +264,7 @@ sub backup_all_engine {
 				return $rs if ($rs != 0);
 			}
 
-			if($zip =~ '^(bzip2|gzip|lzma|xz)$') {
+			if ($zip =~ '^(bzip2|gzip|lzma|xz)$') {
 				my $extension = undef;
 
 				if ($zip eq 'bzip2') {
@@ -285,7 +285,7 @@ sub backup_all_engine {
 				send_error_mail('backup_all_engine()', "Backup algorithm not supported: $zip for domain $dmn_name!");
 			}
 
-			if ( length($backup_cmd) != 0 ) {
+			if (length($backup_cmd) != 0 ) {
 				$rs = sys_command($backup_cmd);
 
 				if ($rs == 0) { # everything ok

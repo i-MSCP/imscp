@@ -28,6 +28,7 @@
 
 use strict;
 use warnings;
+use Switch;
 
 # Hide the "used only once: possible typo" warnings
 no warnings 'once';
@@ -724,6 +725,120 @@ sub ask_fastcgi {
 	}
 
 	push_el(\@main::el, 'ask_fastcgi()', 'Ending...');
+
+	0;
+}
+
+# TODO FIXME
+sub ask_timezone {
+
+	push_el(\@main::el, 'ask_timezone()', 'Starting...');
+	
+	my $rdata = undef;
+	
+	my $qmsg = "\n\tPlease identify a location so that time zone rules can be set correctly." . 
+			   "\n\tPlease select a continent or ocean.".
+			   "\n\t[ 1] Africa" .
+ 			   "\n\t[ 2] Americas" .
+ 			   "\n\t[ 3] Antarctica" .
+ 			   "\n\t[ 4] Arctic Ocean" .
+ 			   "\n\t[ 5] Asia" .
+ 			   "\n\t[ 6] Atlantic Ocean" .
+ 			   "\n\t[ 7] Australia" .
+ 			   "\n\t[ 8] Europe" .
+ 			   "\n\t[ 9] Indian Ocean" .
+ 			   "\n\t[10] Pacific Ocean" .
+ 			   "\n\t#?";
+
+ 	print STDOUT $qmsg;
+ 	
+ 	chomp($rdata = readline \*STDIN);
+ 	
+ 	my $msg_string = "\n\tPlease select a country.";
+ 	switch ($rdata) {
+ 		case 1 {
+ 			$msg_string .
+ 			"\n\t[ 1] Algeria				[18] Gabon				[35] Rwanda" .
+ 			"\n\t[ 2] Angola				[19] Gambia				[36] Sao Tome & Principe" .
+ 			"\n\t[ 3] Benin					[20] Ghana				[37] Senegal" .
+ 			"\n\t[ 4] Botswana				[21] Guinea				[38] Sierra Leone" .
+ 			"\n\t[ 5] Burkina Faso			[22] Guinea-Bissau		[39] Somalia" .
+ 			"\n\t[ 6] Burundi				[23] Kenya				[40] South Africa" .
+ 			"\n\t[ 7] Cameroon				[24] Lesotho			[41] Spain" .
+ 			"\n\t[ 8] Central African Rep.	[25] Liberia			[42] Sudan" .
+ 			"\n\t[ 9] Chad					[26] Libya				[43] Swaziland" .
+ 			"\n\t[10] Congo (Dem. Rep.)		[27] Malawi				[44] Tanzania" .
+ 			"\n\t[11] Congo (Rep.)			[28] Mali				[45] Togo" .
+ 			"\n\t[12] Cote d'Ivoire			[29] Mauritania			[46] Tunisia" .
+ 			"\n\t[13] Djibouti				[30] Morocco			[47] Uganda" .
+ 			"\n\t[14] Egypt					[31] Mozambique			[48] Western Sahara" .
+ 			"\n\t[15] Equatorial Guinea		[32] Namibia			[49] Zambia" .
+ 			"\n\t[16] Eritrea				[33] Niger				[50] Zimbabwe" .
+ 			"\n\t[17] Ethiopia				[34] Nigeria" .
+ 			"\n\t#?";
+ 		}
+ 		case 2 {
+ 			$msg_string .
+  			"\n\t[ 1] Anguilla				[27] Honduras" .
+ 			"\n\t[ 2] Antigua & Barbuda		[28] Jamaica" .
+ 			"\n\t[ 3] Argentina				[29] Martinique" .
+ 			"\n\t[ 4] Aruba					[30] Mexico" .
+ 			"\n\t[ 5] Bahamas				[31] Montserrat" .
+ 			"\n\t[ 6] Barbados				[32] Netherlands Antilles" .
+ 			"\n\t[ 7] Belize				[33] Nicaragua" .
+ 			"\n\t[ 8] Bolivia				[34] Panama" .
+ 			"\n\t[ 9] Brazil				[35] Paraguay" .
+ 			"\n\t[10] Canada				[36] Peru" .
+ 			"\n\t[11] Cayman Islands		[37] Puerto Rico" .
+ 			"\n\t[12] Chile					[38] St Barthelemy" .
+ 			"\n\t[13] Colombia				[39] St Kitts & Nevis" .
+ 			"\n\t[14] Costa Rica			[40] St Lucia" .
+ 			"\n\t[15] Cuba					[41] St Martin (French part)" .
+ 			"\n\t[16] Dominica				[42] St Pierre & Miquelon" .
+ 			"\n\t[17] Dominican Republic	[43] St Vincent" .
+ 			"\n\t[18] Ecuador				[44] Suriname" .
+ 			"\n\t[19] El Salvador			[45] Trinidad & Tobago" .
+ 			"\n\t[20] French Guiana			[46] Turks & Caicos Is" .
+ 			"\n\t[21] Greenland				[47] United States" .
+ 			"\n\t[22] Grenada				[48] Uruguay" .
+ 			"\n\t[23] Guadeloupe			[49] Venezuela" .
+ 			"\n\t[24] Guatemala				[50] Virgin Islands (UK)" .
+ 			"\n\t[25] Guyana				[51] Virgin Islands (US)" .
+ 			"\n\t[26] Haiti" .
+ 			"\n\t#?";
+ 		}
+ 		case 3 {
+ 			
+ 		}
+ 		case 4 {
+ 			
+ 		}
+ 		case 5 {
+ 			
+ 		}
+ 		case 6 {
+ 			
+ 		}
+ 		case 7 {
+ 			
+ 		}
+ 		case 8 {
+ 			
+ 		}
+ 		case 9 {
+ 			
+ 		}
+ 		case 10 {
+ 			
+ 		}
+ 		else {
+ 			print STDOUT colored(['bold red'], "\n\tERROR:") .
+				 " Only numeric input between 1 and 10 is allowed!";
+			return 1;
+ 		}
+ 	}
+	
+	push_el(\@main::el, 'ask_timezone()', 'Ending...');
 
 	0;
 }

@@ -182,6 +182,10 @@ sub user_dialog {
 	do {
 		$rs = ask_fastcgi();
 	} while ($rs == 1);
+	
+	do {
+		$rs = ask_timezone();
+	} while ($rs == 1);
 
 	#
 	# AWStats questions
@@ -194,9 +198,7 @@ sub user_dialog {
 	if ($main::ua{'awstats_on'} eq 'yes' || $main::ua{'awstats_on'} eq 'y') {
 
 		do {
-
 			$rs = ask_awstats_dyn();
-
 		} while ($rs == 1);
 
 	} else {

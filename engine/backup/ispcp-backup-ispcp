@@ -271,7 +271,7 @@ sub backup_ispcp_engine {
 
 	# Backup of configuration files (/etc/ispcp), preparation
 
-	if($zip =~ '^(bzip2|gzip|lzma|xz)$') {
+	if ($zip =~ '^(bzip2|gzip|lzma|xz)$') {
 		my $extension = undef;
 
 		if ($zip eq 'bzip2') {

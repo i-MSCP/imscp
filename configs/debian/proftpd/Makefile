@@ -29,8 +29,6 @@
 #    http://isp-control.net
 #
 
-RELEASE=`lsb_release -c | awk '{print $$2}' | tr -d "\n"`
-
 export
 
 install:
@@ -48,20 +46,10 @@ install:
 	$(SYSTEM_MAKE_DIRS) $(ROOT_CONF)/proftpd/ispcp
 	cp ./root_domain.conf $(ROOT_CONF)/proftpd/ispcp
 
-	# Debian 4.0 "Etch"?
-	if [ $(RELEASE) = 'sarge' ]; then \
-		cp ./proftpd.conf $(SYSTEM_CONF)/proftpd ; \
-	elif [ $(RELEASE) = 'etch' ]; then \
-		if [ -e /etc/proftpd.conf ] ; then \
-			mv /etc/proftpd.conf /etc/proftpd.conf.bak ; \
-		fi ; \
-		cp ./proftpd1.3.conf $(SYSTEM_CONF)/proftpd/proftpd.conf ; \
-	elif [ $(RELEASE) = 'lenny' ] || [ $(RELEASE) = 'squeeze' ]; then \
-		if [ -e /etc/proftpd.conf ] ; then \
-			mv /etc/proftpd.conf /etc/proftpd.conf.bak ; \
-		fi ; \
-		cp ./proftpd1.3.conf.lenny $(SYSTEM_CONF)/proftpd/proftpd.conf ; \
-	fi \
+	if [ -e /etc/proftpd.conf ] ; then \
+		mv /etc/proftpd.conf /etc/proftpd.conf.bak ; \
+	fi ; \
+	cp ./proftpd.conf $(SYSTEM_CONF)/proftpd/proftpd.conf ; \
 
 
 uninstall:
