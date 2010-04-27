@@ -354,7 +354,7 @@ function generate_als_list(&$tpl, $reseller_id, &$als_err) {
 		$als_id = $rs->fields['alias_id'];
 		$domain_id = $rs->fields['domain_id'];
 		$als_name = $rs->fields['alias_name'];
-		$als_mount_point = ($rs->fields['alias_mount'] == '')
+		$als_mount_point = ($rs->fields['alias_mount'] != '')
 			? $rs->fields['alias_mount']
 			: '/';
 		$als_status = $rs->fields['alias_status'];
