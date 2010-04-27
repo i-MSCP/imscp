@@ -183,10 +183,6 @@ sub user_dialog {
 		$rs = ask_fastcgi();
 	} while ($rs == 1);
 	
-	do {
-		$rs = ask_timezone();
-	} while ($rs == 1);
-
 	#
 	# AWStats questions
 	#
