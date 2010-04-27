@@ -199,14 +199,14 @@ function show_services(&$tpl, &$sql) {
 				: $rs->fields['value'];
 			list($port, $protocol, $name, $status, $custom, $ip) = explode(";", $value);
 
-			$selected_udp	= $protocol == 'udp' ? "selected=\"selected\"" : "";
-			$selected_tcp	= $protocol == 'udp' ? "" : "selected=\"selected\"";
+			$selected_udp	= $protocol == 'udp' ? Config::getInstance()->get('HTML_SELECTED') : '';
+			$selected_tcp	= $protocol == 'udp' ? '' : Config::getInstance()->get('HTML_SELECTED');
 
-			$selected_on	= $status == '1' ? "selected=\"selected\"" : "";
-			$selected_off	= $status == '1' ? "" : "selected=\"selected\"";
+			$selected_on	= $status == '1' ? Config::getInstance()->get('HTML_SELECTED') : '';
+			$selected_off	= $status == '1' ? '' : Config::getInstance()->get('HTML_SELECTED');
 
 			if ($custom == 0) {
-				$tpl->assign(array('SERVICE' => $name . "<input name=\"name[]\" type=\"hidden\" id=\"name" . $row . "\" value=\"" . $name . "\" />"));
+				$tpl->assign(array('SERVICE' => $name . '<input name="name[]" type="hidden" id="name' . $row . '" value="' . $name . '" />'));
 				$tpl->assign(
 					array(
 						'PORT_READONLY'		=> Config::getInstance()->get('HTML_READONLY'),
@@ -218,7 +218,7 @@ function show_services(&$tpl, &$sql) {
 				);
 				$tpl->parse('PORT_DELETE_SHOW', '');
 			} else {
-				$tpl->assign(array('SERVICE' => "<input name=\"name[]\" type=\"text\" id=\"name" . $row . "\" value=\"" . $name . "\" class=\"textinput\" maxlength=\"25\" />"));
+				$tpl->assign(array('SERVICE' => '<input name="name[]" type="text" id="name' . $row . '" value="' . $name . '" class="textinput" maxlength="25" />'));
 				$tpl->assign(
 					array(
 						'NAME'				=> $name,

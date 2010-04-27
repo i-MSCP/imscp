@@ -84,7 +84,7 @@ class networkCard {
 		$strError = trim($strError);
 		$strBuffer = trim($strBuffer);
 
-		if (!empty($strError) || $return_value <> 0) {
+		if (!empty($strError) || $return_value != 0) {
 			$strError .= "\nReturn value: " . $return_value;
 			return false;
 		}

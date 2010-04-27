@@ -474,7 +474,7 @@ if (isset($_GET['action']) && $exec_count > 0) {
 			set_page_message(tr('Done'));
 			user_goto('ispcp_debugger.php');
 		} else {
-			$msg = tr('Unknown Error') . '<br/>' . $sql->ErrorMsg();
+			$msg = tr('Unknown Error') . '<br />' . $sql->ErrorMsg();
 			set_page_message($msg);
 			user_goto('ispcp_debugger.php');
 		}

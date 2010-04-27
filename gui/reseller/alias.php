@@ -354,15 +354,15 @@ function generate_als_list(&$tpl, $reseller_id, &$als_err) {
 		$als_id = $rs->fields['alias_id'];
 		$domain_id = $rs->fields['domain_id'];
 		$als_name = $rs->fields['alias_name'];
-		$als_mount_point = $rs->fields['alias_mount'];
+		$als_mount_point = ($rs->fields['alias_mount'] == '')
+			? $rs->fields['alias_mount']
+			: '/';
 		$als_status = $rs->fields['alias_status'];
 		$als_ip_id = $rs->fields['alias_ip_id'];
 		$als_fwd = $rs->fields['url_forward'];
 		$show_als_fwd = ($als_fwd == 'no') ? "-" : $als_fwd;
 
 		$domain_name = decode_idna($rs->fields['domain_name']);
-
-		if ($als_mount_point == '') $als_mount_point = "/";
 
 		$query = "SELECT `ip_number`, `ip_domain` FROM `server_ips` WHERE `ip_id` = ?";
 
@@ -397,9 +397,9 @@ function generate_als_list(&$tpl, $reseller_id, &$als_err) {
 		if (isset($_SESSION['search_common'])
 			&& $_SESSION['search_common'] === 'account_name') {
 			$domain_name_selected = '';
-			$account_name_selected = " selected=\"selected\"";
+			$account_name_selected = Config::getInstance()->get('HTML_SELECTED');
 		} else {
-			$domain_name_selected = " selected=\"selected\"";
+			$domain_name_selected = Config::getInstance()->get('HTML_SELECTED');
 			$account_name_selected = '';
 		}
 

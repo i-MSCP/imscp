@@ -386,10 +386,8 @@ function gen_users_list(&$tpl, $reseller_id) {
 		$domain_id = $dd['domain_id'];
 		$domain_name = $dd['domain_name'];
 
-		// TODO concat if+elseif-condition to only one
-		if (('' == $cr_user_id) && ($i == 1)) {
-			$selected = Config::getInstance()->get('HTML_SELECTED');
-		} else if ($cr_user_id == $domain_id) {
+		if ((('' == $cr_user_id) && ($i == 1))
+			|| ($cr_user_id == $domain_id)) {
 			$selected = Config::getInstance()->get('HTML_SELECTED');
 		}
 
