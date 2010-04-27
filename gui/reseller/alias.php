@@ -99,6 +99,8 @@ unset_messages();
 
 /**
  * Generate domain alias list
+ * 
+ * @todo Use prepared statements (min. with placeholders like ":search_for")
  */
 function generate_als_list(&$tpl, $reseller_id, &$als_err) {
 	$sql = Database::getInstance();

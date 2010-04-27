@@ -34,8 +34,9 @@
 function decrypt_db_password($db_pass) {
 	global $ispcp_db_pass_key, $ispcp_db_pass_iv;
 
-	if ($db_pass == '')
+	if ($db_pass == '') {
 		return '';
+	}
 
 	if (extension_loaded('mcrypt')) {
 		$text = @base64_decode($db_pass . "\n");

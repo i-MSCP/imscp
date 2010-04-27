@@ -953,7 +953,7 @@ function ispcp_domain_exists($domain_name, $reseller_id) {
 
 /**
  * @todo see inline comment, about the messed up code
- * @todo use db prepared statements
+ * @todo use db prepared statements (min. with placeholders like ":reseller_id")
  */
 function gen_manage_domain_query(&$search_query, &$count_query,
 	$reseller_id,

@@ -1,6 +1,10 @@
 ispCP ω 1.0.6 Change Log
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-04-27 Thomas Häber
+	- GUI:
+		* Fixed #2358: Update jQuery to 1.4.2
+
 2010-04-26 Benedikt Heintel
 	- GUI:
         * Merged Critical Udapte with Database Update
