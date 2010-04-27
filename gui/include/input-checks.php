@@ -379,7 +379,7 @@ function validates_dname($dname, $subdname_process = false) {
  * the 'MAX_SUBDNAMES_LABELS' parameter value.
  * This parameter can be overridden by admin in the frontend.
  *
- * Labels 'www|ftp|mail|ns[1-2]?' can not be used as the first part
+ * Labels 'www|ftp|mail|ns[1-2]?' cannot be used as the first part
  * of a subdomain.
  *
  * The string representing the subdomain name must not exceed

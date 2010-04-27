@@ -325,7 +325,7 @@ function validate_domain_deletion($domain_id) {
 			'TR_DOMAIN_ALIASES'	=> tr('Domain aliases:'),
 			'TR_DOMAIN_SUBS'	=> tr('Domain subdomains:'),
 			'TR_DOMAIN_DBS'		=> tr('Domain databases:'),
-			'TR_REALLY_WANT_TO_DELETE_DOMAIN'	=> tr('Do you really want to delete the entire domain? This operation can not be undone!'),
+			'TR_REALLY_WANT_TO_DELETE_DOMAIN'	=> tr('Do you really want to delete the entire domain? This operation cannot be undone!'),
 			'TR_BUTTON_DELETE'	=> tr('Delete domain'),
 			'TR_YES_DELETE_DOMAIN'	=> tr('Yes, delete the domain.'),
 			'DOMAIN_NAME'		=> $data['domain_name'],

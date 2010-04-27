@@ -97,7 +97,7 @@ Config::getInstance()->set(
 	'../' . $root_tpl_path . $user_initial_theme . '/orderpanel'
 );
 
-// set often used HTML template strings, RegEx: \s*([a-zA-Z]+)\s*\=\s*([\"\'])\1\2 
+// set often used HTML template strings, RegEx: \s*([a-zA-Z]+)\s*\=\s*([\\]{0,1}[\"\'])\1\2 
 Config::getInstance()->set('HTML_CHECKED', ' checked="checked"');
 Config::getInstance()->set('HTML_DISABLED', ' disabled="disabled"');
 Config::getInstance()->set('HTML_READONLY', ' readonly="readonly"');
