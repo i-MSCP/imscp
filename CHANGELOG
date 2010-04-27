@@ -1,6 +1,15 @@
 ispCP ω 1.0.6 Change Log
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-04-27 Laurent Declercq
+	- SETUP:
+		* Fixed #2304: [Debian Squeeze] False errors reported during setup must
+			be hidden
+		* Removed useless variables
+		* Code re-factoring for better readability
+	- ENGINE:
+		* Added comments in ispcp_common_methods.pl
+
 2010-04-27 Thomas Häber
 	- GUI:
 		* Fixed #2358: Update jQuery to 1.4.2

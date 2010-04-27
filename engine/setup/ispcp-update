@@ -53,7 +53,6 @@ use Net::LibIDN ':all';
 use File::MimeInfo::Magic;
 use Term::ANSIColor qw(:constants colored);
 $Term::ANSIColor::AUTORESET = 1;
-
 use FindBin;
 use lib "$FindBin::Bin/..";
 
@@ -62,13 +61,7 @@ require 'ispcp-setup-methods.pl';
 
 # User entries
 %main::ua = ();
-
-# Re-assigned here to avoid 'used only once: possible typo warning'
-$main::cfg_re = '^[ \t]*([\_A-Za-z0-9]+) *= *([^\n\r]*)[\n\r]';
-@main::db_connect = ();
-$main::db_host = undef;
-$main::db_user = undef;
-$main::db_name = undef;
+$main::rlogfile = '>> /tmp/ispcp-update.log 2>&1';
 
 #
 ## Subroutines - Begin
@@ -107,8 +100,8 @@ sub update_engine {
 	#
 
 	subtitle('Stopping Services: ');
-	$rs = stop_services();
-	print_status($rs, 'exit_on_error');
+	stop_services();
+	print_status(0);
 
 	#
 	## Stopping services - End
@@ -293,8 +286,8 @@ sub update_engine {
 
 	# Stating services
 	subtitle('Starting services: ');
-	$rs = start_services();
-	print_status($rs, 'exit_on_error');
+	start_services();
+	print_status(0);
 
 	#
 	## Stating services - End
@@ -697,7 +690,7 @@ sub update_database_schema {
 
 	$cmd = "
 		$main::cfg{'CMD_PHP'} $main::cfg{'ROOT_DIR'}/engine/setup/updDB.php " .
-		">> /tmp/ispcp-update-database.log 2>&1";
+		"$main::rlogfile";
 
 	$rs = sys_command_rs($cmd);
 	return $rs if($rs !=0);
@@ -831,7 +824,7 @@ sub rebuild_customers_cfg {
 
 	$rs = sys_command_rs(
 		"perl $main::cfg{'ROOT_DIR'}/engine/ispcp-rqst-mngr " .
-		">> /tmp/ispcp-update-customers.log 2>&1");
+		"$main::rlogfile");
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'rebuild_customers_cfg()', 'Ending...');
@@ -871,7 +864,7 @@ sub set_permissions {
 		$cmd =
 			"$main::cfg{'CMD_SHELL'} " .
 			"$main::cfg{'ROOT_DIR'}/engine/setup/set-$_-permissions.sh " .
-			">> /tmp/ispcp-update-permissions.log 2>&1";
+			"$main::rlogfile";
 
 		$rs = sys_command_rs($cmd);
 		print_status($rs, 'exit_on_error');
@@ -908,14 +901,14 @@ sub update_old_disabled_dmn_layout {
 		# recovery if the process fail
 		if(-e "$_/htdocs" && !-e "$_/htdocs.disabled") {
 			$rs = sys_command_rs(
-				"$main::cfg{'CMD_MV'} $_/htdocs $_/htdocs.disabled >> $log_file 2>&1"
+				"$main::cfg{'CMD_MV'} $_/htdocs $_/htdocs.disabled $main::rlogfile"
 			);
 			return $rs if($rs != 0);
 		}
 
 		# Copy the directory that contain the layout for disabled domains
 		$rs = sys_command_rs(
-			"$main::cfg{CMD_CP} -TRfp $dsd_dmn_skel_dir $_/htdocs >> $log_file 2>&1"
+			"$main::cfg{CMD_CP} -TRfp $dsd_dmn_skel_dir $_/htdocs $main::rlogfile"
 		);
 		return $rs if($rs != 0);
 
@@ -987,7 +980,7 @@ sub update_old_disabled_dmn_layout {
 		# To (eg /var/www/virtual/domain.tld)
 		if(m@(.*)\.disabled$@) {
 			$rs = sys_command_rs(
-				"$main::cfg{'CMD_MV'} $_ $1 >> $log_file 2>&1"
+				"$main::cfg{'CMD_MV'} $_ $1 $main::rlogfile"
 			);
 			return $rs if($rs != 0);
 		} else {
@@ -1009,7 +1002,7 @@ sub update_old_disabled_dmn_layout {
 # Cleanup
 sub cleanup {
 	
-	push_el(\@main::el, 'cleanup()', 'Ending...');
+	push_el(\@main::el, 'cleanup()', 'Starting...');
 
 	sys_command("$main::cfg{'CMD_RM'} -f /tmp/ispcp-update-*");
 

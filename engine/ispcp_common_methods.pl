@@ -750,6 +750,13 @@ sub del_zone {
 	return $bz.$az;
 }
 
+# Execute a system command and returns a message that contain
+# a small description about the command that was failed
+#
+# If you want gets the real exit code, use the sys_command_rs()
+# subroutine instead
+#
+# @return string that contain a smal error description
 sub sys_command {
 
 	my ($cmd) = @_;
@@ -778,6 +785,9 @@ sub sys_command {
 	}
 }
 
+# Execute a system command and return the real exit code
+#
+# @return int command exit code
 sub sys_command_rs {
 
 	my ($cmd) = @_;
@@ -791,12 +801,6 @@ sub sys_command_rs {
 	my $dumped_core = $? & 128;
 
 	push_el(\@main::el, 'sys_command_rs()', 'Ending...');
-
-	#if ($exit_value == 0) {
-	#	return 0;
-	#} else {
-	#	return $exit_value;
-	#}
 
 	return $exit_value;
 }

@@ -1035,9 +1035,6 @@ sub setup_php {
 
 	my ($rs, $cmd) = (undef, undef);
 
-	# Service log file path
-	my $services_log_path = undef;
-
 	my $cfg_tpl = undef;
 	my $cfg = \$cfg_tpl;
 
@@ -1046,16 +1043,10 @@ sub setup_php {
 	my $bk_dir = "$cfg_dir/backup";
 	my $wrk_dir = "$cfg_dir/working";
 
-	# Dedicated tasks for the Install or Updates process - Begin
-
-	# Install:
-	if(!defined &update_engine) {
-		$services_log_path = "/tmp/ispcp-setup-services.log";
+	# Dedicated tasks for the updates process - Begin
 
 	# Update:
-	} else {
-
-		$services_log_path = "/tmp/ispcp-update-services.log";
+	if(defined &update_engine) {
 
 		my $timestamp = time();
 
@@ -1070,7 +1061,7 @@ sub setup_php {
 		}
 	}
 
-	# Dedicated tasks for the Install or Updates process - End
+	# Dedicated tasks for the updates process - End
 
 	# Building, storage and installation of new files - Begin
 
@@ -1150,44 +1141,34 @@ sub setup_php {
 	if(-e '/usr/sbin/a2enmod' && -e '/usr/sbin/a2dismod' ) {
 
 		# Disable php4/5 modules
-		sys_command_rs("/usr/sbin/a2dismod php4 >> $services_log_path 2>&1");
-		sys_command_rs("/usr/sbin/a2dismod php5 >> $services_log_path 2>&1");
+		sys_command_rs("/usr/sbin/a2dismod php4 $main::rlogfile");
+		sys_command_rs("/usr/sbin/a2dismod php5 $main::rlogfile");
 
 		# Enable actions modules
-		sys_command_rs("/usr/sbin/a2enmod actions &> $services_log_path");
+		sys_command_rs("/usr/sbin/a2enmod actions $main::rlogfile");
 
 		if(! -e '/etc/SuSE-release') {
 
 			if ($main::cfg{'PHP_FASTCGI'} eq 'fastcgi') {
 
 				# Ensures that the unused ispcp fcgid module loader is disabled
-				sys_command_rs(
-					"/usr/sbin/a2dismod ispcp_fcgid >> $services_log_path 2>&1"
-				);
+				sys_command_rs("/usr/sbin/a2dismod ispcp_fcgid $main::rlogfile");
 
 				# Enable fastcgi module
-				sys_command_rs("/usr/sbin/a2enmod fastcgi_ispcp &> $services_log_path");
+				sys_command_rs("/usr/sbin/a2enmod fastcgi_ispcp $main::rlogfile");
 
 			} else {
 
 				# Ensures that the unused ispcp fastcgi ispcp module loader is disabled
-				sys_command_rs(
-					"/usr/sbin/a2dismod ispcp_fastcgi >> $services_log_path 2>&1"
-				);
+				sys_command_rs("/usr/sbin/a2dismod ispcp_fastcgi $main::rlogfile");
 
 				# Enable ispcp fastcgi loader
-				sys_command_rs(
-					"/usr/sbin/a2enmod fcgid_ispcp >> $services_log_path 2>&1"
-				);
+				sys_command_rs("/usr/sbin/a2enmod fcgid_ispcp $main::rlogfile");
 			}
 
 			# Disable default  fastcgi/fcgid modules loaders to avoid conflicts with ispcp loaders
-			sys_command_rs(
-				"/usr/sbin/a2dismod fastcgi >> $services_log_path 2>&1"
-			);
-			sys_command_rs(
-				"/usr/sbin/a2dismod fcgid >> $services_log_path 2>&1"
-			);
+			sys_command_rs("/usr/sbin/a2dismod fastcgi $main::rlogfile");
+			sys_command_rs("/usr/sbin/a2dismod fcgid $main::rlogfile");
 		}
 	}
 
@@ -1213,24 +1194,15 @@ sub setup_httpd_main_vhost {
 	my $cfg_tpl = undef;
 	my $cfg = \$cfg_tpl;
 
-	# Log file path
-	my $services_log_path = undef;
-
 	# Directories paths
 	my $cfg_dir = "$main::cfg{'CONF_DIR'}/apache";
 	my $bk_dir = "$cfg_dir/backup";
 	my $wrk_dir = "$cfg_dir/working";
 
-	# Dedicated tasks for the Install or Updates process - Begin
-
-	# Install:
-	if(!defined &update_engine) {
-
-		$services_log_path = "/tmp/ispcp-setup-services.log";
+	# Dedicated tasks for the updates process - Begin
 
 	# Update:
-	} else {
-		$services_log_path = "/tmp/ispcp-update-services.log";
+	if(defined &update_engine) {
 
 		# Saving the current production file if it exists
 		if(-e "$main::cfg{'APACHE_SITES_DIR'}/ispcp.conf") {
@@ -1243,7 +1215,7 @@ sub setup_httpd_main_vhost {
 		}
 	}
 
-	# Dedicated tasks for the Install or Updates process - End
+	# Dedicated tasks for the updates process - End
 
 	# Building, storage and installation of new file - Begin
 
@@ -1283,10 +1255,10 @@ sub setup_httpd_main_vhost {
 
 		# We use cgid instead of cgi because we working with MPM.
 		# FIXME: Check if it's ok for all dists. (Lenny, opensuse OK)
-		sys_command("/usr/sbin/a2enmod cgid >> $services_log_path 2>&1");
+		sys_command("/usr/sbin/a2enmod cgid $main::rlogfile");
 
-		sys_command("/usr/sbin/a2enmod rewrite >> $services_log_path 2>&1");
-		sys_command("/usr/sbin/a2enmod suexec >> $services_log_path 2>&1");
+		sys_command("/usr/sbin/a2enmod rewrite $main::rlogfile");
+		sys_command("/usr/sbin/a2enmod suexec $main::rlogfile");
 	}
 
 	# Enable required modules - End
@@ -1294,7 +1266,7 @@ sub setup_httpd_main_vhost {
 	# Enable main vhost configuration file - Begin
 
 	if(-e "/usr/sbin/a2ensite") {
-		sys_command("/usr/sbin/a2ensite ispcp.conf >> $services_log_path 2>&1");
+		sys_command("/usr/sbin/a2ensite ispcp.conf $main::rlogfile");
 	}
 
 	# Enable main vhost configuration file - End
@@ -1322,9 +1294,6 @@ sub setup_awstats_vhost {
 	my $cfg_tpl = undef;
 	my $cfg = \$cfg_tpl;
 
-	# Log file path
-	my $services_log_path = undef;
-
 	# Directories paths
 	my $cfg_dir = "$main::cfg{'CONF_DIR'}/apache";
 	my $bk_dir = "$cfg_dir/backup";
@@ -1334,7 +1303,6 @@ sub setup_awstats_vhost {
 
 	# Install:
 	if(!defined &update_engine) {
-		$services_log_path = "/tmp/ispcp-setup-services.log";
 
 		# Saving more system cfg files changed by ispCP
 		foreach (
@@ -1353,7 +1321,6 @@ sub setup_awstats_vhost {
 
 	# Update:
 	} else {
-		$services_log_path = '/tmp/ispcp-update-services.log';
 
 		my $timestamp = time;
 
@@ -1439,10 +1406,8 @@ sub setup_awstats_vhost {
 
 		# Enable required modules
 		if(-e '/usr/sbin/a2enmod') {
-			sys_command_rs("/usr/sbin/a2enmod proxy >> $services_log_path 2>&1");
-			sys_command_rs(
-				"/usr/sbin/a2enmod proxy_http >> $services_log_path 2>&1"
-			);
+			sys_command_rs("/usr/sbin/a2enmod proxy $main::rlogfile");
+			sys_command_rs("/usr/sbin/a2enmod proxy_http $main::rlogfile");
 		}
 
 		# Change and enable required proxy module - End
@@ -1451,9 +1416,7 @@ sub setup_awstats_vhost {
 
 		if(-e '/usr/sbin/a2ensite') {
 
-			sys_command(
-				"/usr/sbin/a2ensite 01_awstats.conf >> $services_log_path 2>&1"
-			);
+			sys_command("/usr/sbin/a2ensite 01_awstats.conf $main::rlogfile");
 		}
 
 		# Enable awstats vhost - End
@@ -1514,8 +1477,6 @@ sub setup_mta {
 	my $cfg_tpl = undef;
 	my $cfg = \$cfg_tpl;
 
-	my $services_log_path = undef;
-
 	my ($path, $file) = (undef, undef);
 
 	# Directories paths
@@ -1528,7 +1489,6 @@ sub setup_mta {
 
 	# Install
 	if(!defined &update_engine) {
-		$services_log_path = "/tmp/ispcp-setup-services.log";
 
 		# Savings all system configuration files if they exist
 		foreach (
@@ -1547,8 +1507,6 @@ sub setup_mta {
 
 	# Update
 	} else {
-
-		$services_log_path = "/tmp/ispcp-update-services.log";
 
 		my $timestamp = time;
 
@@ -1650,13 +1608,13 @@ sub setup_mta {
 		return $rs if ($rs != 0);
 
 		# Create / update Btree databases for all lookup tables
-		$cmd = "$main::cfg{'CMD_POSTMAP'} $main::cfg{'MTA_VIRTUAL_CONF_DIR'}/$_ >> $services_log_path 2>&1";
+		$cmd = "$main::cfg{'CMD_POSTMAP'} $main::cfg{'MTA_VIRTUAL_CONF_DIR'}/$_ $main::rlogfile";
 		$rs = sys_command($cmd);
 		return $rs if ($rs != 0);
 	}
 
 	# Rebuild the database for the mail aliases file - Begin
-	$rs = sys_command("$main::cfg{'CMD_NEWALIASES'} >> $services_log_path 2>&1");
+	$rs = sys_command("$main::cfg{'CMD_NEWALIASES'} $main::rlogfile");
 	return $rs if ($rs != 0);
 
 	# Rebuild the database for the mail aliases file - End
@@ -1695,8 +1653,6 @@ sub setup_po {
 
 	my ($rs, $cmd, $rdata) = (undef, undef, undef);
 
-	my $services_log_path = undef;
-
 	# Directories paths
 	my $cfg_dir = "$main::cfg{'CONF_DIR'}/courier";
 	my $bk_dir ="$cfg_dir/backup";
@@ -1706,8 +1662,6 @@ sub setup_po {
 
 	# Install:
 	if(!defined &update_engine) {
-
-		$services_log_path = "/tmp/ispcp-setup-services.log";
 
 		# Saving all system configuration files if they exist
 		foreach (qw/authdaemonrc userdb/) {
@@ -1721,8 +1675,6 @@ sub setup_po {
 
 	# Update:
 	} else {
-
-		$services_log_path = "/tmp/ispcp-update-services.log";
 
 		my $timestamp = time;
 
@@ -2072,10 +2024,6 @@ sub setup_ispcp_daemon_network {
 
 	my $filename = undef;
 
-	my $services_log = (!defined &update_engine) ?
-		'/tmp/ispcp-setup-services.log' : '/tmp/ispcp-update-services.log';
-
-
 	foreach ($main::cfg{'CMD_ISPCPD'}, $main::cfg{'CMD_ISPCPN'}) {
 
 		# Do not process if the service is disabled
@@ -2084,13 +2032,11 @@ sub setup_ispcp_daemon_network {
 		($filename) = /.*\/(.*)$/;
 
 		$rs = sys_command_rs(
-			"$main::cfg{'CMD_CHOWN'} $main::cfg{'ROOT_USER'}:$main::cfg{'ROOT_GROUP'} $_ >> $services_log 2>&1"
+			"$main::cfg{'CMD_CHOWN'} $main::cfg{'ROOT_USER'}:$main::cfg{'ROOT_GROUP'} $_ $main::rlogfile"
 		);
 		return $rs if($rs != 0);
 
-		$rs = sys_command_rs("
-			$main::cfg{'CMD_CHMOD'} 0755 $_ >> $services_log 2>&1"
-		);
+		$rs = sys_command_rs("$main::cfg{'CMD_CHMOD'} 0755 $_ $main::rlogfile");
 		return $rs if($rs != 0);
 
 		# Services installation / update (Debian, Ubuntu)
@@ -2100,7 +2046,7 @@ sub setup_ispcp_daemon_network {
 			# Update task - The links should be removed first to be updated
 			if(defined &update_engine) {
 				sys_command_rs(
-					"/usr/sbin/update-rc.d -f $filename remove >> $services_log 2>&1"
+					"/usr/sbin/update-rc.d -f $filename remove $main::rlogfile"
 				);
 			}
 
@@ -2108,11 +2054,11 @@ sub setup_ispcp_daemon_network {
 			# interfaces deletion process)
 			if($filename eq 'ispcp_network') {
 				sys_command_rs(
-					"/usr/sbin/update-rc.d $filename defaults 99 20 >> $services_log 2>&1"
+					"/usr/sbin/update-rc.d $filename defaults 99 20 $main::rlogfile"
 				);
 			} else {
 				sys_command_rs(
-					"/usr/sbin/update-rc.d $filename defaults 99 >> $services_log 2>&1"
+					"/usr/sbin/update-rc.d $filename defaults 99 $main::rlogfile"
 				);
 			}
 
@@ -2121,14 +2067,10 @@ sub setup_ispcp_daemon_network {
 
 			# Update task
 			if(-x '/usr/lib/lsb/remove_initd' && defined &update_engine) {
-				sys_command_rs(
-					"/usr/lib/lsb/remove_initd $_ >> $services_log 2>&1"
-				);
+				sys_command_rs("/usr/lib/lsb/remove_initd $_ $main::rlogfile");
 			}
 
-			sys_command_rs(
-				"/usr/lib/lsb/install_initd $_ >> $services_log 2>&1"
-			);
+			sys_command_rs("/usr/lib/lsb/install_initd $_ $main::rlogfile");
 			return $rs if ($rs != 0);
 		}
 	}
@@ -2149,23 +2091,13 @@ sub setup_gui_httpd {
 	my $cfg_tpl = undef;
 	my $cfg = \$cfg_tpl;
 
-	# Services log file path
-	my $services_log_path = undef;
-
 	# Directories paths
 	my $cfg_dir = "$main::cfg{'CONF_DIR'}/apache";
 	my $bk_dir = "$cfg_dir/backup";
 	my $wrk_dir = "$cfg_dir/working";
 
-	# Install:
-	if(!defined &update_engine) {
-
-		   $services_log_path = "/tmp/ispcp-setup-services.log";
-
 	# Update:
-	} else {
-
-		$services_log_path = "/tmp/ispcp-update-services.log";
+	if(defined &update_engine) {
 
 		my $timestamp = time();
 
@@ -2234,9 +2166,7 @@ sub setup_gui_httpd {
 	# Disable 000-default vhost  - Begin
 
 	if (-e "/usr/sbin/a2dissite") {
-		sys_command_rs(
-			"/usr/sbin/a2dissite 000-default >> $services_log_path 2>&1"
-		);
+		sys_command_rs("/usr/sbin/a2dissite 000-default $main::rlogfile");
 	}
 
 	# Disable 000-default vhost  - End
@@ -2268,9 +2198,7 @@ sub setup_gui_httpd {
 	# Enable GUI vhost - Begin
 
 	if (-e "/usr/sbin/a2ensite") {
-		sys_command(
-			"/usr/sbin/a2ensite 00_master.conf >> $services_log_path 2>&1"
-		);
+		sys_command("/usr/sbin/a2ensite 00_master.conf $main::rlogfile");
 	}
 
 	# Enable GUI vhost - End
@@ -2298,13 +2226,8 @@ sub setup_gui_php {
 	my $bk_dir = "$cfg_dir/backup";
 	my $wrk_dir = "$cfg_dir/working";
 
-	# Install:
-	if(!defined &update_engine) {
-
-		# Nothing todo here
-
 	# Update:
-	} else {
+	if(defined &update_engine) {
 
 		my $timestamp = time();
 
@@ -2448,7 +2371,7 @@ sub setup_gui_pma {
 		if($cfg_file =~ /\{(?:HOSTNAME|PMA_USER|PMA_PASS|BLOWFISH|TMP_DIR)\}/) {
 
 			print STDOUT colored(['bold yellow'], "\n\n\tWARNING: ") .
-				"Your PMA configuration file should be rebuilded !\n";
+				"Your PMA configuration file should be re-builded !\n";
 
 			# Gets the new pma controluser username
 			do {
@@ -3238,6 +3161,8 @@ sub title {
 sub subtitle {
         my $subtitle = shift;
         print STDOUT "\t $subtitle";
+
+        $main::dyn_length = 0 if(defined $main::dyn_length);
         $main::subtitle_length = length $subtitle;
 }
 
@@ -3318,12 +3243,6 @@ sub start_services {
 
 	push_el(\@main::el, 'start_services()', 'Starting...');
 
-	my $log_path = '/tmp/ispcp-setup-services.log';
-	
-	if(defined &update_engine) {
-		$log_path = '/tmp/ispcp-update-services.log';
-	}
-
 	foreach(
 		qw/CMD_ISPCPN CMD_ISPCPD
 		CMD_NAMED
@@ -3333,7 +3252,7 @@ sub start_services {
 		CMD_IMAP CMD_IMAP_SSL/
 	) {
 		if( $main::cfg{$_} !~ /^no$/i && -e $main::cfg{$_}) {
-			sys_command("$main::cfg{$_} start >> $log_path 2>&1");
+			sys_command("$main::cfg{$_} start $main::rlogfile");
 
 			progress();
 			sleep 1;
@@ -3341,8 +3260,6 @@ sub start_services {
 	}
 
 	push_el(\@main::el, 'start_services()', 'Ending...');
-
-	0;
 }
 
 # Stopping services
@@ -3350,12 +3267,6 @@ sub start_services {
 sub stop_services {
 
 	push_el(\@main::el, 'stop_services()', 'Starting...');
-	
-	my $log_path = '/tmp/ispcp-setup-services.log';
-	
-	if(defined &update_engine) {
-		$log_path = '/tmp/ispcp-update-services.log';
-	}
 
 	foreach(
 		qw/CMD_ISPCPN CMD_ISPCPD
@@ -3366,7 +3277,7 @@ sub stop_services {
 		CMD_IMAP CMD_IMAP_SSL/
 	) {
 		if( $main::cfg{$_} !~ /^no$/i && -e $main::cfg{$_}) {
-			sys_command("$main::cfg{$_} stop >> $log_path 2>&1");
+			sys_command("$main::cfg{$_} stop $main::rlogfile");
 
 			progress();
 			sleep 1;
@@ -3374,8 +3285,6 @@ sub stop_services {
 	}
 
 	push_el(\@main::el, 'stop_services()', 'Ending...');
-
-	0;
 }
 
 #
