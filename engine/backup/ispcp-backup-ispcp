@@ -271,9 +271,16 @@ sub backup_ispcp_engine {
 
 	# Backup of configuration files (/etc/ispcp), preparation
 
-	if( $zip eq 'bzip2' || $zip eq 'gzip' || $zip eq 'lzma') {
+	if($zip =~ '^(bzip2|gzip|lzma|xz)$') {
+		my $extension = undef;
 
-		$backup_filename = "config-backup-$date.tar.".($zip eq 'bzip2' ? 'bz2' : ($zip eq 'gzip' ? 'gz' : $zip));
+		if ($zip eq 'bzip2') {
+			$extension = 'bz2';
+		} else {
+			$extension = $zip;
+		}
+
+		$backup_filename = "config-backup-$date.tar." . $extension;
 		$backup_cmd = "$cmd_tar --create --directory=$conf_dir --$zip --file=$backup_dir/$backup_filename . 2> $main::cfg{'LOG_DIR'}/$backup_filename.log";
 
 	} else {

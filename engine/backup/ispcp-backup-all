@@ -264,8 +264,16 @@ sub backup_all_engine {
 				return $rs if ($rs != 0);
 			}
 
-			if( $zip eq 'bzip2' || $zip eq 'gzip' || $zip eq 'lzma' || $zip eq 'xz') {
-				$backup_filename = "$dmn_name-backup-$date.tar.".($zip eq 'bzip2' ? 'bz2' : ($zip eq 'gzip' ? 'gz' : $zip));
+			if($zip =~ '^(bzip2|gzip|lzma|xz)$') {
+				my $extension = undef;
+
+				if ($zip eq 'bzip2') {
+					$extension = 'bz2';
+				} else {
+					$extension = $zip;
+				}
+
+				$backup_filename = "$dmn_name-backup-$date.tar." . $extension;
 				if ($allowbackup eq "full" || $allowbackup eq "dmn") {
 					$backup_cmd = "$cmd_tar --create --directory=$dmn_dir --$zip --file=$www_dir/$backup_filename --exclude=logs --exclude=phptmp --exclude=backups . 2> $www_dir/$backup_filename.log";
 				}

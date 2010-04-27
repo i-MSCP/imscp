@@ -1,6 +1,10 @@
 ispCP ω 1.0.6 Change Log
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-04-27 Benedikt Heintel
+	- ENGINE:
+		* Fixed #2362: ispCP (system files) Backup cannot use xz compression
+
 2010-04-27 Laurent Declercq
 	- SETUP:
 		* Fixed #2304: [Debian Squeeze] False errors reported during setup must
@@ -18,7 +22,7 @@ ispCP ω 1.0.6 Change Log
 
 2010-04-26 Benedikt Heintel
 	- GUI:
-        * Merged Critical Udapte with Database Update
+		* Merged Critical Udapte with Database Update
 		* Fixed #2345: Delete "Show Server Load"
 
 2010-04-22 Thomas Häber
