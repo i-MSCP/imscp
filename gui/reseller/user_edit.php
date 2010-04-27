@@ -89,6 +89,7 @@ $tpl->assign(
 		'TR_GENDER'				=> tr('Gender'),
 		'TR_MALE'				=> tr('Male'),
 		'TR_FEMALE'				=> tr('Female'),
+		'TR_UNKNOWN'			=> tr('Unknown'),
 		'EDIT_ID'				=> $edit_id,
 		'TR_BTN_ADD_USER'		=> tr('Submit changes'),
 
@@ -255,8 +256,9 @@ function gen_edituser_page(&$tpl) {
 			'VL_COUNTRY'		=> empty($country) ? '' : $country,
 			'VL_STREET1'		=> empty($street_one) ? '' : $street_one,
 			'VL_STREET2'		=> empty($street_two) ? '' : $street_two,
-			'VL_MALE'			=> ($gender == 'M') ? Config::getInstance()->get('HTML_CHECKED') : '',
-			'VL_FEMALE'			=> ($gender == 'F') ? Config::getInstance()->get('HTML_CHECKED') : '',
+			'VL_MALE'			=> ($gender == 'M') ? Config::getInstance()->get('HTML_SELECTED') : '',
+			'VL_FEMALE'			=> ($gender == 'F') ? Config::getInstance()->get('HTML_SELECTED') : '',
+			'VL_UNKNOWN'		=> ($gender == 'U') ? Config::getInstance()->get('HTML_SELECTED') : '',
 			'VL_PHONE'			=> empty($phone) ? '' : $phone,
 			'VL_FAX'			=> empty($fax) ? '' : $fax
 		)
