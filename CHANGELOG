@@ -1,6 +1,11 @@
 ispCP ω 1.0.6 Change Log
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-04-28 Benedikt Heintel
+	- ENGINE:
+		* Fixed #2260: Performance issue in ispcp-mbox-mngr (based on a patch of
+			Marc Pujol)
+
 2010-04-27 Benedikt Heintel
 	- CONFIGS:
 		* Fixed #2036: Drop Debian Etch Support in 1.0.6

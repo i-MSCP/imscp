@@ -52,11 +52,8 @@ sub mngr_start_up {
 	# Let's clear Execution Logs, if any.
 
 	if (-e $main::ispcp_rqst_mngr_el) {
-
 		$rs = del_file($main::ispcp_rqst_mngr_el);
-
 		return $rs if ($rs != 0);
-
 	}
 
 	# config check;
@@ -83,7 +80,6 @@ sub mngr_shut_down {
 	push_el(\@main::el, 'mngr_shut_down()', 'Starting...');
 
 	# Unlocking is not necessary because it is removed automatically on exit.
-
 	push_el(\@main::el, 'mngr_shut_down()', 'Ending...');
 	return 0;
 }
@@ -154,9 +150,8 @@ sub mngr_engine {
 					}
 
 					if (!defined($main::engine_debug)) {
-
-						del_file($main::ispcp_dmn_mngr_stdout); del_file($main::ispcp_dmn_mngr_stderr);
-
+						del_file($main::ispcp_dmn_mngr_stdout);
+						del_file($main::ispcp_dmn_mngr_stderr);
 					}
 
 					return $rs;
@@ -164,11 +159,9 @@ sub mngr_engine {
 				}
 
 				if (!defined($main::engine_debug)) {
-
-					del_file($main::ispcp_dmn_mngr_stdout); del_file($main::ispcp_dmn_mngr_stderr);
-
+					del_file($main::ispcp_dmn_mngr_stdout);
+					del_file($main::ispcp_dmn_mngr_stderr);
 				}
-
 
 			}
 
@@ -219,9 +212,8 @@ sub mngr_engine {
 				}
 
 				if (!defined($main::engine_debug)) {
-
-					del_file($main::ispcp_mbox_mngr_stdout); del_file($main::ispcp_mbox_mngr_stderr);
-
+					del_file($main::ispcp_mbox_mngr_stdout);
+					del_file($main::ispcp_mbox_mngr_stderr);
 				}
 
 				return $rs;
@@ -229,9 +221,8 @@ sub mngr_engine {
 			}
 
 			if (!defined($main::engine_debug)) {
-
-				del_file($main::ispcp_mbox_mngr_stdout); del_file($main::ispcp_mbox_mngr_stderr);
-
+				del_file($main::ispcp_mbox_mngr_stdout);
+				del_file($main::ispcp_mbox_mngr_stderr);
 			}
 
 		}
@@ -279,9 +270,8 @@ sub mngr_engine {
 					}
 
 					if (!defined($main::engine_debug)) {
-
-						del_file($main::ispcp_sub_mngr_stdout); del_file($main::ispcp_sub_mngr_stderr);
-
+						del_file($main::ispcp_sub_mngr_stdout);
+						del_file($main::ispcp_sub_mngr_stderr);
 					}
 
 					return $rs;
@@ -289,9 +279,8 @@ sub mngr_engine {
 				}
 
 				if (!defined($main::engine_debug)) {
-
-					del_file($main::ispcp_sub_mngr_stdout); del_file($main::ispcp_sub_mngr_stderr);
-
+					del_file($main::ispcp_sub_mngr_stdout);
+					del_file($main::ispcp_sub_mngr_stderr);
 				}
 
 			}
@@ -339,9 +328,8 @@ sub mngr_engine {
 				}
 
 				if (!defined($main::engine_debug)) {
-
-					del_file($main::ispcp_als_mngr_stdout); del_file($main::ispcp_als_mngr_stderr);
-
+					del_file($main::ispcp_als_mngr_stdout);
+					del_file($main::ispcp_als_mngr_stderr);
 				}
 
 				return $rs;
@@ -349,9 +337,8 @@ sub mngr_engine {
 			}
 
 			if (!defined($main::engine_debug)) {
-
-				del_file($main::ispcp_als_mngr_stdout); del_file($main::ispcp_als_mngr_stderr);
-
+				del_file($main::ispcp_als_mngr_stdout);
+				del_file($main::ispcp_als_mngr_stderr);
 			}
 
 		}
@@ -398,9 +385,8 @@ sub mngr_engine {
 					}
 
 					if (!defined($main::engine_debug)) {
-
-						del_file($main::ispcp_alssub_mngr_stdout); del_file($main::ispcp_alssub_mngr_stderr);
-
+						del_file($main::ispcp_alssub_mngr_stdout);
+						del_file($main::ispcp_alssub_mngr_stderr);
 					}
 
 					return $rs;
@@ -408,9 +394,8 @@ sub mngr_engine {
 				}
 
 				if (!defined($main::engine_debug)) {
-
-					del_file($main::ispcp_alssub_mngr_stdout); del_file($main::ispcp_alssub_mngr_stderr);
-
+					del_file($main::ispcp_alssub_mngr_stdout);
+					del_file($main::ispcp_alssub_mngr_stderr);
 				}
 
 			}
@@ -458,9 +443,8 @@ sub mngr_engine {
 				}
 
 				if (!defined($main::engine_debug)) {
-
-					del_file($main::ispcp_als_mngr_stdout); del_file($main::ispcp_als_mngr_stderr);
-
+					del_file($main::ispcp_als_mngr_stdout);
+					del_file($main::ispcp_als_mngr_stderr);
 				}
 
 				return $rs;
@@ -468,9 +452,8 @@ sub mngr_engine {
 			}
 
 			if (!defined($main::engine_debug)) {
-
-				del_file($main::ispcp_als_mngr_stdout); del_file($main::ispcp_als_mngr_stderr);
-
+				del_file($main::ispcp_als_mngr_stdout);
+				del_file($main::ispcp_als_mngr_stderr);
 			}
 
 		}
@@ -498,9 +481,8 @@ sub mngr_engine {
 			}
 
 			if (!defined($main::engine_debug)) {
-
-				del_file($main::ispcp_serv_mngr_stdout); del_file($main::ispcp_serv_mngr_stderr);
-
+				del_file($main::ispcp_serv_mngr_stdout);
+				del_file($main::ispcp_serv_mngr_stderr);
 			}
 
 			return $rs;
@@ -508,11 +490,9 @@ sub mngr_engine {
 		}
 
 		if (!defined($main::engine_debug)) {
-
-			del_file($main::ispcp_serv_mngr_stdout); del_file($main::ispcp_serv_mngr_stderr);
-
+			del_file($main::ispcp_serv_mngr_stdout);
+			del_file($main::ispcp_serv_mngr_stderr);
 		}
-
 
 	}
 
@@ -559,9 +539,8 @@ sub mngr_engine {
 					}
 
 					if (!defined($main::engine_debug)) {
-
-						del_file($main::ispcp_htusers_mngr_stdout); del_file($main::ispcp_htusers_mngr_stderr);
-
+						del_file($main::ispcp_htusers_mngr_stdout);
+						del_file($main::ispcp_htusers_mngr_stderr);
 					}
 
 					return $rs;
@@ -569,9 +548,8 @@ sub mngr_engine {
 				}
 
 				if (!defined($main::engine_debug)) {
-
-					del_file($main::ispcp_htusers_mngr_stdout); del_file($main::ispcp_htusers_mngr_stderr);
-
+					del_file($main::ispcp_htusers_mngr_stdout);
+					del_file($main::ispcp_htusers_mngr_stderr);
 				}
 
 			}
@@ -624,9 +602,8 @@ sub mngr_engine {
 				}
 
 				if (!defined($main::engine_debug)) {
-
-					del_file($main::ispcp_htgroups_mngr_stdout); del_file($main::ispcp_htgroups_mngr_stderr);
-
+					del_file($main::ispcp_htgroups_mngr_stdout);
+					del_file($main::ispcp_htgroups_mngr_stderr);
 				}
 
 				return $rs;
@@ -634,9 +611,8 @@ sub mngr_engine {
 			}
 
 			if (!defined($main::engine_debug)) {
-
-				del_file($main::ispcp_htgroups_mngr_stdout); del_file($main::ispcp_htgroups_mngr_stderr);
-
+				del_file($main::ispcp_htgroups_mngr_stdout);
+				del_file($main::ispcp_htgroups_mngr_stderr);
 			}
 
 		}
@@ -690,9 +666,8 @@ sub mngr_engine {
 					}
 
 					if (!defined($main::engine_debug)) {
-
-						del_file($main::ispcp_htaccess_mngr_stdout); del_file($main::ispcp_htaccess_mngr_stderr);
-
+						del_file($main::ispcp_htaccess_mngr_stdout);
+						del_file($main::ispcp_htaccess_mngr_stderr);
 					}
 
 					return $rs;
@@ -700,15 +675,11 @@ sub mngr_engine {
 				}
 
 				if (!defined($main::engine_debug)) {
-
-					del_file($main::ispcp_htaccess_mngr_stdout); del_file($main::ispcp_htaccess_mngr_stderr);
-
+					del_file($main::ispcp_htaccess_mngr_stdout);
+					del_file($main::ispcp_htaccess_mngr_stderr);
 				}
-
 			}
-
 		}
-
 	}
 
 	#
@@ -719,15 +690,15 @@ sub mngr_engine {
 	# Network card management BEGIN.
 	#
 
-	$sql = "SELECT `value` FROM `config` WHERE `name` = 'CRITICAL_UPDATE_REVISION';";
+	$sql = "SELECT `value` FROM `config` WHERE `name` = 'DATABASE_REVISION';";
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
 	my $version = @$rdata[0];
 
-	if (@$version[0] >= 3) {
+	if (@$version[0] >= 33) {
 
-		$sql = "SELECT `ip_id` FROM `server_ips` WHERE `ip_status` != 'ok'";
+		$sql = "SELECT `ip_id` FROM `server_ips` WHERE `ip_status` != 'ok';";
 		($rs, $rdata) = doSQL($sql);
 
 		my $ip_count = @$rdata;
@@ -762,11 +733,21 @@ sub mngr_engine {
 	# Domains data deletion BEGIN
 	#
 
-		#
-		##	/!\  This task must be performed last because other managers need data from the domain table to function properly. /!\
-		#
+	#
+	# /!\  This task must be performed last because other managers need data
+	# from the domain table to function properly. /!\
+	#
 
-	$sql = "select domain_id, domain_name, domain_status from domain where domain_status != 'ok' order by domain_id";
+	$sql = "SELECT
+				domain_id,
+				domain_name,
+				domain_status
+			FROM
+				domain
+			WHERE
+				domain_status != 'ok'
+			ORDER BY
+				domain_id;";
 
 	($rs, $rdata) = doSQL($sql);
 
@@ -807,9 +788,8 @@ sub mngr_engine {
 					}
 
 					if (!defined($main::engine_debug)) {
-
-						del_file($main::ispcp_dmn_mngr_stdout); del_file($main::ispcp_dmn_mngr_stderr);
-
+						del_file($main::ispcp_dmn_mngr_stdout);
+						del_file($main::ispcp_dmn_mngr_stderr);
 					}
 
 					return $rs;
@@ -817,9 +797,8 @@ sub mngr_engine {
 				}
 
 				if (!defined($main::engine_debug)) {
-
-					del_file($main::ispcp_dmn_mngr_stdout); del_file($main::ispcp_dmn_mngr_stderr);
-
+					del_file($main::ispcp_dmn_mngr_stdout);
+					del_file($main::ispcp_dmn_mngr_stderr);
 				}
 
 			}

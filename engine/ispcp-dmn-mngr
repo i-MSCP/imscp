@@ -4456,10 +4456,9 @@ sub dmn_restore_data {
 	}
 
 	my ($rs, $rdata) = ('', '');
-	my ($rs0, $rdata0) = ('','');
 	my $dmn_id       = @$dmn_data[0];
 	my $dmn_name     = @$dmn_data[1];
-	my $dmn_uid	 = @$dmn_data[3];
+	my $dmn_uid		 = @$dmn_data[3];
 	my $www_dir      = $main::cfg{'APACHE_WWW_DIR'};
 	my $dmn_dir      = "$www_dir/$dmn_name";
 	my $dmn_bk_dir   = "$www_dir/$dmn_name/backups";
@@ -4507,16 +4506,16 @@ sub dmn_restore_data {
 			return $rs if ($rs != 0);
 
 			$cmd = "$cmd_chown -R $dmn_uid:www-data $dmn_dir";
-			$rs0 = sys_command($cmd);
-			return $rs0 if ($rs0 != 0);
+			$rs = sys_command($cmd);
+			return $rs if ($rs != 0);
 
 			$cmd = "$cmd_chown -R $dmn_uid:$dmn_uid $dmn_dir/htdocs";
-			$rs0 = sys_command($cmd);
-			return $rs0 if ($rs0 != 0);
+			$rs = sys_command($cmd);
+			return $rs if ($rs != 0);
 
 			$cmd = "$cmd_chown -R $dmn_uid:$dmn_uid $dmn_dir/cgi-bin";
-			$rs0 = sys_command($cmd);
-			return $rs0 if ($rs0 != 0);
+			$rs = sys_command($cmd);
+			return $rs if ($rs != 0);
 		} elsif ($fname =~ m/.sql./i) {			# Restore SQL files
 
 			# Extract databasename

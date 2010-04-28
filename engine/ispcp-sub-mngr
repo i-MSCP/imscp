@@ -2619,7 +2619,7 @@ sub sub_mngr_engine {
 
 	push_el(\@main::el, 'sub_mngr_engine()', 'Starting...');
 
-	my ($rs, $rows, $rdata) = (undef, undef, undef);
+	my ($rs, $rows, $rdata, $sub_status, $sub_id) = (undef, undef, undef, undef, undef);
 
 	my $sql = "
 		SELECT
@@ -2659,8 +2659,7 @@ sub sub_mngr_engine {
 		AND
 			t2.domain_ip_id = t3.ip_id
 		AND
-			t1.subdomain_id = $main::sub_task_id
-		;
+			t1.subdomain_id = $main::sub_task_id;
 	";
 
 	($rs, $rows) = doSQL($sql);
@@ -2668,10 +2667,9 @@ sub sub_mngr_engine {
 
 	my $entry = @$rows[0];
 
-	my ($sub_status, $sub_id) = (@$entry[4], @$entry[0]);
+	($sub_status, $sub_id) = (@$entry[4], @$entry[0]);
 
 	my $timestamp = undef;
-
 
 	if ($sub_status eq 'toadd') {
 		$rs = sub_add_data($entry);

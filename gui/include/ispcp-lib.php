@@ -97,7 +97,8 @@ Config::getInstance()->set(
 	'../' . $root_tpl_path . $user_initial_theme . '/orderpanel'
 );
 
-// set often used HTML template strings, RegEx: \s*([a-zA-Z]+)\s*\=\s*([\\]{0,1}[\"\'])\1\2 
+// set often used HTML template strings
+// RegEx: \s*([a-zA-Z]+)\s*\=\s*([\\]{0,1}[\"\'])\1\2
 Config::getInstance()->set('HTML_CHECKED', ' checked="checked"');
 Config::getInstance()->set('HTML_DISABLED', ' disabled="disabled"');
 Config::getInstance()->set('HTML_READONLY', ' readonly="readonly"');
@@ -110,7 +111,7 @@ require_once(INCLUDEPATH . '/system-message.php');
 require_once(INCLUDEPATH . '/ispcp-db-keys.php');
 require_once(INCLUDEPATH . '/sql.php');
 
-// variable for development edition => shows all php variables t page's end
+// variable for development edition: show all php variables beyond page content
 Config::getInstance()->set('DUMP_GUI_DEBUG', DISABLE);
 
 // show spGZIP compression information in HTML output
@@ -161,7 +162,6 @@ Config::getInstance()->set('MAX_DNAMES_LABELS', 1);
 
 // Maximum number of labels for the subdomain names
 Config::getInstance()->set('MAX_SUBDNAMES_LABELS', 1);
-
 
 // Enable or disable support system
 Config::getInstance()->set('ISPCP_SUPPORT_SYSTEM', ENABLE);

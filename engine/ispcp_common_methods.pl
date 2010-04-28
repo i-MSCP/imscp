@@ -1879,8 +1879,7 @@ sub get_domain_ids {
 		FROM
 			domain
 		ORDER BY
-			domain_id
-		;
+			domain_id;
 	";
 
 	($rs, $rows) = doSQL($sql);
@@ -1907,8 +1906,7 @@ sub get_subdom_ids {
 		FROM
 			subdomain
 		ORDER BY
-			subdomain_id
-		;
+			subdomain_id;
 	";
 
 	($rs, $rows) = doSQL($sql);
@@ -1935,8 +1933,7 @@ sub get_alssub_ids {
     	FROM
     		subdomain_alias
     	ORDER BY
-    		subdomain_alias_id
-    	;
+    		subdomain_alias_id;
     ";
 
 	($rs, $rows) = doSQL($sql);
@@ -1963,8 +1960,7 @@ sub get_alias_ids {
 		FROM
 			domain_aliasses
 		ORDER BY
-			alias_id
-		;
+			alias_id;
 	";
 
 	($rs, $rows) = doSQL($sql);
@@ -1989,8 +1985,7 @@ sub get_ip_nums {
 		FROM
 			server_ips
 		ORDER BY
-			ip_id
-		;
+			ip_id;
 	";
 
 	($rs, $rows) = doSQL($sql);
