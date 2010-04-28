@@ -8,13 +8,13 @@ ispCP ω 1.0.6 Change Log
 		* Fixed #2362: ispCP (system files) Backup cannot use xz compression
 
 2010-04-27 Laurent Declercq
+	- ENGINE:
+		* Added comments in ispcp_common_methods.pl
 	- SETUP:
 		* Fixed #2304: [Debian Squeeze] False errors reported during setup must
 			be hidden
 		* Removed useless variables
 		* Code re-factoring for better readability
-	- ENGINE:
-		* Added comments in ispcp_common_methods.pl
 
 2010-04-27 Thomas Häber
 	- GUI:
