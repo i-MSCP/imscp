@@ -4492,13 +4492,13 @@ sub dmn_restore_data {
 			if ($fname =~ m/.tar.bz2/i) {			# Restore bzip2 files
 				$cmd = "$cmd_tar --extract --preserve-permissions --bzip2 " .
 					"--directory=$dmn_dir --file=$dmn_bk_dir/$fname";
-			} else if ($fname =~ m/.tar.gz/i) {		# Restore gz files
+			} elsif ($fname =~ m/.tar.gz/i) {		# Restore gz files
 				$cmd = "$cmd_tar --extract --preserve-permissions --gunzip " .
 					"--directory=$dmn_dir --file=$dmn_bk_dir/$fname";
-			} else if ($fname =~ m/.tar.lzma/i) {	# Restore lzma files
+			} elsif ($fname =~ m/.tar.lzma/i) {	# Restore lzma files
 				$cmd = "$cmd_tar --extract --preserve-permissions --lzma " .
 					"--directory=$dmn_dir --file=$dmn_bk_dir/$fname";
-			} else if ($fname =~ m/.tar.xz/i) {		# Restore xz files
+			} elsif ($fname =~ m/.tar.xz/i) {		# Restore xz files
 				$cmd = "$cmd_tar --extract --preserve-permissions --xz " .
 					"--directory=$dmn_dir --file=$dmn_bk_dir/$fname";
 			}
@@ -4517,16 +4517,16 @@ sub dmn_restore_data {
 			$cmd = "$cmd_chown -R $dmn_uid:$dmn_uid $dmn_dir/cgi-bin";
 			$rs0 = sys_command($cmd);
 			return $rs0 if ($rs0 != 0);
-		} else if ($fname =~ m/.sql./i) {			# Restore SQL files
+		} elsif ($fname =~ m/.sql./i) {			# Restore SQL files
 
 			# Extract databasename
 			if ($fname =~ m/.sql.bz2/i)	{			# Restore bz2 SQL files
 				$fname =~ /(.*).sql.bz2/;
-			} else if ($fname =~ m/.sql.gz/i) {		# Restore gz SQL files
+			} elsif ($fname =~ m/.sql.gz/i) {		# Restore gz SQL files
 				$fname =~ /(.*).sql.gz/;
-			} else if ($fname =~ m/.sql.lzma/i) {	# Restore lzma SQL files
+			} elsif ($fname =~ m/.sql.lzma/i) {	# Restore lzma SQL files
 				$fname =~ /(.*).sql.lzma/;
-			} else if ($fname =~ m/.sql.xz/i) {		# Restore xz SQL files
+			} elsif ($fname =~ m/.sql.xz/i) {		# Restore xz SQL files
 				$fname =~ /(.*).sql.xz/;
 			}
 			my $dbf_name = $1;
@@ -4578,13 +4578,13 @@ sub dmn_restore_data {
 						if ($fname =~ m/.sql.bz2/i)	{			# Restore bz2 SQL files
 							my $cmd_bzcat = $main::cfg{'CMD_BZCAT'};
 							$cmd = "$cmd_bzcat -d $dmn_bk_dir/$fname";
-						} else if ($fname =~ m/.sql.gz/i) {		# Restore gz SQL files
+						} elsif ($fname =~ m/.sql.gz/i) {		# Restore gz SQL files
 							my $cmd_gzcat = $main::cfg{'CMD_GZCAT'};
 							$cmd = "$cmd_gzcat -d $dmn_bk_dir/$fname";
-						} else if ($fname =~ m/.sql.lzma/i) {	# Restore lzma SQL files
+						} elsif ($fname =~ m/.sql.lzma/i) {	# Restore lzma SQL files
 							my $cmd_lzma = $main::cfg{'CMD_LZMA'};
 							$cmd = "$cmd_lzma -dc $dmn_bk_dir/$fname";
-						} else if ($fname =~ m/.sql.xz/i) {		# Restore xz SQL files
+						} elsif ($fname =~ m/.sql.xz/i) {		# Restore xz SQL files
 							my $cmd_xz = $main::cfg{'CMD_XZ'};
 							$cmd = "$cmd_xz -dc $dmn_bk_dir/$fname";
 						}
