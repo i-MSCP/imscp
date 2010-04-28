@@ -35,18 +35,6 @@ $gui_root_dir = '{GUI_ROOT_DIR}';
 // Include all needed files
 require_once $gui_root_dir . '/include/ispcp-lib.php';
 
-// Perfom all database critical updates if exists
-if (criticalUpdate::getInstance()->checkUpdateExists()) {
-
-	criticalUpdate::getInstance()->executeUpdates();
-
-	if ( ($msg = criticalUpdate::getInstance()->getErrorMessage()) != '') {
-		print $msg;
-		exit(1);
-	}
-
-}
-
 // Perform all database normal updates if exists
 if (databaseUpdate::getInstance()->checkUpdateExists()) {
 
