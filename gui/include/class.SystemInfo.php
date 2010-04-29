@@ -554,7 +554,7 @@ class SystemInfo {
 			$uptime_raw = $this->read('/proc/uptime');
 
 			if (empty($this->error)) {
-				$uptime = preg_split('/ /', $uptime_raw);
+				$uptime = explode(' ', $uptime_raw);
 
 				// $uptime[0] - Total System Uptime
 				// $uptime[1] - System Idle Time
