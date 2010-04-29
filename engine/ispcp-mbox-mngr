@@ -48,7 +48,7 @@ sub mbox_get_dmn_full_name {
 		return (-1,'');
 	}
 
-	my ($rs, $rows, $dmn_full, $entry) = (undef, undef, undef, undef);
+	my ($rs, $rows, $rdata, $dmn_full, $entry) = (undef, undef, undef, undef, undef);
 
 	my $mail_dmn_id = @$mbox_data[4];
 	my $mail_type   = @$mbox_data[5];
