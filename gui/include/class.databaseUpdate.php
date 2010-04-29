@@ -294,7 +294,7 @@ class databaseUpdate extends ispcpUpdate {
 
 		$sqlUpd = array();
 
-		$sqlUpd[] = "ALTER TABLE `mail_users`
+		$sqlUpd[] = "ALTER IGNORE TABLE `mail_users`
 					CHANGE `mail_acc` `mail_acc` VARCHAR(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
 					CHANGE `mail_pass` `mail_pass` VARCHAR(150) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
 					CHANGE `mail_forward` `mail_forward` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
@@ -338,8 +338,8 @@ class databaseUpdate extends ispcpUpdate {
 
 		$sqlUpd = array();
 
-		$sqlUpd[] = "ALTER TABLE `admin` ADD `state` VARCHAR(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `city`";
-		$sqlUpd[] = "ALTER TABLE `orders` ADD `state` VARCHAR(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `city`";
+		$sqlUpd[] = "ALTER IGNORE TABLE `admin` ADD `state` VARCHAR(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `city`";
+		$sqlUpd[] = "ALTER IGNORE TABLE `orders` ADD `state` VARCHAR(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `city`";
 
 		return $sqlUpd;
 	}
@@ -398,7 +398,7 @@ class databaseUpdate extends ispcpUpdate {
 
 		$sqlUpd = array();
 
-		$sqlUpd[] = "ALTER TABLE `hosting_plans` CHANGE `description` `description` TEXT";
+		$sqlUpd[] = "ALTER IGNORE TABLE `hosting_plans` CHANGE `description` `description` TEXT";
 
 		return $sqlUpd;
 	}
@@ -417,7 +417,7 @@ class databaseUpdate extends ispcpUpdate {
 
 		$sqlUpd = array();
 
-		$sqlUpd[] = "ALTER TABLE `domain` ADD `allowbackup` VARCHAR( 8 ) NOT NULL DEFAULT 'full';";
+		$sqlUpd[] = "ALTER IGNORE TABLE `domain` ADD `allowbackup` VARCHAR( 8 ) NOT NULL DEFAULT 'full';";
 
 		return $sqlUpd;
 	}
@@ -630,7 +630,7 @@ class databaseUpdate extends ispcpUpdate {
 
 		$sqlUpd = array();
 
-		$sqlUpd[] = "ALTER TABLE `domain` ADD `domain_expires` INT( 10 ) UNSIGNED NOT NULL DEFAULT '0' AFTER `domain_created`";
+		$sqlUpd[] = "ALTER IGNORE TABLE `domain` ADD `domain_expires` INT( 10 ) UNSIGNED NOT NULL DEFAULT '0' AFTER `domain_created`";
 
 		return $sqlUpd;
 	}
@@ -649,7 +649,7 @@ class databaseUpdate extends ispcpUpdate {
 
 		$sqlUpd = array();
 
-		$sqlUpd[] = "ALTER TABLE `domain_dns` CHANGE `domain_type` `domain_type` ENUM( 'A', 'AAAA', 'CERT', 'CNAME', 'DNAME', 'GPOS', 'KEY', 'KX', 'MX', 'NAPTR', 'NSAP', 'NS', 'NXT', 'PTR', 'PX', 'SIG', 'SRV', 'TXT' ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'A'";
+		$sqlUpd[] = "ALTER IGNORE TABLE `domain_dns` CHANGE `domain_type` `domain_type` ENUM( 'A', 'AAAA', 'CERT', 'CNAME', 'DNAME', 'GPOS', 'KEY', 'KX', 'MX', 'NAPTR', 'NSAP', 'NS', 'NXT', 'PTR', 'PX', 'SIG', 'SRV', 'TXT' ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'A'";
 
 		return $sqlUpd;
 	}
@@ -811,10 +811,10 @@ class databaseUpdate extends ispcpUpdate {
 		$sqlUpd[] = "UPDATE `domain_dns` SET `domain_dns`.`alias_id` = '0' ".
 					"WHERE `domain_dns`.`alias_id`= NULL;";
 		// Remove NULL value for alias_id
-		$sqlUpd[] = "ALTER TABLE `domain_dns` CHANGE `domain_dns`.`alias_id` ".
+		$sqlUpd[] = "ALTER IGNORE TABLE `domain_dns` CHANGE `domain_dns`.`alias_id` ".
 					"`domain_dns`.`alias_id` INT(11) NOT NULL;";
 		// Add Unique Key
-		$sqlUpd[] = "ALTER TABLE `domain_dns` ".
+		$sqlUpd[] = "ALTER IGNORE TABLE `domain_dns` ".
 					"ADD UNIQUE (`domain_id`, `alias_id`, `domain_dns`, ".
 					"`domain_class`, `domain_type`, `domain_text`);";
 
@@ -835,7 +835,7 @@ class databaseUpdate extends ispcpUpdate {
 	 */
 	protected function _databaseUpdate_27() {
 		$sqlUpd = array();
-		$sqlUpd[] = "ALTER TABLE " .
+		$sqlUpd[] = "ALTER IGNORE TABLE " .
 				    "`reseller_props` ADD `support_system` ENUM( 'yes', 'no' ) " .
 				    "NOT NULL DEFAULT 'yes' AFTER `max_traff_amnt`";
 		return $sqlUpd;
@@ -973,7 +973,7 @@ class databaseUpdate extends ispcpUpdate {
 		// Create the new columns only if doesn't already exists
 		if ($rs->RecordCount() == 0) {
 			$sqlUpd[] = "
-				ALTER TABLE
+				ALTER IGNORE TABLE
 				    `hosting_plans`
 				ADD
 					`tos` BLOB NOT NULL
@@ -1153,7 +1153,7 @@ class databaseUpdate extends ispcpUpdate {
 			$interfaces = new networkCard();
 			$card = $interfaces->ip2NetworkCard(Config::getInstance()->get('BASE_SERVER_IP'));
 	
-			$sqlUpd[] = "ALTER TABLE `server_ips`
+			$sqlUpd[] = "ALTER IGNORE TABLE `server_ips`
 						ADD `ip_card` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL,
 						ADD `ip_ssl_domain_id` INT( 10 ) NULL,
 						ADD `ip_status` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL";
@@ -1165,7 +1165,7 @@ class databaseUpdate extends ispcpUpdate {
 		}
 		
 		if (isset($critical_update)) {
-			$sqlUpd[] = "DELETE FROM `ispcp`.`config` WHERE `config`.`name` = 'CRITICAL_UPDATE_REVISION'";
+			$sqlUpd[] = "DELETE IGNORE FROM `ispcp`.`config` WHERE `config`.`name` = 'CRITICAL_UPDATE_REVISION'";
 		}
 		
 		// Returns the pool of queries to be executed
@@ -1187,9 +1187,49 @@ class databaseUpdate extends ispcpUpdate {
 		$sqlUpd = array();
 		$sql = Database::getInstance();
 
-		$sqlUpd[] = "DELETE FROM `ispcp`.`config` WHERE `config`.`name` = 'SHOW_SERVERLOAD'";	
+		$sqlUpd[] = "DELETE IGNORE FROM
+						`ispcp`.`config`
+					WHERE
+						`config`.`name` = 'SHOW_SERVERLOAD'";
 
 		// Returns the pool of queries to be executed
+		return $sqlUpd;
+	}
+
+	/**
+	 * Fix for ticket #2201 http://www.isp-control.net/ispcp/ticket/2201
+	 *
+	 * Deletes the now useless column `correction` from table `domain_traffic`
+	 *
+	 * @author Benedikt Heintel
+	 * @since r2899
+	 *
+	 * @access protected
+	 * @return array sql statements to be performed
+	 */
+	protected function _databaseUpdate_35() {
+		$sqlUpd = array();
+		$sql = Database::getInstance();
+
+		// For domain traffic
+		$sqlUpd[] = "ALTER IGNORE TABLE
+						`ispcp`.`domain_traffic`
+					DROP
+						`correction`;";
+		$sqlUpd[] = "ALTER IGNORE TABLE
+						`ispcp`.`domain_traffic`
+					DROP KEY
+						`i_correction`;";
+		// For server traffic
+		$sqlUpd[] = "ALTER IGNORE TABLE
+						`ispcp`.`server_traffic`
+					DROP
+						`correction`;";
+		$sqlUpd[] = "ALTER IGNORE TABLE
+						`ispcp`.`server_traffic`
+					DROP KEY
+						`correction`;";
+
 		return $sqlUpd;
 	}
 

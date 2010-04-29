@@ -1,6 +1,12 @@
 ispCP ω 1.0.6 Change Log
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-04-29 Benedikt Heintel
+	- DISTS:
+		* OpenSuse: Removed packages not needed for ispCP
+	- ENGINE:
+		* Fixed #2201: Delete ispcp-vrl-traff-correction
+
 2010-04-28 Benedikt Heintel
 	- ENGINE:
 		* Fixed #2260: Performance issue in ispcp-mbox-mngr (based on a patch of

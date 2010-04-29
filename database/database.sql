@@ -228,9 +228,7 @@ CREATE TABLE `domain_traffic` (
   `dtraff_ftp` bigint(20) unsigned default NULL,
   `dtraff_mail` bigint(20) unsigned default NULL,
   `dtraff_pop` bigint(20) unsigned default NULL,
-  `correction` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`dtraff_id`),
-  KEY `i_correction` (`correction`),
   KEY `i_domain_id` (`domain_id`),
   KEY `i_dtraff_time` (`dtraff_time`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -564,9 +562,7 @@ CREATE TABLE `server_traffic` (
   `bytes_pop_out` bigint(20) unsigned default NULL,
   `bytes_web_in` bigint(20) unsigned default NULL,
   `bytes_web_out` bigint(20) unsigned default NULL,
-  `correction` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`straff_id`),
-  KEY `correction` (`correction`),
   KEY `traff_time` (`traff_time`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

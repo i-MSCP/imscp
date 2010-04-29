@@ -241,12 +241,34 @@ sub collect_http_traffic_from_log {
 
 		if($$rows[0][0] == 0){
 
-			$sql = "insert into `domain_traffic` (domain_id, dtraff_time, dtraff_web, dtraff_ftp, dtraff_mail, dtraff_pop) values ('$value', '$timestamp', $sum, '0', '0', '0');";
+			$sql = "INSERT INTO
+						`domain_traffic`
+					(
+						domain_id,
+						dtraff_time,
+						dtraff_web,
+						dtraff_ftp,
+						dtraff_mail,
+						dtraff_pop
+					) VALUES (
+						'$value',
+						'$timestamp',
+						$sum,
+						'0',
+						'0',
+						'0'
+					);";
 
 		} else {
-
-			$sql = "update `domain_traffic` set `dtraff_web`=`dtraff_web`+$sum, `dtraff_time`='$timestamp', `correction`=0 where `domain_id`='$value' and `dtraff_time`>=UNIX_TIMESTAMP(CURRENT_DATE()) LIMIT 1";
-
+			$sql = "UPDATE
+						`domain_traffic`
+					SET
+						`dtraff_web` = `dtraff_web` + $sum,
+						`dtraff_time` = '$timestamp'
+					WHERE
+						`domain_id` = '$value' AND
+						`dtraff_time` >= UNIX_TIMESTAMP(CURRENT_DATE())
+					LIMIT 1";
 		}
 
 		($rs, $rdata) = doSQL($sql);
@@ -363,13 +385,24 @@ sub collect_ftp_traffic {
 				return $rs if ($rs != 0);
 
 				if($$rows[0][0] == 0){
-
-					$sql = "insert into `domain_traffic` (domain_id, dtraff_time, dtraff_web, dtraff_ftp, dtraff_mail, dtraff_pop) values ('$id', '$timestamp', '0', $value, '0', '0');";
-
+					$sql = "INSERT INTO
+								`domain_traffic`
+							(
+								domain_id, dtraff_time, dtraff_web, dtraff_ftp,
+								dtraff_mail, dtraff_pop
+							) VALUES (
+								'$id', '$timestamp', '0', $value, '0', '0'
+							);";
 				} else {
-
-					$sql = "update `domain_traffic` set `dtraff_ftp`=`dtraff_ftp`+$value, `dtraff_time`='$timestamp', `correction`=0 where `domain_id`='$id' and `dtraff_time`>=UNIX_TIMESTAMP(CURRENT_DATE()) LIMIT 1";
-
+					$sql = "UPDATE
+								`domain_traffic`
+							SET
+								`dtraff_ftp` = `dtraff_ftp` + $value,
+								`dtraff_time` = '$timestamp'
+							WHERE
+								`domain_id`='$id' AND
+								`dtraff_time` >= UNIX_TIMESTAMP(CURRENT_DATE())
+							LIMIT 1";
 				}
 
 				($rs, $rdata) = doSQL($sql);
@@ -703,13 +736,24 @@ sub collect_mail_traffic {
 				return $rs if ($rs != 0);
 
 				if($$rows[0][0] == 0){
-
-					$sql = "insert into `domain_traffic` (domain_id, dtraff_time, dtraff_web, dtraff_ftp, dtraff_mail, dtraff_pop) values ('$id', '$timestamp', '0', '0', $value, '0');";
-
+					$sql = "INSERT INTO
+								`domain_traffic`
+							(
+								`domain_id`, `dtraff_time`, `dtraff_web`,
+								`dtraff_ftp`, `dtraff_mail`, `dtraff_pop`
+							) VALUES (
+								'$id', '$timestamp', '0', '0', $value, '0'
+							);";
 				} else {
-
-					$sql = "update `domain_traffic` set `dtraff_mail`=`dtraff_mail`+$value, `dtraff_time`='$timestamp', `correction`=0 where `domain_id`='$id' and `dtraff_time`>=UNIX_TIMESTAMP(CURRENT_DATE()) LIMIT 1";
-
+					$sql = "UPDATE
+								`domain_traffic`
+							SET
+								`dtraff_mail` = `dtraff_mail` + $value,
+								`dtraff_time`='$timestamp'
+							WHERE
+								`domain_id` = '$id' AND
+								`dtraff_time` >= UNIX_TIMESTAMP(CURRENT_DATE())
+							LIMIT 1";
 				}
 
 				($rs, $rdata) = doSQL($sql);
@@ -737,13 +781,24 @@ sub collect_mail_traffic {
 				return $rs if ($rs != 0);
 
 				if($$rows[0][0] == 0){
-
-					$sql = "insert into `domain_traffic` (domain_id, dtraff_time, dtraff_web, dtraff_ftp, dtraff_mail, dtraff_pop) values ('$id', '$timestamp', '0', '0', '0', $value);";
-
+					$sql = "INSERT INTO
+								`domain_traffic`
+							(
+								`domain_id`, `dtraff_time`, `dtraff_web`,
+								`dtraff_ftp`, `dtraff_mail`, `dtraff_pop`
+							) VALUES (
+								'$id', '$timestamp', '0', '0', '0', $value
+							);";
 				} else {
-
-					$sql = "update `domain_traffic` set `dtraff_pop`=`dtraff_pop`+$value, `dtraff_time`='$timestamp', `correction`=0 where `domain_id`='$id' and `dtraff_time`>=UNIX_TIMESTAMP(CURRENT_DATE()) LIMIT 1";
-
+					$sql = "UPDATE
+								`domain_traffic`
+							SET
+								`dtraff_pop` = `dtraff_pop` + $value,
+								`dtraff_time` = '$timestamp'
+							WHERE
+								`domain_id` = '$id' AND
+								`dtraff_time` >= UNIX_TIMESTAMP(CURRENT_DATE())
+							LIMIT 1";
 				}
 
 				($rs, $rdata) = doSQL($sql);

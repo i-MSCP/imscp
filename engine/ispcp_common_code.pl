@@ -165,8 +165,6 @@ $main::ispcp_vrl_traff_el = "$main::log_dir/ispcp-vrl-traff.el";
 $main::ispcp_vrl_traff_stdout = "$main::log_dir/ispcp-vrl-traff.stdout";
 $main::ispcp_vrl_traff_stderr = "$main::log_dir/ispcp-vrl-traff.stderr";
 
-$main::ispcp_vrl_traff_correction_el = "$main::log_dir/ispcp-vrl-traff-correction.el";
-
 $main::ispcp_httpd_logs_mngr_el = "$main::log_dir/ispcp-httpd-logs-mngr.el";
 $main::ispcp_httpd_logs_mngr_stdout = "$main::log_dir/ispcp-httpd-logs-mngr.stdout";
 $main::ispcp_httpd_logs_mngr_stderr = "$main::log_dir/ispcp-httpd-logs-mngr.stderr";
