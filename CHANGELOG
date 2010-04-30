@@ -2,6 +2,10 @@ ispCP ω 1.0.6 Change Log
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2010-04-29 Benedikt Heintel
+	- ENGINE:
+		* Fixed #2366: Database Update r2899 doesn't work
+
+2010-04-29 Benedikt Heintel
 	- DISTS:
 		* OpenSuse: Removed packages not needed for ispCP
 	- ENGINE:
