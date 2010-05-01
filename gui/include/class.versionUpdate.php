@@ -55,7 +55,10 @@ class versionUpdate extends ispcpUpdate {
 	 */
 	protected $errorMessage = "Version update %s failed";
 
-	private function __construct() {}
+	protected function __construct() {
+		parent::__construct();
+	}
+
 	private function __clone() {}
 
 	/**
