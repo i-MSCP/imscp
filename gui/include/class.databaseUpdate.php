@@ -1212,53 +1212,70 @@ class databaseUpdate extends ispcpUpdate {
 		$sql = Database::getInstance();
 
 		// For domain traffic
-		$sqlUpd[] = "ALTER IGNORE TABLE
-						`ispcp`.`domain_traffic`
-					DROP
-						`correction`;";
-		$sqlUpd[] = "ALTER IGNORE TABLE
-						`ispcp`.`domain_traffic`
-					DROP KEY
-						`i_correction`;";
+		$query = "SHOW COLUMNS FROM
+					`ispcp`.`domain_traffic`
+				WHERE
+					`Field` = 'correction';";
+
+		$rs = exec_query($sql, $query);
+
+		// Drop the column only if it exists
+		if ($rs->RecordCount() != 0) {
+			$sqlUpd[] = "ALTER IGNORE TABLE
+							`ispcp`.`domain_traffic`
+						DROP
+							`correction`;";
+		}
+
 		// For server traffic
-		$sqlUpd[] = "ALTER IGNORE TABLE
-						`ispcp`.`server_traffic`
-					DROP
-						`correction`;";
+		$query = "SHOW COLUMNS FROM
+					`ispcp`.`server_traffic`
+				WHERE
+					`Field` = 'correction';";
+
+		$rs = exec_query($sql, $query);
+
+		// Drop the column only if it exists
+		if ($rs->RecordCount() != 0) {
+			$sqlUpd[] = "ALTER IGNORE TABLE
+							`ispcp`.`server_traffic`
+						DROP
+							`correction`;";
+		}
 
 		// Drop server traffic key
 		// it looks like this key is named different, we need to check it first
 
-		// For newer database layouts the key is named 'i_correction'
+		// For oder database layouts the key is named 'i_correction'
 		$query = "SHOW KEYS FROM
-					`server_traffic`
+					`ispcp`.`server_traffic`
 				WHERE
-					`Key_Name` = 'i_correction';";
+					`Key_name` = 'i_correction';";
 
 		$rs = exec_query($sql, $query);
 
 		// Drop the key only if it exists
 		if ($rs->RecordCount() != 0) {
-		$sqlUpd[] = "ALTER IGNORE TABLE
-						`ispcp`.`server_traffic`
-					DROP KEY
-						`i_correction`;";
+			$sqlUpd[] = "ALTER IGNORE TABLE
+							`ispcp`.`server_traffic`
+						DROP KEY
+							`i_correction`;";
 		}
 
-		// For older Database layouts the key is named 'correction'
+		// For newer Database layouts the key is named 'correction'
 		$query = "SHOW KEYS FROM
-					`server_traffic`
+					`ispcp`.`server_traffic`
 				WHERE
-					`Key_Name` = 'correction';";
+					`Key_name` = 'correction';";
 
 		$rs = exec_query($sql, $query);
 
 		// Drop the key only if it exists
 		if ($rs->RecordCount() != 0) {
-		$sqlUpd[] = "ALTER IGNORE TABLE
-						`ispcp`.`server_traffic`
-					DROP KEY
-						`correction`;";
+			$sqlUpd[] = "ALTER IGNORE TABLE
+							`ispcp`.`server_traffic`
+						DROP KEY
+							`correction`;";
 		}
 
 		return $sqlUpd;

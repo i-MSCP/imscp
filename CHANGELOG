@@ -1,6 +1,14 @@
 ispCP ω 1.0.6 Change Log
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-05-01 Benedikt Heintel
+	- DISTS:
+		* OpenSuse: Re-added packages
+		* Ubuntu: Removed intrepid support (End of Life)
+		* Ubuntu: Added lucid support
+	- ENGINE:
+		* Fixed #2201: Delete ispcp-vrl-traff-correction (2nd try)
+
 2010-04-29 Benedikt Heintel
 	- ENGINE:
 		* Fixed #2366: Database Update r2899 doesn't work

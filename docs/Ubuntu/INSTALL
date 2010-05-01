@@ -17,7 +17,7 @@ Table of Content
 1) Version Info
 ---------------
 ispCP ω Version: 	1.0.6
-INSTALL Script:		1.7
+INSTALL Script:		1.8
 Maintainer:
 Homepage:			http://isp-contol.net
 Linux Distros:		Ubuntu
@@ -33,9 +33,9 @@ Penitum III or K6-4 with 500 MHz
 Debian (or even any other *NIX-Distribution)
 
 All 8.04 LTS required packages are listed in ./docs/Ubuntu/ubuntu-packages-hardy
-All 8.10 required packages are listed in ./docs/Ubuntu/ubuntu-packages-intrepid
 All 9.04 required packages are listed in ./docs/Ubuntu/ubuntu-packages-jaunty
 All 9.10 required packages are listed in ./docs/Ubuntu/ubuntu-packages-karmic
+All 10.04 LTS required packages are listed in ./docs/Ubuntu/ubuntu-packages-lucid
 
 ================================================================================
 3) Introduction
