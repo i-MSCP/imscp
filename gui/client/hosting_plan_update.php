@@ -361,15 +361,14 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 				`domain_dns` = ?
 		";
 
-		$check = exec_query(
-								$sql, $check_query,
-								array(
-										$_SESSION['user_id'],
-										$hp_mail, $hp_ftp, $hp_traff,
-										$hp_sql_db, $hp_sql_user,
-										$hp_als, $hp_sub, $hp_disk,
-										$php, $cgi, $dns
-								)
+		$check = exec_query($sql, $check_query,
+			array(
+				$_SESSION['user_id'],
+				$hp_mail, $hp_ftp, $hp_traff,
+				$hp_sql_db, $hp_sql_user,
+				$hp_als, $hp_sub, $hp_disk,
+				$php, $cgi, $dns
+			)
 		);
 
 		if ($check->RecordCount() == 0) {
@@ -379,7 +378,7 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 				. '" class="linkdark">';
 
 			if ($purchase_link == 'order_id' && count($error_msgs) > 0) {
-				$link_purchase = tr('You can not update to this hosting plan, see notices in text.');
+				$link_purchase = tr('You cannot update to this hosting plan, see notices in text.');
 				if (count($warning_msgs) > 0) {
 					$warning_text = '<br /><br /><strong>'.tr('Warning:').'</strong><br />'.implode('<br />', $warning_msgs);
 				} else {
