@@ -374,9 +374,12 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 
 		if ($check->RecordCount() == 0) {
 
+			$link_purchase = '<a href="hosting_plan_update.php?'
+				. $purchase_link.'='.$rs->fields['id']
+				. '" class="linkdark">';
+
 			if ($purchase_link == 'order_id' && count($error_msgs) > 0) {
-				$purchase_link = 'dummy';
-				$purchase_text = tr('You cannot update to this hosting plan, see notices in text.');
+				$link_purchase = tr('You can not update to this hosting plan, see notices in text.');
 				if (count($warning_msgs) > 0) {
 					$warning_text = '<br /><br /><strong>'.tr('Warning:').'</strong><br />'.implode('<br />', $warning_msgs);
 				} else {
@@ -385,9 +388,11 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 				$warning_text .= '<br /><br /><strong>'.tr('Caution:').'</strong><br />'.implode('<br />', $error_msgs);
 			} elseif ($purchase_link == 'order_id' && count($warning_msgs) > 0) {
 				$warning_text = '<br /><br /><strong>'.tr('Warning:').'</strong><br />'.implode('<br />', $warning_msgs);
-				$purchase_text = tr('I understand the warnings - Purchase!');
+				$link_purchase .= tr('I understand the warnings - Purchase!');
+				$link_purchase .= '</a>';
 			} else {
 				$warning_text = '';
+				$link_purchase .= '</a>';
 			}
 
 			$tpl->assign(
@@ -400,7 +405,8 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 					'TR_PURCHASE'		=> $purchase_text,
 					'LINK'				=> $purchase_link,
 					'TR_HOSTING_PLANS'	=> $hp_title,
-					'ITHEM'				=> ($i % 2 == 0) ? 'content' : 'content2'
+					'ITHEM'				=> ($i % 2 == 0) ? 'content' : 'content2',
+					'LINK_PURCHASE'		=> $link_purchase
 				)
 			);
 
