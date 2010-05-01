@@ -68,7 +68,7 @@ function sizeit($bytes, $to = 'B') {
 		case 'B':
 			break;
 		default:
-			write_log(sprintf('FIXME: %s:%d' . "\n" . 'Unknown byte count %s',__FILE__, __LINE__, $from));
+			write_log(sprintf('FIXME: %s:%d' . "\n" . 'Unknown byte count %s',__FILE__, __LINE__, $to));
 			die('FIXME: ' . __FILE__ . ':' . __LINE__);
 	}
 

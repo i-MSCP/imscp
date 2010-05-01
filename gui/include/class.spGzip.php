@@ -101,7 +101,7 @@ class spOutput {
 		/*
 		 * Prevent compression, if contents/buffer is empty (cause otherwise
  		 * 0.00 KB files grow up to 0.01 kB gzipped files, this means more load
- 		 * and more traffic) 
+ 		 * and more traffic)
  		 */
 		if (count($buffer) == 0) {
 			return $buffer;
@@ -185,19 +185,19 @@ class spOutput {
 							);
 			$time			= round(($this->getMicrotime()-$start)*1000, 2);
 			$savingkb		= $uncompressed-$compressed;
-			$saving			= $uncompressed > '0' ? 
+			$saving			= $uncompressed > '0' ?
 								@round($savingkb/$uncompressed*100, 0) : '0';
 
 			// Shows some information
-			$this->contents .= "\n<!--\n\tCompression level: " . $this->level . 
-				"\n\tOriginal size: " . $uncompressed . " kb\n\tNew size: " . 
+			$this->contents .= "\n<!--\n\tCompression level: " . $this->level .
+				"\n\tOriginal size: " . $uncompressed . " kb\n\tNew size: " .
 				$compressed . " kb\n\tSaving: " . $savingkb . " kb (" . $saving .
 				" %)\n\tTime: " . $time . " ms\n-->";
 		}
 
 		// create & concat the full output
 		$this->gzdata .= substr(gzcompress($this->contents, $this->level), 0, -4);
-		unset($compressed_contents);
+
 		$this->gzdata .= pack('V', crc32($this->contents));
 		$this->gzdata .= pack('V', strlen($this->contents));
 		$this->gzsize = strlen($this->gzdata);
@@ -212,7 +212,7 @@ class spOutput {
 
 		// Maybe you just want to see the result of all this
 		if ($this->debug) {
-			return $this->contents . "\n<!--\n\tspGzip is in debug mode. 
+			return $this->contents . "\n<!--\n\tspGzip is in debug mode.
 				The shown output is uncompressed\n-->";
 		}
 

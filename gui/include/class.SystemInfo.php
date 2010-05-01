@@ -282,6 +282,7 @@ class SystemInfo {
         //		976428116 150249136 826178980  16%
         //		/var/www/virtual/<domain>/htdocs/data
         // if solved, we can savely remove the l-argument
+        $pipes = array(); // satisfy warning
 		$proc = proc_open(
 			Config::getInstance()->get('CMD_DF') . ' -Tl',
 			$descriptorspec,
@@ -400,6 +401,7 @@ class SystemInfo {
 					2 => array('pipe', 'a')	 // stderr is a pipe that he cild will write to
 				);
 
+				$pipes = array();
 				$proc = proc_open(
 					Config::getInstance()->get('CMD_VMSTAT'),
 					$descriptorspec,
@@ -415,9 +417,9 @@ class SystemInfo {
 					// parse line for line
 					$ram_info = explode("\n", $raw);
 					// First line only contains Legend
-					array_shift($swap_info);
+					array_shift($ram_info);
 
-					$line = preg_split('/\s+/', $swap_info[0], 19);
+					$line = preg_split('/\s+/', $ram_info[0], 19);
 					$ram['free'] = $line[5];
 				}
 
@@ -471,6 +473,7 @@ class SystemInfo {
 				$args = '-k';
 			}
 
+			$pipes = array(); // satisfy warning
 			$proc = proc_open(
 				Config::getInstance()->get('CMD_SWAPCTL') . $args,
 				$descriptorspec,
@@ -569,19 +572,19 @@ class SystemInfo {
 		$upMins  = floor($upMins - ($upHours * 60) - ($upDays * 24 * 60));
 
 		$uptime_str = '';
-		
+
 		if ($upDays == 1) {
 			$uptime_str .= $upDays . ' ' . tr('Day') . ' ';
 		} else if ($upDays > 1) {
 			$uptime_str .= $upDays . ' ' . tr('Days') . ' ';
 		}
-		
+
 		if ($upHours == 1) {
 			$uptime_str .= ' ' . $upHours . ' ' . tr('Hour') . ' ';
 		} else if ($upHours > 1) {
 			$uptime_str .= ' ' . $upHours . ' ' . tr('Hours') . ' ';
 		}
-		
+
 		if ($upMins == 1) {
 			$uptime_str .= ' ' . $upMins . ' ' . tr('Minute');
 		} else if ($upMins > 1) {
@@ -638,6 +641,7 @@ class SystemInfo {
 			2 => array('pipe', 'a')	 // stderr is a pipe that he cild will write to
 		);
 
+		$pipes = array(); // satisfy warning
 		$proc = proc_open(
 			Config::getInstance()->get('CMD_SYSCTL') . ' -n ' . $args,
 			$descriptorspec, $pipes

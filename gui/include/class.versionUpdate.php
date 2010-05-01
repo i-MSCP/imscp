@@ -34,7 +34,6 @@
  * @version		1.0
  * @see			Other Functions (in other Files)
  * @since		r1355
- * @todo No complete Singleton (missing private constructor, clone)
  */
 class versionUpdate extends ispcpUpdate {
 
@@ -43,7 +42,7 @@ class versionUpdate extends ispcpUpdate {
 	 * @var object versionUpdate
 	 */
 	private static $instance = NULL;
-	
+
 	/**
 	 * Database variable name for the update version
 	 * @var string
@@ -51,18 +50,22 @@ class versionUpdate extends ispcpUpdate {
 	protected $databaseVariableName = "VERSION_UPDATE";
 
 	/**
-	 * @todo Please descibe this variable!
+	 * Error message string
+	 * @var string
 	 */
 	protected $errorMessage = "Version update %s failed";
 
+	private function __construct() {}
+	private function __clone() {}
+
 	/**
-	 * @todo Please descibe this method!
+	 * Return singleton object
 	 */
 	public static function getInstance() {
-		if ($instance === NULL) {
-			$instance = new self();	
+		if (self::$instance === NULL) {
+			self::$instance = new self();
 		}
-		return $instance;
+		return self::$instance;
 	}
 
 	/**

@@ -180,6 +180,7 @@ function check_user_data() {
 		user_goto('user_add2.php');
 	} else {
 		// check if reseller limits are not touched
+		$ehp_error = ''; // fill dummy to satisfy warning...
 		if (reseller_limits_check($sql, $ehp_error, $_SESSION['user_id'], $dmn_chp)) {
 			// send through the session the data
 			$_SESSION['dmn_name']	= $dmn_name;

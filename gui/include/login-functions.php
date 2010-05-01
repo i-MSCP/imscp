@@ -243,11 +243,10 @@ function shall_user_wait($ipaddr = null, $displayMessage = true) {
 }
 
 /**
- * @todo describe function
+ * Check/block IP if bruteforcing the login or captcha wrong
  *
  * @param  String	$ipaddr
  * @param  String	$type
- * @return Boolean				true, if...
  */
 function check_ipaddr($ipaddr = null, $type = "bruteforce") {
 	$sql = Database::getInstance();
@@ -263,7 +262,6 @@ function check_ipaddr($ipaddr = null, $type = "bruteforce") {
 	if ($res->RecordCount() == 0) {
 		$query = "REPLACE INTO `login` (`session_id`, `ipaddr`, `lastaccess`, `login_count`, `captcha_count`) VALUES (?,?,UNIX_TIMESTAMP(),?,?)";
 		exec_query($sql, $query, array($sess_id, $ipaddr, (int)($type == 'bruteforce'), (int)($type == 'captcha')));
-		return false;
 	}
 
 	$data = $res->FetchRow();
@@ -296,17 +294,12 @@ function check_ipaddr($ipaddr = null, $type = "bruteforce") {
 		}
 
 		exec_query($sql, $query, $ipaddr);
-		return false;
 	} else {
 		$backButtonDestination = Config::getInstance()->get('BASE_SERVER_VHOST_PREFIX') . Config::getInstance()->get('BASE_SERVER_VHOST');
 
 		write_log("Login error, <b><i>$ipaddr</i></b> wait " . ($btime - time()) . " seconds", E_USER_NOTICE);
 		system_message(tr('You have to wait %d seconds.', $btime - time()), $backButtonDestination);
-
-		return false;
 	}
-
-	return true;
 }
 
 /**
@@ -324,11 +317,11 @@ function block_ipaddr($ipaddr, $type = 'General') {
  * @todo describe function
  */
 function deny_access() {
-	$backButtonDestination = Config::getInstance()->get('BASE_SERVER_VHOST_PREFIX') . 
+	$backButtonDestination = Config::getInstance()->get('BASE_SERVER_VHOST_PREFIX') .
 		Config::getInstance()->get('BASE_SERVER_VHOST');
 	system_message(
-		tr('You have been blocked for %d minutes.', 
-		Config::getInstance()->get('BRUTEFORCE_BLOCK_TIME')), 
+		tr('You have been blocked for %d minutes.',
+		Config::getInstance()->get('BRUTEFORCE_BLOCK_TIME')),
 		$backButtonDestination
 	);
 }

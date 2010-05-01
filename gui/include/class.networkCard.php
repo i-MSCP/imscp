@@ -69,6 +69,7 @@ class networkCard {
 			1 => array("pipe", "w"),
 			2 => array("pipe", "w")
 		);
+		$pipes = array();
 		$process = proc_open($strProgram, $descriptorspec, $pipes);
 		if (is_resource($process)) {
 			while (!feof($pipes[1])) {
