@@ -54,9 +54,9 @@ function gen_page_data(&$tpl, &$sql) {
 		$tpl->assign(
 			array(
 				'MESSAGE_SUBJECT' => clean_input($_POST['msg_subject'], true),
-				'MESSAGE_TEXT' => clean_input($_POST['msg_text'], false),
-				'SENDER_EMAIL' => clean_input($_POST['sender_email'], false),
-				'SENDER_NAME' => clean_input($_POST['sender_name'], false)
+				'MESSAGE_TEXT' => clean_input($_POST['msg_text'], true),
+				'SENDER_EMAIL' => clean_input($_POST['sender_email'], true),
+				'SENDER_NAME' => clean_input($_POST['sender_name'], true)
 			)
 		);
 	} else {
@@ -89,8 +89,8 @@ function gen_page_data(&$tpl, &$sql) {
 			array(
 				'MESSAGE_SUBJECT' => '',
 				'MESSAGE_TEXT' => '',
-				'SENDER_EMAIL' => $rs->fields['email'],
-				'SENDER_NAME' => $sender_name
+				'SENDER_EMAIL' => tohtml($rs->fields['email']),
+				'SENDER_NAME' => tohtml($sender_name)
 			)
 		);
 	}
@@ -163,7 +163,7 @@ function send_reseller_users_message(&$sql, $admin_id) {
 	while (!$rs->EOF) {
 		$to = "\"" . encode($rs->fields['fname'] . " " . $rs->fields['lname']) . "\" <" . $rs->fields['email'] . ">";
 
-		send_circular_email($to, "\"" . encode($sender_name) . "\" <" . $sender_email . ">", stripslashes($msg_subject), stripslashes($msg_text));
+		send_circular_email($to, "\"" . encode($sender_name) . "\" <" . $sender_email . ">", $msg_subject, $msg_text);
 
 		$rs->MoveNext();
 	}

@@ -558,13 +558,13 @@ function gen_client_mainmenu(&$tpl, $menu_file) {
 			$menu_link = str_replace('{ispcp_uname}', $_SESSION['user_logged'], $menu_link);
 
 			if ($menu_target !== '') {
-				$menu_target = 'target="' . $menu_target . '"';
+				$menu_target = 'target="' . tohtml($menu_target) . '"';
 			}
 
 			$tpl->assign(
 				array(
-					'BUTTON_LINK' => $menu_link,
-					'BUTTON_NAME' => $menu_name,
+					'BUTTON_LINK' => tohtml($menu_link),
+					'BUTTON_NAME' => tohtml($menu_name),
 					'BUTTON_TARGET' => $menu_target,
 					'BUTTON_ID' => $i,
 				)
@@ -727,13 +727,13 @@ function gen_client_menu(&$tpl, $menu_file) {
 			$menu_target = $rs->fields['menu_target'];
 
 			if ($menu_target !== '') {
-				$menu_target = 'target="' . $menu_target . '"';
+				$menu_target = 'target="' . tohtml($menu_target) . '"';
 			}
 
 			$tpl->assign(
 				array(
-					'BUTTON_LINK' => $menu_link,
-					'BUTTON_NAME' => $menu_name,
+					'BUTTON_LINK' => tohtml($menu_link),
+					'BUTTON_NAME' => tohtml($menu_name),
 					'BUTTON_TARGET' => $menu_target,
 					'BUTTON_ID' => $i,
 				)
@@ -811,12 +811,12 @@ function gen_client_menu(&$tpl, $menu_file) {
 	if ($dmn_subd_limit != 0 && $sub_cnt >= $dmn_subd_limit) {
 		$tpl->assign('ISACTIVE_SUBDOMAIN_MENU', '');
 	}
-	
+
 	$als_cnt = get_domain_running_als_cnt($sql, $dmn_id);
 	if ($dmn_als_limit != 0 && $als_cnt >= $dmn_als_limit) {
 		$tpl->assign('ISACTIVE_ALIAS_MENU', '');
 	}
-	
+
 	if (Config::getInstance()->get('AWSTATS_ACTIVE') != 'yes') {
 		$tpl->assign('ACTIVE_AWSTATS', '');
 	} else {

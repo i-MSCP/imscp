@@ -54,20 +54,20 @@ function get_clean_input_data() {
 	if (empty($cdata) && !empty($_POST)) {
 
 		$cdata = array(
-			'customer_id' => clean_input($_POST['customer_id'], true),
-			'fname' => clean_input($_POST['fname'], true),
-			'lname' => clean_input($_POST['lname'], true),
+			'customer_id' => clean_input($_POST['customer_id']),
+			'fname' => clean_input($_POST['fname']),
+			'lname' => clean_input($_POST['lname']),
 			'gender' => clean_input($_POST['gender']),
-			'firm' => clean_input($_POST['firm'], true),
-			'zip' => clean_input($_POST['zip'], true),
-			'city' => clean_input($_POST['city'], true),
-			'state' => clean_input($_POST['state'], true),
-			'country' => clean_input($_POST['country'], true),
-			'email' => clean_input($_POST['email'], true),
-			'phone' => clean_input($_POST['phone'], true),
-			'fax' => clean_input($_POST['fax'], true),
-			'street1' => clean_input($_POST['street1'], true),
-			'street2' => clean_input($_POST['street2'], true),
+			'firm' => clean_input($_POST['firm']),
+			'zip' => clean_input($_POST['zip']),
+			'city' => clean_input($_POST['city']),
+			'state' => clean_input($_POST['state']),
+			'country' => clean_input($_POST['country']),
+			'email' => clean_input($_POST['email']),
+			'phone' => clean_input($_POST['phone']),
+			'fax' => clean_input($_POST['fax']),
+			'street1' => clean_input($_POST['street1']),
+			'street2' => clean_input($_POST['street2']),
 			'max_dmn_cnt' => clean_input($_POST['nreseller_max_domain_cnt']),
 			'max_sub_cnt' => clean_input($_POST['nreseller_max_subdomain_cnt']),
 			'max_als_cnt' => clean_input($_POST['nreseller_max_alias_cnt']),
@@ -382,21 +382,21 @@ function _check_new_limit($new_limit, $assigned_by_reseller, $used_by_customers,
 			} elseif ($new_limit < $assigned_by_reseller && $new_limit != -1) {
 				set_page_message(
 					tr('This reseller has already assigned more/higher <b>%s</b> accounts/limits than the new limit you entered.', $service_name)
-				); 
-			
+				);
+
 			// If the new limit is -1 (disabled) and the already used accounts/limits by users is greater 0
 			} elseif ($new_limit == -1 && $used_by_customers > 0) {
 				set_page_message(
 					tr("This reseller's customers are using/have more/higher <b>%s</b> accounts/limits than the new limit you entered.", $service_name)
 				);
-			
+
 			// If the new limit is -1 (disabled) and the already assigned accounts/limits by reseller is greater 0
 			} elseif ($new_limit == -1 && $assigned_by_reseller > 0) {
 				set_page_message(
 					tr('This reseller has already assigned more/higher <b>%s</b> accounts/limits than the new limit you entered.', $service_name)
 				);
-			} 
-			
+			}
+
 		// One or more reseller's customers have unlimited rights
 		} elseif ($new_limit != 0) {
 			set_page_message(
@@ -1011,8 +1011,8 @@ $tpl->assign(
 		'TR_CTRL+C' => tr('Type `CTRL+C` to copy the generated password in the clipboard.'),
 		'TR_EVENT_NOTICE' => html_entity_decode(htmlspecialchars_decode(tr('ispCP NOTICE:\n\nThe `Enter` key is disabled for performance reasons!\nInstead, use the %s button to update the data.', '`'.tr('Update').'`')), ENT_QUOTES, 'UTF-8'),
 
-		'USERNAME' => $rdata['admin_name'],
-		'EMAIL' => $rdata['email'],
+		'USERNAME' => tohtml($rdata['admin_name']),
+		'EMAIL' => tohtml($rdata['email']),
 
 		'MAX_DOMAIN_COUNT' => $rdata['max_dmn_cnt'],
 		'MAX_SUBDOMAIN_COUNT' => $rdata['max_sub_cnt'],
@@ -1027,25 +1027,25 @@ $tpl->assign(
 		'SUPPORT_YES' => $support_yes,
 		'SUPPORT_NO' => $support_no,
 
-		'CUSTOMER_ID' => $rdata['customer_id'],
-		'FIRST_NAME' => $rdata['fname'],
-		'LAST_NAME' => $rdata['lname'],
+		'CUSTOMER_ID' => tohtml($rdata['customer_id']),
+		'FIRST_NAME' => tohtml($rdata['fname']),
+		'LAST_NAME' => tohtml($rdata['lname']),
 		'VL_MALE' => (($rdata['gender'] == 'M') ? Config::getInstance()->get('HTML_SELECTED') : ''),
 		'VL_FEMALE' => (($rdata['gender'] == 'F') ? Config::getInstance()->get('HTML_SELECTED') : ''),
 		'VL_UNKNOWN' =>
 			(($rdata['gender'] == 'U') || (empty($rdata['gender'])) ?
 				Config::getInstance()->get('HTML_SELECTED') : ''),
-		'FIRM' => $rdata['firm'],
-		'ZIP' => $rdata['zip'],
-		'CITY' => $rdata['city'],
-		'STATE' => ($rdata['state'] === NULL ? '' : $rdata['state']),
-		'COUNTRY' => $rdata['country'],
-		'STREET_1' => $rdata['street1'],
-		'STREET_2' => $rdata['street2'],
-		'PHONE' => $rdata['phone'],
-		'FAX' => $rdata['fax'],
+		'FIRM' => tohtml($rdata['firm']),
+		'ZIP' => tohtml($rdata['zip']),
+		'CITY' => tohtml($rdata['city']),
+		'STATE' => $rdata['state'] === NULL ? '' : tohtml($rdata['state']),
+		'COUNTRY' => tohtml($rdata['country']),
+		'STREET_1' => tohtml($rdata['street1']),
+		'STREET_2' => tohtml($rdata['street2']),
+		'PHONE' => tohtml($rdata['phone']),
+		'FAX' => tohtml($rdata['fax']),
 
-		'EDIT_ID' => $rdata['edit_id'],
+		'EDIT_ID' => tohtml($rdata['edit_id']),
 
 		// The entries below are for Demo versions only
 		'PASSWORD_DISABLED'	=> tr('Password change is deactivated!'),

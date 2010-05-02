@@ -69,11 +69,11 @@ function get_error_domains(&$sql, &$tpl) {
 
 			$tpl->assign(
 				array(
-					'DOMAIN_MESSAGE' => '',
-					'TR_DOMAIN_NAME' => $rs->fields['domain_name'],
-					'TR_DOMAIN_ERROR' => $rs->fields['domain_status'],
-					'CHANGE_ID' => $rs->fields['domain_id'],
-					'CHANGE_TYPE' => 'domain',
+					'DOMAIN_MESSAGE'	=> '',
+					'TR_DOMAIN_NAME' 	=> tohtml($rs->fields['domain_name']),
+					'TR_DOMAIN_ERROR'	=> tohtml($rs->fields['domain_status']),
+					'CHANGE_ID'			=> tohtml($rs->fields['domain_id']),
+					'CHANGE_TYPE'		=> 'domain',
 				)
 			);
 
@@ -140,11 +140,11 @@ function get_error_aliases(&$sql, &$tpl) {
 
 			$tpl->assign(
 				array(
-					'ALIAS_MESSAGE' => '',
-					'TR_ALIAS_NAME' => $rs->fields['alias_name'],
-					'TR_ALIAS_ERROR' => $rs->fields['alias_status'],
-					'CHANGE_ID' => $rs->fields['alias_id'],
-					'CHANGE_TYPE' => 'alias',
+					'ALIAS_MESSAGE' 	=> '',
+					'TR_ALIAS_NAME'		=> tohtml($rs->fields['alias_name']),
+					'TR_ALIAS_ERROR'	=> tohtml($rs->fields['alias_status']),
+					'CHANGE_ID'			=> $rs->fields['alias_id'],
+					'CHANGE_TYPE'		=> 'alias',
 				)
 			);
 
@@ -204,11 +204,11 @@ function get_error_subdomains(&$sql, &$tpl) {
 
 			$tpl->assign(
 				array(
-					'SUBDOMAIN_MESSAGE' => '',
-					'TR_SUBDOMAIN_NAME' => $rs->fields['subdomain_name'],
-					'TR_SUBDOMAIN_ERROR' => $rs->fields['subdomain_status'],
-					'CHANGE_ID' => $rs->fields['subdomain_id'],
-					'CHANGE_TYPE' => 'subdomain'
+					'SUBDOMAIN_MESSAGE'		=> '',
+					'TR_SUBDOMAIN_NAME'		=> tohtml($rs->fields['subdomain_name']),
+					'TR_SUBDOMAIN_ERROR'	=> tohtml($rs->fields['subdomain_status']),
+					'CHANGE_ID'				=> $rs->fields['subdomain_id'],
+					'CHANGE_TYPE'			=> 'subdomain'
 				)
 			);
 
@@ -269,8 +269,8 @@ function get_error_alias_subdomains(&$sql, &$tpl) {
 			$tpl->assign(
 				array(
 					'SUBDOMAIN_ALIAS_MESSAGE' => '',
-					'TR_SUBDOMAIN_ALIAS_NAME' => $rs->fields['subdomain_alias_name'],
-					'TR_SUBDOMAIN_ALIAS_ERROR' => $rs->fields['subdomain_alias_status'],
+					'TR_SUBDOMAIN_ALIAS_NAME' => tohtml($rs->fields['subdomain_alias_name']),
+					'TR_SUBDOMAIN_ALIAS_ERROR' => tohtml($rs->fields['subdomain_alias_status']),
 					'CHANGE_ID' => $rs->fields['subdomain_alias_id'],
 					'CHANGE_TYPE' => 'subdomain_alias'
 				)
@@ -365,10 +365,10 @@ function get_error_mails(&$sql, &$tpl) {
 
 			$tpl->assign(
 				array(
-					'MAIL_MESSAGE' => '',
-					'TR_MAIL_NAME' => $rs->fields['mail_acc'] . "@" . $domain_name,
-					'TR_MAIL_ERROR' => $rs->fields['status'],
-					'CHANGE_ID' => $rs->fields['mail_id'],
+					'MAIL_MESSAGE'	=> '',
+					'TR_MAIL_NAME'	=> tohtml($rs->fields['mail_acc'] . "@" . $domain_name),
+					'TR_MAIL_ERROR'	=> tohtml($rs->fields['status']),
+					'CHANGE_ID'		=> $rs->fields['mail_id'],
 					'CHANGE_TYPE' => 'mail',
 				)
 			);

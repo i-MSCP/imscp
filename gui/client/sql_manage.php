@@ -81,7 +81,7 @@ function gen_db_user_list(&$tpl, &$sql, $db_id) {
 			$user_mysql = $rs->fields['sqlu_name'];
 			$tpl->assign(
 				array(
-					'DB_USER'	=> $user_mysql,
+					'DB_USER'	=> tohtml($user_mysql),
 					'USER_ID'	=> $user_id
 				)
 			);
@@ -117,8 +117,8 @@ function gen_db_list(&$tpl, &$sql, $user_id) {
 			gen_db_user_list($tpl, $sql, $db_id);
 			$tpl->assign(
 				array(
-					'DB_ID'		=> "$db_id",
-					'DB_NAME'	=> "$db_name"
+					'DB_ID'		=> $db_id,
+					'DB_NAME'	=> tohtml($db_name)
 				)
 			);
 			$tpl->parse('DB_LIST', '.db_list');

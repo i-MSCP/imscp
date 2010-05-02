@@ -396,10 +396,10 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 
 			$tpl->assign(
 				array(
-					'HP_NAME'			=> stripslashes($rs->fields['name']),
-					'HP_DESCRIPTION'	=> stripslashes($rs->fields['description']),
-					'HP_DETAILS'		=> stripslashes($details).$warning_text,
-					'HP_COSTS'			=> $price,
+					'HP_NAME'			=> tohtml($rs->fields['name']),
+					'HP_DESCRIPTION'	=> tohtml($rs->fields['description']),
+					'HP_DETAILS'		=> $details.$warning_text,
+					'HP_COSTS'			=> tohtml($price),
 					'ID'				=> $rs->fields['id'],
 					'TR_PURCHASE'		=> $purchase_text,
 					'LINK'				=> $purchase_link,

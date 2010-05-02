@@ -70,7 +70,7 @@ foreach ($config_entries as $config_entry) {
 
 		fclose($handle);
 
-		$contents = nl2br(htmlentities($log));
+		$contents = nl2br(tohtml($log));
 
 		$contents = '<div>' . $contents . '</div>';
 
@@ -124,8 +124,8 @@ foreach ($config_entries as $config_entry) {
 
 	$tpl->assign(
 		array(
-			'LOG' => $contents,
-			'FILENAME' => $filename
+			'LOG'		=> $contents,
+			'FILENAME'	=> tohtml($filename)
 		)
 	);
 	$tpl->parse('PROPS_LIST', '.props_list');

@@ -61,19 +61,19 @@ function update_data(&$sql) {
 	if (isset($_POST['Submit']) && isset($_POST['uaction']) && $_POST['uaction'] === 'edit_user') {
 		if (check_user_data()) {
 			$user_id	= $_SESSION['user_id'];
-			$fname		= clean_input($_POST['fname'], true);
-			$lname		= clean_input($_POST['lname'], true);
-			$firm		= clean_input($_POST['firm'], true);
-			$gender		= clean_input($_POST['gender'], true);
-			$zip		= clean_input($_POST['zip'], true);
-			$city		= clean_input($_POST['city'], true);
-			$state		= clean_input($_POST['state'], true);
-			$country	= clean_input($_POST['country'], true);
-			$email		= clean_input($_POST['email'], true);
-			$phone		= clean_input($_POST['phone'], true);
-			$fax		= clean_input($_POST['fax'], true);
-			$street1	= clean_input($_POST['street1'], true);
-			$street2	= clean_input($_POST['street2'], true);
+			$fname		= clean_input($_POST['fname']);
+			$lname		= clean_input($_POST['lname']);
+			$firm		= clean_input($_POST['firm']);
+			$gender		= clean_input($_POST['gender']);
+			$zip		= clean_input($_POST['zip']);
+			$city		= clean_input($_POST['city']);
+			$state		= clean_input($_POST['state']);
+			$country	= clean_input($_POST['country']);
+			$email		= clean_input($_POST['email']);
+			$phone		= clean_input($_POST['phone']);
+			$fax		= clean_input($_POST['fax']);
+			$street1	= clean_input($_POST['street1']);
+			$street2	= clean_input($_POST['street2']);
 
 			if (empty($_POST['pass'])) {
 				$query = "
@@ -276,7 +276,7 @@ gen_admin_menu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/menu_
 
 update_data($sql);
 
-$admin_name = decode_idna($rs->fields['admin_name']);
+$admin_name = tohtml(decode_idna($rs->fields['admin_name']));
 
 if (isset($_POST['genpass'])) {
 	$tpl->assign('VAL_PASSWORD', passgen());
@@ -315,19 +315,19 @@ $tpl->assign(
 		'TR_UPDATE'						=> tr('Update'),
 		'TR_SEND_DATA'					=> tr('Send new login data'),
 		'TR_PASSWORD_GENERATE'			=> tr('Generate password'),
-		'FIRST_NAME'					=> empty($rs->fields['fname']) ? '' : $rs->fields['fname'],
-		'LAST_NAME'						=> empty($rs->fields['lname']) ? '' : $rs->fields['lname'],
-		'FIRM'							=> empty($rs->fields['firm']) ? '' : $rs->fields['firm'],
-		'ZIP'							=> empty($rs->fields['zip']) ? '' : $rs->fields['zip'],
-		'CITY'							=> empty($rs->fields['city']) ? '' : $rs->fields['city'],
-		'STATE_PROVINCE'				=> empty($rs->fields['state']) ? '' : $rs->fields['state'],
-		'COUNTRY'						=> empty($rs->fields['country']) ? '' : $rs->fields['country'],
-		'STREET_1'						=> empty($rs->fields['street1']) ? '' : $rs->fields['street1'],
-		'STREET_2'						=> empty($rs->fields['street2']) ? '' : $rs->fields['street2'],
-		'PHONE'							=> empty($rs->fields['phone']) ? '' : $rs->fields['phone'],
-		'FAX'							=> empty($rs->fields['fax']) ? '' : $rs->fields['fax'],
-		'USERNAME'						=> $admin_name,
-		'EMAIL'							=> $rs->fields['email'],
+		'FIRST_NAME'					=> empty($rs->fields['fname']) ? '' : tohtml($rs->fields['fname']),
+		'LAST_NAME'						=> empty($rs->fields['lname']) ? '' : tohtml($rs->fields['lname']),
+		'FIRM'							=> empty($rs->fields['firm']) ? '' : tohtml($rs->fields['firm']),
+		'ZIP'							=> empty($rs->fields['zip']) ? '' : tohtml($rs->fields['zip']),
+		'CITY'							=> empty($rs->fields['city']) ? '' : tohtml($rs->fields['city']),
+		'STATE_PROVINCE'				=> empty($rs->fields['state']) ? '' : tohtml($rs->fields['state']),
+		'COUNTRY'						=> empty($rs->fields['country']) ? '' : tohtml($rs->fields['country']),
+		'STREET_1'						=> empty($rs->fields['street1']) ? '' : tohtml($rs->fields['street1']),
+		'STREET_2'						=> empty($rs->fields['street2']) ? '' : tohtml($rs->fields['street2']),
+		'PHONE'							=> empty($rs->fields['phone']) ? '' : tohtml($rs->fields['phone']),
+		'FAX'							=> empty($rs->fields['fax']) ? '' : tohtml($rs->fields['fax']),
+		'USERNAME'						=> tohtml($admin_name),
+		'EMAIL'							=> tohtml($rs->fields['email']),
 		'VL_MALE'						=> (($rs->fields['gender'] === 'M') ? Config::getInstance()->get('HTML_SELECTED') : ''),
 		'VL_FEMALE'						=> (($rs->fields['gender'] === 'F') ? Config::getInstance()->get('HTML_SELECTED') : ''),
 		'VL_UNKNOWN'					=> ((($rs->fields['gender'] === 'U') || (empty($rs->fields['gender']))) ? Config::getInstance()->get('HTML_SELECTED') : ''),

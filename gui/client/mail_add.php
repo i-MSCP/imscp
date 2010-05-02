@@ -54,7 +54,7 @@ function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
 		$tpl->assign(
 			array(
 				'USERNAME'				=> "",
-				'DOMAIN_NAME'			=> $dmn_name,
+				'DOMAIN_NAME'			=> tohtml($dmn_name),
 				'MAIL_DMN_CHECKED'		=> Config::getInstance()->get('HTML_CHECKED'),
 				'MAIL_ALS_CHECKED'		=> "",
 				'MAIL_SUB_CHECKED'		=> "",
@@ -75,7 +75,7 @@ function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
 		$tpl->assign(
 			array(
 				'USERNAME'				=> clean_input($_POST['username'], true),
-				'DOMAIN_NAME'			=> $dmn_name,
+				'DOMAIN_NAME'			=> tohtml($dmn_name),
 				'MAIL_DMN_CHECKED'		=> ($_POST['dmn_type'] === 'dmn') ? Config::getInstance()->get('HTML_CHECKED') : "",
 				'MAIL_ALS_CHECKED'		=> ($_POST['dmn_type'] === 'als') ? Config::getInstance()->get('HTML_CHECKED') : "",
 				'MAIL_SUB_CHECKED'		=> ($_POST['dmn_type'] === 'sub') ? Config::getInstance()->get('HTML_CHECKED') : "",
@@ -143,7 +143,7 @@ function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 				array(
 					'ALS_ID'		=> $rs->fields['alias_id'],
 					'ALS_SELECTED'	=> $als_selected,
-					'ALS_NAME'		=> $alias_name
+					'ALS_NAME'		=> tohtml($alias_name)
 				)
 			);
 			$tpl->parse('ALS_LIST', '.als_list');
@@ -213,7 +213,7 @@ function gen_dmn_sub_list(&$tpl, &$sql, $dmn_id, $dmn_name, $post_check) {
 				array(
 					'SUB_ID'		=> $rs->fields['sub_id'],
 					'SUB_SELECTED'	=> $sub_selected,
-					'SUB_NAME'		=> $sub_name . '.' . $dmn_name
+					'SUB_NAME'		=> tohtml($sub_name . '.' . $dmn_name)
 				)
 			);
 			$tpl->parse('SUB_LIST', '.sub_list');
@@ -286,7 +286,7 @@ function gen_dmn_als_sub_list(&$tpl, &$sql, $dmn_id, $post_check) {
 				array(
 					'ALS_SUB_ID'		=> $rs->fields['als_sub_id'],
 					'ALS_SUB_SELECTED'	=> $als_sub_selected,
-					'ALS_SUB_NAME'		=> $als_sub_name . '.' . $als_name
+					'ALS_SUB_NAME'		=> tohtml($als_sub_name . '.' . $als_name)
 				)
 			);
 			$tpl->parse('ALS_SUB_LIST', '.als_sub_list');

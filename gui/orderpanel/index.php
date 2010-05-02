@@ -88,16 +88,16 @@ function gen_packages_list(&$tpl, &$sql, $user_id) {
 			if ($price == 0 || $price == '') {
 				$price = "/ " . tr('free of charge');
 			} else {
-				$price = "/ " . $price . " " . $rs->fields['value'] . " " . $rs->fields['payment'];
+				$price = "/ " . $price . " " . tohtml($rs->fields['value']) . " " . tohtml($rs->fields['payment']);
 			}
 
 			$tpl->assign(
 				array(
-					'PACK_NAME'	=> $rs->fields['name'],
+					'PACK_NAME'	=> tohtml($rs->fields['name']),
 					'PACK_ID'	=> $rs->fields['id'],
 					'USER_ID'	=> $user_id,
 					'PURCHASE'	=> tr('Purchase'),
-					'PACK_INFO'	=> $description,
+					'PACK_INFO'	=> tohtml($description),
 					'PRICE'		=> $price,
 				)
 			);

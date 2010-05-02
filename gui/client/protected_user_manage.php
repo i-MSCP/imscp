@@ -100,7 +100,7 @@ function gen_pusres(&$tpl, &$sql, &$dmn_id) {
 			list($user_delete, $user_delete_script, $user_edit, $user_edit_script) = gen_user_action($rs->fields['id'], $rs->fields['status']);
 			$tpl->assign(
 				array(
-					'UNAME'					=> $rs->fields['uname'],
+					'UNAME'					=> tohtml($rs->fields['uname']),
 					'USTATUS'				=> translate_dmn_status($rs->fields['status']),
 					'USER_ID'				=> $rs->fields['id'],
 					'USER_DELETE'			=> $user_delete,
@@ -146,7 +146,7 @@ function gen_pgroups(&$tpl, &$sql, &$dmn_id) {
 			list($group_delete, $group_delete_script) = gen_group_action($rs->fields['id'], $rs->fields['status'], $rs->fields['ugroup']);
 			$tpl->assign(
 				array(
-					'GNAME'					=> $rs->fields['ugroup'],
+					'GNAME'					=> tohtml($rs->fields['ugroup']),
 					'GSTATUS'				=> translate_dmn_status($rs->fields['status']),
 					'GROUP_ID'				=> $rs->fields['id'],
 					'GROUP_DELETE'			=> $group_delete,
@@ -172,9 +172,9 @@ function gen_pgroups(&$tpl, &$sql, &$dmn_id) {
 					$rs_members = exec_query($sql, $query, array($members[$i]));
 
 					if ($cnt_members == 1 || $cnt_members == $i + 1) {
-						$tpl->assign('MEMBER', $rs_members->fields['uname']);
+						$tpl->assign('MEMBER', tohtml($rs_members->fields['uname']));
 					} else {
-						$tpl->assign('MEMBER', $rs_members->fields['uname'] . ", ");
+						$tpl->assign('MEMBER', tohtml($rs_members->fields['uname']) . ", ");
 					}
 
 					$tpl->parse('GROUP_MEMBERS', '.group_members');

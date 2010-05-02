@@ -296,14 +296,14 @@ function gen_user_messages_label(&$tpl, &$sql, &$user_id) {
 }
 
 function gen_remain_time($dbtime){
-        
+
         // needed for calculation
         $mi	= 60;
         $h	= $mi * $mi;
         $d	= $h * 24;
         $mo = $d * 30;
         $y	= $d * 365;
-        
+
         // calculation of: years, month, days, hours, minutes, seconds
         $difftime = $dbtime - time();
         $years = floor($difftime / $y);
@@ -317,7 +317,7 @@ function gen_remain_time($dbtime){
         $minutes = floor($difftime / $mi);
 		 $difftime = $difftime % $mi;
         $seconds = $difftime;
-        
+
         // put into array and return
         return array($years, $month, $days, $hours, $minutes, $seconds);
 }
@@ -412,10 +412,10 @@ if ($dmn_expires == 0) {
 }
 
 list(
-	$years, 
-	$month, 
-	$days, 
-	$hours, 
+	$years,
+	$month,
+	$days,
+	$hours,
 	$minutes,
 	$seconds
 		) = gen_remain_time($dmn_expires);
@@ -441,11 +441,11 @@ if (time() < $dmn_expires) {
 		array('DMN_EXPIRES' => "")
 	);
 }
- 
+
 $tpl->assign(
 	array(
-		'ACCOUNT_NAME'		=> $account_name,
-		'MAIN_DOMAIN'		=> $dmn_name,
+		'ACCOUNT_NAME'		=> tohtml($account_name),
+		'MAIN_DOMAIN'		=> tohtml($dmn_name),
 		'DMN_EXPIRES_DATE'	=> $dmn_expires_date,
 		'MYSQL_SUPPORT'		=> ($dmn_sqld_limit != -1 && $dmn_sqlu_limit != -1) ? tr('yes') : tr('no'),
 		'SUBDOMAINS'		=> gen_num_limit_msg($sub_cnt, $dmn_subd_limit),

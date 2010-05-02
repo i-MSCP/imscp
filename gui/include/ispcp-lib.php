@@ -296,20 +296,6 @@ require_once(INCLUDEPATH . '/lostpassword-functions.php');
 require_once(INCLUDEPATH . '/emailtpl-functions.php');
 require_once(INCLUDEPATH . '/layout-functions.php');
 require_once(INCLUDEPATH . '/functions.ticket_system.php');
-require_once(INCLUDEPATH . '/htmlpurifier/HTMLPurifier.auto.php');
-
-// Use HTMLPurifier on every request, if OVERRIDE_PURIFIER is not defined
-if ($_REQUEST && !defined('OVERRIDE_PURIFIER')) {
-	$config = HTMLPurifier_Config::createDefault();
-
-	// XSS cleaning
-	$config->set('HTML.TidyLevel', 'none');
-
-	$purifier = new HTMLPurifier($config);
-
-	$_GET = $purifier->purifyArray($_GET);
-	$_POST = $purifier->purifyArray($_POST);
-}
 
 $query = "SELECT `name`, `value` FROM `config`";
 

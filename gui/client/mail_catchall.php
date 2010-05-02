@@ -74,7 +74,7 @@ function gen_catchall_item(&$tpl, $action, $dmn_id, $dmn_name, $mail_id, $mail_a
 	if ($action === 'create') {
 		$tpl->assign(
 			array(
-				'CATCHALL_DOMAIN'			=> $show_dmn_name,
+				'CATCHALL_DOMAIN'			=> tohtml($show_dmn_name),
 				'CATCHALL_ACC'				=> tr('None'),
 				'CATCHALL_STATUS'			=> tr('N/A'),
 				'CATCHALL_ACTION'			=> tr('Create catch all'),
@@ -89,8 +89,8 @@ function gen_catchall_item(&$tpl, $action, $dmn_id, $dmn_name, $mail_id, $mail_a
 
 		$tpl->assign(
 			array(
-				'CATCHALL_DOMAIN' => $show_dmn_name,
-				'CATCHALL_ACC' => $show_mail_acc,
+				'CATCHALL_DOMAIN' => tohtml($show_dmn_name),
+				'CATCHALL_ACC' => tohtml($show_mail_acc),
 				'CATCHALL_STATUS' => translate_dmn_status($mail_status),
 				'CATCHALL_ACTION' => $catchall_action,
 				'CATCHALL_ACTION_SCRIPT' => $catchall_action_script

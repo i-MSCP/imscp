@@ -146,7 +146,7 @@ SQL_QUERY;
 			$tpl->assign(
 				array(
 					'LAST_DATE'	=> $date,
-					'SUBJECT'	=> htmlspecialchars($rs->fields['ticket_subject']),
+					'SUBJECT'	=> tohtml($rs->fields['ticket_subject']),
 					'SUBJECT2'	=> addslashes(clean_html($rs->fields['ticket_subject'])),
 					'ID'		=> $ticket_id,
 					'CONTENT'	=> ($i % 2 == 0) ? 'content' : 'content2'

@@ -28,13 +28,6 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-/**
- * @todo check/replace/remove dirty HTMLPurifier hack
- */
-
-//dirty hack (disable HTMLPurifier until figure out how to let pass post arrays)
-define('OVERRIDE_PURIFIER', null);
-
 require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
@@ -206,7 +199,7 @@ function show_services(&$tpl, &$sql) {
 			$selected_off	= $status == '1' ? '' : Config::getInstance()->get('HTML_SELECTED');
 
 			if ($custom == 0) {
-				$tpl->assign(array('SERVICE' => $name . '<input name="name[]" type="hidden" id="name' . $row . '" value="' . $name . '" />'));
+				$tpl->assign(array('SERVICE' => tohtml($name) . '<input name="name[]" type="hidden" id="name' . $row . '" value="' . tohtml($name) . '" />'));
 				$tpl->assign(
 					array(
 						'PORT_READONLY'		=> Config::getInstance()->get('HTML_READONLY'),
@@ -218,10 +211,10 @@ function show_services(&$tpl, &$sql) {
 				);
 				$tpl->parse('PORT_DELETE_SHOW', '');
 			} else {
-				$tpl->assign(array('SERVICE' => '<input name="name[]" type="text" id="name' . $row . '" value="' . $name . '" class="textinput" maxlength="25" />'));
+				$tpl->assign(array('SERVICE' => '<input name="name[]" type="text" id="name' . $row . '" value="' . tohtml($name) . '" class="textinput" maxlength="25" />'));
 				$tpl->assign(
 					array(
-						'NAME'				=> $name,
+						'NAME'				=> tohtml($name),
 						'PORT_READONLY'		=> '',
 						'PROTOCOL_READONLY'	=> '',
 						'TR_DELETE'			=> tr('Delete'),
@@ -235,9 +228,9 @@ function show_services(&$tpl, &$sql) {
 
 			$tpl->assign(
 				array(
-					'CUSTOM'		=> $custom,
-					'VAR_NAME'		=> $rs->fields['name'],
-					'IP'			=> (($ip == '127.0.0.1') ? 'localhost' : (empty($ip) ? Config::getInstance()->get('BASE_SERVER_IP') : $ip)),
+					'CUSTOM'		=> tohtml($custom),
+					'VAR_NAME'		=> tohtml($rs->fields['name']),
+					'IP'			=> (($ip == '127.0.0.1') ? 'localhost' : (empty($ip) ? Config::getInstance()->get('BASE_SERVER_IP') : tohtml($ip))),
 					'PORT'			=> $port,
 					'SELECTED_UDP'	=> $selected_udp,
 					'SELECTED_TCP'	=> $selected_tcp,

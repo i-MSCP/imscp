@@ -152,12 +152,12 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 			$tpl->assign(
 				array(
 					'ID'		=> $ticket_id,
-					'FROM'		=> htmlspecialchars($from),
+					'FROM'		=> tohtml($from),
 					'TO'		=> $to,
 					'LAST_DATE'	=> $date,
-					'SUBJECT'	=> htmlspecialchars($rs->fields['ticket_subject']),
+					'SUBJECT'	=> tohtml($rs->fields['ticket_subject']),
 					'SUBJECT2'	=> addslashes(clean_html($rs->fields['ticket_subject'])),
-					'MESSAGE'	=> htmlspecialchars($rs->fields['ticket_message']),
+					'MESSAGE'	=> tohtml($rs->fields['ticket_message']),
 					'CONTENT'	=> ($i % 2 == 0) ? 'content' : 'content2'
 				)
 			);
@@ -255,7 +255,7 @@ function get_ticket_to(&$sql, $ticket_id, $user_id, $html = false) {
 		$to_user_name = htmlspecialchars($to_user_name);
 	}
 
-	if ($rs->fields['admin_id'] == $user_id) {
+	if ($rs->fields['admin_id'] == $user_id && $html) {
 		$to_name = "<b>". $to_first_name . " " . $to_last_name . " (" . $to_user_name . ")</b>";
 	} else {
 		$to_name = $to_first_name . " " . $to_last_name . " (" . $to_user_name . ")";

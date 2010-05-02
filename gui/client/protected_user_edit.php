@@ -163,7 +163,7 @@ if (isset($_GET['uname'])
 	} else {
 		$tpl->assign(
 			array(
-				'UNAME'	=> $rs->fields['uname'],
+				'UNAME'	=> tohtml($rs->fields['uname']),
 				'UID'	=> $uuser_id,
 			)
 		);
@@ -194,7 +194,7 @@ if (isset($_GET['uname'])
 	} else {
 		$tpl->assign(
 			array(
-				'UNAME'	=> $rs->fields['uname'],
+				'UNAME'	=> tohtml($rs->fields['uname']),
 				'UID'	=> $uuser_id,
 			)
 		);

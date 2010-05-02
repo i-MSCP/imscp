@@ -1,6 +1,17 @@
 ispCP ω 1.0.6 Change Log
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-05-02 Thomas Wacker
+	- GUI:
+		* Fixed #2367: Wrong entity conversion of "&" in personal admin data
+		* Revisioning of POST input and output handling 
+
+2010-05-01 Thomas Wacker
+	- GUI:
+		* Fixed #2126: Error in Update Hosting Package 
+		* Possible fix for RAM info on BSD systems 
+		* Small improvements (IDE warnings, variable usage, ...) 
+
 2010-05-01 Benedikt Heintel
 	- DISTS:
 		* OpenSuse: Re-added packages

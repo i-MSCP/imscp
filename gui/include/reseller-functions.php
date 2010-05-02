@@ -103,13 +103,13 @@ function gen_reseller_mainmenu(&$tpl, $menu_file) {
 			$menu_target = $rs->fields['menu_target'];
 
 			if ($menu_target !== "") {
-				$menu_target = 'target="' . $menu_target . '"';
+				$menu_target = 'target="' . tohtml($menu_target) . '"';
 			}
 
 			$tpl->assign(
 				array(
-					'BUTTON_LINK' => $menu_link,
-					'BUTTON_NAME' => $menu_name,
+					'BUTTON_LINK' => tohtml($menu_link),
+					'BUTTON_NAME' => tohtml($menu_name),
 					'BUTTON_TARGET' => $menu_target,
 					'BUTTON_ID' => $i,
 				)
@@ -130,7 +130,7 @@ function gen_reseller_mainmenu(&$tpl, $menu_file) {
 	";
 
 	$rs = exec_query($sql, $query, array($_SESSION['user_id']));
-  
+
 	if (!Config::getInstance()->get('ISPCP_SUPPORT_SYSTEM') || $rs->fields['support_system'] == 'no') {
 		$tpl->assign('ISACTIVE_SUPPORT', '');
  	}
@@ -205,13 +205,13 @@ function gen_reseller_menu(&$tpl, $menu_file) {
 			$menu_target = $rs->fields['menu_target'];
 
 			if ($menu_target !== "") {
-				$menu_target = 'target="' . $menu_target . '"';
+				$menu_target = 'target="' . tohtml($menu_target) . '"';
 			}
 
 			$tpl->assign(
 				array(
-					'BUTTON_LINK' => $menu_link,
-					'BUTTON_NAME' => $menu_name,
+					'BUTTON_LINK' => tohtml($menu_link),
+					'BUTTON_NAME' => tohtml($menu_name),
 					'BUTTON_TARGET' => $menu_target,
 					'BUTTON_ID' => $i,
 				)
@@ -232,7 +232,7 @@ function gen_reseller_menu(&$tpl, $menu_file) {
 	";
 
 	$rs = exec_query($sql, $query, array($_SESSION['user_id']));
-  
+
 	if (!Config::getInstance()->get('ISPCP_SUPPORT_SYSTEM') || $rs->fields['support_system'] == 'no') {
 		$tpl->assign('ISACTIVE_SUPPORT', '');
 	}
@@ -470,7 +470,7 @@ function get_user_traffic($user_id) {
 	$res = exec_query($sql, $query, array($user_id));
 
 	if ($res->RowCount() == 0 || $res->RowCount() > 1) {
-		// write_log("TRAFFIC WARNING: >$user_id< manages incorrect number of 
+		// write_log("TRAFFIC WARNING: >$user_id< manages incorrect number of
 		// domains >".$res->RowCount()."<");
 		return array('n/a', 0, 0, 0, 0, 0, 0, 0, 0, 0);
 	} else {
@@ -488,7 +488,7 @@ function get_user_traffic($user_id) {
 
 		$query = "
 			SELECT
-				YEAR(FROM_UNIXTIME(`dtraff_time`)) AS `tyear`, 
+				YEAR(FROM_UNIXTIME(`dtraff_time`)) AS `tyear`,
 				MONTH(FROM_UNIXTIME(`dtraff_time`)) AS `tmonth`,
 				SUM(`dtraff_web`) AS web,
 				SUM(`dtraff_ftp`) AS ftp,
@@ -508,8 +508,8 @@ function get_user_traffic($user_id) {
 
 		$res = exec_query($sql, $query, array($domain_id));
 
-		$max_traffic_month = 
-		$data['web'] = $data['ftp'] = $data['smtp'] = 
+		$max_traffic_month =
+		$data['web'] = $data['ftp'] = $data['smtp'] =
 		$data['pop'] = $data['total'] = 0;
 
 		while ($row = $res->FetchRow()) {
@@ -539,7 +539,7 @@ function get_user_traffic($user_id) {
 
 /**
  * Get user's properties from Database
- * 
+ *
  * @param int		$user_id	user's ID
  * @return Array				user's properies
  */
@@ -687,7 +687,7 @@ function generate_ip_list(&$tpl, &$reseller_id) {
 			$tpl->assign(
 				array(
 					'IP_NUM' => $data['ip_number'],
-					'IP_NAME' => $data['ip_domain'],
+					'IP_NAME' => tohtml($data['ip_domain']),
 					'IP_VALUE' => $ip_id,
 					'IP_SELECTED' => $selected
 				)
@@ -1175,7 +1175,7 @@ function gen_manage_domain_search_options(&$tpl,
 		);
 	} else {
 		$tpl->assign(
-			array('SEARCH_FOR' => stripslashes($search_for))
+			array('SEARCH_FOR' => $search_for)
 		);
 	}
 
@@ -1270,7 +1270,7 @@ function gen_def_language(&$tpl, &$sql, &$user_def_language) {
 			array(
 				'LANG_VALUE'	=> $lang[0],
 				'LANG_SELECTED' => $lang[1],
-				'LANG_NAME'		=> $lang[2]
+				'LANG_NAME'		=> tohtml($lang[2])
 			)
 		);
 		$tpl->parse('DEF_LANGUAGE', '.def_language');
@@ -1315,7 +1315,7 @@ function gen_domain_details(&$tpl, &$sql, $domain_id) {
 			while (!$alias_rs->EOF) {
 				$alias_name = $alias_rs->fields['alias_name'];
 
-				$tpl->assign('ALIAS_DOMAIN', decode_idna($alias_name));
+				$tpl->assign('ALIAS_DOMAIN', tohtml(decode_idna($alias_name)));
 				$tpl->parse('USER_DETAILS', '.user_details');
 
 				$alias_rs->MoveNext();
@@ -1736,7 +1736,7 @@ function client_mail_add_default_accounts($dmn_id, $user_email, $dmn_part, $dmn_
 
 /**
  * Get count from table by given domain_id's
- * 
+ *
  * @param $tablename string database table name
  * @param $ua array domain_ids
  * @return int count
@@ -1778,7 +1778,7 @@ function get_reseller_detail_count($tablename, $ua) {
 function recalc_reseller_c_props($reseller_id) {
 
 	global $sql;
- 
+
 	// current_dmn_cnt = domain
 	// current_sub_cnt = subdomain
 	// current_als_cnt = domain_aliasses
@@ -1788,9 +1788,9 @@ function recalc_reseller_c_props($reseller_id) {
 	// current_sql_user_cnt = sql_user
 	// current_disk_amnt = disk_space
 	// current_traff_amnt = traffic
- 
+
 	$delstatus = Config::getInstance()->get('ITEM_DELETE_STATUS');
- 
+
 	// Get all users of reseller:
 	$query = "
 		SELECT
@@ -1811,7 +1811,7 @@ function recalc_reseller_c_props($reseller_id) {
 			`domain_status` != ?
 	";
 	$res = exec_query($sql, $query, array($reseller_id, $delstatus));
- 
+
 	$current_dmn_cnt = $res -> fields['crn_domains'];
 
 	if ($current_dmn_cnt > 0) {
@@ -1833,7 +1833,7 @@ function recalc_reseller_c_props($reseller_id) {
 		$current_disk_amnt  = 0;
 		$current_traff_amnt = 0;
 	}
- 
+
 	return array(
 		$current_dmn_cnt,
 		$current_sub_cnt,
@@ -1849,13 +1849,13 @@ function recalc_reseller_c_props($reseller_id) {
 
 /**
  * Recalculate current_ properties of reseller
- * 
+ *
  * @param int $reseller_id unique reseller identifiant
  * @return void
  */
 function update_reseller_c_props($reseller_id) {
 	global $sql;
- 
+
 	$query = "
 		UPDATE
 			`reseller_props`
@@ -1872,18 +1872,18 @@ function update_reseller_c_props($reseller_id) {
 		WHERE
 			`reseller_id` = ?
 	";
- 
+
 
 	$props = recalc_reseller_c_props($reseller_id);
 	$props[] = $reseller_id;
- 
+
 	exec_query($sql, $query, $props);
 }
 
 /**
  * Get the reseller id of a domain
  * moved from admin/domain_edit.php to reseller-functions.php
- * 
+ *
  * @param int $domain_id unique domain identifiant
  * @return int unique reseller identifiant or 0 in on error
  */
@@ -1914,14 +1914,14 @@ function get_reseller_id($domain_id) {
 
 /**
  * Checks if a reseller has the right to add domain aliases
- * 
+ *
  * @param int $reseller_id unique reseller identifiant
- * @return boolean domain alias permissions  
+ * @return boolean domain alias permissions
  */
 function check_reseller_domainalias_permissions($reseller_id) {
 
 	$sql = Database::getInstance();
-	
+
 	list($rdmn_current, $rdmn_max,
 			$rsub_current, $rsub_max,
 			$rals_current, $rals_max,
@@ -1936,5 +1936,5 @@ function check_reseller_domainalias_permissions($reseller_id) {
 	if ($rals_max == "-1") {
 		return false;
 	}
-	return true;	
+	return true;
 }

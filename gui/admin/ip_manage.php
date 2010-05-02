@@ -87,9 +87,9 @@ function show_IPs(&$tpl, &$sql) {
 		$tpl->assign(
 			array(
 				'IP'			=> $rs->fields['ip_number'],
-				'DOMAIN'		=> $rs->fields['ip_domain'],
-				'ALIAS'			=> $rs->fields['ip_alias'],
-				'NETWORK_CARD'	=> ($rs->fields['ip_card'] === NULL) ? '' : $rs->fields['ip_card']
+				'DOMAIN'		=> tohtml($rs->fields['ip_domain']),
+				'ALIAS'			=> tohtml($rs->fields['ip_alias']),
+				'NETWORK_CARD'	=> ($rs->fields['ip_card'] === NULL) ? '' : tohtml($rs->fields['ip_card'])
 			)
 		);
 

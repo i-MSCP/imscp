@@ -125,23 +125,23 @@ function gen_order_details(&$tpl, &$sql, $user_id, $order_id) {
 
 	$tpl->assign(
 		array(
-			'ID'			=> $order_id,
-			'DATE'			=> $date,
-			'HP'			=> $plan_name,
-			'DOMAINNAME'	=> $domain_name,
-			'CUSTOMER_ID'	=> $customer_id,
-			'FNAME'			=> $fname,
-			'LNAME'			=> $lname,
-			'FIRM'			=> $firm,
-			'ZIP'			=> $zip,
-			'CITY'			=> $city,
-			'STATE'			=> $state,
-			'COUNTRY'		=> $country,
-			'EMAIL'			=> $email,
-			'PHONE'			=> $phone,
-			'FAX'			=> $fax,
-			'STREET1'		=> $street1,
-			'STREET2'		=> $street2,
+			'ID'			=> tohtml($order_id),
+			'DATE'			=> tohtml($date),
+			'HP'			=> tohtml($plan_name),
+			'DOMAINNAME'	=> tohtml($domain_name),
+			'CUSTOMER_ID'	=> tohtml($customer_id),
+			'FNAME'			=> tohtml($fname),
+			'LNAME'			=> tohtml($lname),
+			'FIRM'			=> tohtml($firm),
+			'ZIP'			=> tohtml($zip),
+			'CITY'			=> tohtml($city),
+			'STATE'			=> tohtml($state),
+			'COUNTRY'		=> tohtml($country),
+			'EMAIL'			=> tohtml($email),
+			'PHONE'			=> tohtml($phone),
+			'FAX'			=> tohtml($fax),
+			'STREET1'		=> tohtml($street1),
+			'STREET2'		=> tohtml($street2),
 			'VL_MALE'		=> (($gender == 'M') ? Config::getInstance()->get('HTML_SELECTED') : ''),
 			'VL_FEMALE'		=> (($gender == 'F') ? Config::getInstance()->get('HTML_SELECTED') : ''),
 			'VL_UNKNOWN'	=> ((($gender == 'U') || (empty($gender))) ? Config::getInstance()->get('HTML_SELECTED') : '')
@@ -152,20 +152,20 @@ function gen_order_details(&$tpl, &$sql, $user_id, $order_id) {
 function update_order_details(&$tpl, &$sql, $user_id, $order_id) {
 	$domain			= strtolower($_POST['domain']);
 	$domain			= encode_idna($domain);
-	$customer_id	= strip_html($_POST['customer_id']);
-	$fname			= strip_html($_POST['fname']);
-	$lname			= strip_html($_POST['lname']);
+	$customer_id	= $_POST['customer_id'];
+	$fname			= $_POST['fname'];
+	$lname			= $_POST['lname'];
 	$gender			= in_array($_POST['gender'],array('M', 'F', 'U')) ? $_POST['gender'] : 'U';
-	$firm			= strip_html($_POST['firm']);
-	$zip			= strip_html($_POST['zip']);
-	$city			= strip_html($_POST['city']);
-	$state			= strip_html($_POST['state']);
-	$country		= strip_html($_POST['country']);
-	$street1		= strip_html($_POST['street1']);
-	$street2		= strip_html($_POST['street2']);
-	$email			= strip_html($_POST['email']);
-	$phone			= strip_html($_POST['phone']);
-	$fax			= strip_html($_POST['fax']);
+	$firm			= $_POST['firm'];
+	$zip			= $_POST['zip'];
+	$city			= $_POST['city'];
+	$state			= $_POST['state'];
+	$country		= $_POST['country'];
+	$street1		= $_POST['street1'];
+	$street2		= $_POST['street2'];
+	$email			= $_POST['email'];
+	$phone			= $_POST['phone'];
+	$fax			= $_POST['fax'];
 
 	$query = "
 		UPDATE

@@ -65,7 +65,7 @@ function change_sql_user_pass(&$sql, $db_user_id, $db_user_name) {
 		set_page_message(tr('Too long user password!'));
 		return;
 	}
-	
+
 	if (isset($_POST['pass'])
 		&& !preg_match('/^[[:alnum:]:!\*\+\#_.-]+$/', $_POST['pass'])) {
 		set_page_message(tr('Don\'t use special chars like "@, $, %..." in the password!'));
@@ -122,7 +122,7 @@ function gen_page_data(&$tpl, &$sql, $db_user_id) {
 	$rs = exec_query($sql, $query, array($db_user_id));
 	$tpl->assign(
 		array(
-			'USER_NAME' => $rs->fields['sqlu_name'],
+			'USER_NAME' => tohtml($rs->fields['sqlu_name']),
 			'ID' => $db_user_id
 		)
 	);

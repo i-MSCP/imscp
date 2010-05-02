@@ -169,7 +169,7 @@ function get_init_au2_page(&$tpl) {
 
 	$tpl->assign(
 			array(
-				'VL_TEMPLATE_NAME'	=> $hp_name,
+				'VL_TEMPLATE_NAME'	=> tohtml($hp_name),
 				'MAX_DMN_CNT'		=> '',
 				'MAX_SUBDMN_CNT'	=> $hp_sub,
 				'MAX_DMN_ALIAS_CNT'	=> $hp_als,
@@ -215,7 +215,7 @@ function get_hp_data($hpid, $admin_id) {
 
 		$props = $data['props'];
 
-		list($hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, 
+		list($hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db,
 			$hp_sql_user, $hp_traff, $hp_disk, $hp_backup, $hp_dns) = explode(";", $props);
 
 		$hp_name = $data['name'];

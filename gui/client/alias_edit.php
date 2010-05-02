@@ -175,10 +175,10 @@ function gen_editalias_page(&$tpl, $edit_id) {
 	// Fill in the fields
 	$tpl->assign(
 		array(
-			'ALIAS_NAME' => decode_idna($data['alias_name']),
+			'ALIAS_NAME' => tohtml(decode_idna($data['alias_name'])),
 			'DOMAIN_IP' => $ip_data,
-			'FORWARD' => $url_forward,
-			'MOUNT_POINT' => $data['alias_mount'],
+			'FORWARD' => tohtml($url_forward),
+			'MOUNT_POINT' => tohtml($data['alias_mount']),
 			'ID' => $edit_id
 		)
 	);
@@ -208,19 +208,19 @@ function check_fwd_data(&$tpl, $alias_id) {
 		} else {
 			$forward_url = encode_idna($forward_prefix.$forward_url);
 		}
-		
+
 		$check_en = Config::getInstance()->get('HTML_CHECKED');
 		$check_dis = '';
 		$tpl->assign(
 			array(
-				'FORWARD'			=> $forward_url,
+				'FORWARD'			=> tohtml($forward_url),
 				'HTTP_YES'			=> ($forward_prefix === 'http://') ? Config::getInstance()->get('HTML_SELECTED') : '',
 				'HTTPS_YES'			=> ($forward_prefix === 'https://') ? Config::getInstance()->get('HTML_SELECTED') : '',
 				'FTP_YES'			=> ($forward_prefix === 'ftp://') ? Config::getInstance()->get('HTML_SELECTED') : '',
 				'CHECK_EN'			=> $check_en,
 				'CHECK_DIS'			=> $check_dis,
 				'DISABLE_FORWARD'	=>	'',
-				'READONLY_FORWARD'	=>	''	
+				'READONLY_FORWARD'	=>	''
 			)
 		);
 	} else {

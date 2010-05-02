@@ -282,8 +282,8 @@ function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
 	$tpl->assign(
 		array(
 			'DOMAIN_ID'					=> $data['domain_id'],
-			'VL_DOMAIN_NAME'			=> decode_idna($data['domain_name']),
-			'VL_DOMAIN_IP'				=> $ipdat['ip_number'] . ' (' . $ipdat['ip_alias'] . ')',
+			'VL_DOMAIN_NAME'			=> tohtml(decode_idna($data['domain_name'])),
+			'VL_DOMAIN_IP'				=> tohtml($ipdat['ip_number'] . ' (' . $ipdat['ip_alias'] . ')'),
 			'VL_STATUS'					=> $dstatus,
 			'VL_PHP_SUPP'				=> ($data['domain_php'] == 'yes') ? tr('Enabled') : tr('Disabled'),
 			'VL_CGI_SUPP'				=> ($data['domain_cgi'] == 'yes') ? tr('Enabled') : tr('Disabled'),

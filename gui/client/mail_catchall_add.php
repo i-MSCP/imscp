@@ -128,8 +128,8 @@ function gen_dynamic_page_data(&$tpl, &$sql, $id) {
 					$tpl->assign(
 						array(
 							'MAIL_ID'				=> $rs->fields['mail_id'],
-							'MAIL_ACCOUNT'			=> $show_mail_acc . "@" . $show_domain_name, // this will be shown in the templates
-							'MAIL_ACCOUNT_PUNNY'	=> $mail_acc . "@" . $domain_name // this will be updated if we create catch all
+							'MAIL_ACCOUNT'			=> tohtml($show_mail_acc . "@" . $show_domain_name), // this will be shown in the templates
+							'MAIL_ACCOUNT_PUNNY'	=> tohtml($mail_acc . "@" . $domain_name) // this will be updated if we create catch all
 						)
 					);
 
@@ -171,8 +171,8 @@ function gen_dynamic_page_data(&$tpl, &$sql, $id) {
 					$tpl->assign(
 						array(
 							'MAIL_ID'				=> $rs->fields['mail_id'],
-							'MAIL_ACCOUNT'			=> $show_mail_acc . "@" . $show_alias_name, // this will be shown in the templates
-							'MAIL_ACCOUNT_PUNNY'	=> $mail_acc . "@" . $alias_name // this will be updated if we create catch all
+							'MAIL_ACCOUNT'			=> tohtml($show_mail_acc . "@" . $show_alias_name), // this will be shown in the templates
+							'MAIL_ACCOUNT_PUNNY'	=> tohtml($mail_acc . "@" . $alias_name) // this will be updated if we create catch all
 						)
 					);
 
@@ -217,8 +217,8 @@ function gen_dynamic_page_data(&$tpl, &$sql, $id) {
 					$tpl->assign(
 						array(
 							'MAIL_ID'				=> $rs->fields['mail_id'],
-							'MAIL_ACCOUNT'			=> $show_mail_acc . "@" . $show_alias_name, // this will be shown in the templates
-							'MAIL_ACCOUNT_PUNNY'	=> $mail_acc . "@" . $alias_name // this will be updated if we create catch all
+							'MAIL_ACCOUNT'			=> tohtml($show_mail_acc . "@" . $show_alias_name), // this will be shown in the templates
+							'MAIL_ACCOUNT_PUNNY'	=> tohtml($mail_acc . "@" . $alias_name) // this will be updated if we create catch all
 						)
 					);
 
@@ -263,8 +263,8 @@ function gen_dynamic_page_data(&$tpl, &$sql, $id) {
 					$tpl->assign(
 						array(
 							'MAIL_ID'				=> $rs->fields['mail_id'],
-							'MAIL_ACCOUNT'			=> $show_mail_acc . "@" . $show_alias_name, // this will be shown in the templates
-							'MAIL_ACCOUNT_PUNNY'	=> $mail_acc . "@" . $alias_name // this will be updated if we create catch all
+							'MAIL_ACCOUNT'			=> tohtml($show_mail_acc . "@" . $show_alias_name), // this will be shown in the templates
+							'MAIL_ACCOUNT_PUNNY'	=> tohtml($mail_acc . "@" . $alias_name) // this will be updated if we create catch all
 						)
 					);
 

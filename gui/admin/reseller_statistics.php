@@ -238,7 +238,7 @@ function generate_reseller_entry(&$tpl, $reseller_id, $reseller_name, $row) {
 
 	$tpl->assign(
 		array(
-			'RESELLER_NAME' => $reseller_name,
+			'RESELLER_NAME' => tohtml($reseller_name),
 			'RESELLER_ID' => $reseller_id,
 			'MONTH' => $crnt_month,
 			'YEAR' => $crnt_year,

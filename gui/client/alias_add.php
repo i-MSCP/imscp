@@ -153,19 +153,19 @@ function gen_al_page(&$tpl, $reseller_id) {
 	if (isset($_POST['status']) && $_POST['status'] == 1) {
 		$forward_prefix = clean_input($_POST['forward_prefix']);
 
-			$check_en = Config::getInstance()->get('HTML_CHECKED');
-			$check_dis = '';
-			$forward = strtolower(clean_input($_POST['forward']));
+		$check_en = Config::getInstance()->get('HTML_CHECKED');
+		$check_dis = '';
+		$forward = strtolower(clean_input($_POST['forward']));
 
-			$tpl->assign(
-				array(
-					'READONLY_FORWARD'	=> '',
-					'DISABLE_FORWARD'	=> '',
-					'HTTP_YES'			=> ($forward_prefix === 'http://') ? Config::getInstance()->get('HTML_SELECTED') : '',
-					'HTTPS_YES'			=> ($forward_prefix === 'https://') ? Config::getInstance()->get('HTML_SELECTED') : '',
-					'FTP_YES'			=> ($forward_prefix === 'ftp://') ? Config::getInstance()->get('HTML_SELECTED') : ''
-				)
-			);
+		$tpl->assign(
+			array(
+				'READONLY_FORWARD'	=> '',
+				'DISABLE_FORWARD'	=> '',
+				'HTTP_YES'			=> ($forward_prefix === 'http://') ? Config::getInstance()->get('HTML_SELECTED') : '',
+				'HTTPS_YES'			=> ($forward_prefix === 'https://') ? Config::getInstance()->get('HTML_SELECTED') : '',
+				'FTP_YES'			=> ($forward_prefix === 'ftp://') ? Config::getInstance()->get('HTML_SELECTED') : ''
+			)
+		);
 	} else {
 		$check_en = '';
 		$check_dis = Config::getInstance()->get('HTML_CHECKED');
@@ -184,9 +184,9 @@ function gen_al_page(&$tpl, $reseller_id) {
 
 	$tpl->assign(
 		array(
-			'DOMAIN'	=> decode_idna($alias_name),
-			'MP'		=> decode_idna($mount_point),
-			'FORWARD'	=> $forward,
+			'DOMAIN'	=> tohtml(decode_idna($alias_name)),
+			'MP'		=> tohtml(decode_idna($mount_point)),
+			'FORWARD'	=> tohtml($forward),
 			'CHECK_EN'	=> $check_en,
 			'CHECK_DIS' => $check_dis,
 		)
@@ -201,7 +201,7 @@ function add_domain_alias(&$sql, &$err_al) {
 	$cr_user_id = $domain_id = get_user_domain_id($sql, $_SESSION['user_id']);
 	$alias_name	= strtolower($_POST['ndomain_name']);
 	$mount_point = strtolower($_POST['ndomain_mpoint']);
-	
+
 	if ($_POST['status'] == 1) {
 		$forward = strtolower(clean_input($_POST['forward']));
 		$forward_prefix = clean_input($_POST['forward_prefix']);
@@ -209,7 +209,7 @@ function add_domain_alias(&$sql, &$err_al) {
 		$forward = 'no';
 		$forward_prefix = '';
 	}
-	
+
 	$query = "
 		SELECT
 			`domain_ip_id`
@@ -313,10 +313,10 @@ function add_domain_alias(&$sql, &$err_al) {
 } // End of add_domain_alias();
 
 
-function gen_page_msg(&$tpl, $erro_txt) {
+function gen_page_msg(&$tpl, $error_txt) {
 
-	if ($erro_txt != '_off_') {
-		$tpl->assign('MESSAGE', $erro_txt);
+	if ($error_txt != '_off_') {
+		$tpl->assign('MESSAGE', $error_txt);
 		$tpl->parse('PAGE_MESSAGE', 'page_message');
 	} else {
 		$tpl->assign('PAGE_MESSAGE', '');

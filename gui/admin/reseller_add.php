@@ -143,20 +143,20 @@ function add_reseller(&$tpl, &$sql) {
 
 			$user_id = $_SESSION['user_id'];
 
-			$username = clean_input($_POST['username'], true);
-			$fname = clean_input($_POST['fname'], true);
-			$lname = clean_input($_POST['lname'], true);
-			$gender = clean_input($_POST['gender'], true);
-			$firm = clean_input($_POST['firm'], true);
-			$zip = clean_input($_POST['zip'], true);
-			$city = clean_input($_POST['city'], true);
-			$state = clean_input($_POST['state'], true);
-			$country = clean_input($_POST['country'], true);
-			$email = clean_input($_POST['email'], true);
-			$phone = clean_input($_POST['phone'], true);
-			$fax = clean_input($_POST['fax'], true);
-			$street1 = clean_input($_POST['street1'], true);
-			$street2 = clean_input($_POST['street2'], true);
+			$username = clean_input($_POST['username']);
+			$fname = clean_input($_POST['fname']);
+			$lname = clean_input($_POST['lname']);
+			$gender = clean_input($_POST['gender']);
+			$firm = clean_input($_POST['firm']);
+			$zip = clean_input($_POST['zip']);
+			$city = clean_input($_POST['city']);
+			$state = clean_input($_POST['state']);
+			$country = clean_input($_POST['country']);
+			$email = clean_input($_POST['email']);
+			$phone = clean_input($_POST['phone']);
+			$fax = clean_input($_POST['fax']);
+			$street1 = clean_input($_POST['street1']);
+			$street2 = clean_input($_POST['street2']);
 
 			$query = "
 				INSERT INTO `admin` (
@@ -465,7 +465,7 @@ function check_user_data() {
 	} else if ($_POST['nreseller_max_sql_db_cnt'] == -1
 		&& $_POST['nreseller_max_sql_user_cnt'] != -1) {
 		set_page_message(tr('SQL databases limit is <i>disabled</i> but SQL users limit not!'));
-		
+
 		return false;
 	}
 	if (!ispcp_limit_check($_POST['nreseller_max_sql_user_cnt'], -1)) {
@@ -475,7 +475,7 @@ function check_user_data() {
 	} else if ($_POST['nreseller_max_sql_db_cnt'] != -1
 		&& $_POST['nreseller_max_sql_user_cnt'] == -1) {
 		set_page_message(tr('SQL users limit is <i>disabled</i> but SQL databases limit not!'));
-		
+
 		return false;
 	}
 	if (!ispcp_limit_check($_POST['nreseller_max_traffic'], null)) {

@@ -80,8 +80,8 @@ function gen_page_ftp_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 
 			$tpl->assign(
 				array(
-					'FTP_ACCOUNT' => $ftp_accs_encode[$i],
-					'UID' => urlencode ($ftp_accs[$i])
+					'FTP_ACCOUNT' => tohtml($ftp_accs_encode[$i]),
+					'UID' => urlencode($ftp_accs[$i])
 				)
 			);
 

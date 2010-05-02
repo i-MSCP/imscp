@@ -66,7 +66,7 @@ function gen_page_post_data(&$tpl) {
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_db') {
 		$tpl->assign(
 			array(
-				'DB_NAME' => clean_input($_POST['db_name']),
+				'DB_NAME' => clean_input($_POST['db_name'], true),
 				'USE_DMN_ID' => (isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on') ? Config::getInstance()->get('HTML_CHECKED') : '',
 				'START_ID_POS_CHECKED' => (isset($_POST['id_pos']) && $_POST['id_pos'] !== 'end') ? Config::getInstance()->get('HTML_CHECKED') : '',
 				'END_ID_POS_CHECKED' => (isset($_POST['id_pos']) && $_POST['id_pos'] === 'end') ? Config::getInstance()->get('HTML_CHECKED') : ''

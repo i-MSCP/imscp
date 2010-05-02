@@ -244,23 +244,23 @@ function gen_edituser_page(&$tpl) {
 	// Fill in the fields
 	$tpl->assign(
 		array(
-			'VL_USERNAME'		=> decode_idna($dmn_user_name),
-			'VL_MAIL'			=> empty($user_email) ? '' : $user_email,
-			'VL_USR_ID'			=> empty($customer_id) ? '' : $customer_id,
-			'VL_USR_NAME'		=> empty($first_name) ? '' : $first_name,
-			'VL_LAST_USRNAME'	=> empty($last_name) ? '' : $last_name,
-			'VL_USR_FIRM'		=> empty($firm) ? '' : $firm,
-			'VL_USR_POSTCODE'	=> empty($zip) ? '' : $zip,
-			'VL_USRCITY'		=> empty($city) ? '' : $city,
-			'VL_USRSTATE'		=> empty($state) ?'':$state,
-			'VL_COUNTRY'		=> empty($country) ? '' : $country,
-			'VL_STREET1'		=> empty($street_one) ? '' : $street_one,
-			'VL_STREET2'		=> empty($street_two) ? '' : $street_two,
+			'VL_USERNAME'		=> tohtml(decode_idna($dmn_user_name)),
+			'VL_MAIL'			=> empty($user_email) ? '' : tohtml($user_email),
+			'VL_USR_ID'			=> empty($customer_id) ? '' : tohtml($customer_id),
+			'VL_USR_NAME'		=> empty($first_name) ? '' : tohtml($first_name),
+			'VL_LAST_USRNAME'	=> empty($last_name) ? '' : tohtml($last_name),
+			'VL_USR_FIRM'		=> empty($firm) ? '' : tohtml($firm),
+			'VL_USR_POSTCODE'	=> empty($zip) ? '' : tohtml($zip),
+			'VL_USRCITY'		=> empty($city) ? '' : tohtml($city),
+			'VL_USRSTATE'		=> empty($state) ? '' : tohtml($state),
+			'VL_COUNTRY'		=> empty($country) ? '' : tohtml($country),
+			'VL_STREET1'		=> empty($street_one) ? '' : tohtml($street_one),
+			'VL_STREET2'		=> empty($street_two) ? '' : tohtml($street_two),
 			'VL_MALE'			=> ($gender == 'M') ? Config::getInstance()->get('HTML_SELECTED') : '',
 			'VL_FEMALE'			=> ($gender == 'F') ? Config::getInstance()->get('HTML_SELECTED') : '',
 			'VL_UNKNOWN'		=> ($gender == 'U') ? Config::getInstance()->get('HTML_SELECTED') : '',
-			'VL_PHONE'			=> empty($phone) ? '' : $phone,
-			'VL_FAX'			=> empty($fax) ? '' : $fax
+			'VL_PHONE'			=> empty($phone) ? '' : tohtml($phone),
+			'VL_FAX'			=> empty($fax) ? '' : tohtml($fax)
 		)
 	);
 
@@ -284,18 +284,18 @@ function update_data_in_db($hpid) {
 
 	$reseller_id = $_SESSION['user_id'];
 
-	$first_name	= clean_input($first_name, true);
-	$last_name	= clean_input($last_name, true);
-	$firm		= clean_input($firm, true);
-	$gender		= clean_input($gender, true);
-	$zip		= clean_input($zip, true);
-	$city		= clean_input($city, true);
-	$state		= clean_input($state, true);
-	$country	= clean_input($country, true);
-	$phone		= clean_input($phone, true);
-	$fax		= clean_input($fax, true);
-	$street_one	= clean_input($street_one, true);
-	$street_two	= clean_input($street_two, true);
+	$first_name	= clean_input($first_name);
+	$last_name	= clean_input($last_name);
+	$firm		= clean_input($firm);
+	$gender		= clean_input($gender);
+	$zip		= clean_input($zip);
+	$city		= clean_input($city);
+	$state		= clean_input($state);
+	$country	= clean_input($country);
+	$phone		= clean_input($phone);
+	$fax		= clean_input($fax);
+	$street_one	= clean_input($street_one);
+	$street_two	= clean_input($street_two);
 
 	if (empty($inpass)) {
 		// Save without password

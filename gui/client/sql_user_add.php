@@ -180,7 +180,7 @@ function gen_sql_user_list(&$sql, &$tpl, $user_id, $db_id) {
 				array(
 					'SQLUSER_ID' => $rs->fields['sqlu_id'],
 					'SQLUSER_SELECTED' => $select,
-					'SQLUSER_NAME' => $rs->fields['sqlu_name']
+					'SQLUSER_NAME' => tohtml($rs->fields['sqlu_name'])
 				)
 			);
 			$tpl->parse('SQLUSER_LIST', '.sqluser_list');
@@ -240,7 +240,7 @@ function add_sql_user(&$sql, $user_id, $db_id) {
 		set_page_message(tr('Too user long password!'));
 		return;
 	}
-	
+
 	if (isset($_POST['pass'])
 		&& !preg_match('/^[[:alnum:]:!*+#_.-]+$/', $_POST['pass'])
 		&& !isset($_POST['Add_Exist'])) {
@@ -373,7 +373,7 @@ function gen_page_post_data(&$tpl, $db_id) {
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_user') {
 		$tpl->assign(
 			array(
-				'USER_NAME' => (isset($_POST['user_name'])) ? $_POST['user_name'] : '',
+				'USER_NAME' => (isset($_POST['user_name'])) ? clean_html($_POST['user_name'], true) : '',
 				'USE_DMN_ID' => (isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on') ? Config::getInstance()->get('HTML_CHECKED') : '',
 				'START_ID_POS_CHECKED' => (isset($_POST['id_pos']) && $_POST['id_pos'] !== 'end') ? Config::getInstance()->get('HTML_CHECKED') : '',
 				'END_ID_POS_CHECKED' => (isset($_POST['id_pos']) && $_POST['id_pos'] === 'end') ? Config::getInstance()->get('HTML_CHECKED') : ''

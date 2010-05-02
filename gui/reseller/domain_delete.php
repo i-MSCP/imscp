@@ -268,7 +268,7 @@ function validate_domain_deletion($domain_id) {
 
 			$tpl->assign(
 				array(
-					'MAIL_ADDR' => $res->fields['mail_addr'],
+					'MAIL_ADDR' => tohtml($res->fields['mail_addr']),
 					'MAIL_TYPE' => $mdisplay_txt
 				)
 			);
@@ -288,8 +288,8 @@ function validate_domain_deletion($domain_id) {
 
 			$tpl->assign(
 				array(
-					'FTP_USER' => $res->fields['userid'],
-					'FTP_HOME' => $res->fields['homedir']
+					'FTP_USER' => tohtml($res->fields['userid']),
+					'FTP_HOME' => tohtml($res->fields['homedir'])
 				)
 			);
 
@@ -310,8 +310,8 @@ function validate_domain_deletion($domain_id) {
 
 			$tpl->assign(
 				array(
-					'ALS_NAME' => $res->fields['alias_name'],
-					'ALS_MNT' => $res->fields['alias_mount']
+					'ALS_NAME' => tohtml($res->fields['alias_name']),
+					'ALS_MNT' => tohtml($res->fields['alias_mount'])
 				)
 			);
 
@@ -330,8 +330,8 @@ function validate_domain_deletion($domain_id) {
 		$any_sub_found = true;
 		$tpl->assign(
 			array(
-				'SUB_NAME' => $res->fields['subdomain_name'],
-				'SUB_MNT' => $res->fields['subdomain_mount']
+				'SUB_NAME' => tohtml($res->fields['subdomain_name']),
+				'SUB_MNT' => tohtml($res->fields['subdomain_mount'])
 			)
 		);
 
@@ -353,8 +353,8 @@ function validate_domain_deletion($domain_id) {
 			$any_sub_found = true;
 			$tpl->assign(
 				array(
-					'SUB_NAME' => $res->fields['subdomain_alias_name'],
-					'SUB_MNT' => $res->fields['subdomain_alias_mount']
+					'SUB_NAME' => tohtml($res->fields['subdomain_alias_name']),
+					'SUB_MNT' => tohtml($res->fields['subdomain_alias_mount'])
 				)
 			);
 
@@ -382,8 +382,8 @@ function validate_domain_deletion($domain_id) {
 
 			$tpl->assign(
 				array(
-					'DB_NAME' => $res->fields['sqld_name'],
-					'DB_USERS' => $users_txt
+					'DB_NAME' => tohtml($res->fields['sqld_name']),
+					'DB_USERS' => tohtml($users_txt)
 				)
 			);
 

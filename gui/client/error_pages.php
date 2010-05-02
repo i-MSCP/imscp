@@ -28,11 +28,6 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-// Deactivate HTMLPurifyer HTML Tag stripping
-if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_error') {
-	define('OVERRIDE_PURIFIER', 1);
-}
-
 require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
@@ -46,7 +41,7 @@ $tpl->define_dynamic('logged_from', 'page');
 
 function write_error_page(&$sql, $user_id, $eid) {
 
-	$error = stripslashes($_POST['error']);
+	$error = $_POST['error'];
 	$file = '/errors/' . $eid . '.html';
 	$vfs = new vfs($_SESSION['user_logged'], $sql);
 

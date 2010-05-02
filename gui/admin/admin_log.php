@@ -162,7 +162,7 @@ function generate_page(&$tpl) {
 			$date_formt = Config::getInstance()->get('DATE_FORMAT') . ' H:i';
 			$tpl->assign(
 				array(
-					'MESSAGE'	=> html_entity_decode($log_message),
+					'MESSAGE'	=> tohtml($log_message),
 					'DATE'		=> date($date_formt, strtotime($rs->fields['dat'])),
 				)
 			);

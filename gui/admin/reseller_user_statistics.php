@@ -136,7 +136,7 @@ SQL_QUERY;
 
 	$tpl->assign(
 		array(
-			'RESELLER_NAME' => $reseller_name,
+			'RESELLER_NAME' => tohtml($reseller_name),
 			'RESELLER_ID' => $reseller_id
 		)
 	);
@@ -265,7 +265,7 @@ function generate_domain_entry(&$tpl, $user_id, $row) {
 
 	$tpl->assign(
 		array(
-			'DOMAIN_NAME' => $domain_name,
+			'DOMAIN_NAME' => tohtml($domain_name),
 
 			'MONTH' => $crnt_month,
 			'YEAR' => $crnt_year,
@@ -309,7 +309,7 @@ function generate_domain_entry(&$tpl, $user_id, $row) {
 				: tr('%d <br/>of<br/> <b>unlimited</b>', sizeit($uals_current)),
 
 			'MAIL_MSG' => ($umail_max)
-				? (($umail_max > 0) 
+				? (($umail_max > 0)
 					? tr('%1$d <br/>of<br/> <b>%2$d</b>', $umail_current, $umail_max)
 					: tr('<b>disabled</b>'))
 				: tr('%d <br/>of<br/> <b>unlimited</b>', $umail_current),
@@ -362,7 +362,7 @@ $tpl->assign(
 		'TR_FTP' => tr('FTP'),
 		'TR_SQL_DB' => tr('SQL<br>database'),
 		'TR_SQL_USER' => tr('SQL<br>user'),
-		'VALUE_NAME' => $name,
+		'VALUE_NAME' => tohtml($name),
 		'VALUE_RID' => $rid
 	)
 );

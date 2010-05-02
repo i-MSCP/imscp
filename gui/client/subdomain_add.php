@@ -84,7 +84,7 @@ function gen_user_add_subdomain_data(&$tpl, &$sql, $user_id) {
 	$domainname = decode_idna($rs->fields['domain_name']);
 	$tpl->assign(
 		array(
-			'DOMAIN_NAME'		=> '.' . $domainname,
+			'DOMAIN_NAME'		=> '.' . tohtml($domainname),
 			'SUB_DMN_CHECKED'	=> Config::getInstance()->get('HTML_CHECKED'),
 			'SUB_ALS_CHECKED'	=> ''
 		)
@@ -94,8 +94,8 @@ function gen_user_add_subdomain_data(&$tpl, &$sql, $user_id) {
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_subd') {
 		$tpl->assign(
 			array(
-				'SUBDOMAIN_NAME' => clean_input($_POST['subdomain_name']),
-				'SUBDOMAIN_MOUNT_POINT' => clean_input($_POST['subdomain_mnt_pt'])
+				'SUBDOMAIN_NAME' => clean_input($_POST['subdomain_name'], true),
+				'SUBDOMAIN_MOUNT_POINT' => clean_input($_POST['subdomain_mnt_pt'], true)
 			)
 		);
 	} else {
@@ -153,7 +153,7 @@ function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 				array(
 					'ALS_ID' => $rs->fields['alias_id'],
 					'ALS_SELECTED' => $als_selected,
-					'ALS_NAME' => $alias_name
+					'ALS_NAME' => tohtml($alias_name)
 				)
 			);
 			$tpl->parse('ALS_LIST', '.als_list');

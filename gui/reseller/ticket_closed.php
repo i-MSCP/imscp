@@ -50,7 +50,7 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 	$rows_per_page = Config::getInstance()->get('DOMAIN_ROWS_PER_PAGE');
 
 	if (isset($_GET['psi'])) {
-		$start_index = $_GET['psi'];	
+		$start_index = $_GET['psi'];
 	}
 
 	$count_query = "
@@ -145,9 +145,9 @@ SQL_QUERY;
 			$tpl->assign(
 				array(
 					'LAST_DATE'	=> $date,
-					'SUBJECT'	=> htmlspecialchars($rs->fields['ticket_subject']),
+					'SUBJECT'	=> tohtml($rs->fields['ticket_subject']),
 					'SUBJECT2'	=> addslashes(clean_html($rs->fields['ticket_subject'])),
-					'MESSAGE'	=> htmlspecialchars($rs->fields['ticket_message']),
+					'MESSAGE'	=> tohtml($rs->fields['ticket_message']),
 					'ID'		=> $ticket_id,
 					'CONTENT'	=> ($i % 2 == 0) ? 'content' : 'content2'
 				)

@@ -81,19 +81,19 @@ function gen_chart(&$tpl, &$sql, $user_id, $plan_id) {
 		if ($price == 0 || $price == '') {
 			$price = tr('free of charge');
 		} else {
-			$price .= ' ' . $rs->fields['value'] . ' ' . $rs->fields['payment'];
+			$price .= ' ' . tohtml($rs->fields['value']) . ' ' . tohtml($rs->fields['payment']);
 		}
 
 		if ($setup_fee == 0 || $setup_fee == '') {
 			$setup_fee = tr('free of charge');
 		} else {
-			$setup_fee .= ' ' . $rs->fields['value'];
+			$setup_fee .= ' ' . tohtml($rs->fields['value']);
 		}
 
 		if ($total == 0) {
 			$total = tr('free of charge');
 		} else {
-			$total .= ' ' . $rs->fields['value'];
+			$total .= ' ' . tohtml($rs->fields['value']);
 		}
 
 		$tpl->assign(
@@ -101,7 +101,7 @@ function gen_chart(&$tpl, &$sql, $user_id, $plan_id) {
 				'PRICE' => $price,
 				'SETUP' => $setup_fee,
 				'TOTAL' => $total,
-				'TR_PACKAGE_NAME' => $rs->fields['name'],
+				'TR_PACKAGE_NAME' => tohtml($rs->fields['name']),
 			)
 		);
 
@@ -140,19 +140,19 @@ function gen_personal_data(&$tpl) {
 
 	$tpl->assign(
 		array(
-			'VL_USR_NAME'		=> $first_name,
-			'VL_LAST_USRNAME'	=> $last_name,
-			'VL_USR_FIRM'		=> $company,
-			'VL_USR_POSTCODE'	=> $postal_code,
-			'VL_USR_GENDER'		=> $gender,
-			'VL_USRCITY'		=> $city,
-			'VL_USRSTATE'		=> $state,
-			'VL_COUNTRY'		=> $country,
-			'VL_STREET1'		=> $street1,
-			'VL_STREET2'		=> $street2,
-			'VL_PHONE'			=> $phone,
-			'VL_FAX'			=> $fax,
-			'VL_EMAIL'			=> $email,
+			'VL_USR_NAME'		=> tohtml($first_name),
+			'VL_LAST_USRNAME'	=> tohtml($last_name),
+			'VL_USR_FIRM'		=> tohtml($company),
+			'VL_USR_POSTCODE'	=> tohtml($postal_code),
+			'VL_USR_GENDER'		=> tohtml($gender),
+			'VL_USRCITY'		=> tohtml($city),
+			'VL_USRSTATE'		=> tohtml($state),
+			'VL_COUNTRY'		=> tohtml($country),
+			'VL_STREET1'		=> tohtml($street1),
+			'VL_STREET2'		=> tohtml($street2),
+			'VL_PHONE'			=> tohtml($phone),
+			'VL_FAX'			=> tohtml($fax),
+			'VL_EMAIL'			=> tohtml($email),
 		)
 	);
 }

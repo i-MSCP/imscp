@@ -145,13 +145,13 @@ function gen_admin_mainmenu(&$tpl, $menu_file) {
 			$menu_target = $rs->fields['menu_target'];
 
 			if ($menu_target !== '') {
-				$menu_target = 'target="' . $menu_target . '"';
+				$menu_target = 'target="' . tohtml($menu_target) . '"';
 			}
 
 			$tpl->assign(
 				array(
-					'BUTTON_LINK' => $menu_link,
-					'BUTTON_NAME' => $menu_name,
+					'BUTTON_LINK' => tohtml($menu_link),
+					'BUTTON_NAME' => tohtml($menu_name),
 					'BUTTON_TARGET' => $menu_target,
 					'BUTTON_ID' => $i,
 				)
@@ -247,13 +247,13 @@ function gen_admin_menu(&$tpl, $menu_file) {
 			$menu_target = $rs->fields['menu_target'];
 
 			if ($menu_target !== '') {
-				$menu_target = 'target="' . $menu_target . '"';
+				$menu_target = 'target="' . tohtml($menu_target) . '"';
 			}
 
 			$tpl->assign(
 				array(
-					'BUTTON_LINK' => $menu_link,
-					'BUTTON_NAME' => $menu_name,
+					'BUTTON_LINK' => tohtml($menu_link),
+					'BUTTON_NAME' => tohtml($menu_name),
 					'BUTTON_TARGET' => $menu_target,
 					'BUTTON_ID' => $i,
 				)
@@ -407,7 +407,7 @@ function gen_admin_list(&$tpl, &$sql) {
 						'ADMIN_DELETE_SHOW' => '',
 						'TR_DELETE' => tr('Delete'),
 						'URL_DELETE_ADMIN' => "user_delete.php?delete_id=" . $rs->fields['admin_id'] . "&amp;delete_username=" . $rs->fields['admin_name'],
-						'ADMIN_USERNAME' => $rs->fields['admin_name'],
+						'ADMIN_USERNAME' => tohtml($rs->fields['admin_name']),
 					)
 				);
 				$tpl->parse('ADMIN_DELETE_LINK', 'admin_delete_link');
@@ -415,9 +415,9 @@ function gen_admin_list(&$tpl, &$sql) {
 
 			$tpl->assign(
 				array(
-					'ADMIN_USERNAME' => $rs->fields['admin_name'],
-					'ADMIN_CREATED_ON' => $admin_created,
-					'ADMIN_CREATED_BY' => ($rs->fields['created_by'] != null) ? $rs->fields['created_by'] : tr("System"),
+					'ADMIN_USERNAME' => tohtml($rs->fields['admin_name']),
+					'ADMIN_CREATED_ON' => tohtml($admin_created),
+					'ADMIN_CREATED_BY' => ($rs->fields['created_by'] != null) ? tohtml($rs->fields['created_by']) : tr("System"),
 					'URL_EDIT_ADMIN' => "admin_edit.php?edit_id=" . $rs->fields['admin_id'],
 				)
 			);
@@ -510,9 +510,9 @@ function gen_reseller_list(&$tpl, &$sql) {
 
 			$tpl->assign(
 				array(
-					'RSL_USERNAME' => $rs->fields['admin_name'],
-					'RESELLER_CREATED_ON' => $reseller_created,
-					'RSL_CREATED_BY' => $rs->fields['created_by'],
+					'RSL_USERNAME' => tohtml($rs->fields['admin_name']),
+					'RESELLER_CREATED_ON' => tohtml($reseller_created),
+					'RSL_CREATED_BY' => tohtml($rs->fields['created_by']),
 					'URL_EDIT_RSL' => "reseller_edit.php?edit_id=" . $rs->fields['admin_id'],
 				)
 			);
@@ -691,7 +691,7 @@ function gen_user_list(&$tpl, &$sql) {
 						'TR_CHANGE_USER_INTERFACE' => tr('Switch to user interface'),
 						'GO_TO_USER_INTERFACE' => tr('Switch'),
 						'URL_CHANGE_INTERFACE' => "change_user_interface.php?to_id=" . $rs->fields['domain_admin_id'],
-						'USR_USERNAME' => $rs->fields['domain_name'],
+						'USR_USERNAME' => tohtml($rs->fields['domain_name']),
 						'TR_EDIT_DOMAIN' => tr('Edit domain'),
 						'TR_EDIT_USR' => tr('Edit user')
 					)
@@ -742,10 +742,10 @@ function gen_user_list(&$tpl, &$sql) {
 
 			$tpl->assign(
 				array(
-					'USR_USERNAME' => $admin_name,
-					'USER_CREATED_ON' => $domain_created,
+					'USR_USERNAME' => tohtml($admin_name),
+					'USER_CREATED_ON' => tohtml($domain_created),
 					'USER_EXPIRES_ON' => $domain_expires,
-					'USR_CREATED_BY' => $rs2->fields['admin_name'],
+					'USR_CREATED_BY' => tohtml($rs2->fields['admin_name']),
 					'USR_OPTIONS' => '',
 					'URL_EDIT_USR' => "admin_edit.php?edit_id=" . $rs->fields['domain_admin_id'],
 					'TR_MESSAGE_CHANGE_STATUS' => tr('Are you sure you want to change the status of domain account?', true),
@@ -1838,7 +1838,7 @@ function gen_admin_domain_search_options(&$tpl, $search_for, $search_common,
 		);
 	} else {
 		$tpl->assign(
-			array('SEARCH_FOR' => stripslashes($search_for))
+			array('SEARCH_FOR' => $search_for)
 		);
 	}
 

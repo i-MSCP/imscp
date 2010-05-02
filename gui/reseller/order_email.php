@@ -94,10 +94,10 @@ $tpl->assign(
 		'TR_SENDER_EMAIL' => tr('Senders email'),
 		'TR_SENDER_NAME' => tr('Senders name'),
 		'TR_APPLY_CHANGES' => tr('Apply changes'),
-		'SUBJECT_VALUE' => $data['subject'],
-		'MESSAGE_VALUE' => $data['message'],
-		'SENDER_EMAIL_VALUE' => $data['sender_email'],
-		'SENDER_NAME_VALUE' => $data['sender_name']
+		'SUBJECT_VALUE' => tohtml($data['subject']),
+		'MESSAGE_VALUE' => tohtml($data['message']),
+		'SENDER_EMAIL_VALUE' => tohtml($data['sender_email']),
+		'SENDER_NAME_VALUE' => tohtml($data['sender_name'])
 	)
 );
 

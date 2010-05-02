@@ -128,7 +128,7 @@ SQL_QUERY;
 	$rs = exec_query($sql, $query, array($reseller_id));
 	$tpl->assign(
 		array(
-			'RESELLER_NAME' => $reseller_name,
+			'RESELLER_NAME' => tohtml($reseller_name),
 			'RESELLER_ID' => $reseller_id
 		)
 	);
@@ -233,7 +233,7 @@ function generate_domain_entry(&$tpl, $user_id, $row) {
 
 	$tpl->assign(
 		array(
-			'DOMAIN_NAME' => $domain_name,
+			'DOMAIN_NAME' => tohtml($domain_name),
 			'MONTH' => $crnt_month,
 			'YEAR' => $crnt_year,
 			'DOMAIN_ID' => $domain_id,

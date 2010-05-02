@@ -186,25 +186,25 @@ function gen_user_add3_page(&$tpl) {
 	// Fill in the fields
 	$tpl->assign(
 		array(
-			'VL_USERNAME'		=> $dmn_user_name,
+			'VL_USERNAME'		=> tohtml($dmn_user_name),
 			'VL_USR_PASS'		=> passgen(),
-			'VL_MAIL'			=> $user_email,
+			'VL_MAIL'			=> tohtml($user_email),
 			'VL_USR_ID'			=> $customer_id,
-			'VL_USR_NAME'		=> $first_name,
-			'VL_LAST_USRNAME'	=> $last_name,
-			'VL_USR_FIRM'		=> $firm,
-			'VL_USR_POSTCODE'	=> $zip,
-			'VL_USRCITY'		=> $city,
-			'VL_USRSTATE'		=> $state,
+			'VL_USR_NAME'		=> tohtml($first_name),
+			'VL_LAST_USRNAME'	=> tohtml($last_name),
+			'VL_USR_FIRM'		=> tohtml($firm),
+			'VL_USR_POSTCODE'	=> tohtml($zip),
+			'VL_USRCITY'		=> tohtml($city),
+			'VL_USRSTATE'		=> tohtml($state),
 			'VL_MALE'			=> ($gender == 'M') ? Config::getInstance()->get('HTML_SELECTED') : '',
 			'VL_FEMALE'			=> ($gender == 'F') ? Config::getInstance()->get('HTML_SELECTED') : '',
 			'VL_UNKNOWN'		=> ($gender == 'U') ? Config::getInstance()->get('HTML_SELECTED') : '',
-			'VL_COUNTRY'		=> $country,
-			'VL_STREET1'		=> $street_one,
-			'VL_STREET2'		=> $street_two,
-			'VL_MAIL'			=> $mail,
-			'VL_PHONE'			=> $phone,
-			'VL_FAX'			=> $fax
+			'VL_COUNTRY'		=> tohtml($country),
+			'VL_STREET1'		=> tohtml($street_one),
+			'VL_STREET2'		=> tohtml($street_two),
+			'VL_MAIL'			=> tohtml($mail),
+			'VL_PHONE'			=> tohtml($phone),
+			'VL_FAX'			=> tohtml($fax)
 		)
 	);
 
@@ -303,20 +303,20 @@ function add_user_data($reseller_id) {
 	$cgi			= preg_replace("/\_/", "", $cgi);
 	$backup			= preg_replace("/\_/", "", $backup);
 	$dns			= preg_replace("/\_/", "", $dns);
-	$pure_user_pass = $inpass; 
-	$inpass			= crypt_user_pass($inpass, true);
-	$first_name		= clean_input($first_name, true);
-	$last_name		= clean_input($last_name, true);
-	$firm			= clean_input($firm, true);
-	$zip			= clean_input($zip, true);
-	$city			= clean_input($city, true);
-	$state			= clean_input($state, true);
-	$country		= clean_input($country, true);
-	$phone			= clean_input($phone, true);
-	$fax			= clean_input($fax, true);
-	$street_one		= clean_input($street_one, true);
-	$street_two		= clean_input($street_two, true);
-	$customer_id	= clean_input($customer_id, true);
+	$pure_user_pass = $inpass;
+	$inpass			= crypt_user_pass($inpass);
+	$first_name		= clean_input($first_name);
+	$last_name		= clean_input($last_name);
+	$firm			= clean_input($firm);
+	$zip			= clean_input($zip);
+	$city			= clean_input($city);
+	$state			= clean_input($state);
+	$country		= clean_input($country);
+	$phone			= clean_input($phone);
+	$fax			= clean_input($fax);
+	$street_one		= clean_input($street_one);
+	$street_two		= clean_input($street_two);
+	$customer_id	= clean_input($customer_id);
 
 	if (!validates_dname(decode_idna($dmn_user_name))) {
 		return;

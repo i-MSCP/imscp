@@ -94,8 +94,8 @@ function set_page_message($message) {
 /**
  * Converts a Array of Strings to a single <br />-separated String
  * @since r2684
- * 
- * @param	String[]	Array of message strings	
+ *
+ * @param	String[]	Array of message strings
  * @return	String		a single string with <br /> tags
  */
 function format_message($message) {
@@ -132,35 +132,35 @@ function get_menu_vars($menu_link) {
 	$search [] = '{uid}';
 	$replace[] = $_SESSION['user_id'];
 	$search [] = '{uname}';
-	$replace[] = $_SESSION['user_logged'];
+	$replace[] = tohtml($_SESSION['user_logged']);
 	$search [] = '{cid}';
-	$replace[] = $rs->fields['customer_id'];
+	$replace[] = tohtml($rs->fields['customer_id']);
 	$search [] = '{fname}';
-	$replace[] = $rs->fields['fname'];
+	$replace[] = tohtml($rs->fields['fname']);
 	$search [] = '{lname}';
-	$replace[] = $rs->fields['lname'];
+	$replace[] = tohtml($rs->fields['lname']);
 	$search [] = '{company}';
-	$replace[] = $rs->fields['firm'];
+	$replace[] = tohtml($rs->fields['firm']);
 	$search [] = '{zip}';
-	$replace[] = $rs->fields['zip'];
+	$replace[] = tohtml($rs->fields['zip']);
 	$search [] = '{city}';
-	$replace[] = $rs->fields['city'];
+	$replace[] = tohtml($rs->fields['city']);
 	if (Config::getInstance()->get('DATABASE_REVISION') >= 11) {
 		$search [] = '{state}';
 		$replace[] = $rs->fields['state'];
 	}
 	$search [] = '{country}';
-	$replace[] = $rs->fields['country'];
+	$replace[] = tohtml($rs->fields['country']);
 	$search [] = '{email}';
-	$replace[] = $rs->fields['email'];
+	$replace[] = tohtml($rs->fields['email']);
 	$search [] = '{phone}';
-	$replace[] = $rs->fields['phone'];
+	$replace[] = tohtml($rs->fields['phone']);
 	$search [] = '{fax}';
-	$replace[] = $rs->fields['fax'];
+	$replace[] = tohtml($rs->fields['fax']);
 	$search [] = '{street1}';
-	$replace[] = $rs->fields['street1'];
+	$replace[] = tohtml($rs->fields['street1']);
 	$search [] = '{street2}';
-	$replace[] = $rs->fields['street2'];
+	$replace[] = tohtml($rs->fields['street2']);
 
 	$query = "
 		SELECT

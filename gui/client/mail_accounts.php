@@ -65,7 +65,7 @@ $tpl->assign(
  *
  * @param int $mail_id mail id
  * @param string $mail_status mail status
- * @return array 
+ * @return array
  */
 function gen_user_mail_action($mail_id, $mail_status) {
 
@@ -225,7 +225,7 @@ function gen_page_dmn_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 				$mail_type .= user_trans_mail_type($type);
 
 				if (strpos($type, '_forward') !== false) {
-					$mail_type .= ': ' . 
+					$mail_type .= ': ' .
 						str_replace(
 							array("\r\n", "\n", "\r"),
 							", ",
@@ -238,7 +238,7 @@ function gen_page_dmn_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 
 			$tpl->assign(
 				array(
-					'MAIL_ACC' => $mail_acc . '@' . $show_dmn_name,
+					'MAIL_ACC' => tohtml($mail_acc . '@' . $show_dmn_name),
 					'MAIL_TYPE' => $mail_type,
 					'MAIL_STATUS' => translate_dmn_status($rs->fields['status']),
 					'MAIL_DELETE' => $mail_delete,
@@ -269,14 +269,14 @@ function gen_page_dmn_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 /**
  * Must be documented
  *
- * @param object &$tpl reference to the template instance 
+ * @param object &$tpl reference to the template instance
  * @param object &$sql reference to the database instance
  * @param int $dmn_id domain name id
  * @param strinc $dmn_name domain name
  * @return int number of subdomain mails addresses
  */
 function gen_page_sub_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
-	
+
 	$sub_query = "
 		SELECT
 			t1.`subdomain_id` AS sub_id,
@@ -372,7 +372,7 @@ function gen_page_sub_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 			$tpl->assign(
 				array(
 					'MAIL_ACC' =>
-						$mail_acc.'@'.$show_sub_name.'.'.$show_dmn_name,
+						tohtml($mail_acc.'@'.$show_sub_name.'.'.$show_dmn_name),
 
 					'MAIL_TYPE' => $mail_type,
 					'MAIL_STATUS' => translate_dmn_status($rs->fields['status']),
@@ -510,7 +510,7 @@ function gen_page_als_sub_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 
 			$tpl->assign(
 				array(
-					'MAIL_ACC' => $mail_acc . '@' . $show_alssub_name,
+					'MAIL_ACC' => tohtml($mail_acc . '@' . $show_alssub_name),
 					'MAIL_TYPE' => $mail_type,
 					'MAIL_STATUS' => translate_dmn_status($rs->fields['status']),
 					'MAIL_DELETE' => $mail_delete,
@@ -643,7 +643,7 @@ function gen_page_als_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 
 			$tpl->assign(
 				array(
-					'MAIL_ACC' => $mail_acc . '@' . $show_als_name,
+					'MAIL_ACC' => tohtml($mail_acc . '@' . $show_als_name),
 					'MAIL_TYPE' => $mail_type,
 					'MAIL_STATUS' => translate_dmn_status($rs->fields['status']),
 					'MAIL_DELETE' => $mail_delete,
@@ -713,7 +713,7 @@ function gen_page_lists(&$tpl, &$sql, $user_id) {
 	$sub_mails = gen_page_sub_mail_list($tpl, $sql, $dmn_id, $dmn_name);
 	$alssub_mails = gen_page_als_sub_mail_list($tpl, $sql, $dmn_id, $dmn_name);
 	$als_mails = gen_page_als_mail_list($tpl, $sql, $dmn_id, $dmn_name);
-	
+
 	// If 'uaction' is set and own value is != 'hide', the total includes
 	// the number of email by default
 	$counted_mails = $total_mails =
@@ -774,12 +774,12 @@ function gen_page_lists(&$tpl, &$sql, $user_id) {
  * Return the number of default mail adresses according
  * the state of 'uaction''. If no 'uaction' is set or if the
  * 'uaction' is set to 'hide', 0 will be returned.
- * 
+ *
  * Note: 'uaction' = user action -> ($_POST['uaction'])
  *
  * For performances reasons, the query is performed only once
  * and the result is cached.
- * 
+ *
  * @author Laurent declercq <laurent.declercq@ispcp.net>
  * @since r2513
  * @param object &$sql reference to the Database instance

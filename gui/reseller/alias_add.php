@@ -84,22 +84,22 @@ $tpl->assign(
 	)
 );
 
-list($rdmn_current, $rdmn_max, 
-	$rsub_current, $rsub_max, 
- 	$rals_current, $rals_max, 
- 	$rmail_current, $rmail_max, 
- 	$rftp_current, $rftp_max, 
- 	$rsql_db_current, $rsql_db_max, 
- 	$rsql_user_current, $rsql_user_max, 
- 	$rtraff_current, $rtraff_max, 
- 	$rdisk_current, $rdisk_max 
+list($rdmn_current, $rdmn_max,
+	$rsub_current, $rsub_max,
+ 	$rals_current, $rals_max,
+ 	$rmail_current, $rmail_max,
+ 	$rftp_current, $rftp_max,
+ 	$rsql_db_current, $rsql_db_max,
+ 	$rsql_user_current, $rsql_user_max,
+ 	$rtraff_current, $rtraff_max,
+ 	$rdisk_current, $rdisk_max
  	) = get_reseller_default_props($sql, $_SESSION['user_id']);
 
 if ($rals_max != 0 && $rals_current >= $rals_max) {
 	$_SESSION['almax'] = '_yes_';
 }
 
-if (!check_reseller_domainalias_permissions($reseller_id) || 
+if (!check_reseller_domainalias_permissions($reseller_id) ||
 	isset($_SESSION['almax'])) {
 	user_goto('alias.php');
 }
@@ -137,7 +137,7 @@ function init_empty_data() {
 function gen_al_page(&$tpl, $reseller_id) {
 	global $cr_user_id, $alias_name, $domain_ip, $forward, $forward_prefix, $mount_point;
 	$sql = Database::getInstance();
-	
+
 	list($udmn_current, $udmn_max, $udmn_uf,
 		$usub_current, $usub_max, $usub_uf,
 		$uals_current, $uals_max, $uals_uf,
@@ -148,7 +148,7 @@ function gen_al_page(&$tpl, $reseller_id) {
 		$utraff_current, $utraff_max, $utraff_uf,
 		$udisk_current, $udisk_max, $udisk_uf
 	) = generate_reseller_user_props($reseller_id);
-	
+
 	list($rdmn_current, $rdmn_max,
 		$rsub_current, $rsub_max,
 		$rals_current, $rals_max,
@@ -159,7 +159,7 @@ function gen_al_page(&$tpl, $reseller_id) {
 		$rtraff_current, $rtraff_max,
 		$rdisk_current, $rdisk_max
 	) = get_reseller_default_props($sql, $reseller_id);
-	
+
 	if ($uals_current >= $rals_max && $rals_max != "0") {
 		$_SESSION['almax'] = '_yes_';
 		user_goto('alias.php');
@@ -208,12 +208,12 @@ function gen_al_page(&$tpl, $reseller_id) {
 			)
 		);
 	}
-	
+
 	$tpl->assign(
 		array(
-			'DOMAIN' => decode_idna($alias_name),
-			'MP' => decode_idna($mount_point),
-			'FORWARD' => $forward,
+			'DOMAIN' => tohtml(decode_idna($alias_name)),
+			'MP' => tohtml(decode_idna($mount_point)),
+			'FORWARD' => tohtml($forward),
 			'CHECK_EN' => $check_en,
 			'CHECK_DIS' => $check_dis,
 		)
@@ -234,7 +234,7 @@ function add_domain_alias(&$sql, &$err_al) {
 
 	$alias_name = strtolower($_POST['ndomain_name']);
 	$mount_point = array_encode_idna(strtolower($_POST['ndomain_mpoint']), true);
-	
+
 	if ($_POST['status'] == 1) {
 		$forward = strtolower(clean_input($_POST['forward']));
 		$forward_prefix = clean_input($_POST['forward_prefix']);
@@ -396,7 +396,7 @@ function gen_users_list(&$tpl, $reseller_id) {
 		$tpl->assign(
 			array(
 				'USER' => $domain_id,
-				'USER_DOMAIN_ACCOUN' => $domain_name,
+				'USER_DOMAIN_ACCOUN' => tohtml($domain_name),
 				'SELECTED' => $selected
 			)
 		);
@@ -406,9 +406,9 @@ function gen_users_list(&$tpl, $reseller_id) {
 	return true;
 } // End of gen_users_list()
 
-function gen_page_msg(&$tpl, $erro_txt) {
-	if ($erro_txt != '_off_') {
-		$tpl->assign('MESSAGE', $erro_txt);
+function gen_page_msg(&$tpl, $error_txt) {
+	if ($error_txt != '_off_') {
+		$tpl->assign('MESSAGE', $error_txt);
 		$tpl->parse('PAGE_MESSAGE', 'page_message');
 	} else {
 		$tpl->assign('PAGE_MESSAGE', '');

@@ -82,7 +82,7 @@ function gen_user_table(&$tpl, &$sql) {
 
 		$tpl->assign(
 			array(
-				'SRC_RSL_OPTION'	=> $rs->fields['admin_name'],
+				'SRC_RSL_OPTION'	=> tohtml($rs->fields['admin_name']),
 				'SRC_RSL_VALUE'		=> $rs->fields['admin_id'],
 				'SRC_RSL_SELECTED'	=> $selected,
 			)
@@ -90,7 +90,7 @@ function gen_user_table(&$tpl, &$sql) {
 
 		$tpl->assign(
 			array(
-				'DST_RSL_OPTION'	=> $rs->fields['admin_name'],
+				'DST_RSL_OPTION'	=> tohtml($rs->fields['admin_name']),
 				'DST_RSL_VALUE'		=> $rs->fields['admin_id'],
 				'DST_RSL_SELECTED'	=> ''
 			)
@@ -138,7 +138,7 @@ function gen_user_table(&$tpl, &$sql) {
 			$tpl->assign(
 				array(
 					'NUMBER' => $i + 1,
-					'USER_NAME' => $show_admin_name,
+					'USER_NAME' => tohtml($show_admin_name),
 					'CKB_NAME' => $admin_id_var_name,
 				)
 			);

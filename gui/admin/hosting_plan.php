@@ -173,8 +173,8 @@ function gen_hp_table(&$tpl, $reseller_id) {
 			$tpl->assign(
 				array(
 					'PLAN_NOM' => $i++,
-					'PLAN_NAME' => $data['name'],
-					'PLAN_NAME2' => addslashes(clean_html($data['name'])),
+					'PLAN_NAME' => tohtml($data['name']),
+					'PLAN_NAME2' => addslashes(clean_html($data['name'], true)),
 					'PLAN_ACTION' => tr('Delete'),
 					'PLAN_SHOW' => tr('Show hosting plan'),
 					'PURCHASING' => $status,

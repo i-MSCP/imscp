@@ -319,7 +319,7 @@ function generate_users_list(&$tpl, $admin_id) {
 					'CREATION_DATE' => $dom_created,
 					'EXPIRE_DATE' => $dom_expires,
 					'DOMAIN_ID' => $rs->fields['domain_id'],
-					'NAME' => $admin_name,
+					'NAME' => tohtml($admin_name),
 					'ACTION' => tr('Delete'),
 					'USER_ID' => $rs->fields['domain_admin_id'],
 					'CHANGE_INTERFACE' => tr('Switch'),

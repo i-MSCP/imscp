@@ -209,7 +209,7 @@ function get_server_status(&$tpl, &$sql) {
 			array(
 				'HOST' => $data[$i]['ip'],
 				'PORT' => $data[$i]['port'],
-				'SERVICE' => $data[$i]['service'],
+				'SERVICE' => tohtml($data[$i]['service']),
 				'STATUS' => $img,
 				'CLASS' => $class,
 			)

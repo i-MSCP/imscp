@@ -102,16 +102,16 @@ function gen_user_dns_list(&$tpl, &$sql, $user_id) {
 			$sbd_data = $rs->fields['domain_text'];
 			$tpl->assign(
 				array(
-					'DNS_DOMAIN'				=> $domain_name,
-					'DNS_NAME'					=> $sbd_name,
-					'DNS_CLASS'					=> $rs->fields['domain_class'],
-					'DNS_TYPE'					=> $rs->fields['domain_type'],
-					'DNS_DATA'					=> $sbd_data,
+					'DNS_DOMAIN'				=> tohtml($domain_name),
+					'DNS_NAME'					=> tohtml($sbd_name),
+					'DNS_CLASS'					=> tohtml($rs->fields['domain_class']),
+					'DNS_TYPE'					=> tohtml($rs->fields['domain_type']),
+					'DNS_DATA'					=> tohtml($sbd_data),
 //					'DNS_ACTION_SCRIPT_EDIT'	=> $sub_action,
-					'DNS_ACTION_SCRIPT_DELETE'	=> $dns_action_script_delete,
-					'DNS_ACTION_DELETE'			=> $dns_action_delete,
-					'DNS_ACTION_SCRIPT_EDIT'	=> $dns_action_script_edit,
-					'DNS_ACTION_EDIT'			=> $dns_action_edit,
+					'DNS_ACTION_SCRIPT_DELETE'	=> tohtml($dns_action_script_delete),
+					'DNS_ACTION_DELETE'			=> tohtml($dns_action_delete),
+					'DNS_ACTION_SCRIPT_EDIT'	=> tohtml($dns_action_script_edit),
+					'DNS_ACTION_EDIT'			=> tohtml($dns_action_edit),
 					'DNS_TYPE_RECORD'			=> tr("%s record", $rs->fields['domain_type'])
 				)
 			);
@@ -201,9 +201,9 @@ function gen_user_sub_list(&$tpl, &$sql, $user_id) {
 			$sbd_name = decode_idna($rs->fields['subdomain_name']);
 			$tpl->assign(
 				array(
-					'SUB_NAME'			=> $sbd_name,
-					'SUB_ALIAS_NAME'	=> $rs->fields['domain_name'],
-					'SUB_MOUNT'			=> $rs->fields['subdomain_mount'],
+					'SUB_NAME'			=> tohtml($sbd_name),
+					'SUB_ALIAS_NAME'	=> tohtml($rs->fields['domain_name']),
+					'SUB_MOUNT'			=> tohtml($rs->fields['subdomain_mount']),
 					'SUB_STATUS'		=> translate_dmn_status($rs->fields['subdomain_status']),
 					'SUB_ACTION'		=> $sub_action,
 					'SUB_ACTION_SCRIPT'	=> $sub_action_script
@@ -220,9 +220,9 @@ function gen_user_sub_list(&$tpl, &$sql, $user_id) {
 			$sbd_name = decode_idna($rs2->fields['subdomain_alias_name']);
 			$tpl->assign(
 				array(
-					'SUB_NAME'			=> $sbd_name,
-					'SUB_ALIAS_NAME'	=> $rs2->fields['alias_name'],
-					'SUB_MOUNT'			=> $rs2->fields['subdomain_alias_mount'],
+					'SUB_NAME'			=> tohtml($sbd_name),
+					'SUB_ALIAS_NAME'	=> tohtml($rs2->fields['alias_name']),
+					'SUB_MOUNT'			=> tohtml($rs2->fields['subdomain_alias_mount']),
 					'SUB_STATUS'		=> translate_dmn_status($rs2->fields['subdomain_alias_status']),
 					'SUB_ACTION'		=> $sub_action,
 					'SUB_ACTION_SCRIPT'	=> $sub_action_script
@@ -305,10 +305,10 @@ function gen_user_als_list(&$tpl, &$sql, $user_id) {
 			$als_forward = decode_idna($als_forward);
 			$tpl->assign(
 				array(
-					'ALS_NAME'			=> $alias_name,
-					'ALS_MOUNT'			=> $rs->fields['alias_mount'],
+					'ALS_NAME'			=> tohtml($alias_name),
+					'ALS_MOUNT'			=> tohtml($rs->fields['alias_mount']),
 					'ALS_STATUS'		=> translate_dmn_status($rs->fields['alias_status']),
-					'ALS_FORWARD'		=> $als_forward,
+					'ALS_FORWARD'		=> tohtml($als_forward),
 					'ALS_EDIT_LINK'		=> $alias_edit_link,
 					'ALS_EDIT'			=> $als_edit,
 					'ALS_ACTION'		=> $als_action,

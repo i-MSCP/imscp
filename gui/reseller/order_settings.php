@@ -28,8 +28,6 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-define('OVERRIDE_PURIFIER', true);
-
 require '../include/ispcp-lib.php';
 
 check_login(__FILE__);

@@ -88,8 +88,8 @@ function gen_tickets_list(&$tpl, &$sql, &$ticket_id, $screenwidth) {
 				'TR_ACTION' => $tr_action,
 				'ACTION' => $action,
 				'DATE' => date($date_formt, $rs->fields['ticket_date']),
-				'SUBJECT' => htmlspecialchars($rs->fields['ticket_subject']),
-				'TICKET_CONTENT' => nl2br(htmlspecialchars($ticket_content)),
+				'SUBJECT' => tohtml($rs->fields['ticket_subject']),
+				'TICKET_CONTENT' => nl2br(tohtml($ticket_content)),
 				'ID' => $rs->fields['ticket_id']
 			)
 		);
@@ -132,7 +132,7 @@ function get_tickets_replys(&$tpl, &$sql, &$ticket_id, $screenwidth) {
 		$tpl->assign(
 			array(
 				'DATE' => date($date_formt, $ticket_date),
-				'TICKET_CONTENT' => nl2br(htmlspecialchars($ticket_content))
+				'TICKET_CONTENT' => nl2br(tohtml($ticket_content))
 			)
 		);
 		get_ticket_from($tpl, $sql, $ticket_id);
@@ -179,7 +179,7 @@ function get_ticket_from(&$tpl, &$sql, $ticket_id) {
 	$from_last_name = $rs->fields['lname'];
 
 	$from_name = $from_first_name . " " . $from_last_name . " (" . $from_user_name . ")";
-	$tpl->assign(array('FROM' => htmlspecialchars($from_name)));
+	$tpl->assign(array('FROM' => tohtml($from_name)));
 }
 
 // common page data.

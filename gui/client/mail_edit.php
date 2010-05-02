@@ -142,8 +142,8 @@ function edit_mail_account(&$tpl, &$sql) {
 		$maildomain = decode_idna($maildomain);
 		$tpl->assign(
 			array(
-				'EMAIL_ACCOUNT'	=> $mail_acc . "@" . $maildomain,
-				'FORWARD_LIST'	=> str_replace(',', "\n", $mail_forward),
+				'EMAIL_ACCOUNT'	=> tohtml($mail_acc . "@" . $maildomain),
+				'FORWARD_LIST'	=> str_replace(',', "\n", tohtml($mail_forward)),
 				'MTYPE'			=> implode(',', $mtype),
 				'MAIL_TYPE'		=> $mail_type_list,
 				'MAIL_ID'		=> $mail_id

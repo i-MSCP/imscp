@@ -91,11 +91,11 @@ function gen_directories(&$tpl) {
 		$tpl->assign(
 			array(
 				'ACTION' => tr('Protect it'),
-				'PROTECT_IT' => "protected_areas_add.php?file=$dr",
+				'PROTECT_IT' => "protected_areas_add.php?file=".$dr,
 				'ICON' => $image,
-				'DIR_NAME' => $entry['file'],
+				'DIR_NAME' => tohtml($entry['file']),
 				'CHOOSE_IT' => $dr,
-				'LINK' => "ftp_choose_dir.php?cur_dir=$dr",
+				'LINK' => "ftp_choose_dir.php?cur_dir=".$dr,
 			)
 		);
 		$tpl->parse('ACTION_LINK', 'action_link');

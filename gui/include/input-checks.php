@@ -148,6 +148,15 @@ function clean_input($input, $htmlencode = false) {
 }
 
 /**
+ * Convert any text to HTML
+ * @param string $text
+ * @return string HTML entitied text
+ */
+function tohtml($text) {
+	return htmlentities($text, ENT_QUOTES, "UTF-8");
+}
+
+/**
  * Passwort check
  *
  * Check if a password is valid

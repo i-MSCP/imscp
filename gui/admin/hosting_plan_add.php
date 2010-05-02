@@ -181,21 +181,21 @@ function gen_data_ahp_page(&$tpl) {
 
 	$tpl->assign(
 			array(
-					'HP_NAME_VALUE'			=> $hp_name,
-					'TR_MAX_SUB_LIMITS'		=> $hp_sub,
-					'TR_MAX_ALS_VALUES'		=> $hp_als,
-					'HP_MAIL_VALUE'			=> $hp_mail,
-					'HP_FTP_VALUE'			=> $hp_ftp,
-					'HP_SQL_DB_VALUE'		=> $hp_sql_db,
-					'HP_SQL_USER_VALUE'		=> $hp_sql_user,
-					'HP_TRAFF_VALUE'		=> $hp_traff,
-					'HP_DISK_VALUE'			=> $hp_disk,
-					'HP_DESCRIPTION_VALUE'	=> $description,
-					'HP_PRICE'				=> $price,
-					'HP_SETUPFEE'			=> $setup_fee,
-					'HP_VELUE'				=> $value,
-					'HP_PAYMENT'			=> $payment,
-					'HP_TOS_VALUE'			=> $tos
+					'HP_NAME_VALUE'			=> tohtml($hp_name),
+					'TR_MAX_SUB_LIMITS'		=> tohtml($hp_sub),
+					'TR_MAX_ALS_VALUES'		=> tohtml($hp_als),
+					'HP_MAIL_VALUE'			=> tohtml($hp_mail),
+					'HP_FTP_VALUE'			=> tohtml($hp_ftp),
+					'HP_SQL_DB_VALUE'		=> tohtml($hp_sql_db),
+					'HP_SQL_USER_VALUE'		=> tohtml($hp_sql_user),
+					'HP_TRAFF_VALUE'		=> tohtml($hp_traff),
+					'HP_DISK_VALUE'			=> tohtml($hp_disk),
+					'HP_DESCRIPTION_VALUE'	=> tohtml($description),
+					'HP_PRICE'				=> tohtml($price),
+					'HP_SETUPFEE'			=> tohtml($setup_fee),
+					'HP_VELUE'				=> tohtml($value),
+					'HP_PAYMENT'			=> tohtml($payment),
+					'HP_TOS_VALUE'			=> tohtml($tos)
 			)
 	);
 
@@ -233,22 +233,22 @@ function check_data_correction(&$tpl) {
 
 	$ahp_error 		= array();
 
-	$hp_name		= clean_input($_POST['hp_name'], true);
-	$hp_sub			= clean_input($_POST['hp_sub'], true);
-	$hp_als			= clean_input($_POST['hp_als'], true);
-	$hp_mail		= clean_input($_POST['hp_mail'], true);
-	$hp_ftp			= clean_input($_POST['hp_ftp'], true);
-	$hp_sql_db		= clean_input($_POST['hp_sql_db'], true);
-	$hp_sql_user	= clean_input($_POST['hp_sql_user'], true);
-	$hp_traff		= clean_input($_POST['hp_traff'], true);
-	$hp_disk		= clean_input($_POST['hp_disk'], true);
-	$description	= clean_input($_POST['hp_description'], true);
-	$price			= empty($_POST['hp_price']) ? 0 : clean_input($_POST['hp_price'], true);
-	$setup_fee		= empty($_POST['hp_setupfee']) ? 0 : clean_input($_POST['hp_setupfee'], true);
-	$value			= clean_input($_POST['hp_value'], true);
-	$payment		= clean_input($_POST['hp_payment'], true);
+	$hp_name		= clean_input($_POST['hp_name']);
+	$hp_sub			= clean_input($_POST['hp_sub']);
+	$hp_als			= clean_input($_POST['hp_als']);
+	$hp_mail		= clean_input($_POST['hp_mail']);
+	$hp_ftp			= clean_input($_POST['hp_ftp']);
+	$hp_sql_db		= clean_input($_POST['hp_sql_db']);
+	$hp_sql_user	= clean_input($_POST['hp_sql_user']);
+	$hp_traff		= clean_input($_POST['hp_traff']);
+	$hp_disk		= clean_input($_POST['hp_disk']);
+	$description	= clean_input($_POST['hp_description']);
+	$price			= empty($_POST['hp_price']) ? 0 : clean_input($_POST['hp_price']);
+	$setup_fee		= empty($_POST['hp_setupfee']) ? 0 : clean_input($_POST['hp_setupfee']);
+	$value			= clean_input($_POST['hp_value']);
+	$payment		= clean_input($_POST['hp_payment']);
 	$status			= $_POST['status'];
-	$tos			= clean_input($_POST['hp_tos'], true);
+	$tos			= clean_input($_POST['hp_tos']);
 
 	if (isset($_POST['php'])) {
 		$hp_php = $_POST['php'];

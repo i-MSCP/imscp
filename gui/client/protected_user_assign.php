@@ -84,14 +84,14 @@ function gen_user_assign(&$tpl, &$sql, &$dmn_id) {
 		&& is_numeric($_GET['uname'])) {
 		$uuser_id = $_GET['uname'];
 
-		$tpl->assign('UNAME', get_htuser_name($sql, $uuser_id, $dmn_id));
+		$tpl->assign('UNAME', tohtml(get_htuser_name($sql, $uuser_id, $dmn_id)));
 		$tpl->assign('UID', $uuser_id);
 	} else if (isset($_POST['nadmin_name'])
 		&& !empty($_POST['nadmin_name'])
 		&& is_numeric($_POST['nadmin_name'])) {
 		$uuser_id = $_POST['nadmin_name'];
 
-		$tpl->assign('UNAME', get_htuser_name($sql, $uuser_id, $dmn_id));
+		$tpl->assign('UNAME', tohtml(get_htuser_name($sql, $uuser_id, $dmn_id)));
 		$tpl->assign('UID', $uuser_id);
 	} else {
 		user_goto('protected_user_manage.php');
@@ -127,7 +127,7 @@ function gen_user_assign(&$tpl, &$sql, &$dmn_id) {
 				if ($uuser_id == $members[$i]) {
 					$tpl->assign(
 						array(
-							'GRP_IN' => $group_name,
+							'GRP_IN' => tohtml($group_name),
 							'GRP_IN_ID' => $group_id,
 						)
 					);
@@ -140,7 +140,7 @@ function gen_user_assign(&$tpl, &$sql, &$dmn_id) {
 			if ($grp_in !== $group_id) {
 				$tpl->assign(
 					array(
-						'GRP_NAME' => $group_name,
+						'GRP_NAME' => tohtml($group_name),
 						'GRP_ID' => $group_id,
 					)
 				);

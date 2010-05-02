@@ -222,7 +222,7 @@ function generate_page_data(&$tpl, $reseller_id, $reseller_name) {
 
 	$tpl->assign(
 		array(
-			'RESELLER_NAME' => $reseller_name,
+			'RESELLER_NAME' => tohtml($reseller_name),
 
 			'TRAFF_RED' => $traff_red * 3,
 			'TRAFF_GREEN' => $traff_green * 3,

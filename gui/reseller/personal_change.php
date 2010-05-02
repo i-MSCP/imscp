@@ -81,18 +81,18 @@ function gen_reseller_personal_data(&$tpl, &$sql, $user_id) {
 
 	$tpl->assign(
 		array(
-			'FIRST_NAME'	=> (($rs->fields['fname'] == null)		? '' : $rs->fields['fname']),
-			'LAST_NAME'		=> (($rs->fields['lname'] == null)		? '' : $rs->fields['lname']),
-			'FIRM'			=> (($rs->fields['firm'] == null)		? '' : $rs->fields['firm']),
-			'ZIP'			=> (($rs->fields['zip'] == null)		? '' : $rs->fields['zip']),
-			'CITY'			=> (($rs->fields['city'] == null)		? '' : $rs->fields['city']),
-			'STATE'			=> (($rs->fields['state'] == null)		? '' : $rs->fields['state']),
-			'COUNTRY'		=> (($rs->fields['country'] == null)	? '' : $rs->fields['country']),
-			'STREET_1'		=> (($rs->fields['street1'] == null)	? '' : $rs->fields['street1']),
-			'STREET_2'		=> (($rs->fields['street2'] == null)	? '' : $rs->fields['street2']),
-			'EMAIL'			=> (($rs->fields['email'] == null)		? '' : $rs->fields['email']),
-			'PHONE'			=> (($rs->fields['phone'] == null)		? '' : $rs->fields['phone']),
-			'FAX'			=> (($rs->fields['fax'] == null)		? '' : $rs->fields['fax']),
+			'FIRST_NAME'	=> (($rs->fields['fname'] == null)		? '' : tohtml($rs->fields['fname'])),
+			'LAST_NAME'		=> (($rs->fields['lname'] == null)		? '' : tohtml($rs->fields['lname'])),
+			'FIRM'			=> (($rs->fields['firm'] == null)		? '' : tohtml($rs->fields['firm'])),
+			'ZIP'			=> (($rs->fields['zip'] == null)		? '' : tohtml($rs->fields['zip'])),
+			'CITY'			=> (($rs->fields['city'] == null)		? '' : tohtml($rs->fields['city'])),
+			'STATE'			=> (($rs->fields['state'] == null)		? '' : tohtml($rs->fields['state'])),
+			'COUNTRY'		=> (($rs->fields['country'] == null)	? '' : tohtml($rs->fields['country'])),
+			'STREET_1'		=> (($rs->fields['street1'] == null)	? '' : tohtml($rs->fields['street1'])),
+			'STREET_2'		=> (($rs->fields['street2'] == null)	? '' : tohtml($rs->fields['street2'])),
+			'EMAIL'			=> (($rs->fields['email'] == null)		? '' : tohtml($rs->fields['email'])),
+			'PHONE'			=> (($rs->fields['phone'] == null)		? '' : tohtml($rs->fields['phone'])),
+			'FAX'			=> (($rs->fields['fax'] == null)		? '' : tohtml($rs->fields['fax'])),
 			'VL_MALE'		=> (($rs->fields['gender'] == 'M')		? Config::getInstance()->get('HTML_SELECTED') : ''),
 			'VL_FEMALE'		=> (($rs->fields['gender'] == 'F')		? Config::getInstance()->get('HTML_SELECTED') : ''),
 			'VL_UNKNOWN'	=> ((($rs->fields['gender'] == 'U') || (empty($rs->fields['gender']))) ? Config::getInstance()->get('HTML_SELECTED') : '')
@@ -101,19 +101,19 @@ function gen_reseller_personal_data(&$tpl, &$sql, $user_id) {
 }
 
 function update_reseller_personal_data(&$sql, $user_id) {
-	$fname		= clean_input($_POST['fname'], true);
-	$lname		= clean_input($_POST['lname'], true);
+	$fname		= clean_input($_POST['fname']);
+	$lname		= clean_input($_POST['lname']);
 	$gender		= $_POST['gender'];
-	$firm		= clean_input($_POST['firm'], true);
-	$zip		= clean_input($_POST['zip'], true);
-	$city		= clean_input($_POST['city'], true);
-	$state		= clean_input($_POST['state'], true);
-	$country	= clean_input($_POST['country'], true);
-	$street1	= clean_input($_POST['street1'], true);
-	$street2	= clean_input($_POST['street2'], true);
-	$email		= clean_input($_POST['email'], true);
-	$phone		= clean_input($_POST['phone'], true);
-	$fax		= clean_input($_POST['fax'], true);
+	$firm		= clean_input($_POST['firm']);
+	$zip		= clean_input($_POST['zip']);
+	$city		= clean_input($_POST['city']);
+	$state		= clean_input($_POST['state']);
+	$country	= clean_input($_POST['country']);
+	$street1	= clean_input($_POST['street1']);
+	$street2	= clean_input($_POST['street2']);
+	$email		= clean_input($_POST['email']);
+	$phone		= clean_input($_POST['phone']);
+	$fax		= clean_input($_POST['fax']);
 
 	$query = "
 		UPDATE

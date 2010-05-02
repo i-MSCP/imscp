@@ -85,12 +85,12 @@ if (isset($_SESSION['dmn_id']) && $_SESSION['dmn_id'] !== '') {
 	} else {
 		$row = $result->FetchRow();
 		$dmn_status = $row['domain_status'];
-	
+
 		if ($dmn_status != Config::getInstance()->get('ITEM_OK_STATUS') &&
 			$dmn_status != Config::getInstance()->get('ITEM_ADD_STATUS')) {
 
 			set_page_message(tr('System error with Domain Id: %d', $domain_id));
-			
+
 			// Back to the users page
 			user_goto('users.php');
 		}
@@ -156,7 +156,7 @@ function init_empty_data() {
 	global $cr_user_id, $alias_name, $domain_ip, $forward, $forward_prefix, $mount_point, $tpl;
 
 	$cr_user_id = $alias_name = $domain_ip = $forward = $mount_point = '';
-	
+
 	if (isset($_POST['status']) && $_POST['status'] == 1) {
 		$forward_prefix = clean_input($_POST['forward_prefix']);
 		if ($_POST['status'] == 1) {
@@ -198,12 +198,12 @@ function init_empty_data() {
 			)
 		);
 	}
-	
+
 	$tpl->assign(
 		array(
-			'DOMAIN' => !empty($_POST) ? strtolower(clean_input($_POST['ndomain_name'])) : '',
-			'MP' => !empty($_POST) ? strtolower(clean_input($_POST['ndomain_mpoint'])) : '',
-			'FORWARD' => $forward,
+			'DOMAIN' => !empty($_POST) ? strtolower(clean_input($_POST['ndomain_name'], true)) : '',
+			'MP' => !empty($_POST) ? strtolower(clean_input($_POST['ndomain_mpoint'], true)) : '',
+			'FORWARD' => tohtml($forward),
 			'CHECK_EN' => $check_en,
 			'CHECK_DIS' => $check_dis,
 		)
@@ -243,7 +243,7 @@ function gen_al_page(&$tpl, $reseller_id) {
 
 			$tpl->assign(
 				array(
-					'DOMAIN_ALIAS' => $alias_name,
+					'DOMAIN_ALIAS' => tohtml($alias_name),
 					'STATUS' => $alias_status,
 					'CLASS' => $page_cont,
 				)
@@ -264,7 +264,7 @@ function add_domain_alias(&$sql, &$err_al) {
 	$alias_name = strtolower(clean_input($_POST['ndomain_name']));
 	$domain_ip = $_SESSION['dmn_ip'];
 	$mount_point = array_encode_idna(strtolower($_POST['ndomain_mpoint']), true);
-	
+
 	if ($_POST['status'] == 1) {
 		$forward = strtolower(clean_input($_POST['forward']));
 		$forward_prefix = clean_input($_POST['forward_prefix']);
@@ -343,9 +343,9 @@ function add_domain_alias(&$sql, &$err_al) {
 	set_page_message(tr('Domain alias added!'));
 } // End of add_domain_alias();
 
-function gen_page_msg(&$tpl, $erro_txt) {
-	if ($erro_txt != '_off_') {
-		$tpl->assign('MESSAGE', $erro_txt);
+function gen_page_msg(&$tpl, $error_txt) {
+	if ($error_txt != '_off_') {
+		$tpl->assign('MESSAGE', $error_txt);
 		$tpl->parse('PAGE_MESSAGE', 'page_message');
 	} else {
 		$tpl->assign('PAGE_MESSAGE', '');

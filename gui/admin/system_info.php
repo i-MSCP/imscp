@@ -46,15 +46,15 @@ $sysinfo = new SystemInfo();
 
 $tpl->assign(
 	array(
-		'CPU_MODEL'				=> $sysinfo->cpu['model'],
-		'CPU_COUNT'				=> $sysinfo->cpu['cpus'],
-		'CPU_MHZ'				=> $sysinfo->cpu['cpuspeed'],
-		'CPU_CACHE'				=> $sysinfo->cpu['cache'],
-		'CPU_BOGOMIPS'			=> $sysinfo->cpu['bogomips'],
-		'UPTIME'				=> $sysinfo->uptime,
-		'KERNEL'				=> $sysinfo->kernel,
-		'LOAD'					=> $sysinfo->load[0] .' '. 
-									$sysinfo->load[1] .' '. 
+		'CPU_MODEL'				=> tohtml($sysinfo->cpu['model']),
+		'CPU_COUNT'				=> tohtml($sysinfo->cpu['cpus']),
+		'CPU_MHZ'				=> tohtml($sysinfo->cpu['cpuspeed']),
+		'CPU_CACHE'				=> tohtml($sysinfo->cpu['cache']),
+		'CPU_BOGOMIPS'			=> tohtml($sysinfo->cpu['bogomips']),
+		'UPTIME'				=> tohtml($sysinfo->uptime),
+		'KERNEL'				=> tohtml($sysinfo->kernel),
+		'LOAD'					=> $sysinfo->load[0] .' '.
+									$sysinfo->load[1] .' '.
 									$sysinfo->load[2],
 		'RAM_TOTAL'				=> sizeit($sysinfo->ram['total'], 'KB'),
 		'RAM_USED'				=> sizeit($sysinfo->ram['used'], 'KB'),
@@ -69,9 +69,9 @@ $mount_points = $sysinfo->filesystem;
 foreach ($mount_points as $mountpoint) {
 		$tpl->assign(
 			array(
-				'MOUNT'		=> $mountpoint['mount'],
-				'TYPE'		=> $mountpoint['fstype'],
-				'PARTITION'	=> $mountpoint['disk'],
+				'MOUNT'		=> tohtml($mountpoint['mount']),
+				'TYPE'		=> tohtml($mountpoint['fstype']),
+				'PARTITION'	=> tohtml($mountpoint['disk']),
 				'PERCENT'	=> $mountpoint['percent'],
 				'FREE'		=> sizeit($mountpoint['free'], 'KB'),
 				'USED'		=> sizeit($mountpoint['used'], 'KB'),

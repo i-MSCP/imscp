@@ -99,12 +99,12 @@ unset_messages();
 
 /**
  * Generate domain alias list
- * 
+ *
  * @todo Use prepared statements (min. with placeholders like ":search_for")
  */
 function generate_als_list(&$tpl, $reseller_id, &$als_err) {
 	$sql = Database::getInstance();
-	
+
 	list($udmn_current, $udmn_max, $udmn_uf,
 		$usub_current, $usub_max, $usub_uf,
 		$uals_current, $uals_max, $uals_uf,
@@ -115,7 +115,7 @@ function generate_als_list(&$tpl, $reseller_id, &$als_err) {
 		$utraff_current, $utraff_max, $utraff_uf,
 		$udisk_current, $udisk_max, $udisk_uf
 	) = generate_reseller_user_props($reseller_id);
-	
+
 	list($rdmn_current, $rdmn_max,
 		$rsub_current, $rsub_max,
 		$rals_current, $rals_max,
@@ -126,11 +126,11 @@ function generate_als_list(&$tpl, $reseller_id, &$als_err) {
 		$rtraff_current, $rtraff_max,
 		$rdisk_current, $rdisk_max
 	) = get_reseller_default_props($sql, $reseller_id);
-	
+
 	if ($uals_current >= $rals_max && $rals_max != "0") {
 		$tpl->assign('ALS_ADD_BUTTON', '');
-	} 
-	
+	}
+
 	$have_aliases = '_no_';
 
 	$start_index = 0;
@@ -164,7 +164,7 @@ function generate_als_list(&$tpl, $reseller_id, &$als_err) {
 	$tpl->assign(
 		array(
 			'PSI'				=> $current_psi,
-			'SEARCH_FOR'		=> stripslashes($search_for),
+			'SEARCH_FOR'		=> $search_for,
 			'TR_SEARCH'			=> tr('Search'),
 			'M_ALIAS_NAME'		=> tr('Alias name'),
 			'M_ACCOUNT_NAME'	=> tr('Account name'),
@@ -313,7 +313,7 @@ function generate_als_list(&$tpl, $reseller_id, &$als_err) {
 					$als_err = tr('Domain alias limit reached!');
 				else
 					$als_err = tr('You have no alias records.');
-					
+
 				unset($_SESSION['almax']);
 			} else {
 				$als_err = tr('You have no alias records.');
@@ -405,11 +405,11 @@ function generate_als_list(&$tpl, $reseller_id, &$als_err) {
 
 		$tpl->assign(
 			array(
-				'NAME'						=> $als_name,
-				'ALIAS_IP'					=> "$als_ip ($als_ip_name)",
-				'REAL_DOMAIN'				=> $domain_name,
-				'REAL_DOMAIN_MOUNT'			=> $als_mount_point,
-				'FORWARD'					=> $show_als_fwd,
+				'NAME'						=> tohtml($als_name),
+				'ALIAS_IP'					=> tohtml("$als_ip ($als_ip_name)"),
+				'REAL_DOMAIN'				=> tohtml($domain_name),
+				'REAL_DOMAIN_MOUNT'			=> tohtml($als_mount_point),
+				'FORWARD'					=> tohtml($show_als_fwd),
 				'STATUS'					=> $als_status,
 				'ID'						=> $als_id,
 				'DELETE'					=> $action_text,

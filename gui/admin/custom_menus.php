@@ -63,12 +63,12 @@ function gen_button_list(&$tpl, &$sql) {
 
 			$tpl->assign(
 				array(
-					'BUTTON_LINK'		=> $menu_link,
+					'BUTTON_LINK'		=> tohtml($menu_link),
 					'BUTONN_ID'			=> $menu_id,
-					'LEVEL'				=> $menu_level,
-					'MENU_NAME'			=> $menu_name,
+					'LEVEL'				=> tohtml($menu_level),
+					'MENU_NAME'			=> tohtml($menu_name),
 					'MENU_NAME2'		=> addslashes(clean_html($menu_name)),
-					'LINK'				=> $menu_link,
+					'LINK'				=> tohtml($menu_link),
 					'CONTENT'			=> ($i % 2 == 0) ? 'content' : 'content2'
 				)
 			);
@@ -86,7 +86,7 @@ function add_new_button(&$sql) {
 	} else if ($_POST['uaction'] != 'new_button') {
 		return;
 	} else {
-		$button_name = clean_input($_POST['bname'], true);
+		$button_name = clean_input($_POST['bname']);
 		$button_link = clean_input($_POST['blink']);
 		$button_target = clean_input($_POST['btarget']);
 		$button_view = $_POST['bview'];
@@ -202,9 +202,9 @@ function edit_button(&$tpl, &$sql) {
 
 			$tpl->assign(
 				array(
-					'BUTON_NAME'	=> $button_name,
-					'BUTON_LINK'	=> $button_link,
-					'BUTON_TARGET'	=> $button_target,
+					'BUTON_NAME'	=> tohtml($button_name),
+					'BUTON_LINK'	=> tohtml($button_link),
+					'BUTON_TARGET'	=> tohtml($button_target),
 					'ADMIN_VIEW'	=> $admin_view,
 					'RESELLER_VIEW'	=> $reseller_view,
 					'USER_VIEW'		=> $user_view,
@@ -224,7 +224,7 @@ function update_button(&$sql) {
 	} else if ($_POST['uaction'] != 'edit_button') {
 		return;
 	} else {
-		$button_name = clean_input($_POST['bname'], true);
+		$button_name = clean_input($_POST['bname']);
 		$button_link = clean_input($_POST['blink']);
 		$button_target = clean_input($_POST['btarget']);
 		$button_view = $_POST['bview'];

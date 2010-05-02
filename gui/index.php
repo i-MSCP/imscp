@@ -77,7 +77,7 @@ if ((Config::getInstance()->get('MAINTENANCEMODE')
 			'TR_PAGE_TITLE'		=> tr('ispCP Omega a Virtual Hosting Control System'),
 			'THEME_COLOR_PATH'	=> Config::getInstance()->get('LOGIN_TEMPLATE_PATH'),
 			'THEME_CHARSET'		=> tr('encoding'),
-			'TR_MESSAGE'		=> nl2br(Config::getInstance()->get('MAINTENANCEMODE_MESSAGE')),
+			'TR_MESSAGE'		=> nl2br(tohtml(Config::getInstance()->get('MAINTENANCEMODE_MESSAGE'))),
 			'TR_ADMINLOGIN'		=> tr('Administrator login')
 		)
 	);

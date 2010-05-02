@@ -99,7 +99,7 @@ function gen_plan_details(&$tpl, &$sql, $user_id, $plan_id) {
 		if ($price == 0 || $price == '') {
 			$price = tr('free of charge');
 		} else {
-			$price .= ' ' . $rs->fields['value'] . ' ' . $rs->fields['payment'];
+			$price .= ' ' . tohtml($rs->fields['value']) . ' ' . tohtml($rs->fields['payment']);
 		}
 
 		if ($setup_fee == 0 || $setup_fee == '') {
@@ -118,7 +118,7 @@ function gen_plan_details(&$tpl, &$sql, $user_id, $plan_id) {
 		$tpl->assign(
 			array(
 				'PACK_NAME'		=> $rs->fields['name'],
-				'DESCRIPTION'	=> $description,
+				'DESCRIPTION'	=> tohtml($description),
 				'PACK_ID'		=> $rs->fields['id'],
 				'USER_ID'		=> $user_id,
 				'PURCHASE'		=> tr('Purchase'),

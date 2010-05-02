@@ -28,9 +28,6 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-//dirty hack (disable HTMLPurifier until figure out how to let pass post arrays)
-define('OVERRIDE_PURIFIER', null);
-
 require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
@@ -81,7 +78,7 @@ function protect_area(&$tpl, &$sql, $dmn_id) {
 
 	// Cleanup path:
 	// Adds a slash as a first char of the path if it doesn't exists
-	// Removes the double slashes 
+	// Removes the double slashes
 	// Remove the trailing slash if it exists
 	if ($path != '/') {
 		$clean_path = array();
@@ -91,7 +88,7 @@ function protect_area(&$tpl, &$sql, $dmn_id) {
 				$clean_path[] = $dir;
 			}
 		}
-	
+
 		$path = '/' . implode(DIRECTORY_SEPARATOR, $clean_path);
 	}
 
@@ -247,8 +244,8 @@ function gen_protect_it(&$tpl, &$sql, &$dmn_id) {
 
 		$tpl->assign(
 			array(
-				'PATH' => $path,
-				'AREA_NAME' => $auth_name,
+				'PATH' => tohtml($path),
+				'AREA_NAME' => tohtml($auth_name),
 			)
 		);
 		// let's get the htaccess management type
@@ -321,7 +318,7 @@ function gen_protect_it(&$tpl, &$sql, &$dmn_id) {
 			$tpl->assign(
 				array(
 					'USER_VALUE' => $rs->fields['id'],
-					'USER_LABEL' => $rs->fields['uname'],
+					'USER_LABEL' => tohtml($rs->fields['uname']),
 					'USER_SELECTED' => $usr_selected,
 				)
 			);
@@ -367,7 +364,7 @@ function gen_protect_it(&$tpl, &$sql, &$dmn_id) {
 			$tpl->assign(
 				array(
 					'GROUP_VALUE' => $rs->fields['id'],
-					'GROUP_LABEL' => $rs->fields['ugroup'],
+					'GROUP_LABEL' => tohtml($rs->fields['ugroup']),
 					'GROUP_SELECTED' => $grp_selected,
 				)
 			);

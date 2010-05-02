@@ -80,9 +80,9 @@ function gen_htaccess_entries(&$tpl, &$sql, &$dmn_id) {
 
 			$tpl->assign(
 				array(
-					'AREA_NAME' => $auth_name,
-					'JS_AREA_NAME' => addslashes(strip_tags($auth_name)),
-					'AREA_PATH' => $path,
+					'AREA_NAME' => tohtml($auth_name),
+					'JS_AREA_NAME' => addslashes($auth_name),
+					'AREA_PATH' => tohtml($path),
 					'PID' => $id,
 					'STATUS' => translate_dmn_status($status)
 				)

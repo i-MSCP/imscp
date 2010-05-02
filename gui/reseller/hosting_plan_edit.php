@@ -286,7 +286,7 @@ function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
 
 	$tpl->assign(
 		array(
-			'HP_NAME_VALUE' => stripslashes($hp_name),
+			'HP_NAME_VALUE' => tohtml($hp_name),
 			'TR_EDIT_HOSTING_PLAN' => $edit_hp,
 			'TR_MAX_SUB_LIMITS' => $hp_sub,
 			'TR_MAX_ALS_VALUES' => $hp_als,
@@ -296,14 +296,14 @@ function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
 			'HP_SQL_USER_VALUE' => $hp_sql_user,
 			'HP_TRAFF_VALUE' => $hp_traff,
 			'HP_DISK_VALUE' => $hp_disk,
-			'HP_DESCRIPTION_VALUE' => stripslashes($description),
+			'HP_DESCRIPTION_VALUE' => tohtml($description),
 			'HP_PRICE' => $price,
 			'HP_SETUPFEE' => $setup_fee,
-			'HP_CURRENCY' => stripslashes($value),
+			'HP_CURRENCY' => tohtml($value),
 			'READONLY' => $readonly,
 			'DISBLED' => $disabled,
-			'HP_PAYMENT' => stripslashes($payment),
-			'HP_TOS_VALUE' => stripslashes($tos),
+			'HP_PAYMENT' => tohtml($payment),
+			'HP_TOS_VALUE' => tohtml($tos),
 
 			'TR_PHP_YES' => ($hp_php == '_yes_') ? Config::getInstance()->get('HTML_CHECKED') : '',
 			'TR_PHP_NO' => ($hp_php == '_no_')	? Config::getInstance()->get('HTML_CHECKED') : '',

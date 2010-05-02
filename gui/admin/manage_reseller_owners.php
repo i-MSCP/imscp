@@ -86,13 +86,13 @@ function gen_reseller_table(&$tpl, &$sql) {
 
 			$admin_id = $rs->fields['admin_id'];
 
-			$admin_id_var_name = "admin_id_$admin_id";
+			$admin_id_var_name = "admin_id_".$admin_id;
 
 			$tpl->assign(
 				array(
 					'NUMBER' => $i + 1,
-					'RESELLER_NAME' => $rs->fields['admin_name'],
-					'OWNER' => $rs->fields['created_by'],
+					'RESELLER_NAME' => tohtml($rs->fields['admin_name']),
+					'OWNER' => tohtml($rs->fields['created_by']),
 					'CKB_NAME' => $admin_id_var_name,
 				)
 			);
@@ -134,7 +134,7 @@ function gen_reseller_table(&$tpl, &$sql) {
 
 		$tpl->assign(
 			array(
-				'OPTION' => $rs->fields['admin_name'],
+				'OPTION' => tohtml($rs->fields['admin_name']),
 				'VALUE' => $rs->fields['admin_id'],
 				'SELECTED' => $selected,
 			)
