@@ -201,7 +201,7 @@ function check_login($fName = null, $preventExternalLogin = true) {
 
 		if (is_xhr()) {
 			header('HTTP/1.0 403 Forbidden');
-			exit;
+			exit();
 		}
 
 		user_goto('/index.php');
@@ -214,6 +214,7 @@ function check_login($fName = null, $preventExternalLogin = true) {
 		switch ($level) {
 			case 'user':
 				$level = 'client';
+				break;
 			case 'admin':
 			case 'reseller':
 				if ($level != $_SESSION['user_type']) {
@@ -230,10 +231,17 @@ function check_login($fName = null, $preventExternalLogin = true) {
 
 			$info = parse_url($_SERVER['HTTP_REFERER']);
 			if (isset($info['host']) && !empty($info['host'])) {
-				if ($info['host'] != $_SERVER['HTTP_HOST']
+				// Check if $_SERVER['HTTP_REFERER'] equals $_SERVER['HTTP_HOST']
+				// w/ port number stipped
+				$http_host = $_SERVER['HTTP_HOST'];
+				if ($info['host'] != substr($http_host, 0, (int) (strlen($http_host) - strlen(strrchr($http_host, ':'))))
 					|| $info['host'] != $_SERVER['SERVER_NAME']) {
 					set_page_message(tr('Request from foreign host was blocked!'));
-					if (!(substr($_SERVER['SCRIPT_FILENAME'], (int)-strlen($_SERVER['REDIRECT_URL']), strlen($_SERVER['REDIRECT_URL'])) === $_SERVER['REDIRECT_URL'])) {
+					if (!(substr(
+							$_SERVER['SCRIPT_FILENAME'],
+							(int)-strlen($_SERVER['REDIRECT_URL']),
+							strlen($_SERVER['REDIRECT_URL'])
+						) === $_SERVER['REDIRECT_URL'])) {
 						redirect_to_level_page();
 					}
 				}

@@ -1,6 +1,10 @@
 ispCP ω 1.0.6 Change Log
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-05-02 Benedikt Heintel
+	- GUI:
+		* Fixed #2092: login.php changes to allow defaul port modification
+
 2010-05-02 Thomas Wacker
 	- GUI:
 		* Fixed #2367: Wrong entity conversion of "&" in personal admin data
