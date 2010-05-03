@@ -2,8 +2,13 @@ ispCP ω 1.0.6 Change Log
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2010-05-02 Benedikt Heintel
+	- LANGAUGES:
+		* Added Chinese (Taiwan)
+		* Updated Chinese (Hong-Kong)
+
+2010-05-02 Benedikt Heintel
 	- GUI:
-		* Fixed #2092: login.php changes to allow defaul port modification
+		* Fixed #2092: login.php changes to allow default port modification
 
 2010-05-02 Thomas Wacker
 	- GUI:
