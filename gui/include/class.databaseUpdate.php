@@ -70,6 +70,7 @@ class databaseUpdate extends ispcpUpdate {
 		if (!isset($instance) || $instance === NULL) {
 			$instance = new self();	
 		}
+
 		return $instance;
 	}
 
@@ -93,13 +94,22 @@ class databaseUpdate extends ispcpUpdate {
 
 		$sqlUpd = array();
 
-		$sqlUpd[] = "INSERT INTO `config` (name, value) VALUES ('DATABASE_REVISION' , '1')";
+		$sqlUpd[] = "
+			INSERT INTO
+				`config` (name, value)
+			VALUES (
+				'DATABASE_REVISION',
+				'1'
+			)
+			;
+		";
 
 		return $sqlUpd;
 	}
 
 	/**
-	 * Updates the database fields ispcp.mail_users.mail_addr to the right mail address.
+	 * Updates the database fields ispcp.mail_users.mail_addr to the right mail
+	 * address.
 	 *
 	 * @author		Christian Hernmarck
 	 * @version		1.0
@@ -110,45 +120,105 @@ class databaseUpdate extends ispcpUpdate {
 	 */
 	protected function _databaseUpdate_2() {
 
-		$sqlUpd = array(); // we need several SQL Statements...
+		$sqlUpd = array();
 
 		// domain mail + forward
-		$sqlUpd[]	= "UPDATE `mail_users`, `domain`"
-					. "SET `mail_addr` = CONCAT(`mail_acc`,'@',`domain_name`)"
-					. "WHERE `mail_users`.`domain_id` = `domain`.`domain_id`"
-					. "AND (`mail_type` = 'normal_mail' OR `mail_type` = 'normal_forward');";
+		$sqlUpd[] = "
+			UPDATE
+				`mail_users`,
+				`domain`
+			SET
+				`mail_addr` = CONCAT(`mail_acc`,'@',`domain_name`)
+			WHERE
+				`mail_users`.`domain_id` = `domain`.`domain_id`
+			AND
+				(`mail_type` = 'normal_mail' OR `mail_type` = 'normal_forward')
+			;
+		";
 
 		// domain-alias mail + forward
-		$sqlUpd[]	= "UPDATE `mail_users`, `domain_aliasses`"
-					. "SET `mail_addr` = CONCAT(`mail_acc`,'@',`alias_name`)"
-					. "WHERE `mail_users`.`domain_id` = `domain_aliasses`.`domain_id` AND `mail_users`.`sub_id` = `domain_aliasses`.`alias_id`"
-					. "AND (`mail_type` = 'alias_mail' OR `mail_type` = 'alias_forward');";
+		$sqlUpd[] = "
+			UPDATE
+				`mail_users`,
+				`domain_aliasses`
+			SET
+				`mail_addr` = CONCAT(`mail_acc`,'@',`alias_name`)
+			WHERE
+				`mail_users`.`domain_id` = `domain_aliasses`.`domain_id`
+			AND
+				`mail_users`.`sub_id` = `domain_aliasses`.`alias_id`
+			AND
+				(`mail_type` = 'alias_mail' OR `mail_type` = 'alias_forward')
+			;
+		";
 
 		// subdomain mail + forward
-		$sqlUpd[]	= "UPDATE `mail_users`, `subdomain`, `domain`"
-					. "SET `mail_addr` = CONCAT(`mail_acc`,'@',`subdomain_name`,'.',`domain_name`)"
-					. "WHERE `mail_users`.`domain_id` = `subdomain`.`domain_id` AND `mail_users`.`sub_id` = `subdomain`.`subdomain_id`"
-					. "AND `mail_users`.`domain_id` = `domain`.`domain_id`"
-					. "AND (`mail_type` = 'subdom_mail' OR `mail_type` = 'subdom_forward');";
+		$sqlUpd[] = "
+			UPDATE
+				`mail_users`,
+				`subdomain`,
+				`domain`
+			SET
+				`mail_addr` = CONCAT(`mail_acc`,'@',`subdomain_name`,'.',`domain_name`)
+			WHERE
+				`mail_users`.`domain_id` = `subdomain`.`domain_id`
+			AND
+				`mail_users`.`sub_id` = `subdomain`.`subdomain_id`
+			AND
+				`mail_users`.`domain_id` = `domain`.`domain_id`
+			AND
+				(`mail_type` = 'subdom_mail' OR `mail_type` = 'subdom_forward')
+			;
+		";
 
 		// domain catchall
-		$sqlUpd[]	= "UPDATE `mail_users`, `domain`"
-					. "SET `mail_addr` = CONCAT('@',`domain_name`)"
-					. "WHERE `mail_users`.`domain_id` = `domain`.`domain_id`"
-					. "AND `mail_type` = 'normal_catchall';";
+		$sqlUpd[] = "
+			UPDATE
+				`mail_users`,
+				`domain`
+			SET
+				`mail_addr` = CONCAT('@',`domain_name`)
+			WHERE
+				`mail_users`.`domain_id` = `domain`.`domain_id`
+			AND
+				`mail_type` = 'normal_catchall'
+			;
+		";
 
 		// domain-alias catchall
-		$sqlUpd[]	= "UPDATE `mail_users`, `domain_aliasses`"
-					. "SET `mail_addr` = CONCAT('@',`alias_name`)"
-					. "WHERE `mail_users`.`domain_id` = `domain_aliasses`.`domain_id` AND `mail_users`.`sub_id` = `domain_aliasses`.`alias_id`"
-					. "AND `mail_type` = 'alias_catchall';";
+		$sqlUpd[] = "
+			UPDATE
+				`mail_users`,
+				`domain_aliasses`
+			SET
+				`mail_addr` = CONCAT('@',`alias_name`)
+			WHERE
+				`mail_users`.`domain_id` = `domain_aliasses`.`domain_id`
+			AND
+				`mail_users`.`sub_id` = `domain_aliasses`.`alias_id`
+			AND
+				`mail_type` = 'alias_catchall'
+			;
+		";
 
 		// subdomain catchall
-		$sqlUpd[]	= "UPDATE `mail_users`, `subdomain`, `domain`"
-					. "SET `mail_addr` = CONCAT('@',`subdomain_name`,'.',`domain_name`)"
-					. "WHERE `mail_users`.`domain_id` = `subdomain`.`domain_id` AND `mail_users`.`sub_id` = `subdomain`.`subdomain_id`"
-					. "AND `mail_users`.`domain_id` = `domain`.`domain_id`"
-					. "AND `mail_type` = 'subdom_catchall';";
+		$sqlUpd[] = "
+			UPDATE
+				`mail_users`,
+				`subdomain`,
+				`domain`
+			SET
+				`mail_addr` = CONCAT('@',`subdomain_name`,'.',`domain_name`)
+			WHERE
+				`mail_users`.`domain_id` = `subdomain`.`domain_id`
+			AND
+				`mail_users`.`sub_id` = `subdomain`.`subdomain_id`
+			AND
+				`mail_users`.`domain_id` = `domain`.`domain_id`
+			AND
+				`mail_type` = 'subdom_catchall'
+			;
+		";
 
 		return $sqlUpd;
 	}
@@ -167,7 +237,13 @@ class databaseUpdate extends ispcpUpdate {
 
 		$sqlUpd = array();
 
-		$sqlUpd[] = "ALTER IGNORE TABLE `orders_settings` CHANGE `id` `id` int(10) unsigned NOT NULL auto_increment;";
+		$sqlUpd[] = "
+			ALTER IGNORE TABLE
+				`orders_settings`
+			CHANGE
+				`id` `id` int(10) unsigned NOT NULL auto_increment
+			;
+		";
 
 		return $sqlUpd;
 	}
@@ -186,9 +262,29 @@ class databaseUpdate extends ispcpUpdate {
 
 		$sqlUpd = array();
 
-		$sqlUpd[] = "ALTER IGNORE TABLE `mail_users` CHANGE `mail_auto_respond` `mail_auto_respond_text` text collate utf8_unicode_ci;";
-		$sqlUpd[] = "ALTER IGNORE TABLE `mail_users` ADD `mail_auto_respond` BOOL NOT NULL default '0' AFTER `status`;";
-		$sqlUpd[] = "ALTER IGNORE TABLE `mail_users` CHANGE `mail_type` `mail_type` varchar(30);";
+		$sqlUpd[] = "
+			ALTER IGNORE TABLE
+				`mail_users`
+			CHANGE
+				`mail_auto_respond` `mail_auto_respond_text` text collate utf8_unicode_ci
+			;
+		";
+
+		$sqlUpd[] = "
+			ALTER IGNORE TABLE
+				`mail_users`
+			ADD
+				`mail_auto_respond` BOOL NOT NULL default '0' AFTER `status`
+			;
+		";
+
+		$sqlUpd[] = "
+			ALTER IGNORE TABLE
+				`mail_users`
+			CHANGE
+				`mail_type` `mail_type` varchar(30)
+			;
+		";
 
 		return $sqlUpd;
 	}
@@ -207,8 +303,21 @@ class databaseUpdate extends ispcpUpdate {
 
 		$sqlUpd = array();
 
-		$sqlUpd[] = "ALTER IGNORE TABLE `sql_user` CHANGE `sqlu_name` `sqlu_name` varchar(64) binary DEFAULT 'n/a';";
-		$sqlUpd[] = "ALTER IGNORE TABLE `sql_user` CHANGE `sqlu_pass` `sqlu_pass` varchar(64) binary DEFAULT 'n/a';";
+		$sqlUpd[] = "
+			ALTER IGNORE TABLE
+				`sql_user`
+			CHANGE
+				`sqlu_name` `sqlu_name` varchar(64) binary DEFAULT 'n/a'
+			;
+		";
+
+		$sqlUpd[] = "
+			ALTER IGNORE TABLE
+				`sql_user`
+			CHANGE
+				`sqlu_pass` `sqlu_pass` varchar(64) binary DEFAULT 'n/a'
+			;
+		";
 
 		return $sqlUpd;
 	}
@@ -227,9 +336,15 @@ class databaseUpdate extends ispcpUpdate {
 
 		$sqlUpd = array();
 
-		$sqlUpd[] = "ALTER IGNORE TABLE `htaccess`
-					CHANGE `user_id` `user_id` VARCHAR(255) NULL DEFAULT NULL,
-					CHANGE `group_id` `group_id` VARCHAR(255) NULL DEFAULT NULL";
+		$sqlUpd[] = "
+			ALTER IGNORE TABLE
+				`htaccess`
+			CHANGE
+				`user_id` `user_id` VARCHAR(255) NULL DEFAULT NULL,
+			CHANGE
+				`group_id` `group_id` VARCHAR(255) NULL DEFAULT NULL
+			;
+		";
 
 		return $sqlUpd;
 	}
@@ -248,15 +363,24 @@ class databaseUpdate extends ispcpUpdate {
 
 		$sqlUpd = array();
 
-		$sqlUpd[] = "DROP TABLE IF EXISTS `subdomain_alias`";
-		$sqlUpd[] = "CREATE TABLE IF NOT EXISTS `subdomain_alias` (
+		$sqlUpd[] = "
+			DROP TABLE IF EXISTS
+				`subdomain_alias`
+			;
+		";
+		
+		$sqlUpd[] = "
+			CREATE TABLE IF NOT EXISTS
+				`subdomain_alias` (
 					`subdomain_alias_id` int(10) unsigned NOT NULL auto_increment,
 					`alias_id` int(10) unsigned default NULL,
 					`subdomain_alias_name` varchar(200) collate utf8_unicode_ci default NULL,
 					`subdomain_alias_mount` varchar(200) collate utf8_unicode_ci default NULL,
 					`subdomain_alias_status` varchar(255) collate utf8_unicode_ci default NULL,
 					PRIMARY KEY (`subdomain_alias_id`)
-					) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+				) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+			;
+		";
 
 		return $sqlUpd;
 	}
@@ -294,12 +418,21 @@ class databaseUpdate extends ispcpUpdate {
 
 		$sqlUpd = array();
 
-		$sqlUpd[] = "ALTER IGNORE TABLE `mail_users`
-					CHANGE `mail_acc` `mail_acc` VARCHAR(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
-					CHANGE `mail_pass` `mail_pass` VARCHAR(150) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
-					CHANGE `mail_forward` `mail_forward` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
-					CHANGE `mail_type` `mail_type` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
-					CHANGE `status` `status` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL";
+		$sqlUpd[] = "
+			ALTER IGNORE TABLE
+				`mail_users`
+			CHANGE
+				`mail_acc` `mail_acc` VARCHAR(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+			CHANGE
+				`mail_pass` `mail_pass` VARCHAR(150) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+			CHANGE
+				`mail_forward` `mail_forward` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+			CHANGE
+				`mail_type` `mail_type` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+			CHANGE
+				`status` `status` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL
+			;
+		";
 
 		return $sqlUpd;
 	}
@@ -318,8 +451,23 @@ class databaseUpdate extends ispcpUpdate {
 
 		$sqlUpd = array();
 
-		$sqlUpd[] = "UPDATE `config` SET `value` = CONCAT(`value`, ';') WHERE `name` LIKE \"PORT_%\"";
-		$sqlUpd[] = "UPDATE `config` SET `value` = CONCAT(`value`, 'localhost') WHERE `name` IN (\"PORT_POSTGREY\", \"PORT_AMAVIS\", \"PORT_SPAMASSASSIN\", \"PORT_POLICYD-WEIGHT\")";
+		$sqlUpd[] = "
+			UPDATE
+				`config`
+			SET
+				`value` = CONCAT(`value`, ';')
+			WHERE `name` LIKE \"PORT_%\"
+			;
+		";
+
+		$sqlUpd[] = "
+			UPDATE
+				`config`
+			SET
+				`value` = CONCAT(`value`, 'localhost')
+			WHERE `name` IN (\"PORT_POSTGREY\", \"PORT_AMAVIS\", \"PORT_SPAMASSASSIN\", \"PORT_POLICYD-WEIGHT\")
+			;
+		";
 
 		return $sqlUpd;
 	}
@@ -338,8 +486,25 @@ class databaseUpdate extends ispcpUpdate {
 
 		$sqlUpd = array();
 
-		$sqlUpd[] = "ALTER IGNORE TABLE `admin` ADD `state` VARCHAR(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `city`";
-		$sqlUpd[] = "ALTER IGNORE TABLE `orders` ADD `state` VARCHAR(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL AFTER `city`";
+		$sqlUpd[] = "
+			ALTER IGNORE TABLE
+				`admin`
+			ADD
+				`state` VARCHAR(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL
+			AFTER
+				`city`
+			;
+		";
+
+		$sqlUpd[] = "
+			ALTER IGNORE TABLE
+				`orders`
+			ADD
+				`state` VARCHAR(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL
+			AFTER
+				`city`
+			;
+		";
 
 		return $sqlUpd;
 	}
@@ -358,7 +523,13 @@ class databaseUpdate extends ispcpUpdate {
 
 		$sqlUpd = array();
 
-		$sqlUpd[] = "INSERT INTO `config` (name, value) VALUES ('SHOW_SERVERLOAD' , '1')";
+		$sqlUpd[] = "
+			INSERT INTO
+				`config` (name, value)
+			VALUES
+				('SHOW_SERVERLOAD', '1')
+			;
+		";
 
 		return $sqlUpd;
 	}
@@ -377,15 +548,35 @@ class databaseUpdate extends ispcpUpdate {
 
 		$sqlUpd = array();
 
-		$sqlUpd[] = "INSERT INTO `config` (name, value) VALUES ('PREVENT_EXTERNAL_LOGIN_ADMIN' , '1')";
-		$sqlUpd[] = "INSERT INTO `config` (name, value) VALUES ('PREVENT_EXTERNAL_LOGIN_RESELLER' , '1')";
-		$sqlUpd[] = "INSERT INTO `config` (name, value) VALUES ('PREVENT_EXTERNAL_LOGIN_CLIENT' , '1')";
+		$sqlUpd[] = "
+			INSERT INTO
+				`config` (name, value)
+			VALUES
+				('PREVENT_EXTERNAL_LOGIN_ADMIN', '1')
+			;
+		";
+
+		$sqlUpd[] = "
+			INSERT INTO
+				`config` (name, value)
+			VALUES
+				('PREVENT_EXTERNAL_LOGIN_RESELLER', '1')
+			;
+		";
+
+		$sqlUpd[] = "
+			INSERT INTO
+				`config` (name, value)
+			VALUES ('PREVENT_EXTERNAL_LOGIN_CLIENT','1')
+			;
+		";
 
 		return $sqlUpd;
 	}
 
 	/**
-	 * Fixed #1761: Hosting plan description (to short field description in SQL table hosting_plan)
+	 * Fixed #1761: Hosting plan description (to short field description in SQL
+	 * table hosting_plan)
 	 *
 	 * @author		Thomas Häber
 	 * @version		1.0.1
@@ -398,7 +589,13 @@ class databaseUpdate extends ispcpUpdate {
 
 		$sqlUpd = array();
 
-		$sqlUpd[] = "ALTER IGNORE TABLE `hosting_plans` CHANGE `description` `description` TEXT";
+		$sqlUpd[] = "
+			ALTER IGNORE TABLE
+				`hosting_plans`
+			CHANGE
+				`description` `description` TEXT
+			;
+		";
 
 		return $sqlUpd;
 	}
@@ -417,7 +614,13 @@ class databaseUpdate extends ispcpUpdate {
 
 		$sqlUpd = array();
 
-		$sqlUpd[] = "ALTER IGNORE TABLE `domain` ADD `allowbackup` VARCHAR( 8 ) NOT NULL DEFAULT 'full';";
+		$sqlUpd[] = "
+			ALTER IGNORE TABLE
+				`domain`
+			ADD
+				`allowbackup` VARCHAR(8) NOT NULL DEFAULT 'full'
+			;
+		";
 
 		return $sqlUpd;
 	}
@@ -437,7 +640,13 @@ class databaseUpdate extends ispcpUpdate {
 
 		$sqlUpd = array();
 
-		$sqlUpd[] = "INSERT IGNORE INTO `config` (`name`, `value`) VALUES ('PORT_SMTP-SSL', '465;tcp;SMTP-SSL;1;0;')";
+		$sqlUpd[] = "
+			INSERT IGNORE INTO
+				`config` (`name`, `value`)
+			VALUES
+				('PORT_SMTP-SSL', '465;tcp;SMTP-SSL;1;0;')
+			;
+		";
 
 		return $sqlUpd;
 	}
@@ -459,22 +668,45 @@ class databaseUpdate extends ispcpUpdate {
 
 		$sql = Database::getInstance();
 
-		$query	= "SELECT `ticket_id`, `ticket_subject`, `ticket_message`"
-				. " FROM `tickets` ORDER BY `ticket_id`";
+		$query	= "
+			SELECT
+				`ticket_id`,
+				`ticket_subject`,
+				`ticket_message`
+			FROM
+				`tickets`
+			ORDER BY
+				`ticket_id`
+			;
+		";
 
 		$rs = exec_query($sql, $query);
 
 		if ($rs->RecordCount() != 0) {
 			while (!$rs->EOF) {
-				$subject = html_entity_decode($rs->fields['ticket_subject'], ENT_QUOTES, 'UTF-8');
-				$message = html_entity_decode($rs->fields['ticket_message'], ENT_QUOTES, 'UTF-8');
-				if ($subject != $rs->fields['ticket_subject']
-					|| $message != $rs->fields['ticket_message']) {
-					$sqlUpd[] = "UPDATE `tickets` SET"
-							. " `ticket_subject` = '".addslashes($subject)."'"
-							. ", `ticket_message` = '".addslashes($message)."'"
-							. " WHERE `ticket_id` = '".addslashes($rs->fields['ticket_id'])."'";
+				$subject = html_entity_decode(
+					$rs->fields['ticket_subject'], ENT_QUOTES, 'UTF-8'
+				);
+
+				$message = html_entity_decode(
+					$rs->fields['ticket_message'], ENT_QUOTES, 'UTF-8'
+				);
+
+				if ($subject != $rs->fields['ticket_subject'] ||
+					$message != $rs->fields['ticket_message']) {
+
+					$sqlUpd[] = "
+						UPDATE
+							`tickets`
+						SET
+							`ticket_subject` = '" . addslashes($subject) . "',
+							`ticket_message` = '" . addslashes($message) . "',
+						WHERE
+							`ticket_id` = '" . addslashes($rs->fields['ticket_id']) . "'
+						;
+					";
 				}
+
 				$rs->MoveNext();
 			}
 		}
@@ -496,7 +728,7 @@ class databaseUpdate extends ispcpUpdate {
 
 		$sqlUpd = array();
 
-		//moved to 19
+		// Moved to 19
 		return $sqlUpd;
 	}
 
@@ -514,7 +746,9 @@ class databaseUpdate extends ispcpUpdate {
 
 		$sqlUpd = array();
 
-		$sqlUpd[] = "CREATE TABLE IF NOT EXISTS `domain_dns` (
+		$sqlUpd[] = "
+			CREATE TABLE IF NOT EXISTS
+				`domain_dns` (
 					`domain_dns_id` int(11) NOT NULL auto_increment,
 					`domain_id` int(11) NOT NULL,
 					`alias_id` int(11) default NULL,
@@ -523,11 +757,33 @@ class databaseUpdate extends ispcpUpdate {
 					`domain_type` enum('A','AAAA','CERT','CNAME','DNAME','GPOS','KEY','KX','MX','NAPTR','NSAP','NS​','NXT','PTR','PX','SIG','SRV','TXT') collate utf8_unicode_ci NOT NULL default 'A',
 					`domain_text` varchar(128) collate utf8_unicode_ci NOT NULL,
 					PRIMARY KEY  (`domain_dns_id`)
-					) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
+				) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+			;
+		";
 
-		$sqlUpd[] = "ALTER IGNORE TABLE `domain` ADD `domain_dns` VARCHAR( 15 ) NOT NULL DEFAULT 'no';";
-		$sqlUpd[] = "UPDATE `hosting_plans` SET `props` = CONCAT(`props`,'_no_;') ";
-		$sqlUpd[] = "UPDATE `config` SET `value` = '465;tcp;SMTP-SSL;1;0;' WHERE `name` = 'PORT_SMTP-SSL';";
+		$sqlUpd[] = "
+			ALTER IGNORE TABLE
+				`domain`
+			ADD
+				`domain_dns` VARCHAR(15) NOT NULL DEFAULT 'no'
+			;
+		";
+		
+		$sqlUpd[] = "
+			UPDATE
+				`hosting_plans`
+			SET
+				`props` = CONCAT(`props`,'_no_;')
+			;
+		";
+
+		$sqlUpd[] = "
+			UPDATE
+				`config`
+			SET
+				`value` = '465;tcp;SMTP-SSL;1;0;' WHERE `name` = 'PORT_SMTP-SSL'
+			;
+		";
 
 		return $sqlUpd;
 	}
@@ -548,24 +804,38 @@ class databaseUpdate extends ispcpUpdate {
 
 		$sql = Database::getInstance();
 
-		$query	= "SELECT `reseller_id`"
-				. " FROM `reseller_props` ORDER BY `reseller_id`";
+		$query	= "
+			SELECT
+				`reseller_id`
+			FROM
+				`reseller_props`
+			ORDER BY
+				`reseller_id`
+			;
+		";
 
 		$rs = exec_query($sql, $query);
 
 		if ($rs->RecordCount() != 0) {
 			while (!$rs->EOF) {
 				$props = recalc_reseller_c_props($rs->fields['reseller_id']);
-				$sql = "UPDATE `reseller_props` SET ";
-				$sql .= "`current_dmn_cnt` = '".$props[0]."',";
-				$sql .= "`current_sub_cnt` = '".$props[1]."',";
-				$sql .= "`current_als_cnt` = '".$props[2]."',";
-				$sql .= "`current_mail_cnt` = '".$props[3]."',";
-				$sql .= "`current_ftp_cnt` = '".$props[4]."',";
-				$sql .= "`current_sql_db_cnt` = '".$props[5]."',";
-				$sql .= "`current_sql_user_cnt` = '".$props[6]."'";
-				$sql .= " WHERE `reseller_id` = ".$rs->fields['reseller_id'];
-				$sqlUpd[] = $sql;
+
+				$sqlUpd[] = "
+					UPDATE
+						`reseller_props`
+					SET
+						`current_dmn_cnt` = '{$props[0]}',
+						`current_sub_cnt` = '{$props[1]}',
+						`current_als_cnt` = '{$props[2]}',
+						`current_mail_cnt` = '{$props[3]}',
+						`current_ftp_cnt` = '{$props[4]}',
+						`current_sql_db_cnt` = '{$props[5]}',
+						`current_sql_user_cnt` = '{$props[6]}'
+					WHERE
+						`reseller_id` = " . $rs->fields['reseller_id'] . "
+					;
+				";
+
 				$rs->MoveNext();
 			}
 		}
@@ -598,6 +868,7 @@ class databaseUpdate extends ispcpUpdate {
 				`email_tpls`
 			WHERE
 				`name` = ?
+			;
 		";
 
 		$res = exec_query($sql, $query, array('after-order-msg'));
@@ -605,10 +876,19 @@ class databaseUpdate extends ispcpUpdate {
 		while ($data = $res->FetchRow()) {
 			$msg = $data['message'];
 			$n = strpos($msg, '{DOMAIN}');
+
 			if ($n !== false) {
 				$msg = substr($msg, 0, $n+8).$add.substr($msg, $n+8);
-				$sqlUpd[] = "UPDATE `email_tpls` SET `message`='".addslashes($msg)."'"
-						  . " WHERE `id` = ".$data['id'];
+
+				$sqlUpd[] = "
+					UPDATE
+						`email_tpls`
+					SET
+						`message` = '" . addslashes($msg) . "'
+					WHERE
+						`id` = {$data['id']}
+					;
+				";
 			}
 		}
 
@@ -630,7 +910,15 @@ class databaseUpdate extends ispcpUpdate {
 
 		$sqlUpd = array();
 
-		$sqlUpd[] = "ALTER IGNORE TABLE `domain` ADD `domain_expires` INT( 10 ) UNSIGNED NOT NULL DEFAULT '0' AFTER `domain_created`";
+		$sqlUpd[] = "
+			ALTER IGNORE TABLE
+				`domain`
+			ADD
+				`domain_expires` INT( 10 ) UNSIGNED NOT NULL DEFAULT '0'
+			AFTER
+				`domain_created`
+			;
+		";
 
 		return $sqlUpd;
 	}
@@ -649,7 +937,13 @@ class databaseUpdate extends ispcpUpdate {
 
 		$sqlUpd = array();
 
-		$sqlUpd[] = "ALTER IGNORE TABLE `domain_dns` CHANGE `domain_type` `domain_type` ENUM( 'A', 'AAAA', 'CERT', 'CNAME', 'DNAME', 'GPOS', 'KEY', 'KX', 'MX', 'NAPTR', 'NSAP', 'NS', 'NXT', 'PTR', 'PX', 'SIG', 'SRV', 'TXT' ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'A'";
+		$sqlUpd[] = "
+			ALTER IGNORE TABLE
+				`domain_dns`
+			CHANGE
+				`domain_type` `domain_type` ENUM( 'A', 'AAAA', 'CERT', 'CNAME', 'DNAME', 'GPOS', 'KEY', 'KX', 'MX', 'NAPTR', 'NSAP', 'NS', 'NXT', 'PTR', 'PX', 'SIG', 'SRV', 'TXT' ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'A'
+			;
+		";
 
 		return $sqlUpd;
 	}
@@ -686,7 +980,15 @@ class databaseUpdate extends ispcpUpdate {
 		 * - Possible inversion between backup and dns properties
 		 * - Remove the last semicolon in all "hosting_plans.props"
 		 */
-		$query = "SELECT `id`, `props` FROM `hosting_plans`";
+		$query = "
+			SELECT
+				`id`,
+				`props`
+			FROM
+				`hosting_plans`
+			;
+		";
+
 		$rs = exec_query($sql, $query);
 
 		if ($rs->RecordCount() != 0)
@@ -717,9 +1019,13 @@ class databaseUpdate extends ispcpUpdate {
 				}
 
 				$sqlUpd[] = "
-								UPDATE `hosting_plans`
-								SET `props` = '$new_props'
-								WHERE `id`= '{$rs->fields['id']}';
+					UPDATE
+						`hosting_plans`
+					SET
+						`props` = '$new_props'
+					WHERE
+						`id`= '{$rs->fields['id']}'
+					;
 				";
 
 				$rs->MoveNext();
@@ -728,43 +1034,62 @@ class databaseUpdate extends ispcpUpdate {
 
 		/**
 		 * Fixes for "domain.allowbackup" and "domain.domain_dns" fieds
-		 *  - Possible inversion between the values of "domain.allowbackup" and "domain.domain_dns"
+		 *  - Possible inversion between the values of "domain.allowbackup" and
+		 *  "domain.domain_dns"
 		 *  - Possible unstripped values
 		 *  - Possible missing value in "domain.allowbackup"
-		 *  - Change the naming convention for option 'domain' related to the backup feature
+		 *  - Change the naming convention for option 'domain' related to the
+		 *  backup feature
 		 */
 
 		// Temporary table used by the following SQL statement
 		$sqlUpd[] = "
-						CREATE TEMPORARY TABLE IF NOT EXISTS `upd_ispcp`
-						AS SELECT
-							`domain_id` AS `tdomain_id`,
-							TRIM(BOTH '_' FROM `allowbackup`) AS `tdomain_dns`,
-							`domain_dns` AS `tallowbackup`
-					 	FROM `domain`
-					 	WHERE `domain_dns` NOT REGEXP '^[(yes|no)]';
+			CREATE TEMPORARY TABLE IF NOT EXISTS
+				`upd_ispcp`
+			AS SELECT
+				`domain_id` AS `tdomain_id`,
+				TRIM(BOTH '_' FROM `allowbackup`) AS `tdomain_dns`,
+				`domain_dns` AS `tallowbackup`
+			FROM
+				`domain`
+			WHERE
+				`domain_dns` NOT REGEXP '^[(yes|no)]'
+			;
 		";
 
-		// Possible inversion between the values of "domain.allowbackup" and "domain.domain_dns
+		// Possible inversion between the values of "domain.allowbackup" and
+		// "domain.domain_dns
 		$sqlUpd[] = "
-						UPDATE `domain`,`upd_ispcp`
-						SET `allowbackup`=`tallowbackup`,
-							`domain_dns`=`tdomain_dns`
-						WHERE `domain_id`=`tdomain_id`;
+			UPDATE
+				`domain`,`upd_ispcp`
+			SET
+				`allowbackup` = `tallowbackup`,
+				`domain_dns` = `tdomain_dns`
+			WHERE
+				`domain_id` = `tdomain_id`
+			;
 		";
 
 		// Possible missing value in "domain.allowbackup"
 		$sqlUpd[] = "
-						UPDATE `domain`
-						SET `allowbackup`='full'
-						WHERE `allowbackup`='';
+			UPDATE
+				`domain`
+			SET
+				`allowbackup` = 'full'
+			WHERE
+				`allowbackup` = ''
+			;
 		";
 
-		// Change the naming convention for option 'domain' related to the backup feature
+		// Change the naming convention for option 'domain' related to the
+		// backup feature
 		$sqlUpd[] = "
-						UPDATE `domain`
-						SET `allowbackup` = 'dmn'
-						WHERE `allowbackup` = 'domain';
+			UPDATE
+				`domain`
+			SET
+				`allowbackup` = 'dmn'
+			WHERE
+				`allowbackup` = 'domain';
 		";
 
 		return $sqlUpd;
@@ -785,9 +1110,13 @@ class databaseUpdate extends ispcpUpdate {
 		$sqlUpd = array();
 
 		$sqlUpd[] = "
-						UPDATE `user_gui_props`
-						SET `lang` = 'lang_EnglishBritain'
-						WHERE `lang` = 'lang_English';
+			UPDATE
+				`user_gui_props`
+			SET
+				`lang` = 'lang_EnglishBritain'
+			WHERE
+				`lang` = 'lang_English'
+			;
 		";
 
 		return $sqlUpd;
@@ -808,15 +1137,38 @@ class databaseUpdate extends ispcpUpdate {
 		$sqlUpd = array();
 
 		// Change all NULL values to decimal 0
-		$sqlUpd[] = "UPDATE `domain_dns` SET `domain_dns`.`alias_id` = '0' ".
-					"WHERE `domain_dns`.`alias_id`= NULL;";
+		$sqlUpd[] = "
+			UPDATE
+				`domain_dns`
+			SET
+				`domain_dns`.`alias_id` = '0'
+			WHERE
+				`domain_dns`.`alias_id`= NULL
+			;
+		";
+
 		// Remove NULL value for alias_id
-		$sqlUpd[] = "ALTER IGNORE TABLE `domain_dns` CHANGE `domain_dns`.`alias_id` ".
-					"`domain_dns`.`alias_id` INT(11) NOT NULL;";
+		$sqlUpd[] = "
+			ALTER IGNORE TABLE
+				`domain_dns`
+			CHANGE
+				`domain_dns`.`alias_id` `domain_dns`.`alias_id` INT(11) NOT NULL
+			;
+		";
+
 		// Add Unique Key
-		$sqlUpd[] = "ALTER IGNORE TABLE `domain_dns` ".
-					"ADD UNIQUE (`domain_id`, `alias_id`, `domain_dns`, ".
-					"`domain_class`, `domain_type`, `domain_text`);";
+		$sqlUpd[] = "
+			ALTER IGNORE TABLE
+				`domain_dns`
+			ADD UNIQUE
+				(`domain_id`,
+				`alias_id`,
+				`domain_dns`,
+				`domain_class`,
+				`domain_type`,
+				`domain_text`)
+			;
+		";
 
 		return $sqlUpd;
 	}
@@ -835,9 +1187,17 @@ class databaseUpdate extends ispcpUpdate {
 	 */
 	protected function _databaseUpdate_27() {
 		$sqlUpd = array();
-		$sqlUpd[] = "ALTER IGNORE TABLE " .
-				    "`reseller_props` ADD `support_system` ENUM( 'yes', 'no' ) " .
-				    "NOT NULL DEFAULT 'yes' AFTER `max_traff_amnt`";
+		
+		$sqlUpd[] = "
+			ALTER IGNORE TABLE
+				`reseller_props`
+			ADD
+				`support_system` ENUM( 'yes', 'no' ) NOT NULL DEFAULT 'yes'
+			AFTER
+				`max_traff_amnt`
+			;
+		";
+
 		return $sqlUpd;
 	}
 
@@ -853,15 +1213,25 @@ class databaseUpdate extends ispcpUpdate {
 	 */
 	protected function _databaseUpdate_28() {
 		$sqlUpd = array();
+
 		// Dropping the table is safe enough because the worst thing that may happen is that we
 		// autoreply twice the same sender if the update is re-applied. Not a big deal...
-		$sqlUpd[] = "DROP TABLE IF EXISTS `autoreplies_log`";
-		$sqlUpd[] = "CREATE TABLE `autoreplies_log` ( " .
-				"`time` DATETIME NOT NULL COMMENT 'Date and time of the sent autoreply', " .
-				"`from` VARCHAR( 255 ) NOT NULL COMMENT 'autoreply message sender', " .
-				"`to` VARCHAR( 255 ) NOT NULL COMMENT 'autoreply message recipient', " .
-				"INDEX ( `time` ) " .
-			") ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci COMMENT = 'Sent autoreplies log table';";
+		$sqlUpd[] = "
+			DROP TABLE IF EXISTS
+				`autoreplies_log`
+			;
+		";
+
+		$sqlUpd[] = "
+			CREATE TABLE
+				`autoreplies_log` (
+					`time` DATETIME NOT NULL COMMENT 'Date and time of the sent autoreply',
+					`from` VARCHAR( 255 ) NOT NULL COMMENT 'autoreply message sender',
+					`to` VARCHAR( 255 ) NOT NULL COMMENT 'autoreply message recipient',
+					INDEX ( `time` )
+			) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci COMMENT = 'Sent autoreplies log table'
+			;
+		";
 			
 		return $sqlUpd;
 	}
@@ -1012,8 +1382,7 @@ class databaseUpdate extends ispcpUpdate {
 				FROM
 					`admin`
 				WHERE
-					`admin_id` = `user_id`
-				) = 0
+					`admin_id` = `user_id`) = 0
 			;
 		";
 
@@ -1060,13 +1429,14 @@ class databaseUpdate extends ispcpUpdate {
 	 */
 	protected function _databaseUpdate_33() {
 		$sqlUpd = array();
+		
 		$sql = Database::getInstance();
+
         if (Config::getInstance()->exists('CRITICAL_UPDATE_REVISION')) {
             $critical_update = Config::getInstance()->get('CRITICAL_UPDATE_REVISION');
         }
 		
 		if (!isset($critical_update) || $critical_update < 3) {
-			
 			/**
 			 * Old Critical Update #1
 			 * 
@@ -1077,59 +1447,127 @@ class databaseUpdate extends ispcpUpdate {
 			 * @since		r1355
 			 *
 			 * @access		protected
-			 * @param		Type $engine_run_request Set to true if is needed to perform an engine request
+			 * @param		Type $engine_run_request Set to true if is needed to
+			 * perform an engine request
 			 * @return		Type $sqlUpd Sql statements to be performed
 			 */
 			if (!isset($critical_update)) {
 				$status = Config::getInstance()->get('ITEM_CHANGE_STATUS');
 				
-				$query = "SELECT `mail_id`, `mail_pass` FROM `mail_users` WHERE `mail_type` RLIKE '^normal_mail' OR `mail_type` RLIKE '^alias_mail' OR `mail_type` RLIKE '^subdom_mail'";
+				$query = "
+					SELECT
+						`mail_id`,
+						`mail_pass`
+					FROM
+						`mail_users`
+					WHERE
+						`mail_type` RLIKE '^normal_mail'
+							OR
+						`mail_type` RLIKE '^alias_mail'
+							OR
+						`mail_type` RLIKE '^subdom_mail'
+					;
+				";
+				
 				$rs = exec_query($sql, $query);
 
 				if ($rs->RecordCount() != 0) {
 					while (!$rs->EOF) {
-						$sqlUpd[] = "UPDATE `mail_users` SET `mail_pass`= '". encrypt_db_password($rs->fields['mail_pass']). "', `status` = '$status' WHERE `mail_id` = '". $rs->fields['mail_id'] ."'";
+						$sqlUpd[] = "
+							UPDATE
+								`mail_users`
+							SET
+								`mail_pass`= '" .
+								encrypt_db_password($rs->fields['mail_pass']) .
+								"', `status` = '$status' WHERE `mail_id` = '" . 
+								$rs->fields['mail_id'] ."'
+							;
+						";
+
 						$rs->MoveNext();
 					}
 				}
 
-				$query ="SELECT `sqlu_id`, `sqlu_pass` FROM `sql_user`";
+				$query ="
+					SELECT
+						`sqlu_id`,
+						`sqlu_pass`
+					FROM
+						`sql_user`
+					;
+				";
+
 				$rs = exec_query($sql, $query);
 
 				if ($rs->RecordCount() != 0) {
 					while (!$rs->EOF) {
-						$sqlUpd[] = "UPDATE `sql_user` SET `sqlu_pass` = '". encrypt_db_password($rs->fields['sqlu_pass']). "' WHERE `sqlu_id` = '". $rs->fields['sqlu_id'] ."'";
+						$sqlUpd[] = "
+							UPDATE
+								`sql_user`
+							SET
+								`sqlu_pass` = '" .
+								encrypt_db_password($rs->fields['sqlu_pass']) .
+								"' WHERE `sqlu_id` = '".
+								$rs->fields['sqlu_id'] . "'
+							;
+						";
+
 						$rs->MoveNext();
 					}
 				}
-
-			}
+			} // end Old Critical Update #1
 
 			/**
 			 * Old Critical Update #2
 			 * 
 			 * Create default group for statistics
-			 * Fix for ticket #1571 http://www.isp-control.net/ispcp/ticket/1571.
+			 * Fix for ticket #1571 http://www.isp-control.net/ispcp/ticket/1571
 			 *
 			 * @author		Daniel Andreca <sci2tech@gmail.com>
 			 * @version		1.0
 			 * @since		r1417
 			 *
 			 * @access		protected
-			 * @param		Type $engine_run_request Set to true if is needed to perform an engine request
+			 * @param		Type $engine_run_request Set to true if is needed to
+			 * 	perform an engine request
 			 * @return		Type $sqlUpd Sql statements to be performed
 			 */
 			if ($critical_update < 2) {
 				$status = Config::getInstance()->get('ITEM_ADD_STATUS');
 				$statsgroup = Config::getInstance()->get('AWSTATS_GROUP_AUTH');
-				$sql = Database::getInstance();
+				//$sql = Database::getInstance();
 		
-				$query = "SELECT `domain_id` FROM `domain` WHERE `domain_id` NOT IN (SELECT `dmn_id` FROM `htaccess_groups` WHERE `ugroup` = '{$statsgroup}')";
+				$query = "
+					SELECT
+						`domain_id`
+					FROM
+						`domain`
+					WHERE
+						`domain_id` NOT IN (
+							SELECT
+								`dmn_id`
+							FROM
+								`htaccess_groups`
+							WHERE
+								`ugroup` = '{$statsgroup}'
+						)
+					;
+				";
 				$rs = exec_query($sql, $query);
 		
 				if ($rs->RecordCount() != 0) {
 					while (!$rs->EOF) {
-						$sqlUpd[] = "INSERT INTO htaccess_groups (`dmn_id`, `ugroup`,`status`) VALUES ('{$rs->fields['domain_id']}', '{$statsgroup}', '{$status}')";
+						$sqlUpd[] = "
+							INSERT INTO
+								htaccess_groups (`dmn_id`, `ugroup`,`status`)
+							VALUES (
+								'{$rs->fields['domain_id']}',
+								'{$statsgroup}',
+								'{$status}'
+							)
+							;
+						";
+
 						$rs->MoveNext();
 					}
 				}
@@ -1146,18 +1584,36 @@ class databaseUpdate extends ispcpUpdate {
 			 * @since		r1725
 			 *
 			 * @access		protected
-			 * @param		Type	$engine_run_request	Set to true if is needed to perform an engine request
+			 * @param		Type	$engine_run_request	Set to true if is needed
+			 * 	to perform an engine request
 			 * @return		Type	$sqlUpd	Sql statements to be performed
 			 */
-			$sql = Database::getInstance();
+			//$sql = Database::getInstance();
 			$interfaces = new networkCard();
-			$card = $interfaces->ip2NetworkCard(Config::getInstance()->get('BASE_SERVER_IP'));
+			$card = $interfaces->ip2NetworkCard(
+				Config::getInstance()->get('BASE_SERVER_IP')
+			);
 	
-			$sqlUpd[] = "ALTER IGNORE TABLE `server_ips`
-						ADD `ip_card` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL,
-						ADD `ip_ssl_domain_id` INT( 10 ) NULL,
-						ADD `ip_status` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL";
-			$sqlUpd[] = "UPDATE `server_ips` SET `ip_card` = '" . $card . "', `ip_status` = '" . Config::getInstance()->get('ITEM_CHANGE_STATUS') . "'";
+			$sqlUpd[] = "
+				ALTER IGNORE TABLE
+					`server_ips`
+				ADD
+					`ip_card` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL,
+				ADD
+					`ip_ssl_domain_id` INT( 10 ) NULL,
+				ADD
+					`ip_status` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL
+				;
+			";
+
+			$sqlUpd[] = "
+				UPDATE
+					`server_ips`
+				SET
+					`ip_card` = '" . $card . "',
+					`ip_status` = '" . Config::getInstance()->get('ITEM_CHANGE_STATUS') . "'
+				;
+			";
 			
 			/**
 			 * Old Critical Updates #4 and #5 moved to {@see _databaseUpdate_24}
@@ -1165,7 +1621,13 @@ class databaseUpdate extends ispcpUpdate {
 		}
 		
 		if (isset($critical_update)) {
-			$sqlUpd[] = "DELETE IGNORE FROM `ispcp`.`config` WHERE `config`.`name` = 'CRITICAL_UPDATE_REVISION'";
+			$sqlUpd[] = "
+				DELETE IGNORE FROM
+					`ispcp`.`config`
+				WHERE
+					`config`.`name` = 'CRITICAL_UPDATE_REVISION'
+				;
+			";
 		}
 		
 		// Returns the pool of queries to be executed
@@ -1187,10 +1649,13 @@ class databaseUpdate extends ispcpUpdate {
 		$sqlUpd = array();
 		$sql = Database::getInstance();
 
-		$sqlUpd[] = "DELETE IGNORE FROM
-						`ispcp`.`config`
-					WHERE
-						`config`.`name` = 'SHOW_SERVERLOAD'";
+		$sqlUpd[] = "
+			DELETE IGNORE FROM
+				`ispcp`.`config`
+			WHERE
+				`config`.`name` = 'SHOW_SERVERLOAD'
+			;
+		";
 
 		// Returns the pool of queries to be executed
 		return $sqlUpd;
@@ -1212,70 +1677,94 @@ class databaseUpdate extends ispcpUpdate {
 		$sql = Database::getInstance();
 
 		// For domain traffic
-		$query = "SHOW COLUMNS FROM
-					`ispcp`.`domain_traffic`
-				WHERE
-					`Field` = 'correction';";
+		$query = "
+			SHOW COLUMNS FROM
+				`ispcp`.`domain_traffic`
+			WHERE
+				`Field` = 'correction'
+			;
+		";
 
 		$rs = exec_query($sql, $query);
 
 		// Drop the column only if it exists
 		if ($rs->RecordCount() != 0) {
-			$sqlUpd[] = "ALTER IGNORE TABLE
-							`ispcp`.`domain_traffic`
-						DROP
-							`correction`;";
+			$sqlUpd[] = "
+				ALTER IGNORE TABLE
+					`ispcp`.`domain_traffic`
+				DROP
+					`correction`
+				;
+			";
 		}
 
 		// For server traffic
-		$query = "SHOW COLUMNS FROM
-					`ispcp`.`server_traffic`
-				WHERE
-					`Field` = 'correction';";
+		$query = "
+			SHOW COLUMNS FROM
+				`ispcp`.`server_traffic`
+			WHERE
+				`Field` = 'correction'
+			;
+		";
 
 		$rs = exec_query($sql, $query);
 
 		// Drop the column only if it exists
 		if ($rs->RecordCount() != 0) {
-			$sqlUpd[] = "ALTER IGNORE TABLE
-							`ispcp`.`server_traffic`
-						DROP
-							`correction`;";
+			$sqlUpd[] = "
+				ALTER IGNORE TABLE
+					`ispcp`.`server_traffic`
+				DROP
+					`correction`
+				;
+			";
 		}
 
 		// Drop server traffic key
 		// it looks like this key is named different, we need to check it first
 
 		// For oder database layouts the key is named 'i_correction'
-		$query = "SHOW KEYS FROM
-					`ispcp`.`server_traffic`
-				WHERE
-					`Key_name` = 'i_correction';";
+		$query = "
+			SHOW KEYS FROM
+				`ispcp`.`server_traffic`
+			WHERE
+				`Key_name` = 'i_correction'
+			;
+		";
 
 		$rs = exec_query($sql, $query);
 
 		// Drop the key only if it exists
 		if ($rs->RecordCount() != 0) {
-			$sqlUpd[] = "ALTER IGNORE TABLE
-							`ispcp`.`server_traffic`
-						DROP KEY
-							`i_correction`;";
+			$sqlUpd[] = "
+				ALTER IGNORE TABLE
+					`ispcp`.`server_traffic`
+				DROP KEY
+					`i_correction`
+				;
+			";
 		}
 
 		// For newer Database layouts the key is named 'correction'
-		$query = "SHOW KEYS FROM
-					`ispcp`.`server_traffic`
-				WHERE
-					`Key_name` = 'correction';";
+		$query = "
+			SHOW KEYS FROM
+				`ispcp`.`server_traffic`
+			WHERE
+				`Key_name` = 'correction'
+			;
+		";
 
 		$rs = exec_query($sql, $query);
 
 		// Drop the key only if it exists
 		if ($rs->RecordCount() != 0) {
-			$sqlUpd[] = "ALTER IGNORE TABLE
-							`ispcp`.`server_traffic`
-						DROP KEY
-							`correction`;";
+			$sqlUpd[] = "
+				ALTER IGNORE TABLE
+					`ispcp`.`server_traffic`
+				DROP KEY
+					`correction`
+				;
+			";
 		}
 
 		return $sqlUpd;
