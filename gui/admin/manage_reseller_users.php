@@ -65,6 +65,7 @@ function gen_user_table(&$tpl, &$sql) {
 	}
 
 	$reseller_id = $rs->fields['admin_id'];
+	$all_resellers = array();
 
 	while (!$rs->EOF) {
 
@@ -79,6 +80,8 @@ function gen_user_table(&$tpl, &$sql) {
 		} else {
 			$selected = '';
 		}
+
+		$all_resellers[] = $rs->fields['admin_id'];
 
 		$tpl->assign(
 			array(
@@ -101,20 +104,53 @@ function gen_user_table(&$tpl, &$sql) {
 		$rs->MoveNext();
 	}
 
-	$query = "
-		SELECT
-			`admin_id`, `admin_name`
-		FROM
-			`admin`
-		WHERE
-			`admin_type` = 'user'
-		AND
-			`created_by` = ?
-		ORDER BY
-			`admin_name`
-	";
+	if (isset($_POST['src_reseller']) && $_POST['src_reseller'] == 0) {
+		$selected = Config::getInstance()->get('HTML_SELECTED');
+		$reseller_id = 0;
+	} else {
+		$selected = '';
+	}
 
-	$rs = exec_query($sql, $query, array($reseller_id));
+	$tpl->assign(
+		array(
+			'SRC_RSL_OPTION'	=> tr("N/A"),
+			'SRC_RSL_VALUE'		=> 0,
+			'SRC_RSL_SELECTED'	=> $selected,
+		)
+	);
+	$tpl->parse('SRC_RESELLER_OPTION', '.src_reseller_option');
+
+	if ($reseller_id === 0) {
+		$query = "
+			SELECT
+				`admin_id`, `admin_name`
+			FROM
+				`admin`
+			WHERE
+				`admin_type` = 'user'
+			AND
+				`created_by` NOT IN (?)
+			ORDER BY
+				`admin_name`
+		";
+		$not_in = implode(',', $all_resellers);
+		$rs = exec_query($sql, $query, array($not_in));
+	} else {
+		$query = "
+			SELECT
+				`admin_id`, `admin_name`
+			FROM
+				`admin`
+			WHERE
+				`admin_type` = 'user'
+			AND
+				`created_by` = ?
+			ORDER BY
+				`admin_name`
+		";
+		$rs = exec_query($sql, $query, array($reseller_id));
+	}
+
 
 	if ($rs->RecordCount() == 0) {
 		set_page_message(tr('User list is empty!'));

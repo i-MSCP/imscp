@@ -1,6 +1,10 @@
 ispCP ω 1.0.6 Change Log
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-05-05 Thomas Wacker
+	- GUI:
+		* Fixed #2369: After deletion of reseller, user can be not changed or switched to
+
 2010-05-05 Laurent Declercq
 	DATABASE:
 		* Updated database revision number
