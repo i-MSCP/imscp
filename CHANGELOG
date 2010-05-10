@@ -1,6 +1,10 @@
 ispCP ω 1.0.6 Change Log
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-05-10 Sascha Bay
+	- DATABASE:
+		* Fixed #2371: ispCP GUI fails to login via IPv6
+
 2010-05-02 Benedikt Heintel
 	- LANGUAGES:
 		* Updated Catalan (#2364)

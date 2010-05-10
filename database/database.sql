@@ -126,7 +126,7 @@ INSERT INTO `config` (`name`, `value`) VALUES
 ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
 ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
 ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-('DATABASE_REVISION', '35');
+('DATABASE_REVISION', '36');
 
 -- --------------------------------------------------------
 
@@ -383,7 +383,7 @@ CREATE TABLE `log` (
 
 CREATE TABLE `login` (
   `session_id` varchar(200) collate utf8_unicode_ci NOT NULL default '',
-  `ipaddr` varchar(15) collate utf8_unicode_ci default NULL,
+  `ipaddr` varchar(40) collate utf8_unicode_ci default NULL,
   `lastaccess` int(10) unsigned default NULL,
   `login_count` tinyint(1) default '0',
   `captcha_count` tinyint(1) default '0',
@@ -536,7 +536,7 @@ CREATE TABLE `reseller_props` (
 
 CREATE TABLE `server_ips` (
   `ip_id` int(10) unsigned NOT NULL auto_increment,
-  `ip_number` varchar(15) collate utf8_unicode_ci default NULL,
+  `ip_number` varchar(40) collate utf8_unicode_ci default NULL,
   `ip_domain` varchar(200) collate utf8_unicode_ci default NULL,
   `ip_alias` varchar(200) collate utf8_unicode_ci default NULL,
   `ip_card` varchar(255) collate utf8_unicode_ci default NULL,

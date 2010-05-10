@@ -1769,6 +1769,41 @@ class databaseUpdate extends ispcpUpdate {
 
 		return $sqlUpd;
 	}
+	
+	/**
+	 * Fix for ticket #2371 http://isp-control.net/ispcp/ticket/2371
+	 *
+	 * ispCP GUI fails to login via IPv6
+	 *
+	 * @author Sascha Bay
+	 * @since r2918
+	 *
+	 * @access protected
+	 * @return array sql statements to be performed
+	 */
+	protected function _databaseUpdate_36() {
+		$sqlUpd = array();
+		$sql = Database::getInstance();
+
+		$sqlUpd[] = "
+			ALTER IGNORE TABLE
+				`login`
+			CHANGE
+				`ipaddr` `ipaddr` VARCHAR(40) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL
+			;
+		";
+		
+		$sqlUpd[] = "
+			ALTER IGNORE TABLE
+				`server_ips`
+			CHANGE
+				`ip_number` `ip_number` VARCHAR(40) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL
+			;
+		";
+
+		// Returns the pool of queries to be executed
+		return $sqlUpd;
+	}
 
 	/*
 	 * DO NOT CHANGE ANYTHING BELOW THIS LINE!
