@@ -1804,6 +1804,33 @@ class databaseUpdate extends ispcpUpdate {
 		// Returns the pool of queries to be executed
 		return $sqlUpd;
 	}
+	
+	/**
+	 * Fix for ticket #2319 http://isp-control.net/ispcp/ticket/2319
+	 *
+	 * Old Database tables does not support UTF8
+	 *
+	 * @author Sascha Bay
+	 * @since r2920
+	 *
+	 * @access protected
+	 * @return array sql statements to be performed
+	 */
+	protected function _databaseUpdate_37() {
+		$sqlUpd = array();
+		$sql = Database::getInstance();
+
+		$sqlUpd[] = "
+			ALTER IGNORE TABLE
+				`log`
+			CHANGE
+				`log_message` `log_message` VARCHAR(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL
+			;
+		";
+
+		// Returns the pool of queries to be executed
+		return $sqlUpd;
+	}
 
 	/*
 	 * DO NOT CHANGE ANYTHING BELOW THIS LINE!

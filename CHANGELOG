@@ -1,6 +1,10 @@
 ispCP ω 1.0.6 Change Log
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-05-11 Sascha Bay
+	- DATABASE:
+		* Fixed #2319: Old Database tables does not support UTF8
+
 2010-05-11 Peter Ziergoebel
 	- GUI:
 		* Fixed #2328: Domain deactivation date
