@@ -308,7 +308,7 @@ function generate_users_list(&$tpl, $admin_id) {
 			}
 
 			if ($dom_expires == 0) {
-				$dom_expires = tr('N/A');
+				$dom_expires = tr('Not Set');
 			} else {
 				$date_formt = Config::getInstance()->get('DATE_FORMAT');
 				$dom_expires = date($date_formt, $dom_expires);

@@ -735,7 +735,7 @@ function gen_user_list(&$tpl, &$sql) {
 			$domain_expires = $rs->fields['domain_expires'];
 
 			if ($domain_expires == 0) {
-				$domain_expires = tr('N/A');
+				$domain_expires = tr('Not Set');
 			} else {
 				$date_formt = Config::getInstance()->get('DATE_FORMAT');
 				$domain_expires = date($date_formt, $domain_expires);

@@ -60,7 +60,7 @@
           <tr>
             <td width="25">&nbsp;</td>
             <td class="content">{TR_DOMAIN_EXPIRE}</td>
-            <td width="230" class="content2">{DMN_EXPIRES} ( <strong style="text-decoration:underline;">{DMN_EXPIRES_DATE}</strong> )</td>
+            <td width="230" class="content2">{DMN_EXPIRES} {DMN_EXPIRES_DATE}</td>
           </tr>
           <!-- BDP: t_php_support -->
           <tr>

@@ -405,10 +405,10 @@ check_user_permissions(
 $account_name = decode_idna($_SESSION['user_logged']);
 
 if ($dmn_expires == 0) {
-	$dmn_expires_date = tr('N/A');
+	$dmn_expires_date = tr('Not Set');
 } else {
 	$date_formt = Config::getInstance()->get('DATE_FORMAT');
-	$dmn_expires_date = date($date_formt, $dmn_expires);
+	$dmn_expires_date = "( <strong style=\"text-decoration:underline;\">".date($date_formt, $dmn_expires)."</strong> )";
 }
 
 list(
