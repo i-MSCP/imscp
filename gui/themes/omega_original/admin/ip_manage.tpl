@@ -8,14 +8,16 @@
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
+
 <script type="text/javascript">
-<!--
+/*<![CDATA[*/
 function action_delete(url, ip) {
-	if (!confirm(sprintf("{TR_MESSAGE_DELETE} ", ip)))
+	if (url == "#" || !confirm(sprintf("{TR_MESSAGE_DELETE}", ip)))
 		return false;
+
 	location = url;
 }
-//-->
+/*]]>*/
 </script>
 </head>
 

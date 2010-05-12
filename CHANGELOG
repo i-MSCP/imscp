@@ -1,5 +1,9 @@
-ispCP ω 1.0.6 Change Log
+ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2010-05-12 Laurent Declercq
+	GUI:
+		* Don't show the confirmation message for N/A ip action
 
 2010-05-11 Sascha Bay
 	- DATABASE:
