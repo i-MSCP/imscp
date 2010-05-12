@@ -1,6 +1,10 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-05-12 Peter Ziergoebel
+	- GUI:
+		* Fixed #2122: Link to domain in "Reseller/Manage users" don't have "www."
+
 2010-05-12 Laurent Declercq
 	GUI:
 		* Don't show the confirmation message for N/A ip action
@@ -24,7 +28,8 @@ ispCP ω 1.0.6 ChangeLog
 
 2010-05-05 Thomas Wacker
 	- GUI:
-		* Fixed #2369: After deletion of reseller, user can be not changed or switched to
+		* Fixed #2369: After deletion of reseller, user can be not changed or 
+			switched to
 
 2010-05-05 Laurent Declercq
 	DATABASE:
@@ -58,7 +63,7 @@ ispCP ω 1.0.6 ChangeLog
 	- ENGINE:
 		* Fixed #2201: Delete ispcp-vrl-traff-correction (2nd try)
 
-2010-04-29 Benedikt Heintel
+2010-04-30 Benedikt Heintel
 	- ENGINE:
 		* Fixed #2366: Database Update r2899 doesn't work
 
