@@ -37,7 +37,6 @@ $tpl->define_dynamic('page', Config::getInstance()->get('RESELLER_TEMPLATE_PATH'
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('custom_buttons', 'page');
-$tpl->define_dynamic('alias_menu', 'page');
 
 $theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 $user_id = $_SESSION['user_id'];
@@ -122,10 +121,6 @@ $tpl->assign(
 );
 
 gen_page_message($tpl);
-
-if (!check_reseller_domainalias_permissions($_SESSION['user_id'])) {
-	$tpl->assign('ALIAS_MENU', '');
-}
 
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();

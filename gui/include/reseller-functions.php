@@ -147,6 +147,7 @@ function gen_reseller_menu(&$tpl, $menu_file) {
 	$tpl->define_dynamic('menu', $menu_file);
 
 	$tpl->define_dynamic('custom_buttons', 'menu');
+	$tpl->define_dynamic('alias_menu', 'page');
 
 	$tpl->assign(
 		array(
@@ -169,6 +170,8 @@ function gen_reseller_menu(&$tpl, $menu_file) {
 			'TR_MENU_LOGOUT' => tr('Logout'),
 			'TR_MENU_OVERVIEW' => tr('Overview'),
 			'TR_MENU_LANGUAGE' => tr('Language'),
+			'ALIAS_MENU' => (!check_reseller_permissions($_SESSION['user_id'], 'alias'))
+				? '' : $tpl->parse('ALIAS_MENU', '.alias_menu'),
 			'SUPPORT_SYSTEM_PATH' => Config::getInstance()->get('ISPCP_SUPPORT_SYSTEM_PATH'),
 			'SUPPORT_SYSTEM_TARGET' => Config::getInstance()->get('ISPCP_SUPPORT_SYSTEM_TARGET'),
 			'TR_MENU_ORDERS' => tr('Manage Orders'),
@@ -1913,12 +1916,12 @@ function get_reseller_id($domain_id) {
 }
 
 /**
- * Checks if a reseller has the right to add domain aliases
+ * Checks if a reseller has the rights to an option
  *
  * @param int $reseller_id unique reseller identifiant
- * @return boolean domain alias permissions
+ * @return boolean option permissions or array with all options
  */
-function check_reseller_domainalias_permissions($reseller_id) {
+function check_reseller_permissions($reseller_id, $permission) {
 
 	$sql = Database::getInstance();
 
@@ -1933,8 +1936,28 @@ function check_reseller_domainalias_permissions($reseller_id) {
 			$rdisk_current, $rdisk_max
 		) = get_reseller_default_props($sql, $reseller_id);
 
-	if ($rals_max == "-1") {
+	if ($permission == "all_permissions") {
+		return array(
+			$rsub_max,
+			$rals_max,
+			$rmail_max,
+			$rftp_max,
+			$rsql_db_max,
+			$rsql_user_max
+		);
+	} else if ($permission == "subdomain" && $rsub_max == "-1") {
+		return false;
+	} elseif ($permission == "alias" && $rals_max == "-1") {
+		return false;
+	} else if ($permission == "mail" && $rmail_max == "-1") {
+		return false;
+	} else if ($permission == "ftp" && $rftp_max == "-1") {
+		return false;
+	} else if ($permission == "sql_db" && $rsql_db_max == "-1") {
+		return false;
+	} else if ($permission == "sql_user" && $rsql_user_max == "-1") {
 		return false;
 	}
+	
 	return true;
 }

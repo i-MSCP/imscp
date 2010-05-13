@@ -38,7 +38,6 @@ $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('alias_list', 'page');
 $tpl->define_dynamic('alias_entry', 'alias_list');
-$tpl->define_dynamic('alias_menu', 'page');
 
 $theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
@@ -139,10 +138,6 @@ $tpl->assign(
 		'TR_PREFIX_FTP' => 'ftp://'
 	)
 );
-
-if (!check_reseller_domainalias_permissions($_SESSION['user_id'])) {
-	$tpl->assign('ALIAS_MENU', '');
-}
 
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();

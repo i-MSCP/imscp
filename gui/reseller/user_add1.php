@@ -39,7 +39,6 @@ $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('add_user', 'page');
 $tpl->define_dynamic('hp_entry', 'page');
 $tpl->define_dynamic('personalize', 'page');
-$tpl->define_dynamic('alias_menu', 'page');
 
 $theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
@@ -95,10 +94,6 @@ if (isset($_POST['uaction'])) {
 
 get_hp_data_list($tpl, $_SESSION['user_id']);
 gen_page_message($tpl);
-
-if (!check_reseller_domainalias_permissions($_SESSION['user_id'])) {
-	$tpl->assign('ALIAS_MENU', '');
-}
 
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();

@@ -41,6 +41,12 @@ $tpl = new pTemplate();
 $tpl->define_dynamic('page', Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/hosting_plan_add.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
+$tpl->define_dynamic('subdomain_add', 'page');
+$tpl->define_dynamic('alias_add', 'page');
+$tpl->define_dynamic('mail_add', 'page');
+$tpl->define_dynamic('ftp_add', 'page');
+$tpl->define_dynamic('sql_db_add', 'page');
+$tpl->define_dynamic('sql_user_add', 'page');
 
 $theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
@@ -118,6 +124,22 @@ if (isset($_POST['uaction']) && ('add_plan' === $_POST['uaction'])) {
 }
 
 gen_page_message($tpl);
+
+list(
+	$rsub_max,
+	$rals_max,
+	$rmail_max,
+	$rftp_max,
+	$rsql_db_max,
+	$rsql_user_max
+	) = check_reseller_permissions($_SESSION['user_id'], 'all_permissions');
+
+if ($rsub_max == "-1") $tpl->assign('ALIAS_ADD', '');
+if ($rals_max == "-1") $tpl->assign('SUBDOMAIN_ADD', '');
+if ($rmail_max == "-1") $tpl->assign('MAIL_ADD', '');
+if ($rftp_max == "-1") $tpl->assign('FTP_ADD', '');
+if ($rsql_db_max == "-1") $tpl->assign('SQL_DB_ADD', '');
+if ($rsql_user_max == "-1") $tpl->assign('SQL_USER_ADD', '');
 
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
@@ -291,24 +313,56 @@ function check_data_correction(&$tpl) {
 	if (!is_numeric($setup_fee)) {
 		$ahp_error[] = tr('Setup fee must be a number!');
 	}
-	if (!ispcp_limit_check($hp_sub, -1)) {
+	
+	list(
+		$rsub_max,
+		$rals_max,
+		$rmail_max,
+		$rftp_max,
+		$rsql_db_max,
+		$rsql_user_max
+		) = check_reseller_permissions($_SESSION['user_id'], 'all_permissions');
+		
+	if ($rsub_max == "-1") {
+		$hp_sub = "-1";
+	} elseif (!ispcp_limit_check($hp_sub, -1)) {
 		$ahp_error[] = tr('Incorrect subdomains limit!');
 	}
-	if (!ispcp_limit_check($hp_als, -1)) {
+	
+	if ($rals_max == "-1") {
+		$hp_als = "-1";
+	} elseif (!ispcp_limit_check($hp_als, -1)) {
 		$ahp_error[] = tr('Incorrect aliases limit!');
 	}
-	if (!ispcp_limit_check($hp_mail, -1)) {
+	
+	if ($rmail_max == "-1") {
+		$hp_mail = "-1";
+	} elseif (!ispcp_limit_check($hp_mail, -1)) {
 		$ahp_error[] = tr('Incorrect mail accounts limit!');
 	}
-	if (!ispcp_limit_check($hp_ftp, -1)) {
+	
+	if ($rftp_max == "-1") {
+		$hp_ftp = "-1";
+	} elseif (!ispcp_limit_check($hp_ftp, -1)) {
 		$ahp_error[] = tr('Incorrect FTP accounts limit!');
 	}
-	if (!ispcp_limit_check($hp_sql_user, -1)) {
-		$ahp_error[] = tr('Incorrect SQL databases limit!');
-	}
-	if (!ispcp_limit_check($hp_sql_db, -1)) {
+	
+	if ($rsql_db_max == "-1") {
+		$hp_sql_db = "-1";
+	} elseif (!ispcp_limit_check($hp_sql_db, -1)) {
 		$ahp_error[] = tr('Incorrect SQL users limit!');
+	} else if ($hp_sql_user != -1 && $hp_sql_db == -1) {
+		$ahp_error[] = tr('SQL users limit is <i>disabled</i>!');
 	}
+	
+	if ($rsql_user_max == "-1") {
+		$hp_sql_user = "-1";
+	} elseif (!ispcp_limit_check($hp_sql_user, -1)) {
+		$ahp_error[] = tr('Incorrect SQL databases limit!');
+	} else if ($hp_sql_user == -1 && $hp_sql_db != -1) {
+		$ahp_error[] = tr('SQL databases limit is not <i>disabled</i>!');
+	}
+	
 	if (!ispcp_limit_check($hp_traff, null)) {
 		$ahp_error[] = tr('Incorrect traffic limit!');
 	}

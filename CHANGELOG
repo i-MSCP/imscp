@@ -1,6 +1,10 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-05-13 Sascha Bay
+	- GUI:
+		* Fixed #1993: Hide reseller's user add fields
+
 2010-05-12 Peter Ziergoebel
 	- GUI:
 		* Fixed #2122: Link to domain in "Reseller/Manage users" don't have "www."

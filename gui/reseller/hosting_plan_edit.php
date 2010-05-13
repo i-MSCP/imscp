@@ -41,6 +41,12 @@ $tpl->define_dynamic(
 
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
+$tpl->define_dynamic('subdomain_edit', 'page');
+$tpl->define_dynamic('alias_edit', 'page');
+$tpl->define_dynamic('mail_edit', 'page');
+$tpl->define_dynamic('ftp_edit', 'page');
+$tpl->define_dynamic('sql_db_edit', 'page');
+$tpl->define_dynamic('sql_user_edit', 'page');
 
 $theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
@@ -283,6 +289,22 @@ function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
 	if ($value == '') {
 		$value = '';
 	}
+	
+	list(
+		$rsub_max,
+		$rals_max,
+		$rmail_max,
+		$rftp_max,
+		$rsql_db_max,
+		$rsql_user_max
+		) = check_reseller_permissions($_SESSION['user_id'], 'all_permissions');
+
+	if ($rsub_max == "-1") $tpl->assign('ALIAS_EDIT', '');
+	if ($rals_max == "-1") $tpl->assign('SUBDOMAIN_EDIT', '');
+	if ($rmail_max == "-1") $tpl->assign('MAIL_EDIT', '');
+	if ($rftp_max == "-1") $tpl->assign('FTP_EDIT', '');
+	if ($rsql_db_max == "-1") $tpl->assign('SQL_DB_EDIT', '');
+	if ($rsql_user_max == "-1") $tpl->assign('SQL_USER_EDIT', '');
 
 	$tpl->assign(
 		array(
@@ -372,29 +394,54 @@ function check_data_iscorrect(&$tpl) {
     if (isset($_POST['backup'])) {
     	$hp_backup = $_POST['backup'];
     }
+    
+    list(
+		$rsub_max,
+		$rals_max,
+		$rmail_max,
+		$rftp_max,
+		$rsql_db_max,
+		$rsql_user_max
+		) = check_reseller_permissions($_SESSION['user_id'], 'all_permissions');
 
-	if (!ispcp_limit_check($hp_sub, -1)) {
+	if ($rsub_max == "-1") {
+		$hp_sub = "-1";
+	} elseif (!ispcp_limit_check($hp_sub, -1)) {
 		$ahp_error[] = tr('Incorrect subdomains limit!');
 	}
 
-	if (!ispcp_limit_check($hp_als, -1)) {
+	if ($rals_max == "-1") {
+		$hp_als = "-1";
+	} elseif (!ispcp_limit_check($hp_als, -1)) {
 		$ahp_error[] = tr('Incorrect aliases limit!');
 	}
 
-	if (!ispcp_limit_check($hp_mail, -1)) {
+	if ($rmail_max == "-1") {
+		$hp_mail = "-1";
+	} elseif (!ispcp_limit_check($hp_mail, -1)) {
 		$ahp_error[] = tr('Incorrect mail accounts limit!');
 	}
 
-	if (!ispcp_limit_check($hp_ftp, -1)) {
+	if ($rftp_max == "-1") {
+		$hp_ftp = "-1";
+	} elseif (!ispcp_limit_check($hp_ftp, -1)) {
 		$ahp_error[] = tr('Incorrect FTP accounts limit!');
 	}
-
-	if (!ispcp_limit_check($hp_sql_user, -1)) {
-		$ahp_error[] = tr('Incorrect SQL databases limit!');
+	
+	if ($rsql_db_max == "-1") {
+		$hp_sql_db = "-1";
+	} elseif (!ispcp_limit_check($hp_sql_db, -1)) {
+		$ahp_error[] = tr('Incorrect SQL users limit!');
+	} else if ($hp_sql_db == -1 && $hp_sql_user != -1) {
+		$ahp_error[] = tr('SQL databases limit is <i>disabled</i>!');
 	}
 
-	if (!ispcp_limit_check($hp_sql_db, -1)) {
-		$ahp_error[] = tr('Incorrect SQL users limit!');
+	if ($rsql_user_max == "-1") {
+		$hp_sql_user = "-1";
+	} elseif (!ispcp_limit_check($hp_sql_user, -1)) {
+		$ahp_error[] = tr('Incorrect SQL databases limit!');
+	} else if ($hp_sql_user == -1 && $hp_sql_db != -1) {
+		$ahp_error[] = tr('SQL users limit is <i>disabled</i>!');
 	}
 
 	if (!ispcp_limit_check($hp_traff, null)) {

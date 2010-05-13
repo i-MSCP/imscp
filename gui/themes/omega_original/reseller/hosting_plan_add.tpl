@@ -63,36 +63,48 @@
                         <td class="content2">{TR_TEMPLATE_DESCRIPTON}</td>
                         <td class="content"><textarea name="hp_description" class="textinput2" style="width:210px" cols="40" rows="8">{HP_DESCRIPTION_VALUE}</textarea></td>
                       </tr>
+                      <!-- BDP: subdomain_add -->
                       <tr>
                         <td width="35">&nbsp;</td>
                         <td class="content2" width="250">{TR_MAX_SUBDOMAINS}</td>
                         <td class="content"><input type="text" name="hp_sub" value="{TR_MAX_SUB_LIMITS}" style="width:100px" class="textinput" /></td>
                       </tr>
+                      <!-- EDP: subdomain_add -->
+                      <!-- BDP: alias_add -->
                       <tr>
                         <td width="35">&nbsp;</td>
                         <td class="content2" width="250">{TR_MAX_ALIASES}</td>
                         <td class="content"><input type="text" name="hp_als" value="{TR_MAX_ALS_VALUES}" style="width:100px" class="textinput" /></td>
                       </tr>
+                      <!-- EDP: alias_add -->
+                      <!-- BDP: mail_add -->
                       <tr>
                         <td width="35">&nbsp;</td>
                         <td class="content2" width="250">{TR_MAX_MAILACCOUNTS}</td>
                         <td class="content"><input type="text" name="hp_mail" value="{HP_MAIL_VALUE}" style="width:100px" class="textinput" /></td>
                       </tr>
+                      <!-- EDP: mail_add -->
+                      <!-- BDP: ftp_add -->
                       <tr>
                         <td width="35">&nbsp;</td>
                         <td class="content2" width="250">{TR_MAX_FTP}</td>
                         <td class="content"><input type="text" name="hp_ftp" value="{HP_FTP_VALUE}" style="width:100px" class="textinput" /></td>
                       </tr>
+                      <!-- EDP: ftp_add -->
+                      <!-- BDP: sql_db_add -->
                       <tr>
                         <td width="35">&nbsp;</td>
                         <td class="content2" width="250">{TR_MAX_SQL}</td>
                         <td class="content"><input type="text" name="hp_sql_db" value="{HP_SQL_DB_VALUE}" style="width:100px" class="textinput" /></td>
                       </tr>
+                      <!-- EDP: sql_db_add -->
+                      <!-- BDP: sql_user_add -->
                       <tr>
                         <td width="35">&nbsp;</td>
                         <td class="content2" width="250">{TR_MAX_SQL_USERS}</td>
                         <td class="content"><input type="text" name="hp_sql_user" value="{HP_SQL_USER_VALUE}" style="width:100px" class="textinput" /></td>
                       </tr>
+                      <!-- EDP: sql_user_add -->
                       <tr>
                         <td width="35">&nbsp;</td>
                         <td class="content2" width="250">{TR_MAX_TRAFFIC}</td>

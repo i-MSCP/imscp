@@ -99,7 +99,7 @@ if ($rals_max != 0 && $rals_current >= $rals_max) {
 	$_SESSION['almax'] = '_yes_';
 }
 
-if (!check_reseller_domainalias_permissions($reseller_id) ||
+if (!check_reseller_permissions($reseller_id, 'alias') ||
 	isset($_SESSION['almax'])) {
 	user_goto('alias.php');
 }

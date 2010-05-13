@@ -60,11 +60,13 @@
                           <td class="content2" width="200">{TR_TEMPLATE_NAME}</td>
                           <td class="content"><input name="template" type="hidden" id="template" value="{VL_TEMPLATE_NAME}" />{VL_TEMPLATE_NAME} </td>
                         </tr>
+                        <!-- BDP: subdomain_add -->
                         <tr>
                           <td width="25">&nbsp;</td>
                           <td class="content2" width="200">{TR_MAX_SUBDOMAIN}</td>
                           <td class="content"><input type="text" name="nreseller_max_subdomain_cnt" value="{MAX_SUBDMN_CNT}" style="width:140px" class="textinput" /></td>
                         </tr>
+                        <!-- EDP: subdomain_add -->
                         <!-- BDP: alias_add -->
                         <tr>
                           <td width="25">&nbsp;</td>
@@ -72,26 +74,34 @@
                           <td class="content"><input type="text" name="nreseller_max_alias_cnt" value="{MAX_DMN_ALIAS_CNT}" style="width:140px" class="textinput" /></td>
                         </tr>
                         <!-- EDP: alias_add -->
+                        <!-- BDP: mail_add -->
                         <tr>
                           <td width="25">&nbsp;</td>
                           <td class="content2" width="200">{TR_MAX_MAIL_COUNT}</td>
                           <td class="content"><input type="text" name="nreseller_max_mail_cnt" value="{MAX_MAIL_CNT}" style="width:140px" class="textinput" /></td>
                         </tr>
+                        <!-- EDP: mail_add -->
+                        <!-- BDP: ftp_add -->
                         <tr>
                           <td width="25">&nbsp;</td>
                           <td class="content2" width="200">{TR_MAX_FTP}</td>
                           <td class="content"><input type="text" name="nreseller_max_ftp_cnt" value="{MAX_FTP_CNT}" style="width:140px" class="textinput" /></td>
                         </tr>
+                        <!-- EDP: ftp_add -->
+                        <!-- BDP: sql_db_add -->
                         <tr>
                           <td width="25">&nbsp;</td>
                           <td class="content2" width="200">{TR_MAX_SQL_DB}</td>
                           <td class="content"><input type="text" name="nreseller_max_sql_db_cnt" value="{MAX_SQL_CNT}" style="width:140px" class="textinput" /></td>
                         </tr>
+                        <!-- EDP: sql_db_add -->
+                        <!-- BDP: sql_user_add -->
                         <tr>
                           <td width="25">&nbsp;</td>
                           <td class="content2" width="200">{TR_MAX_SQL_USERS}</td>
                           <td class="content"><input type="text" name="nreseller_max_sql_user_cnt" value="{VL_MAX_SQL_USERS}" style="width:140px" class="textinput" /></td>
                         </tr>
+                        <!-- EDP: sql_user_add -->
                         <tr>
                           <td width="25">&nbsp;</td>
                           <td class="content2" width="200">{TR_MAX_TRAFFIC}</td>

@@ -64,42 +64,54 @@
                         <td class="content2">{TR_TEMPLATE_DESCRIPTON}</td>
                         <td class="content"><textarea name="hp_description" {READONLY} class="textinput2" style="width:210px" cols="40" rows="8">{HP_DESCRIPTION_VALUE}</textarea></td>
                       </tr>
+                      <!-- BDP: subdomain_edit -->
                       <tr>
                         <td width="25">&nbsp;</td>
                         <td class="content2" width="193">{TR_MAX_SUBDOMAINS}</td>
                         <td class="content"><input type="text" {READONLY} name="hp_sub" value="{TR_MAX_SUB_LIMITS}" style="width:100px" class="textinput" />
                         </td>
                       </tr>
+                      <!-- EDP: subdomain_edit -->
+                      <!-- BDP: alias_edit -->
                       <tr>
                         <td width="25">&nbsp;</td>
                         <td class="content2" width="193">{TR_MAX_ALIASES}</td>
                         <td width="242" class="content"><input type="text" {READONLY} name="hp_als" value="{TR_MAX_ALS_VALUES}" style="width:100px" class="textinput" />
                         </td>
                       </tr>
+                      <!-- EDP: alias_edit -->
+                      <!-- BDP: mail_edit -->
                       <tr>
                         <td width="25">&nbsp;</td>
                         <td class="content2" width="193">{TR_MAX_MAILACCOUNTS}</td>
                         <td class="content"><input type="text" {READONLY} name="hp_mail" value="{HP_MAIL_VALUE}" style="width:100px" class="textinput" />
                         </td>
                       </tr>
+                      <!-- EDP: mail_edit -->
+                      <!-- BDP: ftp_edit -->
                       <tr>
                         <td width="25">&nbsp;</td>
                         <td class="content2" width="193">{TR_MAX_FTP}</td>
                         <td class="content"><input type="text" {READONLY} name="hp_ftp" value="{HP_FTP_VALUE}" style="width:100px" class="textinput" />
                         </td>
                       </tr>
+                      <!-- EDP: ftp_edit -->
+                      <!-- BDP: sql_db_edit -->
                       <tr>
                         <td width="25">&nbsp;</td>
                         <td class="content2" width="193">{TR_MAX_SQL}</td>
                         <td class="content"><input type="text" {READONLY} name="hp_sql_db" value="{HP_SQL_DB_VALUE}" style="width:100px" class="textinput" />
                         </td>
                       </tr>
+                      <!-- EDP: sql_db_edit -->
+                      <!-- BDP: sql_user_edit -->
                       <tr>
                         <td width="25">&nbsp;</td>
                         <td class="content2" width="193">{TR_MAX_SQL_USERS}</td>
                         <td class="content"><input type="text" {READONLY} name="hp_sql_user" value="{HP_SQL_USER_VALUE}" style="width:100px" class="textinput" />
                         </td>
                       </tr>
+                      <!-- EDP: sql_user_edit -->
                       <tr>
                         <td width="25">&nbsp;</td>
                         <td class="content2" width="193">{TR_MAX_TRAFFIC}</td>
