@@ -11,6 +11,8 @@
  * @version $Id: us_ascii.php 13893 2010-01-25 02:47:41Z pdontthink $
  * @package squirrelmail
  * @subpackage encode
+ *
+ * @author ispCP Team May 2010 based on a patch of Benny Baumann
  */
 
 /**
@@ -19,10 +21,10 @@
  * @return string us-ascii encoded text
  */
 function charset_encode_us_ascii ($string) {
-   // don't run encoding function, if there is no encoded characters
-   if (! preg_match("'&#[0-9]+;'",$string) ) return $string;
+    // don't run encoding function, if there is no encoded characters
+    if (! preg_match("'&#[0-9]+;'",$string) ) return $string;
 
-    $string=preg_replace("/&#([0-9]+);/e","unicodetousascii('\\1')",$string);
+    $string=preg_replace_callback("/&#([0-9]+);/","unicodetousascii",$string);
     // $string=preg_replace("/&#[xX]([0-9A-F]+);/e","unicodetousascii(hexdec('\\1'))",$string);
 
     return $string;
@@ -40,6 +42,10 @@ function charset_encode_us_ascii ($string) {
  * @return string us-ascii character
  */
 function unicodetousascii($var) {
+
+	if(is_array($var)) {
+        $var=$var[1];
+    }
 
     if ($var < 128) {
         $ret = chr ($var);

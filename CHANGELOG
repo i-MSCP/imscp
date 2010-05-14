@@ -1,6 +1,11 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-05-14 Benedikt Heintel
+	- TOOLS:
+		* Fixed #2373: ispCP or components should not use /e modifier for 
+			preg_replace (Thanks to Benny Baumann)
+
 2010-05-13 Sascha Bay
 	- GUI:
 		* Fixed #1993: Hide reseller's user add fields

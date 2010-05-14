@@ -11,6 +11,8 @@
  * @version $Id: cp1255.php 13893 2010-01-25 02:47:41Z pdontthink $
  * @package squirrelmail
  * @subpackage encode
+ *
+ * @author ispCP Team May 2010 based on a patch of Benny Baumann
  */
 
 /**
@@ -19,10 +21,10 @@
  * @return string cp1255 encoded text
  */
 function charset_encode_cp1255 ($string) {
-   // don't run encoding function, if there is no encoded characters
-   if (! preg_match("'&#[0-9]+;'",$string) ) return $string;
+    // don't run encoding function, if there is no encoded characters
+    if (! preg_match("'&#[0-9]+;'",$string) ) return $string;
 
-    $string=preg_replace("/&#([0-9]+);/e","unicodetocp1255('\\1')",$string);
+    $string=preg_replace_callback("/&#([0-9]+);/","unicodetocp1255",$string);
     // $string=preg_replace("/&#[xX]([0-9A-F]+);/e","unicodetocp1255(hexdec('\\1'))",$string);
 
     return $string;
@@ -40,6 +42,10 @@ function charset_encode_cp1255 ($string) {
  * @return string cp1255 character
  */
 function unicodetocp1255($var) {
+
+    if(is_array($var)) {
+        $var=$var[1];
+    }
 
     $cp1255chars=array('160' => "\xA0",
                        '161' => "\xA1",
