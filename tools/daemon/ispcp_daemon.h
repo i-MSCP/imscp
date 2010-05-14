@@ -102,4 +102,3 @@ extern void sig_pipe(int signo);
 extern void take_connection(int sockfd);
 
 #endif
-

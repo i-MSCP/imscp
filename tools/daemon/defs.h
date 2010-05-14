@@ -41,25 +41,25 @@
 #define MSG_ERROR_LISTEN        10004
 #define MSG_ERROR_LISTEN_TXT        "listen() error: %s"
 #define MSG_SIG_CHLD            10005
-#define MSG_SIG_CHLD_TXT            "child %s terminated !"
+#define MSG_SIG_CHLD_TXT            "child %s terminated!"
 #define MSG_SIG_PIPE            10006
-#define MSG_SIG_PIPE_TXT            "Aeee! SIG_PIPE was received ! Will we survive ?"
+#define MSG_SIG_PIPE_TXT            "Aeee! SIG_PIPE was received! Will we survive?"
 #define MSG_ERROR_EINTR         10007
-#define MSG_ERROR_EINTR_TXT         "EINTR was received ! continue;"
+#define MSG_ERROR_EINTR_TXT         "EINTR was received! continue;"
 #define MSG_ERROR_ACCEPT        10008
 #define MSG_ERROR_ACCEPT_TXT        "accept() error: %s"
 #define MSG_START_CHILD         10009
-#define MSG_START_CHILD_TXT         "child %s started !"
+#define MSG_START_CHILD_TXT         "child %s started!"
 #define MSG_ERROR_SOCKET_WR     10010
 #define MSG_ERROR_SOCKET_WR_TXT     "send_line(): socket write error: %s"
 #define MSG_BYTES_WRITTEN       10011
-#define MSG_BYTES_WRITTEN_TXT       "send_line(): %s byte(s) successfully written !"
+#define MSG_BYTES_WRITTEN_TXT       "send_line(): %s byte(s) successfully written!"
 #define MSG_ERROR_SOCKET_RD     10012
 #define MSG_ERROR_SOCKET_RD_TXT     "read_line(): socket read error: %s"
 #define MSG_ERROR_SOCKET_EOF    10013
-#define MSG_ERROR_SOCKET_EOF_TXT    "read_line(): socket EOF ! other end closed the connection !"
+#define MSG_ERROR_SOCKET_EOF_TXT    "read_line(): socket EOF! other end closed the connection!"
 #define MSG_BYTES_READ          10014
-#define MSG_BYTES_READ_TXT          "read_line(): %s byte(s) successfully read !"
+#define MSG_BYTES_READ_TXT          "read_line(): %s byte(s) successfully read!"
 #define MSG_HELO_CMD            10015
 #define MSG_HELO_CMD_TXT            "helo "
 #define MSG_BAD_SYNTAX          10016
@@ -71,15 +71,14 @@
 #define MSG_EQ_CMD              10019
 #define MSG_EQ_CMD_TXT              "execute query"
 #define MSG_CONF_FILE           10020
-#define MSG_CONF_FILE_TXT           "ispCP configuration file not found !"
+#define MSG_CONF_FILE_TXT           "ispCP configuration file not found!"
 #define MSG_MISSING_REG_DATA    10021
-#define MSG_MISSING_REG_DATA_TXT    "ispCP data cannot be found in the config file !"
+#define MSG_MISSING_REG_DATA_TXT    "ispCP data cannot be found in the config file!"
 #define MSG_ERROR_BIND          10022
-#define MSG_ERROR_BIND_TXT          "bind() error: %s ! \r\n Please check for an other running daemon!\r\n "
+#define MSG_ERROR_BIND_TXT          "bind() error: %s! Please check for an other running daemon!"
 
 #define MSG_MAX_COUNT           22
 
 extern char *messages_array[][1];
 
 #endif
-

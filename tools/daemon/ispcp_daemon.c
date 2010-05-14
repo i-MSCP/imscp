@@ -1,13 +1,11 @@
-
 #include "ispcp_daemon.h"
 
 int getopt(int argc, char * const argv[], const char *optstring);
 extern char *optarg;
 extern int optind, opterr, optopt;
 
+int main(int argc, char **argv) {
 
-int main(int argc, char **argv)
-{
 	int listenfd, c;
 	struct sockaddr_in  servaddr;
 
@@ -18,13 +16,12 @@ int main(int argc, char **argv)
 	int given_pid;
 
 	pid_t childpid;
-
 	socklen_t clilen;
 
 	given_pid = 0;
 	pidfile_path = (char)'\0';
 
-	while (( c = getopt( argc, argv, "p:" )) != EOF ) {
+	while ((c = getopt( argc, argv, "p:")) != EOF) {
 		switch( c ) {
 			case 'p':
 			    pidfile_path = optarg;
@@ -40,12 +37,11 @@ int main(int argc, char **argv)
 	memset((void *) &servaddr, '\0', (size_t) sizeof(servaddr));
 
 	servaddr.sin_family = AF_INET;
-
     servaddr.sin_addr.s_addr = htonl(0x7F000001);
-
+	/*servaddr.sin_addr.s_addr = inet_addr("127.0.0.1");*/
 	servaddr.sin_port = htons(SERVER_LISTEN_PORT);
 
-    if ( bind(listenfd, (struct sockaddr *) &servaddr,  sizeof(servaddr)) < 0 ) {
+    if (bind(listenfd, (struct sockaddr *) &servaddr, sizeof(servaddr)) < 0) {
         say(message(MSG_ERROR_BIND), strerror(errno));
 		exit(errno);
     }
@@ -61,7 +57,6 @@ int main(int argc, char **argv)
 	tv_snd = (struct timeval *) calloc(1, sizeof(struct timeval));
 
 	memset(tv_rcv, '\0', sizeof(struct timeval));
-
 	memset(tv_snd, '\0', sizeof(struct timeval));
 
 	tv_rcv -> tv_sec = 30;
@@ -71,30 +66,19 @@ int main(int argc, char **argv)
 	tv_snd -> tv_usec = 0;
 
 	signal(SIGCHLD, sig_child);
-
 	signal(SIGPIPE, sig_pipe);
 
 	if(given_pid) {
-		FILE *file = fopen(pidfile_path,"w");
-		fprintf(file,"%ld",(long)getpid());
+		FILE *file = fopen(pidfile_path, "w");
+		fprintf(file, "%ld", (long)getpid());
 		fclose(file);
 	}
 
-	for ( ; ; ) {
-
+	for (;;) {
 		memset((void *) &cliaddr, '\0', sizeof(cliaddr));
-
 		clilen = (socklen_t) sizeof(cliaddr);
 
-		if (
-			(connfd = accept(
-							 listenfd,
-							 (struct sockaddr *)
-							 &cliaddr,
-							 &clilen
-							)
-			) < 0
-		   ) {
+		if ((connfd = accept(listenfd, (struct sockaddr *) &cliaddr, &clilen)) < 0) {
 			if (errno == EINTR) {
 				say("%s", message(MSG_ERROR_EINTR));
 				continue;
@@ -104,28 +88,8 @@ int main(int argc, char **argv)
 			}
 		}
 
-		/*
-		 TIMEOUT on client socket...
-		 i just wonder if this is enoigh, in meaning that only
-		 one 'timeval' structure is used for all the client
-		 sockets ?! - 13.11.2001
-		 */
-
-		setsockopt(
-				   connfd,
-				   SOL_SOCKET,
-				   SO_RCVTIMEO,
-				   tv_rcv,
-				   sizeof(struct timeval)
-				  );
-
-		setsockopt(
-				   connfd,
-				   SOL_SOCKET,
-				   SO_SNDTIMEO,
-				   tv_snd,
-				   sizeof(struct timeval)
-				  );
+		setsockopt(connfd, SOL_SOCKET, SO_RCVTIMEO, tv_rcv, sizeof(struct timeval));
+		setsockopt(connfd, SOL_SOCKET, SO_SNDTIMEO, tv_snd, sizeof(struct timeval));
 
 		memset(client_ip, '\0', MAX_MSG_SIZE);
 
@@ -136,14 +100,13 @@ int main(int argc, char **argv)
 
 			close(listenfd);
 
-            childpid = getpid();
+			childpid = getpid();
 
 			sprintf(nmb, "%d", childpid);
 
 			say(message(MSG_START_CHILD), nmb);
 
 			take_connection(connfd);
-
             free(nmb);
 
 			exit(0);
@@ -155,5 +118,4 @@ int main(int argc, char **argv)
 	closelog();
 
 	return (NO_ERROR);
-
 }

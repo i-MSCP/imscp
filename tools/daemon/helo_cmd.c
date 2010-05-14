@@ -1,8 +1,7 @@
-
 #include "helo_cmd.h"
 
-int helo_cmd(int fd)
-{
+int helo_cmd(int fd) {
+
 	char *buff = calloc(MAX_MSG_SIZE, sizeof(char));
 	int res;
 
@@ -19,10 +18,11 @@ int helo_cmd(int fd)
 		if (res == -1) {
 			free(buff);
 			return (-1);
-		} else if (res == 1)
+		} else if (res == 1) {
 			continue;
-		else
+		} else {
 			break;
+		}
 	}
 
 	free(buff);

@@ -1,6 +1,11 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-05-14 Laurent Declercq
+	- DAEMON:
+		* Refactored the code for better readability
+		* Removed useless EOL for syslog
+
 2010-05-14 Benedikt Heintel
 	- TOOLS:
 		* Fixed #2373: ispCP or components should not use /e modifier for 
