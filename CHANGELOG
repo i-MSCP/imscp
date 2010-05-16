@@ -1,6 +1,10 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-05-16 Peter Ziergoebel
+	- GUI:
+		* Fixed #2181: vu20xx.admin.domain.tld
+
 2010-05-14 Laurent Declercq
 	- DAEMON:
 		* Refactored the code for better readability

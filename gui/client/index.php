@@ -445,6 +445,7 @@ if (time() < $dmn_expires) {
 $tpl->assign(
 	array(
 		'ACCOUNT_NAME'		=> tohtml($account_name),
+		'DOMAIN_UID' 		=> $dmn_uid.".".Config::getInstance()->get('BASE_SERVER_VHOST'),
 		'MAIN_DOMAIN'		=> tohtml($dmn_name),
 		'DMN_EXPIRES_DATE'	=> $dmn_expires_date,
 		'MYSQL_SUPPORT'		=> ($dmn_sqld_limit != -1 && $dmn_sqlu_limit != -1) ? tr('yes') : tr('no'),
@@ -474,33 +475,34 @@ check_permissions($tpl);
 
 $tpl->assign(
 	array(
-		'TR_CLIENT_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Client/Main Index'),
+		'TR_CLIENT_MAIN_INDEX_PAGE_TITLE' 	=> tr('ispCP - Client/Main Index'),
 		'THEME_COLOR_PATH'			=> "../themes/$theme_color",
 		'THEME_CHARSET'				=> tr('encoding'),
-		'ISP_LOGO'					=> get_logo($_SESSION['user_id']),
-		'TR_GENERAL_INFORMATION' 	=> tr('General information'),
+		'ISP_LOGO'				=> get_logo($_SESSION['user_id']),
+		'TR_GENERAL_INFORMATION' 		=> tr('General information'),
 		'TR_ACCOUNT_NAME'			=> tr('Account name'),
 		'TR_DOMAIN_EXPIRE' 			=> tr('Domain expire'),
 		'TR_MAIN_DOMAIN'			=> tr('Main domain'),
 		'TR_PHP_SUPPORT' 			=> tr('PHP support'),
 		'TR_CGI_SUPPORT' 			=> tr('CGI support'),
 		'TR_DNS_SUPPORT' 			=> tr('Manual DNS support'),
-		'TR_BACKUP_SUPPORT' 		=> tr('Backup support'),
+		'TR_BACKUP_SUPPORT' 			=> tr('Backup support'),
 		'TR_MYSQL_SUPPORT' 			=> tr('SQL support'),
 		'TR_SUBDOMAINS' 			=> tr('Subdomains'),
-		'TR_DOMAIN_ALIASES' 		=> tr('Domain aliases'),
+		'TR_DOMAIN_ALIASES' 			=> tr('Domain aliases'),
 		'TR_MAIL_ACCOUNTS' 			=> tr('Mail accounts'),
 		'TR_FTP_ACCOUNTS' 			=> tr('FTP accounts'),
 		'TR_SQL_DATABASES' 			=> tr('SQL databases'),
 		'TR_SQL_USERS' 				=> tr('SQL users'),
 		'TR_MESSAGES' 				=> tr('Support system'),
 		'TR_LANGUAGE' 				=> tr('Language'),
-		'TR_CHOOSE_DEFAULT_LANGUAGE' => tr('Choose default language'),
-		'TR_SAVE' 					=> tr('Save'),
+		'TR_CHOOSE_DEFAULT_LANGUAGE' 		=> tr('Choose default language'),
+		'TR_SAVE' 				=> tr('Save'),
 		'TR_LAYOUT' 				=> tr('Layout'),
-		'TR_CHOOSE_DEFAULT_LAYOUT' 	=> tr('Choose default layout'),
+		'TR_CHOOSE_DEFAULT_LAYOUT' 		=> tr('Choose default layout'),
 		'TR_TRAFFIC_USAGE' 			=> tr('Traffic usage'),
-		'TR_DISK_USAGE'				=> tr('Disk usage')
+		'TR_DISK_USAGE'				=> tr('Disk usage'),
+		'TR_DMN_TMP_ACCESS'			=> tr('Alternative URL to reach your website')
 	)
 );
 

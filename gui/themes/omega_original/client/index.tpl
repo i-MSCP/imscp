@@ -58,6 +58,11 @@
             <td width="230" class="content2">{ACCOUNT_NAME}</td>
           </tr>
           <tr>
+	     <td>&nbsp;</td> 
+	     <td class="content">{TR_DMN_TMP_ACCESS}</td> 
+	     <td class="content2"><a href=" http://vu{DOMAIN_UID}" target="_blank"> http://vu{DOMAIN_UID}</a></td> 
+	   </tr>
+	   <tr>
             <td width="25">&nbsp;</td>
             <td class="content">{TR_DOMAIN_EXPIRE}</td>
             <td width="230" class="content2">{DMN_EXPIRES} {DMN_EXPIRES_DATE}</td>
