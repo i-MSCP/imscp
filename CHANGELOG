@@ -1,6 +1,12 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-05-18 Laurent Declercq
+	- GUI:
+		* Avoids additional GZip compression information for the requests
+			initiated from the XHR object
+		* Fixed broken password auto regeneration in admin/reseller_edit.php
+
 2010-05-16 Peter Ziergoebel
 	- GUI:
 		* Fixed #2181: vu20xx.admin.domain.tld

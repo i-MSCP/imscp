@@ -829,8 +829,6 @@ if (isset($_REQUEST['edit_id']) && !isset($_POST['Cancel'])) {
 	// Ajax request
 	// TODO: move Header handler in future responses class
 	if (is_xhr() && isset($_POST['uaction']) && $_POST['uaction'] == 'genpass')  {
-			// Disable Gzip output information
-			$GLOBALS['class']['output']->showSize = false;
 
 			// Overwrite the default header for Ajax request
 			header('Content-Type: text/plain; charset=utf-8');

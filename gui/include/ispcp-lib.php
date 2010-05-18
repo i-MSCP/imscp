@@ -310,8 +310,9 @@ if (!$res = exec_query($sql, $query, array())) {
 // Compress/gzip Class
 require_once(INCLUDEPATH . '/class.spGzip.php');
 // Check if server information is enabled
+// Note: If we receive a xhr request, the value must be forced to FALSE
 $showCompression =
-    (Config::getInstance()->get('SHOW_COMPRESSION_SIZE')) ? true : false;
+    (Config::getInstance()->get('SHOW_COMPRESSION_SIZE')) ? !is_xhr() : false;
 // construct the object
 $GLOBALS['class']['output'] = new spOutput('auto', false, $showCompression);
 // Start the output buffering
