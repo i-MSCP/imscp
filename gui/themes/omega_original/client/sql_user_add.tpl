@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="{THEME_CHARSET}" ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>{TR_CLIENT_SQL_ADD_USER_PAGE_TITLE}</title>

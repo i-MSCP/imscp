@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="{THEME_CHARSET}" ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>{TR_ADMIN_CHANGE_SERVER_TRAFFIC_SETTINGS_TITLE}</title>

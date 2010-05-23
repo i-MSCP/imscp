@@ -1,6 +1,14 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-05-23 Laurent Declercq
+	- GUI:
+		* Fixed #2379: Useless XML prolog in the current templates
+
+2010-05-23 Thomas Wacker
+	- GUI:
+		* Fixed #2145: Merge user delete processes
+
 2010-05-18 Laurent Declercq
 	- GUI:
 		* Avoids additional GZip compression information for the requests
