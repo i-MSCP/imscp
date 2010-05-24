@@ -1,6 +1,21 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-05-24 Laurent Declercq
+	- GUI:
+		* Added interface for `ispCP_ConfigHandler` objects
+		* Added documentation for both `Config` and `ConfigHandler` classes.
+		* Changed name of `ConfigHandler` class to `ConfigHandlerFile` to
+			reflect the type of storage handle by this configuration object
+		* Changed the ConfigHandlerFile class to implement the singleton design
+			pattern
+		* Improved the Config class to allow to handle any type of
+			ispCP_ConfigHandler objects (like db storage, xml storage..)
+
+2010-05-24 Thomas Wacker
+	- GUI:
+		Added two Compability wrapper methods in Config class
+
 2010-05-23 Laurent Declercq
 	- GUI:
 		* Fixed #2379: Useless XML prolog in the current templates
