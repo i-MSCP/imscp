@@ -41,6 +41,27 @@ class Config {
         }
         return self::$instance;
     }
+
+	/**
+	 * Compability wrapper for "get"
+	 * @static
+	 * @param string $param
+	 * @return mixed
+	 */
+	public static function get($param) {
+		return self::getInstance()->get($param);
+	}
+
+	/**
+	 * Compability wrapper for "set"
+	 * @static
+	 * @param string $param
+	 * @param mixed $value
+	 * @return void
+	 */
+	public static function set($param, $value) {
+		self::getInstance()->set($param, $value);
+	}
 }
  
 class ConfigHandler {	
