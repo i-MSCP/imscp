@@ -33,7 +33,7 @@
  *
  * Note: All ispCP_ConfigHandler must implement the Singleton design pattern
  *
- * @Since 1.0.6
+ * @since 1.0.6
  * @author Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
  */
 interface ispCP_ConfigHandler {
@@ -94,13 +94,13 @@ final class Config {
 	/**
 	 * Get a Config_Handler object
 	 *
-	 * Returns a reference to a Config_Handler object, only creating it
+	 * Returns a reference to a ispCP_ConfigHandler object, only creating it
 	 * if it doesn't already exist.
 	 *
 	 * The default ispCP_ConfigHandler object is set to ConfigHandlerFile
 	 *
-	 * @param string $type Type of Config_Handler object that should be returned
-	 * @param mixed Options that are passed to the ispCP_ConfigHandler object
+	 * @param string $type Type of ispCP_ConfigHandler object that should be returned
+	 * @param mixed params that are passed to the ispCP_ConfigHandler object
 	 * 	constructor
 	 * @return ispCP_ConfigHandler object
 	 */
@@ -131,7 +131,7 @@ final class Config {
 	 * Wrapper for getter method of a ispCP_ConfigHandler object
 	 *
 	 * @static
-	 * @param string $param Key name of the configuration parameters
+	 * @param string $index Key name of the configuration parameters
 	 * @return mixed configuration parameter value
 	 */
 	public static function get($index, $type = 'ConfigHandlerFile') {
@@ -142,7 +142,7 @@ final class Config {
 	 * Wrapper for getter method of a ispCP_ConfigHandler object
 	 *
 	 * @static
-	 * @param string $param Key name of the configuration parameter
+	 * @param string $index Key name of the configuration parameter
 	 * @param mixed $value Value name of the configuration parameter
 	 * @return void
 	 */
@@ -168,7 +168,7 @@ class ConfigHandlerFile implements ispCP_ConfigHandler {
 	 *
 	 * @var string Configuration file path
 	 */
-	private $file_path;
+	private $path_file;
 	
 	/**
 	 * Array that contain all configuration parameters parsed from the
@@ -188,7 +188,7 @@ class ConfigHandlerFile implements ispCP_ConfigHandler {
 	/**
 	 * Loads the ispCP config file (default directory: /etc/ispcp/ispcp.conf)
 	 *
-	 * @param String $cfg path to ispcp.conf
+	 * @param string $path_file Configuration file path
 	 */
 	private function __construct($path_file = null) {
 
@@ -204,7 +204,7 @@ class ConfigHandlerFile implements ispCP_ConfigHandler {
 			}
 		}
 
-		$this->file_path = $path_file;
+		$this->path_file = $path_file;
 
 		if (!$this->parseFile()) {
 			throw new Exception(
@@ -230,7 +230,7 @@ class ConfigHandlerFile implements ispCP_ConfigHandler {
 	/**
 	 * Getter method to retrieve a configuration parameter value
 	 *
-	 * @param string $param Key name of the configuration parameter
+	 * @param string $index Key name of the configuration parameter
 	 */
 	public function get($index) {
 
@@ -244,7 +244,7 @@ class ConfigHandlerFile implements ispCP_ConfigHandler {
 	/**
 	 * Setter method to set a new configuration parameter
 	 *
-	 * @param string $param Key name of the configuration parameter
+	 * @param string $index Key name of the configuration parameter
 	 * @param mixed $value Value of the configuration parameter
 	 */
 	public function set($index, $value) {
@@ -255,7 +255,7 @@ class ConfigHandlerFile implements ispCP_ConfigHandler {
 	/**
 	 * Checks if a key of a configuration parameters exists
 	 *
-	 * @param string $param Key name of the configuration parameter
+	 * @param string $index Key name of the configuration parameter
 	 * @return boolean TRUE if the configuration parameter is registered, FALSE
 	 * 	otherwise
 	 */
@@ -272,7 +272,7 @@ class ConfigHandlerFile implements ispCP_ConfigHandler {
 	 */
 	private function parseFile() {
 
-		$fd = @file_get_contents($this->file_path);
+		$fd = @file_get_contents($this->path_file);
 
 		if ($fd === false) {
 			return false;
