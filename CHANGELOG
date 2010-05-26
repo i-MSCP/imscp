@@ -1,6 +1,16 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-05-26 Benedikt Heintel
+	- DISTS:
+		* Updated Ubuntu Lucid Package
+	- LANGUAGES:
+		* Updated Italian (#2380)
+	- GUI:
+		* Corrected attributes on IDN en-/decode
+	- TOOLS:
+		* Fixed #2377: SquirrelMail: mime.php Header Decoding Patch
+
 2010-05-24 Laurent Declercq
 	- GUI:
 		* Added interface for `ispCP_ConfigHandler` objects
@@ -24,6 +34,7 @@ ispCP ω 1.0.6 ChangeLog
 	- GUI:
 		* Fixed #2145: Merge user delete processes
 
+>>>>>>> .r2935
 2010-05-18 Laurent Declercq
 	- GUI:
 		* Avoids additional GZip compression information for the requests

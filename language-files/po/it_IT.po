@@ -60,14 +60,16 @@ msgid "Your new password has been sent."
 msgstr "La password è stata richiesta"
 
 msgid "New password could not been sent."
-msgstr ""
+msgstr "La password non può essere richiesta"
 
 #, php-format
 msgid ""
 "Your password request has been initiated. You will receive an email with "
 "instructions to complete the process. This reset request will expire in %s "
 "minutes."
-msgstr ""
+msgstr "La vostra richiesta password è stata avviata. Riceverete una mail con "
+"istruzioni per completare l'operazione. La richiesta di reset scadrà tra %s "
+"minuti."
 
 msgid "Back"
 msgstr "Indietro"
@@ -203,11 +205,11 @@ msgid "Domain account"
 msgstr "Account del dominio"
 
 msgid "ispCP - Admin/Manage users/Edit Administrator"
-msgstr "ispCP - Admin/Gestione utenti/Modificare Utente"
+msgstr "ispCP - Admin/Gestione utenti/Modifica Amministratore"
 
 #, fuzzy
 msgid "ispCP - Admin/Manage users/Edit User"
-msgstr "ispCP - Admin/Gestione utenti/Aggiungere Utenti"
+msgstr "ispCP - Admin/Gestione utenti/Aggiunta Utenti"
 
 msgid "Edit admin"
 msgstr "Modifica admin"
@@ -229,7 +231,7 @@ msgid "Password change is disabled!"
 msgstr "Controllo aggiornamenti disabilitato!"
 
 msgid "Demo Version!"
-msgstr ""
+msgstr "Versione Demo"
 
 msgid "ispCP - Admin/Admin Log"
 msgstr "ispCP - Admin/Log Admin"
@@ -355,7 +357,7 @@ msgid "Missing or incorrect data input!"
 msgstr "I dati inseriti sono errati o mancanti!"
 
 msgid "Invalid URL!"
-msgstr ""
+msgstr "URL non valido!"
 
 #, fuzzy
 msgid "Invalid target!"
@@ -371,7 +373,7 @@ msgid "ispCP - Admin - Manage custom menus"
 msgstr "ispCP - Admin - Gestione dei men&ugrave;  personalizzati"
 
 msgid "Manage custom menus"
-msgstr "Gestione menù¹ personalizzati"
+msgstr "Gestione menù personalizzati"
 
 msgid "Add new button"
 msgstr "Aggiungi nuovo pulsante"
@@ -470,7 +472,7 @@ msgstr "Supporto CGI"
 
 #, fuzzy
 msgid "Manual DNS support (EXPERIMENTAL)"
-msgstr "Supporto MySQL"
+msgstr "Supporto DNS Manuale (SPERIMENTALE)"
 
 #, fuzzy
 msgid "Backup support"
@@ -486,7 +488,7 @@ msgid "Disk in MB"
 msgstr "Spazio in MB"
 
 msgid "Feature"
-msgstr "Feature"
+msgstr "Caratteristiche"
 
 msgid "Used"
 msgstr "Utilizzato"
@@ -519,7 +521,7 @@ msgid "Full"
 msgstr ""
 
 msgid "SQL"
-msgstr ""
+msgstr "SQL"
 
 msgid "Domain"
 msgstr "Dominio"
@@ -534,20 +536,20 @@ msgid "Disabled"
 msgstr "Disabilitato"
 
 msgid "ispCP - Admin/Edit Domain"
-msgstr "ispCP - Admin/Modificat Dominio"
+msgstr "ispCP - Admin/Modifica Dominio"
 
 msgid "Edit Domain"
-msgstr "Modifica dominio"
+msgstr "Modifica Dominio"
 
 msgid "Domain properties"
-msgstr "Proprietà  dominio"
+msgstr "Proprietà  Dominio"
 
 #, fuzzy
 msgid "Domain expire"
-msgstr "Caratteristiche del dominio"
+msgstr "Scadenza Dominio"
 
 msgid "New expire date"
-msgstr ""
+msgstr "Nuova data di scadenza"
 
 msgid "Max subdomains<br /><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Sottodomini <br /><i>(-1 disabilitato, 0 illimitato)</i>"
@@ -582,14 +584,11 @@ msgstr "Annulla"
 msgid "Yes"
 msgstr "Sì"
 
-msgid ""
-"In case 'Domain expire' is 'N/A', the expiration date will be set from today."
-msgstr ""
+msgid "In case 'Domain expire' is 'N/A', the expiration date will be set from today."
+msgstr "In caso di 'scadenza Dominio' 'N / A', la data di scadenza sarà fissata a partire da oggi"
 
-msgid ""
-"User does not exist or you do not have permission to access this interface!"
-msgstr ""
-"L' Utente è inesistente o non hai sufficienti permessi per accedere a questa "
+msgid "User does not exist or you do not have permission to access this interface!"
+msgstr "L' Utente è inesistente o non ha sufficienti permessi per accedere a questa "
 "interfaccia!"
 
 msgid "N/A"
@@ -856,9 +855,11 @@ msgid ""
 "<b>Optional:</b> Leave this field empty if you do not want term of service "
 "for this hosting plan."
 msgstr ""
+"<b> Facoltativo: </ b> Lasciare questo campo vuoto se non volete un termine del servizio"
+"per questo piano di hosting."
 
 msgid "Text Only"
-msgstr ""
+msgstr "Solo Testo"
 
 msgid "Add plan"
 msgstr "Aggiungi piano"
@@ -885,7 +886,7 @@ msgid "Price Style"
 msgstr "Stile Prezzo"
 
 msgid "Text"
-msgstr ""
+msgstr "Testo"
 
 msgid "Update plan"
 msgstr "Aggiorna il piano"
@@ -2711,6 +2712,7 @@ msgstr "Supporto PHP: Disattivato"
 msgid ""
 "You have PHP enabled, but the new hosting plan doesn't has this feature."
 msgstr ""
+"Hai PHP abilitato, ma il nuovo piano di hosting non ha questa funzione."
 
 msgid "CGI Support: enabled"
 msgstr "Supporto CGI: Attivato"
@@ -2721,6 +2723,7 @@ msgstr "Supporto CGI: Disattivato"
 msgid ""
 "You have CGI enabled, but the new hosting plan doesn't has this feature."
 msgstr ""
+"Hai CGI abilitato, ma il nuovo piano di hosting non ha questa funzione."
 
 #, fuzzy
 msgid "DNS Support: enabled"
@@ -2733,27 +2736,28 @@ msgstr "Supporto PHP: Disattivato"
 msgid ""
 "You have DNS enabled, but the new hosting plan doesn't has this feature."
 msgstr ""
+"Hai DNS abilitato, ma il nuovo piano di hosting non ha questa funzione."
 
 msgid "You have more disk space in use than the new hosting plan limits."
-msgstr ""
+msgstr "Stai occupando spazio su disco oltre i limiti del piano di hosting."
 
 msgid "Disk limit"
 msgstr "Limite di spazio"
 
 msgid "You did have more traffic than the new hosting plan limits."
-msgstr ""
+msgstr "Hai avuto più traffico rispetto ai limiti del piano di hosting."
 
 msgid "Traffic limit"
 msgstr "Limite di traffico"
 
 msgid "You have more aliases in use than the new hosting plan limits."
-msgstr ""
+msgstr "Hai più traffico rispetto ai limiti del piano di hosting."
 
 msgid "You have more subdomains in use than the new hosting plan limits."
-msgstr ""
+msgstr "Hai più sottodomini rispetto ai limiti del piano di hosting."
 
 msgid "You have more Email addresses in use than the new hosting plan limits."
-msgstr ""
+msgstr "Hai più indirizzi Email rispetto ai limiti del piano di hosting."
 
 msgid "Emails"
 msgstr "Indirizzi Mail"
@@ -2765,26 +2769,26 @@ msgid "FTPs"
 msgstr "FTPs"
 
 msgid "You have more SQL databases in use than the new hosting plan limits."
-msgstr ""
+msgstr "Hai più database SQL rispetto ai limiti del piano di hosting."
 
 msgid ""
 "You have more SQL database users in use than the new hosting plan limits."
-msgstr ""
+msgstr "Hai più utenti SQL rispetto ai limiti del piano di hosting."
 
 msgid "free of charge"
 msgstr "Gratuito"
 
 msgid "You can not update to this hosting plan, see notices in text."
-msgstr ""
+msgstr "Non è possibile aggiornare a questo piano di hosting, vedere Note nel testo."
 
 msgid "Warning:"
-msgstr ""
+msgstr "Avviso"
 
 msgid "Caution:"
-msgstr ""
+msgstr "Attenzione"
 
 msgid "I understand the warnings - Purchase!"
-msgstr ""
+msgstr "Dichiaro di aver letto le avvertenze - Acquista!"
 
 msgid "There are no available hosting plans for update"
 msgstr "Non sono disponibili piani di hosting per questo aggiornamento"
@@ -2793,7 +2797,7 @@ msgid "ispCP - Update hosting plan"
 msgstr "ispCP - Aggiorna il piano di hosting"
 
 msgid "You have more e-mail addresses in use than the new hosting plan limits."
-msgstr ""
+msgstr "Hai più indirizzi Email rispetto ai limiti del piano di hosting."
 
 msgid "Your request for hosting pack update was added successfully"
 msgstr ""
@@ -3190,7 +3194,7 @@ msgid "You have no users!"
 msgstr "Non hai utenti!"
 
 msgid "Error while authenticating!"
-msgstr ""
+msgstr "Errore durante l'autenticazione!"
 
 msgid "Please type user password!"
 msgstr "Prego, inserire la password dell'utente!"
@@ -3561,14 +3565,14 @@ msgstr "%d B"
 
 #, php-format
 msgid "File %s does not exists or cannot be reached!"
-msgstr ""
+msgstr "Il file %s non esiste o non può essere raggiunto!"
 
 msgid "Error while trying to obtain list of network cards!"
-msgstr ""
+msgstr "Errore durante il tentativo di ottenere la lista delle schede di rete!"
 
 #, php-format
 msgid "This IP (%s) is not assigned to any network card!"
-msgstr ""
+msgstr "Questo IP (%s) non è assegnato a nessuna scheda di rete!"
 
 msgid "Couldn't check for updates! Website not reachable."
 msgstr ""
@@ -3602,10 +3606,10 @@ msgid "Update Hosting Package"
 msgstr "Aggiornare Pacchetto Hosting"
 
 msgid "Add DNS zone's record"
-msgstr ""
+msgstr "Aggiungi zona DNS"
 
 msgid "Manage SSL certificate"
-msgstr ""
+msgstr "Gestisci certificato SSL"
 
 msgid "Domain mail"
 msgstr "Email dominio"
@@ -3857,27 +3861,27 @@ msgstr "Sintassi del sottodominio errata!"
 
 #, php-format
 msgid "Label not allowed: <b>%s</b>"
-msgstr ""
+msgstr "Valore non ammesso: <b>%s</b>"
 
 #, php-format
 msgid "Wrong label syntax: <b>%s</b>"
-msgstr ""
+msgstr "Errore di sintassi <b>%s</b>"
 
 #, php-format
 msgid "Wrong label lenght: <b>%s</b>"
-msgstr ""
+msgstr "Errore nella lunghezza: <b>%s</b>"
 
 #, php-format
 msgid "Wrong Top Level Domain syntax: <b>%s</b>"
-msgstr ""
+msgstr "Errore sintassi Top Level Domain: <b>%s</b>"
 
 #, php-format
 msgid "Wrong Top Level Domain lenght: <b>%s</b>"
-msgstr ""
+msgstr "Errore lunghezza Top Level Domain: <b>%s</b>"
 
 #, php-format
 msgid "Wrong Second Level Domain lenght: <b>%s</b>"
-msgstr ""
+msgstr "Errore lunghezza Dominio Secondo Livello: <b>%s</b>"
 
 #, fuzzy, php-format
 msgid "Wrong domain name: <b>%s</b> is reserved!"
@@ -3885,16 +3889,19 @@ msgstr "Nome di dominio errato: <b>%s</b> è riservato!"
 
 #, php-format
 msgid "Wrong Second Level Domain syntax: <b>%s</b>"
-msgstr ""
+msgstr "Errore sintassi Dominio Secondo Livello: <b>%s</b>"
 
 msgid ""
 "ERROR: ACE labels are not allowed. Please use the ToUnicode equivalent.<br /"
 "><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> "
 "instead</small>."
 msgstr ""
+"ERRORE: L'etichetta ACE non è permessa. Usa l'equivalente ToUnicode.<br /"
+"><small>Esempio: per l'etichetta ACE <b>xn--bcher-kva</b> usa <b>bücher</b> "
+"invece</small>."
 
 msgid "ERROR: PHP extension 'mcrypt' not loaded!"
-msgstr ""
+msgstr "ERRORE: l'estensione PHP 'mcrypt' non è caricata!"
 
 msgid ""
 "We are sorry, but the system is currently under maintenance.\n"
@@ -3939,7 +3946,7 @@ msgstr "Lo status dell'account %s non è ok!"
 
 #, php-format
 msgid "%s's domain expired!"
-msgstr ""
+msgstr "Il dominio %s è scaduto!"
 
 msgid "Request from foreign host was blocked!"
 msgstr "Una richiesta proveniente da un host esterno è stata bloccata!"
@@ -4400,7 +4407,7 @@ msgid "Implementation URL"
 msgstr "URL per l`implementazione"
 
 msgid "Footer"
-msgstr "Footer"
+msgstr "Piè di pagina"
 
 msgid "ispCP - Reseller/Order management"
 msgstr "ispCP - Rivenditore/Gestione ordine"
@@ -4550,7 +4557,7 @@ msgstr "Aggiungi altri domini a questo account"
 
 #, fuzzy, php-format
 msgid "System error with Domain Id: %d"
-msgstr ""
+msgstr "Errore di sistema sul Dominio: %d"
 
 msgid "User terminated!"
 msgstr "Utente disabilitato!"
@@ -4588,11 +4595,11 @@ msgstr "Non hai utenti."
 
 #, php-format
 msgid "%1$s of %2$s MB"
-msgstr ""
+msgstr "%1$s di %2$s MB"
 
 #, php-format
 msgid "%1$s of <b>unlimited</b> MB"
-msgstr ""
+msgstr "%1$s di <b>illimitati</b> MB"
 
 msgid "User data updated!"
 msgstr "Dati dell'utente aggiornati!"

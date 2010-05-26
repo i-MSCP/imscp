@@ -626,6 +626,16 @@ function decodeBody($body, $encoding) {
 }
 
 /**
+ * Helper function for Header field Decoding
+ *
+ * This function decodes quoted-printable-escaped character sequences into
+ * their original byte values, i.e. from =40 into @
+ */
+function decodeHeader_charDecode($m) {
+    return chr(hexdec($m[1]));
+}
+
+/**
  * Decodes headers
  *
  * This functions decode strings that is encoded according to
@@ -704,8 +714,7 @@ function decodeHeader ($string, $utfencode=true,$htmlsave=true,$decide=false) {
                     break;
                 case 'Q':
                     $replace = str_replace('_', ' ', $res[4]);
-                    $replace = preg_replace('/=([0-9a-f]{2})/ie', 'chr(hexdec("\1"))',
-                            $replace);
+                   	$replace = preg_replace_callback('/=([0-9a-f]{2})/i', 'decodeHeader_charDecode', $replace);
                     if ($can_be_encoded) {
                         // string is converted from one charset to another. sanitizing depends on $htmlsave
                         $replace = charset_convert($res[2], $replace,$default_charset,$htmlsave);

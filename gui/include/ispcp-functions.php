@@ -357,7 +357,7 @@ function array_encode_idna($arr, $asPath = false) {
 
 function decode_idna($input) {
 	if (function_exists('idn_to_unicode')) {
-		return idn_to_unicode($input, 'utf-8');
+		return idn_to_utf8($input, IDNA_USE_STD3_RULES);
 	}
 
 	$IDN = new idna_convert();
@@ -368,7 +368,7 @@ function decode_idna($input) {
 
 function encode_idna($input) {
 	if (function_exists('idn_to_ascii')) {
-		return idn_to_ascii($input, 'utf-8');
+		return idn_to_ascii($input);
 	}
 
 	$IDN = new idna_convert();
