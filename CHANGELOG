@@ -34,7 +34,6 @@ ispCP ω 1.0.6 ChangeLog
 	- GUI:
 		* Fixed #2145: Merge user delete processes
 
->>>>>>> .r2935
 2010-05-18 Laurent Declercq
 	- GUI:
 		* Avoids additional GZip compression information for the requests
