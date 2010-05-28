@@ -82,7 +82,7 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 	private $index = null;
 
 	/**
-	 * Variable bound to parameter of the PDOStatement objects
+	 * Variable bound to the PDOStatement objects
 	 *
 	 * The value of this variable is bound to the PDOStatement that are used by
 	 * the both method {@link insert_to_db()} and {@link update_to_db()}
@@ -145,7 +145,7 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 				);
 			}
 
-			$this->_db = $param('database');
+			$this->_db = $param('db');
 
 			// Overrides the database table name for configuration parameters
 			if(isset($params['table_name'])) {
@@ -231,7 +231,7 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 	/**
 	 * Store a new configuration parameter in the database
 	 *
-	 * @throw Exception
+	 * @throws Exception
 	 * @return void
 	 */
 	private function insert_to_db() {
@@ -261,7 +261,7 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 	/**
 	 * Update a configuration parameter in the database
 	 *
-	 * @throw Exception
+	 * @throws Exception
 	 * @return void
 	 */
 	private function update_to_db() {

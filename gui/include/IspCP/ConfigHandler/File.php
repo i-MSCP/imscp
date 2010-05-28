@@ -79,7 +79,7 @@ class ispCP_ConfigHandler_File extends ispCP_ConfigHandler {
 	 * Opens a configuration file and parses its KEY = Value pairs into the
 	 * {@link IspCP_ConfigHangler::parameters} array.
 	 *
-	 * @throw Exception
+	 * @throws Exception
 	 * @return Configuration parameters
 	 */
 	private function parseFile() {
