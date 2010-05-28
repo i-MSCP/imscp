@@ -2148,6 +2148,9 @@ RIC;
 	$tpl->assign('PURCHASE_FOOTER', $footer);
 }
 
+/**
+ * @deprecated since 1.0.6 (Will be removed)
+ */
 function setConfig_Value($name, $value) {
 	$sql = Database::getInstance();
 

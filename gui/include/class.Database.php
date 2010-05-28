@@ -54,6 +54,22 @@ final class Database {
 		return self::$_instances[$connection];
 	}
 
+	/**
+	 * Return a raw PDO instance
+	 *
+	 * @since 1.0.6
+	 * @param $string $connection connection key name
+	 * @throws Exception
+	 * @return raw PDO instance
+	 */
+	public static function getRawInstance($connection = 'default') {
+		if (!isset(self::$_instances[$connection])) {
+			throw new Exception('Database error: Not connected to ' . $connection);
+		}
+
+		return self::$_instances[$connection]->_db;
+	}
+
 	public static function connect($user, $pass, $type, $host, $name, $connection = 'default') {
 		if (isset(self::$_instances[$connection])) {
 			$_instances[$connection]->close();

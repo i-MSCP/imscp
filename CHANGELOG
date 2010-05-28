@@ -1,6 +1,22 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-05-28 Laurent Declercq
+	- GUI:
+		* Added a method in Database class to be able to get a raw PDO instance
+		* Added IspCP_ConfigHandler class to handle config parameters from an
+			array
+		* Added IspCP_ConfigHandler adapter class to handle config parameter
+			from a database
+		* Changed admin/setting.php to use new IspCP_ConfigHandler interface
+		* Changed include/ispcp-lib.php to use new IspCP_ConfigHandler interface
+		* Fixed gen_def_language(): Initial language string should not be passed
+			by reference
+		* Improved autoloader funct. to be able to retrieve class files in the
+			new namespace
+		* Rewrited classes config parameters manipulation
+		* The `setConfig_Value()` funct. in admin-function.php is now deprecated
+
 2010-05-26 Benedikt Heintel
 	- DISTS:
 		* Updated Ubuntu Lucid Package

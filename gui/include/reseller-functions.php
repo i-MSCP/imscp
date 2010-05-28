@@ -1215,7 +1215,7 @@ function gen_manage_domain_search_options(&$tpl,
 /**
  * @todo implement use of more secure dynamic table in SQL query
  */
-function gen_def_language(&$tpl, &$sql, &$user_def_language) {
+function gen_def_language(&$tpl, &$sql, $user_def_language) {
 	$matches = array();
 	$languages = array();
 	$query = "SHOW TABLES";
