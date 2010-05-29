@@ -32,14 +32,17 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
+// Get a reference to the Config object
+$cfg = IspCP_Registry::get('Config');
+
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', $main_cfg->ADMIN_TEMPLATE_PATH . '/settings.tpl');
+$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/settings.tpl');
 $tpl->define_dynamic('def_language', 'page');
 
 $tpl->assign(
 	array(
 		'TR_ADMIN_SETTINGS_PAGE_TITLE' => tr('ispCP - Admin/Settings'),
-		'THEME_COLOR_PATH' => "../themes/{$main_cfg->USER_INITIAL_THEME}",
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
 	)
@@ -93,7 +96,9 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	} else if ($max_subdnames_labels < 1) {
 		$max_subdnames_labels = 1;
 	} else {
-		$db_cfg =& Config::getInstance(Config::DB);
+
+		// Get a reference to the DB_Config Objects
+		$db_cfg = ispCP_Registry::get('Db_Config');
 
 		$db_cfg->LOSTPASSWORD = $lostpwd;
 		$db_cfg->LOSTPASSWORD_TIMEOUT = $lostpwd_timeout;
@@ -124,38 +129,37 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 		$db_cfg->MAX_DNAMES_LABELS = $max_dnames_labels;
 		$db_cfg->MAX_SUBDNAMES_LABELS = $max_subdnames_labels;
 
-		$main_cfg->replace_with($db_cfg);
+		$cfg->replace_with($db_cfg);
 
 		set_page_message(tr('Settings saved!'));
 	}
 }
 
-$coid = isset($main_cfg->CUSTOM_ORDERPANEL_ID)
-	? $main_cfg->CUSTOM_ORDERPANEL_ID
+$coid = isset($cfg->CUSTOM_ORDERPANEL_ID)
+	? $cfg->CUSTOM_ORDERPANEL_ID
 	: '';
 
 $tpl->assign(
 	array(
-		'LOSTPASSWORD_TIMEOUT_VALUE' => $main_cfg->LOSTPASSWORD_TIMEOUT,
-		'PASSWD_CHARS' => $main_cfg->PASSWD_CHARS,
-		'BRUTEFORCE_MAX_LOGIN_VALUE' => $main_cfg->BRUTEFORCE_MAX_LOGIN,
-		'BRUTEFORCE_BLOCK_TIME_VALUE' => $main_cfg->BRUTEFORCE_BLOCK_TIME,
-		'BRUTEFORCE_BETWEEN_TIME_VALUE' => $main_cfg->BRUTEFORCE_BETWEEN_TIME,
-		'BRUTEFORCE_MAX_CAPTCHA' => $main_cfg->BRUTEFORCE_MAX_CAPTCHA,
-		'DOMAIN_ROWS_PER_PAGE' => $main_cfg->DOMAIN_ROWS_PER_PAGE,
+		'LOSTPASSWORD_TIMEOUT_VALUE' => $cfg->LOSTPASSWORD_TIMEOUT,
+		'PASSWD_CHARS' => $cfg->PASSWD_CHARS,
+		'BRUTEFORCE_MAX_LOGIN_VALUE' => $cfg->BRUTEFORCE_MAX_LOGIN,
+		'BRUTEFORCE_BLOCK_TIME_VALUE' => $cfg->BRUTEFORCE_BLOCK_TIME,
+		'BRUTEFORCE_BETWEEN_TIME_VALUE' => $cfg->BRUTEFORCE_BETWEEN_TIME,
+		'BRUTEFORCE_MAX_CAPTCHA' => $cfg->BRUTEFORCE_MAX_CAPTCHA,
+		'DOMAIN_ROWS_PER_PAGE' => $cfg->DOMAIN_ROWS_PER_PAGE,
 		'CUSTOM_ORDERPANEL_ID' => $coid,
-		'MAX_DNAMES_LABELS_VALUE' => $main_cfg->MAX_DNAMES_LABELS,
-		'MAX_SUBDNAMES_LABELS_VALUE' => $main_cfg->MAX_SUBDNAMES_LABELS
+		'MAX_DNAMES_LABELS_VALUE' => $cfg->MAX_DNAMES_LABELS,
+		'MAX_SUBDNAMES_LABELS_VALUE' => $cfg->MAX_SUBDNAMES_LABELS
 	)
 );
 
-//$language = $cfg['USER_INITIAL_LANG'];
-gen_def_language($tpl, $sql, $main_cfg['USER_INITIAL_LANG']);
+gen_def_language($tpl, $sql, $cfg['USER_INITIAL_LANG']);
 
 // Grab the value only once to improve performances
-$html_selected = $main_cfg['HTML_SELECTED'];
+$html_selected = $cfg['HTML_SELECTED'];
 
-if ($main_cfg->LOSTPASSWORD) {
+if ($cfg->LOSTPASSWORD) {
 	$tpl->assign('LOSTPASSWORD_SELECTED_ON', $html_selected);
 	$tpl->assign('LOSTPASSWORD_SELECTED_OFF', '');
 } else {
@@ -163,7 +167,7 @@ if ($main_cfg->LOSTPASSWORD) {
 	$tpl->assign('LOSTPASSWORD_SELECTED_OFF', $html_selected);
 }
 
-if ($main_cfg->PASSWD_STRONG) {
+if ($cfg->PASSWD_STRONG) {
 	$tpl->assign('PASSWD_STRONG_ON', $html_selected);
 	$tpl->assign('PASSWD_STRONG_OFF', '');
 } else {
@@ -171,7 +175,7 @@ if ($main_cfg->PASSWD_STRONG) {
 	$tpl->assign('PASSWD_STRONG_OFF',  $html_selected);
 }
 
-if ($main_cfg->BRUTEFORCE) {
+if ($cfg->BRUTEFORCE) {
 	$tpl->assign('BRUTEFORCE_SELECTED_ON', $html_selected);
 	$tpl->assign('BRUTEFORCE_SELECTED_OFF', '');
 } else {
@@ -179,7 +183,7 @@ if ($main_cfg->BRUTEFORCE) {
 	$tpl->assign('BRUTEFORCE_SELECTED_OFF', $html_selected);
 }
 
-if ($main_cfg->BRUTEFORCE_BETWEEN) {
+if ($cfg->BRUTEFORCE_BETWEEN) {
 	$tpl->assign('BRUTEFORCE_BETWEEN_SELECTED_ON', $html_selected);
 	$tpl->assign('BRUTEFORCE_BETWEEN_SELECTED_OFF', '');
 } else {
@@ -187,7 +191,7 @@ if ($main_cfg->BRUTEFORCE_BETWEEN) {
 	$tpl->assign('BRUTEFORCE_BETWEEN_SELECTED_OFF', $html_selected);
 }
 
-if ($main_cfg->ISPCP_SUPPORT_SYSTEM) {
+if ($cfg->ISPCP_SUPPORT_SYSTEM) {
 	$tpl->assign('SUPPORT_SYSTEM_SELECTED_ON', $html_selected);
 	$tpl->assign('SUPPORT_SYSTEM_SELECTED_OFF', '');
 } else {
@@ -195,7 +199,7 @@ if ($main_cfg->ISPCP_SUPPORT_SYSTEM) {
 	$tpl->assign('SUPPORT_SYSTEM_SELECTED_OFF', $html_selected);
 }
 
-if ($main_cfg->TLD_STRICT_VALIDATION) {
+if ($cfg->TLD_STRICT_VALIDATION) {
 	$tpl->assign('TLD_STRICT_VALIDATION_ON', $html_selected);
 	$tpl->assign('TLD_STRICT_VALIDATION_OFF', '');
 } else {
@@ -203,7 +207,7 @@ if ($main_cfg->TLD_STRICT_VALIDATION) {
 	$tpl->assign('TLD_STRICT_VALIDATION_OFF', $html_selected);
 }
 
-if ($main_cfg->SLD_STRICT_VALIDATION) {
+if ($cfg->SLD_STRICT_VALIDATION) {
 	$tpl->assign('SLD_STRICT_VALIDATION_ON', $html_selected);
 	$tpl->assign('SLD_STRICT_VALIDATION_OFF', '');
 } else {
@@ -211,7 +215,7 @@ if ($main_cfg->SLD_STRICT_VALIDATION) {
 	$tpl->assign('SLD_STRICT_VALIDATION_OFF', $html_selected);
 }
 
-if ($main_cfg->CREATE_DEFAULT_EMAIL_ADDRESSES) {
+if ($cfg->CREATE_DEFAULT_EMAIL_ADDRESSES) {
 	$tpl->assign('CREATE_DEFAULT_EMAIL_ADDRESSES_ON', $html_selected);
 	$tpl->assign('CREATE_DEFAULT_EMAIL_ADDRESSES_OFF', '');
 } else {
@@ -219,7 +223,7 @@ if ($main_cfg->CREATE_DEFAULT_EMAIL_ADDRESSES) {
 	$tpl->assign('CREATE_DEFAULT_EMAIL_ADDRESSES_OFF', $html_selected);
 }
 
-if ($main_cfg->COUNT_DEFAULT_EMAIL_ADDRESSES) {
+if ($cfg->COUNT_DEFAULT_EMAIL_ADDRESSES) {
 	$tpl->assign('COUNT_DEFAULT_EMAIL_ADDRESSES_ON', $html_selected);
 	$tpl->assign('COUNT_DEFAULT_EMAIL_ADDRESSES_OFF', '');
 } else {
@@ -227,7 +231,7 @@ if ($main_cfg->COUNT_DEFAULT_EMAIL_ADDRESSES) {
 	$tpl->assign('COUNT_DEFAULT_EMAIL_ADDRESSES_OFF', $html_selected);
 }
 
-if ($main_cfg->HARD_MAIL_SUSPENSION) {
+if ($cfg->HARD_MAIL_SUSPENSION) {
 	$tpl->assign('HARD_MAIL_SUSPENSION_ON', $html_selected);
 	$tpl->assign('HARD_MAIL_SUSPENSION_OFF', '');
 } else {
@@ -235,7 +239,7 @@ if ($main_cfg->HARD_MAIL_SUSPENSION) {
 	$tpl->assign('HARD_MAIL_SUSPENSION_OFF', $html_selected);
 }
 
-if ($main_cfg->HOSTING_PLANS_LEVEL == 'admin') {
+if ($cfg->HOSTING_PLANS_LEVEL == 'admin') {
 	$tpl->assign('HOSTING_PLANS_LEVEL_ADMIN', $html_selected);
 	$tpl->assign('HOSTING_PLANS_LEVEL_RESELLER', '');
 } else {
@@ -243,7 +247,7 @@ if ($main_cfg->HOSTING_PLANS_LEVEL == 'admin') {
 	$tpl->assign('HOSTING_PLANS_LEVEL_RESELLER', $html_selected);
 }
 
-if ($main_cfg->CHECK_FOR_UPDATES) {
+if ($cfg->CHECK_FOR_UPDATES) {
 	$tpl->assign('CHECK_FOR_UPDATES_SELECTED_ON', $html_selected);
 	$tpl->assign('CHECK_FOR_UPDATES_SELECTED_OFF', '');
 } else {
@@ -251,7 +255,7 @@ if ($main_cfg->CHECK_FOR_UPDATES) {
 	$tpl->assign('CHECK_FOR_UPDATES_SELECTED_OFF', $html_selected);
 }
 
-if ($main_cfg->SHOW_COMPRESSION_SIZE) {
+if ($cfg->SHOW_COMPRESSION_SIZE) {
 	$tpl->assign('SHOW_COMPRESSION_SIZE_SELECTED_ON', $html_selected);
 	$tpl->assign('SHOW_COMPRESSION_SIZE_SELECTED_OFF', '');
 } else {
@@ -259,7 +263,7 @@ if ($main_cfg->SHOW_COMPRESSION_SIZE) {
 	$tpl->assign('SHOW_COMPRESSION_SIZE_SELECTED_OFF', $html_selected);
 }
 
-if ($main_cfg->PREVENT_EXTERNAL_LOGIN_ADMIN) {
+if ($cfg->PREVENT_EXTERNAL_LOGIN_ADMIN) {
 	$tpl->assign('PREVENT_EXTERNAL_LOGIN_ADMIN_SELECTED_ON', $html_selected);
 	$tpl->assign('PREVENT_EXTERNAL_LOGIN_ADMIN_SELECTED_OFF', '');
 } else {
@@ -267,7 +271,7 @@ if ($main_cfg->PREVENT_EXTERNAL_LOGIN_ADMIN) {
 	$tpl->assign('PREVENT_EXTERNAL_LOGIN_ADMIN_SELECTED_OFF', $html_selected);
 }
 
-if ($main_cfg->PREVENT_EXTERNAL_LOGIN_RESELLER) {
+if ($cfg->PREVENT_EXTERNAL_LOGIN_RESELLER) {
 	$tpl->assign('PREVENT_EXTERNAL_LOGIN_RESELLER_SELECTED_ON', $html_selected);
 	$tpl->assign('PREVENT_EXTERNAL_LOGIN_RESELLER_SELECTED_OFF', '');
 } else {
@@ -275,7 +279,7 @@ if ($main_cfg->PREVENT_EXTERNAL_LOGIN_RESELLER) {
 	$tpl->assign('PREVENT_EXTERNAL_LOGIN_RESELLER_SELECTED_OFF', $html_selected);
 }
 
-if ($main_cfg->PREVENT_EXTERNAL_LOGIN_CLIENT) {
+if ($cfg->PREVENT_EXTERNAL_LOGIN_CLIENT) {
 	$tpl->assign('PREVENT_EXTERNAL_LOGIN_CLIENT_SELECTED_ON', $html_selected);
 	$tpl->assign('PREVENT_EXTERNAL_LOGIN_CLIENT_SELECTED_OFF', '');
 } else {
@@ -283,7 +287,7 @@ if ($main_cfg->PREVENT_EXTERNAL_LOGIN_CLIENT) {
 	$tpl->assign('PREVENT_EXTERNAL_LOGIN_CLIENT_SELECTED_OFF', $html_selected);
 }
 
-switch ($main_cfg->LOG_LEVEL) {
+switch ($cfg->LOG_LEVEL) {
 	case E_USER_OFF:
 		$tpl->assign('LOG_LEVEL_SELECTED_OFF', $html_selected);
 		$tpl->assign('LOG_LEVEL_SELECTED_NOTICE', '');
@@ -314,8 +318,8 @@ switch ($main_cfg->LOG_LEVEL) {
  * static page messages.
  *
  */
-gen_admin_mainmenu($tpl, $main_cfg->ADMIN_TEMPLATE_PATH . '/main_menu_settings.tpl');
-gen_admin_menu($tpl, $main_cfg->ADMIN_TEMPLATE_PATH . '/menu_settings.tpl');
+gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_settings.tpl');
+gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_settings.tpl');
 
 $tpl->assign(
 	array(
@@ -388,7 +392,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($main_cfg->DUMP_GUI_DEBUG) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
 

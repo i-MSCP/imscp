@@ -1,6 +1,14 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-05-29 Laurent Declercq
+	- GUI:
+		* Added constant for ConfigHandler support in the Config class
+		* Added IspCP_Registry class to store shared data
+		* Changed ispcp-lib.php and admin/settings.php for usage example of the
+			new IspCP_Registry class
+		* Fixed some typo issue in Config class
+
 2010-05-28 Laurent Declercq
 	- GUI:
 		* Added a method in Database class to be able to get a raw PDO instance
@@ -8,7 +16,7 @@ ispCP ω 1.0.6 ChangeLog
 			array
 		* Added IspCP_ConfigHandler adapter class to handle config parameter
 			from a database
-		* Changed admin/setting.php to use new IspCP_ConfigHandler interface
+		* Changed admin/settings.php to use new IspCP_ConfigHandler interface
 		* Changed include/ispcp-lib.php to use new IspCP_ConfigHandler interface
 		* Fixed gen_def_language(): Initial language string should not be passed
 			by reference

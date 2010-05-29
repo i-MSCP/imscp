@@ -49,6 +49,7 @@ final class Config {
 	 * List of all the spCP_ConfigHandler object that this class can/will handle
 	 */
 	const
+		ARR = 'IspCP_ConfigHandler',
 		DB = 'IspCP_ConfigHandler_Db',
 		FILE = 'IspCP_ConfigHandler_File',
 		INI = false,
@@ -64,9 +65,9 @@ final class Config {
 	private static $_instances = array();
 
 	/**
-	 * Get a Config_Handler object
+	 * Get a IspCP_ConfigHandler instance
 	 *
-	 * Returns a reference to a {@link IspCP_ConfigHandler} object, only
+	 * Returns a reference to a {@link IspCP_ConfigHandler} instance, only
 	 * creating it if it doesn't already exist.
 	 *
 	 * The default handler object is set to {@link IspCP_ConfigHandler_File}
