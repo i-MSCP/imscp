@@ -150,6 +150,9 @@ function delete_button(&$sql) {
 }
 
 function edit_button(&$tpl, &$sql) {
+	
+	$cfg = IspCP_Registry::get('Config');
+	
 	if ($_GET['edit_id'] === '' || !is_numeric($_GET['edit_id'])) {
 		set_page_message(tr('Missing or incorrect data input!'));
 		return;
@@ -179,25 +182,25 @@ function edit_button(&$tpl, &$sql) {
 			$button_view = $rs->fields['menu_level'];
 
 			if ($button_view === 'admin') {
-				$admin_view = Config::getInstance()->get('HTML_SELECTED');
+				$admin_view = $cfg->HTML_SELECTED;
 				$reseller_view = '';
 				$user_view = '';
 				$all_view = '';
 			} else if ($button_view === 'reseller') {
 				$admin_view = '';
-				$reseller_view = Config::getInstance()->get('HTML_SELECTED');
+				$reseller_view = $cfg->HTML_SELECTED;
 				$user_view = '';
 				$all_view = '';
 			} else if ($button_view === 'user') {
 				$admin_view = '';
 				$reseller_view = '';
-				$user_view = Config::getInstance()->get('HTML_SELECTED');
+				$user_view = $cfg->HTML_SELECTED;
 				$all_view = '';
 			} else {
 				$admin_view = '';
 				$reseller_view = '';
 				$user_view = '';
-				$all_view = Config::getInstance()->get('HTML_SELECTED');
+				$all_view = $cfg->HTML_SELECTED;
 			}
 
 			$tpl->assign(
@@ -219,6 +222,7 @@ function edit_button(&$tpl, &$sql) {
 }
 
 function update_button(&$sql) {
+
 	if (!isset($_POST['uaction'])) {
 		return;
 	} else if ($_POST['uaction'] != 'edit_button') {
@@ -276,8 +280,10 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
+$cfg = IspCP_Registry::get('Config');
+
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/custom_menus.tpl');
+$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/custom_menus.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('hosting_plans', 'page');
 $tpl->define_dynamic('button_list', 'page');
@@ -285,18 +291,16 @@ $tpl->define_dynamic('button_list', 'page');
 $tpl->define_dynamic('add_button', 'page');
 $tpl->define_dynamic('edit_button', 'page');
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
-
 $tpl->assign(
 	array(
 		'TR_ADMIN_CUSTOM_MENUS_PAGE_TITLE' => tr('ispCP - Admin - Manage custom menus'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
 	)
 );
-gen_admin_mainmenu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/main_menu_settings.tpl');
-gen_admin_menu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/menu_settings.tpl');
+gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_settings.tpl');
+gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_settings.tpl');
 
 add_new_button($sql);
 
@@ -348,7 +352,8 @@ $tpl->parse('PAGE', 'page');
 
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
+
 unset_messages();

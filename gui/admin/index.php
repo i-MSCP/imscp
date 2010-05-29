@@ -30,12 +30,12 @@
 
 require '../include/ispcp-lib.php';
 
-check_login(__FILE__, Config::getInstance()->get('PREVENT_EXTERNAL_LOGIN_ADMIN'));
+$cfg = IspCP_Registry::get('Config');
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
+check_login(__FILE__, $cfg->PREVENT_EXTERNAL_LOGIN_ADMIN);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/index.tpl');
+$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/index.tpl');
 $tpl->define_dynamic('def_language', 'page');
 $tpl->define_dynamic('def_layout', 'page');
 $tpl->define_dynamic('no_messages', 'page');
@@ -178,14 +178,14 @@ function gen_server_trafic(&$tpl, &$sql) {
 $tpl->assign(
 	array(
 		'TR_ADMIN_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Admin/Main Index'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'ISP_LOGO' => get_logo($_SESSION['user_id']),
 		'THEME_CHARSET' => tr('encoding')
 	)
 );
 
-gen_admin_mainmenu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/main_menu_general_information.tpl');
-gen_admin_menu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/menu_general_information.tpl');
+gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_general_information.tpl');
+gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_general_information.tpl');
 
 get_admin_general_info($tpl, $sql);
 
@@ -200,7 +200,8 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
+
 unset_messages();

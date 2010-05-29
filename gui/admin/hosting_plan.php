@@ -33,12 +33,14 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-if (strtolower(Config::getInstance()->get('HOSTING_PLANS_LEVEL')) != 'admin') {
+$cfg = IspCP_Registry::get('Config');
+
+if (strtolower($cfg->HOSTING_PLANS_LEVEL) != 'admin') {
 	user_goto('index.php');
 }
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/hosting_plan.tpl');
+$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/hosting_plan.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('hosting_plans', 'page');
 // Table with hosting plans
@@ -47,12 +49,10 @@ $tpl->define_dynamic('hp_entry', 'hp_table');
 $tpl->define_dynamic('hp_delete', 'page');
 $tpl->define_dynamic('hp_menu_add', 'page');
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
-
 $tpl->assign(
 		array(
 			'TR_ADMIN_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Administrator/Hosting Plan Management'),
-			'THEME_COLOR_PATH' => "../themes/$theme_color",
+			'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 			'THEME_CHARSET' => tr('encoding'),
 			'ISP_LOGO' => get_logo($_SESSION['user_id'])
 		)
@@ -64,8 +64,8 @@ $tpl->assign(
  *
  */
 
-gen_admin_mainmenu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/main_menu_hosting_plan.tpl');
-gen_admin_menu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/menu_hosting_plan.tpl');
+gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_hosting_plan.tpl');
+gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_hosting_plan.tpl');
 gen_hp_table($tpl, $_SESSION['user_id']);
 
 $tpl->assign(
@@ -83,6 +83,7 @@ $tpl->assign(
 
 gen_hp_message();
 gen_page_message($tpl);
+
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
@@ -124,6 +125,7 @@ function gen_hp_message() {
  */
 function gen_hp_table(&$tpl, $reseller_id) {
 
+	$cfg = IspCP_Registry::get('Config');
 	$sql = Database::getInstance();
 
 	$query = "
@@ -163,7 +165,7 @@ function gen_hp_table(&$tpl, $reseller_id) {
 			)
 		);
 
-		$coid = Config::getInstance()->exists('CUSTOM_ORDERPANEL_ID') ? Config::getInstance()->get('CUSTOM_ORDERPANEL_ID'): '';
+		$coid = $cfg->exists('CUSTOM_ORDERPANEL_ID') ? $cfg->CUSTOM_ORDERPANEL_ID : '';
 		$i = 1;
 
 		while (($data = $rs->FetchRow())) {
@@ -190,7 +192,8 @@ function gen_hp_table(&$tpl, $reseller_id) {
 
 } // End of gen_hp_table()
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
+
 unset_messages();

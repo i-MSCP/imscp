@@ -32,24 +32,28 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
+$cfg = IspCP_Registry::get('Config');
+
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/settings_ports.tpl');
+$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/settings_ports.tpl');
 $tpl->define_dynamic('service_ports', 'page');
 $tpl->define_dynamic('port_delete_link', 'service_ports');
 $tpl->define_dynamic('port_delete_show', 'service_ports');
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
-
 $tpl->assign(
 	array(
 		'TR_ADMIN_SETTINGS_PAGE_TITLE'	=> tr('ispCP - Admin/Settings'),
-		'THEME_COLOR_PATH'				=> "../themes/$theme_color",
+		'THEME_COLOR_PATH'				=> "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET'					=> tr('encoding'),
 		'ISP_LOGO'						=> get_logo(get_session('user_id'))
 	)
 );
 
 function update_services(&$sql) {
+
+	$cfg = IspCP_Registry::get('Config');
+	$db_cfg = IspCP_Registry::get('Db_Config');
+
 	if (isset($_POST['uaction']) && $_POST['uaction'] == "apply") {
 		$count = count(get_post('name'));
 		$break = false;
@@ -77,6 +81,7 @@ function update_services(&$sql) {
 				$name = strtoupper(get_post('name_new'));
 				$protocol = get_post('port_type_new');
 				$status = get_post('show_val_new');
+
 				if (!is_number($port) OR $port <= 0) {
 					set_page_message(tr('ERROR: Only positive numbers are allowed !'));
 					return;
@@ -98,9 +103,11 @@ function update_services(&$sql) {
 					";
 					$var = "PORT_" . $name;
 					$rs = exec_query($sql, $query, array($var));
+
 					if ($rs->RecordCount() == 0) {
 						$value = implode(";", array($port, $protocol, $name, $status, 1, $ip));
-						setConfig_Value($var, $value);
+						$db_cfg->$var = $value;
+						//setConfig_Value($var, $value);
 						write_log(get_session('user_logged') . ": add service port $name ({$port})!");
 					} else {
 						set_page_message(tr('ERROR: Port already exists!'));
@@ -112,15 +119,20 @@ function update_services(&$sql) {
 					$var = $var_name[$j];
 					$name = strtoupper(strip_tags($service_name[$j]));
 					$value = implode(";", array($port[$j], $protocol[$j], $name, $status[$j], $custom[$j], $ip[$j]));
-					setConfig_Value($var, $value);
+					
+					$db_cfg->$var = $value;
+					//setConfig_Value($var, $value);
 				}
 			}
 			set_page_message(tr('Settings saved !'));
 		}
+		
+		$cfg->replace_with($db_cfg);
 	}
 }
 
 function delete_service($port_name) {
+
 	$sql = Database::getInstance();
 
 	if (!is_basicString($port_name)) {
@@ -164,6 +176,9 @@ function delete_service($port_name) {
 }
 
 function show_services(&$tpl, &$sql) {
+
+	$cfg = IspCP_Registry::get('Config');
+
 	$query = "
 		SELECT
 			*
@@ -192,18 +207,18 @@ function show_services(&$tpl, &$sql) {
 				: $rs->fields['value'];
 			list($port, $protocol, $name, $status, $custom, $ip) = explode(";", $value);
 
-			$selected_udp	= $protocol == 'udp' ? Config::getInstance()->get('HTML_SELECTED') : '';
-			$selected_tcp	= $protocol == 'udp' ? '' : Config::getInstance()->get('HTML_SELECTED');
+			$selected_udp	= $protocol == 'udp' ? $cfg->HTML_SELECTED : '';
+			$selected_tcp	= $protocol == 'udp' ? '' : $cfg->HTML_SELECTED;
 
-			$selected_on	= $status == '1' ? Config::getInstance()->get('HTML_SELECTED') : '';
-			$selected_off	= $status == '1' ? '' : Config::getInstance()->get('HTML_SELECTED');
+			$selected_on	= $status == '1' ? $cfg->HTML_SELECTED : '';
+			$selected_off	= $status == '1' ? '' : $cfg->HTML_SELECTED;
 
 			if ($custom == 0) {
 				$tpl->assign(array('SERVICE' => tohtml($name) . '<input name="name[]" type="hidden" id="name' . $row . '" value="' . tohtml($name) . '" />'));
 				$tpl->assign(
 					array(
-						'PORT_READONLY'		=> Config::getInstance()->get('HTML_READONLY'),
-						'PROTOCOL_READONLY'	=> Config::getInstance()->get('HTML_DISABLED'),
+						'PORT_READONLY'		=> $cfg->HTML_READONLY,
+						'PROTOCOL_READONLY'	=> $cfg->HTML_DISABLED,
 						'TR_DELETE'			=> '-',
 						'PORT_DELETE_LINK'	=> '',
 						'NUM'				=> $row
@@ -230,7 +245,7 @@ function show_services(&$tpl, &$sql) {
 				array(
 					'CUSTOM'		=> tohtml($custom),
 					'VAR_NAME'		=> tohtml($rs->fields['name']),
-					'IP'			=> (($ip == '127.0.0.1') ? 'localhost' : (empty($ip) ? Config::getInstance()->get('BASE_SERVER_IP') : tohtml($ip))),
+					'IP'			=> (($ip == '127.0.0.1') ? 'localhost' : (empty($ip) ? $cfg->BASE_SERVER_IP : tohtml($ip))),
 					'PORT'			=> $port,
 					'SELECTED_UDP'	=> $selected_udp,
 					'SELECTED_TCP'	=> $selected_tcp,
@@ -256,8 +271,8 @@ if (isset($_GET['delete'])) {
 
 update_services($sql);
 
-gen_admin_mainmenu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/main_menu_settings.tpl');
-gen_admin_menu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/menu_settings.tpl');
+gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_settings.tpl');
+gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_settings.tpl');
 
 show_services($tpl, $sql);
 
@@ -288,7 +303,8 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
+
 unset_messages();

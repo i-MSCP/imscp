@@ -7,6 +7,7 @@ ispCP ω 1.0.6 ChangeLog
 		* Added IspCP_Registry class to store shared data
 		* Changed ispcp-lib.php and admin/settings.php for usage example of the
 			new IspCP_Registry class
+		* Changed all admin/*.php files to use new IspCP_Registry class
 		* Fixed some typo issue in Config class
 
 2010-05-28 Laurent Declercq

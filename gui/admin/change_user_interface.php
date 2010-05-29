@@ -31,6 +31,7 @@
 require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
+
 // we need to check only if all vars are OK
 // admin can walk into all interfaces
 if (isset($_SESSION['user_id']) && isset($_GET['to_id'])) {

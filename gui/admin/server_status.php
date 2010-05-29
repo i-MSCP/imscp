@@ -32,17 +32,17 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
+$cfg = IspCP_Registry::get('Config');
+
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/server_status.tpl');
+$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/server_status.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('service_status', 'page');
-
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
 $tpl->assign(
 	array(
 		'TR_ADMIN_SERVER_STATUS_PAGE_TITLE' => tr('ispCP Admin / System Tools / Server Status'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
 	)
@@ -149,6 +149,9 @@ class status {
 }
 
 function get_server_status(&$tpl, &$sql) {
+
+	$cfg = IspCP_Registry::get('Config');
+
 	$query = "
 		SELECT
 			*
@@ -175,7 +178,7 @@ function get_server_status(&$tpl, &$sql) {
 			: $rs->fields['value'];
 		list($port, $protocol, $name, $status, $custom, $ip) = explode(";", $value);
 		if ($status) {
-			$ispcp_status->AddService(($ip == '127.0.0.1' ? 'localhost' : (empty($ip) ? Config::getInstance()->get('BASE_SERVER_IP') : $ip)), (int)$port, $name, $protocol);
+			$ispcp_status->AddService(($ip == '127.0.0.1' ? 'localhost' : (empty($ip) ? $cfg->BASE_SERVER_IP : $ip)), (int)$port, $name, $protocol);
 		}
 
 		$rs->MoveNext();
@@ -224,8 +227,8 @@ function get_server_status(&$tpl, &$sql) {
  * static page messages.
  *
  */
-gen_admin_mainmenu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/main_menu_general_information.tpl');
-gen_admin_menu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/menu_general_information.tpl');
+gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_general_information.tpl');
+gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_general_information.tpl');
 
 $tpl->assign(
 	array(
@@ -243,7 +246,8 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
+
 unset_messages();

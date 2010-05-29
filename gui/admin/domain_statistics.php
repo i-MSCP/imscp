@@ -32,8 +32,10 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
+$cfg = IspCP_Registry::get('Config');
+
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/domain_statistics.tpl');
+$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/domain_statistics.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('hosting_plans', 'page');
 $tpl->define_dynamic('month_list', 'page');
@@ -46,7 +48,7 @@ $theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 $tpl->assign(
 	array(
 		'TR_ADMIN_DOMAIN_STATISTICS_PAGE_TITLE' => tr('ispCP - Domain Statistics Data'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
 	)
@@ -104,10 +106,13 @@ function get_domain_trafic($from, $to, $domain_id) {
 }
 
 function generate_page(&$tpl, $domain_id) {
-	$sql = Database::getInstance();
-	global $month, $year;
-	global $web_trf, $ftp_trf, $smtp_trf, $pop_trf,
+	
+
+	global $month, $year, $web_trf, $ftp_trf, $smtp_trf, $pop_trf,
 	$sum_web, $sum_ftp, $sum_mail, $sum_pop;
+
+	$cfg = IspCP_Registry::get('Config');
+	$sql = Database::getInstance();
 
 	$fdofmnth = mktime(0, 0, 0, $month, 1, $year);
 	$ldofmnth = mktime(1, 0, 0, $month + 1, 0, $year);
@@ -155,7 +160,7 @@ function generate_page(&$tpl, $domain_id) {
 			$pop_trf,
 			$smtp_trf) = get_domain_trafic($ftm, $ltm, $domain_id);
 
-		$date_formt = Config::getInstance()->get('DATE_FORMAT');
+		$date_formt = $cfg->DATE_FORMAT;
 		if ($web_trf == 0 && $ftp_trf == 0 && $smtp_trf == 0 && $pop_trf == 0) {
 			$tpl->assign(
 				array(
@@ -216,8 +221,8 @@ function generate_page(&$tpl, $domain_id) {
  *
  */
 
-gen_admin_mainmenu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/main_menu_statistics.tpl');
-gen_admin_menu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/menu_statistics.tpl');
+gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_statistics.tpl');
+gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_statistics.tpl');
 
 $tpl->assign(
 	array(
@@ -245,7 +250,8 @@ $tpl->parse('PAGE', 'page');
 
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
+
 unset_messages();

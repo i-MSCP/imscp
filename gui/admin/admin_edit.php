@@ -32,6 +32,8 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
+$cfg = IspCP_Registry::get('Config');
+
 if (isset($_GET['edit_id'])) {
 	$edit_id = $_GET['edit_id'];
 } else if (isset($_POST['edit_id'])) {
@@ -41,22 +43,22 @@ if (isset($_GET['edit_id'])) {
 }
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/admin_edit.tpl');
+$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/admin_edit.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('hosting_plans', 'page');
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
-
 $tpl->assign(
 	array(
-		'THEME_COLOR_PATH'	=> "../themes/$theme_color",
+		'THEME_COLOR_PATH'	=> "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET'		=> tr('encoding'),
 		'ISP_LOGO'			=> get_logo($_SESSION['user_id']),
 	)
 );
 
 function update_data(&$sql) {
+
 	global $edit_id;
+	$cfg = IspCP_Registry::get('Config');
 
 	if (isset($_POST['Submit']) && isset($_POST['uaction']) && $_POST['uaction'] === 'edit_user') {
 		if (check_user_data()) {
@@ -120,10 +122,10 @@ function update_data(&$sql) {
 				}
 
 				if (!chk_password($_POST['pass'])) {
-					if (Config::getInstance()->get('PASSWD_STRONG')) {
-						set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), Config::getInstance()->get('PASSWD_CHARS')));
+					if ($cfg->PASSWD_STRONG) {
+						set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS));
 					} else {
-						set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), Config::getInstance()->get('PASSWD_CHARS')));
+						set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), $cfg->PASSWD_CHARS));
 					}
 
 					user_goto('admin_edit.php?edit_id=' . $edit_id);
@@ -271,8 +273,8 @@ if ($rs->RecordCount() <= 0) {
 	user_goto('manage_users.php');
 }
 
-gen_admin_mainmenu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/main_menu_users_manage.tpl');
-gen_admin_menu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/menu_users_manage.tpl');
+gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
+gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_users_manage.tpl');
 
 update_data($sql);
 
@@ -328,9 +330,9 @@ $tpl->assign(
 		'FAX'							=> empty($rs->fields['fax']) ? '' : tohtml($rs->fields['fax']),
 		'USERNAME'						=> tohtml($admin_name),
 		'EMAIL'							=> tohtml($rs->fields['email']),
-		'VL_MALE'						=> (($rs->fields['gender'] === 'M') ? Config::getInstance()->get('HTML_SELECTED') : ''),
-		'VL_FEMALE'						=> (($rs->fields['gender'] === 'F') ? Config::getInstance()->get('HTML_SELECTED') : ''),
-		'VL_UNKNOWN'					=> ((($rs->fields['gender'] === 'U') || (empty($rs->fields['gender']))) ? Config::getInstance()->get('HTML_SELECTED') : ''),
+		'VL_MALE'						=> (($rs->fields['gender'] === 'M') ? $cfg->HTML_SELECTED : ''),
+		'VL_FEMALE'						=> (($rs->fields['gender'] === 'F') ? $cfg->HTML_SELECTED : ''),
+		'VL_UNKNOWN'					=> ((($rs->fields['gender'] === 'U') || (empty($rs->fields['gender']))) ? $cfg->HTML_SELECTED : ''),
 		'EDIT_ID'						=> $edit_id,
 		// The entries below are for Demo versions only
 		'PASSWORD_DISABLED'				=> tr('Password change is disabled!'),
@@ -343,7 +345,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
 unset_messages();

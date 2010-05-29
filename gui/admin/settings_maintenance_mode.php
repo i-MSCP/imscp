@@ -32,15 +32,15 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-$tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/settings_maintenance_mode.tpl');
+$cfg = IspCP_Registry::get('Config');
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
+$tpl = new pTemplate();
+$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/settings_maintenance_mode.tpl');
 
 $tpl->assign(
 	array(
 		'TR_ADMIN_MAINTENANCEMODE_PAGE_TITLE' => tr('ispCP - Admin/Maintenance mode'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
 	)
@@ -54,16 +54,20 @@ if (isset($_POST['uaction']) AND $_POST['uaction'] == 'apply') {
 	$maintenancemode = $_POST['maintenancemode'];
 	$maintenancemode_message = clean_input($_POST['maintenancemode_message']);
 
-	setConfig_Value('MAINTENANCEMODE', $maintenancemode);
-	setConfig_Value('MAINTENANCEMODE_MESSAGE', $maintenancemode_message);
+	$db_cfg = IspCP_Registry::get('Db_Config');
+	
+	$db_cfg->MAINTENANCEMODE = $maintenancemode;
+	$db_cfg->MAINTENANCEMODE_MESSAGE = $maintenancemode_message;
+	
+	$cfg->replace_with($db_cfg);
 
 	set_page_message(tr('Settings saved !'));
 }
 
-if (Config::getInstance()->get('MAINTENANCEMODE')) {
-	$selected_on = Config::getInstance()->get('HTML_SELECTED');
+if ($cfg->MAINTENANCEMODE) {
+	$selected_on = $cfg->HTML_SELECTED;
 } else {
-	$selected_off = Config::getInstance()->get('HTML_SELECTED');
+	$selected_off = $cfg->HTML_SELECTED;
 }
 
 /*
@@ -71,15 +75,15 @@ if (Config::getInstance()->get('MAINTENANCEMODE')) {
  * static page messages.
  *
  */
-gen_admin_mainmenu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/main_menu_system_tools.tpl');
-gen_admin_menu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/menu_system_tools.tpl');
+gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_system_tools.tpl');
+gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_system_tools.tpl');
 
 $tpl->assign(
 	array(
 		'TR_MAINTENANCEMODE' => tr('Maintenance mode'),
 		'TR_MESSAGE_TEMPLATE_INFO' => tr('Under this mode only administrators can login'),
 		'TR_MESSAGE' => tr('Message'),
-		'MESSAGE_VALUE' => Config::getInstance()->get('MAINTENANCEMODE_MESSAGE'),
+		'MESSAGE_VALUE' => $cfg->MAINTENANCEMODE_MESSAGE,
 		'SELECTED_ON' => $selected_on,
 		'SELECTED_OFF' => $selected_off,
 		'TR_ENABLED' => tr('Enabled'),
@@ -93,7 +97,8 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
+
 unset_messages();

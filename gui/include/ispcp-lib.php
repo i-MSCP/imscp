@@ -290,7 +290,7 @@ require_once(INCLUDEPATH . '/emailtpl-functions.php');
 require_once(INCLUDEPATH . '/layout-functions.php');
 require_once(INCLUDEPATH . '/functions.ticket_system.php');
 
-// Get and store our configuration parameter that are stored in the database
+// Get and store configuration parameters that are stored in the database
 $reg['Db_Config'] = Config::getInstance(Config::DB, Database::getRawInstance());
 
 // Override all the default parameters with the parameters that are stored in

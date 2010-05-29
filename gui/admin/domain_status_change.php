@@ -29,7 +29,10 @@
  */
 
 require '../include/ispcp-lib.php';
+
 check_login(__FILE__);
+
+$cfg = IspCP_Registry::get('Config');
 
 if (!isset($_GET['domain_id'])) {
 	user_goto('manage_users.php');
@@ -55,10 +58,10 @@ $rs = exec_query($sql, $query, array($domain_id));
 
 $location = 'admin';
 
-if ($rs->fields['domain_status'] == Config::getInstance()->get('ITEM_OK_STATUS')) {
+if ($rs->fields['domain_status'] == $cfg->ITEM_OK_STATUS) {
 	$action = "disable";
 	change_domain_status($sql, $domain_id, $rs->fields['domain_name'], $action, $location);
-} else if ($rs->fields['domain_status'] == Config::getInstance()->get('ITEM_DISABLED_STATUS')) {
+} else if ($rs->fields['domain_status'] == $cfg->ITEM_DISABLED_STATUS) {
 	$action = "enable";
 	change_domain_status($sql, $domain_id, $rs->fields['domain_name'], $action, $location);
 } else {

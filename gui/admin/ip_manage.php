@@ -32,11 +32,13 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
+$cfg = IspCP_Registry::get('Config');
+
 $tpl = new pTemplate();
 
 $interfaces=new networkCard();
 
-$tpl->define_dynamic('page', Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/ip_manage.tpl');
+$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/ip_manage.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('hosting_plans', 'page');
 $tpl->define_dynamic('ip_row', 'page');
@@ -44,19 +46,20 @@ $tpl->define_dynamic('card_list', 'page');
 $tpl->define_dynamic('ip_delete_show', 'ip_row');
 $tpl->define_dynamic('ip_delete_link', 'ip_row');
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
-
 $tpl->assign(
 	array(
 		'TR_ADMIN_IP_MANAGE_PAGE_TITLE'	=> tr('ispCP - Admin/IP manage'),
-		'THEME_COLOR_PATH'				=> "../themes/$theme_color",
+		'THEME_COLOR_PATH'				=> "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET'					=> tr('encoding'),
 		'ISP_LOGO'						=> get_logo($_SESSION['user_id'])
 	)
 );
 
 function gen_ip_action($ip_id, $status) {
-	if ($status === Config::getInstance()->get('ITEM_OK_STATUS')) {
+	
+	$cfg = IspCP_Registry::get('Config');
+
+	if ($status == $cfg->ITEM_OK_STATUS) {
 		return array(tr('Remove IP'), 'ip_delete.php?delete_id=' . $ip_id);
 	} else {
 		return array(tr('N/A'), '#');
@@ -64,6 +67,9 @@ function gen_ip_action($ip_id, $status) {
 }
 
 function show_IPs(&$tpl, &$sql) {
+
+	$cfg = IspCP_Registry::get('Config');
+
 	$query = "
 		SELECT
 			*
@@ -105,8 +111,8 @@ function show_IPs(&$tpl, &$sql) {
 			$tpl->assign(
 				array(
 					'IP_DELETE_SHOW'	=> '',
-					'IP_ACTION'			=> (Config::getInstance()->get('BASE_SERVER_IP') == $rs->fields['ip_number']) ? tr('N/A') : $ip_action,
-					'IP_ACTION_SCRIPT'	=> (Config::getInstance()->get('BASE_SERVER_IP') == $rs->fields['ip_number']) ? '#' : $ip_action_script
+					'IP_ACTION'			=> ($cfg->BASE_SERVER_IP == $rs->fields['ip_number']) ? tr('N/A') : $ip_action,
+					'IP_ACTION_SCRIPT'	=> ($cfg->BASE_SERVER_IP == $rs->fields['ip_number']) ? '#' : $ip_action_script
 				)
 			);
 			$tpl->parse('IP_DELETE_LINK', 'ip_delete_link');
@@ -119,7 +125,9 @@ function show_IPs(&$tpl, &$sql) {
 }
 
 function add_ip(&$tpl, &$sql) {
+
 	global $ip_number, $domain, $alias, $ip_card;
+	$cfg = IspCP_Registry::get('Config');	
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_ip') {
 		if (check_user_data()) {
@@ -132,7 +140,7 @@ function add_ip(&$tpl, &$sql) {
 					(?, ?, ?, ?, ?, ?)
 			";
 			$rs = exec_query($sql, $query, array($ip_number, htmlspecialchars($domain, ENT_QUOTES, "UTF-8"),
-			htmlspecialchars($alias, ENT_QUOTES, "UTF-8"), htmlspecialchars($ip_card, ENT_QUOTES, "UTF-8"), NULL, Config::getInstance()->get('ITEM_ADD_STATUS')));
+			htmlspecialchars($alias, ENT_QUOTES, "UTF-8"), htmlspecialchars($ip_card, ENT_QUOTES, "UTF-8"), NULL, $cfg->ITEM_ADD_STATUS));
 
 			send_request();
 
@@ -206,6 +214,7 @@ function check_user_data() {
 }
 
 function IP_exists() {
+
 	$sql = Database::getInstance();
 
 	global $ip_number;
@@ -228,6 +237,7 @@ function IP_exists() {
 }
 
 function show_Network_Cards(&$tpl, &$interfaces) {
+
 	if ($interfaces->getErrors() != '') {
 		set_page_message($interfaces->getErrors());
 	}
@@ -255,8 +265,8 @@ function show_Network_Cards(&$tpl, &$interfaces) {
  * static page messages.
  *
  */
-gen_admin_mainmenu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/main_menu_settings.tpl');
-gen_admin_menu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/menu_settings.tpl');
+gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_settings.tpl');
+gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_settings.tpl');
 
 show_Network_Cards($tpl, $interfaces);
 
@@ -284,7 +294,8 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
+
 unset_messages();

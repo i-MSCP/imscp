@@ -32,8 +32,10 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
+$cfg = IspCP_Registry::get('Config');
+
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/manage_reseller_owners.tpl');
+$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/manage_reseller_owners.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('hosting_plans', 'page');
 $tpl->define_dynamic('reseller_list', 'page');
@@ -41,12 +43,13 @@ $tpl->define_dynamic('reseller_item', 'reseller_list');
 $tpl->define_dynamic('select_admin', 'page');
 $tpl->define_dynamic('select_admin_option', 'select_admin');
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
-
 /**
  * @todo check if it's useful to have the table admin two times in the same query
  */
 function gen_reseller_table(&$tpl, &$sql) {
+
+	$cfg = IspCP_Registry::get('Config');
+
 	$query = "
 		SELECT
 			t1.`admin_id`, t1.`admin_name`, t2.`admin_name` AS created_by
@@ -127,7 +130,7 @@ function gen_reseller_table(&$tpl, &$sql) {
 		if ((isset($_POST['uaction']) && $_POST['uaction'] === 'reseller_owner')
 			&& (isset($_POST['dest_admin'])
 				&& $_POST['dest_admin'] == $rs->fields['admin_id'])) {
-			$selected = Config::getInstance()->get('HTML_SELECTED');
+			$selected = $cfg->HTML_SELECTED;
 		} else {
 			$selected = '';
 		}
@@ -153,6 +156,7 @@ function gen_reseller_table(&$tpl, &$sql) {
 }
 
 function update_reseller_owner($sql) {
+
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'reseller_owner') {
 		$query = "
 			SELECT
@@ -201,14 +205,14 @@ function update_reseller_owner($sql) {
 $tpl->assign(
 	array(
 		'TR_ADMIN_MANAGE_RESELLER_OWNERS_PAGE_TITLE' => tr('ispCP - Admin/Manage users/Reseller assignment'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
 	)
 );
 
-gen_admin_mainmenu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/main_menu_users_manage.tpl');
-gen_admin_menu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/menu_users_manage.tpl');
+gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
+gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_users_manage.tpl');
 
 update_reseller_owner($sql);
 
@@ -230,7 +234,8 @@ $tpl->assign(
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
+
 unset_messages();

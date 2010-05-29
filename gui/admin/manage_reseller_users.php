@@ -32,8 +32,10 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
+$cfg = IspCP_Registry::get('Config');
+
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/manage_reseller_users.tpl');
+$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/manage_reseller_users.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('hosting_plans', 'page');
 $tpl->define_dynamic('reseller_list', 'page');
@@ -43,9 +45,10 @@ $tpl->define_dynamic('src_reseller_option', 'src_reseller');
 $tpl->define_dynamic('dst_reseller', 'page');
 $tpl->define_dynamic('dst_reseller_option', 'dst_reseller');
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
-
 function gen_user_table(&$tpl, &$sql) {
+
+	$cfg = IspCP_Registry::get('Config');
+
 	$query = "
 		SELECT
 			`admin_id`, `admin_name`
@@ -71,11 +74,11 @@ function gen_user_table(&$tpl, &$sql) {
 
 		if ((isset($_POST['uaction']) && $_POST['uaction'] === 'change_src')
 			&& (isset($_POST['src_reseller']) && $_POST['src_reseller'] == $rs->fields['admin_id'])) {
-			$selected = Config::getInstance()->get('HTML_SELECTED');
+			$selected = $cfg->HTML_SELECTED;
 			$reseller_id = $_POST['src_reseller'];
 		} else if ((isset($_POST['uaction']) && $_POST['uaction'] === 'move_user')
 			&& (isset($_POST['dst_reseller']) && $_POST['dst_reseller'] == $rs->fields['admin_id'])) {
-			$selected = Config::getInstance()->get('HTML_SELECTED');
+			$selected = $cfg->HTML_SELECTED;
 			$reseller_id = $_POST['dst_reseller'];
 		} else {
 			$selected = '';
@@ -105,7 +108,7 @@ function gen_user_table(&$tpl, &$sql) {
 	}
 
 	if (isset($_POST['src_reseller']) && $_POST['src_reseller'] == 0) {
-		$selected = Config::getInstance()->get('HTML_SELECTED');
+		$selected = $cfg->HTML_SELECTED;
 		$reseller_id = 0;
 	} else {
 		$selected = '';
@@ -189,6 +192,7 @@ function gen_user_table(&$tpl, &$sql) {
 }
 
 function update_reseller_user($sql) {
+
 	if (isset($_POST['uaction'])
 		&& $_POST['uaction'] === 'move_user'
 		&& check_user_data()) {
@@ -270,6 +274,7 @@ function check_user_data() {
 }
 
 function manage_reseller_limits($dest_reseller, $src_reseller, $users, &$err) {
+
 	$sql = Database::getInstance();
 
 	list($dest_dmn_current, $dest_dmn_max,
@@ -448,6 +453,7 @@ function calculate_reseller_dvals(&$dest, $dest_max, &$src, $src_max, $umax, &$e
 }
 
 function check_ip_sets($dest, $users, &$err) {
+
 	$sql = Database::getInstance();
 
 	$users_array = explode(";", $users);
@@ -496,8 +502,8 @@ $tpl->assign(
 	)
 );
 
-gen_admin_mainmenu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/main_menu_users_manage.tpl');
-gen_admin_menu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/menu_users_manage.tpl');
+gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
+gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_users_manage.tpl');
 
 update_reseller_user($sql);
 
@@ -521,7 +527,8 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
+
 unset_messages();

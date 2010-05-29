@@ -32,22 +32,24 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-$tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/admin_add.tpl');
-$tpl->define_dynamic('page_message', 'page');
+$cfg = IspCP_Registry::get('Config');
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
+$tpl = new pTemplate();
+$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/admin_add.tpl');
+$tpl->define_dynamic('page_message', 'page');
 
 $tpl->assign(
 	array(
 		'TR_ADMIN_ADD_USER_PAGE_TITLE' => tr('ispCP - Admin/Manage users/Add User'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
-		'THEME_CHARSET' => tr('encoding'),
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
 	)
 );
 
 function add_user(&$tpl, &$sql) {
+
+	$cfg = IspCP_Registry::get('Config');
+	
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_user') {
 		if (check_user_data()) {
 			$upass = crypt_user_pass($_POST['pass']);
@@ -186,9 +188,9 @@ function add_user(&$tpl, &$sql) {
 					'STREET_2' => clean_input($_POST['street2'], true),
 					'PHONE' => clean_input($_POST['phone'], true),
 					'FAX' => clean_input($_POST['fax'], true),
-					'VL_MALE' => (($_POST['gender'] == 'M') ? Config::getInstance()->get('HTML_SELECTED') : ''),
-					'VL_FEMALE' => (($_POST['gender'] == 'F') ? Config::getInstance()->get('HTML_SELECTED') : ''),
-					'VL_UNKNOWN' => ((($_POST['gender'] == 'U') || (empty($_POST['gender']))) ? Config::getInstance()->get('HTML_SELECTED') : '')
+					'VL_MALE' => (($_POST['gender'] == 'M') ? $cfg->HTML_SELECTED : ''),
+					'VL_FEMALE' => (($_POST['gender'] == 'F') ? $cfg->HTML_SELECTED : ''),
+					'VL_UNKNOWN' => ((($_POST['gender'] == 'U') || (empty($_POST['gender']))) ? $cfg->HTML_SELECTED : '')
 				)
 			);
 		}
@@ -210,13 +212,15 @@ function add_user(&$tpl, &$sql) {
 				'FAX' => '',
 				'VL_MALE' => '',
 				'VL_FEMALE' => '',
-				'VL_UNKNOWN' => Config::getInstance()->get('HTML_SELECTED')
+				'VL_UNKNOWN' => $cfg->HTML_SELECTED
 			)
 		);
 	} // end else
 }
 
 function check_user_data() {
+
+	$cfg = IspCP_Registry::get('Config');
 	$sql = Database::getInstance();
 
 	if (!validates_username($_POST['username'])) {
@@ -225,10 +229,10 @@ function check_user_data() {
 		return false;
 	}
 	if (!chk_password($_POST['pass'])) {
-		if (Config::getInstance()->get('PASSWD_STRONG')) {
-			set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), Config::getInstance()->get('PASSWD_CHARS')));
+		if ($cfg->PASSWD_STRONG) {
+			set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS));
 		} else {
-			set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), Config::getInstance()->get('PASSWD_CHARS')));
+			set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), $cfg->PASSWD_CHARS));
 		}
 
 		return false;
@@ -272,8 +276,8 @@ function check_user_data() {
  *
  */
 
-gen_admin_mainmenu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/main_menu_users_manage.tpl');
-gen_admin_menu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/menu_users_manage.tpl');
+gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
+gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_users_manage.tpl');
 
 add_user($tpl, $sql);
 
@@ -314,7 +318,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
 unset_messages();

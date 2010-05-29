@@ -32,6 +32,8 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
+$cfg = IspCP_Registry::get('Config');
+
 // Test if we have a proper delete_id.
 if (!isset($_GET['delete_lang'])) {
 	user_goto('multilanguage.php');
@@ -40,8 +42,8 @@ if (!isset($_GET['delete_lang'])) {
 $delete_lang = $_GET['delete_lang'];
 
 // ERROR - we have domains that use this IP
-if ($delete_lang == Config::getInstance()->get('USER_INITIAL_LANG')) {
-	set_page_message('Error we can\'t delete system default language!');
+if ($delete_lang == $cfg->USER_INITIAL_LANG) {
+	set_page_message("Error we can't delete system default language!");
 
 	user_goto('multilanguage.php');
 }

@@ -32,8 +32,10 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
+$cfg = IspCP_Registry::get('Config');
+
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/reseller_user_statistics.tpl');
+$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/reseller_user_statistics.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('hosting_plans', 'page');
 $tpl->define_dynamic('page_message', 'page');
@@ -47,8 +49,6 @@ $tpl->define_dynamic('scroll_prev_gray', 'page');
 $tpl->define_dynamic('scroll_prev', 'page');
 $tpl->define_dynamic('scroll_next_gray', 'page');
 $tpl->define_dynamic('scroll_next', 'page');
-
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
 if (isset($_POST['rid']) && isset($_POST['name'])) {
 	$rid = $_POST['rid'];
@@ -76,19 +76,21 @@ if (!is_numeric($rid) || !is_numeric($month) || !is_numeric($year)) {
 $tpl->assign(
 	array(
 		'TR_ADMIN_USER_STATISTICS_PAGE_TITLE' => tr('ispCP - Admin/Reseller User Statistics'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
 	)
 );
 
 function generate_page(&$tpl, $reseller_id, $reseller_name) {
-	$sql = Database::getInstance();
+
 	global $rid;
+	$cfg = IspCP_Registry::get('Config');
+	$sql = Database::getInstance();
 
 	$start_index = 0;
 
-	$rows_per_page = Config::getInstance()->get('DOMAIN_ROWS_PER_PAGE');
+	$rows_per_page = $cfg->DOMAIN_ROWS_PER_PAGE;
 
 	if (isset($_GET['psi'])) {
 		$start_index = $_GET['psi'];
@@ -211,6 +213,7 @@ SQL_QUERY;
 }
 
 function generate_domain_entry(&$tpl, $user_id, $row) {
+
 	global $crnt_month, $crnt_year;
 
 	list($domain_name,
@@ -339,8 +342,8 @@ function generate_domain_entry(&$tpl, $user_id, $row) {
  * static page messages.
  *
  */
-gen_admin_mainmenu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/main_menu_statistics.tpl');
-gen_admin_menu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/menu_statistics.tpl');
+gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_statistics.tpl');
+gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_statistics.tpl');
 
 $tpl->assign(
 	array(
@@ -376,7 +379,8 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
+
 unset_messages();

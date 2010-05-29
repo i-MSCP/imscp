@@ -31,8 +31,11 @@
 require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
+
+$cfg = IspCP_Registry::get('Config');
+
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/user_delete.tpl');
+$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/user_delete.tpl');
 
 $tpl->define_dynamic('mail_list', 'page');
 $tpl->define_dynamic('ftp_list', 'page');
@@ -49,12 +52,10 @@ $tpl->define_dynamic('db_item', 'db_list');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
-
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('ispCP - Delete Domain'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id']),
 	)
@@ -76,15 +77,15 @@ if (isset($_GET['delete_id']) && is_numeric($_GET['delete_id'])) {
 	user_goto('manage_users.php');
 }
 
-gen_admin_mainmenu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/main_menu_users_manage.tpl');
-gen_admin_menu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/menu_users_manage.tpl');
+gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
+gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_users_manage.tpl');
 
 gen_page_message($tpl);
 
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
 
@@ -93,7 +94,9 @@ if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
  * @param integer $user_id User ID to delete
  */
 function delete_user($user_id) {
+
 	global $sql;
+	$cfg = IspCP_Registry::get('Config');
 
 	$query = "
 		SELECT
@@ -123,7 +126,7 @@ function delete_user($user_id) {
 		// delete reseller logo if exists
 		if (!empty($reseller_logo) && $reseller_logo !== 0) {
 			try {
-				unlink(Config::getInstance()->get('IPS_LOGO_PATH') . '/' . $reseller_logo);
+				unlink($cfg->IPS_LOGO_PATH . '/' . $reseller_logo);
 			} catch(Exception $e) {
 				set_page_message(tr('Logo could not be deleted:') . " " . $e->getMessage());
 			}
@@ -146,6 +149,7 @@ function delete_user($user_id) {
  * @return boolean true = deletion can be done
  */
 function validate_user_deletion($user_id) {
+
 	global $sql;
 
 	$result = false;
@@ -176,6 +180,7 @@ function validate_user_deletion($user_id) {
  * @param integer $domain_id
  */
 function validate_domain_deletion($domain_id) {
+
 	global $tpl, $sql;
 
 	// check for domain owns
@@ -347,5 +352,4 @@ function validate_domain_deletion($domain_id) {
 	} else {
 		$tpl->assign('DB_LIST', '');
 	}
-
 }

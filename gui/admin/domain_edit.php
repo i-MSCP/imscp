@@ -32,21 +32,21 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
+$cfg = IspCP_Registry::get('Config');
+
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/domain_edit.tpl');
+$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/domain_edit.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('ip_entry', 'page');
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
-
-if (Config::getInstance()->exists('HOSTING_PLANS_LEVEL') && strtolower(Config::getInstance()->get('HOSTING_PLANS_LEVEL')) !== 'admin') {
+if ($cfg->HOSTING_PLANS_LEVEL && $cfg->HOSTING_PLANS_LEVEL !== 'admin') {
 	user_goto('manage_users.php');
 }
 
 $tpl->assign(
 	array(
 		'TR_EDIT_DOMAIN_PAGE_TITLE' => tr('ispCP - Admin/Edit Domain'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
 	)
@@ -90,8 +90,8 @@ $tpl->assign(
 	)
 );
 
-gen_admin_mainmenu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/main_menu_users_manage.tpl');
-gen_admin_menu($tpl, Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/menu_users_manage.tpl');
+gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
+gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_users_manage.tpl');
 gen_page_message($tpl);
 
 if (isset($_POST['uaction']) && ('sub_data' === $_POST['uaction'])) {
@@ -140,6 +140,7 @@ gen_editdomain_page($tpl);
  * Load data from sql
  */
 function load_user_data($user_id, $domain_id) {
+
 	$sql = Database::getInstance();
 
 	global $domain_name, $domain_expires, $domain_ip, $php_sup;
@@ -156,7 +157,7 @@ function load_user_data($user_id, $domain_id) {
 			`domain`
 		WHERE
 			`domain_id` = ?
-";
+	";
 
 	$rs = exec_query($sql, $query, array($domain_id));
 
@@ -181,10 +182,14 @@ function load_user_data($user_id, $domain_id) {
  * Load additional data
  */
 function load_additional_data($user_id, $domain_id) {
-	$sql = Database::getInstance();
+
 	global $domain_name, $domain_expires, $domain_ip, $php_sup;
 	global $cgi_supp, $username, $allowbackup;
 	global $dns_supp;
+
+	$cfg = IspCP_Registry::get('Config');
+	$sql = Database::getInstance();
+
 	// Get domain data
 	$query = "
 		SELECT
@@ -213,7 +218,7 @@ function load_additional_data($user_id, $domain_id) {
 	if ($domain_expires == 0) {
  		$domain_expires = tr('N/A');
  	} else {
- 		$date_formt = Config::getInstance()->get('DATE_FORMAT');
+ 		$date_formt = $cfg->DATE_FORMAT;
  		$domain_expires = date($date_formt, $domain_expires);
  	}
 
@@ -223,6 +228,7 @@ function load_additional_data($user_id, $domain_id) {
 	$allowbackup		= $data['allowbackup'];
 	$domain_admin_id	= $data['domain_admin_id'];
 	$dns_supp			= $data['domain_dns'];
+
 	// Get IP of domain
 	$query = "
 		SELECT
@@ -260,12 +266,16 @@ function load_additional_data($user_id, $domain_id) {
  * Show user data
  */
 function gen_editdomain_page(&$tpl) {
+
 	global $domain_name, $domain_expires, $domain_ip, $php_sup;
 	global $cgi_supp , $sub, $als;
 	global $mail, $ftp, $sql_db;
 	global $sql_user, $traff, $disk;
 	global $username, $allowbackup;
 	global $dns_supp;
+
+	$cfg = IspCP_Registry::get('Config');
+
 	// Fill in the fields
 	$domain_name = decode_idna($domain_name);
 
@@ -276,7 +286,7 @@ function gen_editdomain_page(&$tpl) {
 	if ($allowbackup === 'dmn') {
 		$tpl->assign(
 			array(
-				'BACKUP_DOMAIN' => Config::getInstance()->get('HTML_SELECTED'),
+				'BACKUP_DOMAIN' => $cfg->HTML_SELECTED,
 				'BACKUP_SQL' => '',
 				'BACKUP_FULL' => '',
 				'BACKUP_NO' => '',
@@ -286,7 +296,7 @@ function gen_editdomain_page(&$tpl) {
 		$tpl->assign(
 			array(
 				'BACKUP_DOMAIN' => '',
-				'BACKUP_SQL' => Config::getInstance()->get('HTML_SELECTED'),
+				'BACKUP_SQL' => $cfg->HTML_SELECTED,
 				'BACKUP_FULL' => '',
 				'BACKUP_NO' => '',
 			)
@@ -296,7 +306,7 @@ function gen_editdomain_page(&$tpl) {
 			array(
 				'BACKUP_DOMAIN' => '',
 				'BACKUP_SQL' => '',
-				'BACKUP_FULL' => Config::getInstance()->get('HTML_SELECTED'),
+				'BACKUP_FULL' => $cfg->HTML_SELECTED,
 				'BACKUP_NO' => '',
 			)
 		);
@@ -306,19 +316,19 @@ function gen_editdomain_page(&$tpl) {
 				'BACKUP_DOMAIN' => '',
 				'BACKUP_SQL' => '',
 				'BACKUP_FULL' => '',
-				'BACKUP_NO' => Config::getInstance()->get('HTML_SELECTED'),
+				'BACKUP_NO' => $cfg->HTML_SELECTED,
 			)
 		);
 	}
 
 	$tpl->assign(
 		array(
-			'PHP_YES'				=> ($php_sup == 'yes') ? Config::getInstance()->get('HTML_SELECTED') : '',
-			'PHP_NO'				=> ($php_sup != 'yes') ? Config::getInstance()->get('HTML_SELECTED') : '',
-			'CGI_YES'				=> ($cgi_supp == 'yes') ? Config::getInstance()->get('HTML_SELECTED') : '',
-			'CGI_NO'				=> ($cgi_supp != 'yes') ? Config::getInstance()->get('HTML_SELECTED') : '',
-			'DNS_YES'				=> ($dns_supp == 'yes') ? Config::getInstance()->get('HTML_SELECTED') : '',
-			'DNS_NO'				=> ($dns_supp != 'yes') ? Config::getInstance()->get('HTML_SELECTED') : '',
+			'PHP_YES'				=> ($php_sup == 'yes') ? $cfg->HTML_SELECTED : '',
+			'PHP_NO'				=> ($php_sup != 'yes') ? $cfg->HTML_SELECTED : '',
+			'CGI_YES'				=> ($cgi_supp == 'yes') ? $cfg->HTML_SELECTED : '',
+			'CGI_NO'				=> ($cgi_supp != 'yes') ? $cfg->HTML_SELECTED : '',
+			'DNS_YES'				=> ($dns_supp == 'yes') ? $cfg->HTML_SELECTED : '',
+			'DNS_NO'				=> ($dns_supp != 'yes') ? $cfg->HTML_SELECTED : '',
 			'VL_DOMAIN_NAME'		=> tohtml($domain_name),
 			'VL_DOMAIN_IP'			=> $domain_ip,
 			'VL_DOMAIN_EXPIRE'		=> $domain_expires,
@@ -340,6 +350,7 @@ function gen_editdomain_page(&$tpl) {
  * Check input data
  */
 function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
+
 	global $domain_expires, $sub, $als, $mail, $ftp;
 	global $sql_db, $sql_user, $traff;
 	global $disk, $sql, $domain_ip, $domain_php;
@@ -360,7 +371,7 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 	$domain_php		= preg_replace("/\_/", "", $_POST['domain_php']);
 	$domain_cgi		= preg_replace("/\_/", "", $_POST['domain_cgi']);
 	$domain_dns		= preg_replace("/\_/", "", $_POST['domain_dns']);
-	$allowbackup		= preg_replace("/\_/", "", $_POST['backup']);
+	$allowbackup	= preg_replace("/\_/", "", $_POST['backup']);
 
 	$ed_error = '';
 
@@ -536,6 +547,7 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 } // End of check_user_data()
 
 function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, &$err, $obj) {
+
 	if ($rmax == 0 && $umax == -1) {
 		if ($data == -1) {
 			return;
@@ -664,7 +676,8 @@ function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, &$err, $obj) {
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
+
 unset_messages();

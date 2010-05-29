@@ -32,20 +32,15 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-if (strtolower(Config::getInstance()->get('HOSTING_PLANS_LEVEL')) != 'admin') {
+$cfg = IspCP_Registry::get('Config');
+
+if (strtolower($cfg->HOSTING_PLANS_LEVEL) != 'admin') {
 	user_goto('index.php');
 }
 
 $tpl = new pTemplate();
-
-$tpl->define_dynamic(
-	'page',
-	Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/hosting_plan_edit.tpl'
-);
-
+$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/hosting_plan_edit.tpl');
 $tpl->define_dynamic('page_message', 'page');
-
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
 /**
  * static page messages.
@@ -54,22 +49,16 @@ $theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 global $hpid;
 
 // Show main menu
-gen_admin_mainmenu(
-	$tpl,
-	Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/main_menu_hosting_plan.tpl'
-);
+gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_hosting_plan.tpl');
 
-gen_admin_menu(
-	$tpl,
-	Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/menu_hosting_plan.tpl'
-);
+gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_hosting_plan.tpl');
 
 $tpl->assign(
 		array(
 			'TR_RESELLER_MAIN_INDEX_PAGE_TITLE' => tr(
 				'ispCP - Administrator/Edit hosting plan'
 			),
-			'THEME_COLOR_PATH' => "../themes/$theme_color",
+			'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 			'THEME_CHARSET' => tr('encoding'),
 			'ISP_LOGO' => get_logo($_SESSION['user_id'])
 		)
@@ -154,7 +143,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
 
@@ -166,6 +155,9 @@ if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
  * Restore form on any error
  */
 function restore_form(&$tpl) {
+
+	$cfg = IspCP_Registry::get('Config');
+
 	$tpl->assign(
 		array(
 			'HP_NAME_VALUE' => clean_input($_POST['hp_name'], true),
@@ -185,18 +177,18 @@ function restore_form(&$tpl) {
 			'HP_PAYMENT' => clean_input($_POST['hp_payment'], true),
 			'HP_TOS_VALUE' => clean_input($_POST['hp_tos'], true),
 
-			'TR_PHP_YES' => ($_POST['php'] == '_yes_') ? Config::getInstance()->get('HTML_CHECKED') : '',
-			'TR_PHP_NO' => ($_POST['php'] == '_no_') ? Config::getInstance()->get('HTML_CHECKED') : '',
-			'TR_CGI_YES' => ($_POST['cgi'] == '_yes_') ? Config::getInstance()->get('HTML_CHECKED') : '',
-			'TR_CGI_NO' => ($_POST['cgi'] == '_no_') ? Config::getInstance()->get('HTML_CHECKED') : '',
-			'VL_BACKUPD' => ($_POST['backup'] == '_dmn_') ? Config::getInstance()->get('HTML_CHECKED') : '',
-			'VL_BACKUPS' => ($_POST['backup'] == '_sql_') ? Config::getInstance()->get('HTML_CHECKED') : '',
-			'VL_BACKUPF' => ($_POST['backup'] == '_full_') ? Config::getInstance()->get('HTML_CHECKED') : '',
-			'VL_BACKUPN' => ($_POST['backup'] == '_no_') ? Config::getInstance()->get('HTML_CHECKED') : '',
-			'TR_DNS_YES' => ($_POST['dns'] == '_yes_') ? Config::getInstance()->get('HTML_CHECKED') : '',
-			'TR_DNS_NO' => ($_POST['dns'] == '_no_') ? Config::getInstance()->get('HTML_CHECKED') : '',
-			'TR_STATUS_YES'	=> ($_POST['status']) ? Config::getInstance()->get('HTML_CHECKED') : '',
-			'TR_STATUS_NO' => (!$_POST['status']) ? Config::getInstance()->get('HTML_CHECKED') : '',
+			'TR_PHP_YES' => ($_POST['php'] == '_yes_') ? $cfg->HTML_CHECKED : '',
+			'TR_PHP_NO' => ($_POST['php'] == '_no_') ? $cfg->HTML_CHECKED : '',
+			'TR_CGI_YES' => ($_POST['cgi'] == '_yes_') ? $cfg->HTML_CHECKED : '',
+			'TR_CGI_NO' => ($_POST['cgi'] == '_no_') ? $cfg->HTML_CHECKED : '',
+			'VL_BACKUPD' => ($_POST['backup'] == '_dmn_') ? $cfg->HTML_CHECKED : '',
+			'VL_BACKUPS' => ($_POST['backup'] == '_sql_') ? $cfg->HTML_CHECKED : '',
+			'VL_BACKUPF' => ($_POST['backup'] == '_full_') ? $cfg->HTML_CHECKED : '',
+			'VL_BACKUPN' => ($_POST['backup'] == '_no_') ? $cfg->HTML_CHECKED : '',
+			'TR_DNS_YES' => ($_POST['dns'] == '_yes_') ? $cfg->HTML_CHECKED : '',
+			'TR_DNS_NO' => ($_POST['dns'] == '_no_') ? $cfg->HTML_CHECKED : '',
+			'TR_STATUS_YES'	=> ($_POST['status']) ? $cfg->HTML_CHECKED : '',
+			'TR_STATUS_NO' => (!$_POST['status']) ? $cfg->HTML_CHECKED : '',
 		)
 	);
 } // end of function restore_form()
@@ -205,6 +197,8 @@ function restore_form(&$tpl) {
  * Generate load data from sql for requested hosting plan
  */
 function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
+
+	$cfg = IspCP_Registry::get('Config');
 
 	$_SESSION['hpid'] = $hpid;
 
@@ -282,18 +276,18 @@ function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
 			'HP_PAYMENT'			=> tohtml($payment),
 			'HP_TOS_VALUE' 			=> tohtml($tos),
 
-			'TR_PHP_YES' => ($hp_php == '_yes_') ? Config::getInstance()->get('HTML_CHECKED') : '',
-			'TR_PHP_NO' => ($hp_php == '_no_') ? Config::getInstance()->get('HTML_CHECKED') : '',
-			'TR_CGI_YES' => ($hp_cgi == '_yes_') ? Config::getInstance()->get('HTML_CHECKED') : '',
-			'TR_CGI_NO' => ($hp_cgi == '_no_') ? Config::getInstance()->get('HTML_CHECKED') : '',
-			'VL_BACKUPD' => ($hp_backup == '_dmn_') ? Config::getInstance()->get('HTML_CHECKED') : '',
-			'VL_BACKUPS' => ($hp_backup == '_sql_') ? Config::getInstance()->get('HTML_CHECKED') : '',
-			'VL_BACKUPF' => ($hp_backup == '_full_') ? Config::getInstance()->get('HTML_CHECKED') : '',
-			'VL_BACKUPN' => ($hp_backup == '_no_') ? Config::getInstance()->get('HTML_CHECKED') : '',
-			'TR_DNS_YES' => ($hp_dns == '_yes_') ? Config::getInstance()->get('HTML_CHECKED') : '',
-			'TR_DNS_NO'	 => ($hp_dns == '_no_') ? Config::getInstance()->get('HTML_CHECKED') : '',
-			'TR_STATUS_YES' => ($status) ? Config::getInstance()->get('HTML_CHECKED') : '',
-			'TR_STATUS_NO' => (!$status) ? Config::getInstance()->get('HTML_CHECKED') : ''
+			'TR_PHP_YES' => ($hp_php == '_yes_') ? $cfg->HTML_CHECKED : '',
+			'TR_PHP_NO' => ($hp_php == '_no_') ? $cfg->HTML_CHECKED : '',
+			'TR_CGI_YES' => ($hp_cgi == '_yes_') ? $cfg->HTML_CHECKED : '',
+			'TR_CGI_NO' => ($hp_cgi == '_no_') ? $cfg->HTML_CHECKED : '',
+			'VL_BACKUPD' => ($hp_backup == '_dmn_') ? $cfg->HTML_CHECKED : '',
+			'VL_BACKUPS' => ($hp_backup == '_sql_') ? $cfg->HTML_CHECKED : '',
+			'VL_BACKUPF' => ($hp_backup == '_full_') ? $cfg->HTML_CHECKED : '',
+			'VL_BACKUPN' => ($hp_backup == '_no_') ? $cfg->HTML_CHECKED : '',
+			'TR_DNS_YES' => ($hp_dns == '_yes_') ? $cfg->HTML_CHECKED : '',
+			'TR_DNS_NO'	 => ($hp_dns == '_no_') ? $cfg->HTML_CHECKED : '',
+			'TR_STATUS_YES' => ($status) ? $cfg->HTML_CHECKED : '',
+			'TR_STATUS_NO' => (!$status) ? $cfg->HTML_CHECKED : ''
 		)
 	);
 } // end of gen_load_ehp_page()

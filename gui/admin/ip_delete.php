@@ -32,6 +32,8 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
+$cfg = IspCP_Registry::get('Config');
+
 // Test if we have a proper delete_id.
 if (!isset($_GET['delete_id'])) {
 	user_goto('ip_manage.php');
@@ -102,7 +104,8 @@ $query = "
 		`ip_id` = ?
 	LIMIT 1
 ";
-$rs = exec_query($sql, $query, array(Config::getInstance()->get('ITEM_DELETE_STATUS'), $delete_id));
+
+$rs = exec_query($sql, $query, array($cfg->ITEM_DELETE_STATUS, $delete_id));
 
 send_request();
 

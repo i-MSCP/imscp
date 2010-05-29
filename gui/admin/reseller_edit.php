@@ -33,6 +33,8 @@
  */
 require '../include/ispcp-lib.php';
 
+$cfg = IspCP_Registry::get('Config');
+
 /*******************************************************************************
  * Functions
  */
@@ -96,6 +98,8 @@ function get_clean_input_data() {
  */
 function check_data(&$errFields) {
 
+	$cfg = IspCP_Registry::get('Config');
+
 	// Get needed data
 	$rdata =& get_data();
 
@@ -107,17 +111,17 @@ function check_data(&$errFields) {
 
 		if (!chk_password($_POST['pass0'])) {
 
-			if (Config::getInstance()->get('PASSWD_STRONG')) {
+			if ($cfg->PASSWD_STRONG) {
 				set_page_message(
 					sprintf(
-						tr('The password must be at least %s long and contain letters and numbers to be valid.'),Config::getInstance()->get('PASSWD_CHARS'))
+						tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS)
 				);
 
 			} else {
 
 				set_page_message(
 					sprintf(
-						tr('Password data is shorter than %s signs or includes not permitted signs!'),Config::getInstance()->get('PASSWD_CHARS'))
+						tr('Password data is shorter than %s signs or includes not permitted signs!'),$cfg->PASSWD_CHARS)
 				);
 			}
 
@@ -505,6 +509,7 @@ function get_reseller_prop($reseller_id) {
  */
 function get_servers_ips(&$tpl, $rip_lst) {
 
+	$cfg = IspCP_Registry::get('Config');
 	$sql = Database::getInstance();
 
 	$query = "
@@ -556,14 +561,14 @@ function get_servers_ips(&$tpl, $rip_lst) {
 				$_POST['uaction'] == 'update_reseller') {
 				if (isset($_POST[$ip_var_name]) &&
 					$_POST[$ip_var_name] == 'asgned') {
-					$ip_item_assigned = Config::getInstance()->get('HTML_CHECKED');
+					$ip_item_assigned = $cfg->HTML_CHECKED;
 					$reseller_ips .= "$ip_id;";
 				} else {
 					$ip_item_assigned = '';
 				}
 			} else {
 				if (preg_match("/$ip_id\;/", $rip_lst) == 1) {
-					$ip_item_assigned = Config::getInstance()->get('HTML_CHECKED');
+					$ip_item_assigned = $cfg->HTML_CHECKED;
 					$reseller_ips .= "$ip_id;";
 				}
 			}
@@ -842,27 +847,25 @@ if (isset($_REQUEST['edit_id']) && !isset($_POST['Cancel'])) {
 	}
 
 	$tpl = new pTemplate();
-	$tpl->define_dynamic('page',Config::getInstance()->get('ADMIN_TEMPLATE_PATH') .'/reseller_edit.tpl');
+	$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH .'/reseller_edit.tpl');
 	$tpl->define_dynamic('page_message', 'page');
 	$tpl->define_dynamic('hosting_plans', 'page');
 	$tpl->define_dynamic('rsl_ip_message', 'page');
 	$tpl->define_dynamic('rsl_ip_list', 'page');
 	$tpl->define_dynamic('rsl_ip_item', 'rsl_ip_list');
 
-	$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
-
 	$tpl->assign(
 		array(
 			'TR_ADMIN_EDIT_RESELLER_PAGE_TITLE' =>
 				tr('ispCP - Admin/Manage users/Edit Reseller'),
-			'THEME_COLOR_PATH' => "../themes/$theme_color",
+			'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 			'THEME_CHARSET' => tr('encoding'),
 			'ISP_LOGO' => get_logo($_SESSION['user_id'])
 		)
 	);
 
-	gen_admin_mainmenu($tpl,Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/main_menu_users_manage.tpl');
-	gen_admin_menu($tpl,Config::getInstance()->get('ADMIN_TEMPLATE_PATH') . '/menu_users_manage.tpl');
+	gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
+	gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_users_manage.tpl');
 
 	// First, we get needed data
 	$rdata =& get_data($tpl);
@@ -944,10 +947,10 @@ if (isset($_REQUEST['edit_id']) && !isset($_POST['Cancel'])) {
 fields_highlighting($tpl, $errFields);
 
 if ($rdata['support_system'] == 'yes') {
-	$support_yes = Config::getInstance()->get('HTML_CHECKED');
+	$support_yes = $cfg->HTML_CHECKED;
 	$support_no = '';
 } else {
-	$support_no = Config::getInstance()->get('HTML_CHECKED');
+	$support_no = $cfg->HTML_CHECKED;
 	$support_yes = '';
 }
 
@@ -1028,11 +1031,12 @@ $tpl->assign(
 		'CUSTOMER_ID' => tohtml($rdata['customer_id']),
 		'FIRST_NAME' => tohtml($rdata['fname']),
 		'LAST_NAME' => tohtml($rdata['lname']),
-		'VL_MALE' => (($rdata['gender'] == 'M') ? Config::getInstance()->get('HTML_SELECTED') : ''),
-		'VL_FEMALE' => (($rdata['gender'] == 'F') ? Config::getInstance()->get('HTML_SELECTED') : ''),
+		'VL_MALE' => (($rdata['gender'] == 'M') ? $cfg->HTML_SELECTED : ''),
+		'VL_FEMALE' => (($rdata['gender'] == 'F') ? $cfg->HTML_SELECTED : ''),
 		'VL_UNKNOWN' =>
-			(($rdata['gender'] == 'U') || (empty($rdata['gender'])) ?
-				Config::getInstance()->get('HTML_SELECTED') : ''),
+			(($rdata['gender'] == 'U') || (empty($rdata['gender']))
+				? $cfg->HTML_SELECTED
+				: ''),
 		'FIRM' => tohtml($rdata['firm']),
 		'ZIP' => tohtml($rdata['zip']),
 		'CITY' => tohtml($rdata['city']),
@@ -1062,7 +1066,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
 
