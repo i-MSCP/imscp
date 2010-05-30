@@ -3,9 +3,8 @@ ispCP ω 1.0.6 ChangeLog
 
 2010-05-30 Laurent Declercq
 	- GUI:
-		* Added both Added both __isset() and __unset() methods in
-			IspCP_ConfigHandler classes to be able to operate on inaccessible
-			members
+		* Added both __isset() and __unset() methods in IspCP_ConfigHandler
+			classes to be able to operate on inaccessible members
 		* Added methods in IspCP_ConfigHandler classes to be able to remove
 			configuration parameters
 		* Added a wrapper method in Config class for the
