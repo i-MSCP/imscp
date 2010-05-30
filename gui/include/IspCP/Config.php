@@ -42,7 +42,7 @@
  *
  * Example:
  *
- * $parameters = array('PLUGIN_NAME => 'billing', PLUGIN_VERSION => '1.0.0');
+ * $parameters = array('PLUGIN_NAME' => 'billing', 'PLUGIN_VERSION' => '1.0.0');
  * IspCP_Registry::set('My_ConfigHandler', new IspCP_ConfigHandler($parameters));
  *
  * From another context:

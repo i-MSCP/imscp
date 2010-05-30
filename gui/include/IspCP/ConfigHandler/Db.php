@@ -55,7 +55,7 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 	 * PDOStatement to insert a configuration parameter in the database
 	 *
 	 * For performance reason, the PDOStatement object is created only once at
-	 * the first execution of the {@link insert()} method.
+	 * the first execution of the {@link _insert()} method.
 	 *
 	 * @var PDOStatement
 	 */
@@ -65,7 +65,7 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 	 * PDOStatement to update a configuration parameter in the database
 	 *
 	 * For performance reason, the PDOStatement object is created only once at
-	 * the first execution of the {@link update()} method.
+	 * the first execution of the {@link _update()} method.
 	 *
 	 * @var PDOStatement
 	 */
@@ -75,7 +75,7 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 	 * PDOStatement to delete a configuration parameter in the database
 	 *
 	 * For performance reason, the PDOStatement object is created only once at
-	 * the first execution of the {@link delete()} method.
+	 * the first execution of the {@link _delete()} method.
 	 *
 	 * @var PDOStatement
 	 */
@@ -85,7 +85,7 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 	 * Variable bound to the PDOStatement objects
 	 *
 	 * This variable is bound to the PDOStatement objects that are used by
-	 * {@link insert()} , {@link update()} and {@link delete()} methods.
+	 * {@link _insert()} , {@link _update()} and {@link _delete()} methods.
 	 *
 	 * @var string Configuration parameter key name
 	 */
@@ -95,7 +95,7 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 	 * Variable bound to the PDOStatement objects
 	 *
 	 * This variable is bound to the PDOStatement objects that are used by both
-	 * {@link insert()} and {@link update()} methods.
+	 * {@link _insert()} and {@link _update()} methods.
 	 *
 	 * @var mixed Configuration parameter value
 	 */
@@ -132,7 +132,7 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 	 *
 	 * For an array, the possible parameters are:
 	 *
-	 * db: Reference to a raw PDO (unwrapped) instance
+	 * db: Reference to PDO instance
 	 * table_name: Database configuration table name
 	 * key_column: Database configuration key column name
 	 * value_column: Database configuration value column name
@@ -141,7 +141,7 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 	 *
 	 * For a single parameter, only a PDO instance is accepted.
 	 *
-	 * @param PDO|array A PDO instance or an array of parameter that contain at
+	 * @param PDO|array A PDO instance or an array of parameters that contain at
 	 *	least a PDO instance
 	 * @throws Exception
 	 * @return void
@@ -189,7 +189,7 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 	 * the new value of a parameter are not the same.
 	 *
 	 * @param string $index Configuration parameter key name
-	 * @param string|int $value Configuration parameter value
+	 * @param mixed $value Configuration parameter value
 	 * @return void
 	 */
 	public function set($index, $value) {
@@ -212,7 +212,7 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 	 * Load all the configuration parameters from the database
 	 *
 	 * @throws Exception
-	 * @return void
+	 * @return Array that contain all configuration parameters
 	 */
 	private function _load_all() {
 
