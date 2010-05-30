@@ -142,7 +142,8 @@ function generate_page(&$tpl) {
 				)
 			);
 
-			$log_message = htmlentities($rs->fields['log_message']);
+			$log_message = $rs->fields['log_message'];
+
 			$replaces = array(
 				'/[^a-zA-Z](delete[sd]?)[^a-zA-Z]/i'	=> ' <strong style="color:#FF0000">\\1</strong> ',
 				'/[^a-zA-Z](remove[sd]?)[^a-zA-Z]/i'	=> ' <strong style="color:#FF0000">\\1</strong> ',
@@ -164,7 +165,7 @@ function generate_page(&$tpl) {
 			$date_formt = $cfg->DATE_FORMAT . ' H:i';
 			$tpl->assign(
 				array(
-					'MESSAGE'	=> tohtml($log_message),
+					'MESSAGE'	=> $log_message,
 					'DATE'		=> date($date_formt, strtotime($rs->fields['dat'])),
 				)
 			);

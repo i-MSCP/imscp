@@ -12,6 +12,7 @@ ispCP ω 1.0.6 ChangeLog
 			IspCP_ConfigHandler::del() methods
 		* Fixed doc/typo in Config, IspCP_ConfigHandler and IspCP_Registry
 			classes
+		* Fixed: tohtml() must not be applied on admin logs
 
 2010-05-29 Laurent Declercq
 	- GUI:
