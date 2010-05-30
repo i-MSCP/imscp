@@ -71,9 +71,9 @@ class IspCP_Registry extends ArrayObject {
 	private function __clone() {}
 
 	/**
-	 * Get a IspCP_Registry instance
+	 * Get an IspCP_Registry instance
 	 *
-	 * Returns a reference to a {@link IspCP_Registry} instance, only creating
+	 * Returns a reference to {@link IspCP_Registry} instance, only creating
 	 * it if it doesn't already exist.
 	 *
 	 * @return object IspCP_Registry instance
@@ -88,7 +88,7 @@ class IspCP_Registry extends ArrayObject {
 	}
 
 	/**
-	 * Getter method to get a data that is stored in the register
+	 * Getter method to get data that is stored in the register
 	 *
 	 * @param string Data key name
 	 * @throws Exception
@@ -108,7 +108,7 @@ class IspCP_Registry extends ArrayObject {
 	}
 
 	/**
-	 * Setter method to register a new data in the register
+	 * Setter method to register new data in the register
 	 *
 	 * @param string Data key name
 	 * @param mixed $value Data
@@ -123,7 +123,7 @@ class IspCP_Registry extends ArrayObject {
 	}
 
 	/**
-	 * Check if a data exists in the registry
+	 * Check if data exists in the registry
 	 *
 	 * @param  string $name Data key name
 	 * @return TRUE if the data exists, FALSE otherwise

@@ -55,7 +55,7 @@ class IspCP_ConfigHandler implements ArrayAccess, Iterator {
 	protected $parameters = array();
 
 	/**
-	 * Loads all configuration parameters from an Array
+	 * Loads all configuration parameters from an array
 	 *
 	 * @param array $parameters Configuration parameters
  	 * @return void
@@ -79,9 +79,9 @@ class IspCP_ConfigHandler implements ArrayAccess, Iterator {
 	/**
 	 * Allow access as object propertie
 	 *
+	 * @see set()
 	 * @param string $name Configuration parameter key name
 	 * @param mixed  $value Configuration parameter value
-	 * @see set()
 	 * @return void
 	 */
 	 public function __set($index, $value) {
@@ -109,11 +109,44 @@ class IspCP_ConfigHandler implements ArrayAccess, Iterator {
 	 * Allow access as object properties
 	 *
 	 * @see get();
+	 * @param string Configuration parameter key name
 	 * @return mixed Configuration parameter value
 	 */
 	public function __get($index) {
 
 		return $this->get($index);
+	}
+
+	/**
+	 * Methods to delete a configuration parameters
+	 *
+	 * @param $string $index Configuration parameter key name
+	 * @return void
+	 */
+	public function del($index) {
+		unset($this->parameters[$index]);
+	}
+
+	/**
+	 * PHP Overloading for call of isset() on inaccessible members.
+	 *
+	 * @param string Configuration parameter key name
+	 * @return TRUE if the configuration parameter exists, FALSE otherwise
+	 */	
+	public function __isset($index) {
+
+		return isset($this->parameters[$index]);
+	}
+
+	/**
+	 * PHP Overloading for call of unset() on inaccessible members
+	 *
+	 * @param string Configuration parameter key name
+	 * @return void
+	 */
+	public function __unset($index) {
+
+		$this->del($index);
 	}
 
 	/**
@@ -157,6 +190,7 @@ class IspCP_ConfigHandler implements ArrayAccess, Iterator {
 	 * See {@link http://www.php.net/~helly/php/ext/spl}
 	 */
 	public function current() {
+
 		return current($this->parameters);
 	}
 
@@ -166,6 +200,7 @@ class IspCP_ConfigHandler implements ArrayAccess, Iterator {
 	 * See {@link http://www.php.net/~helly/php/ext/spl}
 	 */
 	public function next() {
+
 		next($this->parameters);
 	}
 
@@ -175,6 +210,7 @@ class IspCP_ConfigHandler implements ArrayAccess, Iterator {
 	 * See {@link http://www.php.net/~helly/php/ext/spl}
 	 */
 	public function valid() {
+
 		return array_key_exists(key($this->parameters), $this->parameters);
 	}
 
@@ -184,6 +220,7 @@ class IspCP_ConfigHandler implements ArrayAccess, Iterator {
 	 * See {@link http://www.php.net/~helly/php/ext/spl}
 	 */
 	public function rewind() {
+
 		reset($this->parameters);
         return $this;
 	}
@@ -194,6 +231,7 @@ class IspCP_ConfigHandler implements ArrayAccess, Iterator {
 	 * See {@link http://www.php.net/~helly/php/ext/spl}
 	 */
 	public function key() {
+
 		return key($this->parameters);
 	}
 
@@ -203,6 +241,7 @@ class IspCP_ConfigHandler implements ArrayAccess, Iterator {
 	 * See {@link http://www.php.net/~helly/php/ext/spl}
 	 */
 	public function offsetExists($index) {
+
 		return $this->exists($index);
 	}
 
@@ -212,6 +251,7 @@ class IspCP_ConfigHandler implements ArrayAccess, Iterator {
 	 * See {@link http://www.php.net/~helly/php/ext/spl}
 	 */
 	public function offsetGet($index) {
+
 		return $this->get($index);
 	}
 
@@ -221,6 +261,7 @@ class IspCP_ConfigHandler implements ArrayAccess, Iterator {
 	 * See {@link http://www.php.net/~helly/php/ext/spl}
 	 */
 	public function offsetSet($index, $value) {
+
 		$this->set($index, $value);
 	}
 
@@ -230,6 +271,7 @@ class IspCP_ConfigHandler implements ArrayAccess, Iterator {
 	 * See {@link http://www.php.net/~helly/php/ext/spl}
 	 */
 	public function offsetUnset($index) {
-		unset($this->parameters[$index]);
+
+		$this->del($index);
 	}
 }

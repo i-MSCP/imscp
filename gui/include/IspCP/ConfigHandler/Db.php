@@ -45,9 +45,9 @@ require_once  INCLUDEPATH . '/IspCP/ConfigHandler.php';
 class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 
 	/**
-	 * Reference to a raw PDO instance
+	 * Reference to a PDO instance
 	 *
-	 * @var Reference to a PDO instance
+	 * @var PDO
 	 */
 	private $_db;
 
@@ -55,44 +55,55 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 	 * PDOStatement to insert a configuration parameter in the database
 	 *
 	 * For performance reason, the PDOStatement object is created only once at
-	 * the first execution of the {@link insert_to_db()} method.
+	 * the first execution of the {@link insert()} method.
 	 *
-	 * @var Reference to a PDOStatement instance
+	 * @var PDOStatement
 	 */
-	private $insert_stmt = null;
+	private $_insert_stmt = null;
 
 	/**
 	 * PDOStatement to update a configuration parameter in the database
 	 *
 	 * For performance reason, the PDOStatement object is created only once at
-	 * the first execution of the {@link update_to_db()} method.
+	 * the first execution of the {@link update()} method.
 	 *
-	 * @var Reference to a PDOStatement instance
+	 * @var PDOStatement
 	 */
-	private $update_stmt = null;
+	private $_update_stmt = null;
+
+	/**
+	 * PDOStatement to delete a configuration parameter in the database
+	 *
+	 * For performance reason, the PDOStatement object is created only once at
+	 * the first execution of the {@link delete()} method.
+	 *
+	 * @var PDOStatement
+	 */
+	private $_delete_stmt = null;
 
 	/**
 	 * Variable bound to the PDOStatement objects
 	 *
-	 * The value of this variable is bound to the PDOStatement that are used by
-	 * the both method {@link insert_to_db()} and {@link update_to_db()}
+	 * This variable is bound to the PDOStatement objects that are used by
+	 * {@link insert()} , {@link update()} and {@link delete()} methods.
 	 *
-	 * @var Configuration parameter key name
+	 * @var string Configuration parameter key name
 	 */
-	private $index = null;
+	private $_index = null;
 
 	/**
 	 * Variable bound to the PDOStatement objects
 	 *
-	 * The value of this variable is bound to the PDOStatement that are used by
-	 * the both method {@link insert_to_db()} and {@link update_to_db()}
+	 * This variable is bound to the PDOStatement objects that are used by both
+	 * {@link insert()} and {@link update()} methods.
 	 *
-	 * @var Configuration parameter value
+	 * @var mixed Configuration parameter value
 	 */
-	private $value = null;
+	private $_value = null;
 
 	/**
 	 * Database table where the configuration parameters are stored
+	 *
 	 * @var
 	 */
 	protected $table_name = 'config';
@@ -128,7 +139,7 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 	 *
 	 * Note: The three last parameters are optionals.
 	 *
-	 * for a single parameter, only a raw PDO (unwrapped) instance is accepted.
+	 * For a single parameter, only a PDO instance is accepted.
 	 *
 	 * @param PDO|array A PDO instance or an array of parameter that contain at
 	 *	least a PDO instance
@@ -168,7 +179,7 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 
 		$this->_db = $params;
 
-		parent::__construct($this->load_all());
+		parent::__construct($this->_load_all());
 	}
 
 	/**
@@ -183,13 +194,13 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 	 */
 	public function set($index, $value) {
 
-		$this->index = $index;
-		$this->value = $value;
+		$this->_index = $index;
+		$this->_value = $value;
 
 		if(!array_key_exists($index, $this->parameters)) {
-			$this->insert_to_db();
+			$this->_insert();
 		} elseif($this->parameters[$index] != $value) {
-			$this->update_to_db();
+			$this->_update();
 		} else {
 			return;
 		}
@@ -203,7 +214,7 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 	 * @throws Exception
 	 * @return void
 	 */
-	private function load_all() {
+	private function _load_all() {
 
 		$query = "
 			SELECT
@@ -234,24 +245,24 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 	 * @throws Exception
 	 * @return void
 	 */
-	private function insert_to_db() {
-		if(!$this->insert_stmt instanceof PDOStatement) {
+	private function _insert() {
+		if(!$this->_insert_stmt instanceof PDOStatement) {
 
 			$query = "
 				INSERT INTO
 					`{$this->table_name}`
-					({$this->keys_column}, `{$this->values_column}`)
+					(`{$this->keys_column}`, `{$this->values_column}`)
 				VALUES
 					(:index, :value)
 				;
 			";
 
-			$this->insert_stmt = $this->_db->prepare($query);
-			$this->insert_stmt->BindParam(':index', $this->index);
-			$this->insert_stmt->BindParam(':value', $this->value);
+			$this->_insert_stmt = $this->_db->prepare($query);
+			$this->_insert_stmt->BindParam(':index', $this->_index);
+			$this->_insert_stmt->BindParam(':value', $this->_value);
 		}
 
-		if($this->insert_stmt->execute() === false) {
+		if($this->_insert_stmt->execute() === false) {
 			throw new Exception(
 				'Unable to insert the configuration parameter in the database!'
 			);
@@ -264,9 +275,9 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 	 * @throws Exception
 	 * @return void
 	 */
-	private function update_to_db() {
+	private function _update() {
 
-		if(!$this->update_stmt instanceof PDOStatement) {
+		if(!$this->_update_stmt instanceof PDOStatement) {
 
 			$query = "
 				UPDATE
@@ -278,14 +289,43 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 				;
 			";
 
-			$this->update_stmt = $this->_db->prepare($query);
-			$this->update_stmt->BindParam(':index', $this->index);
-			$this->update_stmt->BindParam(':value', $this->value);
+			$this->_update_stmt = $this->_db->prepare($query);
+			$this->_update_stmt->BindParam(':index', $this->_index);
+			$this->_update_stmt->BindParam(':value', $this->_value);
 		}
 
-		if($this->update_stmt->execute() === false) {
+		if($this->_update_stmt->execute() === false) {
 			throw new Exception(
 				'Unable to update the configuration parameter in the database!'
+			);
+		}
+	}
+
+	/**
+	 * Delete a configuration parameter in the database
+	 *
+	 * @throws Exception
+	 * @return void
+	 */
+	private function _delete() {
+
+		if(!$this->_delete_stmt instanceof PDOStatement) {
+
+			$query = "
+				DELETE FROM
+					`{$this->table_name}`
+				WHERE
+					`{$this->keys_column}` = :index
+				;
+			";
+
+			$this->_delete_stmt = $this->_db->prepare($query);
+			$this->_delete_stmt->BindParam(':index', $this->_index);
+		}
+
+		if($this->_delete_stmt->execute() === false) {
+			throw new Exception(
+				'Unable to delete the configuration parameter in the database!'
 			);
 		}
 	}
@@ -296,6 +336,32 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 	 * @return void
 	 */
 	public function force_reload() {
-		$this->parameters = $this->load_all();
+
+		$this->parameters = $this->_load_all();
+	}
+
+	/**
+	 * Defined by SPL ArrayAccess interface
+	 *
+	 * See {@link http://www.php.net/~helly/php/ext/spl}
+	 */
+	public function offsetUnset($index) {
+
+		$this->_index = $index;
+		$this->_delete();
+		parent::offsetUnset($index);
+	}
+
+	/**
+	 * PHP Overloading for call of unset() on inaccessible members
+	 *
+	 * @param string $index Configuration parameter key name
+	 * @return void
+	 */
+	public function __unset($index) {
+
+			$this->_index = $index;
+			$this->_delete();
+			parent::__unset($index);
 	}
 }

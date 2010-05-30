@@ -34,13 +34,11 @@ require_once  INCLUDEPATH . '/IspCP/ConfigHandler.php';
  * Class to handle configuration parameters from a flat file
  *
  * IspCP_ConfigHandler adapter to handle configuration parameters that are stored
- * in a flat file where each pair of key values are separated by the equal sign.
+ * in a flat file where each pair of key-values are separated by the equal sign.
  *
- * By default, this object parse the default ispCP configuration file.
- *
- * @See ispCP_ConfigHandler
+ * @see IspCP_ConfigHandler
  */
-class ispCP_ConfigHandler_File extends ispCP_ConfigHandler {
+class ispCP_ConfigHandler_File extends IspCP_ConfigHandler {
 
 	/**
 	 * Configuration file path
@@ -50,10 +48,12 @@ class ispCP_ConfigHandler_File extends ispCP_ConfigHandler {
 	protected $_path_file;
 
 	/**
-	 * Loads the ispCP config file (default directory: /etc/ispcp/ispcp.conf)
+	 * Loads all configuration parameters from a file
+	 *
+	 * Note: default file path is set to: {/usr/local}/etc/ispcp/ispcp.conf
+	 * depending of the used distribution.
 	 *
 	 * @param string $path_file Configuration file path
-	 * @throws Exception
 	 * @return void
 	 */
 	public function __construct($path_file = null) {
@@ -76,11 +76,11 @@ class ispCP_ConfigHandler_File extends ispCP_ConfigHandler {
 	}
 
 	/**
-	 * Opens a configuration file and parses its KEY = Value pairs into the
+	 * Opens a configuration file and parses its Key = Value pairs into the
 	 * {@link IspCP_ConfigHangler::parameters} array.
 	 *
 	 * @throws Exception
-	 * @return Configuration parameters
+	 * @return Array that contain all Configuration parameters
 	 */
 	private function parseFile() {
 
