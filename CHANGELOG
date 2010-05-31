@@ -5,6 +5,7 @@ ispCP ω 1.0.6 ChangeLog
 	- GUI:
 		* Added toArray() method in IspCP_ConfigHandler class to be able to
 			get an associative array that contain all configuration parameters
+		* Complete rewrite of the admin/settings_ports.php script
 
 2010-05-30 Laurent Declercq
 	- GUI:
