@@ -144,7 +144,7 @@ function show_services(&$tpl) {
  * @param string $proto Service port protocol
  * @param int $show
  * @param boolean $on_updt True: validates for update
- * @return TRUE if valids, FALSE otherwise
+ * @return TRUE if valid, FALSE otherwise
  */
 function validates_service($name, $ip, $port, $proto, $show, $on_updt = false) {
 
@@ -159,7 +159,7 @@ function validates_service($name, $ip, $port, $proto, $show, $on_updt = false) {
 		$e = tr('ERROR: Wrong Ip number!');
 	} elseif(!is_number($port) || $port <= 0) {
 		$e = tr('ERROR: Only positive numbers are allowed!');
-	} elseif(isset($db_cfg->$db_sname) && !$on_updt) {
+	} elseif(!$on_updt && isset($db_cfg->$db_sname)) {
 		$e = tr('ERROR: Service port already exists!');
 	} elseif($proto != 'tcp' && $proto != 'udp') {
 		$e = tr('ERROR: Unallowed protocol!');
@@ -217,12 +217,13 @@ function add_update_services() {
 
 			$port = $_POST['port'][$index];
 			$proto = $_POST['port_type'][$index];
+			$name = strtoupper($name);
 			$show = $_POST['show_val'][$index];
 			$custom = $_POST['custom'][$index];
 			$ip = $_POST['ip'][$index];
 
 			if(validates_service($name, $ip, $port, $proto, $show, true)) {
-				$db_sname = "PORT_$name";
+				$db_sname = $_POST['var_name'][$index];
 
 				// Update the service port in the database
 				// See the {@link IspCP_ConfigHandler_Db} adapter class to learn
