@@ -285,9 +285,8 @@ function delete_service($port_name) {
 
 // Adds a service port or updates one or more services ports
 if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
+	
 	add_update_services();
-
-echo '<pre>';
 	user_goto('settings_ports.php');
 
 // Deletes a service port
