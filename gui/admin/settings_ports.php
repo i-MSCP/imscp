@@ -144,6 +144,7 @@ function show_services(&$tpl) {
  * @param string $proto Service port protocol
  * @param int $show
  * @param boolean $on_updt True: validates for update
+ * @return TRUE if valids, FALSE otherwise
  */
 function validates_service($name, $ip, $port, $proto, $show, $on_updt = false) {
 
@@ -186,11 +187,11 @@ function add_update_services() {
 	// Adds a service port
 	if(isset($_POST['name_new']) && !empty($_POST['name_new'])) {
 
-		$name = strtoupper($_POST['name_new']);
-		$ip = $_POST['ip_new'];
 		$port = $_POST['port_new'];
 		$proto = $_POST['port_type_new'];
+		$name = strtoupper($_POST['name_new']);
 		$show = $_POST['show_val_new'];
+		$ip = $_POST['ip_new'];
 
 		if(validates_service($name, $ip, $port, $proto, $show)) {
 			$db_sname = "PORT_$name";
@@ -214,10 +215,11 @@ function add_update_services() {
 	} elseif(isset($_POST['name']) && !empty($_POST['name'])) {
 		foreach($_POST['name'] as $index => $name) {
 
-			$ip = $_POST['ip'][$index];
 			$port = $_POST['port'][$index];
 			$proto = $_POST['port_type'][$index];
 			$show = $_POST['show_val'][$index];
+			$custom = $_POST['custom'][$index];
+			$ip = $_POST['ip'][$index];
 
 			if(validates_service($name, $ip, $port, $proto, $show, true)) {
 				$db_sname = "PORT_$name";
@@ -225,7 +227,7 @@ function add_update_services() {
 				// Update the service port in the database
 				// See the {@link IspCP_ConfigHandler_Db} adapter class to learn
 				// how it work
-				$db_cfg->$db_sname = "$port;$proto;$name;$show;1;$ip";
+				$db_cfg->$db_sname = "$port;$proto;$name;$show;$custom;$ip";
 			} else {
 				return;
 			}
@@ -285,7 +287,7 @@ function delete_service($port_name) {
 
 // Adds a service port or updates one or more services ports
 if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
-	
+
 	add_update_services();
 	user_goto('settings_ports.php');
 
