@@ -3,6 +3,10 @@ ispCP ω 1.0.6 ChangeLog
 
 2010-05-31 Laurent Declercq
 	- GUI:
+		* Deleted obsolete htmlpurifier
+
+2010-05-31 Laurent Declercq
+	- GUI:
 		* Added toArray() method in IspCP_ConfigHandler class to be able to
 			get an associative array that contain all configuration parameters
 		* Complete rewrite of the admin/settings_ports.php script
