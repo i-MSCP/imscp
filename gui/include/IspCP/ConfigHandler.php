@@ -185,6 +185,16 @@ class IspCP_ConfigHandler implements ArrayAccess, Iterator {
 	}
 
 	/**
+	 * Return an associative array that contain all configuration parameters
+	 *
+	 * @return array
+	 */
+	public function toArray() {
+
+		return $this->parameters;
+	}
+
+	/**
 	 * Defined by SPL Iterator interface
 	 *
 	 * See {@link http://www.php.net/~helly/php/ext/spl}

@@ -1,6 +1,11 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-05-31 Laurent Declercq
+	- GUI:
+		* Added toArray() method in IspCP_ConfigHandler class to be able to
+			get an associative array that contain all configuration parameters
+
 2010-05-30 Laurent Declercq
 	- GUI:
 		* Added both __isset() and __unset() methods in IspCP_ConfigHandler
