@@ -590,9 +590,10 @@ function get_user_props($user_id) {
 		'userid', 'ftp_users', 'userid', '@', ''
 		);
 
-	$ftp_current += sub_records_rlike_count('subdomain_name', 'subdomain', 'domain_id', $user_id,
+	//We don't need this query, because we don't have ftpusers for a subdomain! Otherwise the counters count wrong - TheCry
+	/*$ftp_current += sub_records_rlike_count('subdomain_name', 'subdomain', 'domain_id', $user_id,
 		'userid', 'ftp_users', 'userid', '@', ''
-		);
+		);*/
 
 	$ftp_current += sub_records_rlike_count('alias_name', 'domain_aliasses', 'domain_id', $user_id,
 		'userid', 'ftp_users', 'userid', '@', ''
@@ -1798,12 +1799,12 @@ function recalc_reseller_c_props($reseller_id) {
 	$query = "
 		SELECT
 			COUNT(`domain_id`) AS crn_domains,
-			IFNULL(SUM(`domain_subd_limit`), 0) AS current_sub_cnt,
-			IFNULL(SUM(`domain_alias_limit`), 0) AS current_als_cnt,
-			IFNULL(SUM(`domain_mailacc_limit`), 0) AS current_mail_cnt,
-			IFNULL(SUM(`domain_ftpacc_limit`), 0) AS current_ftp_cnt,
-			IFNULL(SUM(`domain_sqld_limit`), 0) AS current_sql_db_cnt,
-			IFNULL(SUM(`domain_sqlu_limit`), 0) AS current_sql_user_cnt,
+			IFNULL(SUM(IF(`domain_subd_limit` >= 0, `domain_subd_limit`, 0)), 0) AS current_sub_cnt,
+			IFNULL(SUM(IF(`domain_alias_limit` >= 0, `domain_alias_limit`, 0)), 0) AS current_als_cnt,
+			IFNULL(SUM(IF(`domain_mailacc_limit` >= 0, `domain_mailacc_limit`, 0)), 0) AS current_mail_cnt,
+			IFNULL(SUM(IF(`domain_ftpacc_limit` >= 0, `domain_ftpacc_limit`, 0)), 0) AS current_ftp_cnt,
+			IFNULL(SUM(IF(`domain_sqld_limit` >= 0, `domain_sqld_limit`, 0)), 0) AS current_sql_db_cnt,
+			IFNULL(SUM(IF(`domain_sqlu_limit` >= 0, `domain_sqlu_limit`, 0)), 0) AS current_sql_user_cnt,
 			IFNULL(SUM(`domain_disk_limit`), 0) AS current_disk_amnt,
 			IFNULL(SUM(`domain_traffic_limit`), 0) AS current_traff_amnt
 		FROM

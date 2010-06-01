@@ -1010,15 +1010,16 @@ function generate_user_props($user_id) {
 		AND `mail_acc` != 'webmaster'
 		AND `mail_type` NOT RLIKE '_catchall'
 		AND `domain_id`";
-		$mail_current = records_count( 'mail_users', $where, $user_id);
+		$mail_current = records_count('mail_users', $where, $user_id);
 	}
 	$mail_max = $rs->fields['domain_mailacc_limit'];
 
 	$ftp_current = sub_records_rlike_count('domain_name', 'domain', 'domain_id', $user_id,
 											'userid', 'ftp_users', 'userid', '@', '');
 
-	$ftp_current += sub_records_rlike_count('subdomain_name', 'subdomain', 'domain_id', $user_id,
-											'userid', 'ftp_users', 'userid', '@', '');
+	//We don't need this query, because we don't have ftpusers for a subdomain! Otherwise the counters count wrong - TheCry
+	/*$ftp_current += sub_records_rlike_count('subdomain_name', 'subdomain', 'domain_id', $user_id,
+											'userid', 'ftp_users', 'userid', '@', '');*/
 
 	$ftp_current += sub_records_rlike_count('alias_name', 'domain_aliasses', 'domain_id', $user_id,
 											'userid', 'ftp_users', 'userid', '@', '');
@@ -1028,8 +1029,8 @@ function generate_user_props($user_id) {
 	$sql_db_current = records_count('sql_database', 'domain_id', $user_id);
 	$sql_db_max = $rs->fields['domain_sqld_limit'];
 
-	$sql_user_current = sub_records_count(	'sqld_id', 'sql_database', 'domain_id', $user_id,
-											'sqlu_id', 'sql_user', 'sqld_id', '', '');
+	$sql_user_current = sub_records_count('sqld_id', 'sql_database', 'domain_id', $user_id,
+											'sqlu_id', 'sql_user', 'sqld_id', 'sqlu_name', '');
 
 	$sql_user_max = $rs->fields['domain_sqlu_limit'];
 
@@ -1087,7 +1088,7 @@ function records_rlike_count($field, $table, $where, $value, $a, $b) {
 /**
  * @todo implement check for dynamic table/row in SQL query
  */
-function sub_records_count($field, $table, $where, $value, $subfield, $subtable, $subwhere) {
+function sub_records_count($field, $table, $where, $value, $subfield, $subtable, $subwhere, $subgroupname) {
 	$sql = Database::getInstance();
 
 	if ($where != '') {
@@ -1103,20 +1104,34 @@ function sub_records_count($field, $table, $where, $value, $subfield, $subtable,
 	if ($rs->RowCount() == 0) {
 		return $result;
 	}
-	while (!$rs->EOF) {
-		$contents = $rs->fields['field'];
+	if($subgroupname != '') {
+		$sqld_ids = array();
+		while (!$rs->EOF) {
+			array_push($sqld_ids, $rs->fields['field']);
+			$rs->MoveNext();
+		}
+		$sqld_ids = implode(",", $sqld_ids);
 
 		if ($subwhere != '') {
-			$query = "SELECT COUNT(*) AS cnt FROM $subtable WHERE $subwhere = ?";
+			$query = "SELECT COUNT(DISTINCT $subgroupname) AS cnt FROM $subtable WHERE sqld_id IN ($sqld_ids)";
+			$subres = exec_query($sql, $query);
+			$result = $subres->fields['cnt'];
 		} else {
 			return $result;
 		}
-
-		$subres = exec_query($sql, $query, array($contents));
-		$result += $subres->fields['cnt'];
-		$rs->MoveNext();
+	} else {
+		while (!$rs->EOF) {
+			$contents = $rs->fields['field'];
+			if ($subwhere != '') {
+				$query = "SELECT COUNT(*) AS cnt FROM $subtable WHERE $subwhere = ?";
+			} else {
+				return $result;
+			}
+			$subres = exec_query($sql, $query, array($contents));
+			$result += $subres->fields['cnt'];
+			$rs->MoveNext();
+		}
 	}
-
 	return $result;
 }
 
