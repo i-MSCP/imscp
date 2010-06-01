@@ -35,7 +35,7 @@ $cfg = IspCP_Registry::get('Config');
 check_login(__FILE__);
 
 if (isset($cfg->HOSTING_PLANS_LEVEL)
-	&& $cfg->HOSTING_PLANS_LEVEL') === 'admin') {
+	&& $cfg->HOSTING_PLANS_LEVEL === 'admin') {
 		user_goto('hosting_plan.php');
 }
 

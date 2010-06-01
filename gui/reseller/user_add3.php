@@ -269,7 +269,7 @@ function add_user_data($reseller_id) {
 	} else {
 
 		if (isset($cfg->HOSTING_PLANS_LEVEL)
-			&& $cfg->HOSTING_PLANS_LEVEL') === 'admin') {
+			&& $cfg->HOSTING_PLANS_LEVEL === 'admin') {
 			$query = 'SELECT `props` FROM `hosting_plans` WHERE `id` = ?';
 			$res = exec_query($sql, $query, array($hpid));
 		} else {

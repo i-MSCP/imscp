@@ -191,7 +191,7 @@ function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
 	$_SESSION['hpid'] = $hpid;
 
 	if (isset($cfg->HOSTING_PLANS_LEVEL)
-		&& $cfg->HOSTING_PLANS_LEVEL') === 'admin') {
+		&& $cfg->HOSTING_PLANS_LEVEL === 'admin') {
 		$query = "
 			SELECT
 				*

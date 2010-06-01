@@ -62,6 +62,8 @@ $tpl->assign(
  */
 
 function gen_order_page(&$tpl, &$sql, $user_id) {
+	$cfg = IspCP_Registry::get('Config');
+	
 	$start_index = 0;
 	$current_psi = 0;
 

@@ -129,7 +129,7 @@ function gen_hp_table(&$tpl, $reseller_id) {
 	$cfg = IspCP_Registry::get('Config');
 
 	if (isset($cfg->HOSTING_PLANS_LEVEL)
-		&& $cfg->HOSTING_PLANS_LEVEL') === 'admin') {
+		&& $cfg->HOSTING_PLANS_LEVEL === 'admin') {
 		$query = "
 			SELECT
 				t1.`id`, t1.`reseller_id`, t1.`name`, t1.`props`, t1.`status`,

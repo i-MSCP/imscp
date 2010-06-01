@@ -44,7 +44,7 @@ if (isset($_GET['order_id']) && is_numeric($_GET['order_id'])) {
 }
 
 if (isset($cfg->HOSTING_PLANS_LEVEL)
-	&& $cfg->HOSTING_PLANS_LEVEL') === 'admin') {
+	&& $cfg->HOSTING_PLANS_LEVEL === 'admin') {
 	$query = "
 		SELECT
 			*
@@ -86,7 +86,7 @@ $dmn_id = get_user_domain_id($sql, $customer_id);
 $err_msg = '';
 
 if (isset($cfg->HOSTING_PLANS_LEVEL)
-	&& $cfg->HOSTING_PLANS_LEVEL') === 'admin') {
+	&& $cfg->HOSTING_PLANS_LEVEL === 'admin') {
 	$query = "SELECT `props` FROM `hosting_plans` WHERE `id` = ?";
 	$res = exec_query($sql, $query, $hpid);
 } else {

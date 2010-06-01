@@ -157,7 +157,7 @@ function check_user_data() {
 
 	// we have plans only for admins
 	if (isset($cfg->HOSTING_PLANS_LEVEL)
-		&& $cfg->HOSTING_PLANS_LEVEL') === 'admin') {
+		&& $cfg->HOSTING_PLANS_LEVEL === 'admin') {
 		$dmn_pt = '_no_';
 	}
 
@@ -253,7 +253,7 @@ function get_hp_data_list(&$tpl, $reseller_id) {
 	$cfg = IspCP_Registry::get('Config');
 
 	if (isset($cfg->HOSTING_PLANS_LEVEL)
-		&& $cfg->HOSTING_PLANS_LEVEL') === 'admin') {
+		&& $cfg->HOSTING_PLANS_LEVEL === 'admin') {
 		$query = "
 			SELECT
 				t1.`id`,
