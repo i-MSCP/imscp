@@ -88,7 +88,7 @@ class ispCP_ConfigHandler_File extends IspCP_ConfigHandler {
 
 		if ($fd === false) {
 			throw new Exception(
-				"Unable to open the configuration file `$path_file`!"
+				"Unable to open the configuration file `{$this->_path_file}`!"
 			);
 		}
 
