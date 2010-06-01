@@ -35,7 +35,7 @@ libio-stringy-perl
 libmail-sendmail-perl
 libmailtools-perl
 libmcrypt4
-libmd5-perl
+libdigest-md5-perl
 libmime-perl
 libnet-dns-perl
 libnet-libidn-perl

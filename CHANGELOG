@@ -2,6 +2,8 @@ ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2010-06-01 Laurent Declercq
+	- DISTS:
+		* Fixed #2381 Replace libmd5-perl with libdigest-md5-perl
 	- ENGINE:
 		#2287: Removed all `Include {MODS_DIR}/fcgid_ispcp.conf`
 	- GUI:
