@@ -30,6 +30,8 @@
 
 require '../include/ispcp-lib.php';
 
+$cfg = IspCP_Registry::get('Config');
+
 check_login(__FILE__);
 
 $query = "
@@ -43,7 +45,7 @@ $query = "
 
 $rs = exec_query($sql, $query, array($_SESSION['user_id']));
 
-if (!Config::getInstance()->get('ISPCP_SUPPORT_SYSTEM') || $rs->fields['support_system'] == 'no') {
+if (!$cfg->ISPCP_SUPPORT_SYSTEM || $rs->fields['support_system'] == 'no') {
 	user_goto('index.php');
 }
 

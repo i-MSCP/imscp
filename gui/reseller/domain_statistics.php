@@ -30,10 +30,12 @@
 
 require '../include/ispcp-lib.php';
 
+$cfg = IspCP_Registry::get('Config');
+
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/domain_statistics.tpl');
+$tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/domain_statistics.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('month_list', 'page');
@@ -41,12 +43,10 @@ $tpl->define_dynamic('year_list', 'page');
 $tpl->define_dynamic('traffic_table', 'page');
 $tpl->define_dynamic('traffic_table_item', 'traffic_table');
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
-
 $tpl->assign(
 	array(
 		'TR_ADMIN_DOMAIN_STATISTICS_PAGE_TITLE' => tr('ispCP - Domain Statistics Data'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
 	)
@@ -74,7 +74,6 @@ if (!is_numeric($domain_id) || !is_numeric($month) || !is_numeric($year)) {
 }
 
 function get_domain_trafic($from, $to, $domain_id) {
-
 	$sql = Database::getInstance();
 	$reseller_id = $_SESSION['user_id'];
 	$query = "
@@ -118,10 +117,12 @@ function get_domain_trafic($from, $to, $domain_id) {
 }
 
 function generate_page(&$tpl, $domain_id) {
-	$sql = Database::getInstance();
 	global $month, $year;
-	global $web_trf, $ftp_trf, $smtp_trf, $pop_trf,
-	$sum_web, $sum_ftp, $sum_mail, $sum_pop;
+	global $web_trf, $ftp_trf, $smtp_trf, $pop_trf;
+	global $sum_web, $sum_ftp, $sum_mail, $sum_pop;
+	
+	$sql = Database::getInstance();
+	$cfg = IspCP_Registry::get('Config');
 
 	$fdofmnth = mktime(0, 0, 0, $month, 1, $year);
 	$ldofmnth = mktime(1, 0, 0, $month + 1, 0, $year);
@@ -163,14 +164,13 @@ function generate_page(&$tpl, $domain_id) {
 		$has_data = false;
 		list($web_trf, $ftp_trf, $pop_trf, $smtp_trf) = get_domain_trafic($ftm, $ltm, $domain_id);
 
-		$date_formt = Config::getInstance()->get('DATE_FORMAT');
 		if ($web_trf == 0 && $ftp_trf == 0 && $smtp_trf == 0 && $pop_trf == 0) {
 			$tpl->assign(
 				array(
 					'MONTH' => $month,
 					'YEAR' => $year,
 					'DOMAIN_ID' => $domain_id,
-					'DATE' => date($date_formt, strtotime($year . "-" . $month . "-" . $i)),
+					'DATE' => date($cfg->DATE_FORMAT, strtotime($year . "-" . $month . "-" . $i)),
 					'WEB_TRAFFIC' => 0,
 					'FTP_TRAFFIC' => 0,
 					'SMTP_TRAFFIC' => 0,
@@ -188,7 +188,7 @@ function generate_page(&$tpl, $domain_id) {
 
 			$tpl->assign(
 				array(
-					'DATE' => date($date_formt, strtotime($year . "-" . $month . "-" . $i)),
+					'DATE' => date($cfg->DATE_FORMAT, strtotime($year . "-" . $month . "-" . $i)),
 					'WEB_TRAFFIC' => sizeit($web_trf),
 					'FTP_TRAFFIC' => sizeit($ftp_trf),
 					'SMTP_TRAFFIC' => sizeit($smtp_trf),
@@ -223,8 +223,8 @@ function generate_page(&$tpl, $domain_id) {
  *
  */
 
-gen_reseller_mainmenu($tpl, Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/main_menu_statistics.tpl');
-gen_reseller_menu($tpl, Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/menu_statistics.tpl');
+gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_statistics.tpl');
+gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_statistics.tpl');
 
 gen_logged_from($tpl);
 
@@ -251,7 +251,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
 unset_messages();

@@ -30,20 +30,20 @@
 
 require '../include/ispcp-lib.php';
 
+$cfg = IspCP_Registry::get('Config');
+
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/alias_add.tpl');
+$tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/alias_add.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('user_entry', 'page');
 $tpl->define_dynamic('ip_entry', 'page');
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
-
 $tpl->assign(
 	array(
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
 	)
@@ -55,8 +55,8 @@ $reseller_id = $_SESSION['user_id'];
  * static page messages.
  */
 
-gen_reseller_mainmenu($tpl, Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/main_menu_users_manage.tpl');
-gen_reseller_menu($tpl, Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/menu_users_manage.tpl');
+gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
+gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_users_manage.tpl');
 
 gen_logged_from($tpl);
 
@@ -120,7 +120,7 @@ $tpl->parse('PAGE', 'page');
 
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
 // Begin function declaration lines
@@ -137,6 +137,7 @@ function init_empty_data() {
 function gen_al_page(&$tpl, $reseller_id) {
 	global $cr_user_id, $alias_name, $domain_ip, $forward, $forward_prefix, $mount_point;
 	$sql = Database::getInstance();
+	$cfg = IspCP_Registry::get('Config');
 
 	list($udmn_current, $udmn_max, $udmn_uf,
 		$usub_current, $usub_max, $usub_uf,
@@ -167,7 +168,7 @@ function gen_al_page(&$tpl, $reseller_id) {
 	if (isset($_POST['status']) && $_POST['status'] == 1) {
 		$forward_prefix = clean_input($_POST['forward_prefix']);
 		if ($_POST['status'] == 1) {
-			$check_en = Config::getInstance()->get('HTML_CHECKED');
+			$check_en = $cfg->HTML_CHECKED;
 			$check_dis = '';
 			$forward = strtolower(clean_input($_POST['forward']));
 			$tpl->assign(
@@ -178,30 +179,30 @@ function gen_al_page(&$tpl, $reseller_id) {
 			);
 		} else {
 			$check_en = '';
-			$check_dis = Config::getInstance()->get('HTML_CHECKED');
+			$check_dis = $cfg->HTML_CHECKED;
 			$forward = '';
 			$tpl->assign(
 				array(
-					'READONLY_FORWARD'	=> Config::getInstance()->get('HTML_READONLY'),
-					'DISABLE_FORWARD'	=> Config::getInstance()->get('HTML_DISABLED')
+					'READONLY_FORWARD'	=> $cfg->HTML_READONLY,
+					'DISABLE_FORWARD'	=> $cfg->HTML_DISABLED
 				)
 			);
 		}
 		$tpl->assign(
 			array(
-				'HTTP_YES'	=> ($forward_prefix === 'http://') ? Config::getInstance()->get('HTML_SELECTED') : '',
-				'HTTPS_YES'	=> ($forward_prefix === 'https://') ? Config::getInstance()->get('HTML_SELECTED') : '',
-				'FTP_YES'	=> ($forward_prefix === 'ftp://') ? Config::getInstance()->get('HTML_SELECTED') : ''
+				'HTTP_YES'	=> ($forward_prefix === 'http://') ? $cfg->HTML_SELECTED : '',
+				'HTTPS_YES'	=> ($forward_prefix === 'https://') ? $cfg->HTML_SELECTED : '',
+				'FTP_YES'	=> ($forward_prefix === 'ftp://') ? $cfg->HTML_SELECTED : ''
 			)
 		);
 	} else {
 		$check_en = '';
-		$check_dis = Config::getInstance()->get('HTML_CHECKED');
+		$check_dis = $cfg->HTML_CHECKED;
 		$forward = '';
 		$tpl->assign(
 			array(
-				'READONLY_FORWARD'	=> Config::getInstance()->get('HTML_READONLY'),
-				'DISABLE_FORWARD'	=> Config::getInstance()->get('HTML_DISABLED'),
+				'READONLY_FORWARD'	=> $cfg->HTML_READONLY,
+				'DISABLE_FORWARD'	=> $cfg->HTML_DISABLED,
 				'HTTP_YES'			=>	'',
 				'HTTPS_YES'			=>	'',
 				'FTP_YES'			=>	''
@@ -226,6 +227,7 @@ function gen_al_page(&$tpl, $reseller_id) {
 function add_domain_alias(&$sql, &$err_al) {
 	global $cr_user_id, $alias_name, $domain_ip, $forward, $forward_prefix, $mount_point;
 	global $validation_err_msg;
+	$cfg = IspCP_Registry::get('Config');
 
 	$cr_user_id = $dmn_id = $_POST['usraccounts'];
 
@@ -270,7 +272,7 @@ function add_domain_alias(&$sql, &$err_al) {
 		$err_al = tr('Domain with that name already exists on the system!');
 	} else if (!validates_mpoint($mount_point) && $mount_point != '/') {
 		$err_al = tr("Incorrect mount point syntax");
-	} else if ($alias_name == Config::getInstance()->get('BASE_SERVER_VHOST')) {
+	} else if ($alias_name == $cfg->BASE_SERVER_VHOST) {
 		$err_al = tr('Master domain cannot be used!');
 	} else if ($_POST['status'] == 1) {
 		if (substr_count($forward, '.') <= 2) {
@@ -312,12 +314,11 @@ function add_domain_alias(&$sql, &$err_al) {
 	// Begin add new alias domain
 	$alias_name = htmlspecialchars($alias_name, ENT_QUOTES, "UTF-8");
 	check_for_lock_file();
-	$status = Config::getInstance()->get('ITEM_ADD_STATUS');
 
 	exec_query($sql,
 		"INSERT INTO `domain_aliasses` (`domain_id`, `alias_name`, `alias_mount`, ".
 		 "`alias_status`, `alias_ip_id`, `url_forward`) VALUES (?, ?, ?, ?, ?, ?)",
-		array($cr_user_id, $alias_name, $mount_point, $status, $domain_ip, $forward));
+		array($cr_user_id, $alias_name, $mount_point, $cfg->ITEM_ADD_STATUS, $domain_ip, $forward));
 
 	$als_id = $sql->Insert_ID();
 
@@ -328,7 +329,7 @@ function add_domain_alias(&$sql, &$err_al) {
 	$user_email = $rs->fields['email'];
 
 	// Create the 3 default addresses if wanted
-	if (Config::getInstance()->get('CREATE_DEFAULT_EMAIL_ADDRESSES'))
+	if ($cfg->CREATE_DEFAULT_EMAIL_ADDRESSES)
 		client_mail_add_default_accounts($cr_user_id, $user_email, $alias_name, 'alias', $als_id);
 
 	send_request();
@@ -340,8 +341,9 @@ function add_domain_alias(&$sql, &$err_al) {
 } // End of add_domain_alias();
 
 function gen_users_list(&$tpl, $reseller_id) {
-	$sql = Database::getInstance();
 	global $cr_user_id;
+	$sql = Database::getInstance();
+	$cfg = IspCP_Registry::get('Config');
 
 	$query = "
 		SELECT
@@ -388,7 +390,7 @@ function gen_users_list(&$tpl, $reseller_id) {
 
 		if ((('' == $cr_user_id) && ($i == 1))
 			|| ($cr_user_id == $domain_id)) {
-			$selected = Config::getInstance()->get('HTML_SELECTED');
+			$selected = $cfg->HTML_SELECTED;
 		}
 
 		$domain_name = decode_idna($domain_name);

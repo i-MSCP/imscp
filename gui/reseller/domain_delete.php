@@ -30,16 +30,17 @@
 
 require '../include/ispcp-lib.php';
 
-check_login(__FILE__);
-$tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/domain_delete.tpl');
+$cfg = IspCP_Registry::get('Config');
 
+check_login(__FILE__);
+
+$tpl = new pTemplate();
+$tpl->define_dynamic('page',  $cfg->RESELLER_TEMPLATE_PATH . '/domain_delete.tpl');
 $tpl->define_dynamic('mail_list', 'page');
 $tpl->define_dynamic('ftp_list', 'page');
 $tpl->define_dynamic('als_list', 'page');
 $tpl->define_dynamic('sub_list', 'page');
 $tpl->define_dynamic('db_list', 'page');
-
 $tpl->define_dynamic('mail_item', 'mail_list');
 $tpl->define_dynamic('sub_item', 'sub_list');
 $tpl->define_dynamic('als_item', 'als_list');
@@ -49,12 +50,10 @@ $tpl->define_dynamic('db_item', 'db_list');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
-
 $tpl->assign(
 	array(
 		'TR_PAGE_TITLE' => tr('ispCP - Delete Domain'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id']),
 	)
@@ -70,8 +69,8 @@ if (isset($_GET['domain_id']) && is_numeric($_GET['domain_id'])) {
 	user_goto('users.php');
 }
 
-gen_reseller_mainmenu($tpl, Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/main_menu_users_manage.tpl');
-gen_reseller_menu($tpl, Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/menu_users_manage.tpl');
+gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
+gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_users_manage.tpl');
 
 gen_logged_from($tpl);
 
@@ -80,7 +79,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
 

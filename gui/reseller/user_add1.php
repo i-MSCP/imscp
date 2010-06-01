@@ -30,22 +30,22 @@
 
 require '../include/ispcp-lib.php';
 
+$cfg = IspCP_Registry::get('Config');
+
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/user_add1.tpl');
+$tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/user_add1.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('add_user', 'page');
 $tpl->define_dynamic('hp_entry', 'page');
 $tpl->define_dynamic('personalize', 'page');
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
-
 $tpl->assign(
 	array(
 		'TR_CLIENT_CHANGE_PERSONAL_DATA_PAGE_TITLE'	=> tr('ispCP - Users/Add user'),
-		'THEME_COLOR_PATH'							=> "../themes/$theme_color",
+		'THEME_COLOR_PATH'							=> "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET'								=> tr('encoding'),
 		'ISP_LOGO'									=> get_logo($_SESSION['user_id']),
 	)
@@ -57,8 +57,8 @@ $tpl->assign(
  *
  */
 
-gen_reseller_mainmenu($tpl, Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/main_menu_users_manage.tpl');
-gen_reseller_menu($tpl, Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/menu_users_manage.tpl');
+gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
+gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_users_manage.tpl');
 
 gen_logged_from($tpl);
 
@@ -98,7 +98,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
 unset_messages();
@@ -109,7 +109,6 @@ unset_messages();
  * Check correction of entered users data
  */
 function check_user_data() {
-
 	global $dmn_name; // domain name
 	global $dmn_expire; // Domain expire date
 	global $dmn_chp; // choosed hosting plan
@@ -117,6 +116,7 @@ function check_user_data() {
 	global $validation_err_msg;
 
 	$sql = Database::getInstance();
+	$cfg = IspCP_Registry::get('Config');
 
 	// personal template
 	$even_txt = '';
@@ -151,13 +151,13 @@ function check_user_data() {
 
 	if (ispcp_domain_exists($dmn_name, $_SESSION['user_id'])) {
 		$even_txt = tr('Domain with that name already exists on the system!');
-	} else if ($dmn_name == Config::getInstance()->get('BASE_SERVER_VHOST')) {
+	} else if ($dmn_name == $cfg->BASE_SERVER_VHOST) {
 		$even_txt = tr('Master domain cannot be used!');
 	}
 
 	// we have plans only for admins
-	if (Config::getInstance()->exists('HOSTING_PLANS_LEVEL')
-		&& Config::getInstance()->get('HOSTING_PLANS_LEVEL') === 'admin') {
+	if (isset($cfg->HOSTING_PLANS_LEVEL)
+		&& $cfg->HOSTING_PLANS_LEVEL') === 'admin') {
 		$dmn_pt = '_no_';
 	}
 
@@ -196,13 +196,14 @@ function check_user_data() {
  * Show empty page
  */
 function get_empty_au1_page(&$tpl) {
-
+	$cfg = IspCP_Registry::get('Config');
+	
 	$tpl->assign(
 		array(
 			'DMN_NAME_VALUE'		=> '',
 			'CHTPL1_VAL'			=> '',
-			'CHTPL2_VAL'			=> Config::getInstance()->get('HTML_CHECKED'),
-			'EXPIRE_NEVER_SET'		=> Config::getInstance()->get('HTML_SELECTED'),
+			'CHTPL2_VAL'			=> $cfg->HTML_CHECKED,
+			'EXPIRE_NEVER_SET'		=> $cfg->HTML_SELECTED,
 			'EXPIRE_1_MONTH_SET'	=> '',
 			'EXPIRE_2_MONTH_SET'	=> '',
 			'EXPIRE_3_MONTH_SET'	=> '',
@@ -219,24 +220,25 @@ function get_empty_au1_page(&$tpl) {
  * Show first page of add user with data
  */
 function get_data_au1_page(&$tpl) {
-
 	global $dmn_name; // Domain name
 	global $dmn_expire; // Domain expire date
 	global $dmn_chp; // choosed hosting plan;
 	global $dmn_pt; // personal template
+	
+	$cfg = IspCP_Registry::get('Config');
 
 	$tpl->assign(
 		array(
 			'DMN_NAME_VALUE'		=> tohtml($dmn_name),
-			'CHTPL1_VAL'			=> $dmn_pt === "_yes_" ? Config::getInstance()->get('HTML_CHECKED') : '',
-			'CHTPL2_VAL'			=> $dmn_pt === "_yes_" ? '' : Config::getInstance()->get('HTML_CHECKED'),
-			'EXPIRE_NEVER_SET'		=> ($dmn_expire === '0') ? Config::getInstance()->get('HTML_SELECTED') : '',
-			'EXPIRE_1_MONTH_SET'	=> ($dmn_expire === '1') ? Config::getInstance()->get('HTML_SELECTED') : '',
-			'EXPIRE_2_MONTH_SET'	=> ($dmn_expire === '2') ? Config::getInstance()->get('HTML_SELECTED') : '',
-			'EXPIRE_3_MONTH_SET'	=> ($dmn_expire === '3') ? Config::getInstance()->get('HTML_SELECTED') : '',
-			'EXPIRE_6_MONTH_SET'	=> ($dmn_expire === '6') ? Config::getInstance()->get('HTML_SELECTED') : '',
-			'EXPIRE_1_YEAR_SET'		=> ($dmn_expire === '12') ? Config::getInstance()->get('HTML_SELECTED') : '',
-			'EXPIRE_2_YEARS_SET'	=> ($dmn_expire === '24') ? Config::getInstance()->get('HTML_SELECTED') : '',
+			'CHTPL1_VAL'			=> $dmn_pt === "_yes_" ? $cfg->HTML_CHECKED : '',
+			'CHTPL2_VAL'			=> $dmn_pt === "_yes_" ? '' : $cfg->HTML_CHECKED,
+			'EXPIRE_NEVER_SET'		=> ($dmn_expire === '0') ? $cfg->HTML_SELECTED : '',
+			'EXPIRE_1_MONTH_SET'	=> ($dmn_expire === '1') ? $cfg->HTML_SELECTED : '',
+			'EXPIRE_2_MONTH_SET'	=> ($dmn_expire === '2') ? $cfg->HTML_SELECTED : '',
+			'EXPIRE_3_MONTH_SET'	=> ($dmn_expire === '3') ? $cfg->HTML_SELECTED : '',
+			'EXPIRE_6_MONTH_SET'	=> ($dmn_expire === '6') ? $cfg->HTML_SELECTED : '',
+			'EXPIRE_1_YEAR_SET'		=> ($dmn_expire === '12') ? $cfg->HTML_SELECTED : '',
+			'EXPIRE_2_YEARS_SET'	=> ($dmn_expire === '24') ? $cfg->HTML_SELECTED : '',
 		)
 	);
 } // End of get_data_au1_page()
@@ -245,13 +247,13 @@ function get_data_au1_page(&$tpl) {
  * Get list with hosting plan for selection
  */
 function get_hp_data_list(&$tpl, $reseller_id) {
-
 	global $dmn_chp;
 
 	$sql = Database::getInstance();
+	$cfg = IspCP_Registry::get('Config');
 
-	if (Config::getInstance()->exists('HOSTING_PLANS_LEVEL')
-		&& Config::getInstance()->get('HOSTING_PLANS_LEVEL') === 'admin') {
+	if (isset($cfg->HOSTING_PLANS_LEVEL)
+		&& $cfg->HOSTING_PLANS_LEVEL') === 'admin') {
 		$query = "
 			SELECT
 				t1.`id`,
@@ -308,7 +310,7 @@ function get_hp_data_list(&$tpl, $reseller_id) {
 					array(
 						'HP_NAME'			=> tohtml($data['name']),
 						'CHN'				=> $data['id'],
-						'CH'.$data['id']	=> ($data['id'] == $dmn_chp) ? Config::getInstance()->get('HTML_SELECTED') : ''
+						'CH'.$data['id']	=> ($data['id'] == $dmn_chp) ? $cfg->HTML_SELECTED : ''
 					)
 			);
 

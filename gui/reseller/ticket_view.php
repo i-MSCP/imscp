@@ -30,6 +30,8 @@
 
 require '../include/ispcp-lib.php';
 
+$cfg = IspCP_Registry::get('Config');
+
 check_login(__FILE__);
 
 $query = "
@@ -43,12 +45,12 @@ $query = "
 
 $rs = exec_query($sql, $query, array($_SESSION['user_id']));
 
-if (!Config::getInstance()->get('ISPCP_SUPPORT_SYSTEM') || $rs->fields['support_system'] == 'no') {
+if (!$cfg->ISPCP_SUPPORT_SYSTEM || $rs->fields['support_system'] == 'no') {
 	user_goto('index.php');
 }
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/ticket_view.tpl');
+$tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/ticket_view.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('tickets_list', 'page');
@@ -57,6 +59,8 @@ $tpl->define_dynamic('tickets_item', 'tickets_list');
 // page functions.
 
 function gen_tickets_list(&$tpl, &$sql, &$ticket_id, &$screenwidth) {
+	$cfg = IspCP_Registry::get('Config');
+	
 	$user_id = $_SESSION['user_id'];
 	$query = "
 		SELECT
@@ -94,7 +98,7 @@ function gen_tickets_list(&$tpl, &$sql, &$ticket_id, &$screenwidth) {
 		}
 
 		get_ticket_from($tpl, $sql, $ticket_id);
-		$date_formt = Config::getInstance()->get('DATE_FORMAT');
+
 		$ticket_content = wordwrap($rs->fields['ticket_message'], round(($screenwidth-200) / 7), "\n");
 
 		$tpl->assign(
@@ -103,7 +107,7 @@ function gen_tickets_list(&$tpl, &$sql, &$ticket_id, &$screenwidth) {
 				'ACTION' => $action,
 				'URGENCY' => get_ticket_urgency($ticket_urgency),
 				'URGENCY_ID' => $ticket_urgency,
-				'DATE' => date($date_formt, $rs->fields['ticket_date']),
+				'DATE' => date($cfg->DATE_FORMAT, $rs->fields['ticket_date']),
 				'SUBJECT' => tohtml($rs->fields['ticket_subject']),
 				'TICKET_CONTENT' => nl2br(tohtml($ticket_content)),
 				'ID' => $rs->fields['ticket_id']
@@ -116,6 +120,8 @@ function gen_tickets_list(&$tpl, &$sql, &$ticket_id, &$screenwidth) {
 }
 
 function get_tickets_replys(&$tpl, &$sql, &$ticket_id, &$screenwidth) {
+	$cfg = IspCP_Registry::get('Config');
+	
 	$query = "
 		SELECT
 			`ticket_id`,
@@ -143,12 +149,11 @@ function get_tickets_replys(&$tpl, &$sql, &$ticket_id, &$screenwidth) {
 		$ticket_date = $rs->fields['ticket_date'];
 		$ticket_message = $rs->fields['ticket_message'];
 
-		$date_formt = Config::getInstance()->get('DATE_FORMAT');
 		$ticket_content = wordwrap($ticket_message, round(($screenwidth-200) / 7), "\n");
 
 		$tpl->assign(
 			array(
-				'DATE' => date($date_formt, $ticket_date),
+				'DATE' => date($cfg->DATE_FORMAT, $ticket_date),
 				'TICKET_CONTENT' => nl2br(tohtml($ticket_content))
 			)
 		);
@@ -204,12 +209,10 @@ function get_ticket_from(&$tpl, &$sql, &$ticket_id) {
 
 // common page data.
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
-
 $tpl->assign(
 	array(
 		'TR_CLIENT_VIEW_TICKET_PAGE_TITLE' => tr('ispCP - Reseller: Support System: View Ticket'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
 	)
@@ -451,8 +454,8 @@ if (isset($_GET['ticket_id'])) {
 
 // static page messages.
 
-gen_reseller_mainmenu($tpl, Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/main_menu_ticket_system.tpl');
-gen_reseller_menu($tpl, Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/menu_ticket_system.tpl');
+gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_ticket_system.tpl');
+gen_reseller_menu($tpl, C$cfg->RESELLER_TEMPLATE_PATH . '/menu_ticket_system.tpl');
 
 gen_logged_from($tpl);
 
@@ -475,7 +478,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG') {
 	dump_gui_debug();
 }
 unset_messages();

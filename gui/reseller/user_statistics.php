@@ -30,10 +30,12 @@
 
 require '../include/ispcp-lib.php';
 
+$cfg = IspCP_Registry::get('Config');
+
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/reseller_user_statistics.tpl');
+$tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/reseller_user_statistics.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('page_message', 'page');
@@ -47,8 +49,6 @@ $tpl->define_dynamic('scroll_prev_gray', 'page');
 $tpl->define_dynamic('scroll_prev', 'page');
 $tpl->define_dynamic('scroll_next_gray', 'page');
 $tpl->define_dynamic('scroll_next', 'page');
-
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
 $rid = $_SESSION['user_id'];
 $name = $_SESSION['user_logged'];
@@ -71,7 +71,7 @@ if (!is_numeric($rid) || !is_numeric($month) || !is_numeric($year)) {
 $tpl->assign(
 	array(
 		'TR_ADMIN_USER_STATISTICS_PAGE_TITLE' => tr('ispCP - Admin/Reseller User Statistics'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
 	)
@@ -79,8 +79,9 @@ $tpl->assign(
 
 function generate_page(&$tpl, $reseller_id, $reseller_name) {
 	$sql = Database::getInstance();
+	$cfg = IspCP_Registry::get('Config');
 
-	$rows_per_page = (int)(Config::getInstance()->get('DOMAIN_ROWS_PER_PAGE') / 2);
+	$rows_per_page = (int)($cfg->DOMAIN_ROWS_PER_PAGE / 2);
 
 	if (isset($_GET['psi'])) {
 		$start_index = (int)trim($_GET['psi']);
@@ -110,7 +111,7 @@ function generate_page(&$tpl, $reseller_id, $reseller_name) {
 	$rs = exec_query($sql, $count_query, array($reseller_id));
 	$records_count = $rs->fields['cnt'];
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`admin_id`
 		FROM
@@ -123,7 +124,7 @@ function generate_page(&$tpl, $reseller_id, $reseller_name) {
 			`admin_name` ASC
 		LIMIT
 			$start_index, $rows_per_page
-SQL_QUERY;
+		";
 
 	$rs = exec_query($sql, $query, array($reseller_id));
 	$tpl->assign(
@@ -307,8 +308,8 @@ function generate_domain_entry(&$tpl, $user_id, $row) {
  *
  */
 
-gen_reseller_mainmenu($tpl, Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/main_menu_statistics.tpl');
-gen_reseller_menu($tpl, Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/menu_statistics.tpl');
+gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_statistics.tpl');
+gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_statistics.tpl');
 
 gen_logged_from($tpl);
 
@@ -346,7 +347,7 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
 unset_messages();

@@ -30,10 +30,12 @@
 
 require '../include/ispcp-lib.php';
 
+$cfg = IspCP_Registry::get('Config');
+
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/user_add2.tpl');
+$tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/user_add2.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('subdomain_add', 'page');
@@ -43,18 +45,16 @@ $tpl->define_dynamic('ftp_add', 'page');
 $tpl->define_dynamic('sql_db_add', 'page');
 $tpl->define_dynamic('sql_user_add', 'page');
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
-
 // check if we have only hosting plans for admins - reseller should not edit them
-if (Config::getInstance()->exists('HOSTING_PLANS_LEVEL')
-	&& Config::getInstance()->get('HOSTING_PLANS_LEVEL') === 'admin') {
+if (isset($cfg->HOSTING_PLANS_LEVEL)
+	&& $cfg->HOSTING_PLANS_LEVEL') === 'admin') {
 	user_goto('users.php');
 }
 
 $tpl->assign(
 	array(
 			'TR_CLIENT_CHANGE_PERSONAL_DATA_PAGE_TITLE' => tr('ispCP - User/Add user(step2)'),
-			'THEME_COLOR_PATH'							=> "../themes/$theme_color",
+			'THEME_COLOR_PATH'							=> "../themes/{$cfg->USER_INITIAL_THEME}",
 			'THEME_CHARSET'								=> tr('encoding'),
 			'ISP_LOGO'									=> get_logo($_SESSION['user_id'])
 	)
@@ -64,8 +64,8 @@ $tpl->assign(
  * static page messages.
  */
 
-gen_reseller_mainmenu($tpl, Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/main_menu_users_manage.tpl');
-gen_reseller_menu($tpl, Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/menu_users_manage.tpl');
+gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
+gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_users_manage.tpl');
 
 gen_logged_from($tpl);
 
@@ -145,7 +145,7 @@ if ($rsql_user_max == "-1") $tpl->assign('SQL_USER_ADD', '');
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
 //unset_messages();
@@ -156,7 +156,6 @@ if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
  * get param of previous page
  */
 function get_pageone_param() {
-
 	global $dmn_name;
 	global $dmn_expire;
 	global $dmn_chp;
@@ -176,11 +175,12 @@ function get_pageone_param() {
  * Show page with initial data fields
  */
 function get_init_au2_page(&$tpl) {
-
 	global $hp_name, $hp_php, $hp_cgi;
 	global $hp_sub, $hp_als, $hp_mail;
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;
 	global $hp_traff, $hp_disk, $hp_backup, $hp_dns;
+	
+	$cfg = IspCP_Registry::get('Config');
 
 	$tpl->assign(
 			array(
@@ -194,16 +194,16 @@ function get_init_au2_page(&$tpl) {
 				'VL_MAX_SQL_USERS'	=> $hp_sql_user,
 				'VL_MAX_TRAFFIC'	=> $hp_traff,
 				'VL_MAX_DISK_USAGE'	=> $hp_disk,
-				'VL_PHPY'			=> ($hp_php === '_yes_') ? Config::getInstance()->get('HTML_CHECKED') : '',
-				'VL_PHPN'			=> ($hp_php === '_no_') ? Config::getInstance()->get('HTML_CHECKED') : '',
-				'VL_CGIY'			=> ($hp_cgi === '_yes_') ? Config::getInstance()->get('HTML_CHECKED') : '',
-				'VL_CGIN'			=> ($hp_cgi === '_no_') ? Config::getInstance()->get('HTML_CHECKED') : '',
-				'VL_BACKUPD'		=> ($hp_backup === '_dmn_') ? Config::getInstance()->get('HTML_CHECKED') : '',
-				'VL_BACKUPS'		=> ($hp_backup === '_sql_') ? Config::getInstance()->get('HTML_CHECKED') : '',
-				'VL_BACKUPF'		=> ($hp_backup === '_full_') ? Config::getInstance()->get('HTML_CHECKED') : '',
-				'VL_BACKUPN'		=> ($hp_backup === '_no_') ? Config::getInstance()->get('HTML_CHECKED') : '',
-				'VL_DNSY'			=> ($hp_dns === '_yes_') ? Config::getInstance()->get('HTML_CHECKED') : '',
-				'VL_DNSN'			=> ($hp_dns === '_no_') ? Config::getInstance()->get('HTML_CHECKED') : ''
+				'VL_PHPY'			=> ($hp_php === '_yes_') ? $cfg->HTML_CHECKED : '',
+				'VL_PHPN'			=> ($hp_php === '_no_') ? $cfg->HTML_CHECKED : '',
+				'VL_CGIY'			=> ($hp_cgi === '_yes_') ? $cfg->HTML_CHECKED : '',
+				'VL_CGIN'			=> ($hp_cgi === '_no_') ? $cfg->HTML_CHECKED : '',
+				'VL_BACKUPD'		=> ($hp_backup === '_dmn_') ? $cfg->HTML_CHECKED : '',
+				'VL_BACKUPS'		=> ($hp_backup === '_sql_') ? $cfg->HTML_CHECKED : '',
+				'VL_BACKUPF'		=> ($hp_backup === '_full_') ? $cfg->HTML_CHECKED : '',
+				'VL_BACKUPN'		=> ($hp_backup === '_no_') ? $cfg->HTML_CHECKED : '',
+				'VL_DNSY'			=> ($hp_dns === '_yes_') ? $cfg->HTML_CHECKED : '',
+				'VL_DNSN'			=> ($hp_dns === '_no_') ? $cfg->HTML_CHECKED : ''
 			)
 	);
 
@@ -213,7 +213,6 @@ function get_init_au2_page(&$tpl) {
  * Get data for hosting plan
  */
 function get_hp_data($hpid, $admin_id) {
-
 	global $hp_name, $hp_php, $hp_cgi;
 	global $hp_sub, $hp_als, $hp_mail;
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;
@@ -255,7 +254,6 @@ function get_hp_data($hpid, $admin_id) {
  * Check validity of input data
  */
 function check_user_data(&$tpl) {
-
 	global $hp_name, $hp_php, $hp_cgi;
 	global $hp_sub, $hp_als, $hp_mail;
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;
@@ -393,7 +391,6 @@ function check_user_data(&$tpl) {
  * Check if hosting plan with this name already exists!
  */
 function check_hosting_plan_name($admin_id) {
-
 	global $hp_name;
 	$sql = Database::getInstance();
 

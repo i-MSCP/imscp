@@ -1,6 +1,10 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-06-01 Sascha Bay
+	- GUI:
+		Changed all reseller/*.php files to use the new IspCP_Registry class and the new IspCP_ConfigHandler interface
+
 2010-06-01 Laurent Declercq
 	- DISTS:
 		* Fixed #2381 Replace libmd5-perl with libdigest-md5-perl

@@ -30,6 +30,8 @@
 
 require '../include/ispcp-lib.php';
 
+$cfg = IspCP_Registry::get('Config');
+
 check_login(__FILE__);
 
 if (isset($_GET['edit_id'])) {
@@ -42,17 +44,15 @@ if (isset($_GET['edit_id'])) {
 
 $tpl = new pTemplate();
 
-$tpl->define_dynamic('page', Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/user_edit.tpl');
+$tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/user_edit.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('ip_entry', 'page');
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
-
 $tpl->assign(
 	array(
 		'TR_EDIT_USER_PAGE_TITLE'	=> tr('ispCP - Users/Edit'),
-		'THEME_COLOR_PATH'			=> "../themes/$theme_color",
+		'THEME_COLOR_PATH'			=> "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET'				=> tr('encoding'),
 		'ISP_LOGO'					=> get_logo($_SESSION['user_id']),
 	)
@@ -99,8 +99,8 @@ $tpl->assign(
 	)
 );
 
-gen_reseller_mainmenu($tpl, Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/main_menu_users_manage.tpl');
-gen_reseller_menu($tpl, Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/menu_users_manage.tpl');
+gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
+gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_users_manage.tpl');
 
 gen_logged_from($tpl);
 
@@ -159,7 +159,7 @@ gen_edituser_page($tpl);
 gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG') {
 	dump_gui_debug();
 }
 //unset_messages();
@@ -172,13 +172,14 @@ if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
  * Load data from sql
  */
 function load_user_data_page($user_id) {
-	$sql = Database::getInstance();
 	global $dmn_user_name;
 	global $user_email, $customer_id, $first_name;
 	global $last_name, $firm, $zip, $gender;
 	global $city, $state, $country, $street_one;
 	global $street_two, $mail, $phone;
 	global $fax;
+	
+	$sql = Database::getInstance();
 
 	$reseller_id = $_SESSION['user_id'];
 
@@ -236,6 +237,8 @@ function gen_edituser_page(&$tpl) {
 	global $city, $state, $country, $street_one;
 	global $street_two, $mail, $phone;
 	global $fax;
+	
+	$cfg = IspCP_Registry::get('Config');
 
 	if ($customer_id == NULL) {
 		$customer_id = '';
@@ -256,9 +259,9 @@ function gen_edituser_page(&$tpl) {
 			'VL_COUNTRY'		=> empty($country) ? '' : tohtml($country),
 			'VL_STREET1'		=> empty($street_one) ? '' : tohtml($street_one),
 			'VL_STREET2'		=> empty($street_two) ? '' : tohtml($street_two),
-			'VL_MALE'			=> ($gender == 'M') ? Config::getInstance()->get('HTML_SELECTED') : '',
-			'VL_FEMALE'			=> ($gender == 'F') ? Config::getInstance()->get('HTML_SELECTED') : '',
-			'VL_UNKNOWN'		=> ($gender == 'U') ? Config::getInstance()->get('HTML_SELECTED') : '',
+			'VL_MALE'			=> ($gender == 'M') ? $cfg->HTML_SELECTED : '',
+			'VL_FEMALE'			=> ($gender == 'F') ? $cfg->HTML_SELECTED : '',
+			'VL_UNKNOWN'		=> ($gender == 'U') ? $cfg->HTML_SELECTED : '',
 			'VL_PHONE'			=> empty($phone) ? '' : tohtml($phone),
 			'VL_FAX'			=> empty($fax) ? '' : tohtml($fax)
 		)
@@ -273,7 +276,6 @@ function gen_edituser_page(&$tpl) {
  * Function to update changes into db
  */
 function update_data_in_db($hpid) {
-	$sql = Database::getInstance();
 	global $dmn_user_name;
 	global $user_email, $customer_id, $first_name;
 	global $last_name, $firm, $zip, $gender;
@@ -281,6 +283,9 @@ function update_data_in_db($hpid) {
 	global $street_two, $mail, $phone;
 	global $fax, $inpass, $domain_ip;
 	global $admin_login;
+	
+	$sql = Database::getInstance();
+	$cfg = IspCP_Registry::get('Config');
 
 	$reseller_id = $_SESSION['user_id'];
 
@@ -344,10 +349,10 @@ function update_data_in_db($hpid) {
 		// Change password
 		if (!chk_password($_POST['userpassword'])) {
 
-			if (Config::getInstance()->get('PASSWD_STRONG')) {
-				set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), Config::getInstance()->get('PASSWD_CHARS')));
+			if (isset($cfg->PASSWD_STRONG')) {
+				set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS));
 			} else {
-				set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), Config::getInstance()->get('PASSWD_CHARS')));
+				set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), $cfg->PASSWD_CHARS));
 			}
 			user_goto('user_edit.php?edit_id=' . $hpid);
 		}

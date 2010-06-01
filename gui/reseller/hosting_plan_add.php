@@ -30,15 +30,17 @@
 
 require '../include/ispcp-lib.php';
 
+$cfg = IspCP_Registry::get('Config');
+
 check_login(__FILE__);
 
-if (Config::getInstance()->exists('HOSTING_PLANS_LEVEL') &&
-	strtolower(Config::getInstance()->get('HOSTING_PLANS_LEVEL')) == 'admin') {
-	user_goto('hosting_plan.php');
+if (isset($cfg->HOSTING_PLANS_LEVEL)
+	&& $cfg->HOSTING_PLANS_LEVEL') === 'admin') {
+		user_goto('hosting_plan.php');
 }
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/hosting_plan_add.tpl');
+$tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/hosting_plan_add.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('subdomain_add', 'page');
@@ -48,12 +50,10 @@ $tpl->define_dynamic('ftp_add', 'page');
 $tpl->define_dynamic('sql_db_add', 'page');
 $tpl->define_dynamic('sql_user_add', 'page');
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
-
 $tpl->assign(
 	array(
 		'TR_RESELLER_MAIN_INDEX_PAGE_TITLE'	=> tr('ispCP - Reseller/Add hosting plan'),
-		'THEME_COLOR_PATH'					=> "../themes/$theme_color",
+		'THEME_COLOR_PATH'					=> "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET'						=> tr('encoding'),
 		'ISP_LOGO'							=> get_logo($_SESSION['user_id'])
 	)
@@ -65,8 +65,8 @@ $tpl->assign(
  *
  */
 
-gen_reseller_mainmenu($tpl, Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/main_menu_hosting_plan.tpl');
-gen_reseller_menu($tpl, Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/menu_hosting_plan.tpl');
+gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_hosting_plan.tpl');
+gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_hosting_plan.tpl');
 
 gen_logged_from($tpl);
 
@@ -144,7 +144,7 @@ if ($rsql_user_max == "-1") $tpl->assign('SQL_USER_ADD', '');
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
 
@@ -154,7 +154,8 @@ if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
  * Generate empty form
  */
 function gen_empty_ahp_page(&$tpl) {
-
+	$cfg = IspCP_Registry::get('Config');
+	
 	$tpl->assign(
 		array(
 			'HP_NAME_VALUE'			=> '',
@@ -171,17 +172,17 @@ function gen_empty_ahp_page(&$tpl) {
 			'HP_PAYMENT'			=> '',
 			'HP_DESCRIPTION_VALUE'	=> '',
 			'TR_PHP_YES'			=> '',
-			'TR_PHP_NO'				=> Config::getInstance()->get('HTML_CHECKED'),
+			'TR_PHP_NO'				=> $cfg->HTML_CHECKED,
 			'TR_CGI_YES'			=> '',
-			'TR_CGI_NO'				=> Config::getInstance()->get('HTML_CHECKED'),
+			'TR_CGI_NO'				=> $cfg->HTML_CHECKED,
 			'VL_BACKUPD'			=> '',
 			'VL_BACKUPS'			=> '',
 			'VL_BACKUPF'			=> '',
-			'VL_BACKUPN'			=> Config::getInstance()->get('HTML_CHECKED'),
+			'VL_BACKUPN'			=> $cfg->HTML_CHECKED,
 			'TR_DNS_YES'			=> '',
-			'TR_DNS_NO'				=> Config::getInstance()->get('HTML_CHECKED'),
+			'TR_DNS_NO'				=> $cfg->HTML_CHECKED,
 			'HP_DISK_VALUE'			=> '',
-			'TR_STATUS_YES'			=> Config::getInstance()->get('HTML_CHECKED'),
+			'TR_STATUS_YES'			=> $cfg->HTML_CHECKED,
 			'TR_STATUS_NO'			=> '',
 			'HP_TOS_VALUE'			=> ''
 		)
@@ -194,7 +195,6 @@ function gen_empty_ahp_page(&$tpl) {
  * Show last entered data for new hp
  */
 function gen_data_ahp_page(&$tpl) {
-
 	global $hp_name, $description, $hp_php, $hp_cgi;
 	global $hp_sub, $hp_als, $hp_mail;
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;
@@ -203,6 +203,8 @@ function gen_data_ahp_page(&$tpl) {
 	global $hp_backup, $hp_dns;
 	global $tos;
 
+	$cfg = IspCP_Registry::get('Config');
+	
 	$tpl->assign(
 		array(
 			'HP_NAME_VALUE'			=> tohtml($hp_name),
@@ -225,18 +227,18 @@ function gen_data_ahp_page(&$tpl) {
 
 	$tpl->assign(
 		array(
-			'TR_PHP_YES'	=> ($hp_php == '_yes_') ? Config::getInstance()->get('HTML_CHECKED') : '',
-			'TR_PHP_NO'		=> ($hp_php == '_no_') ? Config::getInstance()->get('HTML_CHECKED') : '',
-			'TR_CGI_YES'	=> ($hp_cgi == '_yes_') ? Config::getInstance()->get('HTML_CHECKED') : '',
-			'TR_CGI_NO'		=> ($hp_cgi == '_no_') ? Config::getInstance()->get('HTML_CHECKED') : '',
-			'VL_BACKUPD'	=> ($hp_backup == '_dmn_') ? Config::getInstance()->get('HTML_CHECKED') : '',
-			'VL_BACKUPS'	=> ($hp_backup == '_sql_') ? Config::getInstance()->get('HTML_CHECKED') : '',
-			'VL_BACKUPF'	=> ($hp_backup == '_full_') ? Config::getInstance()->get('HTML_CHECKED') : '',
-			'VL_BACKUPN'	=> ($hp_backup == '_no_') ? Config::getInstance()->get('HTML_CHECKED') : '',
-			'TR_DNS_YES'	=> ($hp_dns == '_yes_') ? Config::getInstance()->get('HTML_CHECKED') : '',
-			'TR_DNS_NO'		=> ($hp_dns == '_no_') ? Config::getInstance()->get('HTML_CHECKED') : '',
-			'TR_STATUS_YES'	=> ($status) ? Config::getInstance()->get('HTML_CHECKED') : '',
-			'TR_STATUS_NO'	=> (!$status) ? Config::getInstance()->get('HTML_CHECKED') : ''
+			'TR_PHP_YES'	=> ($hp_php == '_yes_') ? $cfg->HTML_CHECKED : '',
+			'TR_PHP_NO'		=> ($hp_php == '_no_') ? $cfg->HTML_CHECKED : '',
+			'TR_CGI_YES'	=> ($hp_cgi == '_yes_') ? $cfg->HTML_CHECKED : '',
+			'TR_CGI_NO'		=> ($hp_cgi == '_no_') ? $cfg->HTML_CHECKED : '',
+			'VL_BACKUPD'	=> ($hp_backup == '_dmn_') ? $cfg->HTML_CHECKED : '',
+			'VL_BACKUPS'	=> ($hp_backup == '_sql_') ? $cfg->HTML_CHECKED : '',
+			'VL_BACKUPF'	=> ($hp_backup == '_full_') ? $cfg->HTML_CHECKED : '',
+			'VL_BACKUPN'	=> ($hp_backup == '_no_') ? $cfg->HTML_CHECKED : '',
+			'TR_DNS_YES'	=> ($hp_dns == '_yes_') ? $cfg->HTML_CHECKED : '',
+			'TR_DNS_NO'		=> ($hp_dns == '_no_') ? $cfg->HTML_CHECKED : '',
+			'TR_STATUS_YES'	=> ($status) ? $cfg->HTML_CHECKED : '',
+			'TR_STATUS_NO'	=> (!$status) ? $cfg->HTML_CHECKED : ''
 		)
 	);
 
@@ -246,7 +248,6 @@ function gen_data_ahp_page(&$tpl) {
  * Check correction of input data
  */
 function check_data_correction(&$tpl) {
-
 	global $hp_name, $description, $hp_php, $hp_cgi;
 	global $hp_sub, $hp_als, $hp_mail;
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;
@@ -383,7 +384,6 @@ function check_data_correction(&$tpl) {
  * Add new host plan to DB
  */
 function save_data_to_db(&$tpl, $admin_id) {
-
 	global $hp_name, $description, $hp_php, $hp_cgi;
 	global $hp_sub, $hp_als, $hp_mail;
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;

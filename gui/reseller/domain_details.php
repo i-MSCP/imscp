@@ -30,18 +30,18 @@
 
 require '../include/ispcp-lib.php';
 
+$cfg = IspCP_Registry::get('Config');
+
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/domain_details.tpl');
+$tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/domain_details.tpl');
 $tpl->define_dynamic('logged_from', 'page');
-
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
 $tpl->assign(
 	array(
 		'TR_DETAILS_DOMAIN_PAGE_TITLE'	=> tr('ispCP - Domain/Details'),
-		'THEME_COLOR_PATH'				=> "../themes/$theme_color",
+		'THEME_COLOR_PATH'				=> "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET'					=> tr('encoding'),
 		'ISP_LOGO'						=> get_logo($_SESSION['user_id'])
 	)
@@ -80,13 +80,13 @@ $tpl->assign(
 	)
 );
 
-if (Config::getInstance()->exists('HOSTING_PLANS_LEVEL')
-	&& Config::getInstance()->get('HOSTING_PLANS_LEVEL') === 'admin') {
+if (isset($cfg->HOSTING_PLANS_LEVEL)
+	&& $cfg->HOSTING_PLANS_LEVEL') === 'admin') {
 	$tpl->assign('EDIT_OPTION', '');
 }
 
-gen_reseller_mainmenu($tpl, Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/main_menu_users_manage.tpl');
-gen_reseller_menu($tpl, Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/menu_users_manage.tpl');
+gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
+gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_users_manage.tpl');
 
 gen_logged_from($tpl);
 
@@ -103,7 +103,7 @@ $tpl->parse('PAGE', 'page');
 
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
 unset_messages();
@@ -112,6 +112,8 @@ unset_messages();
 
 function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
 	$sql = Database::getInstance();
+	$cfg = IspCP_Registry::get('Config');
+	
 	// Get domain data
 	$query = "
 		SELECT
@@ -215,7 +217,7 @@ function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
 			. "FROM `mail_users` "
 			. "WHERE `domain_id` = ? "
 			. "AND `mail_type` NOT RLIKE '_catchall' ";
-	if (Config::getInstance()->get('COUNT_DEFAULT_EMAIL_ADDRESSES') == 0) {
+	if ($cfg->COUNT_DEFAULT_EMAIL_ADDRESSES == 0) {
 		$query .= "AND `mail_acc` != 'abuse' "
 				. "AND `mail_acc` != 'postmaster' "
 				. "AND `mail_acc` != 'webmaster'";

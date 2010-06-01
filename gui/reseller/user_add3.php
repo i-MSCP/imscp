@@ -30,21 +30,21 @@
 
 require '../include/ispcp-lib.php';
 
+$cfg = IspCP_Registry::get('Config');
+
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/user_add3.tpl');
+$tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/user_add3.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('ip_entry', 'page');
 $tpl->define_dynamic('alias_add', 'page');
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
-
 $tpl->assign(
 	array(
 		'TR_ADD_USER_PAGE_TITLE'	=> tr('ispCP - User/Add user'),
-		'THEME_COLOR_PATH'			=> "../themes/$theme_color",
+		'THEME_COLOR_PATH'			=> "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET'				=> tr('encoding'),
 		'ISP_LOGO'					=> get_logo($_SESSION['user_id']),
 	)
@@ -55,8 +55,8 @@ $tpl->assign(
  * static page messages.
  *
  */
-gen_reseller_mainmenu($tpl, Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/main_menu_users_manage.tpl');
-gen_reseller_menu($tpl, Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/menu_users_manage.tpl');
+gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
+gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_users_manage.tpl');
 
 gen_logged_from($tpl);
 
@@ -124,7 +124,7 @@ if (!check_reseller_permissions($_SESSION['user_id'], 'alias')) {
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }// unset_messages();
 
@@ -134,7 +134,6 @@ if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
  * Get data from previous page
  */
 function init_in_values() {
-
 	global $dmn_name, $dmn_expire, $dmn_user_name, $hpid;
 
 	if (isset($_SESSION['dmn_expire'])) {
@@ -172,13 +171,14 @@ function init_in_values() {
  * generate page add user 3
  */
 function gen_user_add3_page(&$tpl) {
-
 	global $dmn_name, $dmn_expire, $hpid, $dmn_user_name;
 	global $user_email, $customer_id, $first_name;
 	global $last_name, $gender, $firm, $zip;
 	global $city, $state, $country, $street_one;
 	global $street_two, $mail, $phone;
 	global $fax;
+	
+	$cfg = IspCP_Registry::get('Config');
 
 	$dmn_user_name = decode_idna($dmn_user_name);
 	// Fill in the fields
@@ -194,9 +194,9 @@ function gen_user_add3_page(&$tpl) {
 			'VL_USR_POSTCODE'	=> tohtml($zip),
 			'VL_USRCITY'		=> tohtml($city),
 			'VL_USRSTATE'		=> tohtml($state),
-			'VL_MALE'			=> ($gender == 'M') ? Config::getInstance()->get('HTML_SELECTED') : '',
-			'VL_FEMALE'			=> ($gender == 'F') ? Config::getInstance()->get('HTML_SELECTED') : '',
-			'VL_UNKNOWN'		=> ($gender == 'U') ? Config::getInstance()->get('HTML_SELECTED') : '',
+			'VL_MALE'			=> ($gender == 'M') ? $cfg->HTML_SELECTED : '',
+			'VL_FEMALE'			=> ($gender == 'F') ? $cfg->HTML_SELECTED : '',
+			'VL_UNKNOWN'		=> ($gender == 'U') ? $cfg->HTML_SELECTED : '',
 			'VL_COUNTRY'		=> tohtml($country),
 			'VL_STREET1'		=> tohtml($street_one),
 			'VL_STREET2'		=> tohtml($street_two),
@@ -215,7 +215,6 @@ function gen_user_add3_page(&$tpl) {
  * Init global value with empty values
  */
 function gen_empty_data() {
-
 	global $user_email, $customer_id, $first_name;
 	global $last_name, $gender, $firm, $zip;
 	global $city, $state, $country, $street_one;
@@ -244,7 +243,6 @@ function gen_empty_data() {
  * Save data for new user in db
  */
 function add_user_data($reseller_id) {
-
 	global $hpid;
 	global $dmn_name, $dmn_expire, $dmn_user_name, $admin_login;
 	global $user_email, $customer_id, $first_name;
@@ -255,6 +253,7 @@ function add_user_data($reseller_id) {
 	global $dns, $backup;
 
 	$sql = Database::getInstance();
+	$cfg = IspCP_Registry::get('Config');
 
 	// Let's get Desired Hosting Plan Data;
 	$err_msg = '';
@@ -269,8 +268,8 @@ function add_user_data($reseller_id) {
 		unset($_SESSION["ch_hpprops"]);
 	} else {
 
-		if (Config::getInstance()->exists('HOSTING_PLANS_LEVEL')
-			&& strtolower(Config::getInstance()->get('HOSTING_PLANS_LEVEL')) == 'admin') {
+		if (isset($cfg->HOSTING_PLANS_LEVEL)
+			&& $cfg->HOSTING_PLANS_LEVEL') === 'admin') {
 			$query = 'SELECT `props` FROM `hosting_plans` WHERE `id` = ?';
 			$res = exec_query($sql, $query, array($hpid));
 		} else {
@@ -358,8 +357,6 @@ function add_user_data($reseller_id) {
 
 	$record_id = $sql->Insert_ID();
 
-	$status = Config::getInstance()->get('ITEM_ADD_STATUS');
-
 	$expire = $dmn_expire * 2635200; // months * 30.5 days
 
 	if (!empty($expire)) {
@@ -397,7 +394,7 @@ function add_user_data($reseller_id) {
 		array(
 			$dmn_name, $record_id,
 			$reseller_id, $mail, $ftp, $traff, $sql_db,
-			$sql_user, $status, $sub, $als, $domain_ip,
+			$sql_user, $cfg->ITEM_ADD_STATUS, $sub, $als, $domain_ip,
 			$disk, $php, $cgi, $backup, $dns
 		)
 	);
@@ -416,13 +413,11 @@ function add_user_data($reseller_id) {
 	$rs = exec_query($sql, $query,
 			array(
 				$dmn_id, $dmn_name,
-				crypt_user_pass_with_salt($pure_user_pass), $status
+				crypt_user_pass_with_salt($pure_user_pass), $cfg->ITEM_ADD_STATUS
 			)
 	);
 
 	$user_id = $sql->Insert_ID();
-
-	$awstats_auth = Config::getInstance()->get('AWSTATS_GROUP_AUTH');
 
 	$query = "
 		INSERT INTO `htaccess_groups`
@@ -431,10 +426,10 @@ function add_user_data($reseller_id) {
 			(?, ?, ?, ?)
 	";
 
-	$rs = exec_query($sql, $query, array($dmn_id, $awstats_auth, $user_id, $status));
+	$rs = exec_query($sql, $query, array($dmn_id, $cfg->AWSTATS_GROUP_AUTH, $user_id, $cfg->ITEM_ADD_STATUS));
 
 	// Create the 3 default addresses if wanted
-	if (Config::getInstance()->get('CREATE_DEFAULT_EMAIL_ADDRESSES')) {
+	if ($cfg->CREATE_DEFAULT_EMAIL_ADDRESSES) {
 		client_mail_add_default_accounts($dmn_id, $user_email, $dmn_name); // 'domain', 0
 	}
 

@@ -30,11 +30,13 @@
 
 require '../include/ispcp-lib.php';
 
+$cfg = IspCP_Registry::get('Config');
+
 check_login(__FILE__);
 
 $tpl = new pTemplate();
 
-$tpl->define_dynamic('page', Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/domain_alias.tpl');
+$tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/domain_alias.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('table_list', 'page');
@@ -45,12 +47,10 @@ $tpl->define_dynamic('scroll_next_gray', 'page');
 $tpl->define_dynamic('scroll_next', 'page');
 $tpl->define_dynamic('als_add_button', 'page');
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
-
 $tpl->assign(
 	array(
 		'TR_ALIAS_PAGE_TITLE'	=> tr('ispCP - Manage Domain/Alias'),
-		'THEME_COLOR_PATH'		=> "../themes/$theme_color",
+		'THEME_COLOR_PATH'		=> "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET'			=> tr('encoding'),
 		'ISP_LOGO'				=> get_logo($_SESSION['user_id']),
 	)
@@ -62,8 +62,8 @@ $tpl->assign(
  *
  */
 
-gen_reseller_mainmenu($tpl, Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/main_menu_users_manage.tpl');
-gen_reseller_menu($tpl, Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/menu_users_manage.tpl');
+gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
+gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_users_manage.tpl');
 
 gen_logged_from($tpl);
 
@@ -90,7 +90,7 @@ $tpl->parse('PAGE', 'page');
 
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
 unset_messages();
@@ -104,6 +104,7 @@ unset_messages();
  */
 function generate_als_list(&$tpl, $reseller_id, &$als_err) {
 	$sql = Database::getInstance();
+	$cfg = IspCP_Registry::get('Config');
 
 	list($udmn_current, $udmn_max, $udmn_uf,
 		$usub_current, $usub_max, $usub_uf,
@@ -135,7 +136,7 @@ function generate_als_list(&$tpl, $reseller_id, &$als_err) {
 
 	$start_index = 0;
 
-	$rows_per_page = Config::getInstance()->get('DOMAIN_ROWS_PER_PAGE');
+	$rows_per_page = $cfg->DOMAIN_ROWS_PER_PAGE;
 
 	$current_psi = 0;
 	$_SESSION['search_for'] = '';
@@ -374,12 +375,12 @@ function generate_als_list(&$tpl, $reseller_id, &$als_err) {
 
 		$page_cont = ($i % 2 == 0) ? 'content' : 'content2';
 
-		if ($als_status === Config::getInstance()->get('ITEM_OK_STATUS')) {
+		if ($als_status === $cfg->ITEM_OK_STATUS) {
 			$delete_link = "alias_delete.php?del_id=" . $als_id;
 			$edit_link = "alias_edit.php?edit_id=" . $als_id;
 			$action_text = tr("Delete");
 			$edit_text = tr("Edit");
-		} else if ($als_status === Config::getInstance()->get('ITEM_ORDERED_STATUS')) {
+		} else if ($als_status === $cfg->ITEM_ORDERED_STATUS) {
 			$delete_link = "alias_order.php?action=delete&del_id=".$als_id;
 			$edit_link = "alias_order.php?action=activate&act_id=".$als_id;
 			$action_text = tr("Delete order");
@@ -397,9 +398,9 @@ function generate_als_list(&$tpl, $reseller_id, &$als_err) {
 		if (isset($_SESSION['search_common'])
 			&& $_SESSION['search_common'] === 'account_name') {
 			$domain_name_selected = '';
-			$account_name_selected = Config::getInstance()->get('HTML_SELECTED');
+			$account_name_selected = $cfg->HTML_SELECTED;
 		} else {
-			$domain_name_selected = Config::getInstance()->get('HTML_SELECTED');
+			$domain_name_selected = $cfg->HTML_SELECTED;
 			$account_name_selected = '';
 		}
 

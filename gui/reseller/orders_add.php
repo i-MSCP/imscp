@@ -30,6 +30,8 @@
 
 require '../include/ispcp-lib.php';
 
+$cfg = IspCP_Registry::get('Config');
+
 check_login(__FILE__);
 
 $reseller_id = $_SESSION['user_id'];
@@ -41,8 +43,8 @@ if (isset($_GET['order_id']) && is_numeric($_GET['order_id'])) {
 	user_goto('orders.php');
 }
 
-if (Config::getInstance()->exists('HOSTING_PLANS_LEVEL')
-	&& Config::getInstance()->get('HOSTING_PLANS_LEVEL') === 'admin') {
+if (isset($cfg->HOSTING_PLANS_LEVEL)
+	&& $cfg->HOSTING_PLANS_LEVEL') === 'admin') {
 	$query = "
 		SELECT
 			*
@@ -92,8 +94,8 @@ $user_email		= $rs->fields['email'];
 // let's check the reseller limits
 $err_msg = '';
 
-if (Config::getInstance()->exists('HOSTING_PLANS_LEVEL')
-	&& Config::getInstance()->get('HOSTING_PLANS_LEVEL') === 'admin') {
+if (isset($cfg->HOSTING_PLANS_LEVEL)
+	&& $cfg->HOSTING_PLANS_LEVEL') === 'admin') {
 	$query = "SELECT `props` FROM `hosting_plans` WHERE `id` = ?";
 	$res = exec_query($sql, $query, array($hpid));
 } else {
@@ -182,7 +184,7 @@ $query = "
 
 $rs = exec_query($sql, $query, array($reseller_id));
 $domain_ip = $rs->fields['reseller_ips'];
-$status = Config::getInstance()->get('ITEM_ADD_STATUS');
+$status =  $cfg->ITEM_ADD_STATUS;
 
 
 $query = "
@@ -227,7 +229,7 @@ $rs = exec_query($sql, $query, array($dmn_id, $dmn_user_name,
 
 $user_id = $sql->Insert_ID();
 
-$awstats_auth = Config::getInstance()->get('AWSTATS_GROUP_AUTH');
+$awstats_auth = $cfg->AWSTATS_GROUP_AUTH;
 
 $query = "
 	INSERT INTO `htaccess_groups`
@@ -238,7 +240,7 @@ $query = "
 $rs = exec_query($sql, $query, array($dmn_id, $awstats_auth, $user_id, $status));
 
 // Create the 3 default addresses if wanted
-if (Config::getInstance()->get('CREATE_DEFAULT_EMAIL_ADDRESSES'))
+if ($cfg->CREATE_DEFAULT_EMAIL_ADDRESSES)
 	client_mail_add_default_accounts($dmn_id, $user_email, $dmn_user_name); // 'domain', 0
 
 // Added to send the msg with the domain name in idna form

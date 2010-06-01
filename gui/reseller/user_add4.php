@@ -30,20 +30,20 @@
 
 require '../include/ispcp-lib.php';
 
+$cfg = IspCP_Registry::get('Config');
+
 check_login(__FILE__);
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/user_add4.tpl');
+$tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/user_add4.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('alias_list', 'page');
 $tpl->define_dynamic('alias_entry', 'alias_list');
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
-
 $tpl->assign(
 	array(
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id']),
 	)
@@ -56,7 +56,6 @@ $tpl->assign(
  */
 
 if (isset($_SESSION['dmn_id']) && $_SESSION['dmn_id'] !== '') {
-
 	$domain_id = $_SESSION['dmn_id'];
 	$reseller_id = $_SESSION['user_id'];
 
@@ -85,9 +84,7 @@ if (isset($_SESSION['dmn_id']) && $_SESSION['dmn_id'] !== '') {
 		$row = $result->FetchRow();
 		$dmn_status = $row['domain_status'];
 
-		if ($dmn_status != Config::getInstance()->get('ITEM_OK_STATUS') &&
-			$dmn_status != Config::getInstance()->get('ITEM_ADD_STATUS')) {
-
+		if ($dmn_status != $cfg->ITEM_OK_STATUS && $dmn_status != $cfg->ITEM_ADD_STATUS) {
 			set_page_message(tr('System error with Domain Id: %d', $domain_id));
 
 			// Back to the users page
@@ -110,8 +107,8 @@ gen_al_page($tpl, $_SESSION['user_id']);
 
 gen_page_message($tpl);
 
-gen_reseller_mainmenu($tpl, Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/main_menu_users_manage.tpl');
-gen_reseller_menu($tpl, Config::getInstance()->get('RESELLER_TEMPLATE_PATH') . '/menu_users_manage.tpl');
+gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
+gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_users_manage.tpl');
 
 gen_logged_from($tpl);
 
@@ -142,20 +139,22 @@ $tpl->assign(
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
 // Begin function declaration lines
 
 function init_empty_data() {
 	global $cr_user_id, $alias_name, $domain_ip, $forward, $forward_prefix, $mount_point, $tpl;
-
+	
+	$cfg = IspCP_Registry::get('Config');
+	
 	$cr_user_id = $alias_name = $domain_ip = $forward = $mount_point = '';
 
 	if (isset($_POST['status']) && $_POST['status'] == 1) {
 		$forward_prefix = clean_input($_POST['forward_prefix']);
 		if ($_POST['status'] == 1) {
-			$check_en = Config::getInstance()->get('HTML_CHECKED');
+			$check_en = $cfg->HTML_CHECKED;
 			$check_dis = '';
 			$forward = strtolower(clean_input($_POST['forward']));
 			$tpl->assign(
@@ -166,30 +165,30 @@ function init_empty_data() {
 			);
 		} else {
 			$check_en = '';
-			$check_dis = Config::getInstance()->get('HTML_CHECKED');
+			$check_dis = $cfg->HTML_CHECKED;
 			$forward = '';
 			$tpl->assign(
 				array(
-					'READONLY_FORWARD' => Config::getInstance()->get('HTML_READONLY'),
-					'DISABLE_FORWARD' => Config::getInstance()->get('HTML_DISABLED'),
+					'READONLY_FORWARD' => $cfg->HTML_READONLY,
+					'DISABLE_FORWARD' => $cfg->HTML_DISABLED,
 				)
 			);
 		}
 		$tpl->assign(
 			array(
-				'HTTP_YES' => ($forward_prefix === 'http://') ? Config::getInstance()->get('HTML_SELECTED') : '',
-				'HTTPS_YES' => ($forward_prefix === 'https://') ? Config::getInstance()->get('HTML_SELECTED') : '',
-				'FTP_YES' => ($forward_prefix === 'ftp://') ? Config::getInstance()->get('HTML_SELECTED') : ''
+				'HTTP_YES' => ($forward_prefix === 'http://') ? $cfg->HTML_SELECTED : '',
+				'HTTPS_YES' => ($forward_prefix === 'https://') ? $cfg->HTML_SELECTED : '',
+				'FTP_YES' => ($forward_prefix === 'ftp://') ? $cfg->HTML_SELECTED : ''
 			)
 		);
 	} else {
 		$check_en = '';
-		$check_dis = Config::getInstance()->get('HTML_CHECKED');
+		$check_dis = $cfg->HTML_CHECKED;
 		$forward = '';
 		$tpl->assign(
 			array(
-				'READONLY_FORWARD' => Config::getInstance()->get('HTML_READONLY'),
-				'DISABLE_FORWARD' => Config::getInstance()->get('HTML_DISABLED'),
+				'READONLY_FORWARD' => $cfg->HTML_READONLY,
+				'DISABLE_FORWARD' => $cfg->HTML_DISABLED,
 			)
 		);
 	}
@@ -255,6 +254,8 @@ function add_domain_alias(&$sql, &$err_al) {
 	global $cr_user_id, $alias_name, $domain_ip, $forward, $forward_prefix, $mount_point, $tpl;
 	global $validation_err_msg;
 
+	$cfg = IspCP_Registry::get('Config');
+	
 	$cr_user_id = $dmn_id = $_SESSION['dmn_id'];
 	$alias_name = strtolower(clean_input($_POST['ndomain_name']));
 	$domain_ip = $_SESSION['dmn_ip'];
@@ -315,8 +316,6 @@ function add_domain_alias(&$sql, &$err_al) {
 		return;
 	}
 	// Begin add new alias domain
-	$status = Config::getInstance()->get('ITEM_ADD_STATUS');
-
 	$query = "INSERT INTO `domain_aliasses` (" .
 			"`domain_id`, `alias_name`, `alias_mount`, `alias_status`, " .
 			"`alias_ip_id`, `url_forward`) VALUES (?, ?, ?, ?, ?, ?)";
@@ -324,7 +323,7 @@ function add_domain_alias(&$sql, &$err_al) {
 			$cr_user_id,
 			$alias_name,
 			$mount_point,
-			$status,
+			$cfg->ITEM_ADD_STATUS,
 			$domain_ip,
 			$forward
 	));
