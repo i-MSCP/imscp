@@ -2,6 +2,8 @@ ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2010-06-01 Laurent Declercq
+	- ENGINE:
+		#2287: Removed all `Include {MODS_DIR}/fcgid_ispcp.conf`
 	- GUI:
 		Fixed uninitialized variable in ispCP_ConfigHandler_File
 
