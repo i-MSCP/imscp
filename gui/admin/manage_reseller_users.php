@@ -496,7 +496,7 @@ function check_ip_sets($dest, $users, &$err) {
 $tpl->assign(
 	array(
 		'TR_ADMIN_MANAGE_RESELLER_USERS_PAGE_TITLE' => tr('ispCP - Admin/Manage users/User assignment'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
 	)
