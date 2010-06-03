@@ -1,7 +1,7 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-2010-06-01 Laurent Declercq
+2010-06-03 Laurent Declercq
 	- GUI:
 		* Fixed Undefined variable: $theme_color in
 			admin/manage_reseller_users.php
