@@ -28,47 +28,32 @@
 /**
  * Class to store shared data (Better than global variables usage)
  *
- * Note: This class implement the Singleton design pattern
- *
- * @author: Laurent declercq (nuxwin) <laurent.declercq@ispcp.net>
- * @since: 1.0.6
+ * @author Laurent declercq (nuxwin) <laurent.declercq@ispcp.net>
+ * @since 1.0.6
+ * @version 1.0.1
  */
-class IspCP_Registry extends ArrayObject {
+class IspCP_Registry {
 
 	/**
 	 * Instance of this class that provides storage for shared data
 	 *
 	 * @var IspCP_Registry
 	 */
-	private static $_instance = null;
+	protected static $_instance = null;
 
 	/**
 	 * This class implement the Singleton design pattern
 	 *
-	 * Note: This class will be improved later. For the moment, we use a small
-	 * workaround to implement the singleton design pattern because the access
-	 * level for the constructor must be public (as in class ArrayObject).
-	 *
-	 * Dev note: I've used ArrayObject because I'm a lazy developer but not
-	 * worry, I'll replace it by ArrayAccess interface (ASAP)
-	 *
-	 * @throws Exception
-	 * @see getInstance()
+	 * @return void
 	 */
-	public function __construct() {
-
-			if(!is_null(self::$_instance)) {
-				throw new Exception(
-					'This class implements the singleton design pattern. ' .
-						'Use the getInstance() static method!'
-				);
-			}
-	}
+	private function __construct(){}
 
 	/**
 	 * This class implement the Singleton design pattern
+	 *
+	 * @return void
 	 */
-	private function __clone() {}
+	private function __clone(){}
 
 	/**
 	 * Get an IspCP_Registry instance
@@ -76,11 +61,11 @@ class IspCP_Registry extends ArrayObject {
 	 * Returns a reference to {@link IspCP_Registry} instance, only creating
 	 * it if it doesn't already exist.
 	 *
-	 * @return object IspCP_Registry instance
+	 * @return IspCP_Registry
 	 */
 	public static function getInstance() {
 
-		if(!self::$_instance instanceof self) {
+		if(self::$_instance == null) {
 			self::$_instance = new self;
 		}
 
@@ -90,63 +75,71 @@ class IspCP_Registry extends ArrayObject {
 	/**
 	 * Getter method to get data that is stored in the register
 	 *
-	 * @param string Data key name
+	 * Note: If you want get a reference to one data registered that is not an
+	 * object, you should always use this method and not accessed it directly
+	 * like an object member.
+	 *
+	 * To get an reference, use the following syntax:
+	 *
+	 * $data = &IspCP_Register::get('name');
+	 *
+	 * @param string $index Data key name
 	 * @throws Exception
 	 * @return mixed Data
 	 */
-	public static function get($name) {
+	public static function &get($index) {
 
 		$instance = self::getInstance();
 
-		if (!$instance->offsetExists($name)) {
-			throw new Exception(
-				"Unable to retrieve data indexed by the `$name` name!"
-			);
+		if (!isset($instance->$index)) {
+			throw new Exception("Data `$index` is not registered!");
 		}
 
-		return $instance->offsetGet($name);
+		return $instance->$index;
 	}
 
 	/**
-	 * Setter method to register new data in the register
+	 * Overloading on inaccessible members
 	 *
-	 * @param string Data key name
-	 * @param mixed $value Data
-	 * @return mixed The value that was registered
+	 * @param string $index Data key name
+	 * @throws Exception
+	 * @return void
 	 */
-	public static function set($name, $value) {
+	public function __get($index) {
 
-		$instance = self::getInstance();
-		$instance->offsetSet($name, $value);
-
-		return $value;
+		throw new Exception("Data `$index` is not registered!");
 	}
 
 	/**
-	 * Check if data exists in the registry
+	 * Setter method to register new data
 	 *
-	 * @param  string $name Data key name
-	 * @return TRUE if the data exists, FALSE otherwise
-	 */
-	public static function exists($name) {
-
-		if (self::$_instance instanceof self) {
-			return false;
-		}
-
-		return self::$_instance->offsetExists($name);
-	}
-
-	/**
-	 * Overrides {@link ArrayObject::offsetExists()} to fix know bug
-	 * 
-	 * @param string $name Data key name
+	 * For conveniences reasons, this method return the data registered
+	 *
+	 * Note: This method can return a reference for data that are not objects
+	 * like array. For this use the following syntax:
+	 *
+	 * $data = &IspCP_Register::set('name', array());
+	 *
+	 * @param string $index Data key name
+	 * @param mixed $value Data value
 	 * @return mixed
-	 *
-	 * Fix for http://bugs.php.net/bug.php?id=40442
 	 */
-	public function offsetExists($name) {
+	public static function &set($index, $value) {
 
-		return array_key_exists($name, $this);
+		$instance = self::getInstance();
+		$instance->$index = $value;
+
+		return $instance->$index;
+	}
+
+	/**
+	 * Check if a data is registered
+	 * 
+	 * @param string $index Data key name
+	 * @return boolean TRUE if the data is registered, FALSE otherwise
+	 */
+	public static function isRegistered($index) {
+
+		return array_key_exists($index, self::getInstance());
 	}
 }

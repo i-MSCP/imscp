@@ -69,119 +69,115 @@ error_reporting(E_ALL|E_STRICT);
 
 require_once(INCLUDEPATH . '/i18n.php');
 
-// Create a registry to store shared data
-$reg = IspCP_Registry::getInstance();
+// Store config data in the registry and gets a reference to him
+$cfg = IspCP_Registry::set('Config', Config::getInstance());
 
-// Get and register the main configuration data object
-$reg['Config'] = Config::getInstance();
-
-// Template pathes
-$reg['Config']['ROOT_TEMPLATE_PATH'] = 'themes/';
-$reg['Config']['USER_INITIAL_THEME'] = 'omega_original';
+// Template paths
+$cfg->ROOT_TEMPLATE_PATH = 'themes/';
+$cfg->USER_INITIAL_THEME = 'omega_original';
 
 // Get template path
-$tpl_path = $reg['Config']['ROOT_TEMPLATE_PATH'] .
-	$reg['Config']['USER_INITIAL_THEME'];
+$tpl_path = $cfg->ROOT_TEMPLATE_PATH . $cfg->USER_INITIAL_THEME;
 
 // Set the login templates path
-$reg['Config']['LOGIN_TEMPLATE_PATH'] = $tpl_path;
+$cfg->LOGIN_TEMPLATE_PATH = $tpl_path;
 
 // Set the users level templates path
-$reg['Config']['ADMIN_TEMPLATE_PATH'] =  "../$tpl_path/admin";
-$reg['Config']['RESELLER_TEMPLATE_PATH'] = "../$tpl_path/reseller";
-$reg['Config']['CLIENT_TEMPLATE_PATH'] = "../$tpl_path/client";
+$cfg->ADMIN_TEMPLATE_PATH =  "../$tpl_path/admin";
+$cfg->RESELLER_TEMPLATE_PATH = "../$tpl_path/reseller";
+$cfg->CLIENT_TEMPLATE_PATH = "../$tpl_path/client";
 
 // Set the isCP logo path
-$reg['Config']['IPS_LOGO_PATH'] = '../themes/user_logos';
+$cfg->IPS_LOGO_PATH = '../themes/user_logos';
 
 // Set the order panel templates path
-$reg['Config']['PURCHASE_TEMPLATE_PATH'] = "../$tpl_path/orderpanel";
+$cfg->PURCHASE_TEMPLATE_PATH = "../$tpl_path/orderpanel";
 
 // set often used HTML template strings
 // RegEx: \s*([a-zA-Z]+)\s*\=\s*([\\]{0,1}[\"\'])\1\2
-$reg['Config']['HTML_CHECKED'] = ' checked="checked"';
-$reg['Config']['HTML_DISABLED'] = ' disabled="disabled"';
-$reg['Config']['HTML_READONLY'] = ' readonly="readonly"';
-$reg['Config']['HTML_SELECTED'] = ' selected="selected"';
+$cfg->HTML_CHECKED = ' checked="checked"';
+$cfg->HTML_DISABLED = ' disabled="disabled"';
+$cfg->HTML_READONLY = ' readonly="readonly"';
+$cfg->HTML_SELECTED = ' selected="selected"';
 
 // Standard Language (if not set)
-$reg['Config']['USER_INITIAL_LANG'] = 'lang_EnglishBritain';
+$cfg->USER_INITIAL_LANG = 'lang_EnglishBritain';
 
 require_once(INCLUDEPATH . '/system-message.php');
 require_once(INCLUDEPATH . '/ispcp-db-keys.php');
 require_once(INCLUDEPATH . '/sql.php');
 
 // variable for development edition: show all php variables beyond page content
-$reg['Config']['DUMP_GUI_DEBUG'] = DISABLE;
+$cfg->DUMP_GUI_DEBUG = DISABLE;
 
 // show spGZIP compression information in HTML output
-$reg['Config']['SHOW_COMPRESSION_SIZE'] = ENABLE;
+$cfg->SHOW_COMPRESSION_SIZE = ENABLE;
 
 // Session timeout in minutes
-$reg['Config']['SESSION_TIMEOUT'] = 30;
+$cfg->SESSION_TIMEOUT = 30;
 
 // Item states
-$reg['Config']['ITEM_ADD_STATUS'] = 'toadd';
-$reg['Config']['ITEM_OK_STATUS'] = 'ok';
-$reg['Config']['ITEM_CHANGE_STATUS'] = 'change';
-$reg['Config']['ITEM_DELETE_STATUS'] = 'delete';
-$reg['Config']['ITEM_DISABLED_STATUS'] = 'disabled';
-$reg['Config']['ITEM_RESTORE_STATUS'] = 'restore';
-$reg['Config']['ITEM_TOENABLE_STATUS'] = 'toenable';
-$reg['Config']['ITEM_TODISABLED_STATUS'] = 'todisable';
-$reg['Config']['ITEM_ORDERED_STATUS'] = 'ordered';
-$reg['Config']['ITEM_DNSCHANGE_STATUS'] = 'dnschange';
+$cfg->ITEM_ADD_STATUS = 'toadd';
+$cfg->ITEM_OK_STATUS = 'ok';
+$cfg->ITEM_CHANGE_STATUS = 'change';
+$cfg->ITEM_DELETE_STATUS = 'delete';
+$cfg->ITEM_DISABLED_STATUS = 'disabled';
+$cfg->ITEM_RESTORE_STATUS = 'restore';
+$cfg->ITEM_TOENABLE_STATUS = 'toenable';
+$cfg->ITEM_TODISABLED_STATUS = 'todisable';
+$cfg->ITEM_ORDERED_STATUS = 'ordered';
+$cfg->ITEM_DNSCHANGE_STATUS = 'dnschange';
 
 // SQL variables
-$reg['Config']['MAX_SQL_DATABASE_LENGTH'] = 64;
-$reg['Config']['MAX_SQL_USER_LENGTH'] = 16;
-$reg['Config']['MAX_SQL_PASS_LENGTH'] = 32;
+$cfg->MAX_SQL_DATABASE_LENGTH = 64;
+$cfg->MAX_SQL_USER_LENGTH = 16;
+$cfg->MAX_SQL_PASS_LENGTH = 32;
 
 /**
  * The following parameters are overwritten via admin cp
  */
 
 // Domain rows pagination
-$reg['Config']['DOMAIN_ROWS_PER_PAGE'] = 10;
+$cfg->DOMAIN_ROWS_PER_PAGE = 10;
 
 // 'admin': hosting plans are available only in admin level, the reseller
 // cannot make custom changes
 // 'reseller': hosting plans are available only in reseller level
-$reg['Config']['HOSTING_PLANS_LEVEL'] = 'reseller';
+$cfg->HOSTING_PLANS_LEVEL = 'reseller';
 
 // TLD strict validation (according IANA database)
-$reg['Config']['TLD_STRICT_VALIDATION'] = ENABLE;
+$cfg->TLD_STRICT_VALIDATION = ENABLE;
 
 // SLD strict validation
-$reg['Config']['SLD_STRICT_VALIDATION'] = ENABLE;
+$cfg->SLD_STRICT_VALIDATION = ENABLE;
 
 // Maximum number of labels for the domain names
 // and subdomains (excluding SLD and TLD)
-$reg['Config']['MAX_DNAMES_LABELS'] = 1;
+$cfg->MAX_DNAMES_LABELS = 1;
 
 // Maximum number of labels for the subdomain names
-$reg['Config']['MAX_SUBDNAMES_LABELS'] = 1;
+$cfg->MAX_SUBDNAMES_LABELS = 1;
 
 // Enable or disable support system
-$reg['Config']['ISPCP_SUPPORT_SYSTEM'] = ENABLE;
+$cfg->ISPCP_SUPPORT_SYSTEM = ENABLE;
 
 // Enable or disable lost password support
-$reg['Config']['LOSTPASSWORD'] = ENABLE;
+$cfg->LOSTPASSWORD = ENABLE;
 
 // Uniqkeytimeout in minutes
-$reg['Config']['LOSTPASSWORD_TIMEOUT'] = 30;
+$cfg->LOSTPASSWORD_TIMEOUT = 30;
 
 // Captcha imagewidth
-$reg['Config']['LOSTPASSWORD_CAPTCHA_WIDTH'] = 280;
+$cfg->LOSTPASSWORD_CAPTCHA_WIDTH = 280;
 
 // Captcha imagehigh
-$reg['Config']['LOSTPASSWORD_CAPTCHA_HEIGHT'] = 70;
+$cfg->LOSTPASSWORD_CAPTCHA_HEIGHT = 70;
 
 // Captcha background color
-$reg['Config']['LOSTPASSWORD_CAPTCHA_BGCOLOR'] = array(229, 243, 252);
+$cfg->LOSTPASSWORD_CAPTCHA_BGCOLOR = array(229, 243, 252);
 
 // Captcha text color
-$reg['Config']['LOSTPASSWORD_CAPTCHA_TEXTCOLOR'] = array(0, 53, 92);
+$cfg->LOSTPASSWORD_CAPTCHA_TEXTCOLOR = array(0, 53, 92);
 
 /**
  * Captcha ttf fontfiles (have to be under compatible open source license)
@@ -195,83 +191,82 @@ $fonts = array(
 );
 
 // Set random catcha font file
-$reg['Config']['LOSTPASSWORD_CAPTCHA_FONT'] = INCLUDEPATH . '/fonts/' .
+$cfg->LOSTPASSWORD_CAPTCHA_FONT = INCLUDEPATH . '/fonts/' .
 	$fonts[mt_rand(0, count($fonts)-1)];
 
 // Enable or disable bruteforcedetection
-$reg['Config']['BRUTEFORCE'] = ENABLE;
+$cfg->BRUTEFORCE = ENABLE;
 
 // Blocktime in minutes
-$reg['Config']['BRUTEFORCE_BLOCK_TIME'] = 30;
+$cfg->BRUTEFORCE_BLOCK_TIME = 30;
 
 // Max login before block
-$reg['Config']['BRUTEFORCE_MAX_LOGIN'] = 3;
+$cfg->BRUTEFORCE_MAX_LOGIN = 3;
 
 // Max captcha failed attempts before block
-$reg['Config']['BRUTEFORCE_MAX_CAPTCHA'] = 5;
+$cfg->BRUTEFORCE_MAX_CAPTCHA = 5;
 
 // Enable or disable time between logins
-$reg['Config']['BRUTEFORCE_BETWEEN'] = ENABLE;
+$cfg->BRUTEFORCE_BETWEEN = ENABLE;
 
 // Time between logins in seconds
-$reg['Config']['BRUTEFORCE_BETWEEN_TIME'] = 30;
+$cfg->BRUTEFORCE_BETWEEN_TIME = 30;
 
 // Enable or disable maintenance mode
-$reg['Config']['MAINTENANCEMODE'] = DISABLE;
+$cfg->MAINTENANCEMODE = DISABLE;
 
 // Servicemode message
-$reg['Config']['MAINTENANCEMODE_MESSAGE'] =
+$cfg->MAINTENANCEMODE_MESSAGE =
 	tr("We are sorry, but the system is currently under maintenance.\nPlease try again later.");
 
 // Restore language auto detection
 curlang(null, true);
 
 // Minimum password chars
-$reg['Config']['PASSWD_CHARS'] = 6;
+$cfg->PASSWD_CHARS = 6;
 
 // Enable or disable strong passwords
-$reg['Config']['PASSWD_STRONG'] = ENABLE;
+$cfg->PASSWD_STRONG = ENABLE;
 
 // The virtual host file from Apache which contains our virtual host entries
-$reg['Config']['SERVER_VHOST_FILE'] =
-	$reg['Config']['APACHE_SITES_DIR'] . '/ispcp.conf';
+$cfg->SERVER_VHOST_FILE = $cfg->APACHE_SITES_DIR . '/ispcp.conf';
 
 // The minimum level for a message to be sent to DEFAULT_ADMIN_ADDRESS
 // PHP's E_USER_* values are used for simplicity:
 // E_USER_NOTICE: logins, and all info that isn't very relevant
 // E_USER_WARNING: switching to an other account, etc
 // E_USER_ERROR: "admin MUST know" messages
-$reg['Config']['LOG_LEVEL'] = E_USER_NOTICE;
+$cfg->LOG_LEVEL = E_USER_NOTICE;
 
 // Creation of webmaster, postmaster and abuse forwarders when domain/alias/
 // subdomain is created
-$reg['Config']['CREATE_DEFAULT_EMAIL_ADDRESSES'] = ENABLE;
+$cfg->CREATE_DEFAULT_EMAIL_ADDRESSES = ENABLE;
 
 // Count default e-mail addresses (abuse,postmaster,webmaster) in user limit
 // ENABLE: default e-mail are counted
 // DISABLE: default e-mail are NOT counted
-$reg['Config']['COUNT_DEFAULT_EMAIL_ADDRESSES'] = ENABLE;
+$cfg->COUNT_DEFAULT_EMAIL_ADDRESSES = ENABLE;
 
 // Use hard mail suspension when suspending a domain:
 // ENABLE: email accounts are hard suspended (completely unreachable)
 // DISABLE: email accounts are soft suspended (passwords are modified so user
 // can't access the accounts)
-$reg['Config']['HARD_MAIL_SUSPENSION'] = ENABLE;
+$cfg->HARD_MAIL_SUSPENSION = ENABLE;
 
 // Prevent external login (i.e. check for valid local referer)
 // separated in admin, reseller and client
 // This option allows to use external login scripts
 // ENABLE: prevent external login, check for referer, more secure
 // DISABLE: allow external login, do not check for referer, less security (risky)
-$reg['Config']['PREVENT_EXTERNAL_LOGIN_ADMIN'] = ENABLE;
-$reg['Config']['PREVENT_EXTERNAL_LOGIN_RESELLER'] = ENABLE;
-$reg['Config']['PREVENT_EXTERNAL_LOGIN_CLIENT'] = ENABLE;
+$cfg->PREVENT_EXTERNAL_LOGIN_ADMIN = ENABLE;
+$cfg->PREVENT_EXTERNAL_LOGIN_RESELLER = ENABLE;
+$cfg->PREVENT_EXTERNAL_LOGIN_CLIENT = ENABLE;
 
 // Automatic search for new version
-$reg['Config']['CHECK_FOR_UPDATES'] = ENABLE;
+$cfg->CHECK_FOR_UPDATES = ENABLE;
 
-if(!$reg['Config']['ISPCP_SUPPORT_SYSTEM_TARGET']) {
-	$reg['Config']['ISPCP_SUPPORT_SYSTEM_TARGET'] = '_self';
+if(!$cfg->ISPCP_SUPPORT_SYSTEM_TARGET) {
+	$cfg->ISPCP_SUPPORT_SYSTEM_TARGET = '_self';
 }
 
 require_once(INCLUDEPATH . '/date-functions.php');
@@ -290,19 +285,21 @@ require_once(INCLUDEPATH . '/emailtpl-functions.php');
 require_once(INCLUDEPATH . '/layout-functions.php');
 require_once(INCLUDEPATH . '/functions.ticket_system.php');
 
-// Get and store configuration parameters that are stored in the database
-$reg['Db_Config'] = Config::getInstance(Config::DB, Database::getRawInstance());
-
-// Override all the default parameters with the parameters that are stored in
-// the database
-$reg['Config']->replace_with($reg['Db_Config']);
+// Create and store an IspCP_ConfigHandler_Db object in the registry and
+// overrides any configuration settings by those provided by him
+$cfg->replace_with(
+	IspCP_Registry::set(
+		'Db_Config',
+		Config::getInstance(Config::DB, Database::getRawInstance())
+	)
+);
 
 // Compress/gzip Class
 require_once(INCLUDEPATH . '/class.spGzip.php');
 
 // Check if server information is enabled
 // Note: If we receive a xhr request, the value must be forced to FALSE
-$showCompression = $reg['Config']['SHOW_COMPRESSION_SIZE'] ? !is_xhr() : false;
+$showCompression = $cfg->SHOW_COMPRESSION_SIZE ? !is_xhr() : false;
 
 // construct the object
 $GLOBALS['class']['output'] = new spOutput('auto', false, $showCompression);
