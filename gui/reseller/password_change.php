@@ -54,10 +54,10 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_pass') {
 	} else if ($_POST['pass'] !== $_POST['pass_rep']) {
 		set_page_message(tr('Passwords do not match!'));
 	} else if (!chk_password($_POST['pass'])) {
-		if (Config::getInstance()->get('PASSWD_STRONG')) {
-			set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), Config::getInstance()->get('PASSWD_CHARS')));
+		if ($cfg->PASSWD_STRONG) {
+			set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS));
 		} else {
-			set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), Config::getInstance()->get('PASSWD_CHARS')));
+			set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), $cfg->PASSWD_CHARS));
 		}
 	} else if (check_udata($_SESSION['user_id'], $_POST['curr_pass']) === false) {
 		set_page_message(tr('The current password is wrong!'));

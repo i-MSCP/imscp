@@ -45,8 +45,6 @@ $tpl->define_dynamic('ftp_edit', 'page');
 $tpl->define_dynamic('sql_db_edit', 'page');
 $tpl->define_dynamic('sql_user_edit', 'page');
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
-
 /**
  * static page messages.
  */
