@@ -89,7 +89,7 @@ function get_update_infos(&$tpl) {
 		$tpl->assign(array('DATABASE_UPDATE_MESSAGE' => ''));
 	}
 
-	if (!$cfg->CHECK_FOR_UPDATES') {
+	if (!$cfg->CHECK_FOR_UPDATES) {
 		$tpl->assign(array('UPDATE' => tr('Update checking is disabled!')));
 		$tpl->parse('UPDATE_MESSAGE', 'update_message');
 		return false;
