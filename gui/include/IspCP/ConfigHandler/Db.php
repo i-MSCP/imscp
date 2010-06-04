@@ -33,10 +33,10 @@ require_once  INCLUDEPATH . '/IspCP/ConfigHandler.php';
 /**
  * Class to handle configuration parameters from a database
  *
- * IspCP_ConfigHandler adapter to handle configuration parameters that are
+ * IspCP_ConfigHandler adapter class to handle configuration parameters that are
  * stored in a database.
  *
- * Note: Only raw PDO instance is currently supported.
+ * Note: Only PDO is currently supported.
  *
  * @author Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
  * @since 1.0.6
@@ -49,7 +49,7 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 	 *
 	 * @var PDO
 	 */
-	private $_db;
+	protected $_db;
 
 	/**
 	 * PDOStatement to insert a configuration parameter in the database
@@ -59,7 +59,7 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 	 *
 	 * @var PDOStatement
 	 */
-	private $_insert_stmt = null;
+	protected $_insert_stmt = null;
 
 	/**
 	 * PDOStatement to update a configuration parameter in the database
@@ -69,7 +69,7 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 	 *
 	 * @var PDOStatement
 	 */
-	private $_update_stmt = null;
+	protected $_update_stmt = null;
 
 	/**
 	 * PDOStatement to delete a configuration parameter in the database
@@ -79,7 +79,7 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 	 *
 	 * @var PDOStatement
 	 */
-	private $_delete_stmt = null;
+	protected $_delete_stmt = null;
 
 	/**
 	 * Variable bound to the PDOStatement objects
@@ -89,7 +89,7 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 	 *
 	 * @var string Configuration parameter key name
 	 */
-	private $_index = null;
+	protected $_index = null;
 
 	/**
 	 * Variable bound to the PDOStatement objects
@@ -99,28 +99,42 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 	 *
 	 * @var mixed Configuration parameter value
 	 */
-	private $_value = null;
+	protected $_value = null;
+
+	/**
+	 * Counter for sql update queries that were been executed
+	 *
+	 * @var int Sql queries count
+	 */
+	protected $_insert_queries_counter = 0;
+
+	/**
+	 * Counter for sql insert queries that were been executed
+	 *
+	 * @var int Sql queries count
+	 */
+	protected $_update_queries_counter = 0;
 
 	/**
 	 * Database table where the configuration parameters are stored
 	 *
-	 * @var
+	 * @var string Table name
 	 */
-	protected $table_name = 'config';
+	protected $_table_name = 'config';
 
 	/**
 	 * Database column name for configuration parameters keys
 	 *
 	 * @var string Column name
 	 */
-	protected $keys_column = 'name';
+	protected $_keys_column = 'name';
 
 	/**
 	 * Database column name for configuration parameters values
 	 *
 	 * @var string Column name
 	 */
-	protected $values_column = 'value';
+	protected $_values_column = 'value';
 
 	/**
 	 * Loads all configuration parameters from database
@@ -160,17 +174,17 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 
 			// Overrides the database table name for configuration parameters
 			if(isset($params['table_name'])) {
-					$this->table_name = $params['table_name'];
+					$this->_table_name = $params['table_name'];
 			}
 
 			// Override the column name for configuration parameters keys
 			if(isset($params['keys_column'])) {
-				$this->keys_column = $params['keys_column'];
+				$this->_keys_column = $params['keys_column'];
 			}
 
 			// Set the column name for configuration parameters values
 			if(isset($params['values_column'])) {
-				$this->values_column = $params['values_column'];
+				$this->_values_column = $params['values_column'];
 			}
 
 		} elseif(!$params instanceof PDO) {
@@ -183,7 +197,7 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 	}
 
 	/**
-	 * Setter method to set a new configuration parameter in the database
+	 * Setter method to set or change a configuration parameter in the database
 	 *
 	 * For performance reasons, queries for updates are only done if the old and
 	 * the new value of a parameter are not the same.
@@ -209,26 +223,83 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 	}
 
 	/**
+	 * Force reload of all configuration parameters from the database
+	 *
+	 * @return void
+	 */
+	public function force_reload() {
+
+		$this->parameters = $this->_load_all();
+	}
+
+	/**
+	 * Returns the count of sql queries that were executed
+	 *
+	 * This method returns the count of queries that were executed since the
+	 * last call of {@link reset_queries_counter()} method.
+	 *
+	 * @throws Exception
+	 * @param string $query_counter_type type of query counter (insert|update)
+	 * @return void
+	 */
+	public function count_queries($queries_counter_type) {
+
+		if($queries_counter_type == 'update') {
+
+			return $this->_update_queries_counter;
+
+		} elseif($queries_counter_type == 'insert') {
+
+			return $this->_insert_queries_counter;
+
+		} else {
+			throw new Exception('Unknown queries counter!');
+		}
+	}
+
+	/**
+	 * Reset a counter of queries
+	 *
+	 * @throws Exception
+	 * @param string $query_counter_type type of query counter (insert|update)
+	 * @return void
+	 */
+	public function reset_queries_counter($queries_counter_type) {
+
+		if($queries_counter_type == 'update') {
+
+			$this->_update_queries_counter = 0;
+
+		} elseif($queries_counter_type == 'insert') {
+
+			 $this->_insert_queries_counter = 0;
+
+		} else {
+			throw new Exception('Unknown queries counter!');
+		}
+	}
+
+	/**
 	 * Load all the configuration parameters from the database
 	 *
 	 * @throws Exception
 	 * @return Array that contain all configuration parameters
 	 */
-	private function _load_all() {
+	protected function _load_all() {
 
 		$query = "
 			SELECT
-				`{$this->keys_column}`,
-				`{$this->values_column}`
+				`{$this->_keys_column}`,
+				`{$this->_values_column}`
 			FROM
-				`{$this->table_name}`
+				`{$this->_table_name}`
 			;
 		";
 
 		if(($stmt = $this->_db->query($query, PDO::FETCH_ASSOC)) !== false) {
 			foreach($stmt->fetchAll() as $row) {
-				$parameters[$row[$this->keys_column]] =
-					$row[$this->values_column];
+				$parameters[$row[$this->_keys_column]] =
+					$row[$this->_values_column];
 			}
 		} else {
 			throw new Exception(
@@ -245,13 +316,13 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 	 * @throws Exception
 	 * @return void
 	 */
-	private function _insert() {
+	protected function _insert() {
 		if(!$this->_insert_stmt instanceof PDOStatement) {
 
 			$query = "
 				INSERT INTO
-					`{$this->table_name}`
-					(`{$this->keys_column}`, `{$this->values_column}`)
+					`{$this->_table_name}`
+					(`{$this->_keys_column}`, `{$this->_values_column}`)
 				VALUES
 					(:index, :value)
 				;
@@ -275,17 +346,17 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 	 * @throws Exception
 	 * @return void
 	 */
-	private function _update() {
+	protected function _update() {
 
 		if(!$this->_update_stmt instanceof PDOStatement) {
 
 			$query = "
 				UPDATE
-					`{$this->table_name}`
+					`{$this->_table_name}`
 				SET
-					`{$this->values_column}` = :value
+					`{$this->_values_column}` = :value
 				WHERE
-					`{$this->keys_column}` = :index
+					`{$this->_keys_column}` = :index
 				;
 			";
 
@@ -298,6 +369,8 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 			throw new Exception(
 				'Unable to update the configuration parameter in the database!'
 			);
+		} else {
+			$this->_update_queries_counter++;
 		}
 	}
 
@@ -307,15 +380,15 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 	 * @throws Exception
 	 * @return void
 	 */
-	private function _delete() {
+	protected function _delete() {
 
 		if(!$this->_delete_stmt instanceof PDOStatement) {
 
 			$query = "
 				DELETE FROM
-					`{$this->table_name}`
+					`{$this->_table_name}`
 				WHERE
-					`{$this->keys_column}` = :index
+					`{$this->_keys_column}` = :index
 				;
 			";
 
@@ -328,16 +401,6 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 				'Unable to delete the configuration parameter in the database!'
 			);
 		}
-	}
-
-	/**
-	 * Force reload of all configuration parameters from the database
-	 *
-	 * @return void
-	 */
-	public function force_reload() {
-
-		$this->parameters = $this->_load_all();
 	}
 
 	/**
