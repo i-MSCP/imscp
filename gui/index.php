@@ -30,6 +30,8 @@
 
 require 'include/ispcp-lib.php';
 
+$cfg = IspCP_Registry::get('Config');
+
 if (isset($_GET['logout'])) {
 	unset_user_login_data();
 }
@@ -63,33 +65,33 @@ shall_user_wait();
 
 $theme_color = isset($_SESSION['user_theme'])
 	? $_SESSION['user_theme']
-	: Config::getInstance()->get('USER_INITIAL_THEME');
+	: $cfg->USER_INITIAL_THEME;
 
 $tpl = new pTemplate();
 
-if ((Config::getInstance()->get('MAINTENANCEMODE')
+if (($cfg->MAINTENANCEMODE
 		|| databaseUpdate::getInstance()->checkUpdateExists())
 	&& !isset($_GET['admin'])) {
 
-	$tpl->define_dynamic('page', Config::getInstance()->get('LOGIN_TEMPLATE_PATH') . '/maintenancemode.tpl');
+	$tpl->define_dynamic('page', $cfg->LOGIN_TEMPLATE_PATH . '/maintenancemode.tpl');
 	$tpl->assign(
 		array(
 			'TR_PAGE_TITLE'		=> tr('ispCP Omega a Virtual Hosting Control System'),
-			'THEME_COLOR_PATH'	=> Config::getInstance()->get('LOGIN_TEMPLATE_PATH'),
+			'THEME_COLOR_PATH'	=> $cfg->LOGIN_TEMPLATE_PATH,
 			'THEME_CHARSET'		=> tr('encoding'),
-			'TR_MESSAGE'		=> nl2br(tohtml(Config::getInstance()->get('MAINTENANCEMODE_MESSAGE'))),
+			'TR_MESSAGE'		=> nl2br(tohtml($cfg->MAINTENANCEMODE_MESSAGE)),
 			'TR_ADMINLOGIN'		=> tr('Administrator login')
 		)
 	);
 
 } else {
 
-	$tpl->define_dynamic('page', Config::getInstance()->get('LOGIN_TEMPLATE_PATH') . '/index.tpl');
+	$tpl->define_dynamic('page', $cfg->LOGIN_TEMPLATE_PATH . '/index.tpl');
 
 	$tpl->assign(
 		array(
 			'TR_MAIN_INDEX_PAGE_TITLE'	=> tr('ispCP Omega a Virtual Hosting Control System'),
-			'THEME_COLOR_PATH'			=> Config::getInstance()->get('LOGIN_TEMPLATE_PATH'),
+			'THEME_COLOR_PATH'			=> $cfg->LOGIN_TEMPLATE_PATH,
 			'THEME_CHARSET'				=> tr('encoding'),
 			'TR_LOGIN'					=> tr('Login'),
 			'TR_USERNAME'				=> tr('Username'),
@@ -107,7 +109,7 @@ if ((Config::getInstance()->get('MAINTENANCEMODE')
 
 }
 
-if (Config::getInstance()->get('LOSTPASSWORD')) {
+if ($cfg->LOSTPASSWORD) {
 	$tpl->assign('TR_LOSTPW', tr('Lost password'));
 } else {
 	$tpl->assign('TR_LOSTPW', '');
@@ -119,6 +121,6 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
