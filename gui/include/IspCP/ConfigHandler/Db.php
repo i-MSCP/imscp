@@ -5,7 +5,7 @@
  * @copyright	2006-2010 by ispCP | http://isp-control.net
  * @version		SVN: $Id$
  * @link		http://isp-control.net
- * @author		Laurent Declercq (nuxwin) <laurent.declercq@nuxwin.com>
+ * @author		Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
  *
  * @license
  * The contents of this file are subject to the Mozilla Public License
@@ -40,6 +40,7 @@ require_once  INCLUDEPATH . '/IspCP/ConfigHandler.php';
  *
  * @author Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
  * @since 1.0.6
+ * @version 1.0.2
  * @see ispCP_ConfigHandler
  */
 class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
@@ -211,9 +212,9 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 		$this->_index = $index;
 		$this->_value = $value;
 
-		if(!array_key_exists($index, $this->parameters)) {
+		if(!array_key_exists($index, $this->_parameters)) {
 			$this->_insert();
-		} elseif($this->parameters[$index] != $value) {
+		} elseif($this->_parameters[$index] != $value) {
 			$this->_update();
 		} else {
 			return;
@@ -229,7 +230,7 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 	 */
 	public function force_reload() {
 
-		$this->parameters = $this->_load_all();
+		$this->_parameters = $this->_load_all();
 	}
 
 	/**
@@ -277,6 +278,33 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 		} else {
 			throw new Exception('Unknown queries counter!');
 		}
+	}
+
+	/**
+	 * Defined by SPL ArrayAccess interface
+	 *
+	 * See {@link http://www.php.net/~helly/php/ext/spl}
+	 */
+	public function offsetUnset($index) {
+
+		$this->_index = $index;
+		$this->_delete();
+
+		parent::offsetUnset($index);
+	}
+
+	/**
+	 * PHP Overloading for call of unset() on inaccessible members
+	 *
+	 * @param string $index Configuration parameter key name
+	 * @return void
+	 */
+	public function __unset($index) {
+
+			$this->_index = $index;
+			$this->_delete();
+
+			parent::__unset($index);
 	}
 
 	/**
@@ -401,30 +429,5 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 				'Unable to delete the configuration parameter in the database!'
 			);
 		}
-	}
-
-	/**
-	 * Defined by SPL ArrayAccess interface
-	 *
-	 * See {@link http://www.php.net/~helly/php/ext/spl}
-	 */
-	public function offsetUnset($index) {
-
-		$this->_index = $index;
-		$this->_delete();
-		parent::offsetUnset($index);
-	}
-
-	/**
-	 * PHP Overloading for call of unset() on inaccessible members
-	 *
-	 * @param string $index Configuration parameter key name
-	 * @return void
-	 */
-	public function __unset($index) {
-
-			$this->_index = $index;
-			$this->_delete();
-			parent::__unset($index);
 	}
 }

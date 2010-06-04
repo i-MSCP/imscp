@@ -5,7 +5,8 @@
  * @copyright	2006-2010 by ispCP | http://isp-control.net
  * @version		SVN: $Id$
  * @link		http://isp-control.net
- * @author		ispCP team
+ * @author		Benedikt Heintel <benedikt@heintel.org>
+ * @author		laurent declercq <laurent.declercq@ispcp.net>
  *
  * @license
  * The contents of this file are subject to the Mozilla Public License
@@ -33,9 +34,14 @@ require_once  INCLUDEPATH . '/IspCP/ConfigHandler.php';
 /**
  * Class to handle configuration parameters from a flat file
  *
- * IspCP_ConfigHandler adapter to handle configuration parameters that are stored
- * in a flat file where each pair of key-values are separated by the equal sign.
+ * IspCP_ConfigHandler adapter class to handle configuration parameters that are
+ * stored in a flat file where each pair of key-values are separated by the
+ * equal sign.
  *
+ * @since 1.0.6
+ * @version 1.0.1
+ * @author Benedikt Heintel <benedikt@heintel.org>
+ * @author laurent declercq <laurent.declercq@ispcp.net>
  * @see IspCP_ConfigHandler
  */
 class ispCP_ConfigHandler_File extends IspCP_ConfigHandler {
@@ -48,13 +54,14 @@ class ispCP_ConfigHandler_File extends IspCP_ConfigHandler {
 	protected $_path_file;
 
 	/**
-	 * Loads all configuration parameters from a file
+	 * Loads all configuration parameters from a flat file
 	 *
 	 * Note: default file path is set to: {/usr/local}/etc/ispcp/ispcp.conf
 	 * depending of the used distribution.
 	 *
 	 * @param string $path_file Configuration file path
 	 * @return void
+	 * @todo Should be more generic (path file shouldn't be hardcoded here)
 	 */
 	public function __construct($path_file = null) {
 
@@ -82,7 +89,7 @@ class ispCP_ConfigHandler_File extends IspCP_ConfigHandler {
 	 * @throws Exception
 	 * @return Array that contain all Configuration parameters
 	 */
-	private function parseFile() {
+	protected function parseFile() {
 
 		$fd = @file_get_contents($this->_path_file);
 

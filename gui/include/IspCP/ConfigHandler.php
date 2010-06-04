@@ -34,7 +34,7 @@
  *
  * With this class, you can access to your data like:
  *
- * - An array (There is no real sense to use it with direct usage of this class)
+ * - An array
  * - Via object properties
  * - Via setter and getter methods
  *
@@ -43,6 +43,7 @@
  * object of this class.
  *
  * @since 1.0.6
+ * @version 1.0.1
  * @author Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
  */
 class IspCP_ConfigHandler implements ArrayAccess, Iterator {
@@ -52,7 +53,7 @@ class IspCP_ConfigHandler implements ArrayAccess, Iterator {
 	 *
 	 * @var Configuration parameters
 	 */
-	protected $parameters = array();
+	protected $_parameters = array();
 
 	/**
 	 * Loads all configuration parameters from an array
@@ -62,7 +63,7 @@ class IspCP_ConfigHandler implements ArrayAccess, Iterator {
 	 */
 	public function __construct(array $parameters) {
 
-		$this->parameters = $parameters;
+		$this->_parameters = $parameters;
 	}
 
 	/**
@@ -73,7 +74,7 @@ class IspCP_ConfigHandler implements ArrayAccess, Iterator {
 	 */
 	public function set($index, $value) {
 
-		$this->parameters[$index] = $value;
+		$this->_parameters[$index] = $value;
 	}
 
 	/**
@@ -102,7 +103,7 @@ class IspCP_ConfigHandler implements ArrayAccess, Iterator {
 			throw new Exception("Configuration variable `$index` is missing!");
 		}
 
-		return $this->parameters[$index];
+		return $this->_parameters[$index];
 	}
 
 	/**
@@ -124,7 +125,7 @@ class IspCP_ConfigHandler implements ArrayAccess, Iterator {
 	 * @return void
 	 */
 	public function del($index) {
-		unset($this->parameters[$index]);
+		unset($this->_parameters[$index]);
 	}
 
 	/**
@@ -135,7 +136,7 @@ class IspCP_ConfigHandler implements ArrayAccess, Iterator {
 	 */	
 	public function __isset($index) {
 
-		return isset($this->parameters[$index]);
+		return isset($this->_parameters[$index]);
 	}
 
 	/**
@@ -157,7 +158,7 @@ class IspCP_ConfigHandler implements ArrayAccess, Iterator {
 	 */
 	public function exists($index) {
 		
-		return isset($this->parameters[$index]);
+		return isset($this->_parameters[$index]);
 	}
 
 	/**
@@ -191,7 +192,7 @@ class IspCP_ConfigHandler implements ArrayAccess, Iterator {
 	 */
 	public function toArray() {
 
-		return $this->parameters;
+		return $this->_parameters;
 	}
 
 	/**
@@ -201,7 +202,7 @@ class IspCP_ConfigHandler implements ArrayAccess, Iterator {
 	 */
 	public function current() {
 
-		return current($this->parameters);
+		return current($this->_parameters);
 	}
 
 	/**
@@ -211,7 +212,7 @@ class IspCP_ConfigHandler implements ArrayAccess, Iterator {
 	 */
 	public function next() {
 
-		next($this->parameters);
+		next($this->_parameters);
 	}
 
 	/**
@@ -221,7 +222,7 @@ class IspCP_ConfigHandler implements ArrayAccess, Iterator {
 	 */
 	public function valid() {
 
-		return array_key_exists(key($this->parameters), $this->parameters);
+		return array_key_exists(key($this->_parameters), $this->_parameters);
 	}
 
 	/**
@@ -231,7 +232,7 @@ class IspCP_ConfigHandler implements ArrayAccess, Iterator {
 	 */
 	public function rewind() {
 
-		reset($this->parameters);
+		reset($this->_parameters);
         return $this;
 	}
 
@@ -242,7 +243,7 @@ class IspCP_ConfigHandler implements ArrayAccess, Iterator {
 	 */
 	public function key() {
 
-		return key($this->parameters);
+		return key($this->_parameters);
 	}
 
 	/**
