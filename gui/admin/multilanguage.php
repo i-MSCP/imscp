@@ -210,7 +210,7 @@ function show_lang(&$tpl, &$sql) {
 
 		$tpl->assign('LANG_CLASS', ($row++ % 2 == 0) ? 'content2' : 'content');
 
-		if (Config::getInstance()->get('USER_INITIAL_LANG') == 'lang_' . $dat[1]
+		if ($cfg->USER_INITIAL_LANG == 'lang_' . $dat[1]
 			|| $usr_def_lng[1] == $dat[1]) {
 			$tpl->assign(
 				array(

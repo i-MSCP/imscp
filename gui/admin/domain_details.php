@@ -144,7 +144,7 @@ function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
 	// Get status name
 	$dstatus = $data['domain_status'];
 
-	if ($dstatus == Config::getInstance()->get('ITEM_OK_STATUS')
+	if ($dstatus == $cfg->ITEM_OK_STATUS
 		|| $dstatus == $cfg->ITEM_DISABLED_STATUS
 		|| $dstatus == $cfg->ITEM_DELETE_STATUS
 		|| $dstatus == $cfg->ITEM_ADD_STATUS

@@ -270,8 +270,6 @@ function get_ticket_to(&$sql, $ticket_id, $user_id, $html = false) {
 
 // common page data.
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
-
 $tpl->assign(
 	array(
 		'TR_CLIENT_ENABLE_AUTORESPOND_PAGE_TITLE'	=> tr('ispCP - Client/Enable Mail Autoresponder'),

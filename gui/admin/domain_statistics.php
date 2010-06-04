@@ -43,8 +43,6 @@ $tpl->define_dynamic('year_list', 'page');
 $tpl->define_dynamic('traffic_table', 'page');
 $tpl->define_dynamic('traffic_table_item', 'traffic_table');
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
-
 $tpl->assign(
 	array(
 		'TR_ADMIN_DOMAIN_STATISTICS_PAGE_TITLE' => tr('ispCP - Domain Statistics Data'),
