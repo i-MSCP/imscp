@@ -40,7 +40,7 @@ require_once  INCLUDEPATH . '/IspCP/ConfigHandler.php';
  *
  * @since 1.0.6
  * @version 1.0.1
- * @author Benedikt Heintel <benedikt@heintel.org>
+ * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
  * @author laurent declercq <laurent.declercq@ispcp.net>
  * @see IspCP_ConfigHandler
  */

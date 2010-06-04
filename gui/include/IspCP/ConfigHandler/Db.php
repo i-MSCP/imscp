@@ -165,13 +165,13 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 
 		if(is_array($params)) {
 
-			if(!array_key_exists('db', $params) || !$params['db'] instanceof PDO) {
+			if(!array_key_exists('db', $params) || !($params['db'] instanceof PDO)) {
 				throw new Exception(
 					'A PDO instance is requested for ' . __CLASS__
 				);
 			}
 
-			$this->_db = $param('db');
+			$this->_db = $params['db'];
 
 			// Overrides the database table name for configuration parameters
 			if(isset($params['table_name'])) {
