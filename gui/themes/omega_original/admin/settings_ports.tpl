@@ -6,9 +6,11 @@
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="{THEME_COLOR_PATH}/css/jquery.js"></script>
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
+
 <script type="text/javascript">
-<!--
+/*<![CDATA[*/
 function action_delete(url, service) {
 	if (!confirm(sprintf("{TR_MESSAGE_DELETE}", service)))
 		return false;
@@ -16,17 +18,32 @@ function action_delete(url, service) {
 }
 
 function enable_for_post() {
-	for (var i = 0; i < document.frmsettings.length; i++) {
-		for (var j = 0; j < document.frmsettings.elements[i].length; j++) {
-			if (document.frmsettings.elements[i].name == "port_type[]") {
-				document.frmsettings.elements[i].disabled = false;
+	for (var i = 0; i < document.frm_to_updt.length; i++) {
+		for (var j = 0; j < document.frm_to_updt.elements[i].length; j++) {
+			if (document.frm_to_updt.elements[i].name == 'port_type[]') {
+				document.frm_to_updt.elements[i].disabled = false;
 			}
 		}
 	}
 	return true;
 }
-//-->
+
+var error_fields_ids = {ERROR_FIELDS_IDS};
+
+$(document).ready(function(){
+
+ $.each(error_fields_ids, function(){
+  $('#'+this).css({'border' : '1px solid red', 'font-weight' : 'bolder'});
+ });
+
+ $('input[name=submitForReset]').click(
+  function(){$('input[name=uaction]').val('reset');}
+ );
+
+});
+/*]]>*/
 </script>
+
 </head>
 
 <body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
@@ -60,7 +77,7 @@ function enable_for_post() {
 							</tr>
 							<tr>
 								<td valign="top">
-									<form name="frmsettings" method="post" action="settings_ports.php" onsubmit="return enable_for_post();">
+	<form name="frm_to_updt" method="post" action="settings_ports.php" onsubmit="return enable_for_post();">
 										<table width="100%" cellpadding="5" cellspacing="5">
 											<!-- BDP: page_message -->
 											<tr>
@@ -70,7 +87,7 @@ function enable_for_post() {
 											<!-- EDP: page_message -->
 											<tr>
 												<td width="25">&nbsp;</td>
-												<td colspan="6" class="content3"><strong>{TR_SERVICES}</strong></td>
+												<td colspan="6" class="content3"><strong>{TR_SHOW_UPDATE_SERVICE_PORT}</strong></td>
 											</tr>
 											<tr>
 												<td width="25">&nbsp;</td>
@@ -119,14 +136,39 @@ function enable_for_post() {
 											</tr>
 											<!-- EDP: service_ports -->
 											<tr>
+												<td>&nbsp;</td>
+												<td colspan="6">
+												<input type="hidden" name="uaction" value="update" />
+												<input name="submitForUpdate" type="submit" class="button" value="{VAL_FOR_SUBMIT_ON_UPDATE}" />
+												<input name="submitForReset" type="submit" class="button" value="{VAL_FOR_SUBMIT_ON_RESET}"/>
+												</td>
+											</tr>
+										</table>
+									</form>
+								</td>
+								<td>&nbsp;</td>
+							</tr>
+							<tr>
+								<td valign="top">
+									<form name="frm_to_add" method="post" action="settings_ports.php">
+										<table width="100%" cellpadding="5" cellspacing="5">
+											<tr>
 												<td width="25">&nbsp;</td>
-												<td colspan="6">{TR_ADD}:</td>
+												<td colspan="6" class="content3"><strong>{TR_ADD_NEW_SERVICE_PORT}</strong></td>
 											</tr>
 											<tr>
 												<td width="25">&nbsp;</td>
-												<td class="{CLASS}"><input name="name_new" type="text" class="textinput" id="service" value="" maxlength="25"/></td>
-												<td class="{CLASS}"><input name="ip_new" type="text" class="textinput" id="ip" style="" value="" maxlength="15" /></td>
-												<td class="{CLASS}"><input name="port_new" type="text" class="textinput" id="port" style="width:50px" value="" maxlength="6" /></td>
+												<td width="230" class="content3"><strong>{TR_SERVICE}</strong></td>
+												<td class="content3"><strong>{TR_IP}</strong></td>
+												<td class="content3"><strong>{TR_PORT}</strong></td>
+												<td class="content3"><strong>{TR_PROTOCOL}</strong></td>
+												<td class="content3"><strong>{TR_SHOW}</strong></td>
+											</tr>
+											<tr>
+												<td width="25">&nbsp;</td>
+												<td class="{CLASS}"><input name="name_new" type="text" class="textinput" id="name" value="{VAL_FOR_NAME_NEW}" maxlength="25"/></td>
+												<td class="{CLASS}"><input name="ip_new" type="text" class="textinput" id="ip" style="" value="{VAL_FOR_IP_NEW}" maxlength="15" /></td>
+												<td class="{CLASS}"><input name="port_new" type="text" class="textinput" id="port" style="width:50px" value="{VAL_FOR_PORT_NEW}" maxlength="6" /></td>
 												<td class="{CLASS}">
 													<select name="port_type_new" id="port_type">
 														<option value="udp">{TR_UDP}</option>
@@ -139,19 +181,17 @@ function enable_for_post() {
 														<option value="0">{TR_DISABLED}</option>
 													</select>
 												</td>
-												<td class="{CLASS}" width="100" nowrap="nowrap">&nbsp;</td>
 											</tr>
 											<tr>
 												<td>&nbsp;</td>
 												<td colspan="6">
-													<input type="hidden" name="uaction" value="apply" />
-													<input name="Submit" type="submit" class="button" value="{TR_APPLY_CHANGES}" />
+												<input type="hidden" name="uaction" value="add" />
+												<input name="submitForAdd" type="submit" class="button" value="{VAL_FOR_SUBMIT_ON_ADD}" />
 												</td>
 											</tr>
 										</table>
 									</form>
 								</td>
-								<td>&nbsp;</td>
 							</tr>
 							<tr>
 								<td>&nbsp;</td>

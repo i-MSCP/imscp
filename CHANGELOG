@@ -4,9 +4,16 @@ ispCP ω 1.0.6 ChangeLog
 2010-06-04 Laurent Declercq
 	- GUI:
 		* Added support for queries counter in IspCP_ConfigHandler_Db
+		* Complete rewrite of the admin/settings_ports.php script (part II):
+			- Added cached values on error
+			- Added fields highlighting support on error
+			- Added counter information on update
+			- Added an explicit message for a action that changed nothing
+			- Add and show/update actions are clearly separated now
 		* Refactored IspCP_ConfigHandler classes
 		* Refactored IspCP_Registry class
 		* Refactored include/ispcp-lib.php
+
 
 2010-06-03 Laurent Declercq
 	- GUI:
