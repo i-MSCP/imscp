@@ -30,8 +30,10 @@
 
 require '../include/ispcp-lib.php';
 
+$cfg = IspCP_Registry::get('Config');
+
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('PURCHASE_TEMPLATE_PATH') . '/addon.tpl');
+$tpl->define_dynamic('page', $cfg->PURCHASE_TEMPLATE_PATH . '/addon.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('purchase_header', 'page');
 $tpl->define_dynamic('purchase_footer', 'page');
@@ -61,8 +63,10 @@ function addon_domain($dmn_name) {
 }
 
 function is_plan_available(&$sql, $plan_id, $user_id) {
-	if (Config::getInstance()->exists('HOSTING_PLANS_LEVEL') &&
-		Config::getInstance()->get('HOSTING_PLANS_LEVEL') === 'admin') {
+
+	$cfg = IspCP_Registry::get('Config');
+
+	if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
 		$query = "
 			SELECT
 				*
@@ -142,7 +146,7 @@ $tpl->assign(
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
 

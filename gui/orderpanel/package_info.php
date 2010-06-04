@@ -30,9 +30,11 @@
 
 require '../include/ispcp-lib.php';
 
+$cfg = IspCP_Registry::get('Config');
+
 $tpl = new pTemplate();
 
-$tpl->define_dynamic('page', Config::getInstance()->get('PURCHASE_TEMPLATE_PATH') . '/package_info.tpl');
+$tpl->define_dynamic('page', $cfg->PURCHASE_TEMPLATE_PATH . '/package_info.tpl');
 $tpl->define_dynamic('purchase_list', 'page');
 $tpl->define_dynamic('purchase_message', 'page');
 $tpl->define_dynamic('purchase_header', 'page');
@@ -60,8 +62,10 @@ function translate_sse($value) {
 }
 
 function gen_plan_details(&$tpl, &$sql, $user_id, $plan_id) {
-	if (Config::getInstance()->exists('HOSTING_PLANS_LEVEL')
-		&& Config::getInstance()->get('HOSTING_PLANS_LEVEL') === 'admin') {
+
+	$cfg = IspCP_Registry::get('Config');
+
+	if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
 		$query = "
 			SELECT
 				*
@@ -113,7 +117,7 @@ function gen_plan_details(&$tpl, &$sql, $user_id, $plan_id) {
 
 		$hp_traff = translate_limit_value($hp_traff, true);
 
-		$coid = Config::getInstance()->exists('CUSTOM_ORDERPANEL_ID') ? Config::getInstance()->get('CUSTOM_ORDERPANEL_ID'): '';
+		$coid = isset($cfg->CUSTOM_ORDERPANEL_ID) ? $cfg->CUSTOM_ORDERPANEL_ID : '';
 
 		$tpl->assign(
 			array(
@@ -156,7 +160,7 @@ function gen_plan_details(&$tpl, &$sql, $user_id, $plan_id) {
  *
  */
 
-$coid = Config::getInstance()->exists('CUSTOM_ORDERPANEL_ID') ? Config::getInstance()->get('CUSTOM_ORDERPANEL_ID'): '';
+$coid = isset($cfg->CUSTOM_ORDERPANEL_ID) ? $cfg->CUSTOM_ORDERPANEL_ID : '';
 $bcoid = (empty($coid) || (isset($_GET['coid']) && $_GET['coid'] == $coid));
 
 if (isset($_GET['id']) && $bcoid) {
@@ -227,7 +231,7 @@ $tpl->assign(
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
 

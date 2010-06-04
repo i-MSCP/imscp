@@ -30,6 +30,8 @@
 
 require '../include/ispcp-lib.php';
 
+$cfg = IspCP_Registry::get('Config');
+
 /**
  * Validate activation parameters
  * @param integer $order_id ID in table orders
@@ -37,6 +39,9 @@ require '../include/ispcp-lib.php';
  * @return boolean true - validation correct
  */
 function validate_order_key($order_id, $key) {
+
+	$cfg = IspCP_Registry::get('Config');
+
 	$result = false;
 	$sql = Database::getInstance();
 	$query = "
@@ -53,7 +58,7 @@ function validate_order_key($order_id, $key) {
 	if ($rs->RecordCount() == 1) {
 		$domain_name	= $rs->fields['domain_name'];
 		$admin_id		= $rs->fields['user_id'];
-		$coid = Config::getInstance()->exists('CUSTOM_ORDERPANEL_ID') ? Config::getInstance()->get('CUSTOM_ORDERPANEL_ID'): '';
+		$coid =    isset($cfg->CUSTOM_ORDERPANEL_ID) ? $cfg->CUSTOM_ORDERPANEL_ID : '';
 		$ckey = sha1($order_id.'-'.$domain_name.'-'.$admin_id.'-'.$coid);
 		if ($ckey == $key)
 			$result = true;
@@ -67,7 +72,9 @@ function validate_order_key($order_id, $key) {
  */
 function confirm_order($order_id) {
 
+	$cfg = IspCP_Registry::get('Config');
 	$sql = Database::getInstance();
+
 	$query = "
 		SELECT
 			*
@@ -128,7 +135,7 @@ Please login into your ispCP control panel for more details.
 		$message = html_entity_decode($message, ENT_QUOTES, 'UTF-8');
 
 		$headers = "From: ". $from . "\n";
-		$headers .= "MIME-Version: 1.0\n" . "Content-Type: text/plain; charset=utf-8\n" . "Content-Transfer-Encoding: 8bit\n" . "X-Mailer: ispCP " . Config::getInstance()->get('Version') . " Service Mailer";
+		$headers .= "MIME-Version: 1.0\n" . "Content-Type: text/plain; charset=utf-8\n" . "Content-Transfer-Encoding: 8bit\n" . "X-Mailer: ispCP " . $cfg->Version . " Service Mailer";
 
 		mail($from, $subject, $message, $headers);
 	}
@@ -140,12 +147,12 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id']) || !isset($_GET['k'])) {
 
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('PURCHASE_TEMPLATE_PATH') . '/activate.tpl');
+$tpl->define_dynamic('page', $cfg->PURCHASE_TEMPLATE_PATH . '/activate.tpl');
 $tpl->define_dynamic('page_message', 'page');
 
 $theme_color = isset($_SESSION['user_theme'])
 	? $_SESSION['user_theme']
-	: Config::getInstance()->get('USER_INITIAL_THEME');
+	: $cfg->USER_INITIAL_THEME;
 
 $tpl->assign(
 	array(
@@ -168,6 +175,6 @@ $tpl->assign('PAGE_TITLE', tr('Order confirmation'));
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }

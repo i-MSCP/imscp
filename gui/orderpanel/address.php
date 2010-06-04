@@ -30,8 +30,10 @@
 
 require '../include/ispcp-lib.php';
 
+$cfg = IspCP_Registry::get('Config');
+
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('PURCHASE_TEMPLATE_PATH') . '/address.tpl');
+$tpl->define_dynamic('page', $cfg->PURCHASE_TEMPLATE_PATH . '/address.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('purchase_header', 'page');
 $tpl->define_dynamic('purchase_footer', 'page');
@@ -41,6 +43,9 @@ $tpl->define_dynamic('purchase_footer', 'page');
  */
 
 function gen_address(&$tpl, &$sql, $user_id, $plan_id) {
+
+	$cfg = IspCP_Registry::get('Config');
+
 	if (isset($_POST['fname'])) {
 		$first_name = clean_input($_POST['fname']);
 	} else if (isset($_SESSION['fname'])) {
@@ -159,9 +164,9 @@ function gen_address(&$tpl, &$sql, $user_id, $plan_id) {
 			'VL_STREET2'		=> tohtml($street2),
 			'VL_PHONE'			=> tohtml($phone),
 			'VL_FAX'			=> tohtml($fax),
-			'VL_MALE'			=> (($gender === 'M') ? Config::getInstance()->get('HTML_SELECTED') : ''),
-			'VL_FEMALE'			=> (($gender === 'F') ? Config::getInstance()->get('HTML_SELECTED') : ''),
-			'VL_UNKNOWN'		=> (($gender == 'U') ? Config::getInstance()->get('HTML_SELECTED') : '')
+			'VL_MALE'			=> (($gender === 'M') ? $cfg->HTML_SELECTED : ''),
+			'VL_FEMALE'			=> (($gender === 'F') ? $cfg->HTML_SELECTED : ''),
+			'VL_UNKNOWN'		=> (($gender == 'U') ? $cfg->HTML_SELECTED : '')
 		)
 	);
 }
@@ -283,7 +288,7 @@ $tpl->assign(
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
 
