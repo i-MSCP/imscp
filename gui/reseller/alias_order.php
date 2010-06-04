@@ -30,9 +30,9 @@
 
 require '../include/ispcp-lib.php';
 
-$cfg = IspCP_Registry::get('Config');
-
 check_login(__FILE__);
+
+$cfg = IspCP_Registry::get('Config');
 
 if (isset($_GET['action']) && $_GET['action'] === "delete") {
 

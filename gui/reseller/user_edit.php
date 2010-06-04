@@ -159,7 +159,8 @@ gen_edituser_page($tpl);
 gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
-if ($cfg->DUMP_GUI_DEBUG') {
+
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
 //unset_messages();
@@ -178,7 +179,7 @@ function load_user_data_page($user_id) {
 	global $city, $state, $country, $street_one;
 	global $street_two, $mail, $phone;
 	global $fax;
-	
+
 	$sql = Database::getInstance();
 
 	$reseller_id = $_SESSION['user_id'];
@@ -276,6 +277,7 @@ function gen_edituser_page(&$tpl) {
  * Function to update changes into db
  */
 function update_data_in_db($hpid) {
+
 	global $dmn_user_name;
 	global $user_email, $customer_id, $first_name;
 	global $last_name, $firm, $zip, $gender;
@@ -348,9 +350,12 @@ function update_data_in_db($hpid) {
 	} else {
 		// Change password
 		if (!chk_password($_POST['userpassword'])) {
-
-			if (isset($cfg->PASSWD_STRONG')) {
-				set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS));
+			if (isset($cfg->PASSWD_STRONG)){
+				set_page_message(
+					sprintf(
+						tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS
+					)
+				);
 			} else {
 				set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), $cfg->PASSWD_CHARS));
 			}

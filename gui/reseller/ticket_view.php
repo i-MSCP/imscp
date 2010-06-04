@@ -30,9 +30,9 @@
 
 require '../include/ispcp-lib.php';
 
-$cfg = IspCP_Registry::get('Config');
-
 check_login(__FILE__);
+
+$cfg = IspCP_Registry::get('Config');
 
 $query = "
   SELECT
@@ -59,6 +59,7 @@ $tpl->define_dynamic('tickets_item', 'tickets_list');
 // page functions.
 
 function gen_tickets_list(&$tpl, &$sql, &$ticket_id, &$screenwidth) {
+
 	$cfg = IspCP_Registry::get('Config');
 	
 	$user_id = $_SESSION['user_id'];
@@ -120,6 +121,7 @@ function gen_tickets_list(&$tpl, &$sql, &$ticket_id, &$screenwidth) {
 }
 
 function get_tickets_replys(&$tpl, &$sql, &$ticket_id, &$screenwidth) {
+
 	$cfg = IspCP_Registry::get('Config');
 	
 	$query = "
@@ -164,6 +166,7 @@ function get_tickets_replys(&$tpl, &$sql, &$ticket_id, &$screenwidth) {
 }
 
 function get_ticket_from(&$tpl, &$sql, &$ticket_id) {
+
 	$query = "
 		SELECT
 			`ticket_from`,
@@ -219,6 +222,7 @@ $tpl->assign(
 );
 
 function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id, &$screenwidth) {
+
 	if (!isset($_POST['uaction'])) {
 		return;
 	} elseif (empty($_POST['user_message'])) { // no message check->error
@@ -309,6 +313,7 @@ function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id, &$screenwi
 }
 
 function get_send_to_who(&$sql, &$ticket_reply) {
+
 	$query = "
 		SELECT
 			`ticket_from`
@@ -335,6 +340,7 @@ function get_send_to_who(&$sql, &$ticket_reply) {
 }
 
 function close_ticket($sql, $ticket_id) {
+
 	$query = "
 		UPDATE
 			`tickets`
@@ -350,6 +356,7 @@ function close_ticket($sql, $ticket_id) {
 }
 
 function open_ticket($sql, $ticket_id) {
+
 	$query = "
 		SELECT
 			`ticket_level`
@@ -381,6 +388,7 @@ function open_ticket($sql, $ticket_id) {
 }
 
 function change_ticket_status_view($sql, $ticket_id) {
+
 	$query = "
 		SELECT
 			`ticket_level`,
@@ -455,7 +463,7 @@ if (isset($_GET['ticket_id'])) {
 // static page messages.
 
 gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_ticket_system.tpl');
-gen_reseller_menu($tpl, C$cfg->RESELLER_TEMPLATE_PATH . '/menu_ticket_system.tpl');
+gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_ticket_system.tpl');
 
 gen_logged_from($tpl);
 
