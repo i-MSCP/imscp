@@ -32,9 +32,11 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
+$cfg = IspCP_Registry::get('Config');
+
 $tpl = new pTemplate();
 
-$tpl->define_dynamic('page', Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/ftp_add.tpl');
+$tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/ftp_add.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('als_list', 'page');
@@ -64,13 +66,17 @@ function get_alias_mount_point(&$sql, $alias_name) {
 }
 
 function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
+	
+	$cfg = IspCP_Registry::get('Config');
+
 	$dmn_name = decode_idna($dmn_name);
+
 	if ($post_check === 'no') {
 		$tpl->assign(
 			array(
 				'USERNAME' => '',
 				'DOMAIN_NAME' => tohtml($dmn_name),
-				'DMN_TYPE_CHECKED' => Config::getInstance()->get('HTML_CHECKED'),
+				'DMN_TYPE_CHECKED' => $cfg->HTML_CHECKED,
 				'ALS_TYPE_CHECKED' => '',
 				'SUB_TYPE_CHECKED' => '',
 				'OTHER_DIR' => '',
@@ -82,18 +88,21 @@ function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
 			array(
 				'USERNAME' => clean_input($_POST['username'], true),
 				'DOMAIN_NAME' => tohtml($dmn_name),
-				'DMN_TYPE_CHECKED' => ($_POST['dmn_type'] === 'dmn') ? Config::getInstance()->get('HTML_CHECKED') : '',
-				'ALS_TYPE_CHECKED' => ($_POST['dmn_type'] === 'als') ? Config::getInstance()->get('HTML_CHECKED') : '',
-				'SUB_TYPE_CHECKED' => ($_POST['dmn_type'] === 'sub') ? Config::getInstance()->get('HTML_CHECKED') : '',
+				'DMN_TYPE_CHECKED' => ($_POST['dmn_type'] === 'dmn') ? $cfg->HTML_CHECKED : '',
+				'ALS_TYPE_CHECKED' => ($_POST['dmn_type'] === 'als') ? $cfg->HTML_CHECKED : '',
+				'SUB_TYPE_CHECKED' => ($_POST['dmn_type'] === 'sub') ? $cfg->HTML_CHECKED : '',
 				'OTHER_DIR' => clean_input($_POST['other_dir'], true),
-				'USE_OTHER_DIR_CHECKED' => (isset($_POST['use_other_dir']) && $_POST['use_other_dir'] === 'on') ? Config::getInstance()->get('HTML_CHECKED') : ''
+				'USE_OTHER_DIR_CHECKED' => (isset($_POST['use_other_dir']) && $_POST['use_other_dir'] === 'on') ? $cfg->HTML_CHECKED : ''
 			)
 		);
 	}
 }
 
 function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
-	$ok_status = Config::getInstance()->get('ITEM_OK_STATUS');
+
+	$cfg = IspCP_Registry::get('Config');
+
+	$ok_status = $cfg->ITEM_OK_STATUS;
 
 	$query = "
 		SELECT
@@ -113,7 +122,7 @@ function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 		$tpl->assign(
 			array(
 				'ALS_ID' => 'n/a',
-				'ALS_SELECTED' => Config::getInstance()->get('HTML_SELECTED'),
+				'ALS_SELECTED' => $cfg->HTML_SELECTED,
 				'ALS_NAME' => tr('Empty List')
 			)
 		);
@@ -126,10 +135,10 @@ function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 			if ($post_check === 'yes') {
 				$als_id = (!isset($_POST['als_id'])) ? '' : $_POST['als_id'];
 				$als_selected = ($als_id == $rs->fields['alias_name'])
-					? Config::getInstance()->get('HTML_SELECTED')
+					? $cfg->HTML_SELECTED
 					: '';
 			} else {
-				$als_selected = (!$first_passed) ? Config::getInstance()->get('HTML_SELECTED') : '';
+				$als_selected = (!$first_passed) ? $cfg->HTML_SELECTED : '';
 			}
 
 			$als_menu_name = decode_idna($rs->fields['alias_name']);
@@ -151,7 +160,10 @@ function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 }
 
 function gen_dmn_sub_list(&$tpl, &$sql, $dmn_id, $dmn_name, $post_check) {
-	$ok_status = Config::getInstance()->get('ITEM_OK_STATUS');
+
+	$cfg = IspCP_Registry::get('Config');
+
+	$ok_status = $cfg->ITEM_OK_STATUS;
 	$query = "
 		SELECT
 			`subdomain_id` AS sub_id, `subdomain_name` AS sub_name
@@ -171,7 +183,7 @@ function gen_dmn_sub_list(&$tpl, &$sql, $dmn_id, $dmn_name, $post_check) {
 		$tpl->assign(
 			array(
 				'SUB_ID' => 'n/a',
-				'SUB_SELECTED' => Config::getInstance()->get('HTML_SELECTED'),
+				'SUB_SELECTED' => $cfg->HTML_SELECTED,
 				'SUB_NAME' => tr('Empty list')
 			)
 		);
@@ -185,10 +197,10 @@ function gen_dmn_sub_list(&$tpl, &$sql, $dmn_id, $dmn_name, $post_check) {
 			if ($post_check === 'yes') {
 				$sub_id = (!isset($_POST['sub_id'])) ? '' : $_POST['sub_id'];
 				$sub_selected = ($sub_id == $rs->fields['sub_name'])
-					? Config::getInstance()->get('HTML_SELECTED')
+					? $cfg->HTML_SELECTED
 					: '';
 			} else {
-				$sub_selected = (!$first_passed) ? Config::getInstance()->get('HTML_SELECTED') : '';
+				$sub_selected = (!$first_passed) ? $cfg->HTML_SELECTED : '';
 			}
 
 			$sub_menu_name = decode_idna($rs->fields['sub_name']);
@@ -208,8 +220,8 @@ function gen_dmn_sub_list(&$tpl, &$sql, $dmn_id, $dmn_name, $post_check) {
 }
 
 function get_ftp_user_gid(&$sql, $dmn_name, $ftp_user) {
-	global $last_gid;
-	global $max_gid;
+
+	global $last_gid, $max_gid;
 
 	$query = "SELECT `gid`, `members` FROM `ftp_group` WHERE `groupname` = ?";
 
@@ -299,6 +311,7 @@ function get_ftp_user_gid(&$sql, $dmn_name, $ftp_user) {
 }
 
 function get_ftp_user_uid(&$sql, $dmn_name, $ftp_user, $ftp_user_gid) {
+
 	global $max_uid;
 
 	$query = "
@@ -347,6 +360,9 @@ function get_ftp_user_uid(&$sql, $dmn_name, $ftp_user, $ftp_user_gid) {
 }
 
 function add_ftp_user(&$sql, $dmn_name) {
+
+	$cfg = IspCP_Registry::get('Config');
+
 	$username = strtolower(clean_input($_POST['username']));
 
 	if (!validates_username($username)) {
@@ -359,19 +375,19 @@ function add_ftp_user(&$sql, $dmn_name) {
 	switch ($_POST['dmn_type']) {
 		// Default moint point for a domain
 		case 'dmn':
-			$ftp_user = $username . Config::getInstance()->get('FTP_USERNAME_SEPARATOR') . $dmn_name;
-			$ftp_home = Config::getInstance()->get('FTP_HOMEDIR') . "/$dmn_name";
+			$ftp_user = $username . $cfg->FTP_USERNAME_SEPARATOR . $dmn_name;
+			$ftp_home = $cfg->FTP_HOMEDIR . "/$dmn_name";
 			break;
 		// Default mount point for an alias domain
 		case 'als':
-			$ftp_user = $username . Config::getInstance()->get('FTP_USERNAME_SEPARATOR') . $_POST['als_id'];
+			$ftp_user = $username . $cfg->FTP_USERNAME_SEPARATOR . $_POST['als_id'];
 			$alias_mount_point = get_alias_mount_point($sql, $_POST['als_id']);
-			$ftp_home = Config::getInstance()->get('FTP_HOMEDIR') . "/$dmn_name" . $alias_mount_point;
+			$ftp_home = $cfg->FTP_HOMEDIR . "/$dmn_name" . $alias_mount_point;
 			break;
 		// Default mount point for a subdomain
 		case 'sub':
-			$ftp_user = $username . Config::getInstance()->get('FTP_USERNAME_SEPARATOR') . $_POST['sub_id'] . '.' . $dmn_name;
-			$ftp_home = Config::getInstance()->get('FTP_HOMEDIR') . "/$dmn_name/" . clean_input($_POST['sub_id']);
+			$ftp_user = $username . $cfg->FTP_USERNAME_SEPARATOR . $_POST['sub_id'] . '.' . $dmn_name;
+			$ftp_home = $cfg->FTP_HOMEDIR . "/$dmn_name/" . clean_input($_POST['sub_id']);
 			break;
 		// Unknown domain type (?)
 		default:
@@ -390,7 +406,7 @@ function add_ftp_user(&$sql, $dmn_name) {
 			set_page_message(tr('Incorrect mount point length or syntax'));
 			return;
 		}
-		$ftp_home = Config::getInstance()->get('FTP_HOMEDIR') . "/$dmn_name/" . $ftp_vhome;
+		$ftp_home = $cfg->FTP_HOMEDIR . "/$dmn_name/" . $ftp_vhome;
 		// Strip possible double-slashes
 		$ftp_home = str_replace('//', '/', $ftp_home);
 		// Check for $ftp_vhome existence
@@ -410,7 +426,7 @@ function add_ftp_user(&$sql, $dmn_name) {
 
 	if ($ftp_uid == -1) return;
 
-	$ftp_shell = Config::getInstance()->get('CMD_SHELL');
+	$ftp_shell = $cfg->CMD_SHELL;
 	$ftp_passwd = crypt_user_pass_with_salt($_POST['pass']);
 
 	$query = "
@@ -431,6 +447,9 @@ function add_ftp_user(&$sql, $dmn_name) {
 }
 
 function check_ftp_acc_data(&$tpl, &$sql, $dmn_id, $dmn_name) {
+
+	$cfg = IspCP_Registry::get('Config');
+
 	if (!isset($_POST['username']) || $_POST['username'] === '') {
 		set_page_message(tr('Please enter FTP account username!'));
 		return;
@@ -449,10 +468,10 @@ function check_ftp_acc_data(&$tpl, &$sql, $dmn_id, $dmn_name) {
 	}
 
 	if (!chk_password($_POST['pass'])) {
-		if (Config::getInstance()->get('PASSWD_STRONG')) {
-			set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), Config::getInstance()->get('PASSWD_CHARS')));
+		if ($cfg->PASSWD_STRONG) {
+			set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS));
 		} else {
-			set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), Config::getInstance()->get('PASSWD_CHARS')));
+			set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), $cfg->PASSWD_CHARS));
 		}
 		return;
 	}
@@ -522,6 +541,7 @@ function gen_page_ftp_acc_props(&$tpl, &$sql, $user_id) {
 }
 
 function gen_page_js(&$tpl) {
+
 	if (isset($_SESSION['subdomain_count'])
 		&& isset($_SESSION['alias_count'])) { // no subdomains and no alias
 		$tpl->parse('JS_NOT_DOMAIN', 'js_not_domain');
@@ -555,12 +575,11 @@ function gen_page_js(&$tpl) {
 
 // common page data.
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
 $tpl->assign(
 	array(
 		'TR_CLIENT_ADD_FTP_ACC_PAGE_TITLE' => tr('ispCP - Client/Add FTP User'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
 	)
@@ -572,8 +591,8 @@ gen_page_ftp_acc_props($tpl, $sql, $_SESSION['user_id']);
 
 // static page messages.
 
-gen_client_mainmenu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/main_menu_ftp_accounts.tpl');
-gen_client_menu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/menu_ftp_accounts.tpl');
+gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_ftp_accounts.tpl');
+gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_ftp_accounts.tpl');
 
 gen_logged_from($tpl);
 
@@ -591,14 +610,15 @@ $tpl->assign(
 		'TR_USE_OTHER_DIR' => tr('Use other dir'),
 		'TR_ADD' => tr('Add'),
 		'CHOOSE_DIR' => tr('Choose dir'),
-		'FTP_SEPARATOR' => Config::getInstance()->get('FTP_USERNAME_SEPARATOR')
+		'FTP_SEPARATOR' => $cfg->FTP_USERNAME_SEPARATOR
 	)
 );
 
 gen_page_message($tpl);
+
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }

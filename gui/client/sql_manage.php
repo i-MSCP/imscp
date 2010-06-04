@@ -32,8 +32,10 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
+$cfg = IspCP_Registry::get('Config');
+
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/sql_manage.tpl');
+$tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/sql_manage.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('db_list', 'page');
@@ -44,6 +46,7 @@ $count = -1;
 
 // page functions.
 function gen_db_user_list(&$tpl, &$sql, $db_id) {
+
 	global $count;
 
 	$query = "
@@ -92,6 +95,7 @@ function gen_db_user_list(&$tpl, &$sql, $db_id) {
 }
 
 function gen_db_list(&$tpl, &$sql, $user_id) {
+
 	$dmn_id = get_user_domain_id($sql, $user_id);
 
 	$query = "
@@ -134,11 +138,11 @@ if (isset($_SESSION['sql_support']) && $_SESSION['sql_support'] == "no") {
 	user_goto('index.php');
 }
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
+
 $tpl->assign(
 	array(
 		'TR_CLIENT_MANAGE_SQL_PAGE_TITLE' => tr('ispCP - Client/Manage SQL'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
 	)
@@ -150,8 +154,8 @@ gen_db_list($tpl, $sql, $_SESSION['user_id']);
 
 // static page messages.
 
-gen_client_mainmenu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/main_menu_manage_sql.tpl');
-gen_client_menu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/menu_manage_sql.tpl');
+gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_manage_sql.tpl');
+gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_manage_sql.tpl');
 
 gen_logged_from($tpl);
 
@@ -179,7 +183,8 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
+
 unset_messages();

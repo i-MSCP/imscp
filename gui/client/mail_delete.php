@@ -32,6 +32,8 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
+$cfg = IspCP_Registry::get('Config');
+
 if (isset($_GET['id']) && $_GET['id'] !== '') {
 	global $delete_id;
 	$delete_id = $_GET['id'];
@@ -107,7 +109,7 @@ if ($num > 0) {
 /**
  * @todo useDB prepared statements
  */
-$query = "UPDATE `mail_users` SET `status` = '" . Config::getInstance()->get('ITEM_DELETE_STATUS') . "' WHERE `mail_id` = ?";
+$query = "UPDATE `mail_users` SET `status` = '" . $cfg->ITEM_DELETE_STATUS . "' WHERE `mail_id` = ?";
 exec_query($sql, $query, array($delete_id));
 
 update_reseller_c_props(get_reseller_id($data['domain_id']));

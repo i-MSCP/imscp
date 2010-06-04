@@ -32,8 +32,10 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
+$cfg = IspCP_Registry::get('Config');
+
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/domain_statistics.tpl');
+$tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/domain_statistics.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('month_item', 'page');
@@ -44,10 +46,13 @@ $tpl->define_dynamic('traff_item', 'traff_list');
 // page functions.
 
 function gen_page_date(&$tpl, $month, $year) {
+	
+	$cfg = IspCP_Registry::get('Config');
+
 	for ($i = 1; $i <= 12; $i++) {
 		$tpl->assign(
 			array(
-				'MONTH_SELECTED' => ($i == $month) ? Config::getInstance()->get('HTML_SELECTED') : '',
+				'MONTH_SELECTED' => ($i == $month) ? $cfg->HTML_SELECTED : '',
 				'MONTH' => $i
 			)
 		);
@@ -57,7 +62,7 @@ function gen_page_date(&$tpl, $month, $year) {
 	for ($i = $year - 1; $i <= $year + 1; $i++) {
 		$tpl->assign(
 			array(
-				'YEAR_SELECTED' => ($i == $year) ? Config::getInstance()->get('HTML_SELECTED') : '',
+				'YEAR_SELECTED' => ($i == $year) ? $cfg->HTML_SELECTED : '',
 				'YEAR' => $i
 			)
 		);
@@ -66,6 +71,7 @@ function gen_page_date(&$tpl, $month, $year) {
 }
 
 function gen_page_post_data(&$tpl, $current_month, $current_year) {
+
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'show_traff') {
 		$current_month = $_POST['month'];
 		$current_year = $_POST['year'];
@@ -76,6 +82,7 @@ function gen_page_post_data(&$tpl, $current_month, $current_year) {
 }
 
 function get_domain_trafic($from, $to, $domain_id) {
+
 	$sql = Database::getInstance();
 
 	$query = "
@@ -112,6 +119,7 @@ function get_domain_trafic($from, $to, $domain_id) {
  * @todo Check the out commented code at the end of this function, can we remove it?
  */
 function gen_dmn_traff_list(&$tpl, &$sql, $month, $year, $user_id) {
+
 	global $web_trf, $ftp_trf, $smtp_trf, $pop_trf,
 	$sum_web, $sum_ftp, $sum_mail, $sum_pop;
 
@@ -180,7 +188,8 @@ function gen_dmn_traff_list(&$tpl, &$sql, $month, $year, $user_id) {
 		$sum_mail += $smtp_trf;
 		$sum_pop += $pop_trf;
 
-		$date_formt = Config::getInstance()->get('DATE_FORMAT');
+		$date_formt = $cfg->DATE_FORMAT;
+
 		$tpl->assign(
 			array(
 				'DATE' => date($date_formt, strtotime($year . "-" . $month . "-" . $i)),
@@ -296,12 +305,11 @@ function gen_dmn_traff_list(&$tpl, &$sql, $month, $year, $user_id) {
 
 // common page data.
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
 $tpl->assign(
 	array(
 		'TR_CLIENT_DOMAIN_STATISTICS_PAGE_TITLE' => tr('ispCP - Client/Domain Statistics'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
 	)
@@ -311,13 +319,14 @@ $tpl->assign(
 
 $current_month = date("m", time());
 $current_year = date("Y", time());
+
 list($current_month, $current_year) = gen_page_post_data($tpl, $current_month, $current_year);
 gen_dmn_traff_list($tpl, $sql, $current_month, $current_year, $_SESSION['user_id']);
 
 // static page messages.
 
-gen_client_mainmenu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/main_menu_statistics.tpl');
-gen_client_menu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/menu_statistics.tpl');
+gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_statistics.tpl');
+gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_statistics.tpl');
 
 gen_logged_from($tpl);
 
@@ -342,10 +351,12 @@ $tpl->assign(
 );
 
 gen_page_message($tpl);
+
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
+
 unset_messages();

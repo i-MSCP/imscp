@@ -32,17 +32,19 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
+$cfg = IspCP_Registry::get('Config');
+
 $tpl = new pTemplate();
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('dir_item', 'page');
 $tpl->define_dynamic('action_link', 'page');
 $tpl->define_dynamic('list_item', 'page');
-$tpl->define_dynamic('page', Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/ftp_choose_dir.tpl');
+$tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/ftp_choose_dir.tpl');
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
 function gen_directories(&$tpl) {
+
 	$sql = Database::getInstance();
 	// Initialize variables
 	$path = isset($_GET['cur_dir']) ? $_GET['cur_dir'] : '';
@@ -108,7 +110,7 @@ function gen_directories(&$tpl) {
 $tpl->assign(
 	array(
 		'TR_CLIENT_WEBTOOLS_PAGE_TITLE' => tr('ispCP - Client/Webtools'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
 	)
@@ -130,7 +132,8 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
+
 unset_messages();

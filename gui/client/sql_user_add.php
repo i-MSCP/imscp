@@ -32,8 +32,10 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
+$cfg = IspCP_Registry::get('Config');
+
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/sql_user_add.tpl');
+$tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/sql_user_add.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('mysql_prefix_no', 'page');
@@ -138,6 +140,9 @@ function get_sqluser_list_of_current_db(&$sql, $db_id) {
 }
 
 function gen_sql_user_list(&$sql, &$tpl, $user_id, $db_id) {
+
+	$cfg = IspCP_Registry::get('Config');
+
 	$first_passed = true;
 	$user_found = false;
 	$oldrs_name = '';
@@ -166,7 +171,7 @@ function gen_sql_user_list(&$sql, &$tpl, $user_id, $db_id) {
 	while (!$rs->EOF) {
 		// Checks if it's the first element of the combobox and set it as selected
 		if ($first_passed) {
-			$select = Config::getInstance()->get('HTML_SELECTED');
+			$select = $cfg->HTML_SELECTED;
 			$first_passed = false;
 		} else {
 			$select = '';
@@ -210,6 +215,9 @@ function check_db_user(&$sql, $db_user) {
  * 		in loclal ispcp table -> Error handling
  */
 function add_sql_user(&$sql, $user_id, $db_id) {
+
+	$cfg = IspCP_Registry::get('Config');
+
 	if (!isset($_POST['uaction'])) {
 		return;
 	}
@@ -235,7 +243,7 @@ function add_sql_user(&$sql, $user_id, $db_id) {
 	}
 
 	if (isset($_POST['pass'])
-		&& strlen($_POST['pass']) > Config::getInstance()->get('MAX_SQL_PASS_LENGTH')
+		&& strlen($_POST['pass']) > $cfg->MAX_SQL_PASS_LENGTH
 		&& !isset($_POST['Add_Exist'])) {
 		set_page_message(tr('Too user long password!'));
 		return;
@@ -251,10 +259,10 @@ function add_sql_user(&$sql, $user_id, $db_id) {
 	if (isset($_POST['pass'])
 		&& !chk_password($_POST['pass'])
 		&& !isset($_POST['Add_Exist'])) {
-		if (Config::getInstance()->get('PASSWD_STRONG')) {
-			set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), Config::getInstance()->get('PASSWD_CHARS')));
+		if ($cfg->PASSWD_STRONG) {
+			set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS));
 		} else {
-			set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), Config::getInstance()->get('PASSWD_CHARS')));
+			set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), $cfg->PASSWD_CHARS));
 		}
 		return;
 	}
@@ -296,7 +304,7 @@ function add_sql_user(&$sql, $user_id, $db_id) {
 		$db_user = $rs->fields['sqlu_name'];
 	}
 
-	if (strlen($db_user) > Config::getInstance()->get('MAX_SQL_USER_LENGTH')) {
+	if (strlen($db_user) > $cfg->MAX_SQL_USER_LENGTH) {
 		set_page_message(tr('User name too long!'));
 		return;
 	}
@@ -352,9 +360,12 @@ function add_sql_user(&$sql, $user_id, $db_id) {
 }
 
 function gen_page_post_data(&$tpl, $db_id) {
-	if (Config::getInstance()->get('MYSQL_PREFIX') === 'yes') {
+
+	$cfg = IspCP_Registry::get('Config');
+
+	if ($cfg->MYSQL_PREFIX === 'yes') {
 		$tpl->assign('MYSQL_PREFIX_YES', '');
-		if (Config::getInstance()->get('MYSQL_PREFIX_TYPE') === 'behind') {
+		if ($cfg->MYSQL_PREFIX_TYPE === 'behind') {
 			$tpl->assign('MYSQL_PREFIX_INFRONT', '');
 			$tpl->parse('MYSQL_PREFIX_BEHIND', 'mysql_prefix_behind');
 			$tpl->assign('MYSQL_PREFIX_ALL', '');
@@ -374,9 +385,9 @@ function gen_page_post_data(&$tpl, $db_id) {
 		$tpl->assign(
 			array(
 				'USER_NAME' => (isset($_POST['user_name'])) ? clean_html($_POST['user_name'], true) : '',
-				'USE_DMN_ID' => (isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on') ? Config::getInstance()->get('HTML_CHECKED') : '',
-				'START_ID_POS_CHECKED' => (isset($_POST['id_pos']) && $_POST['id_pos'] !== 'end') ? Config::getInstance()->get('HTML_CHECKED') : '',
-				'END_ID_POS_CHECKED' => (isset($_POST['id_pos']) && $_POST['id_pos'] === 'end') ? Config::getInstance()->get('HTML_CHECKED') : ''
+				'USE_DMN_ID' => (isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on') ? $cfg->HTML_CHECKED : '',
+				'START_ID_POS_CHECKED' => (isset($_POST['id_pos']) && $_POST['id_pos'] !== 'end') ? $cfg->HTML_CHECKED : '',
+				'END_ID_POS_CHECKED' => (isset($_POST['id_pos']) && $_POST['id_pos'] === 'end') ? $cfg->HTML_CHECKED : ''
 			)
 		);
 	} else {
@@ -385,7 +396,7 @@ function gen_page_post_data(&$tpl, $db_id) {
 				'USER_NAME' => '',
 				'USE_DMN_ID' => '',
 				'START_ID_POS_CHECKED' => '',
-				'END_ID_POS_CHECKED' => Config::getInstance()->get('HTML_CHECKED')
+				'END_ID_POS_CHECKED' => $cfg->HTML_CHECKED
 			)
 		);
 	}
@@ -399,11 +410,10 @@ if (isset($_SESSION['sql_support']) && $_SESSION['sql_support'] == "no") {
 	user_goto('index.php');
 }
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 $tpl->assign(
 	array(
 		'TR_CLIENT_SQL_ADD_USER_PAGE_TITLE' => tr('ispCP - Client/Add SQL User'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
 	)
@@ -418,8 +428,8 @@ add_sql_user($sql, $_SESSION['user_id'], $db_id);
 
 // static page messages.
 
-gen_client_mainmenu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/main_menu_manage_sql.tpl');
-gen_client_menu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/menu_manage_sql.tpl');
+gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_manage_sql.tpl');
+gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_manage_sql.tpl');
 
 gen_logged_from($tpl);
 
@@ -446,7 +456,8 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
+
 unset_messages();

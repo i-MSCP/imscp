@@ -32,6 +32,8 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
+$cfg = IspCP_Registry::get('Config');
+
 /**
  * @todo check queries if any of them use db prepared statements
  */
@@ -39,7 +41,7 @@ check_login(__FILE__);
 if (isset($_GET['id']) && $_GET['id'] !== '') {
 
 	$id = $_GET['id'];
-	$delete_status = Config::getInstance()->get('ITEM_DELETE_STATUS');
+	$delete_status = $cfg->ITEM_DELETE_STATUS;
 	$dmn_id = get_user_domain_id($sql, $_SESSION['user_id']);
 
 	// let's see the status of this thing
@@ -56,7 +58,8 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 
 	$rs = exec_query($sql, $query, array($id, $dmn_id));
 	$status = $rs->fields['status'];
-	$ok_status = Config::getInstance()->get('ITEM_OK_STATUS');
+	$ok_status = $cfg->ITEM_OK_STATUS;
+
 	if ($status !== $ok_status) {
 		set_page_message(tr('Protected area status should be OK if you want to delete it!'));
 		user_goto('protected_areas.php');

@@ -36,8 +36,6 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
-
 if (isset($_GET['del_id']) && !empty($_GET['del_id'])) {
 	$del_id = $_GET['del_id'];
 } else {

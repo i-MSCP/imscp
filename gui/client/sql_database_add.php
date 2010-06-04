@@ -32,8 +32,10 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
+$cfg = IspCP_Registry::get('Config');
+
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/sql_database_add.tpl');
+$tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/sql_database_add.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('mysql_prefix_no', 'page');
@@ -45,9 +47,13 @@ $tpl->define_dynamic('mysql_prefix_all', 'page');
 // page functions.
 
 function gen_page_post_data(&$tpl) {
-	if (Config::getInstance()->get('MYSQL_PREFIX') === 'yes') {
+
+	$cfg = IspCP_Registry::get('Config');
+
+	if ($cfg->MYSQL_PREFIX === 'yes') {
 		$tpl->assign('MYSQL_PREFIX_YES', '');
-		if (Config::getInstance()->get('MYSQL_PREFIX_TYPE') === 'behind') {
+
+		if ($cfg->MYSQL_PREFIX_TYPE === 'behind') {
 			$tpl->assign('MYSQL_PREFIX_INFRONT', '');
 			$tpl->parse('MYSQL_PREFIX_BEHIND', 'mysql_prefix_behind');
 			$tpl->assign('MYSQL_PREFIX_ALL', '');
@@ -67,9 +73,9 @@ function gen_page_post_data(&$tpl) {
 		$tpl->assign(
 			array(
 				'DB_NAME' => clean_input($_POST['db_name'], true),
-				'USE_DMN_ID' => (isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on') ? Config::getInstance()->get('HTML_CHECKED') : '',
-				'START_ID_POS_CHECKED' => (isset($_POST['id_pos']) && $_POST['id_pos'] !== 'end') ? Config::getInstance()->get('HTML_CHECKED') : '',
-				'END_ID_POS_CHECKED' => (isset($_POST['id_pos']) && $_POST['id_pos'] === 'end') ? Config::getInstance()->get('HTML_CHECKED') : ''
+				'USE_DMN_ID' => (isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on') ? $cfg->HTML_CHECKED : '',
+				'START_ID_POS_CHECKED' => (isset($_POST['id_pos']) && $_POST['id_pos'] !== 'end') ? $cfg->HTML_CHECKED : '',
+				'END_ID_POS_CHECKED' => (isset($_POST['id_pos']) && $_POST['id_pos'] === 'end') ? $cfg->HTML_CHECKED : ''
 			)
 		);
 	} else {
@@ -77,7 +83,7 @@ function gen_page_post_data(&$tpl) {
 			array(
 				'DB_NAME' => '',
 				'USE_DMN_ID' => '',
-				'START_ID_POS_CHECKED' => Config::getInstance()->get('HTML_CHECKED'),
+				'START_ID_POS_CHECKED' => $cfg->HTML_CHECKED,
 				'END_ID_POS_CHECKED' => ''
 			)
 		);
@@ -98,6 +104,9 @@ function check_db_name(&$sql, $db_name) {
 }
 
 function add_sql_database(&$sql, $user_id) {
+
+	$cfg = IspCP_Registry::get('Config');
+
 	if (!isset($_POST['uaction'])) return;
 
 	// let's generate database name.
@@ -121,7 +130,7 @@ function add_sql_database(&$sql, $user_id) {
 		$db_name = clean_input($_POST['db_name']);
 	}
 
-	if (strlen($db_name) > Config::getInstance()->get('MAX_SQL_DATABASE_LENGTH')) {
+	if (strlen($db_name) > $cfg->MAX_SQL_DATABASE_LENGTH) {
 		set_page_message(tr('Database name is too long!'));
 		return;
 	}
@@ -199,12 +208,10 @@ function check_sql_permissions($sql, $user_id) {
 	}
 }
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
-
 $tpl->assign(
 	array(
 		'TR_CLIENT_ADD_SQL_DATABASE_PAGE_TITLE' => tr('ispCP - Client/Add SQL Database'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
 	)
@@ -218,8 +225,8 @@ gen_page_post_data($tpl);
 
 add_sql_database($sql, $_SESSION['user_id']);
 
-gen_client_mainmenu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/main_menu_manage_sql.tpl');
-gen_client_menu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/menu_manage_sql.tpl');
+gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_manage_sql.tpl');
+gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_manage_sql.tpl');
 
 gen_logged_from($tpl);
 
@@ -241,6 +248,6 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }

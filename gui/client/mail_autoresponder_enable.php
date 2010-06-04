@@ -32,8 +32,10 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
+$cfg = IspCP_Registry::get('Config');
+
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/mail_autoresponder_enable.tpl');
+$tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/mail_autoresponder_enable.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 
@@ -68,6 +70,9 @@ function check_email_user(&$sql) {
 }
 
 function gen_page_dynamic_data(&$tpl, &$sql, $mail_id) {
+
+	$cfg = IspCP_Registry::get('Config');
+
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'enable_arsp') {
 		if (empty($_POST['arsp_message'])) {
 			$tpl->assign('ARSP_MESSAGE', '');
@@ -76,7 +81,7 @@ function gen_page_dynamic_data(&$tpl, &$sql, $mail_id) {
 		}
 
 		$arsp_message = clean_input($_POST['arsp_message'], false);
-		$item_change_status = Config::getInstance()->get('ITEM_CHANGE_STATUS');
+		$item_change_status = $cfg->ITEM_CHANGE_STATUS;
 
 		$query = "
 			UPDATE
@@ -150,12 +155,11 @@ if (isset($_SESSION['email_support']) && $_SESSION['email_support'] == "no") {
 	header("Location: index.php");
 }
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
 $tpl->assign(
 	array(
 		'TR_CLIENT_ENABLE_AUTORESPOND_PAGE_TITLE'	=> tr('ispCP - Client/Enable Mail Auto Responder'),
-		'THEME_COLOR_PATH'							=> "../themes/$theme_color",
+		'THEME_COLOR_PATH'							=> "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET'								=> tr('encoding'),
 		'ISP_LOGO'									=> get_logo($_SESSION['user_id'])
 	)
@@ -168,8 +172,8 @@ gen_page_dynamic_data($tpl, $sql, $mail_id);
 
 // static page messages.
 
-gen_client_mainmenu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/main_menu_email_accounts.tpl');
-gen_client_menu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/menu_email_accounts.tpl');
+gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_email_accounts.tpl');
+gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_email_accounts.tpl');
 
 gen_logged_from($tpl);
 
@@ -189,7 +193,8 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
+
 unset_messages();

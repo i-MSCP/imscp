@@ -30,11 +30,13 @@
 
 require '../include/ispcp-lib.php';
 
-check_login(__FILE__, Config::getInstance()->get('PREVENT_EXTERNAL_LOGIN_CLIENT'));
+$cfg = IspCP_Registry::get('Config');
+
+check_login(__FILE__, $cfg->PREVENT_EXTERNAL_LOGIN_CLIENT);
 
 $tpl = new pTemplate();
 
-$tpl->define_dynamic('page', Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/index.tpl');
+$tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/index.tpl');
 $tpl->define_dynamic('def_language', 'page');
 $tpl->define_dynamic('def_layout', 'page');
 $tpl->define_dynamic('no_messages', 'page');
@@ -328,7 +330,7 @@ function gen_remain_time($dbtime){
  *
  */
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
+$theme_color = $cfg->USER_INITIAL_THEME;
 
 if (isset($_POST['uaction']) && $_POST['uaction'] === 'save_layout') {
 	$user_id = $_SESSION['user_id'];
@@ -407,7 +409,7 @@ $account_name = decode_idna($_SESSION['user_logged']);
 if ($dmn_expires == 0) {
 	$dmn_expires_date = tr('Not Set');
 } else {
-	$date_formt = Config::getInstance()->get('DATE_FORMAT');
+	$date_formt = $cfg->DATE_FORMAT;
 	$dmn_expires_date = "( <strong style=\"text-decoration:underline;\">".date($date_formt, $dmn_expires)."</strong> )";
 }
 
@@ -445,7 +447,7 @@ if (time() < $dmn_expires) {
 $tpl->assign(
 	array(
 		'ACCOUNT_NAME'		=> tohtml($account_name),
-		'DOMAIN_UID' 		=> $dmn_uid.".".Config::getInstance()->get('BASE_SERVER_VHOST'),
+		'DOMAIN_UID' 		=> $dmn_uid.".".$cfg->BASE_SERVER_VHOST,
 		'MAIN_DOMAIN'		=> tohtml($dmn_name),
 		'DMN_EXPIRES_DATE'	=> $dmn_expires_date,
 		'MYSQL_SUPPORT'		=> ($dmn_sqld_limit != -1 && $dmn_sqlu_limit != -1) ? tr('yes') : tr('no'),
@@ -464,8 +466,8 @@ $tpl->assign(
  *
  */
 
-gen_client_mainmenu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/main_menu_general_information.tpl');
-gen_client_menu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/menu_general_information.tpl');
+gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_general_information.tpl');
+gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_general_information.tpl');
 
 gen_logged_from($tpl);
 
@@ -511,6 +513,6 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }

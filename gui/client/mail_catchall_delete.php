@@ -32,9 +32,11 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
+$cfg = IspCP_Registry::get('Config');
+
 if (isset($_GET['id']) && $_GET['id'] !== '') {
 	$mail_id = $_GET['id'];
-	$item_delete_status = Config::getInstance()->get('ITEM_DELETE_STATUS');
+	$item_delete_status = $cfg->ITEM_DELETE_STATUS;
 	$dmn_id = get_user_domain_id($sql, $_SESSION['user_id']);
 
 	$query = "

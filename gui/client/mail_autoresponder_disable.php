@@ -32,7 +32,10 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
+$cfg = IspCP_Registry::get('Config');
+
 function check_email_user(&$sql) {
+
 	$dmn_name = $_SESSION['user_logged'];
 	$mail_id = $_GET['id'];
 
@@ -65,7 +68,7 @@ check_email_user($sql);
 
 if (isset($_GET['id']) && $_GET['id'] !== '') {
 	$mail_id = $_GET['id'];
-	$item_change_status = Config::getInstance()->get('ITEM_CHANGE_STATUS');
+	$item_change_status = $cfg->ITEM_CHANGE_STATUS;
 
 	$query = "
 		UPDATE

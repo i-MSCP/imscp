@@ -32,17 +32,17 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
+$cfg = IspCP_Registry::get('Config');
+
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/alias_edit.tpl');
+$tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/alias_edit.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
-
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
 $tpl->assign(
 	array(
 		'TR_EDIT_ALIAS_PAGE_TITLE' => tr('ispCP - Manage Domain Alias/Edit Alias'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
 	)
@@ -72,8 +72,8 @@ $tpl->assign(
 	)
 );
 
-gen_client_mainmenu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/main_menu_manage_domains.tpl');
-gen_client_menu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/menu_manage_domains.tpl');
+gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_manage_domains.tpl');
+gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_manage_domains.tpl');
 
 gen_logged_from($tpl);
 
@@ -108,9 +108,10 @@ gen_editalias_page($tpl, $editid);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
+
 unset_messages();
 
 // Begin function block
@@ -119,7 +120,10 @@ unset_messages();
  * Show user data
  */
 function gen_editalias_page(&$tpl, $edit_id) {
+
+	$cfg = IspCP_Registry::get('Config');
 	$sql = Database::getInstance();
+
 	// Get data from sql
 	list($domain_id) = get_domain_default_props($sql, $_SESSION['user_id']);
 	$res = exec_query($sql, "SELECT * FROM `domain_aliasses` WHERE `alias_id` = ? AND `domain_id` = ?", array($edit_id, $domain_id));
@@ -141,27 +145,27 @@ function gen_editalias_page(&$tpl, $edit_id) {
 
 		if ($data["url_forward"] == "no") {
 			$check_en = '';
-			$check_dis = Config::getInstance()->get('HTML_CHECKED');
+			$check_dis = $cfg->HTML_CHECKED;
 			$url_forward = '';
 			$tpl->assign(
 				array(
-					'READONLY_FORWARD'	=> Config::getInstance()->get('HTML_READONLY'),
-					'DISABLE_FORWARD'	=> Config::getInstance()->get('HTML_DISABLED'),
+					'READONLY_FORWARD'	=> $cfg->HTML_READONLY,
+					'DISABLE_FORWARD'	=> $cfg->HTML_DISABLED,
 					'HTTP_YES'			=> '',
 					'HTTPS_YES'			=> '',
 					'FTP_YES'			=> ''
 				)
 			);
 		} else {
-			$check_en = Config::getInstance()->get('HTML_CHECKED');
+			$check_en = $cfg->HTML_CHECKED;
 			$check_dis = '';
 			$tpl->assign(
 				array(
 					'READONLY_FORWARD'	=> '',
 					'DISABLE_FORWARD'	=> '',
-					'HTTP_YES'			=> (preg_match("/http:\/\//", $data['url_forward'])) ? Config::getInstance()->get('HTML_SELECTED') : '',
-					'HTTPS_YES'			=> (preg_match("/https:\/\//", $data['url_forward'])) ? Config::getInstance()->get('HTML_SELECTED') : '',
-					'FTP_YES'			=> (preg_match("/ftp:\/\//", $data['url_forward'])) ? Config::getInstance()->get('HTML_SELECTED') : ''
+					'HTTP_YES'			=> (preg_match("/http:\/\//", $data['url_forward'])) ? $cfg->HTML_SELECTED : '',
+					'HTTPS_YES'			=> (preg_match("/https:\/\//", $data['url_forward'])) ? $cfg->HTML_SELECTED : '',
+					'FTP_YES'			=> (preg_match("/ftp:\/\//", $data['url_forward'])) ? $cfg->HTML_SELECTED : ''
 				)
 			);
 		}
@@ -188,6 +192,8 @@ function gen_editalias_page(&$tpl, $edit_id) {
  * Check input data
  */
 function check_fwd_data(&$tpl, $alias_id) {
+
+	$cfg = IspCP_Registry::get('Config');
 	$sql = Database::getInstance();
 
 	$forward_url = strtolower(clean_input($_POST['forward']));
@@ -209,14 +215,14 @@ function check_fwd_data(&$tpl, $alias_id) {
 			$forward_url = encode_idna($forward_prefix.$forward_url);
 		}
 
-		$check_en = Config::getInstance()->get('HTML_CHECKED');
+		$check_en = $cfg->HTML_CHECKED;
 		$check_dis = '';
 		$tpl->assign(
 			array(
 				'FORWARD'			=> tohtml($forward_url),
-				'HTTP_YES'			=> ($forward_prefix === 'http://') ? Config::getInstance()->get('HTML_SELECTED') : '',
-				'HTTPS_YES'			=> ($forward_prefix === 'https://') ? Config::getInstance()->get('HTML_SELECTED') : '',
-				'FTP_YES'			=> ($forward_prefix === 'ftp://') ? Config::getInstance()->get('HTML_SELECTED') : '',
+				'HTTP_YES'			=> ($forward_prefix === 'http://') ? $cfg->HTML_SELECTED : '',
+				'HTTPS_YES'			=> ($forward_prefix === 'https://') ? $cfg->HTML_SELECTED : '',
+				'FTP_YES'			=> ($forward_prefix === 'ftp://') ? $cfg->HTML_SELECTED : '',
 				'CHECK_EN'			=> $check_en,
 				'CHECK_DIS'			=> $check_dis,
 				'DISABLE_FORWARD'	=>	'',
@@ -225,12 +231,12 @@ function check_fwd_data(&$tpl, $alias_id) {
 		);
 	} else {
 		$check_en = '';
-		$check_dis = Config::getInstance()->get('HTML_CHECKED');
+		$check_dis = $cfg->HTML_CHECKED;
 		$forward_url = 'no';
 		$tpl->assign(
 			array(
-				'READONLY_FORWARD' => Config::getInstance()->get('HTML_READONLY'),
-				'DISABLE_FORWARD' => Config::getInstance()->get('HTML_DISABLED'),
+				'READONLY_FORWARD' => $cfg->HTML_READONLY,
+				'DISABLE_FORWARD' => $cfg->HTML_DISABLED,
 				'CHECK_EN' => $check_en,
 				'CHECK_DIS' => $check_dis,
 			)
@@ -247,7 +253,7 @@ function check_fwd_data(&$tpl, $alias_id) {
 			WHERE
 				`alias_id` = ?
 		";
-		exec_query($sql, $query, array($forward_url, Config::getInstance()->get('ITEM_CHANGE_STATUS'), $alias_id));
+		exec_query($sql, $query, array($forward_url, $cfg->ITEM_CHANGE_STATUS, $alias_id));
 
 		$query = "
 			UPDATE
@@ -257,7 +263,7 @@ function check_fwd_data(&$tpl, $alias_id) {
 			WHERE
 				`alias_id` = ?
 		";
-		exec_query($sql, $query, array(Config::getInstance()->get('ITEM_CHANGE_STATUS'), $alias_id));
+		exec_query($sql, $query, array($cfg->ITEM_CHANGE_STATUS, $alias_id));
 
 		send_request();
 

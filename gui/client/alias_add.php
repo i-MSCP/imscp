@@ -32,18 +32,18 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
+$cfg = IspCP_Registry::get('Config');
+
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/alias_add.tpl');
+$tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/alias_add.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('user_entry', 'page');
 $tpl->define_dynamic('ip_entry', 'page');
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
-
 $tpl->assign(
 	array(
-		'THEME_COLOR_PATH' => '../themes/' . $theme_color,
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id']),
 	)
@@ -55,8 +55,8 @@ $tpl->assign(
  *
  */
 
-gen_client_mainmenu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/main_menu_manage_domains.tpl');
-gen_client_menu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/menu_manage_domains.tpl');
+gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_manage_domains.tpl');
+gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_manage_domains.tpl');
 
 gen_logged_from($tpl);
 
@@ -148,12 +148,16 @@ function init_empty_data() {
  * Show data fields
  */
 function gen_al_page(&$tpl, $reseller_id) {
+
 	global $alias_name, $forward, $forward_prefix, $mount_point;
 
+	$cfg = IspCP_Registry::get('Config');
+
 	if (isset($_POST['status']) && $_POST['status'] == 1) {
+
 		$forward_prefix = clean_input($_POST['forward_prefix']);
 
-		$check_en = Config::getInstance()->get('HTML_CHECKED');
+		$check_en = $cfg->HTML_CHECKED;
 		$check_dis = '';
 		$forward = strtolower(clean_input($_POST['forward']));
 
@@ -161,20 +165,20 @@ function gen_al_page(&$tpl, $reseller_id) {
 			array(
 				'READONLY_FORWARD'	=> '',
 				'DISABLE_FORWARD'	=> '',
-				'HTTP_YES'			=> ($forward_prefix === 'http://') ? Config::getInstance()->get('HTML_SELECTED') : '',
-				'HTTPS_YES'			=> ($forward_prefix === 'https://') ? Config::getInstance()->get('HTML_SELECTED') : '',
-				'FTP_YES'			=> ($forward_prefix === 'ftp://') ? Config::getInstance()->get('HTML_SELECTED') : ''
+				'HTTP_YES'			=> ($forward_prefix === 'http://') ? $cfg->HTML_SELECTED : '',
+				'HTTPS_YES'			=> ($forward_prefix === 'https://') ? $cfg->HTML_SELECTED : '',
+				'FTP_YES'			=> ($forward_prefix === 'ftp://') ? $cfg->HTML_SELECTED : ''
 			)
 		);
 	} else {
 		$check_en = '';
-		$check_dis = Config::getInstance()->get('HTML_CHECKED');
+		$check_dis = $cfg->HTML_CHECKED;
 		$forward = '';
 
 		$tpl->assign(
 			array(
-				'READONLY_FORWARD'	=> Config::getInstance()->get('HTML_READONLY'),
-				'DISABLE_FORWARD'	=> Config::getInstance()->get('HTML_DISABLED'),
+				'READONLY_FORWARD'	=> $cfg->HTML_READONLY,
+				'DISABLE_FORWARD'	=> $cfg->HTML_DISABLED,
 				'HTTP_YES'			=> '',
 				'HTTPS_YES'			=> '',
 				'FTP_YES'			=> ''
@@ -242,7 +246,7 @@ function add_domain_alias(&$sql, &$err_al) {
 	 $err_al = tr('Domain with that name already exists on the system!');
 	} else if (!validates_mpoint($mount_point) && $mount_point != '/') {
 		$err_al = tr("Incorrect mount point syntax");
-	} else if ($alias_name == Config::getInstance()->get('BASE_SERVER_VHOST')) {
+	} else if ($alias_name == $cfg->BASE_SERVER_VHOST) {
 		$err_al = tr('Master domain cannot be used!');
 	} else if ($_POST['status'] == 1) {
 		$aurl = @parse_url($forward_prefix.$forward);
@@ -309,7 +313,7 @@ function add_domain_alias(&$sql, &$err_al) {
 	// Begin add new alias domain
 	$alias_name = htmlspecialchars($alias_name, ENT_QUOTES, "UTF-8");
 
-	$status = Config::getInstance()->get('ITEM_ORDERED_STATUS');
+	$status = $cfg->ITEM_ORDERED_STATUS;
 
 	$query = "INSERT INTO `domain_aliasses` (`domain_id`, `alias_name`, `alias_mount`, `alias_status`, `alias_ip_id`, `url_forward`) VALUES (?, ?, ?, ?, ?, ?)";
 	exec_query($sql, $query, array($cr_user_id, $alias_name, $mount_point, $status, $domain_ip, $forward));
@@ -320,7 +324,7 @@ function add_domain_alias(&$sql, &$err_al) {
 
 	$admin_login = $_SESSION['user_logged'];
 
-	if ($status == Config::getInstance()->get('ITEM_ORDERED_STATUS')) {
+	if ($status == $cfg->ITEM_ORDERED_STATUS) {
 		// notify the reseller:
 		send_alias_order_email($alias_name);
 
@@ -355,6 +359,6 @@ gen_page_msg($tpl, $err_txt);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }

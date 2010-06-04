@@ -32,8 +32,10 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
+$cfg = IspCP_Registry::get('Config');
+
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/error_pages.tpl');
+$tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/error_pages.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 
@@ -49,8 +51,10 @@ function write_error_page(&$sql, $user_id, $eid) {
 }
 
 function update_error_page(&$sql, $user_id) {
+
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_error') {
 		$eid = intval($_POST['eid']);
+
 		if (in_array($eid, array(401, 402, 403, 404, 500, 503))
 			&& write_error_page($sql, $_SESSION['user_id'], $eid)) {
 			set_page_message(tr('Custom error page was updated!'));
@@ -60,7 +64,7 @@ function update_error_page(&$sql, $user_id) {
 	}
 }
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
+
 
 // common page data.
 
@@ -70,7 +74,7 @@ $domain = "http://www." . $domain;
 $tpl->assign(
 	array(
 		'TR_CLIENT_ERROR_PAGE_TITLE' => tr('ispCP - Client/Manage Error Custom Pages'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id']),
 		'DOMAIN' => $domain
@@ -83,8 +87,8 @@ update_error_page($sql, $_SESSION['user_id']);
 
 // static page messages.
 
-gen_client_mainmenu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/main_menu_webtools.tpl');
-gen_client_menu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/menu_webtools.tpl');
+gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_webtools.tpl');
+gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_webtools.tpl');
 
 gen_logged_from($tpl);
 
@@ -104,10 +108,12 @@ $tpl->assign(
 );
 
 gen_page_message($tpl);
+
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
+
 unset_messages();

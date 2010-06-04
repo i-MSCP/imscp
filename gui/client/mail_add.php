@@ -32,9 +32,11 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
+$cfg = IspCP_Registry::get('Config');
+
 $tpl = new pTemplate();
 
-$tpl->define_dynamic('page', Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/mail_add.tpl');
+$tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/mail_add.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('als_list', 'page');
@@ -47,6 +49,9 @@ $tpl->define_dynamic('to_alias_subdomain', 'page');
 // page functions.
 
 function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
+	
+	$cfg = IspCP_Registry::get('Config');
+
 	$dmn_name = decode_idna($dmn_name);
 
 	if ($post_check === 'no') {
@@ -55,11 +60,11 @@ function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
 			array(
 				'USERNAME'				=> "",
 				'DOMAIN_NAME'			=> tohtml($dmn_name),
-				'MAIL_DMN_CHECKED'		=> Config::getInstance()->get('HTML_CHECKED'),
+				'MAIL_DMN_CHECKED'		=> $cfg->HTML_CHECKED,
 				'MAIL_ALS_CHECKED'		=> "",
 				'MAIL_SUB_CHECKED'		=> "",
 				'MAIL_ALS_SUB_CHECKED'	=> "",
-				'NORMAL_MAIL_CHECKED'	=> Config::getInstance()->get('HTML_CHECKED'),
+				'NORMAL_MAIL_CHECKED'	=> $cfg->HTML_CHECKED,
 				'FORWARD_MAIL_CHECKED'	=> "",
 				'FORWARD_LIST'			=> ""
 			)
@@ -76,12 +81,12 @@ function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
 			array(
 				'USERNAME'				=> clean_input($_POST['username'], true),
 				'DOMAIN_NAME'			=> tohtml($dmn_name),
-				'MAIL_DMN_CHECKED'		=> ($_POST['dmn_type'] === 'dmn') ? Config::getInstance()->get('HTML_CHECKED') : "",
-				'MAIL_ALS_CHECKED'		=> ($_POST['dmn_type'] === 'als') ? Config::getInstance()->get('HTML_CHECKED') : "",
-				'MAIL_SUB_CHECKED'		=> ($_POST['dmn_type'] === 'sub') ? Config::getInstance()->get('HTML_CHECKED') : "",
-				'MAIL_ALS_SUB_CHECKED'	=> ($_POST['dmn_type'] === 'als_sub') ? Config::getInstance()->get('HTML_CHECKED') : "",
-				'NORMAL_MAIL_CHECKED'	=> (isset($_POST['mail_type_normal'])) ? Config::getInstance()->get('HTML_CHECKED') : "",
-				'FORWARD_MAIL_CHECKED'	=> (isset($_POST['mail_type_forward'])) ? Config::getInstance()->get('HTML_CHECKED') : "",
+				'MAIL_DMN_CHECKED'		=> ($_POST['dmn_type'] === 'dmn') ? $cfg->HTML_CHECKED : "",
+				'MAIL_ALS_CHECKED'		=> ($_POST['dmn_type'] === 'als') ? $cfg->HTML_CHECKED : "",
+				'MAIL_SUB_CHECKED'		=> ($_POST['dmn_type'] === 'sub') ? $cfg->HTML_CHECKED : "",
+				'MAIL_ALS_SUB_CHECKED'	=> ($_POST['dmn_type'] === 'als_sub') ? $cfg->HTML_CHECKED : "",
+				'NORMAL_MAIL_CHECKED'	=> (isset($_POST['mail_type_normal'])) ? $cfg->HTML_CHECKED : "",
+				'FORWARD_MAIL_CHECKED'	=> (isset($_POST['mail_type_forward'])) ? $cfg->HTML_CHECKED : "",
 				'FORWARD_LIST'			=> $f_list
 			)
 		);
@@ -89,7 +94,10 @@ function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
 }
 
 function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
-	$ok_status = Config::getInstance()->get('ITEM_OK_STATUS');
+
+	$cfg = IspCP_Registry::get('Config');
+
+	$ok_status = $cfg->ITEM_OK_STATUS;
 
 	$query = "
 		SELECT
@@ -109,7 +117,7 @@ function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 		$tpl->assign(
 			array(
 				'ALS_ID'		=> '0',
-				'ALS_SELECTED'	=> Config::getInstance()->get('HTML_SELECTED'),
+				'ALS_SELECTED'	=> $cfg->HTML_SELECTED,
 				'ALS_NAME'		=> tr('Empty list')
 			)
 		);
@@ -126,13 +134,13 @@ function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 				}
 
 				if ($als_id == $rs->fields['alias_id']) {
-					$als_selected = Config::getInstance()->get('HTML_SELECTED');
+					$als_selected = $cfg->HTML_SELECTED;
 				} else {
 					$als_selected = '';
 				}
 			} else {
 				if (!$first_passed) {
-					$als_selected = Config::getInstance()->get('HTML_SELECTED');
+					$als_selected = $cfg->HTML_SELECTED;
 				} else {
 					$als_selected = '';
 				}
@@ -156,7 +164,10 @@ function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 }
 
 function gen_dmn_sub_list(&$tpl, &$sql, $dmn_id, $dmn_name, $post_check) {
-	$ok_status = Config::getInstance()->get('ITEM_OK_STATUS');
+	
+	$cfg = IspCP_Registry::get('Config');
+
+	$ok_status = $cfg->ITEM_OK_STATUS;
 
 	$query = "
 		SELECT
@@ -177,7 +188,7 @@ function gen_dmn_sub_list(&$tpl, &$sql, $dmn_id, $dmn_name, $post_check) {
 		$tpl->assign(
 			array(
 				'SUB_ID'		=> '0',
-				'SUB_SELECTED'	=> Config::getInstance()->get('HTML_SELECTED'),
+				'SUB_SELECTED'	=> $cfg->HTML_SELECTED,
 				'SUB_NAME'		=> tr('Empty list')
 			)
 		);
@@ -195,13 +206,13 @@ function gen_dmn_sub_list(&$tpl, &$sql, $dmn_id, $dmn_name, $post_check) {
 				}
 
 				if ($sub_id == $rs->fields['sub_id']) {
-					$sub_selected = Config::getInstance()->get('HTML_SELECTED');
+					$sub_selected = $cfg->HTML_SELECTED;
 				} else {
 					$sub_selected = '';
 				}
 			} else {
 				if (!$first_passed) {
-					$sub_selected = Config::getInstance()->get('HTML_SELECTED');
+					$sub_selected = $cfg->HTML_SELECTED;
 				} else {
 					$sub_selected = '';
 				}
@@ -226,7 +237,10 @@ function gen_dmn_sub_list(&$tpl, &$sql, $dmn_id, $dmn_name, $post_check) {
 }
 
 function gen_dmn_als_sub_list(&$tpl, &$sql, $dmn_id, $post_check) {
-	$ok_status = Config::getInstance()->get('ITEM_OK_STATUS');
+
+	$cfg = IspCP_Registry::get('Config');
+
+	$ok_status = $cfg->ITEM_OK_STATUS;
 
 	$query = "
 		SELECT
@@ -250,7 +264,7 @@ function gen_dmn_als_sub_list(&$tpl, &$sql, $dmn_id, $post_check) {
 		$tpl->assign(
 			array(
 				'ALS_SUB_ID'		=> '0',
-				'ALS_SUB_SELECTED'	=> Config::getInstance()->get('HTML_SELECTED'),
+				'ALS_SUB_SELECTED'	=> $cfg->HTML_SELECTED,
 				'ALS_SUB_NAME'		=> tr('Empty list')
 			)
 		);
@@ -268,13 +282,13 @@ function gen_dmn_als_sub_list(&$tpl, &$sql, $dmn_id, $post_check) {
 				}
 
 				if ($als_sub_id == $rs->fields['als_sub_id']) {
-					$als_sub_selected = Config::getInstance()->get('HTML_SELECTED');
+					$als_sub_selected = $cfg->HTML_SELECTED;
 				} else {
 					$als_sub_selected = '';
 				}
 			} else {
 				if (!$first_passed) {
-					$als_sub_selected = Config::getInstance()->get('HTML_SELECTED');
+					$als_sub_selected = $cfg->HTML_SELECTED;
 				} else {
 					$als_sub_selected = '';
 				}
@@ -299,6 +313,8 @@ function gen_dmn_als_sub_list(&$tpl, &$sql, $dmn_id, $post_check) {
 }
 
 function schedule_mail_account(&$sql, $domain_id, $dmn_name, $mail_acc) {
+
+	$cfg = IspCP_Registry::get('Config');
 
 	$mail_auto_respond = false;
 	$mail_auto_respond_text = '';
@@ -427,7 +443,7 @@ function schedule_mail_account(&$sql, $domain_id, $dmn_name, $mail_acc) {
 			$domain_id,
 			$mail_type,
 			$sub_id,
-			Config::getInstance()->get('ITEM_ADD_STATUS'),
+			$cfg->ITEM_ADD_STATUS,
 			$mail_auto_respond,
 			$mail_auto_respond_text,
 			$mail_addr));
@@ -441,6 +457,8 @@ function schedule_mail_account(&$sql, $domain_id, $dmn_name, $mail_acc) {
 }
 
 function check_mail_acc_data(&$sql, $dmn_id, $dmn_name) {
+
+	$cfg = IspCP_Registry::get('Config');
 
 	$mail_type_normal = isset($_POST['mail_type_normal']) ? $_POST['mail_type_normal'] : false;
 	$mail_type_forward = isset($_POST['mail_type_forward']) ? $_POST['mail_type_forward'] : false;
@@ -475,10 +493,10 @@ function check_mail_acc_data(&$sql, $dmn_id, $dmn_name) {
 			return false;
 		} else if (!chk_password($pass, 50, "/[`\xb4'\"\\\\\x01-\x1f\015\012|<>^$]/i")) {
 			// Not permitted chars
-			if (Config::getInstance()->get('PASSWD_STRONG')) {
-				set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), Config::getInstance()->get('PASSWD_CHARS')));
+			if ($cfg->PASSWD_STRONG) {
+				set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS));
 			} else {
-				set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), Config::getInstance()->get('PASSWD_CHARS')));
+				set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), $cfg->PASSWD_CHARS));
 			}
 			return false;
 		}
@@ -603,12 +621,10 @@ if (isset($_SESSION['email_support']) && $_SESSION['email_support'] == "no") {
 	header("Location: index.php");
 }
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
-
 $tpl->assign(
 	array(
 		'TR_CLIENT_ADD_MAIL_ACC_PAGE_TITLE'	=> tr('ispCP - Client/Add Mail User'),
-		'THEME_COLOR_PATH'					=> "../themes/$theme_color",
+		'THEME_COLOR_PATH'					=> "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET'						=> tr('encoding'),
 		'ISP_LOGO'							=> get_logo($_SESSION['user_id'])
 	)
@@ -620,8 +636,8 @@ gen_page_mail_acc_props($tpl, $sql, $_SESSION['user_id']);
 
 // static page messages.
 
-gen_client_mainmenu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/main_menu_email_accounts.tpl');
-gen_client_menu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/menu_email_accounts.tpl');
+gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_email_accounts.tpl');
+gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_email_accounts.tpl');
 
 gen_logged_from($tpl);
 
@@ -650,6 +666,6 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }

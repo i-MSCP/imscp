@@ -36,8 +36,10 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
+$cfg = IspCP_Registry::get('Config');
+
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/mail_catchall.tpl');
+$tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/mail_catchall.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('catchall_message', 'page');
@@ -47,7 +49,10 @@ $tpl->define_dynamic('catchall_item', 'page');
 // page functions.
 
 function gen_user_mail_action($mail_id, $mail_status) {
-	if ($mail_status === Config::getInstance()->get('ITEM_OK_STATUS')) {
+
+	$cfg = IspCP_Registry::get('Config');
+
+	if ($mail_status === $cfg->ITEM_OK_STATUS) {
 		return array(tr('Delete'), "mail_delete.php?id=$mail_id", "mail_edit.php?id=$mail_id");
 	} else {
 		return array(tr('N/A'), '#', '#');
@@ -55,13 +60,16 @@ function gen_user_mail_action($mail_id, $mail_status) {
 }
 
 function gen_user_catchall_action($mail_id, $mail_status) {
-	if ($mail_status === Config::getInstance()->get('ITEM_ADD_STATUS')) {
+
+	$cfg = IspCP_Registry::get('Config');
+
+	if ($mail_status === $cfg->ITEM_ADD_STATUS) {
 		return array(tr('N/A'), '#'); // Addition in progress
-	} else if ($mail_status === Config::getInstance()->get('ITEM_OK_STATUS')) {
+	} else if ($mail_status === $cfg->ITEM_OK_STATUS) {
 		return array(tr('Delete CatchAll'), "mail_catchall_delete.php?id=$mail_id");
-	} else if ($mail_status === Config::getInstance()->get('ITEM_CHANGE_STATUS')) {
+	} else if ($mail_status === $cfg->ITEM_CHANGE_STATUS) {
 		return array(tr('N/A'), '#');
-	} else if ($mail_status === Config::getInstance()->get('ITEM_DELETE_STATUS')) {
+	} else if ($mail_status === $cfg->ITEM_DELETE_STATUS) {
 		return array(tr('N/A'), '#');
 	} else {
 		return null;
@@ -342,12 +350,10 @@ function gen_page_lists(&$tpl, &$sql, $user_id)
 
 // common page data.
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
-
 $tpl->assign(
 	array(
 		'TR_CLIENT_MANAGE_USERS_PAGE_TITLE'	=> tr('ispCP - Client/Manage Users'),
-		'THEME_COLOR_PATH'					=> "../themes/$theme_color",
+		'THEME_COLOR_PATH'					=> "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET'						=> tr('encoding'),
 		'ISP_LOGO'							=> get_logo($_SESSION['user_id'])
 	)
@@ -363,8 +369,8 @@ gen_page_lists($tpl, $sql, $_SESSION['user_id']);
 
 // static page messages.
 
-gen_client_mainmenu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/main_menu_email_accounts.tpl');
-gen_client_menu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/menu_email_accounts.tpl');
+gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_email_accounts.tpl');
+gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_email_accounts.tpl');
 
 gen_logged_from($tpl);
 check_permissions($tpl);
@@ -385,7 +391,8 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
+
 unset_messages();

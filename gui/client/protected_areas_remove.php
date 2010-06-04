@@ -32,6 +32,8 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
+$cfg = IspCP_Registry::get('Config');
+
 /**
  * @todo Do we have a proper cdir?
  */
@@ -41,7 +43,7 @@ if (!isset($_GET['cdir'])) {
 $domain_name = $_SESSION['user_logged'];
 $cdir = $_GET['cdir'];
 
-unlink(Config::getInstance()->get('FTP_HOMEDIR') . '/' . $domain_name . $cdir . '.htaccess');
+unlink($cfg->FTP_HOMEDIR . '/' . $domain_name . $cdir . '.htaccess');
 
 set_page_message(tr('Protected area was deleted successful!'));
 

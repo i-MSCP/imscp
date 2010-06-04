@@ -32,8 +32,10 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
+$cfg = IspCP_Registry::get('Config');
+
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/subdomain_add.tpl');
+$tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/subdomain_add.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('als_list', 'page');
@@ -70,6 +72,9 @@ function check_subdomain_permissions($sql, $user_id) {
 }
 
 function gen_user_add_subdomain_data(&$tpl, &$sql, $user_id) {
+
+	$cfg = IspCP_Registry::get('Config');
+
 	$query = "
 		SELECT
 			`domain_name`,
@@ -85,7 +90,7 @@ function gen_user_add_subdomain_data(&$tpl, &$sql, $user_id) {
 	$tpl->assign(
 		array(
 			'DOMAIN_NAME'		=> '.' . tohtml($domainname),
-			'SUB_DMN_CHECKED'	=> Config::getInstance()->get('HTML_CHECKED'),
+			'SUB_DMN_CHECKED'	=> $cfg->HTML_CHECKED,
 			'SUB_ALS_CHECKED'	=> ''
 		)
 	);
@@ -111,7 +116,10 @@ function gen_user_add_subdomain_data(&$tpl, &$sql, $user_id) {
 }
 
 function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
-	$ok_status = Config::getInstance()->get('ITEM_OK_STATUS');
+
+	$cfg = IspCP_Registry::get('Config');
+
+	$ok_status = $cfg->ITEM_OK_STATUS;
 
 	$query = "
 		SELECT
@@ -131,7 +139,7 @@ function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 		$tpl->assign(
 			array(
 				'ALS_ID' => '0',
-				'ALS_SELECTED' => Config::getInstance()->get('HTML_SELECTED'),
+				'ALS_SELECTED' => $cfg->HTML_SELECTED,
 				'ALS_NAME' => tr('Empty list')
 			)
 		);
@@ -143,9 +151,9 @@ function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 		while (!$rs->EOF) {
 			if ($post_check === 'yes') {
 				$als_id = (!isset($_POST['als_id'])) ? '' : $_POST['als_id'];
-				$als_selected = ($als_id == $rs->fields['alias_id']) ? Config::getInstance()->get('HTML_SELECTED') : '';
+				$als_selected = ($als_id == $rs->fields['alias_id']) ? $cfg->HTML_SELECTED : '';
 			} else {
-				$als_selected = (!$first_passed) ? Config::getInstance()->get('HTML_SELECTED') : '';
+				$als_selected = (!$first_passed) ? $cfg->HTML_SELECTED : '';
 			}
 
 			$alias_name = decode_idna($rs->fields['alias_name']);
@@ -281,7 +289,10 @@ function subdmn_mnt_pt_exists(&$sql, $user_id, $domain_id, $sub_name, $sub_mnt_p
 }
 
 function subdomain_schedule(&$sql, $user_id, $domain_id, $sub_name, $sub_mnt_pt) {
-	$status_add = Config::getInstance()->get('ITEM_ADD_STATUS');
+
+	$cfg = IspCP_Registry::get('Config');
+
+	$status_add = $cfg->ITEM_ADD_STATUS;
 
 	if ($_POST['dmn_type'] == 'als') {
 		$query = "
@@ -404,12 +415,10 @@ if (isset($_SESSION['subdomain_support']) && $_SESSION['subdomain_support'] == "
 	header("Location: index.php");
 }
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
-
 $tpl->assign(
 	array(
 		'TR_CLIENT_ADD_SUBDOMAIN_PAGE_TITLE' => tr('ispCP - Client/Add Subdomain'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
 	)
@@ -423,8 +432,8 @@ check_subdomain_data($tpl, $sql, $_SESSION['user_id'], $dmn_name);
 
 // static page messages.
 
-gen_client_mainmenu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/main_menu_manage_domains.tpl');
-gen_client_menu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/menu_manage_domains.tpl');
+gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_manage_domains.tpl');
+gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_manage_domains.tpl');
 
 gen_logged_from($tpl);
 
@@ -446,6 +455,6 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }

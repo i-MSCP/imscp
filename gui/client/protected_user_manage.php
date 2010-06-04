@@ -32,8 +32,10 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
+$cfg = IspCP_Registry::get('Config');
+
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/puser_manage.tpl');
+$tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/puser_manage.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('usr_msg', 'page');
 $tpl->define_dynamic('grp_msg', 'page');
@@ -43,19 +45,20 @@ $tpl->define_dynamic('pgroups', 'page');
 $tpl->define_dynamic('group_members', 'page');
 $tpl->define_dynamic('table_list', 'page');
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
-
 $tpl->assign(
 	array(
 		'TR_CLIENT_WEBTOOLS_PAGE_TITLE'	=> tr('ispCP - Client/Webtools'),
-		'THEME_COLOR_PATH'				=> "../themes/$theme_color",
+		'THEME_COLOR_PATH'				=> "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET'					=> tr('encoding'),
 		'ISP_LOGO'						=> get_logo($_SESSION['user_id'])
 	)
 );
 
 function gen_user_action($id, $status) {
-	if ($status === Config::getInstance()->get('ITEM_OK_STATUS')) {
+
+	$cfg = IspCP_Registry::get('Config');
+
+	if ($status === $cfg->ITEM_OK_STATUS) {
 		return array(tr('Delete'), "action_delete('protected_user_delete.php?uname={USER_ID}', '{UNAME}')", tr('Edit'), "protected_user_edit.php?uname={USER_ID}");
 	} else {
 		return array(tr('N/A'), '', tr('N/A'), '#');
@@ -63,8 +66,11 @@ function gen_user_action($id, $status) {
 }
 
 function gen_group_action($id, $status, $group) {
-	if ($status === Config::getInstance()->get('ITEM_OK_STATUS')
-		&& $group != Config::getInstance()->get('AWSTATS_GROUP_AUTH')) {
+
+	$cfg = IspCP_Registry::get('Config');
+
+	if ($status === $cfg->ITEM_OK_STATUS
+		&& $group != $cfg->AWSTATS_GROUP_AUTH) {
 		return array(tr('Delete'), "action_delete('protected_group_delete.php?gname={GROUP_ID}', '{GNAME}')");
 	} else {
 		return array(tr('N/A'), '');
@@ -194,8 +200,8 @@ function gen_pgroups(&$tpl, &$sql, &$dmn_id) {
  *
  */
 
-gen_client_mainmenu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/main_menu_webtools.tpl');
-gen_client_menu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/menu_webtools.tpl');
+gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_webtools.tpl');
+gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_webtools.tpl');
 
 gen_logged_from($tpl);
 
@@ -232,7 +238,8 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
+
 unset_messages();

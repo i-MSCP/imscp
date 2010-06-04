@@ -32,8 +32,10 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
+$cfg = IspCP_Registry::get('Config');
+
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/puser_assign.tpl');
+$tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/puser_assign.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('already_in', 'page');
@@ -43,11 +45,9 @@ $tpl->define_dynamic('remove_button', 'page');
 $tpl->define_dynamic('in_group', 'page');
 $tpl->define_dynamic('not_in_group', 'page');
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
-
 $tpl->assign(
 	array(
-		'THEME_COLOR_PATH'	=> "../themes/$theme_color",
+		'THEME_COLOR_PATH'	=> "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET'		=> tr('encoding'),
 		'ISP_LOGO'			=> get_logo($_SESSION['user_id'])
 	)
@@ -161,6 +161,9 @@ function gen_user_assign(&$tpl, &$sql, &$dmn_id) {
 }
 
 function add_user_to_group(&$tpl, &$sql, &$dmn_id) {
+
+	$cfg = IspCP_Registry::get('Config');
+
 	if (isset($_POST['uaction']) && $_POST['uaction'] == 'add'
 		&& isset($_POST['groups']) && !empty($_POST['groups'])
 		&& isset($_POST['nadmin_name']) && is_numeric($_POST['groups'])
@@ -190,7 +193,7 @@ function add_user_to_group(&$tpl, &$sql, &$dmn_id) {
 			$members = $members . "," . $uuser_id;
 		}
 
-		$change_status = Config::getInstance()->get('ITEM_CHANGE_STATUS');
+		$change_status = $cfg->ITEM_CHANGE_STATUS;
 
 		$update_query = "
 			UPDATE
@@ -214,6 +217,9 @@ function add_user_to_group(&$tpl, &$sql, &$dmn_id) {
 }
 
 function delete_user_from_group(&$tpl, &$sql, &$dmn_id) {
+
+	$cfg = IspCP_Registry::get('Config');
+
 	if (isset($_POST['uaction']) && $_POST['uaction'] == 'remove'
 		&& isset($_POST['groups_in']) && !empty($_POST['groups_in'])
 		&& isset($_POST['nadmin_name']) && is_numeric($_POST['groups_in'])
@@ -241,7 +247,7 @@ function delete_user_from_group(&$tpl, &$sql, &$dmn_id) {
 		if ($key !== false) {
 			unset($members[$key]);
 			$members = implode(",", $members);
-			$change_status = Config::getInstance()->get('ITEM_CHANGE_STATUS');
+			$change_status = $cfg->ITEM_CHANGE_STATUS;
 			$update_query = "
 				UPDATE
 					`htaccess_groups`
@@ -268,8 +274,8 @@ function delete_user_from_group(&$tpl, &$sql, &$dmn_id) {
 
 // ** end of funcfions
 
-gen_client_mainmenu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/main_menu_webtools.tpl');
-gen_client_menu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/menu_webtools.tpl');
+gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_webtools.tpl');
+gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_webtools.tpl');
 
 gen_logged_from($tpl);
 
@@ -302,7 +308,8 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
+
 unset_messages();

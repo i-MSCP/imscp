@@ -32,17 +32,17 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
+$cfg = IspCP_Registry::get('Config');
+
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/personal_change.tpl');
+$tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/personal_change.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
-
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
 $tpl->assign(
 	array(
 		'TR_CLIENT_CHANGE_PERSONAL_DATA_PAGE_TITLE' => tr('ispCP - Client/Change Personal Data'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
 	)
@@ -55,6 +55,9 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_data') {
 gen_user_personal_data($tpl, $sql, $_SESSION['user_id']);
 
 function gen_user_personal_data(&$tpl, &$sql, $user_id) {
+
+	$cfg = IspCP_Registry::get('Config');
+
 	$query = "
 		SELECT
 			`fname`,
@@ -91,9 +94,9 @@ function gen_user_personal_data(&$tpl, &$sql, $user_id) {
 			'EMAIL'			=> empty($rs->fields['email']) ? '' : tohtml($rs->fields['email']),
 			'PHONE'			=> empty($rs->fields['phone']) ? '' : tohtml($rs->fields['phone']),
 			'FAX'			=> empty($rs->fields['fax']) ? '' : tohtml($rs->fields['fax']),
-			'VL_MALE'		=> (($rs->fields['gender'] == 'M') ? Config::getInstance()->get('HTML_SELECTED') : ''),
-			'VL_FEMALE'		=> (($rs->fields['gender'] == 'F') ? Config::getInstance()->get('HTML_SELECTED') : ''),
-			'VL_UNKNOWN'	=> ((($rs->fields['gender'] == 'U') || (empty($rs->fields['gender']))) ? Config::getInstance()->get('HTML_SELECTED') : '')
+			'VL_MALE'		=> (($rs->fields['gender'] == 'M') ? $cfg->HTML_SELECTED : ''),
+			'VL_FEMALE'		=> (($rs->fields['gender'] == 'F') ? $cfg->HTML_SELECTED : ''),
+			'VL_UNKNOWN'	=> ((($rs->fields['gender'] == 'U') || (empty($rs->fields['gender']))) ? $cfg->HTML_SELECTED : '')
 		)
 	);
 }
@@ -146,8 +149,8 @@ function update_user_personal_data(&$sql, $user_id) {
  *
  */
 
-gen_client_mainmenu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/main_menu_general_information.tpl');
-gen_client_menu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/menu_general_information.tpl');
+gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_general_information.tpl');
+gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_general_information.tpl');
 
 gen_logged_from($tpl);
 
@@ -181,7 +184,8 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
+
 unset_messages();

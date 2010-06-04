@@ -36,8 +36,10 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
+$cfg = IspCP_Registry::get('Config');
+
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/puser_edit.tpl');
+$tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/puser_edit.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('usr_msg', 'page');
 $tpl->define_dynamic('grp_msg', 'page');
@@ -45,26 +47,27 @@ $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('pusres', 'page');
 $tpl->define_dynamic('pgroups', 'page');
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
-
 $tpl->assign(
 	array(
 		'TR_CLIENT_WEBTOOLS_PAGE_TITLE'	=> tr('ispCP - Client/Webtools'),
-		'THEME_COLOR_PATH'				=> "../themes/$theme_color",
+		'THEME_COLOR_PATH'				=> "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET'					=> tr('encoding'),
 		'ISP_LOGO'						=> get_logo($_SESSION['user_id'])
 	)
 );
 
 function pedit_user(&$tpl, &$sql, &$dmn_id, &$uuser_id) {
+
+	$cfg = IspCP_Registry::get('Config');
+
 	if (isset($_POST['uaction']) && $_POST['uaction'] == 'modify_user') {
 		// we have to add the user
 		if (isset($_POST['pass']) && isset($_POST['pass_rep'])) {
 			if (!chk_password($_POST['pass'])) {
-				if (Config::getInstance()->get('PASSWD_STRONG')) {
-					set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), Config::getInstance()->get('PASSWD_CHARS')));
+				if ($cfg->PASSWD_STRONG) {
+					set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS));
 				} else {
-					set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), Config::getInstance()->get('PASSWD_CHARS')));
+					set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), $cfg->PASSWD_CHARS));
 				}
 				return;
 			}
@@ -75,7 +78,7 @@ function pedit_user(&$tpl, &$sql, &$dmn_id, &$uuser_id) {
 
 			$nadmin_password = crypt_user_pass_with_salt($_POST['pass']);
 
-			$change_status = Config::getInstance()->get('ITEM_CHANGE_STATUS');
+			$change_status = $cfg->ITEM_CHANGE_STATUS;
 
 			$query = "
 				UPDATE
@@ -128,8 +131,8 @@ function check_get(&$get_input) {
  *
  */
 
-gen_client_mainmenu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/main_menu_webtools.tpl');
-gen_client_menu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/menu_webtools.tpl');
+gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_webtools.tpl');
+gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_webtools.tpl');
 
 gen_logged_from($tpl);
 
@@ -231,7 +234,8 @@ $tpl->parse('PAGE', 'page');
 
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
+
 unset_messages();

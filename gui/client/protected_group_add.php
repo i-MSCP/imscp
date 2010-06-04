@@ -32,8 +32,10 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
+$cfg = IspCP_Registry::get('Config');
+
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/puser_gadd.tpl');
+$tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/puser_gadd.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('usr_msg', 'page');
 $tpl->define_dynamic('grp_msg', 'page');
@@ -41,18 +43,20 @@ $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('pusres', 'page');
 $tpl->define_dynamic('pgroups', 'page');
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
 
 $tpl->assign(
 	array(
 		'TR_CLIENT_WEBTOOLS_PAGE_TITLE'	=> tr('ispCP - Client/Webtools'),
-		'THEME_COLOR_PATH'				=> "../themes/$theme_color",
+		'THEME_COLOR_PATH'				=> "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET'					=> tr('encoding'),
 		'ISP_LOGO'						=> get_logo($_SESSION['user_id'])
 	)
 );
 
 function padd_group(&$tpl, &$sql, $dmn_id) {
+
+	$cfg = IspCP_Registry::get('Config');
+
 	if (isset($_POST['uaction']) && $_POST['uaction'] == 'add_group') {
 		// we have to add the group
 		if (isset($_POST['groupname'])) {
@@ -77,7 +81,7 @@ function padd_group(&$tpl, &$sql, $dmn_id) {
 			$rs = exec_query($sql, $query, array($groupname, $dmn_id));
 
 			if ($rs->RecordCount() == 0) {
-				$change_status = Config::getInstance()->get('ITEM_ADD_STATUS');
+				$change_status = $cfg->ITEM_ADD_STATUS;
 
 				$query = "
 					INSERT INTO `htaccess_groups`
@@ -112,8 +116,8 @@ function padd_group(&$tpl, &$sql, $dmn_id) {
  *
  */
 
-gen_client_mainmenu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/main_menu_webtools.tpl');
-gen_client_menu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/menu_webtools.tpl');
+gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_webtools.tpl');
+gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_webtools.tpl');
 
 gen_logged_from($tpl);
 
@@ -147,7 +151,8 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
+
 unset_messages();

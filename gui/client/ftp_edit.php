@@ -32,6 +32,8 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
+$cfg = IspCP_Registry::get('Config');
+
 if (isset($_GET['id'])) {
 	$ftp_acc = $_GET['id'];
 } else if (isset($_POST['id'])) {
@@ -41,13 +43,16 @@ if (isset($_GET['id'])) {
 }
 
 $tpl = new pTemplate();
-$tpl->define_dynamic('page', Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/ftp_edit.tpl');
+$tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/ftp_edit.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 
 // page functions.
 
 function gen_page_dynamic_data(&$tpl, &$sql, $ftp_acc) {
+
+	$cfg = IspCP_Registry::get('Config');
+
 	$query = "
 		SELECT
 			`homedir`
@@ -61,13 +66,13 @@ function gen_page_dynamic_data(&$tpl, &$sql, $ftp_acc) {
 
 	$homedir = $rs->fields['homedir'];
 	$domain_ftp = $_SESSION['user_logged'];
-	$nftp_dir = Config::getInstance()->get('FTP_HOMEDIR') . "/" . $domain_ftp;
+	$nftp_dir = $cfg->FTP_HOMEDIR . "/" . $domain_ftp;
 
 	if ($nftp_dir == $homedir) {
 		$odir = '';
 		$oins = '';
 	} else {
-		$odir = Config::getInstance()->get('HTML_CHECKED');
+		$odir = $cfg->HTML_CHECKED;
 		$oins = substr($homedir, strlen($nftp_dir));
 	}
 
@@ -82,7 +87,9 @@ function gen_page_dynamic_data(&$tpl, &$sql, $ftp_acc) {
 }
 
 function update_ftp_account(&$sql, $ftp_acc, $dmn_name) {
+
 	global $other_dir;
+	$cfg = IspCP_Registry::get('Config');
 
 	// Create a virtual filesystem (it's important to use =&!)
 	$vfs = new vfs($dmn_name, $sql);
@@ -94,10 +101,10 @@ function update_ftp_account(&$sql, $ftp_acc, $dmn_name) {
 				return;
 			}
 			if (!chk_password($_POST['pass'])) {
-				if (Config::getInstance()->get('PASSWD_STRONG')) {
-					set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), Config::getInstance()->get('PASSWD_CHARS')));
+				if ($cfg->PASSWD_STRONG) {
+					set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS));
 				} else {
-					set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), Config::getInstance()->get('PASSWD_CHARS')));
+					set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), $cfg->PASSWD_CHARS));
 				}
 				return;
 			}
@@ -116,7 +123,7 @@ function update_ftp_account(&$sql, $ftp_acc, $dmn_name) {
 				// append the full path (vfs is always checking per ftp so it's logged
 				// in in the root of the user (no absolute paths are allowed here!)
 
-				$other_dir = Config::getInstance()->get('FTP_HOMEDIR') . "/" . $_SESSION['user_logged']
+				$other_dir = $cfg->FTP_HOMEDIR . "/" . $_SESSION['user_logged']
 							. clean_input($_POST['other_dir']);
 
 				$query = "
@@ -156,7 +163,7 @@ function update_ftp_account(&$sql, $ftp_acc, $dmn_name) {
 					set_page_message(tr('Incorrect mount point length or syntax'));
 					return;
 				}
-				$ftp_home = Config::getInstance()->get('FTP_HOMEDIR') . "/$dmn_name/" . $other_dir;
+				$ftp_home = $cfg->FTP_HOMEDIR . "/$dmn_name/" . $other_dir;
 				// Strip possible double-slashes
 				$ftp_home = str_replace('//', '/', $other_dir);
 				// Check for $other_dir existence
@@ -168,10 +175,10 @@ function update_ftp_account(&$sql, $ftp_acc, $dmn_name) {
 					set_page_message(tr('%s does not exist', $other_dir));
 					return;
 				}
-				$other_dir = Config::getInstance()->get('FTP_HOMEDIR') . "/" . $_SESSION['user_logged'] . $other_dir;
+				$other_dir = $cfg->FTP_HOMEDIR . "/" . $_SESSION['user_logged'] . $other_dir;
 			} else { // End of user-specified mount-point
 
-				$other_dir = Config::getInstance()->get('FTP_HOMEDIR') . "/" . $_SESSION['user_logged'];
+				$other_dir = $cfg->FTP_HOMEDIR . "/" . $_SESSION['user_logged'];
 
 			}
 			$query = "
@@ -192,12 +199,10 @@ function update_ftp_account(&$sql, $ftp_acc, $dmn_name) {
 
 // common page data.
 
-$theme_color = Config::getInstance()->get('USER_INITIAL_THEME');
-
 $tpl->assign(
 	array(
 		'TR_CLIENT_EDIT_FTP_ACC_PAGE_TITLE' => tr('ispCP - Client/Edit FTP Account'),
-		'THEME_COLOR_PATH' => "../themes/$theme_color",
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
 	)
@@ -225,8 +230,8 @@ update_ftp_account($sql, $ftp_acc, $dmn_name);
 
 // static page messages.
 
-gen_client_mainmenu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/main_menu_ftp_accounts.tpl');
-gen_client_menu($tpl, Config::getInstance()->get('CLIENT_TEMPLATE_PATH') . '/menu_ftp_accounts.tpl');
+gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_ftp_accounts.tpl');
+gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_ftp_accounts.tpl');
 
 gen_logged_from($tpl);
 
@@ -252,7 +257,8 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if (Config::getInstance()->get('DUMP_GUI_DEBUG')) {
+if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
+
 unset_messages();
