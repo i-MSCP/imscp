@@ -158,6 +158,9 @@ function install_lang() {
 }
 
 function show_lang(&$tpl, &$sql) {
+
+	$cfg = IspCP_Registry::get('Config');
+
 	$tables = $sql->MetaTables();
 
 	$nlang = count($tables);

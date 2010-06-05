@@ -80,6 +80,7 @@ function gen_system_message(&$tpl, &$sql) {
 
 function get_update_infos(&$tpl) {
 
+	$cfg = IspCP_Registry::get('Config');
 	$sql = Database::getInstance();
 
 	if (databaseUpdate::getInstance()->checkUpdateExists()) {
