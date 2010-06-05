@@ -36,6 +36,13 @@
 class SystemInfo {
 
 	/**
+	 * Operating system name where PHP is run
+	 *
+	 * @var string Operating system name
+	 */
+	protected $_os;
+	
+	/**
 	 * @var Array() CPU info
 	 */
 	public $cpu;
@@ -79,6 +86,7 @@ class SystemInfo {
 	 * Constructor.
 	 */
 	public function __construct() {
+		$this->_os			= php_uname('s');
 		$this->cpu 			= $this->_getCPUInfo();
 		$this->filesystem 	= $this->_getFileSystemInfo();
 		$this->kernel 		= $this->_getKernelInfo();
@@ -102,7 +110,7 @@ class SystemInfo {
 			'bogomips'	=> tr('N/A')
 		);
 
-		if (PHP_OS == 'FreeBSD' || PHP_OS == 'OpenBSD' || PHP_OS == 'NetBSD') {
+		if ($this->_os == 'FreeBSD' || $this->_os == 'OpenBSD' || $this->_os == 'NetBSD') {
 			$tmp = array();
 
 			$pattern = array(
@@ -331,7 +339,7 @@ class SystemInfo {
 	private function _getKernelInfo() {
 		$kernel = tr('N/A');
 
-		if (PHP_OS == 'FreeBSD' || PHP_OS == 'OpenBSD' || PHP_OS == 'NetBSD') {
+		if ($this->_os == 'FreeBSD' || $this->_os == 'OpenBSD' || $this->_os == 'NetBSD') {
 			if ($kernel_raw = $this->sysctl('kern.version')) {
 				$kernel_arr = explode(':', $kernel_raw);
 
@@ -362,7 +370,7 @@ class SystemInfo {
 	private function _getLoadInfo() {
 		$load = array(tr('N/A'), tr('N/A'), tr('N/A'));
 
-		if (PHP_OS == 'FreeBSD' || PHP_OS == 'OpenBSD' || PHP_OS == 'NetBSD') {
+		if ($this->_os == 'FreeBSD' || $this->_os == 'OpenBSD' || $this->_os == 'NetBSD') {
 			if ($load_raw = $this->sysctl('vm.loadavg')) {
 				$load_raw = preg_replace('/{\s/', '', $load_raw);
     			$load_raw = preg_replace('/\s}/', '', $load_raw);
@@ -393,7 +401,7 @@ class SystemInfo {
 	private function _getRAMInfo() {
 		$ram = array('total' => 0, 'free' => 0, 'used' => 0);
 
-		if (PHP_OS == 'FreeBSD' || PHP_OS == 'OpenBSD' || PHP_OS == 'NetBSD') {
+		if ($this->_os == 'FreeBSD' || $this->_os == 'OpenBSD' || $this->_os == 'NetBSD') {
 			if ($ram_raw = $this->sysctl("hw.physmem")) {
 				$descriptorspec = array(
 					0 => array('pipe', 'r'), // stdin is a pipe that the child will read from
@@ -460,14 +468,14 @@ class SystemInfo {
 	private function _getSwapInfo() {
 		$swap = array('total' => 0, 'free' => 0, 'used' => 0);
 
-		if (PHP_OS == 'FreeBSD' || PHP_OS == 'OpenBSD' || PHP_OS == 'NetBSD') {
+		if ($this->_os == 'FreeBSD' || $this->_os == 'OpenBSD' || $this->_os == 'NetBSD') {
 			$descriptorspec = array(
 				0 => array('pipe', 'r'), // stdin is a pipe that the child will read from
 				1 => array('pipe', 'w'), // stdout is a pipe that the child will write to
 				2 => array('pipe', 'a')	 // stderr is a pipe that he cild will write to
 			);
 
-			if (PHP_OS == 'OpenBSD' || PHP_OS == 'NetBSD') {
+			if ($this->_os == 'OpenBSD' || $this->_os == 'NetBSD') {
 				$args = '-l -k';
 			} else {
 				$args = '-k';
@@ -539,9 +547,9 @@ class SystemInfo {
 		$up = 0;
 		$uptime_str = tr('N/A');
 
-		if (PHP_OS == 'FreeBSD' || PHP_OS == 'OpenBSD' || PHP_OS == 'NetBSD') {
+		if ($this->_os == 'FreeBSD' || $this->_os == 'OpenBSD' || $this->_os == 'NetBSD') {
 			if ($uptime_raw = $this->sysctl("kern.boottime")) {
-				switch (PHP_OS) {
+				switch ($this->_os) {
 					case 'FreeBSD':
 						$up_arr = explode(' ', $uptime_raw);
 						$up_tmp = preg_replace('/{\s/', '', $up_arr[3]);
@@ -601,20 +609,20 @@ class SystemInfo {
 	 * @return buf Buffer of the file of false on error
 	 */
 	protected function read($filename) {
-		$result = @file_get_contents($filename);
 
-		if ($result === false) {
-			$this->error = sprintf(
-				tr('File %s does not exists or cannot be reached!'),
+		if(is_readable($filename)) {
+			$result = file_get_contents($filename);
+		} else {
+			$this->error = tr(
+				'File %s does not exists or cannot be reached!',
 				$filename
 			);
 
 			return false;
-		} else {
-			$this->error = '';
-
-			return $result;
 		}
+
+		$this->error = '';
+		return $result;
 	}
 
 	/**

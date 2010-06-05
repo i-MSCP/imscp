@@ -1,6 +1,13 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-06-05 Laurent Declercq
+	- GUI:
+		* include/class.SystemInfo.php:
+			- `PHP_OS` constant shouldn't be used since the returned version is
+				the system where PHP was built and not the system where it's run
+			- Avoid to use arobase to hide errors
+
 2010-06-04 Sascha Bay
 	- GUI:
 		* Fixed #2387: White Page after Login
