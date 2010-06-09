@@ -1,4 +1,4 @@
-phpMyAdmin 3.3.2 Documentation
+phpMyAdmin 3.3.3 Documentation
 
   * Top
   * Requirements
@@ -3673,7 +3673,7 @@ From Wikipedia, the free encyclopedia
   * zlib - an open-source, cross-platform data compression library by Jean-loup
     Gailly and Mark Adler.
 
-  * Copyright ? 2003 - 2009 phpMyAdmin devel team
+  * Copyright ? 2003 - 2010 phpMyAdmin devel team
   * License
   * Donate
   * Valid HTML and CSS

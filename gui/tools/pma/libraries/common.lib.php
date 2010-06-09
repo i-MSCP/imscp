@@ -1397,7 +1397,7 @@ function PMA_formatByteDown($value, $limes = 6, $comma = 0)
         $return_value = PMA_formatNumber($value, 0);
     }
 
-    return array($return_value, $unit);
+    return array(trim($return_value), $unit);
 } // end of the 'PMA_formatByteDown' function
 
 /**
@@ -2593,6 +2593,17 @@ function PMA_printable_bit_value($value, $length) {
     }
     $printable = substr($printable, -$length);
     return $printable;
+}
+
+/**
+ * Verifies whether the value contains a non-printable character 
+ *
+ * @uses    preg_match()
+ * @param   string $value 
+ * @return  boolean 
+ */
+function PMA_contains_nonprintable_ascii($value) {
+    return preg_match('@[^[:print:]]@', $value);
 }
 
 /**

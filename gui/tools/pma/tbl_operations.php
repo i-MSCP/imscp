@@ -95,6 +95,10 @@ if (isset($_REQUEST['submitoptions'])) {
         $tbl_type = $_REQUEST['new_tbl_type'];
         // reset the globals for the new engine
         PMA_set_global_variables_for_engine($tbl_type);
+        if ($is_maria) {
+            $transactional = (isset($transactional) && $transactional == '0') ? '0' : '1';
+            $page_checksum = (isset($page_checksum)) ? $page_checksum : '';
+        }
     }
 
     if (! empty($_REQUEST['tbl_collation'])
@@ -153,8 +157,16 @@ if (isset($_REQUEST['submitoptions'])) {
         $reread_info    = true;
         unset($table_alters);
         foreach (PMA_DBI_get_warnings() as $warning) {
-            $warning_messages[] = $warning['Level'] . ': #' . $warning['Code']
-                            . ' ' . $warning['Message'];
+            // In MariaDB 5.1.44, when altering a table from Maria to MyISAM 
+            // and if TRANSACTIONAL was set, the system reports an error;
+            // I discussed with a Maria developer and he agrees that this
+            // should not be reported with a Level of Error, so here
+            // I just ignore it. But there are other 1478 messages
+            // that it's better to show.
+            if (! ($_REQUEST['new_tbl_type'] == 'MyISAM' && $warning['Code'] == '1478' && $warning['Level'] == 'Error')) {
+                $warning_messages[] = $warning['Level'] . ': #' . $warning['Code']
+                    . ' ' . $warning['Message'];
+            }
         }
     }
 }
@@ -193,7 +205,7 @@ unset($reread_info);
  */
 require_once './libraries/tbl_links.inc.php';
 
-if (isset($result)) {
+if (isset($result) && empty($zero_rows)) {
     // set to success by default, because result set could be empty
     // (for example, a table rename)
     $_type = 'success';

@@ -1,25 +1,34 @@
 <?php
-/* $Id: config.sample.inc.php 9673 2006-11-03 09:05:54Z nijel $ */
+/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
+ * phpMyAdmin configuration file preedided by ispCP
+ *
+ * All directives are explained in Documentation.html and on phpMyAdmin
+ * wiki <http://wiki.phpmyadmin.net>.
+ *
+ * @version     $Id$
+ * @package     phpMyAdmin
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @link 		http://isp-control.net
  * @author 		ispCP Team
  */
 
-/**
- * phpMyAdmin Configuration File
- *
- * All directives are explained in Documentation.html
- * look http://your-server.com/ispcp/tools/pma/Documentation.html#authentication_modes
+/*
+ * This is needed for cookie based authentication to encrypt password in
+ * cookie
  */
+$cfg['blowfish_secret']                 = '{BLOWFISH}';
 
-
-/* Servers configuration */
+/*
+ * Servers configuration
+ */
 $i = 0;
 
-/* Server 1 (cookie) [1] */
+/*
+ * First server
+ */
 $i++;
 
 /* Authentication type */
@@ -31,11 +40,10 @@ $cfg['Servers'][$i]['password']			= $_POST['pma_password'];
 $cfg['Servers'][$i]['host'] 			= '{HOSTNAME}';
 $cfg['Servers'][$i]['port'] 			= '3306';
 $cfg['Servers'][$i]['connect_type'] 	= 'tcp';
-$cfg['Servers'][$i]['socket'] 			= '/var/run/mysqld/mysqld.sock';
 $cfg['Servers'][$i]['compress'] 		= true;
 /* Select mysqli if your server has it */
 $cfg['Servers'][$i]['extension'] 		= 'mysql';
-$cfg['Servers'][$i]['AllowNoPassword'] = false;
+$cfg['Servers'][$i]['AllowNoPassword']  = false;
 /* rajk - for blobstreaming */
 $cfg['Servers'][$i]['bs_garbage_threshold'] = 50;
 $cfg['Servers'][$i]['bs_repository_threshold'] = '32M';
@@ -45,7 +53,7 @@ $cfg['Servers'][$i]['bs_temp_log_threshold'] = '32M';
 $cfg['Servers'][$i]['controluser'] 		= '{PMA_USER}';
 $cfg['Servers'][$i]['controlpass'] 		= '{PMA_PASS}';
 /* Advanced phpMyAdmin features */
-//$cfg['Servers'][$i]['pmadb'] 			= 'phpmyadmin';
+$cfg['Servers'][$i]['pmadb']      	    = 'phpmyadmin';
 $cfg['Servers'][$i]['bookmarktable'] 	= 'pma_bookmark';
 $cfg['Servers'][$i]['relation'] 		= 'pma_relation';
 $cfg['Servers'][$i]['table_info'] 		= 'pma_table_info';
@@ -53,6 +61,7 @@ $cfg['Servers'][$i]['table_coords'] 	= 'pma_table_coords';
 $cfg['Servers'][$i]['pdf_pages'] 		= 'pma_pdf_pages';
 $cfg['Servers'][$i]['column_info'] 		= 'pma_column_info';
 $cfg['Servers'][$i]['history'] 			= 'pma_history';
+$cfg['Servers'][$i]['tracking']         = 'pma_tracking';
 $cfg['Servers'][$i]['designer_coords']	= 'pma_designer_coords';
 $cfg['Servers'][$i]['hide_db'] 			= '(information_schema|phpmyadmin|mysql)';
 /* Name of the Server displayed */
@@ -66,12 +75,8 @@ $cfg['Servers'][$i]['SignonSession']	= 'ispCP Omega';
  */
 
 /*
- * This is needed for cookie based authentication to encrypt password in
- * cookie
+ * Layout preferences 
  */
-$cfg['blowfish_secret'] 			= '{BLOWFISH}';
-
-/* Layout preferences */
 $cfg['LeftFrameLight'] 					= true;
 $cfg['LeftFrameDBTree'] 				= true;
 $cfg['LeftFrameDBSeparator'] 			= '_';
