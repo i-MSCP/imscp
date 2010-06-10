@@ -491,3 +491,28 @@ function is_xhr() {
 		return false;
 	}
 }
+
+/**
+ * Check if a data is serialized
+ *
+ * @since 1.0.6
+ * @author Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
+ * @param mixed $data Data to be checked
+ * @return boolean TRUE if serialized data, FALSE otherwise
+ */
+function is_serialized($data) {
+	
+	if (!is_string($data)) return false;
+
+	$data = trim($data);
+
+	if ('N;' == $data) return true;
+
+	if(preg_match( "/^[aOs]:[0-9]+:.*[;}]\$/s", $data) ||
+		preg_match( "/^[bid]:[0-9.E-]+;\$/", $data)) {
+			
+		return true;
+	}
+
+	return false;
+}

@@ -1,6 +1,10 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-06-10 Laurent Declercq
+	- GUI:
+		* Added `is_serialized()` funct. to check if a data is serialized
+
 2010-06-09 Benedikt Heintel
 	- TOOLS:
 		* Updated phpMyAdmin to version 3.3.3 
