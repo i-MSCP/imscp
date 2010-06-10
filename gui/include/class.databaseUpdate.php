@@ -1783,7 +1783,6 @@ class databaseUpdate extends ispcpUpdate {
 	 */
 	protected function _databaseUpdate_36() {
 		$sqlUpd = array();
-		$sql = Database::getInstance();
 
 		$sqlUpd[] = "
 			ALTER IGNORE TABLE
@@ -1818,7 +1817,6 @@ class databaseUpdate extends ispcpUpdate {
 	 */
 	protected function _databaseUpdate_37() {
 		$sqlUpd = array();
-		$sql = Database::getInstance();
 
 		$sqlUpd[] = "
 			ALTER IGNORE TABLE
@@ -1832,6 +1830,32 @@ class databaseUpdate extends ispcpUpdate {
 		return $sqlUpd;
 	}
 
+	/**
+	 * Changed the config.value column type to allow to store larges data
+	 *
+	 * Some data can be very larges like serialized data that represent a object,
+	 * a array...
+	 *
+	 * @author Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
+	 * @since r2988
+	 *
+	 * @access protected
+	 * @return array sql statements to be performed
+	 */
+	protected function _databaseUpdate_38() {
+		return array("
+			ALTER TABLE
+				`config`
+			CHANGE
+				`value` `value` LONGTEXT
+			CHARACTER SET
+				utf8
+			COLLATE utf8_unicode_ci
+				NOT NULL
+			;
+		");
+	}
+	
 	/*
 	 * DO NOT CHANGE ANYTHING BELOW THIS LINE!
 	 */

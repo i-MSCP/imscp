@@ -97,7 +97,7 @@ CREATE TABLE `auto_num` (
 
 CREATE TABLE `config` (
   `name` varchar(255) collate utf8_unicode_ci NOT NULL default '',
-  `value` varchar(255) collate utf8_unicode_ci NOT NULL default '',
+  `value` longtext collate utf8_unicode_ci NOT NULL,
   PRIMARY KEY  (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

@@ -2,6 +2,8 @@ ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2010-06-10 Laurent Declercq
+	- DATABASE:
+		* Changed the config.value column type to allow to store larges data
 	- GUI:
 		* Added `is_serialized()` funct. to check if a data is serialized
 
