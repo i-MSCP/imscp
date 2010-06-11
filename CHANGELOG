@@ -1,6 +1,12 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-06-11 Laurent Declercq
+	- GUI:
+		* Added include/deprecated.php file for deprecated functions
+		* Moved deprecated functions from include/*.php files in
+			include/deprecated.php
+
 2010-06-10 Laurent Declercq
 	- DATABASE:
 		* Changed the config.value column type to allow to store larges data

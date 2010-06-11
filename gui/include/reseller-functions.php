@@ -623,40 +623,6 @@ function get_user_props($user_id) {
 } // end of get_user_props();
 
 /**
- * @deprecated function deprecated in revision r2228
- */
-/*
-function rsl_full_domain_check($data) {
-
-	$data .= '.';
-	$match = array();
-
-	$res = preg_match_all(
-							"/([^\.]*\.)/",
-							$data,
-							$match,
-							PREG_PATTERN_ORDER
-	);
-
-	if ($res == 0) return 0;
-
-	$last = $res - 1;
-
-	for ($i = 0; $i < $last; $i++) {
-		$token = chop($match[0][$i], ".");
-
-		if (!check_dn_rsl_token($token)) {
-			return 0;
-		}
-	}
-
-	$res = preg_match("/^[A-Za-z][A-Za-z0-9]*[A-Za-z]\.$/", $match[0][$last]);
-
-	return ($res == 0) ? 0 : 1;
-} // end of full_domain_check()
-*/
-
-/**
  * Generate IP list
  */
 function generate_ip_list(&$tpl, &$reseller_id) {

@@ -56,6 +56,7 @@ function autoload_class($className) {
 spl_autoload_register('autoload_class');
 
 require_once(INCLUDEPATH . '/ispcp-config.php');
+require_once(INCLUDEPATH . '/deprecated.php');
 
 session_name('ispCP');
 

@@ -2164,31 +2164,6 @@ RIC;
 }
 
 /**
- * @deprecated since 1.0.6 (Will be removed)
- */
-function setConfig_Value($name, $value) {
-	$sql = Database::getInstance();
-
-	$query = "SELECT `name` FROM `config` WHERE `name`= ?";
-
-	$res = exec_query($sql, $query, array($name));
-
-	if ($res->RecordCount() == 0) {
-		$query = "INSERT INTO `config` (`name`, `value`) VALUES (?, ?)";
-
-		exec_query($sql, $query, array($name, $value));
-	} else {
-		$query = "UPDATE `config` SET `value` = ? WHERE `name`= ?";
-
-		$res = exec_query($sql, $query, array($value, $name));
-	}
-
-	Config::getInstance()->set($name, $value);
-
-	return true;
-}
-
-/**
  * Get language dependend priority string
  *
  * @param integer $ticket_urgency values from 1 to 4
