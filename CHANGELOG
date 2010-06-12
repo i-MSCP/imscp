@@ -2,6 +2,11 @@ ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2010-06-12 Laurent Declercq
+	- GUI:
+		* i18n.php:
+			- Added documentation
+			- Improved performance for tr() funct. by caching the PDOstatement
+				 object
 	- TOOLS:
 		* Fixed #2346: Remove copyright symbol from Webftp logo
 

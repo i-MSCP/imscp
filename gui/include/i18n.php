@@ -33,13 +33,22 @@
  * null: set if missing,
  * true: force update from session/default, anything else: set it as a language
  */
+
+/**
+ * Set and return the current language
+ *
+ * @param string|null $newlang New language to be used or NULL to use existing
+ * @param boolean $force If TRUE, $newlang will be forced
+ * @return string Current language
+ */
 function curlang($newlang = null, $force = false) {
+
 	static $language = null;
 
-	// we store old value so if $language is changed old value is returned
+	// We store old value so if $language is changed old value is returned
 	$_language = $language;
 
-	// forcibly set $language to $newlang (use with CARE!)
+	// Forcibly set $language to $newlang (use with CARE!)
 	if ($force) {
 		$language = $newlang;
 		return $_language;
@@ -47,9 +56,9 @@ function curlang($newlang = null, $force = false) {
 
 	if ($language === null || ($newlang !== null && $newlang !== false)) {
 
-		if ($newlang === true
-			|| (($newlang === null || $newlang === false) && $language === null)
-			) {
+		if ($newlang === true || (($newlang === null || $newlang === false) &&
+			$language === null) ) {
+
 			$newlang = (isset($_SESSION['user_def_lang']))
 				? $_SESSION['user_def_lang']
 				: Config::getInstance()->get('USER_INITIAL_LANG');
@@ -64,45 +73,67 @@ function curlang($newlang = null, $force = false) {
 }
 
 /**
- * translates a given string into the selected language, if exists
+ * Translates a given string into the selected language, if exists
  *
- * @access		public
- * @version		2.2
- * @author		ispCP Team, Benedikt Heintel (2007), Raphael Geissert (2007)
- *
- * @param		String	$msgid			string to translate
- * @param		Mixed	$substitution	prevent the returned string from being replaced with html entities
- * @return		String					translated or original string
- * @todo use db prepared statements
+ * @access public
+ * @version 2.3
+ * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
+ * @author Raphael Geissert (2007)
+ * @param string $msgid string to translate
+ * @param mixed $substitution Prevent the returned string from being replaced
+ * 	with html entities
+ * @return Translated or original string
  */
 function tr($msgid, $substitution = false) {
-	$sql = Database::getInstance();
-	static $cache = array();
 
-	// detect whether $substitution is really $substitution or just a value to be replaced in $msgstr
+	static $cache = array();
+	static $stmt = null;
+
+	// Detect whether $substitution is really $substitution or just a value to
+	// be replaced in $msgstr
 	if (!is_bool($substitution)) {
 		$substitution = false;
 	}
 
 	$lang = curlang();
+
 	$encoding = 'UTF-8';
 
 	if (isset($cache[$lang][$msgid])) {
 		$msgstr = $cache[$lang][$msgid];
 	} else {
+
 		$msgstr = $msgid;
 
-		if ($sql) {
-			if (!$substitution) {
-				// $substitution is true in this call because we need it that way and to prevent an infinite loop
-				$encoding = tr('encoding', true);
-			}
-			$rs = exec_query($sql, "SELECT `msgstr` FROM " . quoteIdentifier($lang) . " WHERE `msgid` = ?;", array($msgid), false);
-
-			if ($rs && $rs->RowCount() > 0 && $rs->fields['msgstr'] != '') {
-				$msgstr = $rs->fields['msgstr'];
-			}
+		if (!$substitution) {
+			// $substitution is true in this call because we need it that way
+			// and to prevent an infinite loop
+			$encoding = tr('encoding', true);
 		}
+
+		// Prepare the query only once to improve performances
+		if($stmt == null) {
+			$query = "
+				SELECT
+					`msgstr`
+				FROM
+					`$lang`
+				WHERE
+					`msgid` = :msgid
+				;
+			";
+
+			$stmt = Database::getRawInstance()->prepare($query);
+		}
+
+		// Execute the query
+		$stmt->execute(array(':msgid' => $msgid ));
+
+		$rs = $stmt->fetch(PDO::FETCH_ASSOC);
+
+		if($rs)
+			$msgstr = $rs['msgstr'];
 	}
 
 	if ($msgid == 'encoding' && $msgstr == 'encoding') {
@@ -110,11 +141,9 @@ function tr($msgid, $substitution = false) {
 	}
 
 	// Detect comments and strip them if $msgid == $msgstr
-	// e.g.
-	// tr('_: This is just a comment\nReal message to translate here')
-	if ($msgid == $msgstr
-		&& substr($msgid, 0, 3) == '_: '
-		&& count($l = explode("\n", $msgid)) > 1) {
+	// e.g. tr('_: This is just a comment\nReal message to translate here')
+	if ( substr($msgid, 0, 3) == '_: ' &&  $msgid == $msgstr &&
+			count($l = explode("\n", $msgid)) > 1) {
 		unset($l[0]);
 		$msgstr = implode("\n", $l);
 	}
@@ -129,6 +158,7 @@ function tr($msgid, $substitution = false) {
 		if (is_bool($argv[1])) {
 			unset($argv[1]);
 		}
+
 		$msgstr = vsprintf($msgstr, $argv);
 	}
 
@@ -140,14 +170,13 @@ function tr($msgid, $substitution = false) {
 }
 
 /**
- * replaces special encoded strings back to their original signs
+ * Replaces special encoded strings back to their original signs
  *
- * @access		public
- * @version		1.0
- * @author		ispCP Team, Benedikt Heintel (2007)
- *
- * @param		string	$string	string to replace chars
- * @return		string	string with replaced chars
+ * @access public
+ * @version 1.0
+ * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @param string $string String to replace chars
+ * @return String with replaced chars
  */
 function replace_html($string) {
 	$pattern = array(
