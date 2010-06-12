@@ -1,6 +1,10 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-06-12 Laurent Declercq
+	- TOOLS:
+		* Fixed #2346: Remove copyright symbol from Webftp logo
+
 2010-06-11 Laurent Declercq
 	- GUI:
 		* Added include/deprecated.php file for deprecated functions
