@@ -28,8 +28,10 @@
  * isp Control Panel. All Rights Reserved.
  */
 
+// Include needed libraries
 require '../include/ispcp-lib.php';
 
+// Check for login
 check_login(__FILE__);
 
 $cfg = IspCP_Registry::get('Config');
@@ -45,17 +47,18 @@ $tpl->define_dynamic('lang_def', 'lang_row');
 
 $tpl->assign(
 	array(
-		'TR_ADMIN_I18N_PAGE_TITLE'	=> tr('ispCP - Admin/Internationalisation'),
-		'THEME_COLOR_PATH'			=> "../themes/{$cfg->USER_INITIAL_THEME}",
-		'THEME_CHARSET'				=> tr('encoding'),
-		'ISP_LOGO'					=> get_logo($_SESSION['user_id'])
+		'TR_ADMIN_I18N_PAGE_TITLE' => tr('ispCP - Admin/Internationalisation'),
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => get_logo($_SESSION['user_id'])
 	)
 );
 
 function install_lang() {
+
 	$sql = Database::getInstance();
 
-	if (isset($_POST['uaction']) && $_POST['uaction'] === 'upload_language') {
+	if (isset($_POST['uaction']) && $_POST['uaction'] == 'upload_language') {
 		// add lang pack now !
 		$file_type = $_FILES['lang_file']['type'];
 		$file = $_FILES['lang_file']['tmp_name'];
@@ -64,18 +67,21 @@ function install_lang() {
 			|| !file_exists($file)
 			|| !is_readable($file)) {
 			set_page_message(tr('Upload file error!'));
+
 			return;
 		}
 
-		if ($file_type !== "text/plain"
+		if ($file_type !== 'text/plain'
 			&& $file_type !== "application/octet-stream") {
 			set_page_message(tr('You can upload only text files!'));
+
 			return;
 		} else {
 			$fp = fopen($file, 'r');
 
 			if (!$fp) {
 				set_page_message(tr('Could not read language file!'));
+
 				return;
 			}
 
@@ -86,6 +92,7 @@ function install_lang() {
 				'ispcp_table' => '',
 				'ispcp_language' => ''
 			);
+
 			$errors = 0;
 
 			while (!feof($fp) && $errors <= 3) {
@@ -107,6 +114,7 @@ function install_lang() {
 
 			if ($errors > 3) {
 				set_page_message(tr('Uploaded file is not a valid language file!'));
+
 				return;
 			}
 
@@ -115,7 +123,9 @@ function install_lang() {
 				|| empty($ab['ispcp_language'])
 				|| !preg_match('/^[a-z]{2}(_[A-Z]{2}){0,1}$/Di', $ab['ispcp_languageSetlocaleValue'])
 				|| !preg_match('/^[a-z0-9]+$/Di', $ab['ispcp_table'])) {
+
 				set_page_message(tr('Uploaded file does not contain the language information!'));
+
 				return;
 			}
 
@@ -131,15 +141,23 @@ function install_lang() {
 			}
 
 			if ($lang_update) {
-				$sql->Execute("DROP TABLE IF EXISTS `$lang_table`;");
+				$sql->Execute("
+					DROP TABLE IF EXISTS
+						`$lang_table`
+					;
+				");
 			}
 
-			$sql->Execute("CREATE TABLE `$lang_table` (
-							`msgid` text collate utf8_unicode_ci,
-							`msgstr` text collate utf8_unicode_ci,
-							KEY `msgid` (msgid(25))
-							) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;"
-			);
+			$sql->Execute("
+				CREATE TABLE
+					`$lang_table` (
+						`msgid` text collate utf8_unicode_ci,
+						`msgstr` text collate utf8_unicode_ci,
+						KEY `msgid` (msgid(25))
+					)
+				DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci
+				;
+			");
 
 			foreach ($ab as $msgid => $msgstr) {
 				$query = "INSERT INTO `$lang_table` (`msgid`, `msgstr`) VALUES (?, ?)";
@@ -147,19 +165,41 @@ function install_lang() {
 			}
 
 			if (!$lang_update) {
-				write_log(sprintf("%s added new language: %s", $_SESSION['user_logged'], $ab['ispcp_language']));
+				write_log(
+					tr(
+						'%s added new language: %s',
+						$_SESSION['user_logged'],
+						$ab['ispcp_language']
+					)
+				);
+				
+				//write_log(sprintf("%s added new language: %s", $_SESSION['user_logged'], $ab['ispcp_language']));
 				set_page_message(tr('New language installed!'));
 			} else {
-				write_log(sprintf("%s updated language: %s", $_SESSION['user_logged'], $ab['ispcp_language']));
+				write_log(
+					tr('%s updated language: %s',
+						$_SESSION['user_logged'],
+						$ab['ispcp_language']
+					)
+				);
+				
+				//write_log(sprintf("%s updated language: %s", $_SESSION['user_logged'], $ab['ispcp_language']));
 				set_page_message(tr('Language was updated!'));
 			}
 		}
 	}
 }
 
-function show_lang(&$tpl, &$sql) {
+/**
+ * Should be documented
+ * 
+ * @param Ptemplate
+ * @return void
+ */
+function show_lang(&$tpl) {
 
 	$cfg = IspCP_Registry::get('Config');
+	$sql = Database::getInstance();
 
 	$tables = $sql->MetaTables();
 
@@ -173,7 +213,8 @@ function show_lang(&$tpl, &$sql) {
 
 	for ($i = 0; $i < $nlang; $i++) {
 		$data = $tables[$i];
-		$pos = strpos($data, "lang_");
+		$pos = strpos($data, 'lang_');
+
 		if ($pos === false) {
 			// not found... ... next :)
 			continue;
@@ -181,16 +222,16 @@ function show_lang(&$tpl, &$sql) {
 		$dat = explode('_', $data);
 
 		$query = "SELECT COUNT(`msgid`) AS cnt FROM " . $tables[$i];
-		$rs = exec_query($sql, $query, array());
+		$rs = exec_query($sql, $query);
 
 		$query = "SELECT `msgstr` FROM " . $tables[$i] . " WHERE `msgid` = 'ispcp_language'";
-		$res2 = exec_query($sql, $query, array());
+		$res2 = exec_query($sql, $query);
 
 		$query = "SELECT `msgstr` FROM " . $tables[$i] . " WHERE `msgid` = 'ispcp_languageSetlocaleValue'";
-		$res3 = exec_query($sql, $query, array());
+		$res3 = exec_query($sql, $query);
 
 		$query = "SELECT `msgstr` FROM " . $tables[$i] . " WHERE `msgid` = 'ispcp_languageRevision'";
-		$res4 = exec_query($sql, $query, array());
+		$res4 = exec_query($sql, $query);
 
 		if ($res2->RecordCount() == 0 || $res3->RecordCount() == 0) {
 			$language_name = tr('Unknown');
@@ -206,6 +247,7 @@ function show_lang(&$tpl, &$sql) {
 		if ($res4->RecordCount() !== 0 && $res4->fields['msgstr'] != '' && class_exists('DateTime')) {
 			$tmp_lang = new DateTime($res4->fields['msgstr']);
 			$language_revision = $tmp_lang->format('Y-m-d H:i');
+
 			unset($tmp_lang);
 		} else {
 			$language_revision = tr('Unknown');
@@ -217,31 +259,33 @@ function show_lang(&$tpl, &$sql) {
 			|| $usr_def_lng[1] == $dat[1]) {
 			$tpl->assign(
 				array(
-					'TR_UNINSTALL'		=> tr('uninstall'),
-					'LANG_DELETE_LINK'	=> '',
-					'LANGUAGE'			=> tohtml($language_name),
-					'LANGUAGE_REVISION'	=> $language_revision,
+					'TR_UNINSTALL' => tr('uninstall'),
+					'LANG_DELETE_LINK' => '',
+					'LANGUAGE' => tohtml($language_name),
+					'LANGUAGE_REVISION' => $language_revision,
 				)
 			);
+
 			$tpl->parse('LANG_DELETE_SHOW', 'lang_delete_show');
 		} else {
 			$tpl->assign(
 				array(
-					'TR_UNINSTALL'		=> tr('uninstall'),
-					'URL_DELETE'		=> 'language_delete.php?delete_lang=lang_' . $dat[1],
-					'LANG_DELETE_SHOW'	=> '',
-					'LANGUAGE'			=> tohtml($language_name),
-					'LANGUAGE_REVISION'	=> $language_revision,
+					'TR_UNINSTALL' => tr('uninstall'),
+					'URL_DELETE' => 'language_delete.php?delete_lang=lang_' . $dat[1],
+					'LANG_DELETE_SHOW' => '',
+					'LANGUAGE' => tohtml($language_name),
+					'LANGUAGE_REVISION' => $language_revision,
 				)
 			);
+
 			$tpl->parse('LANG_DELETE_LINK', 'lang_delete_link');
 		}
 		// 'LANGUAGE' => $dat[1],
 		// $res
 		$tpl->assign(
 			array(
-				'MESSAGES'		=> tr('%d messages translated', $rs->fields['cnt']-5), // -5, because of meta strings
-				'URL_EXPORT'	=> 'multilanguage_export.php?export_lang=lang_' . $dat[1],
+				'MESSAGES' => tr('%d messages translated', $rs->fields['cnt']-5), // -5, because of meta strings
+				'URL_EXPORT' => 'multilanguage_export.php?export_lang=lang_' . $dat[1],
 			)
 		);
 
@@ -260,7 +304,7 @@ gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_settings.tpl');
 
 install_lang();
 
-show_lang($tpl, $sql);
+show_lang($tpl);
 
 $tpl->assign(
 	array(

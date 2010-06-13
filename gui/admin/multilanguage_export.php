@@ -28,43 +28,62 @@
  * isp Control Panel. All Rights Reserved.
  */
 
+// Include needed libraries
 require '../include/ispcp-lib.php';
 
-// Security
+// Check for login
 check_login(__FILE__);
 
 if (isset($_GET['export_lang']) && $_GET['export_lang'] !== '') {
+	
+	$sql = Database::getInstance();
+	
 	$language_table = $_GET['export_lang'];
-	$encoding = $sql->Execute("SELECT `msgstr` FROM `" . $language_table . "` WHERE `msgid` = 'encoding';");
-	if ($encoding
-		&& $encoding->RowCount() > 0
+	
+	$encoding = $sql->Execute("
+		SELECT 
+			`msgstr`
+		FROM
+			`$language_table`
+		WHERE
+			`msgid` = 'encoding'
+		;
+	");
+	
+	if ($encoding && $encoding->RowCount() > 0
 		&& $encoding->fields['msgstr'] != '') {
+
 		$encoding = $encoding->fields['msgstr'];
 	} else {
 		$encoding = 'UTF-8';
 	}
-	$query = <<<SQL_QUERY
-			SELECT
-				`msgid`,
-				`msgstr`
-			FROM
-				$language_table
-SQL_QUERY;
 
-	$rs = exec_query($sql, $query, array());
+	$query = "
+		SELECT
+			`msgid`,
+			`msgstr`
+		FROM
+			$language_table
+		;
+	";
+
+	$rs = exec_query($sql, $query);
 
 	if ($rs->RecordCount() == 0) {
-		set_page_message(tr("Incorrect data input!"));
+		set_page_message(tr('Incorrect data input!'));
 		user_goto('multilanguage.php');
 	} else {
 		$GLOBALS['class']['output']->showSize = false;
 		header('Content-type: text/plain; charset=' . $encoding);
+
 		while (!$rs->EOF) {
 			$msgid = $rs->fields['msgid'];
 			$msgstr = $rs->fields['msgstr'];
+
 			if ($msgid !== '' && $msgstr !== '') {
 				echo $msgid . " = " . $msgstr."\n";
 			}
+
 			$rs->MoveNext();
 		}
 	}

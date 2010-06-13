@@ -1,6 +1,11 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-06-13 Laurent Declercq
+	- GUI:
+		* Some refactoring tasks
+		* Fixed i18n issue in admin/multilanguage.php
+
 2010-06-12 Laurent Declercq
 	- GUI:
 		* i18n.php:
