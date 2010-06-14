@@ -1128,7 +1128,7 @@ function generate_user_props($user_id) {
 
 	if ($rs->RowCount() == 0) {
 		//return array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-		array_fill(0, 14, 0);
+		return array_fill(0, 14, 0);
 	}
 
 	$sub_current = records_count('subdomain', 'domain_id', $user_id);
