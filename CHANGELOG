@@ -1,6 +1,10 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-06-14 Laurent Declercq
+	- GUI:
+		* Some refactoring tasks
+
 2010-06-13 Laurent Declercq
 	- GUI:
 		* Some refactoring tasks
