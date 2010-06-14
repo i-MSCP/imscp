@@ -29,10 +29,13 @@
  */
 
 function init_login() {
-	// just make sure to expire counters in case BRUTEFORCE is turned off
-	unblock(Config::getInstance()->get('BRUTEFORCE_BLOCK_TIME'));
 
-	if (Config::getInstance()->get('BRUTEFORCE')) {
+	$cfg = IspCP_Registry::get('Config');
+
+	// just make sure to expire counters in case BRUTEFORCE is turned off
+	unblock($cfg->BRUTEFORCE_BLOCK_TIME);
+
+	if ($cfg->BRUTEFORCE) {
 		is_ipaddr_blocked(null, 'bruteforce', true);
 	}
 }
@@ -41,30 +44,40 @@ function init_login() {
  * @todo use more secure hash algorithm (see PHP mcrypt extension)
  */
 function register_user($uname, $upass) {
+
+	$cfg = IspCP_Registry::get('Config');
 	$sql = Database::getInstance();
-	$backButtonDestination = Config::getInstance()->get('BASE_SERVER_VHOST_PREFIX') . 
-		Config::getInstance()->get('BASE_SERVER_VHOST');
+
+	$backButtonDestination = $cfg->BASE_SERVER_VHOST_PREFIX .
+		$cfg->BASE_SERVER_VHOST;
 
 	check_ipaddr();
 
 	if (!username_exists($uname)) {
 		write_log("Login error, <b><i>".$uname."</i></b> unknown username");
 		system_message(
-			tr('You entered an incorrect username/password.'), 
+			tr('You entered an incorrect username/password.'),
 			$backButtonDestination
 		);
+
 		return false;
 	}
 
 	$udata = array();
 	$udata = get_userdata($uname);
 
-	if ((
-		databaseUpdate::getInstance()->checkUpdateExists()
-		|| (Config::getInstance()->get('MAINTENANCEMODE'))
-		) && $udata['admin_type'] != 'admin') {
-		write_log("Login error, <b><i>" . $uname . "</i></b> system currently in maintenance mode");
-		system_message(tr('System is currently under maintenance! Only administrators can login.'));
+	if ((databaseUpdate::getInstance()->checkUpdateExists() ||
+		($cfg->MAINTENANCEMODE)) && $udata['admin_type'] != 'admin') {
+
+		write_log(
+			"Login error, <b><i>" . $uname .
+				"</i></b> system currently in maintenance mode"
+		);
+
+		system_message(
+			tr('System is currently under maintenance! Only administrators can login.')
+		);
+
 		return false;
 	}
 
@@ -72,21 +85,33 @@ function register_user($uname, $upass) {
 		|| md5($upass) == $udata['admin_pass']) {
 
 		if (isset($_SESSION['user_logged'])) {
-			write_log(tr("%s user already logged or session sharing problem! Aborting...", $uname));
-			system_message(tr('User already logged or session sharing problem! Aborting...'));
+			write_log(
+				tr(
+					"%s user already logged or session sharing problem! Aborting...",
+					$uname
+				)
+			);
+
+			system_message(
+				tr('User already logged or session sharing problem! Aborting...')
+			);
+
 			unset_user_login_data();
+
 			return false;
 		}
 
 		if (!is_userdomain_ok($uname)) {
 			write_log(tr("%s's account status is not ok!", $uname));
 			system_message(tr("%s's account status is not ok!", $uname));
+
 			return false;
 		}
 
 		if ($udata['admin_type'] == 'user' && is_userdomain_expired($uname)) {
 			write_log(tr("%s's domain expired!", $uname));
 			system_message(tr("%s's domain expired!", $uname));
+
 			return false;
 		}
 
@@ -100,6 +125,7 @@ function register_user($uname, $upass) {
 				`lastaccess` = ?
 			WHERE
 				`session_id` = ?
+			;
 		";
 
 		exec_query($sql, $query, array($uname, time(), $sess_id));
@@ -113,22 +139,29 @@ function register_user($uname, $upass) {
 		$_SESSION['user_login_time'] = time();
 
 		write_log($uname." logged in.");
+
 		return true;
 	} else {
 		write_log($uname . ' entered incorrect password.');
-		system_message(tr('You entered an incorrect username/password.'), $backButtonDestination);
+		system_message(
+			tr('You entered an incorrect username/password.'),
+			$backButtonDestination
+		);
+
 		return false;
 	}
-
 }
 
 function check_user_login() {
+
+	$cfg = IspCP_Registry::get('Config');
 	$sql = Database::getInstance();
 
 	$sess_id = session_id();
 	// kill timed out sessions
 	do_session_timeout();
-	$user_logged = isset($_SESSION['user_logged']) ? $_SESSION['user_logged'] : false;
+	$user_logged = isset($_SESSION['user_logged'])
+		? $_SESSION['user_logged'] : false;
 
 	if (!$user_logged) {
 		return false;
@@ -154,24 +187,33 @@ function check_user_login() {
 			admin.`admin_id` = ?
 		AND
 			login.`session_id` = ?
+		;
 	";
 
-	$rs = exec_query($sql, $query, array($user_logged, $user_pass, $user_type, $user_id, $sess_id));
+	$rs = exec_query(
+			$sql,
+			$query,
+			array($user_logged, $user_pass, $user_type, $user_id, $sess_id)
+	);
 
 	if ($rs->RecordCount() != 1) {
 		write_log("Detected session manipulation on ".$user_logged."'s session!");
 		unset_user_login_data();
+
 		return false;
 	}
 
-	if ((
-			databaseUpdate::getInstance()->checkUpdateExists()
-			|| (Config::getInstance()->get('MAINTENANCEMODE')) )
-			&& $user_type != 'admin') {
+	if ((databaseUpdate::getInstance()->checkUpdateExists() ||
+		($cfg->MAINTENANCEMODE)) && $user_type != 'admin') {
 		unset_user_login_data(true);
-		write_log("System is currently in maintenance mode. Logging out <b><i>".$user_logged."</i></b>");
+		write_log(
+			"System is currently in maintenance mode. Logging out <b><i>" . 
+				$user_logged . "</i></b>"
+		);
+
 		user_goto('/index.php');
 	}
+
 	// if user login data correct - update session and lastaccess
 	$_SESSION['user_login_time'] = time();
 
@@ -182,17 +224,21 @@ function check_user_login() {
 			`lastaccess` = ?
 		WHERE
 			`session_id` = ?
+		;
 	";
 
 	exec_query($sql, $query, array(time(), $sess_id));
+
 	return true;
 }
 
 /**
  * check for valid user login and valid file request/call
  *
- * @param string $fName full path and filename of the file ie. with magic constant __FILE__
- * @param boolean $preventExternalLogin check HTTP Referer for valid request/call, ie. to prevent login from external websites
+ * @param string $fName Full path and filename of the file ie. With magic
+ * 	constant __FILE__
+ * @param boolean $preventExternalLogin Check HTTP Referer for valid request/call,
+ * 	ie. to prevent login from external websites
  */
 function check_login($fName = null, $preventExternalLogin = true) {
 
@@ -218,7 +264,13 @@ function check_login($fName = null, $preventExternalLogin = true) {
 			case 'admin':
 			case 'reseller':
 				if ($level != $_SESSION['user_type']) {
-					write_log('Warning! user |'.$_SESSION['user_logged'].'| requested |'.$_SERVER["REQUEST_URI"].'| with REQUEST_METHOD |'.$_SERVER["REQUEST_METHOD"].'|');
+					write_log(
+						'Warning! user |'. $_SESSION['user_logged'] .
+							'| requested |' . $_SERVER["REQUEST_URI"] .
+								'| with REQUEST_METHOD |' .
+									$_SERVER["REQUEST_METHOD"] . '|'
+					);
+
 					user_goto('/index.php');
 				}
 				break;
@@ -227,16 +279,26 @@ function check_login($fName = null, $preventExternalLogin = true) {
 
 	// prevent external login / check for referer
 	if ($preventExternalLogin) {
-		if (isset($_SERVER['HTTP_REFERER']) && !empty($_SERVER['HTTP_REFERER'])) {
+		if (isset($_SERVER['HTTP_REFERER']) &&
+			!empty($_SERVER['HTTP_REFERER'])) {
 
 			$info = parse_url($_SERVER['HTTP_REFERER']);
+
 			if (isset($info['host']) && !empty($info['host'])) {
 				// Check if $_SERVER['HTTP_REFERER'] equals $_SERVER['HTTP_HOST']
 				// w/ port number stipped
 				$http_host = $_SERVER['HTTP_HOST'];
-				if ($info['host'] != substr($http_host, 0, (int) (strlen($http_host) - strlen(strrchr($http_host, ':'))))
+
+				if ($info['host'] != substr(
+						$http_host,
+						0,
+						(int) (strlen($http_host) - strlen(strrchr($http_host, ':'))))
 					|| $info['host'] != $_SERVER['SERVER_NAME']) {
-					set_page_message(tr('Request from foreign host was blocked!'));
+
+					set_page_message(
+						tr('Request from foreign host was blocked!')
+					);
+
 					if (!(substr(
 							$_SERVER['SCRIPT_FILENAME'],
 							(int)-strlen($_SERVER['REDIRECT_URL']),
@@ -251,47 +313,73 @@ function check_login($fName = null, $preventExternalLogin = true) {
 }
 
 function change_user_interface($from_id, $to_id) {
+
 	$sql = Database::getInstance();
 
 	$index = null;
-	while (1) { // used to easily exit
-		$query = 'SELECT `admin_id`, `admin_name`, `admin_pass`, `admin_type`, `email`, `created_by` FROM `admin` WHERE binary `admin_id` = ?';
 
-		$rs_from	= exec_query($sql, $query, array($from_id));
-		$rs_to		= exec_query($sql, $query, array($to_id));
+	while (1) { // used to easily exit
+		$query = '
+			SELECT
+				`admin_id`,
+				`admin_name`,
+				`admin_pass`,
+				`admin_type`,
+				`email`,
+				`created_by`
+			FROM
+				`admin`
+			WHERE
+				binary `admin_id` = ?
+			;
+		';
+
+		$rs_from = exec_query($sql, $query, $from_id);
+		$rs_to = exec_query($sql, $query, $to_id);
 
 		if (($rs_from->RecordCount()) != 1 || ($rs_to->RecordCount()) != 1) {
-			set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
+			set_page_message(
+				tr('User does not exist or you do not have permission to access this interface!')
+			);
 			break;
 		}
 
-		$from_udata	= $rs_from->FetchRow();
-		$to_udata	= $rs_to->FetchRow();
+		$from_udata = $rs_from->FetchRow();
+		$to_udata = $rs_to->FetchRow();
 
 		if (!is_userdomain_ok($to_udata['admin_name'])) {
-			set_page_message(tr("%s's account status is not ok!", decode_idna($to_udata['admin_name'])));
+			set_page_message(
+				tr(
+					"%s's account status is not ok!",
+					decode_idna($to_udata['admin_name'])
+				)
+			);
 			break;
 		}
 
-		$to_admin_type		= strtolower($to_udata['admin_type']);
-		$from_admin_type	= strtolower($from_udata['admin_type']);
+		$to_admin_type = strtolower($to_udata['admin_type']);
+		$from_admin_type = strtolower($from_udata['admin_type']);
 
-		$allowed_changes	= array();
+		$allowed_changes = array();
 
-		$allowed_changes['admin']['admin']		= 'manage_users.php';
-		$allowed_changes['admin']['BACK']		= 'manage_users.php';
-		$allowed_changes['admin']['reseller']	= 'index.php';
-		$allowed_changes['admin']['user']		= 'index.php';
-		$allowed_changes['reseller']['user']	= 'index.php';
-		$allowed_changes['reseller']['BACK']	= 'users.php';
+		$allowed_changes['admin']['admin'] = 'manage_users.php';
+		$allowed_changes['admin']['BACK'] = 'manage_users.php';
+		$allowed_changes['admin']['reseller'] = 'index.php';
+		$allowed_changes['admin']['user'] = 'index.php';
+		$allowed_changes['reseller']['user'] = 'index.php';
+		$allowed_changes['reseller']['BACK'] = 'users.php';
 
-		if (!isset($allowed_changes[$from_admin_type][$to_admin_type])
-			|| ($to_admin_type == $from_admin_type && $from_admin_type != 'admin')) {
+		if (!isset($allowed_changes[$from_admin_type][$to_admin_type]) ||
+			($to_admin_type == $from_admin_type &&
+				$from_admin_type != 'admin')) {
 
-			if (isset($_SESSION['logged_from_id']) && $_SESSION['logged_from_id'] == $to_id) {
+			if (isset($_SESSION['logged_from_id'])
+				&& $_SESSION['logged_from_id'] == $to_id) {
 				$index = $allowed_changes[$to_admin_type]['BACK'];
 			} else {
-				set_page_message(tr('You do not have permission to access this interface!'));
+				set_page_message(
+					tr('You do not have permission to access this interface!')
+				);
 				break;
 			}
 		}
@@ -300,17 +388,20 @@ function change_user_interface($from_id, $to_id) {
 
 		unset_user_login_data();
 
-		if (($to_admin_type != 'admin' &&
-			((isset($_SESSION['logged_from_id']) && $_SESSION['logged_from_id'] != $to_id)
-			|| !isset($_SESSION['logged_from_id'])))
-			|| ($from_admin_type == 'admin' && $to_admin_type == 'admin')) {
+		if (($to_admin_type != 'admin' && ((isset($_SESSION['logged_from_id']) &&
+			$_SESSION['logged_from_id'] != $to_id) ||
+			!isset($_SESSION['logged_from_id']))) ||
+			($from_admin_type == 'admin' && $to_admin_type == 'admin')) {
 
 			$_SESSION['logged_from'] = $from_udata['admin_name'];
 			$_SESSION['logged_from_id'] = $from_udata['admin_id'];
 
 		}
-		if ($from_admin_type == 'user') { // Ticket 830 - remove the 'logged_from' if back from user
-			unset($_SESSION['logged_from']); // maybe integrated in the construction above...
+
+		// Ticket 830 - remove the 'logged_from' if back from user
+		if ($from_admin_type == 'user') { 
+			// maybe integrated in the construction above...
+			unset($_SESSION['logged_from']);
 			unset($_SESSION['logged_from_id']);
 		}
 
@@ -320,7 +411,9 @@ function change_user_interface($from_id, $to_id) {
 
 		unset($GLOBALS['admin_name']);
 		unset($GLOBALS['admin_id']);
-		// no more sessions and globals to kill - they were always killed - rest in peace
+
+		// no more sessions and globals to kill - they were always killed -
+		// rest in peace
 
 		$_SESSION['user_logged'] = $to_udata['admin_name'];
 		$_SESSION['user_pass'] = $to_udata['admin_pass'];
@@ -330,11 +423,32 @@ function change_user_interface($from_id, $to_id) {
 		$_SESSION['user_created_by'] = $to_udata['created_by'];
 		$_SESSION['user_login_time'] = time();
 
-		$query = 'INSERT INTO login (`session_id`, `ipaddr`, `user_name`, `lastaccess`) VALUES (?, ?, ?, ?)';
+		$query = '
+			INSERT INTO login
+				(`session_id`, `ipaddr`, `user_name`, `lastaccess`)
+			VALUES
+				(?, ?, ?, ?)
+			;
+		';
 
-		exec_query($sql, $query, array(session_id(), getipaddr(), $to_udata['admin_name'], $_SESSION['user_login_time']));
+		exec_query(
+			$sql,
+			$query,
+			array(
+				session_id(),
+				getipaddr(),
+				$to_udata['admin_name'],
+				$_SESSION['user_login_time']
+			)
+		);
 
-		write_log(sprintf("%s changes into %s's interface", decode_idna($from_udata['admin_name']), decode_idna($to_udata['admin_name'])));
+		write_log(
+			sprintf(
+				"%s changes into %s's interface",
+				decode_idna($from_udata['admin_name']),
+				decode_idna($to_udata['admin_name'])
+			)
+		);
 		break;
 	}
 
@@ -342,6 +456,7 @@ function change_user_interface($from_id, $to_id) {
 }
 
 function unset_user_login_data($ignorePreserve = false) {
+
 	$sql = Database::getInstance();
 
 	if (isset($_SESSION['user_logged'])) {
@@ -357,6 +472,7 @@ function unset_user_login_data($ignorePreserve = false) {
 				`session_id` = ?
 			AND
 				`user_name` = ?
+			;
 		";
 
 		$rs = exec_query($sql, $query, array($sess_id, $admin_name));
@@ -381,7 +497,6 @@ function unset_user_login_data($ignorePreserve = false) {
 			$_SESSION[$p] = $preserve_vals[$p];
 		}
 	}
-
 }
 
 function redirect_to_level_page($file = null, $force = false) {
@@ -405,5 +520,6 @@ function redirect_to_level_page($file = null, $force = false) {
 		default:
 			header('Location: /index.php');
 	}
+
 	exit();
 }

@@ -31,14 +31,25 @@
 /**
  * Checks if an username exists
  *
- * @param  String	$username	Username to be checked
- * @return Boolean				true, if username exists
+ * @param  String $username Username to be checked
+ * @return TRUE, if username exists, FALSE otherwise
  */
 function username_exists($username) {
+
 	$sql = Database::getInstance();
+
 	$username = encode_idna($username);
 
-	$query = 'SELECT `admin_id` FROM `admin` WHERE `admin_name` = ?';
+	$query = '
+		SELECT
+			`admin_id`
+		FROM
+			`admin`
+		WHERE
+			`admin_name` = ?
+		;
+	';
+
 	$res = exec_query($sql, $query, array($username));
 
 	return ($res->RecordCount() == 1);
@@ -47,14 +58,24 @@ function username_exists($username) {
 /**
  * Returns the stored data related to the username
  *
- * @param  String	$username	Username that data should be returend
- * @return Array				Array of user-related data
+ * @param String $username Username that data should be returend
+ * @return Array of user-related data
  */
 function get_userdata($username) {
+
 	$sql = Database::getInstance();
 
-	$query = 'SELECT * FROM `admin` WHERE `admin_name` = ?';
-	$res = exec_query($sql, $query, array($username));
+	$query = '
+		SELECT
+			*
+		FROM
+			`admin`
+		WHERE
+			`admin_name` = ?
+		;
+	';
+
+	$res = exec_query($sql, $query, $username);
 
 	return $res->FetchRow();
 }
@@ -62,10 +83,11 @@ function get_userdata($username) {
 /**
  * Checks if the user account (domain name) is still vaild
  *
- * @param  String	$username	Username that data should be checked
- * @return Boolean				true, if still valid
+ * @param String $username Username that data should be checked
+ * @return TRUE if still valid, FALSE otherwise
  */
 function is_userdomain_expired($username) {
+
 	$sql = Database::getInstance();
 
 	$udata = get_userdata($username);
@@ -78,15 +100,24 @@ function is_userdomain_expired($username) {
 		return true;
 	}
 
-	$query = 'SELECT `domain_expires` FROM `domain` WHERE `domain_admin_id` = ?';
+	$query = '
+		SELECT
+			`domain_expires`
+		FROM
+			`domain`
+		WHERE
+			`domain_admin_id` = ?
+		;
+	';
 
-	$res = exec_query($sql, $query, array($udata['admin_id']));
+	$res = exec_query($sql, $query, $udata['admin_id']);
 
 	$row = $res->FetchRow();
 
 	$result = false;
 	if (!empty($row['domain_expires'])) {
-		if (time() > $row['domain_expires']) $result = true;
+		if (time() > $row['domain_expires'])
+			$result = true;
 	}
 
 	return $result;
@@ -95,10 +126,12 @@ function is_userdomain_expired($username) {
 /**
  * Checks if the user account's status is 'ok'
  *
- * @param  String	$username	Username that data should be checked
- * @return Boolean				true, if status is 'ok'
+ * @param string $username Username that data should be checked
+ * @return TRUE if status is 'ok', FALSE otherwise
  */
 function is_userdomain_ok($username) {
+
+	$cfg = IspCP_Registry::get('Config');
 	$sql = Database::getInstance();
 
 	$udata = get_userdata($username);
@@ -111,26 +144,36 @@ function is_userdomain_ok($username) {
 		return true;
 	}
 
-	$query = 'SELECT `domain_status` FROM `domain` WHERE `domain_admin_id` = ?';
+	$query = '
+		SELECT
+			`domain_status`
+		FROM
+			`domain`
+		WHERE
+			`domain_admin_id` = ?
+		;
+	';
 
-	$res = exec_query($sql, $query, array($udata['admin_id']));
+	$res = exec_query($sql, $query, $udata['admin_id']);
 
 	$row = $res->FetchRow();
 
-	return ($row['domain_status'] == Config::getInstance()->get('ITEM_OK_STATUS'));
+	return ($row['domain_status'] == $cfg->ITEM_OK_STATUS);
 }
 
 /**
  * @todo describe function
  *
- * @param  Integer	$timeout
- * @param  String	$type
+ * @param  int $timeout
+ * @param  string $type
  */
 function unblock($timeout = null, $type = 'bruteforce') {
+
+	$cfg = IspCP_Registry::get('Config');
 	$sql = Database::getInstance();
 
 	if ($timeout === null) {
-		$timeout = Config::getInstance()->get('BRUTEFORCE_BLOCK_TIME');
+		$timeout = $cfg->BRUTEFORCE_BLOCK_TIME;
 	}
 
 	$max = 0;
@@ -139,31 +182,67 @@ function unblock($timeout = null, $type = 'bruteforce') {
 
 	switch ($type) {
 		case 'bruteforce':
-			$query = "UPDATE `login` SET `login_count` = '1' WHERE `login_count` >= ? AND `lastaccess` < ? AND `user_name` is NULL";
-			$max = Config::getInstance()->get('BRUTEFORCE_MAX_LOGIN');
+			$query = "
+				UPDATE
+					`login`
+				SET
+					`login_count` = '1'
+				WHERE
+					`login_count` >= ?
+				AND
+					`lastaccess` < ?
+				AND
+					`user_name` is NULL
+				;
+			";
+
+			$max = $cfg->BRUTEFORCE_MAX_LOGIN;
 			break;
 		case 'captcha':
-			$query = "UPDATE `login` SET `captcha_count` = '1' WHERE `captcha_count` >= ? AND `lastaccess` < ? AND `user_name` is NULL";
-			$max = Config::getInstance()->get('BRUTEFORCE_MAX_CAPTCHA');
+			$query = "
+				UPDATE
+					`login`
+				SET
+					`captcha_count` = '1'
+				WHERE
+					`captcha_count` >= ?
+				AND
+					`lastaccess` < ?
+				AND
+					`user_name` is NULL
+				;
+			";
+
+			$max = $cfg->BRUTEFORCE_MAX_CAPTCHA;
 			break;
 		default:
-			write_log(sprintf('FIXME: %s:%d' . "\n" . 'Unknown unblock reason %s',__FILE__, __LINE__, $type));
+			write_log(
+				sprintf(
+					'FIXME: %s:%d' . "\n" . 'Unknown unblock reason %s',
+					__FILE__,
+					__LINE__,
+					$type
+				)
+			);
+
 			die('FIXME: '.__FILE__.':'.__LINE__);
 	}
 
 	exec_query($sql, $query, array($max, $timeout));
-
 }
 
 /**
  * @todo describe function
  *
- * @param  String	$ipaddr
- * @param  String	$type
- * @param  Boolean	$autodeny
- * @return Boolean				true, if...
+ * @param string $ipaddr
+ * @param string $type
+ * @param boolean $autodeny
+ * @return TRUE, if...
  */
-function is_ipaddr_blocked($ipaddr = null, $type = 'bruteforce', $autodeny = false) {
+function is_ipaddr_blocked($ipaddr = null, $type = 'bruteforce',
+	$autodeny = false) {
+
+	$cfg = IspCP_Registry::get('Config');
 	$sql = Database::getInstance();
 
 	if ($ipaddr === null) {
@@ -174,17 +253,48 @@ function is_ipaddr_blocked($ipaddr = null, $type = 'bruteforce', $autodeny = fal
 
 	switch ($type) {
 		case 'bruteforce':
-			$query = "SELECT * FROM `login` WHERE `ipaddr` = ? AND `login_count` = ?";
-			$max = Config::getInstance()->get('BRUTEFORCE_MAX_LOGIN');
+			$query = "
+				SELECT
+					*
+				FROM
+					`login`
+				WHERE
+					`ipaddr` = ?
+				AND
+					`login_count` = ?
+				;
+			";
+
+			$max = $cfg->BRUTEFORCE_MAX_LOGIN;
 			break;
 		case 'captcha':
-			$query = "SELECT * FROM `login` WHERE `ipaddr` = ? AND `captcha_count` = ?";
-			$max = Config::getInstance()->get('BRUTEFORCE_MAX_CAPTCHA');
+			$query = "
+				SELECT
+					*
+				FROM
+					`login`
+				WHERE
+					`ipaddr` = ?
+				AND
+					`captcha_count` = ?
+				;
+			";
+
+			$max = $cfg->BRUTEFORCE_MAX_CAPTCHA;
 			break;
 		default:
-			write_log(sprintf('FIXME: %s:%d' . "\n" . 'Unknown block reason %s',__FILE__, __LINE__, $type));
+			write_log(
+				sprintf(
+					'FIXME: %s:%d' . "\n" . 'Unknown block reason %s',
+					__FILE__,
+					__LINE__,
+					$type
+				)
+			);
+
 			die('FIXME: '.__FILE__.':'.__LINE__);
 	}
+
 	$res = exec_query($sql, $query, array($ipaddr, $max));
 
 	if ($res->RecordCount() == 0) {
@@ -200,22 +310,35 @@ function is_ipaddr_blocked($ipaddr = null, $type = 'bruteforce', $autodeny = fal
 /**
  * @todo describe function
  *
- * @param  String	$ipaddr
- * @param  Boolean	$displayMessage
- * @return Boolean					true, if...
+ * @param string $ipaddr
+ * @param boolean $displayMessage
+ * @return TRUE if...
  */
 function shall_user_wait($ipaddr = null, $displayMessage = true) {
+
+	$cfg = IspCP_Registry::get('Config');
 	$sql = Database::getInstance();
 
-	if (!Config::getInstance()->get('BRUTEFORCE')) {
+	if (!$cfg->BRUTEFORCE) {
 		return false;
 	}
 	if ($ipaddr === null) {
 		$ipaddr = getipaddr();
 	}
 
-	$query = 'SELECT `lastaccess` FROM `login` WHERE `ipaddr` = ? AND `user_name` is NULL';
-	$res = exec_query($sql, $query, array($ipaddr));
+	$query = '
+		SELECT
+			`lastaccess`
+		FROM
+			`login`
+		WHERE
+			`ipaddr` = ?
+		AND
+			`user_name` is NULL
+		;
+	';
+
+	$res = exec_query($sql, $query, $ipaddr);
 
 	if ($res->RecordCount() == 0) {
 		return false;
@@ -225,17 +348,26 @@ function shall_user_wait($ipaddr = null, $displayMessage = true) {
 
 	$lastaccess = $data['lastaccess'];
 
-	if (Config::getInstance()->get('BRUTEFORCE_BETWEEN')) {
-		$btime = $lastaccess + Config::getInstance()->get('BRUTEFORCE_BETWEEN_TIME');
+	if ($cfg->BRUTEFORCE_BETWEEN) {
+		$btime = $lastaccess + $cfg->BRUTEFORCE_BETWEEN_TIME;
 	} else {
 		return false;
 	}
 
 	if ($btime > time()) {
 		if ($displayMessage) {
-			$backButtonDestination = Config::getInstance()->get('BASE_SERVER_VHOST_PREFIX') . Config::getInstance()->get('BASE_SERVER_VHOST');
-			system_message(tr('You have to wait %d seconds.', $btime - time()), $backButtonDestination);
+			$backButtonDestination = $cfg->BASE_SERVER_VHOST_PREFIX .
+				$cfg->BASE_SERVER_VHOST;
+
+			system_message(
+				tr(
+					'You have to wait %d seconds.',
+					$btime - time()
+				),
+				$backButtonDestination
+			);
 		}
+
 		return true;
 	}
 
@@ -245,10 +377,12 @@ function shall_user_wait($ipaddr = null, $displayMessage = true) {
 /**
  * Check/block IP if bruteforcing the login or captcha wrong
  *
- * @param  String	$ipaddr
- * @param  String	$type
+ * @param string $ipaddr
+ * @param string $type
  */
-function check_ipaddr($ipaddr = null, $type = "bruteforce") {
+function check_ipaddr($ipaddr = null, $type = 'bruteforce') {
+
+	$cfg = IspCP_Registry::get('Config');
 	$sql = Database::getInstance();
 
 	if ($ipaddr === null) {
@@ -256,12 +390,48 @@ function check_ipaddr($ipaddr = null, $type = "bruteforce") {
 	}
 
 	$sess_id = session_id();
-	$query = "SELECT `session_id`, `ipaddr`, `user_name`, `lastaccess`, `login_count`, `captcha_count` FROM `login` WHERE `ipaddr` = ? AND `user_name` IS NULL";
-	$res = exec_query($sql, $query, array($ipaddr));
+
+	$query = "
+		SELECT
+			`session_id`,
+			`ipaddr`,
+			`user_name`,
+			`lastaccess`,
+			`login_count`,
+			`captcha_count`
+		FROM
+			`login`
+		WHERE
+			`ipaddr` = ?
+		AND
+			`user_name` IS NULL
+		;
+	";
+
+	$res = exec_query($sql, $query, $ipaddr);
 
 	if ($res->RecordCount() == 0) {
-		$query = "REPLACE INTO `login` (`session_id`, `ipaddr`, `lastaccess`, `login_count`, `captcha_count`) VALUES (?,?,UNIX_TIMESTAMP(),?,?)";
-		exec_query($sql, $query, array($sess_id, $ipaddr, (int)($type == 'bruteforce'), (int)($type == 'captcha')));
+		$query = "
+			REPLACE INTO `login` (
+				`session_id`,
+				`ipaddr`,
+				`lastaccess`,
+				`login_count`,
+				`captcha_count`
+			) VALUES (?,?,UNIX_TIMESTAMP(),?,?)
+			;
+		";
+
+		exec_query(
+			$sql,
+			$query,
+			array(
+				$sess_id,
+				$ipaddr,
+				(int) ($type == 'bruteforce'),
+				(int) ($type == 'captcha')
+			)
+		);
 	}
 
 	$data = $res->FetchRow();
@@ -270,46 +440,88 @@ function check_ipaddr($ipaddr = null, $type = "bruteforce") {
 	$logincount = $data['login_count'];
 	$captchacount = $data['captcha_count'];
 
-	if ($type == 'bruteforce' && Config::getInstance()->get('BRUTEFORCE')
-		&& $logincount > Config::getInstance()->get('BRUTEFORCE_MAX_LOGIN')) {
+	if ($type == 'bruteforce' && $cfg->BRUTEFORCE &&
+		$logincount > $cfg->BRUTEFORCE_MAX_LOGIN) {
 		block_ipaddr($ipaddr, 'Login');
 	}
 
-	if ($type == 'captcha' && Config::getInstance()->get('BRUTEFORCE')
-		&& $captchacount > Config::getInstance()->get('BRUTEFORCE_MAX_CAPTCHA') && Config::getInstance()->get('BRUTEFORCE')) {
+	if ($type == 'captcha' && $cfg->BRUTEFORCE &&
+		$captchacount > $cfg->BRUTEFORCE_MAX_CAPTCHA && $cfg->BRUTEFORCE) {
 		block_ipaddr($ipaddr, 'CAPTCHA');
 	}
 
-	if (Config::getInstance()->get('BRUTEFORCE_BETWEEN')) {
-		$btime = $lastaccess + Config::getInstance()->get('BRUTEFORCE_BETWEEN_TIME');
+	if ($cfg->BRUTEFORCE_BETWEEN) {
+		$btime = $lastaccess + $cfg->BRUTEFORCE_BETWEEN_TIME;
 	} else {
 		$btime = 0;
 	}
 
 	if ($btime < time()) {
-		if ($type == "bruteforce") {
-			$query = "UPDATE `login` SET `lastaccess` = UNIX_TIMESTAMP(), `login_count` = `login_count`+1 WHERE `ipaddr` = ? AND `user_name` IS NULL";
-		} else if ($type == "captcha") {
-			$query = "UPDATE `login` SET `lastaccess` = UNIX_TIMESTAMP(), `captcha_count` = `captcha_count`+1 WHERE `ipaddr` = ? AND `user_name` IS NULL";
+		if ($type == 'bruteforce') {
+			$query = "
+				UPDATE
+					`login`
+				SET
+					`lastaccess` = UNIX_TIMESTAMP(),
+					`login_count` = `login_count`+1
+				WHERE
+					`ipaddr` = ?
+				AND
+					`user_name` IS NULL
+				;
+			";
+		} else if ($type == 'captcha') {
+			$query = "
+				UPDATE
+					`login`
+				SET
+					`lastaccess` = UNIX_TIMESTAMP(),
+					`captcha_count` = `captcha_count`+1
+				WHERE
+					`ipaddr` = ?
+				AND
+					`user_name` IS NULL
+				;
+			";
 		}
 
 		exec_query($sql, $query, $ipaddr);
 	} else {
-		$backButtonDestination = Config::getInstance()->get('BASE_SERVER_VHOST_PREFIX') . Config::getInstance()->get('BASE_SERVER_VHOST');
+		$backButtonDestination = $cfg->BASE_SERVER_VHOST_PREFIX . 
+			$cfg->BASE_SERVER_VHOST;
 
-		write_log("Login error, <b><i>$ipaddr</i></b> wait " . ($btime - time()) . " seconds", E_USER_NOTICE);
-		system_message(tr('You have to wait %d seconds.', $btime - time()), $backButtonDestination);
+		write_log(
+			"Login error, <b><i>$ipaddr</i></b> wait " . ($btime - time()) .
+				" seconds", E_USER_NOTICE
+		);
+
+		system_message(
+			tr(
+				'You have to wait %d seconds.',
+				$btime - time()
+			),
+			$backButtonDestination
+		);
 	}
 }
 
 /**
  * @todo describe function
  *
- * @param  String	$ipaddr
- * @param  String	$type
+ * @param string $ipaddr
+ * @param string $type
  */
 function block_ipaddr($ipaddr, $type = 'General') {
-	write_log("$type protection, <b><i> " . htmlspecialchars($ipaddr, ENT_QUOTES, "UTF-8") . "</i></b> blocked for " . Config::getInstance()->get('BRUTEFORCE_BLOCK_TIME') . " minutes.");
+
+	$cfg = IspCP_Registry::get('Config');
+
+	write_log(
+			"$type protection, <b><i> " .
+				htmlspecialchars($ipaddr, ENT_QUOTES, "UTF-8") .
+					"</i></b> blocked for " . $cfg->BRUTEFORCE_BLOCK_TIME .
+						" minutes."
+	);
+
 	deny_access();
 }
 
@@ -317,11 +529,17 @@ function block_ipaddr($ipaddr, $type = 'General') {
  * @todo describe function
  */
 function deny_access() {
-	$backButtonDestination = Config::getInstance()->get('BASE_SERVER_VHOST_PREFIX') .
-		Config::getInstance()->get('BASE_SERVER_VHOST');
+
+	$cfg = IspCP_Registry::get('Config');
+
+	$backButtonDestination =
+		$cfg->BASE_SERVER_VHOST_PREFIX . $cfg->BASE_SERVER_VHOST;
+
 	system_message(
-		tr('You have been blocked for %d minutes.',
-		Config::getInstance()->get('BRUTEFORCE_BLOCK_TIME')),
+		tr(
+			'You have been blocked for %d minutes.',
+			$cfg->BRUTEFORCE_BLOCK_TIME
+		),
 		$backButtonDestination
 	);
 }
@@ -329,7 +547,7 @@ function deny_access() {
 /**
  * Returns the user's IP address
  *
- * @return String	user's IP address
+ * @return user's IP address
  */
 function getipaddr() {
 	return $_SERVER['REMOTE_ADDR'];
@@ -339,12 +557,21 @@ function getipaddr() {
  * @todo describe function
  */
 function do_session_timeout() {
+
+	$cfg = IspCP_Registry::get('Config');
 	$sql = Database::getInstance();
 
-	$ttl = time() - Config::getInstance()->get('SESSION_TIMEOUT') * 60;
+	$ttl = time() - $cfg->SESSION_TIMEOUT * 60;
 
-	$query = "DELETE FROM `login` WHERE `lastaccess` < ?";
-	exec_query($sql, $query, array($ttl));
+	$query = "
+		DELETE FROM
+			`login`
+		WHERE
+			`lastaccess` < ?
+		;
+	";
+
+	exec_query($sql, $query, $ttl);
 
 	if (!session_exists(session_id())) {
 		unset($_SESSION['user_logged']);
@@ -355,14 +582,28 @@ function do_session_timeout() {
 /**
  * Checks if an session already exists and the IP address is matching
  *
- * @param  String	$sess_id	user session id from cookie
- * @return Boolean				true, if session is valid
+ * @param string $sess_id User session id from cookie
+ * @return TRUE if session is valid
  */
 function session_exists($sess_id) {
+
 	$sql = Database::getInstance();
 
 	$ip = getipaddr();
-	$query = "SELECT `session_id`, `ipaddr` FROM `login` WHERE `session_id` = ? AND `ipaddr` = ?";
+
+	$query = "
+		SELECT
+			`session_id`,
+			`ipaddr`
+		FROM
+			`login`
+		WHERE
+			`session_id` = ?
+		AND
+			`ipaddr` = ?
+		;
+	";
+
 	$res = exec_query($sql, $query, array($sess_id, $ip));
 
 	return ($res->RecordCount() == 1);
