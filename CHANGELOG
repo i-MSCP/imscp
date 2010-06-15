@@ -1,6 +1,11 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-06-16 Laurent Declercq
+	- CONFIG:
+		- Removed useless files (ispCP is not compatible with PHP versions
+			more older than 5.1.4)
+
 2010-06-14 Laurent Declercq
 	- GUI:
 		* Some refactoring tasks
