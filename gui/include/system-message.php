@@ -28,13 +28,25 @@
  * isp Control Panel. All Rights Reserved.
  */
 
+// Small workaround to be able to use the system_message() function during
+// IspCP initialization process without i18n support
+if (!function_exists('tr')) {
+	function tr($msgid) {
+		return $msgid;
+	}
+}
+
 /**
- * @todo possible session injection, check $_SESSION['user_theme'] for valid value
+ * @todo possible session injection, check $_SESSION['user_theme'] for valid
+ *	value
  */
-function system_message($msg, $backButtonDestination = "") {
+function system_message($msg, $backButtonDestination = '') {
+
+	$cfg = IspCP_Registry::get('Config');
+
 	$theme_color = (isset($_SESSION['user_theme']))
 		? $_SESSION['user_theme']
-		: Config::getInstance()->get('USER_INITIAL_THEME');
+		: $cfg->USER_INITIAL_THEME;
 
 	if (empty($backButtonDestination)) {
 		$backButtonDestination = "javascript:history.go(-1)";
@@ -43,19 +55,21 @@ function system_message($msg, $backButtonDestination = "") {
 	$tpl = new pTemplate();
 
 	// If we are on the login page, path will be like this
-	$template = Config::getInstance()->get('LOGIN_TEMPLATE_PATH') . '/system-message.tpl';
+	$template = $cfg->LOGIN_TEMPLATE_PATH . '/system-message.tpl';
 
 	if (!is_file($template)) {
 		// But if we're inside the panel it will be like this
-		$template = '../' . Config::getInstance()->get('LOGIN_TEMPLATE_PATH') . '/system-message.tpl';
+		$template = '../' . $cfg->LOGIN_TEMPLATE_PATH . '/system-message.tpl';
 	}
 
 	if (!is_file($template)) {
-		// And if we don't find the template, we'll just die displaying error message
+		// And if we don't find the template, we'll just die displaying error
+		// message
 		die($msg);
 	}
 
 	$tpl->define('page', $template);
+
 	$tpl->assign(
 		array(
 			'TR_SYSTEM_MESSAGE_PAGE_TITLE'	=> tr('ispCP Error'),
@@ -71,5 +85,5 @@ function system_message($msg, $backButtonDestination = "") {
 	$tpl->parse('PAGE', 'page');
 	$tpl->prnt();
 
-	die();
+	exit;
 }
