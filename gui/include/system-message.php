@@ -28,14 +28,6 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-// Small workaround to be able to use the system_message() function during
-// IspCP initialization process without i18n support
-if (!function_exists('tr')) {
-	function tr($msgid) {
-		return $msgid;
-	}
-}
-
 /**
  * @todo possible session injection, check $_SESSION['user_theme'] for valid
  *	value
@@ -70,17 +62,33 @@ function system_message($msg, $backButtonDestination = '') {
 
 	$tpl->define('page', $template);
 
-	$tpl->assign(
-		array(
-			'TR_SYSTEM_MESSAGE_PAGE_TITLE'	=> tr('ispCP Error'),
-			'THEME_COLOR_PATH'				=> '/themes/' . $theme_color,
-			'THEME_CHARSET'					=> tr('encoding'),
-			'TR_BACK'						=> tr('Back'),
-			'TR_ERROR_MESSAGE'				=> tr('Error Message'),
-			'MESSAGE'						=> $msg,
-			'BACKBUTTONDESTINATION'			=> $backButtonDestination
-		)
-	);
+	// Small workaround to be able to use the system_message() function during
+	// IspCP initialization process without i18n support
+	if (function_exists('tr')) {
+		$tpl->assign(
+			array(
+				'TR_SYSTEM_MESSAGE_PAGE_TITLE' => tr('ispCP Error'),
+				'THEME_COLOR_PATH' => '/themes/' . $theme_color,
+				'THEME_CHARSET' => tr('encoding'),
+				'TR_BACK' => tr('Back'),
+				'TR_ERROR_MESSAGE' => tr('Error Message'),
+				'MESSAGE' => $msg,
+				'BACKBUTTONDESTINATION' => $backButtonDestination
+			)
+		);
+	} else {
+		$tpl->assign(
+			array(
+				'TR_SYSTEM_MESSAGE_PAGE_TITLE' => 'ispCP Error',
+				'THEME_COLOR_PATH' => '/themes/' . $theme_color,
+				'THEME_CHARSET' => 'encoding',
+				'TR_BACK' => 'Back',
+				'TR_ERROR_MESSAGE' => 'Error Message',
+				'MESSAGE' => $msg,
+				'BACKBUTTONDESTINATION' => $backButtonDestination
+			)
+		);
+	}
 
 	$tpl->parse('PAGE', 'page');
 	$tpl->prnt();
