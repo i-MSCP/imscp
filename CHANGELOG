@@ -10,6 +10,14 @@ ispCP ω 1.0.6 ChangeLog
 		* Added a new IspCP_Bootstrap class for ispCP boot process
 			(Not Yet Integrated)
 		* Fixed #2392: Various problems with hosting_plan_edit.php as admin
+	- TRANSLATION:
+		* Added specific keyword `/*tr*/` into the makemsgs script to be able
+			to parse localization before that the php i18n support was loaded
+		* Updated the portable object template file
+		* Updated all the portables object files:
+			- Executed the updateToPOT script
+			- Fixed some errors due to the absence of argument in several
+			translated strings (Reported by the checkPo)
 
 2010-06-16 Laurent Declercq
 	- DATABASE:

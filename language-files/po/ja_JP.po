@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ja_JP\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-05 16:20+0200\n"
+"POT-Creation-Date: 2010-06-17 10:11+0200\n"
 "PO-Revision-Date: 2010-03-24 07:13+0900\n"
 "Last-Translator: kazu.nito@gmail.com <Nito Kazunori>\n"
 "Language-Team: Japanese <ja_JP@li.org>\n"
@@ -22,6 +22,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#. Please ignore this entry
+#. Please ignore this entry
 #. Please ignore this entry
 msgid "encoding"
 msgstr "UTF-8"
@@ -714,53 +716,11 @@ msgstr "すべてのトラフィック"
 msgid "Day"
 msgstr "日"
 
-msgid "ispCP - Administrator/Hosting Plan Management"
-msgstr "ispCP - アドミニストレータ/ホスティングプラン管理t"
-
-msgid "Hosting plans"
-msgstr "ホスティングプラン"
-
-msgid "Manage hosting plans"
-msgstr "ホスティングプラン管理"
-
-msgid "Purchasing"
-msgstr "購入"
+msgid "ispCP - Administrator/Add hosting plan"
+msgstr "ispCP - アドミニストレータ/ホスティングプラン追加"
 
 msgid "Add hosting plan"
 msgstr "ホスティングプラン追加"
-
-msgid "Add new user hosting plan"
-msgstr "新規ユーザーホスティングプラン追加"
-
-msgid "Return to previous menu"
-msgstr "前のメニューに戻る"
-
-msgid "Hosting plan added!"
-msgstr "ホスティングプランが追加されました！"
-
-msgid "Hosting plan deleted!"
-msgstr "ホスティングプランが削除されました！"
-
-msgid "Hosting plan updated!"
-msgstr "ホスティングプランが更新されました！"
-
-msgid "Hosting plan can't be deleted, there are orders!"
-msgstr "注文があるため、ホスティングプランを削除できません！"
-
-msgid "Hosting plans not found!"
-msgstr "ホスティングプランが見つかりません"
-
-msgid "No."
-msgstr "No."
-
-msgid "Name"
-msgstr "ネーム"
-
-msgid "Show hosting plan"
-msgstr "ホスティングプラン閲覧"
-
-msgid "ispCP - Administrator/Add hosting plan"
-msgstr "ispCP - アドミニストレータ/ホスティングプラン追加"
 
 msgid "Hosting plan properties"
 msgstr "ホスティングプランの詳細"
@@ -890,6 +850,48 @@ msgstr "料金が正しくありません。 例： 999"
 
 msgid "Incorrect setup fee. Example: 19.99"
 msgstr "料金設定が正しくありません。 例： 1999"
+
+msgid "ispCP - Administrator/Hosting Plan Management"
+msgstr "ispCP - アドミニストレータ/ホスティングプラン管理t"
+
+msgid "Hosting plans"
+msgstr "ホスティングプラン"
+
+msgid "Manage hosting plans"
+msgstr "ホスティングプラン管理"
+
+msgid "Purchasing"
+msgstr "購入"
+
+msgid "Add new user hosting plan"
+msgstr "新規ユーザーホスティングプラン追加"
+
+msgid "Return to previous menu"
+msgstr "前のメニューに戻る"
+
+msgid "Hosting plan added!"
+msgstr "ホスティングプランが追加されました！"
+
+msgid "Hosting plan deleted!"
+msgstr "ホスティングプランが削除されました！"
+
+msgid "Hosting plan updated!"
+msgstr "ホスティングプランが更新されました！"
+
+msgid "Hosting plan can't be deleted, there are orders!"
+msgstr "注文があるため、ホスティングプランを削除できません！"
+
+msgid "Hosting plans not found!"
+msgstr "ホスティングプランが見つかりません"
+
+msgid "No."
+msgstr "No."
+
+msgid "Name"
+msgstr "ネーム"
+
+msgid "Show hosting plan"
+msgstr "ホスティングプラン閲覧"
 
 #, php-format
 msgid "You have <b>%d</b> new support questions"
@@ -1049,6 +1051,9 @@ msgstr "利用可能なispCPアップデート"
 msgid "No new ispCP updates available"
 msgstr "ispCPのアップデートは有りません"
 
+msgid "Language was removed!"
+msgstr "言語を削除しました！"
+
 msgid "User language updated successfully!"
 msgstr "ユーザーの言語が更新されました！"
 
@@ -1060,9 +1065,6 @@ msgstr "言語"
 
 msgid "Choose your default language"
 msgstr "デフォルト言語を選択"
-
-msgid "Language was removed!"
-msgstr "言語を削除しました！"
 
 msgid "Reseller list is empty!"
 msgstr "代理店が登録されていません"
@@ -1180,6 +1182,9 @@ msgstr ""
 msgid "User was disabled"
 msgstr "ユーザーが無効になりました"
 
+msgid "Incorrect data input!"
+msgstr "データ入力が正しくありません！"
+
 msgid "ispCP - Admin/Internationalisation"
 msgstr "ispCP - 管理者/国際化"
 
@@ -1198,8 +1203,16 @@ msgstr "アップロードされた言語ファイルは有効ではありませ
 msgid "Uploaded file does not contain the language information!"
 msgstr "アップロードファイルは言語情報を含んでいません！"
 
+#, php-format
+msgid "%s added new language: %s"
+msgstr ""
+
 msgid "New language installed!"
 msgstr "新しい言語ファイルが追加されました！"
+
+#, php-format
+msgid "%s updated language: %s"
+msgstr ""
 
 msgid "Language was updated!"
 msgstr "言語が更新されました！"
@@ -1234,9 +1247,6 @@ msgstr "インストール"
 
 msgid "Export"
 msgstr "エキスポート"
-
-msgid "Incorrect data input!"
-msgstr "データ入力が正しくありません！"
 
 msgid "ispCP - Admin/Change Password"
 msgstr "ispCP - 管理者/パスワード変更"
@@ -1478,6 +1488,9 @@ msgstr "%1$d / %2$d <br/>of<br/> <b>%3$d</b>"
 msgid "%1$d / %2$d <br/>of<br/> <b>unlimited</b>"
 msgstr "%1$d / %2$d <br/>of<br/> <b>無制限</b>"
 
+msgid "<b>disabled</b>"
+msgstr "<b>無効</b>"
+
 msgid "Reseller statistics table"
 msgstr "代理店の統計テーブル"
 
@@ -1501,9 +1514,6 @@ msgstr "%s <br/>of<br/> <b>無制限</b>"
 #, php-format
 msgid "%1$d <br/>of<br/> <b>%2$d</b>"
 msgstr "%1$d <br/>of<br/> <b>%2$d</b>"
-
-msgid "<b>disabled</b>"
-msgstr "<b>無効</b>"
 
 #, php-format
 msgid "%d <br/>of<br/> <b>unlimited</b>"
@@ -1549,11 +1559,23 @@ msgstr "%s が存在しないか、空です"
 msgid "Anti-Rootkits Tools Log Checker"
 msgstr "アンチルートキットのログチェック"
 
-msgid "ispCP - Admin/Server statistics"
-msgstr "ispCP - 管理者/サーバの統計情報"
+msgid "ispCP - Admin/Server day stats"
+msgstr "ispCP - 管理者/サーバ統計情報（日次）"
 
-msgid "Server statistics"
-msgstr "サーバー統計情報"
+msgid "Server day statistics"
+msgstr "サーバの統計情報（日次）"
+
+msgid "Month:"
+msgstr "月"
+
+msgid "Year:"
+msgstr "年:"
+
+msgid "Day:"
+msgstr "日:"
+
+msgid "Hour"
+msgstr "時間"
 
 msgid "Web in"
 msgstr "Web in"
@@ -1585,23 +1607,11 @@ msgstr "全体 in"
 msgid "All out"
 msgstr "全体 out"
 
-msgid "ispCP - Admin/Server day stats"
-msgstr "ispCP - 管理者/サーバ統計情報（日次）"
+msgid "ispCP - Admin/Server statistics"
+msgstr "ispCP - 管理者/サーバの統計情報"
 
-msgid "Server day statistics"
-msgstr "サーバの統計情報（日次）"
-
-msgid "Month:"
-msgstr "月"
-
-msgid "Year:"
-msgstr "年:"
-
-msgid "Day:"
-msgstr "日:"
-
-msgid "Hour"
-msgstr "時間"
+msgid "Server statistics"
+msgstr "サーバー統計情報"
 
 msgid "ispCP Admin / System Tools / Server Status"
 msgstr "ispCP 管理者 / システムツール / サーバステータス"
@@ -1638,141 +1648,6 @@ msgstr "オプション"
 
 msgid "Kill session"
 msgstr "セッションの切断"
-
-msgid "ispCP - Admin/Settings"
-msgstr "ispCP - 管理者/設定"
-
-msgid "ERROR: Only positive numbers are allowed !"
-msgstr "エラー： 正の数だけが許可されてます！"
-
-msgid "Settings saved !"
-msgstr "設定は保存されました！"
-
-msgid "General settings"
-msgstr "基本設定"
-
-msgid "Activation link expire time (minutes)"
-msgstr "有効化リンク有効時間 (分)"
-
-msgid "Password settings"
-msgstr "パスワード設定"
-
-msgid "Use strong Passwords"
-msgstr "強力なパスワードを使う"
-
-msgid "Password length"
-msgstr "パスワードの長さ"
-
-msgid "Bruteforce detection"
-msgstr "ブルートフォース検知"
-
-msgid "Block time between logins"
-msgstr "連続ログインのブロックタイム"
-
-msgid "Max number of login attempts"
-msgstr "最大数のログインの試み"
-
-msgid "Blocktime (minutes)"
-msgstr "ログイン拒否時間(分)"
-
-msgid "Block time between logins (seconds)"
-msgstr "連続ログインのブロックタイム (秒)"
-
-msgid "Max number of CAPTCHA validation attempts"
-msgstr "最大数のCAPTCHA認証の試み"
-
-msgid "Other settings"
-msgstr "その他設定"
-
-msgid "E-Mail settings"
-msgstr "メール設定"
-
-msgid "Create default E-Mail addresses"
-msgstr "デフォルトメールアドレスを作成"
-
-msgid "Count default E-Mail addresses"
-msgstr "デフォルトメールをアドレスとしてカウント"
-
-msgid "E-Mail accounts are hard suspended"
-msgstr "メールアカウント停止"
-
-msgid "Panel default language"
-msgstr "デフォルト言語を選択"
-
-msgid "Apply changes"
-msgstr "変更を適用"
-
-msgid "Server ports"
-msgstr "サーバーポート"
-
-msgid "Hosting plans available for"
-msgstr "ホスティングプランを使えるユーザ"
-
-msgid "Admin"
-msgstr "管理者"
-
-msgid "Domains per page"
-msgstr "1ページあたりのドメイン数"
-
-msgid "Log Level"
-msgstr "ログレベル"
-
-msgid "Notices, Warnings and Errors"
-msgstr "通知, 警告とエラー"
-
-msgid "Warnings and Errors"
-msgstr "警告とエラー"
-
-msgid "Errors"
-msgstr "エラー"
-
-msgid "Check for update"
-msgstr "更新がないかどうかチェック"
-
-msgid "Show server load"
-msgstr "サーバーの負荷を表示する"
-
-msgid "Prevent external login for admins"
-msgstr "管理者の外部ログインを禁止"
-
-msgid "Prevent external login for resellers"
-msgstr "代理店の外部ログインを禁止"
-
-msgid "Prevent external login for clients"
-msgstr "クライアントの外部ログインを禁止"
-
-msgid "Custom orderpanel ID"
-msgstr "カスタムオーダーパネルID"
-
-msgid "Domain names validation"
-msgstr "ドメイン名の確認"
-
-msgid "Top Level Domain name strict validation"
-msgstr "トップレベルドメイン名の厳密な確認"
-
-msgid ""
-"Only Top Level Domains (TLD) listed in IANA root zone database can be used."
-msgstr ""
-"IANAにルートゾーンのデータベースに記載されている、トップレベルドメイン（TLD）"
-"のみが使用することができます。"
-
-msgid "Second Level Domain name strict validation"
-msgstr "セカンドレベルドメイン名の厳密な確認"
-
-msgid ""
-"Single letter Second Level Domains (SLD) are not allowed under the most Top "
-"Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de."
-msgstr ""
-"１文字でのセカンドレベルドメイン(SLD)は、ほとんどのトップレベルドメイン (TLD)"
-"では許可されていません。少ないですが、例えは、トップレベルドメイン .de　など"
-"例外もあります。"
-
-msgid ""
-"Maximal number of labels for domain names<br />(<i>Excluding SLD & TLD</i>)"
-msgstr "ドメイン名のラベルの最大数<br />(<i>SLD & TLDを除く</i>)"
-
-msgid "Maximal number of labels for subdomains"
-msgstr "サブドメインのための最大限のラベル数"
 
 msgid "You can only upload images!"
 msgstr "画像のみアップロードできます！"
@@ -1855,6 +1730,9 @@ msgstr "パスワード紛失時のリンク"
 msgid "Subject"
 msgstr "タイトル"
 
+msgid "Apply changes"
+msgstr "変更を適用"
+
 msgid "URL to this admin panel"
 msgstr "管理パネルへのURL"
 
@@ -1864,20 +1742,195 @@ msgstr "URLプロトコル"
 msgid "ispCP - Admin/Maintenance mode"
 msgstr "ispCP - 管理者/メンテナンスモード"
 
+msgid "Settings saved !"
+msgstr "設定は保存されました！"
+
 msgid "Maintenance mode"
 msgstr "メンテナンスモード"
 
 msgid "Under this mode only administrators can login"
 msgstr "このモードにすると、管理者以外のログインが出来なくなります"
 
-msgid "ERROR: Only Letters, Numbers, Dash and Underscore are allowed!"
+msgid "ispCP - Admin/Settings"
+msgstr "ispCP - 管理者/設定"
+
+msgid "ERROR: Only positive numbers are allowed !"
+msgstr "エラー： 正の数だけが許可されてます！"
+
+#, fuzzy
+msgid "Settings saved!"
+msgstr "設定は保存されました！"
+
+msgid "General settings"
+msgstr "基本設定"
+
+msgid "Activation link expire time (minutes)"
+msgstr "有効化リンク有効時間 (分)"
+
+msgid "Password settings"
+msgstr "パスワード設定"
+
+msgid "Use strong Passwords"
+msgstr "強力なパスワードを使う"
+
+msgid "Password length"
+msgstr "パスワードの長さ"
+
+msgid "Bruteforce detection"
+msgstr "ブルートフォース検知"
+
+msgid "Block time between logins"
+msgstr "連続ログインのブロックタイム"
+
+msgid "Max number of login attempts"
+msgstr "最大数のログインの試み"
+
+msgid "Blocktime (minutes)"
+msgstr "ログイン拒否時間(分)"
+
+msgid "Block time between logins (seconds)"
+msgstr "連続ログインのブロックタイム (秒)"
+
+msgid "Max number of CAPTCHA validation attempts"
+msgstr "最大数のCAPTCHA認証の試み"
+
+msgid "Other settings"
+msgstr "その他設定"
+
+msgid "E-Mail settings"
+msgstr "メール設定"
+
+msgid "Create default E-Mail addresses"
+msgstr "デフォルトメールアドレスを作成"
+
+msgid "Count default E-Mail addresses"
+msgstr "デフォルトメールをアドレスとしてカウント"
+
+msgid "E-Mail accounts are hard suspended"
+msgstr "メールアカウント停止"
+
+msgid "Panel default language"
+msgstr "デフォルト言語を選択"
+
+msgid "Server ports"
+msgstr "サーバーポート"
+
+msgid "Hosting plans available for"
+msgstr "ホスティングプランを使えるユーザ"
+
+msgid "Admin"
+msgstr "管理者"
+
+msgid "Domains per page"
+msgstr "1ページあたりのドメイン数"
+
+msgid "Log Level"
+msgstr "ログレベル"
+
+msgid "Notices, Warnings and Errors"
+msgstr "通知, 警告とエラー"
+
+msgid "Warnings and Errors"
+msgstr "警告とエラー"
+
+msgid "Errors"
+msgstr "エラー"
+
+msgid "Check for update"
+msgstr "更新がないかどうかチェック"
+
+msgid "Show compression size comment"
+msgstr ""
+
+msgid "Prevent external login for admins"
+msgstr "管理者の外部ログインを禁止"
+
+msgid "Prevent external login for resellers"
+msgstr "代理店の外部ログインを禁止"
+
+msgid "Prevent external login for clients"
+msgstr "クライアントの外部ログインを禁止"
+
+msgid "Custom orderpanel ID"
+msgstr "カスタムオーダーパネルID"
+
+msgid "Domain names validation"
+msgstr "ドメイン名の確認"
+
+msgid "Top Level Domain name strict validation"
+msgstr "トップレベルドメイン名の厳密な確認"
+
+msgid ""
+"Only Top Level Domains (TLD) listed in IANA root zone database can be used."
+msgstr ""
+"IANAにルートゾーンのデータベースに記載されている、トップレベルドメイン（TLD）"
+"のみが使用することができます。"
+
+msgid "Second Level Domain name strict validation"
+msgstr "セカンドレベルドメイン名の厳密な確認"
+
+msgid ""
+"Single letter Second Level Domains (SLD) are not allowed under the most Top "
+"Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de."
+msgstr ""
+"１文字でのセカンドレベルドメイン(SLD)は、ほとんどのトップレベルドメイン (TLD)"
+"では許可されていません。少ないですが、例えは、トップレベルドメイン .de　など"
+"例外もあります。"
+
+msgid ""
+"Maximal number of labels for domain names<br />(<i>Excluding SLD & TLD</i>)"
+msgstr "ドメイン名のラベルの最大数<br />(<i>SLD & TLDを除く</i>)"
+
+msgid "Maximal number of labels for subdomains"
+msgstr "サブドメインのための最大限のラベル数"
+
+#, fuzzy
+msgid ""
+"ERROR: Only letters, numbers, dash and underscore are allowed for services "
+"names!"
 msgstr "エラー： 文字、数字、ダッシュ、アンダースコアだけが許可されてます！"
 
-msgid "ERROR: Port already exists!"
+#, fuzzy
+msgid "ERROR: Wrong Ip number!"
+msgstr "IPアドレスに間違いがあります！"
+
+#, fuzzy
+msgid "ERROR: Only positive numbers are allowed for services ports!"
+msgstr "エラー： 正の数だけが許可されてます！"
+
+#, fuzzy
+msgid "ERROR: Service port with same name already exists!"
 msgstr "エラー： ポートがすでに存在します！"
+
+msgid "ERROR: Unallowed protocol!"
+msgstr ""
+
+msgid "ERROR: Bad value for show entry!"
+msgstr ""
+
+#, fuzzy
+msgid "Service port was added!"
+msgstr "新規IPアドレスが追加されました！"
+
+#, php-format
+msgid "%d Service(s) port was updated!"
+msgstr ""
+
+msgid "Nothing's been changed!"
+msgstr ""
 
 msgid "You have no custom service ports defined."
 msgstr "カスタムサービスポートは定義されてません。"
+
+msgid "ERROR: Unknown service port name!"
+msgstr ""
+
+#, fuzzy
+msgid "Service port was removed!"
+msgstr "チケットは再開しました！"
+
+msgid "ERROR: You are not allowed to remove this port entry!"
+msgstr ""
 
 msgid "udp"
 msgstr "udp"
@@ -1885,14 +1938,22 @@ msgstr "udp"
 msgid "tcp"
 msgstr "tcp"
 
-msgid "Services"
-msgstr "サービス"
-
 msgid "Port"
 msgstr "ポート番号"
 
 msgid "Protocol"
 msgstr "プロトコル"
+
+#, fuzzy, php-format
+msgid "Are you sure you want to delete %s service port ?"
+msgstr "%s を削除してもよろしいですか？"
+
+msgid "View / Update service(s) port"
+msgstr ""
+
+#, fuzzy
+msgid "Add new service port"
+msgstr "新規ユーザーホスティングプラン追加"
 
 msgid "ispCP - Admin/Server Traffic Settings"
 msgstr "ispCP - 管理者/サーバートラフィック設定"
@@ -1933,26 +1994,11 @@ msgstr "ユーザの本当の名前（姓と名）"
 msgid "User type (admin, reseller, user)"
 msgstr "ユーザタイプ (管理者, 代理店, ユーザ)"
 
-msgid "days"
-msgstr "日"
+msgid "CPU bogomips"
+msgstr "CPU bogomips"
 
-msgid "hours"
-msgstr "時間"
-
-msgid "minutes"
-msgstr "分"
-
-msgid "System info"
-msgstr "システム情報"
-
-msgid "Vital system info"
-msgstr "システム情報"
-
-msgid "CPU system Info"
-msgstr "CPU情報"
-
-msgid "CPU model"
-msgstr "CPU モデル"
+msgid "CPU cache"
+msgstr "CPUキャッシュメモリ"
 
 msgid "Number of CPU Cores"
 msgstr "CPUコア数"
@@ -1960,44 +2006,33 @@ msgstr "CPUコア数"
 msgid "CPU MHz"
 msgstr "CPUクロック(MHz)"
 
-msgid "CPU cache"
-msgstr "CPUキャッシュメモリ"
+msgid "CPU model"
+msgstr "CPU モデル"
 
-msgid "CPU bogomips"
-msgstr "CPU bogomips"
-
-msgid "Memory system info"
-msgstr "システムメモリー情報"
-
-msgid "RAM"
-msgstr "メモリ"
-
-msgid "Total"
-msgstr "合計"
-
-msgid "Free"
-msgstr "空き容量"
-
-msgid "Swap"
-msgstr "スワップ"
-
-msgid "Up time"
-msgstr "起動時間"
-
-msgid "Kernel"
-msgstr "カーネル"
-
-msgid "Load"
-msgstr "ロードアベレージ"
+msgid "CPU system Info"
+msgstr "CPU情報"
 
 msgid "Filesystem system Info"
 msgstr "ファイルシステム情報"
 
+msgid "Free"
+msgstr "空き容量"
+
+#, fuzzy
+msgid "Kernel Version"
+msgstr "デモ版！"
+
+msgid "Load (1 Min, 5 Min, 15 Min)"
+msgstr ""
+
+msgid "Memory system info"
+msgstr "システムメモリー情報"
+
 msgid "Mount"
 msgstr "マウント先"
 
-msgid "Type"
-msgstr "タイプ"
+msgid "RAM"
+msgstr "メモリ"
 
 msgid "Partition"
 msgstr "パーティション"
@@ -2007,6 +2042,24 @@ msgstr "パーセント"
 
 msgid "Size"
 msgstr "サイズ"
+
+msgid "Swap"
+msgstr "スワップ"
+
+msgid "System info"
+msgstr "システム情報"
+
+msgid "Vital system info"
+msgstr "システム情報"
+
+msgid "Total"
+msgstr "合計"
+
+msgid "Type"
+msgstr "タイプ"
+
+msgid "Up time"
+msgstr "起動時間"
 
 msgid "You have no support tickets."
 msgstr "チケットは登録されていません"
@@ -2128,8 +2181,9 @@ msgstr "メインドのサブドメイン："
 msgid "Domain databases:"
 msgstr "ドメインデータベース："
 
+#, fuzzy
 msgid ""
-"Do you really want to delete the entire domain? This operation can not be "
+"Do you really want to delete the entire domain? This operation cannot be "
 "undone!"
 msgstr ""
 "あなたは本当に、ドメイン全体を削除しますか？この操作を行うと、元に戻すことは"
@@ -2188,6 +2242,10 @@ msgstr "マウント先が間違ってます"
 
 msgid "Master domain cannot be used!"
 msgstr "マスタドメインに使うことはできません！"
+
+#, fuzzy
+msgid "Wrong address in forward URL!"
+msgstr "URLの前方のドメイン部分が間違っています！"
 
 msgid "Wrong domain part in forward URL!"
 msgstr "URLの前方のドメイン部分が間違っています！"
@@ -2431,24 +2489,6 @@ msgstr "レコード %s は使えません。　理由 「%s」。"
 msgid "Unknown zone type %s!"
 msgstr "不明なゾーンタイプ %s ！"
 
-msgid "ispCP - Client/Domain Statistics"
-msgstr "ispCP - クライアント/ドメイン統計情報"
-
-msgid "Web Stats"
-msgstr "Web統計"
-
-msgid "WEB"
-msgstr "ウェブ"
-
-msgid "SMTP"
-msgstr "SMTP"
-
-msgid "POP3/IMAP"
-msgstr "POP3/IMAP"
-
-msgid "Sum"
-msgstr "合計"
-
 msgid "Manual zone's records list is empty!"
 msgstr "手動のゾーン一覧が空です！"
 
@@ -2482,6 +2522,24 @@ msgstr "アクション"
 
 msgid "Record data"
 msgstr "レコードデータ"
+
+msgid "ispCP - Client/Domain Statistics"
+msgstr "ispCP - クライアント/ドメイン統計情報"
+
+msgid "Web Stats"
+msgstr "Web統計"
+
+msgid "WEB"
+msgstr "ウェブ"
+
+msgid "SMTP"
+msgstr "SMTP"
+
+msgid "POP3/IMAP"
+msgstr "POP3/IMAP"
+
+msgid "Sum"
+msgstr "合計"
 
 msgid "ispCP - Client/Manage Error Custom Pages"
 msgstr "ispCP - クライアント/カスタムエラーページ管理"
@@ -2738,7 +2796,8 @@ msgstr ""
 msgid "free of charge"
 msgstr "無料"
 
-msgid "You can not update to this hosting plan, see notices in text."
+#, fuzzy
+msgid "You cannot update to this hosting plan, see notices in text."
 msgstr "ホスティングプランに変更できない理由が通知されています。"
 
 msgid "Warning:"
@@ -2801,6 +2860,9 @@ msgstr "ディスク容量の最大量に到達しました"
 msgid "You have no new support questions!"
 msgstr "新しい質問はありません!"
 
+msgid "Not Set"
+msgstr ""
+
 msgid "This Domain is expired"
 msgstr "ドメイン有効期限切れ"
 
@@ -2830,6 +2892,9 @@ msgstr "トラフィック量"
 
 msgid "Disk usage"
 msgstr "ディスク使用量"
+
+msgid "Alternative URL to reach your website"
+msgstr ""
 
 msgid "ispCP - Client/Change Language"
 msgstr "ispCP - クライアント/言語変更"
@@ -2956,21 +3021,6 @@ msgstr "本文"
 msgid "Enable mail auto responder"
 msgstr "メール自動返信を有効にする"
 
-msgid "Delete CatchAll"
-msgstr "キャッチオール削除"
-
-msgid "None"
-msgstr "なし"
-
-msgid "Create catch all"
-msgstr "キャッチオール作成"
-
-msgid "Catch all account"
-msgstr "全てのアカウントを対象"
-
-msgid "Catch all"
-msgstr "全て対象"
-
 msgid "Catch all account scheduled for creation!"
 msgstr "キャッチオールメールの作成を受け付けました！"
 
@@ -2986,8 +3036,23 @@ msgstr "キャッチオールメールアカウント作成"
 msgid "Mail accounts list"
 msgstr "メールアカウント一覧"
 
+msgid "Create catch all"
+msgstr "キャッチオール作成"
+
 msgid "Catch all account scheduled for deletion!"
 msgstr "キャッチオールメールの削除を受け付けました！"
+
+msgid "Delete CatchAll"
+msgstr "キャッチオール削除"
+
+msgid "None"
+msgstr "なし"
+
+msgid "Catch all account"
+msgstr "全てのアカウントを対象"
+
+msgid "Catch all"
+msgstr "全て対象"
 
 msgid "Please delete first CatchAll account for this email!"
 msgstr ""
@@ -3011,30 +3076,6 @@ msgstr "ispCP - クライアント/パスワード変更"
 
 msgid "ispCP - Client/Change Personal Data"
 msgstr "ispCP - クライアント/パーソナルデータ修正"
-
-msgid "You do not have protected areas"
-msgstr "アクセス制限領域は登録されていません"
-
-msgid "Manage users and groups"
-msgstr "ユーザーとグループの管理"
-
-msgid "Add user"
-msgstr "ユーザー追加"
-
-msgid "Group name"
-msgstr "グループ名"
-
-msgid "Group members"
-msgstr "グループのメンバー"
-
-msgid "Add group"
-msgstr "グループ追加"
-
-msgid "Group"
-msgstr "グループ"
-
-msgid "Add new protected area"
-msgstr "新しい保護領域追加"
 
 msgid "Please choose user or group"
 msgstr "ユーザーかグループを選択してください"
@@ -3091,6 +3132,9 @@ msgstr "エリア名"
 msgid "Unprotect it"
 msgstr "保護を解除する"
 
+msgid "Manage users and groups"
+msgstr "ユーザーとグループの管理"
+
 msgid "Protected area status should be OK if you want to delete it!"
 msgstr "保護エリアの状態がOKでなければ削除できません！"
 
@@ -3099,6 +3143,27 @@ msgstr "アクセス制限領域の削除に成功しました!"
 
 msgid "Permission deny!"
 msgstr "承認が得られませんでした！"
+
+msgid "You do not have protected areas"
+msgstr "アクセス制限領域は登録されていません"
+
+msgid "Add user"
+msgstr "ユーザー追加"
+
+msgid "Group name"
+msgstr "グループ名"
+
+msgid "Group members"
+msgstr "グループのメンバー"
+
+msgid "Add group"
+msgstr "グループ追加"
+
+msgid "Group"
+msgstr "グループ"
+
+msgid "Add new protected area"
+msgstr "新しい保護領域追加"
 
 msgid "Protected area was deleted successful!"
 msgstr "アクセス制限領域の削除に成功しました!"
@@ -3152,6 +3217,9 @@ msgstr "ユーザパスワードを入力してください！"
 
 msgid "Too long user password!"
 msgstr "ユーザのパスワードが長すぎます"
+
+msgid "Don't use special chars like \"@, $, %...\" in the password!"
+msgstr ""
 
 msgid "SQL user password was successfully changed!"
 msgstr "SQLユーザーのパスワードは変更されました！"
@@ -3524,6 +3592,22 @@ msgstr "ネットワークカードの一覧を取得しようとしてエラー
 msgid "This IP (%s) is not assigned to any network card!"
 msgstr "このIP (%s) はどのネットワークカードにも割り当てられていません！"
 
+#, fuzzy
+msgid "Days"
+msgstr "日"
+
+#, fuzzy
+msgid "Hours"
+msgstr "時間"
+
+#, fuzzy
+msgid "Minute"
+msgstr "分"
+
+#, fuzzy
+msgid "Minutes"
+msgstr "分"
+
 msgid "Couldn't check for updates! Website not reachable."
 msgstr ""
 "アップデートがないかどうか確認できませんでした！ webサイトに届きません。"
@@ -3849,16 +3933,6 @@ msgstr ""
 msgid "ERROR: PHP extension 'mcrypt' not loaded!"
 msgstr ""
 
-msgid ""
-"We are sorry, but the system is currently under maintenance.\n"
-"Please try again later."
-msgstr ""
-"申し訳ありませが、現在システムがメンテナンス中です。\n"
-"しばらくしてからお試し下さい。"
-
-msgid "Could not get config from database"
-msgstr "データベースから設定を取得できませんでした"
-
 #, php-format
 msgid "You have to wait %d seconds."
 msgstr "%d 秒お待ちください"
@@ -4150,6 +4224,12 @@ msgstr "初期費用"
 msgid "Performance"
 msgstr "パフォーマンス"
 
+msgid "ispCP Reseller: Add Alias"
+msgstr "ispCP 代理店 ： 別名追加"
+
+msgid "There is no user records for this reseller to add an alias for."
+msgstr "この代理店が、別名を追加したユーザー記録がありません。"
+
 msgid "ispCP - Manage Domain/Alias"
 msgstr "ispCP - ドメイン管理/エイリアス"
 
@@ -4191,12 +4271,6 @@ msgstr "ドメインエイリアスが有効にできませんでした!"
 
 msgid "Ordered domain alias not activated!"
 msgstr "ドメインエイリアスが有効化できませんでした！"
-
-msgid "ispCP Reseller: Add Alias"
-msgstr "ispCP 代理店 ： 別名追加"
-
-msgid "There is no user records for this reseller to add an alias for."
-msgstr "この代理店が、別名を追加したユーザー記録がありません。"
 
 msgid "ispCP - Circular"
 msgstr "ispCP - 回報"
@@ -4254,12 +4328,6 @@ msgstr "<em>%s</em> サービスを制限できません！"
 msgid "The <em>%s</em> service cannot be unlimited!"
 msgstr "<em>%s</em> サービスは無制限にすることはできません！"
 
-msgid "ispCP - Reseller/Main Index"
-msgstr "ispCP - 代理店/メインインデックス"
-
-msgid "View details"
-msgstr "ビュー 詳細"
-
 msgid "ispCP - Reseller/Add hosting plan"
 msgstr "ispCP - 代理店/ホスティングプラン追加"
 
@@ -4269,6 +4337,9 @@ msgstr "料金は数値です！"
 msgid "Setup fee must be a number!"
 msgstr "初期費用は数値です！"
 
+msgid "SQL databases limit is not <i>disabled</i>!"
+msgstr "データベース制限は<br><i>無効</i>ではありません！"
+
 msgid "Hosting plan values exceed reseller maximum values!"
 msgstr "代理店の最大値を越えるホスティングプランの値！"
 
@@ -4277,6 +4348,12 @@ msgstr "ispCP - 代理店/ホスティングプラン編集"
 
 msgid "View hosting plan"
 msgstr "ビュー ホスティングプラン"
+
+msgid "ispCP - Reseller/Main Index"
+msgstr "ispCP - 代理店/メインインデックス"
+
+msgid "View details"
+msgstr "ビュー 詳細"
 
 msgid "User accounts"
 msgstr "ユーザーアカウント"
@@ -4315,6 +4392,48 @@ msgstr "注文管理"
 msgid "Activation Link"
 msgstr "有効なリンク"
 
+msgid "Wrong order ID!"
+msgstr "間違った注文ID！"
+
+msgid "Order Cancelled: resellers maximum exceeded!"
+msgstr "注文キャンセル： 再販数の上限を超えました！"
+
+msgid "Wrong domain name syntax!"
+msgstr "ドメイン名が間違っています！"
+
+msgid "User added!"
+msgstr "ユーザーが追加されました！"
+
+msgid "Customer order was removed successful!"
+msgstr "顧客の注文が削除されました！"
+
+msgid "ispCP - Reseller/Order details"
+msgstr "ispCP - 代理店/注文詳細"
+
+msgid "Order data updated successfully!"
+msgstr "注文情報が更新されました"
+
+msgid "Order date"
+msgstr "注文日"
+
+msgid "Hosting plan"
+msgstr "ホスティングプラン"
+
+msgid "Hosting details"
+msgstr "ホスティング詳細"
+
+msgid "Order details"
+msgstr "注文詳細"
+
+msgid "Customer data"
+msgstr "顧客データ"
+
+msgid "Are you sure you want to delete this order?"
+msgstr "この注文を削除してよろしいですか?"
+
+msgid "Add to the system"
+msgstr "システムへ追加"
+
 msgid "ispCP - Reseller/Order settings"
 msgstr "ispCP - 代理店/注文設定"
 
@@ -4345,53 +4464,11 @@ msgstr "注文をアップデート"
 msgid "ID"
 msgstr "ID"
 
-msgid "Customer data"
-msgstr "顧客データ"
-
 msgid "Order"
 msgstr "注文"
 
-msgid "Hosting plan"
-msgstr "ホスティングプラン"
-
-msgid "Are you sure you want to delete this order?"
-msgstr "この注文を削除してよろしいですか?"
-
 msgid "Add/Details"
 msgstr "追加/詳細"
-
-msgid "Wrong order ID!"
-msgstr "間違った注文ID！"
-
-msgid "Order Cancelled: resellers maximum exceeded!"
-msgstr "注文キャンセル： 再販数の上限を超えました！"
-
-msgid "Wrong domain name syntax!"
-msgstr "ドメイン名が間違っています！"
-
-msgid "User added!"
-msgstr "ユーザーが追加されました！"
-
-msgid "Customer order was removed successful!"
-msgstr "顧客の注文が削除されました！"
-
-msgid "ispCP - Reseller/Order details"
-msgstr "ispCP - 代理店/注文詳細"
-
-msgid "Order data updated successfully!"
-msgstr "注文情報が更新されました"
-
-msgid "Order date"
-msgstr "注文日"
-
-msgid "Hosting details"
-msgstr "ホスティング詳細"
-
-msgid "Order details"
-msgstr "注文詳細"
-
-msgid "Add to the system"
-msgstr "システムへ追加"
 
 msgid "Order Canceled: resellers maximum exceeded!"
 msgstr "注文キャンセル： 代理店の上限を超えてます！"
@@ -4465,30 +4542,21 @@ msgstr "AwStats"
 msgid "Domain data has been altered. Please enter again"
 msgstr "ドメイン内のデータが変更されています。再度ご入力ください"
 
-msgid "SQL databases limit is not <i>disabled</i>!"
-msgstr "データベース制限は<br><i>無効</i>ではありません！"
-
 msgid "ispCP - User/Add user"
 msgstr "ispCP - ユーザ/ユーザ追加"
 
 msgid "Add other domains to this account"
 msgstr "他のドメインをこのアカウントに追加"
 
-#, fuzzy, php-format
+#, php-format
 msgid "System error with Domain Id: %d"
 msgstr ""
-
-msgid "User terminated!"
-msgstr "ユーザ終了！"
 
 msgid "ispCP - Users/Edit"
 msgstr "ispCP - ユーザ/編集"
 
 msgid "Users list"
 msgstr "ユーザーリスト"
-
-msgid "This reseller has no domains yet."
-msgstr "このユーザにドメインが登録されていません。"
 
 msgid "ispCP - Users"
 msgstr "ispCP - ユーザ"
@@ -4532,8 +4600,42 @@ msgstr ""
 "このユーザーにはドメインレコードがあります！<br>まずはシステムからドメインを"
 "削除してください！"
 
+msgid "User terminated!"
+msgstr "ユーザ終了！"
+
 msgid "User not terminated!"
 msgstr "ユーザは終わりません！"
+
+msgid "This reseller has no domains yet."
+msgstr "このユーザにドメインが登録されていません。"
+
+#~ msgid "Show server load"
+#~ msgstr "サーバーの負荷を表示する"
+
+#~ msgid "Services"
+#~ msgstr "サービス"
+
+#~ msgid "days"
+#~ msgstr "日"
+
+#~ msgid "hours"
+#~ msgstr "時間"
+
+#~ msgid "Kernel"
+#~ msgstr "カーネル"
+
+#~ msgid "Load"
+#~ msgstr "ロードアベレージ"
+
+#~ msgid ""
+#~ "We are sorry, but the system is currently under maintenance.\n"
+#~ "Please try again later."
+#~ msgstr ""
+#~ "申し訳ありませが、現在システムがメンテナンス中です。\n"
+#~ "しばらくしてからお試し下さい。"
+
+#~ msgid "Could not get config from database"
+#~ msgstr "データベースから設定を取得できませんでした"
 
 #~ msgid ""
 #~ "Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bg_BG\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-05 16:20+0200\n"
+"POT-Creation-Date: 2010-06-17 10:11+0200\n"
 "PO-Revision-Date: 2009-12-18 14:26+0100\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Bulgarian <bg_BG@li.org>\n"
@@ -15,6 +15,8 @@ msgstr ""
 "X-Poedit-Country: BULGARIA\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
+#. Please ignore this entry
+#. Please ignore this entry
 #. Please ignore this entry
 msgid "encoding"
 msgstr "UTF-8"
@@ -729,53 +731,11 @@ msgstr "Целия трафик"
 msgid "Day"
 msgstr "Ден"
 
-msgid "ispCP - Administrator/Hosting Plan Management"
-msgstr "ispCP - Администратор/Управление хостинг-планове"
-
-msgid "Hosting plans"
-msgstr "Хостинг-планове"
-
-msgid "Manage hosting plans"
-msgstr "Управление хостинг планове"
-
-msgid "Purchasing"
-msgstr "заявка"
+msgid "ispCP - Administrator/Add hosting plan"
+msgstr "ispCP - Админ/Добави хостинг-план"
 
 msgid "Add hosting plan"
 msgstr "Добави хостинг-план"
-
-msgid "Add new user hosting plan"
-msgstr "Добави Нов хостинг-план"
-
-msgid "Return to previous menu"
-msgstr "Връщане в предното меню"
-
-msgid "Hosting plan added!"
-msgstr "Хостинг-план е добавен!"
-
-msgid "Hosting plan deleted!"
-msgstr "Хостинг-план е изтрит!"
-
-msgid "Hosting plan updated!"
-msgstr "Хостинг-план е обновен!"
-
-msgid "Hosting plan can't be deleted, there are orders!"
-msgstr "Хостинг плана не може да бъде изтрит, в него има заявки!"
-
-msgid "Hosting plans not found!"
-msgstr "Хостинг-плановете не са открити!"
-
-msgid "No."
-msgstr ""
-
-msgid "Name"
-msgstr "Име"
-
-msgid "Show hosting plan"
-msgstr "Покажи хостинг-план"
-
-msgid "ispCP - Administrator/Add hosting plan"
-msgstr "ispCP - Админ/Добави хостинг-план"
 
 msgid "Hosting plan properties"
 msgstr "Свойства хостинг-плана"
@@ -906,6 +866,48 @@ msgstr "Некоректна цена. Пример: 9.99"
 
 msgid "Incorrect setup fee. Example: 19.99"
 msgstr "Некоректна цена за включване. Пример 19.99"
+
+msgid "ispCP - Administrator/Hosting Plan Management"
+msgstr "ispCP - Администратор/Управление хостинг-планове"
+
+msgid "Hosting plans"
+msgstr "Хостинг-планове"
+
+msgid "Manage hosting plans"
+msgstr "Управление хостинг планове"
+
+msgid "Purchasing"
+msgstr "заявка"
+
+msgid "Add new user hosting plan"
+msgstr "Добави Нов хостинг-план"
+
+msgid "Return to previous menu"
+msgstr "Връщане в предното меню"
+
+msgid "Hosting plan added!"
+msgstr "Хостинг-план е добавен!"
+
+msgid "Hosting plan deleted!"
+msgstr "Хостинг-план е изтрит!"
+
+msgid "Hosting plan updated!"
+msgstr "Хостинг-план е обновен!"
+
+msgid "Hosting plan can't be deleted, there are orders!"
+msgstr "Хостинг плана не може да бъде изтрит, в него има заявки!"
+
+msgid "Hosting plans not found!"
+msgstr "Хостинг-плановете не са открити!"
+
+msgid "No."
+msgstr ""
+
+msgid "Name"
+msgstr "Име"
+
+msgid "Show hosting plan"
+msgstr "Покажи хостинг-план"
 
 #, php-format
 msgid "You have <b>%d</b> new support questions"
@@ -1072,6 +1074,10 @@ msgstr "Достъпни ispCP обновявания"
 msgid "No new ispCP updates available"
 msgstr "Няма достъпни ispCP обновявания"
 
+#, fuzzy
+msgid "Language was removed!"
+msgstr "Език беше сменен!"
+
 msgid "User language updated successfully!"
 msgstr "Език на потребителския интерфейса беше успешно променен!"
 
@@ -1084,10 +1090,6 @@ msgstr "Език"
 #, fuzzy
 msgid "Choose your default language"
 msgstr "Избор на езика по подразбиране"
-
-#, fuzzy
-msgid "Language was removed!"
-msgstr "Език беше сменен!"
 
 msgid "Reseller list is empty!"
 msgstr "Списъкът с риселъри е празен!"
@@ -1205,6 +1207,9 @@ msgstr ""
 msgid "User was disabled"
 msgstr "Потребителя беше забранен"
 
+msgid "Incorrect data input!"
+msgstr "Некоректен вход на данни!"
+
 msgid "ispCP - Admin/Internationalisation"
 msgstr "ispCP - Админ/Интернационализация"
 
@@ -1223,8 +1228,16 @@ msgstr "Качания файл не е валиден езиков файл!"
 msgid "Uploaded file does not contain the language information!"
 msgstr "Качания файл не съдържа информация за език!"
 
+#, php-format
+msgid "%s added new language: %s"
+msgstr ""
+
 msgid "New language installed!"
 msgstr "Новия език е инсталиран!"
+
+#, php-format
+msgid "%s updated language: %s"
+msgstr ""
 
 msgid "Language was updated!"
 msgstr "Език беше сменен!"
@@ -1260,9 +1273,6 @@ msgstr "Инсталиране"
 
 msgid "Export"
 msgstr "Експорт"
-
-msgid "Incorrect data input!"
-msgstr "Некоректен вход на данни!"
 
 msgid "ispCP - Admin/Change Password"
 msgstr "ispCP - Админ/Смяна парола"
@@ -1503,6 +1513,9 @@ msgstr "%1$d / %2$d <br/>от<br/> <b>%3$d</b>"
 msgid "%1$d / %2$d <br/>of<br/> <b>unlimited</b>"
 msgstr "%1$d / %2$d <br/>от<br/> <b>без Ограничение</b>"
 
+msgid "<b>disabled</b>"
+msgstr "<b>забранен</b>"
+
 msgid "Reseller statistics table"
 msgstr "Таблица със статистиките на риселъра"
 
@@ -1526,9 +1539,6 @@ msgstr "%s <br/>от<br/> <b>без Ограничение</b>"
 #, php-format
 msgid "%1$d <br/>of<br/> <b>%2$d</b>"
 msgstr "%1$d <br/>от<br/> <b>%2$d</b>"
-
-msgid "<b>disabled</b>"
-msgstr "<b>забранен</b>"
 
 #, php-format
 msgid "%d <br/>of<br/> <b>unlimited</b>"
@@ -1576,11 +1586,23 @@ msgstr "%s не съществува или празен"
 msgid "Anti-Rootkits Tools Log Checker"
 msgstr "Анти-шпионски инструмент за проврка на Логовете"
 
-msgid "ispCP - Admin/Server statistics"
-msgstr "ispCP - Админ/Статистика на сървъра"
+msgid "ispCP - Admin/Server day stats"
+msgstr "ispCP - Админ/Дневна статистика на сървъра"
 
-msgid "Server statistics"
-msgstr "Статистика на сървъра"
+msgid "Server day statistics"
+msgstr "Дневна статистика на сървъра"
+
+msgid "Month:"
+msgstr "Месец:"
+
+msgid "Year:"
+msgstr "Година:"
+
+msgid "Day:"
+msgstr "Ден:"
+
+msgid "Hour"
+msgstr "Час"
 
 msgid "Web in"
 msgstr "Уеб-вход"
@@ -1616,23 +1638,11 @@ msgstr "Всички-вход"
 msgid "All out"
 msgstr "Всички-изход"
 
-msgid "ispCP - Admin/Server day stats"
-msgstr "ispCP - Админ/Дневна статистика на сървъра"
+msgid "ispCP - Admin/Server statistics"
+msgstr "ispCP - Админ/Статистика на сървъра"
 
-msgid "Server day statistics"
-msgstr "Дневна статистика на сървъра"
-
-msgid "Month:"
-msgstr "Месец:"
-
-msgid "Year:"
-msgstr "Година:"
-
-msgid "Day:"
-msgstr "Ден:"
-
-msgid "Hour"
-msgstr "Час"
+msgid "Server statistics"
+msgstr "Статистика на сървъра"
 
 msgid "ispCP Admin / System Tools / Server Status"
 msgstr "ispCP Админ / Системни инструменти / Статус на сървъра"
@@ -1669,144 +1679,6 @@ msgstr "Опции"
 
 msgid "Kill session"
 msgstr "Закрий сесията"
-
-msgid "ispCP - Admin/Settings"
-msgstr "ispCP - Админ/Настройки"
-
-msgid "ERROR: Only positive numbers are allowed !"
-msgstr "Грешка: Само положителни числа са разрешени !"
-
-msgid "Settings saved !"
-msgstr "Настройките са запазени !"
-
-msgid "General settings"
-msgstr "Общи настройки"
-
-msgid "Activation link expire time (minutes)"
-msgstr "Срок на действие на връзките (минути)"
-
-msgid "Password settings"
-msgstr ""
-
-msgid "Use strong Passwords"
-msgstr ""
-
-msgid "Password length"
-msgstr ""
-
-msgid "Bruteforce detection"
-msgstr "Определи атаките - грубасила"
-
-msgid "Block time between logins"
-msgstr "Блокиращо време между опитите за влизане"
-
-msgid "Max number of login attempts"
-msgstr "Максимум брои опити за влизане"
-
-msgid "Blocktime (minutes)"
-msgstr "Блокиращо време (в минути)"
-
-msgid "Block time between logins (seconds)"
-msgstr "Блокиращо време между опитите за влизане (секунди)"
-
-msgid "Max number of CAPTCHA validation attempts"
-msgstr "Максимум CAPTCHA опити за подтвърждение"
-
-msgid "Other settings"
-msgstr "Други настройки"
-
-msgid "E-Mail settings"
-msgstr ""
-
-msgid "Create default E-Mail addresses"
-msgstr ""
-
-msgid "Count default E-Mail addresses"
-msgstr ""
-
-msgid "E-Mail accounts are hard suspended"
-msgstr ""
-
-#, fuzzy
-msgid "Panel default language"
-msgstr "Избор на езика по подразбиране"
-
-msgid "Apply changes"
-msgstr "Приеми промените"
-
-msgid "Server ports"
-msgstr "Портове на сървъра"
-
-msgid "Hosting plans available for"
-msgstr ""
-
-#, fuzzy
-msgid "Admin"
-msgstr "До Администратора"
-
-msgid "Domains per page"
-msgstr "Домейни на страница"
-
-#, fuzzy
-msgid "Log Level"
-msgstr "Ниво"
-
-msgid "Notices, Warnings and Errors"
-msgstr ""
-
-msgid "Warnings and Errors"
-msgstr ""
-
-#, fuzzy
-msgid "Errors"
-msgstr "Грешка"
-
-#, fuzzy
-msgid "Check for update"
-msgstr "Потребителя е обновен"
-
-msgid "Show server load"
-msgstr ""
-
-#, fuzzy
-msgid "Prevent external login for admins"
-msgstr "Моля, въведете Вашите данни за вход"
-
-msgid "Prevent external login for resellers"
-msgstr ""
-
-msgid "Prevent external login for clients"
-msgstr ""
-
-#, fuzzy
-msgid "Custom orderpanel ID"
-msgstr "Клиент ID"
-
-#, fuzzy
-msgid "Domain names validation"
-msgstr "Име на Домейна"
-
-msgid "Top Level Domain name strict validation"
-msgstr ""
-
-msgid ""
-"Only Top Level Domains (TLD) listed in IANA root zone database can be used."
-msgstr ""
-
-msgid "Second Level Domain name strict validation"
-msgstr ""
-
-msgid ""
-"Single letter Second Level Domains (SLD) are not allowed under the most Top "
-"Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de."
-msgstr ""
-
-msgid ""
-"Maximal number of labels for domain names<br />(<i>Excluding SLD & TLD</i>)"
-msgstr ""
-
-msgid "Maximal number of labels for subdomains"
-msgstr ""
 
 msgid "You can only upload images!"
 msgstr "Вие можете само да качвате картинки!"
@@ -1890,6 +1762,9 @@ msgstr "Връзка към активация на възстановена п�
 msgid "Subject"
 msgstr "Тема"
 
+msgid "Apply changes"
+msgstr "Приеми промените"
+
 msgid "URL to this admin panel"
 msgstr ""
 
@@ -1900,21 +1775,199 @@ msgstr "Протокол"
 msgid "ispCP - Admin/Maintenance mode"
 msgstr "ispCP - Админ/Режим на поддръжка"
 
+msgid "Settings saved !"
+msgstr "Настройките са запазени !"
+
 msgid "Maintenance mode"
 msgstr "Режим на поддръжка"
 
 msgid "Under this mode only administrators can login"
 msgstr "В този режим само администраторите могат да влизат"
 
-msgid "ERROR: Only Letters, Numbers, Dash and Underscore are allowed!"
+msgid "ispCP - Admin/Settings"
+msgstr "ispCP - Админ/Настройки"
+
+msgid "ERROR: Only positive numbers are allowed !"
+msgstr "Грешка: Само положителни числа са разрешени !"
+
+#, fuzzy
+msgid "Settings saved!"
+msgstr "Настройките са запазени !"
+
+msgid "General settings"
+msgstr "Общи настройки"
+
+msgid "Activation link expire time (minutes)"
+msgstr "Срок на действие на връзките (минути)"
+
+msgid "Password settings"
+msgstr ""
+
+msgid "Use strong Passwords"
+msgstr ""
+
+msgid "Password length"
+msgstr ""
+
+msgid "Bruteforce detection"
+msgstr "Определи атаките - грубасила"
+
+msgid "Block time between logins"
+msgstr "Блокиращо време между опитите за влизане"
+
+msgid "Max number of login attempts"
+msgstr "Максимум брои опити за влизане"
+
+msgid "Blocktime (minutes)"
+msgstr "Блокиращо време (в минути)"
+
+msgid "Block time between logins (seconds)"
+msgstr "Блокиращо време между опитите за влизане (секунди)"
+
+msgid "Max number of CAPTCHA validation attempts"
+msgstr "Максимум CAPTCHA опити за подтвърждение"
+
+msgid "Other settings"
+msgstr "Други настройки"
+
+msgid "E-Mail settings"
+msgstr ""
+
+msgid "Create default E-Mail addresses"
+msgstr ""
+
+msgid "Count default E-Mail addresses"
+msgstr ""
+
+msgid "E-Mail accounts are hard suspended"
+msgstr ""
+
+#, fuzzy
+msgid "Panel default language"
+msgstr "Избор на езика по подразбиране"
+
+msgid "Server ports"
+msgstr "Портове на сървъра"
+
+msgid "Hosting plans available for"
+msgstr ""
+
+#, fuzzy
+msgid "Admin"
+msgstr "До Администратора"
+
+msgid "Domains per page"
+msgstr "Домейни на страница"
+
+#, fuzzy
+msgid "Log Level"
+msgstr "Ниво"
+
+msgid "Notices, Warnings and Errors"
+msgstr ""
+
+msgid "Warnings and Errors"
+msgstr ""
+
+#, fuzzy
+msgid "Errors"
+msgstr "Грешка"
+
+#, fuzzy
+msgid "Check for update"
+msgstr "Потребителя е обновен"
+
+msgid "Show compression size comment"
+msgstr ""
+
+#, fuzzy
+msgid "Prevent external login for admins"
+msgstr "Моля, въведете Вашите данни за вход"
+
+msgid "Prevent external login for resellers"
+msgstr ""
+
+msgid "Prevent external login for clients"
+msgstr ""
+
+#, fuzzy
+msgid "Custom orderpanel ID"
+msgstr "Клиент ID"
+
+#, fuzzy
+msgid "Domain names validation"
+msgstr "Име на Домейна"
+
+msgid "Top Level Domain name strict validation"
+msgstr ""
+
+msgid ""
+"Only Top Level Domains (TLD) listed in IANA root zone database can be used."
+msgstr ""
+
+msgid "Second Level Domain name strict validation"
+msgstr ""
+
+msgid ""
+"Single letter Second Level Domains (SLD) are not allowed under the most Top "
+"Level Domains (TLD). There is a small list of exceptions, e.g. the TLD .de."
+msgstr ""
+
+msgid ""
+"Maximal number of labels for domain names<br />(<i>Excluding SLD & TLD</i>)"
+msgstr ""
+
+msgid "Maximal number of labels for subdomains"
+msgstr ""
+
+#, fuzzy
+msgid ""
+"ERROR: Only letters, numbers, dash and underscore are allowed for services "
+"names!"
 msgstr ""
 "Грешка: Само латински символи, числа, тире и ниска черта се разрешават!"
 
-msgid "ERROR: Port already exists!"
+#, fuzzy
+msgid "ERROR: Wrong Ip number!"
+msgstr "Неправилен IP адрес!"
+
+#, fuzzy
+msgid "ERROR: Only positive numbers are allowed for services ports!"
+msgstr "Грешка: Само положителни числа са разрешени !"
+
+#, fuzzy
+msgid "ERROR: Service port with same name already exists!"
 msgstr "Грешка: Портът вече съществува!"
+
+msgid "ERROR: Unallowed protocol!"
+msgstr ""
+
+msgid "ERROR: Bad value for show entry!"
+msgstr ""
+
+#, fuzzy
+msgid "Service port was added!"
+msgstr "Нов IP адрес беше добавлен!"
+
+#, php-format
+msgid "%d Service(s) port was updated!"
+msgstr ""
+
+msgid "Nothing's been changed!"
+msgstr ""
 
 msgid "You have no custom service ports defined."
 msgstr "Няма портове избрани за Изборни Услуги."
+
+msgid "ERROR: Unknown service port name!"
+msgstr ""
+
+#, fuzzy
+msgid "Service port was removed!"
+msgstr "Билет перезагружен!"
+
+msgid "ERROR: You are not allowed to remove this port entry!"
+msgstr ""
 
 msgid "udp"
 msgstr ""
@@ -1922,14 +1975,22 @@ msgstr ""
 msgid "tcp"
 msgstr ""
 
-msgid "Services"
-msgstr "Услуги"
-
 msgid "Port"
 msgstr "Порт"
 
 msgid "Protocol"
 msgstr "Протокол"
+
+#, php-format
+msgid "Are you sure you want to delete %s service port ?"
+msgstr ""
+
+msgid "View / Update service(s) port"
+msgstr ""
+
+#, fuzzy
+msgid "Add new service port"
+msgstr "Добави Нов хостинг-план"
 
 msgid "ispCP - Admin/Server Traffic Settings"
 msgstr "ispCP - Админ/настройки за трафик на сървъра"
@@ -1970,26 +2031,11 @@ msgstr "Настоящо Име и Фамилия на потребител"
 msgid "User type (admin, reseller, user)"
 msgstr ""
 
-msgid "days"
-msgstr "дни"
+msgid "CPU bogomips"
+msgstr ""
 
-msgid "hours"
-msgstr "часове"
-
-msgid "minutes"
-msgstr "минути"
-
-msgid "System info"
-msgstr "Системна информация"
-
-msgid "Vital system info"
-msgstr "Важна системна информация"
-
-msgid "CPU system Info"
-msgstr "Системна информация CPU"
-
-msgid "CPU model"
-msgstr "Модел CPU"
+msgid "CPU cache"
+msgstr ""
 
 msgid "Number of CPU Cores"
 msgstr ""
@@ -1997,44 +2043,33 @@ msgstr ""
 msgid "CPU MHz"
 msgstr ""
 
-msgid "CPU cache"
-msgstr ""
+msgid "CPU model"
+msgstr "Модел CPU"
 
-msgid "CPU bogomips"
+msgid "CPU system Info"
+msgstr "Системна информация CPU"
+
+msgid "Filesystem system Info"
+msgstr "Информация за файловата система"
+
+msgid "Free"
+msgstr "Свободно"
+
+#, fuzzy
+msgid "Kernel Version"
+msgstr "Закрий сесията"
+
+msgid "Load (1 Min, 5 Min, 15 Min)"
 msgstr ""
 
 msgid "Memory system info"
 msgstr "Информация за системната памет"
 
-msgid "RAM"
-msgstr ""
-
-msgid "Total"
-msgstr "Всичко"
-
-msgid "Free"
-msgstr "Свободно"
-
-msgid "Swap"
-msgstr "Swap Файл"
-
-msgid "Up time"
-msgstr "Време онлайн"
-
-msgid "Kernel"
-msgstr "Ядро"
-
-msgid "Load"
-msgstr "Зареждане"
-
-msgid "Filesystem system Info"
-msgstr "Информация за файловата система"
-
 msgid "Mount"
 msgstr ""
 
-msgid "Type"
-msgstr "Тип"
+msgid "RAM"
+msgstr ""
 
 msgid "Partition"
 msgstr "Дял"
@@ -2044,6 +2079,24 @@ msgstr "Процент"
 
 msgid "Size"
 msgstr "Размер"
+
+msgid "Swap"
+msgstr "Swap Файл"
+
+msgid "System info"
+msgstr "Системна информация"
+
+msgid "Vital system info"
+msgstr "Важна системна информация"
+
+msgid "Total"
+msgstr "Всичко"
+
+msgid "Type"
+msgstr "Тип"
+
+msgid "Up time"
+msgstr "Време онлайн"
 
 msgid "You have no support tickets."
 msgstr "Няма билети за поддръжка."
@@ -2176,7 +2229,7 @@ msgid "Domain databases:"
 msgstr "Псевдоними на домейна"
 
 msgid ""
-"Do you really want to delete the entire domain? This operation can not be "
+"Do you really want to delete the entire domain? This operation cannot be "
 "undone!"
 msgstr ""
 
@@ -2237,6 +2290,10 @@ msgstr "Некоректен синтакс <i>точка на монтиран�
 #, fuzzy
 msgid "Master domain cannot be used!"
 msgstr "заявката за псевдоним на домейна НЕ е изтрита!"
+
+#, fuzzy
+msgid "Wrong address in forward URL!"
+msgstr "Неправилен синтаксис за име на домейн!"
 
 #, fuzzy
 msgid "Wrong domain part in forward URL!"
@@ -2497,24 +2554,6 @@ msgstr ""
 msgid "Unknown zone type %s!"
 msgstr ""
 
-msgid "ispCP - Client/Domain Statistics"
-msgstr "ispCP - Клиент/Статистика на домейна"
-
-msgid "Web Stats"
-msgstr "Уеб статистика"
-
-msgid "WEB"
-msgstr "Уеб"
-
-msgid "SMTP"
-msgstr ""
-
-msgid "POP3/IMAP"
-msgstr ""
-
-msgid "Sum"
-msgstr ""
-
 #, fuzzy
 msgid "Manual zone's records list is empty!"
 msgstr "Списъкът с пощенски кутии е празен!"
@@ -2550,6 +2589,24 @@ msgstr "Действия"
 #, fuzzy
 msgid "Record data"
 msgstr "данни ядро"
+
+msgid "ispCP - Client/Domain Statistics"
+msgstr "ispCP - Клиент/Статистика на домейна"
+
+msgid "Web Stats"
+msgstr "Уеб статистика"
+
+msgid "WEB"
+msgstr "Уеб"
+
+msgid "SMTP"
+msgstr ""
+
+msgid "POP3/IMAP"
+msgstr ""
+
+msgid "Sum"
+msgstr ""
 
 msgid "ispCP - Client/Manage Error Custom Pages"
 msgstr "ispCP - Клиент/Управление на страниците с грешки"
@@ -2793,7 +2850,7 @@ msgstr ""
 msgid "free of charge"
 msgstr "безплатно включване"
 
-msgid "You can not update to this hosting plan, see notices in text."
+msgid "You cannot update to this hosting plan, see notices in text."
 msgstr ""
 
 msgid "Warning:"
@@ -2855,6 +2912,9 @@ msgstr "Вие сте превишили ограничението за дис�
 msgid "You have no new support questions!"
 msgstr "Няма заявка за тех.поддръжка!"
 
+msgid "Not Set"
+msgstr ""
+
 #, fuzzy
 msgid "This Domain is expired"
 msgstr "Параметри домейна"
@@ -2885,6 +2945,9 @@ msgstr "Използван трафик"
 
 msgid "Disk usage"
 msgstr "Използвано дисково пространство"
+
+msgid "Alternative URL to reach your website"
+msgstr ""
 
 msgid "ispCP - Client/Change Language"
 msgstr "ispCP - Клиент/Промяна език"
@@ -3015,21 +3078,6 @@ msgstr "Вашето съобщение"
 msgid "Enable mail auto responder"
 msgstr "Включи пощенския Автоматичен отговор"
 
-msgid "Delete CatchAll"
-msgstr "Изтрий CatchAll"
-
-msgid "None"
-msgstr "Празно"
-
-msgid "Create catch all"
-msgstr "Създай catch all"
-
-msgid "Catch all account"
-msgstr "Catch all акаунт"
-
-msgid "Catch all"
-msgstr "Обхвани Всички"
-
 msgid "Catch all account scheduled for creation!"
 msgstr "Catch all акаунт вграфика за създаване"
 
@@ -3045,8 +3093,23 @@ msgstr "Создат CatchAll пощенска кутия"
 msgid "Mail accounts list"
 msgstr "Списък пощенски кутии"
 
+msgid "Create catch all"
+msgstr "Създай catch all"
+
 msgid "Catch all account scheduled for deletion!"
 msgstr "Catch all акаунта е добавен в графика за изтриване!"
+
+msgid "Delete CatchAll"
+msgstr "Изтрий CatchAll"
+
+msgid "None"
+msgstr "Празно"
+
+msgid "Catch all account"
+msgstr "Catch all акаунт"
+
+msgid "Catch all"
+msgstr "Обхвани Всички"
 
 msgid "Please delete first CatchAll account for this email!"
 msgstr "Първо изтрийте CatchAll акаунта за тази пощенска кутия!"
@@ -3068,30 +3131,6 @@ msgstr "ispCP - Клиент/Смени парола"
 
 msgid "ispCP - Client/Change Personal Data"
 msgstr "ispCP - Клиент/Смяна на персонални данни"
-
-msgid "You do not have protected areas"
-msgstr "Нямате защитени зони"
-
-msgid "Manage users and groups"
-msgstr "Управление потребители и групи"
-
-msgid "Add user"
-msgstr "Добави потребител"
-
-msgid "Group name"
-msgstr "Име на група"
-
-msgid "Group members"
-msgstr "Членове на група"
-
-msgid "Add group"
-msgstr "Добави група"
-
-msgid "Group"
-msgstr "Група"
-
-msgid "Add new protected area"
-msgstr "Добави нова защитена зона"
 
 msgid "Please choose user or group"
 msgstr "Моля, изберете потребител или група"
@@ -3151,6 +3190,9 @@ msgstr "Име на зона"
 msgid "Unprotect it"
 msgstr "Махни защита"
 
+msgid "Manage users and groups"
+msgstr "Управление потребители и групи"
+
 msgid "Protected area status should be OK if you want to delete it!"
 msgstr ""
 "Статусът на защитената зона трябва да бъде нормален ако искате да го "
@@ -3161,6 +3203,27 @@ msgstr "Защитената зона е изтрита успешно!"
 
 msgid "Permission deny!"
 msgstr "Достъпът е забранен!"
+
+msgid "You do not have protected areas"
+msgstr "Нямате защитени зони"
+
+msgid "Add user"
+msgstr "Добави потребител"
+
+msgid "Group name"
+msgstr "Име на група"
+
+msgid "Group members"
+msgstr "Членове на група"
+
+msgid "Add group"
+msgstr "Добави група"
+
+msgid "Group"
+msgstr "Група"
+
+msgid "Add new protected area"
+msgstr "Добави нова защитена зона"
 
 msgid "Protected area was deleted successful!"
 msgstr "Защитената зона е изтрита успешно!"
@@ -3214,6 +3277,9 @@ msgstr "Моля, въведете потребителската парола!"
 
 msgid "Too long user password!"
 msgstr "Твърде дълга потребителска парола!"
+
+msgid "Don't use special chars like \"@, $, %...\" in the password!"
+msgstr ""
 
 msgid "SQL user password was successfully changed!"
 msgstr "Паролата на SQL потребителя беше успешно променена!"
@@ -3592,6 +3658,22 @@ msgstr ""
 msgid "This IP (%s) is not assigned to any network card!"
 msgstr ""
 
+#, fuzzy
+msgid "Days"
+msgstr "Ден"
+
+#, fuzzy
+msgid "Hours"
+msgstr "Час"
+
+#, fuzzy
+msgid "Minute"
+msgstr "минути"
+
+#, fuzzy
+msgid "Minutes"
+msgstr "минути"
+
 msgid "Couldn't check for updates! Website not reachable."
 msgstr "Не е възможна проверка за обновявания! Сайтът не отговаря."
 
@@ -3914,16 +3996,6 @@ msgstr ""
 msgid "ERROR: PHP extension 'mcrypt' not loaded!"
 msgstr ""
 
-msgid ""
-"We are sorry, but the system is currently under maintenance.\n"
-"Please try again later."
-msgstr ""
-"Съжаляваме, но системата в момента е в профилактика.\n"
-"Моля опитайте отново по-късно."
-
-msgid "Could not get config from database"
-msgstr "Не може да бъде взета конфигурацита от базата данни"
-
 #, php-format
 msgid "You have to wait %d seconds."
 msgstr "Вие трябва да изчакате %d секунди"
@@ -4237,6 +4309,13 @@ msgstr "Такса за настройка"
 msgid "Performance"
 msgstr "Производителност"
 
+#, fuzzy
+msgid "ispCP Reseller: Add Alias"
+msgstr "ispCP Риселър : Добави псевдоним"
+
+msgid "There is no user records for this reseller to add an alias for."
+msgstr ""
+
 msgid "ispCP - Manage Domain/Alias"
 msgstr "ispCP - Управление домейни/Псевдоними"
 
@@ -4278,13 +4357,6 @@ msgstr "заявката за псевдоним на домейна е акти
 
 msgid "Ordered domain alias not activated!"
 msgstr "заявката за псевдоним на домейна НЕ е активирана!"
-
-#, fuzzy
-msgid "ispCP Reseller: Add Alias"
-msgstr "ispCP Риселър : Добави псевдоним"
-
-msgid "There is no user records for this reseller to add an alias for."
-msgstr ""
 
 msgid "ispCP - Circular"
 msgstr ""
@@ -4351,12 +4423,6 @@ msgstr "Услугата <em>%s</em> не может да бъде ограни�
 msgid "The <em>%s</em> service cannot be unlimited!"
 msgstr "Услугата <em>%s</em> не може да бъде без ограничение! "
 
-msgid "ispCP - Reseller/Main Index"
-msgstr "ispCP - Риселър/Главна"
-
-msgid "View details"
-msgstr "Преглед детайли"
-
 msgid "ispCP - Reseller/Add hosting plan"
 msgstr "ispCP - Риселър/Добави хостинг-план"
 
@@ -4366,6 +4432,10 @@ msgstr "Цената трябва да бъде указанна в цифри!"
 msgid "Setup fee must be a number!"
 msgstr "Стартовата цена трябва да бъде указанна в цифри!"
 
+#, fuzzy
+msgid "SQL databases limit is not <i>disabled</i>!"
+msgstr "Ограничението за SQL бази данни е <i>Забранено</i>!"
+
 msgid "Hosting plan values exceed reseller maximum values!"
 msgstr ""
 
@@ -4374,6 +4444,12 @@ msgstr "ispCP - Риселър/Редакция хостинг-план"
 
 msgid "View hosting plan"
 msgstr "Преглед хостинг-план"
+
+msgid "ispCP - Reseller/Main Index"
+msgstr "ispCP - Риселър/Главна"
+
+msgid "View details"
+msgstr "Преглед детайли"
 
 msgid "User accounts"
 msgstr "потребители"
@@ -4413,6 +4489,48 @@ msgstr "Управление заявки"
 msgid "Activation Link"
 msgstr "Активация имайл"
 
+msgid "Wrong order ID!"
+msgstr "Неверна Заявка ID!"
+
+msgid "Order Cancelled: resellers maximum exceeded!"
+msgstr ""
+
+msgid "Wrong domain name syntax!"
+msgstr "Неправилен синтаксис за име на домейн!"
+
+msgid "User added!"
+msgstr "Потребителя е добавен!"
+
+msgid "Customer order was removed successful!"
+msgstr "Клиента заявка успешно е изтрита!"
+
+msgid "ispCP - Reseller/Order details"
+msgstr "ispCP - Риселър/Детайли заявка"
+
+msgid "Order data updated successfully!"
+msgstr "данните на заявката са успешно обновени!"
+
+msgid "Order date"
+msgstr "Дата на заявката"
+
+msgid "Hosting plan"
+msgstr "Хостинг-план"
+
+msgid "Hosting details"
+msgstr "Детайли за хостинга"
+
+msgid "Order details"
+msgstr "Детайли заявка"
+
+msgid "Customer data"
+msgstr "данни клиент"
+
+msgid "Are you sure you want to delete this order?"
+msgstr "Уверени ли сте,че искате да изтриете тази заявка?"
+
+msgid "Add to the system"
+msgstr "Добави в системата"
+
 msgid "ispCP - Reseller/Order settings"
 msgstr "ispCP - Риселър/Настройки заявкаа"
 
@@ -4443,53 +4561,11 @@ msgstr "Обнови заявката"
 msgid "ID"
 msgstr ""
 
-msgid "Customer data"
-msgstr "данни клиент"
-
 msgid "Order"
 msgstr "заявка"
 
-msgid "Hosting plan"
-msgstr "Хостинг-план"
-
-msgid "Are you sure you want to delete this order?"
-msgstr "Уверени ли сте,че искате да изтриете тази заявка?"
-
 msgid "Add/Details"
 msgstr "Добави/Детали"
-
-msgid "Wrong order ID!"
-msgstr "Неверна Заявка ID!"
-
-msgid "Order Cancelled: resellers maximum exceeded!"
-msgstr ""
-
-msgid "Wrong domain name syntax!"
-msgstr "Неправилен синтаксис за име на домейн!"
-
-msgid "User added!"
-msgstr "Потребителя е добавен!"
-
-msgid "Customer order was removed successful!"
-msgstr "Клиента заявка успешно е изтрита!"
-
-msgid "ispCP - Reseller/Order details"
-msgstr "ispCP - Риселър/Детайли заявка"
-
-msgid "Order data updated successfully!"
-msgstr "данните на заявката са успешно обновени!"
-
-msgid "Order date"
-msgstr "Дата на заявката"
-
-msgid "Hosting details"
-msgstr "Детайли за хостинга"
-
-msgid "Order details"
-msgstr "Детайли заявка"
-
-msgid "Add to the system"
-msgstr "Добави в системата"
 
 msgid "Order Canceled: resellers maximum exceeded!"
 msgstr ""
@@ -4569,31 +4645,21 @@ msgstr "Статистика AwStats"
 msgid "Domain data has been altered. Please enter again"
 msgstr ""
 
-#, fuzzy
-msgid "SQL databases limit is not <i>disabled</i>!"
-msgstr "Ограничението за SQL бази данни е <i>Забранено</i>!"
-
 msgid "ispCP - User/Add user"
 msgstr "ispCP - Потребитеи/Добави потребител"
 
 msgid "Add other domains to this account"
 msgstr "Добавите другие домейн  към този акаунт"
 
-#, fuzzy, php-format
+#, php-format
 msgid "System error with Domain Id: %d"
 msgstr ""
-
-msgid "User terminated!"
-msgstr "Потребителя е закрит!"
 
 msgid "ispCP - Users/Edit"
 msgstr "ispCP - Потребители/Редакция"
 
 msgid "Users list"
 msgstr "Списък потребители"
-
-msgid "This reseller has no domains yet."
-msgstr "Този риселър няма домейни засега."
 
 msgid "ispCP - Users"
 msgstr "ispCP - потребителии"
@@ -4636,8 +4702,39 @@ msgid ""
 msgstr ""
 "Този потребител има домейн запис !<br>Първо изтрийте домейна от системата!"
 
+msgid "User terminated!"
+msgstr "Потребителя е закрит!"
+
 msgid "User not terminated!"
 msgstr "Потребителя не е приключен!"
+
+msgid "This reseller has no domains yet."
+msgstr "Този риселър няма домейни засега."
+
+#~ msgid "Services"
+#~ msgstr "Услуги"
+
+#~ msgid "days"
+#~ msgstr "дни"
+
+#~ msgid "hours"
+#~ msgstr "часове"
+
+#~ msgid "Kernel"
+#~ msgstr "Ядро"
+
+#~ msgid "Load"
+#~ msgstr "Зареждане"
+
+#~ msgid ""
+#~ "We are sorry, but the system is currently under maintenance.\n"
+#~ "Please try again later."
+#~ msgstr ""
+#~ "Съжаляваме, но системата в момента е в профилактика.\n"
+#~ "Моля опитайте отново по-късно."
+
+#~ msgid "Could not get config from database"
+#~ msgstr "Не може да бъде взета конфигурацита от базата данни"
 
 #~ msgid ""
 #~ "Inconsistency between current_als_cnt and actual alias count: %1$d != %2$d"
