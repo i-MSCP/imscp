@@ -305,6 +305,7 @@ function check_data_iscorrect(&$tpl) {
 	global $hp_backup, $hp_dns;
 
 	$ahp_error = array();
+
 	$hp_name = clean_input($_POST['hp_name']);
 	$hp_sub = clean_input($_POST['hp_sub']);
 	$hp_als = clean_input($_POST['hp_als']);
@@ -381,11 +382,13 @@ function check_data_iscorrect(&$tpl) {
 		$ahp_error[] = tr('Incorrect disk quota limit!');
 	}
 
-	if (!isset($ahp_error)) {
+	if (empty($ahp_error)) {
 		$tpl->assign('MESSAGE', '');
+
 		return true;
 	} else {
 		set_page_message(format_message($ahp_error));
+
 		return false;
 	}
 } // end of check_data_iscorrect()
@@ -427,7 +430,7 @@ function save_data_to_db() {
 			`setup_fee` = ?,
 			`value` = ?,
 			`payment` = ?,
-			`status` = ?
+			`status` = ?,
 			`tos` = ?
 		WHERE
 			`id` = ?
