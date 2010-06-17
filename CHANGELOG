@@ -5,6 +5,8 @@ ispCP ω 1.0.6 ChangeLog
 	- GUI:
 		* Added a new IspCP_Initializer class for initialization process
 			(Not Yet Integrated)
+		* Added a new IspCP_Bootstrap class for ispCP boot process
+			(Not Yet Integrated)
 
 2010-06-16 Laurent Declercq
 	- DATABASE:
