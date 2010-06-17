@@ -7,6 +7,7 @@ ispCP ω 1.0.6 ChangeLog
 			(Not Yet Integrated)
 		* Added a new IspCP_Bootstrap class for ispCP boot process
 			(Not Yet Integrated)
+		* Fixed #2392: Various problems with hosting_plan_edit.php as admin
 
 2010-06-16 Laurent Declercq
 	- DATABASE:
