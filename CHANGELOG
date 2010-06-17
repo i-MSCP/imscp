@@ -2,6 +2,8 @@ ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2010-06-17 Laurent Declercq
+	- CONTRIB:
+		* Added migration tool `backup-restore` in contrib section
 	- GUI:
 		* Added a new IspCP_Initializer class for initialization process
 			(Not Yet Integrated)
