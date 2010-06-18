@@ -19,8 +19,6 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 
 #. Please ignore this entry
-#. Please ignore this entry
-#. Please ignore this entry
 msgid "encoding"
 msgstr "UTF-8"
 

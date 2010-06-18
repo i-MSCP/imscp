@@ -4,10 +4,12 @@ ispCP ω 1.0.6 ChangeLog
 2010-06-18 Laurent Declercq
 	- GUI:
 		* Switched to the new naming convention
+	- TRANSLATION:
+		* Removed duplicate entries ('#. Please ignore this entry')
 
 2010-06-17 Laurent Declercq
 	- CONTRIB:
-		* Added migration tool `backup-restore` in contrib section
+		* Added migration tool `backup-restore` in the contrib section
 	- GUI:
 		* Added a new IspCP_Initializer class for initialization process
 			(Not Yet Integrated)
@@ -17,11 +19,11 @@ ispCP ω 1.0.6 ChangeLog
 	- TRANSLATION:
 		* Added specific keyword `/*tr*/` into the makemsgs script to be able
 			to parse localization before that the php i18n support was loaded
-		* Updated the portable object template file
-		* Updated all the portables object files:
+		* Updated pot file
+		* Updated all the po files:
 			- Executed the updateToPOT script
 			- Fixed some errors due to the absence of argument in several
-			translated strings (Reported by the checkPo)
+			translated strings (Reported by the checkPo script)
 
 2010-06-16 Laurent Declercq
 	- DATABASE:

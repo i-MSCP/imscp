@@ -15,8 +15,6 @@ msgstr ""
 "X-Generator: x64PoPot 0.2\n"
 
 #. Please ignore this entry
-#. Please ignore this entry
-#. Please ignore this entry
 msgid "encoding"
 msgstr "UTF-8"
 

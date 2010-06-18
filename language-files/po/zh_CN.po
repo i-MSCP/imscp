@@ -16,8 +16,6 @@ msgstr ""
 "X-Poedit-Bookmarks: -1,-1,-1,-1,-1,-1,994,-1,-1,-1\n"
 
 #. Please ignore this entry
-#. Please ignore this entry
-#. Please ignore this entry
 msgid "encoding"
 msgstr "UTF-8"
 

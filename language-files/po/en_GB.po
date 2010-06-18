@@ -16,8 +16,6 @@ msgstr ""
 "X-Poedit-Country: GREAT BRITAIN\n"
 
 #. Please ignore this entry
-#. Please ignore this entry
-#. Please ignore this entry
 msgid "encoding"
 msgstr "UTF-8"
 

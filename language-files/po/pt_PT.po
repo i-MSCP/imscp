@@ -17,8 +17,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #. Please ignore this entry
-#. Please ignore this entry
-#. Please ignore this entry
 msgid "encoding"
 msgstr "UTF-8"
 

@@ -20,8 +20,6 @@ msgstr ""
 "X-Poedit-Country: Azerbaijan\n"
 
 #. Please ignore this entry
-#. Please ignore this entry
-#. Please ignore this entry
 msgid "encoding"
 msgstr "UTF-8"
 

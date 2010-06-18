@@ -18,8 +18,6 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 
 #. Please ignore this entry
-#. Please ignore this entry
-#. Please ignore this entry
 msgid "encoding"
 msgstr "UTF-8"
 
