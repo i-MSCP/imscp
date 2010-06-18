@@ -26,7 +26,7 @@
  */
 
 /**
- * @see IspCP_ConfigHandler
+ * @see ispCP_ConfigHandler
  */
 require_once  INCLUDEPATH . '/ispCP/ConfigHandler.php';
 

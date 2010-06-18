@@ -27,9 +27,9 @@
  */
 
 /**
- * Class IspCP_Initializer
+ * Class ispCP_Initializer
  *
- * The initializer is responsible for processing the IspCP configuration,
+ * The initializer is responsible for processing the ispCP configuration,
  * such as setting the include_path, initializing logging, database and
  * more.
  *
@@ -42,7 +42,7 @@
 class ispCP_Initializer {
 
 	/**
-	 * IspCP_ConfigHandler instance used by this class
+	 * ispCP_ConfigHandler instance used by this class
 	 *
 	 * @var ispCP_ConfigHandler
 	 */
@@ -63,7 +63,7 @@ class ispCP_Initializer {
 	 * specify explicitly which initialization methods you want:
 	 *
 	 * <samp>
-	 *	IspCP_Initializer::run('_setIncludePath')
+	 *	ispCP_Initializer::run('_setIncludePath')
 	 * <samp>
 	 *
 	 * This is useful if you only want the include_path path initialized,
@@ -73,10 +73,10 @@ class ispCP_Initializer {
 	 * Note: Concept borrowed to the RoR framework
 	 *
 	 * @throw Exception
-	 * @param string|IspCP_ConfigHandler $command Initializer method to be
-	 *	executed or an IspCP_ConfigHandler object
-	 * @param IspCP_ConfigHandler $config Optional IspCP_ConfigHandler object
-	 * @return The IspCP_Initializer instance
+	 * @param string|ispCP_ConfigHandler $command Initializer method to be
+	 *	executed or an ispCP_ConfigHandler object
+	 * @param ispCP_ConfigHandler $config Optional ispCP_ConfigHandler object
+	 * @return The ispCP_Initializer instance
 	 */
 	public static function run($command = '_processAll',
 		ispCP_ConfigHandler $config = null) {
@@ -95,7 +95,7 @@ class ispCP_Initializer {
 			$initializer->$command();
 
 		} else {
-			throw new Exception('Error: IspCP is already fully initialized!');
+			throw new Exception('Error: ispCP is already fully initialized!');
 		}
 
 		return $initializer;
@@ -103,9 +103,9 @@ class ispCP_Initializer {
 
 	/**
 	 * Create a new Initializer instance that references the given
-	 * {@link IspCP_ConfigHandler} instance
+	 * {@link ispCP_ConfigHandler} instance
 	 *
-	 * @param IspCP_ConfigHandler IspCP_ConfigHandler instance
+	 * @param ispCP_ConfigHandler ispCP_ConfigHandler instance
 	 * @return void
 	 */
 	private function __construct($config) {
@@ -159,7 +159,7 @@ class ispCP_Initializer {
 
       	// Trigger the 'OnAfterInitialize' action hook
 		// (will be activated later)
-		//IspCP_Registry::get('Hook')->OnAfterInitialize();
+		//ispCP_Registry::get('Hook')->OnAfterInitialize();
 
 		self::$_initialized = true;
 	}
@@ -167,12 +167,12 @@ class ispCP_Initializer {
 	/**
 	 * Check for PHP version and Standard PHP library availability
 	 *
-	 * IspCP uses interfaces and classes that come from the Standard Php library
+	 * ispCP uses interfaces and classes that come from the Standard Php library
 	 * under PHP version 5.1.4. This methods ensures that the PHP version used
 	 * is more recent or equal to the PHP version 5.1.4 and that the SPL is
 	 * loaded.
 	 *
-	 * Note: IspCP requires PHP 5.1.4 or later because some SPL interfaces were
+	 * Note: ispCP requires PHP 5.1.4 or later because some SPL interfaces were
 	 * not stable in earlier versions of PHP.
 	 *
 	 * @return void
@@ -221,7 +221,7 @@ class ispCP_Initializer {
 	protected function _initializeOutputBuffering() {
 
 		// Will be reactivated
-		//IspCP_spGzip::ob_start(7, false, true, true);
+		//ispCP_spGzip::ob_start(7, false, true, true);
 	}
 
 	/**
@@ -324,14 +324,14 @@ class ispCP_Initializer {
 	 */
 	protected function _processConfiguration() {
 
-		// We get an IspCP_ConfigHandler_Db object
+		// We get an ispCP_ConfigHandler_Db object
 		$db_cfg = Config::getInstance(Config::DB, ispCP_Registry::get('Pdo'));
 
 		// Now, we can override our base configuration object with parameter
 		// that come from the database
 		$this->_config->replaceWith($db_cfg);
 
-		// Finally, we register the IspCP_ConfigHandler_Db for shared access
+		// Finally, we register the ispCP_ConfigHandler_Db for shared access
 		ispCP_Registry::set('Db_Config', $db_cfg);
 	}
 
@@ -354,7 +354,7 @@ class ispCP_Initializer {
 		if (isset($this->_config->DATABASE_UTF8) &&
 			$this->_config->DATABASE_UTF8 == 'yes') {
 
-			$db = IspCP_Registry::get('Db');
+			$db = ispCP_Registry::get('Db');
 
 			try {
 				if($db->Execute('SET NAMES `utf8`;') === false)
@@ -427,7 +427,7 @@ class ispCP_Initializer {
 		// Load all the available plugins for the current execution context
 		ispCP_Plugin_Helpers::getPlugins();
 
-		// Register an IspCP_Plugin_ActionsHooks for shared access
+		// Register an ispCP_Plugin_ActionsHooks for shared access
 		ispCP_Registry::set('Hook', ispCP_Plugin_ActionsHooks::getInstance());
 	}
 }

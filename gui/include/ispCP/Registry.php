@@ -37,7 +37,7 @@ class ispCP_Registry {
 	/**
 	 * Instance of this class that provides storage for shared data
 	 *
-	 * @var IspCP_Registry
+	 * @var ispCP_Registry
 	 */
 	protected static $_instance = null;
 
@@ -56,12 +56,12 @@ class ispCP_Registry {
 	private function __clone(){}
 
 	/**
-	 * Get an IspCP_Registry instance
+	 * Get an ispCP_Registry instance
 	 *
-	 * Returns a reference to {@link IspCP_Registry} instance, only creating
+	 * Returns a reference to {@link ispCP_Registry} instance, only creating
 	 * it if it doesn't already exist.
 	 *
-	 * @return IspCP_Registry
+	 * @return ispCP_Registry
 	 */
 	public static function getInstance() {
 
@@ -81,7 +81,7 @@ class ispCP_Registry {
 	 *
 	 * To get an reference, use the following syntax:
 	 *
-	 * $data = &IspCP_Register::get('name');
+	 * $data = &ispCP_Register::get('name');
 	 *
 	 * @param string $index Data key name
 	 * @throws Exception
@@ -118,7 +118,7 @@ class ispCP_Registry {
 	 * Note: This method can return a reference for data that are not objects
 	 * like array. For this use the following syntax:
 	 *
-	 * $data = &IspCP_Register::set('name', array());
+	 * $data = &ispCP_Register::set('name', array());
 	 *
 	 * @param string $index Data key name
 	 * @param mixed $value Data value

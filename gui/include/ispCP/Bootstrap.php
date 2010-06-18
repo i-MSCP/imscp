@@ -42,7 +42,7 @@ defined('INCLUDEPATH') or define('INCLUDEPATH', dirname(dirname(__FILE__)));
 class ispCP_Bootstrap {
 
 	/**
-	 * Boot IspCP environment and, configuration
+	 * Boot ispCP environment and, configuration
 	 *
 	 * @return void
 	 */
@@ -88,7 +88,7 @@ class ispCP_Bootstrap {
 	protected function _run() {
 
 		$this->_loadInitializer();
-		IspCP_Initializer::run('_setIncludePath');
+		ispCP_Initializer::run('_setIncludePath');
 	}
 
 	/**

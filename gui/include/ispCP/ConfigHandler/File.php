@@ -27,7 +27,7 @@
  */
 
 /**
- * @see IspCP_ConfigHandler
+ * @see ispCP_ConfigHandler
  */
 require_once  INCLUDEPATH . '/ispCP/ConfigHandler.php';
 
@@ -44,7 +44,7 @@ require_once  INCLUDEPATH . '/ispCP/ConfigHandler.php';
  * @author laurent declercq <laurent.declercq@ispcp.net>
  * @see ispCP_ConfigHandler
  */
-class ispCP_ConfigHandler_File extends IspCP_ConfigHandler {
+class ispCP_ConfigHandler_File extends ispCP_ConfigHandler {
 
 	/**
 	 * Configuration file path

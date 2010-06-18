@@ -178,7 +178,7 @@ class ispCP_ConfigHandler implements ArrayAccess, Iterator {
 	 * @param ispCP_ConfigHandler $config ispCP_ConfigHandler object
 	 * @return void
 	 */
-	public function replaceWith(IspCP_ConfigHandler $config) {
+	public function replaceWith(ispCP_ConfigHandler $config) {
 
 		foreach($config as $index => $value) {
 			$this->set($index, $value);
