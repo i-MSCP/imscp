@@ -406,7 +406,7 @@ function save_data_to_db() {
 	global $hp_backup, $hp_dns;
 	//global $tos;
 
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	$description = clean_input($_POST['hp_description']);
 	$price = clean_input($_POST['hp_price']);

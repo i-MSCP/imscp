@@ -115,7 +115,7 @@ function check_user_data() {
 	global $dmn_pt;
 	global $validation_err_msg;
 
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 	$cfg = IspCP_Registry::get('Config');
 
 	// personal template
@@ -249,7 +249,7 @@ function get_data_au1_page(&$tpl) {
 function get_hp_data_list(&$tpl, $reseller_id) {
 	global $dmn_chp;
 
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 	$cfg = IspCP_Registry::get('Config');
 
 	if (isset($cfg->HOSTING_PLANS_LEVEL)

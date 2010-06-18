@@ -463,7 +463,7 @@ function check_user_ip_data($reseller_id, $r_ips, $u_ips) {
  */
 function get_reseller_prop($reseller_id) {
 
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	$query = "
 		SELECT
@@ -510,7 +510,7 @@ function get_reseller_prop($reseller_id) {
 function get_servers_ips(&$tpl, $rip_lst) {
 
 	$cfg = IspCP_Registry::get('Config');
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	$query = "
 		SELECT
@@ -603,7 +603,7 @@ function get_servers_ips(&$tpl, $rip_lst) {
  */
 function have_reseller_ip_users($reseller_id, $ip, &$ip_num, &$ip_name) {
 
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	$query = "
 		SELECT
@@ -663,7 +663,7 @@ function update_reseller() {
 	$rdata =& get_data();
 
 	// Get database instance
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	/**
 	 * Update reseller additional data
@@ -746,7 +746,7 @@ function &get_data(&$tpl = false) {
 
 	if (empty($rdata) && $tpl !== false) {
 
-		$sql = Database::getInstance();
+		$sql = IspCP_Registry::get('Db');
 
 		// Update action
 		if (isset($_POST['uaction']) && $_POST['uaction'] == 'update_reseller') {

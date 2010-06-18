@@ -222,7 +222,7 @@ function add_user(&$tpl, &$sql) {
 function check_user_data() {
 
 	$cfg = IspCP_Registry::get('Config');
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	if (!validates_username($_POST['username'])) {
 		set_page_message(tr("Incorrect username length or syntax!"));

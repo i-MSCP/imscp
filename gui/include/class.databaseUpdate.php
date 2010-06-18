@@ -666,7 +666,7 @@ class databaseUpdate extends ispcpUpdate {
 
 		$sqlUpd = array();
 
-		$sql = Database::getInstance();
+		$sql = IspCP_Registry::get('Db');
 
 		$query	= "
 			SELECT
@@ -802,7 +802,7 @@ class databaseUpdate extends ispcpUpdate {
 
 		$sqlUpd = array();
 
-		$sql = Database::getInstance();
+		$sql = IspCP_Registry::get('Db');
 
 		$query	= "
 			SELECT
@@ -857,7 +857,7 @@ class databaseUpdate extends ispcpUpdate {
 
 		$sqlUpd = array();
 
-		$sql = Database::getInstance();
+		$sql = IspCP_Registry::get('Db');
 
 		$add = "\n\nYou have to click the following link to continue the domain creation process.\n\n{ACTIVATE_LINK}\n";
 
@@ -971,7 +971,7 @@ class databaseUpdate extends ispcpUpdate {
 	 */
 	 protected function _databaseUpdate_24() {
 
-		$sql = Database::getInstance();
+		$sql = IspCP_Registry::get('Db');
 		$sqlUpd = array();
 
 		/**
@@ -1269,7 +1269,7 @@ class databaseUpdate extends ispcpUpdate {
 	protected function _databaseUpdate_30() {
 
 		$sqlUpd = array();
-		$sql = Database::getInstance();
+		$sql = IspCP_Registry::get('Db');
 
 		$query = "
 			SELECT
@@ -1326,7 +1326,7 @@ class databaseUpdate extends ispcpUpdate {
 	protected function _databaseUpdate_31() {
 
 		$sqlUpd = array();
-		$sql = Database::getInstance();
+		$sql = IspCP_Registry::get('Db');
 
 		// Test added to prevent error if old version of
 		// self::database_databaseUpdate_29() was already applyed
@@ -1369,7 +1369,7 @@ class databaseUpdate extends ispcpUpdate {
 	protected function _databaseUpdate_32() {
 
 		$sqlUpd = array();
-		$sql = Database::getInstance();
+		$sql = IspCP_Registry::get('Db');
 
 		$query = "
 			SELECT 
@@ -1430,7 +1430,7 @@ class databaseUpdate extends ispcpUpdate {
 	protected function _databaseUpdate_33() {
 		$sqlUpd = array();
 		
-		$sql = Database::getInstance();
+		$sql = IspCP_Registry::get('Db');
 
         if (Config::getInstance()->exists('CRITICAL_UPDATE_REVISION')) {
             $critical_update = Config::getInstance()->get('CRITICAL_UPDATE_REVISION');
@@ -1535,7 +1535,7 @@ class databaseUpdate extends ispcpUpdate {
 			if ($critical_update < 2) {
 				$status = Config::getInstance()->get('ITEM_ADD_STATUS');
 				$statsgroup = Config::getInstance()->get('AWSTATS_GROUP_AUTH');
-				//$sql = Database::getInstance();
+				//$sql = IspCP_Registry::get('Db');
 		
 				$query = "
 					SELECT
@@ -1588,7 +1588,7 @@ class databaseUpdate extends ispcpUpdate {
 			 * 	to perform an engine request
 			 * @return		Type	$sqlUpd	Sql statements to be performed
 			 */
-			//$sql = Database::getInstance();
+			//$sql = IspCP_Registry::get('Db');
 			$interfaces = new networkCard();
 			$card = $interfaces->ip2NetworkCard(
 				Config::getInstance()->get('BASE_SERVER_IP')
@@ -1647,7 +1647,7 @@ class databaseUpdate extends ispcpUpdate {
 	 */
 	protected function _databaseUpdate_34() {
 		$sqlUpd = array();
-		$sql = Database::getInstance();
+		$sql = IspCP_Registry::get('Db');
 
 		$sqlUpd[] = "
 			DELETE IGNORE FROM
@@ -1674,7 +1674,7 @@ class databaseUpdate extends ispcpUpdate {
 	 */
 	protected function _databaseUpdate_35() {
 		$sqlUpd = array();
-		$sql = Database::getInstance();
+		$sql = IspCP_Registry::get('Db');
 
 		// For domain traffic
 		$query = "

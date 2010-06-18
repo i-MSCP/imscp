@@ -56,7 +56,7 @@ $tpl->assign(
 function generate_page(&$tpl) {
 	
 	$cfg = IspCP_Registry::get('Config');
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	$start_index = 0;
 	$rows_per_page = 15;
@@ -178,7 +178,7 @@ function generate_page(&$tpl) {
 }
 
 function clear_log() {
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'clear_log') {
 		$query = null;

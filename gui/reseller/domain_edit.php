@@ -158,7 +158,7 @@ function load_user_data($user_id, $domain_id) {
 	global $username;
 	global $dns_supp;
 	
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	$query = "
 		SELECT
@@ -199,7 +199,7 @@ function load_additional_data($user_id, $domain_id) {
 	global $cgi_supp, $username, $allowbackup;
 	global $dns_supp;
 	
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 	$cfg = IspCP_Registry::get('Config');
 	
 	// Get domain data

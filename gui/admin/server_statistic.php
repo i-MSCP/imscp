@@ -65,7 +65,7 @@ if (isset($_GET['month']) && isset($_GET['year'])) {
 }
 
 function get_server_trafic($from, $to) {
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	$query = "
 		SELECT
@@ -100,7 +100,7 @@ function get_server_trafic($from, $to) {
 function generate_page(&$tpl) {
 
 	global $month, $year;
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 
 	if ($month == date('m') && $year == date('Y')) {

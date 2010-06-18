@@ -111,7 +111,7 @@ unset_messages();
 // Begin function block
 
 function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 	$cfg = IspCP_Registry::get('Config');
 	
 	// Get domain data

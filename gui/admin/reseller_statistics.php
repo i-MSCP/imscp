@@ -75,7 +75,7 @@ function generate_page(&$tpl) {
 	global $month, $year;
 
 	$cfg = IspCP_Registry::get('Config');
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	$start_index = 0;
 

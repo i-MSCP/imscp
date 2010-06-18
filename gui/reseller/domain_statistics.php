@@ -74,7 +74,7 @@ if (!is_numeric($domain_id) || !is_numeric($month) || !is_numeric($year)) {
 }
 
 function get_domain_trafic($from, $to, $domain_id) {
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 	$reseller_id = $_SESSION['user_id'];
 	$query = "
 		SELECT
@@ -121,7 +121,7 @@ function generate_page(&$tpl, $domain_id) {
 	global $web_trf, $ftp_trf, $smtp_trf, $pop_trf;
 	global $sum_web, $sum_ftp, $sum_mail, $sum_pop;
 	
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 	$cfg = IspCP_Registry::get('Config');
 
 	$fdofmnth = mktime(0, 0, 0, $month, 1, $year);

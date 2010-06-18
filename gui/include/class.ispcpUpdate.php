@@ -83,7 +83,7 @@ abstract class ispcpUpdate {
 	 * @return int Last update that was applied
 	 */
 	protected function getCurrentVersion() {
-		$sql	= Database::getInstance();
+		$sql	= IspCP_Registry::get('Db');
 		$query	= "SELECT * FROM `config` WHERE `name` = '". $this->databaseVariableName ."'";
 		$rs		= $sql->Execute($query);
 
@@ -153,7 +153,7 @@ abstract class ispcpUpdate {
 	 */
 	public function executeUpdates() {
 		$engine_run_request = false;
-		$sql = Database::getInstance();
+		$sql = IspCP_Registry::get('Db');
 
 		while ($this->checkUpdateExists()) {
 

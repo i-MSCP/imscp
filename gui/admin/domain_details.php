@@ -109,7 +109,7 @@ unset_messages();
 function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
 	
 	$cfg = IspCP_Registry::get('Config');
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	// Get domain data
 	$query = "

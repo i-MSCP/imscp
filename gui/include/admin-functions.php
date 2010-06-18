@@ -72,7 +72,7 @@ function encode($in_str, $charset = 'UTF-8') {
 function gen_admin_mainmenu(&$tpl, $menu_file) {
 
 	$cfg = IspCP_Registry::get('Config');
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	$tpl->define_dynamic('menu', $menu_file);
 	$tpl->define_dynamic('isactive_support', 'menu');
@@ -187,7 +187,7 @@ function gen_admin_mainmenu(&$tpl, $menu_file) {
 function gen_admin_menu(&$tpl, $menu_file) {
 
 	$cfg = IspCP_Registry::get('Config');
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	$tpl->define_dynamic('menu', $menu_file);
 	$tpl->define_dynamic('custom_buttons', 'menu');
@@ -888,7 +888,7 @@ function get_admin_manage_users(&$tpl, &$sql) {
 
 function generate_reseller_props($reseller_id) {
 
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	$query = "
 		SELECT
@@ -939,7 +939,7 @@ function generate_reseller_props($reseller_id) {
 
 function generate_reseller_users_props($reseller_id) {
 
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	$rdmn_current = 0;
 	$rdmn_max = 0;
@@ -1112,7 +1112,7 @@ function generate_reseller_users_props($reseller_id) {
 function generate_user_props($user_id) {
 
 	$cfg = IspCP_Registry::get('Config');
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	$query = "
 		SELECT
@@ -1208,7 +1208,7 @@ function generate_user_props($user_id) {
  */
 function records_count($table, $where, $value) {
 
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	if ($where != '') {
 		if ($value != '') {
@@ -1253,7 +1253,7 @@ function records_count($table, $where, $value) {
  */
 function records_rlike_count($field, $table, $where, $value, $a, $b) {
 
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	if ($where != '') {
 		$query = "
@@ -1290,7 +1290,7 @@ function records_rlike_count($field, $table, $where, $value, $a, $b) {
 function sub_records_count($field, $table, $where, $value, $subfield, $subtable,
 	$subwhere, $subgroupname) {
 
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	if ($where != '') {
 		$query = "
@@ -1374,7 +1374,7 @@ function sub_records_count($field, $table, $where, $value, $subfield, $subtable,
 function generate_user_traffic($user_id) {
 
 	global $crnt_month, $crnt_year;
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	$from_timestamp = mktime(0, 0, 0, $crnt_month, 1, $crnt_year);
 
@@ -1476,7 +1476,7 @@ function make_usage_vals($current, $max) {
 function sub_records_rlike_count($field, $table, $where, $value, $subfield,
 	$subtable, $subwhere, $a, $b) {
 
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	if ($where != '') {
 		$query = "
@@ -1576,7 +1576,7 @@ function gen_select_lists(&$tpl, $user_month, $user_year) {
 
 function get_user_name($user_id) {
 
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	$query = "
 		SELECT
@@ -1596,7 +1596,7 @@ function get_user_name($user_id) {
 function get_logo($user_id) {
 
 	$cfg = IspCP_Registry::get('Config');
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	// check which logo we should return:
 	$query = "
@@ -1638,7 +1638,7 @@ function get_own_logo($user_id) {
 function get_admin_logo($user_id) {
 
 	$cfg = IspCP_Registry::get('Config');
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	$query = "
 		SELECT
@@ -1678,7 +1678,7 @@ function write_log($msg, $level = E_USER_WARNING) {
 
 	global $send_log_to;
 	$cfg = IspCP_Registry::get('Config');
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	if (isset($_SERVER['REMOTE_ADDR'])) {
 		$client_ip = $_SERVER['REMOTE_ADDR'];
@@ -1831,7 +1831,7 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname,
 
 function update_reseller_props($reseller_id, $props) {
 
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	if ($props == '') {
 		return;
@@ -2361,7 +2361,7 @@ function gen_admin_domain_search_options(&$tpl, $search_for, $search_common,
 function delete_domain($domain_id, $goto, $breseller=false) {
 
 	$cfg = IspCP_Registry::get('Config');
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	// Get uid and gid of domain user
 	$query = "
@@ -2627,7 +2627,7 @@ function delete_domain($domain_id, $goto, $breseller=false) {
 
 function remove_users_common_properties($id_user) {
 
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	$query = "
 		DELETE FROM

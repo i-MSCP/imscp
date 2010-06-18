@@ -85,7 +85,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_pass') {
 }
 
 function check_udata($id, $pass) {
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	$query = "
 		SELECT

@@ -392,7 +392,7 @@ function save_data_to_db(&$tpl, $admin_id) {
 	global $hp_backup, $hp_dns;
 	global $tos;
 
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 	$err_msg = '';
 
 	$query = "SELECT `id` FROM `hosting_plans` WHERE `name` = ? AND `reseller_id` = ?";

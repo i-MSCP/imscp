@@ -78,7 +78,7 @@ $tpl->assign(
 );
 
 function generate_page(&$tpl, $reseller_id, $reseller_name) {
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 	$cfg = IspCP_Registry::get('Config');
 
 	$rows_per_page = (int)($cfg->DOMAIN_ROWS_PER_PAGE / 2);

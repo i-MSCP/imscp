@@ -36,7 +36,7 @@ check_login(__FILE__);
 
 if (isset($_GET['export_lang']) && $_GET['export_lang'] !== '') {
 	
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 	
 	$language_table = $_GET['export_lang'];
 	

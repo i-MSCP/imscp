@@ -81,7 +81,7 @@ function gen_system_message(&$tpl, &$sql) {
 function get_update_infos(&$tpl) {
 
 	$cfg = IspCP_Registry::get('Config');
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	if (databaseUpdate::getInstance()->checkUpdateExists()) {
 		$tpl->assign(array('DATABASE_UPDATE' => '<a href="database_update.php" class="link">' . tr('A database update is available') . '</a>'));

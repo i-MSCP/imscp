@@ -122,7 +122,7 @@ function gen_disk_usage(&$tpl, $usage, $max_usage, $bars_max) {
 function generate_page_data(&$tpl, $reseller_id, $reseller_name) {
 	global $crnt_month, $crnt_year;
 	
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 	
 	$crnt_month = date("m");
 	$crnt_year = date("Y");
@@ -272,7 +272,7 @@ function generate_page_data(&$tpl, $reseller_id, $reseller_name) {
 }
 
 function gen_messages_table(&$tpl, $admin_id) {
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	$query = "
 		SELECT

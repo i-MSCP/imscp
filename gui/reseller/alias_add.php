@@ -136,7 +136,7 @@ function init_empty_data() {
  */
 function gen_al_page(&$tpl, $reseller_id) {
 	global $cr_user_id, $alias_name, $domain_ip, $forward, $forward_prefix, $mount_point;
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 	$cfg = IspCP_Registry::get('Config');
 
 	list($udmn_current, $udmn_max, $udmn_uf,
@@ -342,7 +342,7 @@ function add_domain_alias(&$sql, &$err_al) {
 
 function gen_users_list(&$tpl, $reseller_id) {
 	global $cr_user_id;
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 	$cfg = IspCP_Registry::get('Config');
 
 	$query = "

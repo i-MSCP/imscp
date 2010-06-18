@@ -126,7 +126,7 @@ function update_logo() {
 
 function update_user_logo($file_name, $user_id) {
 
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	$query = "
 		UPDATE

@@ -208,7 +208,7 @@ function init_empty_data() {
  * Show data fields
  */
 function gen_al_page(&$tpl, $reseller_id) {
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	$dmn_id = $_SESSION['dmn_id'];
 

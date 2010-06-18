@@ -15,7 +15,27 @@ ispCP ω 1.0.6 ChangeLog
 			(Not Yet Integrated)
 		* Added a new IspCP_Bootstrap class for ispCP boot process
 			(Not Yet Integrated)
+		* Added documentation for the ispCP_Database class
+		* Added include/ispcp-loader.php file for the autoload_class() funct.
+		* Added the environment.php file to reflect correctly the purpose of the
+			work
 		* Fixed #2392: Various problems with hosting_plan_edit.php as admin
+		* Integrated news classes:
+			- ispCP_Bootstrap class for the ispCP boot process
+			- ispCP_Initializer class for the ispCP initialization process
+		* Moved class.database.php file to ispCP/Database.php
+		* Naming convention:
+			- Moved `include/ispCP` directory to `include/ispCP` according the
+				new naming convention
+			- Changed all classes names prefix to `ispCP_` for the classes that
+				live under the include/ispCP directory
+			- Refactored all files (Usage of the ispCP_registry class to get
+				shared objects)
+		* Removed the include/config.php file (Functions moved to the
+			ispcp-functions.php file)
+		* Refactored the include/ispcp-lib.php file
+		* Refactored the include/sql.php file according the new
+			ispCP_initialization class
 	- TRANSLATION:
 		* Added specific keyword `/*tr*/` into the makemsgs script to be able
 			to parse localization before that the php i18n support was loaded

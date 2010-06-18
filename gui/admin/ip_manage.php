@@ -215,7 +215,7 @@ function check_user_data() {
 
 function IP_exists() {
 
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	global $ip_number;
 

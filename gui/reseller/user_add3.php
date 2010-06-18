@@ -252,7 +252,7 @@ function add_user_data($reseller_id) {
 	global $fax, $inpass, $domain_ip;
 	global $dns, $backup;
 
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 	$cfg = IspCP_Registry::get('Config');
 
 	// Let's get Desired Hosting Plan Data;

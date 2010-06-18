@@ -180,7 +180,7 @@ function load_user_data_page($user_id) {
 	global $street_two, $mail, $phone;
 	global $fax;
 
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	$reseller_id = $_SESSION['user_id'];
 
@@ -286,7 +286,7 @@ function update_data_in_db($hpid) {
 	global $fax, $inpass, $domain_ip;
 	global $admin_login;
 	
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 	$cfg = IspCP_Registry::get('Config');
 
 	$reseller_id = $_SESSION['user_id'];

@@ -288,7 +288,7 @@ if ($cfg->PREVENT_EXTERNAL_LOGIN_CLIENT) {
 }
 
 switch ($cfg->LOG_LEVEL) {
-	case E_USER_OFF:
+	case false:
 		$tpl->assign('LOG_LEVEL_SELECTED_OFF', $html_selected);
 		$tpl->assign('LOG_LEVEL_SELECTED_NOTICE', '');
 		$tpl->assign('LOG_LEVEL_SELECTED_WARNING', '');

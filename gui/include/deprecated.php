@@ -42,7 +42,7 @@
  * @deprecated since 1.0.6
  */
 function setConfig_Value($name, $value) {
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	$query = "SELECT `name` FROM `config` WHERE `name`= ?";
 

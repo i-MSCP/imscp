@@ -125,7 +125,7 @@ function gen_hp_message(&$tpl) {
 function gen_hp_table(&$tpl, $reseller_id) {
 	global $external_event;
 
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 	$cfg = IspCP_Registry::get('Config');
 
 	if (isset($cfg->HOSTING_PLANS_LEVEL)

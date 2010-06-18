@@ -30,7 +30,7 @@
 
 function get_email_tpl_data($admin_id, $tpl_name) {
 
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	$query = "
 		SELECT
@@ -89,7 +89,7 @@ function get_email_tpl_data($admin_id, $tpl_name) {
 
 function set_email_tpl_data($admin_id, $tpl_name, $data) {
 
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	$query = "
 		SELECT

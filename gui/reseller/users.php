@@ -133,7 +133,7 @@ unset_messages();
 function generate_users_list(&$tpl, $admin_id) {
 	global $externel_event;
 
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 	$cfg = IspCP_Registry::get('Config');
 	
 	$start_index = 0;

@@ -83,7 +83,7 @@ function gen_page_post_data(&$tpl, $current_month, $current_year) {
 
 function get_domain_trafic($from, $to, $domain_id) {
 
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	$query = "
 		SELECT

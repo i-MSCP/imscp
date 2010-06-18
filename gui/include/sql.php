@@ -28,6 +28,7 @@
  * isp Control Panel. All Rights Reserved.
  */
 
+/*
 // Get an Database instance
 @$sql = Database::connect(
 	Config::getInstance()->get('DATABASE_USER'),
@@ -41,6 +42,10 @@
 if (Config::getInstance()->exists('DATABASE_UTF8') && Config::getInstance()->get('DATABASE_UTF8') == 'yes') {
 	@$sql->Execute("SET NAMES 'utf8'");
 }
+
+*/
+
+$sql = IspCP_Registry::get('Db');
 
 /**
  * @todo Please describe this function!
@@ -95,7 +100,7 @@ function exec_query(&$sql, $query, $data = array(), $failDie = true) {
  * @todo document this function
  */
 function quoteIdentifier($identifier) {
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	$identifier = str_replace($sql->nameQuote, '\\' . $sql->nameQuote, $identifier);
 

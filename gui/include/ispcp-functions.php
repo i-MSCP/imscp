@@ -127,7 +127,7 @@ function send_request() {
 
 function update_expire_date ( $user_id, $domain_new_expire ) {
 
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	$query = "
 		UPDATE
@@ -150,7 +150,7 @@ function update_expire_date ( $user_id, $domain_new_expire ) {
 
 function update_user_props($user_id, $props) {
 
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	list(
 		$sub_current,
@@ -515,4 +515,75 @@ function is_serialized($data) {
 	}
 
 	return false;
+}
+
+/**
+ * @todo use of @ is problematic, instead use try-catch
+ */
+function decrypt_db_password($db_pass) {
+	global $ispcp_db_pass_key, $ispcp_db_pass_iv;
+
+	if ($db_pass == '') {
+		return '';
+	}
+
+	if (extension_loaded('mcrypt')) {
+		$text = @base64_decode($db_pass . "\n");
+		// Open the cipher
+		$td = @mcrypt_module_open('blowfish', '', 'cbc', '');
+		// Create key
+		$key = $ispcp_db_pass_key;
+		// Create the IV and determine the keysize length
+		$iv = $ispcp_db_pass_iv;
+
+		// Initialize encryption
+		@mcrypt_generic_init($td, $key, $iv);
+		// Decrypt encrypted string
+		$decrypted = @mdecrypt_generic ($td, $text);
+		@mcrypt_module_close($td);
+
+		// Show string
+		return trim($decrypted);
+	} else {
+		system_message("ERROR: The php-extension 'mcrypt' not loaded!");
+		die(tr("ERROR: PHP extension 'mcrypt' not loaded!"));
+	}
+}
+
+/**
+ * @todo use of @ is problematic, instead use try-catch
+ */
+function encrypt_db_password($db_pass) {
+	global $ispcp_db_pass_key, $ispcp_db_pass_iv;
+
+	if (extension_loaded('mcrypt')) {
+		$td = @mcrypt_module_open(MCRYPT_BLOWFISH, '', 'cbc', '');
+		// Create key
+		$key = $ispcp_db_pass_key;
+		// Create the IV and determine the keysize length
+		$iv = $ispcp_db_pass_iv;
+
+		// compatibility with used perl pads
+		$block_size = @mcrypt_enc_get_block_size($td);
+		$strlen = strlen($db_pass);
+
+		$pads = $block_size-$strlen % $block_size;
+
+		$db_pass .= str_repeat(' ', $pads);
+
+		// Initialize encryption
+		@mcrypt_generic_init($td, $key, $iv);
+		// Encrypt string
+		$encrypted = @mcrypt_generic ($td, $db_pass);
+		@mcrypt_generic_deinit($td);
+		@mcrypt_module_close($td);
+
+		$text = @base64_encode("$encrypted");
+
+		// Show encrypted string
+		return trim($text);
+	} else {
+		system_message("ERROR: The php-extension 'mcrypt' not loaded!");
+		die(tr("ERROR: PHP extension 'mcrypt' not loaded!"));
+	}
 }

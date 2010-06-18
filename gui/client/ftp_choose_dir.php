@@ -45,7 +45,7 @@ $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/ftp_choose_dir.tpl')
 
 function gen_directories(&$tpl) {
 
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 	// Initialize variables
 	$path = isset($_GET['cur_dir']) ? $_GET['cur_dir'] : '';
 	$domain = $_SESSION['user_logged'];

@@ -46,7 +46,7 @@ function init_login() {
 function register_user($uname, $upass) {
 
 	$cfg = IspCP_Registry::get('Config');
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	$backButtonDestination = $cfg->BASE_SERVER_VHOST_PREFIX .
 		$cfg->BASE_SERVER_VHOST;
@@ -155,7 +155,7 @@ function register_user($uname, $upass) {
 function check_user_login() {
 
 	$cfg = IspCP_Registry::get('Config');
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	$sess_id = session_id();
 	// kill timed out sessions
@@ -314,7 +314,7 @@ function check_login($fName = null, $preventExternalLogin = true) {
 
 function change_user_interface($from_id, $to_id) {
 
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	$index = null;
 
@@ -457,7 +457,7 @@ function change_user_interface($from_id, $to_id) {
 
 function unset_user_login_data($ignorePreserve = false) {
 
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	if (isset($_SESSION['user_logged'])) {
 

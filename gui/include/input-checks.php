@@ -826,7 +826,7 @@ function is_subdir_of($base_domain, $subdomain, $realPath = true) {
  * @return numeric The id of the admin who owns the id $id of $type type
  */
 function who_owns_this($id, $type = 'dmn', $forcefinal = false) {
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	$who = null;
 	// Fix $type according to type or by alias

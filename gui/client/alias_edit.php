@@ -122,7 +122,7 @@ unset_messages();
 function gen_editalias_page(&$tpl, $edit_id) {
 
 	$cfg = IspCP_Registry::get('Config');
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	// Get data from sql
 	list($domain_id) = get_domain_default_props($sql, $_SESSION['user_id']);
@@ -194,7 +194,7 @@ function gen_editalias_page(&$tpl, $edit_id) {
 function check_fwd_data(&$tpl, $alias_id) {
 
 	$cfg = IspCP_Registry::get('Config');
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	$forward_url = strtolower(clean_input($_POST['forward']));
 	$status = $_POST['status'];

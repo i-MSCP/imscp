@@ -43,7 +43,7 @@ function validate_order_key($order_id, $key) {
 	$cfg = IspCP_Registry::get('Config');
 
 	$result = false;
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 	$query = "
 		SELECT
 			*
@@ -73,7 +73,7 @@ function validate_order_key($order_id, $key) {
 function confirm_order($order_id) {
 
 	$cfg = IspCP_Registry::get('Config');
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	$query = "
 		SELECT

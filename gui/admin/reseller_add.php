@@ -397,7 +397,7 @@ function check_user_data() {
 	global $reseller_ips;
 
 	$cfg = IspCP_Registry::get('Config');
-	$sql = Database::getInstance();
+	$sql = IspCP_Registry::get('Db');
 
 	$username = clean_input($_POST['username']);
 
