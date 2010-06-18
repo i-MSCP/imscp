@@ -32,7 +32,7 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = IspCP_Registry::get('Config');
+$cfg = ispCP_Registry::get('Config');
 
 $tpl = new pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/settings_layout.tpl');
@@ -56,7 +56,7 @@ if (get_own_logo($_SESSION['user_id']) !== $cfg->IPS_LOGO_PATH . '/isp_logo.gif'
 function save_layout() {
 	global $theme_color;
 	
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 	
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'save_layout') {
 
@@ -141,7 +141,7 @@ function update_logo() {
 
 
 function update_user_gui_props($file_name, $user_id) {
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 
 	$query = "
 		UPDATE

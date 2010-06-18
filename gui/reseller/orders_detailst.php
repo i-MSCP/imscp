@@ -33,7 +33,7 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = IspCP_Registry::get('Config');
+$cfg = ispCP_Registry::get('Config');
 
 $tpl = new pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/orders_detailst.tpl');
@@ -55,7 +55,7 @@ $tpl->assign(
  */
 
 function gen_order_details(&$tpl, &$sql, $user_id, $order_id) {
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 	
 	$query = "
 		SELECT

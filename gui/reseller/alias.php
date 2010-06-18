@@ -32,7 +32,7 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = IspCP_Registry::get('Config');
+$cfg = ispCP_Registry::get('Config');
 
 $tpl = new pTemplate();
 
@@ -103,8 +103,8 @@ unset_messages();
  * @todo Use prepared statements (min. with placeholders like ":search_for")
  */
 function generate_als_list(&$tpl, $reseller_id, &$als_err) {
-	$sql = IspCP_Registry::get('Db');
-	$cfg = IspCP_Registry::get('Config');
+	$sql = ispCP_Registry::get('Db');
+	$cfg = ispCP_Registry::get('Config');
 
 	list($udmn_current, $udmn_max, $udmn_uf,
 		$usub_current, $usub_max, $usub_uf,

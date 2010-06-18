@@ -32,7 +32,7 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = IspCP_Registry::get('Config');
+$cfg = ispCP_Registry::get('Config');
 
 $tpl = new pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/user_add3.tpl');
@@ -178,7 +178,7 @@ function gen_user_add3_page(&$tpl) {
 	global $street_two, $mail, $phone;
 	global $fax;
 	
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	$dmn_user_name = decode_idna($dmn_user_name);
 	// Fill in the fields
@@ -252,8 +252,8 @@ function add_user_data($reseller_id) {
 	global $fax, $inpass, $domain_ip;
 	global $dns, $backup;
 
-	$sql = IspCP_Registry::get('Db');
-	$cfg = IspCP_Registry::get('Config');
+	$sql = ispCP_Registry::get('Db');
+	$cfg = ispCP_Registry::get('Config');
 
 	// Let's get Desired Hosting Plan Data;
 	$err_msg = '';

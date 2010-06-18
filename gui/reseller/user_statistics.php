@@ -32,7 +32,7 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = IspCP_Registry::get('Config');
+$cfg = ispCP_Registry::get('Config');
 
 $tpl = new pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/reseller_user_statistics.tpl');
@@ -78,8 +78,8 @@ $tpl->assign(
 );
 
 function generate_page(&$tpl, $reseller_id, $reseller_name) {
-	$sql = IspCP_Registry::get('Db');
-	$cfg = IspCP_Registry::get('Config');
+	$sql = ispCP_Registry::get('Db');
+	$cfg = ispCP_Registry::get('Config');
 
 	$rows_per_page = (int)($cfg->DOMAIN_ROWS_PER_PAGE / 2);
 

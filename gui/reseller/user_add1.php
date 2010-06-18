@@ -32,7 +32,7 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = IspCP_Registry::get('Config');
+$cfg = ispCP_Registry::get('Config');
 
 $tpl = new pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/user_add1.tpl');
@@ -115,8 +115,8 @@ function check_user_data() {
 	global $dmn_pt;
 	global $validation_err_msg;
 
-	$sql = IspCP_Registry::get('Db');
-	$cfg = IspCP_Registry::get('Config');
+	$sql = ispCP_Registry::get('Db');
+	$cfg = ispCP_Registry::get('Config');
 
 	// personal template
 	$even_txt = '';
@@ -196,7 +196,7 @@ function check_user_data() {
  * Show empty page
  */
 function get_empty_au1_page(&$tpl) {
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 	
 	$tpl->assign(
 		array(
@@ -225,7 +225,7 @@ function get_data_au1_page(&$tpl) {
 	global $dmn_chp; // choosed hosting plan;
 	global $dmn_pt; // personal template
 	
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	$tpl->assign(
 		array(
@@ -249,8 +249,8 @@ function get_data_au1_page(&$tpl) {
 function get_hp_data_list(&$tpl, $reseller_id) {
 	global $dmn_chp;
 
-	$sql = IspCP_Registry::get('Db');
-	$cfg = IspCP_Registry::get('Config');
+	$sql = ispCP_Registry::get('Db');
+	$cfg = ispCP_Registry::get('Config');
 
 	if (isset($cfg->HOSTING_PLANS_LEVEL)
 		&& $cfg->HOSTING_PLANS_LEVEL === 'admin') {

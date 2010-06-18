@@ -30,7 +30,7 @@
 
 require '../include/ispcp-lib.php';
 
-$cfg = IspCP_Registry::get('Config');
+$cfg = ispCP_Registry::get('Config');
 
 check_login(__FILE__);
 
@@ -180,7 +180,7 @@ function load_user_data_page($user_id) {
 	global $street_two, $mail, $phone;
 	global $fax;
 
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 
 	$reseller_id = $_SESSION['user_id'];
 
@@ -239,7 +239,7 @@ function gen_edituser_page(&$tpl) {
 	global $street_two, $mail, $phone;
 	global $fax;
 	
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	if ($customer_id == NULL) {
 		$customer_id = '';
@@ -286,8 +286,8 @@ function update_data_in_db($hpid) {
 	global $fax, $inpass, $domain_ip;
 	global $admin_login;
 	
-	$sql = IspCP_Registry::get('Db');
-	$cfg = IspCP_Registry::get('Config');
+	$sql = ispCP_Registry::get('Db');
+	$cfg = ispCP_Registry::get('Config');
 
 	$reseller_id = $_SESSION['user_id'];
 

@@ -32,7 +32,7 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = IspCP_Registry::get('Config');
+$cfg = ispCP_Registry::get('Config');
 
 $tpl = new pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/hosting_plan_edit.tpl');
@@ -144,7 +144,7 @@ if ($cfg->DUMP_GUI_DEBUG) {
  * Restore form on any error
  */
 function restore_form(&$tpl, &$sql) {
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	$tpl->assign(
 		array(
@@ -184,7 +184,7 @@ function restore_form(&$tpl, &$sql) {
  * Generate load data from sql for requested hosting plan
  */
 function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 	
 	$_SESSION['hpid'] = $hpid;
 
@@ -455,7 +455,7 @@ function save_data_to_db() {
 	global $hp_backup, $hp_dns;
 //	global $tos;
 
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 
 	$err_msg = '';
 	$description = clean_input($_POST['hp_description']);
