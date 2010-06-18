@@ -33,7 +33,7 @@
  */
 require '../include/ispcp-lib.php';
 
-$cfg = IspCP_Registry::get('Config');
+$cfg = ispCP_Registry::get('Config');
 
 /*******************************************************************************
  * Functions
@@ -98,7 +98,7 @@ function get_clean_input_data() {
  */
 function check_data(&$errFields) {
 
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	// Get needed data
 	$rdata =& get_data();
@@ -463,7 +463,7 @@ function check_user_ip_data($reseller_id, $r_ips, $u_ips) {
  */
 function get_reseller_prop($reseller_id) {
 
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 
 	$query = "
 		SELECT
@@ -509,8 +509,8 @@ function get_reseller_prop($reseller_id) {
  */
 function get_servers_ips(&$tpl, $rip_lst) {
 
-	$cfg = IspCP_Registry::get('Config');
-	$sql = IspCP_Registry::get('Db');
+	$cfg = ispCP_Registry::get('Config');
+	$sql = ispCP_Registry::get('Db');
 
 	$query = "
 		SELECT
@@ -603,7 +603,7 @@ function get_servers_ips(&$tpl, $rip_lst) {
  */
 function have_reseller_ip_users($reseller_id, $ip, &$ip_num, &$ip_name) {
 
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 
 	$query = "
 		SELECT
@@ -663,7 +663,7 @@ function update_reseller() {
 	$rdata =& get_data();
 
 	// Get database instance
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 
 	/**
 	 * Update reseller additional data
@@ -746,7 +746,7 @@ function &get_data(&$tpl = false) {
 
 	if (empty($rdata) && $tpl !== false) {
 
-		$sql = IspCP_Registry::get('Db');
+		$sql = ispCP_Registry::get('Db');
 
 		// Update action
 		if (isset($_POST['uaction']) && $_POST['uaction'] == 'update_reseller') {

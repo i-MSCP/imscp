@@ -32,7 +32,7 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = IspCP_Registry::get('Config');
+$cfg = ispCP_Registry::get('Config');
 
 $tpl = new pTemplate();
 
@@ -57,7 +57,7 @@ $tpl->assign(
 
 function gen_ip_action($ip_id, $status) {
 	
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	if ($status == $cfg->ITEM_OK_STATUS) {
 		return array(tr('Remove IP'), 'ip_delete.php?delete_id=' . $ip_id);
@@ -68,7 +68,7 @@ function gen_ip_action($ip_id, $status) {
 
 function show_IPs(&$tpl, &$sql) {
 
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	$query = "
 		SELECT
@@ -127,7 +127,7 @@ function show_IPs(&$tpl, &$sql) {
 function add_ip(&$tpl, &$sql) {
 
 	global $ip_number, $domain, $alias, $ip_card;
-	$cfg = IspCP_Registry::get('Config');	
+	$cfg = ispCP_Registry::get('Config');	
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_ip') {
 		if (check_user_data()) {
@@ -215,7 +215,7 @@ function check_user_data() {
 
 function IP_exists() {
 
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 
 	global $ip_number;
 

@@ -32,7 +32,7 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = IspCP_Registry::get('Config');
+$cfg = ispCP_Registry::get('Config');
 
 $tpl = new pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/server_statistic_day.tpl');
@@ -63,7 +63,7 @@ if (isset($_GET['month']) && isset($_GET['year']) && isset($_GET['day'])
 }
 
 function generate_page(&$tpl) {
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 	global $month, $year, $day;
 
 	$all[0] = 0;

@@ -34,7 +34,7 @@ require '../include/ispcp-lib.php';
 // Check for login
 check_login(__FILE__);
 
-$cfg = IspCP_Registry::get('Config');
+$cfg = ispCP_Registry::get('Config');
 
 $tpl = new pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/multilanguage.tpl');
@@ -56,7 +56,7 @@ $tpl->assign(
 
 function install_lang() {
 
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] == 'upload_language') {
 		// add lang pack now !
@@ -198,8 +198,8 @@ function install_lang() {
  */
 function show_lang(&$tpl) {
 
-	$cfg = IspCP_Registry::get('Config');
-	$sql = IspCP_Registry::get('Db');
+	$cfg = ispCP_Registry::get('Config');
+	$sql = ispCP_Registry::get('Db');
 
 	$tables = $sql->MetaTables();
 

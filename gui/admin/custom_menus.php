@@ -151,7 +151,7 @@ function delete_button(&$sql) {
 
 function edit_button(&$tpl, &$sql) {
 	
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 	
 	if ($_GET['edit_id'] === '' || !is_numeric($_GET['edit_id'])) {
 		set_page_message(tr('Missing or incorrect data input!'));
@@ -280,7 +280,7 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = IspCP_Registry::get('Config');
+$cfg = ispCP_Registry::get('Config');
 
 $tpl = new pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/custom_menus.tpl');

@@ -32,7 +32,7 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = IspCP_Registry::get('Config');
+$cfg = ispCP_Registry::get('Config');
 
 $tpl = new pTemplate();
 
@@ -57,7 +57,7 @@ $tpl->assign(
  */
 function get_server_ip(&$tpl, &$sql) {
 
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	$query = "
 		SELECT
@@ -140,7 +140,7 @@ function get_server_ip(&$tpl, &$sql) {
 function add_reseller(&$tpl, &$sql) {
 
 	global $reseller_ips;
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_reseller') {
 		if (check_user_data()) {
@@ -396,8 +396,8 @@ function check_user_data() {
 
 	global $reseller_ips;
 
-	$cfg = IspCP_Registry::get('Config');
-	$sql = IspCP_Registry::get('Db');
+	$cfg = ispCP_Registry::get('Config');
+	$sql = ispCP_Registry::get('Db');
 
 	$username = clean_input($_POST['username']);
 

@@ -32,11 +32,11 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = IspCP_Registry::get('Config');
+$cfg = ispCP_Registry::get('Config');
 
 function count_requests(&$sql, $id_name, $table) {
 
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	$query = "SELECT `$id_name` FROM `$table` WHERE `$id_name` NOT IN (?, ?, ?)";
 	$rs = exec_query($sql, $query, array($cfg->ITEM_OK_STATUS, $cfg->ITEM_DISABLED_STATUS, $cfg->ITEM_ORDERED_STATUS));
@@ -46,7 +46,7 @@ function count_requests(&$sql, $id_name, $table) {
 
 function get_error_domains(&$sql, &$tpl) {
 
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	$ok_status = $cfg->ITEM_OK_STATUS;
 	$disabled_status = $cfg->ITEM_DISABLED_STATUS;
@@ -96,7 +96,7 @@ function get_error_domains(&$sql, &$tpl) {
 
 function get_error_aliases(&$sql, &$tpl) {
 
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	$ok_status = $cfg->ITEM_OK_STATUS;
 	$disabled_status = $cfg->ITEM_DISABLED_STATUS;
@@ -169,7 +169,7 @@ function get_error_aliases(&$sql, &$tpl) {
 
 function get_error_subdomains(&$sql, &$tpl) {
 
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	$ok_status = $cfg->ITEM_OK_STATUS;
 	$disabled_status = $cfg->ITEM_DISABLED_STATUS;
@@ -236,7 +236,7 @@ function get_error_subdomains(&$sql, &$tpl) {
 
 function get_error_alias_subdomains(&$sql, &$tpl) {
 
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	$ok_status = $cfg->ITEM_OK_STATUS;
 	$disabled_status = $cfg->ITEM_DISABLED_STATUS;
@@ -303,7 +303,7 @@ function get_error_alias_subdomains(&$sql, &$tpl) {
 
 function get_error_mails(&$sql, &$tpl) {
 
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	$ok_status = $cfg->ITEM_OK_STATUS;
 	$disabled_status = $cfg->ITEM_DISABLED_STATUS;

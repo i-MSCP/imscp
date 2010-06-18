@@ -32,7 +32,7 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = IspCP_Registry::get('Config');
+$cfg = ispCP_Registry::get('Config');
 
 if (!$cfg->ISPCP_SUPPORT_SYSTEM) {
 	user_goto('index.php');
@@ -47,7 +47,7 @@ $tpl->define_dynamic('tickets_item', 'tickets_list');
 // page functions.
 function gen_tickets_list(&$tpl, &$sql, &$ticket_id, $screenwidth) {
 
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	$query = "
 		SELECT
@@ -108,7 +108,7 @@ function gen_tickets_list(&$tpl, &$sql, &$ticket_id, $screenwidth) {
 
 function get_tickets_replys(&$tpl, &$sql, &$ticket_id, $screenwidth) {
 
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	$query = "
 		SELECT
