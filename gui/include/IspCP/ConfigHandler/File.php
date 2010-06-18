@@ -39,7 +39,7 @@ require_once  INCLUDEPATH . '/IspCP/ConfigHandler.php';
  * equal sign.
  *
  * @since 1.0.6
- * @version 1.0.1
+ * @version 1.0.2
  * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
  * @author laurent declercq <laurent.declercq@ispcp.net>
  * @see IspCP_ConfigHandler
@@ -51,7 +51,7 @@ class ispCP_ConfigHandler_File extends IspCP_ConfigHandler {
 	 *
 	 * @var string Configuration file path
 	 */
-	protected $_path_file;
+	protected $_pathFile;
 
 	/**
 	 * Loads all configuration parameters from a flat file
@@ -59,27 +59,27 @@ class ispCP_ConfigHandler_File extends IspCP_ConfigHandler {
 	 * Note: default file path is set to: {/usr/local}/etc/ispcp/ispcp.conf
 	 * depending of the used distribution.
 	 *
-	 * @param string $path_file Configuration file path
+	 * @param string $pathFile Configuration file path
 	 * @return void
 	 * @todo Should be more generic (path file shouldn't be hardcoded here)
 	 */
-	public function __construct($path_file = null) {
+	public function __construct($pathFile = null) {
 
-		if(is_null($path_file)) {
+		if(is_null($pathFile)) {
 			switch (PHP_OS) {
 				case 'FreeBSD':
 				case 'OpenBSD':
 				case 'NetBSD':
-					$path_file = '/usr/local/etc/ispcp/ispcp.conf';
+					$pathFile = '/usr/local/etc/ispcp/ispcp.conf';
 					break;
 				default: 
-					$path_file = '/etc/ispcp/ispcp.conf';
+					$pathFile = '/etc/ispcp/ispcp.conf';
 			}
 		}
 
-		$this->_path_file = $path_file;
+		$this->_pathFile = $pathFile;
 
-		parent::__construct($this->parseFile());
+		parent::__construct($this->_parseFile());
 	}
 
 	/**
@@ -88,14 +88,15 @@ class ispCP_ConfigHandler_File extends IspCP_ConfigHandler {
 	 *
 	 * @throws Exception
 	 * @return Array that contain all Configuration parameters
+	 * @todo Don't use '@' error operator
 	 */
-	protected function parseFile() {
+	protected function _parseFile() {
 
-		$fd = @file_get_contents($this->_path_file);
+		$fd = @file_get_contents($this->_pathFile);
 
 		if ($fd === false) {
 			throw new Exception(
-				"Unable to open the configuration file `{$this->_path_file}`!"
+				"Unable to open the configuration file `{$this->_pathFile}`!"
 			);
 		}
 

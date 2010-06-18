@@ -195,7 +195,7 @@ function add_update_services($mode) {
 	// Updates one or more services ports
 	} else {
 		// Reset counter of update queries
-		$db_cfg->reset_queries_counter('update');
+		$db_cfg->resetQueriesCounter('update');
 
 		foreach($_POST['name'] as $index => $name) {
 
@@ -226,7 +226,7 @@ function add_update_services($mode) {
 	// Prepares message for page on update
 	} else {
 		// gets the number of queries that were been executed
-		$updt_count = $db_cfg->count_queries('update');
+		$updt_count = $db_cfg->countQueries('update');
 
 		// An Update was been made in the database ?
 		if($updt_count > 0) {

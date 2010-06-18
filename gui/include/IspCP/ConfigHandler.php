@@ -29,7 +29,7 @@
  * This class provides an interface to manage easily a set of configuration
  * parameters from an array.
  *
- * This class implements the ArrayAccess and Iterator SPL interfaces to improve
+ * This class implements the ArrayAccess and Iterator interfaces to improve
  * the access to the configuration parameters.
  *
  * With this class, you can access to your data like:
@@ -43,7 +43,7 @@
  * object of this class.
  *
  * @since 1.0.6
- * @version 1.0.1
+ * @version 1.0.2
  * @author Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
  */
 class IspCP_ConfigHandler implements ArrayAccess, Iterator {
@@ -51,7 +51,7 @@ class IspCP_ConfigHandler implements ArrayAccess, Iterator {
 	/**
 	 * Array that contain all configuration parameters
 	 *
-	 * @var Configuration parameters
+	 * @var Array Configuration parameters
 	 */
 	protected $_parameters = array();
 
@@ -78,7 +78,7 @@ class IspCP_ConfigHandler implements ArrayAccess, Iterator {
 	}
 
 	/**
-	 * Allow access as object propertie
+	 * Allow access as object properties
 	 *
 	 * @see set()
 	 * @param string $name Configuration parameter key name
@@ -175,12 +175,12 @@ class IspCP_ConfigHandler implements ArrayAccess, Iterator {
 	 *
 	 * This method is not recursive.
 	 *
-	 * @param IspCP_ConfigHandler $object IspCP_ConfigHandler object
+	 * @param IspCP_ConfigHandler $config IspCP_ConfigHandler object
 	 * @return void
 	 */
-	public function replace_with(IspCP_ConfigHandler &$object) {
+	public function replaceWith(IspCP_ConfigHandler $config) {
 
-		foreach($object as $index => $value) {
+		foreach($config as $index => $value) {
 			$this->set($index, $value);
 		}
 	}

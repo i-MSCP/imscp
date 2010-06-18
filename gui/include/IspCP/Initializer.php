@@ -37,7 +37,7 @@
  *
  * @author Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
  * @since 1.0.6
- * @version 1.0.0
+ * @version 1.0.1
  */
 class IspCP_Initializer {
 
@@ -58,12 +58,12 @@ class IspCP_Initializer {
 	/**
 	 * Runs the initializer
 	 *
-	 * By default, this will invoke the {@link process_all} methods, which
+	 * By default, this will invoke the {@link _processAll} methods, which
 	 * simply executes all of the initialization methods. Alternately, you can
 	 * specify explicitly which initialization methods you want:
 	 *
 	 * <samp>
-	 *	IspCP_Initializer::run('set_include_path')
+	 *	IspCP_Initializer::run('_setIncludePath')
 	 * <samp>
 	 *
 	 * This is useful if you only want the include_path path initialized,
@@ -74,18 +74,18 @@ class IspCP_Initializer {
 	 *
 	 * @throw Exception
 	 * @param string|IspCP_ConfigHandler $command Initializer method to be
-	 * executed or an IspCP_ConfigHandler object
+	 *	executed or an IspCP_ConfigHandler object
 	 * @param IspCP_ConfigHandler $config Optional IspCP_ConfigHandler object
 	 * @return The IspCP_Initializer instance
 	 */
-	public static function run($command = 'process_all',
+	public static function run($command = '_processAll',
 		IspCP_ConfigHandler $config = null) {
 
 		if(!self::$_initialized) {
 
 			if($command instanceof IspCP_ConfigHandler) {
 				$config = $command;
-				$command = 'process_all';
+				$command = '_processAll';
 			}
 
 			$initializer = new self(
@@ -123,39 +123,39 @@ class IspCP_Initializer {
 	 *
 	 * @return void
 	 */
-	 protected function process_all() {
+	 protected function _processAll() {
 
 		// Check php version and availability of the Php Standard Library
-		$this->check_php();
+		$this->_checkPhp();
 
 		// Initialize output buffering
-		$this->initialize_output_buffering();
+		$this->_initializeOutputBuffering();
 
 		// Include path
-		$this->set_include_path();
+		$this->_setIncludePath();
 
 		// Create or restore the session
-		$this->initialize_session();
+		$this->_initializeSession();
 
 		// Establish the connection to the database
-		$this->initialize_database();
+		$this->_initializeDatabase();
 
 		// Initialize logger
-		$this->initialize_logger();
+		$this->_initializeLogger();
 
 		// Load all the configuration parameters from the database
-		$this->process_configuration();
+		$this->_processConfiguration();
 
 		// Se encodage
-		$this->set_encodage();
+		$this->_setEncoding();
 
 		// Set timezone
-		$this->set_timezone();
+		$this->_setTimezone();
 
-		$this->initialize_i18n();
+		$this->_initializeI18n();
 
 		// Not yet fully integrated - (testing in progress)
-		// $this->load_plugins();
+		// $this->loadPlugins();
 
       	// Trigger the 'OnAfterInitialize' action hook
 		// (will be activated later)
@@ -177,7 +177,7 @@ class IspCP_Initializer {
 	 *
 	 * @return void
 	 */
-	protected function check_php() {
+	protected function checkPhp() {
 
 		// MAJOR . MINOR . TINY
 		$php_version = substr(phpversion(), 0, 5);
@@ -214,11 +214,11 @@ class IspCP_Initializer {
 	 * compared to the intermediate level like 6,7
 	 *
 	 * Note: ShowCompression option and checking for XmlHttpRequet will be done
-	 * by a filter hooked on the 'OnBeforeOutput' action hook.
+	 * by a  filter hooked on the 'OnBeforeOutput' action hook.
 	 *
 	 * @return void
 	 */
-	protected function initialize_output_buffering() {
+	protected function _initializeOutputBuffering() {
 
 		IspCP_spGzip::ob_start(7, false, true, true);
 	}
@@ -231,8 +231,9 @@ class IspCP_Initializer {
 	 * Note: Will be completed later with other paths (MVC switching).
 	 *
 	 * @return void
+	 * @todo Remove possible duplicate entries on multiple call
 	 */
-	protected function set_include_path() {
+	protected function _setIncludePath() {
 
 		$include_path = dirname(dirname(__FILE__));
 		set_include_path(get_include_path() . PATH_SEPARATOR . $include_path);
@@ -243,7 +244,7 @@ class IspCP_Initializer {
 	 *
 	 * @return void
 	 */
-	protected function initialize_session() {
+	protected function _initializeSession() {
 
 		session_name('ispCP');
 
@@ -261,7 +262,7 @@ class IspCP_Initializer {
 	 * @throws Exception
 	 * @return void
 	 */
-	protected function initialize_database() {
+	protected function _initializeDatabase() {
 
 		// @todo Add a specific test to check if the db keys were generated and
 		// throws an exception if its not the case - Don't use global
@@ -302,7 +303,7 @@ class IspCP_Initializer {
 	 *
 	 * Not used at this moment (testing in progress)
 	 */
-	protected function initialize_logger() {}
+	protected function _initializeLogger() {}
 
 	/**
 	 * Load configuration parameters from database
@@ -317,7 +318,7 @@ class IspCP_Initializer {
 	 *
 	 * @return void
 	 */
-	protected function process_configuration() {
+	protected function _processConfiguration() {
 
 		// We get an IspCP_ConfigHandler_Db object
 		$db_cfg = Config::getInstance(
@@ -327,21 +328,21 @@ class IspCP_Initializer {
 
 		// Now, we can override our base configuration object with parameter
 		// that come from the database
-		$this->_config->replace_with($db_cfg);
+		$this->_config->replaceWith($db_cfg);
 
 		// Finally, we register the IspCP_ConfigHandler_Db for shared access
 		IspCP_Registry::set('Db_Config', $db_cfg);
 	}
 
 	/**
-	 * Set encodage
+	 * Set encoding
 	 *
-	 * This methods set encodage for both communication database and PHP.
+	 * This methods set encoding for both communication database and PHP.
 	 *
 	 * @throws Exception
 	 * @return void
 	 */
-	protected function set_encodage() {
+	protected function _setEncoding() {
 
 		// Always send the following header:
 		// Content-type: text/html; charset=UTF-8'
@@ -383,7 +384,7 @@ class IspCP_Initializer {
 	 *
 	 * @return void
 	 */
-	protected function set_timezone() {
+	protected function _setTimezone() {
 
 		// Timezone is not set in the php.ini file ?
 		if(ini_get('date.timezone') == '') {
@@ -401,14 +402,14 @@ class IspCP_Initializer {
 	 *
 	 * @todo Ask Jochen for the new i18n library and initilization processing
 	 */
-	protected function initialize_i18n() {}
+	protected function _initializeI18n() {}
 
 	/**
 	 * Not yet implemented
 	 *
 	 * Not used at this moment because we have only one theme.
 	 */
-	protected function initialize_layout() {}
+	protected function _initializeLayout() {}
 
 	/**
 	 * Load all plugins
@@ -420,7 +421,7 @@ class IspCP_Initializer {
 	 *
 	 * @return void
 	 */
-	protected function load_plugins() {
+	protected function _loadPlugins() {
 
 		// Load all the available plugins for the current execution context
 		IspCP_Plugin_Helpers::getPlugins();

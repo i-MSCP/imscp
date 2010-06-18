@@ -30,7 +30,7 @@
  *
  * @author Laurent declercq (nuxwin) <laurent.declercq@ispcp.net>
  * @since 1.0.6
- * @version 1.0.1
+ * @version 1.0.2
  */
 class IspCP_Registry {
 

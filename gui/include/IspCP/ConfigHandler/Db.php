@@ -40,7 +40,7 @@ require_once  INCLUDEPATH . '/IspCP/ConfigHandler.php';
  *
  * @author Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
  * @since 1.0.6
- * @version 1.0.2
+ * @version 1.0.3
  * @see ispCP_ConfigHandler
  */
 class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
@@ -60,7 +60,7 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 	 *
 	 * @var PDOStatement
 	 */
-	protected $_insert_stmt = null;
+	protected $_insertStmt = null;
 
 	/**
 	 * PDOStatement to update a configuration parameter in the database
@@ -70,7 +70,7 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 	 *
 	 * @var PDOStatement
 	 */
-	protected $_update_stmt = null;
+	protected $_updateStmt = null;
 
 	/**
 	 * PDOStatement to delete a configuration parameter in the database
@@ -80,7 +80,7 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 	 *
 	 * @var PDOStatement
 	 */
-	protected $_delete_stmt = null;
+	protected $_deleteStmt = null;
 
 	/**
 	 * Variable bound to the PDOStatement objects
@@ -107,35 +107,35 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 	 *
 	 * @var int Sql queries count
 	 */
-	protected $_insert_queries_counter = 0;
+	protected $_insertQueriesCounter = 0;
 
 	/**
 	 * Counter for sql insert queries that were been executed
 	 *
 	 * @var int Sql queries count
 	 */
-	protected $_update_queries_counter = 0;
+	protected $_updateQueriesCounter = 0;
 
 	/**
 	 * Database table where the configuration parameters are stored
 	 *
 	 * @var string Table name
 	 */
-	protected $_table_name = 'config';
+	protected $_tableName = 'config';
 
 	/**
 	 * Database column name for configuration parameters keys
 	 *
 	 * @var string Column name
 	 */
-	protected $_keys_column = 'name';
+	protected $_keysColumn = 'name';
 
 	/**
 	 * Database column name for configuration parameters values
 	 *
 	 * @var string Column name
 	 */
-	protected $_values_column = 'value';
+	protected $_valuesColumn = 'value';
 
 	/**
 	 * Loads all configuration parameters from database
@@ -175,17 +175,17 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 
 			// Overrides the database table name for configuration parameters
 			if(isset($params['table_name'])) {
-					$this->_table_name = $params['table_name'];
+					$this->_tableName = $params['table_name'];
 			}
 
 			// Override the column name for configuration parameters keys
 			if(isset($params['keys_column'])) {
-				$this->_keys_column = $params['keys_column'];
+				$this->_keysColumn = $params['keys_column'];
 			}
 
 			// Set the column name for configuration parameters values
 			if(isset($params['values_column'])) {
-				$this->_values_column = $params['values_column'];
+				$this->_valuesColumn = $params['values_column'];
 			}
 
 		} elseif(!$params instanceof PDO) {
@@ -194,7 +194,7 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 
 		$this->_db = $params;
 
-		parent::__construct($this->_load_all());
+		parent::__construct($this->_loadAll());
 	}
 
 	/**
@@ -228,9 +228,9 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 	 *
 	 * @return void
 	 */
-	public function force_reload() {
+	public function forceReload() {
 
-		$this->_parameters = $this->_load_all();
+		$this->_parameters = $this->_loadAll();
 	}
 
 	/**
@@ -240,18 +240,18 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 	 * last call of {@link reset_queries_counter()} method.
 	 *
 	 * @throws Exception
-	 * @param string $query_counter_type type of query counter (insert|update)
+	 * @param string $queriesCounterType Type of query counter (insert|update)
 	 * @return void
 	 */
-	public function count_queries($queries_counter_type) {
+	public function countQueries($queriesCounterType) {
 
-		if($queries_counter_type == 'update') {
+		if($queriesCounterType == 'update') {
 
-			return $this->_update_queries_counter;
+			return $this->_updateQueriesCounter;
 
-		} elseif($queries_counter_type == 'insert') {
+		} elseif($queriesCounterType == 'insert') {
 
-			return $this->_insert_queries_counter;
+			return $this->_insertQueriesCounter;
 
 		} else {
 			throw new Exception('Unknown queries counter!');
@@ -262,18 +262,18 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 	 * Reset a counter of queries
 	 *
 	 * @throws Exception
-	 * @param string $query_counter_type type of query counter (insert|update)
+	 * @param string $queriesCounterType Type of query counter (insert|update)
 	 * @return void
 	 */
-	public function reset_queries_counter($queries_counter_type) {
+	public function resetQueriesCounter($queriesCounterType) {
 
-		if($queries_counter_type == 'update') {
+		if($queriesCounterType == 'update') {
 
-			$this->_update_queries_counter = 0;
+			$this->_updateQueriesCounter = 0;
 
-		} elseif($queries_counter_type == 'insert') {
+		} elseif($queriesCounterType == 'insert') {
 
-			 $this->_insert_queries_counter = 0;
+			 $this->_insertQueriesCounter = 0;
 
 		} else {
 			throw new Exception('Unknown queries counter!');
@@ -313,21 +313,21 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 	 * @throws Exception
 	 * @return Array that contain all configuration parameters
 	 */
-	protected function _load_all() {
+	protected function _loadAll() {
 
 		$query = "
 			SELECT
-				`{$this->_keys_column}`,
-				`{$this->_values_column}`
+				`{$this->_keysColumn}`,
+				`{$this->_valuesColumn}`
 			FROM
-				`{$this->_table_name}`
+				`{$this->_tableName}`
 			;
 		";
 
 		if(($stmt = $this->_db->query($query, PDO::FETCH_ASSOC)) !== false) {
 			foreach($stmt->fetchAll() as $row) {
-				$parameters[$row[$this->_keys_column]] =
-					$row[$this->_values_column];
+				$parameters[$row[$this->_keysColumn]] =
+					$row[$this->_valuesColumn];
 			}
 		} else {
 			throw new Exception(
@@ -349,19 +349,19 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 
 			$query = "
 				INSERT INTO
-					`{$this->_table_name}`
-					(`{$this->_keys_column}`, `{$this->_values_column}`)
+					`{$this->_tableName}`
+					(`{$this->_keysColumn}`, `{$this->_valuesColumn}`)
 				VALUES
 					(:index, :value)
 				;
 			";
 
-			$this->_insert_stmt = $this->_db->prepare($query);
-			$this->_insert_stmt->BindParam(':index', $this->_index);
-			$this->_insert_stmt->BindParam(':value', $this->_value);
+			$this->_insertStmt = $this->_db->prepare($query);
+			$this->_insertStmt->BindParam(':index', $this->_index);
+			$this->_insertStmt->BindParam(':value', $this->_value);
 		}
 
-		if($this->_insert_stmt->execute() === false) {
+		if($this->_insertStmt->execute() === false) {
 			throw new Exception(
 				'Unable to insert the configuration parameter in the database!'
 			);
@@ -376,29 +376,29 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 	 */
 	protected function _update() {
 
-		if(!$this->_update_stmt instanceof PDOStatement) {
+		if(!$this->_updateStmt instanceof PDOStatement) {
 
 			$query = "
 				UPDATE
-					`{$this->_table_name}`
+					`{$this->_tableName}`
 				SET
-					`{$this->_values_column}` = :value
+					`{$this->_valuesColumn}` = :value
 				WHERE
-					`{$this->_keys_column}` = :index
+					`{$this->_keysColumn}` = :index
 				;
 			";
 
-			$this->_update_stmt = $this->_db->prepare($query);
-			$this->_update_stmt->BindParam(':index', $this->_index);
-			$this->_update_stmt->BindParam(':value', $this->_value);
+			$this->_updateStmt = $this->_db->prepare($query);
+			$this->_updateStmt->BindParam(':index', $this->_index);
+			$this->_updateStmt->BindParam(':value', $this->_value);
 		}
 
-		if($this->_update_stmt->execute() === false) {
+		if($this->_updateStmt->execute() === false) {
 			throw new Exception(
 				'Unable to update the configuration parameter in the database!'
 			);
 		} else {
-			$this->_update_queries_counter++;
+			$this->_updateQueriesCounter++;
 		}
 	}
 
@@ -410,21 +410,21 @@ class IspCP_ConfigHandler_Db extends IspCP_ConfigHandler {
 	 */
 	protected function _delete() {
 
-		if(!$this->_delete_stmt instanceof PDOStatement) {
+		if(!$this->_deleteStmt instanceof PDOStatement) {
 
 			$query = "
 				DELETE FROM
-					`{$this->_table_name}`
+					`{$this->_tableName}`
 				WHERE
-					`{$this->_keys_column}` = :index
+					`{$this->_keysColumn}` = :index
 				;
 			";
 
-			$this->_delete_stmt = $this->_db->prepare($query);
-			$this->_delete_stmt->BindParam(':index', $this->_index);
+			$this->_deleteStmt = $this->_db->prepare($query);
+			$this->_deleteStmt->BindParam(':index', $this->_index);
 		}
 
-		if($this->_delete_stmt->execute() === false) {
+		if($this->_deleteStmt->execute() === false) {
 			throw new Exception(
 				'Unable to delete the configuration parameter in the database!'
 			);

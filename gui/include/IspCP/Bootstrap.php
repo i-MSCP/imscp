@@ -36,6 +36,7 @@ defined('INCLUDEPATH') or define('INCLUDEPATH', dirname(dirname(__FILE__)));
  * Note: Will be improved later
  *
  * @since 1.0.6
+ * @version 1.0.1
  * @author Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
  */
 class IspCP_Bootstrap {
@@ -47,9 +48,9 @@ class IspCP_Bootstrap {
 	 */
 	public static function boot() {
 
-		if(!self::is_booted()) {
+		if(!self::_isBooted()) {
 			$boot = new self;
-			$boot->run();
+			$boot->_run();
 		} else {
 			system_message('Error: IspCP is already booted!');
 		}
@@ -74,7 +75,7 @@ class IspCP_Bootstrap {
 	 *
 	 * @return TRUE if booted, FALSE othewise
 	 */
-	private static function is_booted() {
+	protected static function _isBooted() {
 
 		return class_exists('IspCP_Initializer', false);
 	}
@@ -84,10 +85,10 @@ class IspCP_Bootstrap {
 	 *
 	 * @return void
 	 */
-	private function run() {
+	protected function _run() {
 
-		$this->load_initializer();
-		IspCP_Initializer::run('set_include_path');
+		$this->_loadInitializer();
+		IspCP_Initializer::run('_setIncludePath');
 	}
 
 	/**
@@ -95,7 +96,7 @@ class IspCP_Bootstrap {
 	 *
 	 * @return void
 	 */
-	function load_initializer() {
+	protected function _loadInitializer() {
 
       require INCLUDEPATH . '/IspCP/Initializer.php';
 	}

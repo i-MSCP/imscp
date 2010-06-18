@@ -56,6 +56,8 @@
  * To resume, the Config class acts as a registry for the IspCP_ConfigHandler
  * objects where the registered values (that are IspCP_ConfigHandler objects)
  * are indexed by they class name.
+ * 
+ * @version 1.0.5
  */
 final class Config {
 
@@ -86,36 +88,36 @@ final class Config {
 	 *
 	 * The default handler object is set to {@link IspCP_ConfigHandler_File}
 	 *
-	 * @param string $classname IspCP_ConfigHandler class name
+	 * @param string $className IspCP_ConfigHandler class name
 	 * @param mixed $params Parameters that are passed to IspCP_ConfigHandler
 	 * 	object constructor
 	 * @throws Exception
 	 * @return IspCP_ConfigHandler
 	 */
-	public static function &getInstance($classname = self::FILE, $params = null) {
+	public static function getInstance($className = self::FILE, $params = null) {
 
-		if(!array_key_exists($classname, self::$_instances)) {
+		if(!array_key_exists($className, self::$_instances)) {
 
-			if($classname === false) {
+			if($className === false) {
 				throw new Exception(
 					'The IspCP_ConfigHandler object you trying to use is not ' .
 						'yet implemented!'
 				);
-			} elseif (!class_exists($classname, true)) {
+			} elseif (!class_exists($className, true)) {
 				throw new Exception(
-					"The class `$classname` is not reachable!"
+					"The class $className is not reachable!"
 				);
-    		} elseif (!is_subclass_of($classname, 'IspCP_ConfigHandler')) {
+    		} elseif (!is_subclass_of($className, 'IspCP_ConfigHandler')) {
 				throw new Exception(
 					'Only IspCP_ConfigHandler objects can be handling by the ' .
 						__CLASS__ . ' class!'
 				);
 			}
 
-			self::$_instances[$classname] = new $classname($params);
+			self::$_instances[$className] = new $className($params);
 		}
 
-		return self::$_instances[$classname];
+		return self::$_instances[$className];
 	}
 
 	/**
@@ -123,12 +125,12 @@ final class Config {
 	 *
 	 * @see IspCP_ConfigHandler::get()
 	 * @param string $index Configuration parameter key name
-	 * @param string $classname IspCP_ConfigHandler class name
+	 * @param string $className IspCP_ConfigHandler class name
 	 * @return Configuration parameter value
 	 */
-	public static function get($index, $classname = self::FILE) {
+	public static function get($index, $className = self::FILE) {
 
-		return self::getInstance($classname)->get($index);
+		return self::getInstance($className)->get($index);
 	}
 
 	/**
@@ -137,12 +139,12 @@ final class Config {
 	 * @see IspCP_ConfigHandler::set()
 	 * @param string $index Configuration parameter key name
 	 * @param mixed $value Configuration parameter value
-	 * @param string $classname IspCP_ConfigHandler class name
+	 * @param string $className IspCP_ConfigHandler class name
 	 * @return void
 	 */
-	public static function set($index, $value, $classname = self::FILE) {
+	public static function set($index, $value, $className = self::FILE) {
 
-		self::getInstance($classname)->set($index, $value);
+		self::getInstance($className)->set($index, $value);
 	}
 
 	/**
@@ -150,11 +152,11 @@ final class Config {
 	 *
 	 * @see IspCP_ConfigHandler::del()
 	 * @param string $index Configuration parameter key name
-	 * @param string $classname IspCP_ConfigHandler class name
+	 * @param string $className IspCP_ConfigHandler class name
 	 * @return void
 	 */
-	public static function del($index, $classname = self::FILE) {
+	public static function del($index, $className = self::FILE) {
 
-		self::getInstance($classname)->del($index);
+		self::getInstance($className)->del($index);
 	}
 }

@@ -1,6 +1,10 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-06-18 Laurent Declercq
+	- GUI:
+		* Switched to the new naming convention
+
 2010-06-17 Laurent Declercq
 	- CONTRIB:
 		* Added migration tool `backup-restore` in contrib section

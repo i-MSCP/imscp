@@ -129,7 +129,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 		$db_cfg->MAX_DNAMES_LABELS = $max_dnames_labels;
 		$db_cfg->MAX_SUBDNAMES_LABELS = $max_subdnames_labels;
 
-		$cfg->replace_with($db_cfg);
+		$cfg->replaceWith($db_cfg);
 
 		set_page_message(tr('Settings saved!'));
 	}
