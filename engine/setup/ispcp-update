@@ -137,7 +137,7 @@ sub update_engine {
 	title('ispCP main configuration file');
 
 	# Loading old ispCP configuration file
-	subtitle('Loading old ispCP configuration file');
+	subtitle('Loading old ispCP configuration file:');
 	$rs = load_old_ispcp_cfg();
 	print_status($rs, 'exit_on_error');
 
@@ -165,7 +165,7 @@ sub update_engine {
 	title('ispCP database');
 
 	# Update ispCP database schema
-	subtitle('Update ispCP database schema');
+	subtitle('Update ispCP database schema:');
 	$rs = update_database_schema();
 	print_status($rs, 'exit_on_error');
 
