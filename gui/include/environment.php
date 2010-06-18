@@ -60,7 +60,7 @@ $cfg->IPS_LOGO_PATH = '../themes/user_logos';
 $cfg->PURCHASE_TEMPLATE_PATH = "../$tpl_path/orderpanel";
 
 $cfg->HTML_CHECKED = ' checked="checked"';
-$cfg->HTML_falseD = ' disabled="disabled"';
+$cfg->HTML_DISABLED = ' disabled="disabled"';
 $cfg->HTML_READONLY = ' readonly="readonly"';
 $cfg->HTML_SELECTED = ' selected="selected"';
 
@@ -81,10 +81,10 @@ $cfg->ITEM_ADD_STATUS = 'toadd';
 $cfg->ITEM_OK_STATUS = 'ok';
 $cfg->ITEM_CHANGE_STATUS = 'change';
 $cfg->ITEM_DELETE_STATUS = 'delete';
-$cfg->ITEM_falseD_STATUS = 'disabled';
+$cfg->ITEM_DISABLED_STATUS = 'disabled';
 $cfg->ITEM_RESTORE_STATUS = 'restore';
-$cfg->ITEM_TOtrue_STATUS = 'toenable';
-$cfg->ITEM_TOfalseD_STATUS = 'todisable';
+$cfg->ITEM_TOENABLE_STATUS = 'toenable';
+$cfg->ITEM_TODISABLED_STATUS = 'todisable';
 $cfg->ITEM_ORDERED_STATUS = 'ordered';
 $cfg->ITEM_DNSCHANGE_STATUS = 'dnschange';
 
