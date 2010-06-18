@@ -288,7 +288,7 @@ require_once(INCLUDEPATH . '/functions.ticket_system.php');
 
 // Create and store an IspCP_ConfigHandler_Db object in the registry and
 // overrides any configuration settings by those provided by him
-$cfg->replace_with(
+$cfg->replaceWith(
 	IspCP_Registry::set(
 		'Db_Config',
 		Config::getInstance(Config::DB, Database::getRawInstance())
