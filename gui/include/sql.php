@@ -28,23 +28,6 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-/*
-// Get an Database instance
-@$sql = Database::connect(
-	Config::getInstance()->get('DATABASE_USER'),
-	decrypt_db_password(Config::getInstance()->get('DATABASE_PASSWORD')),
-	Config::getInstance()->get('DATABASE_TYPE'),
-	Config::getInstance()->get('DATABASE_HOST'),
-	Config::getInstance()->get('DATABASE_NAME')
-) or system_message('ERROR: Unable to connect to SQL server !<br />SQL returned: ' . $sql->ErrorMsg());
-
-// switch optionally to utf8 based communication with the database
-if (Config::getInstance()->exists('DATABASE_UTF8') && Config::getInstance()->get('DATABASE_UTF8') == 'yes') {
-	@$sql->Execute("SET NAMES 'utf8'");
-}
-
-*/
-
 $sql = IspCP_Registry::get('Db');
 
 /**

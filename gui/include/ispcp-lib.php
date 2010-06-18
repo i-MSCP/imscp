@@ -37,7 +37,7 @@
 error_reporting(E_ALL|E_STRICT);
 
 // Only for development
-ini_set('display_errors', 1);
+//ini_set('display_errors', 1);
 
 // Define path for the ispCP include directory
 define('INCLUDEPATH', dirname(__FILE__));
@@ -94,7 +94,7 @@ require_once 'client-functions.php';
 /**
  * Some others shared librairies
  */
-require_once 'i18n.php';
+require_once 'deprecated.php';
 require_once 'date-functions.php';
 require_once 'input-checks.php';
 require_once 'calc-functions.php';
