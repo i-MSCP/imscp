@@ -30,7 +30,7 @@
 
 require 'include/ispcp-lib.php';
 
-$cfg = IspCP_Registry::get('Config');
+$cfg = ispCP_Registry::get('Config');
 
 if (!$cfg->LOSTPASSWORD) {
 	system_message(tr('Retrieving lost passwords is currently not possible'));

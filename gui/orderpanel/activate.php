@@ -30,7 +30,7 @@
 
 require '../include/ispcp-lib.php';
 
-$cfg = IspCP_Registry::get('Config');
+$cfg = ispCP_Registry::get('Config');
 
 /**
  * Validate activation parameters
@@ -40,10 +40,10 @@ $cfg = IspCP_Registry::get('Config');
  */
 function validate_order_key($order_id, $key) {
 
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	$result = false;
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 	$query = "
 		SELECT
 			*
@@ -72,8 +72,8 @@ function validate_order_key($order_id, $key) {
  */
 function confirm_order($order_id) {
 
-	$cfg = IspCP_Registry::get('Config');
-	$sql = IspCP_Registry::get('Db');
+	$cfg = ispCP_Registry::get('Config');
+	$sql = ispCP_Registry::get('Db');
 
 	$query = "
 		SELECT

@@ -30,7 +30,7 @@
 
 require 'include/ispcp-lib.php';
 
-$cfg = IspCP_Registry::get('Config');
+$cfg = ispCP_Registry::get('Config');
 
 if (isset($_GET['logout'])) {
 	unset_user_login_data();

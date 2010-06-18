@@ -30,7 +30,7 @@
 
 require '../include/ispcp-lib.php';
 
-$cfg = IspCP_Registry::get('Config');
+$cfg = ispCP_Registry::get('Config');
 
 $tpl = new pTemplate();
 $tpl->define_dynamic('page', $cfg->PURCHASE_TEMPLATE_PATH . '/chart.tpl');
@@ -46,7 +46,7 @@ $tpl->define_dynamic('purchase_footer', 'page');
 
 function gen_chart(&$tpl, &$sql, $user_id, $plan_id) {
 
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	if (isset($cfg->HOSTING_PLANS_LEVEL)&& $cfg->HOSTING_PLANS_LEVEL == 'admin') {
 		$query = "
