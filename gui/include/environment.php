@@ -42,8 +42,7 @@ $cfg->ROOT_TEMPLATE_PATH = 'themes/';
 //$cfg->USER_INITIAL_THEME = 'omega_original';
 
 // Get template path
-$tpl_path = $cfg->ROOT_TEMPLATE_PATH .
-$cfg->USER_INITIAL_THEME;
+$tpl_path = $cfg->ROOT_TEMPLATE_PATH . $cfg->USER_INITIAL_THEME;
 
 // Set the login templates path
 $cfg->LOGIN_TEMPLATE_PATH = $tpl_path;
@@ -178,7 +177,7 @@ $cfg->MAINTENANCEMODE = false;
 // Servicemode message
 // Please: Leave the comment for 'tr'
 $cfg->MAINTENANCEMODE_MESSAGE =
-	/*tr*/("Wesss are sorry, but the system is currently under maintenance.\nPlease try again later.");
+	/*tr*/("We are sorry, but the system is currently under maintenance.\nPlease try again later.");
 
 // Minimum password chars
 $cfg->PASSWD_CHARS = 6;
