@@ -3,23 +3,10 @@ ispCP ω 1.0.6 ChangeLog
 
 2010-06-18 Laurent Declercq
 	- GUI:
-		* Switched to the new naming convention
-	- TRANSLATION:
-		* Removed duplicate entries ('#. Please ignore this entry')
-
-2010-06-17 Laurent Declercq
-	- CONTRIB:
-		* Added migration tool `backup-restore` in the contrib section
-	- GUI:
-		* Added a new IspCP_Initializer class for initialization process
-			(Not Yet Integrated)
-		* Added a new IspCP_Bootstrap class for ispCP boot process
-			(Not Yet Integrated)
 		* Added documentation for the ispCP_Database class
 		* Added include/ispcp-loader.php file for the autoload_class() funct.
 		* Added the environment.php file to reflect correctly the purpose of the
 			work
-		* Fixed #2392: Various problems with hosting_plan_edit.php as admin
 		* Integrated news classes:
 			- ispCP_Bootstrap class for the ispCP boot process
 			- ispCP_Initializer class for the ispCP initialization process
@@ -36,6 +23,19 @@ ispCP ω 1.0.6 ChangeLog
 		* Refactored the include/ispcp-lib.php file
 		* Refactored the include/sql.php file according the new
 			ispCP_initialization class
+		* Switched to the new naming convention
+	- TRANSLATION:
+		* Removed duplicate entries ('#. Please ignore this entry')
+
+2010-06-17 Laurent Declercq
+	- CONTRIB:
+		* Added migration tool `backup-restore` in the contrib section
+	- GUI:
+		* Added a new IspCP_Initializer class for initialization process
+			(Not Yet Integrated)
+		* Added a new IspCP_Bootstrap class for ispCP boot process
+			(Not Yet Integrated)
+		* Fixed #2392: Various problems with hosting_plan_edit.php as admin
 	- TRANSLATION:
 		* Added specific keyword `/*tr*/` into the makemsgs script to be able
 			to parse localization before that the php i18n support was loaded
