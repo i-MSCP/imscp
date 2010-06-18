@@ -127,7 +127,7 @@ function send_request() {
 
 function update_expire_date ( $user_id, $domain_new_expire ) {
 
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 
 	$query = "
 		UPDATE
@@ -150,7 +150,7 @@ function update_expire_date ( $user_id, $domain_new_expire ) {
 
 function update_user_props($user_id, $props) {
 
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 
 	list(
 		$sub_current,

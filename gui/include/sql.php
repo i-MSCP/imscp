@@ -28,7 +28,7 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-$sql = IspCP_Registry::get('Db');
+$sql = ispCP_Registry::get('Db');
 
 /**
  * @todo Please describe this function!
@@ -83,7 +83,7 @@ function exec_query(&$sql, $query, $data = array(), $failDie = true) {
  * @todo document this function
  */
 function quoteIdentifier($identifier) {
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 
 	$identifier = str_replace($sql->nameQuote, '\\' . $sql->nameQuote, $identifier);
 

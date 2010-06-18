@@ -77,7 +77,7 @@ function ticketGetLastDate(&$sql, $ticket_id) {
  * @param	int			$urgency			ticket urgency
  */
 function send_tickets_msg($to_id, $from_id, $ticket_subject, $ticket_message, $ticket_status, $urgency) {
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 	global $admin_login;
 	// To information
 	$query = "SELECT `fname`, `lname`, `email`, `admin_name` FROM `admin` WHERE `admin_id` = ?";

@@ -34,7 +34,7 @@
  */
 function system_message($msg, $backButtonDestination = '') {
 
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	$theme_color = (isset($_SESSION['user_theme']))
 		? $_SESSION['user_theme']

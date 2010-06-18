@@ -113,7 +113,7 @@ function strrand($length, $strSessionVar) {
 }
 
 function removeOldKeys($ttl) {
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 
 	$boundary = date('Y-m-d H:i:s', time() - $ttl * 60);
 
@@ -131,7 +131,7 @@ function removeOldKeys($ttl) {
 }
 
 function setUniqKey($admin_name, $uniqkey) {
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 
 	$timestamp = date('Y-m-d H:i:s', time());
 
@@ -149,7 +149,7 @@ function setUniqKey($admin_name, $uniqkey) {
 }
 
 function setPassword($uniqkey, $upass) {
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 
 	if ($uniqkey == '') {
 		die();
@@ -168,7 +168,7 @@ function setPassword($uniqkey, $upass) {
 }
 
 function uniqkeyexists($uniqkey) {
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 
 	$query = "
 		SELECT
@@ -198,7 +198,7 @@ function uniqkeygen() {
 }
 
 function sendpassword($uniqkey) {
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 
 	$query = "
 		SELECT
@@ -298,7 +298,7 @@ function sendpassword($uniqkey) {
 }
 
 function requestpassword($admin_name) {
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 
 	$query = "
 		SELECT

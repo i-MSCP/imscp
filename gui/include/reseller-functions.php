@@ -43,7 +43,7 @@ define('MT_ALIAS_CATCHALL', 'alias_catchall');
 define('MT_ALSSUB_CATCHALL', 'alssub_catchall');
 
 function gen_reseller_mainmenu(&$tpl, $menu_file) {
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 
 	$tpl->define_dynamic('menu', $menu_file);
 	$tpl->define_dynamic('isactive_support', 'menu');
@@ -142,7 +142,7 @@ function gen_reseller_mainmenu(&$tpl, $menu_file) {
  * Function to generate the menu data for reseller
  */
 function gen_reseller_menu(&$tpl, $menu_file) {
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 
 	$tpl->define_dynamic('menu', $menu_file);
 
@@ -292,7 +292,7 @@ function get_reseller_default_props(&$sql, $reseller_id) {
  * Making users props
  */
 function generate_reseller_user_props($reseller_id) {
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 	// Init with empty variables
 	$rdmn_current = 0;
 	$rdmn_max = 0;
@@ -452,7 +452,7 @@ function generate_reseller_user_props($reseller_id) {
  */
 function get_user_traffic($user_id) {
 
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 	global $crnt_month, $crnt_year;
 
 	$query = "
@@ -548,7 +548,7 @@ function get_user_traffic($user_id) {
  */
 function get_user_props($user_id) {
 
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 
 	$query = "
 		SELECT
@@ -626,7 +626,7 @@ function get_user_props($user_id) {
  * Generate IP list
  */
 function generate_ip_list(&$tpl, &$reseller_id) {
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 	global $domain_ip;
 
 	$query = "
@@ -809,7 +809,7 @@ function translate_dmn_status($status) {
  * Check if the domain already exist
  */
 function ispcp_domain_exists($domain_name, $reseller_id) {
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 	// query to check if the domain name exist in the table for domains/accounts
 	$query_domain = "
 		SELECT
@@ -1564,7 +1564,7 @@ function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail, $
 }
 
 function send_alias_order_email($alias_name) {
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 
 	$user_id = $_SESSION['user_id'];
 
@@ -1632,7 +1632,7 @@ function send_alias_order_email($alias_name) {
  */
 function client_mail_add_default_accounts($dmn_id, $user_email, $dmn_part, $dmn_type = 'domain', $sub_id = 0) {
 
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 
 	if (Config::getInstance()->get('CREATE_DEFAULT_EMAIL_ADDRESSES')) {
 
@@ -1859,7 +1859,7 @@ function update_reseller_c_props($reseller_id) {
  */
 function get_reseller_id($domain_id) {
 
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 
 	$query = "
 		SELECT
@@ -1890,7 +1890,7 @@ function get_reseller_id($domain_id) {
  */
 function check_reseller_permissions($reseller_id, $permission) {
 
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 
 	list($rdmn_current, $rdmn_max,
 			$rsub_current, $rsub_max,

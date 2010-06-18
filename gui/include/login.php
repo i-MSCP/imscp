@@ -30,7 +30,7 @@
 
 function init_login() {
 
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	// just make sure to expire counters in case BRUTEFORCE is turned off
 	unblock($cfg->BRUTEFORCE_BLOCK_TIME);
@@ -45,8 +45,8 @@ function init_login() {
  */
 function register_user($uname, $upass) {
 
-	$cfg = IspCP_Registry::get('Config');
-	$sql = IspCP_Registry::get('Db');
+	$cfg = ispCP_Registry::get('Config');
+	$sql = ispCP_Registry::get('Db');
 
 	$backButtonDestination = $cfg->BASE_SERVER_VHOST_PREFIX .
 		$cfg->BASE_SERVER_VHOST;
@@ -154,8 +154,8 @@ function register_user($uname, $upass) {
 
 function check_user_login() {
 
-	$cfg = IspCP_Registry::get('Config');
-	$sql = IspCP_Registry::get('Db');
+	$cfg = ispCP_Registry::get('Config');
+	$sql = ispCP_Registry::get('Db');
 
 	$sess_id = session_id();
 	// kill timed out sessions
@@ -314,7 +314,7 @@ function check_login($fName = null, $preventExternalLogin = true) {
 
 function change_user_interface($from_id, $to_id) {
 
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 
 	$index = null;
 
@@ -457,7 +457,7 @@ function change_user_interface($from_id, $to_id) {
 
 function unset_user_login_data($ignorePreserve = false) {
 
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 
 	if (isset($_SESSION['user_logged'])) {
 

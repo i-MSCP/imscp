@@ -475,7 +475,7 @@ function get_domain_running_props_cnt(&$sql, $domain_id) {
 
 function gen_client_mainmenu(&$tpl, $menu_file) {
 
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 
 	$tpl->define_dynamic('menu', $menu_file);
 	$tpl->define_dynamic('isactive_awstats', 'menu');
@@ -646,7 +646,7 @@ function gen_client_mainmenu(&$tpl, $menu_file) {
 
 function gen_client_menu(&$tpl, $menu_file) {
 
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 
 	$tpl->define_dynamic('menu', $menu_file);
 	$tpl->define_dynamic('custom_buttons', 'menu');
@@ -1141,7 +1141,7 @@ function get_gender_by_code($code, $nullOnBad = false) {
 
 function mount_point_exists($dmn_id, $mnt_point) {
 
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 
 	$query = "
 		SELECT

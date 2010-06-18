@@ -36,7 +36,7 @@
  */
 function username_exists($username) {
 
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 
 	$username = encode_idna($username);
 
@@ -63,7 +63,7 @@ function username_exists($username) {
  */
 function get_userdata($username) {
 
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 
 	$query = '
 		SELECT
@@ -88,7 +88,7 @@ function get_userdata($username) {
  */
 function is_userdomain_expired($username) {
 
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 
 	$udata = get_userdata($username);
 
@@ -131,8 +131,8 @@ function is_userdomain_expired($username) {
  */
 function is_userdomain_ok($username) {
 
-	$cfg = IspCP_Registry::get('Config');
-	$sql = IspCP_Registry::get('Db');
+	$cfg = ispCP_Registry::get('Config');
+	$sql = ispCP_Registry::get('Db');
 
 	$udata = get_userdata($username);
 
@@ -169,8 +169,8 @@ function is_userdomain_ok($username) {
  */
 function unblock($timeout = null, $type = 'bruteforce') {
 
-	$cfg = IspCP_Registry::get('Config');
-	$sql = IspCP_Registry::get('Db');
+	$cfg = ispCP_Registry::get('Config');
+	$sql = ispCP_Registry::get('Db');
 
 	if ($timeout === null) {
 		$timeout = $cfg->BRUTEFORCE_BLOCK_TIME;
@@ -242,8 +242,8 @@ function unblock($timeout = null, $type = 'bruteforce') {
 function is_ipaddr_blocked($ipaddr = null, $type = 'bruteforce',
 	$autodeny = false) {
 
-	$cfg = IspCP_Registry::get('Config');
-	$sql = IspCP_Registry::get('Db');
+	$cfg = ispCP_Registry::get('Config');
+	$sql = ispCP_Registry::get('Db');
 
 	if ($ipaddr === null) {
 		$ipaddr = getipaddr();
@@ -316,8 +316,8 @@ function is_ipaddr_blocked($ipaddr = null, $type = 'bruteforce',
  */
 function shall_user_wait($ipaddr = null, $displayMessage = true) {
 
-	$cfg = IspCP_Registry::get('Config');
-	$sql = IspCP_Registry::get('Db');
+	$cfg = ispCP_Registry::get('Config');
+	$sql = ispCP_Registry::get('Db');
 
 	if (!$cfg->BRUTEFORCE) {
 		return false;
@@ -382,8 +382,8 @@ function shall_user_wait($ipaddr = null, $displayMessage = true) {
  */
 function check_ipaddr($ipaddr = null, $type = 'bruteforce') {
 
-	$cfg = IspCP_Registry::get('Config');
-	$sql = IspCP_Registry::get('Db');
+	$cfg = ispCP_Registry::get('Config');
+	$sql = ispCP_Registry::get('Db');
 
 	if ($ipaddr === null) {
 		$ipaddr = getipaddr();
@@ -513,7 +513,7 @@ function check_ipaddr($ipaddr = null, $type = 'bruteforce') {
  */
 function block_ipaddr($ipaddr, $type = 'General') {
 
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	write_log(
 			"$type protection, <b><i> " .
@@ -530,7 +530,7 @@ function block_ipaddr($ipaddr, $type = 'General') {
  */
 function deny_access() {
 
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	$backButtonDestination =
 		$cfg->BASE_SERVER_VHOST_PREFIX . $cfg->BASE_SERVER_VHOST;
@@ -558,8 +558,8 @@ function getipaddr() {
  */
 function do_session_timeout() {
 
-	$cfg = IspCP_Registry::get('Config');
-	$sql = IspCP_Registry::get('Db');
+	$cfg = ispCP_Registry::get('Config');
+	$sql = ispCP_Registry::get('Db');
 
 	$ttl = time() - $cfg->SESSION_TIMEOUT * 60;
 
@@ -587,7 +587,7 @@ function do_session_timeout() {
  */
 function session_exists($sess_id) {
 
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 
 	$ip = getipaddr();
 

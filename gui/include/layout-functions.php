@@ -78,7 +78,7 @@ function gen_page_message(&$tpl) {
 }
 
 function check_language_exist($lang_table) {
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 
 	return (in_array($lang_table, $sql->MetaTables()) == true) ? true : false;
 }
@@ -110,7 +110,7 @@ function format_message($message) {
  * @todo remove checks for DATABASE_REVISION >= 11, this produces unmaintainable code
  */
 function get_menu_vars($menu_link) {
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 
 	$user_id = $_SESSION['user_id'];
 
