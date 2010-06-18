@@ -32,7 +32,7 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = IspCP_Registry::get('Config');
+$cfg = ispCP_Registry::get('Config');
 
 $dmn_id = get_user_domain_id($sql, $_SESSION['user_id']);
 

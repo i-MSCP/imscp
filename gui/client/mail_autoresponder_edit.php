@@ -32,7 +32,7 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = IspCP_Registry::get('Config');
+$cfg = ispCP_Registry::get('Config');
 
 $tpl = new pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/mail_autoresponder_enable.tpl');
@@ -71,7 +71,7 @@ function check_email_user(&$sql) {
 
 function gen_page_dynamic_data(&$tpl, &$sql, $mail_id, $read_from_db) {
 
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	// Get Message
 	if ($read_from_db) {

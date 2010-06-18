@@ -32,7 +32,7 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = IspCP_Registry::get('Config');
+$cfg = ispCP_Registry::get('Config');
 
 $tpl = new pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/personal_change.tpl');
@@ -56,7 +56,7 @@ gen_user_personal_data($tpl, $sql, $_SESSION['user_id']);
 
 function gen_user_personal_data(&$tpl, &$sql, $user_id) {
 
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	$query = "
 		SELECT

@@ -36,7 +36,7 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = IspCP_Registry::get('Config');
+$cfg = ispCP_Registry::get('Config');
 
 $tpl = new pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/puser_edit.tpl');
@@ -58,7 +58,7 @@ $tpl->assign(
 
 function pedit_user(&$tpl, &$sql, &$dmn_id, &$uuser_id) {
 
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] == 'modify_user') {
 		// we have to add the user

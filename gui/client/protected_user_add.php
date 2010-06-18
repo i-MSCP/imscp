@@ -32,7 +32,7 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = IspCP_Registry::get('Config');
+$cfg = ispCP_Registry::get('Config');
 
 $tpl = new pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/puser_uadd.tpl');
@@ -54,7 +54,7 @@ $tpl->assign(
 
 function padd_user(&$tpl, &$sql, $dmn_id) {
 
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] == 'add_user') {
 		// we have to add the user

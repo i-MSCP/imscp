@@ -32,7 +32,7 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = IspCP_Registry::get('Config');
+$cfg = ispCP_Registry::get('Config');
 
 $tpl = new pTemplate();
 
@@ -50,7 +50,7 @@ $tpl->define_dynamic('to_alias_subdomain', 'page');
 
 function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
 	
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	$dmn_name = decode_idna($dmn_name);
 
@@ -95,7 +95,7 @@ function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
 
 function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	$ok_status = $cfg->ITEM_OK_STATUS;
 
@@ -165,7 +165,7 @@ function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 
 function gen_dmn_sub_list(&$tpl, &$sql, $dmn_id, $dmn_name, $post_check) {
 	
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	$ok_status = $cfg->ITEM_OK_STATUS;
 
@@ -238,7 +238,7 @@ function gen_dmn_sub_list(&$tpl, &$sql, $dmn_id, $dmn_name, $post_check) {
 
 function gen_dmn_als_sub_list(&$tpl, &$sql, $dmn_id, $post_check) {
 
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	$ok_status = $cfg->ITEM_OK_STATUS;
 
@@ -314,7 +314,7 @@ function gen_dmn_als_sub_list(&$tpl, &$sql, $dmn_id, $post_check) {
 
 function schedule_mail_account(&$sql, $domain_id, $dmn_name, $mail_acc) {
 
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	$mail_auto_respond = false;
 	$mail_auto_respond_text = '';
@@ -458,7 +458,7 @@ function schedule_mail_account(&$sql, $domain_id, $dmn_name, $mail_acc) {
 
 function check_mail_acc_data(&$sql, $dmn_id, $dmn_name) {
 
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	$mail_type_normal = isset($_POST['mail_type_normal']) ? $_POST['mail_type_normal'] : false;
 	$mail_type_forward = isset($_POST['mail_type_forward']) ? $_POST['mail_type_forward'] : false;

@@ -32,7 +32,7 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = IspCP_Registry::get('Config');
+$cfg = ispCP_Registry::get('Config');
 
 $tpl = new pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/protect_it.tpl');
@@ -56,7 +56,7 @@ $tpl->assign(
  */
 function protect_area(&$tpl, &$sql, $dmn_id) {
 
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	if (!isset($_POST['uaction']) || $_POST['uaction'] != 'protect_it') {
 		return;
@@ -199,7 +199,7 @@ SQL_QUERY;
 
 function gen_protect_it(&$tpl, &$sql, &$dmn_id) {
 
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	if (!isset($_GET['id'])) {
 		$edit = 'no';

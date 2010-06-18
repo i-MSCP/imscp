@@ -32,7 +32,7 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = IspCP_Registry::get('Config');
+$cfg = ispCP_Registry::get('Config');
 
 $tpl = new pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/domains_manage.tpl');
@@ -128,7 +128,7 @@ function gen_user_dns_list(&$tpl, &$sql, $user_id) {
 
 function gen_user_dns_action($action, $dns_id, $status) {
 
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	if ($status === $cfg->ITEM_OK_STATUS) {
 		return array(tr($action), 'dns_'.strtolower($action).'.php?edit_id='.$dns_id);
@@ -139,7 +139,7 @@ function gen_user_dns_action($action, $dns_id, $status) {
 
 function gen_user_sub_action($sub_id, $sub_status) {
 
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	if ($sub_status === $cfg->ITEM_OK_STATUS) {
 		return array(tr('Delete'), "subdomain_delete.php?id=$sub_id");
@@ -150,7 +150,7 @@ function gen_user_sub_action($sub_id, $sub_status) {
 
 function gen_user_alssub_action($sub_id, $sub_status) {
 
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	if ($sub_status === $cfg->ITEM_OK_STATUS) {
 		return array(tr('Delete'), "alssub_delete.php?id=$sub_id");
@@ -251,7 +251,7 @@ function gen_user_sub_list(&$tpl, &$sql, $user_id) {
 
 function gen_user_als_action($als_id, $als_status) {
 
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	if ($als_status === $cfg->ITEM_OK_STATUS) {
 		return array(tr('Delete'), 'alias_delete.php?id=' . $als_id);

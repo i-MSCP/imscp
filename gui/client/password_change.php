@@ -32,7 +32,7 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = IspCP_Registry::get('Config');
+$cfg = ispCP_Registry::get('Config');
 
 $tpl = new pTemplate();
 
@@ -86,7 +86,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_pass') {
 
 function check_udata($id, $pass) {
 
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 
 	$query = "
 		SELECT

@@ -32,7 +32,7 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = IspCP_Registry::get('Config');
+$cfg = ispCP_Registry::get('Config');
 
 $tpl = new pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/alias_edit.tpl');
@@ -121,8 +121,8 @@ unset_messages();
  */
 function gen_editalias_page(&$tpl, $edit_id) {
 
-	$cfg = IspCP_Registry::get('Config');
-	$sql = IspCP_Registry::get('Db');
+	$cfg = ispCP_Registry::get('Config');
+	$sql = ispCP_Registry::get('Db');
 
 	// Get data from sql
 	list($domain_id) = get_domain_default_props($sql, $_SESSION['user_id']);
@@ -193,8 +193,8 @@ function gen_editalias_page(&$tpl, $edit_id) {
  */
 function check_fwd_data(&$tpl, $alias_id) {
 
-	$cfg = IspCP_Registry::get('Config');
-	$sql = IspCP_Registry::get('Db');
+	$cfg = ispCP_Registry::get('Config');
+	$sql = ispCP_Registry::get('Db');
 
 	$forward_url = strtolower(clean_input($_POST['forward']));
 	$status = $_POST['status'];

@@ -30,7 +30,7 @@
 
 require '../include/ispcp-lib.php';
 
-$cfg = IspCP_Registry::get('Config');
+$cfg = ispCP_Registry::get('Config');
 
 check_login(__FILE__, $cfg->PREVENT_EXTERNAL_LOGIN_CLIENT);
 
@@ -234,7 +234,7 @@ function check_user_permissions(&$tpl, $dmn_sqld_limit, $dmn_sqlu_limit, $dmn_ph
  * Calculate the usege traffic/ return array (persent/value)
  */
 function make_traff_usege($domain_id) {
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 
 	$res = exec_query($sql, "SELECT `domain_id` FROM `domain` WHERE `domain_admin_id` = ?", array($domain_id));
 	$dom_id = $res->FetchRow();

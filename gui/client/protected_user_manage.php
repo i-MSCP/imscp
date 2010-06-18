@@ -32,7 +32,7 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = IspCP_Registry::get('Config');
+$cfg = ispCP_Registry::get('Config');
 
 $tpl = new pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/puser_manage.tpl');
@@ -56,7 +56,7 @@ $tpl->assign(
 
 function gen_user_action($id, $status) {
 
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	if ($status === $cfg->ITEM_OK_STATUS) {
 		return array(tr('Delete'), "action_delete('protected_user_delete.php?uname={USER_ID}', '{UNAME}')", tr('Edit'), "protected_user_edit.php?uname={USER_ID}");
@@ -67,7 +67,7 @@ function gen_user_action($id, $status) {
 
 function gen_group_action($id, $status, $group) {
 
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	if ($status === $cfg->ITEM_OK_STATUS
 		&& $group != $cfg->AWSTATS_GROUP_AUTH) {

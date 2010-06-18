@@ -32,7 +32,7 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = IspCP_Registry::get('Config');
+$cfg = ispCP_Registry::get('Config');
 
 $tpl = new pTemplate();
 $tpl->define_dynamic('page_message', 'page');
@@ -45,7 +45,7 @@ $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/ftp_choose_dir.tpl')
 
 function gen_directories(&$tpl) {
 
-	$sql = IspCP_Registry::get('Db');
+	$sql = ispCP_Registry::get('Db');
 	// Initialize variables
 	$path = isset($_GET['cur_dir']) ? $_GET['cur_dir'] : '';
 	$domain = $_SESSION['user_logged'];

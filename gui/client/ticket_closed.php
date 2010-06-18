@@ -32,7 +32,7 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = IspCP_Registry::get('Config');
+$cfg = ispCP_Registry::get('Config');
 
 $tpl = new pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/ticket_closed.tpl');
@@ -49,7 +49,7 @@ $tpl->define_dynamic('scroll_next', 'page');
 
 function gen_tickets_list(&$tpl, &$sql, $user_id) {
 
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	$start_index = 0;
 	$rows_per_page = $cfg->DOMAIN_ROWS_PER_PAGE;

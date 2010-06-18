@@ -29,7 +29,7 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = IspCP_Registry::get('Config');
+$cfg = ispCP_Registry::get('Config');
 
 if (isset($_GET['edit_id']) && $_GET['edit_id'] !== '') {
 	$dns_id = $_GET['edit_id'];

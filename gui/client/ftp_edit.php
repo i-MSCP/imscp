@@ -32,7 +32,7 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = IspCP_Registry::get('Config');
+$cfg = ispCP_Registry::get('Config');
 
 if (isset($_GET['id'])) {
 	$ftp_acc = $_GET['id'];
@@ -51,7 +51,7 @@ $tpl->define_dynamic('logged_from', 'page');
 
 function gen_page_dynamic_data(&$tpl, &$sql, $ftp_acc) {
 
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	$query = "
 		SELECT
@@ -89,7 +89,7 @@ function gen_page_dynamic_data(&$tpl, &$sql, $ftp_acc) {
 function update_ftp_account(&$sql, $ftp_acc, $dmn_name) {
 
 	global $other_dir;
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	// Create a virtual filesystem (it's important to use =&!)
 	$vfs = new vfs($dmn_name, $sql);

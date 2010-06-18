@@ -36,7 +36,7 @@ check_login(__FILE__);
 
 function get_db_user_passwd(&$sql, $db_user_id) {
 
-	$cfg = IspCP_Registry::get('Config');
+	$cfg = ispCP_Registry::get('Config');
 
 	$query = "
 		SELECT
