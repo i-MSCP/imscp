@@ -1,6 +1,11 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-06-19 Laurent Declercq
+	- ENGINE
+		Fixed warning in awstats_buildstaticpages.pl:
+			- "my" variable $SiteConfig masks earlier declaration in same scope
+
 2010-06-18 Laurent Declercq
 	- GUI:
 		* Added documentation for the ispCP_Database class
@@ -10,19 +15,19 @@ ispCP ω 1.0.6 ChangeLog
 		* Integrated news classes:
 			- ispCP_Bootstrap class for the ispCP boot process
 			- ispCP_Initializer class for the ispCP initialization process
-		* Moved class.database.php file to ispCP/Database.php
 		* Naming convention:
-			- Moved `include/ispCP` directory to `include/ispCP` according the
-				new naming convention
 			- Changed all classes names prefix to `ispCP_` for the classes that
 				live under the include/ispCP directory
+			- Moved `include/ispCP` directory to `include/ispCP` according the
+				new naming convention
 			- Refactored all files (Usage of the ispCP_registry class to get
 				shared objects)
-		* Removed the include/config.php file (Functions moved to the
-			ispcp-functions.php file)
+		* Moved class.database.php file to ispCP/Database.php
 		* Refactored the include/ispcp-lib.php file
 		* Refactored the include/sql.php file according the new
 			ispCP_initialization class
+		* Removed the include/config.php file (Functions moved to the
+			ispcp-functions.php file)
 		* Switched to the new naming convention
 	- TRANSLATION:
 		* Removed duplicate entries ('#. Please ignore this entry')
