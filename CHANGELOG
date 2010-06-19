@@ -1,6 +1,10 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-06-20 Laurent Declercq
+	- GUI:
+		* Updated documentation for ispCP_Database class
+
 2010-06-19 Laurent Declercq
 	- ENGINE
 		Fixed warning in awstats_buildstaticpages.pl:
