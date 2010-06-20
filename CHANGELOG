@@ -11,6 +11,8 @@ ispCP ω 1.0.6 ChangeLog
 2010-06-20 Laurent Declercq
 	- GUI:
 		* Updated documentation for ispCP_Database class
+		* Added a new set of class to be able to handle all uncaught exceptions
+			(Will be integrated later)
 
 2010-06-19 Laurent Declercq
 	- ENGINE
