@@ -157,6 +157,18 @@ function tohtml($text) {
 }
 
 /**
+ * Convert any text to JavaScript text
+ * @param  $text
+ * @return string JavaScript text
+ */
+function tojs($text) {
+	$result = htmlentities($text, ENT_COMPAT, "UTF-8");
+	$result = strtr($result, array('\\'=>'\\\\',"'"=>"\\'",'"'=>'\\"',"\r"=>'\\r',"\n"=>'\\n','</'=>'<\/'));
+
+	return $result;
+}
+
+/**
  * Passwort check
  *
  * Check if a password is valid

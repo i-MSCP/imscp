@@ -85,6 +85,7 @@ function gen_db_user_list(&$tpl, &$sql, $db_id) {
 			$tpl->assign(
 				array(
 					'DB_USER'	=> tohtml($user_mysql),
+					'DB_USER_JS'=> tojs($user_mysql),
 					'USER_ID'	=> $user_id
 				)
 			);
@@ -122,7 +123,8 @@ function gen_db_list(&$tpl, &$sql, $user_id) {
 			$tpl->assign(
 				array(
 					'DB_ID'		=> $db_id,
-					'DB_NAME'	=> tohtml($db_name)
+					'DB_NAME'	=> tohtml($db_name),
+					'DB_NAME_JS'=> tojs($db_name)
 				)
 			);
 			$tpl->parse('DB_LIST', '.db_list');

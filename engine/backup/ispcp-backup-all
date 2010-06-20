@@ -141,6 +141,13 @@ sub backup_sql {
 	my ($rs, $rdata, $sql) = (undef, undef, undef);
 
 	my $dmn_backup_dir = $main::cfg{'APACHE_WWW_DIR'}."/$dmn_name/backups";
+	my $dbhost = $main::cfg{'DATABASE_HOST'};
+	my $dbuser = $main::cfg{'DATABASE_USER'};
+	my $dbpass = decrypt_db_password($main::cfg{'DATABASE_PASSWORD'});
+
+	foreach ($dbhost, $dbuser, $dbpass) {
+		$_ =~ s/"/\\"/gm;
+	}
 
 	$sql = "SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id=$dmn_id";
 	($rs, $rdata) = doSQL($sql);
@@ -151,18 +158,24 @@ sub backup_sql {
 		my $db_name = @$_[1];
 		my $db_backup_file = "$dmn_backup_dir/$db_name.sql";
 		my ($db_filename, $db_compresscmd) = (undef, undef);
+		my $dbname = $db_name;
+		my $dbbackup = $db_backup_file;
 
-		my $db_backupcmd = "$main::cfg{'CMD_MYSQLDUMP'} --add-drop-table --allow-keywords --quote-names -h'$main::cfg{'DATABASE_HOST'}' -u'$main::cfg{'DATABASE_USER'}' -p'".decrypt_db_password($main::cfg{'DATABASE_PASSWORD'})."' '$db_name' >'$db_backup_file'";
+		$dbname =~ s/"/\\"/g;
+		$dbbackup =~ s/"/\\"/g;
+
+		my $db_backupcmd = "$main::cfg{'CMD_MYSQLDUMP'} --add-drop-table --allow-keywords --quote-names";
+		$db_backupcmd .= qq/ -h"$dbhost" -u"$dbuser" -p"$dbpass" "$dbname" > "$dbbackup"/;
 
 		if ($zip eq "bzip2") {
-			$db_filename = "$db_backup_file.bz2";
-			$db_compresscmd = "$main::cfg{'CMD_BZIP'} --force '$db_backup_file'";
+			$db_filename = "$dbbackup.bz2";
+			$db_compresscmd = $main::cfg{'CMD_BZIP'}.qq/ --force "$dbbackup"/;
 		} elsif ($zip eq "gzip") {
-			$db_filename = "$db_backup_file.gz";
-			$db_compresscmd = "$main::cfg{'CMD_GZIP'} --force '$db_backup_file'";
+			$db_filename = "$dbbackup.gz";
+			$db_compresscmd = $main::cfg{'CMD_GZIP'}.qq/ --force "$dbbackup"/;
 		} elsif ($zip eq "lzma") {
-			$db_filename = "$db_backup_file.lzma";
-			$db_compresscmd = "$main::cfg{'CMD_LZMA'} --force '$db_backup_file'";
+			$db_filename = "$dbbackup.lzma";
+			$db_compresscmd = $main::cfg{'CMD_LZMA'}.qq/ --force "$dbbackup"/;
 		} else {
 			push_el(\@main::el, 'backup_sql()', "Domain $dmn_name: Backup algorithm for domain $dmn_name not supported: $zip!");
 			send_error_mail('backup_sql()', "Domain $dmn_name: Backup algorithm for domain $dmn_name not supported: $zip!");
