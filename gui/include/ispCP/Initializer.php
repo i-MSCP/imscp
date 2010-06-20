@@ -37,7 +37,7 @@
  *
  * @author Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
  * @since 1.0.6
- * @version 1.0.1
+ * @version 1.0.2
  */
 class ispCP_Initializer {
 
@@ -72,7 +72,7 @@ class ispCP_Initializer {
 	 *
 	 * Note: Concept borrowed to the RoR framework
 	 *
-	 * @throw Exception
+	 * @throw ispCP_Exception
 	 * @param string|ispCP_ConfigHandler $command Initializer method to be
 	 *	executed or an ispCP_ConfigHandler object
 	 * @param ispCP_ConfigHandler $config Optional ispCP_ConfigHandler object
@@ -95,7 +95,9 @@ class ispCP_Initializer {
 			$initializer->$command();
 
 		} else {
-			throw new Exception('Error: ispCP is already fully initialized!');
+			throw new ispCP_Exception(
+				'Error: ispCP is already fully initialized!'
+			);
 		}
 
 		return $initializer;
@@ -128,6 +130,8 @@ class ispCP_Initializer {
 		// Check php version and availability of the Php Standard Library
 		$this->_checkPhp();
 
+		$this->_setDisplayError();
+
 		// Initialize output buffering
 		$this->_initializeOutputBuffering();
 
@@ -139,6 +143,9 @@ class ispCP_Initializer {
 
 		// Establish the connection to the database
 		$this->_initializeDatabase();
+
+		// Set additionally ispCP_ExceptionHandler_Writer_Abstract observers
+		//$this->_setExceptionHandlerWriters();
 
 		// Initialize logger
 		$this->_initializeLogger();
@@ -175,6 +182,7 @@ class ispCP_Initializer {
 	 * Note: ispCP requires PHP 5.1.4 or later because some SPL interfaces were
 	 * not stable in earlier versions of PHP.
 	 *
+	 * @throws ispCP_Exception
 	 * @return void
 	 */
 	protected function _checkPhp() {
@@ -193,13 +201,58 @@ class ispCP_Initializer {
 		// so, we can do the checking here without any problem.
 		} elseif($php_version < '5.3.0' && !extension_loaded('SPL')) {
 			$err_msg = 
-				'Error: Standard PHP Library (SPL) was not detected !<br />' .
+				'Error: Standard PHP Library (SPL) was not detected!' .
 				'See http://php.net/manual/en/book.spl.php for more information!';
 		} else {
 			return;
 		}
 
-		system_message($err_msg);
+		throw new ispCP_Exception($err_msg);
+	}
+
+	/**
+	 * Set the php display_errors parameter
+	 *
+	 * @return void
+	 */
+	protected function _setDisplayError() {
+		if($this->_config->DEBUG) {
+			ini_set('display_errors', 1);
+		}
+	}
+
+	/**
+	 * Set additional observers for the exception handler
+	 *
+	 * @return void
+	 */
+	protected function _setExceptionHandlerWriters() {
+
+		// Get a reference to the ispCP_ExceptionHandler object
+		$exceptionHandler = ispCP_Registry::get('ExceptionHandler');
+
+		$writerObservers = explode(',', $this->_config->PHP_EXCEPTION_WRITERS);
+
+		if(in_array('file', $writerObservers)) {
+			// Writer not Yet Implemented
+			/*$exceptionHandler->attach(
+				new ispCP_ExceptionHandler_Writer_File(
+					'path_to_logfile'
+				)
+			);*/
+		} elseif(in_array('database', $writerObservers)) {
+			/*$exceptionHandler->attach(
+				new ispCP_ExceptionHandler_Writer_Db(
+					ispCP_Registry::get('Pdo')
+			);*/
+		} elseif(in_array('mail', $writerObservers)) {
+			// Writer not Yet Implemented
+			/*$exceptionHandler->attach(
+				new ispCP_ExceptionHandler_Writer_Mail(
+					$this->_config->DEFAULT_ADMIN_ADDRESS
+				)
+			);*/
+		}
 	}
 
 	/**
@@ -257,10 +310,12 @@ class ispCP_Initializer {
 	 * Establishes the connection to the database
 	 *
 	 * This methods establishes the default connection to the database by using
-	 * configuration parameters that come from the basis configuration object and
-	 * then, register the database instance in the registry for shared access
+	 * configuration parameters that come from the basis configuration object
+	 * and then, register the database instance in the registry for shared access.
 	 *
-	 * @throws Exception
+	 * A raw PDO instance is also registered in the registry for shared access.
+	 *
+	 * @throws ispCP_Exception
 	 * @return void
 	 */
 	protected function _initializeDatabase() {
@@ -271,7 +326,7 @@ class ispCP_Initializer {
 
 		// Include needed db keys
 		require_once 'ispcp-db-keys.php';
-		
+		$this->_config->DATABASE_PASSWORD = 'dd';
 		try {
 
 			$connection = ispCP_Database::connect(
@@ -286,13 +341,10 @@ class ispCP_Initializer {
 
 			// Here, any SQL error information are showed only if the DEBUG
 			// parameter value is set to a positive value in the ispcp.conf file.
-			system_message(
-				$this->_config->DEBUG ?
-					'Error: Unable to establish connection to the database!<br />'.
-						'SQL returned: ' . $e->getMessage() :
-					'Error: An error occurred! Please, contact your administrator!'
+			throw new ispCP_Exception(
+				'Error: Unable to establish connection to the database!'.
+				'SQL returned: ' . $e->getMessage()
 			);
-
 		}
 
 		// Register the Database instance for shared access
@@ -327,7 +379,7 @@ class ispCP_Initializer {
 		// We get an ispCP_ConfigHandler_Db object
 		$db_cfg = Config::getInstance(Config::DB, ispCP_Registry::get('Pdo'));
 
-		// Now, we can override our base configuration object with parameter
+		// Now, we can override our basis configuration object with parameter
 		// that come from the database
 		$this->_config->replaceWith($db_cfg);
 
@@ -340,7 +392,7 @@ class ispCP_Initializer {
 	 *
 	 * This methods set encoding for both communication database and PHP.
 	 *
-	 * @throws Exception
+	 * @throws ispCP_Exception
 	 * @return void
 	 */
 	protected function _setEncoding() {
@@ -356,15 +408,10 @@ class ispCP_Initializer {
 
 			$db = ispCP_Registry::get('Db');
 
-			try {
-				if($db->Execute('SET NAMES `utf8`;') === false)
-					throw new Exception($db->ErrorMsg());
-			} catch(Exception $e) {
-				system_message(
-					$this->_config->DEBUG ?
-						'Error: Unable to set charset for database communication!<br />' .
-							$e->getMessage() :
-						'Error: An error occurred! Please, contact your administrator!'
+			if($db->Execute('SET NAMES `utf8`;') === false) {
+				throw new ispCP_Exception(
+					'Error: Unable to set charset for database communication!' .
+					$db->ErrorMsg()
 				);
 			}
 		}

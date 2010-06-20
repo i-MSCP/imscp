@@ -10,10 +10,13 @@ ispCP ω 1.0.6 ChangeLog
 
 2010-06-20 Laurent Declercq
 	- GUI:
-		* Updated documentation for ispCP_Database class
 		* Added a new set of class to be able to handle all uncaught exceptions
 			(Will be integrated later)
 		* Added ispCP_Exception and ispCP_Exception_Production classes
+		* Integrated the ispCP_ExceptionHandler class and the first
+			ispCP_ExceptionHandler_Writer_Abstract object
+		* Updated documentation for ispCP_Database class
+		* Updated several classes to use the new ispCP_Exception class
 
 2010-06-19 Laurent Declercq
 	- ENGINE

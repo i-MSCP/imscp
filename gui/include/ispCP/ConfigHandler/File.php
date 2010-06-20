@@ -39,7 +39,7 @@ require_once  INCLUDEPATH . '/ispCP/ConfigHandler.php';
  * equal sign.
  *
  * @since 1.0.6
- * @version 1.0.2
+ * @version 1.0.3
  * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
  * @author laurent declercq <laurent.declercq@ispcp.net>
  * @see ispCP_ConfigHandler
@@ -86,7 +86,7 @@ class ispCP_ConfigHandler_File extends ispCP_ConfigHandler {
 	 * Opens a configuration file and parses its Key = Value pairs into the
 	 * {@link ispCP_ConfigHangler::parameters} array.
 	 *
-	 * @throws Exception
+	 * @throws ispCP_Exception
 	 * @return Array that contain all Configuration parameters
 	 * @todo Don't use '@' error operator
 	 */
@@ -95,8 +95,8 @@ class ispCP_ConfigHandler_File extends ispCP_ConfigHandler {
 		$fd = @file_get_contents($this->_pathFile);
 
 		if ($fd === false) {
-			throw new Exception(
-				"Unable to open the configuration file `{$this->_pathFile}`!"
+			throw new ispCP_Exception(
+				"Error: Unable to open the configuration file `{$this->_pathFile}`!"
 			);
 		}
 

@@ -31,112 +31,110 @@
 // Boot IspCP
 ispCP_Bootstrap::boot();
 
-$cfg = Config::getInstance();
+// Get a reference to a ispCP_ConfigHandler_File instance
+$config = Config::getInstance();
 
 // Set some configuration parameters
 
 // Template paths
-$cfg->ROOT_TEMPLATE_PATH = 'themes/';
-
-// Not needed (Defined in the ispcp.conf)
-//$cfg->USER_INITIAL_THEME = 'omega_original';
+$config->ROOT_TEMPLATE_PATH = 'themes/';
 
 // Get template path
-$tpl_path = $cfg->ROOT_TEMPLATE_PATH . $cfg->USER_INITIAL_THEME;
+$tpl_path = $config->ROOT_TEMPLATE_PATH . $config->USER_INITIAL_THEME;
 
 // Set the login templates path
-$cfg->LOGIN_TEMPLATE_PATH = $tpl_path;
+$config->LOGIN_TEMPLATE_PATH = $tpl_path;
 
 // Set the users level templates path
-$cfg->ADMIN_TEMPLATE_PATH =  "../$tpl_path/admin";
-$cfg->RESELLER_TEMPLATE_PATH = "../$tpl_path/reseller";
-$cfg->CLIENT_TEMPLATE_PATH = "../$tpl_path/client";
+$config->ADMIN_TEMPLATE_PATH =  "../$tpl_path/admin";
+$config->RESELLER_TEMPLATE_PATH = "../$tpl_path/reseller";
+$config->CLIENT_TEMPLATE_PATH = "../$tpl_path/client";
 
 // Set the isCP logo path
-$cfg->IPS_LOGO_PATH = '../themes/user_logos';
+$config->IPS_LOGO_PATH = '../themes/user_logos';
 
-		// Set the order panel templates path
-$cfg->PURCHASE_TEMPLATE_PATH = "../$tpl_path/orderpanel";
+// Set the order panel templates path
+$config->PURCHASE_TEMPLATE_PATH = "../$tpl_path/orderpanel";
 
-$cfg->HTML_CHECKED = ' checked="checked"';
-$cfg->HTML_DISABLED = ' disabled="disabled"';
-$cfg->HTML_READONLY = ' readonly="readonly"';
-$cfg->HTML_SELECTED = ' selected="selected"';
+$config->HTML_CHECKED = ' checked="checked"';
+$config->HTML_DISABLED = ' disabled="disabled"';
+$config->HTML_READONLY = ' readonly="readonly"';
+$config->HTML_SELECTED = ' selected="selected"';
 
 // Standard Language (if not set)
-$cfg->USER_INITIAL_LANG = 'lang_EnglishBritain';
+$config->USER_INITIAL_LANG = 'lang_EnglishBritain';
 
 // variable for development edition: show all php variables beyond page content
-$cfg->DUMP_GUI_DEBUG = false;
+$config->DUMP_GUI_DEBUG = false;
 
 // show spGZIP compression information in HTML output
-$cfg->SHOW_COMPRESSION_SIZE = true;
+$config->SHOW_COMPRESSION_SIZE = true;
 
 // Session timeout in minutes
-$cfg->SESSION_TIMEOUT = 30;
+$config->SESSION_TIMEOUT = 30;
 
 // Item states
-$cfg->ITEM_ADD_STATUS = 'toadd';
-$cfg->ITEM_OK_STATUS = 'ok';
-$cfg->ITEM_CHANGE_STATUS = 'change';
-$cfg->ITEM_DELETE_STATUS = 'delete';
-$cfg->ITEM_DISABLED_STATUS = 'disabled';
-$cfg->ITEM_RESTORE_STATUS = 'restore';
-$cfg->ITEM_TOENABLE_STATUS = 'toenable';
-$cfg->ITEM_TODISABLED_STATUS = 'todisable';
-$cfg->ITEM_ORDERED_STATUS = 'ordered';
-$cfg->ITEM_DNSCHANGE_STATUS = 'dnschange';
+$config->ITEM_ADD_STATUS = 'toadd';
+$config->ITEM_OK_STATUS = 'ok';
+$config->ITEM_CHANGE_STATUS = 'change';
+$config->ITEM_DELETE_STATUS = 'delete';
+$config->ITEM_DISABLED_STATUS = 'disabled';
+$config->ITEM_RESTORE_STATUS = 'restore';
+$config->ITEM_TOENABLE_STATUS = 'toenable';
+$config->ITEM_TODISABLED_STATUS = 'todisable';
+$config->ITEM_ORDERED_STATUS = 'ordered';
+$config->ITEM_DNSCHANGE_STATUS = 'dnschange';
 
 // SQL variables
-$cfg->MAX_SQL_DATABASE_LENGTH = 64;
-$cfg->MAX_SQL_USER_LENGTH = 16;
-$cfg->MAX_SQL_PASS_LENGTH = 32;
+$config->MAX_SQL_DATABASE_LENGTH = 64;
+$config->MAX_SQL_USER_LENGTH = 16;
+$config->MAX_SQL_PASS_LENGTH = 32;
 
 /**
  * The following parameters are overwritten via admin cp
  */
 
 // Domain rows pagination
-$cfg->DOMAIN_ROWS_PER_PAGE = 10;
+$config->DOMAIN_ROWS_PER_PAGE = 10;
 
 // 'admin': hosting plans are available only in admin level, the
 // reseller cannot make custom changes
 // 'reseller': hosting plans are available only in reseller level
-$cfg->HOSTING_PLANS_LEVEL = 'reseller';
+$config->HOSTING_PLANS_LEVEL = 'reseller';
 
 // TLD strict validation (according IANA database)
-$cfg->TLD_STRICT_VALIDATION = true;
+$config->TLD_STRICT_VALIDATION = true;
 
 // SLD strict validation
-$cfg->SLD_STRICT_VALIDATION = true;
+$config->SLD_STRICT_VALIDATION = true;
 
 // Maximum number of labels for the domain names
 // and subdomains (excluding SLD and TLD)
-$cfg->MAX_DNAMES_LABELS = 1;
+$config->MAX_DNAMES_LABELS = 1;
 
 // Maximum number of labels for the subdomain names
-$cfg->MAX_SUBDNAMES_LABELS = 1;
+$config->MAX_SUBDNAMES_LABELS = 1;
 
 // Enable or disable support system
-$cfg->ISPCP_SUPPORT_SYSTEM = true;
+$config->ISPCP_SUPPORT_SYSTEM = true;
 
 // Enable or disable lost password support
-$cfg->LOSTPASSWORD = true;
+$config->LOSTPASSWORD = true;
 
 // Uniqkeytimeout in minutes
-$cfg->LOSTPASSWORD_TIMEOUT = 30;
+$config->LOSTPASSWORD_TIMEOUT = 30;
 
 // Captcha imagewidth
-$cfg->LOSTPASSWORD_CAPTCHA_WIDTH = 280;
+$config->LOSTPASSWORD_CAPTCHA_WIDTH = 280;
 
 // Captcha imagehigh
-$cfg->LOSTPASSWORD_CAPTCHA_HEIGHT = 70;
+$config->LOSTPASSWORD_CAPTCHA_HEIGHT = 70;
 
 // Captcha background color
-$cfg->LOSTPASSWORD_CAPTCHA_BGCOLOR = array(229, 243, 252);
+$config->LOSTPASSWORD_CAPTCHA_BGCOLOR = array(229, 243, 252);
 
 // Captcha text color
-$cfg->LOSTPASSWORD_CAPTCHA_TEXTCOLOR = array(0, 53, 92);
+$config->LOSTPASSWORD_CAPTCHA_TEXTCOLOR = array(0, 53, 92);
 
 /**
  * Captcha ttf fontfiles (have to be under compatible open source license)
@@ -150,67 +148,66 @@ $fonts = array(
 );
 
 // Set random catcha font file
-$cfg->LOSTPASSWORD_CAPTCHA_FONT = INCLUDEPATH . '/fonts/' .
+$config->LOSTPASSWORD_CAPTCHA_FONT = INCLUDEPATH . '/fonts/' .
 	$fonts[mt_rand(0, count($fonts)-1)];
 
 // Enable or disable bruteforcedetection
-$cfg->BRUTEFORCE = true;
+$config->BRUTEFORCE = true;
 
 // Blocktime in minutes
-$cfg->BRUTEFORCE_BLOCK_TIME = 30;
+$config->BRUTEFORCE_BLOCK_TIME = 30;
 
 // Max login before block
-$cfg->BRUTEFORCE_MAX_LOGIN = 3;
+$config->BRUTEFORCE_MAX_LOGIN = 3;
 
 // Max captcha failed attempts before block
-$cfg->BRUTEFORCE_MAX_CAPTCHA = 5;
+$config->BRUTEFORCE_MAX_CAPTCHA = 5;
 
 // Enable or disable time between logins
-$cfg->BRUTEFORCE_BETWEEN = true;
+$config->BRUTEFORCE_BETWEEN = true;
 
 // Time between logins in seconds
-$cfg->BRUTEFORCE_BETWEEN_TIME = 30;
+$config->BRUTEFORCE_BETWEEN_TIME = 30;
 
 // Enable or disable maintenance mode
-$cfg->MAINTENANCEMODE = false;
+$config->MAINTENANCEMODE = false;
 
 // Servicemode message
 // Please: Leave the comment for 'tr'
-$cfg->MAINTENANCEMODE_MESSAGE =
+$config->MAINTENANCEMODE_MESSAGE =
 	/*tr*/("We are sorry, but the system is currently under maintenance.\nPlease try again later.");
 
 // Minimum password chars
-$cfg->PASSWD_CHARS = 6;
+$config->PASSWD_CHARS = 6;
 
 // Enable or disable strong passwords
-$cfg->PASSWD_STRONG = true;
+$config->PASSWD_STRONG = true;
 
 // The virtual host file from Apache which contains our virtual host
 // entries
-$cfg->SERVER_VHOST_FILE =
-$cfg->APACHE_SITES_DIR . '/ispcp.conf';
+$config->SERVER_VHOST_FILE = $config->APACHE_SITES_DIR . '/ispcp.conf';
 
 // The minimum level for a message to be sent to DEFAULT_ADMIN_ADDRESS
 // PHP's E_USER_* values are used for simplicity:
 // E_USER_NOTICE: logins, and all info that isn't very relevant
 // E_USER_WARNING: switching to an other account, etc
 // E_USER_ERROR: "admin MUST know" messages
-$cfg->LOG_LEVEL = E_USER_NOTICE;
+$config->LOG_LEVEL = E_USER_NOTICE;
 
-// Creation of webmaster, postmaster and abuse forwarders when 
+// Creation of webmaster, postmaster and abuse forwarders when
 // domain/alias/ subdomain is created
-$cfg->CREATE_DEFAULT_EMAIL_ADDRESSES = true;
+$config->CREATE_DEFAULT_EMAIL_ADDRESSES = true;
 
 // Count default e-mail (abuse,postmaster,webmaster) in user limit
 // true: default e-mail are counted
 // false: default e-mail are NOT counted
-$cfg->COUNT_DEFAULT_EMAIL_ADDRESSES = true;
+$config->COUNT_DEFAULT_EMAIL_ADDRESSES = true;
 
 // Use hard mail suspension when suspending a domain:
 // true: email accounts are hard suspended (completely unreachable)
 // false: email accounts are soft suspended (passwords are modified so
 // user can't access the accounts)
-$cfg->HARD_MAIL_SUSPENSION = true;
+$config->HARD_MAIL_SUSPENSION = true;
 
 // Prevent external login (i.e. check for valid local referer)
 // separated in admin, reseller and client
@@ -218,16 +215,16 @@ $cfg->HARD_MAIL_SUSPENSION = true;
 // true: prevent external login, check for referer, more secure
 // false: allow external login, do not check for referer, less
 // security (risky)
-$cfg->PREVENT_EXTERNAL_LOGIN_ADMIN = true;
-$cfg->PREVENT_EXTERNAL_LOGIN_RESELLER = true;
-$cfg->PREVENT_EXTERNAL_LOGIN_CLIENT = true;
+$config->PREVENT_EXTERNAL_LOGIN_ADMIN = true;
+$config->PREVENT_EXTERNAL_LOGIN_RESELLER = true;
+$config->PREVENT_EXTERNAL_LOGIN_CLIENT = true;
 
 // Automatic search for new version
-$cfg->CHECK_FOR_UPDATES = true;
+$config->CHECK_FOR_UPDATES = true;
 
-if(!$cfg->ISPCP_SUPPORT_SYSTEM_TARGET) {
-	$cfg->ISPCP_SUPPORT_SYSTEM_TARGET = '_self';
+if(!$config->ISPCP_SUPPORT_SYSTEM_TARGET) {
+	$config->ISPCP_SUPPORT_SYSTEM_TARGET = '_self';
 }
 
 // Initialize the application
-IspCP_Initializer::run($cfg);
+IspCP_Initializer::run($config);

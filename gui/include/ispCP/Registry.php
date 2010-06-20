@@ -30,7 +30,7 @@
  *
  * @author Laurent declercq (nuxwin) <laurent.declercq@ispcp.net>
  * @since 1.0.6
- * @version 1.0.2
+ * @version 1.0.3
  */
 class ispCP_Registry {
 
@@ -83,8 +83,8 @@ class ispCP_Registry {
 	 *
 	 * $data = &ispCP_Register::get('name');
 	 *
+	 * @throws ispCP_Exception
 	 * @param string $index Data key name
-	 * @throws Exception
 	 * @return mixed Data
 	 */
 	public static function &get($index) {
@@ -92,7 +92,9 @@ class ispCP_Registry {
 		$instance = self::getInstance();
 
 		if (!isset($instance->$index)) {
-			throw new Exception("Data `$index` is not registered!");
+			throw new ispCP_Exception(
+				"Error: Data `$index` is not registered!"
+			);
 		}
 
 		return $instance->$index;
@@ -101,13 +103,13 @@ class ispCP_Registry {
 	/**
 	 * Overloading on inaccessible members
 	 *
+	 * @throws ispCP_Exception
 	 * @param string $index Data key name
-	 * @throws Exception
 	 * @return void
 	 */
 	public function __get($index) {
 
-		throw new Exception("Data `$index` is not registered!");
+		throw new ispCP_Exception("Error: Data `$index` is not registered!");
 	}
 
 	/**
@@ -134,7 +136,7 @@ class ispCP_Registry {
 
 	/**
 	 * Check if a data is registered
-	 * 
+	 *
 	 * @param string $index Data key name
 	 * @return boolean TRUE if the data is registered, FALSE otherwise
 	 */

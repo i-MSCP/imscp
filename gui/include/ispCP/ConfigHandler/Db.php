@@ -40,7 +40,7 @@ require_once  INCLUDEPATH . '/ispCP/ConfigHandler.php';
  *
  * @author Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
  * @since 1.0.6
- * @version 1.0.3
+ * @version 1.0.4
  * @see ispCP_ConfigHandler
  */
 class ispCP_ConfigHandler_Db extends ispCP_ConfigHandler {
@@ -156,9 +156,9 @@ class ispCP_ConfigHandler_Db extends ispCP_ConfigHandler {
 	 *
 	 * For a single parameter, only a PDO instance is accepted.
 	 *
+	 * @throws ispCP_Exception
 	 * @param PDO|array A PDO instance or an array of parameters that contain at
 	 *	least a PDO instance
-	 * @throws Exception
 	 * @return void
 	 */
 	public function __construct($params) {
@@ -166,8 +166,8 @@ class ispCP_ConfigHandler_Db extends ispCP_ConfigHandler {
 		if(is_array($params)) {
 
 			if(!array_key_exists('db', $params) || !($params['db'] instanceof PDO)) {
-				throw new Exception(
-					'A PDO instance is requested for ' . __CLASS__
+				throw new ispCP_Exception(
+					'Error: A PDO instance is requested for ' . __CLASS__
 				);
 			}
 
@@ -189,7 +189,9 @@ class ispCP_ConfigHandler_Db extends ispCP_ConfigHandler {
 			}
 
 		} elseif(!$params instanceof PDO) {
-			throw new Exception('PDO instance requested for ' . __CLASS__);
+			throw new ispCP_Exception(
+				'Error: PDO instance requested for ' . __CLASS__
+			);
 		}
 
 		$this->_db = $params;
@@ -239,7 +241,7 @@ class ispCP_ConfigHandler_Db extends ispCP_ConfigHandler {
 	 * This method returns the count of queries that were executed since the
 	 * last call of {@link reset_queries_counter()} method.
 	 *
-	 * @throws Exception
+	 * @throws ispCP_Exception
 	 * @param string $queriesCounterType Type of query counter (insert|update)
 	 * @return void
 	 */
@@ -254,14 +256,14 @@ class ispCP_ConfigHandler_Db extends ispCP_ConfigHandler {
 			return $this->_insertQueriesCounter;
 
 		} else {
-			throw new Exception('Unknown queries counter!');
+			throw new ispCP_Exception('Error: Unknown queries counter!');
 		}
 	}
 
 	/**
 	 * Reset a counter of queries
 	 *
-	 * @throws Exception
+	 * @throws ispCP_Exception
 	 * @param string $queriesCounterType Type of query counter (insert|update)
 	 * @return void
 	 */
@@ -276,7 +278,7 @@ class ispCP_ConfigHandler_Db extends ispCP_ConfigHandler {
 			 $this->_insertQueriesCounter = 0;
 
 		} else {
-			throw new Exception('Unknown queries counter!');
+			throw new ispCP_Exception('Error: Unknown queries counter!');
 		}
 	}
 
@@ -310,7 +312,7 @@ class ispCP_ConfigHandler_Db extends ispCP_ConfigHandler {
 	/**
 	 * Load all the configuration parameters from the database
 	 *
-	 * @throws Exception
+	 * @throws ispCP_Exception
 	 * @return Array that contain all configuration parameters
 	 */
 	protected function _loadAll() {
@@ -330,8 +332,8 @@ class ispCP_ConfigHandler_Db extends ispCP_ConfigHandler {
 					$row[$this->_valuesColumn];
 			}
 		} else {
-			throw new Exception(
-				'Could not get configuration parameters from database!'
+			throw new ispCP_Exception(
+				'Error: Could not get configuration parameters from database!'
 			);
 		}
 
@@ -341,11 +343,11 @@ class ispCP_ConfigHandler_Db extends ispCP_ConfigHandler {
 	/**
 	 * Store a new configuration parameter in the database
 	 *
-	 * @throws Exception
+	 * @throws ispCP_Exception
 	 * @return void
 	 */
 	protected function _insert() {
-		if(!$this->_insert_stmt instanceof PDOStatement) {
+		if(!$this->_insertStmt instanceof PDOStatement) {
 
 			$query = "
 				INSERT INTO
@@ -362,8 +364,8 @@ class ispCP_ConfigHandler_Db extends ispCP_ConfigHandler {
 		}
 
 		if($this->_insertStmt->execute() === false) {
-			throw new Exception(
-				'Unable to insert the configuration parameter in the database!'
+			throw new ispCP_Exception(
+				'Error: Unable to insert the configuration parameter in the database!'
 			);
 		}
 	}
@@ -371,7 +373,7 @@ class ispCP_ConfigHandler_Db extends ispCP_ConfigHandler {
 	/**
 	 * Update a configuration parameter in the database
 	 *
-	 * @throws Exception
+	 * @throws ispCP_Exception
 	 * @return void
 	 */
 	protected function _update() {
@@ -394,8 +396,8 @@ class ispCP_ConfigHandler_Db extends ispCP_ConfigHandler {
 		}
 
 		if($this->_updateStmt->execute() === false) {
-			throw new Exception(
-				'Unable to update the configuration parameter in the database!'
+			throw new ispCP_Exception(
+				'Error: Unable to update the configuration parameter in the database!'
 			);
 		} else {
 			$this->_updateQueriesCounter++;
@@ -405,7 +407,7 @@ class ispCP_ConfigHandler_Db extends ispCP_ConfigHandler {
 	/**
 	 * Delete a configuration parameter in the database
 	 *
-	 * @throws Exception
+	 * @throws ispCP_Exception
 	 * @return void
 	 */
 	protected function _delete() {
@@ -425,8 +427,8 @@ class ispCP_ConfigHandler_Db extends ispCP_ConfigHandler {
 		}
 
 		if($this->_deleteStmt->execute() === false) {
-			throw new Exception(
-				'Unable to delete the configuration parameter in the database!'
+			throw new ispCP_Exception(
+				'Error: Unable to delete the configuration parameter in the database!'
 			);
 		}
 	}

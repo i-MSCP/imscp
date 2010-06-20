@@ -36,7 +36,7 @@ defined('INCLUDEPATH') or define('INCLUDEPATH', dirname(dirname(__FILE__)));
  * Note: Will be improved later
  *
  * @since 1.0.6
- * @version 1.0.1
+ * @version 1.0.2
  * @author Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
  */
 class ispCP_Bootstrap {
@@ -44,6 +44,7 @@ class ispCP_Bootstrap {
 	/**
 	 * Boot ispCP environment and, configuration
 	 *
+	 * @throws ispCP_Exception
 	 * @return void
 	 */
 	public static function boot() {
@@ -52,7 +53,7 @@ class ispCP_Bootstrap {
 			$boot = new self;
 			$boot->_run();
 		} else {
-			system_message('Error: ispCP is already booted!');
+			throw new ispCP_Exception('Error: ispCP is already booted!');
 		}
 	}
 

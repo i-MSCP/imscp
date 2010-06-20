@@ -43,7 +43,7 @@
  * object of this class.
  *
  * @since 1.0.6
- * @version 1.0.2
+ * @version 1.0.3
  * @author Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
  */
 class ispCP_ConfigHandler implements ArrayAccess, Iterator {
@@ -94,13 +94,13 @@ class ispCP_ConfigHandler implements ArrayAccess, Iterator {
 	 * Getter method to retrieve a configuration parameter value
 	 *
 	 * @param string $index Configuration parameter key name
-	 * @throws Exception
+	 * @throws ispCP_Exception
 	 * @return Configuration parameter value
 	 */
 	public function get($index) {
 
 		if (!$this->exists($index)) {
-			throw new Exception("Configuration variable `$index` is missing!");
+			throw new ispCP_Exception("Error: Configuration variable `$index` is missing!");
 		}
 
 		return $this->_parameters[$index];

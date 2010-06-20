@@ -81,15 +81,15 @@ final class ispCP_Database {
 	/**
 	 * Return an instance of this class
 	 *
-	 * @throws Exception
+	 * @throws ispCP_Exception
 	 * @param string $connection Connection key name
 	 * return Database instance
 	 */
 	public static function getInstance($connection = 'default') {
 
 		if (!isset(self::$_instances[$connection])) {
-			throw new Exception(
-				'Database error: Not connected to ' . $connection
+			throw new ispCP_Exception(
+				'Error: Database error: Not connected to ' . $connection
 			);
 		}
 
@@ -101,15 +101,15 @@ final class ispCP_Database {
 	 *
 	 * @since 1.0.6
 	 * @author Laurent Declercq <laurent.declercq@ispcp.net>
-	 * @throws Exception
+	 * @throws ispCP_Exception
 	 * @param $string $connection Connection key name
 	 * @return PDO instance
 	 */
 	public static function getRawInstance($connection = 'default') {
 
 		if (!isset(self::$_instances[$connection])) {
-			throw new Exception(
-				'Database error: Not connected to ' . $connection
+			throw new ispCP_Exception(
+				'Error: Database error: Not connected to ' . $connection
 			);
 		}
 

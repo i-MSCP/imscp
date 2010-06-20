@@ -36,8 +36,8 @@
 // Set default error reporting level
 error_reporting(E_ALL|E_STRICT);
 
-// Only for development
-//ini_set('display_errors', 1);
+// Should be set to 1 only for development
+ini_set('display_errors', 0);
 
 // Define path for the ispCP include directory
 define('INCLUDEPATH', dirname(__FILE__));
@@ -51,12 +51,29 @@ require_once INCLUDEPATH . '/ispcp-loader.php';
 spl_autoload_register('autoload_class');
 
 /**
- * Include primary needed librairies
+ * Exception Handler for uncaught exceptions
+ *
+ * Set the exception handler for uncaught exceptions and register it in the
+ * registry for shared access.
  */
+ispCP_Registry::set('ExceptionHandler', ispCP_ExceptionHandler::getInstance());
 
-require_once INCLUDEPATH . '/i18n.php';
-require_once INCLUDEPATH . '/system-message.php';
+/**
+ * Attach the primary needed writer observer to write uncaught exceptions
+ * messages to the client browser.
+ */
+ispCP_Registry::get('ExceptionHandler')->attach(
+	new ispCP_ExceptionHandler_Writer_Browser(
+		// hardcoded here but will be improved later
+		'themes/omega_original/system-message.tpl'
+	)
+);
+
+/**
+ * Include ispCP common functions
+ */
 require_once INCLUDEPATH . '/ispcp-functions.php';
+require_once INCLUDEPATH . '/deprecated.php';
 
 /**
  * Bootstrap the IspCP environment, and default configuration
@@ -65,6 +82,17 @@ require_once INCLUDEPATH . '/ispcp-functions.php';
  * @see {@link IspCP_Initializer} class
  */
 include_once INCLUDEPATH . '/environment.php';
+
+/**
+ * Internationalisation functions
+ */
+require_once INCLUDEPATH . '/i18n.php';
+
+/**
+ * system message functions
+ * @deprecated Depreacted since 1.0.6 - Will be replaced by ispCP_Exception
+ */
+require_once INCLUDEPATH . '/system-message.php';
 
 /**
  * Sql convenience* functions
@@ -77,7 +105,7 @@ include_once INCLUDEPATH . '/environment.php';
 require_once 'sql.php';
 
 /**
- * Authentication librairies
+ * Authentication libraries
  */
 require_once 'login-functions.php';
 require_once 'login.php';
@@ -92,9 +120,8 @@ require_once 'reseller-functions.php';
 require_once 'client-functions.php';
 
 /**
- * Some others shared librairies
+ * Some others shared libraries
  */
-require_once 'deprecated.php';
 require_once 'date-functions.php';
 require_once 'input-checks.php';
 require_once 'calc-functions.php';

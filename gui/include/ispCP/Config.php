@@ -57,7 +57,7 @@
  * objects where the registered values (that are ispCP_ConfigHandler objects)
  * are indexed by they class name.
  * 
- * @version 1.0.5
+ * @version 1.0.6
  */
 final class Config {
 
@@ -88,10 +88,10 @@ final class Config {
 	 *
 	 * The default handler object is set to {@link ispCP_ConfigHandler_File}
 	 *
+	 * @throws ispCP_Exception
 	 * @param string $className ispCP_ConfigHandler class name
 	 * @param mixed $params Parameters that are passed to ispCP_ConfigHandler
 	 * 	object constructor
-	 * @throws Exception
 	 * @return ispCP_ConfigHandler
 	 */
 	public static function getInstance($className = self::FILE, $params = null) {
@@ -99,17 +99,17 @@ final class Config {
 		if(!array_key_exists($className, self::$_instances)) {
 
 			if($className === false) {
-				throw new Exception(
-					'The ispCP_ConfigHandler object you trying to use is not ' .
+				throw new ispCP_Exception(
+					'Error: The ispCP_ConfigHandler object you trying to use is not ' .
 						'yet implemented!'
 				);
 			} elseif (!class_exists($className, true)) {
-				throw new Exception(
-					"The class $className is not reachable!"
+				throw new ispCP_Exception(
+					"Error: The class $className is not reachable!"
 				);
     		} elseif (!is_subclass_of($className, 'ispCP_ConfigHandler')) {
-				throw new Exception(
-					'Only ispCP_ConfigHandler objects can be handling by the ' .
+				throw new ispCP_Exception(
+					'Error: Only ispCP_ConfigHandler objects can be handling by the ' .
 						__CLASS__ . ' class!'
 				);
 			}
