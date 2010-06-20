@@ -46,7 +46,7 @@ require_once  INCLUDEPATH . '/ispCP/ExceptionHandler/Writer/Abstract.php';
  *
  * @author Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
  * @since 1.0.6
- * @version 1.0.0
+ * @version 1.0.1
  * @todo Display more information like trace on debug mode.
  */
 class ispCP_ExceptionHandler_Writer_Browser extends ispCP_ExceptionHandler_Writer_Abstract {
@@ -64,6 +64,13 @@ class ispCP_ExceptionHandler_Writer_Browser extends ispCP_ExceptionHandler_Write
 	 * @var string Template file path
 	 */
 	protected $_templateFile = null;
+
+	/**
+	 * The message to be written
+	 *
+	 * @var string Message to be written
+	 */
+	protected $_message = '';
 
 	/**
 	 * Constructor
@@ -87,7 +94,12 @@ class ispCP_ExceptionHandler_Writer_Browser extends ispCP_ExceptionHandler_Write
 	 * @return void
 	 */
 	protected function _write() {
-		$this->_ptemplate->prnt();
+		if($this->_ptemplate != null) {
+			$this->_ptemplate->prnt();
+		} else {
+			// @todo Replace this by inline template
+			echo $this->_message;
+		}
 	}
 
 	/**
@@ -99,15 +111,11 @@ class ispCP_ExceptionHandler_Writer_Browser extends ispCP_ExceptionHandler_Write
 	public function update(SplSubject $exceptionHandler) {
 
 		// Get the last exception raised
-		$message = $exceptionHandler->getException()->getMessage();
+		$this->_message = $exceptionHandler->getException()->getMessage();
 
 		if($this->_templateFile != null) {
-			$this->_prepareTemplate($message);
-
+			$this->_prepareTemplate();
 			$this->_ptemplate->parse('PAGE', 'page');
-		} else {
-			 // @todo Replace this by inline template
-			echo $message;
 		}
 
 		// Finally, we write the output
@@ -117,10 +125,9 @@ class ispCP_ExceptionHandler_Writer_Browser extends ispCP_ExceptionHandler_Write
 	/**
 	 * Prepare the template
 	 *
-	 * @param string $message Message to be displayed
 	 * @return void
 	 */
-	protected function _prepareTemplate($message) {
+	protected function _prepareTemplate() {
 
 		$this->_ptemplate = new pTemplate();
 		$this->_ptemplate->define('page', $this->_templateFile);
@@ -140,7 +147,7 @@ class ispCP_ExceptionHandler_Writer_Browser extends ispCP_ExceptionHandler_Write
 					'THEME_CHARSET' => tr('encoding'),
 					'TR_BACK' => tr('Back'),
 					'TR_ERROR_MESSAGE' => tr('Error Message'),
-					'MESSAGE' => $message
+					'MESSAGE' => $this->_message
 				)
 			);
 		} else {
@@ -150,7 +157,7 @@ class ispCP_ExceptionHandler_Writer_Browser extends ispCP_ExceptionHandler_Write
 					'THEME_CHARSET' => 'UTF-8',
 					'TR_BACK' => 'Back',
 					'TR_ERROR_MESSAGE' => 'Error Message',
-					'MESSAGE' => $message
+					'MESSAGE' => $this->_message
 				)
 			);
 		}
