@@ -211,12 +211,11 @@ class ispCP_ExceptionHandler implements SplSubject, IteratorAggregate, Countable
 	 */
 	public function exceptionHandler(Exception $exception) {
 
-		if(error_reporting() == 0 || (ispCP_Registry::isRegistered('Config') &&
-			ispCP_Registry::get('Config')->DEBUG == false )) {
+		if(error_reporting() == 0 || !ini_get('display_errors')) {
 			$this->_exception = new ispCP_Exception_Production();
+		} else {
+			$this->_exception = $exception;
 		}
-
-		$this->_exception = $exception;
 
 		// Notify all observers
 		$this->notify();
