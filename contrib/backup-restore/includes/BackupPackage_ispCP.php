@@ -44,7 +44,7 @@ class BackupPackage_ispCP extends BackupPackage implements iBackupPackage
 	public function __construct($domain_name, $password, $log_level)
 	{
 		parent::__construct($domain_name, $password, $log_level);
-		$this->db = Database::getInstance();
+		$this->db = ispCP_Database::getInstance();
 	}
 
 	/**

@@ -54,12 +54,6 @@ abstract class BackupPackage extends BaseController
 
 		$this->backup_temp_path = ISPCP_VIRTUAL_PATH.'/'.$this->domain_name.'/tmp';
 
-		// make clean temp path for every call
-		if (file_exists($this->backup_temp_path)) {
-			delTree($this->backup_temp_path);
-		}
-		mkdir($this->backup_temp_path, 0700, true);
-
 		// create archive path for domain packages if not exist
 		if (!file_exists(ARCHIVE_PATH)) {
 			mkdir(ARCHIVE_PATH, 0700, true);
@@ -175,6 +169,8 @@ abstract class BackupPackage extends BaseController
 	{
 		$result = $this->initDomain();
 		if ($result) {
+			$this->_createTempPath();
+
 			// collect all data
 			$this->setConfigData('domain', $this->getDomainConfig());
 			$this->setConfigData('subdomain', $this->getSubDomainConfig());
@@ -227,5 +223,17 @@ abstract class BackupPackage extends BaseController
 			$this->databases[$type] = array();
 		}
 		$this->databases[$type][] = $db;
+	}
+
+	/**
+	 * Make clean temp path for every call
+	 * @return void
+	 */
+	protected function _createTempPath()
+	{
+		if (file_exists($this->backup_temp_path)) {
+			delTree($this->backup_temp_path);
+		}
+		mkdir($this->backup_temp_path, 0700, true);
 	}
 }

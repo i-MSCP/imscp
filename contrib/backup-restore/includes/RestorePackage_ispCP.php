@@ -121,7 +121,7 @@ class RestorePackage_ispCP extends BaseController
 		$this->log_level = $log_level;
 		$this->password = $password;
 		$this->domain_name = $domain_name;
-		$this->db = Database::getInstance();
+		$this->db = ispCP_Database::getInstance();
 		$this->ip = $option_ip;
 		$this->reseller = $option_reseller;
 		$this->gpg_archive = ARCHIVE_PATH.'/'.$this->domain_name.'.tar.gz.gpg';

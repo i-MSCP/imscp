@@ -5,6 +5,8 @@ ispCP ω 1.0.6 ChangeLog
 	- GUI+ENGINE:
 		* Fixed #2343: It's not possible to delete valid Single-/Double-Quotes
 			databases and db user names
+	- CONTRIB:
+		* Fixed #2394: backup-restore: Domain directory shouldn't be created on error
 
 2010-06-20 Laurent Declercq
 	- GUI:
