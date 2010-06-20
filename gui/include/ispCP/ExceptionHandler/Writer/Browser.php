@@ -33,10 +33,10 @@ require_once  INCLUDEPATH . '/ispCP/ExceptionHandler/Writer/Abstract.php';
 /**
  * Browser writer class
  *
- * This writer display the message defined by an exception to the client
+ * This writer writes the message defined by an exception to the client
  * browser. This writer acts also as a formatter that will use a specific
  * template for the message formatting. If no template path is given, or if the
- * template file is not reachable, a string that represent the  message is send
+ * template file is not reachable, a string that represent the  message is write
  * to the client browser.
  *
  * The given template should be a template file that can be treated by a
@@ -89,7 +89,7 @@ class ispCP_ExceptionHandler_Writer_Browser extends ispCP_ExceptionHandler_Write
 	}
 
 	/**
-	 * Write the output to the client browser
+	 * Writes the output to the client browser
 	 *
 	 * @return void
 	 */
@@ -110,8 +110,11 @@ class ispCP_ExceptionHandler_Writer_Browser extends ispCP_ExceptionHandler_Write
 	 */
 	public function update(SplSubject $exceptionHandler) {
 
-		// Get the last exception raised
-		$this->_message = $exceptionHandler->getException()->getMessage();
+		$messageProduction = $exceptionHandler->getProductionException();
+
+		$this->_message = ($messageProduction)
+			? $messageProduction->getMessage()
+			: $exceptionHandler->getException()->getMessage();
 
 		if($this->_templateFile != null) {
 			$this->_prepareTemplate();

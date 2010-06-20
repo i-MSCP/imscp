@@ -30,22 +30,32 @@
  * ispCP_ExceptionHandler class
  *
  * This class is responsible to handle all uncaught exceptions. This class is an
- * observable subject. An object that implement the SplObserver interface can
+ * observable subject. An object that implement the
+ * {@link ispCP_ExceptionHandler_Writer_Abstract} interface can
  * listen events of this class. This class provides only one event that occurs
  * when an uncaught exceptions is raised.
  *
  * What's the event:
  *
  * When an uncaught exception is raised, the exception handler defined by this
- * class will notify all these observers by passing the exception. After, the
- * observers can do whatever they want with this exception.
+ * class will notify all these observers by passing the ispCP_ExceptionHandler
+ * instance. After, the observers call the getException() method to get the
+ * raised exception and do whatever they want with this exception.
  *
- * Observers responsibility can be :
+ * In production, a secondary {@link ispCP_Exception_Production} object will be
+ * created. Each writer that write on the client browser should check if this
+ * exception exist and use it in place of the real {@link $_exception} that was
+ * raised to avoid revealing important information about the environment.
  *
- * - Display the error message on the client browser with specific formatting
- * - Send a mail to the administrator that contains information about error
- * - Register the error in the database
- * - Register the error in a logfile
+ * See the {@link getProductionException} to learn how to check if an
+ * {@link ispCP_Exception_Production} was created and how to get it.
+ *
+ * Observers writer responsibility can be :
+ *
+ * - Write the error message on the client browser with specific formatting
+ * - Write a mail to the administrator that contains information about error
+ * - Write the error in the database
+ * - Write the error in a logfile
  *
  * Note: It's not a restrictive list.
  *
@@ -61,11 +71,13 @@
  *
  * What is done here ?
  *
- *  1. We create an instance of the ispCP_ExceptionHandler class
- *  2. We attach an observer (Writer) that will listen events of this class
+ *  1. We create an instance of the {@link ispCP_ExceptionHandler} class
+ *  2. We attach an {@link ispCP_ExceptionHandler_Writer_Abstract} (Writer) that
+ *		will listen events of this class
  *
  * See the methods documentation for more information about possibilities.
- * See ispCP/ExceptionHandler/Writer for a list of available observers.
+ * See ispCP/ExceptionHandler/Writer for a list of available
+ *	{@link ispCP_ExceptionHandler_Writer_Abstract} writers observers.
  *
  * Note:
  *
@@ -76,7 +88,7 @@
  *
  * @author Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
  * @since 1.0.6
- * @version 1.0.0
+ * @version 1.0.1
  */
 class ispCP_ExceptionHandler implements SplSubject, IteratorAggregate, Countable {
 
@@ -88,25 +100,35 @@ class ispCP_ExceptionHandler implements SplSubject, IteratorAggregate, Countable
 	protected static $_instance = null;
 
 	/**
+	 * Production exception
+	 *
+	 * This variable contains a ispCP_Exception_Production
+	 *
+	 * @see getProductionException()
+	 * @var ispCP_Exception_Production
+	 */
+	protected $_productionException = null;
+
+	/**
 	 * Exception instance
 	 *
-	 * @var Exception
+	 * @see getException()
+	 * @var ispCP_Exception
 	 */
-    protected $_exception;
+    protected $_exception = null;
 
 	/**
 	 * SplObjectStorage object that contains all references to the observers
 	 *
 	 * @var SplObjectStorage
 	 */
-    public $_observers;
+    protected $_observers;
 
 	/**
 	 * This class implements the Singleton Design Pattern
 	 *
-	 * Only one instance of this class should exist at same time
-	 *
-	 * @param boolean $setHandler If TRUE, sets the exception handler
+	 * @see setHandler()
+	 * @param boolean $setHandler If TRUE, set exception handler automatically
 	 *	automatically
 	 * @return void
 	 */
@@ -114,16 +136,15 @@ class ispCP_ExceptionHandler implements SplSubject, IteratorAggregate, Countable
 
 		$this->_observers = new SplObjectStorage();
 
-		if($setHandler)
+		if($setHandler) {
 			$this->setHandler();
+		}
 	}
 
 	/**
 	 * This class implements the Singleton Design Pattern
-	 *
-	 * The Object of this class shouldn't be cloned
 	 */
-	private function __clone(){}
+	private function __clone() {}
 
 	/**
 	 * Get an ispCP_ExceptionHandler instance
@@ -147,9 +168,9 @@ class ispCP_ExceptionHandler implements SplSubject, IteratorAggregate, Countable
 	 * Reset the current instance of this class
 	 *
 	 * This method can be used to purge all observers. After reset, you can
-	 * attach a new set of observers.
+	 * attach a new set of {@link ispCP_ExceptionHandler_Writer_Abstract} objects.
 	 *
-	 * @param boolean $setHandler If TRUE, set the exception handler
+	 * @param boolean $setHandler If TRUE, set exception handler automatically
 	 * @return ispCP_ExceptionHandler
 	 */
 	public static function resetInstance($setHandler = true) {
@@ -161,10 +182,10 @@ class ispCP_ExceptionHandler implements SplSubject, IteratorAggregate, Countable
 	}
 
 	/**
-	 * Set Exception handler
+	 * Set exception handler
 	 *
 	 * This method set the default {@link exceptionHandler() exception handler}
-	 * that will used for all uncaught exceptions.
+	 * that will be used for all uncaught exceptions.
 	 *
 	 * @see exceptionHandler()
 	 * @return ispCP_ExceptionHandler
@@ -200,9 +221,10 @@ class ispCP_ExceptionHandler implements SplSubject, IteratorAggregate, Countable
 	 * This method will act as default exception handler for all uncaught
 	 * exceptions.
 	 *
-	 * Note: In production, the real uncaught exception that is raised will be
-	 * overriden by an {@link ispCP_Exception_Production} to hide all important
-	 * informations about the ispCP environment.
+	 * Note: In production, this exception handler will create a secondary
+	 * ispCP_Exception_Production. This exception should be used by all writers
+	 * that write on the client browser in place of the real raised exception to
+	 * avoid revealing important information about the environment.
 	 *
 	 * @see setHandler()
 	 * @see unsetHandler()
@@ -212,7 +234,13 @@ class ispCP_ExceptionHandler implements SplSubject, IteratorAggregate, Countable
 	public function exceptionHandler(Exception $exception) {
 
 		if(error_reporting() == 0 || !ini_get('display_errors')) {
-			$this->_exception = new ispCP_Exception_Production();
+			
+			if($exception instanceof ispCP_Exception_Production) {
+				$this->_exception = $exception;
+			} else {
+				$this->_exception = $exception;
+				$this->_productionException = new ispCP_Exception_Production();
+			}
 		} else {
 			$this->_exception = $exception;
 		}
@@ -233,7 +261,7 @@ class ispCP_ExceptionHandler implements SplSubject, IteratorAggregate, Countable
 	 */
 	public function getException() {
 
-        if (!$this->_exception) {
+        if ($this->_exception == null) {
             return false;
         }
 
@@ -241,10 +269,26 @@ class ispCP_ExceptionHandler implements SplSubject, IteratorAggregate, Countable
 	}
 
 	/**
-	 * Attach a observer that will listen all events of this class
+	 * Accessor method to get the Production exception
 	 *
-	 * @param SplObserver $observer Observer that listen events of this class
+	 * Note the ispCP_Exception_Production is only raised on production
 	 *
+	 * @return An ispCP_Exception_Production if exists; FALSE otherwise
+	 */
+	public function getProductionException() {
+
+        if ($this->_productionException == null) {
+            return false;
+        }
+
+		return $this->_productionException;
+	}
+
+	/**
+	 * Attach an observer that will listen all events of this class
+	 *
+	 * @param ispCP_ExceptionHandler_Writer_Abstract $observer Observer that
+	 * 	listen events of this class
 	 * @return ispCP_ExceptionHandler
 	 */
 	public function attach(SplObserver $observer) {
@@ -257,7 +301,8 @@ class ispCP_ExceptionHandler implements SplSubject, IteratorAggregate, Countable
 	/**
 	 * Dettach an observer that listen events of this class
 	 *
-	 * @param SplObserver $observer Observer that listen events of this class
+	 * @param ispCP_ExceptionHandler_Writer_Abstract $observer Observer that
+	 * 	listen events of this class
 	 * @return ispCP_ExceptionHandler
 	 */
 	public function detach(SplObserver $observer) {
@@ -289,7 +334,7 @@ class ispCP_ExceptionHandler implements SplSubject, IteratorAggregate, Countable
 	}
 
 	/**
-	 * Defined by the spl
+	 * Defined by the SPL
 	 *
 	 * See {@link http://php.net/manual/fr/arrayobject.getiterator.php}
 	 */
