@@ -52,10 +52,10 @@
  *
  * Observers writer responsibility can be :
  *
- * - Write the error message on the client browser with specific formatting
- * - Write a mail to the administrator that contains information about error
- * - Write the error in the database
- * - Write the error in a logfile
+ * - Writing the error message on the client browser with specific formatting
+ * - Writing a mail to the administrator that contains information about error
+ * - Writing the error in the database
+ * - Writing the error in a logfile
  *
  * Note: It's not a restrictive list.
  *
