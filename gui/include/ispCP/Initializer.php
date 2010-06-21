@@ -37,7 +37,7 @@
  *
  * @author Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
  * @since 1.0.6
- * @version 1.0.2
+ * @version 1.0.3
  */
 class ispCP_Initializer {
 
@@ -130,7 +130,7 @@ class ispCP_Initializer {
 		// Check php version and availability of the Php Standard Library
 		$this->_checkPhp();
 
-		$this->_setDisplayError();
+		$this->_setDisplayErrors();
 
 		// Initialize output buffering
 		$this->_initializeOutputBuffering();
@@ -201,7 +201,7 @@ class ispCP_Initializer {
 		// so, we can do the checking here without any problem.
 		} elseif($php_version < '5.3.0' && !extension_loaded('SPL')) {
 			$err_msg = 
-				'Error: Standard PHP Library (SPL) was not detected!' .
+				'Error: Standard PHP Library (SPL) was not detected! ' .
 				'See http://php.net/manual/en/book.spl.php for more information!';
 		} else {
 			return;
@@ -211,11 +211,11 @@ class ispCP_Initializer {
 	}
 
 	/**
-	 * Set the php display_errors parameter
+	 * Set the PHP display_errors parameter
 	 *
 	 * @return void
 	 */
-	protected function _setDisplayError() {
+	protected function _setDisplayErrors() {
 		if($this->_config->DEBUG) {
 			ini_set('display_errors', 1);
 		}
@@ -326,7 +326,7 @@ class ispCP_Initializer {
 
 		// Include needed db keys
 		require_once 'ispcp-db-keys.php';
-		$this->_config->DATABASE_PASSWORD = 'dd';
+
 		try {
 
 			$connection = ispCP_Database::connect(
@@ -342,7 +342,7 @@ class ispCP_Initializer {
 			// Here, any SQL error information are showed only if the DEBUG
 			// parameter value is set to a positive value in the ispcp.conf file.
 			throw new ispCP_Exception(
-				'Error: Unable to establish connection to the database!'.
+				'Error: Unable to establish connection to the database! '.
 				'SQL returned: ' . $e->getMessage()
 			);
 		}
@@ -410,8 +410,8 @@ class ispCP_Initializer {
 
 			if($db->Execute('SET NAMES `utf8`;') === false) {
 				throw new ispCP_Exception(
-					'Error: Unable to set charset for database communication!' .
-					$db->ErrorMsg()
+					'Error: Unable to set charset for database communication! ' .
+					'SQL returned: ' . $db->ErrorMsg()
 				);
 			}
 		}
