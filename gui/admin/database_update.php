@@ -96,8 +96,11 @@ if (databaseUpdate::getInstance()->checkUpdateExists()) {
 // Execute all available db updates and redirect back to database_update.php
 if ($execute) {
 	databaseUpdate::getInstance()->executeUpdates();
+
 	if (databaseUpdate::getInstance()->getErrorMessage() != "") {
-		system_message(databaseUpdate::getInstance()->getErrorMessage());
+		throw new ispCP_Exception(
+			databaseUpdate::getInstance()->getErrorMessage()
+		);
 	}
 	header('Location: ' . $_SERVER['PHP_SELF']);
 }

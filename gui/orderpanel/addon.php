@@ -113,13 +113,19 @@ if (isset($_SESSION['user_id'])) {
 		if (is_plan_available($sql, $plan_id, $user_id)) {
 			$_SESSION['plan_id'] = $plan_id;
 		} else {
-			system_message(tr('This hosting plan is not available for purchase'));
+			throw new ispCP_Exception_Production(
+				tr('This hosting plan is not available for purchase')
+			);
 		}
 	} else {
-		system_message(tr('You do not have permission to access this interface!'));
+		throw new ispCP_Exception_Production(
+			tr('You do not have permission to access this interface!')
+		);
 	}
 } else {
-	system_message(tr('You do not have permission to access this interface!'));
+	throw new ispCP_Exception_Production(
+		tr('You do not have permission to access this interface!')
+	);
 }
 
 if (isset($_SESSION['domainname'])) {

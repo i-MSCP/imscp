@@ -34,8 +34,11 @@ $sql = ispCP_Registry::get('Db');
  * @todo Please describe this function!
  */
 function execute_query(&$sql, $query) {
+
 	$rs = $sql->Execute($query);
-	if (!$rs) system_message($sql->ErrorMsg());
+	
+	if (!$rs)
+		throw new ispCP_Exception($sql->ErrorMsg());
 
 	return $rs;
 }
@@ -72,7 +75,7 @@ function exec_query(&$sql, $query, $data = array(), $failDie = true) {
 			$mail_result = mail($admin_email, $subject, $output, $headers);
 		}
 
-		system_message(isset($msg[2]) ? $msg[2] : $msg);
+		throw new ispCP_Exception(isset($msg[2]) ? $msg[2] : $msg);
 	}
 
 	return $rs;
@@ -108,8 +111,8 @@ function check_query($exclude = array()) {
 	if (phpversion() <= '4.2.2') {
 		$message = "Your PHP version is older than 4.2.2!";
 		write_log($message);
-		system_message($message);
-		die('ERROR: ' . $message);
+
+		throw new ispCP_Exception("Error:  $message");
 	}
 
 	if (!is_array($exclude)) {
@@ -125,8 +128,8 @@ function check_query($exclude = array()) {
 			if (match_sqlinjection($value, $matches)) {
 				$message = "Possible SQL injection detected: $key=>$value. <b>${matches[0]}</b>. Script terminated.";
 				write_log($message);
-				system_message($message);
-				die('<b>WARNING</b>: Possible SQL injection detected. Script terminated.');
+
+				throw new ispCP_Exception("<b>WARNING</b>: $message");
 			}
 		} else {
 			foreach ($value as $skey => $svalue) {
@@ -134,8 +137,8 @@ function check_query($exclude = array()) {
 					if (match_sqlinjection($svalue, $matches)) {
 						$message = "Possible SQL injection detected: $skey=>$svalue <b>${matches[0]}</b>. Script terminated.";
 						write_log($message);
-						system_message($message);
-						die('<b>WARNING</b>: Possible SQL injection detected. Script terminated.');
+
+						throw new ispCP_Exception("<b>WARNING</b>: $message");
 					}
 				}
 			}

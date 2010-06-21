@@ -33,17 +33,18 @@ require 'include/ispcp-lib.php';
 $cfg = ispCP_Registry::get('Config');
 
 if (!$cfg->LOSTPASSWORD) {
-	system_message(tr('Retrieving lost passwords is currently not possible'));
-	die();
+	throw new ispCP_Exception_Production(
+		tr('Retrieving lost passwords is currently not possible')
+	);
 }
 
 // check for gd >= 2.x
 if (!check_gd()) {
-	system_message("ERROR: php-extension 'gd' not loaded!");
+	throw new ispCP_Exception("ERROR: php-extension 'gd' not loaded!");
 }
 
 if (!captcha_fontfile_exists()) {
-	system_message("ERROR: captcha fontfile not found!");
+	throw new ispCP_Exception("ERROR: captcha fontfile not found!");
 }
 
 // remove old uniqkeys

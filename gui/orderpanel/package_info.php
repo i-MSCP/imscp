@@ -172,10 +172,14 @@ if (isset($_GET['id']) && $bcoid) {
 		$user_id = $_GET['user_id'];
 		$_SESSION['user_id'] = $user_id;
 	} else {
-		system_message(tr('You do not have permission to access this interface!'));
+		throw new ispCP_Exception_Production(
+			tr('You do not have permission to access this interface!')
+		);
 	}
 } else {
-	system_message(tr('You do not have permission to access this interface!'));
+	throw new ispCP_Exception_Production(
+		tr('You do not have permission to access this interface!')
+	);
 }
 
 gen_purchase_haf($tpl, $sql, $user_id);

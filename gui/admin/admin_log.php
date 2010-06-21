@@ -244,8 +244,7 @@ function clear_log() {
 
 				break;
 			default:
-				system_message(tr('Invalid time period!'));
-				break;
+				throw new ispCP_Exception(tr('Invalid time period!'));
 		}
 
 		$rs = execute_query($sql, $query);

@@ -142,7 +142,7 @@ Please login into your ispCP control panel for more details.
 }
 
 if (!isset($_GET['id']) || !is_numeric($_GET['id']) || !isset($_GET['k'])) {
-	system_message(tr('You do not have permission to access this interface!'));
+	throw new ispCP_Exception_Production(tr('You do not have permission to access this interface!'));
 }
 
 

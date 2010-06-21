@@ -83,7 +83,9 @@ function gen_packages_list(&$tpl, &$sql, $user_id) {
 	}
 
 	if ($rs->RecordCount() == 0) {
-		system_message(tr('No available hosting packages'));
+		throw new ispCP_Exception_Production(
+			tr('No available hosting packages')
+		);
 	} else {
 		while (!$rs->EOF) {
 			$description = $rs->fields['description'];
