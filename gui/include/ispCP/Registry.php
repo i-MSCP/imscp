@@ -30,7 +30,7 @@
  *
  * @author Laurent declercq (nuxwin) <laurent.declercq@ispcp.net>
  * @since 1.0.6
- * @version 1.0.3
+ * @version 1.0.4
  */
 class ispCP_Registry {
 
@@ -91,7 +91,7 @@ class ispCP_Registry {
 
 		$instance = self::getInstance();
 
-		if (!isset($instance->$index)) {
+		if (!$instance->isRegistered($index)) {
 			throw new ispCP_Exception(
 				"Error: Data `$index` is not registered!"
 			);

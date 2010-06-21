@@ -1,6 +1,10 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-06-21 Laurent Declercq
+	- GUI:
+		Fixed ispCP_Registry: Unable to get data with null value
+
 2010-06-20 Thomas Wacker
 	- GUI+ENGINE:
 		* Fixed #2343: It's not possible to delete valid Single-/Double-Quotes
