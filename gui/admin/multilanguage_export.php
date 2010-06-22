@@ -73,7 +73,6 @@ if (isset($_GET['export_lang']) && $_GET['export_lang'] !== '') {
 		set_page_message(tr('Incorrect data input!'));
 		user_goto('multilanguage.php');
 	} else {
-		$GLOBALS['class']['output']->showSize = false;
 		header('Content-type: text/plain; charset=' . $encoding);
 
 		while (!$rs->EOF) {
