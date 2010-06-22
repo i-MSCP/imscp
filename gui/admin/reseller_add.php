@@ -342,16 +342,16 @@ function add_reseller(&$tpl, &$sql) {
 					'VL_FEMALE' => (($_POST['gender'] == 'F') ? $cfg->HTML_SELECTED : ''),
 					'VL_UNKNOWN' => ((($_POST['gender'] == 'U') || (empty($_POST['gender']))) ? $cfg->HTML_SELECTED : ''),
 
-					'MAX_DOMAIN_COUNT' => clean_input($_POST['nreseller_max_domain_cnt']),
-					'MAX_SUBDOMAIN_COUNT' => clean_input($_POST['nreseller_max_subdomain_cnt']),
-					'MAX_ALIASES_COUNT' => clean_input($_POST['nreseller_max_alias_cnt']),
-					'MAX_MAIL_USERS_COUNT' => clean_input($_POST['nreseller_max_mail_cnt']),
-					'MAX_FTP_USERS_COUNT' => clean_input($_POST['nreseller_max_ftp_cnt']),
-					'MAX_SQLDB_COUNT' => clean_input($_POST['nreseller_max_sql_db_cnt']),
-					'MAX_SQL_USERS_COUNT' => clean_input($_POST['nreseller_max_sql_user_cnt']),
-					'MAX_TRAFFIC_AMOUNT' => clean_input($_POST['nreseller_max_traffic']),
-					'SUPPORT_SYSTEM' => clean_input($_POST['support_system']),
-					'MAX_DISK_AMOUNT' => clean_input($_POST['nreseller_max_disk'])
+					'MAX_DOMAIN_COUNT' => clean_input($_POST['nreseller_max_domain_cnt'], true),
+					'MAX_SUBDOMAIN_COUNT' => clean_input($_POST['nreseller_max_subdomain_cnt'], true),
+					'MAX_ALIASES_COUNT' => clean_input($_POST['nreseller_max_alias_cnt'], true),
+					'MAX_MAIL_USERS_COUNT' => clean_input($_POST['nreseller_max_mail_cnt'], true),
+					'MAX_FTP_USERS_COUNT' => clean_input($_POST['nreseller_max_ftp_cnt'], true),
+					'MAX_SQLDB_COUNT' => clean_input($_POST['nreseller_max_sql_db_cnt'], true),
+					'MAX_SQL_USERS_COUNT' => clean_input($_POST['nreseller_max_sql_user_cnt'], true),
+					'MAX_TRAFFIC_AMOUNT' => clean_input($_POST['nreseller_max_traffic'], true),
+					'SUPPORT_SYSTEM' => clean_input($_POST['support_system'], true),
+					'MAX_DISK_AMOUNT' => clean_input($_POST['nreseller_max_disk'], true)
 				)
 			);
 		}

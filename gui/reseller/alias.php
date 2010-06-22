@@ -165,7 +165,7 @@ function generate_als_list(&$tpl, $reseller_id, &$als_err) {
 	$tpl->assign(
 		array(
 			'PSI'				=> $current_psi,
-			'SEARCH_FOR'		=> $search_for,
+			'SEARCH_FOR'		=> tohtml($search_for),
 			'TR_SEARCH'			=> tr('Search'),
 			'M_ALIAS_NAME'		=> tr('Alias name'),
 			'M_ACCOUNT_NAME'	=> tr('Account name'),

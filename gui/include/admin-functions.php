@@ -2320,7 +2320,7 @@ function gen_admin_domain_search_options(&$tpl, $search_for, $search_common,
 		);
 	} else {
 		$tpl->assign(
-			array('SEARCH_FOR' => $search_for)
+			array('SEARCH_FOR' => tohtml($search_for))
 		);
 	}
 

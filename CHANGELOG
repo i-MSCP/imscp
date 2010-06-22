@@ -4,6 +4,7 @@ ispCP ω 1.0.6 ChangeLog
 2010-06-22 Thomas Wacker
 	- GUI:
 		* Fixed #2338: multilanguage_export only produces blank/white page
+		* Fixed #2341: Some (minor) Cross Site Scripting Issues
 
 2010-06-21 Laurent Declercq
 	- GUI:

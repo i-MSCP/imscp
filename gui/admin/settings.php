@@ -77,7 +77,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	$sld_strict_validation = $_POST['sld_strict_validation'];
 	$max_dnames_labels = clean_input($_POST['max_dnames_labels']);
 	$max_subdnames_labels = clean_input($_POST['max_subdnames_labels']);
-	$log_level = constant($_POST['log_level']);
+	$log_level = defined($_POST['log_level']) ? constant($_POST['log_level']) : false;
 
 	if ((!is_number($lostpwd_timeout))
 		|| (!is_number($pwd_chars))
@@ -148,7 +148,7 @@ $tpl->assign(
 		'BRUTEFORCE_BETWEEN_TIME_VALUE' => $cfg->BRUTEFORCE_BETWEEN_TIME,
 		'BRUTEFORCE_MAX_CAPTCHA' => $cfg->BRUTEFORCE_MAX_CAPTCHA,
 		'DOMAIN_ROWS_PER_PAGE' => $cfg->DOMAIN_ROWS_PER_PAGE,
-		'CUSTOM_ORDERPANEL_ID' => $coid,
+		'CUSTOM_ORDERPANEL_ID' => tohtml($coid),
 		'MAX_DNAMES_LABELS_VALUE' => $cfg->MAX_DNAMES_LABELS,
 		'MAX_SUBDNAMES_LABELS_VALUE' => $cfg->MAX_SUBDNAMES_LABELS
 	)

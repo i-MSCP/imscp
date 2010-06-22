@@ -1145,7 +1145,7 @@ function gen_manage_domain_search_options(&$tpl,
 		);
 	} else {
 		$tpl->assign(
-			array('SEARCH_FOR' => $search_for)
+			array('SEARCH_FOR' => tohtml($search_for))
 		);
 	}
 

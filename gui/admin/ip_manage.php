@@ -155,10 +155,10 @@ function add_ip(&$tpl, &$sql) {
 	if (!isset($sucess) && isset($_POST['ip_number_1'])) {
 		$tpl->assign(
 			array(
-				'VALUE_IP1'		=> $_POST['ip_number_1'],
-				'VALUE_IP2'		=> $_POST['ip_number_2'],
-				'VALUE_IP3'		=> $_POST['ip_number_3'],
-				'VALUE_IP4'		=> $_POST['ip_number_4'],
+				'VALUE_IP1'		=> tohtml($_POST['ip_number_1']),
+				'VALUE_IP2'		=> tohtml($_POST['ip_number_2']),
+				'VALUE_IP3'		=> tohtml($_POST['ip_number_3']),
+				'VALUE_IP4'		=> tohtml($_POST['ip_number_4']),
 				'VALUE_DOMAIN'	=> clean_input($_POST['domain'], true),
 				'VALUE_ALIAS'	=> clean_input($_POST['alias'], true),
 			)

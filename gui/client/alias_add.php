@@ -311,7 +311,6 @@ function add_domain_alias(&$sql, &$err_al) {
 	}
 
 	// Begin add new alias domain
-	$alias_name = htmlspecialchars($alias_name, ENT_QUOTES, "UTF-8");
 
 	$status = $cfg->ITEM_ORDERED_STATUS;
 
