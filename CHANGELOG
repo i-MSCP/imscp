@@ -3,6 +3,7 @@ ispCP ω 1.0.6 ChangeLog
 
 2010-06-23 Laurent Declercq
 	- GUI:
+		* ispcp-lib.php: Updated documentation
 		* ispCP_Registry: Added method to be able to register aliases instead of
 			object identifiers
 		* ispCP_Registry: Updated documentation

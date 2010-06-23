@@ -55,12 +55,22 @@ spl_autoload_register('autoload_class');
  *
  * Set the exception handler for uncaught exceptions and register it in the
  * registry for shared access.
+ *
+ * Anothers optional writers will be attached to this object during
+ * intialization process.
  */
-ispCP_Registry::set('ExceptionHandler', ispCP_ExceptionHandler::getInstance());
+ispCP_Registry::setAlias(
+	'ExceptionHandler', ispCP_ExceptionHandler::getInstance()
+);
 
 /**
- * Attach the primary needed writer observer to write uncaught exceptions
- * messages to the client browser.
+ * Attach the primary writer observer to write uncaught exceptions messages to
+ * the client browser.
+ *
+ * The writer writes all ispCP_Exception messages to the client browser. In
+ * production, all messages sare replaced by a specific message to avoid
+ * revealing important information about the ispCP application environment if
+ * the user is not an administrator.
  */
 ispCP_Registry::get('ExceptionHandler')->attach(
 	new ispCP_ExceptionHandler_Writer_Browser(
