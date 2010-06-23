@@ -30,7 +30,7 @@
  *
  * @author Laurent declercq (nuxwin) <laurent.declercq@ispcp.net>
  * @since 1.0.6
- * @version 1.0.4
+ * @version 1.0.5
  */
 class ispCP_Registry {
 
@@ -42,14 +42,14 @@ class ispCP_Registry {
 	protected static $_instance = null;
 
 	/**
-	 * This class implement the Singleton design pattern
+	 * This class implements the Singleton design pattern
 	 *
 	 * @return void
 	 */
-	private function __construct(){}
+	protected function __construct(){}
 
 	/**
-	 * This class implement the Singleton design pattern
+	 * This class implements the Singleton design pattern
 	 *
 	 * @return void
 	 */
@@ -58,8 +58,8 @@ class ispCP_Registry {
 	/**
 	 * Get an ispCP_Registry instance
 	 *
-	 * Returns a reference to {@link ispCP_Registry} instance, only creating
-	 * it if it doesn't already exist.
+	 * Returns an {@link ispCP_Registry} instance, only creating it if it
+	 * doesn't already exist.
 	 *
 	 * @return ispCP_Registry
 	 */
@@ -73,11 +73,11 @@ class ispCP_Registry {
 	}
 
 	/**
-	 * Getter method to get data that is stored in the register
+	 * Getter method to get data stored in the registry
 	 *
-	 * Note: If you want get a reference to one data registered that is not an
-	 * object, you should always use this method and not accessed it directly
-	 * like an object member.
+	 * Note: If you want get a reference for data that is not an object, you
+	 * should always use this method and not accessed it directly like an object
+	 * member.
 	 *
 	 * To get an reference, use the following syntax:
 	 *
@@ -113,14 +113,11 @@ class ispCP_Registry {
 	}
 
 	/**
-	 * Setter method to register new data
+	 * Setter method to register data
 	 *
 	 * For conveniences reasons, this method return the data registered
 	 *
-	 * Note: This method can return a reference for data that are not objects
-	 * like array. For this use the following syntax:
-	 *
-	 * $data = &ispCP_Register::set('name', array());
+	 * Note: This method can return a reference.
 	 *
 	 * @param string $index Data key name
 	 * @param mixed $value Data value
@@ -132,6 +129,36 @@ class ispCP_Registry {
 		$instance->$index = $value;
 
 		return $instance->$index;
+	}
+
+	/**
+	 * Setter method to register data by reference.
+	 *
+	 * This method take sense for the singleton objects that provide a reset
+	 * method to recreate the instance. When the object::resetInstance() method
+	 * is called, the alias that was registered in the registry will refer to
+	 * the new instance. It's not the case with data that were registered with
+	 * the {@link set()} method because registered values for objects are
+	 * objects identifiers and not aliases (references).
+	 *
+	 * see {@link http://www.php.net/manual/en/language.oop5.references.php} for
+	 * more information about this issue.
+	 *
+	 * Note: This method can return a reference.
+	 *
+	 * @param string $index Data key name
+	 * @param mixed $value Data value
+	 * @return mixed
+	 */
+	public static function &setAlias($index, &$value) {
+
+		$instance = self::getInstance();
+
+		// Small workaround to avoid call of magic __get()
+		// See http://bugs.php.net/bug.php?id=52157
+		$instance->$index = '';
+
+		return $instance->$index = &$value;
 	}
 
 	/**

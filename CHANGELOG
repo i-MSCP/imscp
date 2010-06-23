@@ -1,6 +1,12 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-06-23 Laurent Declercq
+	- GUI:
+		* ispCP_Registry: Added method to be able to register aliases instead of
+			object identifiers
+		* ispCP_Registry: Updated documentation
+
 2010-06-22 Thomas Wacker
 	- GUI:
 		* Fixed #2338: multilanguage_export only produces blank/white page
