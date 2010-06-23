@@ -3,6 +3,7 @@ ispCP ω 1.0.6 ChangeLog
 
 2010-06-23 Laurent Declercq
 	- GUI:
+		* ispCP_ExceptionHandler: Some update (documentation, variable name)
 		* ispcp-lib.php: Updated documentation
 		* ispcp-lib.php: Usage of ispCP_Registry::setAlias() instead of
 			ispCP_Registry::set() for register ispCP_ExceptionHandler object
