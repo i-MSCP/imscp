@@ -1,6 +1,10 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-06-24 Laurent Declercq
+	- GUI:
+		* ispCP_Initializer::_setIncludePath() - Removed duplicate entries 
+
 2010-06-23 Laurent Declercq
 	- GUI:
 		* ispCP_ExceptionHandler: Some update (documentation, variable name)

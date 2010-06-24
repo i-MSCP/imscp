@@ -37,7 +37,7 @@
  *
  * @author Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
  * @since 1.0.6
- * @version 1.0.3
+ * @version 1.0.4
  */
 class ispCP_Initializer {
 
@@ -216,6 +216,7 @@ class ispCP_Initializer {
 	 * @return void
 	 */
 	protected function _setDisplayErrors() {
+
 		if($this->_config->DEBUG) {
 			ini_set('display_errors', 1);
 		}
@@ -280,7 +281,7 @@ class ispCP_Initializer {
 	/**
 	 * Set the include path
 	 *
-	 * Add the ispCP ./include directory to the include_path
+	 * Set the PHP include_path. Duplicates entries are removed.
 	 *
 	 * Note: Will be completed later with other paths (MVC switching).
 	 *
@@ -289,8 +290,18 @@ class ispCP_Initializer {
 	 */
 	protected function _setIncludePath() {
 
-		$include_path = dirname(dirname(__FILE__));
-		set_include_path(get_include_path() . PATH_SEPARATOR . $include_path);
+		$ps = PATH_SEPARATOR;
+
+		// Get the current PHP include path string and transform it in array
+		$include_path = explode(
+			$ps, str_replace('.' . $ps, '', ini_get('include_path'))
+		);
+
+		// Adds the ispCP gui/include ABSPATH to the PHP include_path
+		array_unshift($include_path, dirname(dirname(__FILE__)));
+
+		// Transform array of path to string and set the new PHP include_path
+		set_include_path('.' . $ps .implode($ps, array_unique($include_path)));
 	}
 
 	/**
