@@ -278,7 +278,8 @@ class ispCP_Filter_Compress_Gzip {
 	/**
 	 * Send headers
 	 *
-	 * Note: Only called when the filter is used in 'bufferFilter' mode.
+	 * Note: Only called when the filter is used as callback function of the
+	 * PHP ob_start function.
 	 *
 	 * @return void
 	 */
@@ -291,7 +292,8 @@ class ispCP_Filter_Compress_Gzip {
 	/**
 	 * Adds compression information as HTML comment
 	 *
-	 * Note: Only used  when the filter is used to create GZIP standard file.
+	 * Note: Only called when the filter is used as callback function of the
+	 * PHP ob_start function.
 	 *
 	 * @param string $gzipData Encoded data in gzip file format
 	 * @param string $time Time for data compression
