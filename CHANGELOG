@@ -1,6 +1,13 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-06-28 Laurent Declercq
+	- GUI:
+		* Refactored all include/ispCP/* classes for PhpDocumentor compatibility
+		* Replaced spOutput class by a new ispCP_Filter_Compress_Gzip filter
+			class that can be used both for create standard Gzip file and acts
+			as callback function for the PHP ob_start() function.
+
 2010-06-24 Laurent Declercq
 	- GUI:
 		* ispCP_Initializer::_setIncludePath() - Removed duplicate entries 

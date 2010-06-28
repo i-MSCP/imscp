@@ -2,13 +2,6 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
- *
- * @license
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
@@ -26,18 +19,25 @@
  * by moleSoftware GmbH. All Rights Reserved.
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
+ *
+ * @category	ispCP
+ * @package		ispCP
+ * @copyright 	2001-2006 by moleSoftware GmbH
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @version 	SVN: $Id$
+ * @link 		http://isp-control.net
+ * @author 		ispCP Team
  */
 
 /**
  * This is the primarly file that should be included in all the IspCP's user
  * levels scripts such as all scripts that live under gui/{admin,reseller,client}
  */
-
 // Set default error reporting level
 error_reporting(E_ALL|E_STRICT);
 
 // Should be set to 1 only for development
-ini_set('display_errors', 0);
+ini_set('display_errors', 1);
 
 // Define path for the ispCP include directory
 define('INCLUDEPATH', dirname(__FILE__));
@@ -60,11 +60,12 @@ spl_autoload_register('autoload_class');
  * intialization process.
  */
 ispCP_Registry::setAlias(
-	'ExceptionHandler', ispCP_ExceptionHandler::getInstance()
+	'ExceptionHandler',
+	ispCP_Exception_Handler::getInstance()->setHandler()
 );
 
 /**
- * Attach the primary writer observer to write uncaught exceptions messages to
+ * Attach the primary writer to write uncaught exceptions messages to
  * the client browser.
  *
  * The writer writes all ispCP_Exception messages to the client browser. In
@@ -73,7 +74,7 @@ ispCP_Registry::setAlias(
  * the user is not an administrator.
  */
 ispCP_Registry::get('ExceptionHandler')->attach(
-	new ispCP_ExceptionHandler_Writer_Browser(
+	new ispCP_Exception_Writer_Browser(
 		// hardcoded here but will be improved later
 		'themes/omega_original/system-message.tpl'
 	)

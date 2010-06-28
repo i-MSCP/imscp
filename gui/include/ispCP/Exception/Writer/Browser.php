@@ -2,12 +2,6 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
- *
- * @license
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
@@ -23,54 +17,60 @@
  * The Initial Developer of the Original Code is ispCP Team.
  * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
+ *
+ * @category	ispCP
+ * @package		ispCP_Exception
+ * @subpackage	Writer
+ * @copyright	2006-2010 by ispCP | http://isp-control.net
+ * @author		Laurent Declercq <laurent.declercq@ispcp.net>
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net ispCP Home Site
+ * @license		http://www.mozilla.org/MPL/ MPL 1.1
+ * @filesource
  */
 
 /**
- * @see ispCP_ExceptionHandler_Writer_Abstract
+ * @see ispCP_Exception_Writer
  */
-require_once  INCLUDEPATH . '/ispCP/ExceptionHandler/Writer/Abstract.php';
+require_once  INCLUDEPATH . '/ispCP/Exception/Writer.php';
 
 /**
  * Browser writer class
  *
- * This writer writes the message defined by an exception to the client
- * browser. This writer acts also as a formatter that will use a specific
- * template for the message formatting. If no template path is given, or if the
- * template file is not reachable, a string that represent the  message is write
- * to the client browser.
+ * This writer writes the exception messages to the client browser. This writer
+ * acts also as a formatter that will use a specific template for the messages
+ * formatting. If no template path is given, or if the template file is not
+ * reachable, a string that represent the  message is write to the client
+ * browser.
  *
  * The given template should be a template file that can be treated by a
  * ptemplate object.
  *
  * Note: Will be improved later.
  *
- * @author Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
- * @since 1.0.6
- * @version 1.0.1
- * @todo Display more information like trace on debug mode.
+ * @category	ispCP
+ * @package		ispCP_Exception
+ * @subpackage	Writer
+ * @author		Laurent Declercq <laurent.declercq@ispcp.net>
+ * @since		1.0.6
+ * @version		1.0.3
+ * @todo		Display more information like trace on debug mode.
  */
-class ispCP_ExceptionHandler_Writer_Browser extends ispCP_ExceptionHandler_Writer_Abstract {
+class ispCP_Exception_Writer_Browser extends ispCP_Exception_Writer {
 
 	/**
-	 * ptemplate instance
+	 * pTemplate instance
 	 *
 	 * @var ptemplate
 	 */
-	protected $_ptemplate = null;
+	protected $_pTemplate = null;
 
 	/**
 	 * Template file path
 	 *
-	 * @var string Template file path
+	 * @var string
 	 */
 	protected $_templateFile = null;
-
-	/**
-	 * The message to be written
-	 *
-	 * @var string Message to be written
-	 */
-	protected $_message = '';
 
 	/**
 	 * Constructor
@@ -92,12 +92,13 @@ class ispCP_ExceptionHandler_Writer_Browser extends ispCP_ExceptionHandler_Write
 	 * Writes the output to the client browser
 	 *
 	 * @return void
+	 * @todo Add inline template for rescue
 	 */
 	protected function _write() {
-		if($this->_ptemplate != null) {
-			$this->_ptemplate->prnt();
+
+		if($this->_pTemplate != null) {
+			$this->_pTemplate->prnt();
 		} else {
-			// @todo Replace this by inline template
 			echo $this->_message;
 		}
 	}
@@ -105,20 +106,32 @@ class ispCP_ExceptionHandler_Writer_Browser extends ispCP_ExceptionHandler_Write
 	/**
 	 * This methods is called from the subject (i.e. when an event occur)
 	 *
-	 * @param ispCP_ExceptionHandler $exceptionHandler ispCP_ExceptionHandler
+	 * @param ispCP_Exception_Handler $exceptionHandler ispCP_Exception_Handler
 	 * @return void
 	 */
 	public function update(SplSubject $exceptionHandler) {
 
-		$messageProduction = $exceptionHandler->getProductionException();
+		// Always write the real exception message if we are the admin
+		if(isset($_SESSION) && ((isset($_SESSION['logged_from']) &&
+			$_SESSION['logged_from'] == 'admin') ||
+				isset($_SESSION['user_type']) &&
+					$_SESSION['user_type'] == 'admin')) {
 
-		$this->_message = ($messageProduction)
-			? $messageProduction->getMessage()
-			: $exceptionHandler->getException()->getMessage();
+			$this->_message = $exceptionHandler->getException()->getMessage();
+	
+		} else {
+
+			$productionException = $exceptionHandler->getProductionException();
+
+			// An exception for production exists ? If it's not case, use the
+			// real exception raised
+			$this->_message = ($productionException !== false)
+				? $productionException->getMessage()
+				: $exceptionHandler->getException()->getMessage();
+		}
 
 		if($this->_templateFile != null) {
 			$this->_prepareTemplate();
-			$this->_ptemplate->parse('PAGE', 'page');
 		}
 
 		// Finally, we write the output
@@ -132,37 +145,46 @@ class ispCP_ExceptionHandler_Writer_Browser extends ispCP_ExceptionHandler_Write
 	 */
 	protected function _prepareTemplate() {
 
-		$this->_ptemplate = new pTemplate();
-		$this->_ptemplate->define('page', $this->_templateFile);
+		$this->_pTemplate = new pTemplate();
+		$this->_pTemplate->define('page', $this->_templateFile);
 
-		$this->_ptemplate->assign(
+		
+		if(ispCP_Registry::isRegistered('backButtonDestination')) {
+			$backButtonDest = ispCP_Registry::get('backButtonDestination');
+		} else {
+			$backButtonDest = 'javascript:history.go(-1)';
+		}
+
+		$this->_pTemplate->assign(
 			array(
 				'THEME_COLOR_PATH' => '/themes/' . 'omega_original',
-				'BACKBUTTONDESTINATION' => "javascript:history.go(-1)"
+				'BACKBUTTONDESTINATION' => $backButtonDest,
+				'MESSAGE' => $this->_message
 			)
 		);
 
 		// i18n support is available ?
 		if (function_exists('tr')) {
-			$this->_ptemplate->assign(
+			$this->_pTemplate->assign(
 				array(
 					'TR_SYSTEM_MESSAGE_PAGE_TITLE' => tr('ispCP Error'),
 					'THEME_CHARSET' => tr('encoding'),
 					'TR_BACK' => tr('Back'),
 					'TR_ERROR_MESSAGE' => tr('Error Message'),
-					'MESSAGE' => $this->_message
+					
 				)
 			);
 		} else {
-			$this->_ptemplate->assign(
+			$this->_pTemplate->assign(
 				array(
 					'TR_SYSTEM_MESSAGE_PAGE_TITLE' => 'ispCP Error',
 					'THEME_CHARSET' => 'UTF-8',
 					'TR_BACK' => 'Back',
 					'TR_ERROR_MESSAGE' => 'Error Message',
-					'MESSAGE' => $this->_message
 				)
 			);
 		}
+
+		$this->_pTemplate->parse('PAGE', 'page');
 	} // end prepareTemplate()
 }

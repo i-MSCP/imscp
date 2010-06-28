@@ -2,13 +2,6 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright	2006-2010 by ispCP | http://isp-control.net
- * @version		SVN: $Id$
- * @link		http://isp-control.net
- * @author		Benedikt Heintel <benedikt@heintel.org>
- * @author		laurent declercq <laurent.declercq@ispcp.net>
- *
- * @license
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
@@ -24,32 +17,44 @@
  * The Initial Developer of the Original Code is ispCP Team.
  * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
+ *
+ * @category	ispCP
+ * @package		ispCP_Config
+ * @subpackage	Handler
+ * @copyright	2006-2010 by ispCP | http://isp-control.net
+ * @author		Laurent Declercq <laurent.declercq@ispcp.net>
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net ispCP Home Site
+ * @license		http://www.mozilla.org/MPL/ MPL 1.1
+ * @filesource
  */
 
 /**
- * @see ispCP_ConfigHandler
+ * @see ispCP_Config_Handler
  */
-require_once  INCLUDEPATH . '/ispCP/ConfigHandler.php';
+require_once  INCLUDEPATH . '/ispCP/Config/Handler.php';
 
 /**
  * Class to handle configuration parameters from a flat file
  *
- * ispCP_ConfigHandler adapter class to handle configuration parameters that are
+ * ispCP_Config_Handler adapter class to handle configuration parameters that are
  * stored in a flat file where each pair of key-values are separated by the
  * equal sign.
  *
- * @since 1.0.6
- * @version 1.0.3
- * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
- * @author laurent declercq <laurent.declercq@ispcp.net>
- * @see ispCP_ConfigHandler
+ * @category	ispCP
+ * @package		ispCP_Config
+ * @subpackage	Handler
+ * @author		Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author		Laurent Declercq <laurent.declercq@ispcp.net>
+ * @since		1.0.6
+ * @version		1.0.5
  */
-class ispCP_ConfigHandler_File extends ispCP_ConfigHandler {
+class ispCP_Config_Handler_File extends ispCP_Config_Handler {
 
 	/**
 	 * Configuration file path
 	 *
-	 * @var string Configuration file path
+	 * @var string
 	 */
 	protected $_pathFile;
 
@@ -84,10 +89,10 @@ class ispCP_ConfigHandler_File extends ispCP_ConfigHandler {
 
 	/**
 	 * Opens a configuration file and parses its Key = Value pairs into the
-	 * {@link ispCP_ConfigHangler::parameters} array.
+	 * {@link ispCP_Config_Hangler::parameters} array.
 	 *
 	 * @throws ispCP_Exception
-	 * @return Array that contain all Configuration parameters
+	 * @return array A array that contain all Configuration parameters
 	 * @todo Don't use '@' error operator
 	 */
 	protected function _parseFile() {

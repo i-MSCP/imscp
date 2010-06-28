@@ -2,12 +2,6 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright	2006-2010 by ispCP | http://isp-control.net
- * @version		SVN: $Id$
- * @link		http://isp-control.net
- * @author		Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
- *
- * @license
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
@@ -23,6 +17,16 @@
  * The Initial Developer of the Original Code is ispCP Team.
  * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
+ *
+ * @category	ispCP
+ * @package		ispCP_Config
+ * @subpackage	Handler
+ * @copyright	2006-2010 by ispCP | http://isp-control.net
+ * @author		Laurent Declercq <laurent.declercq@ispcp.net>
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net ispCP Home Site
+ * @license		http://www.mozilla.org/MPL/ MPL 1.1
+ * @filesource
  */
 
 /**
@@ -38,20 +42,19 @@
  * - Via object properties
  * - Via setter and getter methods
  *
- * Also, this class implements a helper method replace_with() that allow to
- * replace all parameters of object of this class with parameters from another
- * object of this class.
- *
- * @since 1.0.6
- * @version 1.0.3
- * @author Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
+ * @category	ispCP
+ * @package		ispCP_Config
+ * @subpackage	Handler
+ * @author		Laurent Declercq <laurent.declercq@ispcp.net>
+ * @since		1.0.6
+ * @version		1.0.4
  */
-class ispCP_ConfigHandler implements ArrayAccess, Iterator {
+class ispCP_Config_Handler implements ArrayAccess, Iterator {
 
 	/**
 	 * Array that contain all configuration parameters
 	 *
-	 * @var Array Configuration parameters
+	 * @var array
 	 */
 	protected $_parameters = array();
 
@@ -71,6 +74,7 @@ class ispCP_ConfigHandler implements ArrayAccess, Iterator {
 	 *
 	 * @param string $index Configuration parameter key name
 	 * @param mixed $value Configuration parameter value
+	 * @return void
 	 */
 	public function set($index, $value) {
 
@@ -95,7 +99,7 @@ class ispCP_ConfigHandler implements ArrayAccess, Iterator {
 	 *
 	 * @param string $index Configuration parameter key name
 	 * @throws ispCP_Exception
-	 * @return Configuration parameter value
+	 * @return mixed Configuration parameter value
 	 */
 	public function get($index) {
 
@@ -129,10 +133,10 @@ class ispCP_ConfigHandler implements ArrayAccess, Iterator {
 	}
 
 	/**
-	 * PHP Overloading for call of isset() on inaccessible members.
+	 * PHP Overloading for call isset() on inaccessible members.
 	 *
 	 * @param string Configuration parameter key name
-	 * @return TRUE if the configuration parameter exists, FALSE otherwise
+	 * @return boolean TRUE if configuration parameter exists, FALSE otherwise
 	 */	
 	public function __isset($index) {
 
@@ -154,7 +158,7 @@ class ispCP_ConfigHandler implements ArrayAccess, Iterator {
 	 * Checks if a configuration parameters exists
 	 *
 	 * @param string $index Configuration parameter key name
-	 * @return TRUE if the configuration parameter exists, FALSE otherwise
+	 * @return boolean TRUE if configuration parameter exists, FALSE otherwise
 	 */
 	public function exists($index) {
 		
@@ -165,7 +169,7 @@ class ispCP_ConfigHandler implements ArrayAccess, Iterator {
 	 * Replaces all parameters of this object with parameters from another
 	 *
 	 * This method replace the parameters values of this object with the same
-	 * values from another {@link ispCP_ConfigHandler} object.
+	 * values from another {@link ispCP_Config_Handler} object.
 	 *
 	 * If a key from this object exists in the second object, its value will be
 	 * replaced by the value from the second object. If the key exists in the
@@ -175,10 +179,10 @@ class ispCP_ConfigHandler implements ArrayAccess, Iterator {
 	 *
 	 * This method is not recursive.
 	 *
-	 * @param ispCP_ConfigHandler $config ispCP_ConfigHandler object
+	 * @param ispCP_Config_Handler $config ispCP_Config_Handler object
 	 * @return void
 	 */
-	public function replaceWith(ispCP_ConfigHandler $config) {
+	public function replaceWith(ispCP_Config_Handler $config) {
 
 		foreach($config as $index => $value) {
 			$this->set($index, $value);
@@ -188,7 +192,7 @@ class ispCP_ConfigHandler implements ArrayAccess, Iterator {
 	/**
 	 * Return an associative array that contain all configuration parameters
 	 *
-	 * @return array
+	 * @return array Array that contain configuration parameters
 	 */
 	public function toArray() {
 

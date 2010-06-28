@@ -2,12 +2,6 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
- *
- * @license
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
@@ -23,12 +17,24 @@
  * The Initial Developer of the Original Code is ispCP Team.
  * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
+ *
+ * @category	ispCP
+ * @package		ispCP_Database
+ * @copyright	2006-2010 by ispCP | http://isp-control.net
+ * @author		ispCP Team
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net ispCP Home Site
+ * @license		http://www.mozilla.org/MPL/ MPL 1.1
+ * @filesource
  */
 
 /**
  * This class wrap the PDO abstraction layer
  *
- * @todo Use Exceptions for all errors (will be activated when the
+ * @category	ispCP
+ * @package		ispCP_Database
+ * @author		ispCP Team
+ * @todo		Use Exceptions for all errors (will be activated when the
  *	ispCP_ExceptionHandler class will be ready (test in progress)
  */
 final class ispCP_Database {
@@ -83,7 +89,7 @@ final class ispCP_Database {
 	 *
 	 * @throws ispCP_Exception
 	 * @param string $connection Connection key name
-	 * return Database instance
+	 * @return Database A Database instance
 	 */
 	public static function getInstance($connection = 'default') {
 
@@ -103,7 +109,7 @@ final class ispCP_Database {
 	 * @author Laurent Declercq <laurent.declercq@ispcp.net>
 	 * @throws ispCP_Exception
 	 * @param $string $connection Connection key name
-	 * @return PDO instance
+	 * @return PDO A PDO instance
 	 */
 	public static function getRawInstance($connection = 'default') {
 
@@ -129,7 +135,7 @@ final class ispCP_Database {
 	 * @param string $host Mysql server hostname
 	 * @param string $name Database name
 	 * @param string $connection Connection key name
-	 * @return Database instance
+	 * @return Database A Database instance
 	 */
 	public static function connect($user, $pass, $type, $host, $name,
 		$connection = 'default') {
@@ -155,7 +161,7 @@ final class ispCP_Database {
 	 * @author Laurent Declercq <laurent.declercq@ispcp.net>
 	 * @param int $attribute Attribute uid
 	 * @param mixed $value Attribute value
-	 * @return TRUE on success, FALSE on failure
+	 * @return boolean TRUE on success, FALSE on failure
 	 */
 	public function setAttribute($attribute, $value) {
 
@@ -168,7 +174,7 @@ final class ispCP_Database {
 	 * This method returns a stringified version of the error information
 	 * associated with the last database operation.
 	 *
-	 * @return String Error information
+	 * @return string Error information
 	 */
 	public function ErrorMsg() {
 
@@ -200,13 +206,13 @@ final class ispCP_Database {
 	 * be a integer or string that represent a parameter value or an array that
 	 * contain parameter values.
 	 *
-	 * @param string|PDOstatement PDOstatement instance or a SQL statement
+	 * @param string|PDOStatement PDOstatement instance or a SQL statement
 	 * @param string|int|array parameter values.
 	 * @return boolean|int|DatabaseResult Depending of the query type and result
-	 * the returned value can be a DatabaseResult instance or FALSE on failure
-	 * (prepared queries) ; A DatabaseResult or FALSE on faillure for queries
-	 * such as SELECT, EXPLAIN ; An integer that represent the number of
-	 * affected line or A FALSE on failure for queries such as INSERT, UPDATE
+	 *	the returned value can be a DatabaseResult instance or FALSE on failure
+	 *	(prepared queries) ; A DatabaseResult or FALSE on faillure for queries
+	 *	such as SELECT, EXPLAIN ; An integer that represent the number of
+	 *	affected line or A FALSE on failure for queries such as INSERT, UPDATE
 	 */
 	public function Execute($stmt, $param = array()) {
 
@@ -232,7 +238,7 @@ final class ispCP_Database {
 	 *
 	 * @param string $query SQL statement
 	 * @param array $attributes Attribute values for the PDOStatement object 
-	 * @return PDOStatement instance
+	 * @return PDOStatement A PDOStatement instance
 	 */
 	public function Prepare($statement, array $attributes = array()) {
 
@@ -252,7 +258,7 @@ final class ispCP_Database {
 	/**
 	 * Returns the list of the permanent tables from the database
 	 *
-	 * @return Array that represent a list of the permanent tables
+	 * @return array An array that represent a list of the permanent tables
 	 */
 	public function MetaTables() {
 
@@ -281,7 +287,7 @@ final class ispCP_Database {
 	/**
 	 * Retrieve a PDO database connection attribute
 	 *
-	 * @return Attribute value or NULL on failure
+	 * @return mixed Attribute value or NULL on failure
 	 */
 	public function getAttribute($attribute) {
 
@@ -291,7 +297,7 @@ final class ispCP_Database {
 	/**
 	 *  Initiates a transaction
 	 *
-	 * @return TRUE on success, FALSE on failure
+	 * @return boolean TRUE on success, FALSE on failure
 	 */
 	public function StartTrans() {
 
@@ -301,7 +307,7 @@ final class ispCP_Database {
 	/**
 	 * Commits a transaction
 	 *
-	 * @return TRUE on success, FALSE on failure
+	 * @return boolean TRUE on success, FALSE on failure
 	 */
 	public function CompleteTrans() {
 
@@ -317,7 +323,7 @@ final class ispCP_Database {
 	 * @author Laurent Declercq <laurent.declerq@ispcp.net>
 	 * @param int $attribute Attribute uid
 	 * @param mixed $value Attribute value
-	 * @return TRUE on success or FALSE on failure
+	 * @return boolean TRUE on success or FALSE on failure
 	 */
 	public function RollbackTrans() {
 
@@ -325,7 +331,7 @@ final class ispCP_Database {
 	}
 
 	/**
-	 * Should be documented
+	 * This method is not currently used
 	 *
 	 * @return false
 	 */

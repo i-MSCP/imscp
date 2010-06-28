@@ -2,12 +2,6 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
- *
- * @license
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
@@ -23,14 +17,25 @@
  * The Initial Developer of the Original Code is ispCP Team.
  * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
+ *
+ * @category	ispCP
+ * @package		ispCP_Registry
+ * @copyright	2006-2010 by ispCP | http://isp-control.net
+ * @author		Laurent Declercq <laurent.declercq@ispcp.net>
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net ispCP Home Site
+ * @license		http://www.mozilla.org/MPL/ MPL 1.1
+ * @filesource
  */
 
 /**
  * Class to store shared data (Better than global variables usage)
  *
- * @author Laurent declercq (nuxwin) <laurent.declercq@ispcp.net>
- * @since 1.0.6
- * @version 1.0.5
+ * @category	ispCP
+ * @package		ispCP_Registry
+ * @author		Laurent declercq <laurent.declercq@ispcp.net>
+ * @since		1.0.6
+ * @version		1.0.6
  */
 class ispCP_Registry {
 
@@ -61,7 +66,7 @@ class ispCP_Registry {
 	 * Returns an {@link ispCP_Registry} instance, only creating it if it
 	 * doesn't already exist.
 	 *
-	 * @return ispCP_Registry
+	 * @return ispCP_Registry An ispCP_Registry instance
 	 */
 	public static function getInstance() {
 
@@ -73,19 +78,21 @@ class ispCP_Registry {
 	}
 
 	/**
-	 * Getter method to get data stored in the registry
+	 * Getter method to retrieve registered data
 	 *
 	 * Note: If you want get a reference for data that is not an object, you
 	 * should always use this method and not accessed it directly like an object
 	 * member.
 	 *
-	 * To get an reference, use the following syntax:
+	 * To get a reference, use the following syntax:
 	 *
+	 * <code>
 	 * $data = &ispCP_Register::get('name');
+	 * </code>
 	 *
 	 * @throws ispCP_Exception
 	 * @param string $index Data key name
-	 * @return mixed Data
+	 * @return mixed Registered data
 	 */
 	public static function &get($index) {
 
@@ -103,6 +110,9 @@ class ispCP_Registry {
 	/**
 	 * Overloading on inaccessible members
 	 *
+	 * This method raises an {@link ispCP_Exception} if a member is inaccessible
+	 * for reading.
+	 *
 	 * @throws ispCP_Exception
 	 * @param string $index Data key name
 	 * @return void
@@ -115,13 +125,11 @@ class ispCP_Registry {
 	/**
 	 * Setter method to register data
 	 *
-	 * For conveniences reasons, this method return the data registered
-	 *
-	 * Note: This method can return a reference.
+	 * For conveniences reasons, this method return the data registered.
 	 *
 	 * @param string $index Data key name
 	 * @param mixed $value Data value
-	 * @return mixed
+	 * @return mixed Registered Data
 	 */
 	public static function &set($index, $value) {
 
@@ -134,21 +142,19 @@ class ispCP_Registry {
 	/**
 	 * Setter method to register data by reference.
 	 *
-	 * This method take sense for the singleton objects that provide a reset
-	 * method to recreate the instance. When the object::resetInstance() method
-	 * is called, the alias that was registered in the registry will refer to
-	 * the new instance. It's not the case with data that were registered with
-	 * the {@link set()} method because registered values for objects are
-	 * objects identifiers and not aliases (references).
+	 * This method take sense for the singleton objects that provide a method
+	 * to recreate the instance. When the object instance is reseted, the alias
+	 * that iq registered in the registry will refer to the new instance. It's
+	 * not the case with data that were registered with the {@link set()} method
+	 * because registered values for objects are objects identifiers and not
+	 * real aliases.
 	 *
-	 * see {@link http://www.php.net/manual/en/language.oop5.references.php} for
-	 * more information about this issue.
-	 *
-	 * Note: This method can return a reference.
+	 * See the {@link http://www.php.net/manual/en/language.oop5.references.php
+	 * Php documentation} for more information about this issue.
 	 *
 	 * @param string $index Data key name
 	 * @param mixed $value Data value
-	 * @return mixed
+	 * @return mixed Registered data
 	 */
 	public static function &setAlias($index, &$value) {
 
@@ -165,7 +171,7 @@ class ispCP_Registry {
 	 * Check if a data is registered
 	 *
 	 * @param string $index Data key name
-	 * @return boolean TRUE if the data is registered, FALSE otherwise
+	 * @return boolean TRUE if data is registered, FALSE otherwise
 	 */
 	public static function isRegistered($index) {
 

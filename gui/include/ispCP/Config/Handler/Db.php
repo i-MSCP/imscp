@@ -2,12 +2,6 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright	2006-2010 by ispCP | http://isp-control.net
- * @version		SVN: $Id$
- * @link		http://isp-control.net
- * @author		Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
- *
- * @license
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
@@ -23,30 +17,40 @@
  * The Initial Developer of the Original Code is ispCP Team.
  * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
+ *
+ * @category	ispCP
+ * @package		ispCP_Config
+ * @subpackage	Handler
+ * @copyright	2006-2010 by ispCP | http://isp-control.net
+ * @author		Laurent Declercq <laurent.declercq@ispcp.net>
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net ispCP Home Site
+ * @license		http://www.mozilla.org/MPL/ MPL 1.1
+ * @filesource
  */
 
 /**
- * @see ispCP_ConfigHandler
+ * @see ispCP_Config_Handler
  */
-require_once  INCLUDEPATH . '/ispCP/ConfigHandler.php';
+require_once  INCLUDEPATH . '/ispCP/Config/Handler.php';
 
 /**
  * Class to handle configuration parameters from database
  *
- * ispCP_ConfigHandler adapter class to handle configuration parameters that are
- * stored in a database.
+ * ispCP_Config_Handler adapter class to handle configuration parameters that
+ * are stored in database.
  *
- * Note: Only PDO is currently supported.
- *
- * @author Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
- * @since 1.0.6
- * @version 1.0.4
- * @see ispCP_ConfigHandler
+ * @category	ispCP
+ * @package		ispCP_Config
+ * @subpackage	Handler
+ * @author		Laurent Declercq <laurent.declercq@ispcp.net>
+ * @since		1.0.6
+ * @version		1.0.5
  */
-class ispCP_ConfigHandler_Db extends ispCP_ConfigHandler {
+class ispCP_Config_Handler_Db extends ispCP_Config_Handler {
 
 	/**
-	 * Reference to a PDO instance
+	 * PDO instance
 	 *
 	 * @var PDO
 	 */
@@ -55,7 +59,7 @@ class ispCP_ConfigHandler_Db extends ispCP_ConfigHandler {
 	/**
 	 * PDOStatement to insert a configuration parameter in the database
 	 *
-	 * For performance reason, the PDOStatement object is created only once at
+	 * For performance reason, the PDOStatement instance is created only once at
 	 * the first execution of the {@link _insert()} method.
 	 *
 	 * @var PDOStatement
@@ -65,7 +69,7 @@ class ispCP_ConfigHandler_Db extends ispCP_ConfigHandler {
 	/**
 	 * PDOStatement to update a configuration parameter in the database
 	 *
-	 * For performance reason, the PDOStatement object is created only once at
+	 * For performance reason, the PDOStatement instance is created only once at
 	 * the first execution of the {@link _update()} method.
 	 *
 	 * @var PDOStatement
@@ -75,7 +79,7 @@ class ispCP_ConfigHandler_Db extends ispCP_ConfigHandler {
 	/**
 	 * PDOStatement to delete a configuration parameter in the database
 	 *
-	 * For performance reason, the PDOStatement object is created only once at
+	 * For performance reason, the PDOStatement instance is created only once at
 	 * the first execution of the {@link _delete()} method.
 	 *
 	 * @var PDOStatement
@@ -83,9 +87,9 @@ class ispCP_ConfigHandler_Db extends ispCP_ConfigHandler {
 	protected $_deleteStmt = null;
 
 	/**
-	 * Variable bound to the PDOStatement objects
+	 * Variable bound to the PDOStatement instances
 	 *
-	 * This variable is bound to the PDOStatement objects that are used by
+	 * This variable is bound to the PDOStatement instances that are used by
 	 * {@link _insert()} , {@link _update()} and {@link _delete()} methods.
 	 *
 	 * @var string Configuration parameter key name
@@ -95,45 +99,45 @@ class ispCP_ConfigHandler_Db extends ispCP_ConfigHandler {
 	/**
 	 * Variable bound to the PDOStatement objects
 	 *
-	 * This variable is bound to the PDOStatement objects that are used by both
-	 * {@link _insert()} and {@link _update()} methods.
+	 * This variable is bound to the PDOStatement instances that are used by
+	 * both {@link _insert()} and {@link _update()} methods.
 	 *
 	 * @var mixed Configuration parameter value
 	 */
 	protected $_value = null;
 
 	/**
-	 * Counter for sql update queries that were been executed
+	 * Counter for SQL update queries
 	 *
-	 * @var int Sql queries count
+	 * @var int
 	 */
 	protected $_insertQueriesCounter = 0;
 
 	/**
-	 * Counter for sql insert queries that were been executed
+	 * Counter for SQL insert queries
 	 *
-	 * @var int Sql queries count
+	 * @var int
 	 */
 	protected $_updateQueriesCounter = 0;
 
 	/**
-	 * Database table where the configuration parameters are stored
+	 * Database table for configuration parameters
 	 *
-	 * @var string Table name
+	 * @var string
 	 */
 	protected $_tableName = 'config';
 
 	/**
 	 * Database column name for configuration parameters keys
 	 *
-	 * @var string Column name
+	 * @var string
 	 */
 	protected $_keysColumn = 'name';
 
 	/**
 	 * Database column name for configuration parameters values
 	 *
-	 * @var string Column name
+	 * @var string
 	 */
 	protected $_valuesColumn = 'value';
 
@@ -147,10 +151,10 @@ class ispCP_ConfigHandler_Db extends ispCP_ConfigHandler {
 	 *
 	 * For an array, the possible parameters are:
 	 *
-	 * db: Reference to PDO instance
-	 * table_name: Database configuration table name
-	 * key_column: Database configuration key column name
-	 * value_column: Database configuration value column name
+	 * - db: Reference to PDO instance
+	 * - table_name: Database configuration table name
+	 * - key_column: Database configuration key column name
+	 * - value_column: Database configuration value column name
 	 *
 	 * Note: The three last parameters are optionals.
 	 *
@@ -202,8 +206,8 @@ class ispCP_ConfigHandler_Db extends ispCP_ConfigHandler {
 	/**
 	 * Setter method to set or change a configuration parameter in the database
 	 *
-	 * For performance reasons, queries for updates are only done if the old and
-	 * the new value of a parameter are not the same.
+	 * For performance reasons, queries for updates are only done if old and new
+	 * value of a parameter are not the same.
 	 *
 	 * @param string $index Configuration parameter key name
 	 * @param mixed $value Configuration parameter value
@@ -236,7 +240,7 @@ class ispCP_ConfigHandler_Db extends ispCP_ConfigHandler {
 	}
 
 	/**
-	 * Returns the count of sql queries that were executed
+	 * Returns the count of SQL queries that were executed
 	 *
 	 * This method returns the count of queries that were executed since the
 	 * last call of {@link reset_queries_counter()} method.
@@ -313,7 +317,7 @@ class ispCP_ConfigHandler_Db extends ispCP_ConfigHandler {
 	 * Load all the configuration parameters from the database
 	 *
 	 * @throws ispCP_Exception
-	 * @return Array that contain all configuration parameters
+	 * @return array An Array that contain all configuration parameters
 	 */
 	protected function _loadAll() {
 

@@ -2,13 +2,6 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
- *
- * @license
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
@@ -24,27 +17,36 @@
  * The Initial Developer of the Original Code is ispCP Team.
  * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
+ *
+ * @category	ispCP
+ * @package		ispCP_Initializer
+ * @copyright	2006-2010 by ispCP | http://isp-control.net
+ * @author		Laurent Declercq <laurent.declercq@ispcp.net>
+ * @version		SVN: $Id$
+ * @link		http://isp-control.net ispCP Home Site
+ * @license		http://www.mozilla.org/MPL/ MPL 1.1
+ * @filesource
  */
 
 /**
- * Class ispCP_Initializer
+ * ispCP Initializer class
  *
  * The initializer is responsible for processing the ispCP configuration,
  * such as setting the include_path, initializing logging, database and
  * more.
  *
- * Note: Not Yet Used, testing in progress
- *
- * @author Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
- * @since 1.0.6
- * @version 1.0.4
+ * @category	ispCP
+ * @package		ispCP_Initializer
+ * @author		Laurent declercq <laurent.declercq@ispcp.net>
+ * @since		1.0.6
+ * @version		1.0.5
  */
 class ispCP_Initializer {
 
 	/**
-	 * ispCP_ConfigHandler instance used by this class
+	 * ispCP_Config_Handler instance used by this class
 	 *
-	 * @var ispCP_ConfigHandler
+	 * @var ispCP_Config_Handler
 	 */
 	private $_config;
 
@@ -62,28 +64,26 @@ class ispCP_Initializer {
 	 * simply executes all of the initialization methods. Alternately, you can
 	 * specify explicitly which initialization methods you want:
 	 *
-	 * <samp>
+	 * <code>
 	 *	ispCP_Initializer::run('_setIncludePath')
-	 * <samp>
+	 * </code>
 	 *
 	 * This is useful if you only want the include_path path initialized,
 	 * without incurring the overhead of completely loading the entire
 	 * environment.
 	 *
-	 * Note: Concept borrowed to the RoR framework
-	 *
-	 * @throw ispCP_Exception
-	 * @param string|ispCP_ConfigHandler $command Initializer method to be
-	 *	executed or an ispCP_ConfigHandler object
-	 * @param ispCP_ConfigHandler $config Optional ispCP_ConfigHandler object
-	 * @return The ispCP_Initializer instance
+	 * @throws ispCP_Exception
+	 * @param string|ispCP_Config_Handler $command Initializer method to be
+	 *	executed or an ispCP_Config_Handler object
+	 * @param ispCP_Config_Handler $config Optional ispCP_Config_Handler object
+	 * @return ispCP_Initializer The ispCP_Initializer instance
 	 */
 	public static function run($command = '_processAll',
-		ispCP_ConfigHandler $config = null) {
+		ispCP_Config_Handler $config = null) {
 
 		if(!self::$_initialized) {
 
-			if($command instanceof ispCP_ConfigHandler) {
+			if($command instanceof ispCP_Config_Handler) {
 				$config = $command;
 				$command = '_processAll';
 			}
@@ -105,12 +105,12 @@ class ispCP_Initializer {
 
 	/**
 	 * Create a new Initializer instance that references the given
-	 * {@link ispCP_ConfigHandler} instance
+	 * {@link ispCP_Config_Handler} instance
 	 *
-	 * @param ispCP_ConfigHandler ispCP_ConfigHandler instance
+	 * @param ispCP_Config_Handler $config ispCP_Config_Handler instance
 	 * @return void
 	 */
-	private function __construct($config) {
+	protected function __construct(ispCP_Config_Handler $config) {
 
 		$this->_config = ispCP_Registry::set('Config', $config);
 	}
@@ -118,10 +118,10 @@ class ispCP_Initializer {
 	/**
 	 * Object of this class shouldn't be cloned
 	 */
-	private function __clone() {}
+	protected function __clone() {}
 
 	/**
-	 * Execute all of the available initialization routines
+	 * Execute all of the availables initialization routines
 	 *
 	 * @return void
 	 */
@@ -274,8 +274,16 @@ class ispCP_Initializer {
 	 */
 	protected function _initializeOutputBuffering() {
 
-		// Will be reactivated
-		//ispCP_spGzip::ob_start(7, false, true, true);
+		// Create a new filter that will be applyed on the buffer output
+		$filter = ispCP_Registry::set(
+			'bufferFilter',
+			new ispCP_Filter_Compress_Gzip(
+				ispCP_Filter_Compress_Gzip::FILTER_BUFFER
+			)
+		);
+
+		// Start the buffer and attach the filter to him
+		ob_start(array($filter, ispCP_Filter_Compress_Gzip::FILTER_CALLBACK));
 	}
 
 	/**
@@ -286,7 +294,6 @@ class ispCP_Initializer {
 	 * Note: Will be completed later with other paths (MVC switching).
 	 *
 	 * @return void
-	 * @todo Remove possible duplicate entries on multiple call
 	 */
 	protected function _setIncludePath() {
 
@@ -322,20 +329,20 @@ class ispCP_Initializer {
 	 *
 	 * This methods establishes the default connection to the database by using
 	 * configuration parameters that come from the basis configuration object
-	 * and then, register the database instance in the registry for shared access.
+	 * and then, register the {@link ispCP_Database} instance in the
+	 * {@link ispCP_Registry} for shared access.
 	 *
-	 * A raw PDO instance is also registered in the registry for shared access.
+	 * A PDO instance is also registered in the registry for shared access.
 	 *
 	 * @throws ispCP_Exception
 	 * @return void
+	 * @todo Add a specific test to check if the db keys were generated and 
+	 * throws an exception if its not the case - Don't use global variables
 	 */
 	protected function _initializeDatabase() {
 
-		// @todo Add a specific test to check if the db keys were generated and
-		// throws an exception if its not the case - Don't use global
 		global $ispcp_db_pass_key, $ispcp_db_pass_iv;
 
-		// Include needed db keys
 		require_once 'ispcp-db-keys.php';
 
 		try {
@@ -350,18 +357,14 @@ class ispCP_Initializer {
 
 		} catch(PDOException $e) {
 
-			// Here, any SQL error information are showed only if the DEBUG
-			// parameter value is set to a positive value in the ispcp.conf file.
 			throw new ispCP_Exception(
 				'Error: Unable to establish connection to the database! '.
 				'SQL returned: ' . $e->getMessage()
 			);
 		}
 
-		// Register the Database instance for shared access
+		// Register both Database and PDO instances for shared access
 		ispCP_Registry::set('Db', $connection);
-
-		// Register the Pdo instance for shared access
 		ispCP_Registry::set('Pdo', ispCP_Database::getRawInstance());
 	}
 
@@ -369,6 +372,8 @@ class ispCP_Initializer {
 	 * Not Yet Implemented
 	 *
 	 * Not used at this moment (testing in progress)
+	 *
+	 * @return void
 	 */
 	protected function _initializeLogger() {}
 
@@ -378,7 +383,7 @@ class ispCP_Initializer {
 	 * This function retrieves all the parameters from the database and merge
 	 * them with the basis configuration object.
 	 *
-	 * Parameters that exists in the basis configuration object will replaced
+	 * Parameters that exists in the basis configuration object will be replaced
 	 * by them that come from the database. The basis configuration object
 	 * contains parameters that come from the ispcp.conf configuration file or
 	 * any parameter defined in the {@link environment.php} file.
@@ -387,14 +392,14 @@ class ispCP_Initializer {
 	 */
 	protected function _processConfiguration() {
 
-		// We get an ispCP_ConfigHandler_Db object
+		// We get an ispCP_Config_Handler_Db object
 		$db_cfg = Config::getInstance(Config::DB, ispCP_Registry::get('Pdo'));
 
 		// Now, we can override our basis configuration object with parameter
 		// that come from the database
 		$this->_config->replaceWith($db_cfg);
 
-		// Finally, we register the ispCP_ConfigHandler_Db for shared access
+		// Finally, we register the ispCP_Config_Handler_Db for shared access
 		ispCP_Registry::set('Db_Config', $db_cfg);
 	}
 
@@ -459,6 +464,7 @@ class ispCP_Initializer {
 	/**
 	 * Not Yet Implemented
 	 *
+	 * @return void
 	 * @todo Ask Jochen for the new i18n library and initilization processing
 	 */
 	protected function _initializeI18n() {}
@@ -467,6 +473,8 @@ class ispCP_Initializer {
 	 * Not yet implemented
 	 *
 	 * Not used at this moment because we have only one theme.
+	 *
+	 * @return void
 	 */
 	protected function _initializeLayout() {}
 
