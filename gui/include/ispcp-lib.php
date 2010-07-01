@@ -37,7 +37,7 @@
 error_reporting(E_ALL|E_STRICT);
 
 // Should be set to 1 only for development
-ini_set('display_errors', 1);
+ini_set('display_errors', 0);
 
 // Define path for the ispCP include directory
 define('INCLUDEPATH', dirname(__FILE__));

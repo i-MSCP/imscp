@@ -39,7 +39,7 @@
  * @package		ispCP_Initializer
  * @author		Laurent declercq <laurent.declercq@ispcp.net>
  * @since		1.0.6
- * @version		1.0.5
+ * @version		1.0.6
  */
 class ispCP_Initializer {
 
@@ -144,8 +144,8 @@ class ispCP_Initializer {
 		// Establish the connection to the database
 		$this->_initializeDatabase();
 
-		// Set additionally ispCP_ExceptionHandler_Writer_Abstract observers
-		//$this->_setExceptionHandlerWriters();
+		// Set additionally ispCP_Exception_Writer observers
+		$this->_setExceptionWriters();
 
 		// Initialize logger
 		$this->_initializeLogger();
@@ -227,34 +227,46 @@ class ispCP_Initializer {
 	 *
 	 * @return void
 	 */
-	protected function _setExceptionHandlerWriters() {
+	protected function _setExceptionWriters() {
 
 		// Get a reference to the ispCP_ExceptionHandler object
 		$exceptionHandler = ispCP_Registry::get('ExceptionHandler');
 
-		$writerObservers = explode(',', $this->_config->PHP_EXCEPTION_WRITERS);
+		$admin_email = $this->_config->DEFAULT_ADMIN_ADDRESS;
 
+		$writerObservers = explode(',', $this->_config->GUI_EXCEPTION_WRITERS);
+		$writerObservers = array_map('trim', $writerObservers);
+		$writerObservers = array_map('strtolower', $writerObservers);
+
+		/*
 		if(in_array('file', $writerObservers)) {
 			// Writer not Yet Implemented
-			/*$exceptionHandler->attach(
-				new ispCP_ExceptionHandler_Writer_File(
+			$exceptionHandler->attach(
+				new ispCP_Exception_Writer_File(
 					'path_to_logfile'
 				)
-			);*/
-		} elseif(in_array('database', $writerObservers)) {
-			/*$exceptionHandler->attach(
-				new ispCP_ExceptionHandler_Writer_Db(
-					ispCP_Registry::get('Pdo')
-			);*/
-		} elseif(in_array('mail', $writerObservers)) {
-			// Writer not Yet Implemented
-			/*$exceptionHandler->attach(
-				new ispCP_ExceptionHandler_Writer_Mail(
-					$this->_config->DEFAULT_ADMIN_ADDRESS
-				)
-			);*/
+			);
 		}
-	}
+		*/
+
+		if(in_array('mail', $writerObservers)) {
+
+			$admin_email = $this->_config->DEFAULT_ADMIN_ADDRESS;
+			if($admin_email != '') {
+				$exceptionHandler->attach(
+					new ispCP_Exception_Writer_Mail($admin_email)
+				);
+			}
+		}
+
+		/*
+		if(in_array('database', $writerObservers)) {
+			$exceptionHandler->attach(
+				new ispCP_Exception_Writer_Db(ispCP_Registry::get('Pdo'))
+			);
+		}
+		*/
+	} // end _setExceptionWriters()
 
 	/**
 	 * Initialize the PHP output buffering / spGzip filter

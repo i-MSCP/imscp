@@ -91,7 +91,7 @@
  * @subpackage	Handler
  * @author		Laurent Declercq <laurent.declercq@ispcp.net>
  * @since		1.0.6
- * @version		1.0.2
+ * @version		1.0.3
  */
 class ispCP_Exception_Handler implements SplSubject, IteratorAggregate, Countable {
 
@@ -324,10 +324,28 @@ class ispCP_Exception_Handler implements SplSubject, IteratorAggregate, Countabl
 
 		// See the {@link getIterator()} method to understand this statement
 		foreach ($this as $writer) {
-			try{
+			try {
 				$writer->update($this);
-			} catch(ispCP_Exception $e){
-				die($e->getMessage());
+			} catch(Exception $e) {
+
+				// Avoid loop with broken writer
+				$this->detach($writer);
+
+				$writerName = get_class($writer);
+				$previousMessage = $this->_exception->getMessage();
+				$lastMessage = $e->getMessage();
+
+				$message =
+					"Error: The Exception Writer `$writerName` was unable" .
+					" to write the following message: $previousMessage! Reason: " .
+					$lastMessage;
+
+				if(!count($this)) {
+					trigger_error($message, E_USER_ERROR);
+				} else {
+					$this->exceptionHandler(new ispCP_Exception($message));
+					die();
+				}
 			}
 		}
 	}

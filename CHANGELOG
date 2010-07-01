@@ -1,6 +1,16 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-07-01 Laurent Declercq
+	- GUI:
+		* Added an ispCP_Exception_Writer_Mail writer that writes messages and
+			debug backtrace information in mail sent to the admin
+	-	* Improved the ispCP_Exception_Handler to avoid loop with broken writer
+	- CONFIG:
+		* Added a new configuration parameter into the ispCP.conf file to be able
+			to deactivate the GUI writers observers (Currently, only the `Mail`
+			writer is settable.
+
 2010-06-28 Laurent Declercq
 	- GUI:
 		* Refactored all include/ispCP/* classes for PhpDocumentor compatibility
