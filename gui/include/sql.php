@@ -28,10 +28,14 @@
  * isp Control Panel. All Rights Reserved.
  */
 
+
 $sql = ispCP_Registry::get('Db');
 
 /**
- * @todo Please describe this function!
+ * @throws ispCP_Exception
+ * @param  $sql
+ * @param  $query
+ * @return 
  */
 function execute_query(&$sql, $query) {
 
@@ -44,6 +48,12 @@ function execute_query(&$sql, $query) {
 }
 
 /**
+ * @throws ispCP_Exception
+ * @param  $sql
+ * @param  $query
+ * @param mixed $data
+ * @param bool $failDie
+ * @return
  * @todo Please describe this function!
  */
 function exec_query(&$sql, $query, $data = array(), $failDie = true) {
@@ -91,57 +101,4 @@ function quoteIdentifier($identifier) {
 	$identifier = str_replace($sql->nameQuote, '\\' . $sql->nameQuote, $identifier);
 
 	return $sql->nameQuote . $identifier . $sql->nameQuote;
-}
-
-/**
- * Function match_sqlinjection
- * @todo document this function
- */
-function match_sqlinjection($value, &$matches) {
-	$matches = array();
-	return (preg_match("/((DELETE)|(INSERT)|(UPDATE)|(ALTER)|(CREATE)|( TABLE)|(DROP))\s[A-Za-z0-9 ]{0,200}(\s(FROM)|(INTO)|(TABLE)\s)/i", $value, $matches) > 0);
-}
-
-/**
- * @todo remove check for PHP <= 4.2.2, this produces unmantainable code
- */
-function check_query($exclude = array()) {
-	$matches = null;
-
-	if (phpversion() <= '4.2.2') {
-		$message = "Your PHP version is older than 4.2.2!";
-		write_log($message);
-
-		throw new ispCP_Exception("Error:  $message");
-	}
-
-	if (!is_array($exclude)) {
-		$exclude = array($exclude);
-	}
-
-	foreach ($_REQUEST as $key => $value) {
-		if (in_array($key, $exclude)) {
-			continue;
-		}
-
-		if (!is_array($value)) {
-			if (match_sqlinjection($value, $matches)) {
-				$message = "Possible SQL injection detected: $key=>$value. <b>${matches[0]}</b>. Script terminated.";
-				write_log($message);
-
-				throw new ispCP_Exception("<b>WARNING</b>: $message");
-			}
-		} else {
-			foreach ($value as $skey => $svalue) {
-				if (!is_array($svalue)) {
-					if (match_sqlinjection($svalue, $matches)) {
-						$message = "Possible SQL injection detected: $skey=>$svalue <b>${matches[0]}</b>. Script terminated.";
-						write_log($message);
-
-						throw new ispCP_Exception("<b>WARNING</b>: $message");
-					}
-				}
-			}
-		}
-	}
 }

@@ -731,8 +731,6 @@ function ispcp_limit_check($data, $extra = -1) {
 	return (bool)preg_match("/^(${extra}0|[1-9][0-9]*)$/D", $data);
 }
 
-
-
 /**
  * Validates a mount point
  *
@@ -795,37 +793,12 @@ function _validates_mpoint_token($token, $max_char = null) {
 /**
  * @todo document this function
  */
-function get_post($value) {
-	if (array_key_exists($value, $_POST)) {
-		return $_POST[$value];
-	} else {
-		return null;
-	}
-}
-
-/**
- * @todo document this function
- */
 function get_session($value) {
 	if (array_key_exists($value, $_SESSION)) {
 		return $_SESSION[$value];
 	} else {
 		return null;
 	}
-}
-
-/**
- * @todo document this function
- */
-function is_subdir_of($base_domain, $subdomain, $realPath = true) {
-	if ($realPath) {
-		$base_domain = realpath($base_domain);
-		$subdomain = realpath($subdomain);
-	}
-
-	$t = explode($base_domain, $subdomain);
-
-	return (count($t) > 1 && $t[0] === '');
 }
 
 /**

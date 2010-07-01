@@ -77,12 +77,6 @@ function gen_page_message(&$tpl) {
 	}
 }
 
-function check_language_exist($lang_table) {
-	$sql = ispCP_Registry::get('Db');
-
-	return (in_array($lang_table, $sql->MetaTables()) == true) ? true : false;
-}
-
 function set_page_message($message) {
 	if (isset($_SESSION['user_page_message'])) {
 		$_SESSION['user_page_message'] .= "\n<br />$message";

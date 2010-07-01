@@ -323,15 +323,6 @@ function update_user_props($user_id, $props) {
 	}
 }
 
-
-function escape_user_data($data) {
-
-	$res_one = preg_replace("/\\\\/", "", $data);
-	$res = preg_replace("/'/", "\\\'", $res_one);
-	return $res;
-
-}
-
 function array_decode_idna($arr, $asPath = false) {
 	if ($asPath && !is_array($arr)) {
 		return implode('/', array_decode_idna(explode('/', $arr)));
@@ -373,11 +364,6 @@ function encode_idna($input) {
 
 	$IDN = new idna_convert();
 	$output = $IDN->encode($input);
-	return $output;
-}
-
-function strip_html($input) {
-	$output = htmlspecialchars($input, ENT_QUOTES, "UTF-8");
 	return $output;
 }
 

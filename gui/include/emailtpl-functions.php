@@ -297,7 +297,3 @@ The ispCP Team
 
 	return $data;
 }
-
-function set_alias_order_email($admin_id, $data) {
-	set_email_tpl_data($admin_id, 'alias-order-msg', $data);
-}

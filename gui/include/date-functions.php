@@ -64,13 +64,3 @@ function check_date($date) {
 
 	return 0;
 }
-
-function split_date($date) {
-
-	if (check_date($date)) {
-		$res = preg_match_all("/^([^\.]+)\.([^\.]+)\.([^\n]+)\n/D", "$date\n", $parts, PREG_PATTERN_ORDER);
-		return array($parts[1][0], $parts[2][0], $parts[3][0]);
-	}
-
-	return '';
-}

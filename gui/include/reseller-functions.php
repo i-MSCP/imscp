@@ -1303,35 +1303,6 @@ function gen_domain_details(&$tpl, &$sql, $domain_id) {
 	}
 }
 
-function add_domain_extras(&$dmn_id, &$admin_id, &$sql) {
-	$query = "
-		INSERT INTO `domain_extras`
-			(`dmn_id`,
-			`admin_id`,
-			`frontpage`,
-			`htaccess`,
-			`supportsystem`,
-			`backup`,
-			`errorpages`,
-			`webmail`,
-			`filemanager`,
-			`installer`)
-		VALUES
-			(?,
-			?,
-			'0',
-			'1',
-			'1',
-			'1',
-			'1',
-			'1',
-			'1',
-			'0')
-	";
-
-	$rs = exec_query($sql, $query, array($dmn_id, $admin_id));
-}
-
 function reseller_limits_check(&$sql, &$err_msg, $reseller_id, $hpid, $newprops = "") {
 	$error = false;
 
@@ -1505,7 +1476,6 @@ function reseller_limits_check(&$sql, &$err_msg, $reseller_id, $hpid, $newprops 
 
 	return true;
 }
-
 
 function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail, $order_id) {
 	$data = get_order_email($admin_id);
@@ -1703,41 +1673,6 @@ function client_mail_add_default_accounts($dmn_id, $user_email, $dmn_part, $dmn_
 	}
 
 } // end client_mail_add_default_accounts
-
-/**
- * Get count from table by given domain_id's
- *
- * @param $tablename string database table name
- * @param $ua array domain_ids
- * @return int count
- */
-function get_reseller_detail_count($tablename, $ua) {
-	global $sql;
-
-	$delstatus = Config::getInstance()->get('ITEM_DELETE_STATUS');
-
-	$query = "SELECT COUNT(*) AS cnt FROM `".$tablename;
-	if ($tablename == 'ftp_users') {
-		$fieldname = 'uid';
-	} else {
-		$fieldname = 'domain_id';
-	}
-	$query .= "` WHERE `".$fieldname."` IN (".implode(',', $ua).")";
-	if ($tablename == 'mail_users') {
-		$query .= " AND `mail_acc` != 'abuse'
-			AND `mail_acc` != 'postmaster'
-			AND `mail_acc` != 'webmaster'
-			AND `mail_type` NOT RLIKE '_catchall'";
-		$query .= " AND status != '".$delstatus."'";
-	} else if ($tablename == 'subdomain') {
-		$query .= " AND subdomain_status != '".$delstatus."'";
-	} else if ($tablename == 'domain_aliasses') {
-		$query .= " AND alias_status != '".$delstatus."'";
-	}
-	$res = exec_query($sql, $query);
-
-	return $res->fields['cnt'];
-}
 
 /**
  * Recalculate current_ properties of reseller

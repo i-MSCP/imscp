@@ -292,24 +292,6 @@ function gen_admin_menu(&$tpl, $menu_file) {
 	$tpl->parse('MENU', 'menu');
 }
 
-function get_cnt_of_user(&$sql, $user_type) {
-
-	$query = "
-		SELECT COUNT(*) AS
-			`cnt`
-		FROM
-			`admin`
-		WHERE
-			`admin_type` = ?
-		;
-	";
-
-	$rs = exec_query($sql, $query, $user_type);
-	$admin_cnt = $rs->fields['cnt'];
-
-	return $admin_cnt;
-}
-
 function get_sql_user_count($sql) {
 
 	$query = "
@@ -1222,42 +1204,6 @@ function records_count($table, $where, $value) {
 	} else {
 		$query = "
 			SELECT COUNT(*) AS `cnt`
-			FROM
-				$table
-			;
-		";
-
-		$rs = exec_query($sql, $query);
-	}
-
-	return $rs->fields['cnt'];
-}
-
-/**
-* @todo implement check for dynamic table/row in SQL query
-*/
-function records_rlike_count($field, $table, $where, $value, $a, $b) {
-
-	$sql = ispCP_Registry::get('Db');
-
-	if($where != '') {
-		$query = "
-			SELECT COUNT(*) AS
-				`cnt`
-			FROM
-				$table
-			WHERE
-				$where
-			RLIKE
-				?
-			;
-		";
-
-		$rs = exec_query($sql, $query, $a . $value . $b);
-	} else {
-		$query = "
-			SELECT COUNT(*) AS
-				`cnt`
 			FROM
 				$table
 			;
@@ -2537,102 +2483,6 @@ function delete_domain($domain_id, $goto, $breseller = false) {
 	update_reseller_c_props($reseller_id);
 	$_SESSION['ddel'] = '_yes_';
 	user_goto($goto);
-}
-
-function remove_users_common_properties($id_user) {
-
-	$sql = ispCP_Registry::get('Db');
-
-	$query = "
-		DELETE FROM
-			`admin`
-		WHERE
-			`admin_id` = ?
-		;
-	";
-
-	// $rs = exec_query($sql, $query, $id_user);
-	exec_query($sql, $query, $id_user);
-
-	$query = "
-		DELETE FROM
-			`user_gui_props`
-		WHERE
-			`user_id` = ?
-		;
-	";
-
-	// Unused result so ...
-	// $rs = exec_query($sql, $query, $id_user);
-	exec_query($sql, $query, $id_user);
-}
-
-function substract_from_reseller_props($reseller_id, $domain_id) {
-
-	// function update reseller props before deleting account
-	list($rdmn_current, $rdmn_max,
-			$rsub_current, $rsub_max,
-			$rals_current, $rals_max,
-			$rmail_current, $rmail_max,
-			$rftp_current, $rftp_max,
-			$rsql_db_current, $rsql_db_max,
-			$rsql_user_current, $rsql_user_max,
-			$rtraff_current, $rtraff_max,
-			$rdisk_current, $rdisk_max
-	) = generate_reseller_props($reseller_id);
-
-	// NXW: Unused variable so ..
-	/*
-	list($sub_current, $sub_max,
-		$als_current, $als_max,
-		$mail_current, $mail_max,
-		$ftp_current, $ftp_max,
-		$sql_db_current, $sql_db_max,
-		$sql_user_current, $sql_user_max,
-		$traff_max, $disk_max
-	) = generate_user_props($domain_id);
-	*/
-	list(
-		$sub_current,,$als_current,,$mail_current,,$ftp_current,,
-		$sql_db_current,,$sql_user_current
-	) = generate_user_props($domain_id);
-
-	// NXW: Unused variable so ..
-	/*
-	list($tmpval1,
-		$tmpval2,
-		$tmpval3,
-		$tmpval4,
-		$tmpval5,
-		$tmpval16,
-		$traff_current,
-		$disk_current,
-		$tmpval7,
-		$tmpval8
-	) = generate_user_traffic($domain_id);
-	*/
-	list(,,,,,,$traff_current,$disk_current) = generate_user_traffic($domain_id);
-
-	$rdmn_current -= 1;
-	$rsub_current -= $sub_current;
-	$rals_current -= $als_current;
-	$rmail_current -= $mail_current;
-	$rftp_current -= $ftp_current;
-	$rsql_db_current -= $sql_db_current;
-	$rsql_user_current -= $sql_user_current;
-	$rtraff_current -= $traff_current;
-	$rdisk_current -= $disk_current;
-	$rprops = "$rdmn_current;$rdmn_max;";
-	$rprops .= "$rsub_current;$rsub_max;";
-	$rprops .= "$rals_current;$rals_max;";
-	$rprops .= "$rmail_current;$rmail_max;";
-	$rprops .= "$rftp_current;$rftp_max;";
-	$rprops .= "$rsql_db_current;$rsql_db_max;";
-	$rprops .= "$rsql_user_current;$rsql_user_max;";
-	$rprops .= "$rtraff_current;$rtraff_max;";
-	$rprops .= "$rdisk_current;$rdisk_max;";
-
-	update_reseller_props($reseller_id, $rprops);
 }
 
 /**

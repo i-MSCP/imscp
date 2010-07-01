@@ -154,13 +154,6 @@ function crypt_user_pass_with_salt($data) {
 	return $res;
 }
 
-
-function check_user_pass($crdata, $data) {
-	$salt = get_salt_from($crdata);
-	$udata = crypt($data, $salt);
-	return ($udata == $crdata);
-}
-
 /**
  * Generates random password of size specified in Config Var 'PASSWD_CHARS'
  *
