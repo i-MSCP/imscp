@@ -47,7 +47,7 @@ require_once  INCLUDEPATH . '/ispCP/Exception/Writer.php';
  * @subpackage	Writer
  * @author		Laurent Declercq <laurent.declercq@ispcp.net>
  * @since		1.0.6
- * @version		1.0.0
+ * @version		1.0.1
  * @todo		Avoid sending multiple email for same exception
  */
 class ispCP_Exception_Writer_Mail extends ispCP_Exception_Writer {
@@ -57,7 +57,7 @@ class ispCP_Exception_Writer_Mail extends ispCP_Exception_Writer {
 	 *
 	 * @var string
 	 */
-	const NAME = 'IspCP Exception Mail Writer';
+	const NAME = 'ispCP Exception Mail Writer';
 
 	/**
 	 * Mail recipient
@@ -102,7 +102,7 @@ class ispCP_Exception_Writer_Mail extends ispCP_Exception_Writer {
 		} else {
 			$ret = (bool) preg_match('/^(?:[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+\.)*[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+@(?:(?:(?:[a-zA-Z0-9_](?:[a-zA-Z0-9_\-](?!\.)){0,61}[a-zA-Z0-9_-]?\.)+[a-zA-Z0-9_](?:[a-zA-Z0-9_\-](?!$)){0,61}[a-zA-Z0-9_]?)|(?:\[(?:(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\]))$/', $to);
 		}
-	
+
 		if($ret === false) {
 			throw new ispCP_Exception(
 				'ispCP_Exception_Writer_Mail error: Invalid email address!'
@@ -160,6 +160,7 @@ class ispCP_Exception_Writer_Mail extends ispCP_Exception_Writer {
 		$this->_body .= "{$this->_message}\n\n";
 		$this->_body .= "Debug backtrace:\n\n";
 
+		// Debug Backtrace
 		foreach ($exception->getTrace() as $trace) {
 				$this->_body .=
 					"File: {$trace['file']} (Line: {$trace['line']})\n";
@@ -172,8 +173,20 @@ class ispCP_Exception_Writer_Mail extends ispCP_Exception_Writer {
 				}
 		}
 
-		$this->_body .= "\n\n---------------------------------------\n";
-		$this->_body .= self::NAME;
-		$this->_body = wordwrap($this->_body, 70);
+		// Additional information
+		$this->_body .= "\nAdditional information:\n\n";
+
+		foreach(array('HTTP_USER_AGENT', 'REQUEST_URI', 'HTTP_REFERER',
+			'REMOTE_ADDR', 'SERVER_ADDR') as $key) {
+
+			if(isset($_SERVER[$key]) && $_SERVER[$key] != '' ) {
+				$this->_body .=
+					str_replace('_', ' ', $key) . ": {$_SERVER["$key"]}\n";
+			}
+		}
+
+		$this->_body .= "\n---------------------------------------\n";
+		$this->_body .= self::NAME . "\n";
+		$this->_body = wordwrap($this->_body, 80);
 	}
 }
