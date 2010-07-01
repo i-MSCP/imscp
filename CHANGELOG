@@ -6,11 +6,12 @@ ispCP ω 1.0.6 ChangeLog
 		* Added an ispCP_Exception_Writer_Mail writer that writes messages and
 			debug backtrace information in mail sent to the admin
 		* Fixed: Funct. `tr()` can't be used if the database isn't reachable
-	-	* Improved the ispCP_Exception_Handler to avoid loop with broken writer
+	    * Improved the ispCP_Exception_Handler to avoid loop with broken writer
+	    * Refactored include/admin-function.php
 	- CONFIG:
-		* Added a new configuration parameter into the ispCP.conf file to be able
-			to deactivate the GUI writers observers (Currently, only the `Mail`
-			writer is settable.
+		* Added a new configuration parameter into the ispCP.conf file to be
+		    able to deactivate the GUI writers observers (Currently, only the
+		    `Mail` writer is settable).
 
 2010-06-28 Laurent Declercq
 	- GUI:
