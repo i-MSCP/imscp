@@ -30,6 +30,11 @@
  */
 
 /**
+ * @see ispCP_Exception_Writer
+ */
+require_once  INCLUDEPATH . '/ispCP/Exception/Writer.php';
+
+/**
  * Exception Mail writer
  *
  * This writer writes a mail that contain the exception messages and some
