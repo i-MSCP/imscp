@@ -545,7 +545,7 @@ function decrypt_db_password($db_pass) {
 		// Show string
 		return trim($decrypted);
 	} else {
-		throw new ispCP_Exception(tr("ERROR: PHP extension 'mcrypt' not loaded!"));
+		throw new ispCP_Exception("ERROR: PHP extension 'mcrypt' not loaded!");
 	}
 }
 

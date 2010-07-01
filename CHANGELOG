@@ -5,6 +5,7 @@ ispCP ω 1.0.6 ChangeLog
 	- GUI:
 		* Added an ispCP_Exception_Writer_Mail writer that writes messages and
 			debug backtrace information in mail sent to the admin
+		* Fixed: Funct. `tr()` can't be used if the database isn't reachable
 	-	* Improved the ispCP_Exception_Handler to avoid loop with broken writer
 	- CONFIG:
 		* Added a new configuration parameter into the ispCP.conf file to be able
