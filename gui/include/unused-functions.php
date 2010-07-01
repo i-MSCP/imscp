@@ -29,7 +29,7 @@
  */
 
 /**
- *  This file contains all the function that are currently not used
+ *  This file contains all the functions that are currently not used
  */
 
 /* Unused functions moved from include/admin-functions.php */
