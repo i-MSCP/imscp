@@ -71,7 +71,7 @@ function save_haf(&$tpl, &$sql) {
 	";
 	$rs = exec_query($sql, $query, array($user_id));
 
-	if ($rs->RecordCount() !== 0) {
+	if ($rs->recordCount() !== 0) {
 		// update query
 		$query = "
 			UPDATE

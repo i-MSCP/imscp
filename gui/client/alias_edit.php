@@ -128,14 +128,14 @@ function gen_editalias_page(&$tpl, $edit_id) {
 	list($domain_id) = get_domain_default_props($sql, $_SESSION['user_id']);
 	$res = exec_query($sql, "SELECT * FROM `domain_aliasses` WHERE `alias_id` = ? AND `domain_id` = ?", array($edit_id, $domain_id));
 
-	if ($res->RecordCount() <= 0) {
+	if ($res->recordCount() <= 0) {
 		$_SESSION['aledit'] = '_no_';
 		user_goto('domains_manage.php');
 	}
-	$data = $res->FetchRow();
+	$data = $res->fetchRow();
 	// Get IP data
 	$ipres = exec_query($sql, "SELECT * FROM `server_ips` WHERE `ip_id` = ?", array($data['alias_ip_id']));
-	$ipdat = $ipres->FetchRow();
+	$ipdat = $ipres->fetchRow();
 	$ip_data = $ipdat['ip_number'] . ' (' . $ipdat['ip_alias'] . ')';
 
 	if (isset($_POST['uaction']) && ($_POST['uaction'] == 'modify')) {

@@ -74,7 +74,7 @@ function gen_chart(&$tpl, &$sql, $user_id, $plan_id) {
 		$rs = exec_query($sql, $query, array($user_id, $plan_id));
 	}
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		user_goto('index.php');
 	} else {
 		$price = $rs->fields['price'];

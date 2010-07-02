@@ -40,7 +40,7 @@ function count_requests(&$sql, $id_name, $table) {
 
 	$query = "SELECT `$id_name` FROM `$table` WHERE `$id_name` NOT IN (?, ?, ?)";
 	$rs = exec_query($sql, $query, array($cfg->ITEM_OK_STATUS, $cfg->ITEM_DISABLED_STATUS, $cfg->ITEM_ORDERED_STATUS));
-	$count = $rs->RecordCount();
+	$count = $rs->recordCount();
 	return $count;
 }
 
@@ -62,7 +62,7 @@ function get_error_domains(&$sql, &$tpl) {
 	$rs = exec_query($sql, $dmn_query, array($ok_status, $disabled_status, $delete_status, $add_status,
 			$restore_status, $change_status, $toenable_status, $todisable_status));
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		$tpl->assign(
 			array(
 				'DOMAIN_LIST' => '',
@@ -88,7 +88,7 @@ function get_error_domains(&$sql, &$tpl) {
 			$tpl->parse('DOMAIN_LIST', '.domain_list');
 
 			$i++;
-			$rs->MoveNext();
+			$rs->moveNext();
 		}
 	}
 
@@ -131,7 +131,7 @@ function get_error_aliases(&$sql, &$tpl) {
 			$ordered_status)
 	);
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		$tpl->assign(
 			array(
 				'ALIAS_LIST' => '',
@@ -162,7 +162,7 @@ function get_error_aliases(&$sql, &$tpl) {
 			$tpl->parse('ALIAS_LIST', '.alias_list');
 
 			$i++;
-			$rs->MoveNext();
+			$rs->moveNext();
 		}
 	}
 }
@@ -202,7 +202,7 @@ function get_error_subdomains(&$sql, &$tpl) {
 			$todisable_status)
 	);
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		$tpl->assign(
 			array(
 				'SUBDOMAIN_LIST' => '',
@@ -229,7 +229,7 @@ function get_error_subdomains(&$sql, &$tpl) {
 			$tpl->parse('SUBDOMAIN_LIST', '.subdomain_list');
 
 			$i++;
-			$rs->MoveNext();
+			$rs->moveNext();
 		}
 	}
 }
@@ -269,7 +269,7 @@ function get_error_alias_subdomains(&$sql, &$tpl) {
 			$todisable_status)
 	);
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		$tpl->assign(
 			array(
 				'SUBDOMAIN_ALIAS_LIST' => '',
@@ -296,7 +296,7 @@ function get_error_alias_subdomains(&$sql, &$tpl) {
 			$tpl->parse('SUBDOMAIN_ALIAS_LIST', '.subdomain_alias_list');
 
 			$i++;
-			$rs->MoveNext();
+			$rs->moveNext();
 		}
 	}
 }
@@ -338,7 +338,7 @@ function get_error_mails(&$sql, &$tpl) {
 			$ordered_status)
 	);
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		$tpl->assign(
 			array(
 				'MAIL_LIST' => '',
@@ -396,7 +396,7 @@ function get_error_mails(&$sql, &$tpl) {
 			$tpl->parse('MAIL_LIST', '.mail_list');
 
 			$i++;
-			$rs->MoveNext();
+			$rs->moveNext();
 		}
 	}
 }

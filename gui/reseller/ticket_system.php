@@ -97,7 +97,7 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 
 	$rs = exec_query($sql, $query, array($user_id, $user_id));
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		$tpl->assign(
 			array(
 				'TICKETS_LIST' => '',
@@ -165,7 +165,7 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 			);
 
 			$tpl->parse('TICKETS_ITEM', '.tickets_item');
-			$rs->MoveNext();
+			$rs->moveNext();
 			$i++;
 		}
 	}

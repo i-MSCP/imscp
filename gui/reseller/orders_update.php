@@ -74,7 +74,7 @@ if (isset($cfg->HOSTING_PLANS_LEVEL)
 	$rs = exec_query($sql, $query, array($order_id, $reseller_id));
 }
 
-if ($rs->RecordCount() == 0) {
+if ($rs->recordCount() == 0) {
 	set_page_message(tr('Permission deny!'));
 	user_goto('orders.php');
 }
@@ -93,7 +93,7 @@ if (isset($cfg->HOSTING_PLANS_LEVEL)
 	$query = "SELECT `props` FROM `hosting_plans` WHERE `reseller_id` = ? AND `id` = ?";
 	$res = exec_query($sql, $query, array($reseller_id, $hpid));
 }
-$data = $res->FetchRow();
+$data = $res->fetchRow();
 $props = $data['props'];
 
 $_SESSION["ch_hpprops"] = $props;

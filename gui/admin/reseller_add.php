@@ -74,7 +74,7 @@ function get_server_ip(&$tpl, &$sql) {
 
 	$reseller_ips = '';
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		$tpl->assign(
 			array(
 				'RSL_IP_MESSAGE' => tr('Reseller IP list is empty!'),
@@ -124,7 +124,7 @@ function get_server_ip(&$tpl, &$sql) {
 
 			$tpl->parse('RSL_IP_ITEM', '.rsl_ip_item');
 
-			$rs->MoveNext();
+			$rs->moveNext();
 
 			$i++;
 		}
@@ -412,7 +412,7 @@ function check_user_data() {
 
 	$rs = exec_query($sql, $query, array($username));
 
-	if ($rs->RecordCount() != 0) {
+	if ($rs->recordCount() != 0) {
 		set_page_message(tr('This user name already exist!'));
 
 		return false;

@@ -51,7 +51,7 @@ function get_user_gui_props(&$sql, $user_id) {
 
 	$rs = exec_query($sql, $query, array($user_id));
 
-	if ($rs->RecordCount() == 0
+	if ($rs->recordCount() == 0
 		|| (empty($rs->fields['lang']) && empty($rs->fields['layout']))) {
 		// values for user id, some default stuff
 		return array(Config::getInstance()->get('USER_INITIAL_LANG'), Config::getInstance()->get('USER_INITIAL_THEME'));

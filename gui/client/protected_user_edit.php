@@ -161,7 +161,7 @@ if (isset($_GET['uname'])
 
 	$rs = execute_query($sql, $query);
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		user_goto('protected_user_manage.php');
 	} else {
 		$tpl->assign(
@@ -192,7 +192,7 @@ if (isset($_GET['uname'])
 
 	$rs = execute_query($sql, $query);
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		user_goto('protected_user_manage.php');
 	} else {
 		$tpl->assign(

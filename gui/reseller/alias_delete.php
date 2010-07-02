@@ -59,7 +59,7 @@ $query = "
 
 $rs = exec_query($sql, $query, array($del_id, $reseller_id));
 
-if ($rs->RecordCount() == 0) {
+if ($rs->recordCount() == 0) {
 	user_goto('alias.php');
 }
 
@@ -84,7 +84,7 @@ $query = "
 exec_query($sql, $query, array($cfg->ITEM_DELETE_STATUS, $del_id, $del_id));
 
 $res = exec_query($sql, "SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id` = ?", array($del_id));
-$dat = $res->FetchRow();
+$dat = $res->fetchRow();
 
 // TODO Use prepared statements
 exec_query($sql, "UPDATE `subdomain_alias` SET `subdomain_alias_status` = '" . $cfg->ITEM_DELETE_STATUS . "' WHERE `alias_id` = ?", array($del_id));

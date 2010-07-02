@@ -85,7 +85,7 @@ function get_server_trafic($from, $to) {
 
 	$rs = exec_query($sql, $query, array($from, $to));
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		return array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 	} else {
 		return array($rs->fields['swbin'], $rs->fields['swbout'],
@@ -138,7 +138,7 @@ function generate_page(&$tpl) {
 		$rs = exec_query($sql, $query, array($ftm, $ltm));
 		$has_data = false;
 		// if ($rs->fields['cnt'] > 0) {
-		if ($rs->RecordCount() > 0) {
+		if ($rs->recordCount() > 0) {
 			list($web_in,
 				$web_out,
 				$smtp_in,

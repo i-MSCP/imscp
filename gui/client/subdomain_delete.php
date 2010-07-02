@@ -51,7 +51,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	$rs = exec_query($sql, $query, array($dmn_id, $sub_id));
 	$sub_name = $rs->fields['subdomain_name'];
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		user_goto('domains_manage.php');
 	}
 

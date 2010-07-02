@@ -38,7 +38,7 @@ function gen_button_list(&$tpl, &$sql) {
 	";
 
 	$rs = exec_query($sql, $query, array());
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		$tpl->assign('BUTTON_LIST', '');
 
 		set_page_message(tr('You have no custom menus.'));
@@ -74,7 +74,7 @@ function gen_button_list(&$tpl, &$sql) {
 			);
 
 			$tpl->parse('BUTTON_LIST', '.button_list');
-			$rs->MoveNext();
+			$rs->moveNext();
 			$i++;
 		} // end while
 	} // end else
@@ -169,7 +169,7 @@ function edit_button(&$tpl, &$sql) {
 		";
 
 		$rs = exec_query($sql, $query, array($edit_id));
-		if ($rs->RecordCount() == 0) {
+		if ($rs->recordCount() == 0) {
 			set_page_message(tr('Missing or incorrect data input!'));
 			$tpl->assign('EDIT_BUTTON', '');
 			return;

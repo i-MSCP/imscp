@@ -123,24 +123,24 @@ function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
 	";
 
 	$res = exec_query($sql, $query, array($domain_id));
-	$data = $res->FetchRow();
+	$data = $res->fetchRow();
 
 
-	if ($res->RecordCount() <= 0) {
+	if ($res->recordCount() <= 0) {
 		user_goto('manage_users.php');
 	}
 
 	// Get admin data
 	$query = "SELECT `admin_name` FROM `admin` WHERE `admin_id` = ?";
 	$res1 = exec_query($sql, $query, array($data['domain_admin_id']));
-	$data1 = $res1->FetchRow();
-	if ($res1->RecordCount() <= 0) {
+	$data1 = $res1->fetchRow();
+	if ($res1->recordCount() <= 0) {
 		user_goto('manage_users.php');
 	}
 	// Get IP info
 	$query = "SELECT * FROM `server_ips` WHERE `ip_id` = ?";
 	$ipres = exec_query($sql, $query, array($data['domain_ip_id']));
-	$ipdat = $ipres->FetchRow();
+	$ipdat = $ipres->fetchRow();
 	// Get status name
 	$dstatus = $data['domain_status'];
 
@@ -177,7 +177,7 @@ function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
 	";
 
 	$res7 = exec_query($sql, $query, array($data['domain_id'], $fdofmnth, $ldofmnth));
-	$dtraff = $res7->FetchRow();
+	$dtraff = $res7->fetchRow();
 	$sumtraff = $dtraff['dtraff_web'] + $dtraff['dtraff_ftp'] + $dtraff['dtraff_mail'] + $dtraff['dtraff_pop'];
 	$dtraffmb = sprintf("%.1f", ($sumtraff / 1024) / 1024);
 
@@ -186,7 +186,7 @@ function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
 
 	$query = "SELECT * FROM `server_ips` WHERE `ip_id` = ?";
 	$res8 = exec_query($sql, $query, array($data['domain_ip_id']));
-	$ipdat = $res8->FetchRow();
+	$ipdat = $res8->fetchRow();
 
 	$domain_traffic_limit = $data['domain_traffic_limit'];
 	$domain_all_traffic = $sumtraff; //$dtraff['traffic'];
@@ -234,19 +234,19 @@ function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
 			AND `mail_acc` != 'webmaster'";
 	}
 	$res6 = exec_query($sql, $query, array($data['domain_id']));
-	$dat3 = $res6->FetchRow();
+	$dat3 = $res6->fetchRow();
 	$mail_limit = translate_limit_value($data['domain_mailacc_limit']);
 	// FTP stat
 	$query = "SELECT `gid` FROM `ftp_group` WHERE `groupname` = ?";
 	$res4 = exec_query($sql, $query, array($data['domain_name']));
-	$ftp_gnum = $res4->RowCount();
+	$ftp_gnum = $res4->rowCount();
 	if ($ftp_gnum == 0) {
 		$used_ftp_acc = 0;
 	} else {
-		$dat1 = $res4->FetchRow();
+		$dat1 = $res4->fetchRow();
 		$query = "SELECT COUNT(*) AS ftp_cnt FROM `ftp_users` WHERE `gid` = ?";
 		$res5 = exec_query($sql, $query, array($dat1['gid']));
-		$dat2 = $res5->FetchRow();
+		$dat2 = $res5->fetchRow();
 
 		$used_ftp_acc = $dat2['ftp_cnt'];
 	}
@@ -254,25 +254,25 @@ function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
 	// Get sql database count
 	$query = "SELECT COUNT(*) AS dnum FROM `sql_database` WHERE `domain_id` = ?";
 	$res = exec_query($sql, $query, array($data['domain_id']));
-	$dat5 = $res->FetchRow();
+	$dat5 = $res->fetchRow();
 	$sql_db = translate_limit_value($data['domain_sqld_limit']);
 	// Get sql users count
 	$query = "SELECT COUNT(u.`sqlu_id`) AS ucnt FROM `sql_user` u, `sql_database` d WHERE u.`sqld_id` = d.`sqld_id` AND d.`domain_id` = ?";
 	$res = exec_query($sql, $query, array($data['domain_id']));
-	$dat6 = $res->FetchRow();
+	$dat6 = $res->fetchRow();
 	$sql_users = translate_limit_value($data['domain_sqlu_limit']);
 	// Get subdomain
 	$query = "SELECT COUNT(`subdomain_id`) AS sub_num FROM `subdomain` WHERE `domain_id` = ?";
 	$res1 = exec_query($sql, $query, array($data['domain_id']));
-	$sub_num_data = $res1->FetchRow();
+	$sub_num_data = $res1->fetchRow();
 	$query = "SELECT COUNT(`subdomain_alias_id`) AS sub_num FROM `subdomain_alias` WHERE `alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)";
 	$res1 = exec_query($sql, $query, array($domain_id));
-	$alssub_num_data = $res1->FetchRow();
+	$alssub_num_data = $res1->fetchRow();
 	$sub_dom = translate_limit_value($data['domain_subd_limit']);
 	// Get domain aliases
 	$query = "SELECT COUNT(*) AS alias_num FROM `domain_aliasses` WHERE `domain_id` = ?";
 	$res1 = exec_query($sql, $query, array($data['domain_id']));
-	$alias_num_data = $res1->FetchRow();
+	$alias_num_data = $res1->fetchRow();
 
 	// Check if Backup support is available for this user
 	switch($data['allowbackup']){

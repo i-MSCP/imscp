@@ -103,7 +103,7 @@ while (!$rs->EOF) {
 		$rs_update = exec_query($sql, $update_query, array($grp_id, $status, $ht_id));
 	}
 
-	$rs->MoveNext();
+	$rs->moveNext();
 }
 
 send_request();

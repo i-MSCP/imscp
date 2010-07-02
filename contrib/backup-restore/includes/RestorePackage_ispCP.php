@@ -596,8 +596,8 @@ class RestorePackage_ispCP extends BaseController
 		do {
 			sleep(1);
 			$rs = $this->db->execute($query, array(':domain_id'=>$this->domain_id));
-			if ($rs && $rs->RecordCount() > 0) {
-				$row = $rs->FetchRow();
+			if ($rs && $rs->recordCount() > 0) {
+				$row = $rs->fetchRow();
 				if (!empty($row['domain_uid'])) {
 					// set domain_user_id and domain_group_id
 					$this->domain_user_id = $row['domain_uid'];

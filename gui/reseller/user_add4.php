@@ -73,7 +73,7 @@ if (isset($_SESSION['dmn_id']) && $_SESSION['dmn_id'] !== '') {
 
 	$result = exec_query($sql, $query, array($domain_id, $reseller_id));
 
-	if ($result->RecordCount() == 0) {
+	if ($result->recordCount() == 0) {
 		set_page_message(
 			tr('User does not exist or you do not have permission to access this interface!')
 		);
@@ -81,7 +81,7 @@ if (isset($_SESSION['dmn_id']) && $_SESSION['dmn_id'] !== '') {
 		// Back to the users page
 		user_goto('users.php');
 	} else {
-		$row = $result->FetchRow();
+		$row = $result->fetchRow();
 		$dmn_status = $row['domain_status'];
 
 		if ($dmn_status != $cfg->ITEM_OK_STATUS && $dmn_status != $cfg->ITEM_ADD_STATUS) {
@@ -225,7 +225,7 @@ function gen_al_page(&$tpl, $reseller_id) {
 
 	$rs = exec_query($sql, $query, array($dmn_id));
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		$tpl->assign('ALIAS_LIST', '');
 	} else {
 		$i = 0;
@@ -245,7 +245,7 @@ function gen_al_page(&$tpl, $reseller_id) {
 
 			$i++;
 			$tpl->parse('ALIAS_ENTRY', '.alias_entry');
-			$rs->MoveNext();
+			$rs->moveNext();
 		}
 	}
 } // End of gen_al_page()
@@ -301,7 +301,7 @@ function add_domain_alias(&$sql, &$err_al) {
 		$res = exec_query($sql, $query, array($alias_name));
 		$query = "SELECT `domain_id` FROM `domain` WHERE `domain_name` = ?";
 		$res2 = exec_query($sql, $query, array($alias_name));
-		if ($res->RowCount() > 0 || $res2->RowCount() > 0) {
+		if ($res->rowCount() > 0 || $res2->rowCount() > 0) {
 			// we already have a domain with this name
 			$err_al = tr("Domain with this name already exist");
 		}

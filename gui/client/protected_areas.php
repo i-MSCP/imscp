@@ -63,7 +63,7 @@ function gen_htaccess_entries(&$tpl, &$sql, &$dmn_id) {
 
 	$rs = exec_query($sql, $query, array($dmn_id));
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		$tpl->assign('PROTECTED_AREAS', '');
 		set_page_message(tr('You do not have protected areas'));
 	} else {
@@ -88,7 +88,7 @@ function gen_htaccess_entries(&$tpl, &$sql, &$dmn_id) {
 				)
 			);
 			$tpl->parse('DIR_ITEM', '.dir_item');
-			$rs->MoveNext();
+			$rs->moveNext();
 			$counter++;
 		}
 	}

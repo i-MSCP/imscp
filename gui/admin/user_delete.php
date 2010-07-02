@@ -108,7 +108,7 @@ function delete_user($user_id) {
 		WHERE
 			`admin_id` = ?";
 	$res = exec_query($sql, $query, array($user_id));
-	$data = $res->FetchRow();
+	$data = $res->fetchRow();
 	$type = $data['admin_type'];
 	if (empty($type) || $type == 'user') {
 		set_page_message(tr('Invalid user id!'));
@@ -157,11 +157,11 @@ function validate_user_deletion($user_id) {
 	// check if there are domains created by user
 	$query = "SELECT COUNT(`domain_id`) AS `num_domains` FROM `domain` WHERE `domain_created_id` = ?";
 	$res = exec_query($sql, $query, array($user_id));
-	$data = $res->FetchRow();
+	$data = $res->fetchRow();
 	if ($data['num_domains'] == 0) {
 		$query = "SELECT `admin_type` FROM `admin` WHERE `admin_id` = ?";
 		$res = exec_query($sql, $query, array($user_id));
-		$data = $res->FetchRow();
+		$data = $res->fetchRow();
 		$type = $data['admin_type'];
 		if ($type == 'admin' || $type == 'reseller') {
 			$result = true;
@@ -186,7 +186,7 @@ function validate_domain_deletion($domain_id) {
 	// check for domain owns
 	$query = "SELECT `domain_id`, `domain_name`, `domain_created_id` FROM `domain` WHERE `domain_id` = ?";
 	$res = exec_query($sql, $query, array($domain_id));
-	$data = $res->FetchRow();
+	$data = $res->fetchRow();
 	if ($data['domain_id'] == 0) {
 		set_page_message(tr('Wrong domain ID!'));
 		user_goto('manage_users.php');
@@ -233,7 +233,7 @@ function validate_domain_deletion($domain_id) {
 			);
 
 			$tpl->parse('MAIL_ITEM', '.mail_item');
-			$res->MoveNext();
+			$res->moveNext();
 		}
 	} else {
 		$tpl->assign('MAIL_LIST', '');
@@ -253,7 +253,7 @@ function validate_domain_deletion($domain_id) {
 			);
 
 			$tpl->parse('FTP_ITEM', '.ftp_item');
-			$res->MoveNext();
+			$res->moveNext();
 		}
 	} else {
 		$tpl->assign('FTP_LIST', '');
@@ -275,7 +275,7 @@ function validate_domain_deletion($domain_id) {
 			);
 
 			$tpl->parse('ALS_ITEM', '.als_item');
-			$res->MoveNext();
+			$res->moveNext();
 		}
 	} else {
 		$tpl->assign('ALS_LIST', '');
@@ -295,7 +295,7 @@ function validate_domain_deletion($domain_id) {
 		);
 
 		$tpl->parse('SUB_ITEM', '.sub_item');
-		$res->MoveNext();
+		$res->moveNext();
 	}
 
 	if (!$any_sub_found) {
@@ -318,7 +318,7 @@ function validate_domain_deletion($domain_id) {
 			);
 
 			$tpl->parse('SUB_ITEM', '.sub_item');
-			$res->MoveNext();
+			$res->moveNext();
 		}
 	}
 
@@ -335,7 +335,7 @@ function validate_domain_deletion($domain_id) {
 			$users_a = array();
 			while (!$ures->EOF) {
 				$users_a[] = $ures->fields['sqlu_name'];
-				$ures->MoveNext();
+				$ures->moveNext();
 			}
 			$users_txt = implode(', ', $users_a);
 
@@ -347,7 +347,7 @@ function validate_domain_deletion($domain_id) {
 			);
 
 			$tpl->parse('DB_ITEM', '.db_item');
-			$res->MoveNext();
+			$res->moveNext();
 		}
 	} else {
 		$tpl->assign('DB_LIST', '');

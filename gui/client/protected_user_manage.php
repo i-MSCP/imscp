@@ -91,7 +91,7 @@ function gen_pusres(&$tpl, &$sql, &$dmn_id) {
 
 	$rs = exec_query($sql, $query, array($dmn_id));
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		$tpl->assign(
 				array(
 					'PUSRES'		=>	'',
@@ -117,7 +117,7 @@ function gen_pusres(&$tpl, &$sql, &$dmn_id) {
 			);
 
 			$tpl->parse('PUSRES', '.pusres');
-			$rs->MoveNext();
+			$rs->moveNext();
 
 		}
 	}
@@ -140,7 +140,7 @@ function gen_pgroups(&$tpl, &$sql, &$dmn_id) {
 
 	$rs = exec_query($sql, $query, array($dmn_id));
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		$tpl->assign('GROUP_MESSAGE', tr('You have no groups!'));
 		$tpl->parse('GRP_MSG', 'grp_msg');
 		$tpl->assign('PGROUPS', '');
@@ -189,7 +189,7 @@ function gen_pgroups(&$tpl, &$sql, &$dmn_id) {
 
 			$tpl->parse('PGROUPS', '.pgroups');
 			$tpl->assign('GROUP_MEMBERS', '');
-			$rs->MoveNext();
+			$rs->moveNext();
 		}
 	}
 }

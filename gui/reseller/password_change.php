@@ -100,7 +100,7 @@ function check_udata($id, $pass) {
 
 	$rs = exec_query($sql, $query, array($id, md5($pass)));
 
-	return (($rs->RecordCount()) != 1) ? false : true;
+	return (($rs->recordCount()) != 1) ? false : true;
 }
 
 /*

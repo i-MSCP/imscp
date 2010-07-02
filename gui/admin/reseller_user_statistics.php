@@ -143,7 +143,7 @@ SQL_QUERY;
 		)
 	);
 
-	if ($rs->RowCount() == 0) {
+	if ($rs->rowCount() == 0) {
 		$tpl->assign(
 			array(
 				'DOMAIN_LIST' => '',
@@ -207,7 +207,7 @@ SQL_QUERY;
 
 			$tpl->parse('DOMAIN_ENTRY', '.domain_entry');
 
-			$rs->MoveNext();
+			$rs->moveNext();
 		}
 	}
 }

@@ -163,7 +163,7 @@ function send_reseller_message(&$sql) {
 			send_reseller_users_message($sql, $rs->fields['admin_id']);
 		}
 
-		$rs->MoveNext();
+		$rs->moveNext();
 	}
 
 	set_page_message(tr('You send email to your users successfully!'));
@@ -203,7 +203,7 @@ function send_reseller_users_message(&$sql, $admin_id) {
 	while (!$rs->EOF) {
 		$to = "\"" . encode($rs->fields['fname'] . " " . $rs->fields['lname']) . "\" <" . $rs->fields['email'] . ">";
 		send_circular_email($to, "\"" . encode($sender_name) . "\" <" . $sender_email . ">", $msg_subject, $msg_text);
-		$rs->MoveNext();
+		$rs->moveNext();
 	}
 }
 

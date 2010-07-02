@@ -93,7 +93,7 @@ function padd_user(&$tpl, &$sql, $dmn_id) {
 			";
 			$rs = exec_query($sql, $query, array($uname, $dmn_id));
 
-			if ($rs->RecordCount() == 0) {
+			if ($rs->recordCount() == 0) {
 
 				$query = "
 					INSERT INTO `htaccess_users`

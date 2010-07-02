@@ -130,7 +130,7 @@ function gen_order_page(&$tpl, &$sql, $user_id) {
 		);
 	}
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		set_page_message(tr('You do not have new orders!'));
 		$tpl->assign('ORDERS_TABLE', '');
 		$tpl->assign('SCROLL_NEXT_GRAY', '');
@@ -198,7 +198,7 @@ function gen_order_page(&$tpl, &$sql, $user_id) {
 			);
 
 			$tpl->parse('ORDER', '.order');
-			$rs->MoveNext();
+			$rs->moveNext();
 			$counter++;
 		}
 	}

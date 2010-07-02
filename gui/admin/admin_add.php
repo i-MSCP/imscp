@@ -262,7 +262,7 @@ function check_user_data() {
 
 	$rs = exec_query($sql, $query, array($username));
 
-	if ($rs->RecordCount() != 0) {
+	if ($rs->recordCount() != 0) {
 		set_page_message(tr('This user name already exist!'));
 
 		return false;

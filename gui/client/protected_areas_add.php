@@ -162,7 +162,7 @@ function protect_area(&$tpl, &$sql, $dmn_id) {
 	$toadd_status = $cfg->ITEM_ADD_STATUS;
 	$tochange_status = $cfg->ITEM_CHANGE_STATUS;
 
-	if ($rs->RecordCount() !== 0) {
+	if ($rs->recordCount() !== 0) {
 		$update_id = $rs->fields['id'];
 		// @todo Can we move $update_id to the prepared statement variables?
 		$query = <<<SQL_QUERY
@@ -233,7 +233,7 @@ function gen_protect_it(&$tpl, &$sql, &$dmn_id) {
 
 		$rs = exec_query($sql, $query, array($dmn_id, $ht_id));
 
-		if ($rs->RecordCount() == 0) {
+		if ($rs->recordCount() == 0) {
 			user_goto('protected_areas_add.php');
 		}
 
@@ -267,7 +267,7 @@ function gen_protect_it(&$tpl, &$sql, &$dmn_id) {
 		}
 	}
 	// this area is not secured by htaccess
-	if ($edit = 'no' || $rs->RecordCount() == 0 || $type == 'user') {
+	if ($edit = 'no' || $rs->recordCount() == 0 || $type == 'user') {
 		$tpl->assign(
 			array(
 				'USER_CHECKED' => $cfg->HTML_CHECKED,
@@ -300,7 +300,7 @@ function gen_protect_it(&$tpl, &$sql, &$dmn_id) {
 
 	$rs = exec_query($sql, $query, array($dmn_id));
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		$tpl->assign(
 			array(
 				'USER_VALUE' => "-1",
@@ -331,7 +331,7 @@ function gen_protect_it(&$tpl, &$sql, &$dmn_id) {
 
 			$tpl->parse('USER_ITEM', '.user_item');
 
-			$rs->MoveNext();
+			$rs->moveNext();
 		}
 	}
 
@@ -346,7 +346,7 @@ function gen_protect_it(&$tpl, &$sql, &$dmn_id) {
 
 	$rs = exec_query($sql, $query, array($dmn_id));
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		$tpl->assign(
 			array(
 				'GROUP_VALUE' => "-1",
@@ -375,7 +375,7 @@ function gen_protect_it(&$tpl, &$sql, &$dmn_id) {
 				)
 			);
 			$tpl->parse('GROUP_ITEM', '.group_item');
-			$rs->MoveNext();
+			$rs->moveNext();
 		}
 	}
 }

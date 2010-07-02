@@ -96,7 +96,7 @@ SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array($user_id));
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		$tpl->assign(
 			array(
 				'TICKETS_LIST' => '',
@@ -158,7 +158,7 @@ SQL_QUERY;
 				)
 			);
 			$tpl->parse('TICKETS_ITEM', '.tickets_item');
-			$rs->MoveNext();
+			$rs->moveNext();
 			$i++;
 		}
 	}

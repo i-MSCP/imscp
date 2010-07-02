@@ -130,7 +130,7 @@ function gen_page_catchall_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 
 		$rs = execute_query($sql, $query);
 
-		if ($rs->RecordCount() == 0) {
+		if ($rs->recordCount() == 0) {
 			gen_catchall_item($tpl, 'create', $dmn_id, $dmn_name, '', '', '', 'normal');
 		} else {
 			gen_catchall_item($tpl,
@@ -184,7 +184,7 @@ function gen_page_catchall_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 
 			$rs_als = execute_query($sql, $query);
 
-			if ($rs_als->RecordCount() == 0) {
+			if ($rs_als->recordCount() == 0) {
 				gen_catchall_item($tpl, 'create', $als_id, $als_name, '', '', '', 'alias');
 			} else {
 				gen_catchall_item(
@@ -200,7 +200,7 @@ function gen_page_catchall_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 
 			$tpl->parse('CATCHALL_ITEM', '.catchall_item');
 
-			$rs->MoveNext();
+			$rs->moveNext();
 			$counter++;
 		}
 
@@ -241,7 +241,7 @@ function gen_page_catchall_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 
 			$rs_als = execute_query($sql, $query);
 
-			if ($rs_als->RecordCount() == 0) {
+			if ($rs_als->recordCount() == 0) {
 				gen_catchall_item($tpl, 'create', $als_id, $als_name, '', '', '', 'alssub');
 			} else {
 				gen_catchall_item(
@@ -257,7 +257,7 @@ function gen_page_catchall_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 
 			$tpl->parse('CATCHALL_ITEM', '.catchall_item');
 
-			$rs->MoveNext();
+			$rs->moveNext();
 			$counter++;
 		}
 
@@ -298,7 +298,7 @@ function gen_page_catchall_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 
 			$rs_als = execute_query($sql, $query);
 
-			if ($rs_als->RecordCount() == 0) {
+			if ($rs_als->recordCount() == 0) {
 				gen_catchall_item($tpl, 'create', $als_id, $als_name, '', '', '', 'subdom');
 			} else {
 				gen_catchall_item($tpl,
@@ -312,7 +312,7 @@ function gen_page_catchall_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 
 			$tpl->parse('CATCHALL_ITEM', '.catchall_item');
 
-			$rs->MoveNext();
+			$rs->moveNext();
 			$counter++;
 		}
 }

@@ -181,7 +181,7 @@ function get_server_status(&$tpl, &$sql) {
 			$ispcp_status->AddService(($ip == '127.0.0.1' ? 'localhost' : (empty($ip) ? $cfg->BASE_SERVER_IP : $ip)), (int)$port, $name, $protocol);
 		}
 
-		$rs->MoveNext();
+		$rs->moveNext();
 	} // end while
 
 	$ispcp_status->CheckStatus(5);

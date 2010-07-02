@@ -110,7 +110,7 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 
 	$rs = exec_query($sql, $query, array($user_id, 'added'));
 
-	if ($rs->RecordCount() > 0) {
+	if ($rs->recordCount() > 0) {
 		$availabe_order = 1;
 		$availabe_hp_id = $rs->fields['plan_id'];
 
@@ -151,7 +151,7 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 
 			$rs = exec_query($sql, $query, array('admin'));
 
-			$count = $rs->RecordCount();
+			$count = $rs->recordCount();
 			$count++;
 		} else {
 			$query = "
@@ -185,7 +185,7 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 		$purchase_link = 'order_id';
 	}
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		$tpl->assign(
 			array(
 				'TR_HOSTING_PLANS'	=> $hp_title,
@@ -375,7 +375,7 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 			)
 		);
 
-		if ($check->RecordCount() == 0) {
+		if ($check->recordCount() == 0) {
 
 			$link_purchase = '<a href="hosting_plan_update.php?'
 				. $purchase_link.'='.$rs->fields['id']
@@ -419,7 +419,7 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 		}
 		$purchase_text = tr('Purchase');
 		$purchase_link = 'order_id';
-		$rs->MoveNext();
+		$rs->moveNext();
 	}
 	if ($i == 0) {
 		$tpl->assign(

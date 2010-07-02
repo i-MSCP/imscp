@@ -63,7 +63,7 @@ function check_email_user(&$sql) {
 
 	$rs = exec_query($sql, $query, array($mail_id, $dmn_name));
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
 		user_goto('mail_accounts.php');
 	}

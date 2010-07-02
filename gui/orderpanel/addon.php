@@ -92,7 +92,7 @@ function is_plan_available(&$sql, $plan_id, $user_id) {
 		$rs = exec_query($sql, $query, array($user_id, $plan_id));
 	}
 
-	return $rs->RecordCount() > 0 && $rs->fields['status'] != 0;
+	return $rs->recordCount() > 0 && $rs->fields['status'] != 0;
 }
 
 /**

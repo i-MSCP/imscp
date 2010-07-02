@@ -145,7 +145,7 @@ function gen_hp_table(&$tpl, $reseller_id) {
 	$rs = exec_query($sql, $query, array('admin'));
 	$tr_edit = tr('Edit');
 
-	if ($rs->RowCount() == 0) {
+	if ($rs->rowCount() == 0) {
 		// if ($externel_event == '_off_') {
 		set_page_message(tr('Hosting plans not found!'));
 		// }
@@ -168,7 +168,7 @@ function gen_hp_table(&$tpl, $reseller_id) {
 		$coid = $cfg->exists('CUSTOM_ORDERPANEL_ID') ? $cfg->CUSTOM_ORDERPANEL_ID : '';
 		$i = 1;
 
-		while (($data = $rs->FetchRow())) {
+		while (($data = $rs->fetchRow())) {
 			$tpl->assign(array('CLASS_TYPE_ROW' => ($i % 2 == 0) ? 'content' : 'content2'));
 			$status = ($data['status']) ? tr('Enabled') : tr('Disabled');
 

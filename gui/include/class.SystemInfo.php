@@ -29,94 +29,113 @@
  * This class provides the functionallitiy needed by {@see admin/system_info.php}
  * for Linux and BSD systems.
  *
- * @author 	Benedikt Heintel <benedikt.heintel@ispcp.net>
- * @version	1.0
- * @since 	r2796
+ * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @version 1.0
+ * @since r2796
  */
 class SystemInfo {
 
 	/**
 	 * Operating system name where PHP is run
 	 *
-	 * @var string Operating system name
+	 * @var string
 	 */
 	protected $_os;
 	
 	/**
-	 * @var Array() CPU info
+	 * CPU info
+	 *
+	 * @var array
 	 */
 	public $cpu;
 
 	/**
-	 * @var Array() file system info
+	 * File system info
+	 *
+	 * @var array
 	 */
 	public $filesystem;
 
 	/**
-	 * @var String Kernel version
+	 * Kernel version
+	 *
+	 * @var string
 	 */
 	public $kernel;
 
 	/**
-	 * @var Array() system load info
+	 * System load info
+	 *
+	 * @var array
 	 */
 	public $load;
 
 	/**
-	 * @var Array() RAM info
+	 * RAM info
+	 *
+	 * @var array
 	 */
 	public $ram;
 
 	/**
-	 * @var Array() Swap info
+	 *
+	 * @var Array Swap info
 	 */
 	public $swap;
 
 	/**
-	 * @var String System uptime
+	 * System uptime
+	 *
+	 * @var string
 	 */
 	public $uptime;
 
 	/**
-	 * @var String Error message
+	 * Error message
+	 *
+	 * @var string
 	 */
-	protected $error = '';
+	protected $_error = '';
 
 	/**
 	 * Constructor.
 	 */
 	public function __construct() {
-		$this->_os			= php_uname('s');
-		$this->cpu 			= $this->_getCPUInfo();
-		$this->filesystem 	= $this->_getFileSystemInfo();
-		$this->kernel 		= $this->_getKernelInfo();
-		$this->load 		= $this->_getLoadInfo();
-		$this->ram 			= $this->_getRAMInfo();
-		$this->swap 		= $this->_getSwapInfo();
-		$this->uptime		= $this->_getUptime();
+
+		$this->_os = php_uname('s');
+		$this->cpu = $this->_getCPUInfo();
+		$this->filesystem = $this->_getFileSystemInfo();
+		$this->kernel = $this->_getKernelInfo();
+		$this->load = $this->_getLoadInfo();
+		$this->ram = $this->_getRAMInfo();
+		$this->swap = $this->_getSwapInfo();
+		$this->uptime = $this->_getUptime();
 	}
 
 	/**
 	 * Reads /proc/cpuinfo and parses its content
 	 *
-	 * @return Array(model, # of CPUs, CPUspeed, cache, bogomips)
+	 * @return array Cpu Information
 	 */
 	private function _getCPUInfo() {
+
 		$cpu = array(
-			'model'		=> tr('N/A'),
-			'cpus'		=> tr('N/A'),
-			'cpuspeed'	=> tr('N/A'),
-			'cache'		=> tr('N/A'),
-			'bogomips'	=> tr('N/A')
+			'model' => tr('N/A'),
+			'cpus' => tr('N/A'),
+			'cpuspeed' => tr('N/A'),
+			'cache' => tr('N/A'),
+			'bogomips' => tr('N/A')
 		);
 
-		if ($this->_os == 'FreeBSD' || $this->_os == 'OpenBSD' || $this->_os == 'NetBSD') {
+		if ($this->_os == 'FreeBSD' || $this->_os == 'OpenBSD' ||
+			$this->_os == 'NetBSD') {
+
 			$tmp = array();
 
 			$pattern = array(
-				'/CPU: (.*) \((.*)-MHz (.*)\)/',	// FreeBSD
-				'/^cpu(.*) (.*) MHz/', 				// OpenBSD
-				'/^cpu(.*)\, (.*) MHz/'				// NetBSD
+				'/CPU: (.*) \((.*)-MHz (.*)\)/', // FreeBSD
+				'/^cpu(.*) (.*) MHz/', // OpenBSD
+				'/^cpu(.*)\, (.*) MHz/' // NetBSD
 			);
 
 			if ($cpu['model'] = $this->sysctl('hw.model')) {
@@ -125,7 +144,7 @@ class SystemInfo {
 				// Read dmesg bot log on reboot
 				$dmesg = $this->read('/var/run/dmesg.boot');
 
-				if (empty($this->error)) {
+				if (empty($this->_error)) {
 					$dmesg_arr = explode('rebooting', $dmesg);
         			$dmesg_info = explode("\n", $dmesg_arr[count($dmesg_arr)-1]);
 
@@ -139,7 +158,7 @@ class SystemInfo {
 			}
 		} else {
 			$cpu_raw = $this->read('/proc/cpuinfo');
-			if (empty($this->error)) {
+			if (empty($this->_error)) {
 
 				// parse line for line
 				$cpu_info = explode("\n", $cpu_raw);
@@ -230,7 +249,7 @@ class SystemInfo {
 						'/proc/openprom/' . $sparc . '/ecache-size'
 					);
 
-					if (empty($this->error) && !empty($raw)) {
+					if (empty($this->_error) && !empty($raw)) {
 						$cpu['cache'] = base_convert($raw, 16, 10)/1024 . ' KB';
 					}
 				}
@@ -269,9 +288,10 @@ class SystemInfo {
 	/**
 	 * Gets and parses the information of mounted filesystem
 	 *
-	 * @return Array[][mountPoint, fsTyp, disk, percentUsed, free, used, size]
+	 * @return array File system information
 	 */
 	private function _getFileSystemInfo() {
+
 		$filesystem = array();
 
 		$descriptorspec = array(
@@ -334,12 +354,15 @@ class SystemInfo {
 	/**
 	 * Reads /proc/version and parses its content
 	 *
-	 * @return kernel information
+	 * @return string|Translated Kernel information
 	 */
 	private function _getKernelInfo() {
+
 		$kernel = tr('N/A');
 
-		if ($this->_os == 'FreeBSD' || $this->_os == 'OpenBSD' || $this->_os == 'NetBSD') {
+		if ($this->_os == 'FreeBSD' || $this->_os == 'OpenBSD' ||
+			$this->_os == 'NetBSD') {
+
 			if ($kernel_raw = $this->sysctl('kern.version')) {
 				$kernel_arr = explode(':', $kernel_raw);
 
@@ -347,7 +370,7 @@ class SystemInfo {
 			}
 		} else {
 			$kernel_raw = $this->read('/proc/version');
-			if (empty($this->error)) {
+			if (empty($this->_error)) {
 				if (preg_match('/version (.*?) /', $kernel_raw, $kernel_info)) {
 		        	$kernel = $kernel_info[1];
 
@@ -365,12 +388,15 @@ class SystemInfo {
 	 * Reads /proc/loadavg and parses its content into Load 1 min, Load 5 Min
 	 * and Load 15 min
 	 *
-	 * @return Array(Load1, Load5, Load15)
+	 * @return array Load average
 	 */
 	private function _getLoadInfo() {
+
 		$load = array(tr('N/A'), tr('N/A'), tr('N/A'));
 
-		if ($this->_os == 'FreeBSD' || $this->_os == 'OpenBSD' || $this->_os == 'NetBSD') {
+		if ($this->_os == 'FreeBSD' || $this->_os == 'OpenBSD' ||
+			$this->_os == 'NetBSD') {
+
 			if ($load_raw = $this->sysctl('vm.loadavg')) {
 				$load_raw = preg_replace('/{\s/', '', $load_raw);
     			$load_raw = preg_replace('/\s}/', '', $load_raw);
@@ -378,7 +404,8 @@ class SystemInfo {
 			}
 		} else {
 			$load_raw = $this->read('/proc/loadavg');
-			if (empty($this->error)) {
+
+			if (empty($this->_error)) {
 				// $load[0] - Load 1 Min
 				// $load[1] - Load 5 Min
 				// $load[2] - Load 15 Min
@@ -396,7 +423,7 @@ class SystemInfo {
 	 * Reads /proc/meminfo and parses its content into Total, Used and Free
 	 * RAM
 	 *
-	 * @return Array(Total, Free, Used)
+	 * @return array Memory information
 	 */
 	private function _getRAMInfo() {
 		$ram = array('total' => 0, 'free' => 0, 'used' => 0);
@@ -436,7 +463,7 @@ class SystemInfo {
 			}
 		} else {
 			$ram_raw = $this->read('/proc/meminfo');
-			if (empty($this->error)) {
+			if (empty($this->_error)) {
 				// parse line for line
 				$ram_info = explode("\n", $ram_raw);
 
@@ -463,12 +490,15 @@ class SystemInfo {
 	 * Reads /proc/swaps and parses its content into Total, Used and Free
 	 * Swaps
 	 *
-	 * @return Array(Total, Free, Used)
+	 * @return array Swap information
 	 */
 	private function _getSwapInfo() {
+
 		$swap = array('total' => 0, 'free' => 0, 'used' => 0);
 
-		if ($this->_os == 'FreeBSD' || $this->_os == 'OpenBSD' || $this->_os == 'NetBSD') {
+		if ($this->_os == 'FreeBSD' || $this->_os == 'OpenBSD' ||
+			$this->_os == 'NetBSD') {
+
 			$descriptorspec = array(
 				0 => array('pipe', 'r'), // stdin is a pipe that the child will read from
 				1 => array('pipe', 'w'), // stdout is a pipe that the child will write to
@@ -516,7 +546,7 @@ class SystemInfo {
 
 		} else {
 			$swap_raw = $this->read('/proc/swaps');
-			if (empty($this->error)) {
+			if (empty($this->_error)) {
 				// parse line for line
 				$swap_info = explode("\n", $swap_raw);
 
@@ -538,10 +568,12 @@ class SystemInfo {
 	}
 
 	/**
+
+	/**
 	 * Reads /proc/uptime, parses its content and makes it human readable in
 	 * the format: # [[Day[s]] # Hour[s]] # Minute[s].
 	 *
-	 * @return Parsed System Uptime
+	 * @return string|Translated Uptime information
 	 */
 	private function _getUptime() {
 		$up = 0;
@@ -564,7 +596,7 @@ class SystemInfo {
 		} else {
 			$uptime_raw = $this->read('/proc/uptime');
 
-			if (empty($this->error)) {
+			if (empty($this->_error)) {
 				$uptime = explode(' ', $uptime_raw);
 
 				// $uptime[0] - Total System Uptime
@@ -605,15 +637,15 @@ class SystemInfo {
 	/**
 	 * Gets the content of a file if sucessful or and error otherwise.
 	 *
-	 * @param String $filename Path to file
-	 * @return buf Buffer of the file of false on error
+	 * @param dtring $filename Path to file
+	 * @return bool|string
 	 */
 	protected function read($filename) {
 
 		if(is_readable($filename)) {
 			$result = file_get_contents($filename);
 		} else {
-			$this->error = tr(
+			$this->_error = tr(
 				'File %s does not exists or cannot be reached!',
 				$filename
 			);
@@ -621,7 +653,8 @@ class SystemInfo {
 			return false;
 		}
 
-		$this->error = '';
+		$this->_error = '';
+
 		return $result;
 	}
 
@@ -629,20 +662,23 @@ class SystemInfo {
 	 * This function emulates PHP 5.3's strstr behavior if used as
 	 * strstr($haystack, $needle, true)
 	 *
-	 * @param string $haystack
-	 * @param mixed $needle
+	 * @param $haystack
+	 * @param $needle
+	 * @return mixed
 	 */
 	protected function strstrb($haystack, $needle) {
+
 		return array_shift((explode($needle, $haystack, 2)));
 	}
 
 	/**
 	 * Execute sysctl on *BDS to receive system information
 	 *
-	 * @param String $args Arguments to call sysctl
-	 * @return String $raw unformated sysctl output
+	 * @param string $args Arguments to call sysctl
+	 * @return string $raw Unformated sysctl output
 	 */
 	protected function sysctl($args) {
+
 		$descriptorspec = array(
 			0 => array('pipe', 'r'), // stdin is a pipe that the child will read from
 			1 => array('pipe', 'w'), // stdout is a pipe that the child will write to
@@ -670,10 +706,11 @@ class SystemInfo {
 	/**
 	 * Returns the latest error
 	 *
-	 * @return String error
+	 * @return string Error
 	 */
 	public function getError() {
-		return $this->error;
+
+		return $this->_error;
 	}
 
 }

@@ -145,21 +145,21 @@ function gen_editalias_page(&$tpl, $edit_id) {
 
 	$rs = exec_query($sql, $query, array($edit_id, $reseller_id));
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
 		user_goto('alias.php');
 	}
 	// Get data from sql
 	$res = exec_query($sql, "SELECT * FROM `domain_aliasses` WHERE `alias_id` = ?", array($edit_id));
 
-	if ($res->RecordCount() <= 0) {
+	if ($res->recordCount() <= 0) {
 		$_SESSION['aledit'] = '_no_';
 		user_goto('alias.php');
 	}
-	$data = $res->FetchRow();
+	$data = $res->fetchRow();
 	// Get IP data
 	$ipres = exec_query($sql, "SELECT * FROM `server_ips` WHERE `ip_id` = ?", array($data['alias_ip_id']));
-	$ipdat = $ipres->FetchRow();
+	$ipdat = $ipres->fetchRow();
 	$ip_data = $ipdat['ip_number'] . ' (' . $ipdat['ip_alias'] . ')';
 
 	if (isset($_POST['uaction']) && ($_POST['uaction'] == 'modify')) {

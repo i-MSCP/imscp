@@ -91,7 +91,7 @@ function gen_reseller_mainmenu(&$tpl, $menu_file) {
 	";
 
 	$rs = exec_query($sql, $query, array());
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		$tpl->assign('CUSTOM_BUTTONS', '');
 	} else {
 		global $i;
@@ -116,7 +116,7 @@ function gen_reseller_mainmenu(&$tpl, $menu_file) {
 			);
 
 			$tpl->parse('CUSTOM_BUTTONS', '.custom_buttons');
-			$rs->MoveNext();
+			$rs->moveNext();
 			$i++;
 		} // end while
 	} // end else
@@ -196,7 +196,7 @@ function gen_reseller_menu(&$tpl, $menu_file) {
 	";
 
 	$rs = exec_query($sql, $query, array());
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		$tpl->assign('CUSTOM_BUTTONS', '');
 	} else {
 		global $i;
@@ -221,7 +221,7 @@ function gen_reseller_menu(&$tpl, $menu_file) {
 			);
 
 			$tpl->parse('CUSTOM_BUTTONS', '.custom_buttons');
-			$rs->MoveNext();
+			$rs->moveNext();
 			$i++;
 		} // end while
 	} // end else
@@ -262,7 +262,7 @@ function get_reseller_default_props(&$sql, $reseller_id) {
 	// send sql query
 	$rs = exec_query($sql, $query, array($reseller_id));
 
-	if (0 == $rs->RowCount()) {
+	if (0 == $rs->rowCount()) {
 		return NULL;
 	}
 
@@ -333,11 +333,11 @@ function generate_reseller_user_props($reseller_id) {
 
 	$res = exec_query($sql, $query, array($reseller_id));
 
-	if ($res->RowCount() == 0) {
+	if ($res->rowCount() == 0) {
 		return array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 	}
 	// Process all users of this group
-	while ($data = $res->FetchRow()) {
+	while ($data = $res->fetchRow()) {
 		$admin_id = $data['admin_id'];
 
 		$query = "
@@ -351,7 +351,7 @@ function generate_reseller_user_props($reseller_id) {
 
 		$dres = exec_query($sql, $query, array($admin_id));
 
-		$ddata = $dres->FetchRow();
+		$ddata = $dres->fetchRow();
 
 		$user_id = $ddata['domain_id'];
 
@@ -472,12 +472,12 @@ function get_user_traffic($user_id) {
 
 	$res = exec_query($sql, $query, array($user_id));
 
-	if ($res->RowCount() == 0 || $res->RowCount() > 1) {
+	if ($res->rowCount() == 0 || $res->rowCount() > 1) {
 		// write_log("TRAFFIC WARNING: >$user_id< manages incorrect number of
 		// domains >".$res->RowCount()."<");
 		return array('n/a', 0, 0, 0, 0, 0, 0, 0, 0, 0);
 	} else {
-		$data = $res->FetchRow();
+		$data = $res->fetchRow();
 
 		$domain_id = $data['domain_id'];
 
@@ -515,7 +515,7 @@ function get_user_traffic($user_id) {
 		$data['web'] = $data['ftp'] = $data['smtp'] =
 		$data['pop'] = $data['total'] = 0;
 
-		while ($row = $res->FetchRow()) {
+		while ($row = $res->fetchRow()) {
 			$data['web'] += $row['web'];
 			$data['ftp'] += $row['ftp'];
 			$data['smtp'] += $row['smtp'];
@@ -561,11 +561,11 @@ function get_user_props($user_id) {
 
 	$res = exec_query($sql, $query, array($user_id));
 
-	if ($res->RowCount() == 0) {
+	if ($res->rowCount() == 0) {
 		return array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 	}
 
-	$data = $res->FetchRow();
+	$data = $res->fetchRow();
 
 	$sub_current = get_domain_running_sub_cnt($sql, $user_id);
 	$sub_max = $data['domain_subd_limit'];
@@ -640,7 +640,7 @@ function generate_ip_list(&$tpl, &$reseller_id) {
 
 	$res = exec_query($sql, $query, array($reseller_id));
 
-	$data = $res->FetchRow();
+	$data = $res->fetchRow();
 
 	$reseller_ips = $data['reseller_ips'];
 
@@ -648,7 +648,7 @@ function generate_ip_list(&$tpl, &$reseller_id) {
 
 	$res = exec_query($sql, $query, array());
 
-	while ($data = $res->FetchRow()) {
+	while ($data = $res->fetchRow()) {
 		$ip_id = $data['ip_id'];
 
 		if (preg_match("/$ip_id;/", $reseller_ips) == 1) {
@@ -911,7 +911,7 @@ function ispcp_domain_exists($domain_name, $reseller_id) {
 	$res_build_sub = exec_query($sql, $query_build_subdomain, array($reseller_id));
 	while (!$res_build_sub->EOF) {
 		$subdomains[] = $res_build_sub->fields['subdomain_name'] . "." . $res_build_sub->fields['domain_name'];
-		$res_build_sub->MoveNext();
+		$res_build_sub->moveNext();
 	}
 
 	if ($res_domain->fields['cnt'] == 0 && $res_aliases->fields['cnt'] == 0 && !in_array($domain_name, $subdomains)) {
@@ -1215,7 +1215,7 @@ function gen_def_language(&$tpl, &$sql, $user_def_language) {
 
 			$res3 = exec_query($sql, $query, array());
 
-			if ($res2->RecordCount() == 0 || $res3->RecordCount() == 0) {
+			if ($res2->recordCount() == 0 || $res3->recordCount() == 0) {
 				$language_name = tr('Unknown');
 			} else {
 				$tr_langcode = tr($res3->fields['msgstr']);
@@ -1231,7 +1231,7 @@ function gen_def_language(&$tpl, &$sql, $user_def_language) {
 			array_push($languages, array($matches[0], $selected, $language_name));
 		}
 
-		$rs->MoveNext();
+		$rs->moveNext();
 	}
 
 	asort($languages[0], SORT_STRING);
@@ -1279,7 +1279,7 @@ function gen_domain_details(&$tpl, &$sql, $domain_id) {
 		";
 		$alias_rs = exec_query($sql, $alias_query, array($domain_id));
 
-		if ($alias_rs->RecordCount() == 0) {
+		if ($alias_rs->recordCount() == 0) {
 			$tpl->assign('USER_DETAILS', '');
 		} else {
 			while (!$alias_rs->EOF) {
@@ -1288,7 +1288,7 @@ function gen_domain_details(&$tpl, &$sql, $domain_id) {
 				$tpl->assign('ALIAS_DOMAIN', tohtml(decode_idna($alias_name)));
 				$tpl->parse('USER_DETAILS', '.user_details');
 
-				$alias_rs->MoveNext();
+				$alias_rs->moveNext();
 			}
 		}
 	} else {
@@ -1321,7 +1321,7 @@ function reseller_limits_check(&$sql, &$err_msg, $reseller_id, $hpid, $newprops 
 			";
 
 			$res = exec_query($sql, $query, array($hpid));
-			$data = $res->FetchRow();
+			$data = $res->fetchRow();
 			$props = $data['props'];
 		}
 	} else {
@@ -1344,7 +1344,7 @@ function reseller_limits_check(&$sql, &$err_msg, $reseller_id, $hpid, $newprops 
 	";
 
 	$res = exec_query($sql, $query, array($reseller_id));
-	$data = $res->FetchRow();
+	$data = $res->fetchRow();
 	$dmn_current = $data['current_dmn_cnt'];
 	$dmn_max = $data['max_dmn_cnt'];
 
@@ -1809,11 +1809,11 @@ function get_reseller_id($domain_id) {
 
 	$rs = exec_query($sql, $query, array($domain_id));
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		return 0;
 	}
 
-	$data = $rs->FetchRow();
+	$data = $rs->fetchRow();
 	return $data['created_by'];
 }
 

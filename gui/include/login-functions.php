@@ -52,7 +52,7 @@ function username_exists($username) {
 
 	$res = exec_query($sql, $query, array($username));
 
-	return ($res->RecordCount() == 1);
+	return ($res->recordCount() == 1);
 }
 
 /**
@@ -77,7 +77,7 @@ function get_userdata($username) {
 
 	$res = exec_query($sql, $query, $username);
 
-	return $res->FetchRow();
+	return $res->fetchRow();
 }
 
 /**
@@ -112,7 +112,7 @@ function is_userdomain_expired($username) {
 
 	$res = exec_query($sql, $query, $udata['admin_id']);
 
-	$row = $res->FetchRow();
+	$row = $res->fetchRow();
 
 	$result = false;
 	if (!empty($row['domain_expires'])) {
@@ -156,7 +156,7 @@ function is_userdomain_ok($username) {
 
 	$res = exec_query($sql, $query, $udata['admin_id']);
 
-	$row = $res->FetchRow();
+	$row = $res->fetchRow();
 
 	return ($row['domain_status'] == $cfg->ITEM_OK_STATUS);
 }
@@ -297,7 +297,7 @@ function is_ipaddr_blocked($ipaddr = null, $type = 'bruteforce',
 
 	$res = exec_query($sql, $query, array($ipaddr, $max));
 
-	if ($res->RecordCount() == 0) {
+	if ($res->recordCount() == 0) {
 		return false;
 	} else if (!$autodeny) {
 		return true;
@@ -340,11 +340,11 @@ function shall_user_wait($ipaddr = null, $displayMessage = true) {
 
 	$res = exec_query($sql, $query, $ipaddr);
 
-	if ($res->RecordCount() == 0) {
+	if ($res->recordCount() == 0) {
 		return false;
 	}
 
-	$data = $res->FetchRow();
+	$data = $res->fetchRow();
 
 	$lastaccess = $data['lastaccess'];
 
@@ -410,7 +410,7 @@ function check_ipaddr($ipaddr = null, $type = 'bruteforce') {
 
 	$res = exec_query($sql, $query, $ipaddr);
 
-	if ($res->RecordCount() == 0) {
+	if ($res->recordCount() == 0) {
 		$query = "
 			REPLACE INTO `login` (
 				`session_id`,
@@ -434,7 +434,7 @@ function check_ipaddr($ipaddr = null, $type = 'bruteforce') {
 		);
 	}
 
-	$data = $res->FetchRow();
+	$data = $res->fetchRow();
 
 	$lastaccess = $data['lastaccess'];
 	$logincount = $data['login_count'];
@@ -606,5 +606,5 @@ function session_exists($sess_id) {
 
 	$res = exec_query($sql, $query, array($sess_id, $ip));
 
-	return ($res->RecordCount() == 1);
+	return ($res->recordCount() == 1);
 }

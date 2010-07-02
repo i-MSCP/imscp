@@ -25,25 +25,56 @@
  * isp Control Panel. All Rights Reserved.
  */
 
+/**
+ * DatabaseResult class -  Wrap the PDOStatement class
+ *
+ */
 final class DatabaseResult {
 
+	/**
+	 * PDOStatement object
+	 *
+	 * @var PDOStatement
+	 */
 	protected $_result = null;
+
+	/**
+	 * 
+	 */
 	protected $_fields = null;
 
+	/**
+	 * Should be documented
+	 *
+	 * @param PDOStatement $result A PDOStatement instance
+	 * @return bool FALSE if $result is not a PDOStatement instance
+	 */
 	public function __construct($result) {
+
 		if (!$result instanceof PDOStatement) {
 			return false;
 		}
+
 		$this->_result = $result;
 	}
 
+	/**
+	 * Should be documented
+	 *
+	 * @throws Exception
+	 * @param  $param
+	 * @return bool
+	 */
 	public function __get($param) {
+
 		if ($param == 'fields') {
 			if ($this->_fields === null) {
 				$this->_fields = $this->_result->fetch();
 			}
+
 			return $this->_fields;
 		}
+
 		if ($param == 'EOF') {
 			if ($this->_result->rowCount() == 0) {
 				return true;
@@ -54,23 +85,54 @@ final class DatabaseResult {
 		throw new Exception('Unknown parameter: ' . $param);
 	}
 
+	/**
+	 * Should be documented
+	 *
+	 * @param  $param
+	 * @return
+	 */
 	public function fields($param) {
+
 		return $this->fields[$param];
 	}
 
-	public function RowCount() {
+	/**
+	 * Should be documented
+	 *
+	 * @return
+	 */
+	public function rowCount() {
+
 		return $this->_result->rowCount();
 	}
 
-	public function RecordCount() {
+	/**
+	 * Should be documented
+	 *
+	 * @return
+	 */
+	public function recordCount() {
+
 		return $this->_result->rowCount();
 	}
 
-	public function FetchRow() {
+	/**
+	 * Should be documented
+	 *
+	 * @return
+	 */
+	public function fetchRow() {
+
 		return $this->_result->fetch();
 	}
 
-	public function MoveNext() {
+	/**
+	 * Should be documented
+	 *
+	 * @return void
+	 */
+	public function moveNext() {
+
 		$this->_fields = $this->_result->fetch();
 	}
 

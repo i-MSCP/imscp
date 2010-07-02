@@ -277,7 +277,7 @@ function add_user_data($reseller_id) {
 			$res = exec_query($sql, $query, array($reseller_id, $hpid));
 		}
 
-		$data = $res->FetchRow();
+		$data = $res->fetchRow();
 		$props = $data['props'];
 	}
 

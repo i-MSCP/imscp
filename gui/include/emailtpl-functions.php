@@ -76,7 +76,7 @@ function get_email_tpl_data($admin_id, $tpl_name) {
 
 	$rs = exec_query($sql, $query, array($admin_id, $tpl_name));
 
-	if ($rs->RowCount() == 1) {
+	if ($rs->rowCount() == 1) {
 		$data['subject'] = $rs->fields['subject'];
 		$data['message'] = $rs->fields['message'];
 	} else {
@@ -104,7 +104,7 @@ function set_email_tpl_data($admin_id, $tpl_name, $data) {
 
 	$rs = exec_query($sql, $query, array($admin_id, $tpl_name));
 
-	if ($rs->RowCount() == 0) {
+	if ($rs->rowCount() == 0) {
 
 		$query = "
 			INSERT INTO `email_tpls`

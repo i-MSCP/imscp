@@ -224,8 +224,8 @@ function get_hp_data($hpid, $admin_id) {
 
 	$res = exec_query($sql, $query, array($admin_id, $hpid));
 
-	if (0 !== $res->RowCount()) {
-		$data = $res->FetchRow();
+	if (0 !== $res->rowCount()) {
+		$data = $res->fetchRow();
 
 		$props = $data['props'];
 
@@ -397,7 +397,7 @@ function check_hosting_plan_name($admin_id) {
 	$query = "SELECT `id` FROM `hosting_plans` WHERE `name` = ? AND `reseller_id` = ?";
 	$res = exec_query($sql, $query, array($hp_name, $admin_id));
 
-	if ($res->RowCount() !== 0) {
+	if ($res->rowCount() !== 0) {
 		return false;
 	}
 

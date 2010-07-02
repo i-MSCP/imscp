@@ -233,7 +233,7 @@ function show_lang(&$tpl) {
 		$query = "SELECT `msgstr` FROM " . $tables[$i] . " WHERE `msgid` = 'ispcp_languageRevision'";
 		$res4 = exec_query($sql, $query);
 
-		if ($res2->RecordCount() == 0 || $res3->RecordCount() == 0) {
+		if ($res2->recordCount() == 0 || $res3->recordCount() == 0) {
 			$language_name = tr('Unknown');
 		} else {
 			$tr_langcode = tr($res3->fields['msgstr']);
@@ -244,7 +244,7 @@ function show_lang(&$tpl) {
 			}
 		}
 
-		if ($res4->RecordCount() !== 0 && $res4->fields['msgstr'] != '' && class_exists('DateTime')) {
+		if ($res4->recordCount() !== 0 && $res4->fields['msgstr'] != '' && class_exists('DateTime')) {
 			$tmp_lang = new DateTime($res4->fields['msgstr']);
 			$language_revision = $tmp_lang->format('Y-m-d H:i');
 

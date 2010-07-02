@@ -57,7 +57,7 @@ function gen_page_ftp_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 
 	$rs = exec_query($sql, $query, array($dmn_name));
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		$tpl->assign(
 			array(
 				'FTP_MSG' => tr('FTP list is empty!'),

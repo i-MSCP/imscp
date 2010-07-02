@@ -164,7 +164,7 @@ function send_reseller_users_message(&$sql, $admin_id) {
 
 		send_circular_email($to, "\"" . encode($sender_name) . "\" <" . $sender_email . ">", $msg_subject, $msg_text);
 
-		$rs->MoveNext();
+		$rs->moveNext();
 	}
 
 	set_page_message(tr('You send email to your users successfully!'));

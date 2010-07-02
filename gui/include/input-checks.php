@@ -1045,7 +1045,7 @@ function who_owns_this($id, $type = 'dmn', $forcefinal = false) {
 			}
 			$select = $matches[1];
 			$rs = exec_query($sql, $r['query'], $id);
-			if ($rs->RecordCount() != 0) {
+			if ($rs->recordCount() != 0) {
 				if ($r['is_final'] || $forcefinal) {
 					$who = $rs->fields[$select];
 				} else {

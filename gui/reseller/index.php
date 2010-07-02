@@ -288,7 +288,7 @@ function gen_messages_table(&$tpl, $admin_id) {
 	";
 	$res = exec_query($sql, $query, array($admin_id, $admin_id));
 
-	$questions = $res->RowCount();
+	$questions = $res->rowCount();
 
 	if ($questions == 0) {
 		$tpl->assign(

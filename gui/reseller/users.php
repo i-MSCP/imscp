@@ -328,7 +328,7 @@ function generate_users_list(&$tpl, $admin_id) {
 			gen_domain_details($tpl, $sql, $rs->fields['domain_id']);
 			$tpl->parse('USER_ENTRY', '.user_entry');
 			$i++;
-			$rs->MoveNext();
+			$rs->moveNext();
 		}
 
 		$tpl->parse('USER_LIST', 'users_list');

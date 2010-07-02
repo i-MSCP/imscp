@@ -193,7 +193,7 @@ function gen_page_dmn_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 
 	$rs = exec_query($sql, $dmn_query, array($dmn_id));
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		return 0;
 	} else {
 		global $counter;
@@ -258,11 +258,11 @@ function gen_page_dmn_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 
 			$tpl->parse('MAIL_ITEM', '.mail_item');
 
-			$rs->MoveNext();
+			$rs->moveNext();
 			$counter++;
 		}
 
-		return $rs->RecordCount();
+		return $rs->recordCount();
 	}
 } // end gen_page_dmn_mail_list()
 
@@ -326,7 +326,7 @@ function gen_page_sub_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 
 	$rs = exec_query($sql, $sub_query, array($dmn_id, $dmn_id));
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		return 0;
 	} else {
 		global $counter;
@@ -393,11 +393,11 @@ function gen_page_sub_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 
 			$tpl->parse('MAIL_ITEM', '.mail_item');
 
-			$rs->MoveNext();
+			$rs->moveNext();
 			$counter++;
 		}
 
-		return $rs->RecordCount();
+		return $rs->recordCount();
 	}
 } // end gen_page_sub_mail_list()
 
@@ -467,7 +467,7 @@ function gen_page_als_sub_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 
 	$rs = exec_query($sql, $sub_query, array($dmn_id));
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		return 0;
 	} else {
 		global $counter;
@@ -530,11 +530,11 @@ function gen_page_als_sub_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 
 			$tpl->parse('MAIL_ITEM', '.mail_item');
 
-			$rs->MoveNext();
+			$rs->moveNext();
 			$counter++;
 		}
 
-		return $rs->RecordCount();
+		return $rs->recordCount();
 	}
 } // end gen_page_als_sub_mail_list()
 
@@ -598,7 +598,7 @@ function gen_page_als_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 
 	$rs = exec_query($sql, $als_query, array($dmn_id, $dmn_id));
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		return 0;
 	} else {
 		global $counter;
@@ -663,11 +663,11 @@ function gen_page_als_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 
 			$tpl->parse('MAIL_ITEM', '.mail_item');
 
-			$rs->MoveNext();
+			$rs->moveNext();
 			$counter++;
 		}
 
-		return $rs->RecordCount();
+		return $rs->recordCount();
 	}
 } // end gen_page_als_mail_list()
 

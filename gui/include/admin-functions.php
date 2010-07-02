@@ -143,7 +143,7 @@ function gen_admin_mainmenu(&$tpl, $menu_file) {
 
 	$rs = exec_query($sql, $query);
 
-	if($rs->RecordCount() == 0) {
+	if($rs->recordCount() == 0) {
 		$tpl->assign('CUSTOM_BUTTONS', '');
 	} else {
 		global $i;
@@ -168,7 +168,7 @@ function gen_admin_mainmenu(&$tpl, $menu_file) {
 			);
 
 			$tpl->parse('CUSTOM_BUTTONS', '.custom_buttons');
-			$rs->MoveNext();
+			$rs->moveNext();
 			$i++;
 		} // end while
 	} // end else
@@ -251,7 +251,7 @@ function gen_admin_menu(&$tpl, $menu_file) {
 
 	$rs = exec_query($sql, $query);
 
-	if($rs->RecordCount() == 0) {
+	if($rs->recordCount() == 0) {
 		$tpl->assign('CUSTOM_BUTTONS', '');
 	} else {
 		global $i;
@@ -276,7 +276,7 @@ function gen_admin_menu(&$tpl, $menu_file) {
 			);
 
 			$tpl->parse('CUSTOM_BUTTONS', '.custom_buttons');
-			$rs->MoveNext();
+			$rs->moveNext();
 			$i++;
 		} // end while
 	} // end else
@@ -306,7 +306,7 @@ function get_sql_user_count($sql) {
 	// $rs = exec_query($sql, $query, false);
 	$rs = exec_query($sql, $query);
 
-	return $rs->RecordCount();
+	return $rs->recordCount();
 }
 
 function get_admin_general_info(&$tpl, &$sql) {
@@ -401,7 +401,7 @@ function gen_admin_list(&$tpl, &$sql) {
 
 	$rs = exec_query($sql, $query);
 
-	if($rs->RecordCount() == 0) {
+	if($rs->recordCount() == 0) {
 		$tpl->assign(
 			array(
 				'ADMIN_MESSAGE' => tr('Administrators list is empty!'),
@@ -475,7 +475,7 @@ function gen_admin_list(&$tpl, &$sql) {
 			);
 
 			$tpl->parse('ADMIN_ITEM', '.admin_item');
-			$rs->MoveNext();
+			$rs->moveNext();
 			$i++;
 		}
 
@@ -506,7 +506,7 @@ function gen_reseller_list(&$tpl, &$sql) {
 
 	$rs = exec_query($sql, $query);
 
-	if($rs->RecordCount() == 0) {
+	if($rs->recordCount() == 0) {
 		$tpl->assign(
 			array(
 				'RSL_MESSAGE' => tr('Resellers list is empty!'),
@@ -582,7 +582,7 @@ function gen_reseller_list(&$tpl, &$sql) {
 			);
 
 			$tpl->parse('RSL_ITEM', '.rsl_item');
-			$rs->MoveNext();
+			$rs->moveNext();
 			$i++;
 		}
 
@@ -657,7 +657,7 @@ function gen_user_list(&$tpl, &$sql) {
 	$rs = execute_query($sql, $search_query);
 	$i = 0;
 
-	if($rs->RecordCount() == 0) {
+	if($rs->recordCount() == 0) {
 		if(isset($_SESSION['search_for'])) {
 			$tpl->assign(
 				array(
@@ -846,7 +846,7 @@ function gen_user_list(&$tpl, &$sql) {
 
 			gen_domain_details($tpl, $sql, $rs->fields['domain_id']);
 			$tpl->parse('USR_ITEM', '.usr_item');
-			$rs->MoveNext();
+			$rs->moveNext();
 			$i++;
 		}
 
@@ -893,7 +893,7 @@ function generate_reseller_props($reseller_id) {
 
 	$rs = exec_query($sql, $query, $reseller_id);
 
-	if($rs->RowCount() == 0) {
+	if($rs->rowCount() == 0) {
 		return array_fill(0, 18, 0);
 	}
 
@@ -963,7 +963,7 @@ function generate_reseller_users_props($reseller_id) {
 
 	$rs = exec_query($sql, $query, $reseller_id);
 
-	if($rs->RowCount() == 0) {
+	if($rs->rowCount() == 0) {
 		return array(
 			$rdmn_current, $rdmn_max, $rdmn_uf,
 			$rsub_current, $rsub_max, $rsub_uf,
@@ -1068,7 +1068,7 @@ function generate_reseller_users_props($reseller_id) {
 
 		$rdisk_current += $disk_current;
 		$rdisk_max += $disk_max;
-		$rs->MoveNext();
+		$rs->moveNext();
 	}
 
 	return array(
@@ -1104,7 +1104,7 @@ function generate_user_props($user_id) {
 
 	$rs = exec_query($sql, $query, $user_id);
 
-	if($rs->RowCount() == 0) {
+	if($rs->rowCount() == 0) {
 		return array_fill(0, 14, 0);
 	}
 
@@ -1249,7 +1249,7 @@ function sub_records_count($field, $table, $where, $value, $subfield, $subtable,
 
 	$result = 0;
 
-	if($rs->RowCount() == 0) {
+	if($rs->rowCount() == 0) {
 		return $result;
 	}
 
@@ -1258,7 +1258,7 @@ function sub_records_count($field, $table, $where, $value, $subfield, $subtable,
 
 		while(!$rs->EOF) {
 			array_push($sqld_ids, $rs->fields['field']);
-			$rs->MoveNext();
+			$rs->moveNext();
 		}
 
 		$sqld_ids = implode(',', $sqld_ids);
@@ -1297,7 +1297,7 @@ function sub_records_count($field, $table, $where, $value, $subfield, $subtable,
 
 			$subres = exec_query($sql, $query, $contents);
 			$result += $subres->fields['cnt'];
-			$rs->MoveNext();
+			$rs->moveNext();
 		}
 	}
 
@@ -1335,10 +1335,10 @@ function generate_user_traffic($user_id) {
 
 	$rs = exec_query($sql, $query, $user_id);
 
-	if($rs->RowCount() == 0 || $rs->RowCount() > 1) {
+	if($rs->rowCount() == 0 || $rs->rowCount() > 1) {
 		write_log(
 			'TRAFFIC WARNING: ' . $rs->fields['domain_name'] .
-				' manages incorrect number of domains: ' . $rs->RowCount()
+				' manages incorrect number of domains: ' . $rs->rowCount()
 		);
 
 		return array('n/a', 0, 0, 0, 0, 0, 0, 0, 0, 0);
@@ -1438,7 +1438,7 @@ function sub_records_rlike_count($field, $table, $where, $value, $subfield,
 
 	$result = 0;
 
-	if($rs->RowCount() == 0) {
+	if($rs->rowCount() == 0) {
 		return $result;
 	}
 
@@ -1462,7 +1462,7 @@ function sub_records_rlike_count($field, $table, $where, $value, $subfield,
 
 		$subres = exec_query($sql, $query, $a . $contents . $b);
 		$result += $subres->fields['cnt'];
-		$rs->MoveNext();
+		$rs->moveNext();
 	}
 
 	return $result;
@@ -1901,7 +1901,7 @@ function change_domain_status(&$sql, $domain_id, $domain_name, $action,
 			$sql, $query, array($mail_pass, $mail_status, $mail_id)
 		);
 
-		$rs->MoveNext();
+		$rs->moveNext();
 	}
 
 	$query = "
@@ -2245,7 +2245,7 @@ function delete_domain($domain_id, $goto, $breseller = false) {
 		$res = exec_query($sql, $query, $domain_id);
 	}
 
-	$data = $res->FetchRow();
+	$data = $res->fetchRow();
 
 	if(empty($data['domain_uid']) || empty($data['domain_admin_id'])) {
 		set_page_message(tr('Wrong domain ID!'));
@@ -2312,7 +2312,7 @@ function delete_domain($domain_id, $goto, $breseller = false) {
 
 	while(!$res->EOF) {
 		$alias_a[] = $res->fields['alias_id'];
-		$res->MoveNext();
+		$res->moveNext();
 	}
 
 	if(count($alias_a) > 0) {
@@ -2345,7 +2345,7 @@ function delete_domain($domain_id, $goto, $breseller = false) {
 
 	while(!$res->EOF) {
 		delete_sql_database($sql, $domain_id, $res->fields['sqld_id']);
-		$res->MoveNext();
+		$res->moveNext();
 	}
 
 	// Domain aliases:
@@ -2511,7 +2511,7 @@ function gen_purchase_haf(&$tpl, &$sql, $user_id, $encode = false) {
 
 	$rs = exec_query($sql, $query, $user_id);
 
-	if($rs->RecordCount() == 0) {
+	if($rs->recordCount() == 0) {
 		$title = tr("ispCP - Order Panel");
 
 		$header = <<<RIC

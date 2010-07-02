@@ -63,7 +63,7 @@ if (isset($_GET['action']) && $_GET['action'] === "delete") {
 	}
 	$query = "SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id` = ?";
 	$rs = exec_query($sql, $query, $act_id);
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		user_goto('alias.php');
 	}
 	$alias_name = $rs->fields['alias_name'];
@@ -74,7 +74,7 @@ if (isset($_GET['action']) && $_GET['action'] === "delete") {
 	$domain_id = who_owns_this($act_id, 'als_id', true);
 	$query = 'SELECT `email` FROM `admin`, `domain` WHERE `admin`.`admin_id` = `domain`.`domain_admin_id` AND `domain`.`domain_id` = ?';
 	$rs = exec_query($sql, $query, $domain_id);
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		user_goto('alias.php');
 	}
 	$user_email = $rs->fields['email'];

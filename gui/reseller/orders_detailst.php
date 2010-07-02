@@ -68,7 +68,7 @@ function gen_order_details(&$tpl, &$sql, $user_id, $order_id) {
 			`user_id` = ?
 	";
 	$rs = exec_query($sql, $query, array($order_id, $user_id));
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		set_page_message(tr('Permission deny!'));
 		user_goto('orders.php');
 	}

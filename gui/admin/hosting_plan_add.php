@@ -353,7 +353,7 @@ function save_data_to_db(&$tpl, $admin_id) {
 	";
 	$res = exec_query($sql, $query, array('admin', $hp_name));
 
-	if ($res->RowCount() == 1) {
+	if ($res->rowCount() == 1) {
 		$tpl->assign('MESSAGE', tr('Hosting plan with entered name already exists!'));
 		// $tpl->parse('AHP_MESSAGE', 'ahp_message');
 	} else {

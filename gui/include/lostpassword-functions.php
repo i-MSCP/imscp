@@ -181,7 +181,7 @@ function uniqkeyexists($uniqkey) {
 
 	$res = exec_query($sql, $query, array($uniqkey));
 
-	return ($res->RecordCount() != 0) ? true : false;
+	return ($res->recordCount() != 0) ? true : false;
 }
 
 /**
@@ -211,7 +211,7 @@ function sendpassword($uniqkey) {
 
 	$res = exec_query($sql, $query, array($uniqkey));
 
-	if ($res->RecordCount() == 1) {
+	if ($res->recordCount() == 1) {
 		$admin_name = $res->fields['admin_name'];
 
 		$created_by = $res->fields['created_by'];
@@ -311,7 +311,7 @@ function requestpassword($admin_name) {
 
 	$res = exec_query($sql, $query, array($admin_name));
 
-	if ($res->RecordCount() == 0) {
+	if ($res->recordCount() == 0) {
 		return false;
 	}
 

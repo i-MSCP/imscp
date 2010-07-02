@@ -60,7 +60,7 @@ if (isset($_GET['edit_id']) && $_GET['edit_id'] !== '') {
 	$id = $rs->fields['id'];
 	$alias_id = $rs->fields['alias_id'];
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		user_goto('domains_manage.php');
 	}
 

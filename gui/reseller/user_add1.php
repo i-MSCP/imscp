@@ -279,7 +279,7 @@ function get_hp_data_list(&$tpl, $reseller_id) {
 		$rs = exec_query($sql, $query, array('admin'));
 		$tpl->assign('PERSONALIZE', '');
 
-		if ($rs->RecordCount() == 0) {
+		if ($rs->recordCount() == 0) {
 			set_page_message(tr('You have no hosting plans. Please contact your system administrator.'));
 			$tpl->assign('ADD_USER', '');
 			$tpl->assign('ADD_FORM', '');
@@ -303,8 +303,8 @@ function get_hp_data_list(&$tpl, $reseller_id) {
 		$rs = exec_query($sql, $query, array($reseller_id));
 	}
 
-	if (0 !== $rs->RowCount()) { // There are data
-		while (($data = $rs->FetchRow())) {
+	if (0 !== $rs->rowCount()) { // There are data
+		while (($data = $rs->fetchRow())) {
 			$dmn_chp = isset($dmn_chp) ? $dmn_chp : $data['id'];
 			$tpl->assign(
 					array(

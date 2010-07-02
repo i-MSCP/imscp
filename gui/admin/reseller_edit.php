@@ -483,7 +483,7 @@ function get_reseller_prop($reseller_id) {
 
 	$rs = exec_query($sql, $query, array($reseller_id));
 
-	if ($rs->RecordCount() <= 0) {
+	if ($rs->recordCount() <= 0) {
 			set_page_message(
 				tr('ERROR: The reseller account you trying to edit does not exist!')
 			);
@@ -526,7 +526,7 @@ function get_servers_ips(&$tpl, $rip_lst) {
 	$i = 0;
 	$reseller_ips = '';
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		$tpl->assign(
 			array(
 				'RSL_IP_MESSAGE' => tr('Reseller IP list is empty!'),
@@ -585,7 +585,7 @@ function get_servers_ips(&$tpl, $rip_lst) {
 			);
 
 			$tpl->parse('RSL_IP_ITEM', '.rsl_ip_item');
-			$rs->MoveNext();
+			$rs->moveNext();
 
 			$i++;
 		}
@@ -616,7 +616,7 @@ function have_reseller_ip_users($reseller_id, $ip, &$ip_num, &$ip_name) {
 
 	$res = exec_query($sql, $query, array($reseller_id));
 
-	if ($res->RowCount() == 0) {
+	if ($res->rowCount() == 0) {
 		return false;
 	}
 
@@ -640,13 +640,13 @@ function have_reseller_ip_users($reseller_id, $ip, &$ip_num, &$ip_name) {
 
 		$dres = exec_query($sql, $query, array($reseller_id, $ip));
 
-		if ($dres->RowCount() != 0) {
+		if ($dres->rowCount() != 0) {
 			$ip_num = $dres->fields['ip_number'];
 			$ip_name = $dres->fields['ip_domain'];
 			return true;
 		}
 
-		$res->MoveNext();
+		$res->moveNext();
 	}
 
 	return false;
@@ -765,7 +765,7 @@ function &get_data(&$tpl = false) {
 
 			$rs = exec_query($sql, $query, array($rdata['edit_id']));
 
-			if ($rs->RecordCount() <= 0) {
+			if ($rs->recordCount() <= 0) {
 				user_goto('manage_users.php');
 			}
 			$rdata['admin_name'] = $rs->fields['admin_name'];

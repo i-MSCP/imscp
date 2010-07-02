@@ -113,7 +113,7 @@ function check_sql_permissions(&$tpl, $sql, $user_id, $db_id, $sqluser_available
 
 	$rs = exec_query($sql, $query, array($db_id, $dmn_name));
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
 		user_goto('sql_manage.php');
 	}
@@ -127,12 +127,12 @@ function get_sqluser_list_of_current_db(&$sql, $db_id) {
 
 	$rs = exec_query($sql, $query, array($db_id));
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		return false;
 	} else {
 		while (!$rs->EOF) {
 			$userlist[] = $rs->fields['sqlu_name'];
-			$rs->MoveNext();
+			$rs->moveNext();
 		}
 	}
 
@@ -190,7 +190,7 @@ function gen_sql_user_list(&$sql, &$tpl, $user_id, $db_id) {
 			);
 			$tpl->parse('SQLUSER_LIST', '.sqluser_list');
 		}
-		$rs->MoveNext();
+		$rs->moveNext();
 	}
 	// let's hide the combobox in case there are no other sqlusers
 	if (!$user_found) {
@@ -271,7 +271,7 @@ function add_sql_user(&$sql, $user_id, $db_id) {
 		$query = "SELECT `sqlu_pass` FROM `sql_user` WHERE `sqlu_id` = ?";
 		$rs = exec_query($sql, $query, array($_POST['sqluser_id']));
 
-		if ($rs->RecordCount() == 0) {
+		if ($rs->recordCount() == 0) {
 			set_page_message(tr('SQL-user not found! Maybe it was deleted by another user!'));
 			return;
 		}

@@ -135,7 +135,7 @@ function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 	";
 
 	$rs = exec_query($sql, $query, array($dmn_id, $ok_status));
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		$tpl->assign(
 			array(
 				'ALS_ID' => '0',
@@ -165,7 +165,7 @@ function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 				)
 			);
 			$tpl->parse('ALS_LIST', '.als_list');
-			$rs->MoveNext();
+			$rs->moveNext();
 
 			if (!$first_passed) {
 				$first_passed = true;

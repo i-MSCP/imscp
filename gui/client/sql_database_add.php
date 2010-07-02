@@ -97,7 +97,7 @@ function check_db_name(&$sql, $db_name) {
 
 	while (!$rs->EOF) {
 		if ($db_name === $rs->fields[0]) return 1;
-		$rs->MoveNext();
+		$rs->moveNext();
 	}
 
 	return 0;

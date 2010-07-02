@@ -368,7 +368,7 @@ function generate_als_list(&$tpl, $reseller_id, &$als_err) {
 		$query = "SELECT `ip_number`, `ip_domain` FROM `server_ips` WHERE `ip_id` = ?";
 
 		$alsip_r = exec_query($sql, $query, array($als_ip_id));
-		$alsip_d = $alsip_r->FetchRow();
+		$alsip_d = $alsip_r->fetchRow();
 
 		$als_ip = $alsip_d['ip_number'];
 		$als_ip_name = $alsip_d['ip_domain'];
@@ -425,7 +425,7 @@ function generate_als_list(&$tpl, $reseller_id, &$als_err) {
 
 		$i++;
 		$tpl->parse('TABLE_ITEM', '.table_item');
-		$rs->MoveNext();
+		$rs->moveNext();
 	}
 } // End of generate_als_list()
 

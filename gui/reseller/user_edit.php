@@ -198,9 +198,9 @@ function load_user_data_page($user_id) {
 	";
 
 	$res = exec_query($sql, $query, array($user_id, $reseller_id));
-	$data = $res->FetchRow();
+	$data = $res->fetchRow();
 
-	if ($res->RecordCount() == 0) {
+	if ($res->recordCount() == 0) {
 		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
 		user_goto('users.php');
 	} else {
@@ -426,7 +426,7 @@ function update_data_in_db($hpid) {
 		";
 
 		$rs = exec_query($sql, $query, array($admin_name));
-			if ($rs->RecordCount() != 0) {
+			if ($rs->recordCount() != 0) {
 				set_page_message(tr('User session was killed!'));
 				write_log($_SESSION['user_logged'] . " killed ".$admin_name."'s session because of password change");
 		}

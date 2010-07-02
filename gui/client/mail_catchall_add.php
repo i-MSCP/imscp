@@ -119,7 +119,7 @@ function gen_dynamic_page_data(&$tpl, &$sql, $id) {
 			";
 
 			$rs = exec_query($sql, $query, array($item_id, $item_id, $ok_status));
-			if ($rs->RecordCount() == 0) {
+			if ($rs->recordCount() == 0) {
 				$tpl->assign(array('FORWARD_MAIL' => $cfg->HTML_CHECKED, 'MAIL_LIST' => '', 'DEFAULT' => 'forward'));
 			} else {
 				$tpl->assign(array('NORMAL_MAIL' => $cfg->HTML_CHECKED, 'NORMAL_MAIL_CHECK' => 'checked', 'FORWARD_MAIL' => '', 'DEFAULT' => 'normal'));
@@ -138,7 +138,7 @@ function gen_dynamic_page_data(&$tpl, &$sql, $id) {
 					);
 
 					$tpl->parse('MAIL_LIST', '.mail_list');
-					$rs->MoveNext();
+					$rs->moveNext();
 				}
 			}
 		} else if ($item_type === 'alias') {
@@ -162,7 +162,7 @@ function gen_dynamic_page_data(&$tpl, &$sql, $id) {
 
 			$rs = exec_query($sql, $query, array($ok_status, $item_id));
 
-			if ($rs->RecordCount() == 0) {
+			if ($rs->recordCount() == 0) {
 				$tpl->assign(array('FORWARD_MAIL' => $cfg->HTML_CHECKED, 'MAIL_LIST' => '', 'DEFAULT' => 'forward'));
 			} else {
 				$tpl->assign(array('NORMAL_MAIL' => $cfg->HTML_CHECKED, 'NORMAL_MAIL_CHECK' => 'checked', 'FORWARD_MAIL' => '', 'DEFAULT' => 'normal'));
@@ -181,7 +181,7 @@ function gen_dynamic_page_data(&$tpl, &$sql, $id) {
 					);
 
 					$tpl->parse('MAIL_LIST', '.mail_list');
-					$rs->MoveNext();
+					$rs->moveNext();
 				}
 			}
 		} else if ($item_type === 'subdom') {
@@ -208,7 +208,7 @@ function gen_dynamic_page_data(&$tpl, &$sql, $id) {
 
 			$rs = exec_query($sql, $query, array($ok_status, $item_id));
 
-			if ($rs->RecordCount() == 0) {
+			if ($rs->recordCount() == 0) {
 				$tpl->assign(array('FORWARD_MAIL' => $cfg->HTML_CHECKED, 'MAIL_LIST' => '', 'DEFAULT' => 'forward'));
 			} else {
 				$tpl->assign(array('NORMAL_MAIL' => $cfg->HTML_CHECKED, 'NORMAL_MAIL_CHECK' => 'checked', 'FORWARD_MAIL' => '', 'DEFAULT' => 'normal'));
@@ -227,7 +227,7 @@ function gen_dynamic_page_data(&$tpl, &$sql, $id) {
 					);
 
 					$tpl->parse('MAIL_LIST', '.mail_list');
-					$rs->MoveNext();
+					$rs->moveNext();
 				}
 			}
 		} else if ($item_type === 'alssub') {
@@ -254,7 +254,7 @@ function gen_dynamic_page_data(&$tpl, &$sql, $id) {
 
 			$rs = exec_query($sql, $query, array($ok_status, $item_id));
 
-			if ($rs->RecordCount() == 0) {
+			if ($rs->recordCount() == 0) {
 				$tpl->assign(array('FORWARD_MAIL' => $cfg->HTML_CHECKED, 'MAIL_LIST' => '', 'DEFAULT' => 'forward'));
 			} else {
 				$tpl->assign(array('NORMAL_MAIL' => $cfg->HTML_CHECKED, 'NORMAL_MAIL_CHECK' => 'checked', 'FORWARD_MAIL' => '', 'DEFAULT' => 'normal'));
@@ -273,7 +273,7 @@ function gen_dynamic_page_data(&$tpl, &$sql, $id) {
 					);
 
 					$tpl->parse('MAIL_LIST', '.mail_list');
-					$rs->MoveNext();
+					$rs->moveNext();
 				}
 			}
 		}

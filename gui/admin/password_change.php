@@ -103,8 +103,8 @@ function check_udata($id, $pass) {
 
 	$rs = exec_query($sql, $query, array($id));
 
-	if ($rs->RecordCount() == 1) {
-		$rs = $rs->FetchRow();
+	if ($rs->recordCount() == 1) {
+		$rs = $rs->fetchRow();
 
 		if ((crypt($pass, $rs['admin_pass']) == $rs['admin_pass'])
 			|| (md5($pass) == $rs['admin_pass'])) {

@@ -72,7 +72,7 @@ function edit_mail_account(&$tpl, &$sql) {
 
 	$rs = exec_query($sql, $query, array($mail_id, $dmn_name));
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
 		user_goto('mail_accounts.php');
 	} else {
@@ -86,56 +86,56 @@ function edit_mail_account(&$tpl, &$sql) {
 			if ($mail_type == MT_NORMAL_MAIL) {
 				$mtype[] = 1;
 				$res1 = exec_query($sql, "SELECT `domain_name` FROM `domain` WHERE `domain_id` = ?", array($domain_id));
-				$tmp1 = $res1->FetchRow(0);
+				$tmp1 = $res1->fetchRow(0);
 				$maildomain = $tmp1['domain_name'];
 			} else if ($mail_type == MT_NORMAL_FORWARD) {
 				$mtype[] = 4;
 				$res1 = exec_query($sql, "SELECT `domain_name` FROM `domain` WHERE `domain_id` = ?", array($domain_id));
-				$tmp1 = $res1->FetchRow(0);
+				$tmp1 = $res1->fetchRow(0);
 				$maildomain = $tmp1['domain_name'];
 			} else if ($mail_type == MT_ALIAS_MAIL) {
 				$mtype[] = 2;
 				$res1 = exec_query($sql, "SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id` = ?", array($sub_id));
-				$tmp1 = $res1->FetchRow(0);
+				$tmp1 = $res1->fetchRow(0);
 				$maildomain = $tmp1['alias_name'];
 			} else if ($mail_type == MT_ALIAS_FORWARD) {
 				$mtype[] = 5;
 				$res1 = exec_query($sql, "SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id` = ?", array($sub_id));
-				$tmp1 = $res1->FetchRow();
+				$tmp1 = $res1->fetchRow();
 				$maildomain = $tmp1['alias_name'];
 			} else if ($mail_type == MT_SUBDOM_MAIL) {
 				$mtype[] = 3;
 				$res1 = exec_query($sql, "SELECT `subdomain_name` FROM `subdomain` WHERE `subdomain_id` = ?", array($sub_id));
-				$tmp1 = $res1->FetchRow();
+				$tmp1 = $res1->fetchRow();
 				$maildomain = $tmp1['subdomain_name'];
 				$res1 = exec_query($sql, "SELECT `domain_name` FROM `domain` WHERE `domain_id` = ?", array($domain_id));
-				$tmp1 = $res1->FetchRow(0);
+				$tmp1 = $res1->fetchRow(0);
 				$maildomain = $maildomain . "." . $tmp1['domain_name'];
 			} else if ($mail_type == MT_SUBDOM_FORWARD) {
 				$mtype[] = 6;
 				$res1 = exec_query($sql, "SELECT `subdomain_name` FROM `subdomain` WHERE `subdomain_id` = ?", array($sub_id));
-				$tmp1 = $res1->FetchRow();
+				$tmp1 = $res1->fetchRow();
 				$maildomain = $tmp1['subdomain_name'];
 				$res1 = exec_query($sql, "SELECT `domain_name` FROM `domain` WHERE `domain_id` = ?", array($domain_id));
-				$tmp1 = $res1->FetchRow(0);
+				$tmp1 = $res1->fetchRow(0);
 				$maildomain = $maildomain . "." . $tmp1['domain_name'];
 			} else if ($mail_type == MT_ALSSUB_MAIL) {
 				$mtype[] = 7;
 				$res1 = exec_query($sql, "SELECT `subdomain_alias_name`, `alias_id` FROM `subdomain_alias` WHERE `subdomain_alias_id` = ?", array($sub_id));
-				$tmp1 = $res1->FetchRow();
+				$tmp1 = $res1->fetchRow();
 				$maildomain = $tmp1['subdomain_alias_name'];
 				$alias_id = $tmp1['alias_id'];
 				$res1 = exec_query($sql, "SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id` = ?", array($alias_id));
-				$tmp1 = $res1->FetchRow(0);
+				$tmp1 = $res1->fetchRow(0);
 				$maildomain = $maildomain . "." . $tmp1['alias_name'];
 			} else if ($mail_type == MT_ALSSUB_FORWARD) {
 				$mtype[] = 8;
 				$res1 = exec_query($sql, "SELECT `subdomain_alias_name`, `alias_id` FROM `subdomain_alias` WHERE `subdomain_alias_id` = ?", array($sub_id));
-				$tmp1 = $res1->FetchRow();
+				$tmp1 = $res1->fetchRow();
 				$maildomain = $tmp1['subdomain_alias_name'];
 				$alias_id = $tmp1['alias_id'];
 				$res1 = exec_query($sql, "SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id` = ?", array($alias_id));
-				$tmp1 = $res1->FetchRow(0);
+				$tmp1 = $res1->fetchRow(0);
 				$maildomain = $maildomain . "." . $tmp1['alias_name'];
 			}
 		}

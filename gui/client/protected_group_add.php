@@ -80,7 +80,7 @@ function padd_group(&$tpl, &$sql, $dmn_id) {
 
 			$rs = exec_query($sql, $query, array($groupname, $dmn_id));
 
-			if ($rs->RecordCount() == 0) {
+			if ($rs->recordCount() == 0) {
 				$change_status = $cfg->ITEM_ADD_STATUS;
 
 				$query = "

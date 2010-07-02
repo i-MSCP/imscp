@@ -62,7 +62,7 @@ function gen_db_user_list(&$tpl, &$sql, $db_id) {
 
 	$rs = exec_query($sql, $query, array($db_id));
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		$tpl->assign(
 			array(
 				'DB_MSG'	=> tr('Database user list is empty!'),
@@ -90,7 +90,7 @@ function gen_db_user_list(&$tpl, &$sql, $db_id) {
 				)
 			);
 			$tpl->parse('USER_LIST', '.user_list');
-			$rs->MoveNext();
+			$rs->moveNext();
 		}
 	}
 }
@@ -112,7 +112,7 @@ function gen_db_list(&$tpl, &$sql, $user_id) {
 
 	$rs = exec_query($sql, $query, array($dmn_id));
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		set_page_message(tr('Database list is empty!'));
 		$tpl->assign('DB_LIST', '');
 	} else {
@@ -128,7 +128,7 @@ function gen_db_list(&$tpl, &$sql, $user_id) {
 				)
 			);
 			$tpl->parse('DB_LIST', '.db_list');
-			$rs->MoveNext();
+			$rs->moveNext();
 		}
 	}
 }

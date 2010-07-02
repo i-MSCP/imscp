@@ -69,7 +69,7 @@ if (isset($_GET['export_lang']) && $_GET['export_lang'] !== '') {
 
 	$rs = exec_query($sql, $query);
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		set_page_message(tr('Incorrect data input!'));
 		user_goto('multilanguage.php');
 	} else {
@@ -83,7 +83,7 @@ if (isset($_GET['export_lang']) && $_GET['export_lang'] !== '') {
 				echo $msgid . " = " . $msgstr."\n";
 			}
 
-			$rs->MoveNext();
+			$rs->moveNext();
 		}
 	}
 } else {

@@ -237,11 +237,11 @@ function make_traff_usege($domain_id) {
 	$sql = ispCP_Registry::get('Db');
 
 	$res = exec_query($sql, "SELECT `domain_id` FROM `domain` WHERE `domain_admin_id` = ?", array($domain_id));
-	$dom_id = $res->FetchRow();
+	$dom_id = $res->fetchRow();
 	$domain_id = $dom_id['domain_id'];
 
 	$res = exec_query($sql, "SELECT `domain_traffic_limit` FROM `domain` WHERE `domain_id` = ?", array($domain_id));
-	$dat = $res->FetchRow();
+	$dat = $res->fetchRow();
 
 	$fdofmnth = mktime(0, 0, 0, date("m"), 1, date("Y"));
 	$ldofmnth = mktime(1, 0, 0, date("m") + 1, 0, date("Y"));
@@ -249,7 +249,7 @@ function make_traff_usege($domain_id) {
 		"SELECT IFNULL(SUM(`dtraff_web`) + SUM(`dtraff_ftp`) + SUM(`dtraff_mail`) + SUM(`dtraff_pop`), 0) "
 		. "AS traffic FROM `domain_traffic` " . "WHERE `domain_id` = ? AND `dtraff_time` > ? AND `dtraff_time` < ?",
 		array($domain_id, $fdofmnth, $ldofmnth));
-	$data = $res->FetchRow();
+	$data = $res->fetchRow();
 	$traff = ($data['traffic'] / 1024) / 1024;
 	$mtraff = sprintf("%.2f", $traff);
 	if ($dat['domain_traffic_limit'] == 0) {

@@ -134,7 +134,7 @@ function generate_page(&$tpl, $reseller_id, $reseller_name) {
 		)
 	);
 
-	if ($rs->RowCount() == 0) {
+	if ($rs->rowCount() == 0) {
 		$tpl->assign(
 			array(
 				'DOMAIN_LIST' => '',
@@ -184,7 +184,7 @@ function generate_page(&$tpl, $reseller_id, $reseller_name) {
 			$dres = exec_query ($sql, $query, array($admin_id));
 			generate_domain_entry($tpl, $dres->fields['domain_id'], $row++);
 			$tpl->parse('DOMAIN_ENTRY', '.domain_entry');
-			$rs->MoveNext();
+			$rs->moveNext();
 		}
 	}
 }

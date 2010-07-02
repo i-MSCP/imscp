@@ -62,7 +62,7 @@ function gen_user_table(&$tpl, &$sql) {
 
 	$rs = exec_query($sql, $query, array());
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		set_page_message(tr('Reseller or user list is empty!'));
 		user_goto('manage_users.php');
 	}
@@ -104,7 +104,7 @@ function gen_user_table(&$tpl, &$sql) {
 
 		$tpl->parse('SRC_RESELLER_OPTION', '.src_reseller_option');
 		$tpl->parse('DST_RESELLER_OPTION', '.dst_reseller_option');
-		$rs->MoveNext();
+		$rs->moveNext();
 	}
 
 	if (isset($_POST['src_reseller']) && $_POST['src_reseller'] == 0) {
@@ -155,7 +155,7 @@ function gen_user_table(&$tpl, &$sql) {
 	}
 
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		set_page_message(tr('User list is empty!'));
 
 		$tpl->assign('RESELLER_LIST', '');
@@ -183,7 +183,7 @@ function gen_user_table(&$tpl, &$sql) {
 			);
 
 			$tpl->parse('RESELLER_ITEM', '.reseller_item');
-			$rs->MoveNext();
+			$rs->moveNext();
 
 			$i++;
 		}

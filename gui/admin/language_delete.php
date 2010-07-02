@@ -61,7 +61,7 @@ $query = "
 $rs = exec_query($sql, $query, array($delete_lang));
 
 // ERROR - we have domains that use this IP
-if ($rs->RecordCount () > 0) {
+if ($rs->recordCount () > 0) {
 	set_page_message('Error we have user that uses that language!');
 
 	user_goto('multilanguage.php');

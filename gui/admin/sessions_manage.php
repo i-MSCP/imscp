@@ -111,7 +111,7 @@ function gen_user_sessions(&$tpl, &$sql) {
 
 		$tpl->parse('USER_SESSION', '.user_session');
 
-		$rs->MoveNext();
+		$rs->moveNext();
 	}
 }
 

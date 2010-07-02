@@ -182,7 +182,7 @@ function update_data(&$sql) {
 				";
 
 				$rs = exec_query($sql, $query, array($admin_name));
-				if ($rs->RecordCount() != 0) {
+				if ($rs->recordCount() != 0) {
 					set_page_message(tr('User session was killed!'));
 					write_log($_SESSION['user_logged'] . " killed " . $admin_name . "'s session because of password change");
 				}
@@ -269,7 +269,7 @@ $query = "
 
 $rs = exec_query($sql, $query, array($edit_id));
 
-if ($rs->RecordCount() <= 0) {
+if ($rs->recordCount() <= 0) {
 	user_goto('manage_users.php');
 }
 

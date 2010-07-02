@@ -70,7 +70,7 @@ $query = "SELECT `reseller_ips` FROM `reseller_props`";
 
 $res = exec_query($sql, $query, array());
 
-while (($data = $res->FetchRow())) {
+while (($data = $res->fetchRow())) {
 	if (preg_match("/$delete_id;/", $data['reseller_ips'])) {
 		set_page_message(tr('Error: we have a reseller using this IP!'));
 		user_goto('ip_manage.php');

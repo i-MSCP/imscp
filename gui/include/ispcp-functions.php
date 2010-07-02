@@ -193,7 +193,7 @@ function update_user_props($user_id, $props) {
 
 	$rs = exec_query($sql, $query, array($user_id, $domain_php, $domain_cgi, $domain_dns));
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		// mama mia, we have to rebuild the system entry for this domain
 		// and also all domain alias and subdomains
 

@@ -3,7 +3,7 @@ ispCP ω 1.0.6 ChangeLog
 
 2010-07-02 Laurent Declercq
 	- GUI:
-		* Updated naming convention for the ispCP_Database class
+		* Updated naming convention for all classes (First part)
 
 2010-07-01 Laurent Declercq
 	- GUI:

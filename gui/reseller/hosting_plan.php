@@ -165,7 +165,7 @@ function gen_hp_table(&$tpl, $reseller_id) {
 		$tr_edit = tr('Edit');
 	}
 
-	if ($rs->RowCount() == 0) {
+	if ($rs->rowCount() == 0) {
 		// if ($external_event == '_off_') {
 		set_page_message(tr('Hosting plans not found!'));
 		// }
@@ -190,7 +190,7 @@ function gen_hp_table(&$tpl, $reseller_id) {
 			: '';
 
 		$i = 1;
-		while ($data = $rs->FetchRow()) {
+		while ($data = $rs->fetchRow()) {
 
 			$tpl->assign(array('CLASS_TYPE_ROW' => ($i % 2 == 0) ? 'content' : 'content2'));
 

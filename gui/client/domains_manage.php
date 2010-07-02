@@ -82,7 +82,7 @@ function gen_user_dns_list(&$tpl, &$sql, $user_id) {
 	";
 
 	$rs = exec_query($sql, $query, array($domain_id));
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		$tpl->assign(array('DNS_MSG' => tr("Manual zone's records list is empty!"), 'DNS_LIST' => ''));
 		$tpl->parse('DNS_MESSAGE', 'dns_message');
 	} else {
@@ -117,7 +117,7 @@ function gen_user_dns_list(&$tpl, &$sql, $user_id) {
 				)
 			);
 			$tpl->parse('DNS_ITEM', '.dns_item');
-			$rs->MoveNext();
+			$rs->moveNext();
 			$counter++;
 		}
 
@@ -200,7 +200,7 @@ function gen_user_sub_list(&$tpl, &$sql, $user_id) {
 	$rs = exec_query($sql, $query, array($domain_id));
 	$rs2 = exec_query($sql, $query2, array($domain_id));
 
-	if (($rs->RecordCount() + $rs2->RecordCount()) == 0) {
+	if (($rs->recordCount() + $rs2->recordCount()) == 0) {
 		$tpl->assign(array('SUB_MSG' => tr('Subdomain list is empty!'), 'SUB_LIST' => ''));
 		$tpl->parse('SUB_MESSAGE', 'sub_message');
 	} else {
@@ -221,7 +221,7 @@ function gen_user_sub_list(&$tpl, &$sql, $user_id) {
 				)
 			);
 			$tpl->parse('SUB_ITEM', '.sub_item');
-			$rs->MoveNext();
+			$rs->moveNext();
 			$counter++;
 		}
 		while (!$rs2->EOF) {
@@ -240,7 +240,7 @@ function gen_user_sub_list(&$tpl, &$sql, $user_id) {
 				)
 			);
 			$tpl->parse('SUB_ITEM', '.sub_item');
-			$rs2->MoveNext();
+			$rs2->moveNext();
 			$counter++;
 		}
 
@@ -306,7 +306,7 @@ function gen_user_als_list(&$tpl, &$sql, $user_id) {
 
 	$rs = exec_query($sql, $query, array($domain_id));
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		$tpl->assign(array('ALS_MSG' => tr('Alias list is empty!'), 'ALS_LIST' => ''));
 		$tpl->parse('ALS_MESSAGE', 'als_message');
 	} else {
@@ -332,7 +332,7 @@ function gen_user_als_list(&$tpl, &$sql, $user_id) {
 				)
 			);
 			$tpl->parse('ALS_ITEM', '.als_item');
-			$rs->MoveNext();
+			$rs->moveNext();
 			$counter++;
 		}
 

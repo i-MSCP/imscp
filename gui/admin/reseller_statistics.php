@@ -121,7 +121,7 @@ SQL_QUERY;
 
 	$rs = exec_query($sql, $query, array());
 
-	if ($rs->RowCount() == 0) {
+	if ($rs->rowCount() == 0) {
 
 		$tpl->assign(
 			array(
@@ -173,7 +173,7 @@ SQL_QUERY;
 		while (!$rs->EOF) {
 			generate_reseller_entry($tpl, $rs->fields['admin_id'], $rs->fields['admin_name'], $row++);
 
-			$rs->MoveNext();
+			$rs->moveNext();
 		}
 	}
 

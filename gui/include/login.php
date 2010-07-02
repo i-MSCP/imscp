@@ -196,7 +196,7 @@ function check_user_login() {
 			array($user_logged, $user_pass, $user_type, $user_id, $sess_id)
 	);
 
-	if ($rs->RecordCount() != 1) {
+	if ($rs->recordCount() != 1) {
 		write_log("Detected session manipulation on ".$user_logged."'s session!");
 		unset_user_login_data();
 
@@ -337,15 +337,15 @@ function change_user_interface($from_id, $to_id) {
 		$rs_from = exec_query($sql, $query, $from_id);
 		$rs_to = exec_query($sql, $query, $to_id);
 
-		if (($rs_from->RecordCount()) != 1 || ($rs_to->RecordCount()) != 1) {
+		if (($rs_from->recordCount()) != 1 || ($rs_to->recordCount()) != 1) {
 			set_page_message(
 				tr('User does not exist or you do not have permission to access this interface!')
 			);
 			break;
 		}
 
-		$from_udata = $rs_from->FetchRow();
-		$to_udata = $rs_to->FetchRow();
+		$from_udata = $rs_from->fetchRow();
+		$to_udata = $rs_to->fetchRow();
 
 		if (!is_userdomain_ok($to_udata['admin_name'])) {
 			set_page_message(

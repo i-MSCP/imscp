@@ -69,7 +69,7 @@ function gen_reseller_table(&$tpl, &$sql) {
 
 	$i = 0;
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		$tpl->assign(
 			array(
 				'MESSAGE' => tr('Reseller list is empty!'),
@@ -102,7 +102,7 @@ function gen_reseller_table(&$tpl, &$sql) {
 
 			$tpl->parse('RESELLER_ITEM', '.reseller_item');
 
-			$rs->MoveNext();
+			$rs->moveNext();
 
 			$i++;
 		}
@@ -145,7 +145,7 @@ function gen_reseller_table(&$tpl, &$sql) {
 
 		$tpl->parse('SELECT_ADMIN_OPTION', '.select_admin_option');
 
-		$rs->MoveNext();
+		$rs->moveNext();
 
 		$i++;
 	}
@@ -191,7 +191,7 @@ function update_reseller_owner($sql) {
 				$up = exec_query($sql, $query, array($dest_admin, $admin_id));
 			}
 
-			$rs->MoveNext();
+			$rs->moveNext();
 		}
 	}
 }

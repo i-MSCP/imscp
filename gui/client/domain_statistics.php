@@ -103,7 +103,7 @@ function get_domain_trafic($from, $to, $domain_id) {
 
 	$rs = exec_query($sql, $query, array($domain_id, $from, $to));
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		return array(0, 0, 0, 0);
 	} else {
 		return array(

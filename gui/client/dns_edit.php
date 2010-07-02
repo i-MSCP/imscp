@@ -277,16 +277,16 @@ function gen_editdns_page(&$tpl, $edit_id) {
 
 		$res = exec_query($sql, $query, array('domain_id' => $dmn_id, 'state' => $cfg->ITEM_ORDERED_STATUS));
 		$sel = '';
-		while ($row = $res->FetchRow()) {
+		while ($row = $res->fetchRow()) {
 			$sel.= '<option value="'.$row['alias_id'].'">'.$row['domain_name'].'</option>';
 		}
 		$tpl->assign('SELECT_ALIAS', $sel);
 
 	} else {
 		$res = exec_query($sql, "SELECT * FROM `domain_dns` WHERE `domain_dns_id` = ? AND `domain_id` = ?", array($edit_id, $dmn_id));
-		if ( $res->RecordCount() <= 0)
+		if ( $res->recordCount() <= 0)
 		not_allowed();
-		$data = $res->FetchRow();
+		$data = $res->fetchRow();
 		$tpl->assign('ADD_RECORD', '');
 	}
 
@@ -504,10 +504,10 @@ function check_fwd_data(&$tpl, $edit_id) {
 				IFNULL(`tbl`.`alias_id`, 0) = ?
 		";
 		$res = exec_query($sql, $query, array($dmn_id, $dmn_id, $_POST['alias_id']));
-		if ($res->RecordCount() <= 0) {
+		if ($res->recordCount() <= 0) {
 			not_allowed();
 		}
-		$alias_id = $res->FetchRow();
+		$alias_id = $res->fetchRow();
 		$record_domain = $alias_id['domain_name'];
 		// if no alias is selected, ID is 0 else the real alias_id
 		$alias_id = $alias_id['alias_id'];
@@ -525,10 +525,10 @@ function check_fwd_data(&$tpl, $edit_id) {
 		AND
 		`domain_id` = ?
 		", array($edit_id, $dmn_id));
-		if ($res->RecordCount() <= 0) {
+		if ($res->recordCount() <= 0) {
 			not_allowed();
 		}
-		$data = $res->FetchRow();
+		$data = $res->fetchRow();
 		$record_domain = $data['domain_name'];
 		$alias_id = $data['alias_id'];
 		$_dns = $data['domain_dns'];

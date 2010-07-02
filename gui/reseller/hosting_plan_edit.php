@@ -227,11 +227,11 @@ function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
 		$edit_hp = tr('Edit hosting plan');
 	}
 
-	if ($res->RowCount() !== 1) { // Error
+	if ($res->rowCount() !== 1) { // Error
 		user_goto('hosting_plan.php');
 	}
 
-	$data = $res->FetchRow();
+	$data = $res->fetchRow();
 
 	$props = $data['props'];
 	$description = $data['description'];

@@ -67,7 +67,7 @@ if (isset($_GET['ticket_id']) && $_GET['ticket_id'] !== '') {
 
 	$rs = exec_query($sql, $query, array($ticket_id, $user_id, $user_id));
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		user_goto('ticket_system.php');
 	}
 	$ticket_status = $rs->fields['ticket_status'];
@@ -88,7 +88,7 @@ if (isset($_GET['ticket_id']) && $_GET['ticket_id'] !== '') {
 	$rs = exec_query($sql, $query, array($ticket_id, $ticket_id));
 
 	while (!$rs->EOF) {
-		$rs->MoveNext();
+		$rs->moveNext();
 	}
 
 	set_page_message(tr('Support ticket deleted successfully!'));
@@ -109,7 +109,7 @@ if (isset($_GET['ticket_id']) && $_GET['ticket_id'] !== '') {
 	$rs = exec_query($sql, $query, array($user_id, $user_id));
 
 	while (!$rs->EOF) {
-		$rs->MoveNext();
+		$rs->moveNext();
 	}
 	set_page_message(tr('All open support tickets deleted successfully!'));
 
@@ -130,7 +130,7 @@ if (isset($_GET['ticket_id']) && $_GET['ticket_id'] !== '') {
 	$rs = exec_query($sql, $query, array($user_id, $user_id));
 
 	while (!$rs->EOF) {
-		$rs->MoveNext();
+		$rs->moveNext();
 	}
 	set_page_message(tr('All closed support tickets deleted successfully!'));
 

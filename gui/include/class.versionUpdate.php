@@ -38,50 +38,76 @@
 class versionUpdate extends ispcpUpdate {
 
 	/**
-	 * create instance
-	 * @var object versionUpdate
+	 * versionUpdate instance
+	 *
+	 * @var versionUpdate
 	 */
-	private static $instance = NULL;
+	private static $_instance = null;
 
 	/**
 	 * Database variable name for the update version
+	 *
 	 * @var string
 	 */
-	protected $databaseVariableName = "VERSION_UPDATE";
+	protected $_databaseVariableName = 'VERSION_UPDATE';
 
 	/**
 	 * Error message string
+	 *
 	 * @var string
 	 */
-	protected $errorMessage = "Version update %s failed";
+	protected $_errorMessage = 'Version update %s failed';
 
+	/**
+	 * Constructor
+	 * 
+	 * This class implements the Singleton Design pattern
+	 *
+	 * @return void
+	 */
 	protected function __construct() {
+
 		parent::__construct();
 	}
 
+	/**
+	 * This class implements the Singleton Design pattern
+	 *
+	 * @return void
+	 */
 	private function __clone() {}
 
 	/**
-	 * Return singleton object
+	 * Return instance of this class
+	 *
+	 * @return versionUpdate
 	 */
 	public static function getInstance() {
-		if (self::$instance === NULL) {
-			self::$instance = new self();
+
+		if (self::$_instance === null) {
+			self::$_instance = new self;
 		}
-		return self::$instance;
+
+		return self::$_instance;
 	}
 
 	/**
-	 * @todo Please descibe this method!
+	 * Should be documented
+	 *
+	 * @return int
 	 */
-	protected function getCurrentVersion() {
+	protected function _getCurrentVersion() {
+
 		return (int)Config::getInstance()->get('BuildDate');
 	}
 
 	/**
-	 * @todo Please descibe this method!
+	 * Should be documented
+	 *
+	 * @return bool|int
 	 */
-	protected function getNextVersion() {
+	protected function _getNextVersion() {
+
 		$last_update = "http://www.isp-control.net/latest.txt";
 		ini_set('user_agent', 'Mozilla/5.0');
 		$timeout = 2;
@@ -90,7 +116,10 @@ class versionUpdate extends ispcpUpdate {
 		ini_set('default_socket_timeout', $old_timeout);
 
 		if (!is_resource($dh2)) {
-			$this->addErrorMessage(tr("Couldn't check for updates! Website not reachable."));
+			$this->_addErrorMessage(
+				tr("Couldn't check for updates! Website not reachable.")
+			);
+
 			return false;
 		}
 
@@ -101,21 +130,31 @@ class versionUpdate extends ispcpUpdate {
 	}
 
 	/**
-	 * @todo Please descibe this method!
+	 * Should be documented
+	 *
+	 * @return bool
 	 */
 	public function checkUpdateExists() {
-		return ($this->getNextVersion()>$this->currentVersion) ? true : false;
+
+		return ($this->_getNextVersion()->$this->_currentVersion) ? true : false;
 	}
 
 	/**
-	 * @todo Please descibe this method!
+	 * Should be documented
+	 *
+	 * @param  $version
+	 * @return string
 	 */
-	protected function returnFunctionName($version) {
-		return "dummyFunctionThatAllwaysExists";
+	protected function _returnFunctionName($version) {
+
+		return 'dummyFunctionThatAllwaysExists';
 	}
 
 	/**
-	 * @todo Please descibe this method!
+	 * Should be documented
+	 *
+	 * @param  $engine_run_request
+	 * @return void
 	 */
 	protected function dummyFunctionThatAllwaysExists(&$engine_run_request) {
 		// uncomment when engine part will be ready

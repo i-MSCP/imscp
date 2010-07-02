@@ -160,7 +160,7 @@ function generate_page(&$tpl) {
 
 			$tpl->parse('HOUR_LIST', '.hour_list');
 
-			$rs1->MoveNext();
+			$rs1->moveNext();
 		} // end for
 		$all_other_in = $all[6] - ($all[0] + $all[2] + $all[4]);
 		$all_other_out = $all[7] - ($all[1] + $all[3] + $all[5]);

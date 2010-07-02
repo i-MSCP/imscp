@@ -350,7 +350,7 @@ function get_domain_running_sub_ftp_acc_cnt(&$sql, $domain_id) {
 
 		$sub_ftp_acc_cnt += $rs_cnt->fields['cnt'];
 
-		$rs->MoveNext();
+		$rs->moveNext();
 	}
 
 	return $sub_ftp_acc_cnt;
@@ -393,7 +393,7 @@ function get_domain_running_als_ftp_acc_cnt(&$sql, $domain_id) {
 
 		$als_ftp_acc_cnt += $rs_cnt->fields['cnt'];
 
-		$rs->MoveNext();
+		$rs->moveNext();
 	}
 
 	return $als_ftp_acc_cnt;
@@ -448,7 +448,7 @@ function get_domain_running_sqlu_acc_cnt(&$sql, $domain_id) {
 
 	$rs = exec_query($sql, $query, array($domain_id));
 
-	$sqlu_acc_cnt = $rs->RecordCount();
+	$sqlu_acc_cnt = $rs->recordCount();
 
 	return $sqlu_acc_cnt;
 }
@@ -545,7 +545,7 @@ function gen_client_mainmenu(&$tpl, $menu_file) {
 
 	$rs = exec_query($sql, $query, array());
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		$tpl->assign('CUSTOM_BUTTONS', '');
 	} else {
 		global $i;
@@ -571,7 +571,7 @@ function gen_client_mainmenu(&$tpl, $menu_file) {
 			);
 
 			$tpl->parse('CUSTOM_BUTTONS', '.custom_buttons');
-			$rs->MoveNext();
+			$rs->moveNext();
 			$i++;
 		} // end while
 	} // end else
@@ -715,7 +715,7 @@ function gen_client_menu(&$tpl, $menu_file) {
 
 	$rs = exec_query($sql, $query, array());
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		$tpl->assign('CUSTOM_BUTTONS', '');
 	} else {
 		global $i;
@@ -740,7 +740,7 @@ function gen_client_menu(&$tpl, $menu_file) {
 			);
 
 			$tpl->parse('CUSTOM_BUTTONS', '.custom_buttons');
-			$rs->MoveNext();
+			$rs->moveNext();
 			$i++;
 		} // end while
 	} // end else
@@ -843,7 +843,7 @@ function gen_client_menu(&$tpl, $menu_file) {
 
 	$rs = exec_query($sql, $query, array($_SESSION['user_created_by']));
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		if (Config::getInstance()->get('HOSTING_PLANS_LEVEL') != 'admin') {
 			$tpl->assign('ISACTIVE_UPDATE_HP', '');
 		}
@@ -947,7 +947,7 @@ function sql_delete_user(&$sql, $dmn_id, $db_user_id) {
 
 	$rs = exec_query($sql, $query, array($dmn_id, $db_user_id));
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		// dirty hack admin can't delete users without database
 		if ($_SESSION['user_type'] === 'admin'
 			|| $_SESSION['user_type'] === 'reseller') {
@@ -1062,7 +1062,7 @@ function delete_sql_database(&$sql, $dmn_id, $db_id) {
 
 	$rs = exec_query($sql, $query, array($dmn_id, $db_id));
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		if ($_SESSION['user_type'] === 'admin'
 			|| $_SESSION['user_type'] === 'reseller') {
 			return;
@@ -1091,7 +1091,7 @@ function delete_sql_database(&$sql, $dmn_id, $db_id) {
 
 	$rs = exec_query($sql, $query, array($dmn_id, $db_id));
 
-	if ($rs->RecordCount() != 0) {
+	if ($rs->recordCount() != 0) {
 		while (!$rs->EOF) {
 			$db_user_id = $rs->fields['db_user_id'];
 
@@ -1099,7 +1099,7 @@ function delete_sql_database(&$sql, $dmn_id, $db_id) {
 
 			sql_delete_user($sql, $dmn_id, $db_user_id);
 
-			$rs->MoveNext();
+			$rs->moveNext();
 		}
 	}
 
@@ -1174,7 +1174,7 @@ function mount_point_exists($dmn_id, $mnt_point) {
 
 	$rs = exec_query($sql, $query, array($dmn_id, $mnt_point, $mnt_point, $mnt_point));
 
-	if ($rs->RowCount() > 0) {
+	if ($rs->rowCount() > 0) {
 		return true;
 	}
 	return false;

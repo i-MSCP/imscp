@@ -85,7 +85,7 @@ $query = "
 ";
 $rs = exec_query($sql, $query, array($dmn_id));
 
- if ($rs->RecordCount() !== 0) {
+ if ($rs->recordCount() !== 0) {
 
 	 while (!$rs->EOF) {
 		$members = explode(',',$rs->fields['members']);
@@ -106,7 +106,7 @@ $rs = exec_query($sql, $query, array($dmn_id));
 			";
 			$rs_update = exec_query($sql, $update_query, array($members, $change_status, $group_id));
 		}
-		$rs->MoveNext();
+		$rs->moveNext();
 	 }
  }
 
@@ -150,7 +150,7 @@ while (!$rs->EOF) {
 		$rs_update = exec_query($sql, $update_query, array($usr_id, $status, $ht_id));
 	}
 
-	$rs->MoveNext();
+	$rs->moveNext();
 }
 
 send_request();

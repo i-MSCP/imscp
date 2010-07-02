@@ -290,17 +290,17 @@ function add_domain_alias(&$sql, &$err_al) {
 		$res = exec_query($sql, $query, array($alias_name));
 		$query = "SELECT `domain_id` FROM `domain` WHERE `domain_name` = ?";
 		$res2 = exec_query($sql, $query, array($alias_name));
-		if ($res->RowCount() > 0 || $res2->RowCount() > 0) {
+		if ($res->rowCount() > 0 || $res2->rowCount() > 0) {
 			// we already have domain with this name
 			$err_al = tr("Domain with this name already exist");
 		}
 
 		$query = "SELECT COUNT(`subdomain_id`) AS cnt FROM `subdomain` WHERE `domain_id` = ? AND `subdomain_mount` = ?";
 		$subdomres = exec_query($sql, $query, array($cr_user_id, $mount_point));
-		$subdomdata = $subdomres->FetchRow();
+		$subdomdata = $subdomres->fetchRow();
 		$query = "SELECT COUNT(`subdomain_alias_id`) AS alscnt FROM `subdomain_alias` WHERE `alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?) AND `subdomain_alias_mount` = ?";
 		$alssubdomres = exec_query($sql, $query, array($cr_user_id, $mount_point));
-		$alssubdomdata = $alssubdomres->FetchRow();
+		$alssubdomdata = $alssubdomres->fetchRow();
 		if ($subdomdata['cnt'] > 0 || $alssubdomdata['alscnt'] > 0) {
 			$err_al = tr("There is a subdomain with the same mount point!");
 		}

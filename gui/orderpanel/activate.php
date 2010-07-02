@@ -55,7 +55,7 @@ function validate_order_key($order_id, $key) {
 			`status` = ?
 	";
 	$rs = exec_query($sql, $query, array($order_id, 'unconfirmed'));
-	if ($rs->RecordCount() == 1) {
+	if ($rs->recordCount() == 1) {
 		$domain_name	= $rs->fields['domain_name'];
 		$admin_id		= $rs->fields['user_id'];
 		$coid =    isset($cfg->CUSTOM_ORDERPANEL_ID) ? $cfg->CUSTOM_ORDERPANEL_ID : '';
@@ -84,7 +84,7 @@ function confirm_order($order_id) {
 			`id` = ?
 	";
 	$rs = exec_query($sql, $query, array($order_id));
-	if ($rs->RecordCount() == 1) {
+	if ($rs->recordCount() == 1) {
 
 		$query = "
 			UPDATE `orders` SET `status` = ? WHERE `id` = ?

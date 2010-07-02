@@ -81,7 +81,7 @@ function show_IPs(&$tpl, &$sql) {
 	$row = 1;
 	$single = false;
 
-	if ($rs->RecordCount() < 2) {
+	if ($rs->recordCount() < 2) {
 		$single = true;
 	}
 
@@ -120,7 +120,7 @@ function show_IPs(&$tpl, &$sql) {
 
 		$tpl->parse('IP_ROW', '.ip_row');
 
-		$rs->MoveNext();
+		$rs->moveNext();
 	} // end while
 }
 
@@ -230,7 +230,7 @@ function IP_exists() {
 
 	$rs = exec_query($sql, $query, array($ip_number));
 
-	if ($rs->RowCount() == 0) {
+	if ($rs->rowCount() == 0) {
 		return false;
 	}
 	return true;

@@ -66,7 +66,7 @@ function gen_tickets_list(&$tpl, &$sql, &$ticket_id, $screenwidth) {
 	";
 	$rs = exec_query($sql, $query, array($ticket_id, $user_id, $user_id));
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		$tpl->assign('TICKETS_LIST', '');
 		set_page_message(tr('Ticket not found!'));
 	} else {
@@ -126,7 +126,7 @@ function get_tickets_replys(&$tpl, &$sql, &$ticket_id, $screenwidth) {
 	";
 
 	$rs = exec_query($sql, $query, array($ticket_id));
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		return;
 	}
 	while (!$rs->EOF) {
@@ -145,7 +145,7 @@ function get_tickets_replys(&$tpl, &$sql, &$ticket_id, $screenwidth) {
 		);
 		get_ticket_from($tpl, $sql, $ticket_id);
 		$tpl->parse('TICKETS_ITEM', '.tickets_item');
-		$rs->MoveNext();
+		$rs->moveNext();
 	}
 }
 
@@ -258,7 +258,7 @@ function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id) {
 	$rs = exec_query($sql, $query, array($ticket_reply, $ticket_reply));
 
 	while (!$rs->EOF) {
-		$rs->MoveNext();
+		$rs->moveNext();
 	}
 
 	set_page_message(tr('Message was sent.'));

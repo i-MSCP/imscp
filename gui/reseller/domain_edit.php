@@ -173,7 +173,7 @@ function load_user_data($user_id, $domain_id) {
 
 	$rs = exec_query($sql, $query, array($domain_id, $user_id));
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
 
 		user_goto('users.php');
@@ -220,7 +220,7 @@ function load_additional_data($user_id, $domain_id) {
 	";
 
 	$res = exec_query($sql, $query, $domain_id);
-	$data = $res->FetchRow();
+	$data = $res->fetchRow();
 
 	$domain_name = $data['domain_name'];
 
@@ -252,7 +252,7 @@ function load_additional_data($user_id, $domain_id) {
 	";
 
 	$res = exec_query($sql, $query, array($domain_ip_id));
-	$data = $res->FetchRow();
+	$data = $res->fetchRow();
 
 	$domain_ip = $data['ip_number'] . '&nbsp;(' . $data['ip_domain'] . ')';
 	// Get username of domain
@@ -270,7 +270,7 @@ function load_additional_data($user_id, $domain_id) {
 	";
 
 	$res = exec_query($sql, $query, array($domain_admin_id, $user_id));
-	$data = $res->FetchRow();
+	$data = $res->fetchRow();
 
 	$username = $data['admin_name'];
 } // End of load_additional_data()

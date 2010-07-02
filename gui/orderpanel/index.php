@@ -82,7 +82,7 @@ function gen_packages_list(&$tpl, &$sql, $user_id) {
 		$rs = exec_query($sql, $query, array($user_id));
 	}
 
-	if ($rs->RecordCount() == 0) {
+	if ($rs->recordCount() == 0) {
 		throw new ispCP_Exception_Production(
 			tr('No available hosting packages')
 		);
@@ -110,7 +110,7 @@ function gen_packages_list(&$tpl, &$sql, $user_id) {
 
 			$tpl->parse('PURCHASE_LIST', '.purchase_list');
 
-			$rs->MoveNext();
+			$rs->moveNext();
 		}
 	}
 }
