@@ -136,7 +136,7 @@ class versionUpdate extends ispcpUpdate {
 	 */
 	public function checkUpdateExists() {
 
-		return ($this->_getNextVersion()->$this->_currentVersion) ? true : false;
+		return ($this->_getNextVersion() > $this->_currentVersion) ? true : false;
 	}
 
 	/**
