@@ -133,7 +133,7 @@ function install_lang() {
 
 			$lang_update = false;
 
-			for ($i = 0, $tables = $sql->MetaTables(), $nlang = count($tables); $i < $nlang; $i++) {
+			for ($i = 0, $tables = $sql->metaTables(), $nlang = count($tables); $i < $nlang; $i++) {
 				if ($lang_table == $tables[$i]) {
 					$lang_update = true;
 					break;
@@ -141,14 +141,14 @@ function install_lang() {
 			}
 
 			if ($lang_update) {
-				$sql->Execute("
+				$sql->execute("
 					DROP TABLE IF EXISTS
 						`$lang_table`
 					;
 				");
 			}
 
-			$sql->Execute("
+			$sql->execute("
 				CREATE TABLE
 					`$lang_table` (
 						`msgid` text collate utf8_unicode_ci,
@@ -201,7 +201,7 @@ function show_lang(&$tpl) {
 	$cfg = ispCP_Registry::get('Config');
 	$sql = ispCP_Registry::get('Db');
 
-	$tables = $sql->MetaTables();
+	$tables = $sql->metaTables();
 
 	$nlang = count($tables);
 

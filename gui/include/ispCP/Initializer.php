@@ -436,10 +436,10 @@ class ispCP_Initializer {
 
 			$db = ispCP_Registry::get('Db');
 
-			if($db->Execute('SET NAMES `utf8`;') === false) {
+			if($db->execute('SET NAMES `utf8`;') === false) {
 				throw new ispCP_Exception(
 					'Error: Unable to set charset for database communication! ' .
-					'SQL returned: ' . $db->ErrorMsg()
+					'SQL returned: ' . $db->errorMsg()
 				);
 			}
 		}

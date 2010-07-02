@@ -176,7 +176,7 @@ final class ispCP_Database {
 	 *
 	 * @return string Error information
 	 */
-	public function ErrorMsg() {
+	public function errorMsg() {
 
 		return implode(' - ', $this->_db->errorInfo());
 	}
@@ -214,7 +214,7 @@ final class ispCP_Database {
 	 *	such as SELECT, EXPLAIN ; An integer that represent the number of
 	 *	affected line or A FALSE on failure for queries such as INSERT, UPDATE
 	 */
-	public function Execute($stmt, $param = array()) {
+	public function execute($stmt, $param = array()) {
 
 		if ($stmt instanceof PDOStatement) {
 			$rs = $stmt->execute((array) $param);
@@ -240,7 +240,7 @@ final class ispCP_Database {
 	 * @param array $attributes Attribute values for the PDOStatement object 
 	 * @return PDOStatement A PDOStatement instance
 	 */
-	public function Prepare($statement, array $attributes = array()) {
+	public function prepare($statement, array $attributes = array()) {
 
 		if (version_compare(PHP_VERSION, '5.2.5', '<')) {
 			if (preg_match("/(ALTER |CREATE |DROP |GRANT |REVOKE |FLUSH )/i",
@@ -260,7 +260,7 @@ final class ispCP_Database {
 	 *
 	 * @return array An array that represent a list of the permanent tables
 	 */
-	public function MetaTables() {
+	public function metaTables() {
 
 		$tables = array();
 
@@ -279,7 +279,7 @@ final class ispCP_Database {
 	 *
 	 * @return string Row ID of the last row that was inserted in database
 	 */
-	public function Insert_ID() {
+	public function insertId() {
 
 		return $this->_db->lastInsertId();
 	}
@@ -299,7 +299,7 @@ final class ispCP_Database {
 	 *
 	 * @return boolean TRUE on success, FALSE on failure
 	 */
-	public function StartTrans() {
+	public function startTransaction() {
 
 		$this->_db->beginTransaction();
 	}
@@ -309,7 +309,7 @@ final class ispCP_Database {
 	 *
 	 * @return boolean TRUE on success, FALSE on failure
 	 */
-	public function CompleteTrans() {
+	public function completeTransaction() {
 
 		$this->_db->commit();
 	}
@@ -325,7 +325,7 @@ final class ispCP_Database {
 	 * @param mixed $value Attribute value
 	 * @return boolean TRUE on success or FALSE on failure
 	 */
-	public function RollbackTrans() {
+	public function rollbackTransaction() {
 
 		return $this->_db->rollback();
 	}
@@ -335,7 +335,7 @@ final class ispCP_Database {
 	 *
 	 * @return false
 	 */
-	public function HasFailedTrans() {
+	public function hasFailedTransaction() {
 
 		return false;
 	}

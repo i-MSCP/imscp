@@ -40,7 +40,7 @@ if (isset($_GET['export_lang']) && $_GET['export_lang'] !== '') {
 	
 	$language_table = $_GET['export_lang'];
 	
-	$encoding = $sql->Execute("
+	$encoding = $sql->execute("
 		SELECT 
 			`msgstr`
 		FROM

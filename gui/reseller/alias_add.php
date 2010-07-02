@@ -320,7 +320,7 @@ function add_domain_alias(&$sql, &$err_al) {
 		 "`alias_status`, `alias_ip_id`, `url_forward`) VALUES (?, ?, ?, ?, ?, ?)",
 		array($cr_user_id, $alias_name, $mount_point, $cfg->ITEM_ADD_STATUS, $domain_ip, $forward));
 
-	$als_id = $sql->Insert_ID();
+	$als_id = $sql->insertId();
 
 	update_reseller_c_props(get_reseller_id($cr_user_id));
 

@@ -1,6 +1,10 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-07-02 Laurent Declercq
+	- GUI:
+		* Updated naming convention for the ispCP_Database class
+
 2010-07-01 Laurent Declercq
 	- GUI:
 		* Added an ispCP_Exception_Writer_Mail writer that writes messages and

@@ -257,7 +257,7 @@ function strip_html($input) {
 function check_language_exist($lang_table) {
 	$sql = ispCP_Registry::get('Db');
 
-	return (in_array($lang_table, $sql->MetaTables()) == true) ? true : false;
+	return (in_array($lang_table, $sql->metaTables()) == true) ? true : false;
 }
 
 function add_domain_extras(&$dmn_id, &$admin_id, &$sql) {

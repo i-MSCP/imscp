@@ -94,7 +94,7 @@ function gen_checkout(&$tpl, &$sql, $user_id, $plan_id) {
 
 	$rs = exec_query($sql, $query, array($user_id, $plan_id, $date, $domain_name, $fname, $lname, $gender, $firm, $zip, $city, $state, $country, $email, $phone, $fax, $street1, $street2, $status));
 
-	$order_id = $sql->Insert_ID();
+	$order_id = $sql->insertId();
 	send_order_emails($user_id, $domain_name, $fname, $lname, $email, $order_id);
 
 	// Remove useless data

@@ -322,7 +322,7 @@ function subdomain_schedule(&$sql, $user_id, $domain_id, $sub_name, $sub_mnt_pt)
 
 	update_reseller_c_props(get_reseller_id($domain_id));
 
-	$sub_id = $sql->Insert_ID();
+	$sub_id = $sql->insertId();
 
 	// We do not need to create the default mail addresses, subdomains are
 	// related to their domains.

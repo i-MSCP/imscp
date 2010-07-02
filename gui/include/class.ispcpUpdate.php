@@ -85,7 +85,7 @@ abstract class ispcpUpdate {
 	protected function getCurrentVersion() {
 		$sql	= ispCP_Registry::get('Db');
 		$query	= "SELECT * FROM `config` WHERE `name` = '". $this->databaseVariableName ."'";
-		$rs		= $sql->Execute($query);
+		$rs		= $sql->execute($query);
 
 		return	(int)$rs->fields['value'];
 	}
@@ -178,7 +178,7 @@ abstract class ispcpUpdate {
 			$sql->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 			// We start a transaction (autocommit disabled)
-			$sql->StartTrans();
+			$sql->startTransaction();
 
 			try {
 					// We execute every Sql statements
@@ -188,12 +188,12 @@ abstract class ispcpUpdate {
 
 					// If all SQL statements are executed correctly, commits
 					// the changes
-					$sql->CompleteTrans();
+					$sql->completeTransaction();
 
 			} catch (PDOException $e) {
 
 				// Perform a rollback if a Sql statement was failed
-				$sql->RollbackTrans();
+				$sql->rollbackTransaction();
 
 				// Prepare and display an error message
 				$errorMessage =  tr($this->errorMessage, $newVersion);

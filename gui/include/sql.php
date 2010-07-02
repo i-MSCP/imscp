@@ -39,10 +39,10 @@ $sql = ispCP_Registry::get('Db');
  */
 function execute_query(&$sql, $query) {
 
-	$rs = $sql->Execute($query);
+	$rs = $sql->execute($query);
 	
 	if (!$rs)
-		throw new ispCP_Exception($sql->ErrorMsg());
+		throw new ispCP_Exception($sql->errorMsg());
 
 	return $rs;
 }
@@ -57,8 +57,8 @@ function execute_query(&$sql, $query) {
  * @todo Please describe this function!
  */
 function exec_query(&$sql, $query, $data = array(), $failDie = true) {
-	$query = $sql->Prepare($query);
-	$rs = $sql->Execute($query, $data);
+	$query = $sql->prepare($query);
+	$rs = $sql->execute($query, $data);
 
 	if (!$rs && $failDie) {
 		$msg = ($query instanceof PDOStatement) ? $query->errorInfo() : $sql->errorInfo();

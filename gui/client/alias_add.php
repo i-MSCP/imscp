@@ -317,7 +317,7 @@ function add_domain_alias(&$sql, &$err_al) {
 	$query = "INSERT INTO `domain_aliasses` (`domain_id`, `alias_name`, `alias_mount`, `alias_status`, `alias_ip_id`, `url_forward`) VALUES (?, ?, ?, ?, ?, ?)";
 	exec_query($sql, $query, array($cr_user_id, $alias_name, $mount_point, $status, $domain_ip, $forward));
 
-	$als_id = $sql->Insert_ID();
+	$als_id = $sql->insertId();
 
 	update_reseller_c_props(get_reseller_id($cr_user_id));
 

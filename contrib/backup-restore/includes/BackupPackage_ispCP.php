@@ -81,8 +81,8 @@ class BackupPackage_ispCP extends BackupPackage implements iBackupPackage
 		$query = "SELECT `domain_id`, `domain_uid` FROM `domain`".
 				 " WHERE `domain_name` = :domain_name";
 
-		$query = $this->db->Prepare($query);
-		$rs = $this->db->Execute($query, array(':domain_name'=>$domain_name));
+		$query = $this->db->prepare($query);
+		$rs = $this->db->execute($query, array(':domain_name'=>$domain_name));
 		if ($rs->RecordCount() > 0) {
 			$this->domain_id = $rs->fields['domain_id'];
 			$this->domain_user_id = $rs->fields['domain_uid'];
@@ -100,8 +100,8 @@ class BackupPackage_ispCP extends BackupPackage implements iBackupPackage
 		$sql = "SELECT ".$fields." FROM `domain`, `admin`".
 			   " WHERE `domain`.`domain_id` = :id AND `admin`.`admin_id` = `domain`.`domain_admin_id`";
 
-		$query = $this->db->Prepare($sql);
-		$rs = $this->db->Execute($query, array(':id'=>$this->domain_id));
+		$query = $this->db->prepare($sql);
+		$rs = $this->db->execute($query, array(':id'=>$this->domain_id));
 		if ($rs && $rs->RecordCount() > 0) {
 			$result = $rs->fields;
 			unset($result['domain_id']);
@@ -123,8 +123,8 @@ class BackupPackage_ispCP extends BackupPackage implements iBackupPackage
 		$query = "SELECT ".$fields." FROM `mail_users`".
 				 " WHERE `mail_users`.`domain_id` = :id";
 
-		$query = $this->db->Prepare($query);
-		$rs = $this->db->Execute($query, array(':id'=>$this->domain_id));
+		$query = $this->db->prepare($query);
+		$rs = $this->db->execute($query, array(':id'=>$this->domain_id));
 		while (($row = $rs->FetchRow())) {
 
 			if ($row['mail_pass'] != '_no_') {
@@ -145,8 +145,8 @@ class BackupPackage_ispCP extends BackupPackage implements iBackupPackage
 		$query = "SELECT ".$fields." FROM `ftp_users`".
 				 " WHERE `ftp_users`.`uid` = :uid";
 
-		$query = $this->db->Prepare($query);
-		$rs = $this->db->Execute($query, array(':uid'=>$this->domain_user_id));
+		$query = $this->db->prepare($query);
+		$rs = $this->db->execute($query, array(':uid'=>$this->domain_user_id));
 		while ($rs && ($row = $rs->FetchRow())) {
 			$result[] = $row;
 		}
@@ -163,8 +163,8 @@ class BackupPackage_ispCP extends BackupPackage implements iBackupPackage
 		$query = "SELECT ".$fields." FROM `domain_aliasses`".
 				 " WHERE `domain_aliasses`.`domain_id` = :id";
 
-		$query = $this->db->Prepare($query);
-		$rs = $this->db->Execute($query, array(':id'=>$this->domain_id));
+		$query = $this->db->prepare($query);
+		$rs = $this->db->execute($query, array(':id'=>$this->domain_id));
 		while ($rs && ($row = $rs->FetchRow())) {
 			$row['subdomain'] = $this->getSubdomainAliasConfig($row['alias_id']);
 			$result[] = $row;
@@ -182,8 +182,8 @@ class BackupPackage_ispCP extends BackupPackage implements iBackupPackage
 		$query = "SELECT ".$fields." FROM `subdomain_alias`".
 				 " WHERE `subdomain_alias`.`alias_id` = :aid";
 
-		$query = $this->db->Prepare($query);
-		$rs = $this->db->Execute($query, array(':aid'=>$alias_id));
+		$query = $this->db->prepare($query);
+		$rs = $this->db->execute($query, array(':aid'=>$alias_id));
 		while ($rs && ($row = $rs->FetchRow())) {
 			$result[] = $row;
 		}
@@ -200,8 +200,8 @@ class BackupPackage_ispCP extends BackupPackage implements iBackupPackage
 		$query = "SELECT ".$fields." FROM `subdomain`".
 				 " WHERE `subdomain`.`domain_id` = :id";
 
-		$query = $this->db->Prepare($query);
-		$rs = $this->db->Execute($query, array(':id'=>$this->domain_id));
+		$query = $this->db->prepare($query);
+		$rs = $this->db->execute($query, array(':id'=>$this->domain_id));
 		while ($rs && ($row = $rs->FetchRow())) {
 			$result[] = $row;
 		}
@@ -218,8 +218,8 @@ class BackupPackage_ispCP extends BackupPackage implements iBackupPackage
 		$query = "SELECT ".$fields." FROM `htaccess_users`".
 				 " WHERE `htaccess_users`.`dmn_id` = :id";
 
-		$query = $this->db->Prepare($query);
-		$rs = $this->db->Execute($query, array(':id'=>$this->domain_id));
+		$query = $this->db->prepare($query);
+		$rs = $this->db->execute($query, array(':id'=>$this->domain_id));
 		while ($rs && ($row = $rs->FetchRow())) {
 			$result[] = $row;
 		}
@@ -236,8 +236,8 @@ class BackupPackage_ispCP extends BackupPackage implements iBackupPackage
 		$query = "SELECT ".$fields." FROM `htaccess_groups`".
 				 " WHERE `htaccess_groups`.`dmn_id` = :id";
 
-		$query = $this->db->Prepare($query);
-		$rs = $this->db->Execute($query, array(':id'=>$this->domain_id));
+		$query = $this->db->prepare($query);
+		$rs = $this->db->execute($query, array(':id'=>$this->domain_id));
 		while ($rs && ($row = $rs->FetchRow())) {
 			$result[] = $row;
 		}
@@ -254,8 +254,8 @@ class BackupPackage_ispCP extends BackupPackage implements iBackupPackage
 		$query = "SELECT ".$fields." FROM `htaccess`".
 				 " WHERE `htaccess`.`dmn_id` = :id";
 
-		$query = $this->db->Prepare($query);
-		$rs = $this->db->Execute($query, array(':id'=>$this->domain_id));
+		$query = $this->db->prepare($query);
+		$rs = $this->db->execute($query, array(':id'=>$this->domain_id));
 		while ($rs && ($row = $rs->FetchRow())) {
 			$result[] = $row;
 		}
@@ -267,7 +267,7 @@ class BackupPackage_ispCP extends BackupPackage implements iBackupPackage
 	{
 		$result = array();
 
-		$rs = $this->db->Execute("SHOW TABLES LIKE 'domain_dns'");
+		$rs = $this->db->execute("SHOW TABLES LIKE 'domain_dns'");
 		if ($rs && !$rs->EOF) {
 			$fields = "`domain_dns`.`alias_id`".
 					  ", `domain_aliasses`.`domain_dns`".
@@ -275,11 +275,11 @@ class BackupPackage_ispCP extends BackupPackage implements iBackupPackage
 					  ", `domain_aliasses`.`domain_type`".
 					  ", `domain_aliasses`.`domain_text`";
 
-			$query = $this->db->Prepare(
+			$query = $this->db->prepare(
 				"SELECT ".$fields." FROM `domain_dns`".
 				" WHERE `domain_dns`.`domain_id` = :id"
 			);
-			$rs = $this->db->Execute($query, array(':id'=>$this->domain_id));
+			$rs = $this->db->execute($query, array(':id'=>$this->domain_id));
 			while ($rs && ($row = $rs->FetchRow())) {
 				$result[] = $row;
 			}
@@ -298,8 +298,8 @@ class BackupPackage_ispCP extends BackupPackage implements iBackupPackage
 		$query = "SELECT ".$fields." FROM `sql_database`".
 				 " WHERE `sql_database`.`domain_id` = :id";
 
-		$query = $this->db->Prepare($query);
-		$rs = $this->db->Execute($query, array(':id'=>$this->domain_id));
+		$query = $this->db->prepare($query);
+		$rs = $this->db->execute($query, array(':id'=>$this->domain_id));
 		while ($rs && ($row = $rs->FetchRow())) {
 			$this->db_ids[$row['sqld_name']] = $row['sqld_id'];
 			$this->addDatabase('mysql', $row['sqld_name']);
@@ -318,10 +318,10 @@ class BackupPackage_ispCP extends BackupPackage implements iBackupPackage
 
 		$query = "SELECT ".$fields." FROM `sql_user`".
 				 " WHERE `sql_user`.`sqld_id` = :sqld_id";
-		$query = $this->db->Prepare($query);
+		$query = $this->db->prepare($query);
 
 		foreach ($this->db_ids as $dbname => $sqld_id) {
-			$rs = $this->db->Execute($query, array(':sqld_id'=>$sqld_id));
+			$rs = $this->db->execute($query, array(':sqld_id'=>$sqld_id));
 			while ($rs && ($row = $rs->FetchRow())) {
 				$row['database'] = $dbname;
 				$row['sqlu_pass'] = decrypt_db_password($row['sqlu_pass']);

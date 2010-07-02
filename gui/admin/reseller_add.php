@@ -222,7 +222,7 @@ function add_reseller(&$tpl, &$sql) {
 					$gender)
 			);
 
-			$new_admin_id = $sql->Insert_ID();
+			$new_admin_id = $sql->insertId();
 
 			$user_logged = $_SESSION['user_logged'];
 

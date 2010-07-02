@@ -353,9 +353,9 @@ function add_user_data($reseller_id) {
 		)
 	);
 
-	print $sql->ErrorMsg();
+	print $sql->errorMsg();
 
-	$record_id = $sql->Insert_ID();
+	$record_id = $sql->insertId();
 
 	$expire = $dmn_expire * 2635200; // months * 30.5 days
 
@@ -399,7 +399,7 @@ function add_user_data($reseller_id) {
 		)
 	);
 
-	$dmn_id = $sql->Insert_ID();
+	$dmn_id = $sql->insertId();
 
 	// Add statistics group
 
@@ -417,7 +417,7 @@ function add_user_data($reseller_id) {
 			)
 	);
 
-	$user_id = $sql->Insert_ID();
+	$user_id = $sql->insertId();
 
 	$query = "
 		INSERT INTO `htaccess_groups`
