@@ -101,7 +101,7 @@ function check_udata($id, $pass) {
 			`admin_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($id));
+	$rs = exec_query($sql, $query, $id);
 
 	if ($rs->recordCount() == 1) {
 		$rs = $rs->fetchRow();

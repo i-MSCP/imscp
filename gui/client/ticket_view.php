@@ -125,7 +125,7 @@ function get_tickets_replys(&$tpl, &$sql, &$ticket_id, $screenwidth) {
 			`ticket_date` ASC
 	";
 
-	$rs = exec_query($sql, $query, array($ticket_id));
+	$rs = exec_query($sql, $query, $ticket_id);
 	if ($rs->recordCount() == 0) {
 		return;
 	}
@@ -181,7 +181,7 @@ function get_ticket_from(&$tpl, &$sql, $ticket_id) {
 			`admin_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($ticket_from));
+	$rs = exec_query($sql, $query, $ticket_from);
 	$from_user_name = decode_idna($rs->fields['admin_name']);
 	$from_first_name = $rs->fields['fname'];
 	$from_last_name = $rs->fields['lname'];
@@ -346,7 +346,7 @@ $query = "
     `reseller_id` = ?
 ";
 
-$rs = exec_query($sql, $query, array($_SESSION['user_created_by']));
+$rs = exec_query($sql, $query, $_SESSION['user_created_by']);
 
 if (!$cfg->ISPCP_SUPPORT_SYSTEM || $rs->fields['support_system'] == 'no') {
 	user_goto('index.php');

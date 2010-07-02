@@ -323,7 +323,7 @@ function create_catchall_mail_account(&$sql, $id) {
 						`mail_id` = ?
 				";
 
-				$rs = exec_query($sql, $query, array($mail_id));
+				$rs = exec_query($sql, $query, $mail_id);
 				$domain_id = $rs->fields['domain_id'];
 				$sub_id = $rs->fields['sub_id'];
 				$status = $cfg->ITEM_ADD_STATUS;

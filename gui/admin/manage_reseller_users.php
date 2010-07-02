@@ -60,7 +60,7 @@ function gen_user_table(&$tpl, &$sql) {
 			`admin_name`
 	";
 
-	$rs = exec_query($sql, $query, array());
+	$rs = exec_query($sql, $query);
 
 	if ($rs->recordCount() == 0) {
 		set_page_message(tr('Reseller or user list is empty!'));
@@ -137,7 +137,7 @@ function gen_user_table(&$tpl, &$sql) {
 				`admin_name`
 		";
 		$not_in = implode(',', $all_resellers);
-		$rs = exec_query($sql, $query, array($not_in));
+		$rs = exec_query($sql, $query, $not_in);
 	} else {
 		$query = "
 			SELECT
@@ -151,7 +151,7 @@ function gen_user_table(&$tpl, &$sql) {
 			ORDER BY
 				`admin_name`
 		";
-		$rs = exec_query($sql, $query, array($reseller_id));
+		$rs = exec_query($sql, $query, $reseller_id);
 	}
 
 
@@ -214,7 +214,7 @@ function check_user_data() {
 			`admin_name`
 	";
 
-	$rs = exec_query($sql, $query, array());
+	$rs = exec_query($sql, $query);
 
 	$selected_users = '';
 
@@ -252,7 +252,7 @@ function check_user_data() {
 			`reseller_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($dst_reseller));
+	$rs = exec_query($sql, $query, $dst_reseller);
 
 	$mru_error = '_off_';
 
@@ -311,7 +311,7 @@ function manage_reseller_limits($dest_reseller, $src_reseller, $users, &$err) {
 				`domain_admin_id` = ?
 		";
 
-		$rs = exec_query($sql, $query, array($users_array[$i]));
+		$rs = exec_query($sql, $query, $users_array[$i]);
 
 		$domain_name = $rs->fields['domain_name'];
 
@@ -468,7 +468,7 @@ function check_ip_sets($dest, $users, &$err) {
 				`domain_admin_id` = ?
 		";
 
-		$rs = exec_query($sql, $query, array($users_array[$i]));
+		$rs = exec_query($sql, $query, $users_array[$i]);
 
 		$domain_ip_id = $rs->fields['domain_ip_id'];
 

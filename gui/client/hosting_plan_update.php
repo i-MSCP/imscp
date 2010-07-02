@@ -78,7 +78,7 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 			`domain_admin_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($user_id));
+	$rs = exec_query($sql, $query, $user_id);
 	$domain_id = $rs->fields['domain_id'];
 
 	// get current domain settings
@@ -91,7 +91,7 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 			`domain_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($domain_id));
+	$rs = exec_query($sql, $query, $domain_id);
 	$current = $rs->fetchRow();
 
 	$availabe_order = 0;
@@ -123,7 +123,7 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 				`id` = ?
 		";
 
-		$rs = exec_query($sql, $query, array($availabe_hp_id));
+		$rs = exec_query($sql, $query, $availabe_hp_id);
 		$count = 2;
 		$purchase_text = tr('Cancel order');
 		$purchase_link = 'delete_id';
@@ -149,7 +149,7 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 					t1.`name`
 			";
 
-			$rs = exec_query($sql, $query, array('admin'));
+			$rs = exec_query($sql, $query, 'admin');
 
 			$count = $rs->recordCount();
 			$count++;
@@ -176,8 +176,8 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 					`status` = '1'
 			";
 
-			$cnt = exec_query($sql, $count_query, array($_SESSION['user_created_by']));
-			$rs = exec_query($sql, $query, array($_SESSION['user_created_by']));
+			$cnt = exec_query($sql, $count_query, $_SESSION['user_created_by']);
+			$rs = exec_query($sql, $query, $_SESSION['user_created_by']);
 			$count = $cnt->fields['cnum'] + 1;
 		}
 
@@ -461,7 +461,7 @@ function add_new_order(&$tpl, &$sql, $order_id, $user_id) {
 			`domain_admin_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($user_id));
+	$rs = exec_query($sql, $query, $user_id);
 	$domain_id = $rs->fields['domain_id'];
 
 	// get current domain settings
@@ -474,7 +474,7 @@ function add_new_order(&$tpl, &$sql, $order_id, $user_id) {
 			`domain_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($domain_id));
+	$rs = exec_query($sql, $query, $domain_id);
 	$current = $rs->fetchRow();
 
 	$query = "
@@ -487,7 +487,7 @@ function add_new_order(&$tpl, &$sql, $order_id, $user_id) {
 	";
 
 	$error_msgs = array();
-	$rs = exec_query($sql, $query, array($order_id));
+	$rs = exec_query($sql, $query, $order_id);
 	list($hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk, $hp_backup, $hp_dns) = explode(";", $rs->fields['props']);
 
 	$traffic = get_user_traffic($domain_id);

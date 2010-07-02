@@ -135,7 +135,7 @@ function gen_dmn_traff_list(&$tpl, &$sql, $month, $year, $user_id) {
 			`domain_admin_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($domain_admin_id));
+	$rs = exec_query($sql, $query, $domain_admin_id);
 	$domain_id = $rs->fields('domain_id');
 	$fdofmnth = mktime(0, 0, 0, $month, 1, $year);
 	$ldofmnth = mktime(1, 0, 0, $month + 1, 0, $year);

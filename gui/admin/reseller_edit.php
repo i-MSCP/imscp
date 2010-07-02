@@ -481,7 +481,7 @@ function get_reseller_prop($reseller_id) {
 			r.`reseller_id` = a.`admin_id`
 	";
 
-	$rs = exec_query($sql, $query, array($reseller_id));
+	$rs = exec_query($sql, $query, $reseller_id);
 
 	if ($rs->recordCount() <= 0) {
 			set_page_message(
@@ -521,7 +521,7 @@ function get_servers_ips(&$tpl, $rip_lst) {
 			`ip_number`
 	";
 
-	$rs = exec_query($sql, $query, array());
+	$rs = exec_query($sql, $query);
 
 	$i = 0;
 	$reseller_ips = '';
@@ -614,7 +614,7 @@ function have_reseller_ip_users($reseller_id, $ip, &$ip_num, &$ip_name) {
 			`created_by` = ?
 	";
 
-	$res = exec_query($sql, $query, array($reseller_id));
+	$res = exec_query($sql, $query, $reseller_id);
 
 	if ($res->rowCount() == 0) {
 		return false;
@@ -694,7 +694,7 @@ function update_reseller() {
 		array_unshift($qparams, crypt_user_pass($_POST['pass0']));
 	}
 
-	exec_query($sql, $query, $qparams );
+	exec_query($sql, $query, $qparams);
 
 	/**
 	 * Update reseller properties
@@ -763,7 +763,7 @@ function &get_data(&$tpl = false) {
 					`admin_id` = ?
 			";
 
-			$rs = exec_query($sql, $query, array($rdata['edit_id']));
+			$rs = exec_query($sql, $query, $rdata['edit_id']);
 
 			if ($rs->recordCount() <= 0) {
 				user_goto('manage_users.php');

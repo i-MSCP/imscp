@@ -212,7 +212,7 @@ function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
 		;
 	";
 
-	$res = exec_query($sql, $query, array($hpid));
+	$res = exec_query($sql, $query, $hpid);
 
 	$readonly = '';
 	$disabled = '';

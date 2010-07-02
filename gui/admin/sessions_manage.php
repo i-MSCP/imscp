@@ -61,7 +61,7 @@ function kill_session($sql) {
 				`session_id` = ?
 		";
 
-		$rs = exec_query($sql, $query, array($admin_name));
+		$rs = exec_query($sql, $query, $admin_name);
 		set_page_message(tr('User session was killed!'));
 		write_log($_SESSION['user_logged'] . ": killed user session: $admin_name!");
 	}
@@ -75,7 +75,7 @@ function gen_user_sessions(&$tpl, &$sql) {
 			`login`
 	";
 
-	$rs = exec_query($sql, $query, array());
+	$rs = exec_query($sql, $query);
 
 	$row = 1;
 	while (!$rs->EOF) {

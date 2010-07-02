@@ -223,7 +223,7 @@ function add_domain_alias(&$sql, &$err_al) {
 			`domain_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($cr_user_id));
+	$rs = exec_query($sql, $query, $cr_user_id);
 	$domain_ip = $rs->fields['domain_ip_id'];
 
 	// Should be perfomed after domain names syntax validation now
@@ -287,9 +287,9 @@ function add_domain_alias(&$sql, &$err_al) {
 		$mount_point = array_decode_idna($mount_point, true);
 
 		$query = "SELECT `domain_id` FROM `domain_aliasses` WHERE `alias_name` = ?";
-		$res = exec_query($sql, $query, array($alias_name));
+		$res = exec_query($sql, $query, $alias_name);
 		$query = "SELECT `domain_id` FROM `domain` WHERE `domain_name` = ?";
-		$res2 = exec_query($sql, $query, array($alias_name));
+		$res2 = exec_query($sql, $query, $alias_name);
 		if ($res->rowCount() > 0 || $res2->rowCount() > 0) {
 			// we already have domain with this name
 			$err_al = tr("Domain with this name already exist");

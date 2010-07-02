@@ -251,7 +251,7 @@ function load_additional_data($user_id, $domain_id) {
 			`ip_id` = ?
 	";
 
-	$res = exec_query($sql, $query, array($domain_ip_id));
+	$res = exec_query($sql, $query, $domain_ip_id);
 	$data = $res->fetchRow();
 
 	$domain_ip = $data['ip_number'] . '&nbsp;(' . $data['ip_domain'] . ')';
@@ -512,7 +512,7 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 				sd.`domain_id` = ?
 ";
 
-		$rs = exec_query($sql, $query, array($_SESSION['edit_id']));
+		$rs = exec_query($sql, $query, $_SESSION['edit_id']);
 		calculate_user_dvals($sql_user, $rs->fields['cnt'], $usql_user_max, $rsql_user_current, $rsql_user_max, $ed_error, tr('SQL User'));
 	}
 
@@ -525,9 +525,9 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 		// Set domains status to 'change' to update mod_cband's limit
 		if ($previous_utraff_max != $utraff_max) {
 			$query = "UPDATE `domain` SET `domain_status` = 'change' WHERE `domain_id` = ?";
-			exec_query($sql, $query, array($user_id));
+			exec_query($sql, $query, $user_id);
 			$query = "UPDATE `subdomain` SET `subdomain_status` = 'change' WHERE `domain_id` = ?";
-			exec_query($sql, $query, array($user_id));
+			exec_query($sql, $query, $user_id);
 			send_request();
 		}
 
@@ -583,7 +583,7 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 		$temp_dmn_name = $rs->fields['domain_name'];
 
 		$query = "SELECT COUNT(`name`) AS cnt FROM `quotalimits` WHERE `name` = ?";
-		$rs = exec_query($sql, $query, array($temp_dmn_name));
+		$rs = exec_query($sql, $query, $temp_dmn_name);
 		if ($rs->fields['cnt'] > 0) {
 			// we need to update it
 			if ($disk == 0) {

@@ -236,11 +236,11 @@ function check_user_permissions(&$tpl, $dmn_sqld_limit, $dmn_sqlu_limit, $dmn_ph
 function make_traff_usege($domain_id) {
 	$sql = ispCP_Registry::get('Db');
 
-	$res = exec_query($sql, "SELECT `domain_id` FROM `domain` WHERE `domain_admin_id` = ?", array($domain_id));
+	$res = exec_query($sql, "SELECT `domain_id` FROM `domain` WHERE `domain_admin_id` = ?", $domain_id);
 	$dom_id = $res->fetchRow();
 	$domain_id = $dom_id['domain_id'];
 
-	$res = exec_query($sql, "SELECT `domain_traffic_limit` FROM `domain` WHERE `domain_id` = ?", array($domain_id));
+	$res = exec_query($sql, "SELECT `domain_traffic_limit` FROM `domain` WHERE `domain_id` = ?", $domain_id);
 	$dat = $res->fetchRow();
 
 	$fdofmnth = mktime(0, 0, 0, date("m"), 1, date("Y"));
@@ -275,7 +275,7 @@ function gen_user_messages_label(&$tpl, &$sql, &$user_id) {
 			`ticket_status` = '2'
 	";
 
-	$rs = exec_query($sql, $query, array($user_id));
+	$rs = exec_query($sql, $query, $user_id);
 	$num_question = $rs->fields('cnum');
 
 	if ($num_question == 0) {

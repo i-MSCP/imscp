@@ -54,7 +54,7 @@ if (isset($cfg->HOSTING_PLANS_LEVEL)
 			`id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($order_id));
+	$rs = exec_query($sql, $query, $order_id);
 } else {
 	$query = "
 		SELECT
@@ -97,7 +97,7 @@ $err_msg = '';
 if (isset($cfg->HOSTING_PLANS_LEVEL)
 	&& $cfg->HOSTING_PLANS_LEVEL === 'admin') {
 	$query = "SELECT `props` FROM `hosting_plans` WHERE `id` = ?";
-	$res = exec_query($sql, $query, array($hpid));
+	$res = exec_query($sql, $query, $hpid);
 } else {
 	$query = "SELECT `props` FROM `hosting_plans` WHERE `reseller_id` = ? AND `id` = ?";
 	$res = exec_query($sql, $query, array($reseller_id, $hpid));
@@ -182,7 +182,7 @@ $query = "
 		`reseller_id` = ?
 ";
 
-$rs = exec_query($sql, $query, array($reseller_id));
+$rs = exec_query($sql, $query, $reseller_id);
 $domain_ip = $rs->fields['reseller_ips'];
 $status =  $cfg->ITEM_ADD_STATUS;
 

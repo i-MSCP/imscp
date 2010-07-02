@@ -832,7 +832,7 @@ class databaseUpdate extends ispcpUpdate {
 			;
 		";
 
-		$res = exec_query($sql, $query, array('after-order-msg'));
+		$res = exec_query($sql, $query, 'after-order-msg');
 
 		while ($data = $res->fetchRow()) {
 			$msg = $data['message'];

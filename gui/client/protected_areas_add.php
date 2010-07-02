@@ -298,7 +298,7 @@ function gen_protect_it(&$tpl, &$sql, &$dmn_id) {
 			`dmn_id` = ?;
 	";
 
-	$rs = exec_query($sql, $query, array($dmn_id));
+	$rs = exec_query($sql, $query, $dmn_id);
 
 	if ($rs->recordCount() == 0) {
 		$tpl->assign(
@@ -344,7 +344,7 @@ function gen_protect_it(&$tpl, &$sql, &$dmn_id) {
 			`dmn_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($dmn_id));
+	$rs = exec_query($sql, $query, $dmn_id);
 
 	if ($rs->recordCount() == 0) {
 		$tpl->assign(

@@ -60,7 +60,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	// check for mail accounts
 	// TODO use prepared statement for constants
 	$query = "SELECT COUNT(`mail_id`) AS cnt FROM `mail_users` WHERE (`mail_type` LIKE '".MT_ALSSUB_MAIL."%' OR `mail_type` = '".MT_ALSSUB_FORWARD."') AND `sub_id` = ?";
-	$rs = exec_query($sql, $query, array($sub_id));
+	$rs = exec_query($sql, $query, $sub_id);
 
 	if ($rs->fields['cnt'] > 0) {
 		set_page_message(tr('Subdomain you are trying to remove has email accounts !<br>First remove them!'));
@@ -76,7 +76,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 			`subdomain_alias_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($sub_id));
+	$rs = exec_query($sql, $query, $sub_id);
 	send_request();
 	write_log($_SESSION['user_logged'].": delete alias subdomain: ".$sub_name);
 	set_page_message('Alias '.tr('Subdomain scheduled for deletion!'));

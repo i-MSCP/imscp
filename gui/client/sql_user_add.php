@@ -125,7 +125,7 @@ function check_sql_permissions(&$tpl, $sql, $user_id, $db_id, $sqluser_available
 function get_sqluser_list_of_current_db(&$sql, $db_id) {
 	$query = "SELECT `sqlu_name` FROM `sql_user` WHERE `sqld_id` = ?";
 
-	$rs = exec_query($sql, $query, array($db_id));
+	$rs = exec_query($sql, $query, $db_id);
 
 	if ($rs->recordCount() == 0) {
 		return false;
@@ -204,7 +204,7 @@ function gen_sql_user_list(&$sql, &$tpl, $user_id, $db_id) {
 function check_db_user(&$sql, $db_user) {
 	$query = "SELECT COUNT(`User`) AS cnt FROM mysql.`user` WHERE `User` = ?";
 
-	$rs = exec_query($sql, $query, array($db_user));
+	$rs = exec_query($sql, $query, $db_user);
 	return $rs->fields['cnt'];
 }
 
@@ -269,7 +269,7 @@ function add_sql_user(&$sql, $user_id, $db_id) {
 
 	if (isset($_POST['Add_Exist'])) {
 		$query = "SELECT `sqlu_pass` FROM `sql_user` WHERE `sqlu_id` = ?";
-		$rs = exec_query($sql, $query, array($_POST['sqluser_id']));
+		$rs = exec_query($sql, $query, $_POST['sqluser_id']);
 
 		if ($rs->recordCount() == 0) {
 			set_page_message(tr('SQL-user not found! Maybe it was deleted by another user!'));
@@ -300,7 +300,7 @@ function add_sql_user(&$sql, $user_id, $db_id) {
 		}
 	} else {
 		$query = "SELECT `sqlu_name` FROM `sql_user` WHERE `sqlu_id` = ?";
-		$rs = exec_query($sql, $query, array($_POST['sqluser_id']));
+		$rs = exec_query($sql, $query, $_POST['sqluser_id']);
 		$db_user = $rs->fields['sqlu_name'];
 	}
 

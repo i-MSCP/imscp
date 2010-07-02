@@ -276,7 +276,7 @@ function get_hp_data_list(&$tpl, $reseller_id) {
 				t1.`name`
 		";
 
-		$rs = exec_query($sql, $query, array('admin'));
+		$rs = exec_query($sql, $query, 'admin');
 		$tpl->assign('PERSONALIZE', '');
 
 		if ($rs->recordCount() == 0) {
@@ -300,7 +300,7 @@ function get_hp_data_list(&$tpl, $reseller_id) {
 				`name`
 		";
 
-		$rs = exec_query($sql, $query, array($reseller_id));
+		$rs = exec_query($sql, $query, $reseller_id);
 	}
 
 	if (0 !== $rs->rowCount()) { // There are data

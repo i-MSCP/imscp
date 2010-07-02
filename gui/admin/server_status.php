@@ -163,7 +163,7 @@ function get_server_status(&$tpl, &$sql) {
 			`name` ASC
 	";
 
-	$rs = exec_query($sql, $query, array());
+	$rs = exec_query($sql, $query);
 
 	$ispcp_status = new status;
 

@@ -90,7 +90,7 @@ function gen_reseller_mainmenu(&$tpl, $menu_file) {
 			`menu_level` = 'all'
 	";
 
-	$rs = exec_query($sql, $query, array());
+	$rs = exec_query($sql, $query);
 	if ($rs->recordCount() == 0) {
 		$tpl->assign('CUSTOM_BUTTONS', '');
 	} else {
@@ -129,7 +129,7 @@ function gen_reseller_mainmenu(&$tpl, $menu_file) {
 		`reseller_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($_SESSION['user_id']));
+	$rs = exec_query($sql, $query, $_SESSION['user_id']);
 
 	if (!Config::getInstance()->get('ISPCP_SUPPORT_SYSTEM') || $rs->fields['support_system'] == 'no') {
 		$tpl->assign('ISACTIVE_SUPPORT', '');
@@ -195,7 +195,7 @@ function gen_reseller_menu(&$tpl, $menu_file) {
 			`menu_level` = 'all'
 	";
 
-	$rs = exec_query($sql, $query, array());
+	$rs = exec_query($sql, $query);
 	if ($rs->recordCount() == 0) {
 		$tpl->assign('CUSTOM_BUTTONS', '');
 	} else {
@@ -234,7 +234,7 @@ function gen_reseller_menu(&$tpl, $menu_file) {
 		`reseller_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($_SESSION['user_id']));
+	$rs = exec_query($sql, $query, $_SESSION['user_id']);
 
 	if (!Config::getInstance()->get('ISPCP_SUPPORT_SYSTEM') || $rs->fields['support_system'] == 'no') {
 		$tpl->assign('ISACTIVE_SUPPORT', '');
@@ -260,7 +260,7 @@ function get_reseller_default_props(&$sql, $reseller_id) {
 			`reseller_id` = ?
 	";
 	// send sql query
-	$rs = exec_query($sql, $query, array($reseller_id));
+	$rs = exec_query($sql, $query, $reseller_id);
 
 	if (0 == $rs->rowCount()) {
 		return NULL;
@@ -331,7 +331,7 @@ function generate_reseller_user_props($reseller_id) {
 			`created_by` = ?
 	";
 
-	$res = exec_query($sql, $query, array($reseller_id));
+	$res = exec_query($sql, $query, $reseller_id);
 
 	if ($res->rowCount() == 0) {
 		return array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
@@ -349,7 +349,7 @@ function generate_reseller_user_props($reseller_id) {
 				`domain_admin_id` = ?
 		";
 
-		$dres = exec_query($sql, $query, array($admin_id));
+		$dres = exec_query($sql, $query, $admin_id);
 
 		$ddata = $dres->fetchRow();
 
@@ -470,7 +470,7 @@ function get_user_traffic($user_id) {
 			`domain_id`
 	";
 
-	$res = exec_query($sql, $query, array($user_id));
+	$res = exec_query($sql, $query, $user_id);
 
 	if ($res->rowCount() == 0 || $res->rowCount() > 1) {
 		// write_log("TRAFFIC WARNING: >$user_id< manages incorrect number of
@@ -509,7 +509,7 @@ function get_user_traffic($user_id) {
 				`tyear`, `tmonth`
 		";
 
-		$res = exec_query($sql, $query, array($domain_id));
+		$res = exec_query($sql, $query, $domain_id);
 
 		$max_traffic_month =
 		$data['web'] = $data['ftp'] = $data['smtp'] =
@@ -559,7 +559,7 @@ function get_user_props($user_id) {
 			`domain_id` = ?
 	";
 
-	$res = exec_query($sql, $query, array($user_id));
+	$res = exec_query($sql, $query, $user_id);
 
 	if ($res->rowCount() == 0) {
 		return array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
@@ -638,7 +638,7 @@ function generate_ip_list(&$tpl, &$reseller_id) {
 			`reseller_id` = ?
 	";
 
-	$res = exec_query($sql, $query, array($reseller_id));
+	$res = exec_query($sql, $query, $reseller_id);
 
 	$data = $res->fetchRow();
 
@@ -646,7 +646,7 @@ function generate_ip_list(&$tpl, &$reseller_id) {
 
 	$query = "SELECT * FROM `server_ips`";
 
-	$res = exec_query($sql, $query, array());
+	$res = exec_query($sql, $query);
 
 	while ($data = $res->fetchRow()) {
 		$ip_id = $data['ip_id'];
@@ -820,7 +820,7 @@ function ispcp_domain_exists($domain_name, $reseller_id) {
 			`domain_name` = ?
 	";
 
-	$res_domain = exec_query($sql, $query_domain, array($domain_name));
+	$res_domain = exec_query($sql, $query_domain, $domain_name);
 	// query to check if the domain name exists in the table for domain aliases
 	$query_alias = "
 		SELECT
@@ -833,7 +833,7 @@ function ispcp_domain_exists($domain_name, $reseller_id) {
 			t1.`alias_name` = ?
 	";
 
-	$res_aliases = exec_query($sql, $query_alias, array($domain_name));
+	$res_aliases = exec_query($sql, $query_alias, $domain_name);
 	// redefine query to check in the table domain/acounts if 3rd level for this reseller is allowed
 	$query_domain = "
 		SELECT
@@ -908,7 +908,7 @@ function ispcp_domain_exists($domain_name, $reseller_id) {
 	";
 
 	$subdomains = array();
-	$res_build_sub = exec_query($sql, $query_build_subdomain, array($reseller_id));
+	$res_build_sub = exec_query($sql, $query_build_subdomain, $reseller_id);
 	while (!$res_build_sub->EOF) {
 		$subdomains[] = $res_build_sub->fields['subdomain_name'] . "." . $res_build_sub->fields['domain_name'];
 		$res_build_sub->moveNext();
@@ -1187,7 +1187,7 @@ function gen_def_language(&$tpl, &$sql, $user_def_language) {
 	$languages = array();
 	$query = "SHOW TABLES";
 
-	$rs = exec_query($sql, $query, array());
+	$rs = exec_query($sql, $query);
 
 	while (!$rs->EOF) {
 		$lang_table = $rs->fields[0];
@@ -1202,7 +1202,7 @@ function gen_def_language(&$tpl, &$sql, $user_def_language) {
 					`msgid` = 'ispcp_language'
 			";
 
-			$res2 = exec_query($sql, $query, array());
+			$res2 = exec_query($sql, $query);
 
 			$query = "
 				SELECT
@@ -1213,7 +1213,7 @@ function gen_def_language(&$tpl, &$sql, $user_def_language) {
 					`msgid` = 'ispcp_languageSetlocaleValue'
 			";
 
-			$res3 = exec_query($sql, $query, array());
+			$res3 = exec_query($sql, $query);
 
 			if ($res2->recordCount() == 0 || $res3->recordCount() == 0) {
 				$language_name = tr('Unknown');
@@ -1277,7 +1277,7 @@ function gen_domain_details(&$tpl, &$sql, $domain_id) {
 			ORDER BY
 				`alias_id` DESC
 		";
-		$alias_rs = exec_query($sql, $alias_query, array($domain_id));
+		$alias_rs = exec_query($sql, $alias_query, $domain_id);
 
 		if ($alias_rs->recordCount() == 0) {
 			$tpl->assign('USER_DETAILS', '');
@@ -1320,7 +1320,7 @@ function reseller_limits_check(&$sql, &$err_msg, $reseller_id, $hpid, $newprops 
 					`id` = ?
 			";
 
-			$res = exec_query($sql, $query, array($hpid));
+			$res = exec_query($sql, $query, $hpid);
 			$data = $res->fetchRow();
 			$props = $data['props'];
 		}
@@ -1343,7 +1343,7 @@ function reseller_limits_check(&$sql, &$err_msg, $reseller_id, $hpid, $newprops 
 			`reseller_id` = ?
 	";
 
-	$res = exec_query($sql, $query, array($reseller_id));
+	$res = exec_query($sql, $query, $reseller_id);
 	$data = $res->fetchRow();
 	$dmn_current = $data['current_dmn_cnt'];
 	$dmn_max = $data['max_dmn_cnt'];
@@ -1807,7 +1807,7 @@ function get_reseller_id($domain_id) {
 			d.`domain_admin_id` = a.`admin_id`
 	";
 
-	$rs = exec_query($sql, $query, array($domain_id));
+	$rs = exec_query($sql, $query, $domain_id);
 
 	if ($rs->recordCount() == 0) {
 		return 0;

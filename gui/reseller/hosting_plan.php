@@ -147,7 +147,7 @@ function gen_hp_table(&$tpl, $reseller_id) {
 				t1.`name`
 		";
 
-		$rs = exec_query($sql, $query, array('admin'));
+		$rs = exec_query($sql, $query, 'admin');
 		$tr_edit = tr('View details');
 		$tpl->assign('HP_MENU_ADD', '');
 	} else {
@@ -161,7 +161,7 @@ function gen_hp_table(&$tpl, $reseller_id) {
 			ORDER BY
 				`name`
 		";
-		$rs = exec_query($sql, $query, array($reseller_id));
+		$rs = exec_query($sql, $query, $reseller_id);
 		$tr_edit = tr('Edit');
 	}
 

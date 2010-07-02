@@ -47,7 +47,7 @@ if (isset($_GET['ticket_id']) && $_GET['ticket_id'] !== '') {
 			`ticket_date` ASC
 	";
 
-	$rs = exec_query($sql, $query, array($ticket_id));
+	$rs = exec_query($sql, $query, $ticket_id);
 	$ticket_status = $rs->fields['ticket_status'];
 
 	$back_url = ($ticket_status == 0) ? 'ticket_closed.php' : 'ticket_system.php';

@@ -124,7 +124,7 @@ function gen_page_data(&$tpl, &$sql, $db_user_id) {
 			`sqlu_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($db_user_id));
+	$rs = exec_query($sql, $query, $db_user_id);
 	$tpl->assign(
 		array(
 			'USER_NAME' => tohtml($rs->fields['sqlu_name']),

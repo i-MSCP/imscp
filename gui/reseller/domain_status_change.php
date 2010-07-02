@@ -57,7 +57,7 @@ $query = "
 		`domain_id` = ?
 ";
 
-$rs = exec_query($sql, $query, array($domain_id));
+$rs = exec_query($sql, $query, $domain_id);
 
 // let's check if this reseller has rights to disable/enable this domain
 if ($rs->fields['domain_created_id'] != $_SESSION['user_id']) {

@@ -127,7 +127,7 @@ function removeOldKeys($ttl) {
 			`uniqkey_time` < ?
 	";
 
-	exec_query($sql, $query, array($boundary));
+	exec_query($sql, $query, $boundary);
 }
 
 function setUniqKey($admin_name, $uniqkey) {
@@ -179,7 +179,7 @@ function uniqkeyexists($uniqkey) {
 			`uniqkey` = ?
 	";
 
-	$res = exec_query($sql, $query, array($uniqkey));
+	$res = exec_query($sql, $query, $uniqkey);
 
 	return ($res->recordCount() != 0) ? true : false;
 }
@@ -209,7 +209,7 @@ function sendpassword($uniqkey) {
 			`uniqkey` = ?
 	";
 
-	$res = exec_query($sql, $query, array($uniqkey));
+	$res = exec_query($sql, $query, $uniqkey);
 
 	if ($res->recordCount() == 1) {
 		$admin_name = $res->fields['admin_name'];
@@ -309,7 +309,7 @@ function requestpassword($admin_name) {
 			`admin_name` = ?
 	";
 
-	$res = exec_query($sql, $query, array($admin_name));
+	$res = exec_query($sql, $query, $admin_name);
 
 	if ($res->recordCount() == 0) {
 		return false;

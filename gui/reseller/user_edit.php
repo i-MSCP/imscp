@@ -425,7 +425,7 @@ function update_data_in_db($hpid) {
 				`user_name` = ?
 		";
 
-		$rs = exec_query($sql, $query, array($admin_name));
+		$rs = exec_query($sql, $query, $admin_name);
 			if ($rs->recordCount() != 0) {
 				set_page_message(tr('User session was killed!'));
 				write_log($_SESSION['user_logged'] . " killed ".$admin_name."'s session because of password change");

@@ -60,7 +60,7 @@ function gen_db_user_list(&$tpl, &$sql, $db_id) {
 			`sqlu_name`
 	";
 
-	$rs = exec_query($sql, $query, array($db_id));
+	$rs = exec_query($sql, $query, $db_id);
 
 	if ($rs->recordCount() == 0) {
 		$tpl->assign(
@@ -110,7 +110,7 @@ function gen_db_list(&$tpl, &$sql, $user_id) {
 			`sqld_name`
 	";
 
-	$rs = exec_query($sql, $query, array($dmn_id));
+	$rs = exec_query($sql, $query, $dmn_id);
 
 	if ($rs->recordCount() == 0) {
 		set_page_message(tr('Database list is empty!'));

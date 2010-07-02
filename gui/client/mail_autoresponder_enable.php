@@ -117,7 +117,7 @@ function gen_page_dynamic_data(&$tpl, &$sql, $mail_id) {
 				`mail_id` = ?
 		";
 
-		$rs = exec_query($sql, $query, array($mail_id));
+		$rs = exec_query($sql, $query, $mail_id);
 		$mail_name = $rs->fields['mailbox'];
 		write_log($_SESSION['user_logged'] . ": add mail autoresponder: " . $mail_name);
 		set_page_message(tr('Mail account scheduler for modification!'));
@@ -133,7 +133,7 @@ function gen_page_dynamic_data(&$tpl, &$sql, $mail_id) {
 				`mail_id` = ?
 		";
 
-		$rs = exec_query($sql, $query, array($mail_id));
+		$rs = exec_query($sql, $query, $mail_id);
 		$mail_name = $rs->fields['mail_acc'];
 
 		$tpl->assign('ARSP_MESSAGE', tohtml($rs->fields['mail_auto_respond_text']));

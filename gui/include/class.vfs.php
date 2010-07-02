@@ -155,7 +155,7 @@ class vfs {
 			;
 		";
 
-		$rs = exec_query($this->_db, $query, array($this->_domain));
+		$rs = exec_query($this->_db, $query, $this->_domain);
 
 		if (!$rs) {
 			return false;
@@ -213,7 +213,7 @@ class vfs {
 			;
 		";
 
-		$rs = exec_query($this->_db, $query, array($this->_user));
+		$rs = exec_query($this->_db, $query, $this->_user);
 
 		return $rs ? true : false;
 	}

@@ -68,7 +68,7 @@ function get_server_ip(&$tpl, &$sql) {
 			`ip_number`
 	";
 
-	$rs = exec_query($sql, $query, array());
+	$rs = exec_query($sql, $query);
 
 	$i = 0;
 
@@ -410,7 +410,7 @@ function check_user_data() {
 			`admin_name` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($username));
+	$rs = exec_query($sql, $query, $username);
 
 	if ($rs->recordCount() != 0) {
 		set_page_message(tr('This user name already exist!'));

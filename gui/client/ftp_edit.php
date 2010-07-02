@@ -62,7 +62,7 @@ function gen_page_dynamic_data(&$tpl, &$sql, $ftp_acc) {
 			`userid` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($ftp_acc));
+	$rs = exec_query($sql, $query, $ftp_acc);
 
 	$homedir = $rs->fields['homedir'];
 	$domain_ftp = $_SESSION['user_logged'];
@@ -220,7 +220,7 @@ $query = "
 		`domain_admin_id` = ?
 ";
 
-$rs = exec_query($sql, $query, array($_SESSION['user_id']));
+$rs = exec_query($sql, $query, $_SESSION['user_id']);
 
 $dmn_name = $rs->fields['domain_name'];
 

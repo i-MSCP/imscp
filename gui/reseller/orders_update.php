@@ -56,7 +56,7 @@ if (isset($cfg->HOSTING_PLANS_LEVEL)
 			`status` = 'update'
 	";
 
-	$rs = exec_query($sql, $query, array($order_id));
+	$rs = exec_query($sql, $query, $order_id);
 } else {
 	$query = "
 		SELECT
@@ -126,7 +126,7 @@ if ($cfg->COUNT_DEFAULT_EMAIL_ADDRESSES == 0) {
 		AND (`mail_acc` = 'abuse'
 		OR `mail_acc` = 'postmaster'
 		OR `mail_acc` = 'webmaster')";
-	$rs = exec_query($sql, $query, array($dmn_id));
+	$rs = exec_query($sql, $query, $dmn_id);
 	$default_mails = $rs->fields['cnt'];
 	$mail += $default_mails;
 }
@@ -223,11 +223,11 @@ if (empty($ed_error)) {
 	update_reseller_props($reseller_id, $reseller_props);
 	// update the sql quotas, too
 	$query = "SELECT `domain_name` FROM `domain` WHERE `domain_id` = ?";
-	$rs = exec_query($sql, $query, array($dmn_id));
+	$rs = exec_query($sql, $query, $dmn_id);
 	$temp_dmn_name = $rs->fields['domain_name'];
 
 	$query = "SELECT COUNT(`name`) AS cnt FROM `quotalimits` WHERE `name` = ?";
-	$rs = exec_query($sql, $query, array($temp_dmn_name));
+	$rs = exec_query($sql, $query, $temp_dmn_name);
 	if ($rs->fields['cnt'] > 0) {
 		// we need to update it
 		if ($disk == 0) {

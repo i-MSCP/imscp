@@ -277,10 +277,10 @@ function generate_als_list(&$tpl, $reseller_id, &$als_err) {
 		";
 	}
 	// let's count
-	$rs = exec_query($sql, $count_query, array($reseller_id));
+	$rs = exec_query($sql, $count_query, $reseller_id);
 	$records_count = $rs->fields['cnt'];
 	// Get all alias records
-	$rs = exec_query($sql, $query, array($reseller_id));
+	$rs = exec_query($sql, $query, $reseller_id);
 
 	if ($records_count == 0) {
 		if (isset($_SESSION['search_for']) && $_SESSION['search_for'] != '') {
@@ -367,7 +367,7 @@ function generate_als_list(&$tpl, $reseller_id, &$als_err) {
 
 		$query = "SELECT `ip_number`, `ip_domain` FROM `server_ips` WHERE `ip_id` = ?";
 
-		$alsip_r = exec_query($sql, $query, array($als_ip_id));
+		$alsip_r = exec_query($sql, $query, $als_ip_id);
 		$alsip_d = $alsip_r->fetchRow();
 
 		$als_ip = $alsip_d['ip_number'];

@@ -46,7 +46,7 @@ function setConfig_Value($name, $value) {
 
 	$query = "SELECT `name` FROM `config` WHERE `name`= ?";
 
-	$res = exec_query($sql, $query, array($name));
+	$res = exec_query($sql, $query, $name);
 
 	if ($res->recordCount() == 0) {
 		$query = "INSERT INTO `config` (`name`, `value`) VALUES (?, ?)";

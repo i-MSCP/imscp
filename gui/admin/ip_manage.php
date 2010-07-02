@@ -76,7 +76,7 @@ function show_IPs(&$tpl, &$sql) {
 		FROM
 			`server_ips`
 	";
-	$rs = exec_query($sql, $query, array());
+	$rs = exec_query($sql, $query);
 
 	$row = 1;
 	$single = false;
@@ -228,7 +228,7 @@ function IP_exists() {
 			`ip_number` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($ip_number));
+	$rs = exec_query($sql, $query, $ip_number);
 
 	if ($rs->rowCount() == 0) {
 		return false;

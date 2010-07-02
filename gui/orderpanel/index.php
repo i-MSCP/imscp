@@ -66,7 +66,7 @@ function gen_packages_list(&$tpl, &$sql, $user_id) {
 				t1.`id`
 		";
 
-		$rs = exec_query($sql, $query, array('admin'));
+		$rs = exec_query($sql, $query, 'admin');
 	} else {
 		$query = "
 			SELECT
@@ -79,7 +79,7 @@ function gen_packages_list(&$tpl, &$sql, $user_id) {
 				`status` = '1'
 		";
 
-		$rs = exec_query($sql, $query, array($user_id));
+		$rs = exec_query($sql, $query, $user_id);
 	}
 
 	if ($rs->recordCount() == 0) {

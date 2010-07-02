@@ -271,7 +271,7 @@ function add_user_data($reseller_id) {
 		if (isset($cfg->HOSTING_PLANS_LEVEL)
 			&& $cfg->HOSTING_PLANS_LEVEL === 'admin') {
 			$query = 'SELECT `props` FROM `hosting_plans` WHERE `id` = ?';
-			$res = exec_query($sql, $query, array($hpid));
+			$res = exec_query($sql, $query, $hpid);
 		} else {
 			$query = "SELECT `props` FROM `hosting_plans` WHERE `reseller_id` = ? AND `id` = ?";
 			$res = exec_query($sql, $query, array($reseller_id, $hpid));

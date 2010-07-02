@@ -75,7 +75,7 @@ function gen_plan_details(&$tpl, &$sql, $user_id, $plan_id) {
 				`id` = ?
 		";
 
-		$rs = exec_query($sql, $query, array($plan_id));
+		$rs = exec_query($sql, $query, $plan_id);
 	} else {
 		$query = "
 			SELECT

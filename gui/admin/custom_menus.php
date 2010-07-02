@@ -37,7 +37,7 @@ function gen_button_list(&$tpl, &$sql) {
 			`custom_menus`
 	";
 
-	$rs = exec_query($sql, $query, array());
+	$rs = exec_query($sql, $query);
 	if ($rs->recordCount() == 0) {
 		$tpl->assign('BUTTON_LIST', '');
 
@@ -142,7 +142,7 @@ function delete_button(&$sql) {
 				`menu_id` = ?
 		";
 
-		$rs = exec_query($sql, $query, array($delete_id));
+		$rs = exec_query($sql, $query, $delete_id);
 
 		set_page_message(tr('Custom menu deleted successful!'));
 		return;
@@ -168,7 +168,7 @@ function edit_button(&$tpl, &$sql) {
 				`menu_id` = ?
 		";
 
-		$rs = exec_query($sql, $query, array($edit_id));
+		$rs = exec_query($sql, $query, $edit_id);
 		if ($rs->recordCount() == 0) {
 			set_page_message(tr('Missing or incorrect data input!'));
 			$tpl->assign('EDIT_BUTTON', '');

@@ -89,7 +89,7 @@ function gen_pusres(&$tpl, &$sql, &$dmn_id) {
 			`dmn_id` DESC
 	";
 
-	$rs = exec_query($sql, $query, array($dmn_id));
+	$rs = exec_query($sql, $query, $dmn_id);
 
 	if ($rs->recordCount() == 0) {
 		$tpl->assign(
@@ -138,7 +138,7 @@ function gen_pgroups(&$tpl, &$sql, &$dmn_id) {
 			`dmn_id` DESC
 	";
 
-	$rs = exec_query($sql, $query, array($dmn_id));
+	$rs = exec_query($sql, $query, $dmn_id);
 
 	if ($rs->recordCount() == 0) {
 		$tpl->assign('GROUP_MESSAGE', tr('You have no groups!'));
@@ -175,7 +175,7 @@ function gen_pgroups(&$tpl, &$sql, &$dmn_id) {
 							`id` = ?
 					";
 
-					$rs_members = exec_query($sql, $query, array($members[$i]));
+					$rs_members = exec_query($sql, $query, $members[$i]);
 
 					if ($cnt_members == 1 || $cnt_members == $i + 1) {
 						$tpl->assign('MEMBER', tohtml($rs_members->fields['uname']));

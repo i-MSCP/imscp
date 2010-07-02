@@ -103,7 +103,7 @@ function generate_server_data(&$tpl, &$sql) {
 			`straff_settings`
 	";
 
-	$rs = exec_query($sql, $query, array());
+	$rs = exec_query($sql, $query);
 
 	$tpl->assign(
 		array(

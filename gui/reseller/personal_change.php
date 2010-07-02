@@ -79,7 +79,7 @@ function gen_reseller_personal_data(&$tpl, &$sql, $user_id) {
 			`admin_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($user_id));
+	$rs = exec_query($sql, $query, $user_id);
 
 	$tpl->assign(
 		array(

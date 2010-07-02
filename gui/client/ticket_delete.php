@@ -43,7 +43,7 @@ $query = "
     `reseller_id` = ?
 ";
 
-$rs = exec_query($sql, $query, array($_SESSION['user_created_by']));
+$rs = exec_query($sql, $query, $_SESSION['user_created_by']);
 
 if (!$cfg->ISPCP_SUPPORT_SYSTEM || $rs->fields['support_system'] == 'no') {
 	user_goto('index.php');
@@ -103,7 +103,7 @@ if (isset($_GET['ticket_id']) && $_GET['ticket_id'] !== '') {
 			`ticket_status` != '0'
 	";
 
-	$rs = exec_query($sql, $query, array($user_id));
+	$rs = exec_query($sql, $query, $user_id);
 
 	while (!$rs->EOF) {
 		$rs->moveNext();
@@ -122,7 +122,7 @@ if (isset($_GET['ticket_id']) && $_GET['ticket_id'] !== '') {
 			`ticket_status` = '0'
 	";
 
-	$rs = exec_query($sql, $query, array($user_id));
+	$rs = exec_query($sql, $query, $user_id);
 
 	while (!$rs->EOF) {
 		$rs->moveNext();

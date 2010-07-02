@@ -81,7 +81,7 @@ function gen_user_dns_list(&$tpl, &$sql, $user_id) {
 				`domain_type`
 	";
 
-	$rs = exec_query($sql, $query, array($domain_id));
+	$rs = exec_query($sql, $query, $domain_id);
 	if ($rs->recordCount() == 0) {
 		$tpl->assign(array('DNS_MSG' => tr("Manual zone's records list is empty!"), 'DNS_LIST' => ''));
 		$tpl->parse('DNS_MESSAGE', 'dns_message');
@@ -197,8 +197,8 @@ function gen_user_sub_list(&$tpl, &$sql, $user_id) {
 			`subdomain_alias_name`
 	";
 
-	$rs = exec_query($sql, $query, array($domain_id));
-	$rs2 = exec_query($sql, $query2, array($domain_id));
+	$rs = exec_query($sql, $query, $domain_id);
+	$rs2 = exec_query($sql, $query2, $domain_id);
 
 	if (($rs->recordCount() + $rs2->recordCount()) == 0) {
 		$tpl->assign(array('SUB_MSG' => tr('Subdomain list is empty!'), 'SUB_LIST' => ''));
@@ -304,7 +304,7 @@ function gen_user_als_list(&$tpl, &$sql, $user_id) {
 			`alias_name`
 	";
 
-	$rs = exec_query($sql, $query, array($domain_id));
+	$rs = exec_query($sql, $query, $domain_id);
 
 	if ($rs->recordCount() == 0) {
 		$tpl->assign(array('ALS_MSG' => tr('Alias list is empty!'), 'ALS_LIST' => ''));

@@ -191,7 +191,7 @@ function gen_page_dmn_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 			`mail_type` DESC
 	";
 
-	$rs = exec_query($sql, $dmn_query, array($dmn_id));
+	$rs = exec_query($sql, $dmn_query, $dmn_id);
 
 	if ($rs->recordCount() == 0) {
 		return 0;
@@ -324,7 +324,7 @@ function gen_page_sub_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 			t2.`mail_type` DESC
 	";
 
-	$rs = exec_query($sql, $sub_query, array($dmn_id, $dmn_id));
+	$rs = exec_query($sql, $sub_query, $dmn_id, $dmn_id);
 
 	if ($rs->recordCount() == 0) {
 		return 0;
@@ -465,7 +465,7 @@ function gen_page_als_sub_mail_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 			t1.`mail_type` DESC
 	";
 
-	$rs = exec_query($sql, $sub_query, array($dmn_id));
+	$rs = exec_query($sql, $sub_query, $dmn_id);
 
 	if ($rs->recordCount() == 0) {
 		return 0;
@@ -809,7 +809,7 @@ function count_default_mails(&$sql, $dmn_id) {
 				)
 		";
 
-		$rs = exec_query($sql, $query, array($dmn_id));
+		$rs = exec_query($sql, $query, $dmn_id);
 		$count_default_mails = (int) $rs->fields['cnt'];
 	}
 

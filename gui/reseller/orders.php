@@ -149,7 +149,7 @@ function gen_order_page(&$tpl, &$sql, $user_id) {
 				WHERE
 					`id` = ?
 			";
-			$rs_planname = exec_query($sql, $planname_query, array($plan_id));
+			$rs_planname = exec_query($sql, $planname_query, $plan_id);
 			$plan_name = $rs_planname->fields['name'];
 
 			$tpl->assign('ITEM_CLASS', ($counter % 2 == 0) ? 'content' : 'content2');
@@ -165,7 +165,7 @@ function gen_order_page(&$tpl, &$sql, $user_id) {
 					WHERE
 						`admin_id` = ?
 				";
-				$rs_customer = exec_query($sql, $cusrtomer_query, array($customer_id));
+				$rs_customer = exec_query($sql, $cusrtomer_query, $customer_id);
 				$user_details = tohtml($rs_customer->fields['fname']) . "&nbsp;"
 					. tohtml($rs_customer->fields['lname'])
 					. "<br /><a href=\"mailto:" . tohtml($rs_customer->fields['email'])

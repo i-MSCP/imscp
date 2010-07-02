@@ -50,7 +50,7 @@ function username_exists($username) {
 		;
 	';
 
-	$res = exec_query($sql, $query, array($username));
+	$res = exec_query($sql, $query, $username);
 
 	return ($res->recordCount() == 1);
 }

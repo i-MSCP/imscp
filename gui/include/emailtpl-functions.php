@@ -41,7 +41,7 @@ function get_email_tpl_data($admin_id, $tpl_name) {
 			`admin_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($admin_id));
+	$rs = exec_query($sql, $query, $admin_id);
 
 	if ((trim($rs->fields('fname')) != '') && (trim($rs->fields('lname')) != '')) {
 		$data['sender_name'] = $rs->fields('fname') . ' ' . $rs->fields('lname');

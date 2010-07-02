@@ -73,7 +73,7 @@ if (isset($_GET['edit_id']) && $_GET['edit_id'] !== '') {
 		LIMIT 1
 	";
 
-	$rs = exec_query($sql, $query, array($dns_id));
+	$rs = exec_query($sql, $query, $dns_id);
 
 	if (empty($alias_id)) {
 		$query = "

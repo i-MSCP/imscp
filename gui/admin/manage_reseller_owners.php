@@ -65,7 +65,7 @@ function gen_reseller_table(&$tpl, &$sql) {
 			`admin_id`
 	";
 
-	$rs = exec_query($sql, $query, array());
+	$rs = exec_query($sql, $query);
 
 	$i = 0;
 
@@ -123,7 +123,7 @@ function gen_reseller_table(&$tpl, &$sql) {
 			`admin_name`
 	";
 
-	$rs = exec_query($sql, $query, array());
+	$rs = exec_query($sql, $query);
 
 	while (!$rs->EOF) {
 

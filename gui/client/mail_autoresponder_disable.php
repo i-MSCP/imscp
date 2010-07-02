@@ -103,7 +103,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 			`mail_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($mail_id));
+	$rs = exec_query($sql, $query, $mail_id);
 	$mail_name = $rs->fields['mailbox'];
 	write_log($_SESSION['user_logged'].": disabled mail autoresponder: ".$mail_name);
 	set_page_message(tr('Mail account scheduled for modification!'));

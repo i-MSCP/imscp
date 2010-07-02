@@ -61,7 +61,7 @@ function get_alias_mount_point(&$sql, $alias_name) {
 			`alias_name` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($alias_name));
+	$rs = exec_query($sql, $query, $alias_name);
 	return $rs->fields['alias_mount'];
 }
 
@@ -225,7 +225,7 @@ function get_ftp_user_gid(&$sql, $dmn_name, $ftp_user) {
 
 	$query = "SELECT `gid`, `members` FROM `ftp_group` WHERE `groupname` = ?";
 
-	$rs = exec_query($sql, $query, array($dmn_name));
+	$rs = exec_query($sql, $query, $dmn_name);
 
 	if ($rs->recordCount() == 0) { // there is no such group. we'll need a new one.
 		list($temp_dmn_id,
@@ -264,7 +264,7 @@ function get_ftp_user_gid(&$sql, $dmn_name, $ftp_user) {
 		// add entries in the quota tables
 		// first check if we have it by one or other reason
 		$query = "SELECT COUNT(`name`) AS cnt FROM `quotalimits` WHERE `name` = ?";
-		$rs = exec_query($sql, $query, array($temp_dmn_name));
+		$rs = exec_query($sql, $query, $temp_dmn_name);
 		if ($rs->fields['cnt'] == 0) {
 			// ok insert it
 			if ($temp_dmn_disk_limit == 0) {

@@ -40,7 +40,7 @@ else {
 }
 
 // Check if there is no order for this plan
-$res = exec_query($sql, "SELECT COUNT(`id`) FROM `orders` WHERE `plan_id` = ?", array($hpid));
+$res = exec_query($sql, "SELECT COUNT(`id`) FROM `orders` WHERE `plan_id` = ?", $hpid);
 $data = $res->fetchRow();
 
 if ($data['0'] > 0) {

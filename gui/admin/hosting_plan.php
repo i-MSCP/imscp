@@ -142,7 +142,7 @@ function gen_hp_table(&$tpl, $reseller_id) {
 		ORDER BY
 			t1.`name`
 	";
-	$rs = exec_query($sql, $query, array('admin'));
+	$rs = exec_query($sql, $query, 'admin');
 	$tr_edit = tr('Edit');
 
 	if ($rs->rowCount() == 0) {

@@ -76,7 +76,7 @@ function is_plan_available(&$sql, $plan_id, $user_id) {
 				`id` = ?
 			";
 
-		$rs = exec_query($sql, $query, array($plan_id));
+		$rs = exec_query($sql, $query, $plan_id);
 	} else {
 		$query = "
 			SELECT

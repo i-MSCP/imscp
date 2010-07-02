@@ -254,7 +254,7 @@ function add_domain_alias(&$sql, &$err_al) {
 			`domain_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($cr_user_id));
+	$rs = exec_query($sql, $query, $cr_user_id);
 	$domain_ip = $rs->fields['domain_ip_id'];
 
 	// $mount_point = "/".$mount_point;
@@ -289,8 +289,8 @@ function add_domain_alias(&$sql, &$err_al) {
 		// now let's fix the mountpoint
 		$mount_point = array_decode_idna($mount_point, true);
 
-		$res = exec_query($sql, "SELECT `domain_id` FROM `domain_aliasses` WHERE `alias_name` = ?", array($alias_name));
-		$res2 = exec_query($sql, "SELECT `domain_id` FROM `domain` WHERE `domain_name` = ?", array($alias_name));
+		$res = exec_query($sql, "SELECT `domain_id` FROM `domain_aliasses` WHERE `alias_name` = ?", $alias_name);
+		$res2 = exec_query($sql, "SELECT `domain_id` FROM `domain` WHERE `domain_name` = ?", $alias_name);
 		if ($res->rowCount() > 0 || $res2->rowCount() > 0) {
 			// we already have domain with this name
 			$err_al = tr("Domain with this name already exist");
@@ -358,7 +358,7 @@ function gen_users_list(&$tpl, $reseller_id) {
 			`admin_name`
 	";
 
-	$ar = exec_query($sql, $query, array($reseller_id));
+	$ar = exec_query($sql, $query, $reseller_id);
 
 	if ($ar->rowCount() == 0) {
 		set_page_message(tr('There is no user records for this reseller to add an alias for.'));
@@ -382,7 +382,7 @@ function gen_users_list(&$tpl, $reseller_id) {
 				`domain_admin_id` = ?
 		";
 
-		$dr = exec_query($sql, $query, array($admin_id));
+		$dr = exec_query($sql, $query, $admin_id);
 		$dd = $dr->fetchRow();
 
 		$domain_id = $dd['domain_id'];

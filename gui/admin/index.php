@@ -60,7 +60,7 @@ function gen_system_message(&$tpl, &$sql) {
 			`ticket_reply` = 0
 	";
 
-	$rs = exec_query($sql, $query, array($user_id));
+	$rs = exec_query($sql, $query, $user_id);
 
 	$num_question = $rs->fields('cnum');
 
@@ -112,7 +112,7 @@ function get_update_infos(&$tpl) {
 function gen_server_trafic(&$tpl, &$sql) {
 	$query = "SELECT `straff_max`, `straff_warn` FROM `straff_settings`";
 
-	$rs = exec_query($sql, $query, array());
+	$rs = exec_query($sql, $query);
 
 	$straff_max = (($rs->fields['straff_max']) * 1024) * 1024;
 

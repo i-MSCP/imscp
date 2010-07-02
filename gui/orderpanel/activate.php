@@ -83,7 +83,7 @@ function confirm_order($order_id) {
 		WHERE
 			`id` = ?
 	";
-	$rs = exec_query($sql, $query, array($order_id));
+	$rs = exec_query($sql, $query, $order_id);
 	if ($rs->recordCount() == 1) {
 
 		$query = "

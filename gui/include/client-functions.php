@@ -66,7 +66,7 @@ function get_domain_default_props(&$sql, $domain_admin_id, $returnWKeys = false)
 		;
 	";
 
-	$rs = exec_query($sql, $query, array($domain_admin_id));
+	$rs = exec_query($sql, $query, $domain_admin_id);
 
 	if (!$returnWKeys) {
 		return array(
@@ -111,7 +111,7 @@ function get_domain_running_sub_cnt(&$sql, $domain_id) {
 		;
 	";
 
-	$rs = exec_query($sql, $query, array($domain_id));
+	$rs = exec_query($sql, $query, $domain_id);
 
 	$sub_count = $rs->fields['cnt'];
 
@@ -125,7 +125,7 @@ function get_domain_running_sub_cnt(&$sql, $domain_id) {
 		;
 	";
 
-	$rs = exec_query($sql, $query, array($domain_id));
+	$rs = exec_query($sql, $query, $domain_id);
 
 	$alssub_count = $rs->fields['cnt'];
 
@@ -144,7 +144,7 @@ function get_domain_running_als_cnt(&$sql, $domain_id) {
 		;
 	";
 
-	$rs = exec_query($sql, $query, array($domain_id));
+	$rs = exec_query($sql, $query, $domain_id);
 
 	$als_count = $rs->fields['cnt'];
 
@@ -247,16 +247,16 @@ function get_domain_running_mail_acc_cnt(&$sql, $domain_id) {
 		";
 	}
 
-	$rs = exec_query($sql, $qr_dmn, array($domain_id));
+	$rs = exec_query($sql, $qr_dmn, $domain_id);
 	$dmn_mail_acc = $rs->fields['cnt'];
 
-	$rs = exec_query($sql, $qr_als, array($domain_id));
+	$rs = exec_query($sql, $qr_als, $domain_id);
 	$als_mail_acc = $rs->fields['cnt'];
 
-	$rs = exec_query($sql, $qr_sub, array($domain_id));
+	$rs = exec_query($sql, $qr_sub, $domain_id);
 	$sub_mail_acc = $rs->fields['cnt'];
 
-	$rs = exec_query($sql, $qr_alssub, array($domain_id));
+	$rs = exec_query($sql, $qr_alssub, $domain_id);
 	$alssub_mail_acc = $rs->fields['cnt'];
 
 	return array(
@@ -282,7 +282,7 @@ function get_domain_running_dmn_ftp_acc_cnt(&$sql, $domain_id) {
 		;
 	";
 
-	$rs = exec_query($sql, $query, array($domain_id));
+	$rs = exec_query($sql, $query, $domain_id);
 
 	$dmn_name = $rs->fields['domain_name'];
 
@@ -296,7 +296,7 @@ function get_domain_running_dmn_ftp_acc_cnt(&$sql, $domain_id) {
 		;
 	";
 
-	$rs = exec_query($sql, $query, array('%' . $ftp_separator . $dmn_name));
+	$rs = exec_query($sql, $query, '%' . $ftp_separator . $dmn_name);
 
 	// domain ftp account count
 	return $rs->fields['cnt'];
@@ -328,8 +328,8 @@ function get_domain_running_sub_ftp_acc_cnt(&$sql, $domain_id) {
 		;
 	";
 
-	$dmn = exec_query($sql, $query2, array($domain_id));
-	$rs = exec_query($sql, $query, array($domain_id));
+	$dmn = exec_query($sql, $query2, $domain_id);
+	$rs = exec_query($sql, $query, $domain_id);
 
 	$sub_ftp_acc_cnt = 0;
 
@@ -346,7 +346,7 @@ function get_domain_running_sub_ftp_acc_cnt(&$sql, $domain_id) {
 			;
 		";
 
-		$rs_cnt = exec_query($sql, $query, array('%' . $ftp_separator . $sub_name . '.' . $dmn->fields['domain_name']));
+		$rs_cnt = exec_query($sql, $query, '%' . $ftp_separator . $sub_name . '.' . $dmn->fields['domain_name']);
 
 		$sub_ftp_acc_cnt += $rs_cnt->fields['cnt'];
 
@@ -372,7 +372,7 @@ function get_domain_running_als_ftp_acc_cnt(&$sql, $domain_id) {
 		;
 	";
 
-	$rs = exec_query($sql, $query, array($domain_id));
+	$rs = exec_query($sql, $query, $domain_id);
 
 	$als_ftp_acc_cnt = 0;
 
@@ -389,7 +389,7 @@ function get_domain_running_als_ftp_acc_cnt(&$sql, $domain_id) {
 			;
 		";
 
-		$rs_cnt = exec_query($sql, $query, array('%' . $ftp_separator . $als_name));
+		$rs_cnt = exec_query($sql, $query, '%' . $ftp_separator . $als_name);
 
 		$als_ftp_acc_cnt += $rs_cnt->fields['cnt'];
 
@@ -425,7 +425,7 @@ function get_domain_running_sqld_acc_cnt(&$sql, $domain_id) {
 		;
 	";
 
-	$rs = exec_query($sql, $query, array($domain_id));
+	$rs = exec_query($sql, $query, $domain_id);
 
 	$sqld_acc_cnt = $rs->fields['cnt'];
 
@@ -446,7 +446,7 @@ function get_domain_running_sqlu_acc_cnt(&$sql, $domain_id) {
 		;
 	";
 
-	$rs = exec_query($sql, $query, array($domain_id));
+	$rs = exec_query($sql, $query, $domain_id);
 
 	$sqlu_acc_cnt = $rs->recordCount();
 
@@ -543,7 +543,7 @@ function gen_client_mainmenu(&$tpl, $menu_file) {
 		;
 	";
 
-	$rs = exec_query($sql, $query, array());
+	$rs = exec_query($sql, $query);
 
 	if ($rs->recordCount() == 0) {
 		$tpl->assign('CUSTOM_BUTTONS', '');
@@ -624,7 +624,7 @@ function gen_client_mainmenu(&$tpl, $menu_file) {
 		;
 	";
 
-	$rs = exec_query($sql, $query, array($_SESSION['user_created_by']));
+	$rs = exec_query($sql, $query, $_SESSION['user_created_by']);
 
 	if (!Config::getInstance()->get('ISPCP_SUPPORT_SYSTEM') || $rs->fields['support_system'] == 'no') {
 		$tpl->assign('ISACTIVE_SUPPORT', '');
@@ -713,7 +713,7 @@ function gen_client_menu(&$tpl, $menu_file) {
 		;
 	";
 
-	$rs = exec_query($sql, $query, array());
+	$rs = exec_query($sql, $query);
 
 	if ($rs->recordCount() == 0) {
 		$tpl->assign('CUSTOM_BUTTONS', '');
@@ -755,7 +755,7 @@ function gen_client_menu(&$tpl, $menu_file) {
 		;
 	";
 
-	$rs = exec_query($sql, $query, array($_SESSION['user_created_by']));
+	$rs = exec_query($sql, $query, $_SESSION['user_created_by']);
 
 	if (!Config::getInstance()->get('ISPCP_SUPPORT_SYSTEM') || $rs->fields['support_system'] == 'no') {
 		$tpl->assign('SUPPORT_SYSTEM', '');
@@ -841,7 +841,7 @@ function gen_client_menu(&$tpl, $menu_file) {
 		;
 	";
 
-	$rs = exec_query($sql, $query, array($_SESSION['user_created_by']));
+	$rs = exec_query($sql, $query, $_SESSION['user_created_by']);
 
 	if ($rs->recordCount() == 0) {
 		if (Config::getInstance()->get('HOSTING_PLANS_LEVEL') != 'admin') {
@@ -864,7 +864,7 @@ function get_user_domain_id(&$sql, $user_id) {
 		;
 	";
 
-	$rs = exec_query($sql, $query, array($user_id));
+	$rs = exec_query($sql, $query, $user_id);
 
 	return $rs->fields['domain_id'];
 }
@@ -919,7 +919,7 @@ function count_sql_user_by_name(&$sql, $sqlu_name) {
 		;
 	";
 
-	$rs = exec_query($sql, $query, array($sqlu_name));
+	$rs = exec_query($sql, $query, $sqlu_name);
 
 	return $rs->fields['cnt'];
 }
@@ -970,27 +970,27 @@ function sql_delete_user(&$sql, $dmn_id, $db_user_id) {
 
 		// revoke grants on global level, if any;
 		$query = "REVOKE ALL ON *.* FROM ?@'%';";
-		$rs = exec_query($sql, $query, array($db_user_name));
+		$rs = exec_query($sql, $query, $db_user_name);
 
 		$query = "REVOKE ALL ON *.* FROM ?@localhost;";
-		$rs = exec_query($sql, $query, array($db_user_name));
+		$rs = exec_query($sql, $query, $db_user_name);
 
 		// delete user record from mysql.user table;
 		$query = "DROP USER ?@'%';";
-		$rs = exec_query($sql, $query, array($db_user_name));
+		$rs = exec_query($sql, $query, $db_user_name);
 
 		$query = "DROP USER ?@'localhost';";
-		$rs = exec_query($sql, $query, array($db_user_name));
+		$rs = exec_query($sql, $query, $db_user_name);
 
 		// flush privileges.
 		$query = "FLUSH PRIVILEGES;";
-		$rs = exec_query($sql, $query, array());
+		$rs = exec_query($sql, $query);
 	} else {
 		$query = "REVOKE ALL ON $db_name.* FROM ?@'%';";
-		$rs = exec_query($sql, $query, array($db_user_name));
+		$rs = exec_query($sql, $query, $db_user_name);
 
 		$query = "REVOKE ALL ON $db_name.* FROM ?@localhost;";
-		$rs = exec_query($sql, $query, array($db_user_name));
+		$rs = exec_query($sql, $query, $db_user_name);
 	}
 }
 

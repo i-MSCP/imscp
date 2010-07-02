@@ -93,7 +93,7 @@ function gen_page_post_data(&$tpl) {
 function check_db_name(&$sql, $db_name) {
 	$query = "SHOW DATABASES";
 
-	$rs = exec_query($sql, $query, array());
+	$rs = exec_query($sql, $query);
 
 	while (!$rs->EOF) {
 		if ($db_name === $rs->fields[0]) return 1;
@@ -147,7 +147,7 @@ function add_sql_database(&$sql, $user_id) {
 	}
 
 	$query = 'create database ' . quoteIdentifier($db_name);
-	$rs = exec_query($sql, $query, array());
+	$rs = exec_query($sql, $query);
 
 	$query = "
 		INSERT INTO `sql_database`

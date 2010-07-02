@@ -53,7 +53,7 @@ function send_backup_restore_request(&$sql, $user_id) {
 				`domain_admin_id` = ?
 		";
 
-		$rs = exec_query($sql, $query, array($user_id));
+		$rs = exec_query($sql, $query, $user_id);
 
 		send_request();
 		write_log($_SESSION['user_logged'] . ": restore backup files.");

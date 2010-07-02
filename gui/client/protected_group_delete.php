@@ -73,7 +73,7 @@ $query = "
 		`dmn_id` = ?
 ";
 
-$rs = exec_query($sql, $query, array($dmn_id));
+$rs = exec_query($sql, $query, $dmn_id);
 
 while (!$rs->EOF) {
 

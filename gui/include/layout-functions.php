@@ -49,7 +49,7 @@ function get_user_gui_props(&$sql, $user_id) {
 			`user_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($user_id));
+	$rs = exec_query($sql, $query, $user_id);
 
 	if ($rs->recordCount() == 0
 		|| (empty($rs->fields['lang']) && empty($rs->fields['layout']))) {
@@ -118,7 +118,7 @@ function get_menu_vars($menu_link) {
 		WHERE
 			`admin_id` = ?
 	";
-	$rs = exec_query($sql, $query, array($user_id));
+	$rs = exec_query($sql, $query, $user_id);
 
 	$search = array();
 	$replace = array();
@@ -165,7 +165,7 @@ function get_menu_vars($menu_link) {
 			`domain_admin_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($user_id));
+	$rs = exec_query($sql, $query, $user_id);
 
 	$search [] = '{domain_name}';
 	$replace[] = $rs->fields['domain_name'];

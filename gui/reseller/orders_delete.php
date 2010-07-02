@@ -67,7 +67,7 @@ $query = "
 	WHERE
 		`id` = ?
 ";
-$rs = exec_query($sql, $query, array($order_id));
+$rs = exec_query($sql, $query, $order_id);
 
 set_page_message(tr('Customer order was removed successful!'));
 

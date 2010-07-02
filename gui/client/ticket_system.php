@@ -69,7 +69,7 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 			`ticket_reply` = 0
 	";
 
-	$rs = exec_query($sql, $count_query, array($user_id));
+	$rs = exec_query($sql, $count_query, $user_id);
 	$records_count = $rs->fields['cnt'];
 
 	$query = <<<SQL_QUERY
@@ -94,7 +94,7 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 			$start_index, $rows_per_page
 SQL_QUERY;
 
-	$rs = exec_query($sql, $query, array($user_id));
+	$rs = exec_query($sql, $query, $user_id);
 
 	if ($rs->recordCount() == 0) {
 		$tpl->assign(
@@ -185,7 +185,7 @@ $query = "
     `reseller_id` = ?
 ";
 
-$rs = exec_query($sql, $query, array($_SESSION['user_created_by']));
+$rs = exec_query($sql, $query, $_SESSION['user_created_by']);
 
 if (!$cfg->ISPCP_SUPPORT_SYSTEM || $rs->fields['support_system'] == 'no') {
 	user_goto('index.php');

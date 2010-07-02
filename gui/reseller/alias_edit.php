@@ -150,7 +150,7 @@ function gen_editalias_page(&$tpl, $edit_id) {
 		user_goto('alias.php');
 	}
 	// Get data from sql
-	$res = exec_query($sql, "SELECT * FROM `domain_aliasses` WHERE `alias_id` = ?", array($edit_id));
+	$res = exec_query($sql, "SELECT * FROM `domain_aliasses` WHERE `alias_id` = ?", $edit_id);
 
 	if ($res->recordCount() <= 0) {
 		$_SESSION['aledit'] = '_no_';
@@ -158,7 +158,7 @@ function gen_editalias_page(&$tpl, $edit_id) {
 	}
 	$data = $res->fetchRow();
 	// Get IP data
-	$ipres = exec_query($sql, "SELECT * FROM `server_ips` WHERE `ip_id` = ?", array($data['alias_ip_id']));
+	$ipres = exec_query($sql, "SELECT * FROM `server_ips` WHERE `ip_id` = ?", $data['alias_ip_id']);
 	$ipdat = $ipres->fetchRow();
 	$ip_data = $ipdat['ip_number'] . ' (' . $ipdat['ip_alias'] . ')';
 

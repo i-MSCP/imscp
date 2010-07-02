@@ -55,7 +55,7 @@ function gen_page_ftp_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 			`groupname` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($dmn_name));
+	$rs = exec_query($sql, $query, $dmn_name);
 
 	if ($rs->recordCount() == 0) {
 		$tpl->assign(

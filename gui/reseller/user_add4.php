@@ -223,7 +223,7 @@ function gen_al_page(&$tpl, $reseller_id) {
 			`domain_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($dmn_id));
+	$rs = exec_query($sql, $query, $dmn_id);
 
 	if ($rs->recordCount() == 0) {
 		$tpl->assign('ALIAS_LIST', '');
@@ -298,9 +298,9 @@ function add_domain_alias(&$sql, &$err_al) {
 		}
 	} else {
 		$query = "SELECT `domain_id` FROM `domain_aliasses` WHERE `alias_name` = ?";
-		$res = exec_query($sql, $query, array($alias_name));
+		$res = exec_query($sql, $query, $alias_name);
 		$query = "SELECT `domain_id` FROM `domain` WHERE `domain_name` = ?";
-		$res2 = exec_query($sql, $query, array($alias_name));
+		$res2 = exec_query($sql, $query, $alias_name);
 		if ($res->rowCount() > 0 || $res2->rowCount() > 0) {
 			// we already have a domain with this name
 			$err_al = tr("Domain with this name already exist");

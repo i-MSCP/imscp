@@ -83,7 +83,7 @@ $query = "
 	WHERE
 		`dmn_id` = ?
 ";
-$rs = exec_query($sql, $query, array($dmn_id));
+$rs = exec_query($sql, $query, $dmn_id);
 
  if ($rs->recordCount() !== 0) {
 
@@ -120,7 +120,7 @@ $query = "
 		`dmn_id` = ?
 ";
 
-$rs = exec_query($sql, $query, array($dmn_id));
+$rs = exec_query($sql, $query, $dmn_id);
 
 while (!$rs->EOF) {
 	$ht_id = $rs->fields['id'];

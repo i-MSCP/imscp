@@ -64,7 +64,7 @@ function gen_tickets_list(&$tpl, &$sql, &$ticket_id, $screenwidth) {
 			`ticket_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($ticket_id));
+	$rs = exec_query($sql, $query, $ticket_id);
 
 	if ($rs->recordCount() == 0) {
 		$tpl->assign('TICKETS_LIST', '');
@@ -127,7 +127,7 @@ function get_tickets_replys(&$tpl, &$sql, &$ticket_id, $screenwidth) {
 			`ticket_date` ASC
 	";
 
-	$rs = exec_query($sql, $query, array($ticket_id));
+	$rs = exec_query($sql, $query, $ticket_id);
 
 	if ($rs->recordCount() == 0) {
 		return;
@@ -166,7 +166,7 @@ function get_ticket_from(&$tpl, &$sql, $ticket_id) {
 			`ticket_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($ticket_id));
+	$rs = exec_query($sql, $query, $ticket_id);
 
 	$ticket_from = $rs->fields['ticket_from'];
 	$ticket_to = $rs->fields['ticket_to'];
@@ -184,7 +184,7 @@ function get_ticket_from(&$tpl, &$sql, $ticket_id) {
 			`admin_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($ticket_from));
+	$rs = exec_query($sql, $query, $ticket_from);
 	$from_user_name = $rs->fields['admin_name'];
 	$from_first_name = $rs->fields['fname'];
 	$from_last_name = $rs->fields['lname'];
@@ -239,7 +239,7 @@ function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id) {
 			`ticket_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($ticket_reply));
+	$rs = exec_query($sql, $query, $ticket_reply);
 
 	$ticket_to = $rs->fields['ticket_from'];
 	$ticket_from = $_SESSION['user_id'];
@@ -317,7 +317,7 @@ function change_ticket_status($sql, $ticket_id) {
 			`ticket_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($ticket_id));
+	$rs = exec_query($sql, $query, $ticket_id);
 	$ch_ticket_status = $rs->fields['ticket_status'];
 
 	if ($ch_ticket_status == 0) {
@@ -352,7 +352,7 @@ function close_ticket($sql, $ticket_id) {
 			`ticket_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($ticket_id));
+	$rs = exec_query($sql, $query, $ticket_id);
 
 	set_page_message(tr('Ticket was closed!'));
 }

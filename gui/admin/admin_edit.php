@@ -181,7 +181,7 @@ function update_data(&$sql) {
 						`user_name` = ?
 				";
 
-				$rs = exec_query($sql, $query, array($admin_name));
+				$rs = exec_query($sql, $query, $admin_name);
 				if ($rs->recordCount() != 0) {
 					set_page_message(tr('User session was killed!'));
 					write_log($_SESSION['user_logged'] . " killed " . $admin_name . "'s session because of password change");
@@ -197,7 +197,7 @@ function update_data(&$sql) {
 			if (isset($_POST['send_data']) && !empty($_POST['pass'])) {
 				$query = "SELECT admin_type FROM admin WHERE admin_id='" . addslashes(htmlspecialchars($edit_id)) . "'";
 
-				$res = exec_query($sql, $query, array());
+				$res = exec_query($sql, $query);
 
 				if ($res->fields['admin_type'] == 'admin') {
 					$admin_type = tr('Administrator');
@@ -267,7 +267,7 @@ $query = "
 		`admin_id` = ?
 ";
 
-$rs = exec_query($sql, $query, array($edit_id));
+$rs = exec_query($sql, $query, $edit_id);
 
 if ($rs->recordCount() <= 0) {
 	user_goto('manage_users.php');

@@ -70,7 +70,7 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 			`ticket_reply` = 0
 	";
 
-	$rs = exec_query($sql, $count_query, array());
+	$rs = exec_query($sql, $count_query);
 	$records_count = $rs->fields['cnt'];
 
 	$query = <<<SQL_QUERY
@@ -93,7 +93,7 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 			$start_index, $rows_per_page
 SQL_QUERY;
 
-	$rs = exec_query($sql, $query, array());
+	$rs = exec_query($sql, $query);
 
 	if ($rs->recordCount() == 0) {
 		$tpl->assign(
@@ -182,7 +182,7 @@ function get_ticket_from(&$sql, $ticket_id) {
 			`ticket_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($ticket_id));
+	$rs = exec_query($sql, $query, $ticket_id);
 	$ticket_from = $rs->fields['ticket_from'];
 	$ticket_to = $rs->fields['ticket_to'];
 	$ticket_status = $rs->fields['ticket_status'];
@@ -200,7 +200,7 @@ function get_ticket_from(&$sql, $ticket_id) {
 			`admin_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($ticket_from));
+	$rs = exec_query($sql, $query, $ticket_from);
 	$from_user_name = decode_idna($rs->fields['admin_name']);
 	$admin_type = $rs->fields['admin_type'];
 	$from_first_name = $rs->fields['fname'];
@@ -224,7 +224,7 @@ function get_ticket_to(&$sql, $ticket_id, $user_id, $html = false) {
 			`ticket_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($ticket_id));
+	$rs = exec_query($sql, $query, $ticket_id);
 	$ticket_from = $rs->fields['ticket_from'];
 	$ticket_to = $rs->fields['ticket_to'];
 	$ticket_status = $rs->fields['ticket_status'];
@@ -243,7 +243,7 @@ function get_ticket_to(&$sql, $ticket_id, $user_id, $html = false) {
 			`admin_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($ticket_to));
+	$rs = exec_query($sql, $query, $ticket_to);
 	$to_user_name = decode_idna($rs->fields['admin_name']);
 	$admin_type = $rs->fields['admin_type'];
 	$to_first_name = $rs->fields['fname'];

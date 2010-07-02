@@ -83,13 +83,13 @@ $query = "
 
 exec_query($sql, $query, array($cfg->ITEM_DELETE_STATUS, $del_id, $del_id));
 
-$res = exec_query($sql, "SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id` = ?", array($del_id));
+$res = exec_query($sql, "SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id` = ?", $del_id);
 $dat = $res->fetchRow();
 
 // TODO Use prepared statements
-exec_query($sql, "UPDATE `subdomain_alias` SET `subdomain_alias_status` = '" . $cfg->ITEM_DELETE_STATUS . "' WHERE `alias_id` = ?", array($del_id));
+exec_query($sql, "UPDATE `subdomain_alias` SET `subdomain_alias_status` = '" . $cfg->ITEM_DELETE_STATUS . "' WHERE `alias_id` = ?", $del_id);
 // TODO Use prepared statements
-exec_query($sql, "UPDATE `domain_aliasses` SET `alias_status` = '" . $cfg->ITEM_DELETE_STATUS . "' WHERE `alias_id` = ?", array($del_id));
+exec_query($sql, "UPDATE `domain_aliasses` SET `alias_status` = '" . $cfg->ITEM_DELETE_STATUS . "' WHERE `alias_id` = ?", $del_id);
 
 update_reseller_c_props($reseller_id);
 

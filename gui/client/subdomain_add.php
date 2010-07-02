@@ -65,7 +65,7 @@ function check_subdomain_permissions($sql, $user_id) {
 			WHERE
 				`alias_id` = ?
 		";
-		$rs = exec_query($sql, $query_alias, array($_POST['als_id']));
+		$rs = exec_query($sql, $query_alias, $_POST['als_id']);
 		return $rs->fields['alias_name'];
 	}
 	return $dmn_name; // Will be used in subdmn_exists()
@@ -85,7 +85,7 @@ function gen_user_add_subdomain_data(&$tpl, &$sql, $user_id) {
 			`domain_admin_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($user_id));
+	$rs = exec_query($sql, $query, $user_id);
 	$domainname = decode_idna($rs->fields['domain_name']);
 	$tpl->assign(
 		array(
@@ -370,7 +370,7 @@ function check_subdomain_data(&$tpl, &$sql, $user_id, $dmn_name) {
 					`alias_id` = ?
 			";
 
-			$rs = exec_query($sql, $query_alias, array($_POST['als_id']));
+			$rs = exec_query($sql, $query_alias, $_POST['als_id']);
 
 			$als_mnt = $rs->fields['alias_mount'];
 

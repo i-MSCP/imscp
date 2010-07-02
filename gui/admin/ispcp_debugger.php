@@ -374,7 +374,7 @@ function get_error_mails(&$sql, &$tpl) {
 					die('FIXME: ' . __FILE__ . ':' . __LINE__);
 			}
 
-			$sr = exec_query($sql, $query, array($searched_id));
+			$sr = exec_query($sql, $query, $searched_id);
 			$domain_name = $sr->fields['domain_name'];
 
 			$tpl->assign(

@@ -72,7 +72,7 @@ function gen_page_data(&$tpl, &$sql) {
 				`email`
 		";
 
-		$rs = exec_query($sql, $query, array($user_id));
+		$rs = exec_query($sql, $query, $user_id);
 
 		if (isset($rs->fields['fname']) && isset($rs->fields['lname'])) {
 			$sender_name = $rs->fields['fname'] . ' ' . $rs->fields['lname'];
@@ -157,7 +157,7 @@ function send_reseller_users_message(&$sql, $admin_id) {
 			`email`
 	";
 
-	$rs = exec_query($sql, $query, array($admin_id));
+	$rs = exec_query($sql, $query, $admin_id);
 
 	while (!$rs->EOF) {
 		$to = "\"" . encode($rs->fields['fname'] . " " . $rs->fields['lname']) . "\" <" . $rs->fields['email'] . ">";

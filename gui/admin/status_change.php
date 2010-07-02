@@ -56,7 +56,7 @@ $query = "
 		`domain_id` = ?
 ";
 
-$rs = exec_query($sql, $query, array($domain_id));
+$rs = exec_query($sql, $query, $domain_id);
 
 $location = 'admin';
 

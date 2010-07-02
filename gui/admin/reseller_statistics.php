@@ -116,10 +116,10 @@ function generate_page(&$tpl) {
 			$start_index, $rows_per_page
 SQL_QUERY;
 
-	$rs = exec_query($sql, $count_query, array());
+	$rs = exec_query($sql, $count_query);
 	$records_count = $rs->fields['cnt'];
 
-	$rs = exec_query($sql, $query, array());
+	$rs = exec_query($sql, $query);
 
 	if ($rs->rowCount() == 0) {
 
