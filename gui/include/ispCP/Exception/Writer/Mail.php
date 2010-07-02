@@ -47,7 +47,7 @@ require_once  INCLUDEPATH . '/ispCP/Exception/Writer.php';
  * @subpackage	Writer
  * @author		Laurent Declercq <laurent.declercq@ispcp.net>
  * @since		1.0.6
- * @version		1.0.1
+ * @version		1.0.2
  * @todo		Avoid sending multiple email for same exception
  */
 class ispCP_Exception_Writer_Mail extends ispCP_Exception_Writer {
@@ -156,37 +156,55 @@ class ispCP_Exception_Writer_Mail extends ispCP_Exception_Writer {
 		$this->_subject = self::NAME . ' - Exception raised!';
 
 		// Body
-		$this->_body = "An exception with the following message was raised:\n\n";
-		$this->_body .= "{$this->_message}\n\n";
-		$this->_body .= "Debug backtrace:\n\n";
+		$this->_body ="Dear admin,\n\n";
+		$this->_body .=
+			'An exception with the following message was raised in file ' .
+			$exception->getFile() . ' (Line: ' . $exception->getLine() . "):\n\n";
+
+		$this->_body .="==================================================\n\n";
+		$this->_body .= " {$this->_message}\n";
+		$this->_body .="==================================================\n\n";
 
 		// Debug Backtrace
-		foreach ($exception->getTrace() as $trace) {
-				$this->_body .=
-					"File: {$trace['file']} (Line: {$trace['line']})\n";
+		$this->_body .= "Debug backtrace:\n";
+		$this->_body .= "---------------\n\n";
 
-				if(isset($trace['class'])) {
-					$this->_body .=
-						"Method: {$trace['class']}::{$trace['function']}()\n";
-				} else {
-					$this->_body .= "Function: {$trace['function']}()\n";
-				}
+		if(count($exception->getTrace()) != 0) {
+			foreach ($exception->getTrace() as $trace) {
+					if(isset($trace['file'])) {
+						$this->_body .=
+							"File: {$trace['file']} (Line: {$trace['line']})\n";
+					}
+
+					if(isset($trace['class'])) {
+						$this->_body .=
+							"Method: {$trace['class']}::{$trace['function']}()\n";
+					} elseif(isset($trace['function'])) {
+						$this->_body .= "Function: {$trace['function']}()\n";
+					}
+			}
+		} else {
+			$this->_body .= 'File: ' . $exception->getFile() . ' (Line: ' .
+				$exception->getLine() . ")\n";
+			$this->_body .= "Function: main()\n";
 		}
 
 		// Additional information
-		$this->_body .= "\nAdditional information:\n\n";
+		$this->_body .= "\nAdditional information:\n";
+		$this->_body .= "----------------------\n\n";
 
 		foreach(array('HTTP_USER_AGENT', 'REQUEST_URI', 'HTTP_REFERER',
 			'REMOTE_ADDR', 'SERVER_ADDR') as $key) {
 
 			if(isset($_SERVER[$key]) && $_SERVER[$key] != '' ) {
 				$this->_body .=
-					str_replace('_', ' ', $key) . ": {$_SERVER["$key"]}\n";
+					ucwords(strtolower(str_replace('_', ' ', $key))) .
+						": {$_SERVER["$key"]}\n";
 			}
 		}
 
-		$this->_body .= "\n---------------------------------------\n";
+		$this->_body .= "\n______________________________________________\n";
 		$this->_body .= self::NAME . "\n";
-		$this->_body = wordwrap($this->_body, 80);
+		$this->_body = wordwrap($this->_body, 70, "\n");
 	}
 }
