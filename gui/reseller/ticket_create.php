@@ -78,8 +78,14 @@ function send_user_message(&$sql, $user_id, $user_created_by) {
 			(?, ?, ?, ?, ?, ?, ?, ?, ?)
 	";
 
-	$rs = exec_query($sql, $query, array($ticket_level,	$user_id, $user_created_by,
-			$ticket_status,	$ticket_reply, $urgency, $ticket_date, $subject, $user_message));
+	exec_query(
+		$sql,
+		$query,
+		array(
+			$ticket_level, $user_id, $user_created_by, $ticket_status,
+			$ticket_reply, $urgency, $ticket_date, $subject, $user_message
+		)
+	);
 
 	set_page_message(tr('Message was sent.'));
 	send_tickets_msg($user_created_by, $user_id, $subject, $user_message, $ticket_reply, $urgency);

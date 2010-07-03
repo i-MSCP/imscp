@@ -135,10 +135,19 @@ function init_empty_data() {
  * Show data fields
  */
 function gen_al_page(&$tpl, $reseller_id) {
-	global $cr_user_id, $alias_name, $domain_ip, $forward, $forward_prefix, $mount_point;
+	// NXW Some unused variables so...
+	/*
+	global $cr_user_id, $alias_name, $domain_ip, $forward, $forward_prefix,
+	$mount_point;
+	*/
+
+	global $alias_name, $forward, $forward_prefix, $mount_point;
+
 	$sql = ispCP_Registry::get('Db');
 	$cfg = ispCP_Registry::get('Config');
 
+	// NXW: Unused variables so...
+	/*
 	list($udmn_current, $udmn_max, $udmn_uf,
 		$usub_current, $usub_max, $usub_uf,
 		$uals_current, $uals_max, $uals_uf,
@@ -149,7 +158,11 @@ function gen_al_page(&$tpl, $reseller_id) {
 		$utraff_current, $utraff_max, $utraff_uf,
 		$udisk_current, $udisk_max, $udisk_uf
 	) = generate_reseller_user_props($reseller_id);
+	*/
+	list(,,,,,,$uals_current) = generate_reseller_user_props($reseller_id);
 
+	// NXW: Unused variables so ...
+	/*
 	list($rdmn_current, $rdmn_max,
 		$rsub_current, $rsub_max,
 		$rals_current, $rals_max,
@@ -160,6 +173,8 @@ function gen_al_page(&$tpl, $reseller_id) {
 		$rtraff_current, $rtraff_max,
 		$rdisk_current, $rdisk_max
 	) = get_reseller_default_props($sql, $reseller_id);
+	*/
+	list(,,,,,$rals_max) = get_reseller_default_props($sql, $reseller_id);
 
 	if ($uals_current >= $rals_max && $rals_max != "0") {
 		$_SESSION['almax'] = '_yes_';
@@ -225,11 +240,14 @@ function gen_al_page(&$tpl, $reseller_id) {
 } // End of gen_al_page()
 
 function add_domain_alias(&$sql, &$err_al) {
-	global $cr_user_id, $alias_name, $domain_ip, $forward, $forward_prefix, $mount_point;
-	global $validation_err_msg;
+
+	global $cr_user_id, $alias_name, $domain_ip, $forward, $forward_prefix,
+		$mount_point, $validation_err_msg;
 	$cfg = ispCP_Registry::get('Config');
 
-	$cr_user_id = $dmn_id = $_POST['usraccounts'];
+	// NXW: Unused variable so...
+	// $cr_user_id = $dmn_id = $_POST['usraccounts'];
+	$cr_user_id = $_POST['usraccounts'];
 
 	// Should be perfomed after domain names syntax validation now
 	//$alias_name = encode_idna(strtolower($_POST['ndomain_name']));

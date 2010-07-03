@@ -70,12 +70,14 @@ function save_layout() {
 			WHERE
 				`user_id` = ?
 		";
-		$rs = exec_query($sql, $query, array($user_layout, $user_id));
+
+		// NXW: Unused variable so...
+		//$rs = exec_query($sql, $query, array($user_layout, $user_id));
+		exec_query($sql, $query, array($user_layout, $user_id));
 		$theme_color = $user_layout;
 		$_SESSION['user_theme_color'] = $user_layout;
 	}
 }
-
 
 function update_logo() {
 
@@ -123,7 +125,7 @@ function update_logo() {
 		}
 
 		// get the size of the image to prevent over large images
-		list($fwidth, $fheight, $ftype, $fattr) = getimagesize($fname);
+		list($fwidth, $fheight) = getimagesize($fname);
 		if ($fwidth > 195 || $fheight > 195) {
 			set_page_message(tr('Images have to be smaller than 195 x 195 pixels!'));
 			return;
@@ -151,7 +153,8 @@ function update_user_gui_props($file_name, $user_id) {
 		WHERE
 			`user_id` = ?
 	";
-	$rs = exec_query($sql, $query, array($file_name, $user_id));
+
+	exec_query($sql, $query, array($file_name, $user_id));
 }
 
 $tpl->assign(

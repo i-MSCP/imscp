@@ -151,12 +151,17 @@ gen_editdomain_page($tpl);
  * Load data from sql
  */
 function load_user_data($user_id, $domain_id) {
+
+	// NXW: Some unused variables so...
+	/*
 	global $domain_name, $domain_expires, $domain_ip, $php_sup;
 	global $cgi_supp , $sub, $als;
 	global $mail, $ftp, $sql_db;
 	global $sql_user, $traff, $disk;
 	global $username;
 	global $dns_supp;
+	*/
+	global $sub, $als, $mail, $ftp, $sql_db, $sql_user, $traff, $disk;
 	
 	$sql = ispCP_Registry::get('Db');
 
@@ -179,6 +184,8 @@ function load_user_data($user_id, $domain_id) {
 		user_goto('users.php');
 	}
 
+	// NXW: Unused variables so...
+	/*
 	list($a, $sub,
 		$b, $als,
 		$c, $mail,
@@ -186,7 +193,10 @@ function load_user_data($user_id, $domain_id) {
 		$e, $sql_db,
 		$f, $sql_user,
 		$traff, $disk
-	) = generate_user_props($domain_id);;
+	) = generate_user_props($domain_id);
+	*/
+	list(,$sub,,$als,,$mail,,$ftp,,$sql_db,,$sql_user,$traff,$disk) =
+		generate_user_props($domain_id);
 
 	load_additional_data($user_id, $domain_id);
 } // End of load_user_data()
@@ -386,12 +396,10 @@ function gen_editdomain_page(&$tpl) {
  * Check input data
  */
 function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
-	global $sub, $als, $mail, $ftp;
-	global $sql_db, $sql_user, $traff;
-	global $disk, $sql, $domain_ip, $domain_php;
-	global $domain_cgi, $allowbackup;
-	global $domain_dns;
-	global $domain_expires, $domain_new_expire;
+
+	global $sub, $als, $mail, $ftp, $sql_db, $sql_user, $traff, $disk, $sql,
+		$domain_php, $domain_cgi, $allowbackup, $domain_dns, $domain_expires,
+		$domain_new_expire;
 
 	$domain_new_expire = clean_input($_POST['dmn_expire']);
 	$sub 			= clean_input($_POST['dom_sub']);
@@ -402,6 +410,7 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 	$sql_user 		= clean_input($_POST['dom_sql_users']);
 	$traff 			= clean_input($_POST['dom_traffic']);
 	$disk 			= clean_input($_POST['dom_disk']);
+
 	// $domain_ip = $_POST['domain_ip'];
 	$domain_php		= preg_replace("/\_/", "", $_POST['domain_php']);
 	$domain_cgi		= preg_replace("/\_/", "", $_POST['domain_cgi']);
@@ -488,8 +497,11 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 		$rsql_user_current, $rsql_user_max,
 		$rtraff_current, $rtraff_max,
 		$rdisk_current, $rdisk_max
-	) = get_reseller_default_props($sql, $reseller_id); //generate_reseller_props($reseller_id);
-	list($a, $b, $c, $d, $e, $f, $utraff_current, $udisk_current, $i, $h) = generate_user_traffic($user_id);
+	) = get_reseller_default_props($sql, $reseller_id);
+
+	// NXW: Unused variables so...
+	//list($a, $b, $c, $d, $e, $f, $utraff_current, $udisk_current, $i, $h) = generate_user_traffic($user_id);
+	list(,,,,,,$utraff_current, $udisk_current) = generate_user_traffic($user_id);
 
 	if (empty($ed_error)) {
 		calculate_user_dvals($sub, $usub_current, $usub_max, $rsub_current, $rsub_max, $ed_error, tr('Subdomain'));

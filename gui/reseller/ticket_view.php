@@ -181,9 +181,12 @@ function get_ticket_from(&$tpl, &$sql, &$ticket_id) {
 
 	$rs = exec_query($sql, $query, $ticket_id);
 	$ticket_from = $rs->fields['ticket_from'];
+	// NXW: Unused variables so...
+	/*
 	$ticket_to = $rs->fields['ticket_to'];
 	$ticket_status = $rs->fields['ticket_status'];
 	$ticket_reply = clean_html($rs->fields['ticket_reply']);
+	*/
 
 	$query = "
 		SELECT
@@ -199,7 +202,7 @@ function get_ticket_from(&$tpl, &$sql, &$ticket_id) {
 
 	$rs = exec_query($sql, $query, $ticket_from);
 	$from_user_name = decode_idna($rs->fields['admin_name']);
-	$admin_type = $rs->fields['admin_type'];
+	//$admin_type = $rs->fields['admin_type'];
 	$from_first_name = $rs->fields['fname'];
 	$from_last_name = $rs->fields['lname'];
 
@@ -312,6 +315,8 @@ function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id, &$screenwi
 	send_tickets_msg($ticket_from, $ticket_to, $subject, $user_message, $ticket_reply, $urgency);
 }
 
+// NXW: Not used !
+/*
 function get_send_to_who(&$sql, &$ticket_reply) {
 
 	$query = "
@@ -336,8 +341,9 @@ function get_send_to_who(&$sql, &$ticket_reply) {
 	";
 
 	$rs = exec_query($sql, $query, $ticket_from);
-	$admin_type = $rs->fields['admin_type'];
+	//$admin_type = $rs->fields['admin_type'];
 }
+*/
 
 function close_ticket($sql, $ticket_id) {
 
@@ -350,7 +356,7 @@ function close_ticket($sql, $ticket_id) {
 			`ticket_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, $ticket_id);
+	exec_query($sql, $query, $ticket_id);
 
 	set_page_message(tr('Ticket was closed!'));
 }

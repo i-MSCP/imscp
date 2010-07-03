@@ -222,23 +222,30 @@ function get_empty_au1_page(&$tpl) {
 function get_data_au1_page(&$tpl) {
 	global $dmn_name; // Domain name
 	global $dmn_expire; // Domain expire date
-	global $dmn_chp; // choosed hosting plan;
+	//global $dmn_chp; // choosed hosting plan;
 	global $dmn_pt; // personal template
 	
 	$cfg = ispCP_Registry::get('Config');
 
 	$tpl->assign(
 		array(
-			'DMN_NAME_VALUE'		=> tohtml($dmn_name),
-			'CHTPL1_VAL'			=> $dmn_pt === "_yes_" ? $cfg->HTML_CHECKED : '',
-			'CHTPL2_VAL'			=> $dmn_pt === "_yes_" ? '' : $cfg->HTML_CHECKED,
-			'EXPIRE_NEVER_SET'		=> ($dmn_expire === '0') ? $cfg->HTML_SELECTED : '',
-			'EXPIRE_1_MONTH_SET'	=> ($dmn_expire === '1') ? $cfg->HTML_SELECTED : '',
-			'EXPIRE_2_MONTH_SET'	=> ($dmn_expire === '2') ? $cfg->HTML_SELECTED : '',
-			'EXPIRE_3_MONTH_SET'	=> ($dmn_expire === '3') ? $cfg->HTML_SELECTED : '',
-			'EXPIRE_6_MONTH_SET'	=> ($dmn_expire === '6') ? $cfg->HTML_SELECTED : '',
-			'EXPIRE_1_YEAR_SET'		=> ($dmn_expire === '12') ? $cfg->HTML_SELECTED : '',
-			'EXPIRE_2_YEARS_SET'	=> ($dmn_expire === '24') ? $cfg->HTML_SELECTED : '',
+			'DMN_NAME_VALUE' => tohtml($dmn_name),
+			'CHTPL1_VAL' => $dmn_pt === "_yes_" ? $cfg->HTML_CHECKED : '',
+			'CHTPL2_VAL' => $dmn_pt === "_yes_" ? '' : $cfg->HTML_CHECKED,
+			'EXPIRE_NEVER_SET' =>
+				($dmn_expire === '0') ? $cfg->HTML_SELECTED : '',
+			'EXPIRE_1_MONTH_SET' =>
+				($dmn_expire === '1') ? $cfg->HTML_SELECTED : '',
+			'EXPIRE_2_MONTH_SET' =>
+				($dmn_expire === '2') ? $cfg->HTML_SELECTED : '',
+			'EXPIRE_3_MONTH_SET' =>
+				($dmn_expire === '3') ? $cfg->HTML_SELECTED : '',
+			'EXPIRE_6_MONTH_SET' =>
+				($dmn_expire === '6') ? $cfg->HTML_SELECTED : '',
+			'EXPIRE_1_YEAR_SET' =>
+				($dmn_expire === '12') ? $cfg->HTML_SELECTED : '',
+			'EXPIRE_2_YEARS_SET' =>
+				($dmn_expire === '24') ? $cfg->HTML_SELECTED : '',
 		)
 	);
 } // End of get_data_au1_page()

@@ -169,9 +169,9 @@ $res = exec_query($sql, $query, array(
 		$street_two, $customer_id)
 );
 
-print $sql->ErrorMsg();
+print $sql->errorMsg();
 
-$record_id = $sql->Insert_ID();
+$record_id = $sql->insertId();
 
 $query = "
 	SELECT
@@ -215,7 +215,8 @@ $res = exec_query($sql, $query, array($dmn_user_name, $record_id, $reseller_id,
 		$mail, $ftp, $traff, $sql_db, $sql_user, $status, $sub, $als, $domain_ip,
 		$disk, $php, $cgi, $backup,	$dns)
 );
-$dmn_id = $sql->Insert_ID();
+
+$dmn_id = $sql->insertId();
 
 // Add statistics group
 $query = "
@@ -227,7 +228,7 @@ $query = "
 $rs = exec_query($sql, $query, array($dmn_id, $dmn_user_name,
 	 	crypt_user_pass_with_salt($password), $status));
 
-$user_id = $sql->Insert_ID();
+$user_id = $sql->insertId();
 
 $awstats_auth = $cfg->AWSTATS_GROUP_AUTH;
 

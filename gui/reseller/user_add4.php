@@ -251,8 +251,8 @@ function gen_al_page(&$tpl, $reseller_id) {
 } // End of gen_al_page()
 
 function add_domain_alias(&$sql, &$err_al) {
-	global $cr_user_id, $alias_name, $domain_ip, $forward, $forward_prefix, $mount_point, $tpl;
-	global $validation_err_msg;
+	global $cr_user_id, $alias_name, $domain_ip, $forward, $forward_prefix,
+		$mount_point, $validation_err_msg;
 
 	$cfg = ispCP_Registry::get('Config');
 	
@@ -268,9 +268,6 @@ function add_domain_alias(&$sql, &$err_al) {
 		$forward = 'no';
 		$forward_prefix = '';
 	}
-
-	// Should be perfomed after domain names syntax validation now
-	//$alias_name = encode_idna($alias_name);
 
 	// Check if input string is a valid domain names
 	if (!validates_dname($alias_name)) {

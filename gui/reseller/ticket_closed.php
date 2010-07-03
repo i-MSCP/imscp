@@ -139,7 +139,7 @@ SQL_QUERY;
 		while (!$rs->EOF) {
 			$ticket_id		= $rs->fields['ticket_id'];
 			$ticket_urgency = $rs->fields['ticket_urgency'];
-			$ticket_status	= $rs->fields['ticket_status'];
+			//$ticket_status	= $rs->fields['ticket_status'];
 			$date			= ticketGetLastDate($sql, $ticket_id);
 
 			$tpl->assign(array('URGENCY' => get_ticket_urgency($ticket_urgency)));

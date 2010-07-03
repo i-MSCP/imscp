@@ -171,12 +171,9 @@ function init_in_values() {
  * generate page add user 3
  */
 function gen_user_add3_page(&$tpl) {
-	global $dmn_name, $dmn_expire, $hpid, $dmn_user_name;
-	global $user_email, $customer_id, $first_name;
-	global $last_name, $gender, $firm, $zip;
-	global $city, $state, $country, $street_one;
-	global $street_two, $mail, $phone;
-	global $fax;
+	global $dmn_name, $hpid, $dmn_user_name, $user_email, $customer_id,
+		$first_name, $last_name, $gender, $firm, $zip, $city, $state, $country,
+		$street_one, $street_two, $mail, $phone, $fax;
 	
 	$cfg = ispCP_Registry::get('Config');
 
@@ -215,10 +212,10 @@ function gen_user_add3_page(&$tpl) {
  * Init global value with empty values
  */
 function gen_empty_data() {
-	global $user_email, $customer_id, $first_name;
-	global $last_name, $gender, $firm, $zip;
-	global $city, $state, $country, $street_one;
-	global $street_two, $mail, $phone, $fax;
+
+	global $user_email, $customer_id, $first_name, $last_name, $gender, $firm,
+		$zip, $city, $state, $country, $street_one, $street_two, $mail, $phone,
+		$fax, $domain_ip;
 
 	$user_email		= '';
 	$customer_id	= '';
@@ -410,7 +407,7 @@ function add_user_data($reseller_id) {
 			(?, ?, ?, ?)
 	";
 
-	$rs = exec_query($sql, $query,
+	exec_query($sql, $query,
 			array(
 				$dmn_id, $dmn_name,
 				crypt_user_pass_with_salt($pure_user_pass), $cfg->ITEM_ADD_STATUS
@@ -426,7 +423,13 @@ function add_user_data($reseller_id) {
 			(?, ?, ?, ?)
 	";
 
-	$rs = exec_query($sql, $query, array($dmn_id, $cfg->AWSTATS_GROUP_AUTH, $user_id, $cfg->ITEM_ADD_STATUS));
+	exec_query(
+		$sql,
+		$query,
+		array(
+			$dmn_id, $cfg->AWSTATS_GROUP_AUTH, $user_id, $cfg->ITEM_ADD_STATUS
+		)
+	);
 
 	// Create the 3 default addresses if wanted
 	if ($cfg->CREATE_DEFAULT_EMAIL_ADDRESSES) {

@@ -232,12 +232,9 @@ function load_user_data_page($user_id) {
  * Show user data
  */
 function gen_edituser_page(&$tpl) {
-	global $dmn_user_name;
-	global $user_email, $customer_id, $first_name;
-	global $last_name, $firm, $zip, $gender;
-	global $city, $state, $country, $street_one;
-	global $street_two, $mail, $phone;
-	global $fax;
+	global $dmn_user_name, $user_email, $customer_id, $first_name, $last_name,
+		$firm, $zip, $gender, $city, $state, $country, $street_one, $street_two,
+		$phone, $fax;
 	
 	$cfg = ispCP_Registry::get('Config');
 
@@ -248,23 +245,23 @@ function gen_edituser_page(&$tpl) {
 	// Fill in the fields
 	$tpl->assign(
 		array(
-			'VL_USERNAME'		=> tohtml(decode_idna($dmn_user_name)),
-			'VL_MAIL'			=> empty($user_email) ? '' : tohtml($user_email),
-			'VL_USR_ID'			=> empty($customer_id) ? '' : tohtml($customer_id),
-			'VL_USR_NAME'		=> empty($first_name) ? '' : tohtml($first_name),
-			'VL_LAST_USRNAME'	=> empty($last_name) ? '' : tohtml($last_name),
-			'VL_USR_FIRM'		=> empty($firm) ? '' : tohtml($firm),
-			'VL_USR_POSTCODE'	=> empty($zip) ? '' : tohtml($zip),
-			'VL_USRCITY'		=> empty($city) ? '' : tohtml($city),
-			'VL_USRSTATE'		=> empty($state) ? '' : tohtml($state),
-			'VL_COUNTRY'		=> empty($country) ? '' : tohtml($country),
-			'VL_STREET1'		=> empty($street_one) ? '' : tohtml($street_one),
-			'VL_STREET2'		=> empty($street_two) ? '' : tohtml($street_two),
-			'VL_MALE'			=> ($gender == 'M') ? $cfg->HTML_SELECTED : '',
-			'VL_FEMALE'			=> ($gender == 'F') ? $cfg->HTML_SELECTED : '',
-			'VL_UNKNOWN'		=> ($gender == 'U') ? $cfg->HTML_SELECTED : '',
-			'VL_PHONE'			=> empty($phone) ? '' : tohtml($phone),
-			'VL_FAX'			=> empty($fax) ? '' : tohtml($fax)
+			'VL_USERNAME' => tohtml(decode_idna($dmn_user_name)),
+			'VL_MAIL' => empty($user_email) ? '' : tohtml($user_email),
+			'VL_USR_ID' => empty($customer_id) ? '' : tohtml($customer_id),
+			'VL_USR_NAME' => empty($first_name) ? '' : tohtml($first_name),
+			'VL_LAST_USRNAME' => empty($last_name) ? '' : tohtml($last_name),
+			'VL_USR_FIRM' => empty($firm) ? '' : tohtml($firm),
+			'VL_USR_POSTCODE' => empty($zip) ? '' : tohtml($zip),
+			'VL_USRCITY' => empty($city) ? '' : tohtml($city),
+			'VL_USRSTATE' => empty($state) ? '' : tohtml($state),
+			'VL_COUNTRY' => empty($country) ? '' : tohtml($country),
+			'VL_STREET1' => empty($street_one) ? '' : tohtml($street_one),
+			'VL_STREET2' => empty($street_two) ? '' : tohtml($street_two),
+			'VL_MALE' => ($gender == 'M') ? $cfg->HTML_SELECTED : '',
+			'VL_FEMALE' => ($gender == 'F') ? $cfg->HTML_SELECTED : '',
+			'VL_UNKNOWN' => ($gender == 'U') ? $cfg->HTML_SELECTED : '',
+			'VL_PHONE' => empty($phone) ? '' : tohtml($phone),
+			'VL_FAX' => empty($fax) ? '' : tohtml($fax)
 		)
 	);
 
@@ -278,13 +275,9 @@ function gen_edituser_page(&$tpl) {
  */
 function update_data_in_db($hpid) {
 
-	global $dmn_user_name;
-	global $user_email, $customer_id, $first_name;
-	global $last_name, $firm, $zip, $gender;
-	global $city, $state, $country, $street_one;
-	global $street_two, $mail, $phone;
-	global $fax, $inpass, $domain_ip;
-	global $admin_login;
+	global $dmn_user_name, $user_email, $customer_id, $first_name, $last_name,
+		$firm, $zip, $gender, $city, $state, $country, $street_one, $street_two,
+		$mail, $phone, $fax, $inpass, $admin_login;
 	
 	$sql = ispCP_Registry::get('Db');
 	$cfg = ispCP_Registry::get('Config');

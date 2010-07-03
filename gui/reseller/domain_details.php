@@ -136,7 +136,10 @@ function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
 	$created_by = $_SESSION['user_id'];
 	$query = "SELECT `admin_name` FROM `admin` WHERE `admin_id` = ? AND `created_by` = ?";
 	$res1 = exec_query($sql, $query, array($data['domain_admin_id'], $created_by));
-	$data1 = $res1->fetchRow();
+
+	// NXW: Unused variable so...
+	// $data1 = $res1->fetchRow();
+	$res1->fetchRow();
 	if ($res1->recordCount() <= 0) {
 		user_goto('users.php');
 	}
@@ -168,20 +171,25 @@ function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
 	$dtraff = $res7->fetchRow();
 
 	$sumtraff = $dtraff['dtraff_web'] + $dtraff['dtraff_ftp'] + $dtraff['dtraff_mail'] + $dtraff['dtraff_pop'];
-	$dtraffmb = sprintf("%.1f", ($sumtraff / 1024) / 1024);
 
+	// NXW: Unused variables so ...
+	/*
+	$dtraffmb = sprintf("%.1f", ($sumtraff / 1024) / 1024);
 	$month = date("m");
 	$year = date("Y");
+	*/
 
 	$query = "SELECT * FROM `server_ips` WHERE `ip_id` = ?";
 	$res8 = exec_query($sql, $query, $data['domain_ip_id']);
 	$ipdat = $res8->fetchRow();
 
 	$domain_traffic_limit = $data['domain_traffic_limit'];
-	$domain_all_traffic = $sumtraff; //$dtraff['traffic'];
+	$domain_all_traffic = $sumtraff;
 
 	$traff = ($domain_all_traffic / 1024) / 1024;
-	$mtraff = sprintf("%.2f", $traff);
+
+	// NXW: Unused variable so ...
+	// $mtraff = sprintf("%.2f", $traff);
 
 	if ($domain_traffic_limit == 0) {
 		$pr = 0;
@@ -190,9 +198,15 @@ function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
 		$pr = sprintf("%.2f", $pr);
 	}
 
-	$indx = (int)$pr;
+	// NXW: Unused variable so ...
+	//$indx = (int) $pr;
 
-	list($traffic_percent, $indx, $a) = make_usage_vals($domain_all_traffic, $domain_traffic_limit * 1024 * 1024);
+	// NXW: Unused variables so ...
+	// list($traffic_percent, $indx, $a) = make_usage_vals($domain_all_traffic, $domain_traffic_limit * 1024 * 1024);
+	list($traffic_percent) = make_usage_vals(
+		$domain_all_traffic, $domain_traffic_limit * 1024 * 1024
+	);
+
 	// Get disk status
 	$domdu = $data['domain_disk_usage'];
 	$domdl = $data['domain_disk_limit'];
@@ -208,10 +222,14 @@ function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
 		$dpr = sprintf("%.2f", $dpr);
 	}
 
-	$dindx = (int) $dpr;
+	// NXW: Unused variable so ...
+	// $dindx = (int) $dpr;
 	$domduh = sizeit($domdu);
 
-	list($disk_percent, $dindx, $b) = make_usage_vals($domdu, $domdl * 1024 * 1024);
+	// NXW: Unused variables so ...
+	// list($disk_percent, $dindx, $b) = make_usage_vals($domdu, $domdl * 1024 * 1024);
+	list($disk_percent) = make_usage_vals($domdu, $domdl * 1024 * 1024);
+
 	// Get current mail count
 	$query = "SELECT COUNT(`mail_id`) AS mcnt "
 			. "FROM `mail_users` "

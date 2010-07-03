@@ -186,9 +186,12 @@ function get_ticket_from(&$tpl, &$sql, &$ticket_id) {
 
 	$rs = exec_query($sql, $query, $ticket_id);
 	$ticket_from = $rs->fields['ticket_from'];
+	// NXW: Unused variables so...
+	/*
 	$ticket_to = $rs->fields['ticket_to'];
 	$ticket_status = $rs->fields['ticket_status'];
 	$ticket_reply = clean_html($rs->fields['ticket_reply']);
+	*/
 
 	$query = "
 		SELECT
@@ -204,7 +207,7 @@ function get_ticket_from(&$tpl, &$sql, &$ticket_id) {
 
 	$rs = exec_query($sql, $query, $ticket_from);
 	$from_user_name = decode_idna($rs->fields['admin_name']);
-	$admin_type = $rs->fields['admin_type'];
+	// $admin_type = $rs->fields['admin_type'];
 	$from_first_name = $rs->fields['fname'];
 	$from_last_name = $rs->fields['lname'];
 

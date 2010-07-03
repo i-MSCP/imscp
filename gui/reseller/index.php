@@ -153,6 +153,8 @@ function generate_page_data(&$tpl, $reseller_id, $reseller_name) {
 		) = array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 	}
 
+	// NXW: Unused variables so...
+	/*
 	list($udmn_current, $udmn_max, $udmn_uf,
 		$usub_current, $usub_max, $usub_uf,
 		$uals_current, $uals_max, $uals_uf,
@@ -163,6 +165,13 @@ function generate_page_data(&$tpl, $reseller_id, $reseller_name) {
 		$utraff_current, $utraff_max, $utraff_uf,
 		$udisk_current, $udisk_max, $udisk_uf
 	) = generate_reseller_user_props($reseller_id);
+	*/
+
+	list($udmn_current,,,$usub_current,,,$uals_current,,,$umail_current,,,
+		$uftp_current,,,$usql_db_current,,,$usql_user_current,,,$utraff_current,
+		$utraff_max,,$udisk_current, $udisk_max
+	) = generate_reseller_user_props($reseller_id);
+
 	// Convert into MB values
 	$rtraff_max = $rtraff_max * 1024 * 1024;
 
@@ -178,7 +187,8 @@ function generate_page_data(&$tpl, $reseller_id, $reseller_name) {
 
 	list($traff_percent, $traff_red, $traff_green) = make_usage_vals($utraff_current, $rtraff_max);
 
-	list($disk_percent, $disk_red, $disk_green) = make_usage_vals($udisk_current, $rdisk_max);
+	// NXW: Unused variables so ...
+	// list($disk_percent, $disk_red, $disk_green) = make_usage_vals($udisk_current, $rdisk_max);
 
 	gen_traff_usage($tpl, $utraff_current, $rtraff_max, 400);
 

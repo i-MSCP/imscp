@@ -190,6 +190,7 @@ function generate_page(&$tpl, $reseller_id, $reseller_name) {
 }
 
 function generate_domain_entry(&$tpl, $user_id, $row) {
+
 	global $crnt_month, $crnt_year;
 
 	list($domain_name,
@@ -199,9 +200,7 @@ function generate_domain_entry(&$tpl, $user_id, $row) {
 		$smtp,
 		$pop3,
 		$utraff_current,
-		$udisk_current,
-		$i,
-		$j
+		$udisk_current
 	) = generate_user_traffic($user_id);
 
 	list($usub_current, $usub_max,

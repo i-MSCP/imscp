@@ -215,13 +215,15 @@ function gen_editalias_page(&$tpl, $edit_id) {
  * Check input data
  */
 function check_fwd_data(&$tpl, $alias_id) {
+
 	$sql = ispCP_Registry::get('Db');
 	$cfg = ispCP_Registry::get('Config');
 
 	$forward_url = strtolower(clean_input($_POST['forward']));
 	// unset errors
 	$ed_error = '_off_';
-	$admin_login = '';
+	// NXW: Unused variable so...
+	// $admin_login = '';
 
 	if (isset($_POST['status']) && $_POST['status'] == 1) {
 		$forward_prefix = clean_input($_POST['forward_prefix']);
@@ -288,8 +290,11 @@ function check_fwd_data(&$tpl, $alias_id) {
 
 		send_request();
 
+		// NXW: oh my god... Should be review...
+		/*
 		$admin_login = $_SESSION['user_logged'];
 		write_log("$admin_login: changes domain alias forward: " . $rs->fields['t1.alias_name']);
+		*/
 		unset($_SESSION['edit_ID']);
 		$tpl->assign('MESSAGE', "");
 		return true;

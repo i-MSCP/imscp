@@ -131,7 +131,6 @@ unset_messages();
 // Begin function block
 
 function generate_users_list(&$tpl, $admin_id) {
-	global $externel_event;
 
 	$sql = ispCP_Registry::get('Db');
 	$cfg = ispCP_Registry::get('Config');
@@ -336,7 +335,8 @@ function generate_users_list(&$tpl, $admin_id) {
 }
 
 function check_externel_events(&$tpl) {
-	global $user_add3_added, $externel_event, $edit, $es_sbmt, $user_has_domain, $user_deleted;
+
+	global $externel_event;
 
 	if (isset($_SESSION["user_add3_added"])) {
 		if ($_SESSION["user_add3_added"] === '_yes_') {
