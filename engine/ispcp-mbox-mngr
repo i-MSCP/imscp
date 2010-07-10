@@ -44,23 +44,60 @@ sub mbox_get_dmn_full_name {
 	push_el(\@main::el, 'mbox_get_dmn_full_name()', 'Starting...');
 
 	if (!defined($mbox_data) || $mbox_data eq '') {
-		push_el(\@main::el, 'mbox_get_dmn_full_name()', 'ERROR: Undefined Input Data...');
+		push_el(\@main::el, 'mbox_get_dmn_full_name()', 
+			'ERROR: Undefined Input Data...');
 		return (-1,'');
 	}
 
-	my ($rs, $rows, $dmn_full, $entry) = ( undef, undef, undef, undef);
+	my ($rs, $rows, $dmn_full, $entry, $sql) = (undef, undef, undef, undef, '');
 
 	my $mail_dmn_id = @$mbox_data[4];
 	my $mail_type   = @$mbox_data[5];
 	my $mail_sub_id = @$mbox_data[6];
-
-	my $sql = "
-		SELECT
-			`domain_name`
-		FROM
-			`domain`
-		WHERE
-			`domain_id` = " . $mail_dmn_id;
+	
+	if ($mail_sub_id == 0) {
+	
+		$sql = "
+			SELECT
+				`domain_name`
+			FROM
+				`domain`
+			WHERE
+				`domain_id` = " . $mail_dmn_id;
+	} else {
+		if ($mail_type =~ /.*alias_(mail|forward|catchall).*/) {
+			$sql = "SELECT
+				`alias_name`
+			FROM
+				`domain_aliasses`
+			WHERE
+				`alias_id` = " . $mail_sub_id;
+		} elsif ($mail_type =~ /.*subdom_(mail|forward|catchall).*/) {
+			$sql = "SELECT
+				CONCAT(`subdomain`.`subdomain_name`, '.', 
+					`domain`.`domain_name`) AS `domain_name`
+			FROM
+				`subdomain`
+			LEFT JOIN	
+				`domain`
+			ON (
+				`subdomain`.`domain_id` = `domain`.`domain_id`
+			) WHERE
+				`subdomain`.`subdomain_id` = ". $mail_sub_id;
+		} else { # $mail_type = alssub_(mail|forward|catchall)
+			$sql = "SELECT
+				CONCAT(`subdomain_alias`.`subdomain_alias_name`, '.', 
+					`domain_aliasses`.`alias_name`) AS `domain_name`
+			FROM
+				`subdomain_alias`
+			LEFT JOIN
+				`domain_aliasses`
+			ON (
+				`subdomain_alias`.`alias_id` = `domain_aliasses`.`alias_id`
+			) WHERE
+				`subdomain_alias`.`subdomain_alias_id` = " . $mail_dmn_id;
+		}
+	}	
 
 	($rs, $rows) = doSQL($sql);
 	return ($rs,'') if ($rs != 0);
@@ -323,8 +360,7 @@ sub mbox_add_sasl_data {
 		return $rs if ($rs != 0);
 
 		# Saving the current sender-access file if it exits
-		if(-e $main::cfg{'MTA_SENDER_ACCESS_HASH'})
-		{
+		if(-e $main::cfg{'MTA_SENDER_ACCESS_HASH'})	{
 			my $timestamp = time;
 
 			$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'MTA_SENDER_ACCESS_HASH'} $bkp_dir/sender-access.$timestamp";
@@ -353,7 +389,7 @@ sub mbox_add_sasl_data {
 
 	push_el(\@main::el, 'mbox_add_sasl_data()', 'Ending...');
 
-	0;
+	return 0;
 }
 
 sub mbox_add_po_data {
@@ -533,8 +569,7 @@ sub mbox_add_mta_cfg_autorespond_data {
 	}
 
 	# Saving all current production files it they exist
-	foreach($main::cfg{'MTA_VIRTUAL_ALIAS_HASH'}, $main::cfg{'MTA_TRANSPORT_HASH'})
-	{
+	foreach($main::cfg{'MTA_VIRTUAL_ALIAS_HASH'}, $main::cfg{'MTA_TRANSPORT_HASH'})	{
 		next if(!-e $_);
 		my ($fname) = /.*\/(.*)$/;
 
@@ -550,24 +585,18 @@ sub mbox_add_mta_cfg_autorespond_data {
 
 		$hash_key = "$mail_acc\@$dmn_name";
 
-		if ($mail_type =~ /.*_forward.*/)
-		{
+		if ($mail_type =~ /.*_forward.*/) {
 			$hash_value = undef;
 
 			($rs, $rdata) = get_mta_hash_value("$wrk_dir/aliases", $hash_key);
 			return $rs if ($rs != 0);
 
-			if ($rdata eq '')
-			{
+			if ($rdata eq '') {
 				$hash_value = "$mail_acc\@$dmn_name,$mail_acc\@ispcp-arpl.$dmn_name";
-			}
-			else
-			{
+			} else {
 				$hash_value = $rdata.",$mail_acc\@ispcp-arpl.$dmn_name";
 			}
-		}
-		else
-		{
+		} else {
 			$hash_value = "$mail_acc\@$dmn_name$mail_forward_list,$mail_acc\@ispcp-arpl.$dmn_name";
 
 			$rs = del_mta_hash_value("$wrk_dir/aliases", $hash_key);
@@ -981,7 +1010,8 @@ sub mbox_change_data {
 
 	if (!defined($mbox_data) || $mbox_data eq '') {
 
-		push_el(\@main::el, 'mbox_change_data()', 'ERROR: Undefined Input Data...');
+		push_el(\@main::el, 'mbox_change_data()', 
+			'ERROR: Undefined Input Data...');
 		return -1;
 
 	}
@@ -1434,7 +1464,7 @@ sub mbox_mngr_engine {
 			mail_id, mail_acc, mail_pass,
 			mail_forward, domain_id, mail_type,
 			sub_id, status, mail_auto_respond, quota,
-			mail_addr	FROM mail_users
+			mail_addr FROM mail_users
 		WHERE
 			mail_id = $main::mail_task_id
 	";
