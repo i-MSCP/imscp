@@ -25,7 +25,6 @@
  * @version		SVN: $Id$
  * @link		http://isp-control.net ispCP Home Site
  * @license		http://www.mozilla.org/MPL/ MPL 1.1
- * @filesource
  */
 
 /**
@@ -36,7 +35,6 @@ require_once  INCLUDEPATH . '/ispCP/Exception.php';
 /**
  * Exception used on production by ispCP_Exception_Handler
  *
- * @category	ispCP
  * @package		ispCP_Exception
  * @author		Laurent declercq <laurent.declercq@ispcp.net>
  * @since		1.0.6

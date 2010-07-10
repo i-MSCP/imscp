@@ -28,11 +28,16 @@
  */
 
 /**
- * ispCP default Exception
+ * @see ispCP_Exception
+ */
+require_once  INCLUDEPATH . '/ispCP/Exception.php';
+
+/**
+ * Exception used on production by ispCP_Exception_Handler
  *
  * @package		ispCP_Exception
- * @author		Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
+ * @author		Laurent declercq <laurent.declercq@ispcp.net>
  * @since		1.0.6
  * @version		1.0.0
  */
-class ispCP_Exception extends Exception {}
+class ispCP_Exception_Database extends ispCP_Exception {}

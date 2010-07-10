@@ -25,16 +25,15 @@
  * @version		SVN: $Id$
  * @link		http://isp-control.net ispCP Home Site
  * @license		http://www.mozilla.org/MPL/ MPL 1.1
- * @filesource
  */
 
 /**
  * This class wraps the creation and manipulation of the ispCP_Config_Handler
  * objects
  *
- * Important consideration:
+ * <b>Important consideration:</b>
  *
- * This class implement the Singleton design pattern, so, each type of
+ * This class implement the <i>Singleton design pattern</i>, so, each type of
  * {@link ispCP_Config_Handler} objects are instanciated only once.
  *
  * If you want use several instances of an ispCP_Config_Handler object (e.g: To
@@ -43,16 +42,17 @@
  * this class. Instead of this, register your own ispCP_Config_Handler objects
  * into the ispCP_Registry object to be able to use them from all contexts.
  *
- * Example:
- *
+ * <b>Usage example:</b>
+ * <code>
  * $parameters = array('PLUGIN_NAME' => 'billing', 'PLUGIN_VERSION' => '1.0.0');
  * ispCP_Registry::set('My_ConfigHandler', new ispCP_Config_Handler($parameters));
  *
- * From another context:
+ * // From another context:
  * 
  * $my_cfg = ispCP_Registry::get('My_ConfigHandler');
  * echo $my_cfg->PLUGIN_NAME; // billing
  * echo $my_cfg->PLUGIN_VERSION; // 1.0.0
+ * </code>
  *
  * See {@link ispCP_Registry} for more information.
  *
@@ -60,10 +60,9 @@
  * objects where the registered values (that are ispCP_Config_Handler objects)
  * are indexed by they class name.
  *
- * @category	ispCP
  * @package		ispCP_Config
  * @author		ispCP Team
- * @version		1.0.7
+ * @version		1.0.8
  */
 class Config {
 
@@ -98,7 +97,7 @@ class Config {
 	 * @throws ispCP_Exception
 	 * @param string $className ispCP_Config_Handler class name
 	 * @param mixed $params Parameters that are passed to ispCP_Config_Handler
-	 * 	object constructor
+	 * object constructor
 	 * @return ispCP_Config_Handler An ispCP_Config_Handler instance
 	 */
 	public static function getInstance($className = self::FILE, $params = null) {
@@ -133,7 +132,7 @@ class Config {
 	 * @see ispCP_Config_Handler::get()
 	 * @param string $index Configuration parameter key name
 	 * @param string $className ispCP_Config_Handler class name
-	 * @return Configuration parameter value
+	 * @return mixed Configuration parameter value
 	 */
 	public static function get($index, $className = self::FILE) {
 

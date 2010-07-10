@@ -26,7 +26,6 @@
  * @version		SVN: $Id$
  * @link		http://isp-control.net ispCP Home Site
  * @license		http://www.mozilla.org/MPL/ MPL 1.1
- * @filesource
  */
 
 /**
@@ -37,18 +36,18 @@ require_once  INCLUDEPATH . '/ispCP/Exception/Writer.php';
 /**
  * Exception Mail writer
  *
- * This writer writes a mail that contain the exception messages and some
- * debug backtrace information.
+ * This writer writes a mail that contain the exception messages and some debug
+ * backtrace information.
  *
- * Note: Will be improved later.
+ * <b>Note:</b> Will be improved later.
  *
  * @category	ispCP
  * @package		ispCP_Exception
  * @subpackage	Writer
  * @author		Laurent Declercq <laurent.declercq@ispcp.net>
  * @since		1.0.6
- * @version		1.0.2
- * @todo		Avoid sending multiple email for same exception
+ * @version		1.0.3
+ * @todo		Clean expired mails body footprint
  */
 class ispCP_Exception_Writer_Mail extends ispCP_Exception_Writer {
 
@@ -88,7 +87,13 @@ class ispCP_Exception_Writer_Mail extends ispCP_Exception_Writer {
 	protected $_body = '';
 
 	/**
-	 * Constructor - Create a new ispCP_Exception_Writer_Mail object
+	 * Mail body footprint
+	 * @var md5
+	 */
+	protected $_footPrint = '';
+
+	/**
+	 * Constructor - Create a new mail writer object
 	 *
 	 * @throws ispCP_Exception
 	 * @param string $to An valid adresse email
@@ -96,7 +101,7 @@ class ispCP_Exception_Writer_Mail extends ispCP_Exception_Writer {
 	 */
 	public function __construct($to) {
 
-		// filter_var() is only available with PHP >= 5.2
+		// filter_var() is only available in PHP >= 5.2
 		if(function_exists('filter_var')) {
 			$ret = filter_var($to, FILTER_VALIDATE_EMAIL);
 		} else {
@@ -115,26 +120,86 @@ class ispCP_Exception_Writer_Mail extends ispCP_Exception_Writer {
 	/**
 	 * This methods is called from the subject (i.e. when an event occur)
 	 *
-	 * @param ispCP_Exception_Handler $exceptionHandler ispCP_Exception_Handler
+	 * @param ispCP_Exception_Handler $exceptionHandler An ispCP_Exception_Handler
+	 * object
 	 * @return void
 	 */
 	public function update(SplSubject $exceptionHandler) {
 
 		$exception = $exceptionHandler->getException();
-		$this->_message = $exception->getMessage() ."\n";
+		$this->_message = $exception->getMessage() . "\n";
 		$this->prepareMail($exception);
 
-		$this->_write();
+		if(!$this->isAlreadySent()) {
+			$this->_write();
+			$this->_cacheMessage();
+		}
+	}
+
+	/**
+	 * Checks if the mail was already sent
+	 *
+	 * @return boolean TRUE if the message was already sent, FALSE otherwise
+	 * @todo Flat file for alternative storage
+	 */
+	protected function isAlreadySent() {
+
+		if(ispCP_Registry::isRegistered('Db_Config')) {
+			$config = ispCP_Registry::get('Db_Config');
+
+			if(isset($config->EXCEPTION_MESSAGES) &&
+				is_serialized($config->EXCEPTION_MESSAGES)) {
+
+				$cachedMsg = unserialize($config->EXCEPTION_MESSAGES);
+
+				if(array_key_exists($this->_footPrint, $cachedMsg) &&
+					$cachedMsg[$this->_footPrint] > strtotime('now')) {
+
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Creates the mail body footprint and expiration time
+	 *
+	 * Both footprint and expiration time are used to avoid multiple sending of
+	 * mail for the same exception raised in interval of 12 hours.
+	 *
+	 * @todo Flat file
+	 * @return void
+	 */
+	protected function _cacheMessage() {
+
+		if(ispCP_Registry::isRegistered('Db_Config')) {
+			$dbConfig = ispCP_Registry::get('Db_Config');
+
+			if(isset($dbConfig->EXCEPTION_MESSAGES) &&
+				is_serialized($dbConfig->EXCEPTION_MESSAGES)) {
+
+				$cachedMsg = unserialize($dbConfig->EXCEPTION_MESSAGES);
+			}
+
+			$cachedMsg[$this->_footPrint] = strtotime('+12 hour');
+			$dbConfig->EXCEPTION_MESSAGES = serialize($cachedMsg);
+		}
 	}
 
 	/**
 	 * Writes the mail
 	 *
-	 * @return void
+	 * @return boolean TRUE on sucess, FALSE otherwise
 	 */
 	protected function _write() {
 
-		mail($this->_to, $this->_subject, $this->_body, $this->_header);
+		if(mail($this->_to, $this->_subject, $this->_body, $this->_header)) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -206,5 +271,8 @@ class ispCP_Exception_Writer_Mail extends ispCP_Exception_Writer {
 		$this->_body .= "\n______________________________________________\n";
 		$this->_body .= self::NAME . "\n";
 		$this->_body = wordwrap($this->_body, 70, "\n");
+
+		// Get the mail body footprint
+		$this->_footPrint = md5($this->_body);
 	}
 }

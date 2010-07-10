@@ -26,7 +26,6 @@
  * @version		SVN: $Id$
  * @link		http://isp-control.net ispCP Home Site
  * @license		http://www.mozilla.org/MPL/ MPL 1.1
- * @filesource
  */
 
 /**
@@ -41,7 +40,6 @@ require_once  INCLUDEPATH . '/ispCP/Config/Handler.php';
  * stored in a flat file where each pair of key-values are separated by the
  * equal sign.
  *
- * @category	ispCP
  * @package		ispCP_Config
  * @subpackage	Handler
  * @author		Benedikt Heintel <benedikt.heintel@ispcp.net>
@@ -93,7 +91,7 @@ class ispCP_Config_Handler_File extends ispCP_Config_Handler {
 	 *
 	 * @throws ispCP_Exception
 	 * @return array A array that contain all Configuration parameters
-	 * @todo Don't use '@' error operator
+	 * @todo Don't use error operator
 	 */
 	protected function _parseFile() {
 

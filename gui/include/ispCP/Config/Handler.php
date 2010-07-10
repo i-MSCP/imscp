@@ -26,7 +26,6 @@
  * @version		SVN: $Id$
  * @link		http://isp-control.net ispCP Home Site
  * @license		http://www.mozilla.org/MPL/ MPL 1.1
- * @filesource
  */
 
 /**
@@ -42,7 +41,6 @@
  * - Via object properties
  * - Via setter and getter methods
  *
- * @category	ispCP
  * @package		ispCP_Config
  * @subpackage	Handler
  * @author		Laurent Declercq <laurent.declercq@ispcp.net>
@@ -133,7 +131,7 @@ class ispCP_Config_Handler implements ArrayAccess, Iterator {
 	}
 
 	/**
-	 * PHP Overloading for call isset() on inaccessible members.
+	 * PHP Overloading for call isset() on inaccessible members
 	 *
 	 * @param string Configuration parameter key name
 	 * @return boolean TRUE if configuration parameter exists, FALSE otherwise
@@ -177,7 +175,7 @@ class ispCP_Config_Handler implements ArrayAccess, Iterator {
 	 * object. All keys in this object that don't exist in the second object
 	 * will be left untouched.
 	 *
-	 * This method is not recursive.
+	 * <b>Note:</b> This method is not recursive.
 	 *
 	 * @param ispCP_Config_Handler $config ispCP_Config_Handler object
 	 * @return void
@@ -192,7 +190,7 @@ class ispCP_Config_Handler implements ArrayAccess, Iterator {
 	/**
 	 * Return an associative array that contain all configuration parameters
 	 *
-	 * @return array Array that contain configuration parameters
+	 * @return array Array that contains configuration parameters
 	 */
 	public function toArray() {
 

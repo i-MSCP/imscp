@@ -39,6 +39,13 @@
 abstract class ispcpUpdate {
 
 	/**
+	 * versionUpdate instance
+	 *
+	 * @var versionUpdate
+	 */
+	protected static $_instance = null;
+
+	/**
 	 * Version of the last update that was applied
 	 *
 	 * @var int
@@ -104,7 +111,7 @@ abstract class ispcpUpdate {
 
 		$rs = $sql->execute($query);
 
-		return	(int)$rs->fields['value'];
+		return	(int) $rs->fields['value'];
 	}
 
 	/**

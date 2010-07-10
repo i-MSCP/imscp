@@ -33,36 +33,35 @@
  * ispCP Exception Handler class
  *
  * This class is responsible to handle all uncaught exceptions. This class is an
- * observable subject. An object that implement {@link ispCP_Exception_Writer}
+ * observable subject. An object that implements {@link ispCP_Exception_Writer}
  * interface can listen events of this class. This class has only one event that
  * occurs when an uncaught exceptions is raised.
  *
- * What's the event:
+ * <b>What's the event:</b>
  *
  * When an uncaught exception is raised, the exception handler defined by this
- * class notify all these writer by passing the ispCP_Exception_Handler
- * instance. After, each observer should call the getException() method to get
- * the exception and do whatever they want with it
+ * class notify all these writers by passing the ispCP_Exception_Handler
+ * instance to it. After, each observer should call the {@link getException()}
+ * method to get the exception and do whatever they want with it.
  *
  * In production, a secondary {@link ispCP_Exception_Production} object is
- * created. Each writer that write on the client browser must check if this
- * exception exist and use it in place of the real {@link $_exception} that was
+ * created. Each writer that writes on the client browser must check if this
+ * exception exists and use it in place of the real {@link $_exception} that was
  * raised to avoid revealing important information about the environment.
  *
- * See the {@link getProductionException} to learn how to check if an
- * {@link ispCP_Exception_Production} was created and how to get it.
+ * See the {@link getProductionException} method to learn how to check if an
+ * {@link ispCP_Exception_Production exception} was created and how to get it.
  *
- * Writer observer responsibility can be :
+ * <b>Writer observer responsibility can be :</b>
  *
  * - Writing the error message on the client browser with specific formatting
  * - Writing a mail to the administrator that contains information about error
  * - Writing the error in the database
  * - Writing the error in a logfile
  *
- * Note: It's not a restrictive list.
+ * <b>Note:</b> It's not a restrictive list.
  *
- * How this class work:
- *
+ * <b>Usage example:</b>
  * <code>
  * ispCP_Exception_Handler::getInstance()->attach(
  *  new ispCP_Exception_Writer_Browser(
@@ -71,7 +70,7 @@
  * );
  * </code>
  *
- * What is done here ?
+ * <b>What is done here ?</b>
  *
  *  1. We create an instance of the {@link ispCP_Exception_Handler} class
  *  2. We attach an {@link ispCP_Exception_Writer} that will listen this class
@@ -79,7 +78,7 @@
  * See ispCP/Exception/Writer for a list of availables 
  *	{@link ispCP_Exception_Writer writers}.
  *
- * Note:
+ * <b>Note:</b>
  *
  * This class implements the
  * {@link http://en.wikipedia.org/wiki/Fluent_interface Fluent interface},
@@ -184,7 +183,7 @@ class ispCP_Exception_Handler implements SplSubject, IteratorAggregate, Countabl
 	}
 
 	/**
-	 * Set exception handler
+	 * Sets exception handler
 	 *
 	 * This method set the {@link exceptionHandler() exception handler} that
 	 * is used for all uncaught exceptions.
@@ -219,7 +218,7 @@ class ispCP_Exception_Handler implements SplSubject, IteratorAggregate, Countabl
 	 * This is the exception handler provided by this class.
 	 * This method act like an exception handler for all uncaught exceptions.
 	 *
-	 * Note: In production, this exception handler create a secondary
+	 * <b>Note:</b> In production, this exception handler create a secondary
 	 * ispCP_Exception_Production object. This exception should be used by all
 	 * writers that write on the client browser in place of the real raised
 	 * exception to avoid revealing important information about the environment.
@@ -269,7 +268,8 @@ class ispCP_Exception_Handler implements SplSubject, IteratorAggregate, Countabl
 	/**
 	 * Accessor method to get the ispCP_Exception_Production object
 	 *
-	 * Note the {@link ispCP_Exception_Production} is only raised in production.
+	 * <b>Note:</b> The {@link ispCP_Exception_Production} is only raised in
+	 * production.
 	 *
 	 * @return ispCP_Exception_Production|false
 	 */
@@ -283,11 +283,11 @@ class ispCP_Exception_Handler implements SplSubject, IteratorAggregate, Countabl
 	}
 
 	/**
-	 * Attach a writer that listen all events of this class
+	 * Attach a writer that listen all events
 	 *
 	 * @param ispCP_Exception_Writer $writer Writer that listen events of this
-	 *	class
-	 * @return ispCP_Exception_Handler
+	 * object
+	 * @return ispCP_Exception_Handler The ispCP_Exception_Handler instance
 	 */
 	public function attach(SplObserver $writer) {
 
@@ -301,7 +301,7 @@ class ispCP_Exception_Handler implements SplSubject, IteratorAggregate, Countabl
 	 *
 	 * @param ispCP_Exception_Writer $writer Writer that listen events of this
 	 *	class
-	 * @return ispCP_Exception_Handler
+	 * @return ispCP_Exception_Handler The ispCP_Exception_Handler instance
 	 */
 	public function detach(SplObserver $writer) {
 
@@ -314,8 +314,8 @@ class ispCP_Exception_Handler implements SplSubject, IteratorAggregate, Countabl
 	 * Notify all observers that listen events of this class
 	 *
 	 * This method notify all these attached observers by calling their update()
-	 * method. The {@link $_instance instance} of this class is passed as
-	 * argument of this method.
+	 * method. The {@link $_instance instance} is passed to each writer as
+	 * argument of the argument of their update() method.
 	 *
 	 * @throws ispCP_Exception
 	 * @return void
@@ -355,7 +355,7 @@ class ispCP_Exception_Handler implements SplSubject, IteratorAggregate, Countabl
 	 *
 	 * See {@link http://php.net/manual/fr/arrayobject.getiterator.php}
 	 *
-	 * @return An iterator to iterate on the attached writers
+	 * @return Iterator An iterator to iterate on the attached writers
 	 */
 	public function getIterator() {
 
@@ -365,7 +365,7 @@ class ispCP_Exception_Handler implements SplSubject, IteratorAggregate, Countabl
 	/**
 	 * PHP overloading for count()
 	 *
-	 * This methods return the number of attached observers.
+	 * This methods returns the number of attached observers.
 	 *
 	 * @return int Count of attached members
 	 */

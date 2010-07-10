@@ -92,7 +92,7 @@ require_once INCLUDEPATH . '/deprecated.php';
  * @see {@link IspCP_Bootstrap} class
  * @see {@link IspCP_Initializer} class
  */
-include_once INCLUDEPATH . '/environment.php';
+require_once INCLUDEPATH . '/environment.php';
 
 /**
  * Internationalisation functions
@@ -106,12 +106,7 @@ require_once INCLUDEPATH . '/i18n.php';
 require_once INCLUDEPATH . '/system-message.php';
 
 /**
- * Sql convenience* functions
- *
- * @todo Implement the Observer Design Pattern for mail delivery and logging
- * and, then remove these functions (Only POO style should be used).
- *
- * *For them that are newbies...
+ * Sql convenience functions
  */
 require_once 'sql.php';
 

@@ -26,7 +26,6 @@
  * @version		SVN: $Id$
  * @link		http://isp-control.net ispCP Home Site
  * @license		http://www.mozilla.org/MPL/ MPL 1.1
- * @filesource
  */
 
 /**
@@ -40,7 +39,6 @@ require_once  INCLUDEPATH . '/ispCP/Config/Handler.php';
  * ispCP_Config_Handler adapter class to handle configuration parameters that
  * are stored in database.
  *
- * @category	ispCP
  * @package		ispCP_Config
  * @subpackage	Handler
  * @author		Laurent Declercq <laurent.declercq@ispcp.net>
@@ -59,8 +57,8 @@ class ispCP_Config_Handler_Db extends ispCP_Config_Handler {
 	/**
 	 * PDOStatement to insert a configuration parameter in the database
 	 *
-	 * For performance reason, the PDOStatement instance is created only once at
-	 * the first execution of the {@link _insert()} method.
+	 * <b>Note:</b> For performance reason, the PDOStatement instance is created
+	 * only once at the first execution of the {@link _insert()} method.
 	 *
 	 * @var PDOStatement
 	 */
@@ -69,8 +67,8 @@ class ispCP_Config_Handler_Db extends ispCP_Config_Handler {
 	/**
 	 * PDOStatement to update a configuration parameter in the database
 	 *
-	 * For performance reason, the PDOStatement instance is created only once at
-	 * the first execution of the {@link _update()} method.
+	 * <b>Note:</b> For performance reason, the PDOStatement instance is created
+	 * only once at the first execution of the {@link _update()} method.
 	 *
 	 * @var PDOStatement
 	 */
@@ -79,8 +77,8 @@ class ispCP_Config_Handler_Db extends ispCP_Config_Handler {
 	/**
 	 * PDOStatement to delete a configuration parameter in the database
 	 *
-	 * For performance reason, the PDOStatement instance is created only once at
-	 * the first execution of the {@link _delete()} method.
+	 * <b>Note:</b> For performance reason, the PDOStatement instance is created
+	 * only once at the first execution of the {@link _delete()} method.
 	 *
 	 * @var PDOStatement
 	 */
@@ -144,7 +142,7 @@ class ispCP_Config_Handler_Db extends ispCP_Config_Handler {
 	/**
 	 * Loads all configuration parameters from database
 	 *
-	 * Parameters:
+	 * <b>Parameters:</b>
 	 *
 	 * The constructor accept one or more parameters passed in a array where
 	 * each key represent a parameter name.
@@ -156,9 +154,9 @@ class ispCP_Config_Handler_Db extends ispCP_Config_Handler {
 	 * - key_column: Database configuration key column name
 	 * - value_column: Database configuration value column name
 	 *
-	 * Note: The three last parameters are optionals.
+	 * <b>Note:</b> The three last parameters are optionals.
 	 *
-	 * For a single parameter, only a PDO instance is accepted.
+	 * For a single parameter, only a {@link PDO} instance is accepted.
 	 *
 	 * @throws ispCP_Exception
 	 * @param PDO|array A PDO instance or an array of parameters that contain at
@@ -206,8 +204,8 @@ class ispCP_Config_Handler_Db extends ispCP_Config_Handler {
 	/**
 	 * Setter method to set or change a configuration parameter in the database
 	 *
-	 * For performance reasons, queries for updates are only done if old and new
-	 * value of a parameter are not the same.
+	 * <b>Note:</b> For performance reasons, queries for updates are only done
+	 * if old and new value of a parameter are not the same.
 	 *
 	 * @param string $index Configuration parameter key name
 	 * @param mixed $value Configuration parameter value

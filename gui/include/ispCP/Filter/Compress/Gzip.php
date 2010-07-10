@@ -26,7 +26,6 @@
  * @version		SVN: $Id$
  * @link		http://isp-control.net ispCP Home Site
  * @license		http://www.mozilla.org/MPL/ MPL 1.1
- * @filesource
  */
 
 /**
@@ -46,7 +45,7 @@
  * @subpackage	Compress
  * @author		Laurent declercq <laurent.declercq@ispcp.net>
  * @since		1.0.6
- * @version		1.0.0
+ * @version		1.0.1
  * @replace		spOutput class
  */
 class ispCP_Filter_Compress_Gzip {
@@ -54,15 +53,15 @@ class ispCP_Filter_Compress_Gzip {
 	/**
 	 * @var string
 	 */
-	const FILTER_CALLBACK = 'filter';
+	const CALLBACK_NAME = 'filter';
 
 	/**
-	 * @var string
+	 * @var int
 	 */
 	const FILTER_BUFFER = 0;
 
 	/**
-	 * @var string
+	 * @var int
 	 */
 	const FILTER_FILE = 1;
 
@@ -138,9 +137,9 @@ class ispCP_Filter_Compress_Gzip {
 	 * Constructor
 	 *
 	 * @param int $mode Tells if the filter should act as callback function for
-	 *	the PHP ob_start function or as function for create a standard gz file.
-	 *	Possible values are bufferFilter for the callback function, or gzFile
-	 *	for creation of a standard gzip file
+	 * the PHP ob_start function or as function for create a standard gz file.
+	 * The filter mode must be one of the ispCP_Filter_Compress_Gzip::FILTER_*
+	 * constants.
 	 * @param int $compressionLevel Compression level
 	 * @return void
 	 */
@@ -150,7 +149,7 @@ class ispCP_Filter_Compress_Gzip {
 			$this->_mode = $mode;
 		} else {
 			throw new ispCP_Exception(
-				'ispCP_GzipFilter error: Unknown mode!'
+				'ispCP_GzipFilter error: Unknown filter mode!'
 			);
 		}
 

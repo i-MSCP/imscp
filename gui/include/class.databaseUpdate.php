@@ -33,17 +33,9 @@
  * @copyright	2006-2009 by ispCP | http://isp-control.net
  * @version		1.0
  * @since		r1355
- * @todo No complete Singleton (missing private constructor, clone)
  */
 class databaseUpdate extends ispcpUpdate {
 
-	/**
-	 * create instance
-	 *
-	 * @var databaseUpdate
-	 */
-	private static $_instance = NULL;
-	
 	/**
 	 * The database variable name for the update version
 	 *
@@ -65,18 +57,26 @@ class databaseUpdate extends ispcpUpdate {
 	 */
 	protected $_errorMessage = 'Database update %s failed';
 
+
 	/**
-	 * Create and return a new databaseUpdate instance
+	 * This class implements the Singleton Design pattern
 	 *
-	 * return databaseUpdate A databaseUpdate instance
+	 * @return void
+	 */
+	private function __clone() {}
+
+	/**
+	 * Get an databaseUpdate instance
+	 *
+	 * @return databaseUpdate A databaseUpdate instance
 	 */
 	public static function getInstance() {
 
-		if (!isset($instance) || $instance === NULL) {
-			$instance = new self();	
+		if (is_null(self::$_instance)) {
+			self::$_instance = new self;
 		}
 
-		return $instance;
+		return self::$_instance;
 	}
 
 	/*

@@ -38,13 +38,6 @@
 class versionUpdate extends ispcpUpdate {
 
 	/**
-	 * versionUpdate instance
-	 *
-	 * @var versionUpdate
-	 */
-	private static $_instance = null;
-
-	/**
 	 * Database variable name for the update version
 	 *
 	 * @var string
@@ -78,13 +71,13 @@ class versionUpdate extends ispcpUpdate {
 	private function __clone() {}
 
 	/**
-	 * Return instance of this class
+	 * Gets a versionUpdate instance
 	 *
 	 * @return versionUpdate
 	 */
 	public static function getInstance() {
 
-		if (self::$_instance === null) {
+		if (is_null(self::$_instance)) {
 			self::$_instance = new self;
 		}
 
@@ -92,19 +85,22 @@ class versionUpdate extends ispcpUpdate {
 	}
 
 	/**
-	 * Should be documented
+	 * Return the current ispCP version
 	 *
-	 * @return int
+	 * @return int ispCP version
 	 */
 	protected function _getCurrentVersion() {
 
-		return (int)Config::getInstance()->get('BuildDate');
+		return (int) Config::getInstance()->get('BuildDate');
 	}
 
 	/**
-	 * Should be documented
+	 * Gets the last ispCP version
 	 *
-	 * @return bool|int
+	 * @return bool|int Return the last ispCP version available or FALSE on
+	 * failure
+	 * @todo refactor the name of this methods that don't reflect the real
+	 * purpose
 	 */
 	protected function _getNextVersion() {
 
@@ -123,20 +119,21 @@ class versionUpdate extends ispcpUpdate {
 			return false;
 		}
 
-		$last_update_result = (int)fread($dh2, 8);
+		$last_update_result = (int) fread($dh2, 8);
 		fclose($dh2);
 
 		return $last_update_result;
 	}
 
 	/**
-	 * Should be documented
+	 * Check for ispCP update
 	 *
-	 * @return bool
+	 * @return boolean TRUE if an ispCP update is available FALSE otherwise
 	 */
 	public function checkUpdateExists() {
 
-		return ($this->_getNextVersion() > $this->_currentVersion) ? true : false;
+		return ($this->_getNextVersion() > $this->_currentVersion)
+			? true : false;
 	}
 
 	/**

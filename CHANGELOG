@@ -1,5 +1,31 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+2010-07-10 Laurent Declercq
+	- GUI:
+		* Added new DatabaseResult::setFetchMode() method to be able to change
+			the default fetch mode
+		* Added a new ispCP_Exception_Database class for database exceptions
+		* Added two new methods in the DatabaseResult class to be able to get
+			error information associated with the last statement operation
+		* Added $GLOBALS['sql'] in the initializer that reference the default
+			ispCP_Database instance for backware compatibility (Will be removed)
+		* Database class:
+			- Added new getLastErrorMessage() to be able to get the last error
+				message set by both execute() and prepare() methods
+			- Fixed #2402: Switch to server side prepared statements when
+				possible
+			- Improved performances by changing the default Fetch mode to
+				`PDO::FETCH_ASSOC` instead of `PDO::FETCH_BOTH`
+			- Rewrited both execute() and prepare() methods
+		* Fixed some issues in the ispCP_Filter_Compress_Gzip class
+		* include/sql.php:
+			- Rewrited both execute_query() and exec_query() functions
+		* Mail Exception Writer: Avoid to send multiple mails for same exception
+			in interval of 12 hours (Later, the time interval will be settable)
+		* Refactored the vfs class
+		* Updated documentation for several function and classes
+	- ENGINE:
+		* Some refactoring issue
 
 2010-07-02 Laurent Declercq
 	- GUI:

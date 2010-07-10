@@ -28,67 +28,72 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-
-$sql = ispCP_Registry::get('Db');
-
 /**
+ * Convenience method to execute a query
+ *
+ * <b>Note:</b> You may pass additional parameters. They will be treated as
+ * though you called PDOStatement::setFetchMode() on the resultant statement
+ * object that is wrapped by the DatabaseResult object.
+ *
+ * @see ispCP_Database::execute()
  * @throws ispCP_Exception
- * @param  $sql
- * @param  $query
- * @return 
- */
-function execute_query(&$sql, $query) {
+ * @param  ispCP_Database $db ispCP_Database instance
+ * @param string $query Sql statement to be executed
+ * @param array|int|string $parameters OPTIONAL parameters that represents
+ * data to bind to the placeholders for prepared statement, or an integer
+ * that represents the Fetch mode for Sql statement. The fetch mode must be
+ * one of the PDO::FETCH_* constants.
+ * @param int|string|object $parameters OPTIONAL parameter for SQL statement
+ * only. Can be a colum number, an object, a class name (depending of the
+ * Fetch mode used).
+ * @param array $parameters OPTIONAL parameter for Sql statements only. Can
+ * be an array that contains constructor arguments. (See PDO::FETCH_CLASS)
+ * @return DatabaseResult
+ **/
+function execute_query($db, $query, $parameters = null) {
 
-	$rs = $sql->execute($query);
-	
-	if (!$rs)
-		throw new ispCP_Exception($sql->errorMsg());
+	if(!is_null($parameters)) {
+		$parameters = func_get_args();
+		array_shift($parameters);
+		$stmt = call_user_func_array(array($db, 'execute'), $parameters);
+	} else {
+		$stmt = $db->execute($query);
+	}
 
-	return $rs;
+	if ($stmt == false)
+		throw new ispCP_Exception($db->getLastErrorMessage());
+
+	return $stmt;
 }
 
 /**
- * @throws ispCP_Exception
- * @param  $sql
- * @param  $query
- * @param mixed $data
- * @param bool $failDie
- * @return
- * @todo Please describe this function!
+ * Convenience method to prepare and execute a query
+ *
+ * Note: On failure, and if the $failDie parameter is set to TRUE, this function
+ * sends a mail to the administrator with some relevant  information such as
+ * the debug information if the {@link ispCP_Exception_Writer_Mail writer} is
+ * active.
+ *
+ * @throws ispCP_Exception_Database
+ * @param ispCP_Database $db ispCP_Database Instance
+ * @param $query Sql statement
+ * @param string|int|array $bind Data to bind to the placeholders
+ * @param boolean $failDie If TRUE, throws an ispCP_Exception_Database exception
+ * on failure
+ * @return DatabaseResult Return a DatabaseResult object that represent a result
+ * set or FALSE on failure if $failDie is set to FALSE.
  */
-function exec_query(&$sql, $query, $data = array(), $failDie = true) {
-	$query = $sql->prepare($query);
-	$rs = $sql->execute($query, $data);
+function exec_query($db, $query, $bind = null, $failDie = true) {
 
-	if (!$rs && $failDie) {
-		$msg = ($query instanceof PDOStatement) ? $query->errorInfo() : $sql->errorInfo();
-		$backtrace = debug_backtrace();
-		$output = isset($msg[2]) ? $msg[2] : $msg;
-		$output .= "\n";
-
-		foreach ($backtrace as $entry) {
-			$output .= "File: ".$entry['file']." (Line: ".$entry['line'].")";
-			$output .= " Function: ".$entry['function']."\n";
+	if(!($stmt = $db->prepare($query)) || !($stmt = $db->execute($stmt, $bind))) {
+		if($failDie) {
+			throw new ispCP_Exception_Database(
+				$db->getLastErrorMessage() . " - Query: $query"
+			);
 		}
-
-		// Send error output via email to admin
-		$admin_email = Config::getInstance()->get('DEFAULT_ADMIN_ADDRESS');
-
-		if (!empty($admin_email)) {
-			$default_hostname = Config::getInstance()->get('SERVER_HOSTNAME');
-			$default_base_server_ip = Config::getInstance()->get('BASE_SERVER_IP');
-			$Version = Config::getInstance()->get('Version');
-			$headers = "From: \"ispCP Logging Daemon\" <" . $admin_email . ">\n";
-			$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 7bit\n";
-			$headers .= "X-Mailer: ispCP $Version Logging Mailer";
-			$subject = "ispCP $Version on $default_hostname ($default_base_server_ip)";
-			$mail_result = mail($admin_email, $subject, $output, $headers);
-		}
-
-		throw new ispCP_Exception(isset($msg[2]) ? $msg[2] : $msg);
 	}
 
-	return $rs;
+	return $stmt;
 }
 
 /**
@@ -96,9 +101,12 @@ function exec_query(&$sql, $query, $data = array(), $failDie = true) {
  * @todo document this function
  */
 function quoteIdentifier($identifier) {
-	$sql = ispCP_Registry::get('Db');
 
-	$identifier = str_replace($sql->nameQuote, '\\' . $sql->nameQuote, $identifier);
+	$db = ispCP_Registry::get('Db');
 
-	return $sql->nameQuote . $identifier . $sql->nameQuote;
+	$identifier = str_replace(
+		$db->nameQuote, '\\' . $db->nameQuote, $identifier
+	);
+
+	return $db->nameQuote . $identifier . $db->nameQuote;
 }

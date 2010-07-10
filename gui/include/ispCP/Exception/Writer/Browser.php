@@ -26,7 +26,6 @@
  * @version		SVN: $Id$
  * @link		http://isp-control.net ispCP Home Site
  * @license		http://www.mozilla.org/MPL/ MPL 1.1
- * @filesource
  */
 
 /**
@@ -37,16 +36,16 @@ require_once  INCLUDEPATH . '/ispCP/Exception/Writer.php';
 /**
  * Browser writer class
  *
- * This writer writes the exception messages to the client browser. This writer
- * acts also as a formatter that will use a specific template for the messages
+ * This writer writes an exception messages to the client browser. This writer
+ * acts also as a formatter that will use a specific template for the message
  * formatting. If no template path is given, or if the template file is not
- * reachable, a string that represent the  message is write to the client
+ * reachable, a string that represent the message is write to the client
  * browser.
  *
  * The given template should be a template file that can be treated by a
- * ptemplate object.
+ * pTemplate object.
  *
- * Note: Will be improved later.
+ * <b>Note:</b> Will be improved later.
  *
  * @category	ispCP
  * @package		ispCP_Exception
@@ -89,7 +88,7 @@ class ispCP_Exception_Writer_Browser extends ispCP_Exception_Writer {
 	}
 
 	/**
-	 * Writes the output to the client browser
+	 * Writes the exception message to the client browser
 	 *
 	 * @return void
 	 * @todo Add inline template for rescue
@@ -139,7 +138,7 @@ class ispCP_Exception_Writer_Browser extends ispCP_Exception_Writer {
 	}
 
 	/**
-	 * Prepare the template
+	 * Prepares the template
 	 *
 	 * @return void
 	 */

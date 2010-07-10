@@ -39,7 +39,7 @@
  * @package		ispCP_Initializer
  * @author		Laurent declercq <laurent.declercq@ispcp.net>
  * @since		1.0.6
- * @version		1.0.6
+ * @version		1.0.7
  */
 class ispCP_Initializer {
 
@@ -64,6 +64,7 @@ class ispCP_Initializer {
 	 * simply executes all of the initialization methods. Alternately, you can
 	 * specify explicitly which initialization methods you want:
 	 *
+	 * <i>Usage example:</i>
 	 * <code>
 	 *	ispCP_Initializer::run('_setIncludePath')
 	 * </code>
@@ -121,7 +122,7 @@ class ispCP_Initializer {
 	protected function __clone() {}
 
 	/**
-	 * Execute all of the availables initialization routines
+	 * Executes all of the available initialization routines
 	 *
 	 * @return void
 	 */
@@ -153,7 +154,7 @@ class ispCP_Initializer {
 		// Load all the configuration parameters from the database
 		$this->_processConfiguration();
 
-		// Se encodage
+		// Se encoding
 		$this->_setEncoding();
 
 		// Set timezone
@@ -179,7 +180,7 @@ class ispCP_Initializer {
 	 * is more recent or equal to the PHP version 5.1.4 and that the SPL is
 	 * loaded.
 	 *
-	 * Note: ispCP requires PHP 5.1.4 or later because some SPL interfaces were
+	 * <b>Note:</b> ispCP requires PHP 5.1.4 or later because some SPL interfaces were
 	 * not stable in earlier versions of PHP.
 	 *
 	 * @throws ispCP_Exception
@@ -211,7 +212,7 @@ class ispCP_Initializer {
 	}
 
 	/**
-	 * Set the PHP display_errors parameter
+	 * Sets the PHP display_errors parameter
 	 *
 	 * @return void
 	 */
@@ -223,7 +224,7 @@ class ispCP_Initializer {
 	}
 
 	/**
-	 * Set additional observers for the exception handler
+	 * Sets additional observers for the exception handler
 	 *
 	 * @return void
 	 */
@@ -275,12 +276,12 @@ class ispCP_Initializer {
 	 * encoding error (eg. during development phase where the developers uses
 	 * some statements like echo, print in the code for debugging)
 	 *
-	 * Note: The hight level (like 8, 9) for compression are not recommended for
-	 * performances reasons. The obtained gain with these levels is very small
-	 * compared to the intermediate level like 6,7
+	 * <b>Note:</b> The hight level (like 8, 9) for compression are not
+	 * recommended for performances reasons. The obtained gain with these levels
+	 * is very small compared to the intermediate level like 6,7
 	 *
-	 * Note: ShowCompression option and checking for XmlHttpRequet will be done
-	 * by a  filter hooked on the 'OnBeforeOutput' action hook.
+	 * <b>Note:</b> ShowCompression option and checking for XmlHttpRequet will
+	 * be done by a filter hooked on the 'OnBeforeOutput' action hook.
 	 *
 	 * @return void
 	 */
@@ -295,15 +296,15 @@ class ispCP_Initializer {
 		);
 
 		// Start the buffer and attach the filter to him
-		ob_start(array($filter, ispCP_Filter_Compress_Gzip::FILTER_CALLBACK));
+		ob_start(array($filter, ispCP_Filter_Compress_Gzip::CALLBACK_NAME));
 	}
 
 	/**
-	 * Set the include path
+	 * Sets the include path
 	 *
-	 * Set the PHP include_path. Duplicates entries are removed.
+	 * Sets the PHP include_path. Duplicates entries are removed.
 	 *
-	 * Note: Will be completed later with other paths (MVC switching).
+	 * <b>Note:</b> Will be completed later with other paths (MVC switching).
 	 *
 	 * @return void
 	 */
@@ -348,7 +349,7 @@ class ispCP_Initializer {
 	 *
 	 * @throws ispCP_Exception
 	 * @return void
-	 * @todo Add a specific test to check if the db keys were generated and 
+	 * @todo Add a specific test to check if the db keys were generated and
 	 * throws an exception if its not the case - Don't use global variables
 	 */
 	protected function _initializeDatabase() {
@@ -378,12 +379,15 @@ class ispCP_Initializer {
 		// Register both Database and PDO instances for shared access
 		ispCP_Registry::set('Db', $connection);
 		ispCP_Registry::set('Pdo', ispCP_Database::getRawInstance());
+
+		// Will be changed
+		$GLOBALS['sql'] =  ispCP_Registry::get('Db');
 	}
 
 	/**
-	 * Not Yet Implemented
+	 * Initialize logger
 	 *
-	 * Not used at this moment (testing in progress)
+	 * <b>Note:</b> Not used at this moment (testing in progress)
 	 *
 	 * @return void
 	 */
@@ -416,7 +420,7 @@ class ispCP_Initializer {
 	}
 
 	/**
-	 * Set encoding
+	 * Sets encoding
 	 *
 	 * This methods set encoding for both communication database and PHP.
 	 *
@@ -446,7 +450,7 @@ class ispCP_Initializer {
 	}
 
 	/**
-	 * Set timezone
+	 * Sets timezone
 	 *
 	 * This method ensures that the timezone is set to avoid any error with PHP
 	 * versions equal or later than version 5.3.x
@@ -455,7 +459,7 @@ class ispCP_Initializer {
 	 * the value from the ispCP PHP_TIMEZONE parameter if exists and if it not
 	 * empty or to 'UTC' otherwise.
 	 *
-	 * Note : This method don't check if the timezone defined by the
+	 * <b>Note:</b> This method don't check if the timezone defined by the
 	 * ispCP PHP_TIMEZONE parameter is valid.
 	 *
 	 * @return void
@@ -474,7 +478,9 @@ class ispCP_Initializer {
 	}
 
 	/**
-	 * Not Yet Implemented
+	 * Initialize translation libraries
+	 *
+	 * <b>Note:</b> Not Yet Implemented
 	 *
 	 * @return void
 	 * @todo Ask Jochen for the new i18n library and initilization processing
@@ -496,7 +502,7 @@ class ispCP_Initializer {
 	 * This method loads all the active plugins. Only plugins for the current
 	 * execution context are loaded.
 	 *
-	 * Note: Not used at this moment (testing in progress...)
+	 * <b>Note:</b> Not used at this moment (testing in progress...)
 	 *
 	 * @return void
 	 */

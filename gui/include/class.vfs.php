@@ -50,34 +50,34 @@ class vfs {
 	 *
 	 * @var string
 	 */
-	private $_domain = '';
+	protected $_domain = '';
 	/**
 	 * FTP connection handle
 	 *
 	 * @var resource
 	 */
-	private $_handle = null;
+	protected $_handle = null;
 
 	/**
 	 * Database connection handle
 	 *
-	 * @var resource
+	 * @var ispCP_Database
 	 */
-	private $_db = null;
+	protected $_db = null;
 
 	/**
 	 * FTP temporary user name
 	 *
 	 * @var string
 	 */
-	private $_user = '';
+	protected $_user = '';
 
 	/**
 	 * FTP password
 	 *
 	 * @var string
 	 */
-	private $_passwd = '';
+	protected $_passwd = '';
 
 	/**
 	 * Constructor - Create a new Virtual File System
@@ -89,26 +89,32 @@ class vfs {
 	 * left as work for the caller.
 	 *
 	 * @param string $domain Domain name of the new VFS.
-	 * @param resource $db Adodb database resource.
-	 * @return vfs
+	 * @param ispCP_Database $db ispCP_Database instance.
+	 * @return void
 	 */
-	public function __construct($domain, &$db) {
+	public function __construct($domain, $db) {
+
+		$cfg = ispCP_Registry::get('Config');
 
 		$this->_domain = $domain;
-		$this->_db = &$db;
+		$this->_db = $db;
 
+		defined('VFS_TMP_DIR') or define(
+			'VFS_TMP_DIR', "$cfg->GUI_ROOT_DIR/phptmp");
+		/*
 		if (!defined('VFS_TMP_DIR')) {
 			define(
 				'VFS_TMP_DIR',
 				Config::getInstance()->get('GUI_ROOT_DIR') . '/phptmp'
 			);
 		}
+		*/
 
 		$_ENV['PHP_TMPDIR'] = VFS_TMP_DIR;
 		$_ENV['TMPDIR'] = VFS_TMP_DIR;
 
-		putenv("PHP_TMPDIR=" . $_ENV['PHP_TMPDIR']);
-		putenv("TMPDIR=" . $_ENV['PHP_TMPDIR']);
+		putenv("PHP_TMPDIR={$_ENV['PHP_TMPDIR']}");
+		putenv("TMPDIR={$_ENV['PHP_TMPDIR']}");
 	}
 
 	/**
@@ -123,99 +129,15 @@ class vfs {
 	}
 
 	/**
-	 * Set ispCP DB handler
+	 * Sets ispCP DB handler used by this class
 	 *
-	 * The system uses a "global" $sql variable to store the DB
-	 * handler, but we're a "black box" ;).
 	 *
-	 * @param resource $db Adodb database resource.
+	 * @param ispCP_Database $db ispCP_Database database instance
 	 * @return void
 	 */
-	public function setDb(&$db) {
+	public function setDb($db) {
 
-		$this->_db = &$db;
-	}
-
-	/**
-	 * Create a temporary FTP user
-	 *
-	 * @return boolean Returns TRUE on success, FALSE on failure
-	 */
-	private function _createTmpUser() {
-
-		// Get domain data
-		$query = "
-			SELECT
-				`domain_uid`,
-				`domain_gid`
-			FROM
-				`domain`
-			WHERE
-				`domain_name` = ?
-			;
-		";
-
-		$rs = exec_query($this->_db, $query, $this->_domain);
-
-		if (!$rs) {
-			return false;
-		}
-
-		// Generate a random userid and password
-		$user = uniqid('tmp_') . '@' . $this->_domain;
-		$this->_passwd = uniqid('tmp_', true);
-		$passwd = crypt_user_pass_with_salt($this->_passwd);
-
-		// Create the temporary user
-		$query = "
-			INSERT INTO `ftp_users`
-				(`userid`, `passwd`, `uid`, `gid`, `shell`, `homedir`)
-			VALUES
-				(?, ?, ?, ?, ?, ?)
-			;
-		";
-
-		$rs = exec_query(
-			$this->_db,
-			$query,
-			array(
-				$user,
-				$passwd,
-				$rs->fields['domain_uid'],
-				$rs->fields['domain_gid'],
-				Config::getInstance()->get('CMD_SHELL'),
-				Config::getInstance()->get('FTP_HOMEDIR') . '/' . $this->_domain
-			)
-		);
-
-		if (!$rs) {
-			return false;
-		}
-
-		// All ok
-		$this->_user = $user;
-
-		return true;
-	}
-
-	/**
-	 * Removes the temporary FTP user
-	 *
-	 * @return boolean TRUE on success, FALSE on failure.
-	 */
-	private function _removeTmpUser() {
-
-		$query = "
-			DELETE FROM
-				`ftp_users`
-			WHERE
-				`userid` = ?
-			;
-		";
-
-		$rs = exec_query($this->_db, $query, $this->_user);
-
-		return $rs ? true : false;
+		$this->_db = $db;
 	}
 
 	/**
@@ -237,6 +159,7 @@ class vfs {
 
 		// Create the temporary ftp account
 		$result = $this->_createTmpUser();
+
 		if (!$result) {
 			return false;
 		}
@@ -244,6 +167,7 @@ class vfs {
 		// 'localhost' for testing purposes. I have to study if a better
 		// $this->_domain would work on all situations
 		$this->_handle = @ftp_connect('localhost');
+
 		if (!is_resource($this->_handle)) {
 			$this->close();
 			return false;
@@ -251,8 +175,10 @@ class vfs {
 
 		// Perform actual login
 		$response = @ftp_login($this->_handle, $this->_user, $this->_passwd);
+
 		if (!$response) {
 			$this->close();
+
 			return false;
 		}
 
@@ -300,7 +226,7 @@ class vfs {
 
 		// No security implications, the FTP server handles
 		// this for us
-		$list = ftp_rawlist($this->_handle, '-a ' . $dirname, false);
+		$list = ftp_rawlist($this->_handle, "-a $dirname", false);
 		if (!$list) {
 			return false;
 		}
@@ -329,8 +255,8 @@ class vfs {
 	 *
 	 * @param string $file VFS file path.
 	 * @param int $type Type of the file to match. Must be either
-	 *  {@link self::VFS_TYPE_DIR}, {@link self::VFS_TYPE_LINK} or
-	 *  {@link self::VFS_TYPE_FILE}.
+	 * {@link self::VFS_TYPE_DIR}, {@link self::VFS_TYPE_LINK} or
+	 * {@link self::VFS_TYPE_FILE}.
 	 * @return boolean TRUE if file exists, FALSE otherwise.
 	 */
 	public function exists($file, $type = null) {
@@ -408,8 +334,8 @@ class vfs {
 	 * @param string $file VFS file path.
 	 * @param string $content File contents.
 	 * @param int $mode VFS transfer mode. Must be either {@link self::VFS_ASCII}
-	 *	or {@link self::VFS_BINARY}.
-	 * @return boolean Returns TRUE on success or FALSE on failure.
+	 * or {@link self::VFS_BINARY}.
+	 * @return boolean TRUE on success or FALSE on failure.
 	 */
 	public function put($file, $content, $mode = self::VFS_ASCII) {
 
@@ -437,5 +363,91 @@ class vfs {
 		unlink($tmp);
 
 		return true;
+	}
+
+	/**
+	 * Create a temporary FTP user
+	 *
+	 * @return boolean Returns TRUE on success, FALSE on failure
+	 */
+	protected function _createTmpUser() {
+
+		$cfg = ispCP_Registry::get('Config');
+
+		// Get domain data
+		$query = "
+			SELECT
+				`domain_uid`,
+				`domain_gid`
+			FROM
+				`domain`
+			WHERE
+				`domain_name` = ?
+			;
+		";
+
+		$rs = exec_query($this->_db, $query, $this->_domain);
+
+		if (!$rs) {
+			return false;
+		}
+
+		// Generate a random userid and password
+		$user = uniqid('tmp_') . '@' . $this->_domain;
+		$this->_passwd = uniqid('tmp_', true);
+		$passwd = crypt_user_pass_with_salt($this->_passwd);
+
+		// Create the temporary user
+		$query = "
+			INSERT INTO
+				`ftp_users` (
+					`userid`, `passwd`, `uid`, `gid`, `shell`, `homedir`
+				) VALUES (
+					?, ?, ?, ?, ?, ?
+				)
+			;
+		";
+
+		$rs = exec_query(
+			$this->_db,
+			$query,
+			array(
+				$user,
+				$passwd,
+				$rs->fields['domain_uid'],
+				$rs->fields['domain_gid'],
+				$cfg->CMD_SHELL,
+				"{$cfg->FTP_HOMEDIR}/{$this->_domain}"
+			)
+		);
+
+		if (!$rs) {
+			return false;
+		}
+
+		// All ok
+		$this->_user = $user;
+
+		return true;
+	}
+
+	/**
+	 * Removes the temporary FTP user
+	 *
+	 * @return boolean TRUE on success, FALSE on failure.
+	 */
+	protected function _removeTmpUser() {
+
+		$query = "
+			DELETE FROM
+				`ftp_users`
+			WHERE
+				`userid` = ?
+			;
+		";
+
+		$rs = exec_query($this->_db, $query, $this->_user);
+
+		return $rs ? true : false;
 	}
 }

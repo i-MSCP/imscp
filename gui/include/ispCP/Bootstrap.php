@@ -25,11 +25,10 @@
  * @version		SVN: $Id$
  * @link		http://isp-control.net ispCP Home Site
  * @license		http://www.mozilla.org/MPL/ MPL 1.1
- * @filesource
  */
 
 /**
- * Define include directly path if needed
+ * Defines include directory path if needed
  */
 defined('INCLUDEPATH') or define('INCLUDEPATH', dirname(dirname(__FILE__)));
 
@@ -38,13 +37,12 @@ defined('INCLUDEPATH') or define('INCLUDEPATH', dirname(dirname(__FILE__)));
  *
  * This class provide a very small program to boot ispCP
  *
- * Note: Will be improved later
+ * <b>Note:</b> Will be improved later
  *
- * @category	ispCP
  * @package		ispCP_Bootstrap
  * @author		Laurent Declercq <laurent.declercq@ispcp.net>
  * @since		1.0.6
- * @version		1.0.3
+ * @version		1.0.4
  */
 class ispCP_Bootstrap {
 
@@ -65,14 +63,14 @@ class ispCP_Bootstrap {
 	}
 
 	/**
-	 * Shouldn't be instanciated directly
+	 * This class implements the Singleton Design Pattern
 	 *
 	 * @return void
 	 */
 	private function __construct() {}
 
 	/**
-	 * This class shouldn't be cloned
+	 * This class implements the Singleton Design Pattern
 	 *
 	 * @return void
 	 */
@@ -81,7 +79,7 @@ class ispCP_Bootstrap {
 	/**
 	 * Check if ispCP is already booted
 	 *
-	 * @return TRUE if booted, FALSE othewise
+	 * @return boolean TRUE if booted, FALSE otherwise
 	 */
 	protected static function _isBooted() {
 

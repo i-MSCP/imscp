@@ -25,17 +25,15 @@
  * @version		SVN: $Id$
  * @link		http://isp-control.net ispCP Home Site
  * @license		http://www.mozilla.org/MPL/ MPL 1.1
- * @filesource
  */
 
 /**
  * Class to store shared data (Better than global variables usage)
  *
- * @category	ispCP
  * @package		ispCP_Registry
  * @author		Laurent declercq <laurent.declercq@ispcp.net>
  * @since		1.0.6
- * @version		1.0.6
+ * @version		1.0.7
  */
 class ispCP_Registry {
 
@@ -80,15 +78,9 @@ class ispCP_Registry {
 	/**
 	 * Getter method to retrieve registered data
 	 *
-	 * Note: If you want get a reference for data that is not an object, you
+	 * <b>Note:</b> If you want get a reference for data that is not an object, you
 	 * should always use this method and not accessed it directly like an object
 	 * member.
-	 *
-	 * To get a reference, use the following syntax:
-	 *
-	 * <code>
-	 * $data = &ispCP_Register::get('name');
-	 * </code>
 	 *
 	 * @throws ispCP_Exception
 	 * @param string $index Data key name
@@ -168,7 +160,7 @@ class ispCP_Registry {
 	}
 
 	/**
-	 * Check if a data is registered
+	 * Check if data is registered
 	 *
 	 * @param string $index Data key name
 	 * @return boolean TRUE if data is registered, FALSE otherwise

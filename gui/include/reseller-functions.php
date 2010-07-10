@@ -1183,66 +1183,71 @@ function gen_manage_domain_search_options(&$tpl,
  * @todo implement use of more secure dynamic table in SQL query
  */
 function gen_def_language(&$tpl, &$sql, $user_def_language) {
-	$matches = array();
+
 	$languages = array();
-	$query = "SHOW TABLES";
+	$htmlSelected = Config::getInstance()->get('HTML_SELECTED');
+	$query = "SHOW TABLES LIKE 'lang_%'";
 
-	$rs = exec_query($sql, $query);
+	$stmt = exec_query($sql, $query);
 
-	while (!$rs->EOF) {
-		$lang_table = $rs->fields[0];
+	$stmt->setFetchStyle(PDO::FETCH_NUM);
 
-		if (preg_match("/lang_([A-Za-z0-9][A-Za-z0-9]+)/", $lang_table, $matches)) {
-			$query = "
-				SELECT
-					`msgstr`
-				FROM
-					$lang_table
-				WHERE
-					`msgid` = 'ispcp_language'
-			";
+	while (!$stmt->EOF) {
+		$lang_table = $stmt->fields[0];
 
-			$res2 = exec_query($sql, $query);
+		$query = "
+			SELECT
+				`msgstr`
+			FROM
+				`$lang_table`
+			WHERE
+				`msgid` = 'ispcp_language'
+			;
+		";
 
-			$query = "
-				SELECT
-					`msgstr`
-				FROM
-					$lang_table
-				WHERE
-					`msgid` = 'ispcp_languageSetlocaleValue'
-			";
+		$stmt2 = exec_query($sql, $query);
 
-			$res3 = exec_query($sql, $query);
+		$query = "
+			SELECT
+				`msgstr`
+			FROM
+				`$lang_table`
+			WHERE
+				`msgid` = 'ispcp_languageSetlocaleValue'
+			;
+		";
 
-			if ($res2->recordCount() == 0 || $res3->recordCount() == 0) {
-				$language_name = tr('Unknown');
-			} else {
-				$tr_langcode = tr($res3->fields['msgstr']);
-				if ($res3->fields['msgstr'] == $tr_langcode) { // no translation found
-					$language_name = $res2->fields['msgstr'];
-				} else { // found translation
-					$language_name = $tr_langcode;
-				}
+		$stmt3 = exec_query($sql, $query);
+
+		if ($stmt2->recordCount() == 0 || $stmt3->recordCount() == 0) {
+			$language_name = tr('Unknown');
+		} else {
+			$tr_langcode = tr($stmt3->fields['msgstr']);
+
+			if ($stmt3->fields['msgstr'] == $tr_langcode) { // no translation found
+				$language_name = $stmt2->fields['msgstr'];
+			} else { // found translation
+				$language_name = $tr_langcode;
 			}
-
-			$selected = ($matches[0] === $user_def_language) ? Config::getInstance()->get('HTML_SELECTED') : '';
-
-			array_push($languages, array($matches[0], $selected, $language_name));
 		}
 
-		$rs->moveNext();
+		$selected = ($lang_table === $user_def_language) ? $htmlSelected : '';
+
+		array_push($languages, array($lang_table, $selected, $language_name));
+
+		$stmt->moveNext();
 	}
 
 	asort($languages[0], SORT_STRING);
 	foreach ($languages as $lang) {
 		$tpl->assign(
 			array(
-				'LANG_VALUE'	=> $lang[0],
+				'LANG_VALUE' => $lang[0],
 				'LANG_SELECTED' => $lang[1],
-				'LANG_NAME'		=> tohtml($lang[2])
+				'LANG_NAME' => tohtml($lang[2])
 			)
 		);
+
 		$tpl->parse('DEF_LANGUAGE', '.def_language');
 	}
 }
