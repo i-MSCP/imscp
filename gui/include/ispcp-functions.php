@@ -40,21 +40,21 @@ function check_for_lock_file() {
 	 */
 	$cfg = ispCP_Registry::get('Config');
 
-    $fh = fopen($cfg->MR_LOCK_FILE, 'r');
+	$fh = fopen($cfg->MR_LOCK_FILE, 'r');
 
-    if (!$fh) {
-        return false;
-    }
+	if (!$fh) {
+		return false;
+	}
 
-    while (!flock($fh, LOCK_EX|LOCK_NB)) {
-        usleep(rand(200, 600)*1000);
-        clearstatcache();
+	while (!flock($fh, LOCK_EX|LOCK_NB)) {
+		usleep(rand(200, 600)*1000);
+		clearstatcache();
 
-        // Send header to keep connection
-        header("Cache-Control: no-store, no-cache, must-revalidate");
-    }
+		// Send header to keep connection
+		header("Cache-Control: no-store, no-cache, must-revalidate");
+	}
 
-    return true;
+	return true;
 }
 
 /**
@@ -623,8 +623,8 @@ function decrypt_db_password($db_pass) {
  * Encrypte database password
  *
  * @throws ispCP_Exception
- * @param $db_pass Encrypted database password
- * @return string Decrypted database password
+ * @param $db_pass Database password
+ * @return string Encrypted database password
  * @todo Remove error operator
  */
 function encrypt_db_password($db_pass) {
