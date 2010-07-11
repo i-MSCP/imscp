@@ -1,6 +1,14 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-07-11 Laurent Declercq
+	- GUI:
+		* Added exception for ungenerated database key/initialization vector
+		* Refactored ispCP_initializer class
+		* Refactored several functions in include/ispcp-function.php
+		* Removed global var for Database encrypt/decrypt function
+		* Updated funct. documentation in include/ispcp-functions.php
+
 2010-07-10 Benedikt Heintel
 	- ENGINE:
 		* Fixed e-mail adresses on sub-, alias and subalias domains are add
@@ -59,7 +67,7 @@ ispCP ω 1.0.6 ChangeLog
 
 2010-06-24 Laurent Declercq
 	- GUI:
-		* ispCP_Initializer::_setIncludePath() - Removed duplicate entries 
+		* ispCP_Initializer::_setIncludePath() - Removed duplicate entries
 
 2010-06-23 Laurent Declercq
 	- GUI:
@@ -189,7 +197,7 @@ ispCP ω 1.0.6 ChangeLog
 
 2010-06-09 Benedikt Heintel
 	- TOOLS:
-		* Updated phpMyAdmin to version 3.3.3 
+		* Updated phpMyAdmin to version 3.3.3
 
 2010-06-05 Laurent Declercq
 	- GUI:
@@ -223,7 +231,7 @@ ispCP ω 1.0.6 ChangeLog
 	- GUI:
 		* Fixed Undefined variable: $theme_color in
 			admin/manage_reseller_users.php
-		
+
 2010-06-03 Thomas Wacker
 	- GUI:
 		* Fixed # 2269: Allow customers to use URIs for domain redirects
@@ -341,7 +349,7 @@ ispCP ω 1.0.6 ChangeLog
 
 2010-05-14 Benedikt Heintel
 	- TOOLS:
-		* Fixed #2373: ispCP or components should not use /e modifier for 
+		* Fixed #2373: ispCP or components should not use /e modifier for
 			preg_replace (Thanks to Benny Baumann)
 
 2010-05-13 Sascha Bay
@@ -375,7 +383,7 @@ ispCP ω 1.0.6 ChangeLog
 
 2010-05-05 Thomas Wacker
 	- GUI:
-		* Fixed #2369: After deletion of reseller, user can be not changed or 
+		* Fixed #2369: After deletion of reseller, user can be not changed or
 			switched to
 
 2010-05-05 Laurent Declercq
@@ -394,13 +402,13 @@ ispCP ω 1.0.6 ChangeLog
 2010-05-02 Thomas Wacker
 	- GUI:
 		* Fixed #2367: Wrong entity conversion of "&" in personal admin data
-		* Revisioning of POST input and output handling 
+		* Revisioning of POST input and output handling
 
 2010-05-01 Thomas Wacker
 	- GUI:
-		* Fixed #2126: Error in Update Hosting Package 
-		* Possible fix for RAM info on BSD systems 
-		* Small improvements (IDE warnings, variable usage, ...) 
+		* Fixed #2126: Error in Update Hosting Package
+		* Possible fix for RAM info on BSD systems
+		* Small improvements (IDE warnings, variable usage, ...)
 
 2010-05-01 Benedikt Heintel
 	- DISTS:
@@ -444,7 +452,7 @@ ispCP ω 1.0.6 ChangeLog
 	- GUI:
 		* Fixed #2358: Update jQuery to 1.4.2
 		* replaced deprecated split() function for PHP 5.3+
-		* typos, added/improved comments, some refactoring 
+		* typos, added/improved comments, some refactoring
 
 2010-04-26 Benedikt Heintel
 	- GUI:
@@ -467,7 +475,7 @@ ispCP ω 1.0.6 ChangeLog
 
 2010-04-18 Benedikt Heintel
 	- CONFIGS:
-		* Fixed #2257: subdomain.domain.tld aliasdomain doesn't work if another 
+		* Fixed #2257: subdomain.domain.tld aliasdomain doesn't work if another
 			user's main domain is domain.tld
 	- GUI:
 		* Fixed #2339: some confusing singular/plural translation
@@ -499,7 +507,7 @@ ispCP ω 1.0.6 ChangeLog
 2010-04-11 Sascha Bay
 	- GUI:
 		* Fixed #2335: Add and existent user for assign to new db have issues
-		
+
 2010-04-11 Benedikt Heintel
 	- DISTS:
 		* Updated needed Gentoo Sources
@@ -531,7 +539,7 @@ ispCP ω 1.0.6 ChangeLog
 
 2010-04-08 Sascha Bay
 	- GUI:
-		* Fixed #2162: Hide "Subdomain add" and/or "Alias add" from 
+		* Fixed #2162: Hide "Subdomain add" and/or "Alias add" from
 			./client/domains_manage.php menu when disabled
 		* Fixed #2212: Wrong mail counts at reseller user statistics page
 		* Fixed #2329: Reseller statistic shows 0 / 0 of -1 if disabled
@@ -610,7 +618,7 @@ ispCP ω 1.0.6 ChangeLog
 
 2010-03-31 Laurent Declercq
 	- DISTS:
-		* [FreeBSD] Fixed: Unable to hide `rkhunter` output with common 
+		* [FreeBSD] Fixed: Unable to hide `rkhunter` output with common
 			I/O redirections in the `postinst` script
 		* [FreeBSD] The make process must copy the files in `/tmp` by default
 		* [FreeBSD] Removed useless code and some other changes in the `postinst`
@@ -648,7 +656,7 @@ ispCP ω 1.0.6 ChangeLog
 
 2010-03-29 Benedikt Heintel
 	- GUI:
-		* Fixed #2308: Order - The password field of the customer is empty in 
+		* Fixed #2308: Order - The password field of the customer is empty in
 			the confirmation mail.
 
 2010-03-29 Laurent Declercq
@@ -682,8 +690,8 @@ ispCP ω 1.0.6 ChangeLog
 			(Thank to Bene for the patch)
 		* Fixed #2297: Typo in \configs\opensuse\logrotate\ispcp
 	- SETUP
-		* Added new maintainer-helper.sh script (Functions that can be used 
-			in maintainers shell scripts) 
+		* Added new maintainer-helper.sh script (Functions that can be used
+			in maintainers shell scripts)
 
 2010-03-26 Sascha Bay
 	- GUI:
@@ -691,7 +699,7 @@ ispCP ω 1.0.6 ChangeLog
 
 2010-03-23 Laurent Declercq
 	- DISTS:
-		* [OpenSuse] Removed several useless information displayed on STDOUT 
+		* [OpenSuse] Removed several useless information displayed on STDOUT
 		* [OpenSuse] Removed useless tasks in the postinst script
 		* [OpenSuse] Removed useless 'update' argument for postinst script
 		* [OpenSuse] Updated INSTALL file
@@ -728,7 +736,7 @@ ispCP ω 1.0.6 ChangeLog
 	- LANGUAGE:
 		* Fixed #2278: Dutch translation for 1.05
 	- TOOLS:
-		* Fixed possible vulnerability. See: 
+		* Fixed possible vulnerability. See:
 			http://packetstormsecurity.org/1003-exploits/ispcp-rfi.txt
 
 2010-03-19 Laurent Declercq
@@ -807,7 +815,7 @@ ispCP ω 1.0.6 ChangeLog
 
 2010-03-09 Laurent Declercq
 	- GUI:
-		* Domain deletion: It's useless to delegate the deletion tasks for 
+		* Domain deletion: It's useless to delegate the deletion tasks for
 			protected areas files.
 		* Domain deletion - protected areas data: Merged SQL queries
 
@@ -816,13 +824,13 @@ ispCP ω 1.0.6 ChangeLog
 		* Fixed:  The folder "disabled" is missing in the root_domain.conf
 	- DISTS:
 		* Fixed #2253: Porting logrotate to FreeBSD
-		* Fixed #2254: (FreeBSD) The folder "disabled" is missing in the 
+		* Fixed #2254: (FreeBSD) The folder "disabled" is missing in the
 			root_domain.conf
 		* Fixed #2255: Update the FreeBSD packages
 	- TOOLS:
 		* Fixed #2256: Update Squirrelmail Plugins to the newest Version
 		* Fixed #2261: Squirrelmail update to version 1.4.20
-	
+
 2010-03-08 Benedikt Heintel
 	- TOOLS:
 		* Updated phpMyAdmin to version 3.3.0
@@ -834,10 +842,10 @@ ispCP ω 1.0.6 ChangeLog
 
 2010-03-07 Laurent Declercq
 	- GUI:
-		* Fixed #2252: Data related to the subdomains not deleted during domain 
+		* Fixed #2252: Data related to the subdomains not deleted during domain
 			deletion
 	- SETUP:
-		* Fixed #2262: Configuration of domains disabled before update is not 
+		* Fixed #2262: Configuration of domains disabled before update is not
 			regenerated
 
 2010-03-07 Christian Hernmarck
@@ -877,7 +885,7 @@ ispCP ω 1.0.6 ChangeLog
 	- ENGINE:
 		* Changed: Permissions for fcgi folders php.ini
 
-2010-02-28 Sascha Bay 
+2010-02-28 Sascha Bay
 	- GUI:
 		* Fixed #2243: White site after updating a hosting plan of the admin
 
@@ -902,7 +910,7 @@ ispCP ω 1.0.6 ChangeLog
 
 2010-02-24 Benedikt Heintel
 	- CONFIGS:
-		* Fixed #2230: FreeBSD´s Makefile is not up-to-date		
+		* Fixed #2230: FreeBSD´s Makefile is not up-to-date
 	- DATABASE:
 		* Fixed #2229: omega 1.0.4 - Database Schema should be updated
 	- DOCS:
@@ -915,7 +923,7 @@ ispCP ω 1.0.6 ChangeLog
 
 2010-02-23 Benedikt Heintel
 	- DOCS:
-		* Fixed #2225: The unzip path in the INSTALL-File difference with the 
+		* Fixed #2225: The unzip path in the INSTALL-File difference with the
 			path in the Docu.
 
 2010-02-22 Sascha Bay
@@ -954,11 +962,11 @@ ispCP ω 1.0.6 ChangeLog
 	- CONFIGS:
 		* Fixed #2210: FreeBSD: Propose new start/stop script
 	- GUI:
-		* Fixed #2208: Little design error (part 5)	
+		* Fixed #2208: Little design error (part 5)
 
 2010-02-11 Benedikt Heintel
 	- GUI:
-		* Fixed #2159: Reseller can update to small hosting plan even if client 
+		* Fixed #2159: Reseller can update to small hosting plan even if client
 			use more resources
 		* Fixed #2204: Little design error (part 4)
 		* Replaced all "SVN: $ID$" by "SVN: $Id$"
@@ -980,28 +988,28 @@ ispCP ω 1.0.6 ChangeLog
 2010-02-09 Laurent Declercq
 - GUI:
 	* Ehancement:
-		- Added JQuery v1.4.1 library (both format: full and minify - Only minify 
+		- Added JQuery v1.4.1 library (both format: full and minify - Only minify
 			is loaded by client's browser)
-		- Added JQuery ispCPtooltips plugin (both format: full and minify - Only 
+		- Added JQuery ispCPtooltips plugin (both format: full and minify - Only
 			minify is loaded by client's browser)
-		- Added a new javascript function in the ispcp .js-files to handle JQuery 
+		- Added a new javascript function in the ispcp .js-files to handle JQuery
 			XMLHttpRequest errors
 	* admin/reseller_edit.php and related template:
 		* Fixed #2188: Reseller update properties - Inconsistency between...
 		* Re-factoring the code for better readability
 		* Removed unnecessary checks
-		* Added pre-check on the first load to prevent inconstancy data during 
+		* Added pre-check on the first load to prevent inconstancy data during
 			update process
 		* Fixed vertical alignment for password generation button
 		* Ehancement:
-			- Added input fields hightlighting on error(s) (Todo, switch to 
+			- Added input fields hightlighting on error(s) (Todo, switch to
 				JQuery form validation for better performances)
 			- Added cached input values on error
 			- Added 'Cancel' button to abort the update process
-			- Added JavaScript events for the rollover effect of several input 
+			- Added JavaScript events for the rollover effect of several input
 				elements (submit, button)
 			- The password generation is performed via XMLHttpRequest now
-			- When the password is generated, the related input fields are now 
+			- When the password is generated, the related input fields are now
 				set to readonly to prevent inconstancy data
 			- Added button to reset the password input fields
 
@@ -1035,7 +1043,7 @@ ispCP ω 1.0.6 ChangeLog
 
 2010-01-25 Marc Pujol
 	- ENGINE:
-		* Fixed #2180: /var/log/ispcp/logdb doesn't get properly updated and is 
+		* Fixed #2180: /var/log/ispcp/logdb doesn't get properly updated and is
 			causing wrong statistics
 
 2010-01-22 Marc Pujol
@@ -1061,7 +1069,7 @@ ispCP ω 1.0.6 ChangeLog
 
 2010-01-17 Benedikt Heintel
 	- GUI:
-		* Fixed #2088: Possibility to add databases w/o db users and db users 
+		* Fixed #2088: Possibility to add databases w/o db users and db users
 			w/o	databases (based on a patch by Sascha Bay)
 
 2010-01-16 Peter Ziergöbel
@@ -1070,12 +1078,12 @@ ispCP ω 1.0.6 ChangeLog
 
 2010-01-16 Benedikt Heintel
 	- GUI:
-		* Fixed #2165: Reseller can add alias while disabled by the admin (based 
+		* Fixed #2165: Reseller can add alias while disabled by the admin (based
 			on a patch by Sascha Bay)
 
 2010-01-16 Marc Pujol
 	- GUI:
-		* Fixed #2168: Error Message in Browser: HY093 (whats wrong with my 
+		* Fixed #2168: Error Message in Browser: HY093 (whats wrong with my
 			database?)
 
 2010-01-13 Marc Pujol
@@ -1084,14 +1092,14 @@ ispCP ω 1.0.6 ChangeLog
 
 2010-01-13 Sascha Bay
 	- GUI:
-		* Fixed #2164: Manual dns record's - Unable to access to the interface 
+		* Fixed #2164: Manual dns record's - Unable to access to the interface
 			in some circumstances
 
 2010-01-13 Laurent Declercq
 	- GUI:
 		* Fixed #2160: Backup button not exist in client's GUI
-		* Added missing '$domain_expires|$dmn_expire' && '$allowbackup' && 
-		 '$domain_dns|$dmn_dns' variables in all 'list()' that are linked to 
+		* Added missing '$domain_expires|$dmn_expire' && '$allowbackup' &&
+		 '$domain_dns|$dmn_dns' variables in all 'list()' that are linked to
 		  the function 'get_domain_default_props()'
 		* Fixed wrong syntax for svn Id keyword in several files
 
@@ -1101,7 +1109,7 @@ ispCP ω 1.0.6 ChangeLog
 
 2010-01-07 Peter Ziergöbel
 	- GUI:
-		* Fixed #2125: Domain expire date can't set to "Never" (N/A) when it 
+		* Fixed #2125: Domain expire date can't set to "Never" (N/A) when it
 			changed
 
 2010-01-12 Benedikt Heintel
@@ -1115,29 +1123,29 @@ ispCP ω 1.0.6 ChangeLog
 	- GUI:
 		* Fixed #2124: Errors in Layout Settings
 		* Fixed #2144: Wrong Option declaration in Admin (reseller_edit.php)
-		* Fixed #2151: Adding user and exceeding mail account from reseller won't 
+		* Fixed #2151: Adding user and exceeding mail account from reseller won't
 			work correct
 		* Fixed #2153: Changing userlogo upload and deleting userlogo won't work
 		* Fixed #2154: Reseller Overview shows -1 if function is disabled
-		* Fixed #2157: Admin Option "Count default E-Mail addresses" work not 
+		* Fixed #2157: Admin Option "Count default E-Mail addresses" work not
 			correct
 
 2010-01-12 Laurent Declercq
 	- GUI:
-		* Fixed #2118: The button "Show default E-mail addresses" should be 
+		* Fixed #2118: The button "Show default E-mail addresses" should be
 			hidden if the default mail addresses do not exists.
 		* Fixed #2147: Not correct mail users count
-		* Enhancement: Show/hide the mails addresses created by default is now 
+		* Enhancement: Show/hide the mails addresses created by default is now
 			possible
 
 2010-01-12 Christian Hernmarck
 	- CONFIGS:
-		* Fixed #2149: tar [etch] does not understand --lzma (or --xz) -> info 
+		* Fixed #2149: tar [etch] does not understand --lzma (or --xz) -> info
 			in config
 
 2010-01-11 Christian Hernmarck
 	- ENGINE:
-		* Fixed #2021: Error in backup (part II: tar-file and logfile not in 
+		* Fixed #2021: Error in backup (part II: tar-file and logfile not in
 			backup directory)
 
 2010-01-10 Thomas Wacker
@@ -1158,13 +1166,13 @@ ispCP ω 1.0.6 ChangeLog
 		* Added headers  for subroutines - (Some should be commented)
 		* Code optimization - Useless invocation of subroutines get_conf()
 	- SETUP
-		* Fixed (partially) #2131: ispcp_network doesn't stop properly - (I'll 
+		* Fixed (partially) #2131: ispcp_network doesn't stop properly - (I'll
 			finish later)
 
 2010-01-06 Benedikt Heintel
 	- GUI:
 		* Fixed #1121: Support System (Patch by Sebastian Sellmeyer)
-		* Fixed #2093: The main index.php page doesn't deal properly with ssl 
+		* Fixed #2093: The main index.php page doesn't deal properly with ssl
 			controlpannel (Patch by aseques)
 		* Fixed #2096: Fix for iptables accounting in srv-traff (Patch by aseques)
 		* Fixed #2143: When deleting the user the entry in quotalimits remains
@@ -1176,17 +1184,17 @@ ispCP ω 1.0.6 ChangeLog
 
 2010-01-04 Christian Hernmarck
 	- GUI:
-		* Fixed #2142: "Subdomain add Bug" (problem of ie caused by wrong html 
+		* Fixed #2142: "Subdomain add Bug" (problem of ie caused by wrong html
 			in tpl)
 
 2010-01-02 Peter Ziergöbel
 	- GUI:
-		* Fixed #2123: Add "Backup Support" in ../reseller/domain_details.php and 
+		* Fixed #2123: Add "Backup Support" in ../reseller/domain_details.php and
 			in ../admin/domain_details.php
 
 2009-12-31 Laurent Declercq
 	- CONFIGS:
-		* Fixed #2132: All ispCP init scripts must be written in Shell and use 
+		* Fixed #2132: All ispCP init scripts must be written in Shell and use
 			only POSIX features
 	- DOCS:
 		* Updated OpenSUSE INSTALL file

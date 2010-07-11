@@ -39,14 +39,14 @@
  * @package		ispCP_Initializer
  * @author		Laurent declercq <laurent.declercq@ispcp.net>
  * @since		1.0.6
- * @version		1.0.7
+ * @version		1.0.8
  */
 class ispCP_Initializer {
 
 	/**
 	 * ispCP_Config_Handler instance used by this class
 	 *
-	 * @var ispCP_Config_Handler
+	 * @var ispCP_Config_Handler_File
 	 */
 	private $_config;
 
@@ -201,7 +201,7 @@ class ispCP_Initializer {
 		// Note: Both ArrayAccess and Iterator interfaces are part of PHP core,
 		// so, we can do the checking here without any problem.
 		} elseif($php_version < '5.3.0' && !extension_loaded('SPL')) {
-			$err_msg = 
+			$err_msg =
 				'Error: Standard PHP Library (SPL) was not detected! ' .
 				'See http://php.net/manual/en/book.spl.php for more information!';
 		} else {
@@ -354,10 +354,6 @@ class ispCP_Initializer {
 	 */
 	protected function _initializeDatabase() {
 
-		global $ispcp_db_pass_key, $ispcp_db_pass_iv;
-
-		require_once 'ispcp-db-keys.php';
-
 		try {
 
 			$connection = ispCP_Database::connect(
@@ -370,7 +366,7 @@ class ispCP_Initializer {
 
 		} catch(PDOException $e) {
 
-			throw new ispCP_Exception(
+			throw new ispCP_Exception_Database(
 				'Error: Unable to establish connection to the database! '.
 				'SQL returned: ' . $e->getMessage()
 			);
@@ -509,9 +505,9 @@ class ispCP_Initializer {
 	protected function _loadPlugins() {
 
 		// Load all the available plugins for the current execution context
-		ispCP_Plugin_Helpers::getPlugins();
+		// ispCP_Plugin_Helpers::getPlugins();
 
 		// Register an ispCP_Plugin_ActionsHooks for shared access
-		ispCP_Registry::set('Hook', ispCP_Plugin_ActionsHooks::getInstance());
+		// ispCP_Registry::set('Hook', ispCP_Plugin_ActionsHooks::getInstance());
 	}
 }

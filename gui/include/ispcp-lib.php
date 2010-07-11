@@ -81,6 +81,21 @@ ispCP_Registry::get('ExceptionHandler')->attach(
 );
 
 /**
+ * Encryption data
+ */
+require_once INCLUDEPATH . '/ispcp-db-keys.php';
+
+if($ispcp_db_pass_key != '{KEY}' && $ispcp_db_pass_iv != '{IV}') {
+	ispCP_Registry::set('MCRYPT_KEY', $ispcp_db_pass_key);
+	ispCP_Registry::set('MCRYPT_IV', $ispcp_db_pass_iv);
+} else {
+	throw new ispCP_Exception(
+		'Error: Database key and/or initialization vector was not genetated!'
+	);
+
+}
+
+/**
  * Include ispCP common functions
  */
 require_once INCLUDEPATH . '/ispcp-functions.php';
