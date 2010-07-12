@@ -30,10 +30,10 @@
  * DatabaseResult class -  Wrap the PDOStatement class
  *
  * @category	ispCP
- * @package		ispCP_Database
- * @author  ispCP Team
+ * @package     ispCP_Database
+ * @author      ispCP Team
  */
-final class ispCP_Database_ResultSet {
+class ispCP_Database_ResultSet {
 
 	/**
 	 * PDOStatement object
