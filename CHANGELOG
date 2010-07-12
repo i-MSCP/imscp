@@ -1,6 +1,12 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-07-12 Laurent Declercq
+	- GUI:
+		* Improved the ispCP_Filter_Compress_Gzip filter
+		* Removed deprecated spOutput class (file class.spGzip.php)
+		* Reordered the initialization routines
+
 2010-07-11 Laurent Declercq
 	- GUI:
 		* Added exception for ungenerated database key/initialization vector

@@ -45,7 +45,7 @@
  * @subpackage	Compress
  * @author		Laurent declercq <laurent.declercq@ispcp.net>
  * @since		1.0.6
- * @version		1.0.1
+ * @version		1.0.2
  * @replace		spOutput class
  */
 class ispCP_Filter_Compress_Gzip {
@@ -74,17 +74,17 @@ class ispCP_Filter_Compress_Gzip {
 	 *
 	 * @var boolean
 	 */
-	public $_compressionInformation = true;
+	public $compressionInformation = true;
 
 	/**
-	 * Min compression level
+	 * Minimum compression level
 	 *
 	 * @var int
 	 */
 	protected $_minCompressionLevel = 0;
 
 	/**
-	 * Max compression level
+	 * Maximum compression level
 	 *
 	 * @var int
 	 */
@@ -145,15 +145,22 @@ class ispCP_Filter_Compress_Gzip {
 	 */
 	public function __construct($mode = self::FILTER_FILE, $compressionLevel = 7) {
 
-		if($mode === self::FILTER_BUFFER or $mode === self::FILTER_FILE) {
-			$this->_mode = $mode;
+		if(extension_loaded('zlib')) {
+			if($mode === self::FILTER_BUFFER or $mode === self::FILTER_FILE) {
+				$this->_mode = $mode;
+			} else {
+				throw new ispCP_Exception(
+				'ispCP_GzipFilter error: Unknown filter mode!'
+				);
+			}
 		} else {
 			throw new ispCP_Exception(
-				'ispCP_GzipFilter error: Unknown filter mode!'
+				'ispCP_GzipFilter error: Zlib Compression library is not loaded!'
 			);
 		}
 
-		if(in_array($compressionLevel, 
+		if(in_array(
+			$compressionLevel,
 			range($this->_minCompressionLevel, $this->_maxCompressionLevel))) {
 
 			$this->_compressionLevel = $compressionLevel;
@@ -165,50 +172,56 @@ class ispCP_Filter_Compress_Gzip {
 	}
 
 	/**
-	 * Gzip Filter method
+	 * Gzip Filter
 	 *
 	 * This method can be used both for create standard gz files, and as filter
 	 * for the ob_start() function to help facilitate sending gzip encoded data
 	 * to the clients browsers that support the gzip content-coding.
 	 *
+	 * <b>Note:</b> According the PHP documentation, when used as filter for the
+	 * ob_start() function, and if any error occurs, FALSE is returned and then,
+	 * content is sent to the client browser without compression.
+	 *
 	 * @param string $data Data to be compressed
-	 * @param string $destination File path to be used for gz file creation
+	 * @param string $filePath File path to be used for gz file creation
 	 * @return string|false Encoded string in gzip file format, FALSE on failure
 	 */
-	public function filter($data, $destination = '') {
+	public function filter($data, $filePath = '') {
 
 		$this->_data = $data;
 
 		// Act as filter for the PHP ob_start function
 		if($this->_mode === self::FILTER_BUFFER) {
-			if($this->_getEncoding()) {
 
-				if($this->_compressionInformation) {
+			if(ini_get('output_handler') != 'ob_gzhandler'
+				&& !ini_get('zlib.output_compression')
+				&& !headers_sent() && connection_status() == CONNECTION_NORMAL
+				&& $this->_getEncoding()) {
 
-					$statTime = microtime(true);
+					if($this->compressionInformation && !is_xhr()) {
+						$statTime = microtime(true);
 
-					$gzipData = $this->_getEncodedData();
+						$gzipData = $this->_getEncodedData();
+						$time = round((microtime(true) - $statTime) * 1000, 2);
 
-					$time = round((microtime(true) - $statTime) * 1000, 2);
+						$this->_gzipDataSize = strlen($gzipData);
+						$gzipData = $this->_addCompressionInformation($time);
+					} else {
+						$gzipData = $this->_getEncodedData();
+						$this->_gzipDataSize = strlen($gzipData);
+					}
 
-					$this->_gzipDataSize = strlen($gzipData);
-
-					$gzipData = $this->_addCompressionInformation($time);
-				} else {
-					$gzipData = $this->_getEncodedData();
-					$this->_gzipDataSize = strlen($gzipData);
-				}
-
-				// Send required headers
-				$this->_sendHeaders();
-
+					// Send required headers
+					$this->_sendHeaders();
+			} else {
+				return false;
 			}
 
 		// Create standard gz file
 		} else {
 
 			$gzipData = $this->_getEncodedData();
-			$this->_writeFile($gzipData, $destination);
+			$this->_writeFile($gzipData, $filePath);
 		}
 
 		return $gzipData;

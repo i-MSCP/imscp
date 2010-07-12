@@ -39,7 +39,7 @@
  * @package		ispCP_Initializer
  * @author		Laurent declercq <laurent.declercq@ispcp.net>
  * @since		1.0.6
- * @version		1.0.8
+ * @version		1.0.9
  */
 class ispCP_Initializer {
 
@@ -132,10 +132,11 @@ class ispCP_Initializer {
 		// Check php version and availability of the Php Standard Library
 		$this->_checkPhp();
 
+		// Set display errors
 		$this->_setDisplayErrors();
 
-		// Initialize output buffering
-		$this->_initializeOutputBuffering();
+		// Set additionally ispCP_Exception_Writer observers
+		$this->_setExceptionWriters();
 
 		// Include path
 		$this->_setIncludePath();
@@ -146,29 +147,31 @@ class ispCP_Initializer {
 		// Establish the connection to the database
 		$this->_initializeDatabase();
 
-		// Set additionally ispCP_Exception_Writer observers
-		$this->_setExceptionWriters();
-
-		// Initialize logger
-		$this->_initializeLogger();
-
-		// Load all the configuration parameters from the database
-		$this->_processConfiguration();
-
-		// Se encoding
+		// Se encoding (Both PHP and database)
 		$this->_setEncoding();
 
 		// Set timezone
 		$this->_setTimezone();
 
-		$this->_initializeI18n();
+		// Load all the configuration parameters from the database and merge
+		// it to our basis configuration object
+		$this->_processConfiguration();
+
+		// Initialize output buffering
+		$this->_initializeOutputBuffering();
+
+		// Initialize internationalization libraries
+		// $this->_initializeI18n();
+
+		// Initialize logger
+		// $this->_initializeLogger();
 
 		// Not yet fully integrated - (testing in progress)
 		// $this->loadPlugins();
 
       	// Trigger the 'OnAfterInitialize' action hook
 		// (will be activated later)
-		//ispCP_Registry::get('Hook')->OnAfterInitialize();
+		// ispCP_Registry::get('Hook')->OnAfterInitialize();
 
 		self::$_initialized = true;
 	}
@@ -181,11 +184,12 @@ class ispCP_Initializer {
 	 * is more recent or equal to the PHP version 5.1.4 and that the SPL is
 	 * loaded.
 	 *
-	 * <b>Note:</b> ispCP requires PHP 5.1.4 or later because some SPL interfaces were
-	 * not stable in earlier versions of PHP.
+	 * <b>Note:</b> ispCP requires PHP 5.1.4 or later because some SPL
+	 * interfaces were not stable in earlier versions of PHP.
 	 *
 	 * @throws ispCP_Exception
 	 * @return void
+	 * @todo Check SPL part (ispCP_Exception_Handler use SPL)
 	 */
 	protected function _checkPhp() {
 
@@ -225,9 +229,10 @@ class ispCP_Initializer {
 	}
 
 	/**
-	 * Sets additional observers for the exception handler
+	 * Sets additional writers or exception handler
 	 *
 	 * @return void
+	 * @todo Automatic detection of new writers based on the namespace
 	 */
 	protected function _setExceptionWriters() {
 
@@ -252,7 +257,6 @@ class ispCP_Initializer {
 		*/
 
 		if(in_array('mail', $writerObservers)) {
-
 			$admin_email = $this->_config->DEFAULT_ADMIN_ADDRESS;
 			if($admin_email != '') {
 				$exceptionHandler->attach(
@@ -269,36 +273,6 @@ class ispCP_Initializer {
 		}
 		*/
 	} // end _setExceptionWriters()
-
-	/**
-	 * Initialize the PHP output buffering / spGzip filter
-	 *
-	 * The buffer must be started at the earliest opportunity to avoid any
-	 * encoding error (eg. during development phase where the developers uses
-	 * some statements like echo, print in the code for debugging)
-	 *
-	 * <b>Note:</b> The hight level (like 8, 9) for compression are not
-	 * recommended for performances reasons. The obtained gain with these levels
-	 * is very small compared to the intermediate level like 6,7
-	 *
-	 * <b>Note:</b> ShowCompression option and checking for XmlHttpRequet will
-	 * be done by a filter hooked on the 'OnBeforeOutput' action hook.
-	 *
-	 * @return void
-	 */
-	protected function _initializeOutputBuffering() {
-
-		// Create a new filter that will be applyed on the buffer output
-		$filter = ispCP_Registry::set(
-			'bufferFilter',
-			new ispCP_Filter_Compress_Gzip(
-				ispCP_Filter_Compress_Gzip::FILTER_BUFFER
-			)
-		);
-
-		// Start the buffer and attach the filter to him
-		ob_start(array($filter, ispCP_Filter_Compress_Gzip::CALLBACK_NAME));
-	}
 
 	/**
 	 * Sets the include path
@@ -334,8 +308,9 @@ class ispCP_Initializer {
 
 		session_name('ispCP');
 
-		if (!isset($_SESSION))
+		if (!isset($_SESSION)) {
 			session_start();
+		}
 	}
 
 	/**
@@ -379,41 +354,6 @@ class ispCP_Initializer {
 
 		// Will be changed
 		$GLOBALS['sql'] =  ispCP_Registry::get('Db');
-	}
-
-	/**
-	 * Initialize logger
-	 *
-	 * <b>Note:</b> Not used at this moment (testing in progress)
-	 *
-	 * @return void
-	 */
-	protected function _initializeLogger() {}
-
-	/**
-	 * Load configuration parameters from database
-	 *
-	 * This function retrieves all the parameters from the database and merge
-	 * them with the basis configuration object.
-	 *
-	 * Parameters that exists in the basis configuration object will be replaced
-	 * by them that come from the database. The basis configuration object
-	 * contains parameters that come from the ispcp.conf configuration file or
-	 * any parameter defined in the {@link environment.php} file.
-	 *
-	 * @return void
-	 */
-	protected function _processConfiguration() {
-
-		// We get an ispCP_Config_Handler_Db object
-		$db_cfg = Config::getInstance(Config::DB, ispCP_Registry::get('Pdo'));
-
-		// Now, we can override our basis configuration object with parameter
-		// that come from the database
-		$this->_config->replaceWith($db_cfg);
-
-		// Finally, we register the ispCP_Config_Handler_Db for shared access
-		ispCP_Registry::set('Db_Config', $db_cfg);
 	}
 
 	/**
@@ -475,6 +415,67 @@ class ispCP_Initializer {
 	}
 
 	/**
+	 * Load configuration parameters from database
+	 *
+	 * This function retrieves all the parameters from the database and merge
+	 * them with the basis configuration object.
+	 *
+	 * Parameters that exists in the basis configuration object will be replaced
+	 * by them that come from the database. The basis configuration object
+	 * contains parameters that come from the ispcp.conf configuration file or
+	 * any parameter defined in the {@link environment.php} file.
+	 *
+	 * @return void
+	 */
+	protected function _processConfiguration() {
+
+		// We get an ispCP_Config_Handler_Db object
+		$db_cfg = Config::getInstance(Config::DB, ispCP_Registry::get('Pdo'));
+
+		// Now, we can override our basis configuration object with parameter
+		// that come from the database
+		$this->_config->replaceWith($db_cfg);
+
+		// Finally, we register the ispCP_Config_Handler_Db for shared access
+		ispCP_Registry::set('Db_Config', $db_cfg);
+	}
+
+	/**
+	 * Initialize the PHP output buffering / spGzip filter
+	 *
+	 * The buffer must be started at the earliest opportunity to avoid any
+	 * encoding error (eg. during development phase where the developers uses
+	 * some statements like echo, print in the code for debugging)
+	 *
+	 * <b>Note:</b> The hight level (like 8, 9) for compression are not
+	 * recommended for performances reasons. The obtained gain with these levels
+	 * is very small compared to the intermediate level like 6,7
+	 *
+	 * <b>Note:</b> ShowCompression option and checking for XmlHttpRequet will
+	 * be done by a filter hooked on the 'OnBeforeOutput' action hook.
+	 *
+	 * @return void
+	 */
+	protected function _initializeOutputBuffering() {
+
+		// Create a new filter that will be applyed on the buffer output
+		$filter = ispCP_Registry::set(
+			'bufferFilter',
+			new ispCP_Filter_Compress_Gzip(
+				ispCP_Filter_Compress_Gzip::FILTER_BUFFER
+			)
+		);
+
+		// Show compression information in HTML comment ?
+		if(!$this->_config->SHOW_COMPRESSION_SIZE) {
+			$filter->compressionInformation = false;
+		}
+
+		// Start the buffer and attach the filter to him
+		ob_start(array($filter, ispCP_Filter_Compress_Gzip::CALLBACK_NAME));
+	}
+
+	/**
 	 * Initialize translation libraries
 	 *
 	 * <b>Note:</b> Not Yet Implemented
@@ -483,6 +484,15 @@ class ispCP_Initializer {
 	 * @todo Ask Jochen for the new i18n library and initilization processing
 	 */
 	protected function _initializeI18n() {}
+
+	/**
+	 * Initialize logger
+	 *
+	 * <b>Note:</b> Not used at this moment (testing in progress)
+	 *
+	 * @return void
+	 */
+	protected function _initializeLogger() {}
 
 	/**
 	 * Not yet implemented
