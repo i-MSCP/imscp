@@ -50,7 +50,7 @@ final class DatabaseResult {
     protected $_fetchMode = PDO::FETCH_ASSOC;
 
 	/**
-	 * A Row from the result set associated with the referenced PDOStatement
+	 * A row from the result set associated with the referenced PDOStatement
 	 * object
 	 *
 	 * @see fields()
@@ -86,8 +86,8 @@ final class DatabaseResult {
 	 *
 	 * @throws ispCP_Exception_Database
 	 * @param  string $param
-	 * @return mixed Depending of the $param value, this method can return the
-	 * first row of a  result set or a boolean that indicate if any rows exists
+	 * @return mixed Depending of the $param value, this method can returns the
+	 * first row of a result set or a boolean that indicate if any rows exists
 	 * in the result set
 	 */
 	public function __get($param) {
@@ -116,7 +116,7 @@ final class DatabaseResult {
 	 *
 	 * @see get()
 	 * @param string $param Colum field name
-	 * @return mixed
+	 * @return mixed Column value
 	 */
 	public function fields($param) {
 
@@ -159,6 +159,8 @@ final class DatabaseResult {
 	 *
 	 * Note: Currently, all fetch style are not implemented
 	 *
+	 * @author Laurent Declercq <laurent.declercq@ispcp.net>
+	 * @since 1.0.6
 	 * @param  $fetchStyle Controls how the next row will be returned to the
 	 * caller. This value must be one of the PDO::FETCH_* constants
 	 * @return void
@@ -201,7 +203,7 @@ final class DatabaseResult {
 	 * Error information associated with the last operation on the statement
 	 * handle
 	 *
-	 * @author Laurent Declercq <laurent.declercq@nuxwin.com>
+	 * @author Laurent Declercq <laurent.declercq@ispcp.net>
 	 * @since 1.0.6
 	 * @return array Error information
 	 */
@@ -216,7 +218,7 @@ final class DatabaseResult {
 	 * This method returns a stringified version of the error information
 	 * associated with the last statement operation.
 	 *
-	 * @author Laurent Declercq <laurent.declercq@nuxwin.com>
+	 * @author Laurent Declercq <laurent.declercq@ispcp.net>
 	 * @since 1.0.6
 	 * @return string Error information
 	 */
