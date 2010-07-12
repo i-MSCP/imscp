@@ -291,7 +291,7 @@ class ispCP_Database {
 	 * Fetch mode used).
 	 * @param array $object OPTIONAL parameter for SQL statements only. Can
 	 * be an array that contains constructor arguments. (See PDO::FETCH_CLASS)
-	 * @return DatabaseResult Returns a DatabaseResult object that represents a
+	 * @return ispCP_Database_ResultSet Returns a DatabaseResult object that represents a
 	 * result set or FALSE on failure.
 	 */
 	public function execute($stmt, $parameters = null) {
@@ -312,7 +312,7 @@ class ispCP_Database {
 		}
 
 		if($rs) {
-			return  new DatabaseResult($rs === true ? $stmt : $rs);
+			return  new ispCP_Database_ResultSet($rs === true ? $stmt : $rs);
 		} else {
 			$errorInfo =
 				is_string($stmt) ? $this->errorInfo() : $stmt->errorInfo();

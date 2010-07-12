@@ -30,7 +30,7 @@
  *
  * @author  ispCP Team
  */
-final class DatabaseResult {
+final class ispCP_Database_ResultSet {
 
 	/**
 	 * PDOStatement object

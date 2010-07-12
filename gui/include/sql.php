@@ -33,7 +33,7 @@
  *
  * <b>Note:</b> You may pass additional parameters. They will be treated as
  * though you called PDOStatement::setFetchMode() on the resultant statement
- * object that is wrapped by the DatabaseResult object.
+ * object that is wrapped by the ispCP_Database_ResultSet object.
  *
  * @see ispCP_Database::execute()
  * @throws ispCP_Exception
@@ -48,7 +48,7 @@
  * Fetch mode used).
  * @param array $parameters OPTIONAL parameter for Sql statements only. Can
  * be an array that contains constructor arguments. (See PDO::FETCH_CLASS)
- * @return DatabaseResult
+ * @return ispCP_Database_ResultSet
  **/
 function execute_query($db, $query, $parameters = null) {
 
@@ -80,8 +80,8 @@ function execute_query($db, $query, $parameters = null) {
  * @param string|int|array $bind Data to bind to the placeholders
  * @param boolean $failDie If TRUE, throws an ispCP_Exception_Database exception
  * on failure
- * @return DatabaseResult Return a DatabaseResult object that represent a result
- * set or FALSE on failure if $failDie is set to FALSE.
+ * @return ispCP_Database_ResultSet Return a DatabaseResult object that
+ * represent a result set or FALSE on failure if $failDie is set to FALSE.
  */
 function exec_query($db, $query, $bind = null, $failDie = true) {
 
