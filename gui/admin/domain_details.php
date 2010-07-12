@@ -34,7 +34,7 @@ check_login(__FILE__);
 
 $cfg = ispCP_Registry::get('Config');
 
-$tpl = new pTemplate();
+$tpl = new ispCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/domain_details.tpl');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('custom_buttons', 'page');
@@ -107,7 +107,7 @@ unset_messages();
 // Begin function block
 
 function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
-	
+
 	$cfg = ispCP_Registry::get('Config');
 	$sql = ispCP_Registry::get('Db');
 

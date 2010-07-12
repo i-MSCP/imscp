@@ -35,7 +35,7 @@ check_login(__FILE__);
 
 $cfg = ispCP_Registry::get('Config');
 
-$tpl = new pTemplate();
+$tpl = new ispCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/orders.tpl');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('page_message', 'page');
@@ -63,7 +63,7 @@ $tpl->assign(
 
 function gen_order_page(&$tpl, &$sql, $user_id) {
 	$cfg = ispCP_Registry::get('Config');
-	
+
 	$start_index = 0;
 	// NXW: Unused variable so...
 	// $current_psi = 0;

@@ -38,7 +38,7 @@ if (strtolower($cfg->HOSTING_PLANS_LEVEL) != 'admin') {
 	user_goto('index.php');
 }
 
-$tpl = new pTemplate();
+$tpl = new ispCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/hosting_plan_add.tpl');
 $tpl->define_dynamic('page_message', 'page');
 
@@ -132,7 +132,7 @@ if ($cfg->DUMP_GUI_DEBUG) {
 function gen_empty_ahp_page(&$tpl) {
 
 	$cfg = ispCP_Registry::get('Config');
-	
+
 	$tpl->assign(
 			array(
 					'HP_NAME_VALUE'			=> '',
@@ -183,7 +183,7 @@ function gen_data_ahp_page(&$tpl) {
 	global $tos;
 
 	$cfg = ispCP_Registry::get('Config');
-	
+
 	$tpl->assign(
 			array(
 					'HP_NAME_VALUE'			=> tohtml($hp_name),

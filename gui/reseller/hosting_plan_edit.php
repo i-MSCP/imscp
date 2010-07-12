@@ -34,7 +34,7 @@ check_login(__FILE__);
 
 $cfg = ispCP_Registry::get('Config');
 
-$tpl = new pTemplate();
+$tpl = new ispCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/hosting_plan_edit.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
@@ -185,7 +185,7 @@ function restore_form(&$tpl, &$sql) {
  */
 function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
 	$cfg = ispCP_Registry::get('Config');
-	
+
 	$_SESSION['hpid'] = $hpid;
 
 	if (isset($cfg->HOSTING_PLANS_LEVEL)
@@ -263,7 +263,7 @@ function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
 	if ($value == '') {
 		$value = '';
 	}
-	
+
 	list(
 		$rsub_max,
 		$rals_max,
@@ -367,7 +367,7 @@ function check_data_iscorrect(&$tpl) {
     if (isset($_POST['backup'])) {
     	$hp_backup = $_POST['backup'];
     }
-    
+
     list(
 		$rsub_max,
 		$rals_max,
@@ -400,7 +400,7 @@ function check_data_iscorrect(&$tpl) {
 	} elseif (!ispcp_limit_check($hp_ftp, -1)) {
 		$ahp_error[] = tr('Incorrect FTP accounts limit!');
 	}
-	
+
 	if ($rsql_db_max == "-1") {
 		$hp_sql_db = "-1";
 	} elseif (!ispcp_limit_check($hp_sql_db, -1)) {

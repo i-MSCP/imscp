@@ -35,7 +35,7 @@ check_login(__FILE__);
 // Get a reference to the Config object
 $cfg = ispCP_Registry::get('Config');
 
-$tpl = new pTemplate();
+$tpl = new ispCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/settings.tpl');
 $tpl->define_dynamic('def_language', 'page');
 

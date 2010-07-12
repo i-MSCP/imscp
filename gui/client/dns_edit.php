@@ -32,7 +32,7 @@ check_login(__FILE__);
 
 $cfg = ispCP_Registry::get('Config');
 
-$tpl = new pTemplate();
+$tpl = new ispCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/dns_edit.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
@@ -134,7 +134,7 @@ unset_messages();
 // Begin function block
 
 function mysql_get_enum(&$sql, $object, &$default = null) {
-	
+
 	list($table, $col) = explode(".", $object);
 
 	$res = exec_query($sql, "SHOW COLUMNS FROM ".$table." LIKE '".$col."'");

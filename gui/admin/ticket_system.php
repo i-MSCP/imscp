@@ -38,7 +38,7 @@ if (!$cfg->ISPCP_SUPPORT_SYSTEM) {
 	user_goto('index.php');
 }
 
-$tpl = new pTemplate();
+$tpl = new ispCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/ticket_system.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('tickets_list', 'page');

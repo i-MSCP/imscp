@@ -34,7 +34,7 @@ check_login(__FILE__);
 
 $cfg = ispCP_Registry::get('Config');
 
-$tpl = new pTemplate();
+$tpl = new ispCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/domain_statistics.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
@@ -46,7 +46,7 @@ $tpl->define_dynamic('traff_item', 'traff_list');
 // page functions.
 
 function gen_page_date(&$tpl, $month, $year) {
-	
+
 	$cfg = ispCP_Registry::get('Config');
 
 	for ($i = 1; $i <= 12; $i++) {
@@ -122,7 +122,7 @@ function gen_dmn_traff_list(&$tpl, &$sql, $month, $year, $user_id) {
 
 	global $web_trf, $ftp_trf, $smtp_trf, $pop_trf,
 	$sum_web, $sum_ftp, $sum_mail, $sum_pop;
-	
+
 	$cfg = ispCP_Registry::get('Config');
 
 	$domain_admin_id = $_SESSION['user_id'];

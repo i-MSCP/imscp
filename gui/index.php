@@ -67,7 +67,7 @@ $theme_color = isset($_SESSION['user_theme'])
 	? $_SESSION['user_theme']
 	: $cfg->USER_INITIAL_THEME;
 
-$tpl = new pTemplate();
+$tpl = new ispCP_pTemplate();
 
 if (($cfg->MAINTENANCEMODE
 		|| databaseUpdate::getInstance()->checkUpdateExists())

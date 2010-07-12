@@ -34,7 +34,7 @@ check_login(__FILE__);
 
 $cfg = ispCP_Registry::get('Config');
 
-$tpl = new pTemplate();
+$tpl = new ispCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/ticket_system.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
@@ -49,7 +49,7 @@ $tpl->define_dynamic('scroll_next', 'page');
 
 function gen_tickets_list(&$tpl, &$sql, $user_id) {
 	$cfg = ispCP_Registry::get('Config');
-	
+
 	$start_index = 0;
 
 	$rows_per_page = $cfg->DOMAIN_ROWS_PER_PAGE;

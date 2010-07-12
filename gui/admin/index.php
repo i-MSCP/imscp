@@ -34,7 +34,7 @@ $cfg = ispCP_Registry::get('Config');
 
 check_login(__FILE__, $cfg->PREVENT_EXTERNAL_LOGIN_ADMIN);
 
-$tpl = new pTemplate();
+$tpl = new ispCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/index.tpl');
 $tpl->define_dynamic('def_language', 'page');
 $tpl->define_dynamic('def_layout', 'page');

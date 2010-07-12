@@ -164,7 +164,7 @@ function add_update_services($mode) {
 
 	// Gets a reference to the IspCP_ConfigHandler_Db instance
 	$db_cfg = ispCP_Registry::get('Db_Config');
-	
+
 	// Create a pool for messages on error and gets a reference to him
 	$messages = &ispCP_Registry::set('Page_Messages', array());
 
@@ -244,7 +244,7 @@ function add_update_services($mode) {
  *
  * @since 1.0.6
  * @author Laurent declercq (nuxwin) <laurent.declercq@ispcp.net>
- * @param pTemplate &$tpl Reference to a pTemplate instance
+ * @param ispCP_pTemplate &$tpl Reference to a pTemplate instance
  * @return void;
  */
 function show_services(&$tpl) {
@@ -319,7 +319,7 @@ function show_services(&$tpl) {
 
 				$tpl->assign(
 					array(
-						'SERVICE' => 
+						'SERVICE' =>
 							'<input name="name[]" type="text" id="name' .
 								$index . '" value="' . tohtml($name) .
 								'" class="textinput" maxlength="25" />',
@@ -442,7 +442,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] != 'reset') {
 } else {
 	$cfg = ispCP_Registry::get('Config');
 
-	$tpl = new pTemplate();
+	$tpl = new ispCP_pTemplate();
 	$tpl->define_dynamic(
 		'page', $cfg->ADMIN_TEMPLATE_PATH . '/settings_ports.tpl'
 	);

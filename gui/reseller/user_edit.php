@@ -42,7 +42,7 @@ if (isset($_GET['edit_id'])) {
 	user_goto('users.php');
 }
 
-$tpl = new pTemplate();
+$tpl = new ispCP_pTemplate();
 
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/user_edit.tpl');
 $tpl->define_dynamic('page_message', 'page');
@@ -235,7 +235,7 @@ function gen_edituser_page(&$tpl) {
 	global $dmn_user_name, $user_email, $customer_id, $first_name, $last_name,
 		$firm, $zip, $gender, $city, $state, $country, $street_one, $street_two,
 		$phone, $fax;
-	
+
 	$cfg = ispCP_Registry::get('Config');
 
 	if ($customer_id == NULL) {
@@ -278,7 +278,7 @@ function update_data_in_db($hpid) {
 	global $dmn_user_name, $user_email, $customer_id, $first_name, $last_name,
 		$firm, $zip, $gender, $city, $state, $country, $street_one, $street_two,
 		$mail, $phone, $fax, $inpass, $admin_login;
-	
+
 	$sql = ispCP_Registry::get('Db');
 	$cfg = ispCP_Registry::get('Config');
 

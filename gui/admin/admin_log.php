@@ -34,7 +34,7 @@ check_login(__FILE__);
 
 $cfg = ispCP_Registry::get('Config');
 
-$tpl = new pTemplate();
+$tpl = new ispCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/admin_log.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('log_row', 'page');
@@ -54,7 +54,7 @@ $tpl->assign(
 );
 
 function generate_page(&$tpl) {
-	
+
 	$cfg = ispCP_Registry::get('Config');
 	$sql = ispCP_Registry::get('Db');
 

@@ -34,7 +34,7 @@ check_login(__FILE__);
 
 $cfg = ispCP_Registry::get('Config');
 
-$tpl = new pTemplate();
+$tpl = new ispCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/settings_maintenance_mode.tpl');
 
 $tpl->assign(
@@ -55,10 +55,10 @@ if (isset($_POST['uaction']) AND $_POST['uaction'] == 'apply') {
 	$maintenancemode_message = clean_input($_POST['maintenancemode_message']);
 
 	$db_cfg = ispCP_Registry::get('Db_Config');
-	
+
 	$db_cfg->MAINTENANCEMODE = $maintenancemode;
 	$db_cfg->MAINTENANCEMODE_MESSAGE = $maintenancemode_message;
-	
+
 	$cfg->replaceWith($db_cfg);
 
 	set_page_message(tr('Settings saved !'));

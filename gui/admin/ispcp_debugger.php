@@ -410,7 +410,7 @@ $exec_count = $exec_count + count_requests($sql, 'status', 'htaccess');
 $exec_count = $exec_count + count_requests($sql, 'status', 'htaccess_groups');
 $exec_count = $exec_count + count_requests($sql, 'status', 'htaccess_users');
 
-$tpl = new pTemplate();
+$tpl = new ispCP_pTemplate();
 
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/ispcp_debugger.tpl');
 $tpl->define_dynamic('page_message', 'page');

@@ -36,7 +36,7 @@ check_login(__FILE__);
 
 $cfg = ispCP_Registry::get('Config');
 
-$tpl = new pTemplate();
+$tpl = new ispCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/multilanguage.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('lang_row', 'page');
@@ -172,7 +172,7 @@ function install_lang() {
 						$ab['ispcp_language']
 					)
 				);
-				
+
 				//write_log(sprintf("%s added new language: %s", $_SESSION['user_logged'], $ab['ispcp_language']));
 				set_page_message(tr('New language installed!'));
 			} else {
@@ -182,7 +182,7 @@ function install_lang() {
 						$ab['ispcp_language']
 					)
 				);
-				
+
 				//write_log(sprintf("%s updated language: %s", $_SESSION['user_logged'], $ab['ispcp_language']));
 				set_page_message(tr('Language was updated!'));
 			}
@@ -192,7 +192,7 @@ function install_lang() {
 
 /**
  * Should be documented
- * 
+ *
  * @param Ptemplate
  * @return void
  */

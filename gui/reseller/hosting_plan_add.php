@@ -39,7 +39,7 @@ if (isset($cfg->HOSTING_PLANS_LEVEL)
 		user_goto('hosting_plan.php');
 }
 
-$tpl = new pTemplate();
+$tpl = new ispCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/hosting_plan_add.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
@@ -155,7 +155,7 @@ if ($cfg->DUMP_GUI_DEBUG) {
  */
 function gen_empty_ahp_page(&$tpl) {
 	$cfg = ispCP_Registry::get('Config');
-	
+
 	$tpl->assign(
 		array(
 			'HP_NAME_VALUE'			=> '',
@@ -204,7 +204,7 @@ function gen_data_ahp_page(&$tpl) {
 	global $tos;
 
 	$cfg = ispCP_Registry::get('Config');
-	
+
 	$tpl->assign(
 		array(
 			'HP_NAME_VALUE'			=> tohtml($hp_name),
@@ -314,7 +314,7 @@ function check_data_correction(&$tpl) {
 	if (!is_numeric($setup_fee)) {
 		$ahp_error[] = tr('Setup fee must be a number!');
 	}
-	
+
 	list(
 		$rsub_max,
 		$rals_max,
@@ -323,31 +323,31 @@ function check_data_correction(&$tpl) {
 		$rsql_db_max,
 		$rsql_user_max
 		) = check_reseller_permissions($_SESSION['user_id'], 'all_permissions');
-		
+
 	if ($rsub_max == "-1") {
 		$hp_sub = "-1";
 	} elseif (!ispcp_limit_check($hp_sub, -1)) {
 		$ahp_error[] = tr('Incorrect subdomains limit!');
 	}
-	
+
 	if ($rals_max == "-1") {
 		$hp_als = "-1";
 	} elseif (!ispcp_limit_check($hp_als, -1)) {
 		$ahp_error[] = tr('Incorrect aliases limit!');
 	}
-	
+
 	if ($rmail_max == "-1") {
 		$hp_mail = "-1";
 	} elseif (!ispcp_limit_check($hp_mail, -1)) {
 		$ahp_error[] = tr('Incorrect mail accounts limit!');
 	}
-	
+
 	if ($rftp_max == "-1") {
 		$hp_ftp = "-1";
 	} elseif (!ispcp_limit_check($hp_ftp, -1)) {
 		$ahp_error[] = tr('Incorrect FTP accounts limit!');
 	}
-	
+
 	if ($rsql_db_max == "-1") {
 		$hp_sql_db = "-1";
 	} elseif (!ispcp_limit_check($hp_sql_db, -1)) {
@@ -355,7 +355,7 @@ function check_data_correction(&$tpl) {
 	} else if ($hp_sql_user != -1 && $hp_sql_db == -1) {
 		$ahp_error[] = tr('SQL users limit is <i>disabled</i>!');
 	}
-	
+
 	if ($rsql_user_max == "-1") {
 		$hp_sql_user = "-1";
 	} elseif (!ispcp_limit_check($hp_sql_user, -1)) {
@@ -363,7 +363,7 @@ function check_data_correction(&$tpl) {
 	} else if ($hp_sql_user == -1 && $hp_sql_db != -1) {
 		$ahp_error[] = tr('SQL databases limit is not <i>disabled</i>!');
 	}
-	
+
 	if (!ispcp_limit_check($hp_traff, null)) {
 		$ahp_error[] = tr('Incorrect traffic limit!');
 	}

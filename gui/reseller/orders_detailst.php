@@ -35,7 +35,7 @@ check_login(__FILE__);
 
 $cfg = ispCP_Registry::get('Config');
 
-$tpl = new pTemplate();
+$tpl = new ispCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/orders_detailst.tpl');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('ip_entry', 'page');
@@ -56,7 +56,7 @@ $tpl->assign(
 
 function gen_order_details(&$tpl, &$sql, $user_id, $order_id) {
 	$cfg = ispCP_Registry::get('Config');
-	
+
 	$query = "
 		SELECT
 			*

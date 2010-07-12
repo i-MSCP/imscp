@@ -34,7 +34,7 @@ check_login(__FILE__);
 
 $cfg = ispCP_Registry::get('Config');
 
-$tpl = new pTemplate();
+$tpl = new ispCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/settings_layout.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
@@ -55,9 +55,9 @@ if (get_own_logo($_SESSION['user_id']) !== $cfg->IPS_LOGO_PATH . '/isp_logo.gif'
 
 function save_layout() {
 	global $theme_color;
-	
+
 	$sql = ispCP_Registry::get('Db');
-	
+
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'save_layout') {
 
 		$user_id = $_SESSION['user_id'];

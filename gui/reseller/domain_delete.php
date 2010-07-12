@@ -34,7 +34,7 @@ check_login(__FILE__);
 
 $cfg = ispCP_Registry::get('Config');
 
-$tpl = new pTemplate();
+$tpl = new ispCP_pTemplate();
 $tpl->define_dynamic('page',  $cfg->RESELLER_TEMPLATE_PATH . '/domain_delete.tpl');
 $tpl->define_dynamic('mail_list', 'page');
 $tpl->define_dynamic('ftp_list', 'page');

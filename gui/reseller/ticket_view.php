@@ -49,7 +49,7 @@ if (!$cfg->ISPCP_SUPPORT_SYSTEM || $rs->fields['support_system'] == 'no') {
 	user_goto('index.php');
 }
 
-$tpl = new pTemplate();
+$tpl = new ispCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/ticket_view.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
@@ -61,7 +61,7 @@ $tpl->define_dynamic('tickets_item', 'tickets_list');
 function gen_tickets_list(&$tpl, &$sql, &$ticket_id, &$screenwidth) {
 
 	$cfg = ispCP_Registry::get('Config');
-	
+
 	$user_id = $_SESSION['user_id'];
 	$query = "
 		SELECT
@@ -123,7 +123,7 @@ function gen_tickets_list(&$tpl, &$sql, &$ticket_id, &$screenwidth) {
 function get_tickets_replys(&$tpl, &$sql, &$ticket_id, &$screenwidth) {
 
 	$cfg = ispCP_Registry::get('Config');
-	
+
 	$query = "
 		SELECT
 			`ticket_id`,

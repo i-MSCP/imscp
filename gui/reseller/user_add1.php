@@ -34,7 +34,7 @@ check_login(__FILE__);
 
 $cfg = ispCP_Registry::get('Config');
 
-$tpl = new pTemplate();
+$tpl = new ispCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/user_add1.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
@@ -197,7 +197,7 @@ function check_user_data() {
  */
 function get_empty_au1_page(&$tpl) {
 	$cfg = ispCP_Registry::get('Config');
-	
+
 	$tpl->assign(
 		array(
 			'DMN_NAME_VALUE'		=> '',
@@ -224,7 +224,7 @@ function get_data_au1_page(&$tpl) {
 	global $dmn_expire; // Domain expire date
 	//global $dmn_chp; // choosed hosting plan;
 	global $dmn_pt; // personal template
-	
+
 	$cfg = ispCP_Registry::get('Config');
 
 	$tpl->assign(

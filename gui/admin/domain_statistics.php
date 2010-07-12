@@ -34,7 +34,7 @@ check_login(__FILE__);
 
 $cfg = ispCP_Registry::get('Config');
 
-$tpl = new pTemplate();
+$tpl = new ispCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/domain_statistics.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('hosting_plans', 'page');
@@ -104,7 +104,7 @@ function get_domain_trafic($from, $to, $domain_id) {
 }
 
 function generate_page(&$tpl, $domain_id) {
-	
+
 
 	global $month, $year, $web_trf, $ftp_trf, $smtp_trf, $pop_trf,
 	$sum_web, $sum_ftp, $sum_mail, $sum_pop;

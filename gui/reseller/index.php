@@ -34,7 +34,7 @@ $cfg = ispCP_Registry::get('Config');
 
 check_login(__FILE__, $cfg->PREVENT_EXTERNAL_LOGIN_RESELLER);
 
-$tpl = new pTemplate();
+$tpl = new ispCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/index.tpl');
 $tpl->define_dynamic('def_language', 'page');
 $tpl->define_dynamic('def_layout', 'page');
@@ -121,9 +121,9 @@ function gen_disk_usage(&$tpl, $usage, $max_usage, $bars_max) {
 
 function generate_page_data(&$tpl, $reseller_id, $reseller_name) {
 	global $crnt_month, $crnt_year;
-	
+
 	$sql = ispCP_Registry::get('Db');
-	
+
 	$crnt_month = date("m");
 	$crnt_year = date("Y");
 	// global

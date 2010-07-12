@@ -34,7 +34,7 @@ check_login(__FILE__);
 
 $cfg = ispCP_Registry::get('Config');
 
-$tpl = new pTemplate();
+$tpl = new ispCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/user_add4.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
@@ -146,9 +146,9 @@ if ($cfg->DUMP_GUI_DEBUG) {
 
 function init_empty_data() {
 	global $cr_user_id, $alias_name, $domain_ip, $forward, $forward_prefix, $mount_point, $tpl;
-	
+
 	$cfg = ispCP_Registry::get('Config');
-	
+
 	$cr_user_id = $alias_name = $domain_ip = $forward = $mount_point = '';
 
 	if (isset($_POST['status']) && $_POST['status'] == 1) {
@@ -255,7 +255,7 @@ function add_domain_alias(&$sql, &$err_al) {
 		$mount_point, $validation_err_msg;
 
 	$cfg = ispCP_Registry::get('Config');
-	
+
 	$cr_user_id = $dmn_id = $_SESSION['dmn_id'];
 	$alias_name = strtolower(clean_input($_POST['ndomain_name']));
 	$domain_ip = $_SESSION['dmn_ip'];

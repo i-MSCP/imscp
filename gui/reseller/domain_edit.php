@@ -34,7 +34,7 @@ check_login(__FILE__);
 
 $cfg = ispCP_Registry::get('Config');
 
-$tpl = new pTemplate();
+$tpl = new ispCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/domain_edit.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('ip_entry', 'page');
@@ -162,7 +162,7 @@ function load_user_data($user_id, $domain_id) {
 	global $dns_supp;
 	*/
 	global $sub, $als, $mail, $ftp, $sql_db, $sql_user, $traff, $disk;
-	
+
 	$sql = ispCP_Registry::get('Db');
 
 	$query = "
@@ -208,10 +208,10 @@ function load_additional_data($user_id, $domain_id) {
 	global $domain_name, $domain_expires, $domain_ip, $php_sup;
 	global $cgi_supp, $username, $allowbackup;
 	global $dns_supp;
-	
+
 	$sql = ispCP_Registry::get('Db');
 	$cfg = ispCP_Registry::get('Config');
-	
+
 	// Get domain data
 	$query = "
 		SELECT
@@ -295,9 +295,9 @@ function gen_editdomain_page(&$tpl) {
 	global $sql_user, $traff, $disk;
 	global $username, $allowbackup;
 	global $dns_supp;
-	
+
 	$cfg = ispCP_Registry::get('Config');
-	
+
 	// Fill in the fields
 	$domain_name = decode_idna($domain_name);
 
@@ -342,7 +342,7 @@ function gen_editdomain_page(&$tpl) {
 			)
 		);
 	}
-	
+
 	list(
 		$rsub_max,
 		$rals_max,
@@ -358,7 +358,7 @@ function gen_editdomain_page(&$tpl) {
 	if ($rftp_max == "-1") $tpl->assign('FTP_EDIT', '');
 	if ($rsql_db_max == "-1") $tpl->assign('SQL_DB_EDIT', '');
 	if ($rsql_user_max == "-1") $tpl->assign('SQL_USER_EDIT', '');
-	
+
 	$tpl->assign(
 		array(
 			'PHP_YES'					=> ($php_sup == 'yes') ? $cfg->HTML_SELECTED : '',
@@ -418,7 +418,7 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 	$allowbackup	= preg_replace("/\_/", "", $_POST['backup']);
 
 	$ed_error = '';
-	
+
 	list(
 		$rsub_max,
 		$rals_max,
@@ -427,31 +427,31 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 		$rsql_db_max,
 		$rsql_user_max
 		) = check_reseller_permissions($_SESSION['user_id'], 'all_permissions');
-		
+
 	if ($rsub_max == "-1") {
 		$sub = "-1";
 	} elseif (!ispcp_limit_check($sub, -1)) {
 		$ed_error .= tr('Incorrect subdomains limit!');
 	}
-	
+
 	if ($rals_max == "-1") {
 		$als = "-1";
 	} elseif (!ispcp_limit_check($als, -1)) {
 		$ed_error .= tr('Incorrect aliases limit!');
 	}
-	
+
 	if ($rmail_max == "-1") {
 		$mail = "-1";
 	} elseif (!ispcp_limit_check($mail, -1)) {
 		$ed_error .= tr('Incorrect mail accounts limit!');
 	}
-	
+
 	if ($rftp_max == "-1") {
 		$ftp = "-1";
 	} elseif (!ispcp_limit_check($ftp, -1)) {
 		$ed_error .= tr('Incorrect FTP accounts limit!');
 	}
-	
+
 	if ($rsql_db_max == "-1") {
 		$sql_db = "-1";
 	} elseif (!ispcp_limit_check($sql_db, -1)) {
@@ -459,7 +459,7 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 	} else if ($sql_db == -1 && $sql_user != -1) {
 		$ed_error .= tr('SQL databases limit is <i>disabled</i>!');
 	}
-	
+
 	if ($rsql_user_max == "-1") {
 		$sql_user = "-1";
 	} elseif (!ispcp_limit_check($sql_user, -1)) {
@@ -467,7 +467,7 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 	} else if ($sql_user == -1 && $sql_db != -1) {
 		$ed_error .= tr('SQL users limit is <i>disabled</i>!');
 	}
-	
+
 	if (!ispcp_limit_check($traff, null)) {
 		$ed_error .= tr('Incorrect traffic limit!');
 	}

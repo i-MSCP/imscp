@@ -34,7 +34,7 @@ check_login(__FILE__);
 
 $cfg = ispCP_Registry::get('Config');
 
-$tpl = new pTemplate();
+$tpl = new ispCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/user_add3.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
@@ -174,7 +174,7 @@ function gen_user_add3_page(&$tpl) {
 	global $dmn_name, $hpid, $dmn_user_name, $user_email, $customer_id,
 		$first_name, $last_name, $gender, $firm, $zip, $city, $state, $country,
 		$street_one, $street_two, $mail, $phone, $fax;
-	
+
 	$cfg = ispCP_Registry::get('Config');
 
 	$dmn_user_name = decode_idna($dmn_user_name);

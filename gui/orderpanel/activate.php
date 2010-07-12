@@ -146,7 +146,7 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id']) || !isset($_GET['k'])) {
 }
 
 
-$tpl = new pTemplate();
+$tpl = new ispCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->PURCHASE_TEMPLATE_PATH . '/activate.tpl');
 $tpl->define_dynamic('page_message', 'page');
 

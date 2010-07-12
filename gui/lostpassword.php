@@ -60,7 +60,7 @@ if (isset($_GET['key'])) {
 	if ($_GET['key'] != "") {
 		check_input($_GET['key']);
 
-		$tpl = new pTemplate();
+		$tpl = new ispCP_pTemplate();
 		$tpl->define('page', $cfg->LOGIN_TEMPLATE_PATH . '/lostpassword_message.tpl');
 		$tpl->assign(
 			array(
@@ -103,7 +103,7 @@ if (isset($_POST['uname'])) {
 		check_input(trim($_POST['uname']));
 		check_input($_POST['capcode']);
 
-		$tpl = new pTemplate();
+		$tpl = new ispCP_pTemplate();
 		$tpl->define('page', $cfg->LOGIN_TEMPLATE_PATH . '/lostpassword_message.tpl');
 		$tpl->assign(
 			array(
@@ -142,7 +142,7 @@ if (isset($_POST['uname'])) {
 unblock($cfg->BRUTEFORCE_BLOCK_TIME, 'captcha');
 is_ipaddr_blocked(null, 'captcha', true);
 
-$tpl = new pTemplate();
+$tpl = new ispCP_pTemplate();
 $tpl->define('page', $cfg->LOGIN_TEMPLATE_PATH . '/lostpassword.tpl');
 $tpl->assign(
 	array(

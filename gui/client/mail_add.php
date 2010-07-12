@@ -34,7 +34,7 @@ check_login(__FILE__);
 
 $cfg = ispCP_Registry::get('Config');
 
-$tpl = new pTemplate();
+$tpl = new ispCP_pTemplate();
 
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/mail_add.tpl');
 $tpl->define_dynamic('page_message', 'page');
@@ -49,7 +49,7 @@ $tpl->define_dynamic('to_alias_subdomain', 'page');
 // page functions.
 
 function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
-	
+
 	$cfg = ispCP_Registry::get('Config');
 
 	$dmn_name = decode_idna($dmn_name);
@@ -164,7 +164,7 @@ function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 }
 
 function gen_dmn_sub_list(&$tpl, &$sql, $dmn_id, $dmn_name, $post_check) {
-	
+
 	$cfg = ispCP_Registry::get('Config');
 
 	$ok_status = $cfg->ITEM_OK_STATUS;

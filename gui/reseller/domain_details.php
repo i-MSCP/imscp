@@ -34,7 +34,7 @@ check_login(__FILE__);
 
 $cfg = ispCP_Registry::get('Config');
 
-$tpl = new pTemplate();
+$tpl = new ispCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/domain_details.tpl');
 $tpl->define_dynamic('logged_from', 'page');
 
@@ -113,7 +113,7 @@ unset_messages();
 function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
 	$sql = ispCP_Registry::get('Db');
 	$cfg = ispCP_Registry::get('Config');
-	
+
 	// Get domain data
 	$query = "
 		SELECT

@@ -32,7 +32,7 @@ require '../include/ispcp-lib.php';
 
 $cfg = ispCP_Registry::get('Config');
 
-$tpl = new pTemplate();
+$tpl = new ispCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->PURCHASE_TEMPLATE_PATH . '/addon.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('purchase_header', 'page');

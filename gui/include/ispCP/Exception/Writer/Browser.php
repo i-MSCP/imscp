@@ -60,7 +60,7 @@ class ispCP_Exception_Writer_Browser extends ispCP_Exception_Writer {
 	/**
 	 * pTemplate instance
 	 *
-	 * @var ptemplate
+	 * @var ispCP_pTemplate
 	 */
 	protected $_pTemplate = null;
 
@@ -117,7 +117,7 @@ class ispCP_Exception_Writer_Browser extends ispCP_Exception_Writer {
 					$_SESSION['user_type'] == 'admin')) {
 
 			$this->_message = $exceptionHandler->getException()->getMessage();
-	
+
 		} else {
 
 			$productionException = $exceptionHandler->getProductionException();
@@ -144,10 +144,10 @@ class ispCP_Exception_Writer_Browser extends ispCP_Exception_Writer {
 	 */
 	protected function _prepareTemplate() {
 
-		$this->_pTemplate = new pTemplate();
+		$this->_pTemplate = new ispCP_pTemplate();
 		$this->_pTemplate->define('page', $this->_templateFile);
 
-		
+
 		if(ispCP_Registry::isRegistered('backButtonDestination')) {
 			$backButtonDest = ispCP_Registry::get('backButtonDestination');
 		} else {
@@ -170,7 +170,7 @@ class ispCP_Exception_Writer_Browser extends ispCP_Exception_Writer {
 					'THEME_CHARSET' => tr('encoding'),
 					'TR_BACK' => tr('Back'),
 					'TR_ERROR_MESSAGE' => tr('Error Message'),
-					
+
 				)
 			);
 		} else {

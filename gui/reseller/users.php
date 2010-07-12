@@ -34,7 +34,7 @@ check_login(__FILE__);
 
 $cfg = ispCP_Registry::get('Config');
 
-$tpl = new pTemplate();
+$tpl = new ispCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/users.tpl');
 $tpl->define_dynamic('users_list', 'page');
 $tpl->define_dynamic('user_entry', 'users_list');
@@ -134,7 +134,7 @@ function generate_users_list(&$tpl, $admin_id) {
 
 	$sql = ispCP_Registry::get('Db');
 	$cfg = ispCP_Registry::get('Config');
-	
+
 	$start_index = 0;
 
 	$rows_per_page = $cfg->DOMAIN_ROWS_PER_PAGE;

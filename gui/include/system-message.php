@@ -44,7 +44,7 @@ function system_message($msg, $backButtonDestination = '') {
 		$backButtonDestination = "javascript:history.go(-1)";
 	}
 
-	$tpl = new pTemplate();
+	$tpl = new ispCP_pTemplate();
 
 	// If we are on the login page, path will be like this
 	$template = $cfg->LOGIN_TEMPLATE_PATH . '/system-message.tpl';
