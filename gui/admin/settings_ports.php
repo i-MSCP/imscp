@@ -255,7 +255,7 @@ function show_services(&$tpl) {
 	// Gets the needed data
 
 	if(isset($_SESSION['error_on_updt'])) {
-		$values = new IspCP_ConfigHandler($_SESSION['error_on_updt']);
+		$values = new IspCP_Config_Handler($_SESSION['error_on_updt']);
 		unset($_SESSION['error_on_updt']);
 		$services = array_keys($values->toArray());
 	} else {
@@ -270,7 +270,7 @@ function show_services(&$tpl) {
 		$services = array_filter(array_keys($values->toArray()), $filter);
 
 		if(isset($_SESSION['error_on_add'])) {
-			$error_on_add = new IspCP_ConfigHandler($_SESSION['error_on_add']);
+			$error_on_add = new IspCP_Config_Handler($_SESSION['error_on_add']);
 			unset($_SESSION['error_on_add']);
 		}
 	}
