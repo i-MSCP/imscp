@@ -129,11 +129,11 @@ class ispCP_Initializer {
 	 */
 	 protected function _processAll() {
 
-		// Check php version and availability of the Php Standard Library
-		$this->_checkPhp();
-
 		// Set display errors
 		$this->_setDisplayErrors();
+
+		// Check php version and availability of the Php Standard Library
+		$this->_checkPhp();
 
 		// Set additionally ispCP_Exception_Writer observers
 		$this->_setExceptionWriters();
@@ -176,6 +176,21 @@ class ispCP_Initializer {
 		self::$_initialized = true;
 	}
 
+
+	/**
+	 * Sets the PHP display_errors parameter
+	 *
+	 * @return void
+	 */
+	protected function _setDisplayErrors() {
+
+		if($this->_config->DEBUG) {
+			ini_set('display_errors', 1);
+		} else {
+			ini_set('display_errors', 0);
+		}
+	}
+
 	/**
 	 * Check for PHP version and Standard PHP library availability
 	 *
@@ -214,18 +229,6 @@ class ispCP_Initializer {
 		}
 
 		throw new ispCP_Exception($err_msg);
-	}
-
-	/**
-	 * Sets the PHP display_errors parameter
-	 *
-	 * @return void
-	 */
-	protected function _setDisplayErrors() {
-
-		if($this->_config->DEBUG) {
-			ini_set('display_errors', 1);
-		}
 	}
 
 	/**

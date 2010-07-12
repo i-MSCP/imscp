@@ -30,14 +30,17 @@
  */
 
 /**
- * This is the primarly file that should be included in all the IspCP's user
+ * This is the primarly file that should be included in all the ispCP's user
  * levels scripts such as all scripts that live under gui/{admin,reseller,client}
  */
+
 // Set default error reporting level
 error_reporting(E_ALL|E_STRICT);
 
-// Should be set to 1 only for development
-ini_set('display_errors', 0);
+// Sets to TRUE here to ensure displaying of the base core errors
+// Will be overwritten during initialization process
+// @see ispCP_Initializer::_setDisplayErrors()
+ini_set('display_errors', 1);
 
 // Define path for the ispCP include directory
 define('INCLUDEPATH', dirname(__FILE__));
@@ -53,11 +56,8 @@ spl_autoload_register('autoload_class');
 /**
  * Exception Handler for uncaught exceptions
  *
- * Set the exception handler for uncaught exceptions and register it in the
- * registry for shared access.
- *
- * Anothers optional writers will be attached to this object during
- * intialization process.
+ * Sets the exception handler for uncaught exceptions and register it in the
+ * registry.
  */
 ispCP_Registry::setAlias(
 	'ExceptionHandler',
@@ -68,10 +68,13 @@ ispCP_Registry::setAlias(
  * Attach the primary writer to write uncaught exceptions messages to
  * the client browser.
  *
- * The writer writes all ispCP_Exception messages to the client browser. In
- * production, all messages sare replaced by a specific message to avoid
- * revealing important information about the ispCP application environment if
- * the user is not an administrator.
+ * The writer writes all exception messages to the client browser. In production,
+ * all messages are replaced by a specific message to avoid revealing important
+ * information about the ispCP application environment if the user is not an
+ * administrator.
+ *
+ * Anothers optional writers will be attached to this object during
+ * intialization process.
  */
 ispCP_Registry::get('ExceptionHandler')->attach(
 	new ispCP_Exception_Writer_Browser(
@@ -92,7 +95,6 @@ if($ispcp_db_pass_key != '{KEY}' && $ispcp_db_pass_iv != '{IV}') {
 	throw new ispCP_Exception(
 		'Error: Database key and/or initialization vector was not generated!'
 	);
-
 }
 
 /**
@@ -102,26 +104,26 @@ require_once INCLUDEPATH . '/ispcp-functions.php';
 require_once INCLUDEPATH . '/deprecated.php';
 
 /**
- * Bootstrap the IspCP environment, and default configuration
+ * Bootstrap the ispCP environment, and default configuration
  *
- * @see {@link IspCP_Bootstrap} class
- * @see {@link IspCP_Initializer} class
+ * @see {@link ispCP_Bootstrap} class
+ * @see {@link ispCP_Initializer} class
  */
 require_once INCLUDEPATH . '/environment.php';
 
 /**
- * Internationalisation functions
+ * Internationalization functions
  */
 require_once INCLUDEPATH . '/i18n.php';
 
 /**
- * system message functions
- * @deprecated Depreacted since 1.0.6 - Will be replaced by ispCP_Exception
+ * System message functions
+ * @deprecated Deprecated since 1.0.6 - Will be replaced by ispCP_Exception
  */
 require_once INCLUDEPATH . '/system-message.php';
 
 /**
- * Sql convenience functions
+ * SQL convenience functions
  */
 require_once 'sql.php';
 
