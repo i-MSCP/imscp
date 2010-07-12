@@ -50,7 +50,7 @@ function gen_directories(&$tpl) {
 	$path = isset($_GET['cur_dir']) ? $_GET['cur_dir'] : '';
 	$domain = $_SESSION['user_logged'];
 	// Create the virtual file system and open it so it can be used
-	$vfs = new vfs($domain, $sql);
+	$vfs = new ispCP_VirtualFileSystem($domain, $sql);
 	// Get the directory listing
 	$list = $vfs->ls($path);
 	if (!$list) {
@@ -74,7 +74,7 @@ function gen_directories(&$tpl) {
 	// Show directories only
 	foreach ($list as $entry) {
 		// Skip non-directory entries
-		if ($entry['type'] != vfs::VFS_TYPE_DIR) {
+		if ($entry['type'] != ispCP_VirtualFileSystem::VFS_TYPE_DIR) {
 			continue;
 		}
 		// Skip '.' and '..'

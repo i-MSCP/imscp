@@ -45,7 +45,7 @@ function write_error_page(&$sql, $user_id, $eid) {
 
 	$error = $_POST['error'];
 	$file = '/errors/' . $eid . '.html';
-	$vfs = new vfs($_SESSION['user_logged'], $sql);
+	$vfs = new ispCP_VirtualFileSystem($_SESSION['user_logged'], $sql);
 
 	return $vfs->put($file, $error);
 }

@@ -99,7 +99,7 @@ function protect_area(&$tpl, &$sql, $dmn_id) {
 
 	// Check for existing directory
 	// We need to use the virtual file system
-	$vfs = new vfs($domain, $sql);
+	$vfs = new ispCP_VirtualFileSystem($domain, $sql);
 	$res = $vfs->exists($path);
 	if (!$res) {
 		set_page_message(tr("%s doesn't exist", $path));

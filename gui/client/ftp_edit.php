@@ -92,7 +92,7 @@ function update_ftp_account(&$sql, $ftp_acc, $dmn_name) {
 	$cfg = ispCP_Registry::get('Config');
 
 	// Create a virtual filesystem (it's important to use =&!)
-	$vfs = new vfs($dmn_name, $sql);
+	$vfs = new ispCP_VirtualFileSystem($dmn_name, $sql);
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'edit_user') {
 		if (!empty($_POST['pass']) || !empty($_POST['pass_rep'])) {
@@ -168,7 +168,7 @@ function update_ftp_account(&$sql, $ftp_acc, $dmn_name) {
 				$ftp_home = str_replace('//', '/', $other_dir);
 				// Check for $other_dir existence
 				// Create a virtual filesystem (it's important to use =&!)
-				$vfs = new vfs($dmn_name, $sql);
+				$vfs = new ispCP_VirtualFileSystem($dmn_name, $sql);
 				// Check for directory existence
 				$res = $vfs->exists($other_dir);
 				if (!$res) {

@@ -6,6 +6,8 @@ ispCP ω 1.0.6 ChangeLog
 		* Improved the ispCP_Filter_Compress_Gzip filter
 		* Moved the DatabaseResult class to ispCP_Database_ResultSet for use the
 			new naming convention
+		* Moved the vfs class to ispCP_VirtualFileSystem for use the new naming
+			convention
 		* Removed deprecated spOutput class (file class.spGzip.php)
 		* Reordered the initialization routines
 
