@@ -74,9 +74,10 @@ class ispCP_Initializer {
 	 * environment.
 	 *
 	 * @throws ispCP_Exception
-	 * @param string|ispCP_Config_Handler $command Initializer method to be
-	 *	executed or an ispCP_Config_Handler object
-	 * @param ispCP_Config_Handler $config Optional ispCP_Config_Handler object
+	 * @param string|ispCP_Config_Handler_File $command Initializer method to be
+	 *	executed or an ispCP_Config_Handler_File object
+	 * @param ispCP_Config_Handler_File $config Optional ispCP_Config_Handler
+	 * object
 	 * @return ispCP_Initializer The ispCP_Initializer instance
 	 */
 	public static function run($command = '_processAll',
@@ -106,9 +107,9 @@ class ispCP_Initializer {
 
 	/**
 	 * Create a new Initializer instance that references the given
-	 * {@link ispCP_Config_Handler} instance
+	 * {@link ispCP_Config_Handler_File} instance
 	 *
-	 * @param ispCP_Config_Handler $config ispCP_Config_Handler instance
+	 * @param ispCP_Config_Handler_File $config ispCP_Config_Handler_File object
 	 * @return void
 	 */
 	protected function __construct(ispCP_Config_Handler $config) {
@@ -230,7 +231,7 @@ class ispCP_Initializer {
 	 */
 	protected function _setExceptionWriters() {
 
-		// Get a reference to the ispCP_ExceptionHandler object
+		// Get a reference to the ispCP_Exception_Handler object
 		$exceptionHandler = ispCP_Registry::get('ExceptionHandler');
 
 		$admin_email = $this->_config->DEFAULT_ADMIN_ADDRESS;
