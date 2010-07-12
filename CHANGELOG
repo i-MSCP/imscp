@@ -5,6 +5,7 @@ ispCP ω 1.0.6 ChangeLog
 	- GUI:
 		* Enforced displaying of base core errors
 		* Improved the ispCP_Filter_Compress_Gzip filter
+		* Hidden compression information for language file exportation
 		* Moved the DatabaseResult class to ispCP_Database_ResultSet for use the
 			new naming convention
 		* Moved the vfs class to ispCP_VirtualFileSystem for use the new naming

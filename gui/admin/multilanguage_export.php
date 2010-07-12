@@ -35,13 +35,13 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 if (isset($_GET['export_lang']) && $_GET['export_lang'] !== '') {
-	
+
 	$sql = ispCP_Registry::get('Db');
-	
+
 	$language_table = $_GET['export_lang'];
-	
+
 	$encoding = $sql->execute("
-		SELECT 
+		SELECT
 			`msgstr`
 		FROM
 			`$language_table`
@@ -49,7 +49,7 @@ if (isset($_GET['export_lang']) && $_GET['export_lang'] !== '') {
 			`msgid` = 'encoding'
 		;
 	");
-	
+
 	if ($encoding && $encoding->RowCount() > 0
 		&& $encoding->fields['msgstr'] != '') {
 
@@ -73,6 +73,7 @@ if (isset($_GET['export_lang']) && $_GET['export_lang'] !== '') {
 		set_page_message(tr('Incorrect data input!'));
 		user_goto('multilanguage.php');
 	} else {
+		ispCP_Registry::get('bufferFilter')->compressionInformation = false;
 		header('Content-type: text/plain; charset=' . $encoding);
 
 		while (!$rs->EOF) {
