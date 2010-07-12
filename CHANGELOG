@@ -10,6 +10,8 @@ ispCP ω 1.0.6 ChangeLog
 			convention
 		* Moved the SystemInfo class to ispCP_SystemInfo for use the new naming
 			convention
+		* Moved the networkCard class to ispCP_NetworkCard for use the new
+			naming convention
 		* Removed deprecated spOutput class (file class.spGzip.php)
 		* Reordered the initialization routines
 

@@ -39,13 +39,6 @@
 abstract class ispcpUpdate {
 
 	/**
-	 * versionUpdate instance
-	 *
-	 * @var versionUpdate
-	 */
-	protected static $_instance = null;
-
-	/**
 	 * Version of the last update that was applied
 	 *
 	 * @var int

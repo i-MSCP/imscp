@@ -90,7 +90,7 @@ if($ispcp_db_pass_key != '{KEY}' && $ispcp_db_pass_iv != '{IV}') {
 	ispCP_Registry::set('MCRYPT_IV', $ispcp_db_pass_iv);
 } else {
 	throw new ispCP_Exception(
-		'Error: Database key and/or initialization vector was not genetated!'
+		'Error: Database key and/or initialization vector was not generated!'
 	);
 
 }

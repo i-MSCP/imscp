@@ -37,6 +37,13 @@
 class databaseUpdate extends ispcpUpdate {
 
 	/**
+	 * databaseUpdate instance
+	 *
+	 * @var databaseUpdate
+	 */
+	protected static $_instance = null;
+
+	/**
 	 * The database variable name for the update version
 	 *
 	 * @var string
@@ -45,7 +52,7 @@ class databaseUpdate extends ispcpUpdate {
 
 	/**
 	 * The update functions prefix
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $_functionName = '_databaseUpdate_';
@@ -80,7 +87,7 @@ class databaseUpdate extends ispcpUpdate {
 	}
 
 	/*
-	 * Insert the update functions below this entry. The revision has to be 
+	 * Insert the update functions below this entry. The revision has to be
 	 * ascending and unique. Each databaseUpdate function has to return a array,
 	 * even if the array contains only one entry.
 	 */
@@ -357,7 +364,7 @@ class databaseUpdate extends ispcpUpdate {
 				`subdomain_alias`
 			;
 		";
-		
+
 		$sqlUpd[] = "
 			CREATE TABLE IF NOT EXISTS
 				`subdomain_alias` (
@@ -733,7 +740,7 @@ class databaseUpdate extends ispcpUpdate {
 				`domain_dns` VARCHAR(15) NOT NULL DEFAULT 'no'
 			;
 		";
-		
+
 		$sqlUpd[] = "
 			UPDATE
 				`hosting_plans`
@@ -1122,10 +1129,10 @@ class databaseUpdate extends ispcpUpdate {
 
 		return $sqlUpd;
 	}
-	
+
 	/**
 	 * Adding Support System Control:
-	 * Admin can Enable and Disable Reseller's support system from frontend, 
+	 * Admin can Enable and Disable Reseller's support system from frontend,
 	 * belongs to ticket #1121 @see http://isp-control.net/ispcp/ticket/1121
 	 *
 	 * @author Sebastian Sellmeier
@@ -1135,7 +1142,7 @@ class databaseUpdate extends ispcpUpdate {
 	 */
 	protected function _databaseUpdate_27() {
 		$sqlUpd = array();
-		
+
 		$sqlUpd[] = "
 			ALTER IGNORE TABLE
 				`reseller_props`
@@ -1178,13 +1185,13 @@ class databaseUpdate extends ispcpUpdate {
 			) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_unicode_ci COMMENT = 'Sent autoreplies log table'
 			;
 		";
-			
+
 		return $sqlUpd;
 	}
-	
+
 	/**
 	 * Transitional issue (Fix database update conflict)
-	 * 
+	 *
 	 * @author Laurent Declercq <laurent.declercq@ispcp.net>
 	 * @since r2701
 	 * @return array Sql statements to be performed
@@ -1195,7 +1202,7 @@ class databaseUpdate extends ispcpUpdate {
 		// resolve conflict created under 1.0.5
 		return $sqlUpd;
 	}
-	
+
 	/**
 	 * Fix for ticket #2265 http://www.isp-control.net/ispcp/ticket/2265
 	 *
@@ -1234,7 +1241,7 @@ class databaseUpdate extends ispcpUpdate {
 						$clean_path[] = $dir;
 					}
 				}
-	
+
 				$path = '/' . implode(DIRECTORY_SEPARATOR, $clean_path);
 
 				$sqlUpd[] = "
@@ -1253,10 +1260,10 @@ class databaseUpdate extends ispcpUpdate {
 
 		return $sqlUpd;
 	}
-	
+
 	/**
 	 * Adding field for term of service
-	 * 
+	 *
 	 * @author Francesco Bux
 	 * @version 1.0.5
 	 * @since r2614
@@ -1278,7 +1285,7 @@ class databaseUpdate extends ispcpUpdate {
 		";
 
 		$rs = exec_query($sql, $query);
-		
+
 		// Create the new columns only if doesn't already exists
 		if ($rs->recordCount() == 0) {
 			$sqlUpd[] = "
@@ -1289,7 +1296,7 @@ class databaseUpdate extends ispcpUpdate {
 				;
 			";
 		}
-		
+
 		return $sqlUpd;
 	}
 
@@ -1309,7 +1316,7 @@ class databaseUpdate extends ispcpUpdate {
 		$sql = ispCP_Registry::get('Db');
 
 		$query = "
-			SELECT 
+			SELECT
 				`user_id`
 			FROM
 				`user_gui_props`
@@ -1351,10 +1358,10 @@ class databaseUpdate extends ispcpUpdate {
 
 		return $sqlUpd;
 	}
-	
+
 	/**
-	 * Old "criticalUpdate" functions moved here due to removal of critical 
-	 * updates, they will be executed if not done so far, thereafter, the 
+	 * Old "criticalUpdate" functions moved here due to removal of critical
+	 * updates, they will be executed if not done so far, thereafter, the
 	 * constant CRITICAL_UPDATE_REVISION will be removed
 	 *
 	 * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
@@ -1369,11 +1376,11 @@ class databaseUpdate extends ispcpUpdate {
         if (Config::getInstance()->exists('CRITICAL_UPDATE_REVISION')) {
             $critical_update = Config::getInstance()->get('CRITICAL_UPDATE_REVISION');
         }
-		
+
 		if (!isset($critical_update) || $critical_update < 3) {
 			/**
 			 * Old Critical Update #1
-			 * 
+			 *
 			 * Encrypt email and sql users password in database
 			 *
 			 * @author Daniel Andreca <sci2tech@gmail.com>
@@ -1382,7 +1389,7 @@ class databaseUpdate extends ispcpUpdate {
 			 */
 			if (!isset($critical_update)) {
 				$status = Config::getInstance()->get('ITEM_CHANGE_STATUS');
-				
+
 				$query = "
 					SELECT
 						`mail_id`,
@@ -1397,7 +1404,7 @@ class databaseUpdate extends ispcpUpdate {
 						`mail_type` RLIKE '^subdom_mail'
 					;
 				";
-				
+
 				$rs = exec_query($sql, $query);
 
 				if ($rs->recordCount() != 0) {
@@ -1408,7 +1415,7 @@ class databaseUpdate extends ispcpUpdate {
 							SET
 								`mail_pass`= '" .
 								encrypt_db_password($rs->fields['mail_pass']) .
-								"', `status` = '$status' WHERE `mail_id` = '" . 
+								"', `status` = '$status' WHERE `mail_id` = '" .
 								$rs->fields['mail_id'] ."'
 							;
 						";
@@ -1448,7 +1455,7 @@ class databaseUpdate extends ispcpUpdate {
 
 			/**
 			 * Old Critical Update #2
-			 * 
+			 *
 			 * Create default group for statistics
 			 * Fix for ticket #1571 http://www.isp-control.net/ispcp/ticket/1571
 			 *
@@ -1460,7 +1467,7 @@ class databaseUpdate extends ispcpUpdate {
 
 				$status = Config::getInstance()->get('ITEM_ADD_STATUS');
 				$statsgroup = Config::getInstance()->get('AWSTATS_GROUP_AUTH');
-		
+
 				$query = "
 					SELECT
 						`domain_id`
@@ -1479,7 +1486,7 @@ class databaseUpdate extends ispcpUpdate {
 				";
 
 				$rs = exec_query($sql, $query);
-		
+
 				if ($rs->recordCount() != 0) {
 					while (!$rs->EOF) {
 						$sqlUpd[] = "
@@ -1497,10 +1504,10 @@ class databaseUpdate extends ispcpUpdate {
 					}
 				}
 			}
-			
+
 			/**
 			 * Old Critical Update #3
-			 * 
+			 *
 			 * Create default group for statistics
 			 * Fix for ticket #1571 http://www.isp-control.net/ispcp/ticket/1571.
 			 *
@@ -1508,11 +1515,11 @@ class databaseUpdate extends ispcpUpdate {
 			 * @version 1.0
 			 * @since r1725
 			 */
-			$interfaces = new networkCard();
+			$interfaces = new ispCP_NetworkCard();
 			$card = $interfaces->ip2NetworkCard(
 				Config::getInstance()->get('BASE_SERVER_IP')
 			);
-	
+
 			$sqlUpd[] = "
 				ALTER IGNORE TABLE
 					`server_ips`
@@ -1533,12 +1540,12 @@ class databaseUpdate extends ispcpUpdate {
 					`ip_status` = '" . Config::getInstance()->get('ITEM_CHANGE_STATUS') . "'
 				;
 			";
-			
+
 			/**
 			 * Old Critical Updates #4 and #5 moved to {@see _databaseUpdate_24}
 			 */
 		}
-		
+
 		if (isset($critical_update)) {
 			$sqlUpd[] = "
 				DELETE IGNORE FROM
@@ -1679,7 +1686,7 @@ class databaseUpdate extends ispcpUpdate {
 
 		return $sqlUpd;
 	}
-	
+
 	/**
 	 * Fix for ticket #2371 http://isp-control.net/ispcp/ticket/2371
 	 *
@@ -1699,7 +1706,7 @@ class databaseUpdate extends ispcpUpdate {
 				`ipaddr` `ipaddr` VARCHAR(40) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL
 			;
 		";
-		
+
 		$sqlUpd[] = "
 			ALTER IGNORE TABLE
 				`server_ips`
@@ -1710,7 +1717,7 @@ class databaseUpdate extends ispcpUpdate {
 
 		return $sqlUpd;
 	}
-	
+
 	/**
 	 * Fix for ticket #2319 http://isp-control.net/ispcp/ticket/2319
 	 *
@@ -1759,7 +1766,7 @@ class databaseUpdate extends ispcpUpdate {
 			;
 		");
 	}
-	
+
 	/*
 	 * DO NOT CHANGE ANYTHING BELOW THIS LINE!
 	 */

@@ -36,7 +36,7 @@ $cfg = ispCP_Registry::get('Config');
 
 $tpl = new pTemplate();
 
-$interfaces=new networkCard();
+$interfaces=new ispCP_NetworkCard();
 
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/ip_manage.tpl');
 $tpl->define_dynamic('page_message', 'page');
@@ -56,7 +56,7 @@ $tpl->assign(
 );
 
 function gen_ip_action($ip_id, $status) {
-	
+
 	$cfg = ispCP_Registry::get('Config');
 
 	if ($status == $cfg->ITEM_OK_STATUS) {
@@ -127,7 +127,7 @@ function show_IPs(&$tpl, &$sql) {
 function add_ip(&$tpl, &$sql) {
 
 	global $ip_number, $domain, $alias, $ip_card;
-	$cfg = ispCP_Registry::get('Config');	
+	$cfg = ispCP_Registry::get('Config');
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_ip') {
 		if (check_user_data()) {

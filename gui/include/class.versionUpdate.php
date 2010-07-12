@@ -38,6 +38,13 @@
 class versionUpdate extends ispcpUpdate {
 
 	/**
+	 * versionUpdate instance
+	 *
+	 * @var versionUpdate
+	 */
+	protected static $_instance = null;
+
+	/**
 	 * Database variable name for the update version
 	 *
 	 * @var string
@@ -53,7 +60,7 @@ class versionUpdate extends ispcpUpdate {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * This class implements the Singleton Design pattern
 	 *
 	 * @return void
