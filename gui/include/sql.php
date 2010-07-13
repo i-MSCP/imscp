@@ -48,7 +48,7 @@
  * Fetch mode used).
  * @param array $parameters OPTIONAL parameter for Sql statements only. Can
  * be an array that contains constructor arguments. (See PDO::FETCH_CLASS)
- * @return ispCP_Database_ResultSet
+ * @return ispCP_Database_ResultSet Returns an ispCP_Database_ResultSet object
  **/
 function execute_query($db, $query, $parameters = null) {
 
@@ -61,7 +61,7 @@ function execute_query($db, $query, $parameters = null) {
 	}
 
 	if ($stmt == false)
-		throw new ispCP_Exception($db->getLastErrorMessage());
+		throw new ispCP_Exception_Database($db->getLastErrorMessage());
 
 	return $stmt;
 }
