@@ -2239,7 +2239,7 @@ function delete_domain($domain_id, $goto, $breseller = false) {
 
 	if($breseller) {
 		$reseller_id = $_SESSION['user_id'];
-		$query .= " AND domain_created_id` = ?";
+		$query .= " AND `domain_created_id` = ?";
 		$res = exec_query($sql, $query, array($domain_id, $reseller_id));
 	} else {
 		$res = exec_query($sql, $query, $domain_id);
