@@ -92,14 +92,6 @@ class ispCP_Database {
 			$driver_options
 		);
 
-		// Small workaround to improve performances (10 %) if possible
-		// See #2402 for more information about this issue.
-		$version = $this->_db->getAttribute(PDO::ATTR_SERVER_VERSION);
-
-		if(!is_null($version) && version_compare($version, '5.1.21', '>=')) {
-			$this->_db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-		}
-
 		// NXW: This is bad for future support of another RDBMS.
 		$this->_db->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, true);
 	}
@@ -291,8 +283,8 @@ class ispCP_Database {
 	 * Fetch mode used).
 	 * @param array $object OPTIONAL parameter for SQL statements only. Can
 	 * be an array that contains constructor arguments. (See PDO::FETCH_CLASS)
-	 * @return ispCP_Database_ResultSet Returns a DatabaseResult object that represents a
-	 * result set or FALSE on failure.
+	 * @return ispCP_Database_ResultSet Returns a DatabaseResult object that
+	 * represents a result set or FALSE on failure.
 	 */
 	public function execute($stmt, $parameters = null) {
 

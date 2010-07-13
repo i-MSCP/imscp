@@ -1,6 +1,10 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-07-13 Laurent Declercq
+	- GUI:
+		* Fixed #2404: Adding DB User not possible
+
 2010-07-12 Laurent Declercq
 	- GUI:
 		* Enforced displaying of base core errors
