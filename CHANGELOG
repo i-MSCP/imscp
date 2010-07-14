@@ -4,6 +4,8 @@ ispCP ω 1.0.6 ChangeLog
 2010-07-14 Laurent Declercq
 	- CONFIG|GUI||SETUP:
 		* Added PHP Browser Capabilities support (Only for the panel)
+	- GUI
+		* Changed ispCP_Filter_Compress_Gzip filter: small fix
 
 2010-07-13 Laurent Declercq
 		* Fixed #2404: Adding DB User not possible

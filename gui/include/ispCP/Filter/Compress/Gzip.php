@@ -45,22 +45,28 @@
  * @subpackage	Compress
  * @author		Laurent declercq <laurent.declercq@ispcp.net>
  * @since		1.0.6
- * @version		1.0.2
+ * @version		1.0.3
  * @replace		spOutput class
  */
 class ispCP_Filter_Compress_Gzip {
 
 	/**
+	 * Contains the filter method name
+	 *
 	 * @var string
 	 */
 	const CALLBACK_NAME = 'filter';
 
 	/**
+	 * Filter mode for the PHP ob_start function
+	 *
 	 * @var int
 	 */
 	const FILTER_BUFFER = 0;
 
 	/**
+	 * Filter mode for creation of standard gzip file
+	 *
 	 * @var int
 	 */
 	const FILTER_FILE = 1;
@@ -71,6 +77,8 @@ class ispCP_Filter_Compress_Gzip {
 	 *
 	 * It's not recommended to use it in production to avoid multiple
 	 * compression work.
+	 *
+	 * <b>Note:</b>Note usable in {@link self::FILTER_FILE} mode
 	 *
 	 * @var boolean
 	 */
@@ -119,7 +127,7 @@ class ispCP_Filter_Compress_Gzip {
 	protected $_dataSize = 0;
 
 	/**
-	 * Gzip Data size
+	 * Gzip (encoded) Data size
 	 *
 	 * @var int
 	 */
@@ -127,14 +135,14 @@ class ispCP_Filter_Compress_Gzip {
 
 	/**
 	 * Tells if the filter should act as callback function for the PHP ob_start
-	 * function or as function for create a standard gz file.
+	 * function or as simple filter for standard gz file creation.
 	 *
 	 * @var int
 	 */
 	protected $_mode;
 
 	/**
-	 * Constructor
+	 * Constructor Create a new
 	 *
 	 * @param int $mode Tells if the filter should act as callback function for
 	 * the PHP ob_start function or as function for create a standard gz file.
@@ -178,9 +186,13 @@ class ispCP_Filter_Compress_Gzip {
 	 * for the ob_start() function to help facilitate sending gzip encoded data
 	 * to the clients browsers that support the gzip content-coding.
 	 *
-	 * <b>Note:</b> According the PHP documentation, when used as filter for the
-	 * ob_start() function, and if any error occurs, FALSE is returned and then,
-	 * content is sent to the client browser without compression.
+	 * According the PHP documentation, when used as filter for the ob_start()
+	 * function, and if any error occurs, FALSE is returned and then, content is
+	 * sent to the client browser without compression.
+	 *
+	 * If used in {@link self::FILTER_FILE} mode and if the $filePath is not
+	 * specified or is an empty string, the encoded string is returned instead
+	 * of be written in a file.
 	 *
 	 * @param string $data Data to be compressed
 	 * @param string $filePath File path to be used for gz file creation
@@ -221,7 +233,10 @@ class ispCP_Filter_Compress_Gzip {
 		} else {
 
 			$gzipData = $this->_getEncodedData();
-			$this->_writeFile($gzipData, $filePath);
+
+			if($filePath != '' && $gzipData !== false) {
+				$this->_writeFile($gzipData, $filePath);
+			}
 		}
 
 		return $gzipData;
@@ -232,22 +247,22 @@ class ispCP_Filter_Compress_Gzip {
 	 *
 	 * @throws ispCP_Exception
 	 * @param string $gzipData Data in GZIP file format
-	 * @param string $destination Destination file path for Gzip file
+	 * @param string $filePath File path for Gzip file
 	 * @return void
 	 */
-	protected function _writeFile($gzipData, $destination) {
+	protected function _writeFile($gzipData, $filePath) {
 
-		$directory = dirname($destination);
+		$directory = dirname($filePath);
 
 		if(is_dir($directory) && is_writable($directory) &&
-			 $gzipData !== false) {
+		    $gzipData !== false) {
 
-			$fileHandle = fopen($destination, 'w');
+			$fileHandle = fopen($filePath, 'w');
 			fwrite($fileHandle, $gzipData);
 			fclose($fileHandle);
 		} else {
 			throw new ispCP_Exception(
-				"ispCP_GzipFilter error: `$destination` is not a valid " .
+				"ispCP_GzipFilter error: `$filePath` is not a valid " .
 					"directory or is not writable!"
 			);
 		}
