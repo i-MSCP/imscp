@@ -96,7 +96,6 @@ if (isset($_GET['export_lang']) && $_GET['export_lang'] !== '') {
 		if(isset($_GET['compress'])) {
 			$filter = new ispCP_Filter_Compress_Gzip();
 			$data = $filter->filter($data);
-
 			$filename .= '.gz';
 			$mime_type = 'application/x-gzip';
 		} else {
@@ -113,10 +112,11 @@ if (isset($_GET['export_lang']) && $_GET['export_lang'] !== '') {
 
 		// Headers according client browser
 		if($browserInfo->browser == 'msie') {
-            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-            header('Pragma: public');
+			header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+			header('Pragma: public');
 		} else {
 			header('Pragma: no-cache');
+
 			if($browserInfo->browser == 'safari') {
 				header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
 			}
