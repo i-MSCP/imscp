@@ -76,7 +76,7 @@ function execute_query($db, $query, $parameters = null) {
  *
  * @throws ispCP_Exception_Database
  * @param ispCP_Database $db ispCP_Database Instance
- * @param $query Sql statement
+ * @param string $query Sql statement
  * @param string|int|array $bind Data to bind to the placeholders
  * @param boolean $failDie If TRUE, throws an ispCP_Exception_Database exception
  * on failure
