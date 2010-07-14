@@ -92,7 +92,7 @@
                               <td class="{LANG_CLASS}" nowrap="nowrap">{LANGUAGE_REVISION}</td>
 							  <td class="{LANG_CLASS}" width="100" nowrap="nowrap" style="vertical-align:middle">
 							    <img src="{THEME_COLOR_PATH}/images/icons/details.png" width="16" height="16" border="0" style="vertical-align:middle" alt="{TR_EXPORT}" /> <a href="{URL_EXPORT}" id="url_export{INDEX}" class="link" target="_blank">{TR_EXPORT}</a>
-								<input id="gz_export{INDEX}"type="checkbox" onclick="override_export_url(this)" style="vertical-align:middle;margin-bottom:3px;" /><span style="font-size:8px;vertical-align:middle;">{TR_GZIPPED}</span>
+								<input id="gz_export{INDEX}" type="checkbox" onclick="override_export_url(this)" style="vertical-align:middle;margin-bottom:3px;" /><span style="font-size:8px;vertical-align:middle;">{TR_GZIPPED}</span>
 							  </td>
                               <td class="{LANG_CLASS}" width="100" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" />
                                 <!-- BDP: lang_delete_show -->

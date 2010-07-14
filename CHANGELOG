@@ -72,9 +72,9 @@ ispCP ω 1.0.6 ChangeLog
 	- GUI:
 		* Added ispCP_Exception_Writer_Mail writer
 		* Fixed: Funct. `tr()` can't be used if the database isn't reachable
-	    * Improved ispCP_Exception_Handler to avoid loop with broken writers
-	    * Refactored include/admin-function.php
-	    * Moved unused functions into `include/unused-functions.php`
+		* Improved ispCP_Exception_Handler to avoid loop with broken writers
+		* Refactored include/admin-function.php
+		* Moved unused functions into `include/unused-functions.php`
 	- CONFIG:
 		* Added configuration parameter into the ispcp.conf file to be able to
 			deactivate the writers observers

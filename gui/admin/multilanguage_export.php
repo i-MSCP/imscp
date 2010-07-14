@@ -77,7 +77,7 @@ if (isset($_GET['export_lang']) && $_GET['export_lang'] !== '') {
 		// Avoids to grab information about the buffer compression
 		ispCP_Registry::get('bufferFilter')->compressionInformation = false;
 
-		// Get all translation string
+		// Get all translation strings
 		$data = '';
 
 		while (!$rs->EOF) {
