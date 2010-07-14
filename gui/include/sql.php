@@ -36,16 +36,16 @@
  * object that is wrapped by the ispCP_Database_ResultSet object.
  *
  * @see ispCP_Database::execute()
- * @throws ispCP_Exception
+ * @throws ispCP_Exception_Database
  * @param  ispCP_Database $db ispCP_Database instance
- * @param string $query Sql statement to be executed
+ * @param string $query SQL statement to be executed
  * @param array|int|string $parameters OPTIONAL parameters that represents
  * data to bind to the placeholders for prepared statement, or an integer
  * that represents the Fetch mode for Sql statement. The fetch mode must be
- * one of the PDO::FETCH_* constants.
+ * one of the PDO::FETCH_* constants
  * @param int|string|object $parameters OPTIONAL parameter for SQL statement
  * only. Can be a colum number, an object, a class name (depending of the
- * Fetch mode used).
+ * Fetch mode used)
  * @param array $parameters OPTIONAL parameter for Sql statements only. Can
  * be an array that contains constructor arguments. (See PDO::FETCH_CLASS)
  * @return ispCP_Database_ResultSet Returns an ispCP_Database_ResultSet object
@@ -69,19 +69,19 @@ function execute_query($db, $query, $parameters = null) {
 /**
  * Convenience method to prepare and execute a query
  *
- * Note: On failure, and if the $failDie parameter is set to TRUE, this function
- * sends a mail to the administrator with some relevant  information such as
- * the debug information if the {@link ispCP_Exception_Writer_Mail writer} is
- * active.
+ * <b>Note:</b> On failure, and if the $failDie parameter is set to TRUE, this
+ * function sends a mail to the administrator with some relevant information
+ * such as the debug information if the
+ * {@link ispCP_Exception_Writer_Mail writer} is active.
  *
  * @throws ispCP_Exception_Database
  * @param ispCP_Database $db ispCP_Database Instance
- * @param string $query Sql statement
+ * @param string $query SQL statement
  * @param string|int|array $bind Data to bind to the placeholders
  * @param boolean $failDie If TRUE, throws an ispCP_Exception_Database exception
  * on failure
- * @return ispCP_Database_ResultSet Return a DatabaseResult object that
- * represent a result set or FALSE on failure if $failDie is set to FALSE.
+ * @return ispCP_Database_ResultSet Return a ispCP_Database_ResultSet object
+ * that represents a result set or FALSE on failure if $failDie is set to FALSE
  */
 function exec_query($db, $query, $bind = null, $failDie = true) {
 
@@ -98,6 +98,7 @@ function exec_query($db, $query, $bind = null, $failDie = true) {
 
 /**
  * Function quoteIdentifier
+ *
  * @todo document this function
  */
 function quoteIdentifier($identifier) {
