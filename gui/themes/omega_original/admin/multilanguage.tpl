@@ -7,14 +7,35 @@
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
+
 <script type="text/javascript">
-<!--
-function action_delete(url, language) {
-	if (!confirm(sprintf("{TR_MESSAGE_DELETE}", language)))
-		return false;
-	location = url;
-}
-//-->
+/*<![CDATA[*/
+
+	function action_delete(url, language) {
+
+		if (!confirm(sprintf("{TR_MESSAGE_DELETE}", language)))
+			return false;
+
+		location = url;
+	}
+
+	// Overrides exportation url to enable/disable gzip compression
+	//
+	// author Laurent Declercq <laurent.declercq@ispcp.net>
+	// Since 1.0.6
+	function override_export_url(ob) {
+
+		regexp = new RegExp('[a-z_]*([0-9]+)');
+		link = document.getElementById('url_export' + regexp.exec(ob.id)[1]);
+
+		if(ob.checked) {
+			link.href = link.href + '&compress=1';
+		} else {
+			link.href = link.href. substring(0, link.href.indexOf('&compress'));
+		}
+	}
+
+/*]]>*/
 </script>
 </head>
 
@@ -30,7 +51,7 @@ function action_delete(url, language) {
 	    <td colspan="2" style="vertical-align: top;"><table style="width: 100%; padding:0;margin:0;" cellspacing="0">
 				<tr style="height:95px;">
 				  <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
-					<td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" width="73" height="95" border="0" alt="" /></td>
+				  <td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" width="73" height="95" border="0" alt="" /></td>
 				</tr>
 				<tr>
 				  <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -69,10 +90,13 @@ function action_delete(url, language) {
                               <td class="{LANG_CLASS}" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/locale.png" width="16" height="16" style="vertical-align:middle" alt="" /> {LANGUAGE}</td>
                               <td class="{LANG_CLASS}" nowrap="nowrap">{MESSAGES}</td>
                               <td class="{LANG_CLASS}" nowrap="nowrap">{LANGUAGE_REVISION}</td>
-                              <td class="{LANG_CLASS}" width="100" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/details.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="{URL_EXPORT}" class="link" target="_blank">{TR_EXPORT}</a> </td>
+							  <td class="{LANG_CLASS}" width="100" nowrap="nowrap" style="vertical-align:middle">
+							    <img src="{THEME_COLOR_PATH}/images/icons/details.png" width="16" height="16" border="0" style="vertical-align:middle" alt="{TR_EXPORT}" /> <a href="{URL_EXPORT}" id="url_export{INDEX}" class="link" target="_blank">{TR_EXPORT}</a>
+								<input id="gz_export{INDEX}"type="checkbox" onclick="override_export_url(this)" style="vertical-align:middle;margin-bottom:3px;" /><span style="font-size:8px;vertical-align:middle;">{TR_GZIPPED}</span>
+							  </td>
                               <td class="{LANG_CLASS}" width="100" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" />
                                 <!-- BDP: lang_delete_show -->
-                                {TR_UNINSTALL} <!--{LANGUAGE}-->
+                                {TR_UNINSTALL}
                                 <!-- EDP: lang_delete_show -->
                                 <!-- BDP: lang_delete_link -->
                                 <a href="#" onclick="action_delete('{URL_DELETE}', '{LANGUAGE}')" class="link">{TR_UNINSTALL}</a>

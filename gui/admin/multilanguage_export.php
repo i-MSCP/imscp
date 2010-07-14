@@ -40,7 +40,7 @@ if (isset($_GET['export_lang']) && $_GET['export_lang'] !== '') {
 
 	$language_table = $_GET['export_lang'];
 
-	$encoding = $sql->execute("
+	$query = "
 		SELECT
 			`msgstr`
 		FROM
@@ -48,12 +48,13 @@ if (isset($_GET['export_lang']) && $_GET['export_lang'] !== '') {
 		WHERE
 			`msgid` = 'encoding'
 		;
-	");
+	";
 
-	if ($encoding && $encoding->RowCount() > 0
-		&& $encoding->fields['msgstr'] != '') {
+	$stmt = execute_query($sql, $query);
 
-		$encoding = $encoding->fields['msgstr'];
+	if ($stmt->RowCount() > 0 && $stmt->fields['msgstr'] != '') {
+
+		$encoding = $stmt->fields['msgstr'];
 	} else {
 		$encoding = 'UTF-8';
 	}
@@ -63,7 +64,7 @@ if (isset($_GET['export_lang']) && $_GET['export_lang'] !== '') {
 			`msgid`,
 			`msgstr`
 		FROM
-			$language_table
+			`$language_table`
 		;
 	";
 
@@ -73,21 +74,57 @@ if (isset($_GET['export_lang']) && $_GET['export_lang'] !== '') {
 		set_page_message(tr('Incorrect data input!'));
 		user_goto('multilanguage.php');
 	} else {
+		// Avoids to grab information about the buffer compression
 		ispCP_Registry::get('bufferFilter')->compressionInformation = false;
-		header('Content-type: text/plain; charset=' . $encoding);
+
+		// Get all translation string
+		$data = '';
 
 		while (!$rs->EOF) {
 			$msgid = $rs->fields['msgid'];
 			$msgstr = $rs->fields['msgstr'];
 
 			if ($msgid !== '' && $msgstr !== '') {
-				echo $msgid . " = " . $msgstr."\n";
+				$data .= "$msgid = $msgstr\n";
 			}
 
 			$rs->moveNext();
 		}
+
+		$filename = str_replace('lang_', '', $language_table) . '.txt';
+
+		if(isset($_GET['compress'])) {
+			$filter = new ispCP_Filter_Compress_Gzip();
+			$data = $filter->filter($data);
+
+			$filename .= '.gz';
+			$mime_type = 'application/x-gzip';
+		} else {
+			$mime_type = 'text/plain;';
+		}
+
+		// Common headers
+		header("Content-type: $mime_type;");
+		header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+		header('Content-Disposition: attachment; filename="' . $filename . '"');
+
+		// Get client browser information
+		$browserInfo = get_browser();
+
+		// Headers according client browser
+		if($browserInfo->browser == 'msie') {
+            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+            header('Pragma: public');
+		} else {
+			header('Pragma: no-cache');
+			if($browserInfo->browser == 'safari') {
+				header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+			}
+		}
+
+		print $data;
 	}
 } else {
-	set_page_message(tr("Incorrect data input!"));
+	set_page_message(tr('Incorrect data input!'));
 	user_goto('multilanguage.php');
 }
