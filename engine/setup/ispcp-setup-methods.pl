@@ -2210,7 +2210,7 @@ sub setup_gui_httpd {
 
 # ispCP GUI PHP configuration files - Setup / Update
 # Create gui fcgi directory
-# Build, store and install gui php related files (starter script, php.ini)
+# Build, store and install gui php related files (starter script, php.ini...)
 sub setup_gui_php {
 
 	push_el(\@main::el, 'setup_gui_php()', 'Starting...');
@@ -2231,7 +2231,7 @@ sub setup_gui_php {
 
 		my $timestamp = time();
 
-		foreach(qw{php5-fcgi-starter php5/php.ini}) {
+		foreach(qw{php5-fcgi-starter php5/php.ini php5/browscap.ini}) {
 
 			if(-e "$main::cfg{'PHP_STARTER_DIR'}/master/$_") {
 				my (undef, $file) = split('/');
@@ -2245,7 +2245,7 @@ sub setup_gui_php {
 		}
 	}
 
-	# Create the fcgi directory for gui user if it doesn't exists - Begin
+	# Create the fcgi directories tree for gui user if it doesn't exists - Begin
 
 	$rs = make_dir(
 		"$main::cfg{'PHP_STARTER_DIR'}/master/php5",
@@ -2309,7 +2309,9 @@ sub setup_gui_php {
 		'{PEAR_DIR}' => $main::cfg{'PEAR_DIR'},
 		'{RKHUNTER_LOG}' => $main::cfg{'RKHUNTER_LOG'},
 		'{CHKROOTKIT_LOG}' => $main::cfg{'CHKROOTKIT_LOG'},
-		'{OTHER_ROOTKIT_LOG}' => ($main::cfg{'OTHER_ROOTKIT_LOG'} ne '') ? ":$main::cfg{'OTHER_ROOTKIT_LOG'}" : ''
+		'{OTHER_ROOTKIT_LOG}' => ($main::cfg{'OTHER_ROOTKIT_LOG'} ne '')
+			? ":$main::cfg{'OTHER_ROOTKIT_LOG'}" : '',
+		'{PHP_STARTER_DIR}' => $main::cfg{'PHP_STARTER_DIR'}
 	);
 
 	# Building the new file
@@ -2328,10 +2330,36 @@ sub setup_gui_php {
 
 	# Install the new file
 	$cmd = "$main::cfg{'CMD_CP'} -pf $wrk_dir/master.php.ini $main::cfg{'PHP_STARTER_DIR'}/master/php5/php.ini";
+
 	$rs = sys_command($cmd);
 	return $rs if ($rs != 0);
 
 	# PHP5 php.ini file - End
+
+	# PHP Browser Capabilities support file - Begin
+
+	# Store the new file in working directory
+	$cmd = "$main::cfg{'CMD_CP'} -pf $cfg_dir/parts/master/php5/browscap.ini $wrk_dir/browscap.ini";
+
+	$rs = sys_command($cmd);
+	return $rs if ($rs != 0);
+
+	# Set file permissions
+	$rs = setfmode(
+		"$wrk_dir/browscap.ini",
+		$main::cfg{'APACHE_SUEXEC_USER_PREF'} . $main::cfg{'APACHE_SUEXEC_MIN_UID'},
+		$main::cfg{'APACHE_SUEXEC_USER_PREF'} . $main::cfg{'APACHE_SUEXEC_MIN_GID'},
+		0644
+	);
+	return $rs if ($rs != 0);
+
+	# Install the new file
+	$cmd = "$main::cfg{'CMD_CP'} -pf $wrk_dir/browscap.ini $main::cfg{'PHP_STARTER_DIR'}/master/php5/browscap.ini";
+
+	$rs = sys_command($cmd);
+	return $rs if ($rs != 0);
+
+	# PHP Browser Capabilities support file - End
 
 	push_el(\@main::el, 'setup_gui_php()', 'Ending...');
 
@@ -3226,7 +3254,7 @@ sub exit_msg {
 		" An error was occured during update process!\n" .
 		"\tCorrect it and re-run this program." .
 		"\n\n\tYou can find help at http://isp-control.net/forum\n\n";
-		
+
 	if(defined $user_msg && $user_msg ne '') {
 		$msg = "\n\t$user_msg\n" . $msg;
 	}
