@@ -20,13 +20,13 @@
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * @category	ispCP
- * @package		ispCP_Setup
- * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @author 	    Laurent Declercq <laurent.declercq@ispcp.net>
- * @version 	SVN: $Id$
- * @link		http://isp-control.net ispCP Home Site
- * @license		http://www.mozilla.org/MPL/ MPL 1.1
+ * @category    ispCP
+ * @package     ispCP_Setup
+ * @copyright   2006-2010 by ispCP | http://isp-control.net
+ * @author      Laurent Declercq <laurent.declercq@ispcp.net>
+ * @version     SVN: $Id$
+ * @link        http://isp-control.net ispCP Home Site
+ * @license     http://www.mozilla.org/MPL/ MPL 1.1
  */
 
 // @todo Add a try/catch block to prevents execution of any exception writers
