@@ -61,5 +61,5 @@ if ($dbUpdate->checkUpdateExists()) {
 		exit(1);
 	}
 }
-ispC
+
 exit(0);
