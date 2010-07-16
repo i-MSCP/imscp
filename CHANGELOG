@@ -328,7 +328,8 @@ ispCP ω 1.0.6 ChangeLog
 		* Added interface for `ispCP_ConfigHandler` objects
 		* Added documentation for both `Config` and `ConfigHandler` classes
 		* Changed name of `ConfigHandler` class to `ConfigHandlerFile`
-		* Implemented singleton design pattern for the ConfigHandlerFile class			pattern
+		* Implemented singleton design pattern for the ConfigHandlerFile class
+			pattern
 		* Improved Config class to be able to handle any type of
 			ispCP_ConfigHandler objects (like db storage, xml storage..)
 
@@ -480,7 +481,8 @@ ispCP ω 1.0.6 ChangeLog
 
 2010-04-20 Sascha Bay
 	- GUI:
-		* Fixed #2355: Some HTML errors and not correct replaced template variables
+		* Fixed #2355: Some HTML errors and not correct replaced template
+			variables
 		* Little Bugfix for ticket #2330
 		* Fixed #2332: Alias coun't wont work if reseller adds alias
 
@@ -529,7 +531,8 @@ ispCP ω 1.0.6 ChangeLog
 
 2010-04-09 Sascha Bay
 	- GUI:
-		* Fixed #2184: Blocking special chars in sqluser password (changing RegExp)
+		* Fixed #2184: Blocking special chars in sqluser password (changing
+			RegExp)
 
 2010-04-09 Laurent Declercq
 	- GUI:
@@ -650,8 +653,8 @@ ispCP ω 1.0.6 ChangeLog
 		* [OpenSuse] Updated INSTALL file
 		* [OpenSuse] Fixed #2298: OpenSuSe - Maintainer tasks (ispCP 1.0.5):
 			- Replaced insserv by the frontend `chkconfig`
-			- Ensured that `mysql` is running before `ispcp_network` and disabled
-				after if at boot
+			- Ensured that `mysql` is running before `ispcp_network` and
+				disabled after if at boot
 			- Disabled proftpd xinetd (Should be only in standalone mode
 			- Re-builded services list used by IspCP in `postinst`
 		* SETUP
@@ -745,7 +748,7 @@ ispCP ω 1.0.6 ChangeLog
 	- ENGINE:
 		* Fixed #2265: Protected area's files are regenerated in wrong place
 			during update
-		* Re-factoring and some others changes in the ispcp-htaccess-mngr manager:
+		* Re-factoring and some others changes in ispcp-htaccess-mngr:
 			- Added code documentation
 			- Changed `dump_el()` to `pop_el()` in main section to avoid log
 				repetition on error
@@ -771,7 +774,8 @@ ispCP ω 1.0.6 ChangeLog
 2010-03-13 Laurent Declercq
 	- SETUP:
 		* Fixed #2279: Update Old disabled domain style to the new
-		* Added a new subroutine to clean the log after a successful update process
+		* Added a new subroutine to clean the log after a successful update
+			process
 
 2010-03-12 Laurent Declercq
 	- ENGINE:
@@ -793,7 +797,8 @@ ispCP ω 1.0.6 ChangeLog
 		 - Added repository for each version (to prevent stupid user errors)
 		 - Changing sources.list should be done before the installation packages
 	- SETUP:
-		* Fixed #2276: Wrong instructions for removing old files during an update
+		* Fixed #2276: Wrong instructions for removing old files during an
+			update
 
 2010-03-11 Benedikt Heintel
 	- DISTS:
@@ -906,8 +911,10 @@ ispCP ω 1.0.6 ChangeLog
 	- GUI:
 		* Fixed: Only minified version of js files should be used
 		* Fixed: Script tags not properly closed in head
-		* Fixed #2234: Switch to new tooltips system (jquery ispCP tooltips plugin)
-		* Moved js functions related to the tooltips in the section of deprecated functions
+		* Fixed #2234: Switch to new tooltips system (jquery ispCP tooltips
+			plugin)
+		* Moved js functions related to the tooltips in the section of
+			deprecated functions
 		* Rebuilded minified version from ispcp_full.js file
 
 2010-02-24 Benedikt Heintel
@@ -990,12 +997,12 @@ ispCP ω 1.0.6 ChangeLog
 2010-02-09 Laurent Declercq
 - GUI:
 	* Ehancement:
-		- Added JQuery v1.4.1 library (both format: full and minify - Only minify
-			is loaded by client's browser)
+		- Added JQuery v1.4.1 library (both format: full and minify - Only
+			minify is loaded by client's browser)
 		- Added JQuery ispCPtooltips plugin (both format: full and minify - Only
 			minify is loaded by client's browser)
-		- Added a new javascript function in the ispcp .js-files to handle JQuery
-			XMLHttpRequest errors
+		- Added a new javascript function in the ispcp .js-files to handle
+			JQuery XMLHttpRequest errors
 	* admin/reseller_edit.php and related template:
 		* Fixed #2188: Reseller update properties - Inconsistency between...
 		* Re-factoring the code for better readability
@@ -1058,11 +1065,12 @@ ispCP ω 1.0.6 ChangeLog
 2010-01-18 Sascha Bay
 	- GUI:
 		* Fixed #1717: Domain Alias Screen Needs Cosmetic Changes
-		* Partially Fixed #2089: Add Customer with IDN alias domains (first part)
+		* Partially Fixed #2089: Add Customer with IDN alias domains
 
 2010-01-17 Sascha Bay
 	- GUI:
-		* Fixed #2170: "Domain expire" value gets lost on failure with Domain name
+		* Fixed #2170: "Domain expire" value gets lost on failure with Domain
+			name
 
 2010-01-17 Thomas Wacker
 	- GUI:
@@ -1115,7 +1123,8 @@ ispCP ω 1.0.6 ChangeLog
 
 2010-01-12 Benedikt Heintel
 	- ENGINE:
-		* Fixed #2091: Make use of the BASE_SERVER_VHOST_PREFIX in ispcp-dmn-mngr
+		* Fixed #2091: Make use of the BASE_SERVER_VHOST_PREFIX in
+			ispcp-dmn-mngr
 			for default pages
 	- GUI:
 		* Fixed #1121: Support System (review)
@@ -1124,8 +1133,8 @@ ispCP ω 1.0.6 ChangeLog
 	- GUI:
 		* Fixed #2124: Errors in Layout Settings
 		* Fixed #2144: Wrong Option declaration in Admin (reseller_edit.php)
-		* Fixed #2151: Adding user and exceeding mail account from reseller won't
-			work correct
+		* Fixed #2151: Adding user and exceeding mail account from reseller
+			won't work correct
 		* Fixed #2153: Changing userlogo upload and deleting userlogo won't work
 		* Fixed #2154: Reseller Overview shows -1 if function is disabled
 		* Fixed #2157: Admin Option "Count default E-Mail addresses" work not
@@ -1175,7 +1184,8 @@ ispCP ω 1.0.6 ChangeLog
 		* Fixed #1121: Support System (Patch by Sebastian Sellmeyer)
 		* Fixed #2093: The main index.php page doesn't deal properly with ssl
 			controlpannel (Patch by aseques)
-		* Fixed #2096: Fix for iptables accounting in srv-traff (Patch by aseques)
+		* Fixed #2096: Fix for iptables accounting in srv-traff
+			(Patch by aseques)
 		* Fixed #2143: When deleting the user the entry in quotalimits remains
 
 2010-01-06 Peter Ziergöbel
@@ -1190,8 +1200,8 @@ ispCP ω 1.0.6 ChangeLog
 
 2010-01-02 Peter Ziergöbel
 	- GUI:
-		* Fixed #2123: Add "Backup Support" in ../reseller/domain_details.php and
-			in ../admin/domain_details.php
+		* Fixed #2123: Add "Backup Support" in ../reseller/domain_details.php
+			and in ../admin/domain_details.php
 
 2009-12-31 Laurent Declercq
 	- CONFIGS:
@@ -1236,9 +1246,11 @@ ispCP ω 1.0.6 ChangeLog
 2009-12-23 Laurent Declercq
 	- GUI:
 		* Updated TLDs list
-		* Fixed #2113: Wrong SQL syntax in /var/www/ispcp/gui/client/hosting_plan_update.php (Line: 451)
+		* Fixed #2113: Wrong SQL syntax in
+			/var/www/ispcp/gui/client/hosting_plan_update.php (Line: 451)
 	- CONFIGS:
-		* The file ispcp.conf should be readable by everyone. (Should be changed in 1.0.4)
+		* The file ispcp.conf should be readable by everyone.
+			(Should be changed in 1.0.4)
 		* Added PMA_USER for recovery process during update
 	- SETUP
 		* Added recovery process for PMA configuration file
@@ -1265,9 +1277,11 @@ ispCP ω 1.0.6 ChangeLog
 	- PACKAGE:
 		* Updated "Version" in all ispcp.conf
 	- CONFIGS:
-		* CMD_PHP Must be the real path of php5-cli binary to avoid error during update
+		* CMD_PHP Must be the real path of php5-cli binary to avoid error
+			during update
 	- GUI:
-		* Fixed - Security Fail - The files such as "ispcp.conf" and "ispcp-db-keys.php" should not be readable by other
+		* Fixed - Security Fail - The files such as "ispcp.conf" and
+			"ispcp-db-keys.php" should not be readable by other
 
 2009-12-20 Benedikt Heintel
 	- DISTS:
@@ -1368,8 +1382,13 @@ ispCP ω 1.0.6 ChangeLog
 	- GUI:
 		* Fixed #2098: Unable to add subdomain linked to an IDN
 		* Orderpanel: Domain name validation - Old error message deleted
-		* Added status of available functionalities (Backup and Manual DNS) in customer overview page
-		* Removed HTML comment related to domain name in domain default page. Reason: All labels with double hyphens in HTML comments causes rendering errors with Firefox. See http://www.w3.org/TR/html4/intro/sgmltut.html#h-3.2.4 for more information about this issue.
+		* Added status of available functionalities (Backup and Manual DNS) in
+			customer overview page
+		* Removed HTML comment related to domain name in domain default page.
+			Reason: All labels with double hyphens in HTML comments causes
+			rendering errors with Firefox. See
+			http://www.w3.org/TR/html4/intro/sgmltut.html#h-3.2.4 for more
+			information about this issue.
 
 2009-12-10 Laurent Declercq
 	- GUI:
@@ -1386,7 +1405,8 @@ ispCP ω 1.0.6 ChangeLog
 2009-12-09 Laurent Declercq
 	- GUI:
 		* Fixed: Unable to add new IDN domain name
-		* Fixed: Domains alias - Mount point issue : The dot character should not be replaced by underline
+		* Fixed: Domains alias - Mount point issue : The dot character should
+			not be replaced by underline
 	- SETUP:
 		* Improvement and cleanup updDB.php script
 		* Updated behavior for 'failed' status on update
@@ -1429,7 +1449,7 @@ ispCP ω 1.0.6 ChangeLog
 			- Hyphens are now banned in 2nd and 3rd position of input string
 			- ACE labels are no longer allowed as input string
 	- SETUP:
-		* Integration of the new update script and several changes related to it - Must be tested and debugged
+		* Integration of the new update script and several changes related to it
 
 2009-12-04 Benedikt Heintel
 	- ENGINE:
@@ -1459,8 +1479,11 @@ ispCP ω 1.0.6 ChangeLog
 
 2009-11-26 Laurent Declercq
 	- GUI:
-		* Fixed #2041: Internationalized domain name - unable to sets a subdomain as Idna label
-		* New routines for the validation of mount points and usernames - The function that checks the mount point should not use the routines related to the validation of user names
+		* Fixed #2041: Internationalized domain name - unable to sets a
+			subdomain as Idna label
+		* New routines for the validation of mount points and usernames - The
+			function that checks the mount point should not use the routines
+			related to the validation of user names
 		* Fixed #2076: Login - unable to login with Idna customer domain name
 
 2009-11-26 Benedikt Heintel
@@ -1471,14 +1494,17 @@ ispCP ω 1.0.6 ChangeLog
 	- DISTS:
 		* Fixed #2069: [gentoo] /etc/init.d/ispcp_daemon patch
 	- ENGINE:
-		* Fixed: Use of uninitialized value in pattern match (m//) at /var/www/ispcp/engine/quota/ispcp-dsk-quota
+		* Fixed: Use of uninitialized value in pattern match (m//) at
+			/var/www/ispcp/engine/quota/ispcp-dsk-quota
 
 2009-11-21 Laurent Declercq
 	- SETUP:
 		* Check of email address: Application of RFCs 2822, 952 and 1123
 	- GUI
-		* Fixed: Directories chooser does not working ('Use of undefined constant VFS_TYPE_DIR')
-		* Fixed: Protected area creation/update - The related data should be stored in database before the backend request
+		* Fixed: Directories chooser does not working ('Use of undefined
+			constant VFS_TYPE_DIR')
+		* Fixed: Protected area creation/update - The related data should be
+			stored in database before the backend request
 
 2009-11-20 Laurent Declercq
 	- UTILITIES:
@@ -1493,13 +1519,15 @@ ispCP ω 1.0.6 ChangeLog
 	- LANGUAGES:
 		* Updated Dutch language files
 	- SETUP:
-		* Added code to disable the default "NameVirtualHost *:80" directive. That is to avoid the Apache warn during start / restart.
+		* Added code to disable the default "NameVirtualHost *:80" directive.
+			That is to avoid the Apache warn during start / restart.
 
 2009-11-18 Laurent Declercq
 	- GUI:
 		* Fixed #1725: /var/log/rkhunter.log not readable (AGAIN)
 	- DATABASE:
-		* The Sql files (database.sql, language.sql) are the same for all distributions. Moved into only one directory to
+		* The Sql files (database.sql, language.sql) are the same for all
+			distributions. Moved into only one directory to
 facilitate the maintenances.
 
 2009-11-17 Benedikt Heintel
@@ -1517,7 +1545,8 @@ facilitate the maintenances.
 
 2009-11-16 Laurent Declercq
 	- ENGINE:
-		* Fixed #2061: The sender-access file is not backed-up and has no working copy
+		* Fixed #2061: The sender-access file is not backed-up and has no
+			working copy
 		* Cleanup of the mbox_add_mta_cfg_autorespond_data() subroutine
 		* Cleanup of the mbox_add_sasl_data() subroutine
 		* Cleanup of the mbox_del_sasl_data() subroutine
@@ -1548,7 +1577,8 @@ facilitate the maintenances.
 
 2009-11-09 Christian Hernmarck
 	- ENGINE:
-		* Fixed #2034: ispcp-backup error (I hope it's fixed - could not reproduce)
+		* Fixed #2034: ispcp-backup error (I hope it's fixed - could not
+			reproduce)
 		* Fixed #2043: Creating similar mail-addresses causes problems
 
 2009-11-05 Laurent Declercq
@@ -1565,29 +1595,34 @@ facilitate the maintenances.
 
 2009-10-23 Laurent Declercq
 	- GUI:
-		* Fixed #2050: Unable to change interface (Admin to reseller) since the client IP address is verified
+		* Fixed #2050: Unable to change interface (Admin to reseller) since the
+			client IP address is verified
 
 2009-10-15 Benedikt Heintel
 	- GUI:
 		* Added ipaddr check to prevent session hijacking
 	- ENGINE:
-		* Fixed #2044: ispcp-dsk-quota message (Use of uninitialized value in addition (+))
+		* Fixed #2044: ispcp-dsk-quota message (Use of uninitialized value in
+			addition (+))
 	- LANGUAGES:
 		* Updated Russian
 
 2009-10-22 Marc Pujol
 	- ENGINE:
-		* Fixed #2046: ispcpphptemp.sh script fails to read per-domain session.gc_maxlifetime directives
+		* Fixed #2046: ispcpphptemp.sh script fails to read per-domain
+			session.gc_maxlifetime directives
 
 2009-10-20 Christian Hernmarck
 	- ENGINE:
-		* Fixed #2021: Error in backup (part I: information if something went wrong...)
+		* Fixed #2021: Error in backup (part I: information if something
+			went wrong...)
 
 2009-10-17 Benedikt Heintel
 	- ENGINE:
 		* Fixed #2033: ispcp-dsk-quota message
 	- GUI:
-		* Fixed #2029: Ispcp debugger doesn't work when there are adresses forward + normal at the same time
+		* Fixed #2029: Ispcp debugger doesn't work when there are adresses
+			forward + normal at the same time
 
 2009-10-16 Benedikt Heintel
 	- TOOLS:
@@ -1595,7 +1630,8 @@ facilitate the maintenances.
 
 2009-10-16 Laurent Declercq
 	- GUI:
-		* Fixed #2035: Review Domain name syntax ( 'a.de' is not allowed - but denic soon allows it )
+		* Fixed #2035: Review Domain name syntax ( 'a.de' is not allowed - but
+			denic soon allows it )
 
 2009-10-15 Benedikt Heintel
 	- LANGUAGES:
@@ -1617,7 +1653,8 @@ facilitate the maintenances.
 
 2009-10-05 Laurent Declercq
 	- TOOLS:
-		* Fixed #2014: Error when you open pma via link from the customer interface
+		* Fixed #2014: Error when you open pma via link from the customer
+			interface
 
 2009-10-05 Benedikt Heintel
 	- LANGUAGES:
@@ -1636,23 +1673,27 @@ facilitate the maintenances.
 
 2009-09-29 Daniel Andreca
 	- ENGINE:
-		* Fixed #2011: Daily quota script generates errors (missing db in /var/lib/mysql)
+		* Fixed #2011: Daily quota script generates errors (missing db in
+			/var/lib/mysql)
 	- LANGUAGES:
 		* Updated Danish
 
 2009-09-29 Laurent Declercq
 	- CONFIG:
 		* Fixed #2002: openSUSE 11.1 - Unable to add mail user
-		* Fixed SASL Authentication failed (openSUSE):
+		* [openSUSE] Fixed SASL Authentication failed:
 			- Added smtpd.conf configuration file for postfix/sasl
-			- Added new variables related to MTA/SASL in /etc/ispcp/ispcp.conf (openSUSE)
+			- Added new variables related to MTA/SASL
 	- DISTS:
-		* Fixed postfix warning: "not owned by root: /var/spool/postfix" (openSUSE)
-		* Fixed imapd warning related to famd (See http://www.courier-mta.org/FAQ.html#fam) (openSUSE)
-		* Fixed authdaemond warning related to missing modules: "file not found" (openSUSE)
+		* [openSUSE] Fixed postfix warning:
+			"not owned by root: /var/spool/postfix"
+		* [openSUSE] Fixed imapd warning related to famd
+			(See http://www.courier-mta.org/FAQ.html#fam) (openSUSE)
+		* [openSUSE] Fixed authdaemond warning related to missing modules:
+			"file not found" (openSUSE)
 	- DOCS:
-		* Updated docs/OpenSuse/install file
-		* Removed support for older versions (only current stable version is supported) (openSUSE)
+		* [openSUSE] Updated documentation
+		* [openSUSE] Removed support for older versions
 
 2009-09-28 Daniel Andreca
 	- LANGUAGES:
@@ -1660,7 +1701,8 @@ facilitate the maintenances.
 
 2009-09-27 Daniel Andreca
 	- GUI:
-		* Fixed #1974: Reseller properties cannot be edited after working with his domains
+		* Fixed #1974: Reseller properties cannot be edited after working with
+			his domains
 	- ENGINE:
 		* Fixed #2009: Backups do not work
 
@@ -1699,32 +1741,46 @@ facilitate the maintenances.
 2009-09-22 Laurent Declercq
 	- GUI:
 		* Fixed #1989: Failed database updates are silently ignored
-		* Fixed #2000: Wrong default value for 'USER_INITAL_LANG' configuration variable
-			- Added an new db databaseUpdate (25) to fix the 'user_gui_props.lang' value ('lang_EnglishBritain' instead of 'lang_English')
+		* Fixed #2000: Wrong default value for 'USER_INITAL_LANG' configuration
+			variable
+			- Added an new db databaseUpdate (25) to fix the
+				'user_gui_props.lang' value ('lang_EnglishBritain' instead of
+				'lang_English')
 		* Small fixes
 		* Uninitialized variable ($backup) in "client/hosting_plan_update.php"
 
 2009-09-21 Laurent Declercq
 	- DOCS:
-		* Fixed #1997: Removed "perl-HTML-Entities" in OpenSuSE packages lists because the module "HTML::Entities" is
-		  provided by the package perl-HTML-Parser. The package perl-HTML-Entities in itself does not exist.
+		* [openSUSE] Fixed #1997: Removed "perl-HTML-Entities"  because the
+			module "HTML::Entities" is provided by the package perl-HTML-Parser.
+			The package perl-HTML-Entities in itself does not exist.
 
 2009-09-20 Laurent Declercq
 	- GUI:
-		* Fixed #1985: Several problems with the fixes related to #1971 and #1980 ( Introduced in r1986 )
-			- Moved db criticalUpdate 4 && 5 to db databaseUpdate (because the criticalUpdate is performed before)
+		* Fixed #1985: Several problems with the fixes related to #1971 and
+			#1980 ( Introduced in r1986 )
+			- Moved db criticalUpdate 4 && 5 to db databaseUpdate (because the
+				criticalUpdate is performed before)
 			- Added databaseUpdate 24 for the following database fixes:
-				- Added fix for possible missing of backup property in "hosting_plan.props"
-				- Added fix for possible inversion between backup and dns properties in "hosting_plan.props"
-				- Removed the last semicolon in all "hosting_plans.props" (to prevent wrong results with count() function)
-				- Added fix for possible inversion between the values of "domain.allowbackup" and "domain.domain_dns"
-				- Added fix for possible unstripped values ( _yes_|_no_ instead of yes|no ) in "domain.domain_dns"
+				- Added fix for possible missing of backup property in
+					"hosting_plan.props"
+				- Added fix for possible inversion between backup and dns
+					properties in "hosting_plan.props"
+				- Removed the last semicolon in all "hosting_plans.props" (to
+					prevent wrong results with count() function)
+				- Added fix for possible inversion between the values of
+					"domain.allowbackup" and "domain.domain_dns"
+				- Added fix for possible unstripped values ( _yes_|_no_ instead
+					of yes|no ) in "domain.domain_dns"
 				- Added fix for possible missing value in "domain.allowbackup"
-				- Changed the naming convention for option 'domain' in "domain.allowbackup" ( "domain" to "dmn" )
-			- Changed order of "backup" and "dns" variables in all scripts related to hosting plans (admin/reseller)
-			- Added missing variable related to backup hosting plan property in "admin/hosting_plan_add.php"
-			- Removed the last semicolon in all hosting plan properties related variables (to prevent wrong results with count() function)
-		* Cleaning all scripts related to hosting plans (admin/reseller/client) ( code indentation )
+				- Changed the naming convention for option 'domain' in
+					"domain.allowbackup" ( "domain" to "dmn" )
+			- Changed order of "backup" and "dns" variables in all scripts
+				related to hosting plans (admin/reseller)
+			- Added missing variable related to backup hosting plan property in
+				"admin/hosting_plan_add.php"
+			- Removed the last semicolon in all hosting plan properties related
+				variables (to prevent wrong results with count() function)
 		* Documented "criticalUpdate" and "ispcpUpdate" classes
 
 2009-09-19 Benedikt Heintel
@@ -1764,7 +1820,8 @@ facilitate the maintenances.
 
 2009-09-08 Laurent Declercq
 	- CONFIGS:
-		* Fixed #1969: The 6th field of a system cron file must be the name of the user that the command will be executed
+		* Fixed #1969: The 6th field of a system cron file must be the name of
+			the user that the command will be executed
 
 2009-09-07 Andreca Daniel
 	- TOOLS:
@@ -1782,7 +1839,8 @@ facilitate the maintenances.
 2009-09-05 Andreca Daniel
 	- GUI:
 		* Fixed #1975: Error update last version trunk 05/09
-		* Fixed #1974: Reseller properties cannot be edited after working with his domains
+		* Fixed #1974: Reseller properties cannot be edited after working with
+			his domains
 	- LANGUAGES:
 		* Updated Japanese
 
@@ -1798,18 +1856,23 @@ facilitate the maintenances.
 			- Added support for OpenSuse 11.1
 			- Added postinst script for specific install/update tasks
 			- Added Policyd-Weight and Postgrey packages
-			- Fixed small error during Make process ( cannot overwrite non-directory... )
-			- Fixed #1961: Debian and OpenSuSE provide both programs a2enmod/a2dismod but the implementation differs
+			- Fixed small error during Make process : "cannot overwrite
+				non-directory..."
+			- Fixed #1961: Debian and OpenSuSE provide both programs
+				a2enmod/a2dismod but the implementation differs
 			- Fixed #1961: Conflict between FastCGI modules conffiles
 			- Fixed Postfix: unknown smtps service in master.cf
 			- Fixed Postfix: wrong ispcp-arpl-msgr path in master.cf
-			- Changed Postfix: configuration to run unchrooted (I'll set to run in a chroot jail later)
+			- Changed Postfix: configuration to run unchrooted (I'll set to run
+				in a chroot jail later)
 			- Fixed suexec wrapper: owner/group and permissions
-			- Removed apache2-mod_cband for 11.1 ( See OpenSuse INSTALL file for more information )
+			- Removed apache2-mod_cband for 11.1 ( See OpenSuse INSTALL file for
+				more information )
 			- Disabled OpenSuSE Firewall ( ispCP provides its own )
 			- Fixed #1970: Domain error at adding user
 	- SETUP:
-		* Fixed #1961: Debian and OpenSuSE provide both programs a2enmod/a2dismod but the implementation differs
+		* Fixed #1961: Debian and OpenSuSE provide both programs
+			a2enmod/a2dismod but the implementation differs
 	- CONFIGS:
 		* Fixed Missing EOL in several files
 
@@ -1878,7 +1941,8 @@ facilitate the maintenances.
 	- GUI:
 		* Added compatibility for php V5.3
 	- TOOLS
-		* Fixed #1935: Syntax-Error in /etc/init.d/ispcp_network on Ubuntu (thanks lucasgirod)
+		* Fixed #1935: Syntax-Error in /etc/init.d/ispcp_network on Ubuntu
+			(thanks lucasgirod)
 
 2009-08-21 Benedikt Heintel
 	- RELEASE ispCP ω Omega 1.0.2
@@ -1904,7 +1968,8 @@ facilitate the maintenances.
 
 2009-08-14 Malte Geierhos
 	- SETUP:
-		* Fixed various Bugs preventing RPM Builds ( together with George Machitidze)
+		* Fixed various Bugs preventing RPM Builds ( together with George
+			Machitidze)
 
 2009-08-12 Sebastian Sellmeier
 	- GUI:
@@ -1912,7 +1977,8 @@ facilitate the maintenances.
 
 2009-08-12 Jochen Manz
 	- GUI:
-		* Fixed #1881: Webmail button is not disabled when domain has mail disabled
+		* Fixed #1881: Webmail button is not disabled when domain has mail
+			disabled
 
 2009-08-11 Thomas Wacker
 	- GUI:
@@ -1965,7 +2031,8 @@ facilitate the maintenances.
 
 2009-07-29 Laurent Declercq
 	- CONFIGS:
-		* Fixed AuthOrder: "warning: module 'mod_sql_mysql.c' has no auth handlers"
+		* Fixed AuthOrder: "warning: module 'mod_sql_mysql.c' has no auth
+			handlers"
 	- GUI:
 		* admin/reseller_statistics.tpl - repositioning of the message
 
@@ -1981,11 +2048,13 @@ facilitate the maintenances.
 	- DOCS:
 		* Updated Debian INSTALL
 	- DAEMON:
-		* Fixed warning: "ISO C90 forbids mixed declarations and code" in helo_syntax.c
+		* Fixed warning: "ISO C90 forbids mixed declarations and code" in
+			helo_syntax.c
 
 2009-07-12 Thomas Wacker
 	- GUI:
-		* Fixed #1505: When downgrading account, give error to user if account is less than current usage
+		* Fixed #1505: When downgrading account, give error to user if account
+			is less than current usage
 
 2009-07-10 Malte Geierhos
 	- ENGINE:
@@ -1999,7 +2068,8 @@ facilitate the maintenances.
 
 2009-07-05 Thomas Wacker
 	- GUI:
-		* Fixed #1500: Subdomain you are trying to remove has ftp & mail alias accounts
+		* Fixed #1500: Subdomain you are trying to remove has ftp & mail alias
+			accounts
 		* Added improved domain deletion
 
 2009-07-04 Thomas Wacker
@@ -2080,13 +2150,15 @@ facilitate the maintenances.
 
 2009-05-15 Daniel Andreca
 	- GUI:
-		* Fixed #1839: Part of DNS JS delete message has undefined var in client/domains_manage.php
+		* Fixed #1839: Part of DNS JS delete message has undefined var in
+			client/domains_manage.php
 		* Fixed #1840: Variable {ID} not parsed in client/dns_add.php anytime
 
 2009-05-14 Malte Geierhos
 	- ENGINE:
 		* Fixed #1843: Missing Alias for Awstats static icons
-		* Fixed #1844: outdated Centos Packages (thanks to Laurence Alfred Barlow)
+		* Fixed #1844: outdated Centos Packages (thanks to Laurence Alfred
+			Barlow)
 
 2009-05-13 Benedikt Heintel
 	- GUI:
@@ -2134,15 +2206,19 @@ facilitate the maintenances.
 
 2009-05-02 Daniel Andreca
 	- ENGINE:
-		* Added Feature: Virtual network cards can be added with addon ip from gui
+		* Added Feature: Virtual network cards can be added with addon ip from
+			gui
 	- GUI:
 		* Fixed #1810: bug in admin/server_status.php
 
 2009-04-29 Thomas Häber
 	- GUI:
-		* Added Feature: Show cpu cores in admin system tools - thanks to qisback
-		* Fixed #1721: e-Mail from Supportsystem has problems with special chars. - thanks to Thomas Wacker
-		* Fixed #1689: Support ticket priority in email - big thanks to Thomas Wacker
+		* Added Feature: Show cpu cores in admin system tools - thanks to
+			qisback
+		* Fixed #1721: e-Mail from Supportsystem has problems with special
+			chars. - thanks to Thomas Wacker
+		* Fixed #1689: Support ticket priority in email - big thanks to
+			Thomas Wacker
 
 2009-04-27 Christian Hernmarck
 	- GUI:
@@ -2183,7 +2259,8 @@ facilitate the maintenances.
 
 2009-04-23 Thomas Häber
 	- THEMES:
-		* Fixed problem in JavaScript confirmation in client's ticket system, thanks to Thomas Wacker
+		* Fixed problem in JavaScript confirmation in client's ticket system,
+			thanks to Thomas Wacker
 
 2009-04-22 Malte Geierhos
 	- ENGINE:
@@ -2210,25 +2287,30 @@ facilitate the maintenances.
 	- ENGINE:
 		* Added specfile for rpmbuild thanks to George Machitidze
 		* Fixed #1752: Adding of domain aliases broken in r1584
-		* Fixed #1775 (changed regex to match imap.log for dovecot as well -> thx Bene)
+		* Fixed #1775 (changed regex to match imap.log for dovecot as well ->
+			thx Bene)
 	- GUI:
-		* Fixed #1618 (added vhost prefix to allow setting either http:// or https:// )
+		* Fixed #1618 (added vhost prefix to allow setting either http:// or
+			https:// )
 		* Fixed #1688 & #1691 Thanks to Andrew Clarke
 
 2009-04-20 Thomas Häber
 	- LANGUAGES:
 		* Fixed #1796: deutsch / englisch BUG in the Stable 1.0
 	- THEMES:
-		* Partially fix for Ticket #1787: Broken layout in IE because of doctype definition
+		* Partially fix for Ticket #1787: Broken layout in IE because of doctype
+			definition
 
 2009-04-19 Thomas Häber
 	- GUI:
-		* Fixed word wrap problem with long descriptions, which results in hugh webpage widths
+		* Fixed word wrap problem with long descriptions, which results in hugh
+			webpage widths
 		* Fixed syntax bug in admin/hosting_plan_edit.php, thanks to tomdooley
 
 2009-04-16 Thomas Häber
 	- GUI:
-		* Fixed encoding (html replace) problem in mail of client/hosting_plan_update.php
+		* Fixed encoding (html replace) problem in mail of
+			client/hosting_plan_update.php
 	- LANGUAGES:
 		* Fixed pathes in translation tool makemsgs
 		* updated po files
@@ -2237,17 +2319,21 @@ facilitate the maintenances.
 	- GUI:
 		* added and improved highlighting expressions for admin log
 		* Fixed bug in client/hosting_plan_update.php (introduced with r1555)
-		* Fixed #1761: Hosting plan description (to short field description in SQL table hosting_plan)
+		* Fixed #1761: Hosting plan description (to short field description in
+			SQL table hosting_plan)
 
 2009-04-12 Thomas Häber
 	- GUI:
-		* added GUI settings to enable/disable login from external source/website seperated for admin/reseller/client
+		* added GUI settings to enable/disable login from external
+			source/website seperated for admin/reseller/client
 		* added missing translation string for "Count default E-Mail addresses"
 
 2009-04-11 Thomas Häber
 	- GUI:
-		* Fixed #1788: captcha fontfile not found (with new implemented font loading and LGPL fonts)
-		* added field revision(-date) for translations in admin panel for administrator
+		* Fixed #1788: captcha fontfile not found (with new implemented font
+			loading and LGPL fonts)
+		* added field revision(-date) for translations in admin panel for
+			administrator
 		* added possibility to translate language names (+ german translations)
 		* added missing translation string "Language was removed!"
 
@@ -2272,7 +2358,9 @@ facilitate the maintenances.
 
 2009-03-28 Thomas Häber
 	- THEMES:
-		* some refactoring of the JavaScript code (better documentation, replace use of eval, delete unused code/functions, merge use of functions, optimized loops ...)
+		* some refactoring of the JavaScript code (better documentation, replace
+			use of eval, delete unused code/functions, merge use of functions,
+			optimized loops ...)
 	- GUI:
 		* translated german php variables to english
 		* optimized loops in GUI PHP code (especially the for loops)
@@ -2286,9 +2374,12 @@ facilitate the maintenances.
 
 2009-03-25 Thomas Häber
 	- GUI:
-		* Fixed #1667: It should be possible to (de)activate the log-comment on logon/password ispcp gui footer.
-		* Fixed #1767: Incorrect table name 'tickets WHERE ' (regression in SQL code)
-		* Fixed #1769: Unknown column ' bytes_in_avail' in 'field list' (regression in SQL code)
+		* Fixed #1667: It should be possible to (de)activate the log-comment on
+			logon/password ispcp gui footer.
+		* Fixed #1767: Incorrect table name 'tickets WHERE ' (regression in SQL
+			code)
+		* Fixed #1769: Unknown column ' bytes_in_avail' in 'field list'
+			(regression in SQL code)
 		* Fixed #1768: "Back" Button on Domaindetails has no function
 
 2009-03-24 Thomas Häber
@@ -2298,9 +2389,11 @@ facilitate the maintenances.
 
 2009-03-24 Benedikt Heintel
 	- ENGINE:
-		* Fixed #1627: Accented characters in UTF8 encoding Autoreplay message - ispcp-arpl
+		* Fixed #1627: Accented characters in UTF8 encoding Autoreplay message -
+			ispcp-arpl
 	- GUI:
-		* Fixed #678: deleting a mysql database also deletes the user without askint to.
+		* Fixed #678: deleting a mysql database also deletes the user without
+			askint to.
 		* Fixed #1762: MySQL Syntax Error
 
 2009-03-23 Jochen Manz
@@ -2319,7 +2412,8 @@ facilitate the maintenances.
 
 2009-03-18 Thomas Häber
 	- ENGINE:
-		* Fixed #1668: Add the LZMA compression to the possible backup zipping algorithms (currently only tested with debian lenny)
+		* Fixed #1668: Add the LZMA compression to the possible backup zipping
+			algorithms (currently only tested with debian lenny)
 
 2009-03-18 Benedikt Heintel
 	- ENGINE:
@@ -2378,7 +2472,8 @@ facilitate the maintenances.
 
 2009-03-02 Benedikt Heintel
 	- GUI:
-		* Fixed #1702: update Net_IDNA and separate it from internal source code (updated to v0.6.2)
+		* Fixed #1702: update Net_IDNA and separate it from internal source code
+			(updated to v0.6.2)
 
 2009-03-02 Daniel Andreca
 	- GUI:
@@ -2386,17 +2481,22 @@ facilitate the maintenances.
 
 2009-03-01 Daniel Andreca
 	- TOOLS:
-		* Fixed #1620: Request for a new field in "Personal Data": State/Province
+		* Fixed #1620: Request for a new field in "Personal Data":
+			State/Province
 
 2009-03-01 Benedikt Heintel
-		* Updated Copyright in all files (commit follow as other changes are made in this files)
-		* activated $Id$ for all files (commit follow as other changes are made in this files)
+		* Updated Copyright in all files (commit follow as other changes are
+			made in this files)
+		* activated $Id$ for all files (commit follow as other changes are made
+			in this files)
 
 2009-03-01 Thomas Häber
 	- TEMPLATES
-		* Removed W3C Logos/Links for valid HTML/CSS from errordocs, they aren't useful here -> less traffic & requests
+		* Removed W3C Logos/Links for valid HTML/CSS from errordocs, they aren't
+			useful here -> less traffic & requests
 		* Updated stable template (part 2: hosting plan sites)
-		* removed unused font "Cocktails", furthermore there is a unexplained copyright status, which may conflict with existing licenses (GPL)
+		* removed unused font "Cocktails", furthermore there is a unexplained
+			copyright status, which may conflict with existing licenses (GPL)
 
 2009-02-28 Daniel Andreca
 	- TOOLS:
