@@ -131,7 +131,6 @@ require_once 'sql.php';
  * Authentication libraries
  */
 require_once 'login-functions.php';
-require_once 'login.php';
 
 /**
  * User level functions
