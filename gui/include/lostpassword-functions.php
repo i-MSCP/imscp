@@ -36,17 +36,23 @@ function check_gd() {
  * @todo use file_exists in try-catch block
  */
 function captcha_fontfile_exists() {
-	return file_exists(ispCP_Config::getInstance()->get('LOSTPASSWORD_CAPTCHA_FONT'));
+
+	$cfg = ispCP_Registry::get('Config');
+
+	return file_exists($cfg->LOSTPASSWORD_CAPTCHA_FONT);
 }
 
 function createImage($strSessionVar) {
-	$rgBgColor = ispCP_Config::getInstance()->get('LOSTPASSWORD_CAPTCHA_BGCOLOR');
-	$rgTextColor = ispCP_Config::getInstance()->get('LOSTPASSWORD_CAPTCHA_TEXTCOLOR');
 
-	$x = ispCP_Config::getInstance()->get('LOSTPASSWORD_CAPTCHA_WIDTH');
-	$y = ispCP_Config::getInstance()->get('LOSTPASSWORD_CAPTCHA_HEIGHT');
+	$cfg = ispCP_Registry::get('Config');
 
-	$font = ispCP_Config::getInstance()->get('LOSTPASSWORD_CAPTCHA_FONT');
+	$rgBgColor = $cfg->LOSTPASSWORD_CAPTCHA_BGCOLOR;
+	$rgTextColor = $cfg->LOSTPASSWORD_CAPTCHA_TEXTCOLOR;
+
+	$x = $cfg->LOSTPASSWORD_CAPTCHA_WIDTH;
+	$y = $cfg->LOSTPASSWORD_CAPTCHA_HEIGHT;
+
+	$font = $cfg->LOSTPASSWORD_CAPTCHA_FONT;
 
 	$iRandVal = strrand(8, $strSessionVar);
 
@@ -198,6 +204,8 @@ function uniqkeygen() {
 }
 
 function sendpassword($uniqkey) {
+
+	$cfg = ispCP_Registry::get('Config');
 	$sql = ispCP_Registry::get('Db');
 
 	$query = "
@@ -252,9 +260,9 @@ function sendpassword($uniqkey) {
 
 		$message = $data['message'];
 
-		$base_vhost = ispCP_Config::getInstance()->get('BASE_SERVER_VHOST');
+		$base_vhost = $cfg->BASE_SERVER_VHOST;
 
-		$base_vhost_prefix = ispCP_Config::getInstance()->get('BASE_SERVER_VHOST_PREFIX');
+		$base_vhost_prefix = $cfg->BASE_SERVER_VHOST_PREFIX;
 
 		if ($from_name) {
 			$from = '"' . $from_name . '" <' . $from_email . '>';
@@ -298,6 +306,8 @@ function sendpassword($uniqkey) {
 }
 
 function requestpassword($admin_name) {
+
+	$cfg = ispCP_Registry::get('Config');
 	$sql = ispCP_Registry::get('Db');
 
 	$query = "
@@ -337,8 +347,8 @@ function requestpassword($admin_name) {
 	$subject = $data['subject'];
 	$message = $data['message'];
 
-	$base_vhost = ispCP_Config::getInstance()->get('BASE_SERVER_VHOST');
-	$base_vhost_prefix = ispCP_Config::getInstance()->get('BASE_SERVER_VHOST_PREFIX');
+	$base_vhost = $cfg->BASE_SERVER_VHOST;
+	$base_vhost_prefix = $cfg->BASE_SERVER_VHOST_PREFIX;
 
 	if ($from_name) {
 		$from = '"' . $from_name . "\" <" . $from_email . ">";

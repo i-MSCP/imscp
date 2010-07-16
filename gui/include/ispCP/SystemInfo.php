@@ -296,6 +296,8 @@ class ispCP_SystemInfo {
 	 */
 	private function _getFileSystemInfo() {
 
+		$cfg = ispCP_Registry::get('Config');
+
 		$filesystem = array();
 
 		$descriptorspec = array(
@@ -316,7 +318,7 @@ class ispCP_SystemInfo {
         // if solved, we can savely remove the l-argument
         $pipes = array(); // satisfy warning
 		$proc = proc_open(
-			ispCP_Config::getInstance()->get('CMD_DF') . ' -Tl',
+			$cfg->CMD_DF . ' -Tl',
 			$descriptorspec,
 			$pipes
 		);
@@ -430,6 +432,9 @@ class ispCP_SystemInfo {
 	 * @return array Memory information
 	 */
 	private function _getRAMInfo() {
+
+		$cfg = ispCP_Registry::get('Config');
+
 		$ram = array('total' => 0, 'free' => 0, 'used' => 0);
 
 		if ($this->_os == 'FreeBSD' || $this->_os == 'OpenBSD' || $this->_os == 'NetBSD') {
@@ -441,10 +446,9 @@ class ispCP_SystemInfo {
 				);
 
 				$pipes = array();
+
 				$proc = proc_open(
-					ispCP_Config::getInstance()->get('CMD_VMSTAT'),
-					$descriptorspec,
-					$pipes
+					$cfg->CMD_VMSTAT, $descriptorspec, $pipes
 				);
 
 				if (is_resource($proc)) {
@@ -498,6 +502,8 @@ class ispCP_SystemInfo {
 	 */
 	private function _getSwapInfo() {
 
+		$cfg = ispCP_Registry::get('Config');
+
 		$swap = array('total' => 0, 'free' => 0, 'used' => 0);
 
 		if ($this->_os == 'FreeBSD' || $this->_os == 'OpenBSD' ||
@@ -516,10 +522,9 @@ class ispCP_SystemInfo {
 			}
 
 			$pipes = array(); // satisfy warning
+
 			$proc = proc_open(
-				ispCP_Config::getInstance()->get('CMD_SWAPCTL') . $args,
-				$descriptorspec,
-				$pipes
+				$cfg->CMD_SWAPCTL . $args, $descriptorspec, $pipes
 			);
 
 			if (is_resource($proc)) {
@@ -683,6 +688,8 @@ class ispCP_SystemInfo {
 	 */
 	protected function sysctl($args) {
 
+		$cfg = ispCP_Registry::get('Config');
+
 		$descriptorspec = array(
 			0 => array('pipe', 'r'), // stdin is a pipe that the child will read from
 			1 => array('pipe', 'w'), // stdout is a pipe that the child will write to
@@ -690,9 +697,9 @@ class ispCP_SystemInfo {
 		);
 
 		$pipes = array(); // satisfy warning
+
 		$proc = proc_open(
-			ispCP_Config::getInstance()->get('CMD_SYSCTL') . ' -n ' . $args,
-			$descriptorspec, $pipes
+			$cfg->CMD_SYSCTL . ' -n ' . $args, $descriptorspec, $pipes
 		);
 
 		if (is_resource($proc)) {

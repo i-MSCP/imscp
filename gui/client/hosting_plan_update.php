@@ -130,8 +130,7 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 		$hp_title = tr('Your order');
 	} else {
 		// generate all hosting plans available for purchasing
-		if (ispCP_Config::getInstance()->exists('HOSTING_PLANS_LEVEL')
-			&& $cfg->HOSTING_PLANS_LEVEL === 'admin') {
+		if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
 			$query = "
 				SELECT
 					t1.*,

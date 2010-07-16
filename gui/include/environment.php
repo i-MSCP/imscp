@@ -32,7 +32,7 @@
 ispCP_Bootstrap::boot();
 
 // Get a reference to a ispCP_ConfigHandler_File instance
-$config = ispCP_Config::getInstance();
+$config = new ispCP_Config_Handler_File();
 
 // Set some configuration parameters
 
@@ -228,3 +228,6 @@ if(!$config->ISPCP_SUPPORT_SYSTEM_TARGET) {
 
 // Initialize the application
 IspCP_Initializer::run($config);
+
+// Remove useless variable
+unset($config);

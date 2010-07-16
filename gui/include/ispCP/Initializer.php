@@ -76,22 +76,22 @@ class ispCP_Initializer {
 	 * @throws ispCP_Exception
 	 * @param string|ispCP_Config_Handler_File $command Initializer method to be
 	 *	executed or an ispCP_Config_Handler_File object
-	 * @param ispCP_Config_Handler_File $config Optional ispCP_Config_Handler
+	 * @param ispCP_Config_Handler_File $config Optional ispCP_Config_Handler_File
 	 * object
 	 * @return ispCP_Initializer The ispCP_Initializer instance
 	 */
 	public static function run($command = '_processAll',
-		ispCP_Config_Handler $config = null) {
+		ispCP_Config_Handler_File $config = null) {
 
 		if(!self::$_initialized) {
 
-			if($command instanceof ispCP_Config_Handler) {
+			if($command instanceof ispCP_Config_Handler_File) {
 				$config = $command;
 				$command = '_processAll';
 			}
 
 			$initializer = new self(
-				is_object($config) ? $config : ispCP_Config::getInstance()
+				is_object($config) ? $config : new ispCP_Config_Handler_File()
 			);
 
 			$initializer->$command();
@@ -433,14 +433,14 @@ class ispCP_Initializer {
 	protected function _processConfiguration() {
 
 		// We get an ispCP_Config_Handler_Db object
-		$db_cfg = ispCP_Config::getInstance(ispCP_Config::DB, ispCP_Registry::get('Pdo'));
+		$dbConfig = new ispCP_Config_Handler_Db(ispCP_Registry::get('Pdo'));
 
 		// Now, we can override our basis configuration object with parameter
 		// that come from the database
-		$this->_config->replaceWith($db_cfg);
+		$this->_config->replaceWith($dbConfig);
 
 		// Finally, we register the ispCP_Config_Handler_Db for shared access
-		ispCP_Registry::set('Db_Config', $db_cfg);
+		ispCP_Registry::set('Db_Config', $dbConfig);
 	}
 
 	/**

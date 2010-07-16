@@ -187,7 +187,9 @@ abstract class ispCP_Update {
 	 */
 	public function executeUpdates() {
 
+		$cfg = ispCP_Registry::get('Config');
 		$sql = ispCP_Registry::get('Db');
+
 		$engine_run_request = false;
 
 		while ($this->checkUpdateExists()) {
@@ -240,7 +242,7 @@ abstract class ispCP_Update {
 
 				// Extended error message
 				// @todo don't use html for CLI interface
-				if (ispCP_Config::getInstance()->get('DEBUG')) {
+				if ($cfg->DEBUG) {
 					$errorMessage .= "<br />" . $e->getMessage();
 					$errorMessage .=  "<br />Sql Statement was failed: $query";
 				}

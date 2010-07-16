@@ -1364,11 +1364,13 @@ class ispCP_Update_Database extends ispCP_Update {
 	 */
 	protected function _databaseUpdate_33() {
 
-		$sqlUpd = array();
+		$cfg = ispCP_Registry::get('Config');
 		$sql = ispCP_Registry::get('Db');
 
-        if (ispCP_Config::getInstance()->exists('CRITICAL_UPDATE_REVISION')) {
-            $critical_update = ispCP_Config::getInstance()->get('CRITICAL_UPDATE_REVISION');
+		$sqlUpd = array();
+
+        if (isset($cfg->CRITICAL_UPDATE_REVISION)) {
+            $critical_update = $cfg->CRITICAL_UPDATE_REVISION;
         }
 
 		if (!isset($critical_update) || $critical_update < 3) {
@@ -1382,7 +1384,7 @@ class ispCP_Update_Database extends ispCP_Update {
 			 * @since r1355
 			 */
 			if (!isset($critical_update)) {
-				$status = ispCP_Config::getInstance()->get('ITEM_CHANGE_STATUS');
+				$status = $cfg->ITEM_CHANGE_STATUS;
 
 				$query = "
 					SELECT
@@ -1459,8 +1461,8 @@ class ispCP_Update_Database extends ispCP_Update {
 			 */
 			if ($critical_update < 2) {
 
-				$status = ispCP_Config::getInstance()->get('ITEM_ADD_STATUS');
-				$statsgroup = ispCP_Config::getInstance()->get('AWSTATS_GROUP_AUTH');
+				$status = $cfg->ITEM_ADD_STATUS;
+				$statsgroup = $cfg->AWSTATS_GROUP_AUTH;
 
 				$query = "
 					SELECT
@@ -1510,9 +1512,7 @@ class ispCP_Update_Database extends ispCP_Update {
 			 * @since r1725
 			 */
 			$interfaces = new ispCP_NetworkCard();
-			$card = $interfaces->ip2NetworkCard(
-				ispCP_Config::getInstance()->get('BASE_SERVER_IP')
-			);
+			$card = $interfaces->ip2NetworkCard($cfg->BASE_SERVER_IP);
 
 			$sqlUpd[] = "
 				ALTER IGNORE TABLE
@@ -1531,7 +1531,7 @@ class ispCP_Update_Database extends ispCP_Update {
 					`server_ips`
 				SET
 					`ip_card` = '" . $card . "',
-					`ip_status` = '" . ispCP_Config::getInstance()->get('ITEM_CHANGE_STATUS') . "'
+					`ip_status` = '" . $cfg->ITEM_CHANGE_STATUS . "'
 				;
 			";
 

@@ -43,6 +43,7 @@
  */
 function curlang($newlang = null, $force = false) {
 
+	$cfg = ispCP_Registry::get('Config');
 	static $language = null;
 
 	// We store old value so if $language is changed old value is returned
@@ -60,8 +61,7 @@ function curlang($newlang = null, $force = false) {
 			$language === null) ) {
 
 			$newlang = (isset($_SESSION['user_def_lang']))
-				? $_SESSION['user_def_lang']
-				: ispCP_Config::getInstance()->get('USER_INITIAL_LANG');
+				? $_SESSION['user_def_lang'] : $cfg->USER_INITIAL_LANG;
 		}
 
 		if ($newlang !== false) {

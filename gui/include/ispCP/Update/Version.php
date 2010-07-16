@@ -81,7 +81,9 @@ class ispCP_Update_Version extends ispCP_Update {
 	 */
 	protected function _getCurrentVersion() {
 
-		return (int) ispCP_Config::getInstance()->get('BuildDate');
+		$cfg = ispCP_Registry::get('Config');
+
+		return (int) $cfg->BuildDate;
 	}
 
 	/**

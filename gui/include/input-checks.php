@@ -184,7 +184,8 @@ function tojs($text) {
  * @return	boolean				valid password or not
  */
 function chk_password($password, $num = 50, $permitted = "") {
-	global $cfg;
+
+	$cfg = ispCP_Registry::get('Config');
 
 	if ($num > 255) {
 		$num = 255;
@@ -193,7 +194,7 @@ function chk_password($password, $num = 50, $permitted = "") {
 	}
 
 	$len = strlen($password);
-	if ($len < ispCP_Config::getInstance()->get('PASSWD_CHARS') || $len > $num) {
+	if ($len < $cfg->PASSWD_CHARS || $len > $num) {
 		return false;
 	}
 
@@ -201,7 +202,7 @@ function chk_password($password, $num = 50, $permitted = "") {
 		return false;
 	}
 
-	if (ispCP_Config::getInstance()->get('PASSWD_STRONG')) {
+	if ($cfg->PASSWD_STRONG) {
 		return (bool)(preg_match("/[0-9]/", $password)
 			&& preg_match("/[a-zA-Z]/", $password));
 	} else {
@@ -323,9 +324,10 @@ function ispcp_check_local_part($email, $num = 50) {
 function validates_dname($dname, $subdname_process = false) {
 
 	global $validation_err_msg;
+	$cfg = ispCP_Registry::get('Config');
 	$validation_err_msg = tr('Wrong domain name syntax or number of labels');
 
-	$max_labels = ($subdname_process) ? 99 : ispCP_Config::getInstance()->get('MAX_DNAMES_LABELS');
+	$max_labels = ($subdname_process) ? 99 : $cfg->MAX_DNAMES_LABELS;
 
 	if (!$subdname_process) {
 
@@ -389,6 +391,7 @@ function validates_dname($dname, $subdname_process = false) {
  */
 function validates_subdname($subdname, $dname) {
 
+	$cfg = ispCP_Registry::get('Config');
 	global $validation_err_msg;
 	$validation_err_msg = tr('Wrong subdomain syntax or number of labels!');
 
@@ -402,7 +405,7 @@ function validates_subdname($subdname, $dname) {
 	$dname_nb_labels = count(explode('.', $dname)) -1;
 
 	// Retrieves the maximum number of labels for the subdomain
-	$subdname_nb_labels = ispCP_Config::getInstance()->get('MAX_SUBDNAMES_LABELS');
+	$subdname_nb_labels = $cfg->MAX_SUBDNAMES_LABELS;
 
 	$matches = array();
 
@@ -516,12 +519,13 @@ function _validates_dname_label($label) {
  */
 function _validates_tld($tld) {
 
+	$cfg = ispCP_Registry::get('Config');
 	global $validation_err_msg;
 	$validation_err_msg = tr('Wrong Top Level Domain syntax: <b>%s</b>', $tld);
 
 	$matches = array();
 
-	if (ispCP_Config::getInstance()->get('TLD_STRICT_VALIDATION')) {
+	if ($cfg->TLD_STRICT_VALIDATION) {
 
 		// This pattern Matches only Top Level Domain listed in Iana root database
 		// ( only ccTLDs and gTLDs, not IDNs )
@@ -602,8 +606,9 @@ function _validates_tld($tld) {
 function _validates_sld($sld) {
 
 	global $validation_err_msg;
+	$cfg = ispCP_Registry::get('Config');
 
-	if (ispCP_Config::getInstance()->get('SLD_STRICT_VALIDATION')) {
+	if ($cfg->SLD_STRICT_VALIDATION) {
 
 		// Single-Character SLD
 		// Note: All another SC SLD are presently reserved in
