@@ -1,13 +1,7 @@
-<?php
+ <?php
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
- *
- * @license
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
@@ -23,23 +17,31 @@
  * The Initial Developer of the Original Code is ispCP Team.
  * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
+ *
+ * @category	ispCP
+ * @package		ispCP_Update
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @author 		ispCP Team
+ * @version 	SVN: $Id$
+ * @link		http://isp-control.net ispCP Home Site
+ * @license		http://www.mozilla.org/MPL/ MPL 1.1
  */
 
 /**
- * Implementing abstract class ispcpUpdate for database update functions
- * Class criticalUpdate for critical update
+ * Class for database updates
  *
+ * @category	ispCP
+ * @package		ispCP_Update
  * @author		Daniel Andreca <sci2tech@gmail.com>
- * @copyright	2006-2009 by ispCP | http://isp-control.net
- * @version		1.0
+ * @version		1.0.1
  * @since		r1355
  */
-class databaseUpdate extends ispcpUpdate {
+class ispCP_Update_Database extends ispCP_Update {
 
 	/**
-	 * databaseUpdate instance
+	 * ispCP_Update_Database instance
 	 *
-	 * @var databaseUpdate
+	 * @var ispCP_Update_Database
 	 */
 	protected static $_instance = null;
 
@@ -64,18 +66,10 @@ class databaseUpdate extends ispcpUpdate {
 	 */
 	protected $_errorMessage = 'Database update %s failed';
 
-
 	/**
-	 * This class implements the Singleton Design pattern
+	 * Get an ispCP_Update_Database instance
 	 *
-	 * @return void
-	 */
-	private function __clone() {}
-
-	/**
-	 * Get an databaseUpdate instance
-	 *
-	 * @return databaseUpdate A databaseUpdate instance
+	 * @return ispCP_Update_Database An ispCP_Update_Database instance
 	 */
 	public static function getInstance() {
 
@@ -1373,8 +1367,8 @@ class databaseUpdate extends ispcpUpdate {
 		$sqlUpd = array();
 		$sql = ispCP_Registry::get('Db');
 
-        if (Config::getInstance()->exists('CRITICAL_UPDATE_REVISION')) {
-            $critical_update = Config::getInstance()->get('CRITICAL_UPDATE_REVISION');
+        if (ispCP_Config::getInstance()->exists('CRITICAL_UPDATE_REVISION')) {
+            $critical_update = ispCP_Config::getInstance()->get('CRITICAL_UPDATE_REVISION');
         }
 
 		if (!isset($critical_update) || $critical_update < 3) {
@@ -1388,7 +1382,7 @@ class databaseUpdate extends ispcpUpdate {
 			 * @since r1355
 			 */
 			if (!isset($critical_update)) {
-				$status = Config::getInstance()->get('ITEM_CHANGE_STATUS');
+				$status = ispCP_Config::getInstance()->get('ITEM_CHANGE_STATUS');
 
 				$query = "
 					SELECT
@@ -1465,8 +1459,8 @@ class databaseUpdate extends ispcpUpdate {
 			 */
 			if ($critical_update < 2) {
 
-				$status = Config::getInstance()->get('ITEM_ADD_STATUS');
-				$statsgroup = Config::getInstance()->get('AWSTATS_GROUP_AUTH');
+				$status = ispCP_Config::getInstance()->get('ITEM_ADD_STATUS');
+				$statsgroup = ispCP_Config::getInstance()->get('AWSTATS_GROUP_AUTH');
 
 				$query = "
 					SELECT
@@ -1517,7 +1511,7 @@ class databaseUpdate extends ispcpUpdate {
 			 */
 			$interfaces = new ispCP_NetworkCard();
 			$card = $interfaces->ip2NetworkCard(
-				Config::getInstance()->get('BASE_SERVER_IP')
+				ispCP_Config::getInstance()->get('BASE_SERVER_IP')
 			);
 
 			$sqlUpd[] = "
@@ -1537,7 +1531,7 @@ class databaseUpdate extends ispcpUpdate {
 					`server_ips`
 				SET
 					`ip_card` = '" . $card . "',
-					`ip_status` = '" . Config::getInstance()->get('ITEM_CHANGE_STATUS') . "'
+					`ip_status` = '" . ispCP_Config::getInstance()->get('ITEM_CHANGE_STATUS') . "'
 				;
 			";
 

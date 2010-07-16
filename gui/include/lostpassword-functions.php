@@ -36,17 +36,17 @@ function check_gd() {
  * @todo use file_exists in try-catch block
  */
 function captcha_fontfile_exists() {
-	return file_exists(Config::getInstance()->get('LOSTPASSWORD_CAPTCHA_FONT'));
+	return file_exists(ispCP_Config::getInstance()->get('LOSTPASSWORD_CAPTCHA_FONT'));
 }
 
 function createImage($strSessionVar) {
-	$rgBgColor = Config::getInstance()->get('LOSTPASSWORD_CAPTCHA_BGCOLOR');
-	$rgTextColor = Config::getInstance()->get('LOSTPASSWORD_CAPTCHA_TEXTCOLOR');
+	$rgBgColor = ispCP_Config::getInstance()->get('LOSTPASSWORD_CAPTCHA_BGCOLOR');
+	$rgTextColor = ispCP_Config::getInstance()->get('LOSTPASSWORD_CAPTCHA_TEXTCOLOR');
 
-	$x = Config::getInstance()->get('LOSTPASSWORD_CAPTCHA_WIDTH');
-	$y = Config::getInstance()->get('LOSTPASSWORD_CAPTCHA_HEIGHT');
+	$x = ispCP_Config::getInstance()->get('LOSTPASSWORD_CAPTCHA_WIDTH');
+	$y = ispCP_Config::getInstance()->get('LOSTPASSWORD_CAPTCHA_HEIGHT');
 
-	$font = Config::getInstance()->get('LOSTPASSWORD_CAPTCHA_FONT');
+	$font = ispCP_Config::getInstance()->get('LOSTPASSWORD_CAPTCHA_FONT');
 
 	$iRandVal = strrand(8, $strSessionVar);
 
@@ -252,9 +252,9 @@ function sendpassword($uniqkey) {
 
 		$message = $data['message'];
 
-		$base_vhost = Config::getInstance()->get('BASE_SERVER_VHOST');
+		$base_vhost = ispCP_Config::getInstance()->get('BASE_SERVER_VHOST');
 
-		$base_vhost_prefix = Config::getInstance()->get('BASE_SERVER_VHOST_PREFIX');
+		$base_vhost_prefix = ispCP_Config::getInstance()->get('BASE_SERVER_VHOST_PREFIX');
 
 		if ($from_name) {
 			$from = '"' . $from_name . '" <' . $from_email . '>';
@@ -337,8 +337,8 @@ function requestpassword($admin_name) {
 	$subject = $data['subject'];
 	$message = $data['message'];
 
-	$base_vhost = Config::getInstance()->get('BASE_SERVER_VHOST');
-	$base_vhost_prefix = Config::getInstance()->get('BASE_SERVER_VHOST_PREFIX');
+	$base_vhost = ispCP_Config::getInstance()->get('BASE_SERVER_VHOST');
+	$base_vhost_prefix = ispCP_Config::getInstance()->get('BASE_SERVER_VHOST_PREFIX');
 
 	if ($from_name) {
 		$from = '"' . $from_name . "\" <" . $from_email . ">";

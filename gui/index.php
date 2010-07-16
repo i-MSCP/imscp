@@ -70,7 +70,7 @@ $theme_color = isset($_SESSION['user_theme'])
 $tpl = new ispCP_pTemplate();
 
 if (($cfg->MAINTENANCEMODE
-		|| databaseUpdate::getInstance()->checkUpdateExists())
+		|| ispCP_Update_Database::getInstance()->checkUpdateExists())
 	&& !isset($_GET['admin'])) {
 
 	$tpl->define_dynamic('page', $cfg->LOGIN_TEMPLATE_PATH . '/maintenancemode.tpl');

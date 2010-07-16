@@ -163,7 +163,7 @@ function _passgen() {
 	$pw = '';
 
 
-	for ($i = 0, $passwd_chars = Config::getInstance()->get('PASSWD_CHARS'); $i <= $passwd_chars; $i++) {
+	for ($i = 0, $passwd_chars = ispCP_Config::getInstance()->get('PASSWD_CHARS'); $i <= $passwd_chars; $i++) {
 		$z = 0;
 
 		do {

@@ -32,7 +32,7 @@
 ispCP_Bootstrap::boot();
 
 // Get a reference to a ispCP_ConfigHandler_File instance
-$config = Config::getInstance();
+$config = ispCP_Config::getInstance();
 
 // Set some configuration parameters
 

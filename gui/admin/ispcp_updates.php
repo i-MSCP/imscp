@@ -67,7 +67,7 @@ function get_update_infos(&$tpl) {
 		return false;
 	}
 
-	if (versionUpdate::getInstance()->checkUpdateExists()) {
+	if (ispCP_Update_Version::getInstance()->checkUpdateExists()) {
 		$tpl->assign(
 			array(
 				'UPDATE_MESSAGE' => '',
@@ -78,8 +78,8 @@ function get_update_infos(&$tpl) {
 
 		$tpl->parse('UPDATE_INFOS', 'update_infos');
 	} else {
-		if (versionUpdate::getInstance()->getErrorMessage() != "") {
-			$tpl->assign(array('TR_MESSAGE' => versionUpdate::getInstance()->getErrorMessage()));
+		if (ispCP_Update_Version::getInstance()->getErrorMessage() != "") {
+			$tpl->assign(array('TR_MESSAGE' => ispCP_Update_Version::getInstance()->getErrorMessage()));
 		} else {
 			$tpl->assign('TABLE_HEADER', '');
 		}

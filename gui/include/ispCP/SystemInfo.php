@@ -316,7 +316,7 @@ class ispCP_SystemInfo {
         // if solved, we can savely remove the l-argument
         $pipes = array(); // satisfy warning
 		$proc = proc_open(
-			Config::getInstance()->get('CMD_DF') . ' -Tl',
+			ispCP_Config::getInstance()->get('CMD_DF') . ' -Tl',
 			$descriptorspec,
 			$pipes
 		);
@@ -442,7 +442,7 @@ class ispCP_SystemInfo {
 
 				$pipes = array();
 				$proc = proc_open(
-					Config::getInstance()->get('CMD_VMSTAT'),
+					ispCP_Config::getInstance()->get('CMD_VMSTAT'),
 					$descriptorspec,
 					$pipes
 				);
@@ -517,7 +517,7 @@ class ispCP_SystemInfo {
 
 			$pipes = array(); // satisfy warning
 			$proc = proc_open(
-				Config::getInstance()->get('CMD_SWAPCTL') . $args,
+				ispCP_Config::getInstance()->get('CMD_SWAPCTL') . $args,
 				$descriptorspec,
 				$pipes
 			);
@@ -691,7 +691,7 @@ class ispCP_SystemInfo {
 
 		$pipes = array(); // satisfy warning
 		$proc = proc_open(
-			Config::getInstance()->get('CMD_SYSCTL') . ' -n ' . $args,
+			ispCP_Config::getInstance()->get('CMD_SYSCTL') . ' -n ' . $args,
 			$descriptorspec, $pipes
 		);
 

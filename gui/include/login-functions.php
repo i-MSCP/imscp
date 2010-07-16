@@ -673,7 +673,7 @@ function register_user($uname, $upass) {
 	$udata = array();
 	$udata = get_userdata($uname);
 
-	if ((databaseUpdate::getInstance()->checkUpdateExists() ||
+	if ((ispCP_Update_Database::getInstance()->checkUpdateExists() ||
 		($cfg->MAINTENANCEMODE)) && $udata['admin_type'] != 'admin') {
 
 		write_log(
@@ -815,7 +815,7 @@ function check_user_login() {
 		return false;
 	}
 
-	if ((databaseUpdate::getInstance()->checkUpdateExists() ||
+	if ((ispCP_Update_Database::getInstance()->checkUpdateExists() ||
 		($cfg->MAINTENANCEMODE)) && $user_type != 'admin') {
 		unset_user_login_data(true);
 		write_log(

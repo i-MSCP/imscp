@@ -91,7 +91,7 @@ class ispCP_Initializer {
 			}
 
 			$initializer = new self(
-				is_object($config) ? $config : Config::getInstance()
+				is_object($config) ? $config : ispCP_Config::getInstance()
 			);
 
 			$initializer->$command();
@@ -433,7 +433,7 @@ class ispCP_Initializer {
 	protected function _processConfiguration() {
 
 		// We get an ispCP_Config_Handler_Db object
-		$db_cfg = Config::getInstance(Config::DB, ispCP_Registry::get('Pdo'));
+		$db_cfg = ispCP_Config::getInstance(ispCP_Config::DB, ispCP_Registry::get('Pdo'));
 
 		// Now, we can override our basis configuration object with parameter
 		// that come from the database

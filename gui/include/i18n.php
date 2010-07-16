@@ -61,7 +61,7 @@ function curlang($newlang = null, $force = false) {
 
 			$newlang = (isset($_SESSION['user_def_lang']))
 				? $_SESSION['user_def_lang']
-				: Config::getInstance()->get('USER_INITIAL_LANG');
+				: ispCP_Config::getInstance()->get('USER_INITIAL_LANG');
 		}
 
 		if ($newlang !== false) {

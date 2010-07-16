@@ -48,7 +48,7 @@
  * ispCP_Registry::set('My_ConfigHandler', new ispCP_Config_Handler($parameters));
  *
  * // From another context:
- * 
+ *
  * $my_cfg = ispCP_Registry::get('My_ConfigHandler');
  * echo $my_cfg->PLUGIN_NAME; // billing
  * echo $my_cfg->PLUGIN_VERSION; // 1.0.0
@@ -64,7 +64,7 @@
  * @author		ispCP Team
  * @version		1.0.8
  */
-class Config {
+class ispCP_Config {
 
 	/**#@+
  	 * ispCP_Config_Handler class name

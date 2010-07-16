@@ -12,21 +12,22 @@
  * License for the specific language governing rights and limitations
  * under the License.
  *
- * The Original Code is "VHCS - Virtual Hosting Control System".
+ * The Original Code is "ispCP ω (OMEGA) a Virtual Hosting Control Panel".
  *
- * The Initial Developer of the Original Code is moleSoftware GmbH.
- * Portions created by Initial Developer are Copyright (C) 2001-2006
- * by moleSoftware GmbH. All Rights Reserved.
+ * The Initial Developer of the Original Code is ispCP Team.
+ * Portions created by Initial Developer are Copyright (C) 2006-2010 by
+ * isp Control Panel. All Rights Reserved.
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
  * @category	ispCP
  * @package		ispCP
- * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
  * @author 		ispCP Team
+ * @author 	    Laurent Declercq <laurent.declercq@ispcp.net>
+ * @version 	SVN: $Id$
+ * @link		http://isp-control.net ispCP Home Site
+ * @license		http://www.mozilla.org/MPL/ MPL 1.1
  */
 
 /**
@@ -91,6 +92,7 @@ require_once INCLUDEPATH . '/ispcp-db-keys.php';
 if($ispcp_db_pass_key != '{KEY}' && $ispcp_db_pass_iv != '{IV}') {
 	ispCP_Registry::set('MCRYPT_KEY', $ispcp_db_pass_key);
 	ispCP_Registry::set('MCRYPT_IV', $ispcp_db_pass_iv);
+	unset($ispcp_db_pass_key, $ispcp_db_pass_iv);
 } else {
 	throw new ispCP_Exception(
 		'Error: Database key and/or initialization vector was not generated!'
@@ -114,13 +116,14 @@ require_once INCLUDEPATH . '/environment.php';
 /**
  * Internationalization functions
  */
-require_once INCLUDEPATH . '/i18n.php';
+require_once 'i18n.php';
 
 /**
  * System message functions
+ *
  * @deprecated Deprecated since 1.0.6 - Will be replaced by ispCP_Exception
  */
-require_once INCLUDEPATH . '/system-message.php';
+require_once 'system-message.php';
 
 /**
  * SQL convenience functions
@@ -128,7 +131,7 @@ require_once INCLUDEPATH . '/system-message.php';
 require_once 'sql.php';
 
 /**
- * Authentication libraries
+ * Authentication functions
  */
 require_once 'login-functions.php';
 

@@ -83,7 +83,7 @@ function get_update_infos(&$tpl) {
 	$cfg = ispCP_Registry::get('Config');
 	$sql = ispCP_Registry::get('Db');
 
-	if (databaseUpdate::getInstance()->checkUpdateExists()) {
+	if (ispCP_Update_Database::getInstance()->checkUpdateExists()) {
 		$tpl->assign(array('DATABASE_UPDATE' => '<a href="database_update.php" class="link">' . tr('A database update is available') . '</a>'));
 		$tpl->parse('DATABASE_UPDATE_MESSAGE', 'database_update_message');
 	} else {
@@ -96,12 +96,12 @@ function get_update_infos(&$tpl) {
 		return false;
 	}
 
-	if (versionUpdate::getInstance()->checkUpdateExists()) {
+	if (ispCP_Update_Version::getInstance()->checkUpdateExists()) {
 		$tpl->assign(array('UPDATE' => '<a href="ispcp_updates.php" class="link">' . tr('New ispCP update is now available') . '</a>'));
 		$tpl->parse('UPDATE_MESSAGE', 'update_message');
 	} else {
-		if (versionUpdate::getInstance()->getErrorMessage() != "") {
-			$tpl->assign(array('UPDATE' => versionUpdate::getInstance()->getErrorMessage()));
+		if (ispCP_Update_Version::getInstance()->getErrorMessage() != "") {
+			$tpl->assign(array('UPDATE' => ispCP_Update_Version::getInstance()->getErrorMessage()));
 			$tpl->parse('UPDATE_MESSAGE', 'update_message');
 		} else {
 			$tpl->assign(array('UPDATE_MESSAGE' => ''));

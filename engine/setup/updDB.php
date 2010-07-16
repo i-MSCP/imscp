@@ -2,12 +2,6 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @author 		Laurent Declercq <laurent.declercq@ispcp.net>
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- *
- * @license
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
@@ -25,25 +19,47 @@
  * isp Control Panel. All Rights Reserved.
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
+ *
+ * @category	ispCP
+ * @package		ispCP_Setup
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @author 	    Laurent Declercq <laurent.declercq@ispcp.net>
+ * @version 	SVN: $Id$
+ * @link		http://isp-control.net ispCP Home Site
+ * @license		http://www.mozilla.org/MPL/ MPL 1.1
  */
 
-error_reporting(E_ALL|E_STRICT);
+// @todo Add a try/catch block to prevents execution of any exception writers
 
 // GUI root directory absolute path
 $gui_root_dir = '{GUI_ROOT_DIR}';
 
-// Include all needed files
+If($gui_root_dir == '{GUI_ROOT_DIR}') {
+	print 'Error: The gui root directory is not defined in the ' . __FILE__ .
+		" file!\n";
+
+	exit(1);
+}
+
+// Include ispCP core libraries and initialize the environment
 require_once $gui_root_dir . '/include/ispcp-lib.php';
 
-// Perform all database normal updates if exists
-if (databaseUpdate::getInstance()->checkUpdateExists()) {
+// Gets an ispCP_Update_Database instance
+$dbUpdate = ispCP_Update_Database::getInstance();
 
-	databaseUpdate::getInstance()->executeUpdates();
+// Perform all database updates if exists
+// @todo: Should be refactored because the check is not really needed here since
+// the ispCP_Update_Database::executeUpdates() method take care of it
+if ($dbUpdate->checkUpdateExists()) {
 
-	if ( ($msg = databaseUpdate::getInstance()->getErrorMessage() != '')) {
-		print $msg;
+	// Execute all available ispCP database update
+	$dbUpdate->executeUpdates();
+
+	if ( ($msg = $dbUpdate->getErrorMessage() != '')) {
+		print "$msg\n";
+
 		exit(1);
 	}
 }
-
+ispC
 exit(0);

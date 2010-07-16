@@ -3,6 +3,10 @@ ispCP ω 1.0.6 ChangeLog
 
 2010-07-16 Laurent Declercq
 	- GUI:
+		* Moved Config class to ispCP_Config
+		* Moved databaseUpdate class to ispCP_Update_Database
+		* Moved ispcpUpdate class to ispCP_Update
+		* Moved versionUpdate class to ispCP_Update_Version
 		* Merged login functions in include/login-functions.php
 
 2010-07-14 Laurent Declercq

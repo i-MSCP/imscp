@@ -299,7 +299,7 @@ function add_domain_extras(&$dmn_id, &$admin_id, &$sql) {
 function get_reseller_detail_count($tablename, $ua) {
 	global $sql;
 
-	$delstatus = Config::getInstance()->get('ITEM_DELETE_STATUS');
+	$delstatus = ispCP_Config::getInstance()->get('ITEM_DELETE_STATUS');
 
 	$query = "SELECT COUNT(*) AS cnt FROM `".$tablename;
 	if ($tablename == 'ftp_users') {

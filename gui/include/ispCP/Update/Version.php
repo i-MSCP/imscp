@@ -2,12 +2,6 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
- *
- * @license
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
@@ -23,24 +17,32 @@
  * The Initial Developer of the Original Code is ispCP Team.
  * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
+ *
+ * @category	ispCP
+ * @package		ispCP_Update
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @author 		ispCP Team
+ * @version 	SVN: $Id$
+ * @link		http://isp-control.net ispCP Home Site
+ * @license		http://www.mozilla.org/MPL/ MPL 1.1
  */
 
 /**
- * Class versionUpdate is
- * Implementing abstract class ispcpUpdate for future online version update functions
+ * Class ispCP_Update_Version implements the ispCP_Update abstract class for
+ * future online version update functions
  *
+ * @package		ispCP_Update
  * @author		Daniel Andreca <sci2tech@gmail.com>
  * @copyright	2006-2009 by ispCP | http://isp-control.net
- * @version		1.0
- * @see			Other Functions (in other Files)
+ * @version		1.0.1
  * @since		r1355
  */
-class versionUpdate extends ispcpUpdate {
+class ispCP_Update_Version extends ispCP_Update {
 
 	/**
-	 * versionUpdate instance
+	 * ispCP_Update_Version instance
 	 *
-	 * @var versionUpdate
+	 * @var ispCP_Update_Version
 	 */
 	protected static $_instance = null;
 
@@ -59,28 +61,9 @@ class versionUpdate extends ispcpUpdate {
 	protected $_errorMessage = 'Version update %s failed';
 
 	/**
-	 * Constructor
+	 * Gets a ispCP_Update_Version instance
 	 *
-	 * This class implements the Singleton Design pattern
-	 *
-	 * @return void
-	 */
-	protected function __construct() {
-
-		parent::__construct();
-	}
-
-	/**
-	 * This class implements the Singleton Design pattern
-	 *
-	 * @return void
-	 */
-	private function __clone() {}
-
-	/**
-	 * Gets a versionUpdate instance
-	 *
-	 * @return versionUpdate
+	 * @return ispCP_Update_Version
 	 */
 	public static function getInstance() {
 
@@ -92,22 +75,21 @@ class versionUpdate extends ispcpUpdate {
 	}
 
 	/**
-	 * Return the current ispCP version
+	 * Return the current ispCP installed version
 	 *
-	 * @return int ispCP version
+	 * @return int Current ispCP installed version
 	 */
 	protected function _getCurrentVersion() {
 
-		return (int) Config::getInstance()->get('BuildDate');
+		return (int) ispCP_Config::getInstance()->get('BuildDate');
 	}
 
 	/**
-	 * Gets the last ispCP version
+	 * Gets the last available ispCP version
 	 *
-	 * @return bool|int Return the last ispCP version available or FALSE on
+	 * @return bool|int Returns the last ispCP version available or FALSE on
 	 * failure
-	 * @todo refactor the name of this methods that don't reflect the real
-	 * purpose
+	 * @todo Rename this function name that don't reflects the real purpose
 	 */
 	protected function _getNextVersion() {
 
@@ -135,7 +117,8 @@ class versionUpdate extends ispcpUpdate {
 	/**
 	 * Check for ispCP update
 	 *
-	 * @return boolean TRUE if an ispCP update is available FALSE otherwise
+	 * @return boolean TRUE if a new ispCP version is available FALSE otherwise
+	 * @todo Rename this function name that don't reflects the real purpose
 	 */
 	public function checkUpdateExists() {
 

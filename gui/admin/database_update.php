@@ -71,7 +71,7 @@ $tpl->assign(
 	)
 );
 
-if (databaseUpdate::getInstance()->checkUpdateExists()) {
+if (ispCP_Update_Database::getInstance()->checkUpdateExists()) {
 	$tpl->assign(
 		array(
 			'UPDATE_MESSAGE'			=> '',
@@ -95,11 +95,11 @@ if (databaseUpdate::getInstance()->checkUpdateExists()) {
 
 // Execute all available db updates and redirect back to database_update.php
 if ($execute) {
-	databaseUpdate::getInstance()->executeUpdates();
+	ispCP_Update_Database::getInstance()->executeUpdates();
 
-	if (databaseUpdate::getInstance()->getErrorMessage() != "") {
+	if (ispCP_Update_Database::getInstance()->getErrorMessage() != "") {
 		throw new ispCP_Exception(
-			databaseUpdate::getInstance()->getErrorMessage()
+			ispCP_Update_Database::getInstance()->getErrorMessage()
 		);
 	}
 	header('Location: ' . $_SERVER['PHP_SELF']);

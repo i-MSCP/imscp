@@ -54,13 +54,13 @@ function get_user_gui_props(&$sql, $user_id) {
 	if ($rs->recordCount() == 0
 		|| (empty($rs->fields['lang']) && empty($rs->fields['layout']))) {
 		// values for user id, some default stuff
-		return array(Config::getInstance()->get('USER_INITIAL_LANG'), Config::getInstance()->get('USER_INITIAL_THEME'));
+		return array(ispCP_Config::getInstance()->get('USER_INITIAL_LANG'), ispCP_Config::getInstance()->get('USER_INITIAL_THEME'));
 	} else if (empty($rs->fields['lang'])) {
 
-		return array(Config::getInstance()->get('USER_INITIAL_LANG'), $rs->fields['layout']);
+		return array(ispCP_Config::getInstance()->get('USER_INITIAL_LANG'), $rs->fields['layout']);
 	} else if (empty($rs->fields['layout'])) {
 
-		return array($rs->fields['lang'], Config::getInstance()->get('USER_INITIAL_THEME'));
+		return array($rs->fields['lang'], ispCP_Config::getInstance()->get('USER_INITIAL_THEME'));
 	} else {
 
 		return array($rs->fields['lang'], $rs->fields['layout']);
@@ -111,7 +111,7 @@ function get_menu_vars($menu_link) {
 	$query = "
 		SELECT
 			`customer_id`, `fname`, `lname`, `firm`, `zip`, `city`,"
-			. (Config::getInstance()->get('DATABASE_REVISION') >= 11 ? '`state`, ' : '')
+			. (ispCP_Config::getInstance()->get('DATABASE_REVISION') >= 11 ? '`state`, ' : '')
 			. "`country`, `email`, `phone`, `fax`, `street1`, `street2`
 		FROM
 			`admin`
@@ -139,7 +139,7 @@ function get_menu_vars($menu_link) {
 	$replace[] = tohtml($rs->fields['zip']);
 	$search [] = '{city}';
 	$replace[] = tohtml($rs->fields['city']);
-	if (Config::getInstance()->get('DATABASE_REVISION') >= 11) {
+	if (ispCP_Config::getInstance()->get('DATABASE_REVISION') >= 11) {
 		$search [] = '{state}';
 		$replace[] = $rs->fields['state'];
 	}
@@ -181,7 +181,7 @@ function gen_def_layout(&$tpl, $user_def_layout) {
 	$layouts = array('blue', 'green', 'red', 'yellow');
 
 	foreach ($layouts as $layout) {
-		$selected = ($layout === $user_def_layout) ? Config::getInstance()->get('HTML_SELECTED') : '';
+		$selected = ($layout === $user_def_layout) ? ispCP_Config::getInstance()->get('HTML_SELECTED') : '';
 
 		$tpl->assign(
 			array(

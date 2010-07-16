@@ -2,12 +2,6 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
- * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @version 	SVN: $Id$
- * @link 		http://isp-control.net
- * @author 		ispCP Team
- *
- * @license
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
  * compliance with the License. You may obtain a copy of the License at
@@ -23,20 +17,27 @@
  * The Initial Developer of the Original Code is ispCP Team.
  * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
+ *
+ * @category	ispCP
+ * @package		ispCP_Update
+ * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @author 		ispCP Team
+ * @version 	SVN: $Id$
+ * @link		http://isp-control.net ispCP Home Site
+ * @license		http://www.mozilla.org/MPL/ MPL 1.1
  */
 
 /**
- * Abstract class to implement general update functions
+ * Abstract class to implement update functions
  *
+ * @package		ispCP_Update
  * @author		Jochen Manz <zothos@zothos.net>
  * @author		Daniel Andreca <sci2tech@gmail.com>
  * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @copyright	2006-2009 by ispCP | http://isp-control.net
- * @version		1.2
- * @see			class.databaseUpdate.php
+ * @version		1.0.2
  * @since		r1355
  */
-abstract class ispcpUpdate {
+abstract class ispCP_Update {
 
 	/**
 	 * Version of the last update that was applied
@@ -74,7 +75,7 @@ abstract class ispcpUpdate {
 	protected $_errorMessage = '';
 
 	/**
-	 * Constructor
+	 * This class implements the sigleton design pattern
 	 *
 	 * @return void
 	 */
@@ -82,6 +83,14 @@ abstract class ispcpUpdate {
 
 		$this->_currentVersion = $this->_getCurrentVersion();
 	}
+
+
+	/**
+	 * This class implements the sigleton design pattern
+	 *
+	 * @return void
+	 */
+	protected function __clone() {}
 
 	/**
 	 * Returns the version of the last update that was applied
@@ -120,7 +129,7 @@ abstract class ispcpUpdate {
 	/**
 	 * Checks if a new update is available
 	 *
-	 * @return boolean TRUE if an update is available, FALSE otherwise
+	 * @return boolean TRUE if a new update is available, FALSE otherwise
 	 */
 	public function checkUpdateExists() {
 
@@ -130,7 +139,7 @@ abstract class ispcpUpdate {
 	}
 
 	/**
-	 * Returns the name of the function that wraps the update
+	 * Returns the name of the function that provides the update
 	 *
 	 * @return string Update function name
 	 */
@@ -140,7 +149,7 @@ abstract class ispcpUpdate {
 	}
 
 	/**
-	 * Send a query to the ispCP daemon
+	 * Send a request to the ispCP daemon
 	 *
 	 * @return void
 	 */
@@ -173,6 +182,8 @@ abstract class ispcpUpdate {
 	 * Apply all available updates
 	 *
 	 * @return void
+	 * @todo Should be more generic (Only the database variable should be
+	 * updated here. Other stuff should be implemented by the concrete class
 	 */
 	public function executeUpdates() {
 
@@ -192,6 +203,7 @@ abstract class ispcpUpdate {
 
 			// Adding the SQL statement to set the new Database Version, to our
 			// queryArray
+			// @todo Must be done only if the update succeeded
 			$queryArray[] = "
 				UPDATE
 					`config`
@@ -227,7 +239,8 @@ abstract class ispcpUpdate {
 				$errorMessage =  tr($this->_errorMessage, $newVersion);
 
 				// Extended error message
-				if (Config::getInstance()->get('DEBUG')) {
+				// @todo don't use html for CLI interface
+				if (ispCP_Config::getInstance()->get('DEBUG')) {
 					$errorMessage .= "<br />" . $e->getMessage();
 					$errorMessage .=  "<br />Sql Statement was failed: $query";
 				}

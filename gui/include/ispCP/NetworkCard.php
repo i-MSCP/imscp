@@ -185,7 +185,7 @@ class ispCP_NetworkCard {
 	private function _populateInterfaces() {
 
 		$err = '';
-		$message = $this->executeExternal(Config::getInstance()->Get('CMD_IFCONFIG'), $err);
+		$message = $this->executeExternal(ispCP_Config::getInstance()->Get('CMD_IFCONFIG'), $err);
 
 		if (!$message) {
 			$this->_errors .= tr('Error while trying to obtain list of network cards!') . $err;

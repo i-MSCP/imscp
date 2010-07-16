@@ -38,7 +38,7 @@
 
 /**
  * Moved from include/admin-functions.php
- * 
+ *
  * @deprecated since 1.0.6
  */
 function setConfig_Value($name, $value) {
@@ -58,7 +58,7 @@ function setConfig_Value($name, $value) {
 		$res = exec_query($sql, $query, array($value, $name));
 	}
 
-	Config::getInstance()->set($name, $value);
+	ispCP_Config::getInstance()->set($name, $value);
 
 	return true;
 }
@@ -100,7 +100,7 @@ function rsl_full_domain_check($data) {
 	return ($res == 0) ? 0 : 1;
 } // end of full_domain_check()
 */
- 
+
 // Moved from include/reseller-functions.php - End
 
 // Moved from include/input-check.php - Begin
@@ -132,7 +132,7 @@ function chk_username($username, $max_char = null, $min_char = 2) {
 	return false;
 }
 */
- 
+
 /**
  * full_domain_check checks the domain for validity
  *

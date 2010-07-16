@@ -410,7 +410,7 @@ class RestorePackage_ispCP extends BaseController
 		$this->db->execute($query);
 
 		$filename = $this->target_path.'/tmp/'.$dbname.'.sql';
-		$cmd = 'mysql --user '.Config::get('DB_USER').' --password='.Config::get('DB_PASS').
+		$cmd = 'mysql --user '.ispCP_Config::get('DB_USER').' --password='.ispCP_Config::get('DB_PASS').
 			   ' '.$dbname.
 			   ' <'.$filename;
 		// TODO: Error handling
