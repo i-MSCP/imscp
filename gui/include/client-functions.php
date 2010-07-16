@@ -272,7 +272,7 @@ function get_domain_running_mail_acc_cnt(&$sql, $domain_id) {
 
 function get_domain_running_dmn_ftp_acc_cnt(&$sql, $domain_id) {
 
-	$cfg = ispCP_Registry::ge('Config');
+	$cfg = ispCP_Registry::get('Config');
 	$ftp_separator = $cfg->FTP_USERNAME_SEPARATOR;
 
 	$query = "
