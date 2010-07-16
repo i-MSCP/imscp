@@ -1,6 +1,10 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-07-16 Laurent Declercq
+	- GUI:
+		* Merged login functions in include/login-functions.php
+
 2010-07-14 Laurent Declercq
 	- CONFIG|GUI||SETUP:
 		* Added PHP Browser Capabilities support (Only for the panel)
@@ -996,8 +1000,7 @@ ispCP ω 1.0.6 ChangeLog
 			update process
 		* Fixed vertical alignment for password generation button
 		* Ehancement:
-			- Added input fields hightlighting on error(s) (Todo, switch to
-				JQuery form validation for better performances)
+			- Added input fields hightlighting on error(s)
 			- Added cached input values on error
 			- Added 'Cancel' button to abort the update process
 			- Added JavaScript events for the rollover effect of several input
@@ -1417,7 +1420,7 @@ ispCP ω 1.0.6 ChangeLog
 2009-12-05 Laurent Declercq
 	- GUI:
 		* Added new admin settings for the domain names / subdomains validation
-		* Added new routines for ACE labels check (Todo: added ASCII range check)
+		* Added new routines for ACE labels check
 		* Fixed some issues related to RFC 3490:
 			- Hyphens are now banned in 2nd and 3rd position of input string
 			- ACE labels are no longer allowed as input string
