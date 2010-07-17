@@ -34,7 +34,7 @@
  * @author      Jochen Manz <zothos@zothos.net>
  * @author      Daniel Andreca <sci2tech@gmail.com>
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     1.0.3
+ * @version     1.0.4
  * @since		r1355
  */
 abstract class ispCP_Update {
@@ -166,7 +166,11 @@ abstract class ispCP_Update {
 	}
 
 	/**
-	 * Apply all available updates
+	 * Executes all available updates
+	 *
+	 * This method executes all available updates. If a query provided by an
+	 * update fail, the succeeded queries from this update will not executed
+	 * again.
 	 *
 	 * @return boolean TRUE on sucess, FALSE otherwise
 	 * @todo Should be more generic (Only the database variable should be
@@ -174,7 +178,6 @@ abstract class ispCP_Update {
 	 */
 	public function executeUpdates() {
 
-		$cfg = ispCP_Registry::get('Config');
 		$sql = ispCP_Registry::get('Pdo');
 		$dbConfig = ispCP_Registry::get('Db_Config');
 
@@ -194,47 +197,50 @@ abstract class ispCP_Update {
 			// First, switch to exception mode for errors managment
 			$sql->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-			// We start a transaction (autocommit disabled)
-			// NXW: Not needed at this moment (We don't use innoDB engine)
-			// $sql->startTransaction();
+			if(isset($dbConfig->FAILED_UPDATE)) {
+				list($failedUpdate, $queryNb ) = $dbConfig->FAILED_UPDATE;
+			} else {
+				$failedUpdate = 'inexistent';
+				$index = -1;
+			}
 
 			try {
-				// We execute every Sql statements
-				foreach ($queryArray as $query) {
+
+				// We execute all SQL statements
+				foreach($queryArray as $index => $query) {
+					// Query was already applied with success ?
+					if($functionName == $failedUpdate && $index < $queryNb) {
+						continue;
+					}
+
 					$sql->query($query);
 				}
 
-				// If all SQL statements are executed correctly, commits
-				// the changes
-				// NXW: Not needed at this moment (We don't use innoDB engine)
-				// $sql->completeTransaction();
+				unset($dbConfig->FAILED_UPDATE);
 
-				// Update database revision
+				// Update revision
 				$dbConfig->set($this->_databaseVariableName, $newVersion);
 
 			} catch (PDOException $e) {
 
-				// Perform a rollback if a SQL statement was failed
-				// NXW: Not needed at this moment (We don't use innoDB engine)
-				// $sql->rollbackTransaction();
+				// Store the query number and function name that wraps it
+				$dbConfig->FAILED_UPDATE = "$functionName;$index";
 
-				// Prepare and display an error message
+				// Prepare error message
 				$errorMessage =  sprintf($this->_errorMessage, $newVersion);
 
 				// Extended error message
-				if ($cfg->DEBUG) {
-					if(PHP_SAPI != 'cli') {
-						$errorMessage .= "<br />" . $e->getMessage();
-						$errorMessage .= "<br />Query: $query";
-					} else {
-						$errorMessage .= "\n" . $e->getMessage();
-						$errorMessage .= "\nQuery: $query";
-					}
+				if(PHP_SAPI != 'cli') {
+					$errorMessage .= ':<br /><br />' . $e->getMessage() .
+						'<br /><br />Query: ' . trim($query);
+				} else {
+					$errorMessage .= ":\n\n" . $e->getMessage() .
+						"\nQuery: " . trim($query);
 				}
 
 				$this->_addErrorMessage($errorMessage);
 
-				// An error was occured, we stop here !
+				// An error occured, we stop here !
 				return false;
 			}
 
