@@ -3,6 +3,7 @@ ispCP ω 1.0.6 ChangeLog
 
 2010-07-17 Laurent Declercq
 	- GUI:
+		* Improved Database update: Prevents succeeded queries execution 
 		* Fixed #2407: Some changes needed when using CLI interface
 		* Improved ispCP_Update class
 		* Removed useless conditional statements in include/ispcp-loader.php
