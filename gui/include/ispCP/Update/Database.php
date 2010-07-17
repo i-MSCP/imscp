@@ -381,7 +381,6 @@ class ispCP_Update_Database extends ispCP_Update {
 	 * @author Daniel Andreca
 	 * @version 1.0
 	 * @since r1417
-	 * @removed r1418
 	 * @return array Sql statements to be performed
 	 */
 	protected function _databaseUpdate_8() {
@@ -888,7 +887,7 @@ class ispCP_Update_Database extends ispCP_Update {
 	 * @author Daniel Andreca
 	 * @version 1.0.2
 	 * @since r1955
-	 * @return sql statements to be performed
+	 * @return array Sql statements to be performed
 	 */
 	protected function _databaseUpdate_23() {
 
