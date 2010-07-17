@@ -91,9 +91,9 @@ class ispCP_Initializer {
 				$command = '_processAll';
 			}
 
-			// Override _processAll commande for CLI interface
+			// Overrides _processAll command for CLI interface
 			if($command == '_processAll' && PHP_SAPI == 'cli') {
-				$command == 'processCLI';
+				$command = '_processCLI';
 			}
 
 			$initializer = new self(
