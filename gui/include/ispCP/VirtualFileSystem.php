@@ -29,8 +29,8 @@
 /**
  * Virtual File System class
  *
- * This class allows the ispCP Control Panel to browse and edit all of the user
- * files
+ * This class provides a FTP layer that allows to browse and edit all customer's
+ * files from the ispCP control Panel.
  *
  * @category	ispCP
  * @package		ispCP_VirtualFileSystem
