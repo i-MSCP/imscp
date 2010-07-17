@@ -61,7 +61,7 @@ spl_autoload_register('autoload_class');
  * registry.
  */
 ispCP_Registry::setAlias(
-	'ExceptionHandler',
+	'exceptionHandler',
 	ispCP_Exception_Handler::getInstance()->setHandler()
 );
 
@@ -77,7 +77,7 @@ ispCP_Registry::setAlias(
  * Anothers optional writers will be attached to this object during
  * intialization process.
  */
-ispCP_Registry::get('ExceptionHandler')->attach(
+ispCP_Registry::get('exceptionHandler')->attach(
 	new ispCP_Exception_Writer_Browser(
 		// hardcoded here but will be improved later
 		'themes/omega_original/system-message.tpl'

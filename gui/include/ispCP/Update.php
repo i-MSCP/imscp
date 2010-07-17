@@ -18,23 +18,23 @@
  * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * @category	ispCP
- * @package		ispCP_Update
- * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @author 		ispCP Team
- * @version 	SVN: $Id$
- * @link		http://isp-control.net ispCP Home Site
- * @license		http://www.mozilla.org/MPL/ MPL 1.1
+ * @category    ispCP
+ * @package     ispCP_Update
+ * @copyright   2006-2010 by ispCP | http://isp-control.net
+ * @author      ispCP Team
+ * @version     SVN: $Id$
+ * @link        http://isp-control.net ispCP Home Site
+ * @license     http://www.mozilla.org/MPL/ MPL 1.1
  */
 
 /**
  * Abstract class to implement update functions
  *
- * @package		ispCP_Update
- * @author		Jochen Manz <zothos@zothos.net>
- * @author		Daniel Andreca <sci2tech@gmail.com>
- * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		1.0.2
+ * @package     ispCP_Update
+ * @author      Jochen Manz <zothos@zothos.net>
+ * @author      Daniel Andreca <sci2tech@gmail.com>
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @version     1.0.3
  * @since		r1355
  */
 abstract class ispCP_Update {
@@ -84,7 +84,6 @@ abstract class ispCP_Update {
 		$this->_currentVersion = $this->_getCurrentVersion();
 	}
 
-
 	/**
 	 * This class implements the sigleton design pattern
 	 *
@@ -99,21 +98,9 @@ abstract class ispCP_Update {
 	 */
 	protected function _getCurrentVersion() {
 
-		$sql = ispCP_Registry::get('Db');
+		$dbConfig = ispCP_Registry::get('Db_Config');
 
-		$query = "
-			SELECT
-				*
-			FROM
-				`config`
-			WHERE
-				`name` = '{$this->_databaseVariableName}'
-			;
-		";
-
-		$rs = $sql->execute($query);
-
-		return	(int) $rs->fields['value'];
+		return (int) $dbConfig->get($this->_databaseVariableName);
 	}
 
 	/**
@@ -149,7 +136,7 @@ abstract class ispCP_Update {
 	}
 
 	/**
-	 * Send a request to the ispCP daemon
+	 * Sends a request to the ispCP daemon
 	 *
 	 * @return void
 	 */
@@ -181,14 +168,15 @@ abstract class ispCP_Update {
 	/**
 	 * Apply all available updates
 	 *
-	 * @return void
+	 * @return boolean TRUE on sucess, FALSE otherwise
 	 * @todo Should be more generic (Only the database variable should be
 	 * updated here. Other stuff should be implemented by the concrete class
 	 */
 	public function executeUpdates() {
 
 		$cfg = ispCP_Registry::get('Config');
-		$sql = ispCP_Registry::get('Db');
+		$sql = ispCP_Registry::get('Pdo');
+		$dbConfig = ispCP_Registry::get('Db_Config');
 
 		$engine_run_request = false;
 
@@ -203,62 +191,62 @@ abstract class ispCP_Update {
 			// Pull the query from the update function using a variable function
 			$queryArray = $this->$functionName($engine_run_request);
 
-			// Adding the SQL statement to set the new Database Version, to our
-			// queryArray
-			// @todo Must be done only if the update succeeded
-			$queryArray[] = "
-				UPDATE
-					`config`
-				SET
-					`value` = '$newVersion'
-				WHERE
-					`name` = '{$this->_databaseVariableName}'
-				;
-			";
-
 			// First, switch to exception mode for errors managment
 			$sql->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 			// We start a transaction (autocommit disabled)
-			$sql->startTransaction();
+			// NXW: Not needed at this moment (We don't use innoDB engine)
+			// $sql->startTransaction();
 
 			try {
 				// We execute every Sql statements
 				foreach ($queryArray as $query) {
-					$sql->execute($query);
+					$sql->query($query);
 				}
 
 				// If all SQL statements are executed correctly, commits
 				// the changes
-				$sql->completeTransaction();
+				// NXW: Not needed at this moment (We don't use innoDB engine)
+				// $sql->completeTransaction();
+
+				// Update database revision
+				$dbConfig->set($this->_databaseVariableName, $newVersion);
 
 			} catch (PDOException $e) {
 
-				// Perform a rollback if a Sql statement was failed
-				$sql->rollbackTransaction();
+				// Perform a rollback if a SQL statement was failed
+				// NXW: Not needed at this moment (We don't use innoDB engine)
+				// $sql->rollbackTransaction();
 
 				// Prepare and display an error message
-				$errorMessage =  tr($this->_errorMessage, $newVersion);
+				$errorMessage =  sprintf($this->_errorMessage, $newVersion);
 
 				// Extended error message
-				// @todo don't use html for CLI interface
 				if ($cfg->DEBUG) {
-					$errorMessage .= "<br />" . $e->getMessage();
-					$errorMessage .=  "<br />Sql Statement was failed: $query";
+					if(PHP_SAPI != 'cli') {
+						$errorMessage .= "<br />" . $e->getMessage();
+						$errorMessage .= "<br />Query: $query";
+					} else {
+						$errorMessage .= "\n" . $e->getMessage();
+						$errorMessage .= "\nQuery: $query";
+					}
 				}
 
 				$this->_addErrorMessage($errorMessage);
 
 				// An error was occured, we stop here !
-				break;
+				return false;
 			}
 
 			$this->_currentVersion = $newVersion;
 
 		} // End while
 
-		if ($engine_run_request) {
+		// We should never run the backend scripts from the CLI update script
+		if(PHP_SAPI != 'cli' && $engine_run_request) {
 			$this->_sendEngineRequest();
 		}
+
+		return true;
 	}
 }

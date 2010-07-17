@@ -33,81 +33,81 @@ require '../include/ispcp-lib.php';
 check_login(__FILE__);
 
 $cfg = ispCP_Registry::get('Config');
+$dbUpdate = ispCP_Update_Database::getInstance();
 
-$tpl = new ispCP_pTemplate();
-$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/database_update.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('database_update_message', 'page');
-$tpl->define_dynamic('database_update_infos', 'page');
-$tpl->define_dynamic('table_header', 'page');
+if(isset($_POST['execute']) && $_POST['execute'] == 'update') {
 
-$tpl->assign(
-	array(
-		'TR_ADMIN_ISPCP_UPDATES_PAGE_TITLE'	=> tr('ispCP - Virtual Hosting Control System'),
-		'THEME_COLOR_PATH'					=> "../themes/" . $cfg->USER_INITIAL_THEME,
-		'THEME_CHARSET'						=> tr('encoding'),
-		'ISP_LOGO'							=> get_logo($_SESSION['user_id'])
-	)
-);
+	// Execute all available db updates and redirect back to database_update.php
 
-// $execute is false per default
-$execute = false;
-
-// If the post variable execute is set to true, $execute
-// will be set to true, too
-if (!empty($_POST['execute']) && $_POST['execute'])
-	$execute = true;
-
-gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_system_tools.tpl');
-gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_system_tools.tpl');
-gen_page_message($tpl);
-
-$tpl->assign(
-	array(
-		'TR_UPDATES_TITLE'		=> tr('Database updates'),
-		'TR_AVAILABLE_UPDATES'	=> tr('Available database updates'),
-		'TR_UPDATE'				=> tr('Update'),
-		'TR_INFOS'				=> tr('Update details')
-	)
-);
-
-if (ispCP_Update_Database::getInstance()->checkUpdateExists()) {
-	$tpl->assign(
-		array(
-			'UPDATE_MESSAGE'			=> '',
-			'DATABASE_UPDATE_MESSAGE'	=> '',
-			'UPDATE'					=> tr('New Database update is now available'),
-			'INFOS'						=> tr('Do you want to execute the Updates now?'),
-			'TR_EXECUTE_UPDATE'			=> tr('Execute updates')
-		)
-	);
-	$tpl->parse('DATABASE_UPDATE_INFOS', 'database_update_infos');
-} else {
-	$tpl->assign(
-		array(
-			'TR_UPDATE_MESSAGE'		=> tr('No database updates available'),
-			'DATABASE_UPDATE_INFOS'	=> '',
-			'TABLE_HEADER'			=> ''
-		)
-	);
-	$tpl->parse('DATABASE_UPDATE_MESSAGE', 'database_update_message');
-}
-
-// Execute all available db updates and redirect back to database_update.php
-if ($execute) {
-	ispCP_Update_Database::getInstance()->executeUpdates();
-
-	if (ispCP_Update_Database::getInstance()->getErrorMessage() != "") {
-		throw new ispCP_Exception(
-			ispCP_Update_Database::getInstance()->getErrorMessage()
-		);
+	if(!$dbUpdate->executeUpdates()) {
+		throw new ispCP_Exception($dbUpdate->getErrorMessage());
 	}
+
 	header('Location: ' . $_SERVER['PHP_SELF']);
-}
+} else {
 
-$tpl->parse('PAGE', 'page');
-$tpl->prnt();
+	$tpl = new ispCP_pTemplate();
+	$tpl->define_dynamic(
+		'page', $cfg->ADMIN_TEMPLATE_PATH . '/database_update.tpl'
+	);
+	$tpl->define_dynamic('page_message', 'page');
+	$tpl->define_dynamic('database_update_message', 'page');
+	$tpl->define_dynamic('database_update_infos', 'page');
+	$tpl->define_dynamic('table_header', 'page');
 
-if ($cfg->DUMP_GUI_DEBUG) {
-	dump_gui_debug();
+	$tpl->assign(
+		array(
+			'TR_ADMIN_ISPCP_UPDATES_PAGE_TITLE'	=>
+				tr('ispCP - Virtual Hosting Control System'),
+			'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+			'THEME_CHARSET' => tr('encoding'),
+			'ISP_LOGO' => get_logo($_SESSION['user_id'])
+		)
+	);
+
+	gen_admin_mainmenu(
+		$tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_system_tools.tpl'
+	);
+	gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_system_tools.tpl');
+	gen_page_message($tpl);
+
+	$tpl->assign(
+		array(
+			'TR_UPDATES_TITLE' => tr('Database updates'),
+			'TR_AVAILABLE_UPDATES' => tr('Available database updates'),
+			'TR_UPDATE' => tr('Update'),
+			'TR_INFOS' => tr('Update details')
+		)
+	);
+
+	if($dbUpdate->checkUpdateExists()) {
+		$tpl->assign(
+			array(
+				'UPDATE_MESSAGE' => '',
+				'DATABASE_UPDATE_MESSAGE' => '',
+				'UPDATE' => tr('New Database update is now available'),
+				'INFOS' => tr('Do you want to execute the Updates now?'),
+				'TR_EXECUTE_UPDATE' => tr('Execute updates')
+			)
+		);
+
+		$tpl->parse('DATABASE_UPDATE_INFOS', 'database_update_infos');
+	} else {
+		$tpl->assign(
+			array(
+				'TR_UPDATE_MESSAGE' => tr('No database updates available'),
+				'DATABASE_UPDATE_INFOS' => '',
+				'TABLE_HEADER' => ''
+			)
+		);
+
+		$tpl->parse('DATABASE_UPDATE_MESSAGE', 'database_update_message');
+	}
+
+	$tpl->parse('PAGE', 'page');
+	$tpl->prnt();
+
+	if ($cfg->DUMP_GUI_DEBUG) {
+		dump_gui_debug();
+	}
 }

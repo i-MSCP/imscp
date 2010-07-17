@@ -60,8 +60,9 @@ class ispCP_Initializer {
 	/**
 	 * Runs the initializer
 	 *
-	 * By default, this will invoke the {@link _processAll} methods, which
-	 * simply executes all of the initialization methods. Alternately, you can
+	 * By default, this will invoke the {@link _processAll}  or
+	 * {@link _processCLI} methods, which simply executes all of the
+	 * initialization routines for execution context. Alternately, you can
 	 * specify explicitly which initialization methods you want:
 	 *
 	 * <i>Usage example:</i>
@@ -88,6 +89,11 @@ class ispCP_Initializer {
 			if($command instanceof ispCP_Config_Handler_File) {
 				$config = $command;
 				$command = '_processAll';
+			}
+
+			// Override _processAll commande for CLI interface
+			if($command == '_processAll' && PHP_SAPI == 'cli') {
+				$command == 'processCLI';
 			}
 
 			$initializer = new self(
@@ -176,6 +182,31 @@ class ispCP_Initializer {
 		self::$_initialized = true;
 	}
 
+	/**
+	 * Executes all of the available initialization routines for CLI interface
+	 *
+	 * @return void
+	 */
+	protected function _processCLI() {
+
+		// Check php version and availability of the Php Standard Library
+		$this->_checkPhp();
+
+		// Include path
+		$this->_setIncludePath();
+
+		// Establish the connection to the database
+		$this->_initializeDatabase();
+
+		// Se encoding (Both PHP and database)
+		$this->_setEncoding();
+
+		// Load all the configuration parameters from the database and merge
+		// it to our basis configuration object
+		$this->_processConfiguration();
+
+		self::$_initialized = true;
+	}
 
 	/**
 	 * Sets the PHP display_errors parameter
@@ -240,7 +271,7 @@ class ispCP_Initializer {
 	protected function _setExceptionWriters() {
 
 		// Get a reference to the ispCP_Exception_Handler object
-		$exceptionHandler = ispCP_Registry::get('ExceptionHandler');
+		$exceptionHandler = ispCP_Registry::get('exceptionHandler');
 
 		$admin_email = $this->_config->DEFAULT_ADMIN_ADDRESS;
 
@@ -292,7 +323,7 @@ class ispCP_Initializer {
 
 		// Get the current PHP include path string and transform it in array
 		$include_path = explode(
-			$ps, str_replace('.' . $ps, '', ini_get('include_path'))
+			$ps, str_replace('.' . $ps, '', DEFAULT_INCLUDE_PATH)
 		);
 
 		// Adds the ispCP gui/include ABSPATH to the PHP include_path

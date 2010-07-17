@@ -29,8 +29,6 @@
  * @license     http://www.mozilla.org/MPL/ MPL 1.1
  */
 
-// @todo Add a try/catch block to prevents execution of any exception writers
-
 // GUI root directory absolute path
 $gui_root_dir = '{GUI_ROOT_DIR}';
 
@@ -41,25 +39,29 @@ If($gui_root_dir == '{GUI_ROOT_DIR}') {
 	exit(1);
 }
 
-// Include ispCP core libraries and initialize the environment
-require_once $gui_root_dir . '/include/ispcp-lib.php';
+try {
+	// Include ispCP core libraries and initialize the environment
+	require_once $gui_root_dir . '/include/ispcp-lib.php';
 
-// Gets an ispCP_Update_Database instance
-$dbUpdate = ispCP_Update_Database::getInstance();
+	// Gets an ispCP_Update_Database instance
+	$dbUpdate = ispCP_Update_Database::getInstance();
 
-// Perform all database updates if exists
-// @todo: Should be refactored because the check is not really needed here since
-// the ispCP_Update_Database::executeUpdates() method take care of it
-if ($dbUpdate->checkUpdateExists()) {
-
-	// Execute all available ispCP database update
-	$dbUpdate->executeUpdates();
-
-	if ( ($msg = $dbUpdate->getErrorMessage() != '')) {
-		print "$msg\n";
+	if(!$dbUpdate->executeUpdates()) {
+		print "\n[ERROR]: " .$dbUpdate->getErrorMessage() . "\n\n";
 
 		exit(1);
 	}
+
+} catch(Exception $e) {
+
+	$message = "\n[ERROR]: " . $e->getMessage() . "\n\nStackTrace:\n" .
+		$e->getTraceAsString() . "\n\n";
+
+	print "$message\n\n";
+
+	exit(1);
 }
+
+print "\n[INFO]: ispCP database update succeeded!\n\n";
 
 exit(0);

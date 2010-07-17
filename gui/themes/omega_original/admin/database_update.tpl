@@ -67,7 +67,7 @@
           <tr>
            <td width="25">&nbsp;</td>
 	       <td class="content">&nbsp;</td>
-		   <td class="content2" align="left"><input type="submit" name="submit" value="{TR_EXECUTE_UPDATE}" /><input type="hidden" name="execute" id="execute" value="true" /></td>
+		   <td class="content2" align="left"><input type="submit" name="submit" value="{TR_EXECUTE_UPDATE}" /><input type="hidden" name="execute" id="execute" value="update" /></td>
           </tr>
 		<!-- EDP: database_update_infos -->
 	</table>

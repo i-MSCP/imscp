@@ -18,14 +18,13 @@
  * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * @category	ispCP
- * @package		ispCP
- * @copyright	2006-2010 by ispCP | http://isp-control.net
- * @author		Laurent Declercq <laurent.declercq@ispcp.net>
- * @version		SVN: $Id$
- * @link		http://isp-control.net ispCP Home Site
- * @license		http://www.mozilla.org/MPL/ MPL 1.1
- * @filesource
+ * @category    ispCP
+ * @package     ispCP_Loader
+ * @copyright   2006-2010 by ispCP | http://isp-control.net
+ * @author      Laurent Declercq <laurent.declercq@ispcp.net>
+ * @version     SVN: $Id$
+ * @link        http://isp-control.net ispCP Home Site
+ * @license     http://www.mozilla.org/MPL/ MPL 1.1
  */
 
 /**
@@ -35,19 +34,9 @@
  */
 function autoload_class($className) {
 
-	if(file_exists(INCLUDEPATH . "/class.$className.php")) {
+	$path = str_replace('_', '/', $className);
 
-		require_once INCLUDEPATH . "/class.$className.php";
-
-	} elseif(file_exists(INCLUDEPATH . "/ispCP/$className.php")) {
-
-		require_once INCLUDEPATH . "/ispCP/$className.php";
-
-	} else {
-		$path = str_replace('_', '/', $className);
-
-		if(file_exists(INCLUDEPATH . '/' . $path.'.php')) {
-			require_once INCLUDEPATH . '/' . $path.'.php';
-		}
+	if(file_exists(INCLUDEPATH . '/' . $path . '.php')) {
+		require_once INCLUDEPATH . '/' . $path . '.php';
 	}
 }

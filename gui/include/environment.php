@@ -25,13 +25,12 @@
  * @version		SVN: $Id$
  * @link		http://isp-control.net ispCP Home Site
  * @license		http://www.mozilla.org/MPL/ MPL 1.1
- * @filesource
  */
 
 // Boot IspCP
 ispCP_Bootstrap::boot();
 
-// Get a reference to a ispCP_ConfigHandler_File instance
+// Get a reference to a ispCP_Config_Handler_File instance
 $config = new ispCP_Config_Handler_File();
 
 // Set some configuration parameters

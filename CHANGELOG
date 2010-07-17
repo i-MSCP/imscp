@@ -1,6 +1,15 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-07-17 Laurent Declercq
+	- GUI:
+		* Fixed #2407: Some changes needed when using CLI interface
+		* Improved ispCP_Update class
+		* Removed useless conditional statements in include/ispcp-loader.php
+		* Some refactoring tasks
+	- SETUP:
+		Fixed: #2407 Some changes needed when using CLI interface
+
 2010-07-16 Laurent Declercq
 	- GUI:
 		* Moved Config class to ispCP_Config

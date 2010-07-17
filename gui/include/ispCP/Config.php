@@ -18,13 +18,13 @@
  * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * @category	ispCP
- * @package		ispCP_Config
- * @copyright	2006-2010 by ispCP | http://isp-control.net
- * @author		ispCP Team
- * @version		SVN: $Id$
- * @link		http://isp-control.net ispCP Home Site
- * @license		http://www.mozilla.org/MPL/ MPL 1.1
+ * @category    ispCP
+ * @package     ispCP_Config
+ * @copyright   2006-2010 by ispCP | http://isp-control.net
+ * @author      ispCP Team
+ * @version     SVN: $Id$
+ * @link        http://isp-control.net ispCP Home Site
+ * @license     http://www.mozilla.org/MPL/ MPL 1.1
  */
 
 /**
@@ -56,13 +56,13 @@
  *
  * See {@link ispCP_Registry} for more information.
  *
- * To resume, the Config class acts as a registry for the ispCP_Config_Handler
- * objects where the registered values (that are ispCP_Config_Handler objects)
- * are indexed by they class name.
+ * To resume, the ispCP_Config class acts as a registry for the
+ * ispCP_Config_Handler objects where the registered values
+ * (that are ispCP_Config_Handler objects) are indexed by they class name.
  *
  * @package		ispCP_Config
  * @author		ispCP Team
- * @version		1.0.8
+ * @version		1.0.9
  */
 class ispCP_Config {
 
@@ -106,8 +106,8 @@ class ispCP_Config {
 
 			if($className === false) {
 				throw new ispCP_Exception(
-					'Error: The ispCP_Config_Handler object you trying to create is not ' .
-						'yet implemented!'
+					'Error: The ispCP_Config_Handler object you trying to ' .
+						'create is not yet implemented!'
 				);
 			} elseif (!class_exists($className, true)) {
 				throw new ispCP_Exception(
@@ -115,8 +115,8 @@ class ispCP_Config {
 				);
     		} elseif (!is_subclass_of($className, 'ispCP_Config_Handler')) {
 				throw new ispCP_Exception(
-					'Error: Only ispCP_Config_Handler objects can be handling by the ' .
-						__CLASS__ . ' class!'
+					'Error: Only ispCP_Config_Handler objects can be handling ' .
+						'by the ' . __CLASS__ . ' class!'
 				);
 			}
 
