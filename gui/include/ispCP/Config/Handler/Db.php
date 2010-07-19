@@ -18,14 +18,14 @@
  * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * @category	ispCP
- * @package		ispCP_Config
- * @subpackage	Handler
- * @copyright	2006-2010 by ispCP | http://isp-control.net
- * @author		Laurent Declercq <laurent.declercq@ispcp.net>
- * @version		SVN: $Id$
- * @link		http://isp-control.net ispCP Home Site
- * @license		http://www.mozilla.org/MPL/ MPL 1.1
+ * @category    ispCP
+ * @package     ispCP_Config
+ * @subpackage  Handler
+ * @copyright   2006-2010 by ispCP | http://isp-control.net
+ * @author      Laurent Declercq <laurent.declercq@ispcp.net>
+ * @version     SVN: $Id$
+ * @link        http://isp-control.net ispCP Home Site
+ * @license     http://www.mozilla.org/MPL/ MPL 1.1
  */
 
 /**
@@ -39,13 +39,13 @@ require_once  INCLUDEPATH . '/ispCP/Config/Handler.php';
  * ispCP_Config_Handler adapter class to handle configuration parameters that
  * are stored in database.
  *
- * @package		ispCP_Config
- * @subpackage	Handler
- * @author		Laurent Declercq <laurent.declercq@ispcp.net>
- * @since		1.0.6
- * @version		1.0.5
+ * @package     ispCP_Config
+ * @subpackage  Handler
+ * @author      Laurent Declercq <laurent.declercq@ispcp.net>
+ * @since       1.0.6
+ * @version     1.0.6
  */
-class ispCP_Config_Handler_Db extends ispCP_Config_Handler {
+class ispCP_Config_Handler_Db extends ispCP_Config_Handler implements iterator {
 
 	/**
 	 * PDO instance
@@ -53,6 +53,13 @@ class ispCP_Config_Handler_Db extends ispCP_Config_Handler {
 	 * @var PDO
 	 */
 	protected $_db;
+
+	/**
+	 * Array that contains all configuration parameters from the database
+	 *
+	 * @var array
+	 */
+	protected $_parameters = array();
 
 	/**
 	 * PDOStatement to insert a configuration parameter in the database
@@ -67,8 +74,8 @@ class ispCP_Config_Handler_Db extends ispCP_Config_Handler {
 	/**
 	 * PDOStatement to update a configuration parameter in the database
 	 *
-	 * <b>Note:</b> For performance reason, the PDOStatement instance is created
-	 * only once at the first execution of the {@link _update()} method.
+	 * <b>Note:</b> For performances reasons, the PDOStatement instance is
+	 * created only once at the first execution of the {@link _update()} method.
 	 *
 	 * @var PDOStatement
 	 */
@@ -77,8 +84,8 @@ class ispCP_Config_Handler_Db extends ispCP_Config_Handler {
 	/**
 	 * PDOStatement to delete a configuration parameter in the database
 	 *
-	 * <b>Note:</b> For performance reason, the PDOStatement instance is created
-	 * only once at the first execution of the {@link _delete()} method.
+	 * <b>Note:</b> For performances reasons, the PDOStatement instance is
+	 * created only once at the first execution of the {@link _delete()} method.
 	 *
 	 * @var PDOStatement
 	 */
@@ -88,11 +95,11 @@ class ispCP_Config_Handler_Db extends ispCP_Config_Handler {
 	 * Variable bound to the PDOStatement instances
 	 *
 	 * This variable is bound to the PDOStatement instances that are used by
-	 * {@link _insert()} , {@link _update()} and {@link _delete()} methods.
+	 * {@link _insert()}, {@link _update()} and {@link _delete()} methods.
 	 *
 	 * @var string Configuration parameter key name
 	 */
-	protected $_index = null;
+	protected $_key = null;
 
 	/**
 	 * Variable bound to the PDOStatement objects
@@ -119,7 +126,7 @@ class ispCP_Config_Handler_Db extends ispCP_Config_Handler {
 	protected $_updateQueriesCounter = 0;
 
 	/**
-	 * Database table for configuration parameters
+	 * Database table name for configuration parameters
 	 *
 	 * @var string
 	 */
@@ -140,34 +147,35 @@ class ispCP_Config_Handler_Db extends ispCP_Config_Handler {
 	protected $_valuesColumn = 'value';
 
 	/**
-	 * Loads all configuration parameters from database
+	 * Loads all configuration parameters from the database
 	 *
 	 * <b>Parameters:</b>
 	 *
-	 * The constructor accept one or more parameters passed in a array where
+	 * The constructor accepts one or more parameters passed in a array where
 	 * each key represent a parameter name.
 	 *
 	 * For an array, the possible parameters are:
 	 *
-	 * - db: Reference to PDO instance
-	 * - table_name: Database configuration table name
-	 * - key_column: Database configuration key column name
-	 * - value_column: Database configuration value column name
+	 * - db: A PDO instance
+	 * - table_name: Database table for configuration parameters
+	 * - key_column: Database column name for configuration parameters keys
+	 * - value_column: Database column name for configuration parameters values
 	 *
 	 * <b>Note:</b> The three last parameters are optionals.
 	 *
-	 * For a single parameter, only a {@link PDO} instance is accepted.
+	 * For a single parameter, only a PDO instance is accepted.
 	 *
 	 * @throws ispCP_Exception
-	 * @param PDO|array A PDO instance or an array of parameters that contain at
-	 *	least a PDO instance
+	 * @param PDO|array A PDO instance or an array of parameters that contains
+	 * at least a PDO instance
 	 * @return void
 	 */
 	public function __construct($params) {
 
 		if(is_array($params)) {
+			if(!array_key_exists('db', $params) ||
+				!($params['db'] instanceof PDO)) {
 
-			if(!array_key_exists('db', $params) || !($params['db'] instanceof PDO)) {
 				throw new ispCP_Exception(
 					'Error: A PDO instance is requested for ' . __CLASS__
 				);
@@ -197,44 +205,124 @@ class ispCP_Config_Handler_Db extends ispCP_Config_Handler {
 		}
 
 		$this->_db = $params;
-
-		parent::__construct($this->_loadAll());
+		$this->_loadAll();
 	}
 
 	/**
-	 * Setter method to set or change a configuration parameter in the database
+	 * Allow access as object properties
+	 *
+	 * @see set()
+	 * @param string $key Configuration parameter key name
+	 * @param mixed  $value Configuration parameter value
+	 * @return void
+	 */
+	public function __set($key, $value) {
+
+		$this->set($key, $value);
+	}
+
+	/**
+	 * Insert or update a configuration parameter in the database
 	 *
 	 * <b>Note:</b> For performance reasons, queries for updates are only done
 	 * if old and new value of a parameter are not the same.
 	 *
-	 * @param string $index Configuration parameter key name
+	 * @param string $key Configuration parameter key name
 	 * @param mixed $value Configuration parameter value
 	 * @return void
 	 */
-	public function set($index, $value) {
+	public function set($key, $value) {
 
-		$this->_index = $index;
+		$this->_key = $key;
 		$this->_value = $value;
 
-		if(!array_key_exists($index, $this->_parameters)) {
+		if(!$this->exists($key)) {
 			$this->_insert();
-		} elseif($this->_parameters[$index] != $value) {
+		} elseif($this->_parameters[$key] != $value) {
 			$this->_update();
 		} else {
 			return;
 		}
 
-		parent::set($index, $value);
+		$this->_parameters[$key] = $value;
+	}
+
+	/**
+	 * Retrieve a configuration parameter value
+	 *
+	 * @throws ispCP_Exception
+	 * @param string $key Configuration parameter key name
+	 * @return mixed Configuration parameter value
+	 */
+	public function get($key) {
+
+		if (!isset($this->_parameters[$key])) {
+			throw new ispCP_Exception(
+				"Error: Configuration variable `$key` is missing!"
+			);
+		}
+
+		return $this->_parameters[$key];
+	}
+
+	/**
+	 * Checks if a configuration parameters exists
+	 *
+	 * <b>Note:</b> This method  will no longer supported. Direct usage of
+	 * isset() is better for performance.
+	 *
+	 * @param string $key Configuration parameter key name
+	 * @return boolean TRUE if configuration parameter exists, FALSE otherwise
+	 */
+	public function exists($key) {
+
+		return array_key_exists($key, $this->_parameters);
+	}
+
+	/**
+	 * PHP isset() overloading on inaccessible members
+	 *
+	 * This method is triggered by calling isset() or empty() on inaccessible
+	 * members.
+	 *
+	 * <b>Note:</b> This method will return FALSE if the configuration parameter
+	 * value is NULL. To test existence of a configuration parameter, you should
+	 * use the {@link exists()} method.
+	 *
+	 * @param string $key Configuration parameter key name
+	 * @return boolean TRUE if the parameter exists and its value is not NULL
+	 */
+	public function __isset($key) {
+
+		return isset($this->_parameters[$key]);
+	}
+
+	/**
+	 * PHP unset() overloading on inaccessible members
+	 *
+	 * This method is triggered by calling isset() or empty() on inaccessible
+	 * members.
+	 *
+	 * @param  string $key Configuration parameter key name
+	 * @return void
+	 */
+	public function __unset($key) {
+
+		unset($this->_parameters[$key]);
 	}
 
 	/**
 	 * Force reload of all configuration parameters from the database
 	 *
+	 * This method will remove all the current loaded parameters and reload it
+	 * from the database.
+	 *
 	 * @return void
 	 */
 	public function forceReload() {
 
-		$this->_parameters = $this->_loadAll();
+		$this->_parameters = array();
+		$this->_loadAll();
 	}
 
 	/**
@@ -244,7 +332,7 @@ class ispCP_Config_Handler_Db extends ispCP_Config_Handler {
 	 * last call of {@link reset_queries_counter()} method.
 	 *
 	 * @throws ispCP_Exception
-	 * @param string $queriesCounterType Type of query counter (insert|update)
+	 * @param string $queriesCounter Query counter type (insert|update)
 	 * @return void
 	 */
 	public function countQueries($queriesCounterType) {
@@ -285,89 +373,78 @@ class ispCP_Config_Handler_Db extends ispCP_Config_Handler {
 	}
 
 	/**
-	 * Defined by SPL ArrayAccess interface
-	 *
-	 * See {@link http://www.php.net/~helly/php/ext/spl}
-	 */
-	public function offsetUnset($index) {
-
-		$this->_index = $index;
-		$this->_delete();
-
-		parent::offsetUnset($index);
-	}
-
-	/**
-	 * PHP Overloading for call of unset() on inaccessible members
+	 * Deletes a configuration parameters from the database
 	 *
 	 * @param string $index Configuration parameter key name
 	 * @return void
 	 */
-	public function __unset($index) {
+	public function del($key) {
 
-			$this->_index = $index;
-			$this->_delete();
+		$this->_key = $key;
+		$this->_delete();
 
-			parent::__unset($index);
+		unset($this->_parameters[$key]);
 	}
 
 	/**
-	 * Load all the configuration parameters from the database
+	 * Load all configuration parameters from the database
 	 *
 	 * @throws ispCP_Exception
-	 * @return array An Array that contain all configuration parameters
+	 * @return void
 	 */
 	protected function _loadAll() {
 
 		$query = "
 			SELECT
-				`{$this->_keysColumn}`,
-				`{$this->_valuesColumn}`
+				`{$this->_keysColumn}`, `{$this->_valuesColumn}`
 			FROM
 				`{$this->_tableName}`
 			;
 		";
 
-		if(($stmt = $this->_db->query($query, PDO::FETCH_ASSOC)) !== false) {
+		if(($stmt = $this->_db->query($query, PDO::FETCH_ASSOC))) {
+
+			$keyColumn = $this->_keysColumn;
+			$valueColumn = $this->_valuesColumn;
+
 			foreach($stmt->fetchAll() as $row) {
-				$parameters[$row[$this->_keysColumn]] =
-					$row[$this->_valuesColumn];
+				$this->_parameters[$row[$keyColumn]] = $row[$valueColumn];
 			}
 		} else {
 			throw new ispCP_Exception(
 				'Error: Could not get configuration parameters from database!'
 			);
 		}
-
-		return $parameters;
 	}
 
 	/**
 	 * Store a new configuration parameter in the database
 	 *
-	 * @throws ispCP_Exception
+	 * @throws ispCP_Exception_Database
 	 * @return void
 	 */
 	protected function _insert() {
+
 		if(!$this->_insertStmt instanceof PDOStatement) {
 
 			$query = "
 				INSERT INTO
-					`{$this->_tableName}`
-					(`{$this->_keysColumn}`, `{$this->_valuesColumn}`)
-				VALUES
-					(:index, :value)
+					`{$this->_tableName}` (
+						`{$this->_keysColumn}`, `{$this->_valuesColumn}`
+					) VALUES (
+						:index, :value
+					)
 				;
 			";
 
 			$this->_insertStmt = $this->_db->prepare($query);
-			$this->_insertStmt->BindParam(':index', $this->_index);
+			$this->_insertStmt->BindParam(':index', $this->_key);
 			$this->_insertStmt->BindParam(':value', $this->_value);
 		}
 
-		if($this->_insertStmt->execute() === false) {
-			throw new ispCP_Exception(
-				'Error: Unable to insert the configuration parameter in the database!'
+		if(!$this->_insertStmt->execute()) {
+			throw new ispCP_Exception_Database(
+				"Error: Unable to insert the configuration parameter `{$this->_key}` in the database"
 			);
 		}
 	}
@@ -375,7 +452,7 @@ class ispCP_Config_Handler_Db extends ispCP_Config_Handler {
 	/**
 	 * Update a configuration parameter in the database
 	 *
-	 * @throws ispCP_Exception
+	 * @throws ispCP_Exception_Database
 	 * @return void
 	 */
 	protected function _update() {
@@ -393,13 +470,13 @@ class ispCP_Config_Handler_Db extends ispCP_Config_Handler {
 			";
 
 			$this->_updateStmt = $this->_db->prepare($query);
-			$this->_updateStmt->BindParam(':index', $this->_index);
+			$this->_updateStmt->BindParam(':index', $this->_key);
 			$this->_updateStmt->BindParam(':value', $this->_value);
 		}
 
-		if($this->_updateStmt->execute() === false) {
-			throw new ispCP_Exception(
-				'Error: Unable to update the configuration parameter in the database!'
+		if(!$this->_updateStmt->execute()) {
+			throw new ispCP_Exception_Database(
+				"Error: Unable to update the configuration parameter `{$this->_key}` in the database!"
 			);
 		} else {
 			$this->_updateQueriesCounter++;
@@ -407,9 +484,9 @@ class ispCP_Config_Handler_Db extends ispCP_Config_Handler {
 	}
 
 	/**
-	 * Delete a configuration parameter in the database
+	 * Deletes a configuration parameter from the database
 	 *
-	 * @throws ispCP_Exception
+	 * @throws ispCP_Exception_Database
 	 * @return void
 	 */
 	protected function _delete() {
@@ -425,13 +502,87 @@ class ispCP_Config_Handler_Db extends ispCP_Config_Handler {
 			";
 
 			$this->_deleteStmt = $this->_db->prepare($query);
-			$this->_deleteStmt->BindParam(':index', $this->_index);
+			$this->_deleteStmt->BindParam(':index', $this->_key);
 		}
 
-		if($this->_deleteStmt->execute() === false) {
-			throw new ispCP_Exception(
+		if(!$this->_deleteStmt->execute()) {
+			throw new ispCP_Exception_Database(
 				'Error: Unable to delete the configuration parameter in the database!'
 			);
 		}
+	}
+
+	/**
+	 * Whether or not an offset exists
+	 *
+	 * @param mixed $offset An offset to check for existence
+	 * @return boolean TRUE on success or FALSE on failure
+	 */
+	public function offsetExists($offset) {
+
+		return array_key_exists($this->_parameters, $offset);
+	}
+
+	/**
+	 * Returns an associative array that contains all configuration parameters
+	 *
+	 * @return array Array that contains configuration parameters
+	 */
+	public function toArray() {
+
+		return $this->_parameters;
+	}
+
+	/**
+	 * Returns the current element
+	 *
+	 * @return mixed Returns the current element
+	 */
+	public function current() {
+
+		return current($this->_parameters);
+	}
+
+	/**
+	 * Returns the key of the current element
+	 *
+	 * @return scalar Return the key of the current element or NULL on failure
+	 */
+	public function key() {
+
+		return key($this->_parameters);
+	}
+
+	/**
+	 * Moves the current position to the next element
+	 *
+	 * @return void
+	 */
+	public function next() {
+
+		next($this->_parameters);
+	}
+
+	/**
+	 * Rewinds back to the first element of the Iterator
+	 *
+	 * <b>Note:</b> This is the first method called when starting a foreach
+	 * loop. It will not be executed after foreach loops.
+	 *
+	 * @return void
+	 */
+	public function rewind() {
+
+		reset($this->_parameters);
+	}
+
+	/**
+	 * Checks if current position is valid
+	 *
+	 * @return boolean TRUE on success or FALSE on failure
+	 */
+	public function valid() {
+
+		return array_key_exists(key($this->_parameters), $this->_parameters);
 	}
 }

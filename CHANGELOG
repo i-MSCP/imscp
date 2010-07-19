@@ -1,9 +1,18 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-07-19 Laurent Declercq
+	- GUI:
+		* Package ispCP_Config - Handler:
+			- Added property tag for some fields to avoid warnings about
+			undefined fields in some IDE like PHPStorm (first part)
+			- Fixed Notice: Indirect modification of overloaded property...
+			- Fixed: isset() return FALSE of fields with NULL value
+			- Updated documentation
+
 2010-07-17 Laurent Declercq
 	- GUI:
-		* Improved Database update: Prevents succeeded queries execution 
+		* Improved Database update: Prevents succeeded queries execution
 		* Fixed #2407: Some changes needed when using CLI interface
 		* Improved ispCP_Update class
 		* Removed useless conditional statements in include/ispcp-loader.php

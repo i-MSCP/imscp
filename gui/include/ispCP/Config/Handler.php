@@ -18,14 +18,14 @@
  * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * @category	ispCP
- * @package		ispCP_Config
- * @subpackage	Handler
- * @copyright	2006-2010 by ispCP | http://isp-control.net
- * @author		Laurent Declercq <laurent.declercq@ispcp.net>
- * @version		SVN: $Id$
- * @link		http://isp-control.net ispCP Home Site
- * @license		http://www.mozilla.org/MPL/ MPL 1.1
+ * @category    ispCP
+ * @package     ispCP_Config
+ * @subpackage  Handler
+ * @copyright   2006-2010 by ispCP | http://isp-control.net
+ * @author      Laurent Declercq <laurent.declercq@ispcp.net>
+ * @version     SVN: $Id$
+ * @link        http://isp-control.net ispCP Home Site
+ * @license     http://www.mozilla.org/MPL/ MPL 1.1
  */
 
 /**
@@ -41,20 +41,13 @@
  * - Via object properties
  * - Via setter and getter methods
  *
- * @package		ispCP_Config
- * @subpackage	Handler
- * @author		Laurent Declercq <laurent.declercq@ispcp.net>
- * @since		1.0.6
- * @version		1.0.4
+ * @package     ispCP_Config
+ * @subpackage  Handler
+ * @author      Laurent Declercq <laurent.declercq@ispcp.net>
+ * @since       1.0.6
+ * @version     1.0.5
  */
-class ispCP_Config_Handler implements ArrayAccess, Iterator {
-
-	/**
-	 * Array that contain all configuration parameters
-	 *
-	 * @var array
-	 */
-	protected $_parameters = array();
+class ispCP_Config_Handler implements ArrayAccess {
 
 	/**
 	 * Loads all configuration parameters from an array
@@ -64,103 +57,73 @@ class ispCP_Config_Handler implements ArrayAccess, Iterator {
 	 */
 	public function __construct(array $parameters) {
 
-		$this->_parameters = $parameters;
+		foreach($parameters as $parameter => $value) {
+			$this->$parameter = $value;
+		}
 	}
 
 	/**
-	 * Setter method to set a new configuration parameter
+	 * Sets a configuration parameter
 	 *
-	 * @param string $index Configuration parameter key name
+	 * @param string $key Configuration parameter key name
 	 * @param mixed $value Configuration parameter value
 	 * @return void
 	 */
-	public function set($index, $value) {
+	public function set($key, $value) {
 
-		$this->_parameters[$index] = $value;
+		$this->$key = $value;
 	}
 
 	/**
-	 * Allow access as object properties
+	 * PHP overloading on iinaccessible members
 	 *
-	 * @see set()
-	 * @param string $name Configuration parameter key name
-	 * @param mixed  $value Configuration parameter value
-	 * @return void
+	 * @param $key Configuration parameter key name
+	 * @return mixed Configuration parameter value
 	 */
-	 public function __set($index, $value) {
+	public function __get($key) {
 
-		$this->set($index, $value);
+		return $this->get($key);
 	}
 
 	/**
 	 * Getter method to retrieve a configuration parameter value
 	 *
-	 * @param string $index Configuration parameter key name
 	 * @throws ispCP_Exception
+	 * @param string $key Configuration parameter key name
 	 * @return mixed Configuration parameter value
 	 */
-	public function get($index) {
+	public function get($key) {
 
-		if (!$this->exists($index)) {
-			throw new ispCP_Exception("Error: Configuration variable `$index` is missing!");
+		if (!$this->exists($key)) {
+			throw new ispCP_Exception(
+				"Error: Configuration variable `$key` is missing!"
+			);
 		}
 
-		return $this->_parameters[$index];
+		return $this->$key;
 	}
 
 	/**
-	 * Allow access as object properties
+	 * Deletes a configuration parameters
 	 *
-	 * @see get();
-	 * @param string Configuration parameter key name
-	 * @return mixed Configuration parameter value
-	 */
-	public function __get($index) {
-
-		return $this->get($index);
-	}
-
-	/**
-	 * Methods to delete a configuration parameters
-	 *
-	 * @param $string $index Configuration parameter key name
+	 * @param $string $key Configuration parameter key name
 	 * @return void
 	 */
-	public function del($index) {
-		unset($this->_parameters[$index]);
+	public function del($key) {
+
+		unset($this->$key);
 	}
 
 	/**
-	 * PHP Overloading for call isset() on inaccessible members
-	 *
-	 * @param string Configuration parameter key name
-	 * @return boolean TRUE if configuration parameter exists, FALSE otherwise
-	 */	
-	public function __isset($index) {
-
-		return isset($this->_parameters[$index]);
-	}
-
-	/**
-	 * PHP Overloading for call of unset() on inaccessible members
-	 *
-	 * @param string Configuration parameter key name
-	 * @return void
-	 */
-	public function __unset($index) {
-
-		$this->del($index);
-	}
-
-	/**
-	 * Checks if a configuration parameters exists
+	 * Checks whether configuration parameters exists
 	 *
 	 * @param string $index Configuration parameter key name
 	 * @return boolean TRUE if configuration parameter exists, FALSE otherwise
+	 * @todo Remove this method
 	 */
-	public function exists($index) {
-		
-		return isset($this->_parameters[$index]);
+	public function exists($key) {
+
+		return property_exists($this, $key);
 	}
 
 	/**
@@ -182,109 +145,74 @@ class ispCP_Config_Handler implements ArrayAccess, Iterator {
 	 */
 	public function replaceWith(ispCP_Config_Handler $config) {
 
-		foreach($config as $index => $value) {
-			$this->set($index, $value);
+		foreach($config as $key => $value) {
+			$this->set($key, $value);
 		}
 	}
 
 	/**
-	 * Return an associative array that contain all configuration parameters
+	 * Return an associative array that contains all configuration parameters
 	 *
 	 * @return array Array that contains configuration parameters
 	 */
 	public function toArray() {
 
-		return $this->_parameters;
+		$ref = new ReflectionObject($this);
+
+        $properties = $ref->getProperties(ReflectionProperty::IS_PUBLIC);
+
+		$array = array();
+
+		foreach($properties as $property) {
+			$name = $property->name;
+			$array[$name] = $this->$name;
+		}
+
+		return $array;
 	}
 
 	/**
-	 * Defined by SPL Iterator interface
+	 * Assigns a value to the specified offset.
 	 *
-	 * See {@link http://www.php.net/~helly/php/ext/spl}
+	 * @param  $offset The offset to assign the value to
+	 * @param  $value The value to set.
+	 * @return void
 	 */
-	public function current() {
+	public function offsetSet($offset, $value) {
 
-		return current($this->_parameters);
+		$this->set($offset, $value);
 	}
 
 	/**
-	 * Defined by SPL Iterator interface
+	 * Returns the value at specified offset
 	 *
-	 * See {@link http://www.php.net/~helly/php/ext/spl}
+	 * @param  mixed $offset The offset to retrieve
+	 * @return mixed Offset value
 	 */
-	public function next() {
+	public function offsetGet($offset) {
 
-		next($this->_parameters);
+		return $this->get($offset);
 	}
 
 	/**
-	 * Defined by SPL Iterator interface
+	 * Whether or not an offset exists
 	 *
-	 * See {@link http://www.php.net/~helly/php/ext/spl}
+	 * @param mixed $offset An offset to check for existence
+	 * @return boolean TRUE on success or FALSE on failure
 	 */
-	public function valid() {
+	public function offsetExists($offset) {
 
-		return array_key_exists(key($this->_parameters), $this->_parameters);
+		return property_exists($this, $offset);
 	}
 
 	/**
-	 * Defined by SPL Iterator interface
+	 * Unsets an offset
 	 *
-	 * See {@link http://www.php.net/~helly/php/ext/spl}
+	 * @param  mixed $offset The offset to unset
+	 * @return void
 	 */
-	public function rewind() {
+	public function offsetUnset($offset) {
 
-		reset($this->_parameters);
-        return $this;
-	}
-
-	/**
-	 * Defined by SPL Iterator interface
-	 *
-	 * See {@link http://www.php.net/~helly/php/ext/spl}
-	 */
-	public function key() {
-
-		return key($this->_parameters);
-	}
-
-	/**
-	 * Defined by SPL ArrayAccess interface
-	 *
-	 * See {@link http://www.php.net/~helly/php/ext/spl}
-	 */
-	public function offsetExists($index) {
-
-		return $this->exists($index);
-	}
-
-	/**
-	 * Defined by SPL ArrayAccess interface
-	 *
-	 * See {@link http://www.php.net/~helly/php/ext/spl}
-	 */
-	public function offsetGet($index) {
-
-		return $this->get($index);
-	}
-
-	/**
-	 * Defined by SPL ArrayAccess interface
-	 *
-	 * See {@link http://www.php.net/~helly/php/ext/spl}
-	 */
-	public function offsetSet($index, $value) {
-
-		$this->set($index, $value);
-	}
-
-	/**
-	 * Defined by SPL ArrayAccess interface
-	 *
-	 * See {@link http://www.php.net/~helly/php/ext/spl}
-	 */
-	public function offsetUnset($index) {
-
-		$this->del($index);
+		unset($this->$offset);
 	}
 }
