@@ -3,6 +3,7 @@ ispCP ω 1.0.6 ChangeLog
 
 2010-07-19 Laurent Declercq
 	- GUI:
+		* Admin/settings: Improvement for notification about saved settings
 		* Package ispCP_Config - Handler:
 			- Added property tag for some fields to avoid warnings about
 			undefined fields in some IDE like PHPStorm (first part)

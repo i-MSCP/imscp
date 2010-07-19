@@ -131,7 +131,17 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 
 		$cfg->replaceWith($db_cfg);
 
-		set_page_message(tr('Settings saved!'));
+		// gets the number of queries that were been executed
+		$updt_count = $db_cfg->countQueries('update');
+
+		// An Update was been made in the database ?
+		if($updt_count > 0) {
+			set_page_message(
+				tr('%d configuration parameter(s) was updated!', $updt_count)
+			);
+		} else {
+			set_page_message(tr("Nothing's been changed!"));
+		}
 	}
 }
 
