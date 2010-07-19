@@ -75,7 +75,7 @@ class ispCP_Config_Handler implements ArrayAccess {
 	}
 
 	/**
-	 * PHP overloading on iinaccessible members
+	 * PHP overloading on inaccessible members
 	 *
 	 * @param $key Configuration parameter key name
 	 * @return mixed Configuration parameter value
@@ -159,7 +159,7 @@ class ispCP_Config_Handler implements ArrayAccess {
 
 		$ref = new ReflectionObject($this);
 
-        $properties = $ref->getProperties(ReflectionProperty::IS_PUBLIC);
+		$properties = $ref->getProperties(ReflectionProperty::IS_PUBLIC);
 
 		$array = array();
 
@@ -174,8 +174,8 @@ class ispCP_Config_Handler implements ArrayAccess {
 	/**
 	 * Assigns a value to the specified offset.
 	 *
-	 * @param  $offset The offset to assign the value to
-	 * @param  $value The value to set.
+	 * @param mixed $offset The offset to assign the value to
+	 * @param mixed $value The value to set.
 	 * @return void
 	 */
 	public function offsetSet($offset, $value) {

@@ -173,6 +173,7 @@ class ispCP_Config_Handler_Db extends ispCP_Config_Handler implements iterator {
 	public function __construct($params) {
 
 		if(is_array($params)) {
+
 			if(!array_key_exists('db', $params) ||
 				!($params['db'] instanceof PDO)) {
 
@@ -224,7 +225,7 @@ class ispCP_Config_Handler_Db extends ispCP_Config_Handler implements iterator {
 	/**
 	 * Insert or update a configuration parameter in the database
 	 *
-	 * <b>Note:</b> For performance reasons, queries for updates are only done
+	 * <b>Note:</b> For performances reasons, queries for updates are only done
 	 * if old and new value of a parameter are not the same.
 	 *
 	 * @param string $key Configuration parameter key name
@@ -267,9 +268,6 @@ class ispCP_Config_Handler_Db extends ispCP_Config_Handler implements iterator {
 
 	/**
 	 * Checks if a configuration parameters exists
-	 *
-	 * <b>Note:</b> This method  will no longer supported. Direct usage of
-	 * isset() is better for performance.
 	 *
 	 * @param string $key Configuration parameter key name
 	 * @return boolean TRUE if configuration parameter exists, FALSE otherwise
