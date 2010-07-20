@@ -172,7 +172,7 @@ abstract class ispCP_Update {
 	 * update fail, the succeeded queries from this update will not executed
 	 * again.
 	 *
-	 * @return boolean TRUE on sucess, FALSE otherwise
+	 * @return boolean TRUE on success, FALSE otherwise
 	 * @todo Should be more generic (Only the database variable should be
 	 * updated here. Other stuff should be implemented by the concrete class
 	 */
@@ -198,7 +198,7 @@ abstract class ispCP_Update {
 			$sql->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 			if(isset($dbConfig->FAILED_UPDATE)) {
-				list($failedUpdate, $queryNb ) = $dbConfig->FAILED_UPDATE;
+				list($failedUpdate, $queryNb) = $dbConfig->FAILED_UPDATE;
 			} else {
 				$failedUpdate = 'inexistent';
 				$index = -1;
