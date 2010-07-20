@@ -10,9 +10,9 @@
  *
  * @version     $Id$
  * @package     phpMyAdmin
- * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @link 		http://isp-control.net
- * @author 		ispCP Team
+ * @copyright   2006-2010 by ispCP | http://isp-control.net
+ * @link        http://isp-control.net
+ * @author      ispCP Team
  */
 
 /*
@@ -64,6 +64,8 @@ $cfg['Servers'][$i]['history'] 			= 'pma_history';
 $cfg['Servers'][$i]['tracking']         = 'pma_tracking';
 $cfg['Servers'][$i]['designer_coords']	= 'pma_designer_coords';
 $cfg['Servers'][$i]['hide_db'] 			= '(information_schema|phpmyadmin|mysql)';
+/* Added to hide warnings about disabled features */
+$cfg['PmaNoRelation_DisableWarning'] = true;
 /* Name of the Server displayed */
 /*$cfg['Servers'][$i]['verbose'] 		= 'mysql.myserver.com';*/ // reactivate if domain is set in SETUP
 $cfg['Servers'][$i]['SignonSession']	= 'ispCP Omega';
@@ -75,7 +77,7 @@ $cfg['Servers'][$i]['SignonSession']	= 'ispCP Omega';
  */
 
 /*
- * Layout preferences 
+ * Layout preferences
  */
 $cfg['LeftFrameLight'] 					= true;
 $cfg['LeftFrameDBTree'] 				= true;

@@ -1,4 +1,4 @@
-phpMyAdmin 3.3.3 Documentation
+phpMyAdmin 3.3.4 Documentation
 
   * Top
   * Requirements
@@ -2272,7 +2272,7 @@ configuration. See http://httpd.apache.org/docs/2.0/mod/mod_ssl.html#ssloptions
 .
 
 1.40 When accessing phpMyAdmin via an Apache reverse proxy, cookie login does
-not work,
+not work.
 
 To be able to use cookie auth Apache must know that it has to rewrite the
 set-cookie headers.
@@ -3163,27 +3163,10 @@ Yes. If a bookmark has the same label as a table name, it will be executed.
 6.23 Export: I heard phpMyAdmin can export Microsoft Excel files, how can I
 enable that?
 
-Current version does support direct export to Microsoft Excel and Word versions
-2000 and newer. If you need export older versions, you can use CSV suitable for
-Microsoft Excel, which works out of the box or you can try native experimental
-MS Excel exporter. This export has several problems, most important are
-limitation of cell content to 255 chars and no support for charsets, so think
-carefully whether you want to enable this.. For enabling this you need to set
-$cfg['TempDir'] to place where web server user can write (for example './tmp')
-and install PEAR module Spreadsheet_Excel_Writer into php include path. The
-installation can be done by following command:
-
-pear -d preferred_state=beta install -a Spreadsheet_Excel_Writer
-
-First part of switches set we want to install beta version of that module (no
-stable version available yet) and then we tell pear we want to satisfy
-dependencies.
-
-If you are running in PHP safe mode, you will have to set in php.ini the
-safe_mode_include_dir to the directory where your PEAR modules are located, for
-example:
-
-safe_mode_include_dir = /usr/local/lib/php
+You can use CSV for Microsoft Excel, which works out of the box, but phpMyAdmin
+supports direct export to Microsoft Excel version 97 and newer. For this to
+work, you need to set $cfg['TempDir'] to a place where the web server user can
+write (for example './tmp').
 
 To create the temporary directory on a UNIX-based system, you can do:
 
@@ -3201,7 +3184,8 @@ is done whenever you enter Structure page for this table.
 
 First, for general information about BLOB streaming on MySQL, visit
 blobstreaming.org. We currently support streaming if you are running MySQL 5.1
-with the PBXT and PBMS storage engines.
+with the PBXT and PBMS storage engines. Moreover, only PBMS 0.5.04 is
+supported.
 
  1. In config.inc.php your host should be defined with a FQDN (fully qualified
     domain name) instead of something like "localhost".

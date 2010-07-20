@@ -1,6 +1,12 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-07-20 Laurent Declercq
+	- TOOLS:
+		* Package phpmyadmin:
+			- Added parameter to hide warnings about disabled features
+			- Fixed #2408: Updated to version 3.3.4
+
 2010-07-19 Laurent Declercq
 	- GUI:
 		* Admin/settings: Improvement for notification about saved settings
