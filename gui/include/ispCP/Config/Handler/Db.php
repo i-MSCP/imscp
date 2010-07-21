@@ -43,7 +43,7 @@ require_once  INCLUDEPATH . '/ispCP/Config/Handler.php';
  * @subpackage  Handler
  * @author      Laurent Declercq <laurent.declercq@ispcp.net>
  * @since       1.0.6
- * @version     1.0.6
+ * @version     1.0.7
  */
 class ispCP_Config_Handler_Db extends ispCP_Config_Handler implements iterator {
 
@@ -306,7 +306,7 @@ class ispCP_Config_Handler_Db extends ispCP_Config_Handler implements iterator {
 	 */
 	public function __unset($key) {
 
-		unset($this->_parameters[$key]);
+		$this->del($key);
 	}
 
 	/**
