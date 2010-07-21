@@ -18,14 +18,13 @@
  * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * @category	ispCP
- * @package		ispCP_Initializer
- * @copyright	2006-2010 by ispCP | http://isp-control.net
- * @author		Laurent Declercq <laurent.declercq@ispcp.net>
- * @version		SVN: $Id$
- * @link		http://isp-control.net ispCP Home Site
- * @license		http://www.mozilla.org/MPL/ MPL 1.1
- * @filesource
+ * @category    ispCP
+ * @package     ispCP_Initializer
+ * @copyright   2006-2010 by ispCP | http://isp-control.net
+ * @author      Laurent Declercq <laurent.declercq@ispcp.net>
+ * @version     SVN: $Id$
+ * @link        http://isp-control.net ispCP Home Site
+ * @license     http://www.mozilla.org/MPL/ MPL 1.1
  */
 
 /**
@@ -35,11 +34,11 @@
  * such as setting the include_path, initializing logging, database and
  * more.
  *
- * @category	ispCP
- * @package		ispCP_Initializer
- * @author		Laurent declercq <laurent.declercq@ispcp.net>
- * @since		1.0.6
- * @version		1.0.9
+ * @category    ispCP
+ * @package     ispCP_Initializer
+ * @author      Laurent declercq <laurent.declercq@ispcp.net>
+ * @since       1.0.6
+ * @version     1.1.0
  */
 class ispCP_Initializer {
 
@@ -179,7 +178,10 @@ class ispCP_Initializer {
 		// (will be activated later)
 		// ispCP_Registry::get('Hook')->OnAfterInitialize();
 
-		self::$_initialized = true;
+		// Run after intialize callbacks (will be changed later)
+		$this->_afterInitialize();
+
+		 self::$_initialized = true;
 	}
 
 	/**
@@ -292,7 +294,9 @@ class ispCP_Initializer {
 
 		if(in_array('mail', $writerObservers)) {
 			$admin_email = $this->_config->DEFAULT_ADMIN_ADDRESS;
+
 			if($admin_email != '') {
+
 				$exceptionHandler->attach(
 					new ispCP_Exception_Writer_Mail($admin_email)
 				);
@@ -359,8 +363,7 @@ class ispCP_Initializer {
 	 *
 	 * @throws ispCP_Exception
 	 * @return void
-	 * @todo Add a specific test to check if the db keys were generated and
-	 * throws an exception if its not the case - Don't use global variables
+	 * @todo Remove global variable
 	 */
 	protected function _initializeDatabase() {
 
@@ -411,7 +414,7 @@ class ispCP_Initializer {
 
 			$db = ispCP_Registry::get('Db');
 
-			if($db->execute('SET NAMES `utf8`;') === false) {
+			if(!$db->execute('SET NAMES `utf8`;')) {
 				throw new ispCP_Exception(
 					'Error: Unable to set charset for database communication! ' .
 					'SQL returned: ' . $db->errorMsg()
@@ -449,7 +452,7 @@ class ispCP_Initializer {
 	}
 
 	/**
-	 * Load configuration parameters from database
+	 * Load configuration parameters from the database
 	 *
 	 * This function retrieves all the parameters from the database and merge
 	 * them with the basis configuration object.
@@ -477,16 +480,9 @@ class ispCP_Initializer {
 	/**
 	 * Initialize the PHP output buffering / spGzip filter
 	 *
-	 * The buffer must be started at the earliest opportunity to avoid any
-	 * encoding error (eg. during development phase where the developers uses
-	 * some statements like echo, print in the code for debugging)
-	 *
 	 * <b>Note:</b> The hight level (like 8, 9) for compression are not
 	 * recommended for performances reasons. The obtained gain with these levels
-	 * is very small compared to the intermediate level like 6,7
-	 *
-	 * <b>Note:</b> ShowCompression option and checking for XmlHttpRequet will
-	 * be done by a filter hooked on the 'OnBeforeOutput' action hook.
+	 * is very small compared to the intermediate level like 6,7.
 	 *
 	 * @return void
 	 */
@@ -554,5 +550,23 @@ class ispCP_Initializer {
 
 		// Register an ispCP_Plugin_ActionsHooks for shared access
 		// ispCP_Registry::set('Hook', ispCP_Plugin_ActionsHooks::getInstance());
+	}
+
+	/**
+	 * Fires the afterInitialize callbacks
+	 *
+	 * @return void
+	 */
+	protected function _afterInitialize() {
+
+		$callbacks = $this->_config->getAfterInitialize();
+
+		if(!empty($callbacks)) {
+			foreach($callbacks as $callback) {
+				call_user_func_array(
+					$callback['callback'], $callback['parameters']
+				);
+			}
+		}
 	}
 }

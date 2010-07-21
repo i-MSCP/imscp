@@ -45,9 +45,17 @@
  * @subpackage  Handler
  * @author      Laurent Declercq <laurent.declercq@ispcp.net>
  * @since       1.0.6
- * @version     1.0.5
+ * @version     1.0.6
  */
 class ispCP_Config_Handler implements ArrayAccess {
+
+	/**
+	 * Callbacks that will be executed after ispCP has been fully initialized
+	 *
+	 * @var array
+	 */
+	protected $_afterInitializeCallbacks = null;
+
 
 	/**
 	 * Loads all configuration parameters from an array
@@ -169,6 +177,52 @@ class ispCP_Config_Handler implements ArrayAccess {
 		}
 
 		return $array;
+	}
+
+	/**
+	 * Adds a callback which will be executed after ispCP has been fully
+	 * initialized
+	 *
+	 * Useful for per-environment configuration which depends on the ispCP being
+	 * fully initialized.
+	 *
+	 * Callbacks can be defined in a PHP call_user_func() function format.
+	 *
+	 * @throws ispCP_Exception
+	 * @param callback $function The function to be called
+	 * @param mixed $parameters... Zero or more parameters to be passed to the
+	 * function
+	 * @return void
+	 */
+	public function afterInitialize($callback) {
+
+		$args = func_get_args();
+		$tmp['callback'] = array_shift($args);
+
+        if (!empty($args)) {
+            $tmp['parameters'] = $args;
+        } else {
+	        $tmp['parameters'] = array();
+        }
+
+		//if(!is_callable($tmp['callback'])) {
+		//	throw new ispCP_Exception('Error: Callback can not be accessed!');
+		//}
+
+		$this->_afterInitializeCallbacks[] = array(
+			'callback' => $tmp['callback'], 'parameters' => $tmp['parameters']
+		);
+	}
+
+	/**
+	 * Returns callbacks registered with afterInitialize
+	 *
+	 * @return array Array that contains registered callbacks
+	 */
+	public function getAfterInitialize() {
+
+		return is_array($this->_afterInitializeCallbacks)
+			? $this->_afterInitializeCallbacks : array();
 	}
 
 	/**

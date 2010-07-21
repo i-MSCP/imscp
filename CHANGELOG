@@ -1,6 +1,13 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-07-21 Laurent Declercq
+	- GUI:
+		* Packages ispCP_Config - Handler / ispCP_Initializer:
+			- Added `afterInitialize` callbacks hook (will be generalized later)
+		* Package ispCP_Config - Handler (Db):
+			- Fixed: Unable to delete row with unset()
+
 2010-07-20 Laurent Declercq
 	- TOOLS:
 		* Package phpmyadmin:
@@ -14,7 +21,7 @@ ispCP ω 1.0.6 ChangeLog
 			- Added property tag for some fields to avoid warnings about
 			undefined fields in some IDE like PHPStorm (first part)
 			- Fixed Notice: Indirect modification of overloaded property...
-			- Fixed: isset() return FALSE of fields with NULL value
+			- Fixed: isset() return FALSE for fields with NULL value
 			- Updated documentation
 
 2010-07-17 Laurent Declercq
