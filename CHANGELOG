@@ -7,6 +7,11 @@ ispCP ω 1.0.6 ChangeLog
 			- Added `afterInitialize` callbacks hook (will be generalized later)
 		* Package ispCP_Config - Handler (Db):
 			- Fixed: Unable to delete row with unset()
+		* Package ispCP_Exception - Writer (Mail):
+			- Added cleanup routine for mail body footprints
+			- Added routines to be able to set mail body footprints expiry time
+			- Some improvements for mail preparation
+			- Updated documentation
 
 2010-07-20 Laurent Declercq
 	- TOOLS:

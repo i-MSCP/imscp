@@ -18,14 +18,14 @@
  * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * @category	ispCP
- * @package		ispCP_Exception
- * @subpackage	Writer
- * @copyright	2006-2010 by ispCP | http://isp-control.net
- * @author		Laurent Declercq <laurent.declercq@ispcp.net>
- * @version		SVN: $Id$
- * @link		http://isp-control.net ispCP Home Site
- * @license		http://www.mozilla.org/MPL/ MPL 1.1
+ * @category    ispCP
+ * @package	    ispCP_Exception
+ * @subpackage  Writer
+ * @copyright   2006-2010 by ispCP | http://isp-control.net
+ * @author      Laurent Declercq <laurent.declercq@ispcp.net>
+ * @version     SVN: $Id$
+ * @link        http://isp-control.net ispCP Home Site
+ * @license     http://www.mozilla.org/MPL/ MPL 1.1
  */
 
 /**
@@ -39,20 +39,16 @@ require_once  INCLUDEPATH . '/ispCP/Exception/Writer.php';
  * This writer writes a mail that contain the exception messages and some debug
  * backtrace information.
  *
- * <b>Note:</b> Will be improved later.
- *
- * @category	ispCP
- * @package		ispCP_Exception
- * @subpackage	Writer
- * @author		Laurent Declercq <laurent.declercq@ispcp.net>
- * @since		1.0.6
- * @version		1.0.3
- * @todo		Clean expired mails body footprint
+ * @package     ispCP_Exception
+ * @subpackage  Writer
+ * @author      Laurent Declercq <laurent.declercq@ispcp.net>
+ * @since       1.0.6
+ * @version     1.0.4
  */
 class ispCP_Exception_Writer_Mail extends ispCP_Exception_Writer {
 
 	/**
-	 * Exception Writer name
+	 * Exception writer name
 	 *
 	 * @var string
 	 */
@@ -66,7 +62,7 @@ class ispCP_Exception_Writer_Mail extends ispCP_Exception_Writer {
 	protected $_to = '';
 
 	/**
-	 * Mail Header
+	 * Mail header
 	 *
 	 * @var string
 	 */
@@ -87,16 +83,32 @@ class ispCP_Exception_Writer_Mail extends ispCP_Exception_Writer {
 	protected $_body = '';
 
 	/**
-	 * Mail body footprint
-	 * @var md5
+	 * Mail body md5 footprint
+	 *
+	 * @var string
 	 */
-	protected $_footPrint = '';
+	protected $_footprint = '';
+
+	/**
+	 * Mail footprints expiry time (in hours)
+	 *
+	 * @var int
+	 */
+	protected $_expiryTime = 6;
+
+	/**
+	 * Mail body footprints cache
+	 *
+	 * @var array
+	 */
+	protected $_cache = array();
+
 
 	/**
 	 * Constructor - Create a new mail writer object
 	 *
 	 * @throws ispCP_Exception
-	 * @param string $to An valid adresse email
+	 * @param string $to A mail adresse
 	 * @return void
 	 */
 	public function __construct($to) {
@@ -115,77 +127,139 @@ class ispCP_Exception_Writer_Mail extends ispCP_Exception_Writer {
 		} else {
 			$this->_to = $to;
 		}
+
+		$config = ispCP_Registry::get('Config');
+
+		// Set Mail body footprints expiry time
+		$config->afterInitialize(array($this, 'setExpiryTime'));
+
+		// Delete expired mail body footprints
+	    $config->afterInitialize(array($this, 'cleanCache'));
 	}
 
 	/**
 	 * This methods is called from the subject (i.e. when an event occur)
 	 *
-	 * @param ispCP_Exception_Handler $exceptionHandler An ispCP_Exception_Handler
-	 * object
+	 * @param ispCP_Exception_Handler $exceptionHandler An
+	 * ispCP_Exception_Handler object
 	 * @return void
 	 */
 	public function update(SplSubject $exceptionHandler) {
 
 		$exception = $exceptionHandler->getException();
-		$this->_message = $exception->getMessage() . "\n";
+
+		$this->_message = str_replace(
+			array("\t", '<br />'), array('', "\n"), $exception->getMessage()
+		);
+
 		$this->prepareMail($exception);
 
-		if(!$this->isAlreadySent()) {
+		$this->_loadCache();
+
+		if(!$this->_isAlreadySent()) {
 			$this->_write();
-			$this->_cacheMessage();
+			$this->_cacheFootprint();
+			$this->_updateCache();
 		}
 	}
 
 	/**
-	 * Checks if the mail was already sent
+	 * Load cached mail body footprints from the database
+	 *
+	 * @return void
+	 */
+	protected function _loadCache() {
+
+		if(ispCP_Registry::isRegistered('Db_Config')) {
+			$dbConfig = ispCP_Registry::get('Db_Config');
+
+			if(isset($dbConfig->MAIL_BODY_FOOTPRINTS) &&
+				is_serialized($dbConfig->MAIL_BODY_FOOTPRINTS)) {
+
+				$this->_cache = unserialize($dbConfig->MAIL_BODY_FOOTPRINTS);
+			}
+		}
+	}
+
+	/**
+	 * Updates the mail body footprints cache
+	 *
+	 * @return void
+	 */
+	protected function _updateCache() {
+
+		if(!empty($this->_cache) && ispCP_Registry::isRegistered('Db_Config')) {
+				$dbConfig = ispCP_Registry::get('Db_Config');
+				$dbConfig->MAIL_BODY_FOOTPRINTS = serialize($this->_cache);
+		}
+	}
+
+	/**
+	 * Checks if the mail with same body footprint was already sent
 	 *
 	 * @return boolean TRUE if the message was already sent, FALSE otherwise
 	 * @todo Flat file for alternative storage
 	 */
-	protected function isAlreadySent() {
+	protected function _isAlreadySent() {
 
-		if(ispCP_Registry::isRegistered('Db_Config')) {
-			$config = ispCP_Registry::get('Db_Config');
+		if(array_key_exists($this->_footprint, $this->_cache)
+			&& $this->_cache[$this->_footprint] > time()) {
 
-			if(isset($config->EXCEPTION_MESSAGES) &&
-				is_serialized($config->EXCEPTION_MESSAGES)) {
-
-				$cachedMsg = unserialize($config->EXCEPTION_MESSAGES);
-
-				if(array_key_exists($this->_footPrint, $cachedMsg) &&
-					$cachedMsg[$this->_footPrint] > strtotime('now')) {
-
-					return true;
-				}
-			}
+			return true;
 		}
 
 		return false;
 	}
 
 	/**
-	 * Creates the mail body footprint and expiration time
+	 * Mail body footprints cache cleanup
 	 *
-	 * Both footprint and expiration time are used to avoid multiple sending of
-	 * mail for the same exception raised in interval of 12 hours.
+	 * Remove all expirated mail body footprints from the cache.
 	 *
-	 * @todo Flat file
 	 * @return void
 	 */
-	protected function _cacheMessage() {
+	public function cleanCache() {
 
 		if(ispCP_Registry::isRegistered('Db_Config')) {
 			$dbConfig = ispCP_Registry::get('Db_Config');
 
-			if(isset($dbConfig->EXCEPTION_MESSAGES) &&
-				is_serialized($dbConfig->EXCEPTION_MESSAGES)) {
+			if(isset($dbConfig->MAIL_BODY_FOOTPRINTS) &&
+				is_serialized($dbConfig->MAIL_BODY_FOOTPRINTS)) {
 
-				$cachedMsg = unserialize($dbConfig->EXCEPTION_MESSAGES);
+				$cache = unserialize($dbConfig->MAIL_BODY_FOOTPRINTS);
+
+				$now = time();
+
+				foreach($cache as $footprint => $expireTime) {
+					if($expireTime <= $now) {
+						unset($cache[$footprint]);
+					}
+				}
+
+				if(!empty($cache)) {
+					$dbConfig->MAIL_BODY_FOOTPRINTS = serialize($cache);
+				} else {
+					unset($dbConfig->MAIL_BODY_FOOTPRINTS);
+				}
 			}
-
-			$cachedMsg[$this->_footPrint] = strtotime('+12 hour');
-			$dbConfig->EXCEPTION_MESSAGES = serialize($cachedMsg);
 		}
+	}
+
+	/**
+	 * Cache the mail body footprint
+	 *
+	 * Both footprint and expiration time are used to avoid multiple sending of
+	 * mail for the same exception raised in interval of {@link _expiryTime}
+	 * hours.
+	 *
+	 * @todo Flat file
+	 * @return void
+	 */
+	protected function _cacheFootprint() {
+
+		$this->_cache[$this->_footprint] = strtotime(
+			"+{$this->_expiryTime} hour"
+		);
 	}
 
 	/**
@@ -205,7 +279,7 @@ class ispCP_Exception_Writer_Mail extends ispCP_Exception_Writer {
 	/**
 	 * Prepare the mail to be send
 	 *
-	 * @param Exception $exception An exception
+	 * @param Exception $exception An exception object
 	 * @return void
 	 */
 	protected function prepareMail($exception) {
@@ -215,7 +289,7 @@ class ispCP_Exception_Writer_Mail extends ispCP_Exception_Writer {
 		$this->_header .= "MIME-Version: 1.0\n";
 		$this->_header .= "Content-Type: text/plain; charset=utf-8\n";
 		$this->_header .= "Content-Transfer-Encoding: 8bit\n";
-		$this->_header .= 'X-Mailer: ' . self::NAME . "\n";
+		$this->_header .= 'X-Mailer: ' . self::NAME;
 
 		// Subject
 		$this->_subject = self::NAME . ' - Exception raised!';
@@ -226,13 +300,13 @@ class ispCP_Exception_Writer_Mail extends ispCP_Exception_Writer {
 			'An exception with the following message was raised in file ' .
 			$exception->getFile() . ' (Line: ' . $exception->getLine() . "):\n\n";
 
-		$this->_body .="==================================================\n\n";
-		$this->_body .= " {$this->_message}\n";
-		$this->_body .="==================================================\n\n";
+		$this->_body .= str_repeat('=', 65) . "\n\n";
+		$this->_body .= "{$this->_message}\n";
+		$this->_body .= str_repeat('=', 65) . "\n\n";
 
 		// Debug Backtrace
 		$this->_body .= "Debug backtrace:\n";
-		$this->_body .= "---------------\n\n";
+		$this->_body .= str_repeat('-', 15) . "\n\n";
 
 		if(count($exception->getTrace()) != 0) {
 			foreach ($exception->getTrace() as $trace) {
@@ -254,9 +328,12 @@ class ispCP_Exception_Writer_Mail extends ispCP_Exception_Writer {
 			$this->_body .= "Function: main()\n";
 		}
 
+		// Get the static mail body footprint
+		$this->_footprint = md5($this->_body);
+
 		// Additional information
 		$this->_body .= "\nAdditional information:\n";
-		$this->_body .= "----------------------\n\n";
+		$this->_body .= str_repeat('-', 22) . "\n\n";
 
 		foreach(array('HTTP_USER_AGENT', 'REQUEST_URI', 'HTTP_REFERER',
 			'REMOTE_ADDR', 'SERVER_ADDR') as $key) {
@@ -268,11 +345,29 @@ class ispCP_Exception_Writer_Mail extends ispCP_Exception_Writer {
 			}
 		}
 
-		$this->_body .= "\n______________________________________________\n";
+		$this->_body .= "\n" . str_repeat('_', 60) . "\n";
 		$this->_body .= self::NAME . "\n";
+		$this->_body .="\n\nNote: If the same exception is raised several " .
+			"times, this mail will not be re-send before " .
+				"{$this->_expiryTime} hours.\n";
 		$this->_body = wordwrap($this->_body, 70, "\n");
+	}
 
-		// Get the mail body footprint
-		$this->_footPrint = md5($this->_body);
+	/**
+	 * Set mail body footprints expiry time
+	 *
+	 * @return void
+	 */
+	public function setExpiryTime() {
+
+		if(ispCP_Registry::isRegistered('Db_Config')) {
+			/**
+			 * @var $dbConfig ispCP_Config_Handler_Db
+			 */
+			$dbConfig = ispCP_Registry::get('Db_Config');
+			if($dbConfig->exists('MAIL_WRITER_EXPIRY_TIME')) {
+				$this->_expiryTime = $dbConfig->MAIL_WRITER_EXPIRY_TIME;
+			}
+		}
 	}
 }
