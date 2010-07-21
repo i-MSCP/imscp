@@ -19,7 +19,7 @@
  * isp Control Panel. All Rights Reserved.
  *
  * @category    ispCP
- * @package	    ispCP_Exception
+ * @package     ispCP_Exception
  * @subpackage  Writer
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @author      Laurent Declercq <laurent.declercq@ispcp.net>
