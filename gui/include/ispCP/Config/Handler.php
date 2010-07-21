@@ -199,15 +199,15 @@ class ispCP_Config_Handler implements ArrayAccess {
 		$args = func_get_args();
 		$tmp['callback'] = array_shift($args);
 
-        if (!empty($args)) {
-            $tmp['parameters'] = $args;
-        } else {
-	        $tmp['parameters'] = array();
-        }
+		if (!empty($args)) {
+			$tmp['parameters'] = $args;
+		} else {
+			$tmp['parameters'] = array();
+		}
 
-		//if(!is_callable($tmp['callback'])) {
-		//	throw new ispCP_Exception('Error: Callback can not be accessed!');
-		//}
+		if(!is_callable($tmp['callback'])) {
+			throw new ispCP_Exception('Error: Callback can not be accessed!');
+		}
 
 		$this->_afterInitializeCallbacks[] = array(
 			'callback' => $tmp['callback'], 'parameters' => $tmp['parameters']
