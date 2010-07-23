@@ -5,6 +5,8 @@ ispCP ω 1.0.6 ChangeLog
 	- GUI:
 		* Package ispCP - client_sql:
 			- Complete rewrite of the PMA authentication script
+			- Fixed #2410: [Security Fail] A customer must not be able to
+			connect to a database of another customer
 
 2010-07-21 Laurent Declercq
 	- GUI:

@@ -55,16 +55,24 @@ function _getLoginCredentials($dbUserId) {
 	 */
 	$db = ispCP_Registry::get('Db');
 
+	// @todo Should be optimized
 	$query = "
 		SELECT
 			`sqlu_name`, `sqlu_pass`
 		FROM
-			`sql_user`
+			`sql_user`, `sql_database`, `domain`
 		WHERE
-			`sqlu_id` = ?
+			`sql_user`.`sqld_id` = `sql_database`.`sqld_id`
+		AND
+			`sql_user`.`sqlu_id` = ?
+		AND
+			`sql_database`.`domain_id` = `domain`.`domain_id`
+		AND
+			`domain`.`domain_admin_id` = ?
+		;
 	";
 
-	$stmt = exec_query($db, $query, $dbUserId);
+	$stmt = exec_query($db, $query, array($dbUserId, $_SESSION['user_id']));
 
 	if($stmt->rowCount() == 1) {
 			return array(
