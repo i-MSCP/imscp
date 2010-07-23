@@ -1,6 +1,11 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-07-23 Laurent Declercq
+	- GUI:
+		* Package ispCP - client_sql:
+			- Complete rewrite of the PMA authentication script
+
 2010-07-21 Laurent Declercq
 	- GUI:
 		* Packages ispCP_Config - Handler / ispCP_Initializer:
