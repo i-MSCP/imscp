@@ -45,7 +45,7 @@
  * @author Laurent Declercq <laurent.declercq@ispcp.net>
  * @since  1.0.6
  * @access private
- * @param  int $dbUserId Database user Id
+ * @param  int $dbUserId Database user unique identifier
  * @return array Array that contains login credentials or FALSE on failure
  */
 function _getLoginCredentials($dbUserId) {
@@ -144,8 +144,8 @@ function pmaAuth($dbUserId) {
 		"{$cfg->BASE_SERVER_VHOST_PREFIX}{$_SERVER['SERVER_NAME']}/pma/", true
 	);
 
-	if($headers == false || !isset($headers['Location'])) {
-		set_page_message('Error: An error occured during authentication!');
+	if(!$headers || !isset($headers['Location'])) {
+		set_page_message(tr('Error: An error occured during authentication!'));
 
 		return false;
 	} else {
