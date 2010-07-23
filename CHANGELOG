@@ -7,6 +7,7 @@ ispCP ω 1.0.6 ChangeLog
 			- Complete rewrite of the PMA authentication script
 			- Fixed #2410: [Security Fail] A customer must not be able to
 			connect to a database of another customer
+		* Fixed #2409: Access for admin level to client level should be checked
 
 2010-07-21 Laurent Declercq
 	- GUI:

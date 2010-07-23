@@ -865,26 +865,29 @@ function check_login($fName = null, $preventExternalLogin = true) {
 	}
 
 	if ($fName != null) {
+
 		$levels = explode('/', realpath(dirname($fName)));
 		$level = $levels[count($levels) - 1];
 
-		switch ($level) {
-			case 'user':
-				$level = 'client';
-				break;
-			case 'admin':
-			case 'reseller':
-				if ($level != $_SESSION['user_type']) {
-					write_log(
-						'Warning! user |'. $_SESSION['user_logged'] .
-							'| requested |' . $_SERVER["REQUEST_URI"] .
-								'| with REQUEST_METHOD |' .
-									$_SERVER["REQUEST_METHOD"] . '|'
-					);
+		$userType = ($_SESSION['user_type'] == 'user')
+			? 'client' : $_SESSION['user_type'];
 
-					user_goto('/index.php');
-				}
-				break;
+		if($userType != $level) {
+			if($userType != 'admin' &&
+				(!isset($_SESSION['logged_from']) ||
+					$_SESSION['logged_from'] != 'admin' )) {
+
+				$userLoggued = isset($_SESSION['logged_from'])
+					? $_SESSION['logged_from'] : $_SESSION['user_logged'];
+
+				write_log(
+					'Warning! user |' . $userLoggued . '| requested |' .
+						$_SERVER['REQUEST_URI'] . '| with REQUEST_METHOD |' .
+							$_SERVER['REQUEST_METHOD'] . '|'
+				);
+			}
+
+			user_goto('/index.php');
 		}
 	}
 
@@ -954,6 +957,7 @@ function change_user_interface($from_id, $to_id) {
 				binary `admin_id` = ?
 			;
 		';
+
 
 		$rs_from = exec_query($sql, $query, $from_id);
 		$rs_to = exec_query($sql, $query, $to_id);
