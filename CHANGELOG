@@ -7,6 +7,8 @@ ispCP ω 1.0.6 ChangeLog
 	- GUI:
 		* Package ispCP - client_sql:
 			- Fixed: #2228: Problem with phpmyadmin from the user interface
+	- SETUP:
+		* Fixed broken setup
 
 2007-07-25 Thomas Wacker
 	- TOOLS:
