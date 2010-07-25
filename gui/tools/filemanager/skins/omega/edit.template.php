@@ -1,6 +1,6 @@
 <?php defined("NET2FTP") or die("Direct access to this location is not allowed."); ?>
 <!-- Template /skins/omega/edit.template.php begin -->
-<form id="<?php echo $formname; ?>" action="<?php echo $net2ftp_globals["action_url"]; ?>" onsubmit="<?php echo $onSubmit; ?>" method="post">
+<form id="<?php echo $formname; ?>" action="<?php echo $net2ftp_globals["action_url"]; ?>" method="post">
 <?php	printLoginInfo(); ?>
 <input type="hidden" name="state"        value="edit" />
 <input type="hidden" name="state2"       value="" />
@@ -10,9 +10,11 @@
 <table style="padding: 2px; width: 100%; height: 100%; border: 0px;">
 	<tr>
 		<td style="vertical-align: top; text-align: <?php echo __("left"); ?>; width: 25%;">
+<?php			if ($net2ftp_globals["skin"] != "openlaszlo") { ?>
 <?php			printActionIcon("back", "document.forms['" . $formname . "'].state.value='browse';document.forms['" . $formname . "'].state2.value='main';document.forms['" . $formname . "'].submit();", ""); ?> &nbsp; 
-<?php	  		printActionIcon("save", "document.forms['" . $formname . "'].screen.value=3;" . $getCode . "document.forms['" . $formname . "'].submit();", ""); ?> &nbsp; 
-<?php			printTextareaSelect($onchange); ?>
+<?php			} ?>
+<?php	  		printActionIcon("save", "document.forms['" . $formname . "'].screen.value=3;" . $codepress_onclick . "document.forms['" . $formname . "'].submit();", ""); ?> &nbsp; 
+<?php			printTextareaSelect($codepress_onclick . $onchange); ?>
 		</td>
 		<td style="vertical-align: top; text-align: <?php echo __("left"); ?>; width: 50%;">
 <?php			if ($net2ftp_globals["state2"] == "") { ?>
@@ -25,9 +27,9 @@
 			elseif ($net2ftp_globals["state2"] == "newfile") { ?>
 				<?php echo __("New file name: "); ?><input class="input" type="text" name="entry" /><br />
 <?php			} ?>
-<?php 	if (function_exists("mb_detect_encoding") == true && $net2ftp_globals["language"] == "ja") { echo __("Character encoding: "); } ?>
-<?php		printEncodingSelect($text_encoding); ?> &nbsp;
-<?php		printLineBreakSelect($line_break); ?>
+<?php 	if (($net2ftp_globals["language"] == "ja" || $net2ftp_globals["language"] == "tc" || $net2ftp_messages["iso-8859-1"] == "UTF-8") && function_exists("mb_detect_encoding") == true) { echo __("Character encoding: "); } ?>
+<?php			printEncodingSelect($text_encoding_selected); ?> &nbsp;
+<?php			printLineBreakSelect($line_break_selected); ?>
 		</td>
 		<td style="vertical-align: top; text-align: <?php echo __("left"); ?>; width: 25%;">
 			<span style="font-size: 90%;"><?php echo $savestatus; ?></span>
@@ -75,9 +77,7 @@
 <?php 		}
 	/* ----- CodePress ----- */
 			elseif ($textareaType == "codepress") { ?>
-				<iframe id="codepress" src="<?php echo $net2ftp_globals["application_rootdir_url"]; ?>/plugins/codepress/codepress.php?action=edit&amp;file=<?php echo $net2ftp_globals["entry_html"]; ?>" style="width: 100%; height: 450px;"></iframe><br />
-				<input type="hidden" id="load-code" value="<?php echo $text; ?>" />
-				<input type="hidden" name="text" id="text" value="" />
+				<textarea id="text" name="text" class="codepress <?php echo $codepress_programming_language; ?> linenumbers-on" style="width:100%; height:450px;" wrap="off"><?php echo $text; ?></textarea>
 <?php 		} ?>
 			</div>
 		</td>
@@ -85,22 +85,10 @@
 </table>
 </form>
 
-<?php if ($textareaType == "codepress") { ?>
-<script type="text/javascript">
 
 // get code from codepress
-function getCode() {
-	document.getElementById('text').value = document.getElementById('codepress').contentWindow.CodePress.getCode();
-	document.getElementById('load-code').value = "";
-	return true;
-}
 
 // get code from a textarea and put it inside codepress window
-function setCode() {
-	document.getElementById('codepress').contentWindow.CodePress.setCode('php',document.getElementById('load-code').value);
-}
-</script>
-<?php } ?>
 
 
 <!-- Template /skins/omega/edit.template.php end -->

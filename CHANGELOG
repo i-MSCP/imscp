@@ -1,5 +1,9 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+2007-07-25 Thomas Wacker
+	- TOOLS:
+		* Package filemanager:
+			- Fixed #2396: net2ftp / codepress malfunction
 
 2010-07-23 Laurent Declercq
 	- GUI:
