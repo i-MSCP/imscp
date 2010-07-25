@@ -130,30 +130,40 @@ function pmaAuth($dbUserId) {
 		return false;
 	}
 
+	// Prepares PhpMyadmin absolute Uri to use
+	if(isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS'])) {
+		$port = ($_SERVER['SERVER_PORT'] != '443')
+			? ':' . $_SERVER['SERVER_PORT'] : '';
+
+		$pmaUri = "https://{$_SERVER['SERVER_NAME']}$port/pma/";
+	} else {
+		$port = ($_SERVER['SERVER_PORT'] != '80')
+			? ':' . $_SERVER['SERVER_PORT'] : '';
+
+		$pmaUri = "http://{$_SERVER['SERVER_NAME']}$port/pma/";
+	}
+
+	// Set stream context (http) options
 	stream_context_get_default(
 		array(
 			'http' => array(
 				'method' => 'POST',
-				'header' => "Host: {$_SERVER['SERVER_NAME']}\r\n" .
-				"Content-Type: application/x-www-form-urlencoded\r\n" .
-					'Content-Length: ' . strlen($data) . "\r\n" ,
-					"Connection: Close\r\n\r\n",
-					'content' => $data,
+				'header' => "Host: {$_SERVER['SERVER_NAME']}$port\r\n" .
+					"Content-Type: application/x-www-form-urlencoded\r\n" .
+					'Content-Length: ' . strlen($data) . "\r\n" .
+					"Connection: close\r\n\r\n",
+				'content' => $data,
 				'user_agent' => 'Mozilla/5.0',
 				'max_redirects' => 1,
-				'ignore_errors' => 1
 			)
 		)
 	);
 
 	// Gets the headers from PhpMyAdmin
-	// @todo Other ports such as 8080 should be settable here
-	$headers = get_headers(
-		"{$cfg->BASE_SERVER_VHOST_PREFIX}{$_SERVER['SERVER_NAME']}/pma/", true
-	);
+	$headers = get_headers($pmaUri, true);
 
 	if(!$headers || !isset($headers['Location'])) {
-		set_page_message(tr('Error: An error occured during authentication!'));
+		set_page_message(tr('Error: An error occurred while authentication!'));
 
 		return false;
 	} else {

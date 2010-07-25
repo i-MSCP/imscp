@@ -1,5 +1,13 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2010-07-25 Laurent Declercq
+	- CONFIG:
+		* Changed PhpMyAdmin path parameter
+	- GUI:
+		* Package ispCP - client_sql:
+			- Fixed: #2228: Problem with phpmyadmin from the user interface
+
 2007-07-25 Thomas Wacker
 	- TOOLS:
 		* Package filemanager:
@@ -229,8 +237,7 @@ ispCP ω 1.0.6 ChangeLog
 
 2010-06-15 Laurent Declercq
 	- CONFIG:
-		* Removed useless files (ispCP is not compatible with PHP versions
-			more older than 5.1.4)
+		* Fixed #2385 Remove php4 Support completly
 
 2010-06-14 Laurent Declercq
 	- GUI:
