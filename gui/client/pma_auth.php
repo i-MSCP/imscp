@@ -110,11 +110,6 @@ function _pmaCreateCookies($cookies) {
  */
 function pmaAuth($dbUserId) {
 
-	/**
-	 * @var $cfg ispCP_Config_Handler_File
-	 */
-	$cfg = ispCP_Registry::get('Config');
-
 	$credentials = _getLoginCredentials($dbUserId);
 
 	if($credentials) {
