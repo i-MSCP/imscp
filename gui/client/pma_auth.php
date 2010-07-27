@@ -149,7 +149,7 @@ function pmaAuth($dbUserId) {
 					"Connection: close\r\n\r\n",
 				'content' => $data,
 				'user_agent' => 'Mozilla/5.0',
-				'max_redirects' => 1,
+				'max_redirects' => 1
 			)
 		)
 	);
