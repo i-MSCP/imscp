@@ -1,6 +1,10 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-07-27 Laurent Declercq
+	- GUI:
+		* Fixed (Again) #2181: vu20xx.admin.domain.tld
+
 2010-07-25 Laurent Declercq
 	- CONFIG:
 		* Changed PhpMyAdmin path parameter

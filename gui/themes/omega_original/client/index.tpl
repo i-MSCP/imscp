@@ -57,9 +57,9 @@
             <td width="230" class="content2">{ACCOUNT_NAME}</td>
           </tr>
           <tr>
-	     <td>&nbsp;</td> 
-	     <td class="content">{TR_DMN_TMP_ACCESS}</td> 
-	     <td class="content2"><a href=" http://vu{DOMAIN_UID}" target="_blank"> http://vu{DOMAIN_UID}</a></td> 
+	     <td>&nbsp;</td>
+	     <td class="content">{TR_DMN_TMP_ACCESS}</td>
+	     <td class="content2"><a href="{DOMAIN_ALS_URL}" target="_blank">{DOMAIN_ALS_URL}</a></td> 
 	   </tr>
 	   <tr>
             <td width="25">&nbsp;</td>
