@@ -45,7 +45,7 @@
  * @subpackage	Compress
  * @author		Laurent declercq <laurent.declercq@ispcp.net>
  * @since		1.0.6
- * @version		1.0.3
+ * @version		1.0.4
  * @replace		spOutput class
  */
 class ispCP_Filter_Compress_Gzip {
@@ -158,12 +158,12 @@ class ispCP_Filter_Compress_Gzip {
 				$this->_mode = $mode;
 			} else {
 				throw new ispCP_Exception(
-				'ispCP_GzipFilter error: Unknown filter mode!'
+				'ispCP_Filter_Compress_Gzip error: Unknown filter mode!'
 				);
 			}
 		} else {
 			throw new ispCP_Exception(
-				'ispCP_GzipFilter error: Zlib Compression library is not loaded!'
+				'ispCP_Filter_Compress_Gzip error: Zlib Compression library is not loaded!'
 			);
 		}
 
@@ -174,7 +174,7 @@ class ispCP_Filter_Compress_Gzip {
 			$this->_compressionLevel = $compressionLevel;
 		} else {
 			throw new ispCP_Exception(
-				'ispCP_GzipFilter error: Wrong value for compression level!'
+				'ispCP_Filter_Compress_Gzip error: Wrong value for compression level!'
 			);
 		}
 	}
