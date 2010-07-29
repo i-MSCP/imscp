@@ -2302,7 +2302,7 @@ sub sort_domains {
 ##
 ## Update a serial number record according RFC 1912
 ##
-## @author  Laurent Declercq <l.declercq@ispcp.net>
+## @author  Laurent Declercq <laurent.declercq@ispcp.net>
 ## @since   1.0.6
 ## @param   scalar $dmnName Domain name
 ## @param   scalarref $src Ref. to stringified domain zone file content
