@@ -750,13 +750,12 @@ sub del_zone {
 	return $bz.$az;
 }
 
-# Execute a system command and returns a message that contain
-# a small description about the command that was failed
+# Execute a system command
 #
 # If you want gets the real exit code, use the sys_command_rs()
 # subroutine instead
 #
-# @return string that contain a smal error description
+# @return int 0 if success, -1 otherwise
 sub sys_command {
 
 	my ($cmd) = @_;
@@ -1112,9 +1111,11 @@ sub crypt_data {
 
 sub get_tag {
 
-	push_el(\@main::el, 'get_tag()', "Starting...");
+	push_el(\@main::el, 'get_tag()', 'Starting...');
 
-	my ($bt, $et, $src) = @_;
+	my ($bt, $et, $src, $function) = @_;
+
+	$function = 'undefined' if(!defined $function);
 
 	if (!defined($bt) || !defined($et) || !defined($src) || $bt eq '' ||
 		$et eq '' || $src eq '') {
@@ -1135,11 +1136,13 @@ sub get_tag {
 
 		if ($tag_pos < 0) {
 
-			push_el(
-				\@main::el,
-				'get_tag()',
-				"ERROR: '$bt' eq '$et', missing '$bt' in src !"
-			);
+			if($function ne 'repl_tag') {
+				push_el(
+					\@main::el,
+					'get_tag()',
+					"ERROR: '$bt' eq '$et', missing '$bt' in src !"
+				);
+			}
 
 			return (-4, '');
 
@@ -1213,7 +1216,7 @@ sub repl_tag {
 
 	}
 
-	my ($rs, $rdata) = get_tag($bt, $et, $src);
+	my ($rs, $rdata) = get_tag($bt, $et, $src, 'repl_tag');
 	return $rs if ($rs != 0);
 
 	my $tag = $rdata;
@@ -2293,6 +2296,69 @@ sub sort_domains {
 	}
 
 	return reverse(@domains);
+}
+
+################################################################################
+##
+## Update a serial number record according RFC 1912
+##
+## @author  Laurent Declercq <l.declercq@ispcp.net>
+## @since   1.0.6
+## @param   scalar $dmnName Domain name
+## @param   scalarref $src Ref. to stringified domain zone file content
+## @return  mixed  [0, serial] on sucess, negative int otherwise
+## @todo Implement a recovery process like explained in RFC 1912
+sub updateSerialNumber {
+
+	push_el(\@main::el, 'updateSerialNumber()', 'Begin...');
+
+	my ($dmnName, $src) = @_;
+
+	if (!defined $src || $src eq '' || !defined $dmnName || $dmnName eq '') {
+		push_el(
+			\@main::el, 'updateSerialNumber()', 'ERROR: Undefined Input Data...'
+		);
+
+		return -1;
+	}
+
+	my ($rs, $db_time_b, $db_time_e, $serial, $curDate);
+
+	# Get needed templates
+	($rs, $db_time_b, $db_time_e) = get_tpl(
+		"$main::cfg{'CONF_DIR'}/bind/parts", 'db_time_b.tpl', 'db_time_e.tpl'
+	);
+	return -1 if($rs != 0);
+
+	# Variables replacement
+	($rs, $db_time_b, $db_time_e) = prep_tpl(
+		{'{DMN_NAME}' => $dmnName}, $db_time_b, $db_time_e
+	);
+	return -1 if($rs != 0);
+
+	# Get serial number tag
+	($rs, $serial) = get_tag($db_time_b, $db_time_e, $$src);
+	return -1 if($rs != 0);
+
+	# Extract and update serial number
+	if($serial =~ s/[\d\D]+?(\d{8})(\d{2})[ \t]+;[\d\D]+/$1$2/) {
+
+		my (undef, undef, undef, $mday, $mon, $year) = localtime;
+		$curDate = sprintf '%4d%02d%02d', $year+1900, $mon+1, $mday;
+		$serial = ($curDate == $1) ? ++$serial : $curDate . '00';
+
+	} else {
+		push_el(
+			\@main::el, 'updateSerialNumber()',
+			'FATAL: $dmnName: Unable to retrieve serial number in SOA record!'
+		);
+
+		return -1;
+	}
+
+	push_el(\@main::el, 'updateSerialNumber()', 'Ending...');
+
+	return (0, $serial);
 }
 
 sub send_error_mail {

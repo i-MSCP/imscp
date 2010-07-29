@@ -1,6 +1,11 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-07-29 Laurent Declercq
+	- ENGINE: (ispcp_common_methods.pl)
+		* Added new subroutine to get updated serial number
+		* Fixed: False error message raised by get_tag() subroutine
+
 2010-07-27 Laurent Declercq
 	- GUI:
 		* Fixed (Again) #2181: vu20xx.admin.domain.tld
