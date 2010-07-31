@@ -2341,7 +2341,7 @@ sub updateSerialNumber {
 	return -1 if($rs != 0);
 
 	# Extract and update serial number
-	if($serial =~ s/[\d\D]+?(\d{8})(\d{2})[ \t]+;[\d\D]+/$1$2/) {
+	if($serial =~ s/[\d\D]*?(\d{8})(\d{2})[\d\D]*/$1$2/) {
 
 		my (undef, undef, undef, $mday, $mon, $year) = localtime;
 		$curDate = sprintf '%4d%02d%02d', $year+1900, $mon+1, $mday;
