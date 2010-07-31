@@ -2350,7 +2350,7 @@ sub updateSerialNumber {
 	} else {
 		push_el(
 			\@main::el, 'updateSerialNumber()',
-			'FATAL: $dmnName: Unable to retrieve serial number in SOA record!'
+			"FATAL: $dmnName: Unable to retrieve serial number in SOA record!"
 		);
 
 		return -1;
