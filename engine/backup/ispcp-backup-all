@@ -182,7 +182,7 @@ sub backup_sql {
 			return -1;
 		}
 
-		$rs = sys_command($db_backupcmd);
+		$rs = sys_command_rs($db_backupcmd);
 		if( $rs != 0 ){
 			push_el(\@main::el, 'backup_sql()', "Domain $dmn_name: ERROR: Failed to backup database $db_name!");
 			send_error_mail('backup_sql()', "Domain $dmn_name: ERROR: Failed to backup database $db_name!");

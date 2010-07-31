@@ -90,17 +90,26 @@ function gen_page_post_data(&$tpl) {
 	}
 }
 
-function check_db_name(&$sql, $db_name) {
-	$query = "SHOW DATABASES";
+/**
+ * Check if a database with same name already exists
+ *
+ * @param  ispCP_Database $sql ispCP_Database instance
+ * @param  string $db_name database name to be checked
+ * @return boolean TRUE if database exists, false otherwise
+ */
+function check_db_name($sql, $db_name) {
 
-	$rs = exec_query($sql, $query);
+	$rs = exec_query($sql, 'SHOW DATABASES');
 
 	while (!$rs->EOF) {
-		if ($db_name === $rs->fields[0]) return 1;
+		if ($db_name == $rs->fields['Database']) {
+			return true;
+		}
+
 		$rs->moveNext();
 	}
 
-	return 0;
+	return false;
 }
 
 function add_sql_database(&$sql, $user_id) {

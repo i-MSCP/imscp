@@ -1,6 +1,27 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-07-31 Laurent Declercq
+	- CONFIG:
+		* Fixed #2388: A DNS record must be added in master db file for each
+		domain alternative URL
+	- ENGINE:
+		* engine/ispcp-dmn-mngr:
+			- Fixed in dmn_restore_data(): Doubles quotes characters must be
+			also escaped for databases names and dump files names
+			- Rewrited dmn_restore_data() subroutine for better performances and
+			readability
+			- Fixed #2388: A DNS record must be added in master db file for each
+			domain alternative URL
+		* Fixed #2411: [SECURITY_FAIL] Data like database login credentials can
+		be compromised
+		* Some other refactoring tasks to improve readability and performances
+	-GUI:
+		* Fixed: Undefined offset at line 99 in client/sql_database_add.php
+	- SETUP: (ispcp-setup-methods.pl)
+		* Integrated updateSerialNumber() subroutine
+		* Removed useless call of sleep() function
+
 2010-07-29 Laurent Declercq
 	- ENGINE: (ispcp_common_methods.pl)
 		* Added new subroutine to get updated serial number

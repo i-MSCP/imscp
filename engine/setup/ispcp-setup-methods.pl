@@ -2777,11 +2777,8 @@ sub setup_gui_named_db_data {
 
 	# Slave DNS  - Address IP
 	my $sec_dns_ip = $main::cfg{'SECONDARY_DNS'};
-
-	my ($rs, $cmd) = (undef, undef);
-
-	# SOA Record - Serial number related data
-	my ($serial, $otime, $ctime, $rev_nbr) = (undef, '', undef, undef);
+	#my ($rs, $cmd, $serial, $ctm_dmn_als_entries);
+	my ($rs, $cmd, $serial);
 
 	# Directories paths
 	my $cfg_dir = "$main::cfg{'CONF_DIR'}/bind";
@@ -2809,63 +2806,38 @@ sub setup_gui_named_db_data {
 	}
 
 	#
-	## Dedicated tasks for the Install or Updates process - Begin
+	## Dedicated tasks for Install or Updates process - Begin
 	#
 
 	# Update
 	if (defined &update_engine) {
 
-		my $timestamp = time();
-
 		# Saving the current production file if it exists
 		if(-e $sys_cfg) {
 
-			$cmd = "$main::cfg{'CMD_CP'} -p $sys_cfg $bk_cfg.$timestamp";
+			$cmd = "$main::cfg{'CMD_CP'} -p $sys_cfg $bk_cfg." . time;
 			$rs = sys_command_rs($cmd);
 			return $rs if ($rs != 0);
 		}
 
-		#
-		## Get the time and revision number data in SOA record - Begin
-		#
-
-		# First, loading the current working db file
-		($rs, $_) = get_file($wrk_cfg);
+		# First, Loading the current working db file
+		my $wrk_file_content;
+		($rs, $wrk_file_content) = get_file($wrk_cfg);
 		return $rs if($rs != 0);
 
-		# Extraction of old time data and revision number
-		unless ( ($otime, $rev_nbr) = /^.+?(\d{8})(\d{2}).*?;/s ) {
-			push_el(
-				\@main::el,
-				'add_named_db_data()',
-				"FATAL: Can't retrieve the serial number in the master domain SOA record..."
-			);
+		# Update serial number according RCF 1912
+		$serial = updateSerialNumber($base_vhost, \$wrk_file_content);
+		return $rs if($rs != 0);
 
-			return 1;
-		}
+	} else {
 
-		#
-		## Get the time and revision number data in SOA record - End
-		#
+		# Build the serial for SOA record (according RFC 1912)
+		my (undef, undef, undef, $mday, $mon, $year) = localtime;
+		$serial = sprintf '%4d%02d%02d00', $year+1900, $mon+1, $mday;
 	}
 
 	#
-	## Dedicated tasks for the Install or Updates process - End
-	#
-
-	#
-	## Building the serial for SOA record (according RFC 1912) - Begin
-	#
-
-	# Get the current time in human readable format
-	my (undef, undef, undef, $mday, $mon, $year) = localtime;
-	$ctime = sprintf '%4d%02d%02d', $year+1900, $mon+1, $mday;
-
-	# Building the new serial
-	$serial = $ctime . (($otime eq $ctime) ? ++$rev_nbr : '00');
-
-	#
-	## Building the serial for SOA record (according RFC 1912) - End
+	## Dedicated tasks for Install or Updates process - End
 	#
 
 	#
@@ -2877,17 +2849,17 @@ sub setup_gui_named_db_data {
 	($rs, $entry) = get_tpl($tpl_dir, 'db_master_e.tpl');
 	return $rs if ($rs != 0);
 
-	# Tags preparation
-	my %tags_hash = (
-		'{DMN_NAME}' => $base_vhost,
-		'{DMN_IP}' => $base_ip,
-		'{BASE_SERVER_IP}' => $base_ip,
-		'{SECONDARY_DNS_IP}' => ($sec_dns_ip) ? $sec_dns_ip : $base_ip ,
-		'{TIMESTAMP}' => $serial
-	);
-
 	# Replacement tags
-	($rs, $entry) = prep_tpl( \%tags_hash, $entry);
+	($rs, $entry) = prep_tpl(
+		{
+			'{DMN_NAME}' => $base_vhost,
+			'{DMN_IP}' => $base_ip,
+			'{BASE_SERVER_IP}' => $base_ip,
+			'{SECONDARY_DNS_IP}' => ($sec_dns_ip ne '') ? $sec_dns_ip : $base_ip,
+			'{TIMESTAMP}' => $serial
+		},
+		$entry
+	);
 	return $rs if ($rs != 0);
 
 	#
@@ -2900,10 +2872,7 @@ sub setup_gui_named_db_data {
 
 	# Store the new builded file in the working directory
 	$rs = store_file(
-		$wrk_cfg,
-		$entry,
-		$main::cfg{'ROOT_USER'},
-		$main::cfg{'ROOT_GROUP'},
+		$wrk_cfg, $entry, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'},
 		0644
 	);
 	return $rs if ($rs != 0);
@@ -3283,7 +3252,6 @@ sub start_services {
 			sys_command("$main::cfg{$_} start $main::rlogfile");
 
 			progress();
-			sleep 1;
 		}
 	}
 
@@ -3308,7 +3276,6 @@ sub stop_services {
 			sys_command("$main::cfg{$_} stop $main::rlogfile");
 
 			progress();
-			sleep 1;
 		}
 	}
 

@@ -30,3 +30,6 @@ smtp            IN              CNAME           mail
 ftp             IN              CNAME           www
 ; sub [{SUB_NAME}] entry BEGIN.
 ; sub [{SUB_NAME}] entry END.
+
+; ctm domain als entries BEGIN.
+; ctm domain als entries END.
