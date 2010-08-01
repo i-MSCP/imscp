@@ -134,7 +134,7 @@ class ispCP_Exception_Writer_Mail extends ispCP_Exception_Writer {
 		$config->afterInitialize(array($this, 'setExpiryTime'));
 
 		// Delete expired mail body footprints
-	    $config->afterInitialize(array($this, 'cleanCache'));
+		$config->afterInitialize(array($this, 'cleanCache'));
 	}
 
 	/**

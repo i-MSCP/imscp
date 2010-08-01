@@ -113,8 +113,7 @@ require_once  INCLUDEPATH . '/ispCP/Config/Handler.php';
  * @property bool PREVENT_EXTERNAL_LOGIN_CLIENT
  * @property bool CHECK_FOR_UPDATES If TRUE, update cheching is enabled
  * @property string ISPCP_SUPPORT_SYSTEM_TARGET
- * @property mixed AFTER_INITIALISE Callbacks functions which will be executed
- * after ispCP has been fully initialized
+ * @property string BASE_SERVER_VHOST_PREFIX
  *
  * @package		ispCP_Config
  * @subpackage	Handler
