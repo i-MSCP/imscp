@@ -2,6 +2,9 @@ ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2010-08-01 Laurent Declercq
+	- GUI: (admin/ispcp_debugger)
+		* Added support for `dnschange` status
+		* Added documentation + some refactoring tasks
 	- ENGINE:
 		* Fixed: Variable `{BASE_SERVER_VHOST_PREFIX}` is not replaced for
 		subdomains default pages
