@@ -1,6 +1,11 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-08-01 Laurent Declercq
+	- ENGINE:
+		* Fixed: Variable `{BASE_SERVER_VHOST_PREFIX}` is not replaced for
+		subdomains default pages
+
 2010-07-31 Laurent Declercq
 	- CONFIG:
 		* Fixed #2388: A DNS record must be added in master db file for each
@@ -18,7 +23,7 @@ ispCP ω 1.0.6 ChangeLog
 		* Fixed #2413: updateSerialNumber() | FATAL: domain.tld: Unable to
 		retrieve serial number in SOA record!
 		* Some other refactoring tasks to improve readability and performances
-	-GUI:
+	- GUI:
 		* Fixed: Undefined offset at line 99 in client/sql_database_add.php
 	- SETUP: (ispcp-setup-methods.pl)
 		* Integrated updateSerialNumber() subroutine

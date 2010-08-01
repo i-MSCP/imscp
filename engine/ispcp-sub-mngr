@@ -1495,6 +1495,7 @@ sub sub_add_httpd_file_data {
 		return $rs if ($rs != 0);
 
 		$index_tpl =~ s/{DOMAIN_NAME}/$sub_name/gi;
+		$index_tpl =~ s/{BASE_SERVER_VHOST_PREFIX}/$sub_name/gi;
 		$index_tpl =~ s/{BASE_SERVER_VHOST}/$vhost/gi;
 
 		($rs, $rdata) = store_file(
@@ -2746,7 +2747,7 @@ sub sub_mngr_engine {
 
 		($rs, $rdata) = doSQL($sql);
 		return $rs if ($rs != 0);
-		
+
 	} elsif ($sub_status eq 'dnschange'){
 		$rs = sub_change_named_data($entry);
 		$timestamp = time();
