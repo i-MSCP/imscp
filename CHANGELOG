@@ -7,6 +7,7 @@ ispCP ω 1.0.7 ChangeLog
 	- GUI:
 		Fixed #2415: FTP user GID and UID
 	- ENGINE:
+		* Fixed #2331: Useless wait in ispcp-mbox-mngr
 		* Refactored engine/ispcp-rqst-mngr
 		* Refactored engine/ispcp-mbox-mngr
 		* Refactored engine/ispcp-serv-mngr
