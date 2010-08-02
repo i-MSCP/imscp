@@ -5,6 +5,7 @@ ispCP ω 1.0.6 ChangeLog
 	- ENGINE:
 		* Refactored engine/ispcp-rqst-mngr
 		* Refactored engine/ispcp-mbox-mngr
+		* Refactored engine/ispcp-serv-mngr
 
 2010-08-01 Laurent Declercq
 	- GUI: (admin/ispcp_debugger)
