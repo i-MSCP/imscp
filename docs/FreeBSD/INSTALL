@@ -17,7 +17,7 @@ Table of Content
 ================================================================================
 1) Version Info
 ---------------
-ispCP ω Version	: 1.0.6
+ispCP ω Version	: 1.0.7
 INSTALL Script	: 4.7
 Maintainer		: BeNe
 Homepage		: http://www.isp-contol.net
@@ -51,20 +51,20 @@ provides graphic user interfaces for the administrators, resellers and users.
 ================================================================================
 4) Installation
 ---------------
-Make sure you are logged in as root and Nameserver rndc.key has been setup. 
+Make sure you are logged in as root and Nameserver rndc.key has been setup.
 If not create a rndc.key file:
 	# rndc-confgen -a
 
 1. Untar or unzip the distribution files to a secure directory:
 	# cd /usr/local/src
-	# tar xjvf ispcp-omega-1.0.6.tar.bz2
+	# tar xjvf ispcp-omega-1.0.7.tar.bz2
 
 2. Install Ports and Portmaster:
 	# portsnap fetch extract
 	# cd /usr/ports/ports-mgmt/portmaster
 	# make install clean
 	# rehash
-	
+
 3. Configure Apache to use worker instead of prefork:
 	# vi /usr/ports/www/apache22/Makefile
    And change WITH_MPM to worker:
@@ -122,9 +122,9 @@ If not create a rndc.key file:
 	x REWRITE
 	x WRAP
 	x MYSQL
-	
+
 	postfix 2.7.0,1 Options
-	
+
 	x PCRE
 	x SASL2
 	x TLS
@@ -133,16 +133,16 @@ If not create a rndc.key file:
 	x VDA
 
 	p5-Net-DNS 0.66 Options
-	
+
 	x IPV6
-	
+
 	courier-imap 4.7.0,2 Options
-	
+
 	x IPV6
 	x AUTH_USERDB
-	
+
 	cyrus-sasl 2.1.23 Options
-	
+
 	x BDB
 	x MYSQL
 	x AUTHDAEMOND
@@ -172,7 +172,7 @@ If not create a rndc.key file:
 	x SUHOSIN
 	x IPV6
 	x FASTCGI
-	x PATHINFO	
+	x PATHINFO
 
 	PHP5-Extensions 1.3 Options
 
@@ -212,62 +212,62 @@ If not create a rndc.key file:
 	x XMLWRITER
 	x ZIP
 	x ZLIB
-	
+
 	PHP5-MBString 5.2.12 Options
-	
+
 	x REGEX
-	
+
 	PHP5-DBA 5.12 Options
-	
+
 	x CDB
 	x INIFILE
 	x FLATFILE
-	
+
 	PHP5-SQL-lite 5.2.12 Options
-	
+
 	x UTF8
-	
+
 	PHP5-PCRE 5.2.12 Options
-	
+
 	x BUNDLED_PCRE
-	
+
 	awstats 6.95,1 Options
-	
+
 	x IPV6
-	
+
 	curl 7.19.7_1 Options
-	
+
 	x IPV6
 	x OPENSSL
 	x PROXY
-	
+
 	ca_root_nss 3.12.4 Options
-	
+
 	x ETCSYMLINK
-	
+
 	php5-gd 5.2.12 Options
-	
+
 	x T1LIB
 	x TRUETYPE
-	
+
 	libxslt 1.1.26 Options
-	
+
 	x CRYPTO
-	
+
 	rkhunter 1.3.6 Options
-	
+
 	x LSOF
-	
+
 	wget 1.12 Options
-	
+
 	x IPV6
 	x NLS
 	x OPENSSL
-	
+
 	p5-IO-Socket-SSL 1.31 Options
-	
+
 	x IDN
-	
+
 	amavisd-new 2.6.4_5,1 Options
 
 	x BDB
@@ -285,19 +285,19 @@ If not create a rndc.key file:
 	x FREEZE
 	x P7ZIP
 	x MSWORD
-	
+
 	p5-Mail-SpamAssassin 3.3.0_3 Options
-	
+
 	x AS_ROOT
 	x SPAMC
 	x DKIM
 	x SSL
 	x GNUPG
 	x RAZOR
-	
+
 5.  Configure the system.
 	 # rehash
-	
+
 6. (optional) Check the ispcp.conf and adapt it to your requirements.
 
 7.  Configure the MySQL Server and set the MySQL password, if not set:
@@ -305,13 +305,13 @@ If not create a rndc.key file:
 	 # chown -R mysql /var/db/mysql/
 	 # /usr/local/etc/rc.d/mysql-server onestart
 	 # mysqladmin -u root password 'YOUR_PASSWORD'
-	
+
 8.  Build the System by using make:
-	 # cd /usr/local/src/ispcp-omega-1.0.6
+	 # cd /usr/local/src/ispcp-omega-1.0.7
 	 # make -f BSDmakefile install
-	
-9.  Copy all the directories into your system. 
-    If you have not yet, now is a good time to make backups of your server. 
+
+9.  Copy all the directories into your system.
+    If you have not yet, now is a good time to make backups of your server.
     The following steps do fundamental changes to your system configuration.
 	 # cp -R /tmp/ispcp/* /
 
@@ -330,14 +330,14 @@ If not create a rndc.key file:
 
 	If you get no error, all went good; if you get one, look at
 	http://isp-control.net to solve the problem.
-	
+
 14. Restore /usr/share/skel:
 	 # rm -r /usr/share/skel && mv /usr/share/skel.bkp /usr/share/skel
 
 15. Clean the temporary folders:
 	 # rm -fR /tmp/ispcp/
-	
-16. Log into ispCP and change: 
+
+16. Log into ispCP and change:
 	"Settings"->"Server Ports" "POSTGREY Port" to 10023.
 
 ================================================================================
@@ -348,7 +348,7 @@ If not create a rndc.key file:
 	 jail_sysvipc_allow="YES"
 	If you are unsure check with:
 	 sysctl security.jail.sysvipc_allowed
- 
+
 ================================================================================
 6) Update
 ---------
@@ -359,10 +359,10 @@ Make sure you are logged in as root and MySQL is running.
 
 1.  Untar or unzip the distribution files to a secure directory:
 	 # cd /root
-	 # tar xjvf ispcp-omega-1.0.6.tar.bz2
+	 # tar xjvf ispcp-omega-1.0.7.tar.bz2
 
 2.  Change to the newly created directory:
-	 # cd ./ispcp-omega-1.0.6
+	 # cd ./ispcp-omega-1.0.7
 
 3.  Install the required modules:
 	see: ./docs/FreeBSD/freebsd-packages
@@ -392,7 +392,7 @@ Make sure you are logged in as root and MySQL is running.
 
 8.	Backup the current ispcp.conf (you may make backups):
 	 # mv -v /usr/local/etc/ispcp/ispcp.conf /usr/local/etc/ispcp/ispcp.old.conf
-	
+
 9.  Copy /usr and /var directories into your system (you may make backups)
 	 # cp -Rv /tmp/ispcp/usr/* /usr/
 	 # cp -Rv /tmp/ispcp/var/* /var/

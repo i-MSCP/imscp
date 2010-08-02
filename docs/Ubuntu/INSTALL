@@ -56,10 +56,10 @@ provides graphic user interfaces for the administrators, resellers and users.
 
 1. Untar or unzip the distribution files to a secure directory:
 	# cd /usr/local/src
-	# tar xjvf ispcp-omega-1.0.6.tar.bz2
+	# tar xjvf ispcp-omega-1.0.7.tar.bz2
 
 2. Change to the newly created directory:
-	# cd ./ispcp-omega-1.0.6
+	# cd ./ispcp-omega-1.0.7
 
 3. Install the required modules
    First update your system:
@@ -118,10 +118,10 @@ Make sure you are logged in as root and MySQL is running.
 
 1. Untar or unzip the distribution files to a secure directory:
 	# cd /usr/local/src
-	# tar xjvf ispcp-omega-1.0.6.tar.bz2
+	# tar xjvf ispcp-omega-1.0.7.tar.bz2
 
 2. Change to the newly created directory:
-	# cd ./ispcp-omega-1.0.6
+	# cd ./ispcp-omega-1.0.7
 
 3. Install the required modules
    first update your system:
