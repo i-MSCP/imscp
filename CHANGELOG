@@ -2,6 +2,8 @@ ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2010-08-02 Laurent Declercq
+	- GUI:
+		Fixed #2415: FTP user GID and UID
 	- ENGINE:
 		* Refactored engine/ispcp-rqst-mngr
 		* Refactored engine/ispcp-mbox-mngr
