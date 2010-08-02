@@ -790,7 +790,7 @@ sub mbox_check_last_transport_entry {
 				count(mail_id) AS `cnt`
 			FROM
 				`mail_users`
-			ẀHERE
+			WHERE
 				(`status` = 'ok' or `status` = 'change')
 			AND
 				`mail_auto_respond` != '_no_'
