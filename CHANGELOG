@@ -1,7 +1,9 @@
-ispCP ω 1.0.6 ChangeLog
+ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2010-08-02 Laurent Declercq
+	- PACKAGE:
+		Updated version to 1.0.7
 	- GUI:
 		Fixed #2415: FTP user GID and UID
 	- ENGINE:
