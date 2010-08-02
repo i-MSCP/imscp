@@ -557,7 +557,7 @@ function is_xhr() {
 /**
  * Check if a data is serialized
  *
- * @since 1.0.6
+ * @since 1.0.7
  * @author Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
  * @param mixed $data Data to be checked
  * @return boolean TRUE if serialized data, FALSE otherwise

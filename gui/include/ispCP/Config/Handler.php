@@ -44,7 +44,7 @@
  * @package     ispCP_Config
  * @subpackage  Handler
  * @author      Laurent Declercq <laurent.declercq@ispcp.net>
- * @since       1.0.6
+ * @since       1.0.7
  * @version     1.0.6
  */
 class ispCP_Config_Handler implements ArrayAccess {

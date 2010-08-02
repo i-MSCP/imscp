@@ -36,7 +36,7 @@
  * @package		ispCP_Exception
  * @subpackage	Writer
  * @author		Laurent Declercq <laurent.declercq@ispcp.net>
- * @since		1.0.6
+ * @since		1.0.7
  * @version		1.0.1
  */
 abstract class ispCP_Exception_Writer implements SplObserver {

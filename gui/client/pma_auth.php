@@ -22,7 +22,7 @@
  * @subpackage  client_sql
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @author      Laurent Declercq <laurent.declercq@ispcp.net>
- * @since       1.0.6
+ * @since       1.0.7
  * @version     SVN: $Id$
  * @replace     client/sql_auth.php
  * @link        http://isp-control.net ispCP Home Site
@@ -43,7 +43,7 @@
  * Get database login credentials
  *
  * @author Laurent Declercq <laurent.declercq@ispcp.net>
- * @since  1.0.6
+ * @since  1.0.7
  * @access private
  * @param  int $dbUserId Database user unique identifier
  * @return array Array that contains login credentials or FALSE on failure
@@ -88,7 +88,7 @@ function _getLoginCredentials($dbUserId) {
  * Creates all cookies for PhpMyAdmin
  *
  * @author Laurent Declercq <laurent.declercq@ispcp.net>
- * @since  1.0.6
+ * @since  1.0.7
  * @access private
  * @param  array $cookies Array that contains cookies definitions for PMA
  * @return void
@@ -104,7 +104,7 @@ function _pmaCreateCookies($cookies) {
  * PhpMyAdmin authentication
  *
  * @author Laurent Declercq <laurent.declercq@ispcp.net>
- * @since  1.0.6
+ * @since  1.0.7
  * @param  int $dbUserId Database user unique identifier
  * @return bool TRUE on success, FALSE otherwise
  */

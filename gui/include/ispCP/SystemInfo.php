@@ -34,7 +34,7 @@
  * @category    ispCP
  * @package		ispCP_SystemInfo
  * @author      Benedikt Heintel <benedikt.heintel@ispcp.net>
- * @since       1.0.6
+ * @since       1.0.7
  * @version     1.0.2
  */
 class ispCP_SystemInfo {

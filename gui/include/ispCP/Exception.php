@@ -32,7 +32,7 @@
  *
  * @package		ispCP_Exception
  * @author		Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
- * @since		1.0.6
+ * @since		1.0.7
  * @version		1.0.0
  */
 class ispCP_Exception extends Exception {}

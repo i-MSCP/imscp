@@ -42,7 +42,7 @@ require_once  INCLUDEPATH . '/ispCP/Config/Handler.php';
  * @package     ispCP_Config
  * @subpackage  Handler
  * @author      Laurent Declercq <laurent.declercq@ispcp.net>
- * @since       1.0.6
+ * @since       1.0.7
  * @version     1.0.7
  */
 class ispCP_Config_Handler_Db extends ispCP_Config_Handler implements iterator {

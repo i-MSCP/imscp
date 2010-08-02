@@ -75,7 +75,7 @@
  *  1. We create an instance of the {@link ispCP_Exception_Handler} class
  *  2. We attach an {@link ispCP_Exception_Writer} that will listen this class
  *
- * See ispCP/Exception/Writer for a list of availables 
+ * See ispCP/Exception/Writer for a list of availables
  *	{@link ispCP_Exception_Writer writers}.
  *
  * <b>Note:</b>
@@ -89,7 +89,7 @@
  * @package		ispCP_Exception
  * @subpackage	Handler
  * @author		Laurent Declercq <laurent.declercq@ispcp.net>
- * @since		1.0.6
+ * @since		1.0.7
  * @version		1.0.3
  */
 class ispCP_Exception_Handler implements SplSubject, IteratorAggregate, Countable {
@@ -231,7 +231,7 @@ class ispCP_Exception_Handler implements SplSubject, IteratorAggregate, Countabl
 	public function exceptionHandler(Exception $exception) {
 
 		if(error_reporting() == 0 || !ini_get('display_errors')) {
-			
+
 			if($exception instanceof ispCP_Exception_Production) {
 				$this->_exception = $exception;
 			} else {

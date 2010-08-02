@@ -163,7 +163,7 @@ class ispCP_Database_ResultSet {
 	 * Note: Currently, all fetch style are not implemented
 	 *
 	 * @author Laurent Declercq <laurent.declercq@ispcp.net>
-	 * @since 1.0.6
+	 * @since 1.0.7
 	 * @param  $fetchStyle Controls how the next row will be returned to the
 	 * caller. This value must be one of the PDO::FETCH_* constants
 	 * @return void
@@ -207,7 +207,7 @@ class ispCP_Database_ResultSet {
 	 * handle
 	 *
 	 * @author Laurent Declercq <laurent.declercq@ispcp.net>
-	 * @since 1.0.6
+	 * @since 1.0.7
 	 * @return array Error information
 	 */
 	public function errorInfo() {
@@ -222,7 +222,7 @@ class ispCP_Database_ResultSet {
 	 * associated with the last statement operation.
 	 *
 	 * @author Laurent Declercq <laurent.declercq@ispcp.net>
-	 * @since 1.0.6
+	 * @since 1.0.7
 	 * @return string Error information
 	 */
 	public function errorInfoToString() {

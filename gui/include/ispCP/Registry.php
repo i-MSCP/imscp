@@ -32,7 +32,7 @@
  *
  * @package		ispCP_Registry
  * @author		Laurent declercq <laurent.declercq@ispcp.net>
- * @since		1.0.6
+ * @since		1.0.7
  * @version		1.0.7
  */
 class ispCP_Registry {

@@ -163,7 +163,7 @@ class ispCP_Database {
 	/**
 	 * Returns the PDO object linked to the current database connection object
 	 *
-	 * @since 1.0.6
+	 * @since 1.0.7
 	 * @author Laurent Declercq <laurent.declercq@ispcp.net>
 	 * @throws ispCP_Exception
 	 * @param $string $connection Connection unique identifier
@@ -420,7 +420,7 @@ class ispCP_Database {
 	 * or {@link prepare()} methods.
 	 *
 	 * @author Laurent Declercq <laurent.declercq@ispcp.net>
-	 * @since 1.0.6
+	 * @since 1.0.7
 	 * @return string Last error message set by the {@link execute()} or
 	 * {@link prepare()} methods.
 	 */

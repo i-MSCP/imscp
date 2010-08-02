@@ -37,7 +37,7 @@
  * @category    ispCP
  * @package     ispCP_Initializer
  * @author      Laurent declercq <laurent.declercq@ispcp.net>
- * @since       1.0.6
+ * @since       1.0.7
  * @version     1.1.0
  */
 class ispCP_Initializer {

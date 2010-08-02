@@ -41,7 +41,7 @@ check_login(__FILE__);
 /**
  * Prepare and put data in session on error(s)
  *
- * @since 1.0.6
+ * @since 1.0.7
  * @author Laurent declercq (nuxwin) <laurent.declercq@ispcp.net>
  * @param boolean TRUE on add, FALSE otherwise
  * @return void
@@ -89,7 +89,7 @@ function to_session($mode) {
 /**
  * Validates a service port and sets an appropriate message on error
  *
- * @since 1.0.6
+ * @since 1.0.7
  * @author Laurent declercq (nuxwin) <laurent.declercq@ispcp.net>
  * @param string $name Service port name
  * @param string $ip Ip address
@@ -155,7 +155,7 @@ function validates_service($name, $ip, $port, $proto, $show, $index = '') {
 /**
  * Adds or updates a services ports
  *
- * @since 1.0.6
+ * @since 1.0.7
  * @author Laurent declercq (nuxwin) <laurent.declercq@ispcp.net>
  * @param boolean $mode TRUE on add, FALSE on update
  * @return void
@@ -242,7 +242,7 @@ function add_update_services($mode) {
  *
  * This function is used for generation of both pages (show page and error page)
  *
- * @since 1.0.6
+ * @since 1.0.7
  * @author Laurent declercq (nuxwin) <laurent.declercq@ispcp.net>
  * @param ispCP_pTemplate &$tpl Reference to a pTemplate instance
  * @return void;

@@ -42,7 +42,7 @@ require_once  INCLUDEPATH . '/ispCP/Exception/Writer.php';
  * @package     ispCP_Exception
  * @subpackage  Writer
  * @author      Laurent Declercq <laurent.declercq@ispcp.net>
- * @since       1.0.6
+ * @since       1.0.7
  * @version     1.0.4
  */
 class ispCP_Exception_Writer_Mail extends ispCP_Exception_Writer {

@@ -119,7 +119,7 @@ require_once  INCLUDEPATH . '/ispCP/Config/Handler.php';
  * @subpackage	Handler
  * @author		Benedikt Heintel <benedikt.heintel@ispcp.net>
  * @author		Laurent Declercq <laurent.declercq@ispcp.net>
- * @since		1.0.6
+ * @since		1.0.7
  * @version		1.0.6
  */
 class ispCP_Config_Handler_File extends ispCP_Config_Handler {

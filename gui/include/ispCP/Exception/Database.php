@@ -37,7 +37,7 @@ require_once  INCLUDEPATH . '/ispCP/Exception.php';
  *
  * @package		ispCP_Exception
  * @author		Laurent declercq <laurent.declercq@ispcp.net>
- * @since		1.0.6
+ * @since		1.0.7
  * @version		1.0.0
  */
 class ispCP_Exception_Database extends ispCP_Exception {}
