@@ -1,6 +1,10 @@
 ispCP ω 1.0.6 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-08-02 Laurent Declercq
+	- ENGINE:
+		* Refactored engine/ispcp-rqst-mngr
+
 2010-08-01 Laurent Declercq
 	- GUI: (admin/ispcp_debugger)
 		* Added support for `dnschange` status
