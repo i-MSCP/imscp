@@ -1,6 +1,11 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-08-03 Laurent Declercq
+	- CONFIG:
+		* Removed useless templates
+		* Updated all db_e.tpl for better readability
+
 2010-08-03 Benedikt Heintel
 	- TOOLS:
 		* Updated phpMyAdmin to version 3.3.5
