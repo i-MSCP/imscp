@@ -76,12 +76,25 @@ function attachSelectedMessages($msg, $imapConnection) {
                 $message = sqimap_get_message($imapConnection, $id, $mailbox);
 
                 // fetch the subject for the message from the object
-                $filename = $message->rfc822_header->subject;
-                if ( empty($filename) ) {
+                //
+                $subject = $message->rfc822_header->subject;
+
+                // use subject for file name
+                //
+                if ( empty($subject) )
                     $filename = "untitled-".$message->entity_id;
-                }
+                else
+                    $filename = $subject;
                 $filename .= '.msg';
                 $filename = decodeHeader($filename, false, false);
+
+                // figure out a subject for new message
+                //
+                $subject = decodeHeader($subject, false, false, true);
+                $subject = trim($subject);
+                if (substr(strtolower($subject), 0, 4) != 'fwd:') {
+                    $subject = 'Fwd: ' . $subject;
+                }
 
                 array_shift($body_a);
                 array_pop($body_a);
@@ -100,6 +113,7 @@ function attachSelectedMessages($msg, $imapConnection) {
                 fclose($fp);
                 $composeMessage->initAttachment('message/rfc822',$filename,
                      $localfilename);
+                $composeMessage->rfc822_header->subject = $subject;
             }
             $j++;
         }
@@ -223,6 +237,7 @@ if(isset($expungeButton)) {
         } else {
             $composesession = attachSelectedMessages($id, $imapConnection);
             $location = set_url_var($location, 'session', $composesession, false);
+            $location = set_url_var($location, 'forward_as_attachment_init', 1, false);
             if ($compose_new_win) {
                 $location = set_url_var($location, 'composenew', 1, false);
             } else {

@@ -7,7 +7,7 @@
  *
  * @copyright 2003-2010 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: Rfc822Header.class.php 13893 2010-01-25 02:47:41Z pdontthink $
+ * @version $Id: Rfc822Header.class.php 13952 2010-06-21 07:52:41Z pdontthink $
  * @package squirrelmail
  * @subpackage mime
  * @since 1.3.2
@@ -832,14 +832,20 @@ class Rfc822Header {
      * @param mixed $arr string or array of strings
      * @param string $separator
      * @param boolean $encoded (since 1.4.0) return encoded or plain text addresses
+     * @param boolean $unconditionally_quote (since 1.4.21/1.5.2) When TRUE, always
+     *                                                      quote the personal part,
+     *                                                      whether or not it is
+     *                                                      encoded, otherwise quoting
+     *                                                      is only added if the
+     *                                                      personal part is not encoded
      * @return string
      */
-    function getAddr_s($arr, $separator = ',',$encoded=false) {
+    function getAddr_s($arr, $separator = ',',$encoded=false,$unconditionally_quote=FALSE) {
         $s = '';
 
         if (is_array($arr)) {
             foreach($arr as $arg) {
-                if ($this->getAddr_s($arg, $separator, $encoded)) {
+                if ($this->getAddr_s($arg, $separator, $encoded, $unconditionally_quote)) {
                     $s .= $separator;
                 }
             }
@@ -850,9 +856,9 @@ class Rfc822Header {
                 foreach ($addr as $addr_o) {
                     if (is_object($addr_o)) {
                         if ($encoded) {
-                            $s .= $addr_o->getEncodedAddress() . $separator;
+                            $s .= $addr_o->getEncodedAddress($unconditionally_quote) . $separator;
                         } else {
-                            $s .= $addr_o->getAddress() . $separator;
+                            $s .= $addr_o->getAddress(TRUE, FALSE, $unconditionally_quote) . $separator;
                         }
                     }
                 }
@@ -860,9 +866,9 @@ class Rfc822Header {
             } else {
                 if (is_object($addr)) {
                     if ($encoded) {
-                        $s .= $addr->getEncodedAddress();
+                        $s .= $addr->getEncodedAddress($unconditionally_quote);
                     } else {
-                        $s .= $addr->getAddress();
+                        $s .= $addr->getAddress(TRUE, FALSE, $unconditionally_quote);
                     }
                 }
             }

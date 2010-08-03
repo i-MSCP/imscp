@@ -6,7 +6,7 @@
 #
 # A simple configure script to configure SquirrelMail
 #
-# $Id: conf.pl 13906 2010-02-13 23:06:30Z pdontthink $
+# $Id: conf.pl 13966 2010-07-21 07:25:48Z pdontthink $
 ############################################################              
 $conf_pl_version = "1.4.0";
 
@@ -3101,9 +3101,7 @@ sub command94 {
 
 sub command95 {
     print "This is the name of the field in which you want to store the\n";
-    print "username of the person the prefs are for. It default to 'user'\n";
-    print "which clashes with a reserved keyword in PostgreSQL so this\n";
-    print "will need to be changed for that database at least\n";
+    print "username of the person the prefs are for. It defaults to 'user'\n";
     print "\n";
     print "[$WHT$prefs_user_field$NRM]: $WHT";
     $new_field = <STDIN>;

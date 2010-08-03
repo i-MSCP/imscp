@@ -9,7 +9,7 @@
  * @author Marc Groot Koerkamp
  * @copyright 1999-2010 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: Deliver.class.php 13893 2010-01-25 02:47:41Z pdontthink $
+ * @version $Id: Deliver.class.php 13956 2010-06-25 21:31:10Z pdontthink $
  * @package squirrelmail
  */
 
@@ -542,7 +542,7 @@ class Deliver {
         $cnt = count($header);
         $hdr_s = '';
         for ($i = 0 ; $i < $cnt ; $i++)    {
-            $hdr_s .= $this->foldLine($header[$i], 78);
+            $hdr_s .= $this->foldLine($header[$i]);
         }
         $header = $hdr_s;
         $header .= $rn; /* One blank line to separate mimeheader and body-entity */
@@ -780,7 +780,7 @@ class Deliver {
             case 'From':
                 $hdr_s .= $header[$i];
                 break;
-            default: $hdr_s .= $this->foldLine($header[$i], 78); break;
+            default: $hdr_s .= $this->foldLine($header[$i]); break;
             }
         }
         $header = $hdr_s;
@@ -790,97 +790,270 @@ class Deliver {
     }
 
     /**
-     * function foldLine - for cleanly folding of headerlines
-     *
-     * @param   string  $line
-     * @param   integer $length length to fold the line at
-     * @param   string  $pre    prefix the line with...
-     *
-     * @return string   $line folded line with trailing CRLF
-     */
-    function foldLine($line, $length, $pre='') {
-        $line = substr($line,0, -2);
-        $length -= 2; /* do not fold between \r and \n */
-        $cnt = strlen($line);
-        if ($cnt > $length) { /* try folding */
-            $fold_string = "\r\n " . $pre;
-            $bFirstFold = false;
-            $aFoldLine = array();
-            while (strlen($line) > $length) {
-                $fold = false;
-                /* handle encoded parts */
-                if (preg_match('/(=\?([^?]*)\?(Q|B)\?([^?]*)\?=)(\s+|.*)/Ui',$line,$regs)) {
-                    $fold_tmp = $regs[1];
-                    if (!trim($regs[5])) {
-                        $fold_tmp .= $regs[5];
-                    }
-                    $iPosEnc = strpos($line,$fold_tmp);
-                    $iLengthEnc = strlen($fold_tmp);
-                    $iPosEncEnd = $iPosEnc+$iLengthEnc;
-                    if ($iPosEnc < $length && (($iPosEncEnd) > $length)) {
-                        $fold = true;
-                        /* fold just before the start of the encoded string */
-                        if ($iPosEnc) {
-                            $aFoldLine[] = substr($line,0,$iPosEnc);
-                        }
-                        $line = substr($line,$iPosEnc);
-                        if (!$bFirstFold) {
-                            $bFirstFold = true;
-                            $length -= strlen($fold_string);
-                        }
-                        if ($iLengthEnc > $length) { /* place the encoded
-                            string on a separate line and do not fold inside it*/
-                            /* minimize foldstring */
-                            $fold_string = "\r\n ";
-                            $aFoldLine[] = substr($line,0,$iLengthEnc);
-                            $line = substr($line,$iLengthEnc);
-                        }
-                    } else if ($iPosEnc < $length) { /* the encoded string fits into the foldlength */
-                        /*remainder */
-                        $sLineRem = substr($line,$iPosEncEnd,$length - $iPosEncEnd);
-                        if (preg_match('/^(=\?([^?]*)\?(Q|B)\?([^?]*)\?=)(.*)/Ui',$sLineRem) || !preg_match('/[=,;\s]/',$sLineRem)) {
-                            /*impossible to fold clean in the next part -> fold after the enc string */
-                            $aFoldLine[] = substr($line,0,$iPosEncEnd);
-                            $line = substr($line,$iPosEncEnd);
-                            $fold = true;
-                            if (!$bFirstFold) {
-                                $bFirstFold = true;
-                                $length -= strlen($fold_string);
-                            }
-                        }
-                    }
+      * Fold header lines per RFC 2822/2.2.3 and RFC 822/3.1.1
+      *
+      * Herein "soft" folding/wrapping (with whitespace tokens) is
+      * what we refer to as the preferred method of wrapping - that
+      * which we'd like to do within the $soft_wrap limit, but if
+      * not possible, we will try to do as soon as possible after
+      * $soft_wrap up to the $hard_wrap limit.  Encoded words don't
+      * need to be detected in this phase, since they cannot contain
+      * spaces.
+      *
+      * "Hard" folding/wrapping (with "hard" tokens) is what we refer
+      * to as less ideal wrapping that will be done to keep within
+      * the $hard_wrap limit.  This adds other syntactical breaking
+      * elements such as commas and encoded words.
+      *
+      * @param string  $header    The header content being folded
+      * @param integer $soft_wrap The desirable maximum line length
+      *                           (OPTIONAL; default is 78, per RFC)
+      * @param string  $indent    Wrapped lines will already have
+      *                           whitespace following the CRLF wrap,
+      *                           but you can add more indentation (or
+      *                           whatever) with this.  The use of this
+      *                           parameter is DISCOURAGED, since it
+      *                           can corrupt the redisplay (unfolding)
+      *                           of headers whose content is space-
+      *                           sensitive, like subjects, etc.
+      *                           (OPTIONAL; default is an empty string)
+      * @param string  $hard_wrap The absolute maximum line length
+      *                           (OPTIONAL; default is 998, per RFC)
+      *
+      * @return string The folded header content, with a trailing CRLF.
+      *
+      */
+    function foldLine($header, $soft_wrap=78, $indent='', $hard_wrap=998) {
+
+        // the "hard" token list can be altered if desired,
+        // for example, by adding ":"
+        // (in the future, we can take optional arguments
+        // for overriding or adding elements to the "hard"
+        // token list if we want to get fancy)
+        //
+        // the order of these is significant - preferred
+        // fold points should be listed first
+        //
+        // it is advised that the "=" always come first
+        // since it also finds encoded words, thus if it
+        // comes after some other token that happens to
+        // fall within the encoded word, the encoded word
+        // could be inadvertently broken in half, which
+        // is not allowable per RFC
+        //
+        $hard_break_tokens = array(
+            '=',  // includes encoded word detection
+            ',',
+            ';',
+        );
+
+        // the order of these is significant too
+        //
+        $whitespace = array(
+            ' ',
+            "\t",
+        );
+
+        $CRLF = "\r\n";
+
+        $folded_header = '';
+
+        // if using an indent string, reduce wrap limits by its size
+        //
+        if (!empty($indent)) {
+            $soft_wrap -= strlen($indent);
+            $hard_wrap -= strlen($indent);
+        }
+
+        while (strlen($header) > $soft_wrap) {
+
+            $soft_wrapped_line = substr($header, 0, $soft_wrap);
+
+            // look for a token as close to the end of the soft wrap limit as possible
+            //
+            foreach ($whitespace as $token) {
+
+                // note that this if statement also fails when $pos === 0,
+                // which is intended, since blank lines are not allowed
+                //
+                if ($pos = strrpos($soft_wrapped_line, $token))
+                {
+                    $new_fold = substr($header, 0, $pos);
+
+                    // make sure proposed fold doesn't create a blank line
+                    //
+                    if (!trim($new_fold)) continue;
+
+                    // with whitespace breaks, we fold BEFORE the token
+                    //
+                    $folded_header .= $new_fold . $CRLF . $indent;
+                    $header = substr($header, $pos);
+
+                    // ready for next while() iteration
+                    //
+                    continue 2;
+
                 }
-                if (!$fold) {
-                    $line_tmp = substr($line,0,$length);
-                    $iFoldPos = false;
-                    /* try to fold at logical places */
-                    switch (true)
-                    {
-                    case ($iFoldPos = strrpos($line_tmp,',')): break;
-                    case ($iFoldPos = strrpos($line_tmp,';')): break;
-                    case ($iFoldPos = strrpos($line_tmp,' ')): break;
-                    case ($iFoldPos = strrpos($line_tmp,'=')): break;
-                    default: break;
+
+            }
+
+            // we were unable to find a wrapping point within the soft
+            // wrap limit, so now we'll try to find the first possible
+            // soft wrap point within the hard wrap limit
+            //
+            $hard_wrapped_line = substr($header, 0, $hard_wrap);
+
+            // look for a *SOFT* token as close to the
+            // beginning of the hard wrap limit as possible
+            //
+            foreach ($whitespace as $token) {
+
+                // use while loop instead of if block because it
+                // is possible we don't want the first one we find
+                //
+                $pos = $soft_wrap - 1; // -1 is corrected by +1 on next line
+                while ($pos = strpos($hard_wrapped_line, $token, $pos + 1))
+                {
+
+                    $new_fold = substr($header, 0, $pos);
+
+                    // make sure proposed fold doesn't create a blank line
+                    //
+                    if (!trim($new_fold)) continue;
+
+                    // with whitespace breaks, we fold BEFORE the token
+                    //
+                    $folded_header .= $new_fold . $CRLF . $indent;
+                    $header = substr($header, $pos);
+
+                    // ready for next outter while() iteration
+                    //
+                    continue 3;
+
+                }
+
+            }
+
+            // we were still unable to find a soft wrapping point within
+            // both the soft and hard wrap limits, so if the length of
+            // what is left is no more than the hard wrap limit, we'll
+            // simply take the whole thing
+            //
+            if (strlen($header) <= strlen($hard_wrapped_line))
+                break;
+
+            // otherwise, we can't quit yet - look for a "hard" token
+            // as close to the end of the hard wrap limit as possible
+            //
+            foreach ($hard_break_tokens as $token) {
+
+                // note that this if statement also fails when $pos === 0,
+                // which is intended, since blank lines are not allowed
+                //
+                if ($pos = strrpos($hard_wrapped_line, $token))
+                {
+
+                    // if we found a "=" token, we must determine whether,
+                    // if it is part of an encoded word, it is the beginning
+                    // or middle of one, where we need to readjust $pos a bit
+                    //
+                    if ($token == '=') {
+
+                        // if we found the beginning of an encoded word,
+                        // we want to break BEFORE the token
+                        //
+                        if (preg_match('/^(=\?([^?]*)\?(Q|B)\?([^?]*)\?=)/i',
+                                       substr($header, $pos))) {
+                            $pos--;
+                        }
+
+                        // check if we found this token in the *middle*
+                        // of an encoded word, in which case we have to
+                        // ignore it, pushing back to the token that
+                        // starts the encoded word instead
+                        //
+                        // of course, this is only possible if there is
+                        // more content after the next hard wrap
+                        //
+                        // then look for the end of an encoded word in
+                        // the next part (past the next hard wrap)
+                        //
+                        // then see if it is in fact part of a legitimate
+                        // encoded word
+                        //
+                        else if (strlen($header) > $hard_wrap
+                         && ($end_pos = strpos(substr($header, $hard_wrap), '?=')) !== FALSE
+                         && preg_match('/(=\?([^?]*)\?(Q|B)\?([^?]*)\?=)$/i',
+                                       substr($header, 0, $hard_wrap + $end_pos + 2),
+                                       $matches)) {
+
+                            $pos = $hard_wrap + $end_pos + 2 - strlen($matches[1]) - 1;
+
+                        }
+
                     }
 
-                    if (!$iFoldPos) { /* clean folding didn't work */
-                        $iFoldPos = $length;
+                    // $pos could have been changed; make sure it's
+                    // not at the beginning of the line, as blank
+                    // lines are not allowed
+                    //
+                    if ($pos === 0) continue;
+
+                    // we are dealing with a simple token break...
+                    //
+                    // for non-whitespace breaks, we fold AFTER the token
+                    // and add a space after the fold if not immediately
+                    // followed by a whitespace character in the next part
+                    //
+                    $folded_header .= substr($header, 0, $pos + 1) . $CRLF;
+
+                    // don't go beyond end of $header, though
+                    //
+                    if (strlen($header) > $pos + 1) {
+                        $header = substr($header, $pos + 1);
+                        if (!in_array($header{0}, $whitespace))
+                            $header = ' ' . $indent . $header;
+                    } else {
+                        $header = '';
                     }
-                    $aFoldLine[] = substr($line,0,$iFoldPos+1);
-                    $line = substr($line,$iFoldPos+1);
-                    if (!$bFirstFold) {
-                        $bFirstFold = true;
-                        $length -= strlen($fold_string);
-                    }
+
+                    // ready for next while() iteration
+                    //
+                    continue 2;
+
                 }
+
             }
-            /*$reconstruct the line */
-            if ($line) {
-                $aFoldLine[] = $line;
+
+            // finally, we just couldn't find anything to fold on, so we
+            // have to just cut it off at the hard limit
+            //
+            $folded_header .= $hard_wrapped_line . $CRLF;
+
+            // is there more?
+            //
+            if (strlen($header) > strlen($hard_wrapped_line)) {
+                $header = substr($header, strlen($hard_wrapped_line));
+                if (!in_array($header{0}, $whitespace))
+                    $header = ' ' . $indent . $header;
+            } else {
+                $header = '';
             }
-            $line = implode($fold_string,$aFoldLine);
+
         }
-        return $line."\r\n";
+
+
+        // add any left-overs
+        //
+        $folded_header .= $header;
+
+
+        // make sure it ends with a CRLF
+        //
+        if (substr($folded_header, -2) != $CRLF) $folded_header .= $CRLF;
+
+
+        return $folded_header;
     }
 
     /**

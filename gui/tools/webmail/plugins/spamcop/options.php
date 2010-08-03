@@ -103,19 +103,20 @@ spamcop_load();
 			echo ">"._("Quick email-based reporting");
 			echo '</option>';
 		    }
-	        ?>
-	      <option value="thorough_email"
-		<?php
-	    	  if ($spamcop_method == 'thorough_email') echo ' selected';
-	    	  echo ">"._("Thorough email-based reporting");
+
+		    $selected = '';
+		    if ($spamcop_method == 'thorough_email') {
+		        $selected = ' selected';
+		    }
+		    echo sprintf('	      <option value="thorough_email"%s>%s</option>',$selected, _("Through email-based reporting"));
+		    
+		    $selected = '';
+		    if ($spamcop_method == 'web_form') {
+		        $selected = ' selected';
+		    }
+		    echo sprintf('	      <option value="web_form"%s>%s</option>', $selected, _("Web-based form"));
+		    
 		?>
-	      </option>
-	      <option value="web_form"
-	        <?php
-	          if ($spamcop_method == 'web_form') echo ' selected';
-	    	  echo ">"._("Web-based form");
-		?>
-	      </option>
 	    </select>
 	    <input type="hidden" name="action" value="meth" />
 	    <?php

@@ -75,6 +75,32 @@ the "Encrypt Password" checkbox in the option page is not checked. If you
 reenter account's passwords the system will switch to encrypted mode.
 
 
+Security
+========
+
+By default, the user is not allowed to enter a non-standard POP3 port
+number when configuring an external server with this plugin.  This prevents
+the use of this plugin as a port scanner against other servers.  However,
+if you need to allow users to access a POP3 service running on a non-
+standard port, you may create a "config.php" file by copying "config_example.php"
+and editing the list of allowable port numbers therein.  If "ALL" is added
+to the list of allowable port numbers, then there will be no restriction
+on port numbers whatsoever.  Be aware that although this may not represent
+any security threat to servers elsewhere on the Internet that does not
+already exist (other port scanners are freely available), if your server
+resides on a network behind a firewall, this could allow a malicious user
+to scan the servers and services behind your firewall that they'd normally
+not have access to.
+
+The user will also not be allowed to enter server addresses starting
+with "10.", "192.", "127." and "localhost" by default.  This prevents users
+from being able to scan an internal network for the presence of other servers
+they are not allowed to access.  If other server addresses should be banned,
+or this list is too restrictive, you may create a "config.php" file by copying
+"config_example.php" and then edit the list of blocked server addresses
+therein.
+
+
 Future Work
 ===========
 

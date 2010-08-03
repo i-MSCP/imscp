@@ -4,6 +4,7 @@ ispCP ω 1.0.7 ChangeLog
 2010-08-03 Benedikt Heintel
 	- TOOLS:
 		* Updated phpMyAdmin to version 3.3.5
+		* Updates Squirrelmail to version 1.4.21
 
 2010-08-02 Laurent Declercq
 	- GUI:

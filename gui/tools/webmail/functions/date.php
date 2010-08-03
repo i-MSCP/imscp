@@ -10,7 +10,7 @@
  *
  * @copyright 1999-2010 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: date.php 13893 2010-01-25 02:47:41Z pdontthink $
+ * @version $Id: date.php 13932 2010-03-30 05:54:31Z pdontthink $
  * @package squirrelmail
  * @subpackage date
  */
@@ -406,7 +406,16 @@ function getTimeStamp($dateParts) {
     **        and everything would be bumped up one.
     **/
     if (count($dateParts) <2) {
-       return -1;
+        return -1;
+    } else if (count($dateParts) ==3) {
+        if (substr_count($dateParts[0],'-') == 2 &&
+            substr_count($dateParts[1],':') == 2) {
+            //  dd-Month-yyyy 23:19:05 +0200
+            //  redefine the date
+            $aDate = explode('-',$dateParts[0]);
+            $newDate = array($aDate[0],$aDate[1],$aDate[2],$dateParts[1],$dateParts[2]);
+            $dateParts = $newDate;
+        }
     }
 
     /*

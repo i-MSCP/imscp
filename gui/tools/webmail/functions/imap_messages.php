@@ -8,7 +8,7 @@
  *
  * @copyright 1999-2010 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: imap_messages.php 13893 2010-01-25 02:47:41Z pdontthink $
+ * @version $Id: imap_messages.php 13932 2010-03-30 05:54:31Z pdontthink $
  * @package squirrelmail
  * @subpackage imap
  */
@@ -757,6 +757,7 @@ function sqimap_get_small_header_list($imap_stream, $msg_list, $show_num=false) 
 
         // use unset because we do isset below
         unset($date);
+        unset($internal_date);
 
         $flag_seen = $flag_answered = $flag_deleted = $flag_flagged = false;
 
@@ -833,7 +834,7 @@ function sqimap_get_small_header_list($imap_stream, $msg_list, $show_num=false) 
 
                 break;
             case 'INTERNALDATE':
-                $date = parseString($read,$i);
+                $internal_date = parseString($read,$i);
                 //if ($tmpdate === false) break 3;
                 //$tmpdate = str_replace('  ',' ',$tmpdate);
                 //$tmpdate = explode(' ',$tmpdate);
@@ -898,11 +899,25 @@ function sqimap_get_small_header_list($imap_stream, $msg_list, $show_num=false) 
                 break;
             }
         }
-        if (isset($date)) {
-            $date = str_replace('  ', ' ', $date);
-            $tmpdate  = explode(' ', trim($date));
+        if (isset($date) || isset($internal_date)) {
+            if (isset($internal_date)) {
+                $internal_date = str_replace('  ', ' ', $internal_date);
+                $tmpinternal_date  = explode(' ', trim($internal_date));
+                if (!isset($date)) {
+                    $date = $internal_date;
+                    $tmpdate = $tmpinternal_date;
+                }
+            }
+            if (isset($date)) {
+                $date = str_replace('  ', ' ', $date);
+                $tmpdate  = explode(' ', trim($date));
+                if (!isset($internal_date)) {
+                    $internal_date = $date;
+                    $tmpinternal_date = $tmpdate;
+                }
+            }
         } else {
-            $tmpdate = $date = array();
+            $internal_date = $tmpinternal_date = $tmpdate = $date = array();
         }
         if ($uid_support) {
             $msgi ="$unique_id";
@@ -911,6 +926,8 @@ function sqimap_get_small_header_list($imap_stream, $msg_list, $show_num=false) 
             $msgi = "$id";
             $messages[$msgi]['ID'] = $id;
         }
+        $messages[$msgi]['RECEIVED_TIME_STAMP'] = getTimeStamp($tmpinternal_date);
+        $messages[$msgi]['RECEIVED_DATE_STRING'] = getDateString($messages[$msgi]['RECEIVED_TIME_STAMP']);
         $messages[$msgi]['TIME_STAMP'] = getTimeStamp($tmpdate);
         $messages[$msgi]['DATE_STRING'] = getDateString($messages[$msgi]['TIME_STAMP']);
         $messages[$msgi]['FROM'] = $from; //parseAddress($from);

@@ -1,6 +1,13 @@
 Installing SquirrelMail
 =======================
 
+NOTE!  More thorough and possibly up-to-date information about how
+to install, use and maintain SquirrelMail is available in our online
+documentation here:
+
+http://squirrelmail.org/docs/admin/admin.html
+
+
 Table of Contents:
   0.  (QUICK!)   Quick install guide
   1.  (PHP)      Configure your webserver to work with PHP

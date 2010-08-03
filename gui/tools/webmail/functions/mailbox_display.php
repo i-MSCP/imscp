@@ -8,7 +8,7 @@
  *
  * @copyright 1999-2010 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: mailbox_display.php 13902 2010-02-04 20:13:23Z pdontthink $
+ * @version $Id: mailbox_display.php 13932 2010-03-30 05:54:31Z pdontthink $
  * @package squirrelmail
  */
 
@@ -53,7 +53,10 @@ function printMessageInfo($imapConnection, $t, $not_last=true, $key, $mailbox,
            $row_count,
            $allow_server_sort, /* enable/disable server-side sorting */
            $truncate_subject,
-           $truncate_sender;
+           $truncate_sender,
+           $internal_date_sort;
+
+    sqgetGlobalVar('sort', $sort, SQ_SESSION);
 
     $color_string = $color[4];
 
@@ -224,7 +227,12 @@ function printMessageInfo($imapConnection, $t, $not_last=true, $key, $mailbox,
                            $hlt_color, $from_xtra );
                 break;
             case 3: /* date */
-                $date_string = $msg['DATE_STRING'] . '';
+                // show internal date if using it to sort
+                if ($internal_date_sort && ($sort == 0 || $sort == 1)) {
+                    $date_string = $msg['RECEIVED_DATE_STRING'] . '';
+                } else {
+                    $date_string = $msg['DATE_STRING'] . '';
+                }
                 if ($date_string == '') {
                     $date_string = _("Unknown date");
                 }
@@ -560,9 +568,14 @@ function calc_msort($msgs, $sort, $mailbox = 'INBOX') {
      * 9 = Size (dn)
      */
 
+    global $internal_date_sort;
+
     if (($sort == 0) || ($sort == 1)) {
         foreach ($msgs as $item) {
-            $msort[] = $item['TIME_STAMP'];
+            if ($internal_date_sort)
+                $msort[] = $item['RECEIVED_TIME_STAMP'];
+            else
+                $msort[] = $item['TIME_STAMP'];
         }
     } elseif (($sort == 2) || ($sort == 3)) {
         $fld_sort = (handleAsSent($mailbox)?'TO-SORT':'FROM-SORT');
@@ -835,7 +848,7 @@ function mail_message_listing_end($num_msgs, $paginator_str, $msg_cnt_str, $colo
 }
 
 function printHeader($mailbox, $sort, $color, $showsort=true) {
-    global $index_order;
+    global $index_order, $internal_date_sort;
     echo html_tag( 'tr' ,'' , 'center', $color[5] );
 
     /* calculate the width of the subject column based on the
@@ -867,7 +880,9 @@ function printHeader($mailbox, $sort, $color, $showsort=true) {
             break;
         case 3: /* date */
             echo html_tag( 'td' ,'' , 'left', '', 'width="5%" nowrap' )
-                 . '<b>' . _("Date") . '</b>';
+                 . '<b>'
+                 . ($internal_date_sort && ($sort == 0 || $sort == 1) ? _("Received") : _("Date"))
+                 . '</b>';
             if ($showsort) {
                 ShowSortButton($sort, $mailbox, 0, 1);
             }

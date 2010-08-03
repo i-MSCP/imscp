@@ -2,6 +2,36 @@
 *** SquirrelMail Stable Series 1.4 ***
 **************************************
 
+Version 1.4.21 - 23 Jul 2010
+----------------------------
+  - Now allow more than one plugin to control the compose form submit action.
+  - When sorting by received date, the received date is now shown on the
+    message list.
+  - Explicitly disable browser caching for left_main and right_main pages
+    (#2983134).
+  - Fix error with SpamCop reporting plugin not being able to send report as
+    emails (#1795310).
+  - Fix typo in SpamCop plugin.
+  - Reduced default time security tokens stay valid from 30 days to 2 days
+    (reduces chances of session data growing too large)
+  - Several speed enhancements for recent fixes regarding the display of
+    encoded subjects, including a fix for messages with invalid subject
+    encoding (includes #2987016 amongst several other issues reported via
+    mailing list, etc.) (Many thanks to Zdenek Pytela for the untiring help
+    diagnosing and testing.)
+  - Fixed minor vulnerability in Mail Fetch plugin.
+    [CVE-2010-1637/TEHTRI-SA-2010-009]
+  - Now properly quote personal part of encoded addresses when replying.
+  - Now fill in default subject when forwarding as attachment (#2936541).
+  - Implement header folding that doesn't add extraneous spaces so unfolding
+    is less ambiguous (#1951776).
+  - Fixed issues caused by use of PostgreSQL keyword "user" in SquirrelMail's
+    default preferences database schema (#2943483).
+  - Fixed attachment filename decoding problems (#2994865).
+  - Now default search criteria to the TO header when searching the sent folder.
+  - Fixed literal processing of 8-bit usernames/passwords during login.
+    [CVE-2010-2813]
+
 Version 1.4.20 - 06 Mar 2010
 ---------------------------
   - Fixed issue with search not using literals correctly (#2846511).
@@ -50,7 +80,7 @@ Version 1.4.19 - 21 May 2009
   - Resend cookie to browser after session ID regeneration so it gets the
     right cookie parameters.
   - In SMTP, when we EHLO with an IP, wrap it in brackets (#2793154).
-  - The shell escaping fix in map_yp_alias (CVE-2009-1579) was incomplete.
+  - The shell escaping fix in map_yp_alias [CVE-2009-1579] was incomplete.
     Thanks Michal Hlavinka for noticing this. [CVE-2009-1381]
 
 Version 1.4.18 - 11 May 2009

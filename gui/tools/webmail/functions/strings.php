@@ -8,7 +8,7 @@
  *
  * @copyright 1999-2010 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: strings.php 13918 2010-03-07 00:30:35Z pdontthink $
+ * @version $Id: strings.php 13974 2010-07-23 04:49:46Z pdontthink $
  * @package squirrelmail
  */
 
@@ -16,14 +16,14 @@
  * SquirrelMail version number -- DO NOT CHANGE
  */
 global $version;
-$version = '1.4.20';
+$version = '1.4.21';
 
 /**
  * SquirrelMail internal version number -- DO NOT CHANGE
  * $sm_internal_version = array (release, major, minor)
  */
 global $SQM_INTERNAL_VERSION;
-$SQM_INTERNAL_VERSION = array(1,4,20);
+$SQM_INTERNAL_VERSION = array(1,4,21);
 
 /**
  * There can be a circular issue with includes, where the $version string is
@@ -141,7 +141,7 @@ function sqUnWordWrap(&$body) {
   * Truncates the given string so that it has at
   * most $max_chars characters.  NOTE that a "character"
   * may be a multibyte character, or (optionally), an
-  * HTML entity , so this function is different than
+  * HTML entity, so this function is different than
   * using substr() or mb_substr().
   * 
   * NOTE that if $elipses is given and used, the returned
@@ -187,8 +187,9 @@ function sm_truncate_string($string, $max_chars, $elipses='',
    if ($html_entities_as_chars)
    {
 
-      $entity_pos = -1;
-      while (($entity_pos = sq_strpos($string, '&', $entity_pos + 1)) !== FALSE
+      $entity_pos = $entity_end_pos = -1;
+      while ($entity_end_pos + 1 < $actual_strlen
+          && ($entity_pos = sq_strpos($string, '&', $entity_end_pos + 1)) !== FALSE
           && ($entity_end_pos = sq_strpos($string, ';', $entity_pos)) !== FALSE
           && $entity_pos <= $adjusted_max_chars)
       {
@@ -814,16 +815,16 @@ function sq_strlen($string, $charset=NULL){
    //
    if ($charset == 'auto')
    {
-//FIXME: is there any reason why this cannot be a global flag used by all string wrapper functions?
-      static $auto_charset;
-      if (!isset($auto_charset))
+//FIXME: this may or may not be better as a session value instead of a global one
+      global $sq_string_func_auto_charset;
+      if (!isset($sq_string_func_auto_charset))
       {
          global $default_charset, $squirrelmail_language;
          set_my_charset();
-         $auto_charset = $default_charset;
-         if ($squirrelmail_language == 'ja_JP') $auto_charset = 'euc-jp';
+         $sq_string_func_auto_charset = $default_charset;
+         if ($squirrelmail_language == 'ja_JP') $sq_string_func_auto_charset = 'euc-jp';
       }
-      $charset = $auto_charset;
+      $charset = $sq_string_func_auto_charset;
    }
 
 
@@ -894,16 +895,16 @@ function sq_strpos($haystack, $needle, $offset=0, $charset='auto')
    //
    if ($charset == 'auto')
    {
-//FIXME: is there any reason why this cannot be a global flag used by all string wrapper functions?
-      static $auto_charset;
-      if (!isset($auto_charset))
+//FIXME: this may or may not be better as a session value instead of a global one
+      global $sq_string_func_auto_charset;
+      if (!isset($sq_string_func_auto_charset))
       {
          global $default_charset, $squirrelmail_language;
          set_my_charset();
-         $auto_charset = $default_charset;
-         if ($squirrelmail_language == 'ja_JP') $auto_charset = 'euc-jp';
+         $sq_string_func_auto_charset = $default_charset;
+         if ($squirrelmail_language == 'ja_JP') $sq_string_func_auto_charset = 'euc-jp';
       }
-      $charset = $auto_charset;
+      $charset = $sq_string_func_auto_charset;
    }
 
 
@@ -934,7 +935,7 @@ function sq_strpos($haystack, $needle, $offset=0, $charset='auto')
 ===== */
 //FIXME: is there any reason why this cannot be a static global array used by all string wrapper functions?
    if (in_array($charset, sq_mb_list_encodings()))
-      return mb_strpos($haystack, $needle, $offset, $charset);
+       return mb_strpos($haystack, $needle, $offset, $charset);
 
 
    // else use normal strpos()
@@ -987,16 +988,16 @@ function sq_substr($string, $start, $length=NULL, $charset='auto')
    //
    if ($charset == 'auto')
    {
-//FIXME: is there any reason why this cannot be a global flag used by all string wrapper functions?
-      static $auto_charset;
-      if (!isset($auto_charset))
+//FIXME: this may or may not be better as a session value instead of a global one
+      global $sq_string_func_auto_charset;
+      if (!isset($sq_string_func_auto_charset))
       {
          global $default_charset, $squirrelmail_language;
          set_my_charset();
-         $auto_charset = $default_charset;
-         if ($squirrelmail_language == 'ja_JP') $auto_charset = 'euc-jp';
+         $sq_string_func_auto_charset = $default_charset;
+         if ($squirrelmail_language == 'ja_JP') $sq_string_func_auto_charset = 'euc-jp';
       }
-      $charset = $auto_charset;
+      $charset = $sq_string_func_auto_charset;
    }
 
 
@@ -1075,16 +1076,17 @@ function sq_substr_replace($string, $replacement, $start, $length=NULL,
    //
    if ($charset == 'auto')
    {
-//FIXME: is there any reason why this cannot be a global flag used by all string wrapper functions?
-      static $auto_charset;
-      if (!isset($auto_charset))
+//FIXME: this may or may not be better as a session value instead of a global one
+      $charset = $auto_charset;
+      global $sq_string_func_auto_charset;
+      if (!isset($sq_string_func_auto_charset))
       {
          global $default_charset, $squirrelmail_language;
          set_my_charset();
-         $auto_charset = $default_charset;
-         if ($squirrelmail_language == 'ja_JP') $auto_charset = 'euc-jp';
+         $sq_string_func_auto_charset = $default_charset;
+         if ($squirrelmail_language == 'ja_JP') $sq_string_func_auto_charset = 'euc-jp';
       }
-      $charset = $auto_charset;
+      $charset = $sq_string_func_auto_charset;
    }
 
 
@@ -1172,20 +1174,26 @@ function sq_substr_replace($string, $replacement, $start, $length=NULL,
  * @since 1.5.1 and 1.4.6
  */
 function sq_mb_list_encodings() {
+
+    // if it's already in the session, don't need to regenerate it
+    if (sqgetGlobalVar('mb_supported_encodings',$mb_supported_encodings,SQ_SESSION)
+     && is_array($mb_supported_encodings))
+        return $mb_supported_encodings;
+
     // check if mbstring extension is present
-    if (! function_exists('mb_internal_encoding'))
-        return array();
+    if (! function_exists('mb_internal_encoding')) {
+        $supported_encodings = array();
+        sqsession_register($supported_encodings, 'mb_supported_encodings');
+        return $supported_encodings;
+    }
 
     // php 5+ function
     if (function_exists('mb_list_encodings')) {
-        $ret = mb_list_encodings();
-        array_walk($ret,'sq_lowercase_array_vals');
-        return $ret;
+        $supported_encodings = mb_list_encodings();
+        array_walk($supported_encodings, 'sq_lowercase_array_vals');
+        sqsession_register($supported_encodings, 'mb_supported_encodings');
+        return $supported_encodings;
     }
-
-    // don't try to test encodings, if they are already stored in session
-    if (sqgetGlobalVar('mb_supported_encodings',$mb_supported_encodings,SQ_SESSION))
-        return $mb_supported_encodings;
 
     // save original encoding
     $orig_encoding=mb_internal_encoding();
@@ -1231,7 +1239,7 @@ function sq_mb_list_encodings() {
     mb_internal_encoding($orig_encoding);
 
     // register list in session
-    sqsession_register($supported_encodings,'mb_supported_encodings');
+    sqsession_register($supported_encodings, 'mb_supported_encodings');
 
     return $supported_encodings;
 }
@@ -1262,10 +1270,10 @@ function sq_trim_value ( &$value ) {
   *
   * @param boolean $purge_old Indicates if old tokens
   *                           should be purged from the
-  *                           list ("old" is 30 days or
+  *                           list ("old" is 2 days or
   *                           older unless the administrator
   *                           overrides that value using
-  *                           $max_security_token_age in
+  *                           $max_token_age_days in
   *                           config/config_local.php)
   *                           (OPTIONAL; default is to always
   *                           purge old tokens)
@@ -1288,7 +1296,7 @@ function sm_get_user_security_tokens($purge_old=TRUE)
    //
    if ($purge_old)
    {
-      if (empty($max_token_age_days)) $max_token_age_days = 30;
+      if (empty($max_token_age_days)) $max_token_age_days = 2;
       $now = time();
       $discard_token_date = $now - ($max_token_age_days * 86400);
       $cleaned_tokens = array();
@@ -1356,8 +1364,8 @@ function sm_generate_security_token()
   * from the user's preferences if it was valid.  If the token
   * is too old but otherwise valid, it will still be rejected.
   *
-  * "Too old" is 30 days or older unless the administrator
-  * overrides that value using $max_security_token_age in
+  * "Too old" is 2 days or older unless the administrator
+  * overrides that value using $max_token_age_days in
   * config/config_local.php
   *
   * WARNING: If the administrator has turned the token system
@@ -1422,7 +1430,7 @@ function sm_validate_security_token($token, $validity_period=0, $show_error=FALS
 
    // reject tokens that are too old
    //
-   if (empty($max_token_age_days)) $max_token_age_days = 30;
+   if (empty($max_token_age_days)) $max_token_age_days = 2;
    $old_token_date = $now - ($max_token_age_days * 86400);
    if ($timestamp < $old_token_date)
    {

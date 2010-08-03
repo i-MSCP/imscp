@@ -7,7 +7,7 @@
  *
  * @copyright 1999-2010 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: imap_general.php 13893 2010-01-25 02:47:41Z pdontthink $
+ * @version $Id: imap_general.php 13972 2010-07-23 03:18:42Z pdontthink $
  * @package squirrelmail
  * @subpackage imap
  */
@@ -563,18 +563,16 @@ function sqimap_login ($username, $password, $imap_server_address, $imap_port, $
             $message .= _("Please contact your system administrator and report this error.");
         } else {
             // Original IMAP login code
-            $query = 'LOGIN';
-            if(sq_is8bit($username)) {
-                $query .= ' {' . strlen($username) . "}\r\n$username";
+            if(sq_is8bit($username) || sq_is8bit($password)) {
+                $query['command'] = 'LOGIN';
+                $query['literal_args'][0] = $username;
+                $query['literal_args'][1] = $password;
+                $read = sqimap_run_literal_command($imap_stream, $query, false, $response, $message);
             } else {
-                $query .= ' "' . quoteimap($username) . '"';
+                $query = 'LOGIN "' . quoteimap($username) . '"'
+                       . ' "' . quoteimap($password) . '"';
+                $read = sqimap_run_command ($imap_stream, $query, false, $response, $message);
             }
-            if(sq_is8bit($password)) {
-                $query .= ' {' . strlen($password) . "}\r\n$password";
-            } else {
-                $query .= ' "' . quoteimap($password) . '"';
-            }
-            $read = sqimap_run_command ($imap_stream, $query, false, $response, $message);
         }
     } elseif ($imap_auth_mech == 'plain') {
         /* Replace this with SASL PLAIN if it ever gets implemented */

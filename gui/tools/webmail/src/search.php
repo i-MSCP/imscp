@@ -53,7 +53,10 @@ if (!sqgetGlobalVar('what',$what,SQ_GET)) {
 if (! sqgetGlobalVar('where',$where,SQ_GET) ||
     ! in_array( $where, array('BODY','TEXT','SUBJECT','FROM','CC','TO'))) {
     // make sure that 'where' is one if standard IMAP SEARCH keywords
-    $where = 'FROM';
+    if (isset($mailbox) && isSentMailbox($mailbox, TRUE))
+        $where = 'TO';
+    else
+        $where = 'FROM';
 }
 if ( !sqgetGlobalVar('preselected', $preselected, SQ_GET) || !is_array($preselected)) {
   $preselected = array();

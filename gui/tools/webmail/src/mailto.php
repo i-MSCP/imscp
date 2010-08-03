@@ -68,7 +68,11 @@ $force_login = FALSE;
 $compose_only = FALSE;
 
 
+// Disable Browser Caching
+//
+header('Cache-Control: no-cache, no-store, must-revalidate');
 header('Pragma: no-cache');
+header('Expires: Sat, 1 Jan 2000 00:00:00 GMT');
 
 $trtable = array('cc'           => 'cc',
                  'bcc'          => 'bcc',

@@ -2,7 +2,7 @@
 # Copyright (c) 1999-2010 The SquirrelMail Project Team
 # This file is distributed under the same license as the SquirrelMail package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# $Id: squirrelmail.pot 13893 2010-01-25 02:47:41Z pdontthink $
+# $Id: squirrelmail.pot 13941 2010-06-20 16:28:12Z jangliss $
 #, fuzzy
 msgid ""
 msgstr ""
@@ -3122,7 +3122,7 @@ msgstr ""
 msgid "Quick email-based reporting"
 msgstr ""
 
-msgid "Thorough email-based reporting"
+msgid "Through email-based reporting"
 msgstr ""
 
 msgid "Web-based form"

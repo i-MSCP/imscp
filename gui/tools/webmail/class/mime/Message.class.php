@@ -7,7 +7,7 @@
  *
  * @copyright 2003-2010 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: Message.class.php 13893 2010-01-25 02:47:41Z pdontthink $
+ * @version $Id: Message.class.php 13926 2010-03-08 09:26:58Z kink $
  * @package squirrelmail
  * @subpackage mime
  * @since 1.3.2
@@ -923,12 +923,14 @@ class Message {
         if ($this->type0 == 'multipart') {
             if($this->type1 == 'alternative') {
                 $msg = $this->findAlternativeEntity($alt_order);
-                if (count($msg->entities) == 0) {
-                    $entity[] = $msg->entity_id;
-                } else {
-                    $entity = $msg->findDisplayEntity($entity, $alt_order, $strict);
+                if ( ! is_null($msg) ) {
+                    if (count($msg->entities) == 0) {
+                        $entity[] = $msg->entity_id;
+                    } else {
+                        $entity = $msg->findDisplayEntity($entity, $alt_order, $strict);
+                    }
+                    $found = true;
                 }
-                $found = true;
             } else if ($this->type1 == 'related') { /* RFC 2387 */
                 $msgs = $this->findRelatedEntity();
                 foreach ($msgs as $msg) {
@@ -993,19 +995,19 @@ class Message {
 
     /**
      * @param array $alt_order
-     * @return array
+     * @return entity
      */
     function findAlternativeEntity($alt_order) {
         /* If we are dealing with alternative parts then we  */
         /* choose the best viewable message supported by SM. */
         $best_view = 0;
-        $entity = array();
+        $entity = null;
         foreach($this->entities as $ent) {
             $type = $ent->header->type0 . '/' . $ent->header->type1;
             if ($type == 'multipart/related') {
                 $type = $ent->header->getParameter('type');
-            // Mozilla bug. Mozilla does not provide the parameter type.
-            if (!$type) $type = 'text/html';
+                // Mozilla bug. Mozilla does not provide the parameter type.
+                if (!$type) $type = 'text/html';
             }
             $altCount = count($alt_order);
             for ($j = $best_view; $j < $altCount; ++$j) {

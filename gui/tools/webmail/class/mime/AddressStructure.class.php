@@ -8,7 +8,7 @@
  *
  * @copyright 2003-2010 The SquirrelMail Project Team
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version $Id: AddressStructure.class.php 13899 2010-01-30 16:14:53Z pdontthink $
+ * @version $Id: AddressStructure.class.php 13952 2010-06-21 07:52:41Z pdontthink $
  * @package squirrelmail
  * @subpackage mime
  * @since 1.3.2
@@ -51,9 +51,10 @@ class AddressStructure {
      * Return address information from mime headers.
      * @param boolean $full return full address (true) or only personal if it exists, otherwise email (false)
      * @param boolean $encoded (since 1.4.0) return rfc2047 encoded address (true) or plain text (false).
+     * @param boolean $unconditionally_quote (since 1.4.21/1.5.2) when TRUE, always quote the personal part, whether or not it is encoded, otherwise quoting is only added if the personal part is not encoded
      * @return string
      */
-    function getAddress($full = true, $encoded = false) {
+    function getAddress($full = true, $encoded = false, $unconditionally_quote = FALSE) {
         $result = '';
         if (is_object($this)) {
             $email = ($this->host ? $this->mailbox.'@'.$this->host
@@ -70,10 +71,11 @@ class AddressStructure {
                     if ($personal !== $personal_encoded) {
                         $personal = $personal_encoded;
                     } else {
+                        //FIXME: this probably adds quotes around an encoded string which itself is already quoted
                         $personal = '"'.$this->personal.'"';
                     }
                 } else {
-                    if (!$is_encoded) {
+                    if (!$is_encoded || $unconditionally_quote) {
                         $personal = '"'.$this->personal.'"';
                     }
                 }
@@ -92,11 +94,12 @@ class AddressStructure {
     /**
      * Shorter version of getAddress() function
      * Returns full encoded address.
+     * @param boolean $unconditionally_quote (since 1.4.21) when TRUE, always quote the personal part, whether or not it is encoded, otherwise quoting is only added if the personal part is not encoded
      * @return string
      * @since 1.4.0
      */
-    function getEncodedAddress() {
-        return $this->getAddress(true, true);
+    function getEncodedAddress($unconditionally_quote=FALSE) {
+        return $this->getAddress(true, true, $unconditionally_quote);
     }
 }
 
