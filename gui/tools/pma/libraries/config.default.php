@@ -536,11 +536,13 @@ $cfg['ForceSSL'] = false;
 $cfg['ExecTimeLimit'] = 300;
 
 /**
- * maximum allocated bytes (0 for no limit)
+ * maximum allocated bytes ('0' for no limit)
+ * this is a string because '16M' is a valid value; we must put here
+ * a string as the default value so that /setup accepts strings 
  *
- * @global integer $cfg['MemoryLimit']
+ * @global string $cfg['MemoryLimit']
  */
-$cfg['MemoryLimit'] = 0;
+$cfg['MemoryLimit'] = '0';
 
 /**
  * mark used tables, make possible to show locked tables (since MySQL 3.23.30)
@@ -578,7 +580,8 @@ $cfg['Confirm'] = true;
 $cfg['LoginCookieRecall'] = true;
 
 /**
- * validity of cookie login (in seconds)
+ * validity of cookie login (in seconds; 1440 matches php.ini's
+ * session.gc_maxlifetime)
  *
  * @global integer $cfg['LoginCookieValidity']
  */

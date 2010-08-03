@@ -10,7 +10,7 @@ vim: expandtab ts=4 sw=4 sts=4 tw=78
     <link rel="icon" href="./favicon.ico" type="image/x-icon" />
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>phpMyAdmin 3.3.4 - Documentation</title>
+    <title>phpMyAdmin 3.3.5 - Documentation</title>
     <link rel="stylesheet" type="text/css" href="docs.css" />
 </head>
 
@@ -18,7 +18,7 @@ vim: expandtab ts=4 sw=4 sts=4 tw=78
 <div id="header">
     <h1>
         <a href="http://www.phpmyadmin.net/">php<span class="myadmin">MyAdmin</span></a>
-        3.3.4 
+        3.3.5 
         Documentation
     </h1>
 </div>
@@ -396,7 +396,7 @@ rm -rf config                      # remove not needed directory
         In cookie mode, the password is stored, encrypted with the blowfish
         algorithm, in a temporary cookie.</li>
 
-    <li>Note: starting with phpMyAdmin 2.6.1, this section is only applicable if
+    <li>Note: this section is only applicable if
         your MySQL server is running with <tt>--skip-show-database</tt>.<br /><br />
 
         For '<abbr title="HyperText Transfer Protocol">HTTP</abbr>' and 'cookie'
@@ -715,7 +715,7 @@ since this link provides funding for phpMyAdmin.
     <dd>This special account is used for 2 distinct purposes: to make possible
         all relational features (see
         <a href="#pmadb" class="configrule">$cfg['Servers'][$i]['pmadb']</a>)
-        and, for a MySQL server previous to 4.1.2 or running with
+        and, for a MySQL server running with
         <tt>--skip-show-database</tt>, to enable a multi-user installation
         (<abbr title="HyperText Transfer Protocol">HTTP</abbr> or cookie
         authentication mode).<br /><br />
@@ -935,7 +935,8 @@ since this link provides funding for phpMyAdmin.
         table. To allow the usage of this functionality:
         <ul><li>set up <a href="#pmadb">pmadb</a> and the linked-tables infrastructure</li>
             <li>put the table name in
-                <tt>$cfg['Servers'][$i]['table_info']</tt></li>
+                <tt>$cfg['Servers'][$i]['table_info']</tt> (e.g.
+                'pma_table_info')</li>
             <li>then for each table where you want to use this feature,
                 click &quot;Structure/Relation view/Choose field to display&quot;
                 to choose the field.</li>
@@ -994,7 +995,8 @@ since this link provides funding for phpMyAdmin.
         <ul><li>set up <a href="#pmadb">pmadb</a> and the linked-tables
                 infrastructure</li>
             <li>put the table name in
-                <tt>$cfg['Servers'][$i]['column_info']</tt></li>
+                <tt>$cfg['Servers'][$i]['column_info']</tt> (e.g.
+                'pma_column_info')</li>
             <li>to update your PRE-2.5.0 Column_comments Table use this:
 
                 <pre>
@@ -1034,6 +1036,7 @@ ALTER TABLE `pma_column_comments`
         <ul><li>set up <a href="#pmadb">pmadb</a> and the linked-tables
                 infrastructure</li>
             <li>put the table name in <tt>$cfg['Servers'][$i]['history']</tt>
+            (e.g. 'pma_history')
                 </li>
         </ul>
     </dd>
@@ -1064,7 +1067,7 @@ ALTER TABLE `pma_column_comments`
 
         <ul>
             <li>set up <a href="#pmadb">pmadb</a> and the linked-tables infrastructure</li>
-            <li>put the table name in <tt>$cfg['Servers'][$i]['tracking']</tt></li>
+            <li>put the table name in <tt>$cfg['Servers'][$i]['tracking']</tt> (e.g. 'pma_tracking')</li>
         </ul>
     </dd>
 
@@ -1136,7 +1139,7 @@ CREATE DATABASE,ALTER DATABASE,DROP DATABASE</pre>
 
         <ul><li>set up <a href="#pmadb">pmadb</a> and the linked-tables
                 infrastructure</li>
-            <li>put the table name in <tt>$cfg['Servers'][$i]['designer_coords']</tt>
+            <li>put the table name in <tt>$cfg['Servers'][$i]['designer_coords']</tt> (e.g. 'pma_designer_coords')
                 </li>
         </ul>
     </dd>
@@ -1297,7 +1300,7 @@ CREATE DATABASE,ALTER DATABASE,DROP DATABASE</pre>
         This setting is used while importing/exporting dump files and in the
         Synchronize feature but has no effect when PHP is running in safe mode.</dd>
 
-    <dt id="cfg_MemoryLimit">$cfg['MemoryLimit'] integer [number of bytes]</dt>
+    <dt id="cfg_MemoryLimit">$cfg['MemoryLimit'] string [number of bytes]</dt>
     <dd>Set the number of bytes a script is allowed to allocate. If set
         to zero, no limit is imposed.<br />
         This setting is used while importing/exporting dump files and at some
@@ -1343,8 +1346,8 @@ CREATE DATABASE,ALTER DATABASE,DROP DATABASE</pre>
     <dd>Define how long is login cookie valid. Please note that php
         configuration option <a href="http://php.net/manual/en/session.configuration.php#ini.session.gc-maxlifetime">session.gc_maxlifetime</a> 
         might limit session validity and if session is lost, login cookie is
-        also invalidated. So it is good idea to set <code>session.gc_maxlifetime</code> 
-        at least as high is $cfg['LoginCookieValidity'] is set.</dd>
+        also invalidated. So it is a good idea to set <code>session.gc_maxlifetime</code> 
+        not lower than the value of $cfg['LoginCookieValidity'].</dd>
 
     <dt id="cfg_LoginCookieStore">$cfg['LoginCookieStore'] integer [number of seconds]</dt>
     <dd>Define how long is login cookie should be stored in browser. Default 0
@@ -1840,7 +1843,7 @@ $cfg['TrustedProxies'] =
         editing.</dd>
 
     <dt id="cfg_LimitChars">$cfg['LimitChars'] integer</dt>
-    <dd>Maximum number of characters showen in any non-numeric field on browse view.
+    <dd>Maximum number of characters shown in any non-numeric field on browse view.
         Can be turned off by a toggle button on the browse page.</dd>
 
     <dt><span id="cfg_ModifyDeleteAtLeft">$cfg['ModifyDeleteAtLeft'] </span>boolean
@@ -3328,7 +3331,7 @@ have either the <a href="http://pecl.php.net/package/APC">APC</a> extension
 
 <h4 id="login_bug">
     <a href="#login_bug">3.1 When using
-    <abbr title="HyperText Transfer Protocol">HTTP</abbr> authentication, an user
+    <abbr title="HyperText Transfer Protocol">HTTP</abbr> authentication, a user
     who logged out can not log in again in with the same nick.</a></h4>
 
 <p> This is related to the authentication mechanism (protocol) used by
@@ -4294,6 +4297,12 @@ chmod o+rwx tmp
 	<li>When you insert or update a row in this table, put a checkmark on the &quot;Upload to BLOB repository&quot; optional choice; otherwise, the upload will be done directly in your column instead of the repository.</li>
 	<li>Finally when you browse your table, you'll see in your column a link to stream your data, for example &quot;View image&quot;. A header containing the correct MIME-type will be sent to your browser; this MIME-type was stored at upload time but in case it's incorrect, it's possible to edit it by clicking on the displayed MIME-type.</li> 
 </ol>	
+
+<h4 id="faq6_26">
+    <a href="#faq6_26">6.26 How can I select a range of rows?</a></h4>
+
+<p> Click the first row of the range, hold the shift key and click the last row of the range. This works everywhere you see rows, for example in Browse mode or on the Structure page.</p>
+
 
 <h3 id="faqproject">phpMyAdmin project</h3>
 

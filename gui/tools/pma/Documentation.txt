@@ -1,4 +1,4 @@
-phpMyAdmin 3.3.4 Documentation
+phpMyAdmin 3.3.5 Documentation
 
   * Top
   * Requirements
@@ -278,8 +278,8 @@ Using authentication modes
     are using the HTTPS protocol.
     In cookie mode, the password is stored, encrypted with the blowfish
     algorithm, in a temporary cookie.
-  * Note: starting with phpMyAdmin 2.6.1, this section is only applicable if
-    your MySQL server is running with --skip-show-database.
+  * Note: this section is only applicable if your MySQL server is running with
+    --skip-show-database.
 
     For 'HTTP' and 'cookie' modes, phpMyAdmin needs a controluser that has only
     the SELECT privilege on the `mysql`.`user` (all columns except `Password`),
@@ -508,8 +508,8 @@ $cfg['Servers'][$i]['controluser'] string
     $cfg['Servers'][$i]['controlpass'] string
     This special account is used for 2 distinct purposes: to make possible all
     relational features (see $cfg['Servers'][$i]['pmadb']) and, for a MySQL
-    server previous to 4.1.2 or running with --skip-show-database, to enable a
-    multi-user installation (HTTP or cookie authentication mode).
+    server running with --skip-show-database, to enable a multi-user
+    installation (HTTP or cookie authentication mode).
 
     When using HTTP or cookie authentication modes (or 'config' authentication
     mode since phpMyAdmin 2.2.1), you need to supply the details of a MySQL
@@ -657,7 +657,8 @@ $cfg['Servers'][$i]['table_info'] string
     This configuration variable will hold the name of this special table. To
     allow the usage of this functionality:
       + set up pmadb and the linked-tables infrastructure
-      + put the table name in $cfg['Servers'][$i]['table_info']
+      + put the table name in $cfg['Servers'][$i]['table_info'] (e.g.
+        'pma_table_info')
       + then for each table where you want to use this feature, click
         "Structure/Relation view/Choose field to display" to choose the field.
     Usage tip: Display field.
@@ -694,7 +695,8 @@ $cfg['Servers'][$i]['column_info'] string
 
     To allow the usage of this functionality:
       + set up pmadb and the linked-tables infrastructure
-      + put the table name in $cfg['Servers'][$i]['column_info']
+      + put the table name in $cfg['Servers'][$i]['column_info'] (e.g.
+        'pma_column_info')
       + to update your PRE-2.5.0 Column_comments Table use this:
 
         ALTER TABLE `pma_column_comments`
@@ -720,7 +722,8 @@ $cfg['Servers'][$i]['history'] string
 
     To allow the usage of this functionality:
       + set up pmadb and the linked-tables infrastructure
-      + put the table name in $cfg['Servers'][$i]['history']
+      + put the table name in $cfg['Servers'][$i]['history'] (e.g.
+        'pma_history')
 $cfg['Servers'][$i]['tracking'] string
     Since release 3.3.x a tracking mechanism is available. It helps you to
     track every SQL command which is executed by phpMyAdmin. The mechanism
@@ -741,7 +744,8 @@ $cfg['Servers'][$i]['tracking'] string
 
     To allow the usage of this functionality:
       + set up pmadb and the linked-tables infrastructure
-      + put the table name in $cfg['Servers'][$i]['tracking']
+      + put the table name in $cfg['Servers'][$i]['tracking'] (e.g.
+        'pma_tracking')
 $cfg['Servers'][$i]['tracking_version_auto_create'] boolean
     Whether the tracking mechanism creates versions for tables and views
     automatically. Default value is false.
@@ -779,7 +783,8 @@ $cfg['Servers'][$i]['designer_coords'] string
 
     To allow the usage of this functionality:
       + set up pmadb and the linked-tables infrastructure
-      + put the table name in $cfg['Servers'][$i]['designer_coords']
+      + put the table name in $cfg['Servers'][$i]['designer_coords'] (e.g.
+        'pma_designer_coords')
 $cfg['Servers'][$i]['verbose_check'] boolean
     Because release 2.5.0 introduced the new MIME-transformation support, the
     column_info table got enhanced with three new fields. If the above variable
@@ -906,7 +911,7 @@ $cfg['ExecTimeLimit'] integer [number of seconds]
     zero, no time limit is imposed.
     This setting is used while importing/exporting dump files and in the
     Synchronize feature but has no effect when PHP is running in safe mode.
-$cfg['MemoryLimit'] integer [number of bytes]
+$cfg['MemoryLimit'] string [number of bytes]
     Set the number of bytes a script is allowed to allocate. If set to zero, no
     limit is imposed.
     This setting is used while importing/exporting dump files and at some other
@@ -941,9 +946,9 @@ $cfg['LoginCookieRecall'] boolean
 $cfg['LoginCookieValidity'] integer [number of seconds]
     Define how long is login cookie valid. Please note that php configuration
     option session.gc_maxlifetime might limit session validity and if session
-    is lost, login cookie is also invalidated. So it is good idea to set
-    session.gc_maxlifetime at least as high is $cfg['LoginCookieValidity'] is
-    set.
+    is lost, login cookie is also invalidated. So it is a good idea to set
+    session.gc_maxlifetime not lower than the value of $cfg
+    ['LoginCookieValidity'].
 $cfg['LoginCookieStore'] integer [number of seconds]
     Define how long is login cookie should be stored in browser. Default 0
     means that it will be kept for existing session. This is recommended for
@@ -1292,8 +1297,8 @@ $cfg['CtrlArrowsMoving'] boolean
     Enable Ctrl+Arrows (Option+Arrows in Safari) moving between fields when
     editing.
 $cfg['LimitChars'] integer
-    Maximum number of characters showen in any non-numeric field on browse
-    view. Can be turned off by a toggle button on the browse page.
+    Maximum number of characters shown in any non-numeric field on browse view.
+    Can be turned off by a toggle button on the browse page.
 $cfg['ModifyDeleteAtLeft'] boolean $cfg['ModifyDeleteAtRight'] boolean
     Defines the place where modify and delete links would be put when tables
     contents are displayed (you may have them displayed both at the left and at
@@ -2448,7 +2453,7 @@ If using APC, you must set apc.rfc1867 to on in your php.ini.
 
 Known limitations
 
-3.1 When using HTTP authentication, an user who logged out can not log in again
+3.1 When using HTTP authentication, a user who logged out can not log in again
 in with the same nick.
 
 This is related to the authentication mechanism (protocol) used by phpMyAdmin.
@@ -3205,6 +3210,12 @@ supported.
     MIME-type will be sent to your browser; this MIME-type was stored at upload
     time but in case it's incorrect, it's possible to edit it by clicking on
     the displayed MIME-type.
+
+6.26 How can I select a range of rows?
+
+Click the first row of the range, hold the shift key and click the last row of
+the range. This works everywhere you see rows, for example in Browse mode or on
+the Structure page.
 
 phpMyAdmin project
 

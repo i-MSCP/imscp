@@ -92,7 +92,7 @@ class PMA_Config
      */
     function checkSystem()
     {
-        $this->set('PMA_VERSION', '3.3.4');
+        $this->set('PMA_VERSION', '3.3.5');
         /**
          * @deprecated
          */
@@ -489,7 +489,7 @@ class PMA_Config
     }
 
     /**
-     * verifies the permissions on config file (if asked by configuration) 
+     * verifies the permissions on config file (if asked by configuration)
      * (must be called after config.inc.php has been merged)
      */
     function checkPermissions()

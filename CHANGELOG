@@ -1,16 +1,16 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-08-03 Benedikt Heintel
+	- TOOLS:
+		* Updated phpMyAdmin to version 3.3.5
+
 2010-08-02 Laurent Declercq
-	- PACKAGE:
-		Updated version to 1.0.7
 	- GUI:
-		Fixed #2415: FTP user GID and UID
+		* Fixed #2415: FTP user GID and UID
 	- ENGINE:
 		* Fixed #2331: Useless wait in ispcp-mbox-mngr
-		* Refactored engine/ispcp-rqst-mngr
-		* Refactored engine/ispcp-mbox-mngr
-		* Refactored engine/ispcp-serv-mngr
+		* Refactored engine/ispcp-{rqst,mbox,serv}-mngr
 
 2010-08-01 Laurent Declercq
 	- GUI: (admin/ispcp_debugger)
