@@ -8,11 +8,13 @@ ispCP ω 1.0.7 ChangeLog
 	- ENGINE|SETUP:
 		* Integrated getSerialNumber() subroutine in all scripts
 	- ENGINE:
+		* Fixed: Removed load of unreachable templates
 		* Fixed #2095: The serial from alias domains never gets updated...
 		* ispcp-dmn-mnrg/ispcp-als-mngr: Prevents useless work during addition
 		of custom DNS records
+		* Refactored ispcp-htusers-mngr
 		* Some refactoring tasks to improve performances and readability
-		* Fixed: Removed load of unreachable templates
+
 
 2010-08-03 Laurent Declercq
 	- CONFIG:
