@@ -578,61 +578,56 @@ function check_fwd_data(&$tpl, $edit_id) {
 		if ($add_mode) {
 			$query = "
 				INSERT INTO
-					`domain_dns`
-				(
-					`domain_id`,
-					`alias_id`,
-					`domain_dns`,
-					`domain_class`,
-					`domain_type`,
-					`domain_text`
-				)
-				VALUES
-				(
-					?,
-					?,
-					?,
-					?,
-					?,
-					?
-				)
+					`domain_dns` (
+						`domain_id`, `alias_id`, `domain_dns`, `domain_class`,
+						`domain_type`, `domain_text`
+					) VALUES (
+						?, ?, ?, ?, ?, ?
+					)
+				;
 			";
-			exec_query($sql, $query, array($dmn_id, $alias_id, $_dns, $_class, $_type, $_text));
+
+			exec_query(
+				$sql, $query,
+				array($dmn_id, $alias_id, $_dns, $_class, $_type, $_text)
+			);
+
 		} else {
+
 			$query = "
 				UPDATE
 					`domain_dns`
 				SET
-					`domain_dns` = ?,
-					`domain_class` = ?,
-					`domain_type` = ?,
+					`domain_dns` = ?, `domain_class` = ?, `domain_type` = ?,
 					`domain_text` = ?
 				WHERE
 					`domain_dns_id` = ?
+				;
 			";
-			exec_query($sql, $query, array($_dns, $_class, $_type, $_text, $edit_id));
+
+			exec_query(
+				$sql, $query, array($_dns, $_class, $_type, $_text, $edit_id)
+			);
 		}
 
 		if ($alias_id == 0) {
+
 			$query = "
 				UPDATE
 					`domain`
  				SET
-					 `domain`.`domain_status` = ?
+					`domain`.`domain_status` = ?
  				WHERE
-    					`domain`.`domain_id` = ?
+    				`domain`.`domain_id` = ?
+    			;
    			";
-			exec_query($sql, $query, array($cfg->ITEM_DNSCHANGE_STATUS, $dmn_id));
-			$query = "
-				UPDATE
-					`subdomain`
-				SET
-    				`subdomain`.`subdomain_status` = ?
-    			WHERE
-    				`subdomain`.`domain_id` = ?
-				";
-			exec_query($sql, $query, array($cfg->ITEM_DNSCHANGE_STATUS, $dmn_id));
+
+			exec_query(
+				$sql, $query, array($cfg->ITEM_DNSCHANGE_STATUS, $dmn_id)
+			);
+
 		} else {
+
 			$query = "
  				UPDATE
  					`domain_aliasses`
@@ -642,19 +637,14 @@ function check_fwd_data(&$tpl, $edit_id) {
 					`domain_aliasses`.`domain_id` = ?
 				AND	`domain_aliasses`.`alias_id` = ?
 			";
-			exec_query($sql, $query, array($cfg->ITEM_CHANGE_STATUS, $dmn_id, $alias_id));
 
-			$query = "
- 				UPDATE
-					`subdomain_alias`
- 				SET
-					`subdomain_alias`.`subdomain_alias_status` = ?
- 				WHERE
-					`subdomain_alias`.`alias_id` = ?
-			";
-			exec_query($sql, $query, array($cfg->ITEM_CHANGE_STATUS, $alias_id));
+			exec_query(
+				$sql, $query,
+				array($cfg->ITEM_DNSCHANGE_STATUS, $dmn_id, $alias_id)
+			);
 		}
 
+		// Send request to ispCP daemon
 		send_request();
 
 		$admin_login = $_SESSION['user_logged'];

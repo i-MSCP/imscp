@@ -504,196 +504,157 @@ sub als_del_named_cfg_data {
 
 ################################################################################
 ##
-## Create DNS db zone file related to a domain alias
+## Create domain DNS zone file in (eg. /var/cache/bind)
 ##
-sub als_add_named_db_data {
+## @param   arrayref $data Ref to an array that contains domain data
+## @access  private
+## @return  int 0 on success
+sub _als_add_named_db_data {
 
-	push_el(\@main::el, 'als_add_named_db_data()', 'Starting...');
+	push_el(\@main::el, '_als_add_named_db_data()', 'Starting...');
 
-	my ($als_data) = @_;
+	my ($data) = @_;
 
-	my ($rs, $rdata) = (undef, undef);
-
-	if (!defined($als_data) || $als_data eq '') {
+	if (!defined($data) || $data eq '') {
 		push_el(
-			\@main::el,
-			'als_add_named_db_data()',
+			\@main::el, '_als_add_named_db_data()',
 			'ERROR: Undefined Input Data...'
 		);
 
 		return -1;
 	}
 
-	#
-	# Initial data we need;
-	#
+	# Get needed data
+	my $rs;
+	my $alsStatus = @$data[3];
+	my ($alsName, $alsIp) = (@$data[2], $main::ip_id_num{@$data[5]});
+	my $baseServerIp = $main::cfg{'BASE_SERVER_IP'};
+	my $slaveDnsIp = $main::cfg{'SECONDARY_DNS'};
 
-	my $als_name     = @$als_data[2];
-	my $als_ip_id    = @$als_data[5];
-	my $als_ip       = $main::ip_id_num{$als_ip_id};
-	my $conf_dir     = $main::cfg{'CONF_DIR'};
-	my $named_db_dir = $main::cfg{'BIND_DB_DIR'};
-	my $base_svr_ip  = $main::cfg{'BASE_SERVER_IP'};
-	my $sec_dns_ip   = $main::cfg{'SECONDARY_DNS'};
+	# Get needed templates
+	my ($tplDbEntries);
+	($rs, $tplDbEntries) = get_file(
+		"$main::cfg{'CONF_DIR'}/bind/parts/db_e.tpl"
+	);
+	return $rs if($rs != 0);
 
-	#
-	# Any secondary DNS defined;
-	#
+	# Prepare templates
+	($rs, $tplDbEntries) = prep_tpl(
+		{
+			'{DMN_NAME}' => $alsName,
+			'{DMN_IP}' => $alsIp,
+			'{BASE_SERVER_IP}' => $baseServerIp,
+			'{SECONDARY_DNS_IP}' => ($slaveDnsIp ne '') ? $slaveDnsIp : $alsIp
+		},
+		$tplDbEntries
+	);
+	return $rs if($rs != 0);
 
-	if (!$sec_dns_ip) {
-		$sec_dns_ip = $base_svr_ip;
+	my $wrkFile;
+
+	if($alsStatus ne 'toadd') {
+		($rs, $wrkFile) = get_file(
+			"$main::cfg{'CONF_DIR'}/bind/working/$alsName.db"
+		);
+		return $rs if ($rs != 0);
+
+		# Restore all defined sub entries if any exists
+
+		my ($subBeginTag, $subEndTag);
+		($rs, $subBeginTag, $subEndTag)= get_tpl(
+			"$main::cfg{'CONF_DIR'}/bind/parts", 'db_sub_entry_b.tpl',
+			'db_sub_entry_e.tpl'
+		);
+		return $rs if ($rs != 0);
+
+		if($wrkFile =~ /(; sub \[.+?$alsName\].*?\n[\d\D]+)\Q$subBeginTag\E/) {
+			($rs, $tplDbEntries) = add_tag(
+				$subBeginTag, $subEndTag, $tplDbEntries, $1
+			);
+			return $rs if($rs != 0);
+		}
+	} else {
+		$wrkFile = \$tplDbEntries;
 	}
 
-	my $tpl_dir = "$conf_dir/bind/parts";
-	my $backup_dir = "$conf_dir/bind/backup";
-	my $working_dir = "$conf_dir/bind/working";
-	my $db_fname = "$als_name.db";
-	my $sys_cfg = "$named_db_dir/$db_fname";
-	my $working_cfg = "$working_dir/$db_fname";
-
-	#
-	# Let's get needed tags and templates;
-	#
-
-	my ($entry,
-		$db_dns_entry_b,
-		$db_dns_entry_e,
-		$db_dns_entry
-	) = ('', '', '', '');
-
-	(	$rs,
-		$entry,
-		$db_dns_entry_b,
-		$db_dns_entry_e,
-		$db_dns_entry
-	) = get_tpl(
-		$tpl_dir,
-		'db_e.tpl',
-		'db_dns_entry_b.tpl',
-		'db_dns_entry_e.tpl',
-		'db_dns_entry.tpl'
-	);
-	return $rs if ($rs != 0);
-
-	#
-	# Let's prepare them;
-	#
-
-	my %tag_hash = (
-		'{DMN_NAME}' => $als_name,
-		'{DMN_IP}' => $als_ip,
-		'{BASE_SERVER_IP}' => $base_svr_ip,
-		'{SECONDARY_DNS_IP}' => $sec_dns_ip
-	);
-
-	($rs, $entry) = prep_tpl(\%tag_hash, $entry);
-	return $rs if ($rs != 0);
-
 	# Create or Update serial number according RFC 1912
-	$rs = getSerialNumber(\$als_name, \$entry, \$entry);
+	$rs = getSerialNumber(\$alsName, \$tplDbEntries, \$wrkFile);
 	return $rs if ($rs != 0);
 
-	#
-	# Manual DNS records - Begin
-	#
+	# Custom DNS support - Begin
 
-	my $als_alias_id = @$als_data[0];
-	my $als_domain_id = @$als_data[1];
+	if($alsStatus eq 'dnschange' || $alsStatus eq 'change') {
 
-	my $sql = "
-		SELECT
-			domain_dns_id,
-			domain_id,
-			alias_id,
-			domain_dns,
-			domain_text,
-			domain_class,
-			domain_type
-	    FROM
-			domain_dns
-	    WHERE
-		    domain_dns.alias_id = $als_alias_id
-		AND
-			domain_dns.domain_id = $als_domain_id
-	    ;
-	";
+		my $sql = "
+			SELECT
+				`domain_dns_id`, `domain_id`, `alias_id`, `domain_dns`,
+				`domain_text`, `domain_class`, `domain_type`
+			FROM
+				`domain_dns`
+			WHERE
+				`domain_dns`.`alias_id` = @${data[0]}
+			AND
+				`domain_dns`.`domain_id` = @${data[1]}
+			ORDER BY
+				`domain_dns_id`
+			;
+		";
 
-	my $rows;
-	($rs, $rows) = doSQL($sql);
+		my $rows;
 
-	if ($rs == 0) {
+		($rs, $rows) = doSQL($sql);
+		return $rs if ($rs != 0);
 
-		my ($row, $test);
+		if (@$rows > 0) {
 
-		my ($db_dns_entry_b_val,
-			$db_dns_entry_e_val,
-			$db_dns_entry_val
-		) = (undef, undef, undef);
-
-		foreach $row (@$rows) {
-
-			%tag_hash = (
-				'{MANUAL_DNS_NAME}' => @$row[3],
-				'{MANUAL_DNS_ID}' => @$row[0],
-				'{MANUAL_DNS_DATA}' => @$row[4],
-				'{MANUAL_DNS_CLASS}' => @$row[5],
-				'{MANUAL_DNS_TYPE}' => @$row[6]
+			# Get needed templates for custom dns entries - Begin
+			my ($tplDnsEntryB, $tplDnsEntry, $tplDnsEntryE);
+			($rs, $tplDnsEntryB, $tplDnsEntry, $tplDnsEntryE) = get_tpl(
+				"$main::cfg{'CONF_DIR'}/bind/parts", 'db_dns_entry_b.tpl',
+				'db_dns_entry.tpl', 'db_dns_entry_e.tpl'
 			);
+			return $rs if($rs != 0);
 
-			(	$rs,
-				$db_dns_entry_val,
-				$db_dns_entry_b_val,
-				$db_dns_entry_e_val
-			) = prep_tpl(
-				\%tag_hash,
-				$db_dns_entry,
-				$db_dns_entry_b,
-				$db_dns_entry_e
-			);
+			my ($dnsEntryBv, $dnsEntryV, $dnsEntryEv, $dnsEntries);
 
-			$db_dns_entry_val = "$db_dns_entry_b_val$db_dns_entry_val" .
-				"$db_dns_entry_e_val\n$db_dns_entry_b$db_dns_entry_e";
+			foreach (@$rows) {
 
-			($rs, $test) = repl_tag(
-				$db_dns_entry_b,
-				$db_dns_entry_e,
-				$entry,
-				$db_dns_entry_val,
-				'als_add_named_db_data_test'
-			);
+				# Variables replacement
+				($rs, $dnsEntryBv, $dnsEntryV, $dnsEntryEv) = prep_tpl(
+					{
+						'{MANUAL_DNS_NAME}' => $_->[3],
+						'{MANUAL_DNS_ID}' => $_->[0],
+						'{MANUAL_DNS_DATA}' => $_->[4],
+						'{MANUAL_DNS_CLASS}' => $_->[5],
+						'{MANUAL_DNS_TYPE}' => $_->[6]
+					},
+					$tplDnsEntryB, $tplDnsEntry, $tplDnsEntryE
+				);
 
-			if ($rs==0){
-		    	$entry = $test;
+				# Concatenates custom DNS entries
+				$dnsEntries .= "$dnsEntryBv$dnsEntryV$dnsEntryEv\n";
 			}
+
+			# Put the custom DNS entries in db zone file
+			($rs, $tplDbEntries) = add_tag(
+				$tplDnsEntryB, $tplDnsEntryE, $tplDbEntries, $dnsEntries
+			);
+			return $rs if($rs != 0);
 		}
 	}
 
-	#
-	# Manual DNS records - End
-	#
+	# Custom DNS support - End
 
-	#
-	# Let's store generated data;
-	#
-	$rs = store_file(
-		$working_cfg,
-		$entry,
-		$main::cfg{'ROOT_USER'},
-		$main::cfg{'ROOT_GROUP'},
-		0644
-	);
-	return $rs if ($rs != 0);
+	# Install new domain db file
+	foreach("$main::cfg{'CONF_DIR'}/bind/working", $main::cfg{'BIND_DB_DIR'}) {
+		$rs = store_file(
+			"$_/$alsName.db", $tplDbEntries, $main::cfg{'ROOT_USER'},
+			$main::cfg{'ROOT_GROUP'}, 0644
+		);
+		return $rs if($rs != 0);
+	}
 
-	$rs = store_file(
-		$sys_cfg,
-		$entry,
-		$main::cfg{'ROOT_USER'},
-		$main::cfg{'ROOT_GROUP'},
-		0644
-	);
-	return $rs if ($rs != 0);
-
-	push_el(\@main::el, 'als_add_named_db_data()', 'Ending...');
+	push_el(\@main::el, '_als_add_named_db_data()', 'Ending...');
 
 	0;
 }
@@ -754,7 +715,7 @@ sub als_del_named_db_data {
 ################################################################################
 ##
 ## Adds all DNS configuration data related to a domain alias
-## See als_add_named_cfg_data() && als_add_named_db_data()
+## See als_add_named_cfg_data() && _als_add_named_db_data()
 ##
 sub als_add_named_data {
 
@@ -779,7 +740,7 @@ sub als_add_named_data {
 	$rs = als_add_named_cfg_data($als_data);
 	return $rs if ($rs != 0);
 
-	$rs = als_add_named_db_data($als_data);
+	$rs = _als_add_named_db_data($als_data);
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'als_add_named_data()', 'Ending...');
@@ -3896,7 +3857,8 @@ sub als_mngr_engine {
 		return $rs if ($rs != 0);
         } elsif ($als_status eq 'dnschange'){
 			# changing DNS
-			$rs = als_change_named_data($entry);
+			$rs = _als_add_named_db_data($entry);
+
 			$timestamp = time();
 			if ($rs == 0) {
 				$sql = "update domain_aliasses set alias_status='ok' where alias_id = $als_id;";
@@ -3944,8 +3906,6 @@ sub als_mngr_engine {
 			return $rs if ($rs != 0);
 		}
 	}
-
-	sleep(1);
 
 	push_el(\@main::el, 'als_mngr_engine()', 'Ending...');
 
