@@ -79,6 +79,9 @@ BEGIN {
 	}
 }
 
+# Hide the "used only once: possible typo" warnings
+no warnings 'once';
+
 # Global variables;
 
 $main::cc_stdout = '/tmp/ispcp-cc.stdout';
@@ -2300,65 +2303,115 @@ sub sort_domains {
 
 ################################################################################
 ##
-## Update a serial number record according RFC 1912
+## Get a serial number generated according RFC 1912
+##
+## This method can be used both to get and update serial number. $src must
+## contains the serial number tag that must be replaced. $wrkFile must contains
+## the current serial number tags. In case  where the serial number tag was
+## never generated, $wrkFile should contains the prepared serial number tag like:
+##
+## ; dmn [ispcp.net] timestamp entry BEGIN.
+##                {TIMESTAMPS}      ; Serial
+## ; dmn [ispcp.net] timestamp entry END.
 ##
 ## @author  Laurent Declercq <laurent.declercq@ispcp.net>
-## @since   1.0.6
-## @param   scalar $dmnName Domain name
-## @param   scalarref $src Ref. to stringified domain zone file content
-## @return  mixed  [0, serial] on sucess, negative int otherwise
-## @todo Implement a recovery process like explained in RFC 1912
-sub updateSerialNumber {
+## @since   1.0.7
+## @version 1.0.3
+## @param   scalarref $dmnName Domain name
+## @param   scalarref $src String that contains SN tags to be replaced
+## @param   scalarref|refscalarref $wrkFile String that contains current SN tags
+## @return  int on success, negative int otherwise
+sub getSerialNumber {
 
-	push_el(\@main::el, 'updateSerialNumber()', 'Begin...');
+	push_el(\@main::el, 'getSerialNumber()', 'Begin...');
 
-	my ($dmnName, $src) = @_;
+	my ($dmnName, $src, $wrkFile) = @_;
 
-	if (!defined $src || $src eq '' || !defined $dmnName || $dmnName eq '') {
+	if (!defined $dmnName || $dmnName eq '' || !defined $src || $src eq '' ||
+		!defined $wrkFile || $wrkFile eq '') {
+
 		push_el(
-			\@main::el, 'updateSerialNumber()', 'ERROR: Undefined Input Data...'
+			\@main::el, 'getSerialNumber()', 'FATAL: Undefined args!'
 		);
 
 		return -1;
+	} elsif(ref $dmnName eq '' || ref $src eq '' || ref $wrkFile eq '') {
+		push_el(
+			\@main::el, 'getSerialNumber()', 'FATAL: Args must be references!'
+		);
+
+		return -1;
+	} elsif(ref $wrkFile eq 'REF') {
+		# We ensure that we work with a scalar reference (and not a ref to ref)
+		$wrkFile = $$wrkFile;
 	}
 
-	my ($rs, $db_time_b, $db_time_e, $serial, $curDate);
+	my ($rs, $tagB, $tagE, $serial);
 
-	# Get needed templates
-	($rs, $db_time_b, $db_time_e) = get_tpl(
-		"$main::cfg{'CONF_DIR'}/bind/parts", 'db_time_b.tpl', 'db_time_e.tpl'
+	# Get Begin/End serial number templates tags
+	($rs, $tagB, $tagE) = get_tpl(
+		"$main::cfg{CONF_DIR}/bind/parts", 'db_time_b.tpl', 'db_time_e.tpl'
 	);
 	return -1 if($rs != 0);
 
-	# Variables replacement
-	($rs, $db_time_b, $db_time_e) = prep_tpl(
-		{'{DMN_NAME}' => $dmnName}, $db_time_b, $db_time_e
-	);
+	# Build Begin/End serial number tags for the current domain name
+	($rs, $tagB, $tagE) = prep_tpl({'{DMN_NAME}' => $$dmnName}, $tagB, $tagE);
 	return -1 if($rs != 0);
 
-	# Get serial number tag
-	($rs, $serial) = get_tag($db_time_b, $db_time_e, $$src);
+	# Get the serial number tags from working file
+	($rs, $serial) = get_tag($tagB, $tagE, $$wrkFile, 'getSerialNumber()');
 	return -1 if($rs != 0);
 
-	# Extract and update serial number
-	if($serial =~ s/[\d\D]*?(\d{8})(\d{2})[\d\D]*/$1$2/) {
+	# Get current date (ex. 20100703)
+	my ($sec, $min, $hour, $mday, $mon, $year) = localtime;
+	my $curDate = sprintf '%4d%02d%02d', $year+1900, $mon+1, $mday;
 
-		my (undef, undef, undef, $mday, $mon, $year) = localtime;
-		$curDate = sprintf '%4d%02d%02d', $year+1900, $mon+1, $mday;
-		$serial = ($curDate == $1) ? ++$serial : $curDate . '00';
+	# Build serial number
 
+	my $regExp = '[\s](?:(\d{4})(\d{2})(\d{2})(\d{2})|\{TIMESTAMP\})';
+
+	if(($year, $mon, $mday, my $nn) = ($serial =~ /$regExp/)) {
+		if(defined $nn) {
+			if($nn >= 99 && $curDate <= "$year$mon$mday") {
+				push_el(
+					\@main::el, 'getSerialNumber()',
+					"[NOTICE] $$dmnName: Maximum number of modifications is " .
+					'reached! +1 day added to avoid any problems.'
+				);
+
+				use POSIX qw /mktime/;
+
+				(undef, undef, undef, $mday, $mon, $year) = localtime(
+					mktime($sec, $min, $hour, $mday, $mon-1, $year-1900) + 86400
+				);
+
+				$serial = sprintf '%4d%02d%02d00', $year+1900, $mon+1, $mday;
+			} else {
+				$serial = ($curDate <= "$year$mon$mday")
+					? "$year$mon$mday$nn"+1 : "${curDate}00";
+			}
+		} else {
+			$serial = "${curDate}00";
+		}
 	} else {
 		push_el(
-			\@main::el, 'updateSerialNumber()',
-			"FATAL: $dmnName: Unable to retrieve serial number in SOA record!"
+			\@main::el, 'getSerialNumber()',
+			"[FATAL] $$dmnName: Unable to generate new serial number!"
 		);
 
 		return -1;
 	}
 
-	push_el(\@main::el, 'updateSerialNumber()', 'Ending...');
+	# Create the new tags for serial number
+	my $newTag = $tagB . "\t" x2 ."$serial\t; Serial\n$tagE";
 
-	return (0, $serial);
+	# Replaces the serial number tag with the newly created
+	($rs, $$src) = repl_tag($tagB, $tagE, $$src, $newTag, 'getSerialNumber()');
+	return $rs if ($rs != 0);
+
+	push_el(\@main::el, 'getSerialNumber()', 'Ending...');
+
+	0;
 }
 
 sub send_error_mail {

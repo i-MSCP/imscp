@@ -202,30 +202,22 @@ sub alssub_add_named_db_data {
 	my (
 		$db_sub_entry_b,
 		$db_sub_entry,
-		$db_sub_entry_e,
-		$db_time_b,
-		$db_time_e
+		$db_sub_entry_e
 	) = (
 		'db_sub_entry_b.tpl',
 		'db_sub_entry.tpl',
-		'db_sub_entry_e.tpl',
-		'db_time_b.tpl',
-		'db_time_e.tpl'
+		'db_sub_entry_e.tpl'
 	);
 
 	(	$rs,
 		$db_sub_entry_b,
 		$db_sub_entry,
-		$db_sub_entry_e,
-		$db_time_b,
-		$db_time_e
+		$db_sub_entry_e
 	) = get_tpl(
 		$tpl_dir,
 		$db_sub_entry_b,
 		$db_sub_entry,
-		$db_sub_entry_e,
-		$db_time_b,
-		$db_time_e
+		$db_sub_entry_e
 	);
 
 	return $rs if ($rs != 0);
@@ -245,16 +237,12 @@ sub alssub_add_named_db_data {
 	(	$rs,
 		$db_sub_entry_b_val,
 		$db_sub_entry,
-		$db_sub_entry_e_val,
-		$db_time_b,
-		$db_time_e
+		$db_sub_entry_e_val
 	) = prep_tpl(
 		\%tag_hash,
 		$db_sub_entry_b,
 		$db_sub_entry,
-		$db_sub_entry_e,
-		$db_time_b,
-		$db_time_e
+		$db_sub_entry_e
 	);
 
 	return $rs if ($rs != 0);
@@ -297,33 +285,8 @@ sub alssub_add_named_db_data {
 
 	return $rs if ($rs != 0);
 
-	#
-	# {TIMESTAMP} must be updated too;
-	#
-
-	($rs, $rdata) = get_tag($db_time_b, $db_time_e, $working);
-	return $rs if ($rs != 0);
-
-	my @rdata2 = split(/\n/, $rdata);
-	my $seq = $rdata2[1];
-
-	$seq =~ s/;.*//;
-	$seq =~ s/^\s+//;
-	$seq =~ s/\s+$//;
-	$seq = substr($seq, -2);
-	$seq = int($seq) + 1;
-
-	#
-	# RFC 1912
-	#
-
-	my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
-	my $time2 = sprintf "%4d%02d%02d%02d",$year+1900,$mon+1,$mday,$seq;
-
-	my $db_time_val = "$db_time_b\t\t\t $time2\t\n$db_time_e";
-
-	($rs, $working) = repl_tag($db_time_b, $db_time_e, $working, $db_time_val, "alssub_add_named_db_data");
-
+	# Update serial number according RFC 1912
+	$rs = getSerialNumber(\$dmn_name, \$working, \$working);
 	return $rs if ($rs != 0);
 
 	#
@@ -406,30 +369,22 @@ sub alssub_del_named_db_data {
 
 	my ($db_sub_entry_b,
 		$db_sub_entry,
-		$db_sub_entry_e,
-		$db_time_b,
-		$db_time_e
+		$db_sub_entry_e
 	) = (
 		'db_sub_entry_b.tpl',
 		'db_sub_entry.tpl',
-		'db_sub_entry_e.tpl',
-		'db_time_b.tpl',
-		'db_time_e.tpl'
+		'db_sub_entry_e.tpl'
 	);
 
 	(	$rs,
 		$db_sub_entry_b,
 		$db_sub_entry,
-		$db_sub_entry_e,
-		$db_time_b,
-		$db_time_e
+		$db_sub_entry_e
 	) = get_tpl(
 		$tpl_dir,
 		$db_sub_entry_b,
 		$db_sub_entry,
-		$db_sub_entry_e,
-		$db_time_b,
-		$db_time_e
+		$db_sub_entry_e
 	);
 
 	return $rs if ($rs != 0);
@@ -449,16 +404,12 @@ sub alssub_del_named_db_data {
 	(	$rs,
 		$db_sub_entry_b_val,
 		$db_sub_entry,
-		$db_sub_entry_e_val,
-		$db_time_b,
-		$db_time_e
+		$db_sub_entry_e_val
 	) = prep_tpl(
 		\%tag_hash,
 		$db_sub_entry_b,
 		$db_sub_entry,
-		$db_sub_entry_e,
-		$db_time_b,
-		$db_time_e
+		$db_sub_entry_e
 	);
 
 	return $rs if ($rs != 0);
@@ -494,34 +445,9 @@ sub alssub_del_named_db_data {
 
 	return $rs if ($rs != 0);
 
-	#
-	# {TIMESTAMP} must be updated too;
-	#
 
-	($rs, $rdata) = get_tag($db_time_b, $db_time_e, $working);
-
-	return $rs if ($rs != 0);
-
-	my @rdata2 = split(/\n/, $rdata);
-	my $seq = $rdata2[1];
-
-	$seq =~ s/;.*//;
-	$seq =~ s/^\s+//;
-	$seq =~ s/\s+$//;
-	$seq = substr($seq, -2);
-	$seq = int($seq) + 1;
-
-	#
-	# RFC 1912
-	#
-
-	my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
-	my $time2 = sprintf "%4d%02d%02d01",$year+1900,$mon+1,$mday,$seq;
-
-	my $db_time_val = "$db_time_b\t\t\t $time2\t\n$db_time_e";
-
-	($rs, $working) = repl_tag($db_time_b, $db_time_e, $working, $db_time_val, "alssub_del_named_db_data");
-
+	# Update serial number according RFC 1912
+	$rs = getSerialNumber(\$dmn_name, \$working, \$working);
 	return $rs if ($rs != 0);
 
 	#
@@ -2803,7 +2729,7 @@ sub alssub_mngr_engine {
 
 		($rs, $rdata) = doSQL($sql);
 		return $rs if ($rs != 0);
-	} elsif ($sub_status eq 'dnschange') {    
+	} elsif ($sub_status eq 'dnschange') {
 		$rs = alssub_change_named_data($entry);
 		$timestamp = time();
 		if ($rs == 0) {

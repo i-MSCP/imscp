@@ -1,6 +1,16 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-08-04 Laurent Declercq
+	- ENGINE|SETUP:
+		- Integrated getSerialNumber() subroutine in all scripts
+	- ENGINE:
+		- ispcp-dmn-mnrg: Prevents useless work during addition of custom DNS
+		resource record
+		- ispcp-dmn-mnrg: Some refactoring tasks to improve performances and
+		readability
+		- Fixed: Removed load of unreachable templates
+
 2010-08-03 Laurent Declercq
 	- CONFIG:
 		* Removed useless templates

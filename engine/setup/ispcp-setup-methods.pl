@@ -2775,14 +2775,19 @@ sub setup_gui_named_db_data {
 
 	my ($base_ip, $base_vhost) = @_;
 
+	if (!defined($base_vhost) || $base_vhost eq '') {
+		push_el(
+			\@main::el, 'add_named_db_data()', 'FATAL: Undefined Input Data...'
+		);
+
+		return 1;
+	}
+
+	my ($rs, $cmd, $wrk_file_content, $entries);
 	# Slave DNS  - Address IP
 	my $sec_dns_ip = $main::cfg{'SECONDARY_DNS'};
-	#my ($rs, $cmd, $serial, $ctm_dmn_als_entries);
-	my ($rs, $cmd, $serial);
-
 	# Directories paths
 	my $cfg_dir = "$main::cfg{'CONF_DIR'}/bind";
-	my $tpl_dir = "$cfg_dir/parts";
 	my $bk_dir = "$cfg_dir/backup";
 	my $wrk_dir = "$cfg_dir/working";
 	my $db_dir = $main::cfg{'BIND_DB_DIR'};
@@ -2795,96 +2800,75 @@ sub setup_gui_named_db_data {
 	my $wrk_cfg = "$wrk_dir/$db_fname";
 	my $bk_cfg = "$bk_dir/$db_fname";
 
-	if (!defined($base_vhost) || $base_vhost eq '') {
-		push_el(
-			\@main::el,
-			'add_named_db_data()',
-			'FATAL: Undefined Input Data...'
-		);
-
-		return 1;
-	}
-
-	#
 	## Dedicated tasks for Install or Updates process - Begin
-	#
 
-	# Update
 	if (defined &update_engine) {
-
 		# Saving the current production file if it exists
 		if(-e $sys_cfg) {
-
 			$cmd = "$main::cfg{'CMD_CP'} -p $sys_cfg $bk_cfg." . time;
+
 			$rs = sys_command_rs($cmd);
 			return $rs if ($rs != 0);
 		}
 
-		# First, Loading the current working db file
-		my $wrk_file_content;
+		# Load the current working db file
 		($rs, $wrk_file_content) = get_file($wrk_cfg);
-		return $rs if($rs != 0);
 
-		# Update serial number according RCF 1912
-		$serial = updateSerialNumber($base_vhost, \$wrk_file_content);
-		return $rs if($rs != 0);
+		if($rs != 0) {
+			push_el(
+				\@main::el, 'add_named_db_data()',
+				"[WARNING] $base_vhost: Working db file not found!. " .
+				'Re-creation from scratch is needed...'
+			);
 
+			$wrk_file_content = \$entries;
+		}
 	} else {
-
-		# Build the serial for SOA record (according RFC 1912)
-		my (undef, undef, undef, $mday, $mon, $year) = localtime;
-		$serial = sprintf '%4d%02d%02d00', $year+1900, $mon+1, $mday;
+		$wrk_file_content = \$entries;
 	}
 
-	#
 	## Dedicated tasks for Install or Updates process - End
-	#
 
-	#
 	## Building new configuration file - Begin
-	#
 
 	# Loading the template from /etc/ispcp/bind/parts
-	my $entry = '';
-	($rs, $entry) = get_tpl($tpl_dir, 'db_master_e.tpl');
+	($rs, $entries) = get_file("$cfg_dir/parts/db_master_e.tpl");
 	return $rs if ($rs != 0);
 
 	# Replacement tags
-	($rs, $entry) = prep_tpl(
+	($rs, $entries) = prep_tpl(
 		{
 			'{DMN_NAME}' => $base_vhost,
 			'{DMN_IP}' => $base_ip,
 			'{BASE_SERVER_IP}' => $base_ip,
-			'{SECONDARY_DNS_IP}' => ($sec_dns_ip ne '') ? $sec_dns_ip : $base_ip,
-			'{TIMESTAMP}' => $serial
+			'{SECONDARY_DNS_IP}' => ($sec_dns_ip ne '') ? $sec_dns_ip : $base_ip
 		},
-		$entry
+		$entries
 	);
 	return $rs if ($rs != 0);
 
-	#
-	## Building new configuration file - End
-	#
+	# Create or Update serial number according RFC 1912
+	$rs = getSerialNumber(\$base_vhost, \$entries, \$wrk_file_content);
+	return $rs if($rs != 0);
 
-	#
-	## Storage and installation of new file - Begin
-	#
+	## Build new configuration file - End
 
-	# Store the new builded file in the working directory
+	## Store and install - Begin
+
+	# Store the file in the working directory
 	$rs = store_file(
-		$wrk_cfg, $entry, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'},
+		$wrk_cfg, $entries, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'},
 		0644
 	);
 	return $rs if ($rs != 0);
 
-	# Install the new file in the production directory
+	# Install the file in the production directory
 	$cmd = "$main::cfg{'CMD_CP'} -pf $wrk_cfg $db_dir/";
+
 	$rs = sys_command_rs($cmd);
 	return $rs if ($rs != 0);
 
-	#
-	## Storage and installation of new file - End
-	#
+	## Store and install - End
 
 	push_el(\@main::el, 'setup_gui_named_db_data()', 'Ending...');
 

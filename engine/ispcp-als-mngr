@@ -556,39 +556,24 @@ sub als_add_named_db_data {
 	#
 
 	my ($entry,
-		$dns2_b,
-		$dns2_e,
 		$db_dns_entry_b,
 		$db_dns_entry_e,
 		$db_dns_entry
-	) = ('', '', '', '', '', '');
+	) = ('', '', '', '');
 
 	(	$rs,
 		$entry,
-		$dns2_b,
-		$dns2_e,
 		$db_dns_entry_b,
 		$db_dns_entry_e,
 		$db_dns_entry
 	) = get_tpl(
 		$tpl_dir,
 		'db_e.tpl',
-		'db_dns2_b.tpl',
-		'db_dns2_e.tpl',
 		'db_dns_entry_b.tpl',
 		'db_dns_entry_e.tpl',
 		'db_dns_entry.tpl'
 	);
 	return $rs if ($rs != 0);
-
-	my $seq = 0;
-
-	#
-	# RFC 1912
-	#
-
-	my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
-	my $time2 = sprintf "%4d%02d%02d00",$year+1900,$mon+1,$mday,$seq;
 
 	#
 	# Let's prepare them;
@@ -598,16 +583,14 @@ sub als_add_named_db_data {
 		'{DMN_NAME}' => $als_name,
 		'{DMN_IP}' => $als_ip,
 		'{BASE_SERVER_IP}' => $base_svr_ip,
-		'{SECONDARY_DNS_IP}' => $sec_dns_ip,
-		'{TIMESTAMP}' => $time2
+		'{SECONDARY_DNS_IP}' => $sec_dns_ip
 	);
 
-	($rs, $entry, $dns2_b, $dns2_e) = prep_tpl(
-		\%tag_hash,
-		$entry,
-		$dns2_b,
-		$dns2_e,
-	);
+	($rs, $entry) = prep_tpl(\%tag_hash, $entry);
+	return $rs if ($rs != 0);
+
+	# Create or Update serial number according RFC 1912
+	$rs = getSerialNumber(\$als_name, \$entry, \$entry);
 	return $rs if ($rs != 0);
 
 	#
