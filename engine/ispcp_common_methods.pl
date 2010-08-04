@@ -2305,10 +2305,10 @@ sub sort_domains {
 ##
 ## Get a serial number generated according RFC 1912
 ##
-## This method can be used both to get and update serial number. $src must
-## contains the serial number tag that must be replaced. $wrkFile must contains
-## the current serial number tags. In case  where the serial number tag was
-## never generated, $wrkFile should contains the prepared serial number tag like:
+## This subroutine can be used both to get and update serial number. $src must
+## contains the SN tag that must be replaced. $wrkFile must contains the current
+## SN tag. In case  where the SN tag was never generated, $wrkFile should
+## contains the prepared SN tag like:
 ##
 ## ; dmn [ispcp.net] timestamp entry BEGIN.
 ##                {TIMESTAMPS}      ; Serial
@@ -2318,8 +2318,8 @@ sub sort_domains {
 ## @since   1.0.7
 ## @version 1.0.3
 ## @param   scalarref $dmnName Domain name
-## @param   scalarref $src String that contains SN tags to be replaced
-## @param   scalarref|refscalarref $wrkFile String that contains current SN tags
+## @param   scalarref $src String that contains SN tag to be replaced
+## @param   scalarref|refscalarref $wrkFile String that contains current SN tag
 ## @return  int on success, negative int otherwise
 sub getSerialNumber {
 
@@ -2348,17 +2348,17 @@ sub getSerialNumber {
 
 	my ($rs, $tagB, $tagE, $serial);
 
-	# Get Begin/End serial number templates tags
+	# Get Begin/End SN templates tag
 	($rs, $tagB, $tagE) = get_tpl(
 		"$main::cfg{CONF_DIR}/bind/parts", 'db_time_b.tpl', 'db_time_e.tpl'
 	);
 	return -1 if($rs != 0);
 
-	# Build Begin/End serial number tags for the current domain name
+	# Build Begin/End SN tag for the current domain name
 	($rs, $tagB, $tagE) = prep_tpl({'{DMN_NAME}' => $$dmnName}, $tagB, $tagE);
 	return -1 if($rs != 0);
 
-	# Get the serial number tags from working file
+	# Get the SN tag from working file
 	($rs, $serial) = get_tag($tagB, $tagE, $$wrkFile, 'getSerialNumber()');
 	return -1 if($rs != 0);
 
@@ -2402,10 +2402,10 @@ sub getSerialNumber {
 		return -1;
 	}
 
-	# Create the new tags for serial number
+	# Create the new SN tag
 	my $newTag = $tagB . "\t" x2 ."$serial\t; Serial\n$tagE";
 
-	# Replaces the serial number tag with the newly created
+	# Replaces the current SN tag with the newly created
 	($rs, $$src) = repl_tag($tagB, $tagE, $$src, $newTag, 'getSerialNumber()');
 	return $rs if ($rs != 0);
 
