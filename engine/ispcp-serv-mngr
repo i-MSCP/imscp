@@ -76,34 +76,22 @@ sub restart_httpd {
 
 	push_el(\@main::el, 'restart_httpd()', 'Starting...');
 
-	my ($cmd, $rs, $rdata);
+	my ($rs, $stdErr) = sys_command_stderr("$main::cfg{'CMD_HTTPD'} configtest");
 
-	$cmd = $main::cfg{'CMD_HTTPD'};
-
-	$rs = sys_command_rs("$cmd configtest");
-	if ($rs != 0){
-		send_error_mail(
-			'restart_httpd()',
-			"Apache config file contains one or more syntax errors. " .
-			"Please check it before restarting Apache server!"
-		);
-
-		return $rs;
+	if($rs == 0) {
+		($rs, $stdErr) = sys_command_stderr("$main::cfg{'CMD_HTTPD'} graceful");
+		return $rs if ($rs == 0);
 	}
 
-	$rs = sys_command_rs("$cmd graceful");
-
-    if ($rs != 0) {
-		send_error_mail(
-			'restart_httpd()',
-			"Apache config file contains one or more syntax errors. " .
-			"Please check before restarting Apache server!"
-		);
-	}
+	send_error_mail(
+		'restart_httpd()',
+		"The following error was found in your Apache config file:\n\n" .
+		"$stdErr\n\nPlease try to correct it and restart your Apache server!"
+	);
 
 	push_el(\@main::el, 'restart_httpd()', 'Ending...');
 
-	return $rs;
+	$rs;
 }
 
 sub serv_mngr_engine {

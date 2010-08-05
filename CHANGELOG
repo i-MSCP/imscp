@@ -1,6 +1,17 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-08-05 Laurent Declercq
+	- CONFIG
+		* Removed useless APACHE_CMD configuration variable
+	- ENGINE:
+		* Added subroutine to be able to get error message from external command
+		* Changed APACHE_CMD variable to CMD_HTTPD
+		* Improved error mailer
+
+2010-08-04 Jochen Manz
+	- RELEASE ispCP ω Omega 1.0.6
+
 2010-08-04 Laurent Declercq
 	- GUI (custom DNS records):
 		* Removed queries to avoid useless works
@@ -14,7 +25,6 @@ ispCP ω 1.0.7 ChangeLog
 		of custom DNS records
 		* Refactored ispcp-htusers-mngr
 		* Some refactoring tasks to improve performances and readability
-
 
 2010-08-03 Laurent Declercq
 	- CONFIG:

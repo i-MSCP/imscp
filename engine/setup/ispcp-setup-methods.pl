@@ -1031,7 +1031,7 @@ sub setup_php {
 	push_el(\@main::el, 'setup_php()', 'Starting...');
 
 	# Do not generate cfg files if the service is disabled
-	return 0 if($main::cfg{'APACHE_CMD'} =~ /^no$/i);
+	return 0 if($main::cfg{'CMD_HTTPD'} =~ /^no$/i);
 
 	my ($rs, $cmd) = (undef, undef);
 
@@ -1187,7 +1187,7 @@ sub setup_httpd_main_vhost {
 	push_el(\@main::el, 'setup_httpd_main_vhost()', 'Starting...');
 
 	# Do not generate cfg files if the service is disabled
-	return 0 if($main::cfg{'APACHE_CMD'} =~ /^no$/i);
+	return 0 if($main::cfg{'CMD_HTTPD'} =~ /^no$/i);
 
 	my ($rs, $cmd) = (undef, undef);
 

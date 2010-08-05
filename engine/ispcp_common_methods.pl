@@ -758,7 +758,7 @@ sub del_zone {
 # If you want gets the real exit code, use the sys_command_rs()
 # subroutine instead
 #
-# @return int 0 if success, -1 otherwise
+# @return int 0 on success, -1 otherwise
 sub sys_command {
 
 	my ($cmd) = @_;
@@ -787,6 +787,7 @@ sub sys_command {
 	}
 }
 
+#
 # Execute a system command and return the real exit code
 #
 # @return int command exit code
@@ -805,6 +806,31 @@ sub sys_command_rs {
 	push_el(\@main::el, 'sys_command_rs()', 'Ending...');
 
 	return $exit_value;
+}
+
+# Execute a system command and return error message from the command on error
+#
+# @return 0 on success, [-1, errMsg] otherwise
+sub sys_command_stderr() {
+
+	push_el(\@main::el, 'sys_command_stderr()', 'Starting...');
+
+	my ($cmd) = @_;
+
+	my $stderr = `$cmd 2>&1`;
+
+	my $exit_value = $? >> 8;
+	my $signal_num = $? & 127;
+	my $dumped_core = $? & 128;
+
+	if($exit_value != 0) {
+		push_el(\@main::el, 'sys_command_stderr()', "ERROR: $stderr");
+		return (-1, $stderr);
+	}
+
+	push_el(\@main::el, 'sys_command_stderr()', 'Ending...');
+
+	0;
 }
 
 sub make_dir {
@@ -1125,7 +1151,7 @@ sub get_tag {
 		push_el(
 			\@main::el,
 			'get_tag()',
-			"ERROR: Undefined intput data, bt: |$bt|, et: |$et|, src !"
+			"ERROR: Undefined input data, bt: |$bt|, et: |$et|, src !"
 		);
 
 		return (-1, '');
@@ -1220,7 +1246,7 @@ sub repl_tag {
 	}
 
 	my ($rs, $rdata) = get_tag($bt, $et, $src, 'repl_tag');
-	return $rs if ($rs != 0);
+	return ($rs, $src) if ($rs != 0);
 
 	my $tag = $rdata;
 	my ($tag_pos, $tag_len) = (index($src, $tag), length($tag));
@@ -2427,25 +2453,29 @@ sub send_error_mail {
 	my $server_ip = $main::cfg{'BASE_SERVER_IP'};
 
 	my $msg_data ="
-Hey There,
+Dear admin,
 
-I'm the automatic email sent by on your $server_name ($server_ip) server.
+I'm an automatic email sent by your $server_name ($server_ip) server.
 
-A critical error just was encountered while executing function $fname in ".$0."
+A critical error just was encountered while executing function $fname in $0.
 
 Error encountered was:
 
-========================================================================
+=====================================================================
 $errmsg
-========================================================================
+=====================================================================
 ";
+
+    use Text::Wrap;
+	$Text::Wrap::columns = 70;
+    $msg_data = wrap('', '', $msg_data);
 
 	my $out = new MIME::Entity;
 
 	$out -> build(
-		From => "$server_name ($server_ip) <".$admin_email.">",
+		From => "$server_name ($server_ip) <$admin_email>",
 		To => $admin_email,
-		Subject => "[$date] Error report.",
+		Subject => "[$date] ispCP Error report",
 		Data => $msg_data,
 		'X-Mailer' => "ispCP $main::cfg{'Version'} Automatic Error Messenger"
 	);
