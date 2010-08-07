@@ -1,6 +1,16 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-08-07 Laurent Declercq
+	- CONFIG
+		* Changed indentation for all bind/parts/db_sub_entry.tpl
+	- ENGINE:
+		* Fixed Unusable doHashSQL() sub. + typo in ispcp_common_methods.pl
+		* Refactored ispcp-sub-mngr (first part):
+			- Removed some useless subroutine and variable
+			- Usage of doHashSQL() instead of doSQL() for better readility
+			- Rewrited some subroutines for better performances
+
 2010-08-05 Laurent Declercq
 	- CONFIG
 		* Removed useless APACHE_CMD configuration variable
@@ -8,6 +18,7 @@ ispCP ω 1.0.7 ChangeLog
 		* Added subroutine to be able to get error message from external command
 		* Changed APACHE_CMD variable to CMD_HTTPD
 		* Improved error mailer
+		* Refactored ispcp_common_methods.pl
 
 2010-08-04 Jochen Manz
 	- RELEASE ispCP ω Omega 1.0.6

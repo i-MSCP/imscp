@@ -258,8 +258,8 @@ sub doHashSQL {
 
 	push_el(\@main::el, 'doHashSQL()', 'Starting...');
 
-	my ($sql) = @_;
-	my $qr = undef;
+	my ($sql, $kField) = @_;
+	my $qr;
 
 	if (!defined $sql || $sql eq '') {
 		push_el(\@main::el, 'doHashSQL()', 'ERROR: Undefined SQL query !');
@@ -283,12 +283,10 @@ sub doHashSQL {
 		}
 	}
 
-	if ($sql =~ /select/i) {
-		$qr = $main::db -> selectall_hashref($sql);
-	} elsif ($sql =~ /show/i) {
-		$qr = $main::db -> selectall_hashref($sql);
+	if (defined $kField && $kField ne '' && $sql =~ /^[\s]*?(select|show)/i) {
+		$qr = $main::db ->selectall_hashref($sql, $kField);
 	} else {
-		$qr = $main::db -> do($sql);
+		$qr = $main::db->do($sql);
 	}
 
 	if (defined $qr) {
@@ -886,7 +884,7 @@ sub del_dir {
 		return -1;
 	}
 
-	push_el(\@main::el, 'make_dir()', "Trying to remove '$dname'...");
+	push_el(\@main::el, 'del_dir()', "Trying to remove '$dname'...");
 
 	return -1 if (sys_command("$main::cfg{'CMD_RM'} -rf $dname") != 0);
 
