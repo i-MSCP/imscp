@@ -199,8 +199,11 @@ function gen_al_page(&$tpl, $reseller_id) {
 } // End of gen_al_page()
 
 function add_domain_alias(&$sql, &$err_al) {
-	global $cr_user_id, $alias_name, $domain_ip, $forward, $forward_prefix, $mount_point;
-	global $validation_err_msg;
+
+	global $cr_user_id, $alias_name, $domain_ip, $forward, $forward_prefix,
+		$mount_point, $validation_err_msg;
+
+	$cfg = ispCP_Registry::get('Config');
 
 	$cr_user_id = $domain_id = get_user_domain_id($sql, $_SESSION['user_id']);
 	$alias_name	= strtolower($_POST['ndomain_name']);

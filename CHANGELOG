@@ -2,6 +2,8 @@ ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2010-08-07 Laurent Declercq
+	- GUI
+		* Fixed: Undefined variable: cfg in alias_add.php on line 249
 	- CONFIG
 		* Changed indentation for all bind/parts/db_sub_entry.tpl
 	- ENGINE:
@@ -24,9 +26,6 @@ ispCP ω 1.0.7 ChangeLog
 	- RELEASE ispCP ω Omega 1.0.6
 
 2010-08-04 Laurent Declercq
-	- GUI (custom DNS records):
-		* Removed queries to avoid useless works
-		* Some refactoring tasks
 	- ENGINE|SETUP:
 		* Integrated getSerialNumber() subroutine in all scripts
 	- ENGINE:
@@ -36,6 +35,9 @@ ispCP ω 1.0.7 ChangeLog
 		of custom DNS records
 		* Refactored ispcp-htusers-mngr
 		* Some refactoring tasks to improve performances and readability
+	- GUI (custom DNS records):
+		* Removed queries to avoid useless works
+		* Some refactoring tasks
 
 2010-08-03 Laurent Declercq
 	- CONFIG:
@@ -48,19 +50,19 @@ ispCP ω 1.0.7 ChangeLog
 		* Updates Squirrelmail to version 1.4.21
 
 2010-08-02 Laurent Declercq
-	- GUI:
-		* Fixed #2415: FTP user GID and UID
 	- ENGINE:
 		* Fixed #2331: Useless wait in ispcp-mbox-mngr
 		* Refactored engine/ispcp-{rqst,mbox,serv}-mngr
+	- GUI:
+		* Fixed #2415: FTP user GID and UID
 
 2010-08-01 Laurent Declercq
-	- GUI: (admin/ispcp_debugger)
-		* Added support for `dnschange` status
-		* Added documentation + some refactoring tasks
 	- ENGINE:
 		* Fixed: Variable `{BASE_SERVER_VHOST_PREFIX}` is not replaced for
 		subdomains default pages
+	- GUI: (admin/ispcp_debugger)
+		* Added support for `dnschange` status
+		* Added documentation + some refactoring tasks
 
 2010-07-31 Laurent Declercq
 	- CONFIG:
