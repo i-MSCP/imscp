@@ -7,8 +7,8 @@ ispCP ω 1.0.7 ChangeLog
 	- ENGINE:
 		* Fixed Unusable doHashSQL() sub. + typo in ispcp_common_methods.pl
 		* Refactored ispcp-sub-mngr (first part):
-			- Removed some useless subroutine and variable
-			- Usage of doHashSQL() instead of doSQL() for better readility
+			- Removed some useless subroutines and variables
+			- Usage of doHashSQL() instead of doSQL() for better readability
 			- Rewrited some subroutines for better performances
 
 2010-08-05 Laurent Declercq

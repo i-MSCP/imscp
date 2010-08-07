@@ -1006,7 +1006,7 @@ sub sub_add_mta_cfg_data {
 		return $rs if ($rs != 0);
 	}
 
-	# Update lookup tables
+	# Update lookup table
 	$rs = sys_command_rs("$main::cfg{'CMD_POSTMAP'} $sysFile");
 	return $rs if ($rs != 0);
 
@@ -1065,7 +1065,7 @@ sub sub_del_mta_cfg_data {
 		return $rs if ($rs != 0);
 	}
 
-	# Update lookup tables
+	# Update lookup table
 	$rs = sys_command_rs("$main::cfg{'CMD_POSTMAP'} $sysFile");
 	return $rs if ($rs != 0);
 
@@ -1696,7 +1696,7 @@ sub sub_mngr_engine {
 		$rs = sub_change_data($entry);
 	} elsif($sub_status eq 'delete') { # Delete subdomain data
 		$rs = sub_del_data($entry);
-	}  else { # Unknown task type
+	} else { # Unknown task type
 		push_el(
 			\@main::el, 'sub_mngr_engine()',
 			"[ERROR] Unknown task type: `$sub_status`!"
