@@ -12,6 +12,9 @@ ispCP ω 1.0.7 ChangeLog
 			- Removed some useless subroutines and variables
 			- Usage of doHashSQL() instead of doSQL() for better readability
 			- Rewrited some subroutines for better performances
+	- TOOLS:
+		Fixed: pma/libraries/PHPExcel/PHPExcel/Calculation/Functions.php is not
+		the same as provided under the project source archive
 
 2010-08-05 Laurent Declercq
 	- CONFIG
