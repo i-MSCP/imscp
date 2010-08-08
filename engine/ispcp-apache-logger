@@ -135,10 +135,12 @@ sub DefaultLogs(){
 	if (defined($main::engine_debug)){
 		print STDOUT "[ispcp-apache-logger] Starting default log proccessing...\n";
 	}
-	while ( my $log_line = <STDIN> ) {
-		my ($vhost, $size, $line) = $log_line =~ m/^(\S+) (\d+|-) (.*)$/s;
 
-		if( !defined($vhost) || !defined($size) ){
+	while (my $log_line = <STDIN>) {
+		my ($vhost, $size, $in, $out) = 
+			$log_line =~ m/^(\S+) (\d+|-) (\d+|-) (\d+|-)$/s;
+
+		if(!defined($vhost) || !defined($size)){
 			print STDERR "[ispcp-apache-logger] Trouble line:\n\t$log_line\n";
 		}
 
@@ -148,11 +150,11 @@ sub DefaultLogs(){
 		$vhost = $1;
 		$vhost = 'default' unless $vhost;
 
-		my $force_open=0;
-		if ( !$combined_logs{$vhost} || !$traff_logs{$vhost} || !$access_logs{$vhost} ){
-			$force_open=1;
-			if ( (keys(%timestamps)+1) > $MAXFILES ) {
-				my ( $key, $value ) = sort { $timestamps{$a} <=> $timestamps{$b} } ( keys(%timestamps) );
+		my $force_open = 0;
+		if (!$combined_logs{$vhost} || !$traff_logs{$vhost} || !$access_logs{$vhost}){
+			$force_open = 1;
+			if ((keys(%timestamps)+1) > $MAXFILES) {
+				my ($key, $value) = sort { $timestamps{$a} <=> $timestamps{$b} } (keys(%timestamps));
 				if(-e "$main::cfg{'APACHE_LOG_DIR'}/$key-combined.log" && defined($combined_logs{$key})){
 					close $combined_logs{$key};
 				}
@@ -173,11 +175,11 @@ sub DefaultLogs(){
 		checkFileExists($vhost, \%traff_logs, $main::cfg{'APACHE_LOG_DIR'},"-traf.log",$force_open);
 		checkFileExists($vhost, \%access_logs, $main::cfg{'APACHE_USERS_LOG_DIR'},"-access.log",$force_open);
 
-		$log_line=$line;
+		$log_line = $line;
 
 		print { $combined_logs{$vhost} } $log_line;
 		print { $access_logs{$vhost} } $log_line;
-		if ( $size ne '-' && $size != 0 ){
+		if ($size ne '-' && $size != 0){
 			print { $traff_logs{$vhost} } "$size\n";
 		}
 	}

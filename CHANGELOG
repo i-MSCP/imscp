@@ -1,6 +1,10 @@
 ispCP ω 1.0.8 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-08-08 Benedikt Heintel
+	- ENGINE:
+		* Fixed #2354: Domains deleted more that 1 year still listed
+
 2010-08-08 Laurent Declercq
 	- ENGINE:
 		* Refactored ispcp-sub-mngr (last part):

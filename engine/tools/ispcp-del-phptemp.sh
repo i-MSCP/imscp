@@ -43,7 +43,7 @@ export XARGS="xargs$(echo '' |xargs -r 2>/dev/null && echo ' -r')"
 # Ensure that apache dir ends with exactly one slash
 APACHE_WWW_DIR=${APACHE_WWW_DIR%/}/
 
-# Removes old (according to the php session.gc_maxfiletime directive) files
+# Removes old files (according to the php session.gc_maxfiletime directive)
 # from the given temporary directory. Arguments:
 #   - Temporary directory.
 #   - Fcgi directory containing php{4,5} php.ini files.
