@@ -53,11 +53,13 @@ no warnings 'once';
 ##
 ## Perform startup tasks
 ##
+## @return int 0 on success, negative int on failure
+##
 sub sub_mngr_start_up {
 
 	push_el(\@main::el, 'sub_mngr_start_up()', 'Starting...');
 
-	# Get task id (subdomain id) to be processed
+	# Getting task id (subdomain id) to be processed
 	if (defined $ARGV[0] && $ARGV[0] ne '') {
 		$main::sub_task_id = $ARGV[0];
 	} else {
@@ -66,14 +68,14 @@ sub sub_mngr_start_up {
 		return -1;
 	}
 
-	# Check for master process
+	# Checking for master process
 	my $rs = check_master();
 	return $rs if ($rs != 0);
 
 	# Clear execution logs, if any
 	if (-e $main::ispcp_sub_mngr_el) {
 		$rs = del_file($main::ispcp_sub_mngr_el);
-		return $rs if ($rs != 0);
+		return -1 if ($rs != 0);
 	}
 
 	push_el(\@main::el, 'sub_mngr_start_up()', 'Ending...');
@@ -101,8 +103,10 @@ sub sub_mngr_shut_down {
 ##
 ## Add subdomain DNS records
 ##
+## Note: Also called on 'change'
+##
 ## @param hashref $data subdomain entries
-## @return int 0 on success
+## @return int 0 on success, negative int on failure
 ##
 sub sub_add_named_db_data {
 
@@ -123,17 +127,17 @@ sub sub_add_named_db_data {
 	my $dmnName = @$data{'domain_name'};
 	my $cfgDir = $main::cfg{'CONF_DIR'};
 	my $wrkFile = "$cfgDir/bind/working/$dmnName.db";
-	my $sysFile = "$main::cfg{'BIND_DB_DIR'}/$dmnName.db";
+	my $sysFile = "$main::cfg{BIND_DB_DIR}/$dmnName.db";
 	my $bkpFile = "$cfgDir/bind/backup/$dmnName.db." . time;
 
-	# Get needed templates
+	# Getting needed templates
 	my ($rs, $dbSubEntryB, $dbSubEntry, $dbSubEntryE) = get_tpl(
 		"$cfgDir/bind/parts", 'db_sub_entry_b.tpl', 'db_sub_entry.tpl',
 		'db_sub_entry_e.tpl'
 	);
-	return $rs if ($rs != 0);
+	return -1 if ($rs != 0);
 
-	# Prepare needed templates
+	# Preparing templates
 	($rs, my $dbSubEntryBv, $dbSubEntry, my $dbSubEntryEv) = prep_tpl(
 		{
 			'{SUB_NAME}' => "@$data{subdomain_name}.$dmnName",
@@ -142,22 +146,22 @@ sub sub_add_named_db_data {
 		},
 		$dbSubEntryB, $dbSubEntry, $dbSubEntryE
 	);
-	return $rs if ($rs != 0);
+	return -1 if ($rs != 0);
 
-	# Get current domain db working file content
+	# Getting current domain db working file content
 	($rs, my $wrkFileContent) = get_file($wrkFile);
-	return $rs if ($rs != 0);
+	return -1 if ($rs != 0);
 
 	if($subStatus eq 'change') {
-		# Replace subdomain DNS records
+		# Replacing current subdomain DNS records
 		($rs, $wrkFileContent) = repl_tag(
 			$dbSubEntryBv, $dbSubEntryEv, $wrkFileContent,
 			"$dbSubEntryBv$dbSubEntry$dbSubEntryEv", 'sub_add_named_db_data()'
 		);
-		return $rs if($rs != 0 && $rs != -5);
+		return -1 if($rs != 0 && $rs != -5);
 	}
 
-	# Adds subdomain DNS records
+	# Adding subdomain DNS records
 	# Acts also as recovery process on `change` if DNS records were not found
 	if($subStatus eq 'toadd' || $rs == -5) {
 		push_el(
@@ -171,26 +175,26 @@ sub sub_add_named_db_data {
 			"$dbSubEntryBv$dbSubEntry$dbSubEntryEv\n"
 		);
 
-		return $rs if($rs != 0);
+		return -1 if($rs != 0);
 	}
 
-	# Update serial number according RFC 1912
+	# Updating serial number according RFC 1912
 	$rs = getSerialNumber(\$dmnName, \$wrkFileContent, \$wrkFileContent);
-	return $rs if ($rs != 0);
+	return -1 if ($rs != 0);
 
 	# Backup current production file before replace it
 	if(-e $sysFile) {
-		$rs = sys_command_rs("$main::cfg{'CMD_CP'} -pf $sysFile $bkpFile");
-		return $rs if ($rs != 0);
+		$rs = sys_command_rs("$main::cfg{CMD_CP} -pf $sysFile $bkpFile");
+		return -1 if ($rs != 0);
 	}
 
-	# Store and install new production file
+	# Storage and installation of the new production file
 	for ($wrkFile, $sysFile) {
 		$rs = store_file(
 			$_, $wrkFileContent, $main::cfg{'ROOT_USER'},
 			$main::cfg{'ROOT_GROUP'}, 0644
 		);
-		return $rs if ($rs != 0);
+		return -1 if ($rs != 0);
 	}
 
 	push_el(\@main::el, 'sub_add_named_db_data()', 'Ending...');
@@ -203,7 +207,7 @@ sub sub_add_named_db_data {
 ## Delete subdomain DNS records
 ##
 ## @param hashref $data subdomain entries
-## @return int 0 on success
+## @return int 0 on success, negative int on failure
 ##
 sub sub_del_named_db_data {
 
@@ -223,49 +227,49 @@ sub sub_del_named_db_data {
 	my $dmnName = @$data{'domain_name'};
 	my $cfgDir = $main::cfg{'CONF_DIR'};
 	my $wrkFile = "$cfgDir/bind/working/$dmnName.db";
-	my $sysFile = "$main::cfg{'BIND_DB_DIR'}/$dmnName.db";
+	my $sysFile = "$main::cfg{BIND_DB_DIR}/$dmnName.db";
 	my $bkpFile = "$cfgDir/bind/backup/$dmnName.db." . time;
 
-	# Get needed templates
+	# Getting needed templates
 	my ($rs, $dbSubEntryB, $dbSubEntryE) = get_tpl(
 		"$cfgDir/bind/parts", 'db_sub_entry_b.tpl', 'db_sub_entry_e.tpl'
 	);
-	return $rs if ($rs != 0);
+	return -1 if ($rs != 0);
 
-	# Prepare needed templates
+	# Preparing  templates
 	($rs, $dbSubEntryB, $dbSubEntryE) = prep_tpl(
 		{'{SUB_NAME}' => "@$data{subdomain_name}.$dmnName"}, $dbSubEntryB,
 		$dbSubEntryE
 	);
-	return $rs if ($rs != 0);
+	return -1 if ($rs != 0);
 
-	# Get current domain db working file content
+	# Getting current domain db working file content
 	($rs, my $wrkFileContent) = get_file($wrkFile);
-	return $rs if ($rs != 0);
+	return -1 if ($rs != 0);
 
-	# Delete subdomain DNS records if it exist
+	# Deleting subdomain DNS records if it exist
 	($rs, $wrkFileContent) = del_tag(
 		$dbSubEntryB, "$dbSubEntryE\n", $wrkFileContent
 	);
-	return $rs if ($rs != 0 && $rs != -5);
+	return -1 if ($rs != 0 && $rs != -5);
 
-	# Update serial number according RFC 1912
+	# Updating serial number according RFC 1912
 	$rs = getSerialNumber(\$dmnName, \$wrkFileContent, \$wrkFileContent);
-	return $rs if ($rs != 0);
+	return -1 if ($rs != 0);
 
 	# Backup current production file before replace it
 	if(-e $sysFile) {
-		$rs = sys_command_rs("$main::cfg{'CMD_CP'} -pf $sysFile $bkpFile");
-		return $rs if ($rs != 0);
+		$rs = sys_command_rs("$main::cfg{CMD_CP} -pf $sysFile $bkpFile");
+		return -1 if ($rs != 0);
 	}
 
-	# Store and install production file
+	# Storage and installation of the new production file
 	for ($wrkFile, $sysFile) {
 		$rs = store_file(
 			$_, $wrkFileContent, $main::cfg{'ROOT_USER'},
 			$main::cfg{'ROOT_GROUP'}, 0644
 		);
-		return $rs if ($rs != 0);
+		return -1 if ($rs != 0);
 	}
 
 	push_el(\@main::el, 'sub_del_named_db_data()', 'Ending...');
@@ -279,50 +283,58 @@ sub sub_del_named_db_data {
 
 ################################################################################
 ##
-## Generate subdomain httpd group entry
+## Add subdomain httpd configuration data
+##
+## Note: Also called on 'change'
 ##
 ## @param hashref $data subdomain entries
-## @return int 0 on success
+## @return int 0 on success, negative int on failure
 ##
-sub gen_httpd_sub_group_entry {
+sub sub_add_httpd_cfg_data {
 
-	push_el(\@main::el, 'gen_httpd_sub_group_entry()', 'Starting...');
+	push_el(\@main::el, 'sub_add_httpd_cfg_data()', 'Starting...');
 
 	my ($data) = @_;
 
 	if (!defined $data || $data eq '') {
 		push_el(
-			\@main::el, 'gen_httpd_sub_group_entry()',
+			\@main::el, 'sub_add_httpd_cfg_data()',
 			'[ERROR] Undefined Input Data...'
 		);
 
-		return (-1, '');
+		return -1;
 	}
 
+	my $subStatus = @$data{'subdomain_status'};
 	my $dmnName = @$data{'domain_name'};
 	my $subName = "@$data{subdomain_name}.$dmnName";
 	my $subMountPoint = @$data{'subdomain_mount'};
+	my ($sysUid, $sysGid) = get_dmn_suexec_user(@$data{'domain_id'});
+	my $sysUser = "$main::cfg{APACHE_SUEXEC_USER_PREF}$sysUid";
+	my $sysGroup = "$main::cfg{APACHE_SUEXEC_USER_PREF}$sysGid";
 	my $cfgDir = $main::cfg{'CONF_DIR'};
-	my ($suexecUid, $suexecGid) = get_dmn_suexec_user(@$data{'domain_id'});
-	my $suexecUserPref = $main::cfg{'APACHE_SUEXEC_USER_PREF'};
-	my ($suexecUser, $suexecGroup) = (
-		"$suexecUserPref$suexecUid", "$suexecUserPref$suexecGid"
-	);
+	my $sysFile = "$main::cfg{APACHE_SITES_DIR}/ispcp.conf";
+	my $wrkFile = "$cfgDir/apache/working/ispcp.conf";
+	my $bkpFile = "$cfgDir/apache/backup/httpd.conf." . time;
 
-	# Get needed templates
+	# Getting needed templates
 	my (
-		$rs, $subB, $subEntry, $subE, $subCgiB, $subCgiEntry, $subCgiE, $subPhpB,
-		$subPhpEntry, $subPhpE, $subPhp2B, $subPhp2Entry, $subPhp2E, $subCustom
+		$rs, $dgB, $dgE, $subB, $subEnt, $subE, $subCGIb, $subCGIent, $subCGIe,
+		$subPHPonB, $subPHPon, $subPHPonE, $subPHPoffB, $subPHPoff,$subPHPoffE,
+		$subCustom
 	) = get_tpl (
-		"$cfgDir/apache/parts", 'sub_b.tpl', 'sub_entry.tpl', 'sub_e.tpl',
-		'sub_cgi_b.tpl', 'sub_cgi_entry.tpl', 'sub_cgi_e.tpl', 'sub_php_b.tpl',
-		'sub_php_entry.tpl', 'sub_php_e.tpl', 'sub_php2_b.tpl',
+		"$cfgDir/apache/parts", 'dg_b.tpl', 'dg_e.tpl', 'sub_b.tpl',
+		'sub_entry.tpl', 'sub_e.tpl', 'sub_cgi_b.tpl', 'sub_cgi_entry.tpl',
+		'sub_cgi_e.tpl', 'sub_php2_b.tpl', 'sub_php2_entry.tpl', 'sub_php2_e.tpl',
+		'sub_php_b.tpl', 'sub_php_entry.tpl', 'sub_php_e.tpl', 'sub_php2_b.tpl',
 		'sub_php2_entry.tpl', 'sub_php2_e.tpl', 'custom.conf.tpl'
 	);
-	return ($rs, '') if ($rs != 0);
+	return -1 if ($rs != 0);
 
+	# Preparing templates
 	(
-		$rs, $subB, $subEntry, $subE, $subCgiEntry, $subPhp2Entry, $subCustom
+		$rs, $dgB, $dgE, my $subBv, $subEnt, my $subEv, $subCGIb, $subCGIent,
+		$subCGIe, $subPHPon, $subCustom
 	) = prep_tpl(
 		{
 			'{DMN_NAME}' => $dmnName,
@@ -345,186 +357,109 @@ sub gen_httpd_sub_group_entry {
 			'{APACHE_USERS_LOG_DIR}' => $main::cfg{'APACHE_USERS_LOG_DIR'},
 			'{CUSTOM_SITES_CONFIG_DIR}' =>
 				$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'},
-			'{SUEXEC_USER}' => $suexecUser,
-			'{SUEXEC_GROUP}' => $suexecGroup
+			'{SUEXEC_USER}' => $sysUser,
+			'{SUEXEC_GROUP}' => $sysGroup
 		},
-		$subB, $subEntry, $subE, $subCgiEntry, $subPhp2Entry, $subCustom
+		$dgB, $dgE, $subB, $subEnt, $subE, $subCGIb, $subCGIent, $subCGIe,
+		$subPHPon, $subCustom
 	);
-	return ($rs, '') if ($rs != 0);
 
-	# CGI support ?
-	my $cgiEntry = (@$data{'domain_cgi'} eq 'yes')
-		? "$subCgiB$subCgiEntry$subCgiE" : "$subCgiB$subCgiE";
-
-	($rs, $subEntry) = repl_tag(
-		$subCgiB, $subCgiE, $subEntry, $cgiEntry, 'gen_httpd_sub_group_entry()'
-	);
-	return ($rs, '') if ($rs != 0);
-
-	# PHP support ?
-	my $phpEntry;
-
-	if (@$data{'domain_php'} eq 'no') {
-		$phpEntry = "$subPhpB$subPhpEntry$subPhpE";
-	} else {
-		$phpEntry = "$subPhpB$subPhpE";
-		my $php2Entry = "$subPhp2B$subPhp2Entry$subPhp2E";
-
-		($rs, $subEntry) = repl_tag(
-			$subPhp2B, $subPhp2E, $subEntry, $php2Entry,
-			'gen_httpd_sub_group_entry()'
-		);
-		return ($rs, '') if ($rs != 0);
-	}
-
-	($rs, $subEntry) = repl_tag(
-		$subPhpB, $subPhpE, $subEntry, $phpEntry, 'gen_httpd_sub_group_entry()'
-	);
-	return ($rs, '') if ($rs != 0);
-
-	# Custom domain config file
-	if (!-e "$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$subName.conf" ) {
-		$rs = store_file(
-			"$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$subName.conf",
-			$subCustom, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644
-		);
-		return $rs if ($rs != 0);
-	}
-
-	push_el(\@main::el, 'gen_httpd_sub_group_entry()', 'Ending...');
-
-	return (0, "$subB$subEntry$subE");
-}
-
-################################################################################
-##
-## Add subdomain httpd configuration data
-##
-## @param hashref $data subdomain entries
-## @return int 0 on success
-##
-sub sub_add_httpd_cfg_data {
-
-	push_el(\@main::el, 'sub_add_httpd_cfg_data()', 'Starting...');
-
-	my ($data) = @_;
-
-	if (!defined $data || $data eq '') {
-		push_el(
-			\@main::el, 'sub_add_httpd_cfg_data()',
-			'[ERROR] Undefined Input Data...'
-		);
-
-		return -1;
-	}
-
-	my $dmnName = @$data{'domain_name'};
-	my $cfgDir = $main::cfg{'CONF_DIR'};
-	my $sysFile = "$main::cfg{'APACHE_SITES_DIR'}/ispcp.conf";
-	my $wrkFile = "$cfgDir/apache/working/ispcp.conf";
-	my $bkpFile = "$cfgDir/apache/backup/httpd.conf." . time;
-
-	# Get needed templates
-	my ($rs, $cfgB, $cfgE, $vhB, $vhE, $dgB,$dgE, $subB, $subE) = get_tpl (
-		"$cfgDir/apache/parts", 'cfg_b.tpl', 'cfg_e.tpl', 'vh_b.tpl',
-		'vh_e.tpl', 'dg_b.tpl', 'dg_e.tpl', 'sub_b.tpl', 'sub_e.tpl'
-	);
-	return $rs if ($rs != 0);
-
-	# Prepare templates
-	my ($vhBv, $vhEntryV, $vhEv, $dgBv, $dgEv, $subBv,$subEv);
-	($rs, $vhBv, $vhEv, $dgBv, $dgEv, $subBv, $subEv) = prep_tpl(
-		{
-			'{IP}' => @$data{'ip_number'},
-			'{DMN_GRP}' => $dmnName,
-			'{SUB_NAME}' => "@$data{subdomain_name}.$dmnName"
-		},
-		$vhB, $vhE, $dgB, $dgE, $subB, $subE
-	);
-	return $rs if ($rs != 0);
-
-	# Get current production file
-	($rs, my $sysFileContent) = get_file($sysFile);
-	return $rs if ($rs != 0);
-
-	# Get current working file
-	($rs, my $wrkFileContent) = get_file($wrkFile);
-	return $rs if ($rs != 0);
-
-	# Are $cfg_b, $cfg_e tags exist in the working confing ?
-
-	($rs, my $rData) = get_tag($cfgB, $cfgE, $wrkFileContent);
-	return $rs if ($rs != 0);
-
-	# Is our Virtual Host exist in the working config ?
-
-	($rs, $rData) = get_tag($vhBv, $vhEv, $wrkFileContent);
-	return $rs if ($rs != 0);
-
-	my $vhEntryWorking = $rData;
-
-	($rs, $rData) = get_tag($dgBv, $dgEv, $vhEntryWorking);
-	return $rs if ($rs != 0);
-
-	my $dgEntryWorking = $rData;
-
-	($rs, $rData) = get_tag($subBv, $subEv, $dgEntryWorking);
-
-	if ($rs == 0) {
-		($rs, $dgEntryWorking) = del_tag($subBv, "$subEv\n", $dgEntryWorking);
-		return $rs if ($rs != 0);
-	}
-
-	($rs, $rData) = get_tag($subB, $subE, $dgEntryWorking);
-	return $rs if ($rs != 0);
-
-	($rs, my $subEntry) = gen_httpd_sub_group_entry($data);
-	return $rs if ($rs != 0);
-
-	($rs, $dgEntryWorking) = repl_tag(
-		$subB, $subE, $dgEntryWorking, "$subEntry\n$subB$subE"
-	);
-	return $rs if ($rs != 0);
-
-	# Fit all back to top
-
-	($rs, $vhEntryWorking) = repl_tag(
-		$dgBv, $dgEv, $vhEntryWorking, $dgEntryWorking,
+	# Enabling or disabling CGI support according parent domain properties
+	($rs, $subEnt) = repl_tag(
+		$subCGIb, $subCGIe, $subEnt, (@$data{'domain_cgi'} eq 'yes') ?
+		"$subCGIb$subCGIent$subCGIe" : "$subCGIb$subCGIe",
 		'sub_add_httpd_cfg_data()'
 	);
-	return $rs if ($rs != 0);
+	return -1 if ($rs != 0);
 
-	($rs, $wrkFileContent) = repl_tag(
-		$vhBv, $vhEv, $wrkFileContent, $vhEntryWorking,
-		'sub_add_httpd_cfg_data()'
-	);
-	return $rs if ($rs != 0);
-
-	($rs, $rData) = get_tag($cfgB, $cfgE, $sysFileContent);
-
-	if ($rs == 0) {
-		($rs, $sysFileContent) = repl_tag(
-			$cfgB, $cfgE, $sysFileContent, $wrkFileContent,
+	# Enabling or disabling PHP support according parent domain properties
+	if(@$data{'domain_php'} eq 'yes') {
+		($rs, $subEnt) = repl_tag(
+			$subPHPonB, $subPHPonE, $subEnt, "$subPHPonB$subPHPon$subPHPonE",
 			'sub_add_httpd_cfg_data()'
 		);
-		return $rs if ($rs != 0);
-	} elsif ($rs == -1) {
-		$sysFileContent .= $wrkFileContent;
+		return -1 if ($rs != 0);
+
+		($rs, $subEnt) = repl_tag(
+			$subPHPoffB, $subPHPoffE, $subEnt,"$subPHPoffB$subPHPoffE",
+			'sub_add_httpd_cfg_data()'
+		);
+		return -1 if($rs != 0);
 	} else {
-		return $rs;
+		($rs, $subEnt) = repl_tag(
+			$subPHPonB, $subPHPonE, $subEnt,  "$subPHPonB$subPHPonE",
+			'sub_add_httpd_cfg_data()'
+		);
+		return -1 if ($rs != 0);
+
+		($rs, $subEnt) = repl_tag(
+			$subPHPoffB, $subPHPoffE, $subEnt,
+			"$subPHPoffB$subPHPoff$subPHPoffE", 'sub_add_httpd_cfg_data()'
+		);
+		return -1 if ($rs != 0);
 	}
 
-	# Backup current production file before replace it
-	$rs= sys_command_rs("$main::cfg{'CMD_CP'} -p $sysFile $bkpFile");
-	return $rs if ($rs != 0);
+	# Getting current working file content
+	($rs, my $wrkFileContent) = get_file($wrkFile);
+	return -1 if($rs != 0);
 
-	# Store and install new production file
+	# Getting current domain group entry
+	($rs, my $dmnGroupEntry) = get_tag($dgB, $dgE, $wrkFileContent);
+	return -1 if($rs != 0);
+
+	# On 'change', just replace subdomain entry in domain group entry
+	if($subStatus eq 'change') {
+		($rs, $dmnGroupEntry) = repl_tag(
+			$subBv, $subEv, $dmnGroupEntry, "$subBv$subEnt$subEv",
+			'sub_add_httpd_cfg_data()'
+		);
+		return -1 if($rs != 0 && $rs != -5);
+	}
+
+	# Adding subdomain entry in domain group entry
+	# Acts also as recovery process on `change` if subdomain entry was not found
+	if($subStatus eq 'toadd' || $rs == -5) {
+		push_el(
+			\@main::el, 'sub_add_httpd_cfg_data()',
+			'[WARNING] vhost entry was not found in ispcp.conf file! ' .
+			'New one will be added now!'
+		) if($rs == -5);
+
+		($rs, $dmnGroupEntry) = add_tag(
+			$subB, $subE, $dmnGroupEntry, "$subBv$subEnt$subEv\n"
+		);
+		return -1 if($rs != 0);
+	}
+
+	# Replacing current domain group entry
+	($rs, $wrkFileContent) = repl_tag(
+		$dgB, $dgE, $wrkFileContent, "$dmnGroupEntry",
+		'sub_add_httpd_cfg_data()'
+	);
+	return -1 if($rs != 0);
+
+	# Backup current production file before replace it
+	if(-e $sysFile) {
+		$rs = sys_command_rs("$main::cfg{CMD_CP} -pf $sysFile $bkpFile");
+		return -1 if ($rs != 0);
+	}
+
+	# Storage and installation of the new production file
 	for ($wrkFile, $sysFile) {
 		$rs = store_file(
 			$_, $wrkFileContent, $main::cfg{'ROOT_USER'},
 			$main::cfg{'ROOT_GROUP'}, 0644
 		);
-		return $rs if ($rs != 0);
+		return -1 if ($rs != 0);
+	}
+
+	# Creating custom domain configuration file if it don't already exist
+	if (!-e "$main::cfg{APACHE_CUSTOM_SITES_CONFIG_DIR}/$subName.conf" ) {
+		$rs = store_file(
+			"$main::cfg{APACHE_CUSTOM_SITES_CONFIG_DIR}/$subName.conf",
+			$subCustom, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644
+		);
+		return -1 if ($rs != 0);
 	}
 
 	push_el(\@main::el, 'sub_add_httpd_cfg_data()', 'Ending...');
@@ -534,40 +469,10 @@ sub sub_add_httpd_cfg_data {
 
 ################################################################################
 ##
-## Change subdomain httpd configuration data
-##
-## @param hashref $data subdomain entries
-## @return int 0 on success
-##
-sub sub_change_httpd_cfg_data {
-
-	push_el(\@main::el, 'sub_change_httpd_cfg_data()', 'Starting...');
-
-	my ($data) = @_;
-
-	if (!defined $data || $data eq '') {
-		push_el(
-			\@main::el, 'sub_change_httpd_cfg_data()',
-			'[ERROR] Undefined Input Data...'
-		);
-
-		return -1;
-	}
-
-	my $rs = sub_add_httpd_cfg_data($data);
-	return $rs if ($rs != 0);
-
-	push_el(\@main::el, 'sub_change_httpd_cfg_data()', 'Ending...');
-
-	0;
-}
-
-################################################################################
-##
 ## Delete subdomain httpd configuration data
 ##
 ## @param hashref $data subdomain entries
-## @return int 0 on success
+## @return int 0 on success, negative int on failure
 ##
 sub sub_del_httpd_cfg_data {
 
@@ -586,45 +491,45 @@ sub sub_del_httpd_cfg_data {
 
 	my $subName = "@$data{subdomain_name}.@$data{domain_name}";
 	my $cfgDir = $main::cfg{'CONF_DIR'};
-	my $sysFile = "$main::cfg{'APACHE_SITES_DIR'}/ispcp.conf";
+	my $sysFile = "$main::cfg{APACHE_SITES_DIR}/ispcp.conf";
 	my $wrkFile = "$cfgDir/apache/working/ispcp.conf";
 	my $bkpFile = "$cfgDir/apache/backup/httpd.conf." . time;
 
-	# Get needed templates
+	# Getting needed templates
 	my ($rs, $SubEntryB, $SubEntryE) = get_tpl(
 		"$cfgDir/apache/parts", 'sub_b.tpl', 'sub_e.tpl'
 	);
-	return $rs if ($rs != 0);
+	return -1 if ($rs != 0);
 
-	# Prepare needed templates
+	# Preparing templates
 	($rs, $SubEntryB, $SubEntryE) = prep_tpl(
 		{'{SUB_NAME}' => $subName}, $SubEntryB, $SubEntryE
 	);
-	return $rs if ($rs != 0);
+	return -1 if ($rs != 0);
 
-	# Get current apache working file content
+	# Getting current working file content
 	($rs, my $wrkFileContent) = get_file($wrkFile);
-	return $rs if ($rs != 0);
+	return -1 if ($rs != 0);
 
-	# Delete subdomain vhost if it exist
+	# Deleting subdomain entry if it exist
 	($rs, $wrkFileContent) = del_tag(
 		$SubEntryB, "$SubEntryE\n", $wrkFileContent
 	);
-	return $rs if ($rs != 0 && $rs != -5);
+	return -1 if ($rs != 0 && $rs != -5);
 
 	# Backup current production file before replace it
 	if(-e $sysFile) {
-		$rs = sys_command_rs("$main::cfg{'CMD_CP'} -pf $sysFile $bkpFile");
-		return $rs if ($rs != 0);
+		$rs = sys_command_rs("$main::cfg{CMD_CP} -pf $sysFile $bkpFile");
+		return -1 if ($rs != 0);
 	}
 
-	# Store and install production file
+	# Storage and installation of the new production file
 	for ($wrkFile, $sysFile) {
 		$rs = store_file(
 			$_, $wrkFileContent, $main::cfg{'ROOT_USER'},
 			$main::cfg{'ROOT_GROUP'}, 0644
 		);
-		return $rs if ($rs != 0);
+		return -1 if ($rs != 0);
 	}
 
 	push_el(\@main::el, 'sub_del_httpd_cfg_data()', 'Ending...');
@@ -636,8 +541,10 @@ sub sub_del_httpd_cfg_data {
 ##
 ## Add subdomain httpd file data
 ##
+## Note: Also called on 'change'
+##
 ## @param hashref $data subdomain entries
-## @return int 0 on success
+## @return int 0 on success, negative int on failure
 ##
 sub sub_add_httpd_file_data {
 
@@ -656,38 +563,38 @@ sub sub_add_httpd_file_data {
 
 	my $dmnName = @$data{'domain_name'};
 	my $subName = "@$data{subdomain_name}.$dmnName";
-	my $subDir = "$main::cfg{'APACHE_WWW_DIR'}/$dmnName/@$data{subdomain_mount}";
+	my $subDir = "$main::cfg{APACHE_WWW_DIR}/$dmnName/@$data{subdomain_mount}";
 	my ($sysUid, $sysGid) = get_dmn_suexec_user(@$data{'domain_id'});
-	my $sysUser = "$main::cfg{'APACHE_SUEXEC_USER_PREF'}$sysUid";
-	my $sysGroup = "$main::cfg{'APACHE_SUEXEC_USER_PREF'}$sysGid";
+	my $sysUser = "$main::cfg{APACHE_SUEXEC_USER_PREF}$sysUid";
+	my $sysGroup = "$main::cfg{APACHE_SUEXEC_USER_PREF}$sysGid";
 
-	# Create subdomain mountpoint directory
+	# Creating subdomain dir if it don't already exist or just set these perms
 	my $rs = make_dir($subDir, $sysUser, $sysGroup, 0755);
-	return $rs if ($rs != 0);
+	return -1 if ($rs != 0);
 
-	# Create cgi-bin directory
+	# Creating cgi-bin dir if it don't already exist or just set these perms
 	$rs= make_dir("$subDir/cgi-bin", $sysUser, $sysGroup, 0755);
-	return $rs if ($rs != 0);
+	return -1 if ($rs != 0);
 
-	# Create phptmp directory
+	## Creating phptmp dir if it don't already exist or just set these perms
 	$rs = make_dir(
 		"$subDir/phptmp", $sysUser, $main::cfg{'APACHE_GROUP'}, 0770
 	);
-	return $rs if ($rs != 0);
+	return -1 if ($rs != 0);
 
-	# Create htdocs directory with default page if it don't exist
+	# Creating htdocs directory with default page if it don't already exist
 	if (!-e "$subDir/htdocs/") {
 
 		$rs = make_dir("$subDir/htdocs", $sysUser, $sysGroup, 0755);
-		return $rs if ($rs != 0);
+		return -1 if ($rs != 0);
 
 		# Get default index.html default page content
 		($rs, my $indexTpl) = get_file(
-			"$main::cfg{'ROOT_DIR'}/gui/domain_default_page/index.html"
+			"$main::cfg{ROOT_DIR}/gui/domain_default_page/index.html"
 		);
-		return $rs if ($rs != 0);
+		return -1 if ($rs != 0);
 
-		# Prepare index.html default page
+		# Preparing index.html default page
 		my $rVar = {
 			'{DOMAIN_NAME}' => \$subName,
 			'{BASE_SERVER_VHOST_PREFIX}' =>
@@ -697,30 +604,33 @@ sub sub_add_httpd_file_data {
 
 		for (keys %$rVar){
 			($rs, $indexTpl) = repl_var($_, $indexTpl, ${$rVar->{$_}});
-			return $rs if($rs != 0);
+			return -1 if($rs != 0);
 		}
 
-		# Install index.html default page
+		# Installation of the index.html default page
 		$rs = store_file(
 			"$subDir/htdocs/index.html", $indexTpl, $sysUser, $sysGroup, 0644
 		);
-		return $rs if ($rs != 0);
+		return -1 if ($rs != 0);
 
-		# Install all needed images for index.html default page
+		# Installing all needed images for index.html default page
 		$rs = sys_command_rs(
-			"$main::cfg{'CMD_CP'} -Rp $main::cfg{'ROOT_DIR'}/gui/" .
+			"$main::cfg{CMD_CP} -Rp $main::cfg{ROOT_DIR}/gui/" .
 				"domain_default_page/images $subDir/htdocs/"
 			);
-		return $rs if ($rs != 0);
+		return -1 if ($rs != 0);
 
-		# Set user/group and permissions for all images
+		# Setting user/group and perms for all images
 		$rs = setfmode("$subDir/htdocs/images/", $sysUser, $sysGroup, 0755);
-		return $rs if ($rs != 0);
+		return -1 if ($rs != 0);
 
 		for (glob "$subDir/htdocs/images/*") {
 			$rs = setfmode($_, $sysUser, $sysGroup, 0644);
-			return $rs if ($rs != 0);
+			return -1 if ($rs != 0);
 		}
+	} else { # htdocs directory already exists, just set these perms
+			$rs = setfmode("$subDir/htdocs/", $sysUser, $sysGroup, 0755);
+			return -1 if ($rs != 0);
 	}
 
 	push_el(\@main::el, 'sub_add_httpd_file_data()', 'Ending...');
@@ -730,50 +640,10 @@ sub sub_add_httpd_file_data {
 
 ################################################################################
 ##
-## Change subdomain httpd file data
-##
-## @param hashref $data subdomain entries
-## @return int 0 on success
-##
-sub sub_change_httpd_file_data {
-
-	push_el(\@main::el, 'sub_change_httpd_file_data()', 'Starting...');
-
-	my ($data) = @_;
-
-	if (!defined $data || $data eq '') {
-		push_el(
-			\@main::el, 'sub_change_httpd_file_data()',
-			'[ERROR] Undefined Input Data...'
-		);
-
-		return -1;
-	}
-
-	my $wwwDir = $main::cfg{'APACHE_WWW_DIR'};
-	my $subDir ="$wwwDir/@$data{domain_name}@$data{subdomain_mount}";
-	my ($sysUid) = get_dmn_suexec_user(@$data{'domain_id'});
-	my $sysUser = "$main::cfg{'APACHE_SUEXEC_USER_PREF'}$sysUid";
-
-	# Subdomain entry support directories
-	if(!-e "$subDir/phptmp") {
-		my $rs = make_dir(
-			"$subDir/phptmp", $sysUser, $main::cfg{'APACHE_GROUP'}, 0770
-		);
-		return $rs if ($rs != 0);
-	}
-
-	push_el(\@main::el, 'sub_change_httpd_file_data()', 'Ending...');
-
-	0;
-}
-
-################################################################################
-##
 ## Delete subdomain httpd file data
 ##
 ## @param hashref $data subdomain entries
-## @return int 0 on success
+## @return int 0 on success, negative int on failure
 ##
 sub sub_del_httpd_file_data {
 
@@ -791,62 +661,21 @@ sub sub_del_httpd_file_data {
 	}
 
 	my $dmnName = @$data{'domain_name'};
-	my $dmnId = @$data{'domain_id'};
 	my $subName = "@$data{subdomain_name}.$dmnName";
-	my $subMount = @$data{'subdomain_mount'};
-	my $subDir = "$main::cfg{'APACHE_WWW_DIR'}/$dmnName$subMount";
+	my $subDir = "$main::cfg{APACHE_WWW_DIR}/$dmnName@$data{subdomain_mount}";
 
-	my $rs;
-
-	# Custom http config
-	if (-e "$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$subName.conf" ) {
-		$rs = del_file(
-			"$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'}/$subName.conf"
+	# Deleting custom httpd configuration file if it exist
+	if (-e "$main::cfg{APACHE_CUSTOM_SITES_CONFIG_DIR}/$subName.conf" ) {
+		my $rs = del_file(
+			"$main::cfg{APACHE_CUSTOM_SITES_CONFIG_DIR}/$subName.conf"
 		);
-		return $rs if ($rs != 0);
+		return -1 if ($rs != 0);
 	}
 
-	# Skip data deletion if the mount point is shared
-
-	my $sql = "
-		SELECT
-			count(`alias_id`)
-		FROM
-			`domain_aliasses`
-		WHERE
-			`domain_id` = $dmnId
-		AND
-			`alias_mount` = '$subMount'
-		;
-	";
-
-	($rs, my $rData) = doSQL($sql);
-	return $rs if ($rs != 0);
-
-	return 0 if (@{@$rData[0]}[0] > 1);
-
-	# Check for subdomains with same mount point
-	$sql = "
-		SELECT
-			count(`subdomain_id`)
-		FROM
-			`subdomain`
-		WHERE
-			`domain_id` = $dmnId
-		AND
-			`subdomain_mount` = '$subMount'
-		;
-	";
-
-	($rs, $rData) = doSQL($sql);
-	return $rs if ($rs != 0);
-
-	return 0 if (@{@$rData[0]}[0] > 1);
-
-	# Delete subdomain entry support directories
+	# Deleting subdomain main dirctory if it exist
 	if(-e $subDir) {
-		$rs = del_dir($subDir);
-		return $rs if($rs != 0);
+		my $rs = del_dir($subDir);
+		return -1 if($rs != 0);
 	}
 
 	push_el(\@main::el, 'sub_del_httpd_file_data()', 'Ending...');
@@ -858,8 +687,10 @@ sub sub_del_httpd_file_data {
 ##
 ## Add subdomain httpd data
 ##
+## Note: Also called on 'change'
+##
 ## @param hashref $data subdomain entries
-## @return int 0 on success
+## @return int 0 on success, negative int on failure
 ##
 sub sub_add_httpd_data {
 
@@ -876,45 +707,12 @@ sub sub_add_httpd_data {
 	}
 
 	my $rs = sub_add_httpd_cfg_data($data);
-	return $rs if ($rs != 0);
+	return -1 if ($rs != 0);
 
 	$rs = sub_add_httpd_file_data($data);
-	return $rs if ($rs != 0);
+	return -1 if ($rs != 0);
 
 	push_el(\@main::el, 'sub_add_httpd_data()', 'Ending...');
-
-	0;
-}
-
-################################################################################
-##
-## Change subdomain httpd data
-##
-## @param hashref $data subdomain entries
-## @return int 0 on success
-##
-sub sub_change_httpd_data {
-
-	push_el(\@main::el, 'sub_change_httpd_data()', 'Starting...');
-
-	my ($data) = @_;
-
-	if (!defined $data || $data eq '') {
-		push_el(
-			\@main::el, 'sub_change_httpd_data()',
-			'[ERROR] Undefined Input Data...'
-		);
-
-		return -1;
-	}
-
-	my $rs = sub_change_httpd_cfg_data($data);
-	return $rs if ($rs != 0);
-
-	$rs = sub_change_httpd_file_data($data);
-	return $rs if ($rs != 0);
-
-	push_el(\@main::el, 'sub_change_httpd_data()', 'Ending...');
 
 	0;
 }
@@ -924,7 +722,7 @@ sub sub_change_httpd_data {
 ## Delete subdomain httpd data
 ##
 ## @param hashref $data subdomain entries
-## @return int 0 on success
+## @return int 0 on success, negative int on failure
 ##
 sub sub_del_httpd_data {
 
@@ -941,10 +739,10 @@ sub sub_del_httpd_data {
 	}
 
 	my $rs = sub_del_httpd_cfg_data($data);
-	return $rs if ($rs != 0);
+	return -1 if ($rs != 0);
 
 	$rs = sub_del_httpd_file_data($data);
-	return $rs if ($rs != 0);
+	return -1 if ($rs != 0);
 
 	push_el(\@main::el, 'sub_del_httpd_data()', 'Ending...');
 
@@ -959,8 +757,10 @@ sub sub_del_httpd_data {
 ##
 ## Add subdomain mta configuration data
 ##
+## Note: Also called on 'change'
+##
 ## @param hashref $data subdomain entries
-## @return int 0 on success
+## @return int 0 on success, negative int on failure
 ##
 sub sub_add_mta_cfg_data {
 
@@ -983,32 +783,32 @@ sub sub_add_mta_cfg_data {
 	my $wrkFile = "$cfgDir/postfix/working/domains";
 	my $bkpFile = "$cfgDir/postfix/backup/domains." . time;
 
-	# Get current working file content
+	# Getting current working file content
 	my ($rs, $wrkFileContent) = get_file($wrkFile);
-	return $rs if ($rs != 0);
+	return -1 if ($rs != 0);
 
-	# Checking for domain entry existance;
+	# Adding/Replacing subdomain entry
 	$wrkFileContent =~ s/^$subName\t\t\t[^\n]+\n//gim;
 	$wrkFileContent .= "$subName\t\t\tvsubdmn-entry\n";
 
 	# Backup current production file before replace it
 	if(-e $sysFile) {
-		$rs = sys_command_rs("$main::cfg{'CMD_CP'} -p $sysFile $bkpFile");
-		return $rs if($rs != 0);
+		$rs = sys_command_rs("$main::cfg{CMD_CP} -p $sysFile $bkpFile");
+		return -1 if($rs != 0);
 	}
 
-	# Store and install new production file
+	# Storage and installation of the new production file
 	for ($wrkFile, $sysFile) {
 		$rs = store_file(
 			$_, $wrkFileContent, $main::cfg{'ROOT_USER'},
 			$main::cfg{'ROOT_GROUP'}, 0644
 		);
-		return $rs if ($rs != 0);
+		return -1 if ($rs != 0);
 	}
 
-	# Update lookup table
-	$rs = sys_command_rs("$main::cfg{'CMD_POSTMAP'} $sysFile");
-	return $rs if ($rs != 0);
+	# Updating 'domains' lookup table
+	$rs = sys_command_rs("$main::cfg{CMD_POSTMAP} $sysFile");
+	return -1 if ($rs != 0);
 
 	push_el(\@main::el, 'sub_add_mta_cfg_data()', 'Ending...');
 
@@ -1020,7 +820,7 @@ sub sub_add_mta_cfg_data {
 ## Delete subdomain mta configuration data
 ##
 ## @param hashref $data subdomain entries
-## @return int 0 on success
+## @return int 0 on success, negative int on failure
 ##
 sub sub_del_mta_cfg_data {
 
@@ -1043,31 +843,31 @@ sub sub_del_mta_cfg_data {
 	my $wrkFile = "$cfgDir/postfix/working/domains";
 	my $bkpFile = "$cfgDir/postfix/backup/domains." . time;
 
-	# Get current working file
+	# Getting current working file content
 	my ($rs, $wrkFileContent) = get_file($wrkFile);
-	return $rs if ($rs != 0);
+	return -1 if ($rs != 0);
 
-	# Check for domain entry existance
+	# Deleting subdomain entry if any exist
 	$wrkFileContent =~ s/^$subName\t\t\t[^\n]+\n//gim;
 
 	# Backup current production file before replace it
 	if(-e $sysFile) {
-		$rs = sys_command_rs("$main::cfg{'CMD_CP'} -p $sysFile $bkpFile");
-		return $rs if ($rs != 0);
+		$rs = sys_command_rs("$main::cfg{CMD_CP} -p $sysFile $bkpFile");
+		return -1 if ($rs != 0);
 	}
 
-	# Store and install new production file
+	# Storage and installation of the new production file
 	for ($wrkFile, $sysFile) {
 		$rs = store_file(
 			$_, $wrkFileContent, $main::cfg{'ROOT_USER'},
 			$main::cfg{'ROOT_GROUP'}, 0644
 		);
-		return $rs if ($rs != 0);
+		return -1 if ($rs != 0);
 	}
 
-	# Update lookup table
-	$rs = sys_command_rs("$main::cfg{'CMD_POSTMAP'} $sysFile");
-	return $rs if ($rs != 0);
+	# Updating 'domains' lookup table
+	$rs = sys_command_rs("$main::cfg{CMD_POSTMAP} $sysFile");
+	return -1 if ($rs != 0);
 
 	push_el(\@main::el, 'sub_del_mta_cfg_data()', 'Ending...');
 
@@ -1078,8 +878,10 @@ sub sub_del_mta_cfg_data {
 ##
 ## Add subdomain mta file data
 ##
+## Note: Also called on 'change'
+##
 ## @param hashref $data subdomain entries
-## @return int 0 on success
+## @return int 0 on success, negative int on failure
 ##
 sub sub_add_mta_file_data {
 
@@ -1096,12 +898,13 @@ sub sub_add_mta_file_data {
 		return -1;
 	}
 
+	# Creating mail directory if it don't already exist or just set these perms
 	my $rs = make_dir(
-		"$main::cfg{'MTA_VIRTUAL_MAIL_DIR'}/@$data{subdomain_name}." .
+		"$main::cfg{MTA_VIRTUAL_MAIL_DIR}/@$data{subdomain_name}." .
 			@$data{'domain_name'}, $main::cfg{'MTA_MAILBOX_UID_NAME'},
 			$main::cfg{'MTA_MAILBOX_GID_NAME'}, 0700
 	);
-	return $rs if ($rs != 0);
+	return -1 if ($rs != 0);
 
 	push_el(\@main::el, 'sub_add_mta_file_data()', 'Ending...');
 
@@ -1113,7 +916,7 @@ sub sub_add_mta_file_data {
 ## Delete subdomain mta file data
 ##
 ## @param hashref $data subdomain entries
-## @return int 0 on success
+## @return int 0 on success, negative int on failure
 ##
 sub sub_del_mta_file_data {
 
@@ -1131,10 +934,10 @@ sub sub_del_mta_file_data {
 	}
 
 	my $rs = del_dir(
-		"$main::cfg{'MTA_VIRTUAL_MAIL_DIR'}/@$data{subdomain_name}." .
+		"$main::cfg{MTA_VIRTUAL_MAIL_DIR}/@$data{subdomain_name}." .
 			@$data{'domain_name'}
 	);
-	return $rs if ($rs != 0);
+	return -1 if ($rs != 0);
 
 	push_el(\@main::el, 'sub_del_mta_file_data()', 'Ending...');
 
@@ -1145,8 +948,10 @@ sub sub_del_mta_file_data {
 ##
 ## Add subdomain mta data
 ##
+## Note: Also called on 'change'
+##
 ## @param hashref $data subdomain entries
-## @return int 0 on success
+## @return int 0 on success, negative int on failure
 ##
 sub sub_add_mta_data {
 
@@ -1163,41 +968,12 @@ sub sub_add_mta_data {
 	}
 
 	my $rs = sub_add_mta_cfg_data($data);
-	return $rs if ($rs != 0);
+	return -1 if ($rs != 0);
 
 	$rs = sub_add_mta_file_data($data);
-	return $rs if ($rs != 0);
+	return -1 if ($rs != 0);
 
 	push_el(\@main::el, 'sub_add_mta_data()', 'Ending...');
-
-	0;
-}
-
-################################################################################
-##
-## Change subdomain mta data
-##
-## @param hashref $data subdomain entries
-## @return int 0 on success
-##
-sub sub_change_mta_data {
-
-	push_el(\@main::el, 'sub_change_mta_data()', 'Starting...');
-
-	my ($data) = @_;
-
-	if (!defined $data || $data eq '') {
-		push_el(
-			\@main::el, 'sub_change_mta_data()', '[ERROR] Undefined Input Data...'
-		);
-
-		return -1;
-	}
-
-	my $rs = sub_add_mta_data($data);
-	return $rs if ($rs != 0);
-
-	push_el(\@main::el, 'sub_change_mta_data()', 'Ending...');
 
 	0;
 }
@@ -1207,7 +983,7 @@ sub sub_change_mta_data {
 ## Delete subdomain mta data
 ##
 ## @param hashref $data subdomain entries
-## @return int 0 on success
+## @return int 0 on success, negative int on failure
 ##
 sub sub_del_mta_data {
 
@@ -1224,10 +1000,10 @@ sub sub_del_mta_data {
 	}
 
 	my $rs = sub_del_mta_cfg_data($data);
-	return $rs if ($rs != 0);
+	return -1 if ($rs != 0);
 
 	$rs = sub_del_mta_file_data($data);
-	return $rs if ($rs != 0);
+	return -1 if ($rs != 0);
 
 	push_el(\@main::el, 'sub_del_mta_data()', 'Ending...');
 
@@ -1242,8 +1018,10 @@ sub sub_del_mta_data {
 ##
 ## Add subdomain proftpd configuration data
 ##
+## Note: Also called on 'change'
+##
 ## @param hashref $data subdomain entries
-## @return int 0 on success
+## @return int 0 on success, negative int on failure
 ##
 sub sub_add_proftpd_cfg_data {
 
@@ -1259,127 +1037,30 @@ sub sub_add_proftpd_cfg_data {
 		return -1;
 	}
 
-	my $dmnId = @$data{'domain_id'};
-	my $subMountPoint = @$data{'subdomain_mount'};
-	my $subTo = @$data{'domain_name'};
-	my $cfgDir = $main::cfg{'CONF_DIR'};
-	my $proftpdCfgDir = $main::cfg{'FTPD_CONF_DIR'};
-	my $subFname = "@$data{subdomain_name}.$subTo.conf";
-	my $wrkFile = "$main::cfg{'CONF_DIR'}/proftpd/working/$subFname";
-	my $sysFile = "$proftpdCfgDir/$subFname";
+	my $dmnName = @$data{'domain_name'};
+	my $subFname = "@$data{subdomain_name}.$dmnName.conf";
+	my $wrkFile = "$main::cfg{CONF_DIR}/proftpd/working/$subFname";
+	my $sysFile = "$main::cfg{FTPD_CONF_DIR}/$subFname";
 
-	# Dirty trik to allow mount point sharing
-	my ($entry, $fill) = ('', 1);
+	# Getting needed template
+	my ($rs, $entry) = get_file(
+		"$main::cfg{CONF_DIR}/proftpd/parts/proftpd.conf.tpl"
+	);
+	return -1 if ($rs != 0);
 
-	# First subdomains
-	my $sql = "
-		SELECT
-			`subdomain_name`
-		FROM
-			`subdomain`
-		WHERE
-			`domain_id` = $dmnId
-		AND
-			`subdomain_id` != @$data{'subdomain_id'}
-		AND
-			`subdomain_mount` = '$subMountPoint'
-		;
-	";
+	# Prepare template
+	($rs, $entry) = repl_var(
+		'{PATH}', $entry,
+		"$main::cfg{APACHE_WWW_DIR}/$dmnName@$data{subdomain_mount}"
+	);
+	return -1 if ($rs != 0);
 
-	my ($rs, $rData) = doSQL($sql);
-	return $rs if ($rs != 0);
-
-	for (@$rData) {
-		my $otherSub="$proftpdCfgDir/@${_[0]}.$subTo.conf";
-
-		if(-e $otherSub && -s $otherSub) {
-			push_el(
-				\@main::el, 'als_add_proftpd_cfg_data()',
-				"@${_[0]}.$subTo share same mount point. Skipping..."
-			);
-
-			$fill = 0;
-		}
-	}
-
-	$sql = "
-		SELECT
-			`alias_name`
-		FROM
-			`domain_aliasses`
-		WHERE
-			`domain_id` = $dmnId
-		AND
-			`alias_mount` = '$subMountPoint'
-		;
-	";
-
-	($rs, $rData) = doSQL($sql);
-	return $rs if ($rs != 0);
-
-	for (@$rData) {
-		my $alias = "$proftpdCfgDir/@${_[0]}.conf";
-
-		if(-e $alias && -s $alias){
-			push_el(
-				\@main::el, 'als_add_proftpd_cfg_data()',
-				"@${_[0]} share same mount point. Skipping..."
-			);
-
-			$fill = 0;
-		}
-	}
-
-	$sql = "
-		SELECT
-			`t1`.`subdomain_alias_name`, `t2`.`alias_name`
-		FROM
-			`subdomain_alias` AS `t1`
-		LEFT JOIN
-			(`domain_aliasses` AS `t2`)
-		ON
-			(`t1`.`alias_id` = `t2`.`alias_id`)
-		WHERE
-			`t2`.`domain_id` = $dmnId
-		AND
-			`subdomain_alias_mount` = '$subMountPoint'
-		;
-	";
-
-	($rs, $rData) = doSQL($sql);
-	return $rs if ($rs != 0);
-
-	for (@$rData) {
-		my $alsSub = "$proftpdCfgDir/@${_[0]}.@${_[1]}.conf";
-
-		if(-e $alsSub && -s $alsSub){
-			push_el(
-				\@main::el, 'als_add_proftpd_cfg_data()',
-				"@${_[0]}.@${_[1]} share same mount point. Skipping..."
-			);
-
-			$fill = 0;
-		}
-	}
-
-	if ($fill == 1 && $subMountPoint ne '/') {
-
-		($rs, $entry) = get_tpl("$cfgDir/proftpd/parts", 'proftpd.conf.tpl');
-		return $rs if ($rs != 0);
-
-		($rs, $entry) = prep_tpl(
-			{'{PATH}' => "$main::cfg{'APACHE_WWW_DIR'}/$subTo$subMountPoint"},
-			$entry
-			);
-		return $rs if ($rs != 0);
-	}
-
-	# Store and install new production file
+	# Storage and installation of the new production file
 	for ($wrkFile, $sysFile) {
 		$rs = store_file(
 			$_, $entry, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644
 		);
-		return $rs if ($rs != 0);
+		return -1 if ($rs != 0);
 	}
 
 	push_el(\@main::el, 'sub_add_proftpd_cfg_data()', 'Ending...');
@@ -1392,7 +1073,7 @@ sub sub_add_proftpd_cfg_data {
 ## Delete subdomain proftpd configuration data
 ##
 ## @param hashref $data subdomain entries
-## @return int 0 on success
+## @return int 0 on success, negative int on failure
 ##
 sub sub_del_proftpd_cfg_data {
 
@@ -1410,105 +1091,18 @@ sub sub_del_proftpd_cfg_data {
 	}
 
 	my $subFname = "@$data{subdomain_name}.@$data{domain_name}.conf";
-	my $wrkFile = "$main::cfg{'CONF_DIR'}/proftpd/working/$subFname";
-	my $sysFile = "$main::cfg{'FTPD_CONF_DIR'}/$subFname";
+	my $wrkFile = "$main::cfg{CONF_DIR}/proftpd/working/$subFname";
+	my $sysFile = "$main::cfg{FTPD_CONF_DIR}/$subFname";
 
-	# Remove working and production files
+	# Removing working and production files
 	for ($wrkFile, $sysFile) {
 		if(-e $_) {
 			my $rs = del_file($_);
-			return $rs if ($rs != 0);
+			return -1 if ($rs != 0);
 		}
 	}
 
 	push_el(\@main::el, 'sub_del_proftpd_cfg_data()', 'Ending...');
-
-	0;
-}
-
-################################################################################
-##
-## Add subdomain proftpd data
-##
-## @param hashref $data subdomain entries
-## @return int 0 on success
-##
-sub sub_add_proftpd_data {
-
-	push_el(\@main::el, 'sub_add_proftpd_data()', 'Starting...');
-
-	my ($data) = @_;
-
-	if (!defined $data || $data eq '') {
-		push_el(
-			\@main::el, 'sub_add_proftpd_data()',
-			'[ERROR] Undefined Input Data...'
-		);
-		return -1;
-	}
-
-	my $rs = sub_add_proftpd_cfg_data($data);
-	return $rs if ($rs != 0);
-
-	push_el(\@main::el, 'sub_add_proftpd_data()', 'Ending...');
-
-	0;
-}
-
-################################################################################
-##
-## Change subdomain proftpd data
-##
-## @param hashref $data subdomain entries
-## @return int 0 on success
-##
-sub sub_change_proftpd_data {
-
-	push_el(\@main::el, 'sub_change_proftpd_data()', 'Starting...');
-
-	my ($data) = @_;
-
-	if (!defined $data || $data eq '') {
-		push_el(
-			\@main::el, 'sub_change_proftpd_data()',
-			'[ERROR] Undefined Input Data...'
-		);
-		return -1;
-	}
-
-	my $rs = sub_add_proftpd_data($data);
-	return $rs if ($rs != 0);
-
-	push_el(\@main::el, 'sub_change_proftpd_data()', 'Ending...');
-
-	0;
-}
-
-################################################################################
-##
-## Delete subdomain proftpd data
-##
-## @param hashref $data subdomain entries
-## @return int 0 on success
-##
-sub sub_del_proftpd_data {
-
-	push_el(\@main::el, 'sub_del_proftpd_data()', 'Starting...');
-
-	my ($data) = @_;
-
-	if (!defined $data || $data eq '') {
-		push_el(
-			\@main::el, 'sub_del_proftpd_data()',
-			'[ERROR] Undefined Input Data...'
-		);
-		return -1;
-	}
-
-	my $rs = sub_del_proftpd_cfg_data($data);
-	return $rs if ($rs != 0);
-
-	push_el(\@main::el, 'sub_del_proftpd_data()', 'Ending...');
 
 	0;
 }
@@ -1522,7 +1116,7 @@ sub sub_del_proftpd_data {
 ## Add subdomain data
 ##
 ## @param hashref $data subdomain entries
-## @return int 0 on success
+## @return int 0 on success, negative int on failure
 ##
 sub sub_add_data {
 
@@ -1531,31 +1125,31 @@ sub sub_add_data {
 	my ($data) = @_;
 
 	if (!defined $data || $data eq '') {
-		push_el(\@main::el, 'sub_add_data()', '[ERROR] Undefined Input Data...');
+		push_el(
+			\@main::el, 'sub_add_data()', '[ERROR] Undefined Input Data...'
+		);
 
 		return -1;
 	}
 
-	my $rs;
-
 	if($main::cfg{'CMD_FTPD'} ne 'no') {
-		$rs = sub_add_proftpd_data($data);
-		return $rs if ($rs != 0);
+		my $rs = sub_add_proftpd_cfg_data($data);
+		return -1 if ($rs != 0);
 	}
 
 	if($main::cfg{'CMD_NAMED'} ne 'no') {
-		$rs = sub_add_named_db_data($data);
-		return $rs if ($rs != 0);
+		my $rs = sub_add_named_db_data($data);
+		return -1 if ($rs != 0);
 	}
 
 	if($main::cfg{'CMD_HTTPD'} ne 'no') {
-		$rs = sub_add_httpd_data($data);
-		return $rs if ($rs != 0);
+		my $rs = sub_add_httpd_data($data);
+		return -1 if ($rs != 0);
 	}
 
 	if($main::cfg{'CMD_MTA'} ne 'no') {
-		$rs = sub_add_mta_data($data);
-		return $rs if ($rs != 0);
+		my $rs = sub_add_mta_data($data);
+		return -1 if ($rs != 0);
 	}
 
 	push_el(\@main::el, 'sub_add_data()', 'Ending...');
@@ -1565,57 +1159,10 @@ sub sub_add_data {
 
 ################################################################################
 ##
-## Change subdomain data
-##
-## @param hashref $data subdomain entries
-## @return int 0 on success
-##
-sub sub_change_data {
-
-	push_el(\@main::el, 'sub_change_data()', 'Starting...');
-
-	my ($data) = @_;
-
-	if (!defined $data || $data eq '') {
-		push_el(
-			\@main::el, 'sub_change_data()', '[ERROR] Undefined Input Data...'
-		);
-
-		return -1;
-	}
-
-	my $rs;
-
-	if($main::cfg{'CMD_FTPD'} ne 'no') {
-		my $rs = sub_change_proftpd_data($data);
-		return $rs if ($rs != 0);
-	}
-
-	if($main::cfg{'CMD_NAMED'} ne 'no') {
-		$rs = sub_add_named_db_data($data);
-		return $rs if ($rs != 0);
-	}
-
-	if($main::cfg{'CMD_HTTPD'} ne 'no') {
-		$rs = sub_change_httpd_data($data);
-		return $rs if ($rs != 0);
-	}
-
-	if($main::cfg{'CMD_MTA'} ne 'no') {
-		$rs = sub_change_mta_data($data);
-		return $rs if ($rs != 0);
-	}
-	push_el(\@main::el, 'sub_change_data()', 'Ending...');
-
-	0;
-}
-
-################################################################################
-##
 ## Delete subdomain data
 ##
 ## @param hashref $data subdomain entries
-## @return int 0 on success
+## @return int 0 on success, negative int on failure
 ##
 sub sub_del_data {
 
@@ -1624,31 +1171,31 @@ sub sub_del_data {
 	my ($data) = @_;
 
 	if (!defined $data || $data eq '') {
-		push_el(\@main::el, 'sub_del_data()', '[ERROR] Undefined Input Data...');
+		push_el(
+			\@main::el, 'sub_del_data()', '[ERROR] Undefined Input Data...'
+		);
 
 		return -1;
 	}
 
-	my $rs;
-
 	if($main::cfg{'CMD_FTPD'} ne 'no') {
-		$rs = sub_del_proftpd_data($data);
-		return $rs if ($rs != 0);
+		my $rs = sub_del_proftpd_cfg_data($data);
+		return -1 if ($rs != 0);
 	}
 
 	if($main::cfg{'CMD_NAMED'} ne 'no') {
-		$rs = sub_del_named_db_data($data);
-		return $rs if ($rs != 0);
+		my $rs = sub_del_named_db_data($data);
+		return -1 if ($rs != 0);
 	}
 
 	if($main::cfg{'CMD_HTTPD'} ne 'no') {
-		$rs = sub_del_httpd_data($data);
-		return $rs if ($rs != 0);
+		my $rs = sub_del_httpd_data($data);
+		return -1 if ($rs != 0);
 	}
 
 	if($main::cfg{'CMD_MTA'} ne 'no') {
-		$rs = sub_del_mta_data($data);
-		return $rs if ($rs != 0);
+		my $rs = sub_del_mta_data($data);
+		return -1 if ($rs != 0);
 	}
 
 	push_el(\@main::el, 'sub_del_data()', 'Ending...');
@@ -1660,8 +1207,8 @@ sub sub_del_data {
 ##
 ## Perform all tasks to add, change or delete data related to one subdomain
 ##
-## @return int 0 on success
 ## @global int $main::sub_task_id Subdomain id to be processed
+## @return int 0 on success, negative int on failure
 ##
 sub sub_mngr_engine {
 
@@ -1685,15 +1232,20 @@ sub sub_mngr_engine {
 
 	# Get all required subdomain data
 	my ($rs, $rows) = doHashSQL($sql, 'subdomain_id');
-	return $rs if ($rs != 0);
+	return -1 if ($rs != 0);
 
 	my $entry = @$rows{$main::sub_task_id};
 	my $sub_status = @$entry{'subdomain_status'};
 
-	if($sub_status eq 'toadd') { # Add new subdomain data
+	push_el(
+		\@main::el, 'sub_mngr_engine()',
+		"Process all $sub_status tasks for @$entry{'subdomain_name'}." .
+			@$entry{'domain_name'}
+	);
+
+	# Adding/change subdomain data
+	if($sub_status eq 'toadd' || $sub_status eq 'change') {
 		$rs = sub_add_data($entry);
-	} elsif($sub_status eq 'change') { # Change subdomain data
-		$rs = sub_change_data($entry);
 	} elsif($sub_status eq 'delete') { # Delete subdomain data
 		$rs = sub_del_data($entry);
 	} else { # Unknown task type
@@ -1723,18 +1275,18 @@ sub sub_mngr_engine {
 
 		$sql = "
 			UPDATE
-				subdomain
+				`subdomain`
 			SET
-				subdomain_status = $sub_status
+				`subdomain_status` = $sub_status
 			WHERE
-				subdomain_id = $main::sub_task_id
+				`subdomain_id` = $main::sub_task_id
 			;
 		";
 	}
 
 	# Update subdomain status or remove entry on delete
 	($rs) = doSQL($sql);
-	return $rs if ($rs != 0);
+	return -1 if ($rs != 0);
 
 	push_el(\@main::el, 'sub_mngr_engine()', 'Ending...');
 

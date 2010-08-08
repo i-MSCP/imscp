@@ -1,17 +1,26 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-08-08 Laurent Declercq
+	- ENGINE:
+		* Refactored ispcp-sub-mngr (last part):
+			- Removed useless subroutines
+			- Rewrited some subroutines for better performances
+			- Fixed: data should be correctly regenerated/recreated on 'change'
+		* Small change in ispcp_common_methods.pl to hide long cmd in logfiles
+
 2010-08-07 Laurent Declercq
 	- GUI
-		* Fixed: Undefined variable: cfg in alias_add.php on line 249
+		* Fixed: Undefined variable: $cfg in alias_add.php on line 249
 	- CONFIG
 		* Changed indentation for all bind/parts/db_sub_entry.tpl
 	- ENGINE:
-		* Fixed Unusable doHashSQL() sub. + typo in ispcp_common_methods.pl
+		* Fixed: Unusable doHashSQL() sub. + typo in ispcp_common_methods.pl
 		* Refactored ispcp-sub-mngr (first part):
 			- Removed some useless subroutines and variables
 			- Usage of doHashSQL() instead of doSQL() for better readability
 			- Rewrited some subroutines for better performances
+		*  Fixed wrong generated link (to frontend) for subdomain default page
 	- TOOLS:
 		Fixed: pma/libraries/PHPExcel/PHPExcel/Calculation/Functions.php is not
 		the same as provided under the project source archive

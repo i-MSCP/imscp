@@ -822,7 +822,7 @@ sub make_dir {
 
 	my ($rs, $rdata) = ('', '');
 
-	if (-e $dname && -f $dname ) {
+	if (-e $dname && -f $dname) {
 		push_el(
 			\@main::el, 'make_dir()',
 			"'$dname' exists as file ! removing file first..."
@@ -1590,7 +1590,7 @@ sub check_master {
 		push_el(\@$main::el, 'check_master()', 'Starting...');
 	}
 
-	sys_command(
+	sys_command_rs(
 		"export COLUMNS=120;/bin/ps auxww | awk '\$0 ~ /$main::master_name/ " .
 			"&& \$0 !~ /awk/ { print \$2 ;}' 1>$main::cc_stdout 2>$main::cc_stderr"
 	);
