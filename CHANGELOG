@@ -1,6 +1,10 @@
 ispCP ω 1.0.8 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-08-08 Laurent Declercq
+	- SETUP
+		* Fixed: Setup broken (due to r3177 changes)
+
 2010-08-08 Benedikt Heintel
 	- ENGINE:
 		* Fixed #2354: Domains deleted more that 1 year still listed
