@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+œ&#!/usr/bin/perl
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
@@ -2780,10 +2780,6 @@ sub alssub_mngr_engine {
 		($rs, $rdata) = doSQL($sql);
 		return $rs if ($rs != 0);
 	}
-
-	# We'll wait a little, to build full backup history;
-
-	sleep(1);
 
 	push_el(\@main::el, 'alssub_mngr_engine()', 'Ending...');
 
