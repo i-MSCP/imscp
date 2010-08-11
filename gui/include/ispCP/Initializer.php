@@ -38,7 +38,7 @@
  * @package     ispCP_Initializer
  * @author      Laurent declercq <laurent.declercq@ispcp.net>
  * @since       1.0.7
- * @version     1.1.1
+ * @version     1.1.2
  */
 class ispCP_Initializer {
 
@@ -433,9 +433,7 @@ class ispCP_Initializer {
 	 * the value from the ispCP PHP_TIMEZONE parameter if exists and if it not
 	 * empty or to 'UTC' otherwise.
 	 *
-	 * <b>Note:</b> This method don't check if the timezone defined by the
-	 * ispCP PHP_TIMEZONE parameter is valid.
-	 *
+	 * @throw ispCP_Exception
 	 * @return void
 	 */
 	protected function _setTimezone() {
@@ -450,9 +448,9 @@ class ispCP_Initializer {
 			if(!date_default_timezone_set($timezone)) {
 				throw new ispCP_Exception(
 					'Error: Invalid timezone identifier set in your ' .
-					'ispcp.conf file! Plase fix this error and re-run the ' .
+					'ispcp.conf file! Please fix this error and re-run the ' .
 					'ispcp-update script to fix the value in all your ' .
-					'customers\' php.ini files. The current list of valid ' .
+					'customer\'s php.ini files. The current list of valid ' .
 					'identifiers is available at the <a href="http://www.php.net/ ' .
 					'manual/en/timezones.php" target="_blank">PHP Homepage</a> .'
 				);
