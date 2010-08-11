@@ -28,12 +28,12 @@ if($todo_action == 'delete') {
 
 if($todo_action == 'save') {
 	sqgetGlobalVar('todo_index',$todo_index, SQ_POST);
-	
+
 	sqgetGlobalVar('todo_dl_y',$todo_dl_y, SQ_POST);
 	sqgetGlobalVar('todo_dl_m',$todo_dl_m, SQ_POST);
 	sqgetGlobalVar('todo_dl_d',$todo_dl_d, SQ_POST);
 	$todo_deadline = $todo_dl_y . '-' . $todo_dl_m  . '-' . $todo_dl_d;
-	
+
 	sqgetGlobalVar('todo_title',$todo_title, SQ_POST);
 	sqgetGlobalVar('todo_desc',$todo_desc, SQ_POST);
 	sqgetGlobalVar('todo_priority',$todo_priority, SQ_POST);
@@ -48,10 +48,10 @@ $error=0;
 if(!todo_within_limit()) {
 	if( ( ($todo_action == 'edit') || ($todo_action == 'add')  ) && ($error == 1 || $error == 2) )
 	  $todo_action = 'default';
-	
+
 	if ($todo_action == 'add' && $error == 4)
 	  $todo_action = 'default';
-	
+
 	if ($todo_action == 'save' && ($error == 5 || $error == 6))
 	  $todo_action = 'add';
 }
@@ -124,8 +124,8 @@ switch($todo_action) {
 	  echo _("WARNING: Maximum number of reminders is reached. You can't add more reminders");
 	  echo "</center>";
 	  break;
-	} 
-	?>	
+	}
+	?>
 <form method='post' action='<?= $_SERVER["PHP_SELF"]?>'><center><table><tr><td align='center'><b>Title: </b><input type=text name=todo_title value='<?= $todo_title?>'></td></tr>
 <tr><td><textarea name=todo_desc rows=8 cols=50><?=$todo_desc?></textarea></td></tr>
 <tr><td>
@@ -165,7 +165,7 @@ switch($todo_action) {
 		<option value='8' <?php if($todo_priority == 8) echo 'selected'?>>8</option>
 		<option value='9' <?php if($todo_priority == 9) echo 'selected'?>>9</option>
 		<option value='10' <?php if($todo_priority == 10) echo 'selected'?>>10</option>
-	</seleclt>
+	</select>
 		<?php } ?>
 	</td></tr>
 <tr><td><input type=hidden name='todo_index' value='<?= $todo_index ?>'>
@@ -177,12 +177,12 @@ switch($todo_action) {
 	break;
  case 'view' :
 	displayPageHeader($color, "None");
-	sqgetGlobalVar('todo_index',$todo_index);	
+	sqgetGlobalVar('todo_index',$todo_index);
 	$todo_deadline = todo_get_todo_dl($todos, $todo_index);
 	$todo_title = todo_get_todo_title($todos, $todo_index);;
 	$todo_desc = todo_get_todo_desc($todos, $todo_index);;
 	print_title("To Do: View");
-	print "<br><br><center>";	
+	print "<br><br><center>";
 	print "<table width='60%' border=1 bgcolor='$color[9]'><tr><td>\n";
 	print "<table width='100%' bgcolor='$color[4]'><tr><td align=\"center\"><b>$todo_title</b></td></tr>\n";
 	if ($todo_use_todo_priority == 1) {
@@ -197,7 +197,7 @@ switch($todo_action) {
 	  "<a href=".$_SERVER['PHP_SELF']."?todo_action=delete&todo_index=$todo_index>Delete</a>";
 	print "</center>\n";
 	break;
-	
+
  case 'default' :
  default :
 	displayPageHeader($color, "None");
@@ -224,9 +224,9 @@ switch($todo_action) {
 		if ($todo_use_todo_priority == 1) {
 			$todo_priority = todo_get_todo_priority($todos,$i);
 		}
-		
+
 		$overdue = todo_overdue_days($todos,$i);
-		
+
 		if ($overdue > 365 )
 		  $od_hl = "background-color: $todo_od_gt_y_bg; color: $todo_od_gt_y_fg; font-weight: bold;";
 		else if ($overdue > 30)
@@ -237,11 +237,11 @@ switch($todo_action) {
 			if ($todo_use_todo_priority == 1) {
 			  $od_hl = 'color: '. getPref($data_dir, $username, 'todo_prio_'.$todo_priority.'_color') . ';';
 			}
-			else 
+			else
 			  $od_hl = '';
 		}
 
-			
+
 		echo "<tr bgcolor='$color[4]'>";
 		if ($todo_use_todo_priority == 1)
 		  echo "<td style=\"{ $od_hl; }\" align='center'>$todo_priority</td>";
@@ -251,7 +251,7 @@ switch($todo_action) {
 		  "<td align=\"center\"><a href='todo.php?todo_action=edit&todo_index=$i'>" .
 		  "Edit</a> | <a href='todo.php?todo_action=delete&todo_index=$i'>Delete</a>" .
 		  "</td></tr>\n";
-		
+
 	}
 	if ($todo_count == 0)
 	  print "<tr><td colspan=5 bgcolor='$color[4]'><center>You don't have anything to do!</center></td></tr>\n";
@@ -271,7 +271,7 @@ switch($todo_action) {
 	}
 }
 
-?>	
-	
+?>
+
 </body>
 </html>
