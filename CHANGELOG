@@ -14,6 +14,11 @@ ispCP ω 1.0.8 ChangeLog
 2010-08-11 Laurent Declercq
 	- ENGINE:
 		* ispcp-alssub-mngr: Removed useless sleep statement
+		* Refactored ispcp-alssub-mngr:
+			- Fixed: data should be correctly regenerated/recreated on 'change'
+			- Removed useless subroutines
+			- Rewrited several subroutines for better performances
+			- Usage of doHashSQL() instead of doSQL() for better readability
 	- GUI:
 		* Package ispCP_Initializer: Fixed: An exception must be raised if the timezone isn't valid
 
