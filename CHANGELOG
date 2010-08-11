@@ -5,6 +5,7 @@ ispCP ω 1.0.8 ChangeLog
 	- ENGINE:
 		* Fixed #2053: Make ispCP ω PHP 5.3 compatible (part II):
 				Added Timezone Variable
+		* Fixed #2268: Remove *.prev files
 	- GUI:
 		* Default/Disabled Page CSS embedded in CDATA tags
 	- TOOLS:

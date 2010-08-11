@@ -1008,6 +1008,10 @@ sub cleanup {
 	
 	push_el(\@main::el, 'cleanup()', 'Starting...');
 
+	# Delete .prev log files and their rotations not longer needed since r2251
+	sys_command("$main::cfg{'CMD_RM'} -f $main::cfg{'LOG_DIR'}/*-traf.log.prev*");
+
+	# Delete update log files created in /tmp/
 	sys_command("$main::cfg{'CMD_RM'} -f /tmp/ispcp-update-*");
 
 	push_el(\@main::el, 'cleanup()', 'Ending...');

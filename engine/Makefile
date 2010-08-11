@@ -111,7 +111,7 @@ install:
 	$(CMD_INSTALL) ./setup/updDB.php $(SYSTEM_ENGINE_ROOT)/setup
 	$(CMD_INSTALL) ./setup/maintainer-helper.sh $(SYSTEM_ENGINE_ROOT)/setup
 
-	$(CMD_INSTALL) ./tools/ispcp-del-logs-sh $(SYSTEM_ENGINE_ROOT)/tools
+	$(CMD_INSTALL) ./tools/ispcp-del-logs.sh $(SYSTEM_ENGINE_ROOT)/tools
 	$(CMD_INSTALL) ./tools/ispcp-del-phptemp.sh $(SYSTEM_ENGINE_ROOT)/tools
 	$(CMD_INSTALL) ./tools/ispcp-httpd-logs-mngr $(SYSTEM_ENGINE_ROOT)/tools
 	$(CMD_INSTALL) ./tools/ispcp-net-interfaces-mngr $(SYSTEM_ENGINE_ROOT)/tools
