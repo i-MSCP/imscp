@@ -107,9 +107,8 @@ sub user_dialog {
 		$rs = ask_vhost();
 	} while ($rs == 1);
 
-	#
 	# SQL Questions
-	#
+	###############
 
 	$rs = ask_db_host();
 	return $rs if ($rs != 0);
@@ -124,9 +123,8 @@ sub user_dialog {
 		$rs = ask_db_password();
 	} while ($rs == 1);
 
-	#
-	# ispCP ftp SQL user questions;
-	#
+	# ispCP ftp SQL user questions
+	##############################
 
 	do {
 		$rs = ask_db_ftp_user();
@@ -136,9 +134,8 @@ sub user_dialog {
 		$rs = ask_db_ftp_password();
 	} while ($rs == 1);
 
-	#
 	# PMA user for SQL
-	#
+	##################
 
 	do {
 		$rs = ask_db_pma_user();
@@ -148,9 +145,8 @@ sub user_dialog {
 		$rs = ask_db_pma_password();
 	} while ($rs == 1);
 
-	#
 	# Admin questions
-	#
+	#################
 
 	$rs = ask_admin();
 	return $rs if ($rs != 0);
@@ -163,9 +159,8 @@ sub user_dialog {
 		$rs = ask_admin_email();
 	} while ($rs == 1);
 
-	#
 	# Configuration questions
-	#
+	#########################
 
 	do {
 		$rs = ask_second_dns();
@@ -175,17 +170,22 @@ sub user_dialog {
 		$rs = ask_mysql_prefix();
 	} while ($rs == 1);
 
-	#
 	# FastCGI-Version questions
-	#
+	###########################
 
 	do {
 		$rs = ask_fastcgi();
 	} while ($rs == 1);
-	
-	#
+
+	# PHP Timzeone question
+	#######################
+
+	do {
+		$rs = ask_timezone();
+	} while ($rs == 1);
+
 	# AWStats questions
-	#
+	###################
 
 	do {
 		$rs = ask_awstats_on();
@@ -741,6 +741,9 @@ sub setup_config {
 
 	$rs = set_conf_val('PHP_FASTCGI', $main::ua{'php_fastcgi'});
 	return $rs if ($rs != 0);
+	
+	$rs = set_conf_val('PHP_TIMEZONE', $main::ua{'php_timezone'});
+	return $rs if ($rs != 0);
 
 	$rs = set_conf_val('SECONDARY_DNS', $main::ua{'secondary_dns'});
 	return $rs if ($rs != 0);
@@ -791,7 +794,7 @@ sub setup_sql {
 			$main::db_pwd
 		);
 
-		# TODO Add ask to user confirmation
+		# TODO Add ask for user confirmation
 		$sql = "DROP DATABASE IF EXISTS $store_db_name;";
 
 		($rs, $rdata) = doSQL($sql);

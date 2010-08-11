@@ -1,15 +1,22 @@
 ispCP ω 1.0.8 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-08-11 Benedikt Heintel
+	- ENGINE:
+		* Fixed #2053: Make ispCP ω PHP 5.3 compatible (part II):
+				Added Timezone Variable
+	- GUI:
+		* Default/Disabled Page CSS embedded in CDATA tags
+
 2010-08-11 Laurent Declercq
-	- ENGINE: (ispcp-alssub-mngr)
-		* Removed useless sleep statement
-	- GUI: (Package ispCP_Initializer)
-		* Fixed: An exception must be raised if the timezone isn't valid
+	- ENGINE:
+		* ispcp-alssub-mngr: Removed useless sleep statement
+	- GUI:
+		* Package ispCP_Initializer: Fixed: An exception must be raised if the timezone isn't valid
 
 2010-08-09 Laurent Declercq
 	- SETUP:
-		* Fixed: Setup broken (due to r3177 changes)
+		* Fixed: Setup due to r3177 changes
 	- TOOLS:
 		* Fixed: Warning about suhosin must be hidden
 

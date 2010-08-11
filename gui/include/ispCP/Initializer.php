@@ -450,11 +450,11 @@ class ispCP_Initializer {
 			if(!date_default_timezone_set($timezone)) {
 				throw new ispCP_Exception(
 					'Error: Invalid timezone identifier set in your ' .
-					'ispcp.conf file! You must fix this error and rerun '.
-					'the ispcp-update script to fix the value in all your ' .
-					'customers php.ini files. The list of valid identifiers ' .
-					'is available <a href="http://www.php.net/manual/en/' .
-					'timezones.php" target="_blank">here</a> .'
+					'ispcp.conf file! Plase fix this error and re-run the ' .
+					'ispcp-update script to fix the value in all your ' .
+					'customers\' php.ini files. The current list of valid ' .
+					'identifiers is available at the <a href="http://www.php.net/ ' .
+					'manual/en/timezones.php" target="_blank">PHP Homepage</a> .'
 				);
 			}
 		}

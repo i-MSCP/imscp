@@ -689,36 +689,24 @@ sub ask_db_pma_password {
 }
 
 sub ask_fastcgi {
-
 	push_el(\@main::el, 'ask_fastcgi()', 'Starting...');
 
 	my $rdata = undef;
-
 	my $qmsg = "\n\tFastCGI Version: [f]cgid or fast[c]gi. [fcgid]: ";
 
 	print STDOUT $qmsg;
-
 	chomp($rdata = readline \*STDIN);
 
 	if (!defined($rdata) || $rdata eq '') {
-
 		$main::ua{'php_fastcgi'} = 'fcgid';
-
 	} else {
-
 		if ($rdata eq 'fcgid' || $rdata eq 'f') {
-
 			$main::ua{'php_fastcgi'} = 'fcgid';
-
 		} elsif ($rdata eq 'fastcgi' || $rdata eq 'c') {
-
 			$main::ua{'php_fastcgi'} = 'fastcgi';
-
 		} else {
-
 			print STDOUT colored(['bold red'], "\n\tERROR:") .
 				 " Only '[f]cgid' or 'fast[c]gi' are allowed!";
-
 			return 1;
 		}
 	}
@@ -728,33 +716,50 @@ sub ask_fastcgi {
 	0;
 }
 
-sub ask_awstats_on {
+sub ask_timezone {
+	push_el(\@main::el, 'ask_timezone()', 'Starting...');
 
+	my $rdata;
+	my $qmsg = "\n\tServer's Timezone [Europe/London]: ";
+
+	print STDOUT $qmsg;
+	chomp($rdata = readline \*STDIN);
+	
+	if (!defined($rdata) || $rdata eq '') {
+		$main::ua{'php_timezone'} = 'Europe/London';
+	} else {
+		if ($rdata =~ m/^UTC|([Africa|America|Antarctica|Arctic|Asia|Atlantic|Australia|Europe|Indian|Pacific]\/[A-Z][a-z]+)$/i) {
+			$main::ua{'php_timezone'} = $rdata;
+		} else {
+			print STDOUT colored(['bold red'], "\n\tERROR:") .
+				$rdata . " is not a valid Timezone! " . 
+				"The city must start with a capital letter, e.g. Europe/London";
+			return 1;
+		}
+	}
+
+	push_el(\@main::el, 'ask_timezone()', 'Ending...');
+
+	0;
+}
+
+sub ask_awstats_on {
 	push_el(\@main::el, 'ask_awstats_on()', 'Starting...');
 
 	my $rdata = undef;
 	my $qmsg = "\n\tActivate AWStats. [no]: ";
 
 	print STDOUT $qmsg;
-
 	chomp($rdata = readline \*STDIN);
 
 	if (!defined($rdata) || $rdata eq '') {
-
 		$main::ua{'awstats_on'} = 'no';
-
 	} else {
-
 		if ($rdata eq 'yes' || $rdata eq 'y') {
-
 			$main::ua{'awstats_on'} = 'yes';
-
 		} elsif ($rdata eq 'no' || $rdata eq 'n') {
-
 			$main::ua{'awstats_on'} = 'no';
-
 		} else {
-
 			print STDOUT colored(['bold red'], "\n\tERROR:") .
 				" Only '(y)es' and '(n)o' are allowed!";
 			return 1;
@@ -767,35 +772,24 @@ sub ask_awstats_on {
 }
 
 sub ask_awstats_dyn {
-
 	push_el(\@main::el, 'ask_awstats_dyn()', 'Starting...');
 
 	my $rdata = undef;
 	my $qmsg = "\n\tAWStats Mode:\n\tPossible values [d]ynamic and [s]tatic. [dynamic]: ";
 
 	print STDOUT $qmsg;
-
 	chomp($rdata = readline \*STDIN);
 
 	if (!defined($rdata) || $rdata eq '') {
-
 		$main::ua{'awstats_dyn'} = '0';
-
 	} else {
-
 		if ($rdata eq 'dynamic' || $rdata eq 'd') {
-
 			$main::ua{'awstats_dyn'} = '0';
-
 		} elsif ($rdata eq 'static' || $rdata eq 's') {
-
 			$main::ua{'awstats_dyn'} = '1';
-
 		} else {
-
 			print STDOUT colored(['bold red'], "\n\tERROR:") .
 				 " Only '[d]ynamic' or '[s]tatic' are allowed!";
-
 			return 1;
 		}
 	}
@@ -816,12 +810,9 @@ sub ask_awstats_dyn {
 # IspCP crontab setup / update
 # Built, store and install the ispCP crontab file
 sub setup_crontab {
-
 	push_el(\@main::el, 'setup_crontab()', 'Starting...');
 
-	my ($rs, $rdata, $cmd) = (undef, undef, undef);
-
-	my $cfg_tpl = undef;
+	my ($rs, $rdata, $cmd, $cfg_tpl);
 	my $cfg = \$cfg_tpl;
 
 	my ($awstats, $rkhunter, $chkrootkit) = ('', undef, undef);
@@ -834,11 +825,8 @@ sub setup_crontab {
 
 	# Determines the path of production directory
 	if ($main::cfg{'ROOT_GROUP'} eq 'wheel') {
-
 		$prod_dir = '/usr/local/etc/ispcp/cron.d';
-
 	} else {
-
 		$prod_dir = '/etc/cron.d'
 	}
 
@@ -1415,7 +1403,6 @@ sub setup_awstats_vhost {
 		# Enable awstats vhost - Begin
 
 		if(-e '/usr/sbin/a2ensite') {
-
 			sys_command("/usr/sbin/a2ensite 01_awstats.conf $main::rlogfile");
 		}
 
@@ -1423,8 +1410,10 @@ sub setup_awstats_vhost {
 
 		# Update Apache logrotate file - Begin
 
-		# FIXME: check for openSUSE and other dists...
-		# Todo create dedicated directory for backup logrotate configuration file
+		# if the distribution provides an apache or apache2 logrotation file,
+		# update it with the awstats information. If not, use the ispcp file.
+		# logrotation should be never executed twice. Therefore it is sane to
+		# define it two times in different scopes.
 		foreach(qw/apache apache2/) {
 
 			next if(! -e "$bk_dir/$_.system");
@@ -2311,7 +2300,8 @@ sub setup_gui_php {
 		'{CHKROOTKIT_LOG}' => $main::cfg{'CHKROOTKIT_LOG'},
 		'{OTHER_ROOTKIT_LOG}' => ($main::cfg{'OTHER_ROOTKIT_LOG'} ne '')
 			? ":$main::cfg{'OTHER_ROOTKIT_LOG'}" : '',
-		'{PHP_STARTER_DIR}' => $main::cfg{'PHP_STARTER_DIR'}
+		'{PHP_STARTER_DIR}' => $main::cfg{'PHP_STARTER_DIR'},
+		'{PHP_TIMEZONE}' => $main::cfg{'PHP_TIMEZONE'}
 	);
 
 	# Building the new file

@@ -545,15 +545,19 @@ sub cfg_recovery_process {
 
 	push_el(\@main::el, 'check_ispcp_cfg_file()', 'Starting...');
 
-	# Ref to an array of settings names that have a unallowed empty value
+	# Reference to an array of settings that have unallowed empty value
 	my $settings = shift;
 
-	my ($rs, $msg, $rdata, $warn_msg) = (undef, undef, undef, undef);
+	my ($rs, $msg, $rdata, $warn_msg);
 
-	# Map each setting to appropriate dialog subroutine and mainua key name
-	# TODO: Add a trigger to check database connection if related setting values
-	# are changed && add a subroutine for the 'BASE_SERVER_VHOST' to prevent
-	# errors  if a dns file doesn't exist for him
+	# Map each setting to the appropriate dialog subroutine and the corresponding
+	# main::ua key name
+	#
+	# TODO: 
+	#  - Add a trigger to check database connection if related settings are 
+	#    changed 
+	#  - Add a subroutine for the 'BASE_SERVER_VHOST' to prevent errors if the 
+	#    DNS file doesn't exist
 	my $recovery_dispatcher = {
 		DEFAULT_ADMIN_ADDRESS => [\&ask_admin_email, 'admin_email'],
 		SERVER_HOSTNAME => [\&ask_hostname, 'hostname'],
@@ -562,16 +566,17 @@ sub cfg_recovery_process {
 		DATABASE_HOST => [\&ask_db_host, 'db_host'],
 		DATABASE_NAME => [\&ask_db_name, 'db_name'],
 		DATABASE_USER => [\&ask_db_user, 'db_user'],
-		PHP_FASTCGI => [\&ask_fastcgi, 'php_fastcgi']
+		PHP_FASTCGI => [\&ask_fastcgi, 'php_fastcgi'],
+		PHP_TIMEZONE => [\&ask_timezone, 'php_timezone']
 	};
 
-	# If several parameters are set to an empty value, we ensure
-	# that the user has installed ispCP by asking the question
-	if(scalar(@$settings) >= 2) {
+	# If several parameters are set to an empty value, we should ensure
+	# that the user has installed ispCP by asking this question
+	if (scalar(@$settings) >= 2) {
 
 		print colored(['bold yellow'], "\n\n\tWARNING:").
 			" Your ispCP configuration file has several settings set\n" .
-			"\tto an empty value !\n";
+			"\tto an empty value!\n";
 
 		do {
 			print STDOUT "\n\tAre you sure you have installed ispCP ? [Y/n]: ";
@@ -579,30 +584,29 @@ sub cfg_recovery_process {
 		} while($rdata !~ /^(|y|n)$/i);
 
 		$msg = colored(['bold blue'], "\n\tNOTICE:") .
-			" The program will end now !\n" .
-			"\tPlease, run '$main::cfg{'ROOT_DIR'}/engine/setup/ispcp-setup' instead !\n";
+			" The program ends now!\n" .
+			"\tPlease, run '$main::cfg{'ROOT_DIR'}/engine/setup/ispcp-setup' instead!\n";
 
 		($rdata !~ /^n$/i) or exit_msg(1, $msg);
 	}
 
 	print STDOUT colored(['bold yellow'], "\n\n\tWARNING:") .
-		" Your ispCP configuration file is not valid!\n" .
-		"\tThe program will switch to recovery mode now...\n";
+		" Your ispCP configuration file has missing parameters!\n" .
+		"\tThe update script will switch to recovery/upgrade mode now...\n";
 
 	do {
 		print STDOUT "\n\tDo you want to continue [Y/n]: ";
 		chomp($rdata = readline \*STDIN);
 	} while($rdata !~ /^(|y|n)$/i);
 
-	# Exit with a notice message if the user choose
-	# to abort the recovery process
+	# Exit with a notice if the user chooses to abort the recovery/update process
 	($rdata !~ /^n$/i) or exit_msg(1,
 		colored(['bold blue'], "\n\tNOTICE:") .
-		" The recovery process was aborted by user...\n"
+		" The recovery/upgrade process was aborted by user...\n"
 	);
 
-	# For each setting, calls the dialog subroutine if it is available,
-	# OTHERWISE saves the values already changed and stops the program
+	# For each setting, call the subroutine dialouge if available,
+	# OTHERWISE saves the value already changed and stops the program
 	# with an specific message.
 	foreach(@$settings) {
 
@@ -643,7 +647,7 @@ sub cfg_recovery_process {
 		}
 	}
 
-	# Store new configuration settings values and reload it
+	# Store new configuration settings values and reload the ispcp.conf
 	$rs = store_conf();
 	return $rs if($rs != 0);
 
@@ -654,8 +658,8 @@ sub cfg_recovery_process {
 	}
 
 	print STDOUT colored(['bold blue'], "\n\tNOTICE:") .
-		" The recovery process was end successfully!\n" .
-		"\tThe update process will continue normally now...\n\n";
+		" The recovery/upgrade process ended successfully!\n" .
+		"\tThe update process will continue normal...\n\n";
 
 	push_el(\@main::el, 'check_ispcp_cfg_file()', 'Ending...');
 
