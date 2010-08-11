@@ -105,7 +105,7 @@ sub sub_mngr_shut_down {
 ##
 ## Note: Also called on 'change'
 ##
-## @param hashref $data subdomain entries
+## @param hashref $data Subdomain data
 ## @return int 0 on success, negative int on failure
 ##
 sub sub_add_named_db_data {
@@ -206,7 +206,7 @@ sub sub_add_named_db_data {
 ##
 ## Delete subdomain DNS records
 ##
-## @param hashref $data subdomain entries
+## @param hashref $data Subdomain data
 ## @return int 0 on success, negative int on failure
 ##
 sub sub_del_named_db_data {
@@ -287,7 +287,7 @@ sub sub_del_named_db_data {
 ##
 ## Note: Also called on 'change'
 ##
-## @param hashref $data subdomain entries
+## @param hashref $data Subdomain data
 ## @return int 0 on success, negative int on failure
 ##
 sub sub_add_httpd_cfg_data {
@@ -309,9 +309,8 @@ sub sub_add_httpd_cfg_data {
 	my $dmnName = @$data{'domain_name'};
 	my $subName = "@$data{subdomain_name}.$dmnName";
 	my $subMountPoint = @$data{'subdomain_mount'};
-	my ($sysUid, $sysGid) = get_dmn_suexec_user(@$data{'domain_id'});
-	my $sysUser = "$main::cfg{APACHE_SUEXEC_USER_PREF}$sysUid";
-	my $sysGroup = "$main::cfg{APACHE_SUEXEC_USER_PREF}$sysGid";
+	my $sysUser = "$main::cfg{APACHE_SUEXEC_USER_PREF}@$data{domain_uid}";
+	my $sysGroup = "$main::cfg{APACHE_SUEXEC_USER_PREF}@$data{domain_gid}";
 	my $cfgDir = $main::cfg{'CONF_DIR'};
 	my $sysFile = "$main::cfg{APACHE_SITES_DIR}/ispcp.conf";
 	my $wrkFile = "$cfgDir/apache/working/ispcp.conf";
@@ -325,9 +324,9 @@ sub sub_add_httpd_cfg_data {
 	) = get_tpl (
 		"$cfgDir/apache/parts", 'dg_b.tpl', 'dg_e.tpl', 'sub_b.tpl',
 		'sub_entry.tpl', 'sub_e.tpl', 'sub_cgi_b.tpl', 'sub_cgi_entry.tpl',
-		'sub_cgi_e.tpl', 'sub_php2_b.tpl', 'sub_php2_entry.tpl', 'sub_php2_e.tpl',
-		'sub_php_b.tpl', 'sub_php_entry.tpl', 'sub_php_e.tpl', 'sub_php2_b.tpl',
-		'sub_php2_entry.tpl', 'sub_php2_e.tpl', 'custom.conf.tpl'
+		'sub_cgi_e.tpl', 'sub_php2_b.tpl', 'sub_php2_entry.tpl',
+		'sub_php2_e.tpl', 'sub_php_b.tpl', 'sub_php_entry.tpl', 'sub_php_e.tpl',
+		'custom.conf.tpl'
 	);
 	return -1 if ($rs != 0);
 
@@ -345,16 +344,12 @@ sub sub_add_httpd_cfg_data {
 			'{BASE_SERVER_VHOST_PREFIX}' =>
 				$main::cfg{'BASE_SERVER_VHOST_PREFIX'},
 			'{WWW_DIR}' => $main::cfg{'APACHE_WWW_DIR'},
-			'{APACHE_LOG_DIR}' => $main::cfg{'APACHE_LOG_DIR'},
-			'{MODS_DIR}' => $main::cfg{'APACHE_MODS_DIR'},
 			'{SUB_NAME}' => $subName,
 			'{SELF}' => $subName,
 			'{SUB_IP}' => @$data{'ip_number'},
-			'{SUB_NAME_PHP2}' => "$dmnName$subMountPoint",
 			'{MOUNT_POINT}' => $subMountPoint,
 			'{GUI_ROOT_DIR}' => $main::cfg{'GUI_ROOT_DIR'},
 			'{PEAR_DIR}' => $main::cfg{'PEAR_DIR'},
-			'{APACHE_USERS_LOG_DIR}' => $main::cfg{'APACHE_USERS_LOG_DIR'},
 			'{CUSTOM_SITES_CONFIG_DIR}' =>
 				$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'},
 			'{SUEXEC_USER}' => $sysUser,
@@ -471,7 +466,7 @@ sub sub_add_httpd_cfg_data {
 ##
 ## Delete subdomain httpd configuration data
 ##
-## @param hashref $data subdomain entries
+## @param hashref $data Subdomain data
 ## @return int 0 on success, negative int on failure
 ##
 sub sub_del_httpd_cfg_data {
@@ -543,7 +538,7 @@ sub sub_del_httpd_cfg_data {
 ##
 ## Note: Also called on 'change'
 ##
-## @param hashref $data subdomain entries
+## @param hashref $data Subdomain data
 ## @return int 0 on success, negative int on failure
 ##
 sub sub_add_httpd_file_data {
@@ -564,9 +559,8 @@ sub sub_add_httpd_file_data {
 	my $dmnName = @$data{'domain_name'};
 	my $subName = "@$data{subdomain_name}.$dmnName";
 	my $subDir = "$main::cfg{APACHE_WWW_DIR}/$dmnName/@$data{subdomain_mount}";
-	my ($sysUid, $sysGid) = get_dmn_suexec_user(@$data{'domain_id'});
-	my $sysUser = "$main::cfg{APACHE_SUEXEC_USER_PREF}$sysUid";
-	my $sysGroup = "$main::cfg{APACHE_SUEXEC_USER_PREF}$sysGid";
+	my $sysUser = "$main::cfg{APACHE_SUEXEC_USER_PREF}@$data{domain_uid}";
+	my $sysGroup = "$main::cfg{APACHE_SUEXEC_USER_PREF}@$data{domain_gid}";
 
 	# Creating subdomain dir if it don't already exist or just set these perms
 	my $rs = make_dir($subDir, $sysUser, $sysGroup, 0755);
@@ -642,7 +636,7 @@ sub sub_add_httpd_file_data {
 ##
 ## Delete subdomain httpd file data
 ##
-## @param hashref $data subdomain entries
+## @param hashref $data Subdomain data
 ## @return int 0 on success, negative int on failure
 ##
 sub sub_del_httpd_file_data {
@@ -689,7 +683,7 @@ sub sub_del_httpd_file_data {
 ##
 ## Note: Also called on 'change'
 ##
-## @param hashref $data subdomain entries
+## @param hashref $data Subdomain data
 ## @return int 0 on success, negative int on failure
 ##
 sub sub_add_httpd_data {
@@ -721,7 +715,7 @@ sub sub_add_httpd_data {
 ##
 ## Delete subdomain httpd data
 ##
-## @param hashref $data subdomain entries
+## @param hashref $data Subdomain data
 ## @return int 0 on success, negative int on failure
 ##
 sub sub_del_httpd_data {
@@ -759,7 +753,7 @@ sub sub_del_httpd_data {
 ##
 ## Note: Also called on 'change'
 ##
-## @param hashref $data subdomain entries
+## @param hashref $data Subdomain data
 ## @return int 0 on success, negative int on failure
 ##
 sub sub_add_mta_cfg_data {
@@ -819,7 +813,7 @@ sub sub_add_mta_cfg_data {
 ##
 ## Delete subdomain mta configuration data
 ##
-## @param hashref $data subdomain entries
+## @param hashref $data Subdomain data
 ## @return int 0 on success, negative int on failure
 ##
 sub sub_del_mta_cfg_data {
@@ -880,7 +874,7 @@ sub sub_del_mta_cfg_data {
 ##
 ## Note: Also called on 'change'
 ##
-## @param hashref $data subdomain entries
+## @param hashref $data Subdomain data
 ## @return int 0 on success, negative int on failure
 ##
 sub sub_add_mta_file_data {
@@ -915,7 +909,7 @@ sub sub_add_mta_file_data {
 ##
 ## Delete subdomain mta file data
 ##
-## @param hashref $data subdomain entries
+## @param hashref $data Subdomain data
 ## @return int 0 on success, negative int on failure
 ##
 sub sub_del_mta_file_data {
@@ -950,7 +944,7 @@ sub sub_del_mta_file_data {
 ##
 ## Note: Also called on 'change'
 ##
-## @param hashref $data subdomain entries
+## @param hashref $data Subdomain data
 ## @return int 0 on success, negative int on failure
 ##
 sub sub_add_mta_data {
@@ -982,7 +976,7 @@ sub sub_add_mta_data {
 ##
 ## Delete subdomain mta data
 ##
-## @param hashref $data subdomain entries
+## @param hashref $data Subdomain data
 ## @return int 0 on success, negative int on failure
 ##
 sub sub_del_mta_data {
@@ -1020,7 +1014,7 @@ sub sub_del_mta_data {
 ##
 ## Note: Also called on 'change'
 ##
-## @param hashref $data subdomain entries
+## @param hashref $data Subdomain data
 ## @return int 0 on success, negative int on failure
 ##
 sub sub_add_proftpd_cfg_data {
@@ -1072,7 +1066,7 @@ sub sub_add_proftpd_cfg_data {
 ##
 ## Delete subdomain proftpd configuration data
 ##
-## @param hashref $data subdomain entries
+## @param hashref $data Subdomain data
 ## @return int 0 on success, negative int on failure
 ##
 sub sub_del_proftpd_cfg_data {
@@ -1115,7 +1109,7 @@ sub sub_del_proftpd_cfg_data {
 ##
 ## Add subdomain data
 ##
-## @param hashref $data subdomain entries
+## @param hashref $data Subdomain data
 ## @return int 0 on success, negative int on failure
 ##
 sub sub_add_data {
@@ -1161,7 +1155,7 @@ sub sub_add_data {
 ##
 ## Delete subdomain data
 ##
-## @param hashref $data subdomain entries
+## @param hashref $data Subdomain data
 ## @return int 0 on success, negative int on failure
 ##
 sub sub_del_data {
@@ -1218,7 +1212,8 @@ sub sub_mngr_engine {
 		SELECT
 			`t1`.`subdomain_id`, `t1`.`domain_id`, `t1`.`subdomain_name`,
 			`t1`.`subdomain_mount`, `t1`.`subdomain_status`, `t2`.`domain_name`,
-			`t2`.`domain_php`, `t2`.`domain_cgi`, `t3`.`ip_number`
+			`t2`.`domain_uid`, `t2`.`domain_gid`, `t2`.`domain_php`,
+			`t2`.`domain_cgi`, `t3`.`ip_number`
 		FROM
 			`subdomain` AS `t1`, `domain` AS `t2`, `server_ips` AS `t3`
 		WHERE
@@ -1267,7 +1262,7 @@ sub sub_mngr_engine {
 		";
 	} else {
 		if($rs == 0) {
-			$sub_status = $main::db->quote('ok');
+			$sub_status = q/'ok'/;
 		} else {
 			my ($sub_name, $msg) = split(/$main::el_sep/, pop_el(\@main::el));
 			$sub_status = $main::db->quote("$sub_name | $msg");

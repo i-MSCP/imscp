@@ -349,6 +349,7 @@ sub alssub_add_httpd_cfg_data {
 				$main::cfg{'BASE_SERVER_VHOST_PREFIX'},
 			'{WWW_DIR}' => $main::cfg{'APACHE_WWW_DIR'},
 			'{SUB_NAME}' => $subAlsName,
+			'{SELF}' => $subAlsName,
 			'{SUB_IP}' => @$data{'ip_number'},
 			'{MOUNT_POINT}' => $subAlsMountPoint,
 			'{GUI_ROOT_DIR}' => $main::cfg{'GUI_ROOT_DIR'},
@@ -563,9 +564,8 @@ sub alssub_add_httpd_file_data {
 	my $subAlsName = "@$data{subdomain_alias_name}.$dmnAlsName";
 	my $subAlsDir = "$main::cfg{APACHE_WWW_DIR}/@$data{domain_name}" .
 		@$data{'subdomain_alias_mount'};
-	my ($sysUid, $sysGid) = (@$data{'domain_uid'}, @$data{'domain_gid'});
-	my $sysUser = "$main::cfg{APACHE_SUEXEC_USER_PREF}$sysUid";
-	my $sysGroup = "$main::cfg{APACHE_SUEXEC_USER_PREF}$sysGid";
+	my $sysUser = "$main::cfg{APACHE_SUEXEC_USER_PREF}@$data{domain_uid}";
+	my $sysGroup = "$main::cfg{APACHE_SUEXEC_USER_PREF}@$data{domain_gid}";
 
 	# Creating subdomain dir if it don't already exist or just set these perms
 	my $rs = make_dir($subAlsDir, $sysUser, $sysGroup, 0755);
