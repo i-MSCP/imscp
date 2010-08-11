@@ -41,7 +41,8 @@ $dq_limit = $_POST[dq_limit];
 $dq_grace_text = _("Grace Time");
 $dq_grace = $_POST["dq_grace"];
 if ( $dq_blocks >= $dq_quota ) {
-    list ($dq_grace1, $dq_grace2) = split (":", $dq_grace);
+	/* @author ispCP 5.3 Compatibility Change */
+    list ($dq_grace1, $dq_grace2) = explode (":", $dq_grace);
     if ( strlen($dq_grace2) >= 1 ) {
         if ( $dq_grace2 == "day" || $dq_grace2 == "days" ) {
             if ( $dq_grace1 == "1" ) {

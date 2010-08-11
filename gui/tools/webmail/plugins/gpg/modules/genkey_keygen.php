@@ -247,7 +247,8 @@ else
 	    foreach ($ret['messages'] as $thing)
 	    {
 	        //echo ("<br>" . htmlspecialchars($thing));
-	        if (ereg("sec[[:space:]]+([[:digit:]]+[R|D|G])/([[:alnum:]]+)[[:space:]]+(.*)", $thing, $tmp))
+			/* @author ispCP PHP5.3 Compatibility Change */
+	        if (preg_match("/sec[[:space:]]+([[:digit:]]+[R|D|G])\/([[:alnum:]]+)[[:space:]]+(.*)/", $thing, $tmp))
 	            $key_id = $tmp[2];
 	    }
 	    //Get the key.

@@ -34,7 +34,8 @@ function valid_email ($email, $verify)
 {
     global $Email_RegExp_Match;
   
-    if (! eregi('^' . $Email_RegExp_Match . '$', $email))
+    /* @author ispCP PHP5.3 Compatibility Changes */
+    if (! preg_match('/^' . $Email_RegExp_Match . '$/i', $email))
         return false;
     
     if (! $verify)
@@ -47,7 +48,8 @@ function abook_take_read_string($str)
 {
     global $abook_found_email, $Email_RegExp_Match;
 
-    while (eregi('(' . $Email_RegExp_Match . ')', $str, $hits))
+	/* @author ispCP PHP5.3 Compatibility Change */
+    while (preg_match('/(' . $Email_RegExp_Match . ')/i', $str, $hits))
     {
         $str = substr(strstr($str, $hits[0]), strlen($hits[0]));
         if (! isset($abook_found_email[$hits[0]]))

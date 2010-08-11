@@ -54,7 +54,8 @@ function load_prefs_from_file($filename,$debug) {
       foreach ($lines as $line) {
           if (substr($line,0,1) == '#') continue;
 	  $matches=array();
-          eregi("^([[:alnum:]|_]+)=(.*)", $line, $matches);
+		/* @author ispCP PHP5.3 Compatibility Change */
+          preg_match("/^([[:alnum:]|_]+)=(.*)/i", $line, $matches);
           $GLOBALS['GPG_SYSTEM_OPTIONS'][trim($matches[1])] = trim($matches[2]);
           if (trim($matches[1])=='systemkeyringfile') {
               //store the full path to the system keyring file, rather than the path relative to the data dir

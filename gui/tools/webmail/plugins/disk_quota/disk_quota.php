@@ -43,11 +43,13 @@ if ( sizeof($quota_data) > 2 ) {
 
     for ( $i=2 ; $i<sizeof($quota_data) ; $i++ ) {
 
+    	/* @author ispCP 5.3 Compatibility Change */
         list($dq_fsname, $dq_blocks, $dq_quota, $dq_limit, $dq_grace) =
-                split( "[[:blank:]]+", trim($quota_data[$i]) );
+                explode( "[[:blank:]]+", trim($quota_data[$i]) );
         if ( strlen($dq_fsname) != 0 && strlen($dq_blocks) == 0 && strlen($dq_quota) == 0 ) {
+        		/* @author ispCP 5.3 Compatibility Change */
                 list($dq_blocks, $dq_quota, $dq_limit, $dq_grace) =
-                        split( "[[:blank:]]+", trim($quota_data[$i+1]) );
+                        explode( "[[:blank:]]+", trim($quota_data[$i+1]) );
                 $i++;
         }
         if ( $dq_quota != 0 && $dq_quota <= $dq_limit ) {

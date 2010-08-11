@@ -37,14 +37,16 @@ else if ( isset( $_GET['ServerPath'] ) )
 else
 	$GLOBALS["UserFilesPath"] = '/UserFiles/' ;
 
-if ( ! ereg( '/$', $GLOBALS["UserFilesPath"] ) )
+/* @author ispCP PHP5.3 Compatibility Change */
+if ( ! preg_match( '#/$#', $GLOBALS["UserFilesPath"] ) )
 	$GLOBALS["UserFilesPath"] .= '/' ;
 
 if ( strlen( $Config['UserFilesAbsolutePath'] ) > 0 ) 
 {
 	$GLOBALS["UserFilesDirectory"] = $Config['UserFilesAbsolutePath'] ;
 
-	if ( ! ereg( '/$', $GLOBALS["UserFilesDirectory"] ) )
+	/* @author ispCP PHP5.3 Compatibility Change */
+	if ( ! preg_match( '#/$#', $GLOBALS["UserFilesDirectory"] ) )
 		$GLOBALS["UserFilesDirectory"] .= '/' ;
 }
 else
@@ -69,8 +71,9 @@ function DoResponse()
 	if ( !in_array( $sResourceType, array('File','Image','Flash','Media') ) )
 		return ;
 
-	// Check the current folder syntax (must begin and start with a slash).
-	if ( ! ereg( '/$', $sCurrentFolder ) ) $sCurrentFolder .= '/' ;
+	// Check the current folder syntax (must begin and start with a slash).#
+	/* @author ispCP PHP5.3 Compatibility Change */
+	if ( ! preg_match( '#/$#', $sCurrentFolder ) ) $sCurrentFolder .= '/' ;
 	if ( strpos( $sCurrentFolder, '/' ) !== 0 ) $sCurrentFolder = '/' . $sCurrentFolder ;
 	
 	// Check for invalid folder paths (..)

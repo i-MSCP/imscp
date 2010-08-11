@@ -27,7 +27,8 @@ $sqspell_use_app = $_POST['sqspell_use_app'];
  * "%". To get the array, we explode the "%"'s.
  * Dirty: yes. Is there a better solution? Let me know. ;)
  */
-$new_words = ereg_replace("%", "\n", $words);
+/* @author ispCP PHP5.3 Compatibility Change */
+$new_words = preg_replace("/%/", "\n", $words);
 /**
  * Load the user dictionary and see if there is anything in it.
  */

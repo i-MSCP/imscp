@@ -137,7 +137,8 @@ if (((sqGetGlobalVar('aa_import_abook', $aa_import_abook, SQ_FORM) && !empty($aa
                // remove backend name from error string
                //
                $errstr = $aa_abook->error;
-               $errstr = ereg_replace('^\[.*\] *', '', $errstr);
+			   /* @author ispCP PHP5.3 Compatibility Change */
+               $errstr = preg_replace('/^\[.*\] */', '', $errstr);
                $errors[$i][] = sprintf(_("%s for address number %s"), $errstr, $disp_number);
             }
             else $total_added++;

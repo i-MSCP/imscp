@@ -80,7 +80,8 @@ class GnuPGuid
 	function GnuPGuid ($uidstring) {
 	    $j = substr_count($uidstring, "[User id not found]");
 	    if ($j) { $this->email_name='Unknown'; return; }
-	    $matches = split("[<>]", $uidstring);
+	    /* @author ispCP PHP5.3 Compatibility Change */
+	    $matches = explode("[<>]", $uidstring);
 	    switch (count($matches)) {
         	case 1:
         	    //Assume it's just an address.

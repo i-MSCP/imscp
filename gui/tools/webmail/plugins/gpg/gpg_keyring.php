@@ -85,7 +85,8 @@ function gpg_extract_pub($parts) {
     $ret['exp'] = $parts[6];
 
     //Email address info.
-    $matches = split("[<>]", $parts[9]);
+	/* @author ispCP PHP5.3 Compatibility Change */
+    $matches = explode("[<>]", $parts[9]);
     switch (count($matches)) {
         case 1:
             //Assume it's just an address.
@@ -99,7 +100,8 @@ function gpg_extract_pub($parts) {
             break;
         default:
 		//Patch to parse user info lines properly provided by Lars Kruse <devel@sumpfralle.de>
-	    ereg ("^(.*)<([^>]*)>([^>]*)$", $parts[9], $infos);
+		/* @author ispCP PHP5.3 Compatibility Change */
+	    preg_match("/^(.*)<([^>]*)>([^>]*)$/", $parts[9], $infos);
 	    $ret['email_name'] = $infos[1];
 	    $ret['email_addr'] = $infos[2];
 	    $ret['email_extra'] = $infos[3];

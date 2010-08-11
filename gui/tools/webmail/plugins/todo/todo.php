@@ -92,7 +92,8 @@ switch($todo_action) {
 	sqgetGlobalVar('todo_index',$todo_index);
 
 	$todo_deadline = todo_get_todo_dl($todos, $todo_index);
-	list($todo_dl_y, $todo_dl_m, $todo_dl_d) = split('-' ,$todo_deadline, 3);
+	/* @author ispCP PHP5.3 Compatibility Change */
+	list($todo_dl_y, $todo_dl_m, $todo_dl_d) = explode('-' ,$todo_deadline, 3);
 	$todo_title = todo_get_todo_title($todos, $todo_index);;
 	$todo_desc = todo_get_todo_desc($todos, $todo_index);;
 	$todo_priority = todo_get_todo_priority($todos, $todo_index);;

@@ -715,7 +715,8 @@ function aa_validate_email($email, $verify)
 
    // check formatting
    //
-   if (!eregi('^' . $Email_RegExp_Match . '$', $email))
+   /* @author ispCP PHP5.3 Compatibility Change */
+   if (!preg_match('/^' . $Email_RegExp_Match . '$/i', $email))
       return FALSE;
 
 

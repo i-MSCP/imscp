@@ -247,7 +247,8 @@ function gpg_format_key_list ($debug, $search_string, $activity='public', $radio
       $key_id = $bits[4];
       $key_date = $bits[5];
       $matches=array();
-      eregi(".*(<.*>).*", $bits[9], $matches);
+	  /* @author ispCP PHP5.3 Compatibility Change */
+      preg_match("/.*(<.*>).*/i", $bits[9], $matches);
       $email_str = htmlspecialchars($bits[9]);
       $email_addr = htmlspecialchars($matches[1]);
 
@@ -491,14 +492,16 @@ function gpg_keyserver_findkey($search_keyid,$debug) {
         $line=str_replace("&amp;",'"',$line);
         $line=str_replace("&quot;","&",$line);
 
-        if (ereg("^pub[[:space:]]+([[:digit:]]+[R|D])/([[:alnum:]]+)[[:space:]]+([[:digit:]]+)/([[:digit:]]+)/([[:digit:]]+)[[:space:]]+(.*)", $line, $tmp)) {
+		/* @author ispCP PHP5.3 Compatibility Change */
+        if (preg_match("/^pub[[:space:]]+([[:digit:]]+[R|D])\/([[:alnum:]]+)[[:space:]]+([[:digit:]]+)\/([[:digit:]]+)\/([[:digit:]]+)[[:space:]]+(.*)/", $line, $tmp)) {
         // foreach ($tmp as $key => $value) echo "<br>regex $key = $value";
             $lastkey = $tmp[2];
             $lastdate = $tmp[3] . "-" . $tmp[4] . "-" . $tmp[5];
             $line = $tmp[6]; # fool myself
 
         }
-        if (ereg("(.+)<(.+@.+)>", $line, $t)) {
+		/* @author ispCP PHP5.3 Compatibility Change */
+        if (preg_match("/(.+)<(.+@.+)>/", $line, $t)) {
             $tmpemail = $t[2];
             $tmpname = $t[1];
 

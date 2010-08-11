@@ -75,7 +75,8 @@ if (!isset($url)) {
   		$sString = $explode[1];
   		$explode = explode("</TITLE>",$sString);
   		$sString = $explode[0];
-  		$title = ereg_replace("(\r\n|\n|\r)", "", $sString);
+		/* @author ispCP PHP5.3 Compatibility Change */
+  		$title = preg_replace("(\r\n|\n|\r)", "", $sString);
 		}
 	}
 	if ($title == "") {

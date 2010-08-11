@@ -7,6 +7,9 @@ ispCP ω 1.0.8 ChangeLog
 				Added Timezone Variable
 	- GUI:
 		* Default/Disabled Page CSS embedded in CDATA tags
+	- TOOLS:
+		* Fixed #2053: Make ispCP ω PHP 5.3 compatible (part III):
+				Made Squirrelmail Plugins PHP 5.3 compatible
 
 2010-08-11 Laurent Declercq
 	- ENGINE:

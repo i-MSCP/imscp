@@ -78,7 +78,8 @@ if (!function_exists('SendDownloadHeaders')) {
              $filename =
              $languages[$squirrelmail_language]['XTRA_CODE']('downloadfilename', $filename, $HTTP_USER_AGENT);
          } else {
-             $filename = ereg_replace('[\\/:\*\?"<>\|;]', '_', str_replace('&nbsp;', ' ', $filename));
+			 /* @author ispCP PHP5.3 Compatibility Change */
+             $filename = preg_replace('/[\\/:\*\?"<>\|;]/', '_', str_replace('&nbsp;', ' ', $filename));
          }
 
      // A Pox on Microsoft and it's Internet Explorer!

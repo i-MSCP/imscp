@@ -825,12 +825,13 @@ commented until errors can be worked out
 */
     // THIS IS VERY IMPORTANT. Must make sure all the lines end in \r\n
     // see RFC3156 section 5
-    $messageSignedText = ereg_replace("\r\n", "\n", $messageSignedText );
-    $messageSignedText = ereg_replace("\r", "\n", $messageSignedText );
-    $messageSignedText = ereg_replace("\n", "\r\n", $messageSignedText );
+	/* @author ispCP PHP5.3 Compatibility Change */
+    $messageSignedText = preg_replace("/\r\n/", "\n", $messageSignedText );
+    $messageSignedText = preg_replace("/\r/", "\n", $messageSignedText );
+    $messageSignedText = preg_replace("/\n/", "\r\n", $messageSignedText );
 
     //$messageSignedText = escapeshellarg($messageSignedText);
-    $messageSignedText = ereg_replace("\"", "\\\"", $messageSignedText );
+    $messageSignedText = preg_replace("/\"/", "\\\"", $messageSignedText );
 
 
     // first, we put the detached signature in a file
