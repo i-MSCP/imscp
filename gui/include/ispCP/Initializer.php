@@ -431,9 +431,10 @@ class ispCP_Initializer {
 	 *
 	 * This method acts by checking the `date.timezone` value, and sets it to
 	 * the value from the ispCP PHP_TIMEZONE parameter if exists and if it not
-	 * empty or to 'UTC' otherwise.
+	 * empty or to 'UTC' otherwise. If the timezone identifier is invalid, an
+	 * {@link ispCP_Exception} exception is raised.
 	 *
-	 * @throw ispCP_Exception
+	 * @throws ispCP_Exception
 	 * @return void
 	 */
 	protected function _setTimezone() {
