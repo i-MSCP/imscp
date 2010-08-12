@@ -11,8 +11,10 @@
 # customer logs
 @daily root {TOOLS_ROOT_DIR}/ispcp-httpd-logs-mngr &>{LOG_DIR}/ispcp-httpd-logs-mngr.log
 
-# Backup
+# Backup for all the customers' data depending of the domain properties
 @daily root {BACKUP_ROOT_DIR}/ispcp-backup-all yes &>{LOG_DIR}/ispcp-backup-all-mngr.log
+
+# Backup for ispCP database and all /etc/ispcp/* configuration files
 @daily root {BACKUP_ROOT_DIR}/ispcp-backup-ispcp noreport &>{LOG_DIR}/ispcp-backup-ispcp-mngr.log
 
 # Remove config backups older than seven days
