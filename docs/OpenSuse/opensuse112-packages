@@ -51,6 +51,8 @@ perl-DBI
 perl-Data-ShowTable
 perl-Date-Calc
 perl-DateManip
+perl-DateTime
+perl-DateTime-TimeZone
 perl-Digest-HMAC
 perl-HTML-Parser
 perl-HTML-Tagset

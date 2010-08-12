@@ -1,9 +1,15 @@
 ispCP ω 1.0.8 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-08-12 Benedikt Heintel
+	- SETUP:
+		* Changed: Get user's local timezone from system config
+		* Changed: Check timezone against OLSON database
+		* Removed: Depreciated first-check.sh 
+
 2010-08-12 Laurent Declercq
 	- ENGINE:
-		* Fixed: Removed useless postfix restart (Thanks to Marc)
+		* Removed: Useless postfix restart (Thanks to Marc)
 
 2010-08-11 Benedikt Heintel
 	- ENGINE:

@@ -36,6 +36,8 @@ p5-DBD-mysql
 p5-DBI
 p5-Digest-HMAC
 p5-Digest-SHA1
+p5-DateTime
+p5-DateTime-TimeZone
 p5-HTML-Parser
 p5-HTML-Tagset
 p5-HTTP-GHTTP

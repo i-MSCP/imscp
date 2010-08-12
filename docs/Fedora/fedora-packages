@@ -49,6 +49,8 @@ perl-Crypt-DH
 perl-Crypt-PasswdMD5
 perl-Date-Calc
 perl-DateManip
+perl-DateTime
+perl-DateTime-TimeZone
 perl-DBD-MySQL
 perl-Digest-HMAC
 perl-HTML-Parser

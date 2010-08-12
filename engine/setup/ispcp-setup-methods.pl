@@ -28,6 +28,8 @@
 
 use strict;
 use warnings;
+use DateTime;
+use DateTime::TimeZone;
 
 # Hide the "used only once: possible typo" warnings
 no warnings 'once';
@@ -719,23 +721,48 @@ sub ask_fastcgi {
 sub ask_timezone {
 	push_el(\@main::el, 'ask_timezone()', 'Starting...');
 
+	my $error = 0;
+
+	# Get the user's default timezone
+	my ($sec, $min, $hour, $mday, $mon, $year, @misc) = localtime(time);
+	my $datetime  = DateTime->new(
+						year => $year + 1900,
+						month => $mon,
+						day => $mday,
+						hour => $hour,
+						minute => $min,
+						second => $sec,
+						time_zone => 'local'
+					);
+	my $timezone_name = $datetime->time_zone_long_name();
+
 	my $rdata;
-	my $qmsg = "\n\tServer's Timezone [Europe/London]: ";
+	my $qmsg = "\n\tServer's Timezone [$timezone_name]: ";
 
 	print STDOUT $qmsg;
 	chomp($rdata = readline \*STDIN);
 	
+	# Copy $timezone_name to $rdata if $rdata is empty 
 	if (!defined($rdata) || $rdata eq '') {
-		$main::ua{'php_timezone'} = 'Europe/London';
+		$rdata = $timezone_name;
+	}
+	
+	# DateTime::TimeZone::is_olson exits with die if the given data is not valid
+	# eval catches the die() and keeps this program alive
+	eval {
+		my $timezone = DateTime::TimeZone->new(name => $rdata);
+		$timezone->is_olson;
+	};
+	$error = 1 if $@; # $@ contains the die() message
+
+	if ($error == 1) {
+		print STDOUT colored(['bold red'], "\n\tERROR: ") .
+			$rdata . " is not a valid Timezone!" . 
+			"\n\tThe continent and the city both must start with a capital letter, " . 
+			"e.g. Europe/London\n";
+		return 1;
 	} else {
-		if ($rdata =~ m/^UTC|([Africa|America|Antarctica|Arctic|Asia|Atlantic|Australia|Europe|Indian|Pacific]\/[A-Z][a-z]+)$/i) {
-			$main::ua{'php_timezone'} = $rdata;
-		} else {
-			print STDOUT colored(['bold red'], "\n\tERROR:") .
-				$rdata . " is not a valid Timezone! " . 
-				"The city must start with a capital letter, e.g. Europe/London";
-			return 1;
-		}
+		$main::ua{'php_timezone'} = $rdata;
 	}
 
 	push_el(\@main::el, 'ask_timezone()', 'Ending...');

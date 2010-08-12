@@ -27,6 +27,8 @@ libcrypt-cbc-perl
 libcrypt-passwdmd5-perl
 libdate-calc-perl
 libdate-manip-perl
+libdatetime-perl
+libdatetime-timezone-perl
 libdbd-mysql-perl
 libdbi-perl
 libfile-mimeinfo-perl

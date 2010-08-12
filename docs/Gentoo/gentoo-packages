@@ -14,6 +14,8 @@ dev-libs/openssl
 dev-perl/BerkeleyDB
 dev-perl/Crypt-Blowfish
 dev-perl/Crypt-PasswdMD5
+dev-perl/DateTime
+dev-perl/DateTime-TimeZone
 dev-perl/IP-Country
 dev-perl/File-MimeInfo
 dev-perl/Mail-DomainKeys
