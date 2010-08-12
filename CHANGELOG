@@ -3,7 +3,7 @@ ispCP ω 1.0.8 ChangeLog
 
 2010-08-12 Laurent Declercq
 	- ENGINE:
-		* Fixed: Removed useless postfix restart (Thank to Marc)
+		* Fixed: Removed useless postfix restart (Thanks to Marc)
 
 2010-08-11 Benedikt Heintel
 	- ENGINE:
@@ -25,7 +25,8 @@ ispCP ω 1.0.8 ChangeLog
 			- Rewrited several subroutines for better performances
 			- Usage of doHashSQL() instead of doSQL() for better readability
 	- GUI:
-		* Package ispCP_Initializer: Fixed: An exception must be raised if the timezone isn't valid
+		* Package ispCP_Initializer: Fixed: An exception must be raised if the
+		timezone isn't valid
 
 2010-08-09 Laurent Declercq
 	- SETUP:
