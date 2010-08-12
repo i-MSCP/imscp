@@ -1,6 +1,10 @@
 ispCP ω 1.0.8 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-08-12 Laurent Declercq
+	- ENGINE:
+		* Fixed: Removed useless postfix restart (Thank to Marc)
+
 2010-08-11 Benedikt Heintel
 	- ENGINE:
 		* Fixed #2053: Make ispCP ω PHP 5.3 compatible (part II):

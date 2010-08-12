@@ -103,12 +103,6 @@ sub serv_mngr_engine {
 	if ($main::changed_mail_cnt > 0 || $main::changed_dmn_cnt > 0 ||
 		$main::changed_sub_cnt > 0) {
 
-		if ($main::cfg{'CMD_MTA'} ne 'no') {
-			$cmd = $main::cfg{'CMD_MTA'};
-
-			sys_command_rs("$cmd stop");
-		}
-
 		if ($main::cfg{'CMD_AUTHD'} ne 'no') {
 			$cmd = $main::cfg{'CMD_AUTHD'};
 			sys_command_rs("$cmd stop");
@@ -118,7 +112,6 @@ sub serv_mngr_engine {
 			$cmd = $main::cfg{'CMD_AMAVIS'};
 			sys_command_rs("$cmd stop");
 		}
-
 
 		if ($main::cfg{'CMD_IMAP'} ne 'no') {
 			$cmd = $main::cfg{'CMD_IMAP'};
@@ -134,6 +127,7 @@ sub serv_mngr_engine {
 	if ($main::changed_dmn_cnt > 0 || $main::changed_sub_cnt > 0 ||
 		$main::changed_als_cnt > 0 || $main::changed_alssub_cnt > 0) {
 
+		# TODO move to rndc
 		if ($main::cfg{'CMD_NAMED'} ne 'no') {
 			$cmd = $main::cfg{'CMD_NAMED'};
 			sys_command_rs("$cmd restart");
@@ -152,6 +146,7 @@ sub serv_mngr_engine {
 	if ($main::changed_mail_cnt > 0 || $main::changed_dmn_cnt > 0 ||
 		$main::changed_sub_cnt > 0 || $main::changed_als_cnt > 0) {
 
+		# Ensure that postfix is running - Do anything if it already run
 		if ($main::cfg{'CMD_MTA'} ne 'no') {
 			$cmd = $main::cfg{'CMD_MTA'};
 			sys_command_rs("$cmd start");
