@@ -1240,11 +1240,14 @@ sub setup_httpd_main_vhost {
 
 	# Tags preparation
 	my %tags_hash = (
-		'{HOST_IP}' => $main::cfg{'BASE_SERVER_IP'}
+		'{ROOT_DIR}' = $main::cfg{'ROOT_DIR'}
 	);
 
 	# Building the new file
-	($rs, $$cfg) = prep_tpl(\%tags_hash, $cfg_tpl);
+	($rs, $$cfg) = prep_tpl(
+		{
+			'{ROOT_DIR}' = $main::cfg{'ROOT_DIR'}
+		}, $cfg_tpl);
 	return $rs if ($rs != 0);
 
 	# Store the new file in working directory

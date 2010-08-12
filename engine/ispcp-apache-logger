@@ -137,7 +137,8 @@ sub DefaultLogs(){
 	}
 
 	while (my $log_line = <STDIN>) {
-		my ($vhost, $size, $line) = $log_line =~ m/^(\S+) (\d+|-) (.*)$/s;
+		my ($vhost, $size, $in, $out) = 
+			$log_line =~ m/^(\S+) (\d+|-) (\d+|-) (\d+|-)$/s;
 
 		if(!defined($vhost) || !defined($size)){
 			print STDERR "[ispcp-apache-logger] Trouble line:\n\t$log_line\n";
@@ -173,8 +174,6 @@ sub DefaultLogs(){
 		checkFileExists($vhost, \%combined_logs, $main::cfg{'APACHE_LOG_DIR'},"-combined.log",$force_open);
 		checkFileExists($vhost, \%traff_logs, $main::cfg{'APACHE_LOG_DIR'},"-traf.log",$force_open);
 		checkFileExists($vhost, \%access_logs, $main::cfg{'APACHE_USERS_LOG_DIR'},"-access.log",$force_open);
-
-		$log_line = $line;
 
 		print { $combined_logs{$vhost} } $log_line;
 		print { $access_logs{$vhost} } $log_line;

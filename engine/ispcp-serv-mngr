@@ -146,7 +146,7 @@ sub serv_mngr_engine {
 	if ($main::changed_mail_cnt > 0 || $main::changed_dmn_cnt > 0 ||
 		$main::changed_sub_cnt > 0 || $main::changed_als_cnt > 0) {
 
-		# Ensure that postfix is running - Do anything if it already run
+		# Ensure that postfix is running - Do nothing if running
 		if ($main::cfg{'CMD_MTA'} ne 'no') {
 			$cmd = $main::cfg{'CMD_MTA'};
 			sys_command_rs("$cmd start");

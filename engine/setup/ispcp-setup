@@ -273,7 +273,7 @@ sub setup_host_system {
 	$rs = setup_php();
 	return $rs if ($rs != 0);
 
-	# Only ispcp.conf Apache main IspCP vhost configuration file and related modules
+	# Only ispcp.conf Apache main ispCP vhost configuration file and related modules
 	$rs = setup_httpd_main_vhost();
 	return $rs if ($rs != 0);
 
