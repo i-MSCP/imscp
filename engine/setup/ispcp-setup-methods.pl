@@ -741,12 +741,12 @@ sub ask_timezone {
 
 	print STDOUT $qmsg;
 	chomp($rdata = readline \*STDIN);
-	
-	# Copy $timezone_name to $rdata if $rdata is empty 
+
+	# Copy $timezone_name to $rdata if $rdata is empty
 	if (!defined($rdata) || $rdata eq '') {
 		$rdata = $timezone_name;
 	}
-	
+
 	# DateTime::TimeZone::is_olson exits with die if the given data is not valid
 	# eval catches the die() and keeps this program alive
 	eval {
@@ -757,8 +757,8 @@ sub ask_timezone {
 
 	if ($error == 1) {
 		print STDOUT colored(['bold red'], "\n\tERROR: ") .
-			$rdata . " is not a valid Timezone!" . 
-			"\n\tThe continent and the city both must start with a capital letter, " . 
+			$rdata . " is not a valid Timezone!" .
+			"\n\tThe continent and the city both must start with a capital letter, " .
 			"e.g. Europe/London\n";
 		return 1;
 	} else {
@@ -1238,16 +1238,8 @@ sub setup_httpd_main_vhost {
 	($rs, $cfg_tpl) = get_file("$cfg_dir/httpd.conf");
 	return $rs if ($rs != 0);
 
-	# Tags preparation
-	my %tags_hash = (
-		'{ROOT_DIR}' = $main::cfg{'ROOT_DIR'}
-	);
-
 	# Building the new file
-	($rs, $$cfg) = prep_tpl(
-		{
-			'{ROOT_DIR}' = $main::cfg{'ROOT_DIR'}
-		}, $cfg_tpl);
+	($rs, $$cfg) = repl_var('{ROOT_DIR}', $cfg_tpl, $main::cfg{'ROOT_DIR'});
 	return $rs if ($rs != 0);
 
 	# Store the new file in working directory

@@ -1,14 +1,18 @@
 ispCP ω 1.0.8 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-08-13 Laurent Declercq
+	- SETUP:
+		Fixed #2418 [r3201] Error during compile
+
 2010-08-12 Benedikt Heintel
 	- CONFIGS / ENGINE:
-		* Fixed #2187: apache logger should be able to use the improvements of 
+		* Fixed #2187: apache logger should be able to use the improvements of
 			logio in http accounting
 	- SETUP:
 		* Changed: Get user's local timezone from system config
 		* Changed: Check timezone against OLSON database
-		* Removed: Depreciated first-check.sh 
+		* Removed: Depreciated first-check.sh
 
 2010-08-12 Laurent Declercq
 	- ENGINE:
