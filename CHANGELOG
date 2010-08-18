@@ -1,6 +1,10 @@
 ispCP ω 1.0.8 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-08-18 Benedikt Heintel
+	- LANGUAGES:
+		* Updated Japanese (#2422)
+
 2010-08-13 Laurent Declercq
 	- SETUP:
 		Fixed #2418 [r3201] Error during compile
