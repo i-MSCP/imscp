@@ -93,10 +93,11 @@ sub ask_eth {
 
 	my ($rs, $rdata, $warn_msg) = (undef, undef, '');
 
-	# TODO: Replace ifconfig, grep, awk with paths in ispcp.conf
 	my $cmd =
-		"/sbin/ifconfig |grep -v inet6|grep inet|grep -v 127.0.0.1|awk ' " .
-		"{print \$2}'|head -n 1|awk -F: '{print \$NF}' 1>/tmp/ispcp-setup.ip";
+		$main::ua{'CMD_IFCONFIG'} . "|" . $main::ua{'CMD_GREP'} . " -v inet6|" .
+		$main::ua{'CMD_GREP'} . " inet|" . $main::ua{'CMD_GREP'} . " -v 127.0.0.1|" .
+		$main::ua{'CMD_AWK'} . "' {print \$2}'|head -n 1|" .
+		$main::ua{'CMD_AWK'} . " -F: '{print \$NF}' 1>/tmp/ispcp-setup.ip";
 
 	# FIXME: No error correction, if /tmp/ispcp-setup.ip not readable
 	$rs = sys_command($cmd);
@@ -500,7 +501,7 @@ sub ask_vhost {
 		$addr = $main::ua{'hostname'};
 	}
 
-	# Todo [INTERNAL DISCUSSION] : It's a not good idea to remove hostname part
+	# TODO [INTERNAL DISCUSSION] : It's a not good idea to remove hostname part
 	# of the long hostname to purpose admin.domain.tld instead of admin.hostname.domain.tld ?
 	my $vhost = "admin.$addr";
 	my $qmsg = "\n\tPlease enter the domain name where ispCP OMEGA will run on [$vhost]: ";
