@@ -91,13 +91,13 @@ sub ask_eth {
 
 	push_el(\@main::el, 'ask_eth()', 'Starting...');
 
-	my ($rs, $rdata, $warn_msg) = (undef, undef, '');
+	my ($rs, $rdata, $warn_msg);
 
 	my $cmd =
-		$main::ua{'CMD_IFCONFIG'} . "|" . $main::ua{'CMD_GREP'} . " -v inet6|" .
-		$main::ua{'CMD_GREP'} . " inet|" . $main::ua{'CMD_GREP'} . " -v 127.0.0.1|" .
-		$main::ua{'CMD_AWK'} . "' {print \$2}'|head -n 1|" .
-		$main::ua{'CMD_AWK'} . " -F: '{print \$NF}' 1>/tmp/ispcp-setup.ip";
+		"$main::cfg{'CMD_IFCONFIG'}|$main::cfg{'CMD_GREP'} -v inet6|" .
+		"$main::cfg{'CMD_GREP'} inet|$main::cfg{'CMD_GREP'} -v 127.0.0.1|" .
+		"$main::cfg{'CMD_AWK'} ' {print \$2}'|head -n 1|" .
+		"$main::cfg{'CMD_AWK'} -F: '{print \$NF}' 1>/tmp/ispcp-setup.ip";
 
 	# FIXME: No error correction, if /tmp/ispcp-setup.ip not readable
 	$rs = sys_command($cmd);
@@ -111,7 +111,7 @@ sub ask_eth {
 
 	($rs, $rdata) = get_file('/tmp/ispcp-setup.ip');
 
-	unless(!$rs){
+	unless(!$rs) {
 		$warn_msg = colored(['bold red'], "\n\tERROR: ") .
 			'Unable to get the file /tmp/ispcp-setup.ip!'. "\n";
 		return ($rs, $warn_msg);
