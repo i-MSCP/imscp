@@ -31,6 +31,7 @@
 
 use FindBin;
 use lib "$FindBin::Bin/..";
+use Term::ANSIColor qw(:constants colored);
 require 'ispcp_common_code.pl';
 
 use strict;
@@ -42,25 +43,30 @@ sub welcome_note {
 
 	push_el(\@main::el, 'welcome_note()', 'Starting...');
 
-	my $welcome_message = "\n".
-	"\n".
-   " Welcome in ISPCP OMEGA '$main::cfg{'Version'}' Uninstall Program.\n".
-	"\n".
-	"This program will uninstall ispCP OMEGA system from your server.\n".
-	"\n".
-	"/!\\ WARNING: All domain users and their accounts will be removed.  /!\\\n".
-	"\n".
-	"Please press 'Enter' to continue.\n";
+	my $welcome = colored(['bold underline'],
+		"\n\tWelcome to ispCP '$main::cfg{'Version'}' Un-Install Dialog.\n\n"
+	);
 
+	my $welcome_message = 
+		"\tThis program will uninstall ispCP OMEGA system from your server.\n";
 
-	print STDOUT $welcome_message;
+	my $welcome_warning = colored(['bold red'],
+		"\t/!\\ WARNING: All domain users and their accounts will be removed.  /!\\\n"
+	);
 
-	$rdata = readline(\*STDIN);
+	print STDOUT $welcome, $welcome_message, $welcome_warning;
+
+	do {
+		print STDOUT "\n\tDo you really want to continue [Y/n]: ";
+		chomp($rdata = readline \*STDIN);
+
+	} while($rdata !~ /^(|y|n)$/i);
+
+	exit 0 if($rdata =~ /^n$/i);
 
 	push_el(\@main::el, 'welcome_note()', 'Ending...');
 
-	return 0;
-
+	0;
 }
 
 sub ask_remove_user_data {
@@ -69,15 +75,12 @@ sub ask_remove_user_data {
 
 	push_el(\@main::el, 'ask_remove_user_data()', 'Starting...');
 
-	my $qmsg = "\n\tRemove user data? [no]: ";
-
-	print STDOUT $qmsg;
-
-	$rdata = readline(\*STDIN);
-
-	chomp($rdata);
-
-	if ($rdata eq 'yes' || $rdata eq 'y') {
+	do {
+		print STDOUT "\tRemove user data? [y/N]: ";
+		chomp($rdata = readline \*STDIN);
+	} while($rdata !~ /^(|y|n)$/i);
+	
+	if ($rdata =~ /^y$/i) {
 		$main::rm{'rm_u_data'} = 'yes';
 	}
 	else {
@@ -86,8 +89,7 @@ sub ask_remove_user_data {
 
 	push_el(\@main::el, 'ask_remove_user_data()', 'Ending...');
 
-	return 0;
-
+	0;
 }
 
 sub user_dialog {
@@ -96,26 +98,21 @@ sub user_dialog {
 
 	push_el(\@main::el, 'user_dialog()', 'Starting...');
 
-	$rs = welcome_note();
-	return $rs if($rs != 0);
-
-	$rs = ask_remove_user_data();
-	return $rs if($rs != 0);
+	welcome_note();
+	ask_remove_user_data();
 
 	push_el(\@main::el, 'user_dialog()', 'Ending...');
 
-	return 0;
-
+	0;
 }
 
-sub uninstall_start_up {
+# Startup uninstall process
+sub uninstall_startup {
+	push_el(\@main::el, 'uninstall_start_up()', 'Starting...');
 
 	my $rs = undef;
 
-	push_el(\@main::el, 'uninstall_start_up()', 'Starting...');
-
 	# config check;
-
 	$rs = get_conf();
 	return $rs if ($rs != 0);
 
@@ -126,30 +123,25 @@ sub uninstall_start_up {
 
 	push_el(\@main::el, 'uninstall_start_up()', 'Ending...');
 
-	return 0;
-
+	0;
 }
 
-sub uninstall_shut_down {
-
-	my ($rs, $rdata) = (undef, undef);
+# Shutdown uninstall process
+sub uninstall_shutdown {
 
 	push_el(\@main::el, 'uninstall_shut_down()', 'Starting...');
 
-	my $shut_down_message = "\n".
-	"\n".
-	"Congratulations !\n".
-	"\n".
-	"ISPCP OMEGA '$main::cfg{'Version'}' uninstall completed successfully !\n".
-	"\n".
-	"Thank you for using ISPCP OMEGA product !\n";
+	my $shutdown_message = colored(
+		['bold underline'],
+		"\n\n\tCongratulations, you removed ispCP OMEGA" .
+		"'$main::cfg{'Version'}' successfully!\n\n"
+	);
 
-	print STDOUT $shut_down_message;
+	print STDOUT $shutdown_message;
 
 	push_el(\@main::el, 'uninstall_shut_down()', 'Ending...');
 
-	return 0;
-
+	0;
 }
 
 sub remove_sql_users{
@@ -160,9 +152,9 @@ sub remove_sql_users{
 	my $sql = "select distinct(sqlu_name) from sql_user";
 
 	($rs, $rdata) = doSQL($sql);
-	if($rs != 0){
-		print "Can not obtain sql user list!!!\n\n";
-		send_error_mail('remove_sql_db()', "Can not obtain sql user list!!!");
+	if ($rs != 0) {
+		print "cannot obtain sql user list!\n\n";
+		send_error_mail('remove_sql_db()', "cannot obtain sql user list!");
 	}
 
 	my $sql_count = @$rdata;
@@ -176,17 +168,17 @@ sub remove_sql_users{
 
 			$sql = "DROP USER '$sqlu_name'\@'localhost'";
 			($rs, $rdata) = doSQL($sql);
-			if($rs != 0){
-				print "Can not remove sql user '$sqlu_name'\@localhost!!!\n\n";
-				send_error_mail('remove_sql_db()', "Can not remove sql user '$sqlu_name'\@localhost!!!");
+			if ($rs != 0) {
+				print "cannot remove sql user '$sqlu_name'\@localhost!\n\n";
+				send_error_mail('remove_sql_db()', "cannot remove sql user '$sqlu_name'\@localhost!");
 			}
 
 
 			$sql = "DROP USER '$sqlu_name'\@'%'";
 			($rs, $rdata) = doSQL($sql);
-			if($rs != 0){
-				print "Can not remove sql user '$sqlu_name'\@%!!!\n\n";
-				send_error_mail('remove_sql_db()', "Can not remove sql user '$sqlu_name'\@%!!!");
+			if ($rs != 0) {
+				print "cannot remove sql user '$sqlu_name'\@%!\n\n";
+				send_error_mail('remove_sql_db()', "cannot remove sql user '$sqlu_name'\@%!");
 			}
 
 		}
@@ -218,9 +210,9 @@ sub remove_sql_db{
 
 			$sql = "DROP DATABASE IF EXISTS $sqld_name;";
 			($rs, $rdata) = doSQL($sql);
-			if($rs != 0){
-				print "Can not remove database $sqld_name!!\n\n";
-				send_error_mail('remove_sql_db()', "Can not remove database $sqld_name!!!");
+			if ($rs != 0) {
+				print "cannot remove database $sqld_name!!\n\n";
+				send_error_mail('remove_sql_db()', "cannot remove database $sqld_name!");
 			}
 		}
 
@@ -238,131 +230,100 @@ sub uninstall_system_users {
 	push_el(\@main::el, 'uninstall_system_users()', 'Starting...');
 
 	my ($fuid, $fgid) = ($main::cfg{'MTA_MAILBOX_UID_NAME'}, $main::cfg{'MTA_MAILBOX_GID_NAME'});
-
 	my ($muid, $mgid) = ($main::cfg{'APACHE_SUEXEC_MIN_UID'}, $main::cfg{'APACHE_SUEXEC_MIN_GID'});
-
 	my ($upref) = ($main::cfg{'APACHE_SUEXEC_USER_PREF'});
-
 	my ($uid, $gid) = (undef, undef);
 
-
 	my @udata = ();
-
 	my @gdata = ();
 
-	#
 	# MTA Mailbox User
-	#
 	@udata = getpwnam($fuid);
 	@gdata = getgrnam($fgid);
 
 	if (scalar(@udata) != 0) { # we have not this one user data;
-
 		my $cmd = "$main::cfg{'CMD_USERDEL'} $fuid";
 
 		$rs = sys_command($cmd);
-		if($rs != 0){
-			print "Can not remove  user '$fuid'!!!\n\n";
-			send_error_mail('uninstall_system_users()', "Can not remove  user '$fuid'!!!");
+		if ($rs != 0) {
+			print "cannot remove  user '$fuid'!\n\n";
+			send_error_mail('uninstall_system_users()', "cannot remove  user '$fuid'!");
 		}
-
 	}
 
 	if (scalar(@gdata) != 0) { # we have not this one group data;
-
 		my $cmd = "$main::cfg{'CMD_GROUPDEL'} $fgid";
 
 		$rs = sys_command($cmd);
-		if($rs != 0){
-			print "Can not remove  group '$fgid'!!!\n\n";
-			send_error_mail('uninstall_system_users()', "Can not remove  group '$fgid'!!!");
+		if ($rs != 0) {
+			print "cannot remove  group '$fgid'!\n\n";
+			send_error_mail('uninstall_system_users()', "cannot remove  group '$fgid'!");
 		}
-
 	}
 
-	#
 	# PHP Master
-	#
-
 	@udata = getpwnam("$upref$muid");
 
 	if (scalar(@udata) != 0) { # we have not this one user data;
-
 		my $cmd = "$main::cfg{'CMD_USERDEL'} $upref$muid";
 
 		$rs = sys_command($cmd);
-		if($rs != 0){
-			print "Can not remove  user '$fuid'!!!\n\n";
-			send_error_mail('uninstall_system_users()', "Can not remove  user '$fuid'!!!");
+		if ($rs != 0) {
+			print "cannot remove  user '$fuid'!\n\n";
+			send_error_mail('uninstall_system_users()', "cannot remove  user '$fuid'!");
 		}
-
 	}
 
 	@gdata = getgrnam("$upref$mgid");
 
 	if (scalar(@gdata) != 0) { # we have not this one group data;
-
 		my $cmd = "$main::cfg{'CMD_GROUPDEL'} $upref$mgid";
 
 		$rs = sys_command($cmd);
-		if($rs != 0){;
-			print "Can not remove  group '$upref$mgid'!!!\n\n";
-			send_error_mail('uninstall_system_users()', "Can not remove  group '$upref$mgid'!!!");
+		if ($rs != 0) {;
+			print "cannot remove  group '$upref$mgid'!\n\n";
+			send_error_mail('uninstall_system_users()', "cannot remove  group '$upref$mgid'!");
 		}
-
 	}
 
-	#
 	# Virtual User
-	#
-
 	$sql = "select domain_uid,domain_gid from domain";
 
 	($rs, $rows) = doSQL($sql);
 	if ($rs != 0){
-		print "Can not obtain user list!!!\n\n";
-		send_error_mail('uninstall_system_users()', "Can not obtain user list!!!");
+		print "cannot obtain user list!\n\n";
+		send_error_mail('uninstall_system_users()', "cannot obtain user list!");
 		return 0;
 	}
 
 	if (scalar(@$rows) != 0) {
-
 		foreach (@$rows) {
-
 			my $query_user = $_;
-
 			@udata = getpwnam("$upref@$query_user[0]");
 
 			if (scalar(@udata) != 0) { # we have not this one user data;
-
 				my $cmd = "$main::cfg{'CMD_USERDEL'} $upref@$query_user[0]";
 
 				$rs = sys_command($cmd);
-				if($rs != 0){
-					print "Can not remove  user '{$upref@$query_user[0]}'!!!\n\n";
-					send_error_mail('uninstall_system_users()', "Can not remove  user '{$upref@$query_user[0]}'!!!");
+				if ($rs != 0) {
+					print "cannot remove  user '{$upref@$query_user[0]}'!\n\n";
+					send_error_mail('uninstall_system_users()', "cannot remove  user '{$upref@$query_user[0]}'!");
 				}
-
 			}
 
 			@gdata = getgrnam("$upref@$query_user[1]");
-
+			
 			if (scalar(@gdata) != 0) { # we have not this one group data;
-
 				my $cmd = "$main::cfg{'CMD_GROUPDEL'} $upref@$query_user[0]";
 
 				$rs = sys_command($cmd);
-				if($rs != 0){
-					print "Can not remove  group '{upref@$query_user[0]}'!!!\nYou must remove it manually\n";
-					send_error_mail('uninstall_system_users()', "Can not remove  group '{$upref@$query_user[0]}'!!!");
+				if ($rs != 0) {
+					print "cannot remove  group '{upref@$query_user[0]}'!\nYou must remove it manually\n";
+					send_error_mail('uninstall_system_users()', "cannot remove  group '{$upref@$query_user[0]}'!");
 				}
-
 			}
-
 		}
-
 	}
-
 
 	push_el(\@main::el, 'uninstall_system_users()', 'Ending...');
 	return 0;
@@ -378,47 +339,47 @@ sub uninstall_system_dirs {
 	if ($main::rm{'rm_u_data'} eq 'yes') {
 		$rs = del_dir($main::cfg{'APACHE_WWW_DIR'});
 		if ($rs != 0){
-			print "Can not delete folder ".$main::cfg{'APACHE_WWW_DIR'}."!!!\n\n";
-			send_error_mail('uninstall_system_dirs()', "Can not delete folder ".$main::cfg{'APACHE_WWW_DIR'}."!!!");
+			print "cannot delete folder ".$main::cfg{'APACHE_WWW_DIR'}."!\n\n";
+			send_error_mail('uninstall_system_dirs()', "cannot delete folder ".$main::cfg{'APACHE_WWW_DIR'}."!");
 		}
 	}
 
 	$rs = del_dir($main::cfg{'APACHE_USERS_LOG_DIR'});
 	if ($rs != 0){
-		print "Can not delete folder ".$main::cfg{'APACHE_USERS_LOG_DIR'}."!!!\n\n";
-		send_error_mail('uninstall_system_dirs()', "Can not delete folder ".$main::cfg{'APACHE_USERS_LOG_DIR'}."!!!");
+		print "cannot delete folder ".$main::cfg{'APACHE_USERS_LOG_DIR'}."!\n\n";
+		send_error_mail('uninstall_system_dirs()', "cannot delete folder ".$main::cfg{'APACHE_USERS_LOG_DIR'}."!");
 	}
 
 	$rs = del_dir($main::cfg{'APACHE_BACKUP_LOG_DIR'});
 	if ($rs != 0){
-		print "Can not delete folder ".$main::cfg{'APACHE_BACKUP_LOG_DIR'}."!!!\n\n";
-		send_error_mail('uninstall_system_dirs()', "Can not delete folder ".$main::cfg{'APACHE_BACKUP_LOG_DIR'}."!!!");
+		print "cannot delete folder ".$main::cfg{'APACHE_BACKUP_LOG_DIR'}."!\n\n";
+		send_error_mail('uninstall_system_dirs()', "cannot delete folder ".$main::cfg{'APACHE_BACKUP_LOG_DIR'}."!");
 	}
 
 	$rs = del_dir($main::cfg{'MTA_VIRTUAL_CONF_DIR'});
 	if ($rs != 0){
-		print "Can not delete folder ".$main::cfg{'MTA_VIRTUAL_CONF_DIR'}."!!!\n\n";
-		send_error_mail('uninstall_system_dirs()', "Can not delete folder ".$main::cfg{'MTA_VIRTUAL_CONF_DIR'}."!!!");
+		print "cannot delete folder ".$main::cfg{'MTA_VIRTUAL_CONF_DIR'}."!\n\n";
+		send_error_mail('uninstall_system_dirs()', "cannot delete folder ".$main::cfg{'MTA_VIRTUAL_CONF_DIR'}."!");
 	}
 
 	if ($main::rm{'rm_u_data'} eq 'yes') {
 		$rs = del_dir($main::cfg{'MTA_VIRTUAL_MAIL_DIR'});
 		if ($rs != 0){
-			print "Can not delete folder ".$main::cfg{'MTA_VIRTUAL_MAIL_DIR'}."!!!\n\n";
-			send_error_mail('uninstall_system_dirs()', "Can not delete folder ".$main::cfg{'MTA_VIRTUAL_MAIL_DIR'}."!!!");
+			print "cannot delete folder ".$main::cfg{'MTA_VIRTUAL_MAIL_DIR'}."!\n\n";
+			send_error_mail('uninstall_system_dirs()', "cannot delete folder ".$main::cfg{'MTA_VIRTUAL_MAIL_DIR'}."!");
 		}
 	}
 
 	$rs = del_dir($main::cfg{'LOG_DIR'});
 	if ($rs != 0){
-		print "Can not delete folder ".$main::cfg{'LOG_DIR'}."!!!\n\n";
-		send_error_mail('uninstall_system_dirs()', "Can not delete folder ".$main::cfg{'LOG_DIR'}."!!!");
+		print "cannot delete folder ".$main::cfg{'LOG_DIR'}."!\n\n";
+		send_error_mail('uninstall_system_dirs()', "cannot delete folder ".$main::cfg{'LOG_DIR'}."!");
 	}
 
 	$rs = del_dir($main::cfg{'PHP_STARTER_DIR'});
 	if ($rs != 0){
-		print "Can not delete folder ".$main::cfg{'PHP_STARTER_DIR'}."!!!\n\n";
-		send_error_mail('uninstall_system_dirs()', "Can not delete folder ".$main::cfg{'PHP_STARTER_DIR'}."!!!");
+		print "cannot delete folder ".$main::cfg{'PHP_STARTER_DIR'}."!\n\n";
+		send_error_mail('uninstall_system_dirs()', "cannot delete folder ".$main::cfg{'PHP_STARTER_DIR'}."!");
 	}
 
 	push_el(\@main::el, 'uninstall_system_dirs()', 'Ending...');
@@ -465,8 +426,8 @@ sub uninstall_sql {
 
 		($rs, $rdata) = doSQL($sql);
 		if ($rs != 0){
-			print "Can not delete database $store_db_name!!!\n\n";
-			send_error_mail('uninstall_sql()', "Can not delete database $store_db_name!!!");
+			print "cannot delete database $store_db_name!\n\n";
+			send_error_mail('uninstall_sql()', "cannot delete database $store_db_name!");
 		}
 
 
@@ -500,8 +461,8 @@ sub uninstall_crontab {
 	if ( -e "/etc/cron.d/ispcp") {
 		$rs = del_file("/etc/cron.d/ispcp");
 		if ($rs != 0){;
-			print "Can not delete file /etc/cron.d/ispcp!!!\n\n";
-			send_error_mail('uninstall_crontab()', "Can not delete file /etc/cron.d/ispcp!!!");
+			print "cannot delete file /etc/cron.d/ispcp!\n\n";
+			send_error_mail('uninstall_crontab()', "cannot delete file /etc/cron.d/ispcp!");
 		}
 	} else {
 		print "File /etc/cron.d/ispcp do not exists!";
@@ -527,11 +488,11 @@ sub uninstall_resolver {
 
 		$rs = sys_command_rs($cmd);
 		if ($rs != 0){
-			print "Can not move file $resolv_file.bkp into $resolv_file!!!\n\n";
-			send_error_mail('uninstall_resolver()', "Can not move file $resolv_file.bkp into $resolv_file!!!");
+			print "cannot move file $resolv_file.bkp into $resolv_file!\n\n";
+			send_error_mail('uninstall_resolver()', "cannot move file $resolv_file.bkp into $resolv_file!");
 		}
 	} else {
-		print "File $resolv_file.bkp do not exits. File is not restored!!!\n\n";
+		print "File $resolv_file.bkp do not exits. File is not restored!\n\n";
 	}
 
 	push_el(\@main::el, 'uninstall_resolver()', 'Ending...');
@@ -552,11 +513,11 @@ sub uninstall_logrotate {
 
 		$rs = del_file("$logrotate_d/ispcp");
 		if ($rs != 0){
-			print "Can not delete $logrotate_d/ispcp!!!\n\n";
-			send_error_mail('uninstall_resolver()', "Can not delete $logrotate_d/ispcp!!!");
+			print "cannot delete $logrotate_d/ispcp!\n\n";
+			send_error_mail('uninstall_resolver()', "cannot delete $logrotate_d/ispcp!");
 		}
 	} else {
-		print "File $logrotate_d/ispcp do not exits!!!\n\n";
+		print "File $logrotate_d/ispcp do not exits!\n\n";
 	}
 
 	push_el(\@main::el, 'uninstall_logrotate()', 'Ending...');
@@ -587,13 +548,13 @@ sub uninstall_named {
 
 		$rs = sys_command($cmd);
 		if ($rs != 0){
-			print "File $bk_dir/named.conf.system can not be restored\n\n";
-			send_error_mail('uninstall_named()', "File $bk_dir/named.conf.system can not be restored");
+			print "File $bk_dir/named.conf.system cannot be restored\n\n";
+			send_error_mail('uninstall_named()', "File $bk_dir/named.conf.system cannot be restored");
 		}
 
 	} else {
-		print "Backup files $bk_dir/named.conf.system can not be founded\n";
-		send_error_mail('uninstall_ftpd()', "Backup files $bk_dir/named.conf.system can not be founded!!!");
+		print "Backup files $bk_dir/named.conf.system cannot be founded\n";
+		send_error_mail('uninstall_ftpd()', "Backup files $bk_dir/named.conf.system cannot be founded!");
 	}
 
 	sys_command_rs("$main::cfg{'CMD_NAMED'} start >> /tmp/ispcp-uninstall-services.log");
@@ -624,52 +585,52 @@ sub uninstall_httpd {
 
 	$rs = del_file("$main::cfg{'APACHE_SITES_DIR'}/ispcp.conf");
 	if ($rs != 0){
-		print "Can not delete $main::cfg{'APACHE_SITES_DIR'}/ispcp.conf!!!\n\n";
-		send_error_mail('uninstall_httpd()', "Can not delete $main::cfg{'APACHE_SITES_DIR'}/ispcp.conf!!!");
+		print "cannot delete $main::cfg{'APACHE_SITES_DIR'}/ispcp.conf!\n\n";
+		send_error_mail('uninstall_httpd()', "cannot delete $main::cfg{'APACHE_SITES_DIR'}/ispcp.conf!");
 	}
 
 	sys_command_rs("a2dissite 00_master.conf >> /tmp/ispcp-uninstall-services.log");
 
 	$rs = del_file("$main::cfg{'APACHE_SITES_DIR'}/00_master.conf");
 	if ($rs != 0){
-		print "Can not delete $main::cfg{'APACHE_SITES_DIR'}/00_master.conf!!!\n\n";
-		send_error_mail('uninstall_httpd()', "Can not delete $main::cfg{'APACHE_SITES_DIR'}/00_master.conf!!!");
+		print "cannot delete $main::cfg{'APACHE_SITES_DIR'}/00_master.conf!\n\n";
+		send_error_mail('uninstall_httpd()', "cannot delete $main::cfg{'APACHE_SITES_DIR'}/00_master.conf!");
 	}
 
 	sys_command_rs("a2dismod fastcgi_ispcp >> /tmp/ispcp-uninstall-services.log");
 
 	$rs = del_file("$main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.conf");
 	if ($rs != 0){
-		print "Can not delete $main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.conf!!!\n\n";
-		send_error_mail('uninstall_httpd()', "Can not delete $main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.conf!!!");
+		print "cannot delete $main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.conf!\n\n";
+		send_error_mail('uninstall_httpd()', "cannot delete $main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.conf!");
 	}
 
 	sys_command_rs("a2dismod fcgid_ispcp >> /tmp/ispcp-uninstall-services.log");
 
 	$rs = del_file("$main::cfg{'APACHE_MODS_DIR'}/fcgid_ispcp.conf");
 	if ($rs != 0){
-		print "Can not delete $main::cfg{'APACHE_MODS_DIR'}/fcgid_ispcp.conf!!!\n\n";
-		send_error_mail('uninstall_httpd()', "Can not delete $main::cfg{'APACHE_MODS_DIR'}/fcgid_ispcp.conf!!!");
+		print "cannot delete $main::cfg{'APACHE_MODS_DIR'}/fcgid_ispcp.conf!\n\n";
+		send_error_mail('uninstall_httpd()', "cannot delete $main::cfg{'APACHE_MODS_DIR'}/fcgid_ispcp.conf!");
 	}
 
 	if ( -e "$main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.load") {
 		$rs = del_file("$main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.load");
 		if ($rs != 0){
-			print "Can not delete $main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.load!!!\n\n";
-			send_error_mail('uninstall_httpd()', "Can not delete $main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.load!!!");
+			print "cannot delete $main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.load!\n\n";
+			send_error_mail('uninstall_httpd()', "cannot delete $main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.load!");
 		}
 	} else {
-		print "File $main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.load do not exits!!!\n\n";
+		print "File $main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.load do not exits!\n\n";
 	}
 
 	if ( -e "$main::cfg{'APACHE_MODS_DIR'}/fcgid_ispcp.load") {
 		$rs = del_file("$main::cfg{'APACHE_MODS_DIR'}/fcgid_ispcp.load");
 		if ($rs != 0){
-			print "Can not delete $main::cfg{'APACHE_MODS_DIR'}/fcgid_ispcp.load!!!\n\n";
-			send_error_mail('uninstall_httpd()', "Can not delete $main::cfg{'APACHE_MODS_DIR'}/fcgid_ispcp.load!!!");
+			print "cannot delete $main::cfg{'APACHE_MODS_DIR'}/fcgid_ispcp.load!\n\n";
+			send_error_mail('uninstall_httpd()', "cannot delete $main::cfg{'APACHE_MODS_DIR'}/fcgid_ispcp.load!");
 		}
 	} else {
-		print "File $main::cfg{'APACHE_MODS_DIR'}/fcgid_ispcp.load do not exits!!!\n\n";
+		print "File $main::cfg{'APACHE_MODS_DIR'}/fcgid_ispcp.load do not exits!\n\n";
 	}
 
 	sys_command_rs("a2dissite 01_awstats.conf >> /tmp/ispcp-uninstall-services.log");
@@ -677,17 +638,17 @@ sub uninstall_httpd {
 	if ( -e "$main::cfg{'APACHE_SITES_DIR'}/01_awstats.conf") {
 		$rs = del_file("$main::cfg{'APACHE_SITES_DIR'}/01_awstats.conf");
 		if ($rs != 0){
-			print "Can not delete $main::cfg{'APACHE_SITES_DIR'}/01_awstats.conf!!!\n\n";
-			send_error_mail('uninstall_httpd()', "Can not delete $main::cfg{'APACHE_MODS_DIR'}/01_awstats.conf!!!");
+			print "cannot delete $main::cfg{'APACHE_SITES_DIR'}/01_awstats.conf!\n\n";
+			send_error_mail('uninstall_httpd()', "cannot delete $main::cfg{'APACHE_MODS_DIR'}/01_awstats.conf!");
 		}
 	} elsif($main::cfg{'APACHE_SITES_DIR'} eq 'yes' && $main::cfg{'AWSTATS_MODE'} == 0) {
-		print "File $main::cfg{'APACHE_SITES_DIR'}/01_awstats.conf do not exits!!!\n\n";
+		print "File $main::cfg{'APACHE_SITES_DIR'}/01_awstats.conf do not exits!\n\n";
 	}
 
 	$rs = del_dir($main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'});
 	if ($rs != 0){
-		print "Folder $main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'} can not be deleted\n\n";
-		send_error_mail('uninstall_httpd()', "Folder $main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'} can not be deleted");
+		print "Folder $main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'} cannot be deleted\n\n";
+		send_error_mail('uninstall_httpd()', "Folder $main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'} cannot be deleted");
 	}
 
 	sleep(5);
@@ -724,43 +685,43 @@ sub uninstall_mta {
 
 		$rs = sys_command($cmd);
 		if ($rs != 0){
-			print "Can not move $bk_dir/main.cf.system into $main::cfg{'POSTFIX_CONF_FILE'}!!!\n\n";
-			send_error_mail('uninstall_mta()', "Can not move $bk_dir/main.cf.system into $main::cfg{'POSTFIX_CONF_FILE'}!!!");
+			print "cannot move $bk_dir/main.cf.system into $main::cfg{'POSTFIX_CONF_FILE'}!\n\n";
+			send_error_mail('uninstall_mta()', "cannot move $bk_dir/main.cf.system into $main::cfg{'POSTFIX_CONF_FILE'}!");
 		}
 
 		$cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/master.cf.system $main::cfg{'POSTFIX_MASTER_CONF_FILE'}";
 
 		$rs = sys_command($cmd);
 		if ($rs != 0){
-			print "Can not move $bk_dir/master.cf.system into $main::cfg{'POSTFIX_MASTER_CONF_FILE'}!!!\n\n";
-			send_error_mail('uninstall_mta()', "Can not move $bk_dir/master.cf.system into $main::cfg{'POSTFIX_MASTER_CONF_FILE'}!!!");
+			print "cannot move $bk_dir/master.cf.system into $main::cfg{'POSTFIX_MASTER_CONF_FILE'}!\n\n";
+			send_error_mail('uninstall_mta()', "cannot move $bk_dir/master.cf.system into $main::cfg{'POSTFIX_MASTER_CONF_FILE'}!");
 		}
 
 	} else {
-		print "Backup files for MTA can not be founded\n";
-		send_error_mail('uninstall_mta()', "Backup files for MTA can not be founded!!!");
+		print "Backup files for MTA cannot be founded\n";
+		send_error_mail('uninstall_mta()', "Backup files for MTA cannot be founded!");
 	}
 
 	if ( -e "/var/spool/postfix/private/ispcp-arpl" ) {
 		$rs = del_file("/var/spool/postfix/private/ispcp-arpl");
 		if ($rs != 0){
-			print "Can not delete /var/spool/postfix/private/ispcp-arpl!!!\n\n";
-			send_error_mail('uninstall_mta()', "Can not delete /var/spool/postfix/private/ispcp-arpl!!!");
+			print "cannot delete /var/spool/postfix/private/ispcp-arpl!\n\n";
+			send_error_mail('uninstall_mta()', "cannot delete /var/spool/postfix/private/ispcp-arpl!");
 		}
 	}
 
 	if ( -e "/usr/sbin/maillogconvert.pl" ) {
 		$rs = del_file("/usr/sbin/maillogconvert.pl");
 		if ($rs != 0){
-			print "Can not delete /usr/sbin/maillogconvert.pl!!!\n\n";
-			send_error_mail('uninstall_mta()', "Can not delete /usr/sbin/maillogconvert.pl!!!");
+			print "cannot delete /usr/sbin/maillogconvert.pl!\n\n";
+			send_error_mail('uninstall_mta()', "cannot delete /usr/sbin/maillogconvert.pl!");
 		}
 	}
 
 	$rs = sys_command("$main::cfg{'CMD_NEWALIASES'} >> /tmp/ispcp-uninstall-services.log");
 	if ($rs != 0){
-		print "Command $main::cfg{'CMD_NEWALIASES'} failed!!! Check MTA config file\n\n";
-		send_error_mail('uninstall_mta()', "Command $main::cfg{'CMD_NEWALIASES'} failed!!! Check MTA config file!!!");
+		print "Command $main::cfg{'CMD_NEWALIASES'} failed! Check MTA config file\n\n";
+		send_error_mail('uninstall_mta()', "Command $main::cfg{'CMD_NEWALIASES'} failed! Check MTA config file!");
 	}
 
 	sys_command_rs("$main::cfg{'CMD_MTA'} start >> /tmp/ispcp-uninstall-services.log");
@@ -794,16 +755,16 @@ sub uninstall_po {
 	$cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/authdaemonrc.system $main::cfg{'AUTHLIB_CONF_DIR'}/authdaemonrc";
 	$rs = sys_command($cmd);
 	if ($rs != 0){
-		print "File $bk_dir/authdaemonrc.system do not exist!!! Can not be restored\n\n";
-		send_error_mail('uninstall_po()', "File $bk_dir/authdaemonrc.system do not exist!!! Can not be restored");
+		print "File $bk_dir/authdaemonrc.system do not exist! cannot be restored\n\n";
+		send_error_mail('uninstall_po()', "File $bk_dir/authdaemonrc.system do not exist! cannot be restored");
 	}
 
 	if (-e "$bk_dir/authmodulelist.system") {
 		$cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/authmodulelist.system $main::cfg{'AUTHLIB_CONF_DIR'}/authmodulelist";
 		$rs = sys_command($cmd);
 		if ($rs != 0){
-			print "File $bk_dir/authmodulelist.system do not exist!!! Can not be restored\n\n";
-			send_error_mail('uninstall_po()', "File $bk_dir/authmodulelist.system do not exist!!! Can not be restored");
+			print "File $bk_dir/authmodulelist.system do not exist! cannot be restored\n\n";
+			send_error_mail('uninstall_po()', "File $bk_dir/authmodulelist.system do not exist! cannot be restored");
 		}
 	}
 
@@ -813,14 +774,14 @@ sub uninstall_po {
 	}
 
 	if ($rs != 0){
-		print "File $bk_dir/userdb.system do not exist!!! Can not be restored\n\n";
-		send_error_mail('uninstall_po()', "File $bk_dir/userdb.system do not exist!!! Can not be restored");
+		print "File $bk_dir/userdb.system do not exist! cannot be restored\n\n";
+		send_error_mail('uninstall_po()', "File $bk_dir/userdb.system do not exist! cannot be restored");
 	}
 
 	$rs = sys_command($main::cfg{'CMD_MAKEUSERDB'});
 	if ($rs != 0){
-		print "Command $main::cfg{'CMD_MAKEUSERDB'} failed!!! Check config file\n\n";
-		send_error_mail('uninstall_mta()', "Command $main::cfg{'CMD_MAKEUSERDB'} failed!!! Check config file!!!");
+		print "Command $main::cfg{'CMD_MAKEUSERDB'} failed! Check config file\n\n";
+		send_error_mail('uninstall_mta()', "Command $main::cfg{'CMD_MAKEUSERDB'} failed! Check config file!");
 	}
 
 	sys_command_rs("$main::cfg{'CMD_AUTHD'} start >> /tmp/ispcp-uninstall-services.log");
@@ -854,19 +815,19 @@ sub uninstall_ftpd {
 		$cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/proftpd.conf.system $main::cfg{'FTPD_CONF_FILE'}";
 		$rs = sys_command($cmd);
 		if ($rs != 0){
-			print "File $bk_dir/proftpd.conf.system can not be copied\n\n";
-			send_error_mail('uninstall_ftpd()', "File $bk_dir/proftpd.conf.system can not be copied");
+			print "File $bk_dir/proftpd.conf.system cannot be copied\n\n";
+			send_error_mail('uninstall_ftpd()', "File $bk_dir/proftpd.conf.system cannot be copied");
 		}
 
 		$rs = del_dir($main::cfg{'FTPD_CONF_DIR'});
 		if ($rs != 0){
-			print "Folder $main::cfg{'FTPD_CONF_DIR'} can not be deleted\n\n";
-			send_error_mail('uninstall_ftpd()', "Folder $main::cfg{'FTPD_CONF_DIR'} can not be deleted");
+			print "Folder $main::cfg{'FTPD_CONF_DIR'} cannot be deleted\n\n";
+			send_error_mail('uninstall_ftpd()', "Folder $main::cfg{'FTPD_CONF_DIR'} cannot be deleted");
 		}
 
 	} else {
-		print "Backup files $bk_dir/proftpd.conf.system can not be founded\n";
-		send_error_mail('uninstall_ftpd()', "Backup files $bk_dir/proftpd.conf.system can not be founded!!!");
+		print "Backup files $bk_dir/proftpd.conf.system cannot be founded\n";
+		send_error_mail('uninstall_ftpd()', "Backup files $bk_dir/proftpd.conf.system cannot be founded!");
 	}
 
 	sys_command_rs("$main::cfg{'CMD_FTPD'} start >> /tmp/ispcp-uninstall-services.log");
@@ -896,14 +857,14 @@ sub uninstall_ispcpd {
 
 	$rs = del_file("$main::cfg{'CMD_ISPCPD'}");
 	if ($rs != 0){
-		print "File $main::cfg{'CMD_ISPCPD'} can not be deleted\n\n";
-		send_error_mail('uninstall_ispcpd()', "File $main::cfg{'CMD_ISPCPD'} can not be deleted");
+		print "File $main::cfg{'CMD_ISPCPD'} cannot be deleted\n\n";
+		send_error_mail('uninstall_ispcpd()', "File $main::cfg{'CMD_ISPCPD'} cannot be deleted");
 	}
 
 	$rs = del_file("$main::cfg{'CMD_ISPCPN'}");
 	if ($rs != 0){
-		print "File $main::cfg{'CMD_ISPCPN'} can not be deleted\n\n";
-		send_error_mail('uninstall_ispcpd()', "File $main::cfg{'CMD_ISPCPN'} can not be deleted");
+		print "File $main::cfg{'CMD_ISPCPN'} cannot be deleted\n\n";
+		send_error_mail('uninstall_ispcpd()', "File $main::cfg{'CMD_ISPCPN'} cannot be deleted");
 	}
 
 	if ( ! -x "/usr/lib/lsb/install_initd" && -x "/usr/sbin/update-rc.d" ) {
@@ -927,20 +888,20 @@ sub uninstall_ispcp {
 
 	$rs = del_dir($main::cfg{'CONF_DIR'});
 	if ($rs != 0){
-		print "Folder $main::cfg{'CONF_DIR'} can not be deleted\n\n";
-		send_error_mail('uninstall_ispcp()', "Folder $main::cfg{'CONF_DIR'} can not be deleted");
+		print "Folder $main::cfg{'CONF_DIR'} cannot be deleted\n\n";
+		send_error_mail('uninstall_ispcp()', "Folder $main::cfg{'CONF_DIR'} cannot be deleted");
 	}
 
 	$rs = del_dir($main::cfg{'SCOREBOARDS_DIR'});
 	if ($rs != 0){
-		print "Folder $main::cfg{'SCOREBOARDS_DIR'} can not be deleted\n\n";
-		send_error_mail('uninstall_ispcp()', "Folder $main::cfg{'SCOREBOARDS_DIR'} can not be deleted");
+		print "Folder $main::cfg{'SCOREBOARDS_DIR'} cannot be deleted\n\n";
+		send_error_mail('uninstall_ispcp()', "Folder $main::cfg{'SCOREBOARDS_DIR'} cannot be deleted");
 	}
 
 	$rs = del_dir($main::cfg{'ROOT_DIR'});
 	if ($rs != 0){
-		print "Folder $main::cfg{'ROOT_DIR'} can not be deleted\n\n";
-		send_error_mail('uninstall_ispcp()', "Folder $main::cfg{'ROOT_DIR'} can not be deleted");
+		print "Folder $main::cfg{'ROOT_DIR'} cannot be deleted\n\n";
+		send_error_mail('uninstall_ispcp()', "Folder $main::cfg{'ROOT_DIR'} cannot be deleted");
 	}
 
 
@@ -999,7 +960,7 @@ sub uninstall_host_system {
 }
 
 ################################################################################
-##									MAIN									##
+##                                  MAIN                                      ##
 ################################################################################
 
 # Clear screen
@@ -1007,7 +968,7 @@ system('clear');
 
 my $rs = undef;
 
-$rs = uninstall_start_up();
+$rs = uninstall_startup();
 if ($rs != 0) {
 
 	my $el_data = pop_el(\@main::el);
@@ -1017,7 +978,6 @@ if ($rs != 0) {
 	print STDERR "$msg\n";
 
 	exit 1;
-
 }
 
 $rs = user_dialog();
@@ -1030,7 +990,6 @@ if ($rs != 0) {
 	print STDERR "$msg\n";
 
 	exit 1;
-
 }
 
 $rs = uninstall_host_system();
@@ -1043,10 +1002,9 @@ if ($rs != 0) {
 	print STDERR "$msg\n";
 
 	exit 1;
-
 }
 
-$rs = uninstall_shut_down();
+$rs = uninstall_shutdown();
 if ($rs != 0) {
 
 	my $el_data = pop_el(\@main::el);
@@ -1056,5 +1014,29 @@ if ($rs != 0) {
 	print STDERR "$msg\n";
 
 	exit 1;
-
 }
+
+=pod
+ Documentation of the uninstaller's program flow:
+ 
+ uninstall_startup()
+	get_conf() .> ispcp-setup-methods.pl
+	del_file() -> ispcp-setup-methods.pl
+ user_dialog()
+	welcome_note()
+	ask_remove_user_data()
+ uninstall_host_system()
+	uninstall_system_users()
+	uninstall_system_dirs()
+	uninstall_sql()
+	uninstall_crontab()
+	uninstall_logrotate()
+	uninstall_httpd()
+	uninstall_mta()
+	uninstall_po()
+	uninstall_ftpd()
+	uninstall_named()
+	uninstall_ispcpd()
+	uninstall_ispcp()
+ uninstall_shutdown()
+ =cut
