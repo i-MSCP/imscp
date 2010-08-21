@@ -6,6 +6,8 @@ ispCP ω 1.0.7 ChangeLog
 		* Fixed #2365: Ifconfig bad usage in ispcp-net-interfaces-mngr causes
 		networking problems
 		* Fixed #2414: Master db file - serial number incrementation
+		* Fixed #2406: Only session files must be removed in phptmp directories
+		* Fixed: Php garbage collection script should be Dash compatible
 	- GUI
 		* Fixed #2065: Duplicate Key Database Error in Manual DNS
 		* Fixed #2428: Unable to add a custom DNS MX record (Thanks to aseques)

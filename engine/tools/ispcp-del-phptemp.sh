@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2010 by isp Control Panel - http://ispcp.net
@@ -47,7 +47,7 @@ APACHE_WWW_DIR=${APACHE_WWW_DIR%/}/
 # from the given temporary directory. Arguments:
 #   - Temporary directory.
 #   - Fcgi directory containing php{4,5} php.ini files.
-function removeOldFiles {
+removeOldFiles() {
 	if [ ! -d "$1" ]; then
 		return 1;
 	fi
@@ -72,7 +72,7 @@ function removeOldFiles {
 		max=1440
 	fi
 	max=$(($max/60))
-	nice -n 19 find $1 -type f -cmin +${max} -print0 | ${XARGS} -0 rm
+	nice -n 19 find $1 -type f -name 'sess_*' -cmin +${max} -print0 | ${XARGS} -0 rm
 }
 
 # Remove older files from hosted domain's temporary folders
