@@ -1,6 +1,11 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-08-21 Benedikt Heintel
+	- ENGINE
+		* Fixed #2365: Ifconfig bad usage in ispcp-net-interfaces-mngr causes
+		networking problems
+
 2010-08-18 Benedikt Heintel
 	- LANGUAGES:
 		* Updated Japanese (#2422)

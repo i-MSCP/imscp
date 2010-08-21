@@ -85,10 +85,22 @@ sub virtual_netcard_add(){
 		my $ip_card = @$_[2];
 
 		if (defined($ip_card)){
-			push_el(\@main::el, 'virtual_netcard_add()', "$main::cfg{'CMD_IFCONFIG'} ${ip_card}:${ip_id} ${ip_number} up");
-			$rs = sys_command("$main::cfg{'CMD_IFCONFIG'} ${ip_card}:${ip_id} ${ip_number} up");
+			push_el(
+				\@main::el,
+				'virtual_netcard_add()',
+				"$main::cfg{'CMD_IFCONFIG'} ${ip_card}:${ip_id} ${ip_number} " .
+				"netmask 255.255.255.255 up"
+			);
+
+            $rs = sys_command(
+                "$main::cfg{'CMD_IFCONFIG'} ${ip_card}:${ip_id} ${ip_number} netmask 255.255.255.255 up"
+			);
+
 			if ($rs != 0){
-				send_error_mail('virtual_netcard_add()', "Error while trying to add add IP ${ip_number} to network card '${ip_card}'!")
+				send_error_mail(
+					'virtual_netcard_add()',
+					"Error while trying to add add IP ${ip_number} to network card '${ip_card}'!"
+				)
 			}
 		}
 	}
