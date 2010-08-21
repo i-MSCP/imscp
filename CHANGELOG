@@ -6,7 +6,7 @@ ispCP ω 1.0.7 ChangeLog
 		* Fixed #2365: Ifconfig bad usage in ispcp-net-interfaces-mngr causes
 		networking problems
 	- GUI
-		* Fixed #2428: Unable to add a custom DNS MX record
+		* Fixed #2428: Unable to add a custom DNS MX record (Thanks to aseques)
 
 2010-08-18 Benedikt Heintel
 	- LANGUAGES:
