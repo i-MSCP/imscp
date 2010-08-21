@@ -7,6 +7,7 @@ ispCP ω 1.0.7 ChangeLog
 		networking problems
 	- GUI
 		* Fixed #2428: Unable to add a custom DNS MX record (Thanks to aseques)
+		* Revert back on r3186: CDATA tags break the theme in html pages
 
 2010-08-18 Benedikt Heintel
 	- LANGUAGES:
