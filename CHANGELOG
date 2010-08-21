@@ -5,6 +5,7 @@ ispCP ω 1.0.7 ChangeLog
 	- ENGINE
 		* Fixed #2365: Ifconfig bad usage in ispcp-net-interfaces-mngr causes
 		networking problems
+		* Fixed #2414: Master db file - serial number incrementation
 	- GUI
 		* Fixed #2065: Duplicate Key Database Error in Manual DNS
 		* Fixed #2428: Unable to add a custom DNS MX record (Thanks to aseques)

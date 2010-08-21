@@ -581,13 +581,22 @@ sub _add_customer_master_dmn_als_db_data {
 	# Add entry
 	$master_db_file_content =~ s/(; ctm[\w ]+END\.\n)/$entry$1/;
 
+	# Update serial number according RFC 1912
+	# Todo: Add small workaround to avoid to regenerated serial X time during
+	# update
+	$rs = getSerialNumber(
+		\$main::cfg{'BASE_SERVER_VHOST'}, \$master_db_file_content,
+		\$master_db_file_content
+	);
+	return $rs if ($rs != 0);
+
 	# Backup current working file
 	$cmd = "$main::cfg{'CMD_CP'} -p $wrk_dir/$wrk_file $bkp_dir/$wrk_file" . time;
 
 	$rs = sys_command_rs($cmd);
 	return $rs if ($rs != 0);
 
-	# Store the new file in working dirctory
+	# Store the new file in working directory
 	$rs = store_file(
 		"$wrk_dir/$wrk_file", $master_db_file_content, $main::cfg{'ROOT_USER'},
 		$main::cfg{'ROOT_GROUP'}, 0644
