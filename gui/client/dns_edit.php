@@ -566,8 +566,11 @@ function check_fwd_data(&$tpl, $edit_id) {
 			break;
 		case 'MX':
 			$_dns = '';
-			if (!validate_MX($_POST, $err, $_text))
+			if (!validate_MX($_POST, $err, $_text)) {
 				$ed_error = sprintf(tr('Cannot validate %s record. Reason \'%s\'.'), $_POST['type'], $err);
+			} else {
+				$_dns = $record_domain . '.';
+			}
 			break;
 		default :
 			$ed_error = sprintf(tr('Unknown zone type %s!'), $_POST['type']);
