@@ -34,7 +34,6 @@
  * @package		ispCP_Database
  * @author		ispCP Team
  * @author		Laurent Declercq <laurent.declercq@nuxwin.com>
- * @todo		Use PDO exception error handling
  */
 class ispCP_Database {
 
@@ -51,6 +50,14 @@ class ispCP_Database {
 	 * @var PDO
 	 */
 	protected $_db = null;
+
+
+	/**
+	 * Error code from last error occured
+	 *
+	 * @var int
+	 */
+	protected $_lastErrorCode = '';
 
 	/**
 	 * Message from last error occured
@@ -310,6 +317,7 @@ class ispCP_Database {
 				is_string($stmt) ? $this->errorInfo() : $stmt->errorInfo();
 
 			if(isset($errorInfo[2])) {
+				$this->_lastErrorCode = $errorInfo[0];
 				$this->_lastErrorMessage = $errorInfo[2];
 			} else { // WARN (HY093)
 				$errorInfo = error_get_last();
@@ -411,6 +419,19 @@ class ispCP_Database {
 	public function rollbackTransaction() {
 
 		return $this->_db->rollback();
+	}
+
+
+	/**
+	 * Gets the last SQLSTATE error code
+	 *
+	 * @since 1.0.7
+	 * @author Laurent Declercq <laurent.declercq@ispcp.net>
+	 * @return mixed The last SQLSTATE error code
+	 */
+	public function getLastErrorCode() {
+
+		return $this->_lastErrorCode;
 	}
 
 	/**

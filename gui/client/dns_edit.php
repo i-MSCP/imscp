@@ -590,10 +590,27 @@ function check_fwd_data(&$tpl, $edit_id) {
 				;
 			";
 
-			exec_query(
+			$rs = exec_query(
 				$sql, $query,
-				array($dmn_id, $alias_id, $_dns, $_class, $_type, $_text)
+				array($dmn_id, $alias_id, $_dns, $_class, $_type, $_text),
+				false
 			);
+
+			# Error because duplicate entry ? (SQLSTATE 23000)
+			if($rs === false) {
+				if($sql->getLastErrorCode() == 23000) {
+					$tpl->assign(
+						'MESSAGE', tr('Error: DNS record already exist!')
+					);
+					$tpl->parse('PAGE_MESSAGE', 'page_message');
+
+					return false;
+				} else { # Another error ? Throw exception
+					throw new ispCP_Exception_Database(
+						$sql->getLastErrorMessage() . " - Query: $query"
+					);
+				}
+			}
 
 		} else {
 
