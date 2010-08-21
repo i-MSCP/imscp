@@ -2,6 +2,8 @@ ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2010-08-21 Laurent Declercq
+	- CONFIG|SETUP:
+		* Fixed #2334: Allow Apache to read from "errors" directory
 	- ENGINE
 		* Fixed #2365: Ifconfig bad usage in ispcp-net-interfaces-mngr causes
 		networking problems

@@ -1240,7 +1240,13 @@ sub setup_httpd_main_vhost {
 	return $rs if ($rs != 0);
 
 	# Building the new file
-	($rs, $$cfg) = repl_var('{ROOT_DIR}', $cfg_tpl, $main::cfg{'ROOT_DIR'});
+	($rs, $$cfg) = prep_tpl(
+		{
+			'{ROOT_DIR}' => $main::cfg{'ROOT_DIR'},
+			'{APACHE_WWW_DIR}' => $main::cfg{'APACHE_WWW_DIR'}
+		},
+		$cfg_tpl
+	);
 	return $rs if ($rs != 0);
 
 	# Store the new file in working directory
