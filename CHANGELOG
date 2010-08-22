@@ -1,16 +1,20 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-08-22 Benedikt Heintel
+	- CONFIGS:
+		* Fixed: Made DNS SOA Entries RCF1537 compatible
+
 2010-08-21 Laurent Declercq
-	- CONFIG|SETUP:
+	- CONFIGS/SETUP:
 		* Fixed #2334: Allow Apache to read from "errors" directory
-	- ENGINE
-		* Fixed #2365: Ifconfig bad usage in ispcp-net-interfaces-mngr causes
+	- ENGINE:
+		* Fixed #2365: ifconfig bad usage in ispcp-net-interfaces-mngr causes
 		networking problems
-		* Fixed #2414: Master db file - serial number incrementation
+		* Fixed #2414: Master DB file - serial number incrementation
 		* Fixed #2406: Only session files must be removed in phptmp directories
-		* Fixed: Php garbage collection script should be Dash compatible
-	- GUI
+		* Fixed: PHP garbage collection script should be Dash compatible
+	- GUI:
 		* Fixed #2065: Duplicate Key Database Error in Manual DNS
 		* Fixed #2428: Unable to add a custom DNS MX record (Thanks to aseques)
 		* Revert back on r3186: CDATA tags break the theme in html pages
@@ -82,7 +86,7 @@ ispCP ω 1.0.7 ChangeLog
 2010-08-07 Laurent Declercq
 	- GUI
 		* Fixed: Undefined variable: $cfg in alias_add.php on line 249
-	- CONFIG
+	- CONFIGS
 		* Changed indentation for all bind/parts/db_sub_entry.tpl
 	- ENGINE:
 		* Fixed: Unusable doHashSQL() sub. + typo in ispcp_common_methods.pl
@@ -96,7 +100,7 @@ ispCP ω 1.0.7 ChangeLog
 		the same as provided under the project source archive
 
 2010-08-05 Laurent Declercq
-	- CONFIG
+	- CONFIGS:
 		* Removed useless APACHE_CMD configuration variable
 	- ENGINE:
 		* Added subroutine to be able to get error message from external command
@@ -108,7 +112,7 @@ ispCP ω 1.0.7 ChangeLog
 	- RELEASE ispCP ω Omega 1.0.6
 
 2010-08-04 Laurent Declercq
-	- ENGINE|SETUP:
+	- ENGINE/SETUP:
 		* Integrated getSerialNumber() subroutine in all scripts
 	- ENGINE:
 		* Fixed: Removed load of unreachable templates
@@ -122,14 +126,14 @@ ispCP ω 1.0.7 ChangeLog
 		* Some refactoring tasks
 
 2010-08-03 Laurent Declercq
-	- CONFIG:
+	- CONFIGS:
 		* Removed useless templates
 		* Updated all db_e.tpl for better readability
 
 2010-08-03 Benedikt Heintel
 	- TOOLS:
 		* Updated phpMyAdmin to version 3.3.5
-		* Updates Squirrelmail to version 1.4.21
+		* Updated Squirrelmail to version 1.4.21
 
 2010-08-02 Laurent Declercq
 	- ENGINE:
@@ -147,7 +151,7 @@ ispCP ω 1.0.7 ChangeLog
 		* Added documentation + some refactoring tasks
 
 2010-07-31 Laurent Declercq
-	- CONFIG:
+	- CONFIGS:
 		* Fixed #2388: A DNS record must be added in master db file for each
 		domain alternative URL
 	- ENGINE:
@@ -179,7 +183,7 @@ ispCP ω 1.0.7 ChangeLog
 		* Fixed (Again) #2181: vu20xx.admin.domain.tld
 
 2010-07-25 Laurent Declercq
-	- CONFIG:
+	- CONFIGS:
 		* Changed PhpMyAdmin path parameter
 	- GUI:
 		* Package ispCP - client_sql:
@@ -247,7 +251,7 @@ ispCP ω 1.0.7 ChangeLog
 		* Merged login functions in include/login-functions.php
 
 2010-07-14 Laurent Declercq
-	- CONFIG|GUI||SETUP:
+	- CONFIGS|GUI||SETUP:
 		* Added PHP Browser Capabilities support (Only for the panel)
 	- GUI:
 		* Added language export: gzip support
@@ -320,7 +324,7 @@ ispCP ω 1.0.7 ChangeLog
 		* Improved ispCP_Exception_Handler to avoid loop with broken writers
 		* Refactored include/admin-function.php
 		* Moved unused functions into `include/unused-functions.php`
-	- CONFIG:
+	- CONFIGS:
 		* Added configuration parameter into the ispcp.conf file to be able to
 			deactivate the writers observers
 
@@ -415,7 +419,7 @@ ispCP ω 1.0.7 ChangeLog
 			without i18n support
 
 2010-06-15 Laurent Declercq
-	- CONFIG:
+	- CONFIGS:
 		* Fixed #2385 Remove php4 Support completly
 
 2010-06-14 Laurent Declercq
@@ -1822,7 +1826,7 @@ facilitate the maintenances.
 		* Fixed openSUSE runlevels
 
 2009-11-04 Christian Hernmarck
-	- CONFIG:
+	- CONFIGS:
 		* Fixed #2060: increase fastcgi-timeout for user-domains
 
 2009-11-01 Marc Pujol
@@ -1915,7 +1919,7 @@ facilitate the maintenances.
 		* Updated Danish
 
 2009-09-29 Laurent Declercq
-	- CONFIG:
+	- CONFIGS:
 		* Fixed #2002: openSUSE 11.1 - Unable to add mail user
 		* [openSUSE] Fixed SASL Authentication failed:
 			- Added smtpd.conf configuration file for postfix/sasl
@@ -2518,7 +2522,7 @@ facilitate the maintenances.
 		* Fixed #1780: reenabled omega style in filemanager
 
 2009-04-20 Malte Geierhos
-	- CONFIG FILES:
+	- CONFIGS:
 		* Fixed #1793: Optimize the fcgid Config
 	- ENGINE:
 		* Added specfile for rpmbuild thanks to George Machitidze
