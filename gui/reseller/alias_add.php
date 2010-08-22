@@ -293,15 +293,40 @@ function add_domain_alias(&$sql, &$err_al) {
 	} else if ($alias_name == $cfg->BASE_SERVER_VHOST) {
 		$err_al = tr('Master domain cannot be used!');
 	} else if ($_POST['status'] == 1) {
-		if (substr_count($forward, '.') <= 2) {
-			$ret = validates_dname($forward);
+		$aurl = @parse_url($forward_prefix.$forward);
+		if ($aurl === false) {
+			$err_al = tr("Wrong address in forward URL!");
 		} else {
-			$ret = validates_dname($forward, true);
-		}
-		if (!$ret) {
-			$err_al = tr("Wrong domain part in forward URL!");
-		} else {
-			$forward = encode_idna($forward_prefix.$forward);
+			$domain = $aurl['host'];
+			if (substr_count($domain, '.') <= 2) {
+				$ret = validates_dname($domain);
+			} else {
+				$ret = validates_dname($domain, true);
+			}
+			if (!$ret) {
+				$err_al = tr("Wrong domain part in forward URL!");
+			} else {
+				$domain = encode_idna($aurl['host']);
+				$forward = $aurl['scheme'].'://';
+				if (isset($aurl['user'])) {
+					$forward .= $aurl['user'] . (isset($aurl['pass']) ? ':' . $aurl['pass'] : '') .'@';
+				}
+				$forward .= $domain;
+				if (isset($aurl['port'])) {
+					$forward .= ':'.$aurl['port'];
+				}
+				if (isset($aurl['path'])) {
+					$forward .= $aurl['path'];
+				} else {
+					$forward .= '/';
+				}
+				if (isset($aurl['query'])) {
+					$forward .= '?'.$aurl['query'];
+				}
+				if (isset($aurl['fragment'])) {
+					$forward .= '#'.$aurl['fragment'];
+				}
+			}
 		}
 	} else {
 		// now let's fix the mountpoint

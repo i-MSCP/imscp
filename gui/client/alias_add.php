@@ -276,6 +276,8 @@ function add_domain_alias(&$sql, &$err_al) {
 				}
 				if (isset($aurl['path'])) {
 					$forward .= $aurl['path'];
+				} else {
+					$forward .= '/';
 				}
 				if (isset($aurl['query'])) {
 					$forward .= '?'.$aurl['query'];

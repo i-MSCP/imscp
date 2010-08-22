@@ -1,6 +1,10 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-08-22 Thomas Wacker
+    - GUI:
+        * Fixed #2391: Domain Alias Forward apache template appears broken
+
 2010-08-22 Benedikt Heintel
 	- CONFIGS:
 		* Fixed: Made DNS SOA Entries RCF1537 compatible
