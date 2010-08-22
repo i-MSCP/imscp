@@ -8,6 +8,9 @@ ispCP ω 1.0.7 ChangeLog
 2010-08-22 Benedikt Heintel
 	- CONFIGS:
 		* Fixed: Made DNS SOA Entries RCF1537 compatible
+	- ENGINE:
+		* Fixed #2421: Fix for imap traffic accounting in dovecot 
+			(Thanks to aseques)
 
 2010-08-21 Laurent Declercq
 	- CONFIGS/SETUP:
@@ -255,7 +258,7 @@ ispCP ω 1.0.7 ChangeLog
 		* Merged login functions in include/login-functions.php
 
 2010-07-14 Laurent Declercq
-	- CONFIGS|GUI||SETUP:
+	- CONFIGS / GUI /SETUP:
 		* Added PHP Browser Capabilities support (Only for the panel)
 	- GUI:
 		* Added language export: gzip support
