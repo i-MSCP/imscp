@@ -191,7 +191,7 @@ if (isset($org_logo) && $org_logo) {
 }
 
 //
-// Modified by ispCP Omega - http://isp-control.net
+// @modified by ispCP Omega - http://isp-control.net
 //
 
 echo html_tag ( 'div',
@@ -212,7 +212,7 @@ echo html_tag ( 'div',
             	sprintf(_("SquirrelMail version %s"), $version) . '<br />' . "\n"),
 				NULL, NULL, 'class="login small"'
 			),
-			NULL, NULL, '" class="login'
+			NULL, NULL, 'class="login"'
         ),
 		NULL, NULL, 'id="container"' );
 

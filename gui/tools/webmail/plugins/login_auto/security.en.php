@@ -35,7 +35,9 @@
 <TITLE><?php echo $org_title ?> - Security Notice</TITLE>
 </HEAD>
 <BODY>
-<BR><BR>
+<!-- @modified by ispCP Omega -->
+<div id="container" style="background: none;">
+<!-- @modified by ispCP Omega END -->
 <TABLE BGCOLOR="FFFFFF" BORDER="0" COLS="1" WIDTH="90%" CELLSPACING="0" 
 CELLPADDING="2" ALIGN="CENTER">
   <TR>
@@ -153,5 +155,9 @@ server. Clicking the &quot;Sign Out&quot; link will erase these cookies.
     </TD>
   </TR>
 </TABLE>
+<!-- @modified by ispCP Omega -->
+ <p><a href="../../src/login.php>back</a></p>
+</div>
+<!-- @modified by ispCP Omega END -->
 </BODY>
 </HTML>

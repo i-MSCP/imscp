@@ -11,7 +11,7 @@ html {
 
 small {
 	color: #000000;
-	font-size: 9px;
+	font-size: 9pt;
 }
 
 small font {
@@ -24,13 +24,13 @@ body.left small {
 
 pre {
 	font-family: Verdana;
-	font-size: 9px;
+	font-size: 9pt;
 }
 
 body {
 	font-family: Verdana;
 	background-image: url(../../skins/omega/header_right_bg.png);
-	font-size: 9px;
+	font-size: 0.8em;
 	background-repeat: no-repeat;
 	/* background-attachment: fixed; */
 	text-align: center;
@@ -62,7 +62,7 @@ textarea {
 }
 
 td {
-	font-size: 7pt;
+	font-size: 9pt;
 }
 
 .top_bar_header {
@@ -95,7 +95,6 @@ td {
 
 .targetMailbox {
 	font-size: 1em !important;
-	font-size: 1.4em;
 	vertical-align: middle;
 	background-color: #c0c0c0;
 }
@@ -272,7 +271,7 @@ frame {
 */
 p.button_text {
 	margin: 55px 0 0 10px;
-	font-size: 9px;
+	font-size: 9pt;
 	font-weight: bold;
 	text-decoration: none;
 	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
@@ -519,7 +518,7 @@ p.button_text {
 
 .left_button_text {
 	margin: -5px 0 0;
-	font-size: 9px;
+	font-size: 9pt;
 }
 
 #left_hook {
@@ -566,7 +565,7 @@ p.button_text {
 #folders_top p {
 	height: 30px;
 	margin-top: 30px;
-	font-size: 12px;
+	font-size: 12pt;
 	font-family: Verdana, sans-serif;
 	color: #FFFFFF;
 	font-weight: bold;
@@ -584,7 +583,7 @@ p.button_text {
 }
 
 #todo_top p {
-	font-size: 12px;
+	font-size: 12pt;
 	font-family: Verdana, sans-serif;
 	color: #000;
 	font-weight: bold;
@@ -608,7 +607,7 @@ p.button_text {
 }
 
 #extra_top p {
-	font-size: 12px;
+	font-size: 12pt;
 	font-family: Verdana, sans-serif;
 	color: #FFFFFF;
 	font-weight: bold;
@@ -642,7 +641,7 @@ p.button_text {
 }
 
 #cal_top p {
-	font-size: 12px;
+	font-size: 12pt;
 	font-family: Verdana, sans-serif;
 	color: #FFFFFF;
 	font-weight: bold;
@@ -707,7 +706,6 @@ p.button_text {
 
 .targetMailbox {
 	font-size: 1em !important;
-	font-size: 1.4em;
 	vertical-align: middle;
 }
 
@@ -732,7 +730,7 @@ p.button_text {
 
 .move_button {
 	font-family: Tahoma;
-	font-size: 11px;
+	font-size: 11pt;
 	font-weight: normal;
 	text-decoration: none;
 	Color: #000000;
@@ -747,7 +745,7 @@ p.button_text {
 
 .forward_button {
 	font-family: Tahoma;
-	font-size: 11px;
+	font-size: 11pt;
 	font-weight: normal;
 	text-decoration: none;
 	Color: #000000;
@@ -762,7 +760,7 @@ p.button_text {
 
 .read_button {
 	font-family: Tahoma;
-	font-size: 11px;
+	font-size: 11pt;
 	font-weight: normal;
 	text-decoration: none;
 	Color: #000000;
@@ -777,7 +775,7 @@ p.button_text {
 
 .unread_button {
 	font-family: Tahoma;
-	font-size: 11px;
+	font-size: 11pt;
 	font-weight: normal;
 	text-decoration: none;
 	Color: #000000;
@@ -792,7 +790,7 @@ p.button_text {
 
 .delete_button {
 	font-family: Tahoma;
-	font-size: 11px;
+	font-size: 11pt;
 	font-weight: normal;
 	text-decoration: none;
 	Color: #000000;
@@ -807,7 +805,7 @@ p.button_text {
 
 .unflag_button {
 	font-family: Tahoma;
-	font-size: 11px;
+	font-size: 11pt;
 	font-weight: normal;
 	text-decoration: none;
 	Color: #000000;
@@ -822,7 +820,7 @@ p.button_text {
 
 .flag_button {
 	font-family: Tahoma;
-	font-size: 11px;
+	font-size: 11pt;
 	font-weight: normal;
 	text-decoration: none;
 	Color: #000000;
@@ -837,7 +835,7 @@ p.button_text {
 /*
 .savedraft_button {
 	font-family: Tahoma;
-	font-size: 11px;
+	font-size: 11pt;
 	font-weight: normal;
 	text-decoration: none;
 	border: 0px none;
@@ -851,7 +849,7 @@ p.button_text {
 
 .send_button {
 	font-family: Tahoma;
-	font-size: 11px;
+	font-size: 11pt;
 	font-weight: normal;
 	text-decoration: none;
 	border: 0px none;
@@ -865,7 +863,7 @@ p.button_text {
 
 .encrypt_button {
 	font-family: Tahoma;
-	font-size: 11px;
+	font-size: 11pt;
 	font-weight: normal;
 	text-decoration: none;
 	border: 0px none;
@@ -879,7 +877,7 @@ p.button_text {
 
 .decrypt_button {
 	font-family: Tahoma;
-	font-size: 11px;
+	font-size: 11pt;
 	font-weight: normal;
 	text-decoration: none;
 	border: 0px none;
@@ -893,7 +891,7 @@ p.button_text {
 
 .address_button {
 	font-family: Tahoma;
-	font-size: 11px;
+	font-size: 11pt;
 	font-weight: normal;
 	text-decoration: none;
 	border: 0px none;
@@ -907,7 +905,7 @@ p.button_text {
 
 .signature_button {
 	font-family: Tahoma;
-	font-size: 11px;
+	font-size: 11pt;
 	font-weight: normal;
 	text-decoration: none;
 	border: 0px none;
@@ -921,7 +919,7 @@ p.button_text {
 
 .spellcheck_button {
 	font-family: Tahoma;
-	font-size: 11px;
+	font-size: 11pt;
 	font-weight: normal;
 	text-decoration: none;
 	border: 0px none;
@@ -974,11 +972,11 @@ th a:hover, .calhead a:hover {
 
 .left_button_text {
 	margin: -5px 0 0;
-	font-size: 9px;
+	font-size: 9pt;
 }
 
 .message_body_read_text pre {
-	font-size: 14px !important;
+	font-size: 14pt !important;
 }
 
 /*#refresh {
