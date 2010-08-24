@@ -115,7 +115,7 @@ gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_orders.tpl');
 
 gen_logged_from($tpl);
 
-$coid = $cfg->exists('HOSTING_PLANS_LEVEL') ? $cfg->CUSTOM_ORDERPANEL_ID : '';
+$coid = isset($cfg->CUSTOM_ORDERPANEL_ID) ? CUSTOM_ORDERPANEL_ID : '';
 
 $url = $cfg->BASE_SERVER_VHOST_PREFIX . $cfg->BASE_SERVER_VHOST . '/orderpanel/index.php?';
 $url .= 'coid='.$coid;

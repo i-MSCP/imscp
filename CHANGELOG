@@ -1,6 +1,10 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-08-24 Laurent Declercq
+	- GUI:
+		* Fixed: Error: Configuration variable `CUSTOM_ORDERPANEL_ID` is missing!
+
 2010-08-23 Benedikt Heintel
 	- TOOLS:
 		* Fixed #2356: some theme issues in webmail (SquirrelMail)
