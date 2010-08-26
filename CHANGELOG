@@ -1,6 +1,13 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-08-26 Laurent Declercq
+	- CONFIGS:
+		* Added logrotate entry for ispcp-apache-logger logs
+		* Logrotate:
+			- Fixed: `[: 4: 1: unexpected operator`
+			- prerotate/postrotate should be dash compatibles
+
 2010-08-24 Laurent Declercq
 	- GUI:
 		* Fixed: Error: Configuration variable `CUSTOM_ORDERPANEL_ID` is missing!

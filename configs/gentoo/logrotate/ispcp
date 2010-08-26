@@ -39,7 +39,7 @@
   create 640 root adm
   sharedscripts
   prerotate
-    /var/www/ispcp/engine/traffic/ispcp-vrl-traff > /var/log/ispcp/ispcp-vrl-traff.log
+    /var/www/ispcp/engine/traffic/ispcp-vrl-traff >/var/log/ispcp/ispcp-vrl-traff.log 2>&1
   endscript
   postrotate
     if [ -f "`. /etc/apache2/envvars ; echo ${APACHE_PID_FILE:-/var/run/apache2.pid}`" ]; then
@@ -64,23 +64,36 @@
 #
 /var/log/apache2/*.log {
   weekly
-  missingok
   rotate 52
+  missingok
   compress
   delaycompress
   notifempty
   create 640 root adm
   sharedscripts
   prerotate
-    if [ `cat /etc/ispcp/ispcp.conf | grep -c "AWSTATS_ACTIVE = yes"` == 1 ]; then
-          perl /var/www/ispcp/engine/awstats/awstats_updateall.pl now -awstatsprog=/usr/lib/cgi-bin/awstats.pl &> /dev/null
+	if [ `cat /etc/ispcp/ispcp.conf | grep -c 'AWSTATS_ACTIVE *= *yes'` = 1 ]; then
+      perl /var/www/ispcp/engine/awstats/awstats_updateall.pl now -awstatsprog=/usr/lib/cgi-bin/awstats.pl >/dev/null 2>&1
     fi
   endscript
   postrotate
     if [ -f "`. /etc/apache2/envvars ; echo ${APACHE_PID_FILE:-/var/run/apache2.pid}`" ]; then
-           /etc/init.d/apache2 reload > /dev/null
+		/etc/init.d/apache2 reload > /dev/null
     fi
   endscript
+}
+
+# Rotation for ispcp-apache-logger logfiles
+#
+"/var/log/ispcp/ispcp-apache-logger.stderr" /var/log/ispcp/ispcp-apache-logger.stdout {
+	weekly
+	rotate 2
+	size 10m
+	missingok
+	compress
+	delaycompress
+	notifempty
+	create 640 root adm
 }
 
 # Transfer rotation for ProFTPd
@@ -109,7 +122,7 @@
   compress
   delaycompress
   prerotate
-    /var/www/ispcp/engine/traffic/ispcp-vrl-traff > /var/log/ispcp/ispcp-vrl-traff.log
+    /var/www/ispcp/engine/traffic/ispcp-vrl-traff >/var/log/ispcp/ispcp-vrl-traff.log 2>&1
   endscript
   postrotate
     if [ -e /var/run/syslogd.pid ]; then
