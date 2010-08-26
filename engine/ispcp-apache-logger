@@ -1,10 +1,10 @@
 #!/usr/bin/perl
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
-# Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
 # Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
 #
 # Version: $Id$
+# Author: Laurent Declercq <laurent.declercq@ispcp.net>
 #
 # The contents of this file are subject to the Mozilla Public License
 # Version 1.1 (the "License"); you may not use this file except in
@@ -16,12 +16,10 @@
 # License for the specific language governing rights and limitations
 # under the License.
 #
-# The Original Code is "VHCS - Virtual Hosting Control System".
+# The Original Code is "ispCP ω (OMEGA) a Virtual Hosting Control Panel".
 #
-# The Initial Developer of the Original Code is moleSoftware GmbH.
-# Portions created by Initial Developer are Copyright (C) 2001-2006
-# by moleSoftware GmbH. All Rights Reserved.
-# Portions created by the ispCP Team are Copyright (C) 2006-2010 by
+# The Initial Developer of the Original Code is ispCP Team.
+# Portions created by Initial Developer are Copyright (C) 2006-2010 by
 # isp Control Panel. All Rights Reserved.
 #
 # The ispCP ω Home Page is:
@@ -29,205 +27,308 @@
 #    http://isp-control.net
 #
 
-use strict;
-use warnings;
-use sigtrap qw(handler exitall HUP USR1 TERM INT PIPE);
-use Getopt::Std;
+################################################################################
+## Script description:                                                        ##
+##  ispcp-apache-logger - ispCP apache logfiles handling                      ##
+##                                                                            ##
+## I. CustomLog handler:                                                      ##
+##                                                                            ##
+## When called without arguments, this script receives log lines through a    ##
+## pipe and outputs their information into three separate files, depending on ##
+## the origin virtual host:                                                   ##
+##                                                                            ##
+##  - /var/log/apache2/domain.tld-combined.log                                ##
+##  - /var/log/apache2/domain.tld-traf log                                    ##
+##  - /var/log/apache2/users/domain.tld-access.log                            ##
+##                                                                            ##
+## The program assumes that the first field of each log line is the virtual   ##
+## host identity (See the %v logging directive from Apache mod_log_config).   ##
+##                                                                            ##
+## The log format is currently recognized as follows:                         ##
+##                                                                            ##
+##  "%v %... %I %O"                                                           ##
+##                                                                            ##
+## Where %... represents any other logging directives of your choice.         ##
+## Additionally, %I and %O correspond to apache's mod_logio directives for    ##
+## Input and Output bytes, used to generate the content of the traffic log    ##
+## files.                                                                     ##
+##                                                                            ##
+## II. ErrorLog handler:                                                      ##
+##                                                                            ##
+## When called with the 'e' argument, this script takes error log lines       ##
+## pipe and outputs their information into a separate file depending on the   ##
+## originating virtual host :                                                 ##
+##                                                                            ##
+##  - /var/log/apache2/users/domain.tld-error.log                             ##
+##                                                                            ##
+## Due to the fixed log format of error log lines, the script uses a          ##
+## workaround to retrieve the virtual host identity, by looking for any       ##
+## virtual host information inside the line itself. If the script is unable   ##
+## to identify the virtual host with this method, errors are written to       ##
+## the fallback log file, named "default-error.log".                          ##
+##                                                                            ##
+## See http://httpd.apache.org/docs/current/logs.html#piped for more info.    ##
+################################################################################
 
-use FindBin;
-use lib "$FindBin::Bin/";
-require 'ispcp_common_code.pl';
+# Only for dev
+#use strict;
+#no strict 'refs';
+#use warnings;
 
-our %OPTS;
-getopts( 'e', \%OPTS );
+use IO::Handle;
+use POSIX qw/strftime/;
+use FileCache maxopen => 55;
+use Getopt::Long;
+use sigtrap 'handler' => \&signalHandler, 'normal-signals';
 
-my $MAXFILES = "33";
-if ( $main::cfg{'APACHE_MAX_OPEN_LOG'} ) {
-	$MAXFILES = $main::cfg{'APACHE_MAX_OPEN_LOG'};
-}
+my %opt = (
+	loggingType => 'access', # Default logging type
+	logDir => '/var/log/ispcp'  # Script event log directory
+);
 
-my $MAXLOGFILESIZE = 10485760; # 10Mb
-if ( $main::cfg{'APACHE_MAX_LOG_FILE_SIZE'} ) {
-	$MAXLOGFILESIZE = $main::cfg{'APACHE_MAX_LOG_FILE_SIZE'};
-}
+Getopt::Long::Configure(qw(no_ignore_case));
+GetOptions(\%opt, 'loggingType|t=s', 'logDir|l=s');
 
-my %timestamps = ();
-my %combined_logs = ();
-my %traff_logs = ();
-my %access_logs = ();
-my %error_logs = ();
+%main::cfg = ();
 
-sub checkFileExists;
-sub DefaultLogs();
-sub ErrorLogs();
-sub checkFileSize;
+################################################################################
+#                                 Subroutines                                  #
+################################################################################
 
-## Creating log files if possible ##
 
-if ( !-d $main::cfg{'LOG_DIR'} ) {
-	print STDERR "[ispcp-apache-logger] target directory ".$main::cfg{'LOG_DIR'}." does not exist - logging on standard streams.\n";
-} else {
-	checkFileSize("$main::cfg{'LOG_DIR'}/ispcp-apache-logger.stderr");
-	checkFileSize("$main::cfg{'LOG_DIR'}/ispcp-apache-logger.stdout");
+################################################################################
+#
+# Load configuration from ispCP configuration file
+#
+# @return int 0 on success, negative int otherwise
+#
+sub getConf {
 
-	my $res = open (STDERR, ">>", "$main::cfg{'LOG_DIR'}/ispcp-apache-logger.stderr");
-	if (!defined($res)) {
-		print STDERR "[ispcp-apache-logger] Can't redirect STDERR\n";
+	my $file;
+
+	if(-e '/usr/local/etc/ispcp/ispcp.conf'){
+		$file = '/usr/local/etc/ispcp/ispcp.conf';
+	} elsif(-e '/etc/ispcp/ispcp.conf') {
+		$file = '/etc/ispcp/ispcp.conf';
 	} else {
-		STDERR->autoflush(1);
+		return -1;
 	}
-	$res = open (STDOUT, ">>", "$main::cfg{'LOG_DIR'}/ispcp-apache-logger.stdout");
-	if (!defined($res)) {
-		print STDERR "[ispcp-apache-logger] Can't redirect STDOUT\n";
-	} else {
-		STDOUT->autoflush(1);
-	}
+
+	return -1 if ! open F, '<', $file;
+
+	%main::cfg = join('', <F>) =~ /^\s*(\w+)\s*=\s*(.*)$/gm;
+	close F;
+
+	%main::cfg ? 0 : 1;
 }
 
-if ( !-d $main::cfg{'APACHE_LOG_DIR'}) {
-	print STDERR "[ispcp-apache-logger] target directory ".$main::cfg{'APACHE_LOG_DIR'}." does not exist!!!\n";
-} elsif ( !-d $main::cfg{'APACHE_USERS_LOG_DIR'}) {
-	print STDERR "[ispcp-apache-logger] target directory ".$main::cfg{'APACHE_USERS_LOG_DIR'}." does not exist!!!.\n";
-} elsif ( $OPTS{'e'} ) {
-	ErrorLogs();
-} else {
-	DefaultLogs();
-}
+################################################################################
+# Create/update all custom log files
+#
+# This subroutine is the handler that is responsible to grab and parse all error
+# log lines from apache and create the ispCP errors log files from them.
+#
+# @return void
+#
+sub ErrorLogHandler {
 
-while ( my $log_line = <STDIN> ){}
+	eventLog(
+		'notice', 'ispCP Apache Logger started ErrorLog Handler -- ' .
+			'resuming normal operations'
+	);
 
-sub ErrorLogs(){
-	if (defined($main::engine_debug)){
-		print STDOUT "[ispcp-apache-logger] Starting error log proccessing...\n";
-	}
-	while ( my $log_line = <STDIN> ) {
+	while (<STDIN>) {
 		my $vhost = 'default';
 
-		if($log_line =~ m/($main::cfg{'APACHE_WWW_DIR'})/){
-			($vhost) = $log_line =~ m/$main::cfg{'APACHE_WWW_DIR'}\/([a-zA-Z0-9_\-\.]*)/;
+		# Trying to retrieve the virtual host identity
+		$vhost = $1 if /
+			(?:$main::cfg{'APACHE_WWW_DIR'}|$main::cfg{'PHP_STARTER_DIR'})
+			\/([\w\d.-]+)
+		/x;
+
+		# Error from ispCP Frontend ?
+		$vhost = $main::cfg{'BASE_SERVER_VHOST'} if ($vhost eq 'master');
+
+		# Write the error log line in the default|domain.tld-error.log
+		my $fh;
+
+		if($vhost eq 'default') {
+			$fh = cacheout '>>', "$main::cfg{'APACHE_LOG_DIR'}/$vhost-error.log";
 		} else {
-			if($log_line =~ m/($main::cfg{'PHP_STARTER_DIR'})/){
-				($vhost) = $log_line =~ m/$main::cfg{'PHP_STARTER_DIR'}\/([a-zA-Z0-9_\-\.]*)/;
-			}
+			$fh = cacheout '>>',
+				"$main::cfg{'APACHE_USERS_LOG_DIR'}/$vhost-error.log";
 		}
 
-		if ( $vhost eq 'master' ){
-			$vhost='default';
-		}
+		$fh->autoflush(1);
+		print $fh $_;
+	}
 
-		my $force_open=0;
-		if ( !$error_logs{$vhost} ){
-			$force_open=1;
-			if ( (keys(%timestamps)+1) > $MAXFILES ) {
-				my ( $key, $value ) = sort { $timestamps{$a} <=> $timestamps{$b} } ( keys(%timestamps) );
-				close $error_logs{$key};
-				delete $error_logs{$key};
-				delete $timestamps{$key};
-			}
-		}
+	# Occurs when apache breaks the communication for the reason exposed here:
+	# https://issues.apache.org/bugzilla/show_bug.cgi?id=49800
+	signalHandler('eol');
+}
 
-		checkFileExists($vhost, \%error_logs, $main::cfg{'APACHE_USERS_LOG_DIR'},"-error.log",$force_open);
-		print { $error_logs{$vhost} } $log_line;
+################################################################################
+# Create/update all custom log files
+#
+# This subroutine is the handler that is responsible to grab and parse all
+# custom log lines from apache and create the ispCP custom logfiles from them.
+#
+# @return void
+#
+sub CustomLoghandler {
+
+	eventLog(
+		'notice', 'ispCP Apache Logger started CustomLog Handler -- ' .
+			'resuming normal operations'
+	);
+
+	while (<STDIN>) {
+		my ($vhost, $inBytes, $outBytes) = /^(\S+|\s) .* (\d+) (\d+)$/;
+
+		# Normalize the virtual host name to all lowercase. If it's blank, the
+		# request was handled by the default server, so supply a default name.
+		# This shouldn't happen, but caution rocks.
+		$vhost = lc ($vhost) || 'default';
+
+		# If the vhost contains a '/' or '\', it is illegal so just use the
+		# default log to avoid any security issues due if it is interpreted as a
+		# directory separator.
+		$vhost = 'default' if $vhost =~ m@[/\\]@;
+
+		# Back the log line to the NCSA extended/combined log format by stripped
+		# the %v %I and %O variables.
+		# Note: That allows to not define a custom log format in Awstats
+		# configuration template.
+		s/^\S*\s+(.*)\s\d+\s\d+$/$1/;
+
+		# Write the log line in the domain.tld-combined.log file
+		my $fh = cacheout '>>',
+			"$main::cfg{'APACHE_LOG_DIR'}/$vhost-combined.log";
+		$fh->autoflush(1);
+		print $fh $_;
+
+		# Write the traffic value in the default|domain.tld-traf.log file
+		$fh = cacheout '>>', "$main::cfg{'APACHE_LOG_DIR'}/$vhost-traf.log";
+		$fh->autoflush(1);
+		print $fh $inBytes + $outBytes, "\n";
+
+		# Write the log line in the default|domain.tld-access.log file
+		$fh = cacheout '>>',
+			"$main::cfg{'APACHE_USERS_LOG_DIR'}/$vhost-access.log";
+		$fh->autoflush(1);
+		print $fh $_;
 	}
 }
 
-sub DefaultLogs(){
-	if (defined($main::engine_debug)){
-		print STDOUT "[ispcp-apache-logger] Starting default log proccessing...\n";
-	}
+################################################################################
+#
+# Convenience subroutines to log events from this script
+#
+sub eventLog {
 
-	while (my $log_line = <STDIN>) {
-		my ($vhost, $size, $in, $out) = 
-			$log_line =~ m/^(\S+) (\d+|-) (\d+|-) (\d+|-)$/s;
+	($priority, $message) = @_;
 
-		if(!defined($vhost) || !defined($size)){
-			print STDERR "[ispcp-apache-logger] Trouble line:\n\t$log_line\n";
-		}
+	my $date = strftime "%a %b %e %H:%M:%S %Y", localtime;
 
-		$vhost = lc($vhost) || "default";
-		if ( $vhost =~ m#[/\\]# ) { $vhost = "default" }
-		$vhost =~ /(.*)/o;
-		$vhost = $1;
-		$vhost = 'default' unless $vhost;
+	if(-d $opt{'logDir'}) {
+		if($priority ne 'debug' && $priority ne 'info' && $priority ne 'notice') {
+			*STDERR = cacheout '>>',
+				"$opt{'logDir'}/ispcp-apache-logger.stderr";
+			STDERR->autoflush(1);
 
-		my $force_open = 0;
-		if (!$combined_logs{$vhost} || !$traff_logs{$vhost} || !$access_logs{$vhost}){
-			$force_open = 1;
-			if ((keys(%timestamps)+1) > $MAXFILES) {
-				my ($key, $value) = sort { $timestamps{$a} <=> $timestamps{$b} } (keys(%timestamps));
-				if(-e "$main::cfg{'APACHE_LOG_DIR'}/$key-combined.log" && defined($combined_logs{$key})){
-					close $combined_logs{$key};
-				}
-				if(-e "$main::cfg{'APACHE_LOG_DIR'}/$key-traf.log" && defined($traff_logs{$key})){
-					close $traff_logs{$key};
-				}
-				if(-e "$main::cfg{'APACHE_USERS_LOG_DIR'}/$key-access.log" && defined($access_logs{$key})){
-					close $access_logs{$key};
-				}
-				delete $combined_logs{$key};
-				delete $traff_logs{$key};
-				delete $access_logs{$key};
-				delete $timestamps{$key};
-			}
-		}
-
-		checkFileExists($vhost, \%combined_logs, $main::cfg{'APACHE_LOG_DIR'},"-combined.log",$force_open);
-		checkFileExists($vhost, \%traff_logs, $main::cfg{'APACHE_LOG_DIR'},"-traf.log",$force_open);
-		checkFileExists($vhost, \%access_logs, $main::cfg{'APACHE_USERS_LOG_DIR'},"-access.log",$force_open);
-
-		print { $combined_logs{$vhost} } $log_line;
-		print { $access_logs{$vhost} } $log_line;
-		if ($size ne '-' && $size != 0){
-			print { $traff_logs{$vhost} } "$size\n";
-		}
-	}
-}
-
-exit;
-
-sub checkFileSize(){
-	my ($file)=@_;
-	if( -e $file && ((my $filesize = -s $file) > $MAXLOGFILESIZE)) {
-		unlink($file);
-	}
-}
-
-sub checkFileExists(){
-	my ($local_vhost, $hash, $path, $postpend,$force)=@_;
-	if (!(-e "$path/$local_vhost$postpend") || $force eq '1'){
-		my $res = open ($hash->{$local_vhost}, ">>", "$path/$local_vhost$postpend");
-		if (!defined($res)) {
-			print STDERR "[ispcp-apache-logger] Can't open $path/$local_vhost$postpend\n";
+			print STDERR "[$date] [$priority] $message\n";
+		} elsif($priority eq 'debug' && !$main::cfg{'DEBUG'}) {
+			return 0;
 		} else {
-			$hash->{$local_vhost}->autoflush(1);
-			$timestamps{$local_vhost}=time();
+			*STDOUT = cacheout '>>',
+				"$opt{'logDir'}/ispcp-apache-logger.stdout";
+			STDOUT->autoflush(1);
+
+			print STDOUT "[$date] [$priority] $message\n";
 		}
+	} else { # Logging on STDERR
+		STDERR->autoflush(1);
+
+		print STDERR "[$date] [$priority] $message\n";
 	}
+
+	0;
 }
 
-sub exitall {
-	if ( $OPTS{'e'} ) {
-		foreach my $key ( keys %error_logs ) {
-			close $key;
-		}
-		if (defined($main::engine_debug)){
-			print STDOUT "[ispcp-apache-logger] Ending error log proccessing...\n";
-		}
+################################################################################
+#
+# This subroutine is the handler that is responsible to handle some signals that
+# can be received from Apache. This handler ensure that all filehandles are
+# correctly closed before shutting down.
+#
+# This method is also called by the errorLog handler in condition exposed here:
+# https://issues.apache.org/bugzilla/show_bug.cgi?id=49800
+#
+sub signalHandler() {
+
+	my $signal =  shift;
+	my $loggingType = ($opt{'loggingType'} eq 'access') ? 'Access' : 'Error';
+
+	eventLog('debug', "Ending $loggingType log processing...");
+
+	if($signal eq 'eol') {
+		eventLog('notice', "No more lines received, shutting down (pid $$)");
 	} else {
-		foreach my $key ( keys %combined_logs ) {
-			close $key;
-		}
-		%combined_logs = ();
-		foreach my $key ( keys %traff_logs ) {
-			close $key;
-		}
-		%traff_logs = ();
-		foreach my $key ( keys %access_logs ) {
-			close $key;
-		}
-		%access_logs = ();
-		if (defined($main::engine_debug)){
-			print STDOUT "[ispcp-apache-logger] Ending default log proccessing...\n";
-		}
+		eventLog('notice', "Caught SIG$signal, shutting down (pid $$)");
 	}
+
+	# Close all filehandles
+	cacheout_close();
+
+	exit;
 }
+
+################################################################################
+#                              Main program                                    #
+################################################################################
+
+eventLog('notice', "Starting ispCP Apache logger (pid $$)");
+
+# Get ispCP configuration file
+if(getConf() != 0) {
+	eventLog(
+		'err',
+		"Unable to load ispCP configuration from the ispcp.conf file!"
+	);
+
+} elsif (!-d $main::cfg{'APACHE_LOG_DIR'}) {
+	eventLog(
+		'err',
+		"Apache $main::cfg{'APACHE_LOG_DIR'} directory does not exist!"
+	);
+
+} elsif (!-d $main::cfg{'APACHE_USERS_LOG_DIR'}) {
+	eventLog(
+		'err',
+		"Apache $main::cfg{'APACHE_USERS_LOG_DIR'} directory does not exist!"
+	);
+
+} elsif ($opt{'loggingType'} eq 'access') {
+	# Stating Apache access log processing
+	CustomLoghandler();
+} else {
+	# Stating Apache error log processing
+	ErrorLogHandler();
+}
+
+# This is the rescue part of this script that is run when an error occurs.
+# This allows to not kill the current process and prevents Apache to trying to
+# re-spawn the process again and again. Instead, the script will acts as
+# /dev/null.  It's really better to act like this to avoid too much processor
+# resources consumption. But the side effect of this is that the administrator
+# will not be able to see the problem unless if he reads the log file.
+
+eventLog(
+	'notice', "Acts as /dev/null to avoid too many re-spawn attempts by " .
+		"Apache (pid $$)"
+);
+
+while(<STDIN>) {}
+
+__END__
