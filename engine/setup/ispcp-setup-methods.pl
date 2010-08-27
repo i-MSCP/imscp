@@ -28,7 +28,7 @@
 
 use strict;
 use warnings;
-use version;
+use version 0.74;
 use DateTime;
 use DateTime::TimeZone;
 
@@ -1236,13 +1236,12 @@ sub setup_httpd_main_vhost {
 
 	# Building, storage and installation of new file - Begin
 
-	# Using alternative syntax for piped logs scritps when its possible
-	# The alternative syntax allow to not involve the Shell (comes with version
-	# equal or more than Apache 2.2.12)
+	# Using alternative syntax for piped logs scritps when possible
+	# The alternative syntax does not involve the Shell (from Apache 2.2.12)
 	my $pipeSyntax = '|';
 
 	if(`$main::cfg{'CMD_HTTPD'} -v` =~ m!Apache/([\d.]+)! &&
-		version->parse($1) >= version->parse('2.2.12')) {
+		version->new($1) >= version->new('2.2.12')) {
 		$pipeSyntax .= '|';
 	}
 
