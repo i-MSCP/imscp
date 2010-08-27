@@ -3,9 +3,11 @@ ispCP ω 1.0.7 ChangeLog
 
 2010-08-27 Laurent Declercq
 	- CONFIGS:
-		- Usage of alternative syntax to call Apache Piped Logs scripts to avoid
+		* Usage of alternative syntax to call Apache Piped Logs scripts to avoid
 		to involve the shell
-		- Removed useless declarations in httpd.conf (living as ispcp.conf)
+		* Removed useless declarations in httpd.conf (living as ispcp.conf)
+	- ENGINE:
+		* Fixed #2436: Fix for some detected bashisms
 
 2010-08-26 Laurent Declercq
 	- CONFIGS:

@@ -29,7 +29,8 @@
 #    http://isp-control.net
 #
 
-. $(dirname "$0")/ispcp-permission-functions.sh
+SELFDIR=$(dirname "$0")
+. $SELFDIR/ispcp-permission-functions.sh
 
 echo -n "	Setting Engine Permissions: ";
 if [ $DEBUG -eq 1 ]; then

@@ -29,8 +29,9 @@
 #    http://isp-control.net
 #
 
-. $(dirname "$0")/ispcp-permission-functions.sh
 
+SELFDIR=$(dirname "$0")
+. $SELFDIR/ispcp-permission-functions.sh
 # for spacing
 echo -n "	Setting GUI Permissions: ";
 
