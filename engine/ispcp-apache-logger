@@ -33,9 +33,10 @@
 ##                                                                            ##
 ## I. CustomLog handler:                                                      ##
 ##                                                                            ##
-## When called without arguments, this script receives log lines through a    ##
-## pipe and outputs their information into three separate files, depending on ##
-## the origin virtual host:                                                   ##
+## When called without the loggingType arguments or with logginType argument  ##
+## and the value of it set to 'access', this script receives log lines        ##
+## through a pipe and outputs their information into three separate files,    ##
+## depending on the origin virtual host:                                      ##
 ##                                                                            ##
 ##  - /var/log/apache2/domain.tld-combined.log                                ##
 ##  - /var/log/apache2/domain.tld-traf log                                    ##
@@ -55,9 +56,9 @@
 ##                                                                            ##
 ## II. ErrorLog handler:                                                      ##
 ##                                                                            ##
-## When called with the 'e' argument, this script takes error log lines       ##
-## pipe and outputs their information into a separate file depending on the   ##
-## originating virtual host :                                                 ##
+## When called with the loggingType argument and the value is set to 'error', ##
+## this script takes error log lines pipe and outputs their information into  ##
+## a separate file depending on the originating virtual host :                ##
 ##                                                                            ##
 ##  - /var/log/apache2/users/domain.tld-error.log                             ##
 ##                                                                            ##
@@ -83,7 +84,7 @@ use sigtrap 'handler' => \&signalHandler, 'normal-signals';
 
 my %opt = (
 	loggingType => 'access', # Default logging type
-	logDir => '/var/log/ispcp'  # Script event log directory
+	logDir => '/var/log/ispcp' # Default script event log directory
 );
 
 Getopt::Long::Configure(qw(no_ignore_case));
@@ -225,6 +226,8 @@ sub CustomLoghandler {
 #
 # Convenience subroutines to log events from this script
 #
+# @return void
+#
 sub eventLog {
 
 	($priority, $message) = @_;
@@ -252,8 +255,6 @@ sub eventLog {
 
 		print STDERR "[$date] [$priority] $message\n";
 	}
-
-	0;
 }
 
 ################################################################################
@@ -320,7 +321,7 @@ if(getConf() != 0) {
 # This is the rescue part of this script that is run when an error occurs.
 # This allows to not kill the current process and prevents Apache to trying to
 # re-spawn the process again and again. Instead, the script will acts as
-# /dev/null.  It's really better to act like this to avoid too much processor
+# /dev/null. It's really better to act like this to avoid too much processor
 # resources consumption. But the side effect of this is that the administrator
 # will not be able to see the problem unless if he reads the log file.
 
