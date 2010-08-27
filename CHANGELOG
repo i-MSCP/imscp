@@ -2,6 +2,12 @@ ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2010-08-26 Laurent Declercq
+	- ENGINE:
+		* Fixed (again) #2187: apache logger should be able to use the
+		improvements of logio in http accounting
+		* Rewrited ispcp-apache-logger
+
+2010-08-26 Laurent Declercq
 	- CONFIGS:
 		* Added logrotate entry for ispcp-apache-logger logs
 		* Logrotate:
