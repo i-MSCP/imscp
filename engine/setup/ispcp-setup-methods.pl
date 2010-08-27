@@ -1241,7 +1241,7 @@ sub setup_httpd_main_vhost {
 	# equal or more than Apache 2.2.12)
 	my $pipeSyntax = '|';
 
-	if(`$main::cfg{'CMD_HTTPD'} -v` =~ m/Apache\/([\d.]+)/ &&
+	if(`$main::cfg{'CMD_HTTPD'} -v` =~ m!Apache/([\d.]+)! &&
 		version->parse($1) >= version->parse('2.2.12')) {
 		$pipeSyntaxe .= '|';
 	}
