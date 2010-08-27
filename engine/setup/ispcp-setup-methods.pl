@@ -1243,7 +1243,7 @@ sub setup_httpd_main_vhost {
 
 	if(`$main::cfg{'CMD_HTTPD'} -v` =~ m!Apache/([\d.]+)! &&
 		version->parse($1) >= version->parse('2.2.12')) {
-		$pipeSyntaxe .= '|';
+		$pipeSyntax .= '|';
 	}
 
 	# Loading the template from /etc/ispcp/apache/
