@@ -1,11 +1,11 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-2010-08-26 Laurent Declercq
-	- ENGINE:
-		* Fixed (again) #2187: apache logger should be able to use the
-		improvements of logio in http accounting
-		* Rewrited ispcp-apache-logger
+2010-08-27 Laurent Declercq
+	- CONFIGS:
+		- Usage of alternative syntax to call Apache Piped Logs scripts to avoid
+		to involve the shell
+		- Removed useless declarations in httpd.conf (living as ispcp.conf)
 
 2010-08-26 Laurent Declercq
 	- CONFIGS:
@@ -13,6 +13,10 @@ ispCP ω 1.0.7 ChangeLog
 		* Logrotate:
 			- Fixed: `[: 4: 1: unexpected operator`
 			- prerotate/postrotate should be dash compatibles
+	- ENGINE:
+		* Fixed (again) #2187: apache logger should be able to use the
+		improvements of logio in http accounting
+		* Rewrited ispcp-apache-logger
 
 2010-08-24 Laurent Declercq
 	- GUI:
