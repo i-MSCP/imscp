@@ -6,6 +6,7 @@ ispCP ω 1.0.7 ChangeLog
 		* Usage of alternative syntax to call Apache Piped Logs scripts to avoid
 		to involve the shell
 		* Removed useless declarations in httpd.conf (living as ispcp.conf)
+		* Fixed #2437: Unable to restart Apache after updating to r3232
 	- ENGINE:
 		* Fixed #2436: Fix for some detected bashisms
 

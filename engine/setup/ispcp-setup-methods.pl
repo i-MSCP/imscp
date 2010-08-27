@@ -28,6 +28,7 @@
 
 use strict;
 use warnings;
+use version;
 use DateTime;
 use DateTime::TimeZone;
 
@@ -1235,6 +1236,16 @@ sub setup_httpd_main_vhost {
 
 	# Building, storage and installation of new file - Begin
 
+	# Using alternative syntax for piped logs scritps when its possible
+	# The alternative syntax allow to not involve the Shell (comes with version
+	# equal or more than Apache 2.2.12)
+	my $pipeSyntax = '|';
+
+	if(`$main::cfg{'CMD_HTTPD'} -v` =~ m/Apache\/([\d.]+)/ &&
+		version->parse($1) >= version->parse('2.2.12')) {
+		$pipeSyntaxe .= '|';
+	}
+
 	# Loading the template from /etc/ispcp/apache/
 	($rs, $cfg_tpl) = get_file("$cfg_dir/httpd.conf");
 	return $rs if ($rs != 0);
@@ -1242,8 +1253,9 @@ sub setup_httpd_main_vhost {
 	# Building the new file
 	($rs, $$cfg) = prep_tpl(
 		{
+			'{APACHE_WWW_DIR}' => $main::cfg{'APACHE_WWW_DIR'},
 			'{ROOT_DIR}' => $main::cfg{'ROOT_DIR'},
-			'{APACHE_WWW_DIR}' => $main::cfg{'APACHE_WWW_DIR'}
+			'{PIPE}' => $pipeSyntax
 		},
 		$cfg_tpl
 	);
