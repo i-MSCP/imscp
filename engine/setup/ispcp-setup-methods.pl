@@ -1236,7 +1236,7 @@ sub setup_httpd_main_vhost {
 
 	# Building, storage and installation of new file - Begin
 
-	# Using alternative syntax for piped logs script when possible
+	# Using alternative syntax for piped logs scripts when possible
 	# The alternative syntax does not involve the Shell (from Apache 2.2.12)
 	my $pipeSyntax = '|';
 
