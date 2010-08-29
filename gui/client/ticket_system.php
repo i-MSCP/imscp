@@ -140,9 +140,9 @@ SQL_QUERY;
 
 			$tpl->assign(array('URGENCY' => get_ticket_urgency($ticket_urgency)));
 
-			if ($ticket_status == 1 || $ticket_status == 2) {
+			if ($ticket_status == 1) {
 				$tpl->assign(array('NEW' => tr("[New]")));
-			} else if ($ticket_status == 4 || $ticket_status == 5) {
+			} else if ($ticket_status == 2) {
 				$tpl->assign(array('NEW' => tr("[Re]")));
 			} else {
 				$tpl->assign(array('NEW' => " "));

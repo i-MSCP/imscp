@@ -910,9 +910,8 @@ function user_trans_mail_type($mail_type) {
  * @param string $dest destination for header location (path + filename + params)
  */
 function user_goto($dest) {
-
 	header('Location: ' . $dest);
-	die();
+	die('FIXME: ' . __FILE__ . ':' . __LINE__);
 }
 
 function count_sql_user_by_name(&$sql, $sqlu_name) {

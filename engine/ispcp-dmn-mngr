@@ -1605,7 +1605,7 @@ sub dmn_add_httpd_file_data {
 	$rs = make_dir("$www_dir/$dmn_name/phptmp", $sys_user, $httpd_gid, 0770);
 	return $rs if ($rs != 0);
 
-	$rs = make_dir("$www_dir/$dmn_name/backups", $sys_user, $httpd_gid, 0770);
+	$rs = make_dir("$www_dir/$dmn_name/backups", 0, 0, 0555);
 	return $rs if ($rs != 0);
 
 	$rs = make_dir("$www_dir/$dmn_name/errors", $sys_user, $sys_group, 0775);
@@ -1914,7 +1914,7 @@ sub dmn_change_httpd_file_data {
 	}
 
 	if(! -d "$www_dir/$dmn_name/backups") {
-		$rs = make_dir("$www_dir/$dmn_name/backups", $sys_user, $httpd_gid, 0770);
+		$rs = make_dir("$www_dir/$dmn_name/backups", 0, 0, 0555);
 		return $rs if ($rs != 0);
 	}
 

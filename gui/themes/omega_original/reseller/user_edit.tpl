@@ -117,6 +117,18 @@
                         </td>
                       </tr>
                       <tr>
+                        <td width="35">&nbsp;</td>
+                        <td width="200" class="content2">{TR_STREET1}</td>
+                        <td class="content"><input type="text" name="userstreet1" value="{VL_STREET1}" style="width:210px" class="textinput" />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td width="35">&nbsp;</td>
+                        <td width="200" class="content2">{TR_STREET2}</td>
+                        <td class="content"><input type="text" name="userstreet2" value="{VL_STREET2}" style="width:210px" class="textinput" />
+                        </td>
+                      </tr>
+                      <tr>
                         <td width="25">&nbsp;</td>
                         <td width="200" class="content2">{TR_POST_CODE}</td>
                         <td class="content"><input type="text" name="userzip" value="{VL_USR_POSTCODE}" style="width:80px" class="textinput" />
@@ -138,18 +150,6 @@
                         <td width="35">&nbsp;</td>
                         <td width="200" class="content2">{TR_COUNTRY}</td>
                         <td class="content"><input type="text" name="usercountry" value="{VL_COUNTRY}" style="width:210px" class="textinput" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td width="35">&nbsp;</td>
-                        <td width="200" class="content2">{TR_STREET1}</td>
-                        <td class="content"><input type="text" name="userstreet1" value="{VL_STREET1}" style="width:210px" class="textinput" />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td width="35">&nbsp;</td>
-                        <td width="200" class="content2">{TR_STREET2}</td>
-                        <td class="content"><input type="text" name="userstreet2" value="{VL_STREET2}" style="width:210px" class="textinput" />
                         </td>
                       </tr>
                       <tr>

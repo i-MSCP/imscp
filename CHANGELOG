@@ -4,6 +4,12 @@ ispCP ω 1.0.7 ChangeLog
 2010-08-29 Benedikt Heintel
 	- ENGINE:
 		* Security Fix #2440: Backup script will restore forged backup
+			(Thanks to Daniel)
+	- GUI:
+		* Changed: Orderpanel 'State' is not longer a required field
+		* Changed: Oder of address fields changed
+		* Fixed #2174: Several issues for the Ticket Support System
+		* Refactored: Ticket System of (part I/client)
 
 2010-08-27 Laurent Declercq
 	- CONFIGS:

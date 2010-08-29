@@ -298,7 +298,7 @@ function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id, &$screenwi
 		open_ticket($sql, $ticket_id);
 	}
 
-	set_page_message(tr('Message was sent.'));
+	set_page_message(tr('Your message has been sent!'));
 
 	if ($_POST['uaction'] == "close") {
 		if ($user_message != '') {
@@ -313,37 +313,9 @@ function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id, &$screenwi
 	}
 
 	send_tickets_msg($ticket_from, $ticket_to, $subject, $user_message, $ticket_reply, $urgency);
+	
+	user_goto('ticket_system.php');
 }
-
-// NXW: Not used !
-/*
-function get_send_to_who(&$sql, &$ticket_reply) {
-
-	$query = "
-		SELECT
-			`ticket_from`
-		FROM
-			`tickets`
-		WHERE
-			`ticket_id` = ?
-	";
-
-	$rs = exec_query($sql, $query, $ticket_reply);
-	$ticket_from = $rs->fields['ticket_from'];
-
-	$query = "
-		SELECT
-			`admin_type`
-		FROM
-			`admin`
-		WHERE
-			`admin_id` = ?
-	";
-
-	$rs = exec_query($sql, $query, $ticket_from);
-	//$admin_type = $rs->fields['admin_type'];
-}
-*/
 
 function close_ticket($sql, $ticket_id) {
 

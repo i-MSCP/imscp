@@ -50,14 +50,16 @@ function ticketGetLastDate(&$sql, $ticket_id) {
 		FROM
 			`tickets`
 		WHERE
-			`ticket_id` = ?
-		OR
 			`ticket_reply` = ?
 		ORDER BY
 			`ticket_date` DESC
 	";
 
-	$rs = exec_query($sql, $query, array($ticket_id, $ticket_id));
+	$rs = exec_query($sql, $query, array($ticket_id));
+	
+	if($rs->fields['ticket_date'] == NULL) {
+		return tr('Never');
+	}
 
 	$date_formt = $cfg->DATE_FORMAT;
 	return date($date_formt, $rs->fields['ticket_date']); // last date
@@ -81,26 +83,40 @@ function ticketGetLastDate(&$sql, $ticket_id) {
 function send_tickets_msg($to_id, $from_id, $ticket_subject, $ticket_message,
 	$ticket_status, $urgency) {
 
-	$cfg = ispCP_Registry('Config');
+	$cfg = ispCP_Registry::get('Config');
 	$sql = ispCP_Registry::get('Db');
 	global $admin_login;
 
 	// To information
-	$query = "SELECT `fname`, `lname`, `email`, `admin_name` FROM `admin` WHERE `admin_id` = ?";
+	$query = "SELECT 
+			`fname`, `lname`, `email`, `admin_name` 
+		FROM 
+			`admin` 
+		WHERE 
+			`admin_id` = ?
+		;";
 
 	$res = exec_query($sql, $query, $to_id);
 	$to_email = $res->fields['email'];
 	$to_fname = $res->fields['fname'];
 	$to_lname = $res->fields['lname'];
 	$to_uname = $res->fields['admin_name'];
+	
 	// From information
-	$query = "SELECT `fname`, `lname`, `email`, `admin_name` FROM `admin` WHERE `admin_id` = ?";
+	$query = "SELECT 
+			`fname`, `lname`, `email`, `admin_name` 
+		FROM 
+			`admin` 
+		WHERE 
+			`admin_id` = ?
+		;";
 
 	$res = exec_query($sql, $query, $from_id);
 	$from_email = $res->fields['email'];
 	$from_fname = $res->fields['fname'];
 	$from_lname = $res->fields['lname'];
 	$from_uname = $res->fields['admin_name'];
+	
 	// Prepare message
 	$subject = tr("[Ticket]") . " {SUBJ}";
 	if ($ticket_status == 0) {
@@ -110,7 +126,8 @@ function send_tickets_msg($to_id, $from_id, $ticket_subject, $ticket_message,
 	}
 	$message .= "\n".tr("Priority: %s\n", "{PRIORITY}");
 	$message .= "\n" . $ticket_message;
-	$message .= "\n\n" . tr("Log in to answer") . ' ' . $cfg->BASE_SERVER_VHOST_PREFIX . $cfg->BASE_SERVER_VHOST;
+	$message .= "\n\n" . tr("Log in to answer") . ' ' . 
+				$cfg->BASE_SERVER_VHOST_PREFIX . $cfg->BASE_SERVER_VHOST;
 
 	// Format addresses
 	if ($from_fname && $from_lname) {
@@ -147,13 +164,17 @@ function send_tickets_msg($to_id, $from_id, $ticket_subject, $ticket_message,
 	$subject = str_replace($search, $replace, $subject);
 	$message = str_replace($search, $replace, $message);
 
-	$headers = "From: " . $from . "\n";
-
-	$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 8bit\n";
-
-	$headers .= "X-Mailer: ispCP " . $cfg->Version . " Tickets Mailer";
+	$headers = "From: " . $from . "\n" .
+				"MIME-Version: 1.0\nContent-Type: text/plain; " . 
+				"charset=utf-8\nContent-Transfer-Encoding: 8bit\n" .
+				"X-Mailer: ispCP " . $cfg->Version . " Tickets Mailer";
 
 	$mail_result = mail($to, encode($subject), $message, $headers);
 	$mail_status = ($mail_result) ? 'OK' : 'NOT OK';
-	write_log(sprintf("%s send ticket To: %s, From: %s, Status: %s!", $_SESSION['user_logged'], $toname . ": " . $to_email, $fromname . ": " . $from_email, $mail_status));
+	write_log(sprintf(
+						"%s send ticket To: %s, From: %s, Status: %s!", 
+						$_SESSION['user_logged'], 
+						$toname . ": " . $to_email, $fromname . ": " . $from_email, 
+						$mail_status
+					));
 }

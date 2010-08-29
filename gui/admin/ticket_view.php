@@ -46,6 +46,8 @@ $tpl->define_dynamic('tickets_item', 'tickets_list');
 
 // page functions.
 function gen_tickets_list(&$tpl, &$sql, &$ticket_id, $screenwidth) {
+	
+	$user_id = $_SESSION['user_id'];
 
 	$cfg = ispCP_Registry::get('Config');
 
@@ -62,9 +64,11 @@ function gen_tickets_list(&$tpl, &$sql, &$ticket_id, $screenwidth) {
 			`tickets`
 		WHERE
 			`ticket_id` = ?
+		AND
+			(`ticket_from` = ? OR `ticket_to` = ?)
 	";
 
-	$rs = exec_query($sql, $query, $ticket_id);
+	$rs = exec_query($sql, $query, array($ticket_id,$user_id,$user_id));
 
 	if ($rs->recordCount() == 0) {
 		$tpl->assign('TICKETS_LIST', '');
@@ -289,7 +293,7 @@ function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id) {
 		open_ticket($sql, $ticket_id);
 	}
 
-	set_page_message(tr('Message was sent.'));
+	set_page_message(tr('Your message has been sent!'));
 
 	if ($_POST['uaction'] == "close") {
 		if ($user_message != '') {
@@ -304,6 +308,7 @@ function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id) {
 	}
 
 	send_tickets_msg($ticket_to, $ticket_from, $subject, $user_message, $ticket_reply, $urgency);
+	user_goto('ticket_system.php');
 }
 
 function change_ticket_status($sql, $ticket_id) {

@@ -180,7 +180,6 @@ function check_address_data(&$tpl) {
 		&& (isset($_POST['lname']) && $_POST['lname'] != '')
 		&& (isset($_POST['zip']) && $_POST['zip'] != '')
 		&& (isset($_POST['city']) && $_POST['city'] != '')
-		&& (isset($_POST['state']) && $_POST['state'] != '')
 		&& (isset($_POST['country']) && $_POST['country'] != '')
 		&& (isset($_POST['street1']) && $_POST['street1'] != '')
 		&& (isset($_POST['phone']) && $_POST['phone'] != '')
@@ -221,16 +220,9 @@ function check_address_data(&$tpl) {
 	}
 }
 
-/*
- * functions end
- */
+// functions end
 
-/*
- *
- * static page messages.
- *
- */
-
+// static page messages
 if (isset($_SESSION['user_id']) && isset($_SESSION['plan_id'])) {
 	$user_id = $_SESSION['user_id'];
 	$plan_id = $_SESSION['plan_id'];

@@ -82,8 +82,7 @@ sub ask_remove_user_data {
 	
 	if ($rdata =~ /^y$/i) {
 		$main::rm{'rm_u_data'} = 'yes';
-	}
-	else {
+	} else {
 		$main::rm{'rm_u_data'} = 'no';
 	}
 

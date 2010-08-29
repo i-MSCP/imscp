@@ -41,9 +41,52 @@ $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('tickets_list', 'page');
 $tpl->define_dynamic('tickets_item', 'tickets_list');
 
-// page functions.
+// page functions
 
-function gen_tickets_list(&$tpl, &$sql, &$ticket_id, $screenwidth) {
+/**
+ * Checks if the client's reseller has a support system.
+ *
+ * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @since	1.0.7
+ * @version	1.0.0
+ *
+ * @param reference $sql	the SQL object
+ * @param int $reseller_id	the ID of the client's reseller
+ * @return boolean
+ */
+function hasTicketSystem(&$sql, $reseller_id) {
+	$cfg = ispCP_Registry::get('Config');
+
+	$query = "
+	  SELECT
+		`support_system`
+	  FROM
+		`reseller_props`
+	  WHERE
+		`reseller_id` = ?
+	;";
+
+	$rs = exec_query($sql, $query, $reseller_id);
+
+	if (!$cfg->ISPCP_SUPPORT_SYSTEM || $rs->fields['support_system'] == 'no')
+		return false;
+
+	return true;
+}
+
+/**
+ * Gets the content of the selected ticket and generates its output.
+ *
+ * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @since	1.0.7
+ * @version	1.0.0
+ *
+ * @param reference $tpl	the Template object
+ * @param reference $sql	the SQL object
+ * @param int $ticket_id	the ID of the ticket to display
+ * @param int $screenwidth	the width of the display
+ */
+function showTicketContent(&$tpl, &$sql, $ticket_id, $screenwidth) {
 
 	$cfg = ispCP_Registry::get('Config');
 
@@ -63,7 +106,7 @@ function gen_tickets_list(&$tpl, &$sql, &$ticket_id, $screenwidth) {
 			`ticket_id` = ?
 		AND
 			(`ticket_from` = ? OR `ticket_to` = ?)
-	";
+	;";
 	$rs = exec_query($sql, $query, array($ticket_id, $user_id, $user_id));
 
 	if ($rs->recordCount() == 0) {
@@ -84,9 +127,10 @@ function gen_tickets_list(&$tpl, &$sql, &$ticket_id, $screenwidth) {
 		$tpl->assign(array('URGENCY' => get_ticket_urgency($ticket_urgency),
 			'URGENCY_ID' => $ticket_urgency));
 
-		get_ticket_from($tpl, $sql, $ticket_id);
+		getTicketSender($tpl, $sql, $ticket_id);
 		$date_formt = $cfg->DATE_FORMAT;
-		$ticket_content = wordwrap($rs->fields['ticket_message'], round(($screenwidth-200) / 7), "\n");
+		$ticket_content = wordwrap($rs->fields['ticket_message'],
+				round(($screenwidth-200) / 7), "\n");
 
 		$tpl->assign(
 			array(
@@ -100,11 +144,23 @@ function gen_tickets_list(&$tpl, &$sql, &$ticket_id, $screenwidth) {
 		);
 
 		$tpl->parse('TICKETS_ITEM', '.tickets_item');
-		get_tickets_replys($tpl, $sql, $ticket_id, $screenwidth);
+		showTicketReplies($tpl, $sql, $ticket_id, $screenwidth);
 	}
 }
 
-function get_tickets_replys(&$tpl, &$sql, &$ticket_id, $screenwidth) {
+/**
+ * Gets the answers of the selected ticket and generates its output.
+ *
+ * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @since	1.0.7
+ * @version	1.0.0
+ *
+ * @param reference $tpl	the Template object
+ * @param reference $sql	the SQL object
+ * @param int $ticket_id	the ID of the ticket to display
+ * @param int $screenwidth	the width of the display
+ */
+function showTicketReplies(&$tpl, &$sql, $ticket_id, $screenwidth) {
 
 	$cfg = ispCP_Registry::get('Config');
 
@@ -131,10 +187,10 @@ function get_tickets_replys(&$tpl, &$sql, &$ticket_id, $screenwidth) {
 	}
 	while (!$rs->EOF) {
 		$ticket_id = $rs->fields['ticket_id'];
-		$ticket_subject = $rs->fields['ticket_subject'];
 		$ticket_date = $rs->fields['ticket_date'];
 		$ticket_message = $rs->fields['ticket_message'];
-		$ticket_content = wordwrap($ticket_message, round(($screenwidth-200) / 7), "\n");
+		$ticket_content = wordwrap($ticket_message,
+				round(($screenwidth-200) / 7), "\n");
 
 		$date_formt = $cfg->DATE_FORMAT;
 		$tpl->assign(
@@ -143,14 +199,25 @@ function get_tickets_replys(&$tpl, &$sql, &$ticket_id, $screenwidth) {
 				'TICKET_CONTENT' => nl2br(tohtml($ticket_content))
 			)
 		);
-		get_ticket_from($tpl, $sql, $ticket_id);
+		getTicketSender($tpl, $sql, $ticket_id);
 		$tpl->parse('TICKETS_ITEM', '.tickets_item');
 		$rs->moveNext();
 	}
 }
 
-function get_ticket_from(&$tpl, &$sql, $ticket_id) {
-	$query = "
+/**
+ * Gets the sender of a ticket answer.
+ *
+ * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @since	1.0.7
+ * @version	1.0.0
+ *
+ * @param reference $tpl	the Template object
+ * @param reference $sql	the SQL object
+ * @param int $ticket_id	the ID of the ticket to display
+ */
+function getTicketSender(&$tpl, &$sql, $ticket_id) {
+		$query = "
 		SELECT
 			`ticket_from`,
 			`ticket_to`,
@@ -162,13 +229,10 @@ function get_ticket_from(&$tpl, &$sql, $ticket_id) {
 			`ticket_id` = ?
 		AND
 			(`ticket_from` = ? OR `ticket_to` = ?)
-	";
+	;";
 
 	$rs = exec_query($sql, $query, array($ticket_id, $_SESSION['user_id'], $_SESSION['user_id']));
 	$ticket_from = $rs->fields['ticket_from'];
-	$ticket_to = $rs->fields['ticket_to'];
-	$ticket_status = $rs->fields['ticket_status'];
-	$ticket_reply = clean_html($rs->fields['ticket_reply']);
 
 	$query = "
 		SELECT
@@ -179,7 +243,7 @@ function get_ticket_from(&$tpl, &$sql, $ticket_id) {
 			`admin`
 		WHERE
 			`admin_id` = ?
-	";
+	;";
 
 	$rs = exec_query($sql, $query, $ticket_from);
 	$from_user_name = decode_idna($rs->fields['admin_name']);
@@ -190,26 +254,27 @@ function get_ticket_from(&$tpl, &$sql, $ticket_id) {
 	$tpl->assign(array('FROM' => tohtml($from_name)));
 }
 
-// common page data.
+/**
+ * Updates the ticket with a new answer and informs the recipient.
+ *
+ * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @since	1.0.7
+ * @version	1.0.0
+ *
+ * @param reference $sql	the SQL object
+ * @param int $reseller_id	the ID of the client's reseller
+ * @param int $ticket_id	the ID of the ticket to display
+ */
+function updateTicket(&$sql, $reseller_id, $ticket_id) {
+	$user_id = $_SESSION['user_id'];
 
-$tpl->assign(
-	array(
-		'TR_CLIENT_VIEW_TICKET_PAGE_TITLE' => tr('ispCP - Client: Support System: View Ticket'),
-		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => get_logo($_SESSION['user_id'])
-	)
-);
-
-function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id) {
-	if (!isset($_POST['uaction'])) return;
-	// close ticket
-	elseif ($_POST['uaction'] == "close") {
-		close_ticket($sql, $ticket_id);
+	if ($_POST['uaction'] == "close") {
+		// close ticket
+		closeTicket($sql, $ticket_id);
 		return;
 	} elseif ($_POST['uaction'] == "open") {
 		// open ticket
-		open_ticket($sql, $ticket_id);
+		openTicket($sql, $ticket_id);
 		return;
 	} elseif (empty($_POST['user_message'])) {
 		// no message check->error
@@ -220,7 +285,6 @@ function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id) {
 	$ticket_date = time();
 	$subject = clean_input($_POST['subject']);
 	$user_message = clean_input($_POST["user_message"]);
-	$ticket_status = 4;
 	$ticket_reply = $_GET['ticket_id'];
 	$urgency = $_POST['urgency'];
 	$ticket_from = $user_id;
@@ -238,34 +302,41 @@ function send_user_message(&$sql, $user_id, $reseller_id, $ticket_id) {
 			`ticket_message`)
 		VALUES
 			(?, ?, ?, ?, ?, ?, ?, ?)
-	";
+	;";
 
-	$rs = exec_query($sql, $query, array($ticket_from, $ticket_to, $ticket_status,
+	$rs = exec_query($sql, $query, array($ticket_from, $ticket_to, null,
 			$ticket_reply, $urgency, $ticket_date, $subject, $user_message));
 
-	// Update all Replays -> Status 1
-	$query = "
-		UPDATE
-			`tickets`
-		SET
-			`ticket_status` = '1'
-		WHERE
-			`ticket_id` = ?
-		OR
-			`ticket_reply` = ?
-	";
-
-	$rs = exec_query($sql, $query, array($ticket_reply, $ticket_reply));
-
-	while (!$rs->EOF) {
-		$rs->moveNext();
+	$ticket_status = getTicketStatus($sql, $ticket_id);
+	
+	// Set ticket status to "client answered"
+	if ($ticket_status == 0 || $ticket_status == 3) {
+		changeTicketStatus($sql, $ticket_id, 4);
 	}
 
-	set_page_message(tr('Message was sent.'));
+	set_page_message(tr('Your message has been sent'));
 	send_tickets_msg($ticket_to, $ticket_from, $subject, $user_message, $ticket_reply, $urgency);
+	user_goto('ticket_system.php');
 }
 
-function change_ticket_status($sql, $ticket_id) {
+/**
+ * Gets the status of the ticket.
+ * Possible status values:
+ *	0 - closed
+ *	1 - new
+ *	2 - answered by reseller
+ *	3 - read (if status was 2 or 4)
+ *	4 - answered by client
+ *
+ * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @since	1.0.7
+ * @version	1.0.0
+ *
+ * @param reference $sql	the SQL object
+ * @param int $ticket_id	the ticket ID
+ * @return int				ticket status ID
+ */
+function getTicketStatus(&$sql, $ticket_id) {
 	$query = "
 		SELECT
 			`ticket_status`
@@ -275,19 +346,30 @@ function change_ticket_status($sql, $ticket_id) {
 			`ticket_id` = ?
 		AND
 			(`ticket_from` = ? OR `ticket_to` = ?)
-	";
+	;";
 
 	$rs = exec_query($sql, $query, array($ticket_id, $_SESSION['user_id'], $_SESSION['user_id']));
-	$ch_ticket_status = $rs->fields['ticket_status'];
+	return $rs->fields['ticket_status'];
+}
 
-	if ($ch_ticket_status == 0) {
-		$ticket_status = 0;
-	} else if (!isset($_POST['uaction']) || $_POST['uaction'] == "open") {
-		$ticket_status = 3;
-	} else {
-		$ticket_status = 4;
-	}
-
+/**
+ * Changes the status of the ticket.
+ * Possible status values:
+ *	0 - closed
+ *	1 - new
+ *	2 - answered by reseller
+ *	3 - read (if status was 2 or 4)
+ *	4 - answered by client
+ *
+ * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @since	1.0.7
+ * @version	1.0.0
+ *
+ * @param reference $sql		the SQL object
+ * @param int $ticket_id		the ticket ID
+ * @param int $ticket_status	new status ID
+ */
+function changeTicketStatus(&$sql, $ticket_id, $ticket_status) {
 	$query = "
 		UPDATE
 			`tickets`
@@ -297,85 +379,94 @@ function change_ticket_status($sql, $ticket_id) {
 			`ticket_id` = ?
 		AND
 			(`ticket_from` = ? OR `ticket_to` = ?)
-	";
+	;";
 
-	$rs = exec_query($sql, $query, array($ticket_status, $ticket_id, $_SESSION['user_id'], $_SESSION['user_id']));
-	// end of set status 3
+	$rs = exec_query($sql, $query, array(
+			$ticket_status,
+			$ticket_id,
+			$_SESSION['user_id'],
+			$_SESSION['user_id']
+		));
 }
 
-function close_ticket($sql, $ticket_id) {
-	$query = "
-		UPDATE
-			`tickets`
-		SET
-			`ticket_status` = '0'
-		WHERE
-			`ticket_id` = ?
-		AND
-			(`ticket_from` = ? OR `ticket_to` = ?)
-	";
-	$rs = exec_query($sql, $query, array($ticket_id, $_SESSION['user_id'], $_SESSION['user_id']));
+/**
+ * Close the current ticket.
+ *
+ * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @since	1.0.7
+ * @version	1.0.0
+ *
+ * @param reference $sql		the SQL object
+ * @param int $ticket_id		the ticket ID
+ */
+function closeTicket(&$sql, $ticket_id) {
+	changeTicketStatus($sql, $ticket_id, 0);
 	set_page_message(tr('Ticket was closed!'));
 }
 
-function open_ticket(&$sql, $ticket_id) {
-	$ticket_status = 3;
-
-	$query = "
-		UPDATE
-			`tickets`
-		SET
-			`ticket_status` = ?
-		WHERE
-			`ticket_id` = ?
-		AND
-			(`ticket_from` = ? OR `ticket_to` = ?)
-	";
-
-	$rs = exec_query($sql, $query, array($ticket_status, $ticket_id, $_SESSION['user_id'], $_SESSION['user_id']));
+/**
+ * Open the current ticket.
+ *
+ * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @since	1.0.7
+ * @version	1.0.0
+ *
+ * @param reference $sql		the SQL object
+ * @param int $ticket_id		the ticket ID
+ */
+function openTicket(&$sql, $ticket_id) {
+	changeTicketStatus($sql, $ticket_id, 3);
 	set_page_message(tr('Ticket was reopened!'));
 }
 
-// dynamic page data.
-$query = "
-  SELECT
-    `support_system`
-  FROM
-    `reseller_props`
-  WHERE
-    `reseller_id` = ?
-";
+// common page data
+$tpl->assign(
+	array(
+		'TR_CLIENT_VIEW_TICKET_PAGE_TITLE' => tr('ispCP - Client: Support System: View Ticket'),
+		'THEME_COLOR_PATH'				=> "../themes/{$cfg->USER_INITIAL_THEME}",
+		'THEME_CHARSET'					=> tr('encoding'),
+		'ISP_LOGO'						=> get_logo($_SESSION['user_id'])
+	)
+);
 
-$rs = exec_query($sql, $query, $_SESSION['user_created_by']);
+// dynamic page data
+$reseller_id = $_SESSION['user_created_by'];
 
-if (!$cfg->ISPCP_SUPPORT_SYSTEM || $rs->fields['support_system'] == 'no') {
+if (!hasTicketSystem($sql, $reseller_id)) {
 	user_goto('index.php');
 }
 
-$reseller_id = $_SESSION['user_created_by'];
 if (isset($_GET['ticket_id'])) {
 	$ticket_id = $_GET['ticket_id'];
+	$screenwidth = 1024;
 
 	if (isset($_GET['screenwidth'])) {
 		$screenwidth = $_GET['screenwidth'];
-	} else {
+	} else if(isset($_POST['screenwidth'])) {
 		$screenwidth = $_POST['screenwidth'];
 	}
 
-	if (!isset($screenwidth) || $screenwidth < 639) {
+	if ($screenwidth < 639) {
 		$screenwidth = 1024;
 	}
 	$tpl->assign('SCREENWIDTH', $screenwidth);
 
-	send_user_message($sql, $_SESSION['user_id'], $reseller_id, $ticket_id);
-	change_ticket_status($sql, $ticket_id);
-	gen_tickets_list($tpl, $sql, $ticket_id, $screenwidth);
+	// if status "Answer by reseller" set to "read"
+	if (getTicketStatus($sql, $ticket_id) == 2) {
+		changeTicketStatus($sql, $ticket_id, 3);
+	}
+
+	if (isset($_POST['uaction'])) {
+		updateTicket($sql, $reseller_id, $ticket_id);
+	}
+
+	showTicketContent($tpl, $sql, $ticket_id, $screenwidth);
 } else {
 	set_page_message(tr('Ticket not found!'));
 	user_goto('ticket_system.php');
 }
 
-// static page messages.
+// static page messages
 
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_ticket_system.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_ticket_system.tpl');

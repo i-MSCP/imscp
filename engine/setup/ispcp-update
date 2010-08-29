@@ -309,7 +309,7 @@ sub update_shutdown {
 
 	my $shut_down_message = colored(
 		['bold underline'],
-		"\n\n\tCongratulations, you updated ispCP " .
+		"\n\n\tCongratulations, you updated ispCP OMEGA" .
 		"'$main::cfg{'Version'}' successfully!\n\n"
 	);
 
@@ -369,7 +369,6 @@ sub welcome_note {
 	do {
 		print STDOUT "\tDo you want to continue [Y/n]: ";
 		chomp($rdata = readline \*STDIN);
-
 	} while($rdata !~ /^(|y|n)$/i);
 
 	exit 0 if($rdata =~ /^n$/i);

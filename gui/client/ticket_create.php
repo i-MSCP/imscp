@@ -42,14 +42,15 @@ $tpl->define_dynamic('logged_from', 'page');
 // page functions.
 
 function send_user_message(&$sql, $user_id, $reseller_id) {
-	if (!isset($_POST['uaction'])) return;
+	if (!isset($_POST['uaction']))
+		return;
 
 	if (empty($_POST['subj'])) {
 		set_page_message(tr('Please specify message subject!'));
 		return;
 	}
 
-	if ($_POST['user_message'] === '') {
+	if (empty($_POST['user_message'])) {
 		set_page_message(tr('Please type your message!'));
 		return;
 	}
@@ -69,13 +70,15 @@ function send_user_message(&$sql, $user_id, $reseller_id) {
 			 `ticket_date`, `ticket_subject`, `ticket_message`)
 		VALUES
 			(?, ?, ?, ?, ?, ?, ?, ?, ?)
-	";
+	;";
 
 	exec_query($sql, $query, array($ticket_level, $user_id, $reseller_id,
-			$ticket_status, $ticket_reply, $urgency, $ticket_date, $subject, $user_message));
+		$ticket_status, $ticket_reply, $urgency, $ticket_date, $subject, 
+		$user_message));
 
-	set_page_message(tr('Your message was sent!'));
-	send_tickets_msg($reseller_id, $user_id, $subject, $user_message, $ticket_reply, $urgency);
+	set_page_message(tr('Your message has been sent!'));
+	send_tickets_msg($reseller_id, $user_id, $subject, $user_message, 
+		$ticket_reply, $urgency);
 	user_goto('ticket_system.php');
 }
 
@@ -83,7 +86,7 @@ function send_user_message(&$sql, $user_id, $reseller_id) {
 
 $tpl->assign(
 	array(
-		'TR_CLIENT_NEW_TICKET_PAGE_TITLE' => tr('ispCP - Support system - New ticket'),
+		'TR_CLIENT_NEW_TICKET_PAGE_TITLE' => tr('ispCP - Support System - New ticket'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
@@ -98,7 +101,7 @@ $query = "
     `reseller_props`
   WHERE
     `reseller_id` = ?
-";
+;";
 
 $rs = exec_query($sql, $query, $_SESSION['user_created_by']);
 
@@ -123,11 +126,13 @@ $userdata = array(
 	'OPT_URGENCY_3' => '',
 	'OPT_URGENCY_4' => ''
 );
+
 if (isset($_POST['urgency'])) {
 	$userdata['URGENCY'] = intval($_POST['urgency']);
 } else {
 	$userdata['URGENCY'] = 2;
 }
+
 switch ($userdata['URGENCY']) {
 	case 1:
 		$userdata['OPT_URGENCY_1'] = $cfg->HTML_SELECTED;
@@ -140,11 +145,11 @@ switch ($userdata['URGENCY']) {
 		break;
 	default:
 		$userdata['OPT_URGENCY_2'] = $cfg->HTML_SELECTED;
-		break;
 }
 
 $userdata['SUBJECT'] = isset($_POST['subj']) ? clean_input($_POST['subj'], true) : '';
-$userdata['USER_MESSAGE'] = isset($_POST['user_message']) ? clean_input($_POST['user_message'], true) : '';
+$userdata['USER_MESSAGE'] = isset($_POST['user_message']) ? 
+	clean_input($_POST['user_message'], true) : '';
 $tpl->assign($userdata);
 
 

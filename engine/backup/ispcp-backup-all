@@ -183,7 +183,7 @@ sub backup_sql {
 		}
 
 		$rs = sys_command_rs($db_backupcmd);
-		if( $rs != 0 ){
+		if($rs != 0) {
 			push_el(\@main::el, 'backup_sql()', "Domain $dmn_name: ERROR: Failed to backup database $db_name!");
 			send_error_mail('backup_sql()', "Domain $dmn_name: ERROR: Failed to backup database $db_name!");
 			unlink($db_backup_file);
@@ -191,7 +191,7 @@ sub backup_sql {
 		}
 
 		$rs = setfmode("$db_backup_file", 0, 0, 0444);
-		if( $rs != 0 ){
+		if($rs != 0) {
 			push_el(\@main::el, 'backup_sql()', "Domain $dmn_name: ERROR: Can not chmod 0444 uid: 0 gid: 0 file $db_backup_file!");
 			send_error_mail('backup_sql()', "Domain $dmn_name: ERROR: Can not chmod 0444 uid: 0 gid: 0 file $db_backup_file!");
 			unlink($db_backup_file);
@@ -199,7 +199,7 @@ sub backup_sql {
 		}
 
 		$rs = sys_command($db_compresscmd);
-		if ($rs != 0){
+		if ($rs != 0) {
 			push_el(\@main::el, 'backup_sql()', "Domain $dmn_name: ERROR: Error while executing  $db_compresscmd!");
 			send_error_mail('backup_sql()', "Domain $dmn_name: ERROR: Error while executing $db_compresscmd!");
 			unlink($db_backup_file);
@@ -279,7 +279,7 @@ sub backup_all_engine {
 
 			#todo test mode and adjust only if necessary
 			$rs = setfmode($dmn_backup_dir, 0, 0, 0555);
-			if ($rs != 0){
+			if ($rs != 0) {
 				push_el(\@main::el, 'backup_all_engine()', "Domain $dmn_name: Error while changing mode to 0555 uid: 0: 0 for $dmn_backup_dir!");
 				send_error_mail('backup_all_engine()', "Domain $dmn_name: Error while changing mode to 0555 uid: 0 gid: 0 for $dmn_backup_dir!");
 			}
@@ -311,25 +311,25 @@ sub backup_all_engine {
 				if ($rs == 0) { # everything ok
 
 					$rs = sys_command("$cmd_rm -rf $www_dir/$backup_filename.log");
-					if ($rs != 0){
+					if ($rs != 0) {
 						push_el(\@main::el, 'backup_all_engine()', "Domain $dmn_name: Error while executing $cmd_rm -rf $www_dir/$backup_filename.log!");
 						send_error_mail('backup_all_engine()', "Domain $dmn_name: Error while executing $cmd_rm -rf $www_dir/$backup_filename.log!");
 					}
 
 					$rs = sys_command("$cmd_rm -rf $dmn_backup_dir/$dmn_name-*.tar.*");
-					if ($rs != 0){
+					if ($rs != 0) {
 						push_el(\@main::el, 'backup_all_engine()', "Domain $dmn_name: Error while executing $cmd_rm -rf $dmn_backup_dir/$dmn_name-*.tar.*!");
 						send_error_mail('backup_all_engine()', "Domain $dmn_name: Error while executing $cmd_rm -rf $dmn_backup_dir/$dmn_name-*.tar.*!");
 					}
 
 					$rs = sys_command("$cmd_mv -f $www_dir/$backup_filename $dmn_backup_dir");
-					if ($rs != 0){
+					if ($rs != 0) {
 						push_el(\@main::el, 'backup_all_engine()', "Domain $dmn_name: Error while executing $cmd_mv -f $www_dir/$backup_filename $dmn_backup_dir!");
 						send_error_mail('backup_all_engine()', "Domain $dmn_name: Error while executing $cmd_mv -f $www_dir/$backup_filename $dmn_backup_dir!");
 					}
 
 					$rs = setfmode("$dmn_backup_dir/$backup_filename", 0, 0, 0444);
-					if ($rs != 0){
+					if ($rs != 0) {
 						push_el(\@main::el, 'backup_all_engine()', "Domain $dmn_name: Error while changing mode to 0444 uid: 0 gid: 0 for $dmn_backup_dir/$backup_filename!");
 						send_error_mail('backup_all_engine()', "Domain $dmn_name: Error while changing mode to 0444 uid: 0 gid: 0 for $dmn_backup_dir/$backup_filename!");
 					}
@@ -343,7 +343,7 @@ sub backup_all_engine {
 					# delete backup file...
 					if ( -e "$www_dir/$backup_filename" ) {
 						$rs = del_file("$www_dir/$backup_filename");
-						if ($rs != 0){
+						if ($rs != 0) {
 							push_el(\@main::el, 'backup_all_engine()', "Domain $dmn_name: Error while removing file $www_dir/$backup_filename!");
 # we don't need a second mail...			send_error_mail('backup_all_engine()', "Domain $dmn_name: Error while removing file $dmn_dir/$backup_filename!");
 						}

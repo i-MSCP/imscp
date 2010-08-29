@@ -87,7 +87,7 @@ function send_user_message(&$sql, $user_id, $user_created_by) {
 		)
 	);
 
-	set_page_message(tr('Message was sent.'));
+	set_page_message(tr('Your message has been  sent.'));
 	send_tickets_msg($user_created_by, $user_id, $subject, $user_message, $ticket_reply, $urgency);
 	header('Location: ticket_system.php');
 }
@@ -111,7 +111,7 @@ $query = "
 		`reseller_props`
 	WHERE
 		`reseller_id` = ?
-";
+;";
 
 $rs = exec_query($sql, $query, $_SESSION['user_id']);
 
@@ -134,11 +134,13 @@ $userdata = array(
 	'OPT_URGENCY_3' => '',
 	'OPT_URGENCY_4' => ''
 );
+
 if (isset($_POST['urgency'])) {
 	$userdata['URGENCY'] = intval($_POST['urgency']);
 } else {
 	$userdata['URGENCY'] = 2;
 }
+
 switch ($userdata['URGENCY']) {
 	case 1:
 		$userdata['OPT_URGENCY_1'] = $cfg->HTML_SELECTED;
@@ -151,8 +153,8 @@ switch ($userdata['URGENCY']) {
 		break;
 	default:
 		$userdata['OPT_URGENCY_2'] = $cfg->HTML_SELECTED;
-		break;
 }
+
 $userdata['SUBJECT'] = isset($_POST['subj']) ? clean_input($_POST['subj'], true) : '';
 $userdata['USER_MESSAGE'] = isset($_POST['user_message']) ? clean_input($_POST['user_message'], true) : '';
 $tpl->assign($userdata);
@@ -177,10 +179,10 @@ $tpl->assign(
 gen_page_message($tpl);
 
 $tpl->parse('PAGE', 'page');
-
 $tpl->prnt();
 
 if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
+
 unset_messages();
