@@ -190,10 +190,10 @@ sub backup_sql {
 			return $rs;
 		}
 
-		$rs = setfmode("$db_backup_file", $domain_uid, $domain_gid, 0660);
+		$rs = setfmode("$db_backup_file", 0, 0, 0444);
 		if( $rs != 0 ){
-			push_el(\@main::el, 'backup_sql()', "Domain $dmn_name: ERROR: Can not chmod 0660 uid: $domain_uid gid: $domain_gid file $db_backup_file!");
-			send_error_mail('backup_sql()', "Domain $dmn_name: ERROR: Can not chmod 0660 uid: $domain_uid gid: $domain_gid file $db_backup_file!");
+			push_el(\@main::el, 'backup_sql()', "Domain $dmn_name: ERROR: Can not chmod 0444 uid: 0 gid: 0 file $db_backup_file!");
+			send_error_mail('backup_sql()', "Domain $dmn_name: ERROR: Can not chmod 0444 uid: 0 gid: 0 file $db_backup_file!");
 			unlink($db_backup_file);
 			return $rs;
 		}
@@ -273,8 +273,15 @@ sub backup_all_engine {
 			#
 
 			if (! -d $dmn_backup_dir) {
-				$rs = make_dir($dmn_backup_dir, $domain_uid, $domain_gid, 0770);
+				$rs = make_dir($dmn_backup_dir, 0 ,0, 0555);
 				return $rs if ($rs != 0);
+			}
+
+			#todo test mode and adjust only if necessary
+			$rs = setfmode($dmn_backup_dir, 0, 0, 0555);
+			if ($rs != 0){
+				push_el(\@main::el, 'backup_all_engine()', "Domain $dmn_name: Error while changing mode to 0555 uid: 0: 0 for $dmn_backup_dir!");
+				send_error_mail('backup_all_engine()', "Domain $dmn_name: Error while changing mode to 0555 uid: 0 gid: 0 for $dmn_backup_dir!");
 			}
 
 			if ($zip =~ '^(bzip2|gzip|lzma|xz)$') {
@@ -321,10 +328,10 @@ sub backup_all_engine {
 						send_error_mail('backup_all_engine()', "Domain $dmn_name: Error while executing $cmd_mv -f $www_dir/$backup_filename $dmn_backup_dir!");
 					}
 
-					$rs = setfmode("$dmn_backup_dir/$backup_filename", $domain_uid, $domain_gid, 0660);
+					$rs = setfmode("$dmn_backup_dir/$backup_filename", 0, 0, 0444);
 					if ($rs != 0){
-						push_el(\@main::el, 'backup_all_engine()', "Domain $dmn_name: Error while changing mode to 0660 uid: $domain_uid gid: $domain_gid for $dmn_backup_dir/$backup_filename!");
-						send_error_mail('backup_all_engine()', "Domain $dmn_name: Error while changing mode to 0660 uid: $domain_uid gid: $domain_gid for $dmn_backup_dir/$backup_filename!");
+						push_el(\@main::el, 'backup_all_engine()', "Domain $dmn_name: Error while changing mode to 0444 uid: 0 gid: 0 for $dmn_backup_dir/$backup_filename!");
+						send_error_mail('backup_all_engine()', "Domain $dmn_name: Error while changing mode to 0444 uid: 0 gid: 0 for $dmn_backup_dir/$backup_filename!");
 					}
 
 				} else { # some error occurred

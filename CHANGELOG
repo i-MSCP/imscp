@@ -1,6 +1,10 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-08-29 Benedikt Heintel
+	- ENGINE:
+		* Security Fix #2440: Backup script will restore forged backup
+
 2010-08-27 Laurent Declercq
 	- CONFIGS:
 		* Usage of alternative syntax to call Apache Piped Logs scripts to avoid
