@@ -35,10 +35,13 @@ use DateTime::TimeZone;
 # Hide the "used only once: possible typo" warnings
 no warnings 'once';
 
-#
-## Ask subroutines - Begin
-#
+################################################################################
+##                              Ask subroutines                                #
+################################################################################
 
+################################################################################
+# Should be documented
+#
 sub ask_hostname {
 
 	push_el(\@main::el, 'ask_hostname()', 'Starting...');
@@ -88,6 +91,9 @@ sub ask_hostname {
 	0;
 }
 
+################################################################################
+# Should be documented
+#
 sub ask_eth {
 
 	push_el(\@main::el, 'ask_eth()', 'Starting...');
@@ -147,6 +153,9 @@ sub ask_eth {
 	return (0, '');
 }
 
+################################################################################
+# Should be documented
+#
 sub ask_db_host {
 
 	push_el(\@main::el, 'ask_db_host()', 'Starting...');
@@ -170,6 +179,9 @@ sub ask_db_host {
 	0;
 }
 
+################################################################################
+# Should be documented
+#
 sub ask_db_name {
 
 	push_el(\@main::el, 'ask_db_name()', 'Starting...');
@@ -193,6 +205,9 @@ sub ask_db_name {
 	0;
 }
 
+################################################################################
+# Should be documented
+#
 sub ask_db_user {
 
 	push_el(\@main::el, 'ask_db_user()', 'Starting...');
@@ -216,6 +231,9 @@ sub ask_db_user {
 	0;
 }
 
+################################################################################
+# Should be documented
+#
 sub ask_db_password {
 
 	push_el(\@main::el, 'ask_db_password()', 'Starting...');
@@ -253,6 +271,9 @@ sub ask_db_password {
 	0;
 }
 
+################################################################################
+# Should be documented
+#
 sub ask_db_ftp_user {
 
 	push_el(\@main::el, 'ask_db_ftp_user()', 'Starting...');
@@ -287,6 +308,9 @@ sub ask_db_ftp_user {
 	0;
 }
 
+################################################################################
+# Should be documented
+#
 sub ask_db_ftp_password {
 
 	push_el(\@main::el, 'ask_db_ftp_password()', 'Starting...');
@@ -330,6 +354,9 @@ sub ask_db_ftp_password {
 	0;
 }
 
+################################################################################
+# Should be documented
+#
 sub ask_admin {
 
 	push_el(\@main::el, 'ask_admin()', 'Starting...');
@@ -353,6 +380,9 @@ sub ask_admin {
 	0;
 }
 
+################################################################################
+# Should be documented
+#
 sub ask_admin_password {
 
 	push_el(\@main::el, 'ask_admin_password()', 'Starting...');
@@ -405,6 +435,9 @@ sub ask_admin_password {
 	0;
 }
 
+################################################################################
+# Should be documented
+#
 sub ask_admin_email {
 
 	push_el(\@main::el, 'ask_admin_email()', 'Starting...');
@@ -482,6 +515,9 @@ sub ask_admin_email {
 	0;
 }
 
+################################################################################
+# Should be documented
+#
 sub ask_vhost {
 
 	push_el(\@main::el, 'ask_vhost()', 'Starting...');
@@ -530,6 +566,9 @@ sub ask_vhost {
 	0;
 }
 
+################################################################################
+# Should be documented
+#
 sub ask_second_dns {
 
 	push_el(\@main::el, 'ask_second_dns()', 'Starting...');
@@ -561,6 +600,9 @@ sub ask_second_dns {
 	0;
 }
 
+################################################################################
+# Should be documented
+#
 sub ask_mysql_prefix {
 
 	push_el(\@main::el, 'ask_mysql_prefix()', 'Starting...');
@@ -603,6 +645,9 @@ sub ask_mysql_prefix {
 	0;
 }
 
+################################################################################
+# Should be documented
+#
 sub ask_db_pma_user {
 
 	push_el(\@main::el, 'ask_db_pma_user()', 'Starting...');
@@ -651,6 +696,9 @@ sub ask_db_pma_user {
 	0;
 }
 
+################################################################################
+# Should be documented
+#
 sub ask_db_pma_password {
 
 	push_el(\@main::el, 'ask_db_pma_password()', 'Starting...');
@@ -692,6 +740,9 @@ sub ask_db_pma_password {
 	0;
 }
 
+################################################################################
+# Should be documented
+#
 sub ask_fastcgi {
 	push_el(\@main::el, 'ask_fastcgi()', 'Starting...');
 
@@ -720,6 +771,9 @@ sub ask_fastcgi {
 	0;
 }
 
+################################################################################
+# Should be documented
+#
 sub ask_timezone {
 	push_el(\@main::el, 'ask_timezone()', 'Starting...');
 
@@ -772,6 +826,9 @@ sub ask_timezone {
 	0;
 }
 
+################################################################################
+# Should be documented
+#
 sub ask_awstats_on {
 	push_el(\@main::el, 'ask_awstats_on()', 'Starting...');
 
@@ -800,6 +857,9 @@ sub ask_awstats_on {
 	0;
 }
 
+################################################################################
+# Should be documented
+#
 sub ask_awstats_dyn {
 	push_el(\@main::el, 'ask_awstats_dyn()', 'Starting...');
 
@@ -828,16 +888,15 @@ sub ask_awstats_dyn {
 	0;
 }
 
-#
-## Ask subroutines - End
-#
+################################################################################
+#                         Setup / Update subroutines                           #
+################################################################################
 
-#
-## Setup / Update subroutines - Begin
-#
-
+################################################################################
 # IspCP crontab setup / update
-# Built, store and install the ispCP crontab file
+#
+# This subroutine built, store and install the ispCP crontab file
+#
 sub setup_crontab {
 	push_el(\@main::el, 'setup_crontab()', 'Starting...');
 
@@ -940,9 +999,13 @@ sub setup_crontab {
 	0;
 }
 
+################################################################################
 # IspCP named main configuration setup / update
-# Built, store and install main named configuration file
+#
+# This subroutine built, store and install the main named configuration file
+#
 # @TODO Change related Makefile
+#
 sub setup_named {
 
 	push_el(\@main::el, 'setup_named()', 'Starting...');
@@ -1040,9 +1103,13 @@ sub setup_named {
 	0;
 }
 
+################################################################################
 # IspCP php main configuration setup / update
-# Built, store and install all system php related configuration files
-# Enable required modules and disable unused
+#
+# This subroutine do the following tasks:
+#  - Built, store and install all system php related configuration files
+#  - Enable required modules and disable unused
+#
 sub setup_php {
 
 	push_el(\@main::el, 'setup_php()', 'Starting...');
@@ -1100,7 +1167,7 @@ sub setup_php {
 	foreach(qw/fastcgi fcgid/) {
 
 		# Loading the template from /etc/ispcp/apache
-		($rs, $cfg_tpl) = get_file("$cfg_dir/$_\_ispcp.conf");
+		($rs, $cfg_tpl) = get_file("$cfg_dir/${_}_ispcp.conf");
 		return $rs if ($rs != 0);
 
 		# Building the new configuration file
@@ -1109,7 +1176,7 @@ sub setup_php {
 
 		# Store the new file
 		$rs = store_file(
-			"$wrk_dir/$_\_ispcp.conf",
+			"$wrk_dir/${_}_ispcp.conf",
 			$$cfg,
 			$main::cfg{'ROOT_USER'},
 			$main::cfg{'ROOT_GROUP'},
@@ -1118,7 +1185,7 @@ sub setup_php {
 		return $rs if ($rs != 0);
 
 		# Install the new file
-		$cmd = "$main::cfg{'CMD_CP'} -pf $wrk_dir/$_\_ispcp.conf $main::cfg{'APACHE_MODS_DIR'}/";
+		$cmd = "$main::cfg{'CMD_CP'} -pf $wrk_dir/${_}_ispcp.conf $main::cfg{'APACHE_MODS_DIR'}/";
 		$rs = sys_command_rs($cmd);
 		return $rs if($rs != 0);
 	}
@@ -1137,7 +1204,7 @@ sub setup_php {
 
 		# Store the new file
 		$rs = store_file(
-			"$wrk_dir/$_\_ispcp.load",
+			"$wrk_dir/${_}_ispcp.load",
 			$$cfg,
 			$main::cfg{'ROOT_USER'},
 			$main::cfg{'ROOT_GROUP'},
@@ -1146,7 +1213,7 @@ sub setup_php {
 		return $rs if ($rs != 0);
 
 		# Install the new file
-		$cmd = "$main::cfg{'CMD_CP'} -pf $wrk_dir/$_\_ispcp.load $main::cfg{'APACHE_MODS_DIR'}/";
+		$cmd = "$main::cfg{'CMD_CP'} -pf $wrk_dir/${_}_ispcp.load $main::cfg{'APACHE_MODS_DIR'}/";
 		$rs = sys_command_rs($cmd);
 		return $rs if($rs != 0);
 	}
@@ -1196,9 +1263,13 @@ sub setup_php {
 	0;
 }
 
+################################################################################
 # IspCP httpd main vhost setup / update
-# Build, store and install ispCP main vhost configuration file
-# Enable required modules (cgid, rewrite, suexec)
+#
+# This subroutine do the following tasks:
+#  - Built, store and install ispCP main vhost configuration file
+#  - Enable required modules (cgid, rewrite, suexec)
+#
 sub setup_httpd_main_vhost {
 
 	push_el(\@main::el, 'setup_httpd_main_vhost()', 'Starting...');
@@ -1304,10 +1375,14 @@ sub setup_httpd_main_vhost {
 	0;
 }
 
+################################################################################
 # IspCP awstats vhost setup / update
-# Build, store and install awstats vhost configuration file
-# Change proxy module configuration file if it exits
-# Enable proxy module
+#
+# This subroutine do the following tasks:
+#  - Built, store and install awstats vhost configuration file
+#  - Change proxy module configuration file if it exits
+#  - Enable proxy module
+#
 sub setup_awstats_vhost {
 
 	push_el(\@main::el, 'setup_awstats_vhost()', 'Starting...');
@@ -1492,8 +1567,11 @@ sub setup_awstats_vhost {
 	0;
 }
 
+################################################################################
 # IspCP Postfix setup / update
-# Build, store and install Postfix configuration file
+#
+# This subroutine built, store and install Postfix configuration files
+#
 sub setup_mta {
 
 	push_el(\@main::el, 'setup_mta()', 'Starting...');
@@ -1669,10 +1747,13 @@ sub setup_mta {
 	0;
 }
 
+################################################################################
 # IspCP Courier setup / update
-# Build, store and install Courier, related configuration
-# files (authdaemonrc userdb)
-# Creates userdb.dat from the contents of userdb
+#
+# This subroutine do the following tasks:
+#  - Built, store and install Courier, related configuration files
+#  - Creates userdb.dat from the contents of userdb file
+#
 sub setup_po {
 
 	push_el(\@main::el, 'setup_po()', 'Starting...');
@@ -1784,9 +1865,13 @@ sub setup_po {
 	0;
 }
 
+################################################################################
 # IspCP Proftpd setup / update
-# Build, store and install Proftpd main configuration files
-# Create Ftpd Sql account if needed
+#
+# This subroutine do the following tasks:
+#  - Built, store and install Proftpd main configuration files
+#  - Create Ftpd SQL account if needed
+#
 sub setup_ftpd {
 
 	push_el(\@main::el, 'setup_ftpd()', 'Starting...');
@@ -1997,11 +2082,8 @@ sub setup_ftpd {
 
 	# Store the new file in working directory
 	$rs = store_file(
-		"$wrk_dir/proftpd.conf",
-		$$cfg,
-		$main::cfg{'ROOT_USER'},
-		$main::cfg{'ROOT_GROUP'},
-		0600
+		"$wrk_dir/proftpd.conf", $$cfg, $main::cfg{'ROOT_USER'},
+		$main::cfg{'ROOT_GROUP'}, 0600
 	);
 	return $rs if ($rs != 0);
 
@@ -2018,10 +2100,8 @@ sub setup_ftpd {
 
 	if (! -e "$main::cfg{'TRAFF_LOG_DIR'}/proftpd") {
 		$rs = make_dir(
-			"$main::cfg{'TRAFF_LOG_DIR'}/proftpd",
-			$main::cfg{'ROOT_USER'},
-			$main::cfg{'ROOT_GROUP'},
-			0755
+			"$main::cfg{'TRAFF_LOG_DIR'}/proftpd", $main::cfg{'ROOT_USER'},
+			$main::cfg{'ROOT_GROUP'}, 0755
 		);
 		return $rs if ($rs != 0);
 	}
@@ -2029,11 +2109,8 @@ sub setup_ftpd {
 	if(! -e "$main::cfg{'TRAFF_LOG_DIR'}$main::cfg{'FTP_TRAFF_LOG'}") {
 
 		$rs = store_file(
-			"$main::cfg{'TRAFF_LOG_DIR'}$main::cfg{'FTP_TRAFF_LOG'}",
-			"\n",
-			$main::cfg{'ROOT_USER'},
-			$main::cfg{'ROOT_GROUP'},
-			0644
+			"$main::cfg{'TRAFF_LOG_DIR'}$main::cfg{'FTP_TRAFF_LOG'}", "\n",
+			$main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644
 		);
 		return $rs if ($rs != 0);
 	}
@@ -2043,8 +2120,11 @@ sub setup_ftpd {
 	0;
 }
 
+################################################################################
 #  IspCP Daemon, network setup / update
-#  Install or update the ispCP daemon and network init scripts
+#
+# This subroutine install or update the ispCP daemon and network init scripts
+#
 sub setup_ispcp_daemon_network {
 
 	push_el(\@main::el, 'setup_ispcp_daemon_network()', 'Starting...');
@@ -2109,8 +2189,11 @@ sub setup_ispcp_daemon_network {
 	0;
 }
 
+################################################################################
 # IspCP GUI apache vhost setup / update
-# Build, store and install ispCP GUI vhost configuration file
+#
+# this subroutine built, store and install ispCP GUI vhost configuration file
+#
 sub setup_gui_httpd {
 
 	push_el(\@main::el, 'setup_gui_httpd()', 'Starting...');
@@ -2177,11 +2260,8 @@ sub setup_gui_httpd {
 	# Storage and installation of new file - Begin
 
 	$rs = store_file(
-		"$wrk_dir/00_master.conf",
-		$$cfg,
-		$main::cfg{'ROOT_USER'},
-		$main::cfg{'ROOT_GROUP'},
-		0644
+		"$wrk_dir/00_master.conf", $$cfg, $main::cfg{'ROOT_USER'},
+		$main::cfg{'ROOT_GROUP'}, 0644
 	);
 	return $rs if ($rs != 0);
 
@@ -2237,9 +2317,12 @@ sub setup_gui_httpd {
 	0;
 }
 
+################################################################################
 # ispCP GUI PHP configuration files - Setup / Update
-# Create gui fcgi directory
-# Build, store and install gui php related files (starter script, php.ini...)
+#
+# This subroutine do the following tasks:
+#  - Create the master fcgi directory
+#  - Built, store and install gui php related files (starter script, php.ini...)
 sub setup_gui_php {
 
 	push_el(\@main::el, 'setup_gui_php()', 'Starting...');
@@ -2277,10 +2360,8 @@ sub setup_gui_php {
 	# Create the fcgi directories tree for gui user if it doesn't exists - Begin
 
 	$rs = make_dir(
-		"$main::cfg{'PHP_STARTER_DIR'}/master/php5",
-		$main::cfg{'ROOT_USER'},
-		$main::cfg{'ROOT_GROUP'},
-		0755
+		"$main::cfg{'PHP_STARTER_DIR'}/master/php5", $main::cfg{'ROOT_USER'},
+		$main::cfg{'ROOT_GROUP'}, 0755
 	);
 	return $rs if ($rs != 0);
 
@@ -2306,8 +2387,7 @@ sub setup_gui_php {
 
 	# Store the new file in working directory
 	$rs = store_file(
-		"$wrk_dir/master.php5-fcgi-starter",
-		$$cfg,
+		"$wrk_dir/master.php5-fcgi-starter", $$cfg,
 		$main::cfg{'APACHE_SUEXEC_USER_PREF'} . $main::cfg{'APACHE_SUEXEC_MIN_UID'},
 		$main::cfg{'APACHE_SUEXEC_USER_PREF'} . $main::cfg{'APACHE_SUEXEC_MIN_GID'},
 		0755
@@ -2350,8 +2430,7 @@ sub setup_gui_php {
 
 	# Store the new file in working directory
 	$rs = store_file(
-		"$wrk_dir/master.php.ini",
-		$$cfg,
+		"$wrk_dir/master.php.ini", $$cfg,
 		$main::cfg{'APACHE_SUEXEC_USER_PREF'} . $main::cfg{'APACHE_SUEXEC_MIN_UID'},
 		$main::cfg{'APACHE_SUEXEC_USER_PREF'} . $main::cfg{'APACHE_SUEXEC_MIN_GID'},
 		0644
@@ -2396,8 +2475,11 @@ sub setup_gui_php {
 	0;
 }
 
+################################################################################
 # IspCP GUI pma configuration file and pma slq controluser - Setup / Update
-# Build, store and install ispCP GUI pma configuration file (config.inc.php)
+#
+# This subroutine built, store and install the ispCP GUI pma configuration file
+#
 sub setup_gui_pma {
 
 	push_el(\@main::el, 'setup_gui_pma()', 'Starting...');
@@ -2418,14 +2500,12 @@ sub setup_gui_pma {
 
 	# Install
 	if(!defined &update_engine) {
-
 		$pma_sql_user = $main::ua{'db_pma_user'};
 		$pma_sql_password = $main::ua{'db_pma_password'};
 		$hostname = $main::ua{'db_host'};
 
 	# Update:
 	} else {
-
 		if($cfg_file =~ /\{(?:HOSTNAME|PMA_USER|PMA_PASS|BLOWFISH|TMP_DIR)\}/) {
 
 			print STDOUT colored(['bold yellow'], "\n\n\tWARNING: ") .
@@ -2452,7 +2532,6 @@ sub setup_gui_pma {
 	#
 
 	if(defined $pma_sql_user && defined $pma_sql_password) {
-
 		$main::db = undef;
 
 		@main::db_connect = (
@@ -2545,11 +2624,9 @@ sub setup_gui_pma {
 
 		$sql = "
 			GRANT SELECT (
-				Host, User, Select_priv, Insert_priv,
-				 Update_priv, Delete_priv, Create_priv,
-				 Drop_priv, Reload_priv, Shutdown_priv,
-				 Process_priv, File_priv, Grant_priv,
-				 References_priv, Index_priv, Alter_priv,
+				Host, User, Select_priv, Insert_priv, Update_priv, Delete_priv,
+				Create_priv, Drop_priv, Reload_priv, Shutdown_priv, Process_priv,
+				File_priv, Grant_priv, References_priv, Index_priv, Alter_priv,
 				 Show_db_priv, Super_priv, Create_tmp_table_priv,
 				 Lock_tables_priv, Execute_priv, Repl_slave_priv,
 				 Repl_client_priv
@@ -2647,17 +2724,19 @@ sub setup_gui_pma {
 	0;
 }
 
+################################################################################
 # IspCP Gui named configuration
-# Add Gui named cfg data in main configuration file
-# Building GUI named dns record's file
+#
+# This subroutine do the following tasks:
+#  - Add Gui named cfg data in main configuration file
+#  - Built GUI named dns record's file
+#
 sub setup_gui_named {
 
 	push_el(\@main::el, 'setup_gui_named()', 'Starting...');
 
-	my $rs = undef;
-
 	# Add GUI named cfg data
-	$rs = setup_gui_named_cfg_data($main::cfg{'BASE_SERVER_VHOST'});
+	my $rs = setup_gui_named_cfg_data($main::cfg{'BASE_SERVER_VHOST'});
 	return $rs if($rs != 0);
 
 	# Building GUI named dns records file
@@ -2672,8 +2751,10 @@ sub setup_gui_named {
 	0;
 }
 
+################################################################################
 # IspCP Gui named cfg file Setup / Update
 # Add Gui named cfg data in main configuration file
+#
 sub setup_gui_named_cfg_data {
 
 	push_el(\@main::el, 'setup_gui_named_cfg_data()', 'Starting...');
@@ -2716,15 +2797,9 @@ sub setup_gui_named_cfg_data {
 	# Loading all needed templates from /etc/ispcp/bind/parts
 	my ($entry_b, $entry_e, $entry) = ('', '', '');
 
-	(	$rs,
-		$entry_b,
-		$entry_e,
-		$entry
+	(	$rs, $entry_b, $entry_e, $entry
 	) = get_tpl(
-		$tpl_dir,
-		'cfg_entry_b.tpl',
-		'cfg_entry_e.tpl',
-		'cfg_entry.tpl'
+		$tpl_dir, 'cfg_entry_b.tpl', 'cfg_entry_e.tpl', 'cfg_entry.tpl'
 	);
 	return $rs if ($rs != 0);
 
@@ -2737,15 +2812,8 @@ sub setup_gui_named_cfg_data {
 	# Replacement tags
 	my ($entry_b_val, $entry_e_val, $entry_val) = ('', '', '');
 
-	(	$rs,
-		$entry_b_val,
-		$entry_e_val,
-		$entry_val
-	) = prep_tpl(
-		\%tags_hash,
-		$entry_b,
-		$entry_e,
-		$entry
+	($rs, $entry_b_val, $entry_e_val, $entry_val) = prep_tpl(
+		\%tags_hash, $entry_b, $entry_e, $entry
 	);
 	return $rs if ($rs != 0);
 
@@ -2757,11 +2825,7 @@ sub setup_gui_named_cfg_data {
 	my $entry_repl = "$entry_b_val$entry_val$entry_e_val\n$entry_b$entry_e";
 
 	($rs, $cfg) = repl_tag(
-		$entry_b,
-		$entry_e,
-		$cfg,
-		$entry_repl,
-		'setup_gui_named_cfg_data'
+		$entry_b, $entry_e, $cfg, $entry_repl, 'setup_gui_named_cfg_data'
 	);
 	return $rs if ($rs != 0);
 
@@ -2775,11 +2839,8 @@ sub setup_gui_named_cfg_data {
 
 	# Store the new builded file in the working directory
 	$rs = store_file(
-		"$wrk_dir/named.conf",
-		$cfg,
-		$main::cfg{'ROOT_USER'},
-		$main::cfg{'ROOT_GROUP'},
-		0644
+		"$wrk_dir/named.conf", $cfg, $main::cfg{'ROOT_USER'},
+		$main::cfg{'ROOT_GROUP'}, 0644
 	);
 	return $rs if ($rs != 0);
 
@@ -2797,6 +2858,7 @@ sub setup_gui_named_cfg_data {
 	0;
 }
 
+################################################################################
 # IspCP Gui named dns record's Setup / Update
 # Building GUI named dns record's file
 sub setup_gui_named_db_data {
@@ -2905,10 +2967,15 @@ sub setup_gui_named_db_data {
 	0;
 }
 
+################################################################################
 # Setup/updates rkhunter
-# - update rkhunter database files (only during setup process)
-# - Debian specific: Updates the configuration file and cron task, and
+#
+# This subroutine process the following tasks:
+#
+#  - update rkhunter database files (only during setup process)
+#  - Debian specific: Updates the configuration file and cron task, and
 #  remove default unreadable created log file
+#
 sub setup_rkhunter {
 
 	push_el(\@main::el, 'setup_rkhunter()', 'Starting...');
@@ -2970,7 +3037,9 @@ sub setup_rkhunter {
 	0;
 }
 
-# Remove all's empty files in ispCP configuration directories
+################################################################################
+# Remove all empty files in ispCP configuration directories
+#
 sub setup_cleanup {
 
 	push_el(\@main::el, 'setup_cleanup()', 'Starting...');
@@ -2986,15 +3055,13 @@ sub setup_cleanup {
 	0;
 }
 
-#
-## Setup / Update subroutines - End
-#
+################################################################################
+##                              Others subroutines                             #
+################################################################################
 
-#
-## Others subroutines - Begin
-#
-
+################################################################################
 # Get and return the fully qualified hostname
+#
 sub get_sys_hostname {
 
 	push_el(\@main::el, 'get_sys_hostname()', 'Starting...');
@@ -3033,7 +3100,11 @@ sub get_sys_hostname {
 	return (0, $rdata);
 }
 
-# Check ip
+################################################################################
+# Check the format of an IpV4 address
+#
+# @param IpV4 address (dot-decimal notation)
+#
 sub check_eth {
 
 	return 0 if(
@@ -3045,11 +3116,13 @@ sub check_eth {
 	1;
 }
 
+################################################################################
 # Check Sql connection
-# This subroutine can check the connections Sql
 #
-# [param: string Sql username]
-# [param: string Sql plaintext password]
+# This subroutine can be used to check an SQL connections
+#
+# [param: string SQL username]
+# [param: string SQL plain text password]
 #
 sub check_sql_connection {
 
@@ -3087,35 +3160,37 @@ sub check_sql_connection {
 	0;
 }
 
-# Implements the hook for the pre-installation scripts
+################################################################################
+# Implements the hook for the maintainers pre-installation scripts
 #
-# Hook that can be used by maintainers to perform any required tasks before the
-# common SETUP/UPDATE process via a dedicated `preinst` script. This hook is
-# automatically called after stopping services action.
+# Hook that can be used by distribution maintainers to perform any required
+# tasks before that the actions of the main process are executed. This hook
+# allow to add a specific script named `preinst` that will be run before the
+# both setup and update process actions. This hook is automatically called after
+# that all services are shutting down.
 #
-# Note: the `preinst` script can be written in SHELL, PERL or PHP, and should
-# live in the engine/setup directory. A shared library to the scripts that are
-# written in SHELL is available in the engine/setup directory.
+# Note:
 #
-# Argument that will be be passed to the maintainer script
+#  The `preinst` script can be written in PERL, PHP or SHELL (POSIX compliant),
+#  and must be copied in the engine/setup directory during the make process. A
+#  shared library for the scripts that are written in SHELL is available in the
+#  engine/setup directory.
+#
+# @param mixed Argument that will be be passed to the maintainer script
+#
 sub preinst {
 
 	push_el(\@main::el, 'preinst()', 'Starting...');
 
 	my $task = shift;
-
-	my ($rs, $cmd) = (undef, undef);
-
 	my $mime_type = mimetype("$main::cfg{'ROOT_DIR'}/engine/setup/preinst");
 
 	($mime_type =~ /(shell|perl|php)/) ||
 		exit_msg(
-			1,
-			'ERROR: Unable to determine the mimetype of the `preinst` script!'
+			1, '[err] Unable to determine the mimetype of the `preinst` script!'
 		);
 
-	$cmd = "$main::cfg{'CMD_'.uc($1)} preinst $task";
-	$rs = sys_command_rs($cmd);
+	my $rs = sys_command_rs("$main::cfg{'CMD_'.uc($1)} preinst $task");
 	return $rs if($rs != 0);
 
 	push_el(\@main::el, 'preinst()', 'Ending...');
@@ -3123,35 +3198,37 @@ sub preinst {
 	0;
 }
 
-# Implements the hook for the post-installation scripts
+################################################################################
+# Implements the hook for the maintainers post-installation scripts
 #
-# Hook that can be used by maintainers to perform any required tasks before the
-# common SETUP/UPDATE process via a dedicated `postinst` script. This hook is
-# automatically called after stopping services action.
+# Hook that can be used by distribution maintainers to perform any required
+# tasks after that the actions of the main process are executed. This hook
+# allow to add a specific script named `postinst` that will be run after the
+# both setup and update process actions. This hook is automatically called
+# before that all services are restarting.
 #
-# Note: the `postinst` script can be written in SHELL, PERL or PHP, and should
-# live in the engine/setup directory. A shared library to the scripts that are
-# written in SHELL is available in the engine/setup directory.
+# Note:
 #
-# Argument that will be be passed to the maintainer script
+#  The `postinst` script can be written in PERL, PHP or SHELL (POSIX compliant),
+#  and must be copied in the engine/setup directory during the make process. A
+#  shared library for the scripts that are written in SHELL is available in the
+#  engine/setup directory.
+#
+# @param mixed Argument that will be be passed to the maintainer script
+#
 sub postinst {
 
 	push_el(\@main::el, 'postinst()', 'Starting...');
 
 	my $task = shift;
-
-	my ($rs, $cmd) = (undef, undef);
-
 	my $mime_type = mimetype("$main::cfg{'ROOT_DIR'}/engine/setup/postinst");
 
 	($mime_type =~ /(shell|perl|php)/) ||
 		exit_msg(
-			1,
-			'ERROR: Unable to determine the mimetype of the `postinst` script!'
+			1, '[err] Unable to determine the mimetype of the `postinst` script!'
 		);
 
-	$cmd = "$main::cfg{'CMD_'.uc($1)} postinst $task";
-	$rs = sys_command_rs($cmd);
+	my $rs = sys_command_rs("$main::cfg{'CMD_'.uc($1)} postinst $task");
 	return $rs if($rs != 0);
 
 	push_el(\@main::el, 'postinst()', 'Ending...');
@@ -3159,16 +3236,21 @@ sub postinst {
 	0;
 }
 
-# Print a title
-# Param: string title to be displayed
+################################################################################
+# Convenience subroutine to print a title
+#
+# @param string title to be printed (without EOL)
+#
 sub title {
         my $title = shift;
         print STDOUT colored(['bold'], "\t$title\n");
 }
 
-# Print a subtitle
+################################################################################
+# Convenience subroutine  to print a subtitle
 #
-# Param: string subtitle to be displayed
+# @param string subtitle to be printed (without EOL)
+#
 sub subtitle {
         my $subtitle = shift;
         print STDOUT "\t $subtitle";
@@ -3177,17 +3259,22 @@ sub subtitle {
         $main::subtitle_length = length $subtitle;
 }
 
-# Insert a blanc line
+################################################################################
+# Convenience subroutine to insert a white line
+#
 sub spacer {
         print "\n";
 }
 
+################################################################################
 # Can be used in a loop to reflect the action progression
+#
 sub progress {
         print '.';
         $main::dyn_length++;
 }
 
+################################################################################
 # Print status string
 #
 # Note: Should be always called after the subtitle subroutine
@@ -3206,7 +3293,7 @@ sub print_status {
 	}
 
 	my ($term_width) = GetTerminalSize();
-	my $status_string = ($status ==0) ? colored(['green'], 'Done') :
+	my $status_string = ($status == 0) ? colored(['green'], 'Done') :
 		colored(['red'], 'Failed');
 
 	$status_string = sprintf('%'.($term_width-($length+1)).'s', $status_string);
@@ -3219,10 +3306,12 @@ sub print_status {
 	}
 }
 
+################################################################################
 # Exit with an error message
 #
 # [param: int exit code]
 # [param: string optional user message]
+#
 sub exit_msg {
 
 	push_el(\@main::el, 'exit_msg()', 'Starting...');
@@ -3233,8 +3322,8 @@ sub exit_msg {
 		$exit_code = 1;
 	}
 
-	my $msg = "\n\t" . colored(['red'], 'FATAL:')  .
-		" An error was occured during update process!\n" .
+	my $msg = "\n\t" . colored(['red'], '[err]:')  .
+		" An error occurred during update process!\n" .
 		"\tCorrect it and re-run this program." .
 		"\n\n\tYou can find help at http://isp-control.net/forum\n\n";
 
@@ -3249,18 +3338,19 @@ sub exit_msg {
 	exit $exit_code;
 }
 
+################################################################################
 # Starting services
+#
+# This subroutine start all serviced that are not marked as no in the main ispCP
+# configuration file
+#
 sub start_services {
 
 	push_el(\@main::el, 'start_services()', 'Starting...');
 
 	foreach(
-		qw/CMD_ISPCPN CMD_ISPCPD
-		CMD_NAMED
-		CMD_HTTPD CMD_FTPD
-		CMD_MTA CMD_AUTHD
-		CMD_POP CMD_POP_SSL
-		CMD_IMAP CMD_IMAP_SSL/
+		qw/CMD_ISPCPN CMD_ISPCPD CMD_NAMED CMD_HTTPD CMD_FTPD CMD_MTA CMD_AUTHD
+		CMD_POP CMD_POP_SSL CMD_IMAP CMD_IMAP_SSL/
 	) {
 		if( $main::cfg{$_} !~ /^no$/i && -e $main::cfg{$_}) {
 			sys_command("$main::cfg{$_} start $main::rlogfile");
@@ -3272,21 +3362,18 @@ sub start_services {
 	push_el(\@main::el, 'start_services()', 'Ending...');
 }
 
+################################################################################
 # Stopping services
-# Stop all service who are marked as 'no' in ispcp.conf
+#
 sub stop_services {
 
 	push_el(\@main::el, 'stop_services()', 'Starting...');
 
 	foreach(
-		qw/CMD_ISPCPN CMD_ISPCPD
-		CMD_NAMED
-		CMD_HTTPD CMD_FTPD
-		CMD_MTA CMD_AUTHD
-		CMD_POP CMD_POP_SSL
-		CMD_IMAP CMD_IMAP_SSL/
+		qw/CMD_ISPCPN CMD_ISPCPD CMD_NAMED CMD_HTTPD CMD_FTPD CMD_MTA CMD_AUTHD
+		CMD_POP CMD_POP_SSL CMD_IMAP CMD_IMAP_SSL/
 	) {
-		if( $main::cfg{$_} !~ /^no$/i && -e $main::cfg{$_}) {
+		if(-e $main::cfg{$_}) {
 			sys_command("$main::cfg{$_} stop $main::rlogfile");
 
 			progress();
@@ -3295,9 +3382,5 @@ sub stop_services {
 
 	push_el(\@main::el, 'stop_services()', 'Ending...');
 }
-
-#
-## Others Setup / Update subroutines - End
-#
 
 1;
