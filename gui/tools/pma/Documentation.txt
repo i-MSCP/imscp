@@ -1,4 +1,4 @@
-phpMyAdmin 3.3.5.1 Documentation
+phpMyAdmin 3.3.6 Documentation
 
   * Top
   * Requirements
@@ -257,8 +257,8 @@ You should not copy libraries/config.default.php over config.inc.php because
 the default configuration file is version-specific.
 
 If you have upgraded your MySQL server from a version previous to 4.1.2 to
-version 4.1.2 or newer and if you use the pmadb/linked table infrastructure,
-you should run the SQL script found in scripts/upgrade_tables_mysql_4_1_2+.sql.
+version 5.x or newer and if you use the pmadb/linked table infrastructure, you
+should run the SQL script found in scripts/upgrade_tables_mysql_4_1_2+.sql.
 
 Using authentication modes
 
@@ -266,8 +266,7 @@ Using authentication modes
     environment where you want to give users access to their own database and
     don't want them to play around with others.
     Nevertheless be aware that MS Internet Explorer seems to be really buggy
-    about cookies, at least till version 6, and PHP 4.1.1 is also a bit buggy
-    in this area!
+    about cookies, at least till version 6.
     Even in a single-user environment, you might prefer to use HTTP or cookie
     mode so that your user/password pair are not in clear in the configuration
     file.
@@ -592,7 +591,7 @@ $cfg['Servers'][$i]['hide_db'] string
 
     and to hide both "db1" and "db2" use
 
-    $cfg['Servers'][$i]['hide_db'] = '(db1|db2)';
+    $cfg['Servers'][$i]['hide_db'] = '^(db1|db2)$';
 
     More information on regular expressions can be found in the PCRE pattern
     syntax portion of the PHP reference manual.
@@ -1873,17 +1872,13 @@ in-depth coverage of phpMyAdmin's features and or interface.
 
 Server
 
-1.1 I'm running PHP 4+ and my server is crashing each time a specific action is
-required or phpMyAdmin sends a blank page or a page full of cryptic characters
-to my browser, what can I do?
+1.1 My server is crashing each time a specific action is required or phpMyAdmin
+sends a blank page or a page full of cryptic characters to my browser, what can
+I do?
 
-There are some known PHP bugs with output buffering and compression.
 Try to set the $cfg['OBGzip'] directive to FALSE in your config.inc.php file
 and the zlib.output_compression directive to Off in your php configuration
 file.
-Furthermore, we know about such problems connected to the release candidates of
-PHP 4.2.0 (tested with PHP 4.2.0 RC1 to RC4) together with MS Internet
-Explorer. Please upgrade to the release version PHP 4.2.0.
 
 1.2 My Apache server crashes when using phpMyAdmin.
 
@@ -1892,13 +1887,7 @@ See also the FAQ 1.1 entry about PHP bugs with output buffering.
 If your server keeps crashing, please ask for help in the various Apache
 support groups.
 
-1.3 I'm running phpMyAdmin with "cookie" authentication mode under PHP 4.2.0 or
-4.2.1 loaded as an Apache 2 module but can't enter the script: I'm always
-displayed the login screen.
-
-This is a known PHP bug (see this bug report) from the official PHP bug
-database. It means there is and won't be any phpMyAdmin fix against it because
-there is no way to code a fix.
+1.3 (withdrawn).
 
 1.4 Using phpMyAdmin on IIS, I'm displayed the error message: "The specified
 CGI application misbehaved by not returning a complete set of HTTP headers
@@ -1924,11 +1913,7 @@ index.php, navigation.php and libraries/common.lib.php.
 
 These features are based on the gzencode() and bzcompress() PHP functions to be
 more independent of the platform (Unix/Windows, Safe Mode or not, and so on).
-So, you must have PHP4 >= 4.0.4 and Zlib/Bzip2 support (--with-zlib and
---with-bz2).
-We faced PHP crashes when trying to download a dump with MS Internet Explorer
-when phpMyAdmin is run with a release candidate of PHP 4.2.0. In this case you
-should switch to the release version of PHP 4.2.0.
+So, you must have Zlib/Bzip2 support (--with-zlib and --with-bz2).
 
 1.8 I cannot insert a text file in a table, and I get an error about safe mode
 being in effect.
@@ -2053,13 +2038,7 @@ library to match your MySQL installation. Your chosen extension is specified in
 $cfg['Servers'][$i]['extension']. More information (and several workarounds)
 are located in the MySQL Documentation.
 
-1.18 I'm running MySQL <= 4.0.1 having lower_case_table_names set to 1. If I
-create a new table with a capital letter in its name it is changed to lowercase
-as it should. But if I try to DROP this table MySQL is unable to find the
-corresponding file.
-
-This is a bug of MySQL <= 4.0.1. Please upgrade to at least MySQL 4.0.2 or turn
-off your lower_case_table_names directive.
+1.18 (withdrawn).
 
 1.19 I can't run the "display relations" feature because the script seems not
 to know the font face I'm using!
@@ -2073,7 +2052,7 @@ Configuration".
 
 To connect to a MySQL server, PHP needs a set of MySQL functions called "MySQL
 extension". This extension may be part of the PHP distribution (compiled-in),
-otherwise it needs to be loaded dynamically. Its name is probably mysql.so or
+otherwise it needs to be loaded dynamically. Its name is probably mysql.so or 
 php_mysql.dll. phpMyAdmin tried to load the extension but failed.
 
 Usually, the problem is solved by installing a software package called
@@ -2105,10 +2084,7 @@ value of this directive using the query
 
 SHOW VARIABLES LIKE 'lower_case_table_names';
 
-1.24 Some characters are being truncated in my queries, or I get characters
-randomly added. I am running PHP 4.2.3.
-
-This is a PHP 4.2.3 bug.
+1.24 (withdrawn).
 
 1.25 I am running Apache with mod_gzip-1.3.26.1a on Windows XP, and I get
 problems, such as undefined variables when I run a SQL query.
@@ -2285,8 +2261,8 @@ Example from the Apache 2.2 documentation:
 
 ProxyPass /mirror/foo/ http://backend.example.com/
 ProxyPassReverse /mirror/foo/ http://backend.example.com/
-ProxyPassReverseCookieDomain backend.example.com public.example.com
-ProxyPassReverseCookiePath / /mirror/foo/
+ProxyPassReverseCookieDomain backend.example.com public.example.com 
+ProxyPassReverseCookiePath / /mirror/foo/ 
 
 Note: if the backend url looks like http://host/~user/phpmyadmin, the tilde (~)
 must be url encoded as %7E in the ProxyPassReverse* lines. This is not specific
@@ -2329,7 +2305,7 @@ I do?
 
 For RedHat users, Harald Legner suggests this on the mailing list:
 
-On my RedHat-Box the socket of MySQL is /var/lib/mysql/mysql.sock. In your
+On my RedHat-Box the socket of MySQL is /var/lib/mysql/mysql.sock. In your 
 php.ini you will find a line
 
 mysql.default_socket = /tmp/mysql.sock
@@ -2464,7 +2440,7 @@ back to phpMyAdmin. You should be able to log in again.
 or a time limit error.
 
 Compressed dumps are built in memory and because of this are limited to php's
-memory limit. For GZip/BZip2 exports this can be overcome since 2.5.4 using
+memory limit. For GZip/BZip2 exports this can be overcome since 2.5.4 using 
 $cfg['CompressOnFly'] (enabled by default). Zip exports can not be handled this
 way, so if you need Zip files for larger dump, you have to use another way.
 
@@ -2734,9 +2710,7 @@ Testing needs to be done for Konqueror 2.2.2.
 stores the cookies.
 
 MS Internet Explorer seems to be really buggy about cookies, at least till
-version 6. And thanks to Andrew Zivolup we've traced also a PHP 4.1.1 bug in
-this area!
-Then, if you're running PHP 4.1.1, try to upgrade or downgrade... it may work!
+version 6.
 
 5.5 In Internet Explorer 5.0, I get JavaScript errors when browsing my rows.
 
@@ -2971,7 +2945,7 @@ pages?
   * Select a table from the list, enter its coordinates and click Save.
     Coordinates are relative; your diagram will be automatically scaled to fit
     the page. When initially placing tables on the page, just pick any
-    coordinates -- say, 50x50. After clicking Save, you can then use the
+    coordinates -- say, 50x50. After clicking Save, you can then use the 
     graphical editor to position the element correctly.
   * When you'd like to look at your PDF, first be sure to click the Save button
     beneath the list of tables and coordinates, to save any changes you made
@@ -3135,12 +3109,11 @@ file table.tex):
 \include{table}         % including exported table
 \end{document}          % end of document
 
-6.20 In MySQL 4, I see a lot of databases which are not mine, and cannot access
-them.
+6.20 I see a lot of databases which are not mine, and cannot access them.
 
-Upgrading to MySQL 4 usually gives users those global privileges: CREATE
-TEMPORARY TABLES, SHOW DATABASES, LOCK TABLES. Those privileges also enable
-users to see all the database names. See this bug report.
+You have one of these global privileges: CREATE TEMPORARY TABLES, SHOW
+DATABASES, LOCK TABLES. Those privileges also enable users to see all the
+database names. See this bug report.
 
 So if your users do not need those privileges, you can remove them and their
 databases list will shorten.
@@ -3187,7 +3160,7 @@ is done whenever you enter Structure page for this table.
 
 6.25 How does BLOB streaming work in phpMyAdmin?
 
-First, for general information about BLOB streaming on MySQL, visit
+First, for general information about BLOB streaming on MySQL, visit 
 blobstreaming.org. We currently support streaming if you are running MySQL 5.1
 with the PBXT and PBMS storage engines. Moreover, only PBMS 0.5.04 is
 supported.
@@ -3325,7 +3298,7 @@ If you're planning to contribute source, please read the following information:
   * Please enable showing PHP errors and warnings by the $cfg['Error_Handler']
     ['display'] configuration directive.
   * Please try to keep up the file-naming conventions. Table-related stuff goes
-    to tbl_*.php, db-related code to db_*.php, server-related tools to
+    to tbl_*.php, db-related code to db_*.php, server-related tools to 
     server_*.php and so on.
   * Please don't put message strings in your code, instead add the string (at
     least) to english-utf-8.inc.php and print() it out.
