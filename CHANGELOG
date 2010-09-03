@@ -1,19 +1,25 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-09-03 Benedikt Heintel
+	- GUI:
+		* Refactored Ticket System (part I/client, reseller)
+	- LANGUAGES:
+		* Added Persian
+
 2010-08-31 Markus Schmidt
 	- TOOLS:
 		* Updated phpMyAdmin to version 3.3.6
 
 2010-08-29 Benedikt Heintel
 	- ENGINE:
-		* Security Fix #2440: Backup script will restore forged backup
-			(Thanks to Daniel)
+		* Security Fix #2440: Backup script will restore forged backup (Thanks
+			to Daniel)
 	- GUI:
 		* Changed: Orderpanel 'State' is not longer a required field
 		* Changed: Oder of address fields changed
 		* Fixed #2174: Several issues for the Ticket Support System
-		* Refactored: Ticket System of (part I/client)
+		* Refactored Ticket System (part I/client)
 
 2010-08-27 Laurent Declercq
 	- CONFIGS:

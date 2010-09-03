@@ -47,11 +47,53 @@ $tpl->define_dynamic('scroll_next', 'page');
 
 // page functions
 
-function gen_tickets_list(&$tpl, &$sql, $user_id) {
+/**
+ * Checks if the client's reseller has a support system.
+ *
+ * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @since	1.0.7
+ * @version	1.0.0
+ *
+ * @param reference $sql	the SQL object
+ * @param int $admin_id 	the ID of the reseller's admin
+ * @return boolean
+ */
+function hasTicketSystem(&$sql, $admin_id) {
+	$cfg = ispCP_Registry::get('Config');
+
+	$query = "
+	  SELECT
+		`support_system`
+	  FROM
+		`reseller_props`
+	  WHERE
+		`reseller_id` = ?
+	;";
+
+	$rs = exec_query($sql, $query, $admin_id);
+
+	if (!$cfg->ISPCP_SUPPORT_SYSTEM || $rs->fields['support_system'] == 'no')
+		return false;
+
+	return true;
+}
+
+/**
+ * Gets the answers of the selected ticket and generates its output.
+ *
+ * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @since	1.0.7
+ * @version	1.0.0
+ *
+ * @param reference $tpl	the Template object
+ * @param reference $sql	the SQL object
+ * @param int $ticket_id	the ID of the ticket to display
+ * @param int $screenwidth	the width of the display
+ */
+function generateTicketList(&$tpl, &$sql, $user_id) {
 	$cfg = ispCP_Registry::get('Config');
 
 	$start_index = 0;
-
 	$rows_per_page = $cfg->DOMAIN_ROWS_PER_PAGE;
 
 	if (isset($_GET['psi'])) {
@@ -69,7 +111,7 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 			`ticket_status` != 0
 		AND
 			`ticket_reply` = 0
-	";
+	;";
 
 	$rs = exec_query($sql, $count_query, array($user_id, $user_id));
 	$records_count = $rs->fields['cnt'];
@@ -91,9 +133,9 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 			`ticket_reply` = 0
 		ORDER BY
 			`ticket_date` DESC
-		LIMIT
-			$start_index, $rows_per_page
-		";
+		LIMIT " .
+			$start_index . ", " . $rows_per_page
+    . ";";
 
 	$rs = exec_query($sql, $query, array($user_id, $user_id));
 
@@ -103,13 +145,11 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 				'TICKETS_LIST' => '',
 				'SCROLL_PREV' => '',
 				'SCROLL_NEXT' => ''
-				)
-			);
-
-		set_page_message(tr('You have no support tickets.'));
+			)
+		);
+		set_page_message(tr('You don\'t have support tickets.'));
 	} else {
 		$prev_si = $start_index - $rows_per_page;
-
 		if ($start_index == 0) {
 			$tpl->assign('SCROLL_PREV', '');
 		} else {
@@ -120,7 +160,6 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 				)
 			);
 		}
-
 		$next_si = $start_index + $rows_per_page;
 
 		if ($next_si + 1 > $records_count) {
@@ -134,20 +173,19 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 			);
 		}
 
-		global $i;
-
+		$i = 0;
 		while (!$rs->EOF) {
 			$ticket_id		= $rs->fields['ticket_id'];
-			$from			= get_ticket_from($tpl, $sql, $ticket_id);
-			$ticket_urgency = $rs->fields['ticket_urgency'];
+			$from			= getTicketSender($tpl, $sql, $ticket_id);
 			$date			= ticketGetLastDate($sql, $ticket_id);
+            $ticket_urgency = $rs->fields['ticket_urgency'];
 			$ticket_status	= $rs->fields['ticket_status'];
 
 			$tpl->assign(array('URGENCY' => get_ticket_urgency($ticket_urgency)));
 
 			if ($ticket_status == 1) {
 				$tpl->assign(array('NEW' => tr("[New]")));
-			} elseif ($ticket_status == 4) {
+			} else if ($ticket_status == 4) {
 				$tpl->assign(array('NEW' => tr("[Re]")));
 			} else {
 				$tpl->assign(array('NEW' => " "));
@@ -163,7 +201,6 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 					'CONTENT'	=> ($i % 2 == 0) ? 'content' : 'content2'
 				)
 			);
-
 			$tpl->parse('TICKETS_ITEM', '.tickets_item');
 			$rs->moveNext();
 			$i++;
@@ -171,43 +208,35 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 	}
 }
 
-function get_ticket_from(&$tpl, &$sql, &$ticket_id) {
+/**
+ * Get the sender of an ticket.
+ *
+ * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @since	1.0.7
+ * @version	1.0.0
+ *
+ * @param  reference $tpl   the TPL object
+ * @param  reference $sql   the SQL object
+ * @param  int $ticket_id   the sender's ID
+ * @return string           formatted sender string
+ */
+function getTicketSender(&$tpl, &$sql, $ticket_id) {
+
 	$query = "
 		SELECT
-			`ticket_from`,
-			`ticket_to`,
-			`ticket_status`,
-			`ticket_reply`
+            `a`.`admin_name`,
+			`a`.`fname`,
+			`a`.`lname`
 		FROM
-			`tickets`
+			`tickets` AS `t` JOIN `admin` AS `a`
+        ON
+            `t`.`ticket_from` = `a`.`admin_id`
 		WHERE
 			`ticket_id` = ?
-	";
+	;";
 
 	$rs = exec_query($sql, $query, $ticket_id);
-	$ticket_from = $rs->fields['ticket_from'];
-	// NXW: Unused variables so...
-	/*
-	$ticket_to = $rs->fields['ticket_to'];
-	$ticket_status = $rs->fields['ticket_status'];
-	$ticket_reply = clean_html($rs->fields['ticket_reply']);
-	*/
-
-	$query = "
-		SELECT
-			`admin_name`,
-			`admin_type`,
-			`fname`,
-			`lname`
-		FROM
-			`admin`
-		WHERE
-			`admin_id` = ?
-	";
-
-	$rs = exec_query($sql, $query, $ticket_from);
 	$from_user_name = decode_idna($rs->fields['admin_name']);
-	// $admin_type = $rs->fields['admin_type'];
 	$from_first_name = $rs->fields['fname'];
 	$from_last_name = $rs->fields['lname'];
 
@@ -216,22 +245,7 @@ function get_ticket_from(&$tpl, &$sql, &$ticket_id) {
 	return $from_name;
 }
 
-// common page data.
-$query = "
-  SELECT
-    `support_system`
-  FROM
-    `reseller_props`
-  WHERE
-    `reseller_id` = ?
-";
-
-$rs = exec_query($sql, $query, $_SESSION['user_id']);
-
-if (!$cfg->ISPCP_SUPPORT_SYSTEM || $rs->fields['support_system'] == 'no') {
-	user_goto('index.php');
-}
-
+// common page data
 $tpl->assign(
 	array(
 		'TR_CLIENT_QUESTION_PAGE_TITLE' => tr('ispCP - Client/Questions & Comments'),
@@ -241,9 +255,17 @@ $tpl->assign(
 	)
 );
 
-gen_tickets_list($tpl, $sql, $_SESSION['user_id']);
+// dynamic page data
 
-// static page messages.
+$admin_id = $_SESSION['user_created_by'];
+
+if (!hasTicketSystem($sql, $admin_id)) {
+	user_goto('index.php');
+}
+
+generateTicketList($tpl, $sql, $_SESSION['user_id']);
+
+// static page messages
 
 gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_ticket_system.tpl');
 gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_ticket_system.tpl');
@@ -277,4 +299,5 @@ $tpl->prnt();
 if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
+
 unset_messages();

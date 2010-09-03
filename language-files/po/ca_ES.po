@@ -10,13 +10,14 @@ msgstr ""
 "Project-Id-Version: ca_ES\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-06-17 10:11+0200\n"
-"PO-Revision-Date: 2010-04-28 14:05+0200\n"
+"PO-Revision-Date: 2010-08-30 11:02+0200\n"
 "Last-Translator: Joan Juvanteny <jjuvan@grn.cat>\n"
-"Language-Team: Catalan <en@li.org>\n"
+"Language-Team: Catalan <ca@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.11.4\n"
+"X-Generator: Lokalize 1.0\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #. Please ignore this entry
 msgid "encoding"
@@ -1212,14 +1213,14 @@ msgstr "L'arxiu carregat no conté informació d'idioma!"
 
 #, php-format
 msgid "%s added new language: %s"
-msgstr ""
+msgstr "% afegit el nou llenguatge: %s"
 
 msgid "New language installed!"
 msgstr "Nou idioma instal·lat!"
 
 #, php-format
 msgid "%s updated language: %s"
-msgstr ""
+msgstr "% llenguatge actualitzat: %s"
 
 msgid "Language was updated!"
 msgstr "L'idioma s'ha actualitzat!"
@@ -1769,7 +1770,6 @@ msgstr "ispCP - Admin/Paràmetres"
 msgid "ERROR: Only positive numbers are allowed !"
 msgstr "ERROR: Només es permeten números positius!"
 
-#, fuzzy
 msgid "Settings saved!"
 msgstr "Paràmetres guardats!"
 
@@ -1852,7 +1852,7 @@ msgid "Check for update"
 msgstr "Buscar actualització"
 
 msgid "Show compression size comment"
-msgstr ""
+msgstr "Mostrar el comentari de la mida de compressió"
 
 msgid "Prevent external login for admins"
 msgstr "Prohibir l'accés extern dels admins"
@@ -1897,53 +1897,49 @@ msgstr ""
 msgid "Maximal number of labels for subdomains"
 msgstr "Màxim nombre d'etiquetes per subdominis"
 
-#, fuzzy
 msgid ""
 "ERROR: Only letters, numbers, dash and underscore are allowed for services "
 "names!"
-msgstr "ERROR: Només estan permesos Lletres, Números, Guions i Barres!"
+msgstr ""
+"ERROR: Només estan permesos lletres, números, guions i Barres per els noms "
+"dels serveis!"
 
-#, fuzzy
 msgid "ERROR: Wrong Ip number!"
-msgstr "IP incorrecta!"
+msgstr "ERROR: IP incorrecta!"
 
-#, fuzzy
 msgid "ERROR: Only positive numbers are allowed for services ports!"
-msgstr "ERROR: Només es permeten números positius!"
+msgstr "ERROR: Només es permeten números positius per els ports dels serveis!"
 
-#, fuzzy
 msgid "ERROR: Service port with same name already exists!"
-msgstr "ERROR: El port ja existeix!"
+msgstr "ERROR: Ja existeix un port per el servei amb el mateix nom!"
 
 msgid "ERROR: Unallowed protocol!"
-msgstr ""
+msgstr "ERROR: Protocol no permès!"
 
 msgid "ERROR: Bad value for show entry!"
-msgstr ""
+msgstr "ERROR: Valor incorrecte per l'entrada!"
 
-#, fuzzy
 msgid "Service port was added!"
-msgstr "S'ha afegit una nova IP!"
+msgstr "S'ha afegit un port al servei!"
 
 #, php-format
 msgid "%d Service(s) port was updated!"
-msgstr ""
+msgstr "%d ports del(s) servei(s) s'ha(n) actualitzat!"
 
 msgid "Nothing's been changed!"
-msgstr ""
+msgstr "No s'ha fet cap canvi!"
 
 msgid "You have no custom service ports defined."
 msgstr "No teniu ports de servei definits."
 
 msgid "ERROR: Unknown service port name!"
-msgstr ""
+msgstr "ERROR: Nom de port de servei desconegut!"
 
-#, fuzzy
 msgid "Service port was removed!"
-msgstr "El ticket s'ha reobert!"
+msgstr "El port del servei s'ha esborrat!"
 
 msgid "ERROR: You are not allowed to remove this port entry!"
-msgstr ""
+msgstr "ERROR: No estas autoritzat a esborrar aquest port!"
 
 msgid "udp"
 msgstr "udp"
@@ -1957,16 +1953,15 @@ msgstr "Port"
 msgid "Protocol"
 msgstr "Protocol"
 
-#, fuzzy, php-format
+#, php-format
 msgid "Are you sure you want to delete %s service port ?"
-msgstr "Estàs segur que vols esborrar %s?"
+msgstr "Estàs segur que vols esborrar el port del servei %s ?"
 
 msgid "View / Update service(s) port"
-msgstr ""
+msgstr "Veure / Actualitzar port(s) de servei(s)"
 
-#, fuzzy
 msgid "Add new service port"
-msgstr "Afegir un nou usuari del pla de hosting"
+msgstr "Afegir un nou port pel servei"
 
 msgid "ispCP - Admin/Server Traffic Settings"
 msgstr "ispCP - Admin/Paràmetres de Trànsit del Servidor"
@@ -2031,12 +2026,11 @@ msgstr "Informació del sistema de fitxers"
 msgid "Free"
 msgstr "Lliure"
 
-#, fuzzy
 msgid "Kernel Version"
-msgstr "Versió de mostra!"
+msgstr "Versió del kernel"
 
 msgid "Load (1 Min, 5 Min, 15 Min)"
-msgstr ""
+msgstr "Carrega (1 Min, 5 Min, 15 Min)"
 
 msgid "Memory system info"
 msgstr "Informació de la memòria del sistema"
@@ -2194,7 +2188,6 @@ msgstr "Subdominis del domini:"
 msgid "Domain databases:"
 msgstr "Bases de dades del domini:"
 
-#, fuzzy
 msgid ""
 "Do you really want to delete the entire domain? This operation cannot be "
 "undone!"
@@ -2256,9 +2249,8 @@ msgstr "Sintaxi del punt de muntatge incorrecta"
 msgid "Master domain cannot be used!"
 msgstr "El domini mestre no pot ser utilitzat!"
 
-#, fuzzy
 msgid "Wrong address in forward URL!"
-msgstr "El domini de desti del correu no és correcte!"
+msgstr "L'adreça URL de destió és incorrecta!"
 
 msgid "Wrong domain part in forward URL!"
 msgstr "El domini de desti del correu no és correcte!"
@@ -2804,10 +2796,8 @@ msgstr ""
 msgid "free of charge"
 msgstr "gratuït"
 
-#, fuzzy
 msgid "You cannot update to this hosting plan, see notices in text."
-msgstr ""
-"No pots actualitzar aquest pla de hosting, mira les alertes en el text."
+msgstr "No pots actualitzar aquest pla de hosting, mira els avisos en el text."
 
 msgid "Warning:"
 msgstr "Alerta:"
@@ -2873,7 +2863,7 @@ msgid "You have no new support questions!"
 msgstr "No teniu preguntes de suport!"
 
 msgid "Not Set"
-msgstr ""
+msgstr "No definit"
 
 msgid "This Domain is expired"
 msgstr "Aquest domini està caducat"
@@ -2906,7 +2896,7 @@ msgid "Disk usage"
 msgstr "Ús de disc"
 
 msgid "Alternative URL to reach your website"
-msgstr ""
+msgstr "URL alternativa per arribar a la teva web"
 
 msgid "ispCP - Client/Change Language"
 msgstr "ispCP - Client/Canviar idioma"
@@ -3233,6 +3223,7 @@ msgstr "Contrasenya d'usuari massa llarga!"
 
 msgid "Don't use special chars like \"@, $, %...\" in the password!"
 msgstr ""
+"No facis servir caràcters especials com \"@, $, %...\" en la contrasenya!"
 
 msgid "SQL user password was successfully changed!"
 msgstr "Contrasenya d'usuari SQL canviada correctament!"
@@ -3607,21 +3598,17 @@ msgstr "Error provant d'obtenir la llista de la targes de xarxa!"
 msgid "This IP (%s) is not assigned to any network card!"
 msgstr "La IP (%s) no està assignada a cap tarja de xarxa!"
 
-#, fuzzy
 msgid "Days"
-msgstr "Dia"
+msgstr "Dies"
 
-#, fuzzy
 msgid "Hours"
-msgstr "Hora"
+msgstr "Hores"
 
-#, fuzzy
 msgid "Minute"
-msgstr "minuts"
+msgstr "Minut"
 
-#, fuzzy
 msgid "Minutes"
-msgstr "minuts"
+msgstr "Minuts"
 
 msgid "Couldn't check for updates! Website not reachable."
 msgstr ""

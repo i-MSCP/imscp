@@ -45,8 +45,51 @@ $tpl->define_dynamic('scroll_prev', 'page');
 $tpl->define_dynamic('scroll_next_gray', 'page');
 $tpl->define_dynamic('scroll_next', 'page');
 
-// page functions.
-function gen_tickets_list(&$tpl, &$sql, $user_id) {
+// page functions
+
+/**
+ * Checks if the client's reseller has a support system.
+ *
+ * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @since	1.0.7
+ * @version	1.0.0
+ *
+ * @param reference $sql	the SQL object
+ * @param int $admin_id 	the ID of the reseller's admin
+ * @return boolean
+ */
+function hasTicketSystem(&$sql, $admin_id) {
+	$cfg = ispCP_Registry::get('Config');
+
+	$query = "
+	  SELECT
+		`support_system`
+	  FROM
+		`reseller_props`
+	  WHERE
+		`reseller_id` = ?
+	;";
+
+	$rs = exec_query($sql, $query, $admin_id);
+
+	if (!$cfg->ISPCP_SUPPORT_SYSTEM || $rs->fields['support_system'] == 'no')
+		return false;
+
+	return true;
+}
+
+/**
+ * Generates the list with all closed tickets
+ *
+ * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @since	1.0.7
+ * @version	1.0.0
+ *
+ * @param reference $tpl    the TPL object
+ * @param reference $sql    the SQL object
+ * @param int $user_id      the ID of the reseller
+ */
+function generateTicketList(&$tpl, &$sql, $user_id) {
 	$cfg = ispCP_Registry::get('Config');
 
 	$start_index = 0;
@@ -68,12 +111,12 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 			`ticket_status` = 0
 		AND
 			`ticket_reply` = 0
-	";
+	;";
 
 	$rs = exec_query($sql, $count_query, array($user_id, $user_id));
 	$records_count = $rs->fields['cnt'];
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`ticket_id`,
 			`ticket_status`,
@@ -91,9 +134,9 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 			`ticket_reply` = 0
 		ORDER BY
 			`ticket_date` DESC
-		LIMIT
-			$start_index, $rows_per_page
-SQL_QUERY;
+		LIMIT " .
+			$start_index . ", " . $rows_per_page
+    . ";";
 
 	$rs = exec_query($sql, $query, array($user_id, $user_id));
 
@@ -134,25 +177,16 @@ SQL_QUERY;
 			);
 		}
 
-		global $i;
-
+		$i = 0;
 		while (!$rs->EOF) {
-			$ticket_id		= $rs->fields['ticket_id'];
-			$ticket_urgency = $rs->fields['ticket_urgency'];
-			//$ticket_status	= $rs->fields['ticket_status'];
-			$date			= ticketGetLastDate($sql, $ticket_id);
-
-			$tpl->assign(array('URGENCY' => get_ticket_urgency($ticket_urgency)));
-
-			$tpl->assign(array('NEW' => " "));
-
 			$tpl->assign(
-				array(
-					'LAST_DATE'	=> $date,
+                array(
+                    'URGENCY'   => get_ticket_urgency($rs->fields['ticket_urgency']),
+                    'NEW'       => " ",
+					'LAST_DATE'	=> ticketGetLastDate($sql, $rs->fields['ticket_id']),
 					'SUBJECT'	=> tohtml($rs->fields['ticket_subject']),
 					'SUBJECT2'	=> addslashes(clean_html($rs->fields['ticket_subject'])),
-					'MESSAGE'	=> tohtml($rs->fields['ticket_message']),
-					'ID'		=> $ticket_id,
+					'ID'		=> $rs->fields['ticket_id'],
 					'CONTENT'	=> ($i % 2 == 0) ? 'content' : 'content2'
 				)
 			);
@@ -165,20 +199,6 @@ SQL_QUERY;
 }
 
 // common page data.
-$query = "
-  SELECT
-    `support_system`
-  FROM
-    `reseller_props`
-  WHERE
-    `reseller_id` = ?
-";
-
-$rs = exec_query($sql, $query, $_SESSION['user_id']);
-
-if (!$cfg->ISPCP_SUPPORT_SYSTEM || $rs->fields['support_system'] == 'no') {
-	user_goto('index.php');
-}
 
 $tpl->assign(
 	array(
@@ -189,7 +209,14 @@ $tpl->assign(
 	)
 );
 
-gen_tickets_list($tpl, $sql, $_SESSION['user_id']);
+// dynamic page data.
+$admin_id = $_SESSION['user_created_by'];
+
+if (!hasTicketSystem($sql, $admin_id)) {
+	user_goto('index.php');
+}
+
+generateTicketList($tpl, $sql, $_SESSION['user_id']);
 
 // static page messages.
 

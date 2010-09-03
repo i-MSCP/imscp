@@ -87,7 +87,6 @@ function hasTicketSystem(&$sql, $reseller_id) {
  * @param int $screenwidth	the width of the display
  */
 function showTicketContent(&$tpl, &$sql, $ticket_id, $screenwidth) {
-
 	$cfg = ispCP_Registry::get('Config');
 
 	$user_id = $_SESSION['user_id'];
@@ -124,22 +123,21 @@ function showTicketContent(&$tpl, &$sql, $ticket_id, $screenwidth) {
 			$action = "close";
 		}
 
-		$tpl->assign(array('URGENCY' => get_ticket_urgency($ticket_urgency),
-			'URGENCY_ID' => $ticket_urgency));
-
-		getTicketSender($tpl, $sql, $ticket_id);
-		$date_formt = $cfg->DATE_FORMAT;
+		$from           = getTicketSender($tpl, $sql, $ticket_id);
 		$ticket_content = wordwrap($rs->fields['ticket_message'],
 				round(($screenwidth-200) / 7), "\n");
 
 		$tpl->assign(
 			array(
-				'TR_ACTION' => $tr_action,
-				'ACTION' => $action,
-				'DATE' => date($date_formt, $rs->fields['ticket_date']),
-				'SUBJECT' => tohtml($rs->fields['ticket_subject']),
-				'TICKET_CONTENT' => nl2br(tohtml($ticket_content)),
-				'ID' => $rs->fields['ticket_id']
+                'URGENCY'           => get_ticket_urgency($ticket_urgency),
+			    'URGENCY_ID'        => $ticket_urgency,
+				'TR_ACTION'         => $tr_action,
+				'ACTION'            => $action,
+				'DATE'              => date($cfg->DATE_FORMAT, $rs->fields['ticket_date']),
+				'SUBJECT'           => tohtml($rs->fields['ticket_subject']),
+				'TICKET_CONTENT'    => nl2br(tohtml($ticket_content)),
+				'ID'                => $rs->fields['ticket_id'],
+                'FROM'		        => tohtml($from)
 			)
 		);
 
@@ -161,17 +159,13 @@ function showTicketContent(&$tpl, &$sql, $ticket_id, $screenwidth) {
  * @param int $screenwidth	the width of the display
  */
 function showTicketReplies(&$tpl, &$sql, $ticket_id, $screenwidth) {
-
 	$cfg = ispCP_Registry::get('Config');
 
 	$query = "
 		SELECT
 			`ticket_id`,
-			`ticket_status`,
-			`ticket_reply`,
 			`ticket_urgency`,
 			`ticket_date`,
-			`ticket_subject`,
 			`ticket_message`
 		FROM
 			`tickets`
@@ -179,24 +173,25 @@ function showTicketReplies(&$tpl, &$sql, $ticket_id, $screenwidth) {
 			`ticket_reply` = ?
 		ORDER BY
 			`ticket_date` ASC
-	";
+	;";
 
 	$rs = exec_query($sql, $query, $ticket_id);
+
 	if ($rs->recordCount() == 0) {
 		return;
 	}
+
 	while (!$rs->EOF) {
-		$ticket_id = $rs->fields['ticket_id'];
-		$ticket_date = $rs->fields['ticket_date'];
+		$ticket_id      = $rs->fields['ticket_id'];
+		$ticket_date    = $rs->fields['ticket_date'];
 		$ticket_message = $rs->fields['ticket_message'];
 		$ticket_content = wordwrap($ticket_message,
 				round(($screenwidth-200) / 7), "\n");
 
-		$date_formt = $cfg->DATE_FORMAT;
 		$tpl->assign(
 			array(
-				'DATE' => date($date_formt, $ticket_date),
-				'TICKET_CONTENT' => nl2br(tohtml($ticket_content))
+				'DATE'              => date($cfg->DATE_FORMAT, $ticket_date),
+				'TICKET_CONTENT'    => nl2br(tohtml($ticket_content))
 			)
 		);
 		getTicketSender($tpl, $sql, $ticket_id);
@@ -217,41 +212,28 @@ function showTicketReplies(&$tpl, &$sql, $ticket_id, $screenwidth) {
  * @param int $ticket_id	the ID of the ticket to display
  */
 function getTicketSender(&$tpl, &$sql, $ticket_id) {
-		$query = "
-		SELECT
-			`ticket_from`,
-			`ticket_to`,
-			`ticket_status`,
-			`ticket_reply`
-		FROM
-			`tickets`
-		WHERE
-			`ticket_id` = ?
-		AND
-			(`ticket_from` = ? OR `ticket_to` = ?)
-	;";
-
-	$rs = exec_query($sql, $query, array($ticket_id, $_SESSION['user_id'], $_SESSION['user_id']));
-	$ticket_from = $rs->fields['ticket_from'];
 
 	$query = "
 		SELECT
-			`admin_name`,
-			`fname`,
-			`lname`
+            `a`.`admin_name`,
+			`a`.`fname`,
+			`a`.`lname`
 		FROM
-			`admin`
+			`tickets` AS `t` JOIN `admin` AS `a`
+        ON
+            `t`.`ticket_from` = `a`.`admin_id`
 		WHERE
-			`admin_id` = ?
+			`ticket_id` = ?
 	;";
 
-	$rs = exec_query($sql, $query, $ticket_from);
+	$rs = exec_query($sql, $query, $ticket_id);
 	$from_user_name = decode_idna($rs->fields['admin_name']);
 	$from_first_name = $rs->fields['fname'];
 	$from_last_name = $rs->fields['lname'];
 
 	$from_name = $from_first_name . " " . $from_last_name . " (" . $from_user_name . ")";
-	$tpl->assign(array('FROM' => tohtml($from_name)));
+
+	return $from_name;
 }
 
 /**
@@ -420,6 +402,7 @@ function openTicket(&$sql, $ticket_id) {
 }
 
 // common page data
+
 $tpl->assign(
 	array(
 		'TR_CLIENT_VIEW_TICKET_PAGE_TITLE' => tr('ispCP - Client: Support System: View Ticket'),
@@ -430,6 +413,7 @@ $tpl->assign(
 );
 
 // dynamic page data
+
 $reseller_id = $_SESSION['user_created_by'];
 
 if (!hasTicketSystem($sql, $reseller_id)) {
@@ -496,3 +480,5 @@ $tpl->prnt();
 if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
+
+unset_messages();

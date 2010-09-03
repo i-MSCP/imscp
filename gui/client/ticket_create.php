@@ -39,12 +39,51 @@ $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/ticket_create.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 
-// page functions.
+// page functions
 
-function send_user_message(&$sql, $user_id, $reseller_id) {
-	if (!isset($_POST['uaction']))
-		return;
+/**
+ * Checks if the client's reseller has a support system.
+ *
+ * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @since	1.0.7
+ * @version	1.0.0
+ *
+ * @param reference $sql	the SQL object
+ * @param int $reseller_id	the ID of the client's reseller
+ * @return boolean
+ */
+function hasTicketSystem(&$sql, $reseller_id) {
+	$cfg = ispCP_Registry::get('Config');
 
+	$query = "
+	  SELECT
+		`support_system`
+	  FROM
+		`reseller_props`
+	  WHERE
+		`reseller_id` = ?
+	;";
+
+	$rs = exec_query($sql, $query, $reseller_id);
+
+	if (!$cfg->ISPCP_SUPPORT_SYSTEM || $rs->fields['support_system'] == 'no')
+		return false;
+
+	return true;
+}
+
+/**
+ * Creates the ticket and informs the recipient.
+ *
+ * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @since	1.0.7
+ * @version	1.0.0
+ *
+ * @param reference $sql	the SQL object
+ * @param int $user_id		the ID of the client
+ * @param int $reseller_id	the ID of the client's reseller
+ */
+function createTicket(&$sql, $user_id, $reseller_id) {
 	if (empty($_POST['subj'])) {
 		set_page_message(tr('Please specify message subject!'));
 		return;
@@ -72,9 +111,12 @@ function send_user_message(&$sql, $user_id, $reseller_id) {
 			(?, ?, ?, ?, ?, ?, ?, ?, ?)
 	;";
 
-	exec_query($sql, $query, array($ticket_level, $user_id, $reseller_id,
-		$ticket_status, $ticket_reply, $urgency, $ticket_date, $subject, 
-		$user_message));
+	exec_query($sql, $query,
+        array(
+            $ticket_level, $user_id, $reseller_id, $ticket_status,
+            $ticket_reply, $urgency, $ticket_date, $subject, $user_message
+        )
+    );
 
 	set_page_message(tr('Your message has been sent!'));
 	send_tickets_msg($reseller_id, $user_id, $subject, $user_message, 
@@ -82,7 +124,7 @@ function send_user_message(&$sql, $user_id, $reseller_id) {
 	user_goto('ticket_system.php');
 }
 
-// common page data.
+// common page data
 
 $tpl->assign(
 	array(
@@ -93,32 +135,24 @@ $tpl->assign(
 	)
 );
 
-// dynamic page data.
-$query = "
-  SELECT
-    `support_system`
-  FROM
-    `reseller_props`
-  WHERE
-    `reseller_id` = ?
-;";
+// dynamic page data
 
-$rs = exec_query($sql, $query, $_SESSION['user_created_by']);
+$reseller_id = $_SESSION['user_created_by'];
 
-if (!$cfg->ISPCP_SUPPORT_SYSTEM || $rs->fields['support_system'] == 'no') {
+if (!hasTicketSystem($sql, $reseller_id)) {
 	user_goto('index.php');
 }
 
-send_user_message($sql, $_SESSION['user_id'], $_SESSION['user_created_by']);
+if (isset($_POST['uaction'])) {
+	createTicket($sql, $_SESSION['user_id'], $_SESSION['user_created_by']);
+}
 
-// static page messages.
+// static page messages
 
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_ticket_system.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_ticket_system.tpl');
 
 gen_logged_from($tpl);
-
-check_permissions($tpl);
 
 $userdata = array(
 	'OPT_URGENCY_1' => '',
@@ -151,7 +185,6 @@ $userdata['SUBJECT'] = isset($_POST['subj']) ? clean_input($_POST['subj'], true)
 $userdata['USER_MESSAGE'] = isset($_POST['user_message']) ? 
 	clean_input($_POST['user_message'], true) : '';
 $tpl->assign($userdata);
-
 
 $tpl->assign(
 	array(

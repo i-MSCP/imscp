@@ -292,10 +292,10 @@ function gen_messages_table(&$tpl, $admin_id) {
 		WHERE
 			(`ticket_from` = ? OR `ticket_to` = ?)
 		AND
-			`ticket_reply` = '0'
+			`ticket_status` IN ('1', '4')
 		AND
-			(`ticket_status` = '1' OR `ticket_status` = '4')
-	";
+			`ticket_reply` = '0'
+	;";
 	$res = exec_query($sql, $query, array($admin_id, $admin_id));
 
 	$questions = $res->rowCount();

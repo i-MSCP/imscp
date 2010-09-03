@@ -32,24 +32,46 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+/**
+ * Checks if the client's reseller has a support system.
+ *
+ * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @since	1.0.7
+ * @version	1.0.0
+ *
+ * @param reference $sql	the SQL object
+ * @param int $reseller_id	the ID of the client's reseller
+ * @return boolean
+ */
+function hasTicketSystem(&$sql, $reseller_id) {
+	$cfg = ispCP_Registry::get('Config');
 
-$query = "
-  SELECT
-    `support_system`
-  FROM
-    `reseller_props`
-  WHERE
-    `reseller_id` = ?
-";
+	$query = "
+	  SELECT
+		`support_system`
+	  FROM
+		`reseller_props`
+	  WHERE
+		`reseller_id` = ?
+	;";
 
-$rs = exec_query($sql, $query, $_SESSION['user_created_by']);
+	$rs = exec_query($sql, $query, $reseller_id);
 
-if (!$cfg->ISPCP_SUPPORT_SYSTEM || $rs->fields['support_system'] == 'no') {
+	if (!$cfg->ISPCP_SUPPORT_SYSTEM || $rs->fields['support_system'] == 'no')
+		return false;
+
+	return true;
+}
+
+$reseller_id = $_SESSION['user_created_by'];
+
+if (!hasTicketSystem($sql, $reseller_id)) {
 	user_goto('index.php');
 }
 
-if (isset($_GET['ticket_id']) && $_GET['ticket_id'] !== '') {
+$back_url = 'ticket_system.php';
+
+if (isset($_GET['ticket_id']) && $_GET['ticket_id'] != '') {
 
 	$ticket_id = $_GET['ticket_id'];
 	$user_id = $_SESSION['user_id'];
@@ -63,16 +85,16 @@ if (isset($_GET['ticket_id']) && $_GET['ticket_id'] !== '') {
 			`ticket_id` = ?
 		AND
 			(`ticket_from` = ? OR `ticket_to` = ?)
-	";
+	;";
 
 	$rs = exec_query($sql, $query, array($ticket_id, $user_id, $user_id));
+
 	if ($rs->recordCount() == 0) {
 		user_goto('ticket_system.php');
 	}
 
-	$back_url = ($rs->fields['ticket_status'] == 0) ? "ticket_closed.php" : "ticket_system.php";
-
-	$ticket_id = $_GET['ticket_id'];
+	$back_url = ($rs->fields['ticket_status'] == 0) ?
+		"ticket_closed.php" : "ticket_system.php";
 
 	$query = "
 		DELETE FROM
@@ -81,16 +103,16 @@ if (isset($_GET['ticket_id']) && $_GET['ticket_id'] !== '') {
 			`ticket_id` = ?
 		OR
 			`ticket_reply` = ?
-	";
+	;";
 
 	$rs = exec_query($sql, $query, array($ticket_id, $ticket_id));
+
 	while (!$rs->EOF) {
 		$rs->moveNext();
 	}
 
-	write_log($_SESSION['user_logged'].": deletes support ticket");
+	write_log($_SESSION['user_logged'] . ": deletes support ticket" . $ticket_id);
 	set_page_message(tr('Support ticket deleted successfully!'));
-	user_goto($back_url);
 } elseif (isset($_GET['delete']) && $_GET['delete'] == 'open') {
 	$user_id = $_SESSION['user_id'];
 
@@ -101,15 +123,16 @@ if (isset($_GET['ticket_id']) && $_GET['ticket_id'] !== '') {
 			`ticket_from` = ?
 		AND
 			`ticket_status` != '0'
-	";
+	;";
 
 	$rs = exec_query($sql, $query, $user_id);
 
 	while (!$rs->EOF) {
 		$rs->moveNext();
 	}
+
+	write_log($_SESSION['user_logged'] . ": deletes all open support tickets");
 	set_page_message(tr('All open support tickets deleted successfully!'));
-	user_goto('ticket_system.php');
 } elseif (isset($_GET['delete']) && $_GET['delete'] == 'closed') {
 	$user_id = $_SESSION['user_id'];
 
@@ -120,15 +143,17 @@ if (isset($_GET['ticket_id']) && $_GET['ticket_id'] !== '') {
 			`ticket_from` = ?
 		AND
 			`ticket_status` = '0'
-	";
+	;";
 
 	$rs = exec_query($sql, $query, $user_id);
 
 	while (!$rs->EOF) {
 		$rs->moveNext();
 	}
+
+	write_log($_SESSION['user_logged'] . ": deletes all closed support ticket");
 	set_page_message(tr('All closed support tickets deleted successfully!'));
-	user_goto('ticket_closed.php');
-} else {
-	user_goto('ticket_system.php');
+	$back_url = 'ticket_closed.php';
 }
+
+user_goto($back_url);
