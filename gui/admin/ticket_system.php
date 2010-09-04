@@ -34,10 +34,6 @@ check_login(__FILE__);
 
 $cfg = ispCP_Registry::get('Config');
 
-if (!$cfg->ISPCP_SUPPORT_SYSTEM) {
-	user_goto('index.php');
-}
-
 $tpl = new ispCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/ticket_system.tpl');
 $tpl->define_dynamic('page_message', 'page');
@@ -48,17 +44,46 @@ $tpl->define_dynamic('scroll_prev', 'page');
 $tpl->define_dynamic('scroll_next_gray', 'page');
 $tpl->define_dynamic('scroll_next', 'page');
 
-// page functions.
+// page functions
 
-function gen_tickets_list(&$tpl, &$sql, $user_id) {
-
+/**
+ * Checks if the support system is enabled.
+ *
+ * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @since	1.0.7
+ * @version	1.0.0
+ *
+ * @return boolean
+ */
+function hasTicketSystem() {
 	$cfg = ispCP_Registry::get('Config');
-	$start_index = 0;
 
+	if (!$cfg->ISPCP_SUPPORT_SYSTEM)
+		return false;
+
+	return true;
+}
+
+/**
+ * Generates the list with all open tickets
+ *
+ * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @since	1.0.7
+ * @version	1.0.0
+ *
+ * @param reference $tpl    the TPL object
+ * @param reference $sql    the SQL object
+ * @param int $user_id      the ID of the admin
+ */
+function generateTicketList(&$tpl, &$sql, $user_id) {
+	$cfg = ispCP_Registry::get('Config');
+
+	$start_index = 0;
 	$rows_per_page = $cfg->DOMAIN_ROWS_PER_PAGE;
 
-	if (isset($_GET['psi']))
+	if (isset($_GET['psi'])) {
 		$start_index = $_GET['psi'];
+	}
 
 	$count_query = "
 		SELECT
@@ -71,7 +96,7 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 			`ticket_status` != 0
 		AND
 			`ticket_reply` = 0
-	";
+	;";
 
 	$rs = exec_query($sql, $count_query, array($user_id,$user_id));
 	$records_count = $rs->fields['cnt'];
@@ -82,8 +107,7 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 			`ticket_status`,
 			`ticket_urgency`,
 			`ticket_date`,
-			`ticket_subject`,
-			`ticket_message`
+			`ticket_subject`
 		FROM
 			`tickets`
 		WHERE
@@ -94,9 +118,9 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 			`ticket_reply` = 0
 		ORDER BY
 			`ticket_date` DESC
-		LIMIT
-			$start_index, $rows_per_page
-	";
+		LIMIT " .
+			$start_index . ", " . $rows_per_page
+    . ";";
 
 	$rs = exec_query($sql, $query, array($user_id,$user_id));
 
@@ -108,11 +132,9 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 				'SCROLL_NEXT'	=> ''
 			)
 		);
-
 		set_page_message(tr('You have no support tickets.'));
 	} else {
 		$prev_si = $start_index - $rows_per_page;
-
 		if ($start_index == 0) {
 			$tpl->assign('SCROLL_PREV', '');
 		} else {
@@ -123,7 +145,6 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 				)
 			);
 		}
-
 		$next_si = $start_index + $rows_per_page;
 
 		if ($next_si + 1 > $records_count) {
@@ -132,26 +153,24 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 			$tpl->assign(
 				array(
 					'SCROLL_NEXT_GRAY'	=> '',
-					'NEXT_PSI'	=> $next_si
+					'NEXT_PSI'			=> $next_si
 				)
 			);
 		}
-		global $i;
-
+		
+		$i = 0;
 		while (!$rs->EOF) {
 			$ticket_id		= $rs->fields['ticket_id'];
-			$from			= get_ticket_from($sql, $ticket_id);
-			$to				= get_ticket_to($sql, $ticket_id, $user_id, true);
+			$from			= getTicketSender($sql, $ticket_id);
 			$date			= ticketGetLastDate($sql, $ticket_id);
 			$ticket_urgency = $rs->fields['ticket_urgency'];
-
 			$ticket_status = $rs->fields['ticket_status'];
 
-			$tpl->assign(array('URGENCY' => get_ticket_urgency($ticket_urgency)));
+			$tpl->assign(array('URGENCY' => getTicketUrgency($ticket_urgency)));
 
-			if ($ticket_status == 1 || $ticket_status == 2) {
+			if ($ticket_status == 1) {
 				$tpl->assign(array('NEW' => tr("[New]")));
-			} else if ($ticket_status == 4 || $ticket_status == 5) {
+			} else if ($ticket_status == 4) {
 				$tpl->assign(array('NEW' => tr("[Re]")));
 			} else {
 				$tpl->assign(array('NEW' => " "));
@@ -161,15 +180,12 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 				array(
 					'ID'		=> $ticket_id,
 					'FROM'		=> tohtml($from),
-					'TO'		=> $to,
 					'LAST_DATE'	=> $date,
 					'SUBJECT'	=> tohtml($rs->fields['ticket_subject']),
 					'SUBJECT2'	=> addslashes(clean_html($rs->fields['ticket_subject'])),
-					'MESSAGE'	=> tohtml($rs->fields['ticket_message']),
 					'CONTENT'	=> ($i % 2 == 0) ? 'content' : 'content2'
 				)
 			);
-
 			$tpl->parse('TICKETS_ITEM', '.tickets_item');
 			$rs->moveNext();
 			$i++;
@@ -177,40 +193,34 @@ function gen_tickets_list(&$tpl, &$sql, $user_id) {
 	}
 }
 
-function get_ticket_from(&$sql, $ticket_id) {
+/**
+ * Get the sender of an ticket.
+ *
+ * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @since	1.0.7
+ * @version	1.0.0
+ *
+ * @param  reference $sql   the SQL object
+ * @param  int $ticket_id   the sender's ID
+ * @return string           formatted sender string
+ */
+function getTicketSender(&$sql, $ticket_id) {
+
 	$query = "
 		SELECT
-			`ticket_from`,
-			`ticket_to`,
-			`ticket_status`,
-			`ticket_reply`
+            `a`.`admin_name`,
+			`a`.`fname`,
+			`a`.`lname`
 		FROM
-			`tickets`
+			`tickets` AS `t` JOIN `admin` AS `a`
+        ON
+            `t`.`ticket_from` = `a`.`admin_id`
 		WHERE
 			`ticket_id` = ?
-	";
+	;";
 
 	$rs = exec_query($sql, $query, $ticket_id);
-	$ticket_from = $rs->fields['ticket_from'];
-	$ticket_to = $rs->fields['ticket_to'];
-	$ticket_status = $rs->fields['ticket_status'];
-	$ticket_reply = clean_html($rs->fields['ticket_reply']);
-
-	$query = "
-		SELECT
-			`admin_name`,
-			`admin_type`,
-			`fname`,
-			`lname`
-		FROM
-			`admin`
-		WHERE
-			`admin_id` = ?
-	";
-
-	$rs = exec_query($sql, $query, $ticket_from);
-	$from_user_name = decode_idna($rs->fields['admin_name']);
-	$admin_type = $rs->fields['admin_type'];
+	$from_user_name = $rs->fields['admin_name'];
 	$from_first_name = $rs->fields['fname'];
 	$from_last_name = $rs->fields['lname'];
 
@@ -219,60 +229,7 @@ function get_ticket_from(&$sql, $ticket_id) {
 	return $from_name;
 }
 
-function get_ticket_to(&$sql, $ticket_id, $user_id, $html = false) {
-	$query = "
-		SELECT
-			`ticket_from`,
-			`ticket_to`,
-			`ticket_status`,
-			`ticket_reply`
-		FROM
-			`tickets`
-		WHERE
-			`ticket_id` = ?
-	";
-
-	$rs = exec_query($sql, $query, $ticket_id);
-	$ticket_from = $rs->fields['ticket_from'];
-	$ticket_to = $rs->fields['ticket_to'];
-	$ticket_status = $rs->fields['ticket_status'];
-	$ticket_reply = clean_html($rs->fields['ticket_reply']);
-
-	$query = "
-		SELECT
-			`admin_id`,
-			`admin_name`,
-			`admin_type`,
-			`fname`,
-			`lname`
-		FROM
-			`admin`
-		WHERE
-			`admin_id` = ?
-	";
-
-	$rs = exec_query($sql, $query, $ticket_to);
-	$to_user_name = decode_idna($rs->fields['admin_name']);
-	$admin_type = $rs->fields['admin_type'];
-	$to_first_name = $rs->fields['fname'];
-	$to_last_name = $rs->fields['lname'];
-
-	if ($html) {
-		$to_first_name = htmlspecialchars($to_first_name);
-		$to_last_name = htmlspecialchars($to_last_name);
-		$to_user_name = htmlspecialchars($to_user_name);
-	}
-
-	if ($rs->fields['admin_id'] == $user_id && $html) {
-		$to_name = "<b>". $to_first_name . " " . $to_last_name . " (" . $to_user_name . ")</b>";
-	} else {
-		$to_name = $to_first_name . " " . $to_last_name . " (" . $to_user_name . ")";
-	}
-
-	return $to_name;
-}
-
-// common page data.
+// common page data
 
 $tpl->assign(
 	array(
@@ -283,11 +240,15 @@ $tpl->assign(
 	)
 );
 
-// dynamic page data.
+// dynamic page data
 
-gen_tickets_list($tpl, $sql, $_SESSION['user_id']);
+if (!hasTicketSystem()) {
+	user_goto('index.php');
+}
 
-// static page messages.
+generateTicketList($tpl, $sql, $_SESSION['user_id']);
+
+// static page messages
 
 gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_ticket_system.tpl');
 gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_ticket_system.tpl');
@@ -297,7 +258,6 @@ $tpl->assign(
 		'TR_SUPPORT_SYSTEM'	=> tr('Support system'),
 		'TR_SUPPORT_TICKETS'=> tr('Support tickets'),
 		'TR_TICKET_FROM'	=> tr('From'),
-		'TR_TICKET_TO'		=> tr('To'),
 		'TR_STATUS'			=> tr('Status'),
 		'TR_NEW'			=> ' ',
 		'TR_ACTION'			=> tr('Action'),

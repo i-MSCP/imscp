@@ -3,7 +3,7 @@ ispCP ω 1.0.7 ChangeLog
 
 2010-09-03 Benedikt Heintel
 	- GUI:
-		* Refactored Ticket System (part I/client, reseller)
+		* Refactored Ticket System (part I/admin, client, reseller)
 	- LANGUAGES:
 		* Added Persian
 

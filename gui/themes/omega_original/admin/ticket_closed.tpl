@@ -58,7 +58,6 @@ function action_delete(url, subject) {
           <tr>
           	<td width="30" class="content3" align="center"><b>{TR_STATUS}</b></td>
           	<td class="content3" align="center"><b>{TR_TICKET_FROM}</b></td>
-            <td class="content3" align="center"><b>{TR_TICKET_TO}</b></td>
             <td width="260" class="content3" align="center"><b>{TR_SUBJECT}</b></td>
             <td width="150" class="content3" nowrap="nowrap" align="center"><b>{TR_URGENCY}</b></td>
             <td width="100" class="content3" nowrap="nowrap" align="center"><b>{TR_LAST_DATA}</b></td>
@@ -68,7 +67,6 @@ function action_delete(url, subject) {
           <tr class="hl">
             <td width="25" nowrap="nowrap" class="{CONTENT}"><b>{NEW}</b></td>
             <td class="{CONTENT}" nowrap="nowrap" align="left">{FROM}</td>
-            <td class="{CONTENT}" nowrap="nowrap" align="left">{TO}</td>
             <td class="{CONTENT}" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/document.png" width="16" height="16" style="vertical-align:middle" alt="" />
             <script type="text/javascript">
 <!--

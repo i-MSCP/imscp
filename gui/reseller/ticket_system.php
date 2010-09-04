@@ -142,9 +142,9 @@ function generateTicketList(&$tpl, &$sql, $user_id) {
 	if ($rs->recordCount() == 0) {
 		$tpl->assign(
 			array(
-				'TICKETS_LIST' => '',
-				'SCROLL_PREV' => '',
-				'SCROLL_NEXT' => ''
+				'TICKETS_LIST'	=> '',
+				'SCROLL_PREV'	=> '',
+				'SCROLL_NEXT'	=> ''
 			)
 		);
 		set_page_message(tr('You don\'t have support tickets.'));
@@ -167,8 +167,8 @@ function generateTicketList(&$tpl, &$sql, $user_id) {
 		} else {
 			$tpl->assign(
 				array(
-					'SCROLL_NEXT_GRAY' => '',
-					'NEXT_PSI' => $next_si
+					'SCROLL_NEXT_GRAY'	=> '',
+					'NEXT_PSI'			=> $next_si
 				)
 			);
 		}
@@ -181,7 +181,7 @@ function generateTicketList(&$tpl, &$sql, $user_id) {
             $ticket_urgency = $rs->fields['ticket_urgency'];
 			$ticket_status	= $rs->fields['ticket_status'];
 
-			$tpl->assign(array('URGENCY' => get_ticket_urgency($ticket_urgency)));
+			$tpl->assign(array('URGENCY' => getTicketUrgency($ticket_urgency)));
 
 			if ($ticket_status == 1) {
 				$tpl->assign(array('NEW' => tr("[New]")));
@@ -246,6 +246,7 @@ function getTicketSender(&$tpl, &$sql, $ticket_id) {
 }
 
 // common page data
+
 $tpl->assign(
 	array(
 		'TR_CLIENT_QUESTION_PAGE_TITLE' => tr('ispCP - Client/Questions & Comments'),

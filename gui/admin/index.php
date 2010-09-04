@@ -55,7 +55,7 @@ function gen_system_message(&$tpl, &$sql) {
 		WHERE
 			`ticket_to` = ?
 		AND
-			(`ticket_status` = '2' OR `ticket_status` = '5')
+			`ticket_status` IN ('1', '2')
 		AND
 			`ticket_reply` = 0
 	";

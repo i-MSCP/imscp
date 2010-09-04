@@ -32,6 +32,30 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
+/**
+ * Checks if the support system is enabled.
+ *
+ * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @since	1.0.7
+ * @version	1.0.0
+ *
+ * @return boolean
+ */
+function hasTicketSystem() {
+	$cfg = ispCP_Registry::get('Config');
+
+	if (!$cfg->ISPCP_SUPPORT_SYSTEM)
+		return false;
+
+	return true;
+}
+
+if (!hasTicketSystem()) {
+	user_goto('index.php');
+}
+
+$back_url = 'ticket_system.php';
+
 if (isset($_GET['ticket_id']) && $_GET['ticket_id'] !== '') {
 
 	$ticket_id = $_GET['ticket_id'];
@@ -46,17 +70,16 @@ if (isset($_GET['ticket_id']) && $_GET['ticket_id'] !== '') {
 			`ticket_id` = ?
 		AND
 			(`ticket_from` = ? OR `ticket_to` = ?)
-		ORDER BY
-			`ticket_date` ASC
-	";
+	;";
 
-	$rs = exec_query($sql, $query, array($ticket_id,$user_id,$user_id));
-	$ticket_status = $rs->fields['ticket_status'];
+	$rs = exec_query($sql, $query, array($ticket_id, $user_id, $user_id));
 
-	$back_url = ($ticket_status == 0) ? 'ticket_closed.php' : 'ticket_system.php';
+	if ($rs->recordCount() == 0) {
+		user_goto('ticket_system.php');
+	}
 
-	$ticket_id = $_GET['ticket_id'];
-
+	$back_url = ($ticket_status == 0) ?
+		'ticket_closed.php' : 'ticket_system.php';
 
 	$query = "
 		DELETE FROM
@@ -65,7 +88,7 @@ if (isset($_GET['ticket_id']) && $_GET['ticket_id'] !== '') {
 			`ticket_id` = ?
 		OR
 			`ticket_reply` = ?
-	";
+	;";
 
 	$rs = exec_query($sql, $query, array($ticket_id, $ticket_id));
 
@@ -73,12 +96,9 @@ if (isset($_GET['ticket_id']) && $_GET['ticket_id'] !== '') {
 		$rs->moveNext();
 	}
 
+	write_log($_SESSION['user_logged'] . ": deletes support ticket" . $ticket_id);
 	set_page_message(tr('Support ticket deleted successfully!'));
-
-	user_goto($back_url);
-
 } elseif (isset($_GET['delete']) && $_GET['delete'] == 'open') {
-
 	$user_id = $_SESSION['user_id'];
 
 	$query = "
@@ -88,19 +108,17 @@ if (isset($_GET['ticket_id']) && $_GET['ticket_id'] !== '') {
 			(`ticket_from` = ? OR `ticket_to` = ?)
 		AND
 			`ticket_status` != '0'
-	";
+	;";
 
 	$rs = exec_query($sql, $query, array($user_id, $user_id));
 
 	while (!$rs->EOF) {
 		$rs->moveNext();
 	}
+
+	write_log($_SESSION['user_logged'] . ": deletes all open support tickets");
 	set_page_message(tr('All open support tickets deleted successfully!'));
-
-	user_goto('ticket_system.php');
-
 } elseif (isset($_GET['delete']) && $_GET['delete'] == 'closed') {
-
 	$user_id = $_SESSION['user_id'];
 
 	$query = "
@@ -110,17 +128,17 @@ if (isset($_GET['ticket_id']) && $_GET['ticket_id'] !== '') {
 			(`ticket_from` = ? OR `ticket_to` = ?)
 		AND
 			`ticket_status` = '0'
-	";
+	;";
 
 	$rs = exec_query($sql, $query, array($user_id, $user_id));
 
 	while (!$rs->EOF) {
 		$rs->moveNext();
 	}
+
+	write_log($_SESSION['user_logged'] . ": deletes all closed support ticket");
 	set_page_message(tr('All closed support tickets deleted successfully!'));
-
-	user_goto('ticket_closed.php');
-
-} else {
-	user_goto('ticket_system.php');
+	$back_url = 'ticket_closed.php';
 }
+
+user_goto($back_url);

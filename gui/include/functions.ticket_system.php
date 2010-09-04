@@ -33,8 +33,7 @@
  *
  * @author		ispCP Team
  * @author		Benedikt Heintel
- * @copyright	2006-2009 by ispCP | http://isp-control.net
- * @version		1.0
+ * @version		1.0.0
  *
  * @access	public
  * @param	reference	$sql		reference to sql connection
@@ -42,8 +41,8 @@
  * @return	date					last date
  */
 function ticketGetLastDate(&$sql, $ticket_id) {
-
 	$cfg = ispCP_Registry::get('Config');
+
 	$query = "
 		SELECT
 			`ticket_date`
@@ -53,7 +52,7 @@ function ticketGetLastDate(&$sql, $ticket_id) {
 			`ticket_reply` = ?
 		ORDER BY
 			`ticket_date` DESC
-	";
+	;";
 
 	$rs = exec_query($sql, $query, array($ticket_id));
 	
@@ -61,16 +60,15 @@ function ticketGetLastDate(&$sql, $ticket_id) {
 		return tr('Never');
 	}
 
-	$date_formt = $cfg->DATE_FORMAT;
-	return date($date_formt, $rs->fields['ticket_date']); // last date
+	$date_format = $cfg->DATE_FORMAT;
+	return date($date_format, $rs->fields['ticket_date']); // last date
 }
 
 /**
  * Informs an user about a ticket creation/update and writes a line to the log.
  *
  * @author		ispCP Team
- * @copyright	2006-2009 by ispCP | http://isp-control.net
- * @version		1.0
+ * @version		1.0.0
  *
  * @access	public
  * @param	string		$to_id				reference to sql connection
@@ -124,7 +122,7 @@ function send_tickets_msg($to_id, $from_id, $ticket_subject, $ticket_message,
 	} else {
 		$message = tr("Hello %s!\n\nYou have an answer for this ticket:\n", "{TO_NAME}");
 	}
-	$message .= "\n".tr("Priority: %s\n", "{PRIORITY}");
+	$message .= "\n" . tr("Priority: %s\n", "{PRIORITY}");
 	$message .= "\n" . $ticket_message;
 	$message .= "\n\n" . tr("Log in to answer") . ' ' . 
 				$cfg->BASE_SERVER_VHOST_PREFIX . $cfg->BASE_SERVER_VHOST;
@@ -146,7 +144,7 @@ function send_tickets_msg($to_id, $from_id, $ticket_subject, $ticket_message,
 		$to = $to_email;
 	}
 
-	$priority = get_ticket_urgency($urgency);
+	$priority = getTicketUrgency($urgency);
 
 	// Prepare and send mail
 	$search = array();
@@ -177,4 +175,29 @@ function send_tickets_msg($to_id, $from_id, $ticket_subject, $ticket_message,
 						$toname . ": " . $to_email, $fromname . ": " . $from_email, 
 						$mail_status
 					));
+}
+
+/**
+ * Get priority as translated string.
+ *
+ * @author		ispCP Team
+ * @author		Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @version		1.0.1
+ *
+ * @param int $ticket_urgency	values from 1 to 4
+ * @return string				translated priority string
+ */
+function getTicketUrgency($ticket_urgency) {
+
+	switch($ticket_urgency) {
+		case 1:
+			return tr('Low');
+		case 3:
+			return tr('High');
+		case 4:
+			return tr('Very high');
+		case 2:
+		default:
+			return tr('Medium');
+	}
 }

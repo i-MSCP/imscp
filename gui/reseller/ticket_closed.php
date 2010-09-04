@@ -93,7 +93,6 @@ function generateTicketList(&$tpl, &$sql, $user_id) {
 	$cfg = ispCP_Registry::get('Config');
 
 	$start_index = 0;
-
 	$rows_per_page = $cfg->DOMAIN_ROWS_PER_PAGE;
 
 	if (isset($_GET['psi'])) {
@@ -149,7 +148,7 @@ function generateTicketList(&$tpl, &$sql, $user_id) {
 			)
 		);
 
-		set_page_message(tr('You have no support tickets.'));
+		set_page_message(tr('You don\'t have support tickets.'));
 	} else {
 		$prev_si = $start_index - $rows_per_page;
 
@@ -181,7 +180,7 @@ function generateTicketList(&$tpl, &$sql, $user_id) {
 		while (!$rs->EOF) {
 			$tpl->assign(
                 array(
-                    'URGENCY'   => get_ticket_urgency($rs->fields['ticket_urgency']),
+                    'URGENCY'   => getTicketUrgency($rs->fields['ticket_urgency']),
                     'NEW'       => " ",
 					'LAST_DATE'	=> ticketGetLastDate($sql, $rs->fields['ticket_id']),
 					'SUBJECT'	=> tohtml($rs->fields['ticket_subject']),
@@ -198,7 +197,42 @@ function generateTicketList(&$tpl, &$sql, $user_id) {
 	}
 }
 
-// common page data.
+/**
+ * Gets the sender of a ticket answer.
+ *
+ * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @since	1.0.7
+ * @version	1.0.0
+ *
+ * @param reference $sql	the SQL object
+ * @param int $ticket_id	the ID of the ticket to display
+ */
+function getTicketSender(&$sql, $ticket_id) {
+
+	$query = "
+		SELECT
+            `a`.`admin_name`,
+			`a`.`fname`,
+			`a`.`lname`
+		FROM
+			`tickets` AS `t` JOIN `admin` AS `a`
+        ON
+            `t`.`ticket_from` = `a`.`admin_id`
+		WHERE
+			`ticket_id` = ?
+	;";
+
+	$rs = exec_query($sql, $query, $ticket_id);
+	$from_user_name = decode_idna($rs->fields['admin_name']);
+	$from_first_name = $rs->fields['fname'];
+	$from_last_name = $rs->fields['lname'];
+
+	$from_name = $from_first_name . " " . $from_last_name . " (" . $from_user_name . ")";
+
+	return $from_name;
+}
+
+// common page data
 
 $tpl->assign(
 	array(
@@ -209,7 +243,8 @@ $tpl->assign(
 	)
 );
 
-// dynamic page data.
+// dynamic page data
+
 $admin_id = $_SESSION['user_created_by'];
 
 if (!hasTicketSystem($sql, $admin_id)) {
@@ -218,7 +253,7 @@ if (!hasTicketSystem($sql, $admin_id)) {
 
 generateTicketList($tpl, $sql, $_SESSION['user_id']);
 
-// static page messages.
+// static page messages
 
 gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_ticket_system.tpl');
 gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_ticket_system.tpl');
@@ -227,19 +262,20 @@ gen_logged_from($tpl);
 
 $tpl->assign(
 	array(
-		'TR_SUPPORT_SYSTEM' => tr('Support system'),
-		'TR_SUPPORT_TICKETS' => tr('Support tickets'),
-		'TR_STATUS' => tr('Status'),
-		'TR_NEW' => ' ',
-		'TR_ACTION' => tr('Action'),
-		'TR_URGENCY' => tr('Priority'),
-		'TR_SUBJECT' => tr('Subject'),
-		'TR_LAST_DATA' => tr('Last reply'),
-		'TR_DELETE_ALL' => tr('Delete all'),
-		'TR_OPEN_TICKETS' => tr('Open tickets'),
-		'TR_CLOSED_TICKETS' => tr('Closed tickets'),
-		'TR_DELETE' => tr('Delete'),
-		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s'),
+		'TR_SUPPORT_SYSTEM'	=> tr('Support system'),
+		'TR_SUPPORT_TICKETS'=> tr('Support tickets'),
+		'TR_STATUS'			=> tr('Status'),
+		'TR_NEW'			=> ' ',
+		'TR_ACTION'			=> tr('Action'),
+		'TR_URGENCY'		=> tr('Priority'),
+		'TR_SUBJECT'		=> tr('Subject'),
+		'TR_LAST_DATA'		=> tr('Last reply'),
+		'TR_DELETE_ALL'		=> tr('Delete all'),
+		'TR_OPEN_TICKETS'	=> tr('Open tickets'),
+		'TR_CLOSED_TICKETS'	=> tr('Closed tickets'),
+		'TR_DELETE'			=> tr('Delete'),
+		'TR_TICKET_FROM'	=> tr('From'),
+		'TR_MESSAGE_DELETE'	=> tr('Are you sure you want to delete %s?', true, '%s'),
 	)
 );
 
@@ -251,4 +287,5 @@ $tpl->prnt();
 if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
+
 unset_messages();

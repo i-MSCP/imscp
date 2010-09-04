@@ -113,6 +113,7 @@ function showTicketContent(&$tpl, &$sql, $ticket_id, $screenwidth) {
 		set_page_message(tr('Ticket not found!'));
 	} else {
 		$ticket_urgency = $rs->fields['ticket_urgency'];
+		$ticket_subject = $rs->fields['ticket_subject'];
 		$ticket_status = $rs->fields['ticket_status'];
 
 		if ($ticket_status == 0) {
@@ -123,18 +124,18 @@ function showTicketContent(&$tpl, &$sql, $ticket_id, $screenwidth) {
 			$action = "close";
 		}
 
-        $from = getTicketSender($tpl, $sql, $ticket_id);
+        $from = getTicketSender($sql, $ticket_id);
         $ticket_content = wordwrap($rs->fields['ticket_message'],
                 round(($screenwidth-200) / 7), "\n");
 
         $tpl->assign(
 			array(
-                'URGENCY'           => get_ticket_urgency($ticket_urgency),
+                'URGENCY'           => getTicketUrgency($ticket_urgency),
 			    'URGENCY_ID'        => $ticket_urgency,
 				'TR_ACTION'         => $tr_action,
 				'ACTION'            => $action,
 				'DATE'              => date($cfg->DATE_FORMAT, $rs->fields['ticket_date']),
-				'SUBJECT'           => tohtml($rs->fields['ticket_subject']),
+				'SUBJECT'           => tohtml($ticket_subject),
 				'TICKET_CONTENT'    => nl2br(tohtml($ticket_content)),
 				'ID'                => $rs->fields['ticket_id'],
                 'FROM'		        => tohtml($from)
@@ -190,11 +191,11 @@ function showTicketReplies(&$tpl, &$sql, &$ticket_id, &$screenwidth) {
 
 		$tpl->assign(
 			array(
+				'FROM'				=> getTicketSender($sql, $ticket_id),
 				'DATE'              => date($cfg->DATE_FORMAT, $ticket_date),
 				'TICKET_CONTENT'    => nl2br(tohtml($ticket_content))
 			)
 		);
-		getTicketSender($tpl, $sql, $ticket_id);
 		$tpl->parse('TICKETS_ITEM', '.tickets_item');
 		$rs->moveNext();
 	}
@@ -207,11 +208,10 @@ function showTicketReplies(&$tpl, &$sql, &$ticket_id, &$screenwidth) {
  * @since	1.0.7
  * @version	1.0.0
  *
- * @param reference $tpl	the Template object
  * @param reference $sql	the SQL object
  * @param int $ticket_id	the ID of the ticket to display
  */
-function getTicketSender(&$tpl, &$sql, $ticket_id) {
+function getTicketSender(&$sql, $ticket_id) {
 
 	$query = "
 		SELECT
@@ -268,7 +268,6 @@ function updateTicket(&$sql, $ticket_id) {
 	$user_message = clean_input($_POST["user_message"]);
 	$ticket_reply = $_GET['ticket_id'];
 	$urgency = $_POST['urgency'];
-	$ticket_from = $user_id;
 
     // Get info about the type of message
     $query = "
@@ -293,15 +292,15 @@ function updateTicket(&$sql, $ticket_id) {
 	$ticket_level = $rs->fields['ticket_level'];
 
     /* Levels:
-     *  1:      <tbd>
-     *  2:      <tbd>
-     *  NULL:   <tbd>
+     *  1:      Client -> Reseller
+     *  2:      Reseller -> Admin
+     *  NULL:   Reply
      */
-	if ($ticket_level != 1) {
-		$ticket_to = $rs->fields['ticket_from'];
+	if ($ticket_level == 1) {
+		$ticket_to   = $rs->fields['ticket_from'];
 		$ticket_from = $rs->fields['ticket_to'];
 	} else {
-		$ticket_to = $rs->fields['ticket_to'];
+		$ticket_to   = $rs->fields['ticket_to'];
 		$ticket_from = $rs->fields['ticket_from'];
 	}
 

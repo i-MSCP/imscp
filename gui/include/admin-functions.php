@@ -2555,32 +2555,3 @@ RIC;
 	$tpl->assign('PURCHASE_HEADER', $header);
 	$tpl->assign('PURCHASE_FOOTER', $footer);
 }
-
-/**
-* Get language dependend priority string
-*
-* @param integer $ticket_urgency values from 1 to 4
-* @return string language dependend priority string
-*/
-function get_ticket_urgency($ticket_urgency) {
-
-	switch($ticket_urgency) {
-		case 1:
-			$result = tr('Low');
-			break;
-		case 2:
-			$result = tr('Medium');
-			break;
-		case 3:
-			$result = tr('High');
-			break;
-		case 4:
-			$result = tr('Very high');
-			break;
-		default:
-			$result = tr('Medium');
-			break;
-	}
-
-	return $result;
-}

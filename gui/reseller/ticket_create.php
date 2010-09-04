@@ -100,7 +100,7 @@ function createTicket(&$sql, $user_id, $admin_id) {
 	$user_message = clean_input($_POST["user_message"]);
 	$ticket_status = 1;
 	$ticket_reply = 0;
-	$ticket_level = 1;
+	$ticket_level = 2;
 
 	$query = "
 		INSERT INTO `tickets`
