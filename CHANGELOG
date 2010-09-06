@@ -1,6 +1,10 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-09-06 Laurent Declercq
+	- GUI:
+		* Fixed: Ticket support is in unworkable state
+
 2010-09-03 Benedikt Heintel
 	- GUI:
 		* Refactored Ticket System (part I/admin, client, reseller)

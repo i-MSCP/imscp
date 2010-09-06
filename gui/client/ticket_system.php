@@ -179,7 +179,7 @@ function generateTicketList(&$tpl, &$sql, $user_id) {
 			$ticket_urgency = $rs->fields['ticket_urgency'];
 			$ticket_status	= $rs->fields['ticket_status'];
 
-			$tpl->assign(array('URGENCY' => get_ticket_urgency($ticket_urgency)));
+			$tpl->assign(array('URGENCY' => getTicketUrgency($ticket_urgency)));
 
 			if ($ticket_status == 1) {
 				$tpl->assign(array('NEW' => tr("[New]")));
