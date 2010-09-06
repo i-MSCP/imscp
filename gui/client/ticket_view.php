@@ -129,7 +129,7 @@ function showTicketContent(&$tpl, &$sql, $ticket_id, $screenwidth) {
 
 		$tpl->assign(
 			array(
-                'URGENCY'           => get_ticket_urgency($ticket_urgency),
+                'URGENCY'           => getTicketUrgency($ticket_urgency),
 			    'URGENCY_ID'        => $ticket_urgency,
 				'TR_ACTION'         => $tr_action,
 				'ACTION'            => $action,
