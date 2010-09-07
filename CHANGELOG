@@ -1,6 +1,10 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-09-07 Markus Schmidt
+	- TOOLS:
+		* Updated phpMyAdmin to version 3.3.7
+
 2010-09-06 Laurent Declercq
 	- GUI:
 		* Fixed: Ticket support is in unworkable state
