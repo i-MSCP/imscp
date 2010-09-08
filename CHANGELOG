@@ -1,6 +1,11 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-09-08 Daniel Andreca
+	- Engine:
+		* ispcp-htgroups-mngr: Removed useless sleep statement
+		* Forcing logs umask to be root only readable
+
 2010-09-07 Markus Schmidt
 	- TOOLS:
 		* Updated phpMyAdmin to version 3.3.7
@@ -65,7 +70,7 @@ ispCP ω 1.0.7 ChangeLog
 	- CONFIGS:
 		* Fixed: Made DNS SOA Entries RCF1537 compatible
 	- ENGINE:
-		* Fixed #2421: Fix for imap traffic accounting in dovecot 
+		* Fixed #2421: Fix for imap traffic accounting in dovecot
 			(Thanks to aseques)
 
 2010-08-21 Laurent Declercq

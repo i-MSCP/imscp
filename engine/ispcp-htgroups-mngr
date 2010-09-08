@@ -65,43 +65,6 @@ sub htgroup_mngr_start_up {
 
 	return $rs if ($rs != 0);
 
-	# sql check;
-
-	#
-	# getting initial data also must be done here;
-	#
-
-	my $sql = "
-	SELECT
-		domain_id,
-		domain_name,
-		domain_gid,
-		domain_uid,
-		domain_admin_id,
-		domain_created_id,
-		domain_created,
-		domain_last_modified,
-		domain_mailacc_limit,
-		domain_ftpacc_limit,
-		domain_traffic_limit,
-		domain_sqld_limit,
-		domain_sqlu_limit,
-		domain_status,
-		domain_alias_limit,
-		domain_subd_limit,
-		domain_ip_id,
-		domain_disk_limit,
-		domain_disk_usage,
-		domain_php,
-		domain_cgi
-	FROM
-		domain
-	LIMIT 0,1";
-
-	($rs, $rdata) = doSQL($sql);
-
-	return $rs if ($rs != 0);
-
 	#
 	# getting task id and domain record id;
 	#
@@ -237,10 +200,10 @@ sub htgroup_mngr_engine {
 			t1.`status` in ('toadd', 'change', 'delete', 'ok')
 	";
 
-	($rs, $rows) = doSQL($sql);
+	($rs, $rows) = doHashSQL($sql, 'id');
 	return $rs if ($rs != 0);
 
-	if (scalar(@$rows) != 0) {
+	if (keys( %$rows ) != 0) {
 
 		push_el(\@main::el, 'htuser-groupmanagement()', 'Starting...');
 
@@ -248,21 +211,26 @@ sub htgroup_mngr_engine {
 
 		my $apache_www_dir = $main::cfg{'APACHE_WWW_DIR'};
 
-		my $htgroup_dmn = @$rows[0];
+		my @ids = keys %$rows;
 
-		$htgroup_dmn = @$htgroup_dmn[4];
+		my $htgroup_dmn  = @$rows{$ids[0]}->{'domain_name'};
 
 		my $htgroups_file = "$apache_www_dir/$htgroup_dmn/$htgroups_file_name";
 
-		$rs = del_file($htgroups_file);
+		my $rs = open FH, ">$htgroups_file";
 
-		foreach (@$rows) {
+		return -1 if(!$rs);
 
-			my $query_group = $_;
+		close FH;
+
+		foreach (@ids) {
+
 			my ($htgroup_name, $htgroup_members, $htgroup_status, $htgroup_id) =
-				(@$query_group[0], @$query_group[1], @$query_group[2], @$query_group[3]);
+				(@$rows{$_}->{'domain_name'}, @$rows{$_}->{'members'}, @$rows{$_}->{'status'}, @$rows{$_}->{'id'});
 
 			push_el(\@main::el, 'htuser-groupmanagement()', 'Working on '.$htgroup_name);
+
+			push_el(\@main::el, 'htuser-groupmanagement()', 'Working on id '.$_);
 
 			if ($htgroup_status eq 'change' || $htgroup_status eq 'toadd' || $htgroup_status eq 'ok') {
 
@@ -275,12 +243,11 @@ sub htgroup_mngr_engine {
 
 						$sql = "select `uname` from `htaccess_users` where `id` = $id";
 
-						($rs, $rdata) = doSQL($sql);
+						($rs, $rdata) = doHashSQL($sql, 'uname');
 						return $rs if ($rs != 0);
 
-						$rdata = @$rdata[0];
-
-						my ($uname) = (@$rdata[0]);
+						my @unames = keys %$rdata;
+						my $uname  = @$rdata{$unames[0]}->{'uname'};
 
 						$rs = htgroup_add_group_data($htgroup_dmn, $htgroup_name, $uname);
 
@@ -317,15 +284,15 @@ sub htgroup_mngr_engine {
 
 		if ((not -e $htgroups_file) && (-e "$apache_www_dir/$htgroup_dmn/")) {
 
-			$rs = sys_command("$main::cfg{'CMD_TOUCH'} $htgroups_file");
-			return $rs if ($rs != 0);
+			my $rs = open FH, ">$htgroups_file";
+			return -1 if(!$rs);
+
+			close FH;
 
 		}
 
 		push_el(\@main::el, 'htuser-usermanagement()', 'Ending...');
 	}
-
-	sleep(1);
 
 	push_el(\@main::el, 'htgroup_mngr_engine()', 'Ending...');
 

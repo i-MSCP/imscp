@@ -51,6 +51,12 @@ sub mngr_start_up {
 		return $rs if ($rs != 0);
 	}
 
+	# Setting umask
+	# Some files contain sensitive data and must not be world readable
+
+	my $umask = umask();
+	umask(63);
+
 	push_el(\@main::el, 'mngr_start_up()', 'Ending...');
 
 	 0;
@@ -458,41 +464,6 @@ sub mngr_engine {
 		}
 	}
 
-	if ($dmn_count > 0 || $sub_count > 0 || $als_count > 0 || $mail_count > 0 ||
-		$alssub_count > 0) {
-
-		$rs = sys_command(
-			"$main::ispcp_serv_mngr $dmn_count $sub_count $als_count " .
-			"$mail_count $alssub_count 1>$main::ispcp_serv_mngr_stdout " .
-			"2>$main::ispcp_serv_mngr_stderr"
-		);
-
-		if ($rs != 0) {
-			if (-e $main::ispcp_serv_mngr_el) {
-				my $rs1;
-
-				# removing 'sys_command()' error message;
-				pop_el(\@main::el);
-
-				($rs1, $rdata) = get_el_error($main::ispcp_serv_mngr_el);
-				return $rs1 if ($rs1 != 0);
-
-				push_el(\@main::el, $main::ispcp_serv_mngr, $rdata);
-			}
-
-			if (!defined($main::engine_debug)) {
-				del_file($main::ispcp_serv_mngr_stdout);
-				del_file($main::ispcp_serv_mngr_stderr);
-			}
-
-			return $rs;
-		}
-
-		if (!defined($main::engine_debug)) {
-			del_file($main::ispcp_serv_mngr_stdout);
-			del_file($main::ispcp_serv_mngr_stderr);
-		}
-	}
 
 	#
 	# .htusers management BEGIN.
@@ -855,6 +826,42 @@ sub mngr_engine {
 	#
 	# Domains data deletion END
 	#
+
+	if ($dmn_count > 0 || $sub_count > 0 || $als_count > 0 || $mail_count > 0 ||
+		$alssub_count > 0) {
+
+		$rs = sys_command(
+			"$main::ispcp_serv_mngr $dmn_count $sub_count $als_count " .
+			"$mail_count $alssub_count 1>$main::ispcp_serv_mngr_stdout " .
+			"2>$main::ispcp_serv_mngr_stderr"
+		);
+
+		if ($rs != 0) {
+			if (-e $main::ispcp_serv_mngr_el) {
+				my $rs1;
+
+				# removing 'sys_command()' error message;
+				pop_el(\@main::el);
+
+				($rs1, $rdata) = get_el_error($main::ispcp_serv_mngr_el);
+				return $rs1 if ($rs1 != 0);
+
+				push_el(\@main::el, $main::ispcp_serv_mngr, $rdata);
+			}
+
+			if (!defined($main::engine_debug)) {
+				del_file($main::ispcp_serv_mngr_stdout);
+				del_file($main::ispcp_serv_mngr_stderr);
+			}
+
+			return $rs;
+		}
+
+		if (!defined($main::engine_debug)) {
+			del_file($main::ispcp_serv_mngr_stdout);
+			del_file($main::ispcp_serv_mngr_stderr);
+		}
+	}
 
 	push_el(\@main::el, 'mngr_engine()', 'Ending...');
 
