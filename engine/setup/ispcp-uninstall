@@ -47,7 +47,7 @@ sub welcome_note {
 		"\n\tWelcome to ispCP '$main::cfg{'Version'}' Un-Install Dialog.\n\n"
 	);
 
-	my $welcome_message = 
+	my $welcome_message =
 		"\tThis program will uninstall ispCP OMEGA system from your server.\n";
 
 	my $welcome_warning = colored(['bold red'],
@@ -79,7 +79,7 @@ sub ask_remove_user_data {
 		print STDOUT "\tRemove user data? [y/N]: ";
 		chomp($rdata = readline \*STDIN);
 	} while($rdata !~ /^(|y|n)$/i);
-	
+
 	if ($rdata =~ /^y$/i) {
 		$main::rm{'rm_u_data'} = 'yes';
 	} else {
@@ -250,16 +250,6 @@ sub uninstall_system_users {
 		}
 	}
 
-	if (scalar(@gdata) != 0) { # we have not this one group data;
-		my $cmd = "$main::cfg{'CMD_GROUPDEL'} $fgid";
-
-		$rs = sys_command($cmd);
-		if ($rs != 0) {
-			print "cannot remove  group '$fgid'!\n\n";
-			send_error_mail('uninstall_system_users()', "cannot remove  group '$fgid'!");
-		}
-	}
-
 	# PHP Master
 	@udata = getpwnam("$upref$muid");
 
@@ -311,7 +301,7 @@ sub uninstall_system_users {
 			}
 
 			@gdata = getgrnam("$upref@$query_user[1]");
-			
+
 			if (scalar(@gdata) != 0) { # we have not this one group data;
 				my $cmd = "$main::cfg{'CMD_GROUPDEL'} $upref@$query_user[0]";
 
@@ -916,6 +906,9 @@ sub uninstall_host_system {
 
 	push_el(\@main::el, 'uninstall_host_system()', 'Starting...');
 
+	$rs = uninstall_httpd();
+	return $rs if ($rs != 0);
+
 	$rs = uninstall_system_users();
 	return $rs if ($rs != 0);
 
@@ -929,9 +922,6 @@ sub uninstall_host_system {
 	return $rs if ($rs != 0);
 
 	$rs = uninstall_logrotate();
-	return $rs if ($rs != 0);
-
-	$rs = uninstall_httpd();
 	return $rs if ($rs != 0);
 
 	$rs = uninstall_mta();
@@ -1017,7 +1007,7 @@ if ($rs != 0) {
 
 =pod
  Documentation of the uninstaller's program flow:
- 
+
  uninstall_startup()
 	get_conf() .> ispcp-setup-methods.pl
 	del_file() -> ispcp-setup-methods.pl
