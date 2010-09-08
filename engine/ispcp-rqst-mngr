@@ -55,7 +55,7 @@ sub mngr_start_up {
 	# Some files contain sensitive data and must not be world readable
 
 	my $umask = umask();
-	umask(63);
+	umask(23);
 
 	push_el(\@main::el, 'mngr_start_up()', 'Ending...');
 

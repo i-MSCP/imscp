@@ -5,6 +5,7 @@ ispCP ω 1.0.7 ChangeLog
 	- Engine:
 		* ispcp-htgroups-mngr: Removed useless sleep statement
 		* Forcing logs umask to be root only readable
+		* Fixed #2425: Engine do not wait altered files to be written
 
 2010-09-07 Markus Schmidt
 	- TOOLS:
