@@ -190,10 +190,10 @@ sub backup_sql {
 			return $rs;
 		}
 
-		$rs = setfmode("$db_backup_file", 0, 0, 0444);
+		$rs = setfmode("$db_backup_file", $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0444);
 		if($rs != 0) {
-			push_el(\@main::el, 'backup_sql()', "Domain $dmn_name: ERROR: Can not chmod 0444 uid: 0 gid: 0 file $db_backup_file!");
-			send_error_mail('backup_sql()', "Domain $dmn_name: ERROR: Can not chmod 0444 uid: 0 gid: 0 file $db_backup_file!");
+			push_el(\@main::el, 'backup_sql()', "Domain $dmn_name: ERROR: Can not chmod 0444 root:root file $db_backup_file!");
+			send_error_mail('backup_sql()', "Domain $dmn_name: ERROR: Can not chmod 0444 root:root file $db_backup_file!");
 			unlink($db_backup_file);
 			return $rs;
 		}
@@ -273,15 +273,14 @@ sub backup_all_engine {
 			#
 
 			if (! -d $dmn_backup_dir) {
-				$rs = make_dir($dmn_backup_dir, 0 ,0, 0555);
+				$rs = make_dir($dmn_backup_dir, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0755);
 				return $rs if ($rs != 0);
 			}
 
-			#todo test mode and adjust only if necessary
-			$rs = setfmode($dmn_backup_dir, 0, 0, 0555);
+			$rs = setfmode($dmn_backup_dir, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0755);
 			if ($rs != 0) {
-				push_el(\@main::el, 'backup_all_engine()', "Domain $dmn_name: Error while changing mode to 0555 uid: 0: 0 for $dmn_backup_dir!");
-				send_error_mail('backup_all_engine()', "Domain $dmn_name: Error while changing mode to 0555 uid: 0 gid: 0 for $dmn_backup_dir!");
+				push_el(\@main::el, 'backup_all_engine()', "Domain $dmn_name: Error while changing mode to 0755 root: root for $dmn_backup_dir!");
+				send_error_mail('backup_all_engine()', "Domain $dmn_name: Error while changing mode to 0755 root: root for $dmn_backup_dir!");
 			}
 
 			if ($zip =~ '^(bzip2|gzip|lzma|xz)$') {
@@ -328,10 +327,10 @@ sub backup_all_engine {
 						send_error_mail('backup_all_engine()', "Domain $dmn_name: Error while executing $cmd_mv -f $www_dir/$backup_filename $dmn_backup_dir!");
 					}
 
-					$rs = setfmode("$dmn_backup_dir/$backup_filename", 0, 0, 0444);
+					$rs = setfmode("$dmn_backup_dir/$backup_filename", $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0444);
 					if ($rs != 0) {
-						push_el(\@main::el, 'backup_all_engine()', "Domain $dmn_name: Error while changing mode to 0444 uid: 0 gid: 0 for $dmn_backup_dir/$backup_filename!");
-						send_error_mail('backup_all_engine()', "Domain $dmn_name: Error while changing mode to 0444 uid: 0 gid: 0 for $dmn_backup_dir/$backup_filename!");
+						push_el(\@main::el, 'backup_all_engine()', "Domain $dmn_name: Error while changing mode to 0444 root:root for $dmn_backup_dir/$backup_filename!");
+						send_error_mail('backup_all_engine()', "Domain $dmn_name: Error while changing mode to 0444 root:root for $dmn_backup_dir/$backup_filename!");
 					}
 
 				} else { # some error occurred
