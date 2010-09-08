@@ -6,7 +6,9 @@ ispCP ω 1.0.7 ChangeLog
 		* ispcp-htgroups-mngr: Removed useless sleep statement
 		* Forcing logs umask to be root only readable
 		* Fixed #2425: Engine do not wait altered files to be written
-		* Ticket #2440: Backup script will restore forged backup
+		* Fixed #2440: Backup script will restore forged backup
+	- GUI:
+		* Fixed #2442: Adding a domain purcesed via orderpanel will insert type of backup (_full_) witch is not allowed
 
 2010-09-07 Markus Schmidt
 	- TOOLS:

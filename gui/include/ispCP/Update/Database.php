@@ -1760,6 +1760,29 @@ class ispCP_Update_Database extends ispCP_Update {
 		");
 	}
 
+	/**
+	 * Fix ilegal value _full_ for allow backup
+	 *
+	 * adding a domain purcesed via orderpanel will insert
+	 * type of backup (_full_) witch is not allowed
+	 *
+	 * @since r3263
+	 * @return array Sql statements to be performed
+	 */
+	protected function _databaseUpdate_39() {
+
+		return array("
+			UPDATE
+				`domain`
+			SET
+				`allowbackup` = 'full'
+			WHERE
+				`allowbackup` = '_full_'
+			;
+		");
+	}
+
+
 	/*
 	 * DO NOT CHANGE ANYTHING BELOW THIS LINE!
 	 */

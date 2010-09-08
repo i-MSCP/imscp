@@ -126,6 +126,7 @@ list($php, $cgi, $sub,
 $php = preg_replace("/\_/", "", $php);
 $cgi = preg_replace("/\_/", "", $cgi);
 $dns = preg_replace("/\_/", "", $dns);
+$backup = preg_replace("/\_/", "", $backup);
 
 $password = passgen();
 $inpass = crypt_user_pass($password, true);
@@ -263,7 +264,7 @@ $query = "
 		(?, ?, ?)
 ";
 
-$res = exec_query($sql, $query, array($record_id, $user_def_lang, 
+$res = exec_query($sql, $query, array($record_id, $user_def_lang,
 		$user_theme_color));
 
 // send query to the ispcp daemon
