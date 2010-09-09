@@ -47,8 +47,7 @@ install:
 
 	$(SYSTEM_MAKE_DIRS) $(ROOT_CONF)/proftpd/ispcp;
 	cp ./root_domain.conf $(ROOT_CONF)/proftpd/ispcp;
-
-	cp ./proftpd.conf $(SYSTEM_CONF)/proftpd/proftpd.conf ; \
+	cp ./proftpd.conf $(SYSTEM_CONF)/proftpd/proftpd.conf ;
 
 uninstall:
 
