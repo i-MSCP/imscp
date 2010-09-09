@@ -11,14 +11,13 @@
 </IfModule>
 
 #
-# Log processing.
+# Log processing
 #
 
-LogFormat "%B" traff
-LogFormat "%v %b %h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" ispcplog
+LogFormat "%v %h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\" %I %O" ispcplog
 
-CustomLog "| /var/www/ispcp/engine/ispcp-apache-logger" ispcplog
-ErrorLog "| /var/www/ispcp/engine/ispcp-apache-logger -e"
+CustomLog "{PIPE}{ROOT_DIR}/engine/ispcp-apache-logger" ispcplog
+ErrorLog "{PIPE}{ROOT_DIR}/engine/ispcp-apache-logger -t error"
 
 #
 # mod_cband configuration
@@ -34,6 +33,15 @@ ErrorLog "| /var/www/ispcp/engine/ispcp-apache-logger -e"
 #
 
 AddDefaultCharset Off
+
+#
+# Access for errors directory
+#
+
+<Directory {APACHE_WWW_DIR}/*/errors>
+	Order allow,deny
+	Allow from all
+</Directory>
 
 #
 # Header End

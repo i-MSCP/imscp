@@ -1,6 +1,11 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-09-09 Daniel Andreca
+	- CONFIGS:
+		* Fixed #2430: [Ubuntu] Proftpd's modules.conf need to be
+			updated on install/update
+
 2010-09-08 Daniel Andreca
 	- ENGINE:
 		* ispcp-htgroups-mngr: Removed useless sleep statement

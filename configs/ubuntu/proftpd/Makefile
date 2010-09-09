@@ -48,16 +48,7 @@ install:
 	$(SYSTEM_MAKE_DIRS) $(ROOT_CONF)/proftpd/ispcp;
 	cp ./root_domain.conf $(ROOT_CONF)/proftpd/ispcp;
 
-	if [ $(RELEASE) = 'dapper' ] ; then \
-		cp ./proftpd.conf $(SYSTEM_CONF)/proftpd ; \
-	elif [ $(RELEASE) = 'intrepid' ] || [ $(RELEASE) = 'jaunty' ] || [ $(RELEASE) = 'karmic' ]; then \
-		cp ./proftpd1.3.intrepid.conf $(SYSTEM_CONF)/proftpd/proftpd.conf ; \
-	else \
-		if test -e /etc/proftpd.conf; then \
-			mv /etc/proftpd.conf /etc/proftpd.conf.bak ; \
-		fi ; \
-		cp ./proftpd1.3.conf $(SYSTEM_CONF)/proftpd/proftpd.conf ; \
-	fi
+	cp ./proftpd.conf $(SYSTEM_CONF)/proftpd/proftpd.conf ; \
 
 uninstall:
 
