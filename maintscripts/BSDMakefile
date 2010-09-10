@@ -26,14 +26,28 @@
 #    http://isp-control.net
 #
 
-DATABASE_DIR=$(SYSTEM_CONF)/database
+.ifdef $(OSTYPE)==FreeBSD
+.include <../Makefile.fbsd>
+.else
+.include <../Makefile.inc>
+.endif
+
+CMD_INSTALL=/usr/bin/install -m 0700 -o root -g root
+SYSTEM_SETUP_ROOT=$(SYSTEM_ROOT)/engine/setup
 
 install:
-	$(SYSTEM_MAKE_DIRS) $(DATABASE_DIR)
-	cp ./database.sql $(DATABASE_DIR)
-	cp ./languages.sql $(DATABASE_DIR)
+	$(SYSTEM_MAKE_DIRS) $(SYSTEM_SETUP_ROOT)
+
+	if test -f ./preinst.$(HOST_OS) ; then \
+		$(CMD_INSTALL) ./preinst.$(HOST_OS) $(SYSTEM_SETUP_ROOT)/preinst; \
+	fi
+
+	if test -f ./postinst.$(HOST_OS) ; then \
+		$(CMD_INSTALL) ./postinst.$(HOST_OS) $(SYSTEM_SETUP_ROOT)/postinst; \
+	fi
 
 uninstall:
-	rm -rf $(DATABASE_DIR)
+	rm -f $(SYSTEM_SETUP_ROOT)/preinst
+	rm -f $(SYSTEM_SETUP_ROOT)/postinst
 
 .PHONY: install uninstall
