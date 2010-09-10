@@ -49,11 +49,11 @@ install:
 
 	cd ./configs && $(MAKE) install
 	cd ./engine && $(MAKE) install
+	cd ./maintscripts && $(MAKE) install
 	cd ./gui && $(MAKE) install
 	cd ./keys && $(MAKE) install
 	cd ./database && $(MAKE) install
-	cp ./docs/FreeBSD/postinst $(SYSTEM_ROOT)/engine/setup
-	
+
 	# @TODO: Move this touch part here to pre-installation script
 	# Create an empty file for courier
 	touch $(SYSTEM_CONF)/courier/backup/authdaemonrc.system
@@ -61,6 +61,7 @@ install:
 uninstall:
 	cd ./tools && $(MAKE) uninstall
 	cd ./configs && $(MAKE) uninstall
+	cd ./maintscripts && $(MAKE) uninstall
 	cd ./engine && $(MAKE) uninstall
 	cd ./gui && $(MAKE) uninstall
 	cd ./keys && $(MAKE) uninstall
@@ -72,7 +73,6 @@ uninstall:
 	rm -rf $(SYSTEM_FCGI)
 	rm -rf $(SYSTEM_MAIL_VIRTUAL)
 	rm -rf $(SYSTEM_APACHE_BACK_LOG)
-	rm -rf ./*~
 
 clean:
 	cd ./tools/daemon && $(MAKE) clean

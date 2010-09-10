@@ -128,4 +128,3 @@ install:
 uninstall:
 
 	rm -rf $(SYSTEM_ENGINE_ROOT)
-	rm -rf ./*~

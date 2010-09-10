@@ -51,7 +51,6 @@ SYSTEM_MAKE_FILE=/bin/touch
 
 export
 
-
 install:
 
 	cd ./tools && $(MAKE) install
@@ -67,21 +66,22 @@ install:
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_MAIL_VIRTUAL)
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_APACHE_BACK_LOG)
 
-	cd ./configs && $(MAKE) install &
+	cd ./configs && $(MAKE) install
 	cd ./engine && $(MAKE) install
+	cd ./maintscripts && $(MAKE) install
 	cd ./gui && $(MAKE) install
 	cd ./keys && $(MAKE) install
 	cd ./database && $(MAKE) install
 
-
 uninstall:
 
-	cd ./tools && $(MAKE) uninstall &
-	cd ./configs && $(MAKE) uninstall &
-	cd ./engine && $(MAKE) uninstall &
-	cd ./gui && $(MAKE) uninstall &
-	cd ./keys && $(MAKE) uninstall &
-	cd ./database && $(MAKE) uninstall &
+	cd ./tools && $(MAKE) uninstall
+	cd ./configs && $(MAKE) uninstall
+	cd ./maintscripts && $(MAKE) uninstall
+	cd ./engine && $(MAKE) uninstall
+	cd ./gui && $(MAKE) uninstall
+	cd ./keys && $(MAKE) uninstall
+	cd ./database && $(MAKE) uninstall
 
 	rm -rf $(SYSTEM_CONF)
 	rm -rf $(SYSTEM_ROOT)
@@ -91,8 +91,6 @@ uninstall:
 	rm -rf $(SYSTEM_SCOREBOARDS)
 	rm -rf $(SYSTEM_MAIL_VIRTUAL)
 	rm -rf $(SYSTEM_APACHE_BACK_LOG)
-	#rm -rf ./*~
-
 
 clean:
 
