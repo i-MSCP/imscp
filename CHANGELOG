@@ -3,7 +3,7 @@ ispCP ω 1.0.7 ChangeLog
 
 2010-09-10 Laurent Declercq
 	- SETUP
-		* Fixed #2282 Maintainer scripts
+		* Fixed #2282: Maintainer scripts
 		* Some changes in Makefile files
 
 2010-09-09 Daniel Andreca
