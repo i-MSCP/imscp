@@ -32,7 +32,7 @@
 .include <../Makefile.inc>
 .endif
 
-CMD_INSTALL=/usr/bin/install -m 0700 -o root -g root
+CMD_INSTALL=/usr/bin/install -m 0700 -o root -g wheel
 SYSTEM_SETUP_ROOT=$(SYSTEM_ROOT)/engine/setup
 
 install:
