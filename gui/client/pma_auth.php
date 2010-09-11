@@ -75,9 +75,9 @@ function _getLoginCredentials($dbUserId) {
 	$stmt = exec_query($db, $query, array($dbUserId, $_SESSION['user_id']));
 
 	if($stmt->rowCount() == 1) {
-			return array(
-				$stmt->fields['sqlu_name'],
-				decrypt_db_password($stmt->fields['sqlu_pass'])
+		return array(
+			$stmt->fields['sqlu_name'],
+			decrypt_db_password($stmt->fields['sqlu_pass'])
 		);
 	} else {
 		return false;
@@ -173,7 +173,7 @@ function pmaAuth($dbUserId) {
  * Main program
  */
 
-// Include all needed libraries and process to the ispCP intialization
+// Include all needed libraries and process to the ispCP initialization
 require '../include/ispcp-lib.php';
 
 // Check login
