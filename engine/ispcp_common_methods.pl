@@ -46,7 +46,8 @@ BEGIN {
 		Term::ReadPassword,
 		File::Basename,
 		File::Path,
-		HTML::Entities
+		HTML::Entities,
+		File::Temp
 	);
 
 	my ($mod, $mod_err, $mod_missing) = ('', '_off_', '');
@@ -806,6 +807,7 @@ sub sys_command_stderr() {
 sub make_dir {
 
 	push_el(\@main::el, 'make_dir()', 'Starting...');
+	push_el(\@main::el, 'make_dir()', 'WARNING: This function is deprecated. Use makepath() instead ...');
 
 	my ($dname, $duid, $dgid, $dperms) = @_;
 
@@ -2395,4 +2397,298 @@ $errmsg
 	close MAIL;
 
 	push_el(\@main::el, 'send_error_mail()', 'Ending...');
+}
+
+
+###################################################################################
+##
+## makepath
+## Creates a directory path and set ownership and rights for newly created folders
+##
+## @author Daniel Andreca <sci2tech@gmail.com>
+## @since   1.0.7
+## @version 1.0.7
+## @param	String 	$dname	File Name
+## @param	Mixed 	$duid	Linux User or UserID
+## @param	Mixed 	$dgid	Linux Group, GroupID or null
+## @param	int 	$dperms	Linux Permissions
+## @return	int	0 on success, -1 otherwise
+sub makepath {
+
+	push_el(\@main::el, 'makepath()', 'Starting...');
+
+	my ($dname, $duid, $dgid, $dperms) = @_;
+
+	if (!defined $dname || !defined $duid || !defined $dgid || !defined $dperms
+		|| $dname eq '' || $duid eq '' || $dgid eq '' || $dperms eq '' ) {
+		push_el(
+			\@main::el, 'make_path()',
+			"ERROR: Undefined input data, dname: |$dname|, duid: |$duid|, " .
+				"dgid: |$dgid|, dperms: |$dperms| !"
+		);
+
+		return -1;
+	}
+
+	my ($rs, $rdata) = ('', '');
+
+	if (-e $dname && -f $dname) {
+		push_el(
+			\@main::el, 'makepath()',
+			"'$dname' exists as file ! removing file first..."
+		);
+
+		return -1 if (del_file($dname) != 0);
+	}
+
+	if (!(-e $dname && -d $dname)) {
+		push_el(
+			\@main::el, 'makepath()',
+			"'$dname' doesn't exists as directory! creating..."
+		);
+
+		my @lines =  mkpath($dname, {owner => $duid, group => $duid, mode=>0755});
+
+		if (!@lines) {
+			push_el(
+				\@main::el, 'makepath()',
+				"ERROR: mkpath() returned empty path!"
+			);
+
+			return -1;
+		}
+		foreach (@lines){
+			return -1 if (setfmode($_, $duid, $dgid, $dperms) != 0);
+		}
+
+	} else {
+
+		push_el(
+			\@main::el, 'makepath()',
+			"'$dname' exists ! Setting its permissions..."
+		);
+
+		return -1 if (setfmode($dname, $duid, $dgid, $dperms) != 0);
+
+	}
+
+	push_el(\@main::el, 'makepath()', 'Ending...');
+
+	0;
+}
+
+
+###################################################################################
+##
+## get_domain_mount_points
+## return a list with mounting points for aliases domains and subdomains for a
+## domain
+##
+## @author Daniel Andreca <sci2tech@gmail.com>
+## @since   1.0.7
+## @version 1.0.7
+## @param	int 	$dmn_id	domain id
+## @return [0 on success |error code, list of mount points]
+sub get_domain_mount_points {
+
+	push_el(\@main::el, 'get_domain_mount_points()', 'Starting...');
+
+	my ($dmn_id) = @_;
+
+	my $sql = "
+		SELECT
+			`alias_id` as 'id',
+			`alias_mount` as 'mount_point',
+			'alias' as `type`
+		FROM
+			`domain_aliasses`
+		WHERE
+			`domain_id` = '$dmn_id'
+		UNION
+		SELECT
+			`subdomain_id` as 'id',
+			`subdomain_mount` as 'mount_point',
+			'subdomain' as `type`
+		FROM
+			`subdomain`
+		WHERE
+			`domain_id` = '$dmn_id'
+		UNION
+		SELECT
+			`subdomain_alias_id` as 'id',
+			`subdomain_alias_mount` as 'mount_point',
+			'alias_subdomain' as `type`
+		FROM
+			`subdomain_alias`
+		WHERE
+			`alias_id` = ANY (SELECT `alias_id` FROM `domain_aliasses`	WHERE `domain_id` = '$dmn_id')
+		ORDER BY `mount_point` ASC
+		;
+	";
+
+	my ($rs, $rdata) = doHashSQL($sql, 'id');
+
+	push_el(\@main::el, 'get_domain_mount_points()', 'Ending...');
+
+	return ($rs, $rdata);
+
+}
+
+###################################################################################
+##
+## check_mount_point_in_use
+## check if a mount point is shared
+##
+## @author Daniel Andreca <sci2tech@gmail.com>
+## @since   1.0.7
+## @version 1.0.7
+## @param	String 	$dtype	shared point to be deleted is used by alias / subdomain / alias subdomain
+## @param	int 	$did	id of alias / subdomain / alias subdomain to be deleted
+## @param	String 	$dmount_point	Mount point to be deleted
+## @param	array 	$data	list of shared point in use
+## @return array list of shared mount point to be saved
+sub check_mount_point_in_use {
+
+	push_el(\@main::el, 'check_mount_point_in_use()', 'Starting...');
+
+	my($dtype, $dmn_id, $did, $dmount_point, $data) = @_;
+
+	my @to_save = ();
+
+	while ( my($k, $v) = each %$data ) {
+
+		my ($id, $mount_point, $type) = (@$v{'id'}, @$v{'mount_point'}, @$v{'type'});
+
+		push_el(\@main::el, 'check_mount_point_in_use()', "Test $id ne $did or $type ne $dtype (we do not save folder that supose to be deleted)");
+
+		if(!(($id eq $did) && ($type eq $dtype))) {
+
+			push_el(\@main::el, 'check_mount_point_in_use()', "ok. Continue...");
+
+			push_el(\@main::el, 'check_mount_point_in_use()', "Test $mount_point or system folders are subfolder in $dmount_point (if we will not save it will be deleted)");
+
+			my @mpoints = ($mount_point, "$mount_point/backups", "$mount_point/cgi-bin", "$mount_point/disabled", "$mount_point/errors", "$mount_point/htdocs", "$mount_point/logs", "$mount_point/phptmp");
+
+			foreach my $mpoint (@mpoints){
+
+				push_el(\@main::el, 'check_mount_point_in_use()', "Test $mpoint is subfolder in $dmount_point (if we will not save it will be deleted)");
+
+				if($mpoint =~ /^$dmount_point.*$/){
+
+					push_el(\@main::el, 'check_mount_point_in_use()', "it is. Continue...");
+
+					my $save = 1;
+
+					foreach(@to_save){
+
+						push_el(\@main::el, 'check_mount_point_in_use()', "Test $mpoint is subfolder in a scheduled to save folder");
+
+						if($mpoint =~ /^$_.*$/){
+
+							push_el(\@main::el, 'check_mount_point_in_use()', "yes. Not need to save again!");
+
+							$save = 0;
+						}
+
+					}
+
+					if( $save != 0) {
+
+						push_el(\@main::el, 'check_mount_point_in_use()', "Schedule to be saved: $mpoint");
+						push(@to_save, $mpoint);
+
+					}
+				}
+			}
+		}
+
+	}
+
+	push_el(\@main::el, 'check_mount_point_in_use()', 'Ending...');
+
+	return @to_save;
+}
+
+###################################################################################
+##
+## save_as_temp_folder
+## check if a mount point is shared
+##
+## @author Daniel Andreca <sci2tech@gmail.com>
+## @since   1.0.7
+## @version 1.0.7
+## @param	String 	$path	path to user domain
+## @param	array 	$to_save	list of shared mount point to be saved
+## @return	int	0 on success, err code otherwise
+## @return	hash	list of temporary folder as $temporary folder name => path to mount point
+sub save_as_temp_folder {
+
+	push_el(\@main::el, 'save_as_temp_folder()', 'Starting...');
+
+	my ($path, @to_save )= @_;
+
+	my %dirs = ();
+
+	my $rs = 0;
+
+	foreach (@to_save) {
+
+		my $dir = File::Temp->newdir( DIR => $path, CLEANUP => 0 );
+
+		$dirs{$dir->dirname} = "$path$_";
+
+		push_el(\@main::el, 'save_as_temp_folder()', "Mount point to be saved $_ in $dir");
+
+		if (scalar <$path$_/*>){ #save only if not empty
+
+			$rs = sys_command("$main::cfg{'CMD_MV'} -f $path$_/* $dir");
+			return $rs if ($rs != 0);
+
+		}
+
+	}
+
+	push_el(\@main::el, 'save_as_temp_folder()', 'Ending...');
+
+	return ($rs, %dirs);
+}
+
+###################################################################################
+##
+## restore_from_temp_folder
+## check if a mount point is shared
+##
+## @author Daniel Andreca <sci2tech@gmail.com>
+## @since   1.0.7
+## @version 1.0.7
+## @param	Mixed 	$duid	Linux User or UserID
+## @param	Mixed 	$dgid	Linux Group, GroupID or null
+## @param	hash 	%to_restore	list of shared mount point to be restored as $store path => path to mount point
+## @return	int	0 on success, err code otherwise
+sub restore_from_temp_folder {
+
+	push_el(\@main::el, 'restore_from_temp_folder()', 'Starting...');
+
+	my ($duid, $dgid, %to_restore) = @_;
+
+	 while( my ($folder, $path) = each %to_restore ) {
+
+		my $rs = makepath($path, $duid, $dgid, 0755);
+		return $rs if ($rs != 0);
+
+		if (scalar <$folder/*>){#restore only if not empty
+
+			$rs = sys_command("$main::cfg{'CMD_MV'} -f $folder/* $path");
+			return $rs if ($rs != 0);
+
+		}
+
+		$rs = del_dir($folder);
+		return $rs if ($rs != 0);
+
+    }
+
+	push_el(\@main::el, 'restore_from_temp_folder()', 'Ending...');
+
+	0;
 }

@@ -1,6 +1,13 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-09-11 Daniel Andreca
+	- ENGINE
+		* Fixed #2446: make_dir function won`t set correct permissions
+			if more than a folder is created
+		* Fixed #2399: Aliasses deletion - Shared mount point shouldn't
+			be removed
+
 2010-09-10 Laurent Declercq
 	- SETUP
 		* Fixed #2282: Maintainer scripts

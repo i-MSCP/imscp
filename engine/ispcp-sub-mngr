@@ -644,6 +644,7 @@ sub sub_del_httpd_file_data {
 	push_el(\@main::el, 'sub_del_httpd_file_data()', 'Starting...');
 
 	my ($data) = @_;
+	my ($rs, $rdata) = (undef, ());
 
 	if (!defined $data || $data eq '') {
 		push_el(
@@ -654,23 +655,43 @@ sub sub_del_httpd_file_data {
 		return -1;
 	}
 
-	my $dmnName = @$data{'domain_name'};
-	my $subName = "@$data{subdomain_name}.$dmnName";
-	my $subDir = "$main::cfg{APACHE_WWW_DIR}/$dmnName@$data{subdomain_mount}";
+	my $dmn_id		= @$data{'domain_id'};
+	my $duid		= @$data{'domain_uid'};
+	my $dgid		= @$data{'domain_gid'};
+	my $sub_id		= @$data{'subdomain_id'};
+	my $mount_point	= @$data{'subdomain_mount'};
+	my $www_dir		= $main::cfg{'APACHE_WWW_DIR'};
+	my $dmnName		= @$data{'domain_name'};
+	my $subName		= "@$data{subdomain_name}.$dmnName";
+	my $subDir		= "$main::cfg{APACHE_WWW_DIR}/$dmnName@$data{subdomain_mount}";
 
 	# Deleting custom httpd configuration file if it exist
 	if (-e "$main::cfg{APACHE_CUSTOM_SITES_CONFIG_DIR}/$subName.conf" ) {
-		my $rs = del_file(
+		$rs = del_file(
 			"$main::cfg{APACHE_CUSTOM_SITES_CONFIG_DIR}/$subName.conf"
 		);
 		return -1 if ($rs != 0);
 	}
+
+	return 0 if ($mount_point eq '/' || $mount_point eq '');
+
+	($rs, $rdata) = get_domain_mount_points($dmn_id);
+	return $rs if ($rs != 0);
+
+	my @to_save = check_mount_point_in_use('subdomain', $dmn_id, $sub_id, $mount_point, $rdata);
+
+	($rs, my %to_restore) = save_as_temp_folder("$www_dir/$dmnName", @to_save);
+	return $rs if ($rs != 0);
+
 
 	# Deleting subdomain main dirctory if it exist
 	if(-e $subDir) {
 		my $rs = del_dir($subDir);
 		return -1 if($rs != 0);
 	}
+
+	$rs = restore_from_temp_folder($duid, $dgid, %to_restore);
+	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'sub_del_httpd_file_data()', 'Ending...');
 
