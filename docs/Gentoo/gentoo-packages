@@ -17,6 +17,7 @@ dev-perl/Crypt-PasswdMD5
 dev-perl/DateTime
 dev-perl/DateTime-TimeZone
 dev-perl/IP-Country
+dev-perl/File-Copy-Recursive
 dev-perl/File-MimeInfo
 dev-perl/Mail-DomainKeys
 dev-perl/Mail-SPF-Query

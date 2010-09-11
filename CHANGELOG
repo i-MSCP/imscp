@@ -8,6 +8,8 @@ ispCP ω 1.0.7 ChangeLog
 		* Fixed #2399: Aliasses deletion - Shared mount point shouldn't
 			be removed
 		* Improved module requirement
+	- DOCS
+		* Update dependinces
 
 2010-09-10 Laurent Declercq
 	- SETUP

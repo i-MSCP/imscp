@@ -45,6 +45,7 @@ perl-Date-Calc
 perl-DateManip
 perl-DBD-MySQL
 perl-Digest-HMAC
+perl-File-Copy-Recursive
 perl-HTML-Parser
 perl-HTML-Tagset
 perl-IO-stringy

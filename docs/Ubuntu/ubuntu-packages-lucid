@@ -33,6 +33,7 @@ libdatetime-timezone-perl
 libdigest-md5-perl
 libdbd-mysql-perl
 libdbi-perl
+libfile-copy-recursive-perl
 libfile-mimeinfo-perl
 libio-stringy-perl
 libmail-sendmail-perl

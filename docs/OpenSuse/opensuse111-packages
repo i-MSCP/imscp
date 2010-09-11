@@ -56,6 +56,7 @@ perl-DateTime
 perl-DateTime-TimeZone
 perl-DateManip
 perl-Digest-HMAC
+perl-File-Copy-Recursive
 perl-HTML-Parser
 perl-HTML-Tagset
 perl-IO-stringy
