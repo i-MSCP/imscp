@@ -702,7 +702,7 @@ sub alssub_del_httpd_file_data {
 		return -1 if($rs != 0);
 	}
 
-	$rs = restore_from_temp_folder($duid, $dgid, %to_restore);
+	$rs = restore_list_folder(0755, $duid, $dgid, %to_restore);
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'alssub_del_httpd_file_data()', 'Ending...');

@@ -31,31 +31,34 @@
 
 BEGIN {
 
-	my @needed 	= (
-		'strict',
-		'warnings',
-		IO::Socket,
-		DBI,
-		DBD::mysql,
-		MIME::Entity,
-		MIME::Parser,
-		Crypt::CBC,
-		Crypt::Blowfish,
-		Crypt::PasswdMD5,
-		MIME::Base64,
-		Term::ReadPassword,
-		File::Basename,
-		File::Path,
-		HTML::Entities,
-		File::Temp
+	my %needed 	= (
+		'strict' => '',
+		'warnings' => '',
+		'IO::Socket'=> '',
+		'DBI'=> '',
+		DBD::mysql => '',
+		MIME::Entity => '',
+		MIME::Parser => '',
+		Crypt::CBC => '',
+		Crypt::Blowfish => '',
+		Crypt::PasswdMD5 => '',
+		MIME::Base64 => '',
+		Term::ReadPassword => '',
+		File::Basename => '',
+		File::Path => '',
+		HTML::Entities=> '',
+		File::Temp => '',
+		File::Copy::Recursive => 'qw(rcopy)'
 	);
 
 	my ($mod, $mod_err, $mod_missing) = ('', '_off_', '');
 
-	for $mod (@needed) {
+	for $mod (keys %needed) {
 
 		if (eval "require $mod") {
-			$mod -> import();
+
+			eval "use $mod $needed{$mod}";
+
 		} else {
 
 			print STDERR "\nCRITICAL ERROR: Module [$mod] WAS NOT FOUND !\n" ;
@@ -2612,7 +2615,7 @@ sub check_mount_point_in_use {
 ###################################################################################
 ##
 ## save_as_temp_folder
-## check if a mount point is shared
+## move content from a list of folders in temporary created folders
 ##
 ## @author Daniel Andreca <sci2tech@gmail.com>
 ## @since   1.0.7
@@ -2620,7 +2623,7 @@ sub check_mount_point_in_use {
 ## @param	String 	$path	path to user domain
 ## @param	array 	$to_save	list of shared mount point to be saved
 ## @return	int	0 on success, err code otherwise
-## @return	hash	list of temporary folder as $temporary folder name => path to mount point
+## @return	hash	list of temporary folder as $temporary folder name => source folder
 sub save_as_temp_folder {
 
 	push_el(\@main::el, 'save_as_temp_folder()', 'Starting...');
@@ -2639,12 +2642,8 @@ sub save_as_temp_folder {
 
 		push_el(\@main::el, 'save_as_temp_folder()', "Mount point to be saved $_ in $dir");
 
-		if (scalar <$path$_/*>){ #save only if not empty
-
-			$rs = sys_command("$main::cfg{'CMD_MV'} -f $path$_/* $dir");
-			return $rs if ($rs != 0);
-
-		}
+		$rs = move_dir_content("$path$_", $dir);
+		return $rs if ($rs != 0);
 
 	}
 
@@ -2655,40 +2654,77 @@ sub save_as_temp_folder {
 
 ###################################################################################
 ##
-## restore_from_temp_folder
-## check if a mount point is shared
+## move_list_folder
+## move content from a list of folders in folders provided by list
+## and set owner and rights on folder created acording to input parameters
 ##
 ## @author Daniel Andreca <sci2tech@gmail.com>
 ## @since   1.0.7
 ## @version 1.0.7
+## @param	octal 	$perm	permissions
 ## @param	Mixed 	$duid	Linux User or UserID
 ## @param	Mixed 	$dgid	Linux Group, GroupID or null
-## @param	hash 	%to_restore	list of shared mount point to be restored as $store path => path to mount point
+## @param	hash 	%to_restore	list of folders to be restored as source path => destination path
 ## @return	int	0 on success, err code otherwise
-sub restore_from_temp_folder {
+sub restore_list_folder {
 
-	push_el(\@main::el, 'restore_from_temp_folder()', 'Starting...');
+	push_el(\@main::el, 'move_list_folder()', 'Starting...');
 
-	my ($duid, $dgid, %to_restore) = @_;
+	my ($perm, $duid, $dgid, %to_restore) = @_;
 
 	 while( my ($folder, $path) = each %to_restore ) {
 
-		my $rs = makepath($path, $duid, $dgid, 0755);
+		my $rs = makepath($path, $duid, $dgid, $perm);
 		return $rs if ($rs != 0);
 
-		if (scalar <$folder/*>){#restore only if not empty
-
-			$rs = sys_command("$main::cfg{'CMD_MV'} -f $folder/* $path");
-			return $rs if ($rs != 0);
-
-		}
+		$rs = move_dir_content("$folder", $path);
+		return $rs if ($rs != 0);
 
 		$rs = del_dir($folder);
 		return $rs if ($rs != 0);
 
-    }
+	}
 
-	push_el(\@main::el, 'restore_from_temp_folder()', 'Ending...');
+	push_el(\@main::el, 'move_list_folder()', 'Ending...');
+
+	0;
+}
+
+###################################################################################
+##
+## move_dir_content
+## move content of source folder in destination (not source folder itself)
+##
+## @author Daniel Andreca <sci2tech@gmail.com>
+## @since   1.0.7
+## @version 1.0.7
+## @param	String 	$source	Source folder
+## @param	String 	$destination	Destination folder
+## @return	int	0 on success, -1 otherwise
+
+sub move_dir_content{
+
+	push_el(\@main::el, 'move_dir_content()', 'Starting...');
+
+	my ($source, $destination) = @_;
+
+	push_el(\@main::el, 'move_dir_content()', "Trying to move content of $source in $destination");
+
+	if (scalar <$source/*>){#move only if not empty
+
+		my @res = rcopy("$source/*", "$destination");
+
+		if(!@res){
+
+			push_el(\@main::el, 'move_dir_content()', "Failed to move content of $source in $destination!");
+
+			return -1;
+
+		}
+
+	}
+
+	push_el(\@main::el, 'move_dir_content()', 'Ending...');
 
 	0;
 }
