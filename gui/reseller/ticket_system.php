@@ -45,206 +45,6 @@ $tpl->define_dynamic('scroll_prev', 'page');
 $tpl->define_dynamic('scroll_next_gray', 'page');
 $tpl->define_dynamic('scroll_next', 'page');
 
-// page functions
-
-/**
- * Checks if the client's reseller has a support system.
- *
- * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
- * @since	1.0.7
- * @version	1.0.0
- *
- * @param reference $sql	the SQL object
- * @param int $admin_id 	the ID of the reseller's admin
- * @return boolean
- */
-function hasTicketSystem(&$sql, $admin_id) {
-	$cfg = ispCP_Registry::get('Config');
-
-	$query = "
-	  SELECT
-		`support_system`
-	  FROM
-		`reseller_props`
-	  WHERE
-		`reseller_id` = ?
-	;";
-
-	$rs = exec_query($sql, $query, $admin_id);
-
-	if (!$cfg->ISPCP_SUPPORT_SYSTEM || $rs->fields['support_system'] == 'no')
-		return false;
-
-	return true;
-}
-
-/**
- * Gets the answers of the selected ticket and generates its output.
- *
- * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
- * @since	1.0.7
- * @version	1.0.0
- *
- * @param reference $tpl	the Template object
- * @param reference $sql	the SQL object
- * @param int $ticket_id	the ID of the ticket to display
- * @param int $screenwidth	the width of the display
- */
-function generateTicketList(&$tpl, &$sql, $user_id) {
-	$cfg = ispCP_Registry::get('Config');
-
-	$start_index = 0;
-	$rows_per_page = $cfg->DOMAIN_ROWS_PER_PAGE;
-
-	if (isset($_GET['psi'])) {
-		$start_index = $_GET['psi'];
-	}
-
-	$count_query = "
-		SELECT
-			COUNT(`ticket_id`) AS cnt
-		FROM
-			`tickets`
-		WHERE
-			(`ticket_from` = ? OR `ticket_to` = ?)
-		AND
-			`ticket_status` != 0
-		AND
-			`ticket_reply` = 0
-	;";
-
-	$rs = exec_query($sql, $count_query, array($user_id, $user_id));
-	$records_count = $rs->fields['cnt'];
-
-	$query = "
-		SELECT
-			`ticket_id`,
-			`ticket_status`,
-			`ticket_urgency`,
-			`ticket_date`,
-			`ticket_subject`
-		FROM
-			`tickets`
-		WHERE
-			(`ticket_from` = ? OR `ticket_to` = ?)
-		AND
-			`ticket_status` != 0
-		AND
-			`ticket_reply` = 0
-		ORDER BY
-			`ticket_date` DESC
-		LIMIT " .
-			$start_index . ", " . $rows_per_page
-    . ";";
-
-	$rs = exec_query($sql, $query, array($user_id, $user_id));
-
-	if ($rs->recordCount() == 0) {
-		$tpl->assign(
-			array(
-				'TICKETS_LIST'	=> '',
-				'SCROLL_PREV'	=> '',
-				'SCROLL_NEXT'	=> ''
-			)
-		);
-		set_page_message(tr('You don\'t have support tickets.'));
-	} else {
-		$prev_si = $start_index - $rows_per_page;
-		if ($start_index == 0) {
-			$tpl->assign('SCROLL_PREV', '');
-		} else {
-			$tpl->assign(
-				array(
-					'SCROLL_PREV_GRAY' => '',
-					'PREV_PSI' => $prev_si
-				)
-			);
-		}
-		$next_si = $start_index + $rows_per_page;
-
-		if ($next_si + 1 > $records_count) {
-			$tpl->assign('SCROLL_NEXT', '');
-		} else {
-			$tpl->assign(
-				array(
-					'SCROLL_NEXT_GRAY'	=> '',
-					'NEXT_PSI'			=> $next_si
-				)
-			);
-		}
-
-		$i = 0;
-		while (!$rs->EOF) {
-			$ticket_id		= $rs->fields['ticket_id'];
-			$from			= getTicketSender($tpl, $sql, $ticket_id);
-			$date			= ticketGetLastDate($sql, $ticket_id);
-            $ticket_urgency = $rs->fields['ticket_urgency'];
-			$ticket_status	= $rs->fields['ticket_status'];
-
-			$tpl->assign(array('URGENCY' => getTicketUrgency($ticket_urgency)));
-
-			if ($ticket_status == 1) {
-				$tpl->assign(array('NEW' => tr("[New]")));
-			} else if ($ticket_status == 4) {
-				$tpl->assign(array('NEW' => tr("[Re]")));
-			} else {
-				$tpl->assign(array('NEW' => " "));
-			}
-
-			$tpl->assign(
-				array(
-					'LAST_DATE' => $date,
-					'FROM'		=> tohtml($from),
-					'SUBJECT'	=> tohtml($rs->fields['ticket_subject']),
-					'SUBJECT2'	=> addslashes(clean_html($rs->fields['ticket_subject'])),
-					'ID'		=> $ticket_id,
-					'CONTENT'	=> ($i % 2 == 0) ? 'content' : 'content2'
-				)
-			);
-			$tpl->parse('TICKETS_ITEM', '.tickets_item');
-			$rs->moveNext();
-			$i++;
-		}
-	}
-}
-
-/**
- * Get the sender of an ticket.
- *
- * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
- * @since	1.0.7
- * @version	1.0.0
- *
- * @param  reference $tpl   the TPL object
- * @param  reference $sql   the SQL object
- * @param  int $ticket_id   the sender's ID
- * @return string           formatted sender string
- */
-function getTicketSender(&$tpl, &$sql, $ticket_id) {
-
-	$query = "
-		SELECT
-            `a`.`admin_name`,
-			`a`.`fname`,
-			`a`.`lname`
-		FROM
-			`tickets` AS `t` JOIN `admin` AS `a`
-        ON
-            `t`.`ticket_from` = `a`.`admin_id`
-		WHERE
-			`ticket_id` = ?
-	;";
-
-	$rs = exec_query($sql, $query, $ticket_id);
-	$from_user_name = decode_idna($rs->fields['admin_name']);
-	$from_first_name = $rs->fields['fname'];
-	$from_last_name = $rs->fields['lname'];
-
-	$from_name = $from_first_name . " " . $from_last_name . " (" . $from_user_name . ")";
-
-	return $from_name;
-}
-
 // common page data
 
 $tpl->assign(
@@ -260,11 +60,17 @@ $tpl->assign(
 
 $admin_id = $_SESSION['user_created_by'];
 
-if (!hasTicketSystem($sql, $admin_id)) {
+if (!hasTicketSystem($admin_id)) {
 	user_goto('index.php');
 }
+if (isset($_GET['psi'])) {
+	$start = $_GET['psi'];
+} else {
+	$start = 0;
+}
 
-generateTicketList($tpl, $sql, $_SESSION['user_id']);
+generateTicketList($tpl, $_SESSION['user_id'], $start,
+		$cfg->DOMAIN_ROWS_PER_PAGE, 'reseller', 'open');
 
 // static page messages
 

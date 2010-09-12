@@ -57,7 +57,12 @@ function gen_system_message(&$tpl, &$sql) {
 		WHERE
 			(`ticket_to` = ? OR `ticket_from` = ?)
 		AND
-			(`ticket_status` = '1' OR `ticket_status` = '4')
+			(`ticket_status` IN ('1', '4')
+			AND
+			`ticket_level` = 1) OR
+			(`ticket_status` IN ('2')
+			AND
+			`ticket_level` = 2)
 		AND
 			`ticket_reply` = 0
 	";

@@ -1,24 +1,26 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2010-09-11 Benedikt Heintel
+    - GUI:
+        * Refactored Ticket System (part II: removed duplicate code)
+
 2010-09-11 Daniel Andreca
+	- DOCS
+		* Update dependinces
 	- ENGINE, CONFIGS
 		* Fixed #2416: ispCP log files shouldn't be readable by everyone
 	- ENGINE
 		* Improved error log in ispcp-htgroups-mngr
 		* Improved error log in ispcp-sub-mngr
 		* Fixed #2452: Update from v1.0.6 will fail on database update
-	- GUI
-		* New inserted value in config table were not counted
-
-2010-09-11 Daniel Andreca
-	- ENGINE
 		* Fixed #2446: make_dir function won`t set correct permissions
 			if more than a folder is created
 		* Fixed #2399: Aliasses deletion - Shared mount point shouldn't
 			be removed
 		* Improved module requirement
-	- DOCS
-		* Update dependinces
+	- GUI
+		* New inserted value in config table were not counted
 
 2010-09-10 Laurent Declercq
 	- SETUP
