@@ -4,6 +4,8 @@ ispCP ω 1.0.7 ChangeLog
 2010-09-11 Benedikt Heintel
     - GUI:
         * Refactored Ticket System (part II: removed duplicate code)
+	- LANGUAGE:
+		* Updated Basque
 
 2010-09-11 Daniel Andreca
 	- DOCS
