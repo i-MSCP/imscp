@@ -3,7 +3,9 @@ ispCP ω 1.0.7 ChangeLog
 2010-09-11 Daniel Andreca
 	- ENGINE, CONFIGS
 		* Fixed #2416: ispCP log files shouldn't be readable by everyone
+	- ENGINE
 		* Improved error log in ispcp-htgroups-mngr
+		* Improved error log in ispcp-sub-mngr
 
 2010-09-11 Daniel Andreca
 	- ENGINE

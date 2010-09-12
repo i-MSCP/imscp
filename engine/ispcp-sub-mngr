@@ -1250,6 +1250,14 @@ sub sub_mngr_engine {
 	my ($rs, $rows) = doHashSQL($sql, 'subdomain_id');
 	return -1 if ($rs != 0);
 
+	if(!@$rows{$main::sub_task_id}){
+		push_el(
+		\@main::el, 'sub_mngr_engine()',
+		"Detected orphan entry in table subdomain, subdomain_id: $main::sub_task_id"
+		);
+		return -1;
+	}
+
 	my $entry = @$rows{$main::sub_task_id};
 	my $sub_status = @$entry{'subdomain_status'};
 
