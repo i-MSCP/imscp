@@ -444,6 +444,8 @@ class ispCP_Config_Handler_Db extends ispCP_Config_Handler implements iterator {
 			throw new ispCP_Exception_Database(
 				"Error: Unable to insert the configuration parameter `{$this->_key}` in the database"
 			);
+		} else {
+			$this->_insertQueriesCounter++;
 		}
 	}
 

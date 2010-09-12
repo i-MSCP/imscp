@@ -7,6 +7,8 @@ ispCP ω 1.0.7 ChangeLog
 		* Improved error log in ispcp-htgroups-mngr
 		* Improved error log in ispcp-sub-mngr
 		* Fixed #2452: Update from v1.0.6 will fail on database update
+	- GUI
+		* New inserted value in config table were not counted
 
 2010-09-11 Daniel Andreca
 	- ENGINE
