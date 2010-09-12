@@ -46,6 +46,8 @@ IPTABLES="/sbin/iptables"
 LOGDIR=/var/log/ispcp
 LOGFILE=${LOGDIR}/${NAME}.log
 
+umask 027
+
 ${RMMOD} ipchains 1>/tmp/ispcp_network.log 2>/tmp/ispcp_network.err.log
 
 # To monitor more ports, edit SERVICES variable add your own ports
@@ -56,7 +58,7 @@ ${RMMOD} ipchains 1>/tmp/ispcp_network.log 2>/tmp/ispcp_network.err.log
 # IMAP4(S)): 143 993
 # MAIL(S): 25 465 587
 SERVICES="80 443 110 143 25 465 587 995 993"
-# To monitor more outgoing ports, edit SERVICES_OUT variable add your own ports 
+# To monitor more outgoing ports, edit SERVICES_OUT variable add your own ports
 # (mail, etc.)
 #
 # MAIL(S): 25 465 587

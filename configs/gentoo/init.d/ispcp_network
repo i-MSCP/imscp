@@ -52,11 +52,13 @@ NETWORKCARDMANAGER="ispcp-net-interfaces-mngr"
 # IMAP4(S)): 143 993
 # MAIL(S): 25 465 587
 SERVICES="80 443 110 143 25 465 587 995 993"
-# To monitor more outgoing ports, edit SERVICES_OUT variable add your own ports 
+# To monitor more outgoing ports, edit SERVICES_OUT variable add your own ports
 # (mail, etc.)
 #
 # MAIL(S): 25 465 587
 SERVICES_OUT="25 465 587"
+
+umask 027
 
 depend() {
 	need net
@@ -76,7 +78,7 @@ add_rules() {
 		${IPTABLES} -I ISPCP_INPUT  -p tcp --dport "$PORT" 2>> "$LOGFILE"
 		${IPTABLES} -I ISPCP_OUTPUT -p tcp --sport "$PORT" 2>> "$LOGFILE"
 	done
-	
+
 	# Services from matrix basically sending data
 	for PORT in $SERVICES_OUT; do
 		${IPTABLES} -I ISPCP_INPUT  -p tcp --sport "$PORT" 2>> "$LOGFILE"

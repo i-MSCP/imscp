@@ -438,6 +438,8 @@ if ($rs != 0) {
 			($main::ispcp_arpl_msgr_stdout,$main::ispcp_arpl_msgr_stderr)
 		);
 
+		umask(027);
+
 		open(STDOUT, ">", $main::ispcp_arpl_msgr_stdout) ||
 			die "Can't redirect stdout";
 		open(STDERR, ">", $main::ispcp_arpl_msgr_stderr) ||
@@ -569,12 +571,12 @@ sub arpl_msgr_engine {
 	push_el(\@main::el, 'arpl_msgr_engine()', 'Starting...');
 
 	my ($sql, $rs, $ref) = (undef, undef, undef);
-	
+
 	# Cleanup old autoreply log entries
 	$sql = "
 		DELETE FROM
 			`autoreplies_log`
-		WHERE 
+		WHERE
 			ADDTIME(`time`, '24:00:00') < NOW()
 		;
 	";

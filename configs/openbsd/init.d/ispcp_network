@@ -54,11 +54,13 @@ LOGFILE=${LOGDIR}/${NAME}.log
 # IMAP4(S)): 143 993
 # MAIL(S): 25 465 587
 SERVICES="80 443 110 143 25 465 587 995 993"
-# To monitor more outgoing ports, edit SERVICES_OUT variable add your own ports 
+# To monitor more outgoing ports, edit SERVICES_OUT variable add your own ports
 # (mail, etc.)
 #
 # MAIL(S): 25 465 587
 SERVICES_OUT="25 465 587"
+
+umask 027
 
 ${RMMOD} ipchains 1>/tmp/ispcp_network.log 2>/tmp/ispcp_network.err.log
 

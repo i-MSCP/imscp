@@ -72,6 +72,8 @@ sub update_startup {
 
 	push_el(\@main::el, 'update_startup()', 'Starting...');
 
+	umask(027);
+
 	# FIXME: PM Joxi
 	if(-e '/tmp/ispcp-backup-all.lock') {
 		exit_msg(1, 'Backup engine is currently running. Aborting...');
@@ -552,10 +554,10 @@ sub cfg_recovery_process {
 	# Map each setting to the appropriate dialog subroutine and the corresponding
 	# main::ua key name
 	#
-	# TODO: 
-	#  - Add a trigger to check database connection if related settings are 
-	#    changed 
-	#  - Add a subroutine for the 'BASE_SERVER_VHOST' to prevent errors if the 
+	# TODO:
+	#  - Add a trigger to check database connection if related settings are
+	#    changed
+	#  - Add a subroutine for the 'BASE_SERVER_VHOST' to prevent errors if the
 	#    DNS file doesn't exist
 	my $recovery_dispatcher = {
 		DEFAULT_ADMIN_ADDRESS => [\&ask_admin_email, 'admin_email'],
@@ -628,7 +630,7 @@ sub cfg_recovery_process {
 			# Store already changed values in ispcp.conf
 			$rs = store_conf();
 			return $rs if($rs != 0);
-			
+
 			# Updates the reference file if needed
 			if($main::cfg_file ne $main::ua{'old_cfg_file'}) {
 				$rs = sys_command_rs("$main::cfg{CMD_CP} -f $main::cfg_file $main::ua{'old_cfg_file'} ");
@@ -816,7 +818,7 @@ sub rebuild_customers_cfg {
 				SET
 					$field = 'change'
 				WHERE
-					($field = 'ok' OR $field = 'disabled') 
+					($field = 'ok' OR $field = 'disabled')
 				;
 			"
 		);
@@ -1004,7 +1006,7 @@ sub update_old_disabled_dmn_layout {
 
 # Cleanup
 sub cleanup {
-	
+
 	push_el(\@main::el, 'cleanup()', 'Starting...');
 
 	# Delete .prev log files and their rotations not longer needed since r2251

@@ -49,6 +49,8 @@ DIETIME=3
 
 START=1
 
+umask 027
+
 # Debian LSB extensions (will be used if init-functions doesn't override them):
 log_daemon_msg() {
 	if [ ! -z "${2:-}" ]; then

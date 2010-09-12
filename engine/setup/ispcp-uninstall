@@ -111,6 +111,8 @@ sub uninstall_startup {
 
 	my $rs = undef;
 
+	umask(027);
+
 	# config check;
 	$rs = get_conf();
 	return $rs if ($rs != 0);

@@ -43,6 +43,8 @@ sub net_interfaces_mngr_start_up {
 
 	push_el(\@main::el, 'net_interfaces_mngr_start_up()', 'Starting...');
 
+	umask(027);
+
 	if (-e $main::ispcp_net_interfaces_mngr_el) {
 		$rs = del_file($main::ispcp_net_interfaces_mngr_el);
 		return $rs if ($rs != 0);

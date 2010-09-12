@@ -247,6 +247,15 @@ sub htgroup_mngr_engine {
 						return $rs if ($rs != 0);
 
 						my @unames = keys %$rdata;
+
+						if(!@unames){
+
+							push_el(\@main::el, 'htuser-groupmanagement()', "ERROR htaccess_users with $id does not exits.");
+
+							return -1;
+
+						}
+
 						my $uname  = @$rdata{$unames[0]}->{'uname'};
 
 						$rs = htgroup_add_group_data($htgroup_dmn, $htgroup_name, $uname);

@@ -5,20 +5,20 @@ HOME=/var/log
 # delayed tasks START.
 
 # Quota
-@daily {QUOTA_ROOT_DIR}/ispcp-dsk-quota >&{LOG_DIR}/ispcp-dsk-quota.log
+@daily umask 027; {QUOTA_ROOT_DIR}/ispcp-dsk-quota >&{LOG_DIR}/ispcp-dsk-quota.log
 
 # Traffic
-0,30	*	*	*	*  {TRAFF_ROOT_DIR}/ispcp-srv-traff >&{LOG_DIR}/ispcp-srv-traff.log
-0,30	*	*	*	*  {TRAFF_ROOT_DIR}/ispcp-vrl-traff >&{LOG_DIR}/ispcp-vrl-traff.log
+0,30	*	*	*	*  umask 027; {TRAFF_ROOT_DIR}/ispcp-srv-traff >&{LOG_DIR}/ispcp-srv-traff.log
+0,30	*	*	*	*  umask 027; {TRAFF_ROOT_DIR}/ispcp-vrl-traff >&{LOG_DIR}/ispcp-vrl-traff.log
 
 # customer logs
-@daily {TOOLS_ROOT_DIR}/ispcp-httpd-logs-mngr >&{LOG_DIR}/ispcp-httpd-logs-mngr.log
+@daily umask 027; {TOOLS_ROOT_DIR}/ispcp-httpd-logs-mngr >&{LOG_DIR}/ispcp-httpd-logs-mngr.log
 
 # Backup for all the customers' data depending of the domain properties
-@daily {BACKUP_ROOT_DIR}/ispcp-backup-all yes >&{LOG_DIR}/ispcp-backup-all-mngr.log
+@daily umask 027; {BACKUP_ROOT_DIR}/ispcp-backup-all yes >&{LOG_DIR}/ispcp-backup-all-mngr.log
 
 # Backup for ispCP database and all /etc/ispcp/* configuration files
-@daily {BACKUP_ROOT_DIR}/ispcp-backup-ispcp noreport >&{LOG_DIR}/ispcp-backup-ispcp-mngr.log
+@daily umask 027; {BACKUP_ROOT_DIR}/ispcp-backup-ispcp noreport >&{LOG_DIR}/ispcp-backup-ispcp-mngr.log
 
 # Remove config backups older than seven days
 @daily find {CONF_DIR}/*/backup/* -maxdepth 0 -type f -mtime +7 -print | egrep '.*\.[0-9]+$' | xargs -r /bin/rm

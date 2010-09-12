@@ -58,6 +58,8 @@ sub setup_start_up {
 
 	push_el(\@main::el, 'setup_start_up()', 'Starting...');
 
+	umask(027);
+
 	# Clear screen
 	system('clear');
 
@@ -355,16 +357,16 @@ sub setup_shut_down {
 
 	# Running distribution maintainer postinst script if it exists
 	if(-e "$main::cfg{'ROOT_DIR'}/engine/setup/postinst") {
-		
+
 		spacer();
 
 		title('Starting dist maintainer post-installation script');
 
 		$rs = postinst('configure');
-		
+
 		# The script should end up only if the maintainer
 		# was set the exit status to 2
-		exit_msg(	
+		exit_msg(
 			$rs, 'FATAL: An error was returned by the postinst script!'
 		) if($rs == 2);
 	}
@@ -374,7 +376,7 @@ sub setup_shut_down {
 	subtitle('Starting services: ');
 	start_services();
 	print_status(0);
-	
+
 	spacer();
 
 	my $shut_down_message = colored(
@@ -739,7 +741,7 @@ sub setup_config {
 
 	$rs = set_conf_val('PHP_FASTCGI', $main::ua{'php_fastcgi'});
 	return $rs if ($rs != 0);
-	
+
 	$rs = set_conf_val('PHP_TIMEZONE', $main::ua{'php_timezone'});
 	return $rs if ($rs != 0);
 
