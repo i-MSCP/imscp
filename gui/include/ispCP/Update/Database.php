@@ -1630,10 +1630,16 @@ class ispCP_Update_Database extends ispCP_Update {
 			";
 		}
 
+/* sci2tech: Fix for Ticket #2452: Update from v1.0.6 will fail on
+ * database update. If columns are dropped from a table, the columns
+ * are also removed from any index of which they are a part. If all
+ * columns that make up an index are dropped, the index is dropped as well
+
 		// Drop server traffic key
 		// it looks like this key is named different, we need to check it first
 
 		// For oder database layouts the key is named 'i_correction'
+
 		$query = "
 			SHOW KEYS FROM
 				`ispcp`.`server_traffic`
@@ -1676,6 +1682,7 @@ class ispCP_Update_Database extends ispCP_Update {
 				;
 			";
 		}
+*/
 
 		return $sqlUpd;
 	}
