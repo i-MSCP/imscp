@@ -17,7 +17,7 @@ msgstr ""
 
 #. Please ignore this entry
 msgid "encoding"
-msgstr "codificación"
+msgstr "UTF-8"
 
 #. Please fill in the language you are translating to in the following form:
 #. native language name (native country name) - english language name (english country name)
