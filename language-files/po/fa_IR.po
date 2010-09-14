@@ -1202,14 +1202,14 @@ msgstr "فایل آپلود شده حاوی اطلاعات زبان نیست!"
 
 #, fuzzy, php-format
 msgid "%s added new language: %s"
-msgstr "نصب زبان جدید"
+msgstr "%s نصب زبان جدید %s"
 
 msgid "New language installed!"
 msgstr "زبان جدید نصب شد!"
 
 #, fuzzy, php-format
 msgid "%s updated language: %s"
-msgstr " زبان های نصب شده"
+msgstr "%s زبان های نصب شده %s"
 
 msgid "Language was updated!"
 msgstr "زبان بروزرسانی شد"
@@ -1514,7 +1514,7 @@ msgstr "%1$d<br />de<br /><b>%2$d</b>"
 
 #, fuzzy, php-format
 msgid "%d <br/>of<br/> <b>unlimited</b>"
-msgstr "%s<br />از<br /><b>illimité</b>"
+msgstr "%d <br />از<br /><b>illimité</b>"
 
 msgid "Reseller users table"
 msgstr "جدول کاربران ریسلر"
@@ -3821,10 +3821,10 @@ msgid ""
 "\n"
 "You have a new ticket:\n"
 msgstr ""
-"\n"
 " سلام %s!\n"
 "\n"
 " شما یک تیکت جدید دارید:"
+"\n"
 
 #, php-format
 msgid ""
@@ -3832,16 +3832,15 @@ msgid ""
 "\n"
 "You have an answer for this ticket:\n"
 msgstr ""
-"\n"
 " سلام %s!\n"
 "\n"
 " شما یک پاسخ به این تیکت دارید:"
+"\n"
 
 #, php-format
 msgid "Priority: %s\n"
 msgstr ""
-"\n"
-" اولویت: %s"
+" اولویت: %s\n"
 
 msgid "Log in to answer"
 msgstr "برای دیدن پاسخ وارد شوید"
@@ -4519,7 +4518,7 @@ msgstr "دامنه های دیگری به این حساب اضافه کنید."
 
 #, fuzzy, php-format
 msgid "System error with Domain Id: %d"
-msgstr "خطای سیستم با ای دی دامنه"
+msgstr "%d خطای سیستم با ای دی دامنه"
 
 msgid "ispCP - Users/Edit"
 msgstr "آی اس پی سی پی - کاربران/ویرایش "

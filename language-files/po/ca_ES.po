@@ -1215,14 +1215,14 @@ msgstr "L'arxiu carregat no conté informació d'idioma!"
 
 #, php-format
 msgid "%s added new language: %s"
-msgstr "% afegit el nou llenguatge: %s"
+msgstr "%s afegit el nou llenguatge: %s"
 
 msgid "New language installed!"
 msgstr "Nou idioma instal·lat!"
 
 #, php-format
 msgid "%s updated language: %s"
-msgstr "% llenguatge actualitzat: %s"
+msgstr "%s llenguatge actualitzat: %s"
 
 msgid "Language was updated!"
 msgstr "L'idioma s'ha actualitzat!"
