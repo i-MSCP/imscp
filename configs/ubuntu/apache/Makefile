@@ -55,12 +55,7 @@ install:
 
 	cp ./httpd.conf ./parts/ispcp_base.tpl
 
-	# Ubuntu 7.04?
-	if [ $(RELEASE) = 'feisty' ] ; then \
-		cp ./fastcgi2.conf $(SYSTEM_CONF)/apache/fastcgi_ispcp.conf ; \
-	else \
-		cp ./fastcgi.conf $(SYSTEM_CONF)/apache/fastcgi_ispcp.conf ; \
-	fi
+	cp ./fastcgi.conf $(SYSTEM_CONF)/apache/fastcgi_ispcp.conf ; \
 	cp ./fcgid_ispcp.conf $(SYSTEM_CONF)/apache/fcgid_ispcp.conf
 
 uninstall:
