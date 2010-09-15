@@ -185,7 +185,7 @@ function gen_hp_table(&$tpl, $reseller_id) {
 			)
 		);
 
-		$coid = $cfg->CUSTOM_ORDERPANEL_ID
+		$coid = isset($cfg->CUSTOM_ORDERPANEL_ID)
 			? $cfg->CUSTOM_ORDERPANEL_ID
 			: '';
 
