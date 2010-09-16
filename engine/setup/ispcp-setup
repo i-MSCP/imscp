@@ -49,15 +49,18 @@ require 'ispcp-setup-methods.pl';
 %main::ua = ();
 $main::rlogfile = '>> /tmp/ispcp-setup.log 2>&1';
 
-#
-##  Subroutines - Begin
-#
+################################################################################
+#                                 Subroutines                                  #
+################################################################################
 
+################################################################################
 # Start the installation process
+#
 sub setup_start_up {
 
 	push_el(\@main::el, 'setup_start_up()', 'Starting...');
 
+	# Fix umask for logfiles permissions (0640)
 	umask(027);
 
 	# Clear screen
@@ -66,7 +69,9 @@ sub setup_start_up {
 	spacer();
 
 	subtitle('Stopping services: ');
+
 	stop_services();
+
 	print_status(0);
 
 	spacer();
@@ -76,7 +81,9 @@ sub setup_start_up {
 	0;
 }
 
+################################################################################
 # Asks an set of question to user
+#
 sub user_dialog {
 
 	push_el(\@main::el, 'user_dialog()', 'Starting...');
@@ -85,22 +92,22 @@ sub user_dialog {
 
 	welcome_note();
 
-	my $qmsg = "\n\tNext you are asked to enter a \"fully qualified hostname\" (FQHN).\n" .
-               "\tFor more infos read http://en.wikipedia.org/wiki/FQDN.\n\n";
+	$qmsg =
+		"\n\tNext you are asked to enter a \"fully qualified hostname\" " .
+		"(FQHN).\n\tFor more infos read http://en.wikipedia.org/wiki/FQDN.\n\n";
 
 	print STDOUT $qmsg;
+
+	# Host Questions
+	################
 
 	do {
 		$rs = ask_hostname();
 	} while ($rs == 1);
 
-	#return $rs if ($rs != 0);
-
 	do {
-
 		($rs, $warn_msg) = ask_eth();
 		print STDERR $warn_msg if($warn_msg ne '');
-
 	} while ($rs == 1);
 
 	do {
@@ -134,7 +141,7 @@ sub user_dialog {
 		$rs = ask_db_ftp_password();
 	} while ($rs == 1);
 
-	# PMA user for SQL
+	# PMA control user
 	##################
 
 	do {
@@ -192,11 +199,9 @@ sub user_dialog {
 	} while ($rs == 1);
 
 	if ($main::ua{'awstats_on'} eq 'yes' || $main::ua{'awstats_on'} eq 'y') {
-
 		do {
 			$rs = ask_awstats_dyn();
 		} while ($rs == 1);
-
 	} else {
 
 		# dummy to prevent warnings
@@ -210,21 +215,16 @@ sub user_dialog {
 	push_el(\@main::el, 'user_dialog()', 'Ending...');
 
 	0;
-
 }
 
+################################################################################
 # See check_host_sql for more information
+#
 sub check_host_system {
-
-	my $rs = undef;
 
 	push_el(\@main::el, 'check_host_system()', 'Starting...');
 
-	#$rs = check_host_interface();
-	#return $rs if ($rs != 0);
-
-	$rs = check_host_sql();
-
+	my $rs = check_host_sql();
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'check_host_system()', 'Ending...');
@@ -232,16 +232,18 @@ sub check_host_system {
 	0;
 }
 
+################################################################################
 # Performs all subroutines that generate the
 # configuration related to the different services
 # managed by ispCP
+#
 sub setup_host_system {
 
 	push_el(\@main::el, 'setup_host_system()', 'Starting...');
 
-	my $rs = undef;
+	my $rs;
 
-	if (!defined($_)) {
+	if (!defined $_) {
 		$rs = setup_system_users();
 		return $rs if ($rs != 0);
 	}
@@ -269,11 +271,13 @@ sub setup_host_system {
 	return $rs if ($rs != 0);
 
 	# Only system php related configuration files since the generation of
-	# configuration files related to the frontend (GUI) are supported by dedicated subroutines
+	# configuration files related to the frontend (GUI) are supported by
+	# dedicated subroutines
 	$rs = setup_php();
 	return $rs if ($rs != 0);
 
-	# Only ispcp.conf Apache main ispCP vhost configuration file and related modules
+	# Only ispcp.conf Apache main ispCP vhost configuration file and related
+	# modules
 	$rs = setup_httpd_main_vhost();
 	return $rs if ($rs != 0);
 
@@ -287,7 +291,8 @@ sub setup_host_system {
 	$rs = setup_mta();
 	return $rs if ($rs != 0);
 
-	# Built, stores and installs all Courier-authentication related configuration files
+	# Built, stores and installs all Courier-authentication related
+	# configuration files
 	$rs = setup_po();
 	return $rs if ($rs != 0);
 
@@ -295,7 +300,8 @@ sub setup_host_system {
 	$rs = setup_ftpd();
 	return $rs if ($rs != 0);
 
-	# Sets correct user, group and permissions for ispCP daemon and network init scripts
+	# Sets correct user, group and permissions for ispCP daemon and network init
+	# scripts
 	$rs = setup_ispcp_daemon_network();
 	return $rs if ($rs != 0);
 
@@ -304,8 +310,10 @@ sub setup_host_system {
 	0;
 }
 
+################################################################################
 # Performs all subroutines that generate the
 # configuration related to the IspCP frontend (GUI)
+#
 sub setup_gui_cfg {
 
 	push_el(\@main::el, 'setup_gui_cfg()', 'Starting...');
@@ -319,7 +327,8 @@ sub setup_gui_cfg {
 	return $rs if($rs != 0);
 
 	# Create fcgi directory for the user who's used for the frontend (GUI)
-	# Built, stores and installs all php dedicated configuration files (php.ini, fastCGI wrapper)
+	# Built, stores and installs all php dedicated configuration files (php.ini,
+	# fastCGI wrapper)
 	$rs = setup_gui_php();
 	return $rs if($rs != 0);
 
@@ -337,25 +346,29 @@ sub setup_gui_cfg {
 	0;
 }
 
+################################################################################
 # End of the installation process
+#
 sub setup_shut_down {
 
 	push_el(\@main::el, 'setup_shut_down()', 'Starting...');
 
-	my $rs = undef;
+	my $cmd = "$main::cfg{'CMD_SHELL'} $main::cfg{'ROOT_DIR'}/engine/setup/" .
+		"set-gui-permissions.sh";
 
-	my $cmd = "$main::cfg{'CMD_SHELL'} $main::cfg{'ROOT_DIR'}/engine/setup/set-gui-permissions.sh";
-	$rs = sys_command_rs($cmd);
+	my $rs = sys_command_rs($cmd);
 	return $rs if ($rs != 0);
 
-	$cmd = "$main::cfg{'CMD_SHELL'} $main::cfg{'ROOT_DIR'}/engine/setup/set-engine-permissions.sh";
+	$cmd = "$main::cfg{'CMD_SHELL'} $main::cfg{'ROOT_DIR'}/engine/setup/" .
+		"set-engine-permissions.sh";
+
 	$rs = sys_command_rs($cmd);
 	return $rs if ($rs != 0);
 
 	$rs = setup_cleanup();
 	return $rs if($rs != 0);
 
-	# Running distribution maintainer postinst script if it exists
+	# Running distribution maintainer post installation script if it exists
 	if(-e "$main::cfg{'ROOT_DIR'}/engine/setup/postinst") {
 
 		spacer();
@@ -374,14 +387,17 @@ sub setup_shut_down {
 	spacer();
 
 	subtitle('Starting services: ');
+
 	start_services();
+
 	print_status(0);
 
 	spacer();
 
 	my $shut_down_message = colored(
 		['bold underline'],
-		"\n\tCongratulations you installed ispCP '$main::cfg{'Version'}' successfully!\n\n"
+		"\n\tCongratulations you installed ispCP '$main::cfg{'Version'}' " .
+		"successfully!\n\n"
 	);
 
 	my $login_message =
@@ -402,8 +418,6 @@ sub setup_shut_down {
 # Display a welcome note
 sub welcome_note {
 
-	my $rs = undef;
-
 	push_el(\@main::el, 'welcome_note()', 'Starting...');
 
 	my $welcome = colored(
@@ -421,33 +435,38 @@ sub welcome_note {
 	0;
 }
 
+################################################################################
 # @TODO NOT USED - Should be rewritten
+#
 sub check_host_interface {
 
 	push_el(\@main::el, 'check_host_interface()', 'Starting...');
 
-	my ($rs, $rdata, $cmd) = (undef, undef, undef);
+	my $cmd = "$main::cfg{'CMD_IFCONFIG'} $main::ua{'eth'} 1>/tmp/" .
+		"ispcp-setup-iface.stdout 2>/tmp/ispcp-setup-iface.stderr";
 
-	$cmd = "$main::cfg{'CMD_IFCONFIG'} $main::ua{'eth'} 1>/tmp/ispcp-setup-iface.stdout 2>/tmp/ispcp-setup-iface.stderr";
-
-	$rs = sys_command($cmd);
+	my $rs = sys_command($cmd);
 
 	if ($rs != 0) {
-		push_el(\@main::el, 'check_host_interface()', "ERROR: Can't find $main::ua{'eth'} device!");
+		push_el(
+			\@main::el, 'check_host_interface()',
+			"[Error]: Can't find $main::ua{'eth'} device!");
+
 		return $rs;
 	}
 
-	$cmd = "$main::cfg{'CMD_CAT'} /tmp/ispcp-setup-iface.stdout | awk 'BEGIN { i=0 } { i++ } { if (i == 1) { print \$5 } } { if (i == 2) { print substr(\$2, 6) } }' 1>/tmp/ispcp-setup-iface-data.stdout 2>/tmp/ispcp-setup-iface-data.stderr";
+	$cmd = "$main::cfg{'CMD_CAT'} /tmp/ispcp-setup-iface.stdout | " .
+		"awk 'BEGIN { i=0 } { i++ } { if (i == 1) { print \$5 } } { " .
+		"if (i == 2) { print substr(\$2, 6) } }' 1>/tmp/" .
+		"ispcp-setup-iface-data.stdout 2>/tmp/ispcp-setup-iface-data.stderr";
 
 	$rs = sys_command($cmd);
 
-	($rs, $rdata) = get_file("/tmp/ispcp-setup-iface-data.stdout");
+	($rs, my $rdata) = get_file("/tmp/ispcp-setup-iface-data.stdout");
 	return $rs if ($rs != 0);
 
 	$rdata =~ /([^\n]+)\n([^\n]+)\n/;
-
 	$main::ua{'eth_hwaddr'} = $1;
-
 	$main::ua{'eth_ip'} = $2;
 
 	$rs = del_file("/tmp/ispcp-setup-iface.stdout");
@@ -467,32 +486,26 @@ sub check_host_interface {
 	0;
 }
 
+################################################################################
 # Check the connection to the IspCP database
 # with the login information provided by the user
+#
 sub check_host_sql {
 
 	push_el(\@main::el, 'check_host_sql()', 'Starting...');
 
-	my ($rs, $rdata, $sql) = (undef, undef, undef);
-
-	$sql = "show databases;";
+	my $sql = 'show databases;';
 
 	$main::db_host = $main::ua{'db_host'};
-
 	$main::db_user = $main::ua{'db_user'};
-
 	$main::db_pwd = $main::ua{'db_password'};
-
-	$main::db_name = "";
+	$main::db_name = '';
 
 	@main::db_connect = (
-						 "DBI:mysql:$main::db_name:$main::db_host",
-						 $main::db_user,
-						 $main::db_pwd
-						);
+		"DBI:mysql:$main::db_name:$main::db_host", $main::db_user, $main::db_pwd
+	);
 
-	($rs, $rdata) = doSQL($sql);
-
+	my ($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
 	$main::db = undef;
@@ -502,15 +515,19 @@ sub check_host_sql {
 	0;
 }
 
+################################################################################
 # Create users and groups for different services
+#
 sub setup_system_users {
-
-	my ($rs, $cmd) = (undef, undef);
 
 	push_el(\@main::el, 'setup_system_users()', 'Starting...');
 
+	my ($rs, $cmd);
+
 	## Mailbox user
-	my ($fuid, $fgid) = ($main::cfg{'MTA_MAILBOX_UID_NAME'}, $main::cfg{'MTA_MAILBOX_GID_NAME'});
+	my ($fuid, $fgid) = (
+		$main::cfg{'MTA_MAILBOX_UID_NAME'}, $main::cfg{'MTA_MAILBOX_GID_NAME'}
+	);
 	my ($uid, $gid) = (undef, undef);
 
 	my @udata = ();
@@ -532,10 +549,11 @@ sub setup_system_users {
 	@udata = getpwnam($fuid);
 
 	if (scalar(@udata) == 0) { # we have not this one user data;
-		if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
+		if ($main::cfg{'ROOT_GROUP'} eq 'wheel') {
 			$cmd = "$main::cfg{'CMD_USERADD'} $fuid -c vmail-user -s /bin/false";
 		} else {
-			$cmd = "$main::cfg{'CMD_USERADD'} -c vmail-user -g $gid -s /bin/false $fuid";
+			$cmd = "$main::cfg{'CMD_USERADD'} -c vmail-user -g $gid -s " .
+			"/bin/false $fuid";
 		}
 		$rs = sys_command($cmd);
 
@@ -549,14 +567,17 @@ sub setup_system_users {
 	$main::ua{'su_gid'} = $gid;
 
 	## FCGI Master user
-	my ($muid, $mgid, $prefix) = ($main::cfg{'APACHE_SUEXEC_MIN_UID'}, $main::cfg{'APACHE_SUEXEC_MIN_GID'}, $main::cfg{'APACHE_SUEXEC_USER_PREF'});
+	my ($muid, $mgid, $prefix) = (
+		$main::cfg{'APACHE_SUEXEC_MIN_UID'}, $main::cfg{'APACHE_SUEXEC_MIN_GID'},
+		$main::cfg{'APACHE_SUEXEC_USER_PREF'}
+	);
 	my ($vuuid, $vugid) = (undef, undef);
 
 	@gdata = getgrnam($prefix.$mgid);
 	@udata = getpwnam($prefix.$muid);
 
 	if (scalar(@gdata) == 0) { # we do not have this group
-		if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
+		if ($main::cfg{'ROOT_GROUP'} eq 'wheel') {
 			$cmd = "$main::cfg{'CMD_GROUPADD'} $prefix$mgid -g $mgid";
 		} else {
 			$cmd = "$main::cfg{'CMD_GROUPADD'} -g $mgid $prefix$mgid";
@@ -569,10 +590,14 @@ sub setup_system_users {
 
 	# create user and folder
 	if (scalar(@udata) == 0) { # we do not have this user
-		if ($main::cfg{'ROOT_GROUP'} eq "wheel") {
-			$cmd = "$main::cfg{'CMD_USERADD'} $prefix$muid $prefix$muid -d $main::cfg{'PHP_STARTER_DIR'}/master -m -c vu-master -g $prefix$mgid -s /bin/false -u $muid $prefix$muid";
+		if ($main::cfg{'ROOT_GROUP'} eq 'wheel') {
+			$cmd = "$main::cfg{'CMD_USERADD'} $prefix$muid $prefix$muid -d " .
+				"$main::cfg{'PHP_STARTER_DIR'}/master -m -c vu-master -g " .
+				"$prefix$mgid -s /bin/false -u $muid $prefix$muid";
 		} else {
-			$cmd = "$main::cfg{'CMD_USERADD'} -d  $main::cfg{'PHP_STARTER_DIR'}/master -m -c vu-master -g $prefix$mgid -s /bin/false -u $muid $prefix$muid";
+			$cmd = "$main::cfg{'CMD_USERADD'} -d  $main::cfg{'PHP_STARTER_DIR'}" .
+			"/master -m -c vu-master -g $prefix$mgid -s /bin/false -u $muid " .
+			"$prefix$muid";
 		}
 
 		$rs = sys_command($cmd);
@@ -580,78 +605,67 @@ sub setup_system_users {
 
 	} else {
 		# change folder permissions and owner
-		$rs = setfmode("$main::cfg{'PHP_STARTER_DIR'}/master", "$prefix$muid", "$prefix$mgid", 0755);
+		$rs = setfmode(
+			"$main::cfg{'PHP_STARTER_DIR'}/master", "$prefix$muid",
+			"$prefix$mgid", 0755
+		);
 		return $rs if ($rs != 0);
 	}
 
 	$main::ua{'vu_uid'} = $muid;
 	$main::ua{'vu_gid'} = $mgid;
-	##
 
 	push_el(\@main::el, 'setup_system_users()', 'Ending...');
 
 	0;
 }
 
+################################################################################
+# Should be documented
+#
 sub setup_system_dirs {
-
-	my ($rs, $rdata) = (undef, undef);
 
 	push_el(\@main::el, 'setup_system_dirs()', 'Starting...');
 
-	$rs = make_dir(
-		$main::cfg{'APACHE_WWW_DIR'},
-		$main::cfg{'APACHE_USER'},
-		$main::cfg{'APACHE_GROUP'},
-		0755
+	my $rs = make_dir(
+		$main::cfg{'APACHE_WWW_DIR'}, $main::cfg{'APACHE_USER'},
+		$main::cfg{'APACHE_GROUP'}, 0755
 	);
 	return $rs if ($rs != 0);
 
 	$rs = make_dir(
-		$main::cfg{'APACHE_USERS_LOG_DIR'},
-		$main::cfg{'APACHE_USER'},
-		$main::cfg{'APACHE_GROUP'},
-		0755
+		$main::cfg{'APACHE_USERS_LOG_DIR'}, $main::cfg{'APACHE_USER'},
+		$main::cfg{'APACHE_GROUP'}, 0755
 	);
 	return $rs if ($rs != 0);
 
 	$rs = make_dir(
-		$main::cfg{'APACHE_BACKUP_LOG_DIR'},
-		$main::cfg{'ROOT_USER'},
-		$main::cfg{'ROOT_GROUP'},
-		0755
+		$main::cfg{'APACHE_BACKUP_LOG_DIR'}, $main::cfg{'ROOT_USER'},
+		$main::cfg{'ROOT_GROUP'}, 0755
 	);
 	return $rs if ($rs != 0);
 
 	$rs = make_dir(
-		$main::cfg{'MTA_VIRTUAL_CONF_DIR'},
-		$main::cfg{'ROOT_USER'},
-		$main::cfg{'ROOT_GROUP'},
-		0755
+		$main::cfg{'MTA_VIRTUAL_CONF_DIR'}, $main::cfg{'ROOT_USER'},
+		$main::cfg{'ROOT_GROUP'}, 0755
 	);
 	return $rs if ($rs != 0);
 
 	$rs = make_dir(
-		$main::cfg{'MTA_VIRTUAL_MAIL_DIR'},
-		$main::cfg{'ROOT_USER'},
-		$main::cfg{'ROOT_GROUP'},
-		0755
+		$main::cfg{'MTA_VIRTUAL_MAIL_DIR'}, $main::cfg{'ROOT_USER'},
+		$main::cfg{'ROOT_GROUP'}, 0755
 	);
 	return $rs if ($rs != 0);
 
 	$rs = make_dir(
-		$main::cfg{'LOG_DIR'},
-		$main::cfg{'ROOT_USER'},
-		$main::cfg{'ROOT_GROUP'},
-		0755
+		$main::cfg{'LOG_DIR'}, $main::cfg{'ROOT_USER'},
+		$main::cfg{'ROOT_GROUP'}, 0755
 	);
 	return $rs if ($rs != 0);
 
 	$rs = make_dir(
-		$main::cfg{'BACKUP_FILE_DIR'},
-		$main::cfg{'ROOT_USER'},
-		$main::cfg{'ROOT_GROUP'},
-		0755
+		$main::cfg{'BACKUP_FILE_DIR'}, $main::cfg{'ROOT_USER'},
+		$main::cfg{'ROOT_GROUP'}, 0755
 	);
 	return $rs if ($rs != 0);
 
@@ -663,15 +677,13 @@ sub setup_system_dirs {
 	);
 	return $rs if ($rs != 0);
 
-	# AWStats dir, use of $main::ua{'awstats_on'}, instead of $main::cfg{'AWSTATS_ACTIVE'},
-	# because variable not yet set.
+	# AWStats dir, use of $main::ua{'awstats_on'}, instead of
+	# $main::cfg{'AWSTATS_ACTIVE'}, because variable not yet set.
 	if ($main::ua{'awstats_on'} eq 'yes' || $main::ua{'awstats_on'} eq 'y') {
 
 		$rs = make_dir(
-			$main::cfg{'AWSTATS_CACHE_DIR'},
-			$main::cfg{'APACHE_USER'},
-			$main::cfg{'APACHE_GROUP'},
-			0755
+			$main::cfg{'AWSTATS_CACHE_DIR'}, $main::cfg{'APACHE_USER'},
+			$main::cfg{'APACHE_GROUP'}, 0755
 		);
 		return $rs if ($rs != 0);
 	}
@@ -681,14 +693,14 @@ sub setup_system_dirs {
 	0;
 }
 
+################################################################################
 # Update ispcp.conf file
+#
 sub setup_config {
-
-	my ($rs, $rdata) = (undef, undef);
 
 	push_el(\@main::el, 'setup_config()', 'Starting...');
 
-	$rs = set_conf_val('SERVER_HOSTNAME', $main::ua{'hostname'});
+	my $rs = set_conf_val('SERVER_HOSTNAME', $main::ua{'hostname'});
 	return $rs if ($rs != 0);
 
 	$rs = set_conf_val('BASE_SERVER_IP', $main::ua{'eth_ip'});
@@ -708,7 +720,7 @@ sub setup_config {
 
 	if ($main::ua{'db_password'} ne '') {
 
-		($rs, $rdata) = encrypt_db_password($main::ua{'db_password'});
+		($rs, my $rdata) = encrypt_db_password($main::ua{'db_password'});
 		return $rs if ($rs != 0);
 
 		$rs = set_conf_val('DATABASE_PASSWORD', $rdata);
@@ -762,73 +774,59 @@ sub setup_config {
 	0;
 }
 
+################################################################################
 # Create and populates the ispCP database
 # Create the SQL user for the FTP service
 # Create the SQL user for PhpMyAdmin
+#
 sub setup_sql {
-
-	my ($rs, $rdata, $cfg_tpl, $cfg) = (undef, undef, undef, undef);
 
 	push_el(\@main::el, 'setup_sql()', 'Starting...');
 
-	#
 	# check for existing database;
-	#
 
-	my $sql = "SHOW TABLES;";
+	my $sql = 'SHOW TABLES;';
 
-	($rs, $rdata) = doSQL($sql);
+	my ($rs, $rdata) = doSQL($sql);
 
 	if ($rs == 0) { # Yes, we have one ! Let's drop it;
 
 		my $store_db_name = $main::db_name;
-
 
 		# Let's reset data;
 		$main::db = undef;
 		$main::db_name = '';
 
 		@main::db_connect = (
-			"DBI:mysql:$main::db_name:$main::db_host",
-			$main::db_user,
+			"DBI:mysql:$main::db_name:$main::db_host", $main::db_user,
 			$main::db_pwd
 		);
 
 		# TODO Add ask for user confirmation
-		$sql = "DROP DATABASE IF EXISTS $store_db_name;";
+		$sql = 'DROP DATABASE IF EXISTS $store_db_name;';
 
 		($rs, $rdata) = doSQL($sql);
-
 		return $rs if ($rs != 0);
-
 
 		# Let's reset data;
 		$main::db = undef;
-
 		$main::db_name = $store_db_name;
 
 		@main::db_connect = (
-			"DBI:mysql:$main::db_name:$main::db_host",
-			$main::db_user,
+			"DBI:mysql:$main::db_name:$main::db_host", $main::db_user,
 			$main::db_pwd
 		);
-
 	}
 
-	#
 	# Now we'll create our database;
-	#
 
 	($rs, $rdata) = get_file("$main::cfg{'CONF_DIR'}/database/database.sql");
-
 	return $rs if ($rs != 0);
 
 	$rdata =~ s/\{DATABASE_NAME\}/$main::db_name/gi;
 
 	$rs = store_file(
-		"/tmp/db.sql",
-		$rdata, $main::cfg{'ROOT_USER'},
-		$main::cfg{'ROOT_GROUP'},
+		'/tmp/db.sql', $rdata, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'},
 		0644
 	);
 	return $rs if ($rs != 0);
@@ -836,72 +834,70 @@ sub setup_sql {
 	# Escape " and '
 	$main::db_pwd =~ s/([\'\"])/\\$1/g;
 
-	my $cmd = "$main::cfg{'CMD_MYSQL'} --host='$main::db_host' --user='$main::db_user' --pass='$main::db_pwd' < /tmp/db.sql 1>/tmp/db.sql.stdout 2>/tmp/db.sql.stderr";
+	my $cmd = "$main::cfg{'CMD_MYSQL'} --host='$main::db_host' " .
+		"--user='$main::db_user' --pass='$main::db_pwd' < /tmp/db.sql 1>/" .
+		"tmp/db.sql.stdout 2>/tmp/db.sql.stderr";
 
 	$rs = sys_command($cmd);
 	return $rs if ($rs != 0);
 
-	#
 	# English language table;
-	#
 
 	my $languages_sql = "$main::cfg{'CONF_DIR'}/database/languages.sql";
 
-	$cmd = "$main::cfg{'CMD_MYSQL'} --host='$main::db_host' --user='$main::db_user' --pass='$main::db_pwd' $main::db_name < $languages_sql 1>/tmp/db.sql.stdout 2>/tmp/db.sql.stderr";
+	$cmd = "$main::cfg{'CMD_MYSQL'} --host='$main::db_host' " .
+		"--user='$main::db_user' --pass='$main::db_pwd' $main::db_name < " .
+		"$languages_sql 1>/tmp/db.sql.stdout 2>/tmp/db.sql.stderr";
 
 	$rs = sys_command($cmd);
 	return $rs if ($rs != 0);
 
-
-	$rs = del_file("/tmp/db.sql");
+	$rs = del_file('/tmp/db.sql');
 	return $rs if ($rs != 0);
 
-	$rs = del_file("/tmp/db.sql.stdout");
+	$rs = del_file('/tmp/db.sql.stdout');
 	return $rs if ($rs != 0);
 
-	$rs = del_file("/tmp/db.sql.stderr");
+	$rs = del_file('/tmp/db.sql.stderr');
 	return $rs if ($rs != 0);
 
-	#
 	# Let's populate our base with some data;
-	#
 
 	my $admin_password = crypt_md5_data($main::ua{'admin_password'});
 
-	$sql = "INSERT INTO admin (admin_id, admin_name, admin_pass, admin_type, email) VALUES  (1, '$main::ua{'admin'}','$admin_password', 'admin','$main::ua{'admin_email'}')";
+	$sql = "INSERT INTO admin (admin_id, admin_name, admin_pass, admin_type, " .
+		"email) VALUES  (1, '$main::ua{'admin'}','$admin_password', 'admin', " .
+		"'$main::ua{'admin_email'}')";
 
 	($rs, $rdata) = doSQL($sql);
-
 	return $rs if ($rs != 0);
 
-	$sql = "INSERT INTO user_gui_props (user_id) values (1)";
+	$sql = 'INSERT INTO user_gui_props (user_id) values (1)';
 
 	($rs, $rdata) = doSQL($sql);
-
 	return $rs if ($rs != 0);
 
-	$sql = "INSERT INTO server_ips (ip_id, ip_number, ip_domain, ip_alias) VALUES (1, '$main::ua{'eth_ip'}', '$main::ua{'hostname'}', '$main::ua{'hostname'}');";
+	$sql = "INSERT INTO server_ips (ip_id, ip_number, ip_domain, ip_alias) " .
+		"VALUES (1, '$main::ua{'eth_ip'}', '$main::ua{'hostname'}', " .
+		"'$main::ua{'hostname'}');";
 
 	($rs, $rdata) = doSQL($sql);
-
 	return $rs if ($rs != 0);
 
-	#
 	# we'll add ispCP ftp SQL user here.
-	#
 	$main::db = undef;
 
 	@main::db_connect = (
-		"DBI:mysql:mysql:$main::db_host",
-		$main::db_user,
-		$main::db_pwd
+		"DBI:mysql:mysql:$main::db_host", $main::db_user, $main::db_pwd
 	);
 
 	my $vftp_sql_user = $main::ua{'db_ftp_user'};
 	my $vftp_sql_password = $main::ua{'db_ftp_password'};
 	my $hostname = $main::ua{'db_host'};
 
-	$sql = "DELETE FROM tables_priv WHERE Host = '$main::cfg{'SERVER_HOSTNAME'}' AND Db = '$main::db_name' AND User = '$vftp_sql_user'";
+	$sql = "DELETE FROM tables_priv WHERE Host = " .
+		"'$main::cfg{'SERVER_HOSTNAME'}' AND Db = '$main::db_name' AND User " .
+		"= '$vftp_sql_user'";
 
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
@@ -911,27 +907,31 @@ sub setup_sql {
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
-	$sql = "FLUSH PRIVILEGES";
+	$sql = 'FLUSH PRIVILEGES';
 
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
-	$sql = "GRANT SELECT,INSERT,UPDATE,DELETE ON $main::db_name.ftp_group TO '$vftp_sql_user'\@'$hostname' IDENTIFIED BY '$vftp_sql_password'";
+	$sql = "GRANT SELECT,INSERT,UPDATE,DELETE ON $main::db_name.ftp_group TO " .
+	    "'$vftp_sql_user'\@'$hostname' IDENTIFIED BY '$vftp_sql_password'";
 
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
-	$sql = "GRANT SELECT,INSERT,UPDATE,DELETE ON $main::db_name.ftp_users TO '$vftp_sql_user'\@'$hostname' IDENTIFIED BY '$vftp_sql_password'";
+	$sql = "GRANT SELECT,INSERT,UPDATE,DELETE ON $main::db_name.ftp_users TO " .
+		"'$vftp_sql_user'\@'$hostname' IDENTIFIED BY '$vftp_sql_password'";
 
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
-	$sql = "GRANT SELECT,INSERT,UPDATE,DELETE ON $main::db_name.quotalimits TO '$vftp_sql_user'\@'$hostname' IDENTIFIED BY '$vftp_sql_password'";
+	$sql = "GRANT SELECT,INSERT,UPDATE,DELETE ON $main::db_name.quotalimits TO " .
+		"'$vftp_sql_user'\@'$hostname' IDENTIFIED BY '$vftp_sql_password'";
 
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
-	$sql = "GRANT SELECT,INSERT,UPDATE,DELETE ON $main::db_name.quotatallies TO '$vftp_sql_user'\@'$hostname' IDENTIFIED BY '$vftp_sql_password'";
+	$sql = "GRANT SELECT,INSERT,UPDATE,DELETE ON $main::db_name.quotatallies TO " .
+		"'$vftp_sql_user'\@'$hostname' IDENTIFIED BY '$vftp_sql_password'";
 
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
@@ -941,28 +941,25 @@ sub setup_sql {
 	0;
 }
 
-# Adjust the table of static correspondence of hostnames.
+################################################################################
+# Adjust the table of static correspondence of hostname.
+#
 sub setup_hosts {
-
-	my ($rs, $data, $cmd) = (undef, undef, undef);
 
 	push_el(\@main::el, 'setup_hosts()', 'Starting...');
 
 	my $hostname = $main::ua{'hostname'};
 	my $host = $main::ua{'hostname_local'};
-
 	my $hostname_local = "$hostname.local";
-
 	my $ip = $main::ua{'eth_ip'};
-
 	my $hosts_file = "/etc/hosts";
 
-	$cmd = "$main::cfg{'CMD_CP'} -p -f $hosts_file $hosts_file.bkp";
+	my $cmd = "$main::cfg{'CMD_CP'} -p -f $hosts_file $hosts_file.bkp";
 
-	$rs = sys_command_rs($cmd);
+	my $rs = sys_command_rs($cmd);
 	return $rs if ($rs != 0);
 
-	$data  = "# 'hosts' file configuration.\n\n";
+	my $data  = "# 'hosts' file configuration.\n\n";
 	$data .= "127.0.0.1\t$hostname_local\tlocalhost\n";
 	$data .= "$ip\t$hostname\t$host\n";
 	$data .= "::ffff:$ip\t$hostname\t$host\n";
@@ -974,10 +971,7 @@ sub setup_hosts {
 	$data .= "ff02::3\tip6-allhosts\n";
 
 	$rs = store_file(
-		$hosts_file,
-		$data,
-		$main::cfg{'ROOT_USER'},
-		$main::cfg{'ROOT_GROUP'},
+		$hosts_file, $data, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'},
 		0644
 	);
 	return $rs if ($rs != 0);
@@ -987,24 +981,21 @@ sub setup_hosts {
 	0;
 }
 
-#
-##  Subroutines - End
-#
+################################################################################
+#                                Main program                                  #
+################################################################################
 
-my $rs = undef;
 my $uc = 0;
 
-if (defined($ARGV[0]) && $ARGV[0] eq "-rpm") {
-	#if in rpm mode, rpm setup will create users
+if (defined($ARGV[0]) && $ARGV[0] eq '-rpm') {
+	# If in rpm mode, rpm setup will create users
 	$uc = 1;
 }
 
-$rs = setup_start_up();
+my $rs = setup_start_up();
 
 if ($rs != 0) {
-
 	my $el_data = pop_el(\@main::el);
-
 	my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
 
 	print STDERR "$msg\n";
@@ -1015,9 +1006,7 @@ if ($rs != 0) {
 $rs = user_dialog();
 
 if ($rs != 0) {
-
 	my $el_data = pop_el(\@main::el);
-
 	my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
 
 	print STDERR "$msg\n";
@@ -1028,9 +1017,7 @@ if ($rs != 0) {
 $rs = check_host_system();
 
 if ($rs != 0) {
-
 	my $el_data = pop_el(\@main::el);
-
 	my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
 
 	print STDERR "$msg\n";
@@ -1041,9 +1028,7 @@ if ($rs != 0) {
 $rs = setup_host_system($uc);
 
 if ($rs != 0) {
-
 	my $el_data = pop_el(\@main::el);
-
 	my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
 
 	print STDERR "$msg\n";
@@ -1054,9 +1039,7 @@ if ($rs != 0) {
 $rs = setup_gui_cfg();
 
 if ($rs != 0) {
-
 	my $el_data = pop_el(\@main::el);
-
 	my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
 
 	print STDERR "$msg\n";
@@ -1067,9 +1050,7 @@ if ($rs != 0) {
 $rs = setup_shut_down();
 
 if ($rs != 0) {
-
 	my $el_data = pop_el(\@main::el);
-
 	my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
 
 	print STDERR "$msg\n";
