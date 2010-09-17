@@ -226,7 +226,7 @@ sub htgroup_mngr_engine {
 		foreach (@ids) {
 
 			my ($htgroup_name, $htgroup_members, $htgroup_status, $htgroup_id) =
-				(@$rows{$_}->{'domain_name'}, @$rows{$_}->{'members'}, @$rows{$_}->{'status'}, @$rows{$_}->{'id'});
+				(@$rows{$_}->{'ugroup'}, @$rows{$_}->{'members'}, @$rows{$_}->{'status'}, @$rows{$_}->{'id'});
 
 			push_el(\@main::el, 'htuser-groupmanagement()', 'Working on '.$htgroup_name);
 

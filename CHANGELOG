@@ -1,8 +1,13 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-09-17 Daniel Andreca
+	- ENGINE:
+		* Fixed: If a user is added to a group, the group name in stead
+			of the domain name will added to the .htgroup file (tx Freakez)
+
 2010-09-15 Jochen Manz
-	- RELEASE ispCP ω Omega 1.0.7 RC1	
+	- RELEASE ispCP ω Omega 1.0.7 RC1
 
 2010-09-15 Benedikt Heintel
 	- DISTS:
