@@ -132,7 +132,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 		$cfg->replaceWith($db_cfg);
 
 		// gets the number of queries that were been executed
-		$updt_count = $db_cfg->countQueries('update');// + $db_cfg->countQueries('insert');
+		$updt_count = $db_cfg->countQueries('update');
 		$new_count = $db_cfg->countQueries('insert');
 
 		// An Update was been made in the database ?
@@ -141,11 +141,13 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 				tr('%d configuration parameter(s) was updated!', $updt_count)
 			);
 		}
+
 		if($new_count > 0){
 			set_page_message(
 				tr('%d configuration parameter(s) was created!', $new_count)
 			);
 		}
+
 		if($new_count == 0 && $updt_count == 0){
 			set_page_message(tr("Nothing's been changed!"));
 		}

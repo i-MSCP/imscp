@@ -148,8 +148,9 @@ class ispCP_Update_Version extends ispCP_Update {
 	protected function dummyFunctionThatAllwaysExists(&$engine_run_request) {
 		// uncomment when engine part will be ready
 		/*
-		setConfig_Value('VERSION_UPDATE', $this->getNextVersion());
+		$dbConfig = ispCP_Registry::get(DbConfig);
+		$dbConfig->VERSION_UPDATE = $this->getNextVersion();
 		$engine_run_request = true;
-		*/
+		 */
 	}
 }

@@ -33,7 +33,7 @@
  * @package     ispCP_Update
  * @author      Jochen Manz <zothos@zothos.net>
  * @author      Daniel Andreca <sci2tech@gmail.com>
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @author      Laurent Declercq <laurent.declercq@ispcp.net>
  * @version     1.0.4
  * @since		r1355
  */
@@ -194,7 +194,7 @@ abstract class ispCP_Update {
 			// Pull the query from the update function using a variable function
 			$queryArray = $this->$functionName($engine_run_request);
 
-			// First, switch to exception mode for errors managment
+			// First, switch to exception mode for errors management
 			$sql->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 			if(isset($dbConfig->FAILED_UPDATE)) {
@@ -240,7 +240,7 @@ abstract class ispCP_Update {
 
 				$this->_addErrorMessage($errorMessage);
 
-				// An error occured, we stop here !
+				// An error occurred, we stop here !
 				return false;
 			}
 
