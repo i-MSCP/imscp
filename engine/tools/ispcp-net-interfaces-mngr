@@ -101,7 +101,7 @@ sub virtual_netcard_add(){
 			if ($rs != 0){
 				send_error_mail(
 					'virtual_netcard_add()',
-					"Error while trying to add add IP ${ip_number} to network card '${ip_card}'!"
+					"Error while trying to add IP ${ip_number} to network card '${ip_card}'!"
 				)
 			}
 		}
@@ -132,7 +132,7 @@ sub virtual_netcard_remove(){
 
 		push_el(\@main::el, 'virtual_netcard_remove()', "$main::cfg{'CMD_IFCONFIG'} ${ip_card}:${ip_id} down");
 		$rs = sys_command("$main::cfg{'CMD_IFCONFIG'} ${ip_card}:${ip_id} down");
-		send_error_mail('virtual_netcard_remove()', "Error while trying to remove add IP ${ip_number} to network card '${ip_card}'!") if ($rs != 0);
+		send_error_mail('virtual_netcard_remove()', "Error while trying to remove IP ${ip_number} to network card '${ip_card}'!") if ($rs != 0);
 
 	}
 

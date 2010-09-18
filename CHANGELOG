@@ -4,7 +4,14 @@ ispCP ω 1.0.7 ChangeLog
 2010-09-19 Daniel Andreca
 	- GUI:
 		* Fixed: Purchase link unavailable if order record is deleted
-		* Wrong email count
+		* Fixed: Wrong email count
+		* Fixed: #2460: Change domain alias forward: empty (tx nuke3d)
+		* Fixed: #2458: Wrong grammar in alias order UI (tx nuke3d)
+		* Fixed: #2457: Htaccess errors are not displayed in the ispcp
+			debugger
+		* Fixed: #2456: Error in gui/include/ispCP/Update/Database.php (tx nuke3d)
+	- ENGINE:
+		* Fixed: #2459: Small mistake in error message (tx nuke3d)
 
 2010-09-18 Daniel Andreca
 	- ENGINE:

@@ -268,7 +268,10 @@ function check_fwd_data(&$tpl, $alias_id) {
 		send_request();
 
 		$admin_login = $_SESSION['user_logged'];
-		write_log("$admin_login: change domain alias forward: " . $rs->fields['t1.alias_name']);
+
+		$rs = exec_query( $sql, "SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id` = ?", $alias_id );
+
+		write_log("$admin_login: change domain alias forward: " . $rs->fields['alias_name']);
 		unset($_SESSION['edit_ID']);
 		$tpl->assign('MESSAGE', "");
 		return true;

@@ -159,11 +159,36 @@
            <table width="100%" cellpadding="5" cellspacing="5">
             <tr>
              <td width="25">&nbsp;</td>
+             <td class="content3"><b>{TR_HTACCESS_ERRORS}</b></td>
+            </tr>
+            <!-- BDP: htaccess_message -->
+            <tr>
+             <td>&nbsp;</td>
+             <td>{TR_HTACCESS_MESSAGE}</td>
+            </tr>
+            <!-- EDP: htaccess_message -->
+            <!-- BDP: htaccess_list -->
+            <tr>
+             <td>&nbsp;</td>
+             <td class="{CONTENT}">
+			  {TR_HTACCESS_NAME} - <a href="ispcp_debugger.php?action=change_status&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
+              <span style="color:red;">{TR_HTACCESS_ERROR}</span></td>
+            </tr>
+            <!-- EDP: htaccess_list -->
+           </table>
+           <br />
+           <table width="100%" cellpadding="5" cellspacing="5">
+            <tr>
+             <td width="25">&nbsp;</td>
              <td class="content3"><b>{TR_DAEMON_TOOLS}</b></td>
             </tr>
             <tr>
              <td>&nbsp;</td>
              <td><a href="ispcp_debugger.php?action=run_engine" class="link">{EXEC_COUNT} {TR_EXEC_REQUESTS}</a></td>
+            </tr>
+            <tr>
+             <td>&nbsp;</td>
+             <td>{TR_ERRORS}</a></td>
             </tr>
            </table>
            <!-- EDP: props_list -->

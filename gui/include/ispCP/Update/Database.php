@@ -669,7 +669,7 @@ class ispCP_Update_Database extends ispCP_Update {
 							`tickets`
 						SET
 							`ticket_subject` = '" . addslashes($subject) . "',
-							`ticket_message` = '" . addslashes($message) . "',
+							`ticket_message` = '" . addslashes($message) . "'
 						WHERE
 							`ticket_id` = '" . addslashes($rs->fields['ticket_id']) . "'
 						;

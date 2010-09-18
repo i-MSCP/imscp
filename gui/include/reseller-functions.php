@@ -820,7 +820,7 @@ function translate_dmn_status($status) {
 		case $cfg->ITEM_TODISABLED_STATUS:
 			return tr('Being suspended');
 		case $cfg->ITEM_ORDERED_STATUS:
-			return tr('Awaiting for approval');
+			return tr('Awaiting approval');
 		default:
 			return tr('Unknown error');
 	}
