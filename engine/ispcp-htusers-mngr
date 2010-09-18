@@ -307,8 +307,6 @@ sub htusers_mngr_engine {
 		}
 
 		push_el(\@main::el, 'htuser-usermanagement()', 'Ending...');
-	} else {
-		print "nothing to do\n\n";
 	}
 
 	push_el(\@main::el, 'htusers_mngr_engine()', 'Ending...');
