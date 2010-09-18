@@ -1,6 +1,11 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-09-19 Daniel Andreca
+	- GUI:
+		* Fixed: Purchase link unavailable if order record is deleted
+		* Wrong email count
+
 2010-09-18 Daniel Andreca
 	- ENGINE:
 		* Improved error log in ispcp-htgroups-mngr

@@ -1132,7 +1132,6 @@ function generate_user_props($user_id) {
 				`mail_type` NOT RLIKE '_catchall'
 			AND
 				`domain_id`
-			;
 		";
 
 		$mail_current = records_count('mail_users', $where, $user_id);

@@ -394,7 +394,7 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 				$link_purchase .= '</a>';
 			} else {
 				$warning_text = '';
-				$link_purchase .= '</a>';
+				$link_purchase .= '{TR_PURCHASE}</a>';
 			}
 
 			$tpl->assign(
