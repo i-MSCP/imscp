@@ -1,7 +1,12 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-2010-09-17 Laurent Declercq
+2010-09-18 Daniel Andreca
+	- ENGINE:
+		* Improved error log in ispcp-htgroups-mngr
+		* Improved error log in ispcp-htusers-mngr
+
+2010-09-18 Benedikt Heintel
 	- ENGINE:
 		* Fixed .conf extension missing on alias sub domains for domain specific
 			proftpd files

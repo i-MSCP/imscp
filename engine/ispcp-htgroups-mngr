@@ -59,12 +59,6 @@ sub htgroup_mngr_start_up {
 
 	}
 
-	# config check;
-
-	$rs = get_conf();
-
-	return $rs if ($rs != 0);
-
 	#
 	# getting task id and domain record id;
 	#
@@ -183,18 +177,19 @@ sub htgroup_mngr_engine {
 	push_el(\@main::el, 'htgroup_mngr_engine()', 'Starting...');
 
 	$sql = "
-		select
+		SELECT
 			`ugroup`,
 			`members`,
 			`status`,
 			`id`,
 			`domain_name`
-		from
-			`htaccess_groups` as t1,
-			`domain` as t2
+		FROM
+			`htaccess_groups` AS t1
+		LEFT JOIN
+			`domain` AS t2
+		ON
+			t1.`dmn_id` = t2.`domain_id`
 		where
-			t1.`dmn_id`=t2.`domain_id`
-		and
 			t1.`dmn_id` = '".$main::htgroup_task_id."'
 		and
 			t1.`status` in ('toadd', 'change', 'delete', 'ok')
@@ -205,8 +200,6 @@ sub htgroup_mngr_engine {
 
 	if (keys( %$rows ) != 0) {
 
-		push_el(\@main::el, 'htuser-groupmanagement()', 'Starting...');
-
 		my $htgroups_file_name = $main::cfg{'HTACCESS_GROUPS_FILE_NAME'};
 
 		my $apache_www_dir = $main::cfg{'APACHE_WWW_DIR'};
@@ -214,6 +207,22 @@ sub htgroup_mngr_engine {
 		my @ids = keys %$rows;
 
 		my $htgroup_dmn  = @$rows{$ids[0]}->{'domain_name'};
+
+		if (!defined $htgroup_dmn){
+
+			$sql = "update `htaccess_groups` set `status`='orphaned' where `dmn_id` = '$main::htgroup_task_id'";
+			($rs, $rdata) = doSQL($sql);
+			return $rs if ($rs != 0);
+
+			push_el(
+				\@main::el, 'htgroup_mngr_engine()',
+				"Detected orphan entry in table htaccess_groups, id: @$rows{$ids[0]}->{'id'} ".
+				"Domain id $main::htgroup_task_id is missing!"
+			);
+
+			return -1;
+
+		}
 
 		my $htgroups_file = "$apache_www_dir/$htgroup_dmn/$htgroups_file_name";
 
@@ -228,9 +237,9 @@ sub htgroup_mngr_engine {
 			my ($htgroup_name, $htgroup_members, $htgroup_status, $htgroup_id) =
 				(@$rows{$_}->{'ugroup'}, @$rows{$_}->{'members'}, @$rows{$_}->{'status'}, @$rows{$_}->{'id'});
 
-			push_el(\@main::el, 'htuser-groupmanagement()', 'Working on '.$htgroup_name);
+			push_el(\@main::el, 'htgroup_mngr_engine()', 'Working on '.$htgroup_name);
 
-			push_el(\@main::el, 'htuser-groupmanagement()', 'Working on id '.$_);
+			push_el(\@main::el, 'htgroup_mngr_engine()', 'Working on id '.$_);
 
 			if ($htgroup_status eq 'change' || $htgroup_status eq 'toadd' || $htgroup_status eq 'ok') {
 
@@ -250,7 +259,7 @@ sub htgroup_mngr_engine {
 
 						if(!@unames){
 
-							push_el(\@main::el, 'htuser-groupmanagement()', "ERROR htaccess_users with $id does not exits.");
+							push_el(\@main::el, 'htgroup_mngr_engine()', "ERROR htaccess_users with $id does not exits.");
 
 							return -1;
 
@@ -266,7 +275,7 @@ sub htgroup_mngr_engine {
 
 				}
 
-				push_el(\@main::el, 'htuser-usermanagement()', 'Edit Group ID : '.$htgroup_id.'...');
+				push_el(\@main::el, 'htgroup_mngr_engine()', 'Edit Group ID : '.$htgroup_id.'...');
 
 				$sql = "update `htaccess_groups` set `status` = 'ok' where `id` = '$htgroup_id'";
 
@@ -276,11 +285,11 @@ sub htgroup_mngr_engine {
 
 				$sql = "delete from `htaccess_groups` where `id` = '$htgroup_id'";
 
-				push_el(\@main::el, 'htuser-usermanagement()', 'Delete Group ID : '.$htgroup_id.'...');
+				push_el(\@main::el, 'htgroup_mngr_engine()', 'Delete Group ID : '.$htgroup_id.'...');
 
 			} else {
 
-				push_el(\@main::el, 'htuser-groupmanagement()', 'Failure modifying group in Domain $htgroup_dmn : $htgroup_name');
+				push_el(\@main::el, 'htgroup_mngr_engine()', 'Failure modifying group in Domain $htgroup_dmn : $htgroup_name');
 
 				$sql = "update `htaccess_groups` set `status`='failure' where `id` = '$htgroup_id'";
 
@@ -300,12 +309,11 @@ sub htgroup_mngr_engine {
 
 		}
 
-		push_el(\@main::el, 'htuser-usermanagement()', 'Ending...');
 	}
 
 	push_el(\@main::el, 'htgroup_mngr_engine()', 'Ending...');
 
-	return 0;
+	0;
 
 }
 

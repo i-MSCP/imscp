@@ -160,37 +160,67 @@ sub htusers_mngr_engine {
 			`t1`.`uname`, `t1`.`upass`, `t1`.`dmn_id`, `t1`.`status`, `t1`.`id`,
 			`t2`.`domain_name`
 		FROM
-			`htaccess_users` as `t1`, `domain` as `t2`
+			`htaccess_users` as `t1`
+		LEFT JOIN
+			`domain` as `t2`
+		ON
+			`t1`.`dmn_id` = `t2`.`domain_id`
 		WHERE
-			`t1`.`id` = $main::htusers_task_id
+			`t1`.`id` = '$main::htusers_task_id'
 		AND
 			`t1`.`status` != 'ok'
-		AND
-			`t1`.`dmn_id` = `t2`.`domain_id`
 		;
 	";
 
-	($rs, $rows) = doSQL($sql);
+	($rs, $rows) = doHashSQL($sql, 'id');
+	return $rs if ($rs != 0);
 
-	if (scalar(@$rows) != 0) {
-		foreach (@$rows) {
+	if (keys( %$rows )  != 0) {
+		foreach(keys( %$rows )) {
 			push_el(\@main::el, 'htuser-usermanagement()', 'Starting...');
 
 			my (
-				$htpasswd_name,	$htpasswd_pass,	$htpasswd_dnm, $htpasswd_status
+				$htpasswd_name,
+				$htpasswd_pass,
+				$htpasswd_dnm,
+				$htpasswd_status,
+				$htpasswd_id,
+				$htpasswd_dnm_id
 			) = (
-				@$_[0], @$_[1], @$_[5], @$_[3]
+				@$rows{$_}->{'uname'},
+				@$rows{$_}->{'upass'},
+				@$rows{$_}->{'domain_name'},
+				@$rows{$_}->{'status'},
+				@$rows{$_}->{'id'},
+				@$rows{$_}->{'dmn_id'}
 			);
+
+			if (!defined $htpasswd_dnm){
+
+				$sql = "update `htaccess_users` set `status`='orphaned' where `id` = '$main::htusers_task_id'";
+				($rs, undef) = doSQL($sql);
+				return $rs if ($rs != 0);
+
+				push_el(
+					\@main::el, 'htgroup_mngr_engine()',
+					"Detected orphan entry in table htaccess_groups, id: $htpasswd_id ".
+					"Domain id $htpasswd_dnm_id is missing!"
+				);
+
+				return -1;
+
+			}
+
 
 			push_el(
 				\@main::el, 'htuser-usermanagement()',
-				"TASK : $htpasswd_status user : $htpasswd_name"
+				"TASK : $htpasswd_status user: $htpasswd_name"
 			);
 
 			if ($htpasswd_status eq 'change') {
 				push_el(
 					\@main::el, 'htuser-usermanagement()',
-					"Change User ID : @${_[0]}..."
+					"Change User Name: $htpasswd_name, Id: $htpasswd_id..."
 				);
 
 				$rs = htusers_del_user_data($htpasswd_dnm, $htpasswd_name);
@@ -205,9 +235,9 @@ sub htusers_mngr_engine {
 					UPDATE
 						`htaccess_users`
 					SET
-						status = 'ok'
+						`status` = 'ok'
 					WHERE
-						id = @${_[4]}
+						`id` = '$htpasswd_id'
 					;
 				";
 
@@ -215,7 +245,7 @@ sub htusers_mngr_engine {
 
 				push_el(
 					\@main::el, 'htuser-usermanagement()',
-					"Delete User ID : @${_[0]}..."
+					"Delete User Name: $htpasswd_name, Id: $htpasswd_id..."
 				);
 
 				$rs = htusers_del_user_data($htpasswd_dnm, $htpasswd_name);
@@ -225,7 +255,7 @@ sub htusers_mngr_engine {
 					DELETE FROM
 						`htaccess_users`
 					WHERE
-						id = @${_[4]}
+						`id` = '$htpasswd_id'
 					;
 				";
 
@@ -233,7 +263,7 @@ sub htusers_mngr_engine {
 
 				push_el(
 					\@main::el, 'htuser-usermanagement()',
-					"Add User ID : @${_[0]}..."
+					"Add User Name: $htpasswd_name, Id: $htpasswd_id..."
 				);
 
 				$rs = htusers_add_user_data(
@@ -245,9 +275,9 @@ sub htusers_mngr_engine {
 					UPDATE
 						`htaccess_users`
 					SET
-						status = 'ok'
+						`status` = 'ok'
 					WHERE
-						id = @${_[4]}
+						`id` = '$htpasswd_id'
 					;
 				";
 
@@ -266,7 +296,7 @@ sub htusers_mngr_engine {
 					SET
 						`status` = 'failure'
 					WHERE
-						`id` = @${_[4]}
+						`id` = '$htpasswd_id'
 					;
 				";
 
@@ -277,6 +307,8 @@ sub htusers_mngr_engine {
 		}
 
 		push_el(\@main::el, 'htuser-usermanagement()', 'Ending...');
+	} else {
+		print "nothing to do\n\n";
 	}
 
 	push_el(\@main::el, 'htusers_mngr_engine()', 'Ending...');
