@@ -1,6 +1,11 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-09-17 Laurent Declercq
+	- ENGINE:
+		* Fixed .conf extension missing on alias sub domains for domain specific
+			proftpd files
+
 2010-09-18 Laurent Declercq
 	- ENGINE:
 		* Fixed #2455: Some services are not restarted after domain adding

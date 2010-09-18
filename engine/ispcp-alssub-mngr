@@ -1071,7 +1071,7 @@ sub alssub_add_proftpd_cfg_data {
 		return -1;
 	}
 
-	my $subAlsFname = "@$data{subdomain_alias_name}.@$data{alias_name}";
+	my $subAlsFname = "@$data{subdomain_alias_name}.@$data{alias_name}.conf";
 	my $wrkFile = "$main::cfg{CONF_DIR}/proftpd/working/$subAlsFname";
 	my $sysFile = "$main::cfg{FTPD_CONF_DIR}/$subAlsFname";
 
