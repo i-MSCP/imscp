@@ -1,6 +1,10 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-09-18 Laurent Declercq
+	- ENGINE:
+		* Fixed #2455: Some services are not restarted after domain adding
+
 2010-09-17 Daniel Andreca
 	- ENGINE:
 		* Fixed: If a user is added to a group, the group name in stead

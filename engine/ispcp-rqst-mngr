@@ -776,9 +776,9 @@ sub mngr_engine {
 	($rs, $rdata) = doSQL($sql);
 	return $rs if ($rs != 0);
 
-	$dmn_count = @$rdata;
+	my $dmn_del_count = @$rdata;
 
-	if ($dmn_count > 0) {
+	if ($dmn_del_count > 0) {
 		foreach (@$rdata) {
 			my ($dmn_id, $dmn_name, $dmn_status) = (@$_[0], @$_[1], @$_[2]);
 
@@ -826,6 +826,8 @@ sub mngr_engine {
 	#
 	# Domains data deletion END
 	#
+
+	$dmn_count = $dmn_count + $dmn_del_count;
 
 	if ($dmn_count > 0 || $sub_count > 0 || $als_count > 0 || $mail_count > 0 ||
 		$alssub_count > 0) {
