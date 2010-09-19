@@ -1409,17 +1409,18 @@ sub prep_tpl {
 	return @res;
 }
 
+################################################################################
+# Should be documented
+#
+# @return int 0 on success, -1 otherwise
+#
 sub lock_system {
 
 	push_el(\@main::el, 'lock_system()', 'Starting...');
 
-	my $res = open($main::ispcp_semaphore, '>', $main::lock_file);
-
-	if (!$res) {
+	if(!open($main::fh_lock_file, '>', $main::lock_file)) {
 		push_el(
-			\@main::el,
-			'lock_system()',
-			'ERROR: unable to open lock file!'
+			\@main::el, 'lock_system()', '[ERROR] Unable to open lock file!'
 		);
 
 		return -1;
@@ -1427,13 +1428,10 @@ sub lock_system {
 
 	# Import LOCK_* constants.
 	use Fcntl ":flock";
-	$res = flock($main::ispcp_semaphore, LOCK_EX);
 
-	if (!$res) {
+	if(!flock($main::fh_lock_file, LOCK_EX)) {
 		push_el(
-			\@main::el,
-			'lock_system()',
-			'ERROR: unable to acquire global lock!'
+			\@main::el, 'lock_system()','[ERROR] Unable to acquire global lock!'
 		);
 
 		return -1;

@@ -75,6 +75,7 @@ if ($main::db_pass_key eq '{KEY}' || $main::db_pass_iv eq '{IV}') {
 }
 
 $main::lock_file = $main::cfg{'MR_LOCK_FILE'};
+$main::fh_lock_file = undef;
 
 $main::log_dir = $main::cfg{'LOG_DIR'};
 
@@ -178,7 +179,5 @@ $main::ispcp_bk_task_el = "$main::log_dir/ispcp-bk-task.el";
 $main::ispcp_srv_traff_el = "$main::log_dir/ispcp-srv-traff.el";
 
 $main::ispcp_dsk_quota_el = "$main::log_dir/ispcp-dsk-quota.el";
-
-$main::ispcp_semaphore = undef;
 
 1;
