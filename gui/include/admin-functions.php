@@ -2455,6 +2455,17 @@ function delete_domain($domain_id, $goto, $breseller = false) {
 
 	exec_query($sql, $query, $domain_name);
 
+	// Delete the quota section:
+	$query = "
+		DELETE FROM
+			`quotatallies`
+		WHERE
+			`name` = ?
+		;
+	";
+
+	exec_query($sql, $query, $domain_name);
+
 	// Remove support tickets:
 	$query = "
 		DELETE FROM

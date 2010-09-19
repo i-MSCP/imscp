@@ -448,15 +448,19 @@ function get_error_mails($sql, $tpl) {
 	} else {
 		$i = 1;
 		while (!$rs->EOF) {
-			$searched_id = $rs->fields['domain_id'];
+			$searched_id	= $rs->fields['domain_id'];
+			$mail_acc		= $rs->fields['mail_acc'];
+			$mail_type		= $rs->fields['mail_type'];
+			$mail_id		= $rs->fields['mail_id'];
+			$mail_status	= $rs->fields['status'];
 
-			switch ($rs->fields['mail_type']) {
+			switch ($mail_type) {
 				case 'normal_mail':
 				case 'normal_forward':
 				case 'normal_mail,normal_forward':
 					$query = "
 						SELECT
-							`domain_name`
+							CONCAT('@', `domain_name`) AS `domain_name`
 						FROM
 							`domain`
 						WHERE
@@ -469,20 +473,57 @@ function get_error_mails($sql, $tpl) {
 				case 'subdom_mail,subdom_forward':
 					$query = "
 						SELECT
-							`subdomain_name` AS `domain_name`
+							CONCAT('@', `subdomain_name`, '.', IF(t2.`domain_name` IS NULL,'".tr('missing domain')."',t2.`domain_name`)) AS 'domain_name'
 						FROM
-							`subdomain`
+							`subdomain` AS t1
+						LEFT JOIN
+							`domain` AS t2
+						ON
+							t1.`domain_id` = t2.`domain_id`
 						WHERE
 							`subdomain_id` = ?
 						;
 					";
+					break;
+				case 'alssub_mail':
+				case 'alssub_forward':
+				case 'alssub_mail,alssub_forward':
+					$query = "
+						SELECT
+							CONCAT('@', t1.`subdomain_alias_name`, '.', IF(t2.`alias_name` IS NULL,'".tr('missing alias')."',t2.`alias_name`)) AS `domain_name`
+						FROM
+							`subdomain_alias` AS t1
+						LEFT JOIN
+							`domain_aliasses` AS t2
+						ON
+							t1.`alias_id` = t2.`alias_id`
+						WHERE
+							`subdomain_alias_id` = ?
+						;
+					";
+					break;
+				case 'normal_catchall':
+				case 'alias_catchall':
+				case 'alssub_catchall':
+				case 'subdom_catchall':
+					$query = "
+						SELECT
+							`mail_addr` AS `domain_name`
+						FROM
+							`mail_users`
+						WHERE
+							`mail_id` = ?
+						;
+					";
+					$searched_id	= $mail_id;
+					$mail_acc		= '';
 					break;
 				case 'alias_mail':
 				case 'alias_forward':
 				case 'alias_mail,alias_forward':
 					$query = "
 						SELECT
-							`alias_name` AS `domain_name`
+							CONCAT('@', `alias_name`) AS `domain_name`
 						FROM
 							`domain_aliasses`
 						WHERE
@@ -494,11 +535,11 @@ function get_error_mails($sql, $tpl) {
 					write_log(
 						sprintf(
 							'FIXME: %s:%d' . "\n" . 'Unknown mail type %s',
-							__FILE__, __LINE__, $rs->fields['mail_type']
+							__FILE__, __LINE__, $mail_type
 						)
 					);
 
-					die('FIXME: ' . __FILE__ . ':' . __LINE__);
+					die('FIXME: ' . __FILE__ . ':' . __LINE__ . $mail_type);
 			}
 
 			$sr = exec_query($sql, $query, $searched_id);
@@ -514,10 +555,10 @@ function get_error_mails($sql, $tpl) {
 				array(
 					'MAIL_MESSAGE'	=> '',
 					'TR_MAIL_NAME'	=> tohtml(
-						$rs->fields['mail_acc'] . "@" . $domain_name
+						$mail_acc . ($domain_name == '' ? '@ ' . tr('orphan entry') : $domain_name)
 					),
-					'TR_MAIL_ERROR'	=> tohtml($rs->fields['status']),
-					'CHANGE_ID'		=> $rs->fields['mail_id'],
+					'TR_MAIL_ERROR'	=> tohtml($mail_status),
+					'CHANGE_ID'		=> $mail_id,
 					'CHANGE_TYPE' => 'mail',
 				)
 			);
@@ -806,7 +847,7 @@ $tpl->assign(
 		'TR_EXEC_REQUESTS' => tr('Execute requests'),
 		'TR_CHANGE_STATUS' => tr('Set status to \'change\''),
 		'EXEC_COUNT' => $exec_count,
-		'TR_ERRORS' => tr('Errors in database: %s', $errors)
+		'TR_ERRORS' => tr('%s Errors in database', $errors)
 	)
 );
 
