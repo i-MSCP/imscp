@@ -1413,7 +1413,7 @@ sub lock_system {
 
 	push_el(\@main::el, 'lock_system()', 'Starting...');
 
-	my $res = open(my $fh, '>', $main::lock_file);
+	my $res = open($main::ispcp_semaphore, '>', $main::lock_file);
 
 	if (!$res) {
 		push_el(
@@ -1427,7 +1427,7 @@ sub lock_system {
 
 	# Import LOCK_* constants.
 	use Fcntl ":flock";
-	$res = flock($fh, LOCK_EX);
+	$res = flock($main::ispcp_semaphore, LOCK_EX);
 
 	if (!$res) {
 		push_el(

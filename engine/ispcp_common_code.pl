@@ -179,4 +179,6 @@ $main::ispcp_srv_traff_el = "$main::log_dir/ispcp-srv-traff.el";
 
 $main::ispcp_dsk_quota_el = "$main::log_dir/ispcp-dsk-quota.el";
 
+$main::ispcp_semaphore = undef;
+
 1;
