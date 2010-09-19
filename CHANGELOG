@@ -15,6 +15,7 @@ ispCP ω 1.0.7 ChangeLog
 	- ENGINE:
 		* Fixed #2459: Small mistake in error message (tx nuke3d)
 		* Fixed #2462: Engine locking mecanism is faulty
+		* Fixed #2464: Error in autoresponder
 
 2010-09-18 Daniel Andreca
 	- ENGINE:

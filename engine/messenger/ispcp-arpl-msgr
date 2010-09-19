@@ -83,13 +83,14 @@ $main::el_sep = "\t#\t";
 
 sub push_el {
 
-	push @$el, "$sub_name".$main::el_sep."$msgDebug";
-
 	my ($el, $sub_name, $msgDebug) = @_;
+
+	push @$el, "$sub_name".$main::el_sep."$msgDebug";
 
 	if (defined($main::engine_debug)) {
 		print STDOUT "push_el() sub_name: $sub_name, msg: $msgDebug\n";
 	}
+
 }
 
 sub pop_el {
@@ -295,6 +296,8 @@ use FindBin;
 use lib "$FindBin::Bin/";
 require 'ispcp-db-keys.pl';
 
+umask(027);
+
 sub encrypt_db_password {
 
 	push_el(\@main::el, 'encrypt_db_password()', 'Starting...');
@@ -424,6 +427,10 @@ sub get_conf {
 
 my $rs = get_conf();
 
+if ($main::cfg{'DEBUG'} != 0) {
+	$main::engine_debug = '_on_';
+}
+
 if ($rs != 0) {
 	if( -d "$main::cfg{'LOG_DIR'}/ispcp-arpl-msgr/") {
 		$main::ispcp_arpl_msgr_el =
@@ -500,44 +507,6 @@ sub arpl_msgr_start_up {
 	$rs = get_conf();
 	return $rs if ($rs != 0);
 
-	# sql check;
-
-	#
-	# getting initial data also must be done here;
-	#
-
-	my $sql = "
-		SELECT
-			`domain_id`,
-			`domain_name`,
-			`domain_gid`,
-			`domain_uid`,
-			`domain_admin_id`,
-			`domain_created_id`,
-			`domain_created`,
-			`domain_last_modified`,
-			`domain_mailacc_limit`,
-			`domain_ftpacc_limit`,
-			`domain_traffic_limit`,
-			`domain_sqld_limit`,
-			`domain_sqlu_limit`,
-			`domain_status`,
-			`domain_alias_limit`,
-			`domain_ip_id`,
-			`domain_disk_limit`,
-			`domain_disk_usage`,
-			`domain_php`,
-			`domain_cgi`
-		FROM
-			`domain`
-		LIMIT
-			1
-		;
-	";
-
-	($rs, $rdata) = doSQL($sql);
-	return $rs if ($rs != 0);
-
 	push_el(\@main::el, 'arpl_msgr_start_up()', 'Ending...');
 
 	0;
@@ -551,7 +520,7 @@ sub arpl_msgr_shut_down {
 
 	$main::db->disconnect();
 
-	if (defined($main::engine_debug)) {
+	if (!defined($main::engine_debug)) {
 		$rs = del_file($main::ispcp_arpl_msgr_stdout);
 		return $rs if ($rs != 0);
 
@@ -581,8 +550,6 @@ sub arpl_msgr_engine {
 		;
 	";
 
-	print $sql;
-
 	push_el(\@main::el, 'arpl_msgr_engine()', "sql: |".$sql."|");
 
 	($rs, $ref) = doSQL($sql);
@@ -591,7 +558,7 @@ sub arpl_msgr_engine {
 		\@main::el,
 		'arpl_msgr_engine()',
 		'Error purging old autoreplies_log entries'
-	);
+	) if($rs != 0);
 
 	my $msg_parser = new MIME::Parser;
 
@@ -652,7 +619,7 @@ sub arpl_msgr_engine {
 						$to_ma->address . '|'
 				);
 
-				push_el(\@main::el, 'arpl_msgr_engine()', "loop!");
+				push_el(\@main::el, 'arpl_msgr_engine()', "Test for loop!");
 
 				my $ma = $to_ma->address."\n";
 
