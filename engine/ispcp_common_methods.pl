@@ -47,7 +47,7 @@ BEGIN {
 		File::Basename => '',
 		File::Path => '',
 		HTML::Entities=> '',
-		File::Temp => '',
+		File::Temp => 'qw(tempdir)',
 		File::Copy::Recursive => 'qw(rcopy)'
 	);
 
@@ -2645,12 +2645,21 @@ sub save_as_temp_folder {
 
 	my ($path, @to_save )= @_;
 	my %dirs = ();
-	my $rs = 0;
+	my $rs, $dir = (0, undef);
 
 	foreach (@to_save) {
-		my $dir = File::Temp->newdir( DIR => $path, CLEANUP => 0 );
 
-		$dirs{$dir->dirname} = "$path$_";
+		eval{
+			$dir = tempdir( DIR => $path, CLEANUP => 0 );
+		};
+		if ($@) {
+			push_el(
+				\@main::el, 'save_as_temp_folder()',
+				"ERROR while creating temporary folder: $@"
+			);
+		}
+
+		$dirs{$dir} = "$path$_";
 
 		push_el(
 			\@main::el, 'save_as_temp_folder()',
