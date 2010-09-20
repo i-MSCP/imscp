@@ -1,6 +1,10 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-09-20 Daniel Andreca
+	- ENGINE:
+		* Fixed typo in query
+
 2010-09-19 Daniel Andreca
 	- ENGINE:
 		* Fixed #2462: Engine locking mecanism is faulty

@@ -2495,36 +2495,38 @@ sub get_domain_mount_points {
 
 	my $sql = "
 		SELECT
-			`alias_id` AS `id`,
-			`alias_mount` AS `mount_point`,
-			`alias` AS `type`
+			`alias_id` AS 'id',
+			`alias_mount` AS 'mount_point',
+			'alias' AS 'type'
 		FROM
 			`domain_aliasses`
 		WHERE
 			`domain_id` = '$dmn_id'
 		UNION
 		SELECT
-			`subdomain_id` AS `id`,
-			`subdomain_mount` AS `mount_point`,
-			`subdomain` AS `type`
+			`subdomain_id` AS 'id',
+			`subdomain_mount` AS 'mount_point',
+			'subdomain' AS 'type'
 		FROM
 			`subdomain`
 		WHERE
 			`domain_id` = '$dmn_id'
 		UNION
 		SELECT
-			`subdomain_alias_id` AS `id`,
-			`subdomain_alias_mount` AS `mount_point`,
-			`alias_subdomain` AS `type`
+			`subdomain_alias_id` AS 'id',
+			`subdomain_alias_mount` AS 'mount_point',
+			'alias_subdomain' AS 'type'
 		FROM
 			`subdomain_alias`
 		WHERE
-			`alias_id` = ANY (SELECT `alias_id` FROM `domain_aliasses`	WHERE `domain_id` = '$dmn_id')
+			`alias_id` = ANY (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = '$dmn_id')
 		ORDER BY `mount_point` ASC
 		;
 	";
 
 	my ($rs, $rdata) = doHashSQL($sql, 'id');
+
+	return (-1, '') if( $rs != 0 );
 
 	push_el(\@main::el, 'get_domain_mount_points()', 'Ending...');
 
