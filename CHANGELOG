@@ -2,20 +2,20 @@ ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2010-09-19 Daniel Andreca
-	- GUI:
-		* Fixed Purchase link unavailable if order record is deleted
-		* Fixed Wrong email count
-		* Fixed #2460: Change domain alias forward: empty (tx nuke3d)
-		* Fixed #2458: Wrong grammar in alias order UI (tx nuke3d)
-		* Fixed #2457: Htaccess errors are not displayed in the ispcp
-			debugger
-		* Fixed #2456: Error in gui/include/ispCP/Update/Database.php (tx nuke3d)
-		* Improved error messages in ispcp debugger
-		* Quotatallies not cleared on domain removal
 	- ENGINE:
-		* Fixed #2459: Small mistake in error message (tx nuke3d)
+		* Fixed #2459: Small mistake in error message (thanks nuke3d)
 		* Fixed #2462: Engine locking mecanism is faulty
-		* Fixed #2464: Error in autoresponder
+		* Fixed #2464: Error in auto responder
+	- GUI:
+		* Fixed #2460: Change domain alias forward: empty (thanks nuke3d)
+		* Fixed #2456: Error in gui/include/ispCP/Update/Database.php
+			(thanks nuke3d)
+		* Fixed #2457: Htaccess errors are not displayed in the ispcp debugger
+		* Fixed #2458: Wrong grammar in alias order UI (thanks nuke3d)
+		* Fixed wrong email count
+		* Improved error messages in ispcp debugger
+		* Fixed Purchase link unavailable if order record is deleted
+		* Quotatallies not cleared on domain removal
 
 2010-09-18 Daniel Andreca
 	- ENGINE:
@@ -25,7 +25,7 @@ ispCP ω 1.0.7 ChangeLog
 2010-09-18 Benedikt Heintel
 	- ENGINE:
 		* Fixed .conf extension missing on alias sub domains for domain specific
-			proftpd files
+		proftpd files
 
 2010-09-18 Laurent Declercq
 	- ENGINE:
@@ -33,8 +33,8 @@ ispCP ω 1.0.7 ChangeLog
 
 2010-09-17 Daniel Andreca
 	- ENGINE:
-		* Fixed: If a user is added to a group, the group name in stead
-			of the domain name will added to the .htgroup file (tx Freakez)
+		* Fixed: If a user is added to a group, the group name in stead of the
+		domain name will added to the .htgroup file (thanks Freakez)
 
 2010-09-15 Jochen Manz
 	- RELEASE ispCP ω Omega 1.0.7 RC1
@@ -62,17 +62,16 @@ ispCP ω 1.0.7 ChangeLog
 
 2010-09-11 Daniel Andreca
 	- DOCS
-		* Update dependinces
+		* Updated dependencies
 	- ENGINE, CONFIGS
 		* Fixed #2416: ispCP log files shouldn't be readable by everyone
 	- ENGINE
 		* Improved error log in ispcp-htgroups-mngr
 		* Improved error log in ispcp-sub-mngr
 		* Fixed #2452: Update from v1.0.6 will fail on database update
-		* Fixed #2446: make_dir function won`t set correct permissions
-			if more than a folder is created
-		* Fixed #2399: Aliasses deletion - Shared mount point shouldn't
-			be removed
+		* Fixed #2446: make_dir function won`t set correct permissions if more
+			than a folder is created
+		* Fixed #2399: Alias deletion - Shared mount point shouldn't be removed
 		* Improved module requirement
 	- GUI
 		* New inserted value in config table were not counted
@@ -84,19 +83,19 @@ ispCP ω 1.0.7 ChangeLog
 
 2010-09-09 Daniel Andreca
 	- CONFIGS:
-		* Fixed #2430: [Ubuntu] Proftpd's modules.conf need to be
-			updated on install/update
+		* Fixed #2430: [Ubuntu] Proftpd's modules.conf need to be updated on
+			install/update
 		* Changed ispcp_base.tpl to default
 
 2010-09-08 Daniel Andreca
+	- CONFIGS:
+		* Updated database revision
 	- ENGINE:
 		* ispcp-htgroups-mngr: Removed useless sleep statement
 		* Forcing logs umask to be root only readable
 		* Fixed #2425: Engine do not wait altered files to be written
 		* Fixed #2440: Backup script will restore forged backup
 		* Fixed #2107: The Uninstall-Script doesn´t cleanup all Files
-	- CONFIGS:
-		* Updated database revision
 	- GUI:
 		* Fixed #2442: Adding a domain purcesed via orderpanel will
 			insert type of backup (_full_) witch is not allowed

@@ -178,7 +178,6 @@ sub pop_el {
     return $data;
 }
 
-
 sub dump_el {
 
 	my ($el, $fname) = @_;
@@ -308,22 +307,21 @@ sub doHashSQL {
 	}
 }
 
-##
+################################################################################
 # setfmode
+#
 # sets user, group and rights of a file.
 # If $fgroup set to 'null' this function will get the GID from /etc/passwd.
 #
-# @author		VHCS/ispCP Team
-# @author		Benedikt Heintel
-# @copyright 	2006-2009 by ispCP | http://isp-control.net
-# @version		1.1
-#
+# @author   VHCS/ispCP Team
+# @author	Benedikt Heintel
+# @version	1.1
 # @access	public
-# @param	String 	$fname	File or Folder Name
-# @param	Mixed 	$fuser	Linux User or UserID
-# @param	Mixed	$fgroup	Linux Group, GroupID or 'null'
-# @param	int		$fperms	Linux Permissions
-# @return	int				success (0) or error (-1)
+# @param	string $fname	File or Folder Name
+# @param	mixed $fuser	Linux User or UserID
+# @param	mixed $fgroup	Linux Group, GroupID or 'null'
+# @param	int $fperms	Linux Permissions
+# @return	int success (0) or error (-1)
 sub setfmode {
 
 	push_el(\@main::el, 'setfmode()', 'Starting...');
@@ -2241,7 +2239,6 @@ sub sort_domains {
 }
 
 ################################################################################
-##
 ## Get a serial number generated according RFC 1912
 ##
 ## This subroutine can be used both to get and update serial number. $src must
@@ -2401,18 +2398,19 @@ $errmsg
 }
 
 
-###################################################################################
-##
+################################################################################
 ## makepath
-## Creates a directory path and set ownership and rights for newly created folders
+##
+## Creates a directory path and set ownership and rights for newly created
+## folders
 ##
 ## @author Daniel Andreca <sci2tech@gmail.com>
 ## @since   1.0.7
 ## @version 1.0.7
-## @param	String 	$dname	File Name
-## @param	Mixed 	$duid	Linux User or UserID
-## @param	Mixed 	$dgid	Linux Group, GroupID or null
-## @param	int 	$dperms	Linux Permissions
+## @param	string $dname File Name
+## @param	mixed $duid	Linux User or UserID
+## @param	mixed $dgid	Linux Group, GroupID or null
+## @param	int $dperms	Linux Permissions
 ## @return	int	0 on success, -1 otherwise
 sub makepath {
 
@@ -2431,15 +2429,13 @@ sub makepath {
 		return -1;
 	}
 
-	my ($rs, $rdata) = ('', '');
-
 	if (-e $dname && -f $dname) {
 		push_el(
 			\@main::el, 'makepath()',
-			"'$dname' exists as file ! removing file first..."
+			"[NOTICE] '$dname' exists as file ! removing file first..."
 		);
 
-		return -1 if (del_file($dname) != 0);
+		return -1 if del_file($dname);
 	}
 
 	if (!(-e $dname && -d $dname)) {
@@ -2448,28 +2444,29 @@ sub makepath {
 			"'$dname' doesn't exists as directory! creating..."
 		);
 
-		my @lines =  mkpath($dname, {owner => $duid, group => $duid, mode=>0755});
+		my @lines =  mkpath(
+			$dname, {owner => $duid, group => $duid, mode => 0755}
+		);
 
 		if (!@lines) {
 			push_el(
 				\@main::el, 'makepath()',
-				"ERROR: mkpath() returned empty path!"
+				"[ERROR] mkpath() returned empty path!"
 			);
 
 			return -1;
 		}
 		foreach (@lines){
-			return -1 if (setfmode($_, $duid, $dgid, $dperms) != 0);
+			return -1 if setfmode($_, $duid, $dgid, $dperms);
 		}
 
 	} else {
-
 		push_el(
 			\@main::el, 'makepath()',
-			"'$dname' exists ! Setting its permissions..."
+			"[NOTICE] '$dname' exists ! Setting its permissions..."
 		);
 
-		return -1 if (setfmode($dname, $duid, $dgid, $dperms) != 0);
+		return -1 if setfmode($dname, $duid, $dgid, $dperms);
 
 	}
 
@@ -2479,16 +2476,16 @@ sub makepath {
 }
 
 
-###################################################################################
-##
+################################################################################
 ## get_domain_mount_points
+##
 ## return a list with mounting points for aliases domains and subdomains for a
 ## domain
 ##
 ## @author Daniel Andreca <sci2tech@gmail.com>
 ## @since   1.0.7
 ## @version 1.0.7
-## @param	int 	$dmn_id	domain id
+## @param	int $dmn_id	domain id
 ## @return [0 on success |error code, list of mount points]
 sub get_domain_mount_points {
 
@@ -2498,27 +2495,27 @@ sub get_domain_mount_points {
 
 	my $sql = "
 		SELECT
-			`alias_id` as 'id',
-			`alias_mount` as 'mount_point',
-			'alias' as `type`
+			`alias_id` AS `id`,
+			`alias_mount` AS `mount_point`,
+			`alias AS `type`
 		FROM
 			`domain_aliasses`
 		WHERE
 			`domain_id` = '$dmn_id'
 		UNION
 		SELECT
-			`subdomain_id` as 'id',
-			`subdomain_mount` as 'mount_point',
-			'subdomain' as `type`
+			`subdomain_id` AS `id`,
+			`subdomain_mount` AS `mount_point`,
+			`subdomain` AS `type`
 		FROM
 			`subdomain`
 		WHERE
 			`domain_id` = '$dmn_id'
 		UNION
 		SELECT
-			`subdomain_alias_id` as 'id',
-			`subdomain_alias_mount` as 'mount_point',
-			'alias_subdomain' as `type`
+			`subdomain_alias_id` AS `id`,
+			`subdomain_alias_mount` AS `mount_point`,
+			`alias_subdomain` AS `type`
 		FROM
 			`subdomain_alias`
 		WHERE
@@ -2532,21 +2529,21 @@ sub get_domain_mount_points {
 	push_el(\@main::el, 'get_domain_mount_points()', 'Ending...');
 
 	return ($rs, $rdata);
-
 }
 
-###################################################################################
-##
+################################################################################
 ## check_mount_point_in_use
+##
 ## check if a mount point is shared
 ##
 ## @author Daniel Andreca <sci2tech@gmail.com>
 ## @since   1.0.7
 ## @version 1.0.7
-## @param	String 	$dtype	shared point to be deleted is used by alias / subdomain / alias subdomain
-## @param	int 	$did	id of alias / subdomain / alias subdomain to be deleted
-## @param	String 	$dmount_point	Mount point to be deleted
-## @param	array 	$data	list of shared point in use
+## @param	string $dtype shared point to be deleted is used by
+##  alias/subdomain/alias subdomain
+## @param	int $did id of alias/subdomain/alias subdomain to be deleted
+## @param	string $dmount_point Mount point to be deleted
+## @param	array $data	list of shared point in use
 ## @return array list of shared mount point to be saved
 sub check_mount_point_in_use {
 
@@ -2560,49 +2557,66 @@ sub check_mount_point_in_use {
 
 		my ($id, $mount_point, $type) = (@$v{'id'}, @$v{'mount_point'}, @$v{'type'});
 
-		push_el(\@main::el, 'check_mount_point_in_use()', "Test $id ne $did or $type ne $dtype (we do not save folder that supose to be deleted)");
+		push_el(
+			\@main::el, 'check_mount_point_in_use()',
+			"Test $id ne $did or $type ne $dtype (we do not save folder that supose to be deleted)"
+		);
 
 		if(!(($id eq $did) && ($type eq $dtype))) {
-
 			push_el(\@main::el, 'check_mount_point_in_use()', "ok. Continue...");
 
-			push_el(\@main::el, 'check_mount_point_in_use()', "Test $mount_point or system folders are subfolder in $dmount_point (if we will not save it will be deleted)");
+			push_el(
+				\@main::el, 'check_mount_point_in_use()',
+				"Test $mount_point or system folders are subfolder in $dmount_point (if we will not save it will be deleted)"
+			);
 
-			my @mpoints = ($mount_point, "$mount_point/backups", "$mount_point/cgi-bin", "$mount_point/disabled", "$mount_point/errors", "$mount_point/htdocs", "$mount_point/logs", "$mount_point/phptmp");
+			my @mpoints = (
+				$mount_point, "$mount_point/backups", "$mount_point/cgi-bin",
+				"$mount_point/disabled", "$mount_point/errors",
+				"$mount_point/htdocs", "$mount_point/logs", "$mount_point/phptmp"
+			);
 
 			foreach my $mpoint (@mpoints){
-
-				push_el(\@main::el, 'check_mount_point_in_use()', "Test $mpoint is subfolder in $dmount_point (if we will not save it will be deleted)");
+				push_el(
+					\@main::el, 'check_mount_point_in_use()',
+					"Test $mpoint is subfolder in $dmount_point (if we will not save it will be deleted)"
+				);
 
 				if($mpoint =~ /^$dmount_point.*$/){
-
-					push_el(\@main::el, 'check_mount_point_in_use()', "it is. Continue...");
+					push_el(
+						\@main::el, 'check_mount_point_in_use()',
+						'it is. Continue...'
+					);
 
 					my $save = 1;
 
 					foreach(@to_save){
-
-						push_el(\@main::el, 'check_mount_point_in_use()', "Test $mpoint is subfolder in a scheduled to save folder");
+						push_el(
+							\@main::el, 'check_mount_point_in_use()',
+							"Test $mpoint is subfolder in a scheduled to save folder"
+						);
 
 						if($mpoint =~ /^$_.*$/){
-
-							push_el(\@main::el, 'check_mount_point_in_use()', "yes. Not need to save again!");
+							push_el(
+								\@main::el, 'check_mount_point_in_use()',
+								'yes. Not need to save again!'
+							);
 
 							$save = 0;
 						}
-
 					}
 
 					if( $save != 0) {
+						push_el(
+							\@main::el, 'check_mount_point_in_use()',
+							"Schedule to be saved: $mpoint"
+						);
 
-						push_el(\@main::el, 'check_mount_point_in_use()', "Schedule to be saved: $mpoint");
 						push(@to_save, $mpoint);
-
 					}
 				}
 			}
 		}
-
 	}
 
 	push_el(\@main::el, 'check_mount_point_in_use()', 'Ending...');
@@ -2611,8 +2625,8 @@ sub check_mount_point_in_use {
 }
 
 ###################################################################################
-##
 ## save_as_temp_folder
+##
 ## move content from a list of folders in temporary created folders
 ##
 ## @author Daniel Andreca <sci2tech@gmail.com>
@@ -2621,24 +2635,25 @@ sub check_mount_point_in_use {
 ## @param	String 	$path	path to user domain
 ## @param	array 	$to_save	list of shared mount point to be saved
 ## @return	int	0 on success, err code otherwise
-## @return	hash	list of temporary folder as $temporary folder name => source folder
+## @return	hash	list of temporary folder as $temporary folder
+## name => source folder
 sub save_as_temp_folder {
 
 	push_el(\@main::el, 'save_as_temp_folder()', 'Starting...');
 
 	my ($path, @to_save )= @_;
-
 	my %dirs = ();
-
 	my $rs = 0;
 
 	foreach (@to_save) {
-
 		my $dir = File::Temp->newdir( DIR => $path, CLEANUP => 0 );
 
 		$dirs{$dir->dirname} = "$path$_";
 
-		push_el(\@main::el, 'save_as_temp_folder()', "Mount point to be saved $_ in $dir");
+		push_el(
+			\@main::el, 'save_as_temp_folder()',
+			"Mount point to be saved $_ in $dir"
+		);
 
 		$rs = move_dir_content("$path$_", $dir);
 		return $rs if ($rs != 0);
@@ -2650,19 +2665,20 @@ sub save_as_temp_folder {
 	return ($rs, %dirs);
 }
 
-###################################################################################
-##
+################################################################################
 ## move_list_folder
+##
 ## move content from a list of folders in folders provided by list
-## and set owner and rights on folder created acording to input parameters
+## and set owner and rights on folder created according to input parameters
 ##
 ## @author Daniel Andreca <sci2tech@gmail.com>
 ## @since   1.0.7
 ## @version 1.0.7
-## @param	octal 	$perm	permissions
-## @param	Mixed 	$duid	Linux User or UserID
-## @param	Mixed 	$dgid	Linux Group, GroupID or null
-## @param	hash 	%to_restore	list of folders to be restored as source path => destination path
+## @param	octal $perm	permissions
+## @param	Mixed $duid	Linux User or UserID
+## @param	Mixed $dgid	Linux Group, GroupID or null
+## @param	hash %to_restore	list of folders to be restored as source
+##  path => destination path
 ## @return	int	0 on success, err code otherwise
 sub restore_list_folder {
 
@@ -2671,7 +2687,6 @@ sub restore_list_folder {
 	my ($perm, $duid, $dgid, %to_restore) = @_;
 
 	 while( my ($folder, $path) = each %to_restore ) {
-
 		my $rs = makepath($path, $duid, $dgid, $perm);
 		return $rs if ($rs != 0);
 
@@ -2680,7 +2695,6 @@ sub restore_list_folder {
 
 		$rs = del_dir($folder);
 		return $rs if ($rs != 0);
-
 	}
 
 	push_el(\@main::el, 'move_list_folder()', 'Ending...');
@@ -2688,9 +2702,9 @@ sub restore_list_folder {
 	0;
 }
 
-###################################################################################
-##
+################################################################################
 ## move_dir_content
+##
 ## move content of source folder in destination (not source folder itself)
 ##
 ## @author Daniel Andreca <sci2tech@gmail.com>
@@ -2706,20 +2720,22 @@ sub move_dir_content{
 
 	my ($source, $destination) = @_;
 
-	push_el(\@main::el, 'move_dir_content()', "Trying to move content of $source in $destination");
+	push_el(
+		\@main::el, 'move_dir_content()',
+		"Trying to move content of $source in $destination"
+	);
 
-	if (scalar <$source/*>){#move only if not empty
-
+	if (scalar <$source/*>){ #move only if not empty
 		my @res = rcopy("$source/*", "$destination");
 
 		if(!@res){
-
-			push_el(\@main::el, 'move_dir_content()', "Failed to move content of $source in $destination!");
+			push_el(
+				\@main::el, 'move_dir_content()',
+				"Failed to move content of $source in $destination!"
+			);
 
 			return -1;
-
 		}
-
 	}
 
 	push_el(\@main::el, 'move_dir_content()', 'Ending...');
