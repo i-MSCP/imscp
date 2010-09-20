@@ -2645,7 +2645,7 @@ sub save_as_temp_folder {
 
 	my ($path, @to_save )= @_;
 	my %dirs = ();
-	my $rs, $dir = (0, undef);
+	my ($rs, $dir) = (0, undef);
 
 	foreach (@to_save) {
 
