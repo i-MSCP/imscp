@@ -106,7 +106,7 @@ $main::ispcp_rqst_mngr_stderr = "$main::log_dir/ispcp-rqst-mngr.stderr";
 # ispcp_dmn_mngr variables
 #
 $main::ispcp_dmn_mngr = "$main::root_dir/engine/ispcp-dmn-mngr";
-$main::ispcp_dmn_mngr_l = "$main::log_dir/ispcp-dmn-mngr.el";
+$main::ispcp_dmn_mngr_el = "$main::log_dir/ispcp-dmn-mngr.el";
 $main::ispcp_dmn_mngr_stdout = "$main::log_dir/ispcp-dmn-mngr.stdout";
 $main::ispcp_dmn_mngr_stderr = "$main::log_dir/ispcp-dmn-mngr.stderr";
 

@@ -3,9 +3,9 @@ ispCP ω 1.0.7 ChangeLog
 
 2010-09-19 Daniel Andreca
 	- ENGINE:
-		* Fixed #2459: Small mistake in error message (thanks nuke3d)
 		* Fixed #2462: Engine locking mecanism is faulty
 		* Fixed #2464: Error in auto responder
+		* Fixed #2459: Small mistake in error message (thanks nuke3d)
 	- GUI:
 		* Fixed #2460: Change domain alias forward: empty (thanks nuke3d)
 		* Fixed #2456: Error in gui/include/ispCP/Update/Database.php
@@ -25,7 +25,7 @@ ispCP ω 1.0.7 ChangeLog
 2010-09-18 Benedikt Heintel
 	- ENGINE:
 		* Fixed .conf extension missing on alias sub domains for domain specific
-		proftpd files
+			proftpd files
 
 2010-09-18 Laurent Declercq
 	- ENGINE:
@@ -34,7 +34,7 @@ ispCP ω 1.0.7 ChangeLog
 2010-09-17 Daniel Andreca
 	- ENGINE:
 		* Fixed: If a user is added to a group, the group name in stead of the
-		domain name will added to the .htgroup file (thanks Freakez)
+			domain name will added to the .htgroup file (thanks Freakez)
 
 2010-09-15 Jochen Manz
 	- RELEASE ispCP ω Omega 1.0.7 RC1

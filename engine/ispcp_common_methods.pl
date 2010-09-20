@@ -2497,7 +2497,7 @@ sub get_domain_mount_points {
 		SELECT
 			`alias_id` AS `id`,
 			`alias_mount` AS `mount_point`,
-			`alias AS `type`
+			`alias` AS `type`
 		FROM
 			`domain_aliasses`
 		WHERE
