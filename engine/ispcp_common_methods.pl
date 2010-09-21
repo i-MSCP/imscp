@@ -784,7 +784,7 @@ sub sys_command_rs {
 # Execute a system command and return error message from the command on error
 #
 # @return 0 on success, [-1, errMsg] otherwise
-sub sys_command_stderr() {
+sub sys_command_stderr {
 
 	push_el(\@main::el, 'sys_command_stderr()', 'Starting...');
 
