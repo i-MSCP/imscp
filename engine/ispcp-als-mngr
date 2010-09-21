@@ -1634,13 +1634,15 @@ sub als_add_httpd_file_data {
 	# check for aliases with same mount point
 	my $sql = "
 		SELECT
-			count(alias_id)
+			count(*)
 		FROM
-			domain_aliasses
+			`domain_aliasses`
 		WHERE
-			domain_id = $dmn_id
+			`domain_id` = '$dmn_id'
 		AND
-			alias_mount = '$als_mount'
+			`alias_mount` = '$als_mount'
+		AND
+			`alias_status` NOT IN ('toadd', 'delete')
 		;
 	";
 
@@ -1653,13 +1655,36 @@ sub als_add_httpd_file_data {
 
 	$sql = "
 		SELECT
-			count(subdomain_id)
+			count(*)
 		FROM
-			subdomain
+			`subdomain`
 		WHERE
-			domain_id = $dmn_id
+			`domain_id` = '$dmn_id'
 		AND
-			subdomain_mount = '$als_mount'
+			`subdomain_mount` = '$als_mount'
+		AND
+			`subdomain_status` NOT IN ('toadd', 'delete')
+		;
+	";
+
+	($rs, $rdata) = doSQL($sql);
+	return $rs if ($rs != 0);
+
+	return 0 if (@{@$rdata[0]}[0] > 1);
+
+	# check for alias subdomains with same mount point
+
+	$sql = "
+		SELECT
+			count(*)
+		FROM
+			`subdomain_alias`
+		WHERE
+			`alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = '$dmn_id')
+		AND
+			`subdomain_alias_mount` = '$als_mount'
+		AND
+			`subdomain_alias_status`  NOT IN ('toadd', 'delete')
 		;
 	";
 
