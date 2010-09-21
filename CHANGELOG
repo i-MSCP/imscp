@@ -6,7 +6,8 @@ ispCP ω 1.0.7 ChangeLog
 		* Fixed #2466: Domain alias delete fails
 		* Compatibility with debian lenny (perl 10.0)
 		* Fixed #2469: Creating two aliasses with the same mountpoint at
-		 the same time
+			the same time
+		* Add check for DateTime::TimeZone is installed
 
 2010-09-20 Daniel Andreca
 	- ENGINE:
