@@ -2736,7 +2736,9 @@ sub move_dir_content{
 		"Trying to move content of $source in $destination"
 	);
 
-	if (scalar <$source/*>){ #move only if not empty
+	my @folders = <$source/*>;
+
+	if (@folders){ #move only if not empty
 		my @res = rcopy("$source/*", "$destination");
 
 		if(!@res){

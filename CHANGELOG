@@ -4,6 +4,7 @@ ispCP ω 1.0.7 ChangeLog
 2010-09-21 Daniel Andreca
 	- ENGINE:
 		* Fixed #2466: Domain alias delete fails
+		* Compatibility with debian lenny (perl 10.0)
 
 2010-09-20 Daniel Andreca
 	- ENGINE:
