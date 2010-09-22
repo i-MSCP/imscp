@@ -309,16 +309,11 @@ class ispCP_SystemInfo {
 		/* Read output of df command from stdout
 		 * Args:
 		 *	T: Show File System type
-		 *	l: Show only local filesystem
+		 *	P: Show in POSIX format
 		 */
-		// TODO: possibility to handle line breaks on long lines e.g.:
-		//		10.0.100.10:/path/to/mount/point
-        //		976428116 150249136 826178980  16%
-        //		/var/www/virtual/<domain>/htdocs/data
-        // if solved, we can savely remove the l-argument
         $pipes = array(); // satisfy warning
 		$proc = proc_open(
-			$cfg->CMD_DF . ' -Tl',
+			$cfg->CMD_DF . ' -TP',
 			$descriptorspec,
 			$pipes
 		);
