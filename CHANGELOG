@@ -4,6 +4,8 @@ ispCP ω 1.0.7 ChangeLog
 2010-09-22 Benedikt Heintel
 	- GUI:
 		* Fixed warnings in admin/system_info.php if linebreak in df output
+	- LANGUAGES:
+		* Updated Portoguese Brazil
 
 2010-09-21 Daniel Andreca
 	- ENGINE:
