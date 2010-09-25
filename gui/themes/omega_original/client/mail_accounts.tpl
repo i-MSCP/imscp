@@ -23,7 +23,7 @@ function action_delete(url, mailacc) {
 </style>
 </head>
 
-<body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/ftp_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/email_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
+<body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.png','{THEME_COLOR_PATH}/images/icons/domains_a.png','{THEME_COLOR_PATH}/images/icons/ftp_a.png','{THEME_COLOR_PATH}/images/icons/general_a.png' ,'{THEME_COLOR_PATH}/images/icons/email_a.png','{THEME_COLOR_PATH}/images/icons/webtools_a.png','{THEME_COLOR_PATH}/images/icons/statistics_a.png','{THEME_COLOR_PATH}/images/icons/support_a.png')">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="height:100%;padding:0;margin:0 auto;">
 <!-- BDP: logged_from -->
 <tr>
@@ -96,7 +96,7 @@ function action_delete(url, mailacc) {
                    <td nowrap="nowrap" class="{ITEM_CLASS}" width="210">{MAIL_TYPE}</td>
                    <td nowrap="nowrap" class="{ITEM_CLASS}" align="center" width="100">{MAIL_STATUS}</td>
                    <td nowrap="nowrap" class="{ITEM_CLASS}" align="center" width="85">
-                   	<img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="#" class="link" onclick="action_delete('{MAIL_DELETE_SCRIPT}', '{MAIL_ACC}')">{MAIL_DELETE}</a>
+                   	<img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="#" class="link" onClick="action_delete('{MAIL_DELETE_SCRIPT}', '{MAIL_ACC}')">{MAIL_DELETE}</a>
                    </td>
                    <td nowrap="nowrap" class="{ITEM_CLASS}" align="center" width="85">
                    	<img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="{MAIL_EDIT_SCRIPT}" class="link">{MAIL_EDIT}</a>

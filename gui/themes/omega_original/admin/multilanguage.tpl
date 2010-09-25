@@ -39,7 +39,7 @@
 </script>
 </head>
 
-<body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
+<body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.png','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.png','{THEME_COLOR_PATH}/images/icons/domains_a.png','{THEME_COLOR_PATH}/images/icons/general_a.png' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.png','{THEME_COLOR_PATH}/images/icons/webtools_a.png','{THEME_COLOR_PATH}/images/icons/statistics_a.png','{THEME_COLOR_PATH}/images/icons/support_a.png')">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="height:100%;padding:0;margin:0 auto;">
 <tr>
 <td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" width="195" height="56" border="0" alt="ispCP Logogram" /></td>
@@ -92,14 +92,14 @@
                               <td class="{LANG_CLASS}" nowrap="nowrap">{LANGUAGE_REVISION}</td>
 							  <td class="{LANG_CLASS}" width="100" nowrap="nowrap" style="vertical-align:middle">
 							    <img src="{THEME_COLOR_PATH}/images/icons/details.png" width="16" height="16" border="0" style="vertical-align:middle" alt="{TR_EXPORT}" /> <a href="{URL_EXPORT}" id="url_export{INDEX}" class="link" target="_blank">{TR_EXPORT}</a>
-								<input id="gz_export{INDEX}" type="checkbox" onclick="override_export_url(this)" style="vertical-align:middle;margin-bottom:3px;" /><span style="font-size:8px;vertical-align:middle;">{TR_GZIPPED}</span>
+								<input id="gz_export{INDEX}" type="checkbox" onClick="override_export_url(this)" style="vertical-align:middle;margin-bottom:3px;" /><span style="font-size:8px;vertical-align:middle;">{TR_GZIPPED}</span>
 							  </td>
                               <td class="{LANG_CLASS}" width="100" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" />
                                 <!-- BDP: lang_delete_show -->
                                 {TR_UNINSTALL}
                                 <!-- EDP: lang_delete_show -->
                                 <!-- BDP: lang_delete_link -->
-                                <a href="#" onclick="action_delete('{URL_DELETE}', '{LANGUAGE}')" class="link">{TR_UNINSTALL}</a>
+                                <a href="#" onClick="action_delete('{URL_DELETE}', '{LANGUAGE}')" class="link">{TR_UNINSTALL}</a>
                                 <!-- EDP: lang_delete_link --></td>
                             </tr>
                             <!-- EDP: lang_row -->
@@ -120,7 +120,7 @@
                             </tr>
                             <tr>
                               <td width="25" nowrap="nowrap">&nbsp;</td>
-                              <td colspan="2" nowrap="nowrap"><input name="Button" type="button" class="button" value="  {TR_INSTALL}  " onclick="return sbmt(document.forms[0],'upload_language');" /></td>
+                              <td colspan="2" nowrap="nowrap"><input name="Button" type="button" class="button" value="  {TR_INSTALL}  " onClick="return sbmt(document.forms[0],'upload_language');" /></td>
                             </tr>
                           </table>
                         <input type="hidden" name="uaction" value="" />

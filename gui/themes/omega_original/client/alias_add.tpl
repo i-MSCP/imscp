@@ -38,7 +38,7 @@
 </script>
 </head>
 
-<body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif','{THEME_COLOR_PATH}/images/icons/email_a.gif','{THEME_COLOR_PATH}/images/icons/ftp_a.gif','{THEME_COLOR_PATH}/images/icons/custom_link_a.gif')">
+<body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.png','{THEME_COLOR_PATH}/images/icons/domains_a.png','{THEME_COLOR_PATH}/images/icons/general_a.png' ,'{THEME_COLOR_PATH}/images/icons/webtools_a.png','{THEME_COLOR_PATH}/images/icons/statistics_a.png','{THEME_COLOR_PATH}/images/icons/support_a.png','{THEME_COLOR_PATH}/images/icons/email_a.png','{THEME_COLOR_PATH}/images/icons/ftp_a.png','{THEME_COLOR_PATH}/images/icons/custom_link_a.png')">
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="height:100%;padding:0;margin:0 auto;">
 <!-- BDP: logged_from -->
@@ -87,7 +87,7 @@
                         <td width="200" class="content2">
 						 <label for="ndomain_name">{TR_DOMAIN_NAME}</label> <img id="dmn_help" src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" alt="" />
 						</td>
-                        <td class="content"><input name="ndomain_name" id="ndomain_name" type="text" class="textinput" style="width:170px" value="{DOMAIN}" onblur="makeUser();" /></td>
+                        <td class="content"><input name="ndomain_name" id="ndomain_name" type="text" class="textinput" style="width:170px" value="{DOMAIN}" onBlur="makeUser();" /></td>
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>
@@ -98,8 +98,8 @@
 						<td width="25" nowrap="nowrap">&nbsp;</td>
 						<td width="200" nowrap="nowrap" class="content2">{TR_ENABLE_FWD}</td>
 						<td class="content">
-							<input type="radio" name="status"{CHECK_EN} value="1" onchange="setForwardReadonly(this);" /> {TR_ENABLE}<br />
-							<input type="radio" name="status"{CHECK_DIS} value="0" onchange="setForwardReadonly(this);" /> {TR_DISABLE}</td>
+							<input type="radio" name="status"{CHECK_EN} value="1" onChange="setForwardReadonly(this);" /> {TR_ENABLE}<br />
+							<input type="radio" name="status"{CHECK_DIS} value="0" onChange="setForwardReadonly(this);" /> {TR_DISABLE}</td>
 					  </tr>
                       <tr>
                         <td width="20" nowrap="nowrap">&nbsp;</td>

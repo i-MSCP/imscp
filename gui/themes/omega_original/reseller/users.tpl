@@ -24,7 +24,7 @@ function delete_account(url, dmn_name) {
 </script>
 </head>
 
-<body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
+<body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.png','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.png','{THEME_COLOR_PATH}/images/icons/domains_a.png','{THEME_COLOR_PATH}/images/icons/general_a.png' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.png','{THEME_COLOR_PATH}/images/icons/webtools_a.png','{THEME_COLOR_PATH}/images/icons/statistics_a.png','{THEME_COLOR_PATH}/images/icons/support_a.png')">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="height:100%;padding:0;margin:0 auto;">
 <!-- BDP: logged_from -->
 <tr>
@@ -90,7 +90,7 @@ function delete_account(url, dmn_name) {
                             </tr>
                         </table></td>
                         <td colspan="5" align="right"><input type="hidden" name="details" value="" />
-                            <img src="{THEME_COLOR_PATH}/images/icons/show_alias.png" width="16" height="16" style="vertical-align:middle" alt="" /> <a href="#" class="link" onclick="return sbmt_details(document.forms[0],'{SHOW_DETAILS}');">{TR_VIEW_DETAILS}</a></td>
+                            <img src="{THEME_COLOR_PATH}/images/icons/show_alias.png" width="16" height="16" style="vertical-align:middle" alt="" /> <a href="#" class="link" onClick="return sbmt_details(document.forms[0],'{SHOW_DETAILS}');">{TR_VIEW_DETAILS}</a></td>
                       </tr>
                       <!-- BDP: users_list -->
                       <tr>
@@ -105,7 +105,7 @@ function delete_account(url, dmn_name) {
                       <!-- BDP: user_entry -->
                       <tr class="hl">
                         <td align="center">&nbsp;</td>
-                        <td class="{CLASS_TYPE_ROW}" align="center"><a href="#" onclick="change_status('{URL_CHANGE_STATUS}', '{NAME}')"><img src="{THEME_COLOR_PATH}/images/icons/{STATUS_ICON}" width="16" height="16" border="0" alt="" /></a></td>
+                        <td class="{CLASS_TYPE_ROW}" align="center"><a href="#" onClick="change_status('{URL_CHANGE_STATUS}', '{NAME}')"><img src="{THEME_COLOR_PATH}/images/icons/{STATUS_ICON}" width="16" height="16" border="0" alt="" /></a></td>
                         <td class="{CLASS_TYPE_ROW}"><img src="{THEME_COLOR_PATH}/images/icons/goto.png" width="16" height="16" border="0" alt="" /> <a href="http://www.{NAME}/" target="_blank" class="link">{NAME}</a></td>
                         <td class="{CLASS_TYPE_ROW}" width="90" align="center">{CREATION_DATE}</td>
                         <td class="{CLASS_TYPE_ROW}" width="90" align="center">{EXPIRE_DATE}</td>
@@ -113,9 +113,9 @@ function delete_account(url, dmn_name) {
                         <td nowrap="nowrap" width="80" align="center" class="{CLASS_TYPE_ROW}"><img src="{THEME_COLOR_PATH}/images/icons/identity.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="domain_details.php?domain_id={DOMAIN_ID}" class="link">{TR_DETAILS}</a></td>
                         <!-- BDP: edit_option -->
                         <td nowrap="nowrap" width="80" align="center" class="{CLASS_TYPE_ROW}"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="domain_edit.php?edit_id={DOMAIN_ID}" class="link">{TR_EDIT_DOMAIN}</a></td>
-                        <td nowrap="nowrap" width="80" align="center" class="{CLASS_TYPE_ROW}"><img src="{THEME_COLOR_PATH}/images/icons/users.gif" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="user_edit.php?edit_id={USER_ID}" class="link">{TR_EDIT_USER}</a></td>
+                        <td nowrap="nowrap" width="80" align="center" class="{CLASS_TYPE_ROW}"><img src="{THEME_COLOR_PATH}/images/icons/users.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="user_edit.php?edit_id={USER_ID}" class="link">{TR_EDIT_USER}</a></td>
                         <!-- EDP: edit_option -->
-                        <td nowrap="nowrap" width="80" align="center" class="{CLASS_TYPE_ROW}"><img src="{THEME_COLOR_PATH}/images/icons/stats.gif" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="domain_statistics.php?month={VL_MONTH}&amp;year={VL_YEAR}&amp;domain_id={DOMAIN_ID}" class="link">{TR_STAT}</a></td>
+                        <td nowrap="nowrap" width="80" align="center" class="{CLASS_TYPE_ROW}"><img src="{THEME_COLOR_PATH}/images/icons/stats.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="domain_statistics.php?month={VL_MONTH}&amp;year={VL_YEAR}&amp;domain_id={DOMAIN_ID}" class="link">{TR_STAT}</a></td>
                         <td nowrap="nowrap" width="80" align="center" class="{CLASS_TYPE_ROW}"><img src="{THEME_COLOR_PATH}/images/icons/details.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="change_user_interface.php?to_id={USER_ID}" class="link">{CHANGE_INTERFACE}</a></td>
                         <td nowrap="nowrap" width="80" align="center" class="{CLASS_TYPE_ROW}"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="domain_delete.php?domain_id={DOMAIN_ID}" class="link">{ACTION}</a></td>
                       </tr>
@@ -133,16 +133,16 @@ function delete_account(url, dmn_name) {
                   </form>
                     <div align="right"><br />
                         <!-- BDP: scroll_prev_gray -->
-                        <img src="{THEME_COLOR_PATH}/images/icons/flip/prev_gray.gif" width="20" height="20" border="0" alt="" />
+                        <img src="{THEME_COLOR_PATH}/images/icons/flip/prev_gray.png" width="20" height="20" border="0" alt="" />
                         <!-- EDP: scroll_prev_gray -->
                         <!-- BDP: scroll_prev -->
-                        <a href="users.php?psi={PREV_PSI}"><img src="{THEME_COLOR_PATH}/images/icons/flip/prev.gif" width="20" height="20" border="0" alt="" /></a>
+                        <a href="users.php?psi={PREV_PSI}"><img src="{THEME_COLOR_PATH}/images/icons/flip/prev.png" width="20" height="20" border="0" alt="" /></a>
                         <!-- EDP: scroll_prev -->
                         <!-- BDP: scroll_next_gray -->
-                      &nbsp;<img src="{THEME_COLOR_PATH}/images/icons/flip/next_gray.gif" width="20" height="20" border="0" alt="" />
+                      &nbsp;<img src="{THEME_COLOR_PATH}/images/icons/flip/next_gray.png" width="20" height="20" border="0" alt="" />
                       <!-- EDP: scroll_next_gray -->
                       <!-- BDP: scroll_next -->
-                      &nbsp;<a href="users.php?psi={NEXT_PSI}"><img src="{THEME_COLOR_PATH}/images/icons/flip/next.gif" width="20" height="20" border="0" alt="" /></a>
+                      &nbsp;<a href="users.php?psi={NEXT_PSI}"><img src="{THEME_COLOR_PATH}/images/icons/flip/next.png" width="20" height="20" border="0" alt="" /></a>
                       <!-- EDP: scroll_next -->
                   </div></td>
                 <td>&nbsp;</td>

@@ -9,7 +9,7 @@
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
 </head>
 
-<body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/ftp_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/email_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
+<body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.png','{THEME_COLOR_PATH}/images/icons/domains_a.png','{THEME_COLOR_PATH}/images/icons/ftp_a.png','{THEME_COLOR_PATH}/images/icons/general_a.png' ,'{THEME_COLOR_PATH}/images/icons/email_a.png','{THEME_COLOR_PATH}/images/icons/webtools_a.png','{THEME_COLOR_PATH}/images/icons/statistics_a.png','{THEME_COLOR_PATH}/images/icons/support_a.png')">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="height:100%;padding:0;margin:0 auto;">
 <!-- BDP: logged_from -->
 <tr>
@@ -255,7 +255,7 @@
                           &nbsp;&nbsp;
                           <input name="Reset" type="reset" class="button" value="{TR_RESET}" />
                           &nbsp;&nbsp;
-                          <input name="button" type="button" class="button" onclick="MM_goToURL('parent','cronjobs_overview.php');return document.MM_returnValue" value="{TR_CANCEL}" /></td>
+                          <input name="button" type="button" class="button" onClick="MM_goToURL('parent','cronjobs_overview.php');return document.MM_returnValue" value="{TR_CANCEL}" /></td>
                       </tr>
                     </table>
                   <input type="hidden" name="uaction" value="add_cronjob" />

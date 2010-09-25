@@ -17,7 +17,7 @@ function action_delete(url, alias_or_subdomain) {
 //-->
 </script>
 </head>
-<body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
+<body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.png','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.png','{THEME_COLOR_PATH}/images/icons/domains_a.png','{THEME_COLOR_PATH}/images/icons/general_a.png' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.png','{THEME_COLOR_PATH}/images/icons/webtools_a.png','{THEME_COLOR_PATH}/images/icons/statistics_a.png','{THEME_COLOR_PATH}/images/icons/support_a.png')">
 <script type="text/javascript">
 /* <![CDATA[ */
 
@@ -154,7 +154,7 @@ function action_delete(url, alias_or_subdomain) {
 											<tr>
 												<td width="25">&nbsp;</td>
 												<td width="200" class="content2">{TR_DNS_TYPE}</td>
-												<td class="content"><select id="dns_type" onchange="dns_type_changed(this.value)" name="type">{SELECT_DNS_TYPE}</select></td>
+												<td class="content"><select id="dns_type" onChange="dns_type_changed(this.value)" name="type">{SELECT_DNS_TYPE}</select></td>
 											</tr>
 											<tr>
 												<td width="25">&nbsp;</td>
@@ -174,12 +174,12 @@ function action_delete(url, alias_or_subdomain) {
 											<tr id="tr_dns_ip_address">
 												<td width="25">&nbsp;</td>
 												<td width="200" class="content2">{TR_DNS_IP_ADDRESS}</td>
-												<td class="content"><input type="text" onkeypress="return filterChars(event, IPADDRESS);" name="dns_A_address" value="{DNS_ADDRESS}" /></td>
+												<td class="content"><input type="text" onKeyPress="return filterChars(event, IPADDRESS);" name="dns_A_address" value="{DNS_ADDRESS}" /></td>
 											</tr>
 											<tr id="tr_dns_ip_address_v6">
 												<td width="25">&nbsp;</td>
 												<td width="200" class="content2">{TR_DNS_IP_ADDRESS_V6}</td>
-												<td class="content"><input type="text" onkeypress="return filterChars(event, IPv6ADDRESS);" name="dns_AAAA_address" value="{DNS_ADDRESS_V6}" /></td>
+												<td class="content"><input type="text" onKeyPress="return filterChars(event, IPv6ADDRESS);" name="dns_AAAA_address" value="{DNS_ADDRESS_V6}" /></td>
 											</tr>
 											<tr id="tr_dns_srv_protocol">
 												<td width="25">&nbsp;</td>
@@ -189,17 +189,17 @@ function action_delete(url, alias_or_subdomain) {
 											<tr id="tr_dns_srv_ttl">
 												<td width="25">&nbsp;</td>
 												<td width="200" class="content2">{TR_DNS_SRV_TTL}</td>
-												<td class="content"><input type="text" onkeypress="return filterChars(event, NUMBERS);" name="dns_srv_ttl" value="{DNS_SRV_TTL}" /></td>
+												<td class="content"><input type="text" onKeyPress="return filterChars(event, NUMBERS);" name="dns_srv_ttl" value="{DNS_SRV_TTL}" /></td>
 											</tr>
 											<tr id="tr_dns_srv_prio">
 												<td width="25">&nbsp;</td>
 												<td width="200" class="content2">{TR_DNS_SRV_PRIO}</td>
-												<td class="content"><input type="text" onkeypress="return filterChars(event, NUMBERS);" name="dns_srv_prio" value="{DNS_SRV_PRIO}" /></td>
+												<td class="content"><input type="text" onKeyPress="return filterChars(event, NUMBERS);" name="dns_srv_prio" value="{DNS_SRV_PRIO}" /></td>
 											</tr>
 											<tr id="tr_dns_srv_weight">
 												<td width="25">&nbsp;</td>
 												<td width="200" class="content2">{TR_DNS_SRV_WEIGHT}</td>
-												<td class="content"><input type="text" onkeypress="return filterChars(event, NUMBERS);" name="dns_srv_weight" value="{DNS_SRV_WEIGHT}" /></td>
+												<td class="content"><input type="text" onKeyPress="return filterChars(event, NUMBERS);" name="dns_srv_weight" value="{DNS_SRV_WEIGHT}" /></td>
 											</tr>
 											<tr id="tr_dns_srv_host">
 												<td width="25">&nbsp;</td>
@@ -209,7 +209,7 @@ function action_delete(url, alias_or_subdomain) {
 											<tr id="tr_dns_srv_port">
 												<td width="25">&nbsp;</td>
 												<td width="200" class="content2">{TR_DNS_SRV_PORT}</td>
-												<td class="content"><input type="text" onkeypress="return filterChars(event, NUMBERS);" name="dns_srv_port" value="{DNS_SRV_PORT}" /></td>
+												<td class="content"><input type="text" onKeyPress="return filterChars(event, NUMBERS);" name="dns_srv_port" value="{DNS_SRV_PORT}" /></td>
 											</tr>
 											<tr id="tr_dns_cname">
 												<td width="25">&nbsp;</td>
@@ -228,7 +228,7 @@ function action_delete(url, alias_or_subdomain) {
 													<input type="hidden" name="uaction" value="add" />
 													<!-- EDP: form_add_mode -->
 													&nbsp;&nbsp;&nbsp;
-													<input name="Submit" type="submit" class="button" onclick="MM_goToURL('parent','domains_manage.php');return document.MM_returnValue" value=" {TR_CANCEL} " />
+													<input name="Submit" type="submit" class="button" onClick="MM_goToURL('parent','domains_manage.php');return document.MM_returnValue" value=" {TR_CANCEL} " />
 												</td>
 											</tr>
 										</table>

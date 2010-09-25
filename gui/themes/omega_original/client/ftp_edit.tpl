@@ -10,29 +10,29 @@
 <script type="text/javascript">
 <!--
 function over(number) {
-	document.images["image"+number+"_1"].src = '{THEME_COLOR_PATH}/images/bars/menu_button_left.gif';
-	document.images["image"+number+"_2"].src = '{THEME_COLOR_PATH}/images/bars/menu_button_right.gif';
+	document.images["image"+number+"_1"].src = '{THEME_COLOR_PATH}/images/bars/menu_button_left.png';
+	document.images["image"+number+"_2"].src = '{THEME_COLOR_PATH}/images/bars/menu_button_right.png';
 	if (document.layers) {
-		document.layers["m"+number].background.src = '{THEME_COLOR_PATH}/images/bars/menu_button_background.gif';
+		document.layers["m"+number].background.src = '{THEME_COLOR_PATH}/images/bars/menu_button_background.png';
 	} else if (document.all) {
-		window.document.all["id"+number].style.backgroundImage = 'url({THEME_COLOR_PATH}/images/bars/menu_button_background.gif)';
+		window.document.all["id"+number].style.backgroundImage = 'url({THEME_COLOR_PATH}/images/bars/menu_button_background.png)';
 	}
 }
 
 function out(number) {
-	document.images["image"+number+"_1"].src = '../images/menubutton_left.gif';
-	document.images["image"+number+"_2"].src = '../images/menubutton_right.gif';
+	document.images["image"+number+"_1"].src = '../images/menubutton_left.png';
+	document.images["image"+number+"_2"].src = '../images/menubutton_right.png';
 	if (document.layers) {
-		document.layers["m"+number].background.src = '../images/menubutton_background.gif';
+		document.layers["m"+number].background.src = '../images/menubutton_background.png';
 	} else if (document.all) {
-		window.document.all["id"+number].style.backgroundImage = 'url(../images/menubutton_background.gif)';
+		window.document.all["id"+number].style.backgroundImage = 'url(../images/menubutton_background.png)';
 	}
 }
 //-->
 </script>
 </head>
 
-<body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/ftp_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/email_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
+<body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.png','{THEME_COLOR_PATH}/images/icons/domains_a.png','{THEME_COLOR_PATH}/images/icons/ftp_a.png','{THEME_COLOR_PATH}/images/icons/general_a.png' ,'{THEME_COLOR_PATH}/images/icons/email_a.png','{THEME_COLOR_PATH}/images/icons/webtools_a.png','{THEME_COLOR_PATH}/images/icons/statistics_a.png','{THEME_COLOR_PATH}/images/icons/support_a.png')">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="height:100%;padding:0;margin:0 auto;">
 <!-- BDP: logged_from -->
 <tr>
@@ -93,7 +93,7 @@ function out(number) {
                                 {TR_USE_OTHER_DIR}</td>
                               <td nowrap="nowrap" class="content"><input type="text" name="other_dir" value="{OTHER_DIR}" style="width:170px" class="textinput" />
                                   <br />
-                                <a href="#" onclick="showFileTree();" class="link">{CHOOSE_DIR}</a></td>
+                                <a href="#" onClick="showFileTree();" class="link">{CHOOSE_DIR}</a></td>
                             </tr>
                           </table>
                         <input type="hidden" name="uaction" value="edit_user" />

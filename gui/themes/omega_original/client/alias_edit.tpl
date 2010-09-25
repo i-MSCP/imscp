@@ -23,7 +23,7 @@ function setForwardReadonly(obj){
 </script>
 </head>
 
-<body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
+<body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.png','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.png','{THEME_COLOR_PATH}/images/icons/domains_a.png','{THEME_COLOR_PATH}/images/icons/general_a.png' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.png','{THEME_COLOR_PATH}/images/icons/webtools_a.png','{THEME_COLOR_PATH}/images/icons/statistics_a.png','{THEME_COLOR_PATH}/images/icons/support_a.png')">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="height:100%;padding:0;margin:0 auto;">
 <!-- BDP: logged_from -->
 <tr>
@@ -80,8 +80,8 @@ function setForwardReadonly(obj){
                         <td width="25">&nbsp;</td>
                         <td width="200" class="content2" style="vertical-align:top;">{TR_ENABLE_FWD}</td>
                         <td class="content">
-							<input type="radio" name="status"{CHECK_EN} value="1" onchange="setForwardReadonly(this);" /> {TR_ENABLE}<br />
-							<input type="radio" name="status"{CHECK_DIS} value="0" onchange="setForwardReadonly(this);" /> {TR_DISABLE}
+							<input type="radio" name="status"{CHECK_EN} value="1" onChange="setForwardReadonly(this);" /> {TR_ENABLE}<br />
+							<input type="radio" name="status"{CHECK_DIS} value="0" onChange="setForwardReadonly(this);" /> {TR_DISABLE}
                         </td>
                       </tr>
                       <tr>
@@ -100,7 +100,7 @@ function setForwardReadonly(obj){
                         <td width="25">&nbsp;</td>
                         <td colspan="2"><input name="Submit" type="submit" class="button" value="  {TR_MODIFY}  " />
                           &nbsp;&nbsp;&nbsp;
-                          <input name="Submit" type="submit" class="button" onclick="MM_goToURL('parent','domains_manage.php');return document.MM_returnValue" value=" {TR_CANCEL} " /></td>
+                          <input name="Submit" type="submit" class="button" onClick="MM_goToURL('parent','domains_manage.php');return document.MM_returnValue" value=" {TR_CANCEL} " /></td>
                       </tr>
                     </table>
                   <input type="hidden" name="uaction" value="modify" />

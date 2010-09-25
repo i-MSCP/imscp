@@ -16,7 +16,7 @@ function action_delete(url, subject) {
 </script>
 </head>
 
-<body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
+<body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.png','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.png','{THEME_COLOR_PATH}/images/icons/domains_a.png','{THEME_COLOR_PATH}/images/icons/general_a.png' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.png','{THEME_COLOR_PATH}/images/icons/webtools_a.png','{THEME_COLOR_PATH}/images/icons/statistics_a.png','{THEME_COLOR_PATH}/images/icons/support_a.png')">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="height:100%;padding:0;margin:0 auto;">
 <!-- BDP: logged_from -->
 <tr>
@@ -78,23 +78,23 @@ function action_delete(url, subject) {
 						<noscript><a href="ticket_view.php?ticket_id={ID}&amp;screenwidth=800" class="link"> {SUBJECT}</a></noscript></td>
                             <td class="{CONTENT}" nowrap="nowrap" align="center">{URGENCY}</td>
                             <td class="{CONTENT}" nowrap="nowrap" align="center">{LAST_DATE}</td>
-                            <td class="{CONTENT}" nowrap="nowrap" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="ticket_delete.php?ticket_id={ID}" onclick="return action_delete('ticket_delete.php?ticket_id={ID}', '{SUBJECT2}')" class="link">{TR_DELETE}</a></td>
+                            <td class="{CONTENT}" nowrap="nowrap" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="ticket_delete.php?ticket_id={ID}" onClick="return action_delete('ticket_delete.php?ticket_id={ID}', '{SUBJECT2}')" class="link">{TR_DELETE}</a></td>
                           </tr>
                           <!-- EDP: tickets_item -->
                           <tr>
-                            <td colspan="2" nowrap="nowrap"><input name="Submit" type="submit" class="button" onclick="MM_goToURL('parent','ticket_delete.php?delete=closed');return document.MM_returnValue" value="{TR_DELETE_ALL}" /></td>
+                            <td colspan="2" nowrap="nowrap"><input name="Submit" type="submit" class="button" onClick="MM_goToURL('parent','ticket_delete.php?delete=closed');return document.MM_returnValue" value="{TR_DELETE_ALL}" /></td>
                             <td colspan="3" nowrap="nowrap"><div align="right">
                                 <!-- BDP: scroll_prev_gray -->
-                                <img src="{THEME_COLOR_PATH}/images/icons/flip/prev_gray.gif" width="20" height="20" border="0" alt="" />
+                                <img src="{THEME_COLOR_PATH}/images/icons/flip/prev_gray.png" width="20" height="20" border="0" alt="" />
                                 <!-- EDP: scroll_prev_gray -->
                                 <!-- BDP: scroll_prev -->
-                                <a href="ticket_system.php?psi={PREV_PSI}"><img src="{THEME_COLOR_PATH}/images/icons/flip/prev.gif" width="20" height="20" border="0" alt="" /></a>
+                                <a href="ticket_system.php?psi={PREV_PSI}"><img src="{THEME_COLOR_PATH}/images/icons/flip/prev.png" width="20" height="20" border="0" alt="" /></a>
                                 <!-- EDP: scroll_prev -->
                                 <!-- BDP: scroll_next_gray -->
-                              &nbsp;<img src="{THEME_COLOR_PATH}/images/icons/flip/next_gray.gif" width="20" height="20" border="0" alt="" />
+                              &nbsp;<img src="{THEME_COLOR_PATH}/images/icons/flip/next_gray.png" width="20" height="20" border="0" alt="" />
                               <!-- EDP: scroll_next_gray -->
                               <!-- BDP: scroll_next -->
-                              &nbsp;<a href="ticket_system.php?psi={NEXT_PSI}"><img src="{THEME_COLOR_PATH}/images/icons/flip/next.gif" width="20" height="20" border="0" alt="" /></a>
+                              &nbsp;<a href="ticket_system.php?psi={NEXT_PSI}"><img src="{THEME_COLOR_PATH}/images/icons/flip/next.png" width="20" height="20" border="0" alt="" /></a>
                               <!-- EDP: scroll_next -->
                             </div></td>
                           </tr>

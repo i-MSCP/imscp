@@ -27,7 +27,7 @@
 		</script>
 	</head>
 
-	<body onload="MM_preloadImages('../themes/omega_original/images/icons/database_a.gif','../themes/omega_original/images/icons/hosting_plans_a.gif','../themes/omega_original/images/icons/domains_a.gif','../themes/omega_original/images/icons/general_a.gif','../themes/omega_original/images/icons/manage_users_a.gif','../themes/omega_original/images/icons/webtools_a.gif','../themes/omega_original/images/icons/statistics_a.gif','../themes/omega_original/images/icons/support_a.gif')">
+	<body onLoad="MM_preloadImages('../themes/omega_original/images/icons/database_a.png','../themes/omega_original/images/icons/hosting_plans_a.png','../themes/omega_original/images/icons/domains_a.png','../themes/omega_original/images/icons/general_a.png','../themes/omega_original/images/icons/manage_users_a.png','../themes/omega_original/images/icons/webtools_a.png','../themes/omega_original/images/icons/statistics_a.png','../themes/omega_original/images/icons/support_a.png')">
 		<table width="100%" border="0" cellspacing="0" cellpadding="0" style="height:100%">
 			<tr>
 				<td height="80" align="left" valign="top">&nbsp;</td>
@@ -44,7 +44,7 @@
 								</tr>
 								<tr>
 									<td valign="top">
-										<form method="post" action="pay.php" name="client_info" onsubmit="return validateForm(client_info);">
+										<form method="post" action="pay.php" name="client_info" onSubmit="return validateForm(client_info);">
 											<input type="hidden" name="reseller_id" value="{RESELLER_ID}" />
 											<input type="hidden" name="purchase_id" value="{PURCHASE_ID}" />
 											<table width="100%" cellpadding="5" cellspacing="5">

@@ -18,7 +18,7 @@ function delete_order(url, name) {
 </script>
 </head>
 
-<body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
+<body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.png','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.png','{THEME_COLOR_PATH}/images/icons/domains_a.png','{THEME_COLOR_PATH}/images/icons/general_a.png' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.png','{THEME_COLOR_PATH}/images/icons/webtools_a.png','{THEME_COLOR_PATH}/images/icons/statistics_a.png','{THEME_COLOR_PATH}/images/icons/support_a.png')">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="height:100%;padding:0;margin:0 auto;">
 <!-- BDP: logged_from -->
 <tr>
@@ -169,11 +169,11 @@ function delete_order(url, name) {
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>
-                        <td colspan="2"><input name="add" type="button" onclick="return sbmt(document.forms[0],'add_user');" class="button" value="{TR_ADD}" />
+                        <td colspan="2"><input name="add" type="button" onClick="return sbmt(document.forms[0],'add_user');" class="button" value="{TR_ADD}" />
                           &nbsp;&nbsp;
-                          <input name="update" type="button" onclick="return sbmt(document.forms[0],'update_data');" class="button" value="{TR_UPDATE_DATA}" />
+                          <input name="update" type="button" onClick="return sbmt(document.forms[0],'update_data');" class="button" value="{TR_UPDATE_DATA}" />
                           &nbsp;&nbsp;
-                          <input name="delete" type="button" onclick="delete_order('orders_delete.php?order_id={ID}', '{DOMAIN}')" class="button" value="{TR_DELETE_ORDER}" />
+                          <input name="delete" type="button" onClick="delete_order('orders_delete.php?order_id={ID}', '{DOMAIN}')" class="button" value="{TR_DELETE_ORDER}" />
                           <input type="hidden" name="uaction" value="" />
                           <input name="order_id" type="hidden" value="{ID}" /></td>
                       </tr>

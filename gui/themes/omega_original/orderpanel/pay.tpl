@@ -9,7 +9,7 @@
 		<script type="text/javascript" src="../themes/omega_original/css/ispcp.js"></script>
 	</head>
 
-	<body onload="MM_preloadImages('../themes/omega_original/images/icons/database_a.gif','../themes/omega_original/images/icons/hosting_plans_a.gif','../themes/omega_original/images/icons/domains_a.gif','../themes/omega_original/images/icons/general_a.gif','../themes/omega_original/images/icons/manage_users_a.gif','../themes/omega_original/images/icons/webtools_a.gif','../themes/omega_original/images/icons/statistics_a.gif','../themes/omega_original/images/icons/support_a.gif'); {TR_BODY_JOB}">
+	<body onLoad="MM_preloadImages('../themes/omega_original/images/icons/database_a.png','../themes/omega_original/images/icons/hosting_plans_a.png','../themes/omega_original/images/icons/domains_a.png','../themes/omega_original/images/icons/general_a.png','../themes/omega_original/images/icons/manage_users_a.png','../themes/omega_original/images/icons/webtools_a.png','../themes/omega_original/images/icons/statistics_a.png','../themes/omega_original/images/icons/support_a.png'); {TR_BODY_JOB}">
 		<table width="100%" border="0" cellspacing="0" cellpadding="0" style="height:100%">
 			<tr>
 				<td height="80" align="left" valign="top">&nbsp;</td>

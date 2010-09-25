@@ -9,7 +9,7 @@
   <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
  </head>
 
- <body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/ftp_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif','{THEME_COLOR_PATH}/images/icons/email_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
+ <body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.png','{THEME_COLOR_PATH}/images/icons/domains_a.png','{THEME_COLOR_PATH}/images/icons/ftp_a.png','{THEME_COLOR_PATH}/images/icons/general_a.png','{THEME_COLOR_PATH}/images/icons/email_a.png','{THEME_COLOR_PATH}/images/icons/webtools_a.png','{THEME_COLOR_PATH}/images/icons/statistics_a.png','{THEME_COLOR_PATH}/images/icons/support_a.png')">
   <table width="100%" border="0" cellspacing="0" cellpadding="0" style="height:100%;padding:0;margin:0 auto;">
    <!-- BDP: logged_from -->
    <tr>
@@ -51,7 +51,7 @@
              <td class="content">
               <table width="100%" border="0" cellspacing="0" cellpadding="0">
                <tr>
-                <td width="65"><p><a href="protected_areas.php"><img src="{THEME_COLOR_PATH}/images/icons/htaccessicon.gif" width="46" height="46" border="0" alt="" /></a></p></td>
+                <td width="65"><p><a href="protected_areas.php"><img src="{THEME_COLOR_PATH}/images/icons/htaccessicon.png" width="46" height="46" border="0" alt="" /></a></p></td>
                 <td><a href="protected_areas.php" class="link">{TR_HTACCESS}</a><br />
                  {TR_HTACCESS_TEXT}</td>
                </tr>
@@ -63,7 +63,7 @@
              <td class="content">
               <table width="100%" border="0" cellspacing="0" cellpadding="0">
                <tr>
-                <td width="65"><p><a href="protected_user_manage.php"><img src="{THEME_COLOR_PATH}/images/icons/manage_users_a.gif" width="47" height="46" border="0" alt="" /></a></p></td>
+                <td width="65"><p><a href="protected_user_manage.php"><img src="{THEME_COLOR_PATH}/images/icons/manage_users_a.png" width="47" height="46" border="0" alt="" /></a></p></td>
                 <td><a href="protected_user_manage.php" class="link">{TR_HTACCESS_USER}</a><br />
                  {TR_HTACCESS_USER}</td>
                </tr>
@@ -75,7 +75,7 @@
              <td class="content">
               <table width="100%" border="0" cellspacing="0" cellpadding="0">
                <tr>
-                <td width="65"><a href="error_pages.php"><img src="{THEME_COLOR_PATH}/images/icons/errordocsicon.gif" width="46" height="46" border="0" alt="" /></a></td>
+                <td width="65"><a href="error_pages.php"><img src="{THEME_COLOR_PATH}/images/icons/errordocsicon.png" width="46" height="46" border="0" alt="" /></a></td>
                 <td><a href="error_pages.php" class="link">{TR_ERROR_PAGES}</a><br />
                  {TR_ERROR_PAGES_TEXT}</td>
                </tr>
@@ -88,7 +88,7 @@
              <td class="content">
               <table width="100%" border="0" cellspacing="0" cellpadding="0">
                <tr>
-                <td width="65"><a href="backup.php"><img src="{THEME_COLOR_PATH}/images/icons/backupicon.gif" width="46" height="46" border="0" alt="" /></a></td>
+                <td width="65"><a href="backup.php"><img src="{THEME_COLOR_PATH}/images/icons/backupicon.png" width="46" height="46" border="0" alt="" /></a></td>
                 <td><a href="backup.php" class="link">{TR_BACKUP}</a><br />
                  {TR_BACKUP_TEXT}</td>
                </tr>
@@ -102,7 +102,7 @@
              <td class="content">
               <table width="100%" border="0" cellspacing="0" cellpadding="0">
                <tr>
-                <td width="65"><a href="{WEBMAIL_PATH}" target="{WEBMAIL_TARGET}"><img src="{THEME_COLOR_PATH}/images/icons/webmailicon.gif" width="46" height="46" border="0" alt="" /></a></td>
+                <td width="65"><a href="{WEBMAIL_PATH}" target="{WEBMAIL_TARGET}"><img src="{THEME_COLOR_PATH}/images/icons/webmailicon.png" width="46" height="46" border="0" alt="" /></a></td>
                 <td><a href="{WEBMAIL_PATH}" target="{WEBMAIL_TARGET}" class="link">{TR_WEBMAIL}</a><br />
                  {TR_WEBMAIL_TEXT}</td>
                </tr>
@@ -115,7 +115,7 @@
              <td class="content">
 			  <table width="100%" border="0" cellspacing="0" cellpadding="0">
                <tr>
-                <td width="65"><a href="{FILEMANAGER_PATH}" target="{FILEMANAGER_TARGET}"><img src="{THEME_COLOR_PATH}/images/icons/filemanagericon.gif" width="46" height="46" border="0" alt="" /></a></td>
+                <td width="65"><a href="{FILEMANAGER_PATH}" target="{FILEMANAGER_TARGET}"><img src="{THEME_COLOR_PATH}/images/icons/filemanagericon.png" width="46" height="46" border="0" alt="" /></a></td>
                 <td><a href="{FILEMANAGER_PATH}" target="{FILEMANAGER_TARGET}" class="link">{TR_FILEMANAGER}</a><br />
                  {TR_FILEMANAGER_TEXT}</td>
                </tr>
@@ -128,7 +128,7 @@
              <td class="content">
 			  <table width="100%" border="0" cellspacing="0" cellpadding="0">
                <tr>
-                <td width="65"><a href="{AWSTATS_PATH}" target="{AWSTATS_TARGET}"><img src="{THEME_COLOR_PATH}/images/icons/awstatsicon.gif" width="46" height="46" border="0" alt="" /></a></td>
+                <td width="65"><a href="{AWSTATS_PATH}" target="{AWSTATS_TARGET}"><img src="{THEME_COLOR_PATH}/images/icons/awstatsicon.png" width="46" height="46" border="0" alt="" /></a></td>
                 <td><a href="{AWSTATS_PATH}" target="{AWSTATS_TARGET}" class="link">{TR_AWSTATS}</a><br />
                  {TR_AWSTATS_TEXT}</td>
                </tr>

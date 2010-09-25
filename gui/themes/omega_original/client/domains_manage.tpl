@@ -18,7 +18,7 @@ function action_delete(url, alias_or_subdomain) {
 </script>
 </head>
 
-<body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/ftp_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/email_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif','{THEME_COLOR_PATH}/images/icons/custom_link_a.gif')">
+<body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.png','{THEME_COLOR_PATH}/images/icons/domains_a.png','{THEME_COLOR_PATH}/images/icons/ftp_a.png','{THEME_COLOR_PATH}/images/icons/general_a.png' ,'{THEME_COLOR_PATH}/images/icons/email_a.png','{THEME_COLOR_PATH}/images/icons/webtools_a.png','{THEME_COLOR_PATH}/images/icons/statistics_a.png','{THEME_COLOR_PATH}/images/icons/support_a.png','{THEME_COLOR_PATH}/images/icons/custom_link_a.png')">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="height:100%;padding:0;margin:0 auto;">
 <!-- BDP: logged_from -->
 <tr>
@@ -84,7 +84,7 @@ function action_delete(url, alias_or_subdomain) {
 														<td class="{ITEM_CLASS}" nowrap="nowrap">{ALS_MOUNT}</td>
 														<td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{ALS_FORWARD}</td>
 														<td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{ALS_STATUS}</td>
-														<td class="{ITEM_CLASS}" nowrap="nowrap" align="center"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="{ALS_EDIT_LINK}" class="link" title="{ALS_EDIT}">{ALS_EDIT}</a> - <img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="#" class="link" onclick="action_delete('{ALS_ACTION_SCRIPT}', '{ALS_NAME}')" title="{ALS_ACTION}">{ALS_ACTION}</a></td>
+														<td class="{ITEM_CLASS}" nowrap="nowrap" align="center"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="{ALS_EDIT_LINK}" class="link" title="{ALS_EDIT}">{ALS_EDIT}</a> - <img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="#" class="link" onClick="action_delete('{ALS_ACTION_SCRIPT}', '{ALS_NAME}')" title="{ALS_ACTION}">{ALS_ACTION}</a></td>
 													</tr>
 													<!-- EDP: als_item -->
 													<!-- EDP: als_list -->
@@ -138,7 +138,7 @@ function action_delete(url, alias_or_subdomain) {
 														<td class="{ITEM_CLASS}" colspan="2" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/domain_icon.png" width="16" height="16" style="vertical-align:middle" alt="" /> <a href="http://{SUB_NAME}.{SUB_ALIAS_NAME}/" class="link" title="{SUB_NAME}.{SUB_ALIAS_NAME}">{SUB_NAME}.{SUB_ALIAS_NAME}</a></td>
 														<td class="{ITEM_CLASS}" nowrap="nowrap">{SUB_MOUNT}</td>
 														<td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{SUB_STATUS}</td>
-														<td class="{ITEM_CLASS}" nowrap="nowrap" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="#" class="link" onclick="action_delete('{SUB_ACTION_SCRIPT}', '{SUB_NAME}')">{SUB_ACTION}</a></td>
+														<td class="{ITEM_CLASS}" nowrap="nowrap" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="#" class="link" onClick="action_delete('{SUB_ACTION_SCRIPT}', '{SUB_NAME}')">{SUB_ACTION}</a></td>
 													</tr>
 													<!-- EDP: sub_item -->
 													<!-- EDP: sub_list -->
@@ -197,7 +197,7 @@ function action_delete(url, alias_or_subdomain) {
 														<td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{DNS_TYPE}</td>
 														<td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{DNS_DATA}</td>
 														<td class="{ITEM_CLASS}" nowrap="nowrap" align="center">
-															<img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a class="link" href="{DNS_ACTION_SCRIPT_EDIT}" title="{DNS_ACTION_EDIT}">{DNS_ACTION_EDIT}</a> - <img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="#" class="link" onclick="action_delete('{DNS_ACTION_SCRIPT_DELETE}', '{DNS_TYPE_RECORD}')" title="{DNS_ACTION_DELETE}">{DNS_ACTION_DELETE}</a>
+															<img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a class="link" href="{DNS_ACTION_SCRIPT_EDIT}" title="{DNS_ACTION_EDIT}">{DNS_ACTION_EDIT}</a> - <img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="#" class="link" onClick="action_delete('{DNS_ACTION_SCRIPT_DELETE}', '{DNS_TYPE_RECORD}')" title="{DNS_ACTION_DELETE}">{DNS_ACTION_DELETE}</a>
 														</td>
 													</tr>
 													<!-- EDP: dns_item -->

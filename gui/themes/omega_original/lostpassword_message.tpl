@@ -8,7 +8,7 @@
 		<link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
 	</head>
 
-	<body onload="document.frm.uname.focus()">
+	<body onLoad="document.frm.uname.focus()">
 		<table cellpadding="0" cellspacing="0" width="100%" style="height:100%">
 			<tr>
 				<td style="vertical-align:middle; text-align:center;">
@@ -24,16 +24,16 @@
 											<form name="frm" action="lostpw.php" method="post">
 												<table width="453" border="0" cellpadding="0" cellspacing="0">
 													<tr>
-														<td width="6" style="background-image:url({THEME_COLOR_PATH}/images/login/content_line.gif);"><img src="{THEME_COLOR_PATH}/images/trans.gif" width="2" height="2" alt="" /></td>
+														<td width="6" style="background-image:url({THEME_COLOR_PATH}/images/login/content_line.png);"><img src="{THEME_COLOR_PATH}/images/trans.png" width="2" height="2" alt="" /></td>
 														<td width="4">&nbsp;</td>
 														<td width="377"><div class="login_text"><strong>{TR_MESSAGE}</strong></div></td>
 													</tr>
 													<tr>
-														<td style="background-image:url({THEME_COLOR_PATH}/images/login/content_line.gif);">&nbsp;</td>
+														<td style="background-image:url({THEME_COLOR_PATH}/images/login/content_line.png);">&nbsp;</td>
 														<td colspan="2">&nbsp;</td>
 													</tr>
 													<tr>
-														<td style="background-image:url({THEME_COLOR_PATH}/images/login/content_line.gif);">&nbsp;</td>
+														<td style="background-image:url({THEME_COLOR_PATH}/images/login/content_line.png);">&nbsp;</td>
 														<td>&nbsp;</td>
 														<td align="left" valign="bottom">{TR_LINK}</td>
 													</tr>

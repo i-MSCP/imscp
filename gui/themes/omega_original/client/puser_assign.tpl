@@ -9,7 +9,7 @@
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
 </head>
 
-<body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/ftp_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/email_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
+<body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.png','{THEME_COLOR_PATH}/images/icons/domains_a.png','{THEME_COLOR_PATH}/images/icons/ftp_a.png','{THEME_COLOR_PATH}/images/icons/general_a.png' ,'{THEME_COLOR_PATH}/images/icons/email_a.png','{THEME_COLOR_PATH}/images/icons/webtools_a.png','{THEME_COLOR_PATH}/images/icons/statistics_a.png','{THEME_COLOR_PATH}/images/icons/support_a.png')">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="height:100%;padding:0;margin:0 auto;">
 <!-- BDP: logged_from -->
 <tr>
@@ -61,7 +61,7 @@
                           <!-- EDP: already_in -->
                       </select></td>
                       <td class="content"><!-- BDP: remove_button -->
-                          <input name="Submit" type="submit" class="button" value="  {TR_REMOVE}  " onclick="return sbmt(document.forms[0],'remove');" />
+                          <input name="Submit" type="submit" class="button" value="  {TR_REMOVE}  " onClick="return sbmt(document.forms[0],'remove');" />
                           <!-- EDP: remove_button -->
                       </td>
                     </tr>
@@ -77,7 +77,7 @@
                         </select>
                       </td>
                       <td class="content"><!-- BDP: add_button -->
-                          <input name="Submit" type="submit" class="button" value="  {TR_ADD}  " onclick="return sbmt(document.forms[0],'add');" />
+                          <input name="Submit" type="submit" class="button" value="  {TR_ADD}  " onClick="return sbmt(document.forms[0],'add');" />
                           <!-- EDP: add_button -->
                       </td>
                     </tr>
@@ -86,7 +86,7 @@
                       <td>&nbsp;</td>
                       <td colspan="3"><input type="hidden" name="nadmin_name" value="{UID}" />
                           <input type="hidden" name="uaction" value="" />
-                          <input name="Submit" type="submit" class="button" value="  {TR_BACK}  " onclick="MM_goToURL('parent','protected_user_manage.php');return document.MM_returnValue" />
+                          <input name="Submit" type="submit" class="button" value="  {TR_BACK}  " onClick="MM_goToURL('parent','protected_user_manage.php');return document.MM_returnValue" />
                       </td>
                     </tr>
                 </table></td>

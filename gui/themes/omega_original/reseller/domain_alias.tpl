@@ -18,7 +18,7 @@ function delete_account(url, name) {
 </script>
 </head>
 
-<body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
+<body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.png','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.png','{THEME_COLOR_PATH}/images/icons/domains_a.png','{THEME_COLOR_PATH}/images/icons/general_a.png' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.png','{THEME_COLOR_PATH}/images/icons/webtools_a.png','{THEME_COLOR_PATH}/images/icons/statistics_a.png','{THEME_COLOR_PATH}/images/icons/support_a.png')">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="height:100%;padding:0;margin:0 auto;">
 <!-- BDP: logged_from -->
 <tr>
@@ -97,7 +97,7 @@ function delete_account(url, name) {
                         {REAL_DOMAIN_MOUNT}</td>
                       <td align="center" nowrap="nowrap" class="{CONTENT}">{FORWARD}</td>
                       <td class="{CONTENT}" nowrap="nowrap" align="center">{STATUS}</td>
-                      <td class="{CONTENT}" nowrap="nowrap" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="#" onclick="delete_account('{DELETE_LINK}', '{NAME}')" class="link" title="{DELETE}">{DELETE}</a>  - <img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="{EDIT_LINK}" class="link" title="{EDIT}">{EDIT}</a></td>
+                      <td class="{CONTENT}" nowrap="nowrap" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="#" onClick="delete_account('{DELETE_LINK}', '{NAME}')" class="link" title="{DELETE}">{DELETE}</a>  - <img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="{EDIT_LINK}" class="link" title="{EDIT}">{EDIT}</a></td>
                     </tr>
                     <!-- EDP: table_item -->
                     <!-- EDP: table_list -->
@@ -105,19 +105,19 @@ function delete_account(url, name) {
                     <table width="100%" border="0" cellspacing="3" cellpadding="0">
                       <tr>
                         <td width="30">&nbsp;</td>
-                        <!-- BDP: als_add_button --><td><input name="Submit" type="submit" class="button" onclick="MM_goToURL('parent','alias_add.php');return document.MM_returnValue" value="   {TR_ADD_ALIAS}   " /></td><!-- EDP: als_add_button -->
+                        <!-- BDP: als_add_button --><td><input name="Submit" type="submit" class="button" onClick="MM_goToURL('parent','alias_add.php');return document.MM_returnValue" value="   {TR_ADD_ALIAS}   " /></td><!-- EDP: als_add_button -->
                         <td><div align="right">
                             <!-- BDP: scroll_prev_gray -->
-                            <img src="{THEME_COLOR_PATH}/images/icons/flip/prev_gray.gif" width="20" height="20" border="0" alt="" />
+                            <img src="{THEME_COLOR_PATH}/images/icons/flip/prev_gray.png" width="20" height="20" border="0" alt="" />
                             <!-- EDP: scroll_prev_gray -->
                             <!-- BDP: scroll_prev -->
-                            <a href="alias.php?psi={PREV_PSI}"><img src="{THEME_COLOR_PATH}/images/icons/flip/prev.gif" width="20" height="20" border="0" alt="" /></a>
+                            <a href="alias.php?psi={PREV_PSI}"><img src="{THEME_COLOR_PATH}/images/icons/flip/prev.png" width="20" height="20" border="0" alt="" /></a>
                             <!-- EDP: scroll_prev -->
                             <!-- BDP: scroll_next_gray -->
-                          &nbsp;<img src="{THEME_COLOR_PATH}/images/icons/flip/next_gray.gif" width="20" height="20" border="0" alt="" />
+                          &nbsp;<img src="{THEME_COLOR_PATH}/images/icons/flip/next_gray.png" width="20" height="20" border="0" alt="" />
                           <!-- EDP: scroll_next_gray -->
                           <!-- BDP: scroll_next -->
-                          &nbsp;<a href="alias.php?psi={NEXT_PSI}"><img src="{THEME_COLOR_PATH}/images/icons/flip/next.gif" width="20" height="20" border="0" alt="" /></a>
+                          &nbsp;<a href="alias.php?psi={NEXT_PSI}"><img src="{THEME_COLOR_PATH}/images/icons/flip/next.png" width="20" height="20" border="0" alt="" /></a>
                           <!-- EDP: scroll_next -->
                         </div></td>
                       </tr>

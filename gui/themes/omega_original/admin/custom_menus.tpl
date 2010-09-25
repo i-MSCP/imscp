@@ -21,7 +21,7 @@ function action_delete(url, subject) {
 </style>
 </head>
 
-<body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
+<body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.png','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.png','{THEME_COLOR_PATH}/images/icons/domains_a.png','{THEME_COLOR_PATH}/images/icons/general_a.png' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.png','{THEME_COLOR_PATH}/images/icons/webtools_a.png','{THEME_COLOR_PATH}/images/icons/statistics_a.png','{THEME_COLOR_PATH}/images/icons/support_a.png')">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="height:100%;padding:0;margin:0 auto;">
 <tr>
 <td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" width="195" height="56" border="0" alt="ispCP Logogram" /></td>
@@ -67,7 +67,7 @@ function action_delete(url, subject) {
                               {LINK}</td>
                             <td class="{CONTENT}" align="center">{LEVEL}</td>
                             <td width="100" class="{CONTENT}" align="center"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="custom_menus.php?edit_id={BUTONN_ID}" class="link">{TR_EDIT}</a></td>
-                            <td width="100" class="{CONTENT}" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="custom_menus.php?delete_id={BUTONN_ID}" onclick="return action_delete('custom_menus.php?delete_id={BUTONN_ID}', '{MENU_NAME2}')" class="link">{TR_DELETE}</a></td>
+                            <td width="100" class="{CONTENT}" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="custom_menus.php?delete_id={BUTONN_ID}" onClick="return action_delete('custom_menus.php?delete_id={BUTONN_ID}', '{MENU_NAME2}')" class="link">{TR_DELETE}</a></td>
                           </tr>
                           <!-- EDP: button_list -->
                         </table>
@@ -106,7 +106,7 @@ function action_delete(url, subject) {
                               </tr>
                               <tr>
                                 <td>&nbsp;</td>
-                                <td colspan="2"><input name="Button" type="button" class="button" value="  {TR_SAVE}  " onclick="return sbmt(document.forms[0],'new_button');" /></td>
+                                <td colspan="2"><input name="Button" type="button" class="button" value="  {TR_SAVE}  " onClick="return sbmt(document.forms[0],'new_button');" /></td>
                               </tr>
                             </table>
                             <!-- EDP: add_button -->
@@ -143,7 +143,7 @@ function action_delete(url, subject) {
                               </tr>
                               <tr>
                                 <td>&nbsp;</td>
-                                <td colspan="2"><input name="Button" type="button" class="button" value="  {TR_SAVE}  " onclick="return sbmt(document.forms[0],'edit_button');" /></td>
+                                <td colspan="2"><input name="Button" type="button" class="button" value="  {TR_SAVE}  " onClick="return sbmt(document.forms[0],'edit_button');" /></td>
                               </tr>
                             </table>
                             <input type="hidden" name="eid" value="{EID}" />

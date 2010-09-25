@@ -27,7 +27,7 @@
 </style>
 </head>
 
-<body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/ftp_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/email_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif'); changeType('{DEFAULT}');">
+<body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.png','{THEME_COLOR_PATH}/images/icons/domains_a.png','{THEME_COLOR_PATH}/images/icons/ftp_a.png','{THEME_COLOR_PATH}/images/icons/general_a.png' ,'{THEME_COLOR_PATH}/images/icons/email_a.png','{THEME_COLOR_PATH}/images/icons/webtools_a.png','{THEME_COLOR_PATH}/images/icons/statistics_a.png','{THEME_COLOR_PATH}/images/icons/support_a.png'); changeType('{DEFAULT}');">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="height:100%;padding:0;margin:0 auto;">
 <!-- BDP: logged_from -->
 <tr>
@@ -75,7 +75,7 @@
                                   document.getElementById('normal_mail_block').style.display = 'block';
                               }
                               //-->
-                              </script><input type="radio" name="mail_type" id="mail_type1" value="normal" {NORMAL_MAIL} onclick="changeType('normal');" />
+                              </script><input type="radio" name="mail_type" id="mail_type1" value="normal" {NORMAL_MAIL} onClick="changeType('normal');" />
                                 <label for="mail_type1">{TR_MAIL_LIST}</label></td>
                               <td nowrap="nowrap" class="content"><select name="mail_id">
                                   <!-- BDP: mail_list -->
@@ -84,7 +84,7 @@
                                 </select></td>
                             </tr>
                             <tr>
-                              <td nowrap="nowrap" class="content2" colspan="2"><input type="radio" name="mail_type" id="mail_type2" value="forward" {FORWARD_MAIL} onclick="changeType('forward');" />
+                              <td nowrap="nowrap" class="content2" colspan="2"><input type="radio" name="mail_type" id="mail_type2" value="forward" {FORWARD_MAIL} onClick="changeType('forward');" />
                                 <label for="mail_type2">{TR_FORWARD_MAIL}</label></td>
                             </tr>
                             <tr>

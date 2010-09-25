@@ -9,7 +9,7 @@
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
 </head>
 
-<body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
+<body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.png','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.png','{THEME_COLOR_PATH}/images/icons/domains_a.png','{THEME_COLOR_PATH}/images/icons/general_a.png' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.png','{THEME_COLOR_PATH}/images/icons/webtools_a.png','{THEME_COLOR_PATH}/images/icons/statistics_a.png','{THEME_COLOR_PATH}/images/icons/support_a.png')">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="height:100%;padding:0;margin:0 auto;">
 <tr>
 <td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" width="195" height="56" border="0" alt="ispCP Logogram" /></td>
@@ -96,9 +96,9 @@
               </td>
             </tr>
             <tr>
-              <td><input name="Button" type="button" class="button" value="{TR_REPLY}" onclick="return sbmt(document.forms[0],'send_msg');" />
+              <td><input name="Button" type="button" class="button" value="{TR_REPLY}" onClick="return sbmt(document.forms[0],'send_msg');" />
                 &nbsp;&nbsp;&nbsp;
-                <input name="Button" type="button" class="button" value="{TR_ACTION}" onclick="return sbmt(document.forms[0],'{ACTION}');" />
+                <input name="Button" type="button" class="button" value="{TR_ACTION}" onClick="return sbmt(document.forms[0],'{ACTION}');" />
               </td>
             </tr>
             <!-- EDP: tickets_list -->

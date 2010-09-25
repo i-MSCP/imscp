@@ -18,7 +18,7 @@ function action_delete(url, mailacc) {
 </script>
 </head>
 
-<body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/ftp_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/email_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
+<body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.png','{THEME_COLOR_PATH}/images/icons/domains_a.png','{THEME_COLOR_PATH}/images/icons/ftp_a.png','{THEME_COLOR_PATH}/images/icons/general_a.png' ,'{THEME_COLOR_PATH}/images/icons/email_a.png','{THEME_COLOR_PATH}/images/icons/webtools_a.png','{THEME_COLOR_PATH}/images/icons/statistics_a.png','{THEME_COLOR_PATH}/images/icons/support_a.png')">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="height:100%;padding:0;margin:0 auto;">
 <!-- BDP: logged_from -->
 <tr>
@@ -73,7 +73,7 @@ function action_delete(url, mailacc) {
         <td nowrap="nowrap" class="content" colspan="2">{UNAME}</td>
         <td width="80" align="center" nowrap="nowrap" class="content">{USTATUS}</td>
         <td width="60" class="content" nowrap="nowrap" align="center">
-        	<img src="{THEME_COLOR_PATH}/images/icons/users.gif" width="16" height="16" style="vertical-align:middle" alt="" />
+        	<img src="{THEME_COLOR_PATH}/images/icons/users.png" width="16" height="16" style="vertical-align:middle" alt="" />
         	<a href="protected_user_assign.php?uname={USER_ID}" class="link">{TR_GROUP}</a>
         </td>
         <td width="60" class="content" nowrap="nowrap" align="center">
@@ -82,13 +82,13 @@ function action_delete(url, mailacc) {
         </td>
         <td width="60" align="center" nowrap="nowrap" class="content">
         	<img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" />
-        	<a href="#" class="link" onclick="{USER_DELETE_SCRIPT}">{USER_DELETE}</a>
+        	<a href="#" class="link" onClick="{USER_DELETE_SCRIPT}">{USER_DELETE}</a>
         </td>
       </tr>
       <!-- EDP: pusres -->
       <tr>
         <td>&nbsp;</td>
-        <td colspan="5"><input name="Button" type="button" class="button" onclick="MM_goToURL('parent','protected_user_add.php');return document.MM_returnValue" value="{TR_ADD_USER}" />
+        <td colspan="5"><input name="Button" type="button" class="button" onClick="MM_goToURL('parent','protected_user_add.php');return document.MM_returnValue" value="{TR_ADD_USER}" />
           &nbsp;&nbsp; </td>
       </tr>
     </table></td>
@@ -137,13 +137,13 @@ function action_delete(url, mailacc) {
         <td width="80" align="center" nowrap="nowrap" class="content">{GSTATUS}</td>
         <td width="100" colspan="2" align="center" nowrap="nowrap" class="content">
         	<img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" />
-        	<a href="#" class="link" onclick="{GROUP_DELETE_SCRIPT}">{GROUP_DELETE}</a>
+        	<a href="#" class="link" onClick="{GROUP_DELETE_SCRIPT}">{GROUP_DELETE}</a>
         </td>
       </tr>
       <!-- EDP: pgroups -->
       <tr>
         <td>&nbsp;</td>
-        <td colspan="3"><input name="Button2" type="button" class="button" value="{TR_ADD_GROUP}" onclick="MM_goToURL('parent','protected_group_add.php');return document.MM_returnValue" />
+        <td colspan="3"><input name="Button2" type="button" class="button" value="{TR_ADD_GROUP}" onClick="MM_goToURL('parent','protected_group_add.php');return document.MM_returnValue" />
           &nbsp; </td>
       </tr>
     </table></td>

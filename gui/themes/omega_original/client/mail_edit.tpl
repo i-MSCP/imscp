@@ -39,7 +39,7 @@
 </script>
 </head>
 
- <body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/ftp_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/email_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif'); begin_js();">
+ <body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.png','{THEME_COLOR_PATH}/images/icons/domains_a.png','{THEME_COLOR_PATH}/images/icons/ftp_a.png','{THEME_COLOR_PATH}/images/icons/general_a.png' ,'{THEME_COLOR_PATH}/images/icons/email_a.png','{THEME_COLOR_PATH}/images/icons/webtools_a.png','{THEME_COLOR_PATH}/images/icons/statistics_a.png','{THEME_COLOR_PATH}/images/icons/support_a.png'); begin_js();">
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="height:100%;padding:0;margin:0 auto;">
 <!-- BDP: logged_from -->
@@ -107,7 +107,7 @@
                </tr>
                <tr>
                 <td nowrap="nowrap" class="content2" colspan="2">
-                 &nbsp;&nbsp;<input type="checkbox" name="mail_forward" id="mail_forward" value="1" {FORWARD_MAIL_CHECKED} onclick="changeType('forward');" /><label for="mail_forward">{TR_FORWARD_MAIL}</label>
+                 &nbsp;&nbsp;<input type="checkbox" name="mail_forward" id="mail_forward" value="1" {FORWARD_MAIL_CHECKED} onClick="changeType('forward');" /><label for="mail_forward">{TR_FORWARD_MAIL}</label>
                 </td>
                </tr>
                <tr>
@@ -131,7 +131,7 @@
               </table>
               <!-- EDP: forward_mail -->
               <br />
-              <input name="Button" type="button" class="button" value="  {TR_SAVE}  " onclick="return sbmt(document.forms[0],'{ACTION}');" />
+              <input name="Button" type="button" class="button" value="  {TR_SAVE}  " onClick="return sbmt(document.forms[0],'{ACTION}');" />
               <input type="hidden" name="id" value="{MAIL_ID}" />
               <input type="hidden" name="mail_type" value="{MAIL_TYPE}" />
               <input type="hidden" name="mail_account" value="{EMAIL_ACCOUNT}" />

@@ -10,22 +10,22 @@
 <script type="text/javascript">
 <!--
 function over(number) {
-	document.images["image"+number+"_1"].src = '{THEME_COLOR_PATH}/images/bars/menu_button_left.gif';
-	document.images["image"+number+"_2"].src = '{THEME_COLOR_PATH}/images/bars/menu_button_right.gif';
+	document.images["image"+number+"_1"].src = '{THEME_COLOR_PATH}/images/bars/menu_button_left.png';
+	document.images["image"+number+"_2"].src = '{THEME_COLOR_PATH}/images/bars/menu_button_right.png';
 	if (document.layers) {
-		document.layers["m"+number].background.src = '{THEME_COLOR_PATH}/images/bars/menu_button_background.gif';
+		document.layers["m"+number].background.src = '{THEME_COLOR_PATH}/images/bars/menu_button_background.png';
 	} else if (document.all) {
-		window.document.all["id"+number].style.backgroundImage = 'url({THEME_COLOR_PATH}/images/bars/menu_button_background.gif)';
+		window.document.all["id"+number].style.backgroundImage = 'url({THEME_COLOR_PATH}/images/bars/menu_button_background.png)';
 	}
 }
 
 function out(number) {
-	document.images["image"+number+"_1"].src = '../images/menubutton_left.gif';
-	document.images["image"+number+"_2"].src = '../images/menubutton_right.gif';
+	document.images["image"+number+"_1"].src = '../images/menubutton_left.png';
+	document.images["image"+number+"_2"].src = '../images/menubutton_right.png';
 	if (document.layers) {
-		document.layers["m"+number].background.src = '../images/menubutton_background.gif';
+		document.layers["m"+number].background.src = '../images/menubutton_background.png';
 	} else if (document.all) {
-		window.document.all["id"+number].style.backgroundImage = 'url(../images/menubutton_background.gif)';
+		window.document.all["id"+number].style.backgroundImage = 'url(../images/menubutton_background.png)';
 	}
 }
 
@@ -93,7 +93,7 @@ function changeDom(wath) {
 </script>
 </head>
 
-<body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/ftp_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/email_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif'); begin_js();">
+<body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.png','{THEME_COLOR_PATH}/images/icons/domains_a.png','{THEME_COLOR_PATH}/images/icons/ftp_a.png','{THEME_COLOR_PATH}/images/icons/general_a.png' ,'{THEME_COLOR_PATH}/images/icons/email_a.png','{THEME_COLOR_PATH}/images/icons/webtools_a.png','{THEME_COLOR_PATH}/images/icons/statistics_a.png','{THEME_COLOR_PATH}/images/icons/support_a.png'); begin_js();">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="height:100%;padding:0;margin:0 auto;">
 <!-- BDP: logged_from -->
 <tr>
@@ -139,13 +139,13 @@ function changeDom(wath) {
                               <td class="content" nowrap="nowrap"><input type="text" name="username" value="{USERNAME}" style="width:170px" class="textinput" /></td>
                             </tr>
                             <tr>
-                              <td nowrap="nowrap" class="content2" width="200"><input type="radio" name="dmn_type" value="dmn" onfocus="changeDom('real');" {DMN_TYPE_CHECKED} />
+                              <td nowrap="nowrap" class="content2" width="200"><input type="radio" name="dmn_type" value="dmn" onFocus="changeDom('real');" {DMN_TYPE_CHECKED} />
                                 {TR_TO_MAIN_DOMAIN}</td>
                               <td class="content" nowrap="nowrap">{FTP_SEPARATOR}{DOMAIN_NAME}</td>
                             </tr>
                             <!-- BDP: to_alias_domain -->
                             <tr>
-                              <td nowrap="nowrap" class="content2" width="200"><input type="radio" name="dmn_type" value="als" onfocus="changeDom('alias');" {ALS_TYPE_CHECKED} />
+                              <td nowrap="nowrap" class="content2" width="200"><input type="radio" name="dmn_type" value="als" onFocus="changeDom('alias');" {ALS_TYPE_CHECKED} />
                                 {TR_TO_DOMAIN_ALIAS}</td>
                               <td class="content" nowrap="nowrap"><select name="als_id">
                                   <!-- BDP: als_list -->
@@ -167,7 +167,7 @@ function changeDom(wath) {
                                 <label for="use_other_dir">{TR_USE_OTHER_DIR}</label></td>
                               <td nowrap="nowrap" class="content"><input type="text" name="other_dir" value="{OTHER_DIR}" style="width:170px" class="textinput" />
                                   <br />
-                                <a href="#" onclick="showFileTree();" class="link">{CHOOSE_DIR}</a></td>
+                                <a href="#" onClick="showFileTree();" class="link">{CHOOSE_DIR}</a></td>
                             </tr>
                           </table>
                         <input name="Submit" type="submit" class="button" value=" {TR_ADD} " />

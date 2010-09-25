@@ -18,7 +18,7 @@ function action_delete(url, name) {
 </script>
 </head>
 
-<body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/ftp_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/email_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
+<body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.png','{THEME_COLOR_PATH}/images/icons/domains_a.png','{THEME_COLOR_PATH}/images/icons/ftp_a.png','{THEME_COLOR_PATH}/images/icons/general_a.png' ,'{THEME_COLOR_PATH}/images/icons/email_a.png','{THEME_COLOR_PATH}/images/icons/webtools_a.png','{THEME_COLOR_PATH}/images/icons/statistics_a.png','{THEME_COLOR_PATH}/images/icons/support_a.png')">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="height:100%;padding:0;margin:0 auto;">
 <!-- BDP: logged_from -->
 <tr>
@@ -69,12 +69,12 @@ function action_delete(url, name) {
                         {DESCRIPTION}</td>
                       <td width="100" align="center" nowrap="nowrap" class="{ITEM_CLASS}">{ACTIVE}</td>
                       <td width="100" nowrap="nowrap" class="{ITEM_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" style="vertical-align:middle" alt="" /> <a href="cronjobs_edit.php?cron_id={ID}" class="link">{TR_EDIT}</a></td>
-                      <td width="100" nowrap="nowrap" class="{ITEM_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="#" class="link" onclick="action_delete('cronjobs_delete.php?cron_id={ID}', '{NAME}')">{TR_DELETE}</a></td>
+                      <td width="100" nowrap="nowrap" class="{ITEM_CLASS}"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="#" class="link" onClick="action_delete('cronjobs_delete.php?cron_id={ID}', '{NAME}')">{TR_DELETE}</a></td>
                       <!-- EDP: cronjobs -->
                     </tr>
                     <tr>
                       <td nowrap="nowrap">&nbsp;</td>
-                      <td colspan="4"><input name="button" type="button" class="button" onclick="MM_goToURL('parent','cronjobs_add.php');return document.MM_returnValue" value="{TR_ADD}" /></td>
+                      <td colspan="4"><input name="button" type="button" class="button" onClick="MM_goToURL('parent','cronjobs_add.php');return document.MM_returnValue" value="{TR_ADD}" /></td>
                     </tr>
                 </table></td>
                 <td>&nbsp;</td>
