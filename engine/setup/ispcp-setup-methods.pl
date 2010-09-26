@@ -199,9 +199,119 @@ sub ask_db_host {
 	$main::ua{'db_host'} = (!defined($rdata) || $rdata eq '')
 		? 'localhost' : $rdata;
 
-	push_el(\@main::el, 'ask_db_host()', 'Ending...');
+	return -1 if(check_hostname($main::ua{'db_host'}));
+
+	push_el(\@main::el, 'ask_db_host()', "Ending...");
+
+	0;
 }
 
+################################################################################
+## check_hostname
+##
+## Check if hostname is valid
+##
+## @author Daniel Andreca <sci2tech@gmail.com>
+## @since   1.0.7
+## @version 1.0.7
+## @param string $hName hostname
+##
+## @return int 0 on success, -1 otherwise
+
+sub check_hostname{
+	push_el(\@main::el, 'check_hostname()', 'Starting...');
+	my ($hName) = @_;
+
+	return -1 if(check_length($hName, 255, 1));
+	if(check_chars($hName,'^[\.\-]|[^a-zA-Z0-9\-\.]|[\.\-]$')){
+		print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
+			"'$hName' is not a valid hostname!\n".
+			"Check http://en.wikipedia.org/wiki/Hostname about valid hostname\n";
+		return -1
+	}
+
+	foreach(split(/\./, $hName)){
+		return -1 if(check_label($_));
+	}
+	push_el(\@main::el, 'check_hostname()', 'Ending...');
+
+	0;
+}
+################################################################################
+## check_label
+##
+## Check if label is valid
+##
+## @author Daniel Andreca <sci2tech@gmail.com>
+## @since   1.0.7
+## @version 1.0.7
+## @param string $label label
+##
+## @return int 0 on success, -1 otherwise
+
+sub check_label {
+
+	push_el(\@main::el, 'check_label()', 'Starting...');
+
+	my ($label) = @_;
+
+	push_el(\@main::el, 'check_label()', "\$label:$label");
+
+	return -1 if(check_length($label, 63, 1));
+
+	if(check_chars($label,'^\-|[^a-zA-Z0-9\-]|\-$')){
+		print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
+			"'$label' is not a valid label for hostname!\n".
+			"Check http://en.wikipedia.org/wiki/Hostname about valid hostname\n";
+		return -1
+	}
+
+
+	push_el(\@main::el, 'check_label()', 'Ending...');
+
+	0;
+
+}
+
+################################################################################
+## check_chars
+##
+## Check if string contain restricted characters
+##
+## @author Daniel Andreca <sci2tech@gmail.com>
+## @since   1.0.7
+## @version 1.0.7
+## @param string $string string
+## @param regexp $forbidden regexp
+##
+## @return int 0 on success, -1 otherwise
+
+sub check_chars {
+	push_el(\@main::el, 'check_chars()', 'Starting...');
+
+	my ($string, $forbidden) = @_;
+
+	return -1 if($string =~ m/$forbidden/);
+
+	push_el(\@main::el, 'check_label()', 'Ending...');
+
+	0;
+}
+
+sub check_length{
+	push_el(\@main::el, 'check_length()', 'Starting...');
+	my ($string, $maxLength, $minLength) = @_;
+
+	 if(length($string) > $maxLength || ($minLength && $minLength>length($string))){
+		print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
+			"Length for '$string' is bigger or smaller then allowed size 1..63 characters!\n";
+		 return -1;
+	 }
+
+	push_el(\@main::el, 'check_length()', 'Ending...');
+
+	0;
+}
 ################################################################################
 # Ask for ispCP database name
 #

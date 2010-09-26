@@ -56,7 +56,7 @@ require 'ispcp-setup-methods.pl';
 
 %main::ua = ();
 $main::logfile = '/tmp/ispcp-setup.log';
-$main::rlogfile = '>> $main::logfile 2>&1';
+$main::rlogfile = ">> $main::logfile 2>&1";
 
 ################################################################################
 #                                 Subroutines                                  #
@@ -101,7 +101,7 @@ sub user_dialog {
 	# CODE: run once
 	# REF: run in loop
 	for(
-		\&ask_hostname, \&ask_eth, \&ask_vhost, \\&ask_db_host, \\&ask_db_name,
+		\&ask_hostname, \&ask_eth, \&ask_vhost, \&ask_db_host, \\&ask_db_name,
 		\\&ask_db_user, \&ask_db_password, \&ask_db_ftp_user, \&ask_db_ftp_password,
 		\&ask_db_pma_user, \&ask_db_pma_password, \\&ask_admin, \&ask_admin_password,
 		\&ask_admin_email, \&ask_second_dns, \&ask_resolver, \&ask_mysql_prefix,
