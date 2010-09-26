@@ -1,6 +1,10 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-09-22 Laurent Declercq
+	- THEMES:
+		- Revert back on r3332 (jquery was downgraded to version 1.4.1)
+
 2010-09-22 Daniel Andreca
 	- THEMES:
 		* Updated theme (tx HenrikS)
