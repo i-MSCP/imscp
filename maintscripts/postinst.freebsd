@@ -53,7 +53,7 @@ case "$1" in
     configure)
 
 	# Remove old ISPCP_LOGFILE if it exists
-	rm -f $ISPCP_LOGFILE
+	$CMD_RM -f $ISPCP_LOGFILE
 
 	#
 	## System Init Configuration - Begin

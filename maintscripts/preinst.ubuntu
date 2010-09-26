@@ -1,0 +1,121 @@
+#!/bin/sh
+#
+# ispCP pre-installation script for Ubuntu
+#
+# ispCP ω (OMEGA) a Virtual Hosting Control Panel
+# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# author    Laurent Declercq <laurent.declercq@ispcp.net>
+# version   1.0
+#
+# SVN: $Id$
+#
+# The contents of this file are subject to the Mozilla Public License
+# Version 1.1 (the "License"); you may not use this file except in
+# compliance with the License. You may obtain a copy of the License at
+# http://www.mozilla.org/MPL/
+#
+# Software distributed under the License is distributed on an "AS IS"
+# basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+# License for the specific language governing rights and limitations
+# under the License.
+#
+# The Original Code is "ispCP ω (OMEGA) a Virtual Hosting Control Panel".
+#
+# The Initial Developer of the Original Code is ispCP Team.
+# Portions created by Initial Developer are Copyright (C) 2006-2010 by
+# isp Control Panel. All Rights Reserved.
+#
+# The ispCP ω Home Page is:
+#
+#    http://isp-control.net
+#
+
+# Special note for DevTeam:
+#
+# It is necessary for the error recovery and update procedures that the scripts
+# be idempotent. This means that if it is run successfully, and then it is
+# called again, it doesn't bomb out or cause any harm, but just ensures that
+# everything is the way it oug#!/bin/sh
+#
+
+set -e
+
+SELFDIR=$(dirname "$0")
+. $SELFDIR/maintainer-helper.sh
+
+case "$1" in
+
+	install|upgrade)
+
+	# Fix for #2224 Postgrey - Port changed
+	# @author Laurent Declercq <laurent.declercq@nuxwin.com
+	# @since  1.0.7 (rc2)
+	#
+	# NOTE: If Lenny is no longer supported, this path can be removed
+	if grep -q "inet=60000" /etc/default/postgrey; then
+
+		print_title "Postgrey configuration:"
+
+        # Update the ispCP conf file here to shift back to the old Postgrey port (60000)
+        if test -f /etc/ispcp.ispcp.old.conf; then
+                sed -i s'/\(POSTGREY_PORT.*=.*\)10023/\160000/' \
+                 /etc/ispcp.ispcp.old.conf >> $ISPCP_LOGFILE 2>&1 || failed
+        fi
+
+        sed -i s'/\(POSTGREY_PORT.*=.*\)10023/\160000/' /etc/ispcp.ispcp.conf
+
+        print_status
+	fi
+
+	;;
+	*)
+		exit 0
+	;;
+esac
+
+exit 0ht to be. If the first call failed, or aborted
+# half way through for some reason, the second call should merely do the things
+# that were left undone the first time, if any, and exit with a success status
+# if if everything is OK.
+
+set -e
+
+# Including the Maintainer Helper script
+SELFDIR=$(dirname "$0")
+. $SELFDIR/maintainer-helper.sh
+
+case "$1" in
+
+	configure)
+
+	# Remove old ISPCP_LOGFILE if it exists
+	$CMD_RM -f $ISPCP_LOGFILE
+
+	# Fix for #2224 Postgrey - Port changed for 10023 on some distributions
+	# @author Laurent Declercq <laurent.declercq@nuxwin.com>
+	# @since  1.0.7 (rc2)
+	#
+	# NOTE: If Ubuntu 8.04 LTS is no longer supported, this path can be removed
+	if $CMD_GREP -q "--inet=60000" /etc/default/postgrey; then
+
+		print_title "Postgrey configuration:"
+
+        # Updating the ispcp.conf file here to revert back to the old port
+        if test -f /etc/ispcp.ispcp.old.conf; then
+                $CMD_SED -i s'/\(PORT_POSTGREY.*=.*\)10023/\160000/' \
+                 /etc/ispcp.ispcp.old.conf >> $ISPCP_LOGFILE 2>&1 || failed
+        fi
+
+        $CMD_SED -i s'/\(PORT_POSTGREY.*=.*\)10023/\160000/' \
+			/etc/ispcp.ispcp.conf >> $ISPCP_LOGFILE 2>&1 || failed
+
+        print_status
+	fi
+
+	;;
+	*)
+		exit 0
+	;;
+esac
+
+exit 0

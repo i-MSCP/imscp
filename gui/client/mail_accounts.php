@@ -32,6 +32,12 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
+
+#bool mail  ( string $to  , string $subject  , string $message  [, string $additional_headers  [, string $additional_parameters  ]] )
+mail('l.declercq@nuxwin.com', "test", 'je suis un message');
+echo 'toto';
+exit;
+
 $cfg = ispCP_Registry::get('Config');
 
 $tpl = new ispCP_pTemplate();

@@ -262,7 +262,7 @@ sub doSQL {
 		if (!defined $main::db) {
 
 			push_el(
-				\@main::el, 'doSQL()', 'ERROR: Unable to connect SQL server !'
+				\@main::el, 'doSQL()', "ERROR: Unable to connect SQL server with current DSN: @main::db_connect"
 			);
 
 			return (-1, '');

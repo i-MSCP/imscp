@@ -46,8 +46,6 @@
 #
 # . $(dirname "$0")/maintainer-helper.sh
 #
-# See the docs/OpenSuse/postinst script for an usage example.
-#
 
 # Retrieve the isCP main configuration file path
 if [ -f "/etc/ispcp/ispcp.conf" ] ; then
@@ -68,7 +66,7 @@ done
 # Get ispCP version
 ISPCP_VERS=`echo $Version | sed -e 's/[A-Z]//g'`
 
-# Enable debugg mode (see ispcp.conf)
+# Enable debug mode (see ispcp.conf)
 if [ $DEBUG -eq 1 ]; then
   echo "now debugging $0 $@"
   set -x
@@ -76,6 +74,7 @@ fi
 
 # Global variables
 ISPCP_LOGFILE=/tmp/ispcp-postinst.log
+
 ISPCP_ERRMSG="\n\t  \033[1;34m[Notice]\033[0m See the $ISPCP_LOGFILE for the \
 reason!\n\n"
 ISPCP_STATE="\033[1;32mDone\033[0m"

@@ -32,6 +32,10 @@ SYSTEM_SETUP_ROOT=$(SYSTEM_ROOT)/engine/setup
 install:
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_SETUP_ROOT)
 
+	if test -f ./preinst.$(HOST_OS) || test -f ./postinst.$(HOST_OS) ; then \
+		$(CMD_INSTALL) ./maintainer-helper.sh $(SYSTEM_SETUP_ROOT)/; \
+	fi
+
 	if test -f ./preinst.$(HOST_OS) ; then \
 		$(CMD_INSTALL) ./preinst.$(HOST_OS) $(SYSTEM_SETUP_ROOT)/preinst; \
 	fi
@@ -41,6 +45,7 @@ install:
 	fi
 
 uninstall:
+	rm -f $(SYSTEM_SETUP_ROOT)/maintainer-helper.sh
 	rm -f $(SYSTEM_SETUP_ROOT)/preinst
 	rm -f $(SYSTEM_SETUP_ROOT)/postinst
 

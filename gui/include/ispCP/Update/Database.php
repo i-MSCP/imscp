@@ -1,4 +1,4 @@
- <?php
+<?php
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control System
  *
@@ -90,9 +90,9 @@ class ispCP_Update_Database extends ispCP_Update {
 	 * Initital Update. Insert the first Revision.
 	 *
 	 * @author Jochen Manz <zothos@zothos.net>
-	 * @version 1.0
+	 * @version 1.0.0
 	 * @since r1355
-	 * @return array Sql statements to be performed
+	 * @return array SQL statements to be performed
 	 */
 	protected function _databaseUpdate_1() {
 
@@ -114,9 +114,9 @@ class ispCP_Update_Database extends ispCP_Update {
 	 * address.
 	 *
 	 * @author Christian Hernmarck
-	 * @version 1.0
+	 * @version 1.0.0
 	 * @since r1355
-	 * @return array Sql statements to be performed
+	 * @return array SQL statements to be performed
 	 */
 	protected function _databaseUpdate_2() {
 
@@ -227,9 +227,9 @@ class ispCP_Update_Database extends ispCP_Update {
 	 * Fix for ticket #1139 http://www.isp-control.net/ispcp/ticket/1139.
 	 *
 	 * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
-	 * @version 1.0
+	 * @version 1.0.0
 	 * @since r1355
-	 * @return Array Sql statements to be performed
+	 * @return Array SQL statements to be performed
 	 */
 	protected function _databaseUpdate_3() {
 
@@ -250,9 +250,9 @@ class ispCP_Update_Database extends ispCP_Update {
 	 * Fix for ticket #1196 http://www.isp-control.net/ispcp/ticket/1196.
 	 *
 	 * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
-	 * @version 1.0
+	 * @version 1.0.0
 	 * @since r1355
-	 * @return array Sql statements to be performed
+	 * @return array SQL statements to be performed
 	 */
 	protected function _databaseUpdate_4() {
 
@@ -289,9 +289,9 @@ class ispCP_Update_Database extends ispCP_Update {
 	 * Fix for ticket #1346 http://www.isp-control.net/ispcp/ticket/1346.
 	 *
 	 * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
-	 * @version 1.0
+	 * @version 1.0.0
 	 * @since r1355
-	 * @return array Sql statements to be performed
+	 * @return array SQL statements to be performed
 	 */
 	protected function _databaseUpdate_5() {
 
@@ -320,9 +320,9 @@ class ispCP_Update_Database extends ispCP_Update {
 	 * Fix for ticket #755 http://www.isp-control.net/ispcp/ticket/755.
 	 *
 	 * @author Markus Milkereit
-	 * @version 1.0
+	 * @version 1.0.0
 	 * @since r1355
-	 * @return array Sql statements to be performed
+	 * @return array SQL statements to be performed
 	 */
 	protected function _databaseUpdate_6() {
 
@@ -345,9 +345,9 @@ class ispCP_Update_Database extends ispCP_Update {
 	 * Fix for ticket #1509 http://www.isp-control.net/ispcp/ticket/1509.
 	 *
 	 * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
-	 * @version 1.0
+	 * @version 1.0.0
 	 * @since r1356
-	 * @return array Sql statements to be performed
+	 * @return array SQL statements to be performed
 	 */
 	protected function _databaseUpdate_7() {
 
@@ -378,10 +378,10 @@ class ispCP_Update_Database extends ispCP_Update {
 	/**
 	 * Fix for ticket #1571 http://www.isp-control.net/ispcp/ticket/1571.
 	 *
-	 * @author Daniel Andreca
-	 * @version 1.0
+	 * @author Daniel Andreca <sci2tech@gmail.com>
+	 * @version 1.0.0
 	 * @since r1417
-	 * @return array Sql statements to be performed
+	 * @return array SQL statements to be performed
 	 */
 	protected function _databaseUpdate_8() {
 
@@ -394,10 +394,10 @@ class ispCP_Update_Database extends ispCP_Update {
 	/**
 	 * Fix for ticket #1610 http://www.isp-control.net/ispcp/ticket/1610.
 	 *
-	 * @author Daniel Andreca
-	 * @version 1.0
+	 * @author Daniel Andreca <sci2tech@gmail.com>
+	 * @version 1.0.0
 	 * @since r1462
-	 * @return array Sql statements to be performed
+	 * @return array SQL statements to be performed
 	 */
 	protected function _databaseUpdate_9() {
 
@@ -425,10 +425,10 @@ class ispCP_Update_Database extends ispCP_Update {
 	/**
 	 * Fix for ticket #1664 http://www.isp-control.net/ispcp/ticket/1664.
 	 *
-	 * @author Daniel Andreca
-	 * @version 1.0
+	 * @author Daniel Andreca <sci2tech@gmail.com>
+	 * @version 1.0.0
 	 * @since r1508
-	 * @return array Sql statements to be performed
+	 * @return array SQL statements to be performed
 	 */
 	protected function _databaseUpdate_10() {
 
@@ -458,10 +458,10 @@ class ispCP_Update_Database extends ispCP_Update {
 	/**
 	 * Fix for ticket #1620 http://www.isp-control.net/ispcp/ticket/1620.
 	 *
-	 * @author Daniel Andreca
-	 * @version 1.0
+	 * @author Daniel Andreca <sci2tech@gmail.com>
+	 * @version 1.0.0
 	 * @since r1550
-	 * @return array Sql statements to be performed
+	 * @return array SQL statements to be performed
 	 */
 	protected function _databaseUpdate_11() {
 
@@ -496,7 +496,7 @@ class ispCP_Update_Database extends ispCP_Update {
 	 * @author Thomas Häber
 	 * @version 1.0.1
 	 * @since r1614
-	 * @return array Sql statements to be performed
+	 * @return array SQL statements to be performed
 	 */
 	protected function _databaseUpdate_12() {
 
@@ -519,7 +519,7 @@ class ispCP_Update_Database extends ispCP_Update {
 	 * @author Thomas Häber
 	 * @version 1.0.1
 	 * @since r1659
-	 * @return array Sql statements to be performed
+	 * @return array SQL statements to be performed
 	 */
 	protected function _databaseUpdate_13() {
 
@@ -558,7 +558,7 @@ class ispCP_Update_Database extends ispCP_Update {
 	 * @author Thomas Häber
 	 * @version 1.0.1
 	 * @since r1663
-	 * @return array Sql statements to be performed
+	 * @return array SQL statements to be performed
 	 */
 	protected function _databaseUpdate_14() {
 
@@ -581,7 +581,7 @@ class ispCP_Update_Database extends ispCP_Update {
 	 * @author Jochen Manz
 	 * @version 1.0.1
 	 * @since r1663
-	 * @return array Sql statements to be performed
+	 * @return array SQL statements to be performed
 	 */
 	protected function _databaseUpdate_15() {
 
@@ -605,7 +605,7 @@ class ispCP_Update_Database extends ispCP_Update {
 	 * @author Christian Hernmarck
 	 * @version 1.0.1
 	 * @since r1714 (ca)
-	 * @return array Sql statements to be performed
+	 * @return array SQL statements to be performed
 	 */
 	protected function _databaseUpdate_16() {
 
@@ -629,7 +629,7 @@ class ispCP_Update_Database extends ispCP_Update {
 	 * @author Thomas Wacker
 	 * @version 1.0.1
 	 * @since r1718
-	 * @return array Sql statements to be performed
+	 * @return array SQL statements to be performed
 	 */
 	protected function _databaseUpdate_17() {
 
@@ -686,10 +686,10 @@ class ispCP_Update_Database extends ispCP_Update {
 	/**
 	 * Fix for ticket #1810 http://www.isp-control.net/ispcp/ticket/1810.
 	 *
-	 * @author Daniel Andreca
+	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @version 1.0.1
 	 * @since r1726
-	 * @return array Sql statements to be performed
+	 * @return array SQL statements to be performed
 	 */
 	protected function _databaseUpdate_18() {
 
@@ -702,10 +702,10 @@ class ispCP_Update_Database extends ispCP_Update {
 	/**
 	 * Add suport for DNS management.
 	 *
-	 * @author Daniel Andreca
+	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @version 1.0.1
 	 * @since r1727
-	 * @return array Sql statements to be performed
+	 * @return array SQL statements to be performed
 	 */
 	protected function _databaseUpdate_19() {
 
@@ -759,7 +759,7 @@ class ispCP_Update_Database extends ispCP_Update {
 	 * @author Thomas Wacker
 	 * @version 1.0.1
 	 * @since r1834
-	 * @return array Sql statements to be performed
+	 * @return array SQL statements to be performed
 	 */
 	protected function _databaseUpdate_20() {
 
@@ -812,7 +812,7 @@ class ispCP_Update_Database extends ispCP_Update {
 	 * @author Thomas Wacker
 	 * @version 1.0.1
 	 * @since r1848
-	 * @return array Sql statements to be performed
+	 * @return array SQL statements to be performed
 	 */
 	protected function _databaseUpdate_21() {
 
@@ -862,7 +862,7 @@ class ispCP_Update_Database extends ispCP_Update {
 	 * @author Thomas Wacker
 	 * @version 1.0.1
 	 * @since r1849
-	 * @return array Sql statements to be performed
+	 * @return array SQL statements to be performed
 	 */
 	protected function _databaseUpdate_22() {
 
@@ -884,10 +884,10 @@ class ispCP_Update_Database extends ispCP_Update {
 	/**
 	 * Add domain expiration field
 	 *
-	 * @author Daniel Andreca
+	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @version 1.0.2
 	 * @since r1955
-	 * @return array Sql statements to be performed
+	 * @return array SQL statements to be performed
 	 */
 	protected function _databaseUpdate_23() {
 
@@ -918,10 +918,10 @@ class ispCP_Update_Database extends ispCP_Update {
 	 *  - Possible missing value in "domain.allowbackup"
 	 *  - Change the naming convention for option 'domain' related to the backup feature
 	 *
-	 * @author Laurent Declercq <l.declercq@ispcp.net>
+	 * @author Laurent Declercq <laurent.declercq@ispcp.net>
 	 * @version 1.0.2
 	 * @since r1998
-	 * @return array Sql statements to be performed
+	 * @return array SQL statements to be performed
 	 */
 	 protected function _databaseUpdate_24() {
 
@@ -1052,10 +1052,10 @@ class ispCP_Update_Database extends ispCP_Update {
 	/**
 	 * Fixes for ticket #2000 http://www.isp-control.net/ispcp/ticket/1985.
 	 *
-	 * @author Laurent Declercq <l.declercq@ispcp.net>
+	 * @author Laurent Declercq <laurent.declercq@ispcp.net>
 	 * @version 1.0.2
 	 * @since r2013
-	 * @return array sql statements to be performed
+	 * @return array SQL statements to be performed
 	 */
 	protected function _databaseUpdate_25() {
 
@@ -1080,7 +1080,7 @@ class ispCP_Update_Database extends ispCP_Update {
 	 * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
 	 * @version 1.0.2
 	 * @since r2173
-	 * @return array Sql statements to be performed
+	 * @return array SQL statements to be performed
 	 */
 	protected function _databaseUpdate_26() {
 
@@ -1187,13 +1187,13 @@ class ispCP_Update_Database extends ispCP_Update {
 	 *
 	 * @author Laurent Declercq <laurent.declercq@ispcp.net>
 	 * @since r2701
-	 * @return array Sql statements to be performed
+	 * @return array SQL statements to be performed
 	 */
 	protected function _databaseUpdate_29() {
-		$sqlUpd = array();
+
 		// old SQL statements was moved to 31 to
 		// resolve conflict created under 1.0.5
-		return $sqlUpd;
+		return array();
 	}
 
 	/**
@@ -1205,7 +1205,7 @@ class ispCP_Update_Database extends ispCP_Update {
 	 *
 	 * @author Laurent Declercq <laurent.declercq@ispcp.net>
 	 * @since r2698
-	 * @return array Sql statements to be performed
+	 * @return array SQL statements to be performed
 	 */
 	protected function _databaseUpdate_30() {
 
@@ -1260,7 +1260,7 @@ class ispCP_Update_Database extends ispCP_Update {
 	 * @author Francesco Bux
 	 * @version 1.0.5
 	 * @since r2614
-	 * @return array Sql statements to be performed
+	 * @return array SQL statements to be performed
 	 */
 	protected function _databaseUpdate_31() {
 
@@ -1301,7 +1301,7 @@ class ispCP_Update_Database extends ispCP_Update {
 	 *
 	 * @author Laurent Declercq <laurent.declercq@ispcp.net>
 	 * @since r2712
-	 * @return array sql statements to be performed
+	 * @return array SQL statements to be performed
 	 */
 	protected function _databaseUpdate_32() {
 
@@ -1359,7 +1359,7 @@ class ispCP_Update_Database extends ispCP_Update {
 	 *
 	 * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
 	 * @since r2876
-	 * @return array Sql statements to be performed
+	 * @return array SQL statements to be performed
 	 */
 	protected function _databaseUpdate_33() {
 
@@ -1379,7 +1379,7 @@ class ispCP_Update_Database extends ispCP_Update {
 			 * Encrypt email and sql users password in database
 			 *
 			 * @author Daniel Andreca <sci2tech@gmail.com>
-			 * @version 1.0
+			 * @version 1.0.0
 			 * @since r1355
 			 */
 			if (!isset($critical_update)) {
@@ -1455,7 +1455,7 @@ class ispCP_Update_Database extends ispCP_Update {
 			 * Fix for ticket #1571 http://www.isp-control.net/ispcp/ticket/1571
 			 *
 			 * @author Daniel Andreca <sci2tech@gmail.com>
-			 * @version 1.0
+			 * @version 1.0.0
 			 * @since r1417
 			 */
 			if ($critical_update < 2) {
@@ -1507,7 +1507,7 @@ class ispCP_Update_Database extends ispCP_Update {
 			 * Fix for ticket #1571 http://www.isp-control.net/ispcp/ticket/1571.
 			 *
 			 * @author Daniel Andreca <sci2tech@gmail.com>
-			 * @version 1.0
+			 * @version 1.0.0
 			 * @since r1725
 			 */
 			$interfaces = new ispCP_NetworkCard();
@@ -1555,11 +1555,11 @@ class ispCP_Update_Database extends ispCP_Update {
 	/**
 	 * Fix for ticket #2345 http://www.isp-control.net/ispcp/ticket/2345
 	 *
-	 * Deletes the "Show Server Load" Option and the related variable
+	 * Deletes the 'Show Server Load' option and the related variable
 	 *
 	 * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
 	 * @since r2876
-	 * @return array Sql statements to be performed
+	 * @return array SQL statements to be performed
 	 */
 	protected function _databaseUpdate_34() {
 
@@ -1574,12 +1574,14 @@ class ispCP_Update_Database extends ispCP_Update {
 
 	/**
 	 * Fix for ticket #2201 http://www.isp-control.net/ispcp/ticket/2201
-	 *
+	 * Fix for Ticket #2452: Update from v1.0.6 will fail on
 	 * Deletes the now useless column `correction` from table `domain_traffic`
 	 *
-	 * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
+	 * @author Benedikt Heintel <benedikt.heintel@ispcp.net> (#2201)
+	 * @author Daniel Andreca <scie2tech@gmail.com> (#2452)
 	 * @since r2899
-	 * @return array Sql statements to be performed
+	 * @version 1.0.1
+	 * @return array SQL statements to be performed
 	 */
 	protected function _databaseUpdate_35() {
 
@@ -1630,60 +1632,6 @@ class ispCP_Update_Database extends ispCP_Update {
 			";
 		}
 
-/* sci2tech: Fix for Ticket #2452: Update from v1.0.6 will fail on
- * database update. If columns are dropped from a table, the columns
- * are also removed from any index of which they are a part. If all
- * columns that make up an index are dropped, the index is dropped as well
-
-		// Drop server traffic key
-		// it looks like this key is named different, we need to check it first
-
-		// For oder database layouts the key is named 'i_correction'
-
-		$query = "
-			SHOW KEYS FROM
-				`ispcp`.`server_traffic`
-			WHERE
-				`Key_name` = 'i_correction'
-			;
-		";
-
-		$rs = exec_query($sql, $query);
-
-		// Drop the key only if it exists
-		if ($rs->recordCount() != 0) {
-			$sqlUpd[] = "
-				ALTER IGNORE TABLE
-					`ispcp`.`server_traffic`
-				DROP KEY
-					`i_correction`
-				;
-			";
-		}
-
-		// For newer Database layouts the key is named 'correction'
-		$query = "
-			SHOW KEYS FROM
-				`ispcp`.`server_traffic`
-			WHERE
-				`Key_name` = 'correction'
-			;
-		";
-
-		$rs = exec_query($sql, $query);
-
-		// Drop the key only if it exists
-		if ($rs->recordCount() != 0) {
-			$sqlUpd[] = "
-				ALTER IGNORE TABLE
-					`ispcp`.`server_traffic`
-				DROP KEY
-					`correction`
-				;
-			";
-		}
-*/
-
 		return $sqlUpd;
 	}
 
@@ -1694,7 +1642,7 @@ class ispCP_Update_Database extends ispCP_Update {
 	 *
 	 * @author Sascha Bay
 	 * @since r2918
-	 * @return array Sql statements to be performed
+	 * @return array SQL statements to be performed
 	 */
 	protected function _databaseUpdate_36() {
 		$sqlUpd = array();
@@ -1725,7 +1673,7 @@ class ispCP_Update_Database extends ispCP_Update {
 	 *
 	 * @author Sascha Bay
 	 * @since r2920
-	 * @return array Sql statements to be performed
+	 * @return array SQL statements to be performed
 	 */
 	protected function _databaseUpdate_37() {
 
@@ -1748,9 +1696,9 @@ class ispCP_Update_Database extends ispCP_Update {
 	 * Some data can be very larges like serialized data that represent a
 	 * object, an array...
 	 *
-	 * @author Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
+	 * @author Laurent Declercq <laurent.declercq@ispcp.net>
 	 * @since r2988
-	 * @return array Sql statements to be performed
+	 * @return array SQL statements to be performed
 	 */
 	protected function _databaseUpdate_38() {
 
@@ -1770,11 +1718,11 @@ class ispCP_Update_Database extends ispCP_Update {
 	/**
 	 * Fix ilegal value _full_ for allow backup
 	 *
-	 * adding a domain purcesed via orderpanel will insert
-	 * type of backup (_full_) witch is not allowed
+	 * Adding a domain purchased via order panel will insert type of
+	 * backup '_full_' which is not allowed
 	 *
 	 * @since r3263
-	 * @return array Sql statements to be performed
+	 * @return array SQL statements to be performed
 	 */
 	protected function _databaseUpdate_39() {
 
@@ -1789,6 +1737,21 @@ class ispCP_Update_Database extends ispCP_Update {
 		");
 	}
 
+	/**
+	 * Fix for #2224 Postgrey - Port changed to 10023 for some distributions
+	 *
+	 * @author Laurent Declercq <laurent.declercq@ispcp.net>
+	 * @since r3299
+	 * @return array
+	 */
+	protected function _databaseUpdate_40() {
+
+		$cfg = new ispCP_Config_Handler_File();
+		$DbConfig = ispCP_Registry::get('Db_Config');
+		$DbConfig->PORT_POSTGREY = $cfg->PORT_POSTGREY;
+
+		return array();
+	}
 
 	/*
 	 * DO NOT CHANGE ANYTHING BELOW THIS LINE!
