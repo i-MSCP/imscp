@@ -66,7 +66,7 @@ if ($main::db_pass_key eq '{KEY}' || $main::db_pass_iv eq '{IV}') {
 	print STDOUT "\tGenerating database keys, it may take some time, please ".
 		"wait...\n";
 
-	print STDOUT "\tIf it takes to long, please check".
+	print STDOUT "\tIf it takes to long, please check: ".
 	 "http://www.isp-control.net/documentation/frequently_asked_questions/what".
 	 "_does_generating_database_keys_it_may_take_some_time_please_wait..._on_".
 	 "setup_mean\n";
