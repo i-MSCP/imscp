@@ -2,6 +2,9 @@ ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2010-09-26 Laurent Declercq
+	- ENGINE:
+		- Updated documentation for ispcp_common_methods.pl script
+		- Some refactorization tasks in the ispcp_common_methods.pl script
 	- THEMES:
 		- Revert back on r3332 (jQuery was downgraded to version 1.4.1)
 

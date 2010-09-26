@@ -95,6 +95,7 @@ $main::cc_stderr = '/tmp/ispcp-cc.stderr';
 
 $main::el_sep = "\t#\t";
 
+# Initialize the stack that will contain all logging messages
 @main::el = ();
 
 %main::domain_id_name = ();
@@ -146,6 +147,20 @@ $SIG{PIPE} = 'IGNORE';
 
 $SIG{HUP} = 'IGNORE';
 
+################################################################################
+#                                Logging subroutines                           #
+################################################################################
+
+################################################################################
+# Add a new message in the logging stack and print it
+#
+# Note:  Printing is only done in DEBUG mode
+#
+# @param arrayref $el Reference to the global logging stack array
+# @param scalar $sub_name Subroutine name that cause log message
+# @param scalar $msg message to be logged
+# @void
+#
 sub push_el {
 
 	my ($el, $sub_name, $msg) = @_;
@@ -157,6 +172,18 @@ sub push_el {
     }
 }
 
+################################################################################
+# Print and return the last message from the logging stack
+#
+# Note: Printing is only done in DEBUG mode.
+#
+# This subroutine take the last message in the logging stack and print and
+# return it. Note that the message is completely removed from the logging stack.
+#
+# @param arrayref $el Reference to the global logging stack array
+# @return mixed Last message from the log stack or undef if the logging stack is
+# empty
+#
 sub pop_el {
 
 	my ($el) = @_;
@@ -179,19 +206,26 @@ sub pop_el {
     return $data;
 }
 
+################################################################################
+# Dump the logging stack
+#
+# @param arrayref $el Reference to the global Logging stack array
+# @param [string $fname Logfile name]
+# @return int
+#
 sub dump_el {
 
 	my ($el, $fname) = @_;
-	my $res;
+
 
 	if ($fname ne 'stdout' && $fname ne 'stderr') {
-		$res = open(FP, '>', $fname);
-		return 0 if(!defined($res));
+		return 0 if(!open(FP, '>', $fname));
 	}
 
-	my $el_data = undef;
+	my $el_data;
 
 	while (defined($el_data = pop_el(\@main::el))) {
+		# sub_name      $msg
 		my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
 
 		if ($fname eq 'stdout') {
@@ -203,8 +237,12 @@ sub dump_el {
 		}
 	}
 
-	close(FP);
+	close FP;
 }
+
+################################################################################
+#                                SQL subroutines                               #
+################################################################################
 
 sub doSQL {
 
@@ -309,20 +347,26 @@ sub doHashSQL {
 }
 
 ################################################################################
-# setfmode
+#                                Other subroutines                             #
+################################################################################
+
+################################################################################
+# set file user, group and permissions
 #
-# sets user, group and rights of a file.
-# If $fgroup set to 'null' this function will get the GID from /etc/passwd.
+# Note:
+#
+# If $fgroup is set to 'null' this function will get the GID from /etc/passwd.
 #
 # @author   VHCS/ispCP Team
 # @author	Benedikt Heintel
 # @version	1.1
 # @access	public
-# @param	string $fname	File or Folder Name
-# @param	mixed $fuser	Linux User or UserID
-# @param	mixed $fgroup	Linux Group, GroupID or 'null'
+# @param	string $fname File or Folder Name
+# @param	mixed $fuser Linux User or UserID
+# @param	mixed $fgroup Linux Group, GroupID or 'null'
 # @param	int $fperms	Linux Permissions
-# @return	int success (0) or error (-1)
+# @return	int on success, -1 otherwise
+#
 sub setfmode {
 
 	push_el(\@main::el, 'setfmode()', 'Starting...');
@@ -352,7 +396,7 @@ sub setfmode {
 	my @udata = ();
 	my @gdata = ();
 
-	my ($uid, $gid) = (undef, undef);
+	my ($uid, $gid);
 
 	# get UID of user
 	if ($fuser =~ /^\d+$/) {
@@ -415,6 +459,11 @@ sub setfmode {
 	0;
 }
 
+################################################################################
+# Get file content in string
+#
+# @return int 0 on success, -1 otherwise
+#
 sub get_file {
 
 	push_el(\@main::el, 'get_file()', 'Starting...');
@@ -438,12 +487,9 @@ sub get_file {
 		return 1;
 	}
 
-	my $res = open(F, '<', $fname);
-
-	if (!defined $res) {
+	if (!open(F, '<', $fname)) {
 		push_el(
-			\@main::el, 'get_file()',
-			"ERROR: Can't open '$fname' for reading: $!"
+			\@main::el, 'get_file()', "ERROR: Can't open '$fname' for reading: $!"
 		);
 
 		return 1;
@@ -459,22 +505,29 @@ sub get_file {
 	return (0, $line);
 }
 
-##
-# store_file
-# Changes the content of a file and sets user, group and rights of that file.
-# If $fgid set to 'null' this function will get the GID from /etc/passwd.
+################################################################################
+# Stores a string in a file
+#
+# This subroutine allow to store a string in a file. If the file already exit,
+# all the current content will be replaced by the new one from the string.
+#
+# Note:
+#
+# The file is created with rights and permissions defined during the call. If
+# the group is not defined, he will be get from the /etc/passwd file.
 #
 # @author		VHCS/ispCP Team
 # @copyright 	2006-2009 by ispCP | http://isp-control.net
-# @version		1.0
+# @version		1.1
 #
 # @access	public
-# @param	String 	$fname	File Name
-# @param	String	$fdata	Data to write to file
-# @param	Mixed 	$fuser	Linux User or UserID
-# @param	Mixed	$fgroup	Linux Group, GroupID or null
-# @param	int		$fperms	Linux Permissions
-# @return	int				success (0) or error (-1)
+# @param	scalar $fname File Name
+# @param	scalar $fdata Data to write to file
+# @param	mixed $fuser Linux User or UserID
+# @param	mixed $fgroup Linux Group, GroupID or null
+# @param	int $fperms Linux Permissions
+# @return	int	 0 on success, -1 otherwise
+#
 sub store_file {
 
 	push_el(\@main::el, 'store_file()', 'Starting...');
@@ -484,8 +537,7 @@ sub store_file {
 	if (!defined $fname || $fname eq '' || $fuid eq '' || $fgid eq '' ||
 		$fperms eq '') {
 		push_el(
-			\@main::el,
-			'store_file()',
+			\@main::el, 'store_file()',
 			"ERROR: Undefined input data, fname: |$fname|, fdata, " .
 				"fuid: '$fuid', fgid: '$fgid', fperms: '$fperms'"
 		);
@@ -493,9 +545,7 @@ sub store_file {
 		return -1;
 	}
 
-	my $res = open(F, '>', $fname);
-
-	if (!defined($res)) {
+	if (!open(F, '>', $fname)) {
 		push_el(
 			\@main::el, 'store_file()',
 			"ERROR: Can't open file |$fname| for writing: $!"
@@ -515,18 +565,21 @@ sub store_file {
 	0;
 }
 
-##
-# save_file
-# Changes the content of a file.
+################################################################################
+# Save a string in a file
+#
+# Note:
+#
+# This subroutine don't set any user/group and permissions on the file.
 #
 # @author		VHCS/ispCP Team
 # @copyright 	2006-2009 by ispCP | http://isp-control.net
-# @version		1.0
+# @version		1.1
 #
 # @access	public
-# @param	String 	$fname	File Name
-# @param	String	$fdata	Data to write to file
-# @return	int				success (0) or error (-1)
+# @param	scalar $fname File Name
+# @param	scalar $fdata Data to write to file
+# @return	int	0 on success -1 otherwise
 sub save_file {
 
 	push_el(\@main::el, 'save_file()', 'Starting...');
@@ -542,9 +595,7 @@ sub save_file {
 		return -1;
 	}
 
-	my $res = open(F, '>', $fname);
-
-	if (!defined $res) {
+	if (!open(F, '>', $fname)) {
 		push_el(
 			\@main::el, 'save_file()',
 			"ERROR: Can't open file |$fname| for writing: $!"
@@ -561,6 +612,12 @@ sub save_file {
 	0;
 }
 
+################################################################################
+# Delete a file
+#
+# @param scalar $fname File name to be deleted
+# @return 0 on sucess, -1 otherwise
+#
 sub del_file {
 
 	push_el(\@main::el, 'del_file()', 'Starting...');
@@ -726,12 +783,17 @@ sub del_zone {
 	return $bz.$az;
 }
 
-# Execute a system command
+################################################################################
+# Execute an external command
 #
-# If you want gets the real exit code, use the sys_command_rs()
-# subroutine instead
+# Note:
 #
+# If you want gets the real exit code from the external command, use the
+# sys_command_rs() subroutine instead
+#
+# @param scalar $cmd External command to be executed
 # @return int 0 on success, -1 otherwise
+#
 sub sys_command {
 
 	my ($cmd) = @_;
@@ -760,10 +822,12 @@ sub sys_command {
 	}
 }
 
+################################################################################
+# Execute an external command and return the real exit code
 #
-# Execute a system command and return the real exit code
-#
+# @param scalar $cmd External command to be executed
 # @return int command exit code
+#
 sub sys_command_rs {
 
 	my ($cmd) = @_;
@@ -781,9 +845,12 @@ sub sys_command_rs {
 	return $exit_value;
 }
 
-# Execute a system command and return error message from the command on error
+################################################################################
+# Execute an external command and return any output from her
 #
+# @param scalar $cmd External command to be executed
 # @return 0 on success, [-1, errMsg] otherwise
+#
 sub sys_command_stderr {
 
 	push_el(\@main::el, 'sys_command_stderr()', 'Starting...');
@@ -809,7 +876,10 @@ sub sys_command_stderr {
 sub make_dir {
 
 	push_el(\@main::el, 'make_dir()', 'Starting...');
-	push_el(\@main::el, 'make_dir()', 'WARNING: This function is deprecated. Use makepath() instead ...');
+	push_el(
+		\@main::el, 'make_dir()',
+		'WARNING: This function is deprecated. Use makepath() instead ...'
+	);
 
 	my ($dname, $duid, $dgid, $dperms) = @_;
 
@@ -867,10 +937,10 @@ sub make_dir {
 }
 
 ################################################################################
-# Delete directory
+# Delete a directory
 #
 # @param scalar $dname Directory to be deleted
-# @return int 0 on success
+# @return int 0 on success, -1 otherwise
 #
 sub del_dir {
 
@@ -1705,6 +1775,11 @@ sub decrypt_db_password {
 	return (0, $plaintext);
 }
 
+################################################################################
+# Setup the global database variables and redefines the DSN
+#
+# @return int 0
+#
 sub setup_main_vars {
 
 	push_el(\@main::el, 'setup_main_vars()', 'Starting...');
@@ -1736,6 +1811,20 @@ sub setup_main_vars {
 	0;
 }
 
+################################################################################
+# Load all configuration parameters from a specific configuration file
+#
+# This subroutine load all configuration parameters from a specific file where
+# each of them are represented by a pair of key/value separated by the equal
+# sign.
+#
+# This subroutine also calls the setup_main_vars() subroutine that setup all the
+# global database variables and redefines the DSN.
+#
+# @param [scalar $file_name filename from where the configuration must be loaded]
+# Default value is the main ispCP configuration file (ispcp.conf)
+# @return int 0 on success, 1 otherwise
+#
 sub get_conf {
 
 	push_el(\@main::el, 'get_conf()', 'Starting...');
@@ -1771,6 +1860,20 @@ sub get_conf {
 	0;
 }
 
+################################################################################
+# Store a configuration parameter in the global $main::cfg_reg hash
+#
+# The $main::cfg_reg global hash is used by the store_conf() subroutine to
+# update the configuration parameters in a specific file.
+#
+# Note: For now, it's useless to add new configuration parameters that don't
+# already exist in the updated configuration file due to the current
+# implementation of the store_conf() subroutine that don't allows that.
+#
+# @param scalar $name Configuration parameter key
+# @param scalar $value Configuration parameter value
+# @return int 0 on success, 1 otherwise
+#
 sub set_conf_val {
 
 	my ($name, $value) = @_;
@@ -1790,13 +1893,27 @@ sub set_conf_val {
 	0;
 }
 
+################################################################################
+# Store all cached configuration parameters in the ispcp.conf file
+#
+# This function updates the configuration settings to a file with those stored
+# in the global $main::cfg_reg hash . Only parameters that have a different
+# value are updated.
+#
+# Note:
+#
+# This subroutine is currently not able to add configuration settings that do
+# not exist in the configuration file.
+#
+# @param [scalar optional filename where the configuration must be stored]
+# Default value is the main ispCP configuration file (ispcp.conf)
+# @return int 0 on success, 1 otherwise
+#
 sub store_conf {
 
 	push_el(\@main::el, 'store_conf()', 'Starting...');
 
-	my ($key, $value, $fline, $rs) = (undef, undef, undef, undef);
-	my $rwith = undef;
-	my $file_name = undef;
+	my ($key, $value, $rwith, $file_name);
 
 	if (defined $_[0]) {
 		$file_name = $_[0];
@@ -1804,7 +1921,7 @@ sub store_conf {
 		$file_name = $main::cfg_file;
 	}
 
-	($rs, $fline) = get_file($file_name);
+	my ($rs, $fline) = get_file($file_name);
 	return 1 if ($rs != 0);
 
 	if (scalar(keys(%main::cfg_reg)) > 0) {
@@ -2258,6 +2375,7 @@ sub sort_domains {
 ## @param   scalarref $src String that contains SN tag to be replaced
 ## @param   scalarref|refscalarref $wrkFile String that contains current SN tag
 ## @return  int on success, negative int otherwise
+#
 sub getSerialNumber {
 
 	push_el(\@main::el, 'getSerialNumber()', 'Begin...');
@@ -2408,11 +2526,12 @@ $errmsg
 ## @author Daniel Andreca <sci2tech@gmail.com>
 ## @since   1.0.7
 ## @version 1.0.7
-## @param	string $dname File Name
+## @param	scalar $dname File Name
 ## @param	mixed $duid	Linux User or UserID
 ## @param	mixed $dgid	Linux Group, GroupID or null
 ## @param	int $dperms	Linux Permissions
 ## @return	int	0 on success, -1 otherwise
+#
 sub makepath {
 
 	push_el(\@main::el, 'makepath()', 'Starting...');
