@@ -37,7 +37,7 @@
 use strict;
 use warnings;
 use version 0.74;
-use DateTime;
+#~ use DateTime;
 use DateTime::TimeZone;
 
 # Hide the 'used only once: possible typo' warnings
@@ -1097,7 +1097,7 @@ sub setup_fastcgi_modules {
 			if ($main::cfg{'PHP_FASTCGI'} eq 'fastcgi') {
 				# Ensures that the unused ispcp fcgid module loader is disabled
 				$rs = sys_command_rs(
-					"/usr/sbin/a2dismod ispcp_fcgid $main::rlogfile"
+					"/usr/sbin/a2dismod fcgid_ispcp $main::rlogfile"
 				);
 				return $rs if($rs != 0);
 
@@ -1110,7 +1110,7 @@ sub setup_fastcgi_modules {
 				# Ensures that the unused ispcp fastcgi ispcp module loader is
 				# disabled
 				$rs = sys_command_rs(
-					"/usr/sbin/a2dismod ispcp_fastcgi $main::rlogfile"
+					"/usr/sbin/a2dismod fastcgi_ispcp $main::rlogfile"
 				);
 				return $rs if($rs != 0);
 
@@ -2889,7 +2889,7 @@ sub setup_cleanup {
 #
 # @return void
 #
-sub additional_tasks() {
+sub additional_tasks{
 
 	push_el(\@main::el, 'additional_tasks()', 'Starting...');
 
@@ -3011,9 +3011,9 @@ sub check_sql_connection {
 
 	push_el(\@main::el, 'sql_check_connections()', 'Starting...');
 
-	my($userName, password) = @_;
+	my($userName, $password) = @_;
 
-	if(!defined $username && !defined $password) {
+	if(!defined $userName && !defined $password) {
 		push_el(
 			\@main::el, 'sql_check_connections()',
 			'[ERROR] Undefined login credential!'
@@ -3023,7 +3023,7 @@ sub check_sql_connection {
 	}
 
 	# Define the DSN
-	@main::db_connect = ("DBI:mysql::$host", $user, $password);
+	@main::db_connect = ("DBI:mysql:$main::db_name:$main::db_host", $userName, $password);
 	# We force reconnection to the database by removing the current
 	$main::db = undef;
 
@@ -3033,7 +3033,7 @@ sub check_sql_connection {
 	);
 
 	# @todo really needed ?
-	($rs) = doSQL('SHOW databases;');
+	my($rs, $rdata) = doSQL('SHOW databases;');
 	return $rs if ($rs != 0);
 
 	# We force reconnection to the database by resetting the default DSN

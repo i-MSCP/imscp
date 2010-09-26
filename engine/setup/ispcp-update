@@ -53,7 +53,7 @@ require 'ispcp-setup-methods.pl';
 
 # User entries
 $main::logfile = '/tmp/ispcp-update.log';
-$main::rlogfile = '>> $main::logfile 2>&1';
+$main::rlogfile = ">> $main::logfile 2>&1";
 
 ################################################################################
 #                                 Subroutines                                  #
@@ -181,6 +181,8 @@ sub load_old_ispcp_cfg {
 	$main::ua{'old_cfg_file'} = $old_ispcp_cfg_file;
 
 	push_el(\@main::el, 'load_old_ispcp_config()', 'Ending...');
+
+	0;
 }
 
 ################################################################################
@@ -371,7 +373,7 @@ sub cfg_recovery_process {
 
 			$msg = colored(['bold blue'], "\n\t[NOTICE] ") .
 				"The setting '$_' can't be handle by\n\tthe recovery process!" .
-				"\n\n\tPlease, set it manually in your $main::ua{'old_cfg_file'}"
+				"\n\n\tPlease, set it manually in your $main::ua{'old_cfg_file'}".
 				 "and\n\tre-run this script.\n\n\tThe program will end now !\n";
 
 			exit_msg(1, $msg);
