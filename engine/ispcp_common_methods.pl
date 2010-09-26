@@ -225,7 +225,6 @@ sub dump_el {
 	my $el_data;
 
 	while (defined($el_data = pop_el(\@main::el))) {
-		# sub_name      $msg
 		my ($sub_name, $msg) = split(/$main::el_sep/, $el_data);
 
 		if ($fname eq 'stdout') {
@@ -355,13 +354,13 @@ sub doHashSQL {
 #
 # Note:
 #
-# If $fgroup is set to 'null' this function will get the GID from /etc/passwd.
+# If $fgroup is set to 'null' this subroutine will get the GID from /etc/passwd.
 #
 # @author   VHCS/ispCP Team
 # @author	Benedikt Heintel
 # @version	1.1
 # @access	public
-# @param	string $fname File or Folder Name
+# @param	scalar $fname File or Folder Name
 # @param	mixed $fuser Linux User or UserID
 # @param	mixed $fgroup Linux Group, GroupID or 'null'
 # @param	int $fperms	Linux Permissions
