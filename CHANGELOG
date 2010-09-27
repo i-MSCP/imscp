@@ -4,6 +4,8 @@ ispCP ω 1.0.7 ChangeLog
 2010-09-27 Benedikt Heintel
 	- GUI:
 		* Fixed MX record created as local
+	- THEMES:
+		* Added PNG fix for Internet Explorer
 
 2010-09-26 Laurent Declercq
 	- ENGINE:
