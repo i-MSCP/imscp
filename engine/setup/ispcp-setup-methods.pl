@@ -207,112 +207,6 @@ sub ask_db_host {
 }
 
 ################################################################################
-## check_hostname
-##
-## Check if hostname is valid
-##
-## @author Daniel Andreca <sci2tech@gmail.com>
-## @since   1.0.7
-## @version 1.0.7
-## @param string $hName hostname
-##
-## @return int 0 on success, -1 otherwise
-
-sub check_hostname{
-	push_el(\@main::el, 'check_hostname()', 'Starting...');
-	my ($hName) = @_;
-
-	return -1 if(check_length($hName, 255, 1));
-	if(check_chars($hName,'^[\.\-]|[^a-zA-Z0-9\-\.]|[\.\-]$')){
-		print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
-			"'$hName' is not a valid hostname!\n".
-			"Check http://en.wikipedia.org/wiki/Hostname about valid hostname\n";
-		return -1
-	}
-
-	foreach(split(/\./, $hName)){
-		return -1 if(check_label($_));
-	}
-	push_el(\@main::el, 'check_hostname()', 'Ending...');
-
-	0;
-}
-################################################################################
-## check_label
-##
-## Check if label is valid
-##
-## @author Daniel Andreca <sci2tech@gmail.com>
-## @since   1.0.7
-## @version 1.0.7
-## @param string $label label
-##
-## @return int 0 on success, -1 otherwise
-
-sub check_label {
-
-	push_el(\@main::el, 'check_label()', 'Starting...');
-
-	my ($label) = @_;
-
-	push_el(\@main::el, 'check_label()', "\$label:$label");
-
-	return -1 if(check_length($label, 63, 1));
-
-	if(check_chars($label,'^\-|[^a-zA-Z0-9\-]|\-$')){
-		print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
-			"'$label' is not a valid label for hostname!\n".
-			"Check http://en.wikipedia.org/wiki/Hostname about valid hostname\n";
-		return -1
-	}
-
-
-	push_el(\@main::el, 'check_label()', 'Ending...');
-
-	0;
-
-}
-
-################################################################################
-## check_chars
-##
-## Check if string contain restricted characters
-##
-## @author Daniel Andreca <sci2tech@gmail.com>
-## @since   1.0.7
-## @version 1.0.7
-## @param string $string string
-## @param regexp $forbidden regexp
-##
-## @return int 0 on success, -1 otherwise
-
-sub check_chars {
-	push_el(\@main::el, 'check_chars()', 'Starting...');
-
-	my ($string, $forbidden) = @_;
-
-	return -1 if($string =~ m/$forbidden/);
-
-	push_el(\@main::el, 'check_label()', 'Ending...');
-
-	0;
-}
-
-sub check_length{
-	push_el(\@main::el, 'check_length()', 'Starting...');
-	my ($string, $maxLength, $minLength) = @_;
-
-	 if(length($string) > $maxLength || ($minLength && $minLength>length($string))){
-		print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
-			"Length for '$string' is bigger or smaller then allowed size 1..63 characters!\n";
-		 return -1;
-	 }
-
-	push_el(\@main::el, 'check_length()', 'Ending...');
-
-	0;
-}
-################################################################################
 # Ask for ispCP database name
 #
 # @return void
@@ -621,6 +515,7 @@ sub ask_second_dns {
 # Ask for adding nameserver in the resolv.conf file
 #
 # @return int 0 on success, -1 otherwise
+# @todo finish implementation
 #
 sub ask_resolver {
 
@@ -3088,9 +2983,171 @@ sub stop_services {
 ################################################################################
 
 ################################################################################
+# Check hostname length and syntax
+#
+# Check if a hostname is valid according RFC 1123
+#
+# For now, the rule is as follow:
+#
+# 1. A host name  is composed of series of labels concatenated with dots
+# 2. The entire hostname (including the delimiting dots) has a maximum of 255
+# characters.
+#
+# Note: See the check_label() subroutine for more information about labels
+# syntax and length.
+#
+# @author Daniel Andreca <sci2tech@gmail.com>
+# @since   1.0.7 (rc2)
+# @version 1.0.0
+# @param string $hName hostname
+# @return int 0 on success, -1 otherwise
+# @todo Internationalized domain name (IDNA)
+#
+sub check_hostname {
+
+	push_el(\@main::el, 'check_hostname()', 'Starting...');
+
+	my ($hName) = @_;
+
+	if(check_chars($hName,'^[\.\-]|[^a-zA-Z0-9\-\.]|[\.\-]$') ||
+		check_length($hName, 255, 1)){
+
+		print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
+			"'$hName' is not a valid hostname!\n".
+			"Check http://en.wikipedia.org/wiki/Hostname about valid hostname\n";
+
+		return -1
+	}
+
+	# Check hostname label
+	for (split(/\./, $hName)){
+		return -1 if(check_label($_));
+	}
+	push_el(\@main::el, 'check_hostname()', 'Ending...');
+
+	0;
+}
+################################################################################
+# Check a (host name) label length and syntax
+#
+# Check if a label is valid according RFC 1123
+#
+# For now, the rule is as follow:
+#
+# 1. A (host name) label can start or end with a letter or a number
+# 2. A (host name) label MUST NOT start or end with a '-' (dash)
+# 3. A (host name) label MUST NOT consist of all numeric values
+# 4. A (host name) label can be up to 63 characters
+#
+# @author Daniel Andreca <sci2tech@gmail.com>
+# @since   1.0.7 (rc2)
+# @version 1.0.0
+# @param string $label Label to be checked
+# @return int 0 on success, -1 otherwise
+# @todo (At Daniel) Please check the rule 3)
+#
+sub check_label {
+
+	push_el(\@main::el, 'check_label()', 'Starting...');
+
+	my ($label) = @_;
+
+	if(!defined $label) {
+		push_el(\@main::el, 'check_label()', '[ERROR] Missing argument!);
+
+		return -1
+	}
+
+
+	# Check the label length
+	return -1 if(check_length($label, 63, 1));
+
+	# Check the label syntax
+	if(check_chars($label, '^\-|[^a-zA-Z0-9\-]|\-$')){
+		print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
+			"'$label' is not a valid label for hostname!\n".
+			"Check the RFC 1123 for more information about valid syntax!\n";
+
+		return -1
+	}
+
+	push_el(\@main::el, 'check_label()', 'Ending...');
+
+	0;
+
+}
+
+################################################################################
+# Checks the characters in a string
+#
+# This subroutine does a check on a string to be sure that all characters are
+# valid.
+#
+# @author Daniel Andreca <sci2tech@gmail.com>
+# @since   1.0.7 (rc2)
+# @version 1.0.0
+# @param string $string string to be checked
+# @param regexp $forbidden Regexp that match un-allowed characters
+# @return int 0 on success, -1 otherwise
+#
+sub check_chars {
+
+	push_el(\@main::el, 'check_chars()', 'Starting...');
+
+	my ($string, $forbidden) = @_;
+
+	return -1 if($string =~ m/$forbidden/);
+
+	push_el(\@main::el, 'check_label()', 'Ending...');
+
+	0;
+}
+
+################################################################################
+# Check a string length
+#
+# This subroutine does a check on a string length.
+#
+# @author Daniel Andreca <sci2tech@gmail.com>
+# @since   1.0.7 (rc2)
+# @version 1.0.0
+# @param string $string to be checked
+# @param int $maxLength Max. string length
+# @param int $minLength Min. string length
+# @return int 0 on success, -1 otherwise
+#
+sub check_length{
+
+	push_el(\@main::el, 'check_length()', 'Starting...');
+
+	my ($string, $maxLength, $minLength) = @_;
+
+	if(!defined $string || !defined $maxLength || !defined $minLength) {
+		push_el(\@main::el, 'check_length()', '[ERROR] Missing argument!');
+
+		return -1;
+	}
+
+	my $labelLength = length $string;
+
+	if($labelLength > $maxLength || $labelLength < $minLength) {
+		print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
+			"Length for '$string' is bigger or smaller then allowed size: " .
+			"$minLength..$maxLength!\n";
+
+		 return -1;
+	}
+
+	push_el(\@main::el, 'check_length()', 'Ending...');
+
+	0;
+}
+
+################################################################################
 # Check the format of an IpV4 address
 #
 # @param IpV4 address (dot-decimal notation)
+# @return int 0 on success, -1 otherwise
 #
 sub check_eth {
 
@@ -3100,7 +3157,7 @@ sub check_eth {
 		($3 >= 0) && ($3 <= 255) && ($4 >  0) && ($4 <  255)
 	);
 
-	1;
+	-1;
 }
 
 ################################################################################
@@ -3113,8 +3170,8 @@ sub check_eth {
 #
 # This subroutine automatically restore the previous DSN at end.
 #
-# @param scalar $user SQL username
-# @param scalar $password SQL user password
+# @param string $user SQL username
+# @param string $password SQL user password
 # @return int 0 on success, other on failure
 #
 sub check_sql_connection {
@@ -3133,7 +3190,10 @@ sub check_sql_connection {
 	}
 
 	# Define the DSN
-	@main::db_connect = ("DBI:mysql:$main::db_name:$main::db_host", $userName, $password);
+	@main::db_connect = (
+		"DBI:mysql:$main::db_name:$main::db_host", $userName, $password
+	);
+
 	# We force reconnection to the database by removing the current
 	$main::db = undef;
 
@@ -3159,9 +3219,10 @@ sub check_sql_connection {
 ################################################################################
 
 ################################################################################
-# Get and return the fully qualified hostname
+# Get and return the fully qualified system hostname
 #
 # @return mixed [0, string] on success, -1 on failure
+#
 sub get_sys_hostname {
 
 	push_el(\@main::el, 'get_sys_hostname()', 'Starting...');
@@ -3177,7 +3238,8 @@ sub get_sys_hostname {
 ################################################################################
 # Convenience subroutine to print a title
 #
-# @param string title to be printed (without EOL)
+# @param string $title title to be printed (without EOL)
+# @return void
 #
 sub title {
 	my $title = shift;
@@ -3187,7 +3249,8 @@ sub title {
 ################################################################################
 # Convenience subroutine  to print a subtitle
 #
-# @param string subtitle to be printed (without EOL)
+# @param string $subtitle subtitle to be printed (without EOL)
+# @return void
 #
 sub subtitle {
 	my $subtitle = shift;
@@ -3199,6 +3262,7 @@ sub subtitle {
 
 ################################################################################
 # Convenience subroutine to insert a new line
+# @return void
 #
 sub spacer {
 	print STDOUT "\n";
@@ -3206,6 +3270,8 @@ sub spacer {
 
 ################################################################################
 # Can be used in a loop to reflect the action progression
+#
+# @return void
 #
 sub progress {
 	print STDOUT '.';
@@ -3217,9 +3283,10 @@ sub progress {
 #
 # Note: Should be always called after the subtitle subroutine
 #
-# Param: int action status
-# [Param: string If set to 'exit_on_error', the program will end up] if the exit
-# status is a non-zero value
+# @param int $status Action status
+# [@param string $exitOnError If set to 'exit_on_error', the program will end up
+# if the exit status is a non-zero value]
+#
 sub print_status {
 
 	my ($status, $exitOnError) = @_;
@@ -3246,8 +3313,9 @@ sub print_status {
 ################################################################################
 # Exit with a message
 #
-# [param: int exit code] (default set to 1)
-# [param: string optional user message]
+# [@param int $exitCode exit code (default set to 1)]
+# [@param: string $userMsg Optional user message]
+# @return void
 #
 sub exit_msg {
 
@@ -3307,6 +3375,7 @@ sub exit_msg {
 #  engine/setup directory.
 #
 # @param mixed Argument that will be be passed to the maintainer script
+# @return int 0 on success, other otherwise
 #
 sub preinst {
 
@@ -3346,6 +3415,7 @@ sub preinst {
 #  engine/setup directory.
 #
 # @param mixed Argument that will be be passed to the maintainer script
+# @return int 0 on success, other otherwise
 #
 sub postinst {
 
