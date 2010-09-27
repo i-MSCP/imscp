@@ -73,49 +73,4 @@ case "$1" in
 	;;
 esac
 
-exit 0ht to be. If the first call failed, or aborted
-# half way through for some reason, the second call should merely do the things
-# that were left undone the first time, if any, and exit with a success status
-# if if everything is OK.
-
-set -e
-
-# Including the Maintainer Helper script
-SELFDIR=$(dirname "$0")
-. $SELFDIR/maintainer-helper.sh
-
-case "$1" in
-
-	configure)
-
-	# Remove old ISPCP_LOGFILE if it exists
-	$CMD_RM -f $ISPCP_LOGFILE
-
-	# Fix for #2224 Postgrey - Port changed for 10023 on some distributions
-	# @author Laurent Declercq <laurent.declercq@nuxwin.com>
-	# @since  1.0.7 (rc2)
-	#
-	# NOTE: If Ubuntu 8.04 LTS is no longer supported, this path can be removed
-	if $CMD_GREP -q "--inet=60000" /etc/default/postgrey; then
-
-		print_title "Postgrey configuration:"
-
-        # Updating the ispcp.conf file here to revert back to the old port
-        if test -f /etc/ispcp.ispcp.old.conf; then
-                $CMD_SED -i s'/\(PORT_POSTGREY.*=.*\)10023/\160000/' \
-                 /etc/ispcp.ispcp.old.conf >> $ISPCP_LOGFILE 2>&1 || failed
-        fi
-
-        $CMD_SED -i s'/\(PORT_POSTGREY.*=.*\)10023/\160000/' \
-			/etc/ispcp.ispcp.conf >> $ISPCP_LOGFILE 2>&1 || failed
-
-        print_status
-	fi
-
-	;;
-	*)
-		exit 0
-	;;
-esac
-
 exit 0
