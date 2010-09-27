@@ -8,7 +8,7 @@
   <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css" />
   <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
 <!--[if lt IE 7.]>
-<script defer type="text/javascript" src="pngfix.js"></script>
+<script defer type="text/javascript" src="{THEME_COLOR_PATH}/css/pngfix.js"></script>
 <![endif]-->
   <script type="text/javascript">
 <!--
