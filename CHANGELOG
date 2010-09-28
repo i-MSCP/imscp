@@ -1,12 +1,18 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-09-27 Benedikt Heintel
+	- GUI:
+		* Fixed MX record created as local
+	- THEMES:
+		* Added PNG fix for Internet Explorer
+
 2010-09-26 Laurent Declercq
 	- ENGINE:
-		- Updated documentation for ispcp_common_methods.pl script
-		- Some refactorization tasks in the ispcp_common_methods.pl script
+		* Updated documentation for ispcp_common_methods.pl script
+		* Some refactorization tasks in the ispcp_common_methods.pl script
 	- THEMES:
-		- Revert back on r3332 (jQuery was downgraded to version 1.4.1)
+		* Revert back on r3332 (jQuery was downgraded to version 1.4.1)
 
 2010-09-25 Daniel Andreca
 	- THEMES:

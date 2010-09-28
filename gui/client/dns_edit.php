@@ -62,7 +62,8 @@ $tpl->assign(
 		'TR_CANCEL'				=> tr('Cancel'),
 		'TR_ADD'				=> tr('Add'),
 		'TR_DOMAIN'				=> tr('Domain'),
-		'TR_EDIT_DNS'			=> ($add_mode) ? tr("Add DNS zone's record (EXPERIMENTAL)") : tr("Edit DNS zone's record (EXPERIMENTAL)"),
+		'TR_EDIT_DNS'			=> ($add_mode) ? tr("Add DNS zone's record (EXPERIMENTAL)") :
+										tr("Edit DNS zone's record (EXPERIMENTAL)"),
 		'TR_DNS'				=> tr("DNS zone's records"),
 		'TR_DNS_NAME'			=> tr('Name'),
 		'TR_DNS_CLASS'			=> tr('Class'),
@@ -157,15 +158,15 @@ function create_options($data, $value = null) {
 	reset($data);
 
 	foreach ($data as $item) {
-		$res .= '<option value="'.$item.'"'.(($item == $value) ? $cfg->HTML_SELECTED : '') . '>' . $item . '</option>';
+		$res .= '<option value="' . $item . '"' .
+				(($item == $value) ? $cfg->HTML_SELECTED : '') . '>' . $item .
+				'</option>';
 	}
 	return $res;
 }
 
 // Show user data
-
 function not_allowed() {
-
 	$_SESSION['dnsedit'] = '_no_';
 	user_goto('domains_manage.php');
 }
@@ -278,13 +279,21 @@ function gen_editdns_page(&$tpl, $edit_id) {
 		$res = exec_query($sql, $query, array('domain_id' => $dmn_id, 'state' => $cfg->ITEM_ORDERED_STATUS));
 		$sel = '';
 		while ($row = $res->fetchRow()) {
-			$sel.= '<option value="'.$row['alias_id'].'">'.$row['domain_name'].'</option>';
+			$sel.= '<option value="' . $row['alias_id'] . '">' .
+					$row['domain_name'] . '</option>';
 		}
 		$tpl->assign('SELECT_ALIAS', $sel);
 
 	} else {
-		$res = exec_query($sql, "SELECT * FROM `domain_dns` WHERE `domain_dns_id` = ? AND `domain_id` = ?", array($edit_id, $dmn_id));
-		if ( $res->recordCount() <= 0)
+		$query = "SELECT * FROM
+					`domain_dns`
+				WHERE
+					`domain_dns_id` = ?
+				AND
+					`domain_id` = ?
+			;";
+		$res = exec_query($sql, $query, array($edit_id, $dmn_id));
+		if ($res->recordCount() <= 0)
 		not_allowed();
 		$data = $res->fetchRow();
 		$tpl->assign('ADD_RECORD', '');
@@ -330,7 +339,6 @@ function gen_editdns_page(&$tpl, $edit_id) {
 }
 
 // Check input data
-
 function tryPost($id, $data) {
 
 	if (array_key_exists($id, $_POST)) {
@@ -419,6 +427,12 @@ function validate_SRV($record, &$err, &$dns, &$text) {
 }
 
 function validate_MX($record, &$err, &$text) {
+
+	// Add a dot in the end if not
+	if (substr($record['dns_srv_host'], -1) != '.') {
+		$record['dns_srv_host'] .= '.';
+	}
+
 
 	if (!preg_match('~^([\d]+)$~', $record['dns_srv_prio'])) {
 		$err .= tr('Priority must be a number!');
