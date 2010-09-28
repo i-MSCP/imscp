@@ -783,38 +783,72 @@ sub del_zone {
 }
 
 ################################################################################
-# Execute an external command
+#                         Subroutine for handle external commands              #
+################################################################################
+
+################################################################################
+# Get and return external command exit value
+#
+# This is an merely subroutine to get the external command exit value. If the
+# command failed to execute or died with any signal, a negative integer is
+# returned. In all other cases, the real exit value from the external command is
+# returned. 
+#
+# @return int -1 if the command failed to executed or died with any signal,
+# external command exit value otherwise
+#
+sub getCmdExitValue() {
+
+	my $exitValue = -1;
+
+	if ($? == -1) {
+ 		push_el(
+ 		    \@main::el, "[ERROR] Failed to execute external command: $!\n";
+	} elsif ($? & 127) {
+ 		push_el(
+ 		    \@main::el,
+ 		    sprintf "[ERROR] External command died with signal %d, %s coredump\n",
+ 		    ($? & 127), ($? & 128) ? 'with' : 'without'
+ 	    );
+	} else {
+		$exitValue = $? >> 8;
+
+		push_el(
+			\@main::el,
+			"[DEBUG] External command exited with value $exitValue\n",
+		);
+	}
+
+	$exitValue;
+}
+
+################################################################################
+# Execute an external command and show
 #
 # Note:
 #
-# If you want gets the real exit code from the external command, use the
-# sys_command_rs() subroutine instead
+# If you want gets the real exit value from the external command, you must use
+# the sys_command_rs() subroutine.
 #
-# @param scalar $cmd External command to be executed
+# @param string $cmd External command to be executed
 # @return int 0 on success, -1 otherwise
 #
 sub sys_command {
 
-	my ($cmd) = @_;
-
 	push_el(\@main::el, 'sys_command()', 'Starting...');
 
-	my $result = system($cmd);
+	my ($cmd) = @_;
 
-	my $exit_value  = $? >> 8;
-	my $signal_num  = $? & 127;
-	my $dumped_core = $? & 128;
+	system($cmd);
 
-	if ($exit_value == 0) {
+	if (getCmdExitValue() == 0) {
 		push_el(\@main::el, "sys_command('$cmd')", 'Ending...');
 
 		return 0;
-
 	} else {
 		push_el(
-			\@main::el,
-			'sys_command()',
-			"ERROR: External command '$cmd' returned '$exit_value' status !"
+			\@main::el, 'sys_command()',
+			"ERROR: External command '$cmd' exited with value $exit_value !"
 		);
 
 		return -1;
@@ -822,9 +856,9 @@ sub sys_command {
 }
 
 ################################################################################
-# Execute an external command and return the real exit code
+# Execute an external command and return the real exit value
 #
-# @param scalar $cmd External command to be executed
+# @param string $cmd External command to be executed
 # @return int command exit code
 #
 sub sys_command_rs {
@@ -833,21 +867,17 @@ sub sys_command_rs {
 
 	push_el(\@main::el, 'sys_command_rs()', 'Starting...');
 
-	my $result = system($cmd);
-
-	my $exit_value = $? >> 8;
-	my $signal_num = $? & 127;
-	my $dumped_core = $? & 128;
+	system($cmd);
 
 	push_el(\@main::el, 'sys_command_rs()', 'Ending...');
 
-	return $exit_value;
+	return getCmdExitValue();
 }
 
 ################################################################################
 # Execute an external command and return any output from her
 #
-# @param scalar $cmd External command to be executed
+# @param string $cmd External command to be executed
 # @return 0 on success, [-1, errMsg] otherwise
 #
 sub sys_command_stderr {
@@ -858,14 +888,7 @@ sub sys_command_stderr {
 
 	my $stderr = `$cmd 2>&1`;
 
-	my $exit_value = $? >> 8;
-	my $signal_num = $? & 127;
-	my $dumped_core = $? & 128;
-
-	if($exit_value != 0) {
-		push_el(\@main::el, 'sys_command_stderr()', "ERROR: $stderr");
-		return (-1, $stderr);
-	}
+	return (-1, $stderr) if getCmdExitValue() != 0;
 
 	push_el(\@main::el, 'sys_command_stderr()', 'Ending...');
 
