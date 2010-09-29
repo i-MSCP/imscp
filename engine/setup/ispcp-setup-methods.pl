@@ -71,7 +71,7 @@ sub ask_hostname {
 	$rdata = $hostname if $rdata eq '';
 
 	if(isValidHostname($rdata)) {
-		@labels = split '\.', $rdata;
+		my @labels = split '\.', $rdata;
 
 		if(@labels < 3) {
 			print STDOUT colored( ['bold yellow'], "\n\t[WARNING] ") .
@@ -205,7 +205,7 @@ sub ask_db_host {
 
 	if($rdata ne 'localhost' && !isValidHostname($rdata)) {
 		print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
-			"Wrong SQL hostname! See RFC 1123 for more information...\n"
+			"Wrong SQL hostname! See RFC 1123 for more information...\n";
 
 		return -1;
 	}
@@ -3021,13 +3021,13 @@ sub isValidEmail {
 	}
 
 	# split email address on username and hostname
-	my($username, $domain) = $rdata =~ /^(.*)@(.*)$/;
+	my($username, $hostname) = $email =~ /^(.*)@(.*)$/;
 
 	# return false if it impossible
-	return 0 unless(defined $domain);
+	return 0 unless defined $hostname;
 
 	my $rs = isValidMailUsername($username);
-	$rs &&= isValidMailHostname($domain);
+	$rs &&= isValidMailHostname($hostname);
 
 	return 0 if !$rs;
 
