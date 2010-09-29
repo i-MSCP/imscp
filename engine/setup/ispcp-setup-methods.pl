@@ -39,6 +39,7 @@ use warnings;
 use version 0.74;
 #~ use DateTime;
 use DateTime::TimeZone;
+use feature 'state';
 
 # Hide the 'used only once: possible typo' warnings
 no warnings 'once';
@@ -77,7 +78,7 @@ sub ask_hostname {
 				"$rdata is not a 'fully qualified hostname'.\n\t" .
 				"Be aware you cannot use this domain for websites.\n";
 
-			print STDOUT "\n\tAre you sure you want to use this hostname? [Y/n]";
+			print STDOUT "\n\tAre you sure you want to use this hostname? [Y/n]: ";
 			chomp(my $retVal = readline \*STDIN);
 
 			if($retVal ne '' && $retVal !~ /^(?:yes|y)$/i) {
@@ -88,7 +89,8 @@ sub ask_hostname {
 		$main::ua{'hostname'} = $rdata;
 		$main::ua{'hostname_local'} = shift(@labels);
 	} else {
-		print STDOUT "\n\t[ERROR] Hostname is not a valid domain name!\n";
+		print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
+			"Hostname is not a valid domain name!\n";
 
 		return -1;
 	}
@@ -429,62 +431,11 @@ sub ask_admin_email {
 	print STDOUT "\n\tPlease enter administrator e-mail address: ";
 	chomp(my $rdata = readline \*STDIN);
 
-	if (!defined($rdata) || $rdata eq '') {
-		return -1;
-	} else {
-		# Note About the mail validation
-		#
-		# The RFC 2822 list quite a few characters that can be
-		# used in an email address. However, in practice, the
-		# mail client accept a limited version of this list.
-		#
-		# This regular expression allows the character list in
-		# the local part of the email. Regarding the domain part,
-		# the syntax is much more strict.
-		#
-		# Local part:
-		#
-		#  Validation is a limited version of the syntax allowed by the RFC 2822.
-		#
-		# Domain part:
-		#
-		# The syntax is much more strict:
-		#
-		# - The dash characters are forbidden in the beginning and end of line;
-		# - The underscore is prohibited.
-		# - It requires at least one second level domain in accordance with
-		#   standards set by the RFC 952 and 1123.
-		# - It allows only IPv4 domain literal
-		if ($rdata =~
-        	/^
-				# Local part :
-				# Optional segment for the local part
-				(?:[-!#\$%&'*+\/=?^`{|}~\w]+\.)*
-				# Segment required for the local part
-				[-!#\$%&'*+\/=?^`{|}~\w]+
-				# Separator
-				@
-				# Domain part
-				(?:
-				# As common form ( ex. local@domain.tld ) :
-					(?:
-						[a-z0-9](?:
-						(?:[.](?!-))?[-a-z0-9]*[a-z0-9](?:(?:(?<!-)[.](?!-))?[-a-z0-9])*)?
-						)+
-						(?<!-)[.][a-z0-9]{2,6}
-						|
-						# As IPv4 domain literal ( ex. local@[192.168.0.130] )
-						(?:\[(?:(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\])
-					)
-			$/x
-		) {
-			$main::ua{'admin_email'} = $rdata;
-		} else {
-			print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
-				"E-mail address not valid!\n";
+	if($rdata eq '' || !isValidEmail($rdata)) {
+		print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
+			"E-mail address not valid!\n";
 
-			return -1;
-		}
+		return -1;
 	}
 
 	push_el(\@main::el, 'ask_admin_email()', 'Ending...');
@@ -3018,6 +2969,7 @@ sub isValidHostname {
 
 	if(!defined $hostname) {
 		push_el(\@main::el, 'isValidHostname()', 'Missing argument `hostname`!');
+
 		return 0;
 	}
 
@@ -3048,6 +3000,110 @@ sub isValidHostname {
 	push_el(\@main::el, 'isValidHostname()', 'Ending...');
 
 	$retVal;
+}
+
+################################################################################
+# Validates a mail address
+#
+# @param string $email Email address
+# @return 1 if the host name is valid, 0 otherwise
+#
+sub isValidEmail {
+
+	push_el(\@main::el, 'isValidEmail()', 'Starting...');
+
+	my ($email) = shift;
+
+	if(!defined $email) {
+		push_el(\@main::el, 'isValidEmail()', 'Missing argument `email`!');
+
+		return 0;
+	}
+
+    # split email address on username and hostname
+    my($username, $domain) = $rdata =~ /^(.*)@(.*)$/;
+
+     # return false if it impossible
+    return 0 unless(defined $domain);
+
+	my $rs = isValidMailUsername($username);
+	$rs &&= isValidMailHostname($domain);
+
+	return 0 if !$rs;
+
+	push_el(\@main::el, 'isValidEmail()', 'Ending...');
+
+	1;
+}
+
+################################################################################
+# Validates an email local-part
+#
+# # @param string $email Email username
+# @return 1 if the host name is valid, 0 otherwise
+#
+sub isValidEmailUsername {
+
+	push_el(\@main::el, 'isValidMailUsername()', 'Starting...');
+
+    my($username) = shift;
+
+	if(!defined $username) {
+		push_el(
+			\@main::el, 'isValidEmailUsername()', 'Missing argument `username`!'
+		);
+
+		return 0;
+	}
+
+	# Build local-part regexp - step1 (is executed only the first time)
+	state $regexp = (
+		'[' . quotemeta(
+				join '', grep(!/[<>()\[\]\\\.,;:\@"]/, map chr, 33 .. 126)
+		) . ']'
+	);
+
+	# Build local-part regexp  - step2 (is executed only the first time)
+	state $usernameRegexp = qr/^ (?:$regexp+ \.)* $regexp+ $/xo;
+
+    # Always executed
+    return 0 if($username !~ $usernameRegexp);
+
+	push_el(\@main::el, 'isValidMailUsername()', 'Ending...');
+
+	1;
+}
+
+################################################################################
+# Validates an email hostname
+#
+# @param string $email Email Hostname
+# @return 1 if the host name is valid, 0 otherwise
+#
+sub isValidEmailHostname {
+
+	push_el(\@main::el, 'isValidMailHostname()', 'Starting...');
+
+    my($hostname) = shift;
+
+	if(!defined $hostname) {
+		push_el(
+			\@main::el, 'isValidEmailHostname()', 'Missing argument `hostname`!'
+		);
+
+		return 0;
+	}
+
+	# Build the hostname regexp (is executed only the first time)
+	state $domainRegexp = qr/(?:[\da-zA-Z]+ -+)* [\da-zA-Z]+/x;
+	state $hostnameRegexp = qr/^ (?:$domainRegexp \.)+ [a-zA-Z]+ $/xo;
+
+    # Always executed
+    return 0 if $hostname !~ $hostnameRegexp;
+
+	push_el(\@main::el, 'isValidMailHostname()', 'Ending...');
+
+	1;
 }
 
 ################################################################################
