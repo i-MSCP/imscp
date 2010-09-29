@@ -67,26 +67,28 @@ sub ask_hostname {
 	print STDOUT "\n\tPlease enter a fully qualified hostname. [$hostname]: ";
 	chomp(my $rdata = readline \*STDIN);
 
-	if (!defined($rdata) || $rdata eq '') {
-		$rdata = $hostname;
-	}
+	$rdata = $hostname if $rdata eq '';
 
-	if ($rdata =~ /^(((([\w][\w-]{0,253}){0,1}[\w])\.)*)([\w][\w-]{0,253}[\w])\.([a-zA-Z]{2,6})$/) {
-		if ($rdata =~ /^([\w][\w-]{0,253}[\w])\.([a-zA-Z]{2,6})$/) {
-			my $wmsg = colored( ['bold yellow'], "\n\t[WARNING] ") .
-				"$rdata is not a \"fully qualified hostname\". \n\t" .
+	if(isValidHostname($rdata)) {
+		@labels = split '\.', $rdata;
+
+		if(@labels < 3) {
+			print STDOUT colored( ['bold yellow'], "\n\t[WARNING] ") .
+				"$rdata is not a 'fully qualified hostname'.\n\t" .
 				"Be aware you cannot use this domain for websites.\n";
 
-			print STDOUT $wmsg;
+			print STDOUT "\n\tAre you sure you want to use this hostname? [Y/n]";
+			chomp(my $retVal = readline \*STDIN);
+
+			if($retVal ne '' && $retVal !~ /^(?:yes|y)$/i) {
+				return -1;
+			}
 		}
 
 		$main::ua{'hostname'} = $rdata;
-		$main::ua{'hostname_local'} = (($1) ? $1 : $4);
-		$main::ua{'hostname_local'} =~ s/^([^.]+).+$/$1/;
-
+		$main::ua{'hostname_local'} = shift(@labels);
 	} else {
-		print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
-			"Hostname is not a valid domain name!\n";
+		print STDOUT "\n\t[ERROR] Hostname is not a valid domain name!\n";
 
 		return -1;
 	}
@@ -100,11 +102,13 @@ sub ask_hostname {
 # Ask for Ip address
 #
 # @return int 0 on success, -1 otherwise. Exit on unrecoverable error
+# @todo The admin should be able to choose another network card
 #
 sub ask_eth {
 
 	push_el(\@main::el, 'ask_eth()', 'Starting...');
 
+	# @todo IO::Interface 
 	chomp(
 		my $ipAddr =`$main::cfg{'CMD_IFCONFIG'}|$main::cfg{'CMD_GREP'} -v inet6|
 		$main::cfg{'CMD_GREP'} inet|$main::cfg{'CMD_GREP'} -v 127.0.0.1|
@@ -112,10 +116,10 @@ sub ask_eth {
 		$main::cfg{'CMD_AWK'} -F: '{print \$NF}'`
 	);
 
-	if($?) {
+	if(getCmdExitValue() != 0) {
 		exit_msg(
 			-1, colored(['bold red'], "[ERROR] ") . 'External command returned' .
-			 " an error status: '$?' on network\n\tinterface cards lookup!\n"
+			 " an error on network\n\tinterface cards lookup!\n"
 		);
 	}
 
@@ -186,8 +190,7 @@ sub ask_vhost {
 ################################################################################
 # Ask for SQL hostname
 #
-# @return void
-# @todo: Add check on user input data
+# @return 0 on success, -1 on failure
 #
 sub ask_db_host {
 
@@ -196,10 +199,16 @@ sub ask_db_host {
 	print STDOUT "\n\tPlease enter SQL server host. [localhost]: ";
 	chomp(my $rdata = readline \*STDIN);
 
-	$main::ua{'db_host'} = (!defined($rdata) || $rdata eq '')
-		? 'localhost' : $rdata;
+	$rdata = (!defined($rdata) || $rdata eq '') ? 'localhost' : $rdata;
 
-	return -1 if(check_hostname($main::ua{'db_host'}));
+	if($rdata ne 'localhost' && !isValidHostname($rdata)) {
+		print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
+			"Wrong SQL hostname! See RFC 1123 for more information...\n"
+
+		return -1;
+	}
+
+	$main::ua{'db_host'} = $rdata;
 
 	push_el(\@main::el, 'ask_db_host()', "Ending...");
 
@@ -563,7 +572,7 @@ sub ask_mysql_prefix {
 		$main::ua{'mysql_prefix_type'} = 'behind';
 	} else {
 		print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
-		"Not allowed Value, please retry!\n";
+			"Not allowed Value, please retry!\n";
 
 		return -1;
 	}
@@ -843,27 +852,27 @@ sub setup_crontab {
 	($rkhunter = `which rkhunter`) =~ s/\s$//g;
 	($chkrootkit = `which chkrootkit`) =~ s/\s$//g;
 
-	# Tags preparation
-	my %tags_hash = (
-		'{LOG_DIR}' => $main::cfg{'LOG_DIR'},
-		'{CONF_DIR}' => $main::cfg{'CONF_DIR'},
-		'{QUOTA_ROOT_DIR}' => $main::cfg{'QUOTA_ROOT_DIR'},
-		'{TRAFF_ROOT_DIR}' => $main::cfg{'TRAFF_ROOT_DIR'},
-		'{TOOLS_ROOT_DIR}' => $main::cfg{'TOOLS_ROOT_DIR'},
-		'{BACKUP_ROOT_DIR}' => $main::cfg{'BACKUP_ROOT_DIR'},
-		'{AWSTATS_ROOT_DIR}' => $main::cfg{'AWSTATS_ROOT_DIR'},
-		'{RKHUNTER_LOG}' => $main::cfg{'RKHUNTER_LOG'},
-		'{CHKROOTKIT_LOG}' => $main::cfg{'CHKROOTKIT_LOG'},
-		'{AWSTATS_ENGINE_DIR}' => $main::cfg{'AWSTATS_ENGINE_DIR'},
-		'{AW-ENABLED}' => $awstats,
-		'{RK-ENABLED}' => !length($rkhunter) ? '#' : '',
-		'{RKHUNTER}' => $rkhunter,
-		'{CR-ENABLED}' => !length($chkrootkit) ? '#' : '',
-		'{CHKROOTKIT}' => $chkrootkit
-	);
-
 	# Building the new file
-	($rs, $$cfg) = prep_tpl(\%tags_hash, $cfgTpl);
+	($rs, $$cfg) = prep_tpl(
+		{
+			'{LOG_DIR}' => $main::cfg{'LOG_DIR'},
+			'{CONF_DIR}' => $main::cfg{'CONF_DIR'},
+			'{QUOTA_ROOT_DIR}' => $main::cfg{'QUOTA_ROOT_DIR'},
+			'{TRAFF_ROOT_DIR}' => $main::cfg{'TRAFF_ROOT_DIR'},
+			'{TOOLS_ROOT_DIR}' => $main::cfg{'TOOLS_ROOT_DIR'},
+			'{BACKUP_ROOT_DIR}' => $main::cfg{'BACKUP_ROOT_DIR'},
+			'{AWSTATS_ROOT_DIR}' => $main::cfg{'AWSTATS_ROOT_DIR'},
+			'{RKHUNTER_LOG}' => $main::cfg{'RKHUNTER_LOG'},
+			'{CHKROOTKIT_LOG}' => $main::cfg{'CHKROOTKIT_LOG'},
+			'{AWSTATS_ENGINE_DIR}' => $main::cfg{'AWSTATS_ENGINE_DIR'},
+			'{AW-ENABLED}' => $awstats,
+			'{RK-ENABLED}' => !length($rkhunter) ? '#' : '',
+			'{RKHUNTER}' => $rkhunter,
+			'{CR-ENABLED}' => !length($chkrootkit) ? '#' : '',
+			'{CHKROOTKIT}' => $chkrootkit
+		},
+		$cfgTpl
+	);
 	return $rs if ($rs != 0);
 
 	## Storage and installation of new file
@@ -1492,30 +1501,30 @@ sub setup_mta {
 
 	# main.cf
 
-	# Tags preparation
-	my %tags_hash = (
-		'{MTA_HOSTNAME}' => $main::cfg{'SERVER_HOSTNAME'},
-		'{MTA_LOCAL_DOMAIN}' => "$main::cfg{'SERVER_HOSTNAME'}.local",
-		'{MTA_VERSION}' => $main::cfg{'Version'},
-		'{MTA_TRANSPORT_HASH}' => $main::cfg{'MTA_TRANSPORT_HASH'},
-		'{MTA_LOCAL_MAIL_DIR}' => $main::cfg{'MTA_LOCAL_MAIL_DIR'},
-		'{MTA_LOCAL_ALIAS_HASH}' => $main::cfg{'MTA_LOCAL_ALIAS_HASH'},
-		'{MTA_VIRTUAL_MAIL_DIR}' => $main::cfg{'MTA_VIRTUAL_MAIL_DIR'},
-		'{MTA_VIRTUAL_DMN_HASH}' => $main::cfg{'MTA_VIRTUAL_DMN_HASH'},
-		'{MTA_VIRTUAL_MAILBOX_HASH}' => $main::cfg{'MTA_VIRTUAL_MAILBOX_HASH'},
-		'{MTA_VIRTUAL_ALIAS_HASH}' => $main::cfg{'MTA_VIRTUAL_ALIAS_HASH'},
-		'{MTA_MAILBOX_MIN_UID}' => $main::cfg{'MTA_MAILBOX_MIN_UID'},
-		'{MTA_MAILBOX_UID}' => $main::cfg{'MTA_MAILBOX_UID'},
-		'{MTA_MAILBOX_GID}' => $main::cfg{'MTA_MAILBOX_GID'},
-		'{PORT_POSTGREY}' => $main::cfg{'PORT_POSTGREY'}
-	);
-
 	# Loading the template from /etc/ispcp/postfix/
 	($rs, $cfgTpl) = get_file("$cfgDir/main.cf");
 	return $rs if ($rs != 0);
 
 	# Building the new file
-	($rs, $$cfg) = prep_tpl(\%tags_hash, $cfgTpl);
+	($rs, $$cfg) = prep_tpl(
+		{
+			'{MTA_HOSTNAME}' => $main::cfg{'SERVER_HOSTNAME'},
+			'{MTA_LOCAL_DOMAIN}' => "$main::cfg{'SERVER_HOSTNAME'}.local",
+			'{MTA_VERSION}' => $main::cfg{'Version'},
+			'{MTA_TRANSPORT_HASH}' => $main::cfg{'MTA_TRANSPORT_HASH'},
+			'{MTA_LOCAL_MAIL_DIR}' => $main::cfg{'MTA_LOCAL_MAIL_DIR'},
+			'{MTA_LOCAL_ALIAS_HASH}' => $main::cfg{'MTA_LOCAL_ALIAS_HASH'},
+			'{MTA_VIRTUAL_MAIL_DIR}' => $main::cfg{'MTA_VIRTUAL_MAIL_DIR'},
+			'{MTA_VIRTUAL_DMN_HASH}' => $main::cfg{'MTA_VIRTUAL_DMN_HASH'},
+			'{MTA_VIRTUAL_MAILBOX_HASH}' => $main::cfg{'MTA_VIRTUAL_MAILBOX_HASH'},
+			'{MTA_VIRTUAL_ALIAS_HASH}' => $main::cfg{'MTA_VIRTUAL_ALIAS_HASH'},
+			'{MTA_MAILBOX_MIN_UID}' => $main::cfg{'MTA_MAILBOX_MIN_UID'},
+			'{MTA_MAILBOX_UID}' => $main::cfg{'MTA_MAILBOX_UID'},
+			'{MTA_MAILBOX_GID}' => $main::cfg{'MTA_MAILBOX_GID'},
+			'{PORT_POSTGREY}' => $main::cfg{'PORT_POSTGREY'}
+		},
+		$cfgTpl
+	);
 	return $rs if ($rs != 0);
 
 	# Store the new file in working directory
@@ -1873,8 +1882,13 @@ sub setup_ftpd {
 
 	## Building, storage and installation of new file
 
-	# Tags preparation
-	my %tags_hash = (
+	# Loading the template from /etc/ispcp/proftpd/
+	($rs, $cfgTpl) = get_file("$cfgDir/proftpd.conf");
+	return $rs if ($rs != 0);
+
+	# Building the new file
+	($rs, $$cfg) = prep_tpl(
+		{
 		'{HOST_NAME}' => $main::cfg{'SERVER_HOSTNAME'},
 		'{DATABASE_NAME}' => $main::db_name,
 		'{DATABASE_HOST}' => $main::db_host,
@@ -1882,14 +1896,9 @@ sub setup_ftpd {
 		'{DATABASE_PASS}' => $main::ua{'db_ftp_password'},
 		'{FTPD_MIN_UID}' => $main::cfg{'APACHE_SUEXEC_MIN_UID'},
 		'{FTPD_MIN_GID}' => $main::cfg{'APACHE_SUEXEC_MIN_GID'}
+		},
+		$cfgTpl
 	);
-
-	# Loading the template from /etc/ispcp/proftpd/
-	($rs, $cfgTpl) = get_file("$cfgDir/proftpd.conf");
-	return $rs if ($rs != 0);
-
-	# Building the new file
-	($rs, $$cfg) = prep_tpl(\%tags_hash, $cfgTpl);
 	return $rs if ($rs != 0);
 
 	# Store the new file in working directory
@@ -2033,31 +2042,32 @@ sub setup_gui_httpd {
 	($rs, $cfgTpl) = get_file("$cfgDir/00_master.conf");
 	return $rs if($rs != 0);
 
-	# Tags preparation
-	my %tags_hash = (
-		'{BASE_SERVER_IP}' => $main::cfg{'BASE_SERVER_IP'},
-		'{BASE_SERVER_VHOST}' => $main::cfg{'BASE_SERVER_VHOST'},
-		'{DEFAULT_ADMIN_ADDRESS}' => $main::cfg{'DEFAULT_ADMIN_ADDRESS'},
-		'{ROOT_DIR}' => $main::cfg{'ROOT_DIR'},
-		'{APACHE_WWW_DIR}' => $main::cfg{'APACHE_WWW_DIR'},
-		'{APACHE_USERS_LOG_DIR}' => $main::cfg{'APACHE_USERS_LOG_DIR'},
-		'{APACHE_LOG_DIR}' => $main::cfg{'APACHE_LOG_DIR'},
-		'{PHP_STARTER_DIR}' => $main::cfg{'PHP_STARTER_DIR'},
-		'{PHP_VERSION}' => $main::cfg{'PHP_VERSION'},
-		'{WWW_DIR}' => $main::cfg{'ROOT_DIR'},
-		'{DMN_NAME}' => 'gui',
-		'{CONF_DIR}' => $main::cfg{'CONF_DIR'},
-		'{MR_LOCK_FILE}' => $main::cfg{'MR_LOCK_FILE'},
-		'{RKHUNTER_LOG}' => $main::cfg{'RKHUNTER_LOG'},
-		'{CHKROOTKIT_LOG}' => $main::cfg{'CHKROOTKIT_LOG'},
-		'{PEAR_DIR}' => $main::cfg{'PEAR_DIR'},
-		'{OTHER_ROOTKIT_LOG}' => $main::cfg{'OTHER_ROOTKIT_LOG'},
-		'{APACHE_SUEXEC_USER_PREF}' => $main::cfg{'APACHE_SUEXEC_USER_PREF'},
-		'{APACHE_SUEXEC_MIN_UID}' => $main::cfg{'APACHE_SUEXEC_MIN_UID'},
-		'{APACHE_SUEXEC_MIN_GID}' => $main::cfg{'APACHE_SUEXEC_MIN_GID'}
+	# Building the new file
+	($rs, $$cfg) = prep_tpl(
+		{
+			'{BASE_SERVER_IP}' => $main::cfg{'BASE_SERVER_IP'},
+			'{BASE_SERVER_VHOST}' => $main::cfg{'BASE_SERVER_VHOST'},
+			'{DEFAULT_ADMIN_ADDRESS}' => $main::cfg{'DEFAULT_ADMIN_ADDRESS'},
+			'{ROOT_DIR}' => $main::cfg{'ROOT_DIR'},
+			'{APACHE_WWW_DIR}' => $main::cfg{'APACHE_WWW_DIR'},
+			'{APACHE_USERS_LOG_DIR}' => $main::cfg{'APACHE_USERS_LOG_DIR'},
+			'{APACHE_LOG_DIR}' => $main::cfg{'APACHE_LOG_DIR'},
+			'{PHP_STARTER_DIR}' => $main::cfg{'PHP_STARTER_DIR'},
+			'{PHP_VERSION}' => $main::cfg{'PHP_VERSION'},
+			'{WWW_DIR}' => $main::cfg{'ROOT_DIR'},
+			'{DMN_NAME}' => 'gui',
+			'{CONF_DIR}' => $main::cfg{'CONF_DIR'},
+			'{MR_LOCK_FILE}' => $main::cfg{'MR_LOCK_FILE'},
+			'{RKHUNTER_LOG}' => $main::cfg{'RKHUNTER_LOG'},
+			'{CHKROOTKIT_LOG}' => $main::cfg{'CHKROOTKIT_LOG'},
+			'{PEAR_DIR}' => $main::cfg{'PEAR_DIR'},
+			'{OTHER_ROOTKIT_LOG}' => $main::cfg{'OTHER_ROOTKIT_LOG'},
+			'{APACHE_SUEXEC_USER_PREF}' => $main::cfg{'APACHE_SUEXEC_USER_PREF'},
+			'{APACHE_SUEXEC_MIN_UID}' => $main::cfg{'APACHE_SUEXEC_MIN_UID'},
+			'{APACHE_SUEXEC_MIN_GID}' => $main::cfg{'APACHE_SUEXEC_MIN_GID'}
+		},
+		$cfgTpl
 	);
-
-	($rs, $$cfg) = prep_tpl(\%tags_hash, $cfgTpl);
 	return $rs if ($rs != 0);
 
 	## Storage and installation of new file
@@ -2194,24 +2204,24 @@ sub setup_gui_php {
 	($rs, $cfgTpl) = get_file("$cfgDir/parts/master/php5/php.ini");
 	return $rs if ($rs != 0);
 
-	# Tags preparation
-	%tags_hash = (
-		'{WWW_DIR}' => $main::cfg{'ROOT_DIR'},
-		'{DMN_NAME}' => 'gui',
-		'{MAIL_DMN}' => $main::cfg{'BASE_SERVER_VHOST'},
-		'{CONF_DIR}' => $main::cfg{'CONF_DIR'},
-		'{MR_LOCK_FILE}' => $main::cfg{'MR_LOCK_FILE'},
-		'{PEAR_DIR}' => $main::cfg{'PEAR_DIR'},
-		'{RKHUNTER_LOG}' => $main::cfg{'RKHUNTER_LOG'},
-		'{CHKROOTKIT_LOG}' => $main::cfg{'CHKROOTKIT_LOG'},
-		'{OTHER_ROOTKIT_LOG}' => ($main::cfg{'OTHER_ROOTKIT_LOG'} ne '')
-			? ":$main::cfg{'OTHER_ROOTKIT_LOG'}" : '',
-		'{PHP_STARTER_DIR}' => $main::cfg{'PHP_STARTER_DIR'},
-		'{PHP_TIMEZONE}' => $main::cfg{'PHP_TIMEZONE'}
-	);
-
 	# Building the new file
-	($rs, $$cfg) = prep_tpl(\%tags_hash, $cfgTpl);
+	($rs, $$cfg) = prep_tpl(
+		{
+			'{WWW_DIR}' => $main::cfg{'ROOT_DIR'},
+			'{DMN_NAME}' => 'gui',
+			'{MAIL_DMN}' => $main::cfg{'BASE_SERVER_VHOST'},
+			'{CONF_DIR}' => $main::cfg{'CONF_DIR'},
+			'{MR_LOCK_FILE}' => $main::cfg{'MR_LOCK_FILE'},
+			'{PEAR_DIR}' => $main::cfg{'PEAR_DIR'},
+			'{RKHUNTER_LOG}' => $main::cfg{'RKHUNTER_LOG'},
+			'{CHKROOTKIT_LOG}' => $main::cfg{'CHKROOTKIT_LOG'},
+			'{OTHER_ROOTKIT_LOG}' => ($main::cfg{'OTHER_ROOTKIT_LOG'} ne '')
+				? ":$main::cfg{'OTHER_ROOTKIT_LOG'}" : '',
+			'{PHP_STARTER_DIR}' => $main::cfg{'PHP_STARTER_DIR'},
+			'{PHP_TIMEZONE}' => $main::cfg{'PHP_TIMEZONE'}
+		},
+		$cfgTpl
+	);
 	return $rs if ($rs != 0);
 
 	# Store the new file in working directory
@@ -2447,17 +2457,17 @@ sub setup_gui_pma {
 		my $blowfish = gen_sys_rand_num(31);
 		$blowfish =~ s/'/\\'/gi;
 
-		# Tags preparation
-		my %tag_hash = (
-			'{PMA_USER}' => $pma_sql_user,
-			'{PMA_PASS}' => $pma_sql_password,
-			'{HOSTNAME}' => $hostname,
-			'{TMP_DIR}'  => "$main::cfg{'GUI_ROOT_DIR'}/phptmp",
-			'{BLOWFISH}' => $blowfish
-		);
-
 		# Building the file
-		($rs, $$cfg) = prep_tpl(\%tag_hash, $cfg_file);
+		($rs, $$cfg) = prep_tpl(
+			{
+				'{PMA_USER}' => $pma_sql_user,
+				'{PMA_PASS}' => $pma_sql_password,
+				'{HOSTNAME}' => $hostname,
+				'{TMP_DIR}'  => "$main::cfg{'GUI_ROOT_DIR'}/phptmp",
+				'{BLOWFISH}' => $blowfish
+			},
+			$cfg_file
+		);
 		return $rs if ($rs != 0);
 
 		# Install the new file
@@ -2748,7 +2758,7 @@ sub setup_services_cfg {
 		}
 	}
 
-	# Common tasks
+	# Common tasks (Setup/Update)
 	for (
 		[\&setup_crontab, 'ispCP Crontab file:'],
 		[\&setup_named, 'ispCP Bind9 main configuration file:'],
@@ -2983,164 +2993,61 @@ sub stop_services {
 ################################################################################
 
 ################################################################################
-# Check hostname length and syntax
+# Validates a hostname
 #
-# Check if a hostname is valid according RFC 1123
+# This subroutine validates a hostname according the RFC 1123
 #
 # For now, the rule is as follow:
 #
-# 1. A host name  is composed of series of labels concatenated with dots
+# 1. A host name is composed of series of labels concatenated with dots
 # 2. The entire hostname (including the delimiting dots) has a maximum of 255
 # characters.
+# 3. A (host name) label can start or end with a letter or a number
+# 4. A (host name) label MUST NOT start or end with a '-' (dash)
+# 5. A (host name) label can be up to 63 characters
 #
-# Note: See the check_label() subroutine for more information about labels
-# syntax and length.
-#
-# @author Daniel Andreca <sci2tech@gmail.com>
-# @since   1.0.7 (rc2)
-# @version 1.0.0
-# @param string $hName hostname
-# @return int 0 on success, -1 otherwise
+# @param string $hostname Host name to be validated
+# @return 1 if the host name is valid, 0 otherwise
 # @todo Internationalized domain name (IDNA)
 #
-sub check_hostname {
+sub isValidHostname {
 
-	push_el(\@main::el, 'check_hostname()', 'Starting...');
+	push_el(\@main::el, 'isValidHostname()', 'Starting...');
 
-	my ($hName) = @_;
+	my $hostname = shift;
 
-	if(check_chars($hName,'^[\.\-]|[^a-zA-Z0-9\-\.]|[\.\-]$') ||
-		check_length($hName, 255, 1)){
-
-		print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
-			"'$hName' is not a valid hostname!\n".
-			"Check http://en.wikipedia.org/wiki/Hostname about valid hostname\n";
-
-		return -1
+	if(!defined $hostname) {
+		push_el(\@main::el, 'isValidHostname()', 'Missing argument `hostname`!');
+		return 0;
 	}
 
-	# Check hostname label
-	for (split(/\./, $hName)){
-		return -1 if(check_label($_));
-	}
-	push_el(\@main::el, 'check_hostname()', 'Ending...');
+	my $retVal = 1;
 
-	0;
-}
-################################################################################
-# Check a (host name) label length and syntax
-#
-# Check if a label is valid according RFC 1123
-#
-# For now, the rule is as follow:
-#
-# 1. A (host name) label can start or end with a letter or a number
-# 2. A (host name) label MUST NOT start or end with a '-' (dash)
-# 3. A (host name) label MUST NOT consist of all numeric values
-# 4. A (host name) label can be up to 63 characters
-#
-# @author Daniel Andreca <sci2tech@gmail.com>
-# @since   1.0.7 (rc2)
-# @version 1.0.0
-# @param string $label Label to be checked
-# @return int 0 on success, -1 otherwise
-# @todo (At Daniel) Please check the rule 3)
-#
-sub check_label {
+	# Checking hostname length
+	$retVal = 0 if length $hostname > 255;
 
-	push_el(\@main::el, 'check_label()', 'Starting...');
+	# Cutting the hostname per labels
+	my @labels = split '\.', $hostname;
 
-	my ($label) = @_;
+	# We should have a least two labels
+	$retVal = 0 if(@labels < 2);
 
-	if(!defined $label) {
-		push_el(\@main::el, 'check_label()', '[ERROR] Missing argument!);
+	# Retrieve the top level domain
+	my $tld = pop @labels;
 
-		return -1
+	# Checking top level domain syntax
+	$retVal = 0 unless $tld =~ /^[a-z]{2,6}$/;
+
+	# Checking all labels syntax and length
+    for (@labels) {
+		if($_ eq '' || length > 63 || !/^([0-9a-z]+(-+[0-9a-z]+)*|[a-z0-9]+)$/) {
+			$retVal = 0;
+		}
 	}
 
+	push_el(\@main::el, 'isValidHostname()', 'Ending...');
 
-	# Check the label length
-	return -1 if(check_length($label, 63, 1));
-
-	# Check the label syntax
-	if(check_chars($label, '^\-|[^a-zA-Z0-9\-]|\-$')){
-		print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
-			"'$label' is not a valid label for hostname!\n".
-			"Check the RFC 1123 for more information about valid syntax!\n";
-
-		return -1
-	}
-
-	push_el(\@main::el, 'check_label()', 'Ending...');
-
-	0;
-
-}
-
-################################################################################
-# Checks the characters in a string
-#
-# This subroutine does a check on a string to be sure that all characters are
-# valid.
-#
-# @author Daniel Andreca <sci2tech@gmail.com>
-# @since   1.0.7 (rc2)
-# @version 1.0.0
-# @param string $string string to be checked
-# @param regexp $forbidden Regexp that match un-allowed characters
-# @return int 0 on success, -1 otherwise
-#
-sub check_chars {
-
-	push_el(\@main::el, 'check_chars()', 'Starting...');
-
-	my ($string, $forbidden) = @_;
-
-	return -1 if($string =~ m/$forbidden/);
-
-	push_el(\@main::el, 'check_label()', 'Ending...');
-
-	0;
-}
-
-################################################################################
-# Check a string length
-#
-# This subroutine does a check on a string length.
-#
-# @author Daniel Andreca <sci2tech@gmail.com>
-# @since   1.0.7 (rc2)
-# @version 1.0.0
-# @param string $string to be checked
-# @param int $maxLength Max. string length
-# @param int $minLength Min. string length
-# @return int 0 on success, -1 otherwise
-#
-sub check_length{
-
-	push_el(\@main::el, 'check_length()', 'Starting...');
-
-	my ($string, $maxLength, $minLength) = @_;
-
-	if(!defined $string || !defined $maxLength || !defined $minLength) {
-		push_el(\@main::el, 'check_length()', '[ERROR] Missing argument!');
-
-		return -1;
-	}
-
-	my $labelLength = length $string;
-
-	if($labelLength > $maxLength || $labelLength < $minLength) {
-		print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
-			"Length for '$string' is bigger or smaller then allowed size: " .
-			"$minLength..$maxLength!\n";
-
-		 return -1;
-	}
-
-	push_el(\@main::el, 'check_length()', 'Ending...');
-
-	0;
+	$retVal;
 }
 
 ################################################################################
