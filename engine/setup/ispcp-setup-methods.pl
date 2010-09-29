@@ -3020,11 +3020,11 @@ sub isValidEmail {
 		return 0;
 	}
 
-    # split email address on username and hostname
-    my($username, $domain) = $rdata =~ /^(.*)@(.*)$/;
+	# split email address on username and hostname
+	my($username, $domain) = $rdata =~ /^(.*)@(.*)$/;
 
-     # return false if it impossible
-    return 0 unless(defined $domain);
+	# return false if it impossible
+	return 0 unless(defined $domain);
 
 	my $rs = isValidMailUsername($username);
 	$rs &&= isValidMailHostname($domain);
@@ -3046,7 +3046,7 @@ sub isValidEmailUsername {
 
 	push_el(\@main::el, 'isValidMailUsername()', 'Starting...');
 
-    my($username) = shift;
+	my($username) = shift;
 
 	if(!defined $username) {
 		push_el(
@@ -3058,16 +3058,15 @@ sub isValidEmailUsername {
 
 	# Build local-part regexp - step1 (is executed only the first time)
 	state $regexp = (
-		'[' . quotemeta(
-				join '', grep(!/[<>()\[\]\\\.,;:\@"]/, map chr, 33 .. 126)
-		) . ']'
+		'['.quotemeta(join '', grep(!/[<>()\[\]\\\.,;:\@"]/, map chr, 33 .. 126))
+		. ']'
 	);
 
 	# Build local-part regexp  - step2 (is executed only the first time)
 	state $usernameRegexp = qr/^ (?:$regexp+ \.)* $regexp+ $/xo;
 
-    # Always executed
-    return 0 if($username !~ $usernameRegexp);
+	# Always executed
+	return 0 if $username !~ $usernameRegexp;
 
 	push_el(\@main::el, 'isValidMailUsername()', 'Ending...');
 
@@ -3084,7 +3083,7 @@ sub isValidEmailHostname {
 
 	push_el(\@main::el, 'isValidMailHostname()', 'Starting...');
 
-    my($hostname) = shift;
+	my($hostname) = shift;
 
 	if(!defined $hostname) {
 		push_el(
@@ -3098,8 +3097,8 @@ sub isValidEmailHostname {
 	state $domainRegexp = qr/(?:[\da-zA-Z]+ -+)* [\da-zA-Z]+/x;
 	state $hostnameRegexp = qr/^ (?:$domainRegexp \.)+ [a-zA-Z]+ $/xo;
 
-    # Always executed
-    return 0 if $hostname !~ $hostnameRegexp;
+	# Always executed
+	return 0 if $hostname !~ $hostnameRegexp;
 
 	push_el(\@main::el, 'isValidMailHostname()', 'Ending...');
 
