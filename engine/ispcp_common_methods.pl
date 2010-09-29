@@ -802,8 +802,7 @@ sub getCmdExitValue() {
 	my $exitValue = -1;
 
 	if ($? == -1) {
- 		push_el(
- 		    \@main::el, "[ERROR] Failed to execute external command: $!\n";
+ 		push_el(\@main::el, "[ERROR] Failed to execute external command: $!\n");
 	} elsif ($? & 127) {
  		push_el(
  		    \@main::el,
