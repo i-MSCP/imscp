@@ -44,6 +44,7 @@ use feature 'state';
 # Hide the 'used only once: possible typo' warnings
 no warnings 'once';
 
+# Always dump the log at end
 END {
 	@main::el = reverse(@main::el);
 	dump_el(\@main::el, $main::logfile);
@@ -3002,6 +3003,7 @@ sub isValidHostname {
 	$retVal;
 }
 
+
 ################################################################################
 # Validates a mail address
 #
@@ -3021,13 +3023,12 @@ sub isValidEmail {
 	}
 
 	# split email address on username and hostname
-	my($username, $hostname) = $email =~ /^(.*)@(.*)$/;
+	my ($username, $hostname) = split '@', $email;
 
-	# return false if it impossible
-	return 0 unless defined $hostname;
+	return 0 if !defined $hostname;
 
-	my $rs = isValidMailUsername($username);
-	$rs &&= isValidMailHostname($hostname);
+	my $rs = isValidEmailUsername($username);
+	$rs &&= isValidEmailHostname($hostname);
 
 	return 0 if !$rs;
 
@@ -3095,7 +3096,7 @@ sub isValidEmailHostname {
 
 	# Build the hostname regexp (is executed only the first time)
 	state $domainRegexp = qr/(?:[\da-zA-Z]+ -+)* [\da-zA-Z]+/x;
-	state $hostnameRegexp = qr/^ (?:$domainRegexp \.)+ [a-zA-Z]+ $/xo;
+	state $hostnameRegexp = qr/^ (?:$domainRegexp \.)+ [a-zA-Z]{2,6} $/xo;
 
 	# Always executed
 	return 0 if $hostname !~ $hostnameRegexp;
