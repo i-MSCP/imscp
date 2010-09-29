@@ -894,7 +894,7 @@ sub setup_crontab {
 }
 
 ################################################################################
-# IspCP named main configuration setup / update
+# ispCP named main configuration setup / update
 #
 # This subroutine built, store and install the main named configuration file
 #
@@ -987,7 +987,7 @@ sub setup_named {
 }
 
 ################################################################################
-# IspCP Apache fastCGI modules configuration
+# ispCP Apache fastCGI modules configuration
 #
 # This subroutine do the following tasks:
 #  - Built, store and install all system php related configuration files
@@ -1151,7 +1151,7 @@ sub setup_fastcgi_modules {
 }
 
 ################################################################################
-# IspCP httpd main vhost setup / update
+# ispCP httpd main vhost setup / update
 #
 # This subroutine do the following tasks:
 #  - Built, store and install ispCP main vhost configuration file
@@ -1256,7 +1256,7 @@ sub setup_httpd_main_vhost {
 }
 
 ################################################################################
-# IspCP awstats vhost setup / update
+# ispCP awstats vhost setup / update
 #
 # This subroutine do the following tasks:
 #  - Built, store and install awstats vhost configuration file
@@ -1430,7 +1430,7 @@ sub setup_awstats_vhost {
 }
 
 ################################################################################
-# IspCP Postfix setup / update
+# ispCP Postfix setup / update
 #
 # This subroutine built, store and install Postfix configuration files
 #
@@ -1595,7 +1595,7 @@ sub setup_mta {
 }
 
 ################################################################################
-# IspCP Courier setup / update
+# ispCP Courier setup / update
 #
 # This subroutine do the following tasks:
 #  - Built, store and install Courier, related configuration files
@@ -1703,7 +1703,7 @@ sub setup_po {
 }
 
 ################################################################################
-# IspCP Proftpd setup / update
+# ispCP Proftpd setup / update
 #
 # This subroutine do the following tasks:
 #  - Built, store and install Proftpd main configuration files
@@ -1939,7 +1939,7 @@ sub setup_ftpd {
 }
 
 ################################################################################
-# IspCP Daemon, network setup / update
+# ispCP Daemon, network setup / update
 #
 # This subroutine install or update the ispCP daemon and network init scripts
 #
@@ -2006,7 +2006,7 @@ sub setup_ispcp_daemon_network {
 }
 
 ################################################################################
-# IspCP GUI apache vhost setup / update
+# ispCP GUI apache vhost setup / update
 #
 # this subroutine built, store and install ispCP GUI vhost configuration file
 #
@@ -2271,7 +2271,7 @@ sub setup_gui_php {
 }
 
 ################################################################################
-# IspCP GUI pma configuration file and pma slq control user
+# ispCP GUI pma configuration file and pma slq control user
 #
 # This subroutine built, store and install the ispCP GUI pma configuration file
 #
@@ -2494,7 +2494,7 @@ sub setup_gui_pma {
 }
 
 ################################################################################
-# IspCP Gui named configuration
+# ispCP Gui named configuration
 #
 # This subroutine do the following tasks:
 #  - Add Gui named cfg data in main configuration file
@@ -2522,7 +2522,7 @@ sub setup_gui_named {
 }
 
 ################################################################################
-# IspCP Gui named cfg file
+# ispCP Gui named cfg file
 #
 # This subroutine do the following tasks:
 #  - Add Gui named cfg data in main configuration file
@@ -2616,7 +2616,7 @@ sub setup_gui_named_cfg_data {
 }
 
 ################################################################################
-# IspCP Gui named dns record's Setup / Update
+# ispCP Gui named dns record's Setup / Update
 #
 # This subroutine do the following tasks:
 #  - Building GUI named dns record's file
@@ -3039,8 +3039,8 @@ sub isValidHostname {
 	$retVal = 0 unless $tld =~ /^[a-z]{2,6}$/;
 
 	# Checking all labels syntax and length
-    for (@labels) {
-		if($_ eq '' || length > 63 || !/^([0-9a-z]+(-+[0-9a-z]+)*|[a-z0-9]+)$/) {
+	for (@labels) {
+		if($_ eq '' || length > 63 || !/^([0-9a-z]+(-+[0-9a-z]+)*|[a-z0-9]+)$/i) {
 			$retVal = 0;
 		}
 	}
