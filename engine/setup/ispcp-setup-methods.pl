@@ -810,7 +810,7 @@ sub isValidHostname {
 
 	# Checking all labels syntax and length
 	for (@labels) {
-		$retVal = 0 if($_ eq '' || length > 63 || $_ !~ $labelRegExp/);
+		$retVal = 0 if $_ eq '' || length > 63 || $_ !~ $labelRegExp;
 	}
 
 	push_el(\@main::el, 'isValidHostname()', 'Ending...');
@@ -915,15 +915,23 @@ sub isValidEmailDomain {
 		return 0;
 	}
 
-	# Build regExp (is executed only the first time)
-	state $domainRegExp = qr/^
-		(?:(?:(?:[\da-zA-Z]+-+)*[\da-zA-Z]+\.)+
-		[a-zA-Z]{2,6}|(?:\[(?:(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}
-		(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\]))
+	# IP address literal, surrounded by square braces
+	state $ipRegExp = qr /^
+		(?:\[(?:(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}
+		(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\])
 	$/xo;
 
+	return 0 if !isValidHostname($domain) && $domain !~ $ipRegExp;
+
+	# Build regExp (is executed only the first time)
+	#state $domainRegExp = qr/^
+	#	(?:(?:(?:[\da-zA-Z]+-+)*[\da-zA-Z]+\.)+
+	#	[a-zA-Z]{2,6}|(?:\[(?:(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}
+	#	(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\]))
+	#$/xo;
+
 	# Always executed
-	return 0 if $domain !~ $domainRegExp;
+	#return 0 if $domain !~ $domainRegExp;
 
 	push_el(\@main::el, 'isValidMailHostname()', 'Ending...');
 
