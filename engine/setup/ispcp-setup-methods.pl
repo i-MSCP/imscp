@@ -37,12 +37,21 @@
 use strict;
 use warnings;
 use version 0.74;
-#~ use DateTime;
 use DateTime::TimeZone;
 use feature 'state';
 
 # Hide the 'used only once: possible typo' warnings
 no warnings 'once';
+
+# Ensuring that the log directory exists
+BEGIN {
+	my $rs = makepath(
+		"$main::cfg{'LOG_DIR'}/setup", $main::cfg{'ROOT_USER'},
+		$main::cfg{'ROOT_GROUP'}, 0755
+	);
+
+	die("Unable to create ispCP log directory $!") unless $rs == 0;
+}
 
 # Always dump the log at end
 END {
@@ -1123,7 +1132,7 @@ sub exit_msg {
 		$msg = "\n\t" . colored(['red bold'], '[FATAL] ')  .
 			"An error occurred during $context process!\n" .
 			"\tCorrect it and re-run this program." .
-			"\n\n\tYou can find log files under your /tmp directory\n" .
+			"\n\n\tYou can find log files under the $main::cfg{'LOG_DIR'}/setup\n" .
 			"\tYou can also find help at http://isp-control.net/forum\n\n";
 
 	}

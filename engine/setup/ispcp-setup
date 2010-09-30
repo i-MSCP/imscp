@@ -55,7 +55,7 @@ require 'ispcp_common_code.pl';
 require 'ispcp-setup-methods.pl';
 
 %main::ua = ();
-$main::logfile = '/tmp/ispcp-setup.log';
+$main::logfile = "$main::cfg{LOG_DIR}/setup/ispcp-setup.log";
 $main::rlogfile = ">> $main::logfile 2>&1";
 
 ################################################################################

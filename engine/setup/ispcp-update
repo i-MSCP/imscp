@@ -52,7 +52,7 @@ require 'ispcp_common_code.pl';
 require 'ispcp-setup-methods.pl';
 
 # User entries
-$main::logfile = '/tmp/ispcp-update.log';
+$main::logfile = "main::cfg{LOG_DIR}/setup/ispcp-update.log";
 $main::rlogfile = ">> $main::logfile 2>&1";
 
 ################################################################################

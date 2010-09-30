@@ -58,7 +58,7 @@ else
 fi
 
 # Read needed entries from ispcp.conf
-for a in `grep -E '(^Version|APACHE_|MTA_|ROOT_|^PHP_FASTCGI|^CMD_|^DEBUG)' \
+for a in `grep -E '(^Version|APACHE_|MTA_|ROOT_|^PHP_FASTCGI|^CMD_|^DEBUG|^LOG_DIR)' \
 $ISPCP_CONF_FILE | sed -e 's/ //g'`; do
     export $a
 done
@@ -72,9 +72,13 @@ if [ $DEBUG -eq 1 ]; then
   set -x
 fi
 
-ISPCP_LOGFILE="/tmp/ispcp-$0-$1.log"
+# Log file path
+ISPCP_LOGFILE="$LOG_DIR/setup/ispcp-$0-$1.log"
 
-# Remove old ISPCP_LOGFILE if it exists
+# Make sure that the log directory exists
+/usr/bin/install -d $ISPCP_LOGFILE -m 0755 -o $ROOT_USER -g $ROOT_GROUP
+
+# Remove old ISPCP_LOGFILE if one it exists
 $CMD_RM -f $ISPCP_LOGFILE
 
 ISPCP_ERRMSG="\n\t  \033[1;34m[Notice]\033[0m See the $ISPCP_LOGFILE for the \
