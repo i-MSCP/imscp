@@ -44,14 +44,12 @@ use feature 'state';
 no warnings 'once';
 
 # Ensuring that the log directory exists
-BEGIN {
-	my $rs = makepath(
-		"$main::cfg{'LOG_DIR'}/setup", $main::cfg{'ROOT_USER'},
-		$main::cfg{'ROOT_GROUP'}, 0755
-	);
+my $rs = makepath(
+	"$main::cfg{'LOG_DIR'}/setup", $main::cfg{'ROOT_USER'},
+	$main::cfg{'ROOT_GROUP'}, 0755
+);
 
-	die("Unable to create ispCP log directory $!") unless $rs == 0;
-}
+die("Unable to create ispCP log directory $!") unless $rs == 0;
 
 # Always dump the log at end
 END {
