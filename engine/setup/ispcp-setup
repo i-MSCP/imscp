@@ -345,7 +345,7 @@ sub setup_config {
 		return $rs if ($rs != 0);
 	}
 
-	# If not empty password, encrypt it before storage in ispcp.conf file
+	# If not empty password, encrypt it before store it in ispcp.conf file
 	if ($main::ua{'db_password'} ne '') {
 		my ($rs, $rdata) = encrypt_db_password($main::ua{'db_password'});
 		return $rs if ($rs != 0);

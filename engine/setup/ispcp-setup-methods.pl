@@ -787,6 +787,10 @@ sub isValidHostname {
 		return 0;
 	}
 
+	# Build tld and label regexp (is executed only the first time)
+	state $tldRegExp = qr /^[a-z]{2,6}$/o;
+	state $labelRegExp = qr /^([0-9a-z]+(-+[0-9a-z]+)*|[a-z0-9]+)$/io;
+
 	my $retVal = 1;
 
 	# Checking hostname length
@@ -802,13 +806,11 @@ sub isValidHostname {
 	my $tld = pop @labels;
 
 	# Checking top level domain syntax
-	$retVal = 0 unless $tld =~ /^[a-z]{2,6}$/;
+	$retVal = 0 unless defined $tld && $tld =~ $tldRegExp;
 
 	# Checking all labels syntax and length
 	for (@labels) {
-		if($_ eq '' || length > 63 || !/^([0-9a-z]+(-+[0-9a-z]+)*|[a-z0-9]+)$/i) {
-			$retVal = 0;
-		}
+		$retVal = 0 if($_ eq '' || length > 63 || $_ !~ $labelRegExp/);
 	}
 
 	push_el(\@main::el, 'isValidHostname()', 'Ending...');
@@ -852,6 +854,9 @@ sub isValidEmail {
 ################################################################################
 # Validates an email local-part
 #
+# This subroutine validate a email address according a restricted application of
+# both RFC 5321 and RFC 5322 
+#
 # @param string $email Email local-part
 # @return 1 if the local-part is valid, 0 otherwise
 #
@@ -868,6 +873,9 @@ sub isValidEmailUsername {
 
 		return 0;
 	}
+
+	# Checking e-mail address length  - RFC 5321, section 4.5.3.1
+	return 0 if length $username > 254;
 
 	# Build regExp  (is executed only the first time)
 	state $regExp = join '', grep !/[<>()\[\]\\\.,;:\@"]/, map chr, 33..126;
