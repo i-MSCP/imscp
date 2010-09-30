@@ -105,7 +105,7 @@ sub ask_hostname {
 # Ask for Ip address
 #
 # @return int 0 on success, -1 otherwise. Exit on unrecoverable error
-# @todo The admin should be able to choose another network card
+# @todo Admin should be able to choose another network card
 #
 sub ask_eth {
 
@@ -222,7 +222,7 @@ sub ask_db_host {
 # Ask for ispCP database name
 #
 # @return void
-# @todo: Add check on user input data
+# @todo: Add check on input data
 #
 sub ask_db_name {
 
@@ -240,7 +240,7 @@ sub ask_db_name {
 # Ask for ispCP SQL user
 #
 # @return void
-# @todo: Add check on user input data
+# @todo: Add check on input data (only ASCII (recommended) and maxlength 16)
 #
 sub ask_db_user {
 
@@ -745,7 +745,612 @@ sub ask_awstats_dyn {
 }
 
 ################################################################################
-#                         Setup/Update subroutines                             #
+#                             Validations subroutines                          #
+################################################################################
+
+################################################################################
+# Validates a hostname
+#
+# This subroutine validates a hostname according the RFC 1123
+#
+# For now, the rule is as follow:
+#
+# 1. A host name is composed of series of labels concatenated with dots
+# 2. The entire hostname (including the delimiting dots) has a maximum of 255
+# characters.
+# 3. A (host name) label can start or end with a letter or a number
+# 4. A (host name) label MUST NOT start or end with a '-' (dash)
+# 5. A (host name) label can be up to 63 characters
+#
+# @param string $hostname Host name to be validated
+# @return 1 if the host name is valid, 0 otherwise
+# @todo Internationalized domain name (IDNA)
+#
+sub isValidHostname {
+
+	push_el(\@main::el, 'isValidHostname()', 'Starting...');
+
+	my $hostname = shift;
+
+	if(!defined $hostname) {
+		push_el(\@main::el, 'isValidHostname()', 'Missing argument `hostname`!');
+
+		return 0;
+	}
+
+	my $retVal = 1;
+
+	# Checking hostname length
+	$retVal = 0 if length $hostname > 255;
+
+	# Cutting the hostname per labels
+	my @labels = split '\.', $hostname;
+
+	# We should have a least two labels
+	$retVal = 0 if(@labels < 2);
+
+	# Retrieve the top level domain
+	my $tld = pop @labels;
+
+	# Checking top level domain syntax
+	$retVal = 0 unless $tld =~ /^[a-z]{2,6}$/;
+
+	# Checking all labels syntax and length
+	for (@labels) {
+		if($_ eq '' || length > 63 || !/^([0-9a-z]+(-+[0-9a-z]+)*|[a-z0-9]+)$/i) {
+			$retVal = 0;
+		}
+	}
+
+	push_el(\@main::el, 'isValidHostname()', 'Ending...');
+
+	$retVal;
+}
+
+################################################################################
+# Validates a mail address
+#
+# @param string $email Email address
+# @return 1 if the email domain part is valid, 0 otherwise
+#
+sub isValidEmail {
+
+	push_el(\@main::el, 'isValidEmail()', 'Starting...');
+
+	my ($email) = shift;
+
+	if(!defined $email) {
+		push_el(\@main::el, 'isValidEmail()', 'Missing argument `email`!');
+
+		return 0;
+	}
+
+	# split email address on username and hostname
+	my ($username, $domain) = split '@', $email;
+
+	return 0 unless defined $domain;
+
+	my $rs = isValidEmailUsername($username);
+	$rs &&= isValidEmailDomain($domain);
+
+	return 0 if !$rs;
+
+	push_el(\@main::el, 'isValidEmail()', 'Ending...');
+
+	1;
+}
+
+################################################################################
+# Validates an email local-part
+#
+# @param string $email Email local-part
+# @return 1 if the local-part is valid, 0 otherwise
+#
+sub isValidEmailUsername {
+
+	push_el(\@main::el, 'isValidMailUsername()', 'Starting...');
+
+	my($username) = shift;
+
+	if(!defined $username) {
+		push_el(
+			\@main::el, 'isValidEmailUsername()', 'Missing argument `username`!'
+		);
+
+		return 0;
+	}
+
+	# Build regExp  (is executed only the first time)
+	state $regExp = join '', grep !/[<>()\[\]\\\.,;:\@"]/, map chr, 33..126;
+	state $usernameRegexp = qr/^(?:[$regExp]+\.)*[$regExp]+$/o;
+
+	# Always executed
+	return 0 if $username !~ $usernameRegexp;
+
+	push_el(\@main::el, 'isValidMailUsername()', 'Ending...');
+
+	1;
+}
+
+################################################################################
+# Validates an email domain part
+#
+# The domain name part of an email address has to conform to strict guidelines:
+#
+#  It must match the requirements for a hostname (RFC 1123), consisting of
+#  letters, digits, hyphens and dots. In addition, the domain part may be an
+#  IP address literal, surrounded by square braces, such as jdoe@[192.168.2.1]
+#
+# @param string $email Email Hostname
+# @return 1 if the host name is valid, 0 otherwise
+#
+sub isValidEmailDomain {
+
+	push_el(\@main::el, 'isValidMailHostname()', 'Starting...');
+
+	my($domain) = shift;
+
+	if(!defined $domain) {
+		push_el(
+			\@main::el, 'isValidEmailHostname()', 'Missing argument `Domain`!'
+		);
+
+		return 0;
+	}
+
+	# Build regExp (is executed only the first time)
+	state $domainRegExp = qr/^
+		(?:(?:(?:[\da-zA-Z]+-+)*[\da-zA-Z]+\.)+
+		[a-zA-Z]{2,6}|(?:\[(?:(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}
+		(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\]))
+	$/xo;
+
+	# Always executed
+	return 0 if $domain !~ $domainRegExp;
+
+	push_el(\@main::el, 'isValidMailHostname()', 'Ending...');
+
+	1;
+}
+
+################################################################################
+# Validates an IpV4 address
+#
+# @param string $addr IpV4 address (dot-decimal notation)
+# @return int 1 on success, 0 otherwise
+#
+sub isValidAddr {
+
+	push_el(\@main::el, 'isValidAddr()', 'Starting...');
+
+	my ($addr) = shift;
+
+	if(!defined $addr) {
+		push_el(\@main::el, 'isValidAddr()', 'Missing argument `addr`!');
+
+		return 0;
+	}
+
+	# Build regExp (is executed only the first time)
+	state $regExp = qr/^
+		(?:(?:(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}
+		(?:[01]?\d{1,2}|2[0-4]\d|25[0-5]))
+	$/xo;
+
+	# Always executed
+	return 0 if $addr !~ $regExp;
+
+	push_el(\@main::el, 'isValidAddr()', 'Ending...');
+
+	1;
+}
+
+################################################################################
+#                                Check subroutines                             #
+################################################################################
+
+################################################################################
+# Check Sql connection
+#
+# This subroutine can be used to check an MySQL server connection with different
+# login credentials.
+#
+# Note:
+#
+# This subroutine automatically restore the previous DSN at end.
+#
+# @param string $user SQL username
+# @param string $password SQL user password
+# @return int 0 on success, other on failure
+#
+sub check_sql_connection {
+
+	push_el(\@main::el, 'sql_check_connections()', 'Starting...');
+
+	my($userName, $password) = @_;
+
+	if(!defined $userName && !defined $password) {
+		push_el(
+			\@main::el, 'sql_check_connections()',
+			'[ERROR] Undefined login credential!'
+		);
+
+		return -1;
+	}
+
+	# Define the DSN
+	@main::db_connect = (
+		"DBI:mysql:$main::db_name:$main::db_host", $userName, $password
+	);
+
+	# We force reconnection to the database by removing the current
+	$main::db = undef;
+
+	push_el(
+		\@main::el, 'sql_check_connections()',
+		"Checking MySQL server connection with the following DSN: @main::db_connect"
+	);
+
+	# @todo really needed ?
+	my($rs, $rdata) = doSQL('SHOW databases;');
+	return $rs if ($rs != 0);
+
+	# We force reconnection to the database by resetting the default DSN
+	setup_main_vars();
+
+	push_el(\@main::el, 'sql_check_connections()', 'Ending...');
+
+	0;
+}
+
+################################################################################
+##                             Utils subroutines                               #
+################################################################################
+
+################################################################################
+# Get and return the fully qualified system hostname
+#
+# @return mixed [0, string] on success, -1 on failure
+#
+sub get_sys_hostname {
+
+	push_el(\@main::el, 'get_sys_hostname()', 'Starting...');
+
+	chomp(my $hostname = `$main::cfg{'CMD_HOSTNAME'} -f`);
+	return -1 if($? != 0);
+
+	push_el(\@main::el, 'get_sys_hostname()', 'Ending...');
+
+	return (0, $hostname);
+}
+
+################################################################################
+# Convenience subroutine to print a title
+#
+# @param string $title title to be printed (without EOL)
+# @return void
+#
+sub title {
+	my $title = shift;
+	print STDOUT colored(['bold'], "\t$title\n");
+}
+
+################################################################################
+# Convenience subroutine  to print a subtitle
+#
+# @param string $subtitle subtitle to be printed (without EOL)
+# @return void
+#
+sub subtitle {
+	my $subtitle = shift;
+	print STDOUT "\t $subtitle";
+
+	$main::dyn_length = 0 if(defined $main::dyn_length);
+	$main::subtitle_length = length $subtitle;
+}
+
+################################################################################
+# Convenience subroutine to insert a new line
+# @return void
+#
+sub spacer {
+	print STDOUT "\n";
+}
+
+################################################################################
+# Can be used in a loop to reflect the action progression
+#
+# @return void
+#
+sub progress {
+	print STDOUT '.';
+	$main::dyn_length++;
+}
+
+################################################################################
+# Print status string
+#
+# Note: Should be always called after the subtitle subroutine
+#
+# @param int $status Action status
+# [@param string $exitOnError If set to 'exit_on_error', the program will end up
+# if the exit status is a non-zero value]
+#
+sub print_status {
+
+	my ($status, $exitOnError) = @_;
+	my $length = $main::subtitle_length;
+
+	if(defined $main::dyn_length && $main::dyn_length != 0) {
+		$length = $length+$main::dyn_length;
+		$main::dyn_length = 0;
+	}
+
+	my ($termWidth) = GetTerminalSize();
+	my $statusString = ($status == 0)
+		? colored(['green'], 'Done') : colored(['red'], 'Failed');
+
+	$statusString = sprintf('%'.($termWidth-($length+1)).'s', $statusString);
+
+	print STDOUT colored(['bold'], "$statusString\n");
+
+	if(defined $exitOnError && $exitOnError eq 'exit_on_error' && $status != 0) {
+		exit_msg($status);
+	}
+}
+
+################################################################################
+# Exit with a message
+#
+# [@param int $exitCode exit code (default set to 1)]
+# [@param: string $userMsg Optional user message]
+# @return void
+#
+sub exit_msg {
+
+	push_el(\@main::el, 'exit_msg()', 'Starting...');
+
+	my ($exitCode, $userMsg) = @_;
+	my $msg = '';
+
+	if (!defined $exitCode) {
+		$exitCode = 1;
+	}
+
+	if($exitCode != 0) {
+		my $context = defined &setup_engine ? 'setup' : 'update';
+
+		$msg = "\n\t" . colored(['red bold'], '[FATAL] ')  .
+			"An error occurred during $context process!\n" .
+			"\tCorrect it and re-run this program." .
+			"\n\n\tYou can find log files under your /tmp directory\n" .
+			"\tYou can also find help at http://isp-control.net/forum\n\n";
+
+	}
+
+	if(defined $userMsg && $userMsg ne '') {
+		$msg = "\n\t$userMsg\n" . $msg;
+	}
+
+	print STDERR $msg;
+
+	push_el(\@main::el, 'exit_msg()', 'Ending...');
+
+	exit $exitCode;
+}
+
+################################################################################
+#                             Hooks subroutines                                #
+################################################################################
+
+# Common behavior for the preinst and postinst scripts
+#
+# The main script will only end if the  maintainer scripts ends with an exit
+# status equal to 2.
+#
+
+################################################################################
+# Implements the hook for the maintainers pre-installation scripts
+#
+# Hook that can be used by distribution maintainers to perform any required
+# tasks before that the actions of the main process are executed. This hook
+# allow to add a specific script named `preinst` that will be run before the
+# both setup and update process actions. This hook is automatically called after
+# that all services are shutting down.
+#
+# Note:
+#
+#  The `preinst` script can be written in PERL, PHP or SHELL (POSIX compliant),
+#  and must be copied in the engine/setup directory during the make process. A
+#  shared library for the scripts that are written in SHELL is available in the
+#  engine/setup directory.
+#
+# @param mixed Argument that will be be passed to the maintainer script
+# @return int 0 on success, other otherwise
+#
+sub preinst {
+
+	push_el(\@main::el, 'preinst()', 'Starting...');
+
+	my $task = shift;
+	my $mime_type = mimetype("$main::cfg{'ROOT_DIR'}/engine/setup/preinst");
+
+	($mime_type =~ /(shell|perl|php)/) ||
+		exit_msg(
+			1, '[err] Unable to determine the mimetype of the `preinst` script!'
+		);
+
+	my $rs = sys_command_rs("$main::cfg{'CMD_'.uc($1)} preinst $task");
+	return $rs if($rs != 0);
+
+	push_el(\@main::el, 'preinst()', 'Ending...');
+
+	0;
+}
+
+################################################################################
+# Implements the hook for the maintainers post-installation scripts
+#
+# Hook that can be used by distribution maintainers to perform any required
+# tasks after that the actions of the main process are executed. This hook
+# allow to add a specific script named `postinst` that will be run after the
+# both setup and update process actions. This hook is automatically called
+# before the set_permissions() subroutine call and so, before that all services
+# are restarting.
+#
+# Note:
+#
+#  The `postinst` script can be written in PERL, PHP or SHELL (POSIX compliant),
+#  and must be copied in the engine/setup directory during the make process. A
+#  shared library for the scripts that are written in SHELL is available in the
+#  engine/setup directory.
+#
+# @param mixed Argument that will be be passed to the maintainer script
+# @return int 0 on success, other otherwise
+#
+sub postinst {
+
+	push_el(\@main::el, 'postinst()', 'Starting...');
+
+	my $task = shift;
+	my $mime_type = mimetype("$main::cfg{'ROOT_DIR'}/engine/setup/postinst");
+
+	($mime_type =~ /(shell|perl|php)/) ||
+		exit_msg(
+			1, '[err] Unable to determine the mimetype of the `postinst` script!'
+		);
+
+	my $rs = sys_command_rs("$main::cfg{'CMD_'.uc($1)} postinst $task");
+	return $rs if($rs != 0);
+
+	push_el(\@main::el, 'postinst()', 'Ending...');
+
+	0;
+}
+
+################################################################################
+#                               others subroutines                             #
+################################################################################
+
+################################################################################
+# Remove some unneeded files
+#
+# This subroutine process the following tasks:
+# - Delete .prev log files and their rotations not longer needed since r2251
+# - Delete setup/update log files created in /tmp
+# - Delete empty files in ispCP configuration directories
+#
+# @return int 1 on success, other on failure
+#
+sub setup_cleanup {
+
+	push_el(\@main::el, 'setup_cleanup()', 'Starting...');
+
+	my $rs = sys_command_rs(
+		"$main::cfg{'CMD_RM'} -f $main::cfg{'LOG_DIR'}/*-traf.log.prev* " .
+		"/tmp/ispcp-update-* /tmp/ispcp-setup-* " .
+		"$main::cfg{'CONF_DIR'}/*/*/empty-file"
+	);
+	return $rs if($rs != 0);
+
+	push_el(\@main::el, 'setup_cleanup()', 'Ending...');
+
+	0;
+}
+
+################################################################################
+# Run all update additional task such a rkhunter configuration
+#
+# @return void
+#
+sub additional_tasks{
+
+	push_el(\@main::el, 'additional_tasks()', 'Starting...');
+
+	subtitle('ispCP Rkhunter configuration:');
+	my $rs = setup_rkhunter();
+	print_status($rs, 'exit_on_error');
+
+	subtitle('ispCP System cleanup:');
+	setup_cleanup();
+	print_status(0);
+
+	push_el(\@main::el, 'additional_tasks()', 'Ending...');
+}
+
+################################################################################
+# Set engine and gui permissions
+#
+# @return int 0 on success, other on failure
+#
+sub set_permissions {
+
+	push_el(\@main::el, 'set_permissions()', 'Starting...');
+
+	for (qw/engine gui/) {
+		subtitle("Set $_ permissions:");
+
+		my $rs = sys_command_rs(
+			"$main::cfg{'CMD_SHELL'} " .
+			"$main::cfg{'ROOT_DIR'}/engine/setup/set-$_-permissions.sh " .
+			"$main::rlogfile"
+		);
+
+		print_status($rs, 'exit_on_error');
+	}
+
+	push_el(\@main::el, 'set_permissions()', 'Ending...');
+
+	0;
+}
+
+################################################################################
+# Starting services
+#
+# This subroutine start all services managed by ispCP and that are not marked as
+# 'no' in the main ispCP configuration file (ispcp.conf).
+#
+sub start_services {
+
+	push_el(\@main::el, 'start_services()', 'Starting...');
+
+	for (
+		qw/CMD_ISPCPN CMD_ISPCPD CMD_NAMED CMD_HTTPD CMD_FTPD CMD_MTA CMD_AUTHD
+		CMD_POP CMD_POP_SSL CMD_IMAP CMD_IMAP_SSL/
+	) {
+		if( $main::cfg{$_} !~ /^no$/i && -e $main::cfg{$_}) {
+			sys_command("$main::cfg{$_} start $main::rlogfile");
+			progress();
+		}
+	}
+
+	push_el(\@main::el, 'start_services()', 'Ending...');
+}
+
+################################################################################
+# Stopping services
+#
+# This subroutines stop all the services managed by ispCP.
+#
+sub stop_services {
+
+	push_el(\@main::el, 'stop_services()', 'Starting...');
+
+	for (
+		qw/CMD_ISPCPN CMD_ISPCPD CMD_NAMED CMD_HTTPD CMD_FTPD CMD_MTA CMD_AUTHD
+		CMD_POP CMD_POP_SSL CMD_IMAP CMD_IMAP_SSL/
+	) {
+		if(-e $main::cfg{$_}) {
+			sys_command_rs("$main::cfg{$_} stop $main::rlogfile");
+			progress();
+		}
+	}
+
+	push_el(\@main::el, 'stop_services()', 'Ending...');
+}
+
+################################################################################
+#                        Setup/Update low level subroutines                    #
 ################################################################################
 
 ################################################################################
@@ -2670,85 +3275,6 @@ sub setup_gui_named_db_data {
 	0;
 }
 
-
-################################################################################
-# Setup all services and does some other tasks
-#
-# @return void
-# todo make all subroutine called here idempotent
-#
-sub setup_services_cfg {
-
-	push_el(\@main::el, 'setup_services_cfg()', 'Starting...');
-
-	##  Dedicated task for setup process
-	if(defined &setup_engine) {
-		# For 'rpm' package the user/group creation is supported by maintenance
-		# scripts
-		if (!defined($ARGV[0]) || $ARGV[0] ne '-rpm') {
-			subtitle('ispCP users and groups:');
-			my $rs = setup_system_users();
-			print_status($rs, 'exit_on_error');
-		}
-
-		for (
-			[\&setup_system_dirs, 'ispCP directories:'],
-			[\&setup_config, 'ispCP configuration file:'],
-			[\&setup_ispcp_database, 'ispCP database:'],
-			[\&setup_default_language_table, 'ispCP default language table:'],
-			[\&setup_default_sql_data, 'ispCP default SQL data:'],
-			[\&setup_hosts, 'ispCP system hosts file:']
-		) {
-			subtitle($_->[1]);
-			my $rs = &{$_->[0]};
-			print_status($rs, 'exit_on_error');
-		}
-	}
-
-	# Common tasks (Setup/Update)
-	for (
-		[\&setup_crontab, 'ispCP Crontab file:'],
-		[\&setup_named, 'ispCP Bind9 main configuration file:'],
-		[\&setup_fastcgi_modules, 'ispCP Apache fastCGI modules configuration'],
-		[\&setup_httpd_main_vhost, 'ispCP Apache main vhost file:'],
-		[\&setup_awstats_vhost, 'ispCP Apache AWStats vhost file:'],
-		[\&setup_mta, 'ispCP Postfix configuration files:'],
-		[\&setup_po, 'ispCP Courier-Authentication:'],
-		[\&setup_ftpd, 'ispCP ProFTPd configuration file:'],
-		[\&setup_ispcp_daemon_network, 'ispCP init scripts:']
-	) {
-		subtitle($_->[1]);
-		my $rs = &{$_->[0]};
-		print_status($rs, 'exit_on_error');
-	}
-
-	push_el(\@main::el, 'setup_services_cfg()', 'Ending...');
-}
-
-################################################################################
-# Build all GUI related configuration files
-#
-# @return void
-#
-#sub rebuild_gui_cfg {
-sub setup_gui_cfg {
-
-	push_el(\@main::el, 'rebuild_gui_cfg()', 'Starting...');
-
-	for (
-		[\&setup_gui_named, 'ispCP GUI Bind9 configuration:'],
-		[\&setup_gui_php, 'ispCP GUI fastCGI/PHP configuration:'],
-		[\&setup_gui_httpd, 'ispCP GUI vhost file:'],
-		[\&setup_gui_pma, 'ispCP PMA configuration file:']
-	) {
-		subtitle($_->[1]);
-		my $rs = &{$_->[0]};
-		print_status($rs, 'exit_on_error');
-	}
-
-	push_el(\@main::el, 'rebuild_gui_cfg()', 'Ending...');
-}
-
 ################################################################################
 # Setup rkhunter
 #
@@ -2821,600 +3347,84 @@ sub setup_rkhunter {
 }
 
 ################################################################################
-# Remove some unneeded files
-#
-# This subroutine process the following tasks:
-# - Delete .prev log files and their rotations not longer needed since r2251
-# - Delete setup/update log files created in /tmp
-# - Delete empty files in ispCP configuration directories
-#
-# @return int 1 on success, other on failure
-#
-sub setup_cleanup {
-
-	push_el(\@main::el, 'setup_cleanup()', 'Starting...');
-
-	my $rs = sys_command_rs(
-		"$main::cfg{'CMD_RM'} -f $main::cfg{'LOG_DIR'}/*-traf.log.prev* " .
-		"/tmp/ispcp-update-* /tmp/ispcp-setup-* " .
-		"$main::cfg{'CONF_DIR'}/*/*/empty-file"
-	);
-	return $rs if($rs != 0);
-
-	push_el(\@main::el, 'setup_cleanup()', 'Ending...');
-
-	0;
-}
+#                           High Level Subroutines                             #
+################################################################################
 
 ################################################################################
-# Run all update additional task such a rkhunter configuration
+# Executes all the subroutines to setup all services
 #
 # @return void
+# todo make all subroutine called here idempotent
 #
-sub additional_tasks{
+sub setup_services_cfg {
 
-	push_el(\@main::el, 'additional_tasks()', 'Starting...');
+	push_el(\@main::el, 'setup_services_cfg()', 'Starting...');
 
-	subtitle('ispCP Rkhunter configuration:');
-	my $rs = setup_rkhunter();
-	print_status($rs, 'exit_on_error');
+	##  Dedicated tasks for setup process
+	if(defined &setup_engine) {
+		# For 'rpm' package the user/group creation is supported by maintenance
+		# scripts
+		if (!defined($ARGV[0]) || $ARGV[0] ne '-rpm') {
+			subtitle('ispCP users and groups:');
+			my $rs = setup_system_users();
+			print_status($rs, 'exit_on_error');
+		}
 
-	subtitle('ispCP System cleanup:');
-	setup_cleanup();
-	print_status(0);
+		for (
+			[\&setup_system_dirs, 'ispCP directories:'],
+			[\&setup_config, 'ispCP configuration file:'],
+			[\&setup_ispcp_database, 'ispCP database:'],
+			[\&setup_default_language_table, 'ispCP default language table:'],
+			[\&setup_default_sql_data, 'ispCP default SQL data:'],
+			[\&setup_hosts, 'ispCP system hosts file:']
+		) {
+			subtitle($_->[1]);
+			my $rs = &{$_->[0]};
+			print_status($rs, 'exit_on_error');
+		}
+	}
 
-	push_el(\@main::el, 'additional_tasks()', 'Ending...');
-}
-
-################################################################################
-# Set engine and gui permissions
-#
-# @return int 0 on success, other on failure
-#
-sub set_permissions {
-
-	push_el(\@main::el, 'set_permissions()', 'Starting...');
-
-	for (qw/engine gui/) {
-		subtitle("Set $_ permissions:");
-
-		my $rs = sys_command_rs(
-			"$main::cfg{'CMD_SHELL'} " .
-			"$main::cfg{'ROOT_DIR'}/engine/setup/set-$_-permissions.sh " .
-			"$main::rlogfile"
-		);
-
+	# Common tasks (Setup/Update)
+	for (
+		[\&setup_crontab, 'ispCP Crontab file:'],
+		[\&setup_named, 'ispCP Bind9 main configuration file:'],
+		[\&setup_fastcgi_modules, 'ispCP Apache fastCGI modules configuration'],
+		[\&setup_httpd_main_vhost, 'ispCP Apache main vhost file:'],
+		[\&setup_awstats_vhost, 'ispCP Apache AWStats vhost file:'],
+		[\&setup_mta, 'ispCP Postfix configuration files:'],
+		[\&setup_po, 'ispCP Courier-Authentication:'],
+		[\&setup_ftpd, 'ispCP ProFTPd configuration file:'],
+		[\&setup_ispcp_daemon_network, 'ispCP init scripts:']
+	) {
+		subtitle($_->[1]);
+		my $rs = &{$_->[0]};
 		print_status($rs, 'exit_on_error');
 	}
 
-	push_el(\@main::el, 'set_permissions()', 'Ending...');
-
-	0;
+	push_el(\@main::el, 'setup_services_cfg()', 'Ending...');
 }
 
 ################################################################################
-# Starting services
+# Executes all the subroutines to build all GUI related configuration files
 #
-# This subroutine start all serviced that are not marked as no in the main ispCP
-# configuration file
+# @return void
 #
-sub start_services {
+sub setup_gui_cfg {
 
-	push_el(\@main::el, 'start_services()', 'Starting...');
+	push_el(\@main::el, 'rebuild_gui_cfg()', 'Starting...');
 
 	for (
-		qw/CMD_ISPCPN CMD_ISPCPD CMD_NAMED CMD_HTTPD CMD_FTPD CMD_MTA CMD_AUTHD
-		CMD_POP CMD_POP_SSL CMD_IMAP CMD_IMAP_SSL/
+		[\&setup_gui_named, 'ispCP GUI Bind9 configuration:'],
+		[\&setup_gui_php, 'ispCP GUI fastCGI/PHP configuration:'],
+		[\&setup_gui_httpd, 'ispCP GUI vhost file:'],
+		[\&setup_gui_pma, 'ispCP PMA configuration file:']
 	) {
-		if( $main::cfg{$_} !~ /^no$/i && -e $main::cfg{$_}) {
-			sys_command("$main::cfg{$_} start $main::rlogfile");
-			progress();
-		}
+		subtitle($_->[1]);
+		my $rs = &{$_->[0]};
+		print_status($rs, 'exit_on_error');
 	}
 
-	push_el(\@main::el, 'start_services()', 'Ending...');
-}
-
-################################################################################
-# Stopping services
-#
-sub stop_services {
-
-	push_el(\@main::el, 'stop_services()', 'Starting...');
-
-	for (
-		qw/CMD_ISPCPN CMD_ISPCPD CMD_NAMED CMD_HTTPD CMD_FTPD CMD_MTA CMD_AUTHD
-		CMD_POP CMD_POP_SSL CMD_IMAP CMD_IMAP_SSL/
-	) {
-		if(-e $main::cfg{$_}) {
-			sys_command_rs("$main::cfg{$_} stop $main::rlogfile");
-			progress();
-		}
-	}
-
-	push_el(\@main::el, 'stop_services()', 'Ending...');
-}
-
-################################################################################
-#                             Check subroutines                                #
-################################################################################
-
-################################################################################
-# Validates a hostname
-#
-# This subroutine validates a hostname according the RFC 1123
-#
-# For now, the rule is as follow:
-#
-# 1. A host name is composed of series of labels concatenated with dots
-# 2. The entire hostname (including the delimiting dots) has a maximum of 255
-# characters.
-# 3. A (host name) label can start or end with a letter or a number
-# 4. A (host name) label MUST NOT start or end with a '-' (dash)
-# 5. A (host name) label can be up to 63 characters
-#
-# @param string $hostname Host name to be validated
-# @return 1 if the host name is valid, 0 otherwise
-# @todo Internationalized domain name (IDNA)
-#
-sub isValidHostname {
-
-	push_el(\@main::el, 'isValidHostname()', 'Starting...');
-
-	my $hostname = shift;
-
-	if(!defined $hostname) {
-		push_el(\@main::el, 'isValidHostname()', 'Missing argument `hostname`!');
-
-		return 0;
-	}
-
-	my $retVal = 1;
-
-	# Checking hostname length
-	$retVal = 0 if length $hostname > 255;
-
-	# Cutting the hostname per labels
-	my @labels = split '\.', $hostname;
-
-	# We should have a least two labels
-	$retVal = 0 if(@labels < 2);
-
-	# Retrieve the top level domain
-	my $tld = pop @labels;
-
-	# Checking top level domain syntax
-	$retVal = 0 unless $tld =~ /^[a-z]{2,6}$/;
-
-	# Checking all labels syntax and length
-	for (@labels) {
-		if($_ eq '' || length > 63 || !/^([0-9a-z]+(-+[0-9a-z]+)*|[a-z0-9]+)$/i) {
-			$retVal = 0;
-		}
-	}
-
-	push_el(\@main::el, 'isValidHostname()', 'Ending...');
-
-	$retVal;
-}
-
-
-################################################################################
-# Validates a mail address
-#
-# @param string $email Email address
-# @return 1 if the email domain part is valid, 0 otherwise
-#
-sub isValidEmail {
-
-	push_el(\@main::el, 'isValidEmail()', 'Starting...');
-
-	my ($email) = shift;
-
-	if(!defined $email) {
-		push_el(\@main::el, 'isValidEmail()', 'Missing argument `email`!');
-
-		return 0;
-	}
-
-	# split email address on username and hostname
-	my ($username, $domain) = split '@', $email;
-
-	return 0 unless defined $domain;
-
-	my $rs = isValidEmailUsername($username);
-	$rs &&= isValidEmailDomain($domain);
-
-	return 0 if !$rs;
-
-	push_el(\@main::el, 'isValidEmail()', 'Ending...');
-
-	1;
-}
-
-################################################################################
-# Validates an email local-part
-#
-# @param string $email Email local-part
-# @return 1 if the local-part is valid, 0 otherwise
-#
-sub isValidEmailUsername {
-
-	push_el(\@main::el, 'isValidMailUsername()', 'Starting...');
-
-	my($username) = shift;
-
-	if(!defined $username) {
-		push_el(
-			\@main::el, 'isValidEmailUsername()', 'Missing argument `username`!'
-		);
-
-		return 0;
-	}
-
-	# Build regExp  (is executed only the first time)
-	state $regExp = join '', grep !/[<>()\[\]\\\.,;:\@"]/, map chr, 33..126;
-	state $usernameRegexp = qr/^(?:[$regExp]+\.)*[$regExp]+$/o;
-
-	# Always executed
-	return 0 if $username !~ $usernameRegexp;
-
-	push_el(\@main::el, 'isValidMailUsername()', 'Ending...');
-
-	1;
-}
-
-################################################################################
-# Validates an email domain part
-#
-# The domain name part of an email address has to conform to strict guidelines:
-#
-#  It must match the requirements for a hostname (RFC 1123), consisting of
-#  letters, digits, hyphens and dots. In addition, the domain part may be an
-#  IP address literal, surrounded by square braces, such as jdoe@[192.168.2.1]
-#
-# @param string $email Email Hostname
-# @return 1 if the host name is valid, 0 otherwise
-#
-sub isValidEmailDomain {
-
-	push_el(\@main::el, 'isValidMailHostname()', 'Starting...');
-
-	my($domain) = shift;
-
-	if(!defined $domain) {
-		push_el(
-			\@main::el, 'isValidEmailHostname()', 'Missing argument `Domain`!'
-		);
-
-		return 0;
-	}
-
-	# Build regExp (is executed only the first time)
-	state $domainRegExp = qr/^
-		(?:(?:(?:[\da-zA-Z]+-+)*[\da-zA-Z]+\.)+
-		[a-zA-Z]{2,6}|(?:\[(?:(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}
-		(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\]))
-	$/xo;
-
-	# Always executed
-	return 0 if $domain !~ $domainRegExp;
-
-	push_el(\@main::el, 'isValidMailHostname()', 'Ending...');
-
-	1;
-}
-
-################################################################################
-# Check the format of an IpV4 address
-#
-# @param string $addr IpV4 address (dot-decimal notation)
-# @return int 1 on success, 0 otherwise
-#
-#sub check_eth {
-sub isValidAddr {
-
-	push_el(\@main::el, 'isValidAddr()', 'Starting...');
-
-	my ($addr) = shift;
-
-	if(!defined $addr) {
-		push_el(\@main::el, 'isValidAddr()', 'Missing argument `addr`!');
-
-		return 0;
-	}
-
-	# Build regExp (is executed only the first time)
-	state $regExp = qr/^
-		(?:(?:(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}
-		(?:[01]?\d{1,2}|2[0-4]\d|25[0-5]))
-	$/xo;
-
-	# Always executed
-	return 0 if $addr !~ $regExp;
-
-	push_el(\@main::el, 'isValidAddr()', 'Ending...');
-
-	1;
-}
-
-################################################################################
-# Check Sql connection
-#
-# This subroutine can be used to check an MySQL server connection with different
-# login credentials.
-#
-# Note:
-#
-# This subroutine automatically restore the previous DSN at end.
-#
-# @param string $user SQL username
-# @param string $password SQL user password
-# @return int 0 on success, other on failure
-#
-sub check_sql_connection {
-
-	push_el(\@main::el, 'sql_check_connections()', 'Starting...');
-
-	my($userName, $password) = @_;
-
-	if(!defined $userName && !defined $password) {
-		push_el(
-			\@main::el, 'sql_check_connections()',
-			'[ERROR] Undefined login credential!'
-		);
-
-		return -1;
-	}
-
-	# Define the DSN
-	@main::db_connect = (
-		"DBI:mysql:$main::db_name:$main::db_host", $userName, $password
-	);
-
-	# We force reconnection to the database by removing the current
-	$main::db = undef;
-
-	push_el(
-		\@main::el, 'sql_check_connections()',
-		"Checking MySQL server connection with the following DSN: @main::db_connect"
-	);
-
-	# @todo really needed ?
-	my($rs, $rdata) = doSQL('SHOW databases;');
-	return $rs if ($rs != 0);
-
-	# We force reconnection to the database by resetting the default DSN
-	setup_main_vars();
-
-	push_el(\@main::el, 'sql_check_connections()', 'Ending...');
-
-	0;
-}
-
-################################################################################
-##                             Utils subroutines                               #
-################################################################################
-
-################################################################################
-# Get and return the fully qualified system hostname
-#
-# @return mixed [0, string] on success, -1 on failure
-#
-sub get_sys_hostname {
-
-	push_el(\@main::el, 'get_sys_hostname()', 'Starting...');
-
-	chomp(my $hostname = `$main::cfg{'CMD_HOSTNAME'} -f`);
-	return -1 if($? != 0);
-
-	push_el(\@main::el, 'get_sys_hostname()', 'Ending...');
-
-	return (0, $hostname);
-}
-
-################################################################################
-# Convenience subroutine to print a title
-#
-# @param string $title title to be printed (without EOL)
-# @return void
-#
-sub title {
-	my $title = shift;
-	print STDOUT colored(['bold'], "\t$title\n");
-}
-
-################################################################################
-# Convenience subroutine  to print a subtitle
-#
-# @param string $subtitle subtitle to be printed (without EOL)
-# @return void
-#
-sub subtitle {
-	my $subtitle = shift;
-	print STDOUT "\t $subtitle";
-
-	$main::dyn_length = 0 if(defined $main::dyn_length);
-	$main::subtitle_length = length $subtitle;
-}
-
-################################################################################
-# Convenience subroutine to insert a new line
-# @return void
-#
-sub spacer {
-	print STDOUT "\n";
-}
-
-################################################################################
-# Can be used in a loop to reflect the action progression
-#
-# @return void
-#
-sub progress {
-	print STDOUT '.';
-	$main::dyn_length++;
-}
-
-################################################################################
-# Print status string
-#
-# Note: Should be always called after the subtitle subroutine
-#
-# @param int $status Action status
-# [@param string $exitOnError If set to 'exit_on_error', the program will end up
-# if the exit status is a non-zero value]
-#
-sub print_status {
-
-	my ($status, $exitOnError) = @_;
-	my $length = $main::subtitle_length;
-
-	if(defined $main::dyn_length && $main::dyn_length != 0) {
-		$length = $length+$main::dyn_length;
-		$main::dyn_length = 0;
-	}
-
-	my ($termWidth) = GetTerminalSize();
-	my $statusString = ($status == 0)
-		? colored(['green'], 'Done') : colored(['red'], 'Failed');
-
-	$statusString = sprintf('%'.($termWidth-($length+1)).'s', $statusString);
-
-	print STDOUT colored(['bold'], "$statusString\n");
-
-	if(defined $exitOnError && $exitOnError eq 'exit_on_error' && $status != 0) {
-		exit_msg($status);
-	}
-}
-
-################################################################################
-# Exit with a message
-#
-# [@param int $exitCode exit code (default set to 1)]
-# [@param: string $userMsg Optional user message]
-# @return void
-#
-sub exit_msg {
-
-	push_el(\@main::el, 'exit_msg()', 'Starting...');
-
-	my ($exitCode, $userMsg) = @_;
-	my $msg = '';
-
-	if (!defined $exitCode) {
-		$exitCode = 1;
-	}
-
-	if($exitCode != 0) {
-		my $context = defined &setup_engine ? 'setup' : 'update';
-
-		$msg = "\n\t" . colored(['red bold'], '[FATAL] ')  .
-			"An error occurred during $context process!\n" .
-			"\tCorrect it and re-run this program." .
-			"\n\n\tYou can find log files under your /tmp directory\n" .
-			"\tYou can also find help at http://isp-control.net/forum\n\n";
-
-	}
-
-	if(defined $userMsg && $userMsg ne '') {
-		$msg = "\n\t$userMsg\n" . $msg;
-	}
-
-	print STDERR $msg;
-
-	push_el(\@main::el, 'exit_msg()', 'Ending...');
-
-	exit $exitCode;
-}
-
-################################################################################
-#                             Hooks subroutines                                #
-################################################################################
-
-# Common behavior for the preinst and postinst scripts
-#
-# The main script will only end if the  maintainer scripts ends with an exit
-# status equal to 2.
-#
-
-################################################################################
-# Implements the hook for the maintainers pre-installation scripts
-#
-# Hook that can be used by distribution maintainers to perform any required
-# tasks before that the actions of the main process are executed. This hook
-# allow to add a specific script named `preinst` that will be run before the
-# both setup and update process actions. This hook is automatically called after
-# that all services are shutting down.
-#
-# Note:
-#
-#  The `preinst` script can be written in PERL, PHP or SHELL (POSIX compliant),
-#  and must be copied in the engine/setup directory during the make process. A
-#  shared library for the scripts that are written in SHELL is available in the
-#  engine/setup directory.
-#
-# @param mixed Argument that will be be passed to the maintainer script
-# @return int 0 on success, other otherwise
-#
-sub preinst {
-
-	push_el(\@main::el, 'preinst()', 'Starting...');
-
-	my $task = shift;
-	my $mime_type = mimetype("$main::cfg{'ROOT_DIR'}/engine/setup/preinst");
-
-	($mime_type =~ /(shell|perl|php)/) ||
-		exit_msg(
-			1, '[err] Unable to determine the mimetype of the `preinst` script!'
-		);
-
-	my $rs = sys_command_rs("$main::cfg{'CMD_'.uc($1)} preinst $task");
-	return $rs if($rs != 0);
-
-	push_el(\@main::el, 'preinst()', 'Ending...');
-
-	0;
-}
-
-################################################################################
-# Implements the hook for the maintainers post-installation scripts
-#
-# Hook that can be used by distribution maintainers to perform any required
-# tasks after that the actions of the main process are executed. This hook
-# allow to add a specific script named `postinst` that will be run after the
-# both setup and update process actions. This hook is automatically called
-# before the set_permissions() subroutine call and so, before that all services
-# are restarting.
-#
-# Note:
-#
-#  The `postinst` script can be written in PERL, PHP or SHELL (POSIX compliant),
-#  and must be copied in the engine/setup directory during the make process. A
-#  shared library for the scripts that are written in SHELL is available in the
-#  engine/setup directory.
-#
-# @param mixed Argument that will be be passed to the maintainer script
-# @return int 0 on success, other otherwise
-#
-sub postinst {
-
-	push_el(\@main::el, 'postinst()', 'Starting...');
-
-	my $task = shift;
-	my $mime_type = mimetype("$main::cfg{'ROOT_DIR'}/engine/setup/postinst");
-
-	($mime_type =~ /(shell|perl|php)/) ||
-		exit_msg(
-			1, '[err] Unable to determine the mimetype of the `postinst` script!'
-		);
-
-	my $rs = sys_command_rs("$main::cfg{'CMD_'.uc($1)} postinst $task");
-	return $rs if($rs != 0);
-
-	push_el(\@main::el, 'postinst()', 'Ending...');
-
-	0;
+	push_el(\@main::el, 'rebuild_gui_cfg()', 'Ending...');
 }
 
 1;
