@@ -49,7 +49,7 @@ my $rs = makepath(
 	$main::cfg{'ROOT_GROUP'}, 0755
 );
 
-die("Unable to create ispCP log directory $!") unless $rs == 0;
+die("Unable to create ispCP log directory $!\n") unless $rs == 0;
 
 # Always dump the log at end
 END {
@@ -1129,10 +1129,9 @@ sub exit_msg {
 
 		$msg = "\n\t" . colored(['red bold'], '[FATAL] ')  .
 			"An error occurred during $context process!\n" .
-			"\tCorrect it and re-run this program. \n\n\tYou can find log " .
-			"files under the $main::cfg{'LOG_DIR'}/setup directory.\n" .
-			"\tYou can also find help at http://isp-control.net/forum\n\n";
-
+			"\tCorrect it and re-run this program.\n\n\tLog files are stored " .
+			"in $main::cfg{'LOG_DIR'}/setup\n\ttYou can also find help at ".
+			 "http://isp-control.net/forum\n\n";
 	}
 
 	if(defined $userMsg && $userMsg ne '') {
