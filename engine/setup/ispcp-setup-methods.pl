@@ -1130,7 +1130,7 @@ sub exit_msg {
 		$msg = "\n\t" . colored(['red bold'], '[FATAL] ')  .
 			"An error occurred during $context process!\n" .
 			"\tCorrect it and re-run this program.\n\n\tLog files are stored " .
-			"in $main::cfg{'LOG_DIR'}/setup\n\ttYou can also find help at ".
+			"in $main::cfg{'LOG_DIR'}/setup\n\tYou can also find help at ".
 			 "http://isp-control.net/forum\n\n";
 	}
 
