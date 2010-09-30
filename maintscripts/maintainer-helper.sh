@@ -76,7 +76,7 @@ fi
 ISPCP_LOGFILE="$LOG_DIR/setup/ispcp-$0-$1.log"
 
 # Make sure that the log directory exists
-/usr/bin/install -d $ISPCP_LOGFILE -m 0755 -o $ROOT_USER -g $ROOT_GROUP
+/usr/bin/install -d $LOG_DIR/setup -m 0755 -o $ROOT_USER -g $ROOT_GROUP
 
 # Remove old ISPCP_LOGFILE if one it exists
 $CMD_RM -f $ISPCP_LOGFILE
