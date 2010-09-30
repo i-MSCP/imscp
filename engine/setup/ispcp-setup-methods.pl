@@ -3008,7 +3008,7 @@ sub isValidHostname {
 # Validates a mail address
 #
 # @param string $email Email address
-# @return 1 if the host name is valid, 0 otherwise
+# @return 1 if the email domain part is valid, 0 otherwise
 #
 sub isValidEmail {
 
@@ -3023,12 +3023,12 @@ sub isValidEmail {
 	}
 
 	# split email address on username and hostname
-	my ($username, $hostname) = split '@', $email;
+	my ($username, $domain) = split '@', $email;
 
-	return 0 unless defined $hostname;
+	return 0 unless defined $domain;
 
 	my $rs = isValidEmailUsername($username);
-	$rs &&= isValidEmailHostname($hostname);
+	$rs &&= isValidEmailDomain($domain);
 
 	return 0 if !$rs;
 
@@ -3040,8 +3040,8 @@ sub isValidEmail {
 ################################################################################
 # Validates an email local-part
 #
-# @param string $email Email username
-# @return 1 if the host name is valid, 0 otherwise
+# @param string $email Email local-part
+# @return 1 if the local-part is valid, 0 otherwise
 #
 sub isValidEmailUsername {
 
@@ -3074,7 +3074,7 @@ sub isValidEmailUsername {
 #
 # The domain name part of an email address has to conform to strict guidelines:
 #
-#  it must match the requirements for a hostname (RFC 1123), consisting of
+#  It must match the requirements for a hostname (RFC 1123), consisting of
 #  letters, digits, hyphens and dots. In addition, the domain part may be an
 #  IP address literal, surrounded by square braces, such as jdoe@[192.168.2.1]
 #
@@ -3085,9 +3085,9 @@ sub isValidEmailDomain {
 
 	push_el(\@main::el, 'isValidMailHostname()', 'Starting...');
 
-	my($Domain) = shift;
+	my($domain) = shift;
 
-	if(!defined $Domain) {
+	if(!defined $domain) {
 		push_el(
 			\@main::el, 'isValidEmailHostname()', 'Missing argument `Domain`!'
 		);
@@ -3103,7 +3103,7 @@ sub isValidEmailDomain {
 	$/xo;
 
 	# Always executed
-	return 0 if $Domain !~ $domainRegExp;
+	return 0 if $domain !~ $domainRegExp;
 
 	push_el(\@main::el, 'isValidMailHostname()', 'Ending...');
 
