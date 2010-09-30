@@ -444,6 +444,8 @@ sub ask_admin_email {
 		return -1;
 	}
 
+	$main::ua{'admin_email'} = $rdata;
+
 	push_el(\@main::el, 'ask_admin_email()', 'Ending...');
 
 	0;
@@ -974,7 +976,7 @@ sub check_sql_connection {
 
 	push_el(\@main::el, 'sql_check_connections()', 'Starting...');
 
-	my($userName, $password) = @_;
+	my($userName, $password, $dbName) = @_;
 
 	if(!defined $userName && !defined $password) {
 		push_el(
@@ -985,9 +987,11 @@ sub check_sql_connection {
 		return -1;
 	}
 
+	$dbName = $main::db_name if !defined $dbName;
+
 	# Define the DSN
 	@main::db_connect = (
-		"DBI:mysql:$main::db_name:$main::db_host", $userName, $password
+		"DBI:mysql:$dbName:$main::db_host", $userName, $password
 	);
 
 	# We force reconnection to the database by removing the current

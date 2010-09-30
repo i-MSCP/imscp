@@ -159,7 +159,7 @@ sub check_host_system {
 
 	subtitle('ispCP Mysql server connection checking:');
 	my $rs = check_sql_connection(
-		undef, $main::ua{'db_host'}, $main::ua{'db_user'}, $main::ua{'db_password'},
+		$main::ua{'db_user'}, $main::ua{'db_password'}, ''
 	);
 	print_status($rs, 'exit_on_error');
 
@@ -686,7 +686,7 @@ sub setup_engine {
 	if(-e "$main::cfg{'ROOT_DIR'}/engine/setup/preinst") {
 		spacer();
 
-		title('Starting dist maintainer pre-installation script');
+		title('Starting dist. maintainer pre-installation script');
 		my $rs = preinst('install');
 		exit_msg($rs) if ($rs == 2);
 	}
@@ -713,7 +713,7 @@ sub setup_engine {
 	if(-e "$main::cfg{'ROOT_DIR'}/engine/setup/postinst") {
 		spacer();
 
-		title('Starting dist maintainer post-installation script');
+		title('Starting dist. maintainer post-installation script');
 		my $rs = postinst('configure');
 		exit_msg($rs) if ($rs == 2);
 	}
