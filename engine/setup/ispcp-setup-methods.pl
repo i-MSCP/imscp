@@ -126,14 +126,14 @@ sub ask_eth {
 		);
 	}
 
-	print STDOUT "\n\tPlease enter system network address. [$ipAddr]: ";
+	print STDOUT "\n\tPlease enter the system network address. [$ipAddr]: ";
 	chomp(my $rdata = readline \*STDIN);
 
 	$main::ua{'eth_ip'} = (!defined $rdata || $rdata eq '') ? $ipAddr : $rdata;
 
 	if(!isValidAddr($main::ua{'eth_ip'})) {
 		print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
-			"Ip address not valid!\n";
+			"Ip address not valid, please retry!\n";
 
 		return -1;
 	}
@@ -174,9 +174,9 @@ sub ask_vhost {
 		"be\n\treachable [$vhost]: ";
 	chomp(my $rdata = readline \*STDIN);
 
-	if (!defined($rdata) || $rdata eq '') {
+	if ($rdata eq '') {
 		$main::ua{'admin_vhost'} = $vhost;
-	} elsif ($rdata =~ /^([\w][\w-]{0,253}[\w]\.)*([\w][\w-]{0,253}[\w])\.([a-zA-Z]{2,6})$/) {
+	} elsif (isValidHostname($rdata)) {
 		$main::ua{'admin_vhost'} = $rdata;
 	} else {
 		print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
@@ -202,7 +202,7 @@ sub ask_db_host {
 	print STDOUT "\n\tPlease enter SQL server host. [localhost]: ";
 	chomp(my $rdata = readline \*STDIN);
 
-	$rdata = (!defined($rdata) || $rdata eq '') ? 'localhost' : $rdata;
+	$rdata = ($rdata eq '') ? 'localhost' : $rdata;
 
 	if($rdata ne 'localhost' && !isValidHostname($rdata)) {
 		print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
@@ -231,8 +231,7 @@ sub ask_db_name {
 	print STDOUT "\n\tPlease enter system SQL database. [ispcp]: ";
 	chomp(my $rdata = readline \*STDIN);
 
-	$main::ua{'db_name'} = (!defined($rdata) || $rdata eq '')
-		? 'ispcp' : $rdata;
+	$main::ua{'db_name'} = ($rdata eq '') ? 'ispcp' : $rdata;
 
 	push_el(\@main::el, 'ask_db_name()', 'Ending...');
 }
@@ -250,7 +249,7 @@ sub ask_db_user {
 	print STDOUT "\n\tPlease enter system SQL user. [root]: ";
 	chomp(my $rdata = readline \*STDIN);
 
-	$main::ua{'db_user'} = (!defined($rdata) || $rdata eq '') ? 'root' : $rdata;
+	$main::ua{'db_user'} = ($rdata eq '') ? 'root' : $rdata;
 
 	push_el(\@main::el, 'ask_db_user()', 'Ending...');
 }
@@ -266,7 +265,7 @@ sub ask_db_password {
 
 	my $pass1 = read_password("\n\tPlease enter system SQL password. [none]: ");
 
-	if (!defined($pass1) || $pass1 eq '') {
+	if (!defined $pass1 || $pass1 eq '') {
 		$main::ua{'db_password'} = '';
 	} else {
 		my $pass2 = read_password("\tPlease repeat system SQL password: ");
@@ -298,11 +297,11 @@ sub ask_db_ftp_user {
 	print STDOUT "\n\tPlease enter ispCP ftp SQL user. [vftp]: ";
 	chomp(my $rdata = readline \*STDIN);
 
-	if (!defined($rdata) || $rdata eq '') {
+	if ($rdata eq '') {
 		$main::ua{'db_ftp_user'} = 'vftp';
 	} elsif($rdata eq $main::ua{'db_user'}) {
 		print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
-			"Ftp SQL user must not be identical to system SQL user!\n";
+			"Ftp SQL user must not be identical to the system SQL user!\n";
 
 		return -1;
 	} else {
@@ -329,7 +328,7 @@ sub ask_db_ftp_password {
 		"\n\tPlease enter ispCP ftp SQL user password. [auto generate]: "
 	);
 
-	if (!defined($pass1) || $pass1 eq '') {
+	if (!defined $pass1  || $pass1 eq '') {
 		$dbPassword = gen_sys_rand_num(18);
 		$dbPassword =~ s/('|"|`|#|;)//g;
 		$main::ua{'db_ftp_password'} = $dbPassword;
@@ -366,7 +365,7 @@ sub ask_admin {
 	print STDOUT "\n\tPlease enter administrator login name. [admin]: ";
 	chomp(my $rdata = readline \*STDIN);
 
-	$main::ua{'admin'} = (!defined($rdata) || $rdata eq '') ? 'admin' : $rdata;
+	$main::ua{'admin'} = ($rdata eq '') ? 'admin' : $rdata;
 
 	push_el(\@main::el, 'ask_admin()', 'Ending...');
 }
@@ -382,14 +381,13 @@ sub ask_admin_password {
 
 	my $pass1 = read_password("\n\tPlease enter administrator password: ");
 
-	if (!defined($pass1) || $pass1 eq '') {
+	if (!defined $pass1 || $pass1 eq '') {
 		print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
 			 "Password cannot be empty!\n";
 
 		return -1;
-
 	} else {
-		if (length($pass1) < 5) {
+		if (length $pass1 < 5) {
 			print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
 				"Password too short!\n";
 
@@ -456,13 +454,13 @@ sub ask_second_dns {
 	print STDOUT "\n\tIP of Secondary DNS. (optional) []: ";
 	chomp(my $rdata = readline *STDIN);
 
-	if (!defined($rdata) || $rdata eq '') {
+	if (!defined $rdata || $rdata eq '') {
 		$main::ua{'secondary_dns'} = '';
-	} elsif(check_eth($rdata) == 0) {
+	} elsif(isValidAddr($rdata)) {
 		$main::ua{'secondary_dns'} = $rdata;
 	} else {
 		print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
-			"No valid IP, please retry!\n";
+			"Ip address not valid, please retry!\n";
 
 		return -1;
 	}
@@ -486,7 +484,7 @@ sub ask_resolver {
 	"local nameserver\n\tsets by ispCP ? [Y/n]: ";
 	chomp(my $rdata = readline \*STDIN);
 
-	if (!defined($rdata) || $rdata eq '' || $rdata =~ /^(?:(y|yes)|(n|no))$/i) {
+	if ($rdata eq '' || $rdata =~ /^(?:(y|yes)|(n|no))$/i) {
 		$main::ua{'resolver'} = ! defined $2 ? 'yes' : 'no';
 	} else {
 		print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
@@ -513,7 +511,7 @@ sub ask_mysql_prefix {
 		"[i]nfront, [b]ehind, [n]one. [none]: ";
 	chomp(my $rdata = readline \*STDIN);
 
-	if (!defined($rdata) || $rdata eq '' || $rdata eq 'none' || $rdata eq 'n') {
+	if ($rdata eq '' || $rdata eq 'none' || $rdata eq 'n') {
 		$main::ua{'mysql_prefix'} = 'no';
 		$main::ua{'mysql_prefix_type'} = '';
 	} elsif ($rdata eq 'infront' || $rdata eq 'i') {
@@ -551,7 +549,7 @@ sub ask_db_pma_user {
 		"[$main::cfg{'PMA_USER'}]: ";
 	chomp(my $rdata = readline \*STDIN);
 
-	if (!defined($rdata) || $rdata eq '') {
+	if ($rdata eq '') {
 		$main::ua{'db_pma_user'} = $main::cfg{'PMA_USER'}
 	} elsif($rdata eq $main::ua{'db_user'}) {
 		print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
@@ -586,7 +584,7 @@ sub ask_db_pma_password {
 		"[auto generate]: "
 	);
 
-	if (!defined($pass1) || $pass1 eq '') {
+	if (!defined $pass1 || $pass1 eq '') {
 		my $dbPassword = gen_sys_rand_num(18);
 		$dbPassword =~ s/('|"|`|#|;)//g;
 		$main::ua{'db_pma_password'} = $dbPassword;
@@ -622,9 +620,9 @@ sub ask_fastcgi {
 	push_el(\@main::el, 'ask_fastcgi()', 'Starting...');
 
 	print STDOUT "\n\tFastCGI Version: [f]cgid or fast[c]gi. [fcgid]: ";
-	chomp(my$rdata = readline \*STDIN);
+	chomp(my $rdata = readline \*STDIN);
 
-	if (!defined($rdata) || $rdata eq '' || $rdata eq 'fcgid' || $rdata eq 'f') {
+	if ($rdata eq '' || $rdata eq 'fcgid' || $rdata eq 'f') {
 		$main::ua{'php_fastcgi'} = 'fcgid';
 	} elsif ($rdata eq 'fastcgi' || $rdata eq 'c') {
 		$main::ua{'php_fastcgi'} = 'fastcgi';
@@ -662,9 +660,7 @@ sub ask_timezone {
 	chomp(my $rdata = readline \*STDIN);
 
 	# Copy $timezone_name to $rdata if $rdata is empty
-	if (!defined($rdata) || $rdata eq '') {
-		$rdata = $timezone_name;
-	}
+	$rdata = $timezone_name if !defined $rdata || $rdata eq '';
 
 	# DateTime::TimeZone::is_olson exits with die if the given data is not valid
 	# eval catches the die() and keeps this program alive
@@ -703,7 +699,7 @@ sub ask_awstats_on {
 	print STDOUT "\n\tActivate AWStats. [no]: ";
 	chomp(my $rdata = readline \*STDIN);
 
-	if (!defined($rdata) || $rdata eq '' || $rdata eq 'no' || $rdata eq 'n') {
+	if ($rdata eq '' || $rdata eq 'no' || $rdata eq 'n') {
 		$main::ua{'awstats_on'} = 'no';
 	} elsif ($rdata eq 'yes' || $rdata eq 'y') {
 		$main::ua{'awstats_on'} = 'yes';
@@ -732,8 +728,7 @@ sub ask_awstats_dyn {
 		"[s]tatic. [dynamic]: ";
 	chomp(my $rdata = readline \*STDIN);
 
-	if (!defined($rdata) || $rdata eq '' || $rdata eq 'dynamic' || $rdata eq 'd') {
-
+	if ($rdata eq '' || $rdata eq 'dynamic' || $rdata eq 'd') {
 		$main::ua{'awstats_dyn'} = '0';
 	} elsif ($rdata eq 'static' || $rdata eq 's') {
 		$main::ua{'awstats_dyn'} = '1';
@@ -3317,7 +3312,9 @@ sub exit_msg {
 		$msg = "\n\t" . colored(['red bold'], '[FATAL] ')  .
 			"An error occurred during $context process!\n" .
 			"\tCorrect it and re-run this program." .
-			"\n\n\tYou can find help at http://isp-control.net/forum\n\n";
+			"\n\n\tYou can find log files under your /tmp directory\n" .
+			"\tYou can also find help at http://isp-control.net/forum\n\n";
+
 	}
 
 	if(defined $userMsg && $userMsg ne '') {
