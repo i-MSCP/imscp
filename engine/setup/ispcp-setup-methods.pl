@@ -121,8 +121,8 @@ sub ask_eth {
 
 	if(getCmdExitValue() != 0) {
 		exit_msg(
-			-1, colored(['bold red'], "[ERROR] ") . 'External command returned' .
-			 " an error on network\n\tinterface cards lookup!\n"
+			-1, colored(['bold red'], "\n\t[ERROR] ") . 'External command ' .
+			 "returned an error on network\n\tinterface cards lookup!\n"
 		);
 	}
 
@@ -131,7 +131,7 @@ sub ask_eth {
 
 	$main::ua{'eth_ip'} = (!defined $rdata || $rdata eq '') ? $ipAddr : $rdata;
 
-	if(check_eth($main::ua{'eth_ip'})) {
+	if(!isValidAddr($main::ua{'eth_ip'})) {
 		print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
 			"Ip address not valid!\n";
 
@@ -2932,7 +2932,7 @@ sub stop_services {
 		CMD_POP CMD_POP_SSL CMD_IMAP CMD_IMAP_SSL/
 	) {
 		if(-e $main::cfg{$_}) {
-			sys_command("$main::cfg{$_} stop $main::rlogfile");
+			sys_command_rs("$main::cfg{$_} stop $main::rlogfile");
 			progress();
 		}
 	}
@@ -3025,7 +3025,7 @@ sub isValidEmail {
 	# split email address on username and hostname
 	my ($username, $hostname) = split '@', $email;
 
-	return 0 if !defined $hostname;
+	return 0 unless defined $hostname;
 
 	my $rs = isValidEmailUsername($username);
 	$rs &&= isValidEmailHostname($hostname);
@@ -3040,7 +3040,7 @@ sub isValidEmail {
 ################################################################################
 # Validates an email local-part
 #
-# # @param string $email Email username
+# @param string $email Email username
 # @return 1 if the host name is valid, 0 otherwise
 #
 sub isValidEmailUsername {
@@ -3057,14 +3057,9 @@ sub isValidEmailUsername {
 		return 0;
 	}
 
-	# Build local-part regexp - step1 (is executed only the first time)
-	state $regexp = (
-		'['.quotemeta(join '', grep(!/[<>()\[\]\\\.,;:\@"]/, map chr, 33 .. 126))
-		. ']'
-	);
-
-	# Build local-part regexp  - step2 (is executed only the first time)
-	state $usernameRegexp = qr/^ (?:$regexp+ \.)* $regexp+ $/xo;
+	# Build regExp  (is executed only the first time)
+	state $regExp = join '', grep !/[<>()\[\]\\\.,;:\@"]/, map chr, 33..126;
+	state $usernameRegexp = qr/^(?:[$regExp]+\.)*[$regExp]+$/o;
 
 	# Always executed
 	return 0 if $username !~ $usernameRegexp;
@@ -3075,31 +3070,40 @@ sub isValidEmailUsername {
 }
 
 ################################################################################
-# Validates an email hostname
+# Validates an email domain part
+#
+# The domain name part of an email address has to conform to strict guidelines:
+#
+#  it must match the requirements for a hostname (RFC 1123), consisting of
+#  letters, digits, hyphens and dots. In addition, the domain part may be an
+#  IP address literal, surrounded by square braces, such as jdoe@[192.168.2.1]
 #
 # @param string $email Email Hostname
 # @return 1 if the host name is valid, 0 otherwise
 #
-sub isValidEmailHostname {
+sub isValidEmailDomain {
 
 	push_el(\@main::el, 'isValidMailHostname()', 'Starting...');
 
-	my($hostname) = shift;
+	my($Domain) = shift;
 
-	if(!defined $hostname) {
+	if(!defined $Domain) {
 		push_el(
-			\@main::el, 'isValidEmailHostname()', 'Missing argument `hostname`!'
+			\@main::el, 'isValidEmailHostname()', 'Missing argument `Domain`!'
 		);
 
 		return 0;
 	}
 
-	# Build the hostname regexp (is executed only the first time)
-	state $domainRegexp = qr/(?:[\da-zA-Z]+ -+)* [\da-zA-Z]+/x;
-	state $hostnameRegexp = qr/^ (?:$domainRegexp \.)+ [a-zA-Z]{2,6} $/xo;
+	# Build regExp (is executed only the first time)
+	state $domainRegExp = qr/^
+		(?:(?:(?:[\da-zA-Z]+-+)*[\da-zA-Z]+\.)+
+		[a-zA-Z]{2,6}|(?:\[(?:(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}
+		(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\]))
+	$/xo;
 
 	# Always executed
-	return 0 if $hostname !~ $hostnameRegexp;
+	return 0 if $Domain !~ $domainRegExp;
 
 	push_el(\@main::el, 'isValidMailHostname()', 'Ending...');
 
@@ -3109,18 +3113,34 @@ sub isValidEmailHostname {
 ################################################################################
 # Check the format of an IpV4 address
 #
-# @param IpV4 address (dot-decimal notation)
-# @return int 0 on success, -1 otherwise
+# @param string $addr IpV4 address (dot-decimal notation)
+# @return int 1 on success, 0 otherwise
 #
-sub check_eth {
+#sub check_eth {
+sub isValidAddr {
 
-	return 0 if(
-		shift =~ /^(\d+)\.(\d+)\.(\d+)\.(\d+)$/ &&
-		($1 >  0) && ($1 <  255) && ($2 >= 0) && ($2 <= 255) &&
-		($3 >= 0) && ($3 <= 255) && ($4 >  0) && ($4 <  255)
-	);
+	push_el(\@main::el, 'isValidAddr()', 'Starting...');
 
-	-1;
+	my ($addr) = shift;
+
+	if(!defined $addr) {
+		push_el(\@main::el, 'isValidAddr()', 'Missing argument `addr`!');
+
+		return 0;
+	}
+
+	# Build regExp (is executed only the first time)
+	state $regExp = qr/^
+		(?:(?:(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}
+		(?:[01]?\d{1,2}|2[0-4]\d|25[0-5]))
+	$/xo;
+
+	# Always executed
+	return 0 if $addr !~ $regExp;
+
+	push_el(\@main::el, 'isValidAddr()', 'Ending...');
+
+	1;
 }
 
 ################################################################################

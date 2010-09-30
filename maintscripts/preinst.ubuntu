@@ -48,18 +48,18 @@ case "$1" in
 	install|upgrade)
 
 	# Fix for #2224 Postgrey - Port changed
-	# @author Laurent Declercq <laurent.declercq@nuxwin.com
+	# @author Laurent Declercq <laurent.declercq@ispcp.net>
 	# @since  1.0.7 (rc2)
 	#
-	# NOTE: If Lenny is no longer supported, this path can be removed
-	if grep -q "inet=60000" /etc/default/postgrey; then
+	# NOTE: If Lenny is no longer supported, this fix can be removed
+	if grep -qe "inet=60000" /etc/default/postgrey; then
 
 		print_title "Postgrey configuration:"
 
         # Update the ispCP conf file here to shift back to the old Postgrey port (60000)
-        if test -f /etc/ispcp.ispcp.old.conf; then
+        if test -f /etc/ispcp/ispcp.old.conf; then
                 sed -i s'/\(POSTGREY_PORT.*=.*\)10023/\160000/' \
-                 /etc/ispcp.ispcp.old.conf >> $ISPCP_LOGFILE 2>&1 || failed
+                 /etc/ispcp/ispcp.old.conf >> $ISPCP_LOGFILE 2>&1 || failed
         fi
 
         sed -i s'/\(POSTGREY_PORT.*=.*\)10023/\160000/' /etc/ispcp.ispcp.conf

@@ -72,8 +72,10 @@ if [ $DEBUG -eq 1 ]; then
   set -x
 fi
 
-# Global variables
-ISPCP_LOGFILE=/tmp/ispcp-postinst.log
+ISPCP_LOGFILE="/tmp/ispcp-$0-$1.log"
+
+# Remove old ISPCP_LOGFILE if it exists
+$CMD_RM -f $ISPCP_LOGFILE
 
 ISPCP_ERRMSG="\n\t  \033[1;34m[Notice]\033[0m See the $ISPCP_LOGFILE for the \
 reason!\n\n"

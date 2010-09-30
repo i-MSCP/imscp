@@ -54,15 +54,9 @@ CMD_MD5=/usr/bin/md5sum
 SERVICES="mysql ispcp_daemon ispcp_network fam named apache2 proftpd postgrey \
 policyd-weight courier-authdaemon courier-imap courier-pop"
 
-# Get dist release version (not used at this moment)
-#DIST_VERS=`grep -E '^VERSION' /etc/SuSE-release | sed -e 's/[[:space:]=A-Z]//g'`
-
 case "$1" in
 
 	configure)
-
-	# Remove old logfile if it exists
-	$CMD_RM -f $ISPCP_LOGFILE
 
 	#
 	## OpenSuSE firewall configuration - Begin
