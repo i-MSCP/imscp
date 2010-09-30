@@ -799,24 +799,31 @@ sub del_zone {
 #
 sub getCmdExitValue() {
 
+	push_el(\@main::el, 'getCmdExitValue()', 'Starting...');
+
 	my $exitValue = -1;
 
 	if ($? == -1) {
- 		push_el(\@main::el, "[ERROR] Failed to execute external command: $!\n");
+ 		push_el(
+ 		    \@main::el, 'getCmdExitValue()',
+ 		    "[ERROR] Failed to execute external command: $!"
+		);
 	} elsif ($? & 127) {
  		push_el(
- 		    \@main::el,
- 		    sprintf "[ERROR] External command died with signal %d, %s coredump\n",
+ 		    \@main::el, 'getCmdExitValue()',
+ 		    sprintf "[ERROR] External command died with signal %d, %s coredump",
  		    ($? & 127), ($? & 128) ? 'with' : 'without'
  	    );
 	} else {
 		$exitValue = $? >> 8;
 
 		push_el(
-			\@main::el,
-			"[DEBUG] External command exited with value $exitValue\n",
+			\@main::el, 'getCmdExitValue()',
+			"[DEBUG] External command exited with value $exitValue",
 		);
 	}
+
+	push_el(\@main::el, 'getCmdExitValue()', 'Ending...');
 
 	$exitValue;
 }
