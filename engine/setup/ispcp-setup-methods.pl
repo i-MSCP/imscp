@@ -828,7 +828,7 @@ sub isValidEmail {
 
 	push_el(\@main::el, 'isValidEmail()', 'Starting...');
 
-	my ($email) = shift;
+	my $email = shift;
 
 	if(!defined $email) {
 		push_el(\@main::el, 'isValidEmail()', 'Missing argument `email`!');
@@ -854,17 +854,24 @@ sub isValidEmail {
 ################################################################################
 # Validates an email local-part
 #
-# This subroutine validate a email address according a restricted application of
-# both RFC 5321 and RFC 5322 
+# This subroutine validate a email address local-part according RFC 5322.
+#
+# For now, the rule is as follow
+#
+# 1. Only 7bit ASCII characters are allowed for email local-part
+# 2. local-part can be is either a quoted-string* or a dot-atom
+#
+# * Not Yet Implemented.
 #
 # @param string $email Email local-part
 # @return 1 if the local-part is valid, 0 otherwise
+# @Todo quoted string (RFC 5322 section 3.2.4)
 #
 sub isValidEmailUsername {
 
 	push_el(\@main::el, 'isValidMailUsername()', 'Starting...');
 
-	my($username) = shift;
+	my $username = shift;
 
 	if(!defined $username) {
 		push_el(
@@ -877,12 +884,14 @@ sub isValidEmailUsername {
 	# Checking e-mail address length  - RFC 5321, section 4.5.3.1
 	return 0 if length $username > 254;
 
-	# Build regExp  (is executed only the first time)
-	state $regExp = join '', grep !/[<>()\[\]\\\.,;:\@"]/, map chr, 33..126;
-	state $usernameRegexp = qr/^(?:[$regExp]+\.)*[$regExp]+$/o;
+	# Build Atom regexp (RFC 5322 section 3.2.3)
+	state $atext = quotemeta(
+		join '', grep !/[<>()\[\]\\\.,;:\@"]/, map chr, 33..126
+	);
+	state $atomRegExp = qr/^(?:[$atext]+|[$atext]+(?:\.[$atext]+)+)$/o;
 
 	# Always executed
-	return 0 if $username !~ $usernameRegexp;
+	return 0 if $username !~ $atomRegExp;
 
 	push_el(\@main::el, 'isValidMailUsername()', 'Ending...');
 
@@ -895,45 +904,39 @@ sub isValidEmailUsername {
 # The domain name part of an email address has to conform to strict guidelines:
 #
 #  It must match the requirements for a hostname (RFC 1123), consisting of
-#  letters, digits, hyphens and dots. In addition, the domain part may be an
-#  IP address literal, surrounded by square braces, such as jdoe@[192.168.2.1]
+#  letters, digits, hyphens and dots. See isValidHostname() for more information.
+#
+#  In addition, the domain part may be an IP address literal, surrounded by
+#  square braces, such as jdoe@[192.168.2.1]
 #
 # @param string $email Email Hostname
-# @return 1 if the host name is valid, 0 otherwise
+# @return 1 if the hostname is valid, 0 otherwise
 #
 sub isValidEmailDomain {
 
-	push_el(\@main::el, 'isValidMailHostname()', 'Starting...');
+	push_el(\@main::el, 'isValidEmailDomain()', 'Starting...');
 
-	my($domain) = shift;
+	my $domain = shift;
 
 	if(!defined $domain) {
 		push_el(
-			\@main::el, 'isValidEmailHostname()', 'Missing argument `Domain`!'
+			\@main::el, 'isValidEmailDomain()', 'Missing argument `domain`!'
 		);
 
 		return 0;
 	}
 
-	# IP address literal, surrounded by square braces
+	# Build regExp - IP address literal, surrounded by square braces
+	# (is executed only the first time)
 	state $ipRegExp = qr /^
 		(?:\[(?:(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}
 		(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\])
 	$/xo;
 
+	# Always executed
 	return 0 if !isValidHostname($domain) && $domain !~ $ipRegExp;
 
-	# Build regExp (is executed only the first time)
-	#state $domainRegExp = qr/^
-	#	(?:(?:(?:[\da-zA-Z]+-+)*[\da-zA-Z]+\.)+
-	#	[a-zA-Z]{2,6}|(?:\[(?:(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}
-	#	(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\]))
-	#$/xo;
-
-	# Always executed
-	#return 0 if $domain !~ $domainRegExp;
-
-	push_el(\@main::el, 'isValidMailHostname()', 'Ending...');
+	push_el(\@main::el, 'isValidEmailDomain()', 'Ending...');
 
 	1;
 }
@@ -948,7 +951,7 @@ sub isValidAddr {
 
 	push_el(\@main::el, 'isValidAddr()', 'Starting...');
 
-	my ($addr) = shift;
+	my $addr = shift;
 
 	if(!defined $addr) {
 		push_el(\@main::el, 'isValidAddr()', 'Missing argument `addr`!');
