@@ -48,7 +48,7 @@ $tpl->define_dynamic('sql_user_add', 'page');
 // check if we have only hosting plans for admins - reseller should not edit them
 if (isset($cfg->HOSTING_PLANS_LEVEL)
 	&& $cfg->HOSTING_PLANS_LEVEL === 'admin') {
-	user_goto('users.php');
+	user_goto('users.php?psi=last');
 }
 
 $tpl->assign(

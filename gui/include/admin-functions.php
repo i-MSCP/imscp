@@ -1933,7 +1933,7 @@ function change_domain_status(&$sql, $domain_id, $domain_name, $action,
 	if($location == 'admin') {
 		header('Location: manage_users.php');
 	} else if($location == 'reseller') {
-		header('Location: users.php');
+		header('Location: users.php?psi=last');
 	}
 
 	die();

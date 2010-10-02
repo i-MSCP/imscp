@@ -289,4 +289,4 @@ exec_query($sql, $query, array('added', $order_id));
 
 unset($_SESSION['domain_ip']);
 
-user_goto('users.php');
+user_goto('users.php?psi=last');
