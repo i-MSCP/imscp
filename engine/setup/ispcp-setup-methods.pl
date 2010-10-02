@@ -837,8 +837,7 @@ sub isValidEmail {
 	}
 
 	# Checking e-mail address length  - RFC 5321, section 4.5.3.1
-	return 0 if length $emai
-	 > 254;
+	return 0 if length $email > 254;
 
 	# split email address on username and hostname
 	# @Todo should be changed with quoted-string implementation
