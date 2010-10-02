@@ -1690,7 +1690,7 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname,
 	$cfg = ispCP_Registry::get('Config');
 
 	$admin_login = $_SESSION['user_logged'];
-	$data = get_welcome_email($admin_id);
+	$data = get_welcome_email($admin_id, 'user');
 	$from_name = $data['sender_name'];
 	$from_email = $data['sender_email'];
 	$message = $data['message'];
