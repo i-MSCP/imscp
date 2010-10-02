@@ -771,10 +771,16 @@ sub ask_awstats_dyn {
 # 4. A (host name) label MUST NOT start or end with a '-' (dash)
 # 5. A (host name) label can be up to 63 characters
 #
+# Note:
+#
+# This subroutine can also validates an internationalized domain name. To resume,
+# before any validation all unicode string in the hostname is transformed into
+# an ASCII string. See the RFC 3492 (updated by RFC 5891) for more information
+# about the algorithm.
+#
 # @param string $hostname Host name to be validated
 # @return 1 if the host name is valid, 0 otherwise
-# @todo Internationalized domain name (IDNA)
-#
+
 sub isValidHostname {
 
 	push_el(\@main::el, 'isValidHostname()', 'Starting...');
@@ -790,6 +796,10 @@ sub isValidHostname {
 	# Build tld and label regexp (is executed only the first time)
 	state $tldRegExp = qr /^[a-z]{2,6}$/o;
 	state $labelRegExp = qr /^([0-9a-z]+(-+[0-9a-z]+)*|[a-z0-9]+)$/io;
+
+	# Before any validation, we should converts $hostname which might contain
+	# characters outside the range allowed in DNS names, to IDNA ACE
+	$hostname = idn_to_ascii($hostname, 'utf-8');
 
 	my $retVal = 1;
 
@@ -839,8 +849,14 @@ sub isValidEmail {
 	# Checking e-mail address length  - RFC 5321, section 4.5.3.1
 	return 0 if length $email > 254;
 
-	# split email address on username and hostname
-	# @Todo should be changed with quoted-string implementation
+	my $i = rindex $mail, '@';
+
+	if($i != -1) {
+		my ($username, $domain) = (substr($mail, 0, $i), substr($mail, ++$i));
+	} else {
+		return 0
+	}
+
 	my ($username, $domain) = split '@', $email;
 
 	return 0 unless defined $domain;
