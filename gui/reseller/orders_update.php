@@ -250,7 +250,7 @@ if (empty($ed_error)) {
 	";
 	exec_query($sql, $query, array('added', $order_id));
 	set_page_message(tr('Domain properties updated successfully!'));
-	user_goto('users.php');
+	user_goto('users.php?psi=last');
 } else {
 	set_page_message($ed_error);
 	user_goto('orders.php');

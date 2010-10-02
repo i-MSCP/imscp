@@ -63,10 +63,10 @@ if (isset($_GET['domain_id']) && is_numeric($_GET['domain_id'])) {
 	validate_domain_deletion(intval($_GET['domain_id']));
 } else if (isset($_POST['domain_id']) && is_numeric($_POST['domain_id'])
 	&& isset($_POST['delete']) && $_POST['delete'] == 1) {
-	delete_domain((int)$_POST['domain_id'], 'users.php', true);
+	delete_domain((int)$_POST['domain_id'], 'users.php?psi=last', true);
 } else {
 	set_page_message(tr('Wrong domain ID!'));
-	user_goto('users.php');
+	user_goto('users.php?psi=last');
 }
 
 gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
@@ -98,7 +98,7 @@ function validate_domain_deletion($domain_id) {
 	$data = $res->fetchRow();
 	if ($data['domain_id'] == 0) {
 		set_page_message(tr('Wrong domain ID!'));
-		user_goto('users.php');
+		user_goto('users.php?psi=last');
 	}
 
 	$tpl->assign(

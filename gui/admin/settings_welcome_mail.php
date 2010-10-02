@@ -41,7 +41,7 @@ $tpl->define_dynamic('hosting_plans', 'page');
 
 $user_id = $_SESSION['user_id'];
 
-$data = get_welcome_email($user_id);
+$data = get_welcome_email($user_id, 'reseller');
 
 if (isset($_POST['uaction']) && $_POST['uaction'] == 'email_setup') {
 

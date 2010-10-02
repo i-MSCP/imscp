@@ -132,7 +132,7 @@ function set_email_tpl_data($admin_id, $tpl_name, $data) {
 	exec_query($sql, $query, array($data['subject'], $data['message'], $admin_id, $tpl_name));
 }
 
-function get_welcome_email($admin_id) {
+function get_welcome_email($admin_id, $admin_type='user') {
 
 	$data = get_email_tpl_data($admin_id, 'add-user-auto-msg');
 
@@ -141,7 +141,8 @@ function get_welcome_email($admin_id) {
 	}
 
 	if (!$data['message']) {
-		$data['message'] = tr('
+        if ($admin_type == 'user') {
+            $data['message'] = tr('
 
 Hello {NAME}!
 
@@ -156,7 +157,7 @@ Remember to change your password often and the first time you login.
 
 You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}
 
-Statistics: http://{USERNAME}/stats/
+Statistics: {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/{USERNAME}/stats/
 User name: {USERNAME}
 Password: {PASSWORD}
 
@@ -164,6 +165,30 @@ Best wishes with ispCP!
 The ispCP Team.
 
 ', true);
+        } else {
+            $data['message'] = tr('
+
+Hello {NAME}!
+
+A new ispCP account has been created for you.
+Your account information:
+
+User type: {USERTYPE}
+User name: {USERNAME}
+Password: {PASSWORD}
+
+Remember to change your password often and the first time you login.
+
+You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}
+
+User name: {USERNAME}
+Password: {PASSWORD}
+
+Best wishes with ispCP!
+The ispCP Team.
+
+', true);
+        }
 
 	}
 

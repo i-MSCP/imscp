@@ -992,7 +992,7 @@ function change_user_interface($from_id, $to_id) {
 		$allowed_changes['admin']['reseller'] = 'index.php';
 		$allowed_changes['admin']['user'] = 'index.php';
 		$allowed_changes['reseller']['user'] = 'index.php';
-		$allowed_changes['reseller']['BACK'] = 'users.php';
+		$allowed_changes['reseller']['BACK'] = 'users.php?psi=last';
 
 		if (!isset($allowed_changes[$from_admin_type][$to_admin_type]) ||
 			($to_admin_type == $from_admin_type &&
@@ -1001,6 +1001,7 @@ function change_user_interface($from_id, $to_id) {
 			if (isset($_SESSION['logged_from_id'])
 				&& $_SESSION['logged_from_id'] == $to_id) {
 				$index = $allowed_changes[$to_admin_type]['BACK'];
+                $restore = true;
 			} else {
 				set_page_message(
 					tr('You do not have permission to access this interface!')
@@ -1011,7 +1012,7 @@ function change_user_interface($from_id, $to_id) {
 
 		$index = $index ? $index : $allowed_changes[$from_admin_type][$to_admin_type];
 
-		unset_user_login_data();
+		unset_user_login_data(false, $restore);
 
 		if (($to_admin_type != 'admin' && ((isset($_SESSION['logged_from_id']) &&
 			$_SESSION['logged_from_id'] != $to_id) ||
@@ -1084,9 +1085,10 @@ function change_user_interface($from_id, $to_id) {
  * Unset user login data
  *
  * @param bool $ignorePreserve
+ * @param bool $restore restore rembered user data
  * @return void
  */
-function unset_user_login_data($ignorePreserve = false) {
+function unset_user_login_data($ignorePreserve = false, $restore = false) {
 
 	$sql = ispCP_Registry::get('Db');
 
@@ -1110,7 +1112,7 @@ function unset_user_login_data($ignorePreserve = false) {
 
 	}
 
-	$preserve_list = array('user_def_lang', 'user_theme');
+	$preserve_list = array('user_def_lang', 'user_theme', 'uistack');
 	$preserve_vals = array();
 
 	if (!$ignorePreserve) {
@@ -1128,6 +1130,13 @@ function unset_user_login_data($ignorePreserve = false) {
 			$_SESSION[$p] = $preserve_vals[$p];
 		}
 	}
+
+    if ($restore && isset($_SESSION['uistack'])) {
+        foreach ($_SESSION['uistack'] as $key => $value) {
+            $_SESSION[$key] = $value;
+        }
+        unset($_SESSION['uistack']);
+    }
 }
 
 /**

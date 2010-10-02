@@ -135,8 +135,6 @@ function generate_users_list(&$tpl, $admin_id) {
 	$sql = ispCP_Registry::get('Db');
 	$cfg = ispCP_Registry::get('Config');
 
-	$start_index = 0;
-
 	$rows_per_page = $cfg->DOMAIN_ROWS_PER_PAGE;
 
 	if (isset($_POST['details']) && !empty($_POST['details'])) {
@@ -147,11 +145,16 @@ function generate_users_list(&$tpl, $admin_id) {
 		}
 	}
 
-	if (isset($_GET['psi'])) $start_index = $_GET['psi'];
+    if (isset($_GET['psi']) && $_GET['psi'] == 'last') {
+        if (isset($_SESSION['search_page'])) {
+            $_GET['psi'] = $_SESSION['search_page'];
+        } else {
+            unset($_GET['psi']);
+        }
+    }
 
-	// Search request generated ?!
-
-	if (isset($_POST['uaction']) && !empty($_POST['uaction'])) {
+	// Search request generated?
+	if (isset($_POST['search_for']) && !empty($_POST['search_for'])) {
 		$_SESSION['search_for'] = trim(clean_input($_POST['search_for']));
 
 		$_SESSION['search_common'] = $_POST['search_common'];
@@ -160,13 +163,17 @@ function generate_users_list(&$tpl, $admin_id) {
 
 		$start_index = 0;
 	} else {
+        $start_index = isset($_GET['psi']) ? (int)$_GET['psi'] : 0;
+        
 		if (isset($_SESSION['search_for']) && !isset($_GET['psi'])) {
 			// He have not got scroll through patient records.
 			unset($_SESSION['search_for']);
 			unset($_SESSION['search_common']);
 			unset($_SESSION['search_status']);
-		}
+		} 
 	}
+
+    $_SESSION['search_page'] = $start_index;
 
 	$search_query = '';
 	$count_query = '';

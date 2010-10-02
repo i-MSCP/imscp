@@ -79,7 +79,7 @@ if (isset($_SESSION['dmn_id']) && $_SESSION['dmn_id'] !== '') {
 		);
 
 		// Back to the users page
-		user_goto('users.php');
+		user_goto('users.php?psi=last');
 	} else {
 		$row = $result->fetchRow();
 		$dmn_status = $row['domain_status'];
@@ -88,12 +88,12 @@ if (isset($_SESSION['dmn_id']) && $_SESSION['dmn_id'] !== '') {
 			set_page_message(tr('System error with Domain Id: %d', $domain_id));
 
 			// Back to the users page
-			user_goto('users.php');
+			user_goto('users.php?psi=last');
 		}
 	}
 } else {
 	set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
-	user_goto('users.php');
+	user_goto('users.php?psi=last');
 }
 
 $err_txt = '_off_';

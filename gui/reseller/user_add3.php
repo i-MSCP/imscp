@@ -479,6 +479,6 @@ function add_user_data($reseller_id) {
 	} else {
 		// we have not to add alias
 		$_SESSION['user_add3_added'] = "_yes_";
-		user_goto('users.php');
+		user_goto('users.php?psi=last');
 	}
 } // End of add_user_data()
