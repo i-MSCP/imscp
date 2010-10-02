@@ -836,7 +836,12 @@ sub isValidEmail {
 		return 0;
 	}
 
+	# Checking e-mail address length  - RFC 5321, section 4.5.3.1
+	return 0 if length $emai
+	 > 254;
+
 	# split email address on username and hostname
+	# @Todo should be changed with quoted-string implementation
 	my ($username, $domain) = split '@', $email;
 
 	return 0 unless defined $domain;
@@ -859,7 +864,7 @@ sub isValidEmail {
 # For now, the rule is as follow
 #
 # 1. Only 7bit ASCII characters are allowed for email local-part
-# 2. local-part can be is either a quoted-string* or a dot-atom
+# 2. local-part can be is either a dot-atom or quoted-string* 
 #
 # * Not Yet Implemented.
 #
@@ -881,10 +886,7 @@ sub isValidEmailUsername {
 		return 0;
 	}
 
-	# Checking e-mail address length  - RFC 5321, section 4.5.3.1
-	return 0 if length $username > 254;
-
-	# Build Atom regexp (RFC 5322 section 3.2.3)
+	# Build dot-atom regexp (RFC 5322 section 3.2.3)
 	state $atext = quotemeta(
 		join '', grep !/[<>()\[\]\\\.,;:\@"]/, map chr, 33..126
 	);
