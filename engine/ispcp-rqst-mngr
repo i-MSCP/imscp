@@ -70,342 +70,352 @@ sub mngr_shut_down {
 	0;
 }
 
+sub mngr_engine_process{
+
+	push_el(\@main::el, 'mngr_engine_process()', 'Starting...');
+
+	my ($type, $sql, $count) = @_;
+
+	if (defined $main::engine_debug) {
+		push_el(
+			\@main::el, 'mngr_engine_process()',
+			"processing type $type."
+		);
+	}
+
+	my($rs, $rdata) = doHashSQL($sql, 'id');
+	return $rs if ($rs != 0);
+
+	$$count += my @keys = keys(%$rdata);
+
+	foreach (@keys) {
+		my (
+			$id,
+			$name,
+			$status
+		) = (
+			@$rdata{$_}->{'id'},
+			@$rdata{$_}->{'name'},
+			@$rdata{$_}->{'status'}
+		);
+
+		if ($status eq 'restore') {
+			$$count--;
+		}
+
+		my $mngr	= eval('$main::ispcp_'.$type.'_mngr');
+		my $el		= eval('$main::ispcp_'.$type.'_mngr_el');
+		my $stdout	= eval('$main::ispcp_'.$type.'_mngr_stdout');
+		my $stderr	= eval('$main::ispcp_'.$type.'_mngr_stderr');
+
+		if (defined $main::engine_debug) {
+			push_el(
+				\@main::el, 'mngr_engine_process()',
+				"processing $id, $name, $status."
+			);
+		}
+
+		my $rs = sys_command("$mngr $id 1>$stdout 2>$stderr");
+
+		if ($rs != 0) {
+			if (-e $el) {
+
+				my $rs;
+
+				# removing 'sys_command()' error message;
+				pop_el(\@main::el);
+
+				($rs, my $rdata) = get_el_error($el);
+				return $rs if ($rs != 0);
+
+				push_el(\@main::el, $mngr, $rdata);
+
+			}
+
+		}
+
+		if (!defined $main::engine_debug) {
+			del_file($stdout);
+			del_file($stderr);
+		}
+
+		return $rs if ($rs != 0);
+	}
+
+	push_el(\@main::el, 'mngr_engine_process()', 'Ending...');
+
+	0;
+}
+
 sub mngr_engine {
+
+	## First we add / alter main domain but not delete until all related data are processed
+	## Then we add / alter subdomain for main domain but not delete until all related data are processed
+	## Next we add / alter alias for main domain but not delete until all related data are processed
+	## Next we add / alter subdomain for alias but not delete until all related data are processed
+	## Next we process mailboxex
+	## Next we process .htaccess related data
+	## Finally we can delete in order alias subdomains
+	## Subdomains
+	## Alias
+	## Main domain
 
 	push_el(\@main::el, 'mngr_engine()', 'Starting...');
 
 	my ($rs, $rdata, $sql);
 
+	my $dmn_count = 0;
+
 	$sql = "
 		SELECT
-			`domain_id`, `domain_name`, `domain_status`
+			`domain_id` AS 'id',
+			`domain_name` AS 'name',
+			`domain_status` AS 'status'
 		FROM
 			`domain`
 		WHERE
-			`domain_status` != 'ok'
+			`domain_status`
+		IN (
+			'toadd',
+			'change',
+			'dnschange',
+			'restore',
+			'toenable',
+			'todisable'
+		)
 		ORDER BY
 			`domain_id`
 		;
 	";
 
-	($rs, $rdata) = doSQL($sql);
+	$rs = mngr_engine_process(
+		'dmn', $sql, \$dmn_count
+	);
 	return $rs if ($rs != 0);
-
-	my $dmn_count = @$rdata;
-
-	if ($dmn_count > 0) {
-		foreach (@$rdata) {
-			my ($dmn_id, $dmn_name, $dmn_status) = (@$_[0], @$_[1], @$_[2]);
-
-			if ($dmn_status eq 'toadd' || $dmn_status eq 'change' ||
-				$dmn_status eq 'restore' || $dmn_status eq 'toenable' ||
-				$dmn_status eq 'todisable' || $dmn_status eq 'dnschange' ) {
-
-				if ($dmn_status eq 'restore') {
-					$dmn_count--;
-				}
-
-				if (defined $main::engine_debug) {
-					push_el(
-						\@main::el, 'mngr_engine()',
-						"processing $dmn_id, $dmn_name, $dmn_status."
-					);
-				}
-
-				$rs = sys_command(
-					"$main::ispcp_dmn_mngr $dmn_id " .
-					"1>$main::ispcp_dmn_mngr_stdout " .
-					"2>$main::ispcp_dmn_mngr_stderr"
-				);
-
-				if ($rs != 0) {
-					if (-e $main::ispcp_dmn_mngr_el) {
-						my $rs1;
-
-						# removing 'sys_command()' error message;
-						pop_el(\@main::el);
-
-						($rs1, $rdata) = get_el_error($main::ispcp_dmn_mngr_el);
-						return $rs1 if ($rs1 != 0);
-
-						push_el(\@main::el, $main::ispcp_dmn_mngr, $rdata);
-					}
-
-					if (!defined $main::engine_debug) {
-						del_file($main::ispcp_dmn_mngr_stdout);
-						del_file($main::ispcp_dmn_mngr_stderr);
-					}
-
-					return $rs;
-				}
-
-				if (!defined $main::engine_debug) {
-					del_file($main::ispcp_dmn_mngr_stdout);
-					del_file($main::ispcp_dmn_mngr_stderr);
-				}
-			}
-		}
-	}
 
 	$sql = "
 		SELECT
-			`mail_id`, `mail_acc`, `status`
-		FROM
-			`mail_users`
-		WHERE
-			`status` != 'ok'
-		AND
-			`status` != 'disabled'
-		AND
-			`status` != 'ordered'
-		ORDER BY
-			`mail_id`
-		;
-	";
-
-	($rs, $rdata) = doSQL($sql);
-	return $rs if ($rs != 0);
-
-	my $mail_count = @$rdata;
-
-	if ($mail_count > 0) {
-		foreach (@$rdata) {
-			my ($mail_id, $mail_acc, $mail_status) = (@$_[0], @$_[1], @$_[2]);
-
-			if ($mail_status eq 'toadd' || $mail_status eq 'change' ||
-				$mail_status eq 'delete') {
-				if (defined($main::engine_debug)) {
-					push_el(
-						\@main::el, 'mngr_engine()',
-						"processing $mail_id, $mail_acc, $mail_status."
-					);
-				}
-			}
-
-			$rs = sys_command(
-				"$main::ispcp_mbox_mngr $mail_id 1> " .
-				"$main::ispcp_mbox_mngr_stdout 2>$main::ispcp_mbox_mngr_stderr"
-			);
-
-			if ($rs != 0) {
-				if (-e $main::ispcp_mbox_mngr_el) {
-					my $rs1;
-
-					# removing 'sys_command()' error message;
-					pop_el(\@main::el);
-
-					($rs1, $rdata) = get_el_error($main::ispcp_mbox_mngr_el);
-					return $rs1 if ($rs1 != 0);
-
-					push_el(\@main::el, $main::ispcp_mbox_mngr, $rdata);
-				}
-
-				if (!defined $main::engine_debug) {
-					del_file($main::ispcp_mbox_mngr_stdout);
-					del_file($main::ispcp_mbox_mngr_stderr);
-				}
-
-				return $rs;
-			}
-
-			if (!defined $main::engine_debug) {
-				del_file($main::ispcp_mbox_mngr_stdout);
-				del_file($main::ispcp_mbox_mngr_stderr);
-			}
-		}
-	}
-
-	$sql = "
-		SELECT
-			`subdomain_id`, `subdomain_name`, `subdomain_status`
+			`subdomain_id` AS 'id',
+			`subdomain_name` AS 'name',
+			`subdomain_status` AS 'status'
 		FROM
 			`subdomain`
 		WHERE
-			`subdomain_status` != 'ok'
+			`subdomain_status`
+		IN (
+			'toadd',
+			'change'
+		)
 		ORDER BY
 			`subdomain_id`
 		;
 	";
 
-	($rs, $rdata) = doSQL($sql);
+	my $sub_count = 0;
+
+	$rs = mngr_engine_process(
+		'sub', $sql, \$sub_count
+	);
 	return $rs if ($rs != 0);
-
-	my $sub_count = @$rdata;
-
-	if ($sub_count > 0) {
-		foreach (@$rdata) {
-			my ($sub_id, $sub_name, $sub_status) = (@$_[0], @$_[1], @$_[2]);
-
-			if ($sub_status eq 'toadd' || $sub_status eq 'change' ||
-				$sub_status eq 'delete') {
-
-				push_el(
-					\@main::el, 'mngr_engine()',
-					"processing $sub_id, $sub_name, $sub_status."
-				) if (defined $main::engine_debug);
-
-				$rs = sys_command(
-					"$main::ispcp_sub_mngr $sub_id " .
-					"1>$main::ispcp_sub_mngr_stdout " .
-					"2>$main::ispcp_sub_mngr_stderr"
-				);
-
-				if ($rs != 0) {
-					if (-e $main::ispcp_sub_mngr_el) {
-						my $rs1;
-
-						# removing 'sys_command()' error message;
-						pop_el(\@main::el);
-
-						($rs1, $rdata) = get_el_error($main::ispcp_sub_mngr_el);
-						return $rs1 if ($rs1 != 0);
-
-						push_el(\@main::el, $main::ispcp_sub_mngr, $rdata);
-					}
-
-					if (!defined($main::engine_debug)) {
-						del_file($main::ispcp_sub_mngr_stdout);
-						del_file($main::ispcp_sub_mngr_stderr);
-					}
-
-					return $rs;
-				}
-
-				if (!defined($main::engine_debug)) {
-					del_file($main::ispcp_sub_mngr_stdout);
-					del_file($main::ispcp_sub_mngr_stderr);
-				}
-			}
-		}
-	}
 
 	$sql = "
 		SELECT
-			`alias_id`, `alias_name`, `alias_status`
+			`alias_id` AS 'id',
+			`alias_name` AS 'name',
+			`alias_status` AS 'status'
 		FROM
 			`domain_aliasses`
 		WHERE
-			`alias_status` IN ('toadd', 'change','dnschange')
+			`alias_status`
+		IN (
+			'toadd',
+			'change',
+			'dnschange'
+		)
 		ORDER BY
 			`alias_id`
 		;
 	";
 
-	($rs, $rdata) = doSQL($sql);
+	my $als_count = 0;
+
+	$rs = mngr_engine_process(
+		'als', $sql, \$als_count
+	);
 	return $rs if ($rs != 0);
-
-	my $als_count = @$rdata;
-
-	if ($als_count > 0) {
-
-		foreach (@$rdata) {
-			my ($als_id, $als_name, $als_status) = (@$_[0], @$_[1], @$_[2]);
-
-			push_el(
-				\@main::el, 'mngr_engine()',
-				"processing $als_id, $als_name, $als_status."
-			) if (defined $main::engine_debug);
-
-			$rs = sys_command(
-				"$main::ispcp_als_mngr $als_id " .
-				"1>$main::ispcp_als_mngr_stdout 2>$main::ispcp_als_mngr_stderr"
-			);
-
-			if ($rs != 0) {
-				if (-e $main::ispcp_als_mngr_el) {
-					my $rs1;
-
-					# removing 'sys_command()' error message;
-					pop_el(\@main::el);
-
-					($rs1, $rdata) = get_el_error($main::ispcp_als_mngr_el);
-					return $rs1 if ($rs1 != 0);
-
-					push_el(\@main::el, $main::ispcp_als_mngr, $rdata);
-				}
-
-				if (!defined($main::engine_debug)) {
-					del_file($main::ispcp_als_mngr_stdout);
-					del_file($main::ispcp_als_mngr_stderr);
-				}
-
-				return $rs;
-			}
-
-			if (!defined($main::engine_debug)) {
-				del_file($main::ispcp_als_mngr_stdout);
-				del_file($main::ispcp_als_mngr_stderr);
-			}
-		}
-	}
 
 	$sql = "
 		SELECT
-			`subdomain_alias_id`, `subdomain_alias_name`, `subdomain_alias_status`
+			`subdomain_alias_id` AS 'id',
+			`subdomain_alias_name` AS 'name',
+			`subdomain_alias_status` AS 'status'
 		FROM
 			`subdomain_alias`
 		WHERE
-			`subdomain_alias_status` != 'ok'
+			`subdomain_alias_status`
+		IN (
+			'toadd',
+			'change'
+		)
 		ORDER BY
 			`subdomain_alias_id`
 		;
 	";
 
-	($rs, $rdata) = doSQL($sql);
+	my $alssub_count = 0;
+
+	$rs = mngr_engine_process(
+		'alssub', $sql, \$alssub_count
+	);
 	return $rs if ($rs != 0);
-
-	my $alssub_count = @$rdata;
-
-	if ($alssub_count > 0) {
-		foreach (@$rdata) {
-			my ($sub_id, $sub_name, $sub_status) = (@$_[0], @$_[1], @$_[2]);
-
-			if ($sub_status eq 'toadd' || $sub_status eq 'change' ||
-				$sub_status eq 'delete' || $sub_status eq 'dnschange') {
-
-				push_el(
-					\@main::el, 'mngr_engine()',
-					"processing $sub_id, $sub_name, $sub_status."
-				) if (defined $main::engine_debug);
-
-				$rs = sys_command(
-					"$main::ispcp_alssub_mngr $sub_id " .
-					"1>$main::ispcp_alssub_mngr_stdout " .
-					"2>$main::ispcp_alssub_mngr_stderr"
-				);
-
-				if ($rs != 0) {
-					if (-e $main::ispcp_alssub_mngr_el) {
-						my $rs1;
-
-						# removing 'sys_command()' error message;
-						pop_el(\@main::el);
-
-						($rs1, $rdata) = get_el_error($main::ispcp_alssub_mngr_el);
-						return $rs1 if ($rs1 != 0);
-
-						push_el(\@main::el, $main::ispcp_alssub_mngr, $rdata);
-					}
-
-					if (!defined($main::engine_debug)) {
-						del_file($main::ispcp_alssub_mngr_stdout);
-						del_file($main::ispcp_alssub_mngr_stderr);
-					}
-
-					return $rs;
-				}
-
-				if (!defined($main::engine_debug)) {
-					del_file($main::ispcp_alssub_mngr_stdout);
-					del_file($main::ispcp_alssub_mngr_stderr);
-				}
-			}
-		}
-	}
 
 	$sql = "
 		SELECT
-			`alias_id`, `alias_name`, `alias_status`
+			`mail_id` AS 'id',
+			`mail_acc` AS 'name',
+			`status` as 'status'
+		FROM
+			`mail_users`
+		WHERE
+			`status`
+		IN (
+			'toadd',
+			'change',
+			'toenable',
+			'delete',
+			'todisable'
+		)
+		ORDER BY
+			`mail_id`
+		;
+	";
+
+	my $mail_count = 0;
+
+	$rs = mngr_engine_process(
+		'mbox', $sql, \$mail_count
+	);
+	return $rs if ($rs != 0);
+
+	$sql = "
+		SELECT
+			`id`,
+			`uname` as 'name',
+			`status`
+		FROM
+			`htaccess_users`
+		WHERE
+			`status`
+		IN (
+			'toadd',
+			'change',
+			'delete'
+		)
+		ORDER BY
+			`id`
+		;
+	";
+	my $htcount = 0;
+
+	$rs = mngr_engine_process(
+		'htusers', $sql, \$htcount
+	);
+	return $rs if ($rs != 0);
+
+	$sql = "
+		SELECT
+			`id` AS 'name',
+			`dmn_id` AS 'id',
+			`status`
+		FROM
+			`htaccess_groups`
+		WHERE
+			`status`
+		IN (
+			'toadd',
+			'change',
+			'delete'
+		)
+		GROUP BY
+			`dmn_id`
+		ORDER BY
+			`dmn_id`
+		;
+	";
+
+	$rs = mngr_engine_process(
+		'htgroups', $sql, \$htcount
+	);
+	return $rs if ($rs != 0);
+
+
+	$sql = "
+		SELECT
+			`id`,
+			`dmn_id` AS 'name',
+			`status`
+		FROM
+			`htaccess`
+		WHERE
+			`status`
+		IN (
+			'toadd',
+			'change',
+			'delete'
+		)
+		ORDER BY
+			`id`
+		;
+	";
+
+	$rs = mngr_engine_process(
+		'htaccess', $sql, \$htcount
+	);
+	return $rs if ($rs != 0);
+
+	$sql = "
+		SELECT
+			`subdomain_alias_id` AS 'id',
+			`subdomain_alias_name` AS 'name',
+			`subdomain_alias_status` AS 'status'
+		FROM
+			`subdomain_alias`
+		WHERE
+			`subdomain_alias_status` = 'delete'
+		ORDER BY
+			`subdomain_alias_id`
+		;
+	";
+
+	$rs = mngr_engine_process(
+		'alssub', $sql, \$alssub_count
+	);
+	return $rs if ($rs != 0);
+
+	$sql = "
+		SELECT
+			`subdomain_id` AS 'id',
+			`subdomain_name` AS 'name',
+			`subdomain_status` AS 'status'
+		FROM
+			`subdomain`
+		WHERE
+			`subdomain_status` = 'delete'
+		ORDER BY
+			`subdomain_id`
+		;
+	";
+
+	$rs = mngr_engine_process(
+		'sub', $sql, \$sub_count
+	);
+	return $rs if ($rs != 0);
+
+	$sql = "
+		SELECT
+			`alias_id` AS 'id',
+			`alias_name` AS 'name',
+			`alias_status` AS 'status'
 		FROM
 			`domain_aliasses`
 		WHERE
@@ -415,298 +425,46 @@ sub mngr_engine {
 		;
 	";
 
-	($rs, $rdata) = doSQL($sql);
+	$rs = mngr_engine_process(
+		'als', $sql, \$als_count
+	);
 	return $rs if ($rs != 0);
-
-	$als_count += @$rdata;
-
-	if ($als_count > 0) {
-		foreach (@$rdata) {
-			my ($als_id, $als_name, $als_status) = (@$_[0], @$_[1], @$_[2]);
-
-			push_el(
-				\@main::el, 'mngr_engine()',
-				"processing $als_id, $als_name, $als_status."
-			) if (defined $main::engine_debug);
-
-			$rs = sys_command(
-				"$main::ispcp_als_mngr $als_id " .
-				"1>$main::ispcp_als_mngr_stdout " .
-				"2>$main::ispcp_als_mngr_stderr"
-			);
-
-			if ($rs != 0) {
-				if (-e $main::ispcp_als_mngr_el) {
-					my $rs1;
-
-					# removing 'sys_command()' error message;
-					pop_el(\@main::el);
-
-					($rs1, $rdata) = get_el_error($main::ispcp_als_mngr_el);
-					return $rs1 if ($rs1 != 0);
-
-					push_el(\@main::el, $main::ispcp_als_mngr, $rdata);
-
-				}
-
-				if (!defined($main::engine_debug)) {
-					del_file($main::ispcp_als_mngr_stdout);
-					del_file($main::ispcp_als_mngr_stderr);
-				}
-
-				return $rs;
-			}
-
-			if (!defined($main::engine_debug)) {
-				del_file($main::ispcp_als_mngr_stdout);
-				del_file($main::ispcp_als_mngr_stderr);
-			}
-		}
-	}
-
-
-	#
-	# .htusers management BEGIN.
-	#
 
 	$sql = "
 		SELECT
-			`id`, `status`
+			`domain_id` AS 'id',
+			`domain_name` AS 'name',
+			`domain_status` AS 'status'
 		FROM
-			`htaccess_users`
+			`domain`
 		WHERE
-			`status` != 'ok'
+			`domain_status` = 'delete'
 		ORDER BY
-			`id`
+			`domain_id`
 		;
 	";
 
-	($rs, $rdata) = doSQL($sql);
+	$rs = mngr_engine_process(
+		'dmn', $sql, \$dmn_count
+	);
 	return $rs if ($rs != 0);
-
-	my $htusers_count = @$rdata;
-
-	if ($htusers_count > 0) {
-		foreach (@$rdata) {
-			my ($htusers_id, $htusers_status) = (@$_[0], @$_[1]);
-
-			if ($htusers_status eq 'toadd' || $htusers_status eq 'change' ||
-				$htusers_status eq 'delete') {
-
-				push_el(
-					\@main::el, 'mngr_engine()',
-					"processing $htusers_id, $htusers_status."
-				) if (defined $main::engine_debug);
-
-				$rs = sys_command(
-					"$main::ispcp_htusers_mngr $htusers_id " .
-					"1>$main::ispcp_htusers_mngr_stdout " .
-					"2>$main::ispcp_htusers_mngr_stderr"
-				);
-
-				if ($rs != 0) {
-					if (-e $main::ispcp_htusers_mngr_el) {
-						my $rs1;
-
-						# removing 'sys_command()' error message;
-						pop_el(\@main::el);
-
-						($rs1, $rdata) = get_el_error(
-							$main::ispcp_htusers_mngr_el
-						);
-						return $rs1 if ($rs1 != 0);
-
-						push_el(\@main::el, $main::ispcp_htusers_mngr, $rdata);
-
-					}
-
-					if (!defined $main::engine_debug) {
-						del_file($main::ispcp_htusers_mngr_stdout);
-						del_file($main::ispcp_htusers_mngr_stderr);
-					}
-
-					return $rs;
-				}
-
-				if (!defined $main::engine_debug) {
-					del_file($main::ispcp_htusers_mngr_stdout);
-					del_file($main::ispcp_htusers_mngr_stderr);
-				}
-			}
-		}
-	}
-
-	#
-	# .htusers management END.
-	#
-
-	#
-	# .htgroups management BEGIN.
-	#
-
-	$sql = "
-		SELECT
-			`dmn_id`, `id`, `status`
-		FROM
-			`htaccess_groups`
-		WHERE
-			`status` IN ('toadd', 'change', 'delete')
-		GROUP BY
-			`dmn_id`
-		ORDER BY
-			`dmn_id`
-		;
-	";
-
-	($rs, $rdata) = doSQL($sql);
-	return $rs if ($rs != 0);
-
-	my $htgroups_count = @$rdata;
-
-	if ($htgroups_count > 0) {
-		foreach (@$rdata) {
-			my ($htdmn_id, $htgroups_id, $htgroups_status) = (
-				@$_[0], @$_[1], @$_[2]
-			);
-
-			push_el(
-				\@main::el, 'mngr_engine()',
-				"processing $htdmn_id -> $htgroups_id, $htgroups_status."
-			) if (defined $main::engine_debug);
-
-			$rs = sys_command(
-				"$main::ispcp_htgroups_mngr $htdmn_id " .
-				"1>$main::ispcp_htgroups_mngr_stdout " .
-				"2>$main::ispcp_htgroups_mngr_stderr"
-			);
-
-			if ($rs != 0) {
-				if (-e $main::ispcp_htgroups_mngr_el) {
-					my $rs1;
-
-					# removing 'sys_command()' error message;
-					pop_el(\@main::el);
-
-					($rs1, $rdata) = get_el_error($main::ispcp_htgroups_mngr_el);
-					return $rs1 if ($rs1 != 0);
-
-					push_el(\@main::el, $main::ispcp_htgroups_mngr, $rdata);
-				}
-
-				if (!defined $main::engine_debug) {
-					del_file($main::ispcp_htgroups_mngr_stdout);
-					del_file($main::ispcp_htgroups_mngr_stderr);
-				}
-
-				return $rs;
-			}
-
-			if (!defined $main::engine_debug) {
-				del_file($main::ispcp_htgroups_mngr_stdout);
-				del_file($main::ispcp_htgroups_mngr_stderr);
-			}
-		}
-	}
-
-	#
-	# .htgroups management END.
-	#
-
-	#
-	# .htaccess management BEGIN.
-	#
-
-	$sql = "
-		SELECT
-			`id`, `status`
-		FROM
-			`htaccess`
-		WHERE
-			`status` != 'ok'
-		ORDER BY
-			`id`
-		;
-	";
-
-	($rs, $rdata) = doSQL($sql);
-	return $rs if ($rs != 0);
-
-	my $htaccess_count = @$rdata;
-
-	if ($htaccess_count > 0) {
-		foreach (@$rdata) {
-			my ($htaccess_id, $htaccess_status) = (@$_[0], @$_[1]);
-
-			if ($htaccess_status eq 'toadd' || $htaccess_status eq 'change' ||
-				$htaccess_status eq 'delete') {
-
-				push_el(
-					\@main::el, 'mngr_engine()',
-					"processing $htaccess_id, $htaccess_status."
-				) if (defined $main::engine_debug);
-
-				$rs = sys_command(
-					"$main::ispcp_htaccess_mngr $htaccess_id " .
-					"1>$main::ispcp_htaccess_mngr_stdout " .
-					"2>$main::ispcp_htaccess_mngr_stderr"
-				);
-
-				if ($rs != 0) {
-					if (-e $main::ispcp_htaccess_mngr_el) {
-						my $rs1;
-
-						# removing 'sys_command()' error message;
-						pop_el(\@main::el);
-
-						($rs1, $rdata) = get_el_error(
-							$main::ispcp_htaccess_mngr_el
-						);
-						return $rs1 if ($rs1 != 0);
-
-						push_el(\@main::el, $main::ispcp_htaccess_mngr, $rdata);
-
-					}
-
-					if (!defined $main::engine_debug) {
-						del_file($main::ispcp_htaccess_mngr_stdout);
-						del_file($main::ispcp_htaccess_mngr_stderr);
-					}
-
-					return $rs;
-				}
-
-				if (!defined $main::engine_debug) {
-					del_file($main::ispcp_htaccess_mngr_stdout);
-					del_file($main::ispcp_htaccess_mngr_stderr);
-				}
-			}
-		}
-	}
-
-	#
-	# .htaccess management END.
-	#
 
 	#
 	# Network card management BEGIN.
 	#
-
 	$sql = "
 		SELECT
-			`value`
+			`value`, 'name'
 		FROM
 			`config`
 		WHERE
 			`name` = 'DATABASE_REVISION'
 		;
 	";
-
-	($rs, $rdata) = doSQL($sql);
+	($rs, $rdata) = doHashSQL($sql, 'name');
 	return $rs if ($rs != 0);
 
-	my $version = @$rdata[0];
-
-	if (@$version[0] >= 33) {
+	if (keys(%$rdata) > 0 && @$rdata{'name'}->{'value'} >= 33) {
 		$sql = "
 			SELECT
 				`ip_id`
@@ -716,149 +474,62 @@ sub mngr_engine {
 				`ip_status` != 'ok'
 			;
 		";
-
-		($rs, $rdata) = doSQL($sql);
+		($rs, $rdata) = doHashSQL($sql,'ip_id');
 		return $rs if ($rs != 0);
 
-		my $ip_count = @$rdata;
-
-		if ($ip_count > 0) {
+		if (keys(%$rdata) > 0) {
 			$rs = sys_command(
 				"$main::ispcp_net_interfaces_mngr stop " .
 				"1>$main::ispcp_net_interfaces_mngr_stdout 2>&1"
 			);
-
 			if (!defined $main::engine_debug) {
 				del_file($main::ispcp_net_interfaces_mngr_stdout);
 			}
-
-
 			return $rs if($rs != 0);
-
 			$rs = sys_command(
 				"$main::ispcp_net_interfaces_mngr start " .
 				"1>>$main::ispcp_net_interfaces_mngr_stdout 2>&1"
 			);
-
 			if (!defined $main::engine_debug) {
 				del_file($main::ispcp_net_interfaces_mngr_stdout);
 			}
-
 			return $rs if($rs != 0);
 		}
 	}
-
 	#
 	# Network card management END.
 	#
-
-	#
-	# Domains data deletion BEGIN
-	#
-
-	#
-	# /!\  This task must be performed last because other managers need data
-	# from the domain table to function properly. /!\
-	#
-
-	$sql = "
-		SELECT
-			`domain_id`, `domain_name`, `domain_status`
-		FROM
-			`domain`
-		WHERE
-			`domain_status` != 'ok'
-		ORDER BY
-			`domain_id`
-		;
-	";
-
-	($rs, $rdata) = doSQL($sql);
-	return $rs if ($rs != 0);
-
-	my $dmn_del_count = @$rdata;
-
-	if ($dmn_del_count > 0) {
-		foreach (@$rdata) {
-			my ($dmn_id, $dmn_name, $dmn_status) = (@$_[0], @$_[1], @$_[2]);
-
-			if ($dmn_status eq 'delete') {
-				push_el(
-					\@main::el, 'mngr_engine()',
-					"processing $dmn_id, $dmn_name, $dmn_status."
-				) if (defined $main::engine_debug);
-
-				$rs = sys_command(
-					"$main::ispcp_dmn_mngr $dmn_id " .
-					"1>$main::ispcp_dmn_mngr_stdout " .
-					"2>$main::ispcp_dmn_mngr_stderr"
-				);
-
-				if ($rs != 0) {
-					if (-e $main::ispcp_dmn_mngr_el) {
-						my $rs1;
-
-						# removing 'sys_command()' error message;
-						pop_el(\@main::el);
-
-						($rs1, $rdata) = get_el_error($main::ispcp_dmn_mngr_el);
-						return $rs1 if ($rs1 != 0);
-
-						push_el(\@main::el, $main::ispcp_dmn_mngr, $rdata);
-					}
-
-					if (!defined $main::engine_debug) {
-						del_file($main::ispcp_dmn_mngr_stdout);
-						del_file($main::ispcp_dmn_mngr_stderr);
-					}
-
-					return $rs;
-				}
-
-				if (!defined $main::engine_debug) {
-					del_file($main::ispcp_dmn_mngr_stdout);
-					del_file($main::ispcp_dmn_mngr_stderr);
-				}
-			}
-		}
-	}
-
-	#
-	# Domains data deletion END
-	#
-
-	$dmn_count = $dmn_count + $dmn_del_count;
-
+	push_el(
+		\@main::el,
+		'mngr_engine()',
+		"domain count: $dmn_count || ".
+		"subdomain count: $sub_count || ".
+		"aliasses count: $als_count || ".
+		"email count: $mail_count || ".
+		"subdomain aliasses count: $alssub_count"
+	);
 	if ($dmn_count > 0 || $sub_count > 0 || $als_count > 0 || $mail_count > 0 ||
 		$alssub_count > 0) {
-
 		$rs = sys_command(
 			"$main::ispcp_serv_mngr $dmn_count $sub_count $als_count " .
 			"$mail_count $alssub_count 1>$main::ispcp_serv_mngr_stdout " .
 			"2>$main::ispcp_serv_mngr_stderr"
 		);
-
 		if ($rs != 0) {
 			if (-e $main::ispcp_serv_mngr_el) {
 				my $rs1;
-
 				# removing 'sys_command()' error message;
 				pop_el(\@main::el);
-
 				($rs1, $rdata) = get_el_error($main::ispcp_serv_mngr_el);
 				return $rs1 if ($rs1 != 0);
-
 				push_el(\@main::el, $main::ispcp_serv_mngr, $rdata);
 			}
-
 			if (!defined($main::engine_debug)) {
 				del_file($main::ispcp_serv_mngr_stdout);
 				del_file($main::ispcp_serv_mngr_stderr);
 			}
-
 			return $rs;
 		}
-
 		if (!defined($main::engine_debug)) {
 			del_file($main::ispcp_serv_mngr_stdout);
 			del_file($main::ispcp_serv_mngr_stderr);
