@@ -104,7 +104,7 @@ sub mbox_get_dmn_full_name {
 				ON
 					(`subdomain_alias`.`alias_id` = `domain_aliasses`.`alias_id`)
 				WHERE
-					`subdomain_alias`.`subdomain_alias_id` = $mail_dmn_id
+					`subdomain_alias`.`subdomain_alias_id` = $mail_sub_id
 				;
 			";
 		}
