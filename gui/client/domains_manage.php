@@ -64,8 +64,8 @@ function gen_user_dns_list(&$tpl, &$sql, $user_id) {
 			`domain_dns`.`domain_class`,
 			`domain_dns`.`domain_type`,
 			`domain_dns`.`domain_text`,
-			IFNULL(`domain_aliasses`.`alias_name`, `domain`.`domain_name`) AS domain_name,
-			IFNULL(`domain_aliasses`.`alias_status`, `domain`.`domain_status`) AS domain_status
+			IFNULL(`domain_aliasses`.`alias_name`, `domain`.`domain_name`) AS 'domain_name',
+			IFNULL(`domain_aliasses`.`alias_status`, `domain`.`domain_status`) AS 'domain_status'
 		FROM
 			`domain_dns`
 			LEFT JOIN `domain_aliasses` USING (`alias_id`, `domain_id`),
@@ -75,10 +75,10 @@ function gen_user_dns_list(&$tpl, &$sql, $user_id) {
 		AND
 			`domain`.`domain_id` = `domain_dns`.`domain_id`
 		ORDER BY
-				`domain_id`,
-				`alias_id`,
-				`domain_dns`,
-				`domain_type`
+			`domain_id`,
+			`alias_id`,
+			`domain_dns`,
+			`domain_type`
 	";
 
 	$rs = exec_query($sql, $query, $domain_id);
@@ -159,6 +159,32 @@ function gen_user_alssub_action($sub_id, $sub_status) {
 	}
 }
 
+function gen_user_sub_forward($sub_id, $sub_status, $url_forward, $dmn_type) {
+
+	$cfg = ispCP_Registry::get('Config');
+
+	if ($sub_status === $cfg->ITEM_OK_STATUS) {
+		return array(
+			$url_forward === 'no' || $url_forward === NULL
+			?
+				'-'
+			:
+				$url_forward,
+			'subdomain_edit.php?edit_id='.$sub_id.'&amp;dmn_type='.$dmn_type, tr('Edit')
+		);
+	} else if ($sub_status === $cfg->ITEM_ORDERED_STATUS) {
+		return array(
+			$url_forward === 'no' || $url_forward === NULL
+			?
+				'-'
+			:
+				$url_forward, '#', tr('N/A')
+			);
+	} else {
+		return array(tr('N/A'), '#', tr('N/A'));
+	}
+}
+
 function gen_user_sub_list(&$tpl, &$sql, $user_id) {
 
 	$domain_id = get_user_domain_id($sql, $user_id);
@@ -169,6 +195,7 @@ function gen_user_sub_list(&$tpl, &$sql, $user_id) {
 			`subdomain_name`,
 			`subdomain_mount`,
 			`subdomain_status`,
+			`subdomain_url_forward`,
 			`domain_name`
 		FROM
 			`subdomain` JOIN `domain`
@@ -185,6 +212,7 @@ function gen_user_sub_list(&$tpl, &$sql, $user_id) {
 			`subdomain_alias_id`,
 			`subdomain_alias_name`,
 			`subdomain_alias_mount`,
+			`subdomain_alias_url_forward`,
 			`subdomain_alias_status`,
 			`alias_name`
 		FROM
@@ -209,13 +237,18 @@ function gen_user_sub_list(&$tpl, &$sql, $user_id) {
 			$tpl->assign('ITEM_CLASS', ($counter % 2 == 0) ? 'content' : 'content2');
 
 			list($sub_action, $sub_action_script) = gen_user_sub_action($rs->fields['subdomain_id'], $rs->fields['subdomain_status']);
+			list($sub_forward, $sub_edit_link, $sub_edit) = gen_user_sub_forward($rs->fields['subdomain_id'], $rs->fields['subdomain_status'], $rs->fields['subdomain_url_forward'], 'dmn');
 			$sbd_name = decode_idna($rs->fields['subdomain_name']);
+			$sub_forward = decode_idna($sub_forward);
 			$tpl->assign(
 				array(
 					'SUB_NAME'			=> tohtml($sbd_name),
 					'SUB_ALIAS_NAME'	=> tohtml($rs->fields['domain_name']),
 					'SUB_MOUNT'			=> tohtml($rs->fields['subdomain_mount']),
+					'SUB_FORWARD'		=> $sub_forward,
 					'SUB_STATUS'		=> translate_dmn_status($rs->fields['subdomain_status']),
+					'SUB_EDIT_LINK'		=> $sub_edit_link,
+					'SUB_EDIT'			=> $sub_edit,
 					'SUB_ACTION'		=> $sub_action,
 					'SUB_ACTION_SCRIPT'	=> $sub_action_script
 				)
@@ -228,13 +261,18 @@ function gen_user_sub_list(&$tpl, &$sql, $user_id) {
 			$tpl->assign('ITEM_CLASS', ($counter % 2 == 0) ? 'content' : 'content2');
 
 			list($sub_action, $sub_action_script) = gen_user_alssub_action($rs2->fields['subdomain_alias_id'], $rs2->fields['subdomain_alias_status']);
+			list($sub_forward, $sub_edit_link, $sub_edit) = gen_user_sub_forward($rs2->fields['subdomain_alias_id'], $rs2->fields['subdomain_alias_status'], $rs2->fields['subdomain_alias_url_forward'], 'als');
 			$sbd_name = decode_idna($rs2->fields['subdomain_alias_name']);
+			$sub_forward = decode_idna($sub_forward);
 			$tpl->assign(
 				array(
 					'SUB_NAME'			=> tohtml($sbd_name),
 					'SUB_ALIAS_NAME'	=> tohtml($rs2->fields['alias_name']),
 					'SUB_MOUNT'			=> tohtml($rs2->fields['subdomain_alias_mount']),
+					'SUB_FORWARD'		=> $sub_forward,
 					'SUB_STATUS'		=> translate_dmn_status($rs2->fields['subdomain_alias_status']),
+					'SUB_EDIT_LINK'		=> $sub_edit_link,
+					'SUB_EDIT'			=> $sub_edit,
 					'SUB_ACTION'		=> $sub_action,
 					'SUB_ACTION_SCRIPT'	=> $sub_action_script
 				)
@@ -378,6 +416,7 @@ $tpl->assign(
 		'TR_SUBDOMAINS'		=> tr('Subdomains'),
 		'TR_SUB_NAME'		=> tr('Name'),
 		'TR_SUB_MOUNT'		=> tr('Mount point'),
+		'TR_SUB_FORWARD'	=> tr('Forward'),
 		'TR_SUB_STATUS'		=> tr('Status'),
 		'TR_SUB_ACTION'		=> tr('Actions'),
 		'TR_MESSAGE_DELETE'	=> tr('Are you sure you want to delete %s?', true, '%s'),

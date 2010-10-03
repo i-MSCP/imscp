@@ -87,7 +87,7 @@ class ispCP_Update_Database extends ispCP_Update {
 	 */
 
 	/**
-	 * Initital Update. Insert the first Revision.
+	 * Initial Update. Insert the first Revision.
 	 *
 	 * @author Jochen Manz <zothos@zothos.net>
 	 * @version 1.0.0
@@ -1716,7 +1716,7 @@ class ispCP_Update_Database extends ispCP_Update {
 	}
 
 	/**
-	 * Fix ilegal value _full_ for allow backup
+	 * Fix illegal value _full_ for allow backup
 	 *
 	 * Adding a domain purchased via order panel will insert type of
 	 * backup '_full_' which is not allowed
@@ -1738,13 +1738,44 @@ class ispCP_Update_Database extends ispCP_Update {
 	}
 
 	/**
+	 * Added support for subdomain redirect
+	 *
+	 * @author Daniel Andreca (sci2tech) <sci2tech@gmail.com>
+	 * @since r3392
+	 * @return array SQL statements to be performed
+	 */
+	protected function _databaseUpdate_40() {
+		$sqlUpd = array();
+
+		$sqlUpd[] = "
+			ALTER IGNORE TABLE
+				`subdomain`
+			ADD
+				`subdomain_url_forward` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL
+			AFTER
+				`subdomain_mount`;
+		";
+
+		$sqlUpd[] = "
+			ALTER IGNORE TABLE
+				`subdomain_alias`
+			ADD
+				`subdomain_alias_url_forward` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL
+			AFTER
+				`subdomain_alias_mount`;
+		";
+
+		return $sqlUpd;
+	}
+
+	/**
 	 * Fix for #2224 Postgrey - Port changed to 10023 for some distributions
 	 *
 	 * @author Laurent Declercq <laurent.declercq@ispcp.net>
 	 * @since r3299
 	 * @return array
 	 */
-	protected function _databaseUpdate_40() {
+	protected function _databaseUpdate_41() {
 
 		$cfg = new ispCP_Config_Handler_File();
 		$DbConfig = ispCP_Registry::get('Db_Config');

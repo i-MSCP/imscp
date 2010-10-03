@@ -32,6 +32,9 @@
         CBandUser {DMN_GRP}
     </IfModule>
 
+    # httpd sub entry redirect entry BEGIN.
+    # httpd sub entry redirect entry END.
+
     # httpd sub entry cgi support BEGIN.
     # httpd sub entry cgi support END.
 

@@ -8,7 +8,7 @@
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
 <!--[if lt IE 7.]>
-<script defer type="text/javascript" src="{THEME_COLOR_PATH}/css/pngfix.js"></script>
+	<script defer type="text/javascript" src="{THEME_COLOR_PATH}/css/pngfix.js"></script>
 <![endif]-->
 <script type="text/javascript">
 <!--
@@ -131,17 +131,37 @@ function action_delete(url, alias_or_subdomain) {
 													<!-- EDP: sub_message -->
 													<!-- BDP: sub_list -->
 													<tr>
-														<td class="content3" colspan="2" nowrap="nowrap"><b>{TR_SUB_NAME}</b></td>
+														<td class="content3" nowrap="nowrap"><b>{TR_SUB_NAME}</b></td>
 														<td class="content3" nowrap="nowrap"><b>{TR_SUB_MOUNT}</b></td>
+														<td class="content3" nowrap="nowrap" align="center"><b>{TR_SUB_FORWARD}</b></td>
 														<td class="content3" nowrap="nowrap" align="center"><b>{TR_SUB_STATUS}</b></td>
 														<td class="content3" nowrap="nowrap" align="center"><b>{TR_SUB_ACTION}</b></td>
 													</tr>
 													<!-- BDP: sub_item -->
 													<tr class="hl">
-														<td class="{ITEM_CLASS}" colspan="2" nowrap="nowrap"><img src="{THEME_COLOR_PATH}/images/icons/domain_icon.png" width="16" height="16" style="vertical-align:middle" alt="" /> <a href="http://{SUB_NAME}.{SUB_ALIAS_NAME}/" class="link" title="{SUB_NAME}.{SUB_ALIAS_NAME}">{SUB_NAME}.{SUB_ALIAS_NAME}</a></td>
+														<td class="{ITEM_CLASS}" nowrap="nowrap">
+															<img src="{THEME_COLOR_PATH}/images/icons/domain_icon.png" width="16" height="16" style="vertical-align:middle" alt="" />
+															&nbsp;
+															<a href="http://{SUB_NAME}.{SUB_ALIAS_NAME}/" class="link" title="{SUB_NAME}.{SUB_ALIAS_NAME}">
+																{SUB_NAME}.{SUB_ALIAS_NAME}
+															</a>
+														</td>
 														<td class="{ITEM_CLASS}" nowrap="nowrap">{SUB_MOUNT}</td>
+														<td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{SUB_FORWARD}</td>
 														<td class="{ITEM_CLASS}" nowrap="nowrap" align="center">{SUB_STATUS}</td>
-														<td class="{ITEM_CLASS}" nowrap="nowrap" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="#" class="link" onClick="action_delete('{SUB_ACTION_SCRIPT}', '{SUB_NAME}')">{SUB_ACTION}</a></td>
+														<td class="{ITEM_CLASS}" nowrap="nowrap" align="center">
+															<img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" />
+															&nbsp;
+															<a href="#" class="link" onclick="action_delete('{SUB_ACTION_SCRIPT}', '{SUB_NAME}')">
+																{SUB_ACTION}
+															</a>
+															&nbsp;-&nbsp;
+															<img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" />
+															&nbsp;
+															<a href="{SUB_EDIT_LINK}" class="link" title="{SUB_EDIT}">
+																{SUB_EDIT}
+															</a>
+														</td>
 													</tr>
 													<!-- EDP: sub_item -->
 													<!-- EDP: sub_list -->

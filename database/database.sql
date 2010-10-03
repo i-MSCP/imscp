@@ -126,7 +126,7 @@ INSERT INTO `config` (`name`, `value`) VALUES
 ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
 ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
 ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-('DATABASE_REVISION', '39');
+('DATABASE_REVISION', '41');
 
 -- --------------------------------------------------------
 
@@ -622,6 +622,7 @@ CREATE TABLE `subdomain` (
   `domain_id` int(10) unsigned default NULL,
   `subdomain_name` varchar(200) collate utf8_unicode_ci default NULL,
   `subdomain_mount` varchar(200) collate utf8_unicode_ci default NULL,
+  `subdomain_url_forward` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
   `subdomain_status` varchar(255) collate utf8_unicode_ci default NULL,
   PRIMARY KEY  (`subdomain_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -637,6 +638,7 @@ CREATE TABLE `subdomain_alias` (
   `alias_id` int(10) unsigned default NULL,
   `subdomain_alias_name` varchar(200) collate utf8_unicode_ci default NULL,
   `subdomain_alias_mount` varchar(200) collate utf8_unicode_ci default NULL,
+  `subdomain_alias_url_forward` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
   `subdomain_alias_status` varchar(255) collate utf8_unicode_ci default NULL,
   PRIMARY KEY  (`subdomain_alias_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
