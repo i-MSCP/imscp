@@ -64,6 +64,12 @@ case "$1" in
 
         sed -i s'/\(POSTGREY_PORT.*=.*\)10023/\160000/' /etc/ispcp.ispcp.conf
 
+		# Updating database.sql file Only on install
+		if [ "$1" = "install" ] ; then
+			$CMD_SED -i s'/10023\(;tcp;POSTGREY\)/60000\1/' \
+				/etc/ispcp/database/database.sql >> $ISPCP_LOGFILE 2>&1 || failed
+		fi
+
         print_status
 	fi
 

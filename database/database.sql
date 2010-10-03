@@ -118,7 +118,7 @@ INSERT INTO `config` (`name`, `value`) VALUES
 ('PORT_POP3-SSL', '995;tcp;POP3-SSL;1;0;'),
 ('PORT_IMAP', '143;tcp;IMAP;1;0;'),
 ('PORT_IMAP-SSL', '993;tcp;IMAP-SSL;0;0;'),
-('PORT_POSTGREY', '60000;tcp;POSTGREY;1;1;localhost'),
+('PORT_POSTGREY', '10023;tcp;POSTGREY;1;1;localhost'),
 ('PORT_AMAVIS', '10024;tcp;AMaVis;1;1;localhost'),
 ('PORT_SPAMASSASSIN', '783;tcp;SPAMASSASSIN;1;1;localhost'),
 ('PORT_POLICYD-WEIGHT', '12525;tcp;POLICYD-WEIGHT;1;1;localhost'),
