@@ -870,9 +870,9 @@ sub isValidEmail {
 	my $i = rindex $email, '@';
 
 	# The delimiter '@' or one email part was not found ?
-	return 0 if($i == -1 || $i == 0 || $emailLength > ++($i));
+	return 0 if($i == -1 || $i == 0 || $emailLength == ++($i));
 
-	my ($localPart, $domain) = (substr($email, 0, $i), substr($email, ++$i));
+	my ($localPart, $domain) = (substr($email, 0, --$i), substr($email, ++$i));
 
 	my $rs = _isValidEmailUser($localPart);
 	$rs &&= _isValidEmailDomain($domain);
