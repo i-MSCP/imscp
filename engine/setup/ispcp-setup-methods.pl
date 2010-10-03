@@ -38,6 +38,7 @@ use strict;
 use warnings;
 use version 0.74;
 use DateTime::TimeZone;
+use Net::LibIDN 'idn_to_ascii';
 use feature 'state';
 
 # Hide the 'used only once: possible typo' warnings
@@ -760,7 +761,7 @@ sub ask_awstats_dyn {
 ################################################################################
 # Validates a hostname
 #
-# This subroutine validates a hostname according the RFC 1123
+# This subroutine validates a hostname according the RFC 1123.
 #
 # For now, the rule is as follow:
 #
@@ -774,12 +775,12 @@ sub ask_awstats_dyn {
 # Note:
 #
 # This subroutine can also validates an internationalized domain name. To resume,
-# before any validation all unicode string in the hostname is transformed into
+# before any validation all unicode string in the hostname are transformed into
 # an ASCII string. See the RFC 3492 (updated by RFC 5891) for more information
 # about the algorithm.
 #
-# @param string $hostname Host name to be validated
-# @return 1 if the host name is valid, 0 otherwise
+# @param string $hostname Hostname to be validated
+# @return 1 if the hostname is valid, 0 otherwise
 
 sub isValidHostname {
 
@@ -800,39 +801,55 @@ sub isValidHostname {
 	# Before any validation, we should converts $hostname which might contain
 	# characters outside the range allowed in DNS names, to IDNA ACE
 	$hostname = idn_to_ascii($hostname, 'utf-8');
+	return 0 if !defined $hostname; # idn_to_ascii() return undef on error
 
-	my $retVal = 1;
+	# Checking hostname length (RFC 1123 section 2.1)
+	return 0 if length $hostname > 255;
 
-	# Checking hostname length
-	$retVal = 0 if length $hostname > 255;
-
-	# Cutting the hostname per labels
+	# Split the hostname per labels
 	my @labels = split '\.', $hostname;
 
 	# We should have a least two labels
-	$retVal = 0 if(@labels < 2);
+	return 0 if(@labels < 2);
 
 	# Retrieve the top level domain
 	my $tld = pop @labels;
 
 	# Checking top level domain syntax
-	$retVal = 0 unless defined $tld && $tld =~ $tldRegExp;
+	return 0 unless defined $tld && $tld =~ $tldRegExp;
 
-	# Checking all labels syntax and length
 	for (@labels) {
-		$retVal = 0 if $_ eq '' || length > 63 || $_ !~ $labelRegExp;
+		return 0 if $_ eq '' || length > 63 || $_ !~ $labelRegExp;
 	}
 
 	push_el(\@main::el, 'isValidHostname()', 'Ending...');
 
-	$retVal;
+	1;
 }
 
 ################################################################################
 # Validates a mail address
 #
-# @param string $email Email address
-# @return 1 if the email domain part is valid, 0 otherwise
+# Validates an email address according a restricted application of the RFCs 5321
+# 5322, 1123 and 3492 (updated by 5891).
+#
+# For now, the rule is as follow:
+#
+# 1. Only 7bit ASCII characters are allowed for email local-part
+# 2. local-part can be either a dot-atom or quoted-string*
+# 3. The domain part should follow the RFC 1123 specifications
+# 4. The domain part can also be an IDN or an Internet domain literal that is a
+# dotted-decimal host address surrounded by square brackets**
+#
+# * Not Yet Implemented
+# ** For now, only IPv4 address are honored.
+#
+# Note: The obsolete syntax is not honored.
+#
+# @param string $email Email address to be validated
+# @return 1 if the email address is valid, 0 otherwise
+#
+# @todo domain literal (IPv6)
 #
 sub isValidEmail {
 
@@ -846,23 +863,19 @@ sub isValidEmail {
 		return 0;
 	}
 
-	# Checking e-mail address length  - RFC 5321, section 4.5.3.1
-	return 0 if length $email > 254;
+	# Checking e-mail address length  - RFC 5321 section 4.5.3.1
+	return 0 if (my $emailLength = length $email) > 254;
 
-	my $i = rindex $mail, '@';
+	# split email address on local-part and domain part
+	my $i = rindex $email, '@';
 
-	if($i != -1) {
-		my ($username, $domain) = (substr($mail, 0, $i), substr($mail, ++$i));
-	} else {
-		return 0
-	}
+	# The delimiter '@' or one email part was not found ?
+	return 0 if($i == -1 || $i == 0 || $emailLength > ++($i));
 
-	my ($username, $domain) = split '@', $email;
+	my ($localPart, $domain) = (substr($email, 0, $i), substr($email, ++$i));
 
-	return 0 unless defined $domain;
-
-	my $rs = isValidEmailUsername($username);
-	$rs &&= isValidEmailDomain($domain);
+	my $rs = _isValidEmailUser($localPart);
+	$rs &&= _isValidEmailDomain($domain);
 
 	return 0 if !$rs;
 
@@ -874,32 +887,29 @@ sub isValidEmail {
 ################################################################################
 # Validates an email local-part
 #
-# This subroutine validate a email address local-part according RFC 5322.
+# See isValidEmail() for more information about honored RFC specifications.
 #
-# For now, the rule is as follow
-#
-# 1. Only 7bit ASCII characters are allowed for email local-part
-# 2. local-part can be is either a dot-atom or quoted-string* 
-#
-# * Not Yet Implemented.
-#
+# @access private
 # @param string $email Email local-part
 # @return 1 if the local-part is valid, 0 otherwise
 # @Todo quoted string (RFC 5322 section 3.2.4)
 #
-sub isValidEmailUsername {
+sub _isValidEmailUser {
 
-	push_el(\@main::el, 'isValidMailUsername()', 'Starting...');
+	push_el(\@main::el, 'isValidEmailUser()', 'Starting...');
 
-	my $username = shift;
+	my $localPart = shift;
 
-	if(!defined $username) {
+	if(!defined $localPart) {
 		push_el(
-			\@main::el, 'isValidEmailUsername()', 'Missing argument `username`!'
+			\@main::el, 'isValidEmailUser()', 'Missing argument `local-part`!'
 		);
 
 		return 0;
 	}
+
+	# local-part must be 64 char or less (RFC 5321 section 4.5.3.1.1.)
+	return 0 if length $localPart > 64;
 
 	# Build dot-atom regexp (RFC 5322 section 3.2.3)
 	state $atext = quotemeta(
@@ -908,9 +918,9 @@ sub isValidEmailUsername {
 	state $atomRegExp = qr/^(?:[$atext]+|[$atext]+(?:\.[$atext]+)+)$/o;
 
 	# Always executed
-	return 0 if $username !~ $atomRegExp;
+	return 0 if $localPart !~ $atomRegExp;
 
-	push_el(\@main::el, 'isValidMailUsername()', 'Ending...');
+	push_el(\@main::el, 'isValidEmailUser()', 'Ending...');
 
 	1;
 }
@@ -918,18 +928,14 @@ sub isValidEmailUsername {
 ################################################################################
 # Validates an email domain part
 #
-# The domain name part of an email address has to conform to strict guidelines:
+# See the documentation of both isValidEmail and isValidHostname() subroutines
+# for more information about honored RFC specifications.
 #
-#  It must match the requirements for a hostname (RFC 1123), consisting of
-#  letters, digits, hyphens and dots. See isValidHostname() for more information.
-#
-#  In addition, the domain part may be an IP address literal, surrounded by
-#  square braces, such as jdoe@[192.168.2.1]
-#
+# @access private
 # @param string $email Email Hostname
 # @return 1 if the hostname is valid, 0 otherwise
 #
-sub isValidEmailDomain {
+sub _isValidEmailDomain {
 
 	push_el(\@main::el, 'isValidEmailDomain()', 'Starting...');
 
@@ -943,7 +949,7 @@ sub isValidEmailDomain {
 		return 0;
 	}
 
-	# Build regExp - IP address literal, surrounded by square braces
+	# Build regExp - dotted- decimal host address surrounded by square brackets
 	# (is executed only the first time)
 	state $ipRegExp = qr /^
 		(?:\[(?:(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}
@@ -976,7 +982,7 @@ sub isValidAddr {
 		return 0;
 	}
 
-	# Build regExp (is executed only the first time)
+	# Build regExp - dotted- decimal IPv4 (is executed only the first time)
 	state $regExp = qr/^
 		(?:(?:(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}
 		(?:[01]?\d{1,2}|2[0-4]\d|25[0-5]))
