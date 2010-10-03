@@ -178,6 +178,8 @@ function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 function subdmn_exists(&$sql, $user_id, $domain_id, $sub_name) {
 	global $dmn_name;
 
+	$cfg = ispCP_Registry::get('Config');
+
 	if ($_POST['dmn_type'] == 'als') {
 		$query_subdomain = "
 			SELECT
@@ -231,7 +233,9 @@ function subdmn_exists(&$sql, $user_id, $domain_id, $sub_name) {
 
 	if ($rs_subdomain->fields['cnt'] == 0
 		&& $rs_domain->fields['cnt'] == 0
-		&& !in_array($sub_name, $std_subs)) {
+		&& !in_array($sub_name, $std_subs)
+		&& $cfg->BASE_SERVER_VHOST != $domain_name
+	) {
 		return false;
 	}
 
