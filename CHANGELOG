@@ -2,16 +2,18 @@ ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2010-10-03 Daniel Andreca
-    - ENGINE:
-        * Some refactorization tasks in the ispcp_rqst_mngr script
-        * Fixed #2190: Wrong message sent to the reseller at the regeneration
-            of the password
+	- ENGINE:
+		* Some refactorization tasks in the ispcp_rqst_mngr script
+		* Fixed #2467: Orderpanel should not allow client to try register
+			master domain
+		* Fixed #2468: Subdomain management should not allow client to
+			try register master domain (tx Obi_Wan)
 
 2010-10-02 Thomas Wacker
-    - GUI:
-        * Fixed #2024: Changing into a Customer deletes Search result
-        * Fixed #2190: Wrong message sent to the reseller at the regeneration
-            of the password
+	- GUI:
+		* Fixed #2024: Changing into a Customer deletes Search result
+		* Fixed #2190: Wrong message sent to the reseller at the regeneration
+			of the password
 
 2010-09-27 Benedikt Heintel
 	- GUI:
