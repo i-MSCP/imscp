@@ -1789,8 +1789,40 @@ class ispCP_Update_Database extends ispCP_Update {
 		");
 	}
 
+	/**
+	 * Added support for subdomain redirect
+	 *
+	 *
+	 * @author Daniel Andreca (sci2tech) <sci2tech@gmail.com>
+	 * @since r3392
+	 * @return array Sql statements to be performed
+	 */
+	protected function _databaseUpdate_40() {
+		$sqlUpd = array();
+
+		$sqlUpd[] = "
+			ALTER IGNORE TABLE
+				`subdomain`
+			ADD
+				`subdomain_url_forward` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL
+			AFTER
+				`subdomain_mount`;
+		";
+
+		$sqlUpd[] = "
+			ALTER IGNORE TABLE
+				`subdomain_alias`
+			ADD
+				`subdomain_alias_url_forward` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL
+			AFTER
+				`subdomain_alias_mount`;
+		";
+
+		return $sqlUpd;
+	}
 
 	/*
 	 * DO NOT CHANGE ANYTHING BELOW THIS LINE!
 	 */
+
 }

@@ -305,59 +305,67 @@ sub sub_add_httpd_cfg_data {
 		return -1;
 	}
 
-	my $subStatus = @$data{'subdomain_status'};
-	my $dmnName = @$data{'domain_name'};
-	my $subName = "@$data{subdomain_name}.$dmnName";
-	my $subMountPoint = @$data{'subdomain_mount'};
-	my $sysUser = "$main::cfg{APACHE_SUEXEC_USER_PREF}@$data{domain_uid}";
-	my $sysGroup = "$main::cfg{APACHE_SUEXEC_USER_PREF}@$data{domain_gid}";
-	my $cfgDir = $main::cfg{'CONF_DIR'};
-	my $sysFile = "$main::cfg{APACHE_SITES_DIR}/ispcp.conf";
-	my $wrkFile = "$cfgDir/apache/working/ispcp.conf";
-	my $bkpFile = "$cfgDir/apache/backup/httpd.conf." . time;
+	my $subStatus		= @$data{'subdomain_status'};
+	my $dmnName			= @$data{'domain_name'};
+	my $subName			= "@$data{subdomain_name}.$dmnName";
+	my $subRdrURI		= @$data{'subdomain_url_forward'};
+	my $subMountPoint	= @$data{'subdomain_mount'};
+	my $sysUser			= "$main::cfg{APACHE_SUEXEC_USER_PREF}@$data{domain_uid}";
+	my $sysGroup		= "$main::cfg{APACHE_SUEXEC_USER_PREF}@$data{domain_gid}";
+	my $cfgDir			= $main::cfg{'CONF_DIR'};
+	my $sysFile			= "$main::cfg{APACHE_SITES_DIR}/ispcp.conf";
+	my $wrkFile			= "$cfgDir/apache/working/ispcp.conf";
+	my $bkpFile			= "$cfgDir/apache/backup/httpd.conf." . time;
 
 	# Getting needed templates
 	my (
 		$rs, $dgB, $dgE, $subB, $subEnt, $subE, $subCGIb, $subCGIent, $subCGIe,
 		$subPHPonB, $subPHPon, $subPHPonE, $subPHPoffB, $subPHPoff,$subPHPoffE,
-		$subCustom
+		$subCustom, $subRDRb, $subRDRent, $subRDRe
 	) = get_tpl (
 		"$cfgDir/apache/parts", 'dg_b.tpl', 'dg_e.tpl', 'sub_b.tpl',
 		'sub_entry.tpl', 'sub_e.tpl', 'sub_cgi_b.tpl', 'sub_cgi_entry.tpl',
 		'sub_cgi_e.tpl', 'sub_php2_b.tpl', 'sub_php2_entry.tpl',
 		'sub_php2_e.tpl', 'sub_php_b.tpl', 'sub_php_entry.tpl', 'sub_php_e.tpl',
-		'custom.conf.tpl'
+		'custom.conf.tpl', 'sub_rdr_b.tpl', 'sub_rdr_entry.tpl', 'sub_rdr_e.tpl'
 	);
 	return -1 if ($rs != 0);
 
 	# Preparing templates
 	(
 		$rs, $dgB, $dgE, my $subBv, $subEnt, my $subEv, $subCGIb, $subCGIent,
-		$subCGIe, $subPHPon, $subCustom
+		$subCGIe, $subPHPon, $subCustom, $subRDRent
 	) = prep_tpl(
 		{
-			'{DMN_NAME}' => $dmnName,
-			'{DMN_GRP}' => $dmnName,
-			'{STARTER_DIR}' => $main::cfg{'PHP_STARTER_DIR'},
-			'{PHP_VERSION}' => $main::cfg{'PHP_VERSION'},
-			'{BASE_SERVER_VHOST}' => $main::cfg{'BASE_SERVER_VHOST'},
-			'{BASE_SERVER_VHOST_PREFIX}' =>
-				$main::cfg{'BASE_SERVER_VHOST_PREFIX'},
-			'{WWW_DIR}' => $main::cfg{'APACHE_WWW_DIR'},
-			'{SUB_NAME}' => $subName,
-			'{SELF}' => $subName,
-			'{SUB_IP}' => @$data{'ip_number'},
-			'{MOUNT_POINT}' => $subMountPoint,
-			'{GUI_ROOT_DIR}' => $main::cfg{'GUI_ROOT_DIR'},
-			'{PEAR_DIR}' => $main::cfg{'PEAR_DIR'},
-			'{CUSTOM_SITES_CONFIG_DIR}' =>
-				$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'},
-			'{SUEXEC_USER}' => $sysUser,
-			'{SUEXEC_GROUP}' => $sysGroup
+			'{DMN_NAME}'					=> $dmnName,
+			'{DMN_GRP}'						=> $dmnName,
+			'{URI}'							=> !$subRdrURI ? 'no' : $subRdrURI,
+			'{STARTER_DIR}'					=> $main::cfg{'PHP_STARTER_DIR'},
+			'{PHP_VERSION}'					=> $main::cfg{'PHP_VERSION'},
+			'{BASE_SERVER_VHOST}'			=> $main::cfg{'BASE_SERVER_VHOST'},
+			'{BASE_SERVER_VHOST_PREFIX}'	=> $main::cfg{'BASE_SERVER_VHOST_PREFIX'},
+			'{WWW_DIR}'						=> $main::cfg{'APACHE_WWW_DIR'},
+			'{SUB_NAME}'					=> $subName,
+			'{SELF}'						=> $subName,
+			'{SUB_IP}'						=> @$data{'ip_number'},
+			'{MOUNT_POINT}'					=> $subMountPoint,
+			'{GUI_ROOT_DIR}'				=> $main::cfg{'GUI_ROOT_DIR'},
+			'{PEAR_DIR}'					=> $main::cfg{'PEAR_DIR'},
+			'{CUSTOM_SITES_CONFIG_DIR}'		=> $main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'},
+			'{SUEXEC_USER}'					=> $sysUser,
+			'{SUEXEC_GROUP}'				=> $sysGroup
 		},
 		$dgB, $dgE, $subB, $subEnt, $subE, $subCGIb, $subCGIent, $subCGIe,
-		$subPHPon, $subCustom
+		$subPHPon, $subCustom, $subRDRent
 	);
+
+	# Enabling or disabling redirect
+	($rs, $subEnt) = repl_tag(
+		$subRDRb, $subRDRe, $subEnt, (!$subRdrURI || $subRdrURI eq 'no') ?
+		"$subRDRb$subRDRe" : "$subRDRb$subRDRent$subRDRe",
+		'sub_add_httpd_cfg_data()'
+	);
+	return -1 if ($rs != 0);
 
 	# Enabling or disabling CGI support according parent domain properties
 	($rs, $subEnt) = repl_tag(
@@ -1232,6 +1240,7 @@ sub sub_mngr_engine {
 	my $sql = "
 		SELECT
 			`t1`.`subdomain_id`, `t1`.`domain_id`, `t1`.`subdomain_name`,
+			`t1`.`subdomain_url_forward`,
 			`t1`.`subdomain_mount`, `t1`.`subdomain_status`, `t2`.`domain_name`,
 			`t2`.`domain_uid`, `t2`.`domain_gid`, `t2`.`domain_php`,
 			`t2`.`domain_cgi`, `t3`.`ip_number`

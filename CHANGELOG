@@ -8,6 +8,7 @@ ispCP ω 1.0.7 ChangeLog
 			master domain
 		* Fixed #2468: Subdomain management should not allow client to
 			try register master domain (tx Obi_Wan)
+		* Fixed #1998: Add support for subdomain redirect (tx JCD)
 
 2010-10-02 Thomas Wacker
 	- GUI:

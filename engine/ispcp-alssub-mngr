@@ -308,60 +308,68 @@ sub alssub_add_httpd_cfg_data {
 		return -1;
 	}
 
-	my $parentDmnName = @$data{'domain_name'};
-	my $subAlsStatus = @$data{'subdomain_alias_status'};
-	my $dmnAlsName = @$data{'alias_name'};
-	my $subAlsName = "@$data{subdomain_alias_name}.$dmnAlsName";
-	my $subAlsMountPoint = @$data{'subdomain_alias_mount'};
-	my $sysUser = "$main::cfg{APACHE_SUEXEC_USER_PREF}@$data{domain_uid}";
-	my $sysGroup = "$main::cfg{APACHE_SUEXEC_USER_PREF}@$data{'domain_gid'}";
-	my $cfgDir = $main::cfg{'CONF_DIR'};
-	my $sysFile = "$main::cfg{APACHE_SITES_DIR}/ispcp.conf";
-	my $wrkFile = "$cfgDir/apache/working/ispcp.conf";
-	my $bkpFile = "$cfgDir/apache/backup/httpd.conf." . time;
+	my $parentDmnName		= @$data{'domain_name'};
+	my $subAlsStatus		= @$data{'subdomain_alias_status'};
+	my $dmnAlsName			= @$data{'alias_name'};
+	my $subRdrURI			= @$data{'subdomain_alias_url_forward'};
+	my $subAlsName			= "@$data{subdomain_alias_name}.$dmnAlsName";
+	my $subAlsMountPoint	= @$data{'subdomain_alias_mount'};
+	my $sysUser				= "$main::cfg{APACHE_SUEXEC_USER_PREF}@$data{domain_uid}";
+	my $sysGroup			= "$main::cfg{APACHE_SUEXEC_USER_PREF}@$data{'domain_gid'}";
+	my $cfgDir				= $main::cfg{'CONF_DIR'};
+	my $sysFile				= "$main::cfg{APACHE_SITES_DIR}/ispcp.conf";
+	my $wrkFile				= "$cfgDir/apache/working/ispcp.conf";
+	my $bkpFile				= "$cfgDir/apache/backup/httpd.conf." . time;
 
 	# Getting needed templates
 	my (
 		$rs, $dgB, $dgE, $subB, $subEnt, $subE, $subCGIb, $subCGIent, $subCGIe,
 		$subPHPonB, $subPHPon, $subPHPonE, $subPHPoffB, $subPHPoff,$subPHPoffE,
-		$subCustom
+		$subCustom, $subRDRb, $subRDRent, $subRDRe
 	) = get_tpl (
 		"$cfgDir/apache/parts", 'dg_b.tpl', 'dg_e.tpl', 'sub_b.tpl',
 		'sub_entry.tpl', 'sub_e.tpl', 'sub_cgi_b.tpl', 'sub_cgi_entry.tpl',
 		'sub_cgi_e.tpl', 'sub_php2_b.tpl', 'sub_php2_entry.tpl',
 		'sub_php2_e.tpl', 'sub_php_b.tpl', 'sub_php_entry.tpl', 'sub_php_e.tpl',
-		'custom.conf.tpl'
+		'custom.conf.tpl', 'sub_rdr_b.tpl', 'sub_rdr_entry.tpl', 'sub_rdr_e.tpl'
 	);
 	return -1 if ($rs != 0);
 
 	# Preparing templates
 	(
 		$rs, $dgB, $dgE, my $subBv, $subEnt, my $subEv, $subCGIb, $subCGIent,
-		$subCGIe, $subPHPon, $subCustom
+		$subCGIe, $subPHPon, $subCustom, $subRDRent
 	) = prep_tpl(
 		{
-			'{DMN_NAME}' => $parentDmnName,
-			'{DMN_GRP}' => $parentDmnName,
-			'{STARTER_DIR}' => $main::cfg{'PHP_STARTER_DIR'},
-			'{PHP_VERSION}' => $main::cfg{'PHP_VERSION'},
-			'{BASE_SERVER_VHOST}' => $main::cfg{'BASE_SERVER_VHOST'},
-			'{BASE_SERVER_VHOST_PREFIX}' =>
-				$main::cfg{'BASE_SERVER_VHOST_PREFIX'},
-			'{WWW_DIR}' => $main::cfg{'APACHE_WWW_DIR'},
-			'{SUB_NAME}' => $subAlsName,
-			'{SELF}' => $subAlsName,
-			'{SUB_IP}' => @$data{'ip_number'},
-			'{MOUNT_POINT}' => $subAlsMountPoint,
-			'{GUI_ROOT_DIR}' => $main::cfg{'GUI_ROOT_DIR'},
-			'{PEAR_DIR}' => $main::cfg{'PEAR_DIR'},
-			'{CUSTOM_SITES_CONFIG_DIR}' =>
-				$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'},
-			'{SUEXEC_USER}' => $sysUser,
-			'{SUEXEC_GROUP}' => $sysGroup
+			'{DMN_NAME}'					=> $parentDmnName,
+			'{DMN_GRP}'						=> $parentDmnName,
+			'{URI}'							=> !$subRdrURI ? 'no' : $subRdrURI,
+			'{STARTER_DIR}'					=> $main::cfg{'PHP_STARTER_DIR'},
+			'{PHP_VERSION}'					=> $main::cfg{'PHP_VERSION'},
+			'{BASE_SERVER_VHOST}'			=> $main::cfg{'BASE_SERVER_VHOST'},
+			'{BASE_SERVER_VHOST_PREFIX}'	=> $main::cfg{'BASE_SERVER_VHOST_PREFIX'},
+			'{WWW_DIR}'						=> $main::cfg{'APACHE_WWW_DIR'},
+			'{SUB_NAME}'					=> $subAlsName,
+			'{SELF}'						=> $subAlsName,
+			'{SUB_IP}'						=> @$data{'ip_number'},
+			'{MOUNT_POINT}'					=> $subAlsMountPoint,
+			'{GUI_ROOT_DIR}'				=> $main::cfg{'GUI_ROOT_DIR'},
+			'{PEAR_DIR}'					=> $main::cfg{'PEAR_DIR'},
+			'{CUSTOM_SITES_CONFIG_DIR}'		=> 	$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'},
+			'{SUEXEC_USER}'					=> $sysUser,
+			'{SUEXEC_GROUP}'				=> $sysGroup
 		},
 		$dgB, $dgE, $subB, $subEnt, $subE, $subCGIb, $subCGIent, $subCGIe,
-		$subPHPon, $subCustom
+		$subPHPon, $subCustom, $subRDRent
 	);
+
+	# Enabling or disabling redirect
+	($rs, $subEnt) = repl_tag(
+		$subRDRb, $subRDRe, $subEnt, (!$subRdrURI || $subRdrURI eq 'no') ?
+		"$subRDRb$subRDRe" : "$subRDRb$subRDRent$subRDRe",
+		'alssub_add_httpd_cfg_data()'
+	);
+	return -1 if ($rs != 0);
 
 	# Enabling or disabling CGI support according parent domain properties
 	($rs, $subEnt) = repl_tag(
@@ -488,11 +496,11 @@ sub alssub_del_httpd_cfg_data {
 		return -1;
 	}
 
-	my $subAlsName = "@$data{subdomain_alias_name}.@$data{alias_name}";
-	my $cfgDir = $main::cfg{'CONF_DIR'};
-	my $sysFile = "$main::cfg{APACHE_SITES_DIR}/ispcp.conf";
-	my $wrkFile = "$cfgDir/apache/working/ispcp.conf";
-	my $bkpFile = "$cfgDir/apache/backup/httpd.conf." . time;
+	my $subAlsName	= "@$data{subdomain_alias_name}.@$data{alias_name}";
+	my $cfgDir		= $main::cfg{'CONF_DIR'};
+	my $sysFile		= "$main::cfg{APACHE_SITES_DIR}/ispcp.conf";
+	my $wrkFile		= "$cfgDir/apache/working/ispcp.conf";
+	my $bkpFile		= "$cfgDir/apache/backup/httpd.conf." . time;
 
 	# Getting needed templates
 	my ($rs, $SubEntryB, $SubEntryE) = get_tpl(
@@ -560,12 +568,12 @@ sub alssub_add_httpd_file_data {
 		return -1;
 	}
 
-	my $dmnAlsName = @$data{'alias_name'};
-	my $subAlsName = "@$data{subdomain_alias_name}.$dmnAlsName";
-	my $subAlsDir = "$main::cfg{APACHE_WWW_DIR}/@$data{domain_name}" .
+	my $dmnAlsName	= @$data{'alias_name'};
+	my $subAlsName	= "@$data{subdomain_alias_name}.$dmnAlsName";
+	my $subAlsDir	= "$main::cfg{APACHE_WWW_DIR}/@$data{domain_name}" .
 		@$data{'subdomain_alias_mount'};
-	my $sysUser = "$main::cfg{APACHE_SUEXEC_USER_PREF}@$data{domain_uid}";
-	my $sysGroup = "$main::cfg{APACHE_SUEXEC_USER_PREF}@$data{domain_gid}";
+	my $sysUser		= "$main::cfg{APACHE_SUEXEC_USER_PREF}@$data{domain_uid}";
+	my $sysGroup	= "$main::cfg{APACHE_SUEXEC_USER_PREF}@$data{domain_gid}";
 
 	# Creating subdomain dir if it don't already exist or just set these perms
 	my $rs = make_dir($subAlsDir, $sysUser, $sysGroup, 0755);
@@ -595,10 +603,10 @@ sub alssub_add_httpd_file_data {
 
 		# Preparing index.html default page
 		my $rVar = {
-			'{DOMAIN_NAME}' => \$subAlsName,
-			'{BASE_SERVER_VHOST_PREFIX}' =>
+			'{DOMAIN_NAME}'					=> \$subAlsName,
+			'{BASE_SERVER_VHOST_PREFIX}'	=>
 				\$main::cfg{'BASE_SERVER_VHOST_PREFIX'},
-			'{BASE_SERVER_VHOST}' => \$main::cfg{'BASE_SERVER_VHOST'}
+			'{BASE_SERVER_VHOST}'			=> \$main::cfg{'BASE_SERVER_VHOST'}
 		};
 
 		for (keys %$rVar){
@@ -806,11 +814,11 @@ sub alssub_add_mta_cfg_data {
 		return -1;
 	}
 
-	my $subAlsName = "@$data{subdomain_alias_name}.@$data{alias_name}";
-	my $cfgDir = $main::cfg{'CONF_DIR'};
-	my $sysFile = $main::cfg{'MTA_VIRTUAL_DMN_HASH'};
-	my $wrkFile = "$cfgDir/postfix/working/domains";
-	my $bkpFile = "$cfgDir/postfix/backup/domains." . time;
+	my $subAlsName	= "@$data{subdomain_alias_name}.@$data{alias_name}";
+	my $cfgDir		= $main::cfg{'CONF_DIR'};
+	my $sysFile		= $main::cfg{'MTA_VIRTUAL_DMN_HASH'};
+	my $wrkFile		= "$cfgDir/postfix/working/domains";
+	my $bkpFile		= "$cfgDir/postfix/backup/domains." . time;
 
 	# Getting current working file content
 	my ($rs, $wrkFileContent) = get_file($wrkFile);
@@ -866,11 +874,11 @@ sub alssub_del_mta_cfg_data {
 		return -1;
 	}
 
-	my $subAlsName = "@$data{subdomain_alias_name}.@$data{alias_name}";
-	my $cfgDir = $main::cfg{'CONF_DIR'};
-	my $sysFile = $main::cfg{'MTA_VIRTUAL_DMN_HASH'};
-	my $wrkFile = "$cfgDir/postfix/working/domains";
-	my $bkpFile = "$cfgDir/postfix/backup/domains." . time;
+	my $subAlsName	= "@$data{subdomain_alias_name}.@$data{alias_name}";
+	my $cfgDir		= $main::cfg{'CONF_DIR'};
+	my $sysFile		= $main::cfg{'MTA_VIRTUAL_DMN_HASH'};
+	my $wrkFile		= "$cfgDir/postfix/working/domains";
+	my $bkpFile		= "$cfgDir/postfix/backup/domains." . time;
 
 	# Getting current working file content
 	my ($rs, $wrkFileContent) = get_file($wrkFile);
@@ -1071,9 +1079,9 @@ sub alssub_add_proftpd_cfg_data {
 		return -1;
 	}
 
-	my $subAlsFname = "@$data{subdomain_alias_name}.@$data{alias_name}.conf";
-	my $wrkFile = "$main::cfg{CONF_DIR}/proftpd/working/$subAlsFname";
-	my $sysFile = "$main::cfg{FTPD_CONF_DIR}/$subAlsFname";
+	my $subAlsFname	= "@$data{subdomain_alias_name}.@$data{alias_name}.conf";
+	my $wrkFile		= "$main::cfg{CONF_DIR}/proftpd/working/$subAlsFname";
+	my $sysFile		= "$main::cfg{FTPD_CONF_DIR}/$subAlsFname";
 
 	# Getting needed template
 	my ($rs, $entry) = get_file(
@@ -1123,9 +1131,9 @@ sub alssub_del_proftpd_cfg_data {
 		return -1;
 	}
 
-	my $subAlsFname = "@$data{subdomain_alias_name}.@$data{alias_name}.conf";
-	my $wrkFile = "$main::cfg{CONF_DIR}/proftpd/working/$subAlsFname";
-	my $sysFile = "$main::cfg{FTPD_CONF_DIR}/$subAlsFname";
+	my $subAlsFname	= "@$data{subdomain_alias_name}.@$data{alias_name}.conf";
+	my $wrkFile		= "$main::cfg{CONF_DIR}/proftpd/working/$subAlsFname";
+	my $sysFile		= "$main::cfg{FTPD_CONF_DIR}/$subAlsFname";
 
 	# Removing working and production files
 	for ($wrkFile, $sysFile) {
@@ -1251,6 +1259,7 @@ sub alssub_mngr_engine {
 		SELECT
 			`t1`.`subdomain_alias_id`, `t1`.`subdomain_alias_name`,
 			`t1`.`subdomain_alias_mount`, `t1`.`subdomain_alias_status`,
+			`t1`.`subdomain_alias_url_forward`,
 			`t2`.`alias_name`, `t3`.`domain_id`, `t3`.`domain_name`,
 			`t3`.`domain_gid`, `t3`.`domain_uid`, `t3`.`domain_php`,
 			`t3`.`domain_cgi`, `t4`.`ip_number`

@@ -79,15 +79,15 @@ sub restart_httpd {
 	my ($rs, $stdErr) = sys_command_stderr("$main::cfg{'CMD_HTTPD'} configtest");
 
 	if($rs == 0) {
+		push_el(\@main::el, 'restart_httpd()', 'Reloading...');
 		($rs, $stdErr) = sys_command_stderr("$main::cfg{'CMD_HTTPD'} graceful");
-		return $rs if ($rs == 0);
 	}
 
 	send_error_mail(
 		'restart_httpd()',
 		"The following error was found in your Apache config file:\n\n" .
 		"$stdErr\n\nPlease try to correct it and restart your Apache server!"
-	);
+	)if ($rs != 0);
 
 	push_el(\@main::el, 'restart_httpd()', 'Ending...');
 
