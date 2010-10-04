@@ -51,7 +51,6 @@ use lib "$FindBin::Bin/..";
 require 'ispcp_common_code.pl';
 require 'ispcp-setup-methods.pl';
 
-# User entries
 $main::logfile = "main::cfg{LOG_DIR}/setup/ispcp-update.log";
 $main::rlogfile = ">> $main::logfile 2>&1";
 
@@ -103,7 +102,7 @@ sub welcome_note {
 
 	do {
 		print "\tDo you want to continue ? [Y/n]: ";
-		chomp($_ = readline *STDIN );
+		chomp($_ = <STDIN>);
 	} while (!/^(y|yes|n|no|)$/i);
 
 	my $rdata = "\L$1";
@@ -140,7 +139,7 @@ sub warn_msg {
   			"(Not yet implemented)\n\n" if defined $1 && $1 eq '?';
 
 		print "\tDo you want to continue ? [Y/n/?]: ";
-		chomp($_ = readline *STDIN );
+		chomp($_ = <STDIN>);
 	} while (/^(\?)$/ || ! /^(y|yes|n|no|)$/i);
 
 	my $rdata = "\L$1";
@@ -174,7 +173,7 @@ sub load_old_ispcp_cfg {
 			print "\tPlease enter path to your ispcp.old.conf " .
 				"[/etc/ispcp/ispcp.old.conf]: ";
 
-			chomp($old_ispcp_cfg_file = readline \*STDIN);
+			chomp($old_ispcp_cfg_file = <STDIN>);
 		} while (get_conf($old_ispcp_cfg_file));
 	}
 
@@ -266,11 +265,11 @@ sub check_ispcp_cfg_file {
 ################################################################################
 # Recovery process for ispCP cfg settings who's have empty value
 #
-# If a specific dialog function exists for handling the configuration
-# setting, it is called. Otherwise, a error message is returned
-# to the user and the program ends. If a configuration setting is
-# not supported by the recovery process, those who were already
-# corrected are registered before the program ends
+# If a specific dialog subroutine exists for handling the configuration setting,
+# it is called. Otherwise, a error message is returned to the user and the
+# program ends. If a configuration setting is not supported by the recovery
+# process, those who were already corrected are registered before the program
+# ends.
 #
 # The user can also choose not to run the recovery process. In this
 # case, the update process ends.
@@ -306,8 +305,8 @@ sub cfg_recovery_process {
 		PHP_TIMEZONE => [\&ask_timezone, 'php_timezone']
 	};
 
-	# If several parameters are set to an empty value, we should ensure
-	# that the user has installed ispCP by asking this question
+	# If several parameters are set to an empty value, we should ensure that the
+	# user has installed ispCP by asking this question
 	if (scalar(@$settings) >= 2) {
 		print colored(['bold yellow'], "\n\n\t[WARNING] ").
 			"Your ispCP configuration file has several settings set\n" .
@@ -315,7 +314,7 @@ sub cfg_recovery_process {
 
 		do {
 			print "\n\tAre you sure you have installed ispCP ? [Y/n]: ";
-			chomp($rdata = readline \*STDIN);
+			chomp($rdata = <STDIN>);
 		} while($rdata !~ /^(|y|n)$/i);
 
 		$msg = colored(['bold blue'], "\n\t[NOTICE] ") .
@@ -331,7 +330,7 @@ sub cfg_recovery_process {
 
 	do {
 		print "\n\tDo you want to continue [Y/n]: ";
-		chomp($rdata = readline \*STDIN);
+		chomp($rdata = <STDIN>);
 	} while($rdata !~ /^(|y|n)$/i);
 
 	# Exit with a notice if the user chooses to abort the recovery/update process
@@ -340,10 +339,10 @@ sub cfg_recovery_process {
 		"The recovery/upgrade process was aborted by user...\n"
 	);
 
-	# For each setting, call the subroutine dialouge if available,
-	# OTHERWISE saves the value already changed and stops the program
-	# with an specific message.
-	foreach(@$settings) {
+	# For each setting, call the subroutine dialouge if available, otherwise,
+	# saves the value already changed and stops the program with an specific
+	# message.
+	for (@$settings) {
 		# If the recovery process can handle the setting
 		if (exists $recovery_dispatcher->{$_}) {
 
@@ -357,7 +356,7 @@ sub cfg_recovery_process {
 			$rs = set_conf_val($_, $main::ua{$recovery_dispatcher->{$_}[1]});
 			return $rs if ($rs != 0);
 
-			# Otherwise, the program will end here with an error message
+		# Otherwise, the program will end here with an error message
 		} else {
 			# Store already changed values in ispcp.conf
 			$rs = store_conf();
@@ -430,7 +429,7 @@ sub update_database_schema {
 }
 
 ################################################################################
-# Rebuilding all customers configuration files
+# Rebuild all customers configuration files
 #
 # @return int 1 on success, other on failure
 #
@@ -604,6 +603,7 @@ sub update_old_disabled_dmn_layout {
 # Starting update process
 #
 # @return void
+#
 sub update_startup {
 
 	push_el(\@main::el, 'update_startup()', 'Starting...');

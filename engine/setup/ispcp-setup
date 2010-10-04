@@ -132,7 +132,7 @@ sub user_dialog {
 	# Last chance to stop the installation process
 	do {
 		print "\tDo you want to continue? [Y/n]: ";
-		chomp($_ = readline *STDIN );
+		chomp($_ = <STDIN>);
 	} while (!/^(y|yes|n|no|)$/i);
 
 	my $rdata = "\L$1";
@@ -397,7 +397,7 @@ sub setup_ispcp_database {
 		# We must have user confirmation for database drop
 		do {
 			print "\n\tWould you really drop the current database? [Y/n] ";
-			chomp($rdata = readline *STDIN);
+			chomp($rdata = <STDIN>);
 
 			if($rdata =~ /^(?:(y|yes|)|(n|no))$/i) {
 				$rs = defined $1 ? 1 : 0;

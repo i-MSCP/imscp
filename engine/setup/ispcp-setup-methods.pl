@@ -75,20 +75,22 @@ sub ask_hostname {
 	return -1 if ($rs != 0);
 
 	print "\n\tPlease enter a fully qualified hostname. [$hostname]: ";
-	chomp(my $rdata = readline \*STDIN);
+	chomp(my $rdata = <STDIN>);
 
 	$rdata = $hostname if $rdata eq '';
 
+	# Checking hostname
 	if(isValidHostname($rdata)) {
 		my @labels = split '\.', $rdata;
 
+		# Checking for fully qualified hostname
 		if(@labels < 3) {
 			print colored( ['bold yellow'], "\n\t[WARNING] ") .
 				"$rdata is not a 'fully qualified hostname'.\n\t" .
 				"Be aware you cannot use this domain for websites.\n";
 
 			print "\n\tAre you sure you want to use this hostname? [Y/n]: ";
-			chomp(my $retVal = readline \*STDIN);
+			chomp(my $retVal = <STDIN>);
 
 			if($retVal ne '' && $retVal !~ /^(?:yes|y)$/i) {
 				return -1;
@@ -135,7 +137,7 @@ sub ask_eth {
 	}
 
 	print "\n\tPlease enter the system network address. [$ipAddr]: ";
-	chomp(my $rdata = readline \*STDIN);
+	chomp(my $rdata = <STDIN>);
 
 	$main::ua{'eth_ip'} = (!defined $rdata || $rdata eq '') ? $ipAddr : $rdata;
 
@@ -180,7 +182,7 @@ sub ask_vhost {
 
 	print "\n\tPlease enter the domain name from where ispCP OMEGA will " .
 		"be\n\treachable [$vhost]: ";
-	chomp(my $rdata = readline \*STDIN);
+	chomp(my $rdata = <STDIN>);
 
 	if ($rdata eq '') {
 		$main::ua{'admin_vhost'} = $vhost;
@@ -208,7 +210,7 @@ sub ask_db_host {
 	push_el(\@main::el, 'ask_db_host()', 'Starting...');
 
 	print "\n\tPlease enter SQL server host. [localhost]: ";
-	chomp(my $rdata = readline \*STDIN);
+	chomp(my $rdata = <STDIN>);
 
 	$rdata = ($rdata eq '') ? 'localhost' : $rdata;
 
@@ -237,7 +239,7 @@ sub ask_db_name {
 	push_el(\@main::el, 'ask_db_name()', 'Starting...');
 
 	print "\n\tPlease enter system SQL database. [ispcp]: ";
-	chomp(my $rdata = readline \*STDIN);
+	chomp(my $rdata = <STDIN>);
 
 	$main::ua{'db_name'} = ($rdata eq '') ? 'ispcp' : $rdata;
 
@@ -255,7 +257,7 @@ sub ask_db_user {
 	push_el(\@main::el, 'ask_db_user()', 'Starting...');
 
 	print "\n\tPlease enter system SQL user. [root]: ";
-	chomp(my $rdata = readline \*STDIN);
+	chomp(my $rdata = <STDIN>);
 
 	$main::ua{'db_user'} = ($rdata eq '') ? 'root' : $rdata;
 
@@ -303,7 +305,7 @@ sub ask_db_ftp_user {
 	push_el(\@main::el, 'ask_db_ftp_user()', 'Starting...');
 
 	print "\n\tPlease enter ispCP ftp SQL user. [vftp]: ";
-	chomp(my $rdata = readline \*STDIN);
+	chomp(my $rdata = <STDIN>);
 
 	if ($rdata eq '') {
 		$main::ua{'db_ftp_user'} = 'vftp';
@@ -371,7 +373,7 @@ sub ask_admin {
 	push_el(\@main::el, 'ask_admin()', 'Starting...');
 
 	print "\n\tPlease enter administrator login name. [admin]: ";
-	chomp(my $rdata = readline \*STDIN);
+	chomp(my $rdata = <STDIN>);
 
 	$main::ua{'admin'} = ($rdata eq '') ? 'admin' : $rdata;
 
@@ -436,7 +438,7 @@ sub ask_admin_email {
 	push_el(\@main::el, 'ask_admin_email()', 'Starting...');
 
 	print "\n\tPlease enter administrator e-mail address: ";
-	chomp(my $rdata = readline \*STDIN);
+	chomp(my $rdata = <STDIN>);
 
 	if($rdata eq '' || !isValidEmail($rdata)) {
 		print colored(['bold red'], "\n\t[ERROR] ") .
@@ -462,7 +464,7 @@ sub ask_second_dns {
 	push_el(\@main::el, 'ask_second_dns()', 'Starting...');
 
 	print "\n\tIP of Secondary DNS. (optional) []: ";
-	chomp(my $rdata = readline *STDIN);
+	chomp(my $rdata = <STDIN>);
 
 	if (!defined $rdata || $rdata eq '') {
 		$main::ua{'secondary_dns'} = '';
@@ -492,7 +494,7 @@ sub ask_resolver {
 
 	print "\n\tDo you want allow the system resolver to use the " .
 	"local nameserver\n\tsets by ispCP ? [Y/n]: ";
-	chomp(my $rdata = readline \*STDIN);
+	chomp(my $rdata = <STDIN>);
 
 	if ($rdata eq '' || $rdata =~ /^(?:(y|yes)|(n|no))$/i) {
 		$main::ua{'resolver'} = ! defined $2 ? 'yes' : 'no';
@@ -519,7 +521,7 @@ sub ask_mysql_prefix {
 
 	print "\n\tUse MySQL Prefix.\n\tPossible values: " .
 		"[i]nfront, [b]ehind, [n]one. [none]: ";
-	chomp(my $rdata = readline \*STDIN);
+	chomp(my $rdata = <STDIN>);
 
 	if ($rdata eq '' || $rdata eq 'none' || $rdata eq 'n') {
 		$main::ua{'mysql_prefix'} = 'no';
@@ -557,7 +559,7 @@ sub ask_db_pma_user {
 
 	print "\n\tPlease enter ispCP phpMyAdmin Control user. " .
 		"[$main::cfg{'PMA_USER'}]: ";
-	chomp(my $rdata = readline \*STDIN);
+	chomp(my $rdata = <STDIN>);
 
 	if ($rdata eq '') {
 		$main::ua{'db_pma_user'} = $main::cfg{'PMA_USER'}
@@ -630,7 +632,7 @@ sub ask_fastcgi {
 	push_el(\@main::el, 'ask_fastcgi()', 'Starting...');
 
 	print "\n\tFastCGI Version: [f]cgid or fast[c]gi. [fcgid]: ";
-	chomp(my $rdata = readline \*STDIN);
+	chomp(my $rdata = <STDIN>);
 
 	if ($rdata eq '' || $rdata eq 'fcgid' || $rdata eq 'f') {
 		$main::ua{'php_fastcgi'} = 'fcgid';
@@ -667,7 +669,7 @@ sub ask_timezone {
 	my $timezone_name = $datetime->time_zone_long_name();
 
 	print "\n\tServer's Timezone [$timezone_name]: ";
-	chomp(my $rdata = readline \*STDIN);
+	chomp(my $rdata = <STDIN>);
 
 	# Copy $timezone_name to $rdata if $rdata is empty
 	$rdata = $timezone_name if !defined $rdata || $rdata eq '';
@@ -707,7 +709,7 @@ sub ask_awstats_on {
 	push_el(\@main::el, 'ask_awstats_on()', 'Starting...');
 
 	print "\n\tActivate AWStats. [no]: ";
-	chomp(my $rdata = readline \*STDIN);
+	chomp(my $rdata = <STDIN>);
 
 	if ($rdata eq '' || $rdata eq 'no' || $rdata eq 'n') {
 		$main::ua{'awstats_on'} = 'no';
@@ -736,7 +738,7 @@ sub ask_awstats_dyn {
 
 	print "\n\tAWStats Mode:\n\tPossible values [d]ynamic and " .
 		"[s]tatic. [dynamic]: ";
-	chomp(my $rdata = readline \*STDIN);
+	chomp(my $rdata = <STDIN>);
 
 	if ($rdata eq '' || $rdata eq 'dynamic' || $rdata eq 'd') {
 		$main::ua{'awstats_dyn'} = '0';
