@@ -1282,78 +1282,6 @@ sub postinst {
 ################################################################################
 
 ################################################################################
-# Remove some unneeded files
-#
-# This subroutine process the following tasks:
-# - Delete .prev log files and their rotations not longer needed since r2251
-# - Delete setup/update log files created in /tmp
-# - Delete empty files in ispCP configuration directories
-#
-# @return int 1 on success, other on failure
-#
-sub setup_cleanup {
-
-	push_el(\@main::el, 'setup_cleanup()', 'Starting...');
-
-	my $rs = sys_command_rs(
-		"$main::cfg{'CMD_RM'} -f $main::cfg{'LOG_DIR'}/*-traf.log.prev* " .
-		"/tmp/ispcp-update-* /tmp/ispcp-setup-* " .
-		"$main::cfg{'CONF_DIR'}/*/*/empty-file"
-	);
-	return $rs if($rs != 0);
-
-	push_el(\@main::el, 'setup_cleanup()', 'Ending...');
-
-	0;
-}
-
-################################################################################
-# Run all update additional task such a rkhunter configuration
-#
-# @return void
-#
-sub additional_tasks{
-
-	push_el(\@main::el, 'additional_tasks()', 'Starting...');
-
-	subtitle('ispCP Rkhunter configuration:');
-	my $rs = setup_rkhunter();
-	print_status($rs, 'exit_on_error');
-
-	subtitle('ispCP System cleanup:');
-	setup_cleanup();
-	print_status(0);
-
-	push_el(\@main::el, 'additional_tasks()', 'Ending...');
-}
-
-################################################################################
-# Set engine and gui permissions
-#
-# @return int 0 on success, other on failure
-#
-sub set_permissions {
-
-	push_el(\@main::el, 'set_permissions()', 'Starting...');
-
-	for (qw/engine gui/) {
-		subtitle("Set $_ permissions:");
-
-		my $rs = sys_command_rs(
-			"$main::cfg{'CMD_SHELL'} " .
-			"$main::cfg{'ROOT_DIR'}/engine/setup/set-$_-permissions.sh " .
-			"$main::rlogfile"
-		);
-
-		print_status($rs, 'exit_on_error');
-	}
-
-	push_el(\@main::el, 'set_permissions()', 'Ending...');
-
-	0;
-}
-
-################################################################################
 # Starting services
 #
 # This subroutine start all services managed by ispCP and that are not marked as
@@ -1390,7 +1318,7 @@ sub stop_services {
 		CMD_POP CMD_POP_SSL CMD_IMAP CMD_IMAP_SSL/
 	) {
 		if(-e $main::cfg{$_}) {
-			sys_command_rs("$main::cfg{$_} stop $main::rlogfile");
+			sys_command("$main::cfg{$_} stop $main::rlogfile");
 			progress();
 		}
 	}
@@ -1399,11 +1327,62 @@ sub stop_services {
 }
 
 ################################################################################
+# Set engine and gui permissions
+#
+# @return int 0 on success, other on failure
+#
+sub set_permissions {
+
+	push_el(\@main::el, 'set_permissions()', 'Starting...');
+
+	for (qw/engine gui/) {
+		subtitle("Set $_ permissions:");
+
+		my $rs = sys_command(
+			"$main::cfg{'CMD_SHELL'} " .
+			"$main::cfg{'ROOT_DIR'}/engine/setup/set-$_-permissions.sh " .
+			"$main::rlogfile"
+		);
+
+		print_status($rs, 'exit_on_error');
+	}
+
+	push_el(\@main::el, 'set_permissions()', 'Ending...');
+
+	0;
+}
+
+################################################################################
+# Remove some unneeded files
+#
+# This subroutine process the following tasks:
+# - Delete .prev log files and their rotations not longer needed since r2251
+# - Delete setup/update log files created in /tmp
+# - Delete empty files in ispCP configuration directories
+#
+# @return int 1 on success, other on failure
+#
+sub setup_cleanup {
+
+	push_el(\@main::el, 'setup_cleanup()', 'Starting...');
+
+	my $rs = sys_command(
+		"$main::cfg{'CMD_RM'} -f $main::cfg{'LOG_DIR'}/*-traf.log.prev* " .
+		"/tmp/ispcp-update-* /tmp/ispcp-setup-* " .
+		"$main::cfg{'CONF_DIR'}/*/*/empty-file"
+	);
+	return $rs if($rs != 0);
+
+	push_el(\@main::el, 'setup_cleanup()', 'Ending...');
+
+	0;
+}
+################################################################################
 #                        Setup/Update low level subroutines                    #
 ################################################################################
 
 ################################################################################
-# ispCP crontab file
+# ispCP crontab file - (Setup / Update)
 #
 # This subroutine built, store and install the ispCP crontab file
 #
@@ -1431,8 +1410,8 @@ sub setup_crontab {
 	}
 
 	# Saving the current production file if it exists
-	if(-e  "$prodDir/ispcp") {
-		$rs = sys_command_rs(
+	if(-e "$prodDir/ispcp") {
+		$rs = sys_command(
 			"$main::cfg{'CMD_CP'} -p $prodDir/ispcp $bkpDir/ispcp." . time
 		);
 		return $rs if ($rs != 0);
@@ -1450,6 +1429,7 @@ sub setup_crontab {
 	}
 
 	# Search and cleaning path for rkhunter and chkrootkit programs
+	# @todo review this s...
 	($rkhunter = `which rkhunter`) =~ s/\s$//g;
 	($chkrootkit = `which chkrootkit`) =~ s/\s$//g;
 
@@ -1486,7 +1466,7 @@ sub setup_crontab {
 	return $rs if ($rs != 0);
 
 	# Install the new file in production directory
-	$rs = sys_command_rs("$main::cfg{'CMD_CP'} -fp $wrkDir/ispcp $prodDir/");
+	$rs = sys_command("$main::cfg{'CMD_CP'} -fp $wrkDir/ispcp $prodDir/");
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'setup_crontab()', 'Ending...');
@@ -1495,7 +1475,7 @@ sub setup_crontab {
 }
 
 ################################################################################
-# ispCP named main configuration setup / update
+# ispCP named main configuration - (Setup / Update)
 #
 # This subroutine built, store and install the main named configuration file
 #
@@ -1520,7 +1500,7 @@ sub setup_named {
 	if(defined &setup_engine) {
 		# Saving the system main configuration file
 		if(-e $main::cfg{'BIND_CONF_FILE'} && !-e "$bkpDir/named.conf.system") {
-			$rs = sys_command_rs(
+			$rs = sys_command(
 				"$main::cfg{'CMD_CP'} -p $main::cfg{'BIND_CONF_FILE'} " .
 				"$bkpDir/named.conf.system"
 			);
@@ -1530,7 +1510,7 @@ sub setup_named {
 	} else {
 		# Saving the current main production file if it exists
 		if(-e $main::cfg{'BIND_CONF_FILE'}) {
-			$rs = sys_command_rs(
+			$rs = sys_command(
 				"$main::cfg{'CMD_CP'} -p $main::cfg{'BIND_CONF_FILE'} " .
 				"$bkpDir/named.conf." . time
 			);
@@ -1576,7 +1556,7 @@ sub setup_named {
 	return $rs if ($rs != 0);
 
 	# Install the new file in the production directory
-	$rs = sys_command_rs(
+	$rs = sys_command(
 		"$main::cfg{'CMD_CP'} -pf $wrkDir/named.conf " .
 		"$main::cfg{'BIND_CONF_FILE'}"
 	);
@@ -1588,7 +1568,7 @@ sub setup_named {
 }
 
 ################################################################################
-# ispCP Apache fastCGI modules configuration
+# ispCP Apache fastCGI modules configuration - (Setup / Update)
 #
 # This subroutine do the following tasks:
 #  - Built, store and install all system php related configuration files
@@ -1618,7 +1598,7 @@ sub setup_fastcgi_modules {
 		for (qw/fastcgi_ispcp.conf fastcgi_ispcp.load fcgid_ispcp.conf fcgid_ispcp.load/) {
 			# Saving the current production file if it exists
 			if(-e "$main::cfg{'APACHE_MODS_DIR'}/$_") {
-				$rs = sys_command_rs(
+				$rs = sys_command(
 					"$main::cfg{CMD_CP} -p $main::cfg{'APACHE_MODS_DIR'}/$_ " .
 					"$bkpDir/$_." . time()
 				);
@@ -1661,7 +1641,7 @@ sub setup_fastcgi_modules {
 		return $rs if ($rs != 0);
 
 		# Install the new file
-		$rs = sys_command_rs(
+		$rs = sys_command(
 			"$main::cfg{'CMD_CP'} -pf $wrkDir/${_}_ispcp.conf " .
 			"$main::cfg{'APACHE_MODS_DIR'}/"
 		);
@@ -1687,7 +1667,7 @@ sub setup_fastcgi_modules {
 		return $rs if ($rs != 0);
 
 		# Install the new file
-		$rs = sys_command_rs(
+		$rs = sys_command(
 			"$main::cfg{'CMD_CP'} -pf $wrkDir/${_}_ispcp.load " .
 			"$main::cfg{'APACHE_MODS_DIR'}/"
 		);
@@ -1701,36 +1681,36 @@ sub setup_fastcgi_modules {
 	# For others distributions, you must use the a post-installation scripts
 	if(-e '/usr/sbin/a2enmod' && -e '/usr/sbin/a2dismod' ) {
 		# Disable php4/5 modules if enabled
-		sys_command_rs("/usr/sbin/a2dismod php4 $main::rlogfile");
-		sys_command_rs("/usr/sbin/a2dismod php5 $main::rlogfile");
+		sys_command("/usr/sbin/a2dismod php4 $main::rlogfile");
+		sys_command("/usr/sbin/a2dismod php5 $main::rlogfile");
 
 		# Enable actions modules
-		$rs = sys_command_rs("/usr/sbin/a2enmod actions $main::rlogfile");
+		$rs = sys_command("/usr/sbin/a2enmod actions $main::rlogfile");
 		return $rs if($rs != 0);
 
 		if(! -e '/etc/SuSE-release') {
 			if ($main::cfg{'PHP_FASTCGI'} eq 'fastcgi') {
 				# Ensures that the unused ispcp fcgid module loader is disabled
-				$rs = sys_command_rs(
+				$rs = sys_command(
 					"/usr/sbin/a2dismod fcgid_ispcp $main::rlogfile"
 				);
 				return $rs if($rs != 0);
 
 				# Enable fastcgi module
-				$rs = sys_command_rs(
+				$rs = sys_command(
 					"/usr/sbin/a2enmod fastcgi_ispcp $main::rlogfile"
 				);
 				return $rs if($rs != 0);
 			} else {
 				# Ensures that the unused ispcp fastcgi ispcp module loader is
 				# disabled
-				$rs = sys_command_rs(
+				$rs = sys_command(
 					"/usr/sbin/a2dismod fastcgi_ispcp $main::rlogfile"
 				);
 				return $rs if($rs != 0);
 
 				# Enable ispcp fastcgi loader
-				$rs = sys_command_rs(
+				$rs = sys_command(
 					"/usr/sbin/a2enmod fcgid_ispcp $main::rlogfile"
 				);
 				return $rs if($rs != 0);
@@ -1738,10 +1718,10 @@ sub setup_fastcgi_modules {
 
 			# Disable default  fastcgi/fcgid modules loaders to avoid conflicts
 			# with ispcp loaders
-			$rs = sys_command_rs("/usr/sbin/a2dismod fastcgi $main::rlogfile");
+			$rs = sys_command("/usr/sbin/a2dismod fastcgi $main::rlogfile");
 			return $rs if($rs != 0);
 
-			$rs = sys_command_rs("/usr/sbin/a2dismod fcgid $main::rlogfile");
+			$rs = sys_command("/usr/sbin/a2dismod fcgid $main::rlogfile");
 			return $rs if($rs != 0);
 		}
 	}
@@ -1752,7 +1732,7 @@ sub setup_fastcgi_modules {
 }
 
 ################################################################################
-# ispCP httpd main vhost setup / update
+# ispCP httpd main vhost - (Setup / Update)
 #
 # This subroutine do the following tasks:
 #  - Built, store and install ispCP main vhost configuration file
@@ -1777,7 +1757,7 @@ sub setup_httpd_main_vhost {
 
 	# Saving the current production file if it exists
 	if(-e "$main::cfg{'APACHE_SITES_DIR'}/ispcp.conf") {
-		my $rs = sys_command_rs(
+		my $rs = sys_command(
 			"$main::cfg{'CMD_CP'} -p $main::cfg{'APACHE_SITES_DIR'}/" .
 			"ispcp.conf $bkpDir/ispcp.conf.". time
 		);
@@ -1818,7 +1798,7 @@ sub setup_httpd_main_vhost {
 	return $rs if ($rs != 0);
 
 	# Install the new file in production directory
-	$rs = sys_command_rs(
+	$rs = sys_command(
 		"$main::cfg{'CMD_CP'} -pf $wrkDir/ispcp.conf " .
 		"$main::cfg{'APACHE_SITES_DIR'}/"
 	);
@@ -1834,10 +1814,10 @@ sub setup_httpd_main_vhost {
 		$rs = sys_command("/usr/sbin/a2enmod cgid $main::rlogfile");
 		return $rs if($rs != 0);
 
-		sys_command("/usr/sbin/a2enmod rewrite $main::rlogfile");
+		$rs = sys_command("/usr/sbin/a2enmod rewrite $main::rlogfile");
 		return $rs if($rs != 0);
 
-		sys_command("/usr/sbin/a2enmod suexec $main::rlogfile");
+		$rs = sys_command("/usr/sbin/a2enmod suexec $main::rlogfile");
 		return $rs if($rs != 0);
 	}
 
@@ -1857,7 +1837,7 @@ sub setup_httpd_main_vhost {
 }
 
 ################################################################################
-# ispCP awstats vhost setup / update
+# ispCP awstats vhost - (Setup / Update)
 #
 # This subroutine do the following tasks:
 #  - Built, store and install awstats vhost configuration file
@@ -1896,7 +1876,7 @@ sub setup_awstats_vhost {
 			next if(!-e $path.$file);
 
 			if(!-e "$bkpDir/$file.system") {
-				$rs = sys_command_rs(
+				$rs = sys_command(
 					"$main::cfg{'CMD_CP'} -p $path$file $bkpDir/$file.system"
 				);
 				return $rs if($rs != 0);
@@ -1917,7 +1897,7 @@ sub setup_awstats_vhost {
 			($path, $file)= split /:/;
 			next if(!-e $path.$file);
 
-			$rs = sys_command_rs(
+			$rs = sys_command(
 				"$main::cfg{'CMD_CP'} -p $path$file $bkpDir/$file.$timestamp"
 			);
 			return $rs if($rs != 0);
@@ -1948,7 +1928,7 @@ sub setup_awstats_vhost {
 	return $rs if ($rs != 0);
 
 	# Install the new file in production directory
-	$rs = sys_command_rs(
+	$rs = sys_command(
 		"$main::cfg{'CMD_CP'} -pf $wrkDir/01_awstats.conf " .
 		"$main::cfg{'APACHE_SITES_DIR'}/"
 	);
@@ -1973,7 +1953,7 @@ sub setup_awstats_vhost {
 			return $rs if ($rs != 0);
 
 			# Install the new file in production directory
-			$rs = sys_command_rs(
+			$rs = sys_command(
 				"$main::cfg{'CMD_CP'} -pf $wrkDir/proxy.conf " .
 				"$main::cfg{'APACHE_MODS_DIR'}/"
 			);
@@ -1982,8 +1962,8 @@ sub setup_awstats_vhost {
 
 		# Enable required modules
 		if(-e '/usr/sbin/a2enmod') {
-			sys_command_rs("/usr/sbin/a2enmod proxy $main::rlogfile");
-			sys_command_rs("/usr/sbin/a2enmod proxy_http $main::rlogfile");
+			sys_command("/usr/sbin/a2enmod proxy $main::rlogfile");
+			sys_command("/usr/sbin/a2enmod proxy_http $main::rlogfile");
 		}
 
 		## Enable awstats vhost
@@ -2017,7 +1997,7 @@ sub setup_awstats_vhost {
 				return $rs if ($rs != 0);
 
 				# Install the new file in production directory
-				$rs = sys_command_rs(
+				$rs = sys_command(
 					"$main::cfg{'CMD_CP'} -pf $wrkDir/$_ /etc/logrotate.d/"
 				);
 				return $rs if($rs != 0);
@@ -2031,7 +2011,7 @@ sub setup_awstats_vhost {
 }
 
 ################################################################################
-# ispCP Postfix setup / update
+# ispCP Postfix - (Setup / Update)
 #
 # This subroutine built, store and install Postfix configuration files
 #
@@ -2067,7 +2047,7 @@ sub setup_mta {
 
 			next if(!-e $path.$file);
 
-			$rs = sys_command_rs(
+			$rs = sys_command(
 				"$main::cfg{'CMD_CP'} -p $path$file  $bkpDir/$file.system"
 			);
 			return $rs if ($rs != 0);
@@ -2091,7 +2071,7 @@ sub setup_mta {
 
 			next if(!-e $path.$file);
 
-			$rs = sys_command_rs(
+			$rs = sys_command(
 				"$main::cfg{'CMD_CP'} -p $path$file  $bkpDir/$file.$timestamp"
 			);
 			return $rs if ($rs != 0);
@@ -2136,7 +2116,7 @@ sub setup_mta {
 	return $rs if ($rs != 0);
 
 	# Install the new file in production directory
-	$rs = sys_command_rs(
+	$rs = sys_command(
 		"$main::cfg{'CMD_CP'} -pf $wrkDir/main.cf " .
 		"$main::cfg{'POSTFIX_CONF_FILE'}"
 	);
@@ -2196,7 +2176,7 @@ sub setup_mta {
 }
 
 ################################################################################
-# ispCP Courier setup / update
+# ispCP Courier - (Setup / Update)
 #
 # This subroutine do the following tasks:
 #  - Built, store and install Courier, related configuration files
@@ -2226,7 +2206,7 @@ sub setup_po {
 		for (qw/authdaemonrc userdb/) {
 			next if(!-e "$main::cfg{'AUTHLIB_CONF_DIR'}/$_");
 
-			$rs = sys_command_rs(
+			$rs = sys_command(
 				"$main::cfg{'CMD_CP'} -p $main::cfg{'AUTHLIB_CONF_DIR'}/$_ " .
 				"$bkpDir/$_.system"
 			);
@@ -2240,7 +2220,7 @@ sub setup_po {
 		for (qw/authdaemonrc userdb/) {
 			next if(!-e "$main::cfg{'AUTHLIB_CONF_DIR'}/$_");
 
-			$rs = sys_command_rs(
+			$rs = sys_command(
 				"$main::cfg{'CMD_CP'} -p $main::cfg{'AUTHLIB_CONF_DIR'}/$_ " .
 				"$bkpDir/$_.$timestamp"
 			);
@@ -2304,7 +2284,7 @@ sub setup_po {
 }
 
 ################################################################################
-# ispCP Proftpd setup / update
+# ispCP Proftpd - (Setup / Update)
 #
 # This subroutine do the following tasks:
 #  - Built, store and install Proftpd main configuration files
@@ -2346,7 +2326,7 @@ sub setup_ftpd {
 	if(!defined &update_engine) {
 		# Saving the system configuration file if it exist
 		if(-e $main::cfg{'FTPD_CONF_FILE'}) {
-			$rs = sys_command_rs(
+			$rs = sys_command(
 				"$main::cfg{'CMD_CP'} -p $main::cfg{'FTPD_CONF_FILE'} " .
 				"$bkpDir/proftpd.conf.system"
 			);
@@ -2358,7 +2338,7 @@ sub setup_ftpd {
 
 		# Saving the current production files if it exits
 		if(-e $main::cfg{'FTPD_CONF_FILE'}) {
-			$rs = sys_command_rs(
+			$rs = sys_command(
 				"$main::cfg{'CMD_CP'} -p $main::cfg{'FTPD_CONF_FILE'} " .
 				"$bkpDir/proftpd.conf.$timestamp"
 			);
@@ -2540,7 +2520,7 @@ sub setup_ftpd {
 }
 
 ################################################################################
-# ispCP Daemon, network setup / update
+# ispCP Daemon, network - (Setup / Update)
 #
 # This subroutine install or update the ispCP daemon and network init scripts
 #
@@ -2564,7 +2544,7 @@ sub setup_ispcp_daemon_network {
 		);
 		return $rs if($rs != 0);
 
-		$rs = sys_command_rs("$main::cfg{'CMD_CHMOD'} 0755 $_ $main::rlogfile");
+		$rs = sys_command("$main::cfg{'CMD_CHMOD'} 0755 $_ $main::rlogfile");
 		return $rs if($rs != 0);
 
 		# Services installation / update (Debian, Ubuntu)
@@ -2572,7 +2552,7 @@ sub setup_ispcp_daemon_network {
 		if(-x '/usr/sbin/update-rc.d') {
 			# Update task - The links should be removed first to be updated
 			if(defined &update_engine) {
-				sys_command_rs(
+				sys_command(
 					"/usr/sbin/update-rc.d -f $fileName remove $main::rlogfile"
 				);
 			}
@@ -2580,11 +2560,11 @@ sub setup_ispcp_daemon_network {
 			# ispcp_network should be stopped before the MySQL server (due to the
 			# interfaces deletion process)
 			if($fileName eq 'ispcp_network') {
-				sys_command_rs(
+				sys_command(
 					"/usr/sbin/update-rc.d $fileName defaults 99 20 $main::rlogfile"
 				);
 			} else {
-				sys_command_rs(
+				sys_command(
 					"/usr/sbin/update-rc.d $fileName defaults 99 $main::rlogfile"
 				);
 			}
@@ -2593,10 +2573,10 @@ sub setup_ispcp_daemon_network {
 		} elsif(-x '/usr/lib/lsb/install_initd') {
 			# Update task
 			if(-x '/usr/lib/lsb/remove_initd' && defined &update_engine) {
-				sys_command_rs("/usr/lib/lsb/remove_initd $_ $main::rlogfile");
+				sys_command("/usr/lib/lsb/remove_initd $_ $main::rlogfile");
 			}
 
-			sys_command_rs("/usr/lib/lsb/install_initd $_ $main::rlogfile");
+			sys_command("/usr/lib/lsb/install_initd $_ $main::rlogfile");
 			return $rs if ($rs != 0);
 		}
 	}
@@ -2607,9 +2587,9 @@ sub setup_ispcp_daemon_network {
 }
 
 ################################################################################
-# ispCP GUI apache vhost setup / update
+# ispCP GUI apache vhost - (Setup / Update)
 #
-# this subroutine built, store and install ispCP GUI vhost configuration file
+# This subroutine built, store and install ispCP GUI vhost configuration file.
 #
 # @return int 0 on success, other on failure
 #
@@ -2632,7 +2612,7 @@ sub setup_gui_httpd {
 			$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'APACHE_SITES_DIR'}/" .
 			"00_master.conf $bkpDir/00_master.conf." . time;
 
-			$rs = sys_command_rs($cmd);
+			$rs = sys_command($cmd);
 			return $rs if($rs != 0);
 		}
 	}
@@ -2679,7 +2659,7 @@ sub setup_gui_httpd {
 	);
 	return $rs if ($rs != 0);
 
-	$rs = sys_command_rs(
+	$rs = sys_command(
 		"$main::cfg{'CMD_CP'} -pf $wrkDir/00_master.conf " .
 		"$main::cfg{'APACHE_SITES_DIR'}/"
 	);
@@ -2718,7 +2698,7 @@ sub setup_gui_httpd {
 }
 
 ################################################################################
-# ispCP GUI PHP configuration files - Setup / Update
+# ispCP GUI PHP configuration files - (Setup / Update)
 #
 # This subroutine do the following tasks:
 #  - Create the master fcgi directory
@@ -2748,7 +2728,7 @@ sub setup_gui_php {
 				my (undef, $file) = split('/');
 				$file = $_ if(!defined $file);
 
-				$rs = sys_command_rs(
+				$rs = sys_command(
 					"$main::cfg{'CMD_CP'} -p $main::cfg{'PHP_STARTER_DIR'}/" .
 					"master/$_ $bkpDir/master.$file.$timestamp"
 				);
@@ -2872,7 +2852,7 @@ sub setup_gui_php {
 }
 
 ################################################################################
-# ispCP GUI pma configuration file and pma slq control user
+# ispCP GUI pma configuration file and pma slq control user - (Setup / Update)
 #
 # This subroutine built, store and install the ispCP GUI pma configuration file
 #
@@ -3095,11 +3075,11 @@ sub setup_gui_pma {
 }
 
 ################################################################################
-# ispCP Gui named configuration
+# ispCP Gui named configuration - (Setup / Update)
 #
 # This subroutine do the following tasks:
-#  - Add Gui named cfg data in main configuration file
-#  - Built GUI named dns record's file
+#  - Add Gui named cfg data in main Bind9 configuration file
+#  - Built GUI named DNS record's file
 #
 # @return int 0 on success, other on failure
 #
@@ -3107,11 +3087,11 @@ sub setup_gui_named {
 
 	push_el(\@main::el, 'setup_gui_named()', 'Starting...');
 
-	# Add GUI named cfg data
+	# Add GUI Bind9 cfg data
 	my $rs = setup_gui_named_cfg_data($main::cfg{'BASE_SERVER_VHOST'});
 	return $rs if($rs != 0);
 
-	# Building GUI named dns records file
+	# Building GUI Bind9 DNS records file
 	$rs = setup_gui_named_db_data(
 		$main::cfg{'BASE_SERVER_IP'}, $main::cfg{'BASE_SERVER_VHOST'}
 	);
@@ -3123,7 +3103,7 @@ sub setup_gui_named {
 }
 
 ################################################################################
-# ispCP Gui named cfg file
+# ispCP Gui named cfg file - (Setup / Update)
 #
 # This subroutine do the following tasks:
 #  - Add Gui named cfg data in main configuration file
@@ -3145,7 +3125,7 @@ sub setup_gui_named_cfg_data {
 	my $wrkDir = "$cfgDir/bind/working";
 	my $dbDir = $main::cfg{'BIND_DB_DIR'};
 
-	if (!defined($base_vhost) || $base_vhost eq '') {
+	if (!defined $base_vhost || $base_vhost eq '') {
 		push_el(
 			\@main::el, 'setup_gui_named_cfg_data()',
 			'[FATAL] Undefined Input Data...'
@@ -3155,7 +3135,7 @@ sub setup_gui_named_cfg_data {
 
 	# Saving the current production file if it exists
 	if(-e $main::cfg{'BIND_CONF_FILE'}) {
-		$rs = sys_command_rs(
+		$rs = sys_command(
 			"$main::cfg{'CMD_CP'} -p $main::cfg{'BIND_CONF_FILE'} " .
 			"$bkpDir/named.conf." . time
 		);
@@ -3205,7 +3185,7 @@ sub setup_gui_named_cfg_data {
 	return $rs if ($rs != 0);
 
 	# Install the new file in the production directory
-	$rs = sys_command_rs(
+	$rs = sys_command(
 		"$main::cfg{'CMD_CP'} -pf " .
 		"$wrkDir/named.conf $main::cfg{'BIND_CONF_FILE'}"
 	);
@@ -3217,10 +3197,10 @@ sub setup_gui_named_cfg_data {
 }
 
 ################################################################################
-# ispCP Gui named dns record's Setup / Update
+# ispCP Gui named dns record's - (Setup / Update)
 #
-# This subroutine do the following tasks:
-#  - Building GUI named dns record's file
+# This subroutine does the following tasks:
+#  - Build GUI named dns record's file
 #
 # @return int 0 on success, other on failure
 #
@@ -3230,7 +3210,7 @@ sub setup_gui_named_db_data {
 
 	my ($baseIp, $baseVhost) = @_;
 
-	if (!defined($baseVhost) || $baseVhost eq '') {
+	if (!defined $baseVhost || $baseVhost eq '') {
 		push_el(
 			\@main::el, 'add_named_db_data()', 'FATAL: Undefined Input Data...'
 		);
@@ -3262,9 +3242,7 @@ sub setup_gui_named_db_data {
 	if (defined &update_engine) {
 		# Saving the current production file if it exists
 		if(-e $sysCfg) {
-			$rs = sys_command_rs(
-				"$main::cfg{'CMD_CP'} -p $sysCfg $bkpCfg." . time
-			);
+			$rs = sys_command("$main::cfg{'CMD_CP'} -p $sysCfg $bkpCfg." . time);
 			return $rs if ($rs != 0);
 		}
 
@@ -3316,7 +3294,7 @@ sub setup_gui_named_db_data {
 	return $rs if ($rs != 0);
 
 	# Install the file in the production directory
-	$rs = sys_command_rs("$main::cfg{'CMD_CP'} -pf $wrkCfg $dbDir/");
+	$rs = sys_command("$main::cfg{'CMD_CP'} -pf $wrkCfg $dbDir/");
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'setup_gui_named_db_data()', 'Ending...');
@@ -3325,7 +3303,7 @@ sub setup_gui_named_db_data {
 }
 
 ################################################################################
-# Setup rkhunter
+# Setup rkhunter - (Setup / Update)
 #
 # This subroutine process the following tasks:
 #
@@ -3341,11 +3319,11 @@ sub setup_rkhunter {
 
 	my ($rs, $rdata);
 
-	# Deleting any existant log files
-	$rs = sys_command_rs("$main::cfg{'CMD_RM'} -f $main::cfg{'RKHUNTER_LOG'}*");
+	# Deleting any existent log files
+	$rs = sys_command("$main::cfg{'CMD_RM'} -f $main::cfg{'RKHUNTER_LOG'}*");
 	return $rs if($rs != 0);
 
-	# Updates the rkhunter configuration provided by Debian package
+	# Updates the rkhunter configuration provided by Debian like distributions
 	# to disable the default cron task (ispCP provides its own cron job for
 	# rkhunter)
 	if(-e '/etc/default/rkhunter') {
@@ -3361,18 +3339,16 @@ sub setup_rkhunter {
 		return $rs if($rs != 0);
 	}
 
-	# Update weekly cron task provided with the debian package
-	# to avoid creation of unreadable log file
+	# Update weekly cron task provided by Debian like distributions to avoid
+	# creation of unreadable log file
 	if(-e '/etc/cron.weekly/rkhunter') {
 		# Get the rkhunter file content
 		($rs, $rdata) = get_file('/etc/cron.weekly/rkhunter');
 		return $rs if($rs != 0);
 
 		# Adds `--nolog`option to avoid unreadable log file
-		$rdata =~ s@\$RKHUNTER --versioncheck --nocolors$@\$RKHUNTER --versioncheck --nocolors --nolog@gmi;
-		$rdata =~ s@\$RKHUNTER --update --nocolors$@\$RKHUNTER --update --nocolors --nolog@gmi;
-		$rdata =~ s@\$RKHUNTER --versioncheck 1>/dev/null 2>\$OUTFILE@\$RKHUNTER --versioncheck --nolog 1>/dev/null 2>\$OUTFILE@gmi;
-		$rdata =~ s@\$RKHUNTER --update 1>/dev/null 2>>\$OUTFILE@\$RKHUNTER --update --nolog 1>/dev/null 2>>\$OUTFILE@gmi;
+		$rdata =~ s/(--versioncheck)/$1 --nolog/g;
+		$rdata =~ s/(--update)/$1 --nolog/g;
 
 		# Saving the modified file
 		$rs = save_file('/etc/cron.weekly/rkhunter', $rdata);
@@ -3380,12 +3356,13 @@ sub setup_rkhunter {
 	}
 
 	# Updates rkhunter database files (Only during setup process)
+	# @todo Review this s...
 	if(defined &setup_engine) {
-		if (sys_command_rs("which rkhunter > /dev/null") == 0 ) {
+		if (sys_command("which rkhunter > /dev/null") == 0 ) {
 			# Here, we run the command with `--nolog` option to avoid creation
 			# of unreadable log file. The log file will be created later by an
 			# ispCP cron task
-			$rs = sys_command_rs("rkhunter --update --nolog");
+			$rs = sys_command("rkhunter --update --nolog -q");
 			return $rs if($rs != 0);
 		}
 	}
@@ -3400,7 +3377,7 @@ sub setup_rkhunter {
 ################################################################################
 
 ################################################################################
-# Executes all the subroutines to setup all services
+# Executes all the subroutines to setup/update all services
 #
 # @return void
 # todo make all subroutine called here idempotent
@@ -3415,8 +3392,7 @@ sub setup_services_cfg {
 		# scripts
 		if (!defined($ARGV[0]) || $ARGV[0] ne '-rpm') {
 			subtitle('ispCP users and groups:');
-			my $rs = setup_system_users();
-			print_status($rs, 'exit_on_error');
+			print_status(setup_system_users(), 'exit_on_error');
 		}
 
 		for (
@@ -3428,8 +3404,7 @@ sub setup_services_cfg {
 			[\&setup_hosts, 'ispCP system hosts file:']
 		) {
 			subtitle($_->[1]);
-			my $rs = &{$_->[0]};
-			print_status($rs, 'exit_on_error');
+			print_status(&{$_->[0]}, 'exit_on_error');
 		}
 	}
 
@@ -3446,8 +3421,7 @@ sub setup_services_cfg {
 		[\&setup_ispcp_daemon_network, 'ispCP init scripts:']
 	) {
 		subtitle($_->[1]);
-		my $rs = &{$_->[0]};
-		print_status($rs, 'exit_on_error');
+		print_status(&{$_->[0]}, 'exit_on_error');
 	}
 
 	push_el(\@main::el, 'setup_services_cfg()', 'Ending...');
@@ -3469,11 +3443,30 @@ sub setup_gui_cfg {
 		[\&setup_gui_pma, 'ispCP PMA configuration file:']
 	) {
 		subtitle($_->[1]);
-		my $rs = &{$_->[0]};
-		print_status($rs, 'exit_on_error');
+		print_status(&{$_->[0]}, 'exit_on_error');
 	}
 
 	push_el(\@main::el, 'rebuild_gui_cfg()', 'Ending...');
+}
+
+################################################################################
+# Run all update additional task such as rkhunter configuration
+#
+# @return void
+#
+sub additional_tasks{
+
+	push_el(\@main::el, 'additional_tasks()', 'Starting...');
+
+	subtitle('ispCP Rkhunter configuration:');
+	my $rs = setup_rkhunter();
+	print_status($rs, 'exit_on_error');
+
+	subtitle('ispCP System cleanup:');
+	setup_cleanup();
+	print_status(0);
+
+	push_el(\@main::el, 'additional_tasks()', 'Ending...');
 }
 
 1;

@@ -271,7 +271,7 @@ sub setup_system_users {
 }
 
 ################################################################################
-# Creating all directories required by ispCP and the managed services
+# create all directories required by ispCP and the managed services
 #
 # @return int 0 on success, other on failure
 #
@@ -614,8 +614,6 @@ sub setup_default_sql_data {
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'setup_default_sql_data()', 'Ending...');
-
-	exit;
 }
 
 ################################################################################
