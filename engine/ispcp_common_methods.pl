@@ -1905,14 +1905,14 @@ sub set_conf_val {
 	push_el(\@main::el, 'set_conf_val()', 'Starting...');
 
 	if (!defined $name || $name eq '') {
-		push_el(\@main::el, 'set_conf_val()', 'ERROR: Undefined input data...');
+		push_el(\@main::el, 'set_conf_val()', '[ERROR] Undefined input data...');
 
 		return 1;
 	}
 
 	$main::cfg_reg{$name} = $value;
 
-	push_el(\@main::el, 'set_conf_value()', 'Ending...');
+	push_el(\@main::el, 'set_conf_val()', 'Ending...');
 
 	0;
 }
