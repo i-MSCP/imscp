@@ -262,7 +262,8 @@ sub doSQL {
 		if (!defined $main::db) {
 
 			push_el(
-				\@main::el, 'doSQL()', "[ERROR] Unable to connect SQL server with current DSN: @main::db_connect"
+				\@main::el, 'doSQL()',
+				"[ERROR] Unable to connect SQL server with current DSN: @main::db_connect"
 			);
 
 			return (-1, '');
@@ -285,10 +286,9 @@ sub doSQL {
 		push_el(\@main::el, 'doSQL()', 'Ending...');
 		return (0, $qr);
 	} else {
-
 		push_el(
 			\@main::el, 'doSQL()',
-			'[ERROR] Incorrect SQL Query -> '.$main::db -> errstr
+			'[ERROR] Incorrect SQL Query -> ' . $main::db -> errstr
 		);
 
 		return (-1, '');
@@ -1826,6 +1826,9 @@ sub setup_main_vars {
 	@main::db_connect = (
 		"DBI:mysql:$main::db_name:$main::db_host", $main::db_user, $main::db_pwd
 	);
+
+	# Forcing reconnection
+	$main::db = undef;
 
 	push_el(\@main::el, 'setup_main_vars()', 'Ending...');
 

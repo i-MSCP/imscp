@@ -74,7 +74,7 @@ sub ask_hostname {
 	my ($rs, $hostname) = get_sys_hostname();
 	return -1 if ($rs != 0);
 
-	print STDOUT "\n\tPlease enter a fully qualified hostname. [$hostname]: ";
+	print "\n\tPlease enter a fully qualified hostname. [$hostname]: ";
 	chomp(my $rdata = readline \*STDIN);
 
 	$rdata = $hostname if $rdata eq '';
@@ -83,11 +83,11 @@ sub ask_hostname {
 		my @labels = split '\.', $rdata;
 
 		if(@labels < 3) {
-			print STDOUT colored( ['bold yellow'], "\n\t[WARNING] ") .
+			print colored( ['bold yellow'], "\n\t[WARNING] ") .
 				"$rdata is not a 'fully qualified hostname'.\n\t" .
 				"Be aware you cannot use this domain for websites.\n";
 
-			print STDOUT "\n\tAre you sure you want to use this hostname? [Y/n]: ";
+			print "\n\tAre you sure you want to use this hostname? [Y/n]: ";
 			chomp(my $retVal = readline \*STDIN);
 
 			if($retVal ne '' && $retVal !~ /^(?:yes|y)$/i) {
@@ -98,7 +98,7 @@ sub ask_hostname {
 		$main::ua{'hostname'} = $rdata;
 		$main::ua{'hostname_local'} = shift(@labels);
 	} else {
-		print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
+		print colored(['bold red'], "\n\t[ERROR] ") .
 			"Hostname is not a valid domain name!\n";
 
 		return -1;
@@ -134,13 +134,13 @@ sub ask_eth {
 		);
 	}
 
-	print STDOUT "\n\tPlease enter the system network address. [$ipAddr]: ";
+	print "\n\tPlease enter the system network address. [$ipAddr]: ";
 	chomp(my $rdata = readline \*STDIN);
 
 	$main::ua{'eth_ip'} = (!defined $rdata || $rdata eq '') ? $ipAddr : $rdata;
 
 	if(!isValidAddr($main::ua{'eth_ip'})) {
-		print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
+		print colored(['bold red'], "\n\t[ERROR] ") .
 			"Ip address not valid, please retry!\n";
 
 		return -1;
@@ -178,7 +178,7 @@ sub ask_vhost {
 
 	my $vhost = "admin.$addr";
 
-	print STDOUT "\n\tPlease enter the domain name from where ispCP OMEGA will " .
+	print "\n\tPlease enter the domain name from where ispCP OMEGA will " .
 		"be\n\treachable [$vhost]: ";
 	chomp(my $rdata = readline \*STDIN);
 
@@ -187,7 +187,7 @@ sub ask_vhost {
 	} elsif (isValidHostname($rdata)) {
 		$main::ua{'admin_vhost'} = $rdata;
 	} else {
-		print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
+		print colored(['bold red'], "\n\t[ERROR] ") .
 			"Vhost name is not valid!\n";
 
 		return -1;
@@ -207,13 +207,13 @@ sub ask_db_host {
 
 	push_el(\@main::el, 'ask_db_host()', 'Starting...');
 
-	print STDOUT "\n\tPlease enter SQL server host. [localhost]: ";
+	print "\n\tPlease enter SQL server host. [localhost]: ";
 	chomp(my $rdata = readline \*STDIN);
 
 	$rdata = ($rdata eq '') ? 'localhost' : $rdata;
 
 	if($rdata ne 'localhost' && !isValidHostname($rdata)) {
-		print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
+		print colored(['bold red'], "\n\t[ERROR] ") .
 			"Wrong SQL hostname! See RFC 1123 for more information...\n";
 
 		return -1;
@@ -236,7 +236,7 @@ sub ask_db_name {
 
 	push_el(\@main::el, 'ask_db_name()', 'Starting...');
 
-	print STDOUT "\n\tPlease enter system SQL database. [ispcp]: ";
+	print "\n\tPlease enter system SQL database. [ispcp]: ";
 	chomp(my $rdata = readline \*STDIN);
 
 	$main::ua{'db_name'} = ($rdata eq '') ? 'ispcp' : $rdata;
@@ -254,7 +254,7 @@ sub ask_db_user {
 
 	push_el(\@main::el, 'ask_db_user()', 'Starting...');
 
-	print STDOUT "\n\tPlease enter system SQL user. [root]: ";
+	print "\n\tPlease enter system SQL user. [root]: ";
 	chomp(my $rdata = readline \*STDIN);
 
 	$main::ua{'db_user'} = ($rdata eq '') ? 'root' : $rdata;
@@ -281,7 +281,7 @@ sub ask_db_password {
 		if ($pass1 eq $pass2) {
 			$main::ua{'db_password'} = $pass1;
 		} else {
-			print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
+			print colored(['bold red'], "\n\t[ERROR] ") .
 				"Passwords do not match!\n";
 
 			return -1;
@@ -302,13 +302,13 @@ sub ask_db_ftp_user {
 
 	push_el(\@main::el, 'ask_db_ftp_user()', 'Starting...');
 
-	print STDOUT "\n\tPlease enter ispCP ftp SQL user. [vftp]: ";
+	print "\n\tPlease enter ispCP ftp SQL user. [vftp]: ";
 	chomp(my $rdata = readline \*STDIN);
 
 	if ($rdata eq '') {
 		$main::ua{'db_ftp_user'} = 'vftp';
 	} elsif($rdata eq $main::ua{'db_user'}) {
-		print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
+		print colored(['bold red'], "\n\t[ERROR] ") .
 			"Ftp SQL user must not be identical to the system SQL user!\n";
 
 		return -1;
@@ -341,14 +341,14 @@ sub ask_db_ftp_password {
 		$dbPassword =~ s/('|"|`|#|;)//g;
 		$main::ua{'db_ftp_password'} = $dbPassword;
 
-		print STDOUT "\tispCP ftp SQL user password set to: $dbPassword\n";
+		print "\tispCP ftp SQL user password set to: $dbPassword\n";
 	} else {
 		$pass2 = read_password("\tPlease repeat ispCP ftp SQL user password: ");
 
 		if ($pass1 eq $pass2) {
 			$main::ua{'db_ftp_password'} = $pass1;
 		} else {
-			print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
+			print colored(['bold red'], "\n\t[ERROR] ") .
 				"Passwords do not match!\n";
 
 			return -1;
@@ -370,7 +370,7 @@ sub ask_admin {
 
 	push_el(\@main::el, 'ask_admin()', 'Starting...');
 
-	print STDOUT "\n\tPlease enter administrator login name. [admin]: ";
+	print "\n\tPlease enter administrator login name. [admin]: ";
 	chomp(my $rdata = readline \*STDIN);
 
 	$main::ua{'admin'} = ($rdata eq '') ? 'admin' : $rdata;
@@ -390,13 +390,13 @@ sub ask_admin_password {
 	my $pass1 = read_password("\n\tPlease enter administrator password: ");
 
 	if (!defined $pass1 || $pass1 eq '') {
-		print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
+		print colored(['bold red'], "\n\t[ERROR] ") .
 			 "Password cannot be empty!\n";
 
 		return -1;
 	} else {
 		if (length $pass1 < 5) {
-			print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
+			print colored(['bold red'], "\n\t[ERROR] ") .
 				"Password too short!\n";
 
 			return -1;
@@ -408,13 +408,13 @@ sub ask_admin_password {
 			if ($pass1 eq $pass2) {
 				$main::ua{'admin_password'} = $pass1;
 			} else {
-				print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
+				print colored(['bold red'], "\n\t[ERROR] ") .
 					"Passwords do not match!\n";
 
 				return -1;
 			}
 		} else {
-			print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
+			print colored(['bold red'], "\n\t[ERROR] ") .
 				"Passwords must contain at least digits and chars!\n";
 
 			return -1;
@@ -435,11 +435,11 @@ sub ask_admin_email {
 
 	push_el(\@main::el, 'ask_admin_email()', 'Starting...');
 
-	print STDOUT "\n\tPlease enter administrator e-mail address: ";
+	print "\n\tPlease enter administrator e-mail address: ";
 	chomp(my $rdata = readline \*STDIN);
 
 	if($rdata eq '' || !isValidEmail($rdata)) {
-		print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
+		print colored(['bold red'], "\n\t[ERROR] ") .
 			"E-mail address not valid!\n";
 
 		return -1;
@@ -461,7 +461,7 @@ sub ask_second_dns {
 
 	push_el(\@main::el, 'ask_second_dns()', 'Starting...');
 
-	print STDOUT "\n\tIP of Secondary DNS. (optional) []: ";
+	print "\n\tIP of Secondary DNS. (optional) []: ";
 	chomp(my $rdata = readline *STDIN);
 
 	if (!defined $rdata || $rdata eq '') {
@@ -469,7 +469,7 @@ sub ask_second_dns {
 	} elsif(isValidAddr($rdata)) {
 		$main::ua{'secondary_dns'} = $rdata;
 	} else {
-		print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
+		print colored(['bold red'], "\n\t[ERROR] ") .
 			"Ip address not valid, please retry!\n";
 
 		return -1;
@@ -490,14 +490,14 @@ sub ask_resolver {
 
 	push_el(\@main::el, 'ask_resolver()', 'Starting...');
 
-	print STDOUT "\n\tDo you want allow the system resolver to use the " .
+	print "\n\tDo you want allow the system resolver to use the " .
 	"local nameserver\n\tsets by ispCP ? [Y/n]: ";
 	chomp(my $rdata = readline \*STDIN);
 
 	if ($rdata eq '' || $rdata =~ /^(?:(y|yes)|(n|no))$/i) {
 		$main::ua{'resolver'} = ! defined $2 ? 'yes' : 'no';
 	} else {
-		print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
+		print colored(['bold red'], "\n\t[ERROR] ") .
 			"You entered an unrecognized value!\n";
 
 		return -1;
@@ -517,7 +517,7 @@ sub ask_mysql_prefix {
 
 	push_el(\@main::el, 'ask_mysql_prefix()', 'Starting...');
 
-	print STDOUT "\n\tUse MySQL Prefix.\n\tPossible values: " .
+	print "\n\tUse MySQL Prefix.\n\tPossible values: " .
 		"[i]nfront, [b]ehind, [n]one. [none]: ";
 	chomp(my $rdata = readline \*STDIN);
 
@@ -531,7 +531,7 @@ sub ask_mysql_prefix {
 		$main::ua{'mysql_prefix'} = 'yes';
 		$main::ua{'mysql_prefix_type'} = 'behind';
 	} else {
-		print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
+		print colored(['bold red'], "\n\t[ERROR] ") .
 			"Not allowed Value, please retry!\n";
 
 		return -1;
@@ -555,19 +555,19 @@ sub ask_db_pma_user {
 		$main::ua{'db_user'} = $main::cfg{'DATABASE_USER'};
 	}
 
-	print STDOUT "\n\tPlease enter ispCP phpMyAdmin Control user. " .
+	print "\n\tPlease enter ispCP phpMyAdmin Control user. " .
 		"[$main::cfg{'PMA_USER'}]: ";
 	chomp(my $rdata = readline \*STDIN);
 
 	if ($rdata eq '') {
 		$main::ua{'db_pma_user'} = $main::cfg{'PMA_USER'}
 	} elsif($rdata eq $main::ua{'db_user'}) {
-		print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
+		print colored(['bold red'], "\n\t[ERROR] ") .
 			"PhpMyAdmin Control user must not be identical to system SQL user!\n";
 
 		return 1;
 	} elsif ($rdata eq $main::ua{'db_ftp_user'}) {
-		print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
+		print colored(['bold red'], "\n\t[ERROR] ") .
 			"PhpMyAdmin Control user must not be identical to ftp SQL user!\n";
 
 		return -1;
@@ -599,7 +599,7 @@ sub ask_db_pma_password {
 		$dbPassword =~ s/('|"|`|#|;)//g;
 		$main::ua{'db_pma_password'} = $dbPassword;
 
-		print STDOUT "\tPhpMyAdmin Control user password set to: $dbPassword\n";
+		print "\tPhpMyAdmin Control user password set to: $dbPassword\n";
 	} else {
 		my $pass2 = read_password(
 			"\tPlease repeat ispCP PhpMyAdmin Control user password: "
@@ -608,7 +608,7 @@ sub ask_db_pma_password {
 		if ($pass1 eq $pass2) {
 			$main::ua{'db_pma_password'} = $pass1;
 		} else {
-			print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
+			print colored(['bold red'], "\n\t[ERROR] ") .
 				"Passwords do not match!\n";
 
 			return -1;
@@ -629,7 +629,7 @@ sub ask_fastcgi {
 
 	push_el(\@main::el, 'ask_fastcgi()', 'Starting...');
 
-	print STDOUT "\n\tFastCGI Version: [f]cgid or fast[c]gi. [fcgid]: ";
+	print "\n\tFastCGI Version: [f]cgid or fast[c]gi. [fcgid]: ";
 	chomp(my $rdata = readline \*STDIN);
 
 	if ($rdata eq '' || $rdata eq 'fcgid' || $rdata eq 'f') {
@@ -637,7 +637,7 @@ sub ask_fastcgi {
 	} elsif ($rdata eq 'fastcgi' || $rdata eq 'c') {
 		$main::ua{'php_fastcgi'} = 'fastcgi';
 	} else {
-		print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
+		print colored(['bold red'], "\n\t[ERROR] ") .
 			"Only '[f]cgid' or 'fast[c]gi' are allowed!\n";
 
 		return -1
@@ -666,7 +666,7 @@ sub ask_timezone {
 
 	my $timezone_name = $datetime->time_zone_long_name();
 
-	print STDOUT "\n\tServer's Timezone [$timezone_name]: ";
+	print "\n\tServer's Timezone [$timezone_name]: ";
 	chomp(my $rdata = readline \*STDIN);
 
 	# Copy $timezone_name to $rdata if $rdata is empty
@@ -682,7 +682,7 @@ sub ask_timezone {
 	my $error = ($@) ? 1 : 0; # $@ contains the die() message
 
 	if ($error == 1) {
-		print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
+		print colored(['bold red'], "\n\t[ERROR] ") .
 			"$rdata is not a valid Timezone!" .
 			"\n\tThe continent and the city both must start with a capital " .
 			"letter, e.g. Europe/London\n";
@@ -706,7 +706,7 @@ sub ask_awstats_on {
 
 	push_el(\@main::el, 'ask_awstats_on()', 'Starting...');
 
-	print STDOUT "\n\tActivate AWStats. [no]: ";
+	print "\n\tActivate AWStats. [no]: ";
 	chomp(my $rdata = readline \*STDIN);
 
 	if ($rdata eq '' || $rdata eq 'no' || $rdata eq 'n') {
@@ -714,7 +714,7 @@ sub ask_awstats_on {
 	} elsif ($rdata eq 'yes' || $rdata eq 'y') {
 		$main::ua{'awstats_on'} = 'yes';
 	} else {
-		print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
+		print colored(['bold red'], "\n\t[ERROR] ") .
 			"Only '(y)es' and '(n)o' are allowed!\n";
 
 			return -1;
@@ -734,7 +734,7 @@ sub ask_awstats_dyn {
 
 	push_el(\@main::el, 'ask_awstats_dyn()', 'Starting...');
 
-	print STDOUT "\n\tAWStats Mode:\n\tPossible values [d]ynamic and " .
+	print "\n\tAWStats Mode:\n\tPossible values [d]ynamic and " .
 		"[s]tatic. [dynamic]: ";
 	chomp(my $rdata = readline \*STDIN);
 
@@ -743,7 +743,7 @@ sub ask_awstats_dyn {
 	} elsif ($rdata eq 'static' || $rdata eq 's') {
 		$main::ua{'awstats_dyn'} = '1';
 	} else {
-		print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
+		print colored(['bold red'], "\n\t[ERROR] ") .
 			 "Only '[d]ynamic' or '[s]tatic' are allowed!\n";
 
 		return -1;
@@ -1006,19 +1006,17 @@ sub isValidAddr {
 # This subroutine can be used to check an MySQL server connection with different
 # login credentials.
 #
-# Note:
-#
-# This subroutine automatically restore the previous DSN at end.
-#
 # @param string $user SQL username
 # @param string $password SQL user password
+# [@param string $dbName SQL database to use]
+# [@param string $dbHost MySQL server hostname]
 # @return int 0 on success, other on failure
 #
 sub check_sql_connection {
 
 	push_el(\@main::el, 'sql_check_connections()', 'Starting...');
 
-	my($userName, $password, $dbName) = @_;
+	my($userName, $password, $dbName, $dbHost) = @_;
 
 	if(!defined $userName && !defined $password) {
 		push_el(
@@ -1030,13 +1028,14 @@ sub check_sql_connection {
 	}
 
 	$dbName = $main::db_name if !defined $dbName;
+	$dbHost = $main::db_host if !defined $dbHost;
 
 	# Define the DSN
 	@main::db_connect = (
 		"DBI:mysql:$dbName:$main::db_host", $userName, $password
 	);
 
-	# We force reconnection to the database by removing the current
+	# Forcing reconnection
 	$main::db = undef;
 
 	push_el(
@@ -1044,12 +1043,8 @@ sub check_sql_connection {
 		"Checking MySQL server connection with the following DSN: @main::db_connect"
 	);
 
-	# @todo really needed ?
-	my($rs, $rdata) = doSQL('SHOW databases;');
+	my($rs, $rdata) = doSQL('SHOW DATABASES;');
 	return $rs if ($rs != 0);
-
-	# We force reconnection to the database by resetting the default DSN
-	setup_main_vars();
 
 	push_el(\@main::el, 'sql_check_connections()', 'Ending...');
 
@@ -1085,7 +1080,7 @@ sub get_sys_hostname {
 #
 sub title {
 	my $title = shift;
-	print STDOUT colored(['bold'], "\t$title\n");
+	print colored(['bold'], "\t$title\n");
 }
 
 ################################################################################
@@ -1096,7 +1091,7 @@ sub title {
 #
 sub subtitle {
 	my $subtitle = shift;
-	print STDOUT "\t $subtitle";
+	print "\t $subtitle";
 
 	$main::dyn_length = 0 if(defined $main::dyn_length);
 	$main::subtitle_length = length $subtitle;
@@ -1107,7 +1102,7 @@ sub subtitle {
 # @return void
 #
 sub spacer {
-	print STDOUT "\n";
+	print "\n";
 }
 
 ################################################################################
@@ -1116,7 +1111,7 @@ sub spacer {
 # @return void
 #
 sub progress {
-	print STDOUT '.';
+	print '.';
 	$main::dyn_length++;
 }
 
@@ -1145,7 +1140,7 @@ sub print_status {
 
 	$statusString = sprintf('%'.($termWidth-($length+1)).'s', $statusString);
 
-	print STDOUT colored(['bold'], "$statusString\n");
+	print colored(['bold'], "$statusString\n");
 
 	if(defined $exitOnError && $exitOnError eq 'exit_on_error' && $status != 0) {
 		exit_msg($status);
@@ -2902,7 +2897,7 @@ sub setup_gui_pma {
 	# Update:
 	} else {
 		if($cfg_file =~ /\{(?:HOSTNAME|PMA_USER|PMA_PASS|BLOWFISH|TMP_DIR)\}/) {
-			print STDOUT colored(['bold yellow'], "\n\n\tWARNING: ") .
+			print colored(['bold yellow'], "\n\n\tWARNING: ") .
 				"Your PMA configuration file should be re-builded !\n";
 
 			# Gets the new pma control user username

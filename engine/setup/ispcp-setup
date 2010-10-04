@@ -71,7 +71,8 @@ sub welcome_note {
 
 	push_el(\@main::el, 'welcome_note()', 'Starting...');
 
-	print STDOUT colored( ['bold underline'],
+	print colored(
+		['bold underline'],
 		"\n\tWelcome to ispCP '$main::cfg{'Version'}' Setup Dialog.\n\n"
 	), "\tThis program will set up ispCP OMEGA system on your server.\n";
 
@@ -93,9 +94,8 @@ sub user_dialog {
 
 	push_el(\@main::el, 'user_dialog()', 'Starting...');
 
-	print STDOUT "\n\tNext you are asked to enter a \"fully qualified " .
-		"hostname\" (FQHN).\n\tFor more infos read http://en.wikipedia.org" .
-		"/wiki/FQDN.\n\n";
+	print "\n\tNext you are asked to enter a \"fully qualified hostname\" " .
+		"(FQHN).\n\tFor more infos read http://en.wikipedia.org/wiki/FQDN.\n\n";
 
 	# Note to dev:
 	# CODE: run once
@@ -125,13 +125,13 @@ sub user_dialog {
 	system('clear');
 	spacer();
 
-	print STDOUT colored(
+	print colored(
 		['bold'], "\n\tThe program is now ready to set up ispCP on your system.\n"
 	);
 
 	# Last chance to stop the installation process
 	do {
-		print "\tDo you want to continue ? [Y/n]: ";
+		print "\tDo you want to continue? [Y/n]: ";
 		chomp($_ = readline *STDIN );
 	} while (!/^(y|yes|n|no|)$/i);
 
@@ -159,7 +159,7 @@ sub check_host_system {
 
 	subtitle('ispCP Mysql server connection checking:');
 	my $rs = check_sql_connection(
-		$main::ua{'db_user'}, $main::ua{'db_password'}, ''
+		$main::ua{'db_user'}, $main::ua{'db_password'}, '', $main::ua{'db_host'}
 	);
 	print_status($rs, 'exit_on_error');
 
@@ -354,8 +354,8 @@ sub setup_config {
 		return $rs if ($rs != 0);
 	}
 
-	# Storing all new values in the ispcp.conf file, and reloads all the
-	# configuration parameters. Also, resets the DSN.
+	# Updating the main ispCP configuration file with news values and reloads
+	# all configuration parameters from it. Also, resets the DSN.
 	my $rs = store_conf();
 	return $rs if ($rs != 0);
 
@@ -368,33 +368,41 @@ sub setup_config {
 # Creating ispCP database
 #
 # @return int 0 on success, other on failure
-# @todo The admin should be able to conserve the old ispCP database
+#
 sub setup_ispcp_database {
 
 	push_el(\@main::el, 'setup_ispcp_database()', 'Starting...');
 
-	my ($rs, $rdata);
 	my $ispCPdbName = $main::ua{'db_name'};
-	my $sql = "SHOW databases LIKE '$main::ua{'db_name'}';";
+
+	# Setting DSN (We should don't select database here)
+	@main::db_connect = (
+		"DBI:mysql::$main::db_host", $main::db_user, $main::db_pwd
+	);
+
+	# Forcing reconnection
+	$main::db = undef;
+
+	my $sql = "SHOW DATABASES LIKE '$main::ua{'db_name'}';";
 
 	# Check if the a database with same name already exist
-	($rs, $rdata) = doSQL($sql);
+	my ($rs, $rdata) = doSQL($sql);
 	return $rs if($rs != 0);
 
 	while(@$rdata[0]) {
 		# Database with same name already exists
-		print STDOUT colored(['bold yellow'], "\n\n\t[WARNING] ") .
+		print colored(['bold yellow'], "\n\n\t[WARNING] ") .
 			"A database with same name already exist!\n";
 
 		# We must have user confirmation for database drop
 		do {
-			print STDOUT "\n\tWould you really drop the current database? [Y/n] ";
+			print "\n\tWould you really drop the current database? [Y/n] ";
 			chomp($rdata = readline *STDIN);
 
 			if($rdata =~ /^(?:(y|yes|)|(n|no))$/i) {
 				$rs = defined $1 ? 1 : 0;
 			} else {
-				print STDOUT colored(['bold red'], "\n\t[ERROR] ") .
+				print colored(['bold red'], "\n\t[ERROR] ") .
 					"You entered an unrecognized value!\n";
 
 				$rs = -1;
@@ -402,7 +410,7 @@ sub setup_ispcp_database {
 		} while ($rs == -1);
 
 		if(!$rs) {
-			print STDOUT colored(['bold blue'], "\n\t[NOTICE] ") .
+			print colored(['bold blue'], "\n\t[NOTICE] ") .
 				"Next, you'll be asked again a name for the ispCP database.\n" .
 				"\tYou should choose a name that is not already used!\n";
 
@@ -417,28 +425,25 @@ sub setup_ispcp_database {
 				"Removing database $main::ua{'db_name'}"
 			);
 
-			($rs) = doSQL("DROP DATABASE IF EXISTS $main::ua{'db_name'};");
+			($rs) = doSQL("DROP DATABASE $main::ua{'db_name'};");
 			return $rs if($rs != 0);
 			last;
 		}
 	}
 
-exit;
-
-	# Updating the ispCP configuration file with new ispCP database name, reload
-	# all configuration parameter and redefine the DSN if needed
+	# Updating the configuration file and redefinition of the DSN. We also
+	# forcing the re-connection to MySQL server on the next query
 	if($ispCPdbName ne $main::ua{'db_name'}) {
 		$rs = set_conf_val('DATABASE_NAME', $main::ua{'db_name'});
 		return $rs if($rs != 0);
 
 		$rs = store_conf();
 		return $rs if($rs != 0);
-
-		# Forcing reconnection to the database by removing the current one
-		$main::db = undef;
+	} else {
+		# Resetting the DSN to the default values and forcing the re-connection
+		# to the database on the next query
+		setup_main_vars();
 	}
-
-exit;
 
 	## Creating the ispCP database
 
@@ -503,23 +508,33 @@ sub setup_default_language_table {
 #
 sub setup_default_sql_data {
 
-	push_el(\@main::el, 'setup_gui_admin_account()', 'Starting...');
+	push_el(\@main::el, 'setup_default_sql_data()', 'Starting...');
 
 	## First ispCP administrator data - Begin
 
 	my $admin_password = crypt_md5_data($main::ua{'admin_password'});
 
+	push_el(
+		\@main::el, 'setup_default_sql_data()',
+		'[DEBUG] Inserting primary admin account data...'
+	);
+
 	my ($rs) = doSQL(
 		"INSERT INTO admin (admin_id, admin_name, admin_pass, admin_type, " .
-		"email) VALUES  (1, '$main::ua{'admin'}','$admin_password', 'admin', " .
-		"'$main::ua{'admin_email'}')"
+		"email) VALUES (1, '$main::ua{'admin'}','$admin_password', 'admin', " .
+		"'$main::ua{'admin_email'}');"
 	);
 	return $rs if ($rs != 0);
 
-	($rs) = doSQL('INSERT INTO user_gui_props (user_id) values (1)');
+	($rs) = doSQL('INSERT INTO user_gui_props (user_id) values (1);');
 	return $rs if ($rs != 0);
 
 	## First Ip data - Begin
+
+	push_el(
+		\@main::el, 'setup_default_sql_data()',
+		'[DEBUG] Inserting primary Ip data...'
+	);
 
 	($rs) = doSQL(
 		"INSERT INTO server_ips (ip_id, ip_number, ip_domain, ip_alias) " .
@@ -528,7 +543,7 @@ sub setup_default_sql_data {
 	);
 	return $rs if ($rs != 0);
 
-	## Proftpd  SQL user data - Begin
+	## Proftpd SQL user data - Begin
 
 	# First, we redefine the DNS to use mysql database
 	@main::db_connect = (
@@ -546,49 +561,61 @@ sub setup_default_sql_data {
 	# both 'tables_priv' and 'user' tables
 
 	($rs) = doSQL(
-		"DELETE FROM tables_priv WHERE Host = '$main::cfg{'SERVER_HOSTNAME'}'" .
-		 " AND Db = '$main::db_name' AND User = '$vftp_sql_user'"
+		"DELETE FROM tables_priv WHERE Host = '$hostname' AND Db = " .
+		"'$main::db_name' AND User = '$vftp_sql_user';"
 	);
 	return $rs if ($rs != 0);
 
 	($rs) = doSQL(
-		"DELETE FROM user WHERE Host = '$hostname' AND User = '$vftp_sql_user'"
+		"DELETE FROM user WHERE Host = '$hostname' AND User = '$vftp_sql_user';"
 	);
 	return $rs if ($rs != 0);
+
+	push_el(
+		\@main::el, 'setup_default_sql_data()',
+		'[DEBUG] Reloading all SQL privileges...'
+	);
 
 	# Reloading the SQL privileges for all users
 	($rs) = doSQL('FLUSH PRIVILEGES;');
 	return $rs if ($rs != 0);
 
-	# The proftpd SQL user should have some rights on the 'ftp_group' table
+	push_el(
+		\@main::el, 'setup_default_sql_data()',
+		'[DEBUG] Inserting Proftpd SQL user account data...'
+	);
+
+	# The Proftpd SQL user should have some rights on the 'ftp_group' table
 	($rs) = doSQL(
 		"GRANT SELECT,INSERT,UPDATE,DELETE ON $main::db_name.ftp_group TO " .
-	    "'$vftp_sql_user'\@'$hostname' IDENTIFIED BY '$vftp_sql_password'"
+	    "'$vftp_sql_user'\@'$hostname' IDENTIFIED BY '$vftp_sql_password';"
 	);
 	return $rs if ($rs != 0);
 
-	# The proftpd SQL user should have some rights on the 'ftp_users' table
+	# The Proftpd SQL user should have some rights on the 'ftp_users' table
 	($rs) = doSQL(
 		"GRANT SELECT,INSERT,UPDATE,DELETE ON $main::db_name.ftp_users TO " .
-		"'$vftp_sql_user'\@'$hostname' IDENTIFIED BY '$vftp_sql_password'"
+		"'$vftp_sql_user'\@'$hostname' IDENTIFIED BY '$vftp_sql_password';"
 	);
 	return $rs if ($rs != 0);
 
-	# The proftpd SQL user should have some rights on the 'quotalimits' table
+	# The Proftpd SQL user should have some rights on the 'quotalimits' table
 	($rs) = doSQL(
 		"GRANT SELECT,INSERT,UPDATE,DELETE ON $main::db_name.quotalimits TO " .
-		"'$vftp_sql_user'\@'$hostname' IDENTIFIED BY '$vftp_sql_password'"
+		"'$vftp_sql_user'\@'$hostname' IDENTIFIED BY '$vftp_sql_password';"
 	);
 	return $rs if ($rs != 0);
 
-	# The proftpd SQL user should have some rights on the 'quotatallies' table
+	# The Proftpd SQL user should have some rights on the 'quotatallies' table
 	($rs) = doSQL(
 		"GRANT SELECT,INSERT,UPDATE,DELETE ON $main::db_name.quotatallies TO " .
-		"'$vftp_sql_user'\@'$hostname' IDENTIFIED BY '$vftp_sql_password'"
+		"'$vftp_sql_user'\@'$hostname' IDENTIFIED BY '$vftp_sql_password';"
 	);
 	return $rs if ($rs != 0);
 
-	push_el(\@main::el, 'setup_gui_admin_account()', 'Ending...');
+	push_el(\@main::el, 'setup_default_sql_data()', 'Ending...');
+
+	exit;
 }
 
 ################################################################################
@@ -646,9 +673,6 @@ sub setup_start_up {
 
 	# Fixing umask for log files permissions (0640)
 	umask(027);
-
-	# Deleting log file if one exist
-	del_file('/tmp/ispcp-setup.log');
 
 	system('clear');
 	spacer();
@@ -750,7 +774,7 @@ sub setup_shut_down {
 
 	push_el(\@main::el, 'setup_shut_down()', 'Starting...');
 
-	print STDOUT colored( ['bold underline'],
+	print colored( ['bold underline'],
 		"\n\tCongratulations you installed ispCP '$main::cfg{'Version'}' " .
 		"successfully!\n\n"),
 

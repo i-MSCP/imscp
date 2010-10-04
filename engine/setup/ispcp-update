@@ -86,7 +86,7 @@ sub welcome_note {
 	# Clear screen
 	system('clear');
 
-	print STDOUT colored( ['bold underline'],
+	print colored( ['bold underline'],
 		"\n\tWelcome to ispCP '$main::cfg{'Version'}' Update Dialog.\n\n"),
 
 		"\tThis program will update your current ispCP OMEGA installation on " .
@@ -102,7 +102,7 @@ sub welcome_note {
 		"\tconfiguration file will be processed by this program.\n\n";
 
 	do {
-		print STDOUT "\tDo you want to continue ? [Y/n]: ";
+		print "\tDo you want to continue ? [Y/n]: ";
 		chomp($_ = readline *STDIN );
 	} while (!/^(y|yes|n|no|)$/i);
 
@@ -128,13 +128,13 @@ sub warn_msg {
 
 	system('clear');
 
-	print STDOUT colored(['bold blue'], "\n\t[NOTICE] ") .
+	print colored(['bold blue'], "\n\t[NOTICE] ") .
 		"Make sure you have read and performed all steps from\n".
 		"\tdocs/distro/INSTALL document (where distro is your linux " .
 		"distribution).\n\n";
 
 	do {
-		print STDOUT "\n\tOptions:\n" . "\t\ty : Continue the update\n" .
+		print "\n\tOptions:\n" . "\t\ty : Continue the update\n" .
   			"\t\tn : Abort and exit\n" .
   			"\t\ts : Select specific tasks to perform " .
   			"(Not yet implemented)\n\n" if defined $1 && $1 eq '?';
@@ -171,7 +171,7 @@ sub load_old_ispcp_cfg {
 
 	if (get_conf($old_ispcp_cfg_file)) {
 		do {
-			print STDOUT "\tPlease enter path to your ispcp.old.conf " .
+			print "\tPlease enter path to your ispcp.old.conf " .
 				"[/etc/ispcp/ispcp.old.conf]: ";
 
 			chomp($old_ispcp_cfg_file = readline \*STDIN);
@@ -314,7 +314,7 @@ sub cfg_recovery_process {
 			"\tto an empty value!\n";
 
 		do {
-			print STDOUT "\n\tAre you sure you have installed ispCP ? [Y/n]: ";
+			print "\n\tAre you sure you have installed ispCP ? [Y/n]: ";
 			chomp($rdata = readline \*STDIN);
 		} while($rdata !~ /^(|y|n)$/i);
 
@@ -325,12 +325,12 @@ sub cfg_recovery_process {
 		($rdata !~ /^n$/i) or exit_msg(1, $msg);
 	}
 
-	print STDOUT colored(['bold yellow'], "\n\n\t[WARNING] ") .
+	print colored(['bold yellow'], "\n\n\t[WARNING] ") .
 		"Your ispCP configuration file has missing parameters!\n" .
 		"\tThe update script will switch to recovery/upgrade mode now...\n";
 
 	do {
-		print STDOUT "\n\tDo you want to continue [Y/n]: ";
+		print "\n\tDo you want to continue [Y/n]: ";
 		chomp($rdata = readline \*STDIN);
 	} while($rdata !~ /^(|y|n)$/i);
 
@@ -392,7 +392,7 @@ sub cfg_recovery_process {
 		return $rs if($rs != 0);
 	}
 
-	print STDOUT colored(['bold blue'], "\n\t[NOTICE] ") .
+	print colored(['bold blue'], "\n\t[NOTICE] ") .
 		" The recovery/upgrade process ended successfully!\n\tThe update " .
 		"process will continue normal...\n\n";
 
@@ -764,7 +764,7 @@ sub update_shutdown {
 
 	push_el(\@main::el, 'update_shutdown()', 'Starting...');
 
-	print STDOUT colored(['bold underline'],
+	print colored(['bold underline'],
 		"\n\n\tCongratulations, you updated ispCP OMEGA" .
 		"'$main::cfg{'Version'}' successfully!\n\n"),
 
