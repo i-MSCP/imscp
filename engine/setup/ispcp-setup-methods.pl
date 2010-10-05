@@ -1016,13 +1016,13 @@ sub isValidAddr {
 #
 sub check_sql_connection {
 
-	push_el(\@main::el, 'sql_check_connections()', 'Starting...');
+	push_el(\@main::el, 'check_sql_connection()', 'Starting...');
 
 	my($userName, $password, $dbName, $dbHost) = @_;
 
 	if(!defined $userName && !defined $password) {
 		push_el(
-			\@main::el, 'sql_check_connections()',
+			\@main::el, 'check_sql_connection()',
 			'[ERROR] Undefined login credential!'
 		);
 
@@ -1041,14 +1041,14 @@ sub check_sql_connection {
 	$main::db = undef;
 
 	push_el(
-		\@main::el, 'sql_check_connections()',
+		\@main::el, 'check_sql_connection()',
 		"Checking MySQL server connection with the following DSN: @main::db_connect"
 	);
 
 	my($rs, $rdata) = doSQL('SHOW DATABASES;');
 	return $rs if ($rs != 0);
 
-	push_el(\@main::el, 'sql_check_connections()', 'Ending...');
+	push_el(\@main::el, 'check_sql_connection()', 'Ending...');
 
 	0;
 }
@@ -1402,7 +1402,7 @@ sub setup_crontab {
 	my $wrkDir = $cfgDir . '/working';
 	my $prodDir;
 
-	# Determines production directory path
+	# Retrieving production directory path
 	if ($main::cfg{'ROOT_GROUP'} eq 'wheel') {
 		$prodDir = '/usr/local/etc/ispcp/cron.d';
 	} else {
@@ -1458,7 +1458,7 @@ sub setup_crontab {
 
 	## Storage and installation of new file
 
-	# Store the new file in the working directory
+	# Storing new file in the working directory
 	$rs = store_file(
 		"$wrkDir/ispcp", $$cfg, $main::cfg{'ROOT_USER'},
 		$main::cfg{'ROOT_GROUP'}, 0644
@@ -1485,7 +1485,7 @@ sub setup_named {
 
 	push_el(\@main::el, 'setup_named()', 'Starting...');
 
-	# Do not generate cfg files if the service is disabled
+	# Do not generate configuration files if the service is disabled
 	return 0 if($main::cfg{'CMD_NAMED'} =~ /^no$/i);
 
 	my ($rs, $rdata, $cfgTpl, $cfg);
@@ -1493,8 +1493,6 @@ sub setup_named {
 	my $cfgDir = "$main::cfg{'CONF_DIR'}/bind";
 	my $bkpDir = "$cfgDir/backup";
 	my $wrkDir = "$cfgDir/working";
-
-	## Dedicated tasks for Setup and Update process
 
 	# Setup:
 	if(defined &setup_engine) {
@@ -1518,7 +1516,7 @@ sub setup_named {
 		}
 	}
 
-	## Building of new configuration file
+	## Building new configuration file
 
 	# Loading the system main configuration file from
 	# /etc/ispcp/bind/backup/named.conf.system if it exists
@@ -1543,12 +1541,12 @@ sub setup_named {
 	($rs, $cfgTpl) = get_file("$cfgDir/named.conf");
 	return $rs if($rs != 0);
 
-	# Building of new file
+	# Building new file
 	$cfg .= $cfgTpl;
 
 	## Storage and installation of new file
 
-	# Storage of new file in the working directory
+	# Storing new file in the working directory
 	$rs = store_file(
 		"$wrkDir/named.conf", $cfg, $main::cfg{'ROOT_USER'},
 		$main::cfg{'ROOT_GROUP'}, 0644
@@ -1580,7 +1578,7 @@ sub setup_fastcgi_modules {
 
 	push_el(\@main::el, 'setup_php()', 'Starting...');
 
-	# Do not generate cfg files if the service is disabled
+	# Do not generate configuration files if the service is disabled
 	return 0 if($main::cfg{'CMD_HTTPD'} =~ /^no$/i);
 
 	my ($rs, $cfgTpl);
@@ -1591,19 +1589,14 @@ sub setup_fastcgi_modules {
 	my $bkpDir = "$cfgDir/backup";
 	my $wrkDir = "$cfgDir/working";
 
-	## Dedicated tasks for the updates process
-
-	# Update:
-	if(defined &update_engine) {
-		for (qw/fastcgi_ispcp.conf fastcgi_ispcp.load fcgid_ispcp.conf fcgid_ispcp.load/) {
-			# Saving the current production file if it exists
-			if(-e "$main::cfg{'APACHE_MODS_DIR'}/$_") {
-				$rs = sys_command(
-					"$main::cfg{CMD_CP} -p $main::cfg{'APACHE_MODS_DIR'}/$_ " .
-					"$bkpDir/$_." . time()
-				);
-				return $rs if($rs != 0);
-			}
+	# Saving the current production file if they exists
+	for (qw/fastcgi_ispcp.conf fastcgi_ispcp.load fcgid_ispcp.conf fcgid_ispcp.load/) {
+		if(-e "$main::cfg{'APACHE_MODS_DIR'}/$_") {
+			$rs = sys_command(
+				"$main::cfg{CMD_CP} -p $main::cfg{'APACHE_MODS_DIR'}/$_ " .
+				"$bkpDir/$_." . time
+			);
+			return $rs if($rs != 0);
 		}
 	}
 
@@ -1625,7 +1618,7 @@ sub setup_fastcgi_modules {
 
 	# fastcgi_ispcp.conf / fcgid_ispcp.conf
 	for (qw/fastcgi fcgid/) {
-		# Loading the template from /etc/ispcp/apache
+		# Loading the template from the /etc/ispcp/apache directory
 		($rs, $cfgTpl) = get_file("$cfgDir/${_}_ispcp.conf");
 		return $rs if ($rs != 0);
 
@@ -1633,14 +1626,14 @@ sub setup_fastcgi_modules {
 		($rs, $$cfg) = prep_tpl($tags_hash{$_}, $cfgTpl);
 		return $rs if ($rs != 0);
 
-		# Store the new file
+		# Storing the new file
 		$rs = store_file(
 			"$wrkDir/${_}_ispcp.conf", $$cfg, $main::cfg{'ROOT_USER'},
 			$main::cfg{'ROOT_GROUP'}, 0644
 		);
 		return $rs if ($rs != 0);
 
-		# Install the new file
+		# Installing the new file
 		$rs = sys_command(
 			"$main::cfg{'CMD_CP'} -pf $wrkDir/${_}_ispcp.conf " .
 			"$main::cfg{'APACHE_MODS_DIR'}/"
@@ -1676,54 +1669,48 @@ sub setup_fastcgi_modules {
 
 	## Enable required modules and disable unused
 
-	# Debian like only:
+	# Debian like distributions only:
 	# Note for distributions maintainers:
 	# For others distributions, you must use the a post-installation scripts
-	if(-e '/usr/sbin/a2enmod' && -e '/usr/sbin/a2dismod' ) {
+	if(! -e '/etc/SuSE-release' && -e '/usr/sbin/a2enmod') {
 		# Disable php4/5 modules if enabled
-		sys_command("/usr/sbin/a2dismod php4 $main::rlogfile");
-		sys_command("/usr/sbin/a2dismod php5 $main::rlogfile");
+		sys_command("/usr/sbin/a2dismod php4 php5 $main::rlogfile");
 
 		# Enable actions modules
 		$rs = sys_command("/usr/sbin/a2enmod actions $main::rlogfile");
 		return $rs if($rs != 0);
 
-		if(! -e '/etc/SuSE-release') {
-			if ($main::cfg{'PHP_FASTCGI'} eq 'fastcgi') {
-				# Ensures that the unused ispcp fcgid module loader is disabled
-				$rs = sys_command(
-					"/usr/sbin/a2dismod fcgid_ispcp $main::rlogfile"
-				);
-				return $rs if($rs != 0);
-
-				# Enable fastcgi module
-				$rs = sys_command(
-					"/usr/sbin/a2enmod fastcgi_ispcp $main::rlogfile"
-				);
-				return $rs if($rs != 0);
-			} else {
-				# Ensures that the unused ispcp fastcgi ispcp module loader is
-				# disabled
-				$rs = sys_command(
-					"/usr/sbin/a2dismod fastcgi_ispcp $main::rlogfile"
-				);
-				return $rs if($rs != 0);
-
-				# Enable ispcp fastcgi loader
-				$rs = sys_command(
-					"/usr/sbin/a2enmod fcgid_ispcp $main::rlogfile"
-				);
-				return $rs if($rs != 0);
-			}
-
-			# Disable default  fastcgi/fcgid modules loaders to avoid conflicts
-			# with ispcp loaders
-			$rs = sys_command("/usr/sbin/a2dismod fastcgi $main::rlogfile");
+		if ($main::cfg{'PHP_FASTCGI'} eq 'fastcgi') {
+			# Ensures that the unused ispcp fcgid module loader is disabled
+			$rs = sys_command(
+				"/usr/sbin/a2dismod fcgid_ispcp $main::rlogfile"
+			);
 			return $rs if($rs != 0);
 
-			$rs = sys_command("/usr/sbin/a2dismod fcgid $main::rlogfile");
+			# Enable fastcgi module
+			$rs = sys_command(
+				"/usr/sbin/a2enmod fastcgi_ispcp $main::rlogfile"
+			);
+			return $rs if($rs != 0);
+		} else {
+			# Ensures that the unused ispcp fastcgi ispcp module loader is
+			# disabled
+			$rs = sys_command(
+				"/usr/sbin/a2dismod fastcgi_ispcp $main::rlogfile"
+			);
+			return $rs if($rs != 0);
+
+			# Enable ispcp fastcgi loader
+			$rs = sys_command(
+				"/usr/sbin/a2enmod fcgid_ispcp $main::rlogfile"
+			);
 			return $rs if($rs != 0);
 		}
+
+		# Disable default  fastcgi/fcgid modules loaders to avoid conflicts
+		# with ispcp loaders
+		$rs = sys_command("/usr/sbin/a2dismod fastcgi fcgid $main::rlogfile");
+		return $rs if($rs != 0);
 	}
 
 	push_el(\@main::el, 'setup_php()', 'Ending...');
@@ -1744,8 +1731,8 @@ sub setup_httpd_main_vhost {
 
 	push_el(\@main::el, 'setup_httpd_main_vhost()', 'Starting...');
 
-	# Do not generate cfg files if the service is disabled
-	return 0 if($main::cfg{'CMD_HTTPD'} =~ /^no$/i);
+	# Do not generate configuration files if the service is disabled
+	return 0 if $main::cfg{'CMD_HTTPD'} =~ /^no$/i;
 
 	my ($rs, $cfgTpl);
 	my $cfg = \$cfgTpl;
@@ -1790,14 +1777,14 @@ sub setup_httpd_main_vhost {
 	);
 	return $rs if ($rs != 0);
 
-	# Store the new file in working directory
+	# Storing the new file in working directory
 	$rs = store_file(
 		"$wrkDir/ispcp.conf", $$cfg, $main::cfg{'ROOT_USER'},
 		$main::cfg{'ROOT_GROUP'}, 0644
 	);
 	return $rs if ($rs != 0);
 
-	# Install the new file in production directory
+	# Installing the new file in production directory
 	$rs = sys_command(
 		"$main::cfg{'CMD_CP'} -pf $wrkDir/ispcp.conf " .
 		"$main::cfg{'APACHE_SITES_DIR'}/"
@@ -1806,27 +1793,22 @@ sub setup_httpd_main_vhost {
 
 	## Enable required modules
 
-	# Debian like only:
+	# Debian like distributions only:
 	# Note for distributions maintainers:
 	# For others distributions, you must use the a post-installation scripts
-	if(-e '/usr/sbin/a2enmod') {
-		# We use cgid instead of cgi because we working with MPM.
+	if(! -e '/etc/SuSE-release' && -e '/usr/sbin/a2enmod') {
 		$rs = sys_command("/usr/sbin/a2enmod cgid $main::rlogfile");
 		return $rs if($rs != 0);
 
+		# Enabling mod rewrite
 		$rs = sys_command("/usr/sbin/a2enmod rewrite $main::rlogfile");
 		return $rs if($rs != 0);
 
+		# Enabling mod suexec
 		$rs = sys_command("/usr/sbin/a2enmod suexec $main::rlogfile");
 		return $rs if($rs != 0);
-	}
 
-	## Enable main vhost configuration file
-
-	# Debian like only:
-	# Note for distributions maintainers:
-	# For others distributions, you must use the a post-installation scripts
-	if(-e '/usr/sbin/a2ensite') {
+		## Enabling main vhost configuration file
 		$rs = sys_command("/usr/sbin/a2ensite ispcp.conf $main::rlogfile");
 		return $rs if($rs != 0);
 	}
@@ -1850,7 +1832,7 @@ sub setup_awstats_vhost {
 
 	push_el(\@main::el, 'setup_awstats_vhost()', 'Starting...');
 
-	# Do not generate cfg files if the service is disabled
+	# Do not generate configuration files if the service is disabled
 	return 0 if($main::cfg{'AWSTATS_ACTIVE'} =~ /^no$/i);
 
 	my ($rs, $path, $file, $cfgTpl);
@@ -1861,14 +1843,12 @@ sub setup_awstats_vhost {
 	my $bkpDir = "$cfgDir/backup";
 	my $wrkDir = "$cfgDir/working";
 
-	## Dedicated tasks for Setup or Updates process
-
 	# Setup:
 	if(defined &setup_engine) {
-		# Saving some system configuration files modified for ispCP
+		# Saving some system configuration files
 		for (
 			map {/(.*\/)(.*)$/ && $1.':'.$2}
-			'/etc/logrotate.d/apache',
+			'/etc/logrotate.d/apache', # Still needed ?
 			'/etc/logrotate.d/apache2',
 			"$main::cfg{'APACHE_MODS_DIR'}/proxy.conf"
 		) {
@@ -1934,15 +1914,14 @@ sub setup_awstats_vhost {
 	);
 	return $rs if($rs != 0);
 
-	if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes' &&
-		$main::cfg{'AWSTATS_MODE'} eq 0) {
-
+	if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes' && $main::cfg{'AWSTATS_MODE'} eq 0) {
 		## Change the proxy module configuration file if it exists
 		if(-e "$bkpDir/proxy.conf.system") {
 			($rs, $$cfg) = get_file("$bkpDir/proxy.conf.system");
 			return $rs if($rs != 0);
 
-			# Replace the allowed hosts in mod_proxy if nedeed
+			# Replace the allowed hosts in mod_proxy if needed
+			# @todo Squeeze - All is commented / Check if it work like this
 			$$cfg =~ s/#Allow from .example.com/Allow from 127.0.0.1/gi;
 
 			# Store the new file in working directory
@@ -1960,15 +1939,15 @@ sub setup_awstats_vhost {
 			return $rs if($rs != 0);
 		}
 
-		# Enable required modules
-		if(-e '/usr/sbin/a2enmod') {
+		# Debian like distributions only:
+		# Note for distributions maintainers:
+		# For others distributions, you must use the a post-installation scripts
+		if(! -e '/etc/SuSE-release' && -e '/usr/sbin/a2enmod') {
+			# Enable required modules
 			sys_command("/usr/sbin/a2enmod proxy $main::rlogfile");
 			sys_command("/usr/sbin/a2enmod proxy_http $main::rlogfile");
-		}
 
-		## Enable awstats vhost
-
-		if(-e '/usr/sbin/a2ensite') {
+			# Enable awstats vhost
 			sys_command("/usr/sbin/a2ensite 01_awstats.conf $main::rlogfile");
 		}
 
@@ -2013,7 +1992,11 @@ sub setup_awstats_vhost {
 ################################################################################
 # ispCP Postfix - (Setup / Update)
 #
-# This subroutine built, store and install Postfix configuration files
+# This subroutine built, store and install Postfix configuration files:
+# - main.cf
+# - master.cf
+# - aliases, domains, mailboxes, transport, sender-access lookup tables
+# - ARPL messenger
 #
 # @return int 0 on success, other on failure
 #
@@ -2021,7 +2004,7 @@ sub setup_mta {
 
 	push_el(\@main::el, 'setup_mta()', 'Starting...');
 
-	# Do not generate cfg files if the service is disabled
+	# Do not generate configuration files if the service is disabled
 	return 0 if($main::cfg{'CMD_MTA'} =~ /^no$/i);
 
 	my ($rs, $cfgTpl, $path, $file);
@@ -2033,11 +2016,9 @@ sub setup_mta {
 	my $wrkDir = "$cfgDir/working";
 	my $vrlDir = "$cfgDir/ispcp";
 
-	## Dedicated tasks for the Install or Updates process
-
 	# Install
 	if(!defined &update_engine) {
-		# Savings all system configuration files if they exist
+		# Saving all system configuration files if they exists
 		for (
 			map {/(.*\/)(.*)$/ && $1.':'.$2}
 			$main::cfg{'POSTFIX_CONF_FILE'},
@@ -2045,10 +2026,10 @@ sub setup_mta {
 		) {
 			($path, $file) = split /:/;
 
-			next if(!-e $path.$file);
+			next if f(!-e $path.$file || -e "$bkpDir/$file.system");
 
 			$rs = sys_command(
-				"$main::cfg{'CMD_CP'} -p $path$file  $bkpDir/$file.system"
+					"$main::cfg{'CMD_CP'} -p $path$file  $bkpDir/$file.system"
 			);
 			return $rs if ($rs != 0);
 		}
@@ -2072,7 +2053,7 @@ sub setup_mta {
 			next if(!-e $path.$file);
 
 			$rs = sys_command(
-				"$main::cfg{'CMD_CP'} -p $path$file  $bkpDir/$file.$timestamp"
+				"$main::cfg{'CMD_CP'} -p $path$file $bkpDir/$file.$timestamp"
 			);
 			return $rs if ($rs != 0);
 		}
@@ -2086,7 +2067,7 @@ sub setup_mta {
 	($rs, $cfgTpl) = get_file("$cfgDir/main.cf");
 	return $rs if ($rs != 0);
 
-	# Building the new file
+	# Building the file
 	($rs, $$cfg) = prep_tpl(
 		{
 			'{MTA_HOSTNAME}' => $main::cfg{'SERVER_HOSTNAME'},
@@ -2108,14 +2089,14 @@ sub setup_mta {
 	);
 	return $rs if ($rs != 0);
 
-	# Store the new file in working directory
+	# Storing the new file in working directory
 	$rs = store_file(
 		"$wrkDir/main.cf", $$cfg, $main::cfg{'ROOT_USER'},
 		$main::cfg{'ROOT_GROUP'}, 0644
 	);
 	return $rs if ($rs != 0);
 
-	# Install the new file in production directory
+	# Installing the new file in production directory
 	$rs = sys_command(
 		"$main::cfg{'CMD_CP'} -pf $wrkDir/main.cf " .
 		"$main::cfg{'POSTFIX_CONF_FILE'}"
@@ -2124,32 +2105,32 @@ sub setup_mta {
 
 	# master.cf
 
-	# Store the file in working directory
+	# Storing the new file in the working directory
 	$rs = sys_command("$main::cfg{'CMD_CP'} -pf $cfgDir/master.cf $wrkDir/");
 	return $rs if ($rs != 0);
 
-	# Install the file in production dir
+	# Installing the new file in the production dir
 	$rs = sys_command(
 		"$main::cfg{'CMD_CP'} -pf $cfgDir/master.cf " .
 		"$main::cfg{'POSTFIX_MASTER_CONF_FILE'}"
 	);
 	return $rs if ($rs != 0);
 
-	## Virtuals related files
+	## Lookup tables files
 
 	for (qw/aliases domains mailboxes transport sender-access/) {
-		# Store the new files in working directory
+		# Storing the new files in the working directory
 		$rs = sys_command("$main::cfg{'CMD_CP'} -pf $vrlDir/$_ $wrkDir/");
 		return $rs if ($rs != 0);
 
-		# Install the files in production directory
+		# Install the files in the production directory
 		$rs = sys_command(
 			"$main::cfg{'CMD_CP'} -pf $wrkDir/$_ " .
 			"$main::cfg{'MTA_VIRTUAL_CONF_DIR'}/"
 		);
 		return $rs if ($rs != 0);
 
-		# Create / update Btree databases for all lookup tables
+		# Creating/updating Btree databases for all lookup tables
 		$rs = sys_command(
 			"$main::cfg{'CMD_POSTMAP'} $main::cfg{'MTA_VIRTUAL_CONF_DIR'}/$_ " .
 			"$main::rlogfile"
@@ -2157,11 +2138,11 @@ sub setup_mta {
 		return $rs if ($rs != 0);
 	}
 
-	# Rebuild the database for the mail aliases file - Begin
+	# Rebuilding the database for the mail aliases file - Begin
 	$rs = sys_command("$main::cfg{'CMD_NEWALIASES'} $main::rlogfile");
 	return $rs if ($rs != 0);
 
-	## Set ARPL messenger owner, group and permissions
+	## Setting ARPL messenger owner, group and permissions
 
 	$rs = setfmode(
 		"$main::cfg{'ROOT_DIR'}/engine/messenger/ispcp-arpl-msgr",
@@ -2180,7 +2161,7 @@ sub setup_mta {
 #
 # This subroutine do the following tasks:
 #  - Built, store and install Courier, related configuration files
-#  - Creates userdb.dat from the contents of userdb file
+#  - Creates userdb.dat file from the contents of the userdb file
 #
 # @return int 0 on success, other on failure
 #
@@ -2188,7 +2169,7 @@ sub setup_po {
 
 	push_el(\@main::el, 'setup_po()', 'Starting...');
 
-	# Do not generate cfg files if the service is disabled
+	# Do not generate configuration files if the service is disabled
 	return 0 if($main::cfg{'CMD_AUTHD'} =~ /^no$/i);
 
 	my ($rs, $rdata);
@@ -2198,19 +2179,17 @@ sub setup_po {
 	my $bkpDir ="$cfgDir/backup";
 	my $wrkDir = "$cfgDir/working";
 
-	## Dedicated tasks for the Install or Updates process
-
 	# Install:
 	if(!defined &update_engine) {
-		# Saving all system configuration files if they exist
+		# Saving all system configuration files if they exists
 		for (qw/authdaemonrc userdb/) {
-			next if(!-e "$main::cfg{'AUTHLIB_CONF_DIR'}/$_");
-
-			$rs = sys_command(
-				"$main::cfg{'CMD_CP'} -p $main::cfg{'AUTHLIB_CONF_DIR'}/$_ " .
-				"$bkpDir/$_.system"
-			);
-			return $rs if ($rs != 0);
+			if(-e "$main::cfg{'AUTHLIB_CONF_DIR'}/$_" && !-e "$bkpDir/$_.system") {
+				$rs = sys_command(
+					"$main::cfg{'CMD_CP'} -p $main::cfg{'AUTHLIB_CONF_DIR'}/$_ " .
+					"$bkpDir/$_.system"
+				);
+				return $rs if ($rs != 0);
+			}
 		}
 	# Update:
 	} else {
@@ -2230,51 +2209,52 @@ sub setup_po {
 
 	## Building, storage and installation of new file
 
-	# authdaemonrc
+	# authdaemonrc file
 
 	# Loading the system file from /etc/ispcp/backup
 	($rs, $rdata) = get_file("$bkpDir/authdaemonrc.system");
 	return $rs if ($rs != 0);
 
-	# Building the new file
-	# FIXME: Sould be review...
-	$rdata =~ s/authmodulelist="/authmodulelist="authuserdb /gi;
+	# Building the new file (Adding the authuserdb module if needed)
+	if($rdata !~ /^\s*authmodulelist="(?:.*)?authuserdb.*"$/gm) {
+		$rdata =~ s/(authmodulelist=")/$1authuserdb /gm;
+	}
 
-	# Store the new file in working directory
+	# Storing the new file in the working directory
 	$rs = store_file(
 		"$wrkDir/authdaemonrc", $rdata, $main::cfg{'ROOT_USER'},
 		$main::cfg{'ROOT_GROUP'}, 0660
 	);
 	return $rs if ($rs != 0);
 
-	# Install the new file in production directory
+	# Installing the new file in the production directory
 	$rs = sys_command(
 		"$main::cfg{'CMD_CP'} -pf $wrkDir/authdaemonrc " .
 		"$main::cfg{'AUTHLIB_CONF_DIR'}/"
 	);
 	return $rs if ($rs != 0);
 
-	# userdb
+	# userdb file
 
-	# Store the new file in working directory
+	# Storing the new file in the working directory
 	$rs = sys_command("$main::cfg{'CMD_CP'} -pf $cfgDir/userdb $wrkDir/");
 	return $rs if ($rs != 0);
 
-	# Install the new file in production directory
+	# Installing the new file in the production directory
 	$rs = sys_command(
 		"$main::cfg{'CMD_CP'} -pf $wrkDir/userdb " .
 		"$main::cfg{'AUTHLIB_CONF_DIR'}"
 	);
 	return $rs if ($rs != 0);
 
-	# Set permissions for the production file
+	# Setting permissions for the production file
 	$rs = setfmode(
 		"$main::cfg{'AUTHLIB_CONF_DIR'}/userdb", $main::cfg{'ROOT_USER'},
 		$main::cfg{'ROOT_GROUP'}, 0600
 	);
 	return $rs if($rs != 0);
 
-	# Creates userdb.dat from the contents of userdb
+	# Creating/Updating userdb.dat file from the contents of the userdb file
 	$rs = sys_command($main::cfg{'CMD_MAKEUSERDB'});
 	return $rs if ($rs != 0);
 
@@ -2296,7 +2276,7 @@ sub setup_ftpd {
 
 	push_el(\@main::el, 'setup_ftpd()', 'Starting...');
 
-	# Do not generate cfg files if the service is disabled
+	# Do not generate configuration files if the service is disabled
 	return 0 if($main::cfg{'CMD_FTPD'} =~ /^no$/i);
 
 	my ($rs, $rdata, $sql, $cfgTpl);
@@ -2320,12 +2300,10 @@ sub setup_ftpd {
 		return $rs if ($rs != 0);
 	}
 
-	## Dedicated tasks for Install or Updates process
-
 	# Install:
 	if(!defined &update_engine) {
 		# Saving the system configuration file if it exist
-		if(-e $main::cfg{'FTPD_CONF_FILE'}) {
+		if(-e $main::cfg{'FTPD_CONF_FILE'} && !-e "$bkpDir/proftpd.conf.system") {
 			$rs = sys_command(
 				"$main::cfg{'CMD_CP'} -p $main::cfg{'FTPD_CONF_FILE'} " .
 				"$bkpDir/proftpd.conf.system"
@@ -2362,6 +2340,7 @@ sub setup_ftpd {
 			if($rdata =~ /^SQLConnectInfo(?: |\t)+.*?(?: |\t)+(.*?)(?: |\t)+(.*?)\n/im) {
 
 				# Check the database connection with current ids
+				# @todo Check Check Check
 				$rs = check_sql_connection($1, $2);
 
 				# If the connection is successful, we can use these identifiers
@@ -2376,19 +2355,21 @@ sub setup_ftpd {
 				}
 			}
 		} else {
-			$warnMsg = "\n\t[WARNING] Unable to find the Proftpd " .
-				"configuration file!\n\tWe will create a new one.";
+			$warnMsg = colored(['bold yellow'], "\n\t[WARNING] ") .
+				"Unable to find the Proftpd configuration file!" .
+				"\n\tThe program will create a new.";
 		}
 
-		# We ask the database ftp user and password, and we create new Sql ftp
+		# We ask the database ftp user and password, and we create new SQL ftp
 		# user account if needed
 		if(!defined($main::ua{'db_ftp_user'}) ||
 			!defined($main::ua{'db_ftp_password'})) {
 
-			print defined($warnMsg)
+			print defined $warnMsg
 				? $warnMsg
-				: "\n\t[WARNING] Unable to retrieve your current username " .
-					"and/or\n\tpassword for the Ftpd Sql account! We will " .
+				: colored(['bold yellow'], "\n\t[WARNING]") .
+					"Unable to retrieve your current username and/or" .
+					"\n\tpassword for the Ftpd SQL account! We will " .
 					"create a new Ftpd Sql account.\n";
 
 			do {
@@ -2496,7 +2477,7 @@ sub setup_ftpd {
 	);
 	return $rs if ($rs != 0);
 
-	## To fill ftp_traff.log file with something.
+	## To fill ftp_traff.log file with something
 
 	if (! -e "$main::cfg{'TRAFF_LOG_DIR'}/proftpd") {
 		$rs = make_dir(

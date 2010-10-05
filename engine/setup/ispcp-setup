@@ -392,7 +392,7 @@ sub setup_ispcp_database {
 	while(@$rdata[0]) {
 		# Database with same name already exists
 		print colored(['bold yellow'], "\n\n\t[WARNING] ") .
-			"A database with same name already exist!\n";
+			"The '$main::ua{'db_name'}' database already exist!\n";
 
 		# We must have user confirmation for database drop
 		do {
@@ -630,8 +630,12 @@ sub setup_hosts {
 	my $hostname_local = "$hostname.local";
 	my $ip = $main::ua{'eth_ip'};
 
-	my $rs = sys_command_rs("$main::cfg{'CMD_CP'} -fp /etc/hosts /etc/hosts.bkp");
-	return $rs if ($rs != 0);
+	if(!-e '/etc/hosts.bkp') {
+		my $rs = sys_command_rs(
+			"$main::cfg{'CMD_CP'} -fp /etc/hosts /etc/hosts.bkp"
+		);
+		return $rs if ($rs != 0);
+	}
 
 	my $data  = "# 'hosts' file configuration.\n\n";
 
@@ -645,7 +649,7 @@ sub setup_hosts {
 	$data .= "ff02::2\tip6-allrouters\n";
 	$data .= "ff02::3\tip6-allhosts\n";
 
-	$rs = store_file(
+	my $rs = store_file(
 		'/etc/hosts', $data, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'},
 		0644
 	);
@@ -746,13 +750,15 @@ sub setup_engine {
 	title('Additional tasks');
 	additional_tasks();
 
+	spacer();
+
 	title('Set ENGINE and GUI permissions');
 	set_permissions();
 
 	spacer();
 
 	# Starting services
-	subtitle('Starting all services:');
+	subtitle('Starting all services: ');
 	start_services();
 	print_status(0);
 
