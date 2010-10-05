@@ -1,6 +1,10 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-10-05 Daniel Andreca
+	- GUI:
+		* Fixed #2479: sql user is able to create unlimited databases
+
 2010-10-03 Daniel Andreca
 	- ENGINE:
 		* Some refactorization tasks in the ispcp_rqst_mngr script
