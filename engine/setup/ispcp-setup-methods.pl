@@ -2692,8 +2692,6 @@ sub setup_gui_php {
 	my ($rs, $cfgTpl);
 	my $cfg = \$cfgTpl;
 
-	my %tags_hash = ();
-
 	my $cfgDir = "$main::cfg{'CONF_DIR'}/fcgi";
 	my $bkpDir = "$cfgDir/backup";
 	my $wrkDir = "$cfgDir/working";
@@ -2829,9 +2827,9 @@ sub setup_gui_php {
 }
 
 ################################################################################
-# ispCP GUI pma configuration file and pma slq control user - (Setup / Update)
+# ispCP GUI pma configuration file and pma SQL control user - (Setup / Update)
 #
-# This subroutine built, store and install the ispCP GUI pma configuration file
+# This subroutine built, store and install the PhpMyAdmin configuration file
 #
 # @return int 0 on success, -1 otherwise
 #
@@ -3033,6 +3031,7 @@ sub setup_gui_pma {
 
 		# Update the ispcp.conf file, reset the DSN and force reconnection on
 		# the next query
+
 		$rs = set_conf_val('PMA_USER', $ctrlUser);
 		return -1 if ($rs != 0);
 
