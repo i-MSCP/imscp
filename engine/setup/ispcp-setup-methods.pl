@@ -2338,7 +2338,6 @@ sub setup_ftpd {
 
 		unless($rs) {
 			if($rdata =~ /^SQLConnectInfo(?: |\t)+.*?(?: |\t)+(.*?)(?: |\t)+(.*?)\n/im) {
-
 				# Check the database connection with current ids
 				# @todo Check Check Check
 				$rs = check_sql_connection($1, $2);
@@ -2362,9 +2361,7 @@ sub setup_ftpd {
 
 		# We ask the database ftp user and password, and we create new SQL ftp
 		# user account if needed
-		if(!defined($main::ua{'db_ftp_user'}) ||
-			!defined($main::ua{'db_ftp_password'})) {
-
+		if(!defined $main::ua{'db_ftp_user'} || !defined $main::ua{'db_ftp_password'}) {
 			print defined $warnMsg
 				? $warnMsg
 				: colored(['bold yellow'], "\n\t[WARNING]") .
@@ -2372,71 +2369,56 @@ sub setup_ftpd {
 					"\n\tpassword for the Ftpd SQL account! We will " .
 					"create a new Ftpd Sql account.\n";
 
-			do {
-				$rs = ask_db_ftp_user();
-			} while ($rs);
+			# Ask for proftpd SQL username
+			do {$rs = ask_db_ftp_user();} while ($rs);
 
-			do {
-				$rs = ask_db_ftp_password();
-			} while ($rs);
+			# Ask for proftpd SQL user password
+			do {$rs = ask_db_ftp_password();} while ($rs);
 
-			## Setup of new Sql ftp user
+			## Setup of new SQL ftp user
 
-			# First, we reset the db connection
-			$main::db = undef;
-
-			# Sets the dsn
+			# Setting new DSN
 			@main::db_connect = (
 				"DBI:mysql:mysql:$main::db_host", $main::db_user, $main::db_pwd
 			);
 
+			# Forcing reconnection
+			$main::db = undef;
+
 			## We ensure that news data doesn't exist in database
 
-			$sql = "
-				DELETE FROM
-					tables_priv
-				WHERE
-					Host = '$main::cfg{'SERVER_HOSTNAME'}'
-				AND
-					Db = '$main::db_name'
-				AND
-					User = '$main::ua{'db_ftp_user'}'
-				;
-			";
-
-			($rs, $rdata) = doSQL($sql);
+			($rs) = doSQL(
+				qq/
+					DELETE FROM `tables_priv`
+					WHERE `Host` = '$main::cfg{'SERVER_HOSTNAME'}'
+					AND `Db` = '$main::db_name'
+					AND `User` = '$main::ua{'db_ftp_user'}';
+				/
+			);
 			return $rs if ($rs != 0);
 
-			$sql = "
-				DELETE FROM
-					user
-				WHERE
-					Host = '$main::db_host'
-				AND
-					User = '$main::ua{'db_ftp_user'}'
-				;
-			";
-
-			($rs, $rdata) = doSQL($sql);
+			($rs) = doSQL(
+				qq/
+					DELETE FROM `user`
+					WHERE `Host` = '$main::db_host'
+					AND `User` = '$main::ua{'db_ftp_user'}';
+				/
+			);
 			return $rs if ($rs != 0);
 
-			($rs, $rdata) = doSQL('FLUSH PRIVILEGES');
+			($rs) = doSQL('FLUSH PRIVILEGES');
 			return $rs if ($rs != 0);
 
 			## Inserting new data into the database
 
 			for (qw/ftp_group ftp_users quotalimits quotatallies/) {
-				$sql = "
-					GRANT SELECT,INSERT,UPDATE,DELETE ON
-						$main::db_name.$_
-					TO
-						'$main::ua{'db_ftp_user'}'\@'$main::db_host'
-					IDENTIFIED BY
-						'$main::ua{'db_ftp_password'}'
-					;
-				";
-
-				($rs, $rdata) = doSQL($sql);
+				($rs) = doSQL(
+					qq/
+						GRANT SELECT,INSERT,UPDATE,DELETE ON `$main::db_name`.`$_`
+						TO '$main::ua{'db_ftp_user'}'\@'$main::db_host'
+						IDENTIFIED BY '$main::ua{'db_ftp_password'}';
+					/
+				);
 				return $rs if ($rs != 0);
 			}
 		}
@@ -2586,7 +2568,6 @@ sub setup_gui_httpd {
 	my $bkpDir = "$cfgDir/backup";
 	my $wrkDir = "$cfgDir/working";
 
-
 	# Saving the current production file if it exists
 	if(-e "$main::cfg{'APACHE_SITES_DIR'}/00_master.conf") {
 		$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'APACHE_SITES_DIR'}/" .
@@ -2595,8 +2576,6 @@ sub setup_gui_httpd {
 		$rs = sys_command($cmd);
 		return $rs if($rs != 0);
 	}
-
-	# Building new configuration file
 
 	# Loading the template from /etc/ispcp/apache
 	($rs, $cfgTpl) = get_file("$cfgDir/00_master.conf");
@@ -2630,28 +2609,27 @@ sub setup_gui_httpd {
 	);
 	return $rs if ($rs != 0);
 
-	## Storage and installation of new file
-
+	# Storing the new file
 	$rs = store_file(
 		"$wrkDir/00_master.conf", $$cfg, $main::cfg{'ROOT_USER'},
 		$main::cfg{'ROOT_GROUP'}, 0644
 	);
 	return $rs if ($rs != 0);
 
+	# Installing the new file
 	$rs = sys_command(
 		"$main::cfg{'CMD_CP'} -pf $wrkDir/00_master.conf " .
 		"$main::cfg{'APACHE_SITES_DIR'}/"
 	);
 	return $rs if($rs != 0);
 
-	## Disable 000-default vhost
-
+	## Disable 000-default vhost (Debian like distributions)
 	if (-e "/usr/sbin/a2dissite") {
 		sys_command_rs("/usr/sbin/a2dissite 000-default $main::rlogfile");
 	}
 
-	## Disable the default NameVirtualHost directive
-
+	# Disable the default NameVirtualHost directive
+	# (Debian like distributions)
 	if(-e '/etc/apache2/ports.conf') {
 		# Loading the file
 		($rs, my $rdata) = get_file('/etc/apache2/ports.conf');
@@ -2665,8 +2643,7 @@ sub setup_gui_httpd {
 		return $rs if($rs != 0);
 	}
 
-	## Enable GUI vhost - Begin
-
+	# Enable GUI vhost (Debian like distributions)
 	if (-e "/usr/sbin/a2ensite") {
 		sys_command("/usr/sbin/a2ensite 00_master.conf $main::rlogfile");
 	}
@@ -2865,7 +2842,7 @@ sub setup_gui_pma {
 
 			# Retrieving the needed values from the working file
 			($blowfishSecret, $ctrlUser,$ctrlUserPwd) = map {
-				$blowfishSecret =~ /\['$_'\]\s+=\s*'(.+)'/
+				$cfgFile =~ /\['$_'\]\s+=\s*'(.+)'/
 			} qw /blowfish_secret controluser controlpass/;
 	# Update recovery
 	} else {
