@@ -3,7 +3,7 @@
 -- Copyright (c) 2001-2006 by moleSoftware GmbH
 -- Copyright (c) 2006-2010 by ispCP | http://isp-control.net
 --
--- Version: $Id$
+-- Version: $Id: database.sql 3398 2010-10-03 20:17:41Z nuxwin $
 --
 -- The contents of this file are subject to the Mozilla Public License
 -- Version 1.1 (the "License"); you may not use this file except in

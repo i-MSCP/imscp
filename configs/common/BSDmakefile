@@ -26,14 +26,18 @@
 #    http://isp-control.net
 #
 
-DATABASE_DIR=$(SYSTEM_CONF)/database
+.ifdef $(OSTYPE)==FreeBSD
+.include <../Makefile.fbsd>
+.else
+.include <../Makefile.inc>
+.endif
 
 install:
-	$(SYSTEM_MAKE_DIRS) $(DATABASE_DIR)
-	cp ./database.sql $(DATABASE_DIR)
-	cp ./languages.sql $(DATABASE_DIR)
+	cp -R ./database $(SYSTEM_CONF)/database
+	cp -R ./pma $(SYSTEM_CONF)/pma
 
 uninstall:
-	rm -rf $(DATABASE_DIR)
+	rm -rf $(SYSTEM_CONF)/database
+	rm -rf $(SYSTEM_CONF)/pma
 
 .PHONY: install uninstall

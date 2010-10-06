@@ -2586,16 +2586,14 @@ sub setup_gui_httpd {
 	my $bkpDir = "$cfgDir/backup";
 	my $wrkDir = "$cfgDir/working";
 
-	# Update:
-	if(defined &update_engine) {
-		# Saving the current production file if it exists
-		if(-e "$main::cfg{'APACHE_SITES_DIR'}/00_master.conf") {
-			$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'APACHE_SITES_DIR'}/" .
-			"00_master.conf $bkpDir/00_master.conf." . time;
 
-			$rs = sys_command($cmd);
-			return $rs if($rs != 0);
-		}
+	# Saving the current production file if it exists
+	if(-e "$main::cfg{'APACHE_SITES_DIR'}/00_master.conf") {
+		$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'APACHE_SITES_DIR'}/" .
+		"00_master.conf $bkpDir/00_master.conf." . time;
+
+		$rs = sys_command($cmd);
+		return $rs if($rs != 0);
 	}
 
 	# Building new configuration file
@@ -2700,25 +2698,23 @@ sub setup_gui_php {
 	my $bkpDir = "$cfgDir/backup";
 	my $wrkDir = "$cfgDir/working";
 
-	# Update:
-	if(defined &update_engine) {
-		my $timestamp = time();
+	my $timestamp = time;
 
-		for (qw{php5-fcgi-starter php5/php.ini php5/browscap.ini}) {
-			if(-e "$main::cfg{'PHP_STARTER_DIR'}/master/$_") {
-				my (undef, $file) = split('/');
-				$file = $_ if(!defined $file);
+	# Saving files if they exists
+	for ('php5-fcgi-starter', 'php5/php.ini', 'php5/browscap.ini') {
+		if(-e "$main::cfg{'PHP_STARTER_DIR'}/master/$_") {
+			my (undef, $file) = split('/');
+			$file = $_ if(!defined $file);
 
-				$rs = sys_command(
-					"$main::cfg{'CMD_CP'} -p $main::cfg{'PHP_STARTER_DIR'}/" .
-					"master/$_ $bkpDir/master.$file.$timestamp"
-				);
-				return $rs if($rs != 0);
-			}
+			$rs = sys_command(
+				"$main::cfg{'CMD_CP'} -p $main::cfg{'PHP_STARTER_DIR'}/" .
+				"master/$_ $bkpDir/master.$file.$timestamp"
+			);
+			return $rs if($rs != 0);
 		}
 	}
 
-	## Create the fcgi directories tree for gui user if it doesn't exists
+	## Create the fcgi directories tree for the GUI if it doesn't exists
 
 	$rs = make_dir(
 		"$main::cfg{'PHP_STARTER_DIR'}/master/php5", $main::cfg{'ROOT_USER'},
@@ -2732,19 +2728,19 @@ sub setup_gui_php {
 	($rs, $cfgTpl) = get_file("$cfgDir/parts/master/php5-fcgi-starter.tpl");
 	return $rs if ($rs != 0);
 
-	# Tags preparation
-	%tags_hash = (
-		'{PHP_STARTER_DIR}' => $main::cfg{'PHP_STARTER_DIR'},
-		'{PHP5_FASTCGI_BIN}' => $main::cfg{'PHP5_FASTCGI_BIN'},
-		'{GUI_ROOT_DIR}' => $main::cfg{'GUI_ROOT_DIR'},
-		'{DMN_NAME}' => 'master'
-	);
-
 	# Building the new file
-	($rs, $$cfg) = prep_tpl(\%tags_hash, $cfgTpl);
+	($rs, $$cfg) = prep_tpl(
+		{
+			'{PHP_STARTER_DIR}' => $main::cfg{'PHP_STARTER_DIR'},
+			'{PHP5_FASTCGI_BIN}' => $main::cfg{'PHP5_FASTCGI_BIN'},
+			'{GUI_ROOT_DIR}' => $main::cfg{'GUI_ROOT_DIR'},
+			'{DMN_NAME}' => 'master'
+		},
+		$cfgTpl
+	);
 	return $rs if ($rs != 0);
 
-	# Store the new file in working directory
+	# Storing the new file in the working directory
 	$rs = store_file(
 		"$wrkDir/master.php5-fcgi-starter", $$cfg,
 		$main::cfg{'APACHE_SUEXEC_USER_PREF'} . $main::cfg{'APACHE_SUEXEC_MIN_UID'},
@@ -2837,217 +2833,211 @@ sub setup_gui_php {
 #
 # This subroutine built, store and install the ispCP GUI pma configuration file
 #
-# @return int 0 on success, other on failure
+# @return int 0 on success, -1 otherwise
 #
 sub setup_gui_pma {
 
 	push_el(\@main::el, 'setup_gui_pma()', 'Starting...');
 
-	my ($rs, $sql, $cfg_file, $pma_sql_user, $pma_sql_password, $hostname);
-	my $cfg =  \$cfg_file;
+	my $cfgDir = "$main::cfg{'CONF_DIR'}/pma";
+	my $bkpDir = "$cfgDir/backup";
+	my $wrkDir = "$cfgDir/working";
+	my $prodDir = "$main::cfg{'GUI_ROOT_DIR'}/tools/pma";
 
-	my $cfgDir = "$main::cfg{'GUI_ROOT_DIR'}/tools/pma/";
+	my ($rs, $blowfishSecret, $ctrlUser, $ctrlUserPwd, $cfgFile);
 
-	# Gets the pma configuration file
-	($rs, $cfg_file) = get_file("${cfgDir}config.inc.php");
-	return $rs if ($rs != 0);
-
-	# Install
-	if(!defined &update_engine) {
-		$pma_sql_user = $main::ua{'db_pma_user'};
-		$pma_sql_password = $main::ua{'db_pma_password'};
-		$hostname = $main::ua{'db_host'};
-	# Update:
-	} else {
-		if($cfg_file =~ /\{(?:HOSTNAME|PMA_USER|PMA_PASS|BLOWFISH|TMP_DIR)\}/) {
-			print colored(['bold yellow'], "\n\n\tWARNING: ") .
-				"Your PMA configuration file should be re-builded !\n";
-
-			# Gets the new pma control user username
-			do {
-				$rs = ask_db_pma_user();
-			} while ($rs == 1);
-
-			# Gets the new pma control user password
-			do {
-				$rs = ask_db_pma_password();
-			} while ($rs == 1);
-
-			$pma_sql_user = $main::ua{'db_pma_user'};
-			$pma_sql_password = $main::ua{'db_pma_password'};
-			$hostname = $main::cfg{'DATABASE_HOST'}
-		}
+	# Saving the current production file if it exists
+	if(-e "$prodDir/config.inc.php") {
+		$rs = sys_command(
+			"$main::cfg{'CMD_CP'} -p $prodDir/config.inc.php" .
+			"$bkpDir/config.inc.php" . time
+		);
+		return -1 if($rs != 0);
 	}
 
-	# Create or update the PMA user if needed
-	if(defined $pma_sql_user && defined $pma_sql_password) {
-		$main::db = undef;
+	# Setup:
+	if(defined &setup_engine) {
+		$ctrlUser = $main::ua{'db_pma_user'};
+		$ctrlUserPwd = $main::ua{'db_pma_password'};
+	# Update:
+	} elsif(-e "$wrkDir/config.inc.php") {
+			# Gets the pma configuration file
+			($rs, $cfgFile) = get_file("$cfgDir/working/config.inc.php");
+			return -1 if ($rs != 0);
 
+			# Retrieving the needed values from the working file
+			($blowfishSecret, $ctrlUser,$ctrlUserPwd) = map {
+				$blowfishSecret =~ /\['$_'\]\s+=\s*'(.+)'/
+			} qw /blowfish_secret controluser controlpass/;
+	# Update recovery
+	} else {
+		print colored(['bold yellow'], "\n\n\tWARNING: ") .
+			"Unable to found your working PMA configuration file !\n" .
+			"\tA new one will be created.\n";
+
+			# Ask for pma control username
+			do {$rs = ask_db_pma_user();} while ($rs);
+
+			# Ask for control user password
+			do {$rs = ask_db_pma_password();} while ($rs);
+
+			$ctrlUser = $main::ua{'db_pma_user'};
+			$ctrlUserPwd = $main::ua{'db_pma_password'};
+	}
+
+	# Getting blowfish secret
+	if(!defined $blowfishSecret) {
+		$blowfishSecret = gen_sys_rand_num(31);
+		$blowfishSecret =~ s/'/\\'/gi;
+	}
+
+	## Building the new file
+
+	# Getting the template file
+	($rs, $cfgFile) = get_file("$cfgDir/config.inc.tpl");
+	return -1 if ($rs != 0);
+
+	($rs, $cfgFile) = prep_tpl(
+		{
+			'{PMA_USER}' => $ctrlUser,
+			'{PMA_PASS}' => $ctrlUserPwd,
+			'{HOSTNAME}' => $main::cfg{'DATABASE_HOST'},
+			'{TMP_DIR}'  => "$main::cfg{'GUI_ROOT_DIR'}/phptmp",
+			'{BLOWFISH}' => $blowfishSecret
+		},
+		$cfgFile
+	);
+	return -1 if ($rs != 0);
+
+	# Storing the file in the working directory
+	$rs = store_file(
+		"$cfgDir/working/config.inc.php", $cfgFile, "$main::cfg{'ROOT_USER'}",
+		"$main::cfg{'ROOT_GROUP'}", 0640
+	);
+	return -1 if ($rs != 0);
+
+	# Installing the file in the production directory
+	# Note: permission are set by the set-gui-permissions.sh script
+	$rs = sys_command(
+		"$main::cfg{'CMD_CP'} -f $cfgDir/working/config.inc.php $cfgDir/"
+	);
+	return -1 if ($rs != 0);
+
+	## Creating SQL control user account if needed
+
+	if (defined $main::ua{'db_pma_user'}) {
+		# Setting DSN
 		@main::db_connect = (
 			"DBI:mysql:mysql:$main::db_host", $main::db_user, $main::db_pwd
 		);
+
+		# Forcing reconnection
+		$main::db = undef;
 
 		## We ensure the new user is not already registered and we remove the
 		## old user if one exist
 
 		my $i = 0;
 
-		for ($main::cfg{'PMA_USER'}, $pma_sql_user) {
-			if($main::cfg{'PMA_USER'} eq $pma_sql_user && $i == 0) {
+		for ($main::cfg{'PMA_USER'}, $ctrlUserPwd) {
+			if($main::cfg{'PMA_USER'} eq $ctrlUser && $i == 0) {
 				$i++;
 				next;
 			}
 
-			$sql = "
-				DELETE FROM
-					tables_priv
-				WHERE
-					Host = '$hostname'
-				AND
-					Db = 'mysql' AND User = '$_'
-				;
-			";
+			($rs) = dosSQL(
+				qq /
+					DELETE FROM `tables_priv`
+					WHERE `Host` = '$main::cfg{'DATABASE_HOST'}'
+					AND `Db` = 'mysql' AND `User` = '$_';
+				/
+			);
+			return -1 if ($rs != 0);
 
-			($rs) = doSQL($sql);
-			return $rs if ($rs != 0);
+			($rs) = doSQL(
+				qq /
+					DELETE FROM `user`
+					WHERE `Host` = '$main::cfg{'DATABASE_HOST'}'
+					AND `User` = '$_';
+				/
+			);
+			return -1 if ($rs != 0);
 
-			$sql = "
-				DELETE FROM
-					user
-				WHERE
-					Host = '$hostname'
-				AND
-					User = '$_'
-				;
-			";
-
-			($rs) = doSQL($sql);
-			return $rs if ($rs != 0);
-
-			$sql = "
-				DELETE FROM
-					columns_priv
-				WHERE
-					Host = '$hostname'
-				AND
-					User = '$_'
-				;
-			";
-
-			($rs) = doSQL($sql);
-			return $rs if ($rs != 0);
+			($rs) = doSQL(
+				qq /
+					DELETE FROM `columns_priv`
+					WHERE `Host` = '$main::cfg{'DATABASE_HOST'}'
+					AND `User` = '$_';
+				/
+			);
+			return -1 if ($rs != 0);
 		}
 
-		## Flush Db privileges
-
+		# Flushing privileges
 		($rs) = doSQL('FLUSH PRIVILEGES');
-		return $rs if ($rs != 0);
+		return -1 if ($rs != 0);
 
-		## Adding the new pma control user
-
-		$sql = "
-			GRANT USAGE ON
-				mysql.*
-			TO
-				'$pma_sql_user'\@'$hostname'
-			IDENTIFIED BY
-				'$pma_sql_password'
-			;
-		";
-
-		($rs) = doSQL($sql);
-		return $rs if ($rs != 0);
+		# Adding the new pma control user
+		($rs) = doSQL(
+			qq/
+				GRANT USAGE ON `mysql`.*
+				TO '$ctrlUser'\@'$main::cfg{'DATABASE_HOST'}'
+				IDENTIFIED BY '$ctrlUserPwd' ;
+			/
+		);
+		return -1 if ($rs != 0);
 
 		## Sets the rights for the pma control user
-		$sql = "
-			GRANT SELECT (
-				Host, User, Select_priv, Insert_priv, Update_priv, Delete_priv,
-				Create_priv, Drop_priv, Reload_priv, Shutdown_priv, Process_priv,
-				File_priv, Grant_priv, References_priv, Index_priv, Alter_priv,
-				Show_db_priv, Super_priv, Create_tmp_table_priv,
-				Lock_tables_priv, Execute_priv, Repl_slave_priv,
-				Repl_client_priv
-			)
-			ON
-				mysql.user
-			TO
-				'$pma_sql_user'\@'$hostname'
-			;
-		";
 
-		($rs) = doSQL($sql);
-		return $rs if ($rs != 0);
-
-		$sql = "
-			GRANT SELECT ON
-				mysql.db
-			TO
-				'$pma_sql_user'\@'$hostname'
-			;
-		";
-
-		($rs) = doSQL($sql);
-		return $rs if ($rs != 0);
-
-		$sql = "
-			GRANT SELECT ON
-				mysql.host
-			TO
-				'$pma_sql_user'\@'$hostname'
-			;
-		";
-
-		($rs) = doSQL($sql);
-		return $rs if ($rs != 0);
-
-		$sql = "
-			GRANT SELECT
-				(Host, Db, User, Table_name, Table_priv, Column_priv)
-			ON
-				mysql.tables_priv
-			TO
-				'$pma_sql_user'\@'$hostname'
-			;
-		";
-
-		($rs) = doSQL($sql);
-		return $rs if ($rs != 0);
-
-		## Insert pma user and password to config file
-		## together with some other information
-
-		my $blowfish = gen_sys_rand_num(31);
-		$blowfish =~ s/'/\\'/gi;
-
-		# Building the file
-		($rs, $$cfg) = prep_tpl(
-			{
-				'{PMA_USER}' => $pma_sql_user,
-				'{PMA_PASS}' => $pma_sql_password,
-				'{HOSTNAME}' => $hostname,
-				'{TMP_DIR}'  => "$main::cfg{'GUI_ROOT_DIR'}/phptmp",
-				'{BLOWFISH}' => $blowfish
-			},
-			$cfg_file
+		($rs) = doSQL(
+			qq/
+				GRANT SELECT ON `mysql`.`db`
+				TO '$ctrlUser'\@'$main::cfg{'DATABASE_HOST'}';
+			/
 		);
-		return $rs if ($rs != 0);
+		return -1 if ($rs != 0);
 
-		# Install the new file
-		$rs = store_file(
-			"$cfgDir/config.inc.php", $$cfg,
-			"$main::cfg{'APACHE_SUEXEC_USER_PREF'}$main::cfg{'APACHE_SUEXEC_MIN_UID'}",
-			"$main::cfg{'APACHE_GROUP'}", 0440
+		($rs) = doSQL(
+			qq/
+				GRANT SELECT (
+					Host, User, Select_priv, Insert_priv, Update_priv, Delete_priv,
+					Create_priv, Drop_priv, Reload_priv, Shutdown_priv, Process_priv,
+					File_priv, Grant_priv, References_priv, Index_priv, Alter_priv,
+					Show_db_priv, Super_priv, Create_tmp_table_priv,
+					Lock_tables_priv, Execute_priv, Repl_slave_priv,
+					Repl_client_priv
+				)
+				ON `mysql`.`user`
+				TO '$ctrlUser'\@'$main::cfg{'DATABASE_HOST'}';
+			/
 		);
-		return $rs if ($rs != 0);
+		return -1 if ($rs != 0);
 
-		## Update the ispcp.conf file
+		($rs) = doSQL(
+			qq/
+				GRANT SELECT ON mysql.host
+				TO '$ctrlUser'\@'$main::cfg{'DATABASE_HOST'}';
+			/
+		);
+		return -1 if ($rs != 0);
 
-		$rs = set_conf_val('PMA_USER', $pma_sql_user);
-		return $rs if ($rs != 0);
+		($rs) = doSQL(
+			qq/
+				GRANT SELECT
+					(Host, Db, User, Table_name, Table_priv, Column_priv)
+				ON mysql.tables_priv
+				TO '$ctrlUser'\@'$main::cfg{'DATABASE_HOST'}';
+			/
+		);
+		return -1 if ($rs != 0);
+
+		# Update the ispcp.conf file, reset the DSN and force reconnection on
+		# the next query
+		$rs = set_conf_val('PMA_USER', $ctrlUser);
+		return -1 if ($rs != 0);
 
 		$rs = store_conf();
-		return $rs if ($rs != 0);
-
+		return -1 if ($rs != 0);
 	}
 
 	push_el(\@main::el, 'setup_gui_pma()', 'Ending...');
