@@ -6,17 +6,26 @@
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="{THEME_COLOR_PATH}/css/jquery.js"></script>
+<script type="text/javascript" src="{THEME_COLOR_PATH}/css/jquery.ispcpTooltips.js"></script>
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
 <!--[if lt IE 7.]>
 <script defer type="text/javascript" src="{THEME_COLOR_PATH}/css/pngfix.js"></script>
 <![endif]-->
-<script type="text/javascript" src="../themes/omega_original/css/tooltip.js"></script>
+
+<script type="text/javascript">
+/*<![CDATA[*/
+	$(document).ready(function(){
+		// Tooltips - begin
+		$('#dmn_exp_help').ispCPtooltips({msg:"{TR_DMN_EXP_HELP}"});
+		// Tooltips - end
+	});
+/*]]>*/
+</script>
 </head>
 
 <body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.png','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.png','{THEME_COLOR_PATH}/images/icons/domains_a.png','{THEME_COLOR_PATH}/images/icons/general_a.png' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.png','{THEME_COLOR_PATH}/images/icons/webtools_a.png','{THEME_COLOR_PATH}/images/icons/statistics_a.png','{THEME_COLOR_PATH}/images/icons/support_a.png')">
-<!-- ToolTip -->
-<div id="dmn_exp_help" style="background-color:#ffffe0;border: 1px #000 solid;display:none;margin:5px;padding:5px;font-size:9pt;font-family:Verdana, sans-serif;color:#000;width:200px;position:absolute;">{TR_DMN_EXP_HELP}</div>
-<!-- ToolTip end -->
+
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="height:100%;padding:0;margin:0 auto;">
 <!-- BDP: logged_from -->
 <tr>
@@ -71,7 +80,7 @@
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>
-                        <td class="content2" width="193">{TR_DOMAIN_NEW_EXPIRE} <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onMouseOver="showTip('dmn_exp_help', event)" onMouseOut="hideTip('dmn_exp_help')" alt="" /></td>
+                        <td class="content2" width="193">{TR_DOMAIN_NEW_EXPIRE} <img id="dmn_exp_help" src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" alt="" /></td>
                         <td class="content"><select name="dmn_expire">
 							<option value="0" {EXPIRE_UNCHANGED_SET}>{TR_DOMAIN_EXPIRE_UNCHANGED}</option>
 							<option value="OFF" {EXPIRE_NEVER_SET}>{TR_DOMAIN_EXPIRE_NEVER}</option>
