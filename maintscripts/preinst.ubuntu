@@ -49,8 +49,6 @@ case "$1" in
 		# Fix for #2224 Postgrey - Port changed to 10023 for some distributions
 		# @author Laurent Declercq <laurent.declercq@ispcp.net>
 		# @since  1.0.7 (rc2)
-		#
-		# NOTE: If Lenny is no longer supported, this fix can be removed
 		if $CMD_GREP -qe "--inet=60000" /etc/default/postgrey; then
 			print_title "Postgrey configuration (Updating listening port):"
 
