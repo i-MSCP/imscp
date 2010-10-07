@@ -2894,7 +2894,7 @@ sub setup_gui_pma {
 	# Installing the file in the production directory
 	# Note: permission are set by the set-gui-permissions.sh script
 	$rs = sys_command(
-		"$main::cfg{'CMD_CP'} -f $cfgDir/working/config.inc.php $cfgDir/"
+		"$main::cfg{'CMD_CP'} -f $cfgDir/working/config.inc.php $prodDir/"
 	);
 	return -1 if ($rs != 0);
 
