@@ -50,7 +50,7 @@
 		);
 
 		// Create and adds the ajax spinner
-		$('<img>').attr({src:'{THEME_COLOR_PATH}/images/ajax/small-spinner.png'}).
+		$('<img>').attr({src:'{THEME_COLOR_PATH}/images/ajax/small-spinner.gif'}).
 			addClass('small-spinner').insertAfter($(':password'));
 
 		// Configure the request for password generation
