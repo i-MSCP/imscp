@@ -4,6 +4,7 @@ ispCP ω 1.0.7 ChangeLog
 2010-10-07 Sascha Bay
 	- THEMES:
 		* Fixed #2480: Ajax spinner broken since the theme was updated
+		* Small fix: change old tooltip to the new one in reseller domain_edit
 
 2010-10-05 Daniel Andreca
 	- GUI:
