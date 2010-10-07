@@ -1,6 +1,17 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-10-7 Laurent Declercq
+	- CONFIG:
+		* Created a new 'common' directory for common for files such as:
+			- Database schema and language table
+			- PhpMyAdmin configuration file
+	- ENGINE: Some refactorization tasks and improvements
+	- SETUP:
+		* Fixed: #2277: PMA - Update configuration file
+		* Fixed #2224: Postgrey - Port changed to 10023 for some distributions
+		* Several refactorization tasks and improvements
+
 2010-10-07 Sascha Bay
 	- THEMES:
 		* Fixed #2480: Ajax spinner broken since the theme was updated
