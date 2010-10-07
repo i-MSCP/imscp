@@ -46,8 +46,6 @@
 #
 # . $(dirname "$0")/maintainer-helper.sh
 #
-# See the docs/OpenSuse/postinst script for an usage example.
-#
 
 # Retrieve the isCP main configuration file path
 if [ -f "/etc/ispcp/ispcp.conf" ] ; then
@@ -60,7 +58,7 @@ else
 fi
 
 # Read needed entries from ispcp.conf
-for a in `grep -E '(^Version|APACHE_|MTA_|ROOT_|^PHP_FASTCGI|^CMD_|^DEBUG)' \
+for a in `grep -E '(^Version|APACHE_|MTA_|ROOT_|^PHP_FASTCGI|^CMD_|^DEBUG|^LOG_DIR)' \
 $ISPCP_CONF_FILE | sed -e 's/ //g'`; do
     export $a
 done
@@ -68,14 +66,21 @@ done
 # Get ispCP version
 ISPCP_VERS=`echo $Version | sed -e 's/[A-Z]//g'`
 
-# Enable debugg mode (see ispcp.conf)
+# Enable debug mode (see ispcp.conf)
 if [ $DEBUG -eq 1 ]; then
   echo "now debugging $0 $@"
   set -x
 fi
 
-# Global variables
-ISPCP_LOGFILE=/tmp/ispcp-postinst.log
+# Log file path
+ISPCP_LOGFILE="$LOG_DIR/setup/ispcp-$0-$1.log"
+
+# Make sure that the log directory exists
+/usr/bin/install -d $LOG_DIR/setup -m 0755 -o $ROOT_USER -g $ROOT_GROUP
+
+# Remove old ISPCP_LOGFILE if one it exists
+$CMD_RM -f $ISPCP_LOGFILE
+
 ISPCP_ERRMSG="\n\t  \033[1;34m[Notice]\033[0m See the $ISPCP_LOGFILE for the \
 reason!\n\n"
 ISPCP_STATE="\033[1;32mDone\033[0m"
@@ -108,11 +113,11 @@ progress() {
 # Param: string The error message
 set_errmsg() {
 	if [ "$1" = "notice" ] ; then
-		ISPCP_ERRMSG="\n\t  \033[1;34m[Notice]\033[0m $2\n\n"
+		ISPCP_ERRMSG="\n\t  \033[1;34m[Notice]\033[0m $2\n"
 	elif [ "$1" = "warning" ] ; then
-		ISPCP_ERRMSG="\n\t  \033[1;33m[Warning]\033[0m $2\n\n"
+		ISPCP_ERRMSG="\n\t  \033[1;33m[Warning]\033[0m $2\n"
 	elif [ "$1" = "error" ] ; then
-		ISPCP_ERRMSG="\n\t  \033[1;31m[Error]\033[0m $2\n\n"
+		ISPCP_ERRMSG="\n\t  \033[1;31m[Error]\033[0m $2\n"
 	else
 		ISPCP_ERRMSG="\n\t $1\n\n"
 	fi

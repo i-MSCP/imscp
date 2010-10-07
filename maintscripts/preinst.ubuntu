@@ -1,0 +1,84 @@
+#!/bin/sh
+#
+# ispCP pre-installation script for Ubuntu
+#
+# ispCP ω (OMEGA) a Virtual Hosting Control Panel
+# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# author    Laurent Declercq <laurent.declercq@ispcp.net>
+# version   1.0
+#
+# SVN: $Id$
+#
+# The contents of this file are subject to the Mozilla Public License
+# Version 1.1 (the "License"); you may not use this file except in
+# compliance with the License. You may obtain a copy of the License at
+# http://www.mozilla.org/MPL/
+#
+# Software distributed under the License is distributed on an "AS IS"
+# basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+# License for the specific language governing rights and limitations
+# under the License.
+#
+# The Original Code is "ispCP ω (OMEGA) a Virtual Hosting Control Panel".
+#
+# The Initial Developer of the Original Code is ispCP Team.
+# Portions created by Initial Developer are Copyright (C) 2006-2010 by
+# isp Control Panel. All Rights Reserved.
+#
+# The ispCP ω Home Page is:
+#
+#    http://isp-control.net
+#
+
+# Special note for DevTeam:
+#
+# It is necessary for the error recovery and update procedures that the scripts
+# be idempotent. This means that if it is run successfully, and then it is
+# called again, it doesn't bomb out or cause any harm, but just ensures that
+# everything is the way it oug#!/bin/sh
+#
+
+set -e
+
+SELFDIR=$(dirname "$0")
+. $SELFDIR/maintainer-helper.sh
+
+case "$1" in
+	install|upgrade)
+
+		# Fix for #2224 Postgrey - Port changed to 10023 for some distributions
+		# @author Laurent Declercq <laurent.declercq@ispcp.net>
+		# @since  1.0.7 (rc2)
+		if $CMD_GREP -qe "--inet=60000" /etc/default/postgrey; then
+			print_title "Postgrey configuration (Updating listening port):"
+
+			set_errmsg 'warning' "The script was unable to update the Postgrey\n\t  listening port in your ispcp.old.conf file!";
+
+			# Updating the ispcp.conf file here to revert back to the old port
+			if test -f /etc/ispcp/ispcp.old.conf; then
+				$CMD_SED -i s'/\(PORT_POSTGREY.*=.*\)10023/\160000/' \
+					/etc/ispcp/ispcp.old.conf >> $ISPCP_LOGFILE 2>&1 || failed
+			fi
+
+			set_errmsg 'warning' "The script was unable to update the Postgrey\n\t  listening port in your ispcp.conf file!";
+
+			$CMD_SED -i s'/\(PORT_POSTGREY.*=.*\)10023/\160000/' \
+				/etc/ispcp/ispcp.conf >> $ISPCP_LOGFILE 2>&1 || failed
+
+			set_errmsg 'warning' "The script was unable to update the Postgrey\n\t  listening port in the database schema!";
+
+			# Updating database.sql file Only on install
+			if [ "$1" = "install" ] ; then
+				$CMD_SED -i s'/10023\(;tcp;POSTGREY\)/60000\1/' \
+					/etc/ispcp/database/database.sql >> $ISPCP_LOGFILE 2>&1 || failed
+			fi
+
+			print_status
+		fi
+	;;
+	*)
+		exit 0
+	;;
+esac
+
+exit 0

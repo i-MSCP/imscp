@@ -48,8 +48,7 @@ BEGIN {
 		File::Path => '',
 		HTML::Entities=> '',
 		File::Temp => 'qw(tempdir)',
-		File::Copy::Recursive => 'qw(rcopy)',
-		DateTime::TimeZone => ''
+		File::Copy::Recursive => 'qw(rcopy)'
 	);
 
 	my ($mod, $mod_err, $mod_missing) = ('', '_off_', '');
@@ -62,7 +61,7 @@ BEGIN {
 
 		} else {
 
-			print STDERR "\nCRITICAL ERROR: Module [$mod] WAS NOT FOUND !\n" ;
+			print STDERR "\n[FATAL] Module [$mod] WAS NOT FOUND !\n" ;
 
 			$mod_err = '_on_';
 
@@ -168,7 +167,7 @@ sub push_el {
 	push @$el, "$sub_name".$main::el_sep."$msg";
 
 	if (defined $main::engine_debug) {
-        print STDOUT "DEBUG: push_el() sub_name: $sub_name, msg: $msg\n";
+        print STDOUT "[DEBUG] push_el() sub_name: $sub_name, msg: $msg\n";
     }
 }
 
@@ -191,7 +190,7 @@ sub pop_el {
 
 	if (!defined $data) {
 		if (defined $main::engine_debug) {
-			print STDOUT "DEBUG: pop_el() Empty 'EL' Stack !\n";
+			print STDOUT "[DEBUG] pop_el() Empty 'EL' Stack !\n";
 		}
 
 		return undef;
@@ -200,7 +199,7 @@ sub pop_el {
 	my ($sub_name, $msg) = split(/$main::el_sep/, $data);
 
 	if (defined $main::engine_debug) {
-		print STDOUT "DEBUG: pop_el() sub_name: $sub_name, msg: $msg\n";
+		print STDOUT "[DEBUG] pop_el() sub_name: $sub_name, msg: $msg\n";
 	}
 
     return $data;
@@ -251,7 +250,7 @@ sub doSQL {
 	my $qr = undef;
 
 	if (!defined $sql || $sql eq '') {
-		push_el(\@main::el, 'doSQL()', 'ERROR: Undefined SQL query !');
+		push_el(\@main::el, 'doSQL()', '[ERROR] Undefined SQL query !');
 
 		return (-1, '');
 	}
@@ -262,7 +261,8 @@ sub doSQL {
 		if (!defined $main::db) {
 
 			push_el(
-				\@main::el, 'doSQL()', 'ERROR: Unable to connect SQL server !'
+				\@main::el, 'doSQL()',
+				"[ERROR] Unable to connect SQL server with current DSN: @main::db_connect"
 			);
 
 			return (-1, '');
@@ -285,10 +285,9 @@ sub doSQL {
 		push_el(\@main::el, 'doSQL()', 'Ending...');
 		return (0, $qr);
 	} else {
-
 		push_el(
 			\@main::el, 'doSQL()',
-			'ERROR: Incorrect SQL Query -> '.$main::db -> errstr
+			'[ERROR] Incorrect SQL Query -> ' . $main::db -> errstr
 		);
 
 		return (-1, '');
@@ -303,7 +302,7 @@ sub doHashSQL {
 	my $qr;
 
 	if (!defined $sql || $sql eq '') {
-		push_el(\@main::el, 'doHashSQL()', 'ERROR: Undefined SQL query !');
+		push_el(\@main::el, 'doHashSQL()', '[ERROR] Undefined SQL query !');
 
 		return (-1, '');
 	}
@@ -314,7 +313,7 @@ sub doHashSQL {
 		if (!defined $main::db) {
 
 		push_el(
-			\@main::el, 'doHashSQL()', 'ERROR: Unable to connect SQL server !'
+			\@main::el, 'doHashSQL()', '[ERROR] Unable to connect SQL server !'
 		);
 
 		return (-1, '');
@@ -338,7 +337,7 @@ sub doHashSQL {
 	} else {
 		push_el(
 			\@main::el, 'doHashSQL()',
-			'ERROR: Incorrect SQL Query -> '.$main::db -> errstr
+			'[ERROR] Incorrect SQL Query -> '.$main::db -> errstr
 		);
 
 		return (-1, '');
@@ -377,7 +376,7 @@ sub setfmode {
 
 		push_el(
 			\@main::el, 'setfmode()',
-			"ERROR: Undefined input data, fname: |$fname|, fuid: |$fuser|, " .
+			"[ERROR] Undefined input data, fname: |$fname|, fuid: |$fuser|, " .
 				"fgid: |$fgroup|, fperms: |$fperms| !"
 		);
 
@@ -386,7 +385,7 @@ sub setfmode {
 
 	if (!-e $fname) {
 		push_el(
-			\@main::el, 'setfmode()', "ERROR: File '$fname' does not exist !"
+			\@main::el, 'setfmode()', "[ERROR] File '$fname' does not exist !"
 		);
 
 		return -1;
@@ -404,7 +403,7 @@ sub setfmode {
 		@udata = getpwnam($fuser);
 
 		if (scalar(@udata) == 0) {
-			push_el(\@main::el, 'setfmode()', "ERROR: Unknown user '$fuser' !");
+			push_el(\@main::el, 'setfmode()', "[ERROR] Unknown user '$fuser' !");
 
 			return -1;
 		}
@@ -422,7 +421,7 @@ sub setfmode {
 
 		if (scalar(@udata) == 0) {
 			push_el(
-				\@main::el, 'setfmode()', "ERROR: Unknown user '$fgroup' !"
+				\@main::el, 'setfmode()', "[ERROR] Unknown user '$fgroup' !"
 			);
 
 			return -1;
@@ -436,7 +435,7 @@ sub setfmode {
 	if ($res != 1) {
 		push_el(
 			\@main::el, 'setfmode()',
-			"ERROR: cannot change permissions of file '$fname' !"
+			"[ERROR] cannot change permissions of file '$fname' !"
 		);
 
 		return -1;
@@ -447,7 +446,7 @@ sub setfmode {
 	if ($res != 1) {
 		push_el(
 			\@main::el, 'setfmode()',
-			"ERROR: cannot change user/group of file '$fname' !"
+			"[ERROR] cannot change user/group of file '$fname' !"
 		);
 
 		return -1;
@@ -472,7 +471,7 @@ sub get_file {
 	if (!defined $fname || $fname eq '') {
 		push_el(
 			\@main::el, 'get_file()',
-			"ERROR: Undefined input data, fname: |$fname| !"
+			"[ERROR] Undefined input data, fname: |$fname| !"
 		);
 
 		return 1;
@@ -480,7 +479,7 @@ sub get_file {
 
 	if (!-e $fname) {
 		push_el(
-			\@main::el, 'get_file()', "ERROR: File '$fname' does not exist !"
+			\@main::el, 'get_file()', "[ERROR] File '$fname' does not exist !"
 		);
 
 		return 1;
@@ -488,7 +487,7 @@ sub get_file {
 
 	if (!open(F, '<', $fname)) {
 		push_el(
-			\@main::el, 'get_file()', "ERROR: Can't open '$fname' for reading: $!"
+			\@main::el, 'get_file()', "[ERROR] Can't open '$fname' for reading: $!"
 		);
 
 		return 1;
@@ -537,7 +536,7 @@ sub store_file {
 		$fperms eq '') {
 		push_el(
 			\@main::el, 'store_file()',
-			"ERROR: Undefined input data, fname: |$fname|, fdata, " .
+			"[ERROR] Undefined input data, fname: |$fname|, fdata, " .
 				"fuid: '$fuid', fgid: '$fgid', fperms: '$fperms'"
 		);
 
@@ -547,7 +546,7 @@ sub store_file {
 	if (!open(F, '>', $fname)) {
 		push_el(
 			\@main::el, 'store_file()',
-			"ERROR: Can't open file |$fname| for writing: $!"
+			"[ERROR] Can't open file |$fname| for writing: $!"
 		);
 
 		return -1;
@@ -588,7 +587,7 @@ sub save_file {
 	if (!defined $fname || $fname eq '' ) {
 		push_el(
 			\@main::el, 'save_file()',
-			"ERROR: Undefined input data, fname: |$fname|"
+			"[ERROR] Undefined input data, fname: |$fname|"
 		);
 
 		return -1;
@@ -597,7 +596,7 @@ sub save_file {
 	if (!open(F, '>', $fname)) {
 		push_el(
 			\@main::el, 'save_file()',
-			"ERROR: Can't open file |$fname| for writing: $!"
+			"[ERROR] Can't open file |$fname| for writing: $!"
 		);
 
 		return -1;
@@ -626,7 +625,7 @@ sub del_file {
 	if (!defined $fname || $fname eq '') {
 		push_el(
 			\@main::el, 'del_file()',
-			"ERROR: Undefined input data, fname: |$fname| !"
+			"[ERROR] Undefined input data, fname: |$fname| !"
 		);
 
 		return -1;
@@ -634,7 +633,7 @@ sub del_file {
 
 	if (! -e $fname) {
 		push_el(
-			\@main::el, 'del_file()', "ERROR: File '$fname' does not exist !"
+			\@main::el, 'del_file()', "[ERROR] File '$fname' does not exist !"
 		);
 
 		return -1;
@@ -644,7 +643,7 @@ sub del_file {
 
 	if ($res != 1) {
 		push_el(
-			\@main::el, 'del_file()', "ERROR: Can't unlink '$fname' !"
+			\@main::el, 'del_file()', "[ERROR] Can't unlink '$fname' !"
 		);
 
 		return -1;
@@ -783,38 +782,78 @@ sub del_zone {
 }
 
 ################################################################################
-# Execute an external command
+#                         Subroutine for handle external commands              #
+################################################################################
+
+################################################################################
+# Get and return external command exit value
+#
+# This is an merely subroutine to get the external command exit value. If the
+# command failed to execute or died with any signal, a negative integer is
+# returned. In all other cases, the real exit value from the external command is
+# returned. 
+#
+# @return int -1 if the command failed to executed or died with any signal,
+# external command exit value otherwise
+#
+sub getCmdExitValue() {
+
+	push_el(\@main::el, 'getCmdExitValue()', 'Starting...');
+
+	my $exitValue = -1;
+
+	if ($? == -1) {
+ 		push_el(
+ 		    \@main::el, 'getCmdExitValue()',
+ 		    "[ERROR] Failed to execute external command: $!"
+		);
+	} elsif ($? & 127) {
+ 		push_el(
+ 		    \@main::el, 'getCmdExitValue()',
+ 		    sprintf "[ERROR] External command died with signal %d, %s coredump",
+ 		    ($? & 127), ($? & 128) ? 'with' : 'without'
+ 	    );
+	} else {
+		$exitValue = $? >> 8;
+
+		push_el(
+			\@main::el, 'getCmdExitValue()',
+			"[DEBUG] External command exited with value $exitValue",
+		);
+	}
+
+	push_el(\@main::el, 'getCmdExitValue()', 'Ending...');
+
+	$exitValue;
+}
+
+################################################################################
+# Execute an external command and show
 #
 # Note:
 #
-# If you want gets the real exit code from the external command, use the
-# sys_command_rs() subroutine instead
+# If you want gets the real exit value from the external command, you must use
+# the sys_command_rs() subroutine.
 #
-# @param scalar $cmd External command to be executed
+# @param string $cmd External command to be executed
 # @return int 0 on success, -1 otherwise
 #
 sub sys_command {
 
-	my ($cmd) = @_;
-
 	push_el(\@main::el, 'sys_command()', 'Starting...');
 
-	my $result = system($cmd);
+	my ($cmd) = @_;
 
-	my $exit_value  = $? >> 8;
-	my $signal_num  = $? & 127;
-	my $dumped_core = $? & 128;
+	system($cmd);
 
-	if ($exit_value == 0) {
+	if (getCmdExitValue() == 0) {
 		push_el(\@main::el, "sys_command('$cmd')", 'Ending...');
 
 		return 0;
-
 	} else {
 		push_el(
-			\@main::el,
-			'sys_command()',
-			"ERROR: External command '$cmd' returned '$exit_value' status !"
+			\@main::el, 'sys_command()',
+			"[ERROR] External command '$cmd' exited with value $exit_value !"
 		);
 
 		return -1;
@@ -822,9 +861,9 @@ sub sys_command {
 }
 
 ################################################################################
-# Execute an external command and return the real exit code
+# Execute an external command and return the real exit value
 #
-# @param scalar $cmd External command to be executed
+# @param string $cmd External command to be executed
 # @return int command exit code
 #
 sub sys_command_rs {
@@ -833,21 +872,17 @@ sub sys_command_rs {
 
 	push_el(\@main::el, 'sys_command_rs()', 'Starting...');
 
-	my $result = system($cmd);
-
-	my $exit_value = $? >> 8;
-	my $signal_num = $? & 127;
-	my $dumped_core = $? & 128;
+	system($cmd);
 
 	push_el(\@main::el, 'sys_command_rs()', 'Ending...');
 
-	return $exit_value;
+	return getCmdExitValue();
 }
 
 ################################################################################
 # Execute an external command and return any output from her
 #
-# @param scalar $cmd External command to be executed
+# @param string $cmd External command to be executed
 # @return 0 on success, [-1, errMsg] otherwise
 #
 sub sys_command_stderr {
@@ -858,14 +893,7 @@ sub sys_command_stderr {
 
 	my $stderr = `$cmd 2>&1`;
 
-	my $exit_value = $? >> 8;
-	my $signal_num = $? & 127;
-	my $dumped_core = $? & 128;
-
-	if($exit_value != 0) {
-		push_el(\@main::el, 'sys_command_stderr()', "ERROR: $stderr");
-		return (-1, $stderr);
-	}
+	return (-1, $stderr) if getCmdExitValue() != 0;
 
 	push_el(\@main::el, 'sys_command_stderr()', 'Ending...');
 
@@ -877,7 +905,7 @@ sub make_dir {
 	push_el(\@main::el, 'make_dir()', 'Starting...');
 	push_el(
 		\@main::el, 'make_dir()',
-		'WARNING: This function is deprecated. Use makepath() instead ...'
+		'[WARNING] This function is deprecated. Use makepath() instead ...'
 	);
 
 	my ($dname, $duid, $dgid, $dperms) = @_;
@@ -886,7 +914,7 @@ sub make_dir {
 		|| $dname eq '' || $duid eq '' || $dgid eq '' || $dperms eq '' ) {
 		push_el(
 			\@main::el, 'make_dir()',
-			"ERROR: Undefined input data, dname: |$dname|, duid: |$duid|, " .
+			"[ERROR] Undefined input data, dname: |$dname|, duid: |$duid|, " .
 				"dgid: |$dgid|, dperms: |$dperms| !"
 		);
 
@@ -898,7 +926,7 @@ sub make_dir {
 	if (-e $dname && -f $dname) {
 		push_el(
 			\@main::el, 'make_dir()',
-			"'$dname' exists as file ! removing file first..."
+			"[NOTICE] '$dname' exists as file ! removing file first..."
 		);
 
 		return -1 if (del_file($dname) != 0);
@@ -907,15 +935,14 @@ sub make_dir {
 	if (!(-e $dname && -d $dname)) {
 		push_el(
 			\@main::el, 'make_dir()',
-			"'$dname' doesn't exists as directory! creating..."
+			"[NOTICE] '$dname' doesn't exists as directory! creating..."
 		);
 
 		$rs =  mkpath($dname);
 
 		if (!$rs) {
 			push_el(
-				\@main::el, 'make_dir()',
-				"ERROR: mkdir() returned '$rs' status !"
+				\@main::el, 'make_dir()',"[ERROR] mkdir() returned '$rs' status!"
 			);
 
 			return -1;
@@ -924,7 +951,7 @@ sub make_dir {
 	} else {
 		push_el(
 			\@main::el, 'make_dir()',
-			"'$dname' exists ! Setting its permissions..."
+			"[NOTICE] '$dname' exists ! Setting its permissions..."
 		);
 	}
 
@@ -950,8 +977,7 @@ sub del_dir {
 	if (!defined($dname) || ($dname eq '')) {
 		push_el(
 			\@main::el,
-			'del_dir()',
-			"ERROR: Undefined input data, dname: |$dname| !"
+			'del_dir()', "[ERROR]: Undefined input data, dname: |$dname| !"
 		);
 
 		return -1;
@@ -959,7 +985,7 @@ sub del_dir {
 
 	push_el(\@main::el, 'del_dir()', "Trying to remove '$dname'...");
 
-	return -1 if (sys_command("$main::cfg{'CMD_RM'} -rf $dname") != 0);
+	return -1 if sys_command("$main::cfg{'CMD_RM'} -rf $dname") != 0;
 
 	push_el(\@main::el, 'del_dir()', 'Ending...');
 
@@ -975,7 +1001,7 @@ sub gen_rand_num {
 	if (!defined($len) || ($len eq '')) {
 		push_el(
 			\@main::el, 'gen_rand_num()',
-			"ERROR: Undefined input data, len: |$len| !"
+			"[ERROR] Undefined input data, len: |$len| !"
 		);
 
 		return (-1, '');
@@ -984,7 +1010,7 @@ sub gen_rand_num {
 	if (!(0 < $len && $len < 11)) {
 		push_el(
 			\@main::el, 'gen_rand_num()',
-			"ERROR: Input data length '$len' out of limits [1, 10] !"
+			"[ERROR] Input data length '$len' out of limits [1, 10] !"
 		);
 
 		return (-1, '');
@@ -1012,7 +1038,7 @@ sub gen_sys_rand_num {
 	if (!defined $len || $len eq '') {
 		push_el(
 			\@main::el, 'gen_sys_rand_num()',
-			"ERROR: Undefined input data, len: |$len| !"
+			"[ERROR] Undefined input data, len: |$len| !"
 		);
 
 		return (-1, '');
@@ -1021,7 +1047,7 @@ sub gen_sys_rand_num {
 	if (0 >= $len ) {
 		push_el(
 			\@main::el, 'gen_sys_rand_num()',
-			"ERROR: Input data length '$len' is zero or negative !"
+			"[ERROR] Input data length '$len' is zero or negative !"
 		);
 
 		return (-1, '');
@@ -1037,7 +1063,7 @@ sub gen_sys_rand_num {
 		if ($pool_size <= ($len + 10)) {
 			push_el(
 				\@main::el, 'gen_sys_rand_num()',
-				"WARNING: entropy pool is $pool_size, but we require more or less $len"
+				"[WARNING] entropy pool is $pool_size, but we require more or less $len"
 			);
 		}
 	}
@@ -1045,7 +1071,7 @@ sub gen_sys_rand_num {
 	if (-e '/dev/urandom') {
 		push_el(
 			\@main::el, 'gen_sys_rand_num()',
-			"NOTICE: seeding the entropy pool (possible current size: $pool_size)"
+			"[NOTICE] seeding the entropy pool (possible current size: $pool_size)"
 		);
 
 		my $seed = $len;
@@ -1072,7 +1098,7 @@ sub gen_sys_rand_num {
 
 		push_el(
 			\@main::el, 'gen_sys_rand_num()',
-			"NOTICE: new entropy pool size is $pool_size"
+			"[NOTICE] new entropy pool size is $pool_size"
 		);
 	}
 
@@ -1088,7 +1114,7 @@ sub gen_sys_rand_num {
 		if (!defined $rs) {
 			push_el(
 				\@main::el, 'gen_sys_rand_num()',
-				"ERROR: Couldn't open the pseudo-random characters generator: $!"
+				"[ERROR] Couldn't open the pseudo-random characters generator: $!"
 			);
 
 			return (-1, '');
@@ -1127,7 +1153,7 @@ sub crypt_md5_data {
 	if (!defined $data || $data eq '') {
 		push_el(
 			\@main::el, 'crypt_md5_data()',
-			"ERROR: Undefined input data, data: |$data| !"
+			"[ERROR] Undefined input data, data: |$data| !"
 		);
 
 		return (-1, '');
@@ -1152,7 +1178,7 @@ sub crypt_data {
 	if (!defined $data || $data eq '') {
 		push_el(
 			\@main::el, 'crypt_data()',
-			"ERROR: Undefined input data, data: |$data| !"
+			"[ERROR] Undefined input data, data: |$data| !"
 		);
 
 		return (-1, '');
@@ -1180,7 +1206,7 @@ sub get_tag {
 		$et eq '' || $src eq '') {
 		push_el(
 			\@main::el, 'get_tag()',
-			"ERROR: Undefined input data, bt: |$bt|, et: |$et|, src !"
+			"[ERROR] Undefined input data, bt: |$bt|, et: |$et|, src !"
 		);
 
 		return (-1, '');
@@ -1197,7 +1223,7 @@ sub get_tag {
 			if($function ne 'repl_tag') {
 				push_el(
 					\@main::el, 'get_tag()',
-					"ERROR: '$bt' eq '$et', missing '$bt' in src !"
+					"[ERROR] '$bt' eq '$et', missing '$bt' in src!"
 				);
 			}
 
@@ -1212,8 +1238,7 @@ sub get_tag {
 	} else {
 		if ($bt_len + $et_len > $src_len) {
 			push_el(
-				\@main::el, 'get_tag()',
-				"ERROR: len($bt) + len($et) > len(src) !"
+				\@main::el, 'get_tag()', "[ERROR] len($bt) + len($et) > len(src) !"
 			);
 
 			return (-1, '');
@@ -1227,7 +1252,7 @@ sub get_tag {
 			push_el(
 				\@main::el,
 				'get_tag()',
-				"ERROR: '$bt' ne '$et', '$bt' or '$et' missing in src !"
+				"[ERROR] '$bt' ne '$et', '$bt' or '$et' missing in src !"
 			);
 
 			return (-5, '');
@@ -1236,7 +1261,7 @@ sub get_tag {
 		if ($et_pos < $bt_pos + $bt_len) {
 			push_el(
 				\@main::el, 'get_tag()',
-				"ERROR: '$bt' ne '$et', '$et' overlaps '$bt' in src !"
+				"[ERROR] '$bt' ne '$et', '$et' overlaps '$bt' in src !"
 			);
 
 			return (-1, '');
@@ -1263,7 +1288,7 @@ sub repl_tag {
 	if (!defined $rwith) {
 		push_el(
 			\@main::el, 'repl_tag()',
-			"ERROR: Undefined template replacement data in $function!"
+			"[ERROR] Undefined template replacement data in $function!"
 		);
 
 		return (-1, '');
@@ -1296,7 +1321,7 @@ sub add_tag {
 	if (!defined $adata || $adata eq '') {
 		push_el(
 			\@main::el, 'add_tag()',
-			"ERROR: Undefined input data, adata: |$adata| !"
+			"[ERROR] Undefined input data, adata: |$adata| !"
 		);
 
 		return (-1, '');
@@ -1411,9 +1436,7 @@ sub get_tpl {
 
 	if (scalar(@tpls) < 2) {
 		push_el(
-			\@main::el,
-			'get_tpl()',
-			"ERROR: Template filename(s) missing !"
+			\@main::el, 'get_tpl()', "[ERROR] Template filename(s) missing !"
 		);
 
 		return (-1, '');
@@ -1446,9 +1469,7 @@ sub prep_tpl {
 
 	if (scalar(@tpls) < 2) {
 		push_el(
-			\@main::el,
-			'prep_tpl()',
-			"ERROR: Template variable(s) missing !"
+			\@main::el, 'prep_tpl()', "[ERROR] Template variable(s) missing !"
 		);
 
 		return (-1, '');
@@ -1525,7 +1546,7 @@ sub connect_ispcp_daemon {
 		push_el(
 			\@main::el,
 			'connect_ispcp_daemon()',
-			"ERROR: Can't connect to ISPCP license daemon !"
+			"[ERROR] Can't connect to ISPCP license daemon !"
 		);
 
 		return (-1, '');
@@ -1549,7 +1570,7 @@ sub recv_line {
 
 		if (!defined $res) {
 			push_el(
-				\@main::el, 'recv_line()', 'ERROR: unexpected IO problems !'
+				\@main::el, 'recv_line()', '[ERROR] unexpected IO problems !'
 			);
 
 			return (-1, '');
@@ -1578,7 +1599,7 @@ sub send_line {
 
 		if (!defined $res) {
 			push_el(
-				\@main::el, 'send_line()', "ERROR: unexpected IO problems !"
+				\@main::el, 'send_line()', "[ERROR] unexpected IO problems !"
 			);
 
 			return (-1, '');
@@ -1672,7 +1693,7 @@ sub check_master {
 
 		push_el(
 			\@main::el, 'check_master()',
-			'ERROR: Master manager process is not running !'
+			'[ERROR] Master manager process is not running !'
 		);
 
 		return -1;
@@ -1705,7 +1726,7 @@ sub encrypt_db_password {
 	if (length($main::db_pass_key) != 32 || length($main::db_pass_iv) != 8) {
 		push_el(
 			\@main::el, 'encrypt_db_password()',
-			'WARNING: KEY or IV has invalid length'
+			'[WARNING] KEY or IV has invalid length'
 		);
 
 		return (0, '');
@@ -1739,7 +1760,7 @@ sub decrypt_db_password {
 
 	if (!defined $pass || $pass eq '') {
 		push_el(
-			\@main::el, 'decrypt_db_password()', 'ERROR: Undefined input data...'
+			\@main::el, 'decrypt_db_password()', '[ERROR] Undefined input data...'
 		);
 
 		return (1, '');
@@ -1748,7 +1769,7 @@ sub decrypt_db_password {
 	if (length($main::db_pass_key) != 32 || length($main::db_pass_iv) != 8) {
 		push_el(
 			\@main::el, 'decrypt_db_password()',
-			'ERROR: KEY or IV has invalid length'
+			'[ERROR] KEY or IV has invalid length'
 		);
 
 		return (1, '');
@@ -1804,6 +1825,9 @@ sub setup_main_vars {
 	@main::db_connect = (
 		"DBI:mysql:$main::db_name:$main::db_host", $main::db_user, $main::db_pwd
 	);
+
+	# Forcing reconnection
+	$main::db = undef;
 
 	push_el(\@main::el, 'setup_main_vars()', 'Ending...');
 
@@ -1880,14 +1904,14 @@ sub set_conf_val {
 	push_el(\@main::el, 'set_conf_val()', 'Starting...');
 
 	if (!defined $name || $name eq '') {
-		push_el(\@main::el, 'set_conf_val()', 'ERROR: Undefined input data...');
+		push_el(\@main::el, 'set_conf_val()', '[ERROR] Undefined input data...');
 
 		return 1;
 	}
 
 	$main::cfg_reg{$name} = $value;
 
-	push_el(\@main::el, 'set_conf_value()', 'Ending...');
+	push_el(\@main::el, 'set_conf_val()', 'Ending...');
 
 	0;
 }
@@ -2123,7 +2147,7 @@ sub check_uid_gid_available {
 	if($sys_uid > $max_uid){
 		push_el(
 			\@main::el, 'check_uid_gid_available()',
-			"ERROR: Maximum user id for this system is reached!"
+			"[ERROR] Maximum user id for this system is reached!"
 		);
 
 		return (2, $sys_uid, $sys_gid);
@@ -2132,7 +2156,7 @@ sub check_uid_gid_available {
 	if($sys_gid > $max_gid){
 		push_el(
 			\@main::el, 'check_uid_gid_available()',
-			"ERROR: Maximum group id for this system is reached!"
+			"[ERROR] Maximum group id for this system is reached!"
 		);
 
 		return (2, $sys_uid, $sys_gid);
@@ -2143,7 +2167,7 @@ sub check_uid_gid_available {
 	if( defined($name) ) {
 		push_el(
 			\@main::el, 'check_uid_gid_available()',
-			"INFO: Group id $sys_gid already in use!"
+			"[NOTICE] Group id $sys_gid already in use!"
 		);
 
 		return (1, $sys_uid, $sys_gid);
@@ -2154,7 +2178,7 @@ sub check_uid_gid_available {
 	if ( defined($name) ) {
 		push_el(
 			\@main::el, 'check_uid_gid_available()',
-			"INFO: User id $sys_uid already in use!"
+			"[NOTICE] User id $sys_uid already in use!"
 		);
 
 		return (1, $sys_uid, $sys_gid);
@@ -2384,12 +2408,12 @@ sub getSerialNumber {
 	if (!defined $dmnName || $dmnName eq '' || !defined $src || $src eq '' ||
 		!defined $wrkFile || $wrkFile eq '') {
 
-		push_el(\@main::el, 'getSerialNumber()', 'FATAL: Undefined args!');
+		push_el(\@main::el, 'getSerialNumber()', '[FATAL] Undefined args!');
 
 		return -1;
 	} elsif(ref $dmnName eq '' || ref $src eq '' || ref $wrkFile eq '') {
 		push_el(
-			\@main::el, 'getSerialNumber()', 'FATAL: Args must be references!'
+			\@main::el, 'getSerialNumber()', '[FATAL] Args must be references!'
 		);
 
 		return -1;
@@ -2541,7 +2565,7 @@ sub makepath {
 		|| $dname eq '' || $duid eq '' || $dgid eq '' || $dperms eq '' ) {
 		push_el(
 			\@main::el, 'make_path()',
-			"ERROR: Undefined input data, dname: |$dname|, duid: |$duid|, " .
+			"[ERROR] Undefined input data, dname: |$dname|, duid: |$duid|, " .
 				"dgid: |$dgid|, dperms: |$dperms| !"
 		);
 
@@ -2560,7 +2584,7 @@ sub makepath {
 	if (!(-e $dname && -d $dname)) {
 		push_el(
 			\@main::el, 'makepath()',
-			"'$dname' doesn't exists as directory! creating..."
+			"[NOTICE] '$dname' doesn't exists as directory! creating..."
 		);
 
 		my @lines =  mkpath(
@@ -2774,7 +2798,7 @@ sub save_as_temp_folder {
 		if ($@) {
 			push_el(
 				\@main::el, 'save_as_temp_folder()',
-				"ERROR while creating temporary folder: $@"
+				"[ERROR] while creating temporary folder: $@"
 			);
 		}
 
@@ -2863,7 +2887,7 @@ sub move_dir_content{
 		if(!@res){
 			push_el(
 				\@main::el, 'move_dir_content()',
-				"Failed to move content of $source in $destination!"
+				"[ERROR] Failed to move content of $source in $destination!"
 			);
 
 			return -1;

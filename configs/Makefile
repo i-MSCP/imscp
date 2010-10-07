@@ -32,7 +32,15 @@
 export
 
 install:
+	# Distribution specifics files
 	cd $(HOST_OS) && $(MAKE) install
 
+	# Common files
+	cd common && $(MAKE) install
+
 uninstall:
+	# Distribution specifics files
 	cd $(HOST_OS) && $(MAKE) uninstall
+
+	# Common files
+	cd common && $(MAKE) uninstall

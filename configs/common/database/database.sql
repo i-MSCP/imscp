@@ -3,7 +3,7 @@
 -- Copyright (c) 2001-2006 by moleSoftware GmbH
 -- Copyright (c) 2006-2010 by ispCP | http://isp-control.net
 --
--- Version: $Id$
+-- Version: $Id: database.sql 3398 2010-10-03 20:17:41Z nuxwin $
 --
 -- The contents of this file are subject to the Mozilla Public License
 -- Version 1.1 (the "License"); you may not use this file except in
@@ -118,7 +118,7 @@ INSERT INTO `config` (`name`, `value`) VALUES
 ('PORT_POP3-SSL', '995;tcp;POP3-SSL;1;0;'),
 ('PORT_IMAP', '143;tcp;IMAP;1;0;'),
 ('PORT_IMAP-SSL', '993;tcp;IMAP-SSL;0;0;'),
-('PORT_POSTGREY', '60000;tcp;POSTGREY;1;1;localhost'),
+('PORT_POSTGREY', '10023;tcp;POSTGREY;1;1;localhost'),
 ('PORT_AMAVIS', '10024;tcp;AMaVis;1;1;localhost'),
 ('PORT_SPAMASSASSIN', '783;tcp;SPAMASSASSIN;1;1;localhost'),
 ('PORT_POLICYD-WEIGHT', '12525;tcp;POLICYD-WEIGHT;1;1;localhost'),
@@ -126,7 +126,7 @@ INSERT INTO `config` (`name`, `value`) VALUES
 ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
 ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
 ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-('DATABASE_REVISION', '40');
+('DATABASE_REVISION', '41');
 
 -- --------------------------------------------------------
 
