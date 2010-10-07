@@ -456,7 +456,7 @@ sub mbox_add_po_data {
 
 	$rs = store_file(
 		$userdb_backup_cfg, $sys, $main::cfg{'ROOT_USER'},
-		$main::cfg{'ROOT_GROUP'}, 0644
+		$main::cfg{'ROOT_GROUP'}, 0600
 	);
 	return $rs if ($rs != 0);
 
@@ -490,6 +490,13 @@ sub mbox_add_po_data {
 		$main::cfg{'ROOT_GROUP'}, 0600
 	);
 	return $rs if ($rs != 0);
+
+	$rs = setfmode(
+		$userdb_working_cfg, $main::cfg{'ROOT_USER'},
+		$main::cfg{'ROOT_GROUP'}, 0600
+	);
+	return $rs if($rs != 0);
+
 
 	$rs = sys_command($cmd_makeuserdb);
 	return $rs if ($rs != 0);
@@ -1309,7 +1316,7 @@ sub mbox_del_po_data {
 
 	$rs = store_file(
 		$userdb_backup_cfg, $sys, $main::cfg{'ROOT_USER'},
-		$main::cfg{'ROOT_GROUP'}, 0644
+		$main::cfg{'ROOT_GROUP'}, 0600
 	);
 	return $rs if ($rs != 0);
 

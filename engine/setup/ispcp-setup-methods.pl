@@ -122,7 +122,7 @@ sub ask_eth {
 
 	push_el(\@main::el, 'ask_eth()', 'Starting...');
 
-	# @todo IO::Interface 
+	# @todo IO::Interface
 	chomp(
 		my $ipAddr =`$main::cfg{'CMD_IFCONFIG'}|$main::cfg{'CMD_GREP'} -v inet6|
 		$main::cfg{'CMD_GREP'} inet|$main::cfg{'CMD_GREP'} -v 127.0.0.1|
@@ -2241,19 +2241,20 @@ sub setup_po {
 	$rs = sys_command("$main::cfg{'CMD_CP'} -pf $cfgDir/userdb $wrkDir/");
 	return $rs if ($rs != 0);
 
+	# After build this file is world readable which is is bad
+	# Permissions are inherited by production file
+	$rs = setfmode(
+		"$wrkDir/userdb", $main::cfg{'ROOT_USER'},
+		$main::cfg{'ROOT_GROUP'}, 0600
+	);
+	return $rs if($rs != 0);
+
 	# Installing the new file in the production directory
 	$rs = sys_command(
 		"$main::cfg{'CMD_CP'} -pf $wrkDir/userdb " .
 		"$main::cfg{'AUTHLIB_CONF_DIR'}"
 	);
 	return $rs if ($rs != 0);
-
-	# Setting permissions for the production file
-	$rs = setfmode(
-		"$main::cfg{'AUTHLIB_CONF_DIR'}/userdb", $main::cfg{'ROOT_USER'},
-		$main::cfg{'ROOT_GROUP'}, 0600
-	);
-	return $rs if($rs != 0);
 
 	# Creating/Updating userdb.dat file from the contents of the userdb file
 	$rs = sys_command($main::cfg{'CMD_MAKEUSERDB'});

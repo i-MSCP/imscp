@@ -1,6 +1,10 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-10-07 Daniel Andreca
+	- Engine:
+		* Fixed some security issue
+
 2010-10-7 Laurent Declercq
 	- CONFIGS:
 		* Created a new 'common' directory for common files such as:
