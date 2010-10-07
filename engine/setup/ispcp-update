@@ -51,7 +51,7 @@ use lib "$FindBin::Bin/..";
 require 'ispcp_common_code.pl';
 require 'ispcp-setup-methods.pl';
 
-$main::logfile = "main::cfg{LOG_DIR}/setup/ispcp-update.log";
+$main::logfile = "$main::cfg{LOG_DIR}/setup/ispcp-update.log";
 $main::rlogfile = ">> $main::logfile 2>&1";
 
 ################################################################################
@@ -170,7 +170,7 @@ sub load_old_ispcp_cfg {
 
 	if (get_conf($old_ispcp_cfg_file)) {
 		do {
-			print "\tPlease enter path to your ispcp.old.conf " .
+			print "\n\n\tPlease enter path to your ispcp.old.conf " .
 				"[/etc/ispcp/ispcp.old.conf]: ";
 
 			chomp($old_ispcp_cfg_file = <STDIN>);
