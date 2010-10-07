@@ -2026,7 +2026,7 @@ sub setup_mta {
 		) {
 			($path, $file) = split /:/;
 
-			next if f(!-e $path.$file || -e "$bkpDir/$file.system");
+			next if (!-e $path.$file || -e "$bkpDir/$file.system");
 
 			$rs = sys_command(
 					"$main::cfg{'CMD_CP'} -p $path$file  $bkpDir/$file.system"
@@ -2824,8 +2824,8 @@ sub setup_gui_pma {
 	# Saving the current production file if it exists
 	if(-e "$prodDir/config.inc.php") {
 		$rs = sys_command(
-			"$main::cfg{'CMD_CP'} -p $prodDir/config.inc.php" .
-			"$bkpDir/config.inc.php" . time
+			"$main::cfg{'CMD_CP'} -p $prodDir/config.inc.php " .
+			"$bkpDir/config.inc.php." . time
 		);
 		return -1 if($rs != 0);
 	}
@@ -2920,7 +2920,7 @@ sub setup_gui_pma {
 				next;
 			}
 
-			($rs) = dosSQL(
+			($rs) = doSQL(
 				qq /
 					DELETE FROM `tables_priv`
 					WHERE `Host` = '$main::cfg{'DATABASE_HOST'}'
