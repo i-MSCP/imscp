@@ -47,36 +47,39 @@ SELFDIR=$(dirname "$0")
 . $SELFDIR/maintainer-helper.sh
 
 case "$1" in
-
 	install|upgrade)
 
-	# Fix for #2224 Postgrey - Port changed to 10023 for some distributions
-	# @author Laurent Declercq <laurent.declercq@ispcp.net>
-	# @since  1.0.7 (rc2)
-	#
-	# NOTE: If Lenny is no longer supported, this fix can be removed
-	if $CMD_GREP -qe "--inet=60000" /etc/default/postgrey; then
+		# Fix for #2224 Postgrey - Port changed to 10023 for some distributions
+		# @author Laurent Declercq <laurent.declercq@ispcp.net>
+		# @since  1.0.7 (rc2)
+		#
+		# NOTE: If Lenny is no longer supported, this fix can be removed
+		if $CMD_GREP -qe "--inet=60000" /etc/default/postgrey; then
+			print_title "Postgrey configuration (Updating listening port):"
 
-		print_title "Postgrey configuration:"
+			set_errmsg 'warning' "The script was unable to update the Postgrey\n\t  listening port in your ispcp.old.conf file!";
 
-        # Updating the ispcp.conf file here to revert back to the old port
-        if test -f /etc/ispcp.ispcp.old.conf; then
+			# Updating the ispcp.conf file here to revert back to the old port
+			if test -f /etc/ispcp/ispcp.old.conf; then
+				$CMD_SED -i s'/\(PORT_POSTGREY.*=.*\)10023/\160000/' \
+					/etc/ispcp/ispcp.old.conf >> $ISPCP_LOGFILE 2>&1 || failed
+			fi
+
+			set_errmsg 'warning' "The script was unable to update the Postgrey\n\t  listening port in your ispcp.conf file!";
+
 			$CMD_SED -i s'/\(PORT_POSTGREY.*=.*\)10023/\160000/' \
-				/etc/ispcp/ispcp.old.conf >> $ISPCP_LOGFILE 2>&1 || failed
-        fi
+				/etc/ispcp/ispcp.conf >> $ISPCP_LOGFILE 2>&1 || failed
 
-        $CMD_SED -i s'/\(PORT_POSTGREY.*=.*\)10023/\160000/' \
-			/etc/ispcp/ispcp.conf >> $ISPCP_LOGFILE 2>&1 || failed
+			set_errmsg 'warning' "The script was unable to update the Postgrey\n\t  listening port in the database schema!";
 
-		# Updating database.sql file Only on install
-		if [ "$1" = "install" ] ; then
-			$CMD_SED -i s'/10023\(;tcp;POSTGREY\)/60000\1/' \
-				/etc/ispcp/database/database.sql >> $ISPCP_LOGFILE 2>&1 || failed
+			# Updating database.sql file Only on install
+			if [ "$1" = "install" ] ; then
+				$CMD_SED -i s'/10023\(;tcp;POSTGREY\)/60000\1/' \
+					/etc/ispcp/database/database.sql >> $ISPCP_LOGFILE 2>&1 || failed
+			fi
+
+			print_status
 		fi
-
-        print_status
-	fi
-
 	;;
 	*)
 		exit 0

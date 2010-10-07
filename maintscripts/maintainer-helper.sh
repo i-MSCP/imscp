@@ -113,11 +113,11 @@ progress() {
 # Param: string The error message
 set_errmsg() {
 	if [ "$1" = "notice" ] ; then
-		ISPCP_ERRMSG="\n\t  \033[1;34m[Notice]\033[0m $2\n\n"
+		ISPCP_ERRMSG="\n\t  \033[1;34m[Notice]\033[0m $2\n"
 	elif [ "$1" = "warning" ] ; then
-		ISPCP_ERRMSG="\n\t  \033[1;33m[Warning]\033[0m $2\n\n"
+		ISPCP_ERRMSG="\n\t  \033[1;33m[Warning]\033[0m $2\n"
 	elif [ "$1" = "error" ] ; then
-		ISPCP_ERRMSG="\n\t  \033[1;31m[Error]\033[0m $2\n\n"
+		ISPCP_ERRMSG="\n\t  \033[1;31m[Error]\033[0m $2\n"
 	else
 		ISPCP_ERRMSG="\n\t $1\n\n"
 	fi

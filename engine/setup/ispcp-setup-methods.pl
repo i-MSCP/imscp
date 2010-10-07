@@ -2836,14 +2836,14 @@ sub setup_gui_pma {
 		$ctrlUserPwd = $main::ua{'db_pma_password'};
 	# Update:
 	} elsif(-e "$wrkDir/config.inc.php") {
-			# Gets the pma configuration file
-			($rs, $cfgFile) = get_file("$cfgDir/working/config.inc.php");
-			return -1 if ($rs != 0);
+		# Gets the pma configuration file
+		($rs, $cfgFile) = get_file("$cfgDir/working/config.inc.php");
+		return -1 if ($rs != 0);
 
-			# Retrieving the needed values from the working file
-			($blowfishSecret, $ctrlUser,$ctrlUserPwd) = map {
-				$cfgFile =~ /\['$_'\]\s+=\s*'(.+)'/
-			} qw /blowfish_secret controluser controlpass/;
+		# Retrieving the needed values from the working file
+		($blowfishSecret, $ctrlUser, $ctrlUserPwd) = map {
+			$cfgFile =~ /\['$_'\]\s*=\s*'(.+)'/
+		} qw /blowfish_secret controluser controlpass/;
 	# Update recovery
 	} else {
 		print colored(['bold yellow'], "\n\n\tWARNING: ") .
