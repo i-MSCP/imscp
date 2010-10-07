@@ -37,6 +37,7 @@
 use strict;
 use warnings;
 use version 0.74;
+use DateTime;
 use DateTime::TimeZone;
 use Net::LibIDN 'idn_to_ascii';
 use feature 'state';

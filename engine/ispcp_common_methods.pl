@@ -48,8 +48,7 @@ BEGIN {
 		File::Path => '',
 		HTML::Entities=> '',
 		File::Temp => 'qw(tempdir)',
-		File::Copy::Recursive => 'qw(rcopy)',
-		DateTime::TimeZone => ''
+		File::Copy::Recursive => 'qw(rcopy)'
 	);
 
 	my ($mod, $mod_err, $mod_missing) = ('', '_off_', '');

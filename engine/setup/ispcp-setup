@@ -108,7 +108,12 @@ sub user_dialog {
 		\&ask_fastcgi, \&ask_timezone, \&ask_awstats_on
 	) {
 		my $rs;
-		ref ne 'REF' ? eval {do {$rs = &{$_};} while ($rs);} : &{$$_};
+
+		if(ref ne 'REF') {
+			do {$rs = &{$_};} while ($rs);
+		} else {
+			&{$$_}
+		}
 	}
 
 	if ($main::ua{'awstats_on'} eq 'yes' || $main::ua{'awstats_on'} eq 'y') {
