@@ -525,13 +525,13 @@ sub setup_default_sql_data {
 	);
 
 	my ($rs) = doSQL(
-		"INSERT INTO admin (admin_id, admin_name, admin_pass, admin_type, " .
-		"email) VALUES (1, '$main::ua{'admin'}','$admin_password', 'admin', " .
+		"INSERT INTO `admin` (`admin_id`, `admin_name`, `admin_pass`, `admin_type`, " .
+		"`email`) VALUES (1, '$main::ua{'admin'}','$admin_password', 'admin', " .
 		"'$main::ua{'admin_email'}');"
 	);
 	return $rs if ($rs != 0);
 
-	($rs) = doSQL('INSERT INTO user_gui_props (user_id) values (1);');
+	($rs) = doSQL('INSERT INTO `user_gui_props` (`user_id`) values (1);');
 	return $rs if ($rs != 0);
 
 	## First Ip data - Begin
@@ -542,7 +542,7 @@ sub setup_default_sql_data {
 	);
 
 	($rs) = doSQL(
-		"INSERT INTO server_ips (ip_id, ip_number, ip_domain, ip_alias) " .
+		"INSERT INTO `server_ips` (`ip_id`, `ip_number`, `ip_domain`, `ip_alias`) " .
 		"VALUES (1, '$main::ua{'eth_ip'}', '$main::ua{'hostname'}', " .
 		"'$main::ua{'hostname'}');"
 	);
@@ -566,13 +566,13 @@ sub setup_default_sql_data {
 	# both 'tables_priv' and 'user' tables
 
 	($rs) = doSQL(
-		"DELETE FROM tables_priv WHERE Host = '$hostname' AND Db = " .
-		"'$main::db_name' AND User = '$vftp_sql_user';"
+		"DELETE FROM `tables_priv` WHERE `Host` = '$hostname' AND `Db` = " .
+		"'$main::db_name' AND `User` = '$vftp_sql_user';"
 	);
 	return $rs if ($rs != 0);
 
 	($rs) = doSQL(
-		"DELETE FROM user WHERE Host = '$hostname' AND User = '$vftp_sql_user';"
+		"DELETE FROM `user` WHERE `Host` = '$hostname' AND `User` = '$vftp_sql_user';"
 	);
 	return $rs if ($rs != 0);
 
@@ -592,28 +592,28 @@ sub setup_default_sql_data {
 
 	# The Proftpd SQL user should have some rights on the 'ftp_group' table
 	($rs) = doSQL(
-		"GRANT SELECT,INSERT,UPDATE,DELETE ON $main::db_name.ftp_group TO " .
+		"GRANT SELECT,INSERT,UPDATE,DELETE ON `$main::db_name`.`ftp_group` TO " .
 	    "'$vftp_sql_user'\@'$hostname' IDENTIFIED BY '$vftp_sql_password';"
 	);
 	return $rs if ($rs != 0);
 
 	# The Proftpd SQL user should have some rights on the 'ftp_users' table
 	($rs) = doSQL(
-		"GRANT SELECT,INSERT,UPDATE,DELETE ON $main::db_name.ftp_users TO " .
+		"GRANT SELECT,INSERT,UPDATE,DELETE ON `$main::db_name`.`ftp_users` TO " .
 		"'$vftp_sql_user'\@'$hostname' IDENTIFIED BY '$vftp_sql_password';"
 	);
 	return $rs if ($rs != 0);
 
 	# The Proftpd SQL user should have some rights on the 'quotalimits' table
 	($rs) = doSQL(
-		"GRANT SELECT,INSERT,UPDATE,DELETE ON $main::db_name.quotalimits TO " .
+		"GRANT SELECT,INSERT,UPDATE,DELETE ON `$main::db_name`.`quotalimits` TO " .
 		"'$vftp_sql_user'\@'$hostname' IDENTIFIED BY '$vftp_sql_password';"
 	);
 	return $rs if ($rs != 0);
 
 	# The Proftpd SQL user should have some rights on the 'quotatallies' table
 	($rs) = doSQL(
-		"GRANT SELECT,INSERT,UPDATE,DELETE ON $main::db_name.quotatallies TO " .
+		"GRANT SELECT,INSERT,UPDATE,DELETE ON `$main::db_name`.`quotatallies` TO " .
 		"'$vftp_sql_user'\@'$hostname' IDENTIFIED BY '$vftp_sql_password';"
 	);
 	return $rs if ($rs != 0);
