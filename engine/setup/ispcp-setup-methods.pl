@@ -1096,6 +1096,9 @@ sub subtitle {
 	my $subtitle = shift;
 	print "\t $subtitle";
 
+	# saving cursor position
+	system('tput sc');
+
 	$main::dyn_length = 0 if(defined $main::dyn_length);
 	$main::subtitle_length = length $subtitle;
 }
@@ -1115,6 +1118,8 @@ sub spacer {
 #
 sub progress {
 	print '.';
+	# Saving cursor position;
+	system('tput sc');
 	$main::dyn_length++;
 }
 
@@ -1142,6 +1147,9 @@ sub print_status {
 		? colored(['green'], 'Done') : colored(['red'], 'Failed');
 
 	$statusString = sprintf('%'.($termWidth-($length+1)).'s', $statusString);
+
+	# Restoring cursor position
+	system('tput rc && tput ed');
 
 	print colored(['bold'], "$statusString\n");
 

@@ -395,6 +395,9 @@ sub cfg_recovery_process {
 		" The recovery/upgrade process ended successfully!\n\tThe update " .
 		"process will continue normal...\n\n";
 
+	print "\tPlease, type enter to continue...";
+	$rdata = <STDIN>;
+
 	push_el(\@main::el, 'check_ispcp_cfg_file()', 'Ending...');
 
 	-5;

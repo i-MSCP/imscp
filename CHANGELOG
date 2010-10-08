@@ -1,6 +1,11 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-10-8 Laurent Declercq
+	- SETUP:
+		Fixed #2454: Setup/Update: Wrong alignment of "Done" after switch back
+			from recovery mode
+
 2010-10-07 Daniel Andreca
 	- Engine:
 		* Fixed some security issue
