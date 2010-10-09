@@ -210,8 +210,10 @@ Note: For all questions, answer "a" (trust always).
 	# cp -v /srv/www/ispcp/engine/messenger/ispcp-db-keys.pl /tmp/ispcp/srv/www/ispcp/engine/messenger/
 	# cp -v /srv/www/ispcp/gui/include/ispcp-db-keys.php /tmp/ispcp/srv/www/ispcp/gui/include/
 	# cp -v /srv/www/ispcp/gui/themes/user_logos/* /tmp/ispcp/srv/www/ispcp/gui/themes/user_logos/
-	# cp -v /srv/www/ispcp/gui/tools/pma/config.inc.php /tmp/ispcp/srv/www/ispcp/gui/tools/pma/
 	# cp -v /srv/www/ispcp/gui/tools/webmail/data/* /tmp/ispcp/srv/www/ispcp/gui/tools/webmail/data/
+
+	For versions more older than ispCP 1.0.7-rc2
+	# cp -v /srv/www/ispcp/gui/tools/pma/config.inc.php /tmp/ispcp/etc/ispcp/pma/working/
 
 8. Delete old files to avoid security risks:
 

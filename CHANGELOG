@@ -2,6 +2,8 @@ ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2010-10-09 Laurent Declercq
+	- DOCS:
+		* Updating INSTALL documentation according setup/update changes
 	- SETUP:
 		Fixed some possible uninitialized values at recovery process
 
@@ -151,11 +153,11 @@ ispCP ω 1.0.7 ChangeLog
 		* Updated Basque
 
 2010-09-11 Daniel Andreca
-	- DOCS
+	- DOCS:
 		* Updated dependencies
-	- ENGINE, CONFIGS
+	- ENGINE, CONFIGS:
 		* Fixed #2416: ispCP log files shouldn't be readable by everyone
-	- ENGINE
+	- ENGINE:
 		* Fixed #2399: Alias deletion - Shared mount point shouldn't be removed
 		* Fixed #2446: make_dir function won`t set correct permissions if more
 			than a folder is created
@@ -167,7 +169,7 @@ ispCP ω 1.0.7 ChangeLog
 		* New inserted value in config table were not counted
 
 2010-09-10 Laurent Declercq
-	- SETUP
+	- SETUP:
 		* Fixed #2282: Maintainer scripts
 		* Some changes in Makefile files
 
