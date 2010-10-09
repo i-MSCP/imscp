@@ -34,13 +34,19 @@
 # and the script ends, and then the script is run again, the final result
 # should be identical as if the script was run once.
 
+use strict;
+use warnings;
+
+# Hide the 'used only once: possible typo' warnings
+no warnings 'once';
+
 use FindBin;
 use lib "$FindBin::Bin/..";
 
 require 'ispcp_common_code.pl';
 require 'ispcp-setup-methods.pl';
 
-$main::logfile = "$main::cfg{LOG_DIR}/setup/ispcp-update.log";
+$main::logfile = "$main::cfg{LOG_DIR}/setup/$0.log";
 $main::rlogfile = ">> $main::logfile 2>&1";
 
 ################################################################################
