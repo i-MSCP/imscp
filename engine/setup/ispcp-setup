@@ -163,6 +163,7 @@ sub check_host_system {
 	push_el(\@main::el, 'check_host_system()', 'Starting...');
 
 	subtitle('ispCP Mysql server connection checking:');
+
 	my $rs = check_sql_connection(
 		$main::ua{'db_user'}, $main::ua{'db_password'}, '', $main::ua{'db_host'}
 	);
@@ -380,9 +381,12 @@ sub setup_ispcp_database {
 
 	my $ispCPdbName = $main::ua{'db_name'};
 
+	# Converting to ASCII (Punycode)
+	my $dbHost = idn_to_ascii($main::db_host, 'utf-8');
+
 	# Setting DSN (We should don't select database here)
 	@main::db_connect = (
-		"DBI:mysql::$main::db_host", $main::db_user, $main::db_pwd
+		"DBI:mysql::$dbHost", $main::db_user, $main::db_pwd
 	);
 
 	# Forcing reconnection
@@ -469,7 +473,7 @@ sub setup_ispcp_database {
 	$main::db_pwd =~ s/([\'\"])/\\$1/g;
 
 	$rs = sys_command(
-		"$main::cfg{'CMD_MYSQL'} --host='$main::db_host' --user='$main::db_user'" .
+		"$main::cfg{'CMD_MYSQL'} --host='$dbHost' --user='$main::db_user'" .
 		 " --pass='$main::db_pwd' < /tmp/db.sql $main::rlogfile"
 	);
 	return $rs if ($rs != 0);
@@ -490,9 +494,12 @@ sub setup_default_language_table {
 
 	push_el(\@main::el, 'setup_default_language_table()', 'Starting...');
 
+	# Converting to ASCII (Punycode)
+	my $dbHost = idn_to_ascii($main::db_host, 'utf-8');
+
 	my $rs = sys_command(
-		"$main::cfg{'CMD_MYSQL'} --host='$main::db_host' " .
-		"--user='$main::db_user' --pass='$main::db_pwd' $main::db_name " .
+		"$main::cfg{'CMD_MYSQL'} --host='$dbHost' --user='$main::db_user' " .
+		"--pass='$main::db_pwd' $main::db_name " .
 		"< $main::cfg{'CONF_DIR'}/database/languages.sql $main::rlogfile"
 	);
 	return $rs if ($rs != 0);
@@ -550,9 +557,12 @@ sub setup_default_sql_data {
 
 	## Proftpd SQL user data - Begin
 
+	# Converting to ASCII (Punycode)
+	my $dbHost = idn_to_ascii($main::db_host, 'utf-8');
+
 	# First, we redefine the DNS to use mysql database
 	@main::db_connect = (
-		"DBI:mysql:mysql:$main::db_host", $main::db_user, $main::db_pwd
+		"DBI:mysql:mysql:$dbHost", $main::db_user, $main::db_pwd
 	);
 
 	# And then, we force reconnection to the database
@@ -560,19 +570,18 @@ sub setup_default_sql_data {
 
 	my $vftp_sql_user = $main::ua{'db_ftp_user'};
 	my $vftp_sql_password = $main::ua{'db_ftp_password'};
-	my $hostname = $main::ua{'db_host'};
 
 	# Ensuring that the user doesn't already exist by trying to remove it from
 	# both 'tables_priv' and 'user' tables
 
 	($rs) = doSQL(
-		"DELETE FROM `tables_priv` WHERE `Host` = '$hostname' AND `Db` = " .
+		"DELETE FROM `tables_priv` WHERE `Host` = '$dbHost' AND `Db` = " .
 		"'$main::db_name' AND `User` = '$vftp_sql_user';"
 	);
 	return $rs if ($rs != 0);
 
 	($rs) = doSQL(
-		"DELETE FROM `user` WHERE `Host` = '$hostname' AND `User` = '$vftp_sql_user';"
+		"DELETE FROM `user` WHERE `Host` = '$dbHost' AND `User` = '$vftp_sql_user';"
 	);
 	return $rs if ($rs != 0);
 
@@ -593,28 +602,28 @@ sub setup_default_sql_data {
 	# The Proftpd SQL user should have some rights on the 'ftp_group' table
 	($rs) = doSQL(
 		"GRANT SELECT,INSERT,UPDATE,DELETE ON `$main::db_name`.`ftp_group` TO " .
-	    "'$vftp_sql_user'\@'$hostname' IDENTIFIED BY '$vftp_sql_password';"
+	    "'$vftp_sql_user'\@'$dbHost' IDENTIFIED BY '$vftp_sql_password';"
 	);
 	return $rs if ($rs != 0);
 
 	# The Proftpd SQL user should have some rights on the 'ftp_users' table
 	($rs) = doSQL(
 		"GRANT SELECT,INSERT,UPDATE,DELETE ON `$main::db_name`.`ftp_users` TO " .
-		"'$vftp_sql_user'\@'$hostname' IDENTIFIED BY '$vftp_sql_password';"
+		"'$vftp_sql_user'\@'$dbHost' IDENTIFIED BY '$vftp_sql_password';"
 	);
 	return $rs if ($rs != 0);
 
 	# The Proftpd SQL user should have some rights on the 'quotalimits' table
 	($rs) = doSQL(
 		"GRANT SELECT,INSERT,UPDATE,DELETE ON `$main::db_name`.`quotalimits` TO " .
-		"'$vftp_sql_user'\@'$hostname' IDENTIFIED BY '$vftp_sql_password';"
+		"'$vftp_sql_user'\@'$dbHost' IDENTIFIED BY '$vftp_sql_password';"
 	);
 	return $rs if ($rs != 0);
 
 	# The Proftpd SQL user should have some rights on the 'quotatallies' table
 	($rs) = doSQL(
 		"GRANT SELECT,INSERT,UPDATE,DELETE ON `$main::db_name`.`quotatallies` TO " .
-		"'$vftp_sql_user'\@'$hostname' IDENTIFIED BY '$vftp_sql_password';"
+		"'$vftp_sql_user'\@'$dbHost' IDENTIFIED BY '$vftp_sql_password';"
 	);
 	return $rs if ($rs != 0);
 
@@ -630,8 +639,9 @@ sub setup_hosts {
 
 	push_el(\@main::el, 'setup_hosts()', 'Starting...');
 
-	my $hostname = $main::ua{'hostname'};
-	my $host = $main::ua{'hostname_local'};
+	# Converting to ASCII (Punycode)
+	my $hostname = idn_to_ascii($main::ua{'hostname'}, 'utf-8');
+	my $host = idn_to_ascii($main::ua{'hostname_local'}, 'utf-8');
 	my $hostname_local = "$hostname.local";
 	my $ip = $main::ua{'eth_ip'};
 

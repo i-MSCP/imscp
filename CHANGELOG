@@ -5,6 +5,8 @@ ispCP ω 1.0.7 ChangeLog
 	- DOCS:
 		* Updating INSTALL documentation according setup/update changes
 	- SETUP:
+		Fixed part II for #2476: Internationalized domain names - Punycode
+			conversion
 		Fixed some possible uninitialized values at recovery process
 
 2010-10-08 Daniel Andreca

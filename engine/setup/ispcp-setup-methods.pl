@@ -39,7 +39,7 @@ use warnings;
 use version 0.74;
 use DateTime;
 use DateTime::TimeZone;
-use Net::LibIDN 'idn_to_ascii';
+use Net::LibIDN qw/idn_to_ascii idn_to_unicode/;
 use feature 'state';
 
 # Hide the 'used only once: possible typo' warnings
@@ -72,7 +72,7 @@ sub ask_hostname {
 
 	push_el(\@main::el, 'ask_hostname()', 'Starting...');
 
-	my ($rs, $hostname) = get_sys_hostname();
+	my $hostname = get_sys_hostname();
 	return -1 if ($rs != 0);
 
 	print "\n\tPlease enter a fully qualified hostname. [$hostname]: ";
@@ -116,7 +116,7 @@ sub ask_hostname {
 # Ask for Ip address
 #
 # @return int 0 on success, -1 otherwise. Exit on unrecoverable error
-# @todo Admin should be able to choose another network card
+# @todo Admin should be able to choose another Network Card
 #
 sub ask_eth {
 
@@ -150,25 +150,7 @@ sub ask_vhost {
 
 	push_el(\@main::el, 'ask_vhost()', 'Starting...');
 
-
-
-	# Standard IP with dot to binary data (expected by gethostbyaddr() as first
-	# argument )
-	my $iaddr = inet_aton(getEthAddr());
-	my $addr = gethostbyaddr($iaddr, &AF_INET);
-
-	# gethostbyaddr() returns a short host name with a suffix ( hostname.local )
-	# if the host name ( for the current interface ) is not set in /etc/hosts
-	# file. In this case, or if the returned value isn't FQHN, we use the long
-	# host name who's provided by the system hostname command.
-	if(!defined $addr or
-		($addr =~/^[\w][\w-]{0,253}[\w]\.local$/) ||
-		!($addr =~ /^([\w][\w-]{0,253}[\w])\.([\w][\w-]{0,253}[\w])\.([a-zA-Z]{2,6})$/) ) {
-
-		$addr = $main::ua{'hostname'};
-	}
-
-	my $vhost = "admin.$addr";
+	my $vhost = idn_to_unicode('admin.' . get_sys_hostname(), 'utf8');
 
 	print "\n\tPlease enter the domain name from where ispCP OMEGA will " .
 		"be\n\treachable [$vhost]: ";
@@ -791,7 +773,7 @@ sub isValidHostname {
 	state $labelRegExp = qr /^([0-9a-z]+(-+[0-9a-z]+)*|[a-z0-9]+)$/io;
 
 	# Before any validation, we should converts $hostname which might contain
-	# characters outside the range allowed in DNS names, to IDNA ACE
+	# characters outside the range allowed in DNS names to Punycode
 	$hostname = idn_to_ascii($hostname, 'utf-8');
 	return 0 if !defined $hostname; # idn_to_ascii() return undef on error
 
@@ -1022,9 +1004,12 @@ sub check_sql_connection {
 	$dbName = $main::db_name if !defined $dbName;
 	$dbHost = $main::db_host if !defined $dbHost;
 
+	# Converting to ASCII (Punycode)
+	$dbHost = idn_to_ascii($dbHost, 'utf-8');
+
 	# Define the DSN
 	@main::db_connect = (
-		"DBI:mysql:$dbName:$main::db_host", $userName, $password
+		"DBI:mysql:$dbName:$dbHost", $userName, $password
 	);
 
 	# Forcing reconnection
@@ -1050,18 +1035,45 @@ sub check_sql_connection {
 ################################################################################
 # Get and return the fully qualified system hostname
 #
-# @return mixed [0, string] on success, -1 on failure
+# @return string System hostname on success
 #
 sub get_sys_hostname {
 
 	push_el(\@main::el, 'get_sys_hostname()', 'Starting...');
 
-	chomp(my $hostname = `$main::cfg{'CMD_HOSTNAME'} -f`);
-	return -1 if($? != 0);
+	state $hostname;
+
+	if(!defined $hostname) {
+		# Standard IP with dot to binary data (expected by gethostbyaddr() as first
+		# argument )
+		my $iaddr = inet_aton(getEthAddr());
+		$hostname = gethostbyaddr($iaddr, &AF_INET);
+
+		# gethostbyaddr() returns a short host name with a suffix ( hostname.local )
+		# if the host name ( for the current interface ) is not set in /etc/hosts
+		# file. In this case, or if the returned value isn't FQHN, we use the long
+		# host name who's provided by the system hostname command.
+		if(!defined $hostname or
+			($hostname =~/^[\w][\w-]{0,253}[\w]\.local$/) ||
+			!($hostname =~ /^([\w][\w-]{0,253}[\w])\.([\w][\w-]{0,253}[\w])\.([a-zA-Z]{2,6})$/) ) {
+
+			chomp(my $hostname = `$main::cfg{'CMD_HOSTNAME'} -f $main::rlogfile`);
+
+			if(getCmdExitValue() != 0) {
+				exit_msg(
+					-1, colored(['bold red'], "[ERROR] ") . 'Unable to found ' .
+		        "your system hostname!\n"
+				);
+			}
+		}
+
+		# Converting to unicode
+		$hostname = idn_to_unicode($hostname, 'utf-8');
+	}
 
 	push_el(\@main::el, 'get_sys_hostname()', 'Ending...');
 
-	return (0, $hostname);
+	return $hostname;
 }
 
 ################################################################################
@@ -1560,7 +1572,7 @@ sub setup_named {
 	# eg. Centos, Fedora did not file by default
 	} else {
 		push_el(
-			\@main::el, 'add_named_db_data()',
+			\@main::el, 'setup_named()',
 			"[WARNING] Can't find the parent file for named..."
 		);
 
@@ -2097,11 +2109,14 @@ sub setup_mta {
 	($rs, $cfgTpl) = get_file("$cfgDir/main.cf");
 	return $rs if ($rs != 0);
 
+	# Converting to ASCII (Punycode)
+	my $hostname = idn_to_ascii($main::cfg{'SERVER_HOSTNAME'}, 'utf-8');
+
 	# Building the file
 	($rs, $$cfg) = prep_tpl(
 		{
-			'{MTA_HOSTNAME}' => $main::cfg{'SERVER_HOSTNAME'},
-			'{MTA_LOCAL_DOMAIN}' => "$main::cfg{'SERVER_HOSTNAME'}.local",
+			'{MTA_HOSTNAME}' => $hostname,
+			'{MTA_LOCAL_DOMAIN}' => "$hostname.local",
 			'{MTA_VERSION}' => $main::cfg{'Version'},
 			'{MTA_TRANSPORT_HASH}' => $main::cfg{'MTA_TRANSPORT_HASH'},
 			'{MTA_LOCAL_MAIL_DIR}' => $main::cfg{'MTA_LOCAL_MAIL_DIR'},
@@ -2321,6 +2336,9 @@ sub setup_ftpd {
 	my $bkpDir = "$cfgDir/backup";
 	my $wrkDir = "$cfgDir/working";
 
+	# Converting to ASCII (Punycode)
+	my $dbHost = idn_to_ascii($main::db_host, 'utf-8');
+
 	## Sets the path to the configuration file
 
 	if (!-e $main::cfg{'FTPD_CONF_FILE'}) {
@@ -2421,7 +2439,7 @@ sub setup_ftpd {
 			($rs) = doSQL(
 				qq/
 					DELETE FROM `tables_priv`
-					WHERE `Host` = '$main::cfg{'SERVER_HOSTNAME'}'
+					WHERE `Host` = '$dbHost'
 					AND `Db` = '$main::db_name'
 					AND `User` = '$main::ua{'db_ftp_user'}';
 				/
@@ -2431,7 +2449,7 @@ sub setup_ftpd {
 			($rs) = doSQL(
 				qq/
 					DELETE FROM `user`
-					WHERE `Host` = '$main::db_host'
+					WHERE `Host` = '$dbHost'
 					AND `User` = '$main::ua{'db_ftp_user'}';
 				/
 			);
@@ -2446,7 +2464,7 @@ sub setup_ftpd {
 				($rs) = doSQL(
 					qq/
 						GRANT SELECT,INSERT,UPDATE,DELETE ON `$main::db_name`.`$_`
-						TO '$main::ua{'db_ftp_user'}'\@'$main::db_host'
+						TO '$main::ua{'db_ftp_user'}'\@'$dbHost'
 						IDENTIFIED BY '$main::ua{'db_ftp_password'}';
 					/
 				);
@@ -2464,9 +2482,9 @@ sub setup_ftpd {
 	# Building the new file
 	($rs, $$cfg) = prep_tpl(
 		{
-		'{HOST_NAME}' => $main::cfg{'SERVER_HOSTNAME'},
+		'{HOST_NAME}' => idn_to_ascii($main::cfg{'SERVER_HOSTNAME'}, 'utf-8'),
 		'{DATABASE_NAME}' => $main::db_name,
-		'{DATABASE_HOST}' => $main::db_host,
+		'{DATABASE_HOST}' => $dbHost,
 		'{DATABASE_USER}' => $main::ua{'db_ftp_user'},
 		'{DATABASE_PASS}' => $main::ua{'db_ftp_password'},
 		'{FTPD_MIN_UID}' => $main::cfg{'APACHE_SUEXEC_MIN_UID'},
@@ -2616,8 +2634,8 @@ sub setup_gui_httpd {
 	($rs, $$cfg) = prep_tpl(
 		{
 			'{BASE_SERVER_IP}' => $main::cfg{'BASE_SERVER_IP'},
-			'{BASE_SERVER_VHOST}' => $main::cfg{'BASE_SERVER_VHOST'},
-			'{DEFAULT_ADMIN_ADDRESS}' => $main::cfg{'DEFAULT_ADMIN_ADDRESS'},
+			'{BASE_SERVER_VHOST}' => idn_to_ascii($main::cfg{'BASE_SERVER_VHOST'}, 'utf-8'),
+			'{DEFAULT_ADMIN_ADDRESS}' => $main::cfg{'DEFAULT_ADMIN_ADDRESS'}, #TODO Punycode
 			'{ROOT_DIR}' => $main::cfg{'ROOT_DIR'},
 			'{APACHE_WWW_DIR}' => $main::cfg{'APACHE_WWW_DIR'},
 			'{APACHE_USERS_LOG_DIR}' => $main::cfg{'APACHE_USERS_LOG_DIR'},
@@ -2773,7 +2791,7 @@ sub setup_gui_php {
 		{
 			'{WWW_DIR}' => $main::cfg{'ROOT_DIR'},
 			'{DMN_NAME}' => 'gui',
-			'{MAIL_DMN}' => $main::cfg{'BASE_SERVER_VHOST'},
+			'{MAIL_DMN}' => idn_to_ascii($main::cfg{'BASE_SERVER_VHOST'}, 'utf-8'),
 			'{CONF_DIR}' => $main::cfg{'CONF_DIR'},
 			'{MR_LOCK_FILE}' => $main::cfg{'MR_LOCK_FILE'},
 			'{PEAR_DIR}' => $main::cfg{'PEAR_DIR'},
@@ -2850,6 +2868,9 @@ sub setup_gui_pma {
 	my $wrkDir = "$cfgDir/working";
 	my $prodDir = "$main::cfg{'GUI_ROOT_DIR'}/tools/pma";
 
+	# Converting to ASCII (Punycode)
+	my $dbHost = idn_to_ascii($main::cfg{'DATABASE_HOST'}, 'utf-8');
+
 	my ($rs, $blowfishSecret, $ctrlUser, $ctrlUserPwd, $cfgFile);
 
 	# Saving the current production file if it exists
@@ -2907,7 +2928,7 @@ sub setup_gui_pma {
 		{
 			'{PMA_USER}' => $ctrlUser,
 			'{PMA_PASS}' => $ctrlUserPwd,
-			'{HOSTNAME}' => $main::cfg{'DATABASE_HOST'},
+			'{HOSTNAME}' => $dbHost,
 			'{TMP_DIR}'  => "$main::cfg{'GUI_ROOT_DIR'}/phptmp",
 			'{BLOWFISH}' => $blowfishSecret
 		},
@@ -2934,7 +2955,7 @@ sub setup_gui_pma {
 	if (defined $main::ua{'db_pma_user'}) {
 		# Setting DSN
 		@main::db_connect = (
-			"DBI:mysql:mysql:$main::db_host", $main::db_user, $main::db_pwd
+			"DBI:mysql:mysql:$dbHost", $main::db_user, $main::db_pwd
 		);
 
 		# Forcing reconnection
@@ -2954,7 +2975,7 @@ sub setup_gui_pma {
 			($rs) = doSQL(
 				qq /
 					DELETE FROM `tables_priv`
-					WHERE `Host` = '$main::cfg{'DATABASE_HOST'}'
+					WHERE `Host` = '$dbHost'
 					AND `Db` = 'mysql' AND `User` = '$_';
 				/
 			);
@@ -2963,7 +2984,7 @@ sub setup_gui_pma {
 			($rs) = doSQL(
 				qq /
 					DELETE FROM `user`
-					WHERE `Host` = '$main::cfg{'DATABASE_HOST'}'
+					WHERE `Host` = '$dbHost'
 					AND `User` = '$_';
 				/
 			);
@@ -2972,7 +2993,7 @@ sub setup_gui_pma {
 			($rs) = doSQL(
 				qq /
 					DELETE FROM `columns_priv`
-					WHERE `Host` = '$main::cfg{'DATABASE_HOST'}'
+					WHERE `Host` = '$dbHost'
 					AND `User` = '$_';
 				/
 			);
@@ -2987,7 +3008,7 @@ sub setup_gui_pma {
 		($rs) = doSQL(
 			qq/
 				GRANT USAGE ON `mysql`.*
-				TO '$ctrlUser'\@'$main::cfg{'DATABASE_HOST'}'
+				TO '$ctrlUser'\@'$dbHost'
 				IDENTIFIED BY '$ctrlUserPwd' ;
 			/
 		);
@@ -2998,7 +3019,7 @@ sub setup_gui_pma {
 		($rs) = doSQL(
 			qq/
 				GRANT SELECT ON `mysql`.`db`
-				TO '$ctrlUser'\@'$main::cfg{'DATABASE_HOST'}';
+				TO '$ctrlUser'\@'$dbHost';
 			/
 		);
 		return -1 if ($rs != 0);
@@ -3014,7 +3035,7 @@ sub setup_gui_pma {
 					Repl_client_priv
 				)
 				ON `mysql`.`user`
-				TO '$ctrlUser'\@'$main::cfg{'DATABASE_HOST'}';
+				TO '$ctrlUser'\@'$dbHost';
 			/
 		);
 		return -1 if ($rs != 0);
@@ -3022,7 +3043,7 @@ sub setup_gui_pma {
 		($rs) = doSQL(
 			qq/
 				GRANT SELECT ON mysql.host
-				TO '$ctrlUser'\@'$main::cfg{'DATABASE_HOST'}';
+				TO '$ctrlUser'\@'$dbHost';
 			/
 		);
 		return -1 if ($rs != 0);
@@ -3032,7 +3053,7 @@ sub setup_gui_pma {
 				GRANT SELECT
 					(Host, Db, User, Table_name, Table_priv, Column_priv)
 				ON mysql.tables_priv
-				TO '$ctrlUser'\@'$main::cfg{'DATABASE_HOST'}';
+				TO '$ctrlUser'\@'$dbHost';
 			/
 		);
 		return -1 if ($rs != 0);
@@ -3065,13 +3086,16 @@ sub setup_gui_named {
 
 	push_el(\@main::el, 'setup_gui_named()', 'Starting...');
 
+	# Converting to ASCII (Punycode)
+	my $baseServerVhost = idn_to_ascii($main::cfg{'BASE_SERVER_VHOST'}, 'utf-8');
+
 	# Add GUI Bind9 cfg data
-	my $rs = setup_gui_named_cfg_data($main::cfg{'BASE_SERVER_VHOST'});
+	my $rs = setup_gui_named_cfg_data($baseServerVhost);
 	return $rs if($rs != 0);
 
 	# Building GUI Bind9 DNS records file
 	$rs = setup_gui_named_db_data(
-		$main::cfg{'BASE_SERVER_IP'}, $main::cfg{'BASE_SERVER_VHOST'}
+		$main::cfg{'BASE_SERVER_IP'}, $baseServerVhost
 	);
 	return $rs if($rs != 0);
 
@@ -3092,7 +3116,8 @@ sub setup_gui_named_cfg_data {
 
 	push_el(\@main::el, 'setup_gui_named_cfg_data()', 'Starting...');
 
-	my ($base_vhost) = @_;
+	# If IDN, $base_vhost is already to ASCII (Punycode)
+	my ($baseVhost) = @_;
 
 	my ($rs, $rdata, $cfg);
 
@@ -3103,7 +3128,7 @@ sub setup_gui_named_cfg_data {
 	my $wrkDir = "$cfgDir/bind/working";
 	my $dbDir = $main::cfg{'BIND_DB_DIR'};
 
-	if (!defined $base_vhost || $base_vhost eq '') {
+	if (!defined $baseVhost || $baseVhost eq '') {
 		push_el(
 			\@main::el, 'setup_gui_named_cfg_data()',
 			'[FATAL] Undefined Input Data...'
@@ -3131,7 +3156,7 @@ sub setup_gui_named_cfg_data {
 	return $rs if ($rs != 0);
 
 	# Preparation tags
-	my %tags_hash = ('{DMN_NAME}' => $base_vhost, '{DB_DIR}' => $dbDir);
+	my %tags_hash = ('{DMN_NAME}' => $baseVhost, '{DB_DIR}' => $dbDir);
 
 	# Replacement tags
 	my ($entry_b_val, $entry_e_val, $entry_val) = ('', '', '');
@@ -3186,6 +3211,7 @@ sub setup_gui_named_db_data {
 
 	push_el(\@main::el, 'setup_gui_named_db_data()', 'Starting...');
 
+	# If IDN, $baseVhost is already to ASCII (Punycode)
 	my ($baseIp, $baseVhost) = @_;
 
 	if (!defined $baseVhost || $baseVhost eq '') {
