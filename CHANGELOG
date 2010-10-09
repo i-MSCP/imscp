@@ -25,27 +25,27 @@ ispCP ω 1.0.7 ChangeLog
 			- PhpMyAdmin configuration file
 	- ENGINE: Some refactorization tasks and improvements
 	- SETUP:
-		* Fixed #2277: PMA - Update configuration file
 		* Fixed #2224: Postgrey - Port changed to 10023 for some distributions
+		* Fixed #2277: PMA - Update configuration file
 		* Several refactorization tasks and improvements
 
 2010-10-07 Sascha Bay
 	- THEMES:
 		* Fixed #2480: Ajax spinner broken since the theme was updated
-		* Small fix: change old tooltip to the new one in reseller domain_edit
+		* Updated old tooltip to the new one in reseller domain_edit
 
 2010-10-05 Daniel Andreca
 	- GUI:
-		* Fixed #2479: sql user is able to create unlimited databases
+		* Fixed #2479: SQL user is able to create unlimited databases
 
 2010-10-03 Daniel Andreca
 	- ENGINE:
 		* Some refactorization tasks in the ispcp_rqst_mngr script
-		* Fixed #2467: Orderpanel should not allow client to try register
-			master domain
+		* Fixed #2467: Orderpanel should not allow client to try register master
+			domain
 		* Fixed #2468: Subdomain management should not allow client to
-			try register master domain (tx Obi_Wan)
-		* Fixed #1998: Add support for subdomain redirect (tx JCD)
+			try register master domain (Thanks to Obi_Wan)
+		* Fixed #1998: Add support for subdomain redirect (Thanks to JCD)
 	- LANGUAGES:
 		* Updated Romanian
 
@@ -71,7 +71,7 @@ ispCP ω 1.0.7 ChangeLog
 
 2010-09-25 Daniel Andreca
 	- THEMES:
-		* Updated theme (tx HenrikS)
+		* Updated theme (thx HenrikS)
 
 2010-09-22 Benedikt Heintel
 	- GUI:
@@ -81,11 +81,11 @@ ispCP ω 1.0.7 ChangeLog
 
 2010-09-21 Daniel Andreca
 	- ENGINE:
-		* Fixed #2466: Domain alias delete fails
-		* Compatibility with debian lenny (perl 10.0)
-		* Fixed #2469: Creating two aliasses with the same mountpoint at
-			the same time
 		* Add check for DateTime::TimeZone is installed
+		* Compatibility with Debian Lenny (perl 10.0)
+		* Fixed #2466: Domain alias delete fails
+		* Fixed #2469: Creating two aliasses with the same mountpoint at the
+			same time
 
 2010-09-20 Daniel Andreca
 	- ENGINE:
@@ -93,18 +93,18 @@ ispCP ω 1.0.7 ChangeLog
 
 2010-09-19 Daniel Andreca
 	- ENGINE:
-		* Fixed #2462: Engine locking mecanism is faulty
+		* Fixed #2459: Small mistake in error message (thx nuke3d)
+		* Fixed #2462: Engine locking mechanism is faulty
 		* Fixed #2464: Error in auto responder
-		* Fixed #2459: Small mistake in error message (thanks nuke3d)
 	- GUI:
-		* Fixed #2460: Change domain alias forward: empty (thanks nuke3d)
 		* Fixed #2456: Error in gui/include/ispCP/Update/Database.php
-			(thanks nuke3d)
+			(thx nuke3d)
 		* Fixed #2457: Htaccess errors are not displayed in the ispcp debugger
-		* Fixed #2458: Wrong grammar in alias order UI (thanks nuke3d)
+		* Fixed #2458: Wrong grammar in alias order UI (Thanks to nuke3d)
+		* Fixed #2460: Change domain alias forward: empty (Thanks to nuke3d)
 		* Fixed wrong email count
-		* Improved error messages in ispcp debugger
 		* Fixed Purchase link unavailable if order record is deleted
+		* Improved error messages in ispcp debugger
 		* Quotatallies not cleared on domain removal
 
 2010-09-18 Daniel Andreca
@@ -123,8 +123,8 @@ ispCP ω 1.0.7 ChangeLog
 
 2010-09-17 Daniel Andreca
 	- ENGINE:
-		* Fixed: If a user is added to a group, the group name in stead of the
-			domain name will added to the .htgroup file (thanks Freakez)
+		* Fixed: If an user is added to a group, the group name in stead of the
+			domain name will added to the .htgroup file (Thanks to Freakez)
 
 2010-09-15 Jochen Manz
 	- RELEASE ispCP ω Omega 1.0.7 RC1
@@ -156,12 +156,12 @@ ispCP ω 1.0.7 ChangeLog
 	- ENGINE, CONFIGS
 		* Fixed #2416: ispCP log files shouldn't be readable by everyone
 	- ENGINE
-		* Improved error log in ispcp-htgroups-mngr
-		* Improved error log in ispcp-sub-mngr
-		* Fixed #2452: Update from v1.0.6 will fail on database update
+		* Fixed #2399: Alias deletion - Shared mount point shouldn't be removed
 		* Fixed #2446: make_dir function won`t set correct permissions if more
 			than a folder is created
-		* Fixed #2399: Alias deletion - Shared mount point shouldn't be removed
+		* Fixed #2452: Update from v1.0.6 will fail on database update
+		* Improved error log in ispcp-htgroups-mngr
+		* Improved error log in ispcp-sub-mngr
 		* Improved module requirement
 	- GUI
 		* New inserted value in config table were not counted
@@ -173,22 +173,22 @@ ispCP ω 1.0.7 ChangeLog
 
 2010-09-09 Daniel Andreca
 	- CONFIGS:
+		* Changed ispcp_base.tpl to default
 		* Fixed #2430: [Ubuntu] Proftpd's modules.conf need to be updated on
 			install/update
-		* Changed ispcp_base.tpl to default
 
 2010-09-08 Daniel Andreca
 	- CONFIGS:
 		* Updated database revision
 	- ENGINE:
-		* ispcp-htgroups-mngr: Removed useless sleep statement
-		* Forcing logs umask to be root only readable
+		* Fixed #2107: The Uninstall-Script doesn´t cleanup all Files
 		* Fixed #2425: Engine do not wait altered files to be written
 		* Fixed #2440: Backup script will restore forged backup
-		* Fixed #2107: The Uninstall-Script doesn´t cleanup all Files
+		* Forcing logs umask to be root only readable
+		* ispcp-htgroups-mngr: Removed useless sleep statement
 	- GUI:
-		* Fixed #2442: Adding a domain purcesed via orderpanel will
-			insert type of backup (_full_) witch is not allowed
+		* Fixed #2442: Adding a domain purcesed via orderpanel will insert type
+			of backup (_full_) witch is not allowed
 
 2010-09-07 Markus Schmidt
 	- TOOLS:
@@ -214,16 +214,16 @@ ispCP ω 1.0.7 ChangeLog
 			to Daniel)
 	- GUI:
 		* Changed: Orderpanel 'State' is not longer a required field
-		* Changed: Oder of address fields changed
+		* Changed: Order of address fields changed
 		* Fixed #2174: Several issues for the Ticket Support System
 		* Refactored Ticket System (part I/client)
 
 2010-08-27 Laurent Declercq
 	- CONFIGS:
+		* Fixed #2437: Unable to restart Apache after updating to r3232
+		* Removed useless declarations in httpd.conf (living as ispcp.conf)
 		* Usage of alternative syntax to call Apache Piped Logs scripts to avoid
 		to involve the shell
-		* Removed useless declarations in httpd.conf (living as ispcp.conf)
-		* Fixed #2437: Unable to restart Apache after updating to r3232
 	- ENGINE:
 		* Fixed #2436: Fix for some detected bashisms
 
@@ -235,7 +235,7 @@ ispCP ω 1.0.7 ChangeLog
 			- prerotate/postrotate should be dash compatibles
 	- ENGINE:
 		* Fixed (again) #2187: apache logger should be able to use the
-		improvements of logio in http accounting
+			improvements of logio in http accounting
 		* Rewrited ispcp-apache-logger
 
 2010-08-24 Laurent Declercq
@@ -254,8 +254,8 @@ ispCP ω 1.0.7 ChangeLog
 	- CONFIGS:
 		* Fixed: Made DNS SOA Entries RCF1537 compatible
 	- ENGINE:
-		* Fixed #2421: Fix for imap traffic accounting in dovecot
-			(Thanks to aseques)
+		* Fixed #2421: Fix for imap traffic accounting in dovecot (Thanks to
+			aseques)
 
 2010-08-21 Laurent Declercq
 	- CONFIGS/SETUP:

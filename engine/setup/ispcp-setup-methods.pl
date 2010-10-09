@@ -1065,7 +1065,7 @@ sub get_sys_hostname {
 }
 
 ################################################################################
-# Get the ip (iPv4) assigned to the first network interface (eg. eth0)
+# Get the ip (IpV4) assigned to the first Network Interface (eg. eth0)
 #
 # @return string Ip in dot-decimal notation on success or exit on failure
 #
