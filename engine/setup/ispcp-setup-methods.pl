@@ -122,20 +122,7 @@ sub ask_eth {
 
 	push_el(\@main::el, 'ask_eth()', 'Starting...');
 
-	# @todo IO::Interface
-	chomp(
-		my $ipAddr =`$main::cfg{'CMD_IFCONFIG'}|$main::cfg{'CMD_GREP'} -v inet6|
-		$main::cfg{'CMD_GREP'} inet|$main::cfg{'CMD_GREP'} -v 127.0.0.1|
-		$main::cfg{'CMD_AWK'} '{print \$2}'|head -n 1|
-		$main::cfg{'CMD_AWK'} -F: '{print \$NF}'`
-	);
-
-	if(getCmdExitValue() != 0) {
-		exit_msg(
-			-1, colored(['bold red'], "\n\t[ERROR] ") . 'External command ' .
-			 "returned an error on network\n\tinterface cards lookup!\n"
-		);
-	}
+	my $ipAddr = getEthAddr();
 
 	print "\n\tPlease enter the system network address. [$ipAddr]: ";
 	chomp(my $rdata = <STDIN>);
@@ -163,9 +150,11 @@ sub ask_vhost {
 
 	push_el(\@main::el, 'ask_vhost()', 'Starting...');
 
+
+
 	# Standard IP with dot to binary data (expected by gethostbyaddr() as first
 	# argument )
-	my $iaddr = inet_aton($main::ua{'eth_ip'});
+	my $iaddr = inet_aton(getEthAddr());
 	my $addr = gethostbyaddr($iaddr, &AF_INET);
 
 	# gethostbyaddr() returns a short host name with a suffix ( hostname.local )
@@ -1073,6 +1062,38 @@ sub get_sys_hostname {
 	push_el(\@main::el, 'get_sys_hostname()', 'Ending...');
 
 	return (0, $hostname);
+}
+
+################################################################################
+# Get the ip (iPv4) assigned to the first network interface (eg. eth0)
+#
+# @return string Ip in dot-decimal notation on success or exit on failure
+#
+sub getEthAddr {
+
+	push_el(\@main::el, 'getEthAddr()', 'Starting...');
+
+	if(!defined $main::ua{'eth_ip'}) {
+		# @todo IO::Interface
+		chomp(
+			$main::ua{'eth_ip'} =
+				`$main::cfg{'CMD_IFCONFIG'}|$main::cfg{'CMD_GREP'} -v inet6|
+				$main::cfg{'CMD_GREP'} inet|$main::cfg{'CMD_GREP'} -v 127.0.0.1|
+				$main::cfg{'CMD_AWK'} '{print \$2}'|head -n 1|
+				$main::cfg{'CMD_AWK'} -F: '{print \$NF}'`
+		);
+
+		if(getCmdExitValue() != 0) {
+			exit_msg(
+				-1, colored(['bold red'], "\n\t[ERROR] ") . 'External command ' .
+			 "returned an error on network\n\tinterface cards lookup!\n"
+			);
+		}
+	}
+
+	push_el(\@main::el, 'getEthAddr()', 'Ending...');
+
+	return $main::ua{'eth_ip'};
 }
 
 ################################################################################

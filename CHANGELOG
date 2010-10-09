@@ -1,8 +1,12 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-10-08 Laurent Declercq
+	- SETUP:
+		Fixed some possible uninitialized values at recovery process
+
 2010-10-07 Daniel Andreca
-	- Setup:
+	- SETUP:
 		* Small fix to allow database names containing special chars like '-'
 
 2010-10-08 Laurent Declercq
@@ -11,7 +15,7 @@ ispCP ω 1.0.7 ChangeLog
 			from recovery mode
 
 2010-10-07 Daniel Andreca
-	- Engine:
+	- ENGINE:
 		* Fixed some security issue
 
 2010-10-7 Laurent Declercq
