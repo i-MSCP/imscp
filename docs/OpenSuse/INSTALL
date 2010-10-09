@@ -212,7 +212,7 @@ Note: For all questions, answer "a" (trust always).
 	# cp -v /srv/www/ispcp/gui/themes/user_logos/* /tmp/ispcp/srv/www/ispcp/gui/themes/user_logos/
 	# cp -v /srv/www/ispcp/gui/tools/webmail/data/* /tmp/ispcp/srv/www/ispcp/gui/tools/webmail/data/
 
-	For versions more older than ispCP 1.0.7-rc2
+	For ispCP Omega prior version 1.0.7 RC2
 	# cp -v /srv/www/ispcp/gui/tools/pma/config.inc.php /tmp/ispcp/etc/ispcp/pma/working/
 
 8. Delete old files to avoid security risks:

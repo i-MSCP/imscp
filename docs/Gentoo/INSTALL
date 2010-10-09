@@ -229,7 +229,7 @@ Make sure you are logged in as root and MySQL is running.
 	# cp -v /var/www/ispcp/gui/themes/user_logos/* /tmp/ispcp/var/www/ispcp/gui/themes/user_logos/
 	# cp -v /var/www/ispcp/gui/tools/webmail/data/* /tmp/ispcp/var/www/ispcp/gui/tools/webmail/data/
 
-	For versions more older than ispCP 1.0.7-rc2
+	For ispCP Omega prior version 1.0.7 RC2
 	# cp -v /var/www/ispcp/gui/tools/pma/config.inc.php /tmp/ispcp/etc/ispcp/pma/working/
 
 7. Delete old files to avoid security risks:
