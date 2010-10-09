@@ -36,14 +36,23 @@
 
 use strict;
 use warnings;
-use version 0.74;
-use DateTime;
-use DateTime::TimeZone;
-use Net::LibIDN qw/idn_to_ascii idn_to_unicode/;
-use feature 'state';
 
 # Hide the 'used only once: possible typo' warnings
 no warnings 'once';
+
+use DateTime;
+use DateTime::TimeZone;
+use feature 'state';
+use File::MimeInfo::Magic;
+use Net::LibIDN qw/idn_to_ascii idn_to_unicode/;
+use Socket;
+use Term::ReadKey;
+use Term::ANSIColor qw(:constants colored);
+$Term::ANSIColor::AUTORESET = 1;
+use version 0.74;
+
+# User input data
+%main::ua = ();
 
 # Ensuring that the log directory exists
 my $rs = makepath(

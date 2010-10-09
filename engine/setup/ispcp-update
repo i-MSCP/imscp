@@ -34,17 +34,6 @@
 # and the script ends, and then the script is run again, the final result
 # should be identical as if the script was run once.
 
-use strict;
-use warnings;
-
-# Hide the 'used only once: possible typo' warnings
-no warnings 'once';
-
-use Term::ReadKey;
-use Net::LibIDN ':all';
-use File::MimeInfo::Magic;
-use Term::ANSIColor qw(:constants colored);
-$Term::ANSIColor::AUTORESET = 1;
 use FindBin;
 use lib "$FindBin::Bin/..";
 
