@@ -1873,9 +1873,11 @@ sub setup_httpd_main_vhost {
 # ispCP awstats vhost - (Setup / Update)
 #
 # This subroutine do the following tasks:
-#  - Built, store and install awstats vhost configuration file
-#  - Change proxy module configuration file if it exits
+#  - Built, store and install Awstats vhost configuration file (01_awstats.conf)
+#  - Update proxy module configuration file if it exits (proxy.conf)
 #  - Enable proxy module
+#  - Disable default awstats.conf file
+#  - Remove default debian cron task for Awstats
 #
 # @return int 0 on success, other on failure
 #
@@ -1894,95 +1896,90 @@ sub setup_awstats_vhost {
 	my $bkpDir = "$cfgDir/backup";
 	my $wrkDir = "$cfgDir/working";
 
-	# Setup:
-	if(defined &setup_engine) {
-		# Saving some system configuration files
-		for (
-			map {/(.*\/)(.*)$/ && $1.':'.$2}
-			'/etc/logrotate.d/apache', # Still needed ?
-			'/etc/logrotate.d/apache2',
-			"$main::cfg{'APACHE_MODS_DIR'}/proxy.conf"
-		) {
-			($path, $file) = split /:/ ;
-			next if(!-e $path.$file);
+	# Saving some configuration files if they exists
+	for (
+		map {/(.*\/)(.*)$/ && $1.':'.$2}
+		'/etc/logrotate.d/apache',
+		'/etc/logrotate.d/apache2',
+		"$main::cfg{'APACHE_MODS_DIR'}/proxy.conf"
+	) {
+		($path, $file) = split /:/ ;
+		next if(!-e $path.$file);
 
-			if(!-e "$bkpDir/$file.system") {
-				$rs = sys_command(
-					"$main::cfg{'CMD_CP'} -p $path$file $bkpDir/$file.system"
-				);
-				return $rs if($rs != 0);
-			}
-		}
-	# Update:
-	} else {
-		my $timestamp = time;
-
-		# Saving more production files if they exist
-		for (
-			map {/(.*\/)(.*)$/ && $1.':'.$2}
-			'/etc/logrotate.d/apache',
-			'/etc/logrotate.d/apache2',
-			"$main::cfg{'APACHE_MODS_DIR'}/proxy.conf",
-			"$main::cfg{'APACHE_SITES_DIR'}/01_awstats.conf"
-		) {
-			($path, $file)= split /:/;
-			next if(!-e $path.$file);
+		if(!-e "$bkpDir/$file.system") {
+			$rs = sys_command(
+				"$main::cfg{'CMD_CP'} -p $path$file $bkpDir/$file.system"
+			);
+		} else {
+			my $timestamp = time;
 
 			$rs = sys_command(
 				"$main::cfg{'CMD_CP'} -p $path$file $bkpDir/$file.$timestamp"
 			);
-			return $rs if($rs != 0);
 		}
+
+		return $rs if($rs != 0);
 	}
 
-	## Building, storage and installation of new file
+	# Saving the '01_awstats.conf' file if it exists
+	if(-e "$main::cfg{'APACHE_SITES_DIR'}/01_awstats.conf") {
+		$rs = sys_command(
+			"$main::cfg{'CMD_CP'} -p $main::cfg{'APACHE_SITES_DIR'}/" .
+			"01_awstats.conf $bkpDir/01_awstats.conf." . time
+		);
+		return $rs if($rs != 0);
+	}
 
-	# Tags preparation
-	my %tags_hash = (
-		'{AWSTATS_ENGINE_DIR}' => $main::cfg{'AWSTATS_ENGINE_DIR'},
-		'{AWSTATS_WEB_DIR}' => $main::cfg{'AWSTATS_WEB_DIR'}
-	);
+	## Building, storage and installation of new files
 
 	# Loading the template from /etc/ispcp/apache
 	($rs, $cfgTpl) = get_file("$cfgDir/01_awstats.conf");
 	return $rs if($rs != 0);
 
 	# Building the new file
-	($rs, $$cfg) = prep_tpl(\%tags_hash, $cfgTpl);
+	($rs, $$cfg) = prep_tpl(
+		{
+			'{AWSTATS_ENGINE_DIR}' => $main::cfg{'AWSTATS_ENGINE_DIR'},
+			'{AWSTATS_WEB_DIR}' => $main::cfg{'AWSTATS_WEB_DIR'}
+		},
+		$cfgTpl
+	);
 	return $rs if ($rs != 0);
 
-	# Store the new file in working directory
+	# Store the new Awstats Vhost file in working directory
 	$rs = store_file(
 		"$wrkDir/01_awstats.conf", $$cfg, $main::cfg{'ROOT_USER'},
 		$main::cfg{'ROOT_GROUP'}, 0644
 	);
 	return $rs if ($rs != 0);
 
-	# Install the new file in production directory
+	# Install the new new Awstats Vhost file in the production directory
 	$rs = sys_command(
 		"$main::cfg{'CMD_CP'} -pf $wrkDir/01_awstats.conf " .
 		"$main::cfg{'APACHE_SITES_DIR'}/"
 	);
 	return $rs if($rs != 0);
 
+
+	# If Awstats is active and then, dynamic mode is selected
 	if ($main::cfg{'AWSTATS_ACTIVE'} eq 'yes' && $main::cfg{'AWSTATS_MODE'} eq 0) {
-		## Change the proxy module configuration file if it exists
+		## Updating the proxy module configuration file if it exists
 		if(-e "$bkpDir/proxy.conf.system") {
 			($rs, $$cfg) = get_file("$bkpDir/proxy.conf.system");
 			return $rs if($rs != 0);
 
-			# Replace the allowed hosts in mod_proxy if needed
+			# Replacing the allowed hosts in mod_proxy if needed
 			# @todo Squeeze - All is commented / Check if it work like this
 			$$cfg =~ s/#Allow from .example.com/Allow from 127.0.0.1/gi;
 
-			# Store the new file in working directory
+			# Storing the new file in the working directory
 			$rs = store_file(
 				"$wrkDir/proxy.conf", $$cfg, $main::cfg{'ROOT_USER'},
 				$main::cfg{'ROOT_GROUP'}, 0644
 			);
 			return $rs if ($rs != 0);
 
-			# Install the new file in production directory
+			# Installing the new file in the production directory
 			$rs = sys_command(
 				"$main::cfg{'CMD_CP'} -pf $wrkDir/proxy.conf " .
 				"$main::cfg{'APACHE_MODS_DIR'}/"
@@ -2004,11 +2001,11 @@ sub setup_awstats_vhost {
 
 		## Update Apache logrotate file
 
-		# if the distribution provides an apache or apache2 log rotation file,
-		# update it with the awstats information. If not, use the ispcp file.
+		# If the distribution provides an apache or apache2 log rotation file,
+		# update it with the Awstats information. If not, use the ispcp file.
 		# log rotation should be never executed twice. Therefore it is sane to
 		# define it two times in different scopes.
-		for (qw/apache apache2/) {
+		for ('apache', 'apache2') {
 			next if(! -e "$bkpDir/$_.system");
 
 			($rs, $$cfg) = get_file("$bkpDir/$_.system");
@@ -2016,17 +2013,17 @@ sub setup_awstats_vhost {
 
 			# Add code if not exists
 			if ($$cfg !~ /awstats_updateall\.pl/i) {
-				# Building the new file
+				# Building the new apache logrotate file
 				$$cfg =~ s/sharedscripts/sharedscripts\n\tprerotate\n\t\t$main::cfg{'AWSTATS_ROOT_DIR'}\/awstats_updateall.pl now -awstatsprog=$main::cfg{'AWSTATS_ENGINE_DIR'}\/awstats.pl &> \/dev\/null\n\tendscript/gi;
 
-				# Store the new file in working directory
+				# Storing the new file in the working directory
 				$rs = store_file(
 					"$wrkDir/$_", $$cfg, $main::cfg{'ROOT_USER'},
 					$main::cfg{'ROOT_GROUP'}, 0644
 				);
 				return $rs if ($rs != 0);
 
-				# Install the new file in production directory
+				# Installing the new file in the production directory
 				$rs = sys_command(
 					"$main::cfg{'CMD_CP'} -pf $wrkDir/$_ /etc/logrotate.d/"
 				);
@@ -2035,7 +2032,28 @@ sub setup_awstats_vhost {
 		}
 	}
 
-	push_el(\@main::el, 'setup_awstats_vhost()', 'Starting...');
+	# Disabling the default awstats.conf file to avoid error such as:
+	# Error: SiteDomain parameter not defined in your config/domain file
+	# Setup ('/etc/awstats/awstats.conf' file, web server or permissions) may
+	# be wrong...
+	if(-e "$main::cfg{'AWSTATS_CONFIG_DIR'}/awstats.conf") {
+		$rs = sys_command(
+			"$main::cfg{'CMD_MV'} $main::cfg{'AWSTATS_CONFIG_DIR'}/awstats.conf " .
+			"$main::cfg{'AWSTATS_CONFIG_DIR'}/awstats.conf.disabled $main::rlogfile"
+		);
+		return $rs if($rs !=0);
+	}
+
+	# Removing default Debian Package cron task for awstats
+	if(-e "/etc/cron.d/awstats") {
+		$rs = sys_command(
+			"$main::cfg{'CMD_MV'} /etc/cron.d/awstats " .
+			"$main::cfg{'CONF_DIR'}/cron.d/backup/awstats.system $main::rlogfile"
+		);
+		return $rs if($rs !=0);
+	}
+
+	push_el(\@main::el, 'setup_awstats_vhost()', 'Ending...');
 
 	0;
 }
