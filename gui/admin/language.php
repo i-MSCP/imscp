@@ -40,14 +40,10 @@ $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('def_language', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 
-/**
- * page actions.
- */
-
+// page actions.
 if (isset($_POST['uaction']) && $_POST['uaction'] === 'save_lang') {
 
 	$user_id = $_SESSION['user_id'];
-
 	$user_lang = $_POST['def_language'];
 
 	$query = "
@@ -57,7 +53,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'save_lang') {
 			`lang` = ?
 		WHERE
 			`user_id` = ?
-	";
+	;";
 
 	$rs = exec_query($sql, $query, array($user_lang, $user_id));
 
@@ -86,11 +82,7 @@ $tpl->assign(
 );
 
 
-/*
- *
- * static page messages.
- *
- */
+// static page messages.
 
 gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_general_information.tpl');
 gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_general_information.tpl');
@@ -110,7 +102,6 @@ $tpl->assign(
 gen_page_message($tpl);
 
 $tpl->parse('PAGE', 'page');
-
 $tpl->prnt();
 
 if ($cfg->DUMP_GUI_DEBUG) {

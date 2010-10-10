@@ -248,12 +248,24 @@ function check_data_correction(&$tpl) {
 	$hp_traff		= clean_input($_POST['hp_traff']);
 	$hp_disk		= clean_input($_POST['hp_disk']);
 	$description	= clean_input($_POST['hp_description']);
-	$price			= empty($_POST['hp_price']) ? 0 : clean_input($_POST['hp_price']);
-	$setup_fee		= empty($_POST['hp_setupfee']) ? 0 : clean_input($_POST['hp_setupfee']);
 	$value			= clean_input($_POST['hp_value']);
 	$payment		= clean_input($_POST['hp_payment']);
 	$status			= $_POST['status'];
 	$tos			= clean_input($_POST['hp_tos']);
+
+	if (empty($_POST['hp_price'])) {
+		$price = 0;
+	} else {
+		$price = clean_input($_POST['hp_price']);
+	}
+
+	if (empty($_POST['hp_setupfee'])) {
+		$setup_fee = 0;
+	} else {
+		$setup_fee = clean_input($_POST['hp_setupfee']);
+	}
+
+
 
 	if (isset($_POST['php'])) {
 		$hp_php = $_POST['php'];
@@ -263,19 +275,18 @@ function check_data_correction(&$tpl) {
 		$hp_cgi = $_POST['cgi'];
 	}
 
-	if (isset($_POST['backup'])) {
-		$hp_backup = $_POST['backup'];
-	}
-
 	if (isset($_POST['dns'])) {
 		$hp_dns = $_POST['dns'];
 	}
 
-	if (empty($hp_name)) {
-		$ahp_error[] = tr('Incorrect template name length!');
+	if (isset($_POST['backup'])) {
+		$hp_backup = $_POST['backup'];
 	}
 
-	if (empty($description)) {
+	if ($hp_name == '') {
+		$ahp_error[] = tr('Incorrect template name length!');
+	}
+	if ($description == '') {
 		$ahp_error[] = tr('Incorrect template description length!');
 	}
 	if (!is_numeric($price)) {

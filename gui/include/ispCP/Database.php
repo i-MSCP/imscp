@@ -173,7 +173,7 @@ class ispCP_Database {
 	 * @since 1.0.7
 	 * @author Laurent Declercq <laurent.declercq@ispcp.net>
 	 * @throws ispCP_Exception
-	 * @param $string $connection Connection unique identifier
+	 * @param string $connection Connection unique identifier
 	 * @return PDO A PDO instance
 	 */
 	public static function getRawInstance($connection = 'default') {

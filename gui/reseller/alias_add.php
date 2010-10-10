@@ -135,18 +135,12 @@ function init_empty_data() {
  * Show data fields
  */
 function gen_al_page(&$tpl, $reseller_id) {
-	// NXW Some unused variables so...
-	/*
-	global $cr_user_id, $alias_name, $domain_ip, $forward, $forward_prefix,
-	$mount_point;
-	*/
-
 	global $alias_name, $forward, $forward_prefix, $mount_point;
 
 	$sql = ispCP_Registry::get('Db');
 	$cfg = ispCP_Registry::get('Config');
 
-	// NXW: Unused variables so...
+	// Unused variables
 	/*
 	list($udmn_current, $udmn_max, $udmn_uf,
 		$usub_current, $usub_max, $usub_uf,
@@ -161,7 +155,7 @@ function gen_al_page(&$tpl, $reseller_id) {
 	*/
 	list(,,,,,,$uals_current) = generate_reseller_user_props($reseller_id);
 
-	// NXW: Unused variables so ...
+	// Unused variables
 	/*
 	list($rdmn_current, $rdmn_max,
 		$rsub_current, $rsub_max,
@@ -245,12 +239,7 @@ function add_domain_alias(&$sql, &$err_al) {
 		$mount_point, $validation_err_msg;
 	$cfg = ispCP_Registry::get('Config');
 
-	// NXW: Unused variable so...
-	// $cr_user_id = $dmn_id = $_POST['usraccounts'];
 	$cr_user_id = $_POST['usraccounts'];
-
-	// Should be perfomed after domain names syntax validation now
-	//$alias_name = encode_idna(strtolower($_POST['ndomain_name']));
 
 	$alias_name = strtolower($_POST['ndomain_name']);
 	$mount_point = array_encode_idna(strtolower($_POST['ndomain_mpoint']), true);
@@ -274,8 +263,6 @@ function add_domain_alias(&$sql, &$err_al) {
 
 	$rs = exec_query($sql, $query, $cr_user_id);
 	$domain_ip = $rs->fields['domain_ip_id'];
-
-	// $mount_point = "/".$mount_point;
 
 	// First check if input string is a valid domain names
 	if (!validates_dname($alias_name)) {

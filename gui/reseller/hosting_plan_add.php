@@ -267,6 +267,9 @@ function check_data_correction(&$tpl) {
 	$hp_sql_user	= clean_input($_POST['hp_sql_user']);
 	$hp_traff		= clean_input($_POST['hp_traff']);
 	$hp_disk		= clean_input($_POST['hp_disk']);
+	$value			= clean_input($_POST['hp_value']);
+	$payment		= clean_input($_POST['hp_payment']);
+	$status			= $_POST['status'];
 	$description	= clean_input($_POST['hp_description']);
 	$tos			= clean_input($_POST['hp_tos']);
 
@@ -282,16 +285,12 @@ function check_data_correction(&$tpl) {
 		$setup_fee = clean_input($_POST['hp_setupfee']);
 	}
 
-	$value = clean_input($_POST['hp_value']);
-	$payment = clean_input($_POST['hp_payment']);
-	$status = $_POST['status'];
-
 	if (isset($_POST['php'])) {
 		$hp_php = $_POST['php'];
 	}
 
 	if (isset($_POST['cgi'])) {
-		$hp_cgi = $_POST['cgi'];;
+		$hp_cgi = $_POST['cgi'];
 	}
 
 	if (isset($_POST['dns'])) {

@@ -115,7 +115,7 @@ class ispCP_Config {
 				);
     		} elseif (!is_subclass_of($className, 'ispCP_Config_Handler')) {
 				throw new ispCP_Exception(
-					'Error: Only ispCP_Config_Handler objects can be handling ' .
+					'Error: Only ispCP_Config_Handler objects can be handled ' .
 						'by the ' . __CLASS__ . ' class!'
 				);
 			}

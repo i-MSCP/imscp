@@ -156,7 +156,7 @@ server. Clicking the &quot;Sign Out&quot; link will erase these cookies.
   </TR>
 </TABLE>
 <!-- @modified by ispCP Omega -->
- <p><a href="../../src/login.php>back</a></p>
+ <p><a href="../../src/login.php">back</a></p>
 </div>
 <!-- @modified by ispCP Omega END -->
 </BODY>
