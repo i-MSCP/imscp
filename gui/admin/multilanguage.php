@@ -54,6 +54,163 @@ $tpl->assign(
 	)
 );
 
+/**
+ * Import traditional ispCP translation file format 
+ * @param string $file
+ * @return array|int
+ */
+function importOldTranslationFile($file) {
+    $fp = fopen($file, 'r');
+
+    if (!$fp) {
+        return 1;
+    }
+
+    $ab = array(
+        'ispcp_languageRevision' => '',
+        'ispcp_languageSetlocaleValue' => '',
+        'ispcp_table' => '',
+        'ispcp_language' => ''
+    );
+
+    $errors = 0;
+
+    while (!feof($fp) && $errors <= 3) {
+        $t = fgets($fp);
+
+        $msgid = '';
+        $msgstr = '';
+
+        @list($msgid, $msgstr) = $t = explode(' = ', $t);
+
+        if (count($t) != 1) {
+            $ab[$msgid] = rtrim($msgstr);
+        } else {
+            $errors++;
+        }
+    }
+
+    fclose($fp);
+
+    if ($errors > 3) {
+        return 2;
+    }
+
+    return $ab;
+}
+
+/**
+ * Remove leading and trailing quotes, unescape linefeed, cr, tab and quotes
+ * @param string $s
+ * @return string
+ */
+function decodePoFileString($s)
+{
+    $s = preg_replace('/"\s+"/', '', $s);
+
+    return str_replace(
+        array('\\n', '\\r', '\\t', '\"'),
+        array("\n", "\r", "\t", '"'),
+        $s
+    );
+}
+
+function importGettextFile($file, $filename)
+{
+    $content = file_get_contents($file);
+
+    if (empty($content)) return 1;
+
+    $ab = array(
+        'ispcp_languageRevision' => '',
+        'ispcp_languageSetlocaleValue' => '',
+        'ispcp_table' => '',
+        'ispcp_language' => ''
+    );
+
+    // Parse all messages
+    $n = preg_match_all(
+        '/(msgid\s+("([^"]|\\\\")*?"\s*)+)\s+(msgstr\s+("([^"]|\\\\")*?"\s*)+)/',
+        $content,
+        $matches
+    );
+    for ($i = 0; $i < $n; $i++) {
+        $id = preg_replace('/\s*msgid\s*"(.*)"\s*/s', '\\1', $matches[1][$i]);
+        $str = preg_replace('/\s*msgstr\s*"(.*)"\s*/s', '\\1', $matches[4][$i]);
+        if (!empty($str)) {
+            $ab[decodePoFileString($id)] = decodePoFileString($str);            
+        }
+    }
+
+    // set language
+    if (isset($ab['_: Localised language'])) {
+        $ab['ispcp_language'] = $ab['_: Localised language'];
+        unset($ab['_: Localised language']);
+    } else {
+        return 2;
+    }
+
+    // Parse some relevant header information
+    if (isset($ab[''])) {
+        $ameta = array();
+
+        $header = explode("\n", $ab['']);
+        foreach ($header as $hline) {
+            $n = strpos($hline, ':');
+            if ($n !== false) {
+                $key = substr($hline, 0, $n);
+                $ameta[$key] = trim(substr($hline, $n+1));
+            }
+        }
+
+        if (isset($ameta['Language-Team'])) {
+            $s = $ameta['Language-Team'];
+            $n = strpos($s, '<');
+            if ($n !== false) {
+                $ab['ispcp_table'] = str_replace(' ', '', mb_substr($s, 0, $n));
+            }
+        }
+
+        // get ispcp_languageRevision by PO-Revision-Date
+        if (isset($ameta['PO-Revision-Date'])) {
+            // trim timezone
+            $n = strpos($ameta['PO-Revision-Date'], '+');
+            if ($n !== false) {
+                $ameta['PO-Revision-Date'] = substr($ameta['PO-Revision-Date'], 0, $n);
+            }
+
+            // currently some problems with hour/minute parsing?!
+            $time = strptime($ameta['PO-Revision-Date'], '%Y-%m-%d %H:%I');
+
+            $ab['ispcp_languageRevision'] = sprintf(
+                '%04d%02d%02d%02d%02d%02d',
+                $time['tm_year']+1900,
+                $time['tm_mon']+1,
+                $time['tm_mday'],
+                $time['tm_hour'],
+                $time['tm_min'],
+                $time['tm_sec']               
+            );
+        } else {
+            $ab['ispcp_languageRevision'] = strftime('%Y%m%d%H%I%S');
+        }
+
+        // get locale from file name
+        $ab['ispcp_languageSetlocaleValue'] = basename($filename, '.po');
+
+        unset($ab['']);
+    } else {
+        return 2;
+    }
+
+    // set default encoding to UTF-8 if not present
+    if (!isset($ab['encoding'])) {
+        $ab['encoding'] = 'UTF-8';
+    }
+
+    return $ab;
+}
+
 function install_lang() {
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] == 'upload_language') {
@@ -70,53 +227,30 @@ function install_lang() {
 			return;
 		}
 
-		if ($file_type != 'text/plain' &&
-			$file_type != 'application/octet-stream') {
+		if ($file_type != 'text/plain'
+            && $file_type != 'application/octet-stream'
+            && $file_type != 'text/x-gettext-translation'
+        ) {
 
 			set_page_message(tr('You can upload only text files!'));
 
 			return;
 		} else {
-			$fp = fopen($file, 'r');
+            if ($file_type == 'text/x-gettext-translation') {
+                $ab = importGettextFile($file, $_FILES['lang_file']['name']);
+            } else {
+                $ab = importOldTranslationFile($file);
+            }
 
-			if (!$fp) {
-				set_page_message(tr('Could not read language file!'));
-
-				return;
-			}
-
-			$t = '';
-			$ab = array(
-				'ispcp_languageRevision' => '',
-				'ispcp_languageSetlocaleValue' => '',
-				'ispcp_table' => '',
-				'ispcp_language' => ''
-			);
-
-			$errors = 0;
-
-			while (!feof($fp) && $errors <= 3) {
-				$t = fgets($fp);
-
-				$msgid = '';
-				$msgstr = '';
-
-				@list($msgid, $msgstr) = $t = explode(' = ', $t);
-
-				if (count($t) != 1) {
-					$ab[$msgid] = rtrim($msgstr);
-				} else {
-					$errors++;
-				}
-			}
-
-			fclose($fp);
-
-			if ($errors > 3) {
-				set_page_message(tr('Uploaded file is not a valid language file!'));
-
-				return;
-			}
+            if (is_int($ab)) {
+                if ($ab == 1) {
+                    set_page_message(tr('Could not read language file!'));
+                    return;
+                } elseif ($ab == 2) {
+                    set_page_message(tr('Uploaded file is not a valid language file!'));
+                    return;
+                }
+            }
 
 			if (empty($ab['ispcp_languageSetlocaleValue']) ||
 				empty($ab['ispcp_table']) ||

@@ -1,6 +1,10 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-10-10 Thomas Wacker
+    - GUI:
+        * Added language upload by .po files
+
 2010-10-09 Laurent Declercq
 	- DOCS:
 		* Updating INSTALL documentation according setup/update changes
