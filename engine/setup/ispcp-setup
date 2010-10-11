@@ -39,18 +39,16 @@
 
 use strict;
 use warnings;
-
-# Hide the 'used only once: possible typo' warnings
 no warnings 'once';
-
 use FindBin;
 use lib "$FindBin::Bin/..";
 
+# We use our own system() subroutine implementation
+# See in the ispcp-setup-methods.pl file
+use subs 'system';
+
 require 'ispcp_common_code.pl';
 require 'ispcp-setup-methods.pl';
-
-$main::logfile = "$main::cfg{LOG_DIR}/setup/$0.log";
-$main::rlogfile = ">> $main::logfile 2>&1";
 
 ################################################################################
 #                                 Subroutines                                  #
@@ -467,8 +465,8 @@ sub setup_ispcp_database {
 	$main::db_pwd =~ s/([\'\"])/\\$1/g;
 
 	$rs = sys_command(
-		"$main::cfg{'CMD_MYSQL'} --host='$dbHost' --user='$main::db_user'" .
-		 " --pass='$main::db_pwd' < /tmp/db.sql $main::rlogfile"
+		"$main::cfg{'CMD_MYSQL'} --host='$dbHost' --user='$main::db_user' " .
+		 "--pass='$main::db_pwd' < /tmp/db.sql"
 	);
 	return $rs if ($rs != 0);
 
@@ -494,7 +492,7 @@ sub setup_default_language_table {
 	my $rs = sys_command(
 		"$main::cfg{'CMD_MYSQL'} --host='$dbHost' --user='$main::db_user' " .
 		"--pass='$main::db_pwd' $main::db_name " .
-		"< $main::cfg{'CONF_DIR'}/database/languages.sql $main::rlogfile"
+		"< $main::cfg{'CONF_DIR'}/database/languages.sql"
 	);
 	return $rs if ($rs != 0);
 

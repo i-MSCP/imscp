@@ -36,8 +36,6 @@
 
 use strict;
 use warnings;
-
-# Hide the 'used only once: possible typo' warnings
 no warnings 'once';
 
 use DateTime;
@@ -50,9 +48,13 @@ use Term::ReadKey;
 use Term::ANSIColor qw(:constants colored);
 $Term::ANSIColor::AUTORESET = 1;
 use version 0.74;
+use PerlVendor::Capture::Tiny qw/capture_merged/;
 
 # User input data
 %main::ua = ();
+
+# LogFile path
+$main::logfile = "$main::cfg{LOG_DIR}/setup/$0.log";
 
 # Ensuring that the log directory exists
 my $rs = makepath(
@@ -61,12 +63,6 @@ my $rs = makepath(
 );
 
 die("Unable to create ispCP log directory $!\n") unless $rs == 0;
-
-# Always dump the log at end
-END {
-	@main::el = reverse(@main::el);
-	dump_el(\@main::el, $main::logfile);
-}
 
 ################################################################################
 ##                              Ask subroutines                                #
@@ -1066,7 +1062,7 @@ sub get_sys_hostname {
 			($hostname =~/^[\w][\w-]{0,253}[\w]\.local$/) ||
 			!($hostname =~ /^([\w][\w-]{0,253}[\w])\.([\w][\w-]{0,253}[\w])\.([a-zA-Z]{2,6})$/) ) {
 
-			chomp(my $hostname = `$main::cfg{'CMD_HOSTNAME'} -f $main::rlogfile`);
+			chomp(my $hostname = `$main::cfg{'CMD_HOSTNAME'} -f`);
 
 			if(getCmdExitValue() != 0) {
 				exit_msg(
@@ -1116,6 +1112,28 @@ sub getEthAddr {
 
 	return $main::ua{'eth_ip'};
 }
+
+################################################################################
+# Execute a system command. This is an overridden for the system() function
+#
+# This subroutine overwrites the built-in function that allows to perform some
+# logging operation for the external commands output.
+#
+# See http://perldoc.perl.org/functions/system.html a
+#
+sub system {
+	my @args = @_;
+
+	state $regExp = qr /(clear|preinst|postinst|tput)/o;
+
+	if($_[0] !~ $regExp) {
+		my $output = capture_merged { CORE::system(@args); };
+		chomp($output);
+		push_el(\@main::el, 'system()', "[DEBUG] $output") if $output ne '';
+	} else {
+		CORE::system(@args);
+	}
+};
 
 ################################################################################
 # Convenience subroutine to print a title
@@ -1347,7 +1365,7 @@ sub start_services {
 		CMD_POP CMD_POP_SSL CMD_IMAP CMD_IMAP_SSL/
 	) {
 		if( $main::cfg{$_} !~ /^no$/i && -e $main::cfg{$_}) {
-			sys_command("$main::cfg{$_} start $main::rlogfile");
+			sys_command("$main::cfg{$_} start");
 			progress();
 		}
 	}
@@ -1369,7 +1387,7 @@ sub stop_services {
 		CMD_POP CMD_POP_SSL CMD_IMAP CMD_IMAP_SSL/
 	) {
 		if(-e $main::cfg{$_}) {
-			sys_command("$main::cfg{$_} stop $main::rlogfile");
+			sys_command("$main::cfg{$_} stop");
 			progress();
 		}
 	}
@@ -1391,8 +1409,7 @@ sub set_permissions {
 
 		my $rs = sys_command(
 			"$main::cfg{'CMD_SHELL'} " .
-			"$main::cfg{'ROOT_DIR'}/engine/setup/set-$_-permissions.sh " .
-			"$main::rlogfile"
+			"$main::cfg{'ROOT_DIR'}/engine/setup/set-$_-permissions.sh "
 		);
 
 		print_status($rs, 'exit_on_error');
@@ -1419,7 +1436,6 @@ sub setup_cleanup {
 
 	my $rs = sys_command(
 		"$main::cfg{'CMD_RM'} -f $main::cfg{'LOG_DIR'}/*-traf.log.prev* " .
-		"/tmp/ispcp-update-* /tmp/ispcp-setup-* " .
 		"$main::cfg{'CONF_DIR'}/*/*/empty-file"
 	);
 	return $rs if($rs != 0);
@@ -1725,42 +1741,42 @@ sub setup_fastcgi_modules {
 	# For others distributions, you must use the a post-installation scripts
 	if(! -e '/etc/SuSE-release' && -e '/usr/sbin/a2enmod') {
 		# Disable php4/5 modules if enabled
-		sys_command("/usr/sbin/a2dismod php4 php5 $main::rlogfile");
+		sys_command("/usr/sbin/a2dismod php4 php5");
 
 		# Enable actions modules
-		$rs = sys_command("/usr/sbin/a2enmod actions $main::rlogfile");
+		$rs = sys_command("/usr/sbin/a2enmod actions");
 		return $rs if($rs != 0);
 
 		if ($main::cfg{'PHP_FASTCGI'} eq 'fastcgi') {
 			# Ensures that the unused ispcp fcgid module loader is disabled
 			$rs = sys_command(
-				"/usr/sbin/a2dismod fcgid_ispcp $main::rlogfile"
+				"/usr/sbin/a2dismod fcgid_ispcp"
 			);
 			return $rs if($rs != 0);
 
 			# Enable fastcgi module
 			$rs = sys_command(
-				"/usr/sbin/a2enmod fastcgi_ispcp $main::rlogfile"
+				"/usr/sbin/a2enmod fastcgi_ispcp"
 			);
 			return $rs if($rs != 0);
 		} else {
 			# Ensures that the unused ispcp fastcgi ispcp module loader is
 			# disabled
 			$rs = sys_command(
-				"/usr/sbin/a2dismod fastcgi_ispcp $main::rlogfile"
+				"/usr/sbin/a2dismod fastcgi_ispcp"
 			);
 			return $rs if($rs != 0);
 
 			# Enable ispcp fastcgi loader
 			$rs = sys_command(
-				"/usr/sbin/a2enmod fcgid_ispcp $main::rlogfile"
+				"/usr/sbin/a2enmod fcgid_ispcp"
 			);
 			return $rs if($rs != 0);
 		}
 
 		# Disable default  fastcgi/fcgid modules loaders to avoid conflicts
 		# with ispcp loaders
-		$rs = sys_command("/usr/sbin/a2dismod fastcgi fcgid $main::rlogfile");
+		$rs = sys_command("/usr/sbin/a2dismod fastcgi fcgid");
 		return $rs if($rs != 0);
 	}
 
@@ -1848,19 +1864,19 @@ sub setup_httpd_main_vhost {
 	# Note for distributions maintainers:
 	# For others distributions, you must use the a post-installation scripts
 	if(! -e '/etc/SuSE-release' && -e '/usr/sbin/a2enmod') {
-		$rs = sys_command("/usr/sbin/a2enmod cgid $main::rlogfile");
+		$rs = sys_command("/usr/sbin/a2enmod cgid");
 		return $rs if($rs != 0);
 
 		# Enabling mod rewrite
-		$rs = sys_command("/usr/sbin/a2enmod rewrite $main::rlogfile");
+		$rs = sys_command("/usr/sbin/a2enmod rewrite");
 		return $rs if($rs != 0);
 
 		# Enabling mod suexec
-		$rs = sys_command("/usr/sbin/a2enmod suexec $main::rlogfile");
+		$rs = sys_command("/usr/sbin/a2enmod suexec");
 		return $rs if($rs != 0);
 
 		## Enabling main vhost configuration file
-		$rs = sys_command("/usr/sbin/a2ensite ispcp.conf $main::rlogfile");
+		$rs = sys_command("/usr/sbin/a2ensite ispcp.conf");
 		return $rs if($rs != 0);
 	}
 
@@ -1992,11 +2008,11 @@ sub setup_awstats_vhost {
 		# For others distributions, you must use the a post-installation scripts
 		if(! -e '/etc/SuSE-release' && -e '/usr/sbin/a2enmod') {
 			# Enable required modules
-			sys_command("/usr/sbin/a2enmod proxy $main::rlogfile");
-			sys_command("/usr/sbin/a2enmod proxy_http $main::rlogfile");
+			sys_command("/usr/sbin/a2enmod proxy");
+			sys_command("/usr/sbin/a2enmod proxy_http");
 
 			# Enable awstats vhost
-			sys_command("/usr/sbin/a2ensite 01_awstats.conf $main::rlogfile");
+			sys_command("/usr/sbin/a2ensite 01_awstats.conf");
 		}
 
 		## Update Apache logrotate file
@@ -2039,7 +2055,7 @@ sub setup_awstats_vhost {
 	if(-e "$main::cfg{'AWSTATS_CONFIG_DIR'}/awstats.conf") {
 		$rs = sys_command(
 			"$main::cfg{'CMD_MV'} $main::cfg{'AWSTATS_CONFIG_DIR'}/awstats.conf " .
-			"$main::cfg{'AWSTATS_CONFIG_DIR'}/awstats.conf.disabled $main::rlogfile"
+			"$main::cfg{'AWSTATS_CONFIG_DIR'}/awstats.conf.disabled"
 		);
 		return $rs if($rs !=0);
 	}
@@ -2048,7 +2064,7 @@ sub setup_awstats_vhost {
 	if(-e "/etc/cron.d/awstats") {
 		$rs = sys_command(
 			"$main::cfg{'CMD_MV'} /etc/cron.d/awstats " .
-			"$main::cfg{'CONF_DIR'}/cron.d/backup/awstats.system $main::rlogfile"
+			"$main::cfg{'CONF_DIR'}/cron.d/backup/awstats.system"
 		);
 		return $rs if($rs !=0);
 	}
@@ -2204,14 +2220,13 @@ sub setup_mta {
 
 		# Creating/updating Btree databases for all lookup tables
 		$rs = sys_command(
-			"$main::cfg{'CMD_POSTMAP'} $main::cfg{'MTA_VIRTUAL_CONF_DIR'}/$_ " .
-			"$main::rlogfile"
+			"$main::cfg{'CMD_POSTMAP'} $main::cfg{'MTA_VIRTUAL_CONF_DIR'}/$_"
 		);
 		return $rs if ($rs != 0);
 	}
 
 	# Rebuilding the database for the mail aliases file - Begin
-	$rs = sys_command("$main::cfg{'CMD_NEWALIASES'} $main::rlogfile");
+	$rs = sys_command("$main::cfg{'CMD_NEWALIASES'}");
 	return $rs if ($rs != 0);
 
 	## Setting ARPL messenger owner, group and permissions
@@ -2579,11 +2594,11 @@ sub setup_ispcp_daemon_network {
 
 		$rs = sys_command_rs(
 			"$main::cfg{'CMD_CHOWN'} $main::cfg{'ROOT_USER'}:" .
-			"$main::cfg{'ROOT_GROUP'} $_ $main::rlogfile"
+			"$main::cfg{'ROOT_GROUP'} $_"
 		);
 		return $rs if($rs != 0);
 
-		$rs = sys_command("$main::cfg{'CMD_CHMOD'} 0755 $_ $main::rlogfile");
+		$rs = sys_command("$main::cfg{'CMD_CHMOD'} 0755 $_");
 		return $rs if($rs != 0);
 
 		# Services installation / update (Debian, Ubuntu)
@@ -2592,7 +2607,7 @@ sub setup_ispcp_daemon_network {
 			# Update task - The links should be removed first to be updated
 			if(defined &update_engine) {
 				sys_command(
-					"/usr/sbin/update-rc.d -f $fileName remove $main::rlogfile"
+					"/usr/sbin/update-rc.d -f $fileName remove"
 				);
 			}
 
@@ -2600,11 +2615,11 @@ sub setup_ispcp_daemon_network {
 			# interfaces deletion process)
 			if($fileName eq 'ispcp_network') {
 				sys_command(
-					"/usr/sbin/update-rc.d $fileName defaults 99 20 $main::rlogfile"
+					"/usr/sbin/update-rc.d $fileName defaults 99 20"
 				);
 			} else {
 				sys_command(
-					"/usr/sbin/update-rc.d $fileName defaults 99 $main::rlogfile"
+					"/usr/sbin/update-rc.d $fileName defaults 99"
 				);
 			}
 
@@ -2612,10 +2627,10 @@ sub setup_ispcp_daemon_network {
 		} elsif(-x '/usr/lib/lsb/install_initd') {
 			# Update task
 			if(-x '/usr/lib/lsb/remove_initd' && defined &update_engine) {
-				sys_command("/usr/lib/lsb/remove_initd $_ $main::rlogfile");
+				sys_command("/usr/lib/lsb/remove_initd $_");
 			}
 
-			sys_command("/usr/lib/lsb/install_initd $_ $main::rlogfile");
+			sys_command("/usr/lib/lsb/install_initd $_");
 			return $rs if ($rs != 0);
 		}
 	}
@@ -2701,7 +2716,7 @@ sub setup_gui_httpd {
 
 	## Disable 000-default vhost (Debian like distributions)
 	if (-e "/usr/sbin/a2dissite") {
-		sys_command_rs("/usr/sbin/a2dissite 000-default $main::rlogfile");
+		sys_command_rs("/usr/sbin/a2dissite 000-default");
 	}
 
 	# Disable the default NameVirtualHost directive
@@ -2721,7 +2736,7 @@ sub setup_gui_httpd {
 
 	# Enable GUI vhost (Debian like distributions)
 	if (-e "/usr/sbin/a2ensite") {
-		sys_command("/usr/sbin/a2ensite 00_master.conf $main::rlogfile");
+		sys_command("/usr/sbin/a2ensite 00_master.conf");
 	}
 
 	push_el(\@main::el, 'setup_gui_httpd()', 'Ending...');
@@ -3498,6 +3513,13 @@ sub additional_tasks{
 	print_status(0);
 
 	push_el(\@main::el, 'additional_tasks()', 'Ending...');
+}
+
+# Always dump the log at end
+END {
+	del_file($main::logfile) if -e $main::logfile;
+	@main::el = reverse(@main::el);
+	dump_el(\@main::el, $main::logfile);
 }
 
 1;
