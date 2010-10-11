@@ -32,22 +32,6 @@ require '../include/ispcp-lib.php';
 
 check_login(__FILE__);
 
-# Fix for #
-if(is_xhr() && isset($_REQUEST['idn'])) {
-	check_input($_REQUEST['idn']);
-	header('Content-Type: text/plain; charset=utf-8');
-	header('Cache-Control: no-cache, private');
-	header('Pragma: no-cache');
-	header("HTTP/1.0 200 Ok");
-	print encode_idna($_REQUEST['idn']);
-	exit;
-} elseif(!empty($_REQUEST)) {
-	echo '<pre>';
-	print_r($_REQUEST);
-	echo '<pre>';
-exit;
-}
-
 $cfg = ispCP_Registry::get('Config');
 
 $tpl = new ispCP_pTemplate();
