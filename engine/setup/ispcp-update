@@ -59,7 +59,7 @@ use subs 'system';
 # This subroutine overwrites the built-in function that allows to perform some
 # logging operation for the external commands output.
 #
-# See http://perldoc.perl.org/functions/system.html a
+# See http://perldoc.perl.org/functions/system.html
 #
 sub system {
 	my @args = @_;
