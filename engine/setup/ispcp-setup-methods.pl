@@ -48,7 +48,6 @@ use Term::ReadKey;
 use Term::ANSIColor qw(:constants colored);
 $Term::ANSIColor::AUTORESET = 1;
 use version 0.74;
-use PerlVendor::Capture::Tiny qw/capture_merged/;
 
 # User input data
 %main::ua = ();
@@ -1112,28 +1111,6 @@ sub getEthAddr {
 
 	return $main::ua{'eth_ip'};
 }
-
-################################################################################
-# Execute a system command. This is an overridden for the system() function
-#
-# This subroutine overwrites the built-in function that allows to perform some
-# logging operation for the external commands output.
-#
-# See http://perldoc.perl.org/functions/system.html a
-#
-sub system {
-	my @args = @_;
-
-	state $regExp = qr /(clear|preinst|postinst|tput)/o;
-
-	if($_[0] !~ $regExp) {
-		my $output = capture_merged { CORE::system(@args); };
-		chomp($output);
-		push_el(\@main::el, 'system()', "[DEBUG] $output") if $output ne '';
-	} else {
-		CORE::system(@args);
-	}
-};
 
 ################################################################################
 # Convenience subroutine to print a title

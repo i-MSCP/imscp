@@ -1,52 +1,65 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
-	<head>
-		<title>{TR_CLIENT_ADD_SUBDOMAIN_PAGE_TITLE}</title>
-		<meta name="robots" content="nofollow, noindex" />
-		<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
-		<meta http-equiv="Content-Style-Type" content="text/css" />
-		<meta http-equiv="Content-Script-Type" content="text/javascript" />
-		<link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css" />
-		<script type="text/javascript" src="{THEME_COLOR_PATH}/css/jquery.js"></script>
-		<script type="text/javascript" src="{THEME_COLOR_PATH}/css/jquery.ispcpTooltips.js"></script>
-		<script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
-		<!--[if lt IE 7.]>
-			<script defer type="text/javascript" src="{THEME_COLOR_PATH}/css/pngfix.js"></script>
-		<![endif]-->
-		<script type="text/javascript">
-			/*<![CDATA[*/
-				$(document).ready(function(){
-					// Tooltips - begin
-					$('#dmn_help').ispCPtooltips({msg:"{TR_DMN_HELP}"});
-					// Tooltips - end
-				});
+<head>
+ <title>{TR_CLIENT_ADD_SUBDOMAIN_PAGE_TITLE}</title>
+ <meta name="robots" content="nofollow, noindex" />
+ <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
+ <meta http-equiv="Content-Style-Type" content="text/css" />
+ <meta http-equiv="Content-Script-Type" content="text/javascript" />
+ <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css" />
+ <script type="text/javascript" src="{THEME_COLOR_PATH}/css/jquery.js"></script>
+ <script type="text/javascript" src="{THEME_COLOR_PATH}/css/jquery.ispcpTooltips.js"></script>
+ <script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
+ <!--[if lt IE 7.]>
+ <script defer type="text/javascript" src="{THEME_COLOR_PATH}/css/pngfix.js"></script>
+ <![endif]-->
+ <script type="text/javascript">
+/*<![CDATA[*/
 
-				function makeUser() {
-					var subname  = document.forms[0].elements['subdomain_name'].value;
-					subname = subname.toLowerCase();
-					document.forms[0].elements['subdomain_mnt_pt'].value = "/" + subname;
+	function encode_idna(dmnName){
+		reg =  /[\x80-\xff]/;
+
+		if(reg.test(dmnName)) {
+			dmnName= $.ajax(
+				{
+					type: 'GET',
+					url: $(location).attr('pathname') + '?idn=' + dmnName,
+					async: false
 				}
+			).responseText;
+		}
 
-				function setRatioAlias(){
-					document.forms[0].elements['dmn_type'][1].checked = true;
-				}
+		return dmnName;
+	}
 
-				function setForwardReadonly(obj){
-					if(obj.value == 1) {
-						document.forms[0].elements['forward'].readOnly = false;
-						document.forms[0].elements['forward_prefix'].disabled = false;
-					} else {
-						document.forms[0].elements['forward'].readOnly = true;
-						document.forms[0].elements['forward'].value = '';
-						document.forms[0].elements['forward_prefix'].disabled = true;
-					}
-				}
+	$(document).ready(
+		function() {
+			// Tooltip
+			$('#dmn_help').ispCPtooltips({msg:"{TR_DMN_HELP}"});
+			// Encode IDNA for mount point
+			$('#subdomain_name').change(function() {
+				$('#subdomain_mnt_pt').val('/' + encode_idna($(this).val()));
+			});
+		}
+	);
 
-			/*]]>*/
-		</script>
-	</head>
+	function setRatioAlias(){
+		document.forms[0].elements['dmn_type'][1].checked = true;
+	}
 
+	function setForwardReadonly(obj){
+		if(obj.value == 1) {
+			document.forms[0].elements['forward'].readOnly = false;
+			document.forms[0].elements['forward_prefix'].disabled = false;
+		} else {
+			document.forms[0].elements['forward'].readOnly = true;
+			document.forms[0].elements['forward'].value = '';
+			document.forms[0].elements['forward_prefix'].disabled = true;
+		}
+	}
+/*]]>*/
+</script>
+</head>
 	<body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.png','{THEME_COLOR_PATH}/images/icons/domains_a.png','{THEME_COLOR_PATH}/images/icons/ftp_a.png','{THEME_COLOR_PATH}/images/icons/general_a.png' ,'{THEME_COLOR_PATH}/images/icons/email_a.png','{THEME_COLOR_PATH}/images/icons/webtools_a.png','{THEME_COLOR_PATH}/images/icons/statistics_a.png','{THEME_COLOR_PATH}/images/icons/support_a.png','{THEME_COLOR_PATH}/images/icons/custom_link_a.png')">
-
 		<table width="100%" border="0" cellspacing="0" cellpadding="0" style="height:100%;padding:0;margin:0 auto;">
 			<!-- BDP: logged_from -->
 			<tr>
