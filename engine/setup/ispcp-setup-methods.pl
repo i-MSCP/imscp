@@ -1025,7 +1025,7 @@ sub check_sql_connection {
 		"Checking MySQL server connection with the following DSN: @main::db_connect"
 	);
 
-	my($rs, $rdata) = doSQL('SHOW DATABASES;');
+	my ($rs) = doSQL('SHOW DATABASES;');
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'check_sql_connection()', 'Ending...');
@@ -1156,7 +1156,7 @@ sub subtitle {
 	my $subtitle = shift;
 	print "\t $subtitle";
 
-	# saving cursor position
+	# Saving cursor position
 	system('tput sc');
 
 	$main::dyn_length = 0 if(defined $main::dyn_length);
@@ -1295,10 +1295,10 @@ sub preinst {
 
 	($mime_type =~ /(shell|perl|php)/) ||
 		exit_msg(
-			1, '[err] Unable to determine the mimetype of the `preinst` script!'
+			1, '[ERROR] Unable to determine the mimetype of the `preinst` script!'
 		);
 
-	my $rs = sys_command_rs("$main::cfg{'CMD_'.uc($1)} preinst $task");
+	my $rs = sys_command("$main::cfg{'CMD_'.uc($1)} preinst $task");
 	return $rs if($rs != 0);
 
 	push_el(\@main::el, 'preinst()', 'Ending...');
@@ -1335,10 +1335,10 @@ sub postinst {
 
 	($mime_type =~ /(shell|perl|php)/) ||
 		exit_msg(
-			1, '[err] Unable to determine the mimetype of the `postinst` script!'
+			1, '[ERROR] Unable to determine the mimetype of the `postinst` script!'
 		);
 
-	my $rs = sys_command_rs("$main::cfg{'CMD_'.uc($1)} postinst $task");
+	my $rs = sys_command("$main::cfg{'CMD_'.uc($1)} postinst $task");
 	return $rs if($rs != 0);
 
 	push_el(\@main::el, 'postinst()', 'Ending...');
@@ -1409,7 +1409,7 @@ sub set_permissions {
 
 		my $rs = sys_command(
 			"$main::cfg{'CMD_SHELL'} " .
-			"$main::cfg{'ROOT_DIR'}/engine/setup/set-$_-permissions.sh "
+			"$main::cfg{'ROOT_DIR'}/engine/setup/set-$_-permissions.sh"
 		);
 
 		print_status($rs, 'exit_on_error');
@@ -1598,7 +1598,7 @@ sub setup_named {
 	} else {
 		push_el(
 			\@main::el, 'setup_named()',
-			"[WARNING] Can't find the parent file for named..."
+			"[NOTICE] Can't find the parent file for named..."
 		);
 
 		$cfg = '';
@@ -1749,28 +1749,20 @@ sub setup_fastcgi_modules {
 
 		if ($main::cfg{'PHP_FASTCGI'} eq 'fastcgi') {
 			# Ensures that the unused ispcp fcgid module loader is disabled
-			$rs = sys_command(
-				"/usr/sbin/a2dismod fcgid_ispcp"
-			);
+			$rs = sys_command("/usr/sbin/a2dismod fcgid_ispcp");
 			return $rs if($rs != 0);
 
 			# Enable fastcgi module
-			$rs = sys_command(
-				"/usr/sbin/a2enmod fastcgi_ispcp"
-			);
+			$rs = sys_command("/usr/sbin/a2enmod fastcgi_ispcp");
 			return $rs if($rs != 0);
 		} else {
 			# Ensures that the unused ispcp fastcgi ispcp module loader is
 			# disabled
-			$rs = sys_command(
-				"/usr/sbin/a2dismod fastcgi_ispcp"
-			);
+			$rs = sys_command("/usr/sbin/a2dismod fastcgi_ispcp");
 			return $rs if($rs != 0);
 
 			# Enable ispcp fastcgi loader
-			$rs = sys_command(
-				"/usr/sbin/a2enmod fcgid_ispcp"
-			);
+			$rs = sys_command("/usr/sbin/a2enmod fcgid_ispcp");
 			return $rs if($rs != 0);
 		}
 
@@ -2606,21 +2598,15 @@ sub setup_ispcp_daemon_network {
 		if(-x '/usr/sbin/update-rc.d') {
 			# Update task - The links should be removed first to be updated
 			if(defined &update_engine) {
-				sys_command(
-					"/usr/sbin/update-rc.d -f $fileName remove"
-				);
+				sys_command("/usr/sbin/update-rc.d -f $fileName remove");
 			}
 
 			# ispcp_network should be stopped before the MySQL server (due to the
 			# interfaces deletion process)
 			if($fileName eq 'ispcp_network') {
-				sys_command(
-					"/usr/sbin/update-rc.d $fileName defaults 99 20"
-				);
+				sys_command("/usr/sbin/update-rc.d $fileName defaults 99 20");
 			} else {
-				sys_command(
-					"/usr/sbin/update-rc.d $fileName defaults 99"
-				);
+				sys_command("/usr/sbin/update-rc.d $fileName defaults 99");
 			}
 
 		# LSB 3.1 Core section 20.4 compatibility (ex. OpenSUSE > 10.1)
@@ -2651,7 +2637,7 @@ sub setup_gui_httpd {
 
 	push_el(\@main::el, 'setup_gui_httpd()', 'Starting...');
 
-	my ($rs, $cmd, $cfgTpl);
+	my ($rs, $cfgTpl);
 	my $cfg = \$cfgTpl;
 
 	# Directories paths
@@ -2661,10 +2647,10 @@ sub setup_gui_httpd {
 
 	# Saving the current production file if it exists
 	if(-e "$main::cfg{'APACHE_SITES_DIR'}/00_master.conf") {
-		$cmd = "$main::cfg{'CMD_CP'} -p $main::cfg{'APACHE_SITES_DIR'}/" .
-		"00_master.conf $bkpDir/00_master.conf." . time;
-
-		$rs = sys_command($cmd);
+		$rs = sys_command(
+			"$main::cfg{'CMD_CP'} -p $main::cfg{'APACHE_SITES_DIR'}/" .
+			"00_master.conf $bkpDir/00_master.conf." . time
+		);
 		return $rs if($rs != 0);
 	}
 
@@ -2735,7 +2721,7 @@ sub setup_gui_httpd {
 	}
 
 	# Enable GUI vhost (Debian like distributions)
-	if (-e "/usr/sbin/a2ensite") {
+	if (-e '/usr/sbin/a2ensite') {
 		sys_command("/usr/sbin/a2ensite 00_master.conf");
 	}
 
@@ -3480,7 +3466,7 @@ sub setup_services_cfg {
 #
 sub setup_gui_cfg {
 
-	push_el(\@main::el, 'rebuild_gui_cfg()', 'Starting...');
+	push_el(\@main::el, 'setup_gui_cfg()', 'Starting...');
 
 	for (
 		[\&setup_gui_named, 'ispCP GUI Bind9 configuration:'],
@@ -3492,7 +3478,7 @@ sub setup_gui_cfg {
 		print_status(&{$_->[0]}, 'exit_on_error');
 	}
 
-	push_el(\@main::el, 'rebuild_gui_cfg()', 'Ending...');
+	push_el(\@main::el, 'setup_gui_cfg()', 'Ending...');
 }
 
 ################################################################################

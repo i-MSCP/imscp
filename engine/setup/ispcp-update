@@ -415,8 +415,7 @@ sub update_database_schema {
 	}
 
 	$rs = sys_command_rs(
-		"$main::cfg{'CMD_PHP'} $main::cfg{'ROOT_DIR'}/engine/setup/updDB.php " .
-		"$main::rlogfile"
+		"$main::cfg{'CMD_PHP'} $main::cfg{'ROOT_DIR'}/engine/setup/updDB.php"
 	);
 	return $rs if($rs !=0);
 
@@ -468,7 +467,7 @@ sub rebuild_customers_cfg {
 	# Unlock is needed here to be able to launch the ispcp-rqst-mngr script
 	close $main::fh_lock_file if defined $main::fh_lock_file;
 
-	my $rs = sys_command_rs("perl $main::ispcp_rqst_mngr $main::rlogfile");
+	my $rs = sys_command_rs("perl $main::ispcp_rqst_mngr");
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'rebuild_customers_cfg()', 'Ending...');
@@ -506,14 +505,14 @@ sub update_old_disabled_dmn_layout {
 		# recovery if the process fail
 		if(-e "$_/htdocs" && !-e "$_/htdocs.disabled") {
 			$rs = sys_command_rs(
-				"$main::cfg{'CMD_MV'} $_/htdocs $_/htdocs.disabled $main::rlogfile"
+				"$main::cfg{'CMD_MV'} $_/htdocs $_/htdocs.disabled "
 			);
 			return $rs if($rs != 0);
 		}
 
 		# Copy the directory that contain the layout for disabled domains
 		$rs = sys_command_rs(
-			"$main::cfg{CMD_CP} -TRfp $dsd_dmn_skel_dir $_/htdocs $main::rlogfile"
+			"$main::cfg{CMD_CP} -TRfp $dsd_dmn_skel_dir $_/htdocs"
 		);
 		return $rs if($rs != 0);
 
@@ -527,7 +526,7 @@ sub update_old_disabled_dmn_layout {
 		} else {
 			push_el(
 				\@main::el, 'update_old_disabled_dmn_layout()',
-				"ERROR: Unable to retrieve the domain name from the path!"
+				"[ERROR] Unable to retrieve the domain name from the path!"
 			);
 
 			return -1;
@@ -575,12 +574,12 @@ sub update_old_disabled_dmn_layout {
 		# Move (eg /var/www/virtual/domain.tld.disabled)
 		# To (eg /var/www/virtual/domain.tld)
 		if(m@(.*)\.disabled$@) {
-			$rs = sys_command_rs("$main::cfg{'CMD_MV'} $_ $1 $main::rlogfile");
+			$rs = sys_command_rs("$main::cfg{'CMD_MV'} $_ $1");
 			return $rs if($rs != 0);
 		} else {
 			push_el(
 				\@main::el, 'update_old_disabled_dmn_layout()',
-				"ERROR: Unable to retrieve the domain name path!"
+				"[ERROR] Unable to retrieve the domain name path!"
 			);
 
 			return -1;
