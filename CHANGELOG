@@ -1,6 +1,10 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-10-14 Laurent Declercq
+	- SETUP:
+		* Small improvement for user dialog (First part)
+
 2010-10-11 Laurent Declercq
 	- SETUP:
 		* Fixed #2483: Output from external commands must be captured and logged
