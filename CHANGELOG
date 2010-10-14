@@ -2,6 +2,10 @@ ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2010-10-14 Laurent Declercq
+	- CONFIG:
+		* Disabling mod_ratio for proftpd
+
+2010-10-14 Laurent Declercq
 	- SETUP:
 		* Small improvement for user dialog (First part)
 
