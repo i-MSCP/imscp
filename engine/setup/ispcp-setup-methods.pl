@@ -645,7 +645,7 @@ sub ask_timezone {
 	my $error = ($@) ? 1 : 0; # $@ contains the die() message
 
 	if ($error == 1) {
-		printError();	
+		printError($rdata);	
 		return -1;
 	} else {
 		$main::ua{'php_timezone'} = $rdata;

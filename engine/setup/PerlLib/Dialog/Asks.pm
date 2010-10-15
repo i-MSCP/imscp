@@ -27,97 +27,94 @@
 
 package PerlLib::Dialog::Asks;
 use strict;
-no strict 'refs';
 use warnings;
-
-use Term::ReadKey;
+no strict qw /refs vars/;
 use Term::ANSIColor qw(:constants colored);
 $Term::ANSIColor::AUTORESET = 1;
 use Text::Wrap qw(wrap);
 $Text::Wrap::columns = 72;
-
 use base 'Exporter';
 
-our @EXPORT = (
+@EXPORT = (
 	'setAsk', 'printAsk', 'printNotice','printConfirm', 'printWarning',
 	'printError'
 );
 
-our $VALUE = '';
+$VALUE = '';
 
-our $HOSTNAME = 'Please enter a fully qualified hostname. The default value is [%s]: ';
-our $HOSTNAME_WARNING = '%s is not a fully qualified hostname! Be aware you cannot use this domain for websites.';
-our $HOSTNAME_CONFIRM = 'Are you sure you want to use this hostname? [Y/n]: ';
-our $HOSTNAME_ERROR = 'Hostname is not a valid domain name!';
+$HOSTNAME = 'Please enter a fully qualified hostname [%s]: ';
+$HOSTNAME_WARNING = '%s is not a fully qualified hostname! Be aware you cannot use this domain for websites.';
+$HOSTNAME_CONFIRM = 'Are you sure you want to use this hostname? [Y/n]: ';
+$HOSTNAME_ERROR = 'Hostname is not a valid domain name!';
 
-our $ETH = 'Please enter the system network address [%s]: ';
-our $ETH_ERROR = 'Ip address not valid, please retry!';
+$ETH = 'Please enter the system network address [%s]: ';
+$ETH_ERROR = 'Ip address not valid, please retry!';
 
-our $VHOST = 'Please enter the domain name from where ispCP OMEGA will be reachable [%s]: ';
-our $VHOST_ERROR = 'Vhost name is not valid!';
+$VHOST = 'Please enter the domain name from where ispCP OMEGA will be reachable [%s]: ';
+$VHOST_ERROR = 'Vhost name is not valid!';
 
-our $DB_HOST = 'Please enter SQL server host [localhost]: ';
-our $DB_HOST_ERROR = 'Wrong SQL hostname! See RFC 1123 for more information...';
+$DB_HOST = 'Please enter SQL server hostname [localhost]: ';
+$DB_HOST_ERROR = 'Wrong SQL hostname! See RFC 1123 for more information...';
 
-our $DB_NAME = 'Please enter system SQL database [ispcp]: ';
+$DB_NAME = 'Please enter ispCP SQL database name [ispcp]: ';
 
-our $DB_USER = 'Please enter system SQL user [root]: ';
+$DB_USER = 'Please enter ispCP SQL username [root]: ';
 
-our $DB_PASSWORD = 'Please enter system SQL password [none]: ';
-our $DB_PASSWORD_CONFIRM = 'Please repeat system SQL password: ';
-our $DB_PASSWORD_ERROR = 'Passwords do not match!';
+$DB_PASSWORD = 'Please enter ispCP SQL password [none]: ';
+$DB_PASSWORD_CONFIRM = 'Please repeat ispCP SQL password: ';
+$DB_PASSWORD_ERROR = 'Passwords do not match!';
 
-our $DB_FTP_USER = 'Please enter ispCP ftp SQL user. [vftp]: ';
-our $DB_FTP_USER_ERROR = 'Ftp SQL user must not be identical to the system SQL user!';
+$DB_FTP_USER = 'Please enter ispCP ftp SQL user [vftp]: ';
+$DB_FTP_USER_ERROR = 'Ftp SQL user must not be identical to the ispCP SQL user!';
 
-our $DB_FTP_PASSWORD = 'Please enter ispCP ftp SQL user password. [auto generate]: ';
-our $DB_FTP_PASSWORD_CONFIRM = 'Please repeat ispCP ftp SQL user password: ';
-our $DB_FTP_PASSWORD_NOTICE = 'ispCP ftp SQL user password set to: %s';
-our $DB_FTP_PASSWORD_ERROR = 'Passwords do not match!';
+$DB_FTP_PASSWORD = 'Please enter ispCP ftp SQL user password [auto generate]: ';
+$DB_FTP_PASSWORD_CONFIRM = 'Please repeat ispCP ftp SQL user password: ';
+$DB_FTP_PASSWORD_NOTICE = 'ispCP ftp SQL user password set to: %s';
+$DB_FTP_PASSWORD_ERROR = 'Passwords doesn\'t match!';
 
-our $ADMIN = 'Please enter administrator login name. [admin]: ';
+$ADMIN = 'Please enter administrator login name [admin]: ';
 
-our $ADMIN_PASSWORD = 'Please enter administrator password:';
-our $ADMIN_PASSWORD_CONFIRM = 'Please repeat administrator password: ';
-our $ADMIN_PASSWORD_ERROR_1 = 'Password cannot be empty!';
-our $ADMIN_PASSWORD_ERROR_2 = 'Password too short!';
-our $ADMIN_PASSWORD_ERROR_3 = 'Passwords do not match!';
-our $ADMIN_PASSWORD_ERROR_4 = 'Passwords must contain at least digits and chars!';
+$ADMIN_PASSWORD = 'Please enter administrator password: ';
+$ADMIN_PASSWORD_CONFIRM = 'Please repeat administrator password: ';
+$ADMIN_PASSWORD_ERROR_1 = 'Password cannot be empty!';
+$ADMIN_PASSWORD_ERROR_2 = 'Password too short!';
+$ADMIN_PASSWORD_ERROR_3 = 'Passwords doesn\'t match!';
+$ADMIN_PASSWORD_ERROR_4 = 'Password must contain at least digits and chars!';
 
-our $ADMIN_EMAIL = 'Please enter administrator e-mail address: ';
-our $ADMIN_EMAIL_ERROR = 'E-mail address not valid!';
+$ADMIN_EMAIL = 'Please enter administrator e-mail address: ';
+$ADMIN_EMAIL_ERROR = 'E-mail address not valid!';
 
-our $SECOND_DNS = 'IP of Secondary DNS. (optional) []:';
-our $SECOND_DNS_ERROR = 'Ip address not valid, please retry!';
+$SECOND_DNS = 'Secondary DNS server address Ip (optional) []: ';
+$SECOND_DNS_ERROR = 'Ip address not valid, please retry!';
 
-our $RESOLVER = 'Do you want allow the system resolver to use the local nameserver sets by ispCP ? [Y/n]: ';
-our $RESOLVER_ERROR = 'You entered an unrecognized value!';
+$RESOLVER = 'Do you want allow the system resolver to use the local nameserver? [Y/n]: ';
+$RESOLVER_ERROR = 'You entered an unrecognized value, please retry!';
 
-our $MYSQL_PREFIX = 'Use MySQL Prefix ? Possible values: [i]nfront, [b]ehind, [n]one. [none]: ';
-our $MYSQL_PREFIX_ERROR = 'Not allowed Value, please retry!';
+$MYSQL_PREFIX = 'Use MySQL Prefix? Possible values: [i]nfront, [b]ehind, [n]one. [none]: ';
+$MYSQL_PREFIX_ERROR = 'You entered an unrecognized value, please retry!';
 
-our $DB_PMA_USER = 'Please enter ispCP phpMyAdmin Control user [%s]: ';
-our $DB_PMA_USER_ERROR_1 = 'PhpMyAdmin Control user must not be identical to system SQL user!';
-our $DB_PMA_USER_ERROR_2 = 'PhpMyAdmin Control user must not be identical to ftp SQL user!';
+$DB_PMA_USER = 'Please enter ispCP PMA control user [%s]: ';
+$DB_PMA_USER_ERROR_1 = 'ispCP PMA control user must not be identical to system SQL user!';
+$DB_PMA_USER_ERROR_2 = 'ispCP PMA control user must not be identical to ftp SQL user!';
 
-our $DB_PMA_PASSWORD = 'Please enter ispCP PhpMyAdmin Control user password [auto generate]: ';
-our $DB_PMA_PASSWORD_CONFIRM = 'Please repeat ispCP PhpMyAdmin Control user password: ';
-our $DB_PMA_PASSWORD_NOTICE = 'PhpMyAdmin Control user password set to: %s';
-our $DB_PMA_PASSWORD_ERROR = 'Passwords do not match';
+$DB_PMA_PASSWORD = 'Please enter ispCP PMA control user password [auto generate]: ';
+$DB_PMA_PASSWORD_CONFIRM = 'Please repeat ispCP PMA control user password: ';
+$DB_PMA_PASSWORD_NOTICE = 'PMA control user password set to: %s';
+$DB_PMA_PASSWORD_ERROR = 'Passwords doesn\'t match!';
 
-our $FASTCGI = 'FastCGI Version: [f]cgid or fast[c]gi. [fcgid]:';
-our $FASTCGI_ERROR = 'Only \'[f]cgid\' or \'fast[c]gi\' are allowed!';
+$FASTCGI = 'FastCGI Version: [f]cgid or fast[c]gi. [fcgid]: ';
+$FASTCGI_ERROR = 'Only \'[f]cgid\' or \'fast[c]gi\' are allowed!';
 
-our $TIMEZONE = 'Server\'s Timezone [%s]:';
-our $TIMEZONE_ERROR = '%s is not a valid Timezone! The continent and the city both must start with a capital letter, e.g. Europe/London';
+$TIMEZONE = 'Server\'s Timezone [%s]: ';
+$TIMEZONE_ERROR = '\'%s\' is not a valid timezone! The continent and the city, both must starting with a capital letter, e.g. Europe/London';
 
-our $AWSTATS_ON = 'Activate AWStats [no]: ';
-our $AWSTATS_ON_ERROR = 'Only \'(y)es\' and \'(n)o\' are allowed!';
+$AWSTATS_ON = 'Activate AWStats [no]: ';
+$AWSTATS_ON_ERROR = 'Only \'(y)es\' and \'(n)o\' are allowed!';
 
-our $AWSTATS_DYN = 'AWStats Mode: tPossible values [d]ynamic and [s]tatic. [dynamic]:';
-our $AWSTATS_DYN_ERROR = 'Only \'[d]ynamic\' or \'[s]tatic\' are allowed!';
+$AWSTATS_DYN = 'AWStats Mode: tPossible values [d]ynamic and [s]tatic. [dynamic]:';
+$AWSTATS_DYN_ERROR = 'Only \'[d]ynamic\' or \'[s]tatic\' are allowed!';
 
-our $DIAL = '';
+$DIAL = '';
 
 sub setAsk {
 	my $ask = uc(shift||'');
@@ -178,7 +175,6 @@ sub pr {
 }
 
 sub spacer { print "\n"; }
-
 
 1;
 
