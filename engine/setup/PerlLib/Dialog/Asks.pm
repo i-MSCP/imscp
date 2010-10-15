@@ -111,7 +111,7 @@ $TIMEZONE_ERROR = '\'%s\' is not a valid timezone! The continent and the city, b
 $AWSTATS_ON = 'Activate AWStats [no]: ';
 $AWSTATS_ON_ERROR = 'Only \'(y)es\' and \'(n)o\' are allowed!';
 
-$AWSTATS_DYN = 'AWStats Mode: tPossible values [d]ynamic and [s]tatic. [dynamic]:';
+$AWSTATS_DYN = 'AWStats Mode: Possible values [d]ynamic and [s]tatic. [dynamic]:';
 $AWSTATS_DYN_ERROR = 'Only \'[d]ynamic\' or \'[s]tatic\' are allowed!';
 
 $DIAL = '';

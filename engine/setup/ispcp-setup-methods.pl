@@ -1110,14 +1110,17 @@ sub title {
 # @return void
 #
 sub subtitle {
+
 	my $subtitle = shift;
+
+	$subtitle = colored(['bold green'], "* ") . $subtitle;
 	print "\t $subtitle";
 
 	# Saving cursor position
 	system('tput sc');
 
 	$main::dyn_length = 0 if(defined $main::dyn_length);
-	$main::subtitle_length = length $subtitle;
+	$main::subtitle_length = length($subtitle)-12;
 }
 
 ################################################################################
@@ -1160,15 +1163,20 @@ sub print_status {
 	}
 
 	my ($termWidth) = GetTerminalSize();
+	my ($brakedB, $brakedE) = (
+		colored(['bold magenta'], '[ '), colored(['bold magenta'], ' ]')
+	);
 	my $statusString = ($status == 0)
-		? colored(['green'], 'Done') : colored(['red'], 'Failed');
+		? colored(['bold green'], 'Done') : colored(['bold red'], 'Failed');
 
-	$statusString = sprintf('%'.($termWidth-($length+1)).'s', $statusString);
+	$statusString =
+		sprintf('%'.($termWidth-($length-22)).'s', "$brakedB$statusString$brakedE");
 
 	# Restoring cursor position
 	system('tput rc && tput ed');
 
-	print colored(['bold'], "$statusString\n");
+	#print colored(['bold'], "$statusString\n");
+	print "$statusString\n";
 
 	if(defined $exitOnError && $exitOnError eq 'exit_on_error' && $status != 0) {
 		exit_msg($status);
@@ -1205,6 +1213,8 @@ sub exit_msg {
 
 	if(defined $userMsg && $userMsg ne '') {
 		$msg = "\n\t$userMsg\n" . $msg;
+	} elsif (defined $main::exitMessage) {
+		$msg = "\n\t$main::exitMessage\n" . $msg;
 	}
 
 	print STDERR $msg;
@@ -3292,6 +3302,54 @@ sub setup_gui_named_db_data {
 }
 
 ################################################################################
+# Set the local dns resolver
+#
+# @return int 0 on success, -1 on failure
+#
+sub setup_resolver {
+
+	push_el(\@main::el, 'setup_resolver()', 'Starting...');
+
+	if(-e $main::cfg{'RESOLVER_CONF_FILE'}) {
+
+		my ($rs, $cfgFile) = get_file($main::cfg{'RESOLVER_CONF_FILE'});
+		return $rs if ($rs != 0);
+
+		if($main::cfg{'LOCAL_DNS_RESOLVER'} =~ /yes/i &&
+			$cfgFile !~ /nameserver 127.0.0.1/i){
+
+			$cfgFile =~ s/(nameserver.*)/nameserver 127.0.0.1\n$1/i;
+		} else {
+			$cfgFile =~ s/nameserver 127.0.0.1//i;
+		}
+
+		# Saving the old file if needed
+		if(!-e "$main::cfg{'RESOLVER_CONF_FILE'}.bkp") {
+			my $rs = sys_command_rs(
+				"$main::cfg{'CMD_CP'} -fp $main::cfg{'RESOLVER_CONF_FILE'} " .
+				"$main::cfg{'RESOLVER_CONF_FILE'}.bkp"
+			);
+			return $rs if ($rs != 0);
+		}
+
+		# Storing the new file
+		$rs = store_file(
+			$main::cfg{'RESOLVER_CONF_FILE'}, $cfgFile, $main::cfg{'ROOT_USER'},
+			$main::cfg{'ROOT_GROUP'}, 0644
+		);
+		return $rs if($rs != 0);
+	} else {
+		$main::exitMessage = colored(['bold red'], "\n\t[ERROR] ") .
+			"Unable to found your resolv.conf file!\n";
+		return -1;
+	}
+
+	push_el(\@main::el, 'setup_resolver()', 'Ending...');
+
+	0;
+}
+
+################################################################################
 # Setup rkhunter - (Setup / Update)
 #
 # This subroutine process the following tasks:
@@ -3399,6 +3457,7 @@ sub setup_services_cfg {
 
 	# Common tasks (Setup/Update)
 	for (
+		[\&setup_resolver, 'ispCP System resolver:'],
 		[\&setup_crontab, 'ispCP Crontab file:'],
 		[\&setup_named, 'ispCP Bind9 main configuration file:'],
 		[\&setup_fastcgi_modules, 'ispCP Apache fastCGI modules configuration'],

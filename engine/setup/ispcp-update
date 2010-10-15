@@ -323,12 +323,13 @@ sub cfg_recovery_process {
 		DATABASE_NAME => [\&ask_db_name, 'db_name'],
 		DATABASE_USER => [\&ask_db_user, 'db_user'],
 		PHP_FASTCGI => [\&ask_fastcgi, 'php_fastcgi'],
-		PHP_TIMEZONE => [\&ask_timezone, 'php_timezone']
+		PHP_TIMEZONE => [\&ask_timezone, 'php_timezone'],
+		LOCAL_DNS_RESOLVER => [\&ask_resolver, 'resolver']
 	};
 
 	# If several parameters are set to an empty value, we should ensure that the
 	# user has installed ispCP by asking this question
-	if (scalar(@$settings) >= 2) {
+	if (scalar(@$settings) >= 3) {
 		print colored(['bold yellow'], "\n\n\t[WARNING] ").
 			"Your ispCP configuration file has several settings set\n" .
 			"\tto an empty value!\n";

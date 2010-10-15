@@ -364,6 +364,7 @@ sub setup_config {
 		['PHP_FASTCGI', \$main::ua{'php_fastcgi'}],
 		['PHP_TIMEZONE', \$main::ua{'php_timezone'}],
 		['SECONDARY_DNS', \$main::ua{'secondary_dns'}],
+		['LOCAL_DNS_RESOLVER', \$main::ua{'resolver'}],
 		['MYSQL_PREFIX', \$main::ua{'mysql_prefix'}],
 		['MYSQL_PREFIX_TYPE', \$main::ua{'mysql_prefix_type'}]
 	) {

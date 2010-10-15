@@ -1,6 +1,11 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-10-15 Laurent Declercq
+	- SETUP:
+		* Finished local DNS resolver setup
+		* Improved both setup and update look and feel
+
 2010-10-14 Daniel Andreca
 	- CONFIG:
 		* Disabling mod_ratio for proftpd
