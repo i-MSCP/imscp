@@ -1169,13 +1169,13 @@ sub print_status {
 	my $statusString = ($status == 0)
 		? colored(['bold green'], 'Done') : colored(['bold red'], 'Failed');
 
-	$statusString =
-		sprintf('%'.($termWidth-($length-22)).'s', "$bracketB$statusString$bracketE");
+	$statusString = sprintf(
+		'%' . ($termWidth-($length-22)) . 's', "$bracketB$statusString$bracketE"
+	);
 
 	# Restoring cursor position
 	system('tput rc && tput ed');
 
-	#print colored(['bold'], "$statusString\n");
 	print "$statusString\n";
 
 	if(defined $exitOnError && $exitOnError eq 'exit_on_error' && $status != 0) {
@@ -3311,7 +3311,6 @@ sub setup_resolver {
 	push_el(\@main::el, 'setup_resolver()', 'Starting...');
 
 	if(-e $main::cfg{'RESOLVER_CONF_FILE'}) {
-
 		my ($rs, $cfgFile) = get_file($main::cfg{'RESOLVER_CONF_FILE'});
 		return $rs if ($rs != 0);
 
@@ -3460,7 +3459,7 @@ sub setup_services_cfg {
 		[\&setup_resolver, 'ispCP System resolver:'],
 		[\&setup_crontab, 'ispCP Crontab file:'],
 		[\&setup_named, 'ispCP Bind9 main configuration file:'],
-		[\&setup_fastcgi_modules, 'ispCP Apache fastCGI modules configuration'],
+		[\&setup_fastcgi_modules, 'ispCP Apache fastCGI modules configuration:'],
 		[\&setup_httpd_main_vhost, 'ispCP Apache main vhost file:'],
 		[\&setup_awstats_vhost, 'ispCP Apache AWStats vhost file:'],
 		[\&setup_mta, 'ispCP Postfix configuration files:'],
