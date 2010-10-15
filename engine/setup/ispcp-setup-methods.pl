@@ -3315,10 +3315,10 @@ sub setup_resolver {
 		my ($rs, $cfgFile) = get_file($main::cfg{'RESOLVER_CONF_FILE'});
 		return $rs if ($rs != 0);
 
-		if($main::cfg{'LOCAL_DNS_RESOLVER'} =~ /yes/i &&
-			$cfgFile !~ /nameserver 127.0.0.1/i){
-
-			$cfgFile =~ s/(nameserver.*)/nameserver 127.0.0.1\n$1/i;
+		if($main::cfg{'LOCAL_DNS_RESOLVER'} =~ /yes/i) {
+			if($cfgFile !~ /nameserver 127.0.0.1/i) {
+				$cfgFile =~ s/(nameserver.*)/nameserver 127.0.0.1\n$1/i;
+			}
 		} else {
 			$cfgFile =~ s/nameserver 127.0.0.1//i;
 		}
