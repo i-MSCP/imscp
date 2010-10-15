@@ -749,8 +749,6 @@ sub setup_engine {
 		spacer();
 
 		title("Pre-installation tasks for $main::cfg{'DistName'}");
-
-		'Starting dist. maintainer pre-installation script');
 		my $rs = preinst('install');
 		exit_msg($rs) if ($rs == 2);
 	}
