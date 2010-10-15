@@ -182,7 +182,7 @@ sub check_host_system {
 
 	push_el(\@main::el, 'check_host_system()', 'Starting...');
 
-	subtitle('ispCP Mysql server connection checking:');
+	subtitle('Mysql server connection:');
 
 	my $rs = check_sql_connection(
 		$main::ua{'db_user'}, $main::ua{'db_password'}, '', $main::ua{'db_host'}
@@ -736,7 +736,7 @@ sub setup_engine {
 	spacer();
 
 	# Starting ispCP installation
-	title('ispCP installation starting...');
+	title('Starting ispcp installation...');
 	spacer();
 
 	# Stopping services
@@ -748,7 +748,9 @@ sub setup_engine {
 	if(-e "$main::cfg{'ROOT_DIR'}/engine/setup/preinst") {
 		spacer();
 
-		title('Starting dist. maintainer pre-installation script');
+		title("Pre-installation tasks for $main::cfg{'DistName'}");
+
+		'Starting dist. maintainer pre-installation script');
 		my $rs = preinst('install');
 		exit_msg($rs) if ($rs == 2);
 	}
@@ -756,26 +758,26 @@ sub setup_engine {
 	spacer();
 
 	# Checking host system (Currently, only DB connection)
-	title('Checking host system');
+	title('System checks');
 	check_host_system();
 
 	spacer();
 
 	# Setting host system
-	title('Setup all services');
+	title('Service setup');
 	setup_services_cfg();
 
 	spacer();
 
 	# Starting GUI configuration
-	title('Setup GUI configuration');
+	title('GUI setup');
 	setup_gui_cfg();
 
 	# Starting dist. maintainer post-installation script if one exists
 	if(-e "$main::cfg{'ROOT_DIR'}/engine/setup/postinst") {
 		spacer();
 
-		title('Starting dist. maintainer post-installation script');
+		title("Post-installation tasks for $main::cfg{'DistName'}");
 		my $rs = postinst('configure');
 		exit_msg($rs) if ($rs == 2);
 	}
@@ -788,10 +790,12 @@ sub setup_engine {
 
 	spacer();
 
-	title('Set ENGINE and GUI permissions');
+	title('Permissions setup');
 	set_permissions();
 
 	spacer();
+
+	title('Finishing installation.');
 
 	# Starting services
 	subtitle('Starting all services: ');

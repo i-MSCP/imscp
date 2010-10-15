@@ -3443,7 +3443,7 @@ sub setup_services_cfg {
 
 		for (
 			[\&setup_system_dirs, 'ispCP directories:'],
-			[\&setup_config, 'ispCP configuration file:'],
+			[\&setup_config, 'ispCP main configuration file:'],
 			[\&setup_ispcp_database, 'ispCP database:'],
 			[\&setup_default_language_table, 'ispCP default language table:'],
 			[\&setup_default_sql_data, 'ispCP default SQL data:'],
@@ -3456,8 +3456,8 @@ sub setup_services_cfg {
 
 	# Common tasks (Setup/Update)
 	for (
-		[\&setup_resolver, 'ispCP System resolver:'],
-		[\&setup_crontab, 'ispCP Crontab file:'],
+		[\&setup_resolver, 'ispCP system resolver:'],
+		[\&setup_crontab, 'ispCP crontab file:'],
 		[\&setup_named, 'ispCP Bind9 main configuration file:'],
 		[\&setup_fastcgi_modules, 'ispCP Apache fastCGI modules configuration:'],
 		[\&setup_httpd_main_vhost, 'ispCP Apache main vhost file:'],

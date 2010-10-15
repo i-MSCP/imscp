@@ -681,7 +681,7 @@ sub update_engine {
 	if(-e "$main::cfg{'ROOT_DIR'}/engine/setup/preinst") {
 		spacer();
 
-		title('Starting dist. maintainer pre-installation script');
+		title("Pre-installation tasks for $main::cfg{'DistName'}");
 		my $rs = preinst('upgrade');
 
 		exit_msg($rs) if ($rs == 2);
@@ -755,7 +755,7 @@ sub update_engine {
 	if(-e "$main::cfg{'ROOT_DIR'}/engine/setup/postinst") {
 		spacer();
 
-		title('Starting dist. maintainer post installation script');
+		title("Post-installation tasks for $main::cfg{'DistName'}");
 		$rs = postinst('configure');
 
 		exit_msg($rs) if ($rs == 2);
