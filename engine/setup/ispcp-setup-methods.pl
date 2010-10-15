@@ -1163,14 +1163,14 @@ sub print_status {
 	}
 
 	my ($termWidth) = GetTerminalSize();
-	my ($brakedB, $brakedE) = (
+	my ($bracketB, $bracketE) = (
 		colored(['bold magenta'], '[ '), colored(['bold magenta'], ' ]')
 	);
 	my $statusString = ($status == 0)
 		? colored(['bold green'], 'Done') : colored(['bold red'], 'Failed');
 
 	$statusString =
-		sprintf('%'.($termWidth-($length-22)).'s', "$brakedB$statusString$brakedE");
+		sprintf('%'.($termWidth-($length-22)).'s', "$bracketB$statusString$bracketE");
 
 	# Restoring cursor position
 	system('tput rc && tput ed');
