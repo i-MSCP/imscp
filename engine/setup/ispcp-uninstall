@@ -413,7 +413,7 @@ sub uninstall_sql {
 							 $main::db_pwd
 							);
 
-		$sql = "drop database `$store_db_name;`";
+		$sql = "drop database `$store_db_name`;";
 
 		($rs, $rdata) = doSQL($sql);
 		if ($rs != 0){
