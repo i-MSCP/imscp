@@ -49,7 +49,7 @@
 #
 
 ################################################################################
-#					   ispCP Omega configuration variables                     #
+#                      ispCP Omega configuration variables                     #
 ################################################################################
 
 # Retrieving the main ispCP configuration file path
@@ -78,7 +78,7 @@ fi
 ISPCP_VERSION=$(echo $Version | sed -e 's/\s\+\|[a-z]//gi')
 
 ################################################################################
-#					               Logging                                     #
+#                                   Logging                                    #
 ################################################################################
 
 # Log file path
@@ -91,15 +91,11 @@ LOGFILE="$LOG_DIR/setup/ispcp-$0-$1.log"
 $CMD_RM -f $LOGFILE
 
 ################################################################################
-#					                                                           #
+#                                Utils functions                               #
 ################################################################################
 
 # Default Error message
 ERROR_MESSAGE="See the $LOGFILE logfile for the reason!"
-
-################################################################################
-#					             Utils functions                               #
-################################################################################
 
 # TAB+SP+*+SP (11 bytes) + TITLE length
 TITLE_LENGTH=11
