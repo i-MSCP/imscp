@@ -508,8 +508,8 @@ sub mngr_engine {
 		"email count: $mail_count || ".
 		"subdomain aliasses count: $alssub_count"
 	);
-	if ($dmn_count > 0 || $sub_count > 0 || $als_count > 0 || $mail_count > 0 ||
-		$alssub_count > 0) {
+	if (($dmn_count > 0 || $sub_count > 0 || $als_count > 0 || $mail_count > 0 ||
+		$alssub_count > 0) && (!defined($ARGV[0]) || $ARGV[0] eq '')) {
 		$rs = sys_command(
 			"$main::ispcp_serv_mngr $dmn_count $sub_count $als_count " .
 			"$mail_count $alssub_count 1>$main::ispcp_serv_mngr_stdout " .
@@ -534,6 +534,8 @@ sub mngr_engine {
 			del_file($main::ispcp_serv_mngr_stdout);
 			del_file($main::ispcp_serv_mngr_stderr);
 		}
+	} else {
+		push_el(\@main::el, 'mngr_engine()', 'Not restarting servers...');
 	}
 
 	push_el(\@main::el, 'mngr_engine()', 'Ending...');

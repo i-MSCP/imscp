@@ -121,4 +121,3 @@ stop() {
 	eend $?
 }
 
-exit 0
