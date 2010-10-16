@@ -10,6 +10,7 @@ ispCP ω 1.0.7 ChangeLog
 2010-10-16 Daniel Andreca
 	- ENGINE:
 		* Fixed #2472: Some issue with gentoo and update process
+		* Small fix to allow database names containing special chars like '-'
 		
 2010-10-15 Daniel Andreca
 	- ENGINE:

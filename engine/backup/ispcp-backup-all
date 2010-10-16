@@ -149,7 +149,7 @@ sub backup_sql {
 		$_ =~ s/"/\\"/gm;
 	}
 
-	$sql = "SELECT sqld_id, sqld_name FROM sql_database WHERE domain_id=$dmn_id";
+	$sql = "SELECT `sqld_id`, `sqld_name` FROM `sql_database` WHERE `domain_id`='$dmn_id'";
 	($rs, $rdata) = doSQL($sql);
 
 	foreach (@$rdata) {
@@ -165,17 +165,17 @@ sub backup_sql {
 		$dbbackup =~ s/"/\\"/g;
 
 		my $db_backupcmd = "$main::cfg{'CMD_MYSQLDUMP'} --add-drop-table --allow-keywords --quote-names";
-		$db_backupcmd .= qq/ -h"$dbhost" -u"$dbuser" -p"$dbpass" "$dbname" > "$dbbackup"/;
+		$db_backupcmd .= qq/ -h'$dbhost' -u'$dbuser' -p'$dbpass' '$dbname' > '$dbbackup'/;
 
 		if ($zip eq "bzip2") {
 			$db_filename = "$dbbackup.bz2";
-			$db_compresscmd = $main::cfg{'CMD_BZIP'}.qq/ --force "$dbbackup"/;
+			$db_compresscmd = $main::cfg{'CMD_BZIP'}.qq/ --force '$dbbackup'/;
 		} elsif ($zip eq "gzip") {
 			$db_filename = "$dbbackup.gz";
-			$db_compresscmd = $main::cfg{'CMD_GZIP'}.qq/ --force "$dbbackup"/;
+			$db_compresscmd = $main::cfg{'CMD_GZIP'}.qq/ --force '$dbbackup'/;
 		} elsif ($zip eq "lzma") {
 			$db_filename = "$dbbackup.lzma";
-			$db_compresscmd = $main::cfg{'CMD_LZMA'}.qq/ --force "$dbbackup"/;
+			$db_compresscmd = $main::cfg{'CMD_LZMA'}.qq/ --force '$dbbackup'/;
 		} else {
 			push_el(\@main::el, 'backup_sql()', "Domain $dmn_name: Backup algorithm for domain $dmn_name not supported: $zip!");
 			send_error_mail('backup_sql()', "Domain $dmn_name: Backup algorithm for domain $dmn_name not supported: $zip!");
