@@ -2,6 +2,8 @@ ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2010-10-16 Laurent Declercq
+	- DISTS:
+		* Removed support for unmaintained Ubuntu versions
 	- SETUP:
 		* Improved maintainer scripts library
 
