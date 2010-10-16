@@ -1228,12 +1228,6 @@ sub exit_msg {
 #                             Hooks subroutines                                #
 ################################################################################
 
-# Common behavior for the preinst and postinst scripts
-#
-# The main script will only end if the  maintainer scripts ends with an exit
-# status equal to 2.
-#
-
 ################################################################################
 # Implements the hook for the maintainers pre-installation scripts
 #
@@ -1250,14 +1244,14 @@ sub exit_msg {
 #  shared library for the scripts that are written in SHELL is available in the
 #  engine/setup directory.
 #
-# @param mixed Argument that will be be passed to the maintainer script
+# @param string $context Argument that is passed to the maintainer script
 # @return int 0 on success, other otherwise
 #
 sub preinst {
 
 	push_el(\@main::el, 'preinst()', 'Starting...');
 
-	my $task = shift;
+	my $context = shift;
 	my $mime_type = mimetype("$main::cfg{'ROOT_DIR'}/engine/setup/preinst");
 
 	($mime_type =~ /(shell|perl|php)/) ||
@@ -1265,7 +1259,7 @@ sub preinst {
 			1, '[ERROR] Unable to determine the mimetype of the `preinst` script!'
 		);
 
-	my $rs = sys_command("$main::cfg{'CMD_'.uc($1)} preinst $task");
+	my $rs = sys_command("$main::cfg{'CMD_'.uc($1)} preinst $context");
 	return $rs if($rs != 0);
 
 	push_el(\@main::el, 'preinst()', 'Ending...');
@@ -1290,14 +1284,14 @@ sub preinst {
 #  shared library for the scripts that are written in SHELL is available in the
 #  engine/setup directory.
 #
-# @param mixed Argument that will be be passed to the maintainer script
+# @param string $context Argument that is passed to the maintainer script
 # @return int 0 on success, other otherwise
 #
 sub postinst {
 
 	push_el(\@main::el, 'postinst()', 'Starting...');
 
-	my $task = shift;
+	my $context = shift;
 	my $mime_type = mimetype("$main::cfg{'ROOT_DIR'}/engine/setup/postinst");
 
 	($mime_type =~ /(shell|perl|php)/) ||
@@ -1305,7 +1299,7 @@ sub postinst {
 			1, '[ERROR] Unable to determine the mimetype of the `postinst` script!'
 		);
 
-	my $rs = sys_command("$main::cfg{'CMD_'.uc($1)} postinst $task");
+	my $rs = sys_command("$main::cfg{'CMD_'.uc($1)} postinst $context");
 	return $rs if($rs != 0);
 
 	push_el(\@main::el, 'postinst()', 'Ending...');

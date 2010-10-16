@@ -1,6 +1,10 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-10-16 Laurent Declercq
+	- SETUP:
+		* Improved maintainer scripts library
+
 2010-10-16 Daniel Andreca
 	- ENGINE:
 		* Fixed #2472: Some issue with gentoo and update process

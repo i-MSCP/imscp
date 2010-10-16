@@ -5,7 +5,7 @@
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
 # author	Laurent Declercq <laurent.declercq@ispcp.net>
-# version	1.1
+# version	1.2
 #
 # SVN: $Id$
 #
@@ -30,151 +30,138 @@
 #    http://isp-control.net
 #
 
+################################################################################
 # Note to ispCP dists maintainers:
 #
-# This script provide a set of functions that can be used in your maintainers
-# scripts (eg. preinst, postinst...).
+# This library provide a set of functions that can be used in your maintenance
+# scripts.
 #
 # Currently, only a few helper functions to display the titles and error
 # messages are provided.
 #
 # Also, when you include this file into your script, some ispCP configuration
-# variables obtained from the 'ispcp.conf' file will be exported in your script.
+# parameters obtained from the 'ispcp.conf' file are exported in your script.
 #
-# To use these functions, you must include this script at the beginning of your
+# To use library, you must include it at the beginning of your
 # script like this:
 #
 # . $(dirname "$0")/maintainer-helper.sh
 #
 
-# Retrieve the isCP main configuration file path
+################################################################################
+#					   ispCP Omega configuration variables                     #
+################################################################################
+
+# Retrieving the main ispCP configuration file path
 if [ -f "/etc/ispcp/ispcp.conf" ] ; then
-    ISPCP_CONF_FILE=/etc/ispcp/ispcp.conf
+    CONF_FILE=/etc/ispcp/ispcp.conf
 elif [ -f "/usr/local/etc/ispcp/ispcp.conf" ] ; then
-    ISPCP_CONF_FILE=/usr/local/etc/ispcp/ispcp.conf
+    CONF_FILE=/usr/local/etc/ispcp/ispcp.conf
 else
     printf "\033[1;31m[Error]\033[0m ispCP configuration file not found!\n"
     exit 1
 fi
 
-# Read needed entries from ispcp.conf
-for a in `grep -E '(^Version|APACHE_|MTA_|ROOT_|^PHP_FASTCGI|^CMD_|^DEBUG|^LOG_DIR)' \
-$ISPCP_CONF_FILE | sed -e 's/ //g'`; do
+# Reading needed entries from ispcp.conf
+for a in $(grep -E '(^Version|APACHE_|MTA_|ROOT_|^PHP_FASTCGI|^CMD_|^DEBUG|^LOG_DIR)' \
+$CONF_FILE | sed -e 's/ //g'); do
     export $a
 done
 
-# Get ispCP version
-ISPCP_VERS=`echo $Version | sed -e 's/[A-Z]//g'`
-
-# Enable debug mode (see ispcp.conf)
+# Enable DEBUG mode if needed
 if [ $DEBUG -eq 1 ]; then
   echo "now debugging $0 $@"
   set -x
 fi
 
+# ispCP Omega version
+ISPCP_VERSION=$(echo $Version | sed -e 's/\s\+\|[a-z]//gi')
+
+################################################################################
+#					               Logging                                     #
+################################################################################
+
 # Log file path
-ISPCP_LOGFILE="$LOG_DIR/setup/ispcp-$0-$1.log"
+LOGFILE="$LOG_DIR/setup/ispcp-$0-$1.log"
 
 # Make sure that the log directory exists
-/usr/bin/install -d $LOG_DIR/setup -m 0755 -o $ROOT_USER -g $ROOT_GROUP
+#/usr/bin/install -d $LOG_DIR/setup -m 0755 -o $ROOT_USER -g $ROOT_GROUP
 
-# Remove old ISPCP_LOGFILE if one it exists
-$CMD_RM -f $ISPCP_LOGFILE
+# Removing old log file if it exists
+$CMD_RM -f $LOGFILE
 
-ISPCP_ERRMSG="\n\t  \033[1;34m[Notice]\033[0m See the $ISPCP_LOGFILE for the \
-reason!\n\n"
-ISPCP_STATE="\033[1;32mDone\033[0m"
-ISPCP_MSG=""
-ISPCP_PRINT=""
-ISPCP_DYN_LENGTH=0
-ISPCP_EXIT=0
+################################################################################
+#					                                                           #
+################################################################################
 
-# Print section title
+# Default Error message
+ERROR_MESSAGE="See the $LOGFILE logfile for the reason!"
+
+################################################################################
+#					             Utils functions                               #
+################################################################################
+
+# TAB+SP+*+SP (11 bytes) + TITLE length
+TITLE_LENGTH=11
+PROGRESS_LENGTH=0
+
+################################################################################
+# Print a title
 #
-# Param: string A title to be displayed
+# Param: string Title to be printed
+#
 print_title() {
-	ISPCP_PRINT=$1
-	printf "\t $ISPCP_PRINT"
-	printf "[$ISPCP_PRINT]\n" >> $ISPCP_LOGFILE
+	TITLE_LENGTH=$(($TITLE_LENGTH+$(printf "$1" | wc -c)))
+	TITLE="\t \033[1;32m*\033[0m $1"
+	printf "$TITLE";
 }
 
-# Can be used in a loop to reflect the action progression
+################################################################################
+# Print status
+#
+print_status() {
+	if [ "$?" -eq 0 ] ; then
+		STATUS="\033[1;35m[ \033[1;32mDone \033[1;35m]\033[0m"
+		STATUS_LENGTH=8
+	else
+		STATUS="\033[1;35m[ \033[1;31mFailed \033[1;35m]\033[0m"
+		STATUS_LENGTH=10
+	fi
+
+	# Getting terminal width
+	TERM_WIDTH=$(stty size | cut -d' ' -f2)
+
+	# Calculating separator size
+	SEP=$(($TERM_WIDTH-($TITLE_LENGTH+$STATUS_LENGTH+$PROGRESS_LENGTH)))
+
+	printf "%$(($SEP))s$STATUS\n"
+
+	# Reset default length
+	TITLE_LENGTH=11
+	PROGRESS_LENGTH=0
+}
+
+################################################################################
+# Print progress
+#
 progress() {
     printf '.'
-    ISPCP_DYN_LENGTH=$(($ISPCP_DYN_LENGTH+1))
+	PROGRESS_LENGTH=$(($PROGRESS_LENGTH+1))
 }
 
-# Set an error message
+################################################################################
+# Exit with an error message
 #
-# Function that can be used to override the default error message that
-# displayed when an error occur (after the call of the failed() function).
+# [param: string Error message that override the default one]
 #
-# Param: string Type of error. Can be 'notice', warning or 'error'.
-# Param: string The error message
-set_errmsg() {
-	if [ "$1" = "notice" ] ; then
-		ISPCP_ERRMSG="\n\t  \033[1;34m[Notice]\033[0m $2\n"
-	elif [ "$1" = "warning" ] ; then
-		ISPCP_ERRMSG="\n\t  \033[1;33m[Warning]\033[0m $2\n"
-	elif [ "$1" = "error" ] ; then
-		ISPCP_ERRMSG="\n\t  \033[1;31m[Error]\033[0m $2\n"
-	else
-		ISPCP_ERRMSG="\n\t $1\n\n"
-	fi
-}
-
-# Sets the status string to 'Failed' and an error message when a command fail
-#
-# This function allow also to manage the action to be performed when a command
-# fail. If an exit status is set, the program will end up with it according the
-# following rules:
-#
-# If the exit status is set to 1, only the hook script will end up, otherwise,
-# if the exit status is set to 2, the both maintainer script and master script
-# (eg. ispcp-setup / ispcp-update) will end up.
-#
-# $1: Optional exit status
 failed() {
-	ISPCP_STATE="\033[1;31mFailed\033[0m"
+	print_status
 
-	if [ ! -z $1 ] ; then
-		ISPCP_EXIT=$1
+	if ! test -z "$1" ; then
+		ERROR_MESSAGE=$1
 	fi
 
-	ISPCP_MSG="$ISPCP_ERRMSG"
-}
+	printf "\n\t \033[1;31m[ERROR]\033[0m $ERROR_MESSAGE\n"
 
-# Display the status string and the error message
-#
-# If the exist status was set via the 'failed()' function, the script will end
-# up with this exit status.
-#
-# See the failed function for more information about posibility.
-print_status() {
-	ISPCP_TERM_WIDTH=`stty size | cut -d' ' -f2`
-	ISPCP_MSG_LENGTH=`echo "$ISPCP_PRINT" | $CMD_WC -c`
-
-	ISPCP_MSG_LENGTH=$(($ISPCP_MSG_LENGTH+$ISPCP_DYN_LENGTH))
-	ISPCP_DYN_LENGTH=0
-
-	ISPCP_STRING=`printf "%$(($ISPCP_TERM_WIDTH-($ISPCP_MSG_LENGTH-8)))s" \
-$ISPCP_STATE`
-
-	printf "$ISPCP_STRING\n"
-	printf "$ISPCP_MSG"
-
-	if [ $ISPCP_EXIT != 0 ] ; then
-		exit $ISPCP_EXIT
-	fi
-
-	# Reset the status string and the error message
-	reset
-}
-
-# Reset the status string and the error message to they default values
-reset() {
-        ISPCP_STATE="\033[1;32mDone\033[0m"
-        ISPCP_ERRMSG="\n\t  \033[1;34m[Notice]\033[0m See the $ISPCP_LOGFILE \
-for the reason!\n\n"
-	ISPCP_MSG=""
+	exit 1
 }

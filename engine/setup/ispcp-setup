@@ -750,7 +750,7 @@ sub setup_engine {
 
 		title("Pre-installation tasks for $main::cfg{'DistName'}");
 		my $rs = preinst('install');
-		exit_msg($rs) if ($rs == 2);
+		exit_msg($rs) if ($rs != 0);
 	}
 
 	spacer();
@@ -777,7 +777,7 @@ sub setup_engine {
 
 		title("Post-installation tasks for $main::cfg{'DistName'}");
 		my $rs = postinst('configure');
-		exit_msg($rs) if ($rs == 2);
+		exit_msg($rs) if ($rs != 0);
 	}
 
 	spacer();
