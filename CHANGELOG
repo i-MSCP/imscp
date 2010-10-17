@@ -1,6 +1,10 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-10-17 Laurent Declercq
+	- SETUP
+		* Fixed: Regexp doesn't match all possible entries (Postgrey fix)
+
 2010-10-16 Laurent Declercq
 	- DISTS:
 		* Removed support for unmaintained Ubuntu versions

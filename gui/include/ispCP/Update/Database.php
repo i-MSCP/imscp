@@ -1771,11 +1771,24 @@ class ispCP_Update_Database extends ispCP_Update {
 	/**
 	 * Fix for #2224 Postgrey - Port changed to 10023 for some distributions
 	 *
+	 * Note: Moved to 42 (previous preinst fix was wrong
+	 * 
 	 * @author Laurent Declercq <laurent.declercq@ispcp.net>
 	 * @since r3299
 	 * @return array
 	 */
 	protected function _databaseUpdate_41() {
+		return array();
+	}
+
+	/**
+	 * Fix for #2224 Postgrey - Port changed to 10023 for some distributions
+	 *
+	 * @author Laurent Declercq <laurent.declercq@ispcp.net>
+	 * @since r3477
+	 * @return array
+	 */
+	protected function _databaseUpdate_42() {
 
 		$cfg = new ispCP_Config_Handler_File();
 		$DbConfig = ispCP_Registry::get('Db_Config');
@@ -1783,7 +1796,6 @@ class ispCP_Update_Database extends ispCP_Update {
 
 		return array();
 	}
-
 	/*
 	 * DO NOT CHANGE ANYTHING BELOW THIS LINE!
 	 */
