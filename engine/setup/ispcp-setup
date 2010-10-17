@@ -736,7 +736,8 @@ sub setup_engine {
 	spacer();
 
 	# Starting ispCP installation
-	title('Starting ispcp installation...');
+	title('Starting ispCP installation');
+
 	spacer();
 
 	# Stopping services
@@ -793,7 +794,7 @@ sub setup_engine {
 
 	spacer();
 
-	title('Finishing installation.');
+	title('Finishing installation');
 
 	# Starting services
 	subtitle('Starting all services: ');

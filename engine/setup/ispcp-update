@@ -670,6 +670,9 @@ sub update_engine {
 
 	system('clear');
 
+	# Starting ispCP installation
+	title('Starting ispCP update');
+
 	spacer();
 
 	## Stopping services
@@ -768,6 +771,8 @@ sub update_engine {
 	set_permissions();
 
 	spacer();
+
+	title('Finishing update');
 
 	## Stating services
 	subtitle('Starting services: ');

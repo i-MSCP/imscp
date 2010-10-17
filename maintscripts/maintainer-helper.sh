@@ -97,8 +97,8 @@ $CMD_RM -f $LOGFILE
 # Default Error message
 ERROR_MESSAGE="See the $LOGFILE logfile for the reason!"
 
-# TAB+SP+*+SP (11 bytes) + TITLE length
-TITLE_LENGTH=11
+# TAB+SP+*+SP (11 bytes) + TITLE length + 1 byte
+TITLE_LENGTH=12
 PROGRESS_LENGTH=0
 
 ################################################################################
