@@ -88,7 +88,7 @@
 "/var/log/ispcp/ispcp-apache-logger.stderr" /var/log/ispcp/ispcp-apache-logger.stdout {
 	weekly
 	rotate 2
-	size 10m
+	size 10M
 	missingok
 	compress
 	delaycompress
