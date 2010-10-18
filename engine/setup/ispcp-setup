@@ -738,8 +738,6 @@ sub setup_engine {
 	# Starting ispCP installation
 	title('Starting ispCP installation');
 
-	spacer();
-
 	# Stopping services
 	subtitle('Stopping all services: ');
 	stop_services();

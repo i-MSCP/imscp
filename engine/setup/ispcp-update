@@ -669,11 +669,10 @@ sub update_engine {
 	user_dialog();
 
 	system('clear');
+	spacer();
 
 	# Starting ispCP installation
 	title('Starting ispCP update');
-
-	spacer();
 
 	## Stopping services
 	subtitle('Stopping Services: ');
