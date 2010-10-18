@@ -38,7 +38,7 @@ use strict;
 use warnings;
 no warnings 'once';
 
-use PerlLib::Dialog::Asks;
+use PerlLib::Dialog::Query;
 
 use DateTime;
 use DateTime::TimeZone;
@@ -66,7 +66,7 @@ my $rs = makepath(
 die("Unable to create ispCP log directory $!\n") unless $rs == 0;
 
 ################################################################################
-##                              Ask subroutines                                #
+##                              Query subroutines                              #
 ################################################################################
 
 ################################################################################
@@ -78,12 +78,12 @@ sub ask_hostname {
 
 	push_el(\@main::el, 'ask_hostname()', 'Starting...');
 
-	setAsk('hostname');
+	setQuery('hostname');
 
 	my $hostname = get_sys_hostname();
 	return -1 if ($rs != 0);
 
-	printAsk($hostname);
+	printQuery($hostname);
 	chomp(my $rdata = <STDIN>);
 
 	$rdata = $hostname if $rdata eq '';
@@ -122,11 +122,11 @@ sub ask_eth {
 
 	push_el(\@main::el, 'ask_eth()', 'Starting...');
 
-	setAsk('eth');
+	setQuery('eth');
 
 	my $ipAddr = getEthAddr();
 
-	printAsk($ipAddr);
+	printQuery($ipAddr);
 	chomp(my $rdata = <STDIN>);
 
 	if($rdata ne '' && !isValidAddr($rdata)) {
@@ -151,11 +151,11 @@ sub ask_vhost {
 
 	push_el(\@main::el, 'ask_vhost()', 'Starting...');
 
-	setAsk('vhost');
+	setQuery('vhost');
 
 	my $vhost = idn_to_unicode('admin.' . get_sys_hostname(), 'utf8');
 
-	printAsk($vhost);
+	printQuery($vhost);
 	chomp(my $rdata = <STDIN>);
 
 	if ($rdata eq '') {
@@ -181,9 +181,9 @@ sub ask_db_host {
 
 	push_el(\@main::el, 'ask_db_host()', 'Starting...');
 
-	setAsk('db_host');
+	setQuery('db_host');
 
-	printAsk();
+	printQuery();
 	chomp(my $rdata = <STDIN>);
 
 	$rdata = ($rdata eq '') ? 'localhost' : $rdata;
@@ -210,9 +210,9 @@ sub ask_db_name {
 
 	push_el(\@main::el, 'ask_db_name()', 'Starting...');
 
-	setAsk('db_name');
+	setQuery('db_name');
 
-	printAsk();
+	printQuery();
 	chomp(my $rdata = <STDIN>);
 
 	$main::ua{'db_name'} = ($rdata eq '') ? 'ispcp' : $rdata;
@@ -230,9 +230,9 @@ sub ask_db_user {
 
 	push_el(\@main::el, 'ask_db_user()', 'Starting...');
 
-	setAsk('db_user');
+	setQuery('db_user');
 
-	printAsk();
+	printQuery();
 	chomp(my $rdata = <STDIN>);
 
 	$main::ua{'db_user'} = ($rdata eq '') ? 'root' : $rdata;
@@ -249,9 +249,9 @@ sub ask_db_password {
 
 	push_el(\@main::el, 'ask_db_password()', 'Starting...');
 
-	setAsk('db_password');
+	setQuery('db_password');
 
-	my $pass1 = read_password(printAsk());
+	my $pass1 = read_password(printQuery());
 
 	if (!defined $pass1 || $pass1 eq '') {
 		$main::ua{'db_password'} = '';
@@ -280,9 +280,9 @@ sub ask_db_ftp_user {
 
 	push_el(\@main::el, 'ask_db_ftp_user()', 'Starting...');
 
-	setAsk('db_ftp_user');
+	setQuery('db_ftp_user');
 
-	printAsk();
+	printQuery();
 	chomp(my $rdata = <STDIN>);
 
 	if ($rdata eq '') {
@@ -308,11 +308,11 @@ sub ask_db_ftp_password {
 
 	push_el(\@main::el, 'ask_db_ftp_password()', 'Starting...');
 
-	setAsk('db_ftp_password');
+	setQuery('db_ftp_password');
 
 	my ($rs, $pass1, $pass2, $dbPassword);
 
-	$pass1 = read_password(printAsk());
+	$pass1 = read_password(printQuery());
 
 	if (!defined $pass1  || $pass1 eq '') {
 		$dbPassword = gen_sys_rand_num(18);
@@ -345,9 +345,9 @@ sub ask_admin {
 
 	push_el(\@main::el, 'ask_admin()', 'Starting...');
 
-	setAsk('admin');
+	setQuery('admin');
 
-	printAsk();
+	printQuery();
 	chomp(my $rdata = <STDIN>);
 
 	$main::ua{'admin'} = ($rdata eq '') ? 'admin' : $rdata;
@@ -364,9 +364,9 @@ sub ask_admin_password {
 
 	push_el(\@main::el, 'ask_admin_password()', 'Starting...');
 
-	setAsk('admin_password');
+	setQuery('admin_password');
 
-	my $pass1 = read_password(printAsk());
+	my $pass1 = read_password(printQuery());
 
 	if (!defined $pass1 || $pass1 eq '') {
 		printError('', 1);
@@ -406,9 +406,9 @@ sub ask_admin_email {
 
 	push_el(\@main::el, 'ask_admin_email()', 'Starting...');
 
-	setAsk('admin_email');
+	setQuery('admin_email');
 
-	printAsk();
+	printQuery();
 	chomp(my $rdata = <STDIN>);
 
 	if($rdata eq '' || !isValidEmail($rdata)) {
@@ -432,9 +432,9 @@ sub ask_second_dns {
 
 	push_el(\@main::el, 'ask_second_dns()', 'Starting...');
 
-	setAsk('second_dns');
+	setQuery('second_dns');
 
-	printAsk();
+	printQuery();
 	chomp(my $rdata = <STDIN>);
 
 	if (!defined $rdata || $rdata eq '') {
@@ -461,9 +461,9 @@ sub ask_resolver {
 
 	push_el(\@main::el, 'ask_resolver()', 'Starting...');
 
-	setAsk('resolver');
+	setQuery('resolver');
 
-	printAsk();
+	printQuery();
 	chomp(my $rdata = <STDIN>);
 
 	if ($rdata eq '' || $rdata =~ /^(?:(y|yes)|(n|no))$/i) {
@@ -487,9 +487,9 @@ sub ask_mysql_prefix {
 
 	push_el(\@main::el, 'ask_mysql_prefix()', 'Starting...');
 
-	setAsk('mysql_prefix');
+	setQuery('mysql_prefix');
 
-	printAsk();
+	printQuery();
 	chomp(my $rdata = <STDIN>);
 
 	if ($rdata eq '' || $rdata eq 'none' || $rdata eq 'n') {
@@ -520,13 +520,13 @@ sub ask_db_pma_user {
 
 	push_el(\@main::el, 'ask_db_pma_user()', 'Starting...');
 
-	setAsk('db_pma_user');
+	setQuery('db_pma_user');
 
 	if(defined &update_engine) {
 		$main::ua{'db_user'} = $main::cfg{'DATABASE_USER'};
 	}
 
-	printAsk($main::cfg{'PMA_USER'});
+	printQuery($main::cfg{'PMA_USER'});
 
 	chomp(my $rdata = <STDIN>);
 
@@ -556,9 +556,9 @@ sub ask_db_pma_password {
 
 	push_el(\@main::el, 'ask_db_pma_password()', 'Starting...');
 
-	setAsk('db_pma_password');
+	setQuery('db_pma_password');
 
-	my $pass1 = read_password(printAsk());
+	my $pass1 = read_password(printQuery());
 
 	if (!defined $pass1 || $pass1 eq '') {
 		my $dbPassword = gen_sys_rand_num(18);
@@ -590,9 +590,9 @@ sub ask_fastcgi {
 
 	push_el(\@main::el, 'ask_fastcgi()', 'Starting...');
 
-	setAsk('fastcgi');
+	setQuery('fastcgi');
 
-	printAsk();
+	printQuery();
 	chomp(my $rdata = <STDIN>);
 
 	if ($rdata eq '' || $rdata eq 'fcgid' || $rdata eq 'f') {
@@ -618,7 +618,7 @@ sub ask_timezone {
 
 	push_el(\@main::el, 'ask_timezone()', 'Starting...');
 
-	setAsk('timezone');
+	setQuery('timezone');
 
 	# Get the user's default timezone
 	my ($sec, $min, $hour, $mday, $mon, $year, @misc) = localtime;
@@ -629,7 +629,7 @@ sub ask_timezone {
 
 	my $timezone_name = $datetime->time_zone_long_name();
 
-	printAsk($timezone_name);
+	printQuery($timezone_name);
 	chomp(my $rdata = <STDIN>);
 
 	# Copy $timezone_name to $rdata if $rdata is empty
@@ -665,9 +665,9 @@ sub ask_awstats_on {
 
 	push_el(\@main::el, 'ask_awstats_on()', 'Starting...');
 
-	setAsk('awstats_on');
+	setQuery('awstats_on');
 
-	printAsk();
+	printQuery();
 	chomp(my $rdata = <STDIN>);
 
 	if ($rdata eq '' || $rdata eq 'no' || $rdata eq 'n') {
@@ -693,9 +693,9 @@ sub ask_awstats_dyn {
 
 	push_el(\@main::el, 'ask_awstats_dyn()', 'Starting...');
 
-	setAsk('awstats_dyn');
+	setQuery('awstats_dyn');
 
-	printAsk();
+	printQuery();
 	chomp(my $rdata = <STDIN>);
 
 	if ($rdata eq '' || $rdata eq 'dynamic' || $rdata eq 'd') {

@@ -36,7 +36,7 @@ $Text::Wrap::columns = 72;
 use base 'Exporter';
 
 @EXPORT = (
-	'setAsk', 'printAsk', 'printNotice','printConfirm', 'printWarning',
+	'setQuery', 'printQuery', 'printNotice','printConfirm', 'printWarning',
 	'printError'
 );
 
@@ -116,12 +116,12 @@ $AWSTATS_DYN_ERROR = 'Only \'[d]ynamic\' or \'[s]tatic\' are allowed!';
 
 $DIAL = '';
 
-sub setAsk {
+sub setQuery {
 	my $ask = uc(shift||'');
 	$DIAL = $ask if defined ${$ask};
 }
 
-sub printAsk {
+sub printQuery {
 	spacer();
 	$VALUE = shift||$VALUE;
 	pr(${$DIAL});

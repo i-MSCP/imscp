@@ -1,6 +1,10 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-10-18 Benedikt Heintel
+    - SETUP:
+        * Renamed Dialog::Ask to Dialog::Query
+
 2010-10-17 Laurent Declercq
 	- CONFIGS:
 		* Fixed #2486: logrotate error in /etc/logrotate.d/ispcp:91 "unknown
