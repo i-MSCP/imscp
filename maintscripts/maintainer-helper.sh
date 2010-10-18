@@ -94,6 +94,9 @@ $CMD_RM -f $LOGFILE
 #                                Utils functions                               #
 ################################################################################
 
+# Register shutdown function
+trap "shutdown" EXIT
+
 # Default Error message
 ERROR_MESSAGE="See the $LOGFILE logfile for the reason!"
 
@@ -133,7 +136,7 @@ print_status() {
 	printf "%$(($SEP))s$STATUS\n"
 
 	# Reset default length
-	TITLE_LENGTH=11
+	TITLE_LENGTH=12
 	PROGRESS_LENGTH=0
 }
 
@@ -160,4 +163,14 @@ failed() {
 	printf "\n\t \033[1;31m[ERROR]\033[0m $ERROR_MESSAGE\n"
 
 	exit 1
+}
+
+################################################################################
+# Shutdown function
+#
+shutdown() {
+	if test -z "$SEP" ; then
+		print_title "Nothing to do..."
+		print_status
+	fi
 }
