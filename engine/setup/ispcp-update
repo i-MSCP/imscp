@@ -675,7 +675,7 @@ sub update_engine {
 	title('Starting ispCP update');
 
 	## Stopping services
-	subtitle('Stopping Services: ');
+	subtitle('Stopping services: ');
 	stop_services();
 	print_status(0);
 
@@ -766,7 +766,7 @@ sub update_engine {
 	spacer();
 
 	## IspCP files permissions
-	title('Set ENGINE and GUI permissions');
+	title('Permissions setup');
 	set_permissions();
 
 	spacer();

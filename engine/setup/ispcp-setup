@@ -761,7 +761,7 @@ sub setup_engine {
 	spacer();
 
 	# Setting host system
-	title('Service setup');
+	title('Services setup');
 	setup_services_cfg();
 
 	spacer();
