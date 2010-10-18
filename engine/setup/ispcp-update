@@ -793,7 +793,7 @@ sub update_shutdown {
 	push_el(\@main::el, 'update_shutdown()', 'Starting...');
 
 	print colored(['bold underline'],
-		"\n\n\tCongratulations, you updated ispCP OMEGA" .
+		"\n\tCongratulations, you updated ispCP OMEGA" .
 		"'$main::cfg{'Version'}' successfully!\n\n"),
 
 		"\tType http://$main::cfg{'BASE_SERVER_VHOST'} into your browser to " .
