@@ -48,7 +48,8 @@ BEGIN {
 		File::Path => '',
 		HTML::Entities=> '',
 		File::Temp => 'qw(tempdir)',
-		File::Copy::Recursive => 'qw(rcopy)'
+		File::Copy::Recursive => 'qw(rcopy)',
+		Net::LibIDN => 'qw/idn_to_ascii idn_to_unicode/'
 	);
 
 	my ($mod, $mod_err, $mod_missing) = ('', '_off_', '');
@@ -2490,15 +2491,61 @@ sub getSerialNumber {
 	0;
 }
 
+################################################################################
+# Converts the domain part (right hand side, separated by an at sign) of an
+# email address to ASCII (according RFC 3490).
+#
+# @author Laurent Declercq <laurent.declercq@ispcp.net>
+# @since 1.0.7 (rc2)
+# @param scalaref $refEmail Email address
+# @return int 1 on success, 0 otherwise
+#
+sub mailToASCII {
+
+	my $refEmail = shift||'';
+
+	return 0 if $refEmail eq '' || ref $refEmail ne 'SCALAR';
+
+	my $email = $$refEmail;
+
+	# Getting email length
+	my $emailLength = length $email;
+
+	# Split email address on local-part and domain part
+	my $i = rindex $email, '@';
+
+	# The delimiter '@' or one email part was not found ?
+	return 0 if($i == -1 || $i == 0 || $emailLength == ++($i));
+
+	# Retrieving local and domain part
+	my ($localPart, $domain) = (
+		substr($email, 0, --$i), substr($email, ++$i)
+	);
+
+	# Converting domain part to ASCII (Punycode)
+	$domain = idn_to_ascii($domain, 'utf-8');
+
+	$$refEmail = "$localPart\@$domain";
+
+	1;
+}
+
+################################################################################
+# Send error mail
+#
+# @param string $fname Function where the error occurred
+# @param string $errmsg Error message to be sent
+#
 sub send_error_mail {
 
-	my ($fname,$errmsg) = @_;
-	my ($rs, $rdata, $sql) = (undef, undef, undef);
+	my ($fname, $errmsg) = @_;
 
 	push_el(\@main::el, 'send_error_mail()', 'Starting...');
 
-	my $date = get_human_date();
 	my $admin_email = $main::cfg{'DEFAULT_ADMIN_ADDRESS'};
+	return if(!mailToASCII(\$admin_email));
+
+	my $date = get_human_date();
 	my $server_name = $main::cfg{'SERVER_HOSTNAME'};
 	my $server_ip = $main::cfg{'BASE_SERVER_IP'};
 

@@ -44,7 +44,7 @@ use DateTime;
 use DateTime::TimeZone;
 use feature 'state';
 use File::MimeInfo::Magic;
-use Net::LibIDN qw/idn_to_ascii idn_to_unicode/;
+#use Net::LibIDN qw/idn_to_ascii idn_to_unicode/;
 use Socket;
 use Term::ReadKey;
 use Term::ANSIColor qw(:constants colored);
@@ -807,6 +807,7 @@ sub isValidHostname {
 # @param string $email Email address to be validated
 # @return 1 if the email address is valid, 0 otherwise
 #
+# @todo quoted string (RFC 5322 section 3.2.4)
 # @todo domain literal (IPv6)
 #
 sub isValidEmail {
@@ -821,7 +822,7 @@ sub isValidEmail {
 		return 0;
 	}
 
-	# Checking e-mail address length  - RFC 5321 section 4.5.3.1
+	# Checking e-mail address length - RFC 5321 section 4.5.3.1
 	return 0 if (my $emailLength = length $email) > 254;
 
 	# split email address on local-part and domain part
@@ -850,7 +851,6 @@ sub isValidEmail {
 # @access private
 # @param string $email Email local-part
 # @return 1 if the local-part is valid, 0 otherwise
-# @Todo quoted string (RFC 5322 section 3.2.4)
 #
 sub _isValidEmailUser {
 
@@ -955,7 +955,7 @@ sub isValidAddr {
 }
 
 ################################################################################
-#                                Check subroutines                             #
+#                              Check subroutines                               #
 ################################################################################
 
 ################################################################################
@@ -1063,14 +1063,14 @@ sub get_sys_hostname {
 ################################################################################
 # Get the ip (IpV4) assigned to the first Network Interface (eg. eth0)
 #
-# @return string Ip in dot-decimal notation on success or exit on failure
+# @return string Ip in dot-decimal notation on success
 #
 sub getEthAddr {
 
 	push_el(\@main::el, 'getEthAddr()', 'Starting...');
 
 	if(!defined $main::ua{'eth_ip'}) {
-		# @todo IO::Interface
+		# @todo Switch to IO::Interface
 		chomp(
 			$main::ua{'eth_ip'} =
 				`$main::cfg{'CMD_IFCONFIG'}|$main::cfg{'CMD_GREP'} -v inet6|
@@ -1099,7 +1099,7 @@ sub getEthAddr {
 # @return void
 #
 sub title {
-	my $title = shift;
+	my $title = shift||'';
 	print colored(['bold'], "\t$title\n");
 }
 
@@ -1111,7 +1111,7 @@ sub title {
 #
 sub subtitle {
 
-	my $subtitle = shift;
+	my $subtitle = shift||'';
 
 	$subtitle = colored(['bold green'], "* ") . $subtitle;
 	print "\t $subtitle";
@@ -1408,6 +1408,53 @@ sub setup_cleanup {
 ################################################################################
 #                        Setup/Update low level subroutines                    #
 ################################################################################
+
+################################################################################
+# Set the local dns resolver
+#
+# @return int 0 on success, -1 on failure
+#
+sub setup_resolver {
+
+	push_el(\@main::el, 'setup_resolver()', 'Starting...');
+
+	if(-e $main::cfg{'RESOLVER_CONF_FILE'}) {
+		my ($rs, $cfgFile) = get_file($main::cfg{'RESOLVER_CONF_FILE'});
+		return $rs if ($rs != 0);
+
+		if($main::cfg{'LOCAL_DNS_RESOLVER'} =~ /yes/i) {
+			if($cfgFile !~ /nameserver 127.0.0.1/i) {
+				$cfgFile =~ s/(nameserver.*)/nameserver 127.0.0.1\n$1/i;
+			}
+		} else {
+			$cfgFile =~ s/nameserver 127.0.0.1//i;
+		}
+
+		# Saving the old file if needed
+		if(!-e "$main::cfg{'RESOLVER_CONF_FILE'}.bkp") {
+			my $rs = sys_command_rs(
+				"$main::cfg{'CMD_CP'} -fp $main::cfg{'RESOLVER_CONF_FILE'} " .
+				"$main::cfg{'RESOLVER_CONF_FILE'}.bkp"
+			);
+			return $rs if ($rs != 0);
+		}
+
+		# Storing the new file
+		$rs = store_file(
+			$main::cfg{'RESOLVER_CONF_FILE'}, $cfgFile, $main::cfg{'ROOT_USER'},
+			$main::cfg{'ROOT_GROUP'}, 0644
+		);
+		return $rs if($rs != 0);
+	} else {
+		$main::exitMessage = colored(['bold red'], "\n\t[ERROR] ") .
+			"Unable to found your resolv.conf file!\n";
+		return -1;
+	}
+
+	push_el(\@main::el, 'setup_resolver()', 'Ending...');
+
+	0;
+}
 
 ################################################################################
 # ispCP crontab file - (Setup / Update)
@@ -2606,6 +2653,11 @@ sub setup_gui_httpd {
 	my $bkpDir = "$cfgDir/backup";
 	my $wrkDir = "$cfgDir/working";
 
+	my $adminEmailAddress = $main::cfg{'DEFAULT_ADMIN_ADDRESS'};
+
+	# Converting local-part to ASCII (Punycode)
+	mailToASCII(\$adminEmailAddress);
+
 	# Saving the current production file if it exists
 	if(-e "$main::cfg{'APACHE_SITES_DIR'}/00_master.conf") {
 		$rs = sys_command(
@@ -2619,12 +2671,13 @@ sub setup_gui_httpd {
 	($rs, $cfgTpl) = get_file("$cfgDir/00_master.conf");
 	return $rs if($rs != 0);
 
+
 	# Building the new file
 	($rs, $$cfg) = prep_tpl(
 		{
 			'{BASE_SERVER_IP}' => $main::cfg{'BASE_SERVER_IP'},
 			'{BASE_SERVER_VHOST}' => idn_to_ascii($main::cfg{'BASE_SERVER_VHOST'}, 'utf-8'),
-			'{DEFAULT_ADMIN_ADDRESS}' => $main::cfg{'DEFAULT_ADMIN_ADDRESS'}, #TODO Punycode
+			'{DEFAULT_ADMIN_ADDRESS}' => $adminEmailAddress,
 			'{ROOT_DIR}' => $main::cfg{'ROOT_DIR'},
 			'{APACHE_WWW_DIR}' => $main::cfg{'APACHE_WWW_DIR'},
 			'{APACHE_USERS_LOG_DIR}' => $main::cfg{'APACHE_USERS_LOG_DIR'},
@@ -3291,53 +3344,6 @@ sub setup_gui_named_db_data {
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'setup_gui_named_db_data()', 'Ending...');
-
-	0;
-}
-
-################################################################################
-# Set the local dns resolver
-#
-# @return int 0 on success, -1 on failure
-#
-sub setup_resolver {
-
-	push_el(\@main::el, 'setup_resolver()', 'Starting...');
-
-	if(-e $main::cfg{'RESOLVER_CONF_FILE'}) {
-		my ($rs, $cfgFile) = get_file($main::cfg{'RESOLVER_CONF_FILE'});
-		return $rs if ($rs != 0);
-
-		if($main::cfg{'LOCAL_DNS_RESOLVER'} =~ /yes/i) {
-			if($cfgFile !~ /nameserver 127.0.0.1/i) {
-				$cfgFile =~ s/(nameserver.*)/nameserver 127.0.0.1\n$1/i;
-			}
-		} else {
-			$cfgFile =~ s/nameserver 127.0.0.1//i;
-		}
-
-		# Saving the old file if needed
-		if(!-e "$main::cfg{'RESOLVER_CONF_FILE'}.bkp") {
-			my $rs = sys_command_rs(
-				"$main::cfg{'CMD_CP'} -fp $main::cfg{'RESOLVER_CONF_FILE'} " .
-				"$main::cfg{'RESOLVER_CONF_FILE'}.bkp"
-			);
-			return $rs if ($rs != 0);
-		}
-
-		# Storing the new file
-		$rs = store_file(
-			$main::cfg{'RESOLVER_CONF_FILE'}, $cfgFile, $main::cfg{'ROOT_USER'},
-			$main::cfg{'ROOT_GROUP'}, 0644
-		);
-		return $rs if($rs != 0);
-	} else {
-		$main::exitMessage = colored(['bold red'], "\n\t[ERROR] ") .
-			"Unable to found your resolv.conf file!\n";
-		return -1;
-	}
-
-	push_el(\@main::el, 'setup_resolver()', 'Ending...');
 
 	0;
 }

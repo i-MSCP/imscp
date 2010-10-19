@@ -1,6 +1,11 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-10-19 Laurent Declercq
+	- SETUP:
+		Fixed part I (ENGINE) for #2476: Internationalized domain names -
+			Punycode conversion
+
 2010-10-18 Benedikt Heintel
     - SETUP:
         * Renamed Dialog::Ask to Dialog::Query
@@ -20,7 +25,7 @@ ispCP ω 1.0.7 ChangeLog
 
 2010-10-16 Daniel Andreca
 	- ENGINE:
-		* Fixed #2472: Some issue with gentoo and update process
+		* Fixed #2472: Some issue with Gentoo and update process
 		* Small fix to allow database names containing special chars like '-'
 		
 2010-10-15 Daniel Andreca
@@ -43,6 +48,7 @@ ispCP ω 1.0.7 ChangeLog
 2010-10-11 Laurent Declercq
 	- SETUP:
 		* Fixed #2483: Output from external commands must be captured and logged
+
 2010-10-10 Laurent Declercq
 	- SETUP:
 		* Added some fixes for Awstats
