@@ -847,7 +847,9 @@ sub sys_command {
 
 	system($cmd);
 
-	if (getCmdExitValue() == 0) {
+	my $exit_value = getCmdExitValue();
+
+	if ($exit_value == 0) {
 		push_el(\@main::el, "sys_command('$cmd')", 'Ending...');
 
 		return 0;
