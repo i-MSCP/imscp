@@ -25,7 +25,7 @@
 #    http://isp-control.net
 #
 
-package PerlLib::Dialog::Asks;
+package PerlLib::Dialog::Query;
 use strict;
 use warnings;
 no strict qw /refs vars/;
@@ -172,6 +172,9 @@ sub pr {
 	}
 
 	$VALUE = '';
+
+	# Term::ReadPassword::read_password() prompt issue...
+	undef;
 }
 
 sub spacer { print "\n"; }
