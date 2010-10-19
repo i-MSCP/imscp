@@ -225,6 +225,12 @@ if(!$config->ISPCP_SUPPORT_SYSTEM_TARGET) {
 	$config->ISPCP_SUPPORT_SYSTEM_TARGET = '_self';
 }
 
+# Converting some possible IDN to ACE (see 
+$config->DEFAULT_ADMIN_ADDRESS = encode_idna($config->DEFAULT_ADMIN_ADDRESS);
+$config->SERVER_HOSTNAME = encode_idna($config->SERVER_HOSTNAME);
+$config->BASE_SERVER_VHOST = encode_idna($config->BASE_SERVER_VHOST);
+$config->DATABASE_HOST = encode_idna($config->DATABASE_HOST);
+
 // Initialize the application
 IspCP_Initializer::run($config);
 

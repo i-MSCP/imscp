@@ -3,8 +3,8 @@ ispCP ω 1.0.7 ChangeLog
 
 2010-10-19 Laurent Declercq
 	- SETUP:
-		Fixed part I (ENGINE) for #2476: Internationalized domain names -
-			Punycode conversion
+		Fixed (last part) #2476: Internationalized domain names - Punycode
+			conversion
 
 2010-10-18 Benedikt Heintel
     - SETUP:

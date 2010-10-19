@@ -178,7 +178,7 @@ class ispCP_Initializer {
 		// (will be activated later)
 		// ispCP_Registry::get('Hook')->OnAfterInitialize();
 
-		// Run after intialize callbacks (will be changed later)
+		// Run after initialize callbacks (will be changed later)
 		$this->_afterInitialize();
 
 		 self::$_initialized = true;

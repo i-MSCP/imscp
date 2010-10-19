@@ -74,8 +74,8 @@ ispCP_Registry::setAlias(
  * information about the ispCP application environment if the user is not an
  * administrator.
  *
- * Anothers optional writers will be attached to this object during
- * intialization process.
+ * Another optional writers will be attached to this object during
+ * initialization process.
  */
 ispCP_Registry::get('exceptionHandler')->attach(
 	new ispCP_Exception_Writer_Browser(
@@ -102,6 +102,7 @@ if($ispcp_db_pass_key != '{KEY}' && $ispcp_db_pass_iv != '{IV}') {
 /**
  * Include ispCP common functions
  */
+require_once 'net_idna/idna_convert.class.php';
 require_once INCLUDEPATH . '/ispcp-functions.php';
 require_once INCLUDEPATH . '/deprecated.php';
 
@@ -150,7 +151,6 @@ require_once 'client-functions.php';
 require_once 'date-functions.php';
 require_once 'input-checks.php';
 require_once 'calc-functions.php';
-require_once 'net_idna/idna_convert.class.php';
 require_once 'lostpassword-functions.php';
 require_once 'emailtpl-functions.php';
 require_once 'layout-functions.php';
