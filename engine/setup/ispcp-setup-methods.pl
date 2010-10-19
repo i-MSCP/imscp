@@ -44,7 +44,6 @@ use DateTime;
 use DateTime::TimeZone;
 use feature 'state';
 use File::MimeInfo::Magic;
-#use Net::LibIDN qw/idn_to_ascii idn_to_unicode/;
 use Socket;
 use Term::ReadKey;
 use Term::ANSIColor qw(:constants colored);

@@ -42,7 +42,6 @@ require 'ispcp_common_code.pl';
 use strict;
 use warnings;
 
-#use Net::LibIDN ':all';
 $main::dmn_task_id = undef;
 
 # Default status set after domain name change action
