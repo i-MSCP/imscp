@@ -3,7 +3,7 @@ ispCP ω 1.0.7 ChangeLog
 
 2010-10-19 Laurent Declercq
 	- DISTS:
-		* Fixed #2488: [FreeBSD] Changed freebsd_packages
+		* Fixed #2488: [FreeBSD] Changed freebsd_packages (Thanks to Bene)
 	- SETUP:
 		Fixed (last part) #2476: Internationalized domain names - Punycode
 			conversion
