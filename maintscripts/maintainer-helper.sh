@@ -112,6 +112,8 @@ PROGRESS_LENGTH=0
 print_title() {
 	TITLE_LENGTH=$(($TITLE_LENGTH+$(printf "$1" | wc -c)))
 	TITLE="\t \033[1;32m*\033[0m $1"
+
+	printf "[$1]\n" >> $LOGFILE
 	printf "$TITLE";
 }
 

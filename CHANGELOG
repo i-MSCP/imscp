@@ -5,7 +5,7 @@ ispCP ω 1.0.7 ChangeLog
 	- DISTS:
 		* Fixed #2488: [FreeBSD] Changed freebsd_packages (Thanks to Bene)
 	- SETUP:
-		Fixed (last part) #2476: Internationalized domain names - Punycode
+		* Fixed (last part) #2476: Internationalized domain names - Punycode
 			conversion
 
 2010-10-18 Benedikt Heintel

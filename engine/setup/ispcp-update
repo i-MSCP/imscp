@@ -495,7 +495,7 @@ sub rebuild_customers_cfg {
 	# Unlock is needed here to be able to launch the ispcp-rqst-mngr script
 	close $main::fh_lock_file if defined $main::fh_lock_file;
 
-	my $rs = sys_command_rs("perl $main::ispcp_rqst_mngr norestart");
+	my $rs = sys_command("perl $main::ispcp_rqst_mngr norestart");
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'rebuild_customers_cfg()', 'Ending...');
