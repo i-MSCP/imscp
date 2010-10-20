@@ -4,6 +4,7 @@ ispCP ω 1.0.7 ChangeLog
 2010-10-20 Laurent Declercq
 	- CONFIGS:
 		* Removed PHP4 support
+		* Removed Fcgid IPCConnectTimeout directive  (not respected on Unix)
 
 2010-10-19 Laurent Declercq
 	- DISTS:
