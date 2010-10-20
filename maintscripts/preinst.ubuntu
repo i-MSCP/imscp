@@ -64,7 +64,7 @@ case "$1" in
 				/etc/ispcp/ispcp.conf >> $LOGFILE 2>&1 || failed \
 					"The script was unable to update the Postgrey listening port in your\n\t ispcp.conf file!";
 
-			# Updating database.sql file Only on install
+			# Updating database.sql file only on install
 			if [ "$1" = "install" ] ; then
 				$CMD_SED -i s'/10023\(;tcp;POSTGREY\)/60000\1/' \
 					/etc/ispcp/database/database.sql >> $LOGFILE 2>&1 || failed \
