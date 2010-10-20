@@ -113,6 +113,9 @@ install:
 	$(CMD_INSTALL) ./setup/ispcp-uninstall $(SYSTEM_ENGINE_ROOT)/setup
 	$(CMD_INSTALL) ./setup/updDB.php $(SYSTEM_ENGINE_ROOT)/setup
 
+	cp -R ./setup/PerlVendor $(SYSTEM_ENGINE_ROOT)/setup
+	cp -R ./setup/PerlLib $(SYSTEM_ENGINE_ROOT)/setup
+
 	$(CMD_INSTALL) ./tools/ispcp-httpd-logs-mngr $(SYSTEM_ENGINE_ROOT)/tools/ispcp-httpd-logs-mngr
 	$(CMD_INSTALL) ./tools/ispcp-del-logs.sh $(SYSTEM_ENGINE_ROOT)/tools/ispcp-del-logs.sh
 	$(CMD_INSTALL) ./tools/ispcp-del-phptemp.sh $(SYSTEM_ENGINE_ROOT)/tools/ispcp-del-phptemp.sh
