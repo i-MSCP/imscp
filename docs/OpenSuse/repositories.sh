@@ -1,12 +1,12 @@
 #!/bin/sh
 #
-# ispCP required repositories install script for OpenSuse 11.2
+# ispCP repositories install script for OpenSuse 11.3
 #
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2006-2009 by isp Control Panel - http://ispcp.net
 # author	Laurent Declercq <laurent.declercq@ispcp.net>
 #
-# SVN: $Id$
+# SVN: $Id: opensuse112-repositories 2505 2010-01-06 20:30:53Z nuxwin $
 #
 # The contents of this file are subject to the Mozilla Public License
 # Version 1.1 (the "License"); you may not use this file except in
@@ -30,43 +30,43 @@
 
 
 ZYPPER_BIN=/usr/bin/zypper
-URI_BASE="http://download.opensuse.org/repositories"
+URI_BASE="http://download.opensuse.org"
 
 case "$1" in
-
 	add)
-		# Proftpd && Cie...
-		$ZYPPER_BIN ar $URI_BASE/server:/ftp/openSUSE_11.2/ ispcp-proftpd
+		# Standard repositories
+		$ZYPPER_BIN ar $URI_BASE/update/11.3/
+		$ZYPPER_BIN ar $URI_BASE/distribution/11.3/repo/oss/
+		$ZYPPER_BIN ar $URI_BASE/distribution/11.3/repo/non-oss/
+
+		# Apache
+		$ZYPPER_BIN ar $URI_BASE/repositories/Apache/openSUSE_11.3/ ispcp-apache2
+		$ZYPPER_BIN ar $URI_BASE/repositories/Apache:/Modules/openSUSE_11.3/ ispcp-apache2-modules
 
 		# Awstats
-		$ZYPPER_BIN ar $URI_BASE/network:/utilities/openSUSE_11.2/ ispcp-awstats
+		$ZYPPER_BIN ar $URI_BASE/repositories/network:/utilities/openSUSE_11.3/ ispcp-awstats
 
-		# Apache && Cie...
-		$ZYPPER_BIN ar $URI_BASE/Apache:/Modules/Apache_openSUSE_11.2/ ispcp-apache2
+		# Proftpd, lha, rkhunter
+		$ZYPPER_BIN ar $URI_BASE/repositories/openSUSE:/11.3:/Contrib/standard/ ispcp-contrib
 
-		# Rkhunter
-		$ZYPPER_BIN ar $URI_BASE/openSUSE:/Factory:/Contrib/openSUSE_11.2/ ispcp-rkhunter
+		# Courier, Postgrey
+		$ZYPPER_BIN ar $URI_BASE/repositories/server:/mail/openSUSE_11.3 ispcp-mail
 
-		# Postgrey && Policy-weight
-		$ZYPPER_BIN ar $URI_BASE/home:/pheinlein/openSUSE_11.2/ ispcp-mtools
-
-		# lha
-		$ZYPPER_BIN ar $URI_BASE/openSUSE:/Factory:/Contrib/openSUSE_11.2/ ispcp-lha
+		# policyd-weight
+		$ZYPPER_BIN ar $URI_BASE/repositories/home:/pheinlein/openSUSE_11.3/ ispcp-pweight
 
 		# Refresh all repositories
 		$ZYPPER_BIN ref
 	;;
 	rm)
-		REPO="proftpd awstats apache2 rkhunter perllib mtools lha"
+		REPO="apache2 apache2-modules awstats contrib mail pweight"
 
 		for i in $REPO
-   			do $ZYPPER_BIN rr ispcp-$i
+			do $ZYPPER_BIN rr ispcp-$i
 		done
-
 	;;
-
 	*)
-		echo "Usage: sh ./opensuse112-repositories {add|rm}"
+		echo "Usage: sh ./repo {add|rm}"
 
 	exit 1
 esac
