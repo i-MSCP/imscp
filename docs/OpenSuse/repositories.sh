@@ -34,11 +34,6 @@ URI_BASE="http://download.opensuse.org"
 
 case "$1" in
 	add)
-		# Standard repositories
-		$ZYPPER_BIN ar $URI_BASE/update/11.3/
-		$ZYPPER_BIN ar $URI_BASE/distribution/11.3/repo/oss/
-		$ZYPPER_BIN ar $URI_BASE/distribution/11.3/repo/non-oss/
-
 		# Apache
 		$ZYPPER_BIN ar $URI_BASE/repositories/Apache/openSUSE_11.3/ ispcp-apache2
 		$ZYPPER_BIN ar $URI_BASE/repositories/Apache:/Modules/openSUSE_11.3/ ispcp-apache2-modules

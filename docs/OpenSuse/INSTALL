@@ -67,6 +67,7 @@ Note: For all questions, answer "a" (trust always).
 
 4. Install the required packages:
 
+	# zypper up
 	# zypper in $(cat ./docs/OpenSuse/bin-packages)
 
 5. Install the required Perl packages:
@@ -145,6 +146,7 @@ Note: For all questions, answer "a" (trust always).
 
 4. Install the required packages:
 
+	# zypper up
 	# zypper in $(cat ./docs/OpenSuse/bin-packages)
 
 5. Install the required Perl packages:
