@@ -6,7 +6,7 @@
 # Copyright (C) 2006-2009 by isp Control Panel - http://ispcp.net
 # author	Laurent Declercq <laurent.declercq@ispcp.net>
 #
-# SVN: $Id: opensuse112-repositories 2505 2010-01-06 20:30:53Z nuxwin $
+# SVN: $Id$
 #
 # The contents of this file are subject to the Mozilla Public License
 # Version 1.1 (the "License"); you may not use this file except in
