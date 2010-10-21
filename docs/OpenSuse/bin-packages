@@ -19,7 +19,7 @@ gzip
 iptables
 lha
 libidn-devel
-lzma
+liblzma0
 make
 mhash
 mysql-community-server
