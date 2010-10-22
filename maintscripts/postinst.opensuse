@@ -5,7 +5,7 @@
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
 # author        Laurent Declercq <laurent.declercq@ispcp.net>
-# version		1.5
+# version		1.6
 #
 # SVN: $Id$
 #
@@ -46,11 +46,7 @@ set -e
 SELFDIR=$(dirname "$0")
 . $SELFDIR/maintainer-helper.sh
 
-A2ENMOD='/usr/sbin/a2enmod'
-A2DISMOD='/usr/sbin/a2dismod'
-CMD_MD5='/usr/bin/md5sum'
-
-# Please, don't change the order of the following.
+# Init scripts list that must be enabled
 SERVICES="mysql ispcp_daemon ispcp_network fam named apache2 proftpd postgrey \
 policyd-weight courier-authdaemon courier-imap courier-pop"
 
@@ -60,12 +56,12 @@ case "$1" in
 
 		# Disabling default FastCGI/Fcgid packages configuration files
 		print_title "Apache FastCGI/Fcgid modules - Disabling default conffiles:"
+
 		if [ -f /etc/apache2/conf.d/mod_fastcgi.conf ] ; then
 			mv /etc/apache2/conf.d/mod_fastcgi.conf \
 				/etc/apache2/conf.d/mod_fastcgi.conf.disabled >> $LOGFILE 2>&1 || failed
 		fi
 
-		# Ensure that default fcgid apache module configuration file is disabled
 		if [ -f /etc/apache2/conf.d/mod_fcgid.conf ] ; then
 			mv /etc/apache2/conf.d/mod_fcgid.conf \
 				/etc/apache2/conf.d/mod_fcgid.conf.disabled >> $LOGFILE 2>&1 || failed
@@ -75,6 +71,7 @@ case "$1" in
 
 		# Disabling some unused modules if present
 		print_title "Disabling Apache PHP* modules:"
+
 		/usr/sbin/a2dismod php4 >> $LOGFILE 2>&1 || failed
 		/usr/sbin/a2dismod php5 >> $LOGFILE 2>&1 || failed
 
@@ -82,6 +79,7 @@ case "$1" in
 
 		# Enabling FastCGI module (fastcgi|fcgid)
 		print_title "Apache FastCGI/Fcgid - Enabling required module:"
+
 		/usr/sbin/a2dismod fcgid >> $LOGFILE 2>&1 || failed
 		/usr/sbin/a2dismod fastcgi >> $LOGFILE 2>&1 || failed
 		/usr/sbin/a2enmod $PHP_FASTCGI >> $LOGFILE 2>&1 || failed
@@ -90,6 +88,7 @@ case "$1" in
 
 		# Postgrey configuration
 		print_title "Postgrey configuration:"
+
 		/sbin/yast2 sysconfig set POSTGREY_CONN_OPTIONS="--inet=127.0.0.1:10023" >> $LOGFILE 2>&1 || failed
 
 		print_status
@@ -97,22 +96,27 @@ case "$1" in
 		# Sets proper permissions for suexec
 		# @Todo really required ?
 		print_title "Apache - setup suexec permisions:"
+
 		chown root:www /usr/sbin/suexec2 >> $LOGFILE 2>&1 || failed
 		chmod 4755 /usr/sbin/suexec2 >> $LOGFILE 2>&1 || failed
 
 		print_status
 
 		# Postfix Configuration
-		print_title "Postfix configuration:"
+		print_title "Postfix permissions:"
 
-		# Fix warning: "not owned by root: /var/spool/postfix"
-		# This is because the postgrey package changes the
-		# owner of this directory during installation (why ?)
-		if [ -d "/var/spool/postfix" ]; then
-			/sbin/SuSEconfig --module postfix >> $LOGFILE 2>&1 || failed
-		fi
+		# Make postfix in chroot jail
+		# @Todo Change the master.cf file before (don't set chroot for virtual and local)
+		#/sbin/yast2 sysconfig set POSTFIX_CHROOT=yes >> $LOGFILE 2>&1 || failed
+		#/sbin/yast2 sysconfig set POSTFIX_UPDATE_CHROOT_JAIL=yes >> $LOGFILE 2>&1 || failed
+		#/sbin/yast2 sysconfig set MAIL_CREATE_CONFIG=no >> $LOGFILE 2>&1 || failed
+
+		/sbin/SuSEconfig --module postfix >> $LOGFILE 2>&1 || failed
+
+		print_status
 
 		# Postfix SASL configuration file
+		print_title "Postfix SASL configuration:"
 
 		# Saving current production file if needed
 		if [ ! -f /etc/ispcp/postfix/backup/smtpd.conf.system -a -f /etc/sasl2/smtpd.conf ]; then
@@ -144,8 +148,8 @@ case "$1" in
 		# Now, we replace the current production file if the new builded file
 		# has not the same sums
 		if [ -f "$MTA_SASL_CONF_FILE" ] ; then
-			oldmd5=`$CMD_MD5 $MTA_SASL_CONF_FILE | cut -d' ' -f1`
-			newmd5=`$CMD_MD5 /tmp/smtpd.conf.tmp | cut -d' ' -f1`
+			oldmd5=$(/usr/bin/md5sum $MTA_SASL_CONF_FILE | cut -d' ' -f1)
+			newmd5=$(/usr/bin/md5sum /tmp/smtpd.conf.tmp | cut -d' ' -f1)
 
 			if [ "$oldmd5" != "$newmd5" ]; then
 				cp -p /tmp/smtpd.conf.tmp /etc/ispcp/postfix/backup/smtpd.conf.ispcp >> $LOGFILE 2>&1 || failed
@@ -158,41 +162,35 @@ case "$1" in
 
 		print_status
 
-		# Rkhunter
-		print_title "Building rkhunter database:"
-		/usr/bin/rkhunter --propupd > /dev/null 2>&1 &
-
-		print_status
-
-		# Courier-Authentication (Prevent warning about missing modules
+		# Courier-Authentication
 		print_title "Courier-Authentication configuration:"
+
+		# Prevent warning about missing modules
 		sed -i 's/\(authmodulelist="\).*/\1authuserdb authpam"/' \
 			/etc/authlib/authdaemonrc >> $LOGFILE 2>&1 || failed
 
 		print_status
 
 		# Disabling default cron task for Rkhunter
-		print_title "Rkhunter - Disabling default cron task"
-		/sbin/yast2 sysconfig set START_RKHUNTER="no" >> $LOGFILE 2>&1 || failed
+		print_title "Setup Rkhunter"
+
+		/sbin/yast2 sysconfig set START_RKHUNTER=no >> $LOGFILE 2>&1 || failed
+
+		# Rkhunter (update files properties)
+		# @todo Switch to at
+		print_title "Building rkhunter database:"
+		/usr/bin/rkhunter --propupd > /dev/null 2>&1 &
 
 		print_status
 
 		# System Init Configuration
-		print_title "System Init configuration: "
-		# Enable all system init scripts needed by ispCP
-		for service in $SERVICES ; do
-			if [ -x "/etc/init.d/$service" ]; then
-				if [ -x /sbin/chkconfig ]; then
-					# First, we remove all current links to avoid any conflicts
-					# Also, we ensure that proftpd is not reachable via xinetd
-					/sbin/chkconfig -s -f $service off >> $LOGFILE 2>&1 || true
-				
-					# Now, we recreate the link
-					/sbin/chkconfig -s $service on >> $LOGFILE 2>&1 || true
-				fi
+		print_title "Enabling installed system init scripts: "
 
-				progress
-			fi
+		for service in $SERVICES ; do
+			/sbin/insserv -vfr $service >> $LOGFILE 2>&1 || failed
+			/sbin/insserv -v $service >> $LOGFILE 2>&1 || failed
+
+			progress
 		done
 
 		print_status
