@@ -86,13 +86,6 @@ case "$1" in
 
 		print_status
 
-		# Postgrey configuration
-		print_title "Postgrey configuration:"
-
-		/sbin/yast2 sysconfig set POSTGREY_CONN_OPTIONS="--inet=127.0.0.1:10023" >> $LOGFILE 2>&1 || failed
-
-		print_status
-
 		# Sets proper permissions for suexec
 		# @Todo really required ?
 		print_title "Apache - setup suexec permisions:"
@@ -102,24 +95,19 @@ case "$1" in
 
 		print_status
 
-		# Postfix Configuration
-		print_title "Postfix permissions:"
-
+		print_title "Postfix configuration:"
 		# Make postfix in chroot jail
-		# @Todo Change the master.cf file before (don't set chroot for virtual and local)
-		#/sbin/yast2 sysconfig set POSTFIX_CHROOT=yes >> $LOGFILE 2>&1 || failed
-		#/sbin/yast2 sysconfig set POSTFIX_UPDATE_CHROOT_JAIL=yes >> $LOGFILE 2>&1 || failed
-		#/sbin/yast2 sysconfig set MAIL_CREATE_CONFIG=no >> $LOGFILE 2>&1 || failed
-
-		/sbin/SuSEconfig --module postfix >> $LOGFILE 2>&1 || failed
+		/sbin/yast sysconfig set POSTFIX_CHROOT=yes >> $LOGFILE 2>&1 || failed
+		/sbin/yast sysconfig set POSTFIX_UPDATE_CHROOT_JAIL=yes >> $LOGFILE 2>&1 || failed
+		/sbin/yast sysconfig set MAIL_CREATE_CONFIG=no >> $LOGFILE 2>&1 || failed
 
 		print_status
 
 		# Postfix SASL configuration file
 		print_title "Postfix SASL configuration:"
 
-		# Saving current production file if needed
-		if [ ! -f /etc/ispcp/postfix/backup/smtpd.conf.system -a -f /etc/sasl2/smtpd.conf ]; then
+		# Saving package conffile if needed
+		if [ ! -f /etc/ispcp/postfix/backup/smtpd.conf.system -a -f /etc/sasl2/smtpd.conf ] ; then
 			cp -a /etc/sasl2/smtpd.conf \
 				/etc/ispcp/postfix/backup/smtpd.conf.system >> $LOGFILE 2>&1 || failed
 
@@ -127,38 +115,34 @@ case "$1" in
 			chmod 0600 /etc/ispcp/postfix/backup/smtpd.conf.system >> $LOGFILE 2>&1 || failed
 		fi
 
-		# First we build a new configuration file with available
-		# /etc/ispcp/postfix/smtpd.conf template
+		# Saving current production file if one exists
+		if [ -f /etc/ispcp/postfix/working/smtpd.conf ] ; then
+			cp -p /etc/ispcp/postfix/working/smtpd.conf \
+				/etc/ispcp/postfix/backup/smtpd.conf.$(date +%s) >> $LOGFILE 2>&1 || failed
+		fi
+
+		# Building the new smtpd.conf file from the ispCP template
 		(cat /etc/ispcp/postfix/smtpd.conf) | sed "
 			s/{MTA_SASL_LOG_LEVEL}/$MTA_SASL_LOG_LEVEL/
 			s/{MTA_SASL_PWCHECK_METHOD}/$MTA_SASL_PWCHECK_METHOD/
+			s/{MTA_SASL_PWCHECK_METHOD}/$MTA_SASL_AUXPROP_PLUGIN/
 			s/{MTA_SASL_MECH_LIST}/$(echo $MTA_SASL_MECH_LIST | sed 's/,/ /g')/
-		" >/tmp/smtpd.conf.tmp || failed
+		" >/etc/ispcp/postfix/working/smtpd.conf || failed
 
-		# Setup auxprop plugin if needed
-		if [ "$MTA_SASL_AUXPROP_PLUGIN" != "sasldb" ]; then
-			sed -i "s/{MTA_SASL_AUXPROP_PLUGIN}/$MTA_SASL_AUXPROP_PLUGIN/" \
-				/tmp/smtpd.conf.tmp || failed
-		# Removing replace variable otherwise
-		else
-			sed -i '/auxprop_plugin: {MTA_SASL_AUXPROP_PLUGIN}/d' \
-			/tmp/smtpd.conf.tmp || failed
-		fi
+		# Fixing permissions
+		chmod 0600 $MTA_SASL_CONF_FILE /etc/ispcp/postfix/working/smtpd.conf >> $LOGFILE 2>&1 || failed
+		# Installing the new file in the production directory
+		cp -p /etc/ispcp/postfix/working/smtpd.conf $MTA_SASL_CONF_FILE >> $LOGFILE 2>&1 || failed
 
-		# Now, we replace the current production file if the new builded file
-		# has not the same sums
-		if [ -f "$MTA_SASL_CONF_FILE" ] ; then
-			oldmd5=$(/usr/bin/md5sum $MTA_SASL_CONF_FILE | cut -d' ' -f1)
-			newmd5=$(/usr/bin/md5sum /tmp/smtpd.conf.tmp | cut -d' ' -f1)
+		# Applying all changes
+		/sbin/SuSEconfig --module postfix >> $LOGFILE 2>&1 || failed
 
-			if [ "$oldmd5" != "$newmd5" ]; then
-				cp -p /tmp/smtpd.conf.tmp /etc/ispcp/postfix/backup/smtpd.conf.ispcp >> $LOGFILE 2>&1 || failed
-			fi
-		fi
+		print_status
 
-		cp -p /etc/ispcp/postfix/backup/smtpd.conf.ispcp $MTA_SASL_CONF_FILE >> $LOGFILE 2>&1 || failed
-		chmod 0600 $MTA_SASL_CONF_FILE /etc/ispcp/postfix/backup/smtpd.conf.ispcp >> $LOGFILE 2>&1 || failed
-		rm -f /tmp/smtpd.conf.tmp >> $LOGFILE 2>&1
+		# Postgrey configuration
+		print_title "Postgrey configuration:"
+
+		/sbin/yast2 sysconfig set POSTGREY_CONN_OPTIONS="--inet=127.0.0.1:10023" >> $LOGFILE 2>&1 || failed
 
 		print_status
 
@@ -177,7 +161,7 @@ case "$1" in
 		/sbin/yast2 sysconfig set START_RKHUNTER=no >> $LOGFILE 2>&1 || failed
 
 		# Rkhunter (update files properties)
-		# @todo Switch to at
+		# Todo Switch to at
 		print_title "Building rkhunter database:"
 		/usr/bin/rkhunter --propupd > /dev/null 2>&1 &
 

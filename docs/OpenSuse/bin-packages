@@ -13,6 +13,8 @@ courier-authlib-userdb
 courier-imap
 cron
 cyrus-sasl
+cyrus-sasl-crammd5
+cyrus-sasl-digestmd5
 cyrus-sasl-plain
 gcc
 gzip
