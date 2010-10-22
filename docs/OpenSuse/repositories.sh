@@ -45,8 +45,8 @@ case "$1" in
 		# Proftpd, lha, rkhunter
 		$ZYPPER_BIN ar -f $URI_BASE/repositories/openSUSE:/11.3:/Contrib/standard/ ispcp-contrib
 
-		# Courier, Postgrey
-		$ZYPPER_BIN ar -f $URI_BASE/repositories/server:/mail/openSUSE_11.3 ispcp-mail
+		# Courier, Postgrey...
+		$ZYPPER_BIN ar -f $URI_BASE/repositories/server:/mail/openSUSE_11.3/ ispcp-mail
 
 		# policyd-weight
 		$ZYPPER_BIN ar -f $URI_BASE/repositories/home:/pheinlein/openSUSE_11.3/ ispcp-pweight

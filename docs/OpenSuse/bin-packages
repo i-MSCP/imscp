@@ -20,6 +20,7 @@ iptables
 lha
 libidn-devel
 liblzma0
+libmysqlclient-devel
 make
 mhash
 mysql-community-server
