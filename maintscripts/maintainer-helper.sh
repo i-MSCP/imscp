@@ -1,11 +1,11 @@
 #!/bin/sh
 
-# ispCP helper functions for dits maintainers scripts
+# ispCP helper library for distribution maintenace scripts
 #
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
 # author	Laurent Declercq <laurent.declercq@ispcp.net>
-# version	1.2
+# version	1.0.3
 #
 # SVN: $Id$
 #
@@ -31,7 +31,7 @@
 #
 
 ################################################################################
-# Note to ispCP dists maintainers:
+# Note to ispCP distributions. maintainers:
 #
 # This library provide a set of functions that can be used in your maintenance
 # scripts.

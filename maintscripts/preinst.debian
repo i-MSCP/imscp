@@ -5,7 +5,7 @@
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
 # author    Laurent Declercq <laurent.declercq@ispcp.net>
-# version   1.1
+# version   1.0.1
 #
 # SVN: $Id$
 #
@@ -30,15 +30,8 @@
 #    http://isp-control.net
 #
 
-# Special note for DevTeam:
-#
-# It is necessary for the error recovery and update procedures that the scripts
-# be idempotent. This means that if it is run successfully, and then it is
-# called again, it doesn't bomb out or cause any harm, but just ensures that
-# everything is the way it ought to be. If the first call failed, or aborted
-# half way through for some reason, the second call should merely do the things
-# that were left undone the first time, if any, and exit with a success status
-# if if everything is OK.
+# IMPORTANT:
+# This script must be idempotent.
 
 set -e
 
