@@ -76,11 +76,11 @@ sub restart_httpd {
 
 	push_el(\@main::el, 'restart_httpd()', 'Starting...');
 
-	my ($rs, $stdErr) = sys_command_stderr("$main::cfg{'CMD_HTTPD'} configtest");
+	my ($rs, $stdErr) = sys_command_stderr("$main::cfg{'CMD_HTTPD_CTL'} configtest");
 
 	if($rs == 0) {
 		push_el(\@main::el, 'restart_httpd()', 'Reloading...');
-		($rs, $stdErr) = sys_command_stderr("$main::cfg{'CMD_HTTPD'} graceful");
+		($rs, $stdErr) = sys_command_stderr("$main::cfg{'CMD_HTTPD_CTL'} graceful");
 	}
 
 	send_error_mail(

@@ -1823,7 +1823,7 @@ sub setup_httpd_main_vhost {
 	# The alternative syntax does not involve the Shell (from Apache 2.2.12)
 	my $pipeSyntax = '|';
 
-	if(`$main::cfg{'CMD_HTTPD'} -v` =~ m!Apache/([\d.]+)! &&
+	if(`$main::cfg{'CMD_HTTPD_CTL'} -v` =~ m!Apache/([\d.]+)! &&
 		version->new($1) >= version->new('2.2.12')) {
 		$pipeSyntax .= '|';
 	}
