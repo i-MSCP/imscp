@@ -39,6 +39,10 @@ set -e
 SELFDIR=$(dirname "$0")
 . $SELFDIR/maintainer-helper.sh
 
+# Init scripts list that must be enabled
+SERVICES="mysql fam named apache2 proftpd postgrey policyd-weight \
+courier-authdaemon courier-imap courier-pop"
+
 case "$1" in
 	install|upgrade)
 
@@ -48,6 +52,17 @@ case "$1" in
 
 		print_status
 
+		# System Init Configuration
+		print_title "Enabling installed system init scripts: "
+
+		for service in $SERVICES ; do
+			/sbin/insserv -vfr $service >> $LOGFILE 2>&1 || failed
+			/sbin/insserv -v $service >> $LOGFILE 2>&1 || failed
+
+			progress
+		done
+
+		print_status
 	;;
 	*)
 		exit 0
