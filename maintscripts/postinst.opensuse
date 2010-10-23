@@ -33,7 +33,6 @@
 # IMPORTANT:
 # This script must be idempotent.
 
-
 set -e
 
 # Including the helper library
@@ -60,25 +59,36 @@ case "$1" in
 		print_status
 
 		# Disabling some unused modules if present
-		print_title "Disabling Apache PHP* modules:"
+		print_title "Apache - Disabling some Apache modules:"
 
-		/usr/sbin/a2dismod php4 >> $LOGFILE 2>&1 || failed
-		/usr/sbin/a2dismod php5 >> $LOGFILE 2>&1 || failed
+		for module in fcgid fastcgi php4 php5 ; do
+			/usr/sbin/a2enmod -q $module
+
+			if [ "$?" = 0 ] ; then
+				/usr/sbin/sysconf_addword -r /etc/sysconfig/apache2 APACHE_MODULES \
+					$module >> $LOGFILE 2>&1 || failed
+			fi
+		done
 
 		print_status
 
-		# Enabling FastCGI module (fastcgi|fcgid)
-		print_title "Apache FastCGI/Fcgid - Enabling required module:"
+		# Enabling all required Apache module
+		print_title "Apache - Enabling required modules:"
 
-		/usr/sbin/a2dismod fcgid >> $LOGFILE 2>&1 || failed
-		/usr/sbin/a2dismod fastcgi >> $LOGFILE 2>&1 || failed
-		/usr/sbin/a2enmod $PHP_FASTCGI >> $LOGFILE 2>&1 || failed
+		for module in action logio proxy proxy_http rewrite $PHP_FASTCGI ; do
+			/usr/sbin/a2enmod -q $module
+
+			if [ "$?" = 1 ] ; then
+				/usr/sbin/sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES \
+					$module >> $LOGFILE 2>&1 || failed
+			fi
+		done
 
 		print_status
 
 		# Sets proper permissions for suexec
 		# @Todo really required ?
-		print_title "Apache - setup suexec permisions:"
+		print_title "Apache - Setup suexec permisions:"
 
 		chown root:www /usr/sbin/suexec2 >> $LOGFILE 2>&1 || failed
 		chmod 4755 /usr/sbin/suexec2 >> $LOGFILE 2>&1 || failed
