@@ -1,6 +1,10 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-10-22 Laurent Declercq
+	- CONFIGS:
+		* [OpenSUSE] Fixed `apache2ctl` ignore any sysconfig parameters
+
 2010-10-22 Jochen Manz
 	- RELEASE ispCP ω Omega 1.0.7 RC2
 
