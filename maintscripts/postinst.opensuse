@@ -150,13 +150,15 @@ case "$1" in
 		print_status
 
 		# Disabling default cron task for Rkhunter
-		print_title "Setup Rkhunter"
+		print_title "Rkhunter - Disabling default package cron task:r"
 
 		/sbin/yast2 sysconfig set START_RKHUNTER=no >> $LOGFILE 2>&1 || failed
 
+		print_status
+
 		# Rkhunter (update files properties)
 		# Todo Switch to at
-		print_title "Building rkhunter database:"
+		print_title "Rkhunter - Updateing files properties:"
 		/usr/bin/rkhunter --propupd > /dev/null 2>&1 &
 
 		print_status
