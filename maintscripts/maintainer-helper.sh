@@ -85,7 +85,7 @@ ISPCP_VERSION=$(echo $Version | sed -e 's/\s\+\|[a-z]//gi')
 LOGFILE="$LOG_DIR/setup/ispcp-$0-$1.log"
 
 # Make sure that the log directory exists
-#/usr/bin/install -d $LOG_DIR/setup -m 0755 -o $ROOT_USER -g $ROOT_GROUP
+/usr/bin/install -d $LOG_DIR/setup -m 0755 -o $ROOT_USER -g $ROOT_GROUP
 
 # Removing old log file if it exists
 $CMD_RM -f $LOGFILE
