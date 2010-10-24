@@ -58,35 +58,29 @@ case "$1" in
 
 		print_status
 
-		# Disabling some unused modules if present
-		print_title "Apache - Disabling some Apache modules:"
+		print_title "Apache modules management:"
+		# Getting all installed modules
+		APACHE_MODULES=$(grep '^APACHE_MODULES' /etc/sysconfig/apache2 | sed s'/APACHE_MODULES="\(.*\)"/\1/')
 
+		# Removing some Apache modules
+		# This is small workaround because sysconf_addword don't remove
+		# trailing spaces correctly in some circumstances
 		for module in fcgid fastcgi php4 php5 ; do
-			/usr/sbin/a2enmod -q $module
-
-			if [ "$?" = 0 ] ; then
-				/usr/sbin/sysconf_addword -r /etc/sysconfig/apache2 APACHE_MODULES \
-					$module >> $LOGFILE 2>&1 || failed
-			fi
+            APACHE_MODULES=$(echo $APACHE_MODULES | sed 's/\s*\b'"$module"'\b//')
 		done
+
+		# Updating the /etc/sysconfig/apache2 file
+		sed -i 's/^\(APACHE_MODULES="\)[a-z0-9 _]\+/\1'"$APACHE_MODULES"'/' /etc/sysconfig/apache2
+
+		# Enabling all required modules
+		for module in actions logio proxy proxy_http rewrite $PHP_FASTCGI ; do
+            /usr/sbin/sysconf_addword /etc/sysconfig/apache2 \
+                APACHE_MODULES $module >> $LOGFILE 2>&1 || failed
+		done;
 
 		print_status
 
-		# Enabling all required Apache module
-		print_title "Apache - Enabling required modules:"
-
-		for module in action logio proxy proxy_http rewrite $PHP_FASTCGI ; do
-			/usr/sbin/a2enmod -q $module
-
-			if [ "$?" = 1 ] ; then
-				/usr/sbin/sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES \
-					$module >> $LOGFILE 2>&1 || failed
-			fi
-		done
-
-		print_status
-
-		# Sets proper permissions for suexec
+		# Sets proper permissions for suexec wrapper
 		# @Todo really required ?
 		print_title "Apache - Setup suexec permisions:"
 
