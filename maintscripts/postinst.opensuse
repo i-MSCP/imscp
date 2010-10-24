@@ -44,7 +44,8 @@ case "$1" in
 	configure)
 
 		# Disabling default FastCGI/Fcgid packages configuration files
-		print_title "Apache FastCGI/Fcgid modules - Disabling default conffiles:"
+		# ispCP provides these own configuration files
+		print_title "Apache configuration:"
 
 		if [ -f /etc/apache2/conf.d/mod_fastcgi.conf ] ; then
 			mv /etc/apache2/conf.d/mod_fastcgi.conf \
@@ -56,14 +57,10 @@ case "$1" in
 				/etc/apache2/conf.d/mod_fcgid.conf.disabled >> $LOGFILE 2>&1 || failed
 		fi
 
-		print_status
-
-		print_title "Apache modules management:"
-
 		# Getting all installed modules
 		APACHE_MODULES=$(grep '^APACHE_MODULES' /etc/sysconfig/apache2 | sed s'/APACHE_MODULES="\(.*\)"/\1/')
 
-		# Removing some Apache modules
+		# Disabling some Apache modules
 		# This is small workaround because `sysconf_addword -r` don't remove
 		# trailing spaces correctly in some circumstances
 		for module in fcgid fastcgi php4 php5 ; do
@@ -78,18 +75,15 @@ case "$1" in
 			/usr/sbin/sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES $module >> $LOGFILE 2>&1 || failed
 		done;
 
-		print_status
-
 		# Sets proper permissions for suexec wrapper
 		# @Todo really required ?
-		print_title "Apache - Setup suexec permisions:"
-
 		chown root:www /usr/sbin/suexec2 >> $LOGFILE 2>&1 || failed
 		chmod 4755 /usr/sbin/suexec2 >> $LOGFILE 2>&1 || failed
 
 		print_status
 
 		print_title "Postfix configuration:"
+
 		# Make postfix in chroot jail
 		/sbin/yast sysconfig set POSTFIX_CHROOT=yes >> $LOGFILE 2>&1 || failed
 		/sbin/yast sysconfig set POSTFIX_UPDATE_CHROOT_JAIL=yes >> $LOGFILE 2>&1 || failed
@@ -140,6 +134,14 @@ case "$1" in
 
 		print_status
 
+		# Courier IMAP
+		print_title "Courier-Imap configuration:"
+
+		# IMAP daemon must listen on all interfaces
+		sed -i 's/^\(ADDRESS=\)127.0.0.1/\10/' /etc/courier/imapd >> $LOGFILE 2>&1 || failed
+
+		print_status
+
 		# Courier-Authentication
 		print_title "Courier-Authentication configuration:"
 
@@ -151,14 +153,13 @@ case "$1" in
 
 		# Disabling default cron task for Rkhunter
 		print_title "Rkhunter - Disabling default package cron task:"
-
 		/sbin/yast2 sysconfig set START_RKHUNTER=no >> $LOGFILE 2>&1 || failed
-
 		print_status
 
-		# Rkhunter (update files properties)
+		# Rkhunter (updating files properties)
 		# Todo Switch to at
-		print_title "Rkhunter - Updateing files properties:"
+		print_title "Rkhunter - Updapting files properties:"
+
 		/usr/bin/rkhunter --propupd > /dev/null 2>&1 &
 
 		print_status
