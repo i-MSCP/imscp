@@ -1,6 +1,14 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-10-24 Laurent Declercq
+	- CONFIGS:
+		* Added postgrey/policyd-weight init scripts paths
+	- DOCS:
+		* Updating some INSTALL files (Postgrey port)
+	- SETUP:
+		* Added postgrey/policyd-weight start-stop management
+
 2010-10-23 Laurent Declercq
 	- CONFIGS:
 		* [OpenSUSE] Fixed `apache2ctl` ignore any sysconfig parameters

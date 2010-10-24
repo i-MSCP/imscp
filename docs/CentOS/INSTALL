@@ -20,7 +20,7 @@ Table of Content
 ---------------
 
 ispCP Version:         1.0.7
-INSTALL Script:        1.7
+INSTALL Script:        1.8
 Maintainer:            motokochan
 Homepage:              http://isp-contol.net
 Linux Distros:         CentOS 5.4
@@ -252,14 +252,14 @@ Make sure you are logged in as root and MySQL is running (Start with "service my
         # echo 'include vhosts/*.conf' >> /etc/httpd/conf/httpd.conf
 
     Configure Postgrey:
-        By default, Postgrey runs on a socket. We want it to run on port 60000.
+        By default, Postgrey runs on a socket. We want it to run on port 10023.
         Edit the file /etc/init.d/postgrey and change the line:
 
         OPTIONS="--unix=$SOCKET"
 
         to
 
-        OPTIONS="--unix=$SOCKET --inet=60000"
+        OPTIONS="--unix=$SOCKET --inet=10023"
 
 2. Setting Services to Run on Boot
     Several services need to be set to run on boot. To do this, run the
