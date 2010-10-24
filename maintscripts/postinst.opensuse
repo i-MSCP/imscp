@@ -150,7 +150,7 @@ case "$1" in
 		print_status
 
 		# Disabling default cron task for Rkhunter
-		print_title "Rkhunter - Disabling default package cron task:r"
+		print_title "Rkhunter - Disabling default package cron task:"
 
 		/sbin/yast2 sysconfig set START_RKHUNTER=no >> $LOGFILE 2>&1 || failed
 
