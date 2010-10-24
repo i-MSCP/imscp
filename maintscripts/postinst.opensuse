@@ -59,14 +59,15 @@ case "$1" in
 		print_status
 
 		print_title "Apache modules management:"
+
 		# Getting all installed modules
 		APACHE_MODULES=$(grep '^APACHE_MODULES' /etc/sysconfig/apache2 | sed s'/APACHE_MODULES="\(.*\)"/\1/')
 
 		# Removing some Apache modules
-		# This is small workaround because sysconf_addword don't remove
+		# This is small workaround because `sysconf_addword -r` don't remove
 		# trailing spaces correctly in some circumstances
 		for module in fcgid fastcgi php4 php5 ; do
-            APACHE_MODULES=$(echo $APACHE_MODULES | sed 's/\s*\b'"$module"'\b//')
+			APACHE_MODULES=$(echo $APACHE_MODULES | sed 's/\s*\b'"$module"'\b//')
 		done
 
 		# Updating the /etc/sysconfig/apache2 file
@@ -74,8 +75,7 @@ case "$1" in
 
 		# Enabling all required modules
 		for module in actions logio proxy proxy_http rewrite $PHP_FASTCGI ; do
-            /usr/sbin/sysconf_addword /etc/sysconfig/apache2 \
-                APACHE_MODULES $module >> $LOGFILE 2>&1 || failed
+			/usr/sbin/sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES $module >> $LOGFILE 2>&1 || failed
 		done;
 
 		print_status
