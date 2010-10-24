@@ -74,7 +74,7 @@ case "$1" in
 		sed -i 's/^\(APACHE_MODULES="\)[a-z0-9 _]\+/\1'"$APACHE_MODULES"'/' /etc/sysconfig/apache2
 
 		# Enabling all required modules
-		for module in actions logio proxy proxy_http rewrite $PHP_FASTCGI ; do
+		for module in actions $PHP_FASTCGI logio proxy proxy_http rewrite suexec ; do
 			/usr/sbin/sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES $module >> $LOGFILE 2>&1 || failed
 		done;
 
