@@ -18,6 +18,7 @@ ispCP ω 1.0.7 ChangeLog
 		* Fixed in language_delete.php:
 			- Unable to uninstall language (SQL issue)
 			- Warnings about undefined fields and methods (PHPStorm issue)
+		* Fixed #2489: Undefined offset in settings_ports.php
 
 2010-10-24 Laurent Declercq
 	- CONFIGS:
