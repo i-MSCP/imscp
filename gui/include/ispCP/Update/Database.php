@@ -1784,7 +1784,7 @@ class ispCP_Update_Database extends ispCP_Update {
 	/**
 	 * Fix for #2224 Postgrey - Port changed to 10023 for some distributions
 	 *
-	 * Note: Moved to 42 (previous preinst fix was wrong)
+	 * Note: Moved to 43 (previous fix was wrong)
 	 *
 	 * @author Laurent Declercq <laurent.declercq@ispcp.net>
 	 * @since r3477
