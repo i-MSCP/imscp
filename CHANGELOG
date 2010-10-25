@@ -11,7 +11,7 @@ ispCP ω 1.0.7 ChangeLog
 			- Warnings about undefined fields and methods (PHPStorm issue)
 			- Unable to import some PO languages files
 		* Fixed in ispCP_Filter_Compress_Gzip::filter:
-			- Gzipped exportat for language files does not work in some cases
+			- Gzipped export for language files does not work in some cases
 		* Fixed in multilanguage.export.php:
 			- Useless deactivation of compression information
 			- Warnings about undefined fields and methods (PHPStorm issue)
