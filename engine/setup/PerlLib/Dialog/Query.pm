@@ -77,7 +77,7 @@ $ADMIN = 'Please enter administrator login name [admin]: ';
 $ADMIN_PASSWORD = 'Please enter administrator password: ';
 $ADMIN_PASSWORD_CONFIRM = 'Please repeat administrator password: ';
 $ADMIN_PASSWORD_ERROR_1 = 'Password cannot be empty!';
-$ADMIN_PASSWORD_ERROR_2 = 'Password is to short!';
+$ADMIN_PASSWORD_ERROR_2 = 'Password is too short!';
 $ADMIN_PASSWORD_ERROR_3 = 'Passwords do not match!';
 $ADMIN_PASSWORD_ERROR_4 = 'Password must contain at least digits and chars!';
 
