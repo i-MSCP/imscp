@@ -29,6 +29,7 @@
 /**
  * DatabaseResult class -  Wrap the PDOStatement class
  *
+ * @property mixed EOF
  * @property mixed fields
  *
  * @category	ispCP

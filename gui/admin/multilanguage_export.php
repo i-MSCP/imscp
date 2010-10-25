@@ -37,7 +37,6 @@ check_login(__FILE__);
 if (isset($_GET['export_lang']) && $_GET['export_lang'] !== '') {
 
 	$sql = ispCP_Registry::get('Db');
-
 	$language_table = $_GET['export_lang'];
 
 	$query = "
@@ -68,27 +67,27 @@ if (isset($_GET['export_lang']) && $_GET['export_lang'] !== '') {
 		;
 	";
 
-	$rs = exec_query($sql, $query);
+	/**
+	 * @var $stmt ispCP_Database_ResultSet
+	 */
+	$stmt = exec_query($sql, $query);
 
-	if ($rs->recordCount() == 0) {
+	if ($stmt->recordCount() == 0) {
 		set_page_message(tr('Incorrect data input!'));
 		user_goto('multilanguage.php');
 	} else {
-		// Avoids to grab information about the buffer compression
-		ispCP_Registry::get('bufferFilter')->compressionInformation = false;
-
 		// Get all translation strings
 		$data = '';
 
-		while (!$rs->EOF) {
-			$msgid = $rs->fields['msgid'];
-			$msgstr = $rs->fields['msgstr'];
+		while (!$stmt->EOF) {
+			$msgid = $stmt->fields['msgid'];
+			$msgstr = $stmt->fields['msgstr'];
 
 			if ($msgid !== '' && $msgstr !== '') {
 				$data .= "$msgid = $msgstr\n";
 			}
 
-			$rs->moveNext();
+			$stmt->moveNext();
 		}
 
 		$filename = str_replace('lang_', '', $language_table) . '.txt';
@@ -108,20 +107,19 @@ if (isset($_GET['export_lang']) && $_GET['export_lang'] !== '') {
 		header('Content-Disposition: attachment; filename="' . $filename . '"');
 
 		// Get client browser information
-		$browserInfo = get_browser();
+		$browserInfo = get_browser(null, true);
 
 		// Headers according client browser
-		if($browserInfo->browser == 'msie') {
+		if($browserInfo['browser'] == 'msie') {
 			header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 			header('Pragma: public');
 		} else {
 			header('Pragma: no-cache');
 
-			if($browserInfo->browser == 'safari') {
+			if($browserInfo['browser'] == 'safari') {
 				header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
 			}
 		}
-
 		print $data;
 	}
 } else {

@@ -78,7 +78,7 @@ class ispCP_Filter_Compress_Gzip {
 	 * It's not recommended to use it in production to avoid multiple
 	 * compression work.
 	 *
-	 * <b>Note:</b>Note usable in {@link self::FILTER_FILE} mode
+	 * <b>Note:</b>Not usable in {@link self::FILTER_FILE} mode
 	 *
 	 * @var boolean
 	 */
@@ -188,14 +188,14 @@ class ispCP_Filter_Compress_Gzip {
 	 *
 	 * According the PHP documentation, when used as filter for the ob_start()
 	 * function, and if any error occurs, FALSE is returned and then, content is
-	 * sent to the client browser without compression.
+	 * sent to the client browser without compression. Note that FALSE is also
+	 * returned when the data are already encoded.
 	 *
 	 * If used in {@link self::FILTER_FILE} mode and if the $filePath is not
-	 * specified or is an empty string, the encoded string is returned instead
-	 * of be written in a file.
+	 * specified, the encoded string is returned instead of be written in a file.
 	 *
 	 * @param string $data Data to be compressed
-	 * @param string $filePath File path to be used for gz file creation
+	 * @param [string $filePath File path to be used for gz file creation]
 	 * @return string|false Encoded string in gzip file format, FALSE on failure
 	 */
 	public function filter($data, $filePath = '') {
@@ -204,18 +204,16 @@ class ispCP_Filter_Compress_Gzip {
 
 		// Act as filter for the PHP ob_start function
 		if($this->_mode === self::FILTER_BUFFER) {
-
 			if(ini_get('output_handler') != 'ob_gzhandler'
 				&& !ini_get('zlib.output_compression')
 				&& !headers_sent() && connection_status() == CONNECTION_NORMAL
-				&& $this->_getEncoding()) {
+				&& $this->_getEncoding()
+				&& strcmp(substr($data, 0, 2), "\x1f\x8b")) {
 
 					if($this->compressionInformation && !is_xhr()) {
 						$statTime = microtime(true);
-
 						$gzipData = $this->_getEncodedData();
 						$time = round((microtime(true) - $statTime) * 1000, 2);
-
 						$this->_gzipDataSize = strlen($gzipData);
 						$gzipData = $this->_addCompressionInformation($time);
 					} else {
@@ -281,8 +279,8 @@ class ispCP_Filter_Compress_Gzip {
 	/**
 	 * Check and sets the acceptable content-coding for compression
 	 *
-	 * @return boolean TRUE if the client browser accepte gzip content-coding as
-	 *	response, FALSE otherwise
+	 * @return boolean TRUE if the client browser accept gzip content-coding as
+	 * response, FALSE otherwise
 	 */
 	protected function _getEncoding() {
 
