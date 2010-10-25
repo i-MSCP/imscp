@@ -1,6 +1,15 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-10-25 Laurent Declercq
+	- GUI:
+		* Some fixes and re-factorization tasks in multilanguage.php including:
+			- Warnings about undefined fields and methods (PHPStorm issue)
+			- Unable to import some PO languages files
+		* Fixed in language_delete.php:
+			- Unable to uninstall language (SQL issue)
+			- Warnings about undefined fields and methods (PHPStorm issue)
+
 2010-10-24 Laurent Declercq
 	- CONFIGS:
 		* Added postgrey/policyd-weight init scripts paths

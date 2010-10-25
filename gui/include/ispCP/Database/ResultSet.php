@@ -29,6 +29,8 @@
 /**
  * DatabaseResult class -  Wrap the PDOStatement class
  *
+ * @property mixed fields
+ *
  * @category	ispCP
  * @package     ispCP_Database
  * @author      ispCP Team
