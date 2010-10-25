@@ -1,13 +1,17 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-10-25 Benedikt Heintel
+	- SETUP:
+		* Updated texts in PerlLib::Query
+
 2010-10-25 Laurent Declercq
 	- GUI:
 		* Some fixes and re-factorization tasks in multilanguage.php including:
 			- Warnings about undefined fields and methods (PHPStorm issue)
 			- Unable to import some PO languages files
 		* Fixed in ispCP_Filter_Compress_Gzip::filter:
-			- Gzipped exportation for language files don't works in some cases
+			- Gzipped exportat for language files does not work in some cases
 		* Fixed in multilanguage.export.php:
 			- Useless deactivation of compression information
 			- Warnings about undefined fields and methods (PHPStorm issue)
