@@ -1806,7 +1806,7 @@ class ispCP_Update_Database extends ispCP_Update {
 		$cfg = new ispCP_Config_Handler_File();
 		$DbConfig = ispCP_Registry::get('Db_Config');
 		$DbConfig->PORT_POSTGREY =
-			"{$cfg->PORT_POSTGREY};tcp;POSTGREY;1;1;localhost'";
+			"{$cfg->PORT_POSTGREY};tcp;POSTGREY;1;1;localhost";
 
 		return array();
 	}
