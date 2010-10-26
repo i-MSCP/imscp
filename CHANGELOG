@@ -1,6 +1,10 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-10-26 Daniel Andreca
+	- TOOLS:
+		* Updated phpMyAdmin to version 3.3.8
+
 2010-10-25 Benedikt Heintel
 	- SETUP:
 		* Updated texts in PerlLib::Query
@@ -69,7 +73,7 @@ ispCP ω 1.0.7 ChangeLog
 	- ENGINE:
 		* Fixed #2472: Some issue with Gentoo and update process
 		* Small fix to allow database names containing special chars like '-'
-		
+
 2010-10-15 Daniel Andreca
 	- ENGINE:
 		* Small fix to allow database names containing special chars like '-'
