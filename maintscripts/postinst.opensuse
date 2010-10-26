@@ -50,63 +50,73 @@ case "$1" in
 		if [ -f /etc/apache2/conf.d/mod_fastcgi.conf ] ; then
 			mv /etc/apache2/conf.d/mod_fastcgi.conf \
 				/etc/apache2/conf.d/mod_fastcgi.conf.disabled >> $LOGFILE 2>&1 || failed
+			progress
 		fi
 
 		if [ -f /etc/apache2/conf.d/mod_fcgid.conf ] ; then
 			mv /etc/apache2/conf.d/mod_fcgid.conf \
 				/etc/apache2/conf.d/mod_fcgid.conf.disabled >> $LOGFILE 2>&1 || failed
+			progress
 		fi
 
 		# Getting all installed modules
 		APACHE_MODULES=$(grep '^APACHE_MODULES' /etc/sysconfig/apache2 | sed s'/APACHE_MODULES="\(.*\)"/\1/')
+		progress
 
 		# Disabling some Apache modules
 		# This is small workaround because `sysconf_addword -r` don't remove
 		# trailing spaces correctly in some circumstances
 		for module in fcgid fastcgi php4 php5 ; do
 			APACHE_MODULES=$(echo $APACHE_MODULES | sed 's/\s*\b'"$module"'\b//')
+			progress
 		done
 
 		# Updating the /etc/sysconfig/apache2 file
 		sed -i 's/^\(APACHE_MODULES="\)[a-z0-9 _]\+/\1'"$APACHE_MODULES"'/' /etc/sysconfig/apache2
+		progress
 
 		# Enabling all required modules
 		for module in actions $PHP_FASTCGI logio proxy proxy_http rewrite suexec ; do
 			/usr/sbin/sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES $module >> $LOGFILE 2>&1 || failed
+			progress
 		done;
 
 		# Sets proper permissions for suexec wrapper
 		# @Todo really required ?
 		chown root:www /usr/sbin/suexec2 >> $LOGFILE 2>&1 || failed
 		chmod 4755 /usr/sbin/suexec2 >> $LOGFILE 2>&1 || failed
+		progress
 
 		print_status
 
-		print_title "Postfix configuration:"
+		print_title "Postfix configuration: "
 
 		# Make postfix in chroot jail
 		/sbin/yast sysconfig set POSTFIX_CHROOT=yes >> $LOGFILE 2>&1 || failed
+		progress
 		/sbin/yast sysconfig set POSTFIX_UPDATE_CHROOT_JAIL=yes >> $LOGFILE 2>&1 || failed
+		progress
 		/sbin/yast sysconfig set MAIL_CREATE_CONFIG=no >> $LOGFILE 2>&1 || failed
 
 		print_status
 
 		# Postfix SASL configuration file
-		print_title "Postfix SASL configuration:"
+		print_title "Postfix SASL configuration: "
 
 		# Saving package conffile if needed
 		if [ ! -f /etc/ispcp/postfix/backup/smtpd.conf.system -a -f /etc/sasl2/smtpd.conf ] ; then
 			cp -a /etc/sasl2/smtpd.conf \
 				/etc/ispcp/postfix/backup/smtpd.conf.system >> $LOGFILE 2>&1 || failed
-
 			# This file shouldn't be readable by everyone
 			chmod 0600 /etc/ispcp/postfix/backup/smtpd.conf.system >> $LOGFILE 2>&1 || failed
+			progress
 		fi
 
 		# Saving current production file if one exists
 		if [ -f /etc/ispcp/postfix/working/smtpd.conf ] ; then
 			cp -p /etc/ispcp/postfix/working/smtpd.conf \
 				/etc/ispcp/postfix/backup/smtpd.conf.$(date +%s) >> $LOGFILE 2>&1 || failed
+			progress
 		fi
 
 		# Building the new smtpd.conf file from the ispCP template
@@ -116,14 +126,17 @@ case "$1" in
 			s/{MTA_SASL_PWCHECK_METHOD}/$MTA_SASL_AUXPROP_PLUGIN/
 			s/{MTA_SASL_MECH_LIST}/$(echo $MTA_SASL_MECH_LIST | sed 's/,/ /g')/
 		" >/etc/ispcp/postfix/working/smtpd.conf || failed
+		progress
 
 		# Fixing permissions
 		chmod 0600 $MTA_SASL_CONF_FILE /etc/ispcp/postfix/working/smtpd.conf >> $LOGFILE 2>&1 || failed
 		# Installing the new file in the production directory
 		cp -p /etc/ispcp/postfix/working/smtpd.conf $MTA_SASL_CONF_FILE >> $LOGFILE 2>&1 || failed
+		progress
 
 		# Applying all changes
 		/sbin/SuSEconfig --module postfix >> $LOGFILE 2>&1 || failed
+		progress
 
 		print_status
 
@@ -154,6 +167,7 @@ case "$1" in
 		# Disabling default cron task for Rkhunter
 		print_title "Rkhunter - Disabling default package cron task:"
 		/sbin/yast2 sysconfig set START_RKHUNTER=no >> $LOGFILE 2>&1 || failed
+
 		print_status
 
 		# Rkhunter (updating files properties)
