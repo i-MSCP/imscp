@@ -43,49 +43,49 @@ use base 'Exporter';
 $VALUE = '';
 
 $HOSTNAME = 'Please enter a fully qualified hostname [%s]: ';
-$HOSTNAME_WARNING = '%s is not a fully qualified hostname! Be aware you cannot use this domain for websites.';
+$HOSTNAME_WARNING = '%s is not a fully qualified hostname! Be aware that you cannot use this domain for websites.';
 $HOSTNAME_CONFIRM = 'Are you sure you want to use this hostname? [Y/n]: ';
-$HOSTNAME_ERROR = 'Hostname is not a valid domain name!';
+$HOSTNAME_ERROR = 'The hostname is not a valid domain name!';
 
 $ETH = 'Please enter the system network address [%s]: ';
-$ETH_ERROR = 'Ip address not valid, please retry!';
+$ETH_ERROR = 'IP address not valid, please retry!';
 
-$VHOST = 'Please enter the domain name from where ispCP OMEGA will be reachable [%s]: ';
-$VHOST_ERROR = 'Vhost name is not valid!';
+$VHOST = 'Please enter the domain name where ispCP OMEGA will be reachable on [%s]: ';
+$VHOST_ERROR = 'The domain name is not valid!';
 
 $DB_HOST = 'Please enter SQL server hostname [localhost]: ';
 $DB_HOST_ERROR = 'Wrong SQL hostname! See RFC 1123 for more information...';
 
-$DB_NAME = 'Please enter ispCP SQL database name [ispcp]: ';
+$DB_NAME = 'Please enter ispCP OMEGA SQL database name [ispcp]: ';
 
-$DB_USER = 'Please enter ispCP SQL username [root]: ';
+$DB_USER = 'Please enter ispCP OMEGA SQL user name [root]: ';
 
-$DB_PASSWORD = 'Please enter ispCP SQL password [none]: ';
-$DB_PASSWORD_CONFIRM = 'Please repeat ispCP SQL password: ';
+$DB_PASSWORD = 'Please enter ispCP OMEGA SQL password [none]: ';
+$DB_PASSWORD_CONFIRM = 'Please repeat ispCP OMEGA SQL password: ';
 $DB_PASSWORD_ERROR = 'Passwords do not match!';
 
-$DB_FTP_USER = 'Please enter ispCP ftp SQL user [vftp]: ';
-$DB_FTP_USER_ERROR = 'Ftp SQL user must not be identical to the ispCP SQL user!';
+$DB_FTP_USER = 'Please enter ispCP FTP SQL user [vftp]: ';
+$DB_FTP_USER_ERROR = 'FTP SQL user must not be identical to the ispCP OMEGA SQL user!';
 
-$DB_FTP_PASSWORD = 'Please enter ispCP ftp SQL user password [auto generate]: ';
-$DB_FTP_PASSWORD_CONFIRM = 'Please repeat ispCP ftp SQL user password: ';
+$DB_FTP_PASSWORD = 'Please enter ispCP OMEGA FTP SQL user password [auto generate]: ';
+$DB_FTP_PASSWORD_CONFIRM = 'Please repeat ispCP OMEGA ftp SQL user password: ';
 $DB_FTP_PASSWORD_NOTICE = 'ispCP ftp SQL user password set to: %s';
-$DB_FTP_PASSWORD_ERROR = 'Passwords doesn\'t match!';
+$DB_FTP_PASSWORD_ERROR = 'Passwords do not match!';
 
 $ADMIN = 'Please enter administrator login name [admin]: ';
 
 $ADMIN_PASSWORD = 'Please enter administrator password: ';
 $ADMIN_PASSWORD_CONFIRM = 'Please repeat administrator password: ';
 $ADMIN_PASSWORD_ERROR_1 = 'Password cannot be empty!';
-$ADMIN_PASSWORD_ERROR_2 = 'Password too short!';
-$ADMIN_PASSWORD_ERROR_3 = 'Passwords doesn\'t match!';
+$ADMIN_PASSWORD_ERROR_2 = 'Password is too short!';
+$ADMIN_PASSWORD_ERROR_3 = 'Passwords do not match!';
 $ADMIN_PASSWORD_ERROR_4 = 'Password must contain at least digits and chars!';
 
 $ADMIN_EMAIL = 'Please enter administrator e-mail address: ';
 $ADMIN_EMAIL_ERROR = 'E-mail address not valid!';
 
-$SECOND_DNS = 'Secondary DNS server address Ip (optional) []: ';
-$SECOND_DNS_ERROR = 'Ip address not valid, please retry!';
+$SECOND_DNS = 'Secondary DNS server address IP (optional) []: ';
+$SECOND_DNS_ERROR = 'IP address not valid, please retry!';
 
 $RESOLVER = 'Do you want allow the system resolver to use the local nameserver? [Y/n]: ';
 $RESOLVER_ERROR = 'You entered an unrecognized value, please retry!';
@@ -93,25 +93,25 @@ $RESOLVER_ERROR = 'You entered an unrecognized value, please retry!';
 $MYSQL_PREFIX = 'Use MySQL Prefix? Possible values: [i]nfront, [b]ehind, [n]one. [none]: ';
 $MYSQL_PREFIX_ERROR = 'You entered an unrecognized value, please retry!';
 
-$DB_PMA_USER = 'Please enter ispCP PMA control user [%s]: ';
-$DB_PMA_USER_ERROR_1 = 'ispCP PMA control user must not be identical to system SQL user!';
-$DB_PMA_USER_ERROR_2 = 'ispCP PMA control user must not be identical to ftp SQL user!';
+$DB_PMA_USER = 'Please enter ispCP OMEGA PMA control user [%s]: ';
+$DB_PMA_USER_ERROR_1 = 'ispCP OMEGA PMA control user must not be identical to system SQL user!';
+$DB_PMA_USER_ERROR_2 = 'ispCP OMEGA PMA control user must not be identical to FTP SQL user!';
 
-$DB_PMA_PASSWORD = 'Please enter ispCP PMA control user password [auto generate]: ';
-$DB_PMA_PASSWORD_CONFIRM = 'Please repeat ispCP PMA control user password: ';
+$DB_PMA_PASSWORD = 'Please enter ispCP OMEGA PMA control user password [auto generate]: ';
+$DB_PMA_PASSWORD_CONFIRM = 'Please repeat ispCP OMEGA PMA control user password: ';
 $DB_PMA_PASSWORD_NOTICE = 'PMA control user password set to: %s';
-$DB_PMA_PASSWORD_ERROR = 'Passwords doesn\'t match!';
+$DB_PMA_PASSWORD_ERROR = 'Passwords do not match!';
 
-$FASTCGI = 'FastCGI Version: [f]cgid or fast[c]gi. [fcgid]: ';
+$FASTCGI = 'Please select a Fast CGI module: [f]cgid or fast[c]gi. [fcgid]: ';
 $FASTCGI_ERROR = 'Only \'[f]cgid\' or \'fast[c]gi\' are allowed!';
 
-$TIMEZONE = 'Server\'s Timezone [%s]: ';
-$TIMEZONE_ERROR = '\'%s\' is not a valid timezone! The continent and the city, both must starting with a capital letter, e.g. Europe/London';
+$TIMEZONE = 'Please enter Server\'s Timezone [%s]: ';
+$TIMEZONE_ERROR = '\'%s\' is not a valid timezone! The continent and the city, both must start with a capital letter, e.g. Europe/London';
 
-$AWSTATS_ON = 'Activate AWStats [no]: ';
-$AWSTATS_ON_ERROR = 'Only \'(y)es\' and \'(n)o\' are allowed!';
+$AWSTATS_ON = 'Should AWStats be activated? [no]: ';
+$AWSTATS_ON_ERROR = 'Only \'[y]es\' and \'[n]o\' are allowed!';
 
-$AWSTATS_DYN = 'AWStats Mode: Possible values [d]ynamic and [s]tatic. [dynamic]:';
+$AWSTATS_DYN = 'Please select AWStats mode: Possible values [d]ynamic and [s]tatic. [dynamic]:';
 $AWSTATS_DYN_ERROR = 'Only \'[d]ynamic\' or \'[s]tatic\' are allowed!';
 
 $DIAL = '';
