@@ -62,11 +62,16 @@ else
     exit 1
 fi
 
+OLD_IFS=$IFS
+IFS=$
+
 # Reading needed entries from ispcp.conf
-for a in $(grep -E '(^Version|APACHE_|MTA_|ROOT_|^PHP_FASTCGI|^CMD_|^DEBUG|^LOG_DIR)' \
-$CONF_FILE | sed -e 's/ //g'); do
-    export $a
+for a in $(grep -E '^(Version|APACHE_|MTA_|ROOT_|PHP_FASTCGI|CMD_|DEBUG|LOG_DIR)' \
+${CONF_FILE} | sed 's/\s*=\s*\(.*\)/="\1"/'); do
+	 eval $a
 done
+
+IFS=$OLD_IFS
 
 # Enable DEBUG mode if needed
 if [ $DEBUG -eq 1 ]; then

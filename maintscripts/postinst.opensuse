@@ -45,17 +45,19 @@ case "$1" in
 
 		# Disabling default FastCGI/Fcgid packages configuration files
 		# ispCP provides these own configuration files
-		print_title "Apache configuration:"
+		print_title "Apache configuration: "
 
 		if [ -f /etc/apache2/conf.d/mod_fastcgi.conf ] ; then
 			mv /etc/apache2/conf.d/mod_fastcgi.conf \
 				/etc/apache2/conf.d/mod_fastcgi.conf.disabled >> $LOGFILE 2>&1 || failed
+
 			progress
 		fi
 
 		if [ -f /etc/apache2/conf.d/mod_fcgid.conf ] ; then
 			mv /etc/apache2/conf.d/mod_fcgid.conf \
 				/etc/apache2/conf.d/mod_fcgid.conf.disabled >> $LOGFILE 2>&1 || failed
+
 			progress
 		fi
 
@@ -79,11 +81,12 @@ case "$1" in
 		for module in actions $PHP_FASTCGI logio proxy proxy_http rewrite suexec ; do
 			/usr/sbin/sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES $module >> $LOGFILE 2>&1 || failed
 			progress
-		done;
+		done
 
 		# Sets proper permissions for suexec wrapper
-		# @Todo really required ?
 		chown root:www /usr/sbin/suexec2 >> $LOGFILE 2>&1 || failed
+		progress
+
 		chmod 4755 /usr/sbin/suexec2 >> $LOGFILE 2>&1 || failed
 		progress
 
@@ -92,25 +95,25 @@ case "$1" in
 		print_title "Postfix configuration: "
 
 		# Make postfix in chroot jail
-		/sbin/yast sysconfig set POSTFIX_CHROOT=yes >> $LOGFILE 2>&1 || failed
+		/sbin/yast sysconfig set POSTFIX_CHROOT='yes' >> $LOGFILE 2>&1 || failed
 		progress
-		/sbin/yast sysconfig set POSTFIX_UPDATE_CHROOT_JAIL=yes >> $LOGFILE 2>&1 || failed
+
+		/sbin/yast sysconfig set POSTFIX_UPDATE_CHROOT_JAIL='yes' >> $LOGFILE 2>&1 || failed
 		progress
-		/sbin/yast sysconfig set MAIL_CREATE_CONFIG=no >> $LOGFILE 2>&1 || failed
 
-		print_status
+		/sbin/yast sysconfig set MAIL_CREATE_CONFIG='no' >> $LOGFILE 2>&1 || failed
+		progress
 
-		# Postfix SASL configuration file
-		print_title "Postfix SASL configuration: "
-
-		# Saving package conffile if needed
+		# Saving package configuration file if needed
 		if [ ! -f /etc/ispcp/postfix/backup/smtpd.conf.system -a -f /etc/sasl2/smtpd.conf ] ; then
-			cp -a /etc/sasl2/smtpd.conf \
-				/etc/ispcp/postfix/backup/smtpd.conf.system >> $LOGFILE 2>&1 || failed
-			# This file shouldn't be readable by everyone
+			cp -a /etc/sasl2/smtpd.conf /etc/ispcp/postfix/backup/smtpd.conf.system >> $LOGFILE 2>&1 || failed
 			chmod 0600 /etc/ispcp/postfix/backup/smtpd.conf.system >> $LOGFILE 2>&1 || failed
 			progress
 		fi
+
+		print_status
+
+		print_title "SASL configuration: "
 
 		# Saving current production file if one exists
 		if [ -f /etc/ispcp/postfix/working/smtpd.conf ] ; then
@@ -119,17 +122,23 @@ case "$1" in
 			progress
 		fi
 
-		# Building the new smtpd.conf file from the ispCP template
-		(cat /etc/ispcp/postfix/smtpd.conf) | sed "
-			s/{MTA_SASL_LOG_LEVEL}/$MTA_SASL_LOG_LEVEL/
-			s/{MTA_SASL_PWCHECK_METHOD}/$MTA_SASL_PWCHECK_METHOD/
-			s/{MTA_SASL_PWCHECK_METHOD}/$MTA_SASL_AUXPROP_PLUGIN/
-			s/{MTA_SASL_MECH_LIST}/$(echo $MTA_SASL_MECH_LIST | sed 's/,/ /g')/
-		" >/etc/ispcp/postfix/working/smtpd.conf || failed
-		progress
+		if [ -f /etc/ispcp/postfix/smtpd.conf ] ; then
+			# Building the new smtpd.conf file from the ispCP template
+			sed '
+				s/{MTA_SASL_LOG_LEVEL}/'"$MTA_SASL_LOG_LEVEL"'/
+				s/{MTA_SASL_PWCHECK_METHOD}/'"$MTA_SASL_PWCHECK_METHOD"'/
+				s/{MTA_SASL_AUXPROP_PLUGIN}/'"$MTA_SASL_AUXPROP_PLUGIN"'/
+				s/{MTA_SASL_MECH_LIST}/'"$MTA_SASL_MECH_LIST"'/
+			' < /etc/ispcp/postfix/smtpd.conf >/etc/ispcp/postfix/working/smtpd.conf
+			progress
+		else
+			failed 'The smtpd.conf template file was not found!'
+		fi
 
 		# Fixing permissions
 		chmod 0600 $MTA_SASL_CONF_FILE /etc/ispcp/postfix/working/smtpd.conf >> $LOGFILE 2>&1 || failed
+		progress
+
 		# Installing the new file in the production directory
 		cp -p /etc/ispcp/postfix/working/smtpd.conf $MTA_SASL_CONF_FILE >> $LOGFILE 2>&1 || failed
 		progress
@@ -166,6 +175,7 @@ case "$1" in
 
 		# Disabling default cron task for Rkhunter
 		print_title "Rkhunter - Disabling default package cron task:"
+
 		/sbin/yast2 sysconfig set START_RKHUNTER=no >> $LOGFILE 2>&1 || failed
 
 		print_status
