@@ -3409,8 +3409,8 @@ sub setup_rkhunter {
 			# Here, we run the command with `--nolog` option to avoid creation
 			# of unreadable log file. The log file will be created later by an
 			# ispCP cron task
-			$rs = sys_command("rkhunter --update --nolog -q");
-			return $rs if($rs != 0);
+			$rs = sys_command_rs('rkhunter --update --nolog -q');
+			return $rs if($rs != 0 && $rs != 2);
 		}
 	}
 

@@ -1,6 +1,10 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-10-28 Laurent Declercq
+	- SETUP:
+		* Fixed #2494: Setup - Rkhunter update fails at first execution
+
 2010-10-27 Benedikt Heintel
 	- CONFIGS:
 		* Fixed #2493: PHPSESSID renamed to ispCPSESSID
