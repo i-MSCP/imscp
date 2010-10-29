@@ -6,6 +6,9 @@ ispCP ω 1.0.7 ChangeLog
 		Reverted back on the PHP `short_open_tag` directive for convenience and
 			security reasons (All scripts that use the short open tags are
 			showed in plain text format - Think about credentials)
+	- SETUP:
+		- Changed parsing way to allow white spaces in ispcp.conf parameters
+		- Removed deprecated rkhunter.log file permissions fixation
 
 2010-10-28 Laurent Declercq
 	- SETUP:

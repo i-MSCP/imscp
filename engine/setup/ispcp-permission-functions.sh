@@ -34,9 +34,17 @@ if [ -f /usr/local/etc/ispcp/ispcp.conf ]
 then
     CONF_FILE="/usr/local/etc/ispcp/ispcp.conf"
 fi
-for a in `grep -E '(APACHE_|ROOT_|MTA_MAILBOX_|^LOG_DIR|^DEBUG|^PHP_STARTER_DIR|^MR_LOCK|^CMD_)' ${CONF_FILE} | sed -e 's/ //g'`; do
-    export $a
+
+OLD_IFS=$IFS
+IFS=$
+
+# Reading needed entries from ispcp.conf
+for a in $(grep -E '^(APACHE_|CMD_|DEBUG|LOG_DIR|MR_LOCK|MTA_MAILBOX_|ROOT_|PHP_STARTER_DIR)' \
+${CONF_FILE} | sed 's/\s*=\s*\(.*\)/="\1"/'); do
+	 eval $a
 done
+
+IFS=$OLD_IFS
 
 # Detect xargs version:
 # - BSD has no "-r" argument (always acts as if it was specified)

@@ -45,11 +45,6 @@ else
 	set_permissions "/etc/ispcp/ispcp.conf" $ROOT_USER $ROOT_GROUP 0644
 fi
 
-# The panel must be able to read rkhunter log to display it.
-if [ -f /var/log/rkhunter.log ]; then
-	set_permissions "/var/log/rkhunter.log" $PANEL_USER $ROOT_GROUP 640
-fi
-
 # Only root can run engine scripts
 recursive_set_permissions "$ROOT_DIR/engine" $ROOT_USER $ROOT_GROUP 0700 0700
 
