@@ -1392,9 +1392,9 @@ sub set_permissions {
 #
 # @return int 1 on success, other on failure
 #
-sub setup_cleanup {
+sub system_cleanup {
 
-	push_el(\@main::el, 'setup_cleanup()', 'Starting...');
+	push_el(\@main::el, 'system_cleanup()', 'Starting...');
 
 	my $rs = sys_command(
 		"$main::cfg{'CMD_RM'} -f $main::cfg{'LOG_DIR'}/*-traf.log.prev* " .
@@ -1402,7 +1402,7 @@ sub setup_cleanup {
 	);
 	return $rs if($rs != 0);
 
-	push_el(\@main::el, 'setup_cleanup()', 'Ending...');
+	push_el(\@main::el, 'system_cleanup()', 'Ending...');
 
 	0;
 }
@@ -3409,8 +3409,8 @@ sub setup_rkhunter {
 			# Here, we run the command with `--nolog` option to avoid creation
 			# of unreadable log file. The log file will be created later by an
 			# ispCP cron task
-			$rs = sys_command("rkhunter --update --nolog -q");
-			return $rs if($rs != 0);
+			$rs = sys_command_rs('rkhunter --update --nolog -q');
+			return $rs if($rs != 0 && $rs != 2);
 		}
 	}
 
@@ -3511,7 +3511,7 @@ sub additional_tasks{
 	print_status($rs, 'exit_on_error');
 
 	subtitle('ispCP System cleanup:');
-	setup_cleanup();
+	system_cleanup();
 	print_status(0);
 
 	push_el(\@main::el, 'additional_tasks()', 'Ending...');
