@@ -1,11 +1,11 @@
 #!/bin/sh
 #
-# ispCP post installation script for OpenSuse 11.1, 11.2
+# ispCP post installation script for openSUSE
 #
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
-# author        Laurent Declercq <laurent.declercq@ispcp.net>
-# version		1.5
+# author    Laurent Declercq <laurent.declercq@ispcp.net>
+# version   1.0.6
 #
 # SVN: $Id$
 #
@@ -30,15 +30,8 @@
 #    http://isp-control.net
 #
 
-# Special note for DevTeam:
-#
-# It is necessary for the error recovery and update procedures that the scripts
-# be idempotent. This means that if it is run successfully, and then it is
-# called again, it doesn't bomb out or cause any harm, but just ensures that
-# everything is the way it ought to be. If the first call failed, or aborted
-# half way through for some reason, the second call should merely do the things
-# that were left undone the first time, if any, and exit with a success status
-# if if everything is OK.
+# IMPORTANT:
+# This script must be idempotent.
 
 set -e
 
@@ -46,207 +39,161 @@ set -e
 SELFDIR=$(dirname "$0")
 . $SELFDIR/maintainer-helper.sh
 
-A2ENMOD='/usr/sbin/a2enmod'
-A2DISMOD='/usr/sbin/a2dismod'
-CMD_MD5='/usr/bin/md5sum'
-
-# Please, don't change the order of the following.
-SERVICES="mysql ispcp_daemon ispcp_network fam named apache2 proftpd postgrey \
-policyd-weight courier-authdaemon courier-imap courier-pop"
-
 case "$1" in
 
 	configure)
 
-		## OpenSuSE firewall configuration
+		# Disabling default FastCGI/Fcgid packages configuration files
+		# ispCP provides these own configuration files
+		print_title 'Apache configuration: '
 
-		print_title "OpenSuSe firewall configuration:"
-
-		# Disabling OpenSuse firewall (ispCP provides its own)
-		if [ -x "/sbin/SuSEfirewall2" ] ; then
-			/sbin/SuSEfirewall2 off >> $LOGFILE 2>&1 || failed
-		fi
-
-		print_status
-
-		## Apache2 Configuration
-
-		print_title "Apache configuration:"
-
-		# Sets proper permissions for suexec
-		if [ -f /usr/sbin/suexec2 ] ; then
-			$CMD_CHOWN $ROOT_USER:$APACHE_GROUP /usr/sbin/suexec2 >> $LOGFILE 2>&1 || failed
-			$CMD_CHMOD 4755 /usr/sbin/suexec2 >> $LOGFILE 2>&1 || failed
-		fi
-
-		print_status
-
-		## FastCGI Apache module Configuration
-
-		print_title "FastCGI - Apache  module configuration:"
-
-		# Enable FastCGI module (fcgid|fascgi) and disable unused
-		if [ ! -z "$PHP_FASTCGI" ] ; then
-			if [ -x $A2ENMOD ] ; then
-				$A2ENMOD $PHP_FASTCGI >> $LOGFILE 2>&1 || true
-			fi
-
-			if [ "$PHP_FASTCGI" = "fcgid" ]; then
-				if [ -x $A2DISMOD ] ; then
-				$A2DISMOD fastcgi >> $LOGFILE 2>&1 || true
-				fi
-			else
-				if [ -x $A2DISMOD ] ; then
-					$A2DISMOD fcgid >> $LOGFILE 2>&1 || true
-				fi
-			fi
-		fi
-
-		# Ensure that default FastCGI apache module configuration file is disabled
 		if [ -f /etc/apache2/conf.d/mod_fastcgi.conf ] ; then
-			$CMD_MV /etc/apache2/conf.d/mod_fastcgi.conf \
+			mv /etc/apache2/conf.d/mod_fastcgi.conf \
 				/etc/apache2/conf.d/mod_fastcgi.conf.disabled >> $LOGFILE 2>&1 || failed
+
+			progress
 		fi
 
-		# Ensure that default fcgid apache module configuration file is disabled
 		if [ -f /etc/apache2/conf.d/mod_fcgid.conf ] ; then
-			$CMD_MV /etc/apache2/conf.d/mod_fcgid.conf \
+			mv /etc/apache2/conf.d/mod_fcgid.conf \
 				/etc/apache2/conf.d/mod_fcgid.conf.disabled >> $LOGFILE 2>&1 || failed
+
+			progress
+		fi
+
+		# Getting all installed modules
+		APACHE_MODULES=$(grep '^APACHE_MODULES' /etc/sysconfig/apache2 | sed s'/APACHE_MODULES="\(.*\)"/\1/')
+		progress
+
+		# Disabling some Apache modules
+		# This is small workaround because `sysconf_addword -r` don't remove
+		# trailing spaces correctly in some circumstances
+		for module in fcgid fastcgi php4 php5 ; do
+			APACHE_MODULES=$(echo $APACHE_MODULES | sed 's/\s*\b'"$module"'\b//')
+			progress
+		done
+
+		# Updating the /etc/sysconfig/apache2 file
+		sed -i 's/^\(APACHE_MODULES="\)[a-z0-9 _]\+/\1'"$APACHE_MODULES"'/' /etc/sysconfig/apache2
+		progress
+
+		# Enabling all required modules
+		for module in actions $PHP_FASTCGI logio proxy proxy_http rewrite suexec ; do
+			/usr/sbin/sysconf_addword /etc/sysconfig/apache2 APACHE_MODULES $module >> $LOGFILE 2>&1 || failed
+			progress
+		done
+
+		# Sets proper permissions for suexec wrapper
+		chown root:www /usr/sbin/suexec2 >> $LOGFILE 2>&1 || failed
+		progress
+
+		chmod 4755 /usr/sbin/suexec2 >> $LOGFILE 2>&1 || failed
+		progress
+
+		print_status
+
+		print_title 'Postfix configuration: '
+
+		# Make postfix in chroot jail
+		/sbin/yast sysconfig set POSTFIX_CHROOT='yes' >> $LOGFILE 2>&1 || failed
+		progress
+
+		/sbin/yast sysconfig set POSTFIX_UPDATE_CHROOT_JAIL='yes' >> $LOGFILE 2>&1 || failed
+		progress
+
+		/sbin/yast sysconfig set MAIL_CREATE_CONFIG='no' >> $LOGFILE 2>&1 || failed
+		progress
+
+		# Saving package configuration file if needed
+		if [ ! -f /etc/ispcp/postfix/backup/smtpd.conf.system -a -f /etc/sasl2/smtpd.conf ] ; then
+			cp -a /etc/sasl2/smtpd.conf /etc/ispcp/postfix/backup/smtpd.conf.system >> $LOGFILE 2>&1 || failed
+			chmod 0600 /etc/ispcp/postfix/backup/smtpd.conf.system >> $LOGFILE 2>&1 || failed
+			progress
 		fi
 
 		print_status
 
-		## PHP configuration - Begin
+		print_title 'SASL configuration: '
 
-		print_title "PHP post configuration:"
-
-		# Ensure that the apache php5 module is disable
-		if [ -x $A2DISMOD ] ; then
-			$A2DISMOD php5 >> $LOGFILE 2>&1 || true
+		# Saving current production file if one exists
+		if [ -f /etc/ispcp/postfix/working/smtpd.conf ] ; then
+			cp -p /etc/ispcp/postfix/working/smtpd.conf \
+				/etc/ispcp/postfix/backup/smtpd.conf.$(date +%s) >> $LOGFILE 2>&1 || failed
+			progress
 		fi
 
-		print_status
-
-		## Postfix Configuration
-
-		print_title "Postfix configuration:"
-
-		# Fix warning: "not owned by root: /var/spool/postfix"
-		# This is because the postgrey package changes the
-		# owner of this directory during installation (why ?)
-		if [ -d "/var/spool/postfix" ]; then
-			if [ -x /sbin/SuSEconfig ] ; then
-				/sbin/SuSEconfig --module postfix >> $LOGFILE 2>&1 || failed
-			fi
-		fi
-
-		# SASL configuration
-
-		# Fist, we make a save of the current file (production file)
-		if [ ! -f /etc/ispcp/postfix/backup/smtpd.conf.system -a -f /etc/sasl2/smtpd.conf ]; then
-			$CMD_CP -a /etc/sasl2/smtpd.conf \
-				/etc/ispcp/postfix/backup/smtpd.conf.system >> $LOGFILE 2>&1 || failed
-
-			# This file shouldn't be readable by everyone
-			$CMD_CHMOD 0600 /etc/ispcp/postfix/backup/smtpd.conf.system >> $LOGFILE 2>&1 || failed
-		fi
-
-		# First we build a new configuration file with available
-		# /etc/ispcp/postfix/smtpd.conf template
-		($CMD_CAT /etc/ispcp/postfix/smtpd.conf) | $CMD_SED "
-			s/{MTA_SASL_LOG_LEVEL}/$MTA_SASL_LOG_LEVEL/
-			s/{MTA_SASL_PWCHECK_METHOD}/$MTA_SASL_PWCHECK_METHOD/
-			s/{MTA_SASL_MECH_LIST}/$(echo $MTA_SASL_MECH_LIST | sed 's/,/ /g')/
-		" >/tmp/smtpd.conf.tmp || failed
-
-		# If the user was defined an auxprop plugin in the ispcp.conf file,
-		# we should set it in the smtpd.conf file
-		if [ "$MTA_SASL_AUXPROP_PLUGIN" != "sasldb" ]; then
-			$CMD_SED -i "s/{MTA_SASL_AUXPROP_PLUGIN}/$MTA_SASL_AUXPROP_PLUGIN/" \
-				/tmp/smtpd.conf.tmp || failed
-
-		# Otherwise, we should clean the file by remove the replacement variable
+		if [ -f /etc/ispcp/postfix/smtpd.conf ] ; then
+			# Building the new smtpd.conf file from the ispCP template
+			sed '
+				s/{MTA_SASL_LOG_LEVEL}/'"$MTA_SASL_LOG_LEVEL"'/
+				s/{MTA_SASL_PWCHECK_METHOD}/'"$MTA_SASL_PWCHECK_METHOD"'/
+				s/{MTA_SASL_AUXPROP_PLUGIN}/'"$MTA_SASL_AUXPROP_PLUGIN"'/
+				s/{MTA_SASL_MECH_LIST}/'"$MTA_SASL_MECH_LIST"'/
+			' < /etc/ispcp/postfix/smtpd.conf >/etc/ispcp/postfix/working/smtpd.conf
+			progress
 		else
-			$CMD_SED -i '/auxprop_plugin: {MTA_SASL_AUXPROP_PLUGIN}/d' \
-			/tmp/smtpd.conf.tmp || failed
+			failed 'The smtpd.conf template file was not found!'
 		fi
 
-		# Now, we replace the current production file if the new builded file
-		# has not the same sums
-		if [ -f "$MTA_SASL_CONF_FILE" ] ; then
-			oldmd5=`$CMD_MD5 $MTA_SASL_CONF_FILE | cut -d' ' -f1`
-			newmd5=`$CMD_MD5 /tmp/smtpd.conf.tmp | cut -d' ' -f1`
+		# Fixing permissions
+		chmod 0600 $MTA_SASL_CONF_FILE /etc/ispcp/postfix/working/smtpd.conf >> $LOGFILE 2>&1 || failed
+		progress
 
-			if [ "$oldmd5" != "$newmd5" ]; then
-				$CMD_CP -p /tmp/smtpd.conf.tmp /etc/ispcp/postfix/backup/smtpd.conf.ispcp >> $LOGFILE 2>&1 || failed
-			fi
-		fi
+		# Installing the new file in the production directory
+		cp -p /etc/ispcp/postfix/working/smtpd.conf $MTA_SASL_CONF_FILE >> $LOGFILE 2>&1 || failed
+		progress
 
-		$CMD_CP -p /etc/ispcp/postfix/backup/smtpd.conf.ispcp $MTA_SASL_CONF_FILE >> $LOGFILE 2>&1 || failed
-
-		# The smtpd.conf file shouldn't be readable by everyone
-		$CMD_CHMOD 0600 $MTA_SASL_CONF_FILE /etc/ispcp/postfix/backup/smtpd.conf.ispcp >> $LOGFILE 2>&1 || failed
-
-		# We remove the temporary file
-		rm -f /tmp/smtpd.conf.tmp >> $LOGFILE 2>&1
+		# Applying all changes
+		/sbin/SuSEconfig --module postfix >> $LOGFILE 2>&1 || failed
+		progress
 
 		print_status
 
-		## Postgrey Configuration
+		# Postgrey configuration
+		print_title 'Postgrey configuration:'
 
-		print_title "Postgrey configuration:"
-
-		if [ -x "/sbin/yast2" ] ; then
-			/sbin/yast2 sysconfig set POSTGREY_CONN_OPTIONS="--inet=127.0.0.1:10023" >> $LOGFILE 2>&1 || failed
-
-			if [ -x /sbin/SuSEconfig ] ; then
-				/sbin/SuSEconfig >> $LOGFILE 2>&1 || failed
-			fi
-		fi
+		/sbin/yast2 sysconfig set POSTGREY_CONN_OPTIONS="--inet=127.0.0.1:10023" >> $LOGFILE 2>&1 || failed
 
 		print_status
 
-		## Rkhunter
+		# Courier IMAP
+		print_title 'Courier-Imap configuration:'
 
-		print_title "Building rkhunter database:"
+		# IMAP daemon must listen on all interfaces
+		sed -i 's/^\(ADDRESS=\)127.0.0.1/\10/' /etc/courier/imapd >> $LOGFILE 2>&1 || failed
+
+		print_status
+
+		# Courier-Authentication
+		print_title 'Courier-Authentication configuration:'
+
+		# Prevent warning about missing modules
+		sed -i 's/\(authmodulelist="\).*/\1authuserdb authpam"/' \
+			/etc/authlib/authdaemonrc >> $LOGFILE 2>&1 || failed
+
+		print_status
+
+		print_title 'Awstats - Disabling dist. package configuration files: '
+
+		for conffile in $(ls /etc/awstats | grep -E '^awstats\.[a-z]+\.conf$') ; do
+			mv /etc/awstats/$conffile /etc/awstats/$conffile.disabled
+			progress
+		done
+
+		print_status
+
+		# Disabling default cron task for Rkhunter
+		print_title 'Rkhunter - Disabling dist. package cron task:'
+
+		/sbin/yast2 sysconfig set START_RKHUNTER=no >> $LOGFILE 2>&1 || failed
+
+		print_status
+
+		# Rkhunter (updating files properties)
+		# Todo Switch to at
+		print_title 'Rkhunter - Updapting files properties:'
 
 		/usr/bin/rkhunter --propupd > /dev/null 2>&1 &
-
-		print_status
-
-
-		## Courier-Authentication Configuration
-
-		print_title "Courier-Authentication configuration:"
-
-		# Prevent authdaemon warnings related to missing modules in mail log files
-		if [ -f /etc/authlib/authdaemonrc ] ; then
-			$CMD_SED -i 's/authmodulelist="authuserdb authuserdb authpam authpgsql authldap \
-			authmysql authcustom authpipe"/authmodulelist="authuserdb authpam authcustom"/' \
-			/etc/authlib/authdaemonrc >> $LOGFILE 2>&1 || failed
-		fi
-
-		print_status
-
-		## System Init Configuration
-
-		print_title "System Init configuration: "
-
-		# Enable all system init scripts needed by ispCP
-		for service in $SERVICES ; do
-			if [ -x "/etc/init.d/$service" ]; then
-				if [ -x /sbin/chkconfig ]; then
-					# First, we remove all current links to avoid any conflicts
-					# Also, we ensure that proftpd is not reachable via xinetd
-					/sbin/chkconfig -s -f $service off >> $LOGFILE 2>&1 || true
-				
-					# Now, we recreate the link
-					/sbin/chkconfig -s $service on >> $LOGFILE 2>&1 || true
-				fi
-
-				progress
-			fi
-		done
 
 		print_status
 	;;

@@ -1,11 +1,11 @@
 #!/bin/sh
 
-# ispCP helper functions for dits maintainers scripts
+# ispCP helper library for distribution maintenace scripts
 #
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
 # author	Laurent Declercq <laurent.declercq@ispcp.net>
-# version	1.2
+# version	1.0.3
 #
 # SVN: $Id$
 #
@@ -31,7 +31,7 @@
 #
 
 ################################################################################
-# Note to ispCP dists maintainers:
+# Note to ispCP distributions. maintainers:
 #
 # This library provide a set of functions that can be used in your maintenance
 # scripts.
@@ -62,11 +62,16 @@ else
     exit 1
 fi
 
+OLD_IFS=$IFS
+IFS=$
+
 # Reading needed entries from ispcp.conf
-for a in $(grep -E '(^Version|APACHE_|MTA_|ROOT_|^PHP_FASTCGI|^CMD_|^DEBUG|^LOG_DIR)' \
-$CONF_FILE | sed -e 's/ //g'); do
-    export $a
+for a in $(grep -E '^(Version|APACHE_|MTA_|ROOT_|PHP_FASTCGI|CMD_|DEBUG|LOG_DIR)' \
+${CONF_FILE} | sed 's/\s*=\s*\(.*\)/="\1"/'); do
+	 eval $a
 done
+
+IFS=$OLD_IFS
 
 # Enable DEBUG mode if needed
 if [ $DEBUG -eq 1 ]; then
@@ -85,7 +90,7 @@ ISPCP_VERSION=$(echo $Version | sed -e 's/\s\+\|[a-z]//gi')
 LOGFILE="$LOG_DIR/setup/ispcp-$0-$1.log"
 
 # Make sure that the log directory exists
-#/usr/bin/install -d $LOG_DIR/setup -m 0755 -o $ROOT_USER -g $ROOT_GROUP
+/usr/bin/install -d $LOG_DIR/setup -m 0755 -o $ROOT_USER -g $ROOT_GROUP
 
 # Removing old log file if it exists
 $CMD_RM -f $LOGFILE
