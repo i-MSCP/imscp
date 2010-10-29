@@ -17,8 +17,9 @@ Table of Content
 1) Version Info
 ---------------
 ispCP ω Version:    1.0.7
-INSTALL Script:     2.2
-postinst Script:    1.4
+INSTALL file:       2.3
+postinst script:    1.0.6
+preinst script:     1.0.0
 Maintainer:         Laurent Declercq (Nuxwin) <laurent.declercq@ispcp.net>
 Homepage:           http://isp-contol.net
 Linux Distros:      openSuse 11.3
@@ -65,9 +66,11 @@ First, make sure you are logged in as root.
 
 Note: For all questions, answer "a" (trust always).
 
-4. Install the required packages:
+4. install the required packages:
 
+	First, update your distribution:
 	# zypper dup
+
 	# zypper in $(cat ./docs/OpenSuse/bin-packages)
 
 5. Install the required Perl packages:
@@ -87,7 +90,7 @@ Note: For all questions, answer "a" (trust always).
 
 	# cp -RLv /tmp/ispcp/* /
 
-9. Start MySQL, if not running:
+9. Start MySQL, if it not already running:
 
 	# rcmysql restart
 
@@ -103,8 +106,8 @@ Note: For all questions, answer "a" (trust always).
 	# cp -a /etc/skel /etc/skel.bkp
 	# rm -r /etc/skel && mkdir /etc/skel
 
-12. Now it's time to set up the frontend. Change into the engine directory and
-	start the engine setup:
+12. Now it's time to set up ispCP. Change into the engine directory and start
+	the engine setup:
 
 	# cd /srv/www/ispcp/engine/setup
 	# perl ispcp-setup
@@ -146,7 +149,9 @@ Note: For all questions, answer "a" (trust always).
 
 4. Install the required packages:
 
+	# First, update your distribution:
 	# zypper dup
+
 	# zypper in $(cat ./docs/OpenSuse/bin-packages)
 
 5. Install the required Perl packages:

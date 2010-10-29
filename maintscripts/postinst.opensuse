@@ -45,7 +45,7 @@ case "$1" in
 
 		# Disabling default FastCGI/Fcgid packages configuration files
 		# ispCP provides these own configuration files
-		print_title "Apache configuration: "
+		print_title 'Apache configuration: '
 
 		if [ -f /etc/apache2/conf.d/mod_fastcgi.conf ] ; then
 			mv /etc/apache2/conf.d/mod_fastcgi.conf \
@@ -92,7 +92,7 @@ case "$1" in
 
 		print_status
 
-		print_title "Postfix configuration: "
+		print_title 'Postfix configuration: '
 
 		# Make postfix in chroot jail
 		/sbin/yast sysconfig set POSTFIX_CHROOT='yes' >> $LOGFILE 2>&1 || failed
@@ -113,7 +113,7 @@ case "$1" in
 
 		print_status
 
-		print_title "SASL configuration: "
+		print_title 'SASL configuration: '
 
 		# Saving current production file if one exists
 		if [ -f /etc/ispcp/postfix/working/smtpd.conf ] ; then
@@ -150,14 +150,14 @@ case "$1" in
 		print_status
 
 		# Postgrey configuration
-		print_title "Postgrey configuration:"
+		print_title 'Postgrey configuration:'
 
 		/sbin/yast2 sysconfig set POSTGREY_CONN_OPTIONS="--inet=127.0.0.1:10023" >> $LOGFILE 2>&1 || failed
 
 		print_status
 
 		# Courier IMAP
-		print_title "Courier-Imap configuration:"
+		print_title 'Courier-Imap configuration:'
 
 		# IMAP daemon must listen on all interfaces
 		sed -i 's/^\(ADDRESS=\)127.0.0.1/\10/' /etc/courier/imapd >> $LOGFILE 2>&1 || failed
@@ -165,7 +165,7 @@ case "$1" in
 		print_status
 
 		# Courier-Authentication
-		print_title "Courier-Authentication configuration:"
+		print_title 'Courier-Authentication configuration:'
 
 		# Prevent warning about missing modules
 		sed -i 's/\(authmodulelist="\).*/\1authuserdb authpam"/' \
@@ -173,8 +173,17 @@ case "$1" in
 
 		print_status
 
+		print_title 'Awstats - Disabling dist. package configuration files: '
+
+		for conffile in $(ls /etc/awstats | grep -E '^awstats\.[a-z]+\.conf$') ; do
+			mv /etc/awstats/$conffile /etc/awstats/$conffile.disabled
+			progress
+		done
+
+		print_status
+
 		# Disabling default cron task for Rkhunter
-		print_title "Rkhunter - Disabling default package cron task:"
+		print_title 'Rkhunter - Disabling dist. package cron task:'
 
 		/sbin/yast2 sysconfig set START_RKHUNTER=no >> $LOGFILE 2>&1 || failed
 
@@ -182,7 +191,7 @@ case "$1" in
 
 		# Rkhunter (updating files properties)
 		# Todo Switch to at
-		print_title "Rkhunter - Updapting files properties:"
+		print_title 'Rkhunter - Updapting files properties:'
 
 		/usr/bin/rkhunter --propupd > /dev/null 2>&1 &
 
