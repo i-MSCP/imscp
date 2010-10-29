@@ -3,13 +3,13 @@ ispCP ω 1.0.7 ChangeLog
 
 2010-10-29 Laurent Declercq
 	- CONFIGS:
-		Reverted back on the PHP short_open_tag directive to ON for convenience
-			and security reasons (All scripts that use the short open tags are
+		Reverted back on the PHP `short_open_tag` directive for convenience and
+			security reasons (All scripts that use the short open tags are
 			showed in plain text format - Think about credentials)
 
 2010-10-28 Laurent Declercq
 	- SETUP:
-		* Fixed #2494: Setup fails at first Rkhunter execution
+		* Fixed #2494: Setup fails at first Rkhunter update execution
 
 2010-10-27 Benedikt Heintel
 	- CONFIGS:
@@ -17,11 +17,11 @@ ispCP ω 1.0.7 ChangeLog
 
 2010-10-26 Daniel Andreca
 	- TOOLS:
-		* Updated phpMyAdmin to version 3.3.8
+		* Updated PhpMyAdmin to version 3.3.8
 
 2010-10-25 Benedikt Heintel
 	- SETUP:
-		* Updated texts in PerlLib::Query
+		* Updated texts in PerlLib::Dialog::Query
 
 2010-10-25 Laurent Declercq
 	- GUI:
@@ -57,7 +57,7 @@ ispCP ω 1.0.7 ChangeLog
 2010-10-20 Laurent Declercq
 	- CONFIGS:
 		* Removed PHP4 support
-		* Removed Fcgid IPCConnectTimeout directive  (not respected on Unix)
+		* Removed Fcgid IPCConnectTimeout directive  (Not respected on Unix)
 
 2010-10-19 Laurent Declercq
 	- DISTS:
@@ -68,7 +68,7 @@ ispCP ω 1.0.7 ChangeLog
 
 2010-10-18 Benedikt Heintel
     - SETUP:
-        * Renamed Dialog::Ask to Dialog::Query
+        * Renamed PerlLib::Dialog::Ask to PerlLib::Dialog::Query
 
 2010-10-17 Laurent Declercq
 	- CONFIGS:
