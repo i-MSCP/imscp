@@ -1,6 +1,10 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-10-30 Markus Schmidt
+	- TOOLS:
+		* Fixed Updated PhpMyAdmin to version 3.3.8
+
 2010-10-29 Laurent Declercq
 	- CONFIGS:
 		Reverted back on the PHP `short_open_tag` directive for convenience and
