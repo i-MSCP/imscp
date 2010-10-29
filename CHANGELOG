@@ -1,6 +1,12 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-10-29 Laurent Declercq
+	- CONFIGS:
+		Reverted back on the PHP short_open_tag directive to ON for convenience
+			and security reasons (All scripts that use the short open tags are
+			showed in plain text format - Think about credentials)
+
 2010-10-28 Laurent Declercq
 	- SETUP:
 		* Fixed #2494: Setup fails at first Rkhunter execution
