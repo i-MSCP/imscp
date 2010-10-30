@@ -1,7 +1,7 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-2010-10-29 Laurent Declercq
+2010-10-30 Laurent Declercq
 	- DISTS:
 		* [openSUSE]:
 			- Added MTA SASL configuration file path (Chroot issue)
