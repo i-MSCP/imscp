@@ -1,6 +1,10 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-10-31 Laurent Declercq
+	- DISTS:
+		* [openSUSE]: Added Amavisd, SpamAssassin, ClamAv support (first part)
+
 2010-10-30 Laurent Declercq
 	- DISTS:
 		* [openSUSE]:

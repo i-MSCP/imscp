@@ -63,10 +63,7 @@ scache    unix  -       -       n       -       1       scache
 # @author		ispCP Team
 # ====================================================================
 
-#
-# Amavisd configuration - Activate all related services bellow when using it
-# @todo amavisd conffile (contrib)
-#
+## Amavisd - BEGIN
 
 # Postfix to Amavisd
 #amavis    unix  -       -       y       -       2       smtp
@@ -119,6 +116,8 @@ scache    unix  -       -       n       -       1       scache
 #    -o smtpd_client_connection_rate_limit=0
 #    -o receive_override_options=no_header_body_checks,no_unknown_recipient_checks
 #    -o local_header_rewrite_clients=
+
+## Amavisd - BEGIN
 
 #
 # ispCP auto responder service
