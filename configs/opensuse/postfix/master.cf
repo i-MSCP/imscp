@@ -117,7 +117,7 @@ scache    unix  -       -       n       -       1       scache
 #    -o receive_override_options=no_header_body_checks,no_unknown_recipient_checks
 #    -o local_header_rewrite_clients=
 
-## Amavisd - BEGIN
+## Amavisd - END
 
 #
 # ispCP auto responder service
