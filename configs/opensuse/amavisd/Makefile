@@ -35,6 +35,7 @@ install:
 	cp -R ./backup $(SYSTEM_CONF)/amavisd
 	cp -R ./working $(SYSTEM_CONF)/amavisd
 	cp ./amavisd.tpl $(SYSTEM_CONF)/amavisd
+	cp ./amavisd.domains $(SYSTEM_CONF)/amavisd.domains
 
 uninstall:
 
