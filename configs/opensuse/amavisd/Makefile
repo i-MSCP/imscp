@@ -36,6 +36,7 @@ install:
 	cp -R ./working $(SYSTEM_CONF)/amavisd
 	cp ./amavisd.tpl $(SYSTEM_CONF)/amavisd
 	cp ./amavisd.domains $(SYSTEM_CONF)/amavisd.domains
+	cp ./sender_scores_sitewide $(SYSTEM_CONF)/sender_scores_sitewide
 
 uninstall:
 

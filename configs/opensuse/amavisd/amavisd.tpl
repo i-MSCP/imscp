@@ -416,7 +416,7 @@ qr'\.[^./]*[A-Za-z][^./]*\.\s*(exe|vbs|pif|scr|bat|cmd|com|cpl|dll)[.\s]*$'i,
     [qr'^(inkjetplanet|marketopt|MakeMoney)\d*@'i                    => 5.0],
    ),
 
-read_hash("/etc/amavisd/sender_scores_sitewide"),
+read_hash("/etc/ispcp/amavisd/working/sender_scores_sitewide"),
 
    { # a hash-type lookup table (associative array)
      'nobody@cert.org'                        => -3.0,
