@@ -1,6 +1,14 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-10-29 Laurent Declercq
+	- DISTS:
+		* [openSUSE]:
+			- Added MTA SASL configuration file path (Chroot issue)
+			- Changed MTA sasldb2 file path (Chroot issue)
+			- Refactored Amavisd configuration sample in master.cf
+			- Using service keyword instead of port 587 in master.cf
+
 2010-10-29 Markus Schmidt
 	- TOOLS:
 		* Fixed Updated PhpMyAdmin to version 3.3.8
