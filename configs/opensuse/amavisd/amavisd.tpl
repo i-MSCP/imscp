@@ -46,7 +46,7 @@ $nanny_details_level = 2;    # nanny verbosity: 1: traditional, 2: detailed
 $enable_dkim_verification = 1;  # enable DKIM signatures verification
 $enable_dkim_signing = 1;    # load DKIM signing code, keys defined by dkim_key
 
-@local_domains_maps = ( read_hash("/etc/ispcp/amavisd/amavisd.domains") );
+@local_domains_maps = ( read_hash("/etc/ispcp/amavisd/working/amavisd.domains") );
 
 @mynetworks = qw( 127.0.0.0/8 [::1] [FE80::]/10 [FEC0::]/10
                   10.0.0.0/24 );
