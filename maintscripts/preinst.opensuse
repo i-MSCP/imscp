@@ -5,7 +5,7 @@
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
 # author    Laurent Declercq <laurent.declercq@ispcp.net>
-# version   1.0.0
+# version   1.0.1
 #
 # SVN: $Id: preinst.debian 3504 2010-10-20 17:06:25Z nuxwin $
 #
@@ -39,9 +39,11 @@ set -e
 SELFDIR=$(dirname "$0")
 . $SELFDIR/maintainer-helper.sh
 
-# Init scripts list that must be enabled
-SERVICES="mysql fam named apache2 proftpd postgrey policyd-weight \
-courier-authdaemon courier-imap courier-pop"
+BASE_SERVICES="fam mysql"
+SWITCHABLE_SERVICES="${CMD_NAMED}%named ${CMD_HTTPD}%apache2 ${CMD_FTPD}%proftpd \
+${CMD_POSTGREY}%postgrey ${CMD_POLICYD_WEIGHT}%policyd-weight ${CMD_MTA}%postfix \
+${CMD_AUTHD}%courier-authdaemon ${CMD_IMAP}%courier-imap ${CMD_IMAP_SSL}%courier-imap-ssl \
+${CMD_POP}%courier-pop ${CMD_POP_SSL}%courier-pop-ssl"
 
 case "$1" in
 	install|upgrade)
@@ -53,14 +55,47 @@ case "$1" in
 		print_status
 
 		# System Init Configuration
-		print_title "Enabling installed system init scripts: "
+		print_title "Enabling system init scripts: "
 
-		for service in $SERVICES ; do
+		for service in $BASE_SERVICES ; do
 			/sbin/insserv -vfr $service >> $LOGFILE 2>&1 || failed
 			/sbin/insserv -v $service >> $LOGFILE 2>&1 || failed
 
 			progress
 		done
+
+		# Switchable services
+		for service in $SWITCHABLE_SERVICES ; do
+			init_path=$(echo $service | cut -d '%' -f 1 | sed 's/.*\/rc\(.*\)/\1/')
+
+			if [ $init_path != 'no' -a $init_path != 'NO' ] ; then
+				srvname=$init_path
+				/sbin/insserv -vfr $srvname >> $LOGFILE 2>&1 || failed
+				/sbin/insserv -v $srvname >> $LOGFILE 2>&1 || failed
+			else
+				srvname=$(echo $service | cut -d '%' -f 2)
+				/sbin/insserv -vfr $srvname >> $LOGFILE 2>&1 || failed
+			fi
+
+			progress
+		done
+
+		# Amavis and Cie...
+		if [ $CMD_AMAVIS != 'no' -a $CMD_AMAVIS != 'NO' ] ; then
+			/sbin/insserv -vfr amavis >> $LOGFILE 2>&1 || failed
+			/sbin/insserv -v amavis >> $LOGFILE 2>&1 || failed
+
+			if [ $CMD_CLAMD != 'no' -a $CMD_CLAMD != 'NO' ] ; then
+				/sbin/insserv -vfr clamd >> $LOGFILE 2>&1 || failed
+				/sbin/insserv -v clamd >> $LOGFILE 2>&1 || failed
+			fi
+		else
+			for service in amavis clamd ; do
+				/sbin/insserv -vfr $service >> $LOGFILE 2>&1 || failed
+			done
+		fi
+
+		progress
 
 		print_status
 	;;
