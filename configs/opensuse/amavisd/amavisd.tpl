@@ -4,7 +4,7 @@ use strict;
 
 # COMMONLY ADJUSTED SETTINGS:
 
-# @bypass_virus_checks_maps = (1);  # controls running of anti-virus code
+@bypass_virus_checks_maps = (1);  # controls running of anti-virus code
 # @bypass_spam_checks_maps  = (1);  # controls running of anti-spam code
 # $bypass_decode_parts = 1;         # controls running of decoders&dearchivers
 

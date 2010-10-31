@@ -32,6 +32,9 @@
 # Chkrootkit
 {CR-ENABLED}0 	*/12	*	*	*	root {CHKROOTKIT} &> {CHKROOTKIT_LOG}
 
+# Freshclam (Updating database)
+{FR-ENABLED}    */12    *   *   *   vscan {FRESHCLAM}
+
 # Look for and purge old sessions every 30 minutes
 0,30	*	*	*	*	root	{TOOLS_ROOT_DIR}/ispcp-del-phptemp.sh >/dev/null 2>&1
 
