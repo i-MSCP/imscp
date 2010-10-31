@@ -622,7 +622,7 @@ sub ask_timezone {
 	# Get the user's default timezone
 	my ($sec, $min, $hour, $mday, $mon, $year, @misc) = localtime;
 	my $datetime  = DateTime->new(
-		year => $year + 1900, month => $mon, day => $mday, hour => $hour,
+		year => $year + 1900, month => $mon + 1, day => $mday, hour => $hour,
 		minute => $min, second => $sec, time_zone => 'local'
 	);
 
@@ -644,7 +644,7 @@ sub ask_timezone {
 	my $error = ($@) ? 1 : 0; # $@ contains the die() message
 
 	if ($error == 1) {
-		printError($rdata);	
+		printError($rdata);
 		return -1;
 	} else {
 		$main::ua{'php_timezone'} = $rdata;

@@ -1,6 +1,10 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-10-31 Daniel Andreca
+	- ENGINE:
+		* Fixed #2497: local time generation is faulty
+
 2010-10-31 Laurent Declercq
 	- DISTS:
 		* [openSUSE]: Added Amavisd, SpamAssassin, ClamAv support (first part)
