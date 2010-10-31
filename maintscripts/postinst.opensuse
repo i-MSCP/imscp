@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# ispCP post installation script for openSUSE
+# ispCP post installation script for openSUSE 11.3
 #
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
@@ -130,6 +130,7 @@ case "$1" in
 				s/{MTA_SASL_AUXPROP_PLUGIN}/'"$MTA_SASL_AUXPROP_PLUGIN"'/
 				s/{MTA_SASL_MECH_LIST}/'"$MTA_SASL_MECH_LIST"'/
 			' < /etc/ispcp/postfix/smtpd.conf >/etc/ispcp/postfix/working/smtpd.conf
+
 			progress
 		else
 			failed 'The smtpd.conf template file was not found!'
@@ -179,6 +180,142 @@ case "$1" in
 			mv /etc/awstats/$conffile /etc/awstats/$conffile.disabled
 			progress
 		done
+
+		print_status
+
+		# Amavisd
+		print_tile 'Amavisd configuration: '
+
+		if [ $CMD_AMAVIS != 'no' -a $CMD_AMAVIS != 'NO' ] ; then
+			# First does some backup if needed
+			if [ -f /etc/ispcp/amavisd/working/amavisd.domains ] ; then
+				cp -p /etc/ispcp/amavisd/working/amavisd.domains \
+					/etc/ispcp/amavisd/backup/amavisd.domains.$(date +%s) >> $LOGFILE 2>&1 || failed
+				progress
+			fi
+
+			if [ -f /etc/ispcp/amavisd/working/sender_scores_sitewide ] ; then
+				cp -p /etc/ispcp/amavisd/working/sender_scores_sitewide \
+					/etc/ispcp/amavisd/backup/sender_scores_sitewide.$(date +%s) >> $LOGFILE 2>&1 || failed
+				progress
+			fi
+
+			# Ensuring that all needed directories are created
+			mkdir -p /var/spool/amavis/{db,tmp,var,virusmails} >> $LOGFILE 2>&1 || failed
+			chown -R vscan: /var/spool/amavis/{db,tmp,var,virusmails} >> $LOGFILE 2>&1 || failed
+			progress
+
+			# Saving package configuration file if needed
+			if [ ! -f /etc/ispcp/amavisd/backup/amavisd.conf.system -a -f /etc/amavisd.conf ] ; then
+				cp -a /etc/amavisd.conf /etc/ispcp/amavisd/backup/amavisd.conf.system >> $LOGFILE 2>&1 || failed
+				chmod 0640 /etc/ispcp/amavisd/backup/amavisd.conf.conf.system >> $LOGFILE 2>&1 || failed
+				progress
+			fi
+
+			# Saving current production file if one exists
+			if [ -f /etc/ispcp/amavisd/working/amavisd.conf ] ; then
+				cp -p /etc/ispcp/amavisd/working/amavisd.conf \
+					/etc/ispcp/amavisd/backup/amavisd.conf.$(date +%s) >> $LOGFILE 2>&1 || failed
+				progress
+			fi
+
+			# Build the new amavisd.conf configuration file
+			if [ -f /etc/ispcp/amavisd/amavisd.tpl ] ; then
+				sed '
+					s/{AMAVIS_DOMAIN}/'"$AMAVIS_DOMAIN"'/
+					s/{AMAVIS_HOSTNAME}/'"$AMAVIS_HOSTNAME"'/
+					s/{AMAVIS_LOG_LEVEL}/'"$AMAVIS_LOG_LEVEL"'/
+					s/{BASE_SERVER_IP}/'"$BASE_SERVER_IP"'/
+					s/{DEFAULT_ADMIN_ADDRESS}/'"$DEFAULT_ADMIN_ADDRESS"'/
+					s/{AMAVIS_DATABASE}/'"$AMAVIS_DATABASE"'/
+					s/{AMAVIS_SQL_USER}/'"$AMAVIS_SQL_USER"'/
+				' < /etc/ispcp/amavisd/amavisd.tpl >/tmp/amavisd.conf
+
+				progress
+			else
+				failed 'The amavisd.tpl template file was not found!'
+			fi
+
+			if [ $AMAVIS_SQL = 'yes'  ] ; then
+				if [ $AMAVIS_SQL_PASSWORD = 'noset' ] ; then
+					tput sc
+					stty -echo
+
+					while ((1)) ; do
+                     printf "\n\n\tPlease enter Amavisd SQL password: "
+                        read PWD1
+                        printf "\n\tPlease confirm the password: "
+                        read PWD2
+                        [ $PWD1 = $PWD2 ] && break
+                     printf "\n\n\t[ERROR] Passwords don't match!\n"
+					done
+
+				    tput rc && tput ed
+				    stty echo
+
+					# Encrypt the password with ispCP keys
+					cd /srv/www/ispcp/engine
+					encryptedPwd=$(perl -e 'require "ispcp_common_code.pl"; ($rs, $pwd) = encrypt_db_password('"$PWD1"'); print $pwd;')
+
+					# Storing password
+					sed -i 's/^\s*\(AMAVIS_SQL_PASSWORD =\).*/\1'"$encryptedPwd"'/' \
+						/etc/ispcp/ispcp.conf
+				else
+					cd /srv/www/ispcp/engine
+					$PWD=$(perl -e 'require "ispcp_common_code.pl"; ($rs, $pwd) = decrypt_db_password('"$AMAVIS_SQL_PASSWORD"'); print $pwd;')
+				fi
+
+				sed -i '
+					s/{AMAVIS_DATABASE}/'"$AMAVIS_DATABASE"'/
+					s/{AMAVIS_SQL_USER}/'"$AMAVIS_SQL_USER"'/
+					s/{AMAVIS_SQL_PASSWORD}/'"$PWD"'/
+				' /tmp/amavisd.conf
+			else
+				# Deactivation Amavisd SQL
+				sed -i 's/^\s*@storage_sql_dsn/#&/' /tmp/amavisd.conf
+			fi
+
+			# ClamAv configuration
+			if [ $CMD_CLAMD != 'no' -a $CMD_CLAMD != 'NO' ] ; then
+				sed -i 's/^\s*@bypass_virus_checks_maps/#&/' /tmp/amavisd.conf
+				progress
+			fi
+
+			# Storing the working file
+			mv /tmp/amavisd.conf /etc/ispcp/amavisd/working
+
+			# Setting permissions
+			chown root:vscan /etc/ispcp/amavisd/working/amavisd.conf
+			chmod 640 /etc/ispcp/amavisd/working/amavisd.conf
+
+			# Installing the new file in the production directory
+			cp -p /etc/ispcp/amavisd/working/amavisd.conf /etc/amavisd.conf >> $LOGFILE 2>&1 || failed
+
+			progress
+
+			# Updapting main.cf to activate Amavisd service
+			sed -i 's/#content_filter/content_filter/' /etc/ispcp/postfix/working/main.cf
+			cp -p /etc/ispcp/postfix/working/main.cf /etc/postfix/main.cf
+
+			progress
+
+			# Updapting master.cf to activate Amavisd service
+			sed -i '
+				/# Postfix to Amavisd/{:label;/^$/q;n;s/^#//;t label;}
+				/# Amavisd to postfix/{:label;/^$/q;n;s/^#//;t label;}
+				/# Amavisd  -/{:label;/^$/q;n;s/^#//;t label;}
+			' /etc/ispcp/postfix/working/master.cf
+
+			cp -p /etc/ispcp/postfix/working/master.cf /etc/postfix/master.cf
+
+			progress
+
+		else
+			rm -f /etc/ispcp/amavisd/working/amavisd.domains
+			rm -f /etc/ispcp/amavisd/working/sender_scores_sitewide
+
+			progress
+		fi
 
 		print_status
 

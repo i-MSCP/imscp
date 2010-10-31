@@ -19,17 +19,17 @@ $TEMPBASE = "$MYHOME/tmp";   # working directory, needs to exist, -T
 $ENV{TMPDIR} = $TEMPBASE;    # environment variable TMPDIR, used by SA, etc.
 $QUARANTINEDIR = '/var/spool/amavis/virusmails';  # -Q
 $X_HEADER_TAG  = 'X-Virus-Scanned';			# after-default
-$X_HEADER_LINE = "ispCP Mailstorm at $mydomain";  # after-default
+$X_HEADER_LINE = "ispCP MailStorm at $mydomain";  # after-default
 # $quarantine_subdir_levels = 1;  # add level of subdirs to disperse quarantine
 # $release_format = 'resend';     # 'attach', 'plain', 'resend'
 # $report_format  = 'arf';        # 'attach', 'plain', 'resend', 'arf'
 
 # $daemon_chroot_dir = $MYHOME;   # chroot directory or undef, -R
 
-# $db_home   = "$MYHOME/db";      # dir for bdb nanny/cache/snmp databases, -D
-# $helpers_home = "$MYHOME/var";  # working directory for SpamAssassin, -S
-# $lock_file = "$MYHOME/var/amavisd.lock";  # -L
-# $pid_file  = "$MYHOME/var/amavisd.pid";   # -P
+$db_home   = "$MYHOME/db";      # dir for bdb nanny/cache/snmp databases, -D
+$helpers_home = "$MYHOME/var";  # working directory for SpamAssassin, -S
+$lock_file = "$MYHOME/var/amavisd.lock";  # -L
+$pid_file  = "$MYHOME/var/amavisd.pid";   # -P
 #NOTE: create directories $MYHOME/tmp, $MYHOME/var, $MYHOME/db manually
 
 $log_level = {AMAVIS_LOG_LEVEL};  # verbosity 0..5, -d
@@ -37,7 +37,7 @@ $log_recip_templ = undef;    # disable by-recipient level-0 log entries
 $DO_SYSLOG = 1;              # log via syslogd (preferred)
 $syslog_facility = 'mail';   # Syslog facility as a string
 	# e.g.: mail, daemon, user, local0, ... local7
-$syslog_priority = 'debug';  # Syslog base (minimal) priority as a string,
+$syslog_priority = 'info';  # Syslog base (minimal) priority as a string,
            # choose from: emerg, alert, crit, err, warning, notice, info, debug
 
 $enable_db = 1;              # enable use of BerkeleyDB/libdb (SNMP and nanny)
@@ -54,14 +54,15 @@ $enable_dkim_signing = 1;    # load DKIM signing code, keys defined by dkim_key
 $unix_socketname = "$MYHOME/amavisd.sock";  # amavisd-release or amavis-milter
                # option(s) -p overrides $inet_socket_port and $unix_socketname
 
-$inet_socket_port = [10024, 10026, 9998];	 # listen on this local TCP port(s)
+#$inet_socket_port = [10024, 10026, 9998];	 # listen on this local TCP port(s)
+$inet_socket_port = [10024, 10026];	 # listen on this local TCP port(s)
 
 # Mailzu
-$interface_policy{'9998'} = 'MAILZU';
-$policy_bank{'MAILZU'} = {
-	protocol => 'AM.PDP',
-	inet_acl => [qw( 127.0.0.1 [::1] {BASE_SERVER_IP} )],
-};
+#$interface_policy{'9998'} = 'MAILZU';
+#$policy_bank{'MAILZU'} = {
+#	protocol => 'AM.PDP',
+#	inet_acl => [qw( 127.0.0.1 [::1] {BASE_SERVER_IP} )],
+#};
 
 $policy_bank{'MYNETS'} = { # mail originating from @mynetworks
 	originating => 1, # is true in MYNETS by default, but let's make it explicit

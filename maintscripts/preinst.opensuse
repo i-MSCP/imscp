@@ -68,7 +68,7 @@ case "$1" in
 		for service in $SWITCHABLE_SERVICES ; do
 			srvname=$(echo $service | cut -d '%' -f 1 | sed 's/.*\/rc\(.*\)/\1/')
 
-			if [ $srvname != 'no' -a $init_path != 'NO' ] ; then
+			if [ $srvname != 'no' -a $srvname != 'NO' ] ; then
 				/sbin/insserv -vfr $srvname >> $LOGFILE 2>&1 || failed
 				/sbin/insserv -v $srvname >> $LOGFILE 2>&1 || failed
 			else

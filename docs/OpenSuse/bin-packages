@@ -1,3 +1,4 @@
+amavisd-new
 apache2-worker
 apache2-mod_fastcgi
 apache2-mod_fcgid
@@ -8,6 +9,7 @@ bind-libs
 bind-utils
 bzip2
 chkrootkit
+clamav
 courier-authlib
 courier-authlib-userdb
 courier-imap
@@ -45,5 +47,6 @@ proftpd
 proftpd-mysql
 rkhunter
 shared-mime-info
+spamassassin
 tar
 wget
