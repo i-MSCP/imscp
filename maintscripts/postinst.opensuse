@@ -5,7 +5,7 @@
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
 # author    Laurent Declercq <laurent.declercq@ispcp.net>
-# version   1.0.6
+# version   1.0.7
 #
 # SVN: $Id$
 #
@@ -242,16 +242,16 @@ case "$1" in
 					stty -echo
 
 					while ((1)) ; do
-                     printf "\n\n\tPlease enter Amavisd SQL password: "
-                        read PWD1
-                        printf "\n\tPlease confirm the password: "
-                        read PWD2
-                        [ $PWD1 = $PWD2 ] && break
-                     printf "\n\n\t[ERROR] Passwords don't match!\n"
+						printf "\n\n\tPlease enter Amavisd SQL password: "
+						read PWD1
+						printf "\n\tPlease confirm the password: "
+						read PWD2
+						[ $PWD1 = $PWD2 ] && break
+						printf "\n\n\t[ERROR] Passwords don't match!\n"
 					done
 
-				    tput rc && tput ed
-				    stty echo
+					tput rc && tput ed
+					stty echo
 
 					# Encrypt the password with ispCP keys
 					cd /srv/www/ispcp/engine
