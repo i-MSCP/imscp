@@ -51,14 +51,15 @@ provides graphic user interfaces for the administrators, resellers and users.
 4) openSUSE Mail protection
 ---------------------------
 
-Since ispCP Omega 1.0.7 rc3, the setup and update scripts are able to configure
-a complete mail protection solution (using Amavisd, SpamAssassin and ClamAv).
+Since ispCP Omega 1.0.7 rc3, both setup and update scripts are able to configure
+a complete mail protection solution (using Amavisd-new, SpamAssassin and ClamAv).
 
 If you want activate this solution, you should edit the ispcp.conf file before
-install/update ispCP ω Omega to activate these services.
+install/update ispCP ω Omega to activate the releated services.
 
-You can also disable these services by setting the proper values to 'no' in the
-ispcp.conf file and then, run again the ispCP ω Omega update script.
+You can also disable the mail protection solution by setting the proper values
+to 'no' in the ispcp.conf file (ispcp.old.conf when update) and by running again
+the ispCP ω Omega update script.
 
 See the comments in the ispcp.conf file for more information.
 
