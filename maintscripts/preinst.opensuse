@@ -66,15 +66,13 @@ case "$1" in
 
 		# Switchable services
 		for service in $SWITCHABLE_SERVICES ; do
-			init_path=$(echo $service | cut -d '%' -f 1 | sed 's/.*\/rc\(.*\)/\1/')
+			srvname=$(echo $service | cut -d '%' -f 1 | sed 's/.*\/rc\(.*\)/\1/')
 
-			if [ $init_path != 'no' -a $init_path != 'NO' ] ; then
-				srvname=$init_path
+			if [ $srvname != 'no' -a $init_path != 'NO' ] ; then
 				/sbin/insserv -vfr $srvname >> $LOGFILE 2>&1 || failed
 				/sbin/insserv -v $srvname >> $LOGFILE 2>&1 || failed
 			else
-				srvname=$(echo $service | cut -d '%' -f 2)
-				/sbin/insserv -vfr $srvname >> $LOGFILE 2>&1 || failed
+				/sbin/insserv -vfr $(echo $service | cut -d '%' -f 2) >> $LOGFILE 2>&1 || failed
 			fi
 
 			progress
