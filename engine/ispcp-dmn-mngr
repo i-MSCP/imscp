@@ -2331,7 +2331,7 @@ sub dmn_add_mta_cfg_data {
 	($rs, $working) = get_file($working_cfg);
 	return $rs if ($rs != 0);
 
-	# Checking for domain entry existance
+	# Checking for domain entry existence
 
 	$working =~ s/^$dmn_name\t\t\t[^\n]+\n//gim;
 
@@ -2387,6 +2387,34 @@ sub dmn_add_mta_cfg_data {
 
 	$rs = sys_command("$cmd_postmap $sys_cfg");
 	return $rs if ($rs != 0);
+
+	# Support for Amavisd local domains map - Begin
+	if(defined $main::cfg{'AMAVIS_LOCAL_DOMAINS_HASH'}) {
+		# Does backup first
+		if(-e $main::cfg{'AMAVIS_LOCAL_DOMAINS_HASH'}) {
+			$rs = sys_comand_rs(
+				"$main::cfg{CMD_CP} $main::cfg{'AMAVIS_LOCAL_DOMAINS_HASH'} " .
+				"$main::cfg{'CONF_DIR'}/amavisd/backup/amavisd.domains" . time
+			);
+			return $rs if ()$rs != 0);
+		}
+
+		($rs, $working) = get_file($main::cfg{'AMAVIS_LOCAL_DOMAINS_HASH'});
+		return $rs if $rs != 0;
+
+		# Removing entry if already exist
+		$working =~ s/$dmn_name\n//;
+
+		# Adding domain entry
+		$working .= "$dmn_name\n";
+
+		$rs = store_file(
+			$main::cfg{'AMAVIS_LOCAL_DOMAINS_HASH'}, $working,
+			$main::cfg{'AMAVIS_USER'}, $main::cfg{'AMAVIS_GROUP'}, 0640
+		);
+		return $rs if ($rs != 0);
+	}
+	# Support for Amavisd local domains map - End
 
 	push_el(\@main::el, 'dmn_add_mta_cfg_data()', 'Ending...');
 
@@ -2459,6 +2487,32 @@ sub dmn_del_mta_cfg_data {
 
 	$rs = sys_command("$cmd_postmap $sys_cfg");
 	return $rs if ($rs != 0);
+
+	# Support for Amavisd local domains map - Begin
+	if(defined $main::cfg{'AMAVIS_LOCAL_DOMAINS_HASH'}) {
+		# Does backup first
+		if(-e $main::cfg{'AMAVIS_LOCAL_DOMAINS_HASH'}) {
+			$rs = sys_comand_rs(
+				"$main::cfg{CMD_CP} $main::cfg{'AMAVIS_LOCAL_DOMAINS_HASH'} " .
+				"$main::cfg{'CONF_DIR'}/amavisd/backup/amavisd.domains" . time
+			);
+			return $rs if $rs != 0;
+		}
+
+		($rs, $working) = get_file($main::cfg{'AMAVIS_LOCAL_DOMAINS_HASH'});
+		return $rs if $rs != 0;
+
+		# Removing domain entry
+		$working =~ s/^$dmn_name\n//gim;
+
+		$rs = store_file(
+			$main::cfg{'AMAVIS_LOCAL_DOMAINS_HASH'}, $working,
+			$main::cfg{'AMAVIS_USER'}, $main::cfg{'AMAVIS_GROUP'}, 0640
+		);
+		return $rs if ($rs != 0);
+	}
+	# Support for Amavisd local domains map - End
+
 
 	push_el(\@main::el, 'dmn_del_mta_cfg_data()', 'Ending...');
 

@@ -10,6 +10,7 @@ DBD::mysql
 File::Copy::Recursive
 File::MimeInfo::Magic
 HTML::Entities
+Image::Info
 Mail::Address
 MIME::Entity
 MIME::Parser

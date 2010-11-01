@@ -14,7 +14,7 @@
 -- License for the specific language governing rights and limitations
 -- under the License.
 --
--- The Original Code is "SPCP ω (OMEGA) - Virtual Hosting Control Panel".
+-- The Original Code is "ISPCP ω (OMEGA) - Virtual Hosting Control Panel".
 --
 -- The Initial Developer of the Original Code is moleSoftware GmbH.
 -- Portions created by Initial Developer are Copyright (C) 2001-2006

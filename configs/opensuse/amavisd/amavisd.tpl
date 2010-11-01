@@ -37,7 +37,7 @@ $log_recip_templ = undef;    # disable by-recipient level-0 log entries
 $DO_SYSLOG = 1;              # log via syslogd (preferred)
 $syslog_facility = 'mail';   # Syslog facility as a string
 	# e.g.: mail, daemon, user, local0, ... local7
-$syslog_priority = 'info';  # Syslog base (minimal) priority as a string,
+$syslog_priority = 'notice';  # Syslog base (minimal) priority as a string,
            # choose from: emerg, alert, crit, err, warning, notice, info, debug
 
 $enable_db = 1;              # enable use of BerkeleyDB/libdb (SNMP and nanny)
