@@ -161,14 +161,14 @@ $bounce_killer_score = 100; # spam score points to add for joe-jobbed bounces
 $sa_mail_body_size_limit = 800*1024; # don't waste time on SA if mail is larger
 $sa_local_tests_only = 0; # only tests which do not require internet access?
 
-@storage_sql_dsn = (
-	[
-		'DBI:mysql:database={AMAVIS_DATABASE};host={DATABASE_HOST};port=3306',
-		'{AMAVIS_SQL_USER}', '{AMAVIS_SQL_PASSWORD}'
-	]
-);
-
-@lookup_sql_dsn = @storage_sql_dsn;
+# Amavis database
+#@storage_sql_dsn = (
+#	[
+#		'DBI:mysql:database={AMAVIS_DATABASE};host={DATABASE_HOST};port=3306',
+#		'{AMAVIS_SQL_USER}', '{AMAVIS_SQL_PASSWORD}'
+#	]
+#);
+#@lookup_sql_dsn = @storage_sql_dsn;
 
 $timestamp_fmt_mysql = 1; # if using MySQL *and* msgs.time_iso is TIMESTAMP;
 #   defaults to 0, which is good for non-MySQL or if msgs.time_iso is CHAR(16)
