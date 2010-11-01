@@ -1,58 +1,89 @@
-use strict;
+#!/usr/bin/perl
 
-# ispCP (openSUSE 11.3) - Amavisd
+# ispCP ω (OMEGA) a Virtual Hosting Control Panel
+# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+#
+# Version: $Id$
+#
+# The contents of this file are subject to the Mozilla Public License
+# Version 1.1 (the "License"); you may not use this file except in
+# compliance with the License. You may obtain a copy of the License at
+# http://www.mozilla.org/MPL/
+#
+# Software distributed under the License is distributed on an "AS IS"
+# basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+# License for the specific language governing rights and limitations
+# under the License.
+#
+# The Original Code is "ispCP ω (OMEGA) a Virtual Hosting Control Panel".
+#
+# The Initial Developer of the Original Code is ispCP Team.
+# Portions created by Initial Developer are Copyright (C) 2006-2010 by
+# isp Control Panel. All Rights Reserved.
+#
+# The ispCP ω Home Page is:
+#
+#    http://isp-control.net
+#
+
+# ispCP ω Omega specific:
+#
+# If you do not want this file to be regenerated from scratch during ispCP
+# update process, change the 'AMAVIS_REGENERATE' parameter value to 'no' in the
+# ispcp.conf file.
+
+use strict;
 
 # COMMONLY ADJUSTED SETTINGS:
 
-@bypass_virus_checks_maps = (1);  # controls running of anti-virus code
-# @bypass_spam_checks_maps  = (1);  # controls running of anti-spam code
-# $bypass_decode_parts = 1;         # controls running of decoders&dearchivers
+@bypass_virus_checks_maps = (1); # controls running of anti-virus code
+# @bypass_spam_checks_maps  = (1); # controls running of anti-spam code
+# $bypass_decode_parts = 1; # controls running of decoders&dearchivers
 
-$max_servers = 2;            # num of pre-forked children (2..30 is common), -m
-$daemon_user  = 'vscan';     # (no default;  customary: vscan or amavis), -u
-$daemon_group = 'vscan';     # (no default;  customary: vscan or amavis), -g
+$max_servers = 2; # num of pre-forked children (2..30 is common), -m
+$daemon_user  = 'vscan'; # (no default; customary: vscan or amavis), -u
+$daemon_group = 'vscan'; # (no default; customary: vscan or amavis), -g
 
-$mydomain = "{AMAVIS_DOMAIN}";   # a convenient default for other settings
+$mydomain = "{AMAVIS_DOMAIN}"; # a convenient default for other settings
 $myhostname = '{AMAVIS_HOSTNAME}';
-$MYHOME = '/var/spool/amavis';   # a convenient default for other settings, -H
-$TEMPBASE = "$MYHOME/tmp";   # working directory, needs to exist, -T
-$ENV{TMPDIR} = $TEMPBASE;    # environment variable TMPDIR, used by SA, etc.
-$QUARANTINEDIR = '/var/spool/amavis/virusmails';  # -Q
-$X_HEADER_TAG  = 'X-Virus-Scanned';			# after-default
+$MYHOME = '/var/spool/amavis'; # a convenient default for other settings, -H
+$TEMPBASE = "$MYHOME/tmp"; # working directory, needs to exist, -T
+$ENV{TMPDIR} = $TEMPBASE; # environment variable TMPDIR, used by SA, etc.
+$QUARANTINEDIR = '/var/spool/amavis/virusmails'; # -Q
+$X_HEADER_TAG  = 'X-Virus-Scanned'; # after-default
 $X_HEADER_LINE = "ispCP MailStorm at $mydomain";  # after-default
-# $quarantine_subdir_levels = 1;  # add level of subdirs to disperse quarantine
-# $release_format = 'resend';     # 'attach', 'plain', 'resend'
-# $report_format  = 'arf';        # 'attach', 'plain', 'resend', 'arf'
+# $quarantine_subdir_levels = 1; # add level of subdirs to disperse quarantine
+# $release_format = 'resend'; # 'attach', 'plain', 'resend'
+# $report_format  = 'arf'; # 'attach', 'plain', 'resend', 'arf'
 
-# $daemon_chroot_dir = $MYHOME;   # chroot directory or undef, -R
+# $daemon_chroot_dir = $MYHOME; # chroot directory or undef, -R
 
-$db_home   = "$MYHOME/db";      # dir for bdb nanny/cache/snmp databases, -D
-$helpers_home = "$MYHOME/var";  # working directory for SpamAssassin, -S
-$lock_file = "$MYHOME/var/amavisd.lock";  # -L
-$pid_file  = "$MYHOME/var/amavisd.pid";   # -P
+$db_home   = "$MYHOME/db"; # dir for bdb nanny/cache/snmp databases, -D
+$helpers_home = "$MYHOME/var"; # working directory for SpamAssassin, -S
+$lock_file = "$MYHOME/var/amavisd.lock"; # -L
+$pid_file  = "$MYHOME/var/amavisd.pid"; # -P
 #NOTE: create directories $MYHOME/tmp, $MYHOME/var, $MYHOME/db manually
 
-$log_level = {AMAVIS_LOG_LEVEL};  # verbosity 0..5, -d
-$log_recip_templ = undef;    # disable by-recipient level-0 log entries
-$DO_SYSLOG = 1;              # log via syslogd (preferred)
-$syslog_facility = 'mail';   # Syslog facility as a string
-	# e.g.: mail, daemon, user, local0, ... local7
-$syslog_priority = 'notice';  # Syslog base (minimal) priority as a string,
-           # choose from: emerg, alert, crit, err, warning, notice, info, debug
+$log_level = {AMAVIS_LOG_LEVEL}; # verbosity 0..5, -d
+$log_recip_templ = undef; # disable by-recipient level-0 log entries
+$DO_SYSLOG = 1; # log via syslogd (preferred)
+$syslog_facility = 'mail';
+	# Syslog facility as a string e.g.: mail, daemon, user, local0, ... local7
+$syslog_priority = 'notice'; # Syslog base (minimal) priority as a string,
+	# choose from: emerg, alert, crit, err, warning, notice, info, debug
 
-$enable_db = 1;              # enable use of BerkeleyDB/libdb (SNMP and nanny)
-$enable_global_cache = 1;    # enable use of libdb-based cache if $enable_db=1
-$nanny_details_level = 2;    # nanny verbosity: 1: traditional, 2: detailed
-$enable_dkim_verification = 1;  # enable DKIM signatures verification
-$enable_dkim_signing = 1;    # load DKIM signing code, keys defined by dkim_key
+$enable_db = 1; # enable use of BerkeleyDB/libdb (SNMP and nanny)
+$enable_global_cache = 1; # enable use of libdb-based cache if $enable_db=1
+$nanny_details_level = 2; # nanny verbosity: 1: traditional, 2: detailed
+$enable_dkim_verification = 1; # enable DKIM signatures verification
+$enable_dkim_signing = 1; # load DKIM signing code, keys defined by dkim_key
 
-@local_domains_maps = ( read_hash("/etc/ispcp/amavisd/working/amavisd.domains") );
+@local_domains_maps = (read_hash("/etc/ispcp/amavisd/working/amavisd.domains"));
 
-@mynetworks = qw( 127.0.0.0/8 [::1] [FE80::]/10 [FEC0::]/10
-                  10.0.0.0/24 );
+@mynetworks = qw(127.0.0.0/8 [::1] [FE80::]/10 [FEC0::]/10 10.0.0.0/24);
 
-$unix_socketname = "$MYHOME/amavisd.sock";  # amavisd-release or amavis-milter
-               # option(s) -p overrides $inet_socket_port and $unix_socketname
+$unix_socketname = "$MYHOME/amavisd.sock"; # amavisd-release or amavis-milter
+	# option(s) -p overrides $inet_socket_port and $unix_socketname
 
 #$inet_socket_port = [10024, 10026, 9998];	 # listen on this local TCP port(s)
 $inet_socket_port = [10024, 10026];	 # listen on this local TCP port(s)
@@ -60,7 +91,7 @@ $inet_socket_port = [10024, 10026];	 # listen on this local TCP port(s)
 # Mailzu
 #$interface_policy{'9998'} = 'MAILZU';
 #$policy_bank{'MAILZU'} = {
-#	protocol => 'AM.PDP',
+#   protocol => 'AM.PDP',
 #	inet_acl => [qw( 127.0.0.1 [::1] {BASE_SERVER_IP} )],
 #};
 
@@ -132,10 +163,11 @@ $sa_local_tests_only = 0; # only tests which do not require internet access?
 
 @storage_sql_dsn = (
 	[
-		'DBI:mysql:database={AMAVIS_DATABASE};host=127.0.0.1;port=3306',
+		'DBI:mysql:database={AMAVIS_DATABASE};host={DATABASE_HOST};port=3306',
 		'{AMAVIS_SQL_USER}', '{AMAVIS_SQL_PASSWORD}'
 	]
 );
+
 @lookup_sql_dsn = @storage_sql_dsn;
 
 $timestamp_fmt_mysql = 1; # if using MySQL *and* msgs.time_iso is TIMESTAMP;
@@ -251,9 +283,9 @@ $warnbannedrecip = 1;
 # $os_fingerprint_method = 'p0f:*:2345';  # to query p0f-analyzer.pl
 
 ## hierarchy by which a final setting is chosen:
-##   policy bank (based on port or IP address) -> *_by_ccat
-##   *_by_ccat (based on mail contents) -> *_maps
-##   *_maps (based on recipient address) -> final configuration value
+##  policy bank (based on port or IP address) -> *_by_ccat
+##  *_by_ccat (based on mail contents) -> *_maps
+##  *_maps (based on recipient address) -> final configuration value
 
 # SOME OTHER VARIABLES WORTH CONSIDERING (see amavisd.conf-default for all)
 
@@ -272,7 +304,6 @@ $warnbannedrecip = 1;
 # $bad_header_quarantine_to, $spam_quarantine_to,
 #
 # $defang_bad_header, $defang_undecipherable, $defang_spam
-
 
 # REMAINING IMPORTANT VARIABLES ARE LISTED HERE BECAUSE OF LONGER ASSIGNMENTS
 
@@ -432,12 +463,12 @@ $banned_filename_re = new_RE(
 	['uue', \&do_ascii],
 	['hqx', \&do_ascii],
 	['ync', \&do_ascii],
-	['F', \&do_uncompress, ['unfreeze','freeze -d','melt','fcat'] ],
+	#['F', \&do_uncompress, ['unfreeze','freeze -d','melt','fcat'] ],
 	['Z', \&do_uncompress, ['uncompress','gzip -d','zcat'] ],
 	['gz', \&do_uncompress, 'gzip -d'],
 	['gz', \&do_gunzip],
 	['bz2', \&do_uncompress, 'bzip2 -d'],
-	['lzo', \&do_uncompress, 'lzop -d'],
+	#['lzo', \&do_uncompress, 'lzop -d'],
 	['rpm', \&do_uncompress, ['rpm2cpio.pl','rpm2cpio'] ],
 	['cpio', \&do_pax_cpio, ['pax','gcpio','cpio'] ],
 	['tar', \&do_pax_cpio, ['pax','gcpio','cpio'] ],
@@ -447,7 +478,7 @@ $banned_filename_re = new_RE(
 	['7z', \&do_7zip, ['7zr','7za','7z'] ],
 	['rar', \&do_unrar, ['rar','unrar'] ],
 	['arj', \&do_unarj, ['arj','unarj'] ],
-	['arc', \&do_arc, ['nomarch','arc'] ],
+	#['arc', \&do_arc, ['nomarch','arc'] ],
 	['zoo', \&do_zoo, ['zoo','unzoo'] ],
 	['lha', \&do_lha, 'lha'],
 	# ['doc', \&do_ole, 'ripole'],

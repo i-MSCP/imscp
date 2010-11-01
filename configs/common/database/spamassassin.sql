@@ -2,7 +2,7 @@
 -- ISPCP ω (OMEGA) a Virtual Hosting Control Panel
 -- Copyright (c) 2006-2010 by ispCP | http://isp-control.net
 --
--- Version: $Id: database.sql 2201 2009-11-19 02:11:48Z nuxwin $
+-- Version: $Id$
 --
 -- The contents of this file are subject to the Mozilla Public License
 -- Version 1.1 (the "License"); you may not use this file except in
