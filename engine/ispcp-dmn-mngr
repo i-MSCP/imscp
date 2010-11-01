@@ -2389,7 +2389,9 @@ sub dmn_add_mta_cfg_data {
 	return $rs if ($rs != 0);
 
 	# Support for Amavisd local domains map - Begin
-	if(defined $main::cfg{'AMAVIS_LOCAL_DOMAINS_HASH'}) {
+	if(defined $main::cfg{'AMAVIS_LOCAL_DOMAINS_HASH'} &&
+		-e $main::cfg{'AMAVIS_LOCAL_DOMAINS_HASH'}) {
+
 		# Does backup first
 		if(-e $main::cfg{'AMAVIS_LOCAL_DOMAINS_HASH'}) {
 			$rs = sys_comand_rs(
@@ -2489,15 +2491,8 @@ sub dmn_del_mta_cfg_data {
 	return $rs if ($rs != 0);
 
 	# Support for Amavisd local domains map - Begin
-	if(defined $main::cfg{'AMAVIS_LOCAL_DOMAINS_HASH'}) {
-		# Does backup first
-		if(-e $main::cfg{'AMAVIS_LOCAL_DOMAINS_HASH'}) {
-			$rs = sys_comand_rs(
-				"$main::cfg{CMD_CP} $main::cfg{'AMAVIS_LOCAL_DOMAINS_HASH'} " .
-				"$main::cfg{'CONF_DIR'}/amavisd/backup/amavisd.domains" . time
-			);
-			return $rs if $rs != 0;
-		}
+	if(defined $main::cfg{'AMAVIS_LOCAL_DOMAINS_HASH'} &&
+		-e $main::cfg{'AMAVIS_LOCAL_DOMAINS_HASH'}) {
 
 		($rs, $working) = get_file($main::cfg{'AMAVIS_LOCAL_DOMAINS_HASH'});
 		return $rs if $rs != 0;
