@@ -52,6 +52,7 @@ $ENV{TMPDIR} = $TEMPBASE; # environment variable TMPDIR, used by SA, etc.
 $QUARANTINEDIR = '/var/spool/amavis/virusmails'; # -Q
 $X_HEADER_TAG  = 'X-Virus-Scanned'; # after-default
 $X_HEADER_LINE = "ispCP MailStorm at $mydomain";  # after-default
+$allowed_added_header_fields{lc('X-Spam-Checker-Version')} = 1;
 # $quarantine_subdir_levels = 1; # add level of subdirs to disperse quarantine
 # $release_format = 'resend'; # 'attach', 'plain', 'resend'
 # $report_format  = 'arf'; # 'attach', 'plain', 'resend', 'arf'
@@ -171,7 +172,7 @@ $sa_local_tests_only = 0; # only tests which do not require internet access?
 #@lookup_sql_dsn = @storage_sql_dsn;
 
 $timestamp_fmt_mysql = 1; # if using MySQL *and* msgs.time_iso is TIMESTAMP;
-#   defaults to 0, which is good for non-MySQL or if msgs.time_iso is CHAR(16)
+	# defaults to 0, which is good for non-MySQL or if msgs.time_iso is CHAR(16)
 
 $sql_allow_8bit_address = 1; # maddr.email: VARCHAR (0), VARBINARY/BYTEA (1)
 $sql_partition_tag = sub { my($msginfo)=@_; iso8601_week($msginfo->rx_time) };
@@ -190,7 +191,7 @@ $mailfrom_to_quarantine = ''; # null return path; uses original sender if undef
 @addr_extension_spam_maps = ('spam');
 @addr_extension_bad_header_maps = ('badh');
 $recipient_delimiter = '+'; # undef disables address extensions altogether
-# when enabling addr extensions do also Postfix/main.cf: recipient_delimiter=+
+	# when enabling addr extensions do also Postfix/main.cf: recipient_delimiter=+
 
 $path = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/sbin:/usr/bin:/bin';
 # $dspam = 'dspam';
@@ -517,7 +518,7 @@ $banned_filename_re = new_RE(
 @av_scanners = (
 # ### http://www.clamav.net/
  ['ClamAV-clamd',
-   \&ask_daemon, ["CONTSCAN {}\n", "/var/run/clamav/clamd.ctl"],
+   \&ask_daemon, ["CONTSCAN {}\n", "/var/lib/clamav/clamd-socket"],
    qr/\bOK$/, qr/\bFOUND$/,
    qr/^.*?: (?!Infected Archive)(.*) FOUND$/m ],
 );
