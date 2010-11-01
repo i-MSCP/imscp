@@ -137,11 +137,11 @@ case "$1" in
 		fi
 
 		# Fixing permissions
-		chmod 0600 $MTA_SASL_CONF_FILE /etc/ispcp/postfix/working/smtpd.conf >> $LOGFILE 2>&1 || failed
+		chmod 0600 /etc/ispcp/postfix/working/smtpd.conf >> $LOGFILE 2>&1 || failed
 		progress
 
 		# Installing the new file in the production directory
-		cp -p /etc/ispcp/postfix/working/smtpd.conf $MTA_SASL_CONF_FILE >> $LOGFILE 2>&1 || failed
+		cp -p /etc/ispcp/postfix/working/smtpd.conf $ETC_SASL_CONF_FILE >> $LOGFILE 2>&1 || failed
 		progress
 
 		# Applying all changes
@@ -184,7 +184,7 @@ case "$1" in
 		print_status
 
 		# Amavisd
-		print_tile 'Amavisd configuration: '
+		print_title 'Amavisd configuration: '
 
 		if [ $CMD_AMAVIS != 'no' ] ; then
 			# First does some backup if needed
@@ -235,6 +235,7 @@ case "$1" in
 					failed 'The amavisd.tpl template file was not found!'
 				fi
 
+				# Todo finish implementation (No Yet Usable)
 				if [ $AMAVIS_SQL = 'yes'  ] ; then
 					if [ $AMAVIS_SQL_PASSWORD = 'noset' ] ; then
 						tput sc
@@ -310,7 +311,6 @@ case "$1" in
 			cp -p /etc/ispcp/postfix/working/master.cf /etc/postfix/master.cf
 
 			progress
-
 		else
 			rm -f /etc/ispcp/amavisd/working/amavisd.domains
 			rm -f /etc/ispcp/amavisd/working/sender_scores_sitewide

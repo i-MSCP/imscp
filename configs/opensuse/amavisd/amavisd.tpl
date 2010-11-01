@@ -51,7 +51,7 @@ $TEMPBASE = "$MYHOME/tmp"; # working directory, needs to exist, -T
 $ENV{TMPDIR} = $TEMPBASE; # environment variable TMPDIR, used by SA, etc.
 $QUARANTINEDIR = '/var/spool/amavis/virusmails'; # -Q
 $X_HEADER_TAG  = 'X-Virus-Scanned'; # after-default
-$X_HEADER_LINE = "ispCP MailStorm at $mydomain";  # after-default
+$X_HEADER_LINE = "ispCP MailStorm at $myhostname";  # after-default
 $allowed_added_header_fields{lc('X-Spam-Checker-Version')} = 1;
 # $quarantine_subdir_levels = 1; # add level of subdirs to disperse quarantine
 # $release_format = 'resend'; # 'attach', 'plain', 'resend'
@@ -224,7 +224,6 @@ $spam_quarantine_method = 'sql:';
     'welcome.skype.com' => 'WHITELIST',
     'cc.yahoo-inc.com' => 'WHITELIST',
     'cc.yahoo-inc.com/@yahoo-inc.com' => 'WHITELIST',
-    'eole-its.com' => 'WHITELIST',
     'google.com' => 'MILD_WHITELIST',
     'googlemail.com' => 'MILD_WHITELIST',
     './@googlegroups.com' => 'MILD_WHITELIST',
@@ -233,7 +232,6 @@ $spam_quarantine_method = 'sql:';
     './@yahoogroupes.fr' => 'MILD_WHITELIST',
     'yousendit.com' => 'MILD_WHITELIST',
     'meetup.com' => 'MILD_WHITELIST',
-    'dailyhoroscope@astrology.com' => 'MILD_WHITELIST',
   } );
 
 @additional_perl_modules = qw(
@@ -427,6 +425,8 @@ $banned_filename_re = new_RE(
 
 # ENVELOPE SENDER SOFT-WHITELISTING / SOFT-BLACKLISTING
 
+
+
 @score_sender_maps = (
 	{   # a by-recipient hash lookup table,
 		# results from all matching recipient tables are summed
@@ -490,8 +490,8 @@ $banned_filename_re = new_RE(
 	['exe', \&do_executable, ['rar','unrar'], 'lha', ['arj','unarj'] ],
 );
 
-@virus_name_to_spam_score_maps =
-	(new_RE(  # the order matters!
+@virus_name_to_spam_score_maps = (
+	new_RE(  # the order matters!
 		[qr'^Phishing\.' => 0.1 ],
 		[qr'^Structured\.(SSN|CreditCardNumber)\b' => 0.1 ],
 		[qr'^(Email|HTML)\.Phishing\.(?!.*Sanesecurity)' => 0.1 ],
@@ -513,7 +513,8 @@ $banned_filename_re = new_RE(
 		[qr'^winnow\.malware\.' => undef],  # keep as infected
 		[qr'^INetMsg\.SpamDomain-2m\.' => 0.1],
 		[qr'^INetMsg\.SpamDomain-2w\.' => 0.1],
-  ));
+    )
+);
 
 @av_scanners = (
 # ### http://www.clamav.net/
