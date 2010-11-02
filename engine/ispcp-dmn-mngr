@@ -2398,7 +2398,7 @@ sub dmn_add_mta_cfg_data {
 				"$main::cfg{CMD_CP} $main::cfg{'AMAVIS_LOCAL_DOMAINS_HASH'} " .
 				"$main::cfg{'CONF_DIR'}/amavisd/backup/amavisd.domains" . time
 			);
-			return $rs if ()$rs != 0);
+			return $rs if ($rs != 0);
 		}
 
 		($rs, $working) = get_file($main::cfg{'AMAVIS_LOCAL_DOMAINS_HASH'});
