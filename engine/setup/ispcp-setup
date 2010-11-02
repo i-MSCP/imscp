@@ -785,6 +785,8 @@ sub setup_engine {
 		exit_msg($rs) if ($rs != 0);
 	}
 
+	spacer();
+
 	title('Permissions setup');
 	set_permissions();
 
