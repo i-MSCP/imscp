@@ -776,8 +776,6 @@ sub setup_engine {
 	title('Additional tasks');
 	additional_tasks();
 
-	spacer();
-
 	# Starting dist. maintainer post-installation script if one exists
 	if(-e "$main::cfg{'ROOT_DIR'}/engine/setup/postinst") {
 		spacer();

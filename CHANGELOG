@@ -4,6 +4,7 @@ ispCP ω 1.0.7 ChangeLog
 2010-11-02 Laurent Declercq
 	- SETUP:
 		* Moved additional_tasks() subroutine call after the postinst hook call
+		* Moved preinst hook call after ispCP conffile processing (update)
 
 2010-10-31 Daniel Andreca
 	- ENGINE:

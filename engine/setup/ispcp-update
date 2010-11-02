@@ -679,16 +679,6 @@ sub update_engine {
 	stop_services();
 	print_status(0);
 
-	## Starting dist. maintainer pre-installation script if one exists
-	if(-e "$main::cfg{'ROOT_DIR'}/engine/setup/preinst") {
-		spacer();
-
-		title("Pre-installation tasks for $main::cfg{'DistName'}");
-		my $rs = preinst('upgrade');
-
-		exit_msg($rs) if ($rs != 0);
-	}
-
 	spacer();
 
 	## IspCP main configuration file - Begin
@@ -709,6 +699,16 @@ sub update_engine {
 	$rs = check_ispcp_cfg_file();
 	$rs = 0 if($rs == -5);
 	print_status($rs, 'exit_on_error');
+
+	## Starting dist. maintainer pre-installation script if one exists
+	if(-e "$main::cfg{'ROOT_DIR'}/engine/setup/preinst") {
+		spacer();
+
+		title("Pre-installation tasks for $main::cfg{'DistName'}");
+		my $rs = preinst('upgrade');
+
+		exit_msg($rs) if ($rs != 0);
+	}
 
 	spacer();
 
