@@ -8,7 +8,7 @@ Table of Content
 1) Version Info
 2) Requirements
 3) Introduction
-4) openSUSE Mail protection
+4) SiteWide Mail protection solution
 5) Installation
 6) Update
 7) Uninstall
@@ -48,20 +48,24 @@ created. The core of ispCP ω are 3 easy-to-use, web-based control panels. ispCP
 provides graphic user interfaces for the administrators, resellers and users.
 
 ================================================================================
-4) openSUSE Mail protection
----------------------------
+4) SiteWide Mail protection solution
+------------------------------------
 
 Since ispCP Omega 1.0.7 rc3, both setup and update scripts are able to configure
-a complete mail protection solution (using Amavisd-new, SpamAssassin and ClamAv).
+a complete sitewide mail protection solution using Amavisd-new, SpamAssassin,
+ClamAv and some other services such as razor...
 
 If you want activate this solution, you should edit the ispcp.conf file before
-install/update ispCP ω Omega to activate the releated services.
+install/update ispCP ω Omega to activate the services that are part of this
+solution.
 
 You can also disable the mail protection solution by setting the proper values
-to 'no' in the ispcp.conf file (ispcp.old.conf when update) and by running again
-the ispCP ω Omega update script.
+to 'no' in the ispcp.conf file (ispcp.old.conf when update), and by running
+again the ispCP ω Omega update script.
 
 See the comments in the ispcp.conf file for more information.
+
+WARNING: Implementation of this solution is still experimental. You are warned!
 
 ================================================================================
 5) Installation
