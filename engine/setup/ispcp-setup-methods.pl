@@ -1322,11 +1322,12 @@ sub start_services {
 	push_el(\@main::el, 'start_services()', 'Starting...');
 
 	for (
-		qw/CMD_ISPCPN CMD_ISPCPD CMD_NAMED CMD_HTTPD CMD_FTPD CMD_POSTGREY
-		CMD_POLICYD_WEIGHT CMD_MTA CMD_AUTHD CMD_POP CMD_POP_SSL CMD_IMAP
-		CMD_IMAP_SSL/
+		qw/CMD_ISPCPN CMD_ISPCPD CMD_NAMED CMD_HTTPD CMD_FTPD CMD_CLAMD
+		CMD_POSTGREY CMD_POLICYD_WEIGHT CMD_AMAVIS CMD_MTA CMD_AUTHD CMD_POP
+		CMD_POP_SSL CMD_IMAP CMD_IMAP_SSL/
 	) {
-		if( $main::cfg{$_} !~ /^no$/i && -e $main::cfg{$_}) {
+		if(defined $main::cfg{$_} && $main::cfg{$_} !~ /^no$/i &&
+			-e $main::cfg{$_}) {
 			sys_command("$main::cfg{$_} start");
 			progress();
 		}
@@ -1345,11 +1346,11 @@ sub stop_services {
 	push_el(\@main::el, 'stop_services()', 'Starting...');
 
 	for (
-		qw/CMD_ISPCPN CMD_ISPCPD CMD_NAMED CMD_HTTPD CMD_FTPD CMD_POSTGREY
-		CMD_POLICYD_WEIGHT CMD_MTA CMD_AUTHD CMD_POP CMD_POP_SSL CMD_IMAP
-		CMD_IMAP_SSL/
+		qw/CMD_ISPCPN CMD_ISPCPD CMD_NAMED CMD_HTTPD CMD_FTPD CMD_CLAMD
+		CMD_POSTGREY CMD_POLICYD_WEIGHT CMD_AMAVIS CMD_MTA CMD_AUTHD CMD_POP
+		CMD_POP_SSL CMD_IMAP CMD_IMAP_SSL/
 	) {
-		if(-e $main::cfg{$_}) {
+		if(defined $main::cfg{$_} && -e $main::cfg{$_}) {
 			sys_command("$main::cfg{$_} stop");
 			progress();
 		}

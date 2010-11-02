@@ -7,6 +7,7 @@ ispCP ω 1.0.7 ChangeLog
 
 2010-11-02 Laurent Declercq
 	- SETUP:
+		* Added start/stop support for amavids and clamd
 		* Moved additional_tasks() subroutine call after the postinst hook call
 		* Moved preinst hook call after ispCP conffile processing (update)
 
