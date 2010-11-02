@@ -770,6 +770,14 @@ sub setup_engine {
 	title('GUI setup');
 	setup_gui_cfg();
 
+	spacer();
+
+	# Additional tasks
+	title('Additional tasks');
+	additional_tasks();
+
+	spacer();
+
 	# Starting dist. maintainer post-installation script if one exists
 	if(-e "$main::cfg{'ROOT_DIR'}/engine/setup/postinst") {
 		spacer();
@@ -778,14 +786,6 @@ sub setup_engine {
 		my $rs = postinst('configure');
 		exit_msg($rs) if ($rs != 0);
 	}
-
-	spacer();
-
-	# Additional tasks
-	title('Additional tasks');
-	additional_tasks();
-
-	spacer();
 
 	title('Permissions setup');
 	set_permissions();
