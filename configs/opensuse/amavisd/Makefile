@@ -31,6 +31,7 @@
 export
 
 install:
+	$(SYSTEM_MAKE_DIRS) $(SYSTEM_CONF)/amavisd
 
 	cp -R ./backup $(SYSTEM_CONF)/amavisd
 	cp -R ./working $(SYSTEM_CONF)/amavisd
