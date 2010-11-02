@@ -35,8 +35,9 @@ install:
 	cp -R ./backup $(SYSTEM_CONF)/amavisd
 	cp -R ./working $(SYSTEM_CONF)/amavisd
 	cp ./amavisd.tpl $(SYSTEM_CONF)/amavisd
-	cp ./amavisd.domains $(SYSTEM_CONF)/amavisd.domains
-	cp ./sender_scores_sitewide $(SYSTEM_CONF)/sender_scores_sitewide
+	cp ./amavisd.domains $(SYSTEM_CONF)/amavisd/amavisd.domains
+	cp ./sender_scores_sitewide $(SYSTEM_CONF)/amavisd/sender_scores_sitewide
+	cp ./spamassassin.tpl $(SYSTEM_CONF)/amavisd/spamassassin.tpl
 
 uninstall:
 
