@@ -1,6 +1,10 @@
 ispCP ω 1.0.7 ChangeLog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2010-11-02 Daniel Andreca
+	- CONFIGS:
+		* typo in gentoo configs
+
 2010-11-02 Laurent Declercq
 	- SETUP:
 		* Moved additional_tasks() subroutine call after the postinst hook call
