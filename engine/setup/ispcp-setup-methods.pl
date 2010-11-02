@@ -1234,7 +1234,8 @@ sub exit_msg {
 # tasks before that the actions of the main process are executed. This hook
 # allow to add a specific script named `preinst` that will be run before the
 # both setup and update process actions. This hook is automatically called after
-# that all services are shutting down.
+# that all services are shutting down except for the update process where it is
+# called after the ispCP configuration file processing (loading, updating...).
 #
 # Note:
 #
