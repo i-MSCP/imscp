@@ -1326,7 +1326,7 @@ sub start_services {
 		CMD_POSTGREY CMD_POLICYD_WEIGHT CMD_AMAVIS CMD_MTA CMD_AUTHD CMD_POP
 		CMD_POP_SSL CMD_IMAP CMD_IMAP_SSL/
 	) {
-		if(defined $main::cfg{$_} && $main::cfg{$_} !~ /^no$/i &&
+		if(exists $main::cfg{$_} && $main::cfg{$_} !~ /^no$/i &&
 			-e $main::cfg{$_}) {
 			sys_command("$main::cfg{$_} start");
 			progress();
@@ -1350,7 +1350,7 @@ sub stop_services {
 		CMD_POSTGREY CMD_POLICYD_WEIGHT CMD_AMAVIS CMD_MTA CMD_AUTHD CMD_POP
 		CMD_POP_SSL CMD_IMAP CMD_IMAP_SSL/
 	) {
-		if(defined $main::cfg{$_} && -e $main::cfg{$_}) {
+		if(exists $main::cfg{$_} && -e $main::cfg{$_}) {
 			sys_command("$main::cfg{$_} stop");
 			progress();
 		}
