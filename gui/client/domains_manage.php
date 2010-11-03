@@ -65,7 +65,8 @@ function gen_user_dns_list(&$tpl, &$sql, $user_id) {
 			`domain_dns`.`domain_type`,
 			`domain_dns`.`domain_text`,
 			IFNULL(`domain_aliasses`.`alias_name`, `domain`.`domain_name`) AS 'domain_name',
-			IFNULL(`domain_aliasses`.`alias_status`, `domain`.`domain_status`) AS 'domain_status'
+			IFNULL(`domain_aliasses`.`alias_status`, `domain`.`domain_status`) AS 'domain_status',
+			`domain_dns`.`protected`
 		FROM
 			`domain_dns`
 			LEFT JOIN `domain_aliasses` USING (`alias_id`, `domain_id`),
@@ -95,8 +96,15 @@ function gen_user_dns_list(&$tpl, &$sql, $user_id) {
 				$tpl->assign('ITEM_CLASS', 'content2');
 			}
 
-			list($dns_action_delete, $dns_action_script_delete) = gen_user_dns_action('Delete', $rs->fields['domain_dns_id'], $rs->fields['domain_status']);
-			list($dns_action_edit, $dns_action_script_edit) = gen_user_dns_action('Edit', $rs->fields['domain_dns_id'], $rs->fields['domain_status']);
+			list($dns_action_delete, $dns_action_script_delete) = gen_user_dns_action(
+				'Delete', $rs->fields['domain_dns_id'],
+				($rs->fields['protected'] == 'no') ? $rs->fields['domain_status'] : 'PROTECTED'
+			);
+
+			list($dns_action_edit, $dns_action_script_edit) = gen_user_dns_action(
+				'Edit', $rs->fields['domain_dns_id'],
+				($rs->fields['protected'] == 'no') ? $rs->fields['domain_status'] : 'PROTECTED'
+			);
 
 			$domain_name = decode_idna($rs->fields['domain_name']);
 			$sbd_name = $rs->fields['domain_dns'];
@@ -130,11 +138,13 @@ function gen_user_dns_action($action, $dns_id, $status) {
 
 	$cfg = ispCP_Registry::get('Config');
 
-	if ($status === $cfg->ITEM_OK_STATUS) {
+	if ($status == $cfg->ITEM_OK_STATUS) {
 		return array(tr($action), 'dns_'.strtolower($action).'.php?edit_id='.$dns_id);
-	} else {
-		return array(tr('N/A'), '#');
+	} elseif($action != 'Edit' && $status == 'PROTECTED') {
+		return array(tr('N/A'), 'protected');
 	}
+
+	return array(tr('N/A'), '#');
 }
 
 function gen_user_sub_action($sub_id, $sub_status) {

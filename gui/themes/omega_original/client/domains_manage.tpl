@@ -12,9 +12,10 @@
 <![endif]-->
 <script type="text/javascript">
 <!--
-function action_delete(url, alias_or_subdomain) {
-	if (!confirm(sprintf("{TR_MESSAGE_DELETE}", alias_or_subdomain)))
+function action_delete(url, object_type) {
+	if (url == 'protected' || !confirm(sprintf("{TR_MESSAGE_DELETE}", object_type)))
 		return false;
+
 	location = url;
 }
 //-->

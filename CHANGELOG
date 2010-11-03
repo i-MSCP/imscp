@@ -3,8 +3,8 @@ ispCP ω 1.0.7 ChangeLog
 
 2010-11-03 Laurent Declercq
 	- GUI
-		* #1977 Mail deactivation is not working properly (first part):
-			- Allows to protect custom DNS records against both edition/deletion
+		* Allows to protect custom DNS records against both edition/deletion
+		* Disabled both edit/delete links for protected DNS records (cosmetic)
 
 2010-11-02 Daniel Andreca
 	- CONFIGS:
