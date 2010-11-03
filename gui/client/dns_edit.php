@@ -215,7 +215,7 @@ function decode_zone_data($data) {
 	}
 	return array(
 		$name, $address, $addressv6, $srv_name, $srv_proto, $srv_TTL, $srv_prio,
-		$srv_weight, $srv_host, $srv_port, $cname, $txt
+		$srv_weight, $srv_host, $srv_port, $cname, $txt, $data['protected']
 	);
 }
 
@@ -227,29 +227,8 @@ function gen_editdns_page(&$tpl, $edit_id) {
 	global $sql, $DNS_allowed_types;
 	$cfg = ispCP_Registry::get('Config');
 
-	list($dmn_id,
-		$dmn_name,
-		$dmn_gid,
-		$dmn_uid,
-		$dmn_created_id,
-		$dmn_created,
-		$dmn_expires,
-		$dmn_last_modified,
-		$dmn_mailacc_limit,
-		$dmn_ftpacc_limit,
-		$dmn_traff_limit,
-		$dmn_sqld_limit,
-		$dmn_sqlu_limit,
-		$dmn_status,
-		$dmn_als_limit,
-		$dmn_subd_limit,
-		$dmn_ip_id,
-		$dmn_disk_limit,
-		$dmn_disk_usage,
-		$dmn_php,
-		$dmn_cgi,
-		$allowbackup,
-		$dmn_dns
+	list(
+		$dmn_id, $dmn_name,,,,,,,,,,,,,,,,,,,,,$dmn_dns
 	) = get_domain_default_props($sql, $_SESSION['user_id']);
 
 	if ($dmn_dns != 'yes') {
@@ -300,19 +279,15 @@ function gen_editdns_page(&$tpl, $edit_id) {
 	}
 
 	list(
-		$name,
-		$address,
-		$addressv6,
-		$srv_name,
-		$srv_proto,
-		$srv_ttl,
-		$srv_prio,
-		$srv_weight,
-		$srv_host,
-		$srv_port,
-		$cname,
-		$plain
-		) = decode_zone_data($data);
+		$name, $address, $addressv6, $srv_name, $srv_proto, $srv_ttl, $srv_prio,
+		$srv_weight, $srv_host, $srv_port, $cname, $plain, $protected
+	) = decode_zone_data($data);
+
+	// Protection against edition (eg. for external mail MX record)
+	if($protected == 'yes') {
+		set_page_message(tr('You are not allowed to edit this DNS record!'));
+		not_allowed();
+	}
 
 	$dns_type = create_options(array_intersect($DNS_allowed_types, mysql_get_enum($sql, "domain_dns.domain_type")), tryPost('type', $data['domain_type']));
 	$dns_class = create_options(mysql_get_enum($sql, "domain_dns.domain_class"), tryPost('class', $data['domain_class']));
