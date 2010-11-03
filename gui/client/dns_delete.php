@@ -66,7 +66,7 @@ if (isset($_GET['edit_id']) && $_GET['edit_id'] !== '') {
 	if ($rs->recordCount() == 0) {
 		// Back to the main page
 		user_goto('domains_manage.php');
-	} elseif($rs->fields['alias_id'] == 'yes') {
+	} elseif($rs->fields['protected'] == 'yes') {
 		set_page_message(tr('You are not allowed to remove this DNS record!'));
 		user_goto('domains_manage.php');
 	}
