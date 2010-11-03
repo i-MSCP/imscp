@@ -1811,6 +1811,30 @@ class ispCP_Update_Database extends ispCP_Update {
 		return array();
 	}
 
+	/**
+	 * Allows to protect custom DNS records against deletion
+	 *
+	 * @author Laurent Declercq <laurent.declercq@ispcp.net>
+	 * @since r3607
+	 * @return array
+	 */
+	protected function _databaseUpdate_44() {
+
+		$sqlUpd = array();
+
+		$sqlUpd[] = "
+			ALTER IGNORE TABLE
+				`domain_dns`
+			ADD
+				`protected` VARCHAR( 3 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no'
+			AFTER
+				`domain_text`
+			;
+		";
+
+		return $sqlUpd;
+	}
+
 	/*
 	 * DO NOT CHANGE ANYTHING BELOW THIS LINE!
 	 */

@@ -41,7 +41,8 @@ if (isset($_GET['edit_id']) && $_GET['edit_id'] !== '') {
 			`domain_dns`.`domain_dns_id`, `domain_dns`.`domain_dns`,
 			`domain_dns`.`alias_id`,
 			IFNULL(`domain_aliasses`.`alias_name`, `domain`.`domain_name`) AS domain_name,
-			IFNULL(`domain_aliasses`.`alias_id`, `domain_dns`.`domain_id`) AS id
+			IFNULL(`domain_aliasses`.`alias_id`, `domain_dns`.`domain_id`) AS id,
+			`domain_dns`.`protected`
 		FROM
 			`domain_dns`
 		LEFT JOIN
@@ -64,6 +65,9 @@ if (isset($_GET['edit_id']) && $_GET['edit_id'] !== '') {
 	// DNS record not found or not owned by current customer ?
 	if ($rs->recordCount() == 0) {
 		// Back to the main page
+		user_goto('domains_manage.php');
+	} elseif($rs->fields['alias_id'] == 'yes') {
+		set_page_message(tr('You are not allowed to remove this DNS record!'));
 		user_goto('domains_manage.php');
 	}
 
