@@ -572,7 +572,7 @@ sub _add_customer_master_dmn_als_db_data {
 
 	# Entry to be add
 	my $entry = "$main::cfg{'APACHE_SUEXEC_USER_PREF'}@${data[3]}\t\tIN\t\tA\t" .
-		"$main::cfg{'BASE_SERVER_IP'}\n";
+		"@$data[21]\n";
 
 	# Prevents double entries
 	$master_db_file_content =~ s/$entry//;
