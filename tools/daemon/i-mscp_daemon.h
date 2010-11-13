@@ -1,6 +1,6 @@
-#ifndef _ISPCP_DAEMON_H
+#ifndef _IMSCP_DAEMON_H
 
-#define _ISPCP_DAEMON_H
+#define _IMSCP_DAEMON_H
 
 /* Needed headers. */
 

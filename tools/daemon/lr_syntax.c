@@ -67,7 +67,7 @@ int lr_syntax(int fd, char *buff) {
 			memset (fname2, 0, sizeof (fname2));
 
 			if (readlink (fname1, fname2, sizeof (fname2)) > 0) {
-				strncpy(daemon_path, fname2, strlen(fname2)-strlen("daemon/ispcp_daemon"));
+				strncpy(daemon_path, fname2, strlen(fname2)-strlen("daemon/i-mscp_daemon"));
 				strcat(daemon_path, "engine/i-mscp-rqst-mngr");
 				fdres = open ("/dev/null", O_RDONLY);
 

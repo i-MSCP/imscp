@@ -1,8 +1,9 @@
 #!/usr/bin/make -f
 
-# ispCP ω (OMEGA) a Virtual Hosting Control Panel
+# i-MSCP a internet Multi Server Control Panel
 # Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
-# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2010 by internet Multi Server Control Panel - http://i-mscp.sf.net
 #
 # Version: $Id$
 #
@@ -23,10 +24,12 @@
 # by moleSoftware GmbH. All Rights Reserved.
 # Portions created by the ispCP Team are Copyright (C) 2006-2010 by
 # isp Control Panel. All Rights Reserved.
+# Portions created by the i-MSCP Team are Copyright (C) 2010 by
+# internet Multi Server Control Panel. All Rights Reserved.
 #
-# The ispCP ω Home Page is:
+# The i-MSCP Home Page is:
 #
-#    http://isp-control.net
+#    http://i-mscp.sf.net
 #
 
 #.if eq (,$(findstring noopt,$(DAEMON_OPTIONS)))
@@ -36,7 +39,7 @@
 #.endif
 
 
-OBJS = ispcp_daemon.o message.o daemon_init.o say.o signal-handlers.o\
+OBJS = i-mscp_daemon.o message.o daemon_init.o say.o signal-handlers.o\
 receive_data.o send_data.o take_connection.o send_line.o recv_line.o\
 helo_cmd.o helo_syntax.o lr_cmd.o lr_syntax.o bye_cmd.o bye_syntax.o
 
@@ -44,10 +47,10 @@ BUILD = gcc -ansi -Wall -Wstrict-prototypes -pedantic $(CFLAGS)
 
 COMPILE = gcc -ansi -Wall -Wstrict-prototypes -pedantic -c $(CFLAGS)
 
-ispcp_daemon: $(OBJS)
-	$(BUILD) -o ispcp_daemon $(OBJS)
+i-mscp_daemon: $(OBJS)
+	$(BUILD) -o i-mscp_daemon $(OBJS)
 #ifeq (,$(findstring nostrip,$(DAEMON_OPTIONS)))
-	strip -s ispcp_daemon
+	strip -s i-mscp_daemon
 #endif
 
 %.o: %.c %.h
@@ -56,6 +59,6 @@ ispcp_daemon: $(OBJS)
 clean:
 	rm -rf *~
 	rm -rf *.o
-	rm -rf ispcp_daemon
+	rm -rf i-mscp_daemon
 
 .PHONY: clean

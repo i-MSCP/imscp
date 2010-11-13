@@ -24,9 +24,9 @@
 
 #define LOG_DIR "/var/log/i-mscp"
 
-#define STDOUT_LOG "ispcp_daemon-stdout.log"
+#define STDOUT_LOG "i-mscp_daemon-stdout.log"
 
-#define STDERR_LOG "ispcp_daemon-stderr.log"
+#define STDERR_LOG "i-mscp_daemon-stderr.log"
 
 extern char *message(int message_number);
 

@@ -33,11 +33,11 @@
 #define NO_ERROR                0
 
 #define MSG_WELCOME             10001
-#define MSG_WELCOME_TXT	            "250 OK ispCP Daemon v1.1 Welcomes You!\r\n"
+#define MSG_WELCOME_TXT	            "250 OK i-MSCP Daemon v1.1 Welcomes You!\r\n"
 #define MSG_DAEMON_VER          10002
-#define MSG_DAEMON_VER_TXT          "ispCP daemon v1.1 started!"
+#define MSG_DAEMON_VER_TXT          "i-MSCP daemon v1.1 started!"
 #define MSG_DAEMON_NAME         10003
-#define MSG_DAEMON_NAME_TXT         "ispcp_daemon"
+#define MSG_DAEMON_NAME_TXT         "i-mscp_daemon"
 #define MSG_ERROR_LISTEN        10004
 #define MSG_ERROR_LISTEN_TXT        "listen() error: %s"
 #define MSG_SIG_CHLD            10005
@@ -71,9 +71,9 @@
 #define MSG_EQ_CMD              10019
 #define MSG_EQ_CMD_TXT              "execute query"
 #define MSG_CONF_FILE           10020
-#define MSG_CONF_FILE_TXT           "ispCP configuration file not found!"
+#define MSG_CONF_FILE_TXT           "i-MSCP configuration file not found!"
 #define MSG_MISSING_REG_DATA    10021
-#define MSG_MISSING_REG_DATA_TXT    "ispCP data cannot be found in the config file!"
+#define MSG_MISSING_REG_DATA_TXT    "i-MSCP data cannot be found in the config file!"
 #define MSG_ERROR_BIND          10022
 #define MSG_ERROR_BIND_TXT          "bind() error: %s! Please check for an other running daemon!"
 
