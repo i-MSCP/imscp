@@ -32,9 +32,9 @@ cd ${ISPCP_TMP_PATH}
 echo Extracting and configuring ISPCP
 
 cd ${ISPCP_TMP_PATH}
-mv  ${ISPCP_PATH} ${ISPCP_TMP_PATH}/i-mscp-omega-1.0.1-trunk
+mv  ${ISPCP_PATH} ${ISPCP_TMP_PATH}/imscp-1.0.0-trunk
 
-cd i-mscp-omega-1.0.1-trunk
+cd imscp-1.0.0-trunk
 
 #install Required updates
 yum -y install `cat ./docs/Fedora/fedora-packages`
@@ -65,10 +65,10 @@ clear
 ######################################
 echo Installing ISPCP
 
-cd ${ISPCP_TMP_PATH}/i-mscp-omega-1.0.1-trunk
+cd ${ISPCP_TMP_PATH}/imscp-1.0.0-trunk
 make -f Makefile.fedora install
 
-cp -RLf /tmp/i-mscp/* /
+cp -RLf /tmp/imscp/* /
 
 
 clear
@@ -93,8 +93,8 @@ cp -f /etc/init.d/courier-authlib /etc/init.d/courier-authdaemon
 
 # note permissions are changed in cleanup
 
-cp -f /etc/i-mscp/bind/named.conf /var/named/chroot/etc/named-i-mscp.conf
-echo 'include "/etc/named-i-mscp.conf";' >> /var/named/chroot/etc/named.conf
+cp -f /etc/imscp/bind/named.conf /var/named/chroot/etc/named-imscp.conf
+echo 'include "/etc/named-imscp.conf";' >> /var/named/chroot/etc/named.conf
 
 
 
@@ -107,8 +107,8 @@ service mysqld restart
 clear
 ######################################
 echo Prep work done entering ISPCP setup
-cd /var/www/i-mscp/engine/setup
-perl /var/www/i-mscp/engine/setup/i-mscp-setup
+cd /var/www/imscp/engine/setup
+perl /var/www/imscp/engine/setup/imscp-setup
 
 clear
 ######################################
@@ -120,8 +120,8 @@ clear
 ######################################
 echo fixing permissons
 
-chmod 777 /var/www/i-mscp/gui/phptmp
-chown apache:apache /var/www/i-mscp/gui/tools/webmail/data
+chmod 777 /var/www/imscp/gui/phptmp
+chown apache:apache /var/www/imscp/gui/tools/webmail/data
 
 ######################################
 echo Setting Startup services
@@ -152,7 +152,7 @@ service postfix restart
 
 ######################################
 echo removing tmp files
-rm -R /tmp/i-mscp
+rm -R /tmp/imscp
 
 clear
 ######################################

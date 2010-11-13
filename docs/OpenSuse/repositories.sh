@@ -36,20 +36,20 @@ URI_BASE="http://download.opensuse.org"
 case "$1" in
 	add)
 		# Apache
-		$ZYPPER_BIN ar -f $URI_BASE/repositories/Apache/openSUSE_11.3/ i-mscp-apache2
-		$ZYPPER_BIN ar -f $URI_BASE/repositories/Apache:/Modules/openSUSE_11.3/ i-mscp-apache2-modules
+		$ZYPPER_BIN ar -f $URI_BASE/repositories/Apache/openSUSE_11.3/ imscp-apache2
+		$ZYPPER_BIN ar -f $URI_BASE/repositories/Apache:/Modules/openSUSE_11.3/ imscp-apache2-modules
 
 		# Awstats
-		$ZYPPER_BIN ar -f $URI_BASE/repositories/network:/utilities/openSUSE_11.3/ i-mscp-awstats
+		$ZYPPER_BIN ar -f $URI_BASE/repositories/network:/utilities/openSUSE_11.3/ imscp-awstats
 
 		# Proftpd, lha, rkhunter
-		$ZYPPER_BIN ar -f $URI_BASE/repositories/openSUSE:/11.3:/Contrib/standard/ i-mscp-contrib
+		$ZYPPER_BIN ar -f $URI_BASE/repositories/openSUSE:/11.3:/Contrib/standard/ imscp-contrib
 
 		# Courier, Postgrey...
-		$ZYPPER_BIN ar -f $URI_BASE/repositories/server:/mail/openSUSE_11.3/ i-mscp-mail
+		$ZYPPER_BIN ar -f $URI_BASE/repositories/server:/mail/openSUSE_11.3/ imscp-mail
 
 		# policyd-weight
-		$ZYPPER_BIN ar -f $URI_BASE/repositories/home:/pheinlein/openSUSE_11.3/ i-mscp-pweight
+		$ZYPPER_BIN ar -f $URI_BASE/repositories/home:/pheinlein/openSUSE_11.3/ imscp-pweight
 
 		# Refresh all repositories
 		$ZYPPER_BIN ref
@@ -58,7 +58,7 @@ case "$1" in
 		REPO="apache2 apache2-modules awstats contrib mail pweight"
 
 		for i in $REPO
-			do $ZYPPER_BIN rr i-mscp-$i
+			do $ZYPPER_BIN rr imscp-$i
 		done
 	;;
 	*)

@@ -11,7 +11,7 @@ done
 wget ftp://ftp.proftpd.org/distrib/source/proftpd-1.3.1.tar.bz2
 bunzip2 proftpd-1.3.1.tar.bz2
 tar -xvf proftpd-1.3.1.tar
-cd proftpd-1.3.1 
+cd proftpd-1.3.1
 ./configure --sysconfdir=/etc --enable-ctrls --enable-ipv6 --enable-endfile --enable-facl --with-modules=mod_sql:mod_sql_mysql:mod_tls:mod_rewrite:mod_ratio:mod_readme:mod_ifsession:mod_ctrls_admin:mod_quotatab:mod_quotatab_file:mod_quotatab_sql --with-includes=/usr/local/include/mysql --with-libraries=/usr/local/lib --localstatedir=/var/run
 cd ./proftpd-1.3.1
 make
@@ -26,7 +26,7 @@ make install
 /usr/local/share/mysql/mysql.server start
 /usr/local/bin/mysql_install_db
 mysqladmin password 'your-new-password'
-/var/www/i-mscp/engine/setup/i-mscp-setup
+/var/www/imscp/engine/setup/imscp-setup
 echo "mkdir -p /var/run/courier-imap" >> /etc/rc.local
 echo "/usr/local/libexec/authlib/authdaemond start" >> /etc/rc.local
 echo "/usr/local/libexec/imapd.rc start" >> /etc/rc.local
@@ -44,7 +44,7 @@ echo "syslogd_flags=" >> /etc/rc.conf.local
 echo "sendmail_flags=\"-bd -q30m\"" >> /etc/rc.conf.local
 echo "named_flags=" >> /etc/rc.conf.local
 echo "AddType application/x-httpd-php .php" >> /var/www/conf/httpd.conf
-echo "Include /var/www/conf/i-mscp.conf" >> /var/www/conf/httpd.conf
+echo "Include /var/www/conf/imscp.conf" >> /var/www/conf/httpd.conf
 cp /usr/local/share/examples/php4/php.ini-recommended /var/www/conf/php.ini
 /usr/local/sbin/phpxs -s
 /usr/local/sbin/phpxs -a curl
