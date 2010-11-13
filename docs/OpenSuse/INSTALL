@@ -1,4 +1,4 @@
-ispCP ω (OMEGA) HowTo Install for OpenSuse 11.3
+i-MSCP HowTo Install for OpenSuse 11.3
 ================================================================================
 For other Linux distributions please check the other INSTALL files.
 ================================================================================
@@ -17,51 +17,51 @@ Table of Content
 ================================================================================
 1) Version Info
 ---------------
-ispCP ω Version:    1.0.7
-INSTALL file:       2.4
-postinst script:    1.0.6
-preinst script:     1.0.1
-Maintainer:         Laurent Declercq (Nuxwin) <laurent.declercq@i-mscp.net>
-Homepage:           http://isp-contol.net
-Linux Distros:      openSuse 11.3
+i-MSCP Version:		1.0.0
+INSTALL file:		2.4
+postinst script:	1.0.6
+preinst script:		1.0.1
+Maintainer:			Laurent Declercq (Nuxwin) <laurent.declercq@i-mscp.net>
+Homepage:			http://i-mscp.sf.net
+Linux Distros:		openSuse 11.3
 
 ================================================================================
 2) Requirements
 ---------------
-There is no must have for a system using ispCP ω. This is only a recommendation:
+There is no must have for a system using i-MSCP. This is only a recommendation:
 
 Penitum III or K6-4 with 500 MHz
 512 MB RAM
-100 MB disk space (only for install of ispCP ω)
+100 MB disk space (only for install of i-MSCP)
 
 ================================================================================
 3) Introduction
 ---------------
-ispCP ω delivers a complete hosting automation appliance by offering significant
+i-MSCP delivers a complete hosting automation appliance by offering significant
 security, total-cost-of-ownership, and performance advantages over competing
 commercial solutions.
 
-With ispCP ω you can configure your server and applications, create user with
+With i-MSCP you can configure your server and applications, create user with
 domains with a few point-and-click operations that take less than a minute.
 There is no limit to the number of resellers, users and domains that can be
-created. The core of ispCP ω are 3 easy-to-use, web-based control panels. ispCP
+created. The core of i-MSCP are 3 easy-to-use, web-based control panels. i-MSCP
 provides graphic user interfaces for the administrators, resellers and users.
 
 ================================================================================
 4) SiteWide Mail protection solution
 ------------------------------------
 
-Since ispCP Omega 1.0.7 rc3, both setup and update scripts are able to configure
+Since i-MSCP 1.0.0, both setup and update scripts are able to configure
 a complete sitewide mail protection solution using Amavisd-new, SpamAssassin,
 ClamAv and some other services such as razor...
 
 If you want activate this solution, you should edit the i-mscp.conf file before
-install/update ispCP ω Omega to activate the services that are part of this
+install/update i-MSCP Omega to activate the services that are part of this
 solution.
 
 You can also disable the mail protection solution by setting the proper values
 to 'no' in the i-mscp.conf file (i-mscp.old.conf when update), and by running
-again the ispCP ω Omega update script.
+again the i-MSCP Omega update script.
 
 See the comments in the i-mscp.conf file for more information.
 
@@ -75,11 +75,11 @@ First, make sure you are logged in as root.
 1. Untar or unzip the distribution files to a secure directory:
 
 	# cd /usr/local/src
-	# tar xjvf i-mscp-omega-1.0.7.tar.bz2
+	# tar xjvf i-mscp-1.0.0.tar.bz2
 
 2. Change to the newly created directory:
 
-	# cd ./i-mscp-omega-1.0.7
+	# cd ./i-mscp-1.0.0
 
 3. Install the required repositories:
 
@@ -127,7 +127,7 @@ Note: For all questions, answer "a" (trust always).
 	# cp -a /etc/skel /etc/skel.bkp
 	# rm -r /etc/skel && mkdir /etc/skel
 
-12. Now it's time to set up ispCP. Change into the engine directory and start
+12. Now it's time to set up i-MSCP. Change into the engine directory and start
 	the engine setup:
 
 	# cd /srv/www/i-mscp/engine/setup
@@ -137,10 +137,10 @@ Note: For all questions, answer "a" (trust always).
 
 	# rm -r /etc/skel && mv /etc/skel.bkp /etc/skel
 
-14. Install ispCP ω step-by-step
+14. Install i-MSCP step-by-step
 
 	If you get no error, all went good ; if you get one, look at
-	http://isp-control.net to solve the problem.
+	http://is-mscp.sf.net to solve the problem.
 
 15. Clean the temporary folders:
 	# rm -Rf /tmp/i-mscp
@@ -148,19 +148,19 @@ Note: For all questions, answer "a" (trust always).
 ================================================================================
 6) Update
 ---------
-NOTE: ispCP ω can only be updated from post 1.0.0. If you have a
-version prior 1.0.0 (final release) installed, update to ispCP ω 1.0.0 first.
+NOTE: i-MSCP can only be updated from post 1.0.0. If you have a
+version prior 1.0.0 (final release) installed, update to i-MSCP 1.0.0 first.
 
 Make sure you are logged in as root and MySQL is running.
 
 1. Untar or unzip the distribution files to a secure directory:
 
 	# cd /usr/local/src
-	# tar xjvf i-mscp-omega-1.0.7.tar.bz2
+	# tar xjvf i-mscp-1.0.0.tar.bz2
 
 2. Change to the newly created directory:
 
-	# cd ./i-mscp-omega-1.0.7
+	# cd ./i-mscp-1.0.0
 
 3. Install the required repositories:
 
@@ -182,9 +182,9 @@ Note: For all questions, answer "a" (trust always).
 
 	# cpan $(cat ./docs/OpenSuse/perl-packages)
 
-6. Stop the ispcp_deamon and build the System by using make:
+6. Stop the i-mscp_daemon and build the System by using make:
 
-	# /etc/init.d/ispcp_daemon stop
+	# /etc/init.d/i-mscp_daemon stop
 	# make -f Makefile.opensuse install
 
 7. Backup files:
@@ -194,9 +194,6 @@ Note: For all questions, answer "a" (trust always).
 	# cp -v /srv/www/i-mscp/gui/include/i-mscp-db-keys.php /tmp/i-mscp/srv/www/i-mscp/gui/include/
 	# cp -v /srv/www/i-mscp/gui/themes/user_logos/* /tmp/i-mscp/srv/www/i-mscp/gui/themes/user_logos/
 	# cp -v /srv/www/i-mscp/gui/tools/webmail/data/* /tmp/i-mscp/srv/www/i-mscp/gui/tools/webmail/data/
-
-	For ispCP Omega prior version 1.0.7 RC2
-	# cp -v /srv/www/i-mscp/gui/tools/pma/config.inc.php /tmp/i-mscp/etc/i-mscp/pma/working/
 
 8. Delete old files to avoid security risks:
 
@@ -223,10 +220,10 @@ Note: For all questions, answer "a" (trust always).
 12. Start the engine update:
 	# perl i-mscp-update
 
-13. Update ispCP ω step-by-step
+13. Update i-MSCP step-by-step
 
 	If you get no error, all went good; if you get one, look at
-	http://isp-control.net to solve the problem.
+	http://is-mscp.sf.net to solve the problem.
 
 14. Clean the temporary folders:
 	# rm -Rf /tmp/i-mscp/
@@ -250,12 +247,12 @@ Make sure you are logged in as root and MySQL is running.
 8) Credits
 ----------
 
-ispCP ω is a project of ispCP | isp Control Panel.
-ispCP, ispCP ω, isp Control Panel, the ispCP logo and the ω Logo are trademarks
-of the ispCP | isp Control Panel Project Team.
+i-MSCP is a project of i-MSCP | internet Multi Server Control Panel.
+i-MSCP, internet Multi Server Control Panel and the i-MSCP logo are trademarks
+of the i-MSCP | internet Multi Server Control Panel Project Team.
 
-Please visit our site under http://isp-control.net for further information on
-ispCP ω, ispCP and other themes.
+Please visit our site under http://i-mscp.sf.net for further information on
+i-MSCP and other themes.
 
-We hope you enjoy using ispCP ω. If you like it, help us, to make it better. We
+We hope you enjoy using i-MSCP. If you like it, help us, to make it better. We
 would be glad on any help provided!

@@ -1,4 +1,4 @@
-ispCP ω (OMEGA) HowTo Install for CentOS 5.4
+i-MSCP HowTo Install for CentOS 5.4
 ================================================================================
 For other Linux distributions please check the other INSTALL files.
 ================================================================================
@@ -19,11 +19,11 @@ Table of Content
 1) Version Info
 ---------------
 
-ispCP Version:         1.0.7
-INSTALL Script:        1.8
-Maintainer:            motokochan
-Homepage:              http://isp-contol.net
-Linux Distros:         CentOS 5.4
+i-MSCP Version:		1.0.0
+INSTALL Script:		1.8
+Maintainer:
+Homepage:			http://i-mscp.sf.net
+Linux Distros:		CentOS 5.4
 
 This documentation was written for CentOS 5, specifically 5.4. While you might
 be able to install on earlier versions, you may encounter difficulties or
@@ -33,7 +33,7 @@ fit your system.
 The instructions are based on a minimum installation of CentOS with no optional
 packages marked during OS install. If you selected additional options during the
 install process, some extra server services may need to be disabled to avoid
-interfering with the packages used by ispCP ω.
+interfering with the packages used by i-MSCP.
 The install instructions attempt to keep system changes to a minimum, so these
 instructions should also work under Red Hat Enterprise Linux 5. If you encounter
 differences, please notify the maintainer.
@@ -42,11 +42,11 @@ The install instructions should be done under the root account
 ================================================================================
 2) Requirements
 ---------------
-There is no must have for a system using ispCP ω This is only a recommendation:
+There is no must have for a system using i-MSCP This is only a recommendation:
 
 Pentium III or K6-4 with 500 MHz
 512 MB RAM
-100 MB disk space (only for install of ispCP ω
+100 MB disk space (only for install of i-MSCP)
 Debian (or even any other *NIX-Distribution)
 
 All required packages are listed in /docs/CentOS/centos-packages
@@ -54,14 +54,14 @@ All required packages are listed in /docs/CentOS/centos-packages
 ================================================================================
 3) Introduction
 ---------------
-ispCP ω delivers a complete hosting automation appliance by offering significant
+i-MSCP delivers a complete hosting automation appliance by offering significant
 security, total-cost-of-ownership, and performance advantages over competing
 commercial solutions.
 
-With ispCP ω you can configure your server and applications, create user with
+With i-MSCP you can configure your server and applications, create user with
 domains with a few point-and-click operations that take less than a minute.
 There is no limit to the number of resellers, users and domains that can be
-created. The core of ispCP ω are 3 easy-to-use, web-based control panels. ispCP
+created. The core of i-MSCP are 3 easy-to-use, web-based control panels. i-MSCP
 provides graphic user interfaces for the administrators, resellers and users.
 
 ================================================================================
@@ -156,10 +156,10 @@ Make sure you are logged in as root and MySQL is running (Start with "service my
 
 1. Untar or unzip the distribution files to a secure directory:
 	# cd /usr/local/src
-	# tar xjvf i-mscp-omega-1.0.7.tar.bz2
+	# tar xjvf i-mscp-1.0.0.tar.bz2
 
 2. Change to the newly created directory:
-	# cd ./i-mscp-omega-1.0.7
+	# cd ./i-mscp-1.0.0
 
 3. Install the required modules
    A list of packages required by this software is located in
@@ -211,13 +211,13 @@ Make sure you are logged in as root and MySQL is running (Start with "service my
 	# cd /var/www/i-mscp/engine/setup
 	# perl i-mscp-setup
 
-9. Install ispCP ω step-by-step
+9. Install i-MSCP step-by-step
 
     NOTE: During setup, you will be asked if you are using fastcgi or fcgid.
     You will want to choose the option for fcgid (shortcut key "f" on the prompt).
 
     If you get no error, all went good; if you get one, look at
-    http://isp-control.net to solve the problem.
+    http://is-mscp.sf.net to solve the problem.
 
 10. Clean the temporary folders:
 	# rm -fR /tmp/i-mscp/
@@ -267,8 +267,8 @@ Make sure you are logged in as root and MySQL is running (Start with "service my
 
     # chkconfig --level 345 httpd on
     # chkconfig --level 345 mysqld on
-    # chkconfig --level 345 ispcp_network on
-    # chkconfig --level 345 ispcp_daemon on
+    # chkconfig --level 345 i-mscp_network on
+    # chkconfig --level 345 i-mscp_daemon on
     # chkconfig --level 345 amavisd on
     # chkconfig --level 345 named on
     # chkconfig --level 345 proftpd on
@@ -280,8 +280,8 @@ Make sure you are logged in as root and MySQL is running (Start with "service my
 
     # service httpd start
     # service mysqld start
-    # service ispcp_network start
-    # service ispcp_daemon start
+    # service i-mscp_network start
+    # service i-mscp_daemon start
     # service amavisd start
     # service named start
     # service proftpd start
@@ -297,25 +297,25 @@ Make sure you are logged in as root and MySQL is running (Start with "service my
 ================================================================================
 7) Update
 ---------
-NOTE: ispCP ω can only be updated from post 1.0.0. If you have a
-version prior 1.0.0 (final release) installed, update to ispCP ω 1.0.0 first.
+NOTE: i-MSCP can only be updated from post 1.0.0. If you have a
+version prior 1.0.0 (final release) installed, update to i-MSCP 1.0.0 first.
 
 Make sure you are logged in as root and MySQL is running.
 
 1. Untar or unzip the distribution files to a secure directory:
 	# cd /usr/local/src
-	# tar xjvf i-mscp-omega-1.0.7.tar.bz2
+	# tar xjvf i-mscp-1.0.0.tar.bz2
 
 2. Change to the newly created directory:
-	# cd ./i-mscp-omega-1.0.7
+	# cd ./i-mscp-1.0.0
 
 3. Install the required modules
    first update your system:
 	# yum update
 	# yum install `cat ./docs/CentOS/centos-packages`
 
-4. Stop the ispcp_deamon and build the Software by using make:
-	# services ispcp_daemon stop
+4. Stop the i-mscp_daemon and build the Software by using make:
+	# services i-mscp_daemon stop
 	# make -f Makefile.centos
 
 5. Backup files
@@ -350,10 +350,10 @@ Make sure you are logged in as root and MySQL is running.
 10. Start the engine update:
 	# perl i-mscp-update
 
-11. Update ispCP ω step-by-step
+11. Update i-MSCP step-by-step
 
 	If you get no error, all went good; if you get one, look at
-	http://isp-control.net to solve the problem.
+	http://is-mscp.sf.net to solve the problem.
 
 12. Clean the temporary folders:
 	# rm -fR /tmp/i-mscp/
@@ -375,12 +375,12 @@ Make sure you are logged in as root and MySQL is running.
 9) Credits
 ----------
 
-ispCP ω is a project of ispCP | isp Control Panel.
-ispCP, ispCP ω, isp Control Panel, the ispCP logo and the ω Logo are trademarks
-of the ispCP | isp Control Panel Project Team.
+i-MSCP is a project of i-MSCP | internet Multi Server Control Panel.
+i-MSCP, internet Multi Server Control Panel and the i-MSCP logo are trademarks
+of the i-MSCP | internet Multi Server Control Panel Project Team.
 
-Please visit our site under http://isp-control.net for further information on
-ispCP ω, ispCP and other themes.
+Please visit our site under http://i-mscp.sf.net for further information on
+i-MSCP and other themes.
 
-We hope you enjoy using ispCP ω. If you like it, help us, to make it better. We
+We hope you enjoy using i-MSCP. If you like it, help us, to make it better. We
 would be glad on any help provided!
