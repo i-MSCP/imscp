@@ -38,7 +38,7 @@ else
 	CFLAGS += -O3
 endif
 
-OBJS = i-mscp_daemon.o message.o daemon_init.o say.o signal-handlers.o\
+OBJS = imscp_daemon.o message.o daemon_init.o say.o signal-handlers.o\
 receive_data.o send_data.o take_connection.o send_line.o recv_line.o\
 helo_cmd.o helo_syntax.o lr_cmd.o lr_syntax.o bye_cmd.o bye_syntax.o
 
@@ -46,10 +46,10 @@ BUILD = gcc -ansi -Wall -Wstrict-prototypes -pedantic $(CFLAGS)
 
 COMPILE = gcc -ansi -Wall -Wstrict-prototypes -pedantic -c $(CFLAGS)
 
-i-mscp_daemon: $(OBJS)
-	$(BUILD) -o i-mscp_daemon $(OBJS)
+imscp_daemon: $(OBJS)
+	$(BUILD) -o imscp_daemon $(OBJS)
 ifeq (,$(findstring nostrip,$(DAEMON_OPTIONS)))
-	strip -s i-mscp_daemon
+	strip -s imscp_daemon
 endif
 
 %.o: %.c %.h
@@ -58,6 +58,6 @@ endif
 clean:
 	rm -rf *~
 	rm -rf *.o
-	rm -rf i-mscp_daemon
+	rm -rf imscp_daemon
 
 .PHONY: clean

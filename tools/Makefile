@@ -37,15 +37,15 @@ export
 DAEMON_DIR=$(SYSTEM_ROOT)/daemon
 
 
-build: daemon/i-mscp_daemon
+build: daemon/imscp_daemon
 
-daemon/i-mscp_daemon:
+daemon/imscp_daemon:
 	(cd ./daemon; \
-	$(MAKE) i-mscp_daemon;)
+	$(MAKE) imscp_daemon;)
 
 install: build
 	$(SYSTEM_MAKE_DIRS) $(DAEMON_DIR)
-	cp ./daemon/i-mscp_daemon $(DAEMON_DIR)
+	cp ./daemon/imscp_daemon $(DAEMON_DIR)
 
 uninstall:
 

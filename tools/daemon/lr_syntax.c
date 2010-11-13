@@ -67,8 +67,8 @@ int lr_syntax(int fd, char *buff) {
 			memset (fname2, 0, sizeof (fname2));
 
 			if (readlink (fname1, fname2, sizeof (fname2)) > 0) {
-				strncpy(daemon_path, fname2, strlen(fname2)-strlen("daemon/i-mscp_daemon"));
-				strcat(daemon_path, "engine/i-mscp-rqst-mngr");
+				strncpy(daemon_path, fname2, strlen(fname2)-strlen("daemon/imscp_daemon"));
+				strcat(daemon_path, "engine/imscp-rqst-mngr");
 				fdres = open ("/dev/null", O_RDONLY);
 
 				if(fdres == -1) {
@@ -122,7 +122,7 @@ int lr_syntax(int fd, char *buff) {
 					close (fdres);
 				}
 
-				execl(daemon_path, "i-mscp-rqst-mngr" ,(char*)NULL);
+				execl(daemon_path, "imscp-rqst-mngr" ,(char*)NULL);
 			}
 
 			#else
@@ -136,7 +136,7 @@ int lr_syntax(int fd, char *buff) {
 			sprintf(
 				qcommand,
 				"%s 1>%s/%s.%ld 2>%s/%s.%ld",
-				"/usr/local/www/i-mscp/engine/i-mscp-rqst-mngr",
+				"/usr/local/www/imscp/engine/imscp-rqst-mngr",
 				LOG_DIR,
 				STDOUT_LOG,
 				(long int) tim,
