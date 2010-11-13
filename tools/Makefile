@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 
-# i-MSCP insternet Multi Server Control Panel
+# i-MSCP internet Multi Server Control Panel
 # Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
 # Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
 # Copyright (C) 2010 by internet Multi Server Control Panel - http://i-mscp.sf.net
