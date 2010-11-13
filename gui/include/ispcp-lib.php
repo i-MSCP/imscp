@@ -40,7 +40,7 @@ error_reporting(E_ALL|E_STRICT);
 
 // Sets to TRUE here to ensure displaying of the base core errors
 // Will be overwritten during initialization process
-// @see ispCP_Initializer::_setDisplayErrors()
+// @see iMSCP_Initializer::_setDisplayErrors()
 ini_set('display_errors', 1);
 
 // Define path for the ispCP include directory
@@ -62,7 +62,7 @@ spl_autoload_register('autoload_class');
  */
 ispCP_Registry::setAlias(
 	'exceptionHandler',
-	ispCP_Exception_Handler::getInstance()->setHandler()
+	iMSCP_Exception_Handler::getInstance()->setHandler()
 );
 
 /**
@@ -78,7 +78,7 @@ ispCP_Registry::setAlias(
  * initialization process.
  */
 ispCP_Registry::get('exceptionHandler')->attach(
-	new ispCP_Exception_Writer_Browser(
+	new iMSCP_Exception_Writer_Browser(
 		// hardcoded here but will be improved later
 		'themes/omega_original/system-message.tpl'
 	)
@@ -94,7 +94,7 @@ if($ispcp_db_pass_key != '{KEY}' && $ispcp_db_pass_iv != '{IV}') {
 	ispCP_Registry::set('MCRYPT_IV', $ispcp_db_pass_iv);
 	unset($ispcp_db_pass_key, $ispcp_db_pass_iv);
 } else {
-	throw new ispCP_Exception(
+	throw new iMSCP_Exception(
 		'Error: Database key and/or initialization vector was not generated!'
 	);
 }
@@ -109,8 +109,8 @@ require_once INCLUDEPATH . '/deprecated.php';
 /**
  * Bootstrap the ispCP environment, and default configuration
  *
- * @see {@link ispCP_Bootstrap} class
- * @see {@link ispCP_Initializer} class
+ * @see {@link iMSCP_Bootstrap} class
+ * @see {@link iMSCP_Initializer} class
  */
 require_once INCLUDEPATH . '/environment.php';
 
@@ -122,7 +122,7 @@ require_once 'i18n.php';
 /**
  * System message functions
  *
- * @deprecated Deprecated since 1.0.6 - Will be replaced by ispCP_Exception
+ * @deprecated Deprecated since 1.0.6 - Will be replaced by iMSCP_Exception
  */
 require_once 'system-message.php';
 

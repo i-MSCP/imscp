@@ -142,11 +142,11 @@ Please login into your ispCP control panel for more details.
 }
 
 if (!isset($_GET['id']) || !is_numeric($_GET['id']) || !isset($_GET['k'])) {
-	throw new ispCP_Exception_Production(tr('You do not have permission to access this interface!'));
+	throw new iMSCP_Exception_Production(tr('You do not have permission to access this interface!'));
 }
 
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->PURCHASE_TEMPLATE_PATH . '/activate.tpl');
 $tpl->define_dynamic('page_message', 'page');
 

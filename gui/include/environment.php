@@ -28,10 +28,10 @@
  */
 
 // Boot IspCP
-ispCP_Bootstrap::boot();
+iMSCP_Bootstrap::boot();
 
-// Get a reference to a ispCP_Config_Handler_File instance
-$config = new ispCP_Config_Handler_File();
+// Get a reference to a iMSCP_Config_Handler_File instance
+$config = new iMSCP_Config_Handler_File();
 
 // Set some configuration parameters
 
@@ -232,7 +232,7 @@ $config->BASE_SERVER_VHOST = encode_idna($config->BASE_SERVER_VHOST);
 $config->DATABASE_HOST = encode_idna($config->DATABASE_HOST);
 
 // Initialize the application
-IspCP_Initializer::run($config);
+iMSCP_Initializer::run($config);
 
 // Remove useless variable
 unset($config);

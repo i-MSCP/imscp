@@ -58,7 +58,7 @@ function setConfig_Value($name, $value) {
 		$res = exec_query($sql, $query, array($value, $name));
 	}
 
-	ispCP_Config::getInstance()->set($name, $value);
+	iMSCP_Config::getInstance()->set($name, $value);
 
 	return true;
 }

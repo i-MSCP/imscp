@@ -19,7 +19,7 @@
  * isp Control Panel. All Rights Reserved.
  *
  * @category	ispCP
- * @package		ispCP_Exception
+ * @package		iMSCP_Exception
  * @subpackage	Writer
  * @copyright	2006-2010 by ispCP | http://isp-control.net
  * @author		Laurent Declercq <laurent.declercq@i-mscp.net>
@@ -29,7 +29,7 @@
  */
 
 /**
- * @see ispCP_Exception_Writer
+ * @see iMSCP_Exception_Writer
  */
 require_once  INCLUDEPATH . '/ispCP/Exception/Writer.php';
 
@@ -48,19 +48,19 @@ require_once  INCLUDEPATH . '/ispCP/Exception/Writer.php';
  * <b>Note:</b> Will be improved later.
  *
  * @category	ispCP
- * @package		ispCP_Exception
+ * @package		iMSCP_Exception
  * @subpackage	Writer
  * @author		Laurent Declercq <laurent.declercq@i-mscp.net>
  * @since		1.0.7
  * @version		1.0.3
  * @todo		Display more information like trace on debug mode.
  */
-class ispCP_Exception_Writer_Browser extends ispCP_Exception_Writer {
+class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer {
 
 	/**
 	 * pTemplate instance
 	 *
-	 * @var ispCP_pTemplate
+	 * @var iMSCP_pTemplate
 	 */
 	protected $_pTemplate = null;
 
@@ -105,7 +105,7 @@ class ispCP_Exception_Writer_Browser extends ispCP_Exception_Writer {
 	/**
 	 * This methods is called from the subject (i.e. when an event occur)
 	 *
-	 * @param ispCP_Exception_Handler $exceptionHandler ispCP_Exception_Handler
+	 * @param iMSCP_Exception_Handler $exceptionHandler iMSCP_Exception_Handler
 	 * @return void
 	 */
 	public function update(SplSubject $exceptionHandler) {
@@ -144,7 +144,7 @@ class ispCP_Exception_Writer_Browser extends ispCP_Exception_Writer {
 	 */
 	protected function _prepareTemplate() {
 
-		$this->_pTemplate = new ispCP_pTemplate();
+		$this->_pTemplate = new iMSCP_pTemplate();
 		$this->_pTemplate->define('page', $this->_templateFile);
 
 

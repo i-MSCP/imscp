@@ -140,7 +140,7 @@ function update_user_logo($file_name, $user_id) {
 	$rs = exec_query($sql, $query, array($file_name, $user_id));
 }
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/settings_layout.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('hosting_plans', 'page');

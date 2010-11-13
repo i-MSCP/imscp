@@ -33,11 +33,11 @@
  *
  * <b>Note:</b> You may pass additional parameters. They will be treated as
  * though you called PDOStatement::setFetchMode() on the resultant statement
- * object that is wrapped by the ispCP_Database_ResultSet object.
+ * object that is wrapped by the iMSCP_Database_ResultSet object.
  *
- * @see ispCP_Database::execute()
- * @throws ispCP_Exception_Database
- * @param  ispCP_Database $db ispCP_Database instance
+ * @see iMSCP_Database::execute()
+ * @throws iMSCP_Exception_Database
+ * @param  iMSCP_Database $db iMSCP_Database instance
  * @param string $query SQL statement to be executed
  * @param array|int|string $parameters OPTIONAL parameters that represents
  * data to bind to the placeholders for prepared statement, or an integer
@@ -48,7 +48,7 @@
  * Fetch mode used)
  * @param array $parameters OPTIONAL parameter for Sql statements only. Can
  * be an array that contains constructor arguments. (See PDO::FETCH_CLASS)
- * @return ispCP_Database_ResultSet Returns an ispCP_Database_ResultSet object
+ * @return iMSCP_Database_ResultSet Returns an iMSCP_Database_ResultSet object
  **/
 function execute_query($db, $query, $parameters = null) {
 
@@ -61,7 +61,7 @@ function execute_query($db, $query, $parameters = null) {
 	}
 
 	if ($stmt == false)
-		throw new ispCP_Exception_Database($db->getLastErrorMessage());
+		throw new iMSCP_Exception_Database($db->getLastErrorMessage());
 
 	return $stmt;
 }
@@ -72,22 +72,22 @@ function execute_query($db, $query, $parameters = null) {
  * <b>Note:</b> On failure, and if the $failDie parameter is set to TRUE, this
  * function sends a mail to the administrator with some relevant information
  * such as the debug information if the
- * {@link ispCP_Exception_Writer_Mail writer} is active.
+ * {@link iMSCP_Exception_Writer_Mail writer} is active.
  *
- * @throws ispCP_Exception_Database
- * @param ispCP_Database $db ispCP_Database Instance
+ * @throws iMSCP_Exception_Database
+ * @param iMSCP_Database $db iMSCP_Database Instance
  * @param string $query SQL statement
  * @param string|int|array $bind Data to bind to the placeholders
- * @param boolean $failDie If TRUE, throws an ispCP_Exception_Database exception
+ * @param boolean $failDie If TRUE, throws an iMSCP_Exception_Database exception
  * on failure
- * @return ispCP_Database_ResultSet Return a ispCP_Database_ResultSet object
+ * @return iMSCP_Database_ResultSet Return a iMSCP_Database_ResultSet object
  * that represents a result set or FALSE on failure if $failDie is set to FALSE
  */
 function exec_query($db, $query, $bind = null, $failDie = true) {
 
 	if(!($stmt = $db->prepare($query)) || !($stmt = $db->execute($stmt, $bind))) {
 		if($failDie) {
-			throw new ispCP_Exception_Database(
+			throw new iMSCP_Exception_Database(
 				$db->getLastErrorMessage() . " - Query: $query"
 			);
 		}

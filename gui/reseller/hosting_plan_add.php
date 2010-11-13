@@ -39,7 +39,7 @@ if (isset($cfg->HOSTING_PLANS_LEVEL)
 		user_goto('hosting_plan.php');
 }
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/hosting_plan_add.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');

@@ -34,7 +34,7 @@ check_login(__FILE__);
 
 $cfg = ispCP_Registry::get('Config');
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/sql_database_add.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
@@ -93,7 +93,7 @@ function gen_page_post_data(&$tpl) {
 /**
  * Check if a database with same name already exists
  *
- * @param  ispCP_Database $sql ispCP_Database instance
+ * @param  iMSCP_Database $sql iMSCP_Database instance
  * @param  string $db_name database name to be checked
  * @return boolean TRUE if database exists, false otherwise
  */

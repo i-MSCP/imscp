@@ -19,7 +19,7 @@
  * isp Control Panel. All Rights Reserved.
  *
  * @category	ispCP
- * @package		ispCP_Database
+ * @package		iMSCP_Database
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @version 	SVN: $Id$
  * @link		http://isp-control.net ispCP Home Site
@@ -33,10 +33,10 @@
  * @property mixed fields
  *
  * @category	ispCP
- * @package     ispCP_Database
+ * @package     iMSCP_Database
  * @author      ispCP Team
  */
-class ispCP_Database_ResultSet {
+class iMSCP_Database_ResultSet {
 
 	/**
 	 * PDOStatement object
@@ -68,14 +68,14 @@ class ispCP_Database_ResultSet {
 	/**
 	 * Create a new DatabaseResult object
 	 *
-	 * @throws ispCP_Exception_Database
+	 * @throws iMSCP_Exception_Database
 	 * @param PDOStatement $stmt A PDOStatement instance
 	 * @return void
 	 */
 	public function __construct($stmt) {
 
 		if(!($stmt instanceof PDOStatement)) {
-			throw new ispCP_Exception_Database(
+			throw new iMSCP_Exception_Database(
 				'Error: Argument passed to ' . __METHOD__ . '() must be a ' .
 					'PDOStatement object!'
 			);
@@ -90,7 +90,7 @@ class ispCP_Database_ResultSet {
 	 * Php overloading method that allows to fetch the first row in the result
 	 * set or check if one row exist in the result set
 	 *
-	 * @throws ispCP_Exception_Database
+	 * @throws iMSCP_Exception_Database
 	 * @param  string $param
 	 * @return mixed Depending of the $param value, this method can returns the
 	 * first row of a result set or a boolean that indicate if any rows exists
@@ -114,7 +114,7 @@ class ispCP_Database_ResultSet {
 			return !is_null($this->_fields) && !is_array($this->_fields);
 		}
 
-		throw new ispCP_Exception_Database("Error: Unknown parameter: `$param`");
+		throw new iMSCP_Exception_Database("Error: Unknown parameter: `$param`");
 	}
 
 	/**

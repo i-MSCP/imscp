@@ -19,7 +19,7 @@
  * isp Control Panel. All Rights Reserved.
  *
  * @category	ispCP
- * @package		ispCP_Update
+ * @package		iMSCP_Update
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @author 		ispCP Team
  * @version 	SVN: $Id$
@@ -31,17 +31,17 @@
  * Class for database updates
  *
  * @category	ispCP
- * @package		ispCP_Update
+ * @package		iMSCP_Update
  * @author		Daniel Andreca <sci2tech@gmail.com>
  * @version		1.0.1
  * @since		r1355
  */
-class ispCP_Update_Database extends ispCP_Update {
+class iMSCP_Update_Database extends iMSCP_Update {
 
 	/**
-	 * ispCP_Update_Database instance
+	 * iMSCP_Update_Database instance
 	 *
-	 * @var ispCP_Update_Database
+	 * @var iMSCP_Update_Database
 	 */
 	protected static $_instance = null;
 
@@ -67,9 +67,9 @@ class ispCP_Update_Database extends ispCP_Update {
 	protected $_errorMessage = 'Database update %s failed';
 
 	/**
-	 * Get an ispCP_Update_Database instance
+	 * Get an iMSCP_Update_Database instance
 	 *
-	 * @return ispCP_Update_Database An ispCP_Update_Database instance
+	 * @return iMSCP_Update_Database An iMSCP_Update_Database instance
 	 */
 	public static function getInstance() {
 
@@ -1510,7 +1510,7 @@ class ispCP_Update_Database extends ispCP_Update {
 			 * @version 1.0.0
 			 * @since r1725
 			 */
-			$interfaces = new ispCP_NetworkCard();
+			$interfaces = new iMSCP_NetworkCard();
 			$card = $interfaces->ip2NetworkCard($cfg->BASE_SERVER_IP);
 
 			$sqlUpd[] = "
@@ -1803,7 +1803,7 @@ class ispCP_Update_Database extends ispCP_Update {
 	 */
 	protected function _databaseUpdate_43() {
 
-		$cfg = new ispCP_Config_Handler_File();
+		$cfg = new iMSCP_Config_Handler_File();
 		$DbConfig = ispCP_Registry::get('Db_Config');
 		$DbConfig->PORT_POSTGREY =
 			"{$cfg->PORT_POSTGREY};tcp;POSTGREY;1;1;localhost";

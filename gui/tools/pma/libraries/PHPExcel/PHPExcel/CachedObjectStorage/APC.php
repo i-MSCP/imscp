@@ -205,7 +205,7 @@ class PHPExcel_CachedObjectStorage_APC extends PHPExcel_CachedObjectStorage_Cach
 
 			parent::__construct($parent);
 		}
-	}	//	function __construct()
+	}	//	function iMSCP_Bootstrap()
 
 
 	public function __destruct() {

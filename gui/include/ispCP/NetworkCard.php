@@ -19,7 +19,7 @@
  * isp Control Panel. All Rights Reserved.
  *
  * @category	ispCP
- * @package		ispCP_NetworkCard
+ * @package		iMSCP_NetworkCard
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @author 		ispCP Team
  * @version 	SVN: $Id$
@@ -31,10 +31,10 @@
  * Class Network Card
  *
  * @category	ispCP
- * @package		ispCP_NetworkCard
+ * @package		iMSCP_NetworkCard
  * @author 		ispCP Team
  */
-class ispCP_NetworkCard {
+class iMSCP_NetworkCard {
 
 	/**
 	 * Should be documented

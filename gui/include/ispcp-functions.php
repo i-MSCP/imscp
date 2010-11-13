@@ -36,7 +36,7 @@
 function check_for_lock_file() {
 
 	/**
-	 * @var ispCP_Config_Handler_File $cfg
+	 * @var iMSCP_Config_Handler_File $cfg
 	 */
 	$cfg = ispCP_Registry::get('Config');
 
@@ -86,7 +86,7 @@ function read_line(&$socket) {
 function send_request() {
 
 	/**
-	 * @var ispCP_Config_Handler_File $cfg
+	 * @var iMSCP_Config_Handler_File $cfg
 	 */
 	$cfg = ispCP_Registry::get('Config');
 
@@ -190,12 +190,12 @@ function update_expire_date ($user_id, $domain_new_expire ) {
 function update_user_props($user_id, $props) {
 
 	/**
-	 * @var ispCP_Config_Handler_File $cfg
+	 * @var iMSCP_Config_Handler_File $cfg
 	 */
 	$cfg = ispCP_Registry::get('Config');
 
 	/**
-	 * @var ispCP_Database $db
+	 * @var iMSCP_Database $db
 	 */
 	$db = ispCP_Registry::get('Db');
 
@@ -586,7 +586,7 @@ function is_serialized($data) {
 /**
  * Decrypte database password
  *
- * @throws ispCP_Exception
+ * @throws iMSCP_Exception
  * @param  $db_pass Encrypted database password
  * @return string Decrypted database password
  * @todo Remove error operator
@@ -613,7 +613,7 @@ function decrypt_db_password($db_pass) {
 		// Show string
 		return trim($decrypted);
 	} else {
-		throw new ispCP_Exception(
+		throw new iMSCP_Exception(
 			"Error: PHP extension 'mcrypt' not loaded!"
 		);
 	}
@@ -622,7 +622,7 @@ function decrypt_db_password($db_pass) {
 /**
  * Encrypte database password
  *
- * @throws ispCP_Exception
+ * @throws iMSCP_Exception
  * @param $db_pass Database password
  * @return string Encrypted database password
  * @todo Remove error operator
@@ -655,7 +655,7 @@ function encrypt_db_password($db_pass) {
 		// Show encrypted string
 		return trim($text);
 	} else {
-		throw new ispCP_Exception(
+		throw new iMSCP_Exception(
 			tr("ERROR: PHP extension 'mcrypt' not loaded!")
 		);
 	}

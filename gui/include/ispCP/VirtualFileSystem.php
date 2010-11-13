@@ -66,7 +66,7 @@ class ispCP_VirtualFileSystem {
 	/**
 	 * Database connection handle
 	 *
-	 * @var ispCP_Database
+	 * @var iMSCP_Database
 	 */
 	protected $_db = null;
 
@@ -94,7 +94,7 @@ class ispCP_VirtualFileSystem {
 	 * left as work for the caller.
 	 *
 	 * @param string $domain Domain name of the new VFS.
-	 * @param ispCP_Database $db ispCP_Database instance.
+	 * @param iMSCP_Database $db iMSCP_Database instance.
 	 * @return void
 	 */
 	public function __construct($domain, $db) {
@@ -137,7 +137,7 @@ class ispCP_VirtualFileSystem {
 	 * Sets ispCP DB handler used by this class
 	 *
 	 *
-	 * @param ispCP_Database $db ispCP_Database database instance
+	 * @param iMSCP_Database $db iMSCP_Database database instance
 	 * @return void
 	 */
 	public function setDb($db) {

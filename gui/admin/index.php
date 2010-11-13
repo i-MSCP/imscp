@@ -34,7 +34,7 @@ $cfg = ispCP_Registry::get('Config');
 
 check_login(__FILE__, $cfg->PREVENT_EXTERNAL_LOGIN_ADMIN);
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/index.tpl');
 $tpl->define_dynamic('def_language', 'page');
 $tpl->define_dynamic('def_layout', 'page');
@@ -83,7 +83,7 @@ function get_update_infos(&$tpl) {
 	$cfg = ispCP_Registry::get('Config');
 	$sql = ispCP_Registry::get('Db');
 
-	if (ispCP_Update_Database::getInstance()->checkUpdateExists()) {
+	if (iMSCP_Update_Database::getInstance()->checkUpdateExists()) {
 		$tpl->assign(array('DATABASE_UPDATE' => '<a href="database_update.php" class="link">' . tr('A database update is available') . '</a>'));
 		$tpl->parse('DATABASE_UPDATE_MESSAGE', 'database_update_message');
 	} else {
@@ -96,12 +96,12 @@ function get_update_infos(&$tpl) {
 		return false;
 	}
 
-	if (ispCP_Update_Version::getInstance()->checkUpdateExists()) {
+	if (iMSCP_Update_Version::getInstance()->checkUpdateExists()) {
 		$tpl->assign(array('UPDATE' => '<a href="ispcp_updates.php" class="link">' . tr('New ispCP update is now available') . '</a>'));
 		$tpl->parse('UPDATE_MESSAGE', 'update_message');
 	} else {
-		if (ispCP_Update_Version::getInstance()->getErrorMessage() != "") {
-			$tpl->assign(array('UPDATE' => ispCP_Update_Version::getInstance()->getErrorMessage()));
+		if (iMSCP_Update_Version::getInstance()->getErrorMessage() != "") {
+			$tpl->assign(array('UPDATE' => iMSCP_Update_Version::getInstance()->getErrorMessage()));
 			$tpl->parse('UPDATE_MESSAGE', 'update_message');
 		} else {
 			$tpl->assign(array('UPDATE_MESSAGE' => ''));

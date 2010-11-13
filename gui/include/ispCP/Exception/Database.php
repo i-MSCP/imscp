@@ -19,7 +19,7 @@
  * isp Control Panel. All Rights Reserved.
  *
  * @category	ispCP
- * @package		ispCP_Exception
+ * @package		iMSCP_Exception
  * @copyright	2006-2010 by ispCP | http://isp-control.net
  * @author		Laurent Declercq <laurent.declercq@i-mscp.net>
  * @version		SVN: $Id$
@@ -28,16 +28,16 @@
  */
 
 /**
- * @see ispCP_Exception
+ * @see iMSCP_Exception
  */
 require_once  INCLUDEPATH . '/ispCP/Exception.php';
 
 /**
- * Exception used on production by ispCP_Exception_Handler
+ * Exception used on production by iMSCP_Exception_Handler
  *
- * @package		ispCP_Exception
+ * @package		iMSCP_Exception
  * @author		Laurent declercq <laurent.declercq@i-mscp.net>
  * @since		1.0.7
  * @version		1.0.0
  */
-class ispCP_Exception_Database extends ispCP_Exception {}
+class iMSCP_Exception_Database extends iMSCP_Exception {}

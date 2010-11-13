@@ -32,7 +32,7 @@ require '../include/i-mscp-lib.php';
 
 $cfg = ispCP_Registry::get('Config');
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 
 $tpl->define_dynamic('page', $cfg->PURCHASE_TEMPLATE_PATH . '/index.tpl');
 $tpl->define_dynamic('purchase_list', 'page');
@@ -83,7 +83,7 @@ function gen_packages_list(&$tpl, &$sql, $user_id) {
 	}
 
 	if ($rs->recordCount() == 0) {
-		throw new ispCP_Exception_Production(
+		throw new iMSCP_Exception_Production(
 			tr('No available hosting packages')
 		);
 	} else {

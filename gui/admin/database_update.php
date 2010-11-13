@@ -33,20 +33,20 @@ require '../include/i-mscp-lib.php';
 check_login(__FILE__);
 
 $cfg = ispCP_Registry::get('Config');
-$dbUpdate = ispCP_Update_Database::getInstance();
+$dbUpdate = iMSCP_Update_Database::getInstance();
 
 if(isset($_POST['execute']) && $_POST['execute'] == 'update') {
 
 	// Execute all available db updates and redirect back to database_update.php
 
 	if(!$dbUpdate->executeUpdates()) {
-		throw new ispCP_Exception($dbUpdate->getErrorMessage());
+		throw new iMSCP_Exception($dbUpdate->getErrorMessage());
 	}
 
 	header('Location: ' . $_SERVER['PHP_SELF']);
 } else {
 
-	$tpl = new ispCP_pTemplate();
+	$tpl = new iMSCP_pTemplate();
 	$tpl->define_dynamic(
 		'page', $cfg->ADMIN_TEMPLATE_PATH . '/database_update.tpl'
 	);

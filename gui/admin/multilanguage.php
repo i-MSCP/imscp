@@ -39,18 +39,18 @@ require '../include/i-mscp-lib.php';
 /**
  * Prepares page data to show available languages
  *
- * @param  ispCP_pTemplate $tpl An ispCP_pTemplate instance
+ * @param  iMSCP_pTemplate $tpl An iMSCP_pTemplate instance
  * @return void
  */
 function showLang($tpl) {
 
 	/**
-	 * @var $cfg ispCP_Config_Handler_File
+	 * @var $cfg iMSCP_Config_Handler_File
 	 */
 	$cfg = ispCP_Registry::get('Config');
 
 	/**
-	 * @var $sql ispCP_Database
+	 * @var $sql iMSCP_Database
 	 */
 	$sql = ispCP_Registry::get('Db');
 
@@ -76,7 +76,7 @@ function showLang($tpl) {
 		$dat = explode('_', $data);
 
 		/**
-		 * @var $stmt ispCP_Database_ResultSet
+		 * @var $stmt iMSCP_Database_ResultSet
 		 */
 		$stmt = array();
 
@@ -451,11 +451,11 @@ function _decodePoFileString($s) {
 check_login(__FILE__);
 
 /**
- * @var $cfg ispCP_Config_Handler_File
+ * @var $cfg iMSCP_Config_Handler_File
  */
 $cfg = ispCP_Registry::get('Config');
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/multilanguage.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('lang_row', 'page');

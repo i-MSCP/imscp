@@ -69,7 +69,7 @@ function check_input($value = '') {
 			if (preg_match($VAR, $value) > 0) {
 				$message = "Possible hacking attempt. Script terminated.";
 				write_log($message);
-				throw new ispCP_Exception(tr($message));
+				throw new iMSCP_Exception(tr($message));
 			}
 		}
 	}
@@ -1046,7 +1046,7 @@ function who_owns_this($id, $type = 'dmn', $forcefinal = false) {
 		if ($r['query']) {
 			$matches = array();
 			if (!preg_match('/SELECT[ \t]+`([\w]+)`[ \t]+FROM/i', $r['query'], $matches)) {
-				throw new ispCP_Exception(tr('Unknown Error'));
+				throw new iMSCP_Exception(tr('Unknown Error'));
 			}
 			$select = $matches[1];
 			$rs = exec_query($sql, $r['query'], $id);

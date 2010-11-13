@@ -33,7 +33,7 @@ require '../include/i-mscp-lib.php';
 check_login(__FILE__);
 
 /**
- * @var $cfg ispCP_Config_Handler_File
+ * @var $cfg iMSCP_Config_Handler_File
  */
 $cfg = ispCP_Registry::get('Config');
 

@@ -19,7 +19,7 @@
  * isp Control Panel. All Rights Reserved.
  *
  * @category    ispCP
- * @package     ispCP_Config
+ * @package     iMSCP_Config
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @author      ispCP Team
  * @version     SVN: $Id$
@@ -28,24 +28,24 @@
  */
 
 /**
- * This class wraps the creation and manipulation of the ispCP_Config_Handler
+ * This class wraps the creation and manipulation of the iMSCP_Config_Handler
  * objects
  *
  * <b>Important consideration:</b>
  *
  * This class implement the <i>Singleton design pattern</i>, so, each type of
- * {@link ispCP_Config_Handler} objects are instanciated only once.
+ * {@link iMSCP_Config_Handler} objects are instanciated only once.
  *
- * If you want use several instances of an ispCP_Config_Handler object (e.g: To
+ * If you want use several instances of an iMSCP_Config_Handler object (e.g: To
  * handle separate configuration parameters that are stored in another container
  * such as a configuration file linked to a specific plugin) you should not use
- * this class. Instead of this, register your own ispCP_Config_Handler objects
+ * this class. Instead of this, register your own iMSCP_Config_Handler objects
  * into the ispCP_Registry object to be able to use them from all contexts.
  *
  * <b>Usage example:</b>
  * <code>
  * $parameters = array('PLUGIN_NAME' => 'billing', 'PLUGIN_VERSION' => '1.0.0');
- * ispCP_Registry::set('My_ConfigHandler', new ispCP_Config_Handler($parameters));
+ * ispCP_Registry::set('My_ConfigHandler', new iMSCP_Config_Handler($parameters));
  *
  * // From another context:
  *
@@ -56,30 +56,30 @@
  *
  * See {@link ispCP_Registry} for more information.
  *
- * To resume, the ispCP_Config class acts as a registry for the
- * ispCP_Config_Handler objects where the registered values
- * (that are ispCP_Config_Handler objects) are indexed by they class name.
+ * To resume, the iMSCP_Config class acts as a registry for the
+ * iMSCP_Config_Handler objects where the registered values
+ * (that are iMSCP_Config_Handler objects) are indexed by they class name.
  *
- * @package		ispCP_Config
+ * @package		iMSCP_Config
  * @author		ispCP Team
  * @version		1.0.9
  */
-class ispCP_Config {
+class iMSCP_Config {
 
 	/**#@+
- 	 * ispCP_Config_Handler class name
+ 	 * iMSCP_Config_Handler class name
  	 */
 	const
-		ARR = 'ispCP_Config_Handler',
-		DB = 'ispCP_Config_Handler_Db',
-		FILE = 'ispCP_Config_Handler_File',
+		ARR = 'iMSCP_Config_Handler',
+		DB = 'iMSCP_Config_Handler_Db',
+		FILE = 'iMSCP_Config_Handler_File',
 		INI = false,
 		XML = false,
 		YAML = false;
 	/**#@-*/
 
 	/**
-	 * Array that contain references to {@link ispCP_Config_Handler} objects
+	 * Array that contain references to {@link iMSCP_Config_Handler} objects
 	 * indexed by they class name
 	 *
 	 * @staticvar array
@@ -87,35 +87,35 @@ class ispCP_Config {
 	private static $_instances = array();
 
 	/**
-	 * Get a ispCP_Config_Handler instance
+	 * Get a iMSCP_Config_Handler instance
 	 *
-	 * Returns a reference to a {@link ispCP_Config_Handler} instance, only
+	 * Returns a reference to a {@link iMSCP_Config_Handler} instance, only
 	 * creating it if it doesn't already exist.
 	 *
-	 * The default handler object is set to {@link ispCP_Config_Handler_File}
+	 * The default handler object is set to {@link iMSCP_Config_Handler_File}
 	 *
-	 * @throws ispCP_Exception
-	 * @param string $className ispCP_Config_Handler class name
-	 * @param mixed $params Parameters that are passed to ispCP_Config_Handler
+	 * @throws iMSCP_Exception
+	 * @param string $className iMSCP_Config_Handler class name
+	 * @param mixed $params Parameters that are passed to iMSCP_Config_Handler
 	 * object constructor
-	 * @return ispCP_Config_Handler An ispCP_Config_Handler instance
+	 * @return iMSCP_Config_Handler An iMSCP_Config_Handler instance
 	 */
 	public static function getInstance($className = self::FILE, $params = null) {
 
 		if(!array_key_exists($className, self::$_instances)) {
 
 			if($className === false) {
-				throw new ispCP_Exception(
-					'Error: The ispCP_Config_Handler object you trying to ' .
+				throw new iMSCP_Exception(
+					'Error: The iMSCP_Config_Handler object you trying to ' .
 						'create is not yet implemented!'
 				);
 			} elseif (!class_exists($className, true)) {
-				throw new ispCP_Exception(
+				throw new iMSCP_Exception(
 					"Error: The class $className is not reachable!"
 				);
-    		} elseif (!is_subclass_of($className, 'ispCP_Config_Handler')) {
-				throw new ispCP_Exception(
-					'Error: Only ispCP_Config_Handler objects can be handled ' .
+    		} elseif (!is_subclass_of($className, 'iMSCP_Config_Handler')) {
+				throw new iMSCP_Exception(
+					'Error: Only iMSCP_Config_Handler objects can be handled ' .
 						'by the ' . __CLASS__ . ' class!'
 				);
 			}
@@ -127,11 +127,11 @@ class ispCP_Config {
 	}
 
 	/**
-	 * Wrapper for getter method of an ispCP_Config_Handler object
+	 * Wrapper for getter method of an iMSCP_Config_Handler object
 	 *
-	 * @see ispCP_Config_Handler::get()
+	 * @see iMSCP_Config_Handler::get()
 	 * @param string $index Configuration parameter key name
-	 * @param string $className ispCP_Config_Handler class name
+	 * @param string $className iMSCP_Config_Handler class name
 	 * @return mixed Configuration parameter value
 	 */
 	public static function get($index, $className = self::FILE) {
@@ -140,12 +140,12 @@ class ispCP_Config {
 	}
 
 	/**
-	 * Wrapper for setter method of an ispCP_Config_Handler object
+	 * Wrapper for setter method of an iMSCP_Config_Handler object
 	 *
-	 * @see ispCP_Config_Handler::set()
+	 * @see iMSCP_Config_Handler::set()
 	 * @param string $index Configuration parameter key name
 	 * @param mixed $value Configuration parameter value
-	 * @param string $className ispCP_Config_Handler class name
+	 * @param string $className iMSCP_Config_Handler class name
 	 * @return void
 	 */
 	public static function set($index, $value, $className = self::FILE) {
@@ -154,11 +154,11 @@ class ispCP_Config {
 	}
 
 	/**
-	 * Wrapper for {@link ispCP_Config_Handler::del()} method
+	 * Wrapper for {@link iMSCP_Config_Handler::del()} method
 	 *
-	 * @see ispCP_Config_Handler::del()
+	 * @see iMSCP_Config_Handler::del()
 	 * @param string $index Configuration parameter key name
-	 * @param string $className ispCP_Config_Handler class name
+	 * @param string $className iMSCP_Config_Handler class name
 	 * @return void
 	 */
 	public static function del($index, $className = self::FILE) {

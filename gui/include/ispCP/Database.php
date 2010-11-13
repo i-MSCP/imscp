@@ -19,7 +19,7 @@
  * isp Control Panel. All Rights Reserved.
  *
  * @category	ispCP
- * @package		ispCP_Database
+ * @package		iMSCP_Database
  * @copyright	2006-2010 by ispCP | http://isp-control.net
  * @author		ispCP Team
  * @version		SVN: $Id$
@@ -31,11 +31,11 @@
  * This class wrap the PDO abstraction layer
  *
  * @category	ispCP
- * @package		ispCP_Database
+ * @package		iMSCP_Database
  * @author		ispCP Team
  * @author		Laurent Declercq <laurent.declercq@nuxwin.com>
  */
-class ispCP_Database {
+class iMSCP_Database {
 
 	/**
 	 * Database connections objects
@@ -111,12 +111,12 @@ class ispCP_Database {
 	/**
 	 * Establishes the connection to the database
 	 *
-	 * Create and returns an new ispCP_Database object that represents the
+	 * Create and returns an new iMSCP_Database object that represents the
 	 * connection to the database. If a connection with the same identifier is
 	 * already referenced, the connection is automatically closed and then, the
 	 * object is recreated.
 	 *
-	 * @see __construct()
+	 * @see iMSCP_Bootstrap()
 	 * @param string $user Sql username
 	 * @param string $pass Sql password
 	 * @param string $type PDO driver
@@ -124,7 +124,7 @@ class ispCP_Database {
 	 * @param string $name Database name
 	 * @param string $connection OPTIONAL Connection key name
 	 * @param array $driver_options OPTIONAL Driver options
-	 * @return ispCP_database An ispCP_Database instance that represents the
+	 * @return iMSCP_Database An iMSCP_Database instance that represents the
 	 * connection to the database
 	 */
 	public static function connect($user, $pass, $type, $host, $name,
@@ -150,16 +150,16 @@ class ispCP_Database {
 	 * Each database connection object are referenced by an unique identifier.
 	 * The default identifier, if not one is provided, is 'default'.
 	 *
-	 * @throws ispCP_Exception_Database
+	 * @throws iMSCP_Exception_Database
 	 * @param string $connection Connection key name
-	 * @return ispCP_Database A Database instance that represents the connection
+	 * @return iMSCP_Database A Database instance that represents the connection
 	 * to the database
 	 * @todo Rename the method name to 'getConnection' (Sounds better)
 	 */
 	public static function getInstance($connection = 'default') {
 
 		if (!isset(self::$_instances[$connection])) {
-			throw new ispCP_Exception_Database(
+			throw new iMSCP_Exception_Database(
 				"Error: The Database connection $connection doesn't exists!"
 			);
 		}
@@ -172,14 +172,14 @@ class ispCP_Database {
 	 *
 	 * @since 1.0.7
 	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
-	 * @throws ispCP_Exception
+	 * @throws iMSCP_Exception
 	 * @param string $connection Connection unique identifier
 	 * @return PDO A PDO instance
 	 */
 	public static function getRawInstance($connection = 'default') {
 
 		if (!isset(self::$_instances[$connection])) {
-			throw new ispCP_Exception_Database(
+			throw new iMSCP_Exception_Database(
 				"Error: The Database connection $connection doesn't exists!"
 			);
 		}
@@ -290,7 +290,7 @@ class ispCP_Database {
 	 * Fetch mode used).
 	 * @param array $object OPTIONAL parameter for SQL statements only. Can
 	 * be an array that contains constructor arguments. (See PDO::FETCH_CLASS)
-	 * @return ispCP_Database_ResultSet Returns a DatabaseResult object that
+	 * @return iMSCP_Database_ResultSet Returns a DatabaseResult object that
 	 * represents a result set or FALSE on failure.
 	 */
 	public function execute($stmt, $parameters = null) {
@@ -311,7 +311,7 @@ class ispCP_Database {
 		}
 
 		if($rs) {
-			return  new ispCP_Database_ResultSet($rs === true ? $stmt : $rs);
+			return  new iMSCP_Database_ResultSet($rs === true ? $stmt : $rs);
 		} else {
 			$errorInfo =
 				is_string($stmt) ? $this->errorInfo() : $stmt->errorInfo();

@@ -244,7 +244,7 @@ function add_update_services($mode) {
  *
  * @since 1.0.7
  * @author Laurent declercq (nuxwin) <laurent.declercq@i-mscp.net>
- * @param ispCP_pTemplate &$tpl Reference to a pTemplate instance
+ * @param iMSCP_pTemplate &$tpl Reference to a pTemplate instance
  * @return void;
  */
 function show_services(&$tpl) {
@@ -255,7 +255,7 @@ function show_services(&$tpl) {
 	// Gets the needed data
 
 	if(isset($_SESSION['error_on_updt'])) {
-		$values = new IspCP_Config_Handler($_SESSION['error_on_updt']);
+		$values = new iMSCP_Config_Handler($_SESSION['error_on_updt']);
 		unset($_SESSION['error_on_updt']);
 		$services = array_keys($values->toArray());
 	} else {
@@ -270,7 +270,7 @@ function show_services(&$tpl) {
 		$services = array_filter(array_keys($values->toArray()), $filter);
 
 		if(isset($_SESSION['error_on_add'])) {
-			$error_on_add = new IspCP_Config_Handler($_SESSION['error_on_add']);
+			$error_on_add = new iMSCP_Config_Handler($_SESSION['error_on_add']);
 			unset($_SESSION['error_on_add']);
 		}
 	}
@@ -442,7 +442,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] != 'reset') {
 } else {
 	$cfg = ispCP_Registry::get('Config');
 
-	$tpl = new ispCP_pTemplate();
+	$tpl = new iMSCP_pTemplate();
 	$tpl->define_dynamic(
 		'page', $cfg->ADMIN_TEMPLATE_PATH . '/settings_ports.tpl'
 	);

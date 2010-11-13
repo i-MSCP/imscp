@@ -34,7 +34,7 @@ check_login(__FILE__);
 
 $cfg = ispCP_Registry::get('Config');
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/users.tpl');
 $tpl->define_dynamic('users_list', 'page');
 $tpl->define_dynamic('user_entry', 'users_list');

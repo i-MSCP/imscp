@@ -21,7 +21,7 @@
  * isp Control Panel. All Rights Reserved.
  *
  * @category	ispCP
- * @package		ispCP_pTemplate
+ * @package		iMSCP_pTemplate
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @author 		VHCS Team
@@ -35,14 +35,14 @@
  * Class pTemplate is the ispCP template engine.
  *
  * @category	ispCP
- * @package		ispCP_pTemplate
+ * @package		iMSCP_pTemplate
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @author 		VHCS Team
  * @author 		ispCP Team
  * @todo remove all error operators
  */
-class ispCP_pTemplate {
+class iMSCP_pTemplate {
 
 	private $tpl_name;
 	private $tpl_data;

@@ -34,7 +34,7 @@ check_login(__FILE__);
 
 $cfg = ispCP_Registry::get('Config');
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/admin_log.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('log_row', 'page');
@@ -244,7 +244,7 @@ function clear_log() {
 
 				break;
 			default:
-				throw new ispCP_Exception(tr('Invalid time period!'));
+				throw new iMSCP_Exception(tr('Invalid time period!'));
 		}
 
 		$rs = execute_query($sql, $query);

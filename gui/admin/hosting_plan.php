@@ -39,7 +39,7 @@ if (strtolower($cfg->HOSTING_PLANS_LEVEL) != 'admin') {
 	user_goto('index.php');
 }
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/hosting_plan.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('hosting_plans', 'page');

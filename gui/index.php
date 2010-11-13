@@ -67,10 +67,10 @@ $theme_color = isset($_SESSION['user_theme'])
 	? $_SESSION['user_theme']
 	: $cfg->USER_INITIAL_THEME;
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 
 if (($cfg->MAINTENANCEMODE
-		|| ispCP_Update_Database::getInstance()->checkUpdateExists())
+		|| iMSCP_Update_Database::getInstance()->checkUpdateExists())
 	&& !isset($_GET['admin'])) {
 
 	$tpl->define_dynamic('page', $cfg->LOGIN_TEMPLATE_PATH . '/maintenancemode.tpl');

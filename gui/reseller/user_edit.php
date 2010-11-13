@@ -42,7 +42,7 @@ if (isset($_GET['edit_id'])) {
 	user_goto('users.php?psi=last');
 }
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/user_edit.tpl');
 $tpl->define_dynamic('page_message', 'page');

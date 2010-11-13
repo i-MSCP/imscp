@@ -68,7 +68,7 @@ if (isset($_GET['export_lang']) && $_GET['export_lang'] !== '') {
 	";
 
 	/**
-	 * @var $stmt ispCP_Database_ResultSet
+	 * @var $stmt iMSCP_Database_ResultSet
 	 */
 	$stmt = exec_query($sql, $query);
 
@@ -93,7 +93,7 @@ if (isset($_GET['export_lang']) && $_GET['export_lang'] !== '') {
 		$filename = str_replace('lang_', '', $language_table) . '.txt';
 
 		if(isset($_GET['compress'])) {
-			$filter = new ispCP_Filter_Compress_Gzip();
+			$filter = new iMSCP_Filter_Compress_Gzip();
 			$data = $filter->filter($data);
 			$filename .= '.gz';
 			$mime_type = 'application/x-gzip';

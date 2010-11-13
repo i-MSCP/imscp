@@ -19,7 +19,7 @@
  * isp Control Panel. All Rights Reserved.
  *
  * @category    ispCP
- * @package     ispCP_Update
+ * @package     iMSCP_Update
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @author      ispCP Team
  * @version     SVN: $Id$
@@ -30,14 +30,14 @@
 /**
  * Abstract class to implement update functions
  *
- * @package     ispCP_Update
+ * @package     iMSCP_Update
  * @author      Jochen Manz <zothos@zothos.net>
  * @author      Daniel Andreca <sci2tech@gmail.com>
  * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
  * @version     1.0.4
  * @since		r1355
  */
-abstract class ispCP_Update {
+abstract class iMSCP_Update {
 
 	/**
 	 * Version of the last update that was applied

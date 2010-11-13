@@ -19,7 +19,7 @@
  * isp Control Panel. All Rights Reserved.
  *
  * @category    ispCP
- * @package     ispCP_Config
+ * @package     iMSCP_Config
  * @subpackage  Handler
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
@@ -29,23 +29,23 @@
  */
 
 /**
- * @see ispCP_Config_Handler
+ * @see iMSCP_Config_Handler
  */
 require_once  INCLUDEPATH . '/ispCP/Config/Handler.php';
 
 /**
  * Class to handle configuration parameters from database
  *
- * ispCP_Config_Handler adapter class to handle configuration parameters that
+ * iMSCP_Config_Handler adapter class to handle configuration parameters that
  * are stored in database.
  *
- * @package     ispCP_Config
+ * @package     iMSCP_Config
  * @subpackage  Handler
  * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
  * @since       1.0.7
  * @version     1.0.7
  */
-class ispCP_Config_Handler_Db extends ispCP_Config_Handler implements iterator {
+class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator {
 
 	/**
 	 * PDO instance
@@ -165,7 +165,7 @@ class ispCP_Config_Handler_Db extends ispCP_Config_Handler implements iterator {
 	 *
 	 * For a single parameter, only a PDO instance is accepted.
 	 *
-	 * @throws ispCP_Exception
+	 * @throws iMSCP_Exception
 	 * @param PDO|array A PDO instance or an array of parameters that contains
 	 * at least a PDO instance
 	 * @return void
@@ -177,7 +177,7 @@ class ispCP_Config_Handler_Db extends ispCP_Config_Handler implements iterator {
 			if(!array_key_exists('db', $params) ||
 				!($params['db'] instanceof PDO)) {
 
-				throw new ispCP_Exception(
+				throw new iMSCP_Exception(
 					'Error: A PDO instance is requested for ' . __CLASS__
 				);
 			}
@@ -200,7 +200,7 @@ class ispCP_Config_Handler_Db extends ispCP_Config_Handler implements iterator {
 			}
 
 		} elseif(!$params instanceof PDO) {
-			throw new ispCP_Exception(
+			throw new iMSCP_Exception(
 				'Error: PDO instance requested for ' . __CLASS__
 			);
 		}
@@ -251,14 +251,14 @@ class ispCP_Config_Handler_Db extends ispCP_Config_Handler implements iterator {
 	/**
 	 * Retrieve a configuration parameter value
 	 *
-	 * @throws ispCP_Exception
+	 * @throws iMSCP_Exception
 	 * @param string $key Configuration parameter key name
 	 * @return mixed Configuration parameter value
 	 */
 	public function get($key) {
 
 		if (!isset($this->_parameters[$key])) {
-			throw new ispCP_Exception(
+			throw new iMSCP_Exception(
 				"Error: Configuration variable `$key` is missing!"
 			);
 		}
@@ -329,7 +329,7 @@ class ispCP_Config_Handler_Db extends ispCP_Config_Handler implements iterator {
 	 * This method returns the count of queries that were executed since the
 	 * last call of {@link reset_queries_counter()} method.
 	 *
-	 * @throws ispCP_Exception
+	 * @throws iMSCP_Exception
 	 * @param string $queriesCounter Query counter type (insert|update)
 	 * @return void
 	 */
@@ -344,14 +344,14 @@ class ispCP_Config_Handler_Db extends ispCP_Config_Handler implements iterator {
 			return $this->_insertQueriesCounter;
 
 		} else {
-			throw new ispCP_Exception('Error: Unknown queries counter!');
+			throw new iMSCP_Exception('Error: Unknown queries counter!');
 		}
 	}
 
 	/**
 	 * Reset a counter of queries
 	 *
-	 * @throws ispCP_Exception
+	 * @throws iMSCP_Exception
 	 * @param string $queriesCounterType Type of query counter (insert|update)
 	 * @return void
 	 */
@@ -366,7 +366,7 @@ class ispCP_Config_Handler_Db extends ispCP_Config_Handler implements iterator {
 			 $this->_insertQueriesCounter = 0;
 
 		} else {
-			throw new ispCP_Exception('Error: Unknown queries counter!');
+			throw new iMSCP_Exception('Error: Unknown queries counter!');
 		}
 	}
 
@@ -387,7 +387,7 @@ class ispCP_Config_Handler_Db extends ispCP_Config_Handler implements iterator {
 	/**
 	 * Load all configuration parameters from the database
 	 *
-	 * @throws ispCP_Exception
+	 * @throws iMSCP_Exception
 	 * @return void
 	 */
 	protected function _loadAll() {
@@ -409,7 +409,7 @@ class ispCP_Config_Handler_Db extends ispCP_Config_Handler implements iterator {
 				$this->_parameters[$row[$keyColumn]] = $row[$valueColumn];
 			}
 		} else {
-			throw new ispCP_Exception(
+			throw new iMSCP_Exception(
 				'Error: Could not get configuration parameters from database!'
 			);
 		}
@@ -418,7 +418,7 @@ class ispCP_Config_Handler_Db extends ispCP_Config_Handler implements iterator {
 	/**
 	 * Store a new configuration parameter in the database
 	 *
-	 * @throws ispCP_Exception_Database
+	 * @throws iMSCP_Exception_Database
 	 * @return void
 	 */
 	protected function _insert() {
@@ -441,7 +441,7 @@ class ispCP_Config_Handler_Db extends ispCP_Config_Handler implements iterator {
 		}
 
 		if(!$this->_insertStmt->execute()) {
-			throw new ispCP_Exception_Database(
+			throw new iMSCP_Exception_Database(
 				"Error: Unable to insert the configuration parameter `{$this->_key}` in the database"
 			);
 		} else {
@@ -452,7 +452,7 @@ class ispCP_Config_Handler_Db extends ispCP_Config_Handler implements iterator {
 	/**
 	 * Update a configuration parameter in the database
 	 *
-	 * @throws ispCP_Exception_Database
+	 * @throws iMSCP_Exception_Database
 	 * @return void
 	 */
 	protected function _update() {
@@ -475,7 +475,7 @@ class ispCP_Config_Handler_Db extends ispCP_Config_Handler implements iterator {
 		}
 
 		if(!$this->_updateStmt->execute()) {
-			throw new ispCP_Exception_Database(
+			throw new iMSCP_Exception_Database(
 				"Error: Unable to update the configuration parameter `{$this->_key}` in the database!"
 			);
 		} else {
@@ -486,7 +486,7 @@ class ispCP_Config_Handler_Db extends ispCP_Config_Handler implements iterator {
 	/**
 	 * Deletes a configuration parameter from the database
 	 *
-	 * @throws ispCP_Exception_Database
+	 * @throws iMSCP_Exception_Database
 	 * @return void
 	 */
 	protected function _delete() {
@@ -506,7 +506,7 @@ class ispCP_Config_Handler_Db extends ispCP_Config_Handler implements iterator {
 		}
 
 		if(!$this->_deleteStmt->execute()) {
-			throw new ispCP_Exception_Database(
+			throw new iMSCP_Exception_Database(
 				'Error: Unable to delete the configuration parameter in the database!'
 			);
 		}

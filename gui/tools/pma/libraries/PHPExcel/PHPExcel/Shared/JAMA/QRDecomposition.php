@@ -88,7 +88,7 @@ class QRDecomposition {
 		} else {
 			throw new Exception(JAMAError(ArgumentTypeException));
 		}
-	}	//	function __construct()
+	}	//	function iMSCP_Bootstrap()
 
 
 	/**

@@ -108,7 +108,7 @@ class PHPExcel_Reader_CSV implements PHPExcel_Reader_IReader
 		$this->_lineEnding 	= PHP_EOL;
 		$this->_sheetIndex 	= 0;
 		$this->_readFilter 	= new PHPExcel_Reader_DefaultReadFilter();
-	}	//	function __construct()
+	}	//	function iMSCP_Bootstrap()
 
 	/**
 	 *	Can the current PHPExcel_Reader_IReader read the file?

@@ -19,7 +19,7 @@
  * isp Control Panel. All Rights Reserved.
  *
  * @category	ispCP
- * @package		ispCP_Exception
+ * @package		iMSCP_Exception
  * @subpackage	Handler
  * @copyright	2006-2010 by ispCP | http://isp-control.net
  * @author		Laurent Declercq <laurent.declercq@i-mscp.net>
@@ -33,24 +33,24 @@
  * ispCP Exception Handler class
  *
  * This class is responsible to handle all uncaught exceptions. This class is an
- * observable subject. An object that implements {@link ispCP_Exception_Writer}
+ * observable subject. An object that implements {@link iMSCP_Exception_Writer}
  * interface can listen events of this class. This class has only one event that
  * occurs when an uncaught exceptions is raised.
  *
  * <b>What's the event:</b>
  *
  * When an uncaught exception is raised, the exception handler defined by this
- * class notify all these writers by passing the ispCP_Exception_Handler
+ * class notify all these writers by passing the iMSCP_Exception_Handler
  * instance to it. After, each observer should call the {@link getException()}
  * method to get the exception and do whatever they want with it.
  *
- * In production, a secondary {@link ispCP_Exception_Production} object is
+ * In production, a secondary {@link iMSCP_Exception_Production} object is
  * created. Each writer that writes on the client browser must check if this
  * exception exists and use it in place of the real {@link $_exception} that was
  * raised to avoid revealing important information about the environment.
  *
  * See the {@link getProductionException} method to learn how to check if an
- * {@link ispCP_Exception_Production exception} was created and how to get it.
+ * {@link iMSCP_Exception_Production exception} was created and how to get it.
  *
  * <b>Writer observer responsibility can be :</b>
  *
@@ -63,8 +63,8 @@
  *
  * <b>Usage example:</b>
  * <code>
- * ispCP_Exception_Handler::getInstance()->attach(
- *  new ispCP_Exception_Writer_Browser(
+ * iMSCP_Exception_Handler::getInstance()->attach(
+ *  new iMSCP_Exception_Writer_Browser(
  *		'themes/omega_original/system-message.tpl'
  *  )
  * );
@@ -72,43 +72,43 @@
  *
  * <b>What is done here ?</b>
  *
- *  1. We create an instance of the {@link ispCP_Exception_Handler} class
- *  2. We attach an {@link ispCP_Exception_Writer} that will listen this class
+ *  1. We create an instance of the {@link iMSCP_Exception_Handler} class
+ *  2. We attach an {@link iMSCP_Exception_Writer} that will listen this class
  *
  * See ispCP/Exception/Writer for a list of availables
- *	{@link ispCP_Exception_Writer writers}.
+ *	{@link iMSCP_Exception_Writer writers}.
  *
  * <b>Note:</b>
  *
  * This class implements the
  * {@link http://en.wikipedia.org/wiki/Fluent_interface Fluent interface},
  * so, you can chained the calls of several methods such as the
- * {@link ispCP_Exception_Handler::attach()} method.
+ * {@link iMSCP_Exception_Handler::attach()} method.
  *
  * @category	ispCP
- * @package		ispCP_Exception
+ * @package		iMSCP_Exception
  * @subpackage	Handler
  * @author		Laurent Declercq <laurent.declercq@i-mscp.net>
  * @since		1.0.7
  * @version		1.0.3
  */
-class ispCP_Exception_Handler implements SplSubject, IteratorAggregate, Countable {
+class iMSCP_Exception_Handler implements SplSubject, IteratorAggregate, Countable {
 
 	/**
 	 * Instance of this class
 	 *
-	 * @var ispCP_Exception_Handler
+	 * @var iMSCP_Exception_Handler
 	 */
 	protected static $_instance = null;
 
 	/**
 	 * Production exception
 	 *
-	 * This variable can contains an {@link ispCP_Exception_Production} object
+	 * This variable can contains an {@link iMSCP_Exception_Production} object
 	 * depending of the current execution context (Development|Production)
 	 *
 	 * @see getProductionException()
-	 * @var ispCP_Exception_Production
+	 * @var iMSCP_Exception_Production
 	 */
 	protected $_productionException = null;
 
@@ -125,7 +125,7 @@ class ispCP_Exception_Handler implements SplSubject, IteratorAggregate, Countabl
 	/**
 	 * SplObjectStorage object
 	 *
-	 * This storage contains all {@link ispCP_Exception_Writer} objects.
+	 * This storage contains all {@link iMSCP_Exception_Writer} objects.
 	 *
 	 * @var SplObjectStorage
 	 */
@@ -149,12 +149,12 @@ class ispCP_Exception_Handler implements SplSubject, IteratorAggregate, Countabl
 	private function __clone() {}
 
 	/**
-	 * Get an ispCP_Exception_Handler instance
+	 * Get an iMSCP_Exception_Handler instance
 	 *
-	 * Returns an {@link ispCP_Exception_Handler} instance, only creating it if
+	 * Returns an {@link iMSCP_Exception_Handler} instance, only creating it if
 	 * it doesn't already exist.
 	 *
-	 * @return ispCP_Exception_Handler
+	 * @return iMSCP_Exception_Handler
 	 */
 	public static function &getInstance() {
 
@@ -173,7 +173,7 @@ class ispCP_Exception_Handler implements SplSubject, IteratorAggregate, Countabl
 	 * is set to the new instance {@link $_instance}.
 	 *
 	 * @param boolean $setHandler If TRUE, recreate the instance automatically
-	 * @return ispCP_Exception_Handler|null
+	 * @return iMSCP_Exception_Handler|null
 	 */
 	public static function resetInstance($recreate = true) {
 
@@ -189,7 +189,7 @@ class ispCP_Exception_Handler implements SplSubject, IteratorAggregate, Countabl
 	 * is used for all uncaught exceptions.
 	 *
 	 * @see exceptionHandler()
-	 * @return ispCP_Exception_Handler
+	 * @return iMSCP_Exception_Handler
 	 */
 	public function &setHandler(){
 
@@ -203,7 +203,7 @@ class ispCP_Exception_Handler implements SplSubject, IteratorAggregate, Countabl
 	 *
 	 * This methods restore the previously defined exception handler function
 	 *
-	 * @return ispCP_Exception_Handler
+	 * @return iMSCP_Exception_Handler
 	 */
 	public function &unsetHandler() {
 
@@ -219,7 +219,7 @@ class ispCP_Exception_Handler implements SplSubject, IteratorAggregate, Countabl
 	 * This method act like an exception handler for all uncaught exceptions.
 	 *
 	 * <b>Note:</b> In production, this exception handler create a secondary
-	 * ispCP_Exception_Production object. This exception should be used by all
+	 * iMSCP_Exception_Production object. This exception should be used by all
 	 * writers that write on the client browser in place of the real raised
 	 * exception to avoid revealing important information about the environment.
 	 *
@@ -232,11 +232,11 @@ class ispCP_Exception_Handler implements SplSubject, IteratorAggregate, Countabl
 
 		if(error_reporting() == 0 || !ini_get('display_errors')) {
 
-			if($exception instanceof ispCP_Exception_Production) {
+			if($exception instanceof iMSCP_Exception_Production) {
 				$this->_exception = $exception;
 			} else {
 				$this->_exception = $exception;
-				$this->_productionException = new ispCP_Exception_Production();
+				$this->_productionException = new iMSCP_Exception_Production();
 			}
 		} else {
 			$this->_exception = $exception;
@@ -251,10 +251,10 @@ class ispCP_Exception_Handler implements SplSubject, IteratorAggregate, Countabl
 	/**
 	 * Accessor method to get the exception raised
 	 *
-	 * This methods should be used by the {@link ispCP_Exception_Writer} writers
+	 * This methods should be used by the {@link iMSCP_Exception_Writer} writers
 	 * to get the exception raised.
 	 *
-	 * @return Exception The ispCP_Exception if exists; FALSE otherwise
+	 * @return Exception The iMSCP_Exception if exists; FALSE otherwise
 	 */
 	public function getException() {
 
@@ -266,12 +266,12 @@ class ispCP_Exception_Handler implements SplSubject, IteratorAggregate, Countabl
 	}
 
 	/**
-	 * Accessor method to get the ispCP_Exception_Production object
+	 * Accessor method to get the iMSCP_Exception_Production object
 	 *
-	 * <b>Note:</b> The {@link ispCP_Exception_Production} is only raised in
+	 * <b>Note:</b> The {@link iMSCP_Exception_Production} is only raised in
 	 * production.
 	 *
-	 * @return ispCP_Exception_Production|false
+	 * @return iMSCP_Exception_Production|false
 	 */
 	public function getProductionException() {
 
@@ -285,9 +285,9 @@ class ispCP_Exception_Handler implements SplSubject, IteratorAggregate, Countabl
 	/**
 	 * Attach a writer that listen all events
 	 *
-	 * @param ispCP_Exception_Writer $writer Writer that listen events of this
+	 * @param iMSCP_Exception_Writer $writer Writer that listen events of this
 	 * object
-	 * @return ispCP_Exception_Handler The ispCP_Exception_Handler instance
+	 * @return iMSCP_Exception_Handler The iMSCP_Exception_Handler instance
 	 */
 	public function attach(SplObserver $writer) {
 
@@ -299,9 +299,9 @@ class ispCP_Exception_Handler implements SplSubject, IteratorAggregate, Countabl
 	/**
 	 * Dettach an observer that listen events of this class
 	 *
-	 * @param ispCP_Exception_Writer $writer Writer that listen events of this
+	 * @param iMSCP_Exception_Writer $writer Writer that listen events of this
 	 *	class
-	 * @return ispCP_Exception_Handler The ispCP_Exception_Handler instance
+	 * @return iMSCP_Exception_Handler The iMSCP_Exception_Handler instance
 	 */
 	public function detach(SplObserver $writer) {
 
@@ -317,7 +317,7 @@ class ispCP_Exception_Handler implements SplSubject, IteratorAggregate, Countabl
 	 * method. The {@link $_instance instance} is passed to each writer as
 	 * argument of the argument of their update() method.
 	 *
-	 * @throws ispCP_Exception
+	 * @throws iMSCP_Exception
 	 * @return void
 	 */
 	public function notify() {
@@ -343,7 +343,7 @@ class ispCP_Exception_Handler implements SplSubject, IteratorAggregate, Countabl
 				if(!count($this)) {
 					trigger_error($message, E_USER_ERROR);
 				} else {
-					$this->exceptionHandler(new ispCP_Exception($message));
+					$this->exceptionHandler(new iMSCP_Exception($message));
 					die();
 				}
 			}

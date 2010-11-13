@@ -51,7 +51,7 @@
 function _getLoginCredentials($dbUserId) {
 
 	/**
-	 * @var $db ispCP_Database_ResultSet
+	 * @var $db iMSCP_Database_ResultSet
 	 */
 	$db = ispCP_Registry::get('Db');
 

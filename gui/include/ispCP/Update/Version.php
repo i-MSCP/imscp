@@ -19,7 +19,7 @@
  * isp Control Panel. All Rights Reserved.
  *
  * @category	ispCP
- * @package		ispCP_Update
+ * @package		iMSCP_Update
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @author 		ispCP Team
  * @version 	SVN: $Id$
@@ -28,21 +28,21 @@
  */
 
 /**
- * Class ispCP_Update_Version implements the ispCP_Update abstract class for
+ * Class iMSCP_Update_Version implements the iMSCP_Update abstract class for
  * future online version update functions
  *
- * @package		ispCP_Update
+ * @package		iMSCP_Update
  * @author		Daniel Andreca <sci2tech@gmail.com>
  * @copyright	2006-2009 by ispCP | http://isp-control.net
  * @version		1.0.1
  * @since		r1355
  */
-class ispCP_Update_Version extends ispCP_Update {
+class iMSCP_Update_Version extends iMSCP_Update {
 
 	/**
-	 * ispCP_Update_Version instance
+	 * iMSCP_Update_Version instance
 	 *
-	 * @var ispCP_Update_Version
+	 * @var iMSCP_Update_Version
 	 */
 	protected static $_instance = null;
 
@@ -61,9 +61,9 @@ class ispCP_Update_Version extends ispCP_Update {
 	protected $_errorMessage = 'Version update %s failed';
 
 	/**
-	 * Gets a ispCP_Update_Version instance
+	 * Gets a iMSCP_Update_Version instance
 	 *
-	 * @return ispCP_Update_Version
+	 * @return iMSCP_Update_Version
 	 */
 	public static function getInstance() {
 

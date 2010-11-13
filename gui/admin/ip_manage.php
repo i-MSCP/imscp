@@ -34,9 +34,9 @@ check_login(__FILE__);
 
 $cfg = ispCP_Registry::get('Config');
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 
-$interfaces=new ispCP_NetworkCard();
+$interfaces=new iMSCP_NetworkCard();
 
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/ip_manage.tpl');
 $tpl->define_dynamic('page_message', 'page');

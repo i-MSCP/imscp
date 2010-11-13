@@ -28,8 +28,8 @@ require_once ISPCP_GUI_PATH.'/include/i-mscp-lib.php';
 require_once dirname(__FILE__).'/utils.php';
 require_once dirname(__FILE__).'/Base.php';
 
-ispCP_Config::set('DB_TYPE', ispCP_Config::get('DATABASE_TYPE'));
-ispCP_Config::set('DB_HOST', ispCP_Config::get('DATABASE_HOST'));
-ispCP_Config::set('DB_USER', ispCP_Config::get('DATABASE_USER'));
-ispCP_Config::set('DB_PASS', decrypt_db_password(ispCP_Config::get('DATABASE_PASSWORD')));
-ispCP_Config::set('DB_NAME', ispCP_Config::get('DATABASE_NAME'));
+iMSCP_Config::set('DB_TYPE', iMSCP_Config::get('DATABASE_TYPE'));
+iMSCP_Config::set('DB_HOST', iMSCP_Config::get('DATABASE_HOST'));
+iMSCP_Config::set('DB_USER', iMSCP_Config::get('DATABASE_USER'));
+iMSCP_Config::set('DB_PASS', decrypt_db_password(iMSCP_Config::get('DATABASE_PASSWORD')));
+iMSCP_Config::set('DB_NAME', iMSCP_Config::get('DATABASE_NAME'));

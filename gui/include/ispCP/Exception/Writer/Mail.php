@@ -19,7 +19,7 @@
  * isp Control Panel. All Rights Reserved.
  *
  * @category    ispCP
- * @package     ispCP_Exception
+ * @package     iMSCP_Exception
  * @subpackage  Writer
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
@@ -29,7 +29,7 @@
  */
 
 /**
- * @see ispCP_Exception_Writer
+ * @see iMSCP_Exception_Writer
  */
 require_once  INCLUDEPATH . '/ispCP/Exception/Writer.php';
 
@@ -39,13 +39,13 @@ require_once  INCLUDEPATH . '/ispCP/Exception/Writer.php';
  * This writer writes a mail that contain the exception messages and some debug
  * backtrace information.
  *
- * @package     ispCP_Exception
+ * @package     iMSCP_Exception
  * @subpackage  Writer
  * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
  * @since       1.0.7
  * @version     1.0.4
  */
-class ispCP_Exception_Writer_Mail extends ispCP_Exception_Writer {
+class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer {
 
 	/**
 	 * Exception writer name
@@ -107,7 +107,7 @@ class ispCP_Exception_Writer_Mail extends ispCP_Exception_Writer {
 	/**
 	 * Constructor - Create a new mail writer object
 	 *
-	 * @throws ispCP_Exception
+	 * @throws iMSCP_Exception
 	 * @param string $to A mail adresse
 	 * @return void
 	 */
@@ -121,8 +121,8 @@ class ispCP_Exception_Writer_Mail extends ispCP_Exception_Writer {
 		}
 
 		if($ret === false) {
-			throw new ispCP_Exception(
-				'ispCP_Exception_Writer_Mail error: Invalid email address!'
+			throw new iMSCP_Exception(
+				'iMSCP_Exception_Writer_Mail error: Invalid email address!'
 			);
 		} else {
 			$this->_to = $to;
@@ -140,8 +140,8 @@ class ispCP_Exception_Writer_Mail extends ispCP_Exception_Writer {
 	/**
 	 * This methods is called from the subject (i.e. when an event occur)
 	 *
-	 * @param ispCP_Exception_Handler $exceptionHandler An
-	 * ispCP_Exception_Handler object
+	 * @param iMSCP_Exception_Handler $exceptionHandler An
+	 * iMSCP_Exception_Handler object
 	 * @return void
 	 */
 	public function update(SplSubject $exceptionHandler) {
@@ -362,7 +362,7 @@ class ispCP_Exception_Writer_Mail extends ispCP_Exception_Writer {
 
 		if(ispCP_Registry::isRegistered('Db_Config')) {
 			/**
-			 * @var $dbConfig ispCP_Config_Handler_Db
+			 * @var $dbConfig iMSCP_Config_Handler_Db
 			 */
 			$dbConfig = ispCP_Registry::get('Db_Config');
 			if($dbConfig->exists('MAIL_WRITER_EXPIRY_TIME')) {

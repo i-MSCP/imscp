@@ -82,7 +82,7 @@ class ispCP_Registry {
 	 * should always use this method and not accessed it directly like an object
 	 * member.
 	 *
-	 * @throws ispCP_Exception
+	 * @throws iMSCP_Exception
 	 * @param string $index Data key name
 	 * @return mixed Registered data
 	 */
@@ -91,7 +91,7 @@ class ispCP_Registry {
 		$instance = self::getInstance();
 
 		if (!$instance->isRegistered($index)) {
-			throw new ispCP_Exception(
+			throw new iMSCP_Exception(
 				"Error: Data `$index` is not registered!"
 			);
 		}
@@ -102,16 +102,16 @@ class ispCP_Registry {
 	/**
 	 * Overloading on inaccessible members
 	 *
-	 * This method raises an {@link ispCP_Exception} if a member is inaccessible
+	 * This method raises an {@link iMSCP_Exception} if a member is inaccessible
 	 * for reading.
 	 *
-	 * @throws ispCP_Exception
+	 * @throws iMSCP_Exception
 	 * @param string $index Data key name
 	 * @return void
 	 */
 	public function __get($index) {
 
-		throw new ispCP_Exception("Error: Data `$index` is not registered!");
+		throw new iMSCP_Exception("Error: Data `$index` is not registered!");
 	}
 
 	/**

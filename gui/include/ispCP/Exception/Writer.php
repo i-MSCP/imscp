@@ -19,7 +19,7 @@
  * isp Control Panel. All Rights Reserved.
  *
  * @category	ispCP
- * @package		ispCP_Exception
+ * @package		iMSCP_Exception
  * @subpackage	Writer
  * @copyright	2006-2010 by ispCP | http://isp-control.net
  * @author		Laurent Declercq <laurent.declercq@i-mscp.net>
@@ -33,13 +33,13 @@
  * Abstract class for exception writers
  *
  * @category	ispCP
- * @package		ispCP_Exception
+ * @package		iMSCP_Exception
  * @subpackage	Writer
  * @author		Laurent Declercq <laurent.declercq@i-mscp.net>
  * @since		1.0.7
  * @version		1.0.1
  */
-abstract class ispCP_Exception_Writer implements SplObserver {
+abstract class iMSCP_Exception_Writer implements SplObserver {
 
 	/**
 	 * Exception message to be written

@@ -121,7 +121,7 @@ class RestorePackage_ispCP extends BaseController
 		$this->log_level = $log_level;
 		$this->password = $password;
 		$this->domain_name = $domain_name;
-		$this->db = ispCP_Database::getInstance();
+		$this->db = iMSCP_Database::getInstance();
 		$this->ip = $option_ip;
 		$this->reseller = $option_reseller;
 		$this->gpg_archive = ARCHIVE_PATH.'/'.$this->domain_name.'.tar.gz.gpg';
@@ -410,7 +410,7 @@ class RestorePackage_ispCP extends BaseController
 		$this->db->execute($query);
 
 		$filename = $this->target_path.'/tmp/'.$dbname.'.sql';
-		$cmd = 'mysql --user '.ispCP_Config::get('DB_USER').' --password='.ispCP_Config::get('DB_PASS').
+		$cmd = 'mysql --user '.iMSCP_Config::get('DB_USER').' --password='.iMSCP_Config::get('DB_PASS').
 			   ' '.$dbname.
 			   ' <'.$filename;
 		// TODO: Error handling

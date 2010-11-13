@@ -19,7 +19,7 @@
  * isp Control Panel. All Rights Reserved.
  *
  * @category	ispCP
- * @package		ispCP_Bootstrap
+ * @package		iMSCP_Bootstrap
  * @copyright	2006-2010 by ispCP | http://isp-control.net
  * @author		Laurent Declercq <laurent.declercq@i-mscp.net>
  * @version		SVN: $Id$
@@ -39,17 +39,17 @@ defined('INCLUDEPATH') or define('INCLUDEPATH', dirname(dirname(__FILE__)));
  *
  * <b>Note:</b> Will be improved later
  *
- * @package		ispCP_Bootstrap
+ * @package		iMSCP_Bootstrap
  * @author		Laurent Declercq <laurent.declercq@i-mscp.net>
  * @since		1.0.7
  * @version		1.0.4
  */
-class ispCP_Bootstrap {
+class iMSCP_Bootstrap {
 
 	/**
 	 * Boot ispCP environment and, configuration
 	 *
-	 * @throws ispCP_Exception
+	 * @throws iMSCP_Exception
 	 * @return void
 	 */
 	public static function boot() {
@@ -58,7 +58,7 @@ class ispCP_Bootstrap {
 			$boot = new self;
 			$boot->_run();
 		} else {
-			throw new ispCP_Exception('Error: ispCP is already booted!');
+			throw new iMSCP_Exception('Error: ispCP is already booted!');
 		}
 	}
 
@@ -83,7 +83,7 @@ class ispCP_Bootstrap {
 	 */
 	protected static function _isBooted() {
 
-		return class_exists('ispCP_Initializer', false);
+		return class_exists('iMSCP_Initializer', false);
 	}
 
 	/**
@@ -94,7 +94,7 @@ class ispCP_Bootstrap {
 	protected function _run() {
 
 		$this->_loadInitializer();
-		ispCP_Initializer::run('_setIncludePath');
+		iMSCP_Initializer::run('_setIncludePath');
 	}
 
 	/**

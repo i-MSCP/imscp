@@ -43,8 +43,8 @@ try {
 	// Include ispCP core libraries and initialize the environment
 	require_once $gui_root_dir . '/include/i-mscp-lib.php';
 
-	// Gets an ispCP_Update_Database instance
-	$dbUpdate = ispCP_Update_Database::getInstance();
+	// Gets an iMSCP_Update_Database instance
+	$dbUpdate = iMSCP_Update_Database::getInstance();
 
 	if(!$dbUpdate->executeUpdates()) {
 		print "\n[ERROR]: " .$dbUpdate->getErrorMessage() . "\n\n";

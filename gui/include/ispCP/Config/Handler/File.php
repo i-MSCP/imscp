@@ -19,7 +19,7 @@
  * isp Control Panel. All Rights Reserved.
  *
  * @category    ispCP
- * @package     ispCP_Config
+ * @package     iMSCP_Config
  * @subpackage  Handler
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
@@ -29,14 +29,14 @@
  */
 
 /**
- * @see ispCP_Config_Handler
+ * @see iMSCP_Config_Handler
  */
 require_once  INCLUDEPATH . '/ispCP/Config/Handler.php';
 
 /**
  * Class to handle configuration parameters from a flat file
  *
- * ispCP_Config_Handler adapter class to handle configuration parameters that
+ * iMSCP_Config_Handler adapter class to handle configuration parameters that
  * are stored in a flat file where each pair of key-values are separated by the
  * equal sign.
  *
@@ -115,14 +115,14 @@ require_once  INCLUDEPATH . '/ispCP/Config/Handler.php';
  * @property string ISPCP_SUPPORT_SYSTEM_TARGET
  * @property string BASE_SERVER_VHOST_PREFIX
  *
- * @package		ispCP_Config
+ * @package		iMSCP_Config
  * @subpackage	Handler
  * @author		Benedikt Heintel <benedikt.heintel@i-mscp.net>
  * @author		Laurent Declercq <laurent.declercq@i-mscp.net>
  * @since		1.0.7
  * @version		1.0.6
  */
-class ispCP_Config_Handler_File extends ispCP_Config_Handler {
+class iMSCP_Config_Handler_File extends iMSCP_Config_Handler {
 
 	/**
 	 * Configuration file path
@@ -163,7 +163,7 @@ class ispCP_Config_Handler_File extends ispCP_Config_Handler {
 	 * Opens a configuration file and parses its Key = Value pairs into the
 	 * {@link ispCP_Config_Hangler::parameters} array.
 	 *
-	 * @throws ispCP_Exception
+	 * @throws iMSCP_Exception
 	 * @return void
 	 * @todo Don't use error operator
 	 */
@@ -172,7 +172,7 @@ class ispCP_Config_Handler_File extends ispCP_Config_Handler {
 		$fd = @file_get_contents($this->_pathFile);
 
 		if ($fd === false) {
-			throw new ispCP_Exception(
+			throw new iMSCP_Exception(
 				"Error: Unable to open the configuration file `{$this->_pathFile}`!"
 			);
 		}

@@ -19,7 +19,7 @@
  * isp Control Panel. All Rights Reserved.
  *
  * @category	ispCP
- * @package		ispCP_Exception
+ * @package		iMSCP_Exception
  * @copyright	2006-2010 by ispCP | http://isp-control.net
  * @author		Laurent Declercq <laurent.declercq@i-mscp.net>
  * @version		SVN: $Id$
@@ -30,9 +30,9 @@
 /**
  * ispCP default Exception
  *
- * @package		ispCP_Exception
+ * @package		iMSCP_Exception
  * @author		Laurent Declercq (nuxwin) <laurent.declercq@i-mscp.net>
  * @since		1.0.7
  * @version		1.0.0
  */
-class ispCP_Exception extends Exception {}
+class iMSCP_Exception extends Exception {}

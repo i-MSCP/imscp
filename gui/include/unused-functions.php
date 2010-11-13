@@ -299,7 +299,7 @@ function add_domain_extras(&$dmn_id, &$admin_id, &$sql) {
 function get_reseller_detail_count($tablename, $ua) {
 	global $sql;
 
-	$delstatus = ispCP_Config::getInstance()->get('ITEM_DELETE_STATUS');
+	$delstatus = iMSCP_Config::getInstance()->get('ITEM_DELETE_STATUS');
 
 	$query = "SELECT COUNT(*) AS cnt FROM `".$tablename;
 	if ($tablename == 'ftp_users') {
@@ -336,7 +336,7 @@ function check_query($exclude = array()) {
 		$message = "Your PHP version is older than 4.2.2!";
 		write_log($message);
 
-		throw new ispCP_Exception("Error:  $message");
+		throw new iMSCP_Exception("Error:  $message");
 	}
 
 	if (!is_array($exclude)) {
@@ -353,7 +353,7 @@ function check_query($exclude = array()) {
 				$message = "Possible SQL injection detected: $key=>$value. <b>${matches[0]}</b>. Script terminated.";
 				write_log($message);
 
-				throw new ispCP_Exception("<b>WARNING</b>: $message");
+				throw new iMSCP_Exception("<b>WARNING</b>: $message");
 			}
 		} else {
 			foreach ($value as $skey => $svalue) {
@@ -362,7 +362,7 @@ function check_query($exclude = array()) {
 						$message = "Possible SQL injection detected: $skey=>$svalue <b>${matches[0]}</b>. Script terminated.";
 						write_log($message);
 
-						throw new ispCP_Exception("<b>WARNING</b>: $message");
+						throw new iMSCP_Exception("<b>WARNING</b>: $message");
 					}
 				}
 			}

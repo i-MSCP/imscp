@@ -34,7 +34,7 @@ check_login(__FILE__);
 
 $cfg = ispCP_Registry::get('Config');
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/password_change.tpl');
 $tpl->define_dynamic('page_message', 'page');

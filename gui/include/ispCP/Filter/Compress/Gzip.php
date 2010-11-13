@@ -48,7 +48,7 @@
  * @version		1.0.4
  * @replace		spOutput class
  */
-class ispCP_Filter_Compress_Gzip {
+class iMSCP_Filter_Compress_Gzip {
 
 	/**
 	 * Contains the filter method name
@@ -146,7 +146,7 @@ class ispCP_Filter_Compress_Gzip {
 	 *
 	 * @param int $mode Tells if the filter should act as callback function for
 	 * the PHP ob_start function or as function for create a standard gz file.
-	 * The filter mode must be one of the ispCP_Filter_Compress_Gzip::FILTER_*
+	 * The filter mode must be one of the iMSCP_Filter_Compress_Gzip::FILTER_*
 	 * constants.
 	 * @param int $compressionLevel Compression level
 	 * @return void
@@ -157,13 +157,13 @@ class ispCP_Filter_Compress_Gzip {
 			if($mode === self::FILTER_BUFFER or $mode === self::FILTER_FILE) {
 				$this->_mode = $mode;
 			} else {
-				throw new ispCP_Exception(
-				'ispCP_Filter_Compress_Gzip error: Unknown filter mode!'
+				throw new iMSCP_Exception(
+				'iMSCP_Filter_Compress_Gzip error: Unknown filter mode!'
 				);
 			}
 		} else {
-			throw new ispCP_Exception(
-				'ispCP_Filter_Compress_Gzip error: Zlib Compression library is not loaded!'
+			throw new iMSCP_Exception(
+				'iMSCP_Filter_Compress_Gzip error: Zlib Compression library is not loaded!'
 			);
 		}
 
@@ -173,8 +173,8 @@ class ispCP_Filter_Compress_Gzip {
 
 			$this->_compressionLevel = $compressionLevel;
 		} else {
-			throw new ispCP_Exception(
-				'ispCP_Filter_Compress_Gzip error: Wrong value for compression level!'
+			throw new iMSCP_Exception(
+				'iMSCP_Filter_Compress_Gzip error: Wrong value for compression level!'
 			);
 		}
 	}
@@ -243,7 +243,7 @@ class ispCP_Filter_Compress_Gzip {
 	/**
 	 * Write gzip files
 	 *
-	 * @throws ispCP_Exception
+	 * @throws iMSCP_Exception
 	 * @param string $gzipData Data in GZIP file format
 	 * @param string $filePath File path for Gzip file
 	 * @return void
@@ -259,7 +259,7 @@ class ispCP_Filter_Compress_Gzip {
 			fwrite($fileHandle, $gzipData);
 			fclose($fileHandle);
 		} else {
-			throw new ispCP_Exception(
+			throw new iMSCP_Exception(
 				"ispCP_GzipFilter error: `$filePath` is not a valid " .
 					"directory or is not writable!"
 			);

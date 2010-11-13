@@ -32,7 +32,7 @@ check_login(__FILE__);
 
 $cfg = ispCP_Registry::get('Config');
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/dns_edit.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
@@ -595,7 +595,7 @@ function check_fwd_data(&$tpl, $edit_id) {
 
 					return false;
 				} else { # Another error ? Throw exception
-					throw new ispCP_Exception_Database(
+					throw new iMSCP_Exception_Database(
 						$sql->getLastErrorMessage() . " - Query: $query"
 					);
 				}

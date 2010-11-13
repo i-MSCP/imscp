@@ -32,7 +32,7 @@ require '../include/i-mscp-lib.php';
 
 $cfg = ispCP_Registry::get('Config');
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->PURCHASE_TEMPLATE_PATH . '/address.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('purchase_header', 'page');
@@ -227,7 +227,7 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['plan_id'])) {
 	$user_id = $_SESSION['user_id'];
 	$plan_id = $_SESSION['plan_id'];
 } else {
-	throw new ispCP_Exception_Production(
+	throw new iMSCP_Exception_Production(
 		tr('You do not have permission to access this interface!')
 	);
 }

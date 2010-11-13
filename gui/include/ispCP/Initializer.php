@@ -19,7 +19,7 @@
  * isp Control Panel. All Rights Reserved.
  *
  * @category    ispCP
- * @package     ispCP_Initializer
+ * @package     iMSCP_Initializer
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
  * @version     SVN: $Id$
@@ -35,17 +35,17 @@
  * more.
  *
  * @category    ispCP
- * @package     ispCP_Initializer
+ * @package     iMSCP_Initializer
  * @author      Laurent declercq <laurent.declercq@i-mscp.net>
  * @since       1.0.7
  * @version     1.1.2
  */
-class ispCP_Initializer {
+class iMSCP_Initializer {
 
 	/**
-	 * ispCP_Config_Handler instance used by this class
+	 * iMSCP_Config_Handler instance used by this class
 	 *
-	 * @var ispCP_Config_Handler_File
+	 * @var iMSCP_Config_Handler_File
 	 */
 	private $_config;
 
@@ -66,26 +66,26 @@ class ispCP_Initializer {
 	 *
 	 * <i>Usage example:</i>
 	 * <code>
-	 *	ispCP_Initializer::run('_setIncludePath')
+	 *	iMSCP_Initializer::run('_setIncludePath')
 	 * </code>
 	 *
 	 * This is useful if you only want the include_path path initialized,
 	 * without incurring the overhead of completely loading the entire
 	 * environment.
 	 *
-	 * @throws ispCP_Exception
-	 * @param string|ispCP_Config_Handler_File $command Initializer method to be
-	 *	executed or an ispCP_Config_Handler_File object
-	 * @param ispCP_Config_Handler_File $config Optional ispCP_Config_Handler_File
+	 * @throws iMSCP_Exception
+	 * @param string|iMSCP_Config_Handler_File $command Initializer method to be
+	 *	executed or an iMSCP_Config_Handler_File object
+	 * @param iMSCP_Config_Handler_File $config Optional iMSCP_Config_Handler_File
 	 * object
-	 * @return ispCP_Initializer The ispCP_Initializer instance
+	 * @return iMSCP_Initializer The iMSCP_Initializer instance
 	 */
 	public static function run($command = '_processAll',
-		ispCP_Config_Handler_File $config = null) {
+		iMSCP_Config_Handler_File $config = null) {
 
 		if(!self::$_initialized) {
 
-			if($command instanceof ispCP_Config_Handler_File) {
+			if($command instanceof iMSCP_Config_Handler_File) {
 				$config = $command;
 				$command = '_processAll';
 			}
@@ -96,13 +96,13 @@ class ispCP_Initializer {
 			}
 
 			$initializer = new self(
-				is_object($config) ? $config : new ispCP_Config_Handler_File()
+				is_object($config) ? $config : new iMSCP_Config_Handler_File()
 			);
 
 			$initializer->$command();
 
 		} else {
-			throw new ispCP_Exception(
+			throw new iMSCP_Exception(
 				'Error: ispCP is already fully initialized!'
 			);
 		}
@@ -112,12 +112,12 @@ class ispCP_Initializer {
 
 	/**
 	 * Create a new Initializer instance that references the given
-	 * {@link ispCP_Config_Handler_File} instance
+	 * {@link iMSCP_Config_Handler_File} instance
 	 *
-	 * @param ispCP_Config_Handler_File $config ispCP_Config_Handler_File object
+	 * @param iMSCP_Config_Handler_File $config iMSCP_Config_Handler_File object
 	 * @return void
 	 */
-	protected function __construct(ispCP_Config_Handler $config) {
+	protected function __construct(iMSCP_Config_Handler $config) {
 
 		$this->_config = ispCP_Registry::set('Config', $config);
 	}
@@ -140,7 +140,7 @@ class ispCP_Initializer {
 		// Check php version and availability of the Php Standard Library
 		$this->_checkPhp();
 
-		// Set additionally ispCP_Exception_Writer observers
+		// Set additionally iMSCP_Exception_Writer observers
 		$this->_setExceptionWriters();
 
 		// Include path
@@ -235,9 +235,9 @@ class ispCP_Initializer {
 	 * <b>Note:</b> ispCP requires PHP 5.1.4 or later because some SPL
 	 * interfaces were not stable in earlier versions of PHP.
 	 *
-	 * @throws ispCP_Exception
+	 * @throws iMSCP_Exception
 	 * @return void
-	 * @todo Check SPL part (ispCP_Exception_Handler use SPL)
+	 * @todo Check SPL part (iMSCP_Exception_Handler use SPL)
 	 */
 	protected function _checkPhp() {
 
@@ -261,7 +261,7 @@ class ispCP_Initializer {
 			return;
 		}
 
-		throw new ispCP_Exception($err_msg);
+		throw new iMSCP_Exception($err_msg);
 	}
 
 	/**
@@ -272,7 +272,7 @@ class ispCP_Initializer {
 	 */
 	protected function _setExceptionWriters() {
 
-		// Get a reference to the ispCP_Exception_Handler object
+		// Get a reference to the iMSCP_Exception_Handler object
 		$exceptionHandler = ispCP_Registry::get('exceptionHandler');
 
 		$admin_email = $this->_config->DEFAULT_ADMIN_ADDRESS;
@@ -298,7 +298,7 @@ class ispCP_Initializer {
 			if($admin_email != '') {
 
 				$exceptionHandler->attach(
-					new ispCP_Exception_Writer_Mail($admin_email)
+					new iMSCP_Exception_Writer_Mail($admin_email)
 				);
 			}
 		}
@@ -356,12 +356,12 @@ class ispCP_Initializer {
 	 *
 	 * This methods establishes the default connection to the database by using
 	 * configuration parameters that come from the basis configuration object
-	 * and then, register the {@link ispCP_Database} instance in the
+	 * and then, register the {@link iMSCP_Database} instance in the
 	 * {@link ispCP_Registry} for shared access.
 	 *
 	 * A PDO instance is also registered in the registry for shared access.
 	 *
-	 * @throws ispCP_Exception
+	 * @throws iMSCP_Exception
 	 * @return void
 	 * @todo Remove global variable
 	 */
@@ -369,7 +369,7 @@ class ispCP_Initializer {
 
 		try {
 
-			$connection = ispCP_Database::connect(
+			$connection = iMSCP_Database::connect(
 				$this->_config->DATABASE_USER,
 				decrypt_db_password($this->_config->DATABASE_PASSWORD),
 				$this->_config->DATABASE_TYPE,
@@ -379,7 +379,7 @@ class ispCP_Initializer {
 
 		} catch(PDOException $e) {
 
-			throw new ispCP_Exception_Database(
+			throw new iMSCP_Exception_Database(
 				'Error: Unable to establish connection to the database! '.
 				'SQL returned: ' . $e->getMessage()
 			);
@@ -387,7 +387,7 @@ class ispCP_Initializer {
 
 		// Register both Database and PDO instances for shared access
 		ispCP_Registry::set('Db', $connection);
-		ispCP_Registry::set('Pdo', ispCP_Database::getRawInstance());
+		ispCP_Registry::set('Pdo', iMSCP_Database::getRawInstance());
 
 		// Will be changed
 		$GLOBALS['sql'] =  ispCP_Registry::get('Db');
@@ -398,7 +398,7 @@ class ispCP_Initializer {
 	 *
 	 * This methods set encoding for both communication database and PHP.
 	 *
-	 * @throws ispCP_Exception
+	 * @throws iMSCP_Exception
 	 * @return void
 	 */
 	protected function _setEncoding() {
@@ -415,7 +415,7 @@ class ispCP_Initializer {
 			$db = ispCP_Registry::get('Db');
 
 			if(!$db->execute('SET NAMES `utf8`;')) {
-				throw new ispCP_Exception(
+				throw new iMSCP_Exception(
 					'Error: Unable to set charset for database communication! ' .
 					'SQL returned: ' . $db->errorMsg()
 				);
@@ -432,9 +432,9 @@ class ispCP_Initializer {
 	 * This method acts by checking the `date.timezone` value, and sets it to
 	 * the value from the ispCP PHP_TIMEZONE parameter if exists and if it not
 	 * empty or to 'UTC' otherwise. If the timezone identifier is invalid, an
-	 * {@link ispCP_Exception} exception is raised.
+	 * {@link iMSCP_Exception} exception is raised.
 	 *
-	 * @throws ispCP_Exception
+	 * @throws iMSCP_Exception
 	 * @return void
 	 */
 	protected function _setTimezone() {
@@ -447,7 +447,7 @@ class ispCP_Initializer {
 					? $this->_config->PHP_TIMEZONE : 'UTC';
 
 			if(!date_default_timezone_set($timezone)) {
-				throw new ispCP_Exception(
+				throw new iMSCP_Exception(
 					'Error: Invalid timezone identifier set in your ' .
 					'i-mscp.conf file! Please fix this error and re-run the ' .
 					'i-mscp-update script to fix the value in all your ' .
@@ -474,14 +474,14 @@ class ispCP_Initializer {
 	 */
 	protected function _processConfiguration() {
 
-		// We get an ispCP_Config_Handler_Db object
-		$dbConfig = new ispCP_Config_Handler_Db(ispCP_Registry::get('Pdo'));
+		// We get an iMSCP_Config_Handler_Db object
+		$dbConfig = new iMSCP_Config_Handler_Db(ispCP_Registry::get('Pdo'));
 
 		// Now, we can override our basis configuration object with parameter
 		// that come from the database
 		$this->_config->replaceWith($dbConfig);
 
-		// Finally, we register the ispCP_Config_Handler_Db for shared access
+		// Finally, we register the iMSCP_Config_Handler_Db for shared access
 		ispCP_Registry::set('Db_Config', $dbConfig);
 	}
 
@@ -499,8 +499,8 @@ class ispCP_Initializer {
 		// Create a new filter that will be applyed on the buffer output
 		$filter = ispCP_Registry::set(
 			'bufferFilter',
-			new ispCP_Filter_Compress_Gzip(
-				ispCP_Filter_Compress_Gzip::FILTER_BUFFER
+			new iMSCP_Filter_Compress_Gzip(
+				iMSCP_Filter_Compress_Gzip::FILTER_BUFFER
 			)
 		);
 
@@ -510,7 +510,7 @@ class ispCP_Initializer {
 		}
 
 		// Start the buffer and attach the filter to him
-		ob_start(array($filter, ispCP_Filter_Compress_Gzip::CALLBACK_NAME));
+		ob_start(array($filter, iMSCP_Filter_Compress_Gzip::CALLBACK_NAME));
 	}
 
 	/**

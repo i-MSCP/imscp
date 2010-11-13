@@ -34,7 +34,7 @@ check_login(__FILE__);
 
 $cfg = ispCP_Registry::get('Config');
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/ispcp_updates.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('update_message', 'page');
@@ -67,7 +67,7 @@ function get_update_infos(&$tpl) {
 		return false;
 	}
 
-	if (ispCP_Update_Version::getInstance()->checkUpdateExists()) {
+	if (iMSCP_Update_Version::getInstance()->checkUpdateExists()) {
 		$tpl->assign(
 			array(
 				'UPDATE_MESSAGE' => '',
@@ -78,8 +78,8 @@ function get_update_infos(&$tpl) {
 
 		$tpl->parse('UPDATE_INFOS', 'update_infos');
 	} else {
-		if (ispCP_Update_Version::getInstance()->getErrorMessage() != "") {
-			$tpl->assign(array('TR_MESSAGE' => ispCP_Update_Version::getInstance()->getErrorMessage()));
+		if (iMSCP_Update_Version::getInstance()->getErrorMessage() != "") {
+			$tpl->assign(array('TR_MESSAGE' => iMSCP_Update_Version::getInstance()->getErrorMessage()));
 		} else {
 			$tpl->assign('TABLE_HEADER', '');
 		}

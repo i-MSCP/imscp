@@ -19,7 +19,7 @@
  * isp Control Panel. All Rights Reserved.
  *
  * @category	ispCP
- * @package		ispCP_SystemInfo
+ * @package		iMSCP_SystemInfo
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @author 		Benedikt Heintel <benedikt.heintel@i-mscp.net>
  * @version 	SVN: $Id$
@@ -32,12 +32,12 @@
  * for Linux and BSD systems.
  *
  * @category    ispCP
- * @package		ispCP_SystemInfo
+ * @package		iMSCP_SystemInfo
  * @author      Benedikt Heintel <benedikt.heintel@i-mscp.net>
  * @since       1.0.7
  * @version     1.0.2
  */
-class ispCP_SystemInfo {
+class iMSCP_SystemInfo {
 
 	/**
 	 * Operating system name where PHP is run

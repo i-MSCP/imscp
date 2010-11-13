@@ -19,7 +19,7 @@
  * isp Control Panel. All Rights Reserved.
  *
  * @category    ispCP
- * @package     ispCP_Config
+ * @package     iMSCP_Config
  * @subpackage  Handler
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
@@ -41,13 +41,13 @@
  * - Via object properties
  * - Via setter and getter methods
  *
- * @package     ispCP_Config
+ * @package     iMSCP_Config
  * @subpackage  Handler
  * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
  * @since       1.0.7
  * @version     1.0.6
  */
-class ispCP_Config_Handler implements ArrayAccess {
+class iMSCP_Config_Handler implements ArrayAccess {
 
 	/**
 	 * Callbacks that will be executed after ispCP has been fully initialized
@@ -96,14 +96,14 @@ class ispCP_Config_Handler implements ArrayAccess {
 	/**
 	 * Getter method to retrieve a configuration parameter value
 	 *
-	 * @throws ispCP_Exception
+	 * @throws iMSCP_Exception
 	 * @param string $key Configuration parameter key name
 	 * @return mixed Configuration parameter value
 	 */
 	public function get($key) {
 
 		if (!$this->exists($key)) {
-			throw new ispCP_Exception(
+			throw new iMSCP_Exception(
 				"Error: Configuration variable `$key` is missing!"
 			);
 		}
@@ -138,7 +138,7 @@ class ispCP_Config_Handler implements ArrayAccess {
 	 * Replaces all parameters of this object with parameters from another
 	 *
 	 * This method replace the parameters values of this object with the same
-	 * values from another {@link ispCP_Config_Handler} object.
+	 * values from another {@link iMSCP_Config_Handler} object.
 	 *
 	 * If a key from this object exists in the second object, its value will be
 	 * replaced by the value from the second object. If the key exists in the
@@ -148,10 +148,10 @@ class ispCP_Config_Handler implements ArrayAccess {
 	 *
 	 * <b>Note:</b> This method is not recursive.
 	 *
-	 * @param ispCP_Config_Handler $config ispCP_Config_Handler object
+	 * @param iMSCP_Config_Handler $config iMSCP_Config_Handler object
 	 * @return void
 	 */
-	public function replaceWith(ispCP_Config_Handler $config) {
+	public function replaceWith(iMSCP_Config_Handler $config) {
 
 		foreach($config as $key => $value) {
 			$this->set($key, $value);
@@ -188,7 +188,7 @@ class ispCP_Config_Handler implements ArrayAccess {
 	 *
 	 * Callbacks can be defined in a PHP call_user_func() function format.
 	 *
-	 * @throws ispCP_Exception
+	 * @throws iMSCP_Exception
 	 * @param callback $function The function to be called
 	 * @param mixed $parameters... Zero or more parameters to be passed to the
 	 * function
@@ -206,7 +206,7 @@ class ispCP_Config_Handler implements ArrayAccess {
 		}
 
 		if(!is_callable($tmp['callback'])) {
-			throw new ispCP_Exception('Error: Callback can not be accessed!');
+			throw new iMSCP_Exception('Error: Callback can not be accessed!');
 		}
 
 		$this->_afterInitializeCallbacks[] = array(
