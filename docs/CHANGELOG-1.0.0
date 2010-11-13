@@ -2983,7 +2983,7 @@ ispCP ω 1.0.0 Changelog
 
 2007-06-22 Raphael Geissert
 	- ENGINE:
-		* Fixed #423: Undefined subroutine &main::dirname in ispcp_common_code.pl line 37
+		* Fixed #423: Undefined subroutine &main::dirname in i-mscp_common_code.pl line 37
 		* Fixed #424: scalar being compared against integer
 		* Fixed #425: WARNING: KEY or IV has invalid length
 	- SETUP:
@@ -2996,7 +2996,7 @@ ispCP ω 1.0.0 Changelog
 	- SETUP:
 		* Fixed #407: Initialization vector must be exactly 8 bytes long when using the Blowfish cipher
 	- ENGINE:
-		* Separated methods from ispcp_common_code.pl in ispcp_common_methods.pl
+		* Separated methods from i-mscp_common_code.pl in i-mscp_common_methods.pl
 		* Added VHCS 2.4.7.1 to ispCP ω Omega migration script
 
 2007-06-20 Benedikt Heintel

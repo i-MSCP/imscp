@@ -12,7 +12,7 @@ Packager: George Machitidze <giomac@gmail.com>
 Buildroot: $RPM_BUILD_ROOT/tmp/i-mscp/
 Buildrequires: glibc-headers gcc
 Requires: amavisd-new awstats bind-chroot bind-utils bzip2 caching-nameserver chkrootkit clamav clamav-data clamav-lib clamav-server clamav-update courier-authlib-userdb courier-imap cpan2rpm cyrus-sasl-gssapi cyrus-sasl-plain cyrus-sasl-md5 cyrus-sasl-ntlm expect gcc httpd iptables libdbi-dbd-mysql libmcrypt libtool-ltdl mod_perl mod_ssl mod_auth_mysql mysql-server patch perl-Archive-Tar perl-Archive-Zip perl-BerkeleyDB perl-Bit-Vector perl-Carp-Clan perl-Compress-Zlib perl-Convert-TNEF perl-Convert-UUlib perl-Crypt-Blowfish perl-Crypt-CBC perl-Crypt-DH perl-Crypt-PasswdMD5 perl-Date-Calc perl-DateManip perl-DBD-MySQL perl-Digest-HMAC perl-HTML-Parser perl-HTML-Tagset perl-MIME-tools perl-IO-stringy perl-libwww-perl perl-MailTools perl-Net-CIDR-Lite perl-Net-DNS perl-Net-IP perl-Net-LibIDN perl-Net-Netmask perl-Net-Server perl-SNMP_Session perl-suidperl perl-TermReadKey perl-Term-ReadPassword perl-TimeDate perl-URI perl-Unix-Syslog php php-bcmath php-dba php-gd php-ldap php-mbstring php-mcrypt php-mysql php-odbc php-pear php-snmp php-xml postfix proftpd-mysql rkhunter spamassassin system-config-bind tar unixODBC unzip wget perl-HTML-Mason perl-Text-Aspell perl-XML-DOM perl-XML-Parser mod_fcgid
-Provides: perl(i-mscp-db-keys.pl) perl(ispcp_common_code.pl) perl(ispcp_common_methods.pl)  perl(i-mscp-setup-methods.pl)
+Provides: perl(i-mscp-db-keys.pl) perl(i-mscp_common_code.pl) perl(i-mscp_common_methods.pl)  perl(i-mscp-setup-methods.pl)
 
 %description
 IspCP is a project founded to build a Multi Server Control and Administration Panel.

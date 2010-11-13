@@ -255,14 +255,14 @@ case "$1" in
 
 						# Encrypt the password with ispCP keys
 						cd /srv/www/i-mscp/engine
-						encryptedPwd=$(perl -e 'require "ispcp_common_code.pl"; ($rs, $pwd) = encrypt_db_password('"$PWD1"'); print $pwd;')
+						encryptedPwd=$(perl -e 'require "i-mscp_common_code.pl"; ($rs, $pwd) = encrypt_db_password('"$PWD1"'); print $pwd;')
 
 						# Storing password
 						sed -i 's/^\s*\(AMAVIS_SQL_PASSWORD =\).*/\1'"$encryptedPwd"'/' \
 							/etc/i-mscp/i-mscp.conf
 					else
 						cd /srv/www/i-mscp/engine
-						$PWD=$(perl -e 'require "ispcp_common_code.pl"; ($rs, $pwd) = decrypt_db_password('"$AMAVIS_SQL_PASSWORD"'); print $pwd;')
+						$PWD=$(perl -e 'require "i-mscp_common_code.pl"; ($rs, $pwd) = decrypt_db_password('"$AMAVIS_SQL_PASSWORD"'); print $pwd;')
 					fi
 
 					sed -i '

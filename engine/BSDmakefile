@@ -71,8 +71,8 @@ install:
 
 	cd ./traffic && $(MAKE) install
 
-	$(CMD_INSTALL) ./ispcp_common_code.pl $(SYSTEM_ENGINE_ROOT)
-	$(CMD_INSTALL) ./ispcp_common_methods.pl $(SYSTEM_ENGINE_ROOT)
+	$(CMD_INSTALL) ./i-mscp_common_code.pl $(SYSTEM_ENGINE_ROOT)
+	$(CMD_INSTALL) ./i-mscp_common_methods.pl $(SYSTEM_ENGINE_ROOT)
 
 	# keys needed for ispCP engine;
 	$(CMD_INSTALL) ./i-mscp-db-keys.pl $(SYSTEM_ENGINE_ROOT)
