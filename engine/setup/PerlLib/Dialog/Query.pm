@@ -1,7 +1,7 @@
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
 #
-# Author: Laurent Declercq <laurent.declercq@ispcp.net>
+# Author: Laurent Declercq <laurent.declercq@i-mscp.net>
 # Version: $Id$
 #
 # The contents of this file are subject to the Mozilla Public License
@@ -56,7 +56,7 @@ $VHOST_ERROR = 'The domain name is not valid!';
 $DB_HOST = 'Please enter SQL server hostname [localhost]: ';
 $DB_HOST_ERROR = 'Wrong SQL hostname! See RFC 1123 for more information...';
 
-$DB_NAME = 'Please enter ispCP OMEGA SQL database name [ispcp]: ';
+$DB_NAME = 'Please enter ispCP OMEGA SQL database name [i-mscp]: ';
 
 $DB_USER = 'Please enter ispCP OMEGA SQL user name [root]: ';
 

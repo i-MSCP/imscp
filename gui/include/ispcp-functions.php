@@ -538,7 +538,7 @@ function unset_messages() {
  * Note: jQuery and Prototype Javascript libraries sends this
  * header with every Ajax request.
  *
- * @author Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
+ * @author Laurent Declercq (nuxwin) <laurent.declercq@i-mscp.net>
  * @Since r2587
  * @return boolean TRUE if the request‘s "X-Requested-With" header
  *  contains "XMLHttpRequest", FALSE otherwise
@@ -558,7 +558,7 @@ function is_xhr() {
  * Check if a data is serialized
  *
  * @since 1.0.7
- * @author Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
+ * @author Laurent Declercq (nuxwin) <laurent.declercq@i-mscp.net>
  * @param mixed $data Data to be checked
  * @return boolean TRUE if serialized data, FALSE otherwise
  */

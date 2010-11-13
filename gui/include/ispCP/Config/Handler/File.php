@@ -22,7 +22,7 @@
  * @package     ispCP_Config
  * @subpackage  Handler
  * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @author      Laurent Declercq <laurent.declercq@ispcp.net>
+ * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
  * @version     SVN: $Id$
  * @link        http://isp-control.net ispCP Home Site
  * @license     http://www.mozilla.org/MPL/ MPL 1.1
@@ -117,8 +117,8 @@ require_once  INCLUDEPATH . '/ispCP/Config/Handler.php';
  *
  * @package		ispCP_Config
  * @subpackage	Handler
- * @author		Benedikt Heintel <benedikt.heintel@ispcp.net>
- * @author		Laurent Declercq <laurent.declercq@ispcp.net>
+ * @author		Benedikt Heintel <benedikt.heintel@i-mscp.net>
+ * @author		Laurent Declercq <laurent.declercq@i-mscp.net>
  * @since		1.0.7
  * @version		1.0.6
  */
@@ -135,7 +135,7 @@ class ispCP_Config_Handler_File extends ispCP_Config_Handler {
 	 * Loads all configuration parameters from a flat file
 	 *
 	 * <b>Note:</b> Default file path is set to:
-	 * {/usr/local}/etc/ispcp/ispcp.conf depending of the used distribution.
+	 * {/usr/local}/etc/i-mscp/i-mscp.conf depending of the used distribution.
 	 *
 	 * @param string $pathFile Configuration file path
 	 * @return void
@@ -148,10 +148,10 @@ class ispCP_Config_Handler_File extends ispCP_Config_Handler {
 				case 'FreeBSD':
 				case 'OpenBSD':
 				case 'NetBSD':
-					$pathFile = '/usr/local/etc/ispcp/ispcp.conf';
+					$pathFile = '/usr/local/etc/i-mscp/i-mscp.conf';
 					break;
 				default:
-					$pathFile = '/etc/ispcp/ispcp.conf';
+					$pathFile = '/etc/i-mscp/i-mscp.conf';
 			}
 		}
 

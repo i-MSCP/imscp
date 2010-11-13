@@ -28,6 +28,6 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require 'include/ispcp-lib.php';
+require 'include/i-mscp-lib.php';
 
 createImage('image');

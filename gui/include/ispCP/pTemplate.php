@@ -370,7 +370,7 @@ class ispCP_pTemplate {
 	/**
 	 * Check if a namespace exist
 	 *
-	 * @author Laurent Declercq <laurent.declercq@ispcp.net>
+	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
 	 * @since r2467
 	 * @param string $namespace namespace to be check
 	 * @return boolean TRUE if the namespace exist, FALSE otherwise

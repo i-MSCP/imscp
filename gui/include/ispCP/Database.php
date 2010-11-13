@@ -171,7 +171,7 @@ class ispCP_Database {
 	 * Returns the PDO object linked to the current database connection object
 	 *
 	 * @since 1.0.7
-	 * @author Laurent Declercq <laurent.declercq@ispcp.net>
+	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
 	 * @throws ispCP_Exception
 	 * @param string $connection Connection unique identifier
 	 * @return PDO A PDO instance
@@ -364,7 +364,7 @@ class ispCP_Database {
 	 * more information about this.
 	 *
 	 * @since r2013
-	 * @author Laurent Declercq <laurent.declercq@ispcp.net>
+	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
 	 * @param int $attribute Attribute uid
 	 * @param mixed $value Attribute value
 	 * @return boolean TRUE on success, FALSE on failure
@@ -411,7 +411,7 @@ class ispCP_Database {
 	 * {@link startTransaction()} method.
 	 *
 	 * @since r2013
-	 * @author Laurent Declercq <laurent.declerq@ispcp.net>
+	 * @author Laurent Declercq <laurent.declerq@i-mscp.net>
 	 * @param int $attribute Attribute uid
 	 * @param mixed $value Attribute value
 	 * @return boolean TRUE on success or FALSE on failure
@@ -426,7 +426,7 @@ class ispCP_Database {
 	 * Gets the last SQLSTATE error code
 	 *
 	 * @since 1.0.7
-	 * @author Laurent Declercq <laurent.declercq@ispcp.net>
+	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
 	 * @return mixed The last SQLSTATE error code
 	 */
 	public function getLastErrorCode() {
@@ -440,7 +440,7 @@ class ispCP_Database {
 	 * This method returns the last error message set by the {@link execute()}
 	 * or {@link prepare()} methods.
 	 *
-	 * @author Laurent Declercq <laurent.declercq@ispcp.net>
+	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
 	 * @since 1.0.7
 	 * @return string Last error message set by the {@link execute()} or
 	 * {@link prepare()} methods.

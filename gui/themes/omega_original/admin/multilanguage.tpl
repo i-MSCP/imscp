@@ -5,8 +5,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
+<link href="{THEME_COLOR_PATH}/css/i-mscp.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="{THEME_COLOR_PATH}/css/i-mscp.js"></script>
 <!--[if lt IE 7.]>
 <script defer type="text/javascript" src="{THEME_COLOR_PATH}/css/pngfix.js"></script>
 <![endif]-->
@@ -24,7 +24,7 @@
 
 	// Overrides exportation url to enable/disable gzip compression
 	//
-	// author Laurent Declercq <laurent.declercq@ispcp.net>
+	// author Laurent Declercq <laurent.declercq@i-mscp.net>
 	// Since 1.0.6
 	function override_export_url(ob) {
 

@@ -28,7 +28,7 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/ispcp-lib.php';
+require '../include/i-mscp-lib.php';
 
 check_login(__FILE__);
 
@@ -721,7 +721,7 @@ function gen_page_lists($tpl, $sql, $user_id) {
  * For performances reasons, the query is performed only once
  * and the result is cached.
  *
- * @author Laurent declercq <laurent.declercq@ispcp.net>
+ * @author Laurent declercq <laurent.declercq@i-mscp.net>
  * @since r2513
  * @param ispCP_Database $sql reference to the Database instance
  * @param int Domain name id

@@ -4,7 +4,7 @@ echo "Starting ispcp_network: currently not ported to BSD"
 exit 0
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
 #
 # Version: $Id$
 #
@@ -43,7 +43,7 @@ exit 0
 RMMOD="/sbin/rmmod"
 
 IPTABLES="/sbin/iptables"
-LOGDIR=/var/log/ispcp
+LOGDIR=/var/log/i-mscp
 LOGFILE=${LOGDIR}/${NAME}.log
 
 # To monitor more ports, edit SERVICES variable add your own ports

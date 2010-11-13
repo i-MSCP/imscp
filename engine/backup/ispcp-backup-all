@@ -2,7 +2,7 @@
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
 #
 # Version: $Id$
 #
@@ -36,7 +36,7 @@ require 'ispcp_common_code.pl';
 use strict;
 use warnings;
 
-our $backup_lock_file = "/tmp/ispcp-backup-all.lock";
+our $backup_lock_file = "/tmp/i-mscp-backup-all.lock";
 
 sub lock_backup_all_system {
 

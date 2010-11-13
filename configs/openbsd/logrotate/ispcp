@@ -1,6 +1,6 @@
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
 #
 # Version: $Id$
 #
@@ -39,7 +39,7 @@
   create 640 root adm
   sharedscripts
   prerotate
-    /var/www/ispcp/engine/traffic/ispcp-vrl-traff >/var/log/ispcp/ispcp-vrl-traff.log 2>&1
+    /var/www/i-mscp/engine/traffic/i-mscp-vrl-traff >/var/log/i-mscp/i-mscp-vrl-traff.log 2>&1
   endscript
   postrotate
     if [ -f "`. /etc/apache2/envvars ; echo ${APACHE_PID_FILE:-/var/run/apache2.pid}`" ]; then
@@ -72,8 +72,8 @@
   create 640 root adm
   sharedscripts
   prerotate
-	if [ `cat /etc/ispcp/ispcp.conf | grep -c 'AWSTATS_ACTIVE *= *yes'` = 1 ]; then
-      perl /var/www/ispcp/engine/awstats/awstats_updateall.pl now -awstatsprog=/usr/lib/cgi-bin/awstats.pl >/dev/null 2>&1
+	if [ `cat /etc/i-mscp/i-mscp.conf | grep -c 'AWSTATS_ACTIVE *= *yes'` = 1 ]; then
+      perl /var/www/i-mscp/engine/awstats/awstats_updateall.pl now -awstatsprog=/usr/lib/cgi-bin/awstats.pl >/dev/null 2>&1
     fi
   endscript
   postrotate
@@ -83,9 +83,9 @@
   endscript
 }
 
-# ispcp-apache-logger log files rotation
+# i-mscp-apache-logger log files rotation
 #
-"/var/log/ispcp/ispcp-apache-logger.stderr" /var/log/ispcp/ispcp-apache-logger.stdout {
+"/var/log/i-mscp/i-mscp-apache-logger.stderr" /var/log/i-mscp/i-mscp-apache-logger.stdout {
   weekly
   rotate 2
   size 10M
@@ -122,7 +122,7 @@
   compress
   delaycompress
   prerotate
-    /var/www/ispcp/engine/traffic/ispcp-vrl-traff >/var/log/ispcp/ispcp-vrl-traff.log 2>&1
+    /var/www/i-mscp/engine/traffic/i-mscp-vrl-traff >/var/log/i-mscp/i-mscp-vrl-traff.log 2>&1
   endscript
   postrotate
     if [ -e /var/run/syslogd.pid ]; then

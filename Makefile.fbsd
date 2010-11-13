@@ -2,7 +2,7 @@
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
 #
 # Version: $Id$
 #
@@ -30,16 +30,16 @@
 #
 
 .ifndef INST_PREF
- INST_PREF=/tmp/ispcp
+ INST_PREF=/tmp/i-mscp
 .endif
 
 HOST_OS=freebsd
 
 ROOT_CONF=$(INST_PREF)/usr/local/etc
 
-SYSTEM_ROOT=$(INST_PREF)/usr/local/www/ispcp
-SYSTEM_CONF=$(INST_PREF)/usr/local/etc/ispcp
-SYSTEM_LOG=$(INST_PREF)/var/log/ispcp
+SYSTEM_ROOT=$(INST_PREF)/usr/local/www/i-mscp
+SYSTEM_CONF=$(INST_PREF)/usr/local/etc/i-mscp
+SYSTEM_LOG=$(INST_PREF)/var/log/i-mscp
 SYSTEM_APACHE_BACK_LOG=$(INST_PREF)/usr/local/www/logs/backup
 SYSTEM_VIRTUAL=$(INST_PREF)/usr/local/www/data/virtual
 SYSTEM_AWSTATS=$(INST_PREF)/usr/local/www/awstats

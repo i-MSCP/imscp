@@ -2,7 +2,7 @@
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
 #
 # Version: $Id$
 #
@@ -34,7 +34,7 @@ export
 install:
 
 	if test $(HOST_OS) = opensuse ; then \
-		cp ./ispcp.conf $(SYSTEM_CONF) ; \
+		cp ./i-mscp.conf $(SYSTEM_CONF) ; \
 		cd ./amavisd && $(MAKE) install ; cd .. ; \
 		cd ./apache && $(MAKE) install ; cd .. ; \
 		cd ./awstats && $(MAKE) install ; cd .. ; \
@@ -51,7 +51,7 @@ install:
 uninstall:
 
 	if test $(HOST_OS) = opensuse ; then \
-		rm -rf $(SYSTEM_CONF)/ispcp.conf ;  \
+		rm -rf $(SYSTEM_CONF)/i-mscp.conf ;  \
 		cd ./amavisd && $(MAKE) uninstall ; cd.. ; \
 		cd ./apache && $(MAKE) uninstall ; cd .. ; \
 		cd ./awstats && $(MAKE) uninstall ; cd .. ; \

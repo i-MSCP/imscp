@@ -21,7 +21,7 @@
  * @category	ispCP
  * @package		ispCP_Exception
  * @copyright	2006-2010 by ispCP | http://isp-control.net
- * @author		Laurent Declercq <laurent.declercq@ispcp.net>
+ * @author		Laurent Declercq <laurent.declercq@i-mscp.net>
  * @version		SVN: $Id$
  * @link		http://isp-control.net ispCP Home Site
  * @license		http://www.mozilla.org/MPL/ MPL 1.1
@@ -36,7 +36,7 @@ require_once  INCLUDEPATH . '/ispCP/Exception.php';
  * Exception used on production by ispCP_Exception_Handler
  *
  * @package		ispCP_Exception
- * @author		Laurent declercq <laurent.declercq@ispcp.net>
+ * @author		Laurent declercq <laurent.declercq@i-mscp.net>
  * @since		1.0.7
  * @version		1.0.0
  */

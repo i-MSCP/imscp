@@ -2,7 +2,7 @@
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
 #
 # Version: $Id$
 #
@@ -119,8 +119,8 @@ sub srv_traff_engine {
 		my ($rs, $ref) = (undef, undef);
 
 		my ($input_log, $output_log) = (
-			"$main::log_dir/ispcp-iptables-input.log",
-			"$main::log_dir/ispcp-iptables-output.log"
+			"$main::log_dir/i-mscp-iptables-input.log",
+			"$main::log_dir/i-mscp-iptables-output.log"
 		);
 
 		push_el(\@main::el, 'srv_traff_engine()', 'Starting...');

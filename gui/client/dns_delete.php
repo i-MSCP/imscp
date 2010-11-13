@@ -25,7 +25,7 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/ispcp-lib.php';
+require '../include/i-mscp-lib.php';
 
 check_login(__FILE__);
 

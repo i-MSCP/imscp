@@ -119,8 +119,8 @@ scache    unix  -       -       n       -       1       scache
 # ispCP auto responder service
 #
 
-ispcp-arpl unix  -      n       n       -       -       pipe
-  flags=O user=vmail argv=/srv/www/ispcp/engine/messenger/ispcp-arpl-msgr
+i-mscp-arpl unix  -      n       n       -       -       pipe
+  flags=O user=vmail argv=/srv/www/i-mscp/engine/messenger/i-mscp-arpl-msgr
 
 # ====================================================================
 # Interfaces to non-Postfix software. Be sure to examine the manual

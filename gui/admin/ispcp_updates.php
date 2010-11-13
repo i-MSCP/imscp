@@ -28,7 +28,7 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/ispcp-lib.php';
+require '../include/i-mscp-lib.php';
 
 check_login(__FILE__);
 
@@ -72,7 +72,7 @@ function get_update_infos(&$tpl) {
 			array(
 				'UPDATE_MESSAGE' => '',
 				'UPDATE' => tr('New ispCP update is now available'),
-				'INFOS' => tr('Get it at') . " <a href=\"http://www.isp-control.net/download.html\" class=\"link\" target=\"ispcp\">http://www.isp-control.net/download.html</a>"
+				'INFOS' => tr('Get it at') . " <a href=\"http://www.isp-control.net/download.html\" class=\"link\" target=\"i-mscp\">http://www.isp-control.net/download.html</a>"
 			)
 		);
 

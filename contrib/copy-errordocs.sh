@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
 #
 # Version: $Id$
 #
@@ -26,7 +26,7 @@
 #    http://isp-control.net
 #
 
-for a in `cat /etc/ispcp/ispcp.conf | grep -E '(APACHE_WWW_DIR|GUI_ROOT_DIR|APACHE_USER|APACHE_GROUP)'| sed -e 's/ //g'`
+for a in `cat /etc/i-mscp/i-mscp.conf | grep -E '(APACHE_WWW_DIR|GUI_ROOT_DIR|APACHE_USER|APACHE_GROUP)'| sed -e 's/ //g'`
 do
 export $a
 done

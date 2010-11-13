@@ -1,10 +1,10 @@
 #!/usr/bin/perl
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
 #
 # Version: $Id$
-# Author: Laurent Declercq <laurent.declercq@ispcp.net>
+# Author: Laurent Declercq <laurent.declercq@i-mscp.net>
 #
 # The contents of this file are subject to the Mozilla Public License
 # Version 1.1 (the "License"); you may not use this file except in
@@ -29,7 +29,7 @@
 
 ################################################################################
 ## Script description:                                                        ##
-##  ispcp-apache-logger - ispCP apache logfiles handling                      ##
+##  i-mscp-apache-logger - ispCP apache logfiles handling                      ##
 ##                                                                            ##
 ## I. CustomLog handler:                                                      ##
 ##                                                                            ##
@@ -84,7 +84,7 @@ use sigtrap 'handler' => \&signalHandler, 'normal-signals';
 
 my %opt = (
 	loggingType => 'access', # Default logging type
-	logDir => '/var/log/ispcp' # Default script event log directory
+	logDir => '/var/log/i-mscp' # Default script event log directory
 );
 
 Getopt::Long::Configure(qw(no_ignore_case));
@@ -107,10 +107,10 @@ sub getConf {
 
 	my $file;
 
-	if(-e '/usr/local/etc/ispcp/ispcp.conf'){
-		$file = '/usr/local/etc/ispcp/ispcp.conf';
-	} elsif(-e '/etc/ispcp/ispcp.conf') {
-		$file = '/etc/ispcp/ispcp.conf';
+	if(-e '/usr/local/etc/i-mscp/i-mscp.conf'){
+		$file = '/usr/local/etc/i-mscp/i-mscp.conf';
+	} elsif(-e '/etc/i-mscp/i-mscp.conf') {
+		$file = '/etc/i-mscp/i-mscp.conf';
 	} else {
 		return -1;
 	}
@@ -237,7 +237,7 @@ sub eventLog {
 	if(-d $opt{'logDir'}) {
 		if($priority ne 'debug' && $priority ne 'info' && $priority ne 'notice') {
 			*STDERR = cacheout '>>',
-				"$opt{'logDir'}/ispcp-apache-logger.stderr";
+				"$opt{'logDir'}/i-mscp-apache-logger.stderr";
 			STDERR->autoflush(1);
 
 			print STDERR "[$date] [$priority] $message\n";
@@ -245,7 +245,7 @@ sub eventLog {
 			return 0;
 		} else {
 			*STDOUT = cacheout '>>',
-				"$opt{'logDir'}/ispcp-apache-logger.stdout";
+				"$opt{'logDir'}/i-mscp-apache-logger.stdout";
 			STDOUT->autoflush(1);
 
 			print STDOUT "[$date] [$priority] $message\n";
@@ -295,7 +295,7 @@ eventLog('notice', "Starting ispCP Apache logger (pid $$)");
 if(getConf() != 0) {
 	eventLog(
 		'err',
-		"Unable to load ispCP configuration from the ispcp.conf file!"
+		"Unable to load ispCP configuration from the i-mscp.conf file!"
 	);
 
 } elsif (!-d $main::cfg{'APACHE_LOG_DIR'}) {

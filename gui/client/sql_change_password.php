@@ -28,7 +28,7 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/ispcp-lib.php';
+require '../include/i-mscp-lib.php';
 
 check_login(__FILE__);
 
@@ -88,7 +88,7 @@ function change_sql_user_pass(&$sql, $db_user_id, $db_user_name) {
 
 	$user_pass = $_POST['pass'];
 
-	// update user pass in the ispcp sql_user table;
+	// update user pass in the i-mscp sql_user table;
 	$query = "
 		UPDATE
 			`sql_user`

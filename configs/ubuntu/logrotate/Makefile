@@ -2,7 +2,7 @@
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
 #
 # Version: $Id$
 #
@@ -35,9 +35,9 @@ install:
 
 	$(SYSTEM_MAKE_DIRS) $(ROOT_CONF)/logrotate.d
 
-	cp ./ispcp $(ROOT_CONF)/logrotate.d
+	cp ./i-mscp $(ROOT_CONF)/logrotate.d
 
 uninstall:
 
-	rm -rf $(ROOT_CONF)/logrotate.d/ispcp
+	rm -rf $(ROOT_CONF)/logrotate.d/i-mscp
 

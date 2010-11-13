@@ -5,20 +5,20 @@ CURRENTVERSION="1.0.4"
 TARGETVERSION="1.0.5"
 SVNLOCATION="branches"
 SVNFOLDER="omega-"${TARGETVERSION}
-RELEASEFOLDER="ispcp-"${SVNFOLDER}
+RELEASEFOLDER="i-mscp-"${SVNFOLDER}
 FTPFOLDER="ispCP Omega "${TARGETVERSION}
 FTPUSER="" // Insert Sourceforge Username
 
 SVNSTRING="http://www.isp-control.net/ispcp_svn/"${SVNLOCATION}"/"${SVNFOLDER}
 
 # Cleanup
-rm -rf ispcp-omega-*
+rm -rf i-mscp-omega-*
 
 # Pull the code from svn
 svn export $SVNSTRING
 
 # Builddate
-ISPCPCONF="${SVNFOLDER}\configs\debian\ispcp.conf"
+ISPCPCONF="${SVNFOLDER}\configs\debian\i-mscp.conf"
 CURRENTBUILDDATE=$(grep BuildDate ${ISPCPCONF} | cut -d "=" -f 2 | sed 's/ //g')
 TARGETBUILDDATE=$(date -u +"%Y%m%d")
 
@@ -28,7 +28,7 @@ mv ${SVNFOLDER} ${RELEASEFOLDER}
 
 # Release preperations
 #rpl -R "Version = ${CURRENTVERSION} OMEGA" "Version = ${TARGETVERSION} OMEGA" ${RELEASEFOLDER}/configs
-#rpl -R "BuildDate = ${CURRENTBUILDDATE}" "BuildDate = ${TARGETBUILDDATE}" ${RELEASEFOLDER}/*/ispcp.conf
+#rpl -R "BuildDate = ${CURRENTBUILDDATE}" "BuildDate = ${TARGETBUILDDATE}" ${RELEASEFOLDER}/*/i-mscp.conf
 #rpl -R "${CURRENTVERSION}" "${TARGETVERSION}" ${RELEASEFOLDER}/docs/*/INSTALL
 
 # Create the needed Archives
@@ -51,7 +51,7 @@ fi
 
 touch ./ftpbatch.sh
 
-echo -ne "cd /home/frs/project/i/is/ispcp/ispCP\ Omega\n" >> ftpbatch.sh
+echo -ne "cd /home/frs/project/i/is/i-mscp/ispCP\ Omega\n" >> ftpbatch.sh
 echo -ne "mkdir ispCP\ Omega\ ${TARGETVERSION}\n" >> ftpbatch.sh
 echo -ne "cd ispCP\ Omega\ ${TARGETVERSION}\n" >> ftpbatch.sh
 echo -ne "put ${RELEASEFOLDER}.zip\n" >> ftpbatch.sh
@@ -65,4 +65,4 @@ echo -ne "put ${RELEASEFOLDER}.tar.bz2.sum\n" >> ftpbatch.sh
 echo -ne "quit\n" >> ftpbatch.sh
 
 # you will be promted for a login!
-sftp -o "batchmode no" -b ./ftpbatch.sh ${FTPUSER},ispcp@frs.sourceforge.net
+sftp -o "batchmode no" -b ./ftpbatch.sh ${FTPUSER},i-mscp@frs.sourceforge.net

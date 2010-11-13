@@ -2,7 +2,7 @@
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
 #
 # Version: $Id$
 #
@@ -41,7 +41,7 @@ install:
 	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)
 	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/vhosts.d
 	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/modules.d
-	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/ispcp
+	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/i-mscp
 
 	cp ./httpd.conf $(SYSTEM_CONF)/apache
 	cp ./fastcgi_ispcp.conf $(SYSTEM_CONF)/apache

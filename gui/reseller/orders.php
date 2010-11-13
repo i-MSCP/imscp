@@ -29,7 +29,7 @@
  */
 
 // Begin page line
-require '../include/ispcp-lib.php';
+require '../include/i-mscp-lib.php';
 
 check_login(__FILE__);
 

@@ -157,7 +157,7 @@ class ispCP_VirtualFileSystem {
 			return true;
 		}
 
-		// Check if we have a valid ispcp database
+		// Check if we have a valid i-mscp database
 		if (!$this->_db) {
 			return false;
 		}

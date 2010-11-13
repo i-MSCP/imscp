@@ -77,8 +77,8 @@ function curlang($newlang = null, $force = false) {
  *
  * @access public
  * @version 2.3
- * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
- * @author Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
+ * @author Benedikt Heintel <benedikt.heintel@i-mscp.net>
+ * @author Laurent Declercq (nuxwin) <laurent.declercq@i-mscp.net>
  * @author Raphael Geissert (2007)
  * @param string $msgid string to translate
  * @param mixed $substitution Prevent the returned string from being replaced
@@ -174,7 +174,7 @@ function tr($msgid, $substitution = false) {
  *
  * @access public
  * @version 1.0
- * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author Benedikt Heintel <benedikt.heintel@i-mscp.net>
  * @param string $string String to replace chars
  * @return String with replaced chars
  */

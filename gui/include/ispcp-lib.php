@@ -24,7 +24,7 @@
  * @package		ispCP
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @author 		ispCP Team
- * @author 	    Laurent Declercq <laurent.declercq@ispcp.net>
+ * @author 	    Laurent Declercq <laurent.declercq@i-mscp.net>
  * @version 	SVN: $Id$
  * @link		http://isp-control.net ispCP Home Site
  * @license		http://www.mozilla.org/MPL/ MPL 1.1
@@ -51,7 +51,7 @@ define('INCLUDEPATH', dirname(__FILE__));
  *
  * @todo switch to POO
  */
-require_once INCLUDEPATH . '/ispcp-loader.php';
+require_once INCLUDEPATH . '/i-mscp-loader.php';
 spl_autoload_register('autoload_class');
 
 /**
@@ -87,7 +87,7 @@ ispCP_Registry::get('exceptionHandler')->attach(
 /**
  * Encryption data
  */
-require_once INCLUDEPATH . '/ispcp-db-keys.php';
+require_once INCLUDEPATH . '/i-mscp-db-keys.php';
 
 if($ispcp_db_pass_key != '{KEY}' && $ispcp_db_pass_iv != '{IV}') {
 	ispCP_Registry::set('MCRYPT_KEY', $ispcp_db_pass_key);
@@ -103,7 +103,7 @@ if($ispcp_db_pass_key != '{KEY}' && $ispcp_db_pass_iv != '{IV}') {
  * Include ispCP common functions
  */
 require_once 'net_idna/idna_convert.class.php';
-require_once INCLUDEPATH . '/ispcp-functions.php';
+require_once INCLUDEPATH . '/i-mscp-functions.php';
 require_once INCLUDEPATH . '/deprecated.php';
 
 /**

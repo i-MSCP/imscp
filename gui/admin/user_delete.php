@@ -28,7 +28,7 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/ispcp-lib.php';
+require '../include/i-mscp-lib.php';
 
 check_login(__FILE__);
 
@@ -133,7 +133,7 @@ function delete_user($user_id) {
 		}
 	}
 
-	// Delete ispcp login:
+	// Delete i-mscp login:
 	$query = "DELETE FROM `admin` WHERE `admin_id` = ?";
 	exec_query($sql, $query, $user_id);
 

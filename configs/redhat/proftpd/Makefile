@@ -2,7 +2,7 @@
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
 #
 # Version: $Id$
 #
@@ -43,9 +43,9 @@ install:
 		$(SYSTEM_MAKE_DIRS) $(ROOT_CONF)/proftpd ; \
 	fi
 
-	$(SYSTEM_MAKE_DIRS) $(ROOT_CONF)/proftpd/ispcp
+	$(SYSTEM_MAKE_DIRS) $(ROOT_CONF)/proftpd/i-mscp
 
-	cp ./root_domain.conf $(ROOT_CONF)/proftpd/ispcp
+	cp ./root_domain.conf $(ROOT_CONF)/proftpd/i-mscp
 	cp ./proftpd.conf $(SYSTEM_CONF)/proftpd
 
 uninstall:

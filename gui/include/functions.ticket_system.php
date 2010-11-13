@@ -32,7 +32,7 @@
  * Checks if the ticket system is globally enabled and if the specific user has
  * the right to access it.
  *
- * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author	Benedikt Heintel <benedikt.heintel@i-mscp.net>
  * @since	1.0.7
  * @version	1.0.0
  *
@@ -76,7 +76,7 @@ function hasTicketSystem($user_id = null) {
  *	3 - read (if status was 2 or 4)
  *	4 - answered by client
  *
- * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author	Benedikt Heintel <benedikt.heintel@i-mscp.net>
  * @since	1.0.7
  * @version	1.0.0
  *
@@ -115,7 +115,7 @@ function getTicketStatus($ticket_id) {
  *	3 - read (if status was 2 or 4)
  *	4 - answered by client
  *
- * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author	Benedikt Heintel <benedikt.heintel@i-mscp.net>
  * @since	1.0.7
  * @version	1.0.0
  *
@@ -150,7 +150,7 @@ function changeTicketStatus($ticket_id, $ticket_status) {
 /**
  * Creates the ticket and informs the recipient.
  *
- * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author	Benedikt Heintel <benedikt.heintel@i-mscp.net>
  * @since	1.0.7
  * @version	1.0.0
  *
@@ -198,7 +198,7 @@ function createTicket($user_id, $admin_id, $urgency, $subject, $message,
 /**
  * Updates the ticket with a new answer and informs the recipient.
  *
- * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author	Benedikt Heintel <benedikt.heintel@i-mscp.net>
  * @since	1.0.7
  * @version	1.0.0
  *
@@ -316,7 +316,7 @@ function getUserLevel($ticket_id) {
 /**
  * Close the given ticket (status 0).
  *
- * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author	Benedikt Heintel <benedikt.heintel@i-mscp.net>
  * @since	1.0.7
  * @version	1.0.0
  *
@@ -330,7 +330,7 @@ function closeTicket($ticket_id) {
 /**
  * Open the given ticket (Status 3).
  *
- * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author	Benedikt Heintel <benedikt.heintel@i-mscp.net>
  * @since	1.0.7
  * @version	1.0.0
  *
@@ -345,7 +345,7 @@ function openTicket($ticket_id) {
  * Get priority as translated string.
  *
  * @author		ispCP Team
- * @author		Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author		Benedikt Heintel <benedikt.heintel@i-mscp.net>
  * @version		1.0.1
  *
  * @param int $ticket_urgency	values from 1 to 4
@@ -369,7 +369,7 @@ function getTicketUrgency($ticket_urgency) {
 /**
  * Gets the sender of a ticket answer.
  *
- * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author	Benedikt Heintel <benedikt.heintel@i-mscp.net>
  * @since	1.0.7
  * @version	1.0.0
  *
@@ -440,7 +440,7 @@ function ticketGetLastDate($ticket_id) {
 /**
  * Generates the list with all closed tickets
  *
- * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author	Benedikt Heintel <benedikt.heintel@i-mscp.net>
  * @since	1.0.7
  * @version	1.0.0
  *
@@ -580,7 +580,7 @@ function generateTicketList(&$tpl, $user_id, $start, $count, $userLevel, $status
 /**
  * Gets the content of the selected ticket and generates its output.
  *
- * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author	Benedikt Heintel <benedikt.heintel@i-mscp.net>
  * @since	1.0.7
  * @version	1.0.0
  *
@@ -653,7 +653,7 @@ function showTicketContent(&$tpl, $ticket_id, $user_id, $screenwidth) {
 /**
  * Gets the answers of the selected ticket and generates its output.
  *
- * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author	Benedikt Heintel <benedikt.heintel@i-mscp.net>
  * @since	1.0.7
  * @version	1.0.0
  *

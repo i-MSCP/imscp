@@ -1,10 +1,10 @@
 /**
  * ispCP ω (OMEGA) a Virtual Hosting Control Panel
- * Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+ * Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
  *
  * Version:	$Id$
  * @link	http://isp-control.net
- * @author	Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
+ * @author	Laurent Declercq (nuxwin) <laurent.declercq@i-mscp.net>
  *
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
@@ -59,7 +59,7 @@
  *
  * Tested on: MSIE 6,7,8, FF and others Gecko's based browser, chrome.
  *
- * @author Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
+ * @author Laurent Declercq (nuxwin) <laurent.declercq@i-mscp.net>
  * @version 1.0.0
  * @require Jquery 1.4.1
  */

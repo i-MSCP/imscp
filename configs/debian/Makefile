@@ -2,7 +2,7 @@
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
 #
 # Version: $Id$
 #
@@ -33,7 +33,7 @@ export
 
 install:
 	if test $(HOST_OS) = debian  ; then \
-		cp ./ispcp.conf $(SYSTEM_CONF) ; \
+		cp ./i-mscp.conf $(SYSTEM_CONF) ; \
 		(cd ./apache && $(MAKE) install &); \
 		(cd ./awstats && $(MAKE) install &); \
 		(cd ./bind && $(MAKE) install &); \
@@ -48,7 +48,7 @@ install:
 
 uninstall:
 	if test $(HOST_OS) = debian ; then \
-		rm -rf $(SYSTEM_CONF)/ispcp.conf ;  \
+		rm -rf $(SYSTEM_CONF)/i-mscp.conf ;  \
 		(cd ./apache && $(MAKE) uninstall &); \
 		(cd ./awstats && $(MAKE) uninstall &); \
 		(cd ./bind && $(MAKE) uninstall &); \

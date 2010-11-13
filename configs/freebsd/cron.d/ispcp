@@ -5,20 +5,20 @@ HOME=/var/log
 # delayed tasks START.
 
 # Quota
-@daily umask 027; {QUOTA_ROOT_DIR}/ispcp-dsk-quota >&{LOG_DIR}/ispcp-dsk-quota.log
+@daily umask 027; {QUOTA_ROOT_DIR}/i-mscp-dsk-quota >&{LOG_DIR}/i-mscp-dsk-quota.log
 
 # Traffic
-0,30	*	*	*	*  umask 027; {TRAFF_ROOT_DIR}/ispcp-srv-traff >&{LOG_DIR}/ispcp-srv-traff.log
-0,30	*	*	*	*  umask 027; {TRAFF_ROOT_DIR}/ispcp-vrl-traff >&{LOG_DIR}/ispcp-vrl-traff.log
+0,30	*	*	*	*  umask 027; {TRAFF_ROOT_DIR}/i-mscp-srv-traff >&{LOG_DIR}/i-mscp-srv-traff.log
+0,30	*	*	*	*  umask 027; {TRAFF_ROOT_DIR}/i-mscp-vrl-traff >&{LOG_DIR}/i-mscp-vrl-traff.log
 
 # customer logs
-@daily umask 027; {TOOLS_ROOT_DIR}/ispcp-httpd-logs-mngr >&{LOG_DIR}/ispcp-httpd-logs-mngr.log
+@daily umask 027; {TOOLS_ROOT_DIR}/i-mscp-httpd-logs-mngr >&{LOG_DIR}/i-mscp-httpd-logs-mngr.log
 
 # Backup for all the customers' data depending of the domain properties
-@daily umask 027; {BACKUP_ROOT_DIR}/ispcp-backup-all yes >&{LOG_DIR}/ispcp-backup-all-mngr.log
+@daily umask 027; {BACKUP_ROOT_DIR}/i-mscp-backup-all yes >&{LOG_DIR}/i-mscp-backup-all-mngr.log
 
-# Backup for ispCP database and all /etc/ispcp/* configuration files
-@daily umask 027; {BACKUP_ROOT_DIR}/ispcp-backup-ispcp noreport >&{LOG_DIR}/ispcp-backup-ispcp-mngr.log
+# Backup for ispCP database and all /etc/i-mscp/* configuration files
+@daily umask 027; {BACKUP_ROOT_DIR}/i-mscp-backup-i-mscp noreport >&{LOG_DIR}/i-mscp-backup-i-mscp-mngr.log
 
 # Remove config backups older than seven days
 @daily find {CONF_DIR}/*/backup/* -maxdepth 0 -type f -mtime +7 -print | egrep '.*\.[0-9]+$' | xargs -r /bin/rm
@@ -36,10 +36,10 @@ HOME=/var/log
 {CR-ENABLED}0 	*/12	*	*	*	{CHKROOTKIT} >& {CHKROOTKIT_LOG}
 
 # Look for and purge old sessions every 30 minutes
-0,30	*	*	*	*	/usr/local/bin/bash {TOOLS_ROOT_DIR}/ispcp-del-phptemp.sh 2>&1 /dev/null
+0,30	*	*	*	*	/usr/local/bin/bash {TOOLS_ROOT_DIR}/i-mscp-del-phptemp.sh 2>&1 /dev/null
 
 # Delete old apache logfiles weekly
-@weekly /usr/local/bin/bash {TOOLS_ROOT_DIR}/ispcp-del-logs.sh 2>&1 /dev/null
+@weekly /usr/local/bin/bash {TOOLS_ROOT_DIR}/i-mscp-del-logs.sh 2>&1 /dev/null
 
 # [{DMN_NAME}] backup task START.
 # [{DMN_NAME}] backup task END.

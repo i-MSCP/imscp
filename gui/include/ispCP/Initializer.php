@@ -21,7 +21,7 @@
  * @category    ispCP
  * @package     ispCP_Initializer
  * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @author      Laurent Declercq <laurent.declercq@ispcp.net>
+ * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
  * @version     SVN: $Id$
  * @link        http://isp-control.net ispCP Home Site
  * @license     http://www.mozilla.org/MPL/ MPL 1.1
@@ -36,7 +36,7 @@
  *
  * @category    ispCP
  * @package     ispCP_Initializer
- * @author      Laurent declercq <laurent.declercq@ispcp.net>
+ * @author      Laurent declercq <laurent.declercq@i-mscp.net>
  * @since       1.0.7
  * @version     1.1.2
  */
@@ -449,8 +449,8 @@ class ispCP_Initializer {
 			if(!date_default_timezone_set($timezone)) {
 				throw new ispCP_Exception(
 					'Error: Invalid timezone identifier set in your ' .
-					'ispcp.conf file! Please fix this error and re-run the ' .
-					'ispcp-update script to fix the value in all your ' .
+					'i-mscp.conf file! Please fix this error and re-run the ' .
+					'i-mscp-update script to fix the value in all your ' .
 					'customers\' php.ini files. The current list of valid ' .
 					'identifiers is available at the <a href="http://www.php.net/ ' .
 					'manual/en/timezones.php" target="_blank">PHP Homepage</a> .'
@@ -467,7 +467,7 @@ class ispCP_Initializer {
 	 *
 	 * Parameters that exists in the basis configuration object will be replaced
 	 * by them that come from the database. The basis configuration object
-	 * contains parameters that come from the ispcp.conf configuration file or
+	 * contains parameters that come from the i-mscp.conf configuration file or
 	 * any parameter defined in the {@link environment.php} file.
 	 *
 	 * @return void

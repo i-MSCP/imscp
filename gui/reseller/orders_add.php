@@ -28,7 +28,7 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/ispcp-lib.php';
+require '../include/i-mscp-lib.php';
 
 check_login(__FILE__);
 
@@ -267,7 +267,7 @@ $query = "
 $res = exec_query($sql, $query, array($record_id, $user_def_lang,
 		$user_theme_color));
 
-// send query to the ispcp daemon
+// send query to the i-mscp daemon
 send_request();
 
 $admin_login = $_SESSION['user_logged'];

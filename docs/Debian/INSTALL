@@ -55,10 +55,10 @@ Make sure you are logged in as root and MySQL is running.
 
 1. Untar or unzip the distribution files to a secure directory:
 	# cd /usr/local/src
-	# tar xjvf ispcp-omega-1.0.7.tar.bz2
+	# tar xjvf i-mscp-omega-1.0.7.tar.bz2
 
 2. Change to the newly created directory:
-	# cd ./ispcp-omega-1.0.7
+	# cd ./i-mscp-omega-1.0.7
 
 3. Install the required packages
 
@@ -86,7 +86,7 @@ Make sure you are logged in as root and MySQL is running.
 	domain should be already shown.)
 	(if you get to the proftpd screen, select 'standalone')
 
-4. (optional) Check the ispcp.conf and adapt it to your requirements.
+4. (optional) Check the i-mscp.conf and adapt it to your requirements.
 
 5. Build the Software by using make:
 	# make install
@@ -94,7 +94,7 @@ Make sure you are logged in as root and MySQL is running.
 6. Copy all the directories into your system. If you have not yet, now is a good
    time to make backups of your server. The following steps do fundamental
    changes to your system configuration.
-	# cp -R /tmp/ispcp/* /
+	# cp -R /tmp/i-mscp/* /
 
 7. Change or create MySQL root password, remove anonymous users, disallow root
 	login remotely, remove test database (and access to it), reload privilege tables.
@@ -102,8 +102,8 @@ Make sure you are logged in as root and MySQL is running.
 
 8. Now it's time to set up the frontend. Change into the engine directory and
 	start the engine setup:
-	# cd /var/www/ispcp/engine/setup
-	# perl ispcp-setup
+	# cd /var/www/i-mscp/engine/setup
+	# perl i-mscp-setup
 
 9. Install ispCP ω step-by-step
 
@@ -111,7 +111,7 @@ Make sure you are logged in as root and MySQL is running.
 	http://isp-control.net to solve the problem.
 
 10. Clean the temporary folders:
-	# rm -fR /tmp/ispcp/
+	# rm -fR /tmp/i-mscp/
 
 ================================================================================
 5) Update
@@ -123,10 +123,10 @@ Make sure you are logged in as root and MySQL is running.
 
 1. Untar or unzip the distribution files to a secure directory:
 	# cd /usr/local/src
-	# tar xjvf ispcp-omega-1.0.7.tar.bz2
+	# tar xjvf i-mscp-omega-1.0.7.tar.bz2
 
 2. Change to the newly created directory:
-	# cd ./ispcp-omega-1.0.7
+	# cd ./i-mscp-omega-1.0.7
 
 3. Install the required packages
 
@@ -160,36 +160,36 @@ Make sure you are logged in as root and MySQL is running.
 	# make install
 
 5. Backup files
-	# cp -v /var/www/ispcp/engine/ispcp-db-keys.pl /tmp/ispcp/var/www/ispcp/engine/
-	# cp -v /var/www/ispcp/engine/messenger/ispcp-db-keys.pl /tmp/ispcp/var/www/ispcp/engine/messenger/
-	# cp -v /var/www/ispcp/gui/include/ispcp-db-keys.php /tmp/ispcp/var/www/ispcp/gui/include/
-	# cp -v /var/www/ispcp/gui/themes/user_logos/* /tmp/ispcp/var/www/ispcp/gui/themes/user_logos/
-	# cp -TRv /var/www/ispcp/gui/domain_default_page /tmp/ispcp/var/www/ispcp/gui/domain_default_page
-	# cp -v /var/www/ispcp/gui/tools/webmail/data/* /tmp/ispcp/var/www/ispcp/gui/tools/webmail/data/
+	# cp -v /var/www/i-mscp/engine/i-mscp-db-keys.pl /tmp/i-mscp/var/www/i-mscp/engine/
+	# cp -v /var/www/i-mscp/engine/messenger/i-mscp-db-keys.pl /tmp/i-mscp/var/www/i-mscp/engine/messenger/
+	# cp -v /var/www/i-mscp/gui/include/i-mscp-db-keys.php /tmp/i-mscp/var/www/i-mscp/gui/include/
+	# cp -v /var/www/i-mscp/gui/themes/user_logos/* /tmp/i-mscp/var/www/i-mscp/gui/themes/user_logos/
+	# cp -TRv /var/www/i-mscp/gui/domain_default_page /tmp/i-mscp/var/www/i-mscp/gui/domain_default_page
+	# cp -v /var/www/i-mscp/gui/tools/webmail/data/* /tmp/i-mscp/var/www/i-mscp/gui/tools/webmail/data/
 
 	For ispCP Omega prior version 1.0.7 RC2
-	# cp -v /var/www/ispcp/gui/tools/pma/config.inc.php /tmp/ispcp/etc/ispcp/pma/working/
+	# cp -v /var/www/i-mscp/gui/tools/pma/config.inc.php /tmp/i-mscp/etc/i-mscp/pma/working/
 
 6. Delete old files to avoid security risks:
-	# rm -Rf /var/www/ispcp/engine/
-	# rm -Rf /var/www/ispcp/gui/{admin,client,include,orderpanel,themes,reseller}/
-	# rm -Rf /var/www/ispcp/gui/tools/{pma/,filemanager/,webmail/,index.php}
-	# rm -Rf /var/www/ispcp/gui/{*.php,favicon.ico,robots.txt}
+	# rm -Rf /var/www/i-mscp/engine/
+	# rm -Rf /var/www/i-mscp/gui/{admin,client,include,orderpanel,themes,reseller}/
+	# rm -Rf /var/www/i-mscp/gui/tools/{pma/,filemanager/,webmail/,index.php}
+	# rm -Rf /var/www/i-mscp/gui/{*.php,favicon.ico,robots.txt}
 
 7. Copy /usr and /var directories into your system (you may make backups)
-	# cp -R /tmp/ispcp/usr/* /usr/
-	# cp -R /tmp/ispcp/var/* /var/
+	# cp -R /tmp/i-mscp/usr/* /usr/
+	# cp -R /tmp/i-mscp/var/* /var/
 
-8. Backup ispcp.conf and copy the /etc directory into your system (you may make
+8. Backup i-mscp.conf and copy the /etc directory into your system (you may make
    backups):
-	# mv /etc/ispcp/ispcp.conf /etc/ispcp/ispcp.old.conf
-	# cp -R /tmp/ispcp/etc/* /etc/
+	# mv /etc/i-mscp/i-mscp.conf /etc/i-mscp/i-mscp.old.conf
+	# cp -R /tmp/i-mscp/etc/* /etc/
 
 9. Now it's time to update your installation. Change into the engine directory:
-	# cd /var/www/ispcp/engine/setup
+	# cd /var/www/i-mscp/engine/setup
 
 10. Start the engine update:
-	# perl ispcp-update
+	# perl i-mscp-update
 
 11. Update ispCP ω step-by-step
 
@@ -197,7 +197,7 @@ Make sure you are logged in as root and MySQL is running.
 	http://isp-control.net to solve the problem.
 
 12. Clean the temporary folders:
-	# rm -fR /tmp/ispcp/
+	# rm -fR /tmp/i-mscp/
 
 ================================================================================
 6) Uninstall
@@ -205,10 +205,10 @@ Make sure you are logged in as root and MySQL is running.
 Make sure you are logged in as root and MySQL is running.
 
 1. Change into the engine directory:
-	# cd /var/www/ispcp/engine/setup
+	# cd /var/www/i-mscp/engine/setup
 
 2. Start the uninstall script:
-	# perl ispcp-uninstall
+	# perl i-mscp-uninstall
 
 3. Clean up your system
 

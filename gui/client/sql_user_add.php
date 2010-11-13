@@ -28,7 +28,7 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/ispcp-lib.php';
+require '../include/i-mscp-lib.php';
 
 check_login(__FILE__);
 
@@ -212,7 +212,7 @@ function check_db_user(&$sql, $db_user) {
  * @todo
  * 	* Database user with same name can be added several times
  *  * If creation of database user fails in MySQL-Table, database user is already
- * 		in loclal ispcp table -> Error handling
+ * 		in loclal i-mscp table -> Error handling
  */
 function add_sql_user(&$sql, $user_id, $db_id) {
 
@@ -322,7 +322,7 @@ function add_sql_user(&$sql, $user_id, $db_id) {
 		return;
 	}
 
-	// add user in the ispcp table;
+	// add user in the i-mscp table;
 
 	$query = "
 		INSERT INTO `sql_user`

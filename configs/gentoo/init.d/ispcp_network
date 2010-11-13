@@ -1,7 +1,7 @@
 #!/sbin/runscript
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
 #
 # Version: $Id$
 #
@@ -38,11 +38,11 @@
 # Note: do not modify any of these vars here, use /etc/default/$NAME instead
 
 IPTABLES=${IPTABLES:-$(which iptables)}
-LOGDIR=${LOGDIR:-"/var/log/ispcp"}
+LOGDIR=${LOGDIR:-"/var/log/i-mscp"}
 LOGFILE=${LOGFILE:-"${LOGDIR}/${SVCNAME}.log"}
-ENGINEPATH="/var/www/ispcp/engine"
+ENGINEPATH="/var/www/i-mscp/engine"
 ENGINETOOLSPATH=${ENGINEPATH}"/tools"
-NETWORKCARDMANAGER="ispcp-net-interfaces-mngr"
+NETWORKCARDMANAGER="i-mscp-net-interfaces-mngr"
 
 # To monitor more ports, edit SERVICES variable add your own ports
 # (ftp, proxy, http, etc.)

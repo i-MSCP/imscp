@@ -29,7 +29,7 @@
  */
 
 // Include needed libraries
-require '../include/ispcp-lib.php';
+require '../include/i-mscp-lib.php';
 
 // Check for login
 check_login(__FILE__);

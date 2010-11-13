@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
 #
 # Version: $Id$
 #
@@ -214,7 +214,7 @@ sub ask_db_name {
 	printQuery();
 	chomp(my $rdata = <STDIN>);
 
-	$main::ua{'db_name'} = ($rdata eq '') ? 'ispcp' : $rdata;
+	$main::ua{'db_name'} = ($rdata eq '') ? 'i-mscp' : $rdata;
 
 	push_el(\@main::el, 'ask_db_name()', 'Ending...');
 }
@@ -1315,7 +1315,7 @@ sub postinst {
 # Starting services
 #
 # This subroutine start all services managed by ispCP and that are not marked as
-# 'no' in the main ispCP configuration file (ispcp.conf).
+# 'no' in the main ispCP configuration file (i-mscp.conf).
 #
 sub start_services {
 
@@ -1482,26 +1482,26 @@ sub setup_crontab {
 
 	# Retrieving production directory path
 	if ($main::cfg{'ROOT_GROUP'} eq 'wheel') {
-		$prodDir = '/usr/local/etc/ispcp/cron.d';
+		$prodDir = '/usr/local/etc/i-mscp/cron.d';
 	} else {
 		$prodDir = '/etc/cron.d';
 	}
 
 	# Saving the current production file if it exists
-	if(-e "$prodDir/ispcp") {
+	if(-e "$prodDir/i-mscp") {
 		$rs = sys_command(
-			"$main::cfg{'CMD_CP'} -p $prodDir/ispcp $bkpDir/ispcp." . time
+			"$main::cfg{'CMD_CP'} -p $prodDir/i-mscp $bkpDir/i-mscp." . time
 		);
 		return $rs if ($rs != 0);
 	}
 
 	## Building new configuration file
 
-	# Loading the template from /etc/ispcp/cron.d/ispcp
-	($rs, $cfgTpl) = get_file("$cfgDir/ispcp");
+	# Loading the template from /etc/i-mscp/cron.d/i-mscp
+	($rs, $cfgTpl) = get_file("$cfgDir/i-mscp");
 	return $rs if ($rs != 0);
 
-	# Awstats cron task preparation (On|Off) according status in ispcp.conf
+	# Awstats cron task preparation (On|Off) according status in i-mscp.conf
 	if ($main::cfg{'AWSTATS_ACTIVE'} ne 'yes' || $main::cfg{'AWSTATS_MODE'} eq 1) {
 		$awstats = '#';
 	}
@@ -1538,13 +1538,13 @@ sub setup_crontab {
 
 	# Storing new file in the working directory
 	$rs = store_file(
-		"$wrkDir/ispcp", $$cfg, $main::cfg{'ROOT_USER'},
+		"$wrkDir/i-mscp", $$cfg, $main::cfg{'ROOT_USER'},
 		$main::cfg{'ROOT_GROUP'}, 0644
 	);
 	return $rs if ($rs != 0);
 
 	# Install the new file in production directory
-	$rs = sys_command("$main::cfg{'CMD_CP'} -fp $wrkDir/ispcp $prodDir/");
+	$rs = sys_command("$main::cfg{'CMD_CP'} -fp $wrkDir/i-mscp $prodDir/");
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'setup_crontab()', 'Ending...');
@@ -1597,7 +1597,7 @@ sub setup_named {
 	## Building new configuration file
 
 	# Loading the system main configuration file from
-	# /etc/ispcp/bind/backup/named.conf.system if it exists
+	# /etc/i-mscp/bind/backup/named.conf.system if it exists
 	if(-e "$bkpDir/named.conf.system") {
 		($rs, $cfg) = get_file("$bkpDir/named.conf.system");
 		return $rs if($rs != 0);
@@ -1615,7 +1615,7 @@ sub setup_named {
 		$cfg = '';
 	}
 
-	# Loading the template from /etc/ispcp/bind/named.conf
+	# Loading the template from /etc/i-mscp/bind/named.conf
 	($rs, $cfgTpl) = get_file("$cfgDir/named.conf");
 	return $rs if($rs != 0);
 
@@ -1696,7 +1696,7 @@ sub setup_fastcgi_modules {
 
 	# fastcgi_ispcp.conf / fcgid_ispcp.conf
 	for (qw/fastcgi fcgid/) {
-		# Loading the template from the /etc/ispcp/apache directory
+		# Loading the template from the /etc/i-mscp/apache directory
 		($rs, $cfgTpl) = get_file("$cfgDir/${_}_ispcp.conf");
 		return $rs if ($rs != 0);
 
@@ -1759,7 +1759,7 @@ sub setup_fastcgi_modules {
 		return $rs if($rs != 0);
 
 		if ($main::cfg{'PHP_FASTCGI'} eq 'fastcgi') {
-			# Ensures that the unused ispcp fcgid module loader is disabled
+			# Ensures that the unused i-mscp fcgid module loader is disabled
 			$rs = sys_command("/usr/sbin/a2dismod fcgid_ispcp");
 			return $rs if($rs != 0);
 
@@ -1767,18 +1767,18 @@ sub setup_fastcgi_modules {
 			$rs = sys_command("/usr/sbin/a2enmod fastcgi_ispcp");
 			return $rs if($rs != 0);
 		} else {
-			# Ensures that the unused ispcp fastcgi ispcp module loader is
+			# Ensures that the unused i-mscp fastcgi i-mscp module loader is
 			# disabled
 			$rs = sys_command("/usr/sbin/a2dismod fastcgi_ispcp");
 			return $rs if($rs != 0);
 
-			# Enable ispcp fastcgi loader
+			# Enable i-mscp fastcgi loader
 			$rs = sys_command("/usr/sbin/a2enmod fcgid_ispcp");
 			return $rs if($rs != 0);
 		}
 
 		# Disable default  fastcgi/fcgid modules loaders to avoid conflicts
-		# with ispcp loaders
+		# with i-mscp loaders
 		$rs = sys_command("/usr/sbin/a2dismod fastcgi fcgid");
 		return $rs if($rs != 0);
 	}
@@ -1813,10 +1813,10 @@ sub setup_httpd_main_vhost {
 	my $wrkDir = "$cfgDir/working";
 
 	# Saving the current production file if it exists
-	if(-e "$main::cfg{'APACHE_SITES_DIR'}/ispcp.conf") {
+	if(-e "$main::cfg{'APACHE_SITES_DIR'}/i-mscp.conf") {
 		my $rs = sys_command(
 			"$main::cfg{'CMD_CP'} -p $main::cfg{'APACHE_SITES_DIR'}/" .
-			"ispcp.conf $bkpDir/ispcp.conf.". time
+			"i-mscp.conf $bkpDir/i-mscp.conf.". time
 		);
 		return $rs if($rs != 0);
 	}
@@ -1832,7 +1832,7 @@ sub setup_httpd_main_vhost {
 		$pipeSyntax .= '|';
 	}
 
-	# Loading the template from /etc/ispcp/apache/
+	# Loading the template from /etc/i-mscp/apache/
 	($rs, $cfgTpl) = get_file("$cfgDir/httpd.conf");
 	return $rs if ($rs != 0);
 
@@ -1849,14 +1849,14 @@ sub setup_httpd_main_vhost {
 
 	# Storing the new file in working directory
 	$rs = store_file(
-		"$wrkDir/ispcp.conf", $$cfg, $main::cfg{'ROOT_USER'},
+		"$wrkDir/i-mscp.conf", $$cfg, $main::cfg{'ROOT_USER'},
 		$main::cfg{'ROOT_GROUP'}, 0644
 	);
 	return $rs if ($rs != 0);
 
 	# Installing the new file in production directory
 	$rs = sys_command(
-		"$main::cfg{'CMD_CP'} -pf $wrkDir/ispcp.conf " .
+		"$main::cfg{'CMD_CP'} -pf $wrkDir/i-mscp.conf " .
 		"$main::cfg{'APACHE_SITES_DIR'}/"
 	);
 	return $rs if($rs != 0);
@@ -1879,7 +1879,7 @@ sub setup_httpd_main_vhost {
 		return $rs if($rs != 0);
 
 		## Enabling main vhost configuration file
-		$rs = sys_command("/usr/sbin/a2ensite ispcp.conf");
+		$rs = sys_command("/usr/sbin/a2ensite i-mscp.conf");
 		return $rs if($rs != 0);
 	}
 
@@ -1951,7 +1951,7 @@ sub setup_awstats_vhost {
 
 	## Building, storage and installation of new files
 
-	# Loading the template from /etc/ispcp/apache
+	# Loading the template from /etc/i-mscp/apache
 	($rs, $cfgTpl) = get_file("$cfgDir/01_awstats.conf");
 	return $rs if($rs != 0);
 
@@ -2021,7 +2021,7 @@ sub setup_awstats_vhost {
 		## Update Apache logrotate file
 
 		# If the distribution provides an apache or apache2 log rotation file,
-		# update it with the Awstats information. If not, use the ispcp file.
+		# update it with the Awstats information. If not, use the i-mscp file.
 		# log rotation should be never executed twice. Therefore it is sane to
 		# define it two times in different scopes.
 		for ('apache', 'apache2') {
@@ -2102,7 +2102,7 @@ sub setup_mta {
 	my $cfgDir = "$main::cfg{'CONF_DIR'}/postfix";
 	my $bkpDir = "$cfgDir/backup";
 	my $wrkDir = "$cfgDir/working";
-	my $vrlDir = "$cfgDir/ispcp";
+	my $vrlDir = "$cfgDir/i-mscp";
 
 	# Install
 	if(!defined &update_engine) {
@@ -2151,7 +2151,7 @@ sub setup_mta {
 
 	# main.cf
 
-	# Loading the template from /etc/ispcp/postfix/
+	# Loading the template from /etc/i-mscp/postfix/
 	($rs, $cfgTpl) = get_file("$cfgDir/main.cf");
 	return $rs if ($rs != 0);
 
@@ -2235,7 +2235,7 @@ sub setup_mta {
 	## Setting ARPL messenger owner, group and permissions
 
 	$rs = setfmode(
-		"$main::cfg{'ROOT_DIR'}/engine/messenger/ispcp-arpl-msgr",
+		"$main::cfg{'ROOT_DIR'}/engine/messenger/i-mscp-arpl-msgr",
 		$main::cfg{'MTA_MAILBOX_UID_NAME'}, $main::cfg{'MTA_MAILBOX_GID_NAME'},
 		0755
 	);
@@ -2301,7 +2301,7 @@ sub setup_po {
 
 	# authdaemonrc file
 
-	# Loading the system file from /etc/ispcp/backup
+	# Loading the system file from /etc/i-mscp/backup
 	($rs, $rdata) = get_file("$bkpDir/authdaemonrc.system");
 	return $rs if ($rs != 0);
 
@@ -2421,13 +2421,13 @@ sub setup_ftpd {
 
 		if(-e "$wrkDir/proftpd.conf" ) {
 			$wrkFile = "$wrkDir/proftpd.conf";
-		} elsif(-e "$main::cfg{'CONF_DIR'}/proftpd/backup/proftpd.conf.ispcp") {
-			$wrkFile = "$main::cfg{'CONF_DIR'}/proftpd/backup/proftpd.conf.ispcp";
+		} elsif(-e "$main::cfg{'CONF_DIR'}/proftpd/backup/proftpd.conf.i-mscp") {
+			$wrkFile = "$main::cfg{'CONF_DIR'}/proftpd/backup/proftpd.conf.i-mscp";
 		} elsif(-e '/etc/proftpd.conf.bak') {
 			$wrkFile = '/etc/proftpd.conf.bak';
 		}
 
-		# Loading working configuration file from /etc/ispcp/working/
+		# Loading working configuration file from /etc/i-mscp/working/
 		($rs, $rdata) = get_file($wrkFile);
 
 		unless($rs) {
@@ -2520,7 +2520,7 @@ sub setup_ftpd {
 
 	## Building, storage and installation of new file
 
-	# Loading the template from /etc/ispcp/proftpd/
+	# Loading the template from /etc/i-mscp/proftpd/
 	($rs, $cfgTpl) = get_file("$cfgDir/proftpd.conf");
 	return $rs if ($rs != 0);
 
@@ -2670,7 +2670,7 @@ sub setup_gui_httpd {
 		return $rs if($rs != 0);
 	}
 
-	# Loading the template from /etc/ispcp/apache
+	# Loading the template from /etc/i-mscp/apache
 	($rs, $cfgTpl) = get_file("$cfgDir/00_master.conf");
 	return $rs if($rs != 0);
 
@@ -2793,7 +2793,7 @@ sub setup_gui_php {
 
 	## PHP5 Starter script
 
-	# Loading the template from /etc/ispcp/fcgi/parts/master
+	# Loading the template from /etc/i-mscp/fcgi/parts/master
 	($rs, $cfgTpl) = get_file("$cfgDir/parts/master/php5-fcgi-starter.tpl");
 	return $rs if ($rs != 0);
 
@@ -2827,7 +2827,7 @@ sub setup_gui_php {
 
 	## PHP5 php.ini file
 
-	# Loading the template from /etc/ispcp/fcgi/parts/master/php5
+	# Loading the template from /etc/i-mscp/fcgi/parts/master/php5
 	($rs, $cfgTpl) = get_file("$cfgDir/parts/master/php5/php.ini");
 	return $rs if ($rs != 0);
 
@@ -3103,7 +3103,7 @@ sub setup_gui_pma {
 		);
 		return -1 if ($rs != 0);
 
-		# Update the ispcp.conf file, reset the DSN and force reconnection on
+		# Update the i-mscp.conf file, reset the DSN and force reconnection on
 		# the next query
 
 		$rs = set_conf_val('PMA_USER', $ctrlUser);
@@ -3192,7 +3192,7 @@ sub setup_gui_named_cfg_data {
 
 	## Building of new configuration file
 
-	# Loading all needed templates from /etc/ispcp/bind/parts
+	# Loading all needed templates from /etc/i-mscp/bind/parts
 	my ($entry_b, $entry_e, $entry) = ('', '', '');
 
 	($rs, $entry_b, $entry_e, $entry) = get_tpl(
@@ -3211,7 +3211,7 @@ sub setup_gui_named_cfg_data {
 	);
 	return $rs if ($rs != 0);
 
-	# Loading working file from /etc/ispcp/bind/working/named.conf
+	# Loading working file from /etc/i-mscp/bind/working/named.conf
 	($rs, $cfg) = get_file("$wrkDir/named.conf");
 	return $rs if ($rs != 0);
 
@@ -3313,7 +3313,7 @@ sub setup_gui_named_db_data {
 
 	## Building new configuration file
 
-	# Loading the template from /etc/ispcp/bind/parts
+	# Loading the template from /etc/i-mscp/bind/parts
 	($rs, $entries) = get_file("$cfgDir/parts/db_master_e.tpl");
 	return $rs if ($rs != 0);
 

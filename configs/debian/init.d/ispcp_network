@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
 #
 # Version: $Id$
 #
@@ -42,10 +42,10 @@ DESC="ispCP Network Traffic Logger"
 NAME=ispcp_network
 LFILE=/var/run/$NAME
 IPTABLES=/sbin/iptables
-ENGINEPATH="/var/www/ispcp/engine"
+ENGINEPATH="/var/www/i-mscp/engine"
 ENGINETOOLSPATH=${ENGINEPATH}"/tools"
-NETWORKCARDMANAGER="ispcp-net-interfaces-mngr"
-LOGDIR=/var/log/ispcp
+NETWORKCARDMANAGER="i-mscp-net-interfaces-mngr"
+LOGDIR=/var/log/i-mscp
 LOGFILE=${LOGDIR}/${NAME}.log
 DIETIME=3
 

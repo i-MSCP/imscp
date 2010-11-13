@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
 #
 # Version: $Id$
 #
@@ -43,10 +43,10 @@ use lib "$FindBin::Bin/..";
 use PerlVendor::Capture::Tiny qw/capture_merged/;
 
 require 'ispcp_common_code.pl';
-require 'ispcp-setup-methods.pl';
+require 'i-mscp-setup-methods.pl';
 
 # We use our own system() subroutine implementation
-# See in the ispcp-setup-methods.pl file
+# See in the i-mscp-setup-methods.pl file
 use subs 'system';
 
 ################################################################################
@@ -118,7 +118,7 @@ sub welcome_note {
 		"\tbe shut down.\n\n",
 
 		colored(['bold yellow'], "\t[WARNING] ") .
-		"Only services that are not marked with 'NO' in your ispcp.conf\n".
+		"Only services that are not marked with 'NO' in your i-mscp.conf\n".
 		"\tconfiguration file will be processed by this program.\n\n";
 
 	do {
@@ -183,16 +183,16 @@ sub load_old_ispcp_cfg {
 
 	push_el(\@main::el, 'load_old_ispcp_config()', 'Starting...');
 
-	my $old_ispcp_cfg_file = '/etc/ispcp/ispcp.old.conf';
+	my $old_ispcp_cfg_file = '/etc/i-mscp/i-mscp.old.conf';
 
-	if(-f '/usr/local/etc/ispcp/ispcp.old.conf') {
-		$old_ispcp_cfg_file = '/usr/local/etc/ispcp/ispcp.old.conf';
+	if(-f '/usr/local/etc/i-mscp/i-mscp.old.conf') {
+		$old_ispcp_cfg_file = '/usr/local/etc/i-mscp/i-mscp.old.conf';
 	}
 
 	if (get_conf($old_ispcp_cfg_file)) {
 		do {
-			print "\n\n\tPlease enter path to your ispcp.old.conf " .
-				"[/etc/ispcp/ispcp.old.conf]: ";
+			print "\n\n\tPlease enter path to your i-mscp.old.conf " .
+				"[/etc/i-mscp/i-mscp.old.conf]: ";
 
 			chomp($old_ispcp_cfg_file = <STDIN>);
 		} while (get_conf($old_ispcp_cfg_file));
@@ -218,7 +218,7 @@ sub update_ispcp_cfg {
 	my ($rs, $rdata) = get_file($main::ua{'old_cfg_file'});
 	return $rs if($rs != 0);
 
-	# Loading new configuration from [/usr/local]/etc/ispcp/ispcp.conf
+	# Loading new configuration from [/usr/local]/etc/i-mscp/i-mscp.conf
 	$rs = get_conf();
 	return $rs if($rs != 0);
 
@@ -341,7 +341,7 @@ sub cfg_recovery_process {
 
 		$msg = colored(['bold blue'], "\n\t[NOTICE] ") .
 			"The program ends now!\n\tPlease, run '$main::cfg{'ROOT_DIR'}/" .
-			"engine/setup/ispcp-setup' instead!\n";
+			"engine/setup/i-mscp-setup' instead!\n";
 
 		($rdata !~ /^n$/i) or exit_msg(1, $msg);
 	}
@@ -380,7 +380,7 @@ sub cfg_recovery_process {
 
 		# Otherwise, the program will end here with an error message
 		} else {
-			# Store already changed values in ispcp.conf
+			# Store already changed values in i-mscp.conf
 			$rs = store_conf();
 			return $rs if($rs != 0);
 
@@ -401,7 +401,7 @@ sub cfg_recovery_process {
 		}
 	}
 
-	# Store new configuration settings values and reload the ispcp.conf
+	# Store new configuration settings values and reload the i-mscp.conf
 	$rs = store_conf();
 	return $rs if($rs != 0);
 
@@ -492,7 +492,7 @@ sub rebuild_customers_cfg {
 		return $rs if ($rs != 0);
 	}
 
-	# Unlock is needed here to be able to launch the ispcp-rqst-mngr script
+	# Unlock is needed here to be able to launch the i-mscp-rqst-mngr script
 	close $main::fh_lock_file if defined $main::fh_lock_file;
 
 	my $rs = sys_command("perl $main::ispcp_rqst_mngr norestart");
@@ -520,7 +520,7 @@ sub update_old_disabled_dmn_layout {
 
 	my $httpd_uid = getpwnam $main::cfg{'APACHE_USER'};
 	my $httpd_gid = getgrnam $main::cfg{'APACHE_GROUP'};
-	my $log_file = '/tmp/ispcp-update-disabled_layout.log';
+	my $log_file = '/tmp/i-mscp-update-disabled_layout.log';
 
 	my $dsd_dmn_skel_dir = "$main::cfg{'GUI_ROOT_DIR'}/domain_disable_page";
 
@@ -636,9 +636,9 @@ sub update_startup {
 	umask(027);
 
 	# Deleting log file if one exist
-	del_file('/tmp/ispcp-setup.log');
+	del_file('/tmp/i-mscp-setup.log');
 
-	# Ensuring that ispcp-rqst-mngr is not running
+	# Ensuring that i-mscp-rqst-mngr is not running
 	# Note: The lock file will be released when needed
 	if(lock_system()) {
 		exit_msg(
@@ -646,7 +646,7 @@ sub update_startup {
 		)
 	}
 
-	if(-e '/tmp/ispcp-backup-all.lock') {
+	if(-e '/tmp/i-mscp-backup-all.lock') {
 		exit_msg(
 			0, colored(['bold blue'], '[NOTICE] ') .
 			"Backup engine is currently running. Aborting..."

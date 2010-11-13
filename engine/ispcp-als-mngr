@@ -2,7 +2,7 @@
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
 #
 # Version: $Id$
 #
@@ -155,12 +155,12 @@ sub als_add_named_cfg_data {
 	## Saving the current production file if it exist - End
 	#
 
-	# Loading the working file from tpl directory (eg. /etc/ispcp/bind/working/)
+	# Loading the working file from tpl directory (eg. /etc/i-mscp/bind/working/)
 	($rs, $wrk_file) = get_file("$wrk_dir/named.conf");
 	return $rs if ($rs != 0);
 
 	#
-	## Loading all needed templates from (eg. /etc/ispcp/bind/parts/) - Begin
+	## Loading all needed templates from (eg. /etc/i-mscp/bind/parts/) - Begin
 	#
 
 	my ($dta_b, $dta_e, $entry_b, $entry_e, $entry) = ('', '', '', '', '');
@@ -183,7 +183,7 @@ sub als_add_named_cfg_data {
 	return $rs if ($rs != 0);
 
 	#
-	## Loading all needed template from (eg. /etc/ispcp/bind/parts/) - End
+	## Loading all needed template from (eg. /etc/i-mscp/bind/parts/) - End
 	#
 
 	#
@@ -331,12 +331,12 @@ sub als_del_named_cfg_data {
 	## Saving the current production file if it exist - End
 	#
 
-	# Loading the working file from tpl directory (eg. /etc/ispcp/bind/working/)
+	# Loading the working file from tpl directory (eg. /etc/i-mscp/bind/working/)
 	($rs, $wrk_file) = get_file("$wrk_dir/named.conf");
 	return $rs if ($rs != 0);
 
 	#
-	## Loading all needed templates from (eg. /etc/ispcp/bind/parts/) - Begin
+	## Loading all needed templates from (eg. /etc/i-mscp/bind/parts/) - Begin
 	#
 
 	my ($dta_b, $dta_e, $entry_b, $entry_e, $entry) = ('', '', '', '', '');
@@ -359,7 +359,7 @@ sub als_del_named_cfg_data {
 	return $rs if ($rs != 0);
 
 	#
-	## Loading all needed template from (eg. /etc/ispcp/bind/parts/) - End
+	## Loading all needed template from (eg. /etc/i-mscp/bind/parts/) - End
 	#
 
 	#
@@ -1085,8 +1085,8 @@ sub als_add_httpd_cfg_data {
 	my $tpl_dir = "$conf_dir/apache/parts";
 	my $working_dir = "$conf_dir/apache/working";
 	my $backup_dir = "$conf_dir/apache/backup";
-	my $sys_cfg = "$main::cfg{'APACHE_SITES_DIR'}/ispcp.conf";
-	my $working_cfg = "$working_dir/ispcp.conf";
+	my $sys_cfg = "$main::cfg{'APACHE_SITES_DIR'}/i-mscp.conf";
+	my $working_cfg = "$working_dir/i-mscp.conf";
 	my $timestamp = time;
 	my $backup_cfg = "$backup_dir/httpd.conf.$timestamp";
 
@@ -1393,8 +1393,8 @@ sub als_del_httpd_cfg_data {
 	my $tpl_dir = "$conf_dir/apache/parts";
 	my $working_dir = "$conf_dir/apache/working";
 	my $backup_dir = "$conf_dir/apache/backup";
-	my $sys_cfg = "$main::cfg{'APACHE_SITES_DIR'}/ispcp.conf";
-	my $working_cfg = "$working_dir/ispcp.conf";
+	my $sys_cfg = "$main::cfg{'APACHE_SITES_DIR'}/i-mscp.conf";
+	my $working_cfg = "$working_dir/i-mscp.conf";
 	my $timestamp = time;
 	my $backup_cfg = "$backup_dir/httpd.conf.$timestamp";
 
@@ -3167,9 +3167,9 @@ sub als_add_awstats_cron {
 	my $tpl_dir = "$conf_dir/cron.d/parts";
 	my $working_dir= "$conf_dir/cron.d/working";
 	my $backup_dir  = "$conf_dir/cron.d/backup";
-	my $working_cfg = "$working_dir/ispcp";
+	my $working_cfg = "$working_dir/i-mscp";
 	my $timestamp = time;
-	my $backup_cfg = "$backup_dir/ispcp.$timestamp";
+	my $backup_cfg = "$backup_dir/i-mscp.$timestamp";
 	my $user_lang = "en";
 	my $awstats_root_dir= $main::cfg{'AWSTATS_ROOT_DIR'};
 	my $awstats_engine_dir = $main::cfg{'AWSTATS_ENGINE_DIR'};
@@ -3373,7 +3373,7 @@ sub als_add_awstats_cron {
 				"/var/cron/tabs/root $backup_cfg"
 			);
 	} else {
-		$rs = sys_command_rs("$main::cfg{'CMD_CP'} /etc/cron.d/ispcp $backup_cfg");
+		$rs = sys_command_rs("$main::cfg{'CMD_CP'} /etc/cron.d/i-mscp $backup_cfg");
 	}
 
 	return $rs if ($rs != 0);
@@ -3419,9 +3419,9 @@ sub als_del_awstats_cron {
 	my $tpl_dir = "$conf_dir/cron.d/parts";
 	my $working_dir = "$conf_dir/cron.d/working";
 	my $backup_dir = "$conf_dir/cron.d/backup";
-	my $working_cfg  = "$working_dir/ispcp";
+	my $working_cfg  = "$working_dir/i-mscp";
 	my $timestamp = time;
-	my $backup_cfg = "$backup_dir/ispcp.$timestamp";
+	my $backup_cfg = "$backup_dir/i-mscp.$timestamp";
 
 	#
 	# Getting needed templates;
@@ -3515,7 +3515,7 @@ sub als_del_awstats_cron {
 	} else {
 		$rs = sys_command_rs(
 			"$main::cfg{'CMD_CP'} " .
-			"/etc/cron.d/ispcp $backup_cfg"
+			"/etc/cron.d/i-mscp $backup_cfg"
 		);
 	}
 

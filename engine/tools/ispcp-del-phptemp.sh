@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
-# Copyright (C) 2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2010 by isp Control Panel - http://i-mscp.net
 #
 # Version: $Id$
 #
@@ -26,12 +26,12 @@
 #    http://isp-control.net
 #
 
-# Load the required entries from ispcp's configuration
-if [ -f /usr/local/etc/ispcp/ispcp.conf ]
+# Load the required entries from i-mscp's configuration
+if [ -f /usr/local/etc/i-mscp/i-mscp.conf ]
 then
-	CONF=/usr/local/etc/ispcp/ispcp.conf
+	CONF=/usr/local/etc/i-mscp/i-mscp.conf
 else
-	CONF=/etc/ispcp/ispcp.conf
+	CONF=/etc/i-mscp/i-mscp.conf
 fi
 for a in `cat $CONF  | grep -E '(^ROOT_DIR|^APACHE_WWW_DIR|^PHP_STARTER_DIR)' | sed -e 's/ //g'`; do
 	export $a

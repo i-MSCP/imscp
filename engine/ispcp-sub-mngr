@@ -2,7 +2,7 @@
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
 #
 # Version: $Id$
 #
@@ -313,8 +313,8 @@ sub sub_add_httpd_cfg_data {
 	my $sysUser			= "$main::cfg{APACHE_SUEXEC_USER_PREF}@$data{domain_uid}";
 	my $sysGroup		= "$main::cfg{APACHE_SUEXEC_USER_PREF}@$data{domain_gid}";
 	my $cfgDir			= $main::cfg{'CONF_DIR'};
-	my $sysFile			= "$main::cfg{APACHE_SITES_DIR}/ispcp.conf";
-	my $wrkFile			= "$cfgDir/apache/working/ispcp.conf";
+	my $sysFile			= "$main::cfg{APACHE_SITES_DIR}/i-mscp.conf";
+	my $wrkFile			= "$cfgDir/apache/working/i-mscp.conf";
 	my $bkpFile			= "$cfgDir/apache/backup/httpd.conf." . time;
 
 	# Getting needed templates
@@ -424,7 +424,7 @@ sub sub_add_httpd_cfg_data {
 	if($subStatus eq 'toadd' || $rs == -5) {
 		push_el(
 			\@main::el, 'sub_add_httpd_cfg_data()',
-			'[WARNING] vhost entry was not found in ispcp.conf file! ' .
+			'[WARNING] vhost entry was not found in i-mscp.conf file! ' .
 			'New one will be added now!'
 		) if($rs == -5);
 
@@ -494,8 +494,8 @@ sub sub_del_httpd_cfg_data {
 
 	my $subName = "@$data{subdomain_name}.@$data{domain_name}";
 	my $cfgDir = $main::cfg{'CONF_DIR'};
-	my $sysFile = "$main::cfg{APACHE_SITES_DIR}/ispcp.conf";
-	my $wrkFile = "$cfgDir/apache/working/ispcp.conf";
+	my $sysFile = "$main::cfg{APACHE_SITES_DIR}/i-mscp.conf";
+	my $wrkFile = "$cfgDir/apache/working/i-mscp.conf";
 	my $bkpFile = "$cfgDir/apache/backup/httpd.conf." . time;
 
 	# Getting needed templates

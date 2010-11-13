@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
 #
 # Version: $Id$
 #
@@ -28,17 +28,17 @@
 #    http://isp-control.net
 #
 
-# read needed entries from ispcp.conf
-CONF_FILE="/etc/ispcp/ispcp.conf"
-if [ -f /usr/local/etc/ispcp/ispcp.conf ]
+# read needed entries from i-mscp.conf
+CONF_FILE="/etc/i-mscp/i-mscp.conf"
+if [ -f /usr/local/etc/i-mscp/i-mscp.conf ]
 then
-    CONF_FILE="/usr/local/etc/ispcp/ispcp.conf"
+    CONF_FILE="/usr/local/etc/i-mscp/i-mscp.conf"
 fi
 
 OLD_IFS=$IFS
 IFS=$
 
-# Reading needed entries from ispcp.conf
+# Reading needed entries from i-mscp.conf
 for a in $(grep -E '^(APACHE_|CMD_|DEBUG|LOG_DIR|MR_LOCK|MTA_MAILBOX_|ROOT_|PHP_STARTER_DIR)' \
 ${CONF_FILE} | sed 's/\s*=\s*\(.*\)/="\1"/'); do
 	 eval $a

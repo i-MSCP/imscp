@@ -3,9 +3,9 @@
 # ispCP repositories install script for OpenSuse 11.3
 #
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
-# Copyright (C) 2006-2009 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2009 by isp Control Panel - http://i-mscp.net
 #
-# author Laurent Declercq <laurent.declercq@ispcp.net>
+# author Laurent Declercq <laurent.declercq@i-mscp.net>
 # version 1.0.0
 # SVN: $Id$
 #
@@ -36,20 +36,20 @@ URI_BASE="http://download.opensuse.org"
 case "$1" in
 	add)
 		# Apache
-		$ZYPPER_BIN ar -f $URI_BASE/repositories/Apache/openSUSE_11.3/ ispcp-apache2
-		$ZYPPER_BIN ar -f $URI_BASE/repositories/Apache:/Modules/openSUSE_11.3/ ispcp-apache2-modules
+		$ZYPPER_BIN ar -f $URI_BASE/repositories/Apache/openSUSE_11.3/ i-mscp-apache2
+		$ZYPPER_BIN ar -f $URI_BASE/repositories/Apache:/Modules/openSUSE_11.3/ i-mscp-apache2-modules
 
 		# Awstats
-		$ZYPPER_BIN ar -f $URI_BASE/repositories/network:/utilities/openSUSE_11.3/ ispcp-awstats
+		$ZYPPER_BIN ar -f $URI_BASE/repositories/network:/utilities/openSUSE_11.3/ i-mscp-awstats
 
 		# Proftpd, lha, rkhunter
-		$ZYPPER_BIN ar -f $URI_BASE/repositories/openSUSE:/11.3:/Contrib/standard/ ispcp-contrib
+		$ZYPPER_BIN ar -f $URI_BASE/repositories/openSUSE:/11.3:/Contrib/standard/ i-mscp-contrib
 
 		# Courier, Postgrey...
-		$ZYPPER_BIN ar -f $URI_BASE/repositories/server:/mail/openSUSE_11.3/ ispcp-mail
+		$ZYPPER_BIN ar -f $URI_BASE/repositories/server:/mail/openSUSE_11.3/ i-mscp-mail
 
 		# policyd-weight
-		$ZYPPER_BIN ar -f $URI_BASE/repositories/home:/pheinlein/openSUSE_11.3/ ispcp-pweight
+		$ZYPPER_BIN ar -f $URI_BASE/repositories/home:/pheinlein/openSUSE_11.3/ i-mscp-pweight
 
 		# Refresh all repositories
 		$ZYPPER_BIN ref
@@ -58,7 +58,7 @@ case "$1" in
 		REPO="apache2 apache2-modules awstats contrib mail pweight"
 
 		for i in $REPO
-			do $ZYPPER_BIN rr ispcp-$i
+			do $ZYPPER_BIN rr i-mscp-$i
 		done
 	;;
 	*)

@@ -5,7 +5,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}">
 		<meta http-equiv="Content-Style-Type" content="text/css">
 		<meta http-equiv="Content-Script-Type" content="text/javascript">
-		<link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
+		<link href="{THEME_COLOR_PATH}/css/i-mscp.css" rel="stylesheet" type="text/css">
 	</head>
 
 	<body onLoad="document.frm.uname.focus()">

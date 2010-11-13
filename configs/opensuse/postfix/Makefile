@@ -2,7 +2,7 @@
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
 #
 # Version: $Id$
 #
@@ -37,7 +37,7 @@ install:
 
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_CONF)/postfix
 	$(SYSTEM_MAKE_DIRS) $(ROOT_POSTFIX_CONF)
-	$(SYSTEM_MAKE_DIRS) $(ROOT_POSTFIX_CONF)/ispcp
+	$(SYSTEM_MAKE_DIRS) $(ROOT_POSTFIX_CONF)/i-mscp
 
 	cp ./main.cf $(SYSTEM_CONF)/postfix/main.cf
 	cp ./master.cf $(SYSTEM_CONF)/postfix/master.cf
@@ -46,9 +46,9 @@ install:
 	cp -R ./backup $(SYSTEM_CONF)/postfix
 	cp -R ./parts $(SYSTEM_CONF)/postfix
 	cp -R ./working $(SYSTEM_CONF)/postfix
-	cp -R ./ispcp $(SYSTEM_CONF)/postfix
+	cp -R ./i-mscp $(SYSTEM_CONF)/postfix
 
 uninstall:
 
 	rm -rf $(SYSTEM_CONF)/postfix
-	rm -rf $(ROOT_POSTFIX_CONF)/ispcp
+	rm -rf $(ROOT_POSTFIX_CONF)/i-mscp

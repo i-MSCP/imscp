@@ -28,7 +28,7 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require 'include/ispcp-lib.php';
+require 'include/i-mscp-lib.php';
 
 $cfg = ispCP_Registry::get('Config');
 
@@ -97,7 +97,7 @@ if (($cfg->MAINTENANCEMODE
 			'TR_USERNAME'				=> tr('Username'),
 			'TR_PASSWORD'				=> tr('Password'),
 			'TR_LOGIN_INFO'				=> tr('Please enter your login information'),
-			// @todo: make this configurable by ispcp-lib
+			// @todo: make this configurable by i-mscp-lib
 			'TR_SSL_LINK'               => isset($_SERVER['HTTPS']) ? 'http://' . htmlentities($_SERVER['HTTP_HOST']) : 'https://' . htmlentities($_SERVER['HTTP_HOST']),
 			'TR_WEBMAIL_SSL_LINK'       => "webmail",
 			'TR_FTP_SSL_LINK'           => "ftp",

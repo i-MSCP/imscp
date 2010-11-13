@@ -110,7 +110,7 @@ class ispCP_Update_Database extends ispCP_Update {
 	}
 
 	/**
-	 * Updates the database fields ispcp.mail_users.mail_addr to the right mail
+	 * Updates the database fields i-mscp.mail_users.mail_addr to the right mail
 	 * address.
 	 *
 	 * @author Christian Hernmarck
@@ -224,9 +224,9 @@ class ispCP_Update_Database extends ispCP_Update {
 	}
 
 	/**
-	 * Fix for ticket #1139 http://www.isp-control.net/ispcp/ticket/1139.
+	 * Fix for ticket #1139 http://www.isp-control.net/i-mscp/ticket/1139.
 	 *
-	 * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
+	 * @author Benedikt Heintel <benedikt.heintel@i-mscp.net>
 	 * @version 1.0.0
 	 * @since r1355
 	 * @return Array SQL statements to be performed
@@ -247,9 +247,9 @@ class ispCP_Update_Database extends ispCP_Update {
 	}
 
 	/**
-	 * Fix for ticket #1196 http://www.isp-control.net/ispcp/ticket/1196.
+	 * Fix for ticket #1196 http://www.isp-control.net/i-mscp/ticket/1196.
 	 *
-	 * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
+	 * @author Benedikt Heintel <benedikt.heintel@i-mscp.net>
 	 * @version 1.0.0
 	 * @since r1355
 	 * @return array SQL statements to be performed
@@ -286,9 +286,9 @@ class ispCP_Update_Database extends ispCP_Update {
 	}
 
 	/**
-	 * Fix for ticket #1346 http://www.isp-control.net/ispcp/ticket/1346.
+	 * Fix for ticket #1346 http://www.isp-control.net/i-mscp/ticket/1346.
 	 *
-	 * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
+	 * @author Benedikt Heintel <benedikt.heintel@i-mscp.net>
 	 * @version 1.0.0
 	 * @since r1355
 	 * @return array SQL statements to be performed
@@ -317,7 +317,7 @@ class ispCP_Update_Database extends ispCP_Update {
 	}
 
 	/**
-	 * Fix for ticket #755 http://www.isp-control.net/ispcp/ticket/755.
+	 * Fix for ticket #755 http://www.isp-control.net/i-mscp/ticket/755.
 	 *
 	 * @author Markus Milkereit
 	 * @version 1.0.0
@@ -342,9 +342,9 @@ class ispCP_Update_Database extends ispCP_Update {
 	}
 
 	/**
-	 * Fix for ticket #1509 http://www.isp-control.net/ispcp/ticket/1509.
+	 * Fix for ticket #1509 http://www.isp-control.net/i-mscp/ticket/1509.
 	 *
-	 * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
+	 * @author Benedikt Heintel <benedikt.heintel@i-mscp.net>
 	 * @version 1.0.0
 	 * @since r1356
 	 * @return array SQL statements to be performed
@@ -376,7 +376,7 @@ class ispCP_Update_Database extends ispCP_Update {
 	}
 
 	/**
-	 * Fix for ticket #1571 http://www.isp-control.net/ispcp/ticket/1571.
+	 * Fix for ticket #1571 http://www.isp-control.net/i-mscp/ticket/1571.
 	 *
 	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @version 1.0.0
@@ -392,7 +392,7 @@ class ispCP_Update_Database extends ispCP_Update {
 	}
 
 	/**
-	 * Fix for ticket #1610 http://www.isp-control.net/ispcp/ticket/1610.
+	 * Fix for ticket #1610 http://www.isp-control.net/i-mscp/ticket/1610.
 	 *
 	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @version 1.0.0
@@ -423,7 +423,7 @@ class ispCP_Update_Database extends ispCP_Update {
 	}
 
 	/**
-	 * Fix for ticket #1664 http://www.isp-control.net/ispcp/ticket/1664.
+	 * Fix for ticket #1664 http://www.isp-control.net/i-mscp/ticket/1664.
 	 *
 	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @version 1.0.0
@@ -456,7 +456,7 @@ class ispCP_Update_Database extends ispCP_Update {
 	}
 
 	/**
-	 * Fix for ticket #1620 http://www.isp-control.net/ispcp/ticket/1620.
+	 * Fix for ticket #1620 http://www.isp-control.net/i-mscp/ticket/1620.
 	 *
 	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @version 1.0.0
@@ -600,7 +600,7 @@ class ispCP_Update_Database extends ispCP_Update {
 
 	/**
 	 * update SMTP-SSL to the original Port list, see ticket #1806
-	 * http://www.isp-control.net/ispcp/ticket/1806.
+	 * http://www.isp-control.net/i-mscp/ticket/1806.
 	 *
 	 * @author Christian Hernmarck
 	 * @version 1.0.1
@@ -624,7 +624,7 @@ class ispCP_Update_Database extends ispCP_Update {
 
 	/**
 	 * Clean ticket database: Remove html entities from subjects and messages
-	 * Related to ticket #1721 http://www.isp-control.net/ispcp/ticket/1721.
+	 * Related to ticket #1721 http://www.isp-control.net/i-mscp/ticket/1721.
 	 *
 	 * @author Thomas Wacker
 	 * @version 1.0.1
@@ -684,7 +684,7 @@ class ispCP_Update_Database extends ispCP_Update {
 	}
 
 	/**
-	 * Fix for ticket #1810 http://www.isp-control.net/ispcp/ticket/1810.
+	 * Fix for ticket #1810 http://www.isp-control.net/i-mscp/ticket/1810.
 	 *
 	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @version 1.0.1
@@ -905,7 +905,7 @@ class ispCP_Update_Database extends ispCP_Update {
 	}
 
 	/**
-	 * Fixes for ticket #1985 http://www.isp-control.net/ispcp/ticket/1985.
+	 * Fixes for ticket #1985 http://www.isp-control.net/i-mscp/ticket/1985.
 	 *
 	 * This db update provides the following:
 	 * Fixes for hosting plans properties:
@@ -918,7 +918,7 @@ class ispCP_Update_Database extends ispCP_Update {
 	 *  - Possible missing value in "domain.allowbackup"
 	 *  - Change the naming convention for option 'domain' related to the backup feature
 	 *
-	 * @author Laurent Declercq <laurent.declercq@ispcp.net>
+	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
 	 * @version 1.0.2
 	 * @since r1998
 	 * @return array SQL statements to be performed
@@ -1050,9 +1050,9 @@ class ispCP_Update_Database extends ispCP_Update {
 	 }
 
 	/**
-	 * Fixes for ticket #2000 http://www.isp-control.net/ispcp/ticket/1985.
+	 * Fixes for ticket #2000 http://www.isp-control.net/i-mscp/ticket/1985.
 	 *
-	 * @author Laurent Declercq <laurent.declercq@ispcp.net>
+	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
 	 * @version 1.0.2
 	 * @since r2013
 	 * @return array SQL statements to be performed
@@ -1075,9 +1075,9 @@ class ispCP_Update_Database extends ispCP_Update {
 	}
 
 	/**
-	 * Fixes for ticket #2047 http://www.isp-control.net/ispcp/ticket/2047.
+	 * Fixes for ticket #2047 http://www.isp-control.net/i-mscp/ticket/2047.
 	 *
-	 * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
+	 * @author Benedikt Heintel <benedikt.heintel@i-mscp.net>
 	 * @version 1.0.2
 	 * @since r2173
 	 * @return array SQL statements to be performed
@@ -1126,7 +1126,7 @@ class ispCP_Update_Database extends ispCP_Update {
 	/**
 	 * Adding Support System Control:
 	 * Admin can Enable and Disable Reseller's support system from frontend,
-	 * belongs to ticket #1121 @see http://isp-control.net/ispcp/ticket/1121
+	 * belongs to ticket #1121 @see http://isp-control.net/i-mscp/ticket/1121
 	 *
 	 * @author Sebastian Sellmeier
 	 * @version 1.0.1
@@ -1185,7 +1185,7 @@ class ispCP_Update_Database extends ispCP_Update {
 	/**
 	 * Transitional issue (Fix database update conflict)
 	 *
-	 * @author Laurent Declercq <laurent.declercq@ispcp.net>
+	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
 	 * @since r2701
 	 * @return array SQL statements to be performed
 	 */
@@ -1197,13 +1197,13 @@ class ispCP_Update_Database extends ispCP_Update {
 	}
 
 	/**
-	 * Fix for ticket #2265 http://www.isp-control.net/ispcp/ticket/2265
+	 * Fix for ticket #2265 http://www.isp-control.net/i-mscp/ticket/2265
 	 *
 	 * This update adding slash as first char if doesn't exists and remove
 	 * double and trailling slash in the relative paths of `.htaccess` files
-	 * for convenience reasons in the ispcp-htaccess-mngr engine script.
+	 * for convenience reasons in the i-mscp-htaccess-mngr engine script.
 	 *
-	 * @author Laurent Declercq <laurent.declercq@ispcp.net>
+	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
 	 * @since r2698
 	 * @return array SQL statements to be performed
 	 */
@@ -1294,12 +1294,12 @@ class ispCP_Update_Database extends ispCP_Update {
 	}
 
 	/**
-	 * Fix for ticket #2195 http://www.isp-control.net/ispcp/ticket/2195
+	 * Fix for ticket #2195 http://www.isp-control.net/i-mscp/ticket/2195
 	 *
 	 * Remove all user gui properties that are orphan in the 'user_gui_props'
 	 * database table.
 	 *
-	 * @author Laurent Declercq <laurent.declercq@ispcp.net>
+	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
 	 * @since r2712
 	 * @return array SQL statements to be performed
 	 */
@@ -1357,7 +1357,7 @@ class ispCP_Update_Database extends ispCP_Update {
 	 * updates, they will be executed if not done so far, thereafter, the
 	 * constant CRITICAL_UPDATE_REVISION will be removed
 	 *
-	 * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
+	 * @author Benedikt Heintel <benedikt.heintel@i-mscp.net>
 	 * @since r2876
 	 * @return array SQL statements to be performed
 	 */
@@ -1452,7 +1452,7 @@ class ispCP_Update_Database extends ispCP_Update {
 			 * Old Critical Update #2
 			 *
 			 * Create default group for statistics
-			 * Fix for ticket #1571 http://www.isp-control.net/ispcp/ticket/1571
+			 * Fix for ticket #1571 http://www.isp-control.net/i-mscp/ticket/1571
 			 *
 			 * @author Daniel Andreca <sci2tech@gmail.com>
 			 * @version 1.0.0
@@ -1504,7 +1504,7 @@ class ispCP_Update_Database extends ispCP_Update {
 			 * Old Critical Update #3
 			 *
 			 * Create default group for statistics
-			 * Fix for ticket #1571 http://www.isp-control.net/ispcp/ticket/1571.
+			 * Fix for ticket #1571 http://www.isp-control.net/i-mscp/ticket/1571.
 			 *
 			 * @author Daniel Andreca <sci2tech@gmail.com>
 			 * @version 1.0.0
@@ -1542,7 +1542,7 @@ class ispCP_Update_Database extends ispCP_Update {
 		if (isset($critical_update)) {
 			$sqlUpd[] = "
 				DELETE IGNORE FROM
-					`ispcp`.`config`
+					`i-mscp`.`config`
 				WHERE
 					`config`.`name` = 'CRITICAL_UPDATE_REVISION'
 				;
@@ -1553,11 +1553,11 @@ class ispCP_Update_Database extends ispCP_Update {
 	}
 
 	/**
-	 * Fix for ticket #2345 http://www.isp-control.net/ispcp/ticket/2345
+	 * Fix for ticket #2345 http://www.isp-control.net/i-mscp/ticket/2345
 	 *
 	 * Deletes the 'Show Server Load' option and the related variable
 	 *
-	 * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
+	 * @author Benedikt Heintel <benedikt.heintel@i-mscp.net>
 	 * @since r2876
 	 * @return array SQL statements to be performed
 	 */
@@ -1565,7 +1565,7 @@ class ispCP_Update_Database extends ispCP_Update {
 
 		return array("
 			DELETE IGNORE FROM
-				`ispcp`.`config`
+				`i-mscp`.`config`
 			WHERE
 				`config`.`name` = 'SHOW_SERVERLOAD'
 			;
@@ -1573,11 +1573,11 @@ class ispCP_Update_Database extends ispCP_Update {
 	}
 
 	/**
-	 * Fix for ticket #2201 http://www.isp-control.net/ispcp/ticket/2201
+	 * Fix for ticket #2201 http://www.isp-control.net/i-mscp/ticket/2201
 	 * Fix for Ticket #2452: Update from v1.0.6 will fail on
 	 * Deletes the now useless column `correction` from table `domain_traffic`
 	 *
-	 * @author Benedikt Heintel <benedikt.heintel@ispcp.net> (#2201)
+	 * @author Benedikt Heintel <benedikt.heintel@i-mscp.net> (#2201)
 	 * @author Daniel Andreca <scie2tech@gmail.com> (#2452)
 	 * @since r2899
 	 * @version 1.0.1
@@ -1591,7 +1591,7 @@ class ispCP_Update_Database extends ispCP_Update {
 		// For domain traffic
 		$query = "
 			SHOW COLUMNS FROM
-				`ispcp`.`domain_traffic`
+				`i-mscp`.`domain_traffic`
 			WHERE
 				`Field` = 'correction'
 			;
@@ -1603,7 +1603,7 @@ class ispCP_Update_Database extends ispCP_Update {
 		if ($rs->recordCount() != 0) {
 			$sqlUpd[] = "
 				ALTER IGNORE TABLE
-					`ispcp`.`domain_traffic`
+					`i-mscp`.`domain_traffic`
 				DROP
 					`correction`
 				;
@@ -1613,7 +1613,7 @@ class ispCP_Update_Database extends ispCP_Update {
 		// For server traffic
 		$query = "
 			SHOW COLUMNS FROM
-				`ispcp`.`server_traffic`
+				`i-mscp`.`server_traffic`
 			WHERE
 				`Field` = 'correction'
 			;
@@ -1625,7 +1625,7 @@ class ispCP_Update_Database extends ispCP_Update {
 		if ($rs->recordCount() != 0) {
 			$sqlUpd[] = "
 				ALTER IGNORE TABLE
-					`ispcp`.`server_traffic`
+					`i-mscp`.`server_traffic`
 				DROP
 					`correction`
 				;
@@ -1636,7 +1636,7 @@ class ispCP_Update_Database extends ispCP_Update {
 	}
 
 	/**
-	 * Fix for ticket #2371 http://isp-control.net/ispcp/ticket/2371
+	 * Fix for ticket #2371 http://isp-control.net/i-mscp/ticket/2371
 	 *
 	 * ispCP GUI fails to login via IPv6
 	 *
@@ -1667,7 +1667,7 @@ class ispCP_Update_Database extends ispCP_Update {
 	}
 
 	/**
-	 * Fix for ticket #2319 http://isp-control.net/ispcp/ticket/2319
+	 * Fix for ticket #2319 http://isp-control.net/i-mscp/ticket/2319
 	 *
 	 * Old Database tables does not support UTF8
 	 *
@@ -1696,7 +1696,7 @@ class ispCP_Update_Database extends ispCP_Update {
 	 * Some data can be very larges like serialized data that represent a
 	 * object, an array...
 	 *
-	 * @author Laurent Declercq <laurent.declercq@ispcp.net>
+	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
 	 * @since r2988
 	 * @return array SQL statements to be performed
 	 */
@@ -1773,7 +1773,7 @@ class ispCP_Update_Database extends ispCP_Update {
 	 *
 	 * Note: Moved to 42 (previous preinst fix was wrong)
 	 * 
-	 * @author Laurent Declercq <laurent.declercq@ispcp.net>
+	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
 	 * @since r3299
 	 * @return array
 	 */
@@ -1786,7 +1786,7 @@ class ispCP_Update_Database extends ispCP_Update {
 	 *
 	 * Note: Moved to 43 (previous fix was wrong)
 	 *
-	 * @author Laurent Declercq <laurent.declercq@ispcp.net>
+	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
 	 * @since r3477
 	 * @return array
 	 */
@@ -1797,7 +1797,7 @@ class ispCP_Update_Database extends ispCP_Update {
 	/**
 	 * Fix for #2489 Postgrey - Undefined offset in settings_ports.php
 	 *
-	 * @author Laurent Declercq <laurent.declercq@ispcp.net>
+	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
 	 * @since r3547
 	 * @return array
 	 */
@@ -1814,7 +1814,7 @@ class ispCP_Update_Database extends ispCP_Update {
 	/**
 	 * Allows to protect custom DNS records against deletion
 	 *
-	 * @author Laurent Declercq <laurent.declercq@ispcp.net>
+	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
 	 * @since r3607
 	 * @return array
 	 */

@@ -2,7 +2,7 @@
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
 #
 # Version: $Id$
 #
@@ -31,7 +31,7 @@
 
 
 SELFDIR=$(dirname "$0")
-. $SELFDIR/ispcp-permission-functions.sh
+. $SELFDIR/i-mscp-permission-functions.sh
 # for spacing
 echo -n "	Setting GUI Permissions: ";
 
@@ -57,7 +57,7 @@ recursive_set_permissions "$ROOT_DIR/gui/tools/webmail/data" \
 
 # Decryption keys allow root access to the database, so they must only be
 # accessible by the panel user.
-set_permissions "$ROOT_DIR/gui/include/ispcp-db-keys.php" \
+set_permissions "$ROOT_DIR/gui/include/i-mscp-db-keys.php" \
 	$PANEL_USER $PANEL_GROUP 0400
 
 # Main virtual webhosts directory must be owned by root and readable by all

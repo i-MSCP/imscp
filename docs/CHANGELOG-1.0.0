@@ -131,7 +131,7 @@ ispCP ω 1.0.0 Changelog
 	- DOCU:
 		* Updated for ispCP ω 1.0.0
 	- ENGINE:
-		* Fixed #1656: small typo in engine/setup/ispcp-update introduced in r1479 (Thanks Haeber)
+		* Fixed #1656: small typo in engine/setup/i-mscp-update introduced in r1479 (Thanks Haeber)
 		* Updated update script
 	- LANGUAGES:
 		* Updated Russian
@@ -232,7 +232,7 @@ ispCP ω 1.0.0 Changelog
 	- GUI:
 		* Default user name for awstats is not inserted in order_add.php.
 	- ENGINE:
-		* Fixed #1601: Error in ispcp-dsk-quota
+		* Fixed #1601: Error in i-mscp-dsk-quota
 
 2009-01-06 Jochen Manz
 	- CONFIGS:
@@ -291,7 +291,7 @@ ispCP ω 1.0.0 Changelog
 2008-12-15 Daniel Andreca
 	- ENGINE:
 		* Fixed #1587: Catch all after upgrade from RC5 to RC7 not working properly
-		* Fixed #1585: Syntax error on line x of ispcp.conf
+		* Fixed #1585: Syntax error on line x of i-mscp.conf
 	- GUI:
 		* Reseller statistics are not accessable for administrator
 
@@ -302,7 +302,7 @@ ispCP ω 1.0.0 Changelog
 
 2008-12-13 Daniel Andreca
 	- ENGINE:
-		* Fixed: ERROR: Incorrect SQL Query -> Unknown collation: 'utf' in ispcp-arpl-msgr
+		* Fixed: ERROR: Incorrect SQL Query -> Unknown collation: 'utf' in i-mscp-arpl-msgr
 
 2008-12-12 Benedikt Heintel
 	- RELEASE ispCP ω Omega 1.0.0 RC7
@@ -316,7 +316,7 @@ ispCP ω 1.0.0 Changelog
 
 2008-12-11 Daniel Andreca
 	- GUI:
-		* Ticket #1580: Modifying domain's traffic limit removes subdomain in ispcp.conf
+		* Ticket #1580: Modifying domain's traffic limit removes subdomain in i-mscp.conf
 	- DOCS:
 		* Ticket #1581: OpenSUSE is now using zypper
 
@@ -350,12 +350,12 @@ ispCP ω 1.0.0 Changelog
 2008-12-05 Daniel Andreca
 	- ENGINE:
 		* Fixed #1516: Named, at least for gentoo, is only binding to localhost by default
-		* Fixed #1460: /etc/cron.d/ispcp replacements not happening in gentoo install
+		* Fixed #1460: /etc/cron.d/i-mscp replacements not happening in gentoo install
 	- DISTS:
 		* Update Gentoo install documentation
 	- CONFIGS:
 		* Update Gentoo fcgid setting
-		* Update Gentoo ispcp.conf setting
+		* Update Gentoo i-mscp.conf setting
 	- LANGUAGES:
 		* Updated all languages files
 		* Add po file for portuguese_portugal. Update portuguese_portugal language
@@ -535,7 +535,7 @@ ispCP ω 1.0.0 Changelog
 
 2008-09-20 Daniel Andreca
 	- CONFIGS:
-		* logrotate/ispcp fails if rsyslog is used
+		* logrotate/i-mscp fails if rsyslog is used
 
 2008-09-16 Benedikt Heintel
 	- TOOLS:
@@ -562,7 +562,7 @@ ispCP ω 1.0.0 Changelog
 		* Mail_add.php display incorrect messages
 		* Fixed #1530: Inconsistency between current_ftp_cnt and actual ftp count: -9 != 1
 	- CONFIGS:
-		* logrotate/ispcp restart apache 10 times (http://www.isp-control.net/forum/apache-just-stopped-o-t-3747-2.html#pid35737)
+		* logrotate/i-mscp restart apache 10 times (http://www.isp-control.net/forum/apache-just-stopped-o-t-3747-2.html#pid35737)
 
 2008-09-09 Daniel Andreca
 	- ENGINE:
@@ -579,12 +579,12 @@ ispCP ω 1.0.0 Changelog
 
 2008-09-02 Daniel Andreca
 	- ENGINE:
-		* Fixed #1522: ispcp-httpd-logs-mngr crashes if logfile doesn't exist
+		* Fixed #1522: i-mscp-httpd-logs-mngr crashes if logfile doesn't exist
 		* Fixed #1523: Weird logfiles for disabled domain
 
 2008-09-01 Daniel Andreca
 	- ENGINE:
-		* ispcp-apache-logger is crashing
+		* i-mscp-apache-logger is crashing
 		* crontab entry for static awstats scripts broken
 		* partial solve for #1232 domain_traffic becomes huge and slows down server
 
@@ -635,7 +635,7 @@ ispCP ω 1.0.0 Changelog
 		* Updated Chinese (simplified)
 		* Updated German
 	- SETUP:
-		* Fixed #1475: typo on installation (ispcp-setup)
+		* Fixed #1475: typo on installation (i-mscp-setup)
 		* Fixed: default user for rkhunter.log
 
 2008-08-11 Daniel Andreca
@@ -656,7 +656,7 @@ ispCP ω 1.0.0 Changelog
 	- CONFIGS:
 		* Support for libapache2-mod-fcgid in config files
 	- ENGINE:
-		* fcgid-ispcp.conf incorect generated
+		* fcgid-i-mscp.conf incorect generated
 	- GUI:
 		* Missing menu when editing domain alias
 
@@ -719,13 +719,13 @@ ispCP ω 1.0.0 Changelog
 	- TOOLS:
 		* Updated: PHPmyAdmin to 2.11.8.1
 	- SETUP:
-		* Fixed #1443: If MySQL root-password contains a | the ispcp-setup script ends up with an error
+		* Fixed #1443: If MySQL root-password contains a | the i-mscp-setup script ends up with an error
 	- LANGUAGES:
 		* Updated all languages files.
 
 2008-08-03 Malte Geierhos
 	- SETUP:
-		* Fixed #1443: If MySQL root-password contains a | the ispcp-setup script ends up with an error
+		* Fixed #1443: If MySQL root-password contains a | the i-mscp-setup script ends up with an error
 
 2008-08-03 Benedikt Heintel
 	- LANGUAGES:
@@ -765,14 +765,14 @@ ispCP ω 1.0.0 Changelog
 	- ENGINE:
 		* Subdomains and aliases emails were not removed when reseller/admin remove parent domain
 	- GUI:
-		* Corrected link for update hosting plan in ispcp/gui/themes/omega_original/client/hosting_plan_update.tpl
-		* Corrected output for subdomain mail in ispcp/gui/client/mail_accounts.php
+		* Corrected link for update hosting plan in i-mscp/gui/themes/omega_original/client/hosting_plan_update.tpl
+		* Corrected output for subdomain mail in i-mscp/gui/client/mail_accounts.php
 		* Remove residual data from table on user remove.
 		* Fixed #1434: rootkit.log.php
 
 2008-07-20 Daniel Andreca
 	- ENGINE:
-		* Minor fix for engine/ispcp-als-mngr
+		* Minor fix for engine/i-mscp-als-mngr
 	- GUI:
 		* Add missing file
 		* Cleaning gui/admin/domain_status_change.php
@@ -796,7 +796,7 @@ ispCP ω 1.0.0 Changelog
 
 2008-07-19 Jochen Manz
 	- GUI:
-		* Small fix for ispcp-lib.php
+		* Small fix for i-mscp-lib.php
 
 2008-07-18 Benedikt Heintel
 	- GUI:
@@ -823,7 +823,7 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #1413: Editing e-mail account: new password is shell-escaped
 		* Fixed #1414: SMTP AUTH not working with password, that contains a dollar sign
 	- SETUP:
-		* Fixed #1395: vhcs2.4.7-ispcp.sql / ispc-update - default language not migrated
+		* Fixed #1395: vhcs2.4.7-i-mscp.sql / ispc-update - default language not migrated
 
 2008-07-12 Marc Pujol
 	- ENGINE:
@@ -836,7 +836,7 @@ ispCP ω 1.0.0 Changelog
 
 2008-07-09 Benedikt Heintel
 	- ENGINE:
-		* Fixed #1395: vhcs2.4.7-ispcp.sql / ispc-update - default language not migrated
+		* Fixed #1395: vhcs2.4.7-i-mscp.sql / ispc-update - default language not migrated
 	- GUI:
 		* Fixed #1384: Client/Execute Query doesn't work.
 		* Fixed #1393: patch to restore gui/client/ functionality
@@ -875,7 +875,7 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #1382: PASSWD_STRONG enabled or disabled is not corect generated for the template
 	- DISTS:
 		* Fixed #1378: (Fedora) Proftpd Configuration (Fedora Core 9)
-		* Fixed #1379: (Fedora) ispcp.conf for Fedora Core 9 and Fix
+		* Fixed #1379: (Fedora) i-mscp.conf for Fedora Core 9 and Fix
 
 2008-07-04 Marc Pujol
 	- GUI:
@@ -887,7 +887,7 @@ ispCP ω 1.0.0 Changelog
 	- DOCS:
 		* Fixed #1374: apache2-suexec new in Lenny
 	- ENGINE:
-		* Fixed #1363: Domain Aliase at Root - Wrong in apache2 - ispcp.conf
+		* Fixed #1363: Domain Aliase at Root - Wrong in apache2 - i-mscp.conf
 	- GUI:
 		* Fixed #1179: Changing domain_default_page and errordocs templates
 		* Fixed #1368: SQL syntax in reseller_user_statistics.php
@@ -939,7 +939,7 @@ ispCP ω 1.0.0 Changelog
 2008-06-17 Benedikt Heintel
 	- GUI:
 		* Fixed #1231: Session conflict / redirection problem
-		* Fixed #1277: Adding CHECK_FOR_UPDATES in ispcp.conf
+		* Fixed #1277: Adding CHECK_FOR_UPDATES in i-mscp.conf
 		* Fixed #1351: Filemanager not work update RC4 -> RC5
 		* Fixed #1353: In admin/ispcp_debugger.php not all execute request are counted
 		* Fixed #1354: Disabled forward list when editing mixed mail address
@@ -967,7 +967,7 @@ ispCP ω 1.0.0 Changelog
 		* Fixed 1346: client mysql password length
 	- ENGINE:
 		* Fixed #1215: POP/IMAP traffic is not added in domain statistics with courier and fedora core 8
-		* Fixed #1345: Bug in mail log collection (ispcp-vrl-traff)
+		* Fixed #1345: Bug in mail log collection (i-mscp-vrl-traff)
 
 2008-06-12 Benedikt Heintel
 	- GUI:
@@ -981,7 +981,7 @@ ispCP ω 1.0.0 Changelog
 
 2008-06-06 Jochen Manz
 	- CONFIGS:
-		* Fixed #1337: freebsd ispcp.conf ajustment agains dev new ispcp.conf
+		* Fixed #1337: freebsd i-mscp.conf ajustment agains dev new i-mscp.conf
 	- GUI:
 		* Fixed #1336: some better web accessability - (Part 3); and some more
 	- LANGUAGES:
@@ -989,7 +989,7 @@ ispCP ω 1.0.0 Changelog
 
 2008-06-04 Benedikt Heintel
 	- DISTS:
-		* Fixed #1333: (Gentoo) Missing files, directories (/etc/ispcp/apache/), Gentoo
+		* Fixed #1333: (Gentoo) Missing files, directories (/etc/i-mscp/apache/), Gentoo
 
 2008-06-04 Jochen Manz
 	- GUI:
@@ -1072,7 +1072,7 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #1291: reseller/ahp.php complains about already sent header
 		* Fixed #1293: in client/protect_it.php template variable {USER_SELECTED} is not set
 		* Fixed #1294: id has to be unique in the whole html file, but in the list in admin/settings_ports.php|.tpl are several unique id's
-		* Fixed #1299: there is a typo in the whole ispcp, cannot is wrongly written separated, but it is used to write it together
+		* Fixed #1299: there is a typo in the whole i-mscp, cannot is wrongly written separated, but it is used to write it together
 		* Fixed #1300: some html fixes; replaced <font> with external CSS class or span; webmail/pma theme css fixes - Part 7
 
 2008-05-26 Jochen Manz
@@ -1101,12 +1101,12 @@ ispCP ω 1.0.0 Changelog
 	- GUI:
 		* Fixed #1275: Some HTML and CSS fixes in the HTML templates and some PHP files - Part 2
 		* Fixed #1273: some HTML fixes in the HTML templates - Part 1
-		* Fixed #1274: remove Disallow /ispcp/ from robots.txt
+		* Fixed #1274: remove Disallow /i-mscp/ from robots.txt
 
 2008-05-20 Benedikt Heintel
 	- GUI:
 		* Fixed #1266: client webtools site overview misses awstats menu entry
-		* Fixed #1270: some HTML fixes in the HTML templates for the ispcp login
+		* Fixed #1270: some HTML fixes in the HTML templates for the i-mscp login
 
 2008-05-19 Benedikt Heintel
 	- GUI:
@@ -1124,7 +1124,7 @@ ispCP ω 1.0.0 Changelog
 	- CONFIGS:
 		* Fixed #1250: Please harden the php open_basedir pathes in the apache config files.
 	- ENGINE:
-		* Fixed #1260: Syntaxerror in ispcp-als-mngr
+		* Fixed #1260: Syntaxerror in i-mscp-als-mngr
 	- GUI:
 		* Fixed #1144: Show all support tickets to admin
 		* Fixed #1226: Logging Deamon (Mail)
@@ -1137,7 +1137,7 @@ ispCP ω 1.0.0 Changelog
 	- CONFIGS:
 		* Fixed #1250: Please harden the php open_basedir pathes in the apache config files.
 	- ENGINE:
-		* Fixed #1249: ispcp-dmn-mngr beautifying patch
+		* Fixed #1249: i-mscp-dmn-mngr beautifying patch
 
 2008-05-15 Jochen Manz
 	- GUI:
@@ -1150,13 +1150,13 @@ ispCP ω 1.0.0 Changelog
 
 2008-05-13 Benedikt Heintel
 	- ENGINE:
-		* Fixed #1249: ispcp-dmn-mngr beautifying patch
+		* Fixed #1249: i-mscp-dmn-mngr beautifying patch
 	- LANGUAGES:
 		* Updated Catalan
 
 2008-05-12 Benedikt Heintel
 	- ENGINE:
-		* Fixed #1244: Use of uninitialized value in concatenation - in file engine/ispcp-htuser-mngr
+		* Fixed #1244: Use of uninitialized value in concatenation - in file engine/i-mscp-htuser-mngr
 	- GUI:
 		* Fixed #1209: Undefined index: mail_type_forward
 		* Fixed #1243: adding mail aborts
@@ -1173,7 +1173,7 @@ ispCP ω 1.0.0 Changelog
 
 2008-05-11 Benedikt Heintel
 	- ENGINE:
-		* Fixed #1242: Method "Fedora" in ispcp-vrl-traff
+		* Fixed #1242: Method "Fedora" in i-mscp-vrl-traff
 
 2008-05-10 Benedikt Heintel
 	- CONFIGS:
@@ -1202,7 +1202,7 @@ ispCP ω 1.0.0 Changelog
 
 2008-05-07 Jochen Manz
 	- ENGINE:
-		* Fixed #1233: Typo in ispcp-mbox-mngr line 1340
+		* Fixed #1233: Typo in i-mscp-mbox-mngr line 1340
 
 2008-05-04 Benedikt Heintel
 	- SETUP:
@@ -1287,7 +1287,7 @@ ispCP ω 1.0.0 Changelog
 
 2008-04-17 Benedikt Heintel
 	- ENGINE:
-		* Fixed #1193: Typo in engine/ispcp-mbox-mngr
+		* Fixed #1193: Typo in engine/i-mscp-mbox-mngr
 	- GUI:
 		* Fixed #1192: Typo in gui/admin/settings.php
 	- SETUP:
@@ -1297,7 +1297,7 @@ ispCP ω 1.0.0 Changelog
 	- CONFIGS:
 		* Fixed: Error in logrotation
 	- SETUP:
-		* Fixed #1189: Bug in ispcp-setup
+		* Fixed #1189: Bug in i-mscp-setup
 
 2008-04-14 Jochen Manz
 	- CONFIGS:
@@ -1347,23 +1347,23 @@ ispCP ω 1.0.0 Changelog
 2008-04-04 Benedikt Heintel
 	- CONFIGS:
 		* Fixed #1159: ROOT_APACHE_CONF is not defined in toplevel Makefile
-		* Fixed #1162: /etc/ispcp/courier/userdb not present in ispcp-setup (revision 1098, Gentoo)
+		* Fixed #1162: /etc/i-mscp/courier/userdb not present in i-mscp-setup (revision 1098, Gentoo)
 	- GUI:
 		* Fixed #547: encoded email from reseller doesnt work
 
 2008-04-03 Jochen Manz
 	- ENGINE:
-		* Fixed #1160: perl ispcp-setup fails in trunk 1098
+		* Fixed #1160: perl i-mscp-setup fails in trunk 1098
 
 2008-04-02 Benedikt Heintel
 	- ENGINE:
-		* Fixed #1152: Hardcoded postfix configuration path in ispcp-mbox-mngr
-		* Fixed #1153: Hardcoded postfix configuration path in ispcp-dmn-mgr
-		* Fixed #1154: Hardcoded postfix configuration path in ispcp-sub-mgr & ispcp-als-mgr
+		* Fixed #1152: Hardcoded postfix configuration path in i-mscp-mbox-mngr
+		* Fixed #1153: Hardcoded postfix configuration path in i-mscp-dmn-mgr
+		* Fixed #1154: Hardcoded postfix configuration path in i-mscp-sub-mgr & i-mscp-als-mgr
 	- SETUP:
 		* Fixed #1149: A warning if a domain is given instead of a fq host name (setup)
 		* Fixed #1156: Typo
-		* Fixed #1158: ispcp-setup fail in r1097
+		* Fixed #1158: i-mscp-setup fail in r1097
 	- DISTS:
 		* Fixed #1155: Fix major freebsd dist setup
 
@@ -1446,18 +1446,18 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #1085: disable protocols in server status which are not available by default
 	- ENGINE:
 		* Fixed: two errors in htuser-mngr
-		* Fixed #945: logrotate fails because of ispcp script
+		* Fixed #945: logrotate fails because of i-mscp script
 		* Fixed #1113: removed add COURIER_CONF_DIR and stored userdb to AUTHLIB_CONF_DIR path
 		* Fixed #1126: do not add all domains into the MTA domains list
 	- GUI:
 		* Fixed #919: IP Management UI
 		* Fixed #1072: open directory (ftp class)
-		* Fixed #1115: ispcp/gui/include/ispcp-config.php under FreeBSD
+		* Fixed #1115: i-mscp/gui/include/i-mscp-config.php under FreeBSD
 		* Fixed #1116: error in client template in ftp choose dir
 		* Fixed #1122: Email Logging Daemon
 		* Fixed #1127: Order of menu entries in webtools
 	- SETUP:
-		* Fixed #1114: FreeBSD ispcp-setup-methods should be changed
+		* Fixed #1114: FreeBSD i-mscp-setup-methods should be changed
 		* Fixed #1123: database revision should be 1 for updaters
 	- DISTS:
 		* Fixed #1117: (Gentoo) /etc/init.d/ispcp_network: line 155: log_warning_msg: command not found
@@ -1475,7 +1475,7 @@ ispCP ω 1.0.0 Changelog
 2008-03-13 Benedikt Heintel
 	- SETUP:
 		* Fixed #942: ERROR: Undefined intput data, bt: |{PHP_VERSION}|, et: |{PHP_VERSION}|, src !
-		* Fixed #1097: (quick fix) ispcp-vrl-traff-correction generates high load on mysql db -> DB locked
+		* Fixed #1097: (quick fix) i-mscp-vrl-traff-correction generates high load on mysql db -> DB locked
 		* Fixed #1106: BSDmakefile Setup not copy some of its file
 		* Fixed #1111: Variables not parsed in /etc/apache2/sites-enabled/00_master.conf
 		* Updated: a lot of Makefiles
@@ -1502,7 +1502,7 @@ ispCP ω 1.0.0 Changelog
 
 2008-03-10 Christian Hernmarck
 	- SETUP:
-		* Fixed #1099: 1042 - ispcp-setup compilation errors
+		* Fixed #1099: 1042 - i-mscp-setup compilation errors
 		* Fixed #1100: authdaemonrc - wrong content
 
 2008-03-08 Benedikt Heintel
@@ -1529,12 +1529,12 @@ ispCP ω 1.0.0 Changelog
 		* Updated: Update script; Update to RC4
 		* Fixed #1087: ispcp_RC4 setup vs courier
 		* Fixed #1088: ispcp_RC4 setup vs courier again
-		* Changed: make directory to /tmp/ispcp
+		* Changed: make directory to /tmp/i-mscp
 
 2008-03-04 Benedikt Heintel
 	- SETUP:
 		* Fixed #824: IMAP SSL Traffic not counted
-		* Fixed #1075: ispcp-update fails when upgrading from RC2
+		* Fixed #1075: i-mscp-update fails when upgrading from RC2
 		* Updated: Update script; Update to RC3
 	- DISTS:
 		* Fixed #1074: (opensuse) config Dists opensuse - wrong makefile
@@ -1553,12 +1553,12 @@ ispCP ω 1.0.0 Changelog
 	- DOCS:
 		* Updated all Docs. Some are still with ToDo
 	- ENGINE:
-		* Fixed #1070: FreeBSD, ispcp-setup uses group which does not exist
+		* Fixed #1070: FreeBSD, i-mscp-setup uses group which does not exist
 	- LANGUAGES:
 		* Updated: all languages
 	- SETUP:
 		* Inproved: Update SQL with IGNORE statement
-		* Maybe fixed #946; ispcp-setup mysql password error
+		* Maybe fixed #946; i-mscp-setup mysql password error
 	- TOOLS:
 		* Update PHPmyAdmin to version 2.11.5
 	- DISTS:
@@ -1582,7 +1582,7 @@ ispCP ω 1.0.0 Changelog
 
 2008-02-26 Jochen Manz
 	- SETUP:
-		* Corrected the DATABASE_REVISION entry which is inserted when installing ispcp
+		* Corrected the DATABASE_REVISION entry which is inserted when installing i-mscp
 
 2008-02-26 Christian Hernmarck
 	- GUI:
@@ -1664,12 +1664,12 @@ ispCP ω 1.0.0 Changelog
 
 2008-02-19 Benedikt Heintel
 	- DISTS:
-		* Fixed #816: [fedora anymaybe others] fastcgi_ispcp.conf not copied causes ispcp-setup to stop
+		* Fixed #816: [fedora anymaybe others] fastcgi_ispcp.conf not copied causes i-mscp-setup to stop
 		* Updated Makefiles
 
 2008-02-19 Christian Hernmarck
 	- ENGINE:
-		* Fixed #1057: more than one backup of db table ispcp
+		* Fixed #1057: more than one backup of db table i-mscp
 		* Fixed #1058: Validation of "mail setup" make blank page
 
 2008-02-18 Benedikt Heintel
@@ -1706,7 +1706,7 @@ ispCP ω 1.0.0 Changelog
 
 2008-02-16 Christian Hernmarck
 	- ENGINE:
-		* Fixed bug in ispcp-als-mngr: since r762 cgi-bin setting were not set correctly for alias domain
+		* Fixed bug in i-mscp-als-mngr: since r762 cgi-bin setting were not set correctly for alias domain
 
 2008-02-15 Benedikt Heintel
 	- CONFIGS:
@@ -1742,7 +1742,7 @@ ispCP ω 1.0.0 Changelog
 2008-02-11 Christian Hernmarck
 	- ENGINE:
 		* Added: use utf8 with the database depending on the config variable,
-		* Added: charset & collation utf8 for ispcp database creation in database.sql
+		* Added: charset & collation utf8 for i-mscp database creation in database.sql
 	- GUI:
 		* Fixed: small error in client/add_mail_acc.tpl: tooltip on help symbol
 		* Fixed: function "clean_input" now don't htmlencode by default
@@ -1755,7 +1755,7 @@ ispCP ω 1.0.0 Changelog
 	- DISTS:
 		CentOS / Slackware:
 		* Fixed #760: ispcp_daemon not working under Slackware 12.0 or CentOS 5
-		* Fixed #900: /tmp/ispcp-1.0.0/etc/ispcp empty after make install on CentOS 5
+		* Fixed #900: /tmp/i-mscp-1.0.0/etc/i-mscp empty after make install on CentOS 5
 		* Added: Slackware documentation
 	- DOCU:
 		* Updated Debian, CentOS, Slackware
@@ -1804,7 +1804,7 @@ ispCP ω 1.0.0 Changelog
 
 2008-01-24 Benedikt Heintel
 	- ENGINE:
-		* Fixed #965: Error in ispcp-dmn-mngr
+		* Fixed #965: Error in i-mscp-dmn-mngr
 	- SETUP:
 		* Fixed #958: Some Errors in Updatescript
 
@@ -1817,7 +1817,7 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #464: Errors in SuSE Installation " yast -i `cat ./docs/SuSE/suse-packages`"
 		* Fixed #515: fastcgi module OpenSuse 10.2
 		* Fixed #797: Error in package list for Suse
-		* Fixed #814: named db dir setting in ispcp fedora
+		* Fixed #814: named db dir setting in i-mscp fedora
 	- ENGINE:
 		* Fixed #725: Problem with autoresponder and amavis
 
@@ -1831,7 +1831,7 @@ ispCP ω 1.0.0 Changelog
 	- SETUP:
 		* Fixed #55: Update Script from VHCS 2.4.7.1 to ispCP ω 1.0.0 RC3
 						and from ispCP ω 1.0.0 RC2 to ispCP ω 1.0.0 RC3
-		* Fixed #955: "ispcp" Folder in /etc/apache2 is missing
+		* Fixed #955: "i-mscp" Folder in /etc/apache2 is missing
 
 2008-01-13 Benedikt Heintel
 	- SETUP:
@@ -1852,13 +1852,13 @@ ispCP ω 1.0.0 Changelog
 
 2008-01-10 Benedikt Heintel
 	- CONFIGS:
-		* Deleted: Alias domain.tld/ispcp
+		* Deleted: Alias domain.tld/i-mscp
 
 2008-01-07 Christian Hernmarck
 	- TOOLS:
 		* Fixed #937 (but reopened #714): some php errors in pma theme
 		* Added some goodies: - a check while reading the config-variables if all are present
-		*	- a small shell script which could be run before ispcp-setup
+		*	- a small shell script which could be run before i-mscp-setup
 
 2008-01-07 Benedikt Heintel
 	- TOOLS:
@@ -1917,11 +1917,11 @@ ispCP ω 1.0.0 Changelog
 
 2007-12-04 Benedikt Heintel
 	- SETUP:
-		* Fixed #909: Unrecognized escape \P passed through at ./ispcp-setup line 509
+		* Fixed #909: Unrecognized escape \P passed through at ./i-mscp-setup line 509
 
 2007-12-03 Christian Hernmarck
 	- SETUP:
-		* Fixed #907: Error in ispcp-setup (caused by Bug #835)
+		* Fixed #907: Error in i-mscp-setup (caused by Bug #835)
 
 2007-12-02 Benedikt Heintel
 	- SETUP:
@@ -1929,7 +1929,7 @@ ispCP ω 1.0.0 Changelog
 
 2007-12-01 Benedikt Heintel
 	- SETUP:
-		* Fixed #907: perl ispcp-setup - errors
+		* Fixed #907: perl i-mscp-setup - errors
 
 2007-11-29 Benedikt Heintel
 	- GUI:
@@ -1939,11 +1939,11 @@ ispCP ω 1.0.0 Changelog
 
 2007-11-28 Christian Hernmarck
 	- ENGINE:
-		* Fixed #898: Error on ispcp-vrl-traff - another try...
+		* Fixed #898: Error on i-mscp-vrl-traff - another try...
 
 2007-11-27 Benedikt Heintel
 	- ENGINE:
-		* Fixed #898: Error on ispcp-vrl-traff
+		* Fixed #898: Error on i-mscp-vrl-traff
 	- TOOLS:
 		* Fixed #879: Can't login via net2ftp
 
@@ -1953,7 +1953,7 @@ ispCP ω 1.0.0 Changelog
 
 2007-11-26 Benedikt Heintel
 	- ENGINE:
-		* Fixed #898: Error on ispcp-vrl-traff
+		* Fixed #898: Error on i-mscp-vrl-traff
 
 2007-11-25 Christian Hernmarck
     - GUI:
@@ -1997,7 +1997,7 @@ ispCP ω 1.0.0 Changelog
 	- CONFIGS:
 		* Fixed #825: Added permit_* rules in Postfix's main.cf
 	- ENGINE:
-		* Fixed undeclared variables in ispcp-mbox-mngr
+		* Fixed undeclared variables in i-mscp-mbox-mngr
 
 2007-11-10 Raphael Geissert
     - CONFIGS:
@@ -2005,14 +2005,14 @@ ispCP ω 1.0.0 Changelog
         * Made last changes for #825: Improvements for Postfix against SPAM
         * Fixed #860: permit_sasl_authenticated must match before reject_unauth_destination in smtpd_recipient_restrictions
         * Made some cronjobs run at @daily
-        * Fixed logrotate/ispcp so it runs ispcp-vrl-traff before rotating apache user logs instead of ispcp-srv-traff
+        * Fixed logrotate/i-mscp so it runs i-mscp-vrl-traff before rotating apache user logs instead of i-mscp-srv-traff
     - ENGINE:
         * Added missing removal of custom http config files when sub/domain/alias is deleted
         * A subdomain and an alias can now share the same mountpoint (alias must be created first)
         * Added todisable/toenable email accounts status
         * Fixed an error where log data containing a < symbol would be parsed when not desired when counting quota amounts
     - SETUP:
-        * Fixed #865: malformed generated cron.d/ispcp because of new line
+        * Fixed #865: malformed generated cron.d/i-mscp because of new line
     - GUI:
         * Added soft(old method)/hard(ne method, default) mail accounts suspension
         * Fixed #833: Error displayed when adding domain alias
@@ -2021,7 +2021,7 @@ ispCP ω 1.0.0 Changelog
 	- CONFIGS:
 		* Fixed #857: Send output from awstats-scripts somewhere else
 	- ENGINE:
-		* Fixed #858: Error in ispcp-dmn-mngr
+		* Fixed #858: Error in i-mscp-dmn-mngr
 	- LANGUAGES:
 		* German: Fixed Typo
 
@@ -2037,7 +2037,7 @@ ispCP ω 1.0.0 Changelog
 2007-11-01 Raphael Geissert
 	- GUI:
 		* Fixed #840: Wrong comment of tr() function in i18n.php
-		* Fixed #852: Undefined variable: name in /var/www/ispcp/gui/include/admin-functions.php on line 2336
+		* Fixed #852: Undefined variable: name in /var/www/i-mscp/gui/include/admin-functions.php on line 2336
 	- CONFIGS:
 		* Partially implemented #825: postfix improvements
 	- ENGINE:
@@ -2115,7 +2115,7 @@ ispCP ω 1.0.0 Changelog
 		* Updated fedora
 	- SETUP:
 		* Fixed #783: added Makefile.gentoo
-		* Fixed #784: ispcp-setup fails with compilation errors
+		* Fixed #784: i-mscp-setup fails with compilation errors
 		* Fixed #785: bad test into configs/init.d/Makefile
 		* Fixed #788: mistakes with the php4-fcgi-starter.tpl
 	- TOOLS:
@@ -2134,7 +2134,7 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #7: Improvement of static AWStats
 		* Fixed #7: Removed static dirs from conf filess
 		* Fixed #55: Part I: Update Script from VHCS 2.4.7.1 to ispCP ω 1.0.0
-		* Fixed #768: perl ispcp-setup - does not work
+		* Fixed #768: perl i-mscp-setup - does not work
 		* Fixed #779: Makefile Error
 		* Fixed #781: htdocs folder is empty (on new installed domain)
 		* Deleted: Old SASL vaiables and use of them
@@ -2197,7 +2197,7 @@ ispCP ω 1.0.0 Changelog
 2007-10-13 Raphael Geissert
 	- ENGINE:
 		* Generate database keys at setup time (fix for Debian packaging)
-		* Added ispCP config (/etc/ispcp) and database backup system
+		* Added ispCP config (/etc/i-mscp) and database backup system
 	- SETUP:
 		* LSB compatiblity for installing/removing init scripts
 	- CONFIGS:
@@ -2239,7 +2239,7 @@ ispCP ω 1.0.0 Changelog
 
 2007-10-12 Benedikt Heintel
 	- CONFIGS:
-		* Added debug accessable via ispcp.conf
+		* Added debug accessable via i-mscp.conf
 	- DOCS:
 		* Updated Debian: Install
 		* Updated Debian packages: added awstats
@@ -2254,19 +2254,19 @@ ispCP ω 1.0.0 Changelog
 	- DISTS:
 		* Updated files on all dists
 	- ENGINE:
-		* Fixed #7: Integrate AWStats support (dynamic / static) (incl. ispcp-dmn-mngr)
+		* Fixed #7: Integrate AWStats support (dynamic / static) (incl. i-mscp-dmn-mngr)
 		* Fixed #750: incorrect package list for gentoo (thanks to pasichnyk)
 
 2007-10-10 Johannes Schobig
 	- DISTS:
 		* Updated files on all dists
 	- ENGINE:
-		* Fixed #7 Integrate AWStats support (dynamic) (ispcp-dmn-mngr missing)
+		* Fixed #7 Integrate AWStats support (dynamic) (i-mscp-dmn-mngr missing)
 
 2007-10-07 Benedikt Heintel
 	- DISTS:
-		* Partially fixed #441: outdated ispcp.conf files for some distros (here: gentoo)
-		* Fixed #713: BACKUP_FILE_DIR missing from gentoo ispcp.conf
+		* Partially fixed #441: outdated i-mscp.conf files for some distros (here: gentoo)
+		* Fixed #713: BACKUP_FILE_DIR missing from gentoo i-mscp.conf
 	- ENGINE:
 		* Fixed #752: auto-num incrementing on domain change
 
@@ -2274,7 +2274,7 @@ ispCP ω 1.0.0 Changelog
 	- GUI:
 		* Deleted: unused function
 	- SETUP:
-		* Fixed #738: ispcp.conf does not exist and other issues on /bin/sh use!
+		* Fixed #738: i-mscp.conf does not exist and other issues on /bin/sh use!
 
 2007-10-05 Johannes Schobig
 	- GUI:
@@ -2482,9 +2482,9 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #621: database name being escaped with single quote in include/i18n.php
 		* Fixed an error where mount points with special characters where converted to IDN format
 	- CONFIGS:
-		* Removed cron.d/ispcp.phptemp (merged into cron.d/ispcp)
+		* Removed cron.d/i-mscp.phptemp (merged into cron.d/i-mscp)
 		* Fixed error when restarting ispCP services when they were not already running
-		* Awstats entry in cron.d/ispcp is not built into ispcp-setup anymore
+		* Awstats entry in cron.d/i-mscp is not built into i-mscp-setup anymore
 		* Partially updated fedora's, redhat's and suse10's config files
 	- LANGUAGES:
 		* Updated cs_CS translation (thanks to Josef Pinc)
@@ -2513,11 +2513,11 @@ ispCP ω 1.0.0 Changelog
 2007-08-30 Raphael Geissert
 	- GUI:
 		* Fixed #615: client/add_mail_acc.php not respecting config
-		* Fixed #613: Call to undefined function tr() in include/ispcp-lib.php on line 109
+		* Fixed #613: Call to undefined function tr() in include/i-mscp-lib.php on line 109
 
 2007-08-29 Raphael Geissert
 	- GUI:
-		* Fixed #610: Table 'ispcp.log015' doesn't exist
+		* Fixed #610: Table 'i-mscp.log015' doesn't exist
 		* Fixed #603: adding subdomain to a domain with special chars
 		* Page messages are now displayed on login page
 		* Fixed #608: html entities in emails
@@ -2588,7 +2588,7 @@ ispCP ω 1.0.0 Changelog
 
 2007-08-21 Raphael Geissert
 	- GUI:
-		* Fixed #582: FIXME: /var/www/ispcp/gui/include/calc-functions.php:61
+		* Fixed #582: FIXME: /var/www/i-mscp/gui/include/calc-functions.php:61
 		* Fixed an error where system information was not displayed correctly in admin/server_statistic.php
 		* Improved passwords generator
 	- SETUP:
@@ -2654,7 +2654,7 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #566: Undefined template variable: THEME_CHARSET in orderpanel
 		* Removed virtual limits
 	- ENGINE:
-		* Partially fixed #476: /etc/ispcp/ispcp.conf is world readable
+		* Partially fixed #476: /etc/i-mscp/i-mscp.conf is world readable
 		* Applied patch from #387
 		* Added mod_cband support
 	- CONFIGS:
@@ -2667,7 +2667,7 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #546: Blank page when trying to edit a domain alias (client)
 		* Fixed #547: encoded email from reseller doesnt work
 	- CONFIGS:
-		* Fixed #451: missing do in logrotate/ispcp
+		* Fixed #451: missing do in logrotate/i-mscp
 
 2007-08-12 Raphael Geissert
 	- GUI:
@@ -2698,7 +2698,7 @@ ispCP ω 1.0.0 Changelog
 2007-07-31 Raphael Geissert
 	- GUI:
 		* Fixed #539: Undefined variable: total_mails
-		* Removed hardcoded path in include/ispcp-lib.php
+		* Removed hardcoded path in include/i-mscp-lib.php
 		* Re-enabled lock file check
 	- CONFIGS:
 		* Added status target to ispcp_network
@@ -2713,7 +2713,7 @@ ispCP ω 1.0.0 Changelog
 	- GUI:
 		* Fixed #538: who_owns_this' ftp_user next check was calling dmn instead of uid
 	- CONFIGS:
-		* Fixed #536: Error: bad username; while reading /etc/cron.d/ispcp
+		* Fixed #536: Error: bad username; while reading /etc/cron.d/i-mscp
 	- ENGINE:
 		* Added initial custom cronjobs support
 
@@ -2777,7 +2777,7 @@ ispCP ω 1.0.0 Changelog
 
 2007-07-21 Benedikt Heintel
 	- ENGINE:
-		* Fixed #490: ispcp-db-keys.php has invalid escape character
+		* Fixed #490: i-mscp-db-keys.php has invalid escape character
 	- GUI:
 		* Updated PMA to 2.10.3
 	- SETUP:
@@ -2797,7 +2797,7 @@ ispCP ω 1.0.0 Changelog
 	- CONFIGS:
 		* Fixed #498: </IfModule> without matching <IfModule> section
 	- SETUP:
-		* Fixed #502: on every reinstall ispcp adds localhost as nameserver to /etc/resolv.conf
+		* Fixed #502: on every reinstall i-mscp adds localhost as nameserver to /etc/resolv.conf
 	- GUI:
 		* Fixed error where the order panel sends the notification for the reseller to the client
 	- ENGINE:
@@ -2806,7 +2806,7 @@ ispCP ω 1.0.0 Changelog
 2007-07-18 Raphael Geissert
 	- CONFIGS:
 		* Fixed #494: email from webmaster@gui
-		* Fixed #397: Running ispcp-setup in an already installed system duplicates the cronjobs
+		* Fixed #397: Running i-mscp-setup in an already installed system duplicates the cronjobs
 	- SETUP:
 		* Fixed #489: /lib/iptables/libipt_ISPCP_INPUT.so missing
 	- ENGINE:
@@ -2819,7 +2819,7 @@ ispCP ω 1.0.0 Changelog
 		* Made changes to reflect fix for #465
 		* Made changes to reflect fix for #483
 	- ENGINE:
-		* Fixed #482: Error into the script ispcp-dmn-mngr
+		* Fixed #482: Error into the script i-mscp-dmn-mngr
 		* Fixed #465: Error pages can't be displayed when PHP is disabled
 		* Fixed #483: Domain aliases with same mount point (thanks to greg@proxyconcept.net)
 	- CONFIGS:
@@ -2880,7 +2880,7 @@ ispCP ω 1.0.0 Changelog
 
 2007-07-11 Raphael Geissert
 	- ENGINE:
-		* Fixed #477: unexpected token `fi' /var/www/ispcp/engine/tools/ispcpphptemp.sh: line 35
+		* Fixed #477: unexpected token `fi' /var/www/i-mscp/engine/tools/ispcpphptemp.sh: line 35
 	- LANGUAGES
 		* Converted slovak translation to plain file
 
@@ -2890,9 +2890,9 @@ ispCP ω 1.0.0 Changelog
 
 2007-07-10 Raphael Geissert
 	- GUI:
-		* Fixed #473: Undefined variable: cfg in /var/www/ispcp/gui/include/vfs.php on line 111
+		* Fixed #473: Undefined variable: cfg in /var/www/i-mscp/gui/include/vfs.php on line 111
 	- SETUP:
-		* ispcp-uninstall now removes some files that were being left
+		* i-mscp-uninstall now removes some files that were being left
 
 2007-07-09 Raphael Geissert
 	- SETUP:
@@ -2941,7 +2941,7 @@ ispCP ω 1.0.0 Changelog
 2007-07-01 Raphael Geissert
 	- GUI:
 		* Corrected some i18n strings
-		* Fixed #450: duplicated require '../include/ispcp-lib.php';
+		* Fixed #450: duplicated require '../include/i-mscp-lib.php';
 		* Fixed #444: move gui/include/imagecode.php to gui/imagecode.php
 	- SETUP:
 		* Fixed #453: hard coded path for apache module
@@ -2951,7 +2951,7 @@ ispCP ω 1.0.0 Changelog
 		* Added rkhunter to Ubuntu edgy's packages list
 	- GUI:
 		* Fixed some i18n stuff
-		* Fixed #434: Undefined variable: cfg in /var/www/ispcp/gui/include/vfs.php on line 162
+		* Fixed #434: Undefined variable: cfg in /var/www/i-mscp/gui/include/vfs.php on line 162
 		* Fixed #442: Cant create or delete mysql databases
 
 2007-06-26 Raphael Geissert
@@ -2988,7 +2988,7 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #425: WARNING: KEY or IV has invalid length
 	- SETUP:
 		* Migration script now restarts the services
-		* Fixed #421: ispcp-setup errors in crontab file
+		* Fixed #421: i-mscp-setup errors in crontab file
 		* make uninstall now also removes fastcgi.conf
 		* Renamed fastcgi.conf to fastcgi_ispcp.conf to prevent replacing existing fastcgi.conf
 
@@ -3050,7 +3050,7 @@ ispCP ω 1.0.0 Changelog
 
 2007-06-15 Raphael Geissert
 	- TOOLS:
-		* Removed ispcp-mkdirs.pl
+		* Removed i-mscp-mkdirs.pl
 	- ENGINE:
 		* Now engine/tools/ispcpphptemp.sh uses per-domain php.ini (4 and 5) settings
 	- CONFIGS:
@@ -3207,7 +3207,7 @@ ispCP ω 1.0.0 Changelog
 		* Fixed #315: missing linefeed for fedora's bind in db_sub_entry.tpl
 		* Fixed #316: wrong path in cfg_entry.tpl
 		* Fixed #320: wrong aliases for awstats on fedora systems
-		* Fixed #321: wrong path in ispcp.conf
+		* Fixed #321: wrong path in i-mscp.conf
 
 2007-05-30 Raphael Geissert
 	- GUI
@@ -3291,7 +3291,7 @@ ispCP ω 1.0.0 Changelog
 	- GUI
 		* Fixed #268: undefined index on Login Page
 	- SETUP
-		* Fixed #179: crontab was overwritten by installing ispcp
+		* Fixed #179: crontab was overwritten by installing i-mscp
 
 2007-05-13 Jan Porath
 	-	GUI
@@ -3481,7 +3481,7 @@ ispCP ω 1.0.0 Changelog
 		* Romanian: added missing strings
 		* Spanish: added language (Spain)
 	- GUI:
-		* renamed ispcp-2-0.php => ispcp-functions.php
+		* renamed i-mscp-2-0.php => i-mscp-functions.php
 	- SETUP:
 		* fixed erron on uninstall
 

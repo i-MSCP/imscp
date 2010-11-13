@@ -3,8 +3,8 @@
 # ispCP helper library for distribution maintenace scripts
 #
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
-# author	Laurent Declercq <laurent.declercq@ispcp.net>
+# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
+# author	Laurent Declercq <laurent.declercq@i-mscp.net>
 # version	1.0.3
 #
 # SVN: $Id$
@@ -40,7 +40,7 @@
 # messages are provided.
 #
 # Also, when you include this file into your script, some ispCP configuration
-# parameters obtained from the 'ispcp.conf' file are exported in your script.
+# parameters obtained from the 'i-mscp.conf' file are exported in your script.
 #
 # To use library, you must include it at the beginning of your
 # script like this:
@@ -53,10 +53,10 @@
 ################################################################################
 
 # Retrieving the main ispCP configuration file path
-if [ -f "/etc/ispcp/ispcp.conf" ] ; then
-    CONF_FILE=/etc/ispcp/ispcp.conf
-elif [ -f "/usr/local/etc/ispcp/ispcp.conf" ] ; then
-    CONF_FILE=/usr/local/etc/ispcp/ispcp.conf
+if [ -f "/etc/i-mscp/i-mscp.conf" ] ; then
+    CONF_FILE=/etc/i-mscp/i-mscp.conf
+elif [ -f "/usr/local/etc/i-mscp/i-mscp.conf" ] ; then
+    CONF_FILE=/usr/local/etc/i-mscp/i-mscp.conf
 else
     printf "\033[1;31m[Error]\033[0m ispCP configuration file not found!\n"
     exit 1
@@ -65,7 +65,7 @@ fi
 OLD_IFS=$IFS
 IFS=$
 
-# Reading needed entries from ispcp.conf
+# Reading needed entries from i-mscp.conf
 for a in $(grep -E '^(AMAVIS|APACHE_|BASE_SERVER_IP|CMD_|DEBUG|DATABASE_HOST|DEFAULT_ADMIN_ADDRESS|ETC_|LOG_DIR|MTA_|ROOT_|PHP_FASTCGI|SPAMASSASSIN|Version)' \
 ${CONF_FILE} | sed 's/\s*=\s*\(.*\)/="\1"/') ; do
 	 eval $a
@@ -87,7 +87,7 @@ ISPCP_VERSION=$(echo $Version | sed -e 's/\s\+\|[a-z]//gi')
 ################################################################################
 
 # Log file path
-LOGFILE="$LOG_DIR/setup/ispcp-$0-$1.log"
+LOGFILE="$LOG_DIR/setup/i-mscp-$0-$1.log"
 
 # Make sure that the log directory exists
 /usr/bin/install -d $LOG_DIR/setup -m 0755 -o $ROOT_USER -g $ROOT_GROUP

@@ -2,7 +2,7 @@
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
 #
 # Version: $Id$
 #
@@ -29,16 +29,16 @@
 #    http://isp-control.net
 #
 ifndef INST_PREF
-        INST_PREF=/tmp/ispcp
+        INST_PREF=/tmp/i-mscp
 endif
 
 HOST_OS=gentoo
 
 ROOT_CONF=$(INST_PREF)/etc
 
-SYSTEM_ROOT=$(INST_PREF)/var/www/ispcp
-SYSTEM_CONF=$(INST_PREF)/etc/ispcp
-SYSTEM_LOG=$(INST_PREF)/var/log/ispcp
+SYSTEM_ROOT=$(INST_PREF)/var/www/i-mscp
+SYSTEM_CONF=$(INST_PREF)/etc/i-mscp
+SYSTEM_LOG=$(INST_PREF)/var/log/i-mscp
 SYSTEM_PROFTPD_LOG=$(INST_PREF)/var/log/proftpd
 SYSTEM_APACHE_BACK_LOG=$(INST_PREF)/var/log/apache2/backup
 SYSTEM_APACHE_USERS_LOG=$(INST_PREF)/var/log/apache2/users
@@ -61,7 +61,7 @@ install:
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_CONF)
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_ROOT)
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_LOG)
-	$(SYSTEM_MAKE_DIRS) $(SYSTEM_LOG)/ispcp-arpl-msgr
+	$(SYSTEM_MAKE_DIRS) $(SYSTEM_LOG)/i-mscp-arpl-msgr
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_VIRTUAL)
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_FCGI)
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_SCOREBOARDS)

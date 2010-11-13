@@ -21,7 +21,7 @@
  * @category	ispCP
  * @package		ispCP_SystemInfo
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @author 		Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author 		Benedikt Heintel <benedikt.heintel@i-mscp.net>
  * @version 	SVN: $Id$
  * @link		http://isp-control.net ispCP Home Site
  * @license		http://www.mozilla.org/MPL/ MPL 1.1
@@ -33,7 +33,7 @@
  *
  * @category    ispCP
  * @package		ispCP_SystemInfo
- * @author      Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author      Benedikt Heintel <benedikt.heintel@i-mscp.net>
  * @since       1.0.7
  * @version     1.0.2
  */

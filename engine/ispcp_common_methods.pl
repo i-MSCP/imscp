@@ -2,7 +2,7 @@
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
 #
 # Version: $Id$
 #
@@ -89,9 +89,9 @@ no warnings 'once';
 
 # Global variables;
 
-$main::cc_stdout = '/tmp/ispcp-cc.stdout';
+$main::cc_stdout = '/tmp/i-mscp-cc.stdout';
 
-$main::cc_stderr = '/tmp/ispcp-cc.stderr';
+$main::cc_stderr = '/tmp/i-mscp-cc.stderr';
 
 $main::el_sep = "\t#\t";
 
@@ -134,7 +134,7 @@ $main::db = undef;
 
 $main::use_crypted_pwd = undef;
 
-$main::master_name = 'ispcp-rqst-mngr';
+$main::master_name = 'i-mscp-rqst-mngr';
 
 %main::cfg = ();
 
@@ -1848,7 +1848,7 @@ sub setup_main_vars {
 # global database variables and redefines the DSN.
 #
 # @param [scalar $file_name filename from where the configuration must be loaded]
-# Default value is the main ispCP configuration file (ispcp.conf)
+# Default value is the main ispCP configuration file (i-mscp.conf)
 # @return int 0 on success, 1 otherwise
 #
 sub get_conf {
@@ -1920,7 +1920,7 @@ sub set_conf_val {
 }
 
 ################################################################################
-# Store all cached configuration parameters in the ispcp.conf file
+# Store all cached configuration parameters in the i-mscp.conf file
 #
 # This function updates the configuration settings to a file with those stored
 # in the global $main::cfg_reg hash . Only parameters that have a different
@@ -1932,7 +1932,7 @@ sub set_conf_val {
 # not exist in the configuration file.
 #
 # @param [scalar optional filename where the configuration must be stored]
-# Default value is the main ispCP configuration file (ispcp.conf)
+# Default value is the main ispCP configuration file (i-mscp.conf)
 # @return int 0 on success, 1 otherwise
 #
 sub store_conf {
@@ -2390,11 +2390,11 @@ sub sort_domains {
 ## SN tag. In case  where the SN tag was never generated, $wrkFile should
 ## contains the prepared SN tag like:
 ##
-## ; dmn [ispcp.net] timestamp entry BEGIN.
+## ; dmn [i-mscp.net] timestamp entry BEGIN.
 ##                {TIMESTAMPS}      ; Serial
-## ; dmn [ispcp.net] timestamp entry END.
+## ; dmn [i-mscp.net] timestamp entry END.
 ##
-## @author  Laurent Declercq <laurent.declercq@ispcp.net>
+## @author  Laurent Declercq <laurent.declercq@i-mscp.net>
 ## @since   1.0.7
 ## @version 1.0.3
 ## @param   scalarref $dmnName Domain name
@@ -2497,7 +2497,7 @@ sub getSerialNumber {
 # Converts the domain part (right hand side, separated by an at sign) of an
 # email address to ASCII (according RFC 3490).
 #
-# @author Laurent Declercq <laurent.declercq@ispcp.net>
+# @author Laurent Declercq <laurent.declercq@i-mscp.net>
 # @since 1.0.7 (rc2)
 # @param scalaref $refEmail Email address
 # @return int 1 on success, 0 otherwise

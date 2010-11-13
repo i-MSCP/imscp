@@ -22,7 +22,7 @@
 
 #include <sys/time.h>
 
-#define LOG_DIR "/var/log/ispcp"
+#define LOG_DIR "/var/log/i-mscp"
 
 #define STDOUT_LOG "ispcp_daemon-stdout.log"
 

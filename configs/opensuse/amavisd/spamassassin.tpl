@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
 #
 # Version: $Id$
 #
@@ -30,7 +30,7 @@
 #
 # If you do not want this file to be regenerated from scratch during ispCP
 # update process, change the 'SPAMASSASSIN_REGENERATE' parameter value to 'no' in
-# the ispcp.conf file.
+# the i-mscp.conf file.
 
 # SpamAssassin local.cf template file
 

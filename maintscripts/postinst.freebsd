@@ -3,7 +3,7 @@
 # ispCP Maintainer post installation script for FreeBSD
 #
 # ispCP (OMEGA) a Virtual Hosting Control Panel
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
 # author	BeNe, Nuxwin
 # version	1.0.3
 #
@@ -157,13 +157,13 @@ EOF
 		print_title "Postfix configuration:"
 
 		# SASL postfix configuration
-		if [ ! -f /usr/local/etc/ispcp/postfix/backup/smtpd.conf.system ] && [ -f /usr/local/lib/sasl2/smtpd.conf ]; then
-			$CMD_CP -a /usr/local/lib/sasl2/smtpd.conf /usr/local/etc/ispcp/postfix/backup/smtpd.conf.system >> $LOGFILE 2>&1 || failed
-			$CMD_CHMOD 0600 /usr/local/etc/ispcp/postfix/backup/smtpd.conf.system >> $LOGFILE 2>&1 || failed
+		if [ ! -f /usr/local/etc/i-mscp/postfix/backup/smtpd.conf.system ] && [ -f /usr/local/lib/sasl2/smtpd.conf ]; then
+			$CMD_CP -a /usr/local/lib/sasl2/smtpd.conf /usr/local/etc/i-mscp/postfix/backup/smtpd.conf.system >> $LOGFILE 2>&1 || failed
+			$CMD_CHMOD 0600 /usr/local/etc/i-mscp/postfix/backup/smtpd.conf.system >> $LOGFILE 2>&1 || failed
 		fi
 
 		# First we build a new config file with the available smtpd.conf template
-		($CMD_CAT /usr/local/etc/ispcp/postfix/smtpd.conf) |
+		($CMD_CAT /usr/local/etc/i-mscp/postfix/smtpd.conf) |
 		$CMD_SED "
 			s/{MTA_SASL_LOG_LEVEL}/$MTA_SASL_LOG_LEVEL/
 			s/{MTA_SASL_PWCHECK_METHOD}/$MTA_SASL_PWCHECK_METHOD/
@@ -182,12 +182,12 @@ EOF
 			newmd5=`$CMD_MD5 /tmp/smtpd.conf.tmp | cut -d' ' -f4`
 
 			if [ "$oldmd5" != "$newmd5" ]; then
-				$CMD_CP -p /tmp/smtpd.conf.tmp /usr/local/etc/ispcp/postfix/backup/smtpd.conf.ispcp >> $LOGFILE 2>&1 || failed
+				$CMD_CP -p /tmp/smtpd.conf.tmp /usr/local/etc/i-mscp/postfix/backup/smtpd.conf.i-mscp >> $LOGFILE 2>&1 || failed
 			fi
 		fi
 
-		$CMD_CP -p /usr/local/etc/ispcp/postfix/backup/smtpd.conf.ispcp $MTA_SASL_CONF_FILE >> $LOGFILE 2>&1 || failed
-		$CMD_CHMOD 0600 $MTA_SASL_CONF_FILE /usr/local/etc/ispcp/postfix/backup/smtpd.conf.ispcp >> $LOGFILE 2>&1 || failed
+		$CMD_CP -p /usr/local/etc/i-mscp/postfix/backup/smtpd.conf.i-mscp $MTA_SASL_CONF_FILE >> $LOGFILE 2>&1 || failed
+		$CMD_CHMOD 0600 $MTA_SASL_CONF_FILE /usr/local/etc/i-mscp/postfix/backup/smtpd.conf.i-mscp >> $LOGFILE 2>&1 || failed
 	
 		# Create Folders and copy needed Files for a chroot Postfix
 		if [ ! -d /var/spool/postfix/etc ]; then
@@ -234,7 +234,7 @@ EOF
 		print_title "Cron configuration:"
 
 		if [ ! -f "/var/cron/tabs/root" ] ; then
-			crontab /usr/local/etc/ispcp/cron.d/ispcp >> $LOGFILE 2>&1 || failed
+			crontab /usr/local/etc/i-mscp/cron.d/i-mscp >> $LOGFILE 2>&1 || failed
 		fi
 
 		print_status

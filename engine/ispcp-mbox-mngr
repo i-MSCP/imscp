@@ -2,7 +2,7 @@
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
 #
 #
 # The contents of this file are subject to the Mozilla Public License
@@ -273,7 +273,7 @@ sub mbox_check_sasl_user {
 	my ($uname) = @_;
 
 	my ($rs, $rdata);
-	my $check_file = "/tmp/ispcp-mbox-check-sasl-user";
+	my $check_file = "/tmp/i-mscp-mbox-check-sasl-user";
 
 	my $cmd = "$main::cfg{'CMD_SASLDB_LISTUSERS2'} -f " .
 		"$main::cfg{'MTA_SASLDB_FILE'} | $main::cfg{'CMD_GREP'} '$uname' " .
@@ -631,13 +631,13 @@ sub mbox_add_mta_cfg_autorespond_data {
 
 			if ($rdata eq '') {
 				$hash_value =
-					"$mail_acc\@$dmn_name,$mail_acc\@ispcp-arpl.$dmn_name";
+					"$mail_acc\@$dmn_name,$mail_acc\@i-mscp-arpl.$dmn_name";
 			} else {
-				$hash_value = $rdata.",$mail_acc\@ispcp-arpl.$dmn_name";
+				$hash_value = $rdata.",$mail_acc\@i-mscp-arpl.$dmn_name";
 			}
 		} else {
 			$hash_value = "$mail_acc\@$dmn_name$mail_forward_list," .
-				"$mail_acc\@ispcp-arpl.$dmn_name";
+				"$mail_acc\@i-mscp-arpl.$dmn_name";
 
 			$rs = del_mta_hash_value("$wrk_dir/aliases", $hash_key);
 			return $rs if ($rs != 0);
@@ -658,8 +658,8 @@ sub mbox_add_mta_cfg_autorespond_data {
 
 		# Building, store and installation of aliases file - End
 
-		$hash_key = "ispcp-arpl.$dmn_name";
-		$hash_value = "ispcp-arpl:";
+		$hash_key = "i-mscp-arpl.$dmn_name";
+		$hash_value = "i-mscp-arpl:";
 
 		# Building, store and installation of transport file - Begin
 
@@ -718,7 +718,7 @@ sub mbox_del_last_transport_entry {
 	($rs, $dmn_name) = mbox_get_dmn_full_name($mbox_data);
 	return $rs if ($rs != 0);
 
-	my $hash_key = "ispcp-arpl.$dmn_name";
+	my $hash_key = "i-mscp-arpl.$dmn_name";
 
 	$rs = del_mta_hash_value($transport_working_cfg, $hash_key);
 	return $rs if ($rs != 0);
@@ -911,7 +911,7 @@ sub mbox_del_mta_cfg_autorespond_data {
 
 		if ($rdata ne '') {
 
-			$rdata =~ s/\,$mail_acc\@ispcp-arpl\.$dmn_name//gi;
+			$rdata =~ s/\,$mail_acc\@i-mscp-arpl\.$dmn_name//gi;
 
 			$rs = set_mta_hash_value($aliases_working_cfg, $hash_key, $rdata);
 			return $rs if ($rs != 0);

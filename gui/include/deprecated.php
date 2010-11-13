@@ -213,7 +213,7 @@ function check_dn_rsl_token($data) {
  * Function for checking ispCP domains syntax. Here domains are
  * limited to {dname}.{ext} parts
  *
- * @param String $dname ispcp domain data
+ * @param String $dname i-mscp domain data
  * @param int $num number of max. chars
  * @return boolean	false	incorrect syntax
  * 					true	correct syntax
@@ -302,7 +302,7 @@ function chk_mountp($data, $max_char = 50, $min_char = 2) {
  * Data passed to this function must be in the upper form, not
  * only subdomain part for example.
  *
- * @param string $subdname ispcp subdomain data;
+ * @param string $subdname i-mscp subdomain data;
  * @return	false - incorrect syntax;
  *			true - correct syntax;
  * @deprecated function deprecated in revision r2228

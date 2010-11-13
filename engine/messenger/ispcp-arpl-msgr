@@ -2,7 +2,7 @@
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
 #
 # Version: $Id$
 #
@@ -287,14 +287,14 @@ sub del_file {
 %main::cfg = ();
 
 if(!defined($main::cfg_file)) {
-	$main::cfg_file = '/etc/ispcp/ispcp.conf';
+	$main::cfg_file = '/etc/i-mscp/i-mscp.conf';
 }
 
 $main::cfg_re = '^([\_A-Za-z0-9]+) *= *([^\n\r]*)[\n\r]';
 
 use FindBin;
 use lib "$FindBin::Bin/";
-require 'ispcp-db-keys.pl';
+require 'i-mscp-db-keys.pl';
 
 umask(027);
 
@@ -432,13 +432,13 @@ if ($main::cfg{'DEBUG'} != 0) {
 }
 
 if ($rs != 0) {
-	if( -d "$main::cfg{'LOG_DIR'}/ispcp-arpl-msgr/") {
+	if( -d "$main::cfg{'LOG_DIR'}/i-mscp-arpl-msgr/") {
 		$main::ispcp_arpl_msgr_el =
-			"$main::cfg{'LOG_DIR'}ispcp-arpl-msgr/ispcp-arpl-msgr.el";
+			"$main::cfg{'LOG_DIR'}i-mscp-arpl-msgr/i-mscp-arpl-msgr.el";
 		$main::ispcp_arpl_msgr_stdout =
-			"$main::cfg{'LOG_DIR'}/ispcp-arpl-msgr/ispcp-arpl-msgr.stdout";
+			"$main::cfg{'LOG_DIR'}/i-mscp-arpl-msgr/i-mscp-arpl-msgr.stdout";
 		$main::ispcp_arpl_msgr_stderr =
-			"$main::cfg{'LOG_DIR'}/ispcp-arpl-msgr/ispcp-arpl-msgr.stderr";
+			"$main::cfg{'LOG_DIR'}/i-mscp-arpl-msgr/i-mscp-arpl-msgr.stderr";
 		chown(
 			$main::cfg{'MTA_MAILBOX_UID'},
 			$main::cfg{'MTA_MAILBOX_GID'},
@@ -454,7 +454,7 @@ if ($rs != 0) {
 	}
 
 	print STDERR
-		"\nCRITICAL ERROR: Failed open /etc/ispcp/ispcp.conf! Maybe wrong permissions?\n" ;
+		"\nCRITICAL ERROR: Failed open /etc/i-mscp/i-mscp.conf! Maybe wrong permissions?\n" ;
 
 	exit 0;
 }
@@ -463,11 +463,11 @@ if ($rs != 0) {
 $main::log_dir = $main::cfg{'LOG_DIR'};
 
 $main::ispcp_arpl_msgr_el =
-	"$main::log_dir/ispcp-arpl-msgr/ispcp-arpl-msgr.el";
+	"$main::log_dir/i-mscp-arpl-msgr/i-mscp-arpl-msgr.el";
 $main::ispcp_arpl_msgr_stdout =
-	"$main::log_dir/ispcp-arpl-msgr/ispcp-arpl-msgr.stdout";
+	"$main::log_dir/i-mscp-arpl-msgr/i-mscp-arpl-msgr.stdout";
 $main::ispcp_arpl_msgr_stderr =
-	"$main::log_dir/ispcp-arpl-msgr/ispcp-arpl-msgr.stderr";
+	"$main::log_dir/i-mscp-arpl-msgr/i-mscp-arpl-msgr.stderr";
 
 chown(
 	$main::cfg{'MTA_MAILBOX_UID'},
@@ -800,7 +800,7 @@ sub arpl_msgr_engine {
 						$mail_to = $to_ma->address;
 					}
 
-					$mail_to=~s/\@ispcp-arpl./\@/;
+					$mail_to=~s/\@i-mscp-arpl./\@/;
 
 					# Detect duplicates within 24h to avoid autoreplying loops
 					$sql = "

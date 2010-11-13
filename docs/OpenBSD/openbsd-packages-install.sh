@@ -26,7 +26,7 @@ make install
 /usr/local/share/mysql/mysql.server start
 /usr/local/bin/mysql_install_db
 mysqladmin password 'your-new-password'
-/var/www/ispcp/engine/setup/ispcp-setup
+/var/www/i-mscp/engine/setup/i-mscp-setup
 echo "mkdir -p /var/run/courier-imap" >> /etc/rc.local
 echo "/usr/local/libexec/authlib/authdaemond start" >> /etc/rc.local
 echo "/usr/local/libexec/imapd.rc start" >> /etc/rc.local
@@ -44,7 +44,7 @@ echo "syslogd_flags=" >> /etc/rc.conf.local
 echo "sendmail_flags=\"-bd -q30m\"" >> /etc/rc.conf.local
 echo "named_flags=" >> /etc/rc.conf.local
 echo "AddType application/x-httpd-php .php" >> /var/www/conf/httpd.conf
-echo "Include /var/www/conf/ispcp.conf" >> /var/www/conf/httpd.conf
+echo "Include /var/www/conf/i-mscp.conf" >> /var/www/conf/httpd.conf
 cp /usr/local/share/examples/php4/php.ini-recommended /var/www/conf/php.ini
 /usr/local/sbin/phpxs -s
 /usr/local/sbin/phpxs -a curl

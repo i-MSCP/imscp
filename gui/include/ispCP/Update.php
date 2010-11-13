@@ -33,7 +33,7 @@
  * @package     ispCP_Update
  * @author      Jochen Manz <zothos@zothos.net>
  * @author      Daniel Andreca <sci2tech@gmail.com>
- * @author      Laurent Declercq <laurent.declercq@ispcp.net>
+ * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
  * @version     1.0.4
  * @since		r1355
  */

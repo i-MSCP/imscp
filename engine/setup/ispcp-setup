@@ -2,7 +2,7 @@
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
 #
 # Version: $Id$
 #
@@ -46,10 +46,10 @@ use lib "$FindBin::Bin/..";
 use PerlVendor::Capture::Tiny qw/capture_merged/;
 
 require 'ispcp_common_code.pl';
-require 'ispcp-setup-methods.pl';
+require 'i-mscp-setup-methods.pl';
 
 # We use our own system() subroutine implementation
-# See in the ispcp-setup-methods.pl file
+# See in the i-mscp-setup-methods.pl file
 use subs 'system';
 
 ################################################################################
@@ -338,7 +338,7 @@ sub setup_system_dirs {
 }
 
 ################################################################################
-# Update the ispcp.conf file with user data and reload all the configuration
+# Update the i-mscp.conf file with user data and reload all the configuration
 #
 # @return int 0 on success, other on failure
 #
@@ -372,7 +372,7 @@ sub setup_config {
 		return $rs if ($rs != 0);
 	}
 
-	# If not empty password, encrypt it before store it in ispcp.conf file
+	# If not empty password, encrypt it before store it in i-mscp.conf file
 	if ($main::ua{'db_password'} ne '') {
 		my ($rs, $rdata) = encrypt_db_password($main::ua{'db_password'});
 		return $rs if ($rs != 0);

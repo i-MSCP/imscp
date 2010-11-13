@@ -2,7 +2,7 @@
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
 #
 # Version: $Id$
 #
@@ -117,8 +117,8 @@ sub uninstall_startup {
 	$rs = get_conf();
 	return $rs if ($rs != 0);
 
-	if (-e "/tmp/ispcp-uninstall-services.log"){
-		$rs = del_file("/tmp/ispcp-uninstall-services.log");
+	if (-e "/tmp/i-mscp-uninstall-services.log"){
+		$rs = del_file("/tmp/i-mscp-uninstall-services.log");
 		return $rs if ($rs != 0);
 	}
 
@@ -449,14 +449,14 @@ sub uninstall_crontab {
 
 	push_el(\@main::el, 'uninstall_crontab()', 'Starting...');
 
-	if ( -e "/etc/cron.d/ispcp") {
-		$rs = del_file("/etc/cron.d/ispcp");
+	if ( -e "/etc/cron.d/i-mscp") {
+		$rs = del_file("/etc/cron.d/i-mscp");
 		if ($rs != 0){;
-			print "cannot delete file /etc/cron.d/ispcp!\n\n";
-			send_error_mail('uninstall_crontab()', "cannot delete file /etc/cron.d/ispcp!");
+			print "cannot delete file /etc/cron.d/i-mscp!\n\n";
+			send_error_mail('uninstall_crontab()', "cannot delete file /etc/cron.d/i-mscp!");
 		}
 	} else {
-		print "File /etc/cron.d/ispcp do not exists!";
+		print "File /etc/cron.d/i-mscp do not exists!";
 	}
 
 	push_el(\@main::el, 'uninstall_crontab()', 'Ending...');
@@ -500,15 +500,15 @@ sub uninstall_logrotate {
 
 	my $logrotate_d = "/etc/logrotate.d";
 
-	if ( -e "$logrotate_d/ispcp" ) {
+	if ( -e "$logrotate_d/i-mscp" ) {
 
-		$rs = del_file("$logrotate_d/ispcp");
+		$rs = del_file("$logrotate_d/i-mscp");
 		if ($rs != 0){
-			print "cannot delete $logrotate_d/ispcp!\n\n";
-			send_error_mail('uninstall_resolver()', "cannot delete $logrotate_d/ispcp!");
+			print "cannot delete $logrotate_d/i-mscp!\n\n";
+			send_error_mail('uninstall_resolver()', "cannot delete $logrotate_d/i-mscp!");
 		}
 	} else {
-		print "File $logrotate_d/ispcp do not exits!\n\n";
+		print "File $logrotate_d/i-mscp do not exits!\n\n";
 	}
 
 	push_el(\@main::el, 'uninstall_logrotate()', 'Ending...');
@@ -531,7 +531,7 @@ sub uninstall_named {
 
 	my ($cfg_tpl, $cfg, $cmd) = (undef, undef, undef);
 
-	sys_command_rs("$main::cfg{'CMD_NAMED'} stop >> /tmp/ispcp-uninstall-services.log");
+	sys_command_rs("$main::cfg{'CMD_NAMED'} stop >> /tmp/i-mscp-uninstall-services.log");
 
 	if (-e "$bk_dir/named.conf.system") {
 
@@ -548,7 +548,7 @@ sub uninstall_named {
 		send_error_mail('uninstall_ftpd()', "Backup files $bk_dir/named.conf.system cannot be founded!");
 	}
 
-	sys_command_rs("$main::cfg{'CMD_NAMED'} start >> /tmp/ispcp-uninstall-services.log");
+	sys_command_rs("$main::cfg{'CMD_NAMED'} start >> /tmp/i-mscp-uninstall-services.log");
 
 	push_el(\@main::el, 'uninstall_named()', 'Ending...');
 
@@ -570,17 +570,17 @@ sub uninstall_httpd {
 
 	my ($cfg_tpl, $cfg, $cmd) = (undef, undef, undef);
 
-	sys_command_rs("$main::cfg{'CMD_HTTPD'} stop >> /tmp/ispcp-uninstall-services.log");
+	sys_command_rs("$main::cfg{'CMD_HTTPD'} stop >> /tmp/i-mscp-uninstall-services.log");
 
-	sys_command_rs("a2dissite ispcp.conf >> /tmp/ispcp-uninstall-services.log");
+	sys_command_rs("a2dissite i-mscp.conf >> /tmp/i-mscp-uninstall-services.log");
 
-	$rs = del_file("$main::cfg{'APACHE_SITES_DIR'}/ispcp.conf");
+	$rs = del_file("$main::cfg{'APACHE_SITES_DIR'}/i-mscp.conf");
 	if ($rs != 0){
-		print "cannot delete $main::cfg{'APACHE_SITES_DIR'}/ispcp.conf!\n\n";
-		send_error_mail('uninstall_httpd()', "cannot delete $main::cfg{'APACHE_SITES_DIR'}/ispcp.conf!");
+		print "cannot delete $main::cfg{'APACHE_SITES_DIR'}/i-mscp.conf!\n\n";
+		send_error_mail('uninstall_httpd()', "cannot delete $main::cfg{'APACHE_SITES_DIR'}/i-mscp.conf!");
 	}
 
-	sys_command_rs("a2dissite 00_master.conf >> /tmp/ispcp-uninstall-services.log");
+	sys_command_rs("a2dissite 00_master.conf >> /tmp/i-mscp-uninstall-services.log");
 
 	$rs = del_file("$main::cfg{'APACHE_SITES_DIR'}/00_master.conf");
 	if ($rs != 0){
@@ -588,7 +588,7 @@ sub uninstall_httpd {
 		send_error_mail('uninstall_httpd()', "cannot delete $main::cfg{'APACHE_SITES_DIR'}/00_master.conf!");
 	}
 
-	sys_command_rs("a2dismod fastcgi_ispcp >> /tmp/ispcp-uninstall-services.log");
+	sys_command_rs("a2dismod fastcgi_ispcp >> /tmp/i-mscp-uninstall-services.log");
 
 	$rs = del_file("$main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.conf");
 	if ($rs != 0){
@@ -596,7 +596,7 @@ sub uninstall_httpd {
 		send_error_mail('uninstall_httpd()', "cannot delete $main::cfg{'APACHE_MODS_DIR'}/fastcgi_ispcp.conf!");
 	}
 
-	sys_command_rs("a2dismod fcgid_ispcp >> /tmp/ispcp-uninstall-services.log");
+	sys_command_rs("a2dismod fcgid_ispcp >> /tmp/i-mscp-uninstall-services.log");
 
 	$rs = del_file("$main::cfg{'APACHE_MODS_DIR'}/fcgid_ispcp.conf");
 	if ($rs != 0){
@@ -624,7 +624,7 @@ sub uninstall_httpd {
 		print "File $main::cfg{'APACHE_MODS_DIR'}/fcgid_ispcp.load do not exits!\n\n";
 	}
 
-	sys_command_rs("a2dissite 01_awstats.conf >> /tmp/ispcp-uninstall-services.log");
+	sys_command_rs("a2dissite 01_awstats.conf >> /tmp/i-mscp-uninstall-services.log");
 
 	if ( -e "$main::cfg{'APACHE_SITES_DIR'}/01_awstats.conf") {
 		$rs = del_file("$main::cfg{'APACHE_SITES_DIR'}/01_awstats.conf");
@@ -644,7 +644,7 @@ sub uninstall_httpd {
 
 	sleep(5);
 
-	sys_command_rs("$main::cfg{'CMD_HTTPD'} start >> /tmp/ispcp-uninstall-services.log");
+	sys_command_rs("$main::cfg{'CMD_HTTPD'} start >> /tmp/i-mscp-uninstall-services.log");
 
 	push_el(\@main::el, 'uninstall_httpd()', 'Ending...');
 
@@ -664,11 +664,11 @@ sub uninstall_mta {
 
 	my $wrk_dir = "$cfg_dir/working";
 
-	my $vrl_dir = "$cfg_dir/ispcp";
+	my $vrl_dir = "$cfg_dir/i-mscp";
 
 	my ($cfg_tpl, $cfg, $cmd) = (undef, undef, undef);
 
-	sys_command_rs("$main::cfg{'CMD_MTA'} stop >> /tmp/ispcp-uninstall-services.log");
+	sys_command_rs("$main::cfg{'CMD_MTA'} stop >> /tmp/i-mscp-uninstall-services.log");
 
 	if (-e "$bk_dir/main.cf.system") {
 
@@ -693,11 +693,11 @@ sub uninstall_mta {
 		send_error_mail('uninstall_mta()', "Backup files for MTA cannot be founded!");
 	}
 
-	if ( -e "/var/spool/postfix/private/ispcp-arpl" ) {
-		$rs = del_file("/var/spool/postfix/private/ispcp-arpl");
+	if ( -e "/var/spool/postfix/private/i-mscp-arpl" ) {
+		$rs = del_file("/var/spool/postfix/private/i-mscp-arpl");
 		if ($rs != 0){
-			print "cannot delete /var/spool/postfix/private/ispcp-arpl!\n\n";
-			send_error_mail('uninstall_mta()', "cannot delete /var/spool/postfix/private/ispcp-arpl!");
+			print "cannot delete /var/spool/postfix/private/i-mscp-arpl!\n\n";
+			send_error_mail('uninstall_mta()', "cannot delete /var/spool/postfix/private/i-mscp-arpl!");
 		}
 	}
 
@@ -709,13 +709,13 @@ sub uninstall_mta {
 		}
 	}
 
-	$rs = sys_command("$main::cfg{'CMD_NEWALIASES'} >> /tmp/ispcp-uninstall-services.log");
+	$rs = sys_command("$main::cfg{'CMD_NEWALIASES'} >> /tmp/i-mscp-uninstall-services.log");
 	if ($rs != 0){
 		print "Command $main::cfg{'CMD_NEWALIASES'} failed! Check MTA config file\n\n";
 		send_error_mail('uninstall_mta()', "Command $main::cfg{'CMD_NEWALIASES'} failed! Check MTA config file!");
 	}
 
-	sys_command_rs("$main::cfg{'CMD_MTA'} start >> /tmp/ispcp-uninstall-services.log");
+	sys_command_rs("$main::cfg{'CMD_MTA'} start >> /tmp/i-mscp-uninstall-services.log");
 
 	push_el(\@main::el, 'uninstall_mta()', 'Ending...');
 
@@ -737,11 +737,11 @@ sub uninstall_po {
 
 	my ($cfg_tpl, $cfg, $cmd) = (undef, undef, undef);
 
-	sys_command_rs("$main::cfg{'CMD_AUTHD'} stop >> /tmp/ispcp-uninstall-services.log");
+	sys_command_rs("$main::cfg{'CMD_AUTHD'} stop >> /tmp/i-mscp-uninstall-services.log");
 
-	sys_command_rs("$main::cfg{'CMD_IMAP'} stop >> /tmp/ispcp-uninstall-services.log");
+	sys_command_rs("$main::cfg{'CMD_IMAP'} stop >> /tmp/i-mscp-uninstall-services.log");
 
-	sys_command_rs("$main::cfg{'CMD_POP'} stop >> /tmp/ispcp-uninstall-services.log");
+	sys_command_rs("$main::cfg{'CMD_POP'} stop >> /tmp/i-mscp-uninstall-services.log");
 
 	$cmd = "$main::cfg{'CMD_CP'} -p $bk_dir/authdaemonrc.system $main::cfg{'AUTHLIB_CONF_DIR'}/authdaemonrc";
 	$rs = sys_command($cmd);
@@ -775,11 +775,11 @@ sub uninstall_po {
 		send_error_mail('uninstall_mta()', "Command $main::cfg{'CMD_MAKEUSERDB'} failed! Check config file!");
 	}
 
-	sys_command_rs("$main::cfg{'CMD_AUTHD'} start >> /tmp/ispcp-uninstall-services.log");
+	sys_command_rs("$main::cfg{'CMD_AUTHD'} start >> /tmp/i-mscp-uninstall-services.log");
 
-	sys_command_rs("$main::cfg{'CMD_IMAP'} start >> /tmp/ispcp-uninstall-services.log");
+	sys_command_rs("$main::cfg{'CMD_IMAP'} start >> /tmp/i-mscp-uninstall-services.log");
 
-	sys_command_rs("$main::cfg{'CMD_POP'} start >> /tmp/ispcp-uninstall-services.log");
+	sys_command_rs("$main::cfg{'CMD_POP'} start >> /tmp/i-mscp-uninstall-services.log");
 
 	push_el(\@main::el, 'uninstall_po()', 'Ending...');
 
@@ -799,7 +799,7 @@ sub uninstall_ftpd {
 
 	my ($cfg_tpl, $cfg, $cmd) = (undef, undef, undef);
 
-	sys_command_rs("$main::cfg{'CMD_FTPD'} stop >> /tmp/ispcp-uninstall-services.log");
+	sys_command_rs("$main::cfg{'CMD_FTPD'} stop >> /tmp/i-mscp-uninstall-services.log");
 
 	if (-e "$bk_dir/proftpd.conf.system") {
 
@@ -821,7 +821,7 @@ sub uninstall_ftpd {
 		send_error_mail('uninstall_ftpd()', "Backup files $bk_dir/proftpd.conf.system cannot be founded!");
 	}
 
-	sys_command_rs("$main::cfg{'CMD_FTPD'} start >> /tmp/ispcp-uninstall-services.log");
+	sys_command_rs("$main::cfg{'CMD_FTPD'} start >> /tmp/i-mscp-uninstall-services.log");
 
 	push_el(\@main::el, 'uninstall_ftpd()', 'Ending...');
 
@@ -835,14 +835,14 @@ sub uninstall_ispcpd {
 
 	push_el(\@main::el, 'uninstall_ispcpd()', 'Starting...');
 
-	sys_command_rs("$main::cfg{'CMD_ISPCPD'} stop >> /tmp/ispcp-uninstall-services.log");
+	sys_command_rs("$main::cfg{'CMD_ISPCPD'} stop >> /tmp/i-mscp-uninstall-services.log");
 
-	sys_command_rs("$main::cfg{'CMD_ISPCPN'} stop >> /tmp/ispcp-uninstall-services.log");
+	sys_command_rs("$main::cfg{'CMD_ISPCPN'} stop >> /tmp/i-mscp-uninstall-services.log");
 
 	if ( -x "/usr/lib/lsb/install_initd" ) { #LSB 3.1 Core section 20.4 compatibility
 
-		sys_command_rs("/usr/lib/lsb/install_initd $main::cfg{'CMD_ISPCPD'} >> /tmp/ispcp-uninstall-services.log");
-		sys_command_rs("/usr/lib/lsb/install_initd $main::cfg{'CMD_ISPCPN'} >> /tmp/ispcp-uninstall-services.log");
+		sys_command_rs("/usr/lib/lsb/install_initd $main::cfg{'CMD_ISPCPD'} >> /tmp/i-mscp-uninstall-services.log");
+		sys_command_rs("/usr/lib/lsb/install_initd $main::cfg{'CMD_ISPCPN'} >> /tmp/i-mscp-uninstall-services.log");
 
 	}
 
@@ -860,8 +860,8 @@ sub uninstall_ispcpd {
 
 	if ( ! -x "/usr/lib/lsb/install_initd" && -x "/usr/sbin/update-rc.d" ) {
 
-		sys_command_rs("/usr/sbin/update-rc.d ispcp_daemon remove >> /tmp/ispcp-uninstall-services.log");
-		sys_command_rs("/usr/sbin/update-rc.d ispcp_network remove >> /tmp/ispcp-uninstall-services.log");
+		sys_command_rs("/usr/sbin/update-rc.d ispcp_daemon remove >> /tmp/i-mscp-uninstall-services.log");
+		sys_command_rs("/usr/sbin/update-rc.d ispcp_network remove >> /tmp/i-mscp-uninstall-services.log");
 
 	}
 
@@ -1011,8 +1011,8 @@ if ($rs != 0) {
  Documentation of the uninstaller's program flow:
 
  uninstall_startup()
-	get_conf() .> ispcp-setup-methods.pl
-	del_file() -> ispcp-setup-methods.pl
+	get_conf() .> i-mscp-setup-methods.pl
+	del_file() -> i-mscp-setup-methods.pl
  user_dialog()
 	welcome_note()
 	ask_remove_user_data()

@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 #
-# ispcp-eol - Convert all EOL of ispCP files to Unix format and adding missing EOL
-# Copyright (C) 2010  Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
+# i-mscp-eol - Convert all EOL of ispCP files to Unix format and adding missing EOL
+# Copyright (C) 2010  Laurent Declercq (nuxwin) <laurent.declercq@i-mscp.net>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
