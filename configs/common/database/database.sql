@@ -126,7 +126,7 @@ INSERT INTO `config` (`name`, `value`) VALUES
 ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
 ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
 ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-('DATABASE_REVISION', '44');
+('DATABASE_REVISION', '45');
 
 -- --------------------------------------------------------
 
@@ -210,6 +210,7 @@ CREATE TABLE `domain_dns` (
   `domain_class` enum('IN','CH','HS') collate utf8_unicode_ci NOT NULL default 'IN',
   `domain_type` enum('A','AAAA','CERT','CNAME','DNAME','GPOS','KEY','KX','MX','NAPTR','NSAP','NS','NXT','PTR','PX','SIG','SRV','TXT') collate utf8_unicode_ci NOT NULL default 'A',
   `domain_text` varchar(128) collate utf8_unicode_ci NOT NULL,
+  `protected` varchar(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
   PRIMARY KEY  (`domain_dns_id`),
   UNIQUE KEY `domain_id` (`domain_id`,`alias_id`,`domain_dns`,`domain_class`,`domain_type`,`domain_text`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

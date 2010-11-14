@@ -1772,7 +1772,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	 * Fix for #2224 Postgrey - Port changed to 10023 for some distributions
 	 *
 	 * Note: Moved to 42 (previous preinst fix was wrong)
-	 * 
+	 *
 	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
 	 * @since r3299
 	 * @return array
@@ -1812,13 +1812,23 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	}
 
 	/**
+	 * Moved to 45
+	 */
+	protected function _databaseUpdate_44() {
+
+		$sqlUpd = array();
+
+
+		return $sqlUpd;
+	}
+	/**
 	 * Allows to protect custom DNS records against deletion
 	 *
 	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
 	 * @since r3607
 	 * @return array
 	 */
-	protected function _databaseUpdate_44() {
+	protected function _databaseUpdate_45() {
 
 		$sqlUpd = array();
 
