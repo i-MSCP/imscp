@@ -59,7 +59,7 @@ if($help) {
 	my $usage = << "USAGE";
 Usage: perl $0 [OPTION]...
 
-Converts all EOL of ispCP files in the Unix form and adds an EOL at end of file if
+Converts all EOL of i-MSCP files in the Unix form and adds an EOL at end of file if
 missing.
 
 Options:
@@ -142,7 +142,7 @@ sub ToUniq {
 ## Main program
 #
 
-# Go to the ispCP package root directory
+# Go to the i-MSCP package root directory
 chdir '../';
 
 find{wanted => \&FixFiles, preprocess => sub {grep !/$discard_files/, @_;}}, '.';

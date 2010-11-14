@@ -52,7 +52,7 @@ abstract class BackupPackage extends BaseController
 		$this->domain_name = $domain_name;
 		$this->log_level = $log_level;
 
-		$this->backup_temp_path = ISPCP_VIRTUAL_PATH.'/'.$this->domain_name.'/tmp';
+		$this->backup_temp_path = IMSCP_VIRTUAL_PATH.'/'.$this->domain_name.'/tmp';
 
 		// create archive path for domain packages if not exist
 		if (!file_exists(ARCHIVE_PATH)) {
@@ -89,7 +89,7 @@ abstract class BackupPackage extends BaseController
 			fclose($fp);
 		} else {
 			$result = false;
-			$this->logMessage('Could not create file '.$this->config_file, ISPCP_LOG_ERROR);
+			$this->logMessage('Could not create file '.$this->config_file, IMSCP_LOG_ERROR);
 		}
 
 		return $result;
@@ -143,7 +143,7 @@ abstract class BackupPackage extends BaseController
 		$filename = ARCHIVE_PATH.'/'.$this->domain_name.'.tar.gz';
 		// TODO: only htdocs?
 		$cmd = 'tar czf '.$filename.
-				' -C '.ISPCP_VIRTUAL_PATH.' '.$this->domain_name.
+				' -C '.IMSCP_VIRTUAL_PATH.' '.$this->domain_name.
 				' --exclude=logs --exclude=phptmp --exclude=backups';
 
 		// TODO: Error handling

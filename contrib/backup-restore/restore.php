@@ -20,7 +20,7 @@
  */
 
 require_once dirname(__FILE__).'/includes/boot.php';
-require_once dirname(__FILE__).'/includes/RestorePackage_ispCP.php';
+require_once dirname(__FILE__).'/includes/RestorePackage_iMSCP.php';
 
 if ($argc < 3) {
 	echo "Usage: php restore.php [OPTIONS] domain archive-password\n";
@@ -53,7 +53,7 @@ $password = $argv[$argc-1];
 $exitcode = 0;
 
 // start restore for domain
-$handler = new RestorePackage_ispCP($domain_name, $password, $option_ip, $option_res, $log_level);
+$handler = new RestorePackage_iMSCP($domain_name, $password, $option_ip, $option_res, $log_level);
 if ($handler->runRestore() == false) {
 	echo "Error executing restore\n";
 	$exitcode = 9;

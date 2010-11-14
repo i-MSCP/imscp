@@ -22,22 +22,22 @@
 require_once dirname(__FILE__).'/iBackupPackage.php';
 require_once dirname(__FILE__).'/BackupPackage.php';
 
-class BackupPackage_ispCP extends BackupPackage implements iBackupPackage
+class BackupPackage_iMSCP extends BackupPackage implements iBackupPackage
 {
 	/**
-	 * Instance of ispCP Database
+	 * Instance of i-MSCP Database
 	 */
 	public $db = null;
 	/**
-	 * ispCP domain ID
+	 * i-MSCP domain ID
 	 */
 	public $domain_id = 0;
 	/**
-	 * ispCP domain user ID
+	 * i-MSCP domain user ID
 	 */
 	public $domain_user_id = 0;
 	/**
-	 * ispCP database IDs (name => id)
+	 * i-MSCP database IDs (name => id)
 	 */
 	protected $db_ids = array();
 
@@ -55,14 +55,14 @@ class BackupPackage_ispCP extends BackupPackage implements iBackupPackage
 	{
 		$result = false;
 
-		if (!file_exists(ISPCP_VIRTUAL_PATH.'/'.$this->domain_name)) {
-			$this->logMessage('Domain not found in '.ISPCP_VIRTUAL_PATH.'/'.$this->domain_name, ISPCP_LOG_ERROR);
+		if (!file_exists(IMSCP_VIRTUAL_PATH.'/'.$this->domain_name)) {
+			$this->logMessage('Domain not found in '.IMSCP_VIRTUAL_PATH.'/'.$this->domain_name, IMSCP_LOG_ERROR);
 		} else {
 			$test = $this->getDomainID($this->domain_name);
 			if ($test != -1) {
 				$result = true;
 			} else {
-				$this->logMessage('Domain not in database: '.$this->domain_name, ISPCP_LOG_ERROR);
+				$this->logMessage('Domain not in database: '.$this->domain_name, IMSCP_LOG_ERROR);
 			}
 		}
 
@@ -70,7 +70,7 @@ class BackupPackage_ispCP extends BackupPackage implements iBackupPackage
 	}
 
 	/**
-	 * Get ispCP domain id of domain name
+	 * Get i-MSCP domain id of domain name
 	 * @param string $domainname name of domain
 	 * @return integer domain id, -1 if not present
 	 */
@@ -108,7 +108,7 @@ class BackupPackage_ispCP extends BackupPackage implements iBackupPackage
 			unset($result['domain_gid']);
 			unset($result['domain_uid']);
 		} else {
-			$this->logMessage('Error reading domain configuration from database!', ISPCP_LOG_ERROR);
+			$this->logMessage('Error reading domain configuration from database!', IMSCP_LOG_ERROR);
 		}
 
 		return $result;

@@ -20,7 +20,7 @@
  */
 
 require_once dirname(__FILE__).'/includes/boot.php';
-require_once dirname(__FILE__).'/includes/BackupPackage_ispCP.php';
+require_once dirname(__FILE__).'/includes/BackupPackage_iMSCP.php';
 
 if ($argc < 3) {
 	echo "Usage: php backup.php [OPTIONS] domain archive-password\n";
@@ -46,7 +46,7 @@ $password = $argv[$argc-1];
 $exitcode = 0;
 
 // start packager for domain
-$handler = new BackupPackage_ispCP($domain_name, $password, $log_level);
+$handler = new BackupPackage_iMSCP($domain_name, $password, $log_level);
 if ($handler->runPackager() == false) {
 	echo "Error executing packager\n";
 	$exitcode = 9;

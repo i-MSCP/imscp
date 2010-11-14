@@ -20,12 +20,12 @@
  */
 
 /**
- * ispCP restore packager main class
+ * i-MSCP restore packager main class
  */
-class RestorePackage_ispCP extends BaseController
+class RestorePackage_iMSCP extends BaseController
 {
 	/**
-	 * Instance of ispCP Database
+	 * Instance of i-MSCP Database
 	 */
 	public $db = null;
 	/**
@@ -126,7 +126,7 @@ class RestorePackage_ispCP extends BaseController
 		$this->reseller = $option_reseller;
 		$this->gpg_archive = ARCHIVE_PATH.'/'.$this->domain_name.'.tar.gz.gpg';
 		$this->archive = mb_substr($this->gpg_archive, 0, mb_strlen($this->gpg_archive)-4);
-		$this->target_path = ISPCP_VIRTUAL_PATH.'/'.$this->domain_name;
+		$this->target_path = IMSCP_VIRTUAL_PATH.'/'.$this->domain_name;
 
 		// untar and mysql can take a lot of time
 		set_time_limit(1200);
@@ -159,7 +159,7 @@ class RestorePackage_ispCP extends BaseController
 		if ($rs && !$rs->EOF) {
 			$result = $rs->fields['ip_id'];
 		} else {
-			$this->logMessage('No IPs found!?', ISPCP_LOG_ERROR);
+			$this->logMessage('No IPs found!?', IMSCP_LOG_ERROR);
 		}
 
 		return $result;
@@ -180,7 +180,7 @@ class RestorePackage_ispCP extends BaseController
 		if ($rs && !$rs->EOF) {
 			$result = $rs->fields['admin_id'];
 		} else {
-			$this->logMessage('No resellers found!?', ISPCP_LOG_ERROR);
+			$this->logMessage('No resellers found!?', IMSCP_LOG_ERROR);
 		}
 
 		return $result;
@@ -189,7 +189,7 @@ class RestorePackage_ispCP extends BaseController
 	/**
 	 * Get ID of reseller name
 	 * @param string $reseller name of reseller (e.g. 'res1')
-	 * @return integer ispCP database ID of reseller
+	 * @return integer i-MSCP database ID of reseller
 	 */
 	protected function getResellerID($reseller)
 	{
@@ -208,7 +208,7 @@ class RestorePackage_ispCP extends BaseController
 		if ($rs && !$rs->EOF) {
 			$result = $rs->fields['admin_id'];
 		} else {
-			$this->logMessage('Reseller not found: '.$reseller, ISPCP_LOG_ERROR);
+			$this->logMessage('Reseller not found: '.$reseller, IMSCP_LOG_ERROR);
 		}
 
 		return $result;
@@ -233,7 +233,7 @@ class RestorePackage_ispCP extends BaseController
 			$this->reseller_prop_layout = $rs->fields['layout'];
 			$this->reseller_prop_logo = $rs->fields['logo'];
 		} else {
-			$this->logMessage('Reseller user properties not found: '.$this->reseller_id, ISPCP_LOG_ERROR);
+			$this->logMessage('Reseller user properties not found: '.$this->reseller_id, IMSCP_LOG_ERROR);
 			$this->reseller_prop_lang = 'lang_EnglishBritain';
 			$this->reseller_prop_layout = 'omega_original';
 			$this->reseller_prop_logo = 0;
@@ -243,7 +243,7 @@ class RestorePackage_ispCP extends BaseController
 	/**
 	 * Get ID of IP
 	 * @param string $ip IP address
-	 * @return integer ispCP database ID of IP
+	 * @return integer i-MSCP database ID of IP
 	 */
 	protected function getIPID($ip)
 	{
@@ -255,7 +255,7 @@ class RestorePackage_ispCP extends BaseController
 		if ($rs && !$rs->EOF) {
 			$result = $rs->fields['ip_id'];
 		} else {
-			$this->logMessage('IP not found: '.$ip, ISPCP_LOG_ERROR);
+			$this->logMessage('IP not found: '.$ip, IMSCP_LOG_ERROR);
 		}
 
 		return $result;
@@ -269,7 +269,7 @@ class RestorePackage_ispCP extends BaseController
 		$result = false;
 
 		if (!file_exists($this->gpg_archive)) {
-			$this->logMessage('Domain backup package file not found: '.$this->gpg_archive, ISPCP_LOG_ERROR);
+			$this->logMessage('Domain backup package file not found: '.$this->gpg_archive, IMSCP_LOG_ERROR);
 		} else {
 			// IP detection
 			if ($this->ip === false) {
@@ -314,18 +314,18 @@ class RestorePackage_ispCP extends BaseController
 				mkdir($this->target_path, 0770, true);
 			}
 
-			$cmd = 'tar xzf '.$this->archive.' -C '.ISPCP_VIRTUAL_PATH;
+			$cmd = 'tar xzf '.$this->archive.' -C '.IMSCP_VIRTUAL_PATH;
 			$this->shellExecute($cmd, $a);
 
 			if (file_exists($this->target_path.'/tmp/config.ser')) {
 				$result = true;
 			} else {
-				$this->logMessage('File not found: '.$this->target_path.'/tmp/config.ser', ISPCP_LOG_ERROR);
+				$this->logMessage('File not found: '.$this->target_path.'/tmp/config.ser', IMSCP_LOG_ERROR);
 			}
 
 			$result = true;
 		} else {
-			$this->logMessage('File not found: '.$this->archive.' - incorrect password?', ISPCP_LOG_ERROR);
+			$this->logMessage('File not found: '.$this->archive.' - incorrect password?', IMSCP_LOG_ERROR);
 		}
 
 		return $result;
@@ -339,7 +339,7 @@ class RestorePackage_ispCP extends BaseController
 	{
 		$result = false;
 
-		$this->logMessage('getConfigData', ISPCP_LOG_INFO);
+		$this->logMessage('getConfigData', IMSCP_LOG_INFO);
 
 		$config_file = $this->target_path.'/tmp/config.ser';
 
@@ -351,22 +351,22 @@ class RestorePackage_ispCP extends BaseController
 
 			if (is_array($this->configurationData) && count($this->configurationData) > 0) {
 
-				$this->logMessage('configurationData OK', ISPCP_LOG_INFO);
+				$this->logMessage('configurationData OK', IMSCP_LOG_INFO);
 
 				$result = true;
 			} else {
-				$this->logMessage('Broken file '.$config_file, ISPCP_LOG_ERROR);
+				$this->logMessage('Broken file '.$config_file, IMSCP_LOG_ERROR);
 			}
 
 		} else {
-			$this->logMessage('Could not open file '.$config_file, ISPCP_LOG_ERROR);
+			$this->logMessage('Could not open file '.$config_file, IMSCP_LOG_ERROR);
 		}
 
 		return $result;
 	}
 
 	/**
-	 * Start ispCP daemon
+	 * Start i-MSCP daemon
 	 */
 	protected function startDaemon()
 	{
@@ -379,11 +379,11 @@ class RestorePackage_ispCP extends BaseController
 	protected function createDatabases()
 	{
 		foreach ($this->configurationData['db'] as $db) {
-			$this->logMessage('createDatabases: '.$db['sqld_name'], ISPCP_LOG_INFO);
+			$this->logMessage('createDatabases: '.$db['sqld_name'], IMSCP_LOG_INFO);
 
 			$this->importMySQLDatabase($db['sqld_name']);
 
-			// Insert database row into ispCP database
+			// Insert database row into i-MSCP database
 			$query = $this->db->prepare(
 				"INSERT INTO `sql_database`".
 				" (`domain_id`, `sqld_name`)".
@@ -435,7 +435,7 @@ class RestorePackage_ispCP extends BaseController
 		foreach ($this->configurationData['dbuser'] as $dbuser) {
 			$this->createDatabaseUser($dbuser['database'], $dbuser['sqlu_name'], $dbuser['sqlu_pass']);
 
-			// Insert database row into ispCP database
+			// Insert database row into i-MSCP database
 			$this->db->execute(
 				$query, array(
 					':sqld_id'		=> $this->database_ids[$dbuser['database']],
@@ -454,7 +454,7 @@ class RestorePackage_ispCP extends BaseController
 	 */
 	private function createDatabaseUser($db_name, $db_user, $user_pass)
 	{
-		$this->logMessage('createDatabaseUser: '.$db_user, ISPCP_LOG_INFO);
+		$this->logMessage('createDatabaseUser: '.$db_user, IMSCP_LOG_INFO);
 
 		$query = $this->db->prepare(
 			"GRANT ALL PRIVILEGES ON ". quoteIdentifier($db_name) .
@@ -472,7 +472,7 @@ class RestorePackage_ispCP extends BaseController
 	{
 		$result = false;
 
-		$this->logMessage('createDomain', ISPCP_LOG_INFO);
+		$this->logMessage('createDomain', IMSCP_LOG_INFO);
 
 		$query = $this->db->prepare(
 			"INSERT INTO `admin`".
@@ -511,11 +511,11 @@ class RestorePackage_ispCP extends BaseController
 		$params[':created_by'] = $this->reseller_id;
 
 		if (!$this->db->execute($query, $params)) {
-			$this->logMessage('Cannot insert admin database entry!', ISPCP_LOG_ERROR);
+			$this->logMessage('Cannot insert admin database entry!', IMSCP_LOG_ERROR);
 			return false;
 		}
 		$domain_admin_id = $this->db->insertId();
-		$this->logMessage('Domain Admin ID: '.$domain_admin_id, ISPCP_LOG_DEBUG);
+		$this->logMessage('Domain Admin ID: '.$domain_admin_id, IMSCP_LOG_DEBUG);
 
 		// create record for user_gui_props
 		$query = $this->db->prepare(
@@ -531,7 +531,7 @@ class RestorePackage_ispCP extends BaseController
 			':logo'		=> $this->reseller_prop_logo
 		);
 		if (!$this->db->execute($query, $params)) {
-			$this->logMessage('Cannot insert domain database entry!', ISPCP_LOG_ERROR);
+			$this->logMessage('Cannot insert domain database entry!', IMSCP_LOG_ERROR);
 			return false;
 		}
 
@@ -574,7 +574,7 @@ class RestorePackage_ispCP extends BaseController
 		$params[':domain_ip_id']		= $this->ip_id;
 
 		if (!$this->db->execute($query, $params)) {
-			$this->logMessage('Cannot insert domain database entry!', ISPCP_LOG_ERROR);
+			$this->logMessage('Cannot insert domain database entry!', IMSCP_LOG_ERROR);
 			return false;
 		}
 		$this->domain_id = $this->db->insertId();
@@ -608,7 +608,7 @@ class RestorePackage_ispCP extends BaseController
 			}
 			$tries++;
 			if ($tries > 60) {
-				$this->logMessage('Error executing domain creation request!', ISPCP_LOG_ERROR);
+				$this->logMessage('Error executing domain creation request!', IMSCP_LOG_ERROR);
 				$result = false;
 				break;
 			}
@@ -637,7 +637,7 @@ class RestorePackage_ispCP extends BaseController
 		);
 
 		foreach ($this->configurationData['alias'] as $alias) {
-			$this->logMessage('Create alias '.$alias['alias_name'], ISPCP_LOG_INFO);
+			$this->logMessage('Create alias '.$alias['alias_name'], IMSCP_LOG_INFO);
 
 			$this->db->execute(
 				$querya, array(
@@ -651,7 +651,7 @@ class RestorePackage_ispCP extends BaseController
 			);
 
 			$this->domain_alias_ids[$alias['alias_id']] = $alias_id = $this->db->insertId();
-			$this->logMessage(' old alias id='.$alias['alias_id'].' new alias id='.$alias_id, ISPCP_LOG_DEBUG);
+			$this->logMessage(' old alias id='.$alias['alias_id'].' new alias id='.$alias_id, IMSCP_LOG_DEBUG);
 
 			foreach ($alias['subdomain'] as $subdomain) {
 				$this->db->execute(
@@ -679,7 +679,7 @@ class RestorePackage_ispCP extends BaseController
 		);
 
 		foreach ($this->configurationData['subdomain'] as $subdomain) {
-			$this->logMessage('Create subdomain '.$subdomain['subdomain_name'], ISPCP_LOG_INFO);
+			$this->logMessage('Create subdomain '.$subdomain['subdomain_name'], IMSCP_LOG_INFO);
 
 			$this->db->execute(
 				$query, array(
@@ -694,7 +694,7 @@ class RestorePackage_ispCP extends BaseController
 			$this->logMessage(
 				' old subdomain id='.$subdomain['subdomain_id'].' new subdomain id='.
 				$this->subdomain_ids[$subdomain['subdomain_id']],
-				ISPCP_LOG_DEBUG
+				IMSCP_LOG_DEBUG
 			);
 		}
 	}
@@ -725,7 +725,7 @@ class RestorePackage_ispCP extends BaseController
 	 */
 	protected function createEMailAccount($query, array $email)
 	{
-		$this->logMessage('createEMailAccount: '.$email['mail_acc'], ISPCP_LOG_INFO);
+		$this->logMessage('createEMailAccount: '.$email['mail_acc'], IMSCP_LOG_INFO);
 
 		// Set sub_id to either subdomain or alias id
 		$sub_id = 0;
@@ -734,7 +734,7 @@ class RestorePackage_ispCP extends BaseController
 			if ($n !== false) {
 				// subdomain
 				if (!isset($this->subdomain_ids[$email['sub_id']])) {
-					$this->logMessage('domain subdomain id not found: '.$email['sub_id'], ISPCP_LOG_INFO);
+					$this->logMessage('domain subdomain id not found: '.$email['sub_id'], IMSCP_LOG_INFO);
 					return;
 				} else {
 					$sub_id = $this->subdomain_ids[$email['sub_id']];
@@ -742,7 +742,7 @@ class RestorePackage_ispCP extends BaseController
 			} else {
 				// alias
 				if (!isset($this->domain_alias_ids[$email['sub_id']])) {
-					$this->logMessage('domain alias id not found: '.$email['sub_id'], ISPCP_LOG_INFO);
+					$this->logMessage('domain alias id not found: '.$email['sub_id'], IMSCP_LOG_INFO);
 					return;
 				} else {
 					$sub_id = $this->domain_alias_ids[$email['sub_id']];
@@ -789,7 +789,7 @@ class RestorePackage_ispCP extends BaseController
 
 		foreach ($this->configurationData['ftp'] as $ftp) {
 
-			$this->logMessage('createFTPAccounts: '.$ftp['userid'], ISPCP_LOG_INFO);
+			$this->logMessage('createFTPAccounts: '.$ftp['userid'], IMSCP_LOG_INFO);
 
 			$default_values = array(
 				'userid'	=> '',
@@ -839,7 +839,7 @@ class RestorePackage_ispCP extends BaseController
 
 		foreach ($this->configurationData['webuser'] as $webuser) {
 
-			$this->logMessage('createWebUsers: '.$webuser['uname'], ISPCP_LOG_INFO);
+			$this->logMessage('createWebUsers: '.$webuser['uname'], IMSCP_LOG_INFO);
 
 			$this->db->execute(
 				$query, array(
@@ -868,7 +868,7 @@ class RestorePackage_ispCP extends BaseController
 
 		foreach ($this->configurationData['webgroup'] as $webgroup) {
 
-			$this->logMessage('createWebGroups: '.$webgroup['ugroup'], ISPCP_LOG_INFO);
+			$this->logMessage('createWebGroups: '.$webgroup['ugroup'], IMSCP_LOG_INFO);
 
 			$old_members = explode(',', $webgroup['members']);
 			$new_members = array();
@@ -898,7 +898,7 @@ class RestorePackage_ispCP extends BaseController
 	{
 		foreach ($this->configurationData['webaccess'] as $webaccess) {
 
-			$this->logMessage('createWebAccess: '.$webaccess['path'], ISPCP_LOG_INFO);
+			$this->logMessage('createWebAccess: '.$webaccess['path'], IMSCP_LOG_INFO);
 
 			$query = $this->db->prepare(
 				"INSERT INTO `htaccess`".
@@ -911,14 +911,14 @@ class RestorePackage_ispCP extends BaseController
 				if (isset($this->webuser_ids[$webaccess['user_id']])) {
 					$webaccess['user_id'] = $this->webuser_ids[$webaccess['user_id']];
 				} else {
-					$this->logMessage('createWebAccess: missing user_id', ISPCP_LOG_DEBUG);
+					$this->logMessage('createWebAccess: missing user_id', IMSCP_LOG_DEBUG);
 				}
 			}
 			if (!empty($webaccess['group_id'])) {
 				if (isset($this->webgroup_ids[$webaccess['group_id']])) {
 					$webaccess['group_id'] = $this->webgroup_ids[$webaccess['group_id']];
 				} else {
-					$this->logMessage('createWebAccess: missing group_id', ISPCP_LOG_DEBUG);
+					$this->logMessage('createWebAccess: missing group_id', IMSCP_LOG_DEBUG);
 				}
 			}
 
@@ -976,7 +976,7 @@ class RestorePackage_ispCP extends BaseController
 	protected function createDNSEntries()
 	{
 		// TODO: createDNSEntries
-		$this->logMessage('createDNSEntries: currently not supported', ISPCP_LOG_DEBUG);
+		$this->logMessage('createDNSEntries: currently not supported', IMSCP_LOG_DEBUG);
 	}
 
 	/**
