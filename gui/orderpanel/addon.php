@@ -28,7 +28,7 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/i-mscp-lib.php';
+require '../include/imscp-lib.php';
 
 $cfg = iMSCP_Registry::get('Config');
 
@@ -53,7 +53,7 @@ function addon_domain($dmn_name) {
 	// Should be performed after domain name validation now
 	$dmn_name = encode_idna(strtolower($dmn_name));
 
-	if (iMSCP_domain_exists($dmn_name, 0) || $dmn_name == iMSCP_Registry::get('Config')->BASE_SERVER_VHOST) {
+	if (imscp_domain_exists($dmn_name, 0) || $dmn_name == iMSCP_Registry::get('Config')->BASE_SERVER_VHOST) {
 		set_page_message(tr('Domain already exists on the system!'));
 		return;
 	}
