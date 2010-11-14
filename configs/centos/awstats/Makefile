@@ -34,7 +34,7 @@ export
 install:
 
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_CONF)/awstats
-	cp ./awstats.ispcp_tpl.conf $(SYSTEM_CONF)/awstats
+	cp ./awstats.imscp_tpl.conf $(SYSTEM_CONF)/awstats
 
 uninstall:
 
