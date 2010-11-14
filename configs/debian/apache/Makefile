@@ -39,7 +39,7 @@ install:
 	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)
 	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/sites-available
 	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/mods-available
-	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/i-mscp
+	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/imscp
 
 	cp ./httpd.conf $(SYSTEM_CONF)/apache
 	cp ./00_master.conf $(SYSTEM_CONF)/apache
@@ -49,10 +49,10 @@ install:
 	cp -R ./parts $(SYSTEM_CONF)/apache
 	cp -R ./working $(SYSTEM_CONF)/apache
 
-	cp ./httpd.conf $(SYSTEM_CONF)/apache/parts/ispcp_base.tpl
+	cp ./httpd.conf $(SYSTEM_CONF)/apache/parts/imscp_base.tpl
 
-	cp ./fastcgi_ispcp.conf $(SYSTEM_CONF)/apache/fastcgi_ispcp.conf
-	cp ./fcgid_ispcp.conf $(SYSTEM_CONF)/apache/fcgid_ispcp.conf
+	cp ./fastcgi_imscp.conf $(SYSTEM_CONF)/apache/fastcgi_imscp.conf
+	cp ./fcgid_imscp.conf $(SYSTEM_CONF)/apache/fcgid_imscp.conf
 
 uninstall:
 
