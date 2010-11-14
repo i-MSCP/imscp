@@ -30,7 +30,7 @@
 
 require '../include/i-mscp-lib.php';
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->PURCHASE_TEMPLATE_PATH . '/address.tpl');
@@ -44,7 +44,7 @@ $tpl->define_dynamic('purchase_footer', 'page');
 
 function gen_address(&$tpl, &$sql, $user_id, $plan_id) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	if (isset($_POST['fname'])) {
 		$first_name = clean_input($_POST['fname']);

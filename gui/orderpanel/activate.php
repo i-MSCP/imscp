@@ -30,7 +30,7 @@
 
 require '../include/i-mscp-lib.php';
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
 /**
  * Validate activation parameters
@@ -40,10 +40,10 @@ $cfg = ispCP_Registry::get('Config');
  */
 function validate_order_key($order_id, $key) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$result = false;
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 	$query = "
 		SELECT
 			*
@@ -72,8 +72,8 @@ function validate_order_key($order_id, $key) {
  */
 function confirm_order($order_id) {
 
-	$cfg = ispCP_Registry::get('Config');
-	$sql = ispCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
 
 	$query = "
 		SELECT
@@ -125,7 +125,7 @@ function confirm_order($order_id) {
 Dear {RESELLER},
 you have a new order from {NAME} <{MAIL}> for domain {DOMAIN}
 
-Please login into your ispCP control panel for more details.
+Please login into your i-MSCP control panel for more details.
 
 '); // Please, do not put tab here - i18n issue
 
@@ -135,7 +135,7 @@ Please login into your ispCP control panel for more details.
 		$message = html_entity_decode($message, ENT_QUOTES, 'UTF-8');
 
 		$headers = "From: ". $from . "\n";
-		$headers .= "MIME-Version: 1.0\n" . "Content-Type: text/plain; charset=utf-8\n" . "Content-Transfer-Encoding: 8bit\n" . "X-Mailer: ispCP " . $cfg->Version . " Service Mailer";
+		$headers .= "MIME-Version: 1.0\n" . "Content-Type: text/plain; charset=utf-8\n" . "Content-Transfer-Encoding: 8bit\n" . "X-Mailer: i-MSCP " . $cfg->Version . " Service Mailer";
 
 		mail($from, $subject, $message, $headers);
 	}

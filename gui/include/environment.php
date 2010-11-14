@@ -27,7 +27,7 @@
  * @license		http://www.mozilla.org/MPL/ MPL 1.1
  */
 
-// Boot IspCP
+// Boot i-MSCP
 iMSCP_Bootstrap::boot();
 
 // Get a reference to a iMSCP_Config_Handler_File instance

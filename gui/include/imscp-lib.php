@@ -31,7 +31,7 @@
  */
 
 /**
- * This is the primarly file that should be included in all the ispCP's user
+ * This is the primarly file that should be included in all the i-MSCP's user
  * levels scripts such as all scripts that live under gui/{admin,reseller,client}
  */
 

@@ -30,7 +30,7 @@
 
 require '../include/i-mscp-lib.php';
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
 $tpl = new iMSCP_pTemplate();
 
@@ -46,7 +46,7 @@ $tpl->define_dynamic('purchase_footer', 'page');
 
 function gen_packages_list(&$tpl, &$sql, $user_id) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
 		$query = "

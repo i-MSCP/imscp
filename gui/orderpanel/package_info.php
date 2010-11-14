@@ -30,7 +30,7 @@
 
 require '../include/i-mscp-lib.php';
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
 $tpl = new iMSCP_pTemplate();
 
@@ -63,7 +63,7 @@ function translate_sse($value) {
 
 function gen_plan_details(&$tpl, &$sql, $user_id, $plan_id) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
 		$query = "
@@ -220,7 +220,7 @@ $tpl->assign(
 		'TR_CUSTOM_LOGS'		=> tr('Custom Apache Logs'),
 		'TR_ONLINE_SUPPORT'		=> tr('Web & E-Mail Support'),
 		'TR_OWN_DOMAIN'			=> tr('Your Own Domain'),
-		'TR_ISPCP'				=> tr('ispCP Control Panel'),
+		'TR_IMSCP'				=> tr('i-MSCP Control Panel'),
 		'TR_UPDATES'			=> tr('Automatic Updates'),
 		'TR_PRICE'				=> tr('Price'),
 		'TRR_PRICE'				=> tr('Package Price'),
