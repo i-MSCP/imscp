@@ -19,7 +19,7 @@
  * isp Control Panel. All Rights Reserved.
  *
  * @category	ispCP
- * @package		ispCP_Registry
+ * @package		iMSCP_Registry
  * @copyright	2006-2010 by ispCP | http://isp-control.net
  * @author		Laurent Declercq <laurent.declercq@i-mscp.net>
  * @version		SVN: $Id$
@@ -30,17 +30,17 @@
 /**
  * Class to store shared data (Better than global variables usage)
  *
- * @package		ispCP_Registry
+ * @package		iMSCP_Registry
  * @author		Laurent declercq <laurent.declercq@i-mscp.net>
  * @since		1.0.7
  * @version		1.0.7
  */
-class ispCP_Registry {
+class iMSCP_Registry {
 
 	/**
 	 * Instance of this class that provides storage for shared data
 	 *
-	 * @var ispCP_Registry
+	 * @var iMSCP_Registry
 	 */
 	protected static $_instance = null;
 
@@ -59,12 +59,12 @@ class ispCP_Registry {
 	private function __clone(){}
 
 	/**
-	 * Get an ispCP_Registry instance
+	 * Get an iMSCP_Registry instance
 	 *
-	 * Returns an {@link ispCP_Registry} instance, only creating it if it
+	 * Returns an {@link iMSCP_Registry} instance, only creating it if it
 	 * doesn't already exist.
 	 *
-	 * @return ispCP_Registry An ispCP_Registry instance
+	 * @return iMSCP_Registry An iMSCP_Registry instance
 	 */
 	public static function getInstance() {
 

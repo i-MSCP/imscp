@@ -19,7 +19,7 @@
  * isp Control Panel. All Rights Reserved.
  *
  * @category	ispCP
- * @package		ispCP_VirtualFileSystem
+ * @package		iMSCP_VirtualFileSystem
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @version 	SVN: $Id$
  * @link		http://isp-control.net ispCP Home Site
@@ -33,10 +33,10 @@
  * files from the ispCP control Panel.
  *
  * @category	ispCP
- * @package		ispCP_VirtualFileSystem
+ * @package		iMSCP_VirtualFileSystem
  * @author 		ispCP Team
  */
-class ispCP_VirtualFileSystem {
+class iMSCP_VirtualFileSystem {
 	/*
 	 * File types definition
 	 */
@@ -99,7 +99,7 @@ class ispCP_VirtualFileSystem {
 	 */
 	public function __construct($domain, $db) {
 
-		$cfg = ispCP_Registry::get('Config');
+		$cfg = iMSCP_Registry::get('Config');
 
 		$this->_domain = $domain;
 		$this->_db = $db;
@@ -377,7 +377,7 @@ class ispCP_VirtualFileSystem {
 	 */
 	protected function _createTmpUser() {
 
-		$cfg = ispCP_Registry::get('Config');
+		$cfg = iMSCP_Registry::get('Config');
 
 		// Get domain data
 		$query = "

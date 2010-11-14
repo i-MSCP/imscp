@@ -772,7 +772,7 @@ function check_ruser_data(&$tpl, $noPass) {
 	}
 	/* we don't want to validate Customer ID, First and Second name and also ZIP
 
-	  else if (!iMSCP_limit_check($customer_id)) {
+	  else if (!imscp_limit_check($customer_id)) {
 		$user_add_error = tr('Incorrect customer ID syntax!');
 	} else if (!chk_username($first_name, 40)) {
 
@@ -780,7 +780,7 @@ function check_ruser_data(&$tpl, $noPass) {
 	} else if (!chk_username($last_name, 40)) {
 
 		$user_add_error = tr('Incorrect second name length or syntax!');
-	} else if (!iMSCP_limit_check($zip)) {
+	} else if (!imscp_limit_check($zip)) {
 
 		$user_add_error = tr('Incorrect post code length or syntax!');
 	} */
@@ -829,7 +829,7 @@ function translate_dmn_status($status) {
 /**
  * Check if the domain already exist
  */
-function iMSCP_domain_exists($domain_name, $reseller_id) {
+function imscp_domain_exists($domain_name, $reseller_id) {
 	$sql = iMSCP_Registry::get('Db');
 	// query to check if the domain name exist in the table for domains/accounts
 	$query_domain = "

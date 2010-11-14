@@ -184,7 +184,7 @@ class iMSCP_NetworkCard {
 	 */
 	private function _populateInterfaces() {
 
-		$cfg = ispCP_Registry::get('Config');
+		$cfg = iMSCP_Registry::get('Config');
 
 		$err = '';
 		$message = $this->executeExternal($cfg->CMD_IFCONFIG, $err);

@@ -166,7 +166,7 @@ function createTicket($user_id, $admin_id, $urgency, $subject, $message,
 	$sql = iMSCP_Registry::get('Db');
 
 	if ($userLevel < 1 || $userLevel > 2)
-		throw iMSCP_Exception("ERROR: User level is not valid!");
+		throw imscp_Exception("ERROR: User level is not valid!");
 
 	$ticket_date = time();
 	$subject = clean_input($subject);

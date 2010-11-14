@@ -33,9 +33,9 @@
 defined('INCLUDEPATH') or define('INCLUDEPATH', dirname(dirname(__FILE__)));
 
 /**
- * Bootstrap class for ispCP
+ * Bootstrap class for i-MSCP
  *
- * This class provide a very small program to boot ispCP
+ * This class provide a very small program to boot i-MSCP
  *
  * <b>Note:</b> Will be improved later
  *
@@ -47,7 +47,7 @@ defined('INCLUDEPATH') or define('INCLUDEPATH', dirname(dirname(__FILE__)));
 class iMSCP_Bootstrap {
 
 	/**
-	 * Boot ispCP environment and, configuration
+	 * Boot i-MSCP environment and, configuration
 	 *
 	 * @throws iMSCP_Exception
 	 * @return void
@@ -58,7 +58,7 @@ class iMSCP_Bootstrap {
 			$boot = new self;
 			$boot->_run();
 		} else {
-			throw new iMSCP_Exception('Error: ispCP is already booted!');
+			throw new iMSCP_Exception('Error: i-MSCP is already booted!');
 		}
 	}
 
@@ -77,7 +77,7 @@ class iMSCP_Bootstrap {
 	private function __clone() {}
 
 	/**
-	 * Check if ispCP is already booted
+	 * Check if i-MSCP is already booted
 	 *
 	 * @return boolean TRUE if booted, FALSE otherwise
 	 */
@@ -104,6 +104,6 @@ class iMSCP_Bootstrap {
 	 */
 	protected function _loadInitializer() {
 
-      require INCLUDEPATH . '/ispCP/Initializer.php';
+      require INCLUDEPATH . '/iMSCP/Initializer.php';
 	}
 }

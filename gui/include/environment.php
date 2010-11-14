@@ -184,7 +184,7 @@ $config->PASSWD_STRONG = true;
 
 // The virtual host file from Apache which contains our virtual host
 // entries
-$config->SERVER_VHOST_FILE = $config->APACHE_SITES_DIR . '/i-mscp.conf';
+$config->SERVER_VHOST_FILE = $config->APACHE_SITES_DIR . '/imscp.conf';
 
 // The minimum level for a message to be sent to DEFAULT_ADMIN_ADDRESS
 // PHP's E_USER_* values are used for simplicity:

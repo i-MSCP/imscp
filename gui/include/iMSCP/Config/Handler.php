@@ -50,7 +50,7 @@
 class iMSCP_Config_Handler implements ArrayAccess {
 
 	/**
-	 * Callbacks that will be executed after ispCP has been fully initialized
+	 * Callbacks that will be executed after i-MSCP has been fully initialized
 	 *
 	 * @var array
 	 */
@@ -180,10 +180,10 @@ class iMSCP_Config_Handler implements ArrayAccess {
 	}
 
 	/**
-	 * Adds a callback which will be executed after ispCP has been fully
+	 * Adds a callback which will be executed after i-MSCP has been fully
 	 * initialized
 	 *
-	 * Useful for per-environment configuration which depends on the ispCP being
+	 * Useful for per-environment configuration which depends on the i-MSCP being
 	 * fully initialized.
 	 *
 	 * Callbacks can be defined in a PHP call_user_func() function format.

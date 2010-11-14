@@ -31,7 +31,7 @@
 /**
  * @see iMSCP_Config_Handler
  */
-require_once  INCLUDEPATH . '/ispCP/Config/Handler.php';
+require_once  INCLUDEPATH . '/iMSCP/Config/Handler.php';
 
 /**
  * Class to handle configuration parameters from a flat file
@@ -77,7 +77,7 @@ require_once  INCLUDEPATH . '/ispCP/Config/Handler.php';
  * have sld with a single character
  * @property int MAX_DNAMES_LABELS Maximum number of labels for a domain name
  * @property int MAX_SUBDNAMES_LABELS Maximum number of labels for a subdomain
- * @property bool ISPCP_SUPPORT_SYSTEM If TRUE, support system is available
+ * @property bool IMSCP_SUPPORT_SYSTEM If TRUE, support system is available
  * @property bool LOSTPASSWORD If TRUE lost password is available
  * @property int LOSTPASSWORD_TIMEOUT Timeout for lost password
  * @property int LOSTPASSWORD_CAPTCHA_WIDTH Captcha width
@@ -112,7 +112,7 @@ require_once  INCLUDEPATH . '/ispCP/Config/Handler.php';
  * site is prevented for resellers
  * @property bool PREVENT_EXTERNAL_LOGIN_CLIENT
  * @property bool CHECK_FOR_UPDATES If TRUE, update cheching is enabled
- * @property string ISPCP_SUPPORT_SYSTEM_TARGET
+ * @property string IMSCP_SUPPORT_SYSTEM_TARGET
  * @property string BASE_SERVER_VHOST_PREFIX
  *
  * @package		iMSCP_Config
@@ -148,10 +148,10 @@ class iMSCP_Config_Handler_File extends iMSCP_Config_Handler {
 				case 'FreeBSD':
 				case 'OpenBSD':
 				case 'NetBSD':
-					$pathFile = '/usr/local/etc/i-mscp/i-mscp.conf';
+					$pathFile = '/usr/local/etc/imscp/imscp.conf';
 					break;
 				default:
-					$pathFile = '/etc/i-mscp/i-mscp.conf';
+					$pathFile = '/etc/i-mscp/imscp.conf';
 			}
 		}
 
@@ -161,7 +161,7 @@ class iMSCP_Config_Handler_File extends iMSCP_Config_Handler {
 
 	/**
 	 * Opens a configuration file and parses its Key = Value pairs into the
-	 * {@link ispCP_Config_Hangler::parameters} array.
+	 * {@link iMSCP_Config_Hangler::parameters} array.
 	 *
 	 * @throws iMSCP_Exception
 	 * @return void

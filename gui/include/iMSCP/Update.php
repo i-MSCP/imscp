@@ -98,7 +98,7 @@ abstract class iMSCP_Update {
 	 */
 	protected function _getCurrentVersion() {
 
-		$dbConfig = ispCP_Registry::get('Db_Config');
+		$dbConfig = iMSCP_Registry::get('Db_Config');
 
 		return (int) $dbConfig->get($this->_databaseVariableName);
 	}
@@ -178,8 +178,8 @@ abstract class iMSCP_Update {
 	 */
 	public function executeUpdates() {
 
-		$sql = ispCP_Registry::get('Pdo');
-		$dbConfig = ispCP_Registry::get('Db_Config');
+		$sql = iMSCP_Registry::get('Pdo');
+		$dbConfig = iMSCP_Registry::get('Db_Config');
 
 		$engine_run_request = false;
 

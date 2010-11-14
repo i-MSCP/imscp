@@ -28,6 +28,6 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-$iMSCP_db_pass_key = '{KEY}';
+$imscp_db_pass_key = '{KEY}';
 
-$iMSCP_db_pass_iv = '{IV}';
+$imscp_db_pass_iv = '{IV}';

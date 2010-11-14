@@ -30,7 +30,7 @@
 /**
  * @see iMSCP_Exception
  */
-require_once  INCLUDEPATH . '/ispCP/Exception.php';
+require_once  INCLUDEPATH . '/iMSCP/Exception.php';
 
 /**
  * Exception used on production by iMSCP_Exception_Handler
@@ -50,7 +50,7 @@ class iMSCP_Exception_Production extends iMSCP_Exception {
 	public function __construct($message = '', $code = 0) {
 
 		if($message == '') {
-			if(function_exists('tr') && ispCP_Registry::isRegistered('Pdo')) {
+			if(function_exists('tr') && iMSCP_Registry::isRegistered('Pdo')) {
 				$message =
 					tr('An error occured! Please, contact your administrator!');
 			} else {

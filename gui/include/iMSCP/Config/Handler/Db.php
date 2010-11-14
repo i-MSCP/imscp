@@ -31,7 +31,7 @@
 /**
  * @see iMSCP_Config_Handler
  */
-require_once  INCLUDEPATH . '/ispCP/Config/Handler.php';
+require_once  INCLUDEPATH . '/iMSCP/Config/Handler.php';
 
 /**
  * Class to handle configuration parameters from database

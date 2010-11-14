@@ -75,21 +75,21 @@ class iMSCP_Update_Version extends iMSCP_Update {
 	}
 
 	/**
-	 * Return the current ispCP installed version
+	 * Return the current i-MSCP installed version
 	 *
-	 * @return int Current ispCP installed version
+	 * @return int Current i-MSCP installed version
 	 */
 	protected function _getCurrentVersion() {
 
-		$cfg = ispCP_Registry::get('Config');
+		$cfg = iMSCP_Registry::get('Config');
 
 		return (int) $cfg->BuildDate;
 	}
 
 	/**
-	 * Gets the last available ispCP version
+	 * Gets the last available i-MSCP version
 	 *
-	 * @return bool|int Returns the last ispCP version available or FALSE on
+	 * @return bool|int Returns the last i-MSCP version available or FALSE on
 	 * failure
 	 * @todo Rename this function name that don't reflects the real purpose
 	 */
@@ -117,9 +117,9 @@ class iMSCP_Update_Version extends iMSCP_Update {
 	}
 
 	/**
-	 * Check for ispCP update
+	 * Check for i-MSCP update
 	 *
-	 * @return boolean TRUE if a new ispCP version is available FALSE otherwise
+	 * @return boolean TRUE if a new i-MSCP version is available FALSE otherwise
 	 * @todo Rename this function name that don't reflects the real purpose
 	 */
 	public function checkUpdateExists() {
@@ -148,7 +148,7 @@ class iMSCP_Update_Version extends iMSCP_Update {
 	protected function dummyFunctionThatAllwaysExists(&$engine_run_request) {
 		// uncomment when engine part will be ready
 		/*
-		$dbConfig = ispCP_Registry::get(DbConfig);
+		$dbConfig = iMSCP_Registry::get(DbConfig);
 		$dbConfig->VERSION_UPDATE = $this->getNextVersion();
 		$engine_run_request = true;
 		 */

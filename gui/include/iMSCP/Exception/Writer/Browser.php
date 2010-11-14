@@ -31,7 +31,7 @@
 /**
  * @see iMSCP_Exception_Writer
  */
-require_once  INCLUDEPATH . '/ispCP/Exception/Writer.php';
+require_once  INCLUDEPATH . '/iMSCP/Exception/Writer.php';
 
 /**
  * Browser writer class
@@ -148,8 +148,8 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer {
 		$this->_pTemplate->define('page', $this->_templateFile);
 
 
-		if(ispCP_Registry::isRegistered('backButtonDestination')) {
-			$backButtonDest = ispCP_Registry::get('backButtonDestination');
+		if(iMSCP_Registry::isRegistered('backButtonDestination')) {
+			$backButtonDest = iMSCP_Registry::get('backButtonDestination');
 		} else {
 			$backButtonDest = 'javascript:history.go(-1)';
 		}
@@ -166,7 +166,7 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer {
 		if (function_exists('tr')) {
 			$this->_pTemplate->assign(
 				array(
-					'TR_SYSTEM_MESSAGE_PAGE_TITLE' => tr('ispCP Error'),
+					'TR_SYSTEM_MESSAGE_PAGE_TITLE' => tr('i-MSCP Error'),
 					'THEME_CHARSET' => tr('encoding'),
 					'TR_BACK' => tr('Back'),
 					'TR_ERROR_MESSAGE' => tr('Error Message'),
@@ -176,7 +176,7 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer {
 		} else {
 			$this->_pTemplate->assign(
 				array(
-					'TR_SYSTEM_MESSAGE_PAGE_TITLE' => 'ispCP Error',
+					'TR_SYSTEM_MESSAGE_PAGE_TITLE' => 'iMSCP Error',
 					'THEME_CHARSET' => 'UTF-8',
 					'TR_BACK' => 'Back',
 					'TR_ERROR_MESSAGE' => 'Error Message',

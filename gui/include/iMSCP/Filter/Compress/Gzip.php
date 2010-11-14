@@ -19,7 +19,7 @@
  * isp Control Panel. All Rights Reserved.
  *
  * @category	ispCP
- * @package		ispCP_Filter
+ * @package		iMSCP_Filter
  * @subpackage	Compress
  * @copyright	2006-2010 by ispCP | http://isp-control.net
  * @author		Laurent Declercq <laurent.declercq@i-mscp.net>
@@ -41,7 +41,7 @@
  * according the rfc 1952.
  *
  * @category	ispCP
- * @package		ispCP_Filter
+ * @package		iMSCP_Filter
  * @subpackage	Compress
  * @author		Laurent declercq <laurent.declercq@i-mscp.net>
  * @since		1.0.7
@@ -260,7 +260,7 @@ class iMSCP_Filter_Compress_Gzip {
 			fclose($fileHandle);
 		} else {
 			throw new iMSCP_Exception(
-				"ispCP_GzipFilter error: `$filePath` is not a valid " .
+				"iMSCP_GzipFilter error: `$filePath` is not a valid " .
 					"directory or is not writable!"
 			);
 		}

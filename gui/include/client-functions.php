@@ -963,7 +963,7 @@ function sql_delete_user(&$sql, $dmn_id, $db_user_id) {
 		user_goto('sql_manage.php');
 	}
 
-	// remove from i-mscp sql_user table.
+	// remove from i-MSCP sql_user table.
 	$query = 'DELETE FROM `sql_user` WHERE `sqlu_id` = ?';
 	exec_query($sql, $query, $db_user_id);
 
@@ -1116,7 +1116,7 @@ function delete_sql_database(&$sql, $dmn_id, $db_id) {
 	exec_query($sql, $query);
 
 	write_log($_SESSION['user_logged'] . ": delete SQL database: " . $db_name);
-	// delete desired database from the i-mscp sql_database table;
+	// delete desired database from the i-MSCP sql_database table;
 
 	$query = "
 		DELETE FROM

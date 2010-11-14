@@ -51,7 +51,7 @@ define('INCLUDEPATH', dirname(__FILE__));
  *
  * @todo switch to POO
  */
-require_once INCLUDEPATH . '/i-mscp-loader.php';
+require_once INCLUDEPATH . '/imscp-loader.php';
 spl_autoload_register('autoload_class');
 
 /**
@@ -71,7 +71,7 @@ iMSCP_Registry::setAlias(
  *
  * The writer writes all exception messages to the client browser. In production,
  * all messages are replaced by a specific message to avoid revealing important
- * information about the iMSCP application environment if the user is not an
+ * information about the i-MSCP application environment if the user is not an
  * administrator.
  *
  * Another optional writers will be attached to this object during
@@ -87,12 +87,12 @@ iMSCP_Registry::get('exceptionHandler')->attach(
 /**
  * Encryption data
  */
-require_once INCLUDEPATH . '/i-mscp-db-keys.php';
+require_once INCLUDEPATH . '/imscp-db-keys.php';
 
-if($iMSCP_db_pass_key != '{KEY}' && $iMSCP_db_pass_iv != '{IV}') {
-	iMSCP_Registry::set('MCRYPT_KEY', $iMSCP_db_pass_key);
-	iMSCP_Registry::set('MCRYPT_IV', $iMSCP_db_pass_iv);
-	unset($iMSCP_db_pass_key, $iMSCP_db_pass_iv);
+if($imscp_db_pass_key != '{KEY}' && $imscp_db_pass_iv != '{IV}') {
+	iMSCP_Registry::set('MCRYPT_KEY', $imscp_db_pass_key);
+	iMSCP_Registry::set('MCRYPT_IV', $imscp_db_pass_iv);
+	unset($imscp_db_pass_key, $imscp_db_pass_iv);
 } else {
 	throw new iMSCP_Exception(
 		'Error: Database key and/or initialization vector was not generated!'
@@ -103,7 +103,7 @@ if($iMSCP_db_pass_key != '{KEY}' && $iMSCP_db_pass_iv != '{IV}') {
  * Include i-MSCP common functions
  */
 require_once 'net_idna/idna_convert.class.php';
-require_once INCLUDEPATH . '/i-mscp-functions.php';
+require_once INCLUDEPATH . '/imscp-functions.php';
 require_once INCLUDEPATH . '/deprecated.php';
 
 /**

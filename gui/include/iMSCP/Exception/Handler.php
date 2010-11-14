@@ -30,7 +30,7 @@
  */
 
 /**
- * ispCP Exception Handler class
+ * i-MSCP Exception Handler class
  *
  * This class is responsible to handle all uncaught exceptions. This class is an
  * observable subject. An object that implements {@link iMSCP_Exception_Writer}
@@ -75,7 +75,7 @@
  *  1. We create an instance of the {@link iMSCP_Exception_Handler} class
  *  2. We attach an {@link iMSCP_Exception_Writer} that will listen this class
  *
- * See ispCP/Exception/Writer for a list of availables
+ * See iMSCP/Exception/Writer for a list of availables
  *	{@link iMSCP_Exception_Writer writers}.
  *
  * <b>Note:</b>

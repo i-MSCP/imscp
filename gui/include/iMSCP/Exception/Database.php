@@ -30,7 +30,7 @@
 /**
  * @see iMSCP_Exception
  */
-require_once  INCLUDEPATH . '/ispCP/Exception.php';
+require_once  INCLUDEPATH . '/iMSCP/Exception.php';
 
 /**
  * Exception used on production by iMSCP_Exception_Handler

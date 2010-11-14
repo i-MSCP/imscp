@@ -103,7 +103,7 @@ class iMSCP_Initializer {
 
 		} else {
 			throw new iMSCP_Exception(
-				'Error: ispCP is already fully initialized!'
+				'Error: i-MSCP is already fully initialized!'
 			);
 		}
 
@@ -119,7 +119,7 @@ class iMSCP_Initializer {
 	 */
 	protected function __construct(iMSCP_Config_Handler $config) {
 
-		$this->_config = ispCP_Registry::set('Config', $config);
+		$this->_config = iMSCP_Registry::set('Config', $config);
 	}
 
 	/**
@@ -176,7 +176,7 @@ class iMSCP_Initializer {
 
       	// Trigger the 'OnAfterInitialize' action hook
 		// (will be activated later)
-		// ispCP_Registry::get('Hook')->OnAfterInitialize();
+		// iMSCP_Registry::get('Hook')->OnAfterInitialize();
 
 		// Run after initialize callbacks (will be changed later)
 		$this->_afterInitialize();
@@ -273,7 +273,7 @@ class iMSCP_Initializer {
 	protected function _setExceptionWriters() {
 
 		// Get a reference to the iMSCP_Exception_Handler object
-		$exceptionHandler = ispCP_Registry::get('exceptionHandler');
+		$exceptionHandler = iMSCP_Registry::get('exceptionHandler');
 
 		$admin_email = $this->_config->DEFAULT_ADMIN_ADDRESS;
 
@@ -285,7 +285,7 @@ class iMSCP_Initializer {
 		if(in_array('file', $writerObservers)) {
 			// Writer not Yet Implemented
 			$exceptionHandler->attach(
-				new ispCP_Exception_Writer_File(
+				new iMSCP_Exception_Writer_File(
 					'path_to_logfile'
 				)
 			);
@@ -306,7 +306,7 @@ class iMSCP_Initializer {
 		/*
 		if(in_array('database', $writerObservers)) {
 			$exceptionHandler->attach(
-				new ispCP_Exception_Writer_Db(ispCP_Registry::get('Pdo'))
+				new iMSCP_Exception_Writer_Db(iMSCP_Registry::get('Pdo'))
 			);
 		}
 		*/
@@ -344,7 +344,7 @@ class iMSCP_Initializer {
 	 */
 	protected function _initializeSession() {
 
-		session_name('ispCP');
+		session_name('i-MSCP');
 
 		if (!isset($_SESSION)) {
 			session_start();
@@ -357,7 +357,7 @@ class iMSCP_Initializer {
 	 * This methods establishes the default connection to the database by using
 	 * configuration parameters that come from the basis configuration object
 	 * and then, register the {@link iMSCP_Database} instance in the
-	 * {@link ispCP_Registry} for shared access.
+	 * {@link iMSCP_Registry} for shared access.
 	 *
 	 * A PDO instance is also registered in the registry for shared access.
 	 *
@@ -386,11 +386,11 @@ class iMSCP_Initializer {
 		}
 
 		// Register both Database and PDO instances for shared access
-		ispCP_Registry::set('Db', $connection);
-		ispCP_Registry::set('Pdo', iMSCP_Database::getRawInstance());
+		iMSCP_Registry::set('Db', $connection);
+		iMSCP_Registry::set('Pdo', iMSCP_Database::getRawInstance());
 
 		// Will be changed
-		$GLOBALS['sql'] =  ispCP_Registry::get('Db');
+		$GLOBALS['sql'] =  iMSCP_Registry::get('Db');
 	}
 
 	/**
@@ -412,7 +412,7 @@ class iMSCP_Initializer {
 		if (isset($this->_config->DATABASE_UTF8) &&
 			$this->_config->DATABASE_UTF8 == 'yes') {
 
-			$db = ispCP_Registry::get('Db');
+			$db = iMSCP_Registry::get('Db');
 
 			if(!$db->execute('SET NAMES `utf8`;')) {
 				throw new iMSCP_Exception(
@@ -449,8 +449,8 @@ class iMSCP_Initializer {
 			if(!date_default_timezone_set($timezone)) {
 				throw new iMSCP_Exception(
 					'Error: Invalid timezone identifier set in your ' .
-					'i-mscp.conf file! Please fix this error and re-run the ' .
-					'i-mscp-update script to fix the value in all your ' .
+					'imscp.conf file! Please fix this error and re-run the ' .
+					'imscp-update script to fix the value in all your ' .
 					'customers\' php.ini files. The current list of valid ' .
 					'identifiers is available at the <a href="http://www.php.net/ ' .
 					'manual/en/timezones.php" target="_blank">PHP Homepage</a> .'
@@ -475,14 +475,14 @@ class iMSCP_Initializer {
 	protected function _processConfiguration() {
 
 		// We get an iMSCP_Config_Handler_Db object
-		$dbConfig = new iMSCP_Config_Handler_Db(ispCP_Registry::get('Pdo'));
+		$dbConfig = new iMSCP_Config_Handler_Db(iMSCP_Registry::get('Pdo'));
 
 		// Now, we can override our basis configuration object with parameter
 		// that come from the database
 		$this->_config->replaceWith($dbConfig);
 
 		// Finally, we register the iMSCP_Config_Handler_Db for shared access
-		ispCP_Registry::set('Db_Config', $dbConfig);
+		iMSCP_Registry::set('Db_Config', $dbConfig);
 	}
 
 	/**
@@ -497,7 +497,7 @@ class iMSCP_Initializer {
 	protected function _initializeOutputBuffering() {
 
 		// Create a new filter that will be applyed on the buffer output
-		$filter = ispCP_Registry::set(
+		$filter = iMSCP_Registry::set(
 			'bufferFilter',
 			new iMSCP_Filter_Compress_Gzip(
 				iMSCP_Filter_Compress_Gzip::FILTER_BUFFER
@@ -554,10 +554,10 @@ class iMSCP_Initializer {
 	protected function _loadPlugins() {
 
 		// Load all the available plugins for the current execution context
-		// ispCP_Plugin_Helpers::getPlugins();
+		// iMSCP_Plugin_Helpers::getPlugins();
 
-		// Register an ispCP_Plugin_ActionsHooks for shared access
-		// ispCP_Registry::set('Hook', ispCP_Plugin_ActionsHooks::getInstance());
+		// Register an iMSCP_Plugin_ActionsHooks for shared access
+		// iMSCP_Registry::set('Hook', iMSCP_Plugin_ActionsHooks::getInstance());
 	}
 
 	/**

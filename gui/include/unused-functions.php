@@ -237,7 +237,7 @@ function is_subdir_of($base_domain, $subdomain, $realPath = true) {
 	return (count($t) > 1 && $t[0] === '');
 }
 
-/* Unused functions moved from include/i-mscp-function.php */
+/* Unused functions moved from include/imscp-function.php */
 
 function escape_user_data($data) {
 

@@ -635,7 +635,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 
 		$sqlUpd = array();
 
-		$sql = ispCP_Registry::get('Db');
+		$sql = iMSCP_Registry::get('Db');
 
 		$query	= "
 			SELECT
@@ -765,7 +765,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 
 		$sqlUpd = array();
 
-		$sql = ispCP_Registry::get('Db');
+		$sql = iMSCP_Registry::get('Db');
 
 		$query	= "
 			SELECT
@@ -818,7 +818,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 
 		$sqlUpd = array();
 
-		$sql = ispCP_Registry::get('Db');
+		$sql = iMSCP_Registry::get('Db');
 
 		$add = "\n\nYou have to click the following link to continue the domain creation process.\n\n{ACTIVATE_LINK}\n";
 
@@ -925,7 +925,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	 */
 	 protected function _databaseUpdate_24() {
 
-		$sql = ispCP_Registry::get('Db');
+		$sql = iMSCP_Registry::get('Db');
 		$sqlUpd = array();
 
 		/**
@@ -999,7 +999,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 		// Temporary table used by the following SQL statement
 		$sqlUpd[] = "
 			CREATE TEMPORARY TABLE IF NOT EXISTS
-				`upd_ispcp`
+				`upd_imscp`
 			AS SELECT
 				`domain_id` AS `tdomain_id`,
 				TRIM(BOTH '_' FROM `allowbackup`) AS `tdomain_dns`,
@@ -1015,7 +1015,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 		// "domain.domain_dns
 		$sqlUpd[] = "
 			UPDATE
-				`domain`,`upd_ispcp`
+				`domain`,`upd_imscp`
 			SET
 				`allowbackup` = `tallowbackup`,
 				`domain_dns` = `tdomain_dns`
@@ -1210,7 +1210,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	protected function _databaseUpdate_30() {
 
 		$sqlUpd = array();
-		$sql = ispCP_Registry::get('Db');
+		$sql = iMSCP_Registry::get('Db');
 
 		$query = "
 			SELECT
@@ -1265,7 +1265,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	protected function _databaseUpdate_31() {
 
 		$sqlUpd = array();
-		$sql = ispCP_Registry::get('Db');
+		$sql = iMSCP_Registry::get('Db');
 
 		// Test added to prevent error if old version of
 		// self::database_databaseUpdate_29() was already applyed
@@ -1306,7 +1306,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	protected function _databaseUpdate_32() {
 
 		$sqlUpd = array();
-		$sql = ispCP_Registry::get('Db');
+		$sql = iMSCP_Registry::get('Db');
 
 		$query = "
 			SELECT
@@ -1363,8 +1363,8 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	 */
 	protected function _databaseUpdate_33() {
 
-		$cfg = ispCP_Registry::get('Config');
-		$sql = ispCP_Registry::get('Db');
+		$cfg = iMSCP_Registry::get('Config');
+		$sql = iMSCP_Registry::get('Db');
 
 		$sqlUpd = array();
 
@@ -1542,7 +1542,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 		if (isset($critical_update)) {
 			$sqlUpd[] = "
 				DELETE IGNORE FROM
-					`i-mscp`.`config`
+					`imscp`.`config`
 				WHERE
 					`config`.`name` = 'CRITICAL_UPDATE_REVISION'
 				;
@@ -1565,7 +1565,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 
 		return array("
 			DELETE IGNORE FROM
-				`i-mscp`.`config`
+				`imscp`.`config`
 			WHERE
 				`config`.`name` = 'SHOW_SERVERLOAD'
 			;
@@ -1586,12 +1586,12 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	protected function _databaseUpdate_35() {
 
 		$sqlUpd = array();
-		$sql = ispCP_Registry::get('Db');
+		$sql = iMSCP_Registry::get('Db');
 
 		// For domain traffic
 		$query = "
 			SHOW COLUMNS FROM
-				`i-mscp`.`domain_traffic`
+				`imscp`.`domain_traffic`
 			WHERE
 				`Field` = 'correction'
 			;
@@ -1603,7 +1603,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 		if ($rs->recordCount() != 0) {
 			$sqlUpd[] = "
 				ALTER IGNORE TABLE
-					`i-mscp`.`domain_traffic`
+					`imscp`.`domain_traffic`
 				DROP
 					`correction`
 				;
@@ -1613,7 +1613,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 		// For server traffic
 		$query = "
 			SHOW COLUMNS FROM
-				`i-mscp`.`server_traffic`
+				`imscp`.`server_traffic`
 			WHERE
 				`Field` = 'correction'
 			;
@@ -1625,7 +1625,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 		if ($rs->recordCount() != 0) {
 			$sqlUpd[] = "
 				ALTER IGNORE TABLE
-					`i-mscp`.`server_traffic`
+					`imscp`.`server_traffic`
 				DROP
 					`correction`
 				;
@@ -1638,7 +1638,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	/**
 	 * Fix for ticket #2371 http://isp-control.net/i-mscp/ticket/2371
 	 *
-	 * ispCP GUI fails to login via IPv6
+	 * i-MSCP GUI fails to login via IPv6
 	 *
 	 * @author Sascha Bay
 	 * @since r2918
@@ -1804,7 +1804,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	protected function _databaseUpdate_43() {
 
 		$cfg = new iMSCP_Config_Handler_File();
-		$DbConfig = ispCP_Registry::get('Db_Config');
+		$DbConfig = iMSCP_Registry::get('Db_Config');
 		$DbConfig->PORT_POSTGREY =
 			"{$cfg->PORT_POSTGREY};tcp;POSTGREY;1;1;localhost";
 

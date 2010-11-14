@@ -269,7 +269,7 @@ function chk_email($email, $num = 50) {
 /**
  * @todo document this function
  */
-function iMSCP_check_local_part($email, $num = 50) {
+function imscp_check_local_part($email, $num = 50) {
 	if (strlen($email) > $num) {
 		return false;
 	}
@@ -704,9 +704,9 @@ function isACE($label) {
  */
 
 /**
- * Function for checking i-mscp limits.
+ * Function for checking i-MSCP limits.
  *
- * @param string $data i-mscp 'limit' field data (by default valids are numbers greater equal 0)
+ * @param string $data i-MSCP 'limit' field data (by default valids are numbers greater equal 0)
  * @param mixed $extra single extra permitted value or array of permitted values
  * @return boolean	false	incorrect syntax (ranges)
  * 					true	correct syntax (ranges)
@@ -715,7 +715,7 @@ function isACE($label) {
  *
  * @todo foreach and "=" inner this loop is unusual
  */
-function iMSCP_limit_check($data, $extra = -1) {
+function imscp_limit_check($data, $extra = -1) {
 	if ($extra !== null && !is_bool($extra)) {
 		if (is_array($extra)) {
 			$nextra = '';

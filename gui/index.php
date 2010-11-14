@@ -28,9 +28,9 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require 'include/i-mscp-lib.php';
+require 'include/imscp-lib.php';
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
 if (isset($_GET['logout'])) {
 	unset_user_login_data();
@@ -76,7 +76,7 @@ if (($cfg->MAINTENANCEMODE
 	$tpl->define_dynamic('page', $cfg->LOGIN_TEMPLATE_PATH . '/maintenancemode.tpl');
 	$tpl->assign(
 		array(
-			'TR_PAGE_TITLE'		=> tr('ispCP Omega a Virtual Hosting Control System'),
+			'TR_PAGE_TITLE'		=> tr('i-MSCP a Virtual Hosting Control System'),
 			'THEME_COLOR_PATH'	=> $cfg->LOGIN_TEMPLATE_PATH,
 			'THEME_CHARSET'		=> tr('encoding'),
 			'TR_MESSAGE'		=> nl2br(tohtml($cfg->MAINTENANCEMODE_MESSAGE)),
@@ -90,7 +90,7 @@ if (($cfg->MAINTENANCEMODE
 
 	$tpl->assign(
 		array(
-			'TR_MAIN_INDEX_PAGE_TITLE'	=> tr('ispCP Omega a Virtual Hosting Control System'),
+			'TR_MAIN_INDEX_PAGE_TITLE'	=> tr('i-MSCP a Virtual Hosting Control System'),
 			'THEME_COLOR_PATH'			=> $cfg->LOGIN_TEMPLATE_PATH,
 			'THEME_CHARSET'				=> tr('encoding'),
 			'TR_LOGIN'					=> tr('Login'),

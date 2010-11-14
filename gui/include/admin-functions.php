@@ -2433,7 +2433,7 @@ function delete_domain($domain_id, $goto, $breseller = false) {
 
 	exec_query($sql, $query, $domain_gid);
 
-	// Delete i-mscp login:
+	// Delete i-MSCP login:
 	$query = "
 		DELETE FROM
 			`admin`

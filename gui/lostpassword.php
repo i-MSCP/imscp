@@ -28,9 +28,9 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require 'include/i-mscp-lib.php';
+require 'include/imscp-lib.php';
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
 if (!$cfg->LOSTPASSWORD) {
 	throw new iMSCP_Exception_Production(
@@ -64,7 +64,7 @@ if (isset($_GET['key'])) {
 		$tpl->define('page', $cfg->LOGIN_TEMPLATE_PATH . '/lostpassword_message.tpl');
 		$tpl->assign(
 			array(
-				'TR_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Virtual Hosting Control System'),
+				'TR_MAIN_INDEX_PAGE_TITLE' => tr('i-MSCP - Virtual Hosting Control System'),
 				'THEME_COLOR_PATH' => "themes/$theme_color",
 				'THEME_CHARSET' => tr('encoding')
 			)
@@ -107,7 +107,7 @@ if (isset($_POST['uname'])) {
 		$tpl->define('page', $cfg->LOGIN_TEMPLATE_PATH . '/lostpassword_message.tpl');
 		$tpl->assign(
 			array(
-				'TR_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Virtual Hosting Control System'),
+				'TR_MAIN_INDEX_PAGE_TITLE' => tr('i-MSCP - Virtual Hosting Control System'),
 				'THEME_COLOR_PATH' => "themes/$theme_color",
 				'THEME_CHARSET' => tr('encoding')
 			)
@@ -146,7 +146,7 @@ $tpl = new iMSCP_pTemplate();
 $tpl->define('page', $cfg->LOGIN_TEMPLATE_PATH . '/lostpassword.tpl');
 $tpl->assign(
 	array(
-		'TR_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Virtual Hosting Control System'),
+		'TR_MAIN_INDEX_PAGE_TITLE' => tr('i-MSCP - Virtual Hosting Control System'),
 		'THEME_COLOR_PATH' => $cfg->LOGIN_TEMPLATE_PATH,
 		'THEME_CHARSET' => tr('encoding'),
 		'TR_CAPCODE' => tr('Security code'),

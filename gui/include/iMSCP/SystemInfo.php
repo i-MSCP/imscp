@@ -296,7 +296,7 @@ class iMSCP_SystemInfo {
 	 */
 	private function _getFileSystemInfo() {
 
-		$cfg = ispCP_Registry::get('Config');
+		$cfg = iMSCP_Registry::get('Config');
 
 		$filesystem = array();
 
@@ -428,7 +428,7 @@ class iMSCP_SystemInfo {
 	 */
 	private function _getRAMInfo() {
 
-		$cfg = ispCP_Registry::get('Config');
+		$cfg = iMSCP_Registry::get('Config');
 
 		$ram = array('total' => 0, 'free' => 0, 'used' => 0);
 
@@ -497,7 +497,7 @@ class iMSCP_SystemInfo {
 	 */
 	private function _getSwapInfo() {
 
-		$cfg = ispCP_Registry::get('Config');
+		$cfg = iMSCP_Registry::get('Config');
 
 		$swap = array('total' => 0, 'free' => 0, 'used' => 0);
 
@@ -683,7 +683,7 @@ class iMSCP_SystemInfo {
 	 */
 	protected function sysctl($args) {
 
-		$cfg = ispCP_Registry::get('Config');
+		$cfg = iMSCP_Registry::get('Config');
 
 		$descriptorspec = array(
 			0 => array('pipe', 'r'), // stdin is a pipe that the child will read from

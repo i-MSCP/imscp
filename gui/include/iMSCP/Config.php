@@ -40,21 +40,21 @@
  * handle separate configuration parameters that are stored in another container
  * such as a configuration file linked to a specific plugin) you should not use
  * this class. Instead of this, register your own iMSCP_Config_Handler objects
- * into the ispCP_Registry object to be able to use them from all contexts.
+ * into the iMSCP_Registry object to be able to use them from all contexts.
  *
  * <b>Usage example:</b>
  * <code>
  * $parameters = array('PLUGIN_NAME' => 'billing', 'PLUGIN_VERSION' => '1.0.0');
- * ispCP_Registry::set('My_ConfigHandler', new iMSCP_Config_Handler($parameters));
+ * iMSCP_Registry::set('My_ConfigHandler', new iMSCP_Config_Handler($parameters));
  *
  * // From another context:
  *
- * $my_cfg = ispCP_Registry::get('My_ConfigHandler');
+ * $my_cfg = iMSCP_Registry::get('My_ConfigHandler');
  * echo $my_cfg->PLUGIN_NAME; // billing
  * echo $my_cfg->PLUGIN_VERSION; // 1.0.0
  * </code>
  *
- * See {@link ispCP_Registry} for more information.
+ * See {@link iMSCP_Registry} for more information.
  *
  * To resume, the iMSCP_Config class acts as a registry for the
  * iMSCP_Config_Handler objects where the registered values
