@@ -28,7 +28,7 @@
  */
 
 /**
- * IspCP Jquery Tooltips plugin
+ * i-MSCP Jquery Tooltips plugin
  *
  * This plugin provides a function to create nicetitles/tooltips
  * for one or more html elements.
@@ -43,16 +43,16 @@
  * });
  *
  * 1. Create nicetitle for all links that have 'title' attribut
- * 	$('a').ispCPtooltips();
+ * 	$('a').iMSCPtooltips();
  *
  * 2. Create nicetitle for one link that has title attribut
- * 	$('#id_link').ispCPtooltips();
+ * 	$('#id_link').iMSCPtooltips();
  *
  * 3. Tooltip for user helping with custom message
- * 	$('#id_img').ispCPtooltips({msg:'Welcome in our world'});
+ * 	$('#id_img').iMSCPtooltips({msg:'Welcome in our world'});
  *
  * 4. Tooltip for user helping on password input fields with custom message
- *	$(':password').ispCPtooltips({msg:'Please, enter your password here'});
+ *	$(':password').iMSCPtooltips({msg:'Please, enter your password here'});
  *
  * See Parameters section in the plugin body for more information about possible options
  * See the Jquery documentation for more information about available selectors
@@ -65,7 +65,7 @@
  */
 (function($){
 
-	$.fn.ispCPtooltips = function(settings) {
+	$.fn.iMSCPtooltips = function(settings) {
 
 		/**
 		 * Parameters
@@ -173,5 +173,5 @@
 				); // end hover();
 			}
 		});  // End foreach
-	};  // End ispCPtooltips
-})(jQuery); // ispCP plugin tooltips
+	};  // End iMSCPtooltips
+})(jQuery); // iMSCP plugin tooltips

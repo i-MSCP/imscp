@@ -1,12 +1,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>{TR_ADMIN_ISPCP_DEBUGGER_PAGE_TITLE}</title>
+<title>{TR_ADMIN_IMSCP_DEBUGGER_PAGE_TITLE}</title>
 <meta name="robots" content="nofollow, noindex" />
 <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-  <link href="{THEME_COLOR_PATH}/css/i-mscp.css" rel="stylesheet" type="text/css" />
-  <script type="text/javascript" src="{THEME_COLOR_PATH}/css/i-mscp.js"></script>
+  <link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="{THEME_COLOR_PATH}/css/imscp.js"></script>
 <!--[if lt IE 7.]>
 <script defer type="text/javascript" src="{THEME_COLOR_PATH}/css/pngfix.js"></script>
 <![endif]-->
@@ -15,7 +15,7 @@
  <body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.png','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.png','{THEME_COLOR_PATH}/images/icons/domains_a.png','{THEME_COLOR_PATH}/images/icons/general_a.png' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.png','{THEME_COLOR_PATH}/images/icons/webtools_a.png','{THEME_COLOR_PATH}/images/icons/statistics_a.png','{THEME_COLOR_PATH}/images/icons/support_a.png')">
   <table width="100%" border="0" cellspacing="0" cellpadding="0" style="height:100%;padding:0;margin:0 auto;">
    <tr>
-    <td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" width="195" height="56" border="0" alt="ispCP Logogram" /></td>
+    <td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" width="195" height="56" border="0" alt="i-MSCP Logogram" /></td>
     <td style="height: 56px; width:100%; background-color: #0f0f0f"><img src="{THEME_COLOR_PATH}/images/top/top_left_bg.jpg" width="582" height="56" border="0" alt="" /></td>
     <td style="width: 73px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_right.jpg" width="73" height="56" border="0" alt="" /></td>
    </tr>
@@ -65,7 +65,7 @@
             <tr>
              <td>&nbsp;</td>
              <td class="{CONTENT}">
-			  {TR_DOMAIN_NAME} - <a href="ispcp_debugger.php?action=change_status&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
+			  {TR_DOMAIN_NAME} - <a href="imscp_debugger.php?action=change_status&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
               <span style="color:red;">{TR_DOMAIN_ERROR}</span>
 			 </td>
             </tr>
@@ -87,7 +87,7 @@
             <tr>
              <td>&nbsp;</td>
              <td class="{CONTENT}">
-			  {TR_ALIAS_NAME} - <a href="ispcp_debugger.php?action=change_status&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
+			  {TR_ALIAS_NAME} - <a href="imscp_debugger.php?action=change_status&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
               <span style="color:red;">{TR_ALIAS_ERROR}</span>
 			 </td>
             </tr>
@@ -109,7 +109,7 @@
             <tr>
              <td>&nbsp;</td>
              <td class="{CONTENT}">
-			  {TR_SUBDOMAIN_NAME} - <a href="ispcp_debugger.php?action=change_status&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
+			  {TR_SUBDOMAIN_NAME} - <a href="imscp_debugger.php?action=change_status&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
               <span style="color:red;">{TR_SUBDOMAIN_ERROR}</span>
 			 </td>
             </tr>
@@ -131,7 +131,7 @@
             <tr>
              <td>&nbsp;</td>
              <td class="{CONTENT}">
-			  {TR_SUBDOMAIN_ALIAS_NAME} - <a href="ispcp_debugger.php?action=change_status&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
+			  {TR_SUBDOMAIN_ALIAS_NAME} - <a href="imscp_debugger.php?action=change_status&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
               <span style="color:red;">{TR_SUBDOMAIN_ALIAS_ERROR}</span>
 			 </td>
             </tr>
@@ -153,7 +153,7 @@
             <tr>
              <td>&nbsp;</td>
              <td class="{CONTENT}">
-			  {TR_MAIL_NAME} - <a href="ispcp_debugger.php?action=change_status&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
+			  {TR_MAIL_NAME} - <a href="imscp_debugger.php?action=change_status&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
               <span style="color:red;">{TR_MAIL_ERROR}</span></td>
             </tr>
             <!-- EDP: mail_list -->
@@ -174,7 +174,7 @@
             <tr>
              <td>&nbsp;</td>
              <td class="{CONTENT}">
-			  {TR_HTACCESS_NAME} - <a href="ispcp_debugger.php?action=change_status&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
+			  {TR_HTACCESS_NAME} - <a href="imscp_debugger.php?action=change_status&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
               <span style="color:red;">{TR_HTACCESS_ERROR}</span></td>
             </tr>
             <!-- EDP: htaccess_list -->
@@ -187,7 +187,7 @@
             </tr>
             <tr>
              <td>&nbsp;</td>
-             <td><a href="ispcp_debugger.php?action=run_engine" class="link">{EXEC_COUNT} {TR_EXEC_REQUESTS}</a></td>
+             <td><a href="imscp_debugger.php?action=run_engine" class="link">{EXEC_COUNT} {TR_EXEC_REQUESTS}</a></td>
             </tr>
             <tr>
              <td>&nbsp;</td>

@@ -32,7 +32,7 @@
  * to remove comments and unnecessary whitespace use jsmin
  * see http://crockford.com/javascript/jsmin
  * try to add a hint/link to the full JS code in the compressed file, sth. like:
- * // see ispcp_full.js for full JS code & license
+ * // see imscp_full.js for full JS code & license
  *
  * This JavaScript code minimum needs support of JavaScript 1.2.
  *
@@ -362,7 +362,7 @@ function showFileTree() {
 * Note: Should be used as error callback funct of the jquery ajax request
 * @since r2587
 */
-function ispCPajxError(xhr, settings, exception) {
+function iMSCPajxError(xhr, settings, exception) {
 
 	switch (xhr.status) {
 		// We receive this status when the session is expired

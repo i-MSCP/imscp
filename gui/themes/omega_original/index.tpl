@@ -5,7 +5,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}">
 		<meta http-equiv="Content-Style-Type" content="text/css">
 		<meta http-equiv="Content-Script-Type" content="text/javascript">
-		<link href="{THEME_COLOR_PATH}/css/i-mscp.css" rel="stylesheet" type="text/css">
+		<link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css">
 	</head>
 
 	<body onload="document.frm.uname.focus()">
@@ -90,7 +90,7 @@
     <td align="center" width="100"><a class="login" href="{TR_WEBMAIL_SSL_LINK}">Webmail</a></td>
   </tr>
 </table></td>
-       <td width="197" align="right" class="login" style="vertical-align:top;">Powered by <a class="login" href="http://www.isp-control.net" target="_blank">ispCP Omega</a></td>
+       <td width="197" align="right" class="login" style="vertical-align:top;">Powered by <a class="login" href="http://www.i-mscp.net" target="_blank">i-MSCP</a></td>
       </tr> 
      </table>
 				</td>

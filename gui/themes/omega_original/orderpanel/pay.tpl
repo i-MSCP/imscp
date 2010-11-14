@@ -5,8 +5,8 @@
 		<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
 		<meta http-equiv="Content-Style-Type" content="text/css" />
 		<meta http-equiv="Content-Script-Type" content="text/javascript" />
-		<link href="../themes/omega_original/css/i-mscp.css" rel="stylesheet" type="text/css" />
-		<script type="text/javascript" src="../themes/omega_original/css/i-mscp.js"></script>
+		<link href="../themes/omega_original/css/imscp.css" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="../themes/omega_original/css/imscp.js"></script>
 	</head>
 
 	<body onLoad="MM_preloadImages('../themes/omega_original/images/icons/database_a.png','../themes/omega_original/images/icons/hosting_plans_a.png','../themes/omega_original/images/icons/domains_a.png','../themes/omega_original/images/icons/general_a.png','../themes/omega_original/images/icons/manage_users_a.png','../themes/omega_original/images/icons/webtools_a.png','../themes/omega_original/images/icons/statistics_a.png','../themes/omega_original/images/icons/support_a.png'); {TR_BODY_JOB}">
