@@ -28,11 +28,11 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/i-mscp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/manage_reseller_users.tpl');
@@ -47,7 +47,7 @@ $tpl->define_dynamic('dst_reseller_option', 'dst_reseller');
 
 function gen_user_table(&$tpl, &$sql) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$query = "
 		SELECT
@@ -201,7 +201,7 @@ function update_reseller_user($sql) {
 }
 
 function check_user_data() {
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$query = "
 		SELECT
@@ -275,7 +275,7 @@ function check_user_data() {
 
 function manage_reseller_limits($dest_reseller, $src_reseller, $users, &$err) {
 
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	list($dest_dmn_current, $dest_dmn_max,
 		$dest_sub_current, $dest_sub_max,
@@ -454,7 +454,7 @@ function calculate_reseller_dvals(&$dest, $dest_max, &$src, $src_max, $umax, &$e
 
 function check_ip_sets($dest, $users, &$err) {
 
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$users_array = explode(";", $users);
 
@@ -495,7 +495,7 @@ function check_ip_sets($dest, $users, &$err) {
 
 $tpl->assign(
 	array(
-		'TR_ADMIN_MANAGE_RESELLER_USERS_PAGE_TITLE' => tr('ispCP - Admin/Manage users/User assignment'),
+		'TR_ADMIN_MANAGE_RESELLER_USERS_PAGE_TITLE' => tr('i-MSCP - Admin/Manage users/User assignment'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])

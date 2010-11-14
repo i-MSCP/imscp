@@ -28,11 +28,11 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/i-mscp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/server_status.tpl');
@@ -41,7 +41,7 @@ $tpl->define_dynamic('service_status', 'page');
 
 $tpl->assign(
 	array(
-		'TR_ADMIN_SERVER_STATUS_PAGE_TITLE' => tr('ispCP Admin / System Tools / Server Status'),
+		'TR_ADMIN_SERVER_STATUS_PAGE_TITLE' => tr('i-MSCP Admin / System Tools / Server Status'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
@@ -150,7 +150,7 @@ class status {
 
 function get_server_status(&$tpl, &$sql) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$query = "
 		SELECT
@@ -165,11 +165,11 @@ function get_server_status(&$tpl, &$sql) {
 
 	$rs = exec_query($sql, $query);
 
-	$ispcp_status = new status;
+	$imscp_status = new status;
 
 	// Enable logging?
-	$ispcp_status->log = false; // Default is false
-	$ispcp_status->AddService('localhost', 9876, 'ispCP Daemon', 'tcp');
+	$imscp_status->log = false; // Default is false
+	$imscp_status->AddService('localhost', 9876, 'i-MSCP Daemon', 'tcp');
 
 	// Dynamic added Ports
 	while (!$rs->EOF) {
@@ -178,14 +178,14 @@ function get_server_status(&$tpl, &$sql) {
 			: $rs->fields['value'];
 		list($port, $protocol, $name, $status, $custom, $ip) = explode(";", $value);
 		if ($status) {
-			$ispcp_status->AddService(($ip == '127.0.0.1' ? 'localhost' : (empty($ip) ? $cfg->BASE_SERVER_IP : $ip)), (int)$port, $name, $protocol);
+			$imscp_status->AddService(($ip == '127.0.0.1' ? 'localhost' : (empty($ip) ? $cfg->BASE_SERVER_IP : $ip)), (int)$port, $name, $protocol);
 		}
 
 		$rs->moveNext();
 	} // end while
 
-	$ispcp_status->CheckStatus(5);
-	$data = $ispcp_status->GetStatus();
+	$imscp_status->CheckStatus(5);
+	$data = $imscp_status->GetStatus();
 	$up = tr('UP');
 	$down = tr('DOWN');
 

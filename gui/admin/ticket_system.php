@@ -28,11 +28,11 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/i-mscp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/ticket_system.tpl');
@@ -48,7 +48,7 @@ $tpl->define_dynamic('scroll_next', 'page');
 
 $tpl->assign(
 	array(
-		'TR_CLIENT_ENABLE_AUTORESPOND_PAGE_TITLE'	=> tr('ispCP - Client/Enable Mail Autoresponder'),
+		'TR_CLIENT_ENABLE_AUTORESPOND_PAGE_TITLE'	=> tr('i-MSCP - Client/Enable Mail Autoresponder'),
 		'THEME_COLOR_PATH'							=> "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET'								=> tr('encoding'),
 		'ISP_LOGO'									=> get_logo($_SESSION['user_id'])

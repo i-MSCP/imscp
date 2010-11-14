@@ -28,14 +28,14 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/i-mscp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
 /**
  * @var $cfg iMSCP_Config_Handler_File
  */
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
 // Test if we have a proper delete_id.
 if (!isset($_GET['delete_lang'])) {

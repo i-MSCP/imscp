@@ -28,11 +28,11 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/i-mscp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/ticket_view.tpl');
@@ -44,7 +44,7 @@ $tpl->define_dynamic('tickets_item', 'tickets_list');
 
 $tpl->assign(
 	array(
-		'TR_CLIENT_VIEW_TICKET_PAGE_TITLE' => tr('ispCP - Client: Support System: View Ticket'),
+		'TR_CLIENT_VIEW_TICKET_PAGE_TITLE' => tr('i-MSCP - Client: Support System: View Ticket'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
@@ -110,7 +110,7 @@ gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_ticket_system.tpl');
 
 $tpl->assign(
 	array(
-		'TR_SUPPORT_SYSTEM' => tr('ispCP - Admin: Support System: View Ticket'),
+		'TR_SUPPORT_SYSTEM' => tr('i-MSCP - Admin: Support System: View Ticket'),
 		'TR_VIEW_SUPPORT_TICKET' => tr('View support ticket'),
 		'TR_TICKET_URGENCY' => tr('Priority'),
 		'TR_TICKET_SUBJECT' => tr('Subject'),

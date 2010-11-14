@@ -28,23 +28,23 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/i-mscp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
 /**
  * Returns the number of requests that still to run
  *
  * @param  iMSCP_Database $sql iMSCP_Database instance
  * @param  string $statusField status database field name
- * @param  string $tableName ispCP database table name
+ * @param  string $tableName i-MSCP database table name
  * @return int Number of request
  */
 function count_requests($sql, $statusField, $tableName) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$query = "
 		SELECT
@@ -81,7 +81,7 @@ function count_requests($sql, $statusField, $tableName) {
  */
 function get_error_domains($sql, $tpl) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$ok_status = $cfg->ITEM_OK_STATUS;
 	$disabled_status = $cfg->ITEM_DISABLED_STATUS;
@@ -158,7 +158,7 @@ function get_error_domains($sql, $tpl) {
  */
 function get_error_aliases($sql, $tpl) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$ok_status = $cfg->ITEM_OK_STATUS;
 	$disabled_status = $cfg->ITEM_DISABLED_STATUS;
@@ -241,7 +241,7 @@ function get_error_aliases($sql, $tpl) {
  */
 function get_error_subdomains($sql, $tpl) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$ok_status = $cfg->ITEM_OK_STATUS;
 	$disabled_status = $cfg->ITEM_DISABLED_STATUS;
@@ -319,7 +319,7 @@ function get_error_subdomains($sql, $tpl) {
  */
 function get_error_alias_subdomains($sql, $tpl) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$ok_status = $cfg->ITEM_OK_STATUS;
 	$disabled_status = $cfg->ITEM_DISABLED_STATUS;
@@ -401,7 +401,7 @@ function get_error_alias_subdomains($sql, $tpl) {
  */
 function get_error_mails($sql, $tpl) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$ok_status = $cfg->ITEM_OK_STATUS;
 	$disabled_status = $cfg->ITEM_DISABLED_STATUS;
@@ -574,7 +574,7 @@ function get_error_mails($sql, $tpl) {
 
 function get_error_htaccess($sql, $tpl) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$ok_status = $cfg->ITEM_OK_STATUS;
 	$delete_status = $cfg->ITEM_DELETE_STATUS;
@@ -693,7 +693,7 @@ $exec_count = $exec_count + count_requests($sql, 'status', 'htaccess_users');
 
 $tpl = new iMSCP_pTemplate();
 
-$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/ispcp_debugger.tpl');
+$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/imscp_debugger.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('hosting_plans', 'page');
 $tpl->define_dynamic('domain_message', 'page');
@@ -711,8 +711,8 @@ $tpl->define_dynamic('htaccess_list', 'page');
 
 $tpl->assign(
 	array(
-		'TR_ADMIN_ISPCP_DEBUGGER_PAGE_TITLE' => tr(
-			'ispCP - Virtual Hosting Control System'
+		'TR_ADMIN_IMSCP_DEBUGGER_PAGE_TITLE' => tr(
+			'i-MSCP - Virtual Hosting Control System'
 		),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
@@ -810,7 +810,7 @@ if (isset($_GET['action'])) {
 				break;
 			default:
 				set_page_message(tr('Unknown type!'));
-				user_goto('ispcp_debugger.php');
+				user_goto('imscp_debugger.php');
 				break;
 		}
 
@@ -818,11 +818,11 @@ if (isset($_GET['action'])) {
 
 		if ($rs !== false) {
 			set_page_message(tr('Done'));
-			user_goto('ispcp_debugger.php');
+			user_goto('imscp_debugger.php');
 		} else {
 			$msg = tr('Unknown Error') . '<br />' . $sql->errorMsg();
 			set_page_message($msg);
-			user_goto('ispcp_debugger.php');
+			user_goto('imscp_debugger.php');
 		}
 	}
 }
@@ -836,14 +836,14 @@ $errors += get_error_htaccess($sql, $tpl);
 
 $tpl->assign(
 	array(
-		'TR_DEBUGGER_TITLE' => tr('ispCP debugger'),
+		'TR_DEBUGGER_TITLE' => tr('i-MSCP debugger'),
 		'TR_DOMAIN_ERRORS' => tr('Domain errors'),
 		'TR_ALIAS_ERRORS' => tr('Domain alias errors'),
 		'TR_SUBDOMAIN_ERRORS' => tr('Subdomain errors'),
 		'TR_SUBDOMAIN_ALIAS_ERRORS' => tr('Alias subdomain errors'),
 		'TR_MAIL_ERRORS' => tr('Mail account errors'),
 		'TR_HTACCESS_ERRORS' => tr('.htaccess related errors'),
-		'TR_DAEMON_TOOLS' => tr('ispCP Daemon tools'),
+		'TR_DAEMON_TOOLS' => tr('i-MSCP Daemon tools'),
 		'TR_EXEC_REQUESTS' => tr('Execute requests'),
 		'TR_CHANGE_STATUS' => tr('Set status to \'change\''),
 		'EXEC_COUNT' => $exec_count,

@@ -28,11 +28,11 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/i-mscp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/circular.tpl');
@@ -41,7 +41,7 @@ $tpl->define_dynamic('hosting_plans', 'page');
 
 $tpl->assign(
 	array(
-		'TR_ADMIN_CIRCULAR_PAGE_TITLE' => tr('ispCP - Admin - Email Marketing'),
+		'TR_ADMIN_CIRCULAR_PAGE_TITLE' => tr('i-MSCP - Admin - Email Marketing'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
@@ -212,7 +212,7 @@ function send_circular_email($to, $from, $subject, $message) {
 
 	$headers = "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 8bit\n";
 	$headers .= "From: " . $from . "\n";
-	$headers .= "X-Mailer: ispCP marketing mailer";
+	$headers .= "X-Mailer: i-MSCP marketing mailer";
 
 	mail($to, $subject, $message, $headers);
 }

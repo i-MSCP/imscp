@@ -28,11 +28,11 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/i-mscp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/server_statistic.tpl');
@@ -44,7 +44,7 @@ $tpl->define_dynamic('day_list', 'page');
 
 $tpl->assign(
 	array(
-		'TR_ADMIN_SERVER_STATICSTICS_PAGE_TITLE' => tr('ispCP - Admin/Server statistics'),
+		'TR_ADMIN_SERVER_STATICSTICS_PAGE_TITLE' => tr('i-MSCP - Admin/Server statistics'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
@@ -65,7 +65,7 @@ if (isset($_GET['month']) && isset($_GET['year'])) {
 }
 
 function get_server_trafic($from, $to) {
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$query = "
 		SELECT
@@ -100,7 +100,7 @@ function get_server_trafic($from, $to) {
 function generate_page(&$tpl) {
 
 	global $month, $year;
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 
 	if ($month == date('m') && $year == date('Y')) {

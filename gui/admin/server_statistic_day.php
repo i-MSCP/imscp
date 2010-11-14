@@ -28,11 +28,11 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/i-mscp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/server_statistic_day.tpl');
@@ -41,7 +41,7 @@ $tpl->define_dynamic('hour_list', 'page');
 
 $tpl->assign(
 	array(
-		'TR_ADMIN_SERVER_DAY_STATS_PAGE_TITLE' => tr('ispCP - Admin/Server day stats'),
+		'TR_ADMIN_SERVER_DAY_STATS_PAGE_TITLE' => tr('i-MSCP - Admin/Server day stats'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
@@ -63,7 +63,7 @@ if (isset($_GET['month']) && isset($_GET['year']) && isset($_GET['day'])
 }
 
 function generate_page(&$tpl) {
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 	global $month, $year, $day;
 
 	$all[0] = 0;

@@ -28,14 +28,14 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/i-mscp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/ispcp_updates.tpl');
+$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/imscp_updates.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('update_message', 'page');
 $tpl->define_dynamic('update_infos', 'page');
@@ -43,7 +43,7 @@ $tpl->define_dynamic('table_header', 'page');
 
 $tpl->assign(
 	array(
-		'TR_ADMIN_ISPCP_UPDATES_PAGE_TITLE' => tr('ispCP - Virtual Hosting Control System'),
+		'TR_ADMIN_IMSCP_UPDATES_PAGE_TITLE' => tr('i-MSCP - Virtual Hosting Control System'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
@@ -53,7 +53,7 @@ $tpl->assign(
 /* BEGIN common functions */
 function get_update_infos(&$tpl) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	if (!$cfg->CHECK_FOR_UPDATES) {
 		$tpl->assign(
@@ -71,8 +71,8 @@ function get_update_infos(&$tpl) {
 		$tpl->assign(
 			array(
 				'UPDATE_MESSAGE' => '',
-				'UPDATE' => tr('New ispCP update is now available'),
-				'INFOS' => tr('Get it at') . " <a href=\"http://www.isp-control.net/download.html\" class=\"link\" target=\"i-mscp\">http://www.isp-control.net/download.html</a>"
+				'UPDATE' => tr('New i-MSCP update is now available'),
+				'INFOS' => tr('Get it at') . " <a href=\"http://www.i-mscp.net/download.html\" class=\"link\" target=\"i-mscp\">http://www.i-mscp.net/download.html</a>"
 			)
 		);
 
@@ -99,9 +99,9 @@ gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_system_tools.tpl');
 
 $tpl->assign(
 	array(
-		'TR_UPDATES_TITLE' => tr('ispCP updates'),
-		'TR_AVAILABLE_UPDATES' => tr('Available ispCP updates'),
-		'TR_MESSAGE' => tr('No new ispCP updates available'),
+		'TR_UPDATES_TITLE' => tr('i-MSCP updates'),
+		'TR_AVAILABLE_UPDATES' => tr('Available i-MSCP updates'),
+		'TR_MESSAGE' => tr('No new i-MSCP updates available'),
 		'TR_UPDATE' => tr('Update'),
 		'TR_INFOS' => tr('Update details')
 	)

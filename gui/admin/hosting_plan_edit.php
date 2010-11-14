@@ -28,11 +28,11 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/i-mscp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
 if (strtolower($cfg->HOSTING_PLANS_LEVEL) != 'admin') {
 	user_goto('index.php');
@@ -56,7 +56,7 @@ gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_hosting_plan.tpl');
 $tpl->assign(
 		array(
 			'TR_RESELLER_MAIN_INDEX_PAGE_TITLE' => tr(
-				'ispCP - Administrator/Edit hosting plan'
+				'i-MSCP - Administrator/Edit hosting plan'
 			),
 			'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 			'THEME_CHARSET' => tr('encoding'),
@@ -156,7 +156,7 @@ if ($cfg->DUMP_GUI_DEBUG) {
  */
 function restore_form(&$tpl) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$tpl->assign(
 		array(
@@ -198,7 +198,7 @@ function restore_form(&$tpl) {
  */
 function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$_SESSION['hpid'] = $hpid;
 
@@ -350,35 +350,35 @@ function check_data_iscorrect(&$tpl) {
 		$ahp_error[] = tr('Incorrect setup fee. Example: 19.99');
 	}
 
-	if (!ispcp_limit_check($hp_sub, -1)) {
+	if (!imscp_limit_check($hp_sub, -1)) {
 		$ahp_error[] = tr('Incorrect subdomains limit!');
 	}
 
-	if (!ispcp_limit_check($hp_als, -1)) {
+	if (!imscp_limit_check($hp_als, -1)) {
 		$ahp_error[] = tr('Incorrect aliases limit!');
 	}
 
-	if (!ispcp_limit_check($hp_mail, -1)) {
+	if (!imscp_limit_check($hp_mail, -1)) {
 		$ahp_error[] = tr('Incorrect mail accounts limit!');
 	}
 
-	if (!ispcp_limit_check($hp_ftp, -1)) {
+	if (!imscp_limit_check($hp_ftp, -1)) {
 		$ahp_error[] = tr('Incorrect FTP accounts limit!');
 	}
 
-	if (!ispcp_limit_check($hp_sql_user, -1)) {
+	if (!imscp_limit_check($hp_sql_user, -1)) {
 		$ahp_error[] = tr('Incorrect SQL databases limit!');
 	}
 
-	if (!ispcp_limit_check($hp_sql_db, -1)) {
+	if (!imscp_limit_check($hp_sql_db, -1)) {
 		$ahp_error[] = tr('Incorrect SQL users limit!');
 	}
 
-	if (!ispcp_limit_check($hp_traff, null)) {
+	if (!imscp_limit_check($hp_traff, null)) {
 		$ahp_error[] = tr('Incorrect traffic limit!');
 	}
 
-	if (!ispcp_limit_check($hp_disk, null)) {
+	if (!imscp_limit_check($hp_disk, null)) {
 		$ahp_error[] = tr('Incorrect disk quota limit!');
 	}
 
@@ -406,7 +406,7 @@ function save_data_to_db() {
 	global $hp_backup, $hp_dns;
 	//global $tos;
 
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$description = clean_input($_POST['hp_description']);
 	$price = clean_input($_POST['hp_price']);

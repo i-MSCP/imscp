@@ -29,7 +29,7 @@
  */
 
 // Include all needed libraries
-require '../include/i-mscp-lib.php';
+require '../include/imscp-lib.php';
 
 // Check for login
 check_login(__FILE__);
@@ -49,7 +49,7 @@ check_login(__FILE__);
 function to_session($mode) {
 
 	// Get a reference to the array that contain all error fields ids
-	$error_fields_ids = &ispCP_Registry::get('Error_Fields_Ids');
+	$error_fields_ids = &iMSCP_Registry::get('Error_Fields_Ids');
 
 	// Create a json object that will be used by client browser for fields
 	// highlighting
@@ -101,14 +101,14 @@ function to_session($mode) {
  */
 function validates_service($name, $ip, $port, $proto, $show, $index = '') {
 
-	// Get a reference to the IspCP_ConfigHandler_Db instance
-	$db_cfg = ispCP_Registry::get('Db_Config');
+	// Get a reference to the iMSCP_ConfigHandler_Db instance
+	$db_cfg = iMSCP_Registry::get('Db_Config');
 
 	// Get a reference to the array that contain all errors messages
-	$messages = &ispCP_Registry::get('Page_Messages');
+	$messages = &iMSCP_Registry::get('Page_Messages');
 
 	// Get a reference to the array that contain all error fields ids
-	$error_fields_ids = &ispCP_Registry::get('Error_Fields_Ids');
+	$error_fields_ids = &iMSCP_Registry::get('Error_Fields_Ids');
 
 	// Accounting for errors messages
 	static $msg_cnt = 0;
@@ -162,14 +162,14 @@ function validates_service($name, $ip, $port, $proto, $show, $index = '') {
  */
 function add_update_services($mode) {
 
-	// Gets a reference to the IspCP_ConfigHandler_Db instance
-	$db_cfg = ispCP_Registry::get('Db_Config');
+	// Gets a reference to the iMSCP_ConfigHandler_Db instance
+	$db_cfg = iMSCP_Registry::get('Db_Config');
 
 	// Create a pool for messages on error and gets a reference to him
-	$messages = &ispCP_Registry::set('Page_Messages', array());
+	$messages = &iMSCP_Registry::set('Page_Messages', array());
 
 	// Create a pool for error fields ids and gets a reference to him
-	$error_fields_ids = &ispCP_Registry::set('Error_Fields_Ids', array());
+	$error_fields_ids = &iMSCP_Registry::set('Error_Fields_Ids', array());
 
 	// Adds a service port
 	if($mode) {
@@ -183,7 +183,7 @@ function add_update_services($mode) {
 			$db_sname = "PORT_$name";
 
 			// Add the service port in the database
-			// See IspCP_ConfigHandler_Db adapter class to learn how it work
+			// See iMSCP_ConfigHandler_Db adapter class to learn how it work
 			$db_cfg->$db_sname = "$port;$proto;$name;$show;1;$ip";
 
 			write_log(
@@ -210,7 +210,7 @@ function add_update_services($mode) {
 				$db_sname = $_POST['var_name'][$index];
 
 				// Update the service port in the database
-				// See IspCP_ConfigHandler_Db adapter class to learn how it work
+				// See iMSCP_ConfigHandler_Db adapter class to learn how it work
 				$db_cfg->$db_sname = "$port;$proto;$name;$show;$custom;$ip";
 			}
 		}
@@ -249,8 +249,8 @@ function add_update_services($mode) {
  */
 function show_services(&$tpl) {
 
-	// Gets reference to the ispCP_ConfigHandler_File object
-	$cfg = ispCP_Registry::get('Config');
+	// Gets reference to the iMSCP_ConfigHandler_File object
+	$cfg = iMSCP_Registry::get('Config');
 
 	// Gets the needed data
 
@@ -259,7 +259,7 @@ function show_services(&$tpl) {
 		unset($_SESSION['error_on_updt']);
 		$services = array_keys($values->toArray());
 	} else {
-		$values = ispCP_Registry::get('Db_Config');
+		$values = iMSCP_Registry::get('Db_Config');
 
 		// Filter function to get only the services ports names
 		$filter = create_function(
@@ -388,7 +388,7 @@ function show_services(&$tpl) {
  */
 function delete_service($port_name) {
 
-	$db_cfg = ispCP_Registry::get('Db_Config');
+	$db_cfg = iMSCP_Registry::get('Db_Config');
 
 	if (!isset($db_cfg->$port_name)) {
 		set_page_message(tr('ERROR: Unknown service port name!'));
@@ -403,7 +403,7 @@ function delete_service($port_name) {
 
 	if($custom == 1) {
 		// Remove the service port from the database
-		// see IspCP_ConfigHandler_Db adapter class to learn how it work
+		// see iMSCP_ConfigHandler_Db adapter class to learn how it work
 		unset($db_cfg->$port_name);
 
 		write_log(
@@ -440,7 +440,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] != 'reset') {
 
 // Show and Error pages
 } else {
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$tpl = new iMSCP_pTemplate();
 	$tpl->define_dynamic(
@@ -452,7 +452,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] != 'reset') {
 
 	$tpl->assign(
 		array(
-			'TR_ADMIN_SETTINGS_PAGE_TITLE' => tr('ispCP - Admin/Settings'),
+			'TR_ADMIN_SETTINGS_PAGE_TITLE' => tr('i-MSCP - Admin/Settings'),
 			'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 			'THEME_CHARSET' => tr('encoding'),
 			'ISP_LOGO' => get_logo(get_session('user_id'))

@@ -28,11 +28,11 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/i-mscp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
 function save_layout(&$sql) {
 
@@ -126,7 +126,7 @@ function update_logo() {
 
 function update_user_logo($file_name, $user_id) {
 
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$query = "
 		UPDATE
@@ -161,7 +161,7 @@ if (get_own_logo($_SESSION['user_id']) != $cfg->IPS_LOGO_PATH . '/isp_logo.gif')
 
 $tpl->assign(
 	array(
-		'TR_ADMIN_CHANGE_LAYOUT_PAGE_TITLE' => tr('ispCP - Virtual Hosting Control System'),
+		'TR_ADMIN_CHANGE_LAYOUT_PAGE_TITLE' => tr('i-MSCP - Virtual Hosting Control System'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'ISP_LOGO' => get_logo($_SESSION['user_id']),
 		'OWN_LOGO' => get_own_logo($_SESSION['user_id']),

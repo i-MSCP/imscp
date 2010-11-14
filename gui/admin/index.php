@@ -28,9 +28,9 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/i-mscp-lib.php';
+require '../include/imscp-lib.php';
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
 check_login(__FILE__, $cfg->PREVENT_EXTERNAL_LOGIN_ADMIN);
 
@@ -80,8 +80,8 @@ function gen_system_message(&$tpl, &$sql) {
 
 function get_update_infos(&$tpl) {
 
-	$cfg = ispCP_Registry::get('Config');
-	$sql = ispCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
 
 	if (iMSCP_Update_Database::getInstance()->checkUpdateExists()) {
 		$tpl->assign(array('DATABASE_UPDATE' => '<a href="database_update.php" class="link">' . tr('A database update is available') . '</a>'));
@@ -97,7 +97,7 @@ function get_update_infos(&$tpl) {
 	}
 
 	if (iMSCP_Update_Version::getInstance()->checkUpdateExists()) {
-		$tpl->assign(array('UPDATE' => '<a href="ispcp_updates.php" class="link">' . tr('New ispCP update is now available') . '</a>'));
+		$tpl->assign(array('UPDATE' => '<a href="imscp_updates.php" class="link">' . tr('New i-MSCP update is now available') . '</a>'));
 		$tpl->parse('UPDATE_MESSAGE', 'update_message');
 	} else {
 		if (iMSCP_Update_Version::getInstance()->getErrorMessage() != "") {
@@ -178,7 +178,7 @@ function gen_server_trafic(&$tpl, &$sql) {
 
 $tpl->assign(
 	array(
-		'TR_ADMIN_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Admin/Main Index'),
+		'TR_ADMIN_MAIN_INDEX_PAGE_TITLE' => tr('i-MSCP - Admin/Main Index'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'ISP_LOGO' => get_logo($_SESSION['user_id']),
 		'THEME_CHARSET' => tr('encoding')

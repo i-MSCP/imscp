@@ -28,11 +28,11 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/i-mscp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/admin_add.tpl');
@@ -40,7 +40,7 @@ $tpl->define_dynamic('page_message', 'page');
 
 $tpl->assign(
 	array(
-		'TR_ADMIN_ADD_USER_PAGE_TITLE' => tr('ispCP - Admin/Manage users/Add User'),
+		'TR_ADMIN_ADD_USER_PAGE_TITLE' => tr('i-MSCP - Admin/Manage users/Add User'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
@@ -49,7 +49,7 @@ $tpl->assign(
 
 function add_user(&$tpl, &$sql) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_user') {
 		if (check_user_data()) {
@@ -221,8 +221,8 @@ function add_user(&$tpl, &$sql) {
 
 function check_user_data() {
 
-	$cfg = ispCP_Registry::get('Config');
-	$sql = ispCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
 
 	if (!validates_username($_POST['username'])) {
 		set_page_message(tr("Incorrect username length or syntax!"));

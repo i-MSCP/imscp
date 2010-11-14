@@ -28,11 +28,11 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/i-mscp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/domain_edit.tpl');
@@ -45,7 +45,7 @@ if ($cfg->HOSTING_PLANS_LEVEL && $cfg->HOSTING_PLANS_LEVEL !== 'admin') {
 
 $tpl->assign(
 	array(
-		'TR_EDIT_DOMAIN_PAGE_TITLE' => tr('ispCP - Admin/Edit Domain'),
+		'TR_EDIT_DOMAIN_PAGE_TITLE' => tr('i-MSCP - Admin/Edit Domain'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
@@ -141,7 +141,7 @@ gen_editdomain_page($tpl);
  */
 function load_user_data($user_id, $domain_id) {
 
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	global $domain_name, $domain_expires, $domain_ip, $php_sup;
 	global $cgi_supp , $sub, $als;
@@ -187,8 +187,8 @@ function load_additional_data($user_id, $domain_id) {
 	global $cgi_supp, $username, $allowbackup;
 	global $dns_supp;
 
-	$cfg = ispCP_Registry::get('Config');
-	$sql = ispCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
 
 	// Get domain data
 	$query = "
@@ -274,7 +274,7 @@ function gen_editdomain_page(&$tpl) {
 	global $username, $allowbackup;
 	global $dns_supp;
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	// Fill in the fields
 	$domain_name = decode_idna($domain_name);
@@ -375,34 +375,34 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 
 	$ed_error = '';
 
-	if (!ispcp_limit_check($sub, -1)) {
+	if (!imscp_limit_check($sub, -1)) {
 		$ed_error .= tr('Incorrect subdomains limit!');
 	}
-	if (!ispcp_limit_check($als, -1)) {
+	if (!imscp_limit_check($als, -1)) {
 		$ed_error .= tr('Incorrect aliases limit!');
 	}
-	if (!ispcp_limit_check($mail, -1)) {
+	if (!imscp_limit_check($mail, -1)) {
 		$ed_error .= tr('Incorrect mail accounts limit!');
 	}
-	if (!ispcp_limit_check($ftp, -1)) {
+	if (!imscp_limit_check($ftp, -1)) {
 		$ed_error .= tr('Incorrect FTP accounts limit!');
 	}
-	if (!ispcp_limit_check($sql_db, -1)) {
+	if (!imscp_limit_check($sql_db, -1)) {
 		$ed_error .= tr('Incorrect SQL users limit!');
 	}
 	else if ($sql_db == -1 && $sql_user != -1) {
 		$ed_error .= tr('SQL databases limit is <i>disabled</i>!');
 	}
-	if (!ispcp_limit_check($sql_user, -1)) {
+	if (!imscp_limit_check($sql_user, -1)) {
 		$ed_error .= tr('Incorrect SQL databases limit!');
 	}
 	else if ($sql_user == -1 && $sql_db != -1) {
 		$ed_error .= tr('SQL users limit is <i>disabled</i>!');
 	}
-	if (!ispcp_limit_check($traff, null)) {
+	if (!imscp_limit_check($traff, null)) {
 		$ed_error .= tr('Incorrect traffic limit!');
 	}
-	if (!ispcp_limit_check($disk, null)) {
+	if (!imscp_limit_check($disk, null)) {
 		$ed_error .= tr('Incorrect disk quota limit!');
 	}
 

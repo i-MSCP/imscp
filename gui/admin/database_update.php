@@ -28,11 +28,11 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/i-mscp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 $dbUpdate = iMSCP_Update_Database::getInstance();
 
 if(isset($_POST['execute']) && $_POST['execute'] == 'update') {
@@ -57,8 +57,8 @@ if(isset($_POST['execute']) && $_POST['execute'] == 'update') {
 
 	$tpl->assign(
 		array(
-			'TR_ADMIN_ISPCP_UPDATES_PAGE_TITLE'	=>
-				tr('ispCP - Virtual Hosting Control System'),
+			'TR_ADMIN_IMSCP_UPDATES_PAGE_TITLE'	=>
+				tr('i-MSCP - Virtual Hosting Control System'),
 			'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 			'THEME_CHARSET' => tr('encoding'),
 			'ISP_LOGO' => get_logo($_SESSION['user_id'])

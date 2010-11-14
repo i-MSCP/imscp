@@ -29,7 +29,7 @@
  */
 
 // Include needed libraries
-require '../include/i-mscp-lib.php';
+require '../include/imscp-lib.php';
 
 
 /*******************************************************************************
@@ -47,12 +47,12 @@ function showLang($tpl) {
 	/**
 	 * @var $cfg iMSCP_Config_Handler_File
 	 */
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	/**
 	 * @var $sql iMSCP_Database
 	 */
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$tables = $sql->metaTables();
 
@@ -81,8 +81,8 @@ function showLang($tpl) {
 		$stmt = array();
 
 		foreach(array(
-			'ispcp_language', 'ispcp_languageSetlocaleValue',
-			'ispcp_languageRevision') as $msgstr) {
+			'imscp_language', 'imscp_languageSetlocaleValue',
+			'imscp_languageRevision') as $msgstr) {
 
 			$stmt[] = exec_query(
 				$sql, "SELECT `msgstr` FROM `{$tables[$i]}` WHERE `msgid` = '$msgstr'
@@ -204,12 +204,12 @@ function importLanguageFile() {
 			}
 		}
 
-		if (empty($ab['ispcp_languageSetlocaleValue']) ||
-			empty($ab['ispcp_table']) || empty($ab['ispcp_language']) ||
+		if (empty($ab['imscp_languageSetlocaleValue']) ||
+			empty($ab['imscp_table']) || empty($ab['imscp_language']) ||
 			!preg_match(
 				'/^[a-z]{2}(_[A-Z]{2}){0,1}$/Di',
-				$ab['ispcp_languageSetlocaleValue']
-			) || !preg_match('/^[a-z0-9()]+$/Di', $ab['ispcp_table'])) {
+				$ab['imscp_languageSetlocaleValue']
+			) || !preg_match('/^[a-z0-9()]+$/Di', $ab['imscp_table'])) {
 
 			set_page_message(
 				tr('Uploaded file does not contain the language information!')
@@ -217,9 +217,9 @@ function importLanguageFile() {
 			return;
 		}
 
-		$sql = ispCP_Registry::get('Db');
+		$sql = iMSCP_Registry::get('Db');
 
-		$lang_table = 'lang_' . $ab['ispcp_table'];
+		$lang_table = 'lang_' . $ab['imscp_table'];
 		$lang_update = false;
 
 		for ($i = 0, $tables = $sql->metaTables(), $nlang = count($tables) ;
@@ -261,7 +261,7 @@ function importLanguageFile() {
 			write_log(
 				tr(
 					'%s added new language: %s', $_SESSION['user_logged'],
-					$ab['ispcp_language']
+					$ab['imscp_language']
 				)
 			);
 
@@ -270,7 +270,7 @@ function importLanguageFile() {
 			write_log(
 				tr(
 					'%s updated language: %s', $_SESSION['user_logged'],
-					$ab['ispcp_language']
+					$ab['imscp_language']
 				)
 			);
 
@@ -280,7 +280,7 @@ function importLanguageFile() {
 }
 
 /**
- * Import traditional ispCP  translation file format
+ * Import traditional i-MSCP  translation file format
  *
  * @param string $file translation file
  * @return array|int
@@ -290,10 +290,10 @@ function _importTextFile($file) {
     if(!($fp= fopen($file, 'r'))) return 1;
 
     $ab = array(
-        'ispcp_languageRevision' => '',
-        'ispcp_languageSetlocaleValue' => '',
-        'ispcp_table' => '',
-        'ispcp_language' => ''
+        'imscp_languageRevision' => '',
+        'imscp_languageSetlocaleValue' => '',
+        'imscp_table' => '',
+        'imscp_language' => ''
     );
 
     $errors = 0;
@@ -336,10 +336,10 @@ function _importGettextFile($file, $filename) {
     if (empty($content)) return 1;
 
     $ab = array(
-        'ispcp_languageRevision' => '',
-        'ispcp_languageSetlocaleValue' => '',
-        'ispcp_table' => '',
-        'ispcp_language' => ''
+        'imscp_languageRevision' => '',
+        'imscp_languageSetlocaleValue' => '',
+        'imscp_table' => '',
+        'imscp_language' => ''
     );
 
     // Parse all messages
@@ -359,7 +359,7 @@ function _importGettextFile($file, $filename) {
 
     // set language
     if (isset($ab['_: Localised language'])) {
-        $ab['ispcp_language'] = $ab['_: Localised language'];
+        $ab['imscp_language'] = $ab['_: Localised language'];
         unset($ab['_: Localised language']);
     } else {
         return 2;
@@ -385,11 +385,11 @@ function _importGettextFile($file, $filename) {
             $n = strpos($s, '<');
 
             if ($n !== false) {
-                $ab['ispcp_table'] = str_replace(' ', '', mb_substr($s, 0, $n));
+                $ab['imscp_table'] = str_replace(' ', '', mb_substr($s, 0, $n));
             }
         }
 
-        // Getting ispcp_language Revision by PO-Revision-Date
+        // Getting i-MSCP_language Revision by PO-Revision-Date
         if (isset($ameta['PO-Revision-Date'])) {
             // trim timezone
             $n = strpos($ameta['PO-Revision-Date'], '+');
@@ -400,7 +400,7 @@ function _importGettextFile($file, $filename) {
             // currently some problems with hour/minute parsing?!
             $time = strptime($ameta['PO-Revision-Date'], '%Y-%m-%d %H:%I');
 
-            $ab['ispcp_languageRevision'] = sprintf(
+            $ab['imscp_languageRevision'] = sprintf(
                 '%04d%02d%02d%02d%02d%02d',
                 $time['tm_year']+1900,
                 $time['tm_mon']+1,
@@ -410,11 +410,11 @@ function _importGettextFile($file, $filename) {
                 $time['tm_sec']
             );
         } else {
-            $ab['ispcp_languageRevision'] = strftime('%Y%m%d%H%I%S');
+            $ab['imscp_languageRevision'] = strftime('%Y%m%d%H%I%S');
         }
 
         // get locale from file name
-        $ab['ispcp_languageSetlocaleValue'] = basename($filename, '.po');
+        $ab['imscp_languageSetlocaleValue'] = basename($filename, '.po');
 
         unset($ab['']);
     } else {
@@ -453,7 +453,7 @@ check_login(__FILE__);
 /**
  * @var $cfg iMSCP_Config_Handler_File
  */
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/multilanguage.tpl');
@@ -466,7 +466,7 @@ $tpl->define_dynamic('lang_def', 'lang_row');
 
 $tpl->assign(
 	array(
-		'TR_ADMIN_I18N_PAGE_TITLE' => tr('ispCP - Admin/Internationalisation'),
+		'TR_ADMIN_I18N_PAGE_TITLE' => tr('i-MSCP - Admin/Internationalisation'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])

@@ -28,18 +28,18 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/i-mscp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/settings_maintenance_mode.tpl');
 
 $tpl->assign(
 	array(
-		'TR_ADMIN_MAINTENANCEMODE_PAGE_TITLE' => tr('ispCP - Admin/Maintenance mode'),
+		'TR_ADMIN_MAINTENANCEMODE_PAGE_TITLE' => tr('i-MSCP - Admin/Maintenance mode'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
@@ -54,7 +54,7 @@ if (isset($_POST['uaction']) AND $_POST['uaction'] == 'apply') {
 	$maintenancemode = $_POST['maintenancemode'];
 	$maintenancemode_message = clean_input($_POST['maintenancemode_message']);
 
-	$db_cfg = ispCP_Registry::get('Db_Config');
+	$db_cfg = iMSCP_Registry::get('Db_Config');
 
 	$db_cfg->MAINTENANCEMODE = $maintenancemode;
 	$db_cfg->MAINTENANCEMODE_MESSAGE = $maintenancemode_message;

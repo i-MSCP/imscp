@@ -28,12 +28,12 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/i-mscp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
 // Get a reference to the Config object
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/settings.tpl');
@@ -41,7 +41,7 @@ $tpl->define_dynamic('def_language', 'page');
 
 $tpl->assign(
 	array(
-		'TR_ADMIN_SETTINGS_PAGE_TITLE' => tr('ispCP - Admin/Settings'),
+		'TR_ADMIN_SETTINGS_PAGE_TITLE' => tr('i-MSCP - Admin/Settings'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
@@ -98,7 +98,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	} else {
 
 		// Get a reference to the DB_Config Objects
-		$db_cfg = ispCP_Registry::get('Db_Config');
+		$db_cfg = iMSCP_Registry::get('Db_Config');
 
 		$db_cfg->LOSTPASSWORD = $lostpwd;
 		$db_cfg->LOSTPASSWORD_TIMEOUT = $lostpwd_timeout;
@@ -114,7 +114,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 		$db_cfg->COUNT_DEFAULT_EMAIL_ADDRESSES = $count_default_emails;
 		$db_cfg->HARD_MAIL_SUSPENSION = $hard_mail_suspension;
 		$db_cfg->USER_INITIAL_LANG = $user_initial_lang;
-		$db_cfg->ISPCP_SUPPORT_SYSTEM = $support_system;
+		$db_cfg->IMSCP_SUPPORT_SYSTEM = $support_system;
 		$db_cfg->HOSTING_PLANS_LEVEL = $hosting_plan_level;
 		$db_cfg->DOMAIN_ROWS_PER_PAGE = $domain_rows_per_page;
 		$db_cfg->LOG_LEVEL = $log_level;
@@ -210,7 +210,7 @@ if ($cfg->BRUTEFORCE_BETWEEN) {
 	$tpl->assign('BRUTEFORCE_BETWEEN_SELECTED_OFF', $html_selected);
 }
 
-if ($cfg->ISPCP_SUPPORT_SYSTEM) {
+if ($cfg->IMSCP_SUPPORT_SYSTEM) {
 	$tpl->assign('SUPPORT_SYSTEM_SELECTED_ON', $html_selected);
 	$tpl->assign('SUPPORT_SYSTEM_SELECTED_OFF', '');
 } else {
