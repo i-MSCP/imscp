@@ -46,13 +46,14 @@ lmtp      unix  -       -       -       -       -       lmtp
 anvil     unix  -       -       -       -       1       anvil
 scache	  unix	-	-	-	-	1	scache
 # ====================================================================
-# ispCP ω (OMEGA) a Virtual Hosting Control System
+# i-MSCP Internet - Multi Server Control Panel
 #
 # @copyright	2001-2006 by moleSoftware GmbH
 # @copyright	2006-2010 by ispCP | http://isp-control.net
+# @copyright    2010 by i-MSCP | http://www.i-mscp.net
 # @version		SVN: $Id$
 # @link			http://isp-control.net
-# @author		ispCP Team
+# @author		i-MSCP Team
 # ====================================================================
 # for AMaViS and SPAM filter support
 amavis    unix  -       -       n       -       2       smtp
@@ -73,9 +74,9 @@ localhost:10025 inet  n -       n       -      -        smtpd
    -o mynetworks=127.0.0.0/8
    -o strict_rfc821_envelopes=yes
 
-# ispCP autoresponder
-i-mscp-arpl unix  -      n       n       -       -       pipe
-  flags=O user=vmail argv=/usr/local/www/i-mscp/engine/messenger/i-mscp-arpl-msgr
+# i-MSCP autoresponder
+imscp-arpl unix  -      n       n       -       -       pipe
+  flags=O user=vmail argv=/usr/local/www/imscp/engine/messenger/imscp-arpl-msgr
 
 # TLS - Activate, if TLS is avaiable/used
 smtps     inet  n       -       -       -       -       smtpd

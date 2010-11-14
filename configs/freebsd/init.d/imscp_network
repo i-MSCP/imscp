@@ -1,6 +1,6 @@
 #!/usr/local/bin/sh
 
-echo "Starting ispcp_network: currently not ported to BSD"
+echo "Starting imscp_network: currently not ported to BSD"
 exit 0
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
@@ -29,13 +29,13 @@ exit 0
 #    http://isp-control.net
 #
 ### BEGIN INIT INFO
-# Provides:             ispcp_network
+# Provides:             imscp_network
 # Required-Start:       $network $local_fs $remote_fs
 # Required-Stop:
 # Should-Stop:          $local_fs
 # Default-Start:        2 3 4 5
 # Default-Stop:         0 1 6
-# Short-Description:    ispCP Network Traffic Logger
+# Short-Description:    i-MSCP Network Traffic Logger
 #
 ### END INIT INFO
 # Note: do not modify any of these vars here, use /etc/default/$NAME instead
@@ -43,12 +43,12 @@ exit 0
 RMMOD="/sbin/rmmod"
 
 IPTABLES="/sbin/iptables"
-LOGDIR=/var/log/i-mscp
+LOGDIR=/var/log/imscp
 LOGFILE=${LOGDIR}/${NAME}.log
 
 umask 027
 
-${RMMOD} ipchains 1>/tmp/ispcp_network.log 2>/tmp/ispcp_network.err.log
+${RMMOD} ipchains 1>/tmp/imscp_network.log 2>/tmp/imscp_network.err.log
 
 # To monitor more ports, edit SERVICES variable add your own ports
 # (ftp, proxy, http, etc.)
@@ -84,14 +84,14 @@ ${IPTABLES} -I OUTPUT
 
 # Services from matrix basically receiving data
 for PORT in $SERVICES; do
-	${IPTABLES} -I ISPCP_INPUT  -p tcp --dport "$PORT" 2>> "$LOGFILE"
-	${IPTABLES} -I ISPCP_OUTPUT -p tcp --sport "$PORT" 2>> "$LOGFILE"
+	${IPTABLES} -I IMSCP_INPUT  -p tcp --dport "$PORT" 2>> "$LOGFILE"
+	${IPTABLES} -I IMSCP_OUTPUT -p tcp --sport "$PORT" 2>> "$LOGFILE"
 done
 
 # Services from matrix basically sending data
 for PORT in $SERVICES_OUT; do
-	${IPTABLES} -I ISPCP_INPUT  -p tcp --sport "$PORT" 2>> "$LOGFILE"
-	${IPTABLES} -I ISPCP_OUTPUT -p tcp --dport "$PORT" 2>> "$LOGFILE"
+	${IPTABLES} -I IMSCP_INPUT  -p tcp --sport "$PORT" 2>> "$LOGFILE"
+	${IPTABLES} -I IMSCP_OUTPUT -p tcp --dport "$PORT" 2>> "$LOGFILE"
 done
 
 exit 0

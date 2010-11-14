@@ -26,24 +26,24 @@
 #    http://isp-control.net
 #
 
-# PROVIDE: ispcp_daemon
+# PROVIDE: imscp_daemon
 # REQUIRE: DAEMON
 # BEFORE: LOGIN
 # KEYWORD: shutdown
 
 #
-# Add the following lines to /etc/rc.conf to enable ispcp_daemon:
+# Add the following lines to /etc/rc.conf to enable imscp_daemon:
 #
-#ispcp_daemon_enable="YES"
+#imscp_daemon_enable="YES"
 #
 
 . /etc/rc.subr
 
-name=ispcp_daemon
+name=imscp_daemon
 rcvar=`set_rcvar`
 
-command=/usr/local/www/ispcp/daemon/ispcp_daemon
-pidfile=/var/run/ispcp-daemon.pid
+command=/usr/local/www/imscp/daemon/imscp_daemon
+pidfile=/var/run/imscp-daemon.pid
 
 stop_postcmd=stop_postcmd
 
@@ -53,8 +53,8 @@ stop_postcmd() {
 
 # set defaults
 
-ispcp_daemon_enable=${ispcp_daemon_enable:-"NO"}
-ispcp_daemon_flags=${ispcp_daemon_flags:-""}
+imscp_daemon_enable=${imscp_daemon_enable:-"NO"}
+imscp_daemon_flags=${imscp_daemon_flags:-""}
 
 extra_commands="reload"
 

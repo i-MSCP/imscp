@@ -33,7 +33,7 @@
 
 install:
 
-	cp ./i-mscp $(ROOT_CONF)/logrotate.conf
+	cp ./imscp $(ROOT_CONF)/logrotate.conf
 
 uninstall:
 
