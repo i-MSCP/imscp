@@ -36,23 +36,23 @@ install:
 	$(SYSTEM_MAKE_DIRS) $(ROOT_CONF)/init.d
 	$(SYSTEM_MAKE_DIRS) $(ROOT_CONF)/conf.d
 
-	cp ispcp_daemon $(ROOT_CONF)/init.d
-	cp ispcp_network $(ROOT_CONF)/init.d
+	cp imscp_daemon $(ROOT_CONF)/init.d
+	cp imscp_network $(ROOT_CONF)/init.d
 
-	chown root:root $(ROOT_CONF)/init.d/ispcp_network $(ROOT_CONF)/init.d/ispcp_daemon
-	chmod 0755 $(ROOT_CONF)/init.d/ispcp_network $(ROOT_CONF)/init.d/ispcp_daemon
+	chown root:root $(ROOT_CONF)/init.d/imscp_network $(ROOT_CONF)/init.d/imscp_daemon
+	chmod 0755 $(ROOT_CONF)/init.d/imscp_network $(ROOT_CONF)/init.d/imscp_daemon
 
-	if [[ -f conf.d/ispcp_daemon ]]; then \
-		cp -p ispcp_daemon $(ROOT_CONF)/conf.d/ispcp_daemon ; \
+	if [[ -f conf.d/imscp_daemon ]]; then \
+		cp -p imscp_daemon $(ROOT_CONF)/conf.d/imscp_daemon ; \
 	fi
 
-	if [[ -f conf.d/ispcp_network ]]; then \
-		cp -p ispcp_network $(ROOT_CONF)/conf.d/ispcp_network ; \
+	if [[ -f conf.d/imscp_network ]]; then \
+		cp -p imscp_network $(ROOT_CONF)/conf.d/imscp_network ; \
 	fi
 
 uninstall:
 
-	rm -f $(ROOT_CONF)/init.d/ispcp_daemon
-	rm -f $(ROOT_CONF)/init.d/ispcp_network
-	rm -f $(ROOT_CONF)/conf.d/ispcp_daemon
-	rm -f $(ROOT_CONF)/conf.d/ispcp_network
+	rm -f $(ROOT_CONF)/init.d/imscp_daemon
+	rm -f $(ROOT_CONF)/init.d/imscp_network
+	rm -f $(ROOT_CONF)/conf.d/imscp_daemon
+	rm -f $(ROOT_CONF)/conf.d/imscp_network
