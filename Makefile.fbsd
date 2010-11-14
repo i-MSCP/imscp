@@ -30,16 +30,16 @@
 #
 
 .ifndef INST_PREF
- INST_PREF=/tmp/i-mscp
+ INST_PREF=/tmp/imscp
 .endif
 
 HOST_OS=freebsd
 
 ROOT_CONF=$(INST_PREF)/usr/local/etc
 
-SYSTEM_ROOT=$(INST_PREF)/usr/local/www/i-mscp
-SYSTEM_CONF=$(INST_PREF)/usr/local/etc/i-mscp
-SYSTEM_LOG=$(INST_PREF)/var/log/i-mscp
+SYSTEM_ROOT=$(INST_PREF)/usr/local/www/imscp
+SYSTEM_CONF=$(INST_PREF)/usr/local/etc/imscp
+SYSTEM_LOG=$(INST_PREF)/var/log/imscp
 SYSTEM_APACHE_BACK_LOG=$(INST_PREF)/usr/local/www/logs/backup
 SYSTEM_VIRTUAL=$(INST_PREF)/usr/local/www/data/virtual
 SYSTEM_AWSTATS=$(INST_PREF)/usr/local/www/awstats

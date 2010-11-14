@@ -30,16 +30,16 @@
 #
 
 ifndef INST_PREF
-        INST_PREF=/tmp/i-mscp
+        INST_PREF=/tmp/imscp
 endif
 
 HOST_OS=opensuse
 
 ROOT_CONF=$(INST_PREF)/etc
 
-SYSTEM_ROOT=$(INST_PREF)/srv/www/i-mscp
-SYSTEM_CONF=$(INST_PREF)/etc/i-mscp
-SYSTEM_LOG=$(INST_PREF)/var/log/i-mscp
+SYSTEM_ROOT=$(INST_PREF)/srv/www/imscp
+SYSTEM_CONF=$(INST_PREF)/etc/imscp
+SYSTEM_LOG=$(INST_PREF)/var/log/imscp
 SYSTEM_APACHE_BACK_LOG=$(INST_PREF)/var/log/apache2/backup
 SYSTEM_VIRTUAL=$(INST_PREF)/srv/www/virtual
 SYSTEM_AWSTATS=$(INST_PREF)/srv/www/awstats
@@ -58,7 +58,7 @@ install:
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_CONF)
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_ROOT)
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_LOG)
-	$(SYSTEM_MAKE_DIRS) $(SYSTEM_LOG)/i-mscp-arpl-msgr
+	$(SYSTEM_MAKE_DIRS) $(SYSTEM_LOG)/imscp-arpl-msgr
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_VIRTUAL)
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_FCGI)
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_SCOREBOARDS)
