@@ -43,7 +43,7 @@
  */
 function curlang($newlang = null, $force = false) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 	static $language = null;
 
 	// We store old value so if $language is changed old value is returned
@@ -124,7 +124,7 @@ function tr($msgid, $substitution = false) {
 				;
 			";
 
-			$stmt = ispCP_Registry::get('Pdo')->prepare($query);
+			$stmt = iMSCP_Registry::get('Pdo')->prepare($query);
 		}
 
 		// Execute the query

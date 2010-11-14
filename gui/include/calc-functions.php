@@ -161,7 +161,7 @@ function crypt_user_pass_with_salt($data) {
  */
 function _passgen() {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 	$pw = '';
 
 

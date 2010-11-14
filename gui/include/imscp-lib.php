@@ -43,7 +43,7 @@ error_reporting(E_ALL|E_STRICT);
 // @see iMSCP_Initializer::_setDisplayErrors()
 ini_set('display_errors', 1);
 
-// Define path for the ispCP include directory
+// Define path for the i-MSCP include directory
 define('INCLUDEPATH', dirname(__FILE__));
 
 /**
@@ -60,7 +60,7 @@ spl_autoload_register('autoload_class');
  * Sets the exception handler for uncaught exceptions and register it in the
  * registry.
  */
-ispCP_Registry::setAlias(
+iMSCP_Registry::setAlias(
 	'exceptionHandler',
 	iMSCP_Exception_Handler::getInstance()->setHandler()
 );
@@ -71,13 +71,13 @@ ispCP_Registry::setAlias(
  *
  * The writer writes all exception messages to the client browser. In production,
  * all messages are replaced by a specific message to avoid revealing important
- * information about the ispCP application environment if the user is not an
+ * information about the iMSCP application environment if the user is not an
  * administrator.
  *
  * Another optional writers will be attached to this object during
  * initialization process.
  */
-ispCP_Registry::get('exceptionHandler')->attach(
+iMSCP_Registry::get('exceptionHandler')->attach(
 	new iMSCP_Exception_Writer_Browser(
 		// hardcoded here but will be improved later
 		'themes/omega_original/system-message.tpl'
@@ -89,10 +89,10 @@ ispCP_Registry::get('exceptionHandler')->attach(
  */
 require_once INCLUDEPATH . '/i-mscp-db-keys.php';
 
-if($ispcp_db_pass_key != '{KEY}' && $ispcp_db_pass_iv != '{IV}') {
-	ispCP_Registry::set('MCRYPT_KEY', $ispcp_db_pass_key);
-	ispCP_Registry::set('MCRYPT_IV', $ispcp_db_pass_iv);
-	unset($ispcp_db_pass_key, $ispcp_db_pass_iv);
+if($iMSCP_db_pass_key != '{KEY}' && $iMSCP_db_pass_iv != '{IV}') {
+	iMSCP_Registry::set('MCRYPT_KEY', $iMSCP_db_pass_key);
+	iMSCP_Registry::set('MCRYPT_IV', $iMSCP_db_pass_iv);
+	unset($iMSCP_db_pass_key, $iMSCP_db_pass_iv);
 } else {
 	throw new iMSCP_Exception(
 		'Error: Database key and/or initialization vector was not generated!'
@@ -100,14 +100,14 @@ if($ispcp_db_pass_key != '{KEY}' && $ispcp_db_pass_iv != '{IV}') {
 }
 
 /**
- * Include ispCP common functions
+ * Include i-MSCP common functions
  */
 require_once 'net_idna/idna_convert.class.php';
 require_once INCLUDEPATH . '/i-mscp-functions.php';
 require_once INCLUDEPATH . '/deprecated.php';
 
 /**
- * Bootstrap the ispCP environment, and default configuration
+ * Bootstrap the i-MSCP environment, and default configuration
  *
  * @see {@link iMSCP_Bootstrap} class
  * @see {@link iMSCP_Initializer} class

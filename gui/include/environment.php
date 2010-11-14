@@ -115,7 +115,7 @@ $config->MAX_DNAMES_LABELS = 1;
 $config->MAX_SUBDNAMES_LABELS = 1;
 
 // Enable or disable support system
-$config->ISPCP_SUPPORT_SYSTEM = true;
+$config->IMSCP_SUPPORT_SYSTEM = true;
 
 // Enable or disable lost password support
 $config->LOSTPASSWORD = true;
@@ -221,8 +221,8 @@ $config->PREVENT_EXTERNAL_LOGIN_CLIENT = true;
 // Automatic search for new version
 $config->CHECK_FOR_UPDATES = true;
 
-if(!$config->ISPCP_SUPPORT_SYSTEM_TARGET) {
-	$config->ISPCP_SUPPORT_SYSTEM_TARGET = '_self';
+if(!$config->IMSCP_SUPPORT_SYSTEM_TARGET) {
+	$config->IMSCP_SUPPORT_SYSTEM_TARGET = '_self';
 }
 
 # Converting some possible IDN to ACE (see #2476)

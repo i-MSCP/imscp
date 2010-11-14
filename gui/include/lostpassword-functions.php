@@ -37,14 +37,14 @@ function check_gd() {
  */
 function captcha_fontfile_exists() {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	return file_exists($cfg->LOSTPASSWORD_CAPTCHA_FONT);
 }
 
 function createImage($strSessionVar) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$rgBgColor = $cfg->LOSTPASSWORD_CAPTCHA_BGCOLOR;
 	$rgTextColor = $cfg->LOSTPASSWORD_CAPTCHA_TEXTCOLOR;
@@ -119,7 +119,7 @@ function strrand($length, $strSessionVar) {
 }
 
 function removeOldKeys($ttl) {
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$boundary = date('Y-m-d H:i:s', time() - $ttl * 60);
 
@@ -137,7 +137,7 @@ function removeOldKeys($ttl) {
 }
 
 function setUniqKey($admin_name, $uniqkey) {
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$timestamp = date('Y-m-d H:i:s', time());
 
@@ -155,7 +155,7 @@ function setUniqKey($admin_name, $uniqkey) {
 }
 
 function setPassword($uniqkey, $upass) {
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	if ($uniqkey == '') {
 		die();
@@ -174,7 +174,7 @@ function setPassword($uniqkey, $upass) {
 }
 
 function uniqkeyexists($uniqkey) {
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$query = "
 		SELECT
@@ -205,8 +205,8 @@ function uniqkeygen() {
 
 function sendpassword($uniqkey) {
 
-	$cfg = ispCP_Registry::get('Config');
-	$sql = ispCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
 
 	$query = "
 		SELECT
@@ -291,7 +291,7 @@ function sendpassword($uniqkey) {
 
 		$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 7bit\n";
 
-		$headers .= 'X-Mailer: ispCP lostpassword mailer';
+		$headers .= 'X-Mailer: i-MSCP lostpassword mailer';
 
 		$mail_result = mail($to, $subject, $message, $headers);
 
@@ -307,8 +307,8 @@ function sendpassword($uniqkey) {
 
 function requestpassword($admin_name) {
 
-	$cfg = ispCP_Registry::get('Config');
-	$sql = ispCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
 
 	$query = "
 		SELECT
@@ -378,7 +378,7 @@ function requestpassword($admin_name) {
 
 	$headers = 'From: ' . $from . "\n";
 	$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 8bit\n";
-	$headers .= 'X-Mailer: ispCP lostpassword mailer';
+	$headers .= 'X-Mailer: i-MSCP lostpassword mailer';
 
 	$mail_result = mail($to, encode($subject), $message, $headers);
 

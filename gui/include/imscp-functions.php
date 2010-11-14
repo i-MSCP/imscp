@@ -38,7 +38,7 @@ function check_for_lock_file() {
 	/**
 	 * @var iMSCP_Config_Handler_File $cfg
 	 */
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$fh = fopen($cfg->MR_LOCK_FILE, 'r');
 
@@ -88,7 +88,7 @@ function send_request() {
 	/**
 	 * @var iMSCP_Config_Handler_File $cfg
 	 */
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$code = 999;
 
@@ -162,7 +162,7 @@ function send_request() {
  */
 function update_expire_date ($user_id, $domain_new_expire ) {
 
-	$db = ispCP_Registry::get('Db');
+	$db = iMSCP_Registry::get('Db');
 
 	$query = "
 		UPDATE
@@ -192,12 +192,12 @@ function update_user_props($user_id, $props) {
 	/**
 	 * @var iMSCP_Config_Handler_File $cfg
 	 */
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	/**
 	 * @var iMSCP_Database $db
 	 */
-	$db = ispCP_Registry::get('Db');
+	$db = iMSCP_Registry::get('Db');
 
 	list(
 		,$sub_max,,$als_max,,$mail_max,,$ftp_max,,$sql_db_max,,$sql_user_max,
@@ -317,7 +317,7 @@ function update_user_props($user_id, $props) {
 
 		$rs = exec_query($db, $query, array($update_status, $user_id));
 
-		// Send request to the ispCP daemon
+		// Send request to the i-MSCP daemon
 		send_request();
 
 	} else {
@@ -601,8 +601,8 @@ function decrypt_db_password($db_pass) {
 
 		$text = @base64_decode($db_pass . "\n");
 		$td = @mcrypt_module_open('blowfish', '', 'cbc', '');
-		$key = ispCP_Registry::get('MCRYPT_KEY');
-		$iv = ispCP_Registry::get('MCRYPT_IV');
+		$key = iMSCP_Registry::get('MCRYPT_KEY');
+		$iv = iMSCP_Registry::get('MCRYPT_IV');
 
 		// Initialize encryption
 		@mcrypt_generic_init($td, $key, $iv);
@@ -632,8 +632,8 @@ function encrypt_db_password($db_pass) {
 	if (extension_loaded('mcrypt')) {
 
 		$td = @mcrypt_module_open(MCRYPT_BLOWFISH, '', 'cbc', '');
-		$key = ispCP_Registry::get('MCRYPT_KEY');
-		$iv = ispCP_Registry::get('MCRYPT_IV');
+		$key = iMSCP_Registry::get('MCRYPT_KEY');
+		$iv = iMSCP_Registry::get('MCRYPT_IV');
 
 		// compatibility with used perl pads
 		$block_size = @mcrypt_enc_get_block_size($td);

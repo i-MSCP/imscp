@@ -125,7 +125,7 @@ function get_cnt_of_user(&$sql, $user_type) {
  */
 function records_rlike_count($field, $table, $where, $value, $a, $b) {
 
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	if($where != '') {
 		$query = "
@@ -158,7 +158,7 @@ function records_rlike_count($field, $table, $where, $value, $a, $b) {
 
 function remove_users_common_properties($id_user) {
 
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$query = "
 		DELETE FROM
@@ -255,7 +255,7 @@ function strip_html($input) {
 /* Unused functions moved from include/layout-functions.php */
 
 function check_language_exist($lang_table) {
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	return (in_array($lang_table, $sql->metaTables()) == true) ? true : false;
 }

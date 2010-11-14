@@ -42,7 +42,7 @@
  * @deprecated since 1.0.6
  */
 function setConfig_Value($name, $value) {
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$query = "SELECT `name` FROM `config` WHERE `name`= ?";
 
@@ -193,7 +193,7 @@ function chk_dmn_token($data) {
 
 /**
  * Function for checking domain name tokens; Internel function,
- * for usage in ispcp_* functions
+ * for usage in iMSCP_* functions
  *
  * @param string $data token data without eol
  * @return boolean true for correct syntax, false otherwise
@@ -210,7 +210,7 @@ function check_dn_rsl_token($data) {
 */
 
 /**
- * Function for checking ispCP domains syntax. Here domains are
+ * Function for checking i-MSCP domains syntax. Here domains are
  * limited to {dname}.{ext} parts
  *
  * @param String $dname i-mscp domain data
@@ -296,7 +296,7 @@ function chk_mountp($data, $max_char = 50, $min_char = 2) {
 */
 
 /**
- * Function for checking ispCP subdomain syntax.
+ * Function for checking i-MSCP subdomain syntax.
  *
  * Here subdomains are limited to {subname}.{dname}.{ext} parts.
  * Data passed to this function must be in the upper form, not

@@ -35,8 +35,8 @@
  */
 function do_session_timeout() {
 
-	$cfg = ispCP_Registry::get('Config');
-	$sql = ispCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
 
 	$ttl = time() - $cfg->SESSION_TIMEOUT * 60;
 
@@ -64,7 +64,7 @@ function do_session_timeout() {
  */
 function session_exists($sess_id) {
 
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$ip = getipaddr();
 
@@ -104,7 +104,7 @@ function getipaddr() {
  */
 function init_login() {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	// just make sure to expire counters in case BRUTEFORCE is turned off
 	unblock($cfg->BRUTEFORCE_BLOCK_TIME);
@@ -122,7 +122,7 @@ function init_login() {
  */
 function username_exists($username) {
 
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$username = encode_idna($username);
 
@@ -149,7 +149,7 @@ function username_exists($username) {
  */
 function get_userdata($username) {
 
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$query = '
 		SELECT
@@ -174,7 +174,7 @@ function get_userdata($username) {
  */
 function is_userdomain_expired($username) {
 
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$udata = get_userdata($username);
 
@@ -217,8 +217,8 @@ function is_userdomain_expired($username) {
  */
 function is_userdomain_ok($username) {
 
-	$cfg = ispCP_Registry::get('Config');
-	$sql = ispCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
 
 	$udata = get_userdata($username);
 
@@ -256,8 +256,8 @@ function is_userdomain_ok($username) {
  */
 function unblock($timeout = null, $type = 'bruteforce') {
 
-	$cfg = ispCP_Registry::get('Config');
-	$sql = ispCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
 
 	if ($timeout === null) {
 		$timeout = $cfg->BRUTEFORCE_BLOCK_TIME;
@@ -338,8 +338,8 @@ function unblock($timeout = null, $type = 'bruteforce') {
 function is_ipaddr_blocked($ipaddr = null, $type = 'bruteforce',
 	$autodeny = false) {
 
-	$cfg = ispCP_Registry::get('Config');
-	$sql = ispCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
 
 	if ($ipaddr === null) {
 		$ipaddr = getipaddr();
@@ -412,8 +412,8 @@ function is_ipaddr_blocked($ipaddr = null, $type = 'bruteforce',
  */
 function shall_user_wait($ipaddr = null, $displayMessage = true) {
 
-	$cfg = ispCP_Registry::get('Config');
-	$sql = ispCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
 
 	if (!$cfg->BRUTEFORCE) {
 		return false;
@@ -478,8 +478,8 @@ function shall_user_wait($ipaddr = null, $displayMessage = true) {
  */
 function check_ipaddr($ipaddr = null, $type = 'bruteforce') {
 
-	$cfg = ispCP_Registry::get('Config');
-	$sql = ispCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
 
 	if ($ipaddr === null) {
 		$ipaddr = getipaddr();
@@ -609,7 +609,7 @@ function check_ipaddr($ipaddr = null, $type = 'bruteforce') {
  */
 function block_ipaddr($ipaddr, $type = 'General') {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	write_log(
 			"$type protection, <b><i> " .
@@ -628,7 +628,7 @@ function block_ipaddr($ipaddr, $type = 'General') {
  */
 function deny_access() {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$backButtonDestination =
 		$cfg->BASE_SERVER_VHOST_PREFIX . $cfg->BASE_SERVER_VHOST;
@@ -652,8 +652,8 @@ function deny_access() {
  */
 function register_user($uname, $upass) {
 
-	$cfg = ispCP_Registry::get('Config');
-	$sql = ispCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
 
 	$backButtonDestination = $cfg->BASE_SERVER_VHOST_PREFIX .
 		$cfg->BASE_SERVER_VHOST;
@@ -766,8 +766,8 @@ function register_user($uname, $upass) {
  */
 function check_user_login() {
 
-	$cfg = ispCP_Registry::get('Config');
-	$sql = ispCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
 
 	$sess_id = session_id();
 	// kill timed out sessions
@@ -938,7 +938,7 @@ function check_login($fName = null, $preventExternalLogin = true) {
  */
 function change_user_interface($from_id, $to_id) {
 
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$index = null;
 
@@ -1090,7 +1090,7 @@ function change_user_interface($from_id, $to_id) {
  */
 function unset_user_login_data($ignorePreserve = false, $restore = false) {
 
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	if (isset($_SESSION['user_logged'])) {
 

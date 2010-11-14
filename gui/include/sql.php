@@ -103,7 +103,7 @@ function exec_query($db, $query, $bind = null, $failDie = true) {
  */
 function quoteIdentifier($identifier) {
 
-	$db = ispCP_Registry::get('Db');
+	$db = iMSCP_Registry::get('Db');
 
 	$identifier = str_replace(
 		$db->nameQuote, '\\' . $db->nameQuote, $identifier

@@ -71,8 +71,8 @@ function encode($in_str, $charset = 'UTF-8') {
 
 function gen_admin_mainmenu(&$tpl, $menu_file) {
 
-	$cfg = ispCP_Registry::get('Config');
-	$sql = ispCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
 
 	$tpl->define_dynamic('menu', $menu_file);
 	$tpl->define_dynamic('isactive_support', 'menu');
@@ -84,8 +84,8 @@ function gen_admin_mainmenu(&$tpl, $menu_file) {
 			'TR_MENU_SYSTEM_TOOLS' => tr('System tools'),
 			'TR_MENU_MANAGE_USERS' => tr('Manage users'),
 			'TR_MENU_STATISTICS' => tr('Statistics'),
-			'SUPPORT_SYSTEM_PATH' => $cfg->ISPCP_SUPPORT_SYSTEM_PATH,
-			'SUPPORT_SYSTEM_TARGET' => $cfg->ISPCP_SUPPORT_SYSTEM_TARGET,
+			'SUPPORT_SYSTEM_PATH' => $cfg->IMSCP_SUPPORT_SYSTEM_PATH,
+			'SUPPORT_SYSTEM_TARGET' => $cfg->IMSCP_SUPPORT_SYSTEM_TARGET,
 			'TR_MENU_SUPPORT_SYSTEM' => tr('Support system'),
 			'TR_MENU_SETTINGS' => tr('Settings'),
 			'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
@@ -93,8 +93,8 @@ function gen_admin_mainmenu(&$tpl, $menu_file) {
 			'TR_MENU_SYSTEM_TOOLS' => tr('System tools'),
 			'TR_MENU_MANAGE_USERS' => tr('Manage users'),
 			'TR_MENU_STATISTICS' => tr('Statistics'),
-			'SUPPORT_SYSTEM_PATH' => $cfg->ISPCP_SUPPORT_SYSTEM_PATH,
-			'SUPPORT_SYSTEM_TARGET' => $cfg->ISPCP_SUPPORT_SYSTEM_TARGET,
+			'SUPPORT_SYSTEM_PATH' => $cfg->IMSCP_SUPPORT_SYSTEM_PATH,
+			'SUPPORT_SYSTEM_TARGET' => $cfg->IMSCP_SUPPORT_SYSTEM_TARGET,
 			'TR_MENU_SUPPORT_SYSTEM' => tr('Support system'),
 			'TR_MENU_SETTINGS' => tr('Settings'),
 			'TR_MENU_CHANGE_PASSWORD' => tr('Change password'),
@@ -118,9 +118,9 @@ function gen_admin_mainmenu(&$tpl, $menu_file) {
 			'TR_MENU_QUESTIONS_AND_COMMENTS' => tr('Support system'),
 			'TR_MENU_SERVER_TRAFFIC_SETTINGS' => tr('Server traffic settings'),
 			'TR_MENU_SERVER_STATUS' => tr('Server status'),
-			'TR_MENU_ISPCP_UPDATE' => tr('ispCP updates'),
-			'TR_MENU_ISPCP_DATABASE_UPDATE' => tr('ispCP database updates'),
-			'TR_MENU_ISPCP_DEBUGGER' => tr('ispCP debugger'),
+			'TR_MENU_IMSCP_UPDATE' => tr('i-MSCP updates'),
+			'TR_MENU_IMSCP_DATABASE_UPDATE' => tr('i-MSCP database updates'),
+			'TR_MENU_IMSCP_DEBUGGER' => tr('i-MSCP debugger'),
 			'TR_CUSTOM_MENUS' => tr('Custom menus'),
 			'TR_MENU_OVERVIEW' => tr('Overview'),
 			'TR_MENU_MANAGE_SESSIONS' => tr('User sessions'),
@@ -173,7 +173,7 @@ function gen_admin_mainmenu(&$tpl, $menu_file) {
 		} // end while
 	} // end else
 
-	if(!$cfg->ISPCP_SUPPORT_SYSTEM) {
+	if(!$cfg->IMSCP_SUPPORT_SYSTEM) {
 		$tpl->assign('ISACTIVE_SUPPORT', '');
 	}
 
@@ -186,8 +186,8 @@ function gen_admin_mainmenu(&$tpl, $menu_file) {
 
 function gen_admin_menu(&$tpl, $menu_file) {
 
-	$cfg = ispCP_Registry::get('Config');
-	$sql = ispCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
 
 	$tpl->define_dynamic('menu', $menu_file);
 	$tpl->define_dynamic('custom_buttons', 'menu');
@@ -221,13 +221,13 @@ function gen_admin_menu(&$tpl, $menu_file) {
 			'TR_MENU_SYSTEM_TOOLS' => tr('System tools'),
 			'TR_MENU_SERVER_TRAFFIC_SETTINGS' => tr('Server traffic settings'),
 			'TR_MENU_SERVER_STATUS' => tr('Server status'),
-			'TR_MENU_ISPCP_UPDATE' => tr('ispCP updates'),
-			'TR_MENU_ISPCP_DEBUGGER' => tr('ispCP debugger'),
+			'TR_MENU_IMSCP_UPDATE' => tr('i-MSCP updates'),
+			'TR_MENU_IMSCP_DEBUGGER' => tr('i-MSCP debugger'),
 			'TR_CUSTOM_MENUS' => tr('Custom menus'),
 			'TR_MENU_OVERVIEW' => tr('Overview'),
 			'TR_MENU_MANAGE_SESSIONS' => tr('User sessions'),
-			'SUPPORT_SYSTEM_PATH' => $cfg->ISPCP_SUPPORT_SYSTEM_PATH,
-			'SUPPORT_SYSTEM_TARGET' => $cfg->ISPCP_SUPPORT_SYSTEM_TARGET,
+			'SUPPORT_SYSTEM_PATH' => $cfg->IMSCP_SUPPORT_SYSTEM_PATH,
+			'SUPPORT_SYSTEM_TARGET' => $cfg->IMSCP_SUPPORT_SYSTEM_TARGET,
 			'TR_MENU_LOSTPW_EMAIL' => tr('Lostpw email setup'),
 			'TR_MAINTENANCEMODE' => tr('Maintenance mode'),
 			'TR_MENU_SETTINGS' => tr('Settings'),
@@ -281,7 +281,7 @@ function gen_admin_menu(&$tpl, $menu_file) {
 		} // end while
 	} // end else
 
-	if(!$cfg->ISPCP_SUPPORT_SYSTEM) {
+	if(!$cfg->IMSCP_SUPPORT_SYSTEM) {
 		$tpl->assign('SUPPORT_SYSTEM', '');
 	}
 
@@ -311,7 +311,7 @@ function get_sql_user_count($sql) {
 
 function get_admin_general_info(&$tpl, &$sql) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$tpl->assign(
 		array(
@@ -379,7 +379,7 @@ function get_admin_general_info(&$tpl, &$sql) {
 
 function gen_admin_list(&$tpl, &$sql) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$query = "
 		SELECT
@@ -486,7 +486,7 @@ function gen_admin_list(&$tpl, &$sql) {
 
 function gen_reseller_list(&$tpl, &$sql) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$query = "
 		SELECT
@@ -593,7 +593,7 @@ function gen_reseller_list(&$tpl, &$sql) {
 
 function gen_user_list(&$tpl, &$sql) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$start_index = 0;
 	$rows_per_page = $cfg->DOMAIN_ROWS_PER_PAGE;
@@ -879,7 +879,7 @@ function get_admin_manage_users(&$tpl, &$sql) {
 
 function generate_reseller_props($reseller_id) {
 
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$query = "
 		SELECT
@@ -921,7 +921,7 @@ function generate_reseller_props($reseller_id) {
 
 function generate_reseller_users_props($reseller_id) {
 
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$rdmn_current = 0;
 	$rdmn_max = 0;
@@ -1089,8 +1089,8 @@ function generate_reseller_users_props($reseller_id) {
 */
 function generate_user_props($user_id) {
 
-	$cfg = ispCP_Registry::get('Config');
-	$sql = ispCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
 
 	$query = "
 		SELECT
@@ -1174,7 +1174,7 @@ function generate_user_props($user_id) {
 */
 function records_count($table, $where, $value) {
 
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	if($where != '') {
 		if($value != '') {
@@ -1220,7 +1220,7 @@ function records_count($table, $where, $value) {
 function sub_records_count($field, $table, $where, $value, $subfield, $subtable,
 	$subwhere, $subgroupname) {
 
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	if($where != '') {
 		$query = "
@@ -1306,7 +1306,7 @@ function sub_records_count($field, $table, $where, $value, $subfield, $subtable,
 function generate_user_traffic($user_id) {
 
 	global $crnt_month, $crnt_year;
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$from_timestamp = mktime(0, 0, 0, $crnt_month, 1, $crnt_year);
 
@@ -1409,7 +1409,7 @@ function make_usage_vals($current, $max) {
 function sub_records_rlike_count($field, $table, $where, $value, $subfield,
 	$subtable, $subwhere, $a, $b) {
 
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	if($where != '') {
 		$query = "
@@ -1470,7 +1470,7 @@ function sub_records_rlike_count($field, $table, $where, $value, $subfield,
 function gen_select_lists(&$tpl, $user_month, $user_year) {
 
 	global $crnt_month, $crnt_year;
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	if(!$user_month == '' || !$user_year == '') {
 		$crnt_month = $user_month;
@@ -1507,7 +1507,7 @@ function gen_select_lists(&$tpl, $user_month, $user_year) {
 
 function get_user_name($user_id) {
 
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$query = "
 		SELECT
@@ -1526,8 +1526,8 @@ function get_user_name($user_id) {
 
 function get_logo($user_id) {
 
-	$cfg = ispCP_Registry::get('Config');
-	$sql = ispCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
 
 	// check which logo we should return:
 	$query = "
@@ -1567,8 +1567,8 @@ function get_own_logo($user_id) {
 */
 function get_admin_logo($user_id) {
 
-	$cfg = ispCP_Registry::get('Config');
-	$sql = ispCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
 
 	$query = "
 		SELECT
@@ -1607,8 +1607,8 @@ function calc_bar_value($value, $value_max, $bar_width) {
 function write_log($msg, $level = E_USER_WARNING) {
 
 	global $send_log_to;
-	$cfg = ispCP_Registry::get('Config');
-	$sql = ispCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
 
 	if(isset($_SERVER['REMOTE_ADDR'])) {
 		$client_ip = $_SERVER['REMOTE_ADDR'];
@@ -1642,14 +1642,14 @@ function write_log($msg, $level = E_USER_WARNING) {
 		$default_base_server_ip = $cfg->BASE_SERVER_IP;
 		$Version = $cfg->Version;
 		$BuildDate = $cfg->BuildDate;
-		$subject = "ispCP $Version on $default_hostname ($default_base_server_ip)";
+		$subject = "i-MSCP $Version on $default_hostname ($default_base_server_ip)";
 		$to = $send_log_to;
 		$message = <<<AUTO_LOG_MSG
 
-ispCP Log
+i-MSCP Log
 
 Server: $default_hostname ($default_base_server_ip)
-Version: ispCP $Version ($BuildDate)
+Version: i-MSCP $Version ($BuildDate)
 
 Message: ----------------[BEGIN]--------------------------
 
@@ -1659,9 +1659,9 @@ Message: ----------------[END]----------------------------
 
 AUTO_LOG_MSG;
 
-		$headers = "From: \"ispCP Logging Daemon\" <" . $admin_email . ">\n";
+		$headers = "From: \"i-MSCP Logging Daemon\" <" . $admin_email . ">\n";
 		$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 7bit\n";
-		$headers .= "X-Mailer: ispCP $Version Logging Mailer";
+		$headers .= "X-Mailer: i-MSCP $Version Logging Mailer";
 		$mail_result = mail($to, $subject, $message, $headers);
 
 		// Reduce admin log entries by only logging email notification if not
@@ -1687,7 +1687,7 @@ AUTO_LOG_MSG;
 function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname,
 	$ulname, $utype, $gender = '') {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$admin_login = $_SESSION['user_logged'];
 	$data = get_welcome_email($admin_id, 'user');
@@ -1733,7 +1733,7 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname,
 	$headers = "From: " . $from . "\n";
 	$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; " .
 		"charset=utf-8\nContent-Transfer-Encoding: 8bit\n";
-	$headers .= "X-Mailer: ispCP {$cfg->Version} Service Mailer";
+	$headers .= "X-Mailer: i-MSCP {$cfg->Version} Service Mailer";
 	$mail_result = mail($to, $subject, $message, $headers);
 	$mail_status = ($mail_result) ? 'OK' : 'NOT OK';
 
@@ -1743,7 +1743,7 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname,
 
 function update_reseller_props($reseller_id, $props) {
 
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	if($props == '') {
 		return;
@@ -1820,7 +1820,7 @@ function gen_logged_from(&$tpl) {
 function change_domain_status(&$sql, $domain_id, $domain_name, $action,
 	$location) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	if($action == 'disable') {
 		$new_status = $cfg->ITEM_TODISABLED_STATUS;
@@ -2083,7 +2083,7 @@ function gen_admin_domain_query(&$search_query, &$count_query, $start_index,
 function gen_admin_domain_search_options(&$tpl, $search_for, $search_common,
 	$search_status) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	if($search_for == 'n/a' && $search_common == 'n/a' &&
 		$search_status == 'n/a') {
@@ -2219,8 +2219,8 @@ function gen_admin_domain_search_options(&$tpl, $search_for, $search_common,
 */
 function delete_domain($domain_id, $goto, $breseller = false) {
 
-	$cfg = ispCP_Registry::get('Config');
-	$sql = ispCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
 
 	// Get uid and gid of domain user
 	$query = "
@@ -2501,7 +2501,7 @@ function delete_domain($domain_id, $goto, $breseller = false) {
 */
 function gen_purchase_haf(&$tpl, &$sql, $user_id, $encode = false) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$query = "
 		SELECT
@@ -2522,7 +2522,7 @@ function gen_purchase_haf(&$tpl, &$sql, $user_id, $encode = false) {
 	$rs = exec_query($sql, $query, $user_id);
 
 	if($rs->recordCount() == 0) {
-		$title = tr("ispCP - Order Panel");
+		$title = tr("i-MSCP - Order Panel");
 
 		$header = <<<RIC
 <?xml version="1.0" encoding="{THEME_CHARSET}" ?>
@@ -2532,7 +2532,7 @@ function gen_purchase_haf(&$tpl, &$sql, $user_id, $encode = false) {
 		<title>{$title}</title>
 		<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
 		<meta http-equiv="Content-Style-Type" content="text/css" />
-		<link href="../themes/{$theme}/css/ispcp_orderpanel.css" rel="stylesheet" type="text/css" />
+		<link href="../themes/{$theme}/css/imscp_orderpanel.css" rel="stylesheet" type="text/css" />
 	</head>
 	<body>
 		<div align="center">

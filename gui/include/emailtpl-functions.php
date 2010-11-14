@@ -24,13 +24,13 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
- * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
+ * Portions created by the iMSCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  */
 
 function get_email_tpl_data($admin_id, $tpl_name) {
 
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$query = "
 		SELECT
@@ -89,7 +89,7 @@ function get_email_tpl_data($admin_id, $tpl_name) {
 
 function set_email_tpl_data($admin_id, $tpl_name, $data) {
 
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$query = "
 		SELECT
@@ -137,7 +137,7 @@ function get_welcome_email($admin_id, $admin_type='user') {
 	$data = get_email_tpl_data($admin_id, 'add-user-auto-msg');
 
 	if (!$data['subject']) {
-		$data['subject'] = tr('Welcome {USERNAME} to ispCP!', true);
+		$data['subject'] = tr('Welcome {USERNAME} to i-MSCP!', true);
 	}
 
 	if (!$data['message']) {
@@ -146,7 +146,7 @@ function get_welcome_email($admin_id, $admin_type='user') {
 
 Hello {NAME}!
 
-A new ispCP account has been created for you.
+A new i-MSCP account has been created for you.
 Your account information:
 
 User type: {USERTYPE}
@@ -161,8 +161,8 @@ Statistics: {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/{USERNAME}/stats/
 User name: {USERNAME}
 Password: {PASSWORD}
 
-Best wishes with ispCP!
-The ispCP Team.
+Best wishes with i-MSCP!
+The i-MSCP Team.
 
 ', true);
         } else {
@@ -170,7 +170,7 @@ The ispCP Team.
 
 Hello {NAME}!
 
-A new ispCP account has been created for you.
+A new i-MSCP account has been created for you.
 Your account information:
 
 User type: {USERTYPE}
@@ -184,8 +184,8 @@ You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}
 User name: {USERNAME}
 Password: {PASSWORD}
 
-Best wishes with ispCP!
-The ispCP Team.
+Best wishes with i-MSCP!
+The i-MSCP Team.
 
 ', true);
         }
@@ -204,19 +204,19 @@ function get_lostpassword_activation_email($admin_id) {
 	$data = get_email_tpl_data($admin_id, 'lostpw-msg-1');
 
 	if (!$data['subject']) {
-		$data['subject'] = tr('Please activate your new ispCP password!', true);
+		$data['subject'] = tr('Please activate your new i-MSCP password!', true);
 	}
 
 	if (!$data['message']) {
 		$data['message'] = tr('
 
 Hello {NAME}!
-Use this link to activate your new ispCP password:
+Use this link to activate your new i-MSCP password:
 
 {LINK}
 
-Good Luck with the ispCP System
-The ispCP Team
+Good Luck with the i-MSCP System
+The i-MSCP Team
 
 ', true);
 
@@ -234,7 +234,7 @@ function get_lostpassword_password_email($admin_id) {
 	$data = get_email_tpl_data($admin_id, 'lostpw-msg-2');
 
 	if (!$data['subject']) {
-		$data['subject'] = tr('Your new ispCP login!', true);
+		$data['subject'] = tr('Your new i-MSCP login!', true);
 	}
 
 	if (!$data['message']) {
@@ -247,8 +247,8 @@ Your password is: {PASSWORD}
 
 You can login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}
 
-Best wishes with ispCP!
-The ispCP Team
+Best wishes with i-MSCP!
+The i-MSCP Team
 
 ', true);
 
@@ -281,8 +281,8 @@ You have to click the following link to continue the domain creation process.
 
 {ACTIVATE_LINK}
 
-Thank you for using ispCP services.
-The ispCP Team
+Thank you for using i-MSCP services.
+The i-MSCP Team
 
 ', true);
 
@@ -313,8 +313,8 @@ Your customer {CUSTOMER} is awaiting for the approval of his new alias:
 
 Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/reseller/alias.php
 
-Thank you for using ispCP services.
-The ispCP Team
+Thank you for using i-MSCP services.
+The i-MSCP Team
 
 ', true);
 
