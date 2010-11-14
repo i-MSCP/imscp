@@ -1,10 +1,10 @@
 #!/bin/sh
 #
 # chkconfig: - 91 35
-# description: Starts and stops the ISPCP daemon
+# description: Starts and stops the i-MSCP daemon
 #
-# pidfile: /var/run/ispcp.pid
-# config:  /etc/ispcp/ispcp.conf
+# pidfile: /var/run/imscp.pid
+# config:  /etc/imscp/imscp.conf
 #
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
@@ -47,37 +47,37 @@ unset TMPDIR
 # Source networking configuration.
 . /etc/sysconfig/network
 
-if [ -f /var/www/ispcp/daemon ]; then
-   . /var/www/ispcp/daemon
+if [ -f /var/www/imscp/daemon ]; then
+   . /var/www/imscp/daemon
 fi
 
 # Check that networking is up.
 [ ${NETWORKING} = "no" ] && exit 0
 
-# Check that ispcp.conf exists.
-[ -f /etc/ispcp/ispcp.conf ] || exit 0
+# Check that imscp.conf exists.
+[ -f /etc/imscp/imscp.conf ] || exit 0
 
 RETVAL=0
 
 
 start() {
-        KIND="ISPCP"
+        KIND="IMSCP"
 	echo -n $"Starting $KIND services: "
-	daemon /var/www/ispcp/daemon/ispcp_daemon
+	daemon /var/www/imscp/daemon/imscp_daemon
 	RETVAL=$?
 	echo
-      	[ $RETVAL -eq 0 ] && touch /var/lock/subsys/ispcp || RETVAL=1
+      	[ $RETVAL -eq 0 ] && touch /var/lock/subsys/imscp || RETVAL=1
 	echo ""
 	return $RETVAL
 }
 
 stop() {
-        KIND="ISPCP"
+        KIND="IMSCP"
 	echo -n $"Shutting down $KIND services: "
-	killproc ispcp_daemon
+	killproc imscp_daemon
 	RETVAL=$?
 	echo
-	[ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/ispcp
+	[ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/imscp
 	echo ""
 	return $RETVAL
 }
@@ -88,15 +88,15 @@ restart() {
 }
 
 reload() {
-        echo -n $"Reloading ispcp.conf: "
-	killproc ispcp_daemon -HUP
+        echo -n $"Reloading imscp.conf: "
+	killproc imscp_daemon -HUP
 	RETVAL=$?
 	echo
 	return $RETVAL
 }
 
 rhstatus() {
-	status ispcp_daemon
+	status imscp_daemon
 	RETVAL=$?
 	if [ $? -ne 0 -o $RETVAL -ne 0 ] ; then
 		return 1
@@ -111,7 +111,7 @@ if [ "$1" = status ]; then
 fi
 
 # Check that we can write to it... so non-root users stop here
-[ -w /etc/ispcp/ispcp.conf ] || exit 0
+[ -w /etc/imscp/imscp.conf ] || exit 0
 
 
 
@@ -132,7 +132,7 @@ case "$1" in
   	rhstatus
 	;;
   condrestart)
-  	[ -f /var/lock/subsys/ispcp ] && restart || :
+  	[ -f /var/lock/subsys/imscp ] && restart || :
 	;;
   *)
 	echo $"Usage: $0 {start|stop|restart|reload|status|condrestart}"

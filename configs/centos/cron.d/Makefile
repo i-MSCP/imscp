@@ -35,7 +35,7 @@ install:
 
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_CONF)/cron.d
 
-	cp ./i-mscp $(SYSTEM_CONF)/cron.d
+	cp ./imscp $(SYSTEM_CONF)/cron.d
 
 	cp -R ./backup $(SYSTEM_CONF)/cron.d
 	cp -R ./parts $(SYSTEM_CONF)/cron.d

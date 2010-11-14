@@ -43,9 +43,9 @@ install:
 		$(SYSTEM_MAKE_DIRS) $(ROOT_CONF)/proftpd ; \
 	fi
 
-	$(SYSTEM_MAKE_DIRS) $(ROOT_CONF)/proftpd/i-mscp;
+	$(SYSTEM_MAKE_DIRS) $(ROOT_CONF)/proftpd/imscp;
 
-	cp ./root_domain.conf $(ROOT_CONF)/proftpd/i-mscp;
+	cp ./root_domain.conf $(ROOT_CONF)/proftpd/imscp;
 	cp ./proftpd.conf $(SYSTEM_CONF)/proftpd
 
 uninstall:
