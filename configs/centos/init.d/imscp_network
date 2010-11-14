@@ -31,8 +31,8 @@
 # Required-Stop:
 # Should-Stop:          $local_fs
 # chkconfig: 			- 85 15
-# pidfile: 				/var/run/i-mscp.pid
-# config:  				/etc/i-mscp/i-mscp.conf
+# pidfile: 				/var/run/imscp.pid
+# config:  				/etc/imscp/imscp.conf
 # Short-Description:    i-MSCP Network Traffic Logger
 #
 ### END INIT INFO
@@ -43,11 +43,11 @@ DESC="i-MSCP Network Traffic Logger"
 NAME=imscp_network
 LFILE=/var/run/$NAME
 IPTABLES=/sbin/iptables
-LOGDIR=/var/log/i-mscp
+LOGDIR=/var/log/imscp
 LOGFILE=${LOGDIR}/${NAME}.log
-ENGINEPATH="/var/www/i-mscp/engine"
+ENGINEPATH="/var/www/imscp/engine"
 ENGINETOOLSPATH=${ENGINEPATH}"/tools"
-NETWORKCARDMANAGER="i-mscp-net-interfaces-mngr"
+NETWORKCARDMANAGER="imscp-net-interfaces-mngr"
 
 START=1
 

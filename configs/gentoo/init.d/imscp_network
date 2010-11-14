@@ -38,11 +38,11 @@
 # Note: do not modify any of these vars here, use /etc/default/$NAME instead
 
 IPTABLES=${IPTABLES:-$(which iptables)}
-LOGDIR=${LOGDIR:-"/var/log/i-mscp"}
+LOGDIR=${LOGDIR:-"/var/log/imscp"}
 LOGFILE=${LOGFILE:-"${LOGDIR}/${SVCNAME}.log"}
-ENGINEPATH="/var/www/i-mscp/engine"
+ENGINEPATH="/var/www/imscp/engine"
 ENGINETOOLSPATH=${ENGINEPATH}"/tools"
-NETWORKCARDMANAGER="i-mscp-net-interfaces-mngr"
+NETWORKCARDMANAGER="imscp-net-interfaces-mngr"
 
 # To monitor more ports, edit SERVICES variable add your own ports
 # (ftp, proxy, http, etc.)

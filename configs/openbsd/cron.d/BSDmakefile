@@ -35,7 +35,7 @@ install:
 
 	$(SYSTEM_MAKE_DIRS) $(ROOT_CONF)/cron.d
 
-	cp ./i-mscp.phptemp $(ROOT_CONF)/cron.d
+	cp ./imscp.phptemp $(ROOT_CONF)/cron.d
 
 uninstall:
 

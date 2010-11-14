@@ -26,28 +26,28 @@
 #    http://isp-control.net
 #
 ### BEGIN INIT INFO
-# Provides:             ispcp_network
+# Provides:             imscp_network
 # Required-Start:       $network $local_fs $remote_fs mysql
 # Required-Stop:		mysql
 # Should-Stop:          $local_fs
 # Default-Start:        3 5
 # Default-Stop:         0 1 2 6
-# Short-Description:    ispCP Network Traffic Logger
+# Short-Description:    i-MSCP Network Traffic Logger
 #
 ### END INIT INFO
 # Note: do not modify any of these vars here, use /etc/default/$NAME instead
 
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
-DESC="ispCP Network Traffic Logger"
-NAME=ispcp_network
+DESC="i-MSCP Network Traffic Logger"
+NAME=imscp_network
 LFILE=/var/run/$NAME
 IPTABLES=/usr/sbin/iptables
-LOGDIR=/var/log/i-mscp
+LOGDIR=/var/log/imscp
 LOGFILE=${LOGDIR}/${NAME}.log
 DIETIME=3
-ENGINEPATH="/srv/www/i-mscp/engine"
+ENGINEPATH="/srv/www/imscp/engine"
 ENGINETOOLSPATH=${ENGINEPATH}"/tools"
-NETWORKCARDMANAGER="i-mscp-net-interfaces-mngr"
+NETWORKCARDMANAGER="imscp-net-interfaces-mngr"
 
 START=1
 
@@ -100,40 +100,40 @@ if [ $START -eq 0 ]; then
 fi
 
 add_rules() {
-	${IPTABLES} -N ISPCP_INPUT 2>> "$LOGFILE"
-	${IPTABLES} -N ISPCP_OUTPUT 2>> "$LOGFILE"
+	${IPTABLES} -N IMSCP_INPUT 2>> "$LOGFILE"
+	${IPTABLES} -N IMSCP_OUTPUT 2>> "$LOGFILE"
 
 	# All traffic should jump through ISPCP tables before anything else
-	${IPTABLES} -I INPUT -j ISPCP_INPUT 2>> "$LOGFILE"
-	${IPTABLES} -I OUTPUT -j ISPCP_OUTPUT 2>> "$LOGFILE"
+	${IPTABLES} -I INPUT -j IMSCP_INPUT 2>> "$LOGFILE"
+	${IPTABLES} -I OUTPUT -j IMSCP_OUTPUT 2>> "$LOGFILE"
 
 	# Services from matrix basically receiving data
 	for PORT in $SERVICES; do
-		${IPTABLES} -I ISPCP_INPUT  -p tcp --dport "$PORT" 2>> "$LOGFILE"
-		${IPTABLES} -I ISPCP_OUTPUT -p tcp --sport "$PORT" 2>> "$LOGFILE"
+		${IPTABLES} -I IMSCP_INPUT  -p tcp --dport "$PORT" 2>> "$LOGFILE"
+		${IPTABLES} -I IMSCP_OUTPUT -p tcp --sport "$PORT" 2>> "$LOGFILE"
 	done
 
 	# Services from matrix basically sending data
 	for PORT in $SERVICES_OUT; do
-		${IPTABLES} -I ISPCP_INPUT  -p tcp --sport "$PORT" 2>> "$LOGFILE"
-		${IPTABLES} -I ISPCP_OUTPUT -p tcp --dport "$PORT" 2>> "$LOGFILE"
+		${IPTABLES} -I IMSCP_INPUT  -p tcp --sport "$PORT" 2>> "$LOGFILE"
+		${IPTABLES} -I IMSCP_OUTPUT -p tcp --dport "$PORT" 2>> "$LOGFILE"
 	done
 
 	# Explicit return once done
-	${IPTABLES} -A ISPCP_INPUT -j RETURN
-	${IPTABLES} -A ISPCP_OUTPUT -j RETURN
+	${IPTABLES} -A IMSCP_INPUT -j RETURN
+	${IPTABLES} -A IMSCP_OUTPUT -j RETURN
 
 	# Touch lock file
 	touch $LFILE
 }
 
 remove_rules() {
-	${IPTABLES} -D INPUT -j ISPCP_INPUT 2>> "$LOGFILE"
-	${IPTABLES} -D OUTPUT -j ISPCP_OUTPUT 2>> "$LOGFILE"
-	${IPTABLES} -F ISPCP_INPUT 2>> "$LOGFILE"
-	${IPTABLES} -F ISPCP_OUTPUT 2>> "$LOGFILE"
-	${IPTABLES} -X ISPCP_INPUT 2>> "$LOGFILE"
-	${IPTABLES} -X ISPCP_OUTPUT 2>> "$LOGFILE"
+	${IPTABLES} -D INPUT -j IMSCP_INPUT 2>> "$LOGFILE"
+	${IPTABLES} -D OUTPUT -j IMSCP_OUTPUT 2>> "$LOGFILE"
+	${IPTABLES} -F IMSCP_INPUT 2>> "$LOGFILE"
+	${IPTABLES} -F IMSCP_OUTPUT 2>> "$LOGFILE"
+	${IPTABLES} -X IMSCP_INPUT 2>> "$LOGFILE"
+	${IPTABLES} -X IMSCP_OUTPUT 2>> "$LOGFILE"
 
 	# Remove lock file
 	rm $LFILE

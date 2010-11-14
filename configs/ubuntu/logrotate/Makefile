@@ -35,9 +35,9 @@ install:
 
 	$(SYSTEM_MAKE_DIRS) $(ROOT_CONF)/logrotate.d
 
-	cp ./i-mscp $(ROOT_CONF)/logrotate.d
+	cp ./imscp $(ROOT_CONF)/logrotate.d
 
 uninstall:
 
-	rm -rf $(ROOT_CONF)/logrotate.d/i-mscp
+	rm -rf $(ROOT_CONF)/logrotate.d/imscp
 
