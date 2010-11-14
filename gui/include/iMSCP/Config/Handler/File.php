@@ -135,7 +135,7 @@ class iMSCP_Config_Handler_File extends iMSCP_Config_Handler {
 	 * Loads all configuration parameters from a flat file
 	 *
 	 * <b>Note:</b> Default file path is set to:
-	 * {/usr/local}/etc/i-mscp/i-mscp.conf depending of the used distribution.
+	 * {/usr/local}/etc/imscp/imscp.conf depending of the used distribution.
 	 *
 	 * @param string $pathFile Configuration file path
 	 * @return void
