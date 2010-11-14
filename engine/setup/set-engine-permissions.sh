@@ -30,19 +30,19 @@
 #
 
 SELFDIR=$(dirname "$0")
-. $SELFDIR/i-mscp-permission-functions.sh
+. $SELFDIR/imscp-permission-functions.sh
 
 echo -n "	Setting Engine Permissions: ";
 if [ $DEBUG -eq 1 ]; then
     echo	"";
 fi
 
-# i-mscp.conf must be world readable because user "vmail" needs to access it.
-if [ -f /usr/local/etc/i-mscp/i-mscp.conf ]; then
-	set_permissions "/usr/local/etc/i-mscp/i-mscp.conf" \
+# imscp.conf must be world readable because user "vmail" needs to access it.
+if [ -f /usr/local/etc/imscp/imscp.conf ]; then
+	set_permissions "/usr/local/etc/imscp/imscp.conf" \
 		$ROOT_USER $ROOT_GROUP 0644
 else
-	set_permissions "/etc/i-mscp/i-mscp.conf" $ROOT_USER $ROOT_GROUP 0644
+	set_permissions "/etc/imscp/imscp.conf" $ROOT_USER $ROOT_GROUP 0644
 fi
 
 # Only root can run engine scripts
@@ -55,7 +55,7 @@ set_permissions "$ROOT_DIR/engine" $ROOT_USER $ROOT_GROUP 0755
 # Messenger script is run by user "vmail".
 recursive_set_permissions "$ROOT_DIR/engine/messenger" \
 	$MTA_MAILBOX_UID_NAME $MTA_MAILBOX_GID_NAME 0750 0550
-recursive_set_permissions "$LOG_DIR/i-mscp-arpl-msgr" \
+recursive_set_permissions "$LOG_DIR/imscp-arpl-msgr" \
 	$MTA_MAILBOX_UID_NAME $MTA_MAILBOX_GID_NAME 0750 0640
 
 # TODO: Fixing fcgid permisions set before 1.0.5

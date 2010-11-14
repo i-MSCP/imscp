@@ -31,7 +31,7 @@
 
 use FindBin;
 use lib "$FindBin::Bin/";
-require 'ispcp_common_code.pl';
+require 'imscp_common_code.pl';
 
 use strict;
 use warnings;
@@ -46,8 +46,8 @@ sub mngr_start_up {
 	return $rs if ($rs != 0);
 
 	# Let's clear Execution Logs, if any.
-	if (-e $main::ispcp_rqst_mngr_el) {
-		$rs = del_file($main::ispcp_rqst_mngr_el);
+	if (-e $main::imscp_rqst_mngr_el) {
+		$rs = del_file($main::imscp_rqst_mngr_el);
 		return $rs if ($rs != 0);
 	}
 
@@ -103,10 +103,10 @@ sub mngr_engine_process{
 			$$count--;
 		}
 
-		my $mngr	= eval('$main::ispcp_'.$type.'_mngr');
-		my $el		= eval('$main::ispcp_'.$type.'_mngr_el');
-		my $stdout	= eval('$main::ispcp_'.$type.'_mngr_stdout');
-		my $stderr	= eval('$main::ispcp_'.$type.'_mngr_stderr');
+		my $mngr	= eval('$main::imscp_'.$type.'_mngr');
+		my $el		= eval('$main::imscp_'.$type.'_mngr_el');
+		my $stdout	= eval('$main::imscp_'.$type.'_mngr_stdout');
+		my $stderr	= eval('$main::imscp_'.$type.'_mngr_stderr');
 
 		if (defined $main::engine_debug) {
 			push_el(
@@ -479,19 +479,19 @@ sub mngr_engine {
 
 		if (keys(%$rdata) > 0) {
 			$rs = sys_command(
-				"$main::ispcp_net_interfaces_mngr stop " .
-				"1>$main::ispcp_net_interfaces_mngr_stdout 2>&1"
+				"$main::imscp_net_interfaces_mngr stop " .
+				"1>$main::imscp_net_interfaces_mngr_stdout 2>&1"
 			);
 			if (!defined $main::engine_debug) {
-				del_file($main::ispcp_net_interfaces_mngr_stdout);
+				del_file($main::imscp_net_interfaces_mngr_stdout);
 			}
 			return $rs if($rs != 0);
 			$rs = sys_command(
-				"$main::ispcp_net_interfaces_mngr start " .
-				"1>>$main::ispcp_net_interfaces_mngr_stdout 2>&1"
+				"$main::imscp_net_interfaces_mngr start " .
+				"1>>$main::imscp_net_interfaces_mngr_stdout 2>&1"
 			);
 			if (!defined $main::engine_debug) {
-				del_file($main::ispcp_net_interfaces_mngr_stdout);
+				del_file($main::imscp_net_interfaces_mngr_stdout);
 			}
 			return $rs if($rs != 0);
 		}
@@ -511,28 +511,28 @@ sub mngr_engine {
 	if (($dmn_count > 0 || $sub_count > 0 || $als_count > 0 || $mail_count > 0 ||
 		$alssub_count > 0) && (!defined($ARGV[0]) || $ARGV[0] eq '')) {
 		$rs = sys_command(
-			"$main::ispcp_serv_mngr $dmn_count $sub_count $als_count " .
-			"$mail_count $alssub_count 1>$main::ispcp_serv_mngr_stdout " .
-			"2>$main::ispcp_serv_mngr_stderr"
+			"$main::imscp_serv_mngr $dmn_count $sub_count $als_count " .
+			"$mail_count $alssub_count 1>$main::imscp_serv_mngr_stdout " .
+			"2>$main::imscp_serv_mngr_stderr"
 		);
 		if ($rs != 0) {
-			if (-e $main::ispcp_serv_mngr_el) {
+			if (-e $main::imscp_serv_mngr_el) {
 				my $rs1;
 				# removing 'sys_command()' error message;
 				pop_el(\@main::el);
-				($rs1, $rdata) = get_el_error($main::ispcp_serv_mngr_el);
+				($rs1, $rdata) = get_el_error($main::imscp_serv_mngr_el);
 				return $rs1 if ($rs1 != 0);
-				push_el(\@main::el, $main::ispcp_serv_mngr, $rdata);
+				push_el(\@main::el, $main::imscp_serv_mngr, $rdata);
 			}
 			if (!defined($main::engine_debug)) {
-				del_file($main::ispcp_serv_mngr_stdout);
-				del_file($main::ispcp_serv_mngr_stderr);
+				del_file($main::imscp_serv_mngr_stdout);
+				del_file($main::imscp_serv_mngr_stderr);
 			}
 			return $rs;
 		}
 		if (!defined($main::engine_debug)) {
-			del_file($main::ispcp_serv_mngr_stdout);
-			del_file($main::ispcp_serv_mngr_stderr);
+			del_file($main::imscp_serv_mngr_stdout);
+			del_file($main::imscp_serv_mngr_stderr);
 		}
 	} else {
 		push_el(\@main::el, 'mngr_engine()', 'Not restarting servers...');
@@ -549,7 +549,7 @@ $rs = mngr_start_up();
 
 if ($rs != 0) {
 
-	dump_el(\@main::el, $main::ispcp_rqst_mngr_el);
+	dump_el(\@main::el, $main::imscp_rqst_mngr_el);
 
 	mngr_shut_down();
 
@@ -560,7 +560,7 @@ $rs = mngr_engine();
 
 if ($rs != 0) {
 
-	dump_el(\@main::el, $main::ispcp_rqst_mngr_el);
+	dump_el(\@main::el, $main::imscp_rqst_mngr_el);
 
 	mngr_shut_down();
 
@@ -571,7 +571,7 @@ $rs = mngr_shut_down();
 
 if ($rs != 0) {
 
-	dump_el(\@main::el, $main::ispcp_rqst_mngr_el);
+	dump_el(\@main::el, $main::imscp_rqst_mngr_el);
 
 	exit 1;
 }

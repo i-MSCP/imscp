@@ -42,11 +42,11 @@ use FindBin;
 use lib "$FindBin::Bin/..";
 use PerlVendor::Capture::Tiny qw/capture_merged/;
 
-require 'ispcp_common_code.pl';
-require 'i-mscp-setup-methods.pl';
+require 'imscp_common_code.pl';
+require 'imscp-setup-methods.pl';
 
 # We use our own system() subroutine implementation
-# See in the i-mscp-setup-methods.pl file
+# See in the imscp-setup-methods.pl file
 use subs 'system';
 
 ################################################################################
@@ -107,9 +107,9 @@ sub welcome_note {
 	system('clear');
 
 	print colored( ['bold underline'],
-		"\n\tWelcome to ispCP '$main::cfg{'Version'}' Update Dialog.\n\n"),
+		"\n\tWelcome to i-MSCP '$main::cfg{'Version'}' Update Dialog.\n\n"),
 
-		"\tThis program will update your current ispCP OMEGA installation on " .
+		"\tThis program will update your current i-MSCP installation on " .
 		"this\n\tserver.\n\tPlease make sure you did a backup of all your " .
 		"server data.\n\n",
 
@@ -118,7 +118,7 @@ sub welcome_note {
 		"\tbe shut down.\n\n",
 
 		colored(['bold yellow'], "\t[WARNING] ") .
-		"Only services that are not marked with 'NO' in your i-mscp.conf\n".
+		"Only services that are not marked with 'NO' in your imscp.conf\n".
 		"\tconfiguration file will be processed by this program.\n\n";
 
 	do {
@@ -175,50 +175,50 @@ sub warn_msg {
 }
 
 ################################################################################
-# Load old ispCP main configuration file
+# Load old i-MSCP main configuration file
 #
 # @return void
 #
-sub load_old_ispcp_cfg {
+sub load_old_imscp_cfg {
 
-	push_el(\@main::el, 'load_old_ispcp_config()', 'Starting...');
+	push_el(\@main::el, 'load_old_imscp_config()', 'Starting...');
 
-	my $old_ispcp_cfg_file = '/etc/i-mscp/i-mscp.old.conf';
+	my $old_imscp_cfg_file = '/etc/imscp/imscp.old.conf';
 
-	if(-f '/usr/local/etc/i-mscp/i-mscp.old.conf') {
-		$old_ispcp_cfg_file = '/usr/local/etc/i-mscp/i-mscp.old.conf';
+	if(-f '/usr/local/etc/imscp/imscp.old.conf') {
+		$old_imscp_cfg_file = '/usr/local/etc/imscp/imscp.old.conf';
 	}
 
-	if (get_conf($old_ispcp_cfg_file)) {
+	if (get_conf($old_imscp_cfg_file)) {
 		do {
-			print "\n\n\tPlease enter path to your i-mscp.old.conf " .
-				"[/etc/i-mscp/i-mscp.old.conf]: ";
+			print "\n\n\tPlease enter path to your imscp.old.conf " .
+				"[/etc/imscp/imscp.old.conf]: ";
 
-			chomp($old_ispcp_cfg_file = <STDIN>);
-		} while (get_conf($old_ispcp_cfg_file));
+			chomp($old_imscp_cfg_file = <STDIN>);
+		} while (get_conf($old_imscp_cfg_file));
 	}
 
-	$main::ua{'old_cfg_file'} = $old_ispcp_cfg_file;
+	$main::ua{'old_cfg_file'} = $old_imscp_cfg_file;
 
-	push_el(\@main::el, 'load_old_ispcp_config()', 'Ending...');
+	push_el(\@main::el, 'load_old_imscp_config()', 'Ending...');
 
 	0;
 }
 
 ################################################################################
-# Update ispCP main configuration file
+# Update i-MSCP main configuration file
 #
 # @return int 1 on success, other on failure
 #
-sub update_ispcp_cfg {
+sub update_imscp_cfg {
 
-	push_el(\@main::el, 'update_ispcp_cfg()', 'Starting...');
+	push_el(\@main::el, 'update_imscp_cfg()', 'Starting...');
 
-	# Loading old ispCP configuration file as a string
+	# Loading old i-MSCP configuration file as a string
 	my ($rs, $rdata) = get_file($main::ua{'old_cfg_file'});
 	return $rs if($rs != 0);
 
-	# Loading new configuration from [/usr/local]/etc/i-mscp/i-mscp.conf
+	# Loading new configuration from [/usr/local]/etc/imscp/imscp.conf
 	$rs = get_conf();
 	return $rs if($rs != 0);
 
@@ -239,7 +239,7 @@ sub update_ispcp_cfg {
 	$rs = store_conf();
 	return $rs if ($rs != 0);
 
-	push_el(\@main::el, 'update_ispcp_cfg()', 'Ending...');
+	push_el(\@main::el, 'update_imscp_cfg()', 'Ending...');
 
 	0;
 }
@@ -254,12 +254,12 @@ sub update_ispcp_cfg {
 #
 # @return int 0 on success, other on failure
 #
-sub check_ispcp_cfg_file {
+sub check_imscp_cfg_file {
 
-	push_el(\@main::el, 'check_ispcp_cfg_file()', 'Starting...');
+	push_el(\@main::el, 'check_imscp_cfg_file()', 'Starting...');
 
 	my %exception = map {$_ => undef} qw(
-		DATABASE_PASSWORD SECONDARY_DNS ISPCP_SUPPORT_SYSTEM_TARGET
+		DATABASE_PASSWORD SECONDARY_DNS IMSCP_SUPPORT_SYSTEM_TARGET
 		MYSQL_PREFIX_TYPE OTHER_ROOTKIT_LOG
 	);
 
@@ -278,13 +278,13 @@ sub check_ispcp_cfg_file {
 		return $rs;
 	}
 
-	push_el(\@main::el, 'check_ispcp_cfg_file()', 'Ending...');
+	push_el(\@main::el, 'check_imscp_cfg_file()', 'Ending...');
 
 	0;
 }
 
 ################################################################################
-# Recovery process for ispCP cfg settings who's have empty value
+# Recovery process for i-MSCP cfg settings who's have empty value
 #
 # If a specific dialog subroutine exists for handling the configuration setting,
 # it is called. Otherwise, a error message is returned to the user and the
@@ -295,12 +295,12 @@ sub check_ispcp_cfg_file {
 # The user can also choose not to run the recovery process. In this
 # case, the update process ends.
 #
-# @param ref to an array of ispCP setting names
+# @param ref to an array of i-MSCP setting names
 # @return int 0 on success, other on failure
 #
 sub cfg_recovery_process {
 
-	push_el(\@main::el, 'check_ispcp_cfg_file()', 'Starting...');
+	push_el(\@main::el, 'check_imscp_cfg_file()', 'Starting...');
 
 	# Reference to an array of settings that have unallowed empty value
 	my $settings = shift;
@@ -328,26 +328,26 @@ sub cfg_recovery_process {
 	};
 
 	# If several parameters are set to an empty value, we should ensure that the
-	# user has installed ispCP by asking this question
+	# user has installed i-MSCP by asking this question
 	if (scalar(@$settings) >= 3) {
 		print colored(['bold yellow'], "\n\n\t[WARNING] ").
-			"Your ispCP configuration file has several settings set\n" .
+			"Your i-MSCP configuration file has several settings set\n" .
 			"\tto an empty value!\n";
 
 		do {
-			print "\n\tAre you sure you have installed ispCP ? [Y/n]: ";
+			print "\n\tAre you sure you have installed i-MSCP ? [Y/n]: ";
 			chomp($rdata = <STDIN>);
 		} while($rdata !~ /^(|y|n)$/i);
 
 		$msg = colored(['bold blue'], "\n\t[NOTICE] ") .
 			"The program ends now!\n\tPlease, run '$main::cfg{'ROOT_DIR'}/" .
-			"engine/setup/i-mscp-setup' instead!\n";
+			"engine/setup/imscp-setup' instead!\n";
 
 		($rdata !~ /^n$/i) or exit_msg(1, $msg);
 	}
 
 	print colored(['bold yellow'], "\n\n\t[WARNING] ") .
-		"Your ispCP configuration file has missing parameters!\n" .
+		"Your i-MSCP configuration file has missing parameters!\n" .
 		"\tThe update script will switch to recovery/upgrade mode now...\n";
 
 	do {
@@ -380,7 +380,7 @@ sub cfg_recovery_process {
 
 		# Otherwise, the program will end here with an error message
 		} else {
-			# Store already changed values in i-mscp.conf
+			# Store already changed values in imscp.conf
 			$rs = store_conf();
 			return $rs if($rs != 0);
 
@@ -401,7 +401,7 @@ sub cfg_recovery_process {
 		}
 	}
 
-	# Store new configuration settings values and reload the i-mscp.conf
+	# Store new configuration settings values and reload the imscp.conf
 	$rs = store_conf();
 	return $rs if($rs != 0);
 
@@ -420,13 +420,13 @@ sub cfg_recovery_process {
 	print "\tPlease, type 'Enter' to continue...";
 	$rdata = <STDIN>;
 
-	push_el(\@main::el, 'check_ispcp_cfg_file()', 'Ending...');
+	push_el(\@main::el, 'check_imscp_cfg_file()', 'Ending...');
 
 	-5;
 }
 
 ################################################################################
-# Update ispCP database schema
+# Update i-MSCP database schema
 #
 # @return int 1 on success, other on failure
 #
@@ -492,10 +492,10 @@ sub rebuild_customers_cfg {
 		return $rs if ($rs != 0);
 	}
 
-	# Unlock is needed here to be able to launch the i-mscp-rqst-mngr script
+	# Unlock is needed here to be able to launch the imscp-rqst-mngr script
 	close $main::fh_lock_file if defined $main::fh_lock_file;
 
-	my $rs = sys_command("perl $main::ispcp_rqst_mngr norestart");
+	my $rs = sys_command("perl $main::imscp_rqst_mngr norestart");
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'rebuild_customers_cfg()', 'Ending...');
@@ -507,8 +507,8 @@ sub rebuild_customers_cfg {
 # Update old disabled domain style to new
 #
 # This method is called only if the BuildDate of the current
-# ispCP version installed is less than or equal to 20100228
-# @Since 1.0.5
+# i-MSCP version installed is less than or equal to 20100228
+# @Since 1.0.0
 #
 # @return int 0 on success, other on failure
 #
@@ -520,7 +520,7 @@ sub update_old_disabled_dmn_layout {
 
 	my $httpd_uid = getpwnam $main::cfg{'APACHE_USER'};
 	my $httpd_gid = getgrnam $main::cfg{'APACHE_GROUP'};
-	my $log_file = '/tmp/i-mscp-update-disabled_layout.log';
+	my $log_file = '/tmp/imscp-update-disabled_layout.log';
 
 	my $dsd_dmn_skel_dir = "$main::cfg{'GUI_ROOT_DIR'}/domain_disable_page";
 
@@ -636,9 +636,9 @@ sub update_startup {
 	umask(027);
 
 	# Deleting log file if one exist
-	del_file('/tmp/i-mscp-setup.log');
+	del_file('/tmp/imscp-setup.log');
 
-	# Ensuring that i-mscp-rqst-mngr is not running
+	# Ensuring that imscp-rqst-mngr is not running
 	# Note: The lock file will be released when needed
 	if(lock_system()) {
 		exit_msg(
@@ -646,7 +646,7 @@ sub update_startup {
 		)
 	}
 
-	if(-e '/tmp/i-mscp-backup-all.lock') {
+	if(-e '/tmp/imscp-backup-all.lock') {
 		exit_msg(
 			0, colored(['bold blue'], '[NOTICE] ') .
 			"Backup engine is currently running. Aborting..."
@@ -671,8 +671,8 @@ sub update_engine {
 	system('clear');
 	spacer();
 
-	# Starting ispCP installation
-	title('Starting ispCP update');
+	# Starting i-MSCP installation
+	title('Starting i-MSCP update');
 
 	## Stopping services
 	subtitle('Stopping services: ');
@@ -681,22 +681,22 @@ sub update_engine {
 
 	spacer();
 
-	## IspCP main configuration file - Begin
-	title('ispCP main configuration file');
+	## i-MSCP main configuration file - Begin
+	title('i-MSCP main configuration file');
 
-	# Loading old ispCP configuration file
-	subtitle('Loading old ispCP configuration file:');
-	my $rs = load_old_ispcp_cfg();
+	# Loading old i-MSCP configuration file
+	subtitle('Loading old i-MSCP configuration file:');
+	my $rs = load_old_imscp_cfg();
 	print_status($rs, 'exit_on_error');
 
-	# Update ispCP configuration file
-	subtitle('Update ispCP configuration file:');
-	$rs = update_ispcp_cfg();
+	# Update i-MSCP configuration file
+	subtitle('Update i-MSCP configuration file:');
+	$rs = update_imscp_cfg();
 	print_status($rs, 'exit_on_error');
 
 	# Check configuration file
-	subtitle('Check ispCP configuration file:');
-	$rs = check_ispcp_cfg_file();
+	subtitle('Check i-MSCP configuration file:');
+	$rs = check_imscp_cfg_file();
 	$rs = 0 if($rs == -5);
 	print_status($rs, 'exit_on_error');
 
@@ -713,26 +713,26 @@ sub update_engine {
 	spacer();
 
 	## IspCP database
-	title('ispCP database');
-	subtitle('Update ispCP database schema:');
+	title('i-MSCP database');
+	subtitle('Update i-MSCP database schema:');
 	$rs = update_database_schema();
 	print_status($rs, 'exit_on_error');
 
 	spacer();
 
-	# IspCP Services configuration files
+	# i-MSCP Services configuration files
 	title('Rebuilding all services configuration files');
 	setup_services_cfg();
 
 	spacer();
 
-	## IspCP gui configuration files
+	## i-MSCP gui configuration files
 	title('Rebuilding all GUI configuration files');
 	setup_gui_cfg();
 
 	spacer();
 
-	## IspCP customers configuration files
+	## i-MSCP customers configuration files
 	title('Rebuilding all customers configuration files');
 	subtitle('Please wait, this may take some time:');
 
@@ -765,7 +765,7 @@ sub update_engine {
 
 	spacer();
 
-	## IspCP files permissions
+	## i-MSCP files permissions
 	title('Permissions setup');
 	set_permissions();
 
@@ -793,7 +793,7 @@ sub update_shutdown {
 	push_el(\@main::el, 'update_shutdown()', 'Starting...');
 
 	print colored(['bold underline'],
-		"\n\tCongratulations, you updated ispCP OMEGA" .
+		"\n\tCongratulations, you updated i-MSCP" .
 		"'$main::cfg{'Version'}' successfully!\n\n"),
 
 		"\tType http://$main::cfg{'BASE_SERVER_VHOST'} into your browser to " .

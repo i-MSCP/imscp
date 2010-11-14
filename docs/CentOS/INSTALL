@@ -220,7 +220,7 @@ Make sure you are logged in as root and MySQL is running (Start with "service my
     http://i-mscp.sf.net to solve the problem.
 
 10. Clean the temporary folders:
-	# rm -fR /tmp/i-mscp/
+	# rm -fR /tmp/imscp/
 
 ================================================================================
 6) Post-Installation
@@ -267,8 +267,8 @@ Make sure you are logged in as root and MySQL is running (Start with "service my
 
     # chkconfig --level 345 httpd on
     # chkconfig --level 345 mysqld on
-    # chkconfig --level 345 i-mscp_network on
-    # chkconfig --level 345 i-mscp_daemon on
+    # chkconfig --level 345 imscp_network on
+    # chkconfig --level 345 imscp_daemon on
     # chkconfig --level 345 amavisd on
     # chkconfig --level 345 named on
     # chkconfig --level 345 proftpd on
@@ -280,8 +280,8 @@ Make sure you are logged in as root and MySQL is running (Start with "service my
 
     # service httpd start
     # service mysqld start
-    # service i-mscp_network start
-    # service i-mscp_daemon start
+    # service imscp_network start
+    # service imscp_daemon start
     # service amavisd start
     # service named start
     # service proftpd start
@@ -314,17 +314,17 @@ Make sure you are logged in as root and MySQL is running.
 	# yum update
 	# yum install `cat ./docs/CentOS/centos-packages`
 
-4. Stop the i-mscp_daemon and build the Software by using make:
+4. Stop the imscp_daemon and build the Software by using make:
 	# services imscp_daemon stop
 	# make -f Makefile.centos
 
 5. Backup files
-	# cp -v /var/www/imscp/engine/imscp-db-keys.pl /tmp/imscp/var/www/i-mscp/engine/
-	# cp -v /var/www/imscp/engine/messenger/imscp-db-keys.pl /tmp/imscp/var/www/i-mscp/engine/messenger/
-	# cp -v /var/www/imscp/gui/include/imscp-db-keys.php /tmp/imscp/var/www/i-mscp/gui/include/
-	# cp -v /var/www/imscp/gui/themes/user_logos/* /tmp/i-mscp/var/www/imscp/gui/themes/user_logos/
-	# cp -TRv /var/www/imscp/gui/domain_default_page /tmp/i-mscp/var/www/imscp/gui/domain_default_page
-	# cp -v /var/www/imscp/gui/tools/webmail/data/* /tmp/i-mscp/var/www/imscp/gui/tools/webmail/data/
+	# cp -v /var/www/imscp/engine/imscp-db-keys.pl /tmp/imscp/var/www/imscp/engine/
+	# cp -v /var/www/imscp/engine/messenger/imscp-db-keys.pl /tmp/imscp/var/www/imscp/engine/messenger/
+	# cp -v /var/www/imscp/gui/include/imscp-db-keys.php /tmp/imscp/var/www/imscp/gui/include/
+	# cp -v /var/www/imscp/gui/themes/user_logos/* /tmp/imscp/var/www/imscp/gui/themes/user_logos/
+	# cp -TRv /var/www/imscp/gui/domain_default_page /tmp/imscp/var/www/imscp/gui/domain_default_page
+	# cp -v /var/www/imscp/gui/tools/webmail/data/* /tmp/imscp/var/www/imscp/gui/tools/webmail/data/
 
 
 6. Delete old files to avoid security risks:
@@ -337,7 +337,7 @@ Make sure you are logged in as root and MySQL is running.
 	# cp -RLf /tmp/imscp/usr/* /usr/
 	# cp -RLf /tmp/imscp/var/* /var/
 
-8. Backup i-mscp.conf and copy the /etc directory into your system (you may make backups):
+8. Backup imscp.conf and copy the /etc directory into your system (you may make backups):
 	# mv /etc/imscp/imscp.conf /etc/imscp/imscp.old.conf
 	# cp -RLf /tmp/imscp/etc/* /etc/
 

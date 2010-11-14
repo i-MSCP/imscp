@@ -28,7 +28,7 @@
 
 use FindBin;
 use lib "$FindBin::Bin/..";
-require 'ispcp_common_code.pl';
+require 'imscp_common_code.pl';
 
 use strict;
 use warnings;
@@ -44,8 +44,8 @@ sub net_interfaces_mngr_start_up {
 
 	umask(027);
 
-	if (-e $main::ispcp_net_interfaces_mngr_el) {
-		$rs = del_file($main::ispcp_net_interfaces_mngr_el);
+	if (-e $main::imccp_net_interfaces_mngr_el) {
+		$rs = del_file($main::imccp_net_interfaces_mngr_el);
 		return $rs if ($rs != 0);
 	}
 
@@ -233,7 +233,7 @@ sub net_interfaces_mngr_shut_down {
 $rs = net_interfaces_mngr_start_up();
 if ($rs != 0) {
 
-	dump_el(\@main::el, $main::ispcp_net_interfaces_mngr_el);
+	dump_el(\@main::el, $main::imccp_net_interfaces_mngr_el);
 	net_interfaces_mngr_shut_down();
 	exit 1;
 }
@@ -242,14 +242,14 @@ if ($rs != 0) {
 $rs = net_interfaces_mngr_engine();
 if ($rs != 0) {
 
-	dump_el(\@main::el, $main::ispcp_net_interfaces_mngr_el);
+	dump_el(\@main::el, $main::imccp_net_interfaces_mngr_el);
 	net_interfaces_mngr_shut_down();
 	exit 1;
 }
 
 $rs = net_interfaces_mngr_shut_down();
 if ($rs != 0) {
-	dump_el(\@main::el, $main::ispcp_net_interfaces_mngr_el);
+	dump_el(\@main::el, $main::imccp_net_interfaces_mngr_el);
 	exit 1;
 }
 

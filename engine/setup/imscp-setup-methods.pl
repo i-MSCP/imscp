@@ -62,7 +62,7 @@ my $rs = makepath(
 	$main::cfg{'ROOT_GROUP'}, 0755
 );
 
-die("Unable to create ispCP log directory $!\n") unless $rs == 0;
+die("Unable to create i-MSCP log directory $!\n") unless $rs == 0;
 
 ################################################################################
 ##                              Query subroutines                              #
@@ -142,7 +142,7 @@ sub ask_eth {
 }
 
 ################################################################################
-# Ask for ispCP Frontend vhost name
+# Ask for i-MSCP Frontend vhost name
 #
 # @return int 0 on success, -1 otherwise
 #
@@ -200,7 +200,7 @@ sub ask_db_host {
 }
 
 ################################################################################
-# Ask for ispCP database name
+# Ask for i-MSCP database name
 #
 # @return void
 # @todo: Add check on input data
@@ -214,13 +214,13 @@ sub ask_db_name {
 	printQuery();
 	chomp(my $rdata = <STDIN>);
 
-	$main::ua{'db_name'} = ($rdata eq '') ? 'i-mscp' : $rdata;
+	$main::ua{'db_name'} = ($rdata eq '') ? 'imscp' : $rdata;
 
 	push_el(\@main::el, 'ask_db_name()', 'Ending...');
 }
 
 ################################################################################
-# Ask for ispCP SQL user
+# Ask for i-MSCP SQL user
 #
 # @return void
 # @todo: Add check on input data (only ASCII (recommended) and maxlength 16)
@@ -240,7 +240,7 @@ sub ask_db_user {
 }
 
 ################################################################################
-# Ask for ispCP SQL password
+# Ask for i-MSCP SQL password
 #
 # @return int 0 on success, -1 otherwise
 #
@@ -335,7 +335,7 @@ sub ask_db_ftp_password {
 }
 
 ################################################################################
-# Ask for ispCP Frontend first admin name
+# Ask for i-MSCP Frontend first admin name
 #
 # @return void
 # @todo: Add check on user input data
@@ -355,7 +355,7 @@ sub ask_admin {
 }
 
 ################################################################################
-# Ask for ispCP Frontend first admin password
+# Ask for i-MSCP Frontend first admin password
 #
 # @return int 0 on success, -1 otherwise
 #
@@ -397,7 +397,7 @@ sub ask_admin_password {
 }
 
 ################################################################################
-# Ask for ispCP Frontend first admin email
+# Ask for i-MSCP Frontend first admin email
 #
 # @return int 0 on success, -1 otherwise
 #
@@ -1235,7 +1235,7 @@ sub exit_msg {
 # allow to add a specific script named `preinst` that will be run before the
 # both setup and update process actions. This hook is automatically called after
 # that all services are shutting down except for the update process where it is
-# called after the ispCP configuration file processing (loading, updating...).
+# called after the i-MSCP configuration file processing (loading, updating...).
 #
 # Note:
 #
@@ -1314,15 +1314,15 @@ sub postinst {
 ################################################################################
 # Starting services
 #
-# This subroutine start all services managed by ispCP and that are not marked as
-# 'no' in the main ispCP configuration file (i-mscp.conf).
+# This subroutine start all services managed by i-MSCP and that are not marked as
+# 'no' in the main i-MSCP configuration file (imscp.conf).
 #
 sub start_services {
 
 	push_el(\@main::el, 'start_services()', 'Starting...');
 
 	for (
-		qw/CMD_ISPCPN CMD_ISPCPD CMD_NAMED CMD_HTTPD CMD_FTPD CMD_CLAMD
+		qw/CMD_IMSCPN CMD_IMSCPD CMD_NAMED CMD_HTTPD CMD_FTPD CMD_CLAMD
 		CMD_POSTGREY CMD_POLICYD_WEIGHT CMD_AMAVIS CMD_MTA CMD_AUTHD CMD_POP
 		CMD_POP_SSL CMD_IMAP CMD_IMAP_SSL/
 	) {
@@ -1339,14 +1339,14 @@ sub start_services {
 ################################################################################
 # Stopping services
 #
-# This subroutines stop all the services managed by ispCP.
+# This subroutines stop all the services managed by i-MSCP.
 #
 sub stop_services {
 
 	push_el(\@main::el, 'stop_services()', 'Starting...');
 
 	for (
-		qw/CMD_ISPCPN CMD_ISPCPD CMD_NAMED CMD_HTTPD CMD_FTPD CMD_CLAMD
+		qw/CMD_IMSCPN CMD_IMSCPD CMD_NAMED CMD_HTTPD CMD_FTPD CMD_CLAMD
 		CMD_POSTGREY CMD_POLICYD_WEIGHT CMD_AMAVIS CMD_MTA CMD_AUTHD CMD_POP
 		CMD_POP_SSL CMD_IMAP CMD_IMAP_SSL/
 	) {
@@ -1390,7 +1390,7 @@ sub set_permissions {
 # This subroutine process the following tasks:
 # - Delete .prev log files and their rotations not longer needed since r2251
 # - Delete setup/update log files created in /tmp
-# - Delete empty files in ispCP configuration directories
+# - Delete empty files in i-MSCP configuration directories
 #
 # @return int 1 on success, other on failure
 #
@@ -1460,9 +1460,9 @@ sub setup_resolver {
 }
 
 ################################################################################
-# ispCP crontab file - (Setup / Update)
+# i-MSCP crontab file - (Setup / Update)
 #
-# This subroutine built, store and install the ispCP crontab file
+# This subroutine built, store and install the i-MSCP crontab file
 #
 sub setup_crontab {
 
@@ -1482,26 +1482,26 @@ sub setup_crontab {
 
 	# Retrieving production directory path
 	if ($main::cfg{'ROOT_GROUP'} eq 'wheel') {
-		$prodDir = '/usr/local/etc/i-mscp/cron.d';
+		$prodDir = '/usr/local/etc/imscp/cron.d';
 	} else {
 		$prodDir = '/etc/cron.d';
 	}
 
 	# Saving the current production file if it exists
-	if(-e "$prodDir/i-mscp") {
+	if(-e "$prodDir/imscp") {
 		$rs = sys_command(
-			"$main::cfg{'CMD_CP'} -p $prodDir/i-mscp $bkpDir/i-mscp." . time
+			"$main::cfg{'CMD_CP'} -p $prodDir/imscp $bkpDir/imscp." . time
 		);
 		return $rs if ($rs != 0);
 	}
 
 	## Building new configuration file
 
-	# Loading the template from /etc/i-mscp/cron.d/i-mscp
-	($rs, $cfgTpl) = get_file("$cfgDir/i-mscp");
+	# Loading the template from /etc/imscp/cron.d/imscp
+	($rs, $cfgTpl) = get_file("$cfgDir/imscp");
 	return $rs if ($rs != 0);
 
-	# Awstats cron task preparation (On|Off) according status in i-mscp.conf
+	# Awstats cron task preparation (On|Off) according status in imscp.conf
 	if ($main::cfg{'AWSTATS_ACTIVE'} ne 'yes' || $main::cfg{'AWSTATS_MODE'} eq 1) {
 		$awstats = '#';
 	}
@@ -1538,13 +1538,13 @@ sub setup_crontab {
 
 	# Storing new file in the working directory
 	$rs = store_file(
-		"$wrkDir/i-mscp", $$cfg, $main::cfg{'ROOT_USER'},
+		"$wrkDir/imscp", $$cfg, $main::cfg{'ROOT_USER'},
 		$main::cfg{'ROOT_GROUP'}, 0644
 	);
 	return $rs if ($rs != 0);
 
 	# Install the new file in production directory
-	$rs = sys_command("$main::cfg{'CMD_CP'} -fp $wrkDir/i-mscp $prodDir/");
+	$rs = sys_command("$main::cfg{'CMD_CP'} -fp $wrkDir/imscp $prodDir/");
 	return $rs if ($rs != 0);
 
 	push_el(\@main::el, 'setup_crontab()', 'Ending...');
@@ -1553,7 +1553,7 @@ sub setup_crontab {
 }
 
 ################################################################################
-# ispCP named main configuration - (Setup / Update)
+# i-MSCP named main configuration - (Setup / Update)
 #
 # This subroutine built, store and install the main named configuration file
 #
@@ -1597,7 +1597,7 @@ sub setup_named {
 	## Building new configuration file
 
 	# Loading the system main configuration file from
-	# /etc/i-mscp/bind/backup/named.conf.system if it exists
+	# /etc/imscp/bind/backup/named.conf.system if it exists
 	if(-e "$bkpDir/named.conf.system") {
 		($rs, $cfg) = get_file("$bkpDir/named.conf.system");
 		return $rs if($rs != 0);
@@ -1615,7 +1615,7 @@ sub setup_named {
 		$cfg = '';
 	}
 
-	# Loading the template from /etc/i-mscp/bind/named.conf
+	# Loading the template from /etc/imscp/bind/named.conf
 	($rs, $cfgTpl) = get_file("$cfgDir/named.conf");
 	return $rs if($rs != 0);
 
@@ -1644,7 +1644,7 @@ sub setup_named {
 }
 
 ################################################################################
-# ispCP Apache fastCGI modules configuration - (Setup / Update)
+# i-MSCP Apache fastCGI modules configuration - (Setup / Update)
 #
 # This subroutine do the following tasks:
 #  - Built, store and install all system php related configuration files
@@ -1668,7 +1668,7 @@ sub setup_fastcgi_modules {
 	my $wrkDir = "$cfgDir/working";
 
 	# Saving the current production file if they exists
-	for (qw/fastcgi_ispcp.conf fastcgi_ispcp.load fcgid_ispcp.conf fcgid_ispcp.load/) {
+	for (qw/fastcgi_imscp.conf fastcgi_imscp.load fcgid_imscp.conf fcgid_imscp.load/) {
 		if(-e "$main::cfg{'APACHE_MODS_DIR'}/$_") {
 			$rs = sys_command(
 				"$main::cfg{CMD_CP} -p $main::cfg{'APACHE_MODS_DIR'}/$_ " .
@@ -1694,10 +1694,10 @@ sub setup_fastcgi_modules {
 		}
 	);
 
-	# fastcgi_ispcp.conf / fcgid_ispcp.conf
+	# fastcgi_imscp.conf / fcgid_imscp.conf
 	for (qw/fastcgi fcgid/) {
-		# Loading the template from the /etc/i-mscp/apache directory
-		($rs, $cfgTpl) = get_file("$cfgDir/${_}_ispcp.conf");
+		# Loading the template from the /etc/imscp/apache directory
+		($rs, $cfgTpl) = get_file("$cfgDir/${_}_imscp.conf");
 		return $rs if ($rs != 0);
 
 		# Building the new configuration file
@@ -1706,20 +1706,20 @@ sub setup_fastcgi_modules {
 
 		# Storing the new file
 		$rs = store_file(
-			"$wrkDir/${_}_ispcp.conf", $$cfg, $main::cfg{'ROOT_USER'},
+			"$wrkDir/${_}_imscp.conf", $$cfg, $main::cfg{'ROOT_USER'},
 			$main::cfg{'ROOT_GROUP'}, 0644
 		);
 		return $rs if ($rs != 0);
 
 		# Installing the new file
 		$rs = sys_command(
-			"$main::cfg{'CMD_CP'} -pf $wrkDir/${_}_ispcp.conf " .
+			"$main::cfg{'CMD_CP'} -pf $wrkDir/${_}_imscp.conf " .
 			"$main::cfg{'APACHE_MODS_DIR'}/"
 		);
 		return $rs if($rs != 0);
 	}
 
-	# fastcgi_ispcp.load / fcgid_ispcp.load
+	# fastcgi_imscp.load / fcgid_imscp.load
 	for (qw/fastcgi fcgid/) {
 		next if(! -e "$main::cfg{'APACHE_MODS_DIR'}/$_.load");
 
@@ -1732,14 +1732,14 @@ sub setup_fastcgi_modules {
 
 		# Store the new file
 		$rs = store_file(
-			"$wrkDir/${_}_ispcp.load", $$cfg, $main::cfg{'ROOT_USER'},
+			"$wrkDir/${_}_imscp.load", $$cfg, $main::cfg{'ROOT_USER'},
 			$main::cfg{'ROOT_GROUP'}, 0644
 		);
 		return $rs if ($rs != 0);
 
 		# Install the new file
 		$rs = sys_command(
-			"$main::cfg{'CMD_CP'} -pf $wrkDir/${_}_ispcp.load " .
+			"$main::cfg{'CMD_CP'} -pf $wrkDir/${_}_imscp.load " .
 			"$main::cfg{'APACHE_MODS_DIR'}/"
 		);
 		return $rs if($rs != 0);
@@ -1759,26 +1759,26 @@ sub setup_fastcgi_modules {
 		return $rs if($rs != 0);
 
 		if ($main::cfg{'PHP_FASTCGI'} eq 'fastcgi') {
-			# Ensures that the unused i-mscp fcgid module loader is disabled
-			$rs = sys_command("/usr/sbin/a2dismod fcgid_ispcp");
+			# Ensures that the unused i-MSCP fcgid module loader is disabled
+			$rs = sys_command("/usr/sbin/a2dismod fcgid_imscp");
 			return $rs if($rs != 0);
 
 			# Enable fastcgi module
-			$rs = sys_command("/usr/sbin/a2enmod fastcgi_ispcp");
+			$rs = sys_command("/usr/sbin/a2enmod fastcgi_imscp");
 			return $rs if($rs != 0);
 		} else {
-			# Ensures that the unused i-mscp fastcgi i-mscp module loader is
+			# Ensures that the unused i-MSCP fastcgi i-mscp module loader is
 			# disabled
-			$rs = sys_command("/usr/sbin/a2dismod fastcgi_ispcp");
+			$rs = sys_command("/usr/sbin/a2dismod fastcgi_imscp");
 			return $rs if($rs != 0);
 
-			# Enable i-mscp fastcgi loader
-			$rs = sys_command("/usr/sbin/a2enmod fcgid_ispcp");
+			# Enable i-MSCP fastcgi loader
+			$rs = sys_command("/usr/sbin/a2enmod fcgid_imscp");
 			return $rs if($rs != 0);
 		}
 
 		# Disable default  fastcgi/fcgid modules loaders to avoid conflicts
-		# with i-mscp loaders
+		# with i-MSCP loaders
 		$rs = sys_command("/usr/sbin/a2dismod fastcgi fcgid");
 		return $rs if($rs != 0);
 	}
@@ -1789,10 +1789,10 @@ sub setup_fastcgi_modules {
 }
 
 ################################################################################
-# ispCP httpd main vhost - (Setup / Update)
+# i-MSCP httpd main vhost - (Setup / Update)
 #
 # This subroutine do the following tasks:
-#  - Built, store and install ispCP main vhost configuration file
+#  - Built, store and install i-MSCP main vhost configuration file
 #  - Enable required modules (cgid, rewrite, suexec)
 #
 # @return int 0 on success, other on failure
@@ -1813,10 +1813,10 @@ sub setup_httpd_main_vhost {
 	my $wrkDir = "$cfgDir/working";
 
 	# Saving the current production file if it exists
-	if(-e "$main::cfg{'APACHE_SITES_DIR'}/i-mscp.conf") {
+	if(-e "$main::cfg{'APACHE_SITES_DIR'}/imscp.conf") {
 		my $rs = sys_command(
 			"$main::cfg{'CMD_CP'} -p $main::cfg{'APACHE_SITES_DIR'}/" .
-			"i-mscp.conf $bkpDir/i-mscp.conf.". time
+			"imscp.conf $bkpDir/imscp.conf.". time
 		);
 		return $rs if($rs != 0);
 	}
@@ -1832,7 +1832,7 @@ sub setup_httpd_main_vhost {
 		$pipeSyntax .= '|';
 	}
 
-	# Loading the template from /etc/i-mscp/apache/
+	# Loading the template from /etc/imscp/apache/
 	($rs, $cfgTpl) = get_file("$cfgDir/httpd.conf");
 	return $rs if ($rs != 0);
 
@@ -1849,14 +1849,14 @@ sub setup_httpd_main_vhost {
 
 	# Storing the new file in working directory
 	$rs = store_file(
-		"$wrkDir/i-mscp.conf", $$cfg, $main::cfg{'ROOT_USER'},
+		"$wrkDir/imscp.conf", $$cfg, $main::cfg{'ROOT_USER'},
 		$main::cfg{'ROOT_GROUP'}, 0644
 	);
 	return $rs if ($rs != 0);
 
 	# Installing the new file in production directory
 	$rs = sys_command(
-		"$main::cfg{'CMD_CP'} -pf $wrkDir/i-mscp.conf " .
+		"$main::cfg{'CMD_CP'} -pf $wrkDir/imscp.conf " .
 		"$main::cfg{'APACHE_SITES_DIR'}/"
 	);
 	return $rs if($rs != 0);
@@ -1879,7 +1879,7 @@ sub setup_httpd_main_vhost {
 		return $rs if($rs != 0);
 
 		## Enabling main vhost configuration file
-		$rs = sys_command("/usr/sbin/a2ensite i-mscp.conf");
+		$rs = sys_command("/usr/sbin/a2ensite imscp.conf");
 		return $rs if($rs != 0);
 	}
 
@@ -1889,7 +1889,7 @@ sub setup_httpd_main_vhost {
 }
 
 ################################################################################
-# ispCP awstats vhost - (Setup / Update)
+# i-MSCP awstats vhost - (Setup / Update)
 #
 # This subroutine do the following tasks:
 #  - Built, store and install Awstats vhost configuration file (01_awstats.conf)
@@ -1951,7 +1951,7 @@ sub setup_awstats_vhost {
 
 	## Building, storage and installation of new files
 
-	# Loading the template from /etc/i-mscp/apache
+	# Loading the template from /etc/imscp/apache
 	($rs, $cfgTpl) = get_file("$cfgDir/01_awstats.conf");
 	return $rs if($rs != 0);
 
@@ -2021,7 +2021,7 @@ sub setup_awstats_vhost {
 		## Update Apache logrotate file
 
 		# If the distribution provides an apache or apache2 log rotation file,
-		# update it with the Awstats information. If not, use the i-mscp file.
+		# update it with the Awstats information. If not, use the i-MSCP file.
 		# log rotation should be never executed twice. Therefore it is sane to
 		# define it two times in different scopes.
 		for ('apache', 'apache2') {
@@ -2078,7 +2078,7 @@ sub setup_awstats_vhost {
 }
 
 ################################################################################
-# ispCP Postfix - (Setup / Update)
+# i-MSCP Postfix - (Setup / Update)
 #
 # This subroutine built, store and install Postfix configuration files:
 # - main.cf
@@ -2102,7 +2102,7 @@ sub setup_mta {
 	my $cfgDir = "$main::cfg{'CONF_DIR'}/postfix";
 	my $bkpDir = "$cfgDir/backup";
 	my $wrkDir = "$cfgDir/working";
-	my $vrlDir = "$cfgDir/i-mscp";
+	my $vrlDir = "$cfgDir/imscp";
 
 	# Install
 	if(!defined &update_engine) {
@@ -2151,7 +2151,7 @@ sub setup_mta {
 
 	# main.cf
 
-	# Loading the template from /etc/i-mscp/postfix/
+	# Loading the template from /etc/imscp/postfix/
 	($rs, $cfgTpl) = get_file("$cfgDir/main.cf");
 	return $rs if ($rs != 0);
 
@@ -2235,7 +2235,7 @@ sub setup_mta {
 	## Setting ARPL messenger owner, group and permissions
 
 	$rs = setfmode(
-		"$main::cfg{'ROOT_DIR'}/engine/messenger/i-mscp-arpl-msgr",
+		"$main::cfg{'ROOT_DIR'}/engine/messenger/imscp-arpl-msgr",
 		$main::cfg{'MTA_MAILBOX_UID_NAME'}, $main::cfg{'MTA_MAILBOX_GID_NAME'},
 		0755
 	);
@@ -2247,7 +2247,7 @@ sub setup_mta {
 }
 
 ################################################################################
-# ispCP Courier - (Setup / Update)
+# i-MSCP Courier - (Setup / Update)
 #
 # This subroutine do the following tasks:
 #  - Built, store and install Courier, related configuration files
@@ -2301,7 +2301,7 @@ sub setup_po {
 
 	# authdaemonrc file
 
-	# Loading the system file from /etc/i-mscp/backup
+	# Loading the system file from /etc/imscp/backup
 	($rs, $rdata) = get_file("$bkpDir/authdaemonrc.system");
 	return $rs if ($rs != 0);
 
@@ -2355,7 +2355,7 @@ sub setup_po {
 }
 
 ################################################################################
-# ispCP Proftpd - (Setup / Update)
+# i-MSCP Proftpd - (Setup / Update)
 #
 # This subroutine do the following tasks:
 #  - Built, store and install Proftpd main configuration files
@@ -2421,13 +2421,13 @@ sub setup_ftpd {
 
 		if(-e "$wrkDir/proftpd.conf" ) {
 			$wrkFile = "$wrkDir/proftpd.conf";
-		} elsif(-e "$main::cfg{'CONF_DIR'}/proftpd/backup/proftpd.conf.i-mscp") {
-			$wrkFile = "$main::cfg{'CONF_DIR'}/proftpd/backup/proftpd.conf.i-mscp";
+		} elsif(-e "$main::cfg{'CONF_DIR'}/proftpd/backup/proftpd.conf.imscp") {
+			$wrkFile = "$main::cfg{'CONF_DIR'}/proftpd/backup/proftpd.conf.imscp";
 		} elsif(-e '/etc/proftpd.conf.bak') {
 			$wrkFile = '/etc/proftpd.conf.bak';
 		}
 
-		# Loading working configuration file from /etc/i-mscp/working/
+		# Loading working configuration file from /etc/imscp/working/
 		($rs, $rdata) = get_file($wrkFile);
 
 		unless($rs) {
@@ -2520,7 +2520,7 @@ sub setup_ftpd {
 
 	## Building, storage and installation of new file
 
-	# Loading the template from /etc/i-mscp/proftpd/
+	# Loading the template from /etc/imscp/proftpd/
 	($rs, $cfgTpl) = get_file("$cfgDir/proftpd.conf");
 	return $rs if ($rs != 0);
 
@@ -2577,19 +2577,19 @@ sub setup_ftpd {
 }
 
 ################################################################################
-# ispCP Daemon, network - (Setup / Update)
+# i-MSCP Daemon, network - (Setup / Update)
 #
-# This subroutine install or update the ispCP daemon and network init scripts
+# This subroutine install or update the i-MSCP daemon and network init scripts
 #
 # @return int 0 on success, other on failure
 #
-sub setup_ispcp_daemon_network {
+sub setup_imscp_daemon_network {
 
-	push_el(\@main::el, 'setup_ispcp_daemon_network()', 'Starting...');
+	push_el(\@main::el, 'setup_imscp_daemon_network()', 'Starting...');
 
 	my ($rs, $rdata, $fileName);
 
-	for ($main::cfg{'CMD_ISPCPD'}, $main::cfg{'CMD_ISPCPN'}) {
+	for ($main::cfg{'CMD_IMSCPD'}, $main::cfg{'CMD_IMSCPN'}) {
 		# Do not process if the service is disabled
 		next if(/^no$/i);
 
@@ -2612,9 +2612,9 @@ sub setup_ispcp_daemon_network {
 				sys_command("/usr/sbin/update-rc.d -f $fileName remove");
 			}
 
-			# ispcp_network should be stopped before the MySQL server (due to the
+			# imscp_network should be stopped before the MySQL server (due to the
 			# interfaces deletion process)
-			if($fileName eq 'ispcp_network') {
+			if($fileName eq 'imscp_network') {
 				sys_command("/usr/sbin/update-rc.d $fileName defaults 99 20");
 			} else {
 				sys_command("/usr/sbin/update-rc.d $fileName defaults 99");
@@ -2632,15 +2632,15 @@ sub setup_ispcp_daemon_network {
 		}
 	}
 
-	push_el(\@main::el, 'setup_ispcp_daemon_network()', 'Ending...');
+	push_el(\@main::el, 'setup_imscp_daemon_network()', 'Ending...');
 
 	0;
 }
 
 ################################################################################
-# ispCP GUI apache vhost - (Setup / Update)
+# i-MSCP GUI apache vhost - (Setup / Update)
 #
-# This subroutine built, store and install ispCP GUI vhost configuration file.
+# This subroutine built, store and install i-MSCP GUI vhost configuration file.
 #
 # @return int 0 on success, other on failure
 #
@@ -2670,7 +2670,7 @@ sub setup_gui_httpd {
 		return $rs if($rs != 0);
 	}
 
-	# Loading the template from /etc/i-mscp/apache
+	# Loading the template from /etc/imscp/apache
 	($rs, $cfgTpl) = get_file("$cfgDir/00_master.conf");
 	return $rs if($rs != 0);
 
@@ -2748,7 +2748,7 @@ sub setup_gui_httpd {
 }
 
 ################################################################################
-# ispCP GUI PHP configuration files - (Setup / Update)
+# i-MSCP GUI PHP configuration files - (Setup / Update)
 #
 # This subroutine do the following tasks:
 #  - Create the master fcgi directory
@@ -2793,7 +2793,7 @@ sub setup_gui_php {
 
 	## PHP5 Starter script
 
-	# Loading the template from /etc/i-mscp/fcgi/parts/master
+	# Loading the template from /etc/imscp/fcgi/parts/master
 	($rs, $cfgTpl) = get_file("$cfgDir/parts/master/php5-fcgi-starter.tpl");
 	return $rs if ($rs != 0);
 
@@ -2827,7 +2827,7 @@ sub setup_gui_php {
 
 	## PHP5 php.ini file
 
-	# Loading the template from /etc/i-mscp/fcgi/parts/master/php5
+	# Loading the template from /etc/imscp/fcgi/parts/master/php5
 	($rs, $cfgTpl) = get_file("$cfgDir/parts/master/php5/php.ini");
 	return $rs if ($rs != 0);
 
@@ -2898,7 +2898,7 @@ sub setup_gui_php {
 }
 
 ################################################################################
-# ispCP GUI pma configuration file and pma SQL control user - (Setup / Update)
+# i-MSCP GUI pma configuration file and pma SQL control user - (Setup / Update)
 #
 # This subroutine built, store and install the PhpMyAdmin configuration file
 #
@@ -3103,7 +3103,7 @@ sub setup_gui_pma {
 		);
 		return -1 if ($rs != 0);
 
-		# Update the i-mscp.conf file, reset the DSN and force reconnection on
+		# Update the imscp.conf file, reset the DSN and force reconnection on
 		# the next query
 
 		$rs = set_conf_val('PMA_USER', $ctrlUser);
@@ -3119,7 +3119,7 @@ sub setup_gui_pma {
 }
 
 ################################################################################
-# ispCP Gui named configuration - (Setup / Update)
+# i-MSCP Gui named configuration - (Setup / Update)
 #
 # This subroutine do the following tasks:
 #  - Add Gui named cfg data in main Bind9 configuration file
@@ -3150,7 +3150,7 @@ sub setup_gui_named {
 }
 
 ################################################################################
-# ispCP Gui named cfg file - (Setup / Update)
+# i-MSCP Gui named cfg file - (Setup / Update)
 #
 # This subroutine do the following tasks:
 #  - Add Gui named cfg data in main configuration file
@@ -3192,7 +3192,7 @@ sub setup_gui_named_cfg_data {
 
 	## Building of new configuration file
 
-	# Loading all needed templates from /etc/i-mscp/bind/parts
+	# Loading all needed templates from /etc/imscp/bind/parts
 	my ($entry_b, $entry_e, $entry) = ('', '', '');
 
 	($rs, $entry_b, $entry_e, $entry) = get_tpl(
@@ -3211,7 +3211,7 @@ sub setup_gui_named_cfg_data {
 	);
 	return $rs if ($rs != 0);
 
-	# Loading working file from /etc/i-mscp/bind/working/named.conf
+	# Loading working file from /etc/imscp/bind/working/named.conf
 	($rs, $cfg) = get_file("$wrkDir/named.conf");
 	return $rs if ($rs != 0);
 
@@ -3245,7 +3245,7 @@ sub setup_gui_named_cfg_data {
 }
 
 ################################################################################
-# ispCP Gui named dns record's - (Setup / Update)
+# i-MSCP Gui named dns record's - (Setup / Update)
 #
 # This subroutine does the following tasks:
 #  - Build GUI named dns record's file
@@ -3313,7 +3313,7 @@ sub setup_gui_named_db_data {
 
 	## Building new configuration file
 
-	# Loading the template from /etc/i-mscp/bind/parts
+	# Loading the template from /etc/imscp/bind/parts
 	($rs, $entries) = get_file("$cfgDir/parts/db_master_e.tpl");
 	return $rs if ($rs != 0);
 
@@ -3373,7 +3373,7 @@ sub setup_rkhunter {
 	return $rs if($rs != 0);
 
 	# Updates the rkhunter configuration provided by Debian like distributions
-	# to disable the default cron task (ispCP provides its own cron job for
+	# to disable the default cron task (i-MSCP provides its own cron job for
 	# rkhunter)
 	if(-e '/etc/default/rkhunter') {
 		# Get the file as a string
@@ -3410,7 +3410,7 @@ sub setup_rkhunter {
 		if (sys_command("which rkhunter > /dev/null") == 0 ) {
 			# Here, we run the command with `--nolog` option to avoid creation
 			# of unreadable log file. The log file will be created later by an
-			# ispCP cron task
+			# i-MSCP cron task
 			$rs = sys_command_rs('rkhunter --update --nolog -q');
 			return $rs if($rs != 0 && $rs != 2);
 		}
@@ -3440,17 +3440,17 @@ sub setup_services_cfg {
 		# For 'rpm' package the user/group creation is supported by maintenance
 		# scripts
 		if (!defined($ARGV[0]) || $ARGV[0] ne '-rpm') {
-			subtitle('ispCP users and groups:');
+			subtitle('i-MSCP users and groups:');
 			print_status(setup_system_users(), 'exit_on_error');
 		}
 
 		for (
-			[\&setup_system_dirs, 'ispCP directories:'],
-			[\&setup_config, 'ispCP main configuration file:'],
-			[\&setup_ispcp_database, 'ispCP database:'],
-			[\&setup_default_language_table, 'ispCP default language table:'],
-			[\&setup_default_sql_data, 'ispCP default SQL data:'],
-			[\&setup_hosts, 'ispCP system hosts file:']
+			[\&setup_system_dirs, 'i-MSCP directories:'],
+			[\&setup_config, 'i-MSCP main configuration file:'],
+			[\&setup_imscp_database, 'i-MSCP database:'],
+			[\&setup_default_language_table, 'i-MSCP default language table:'],
+			[\&setup_default_sql_data, 'i-MSCP default SQL data:'],
+			[\&setup_hosts, 'i-MSCP system hosts file:']
 		) {
 			subtitle($_->[1]);
 			print_status(&{$_->[0]}, 'exit_on_error');
@@ -3459,16 +3459,16 @@ sub setup_services_cfg {
 
 	# Common tasks (Setup/Update)
 	for (
-		[\&setup_resolver, 'ispCP system resolver:'],
-		[\&setup_crontab, 'ispCP crontab file:'],
-		[\&setup_named, 'ispCP Bind9 main configuration file:'],
-		[\&setup_fastcgi_modules, 'ispCP Apache fastCGI modules configuration:'],
-		[\&setup_httpd_main_vhost, 'ispCP Apache main vhost file:'],
-		[\&setup_awstats_vhost, 'ispCP Apache AWStats vhost file:'],
-		[\&setup_mta, 'ispCP Postfix configuration files:'],
-		[\&setup_po, 'ispCP Courier-Authentication:'],
-		[\&setup_ftpd, 'ispCP ProFTPd configuration file:'],
-		[\&setup_ispcp_daemon_network, 'ispCP init scripts:']
+		[\&setup_resolver, 'i-MSCP system resolver:'],
+		[\&setup_crontab, 'i-MSCP crontab file:'],
+		[\&setup_named, 'i-MSCP Bind9 main configuration file:'],
+		[\&setup_fastcgi_modules, 'i-MSCP Apache fastCGI modules configuration:'],
+		[\&setup_httpd_main_vhost, 'i-MSCP Apache main vhost file:'],
+		[\&setup_awstats_vhost, 'i-MSCP Apache AWStats vhost file:'],
+		[\&setup_mta, 'i-MSCP Postfix configuration files:'],
+		[\&setup_po, 'i-MSCP Courier-Authentication:'],
+		[\&setup_ftpd, 'i-MSCP ProFTPd configuration file:'],
+		[\&setup_imscp_daemon_network, 'i-MSCP init scripts:']
 	) {
 		subtitle($_->[1]);
 		print_status(&{$_->[0]}, 'exit_on_error');
@@ -3487,10 +3487,10 @@ sub setup_gui_cfg {
 	push_el(\@main::el, 'setup_gui_cfg()', 'Starting...');
 
 	for (
-		[\&setup_gui_named, 'ispCP GUI Bind9 configuration:'],
-		[\&setup_gui_php, 'ispCP GUI fastCGI/PHP configuration:'],
-		[\&setup_gui_httpd, 'ispCP GUI vhost file:'],
-		[\&setup_gui_pma, 'ispCP PMA configuration file:']
+		[\&setup_gui_named, 'i-MSCP GUI Bind9 configuration:'],
+		[\&setup_gui_php, 'i-MSCP GUI fastCGI/PHP configuration:'],
+		[\&setup_gui_httpd, 'i-MSCP GUI vhost file:'],
+		[\&setup_gui_pma, 'i-MSCP PMA configuration file:']
 	) {
 		subtitle($_->[1]);
 		print_status(&{$_->[0]}, 'exit_on_error');
@@ -3508,11 +3508,11 @@ sub additional_tasks{
 
 	push_el(\@main::el, 'additional_tasks()', 'Starting...');
 
-	subtitle('ispCP Rkhunter configuration:');
+	subtitle('i-MSCP Rkhunter configuration:');
 	my $rs = setup_rkhunter();
 	print_status($rs, 'exit_on_error');
 
-	subtitle('ispCP System cleanup:');
+	subtitle('i-MSCP System cleanup:');
 	system_cleanup();
 	print_status(0);
 

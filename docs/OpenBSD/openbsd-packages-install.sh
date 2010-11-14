@@ -36,7 +36,7 @@ echo "/usr/local/libexec/pop3d-ssl.rc start" >> /etc/rc.local
 echo "/usr/local/share/mysql/mysql.server start" >> /etc/rc.local
 echo "mkdir -p /var/run/proftpd" >> /etc/rc.local
 echo "/etc/proftpd.rc start" >> /etc/rc.local
-echo "/etc/ispcp_daemon.rc start" >> /etc/rc.local
+echo "/etc/imscp_daemon.rc start" >> /etc/rc.local
 echo "ntpd_flags=" >> /etc/rc.conf.local
 echo "httpd_flags=-u" >> /etc/rc.conf.local
 echo "inetd=NO" >> /etc/rc.conf.local

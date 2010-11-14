@@ -89,9 +89,9 @@ no warnings 'once';
 
 # Global variables;
 
-$main::cc_stdout = '/tmp/i-mscp-cc.stdout';
+$main::cc_stdout = '/tmp/imscp-cc.stdout';
 
-$main::cc_stderr = '/tmp/i-mscp-cc.stderr';
+$main::cc_stderr = '/tmp/imscp-cc.stderr';
 
 $main::el_sep = "\t#\t";
 
@@ -134,7 +134,7 @@ $main::db = undef;
 
 $main::use_crypted_pwd = undef;
 
-$main::master_name = 'i-mscp-rqst-mngr';
+$main::master_name = 'imscp-rqst-mngr';
 
 %main::cfg = ();
 
@@ -681,13 +681,13 @@ sub set_zone {
 		$fdata = substr( $fdata, $ll );
 
 		if($zs == 0) {
-			if(index($curline, $comment."## START ISPCP ".$zone." ###") == 0 ) {
+			if(index($curline, $comment."## START i-MSCP ".$zone." ###") == 0 ) {
 				$zs = 1;
 			} else {
 				$bz .= $curline;
 			}
 		} elsif($ze == 0) {
-			if(index($curline, $comment."## END ISPCP ".$zone." ###") == 0) {
+			if(index($curline, $comment."## END i-MSCP ".$zone." ###") == 0) {
 				$ze = 1;
 			}
 		} elsif($ze == 1) {
@@ -697,9 +697,9 @@ sub set_zone {
 
 	return
 		$bz . ($zs == 1 ? "" : "\n").
-		$comment."## START ISPCP ".$zone." ###\n".
+		$comment."## START i-MSCP ".$zone." ###\n".
 		$data."\n".
-		$comment."## END ISPCP ".$zone." ###\n".
+		$comment."## END i-MSCP ".$zone." ###\n".
 		$az;
 }
 
@@ -726,11 +726,11 @@ sub get_zone {
 		$fdata = substr($fdata, $ll);
 
 		if($zs == 0) {
-			if(index($curline, $comment."## START ISPCP ".$zone." ###") == 0) {
+			if(index($curline, $comment."## START i-MSCP ".$zone." ###") == 0) {
 				$zs = 1;
 			}
 		} elsif($ze == 0) {
-			if(index($curline, $comment."## END ISPCP ".$zone." ###") == 0) {
+			if(index($curline, $comment."## END i-MSCP ".$zone." ###") == 0) {
 				$ze = 1;
 			} else {
 				$zonecontent .= $curline;
@@ -765,13 +765,13 @@ sub del_zone {
 		$fdata = substr( $fdata, $ll );
 
 		if($zs == 0) {
-			if(index($curline, $comment."## START ISPCP ".$zone." ###") == 0) {
+			if(index($curline, $comment."## START i-MSCP ".$zone." ###") == 0) {
 				$zs = 1;
 			} else {
 				$bz .= $curline;
 			}
 		} elsif($ze == 0) {
-			if(index($curline, $comment."## END ISPCP ".$zone." ###") == 0) {
+			if(index($curline, $comment."## END i-MSCP ".$zone." ###") == 0) {
 				$ze = 1;
 			}
 		} elsif($ze == 1) {
@@ -792,7 +792,7 @@ sub del_zone {
 # This is an merely subroutine to get the external command exit value. If the
 # command failed to execute or died with any signal, a negative integer is
 # returned. In all other cases, the real exit value from the external command is
-# returned. 
+# returned.
 #
 # @return int -1 if the command failed to executed or died with any signal,
 # external command exit value otherwise
@@ -1534,9 +1534,9 @@ sub lock_system {
 	0;
 }
 
-sub connect_ispcp_daemon {
+sub connect_imscp_daemon {
 
-	push_el(\@main::el, 'connect_ispcp_daemon()', 'Starting...');
+	push_el(\@main::el, 'connect_imscp_daemon()', 'Starting...');
 
 	my $fd = IO::Socket::INET -> new(
 		Proto => 'tcp',
@@ -1548,14 +1548,14 @@ sub connect_ispcp_daemon {
 
 		push_el(
 			\@main::el,
-			'connect_ispcp_daemon()',
-			"[ERROR] Can't connect to ISPCP license daemon !"
+			'connect_imscp_daemon()',
+			"[ERROR] Can't connect to I-MSCP license daemon !"
 		);
 
 		return (-1, '');
 	}
 
-	push_el(\@main::el, 'connect_ispcp_daemon()', 'Ending...');
+	push_el(\@main::el, 'connect_imscp_daemon()', 'Ending...');
 
 	return (0, $fd);
 }
@@ -1614,22 +1614,22 @@ sub send_line {
 	return (0, '');
 }
 
-sub close_ispcp_daemon {
+sub close_imscp_daemon {
 
-	push_el(\@main::el, 'close_ispcp_daemon()', 'Starting...');
+	push_el(\@main::el, 'close_imscp_daemon()', 'Starting...');
 
 	my ($fd) = @_;
 
 	close($fd);
 
-	push_el(\@main::el, 'close_ispcp_daemon()', 'Ending...');
+	push_el(\@main::el, 'close_imscp_daemon()', 'Ending...');
 }
 
 sub license_request {
 
 	push_el(\@main::el, 'license_query()', 'Starting...');
 
-	my ($rs, $rdata) = connect_ispcp_daemon();
+	my ($rs, $rdata) = connect_imscp_daemon();
 	return ($rs, $rdata) if ($rs != 0);
 
 	my $fd = $rdata;
@@ -1672,7 +1672,7 @@ sub license_request {
 	($rs, $rdata) = send_line($fd, "bye\r\n");
 	($rs, $rdata) = recv_line($fd);
 
-	close_ispcp_daemon($fd);
+	close_imscp_daemon($fd);
 
 	push_el(\@main::el, 'license_query()', 'Ending...');
 
@@ -1848,7 +1848,7 @@ sub setup_main_vars {
 # global database variables and redefines the DSN.
 #
 # @param [scalar $file_name filename from where the configuration must be loaded]
-# Default value is the main ispCP configuration file (i-mscp.conf)
+# Default value is the main i-MSCP configuration file (imscp.conf)
 # @return int 0 on success, 1 otherwise
 #
 sub get_conf {
@@ -1920,7 +1920,7 @@ sub set_conf_val {
 }
 
 ################################################################################
-# Store all cached configuration parameters in the i-mscp.conf file
+# Store all cached configuration parameters in the imscp.conf file
 #
 # This function updates the configuration settings to a file with those stored
 # in the global $main::cfg_reg hash . Only parameters that have a different
@@ -1932,7 +1932,7 @@ sub set_conf_val {
 # not exist in the configuration file.
 #
 # @param [scalar optional filename where the configuration must be stored]
-# Default value is the main ispCP configuration file (i-mscp.conf)
+# Default value is the main i-MSCP configuration file (imscp.conf)
 # @return int 0 on success, 1 otherwise
 #
 sub store_conf {
@@ -2390,9 +2390,9 @@ sub sort_domains {
 ## SN tag. In case  where the SN tag was never generated, $wrkFile should
 ## contains the prepared SN tag like:
 ##
-## ; dmn [i-mscp.net] timestamp entry BEGIN.
+## ; dmn [imscp.net] timestamp entry BEGIN.
 ##                {TIMESTAMPS}      ; Serial
-## ; dmn [i-mscp.net] timestamp entry END.
+## ; dmn [imscp.net] timestamp entry END.
 ##
 ## @author  Laurent Declercq <laurent.declercq@i-mscp.net>
 ## @since   1.0.7
@@ -2574,9 +2574,9 @@ $errmsg
 	$out -> build(
 		From => "$server_name ($server_ip) <$admin_email>",
 		To => $admin_email,
-		Subject => "[$date] ispCP Error report",
+		Subject => "[$date] i-MSCP Error report",
 		Data => $msg_data,
-		'X-Mailer' => "ispCP $main::cfg{'Version'} Automatic Error Messenger"
+		'X-Mailer' => "i-MSCP $main::cfg{'Version'} Automatic Error Messenger"
 	);
 
 	open MAIL, "| /usr/sbin/sendmail -t -oi";

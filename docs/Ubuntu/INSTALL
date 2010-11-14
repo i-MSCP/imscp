@@ -79,16 +79,16 @@ provides graphic user interfaces for the administrators, resellers and users.
 	# sudo make -f Makefile.ubuntu install
 
 6. Copy all the directories into your system (you may make backups)
-	# sudo cp -Rv /tmp/i-mscp/* /
+	# sudo cp -Rv /tmp/imscp/* /
 
 7. Now it's time to set up the frontend. Change into the engine directory:
-	# cd /var/www/i-mscp/engine/setup
+	# cd /var/www/imscp/engine/setup
 
 7a. Set the MySQL password, if not set:
 	# sudo mysqladmin -u root password YOUR_PASSWORD
 
 8. Start the engine setup:
-	# sudo perl i-mscp-setup
+	# sudo perl imscp-setup
 
 9. Install i-MSCP step-by-step
 
@@ -103,7 +103,7 @@ provides graphic user interfaces for the administrators, resellers and users.
 	# sudo /etc/init.d/apache2 restart
 
 11. Clean the temporary folders:
-	# sudo rm -fR /tmp/i-mscp
+	# sudo rm -fR /tmp/imscp
 
 ================================================================================
 5) Update
@@ -136,7 +136,7 @@ Make sure you are logged in as root and MySQL is running.
 	(if you get to the proftpd screen, select 'standalone')
 	(if you get to the rootkithunter screen, select two time 'yes')
 
-4. Stop the i-mscp_daemon and build the Software by using make:
+4. Stop the imscp_daemon and build the Software by using make:
 	# /etc/init.d/imscp_daemon stop
 	# make -f Makefile.ubuntu  install
 
@@ -158,7 +158,7 @@ Make sure you are logged in as root and MySQL is running.
 	# sudo cp -Rv /tmp/imscp/var/* /var/
 
 8. Backup i-mscp.conf and copy the /etc directory into your system (you may make backups):
-	# sudo mv -v /etc/imscp/imscp.conf /etc/i-mscp/imscp.old.conf
+	# sudo mv -v /etc/imscp/imscp.conf /etc/imscp/imscp.old.conf
 	# sudo cp -Rv /tmp/imscp/etc/* /etc/
 
 9. Now it's time to update your installation. Change into the engine directory:

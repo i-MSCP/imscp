@@ -45,11 +45,11 @@ use FindBin;
 use lib "$FindBin::Bin/..";
 use PerlVendor::Capture::Tiny qw/capture_merged/;
 
-require 'ispcp_common_code.pl';
-require 'i-mscp-setup-methods.pl';
+require 'imscp_common_code.pl';
+require 'imscp-setup-methods.pl';
 
 # We use our own system() subroutine implementation
-# See in the i-mscp-setup-methods.pl file
+# See in the imscp-setup-methods.pl file
 use subs 'system';
 
 ################################################################################
@@ -93,8 +93,8 @@ sub welcome_note {
 
 	print colored(
 		['bold underline'],
-		"\n\tWelcome to ispCP '$main::cfg{'Version'}' Setup Dialog.\n\n"
-	), "\tThis program will set up ispCP OMEGA system on your server.\n";
+		"\n\tWelcome to i-MSCP '$main::cfg{'Version'}' Setup Dialog.\n\n"
+	), "\tThis program will set up i-MSCP system on your server.\n";
 
 	push_el(\@main::el, 'welcome_note()', 'Ending...');
 }
@@ -103,7 +103,7 @@ sub welcome_note {
 # Process user dialog
 #
 # In order:
-#  Host Questions, SQL Questions, ispCP ftp SQL user questions,
+#  Host Questions, SQL Questions, i-MSCP ftp SQL user questions,
 #  PMA control user questions, Admin questions, Configuration questions,
 #  FastCGI-Version questions, PHP Timzeone question, Awstats question,
 #  Awstats mode question
@@ -151,7 +151,7 @@ sub user_dialog {
 	spacer();
 
 	print colored(
-		['bold'], "\n\tThe program is now ready to set up ispCP on your system.\n"
+		['bold'], "\n\tThe program is now ready to set up i-MSCP on your system.\n"
 	);
 
 	# Last chance to stop the installation process
@@ -297,7 +297,7 @@ sub setup_system_users {
 }
 
 ################################################################################
-# create all directories required by ispCP and the managed services
+# create all directories required by i-MSCP and the managed services
 #
 # @return int 0 on success, other on failure
 #
@@ -338,7 +338,7 @@ sub setup_system_dirs {
 }
 
 ################################################################################
-# Update the i-mscp.conf file with user data and reload all the configuration
+# Update the imscp.conf file with user data and reload all the configuration
 #
 # @return int 0 on success, other on failure
 #
@@ -372,7 +372,7 @@ sub setup_config {
 		return $rs if ($rs != 0);
 	}
 
-	# If not empty password, encrypt it before store it in i-mscp.conf file
+	# If not empty password, encrypt it before store it in imscp.conf file
 	if ($main::ua{'db_password'} ne '') {
 		my ($rs, $rdata) = encrypt_db_password($main::ua{'db_password'});
 		return $rs if ($rs != 0);
@@ -381,7 +381,7 @@ sub setup_config {
 		return $rs if ($rs != 0);
 	}
 
-	# Updating the main ispCP configuration file with news values and reloads
+	# Updating the main i-MSCP configuration file with news values and reloads
 	# all configuration parameters from it. Also, resets the DSN.
 	my $rs = store_conf();
 	return $rs if ($rs != 0);
@@ -392,15 +392,15 @@ sub setup_config {
 }
 
 ################################################################################
-# Creating ispCP database
+# Creating i-MSCP database
 #
 # @return int 0 on success, other on failure
 #
-sub setup_ispcp_database {
+sub setup_imscp_database {
 
-	push_el(\@main::el, 'setup_ispcp_database()', 'Starting...');
+	push_el(\@main::el, 'setup_imscp_database()', 'Starting...');
 
-	my $ispCPdbName = $main::ua{'db_name'};
+	my $iMSCPdbName = $main::ua{'db_name'};
 
 	# Converting to ASCII (Punycode)
 	my $dbHost = idn_to_ascii($main::db_host, 'utf-8');
@@ -441,7 +441,7 @@ sub setup_ispcp_database {
 
 		if(!$rs) {
 			print colored(['bold blue'], "\n\t[NOTICE] ") .
-				"Next, you'll be asked again a name for the ispCP database.\n" .
+				"Next, you'll be asked again a name for the i-MSCP database.\n" .
 				"\tYou should choose a name that is not already used!\n";
 
 			ask_db_name();
@@ -451,7 +451,7 @@ sub setup_ispcp_database {
 			return $rs if($rs != 0);
 		} else {
 			push_el(
-				\@main::el, 'setup_ispcp_database()',
+				\@main::el, 'setup_imscp_database()',
 				"Removing database $main::ua{'db_name'}"
 			);
 
@@ -463,7 +463,7 @@ sub setup_ispcp_database {
 
 	# Updating the configuration file and redefinition of the DSN. We also
 	# forcing the re-connection to MySQL server on the next query
-	if($ispCPdbName ne $main::ua{'db_name'}) {
+	if($iMSCPdbName ne $main::ua{'db_name'}) {
 		$rs = set_conf_val('DATABASE_NAME', $main::ua{'db_name'});
 		return $rs if($rs != 0);
 
@@ -475,7 +475,7 @@ sub setup_ispcp_database {
 		setup_main_vars();
 	}
 
-	## Creating the ispCP database
+	## Creating the i-MSCP database
 
 	($rs, $rdata) = get_file("$main::cfg{'CONF_DIR'}/database/database.sql");
 	return $rs if ($rs != 0);
@@ -503,7 +503,7 @@ sub setup_ispcp_database {
 	$rs = del_file('/tmp/db.sql');
 	return $rs if ($rs != 0);
 
-	push_el(\@main::el, 'setup_ispcp_database()', 'Ending...');
+	push_el(\@main::el, 'setup_imscp_database()', 'Ending...');
 }
 
 ################################################################################
@@ -529,11 +529,11 @@ sub setup_default_language_table {
 }
 
 ################################################################################
-# Setup ispCP database default data
+# Setup i-MSCP database default data
 #
 # Default data are:
 #
-# - Data for the first ispCP administrator
+# - Data for the first i-MSCP administrator
 # - Data for the first Ip
 # - Data for the proftpd SQL user
 #
@@ -543,7 +543,7 @@ sub setup_default_sql_data {
 
 	push_el(\@main::el, 'setup_default_sql_data()', 'Starting...');
 
-	## First ispCP administrator data - Begin
+	## First i-MSCP administrator data - Begin
 
 	my $admin_password = crypt_md5_data($main::ua{'admin_password'});
 
@@ -735,8 +735,8 @@ sub setup_engine {
 	system('clear');
 	spacer();
 
-	# Starting ispCP installation
-	title('Starting ispCP installation');
+	# Starting i-MSCP installation
+	title('Starting i-MSCP installation');
 
 	# Stopping services
 	subtitle('Stopping all services: ');
@@ -816,11 +816,11 @@ sub setup_shut_down {
 	push_el(\@main::el, 'setup_shut_down()', 'Starting...');
 
 	print colored( ['bold underline'],
-		"\n\tCongratulations you installed ispCP '$main::cfg{'Version'}' " .
+		"\n\tCongratulations you installed i-MSCP '$main::cfg{'Version'}' " .
 		"successfully!\n\n"),
 
 		"\tPlease type http://$main::ua{'admin_vhost'} in your browser and\n" .
-		"\tlog in with your Administrator Account to use ispCP.\n\n";
+		"\tlog in with your Administrator Account to use i-MSCP.\n\n";
 
 	push_el(\@main::el, 'setup_shut_down()', 'Ending...');
 }

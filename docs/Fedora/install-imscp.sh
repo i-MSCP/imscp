@@ -7,7 +7,7 @@
 # The path where the Makefile files are
 ISPCP_PATH=CHANGEME
 
-ISPCP_TMP_PATH=/tmp/ispcp_install
+IMSCP_TMP_PATH=/tmp/imscp_install
 
 
 echo \************************************
@@ -125,11 +125,11 @@ chown apache:apache /var/www/imscp/gui/tools/webmail/data
 
 ######################################
 echo Setting Startup services
-chkconfig --add ispcp_daemon
+chkconfig --add imscp_daemon
 chkconfig --add spamassassin
 chkconfig --add posfix
 
-chkconfig ispcp_daemon on
+chkconfig imscp_daemon on
 chkconfig spamassassin on
 chkconfig postfix on
 chkconfig httpd on
@@ -142,7 +142,7 @@ chkconfig sendmail off
 ######################################
 echo re-starting required services
 service httpd restart
-service ispcp_daemon restart
+service imscp_daemon restart
 service named restart
 service proftpd restart
 service spamassassin restart

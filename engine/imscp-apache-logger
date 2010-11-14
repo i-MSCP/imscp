@@ -29,7 +29,7 @@
 
 ################################################################################
 ## Script description:                                                        ##
-##  i-mscp-apache-logger - ispCP apache logfiles handling                      ##
+##  imscp-apache-logger - iMSCP apache logfiles handling                      ##
 ##                                                                            ##
 ## I. CustomLog handler:                                                      ##
 ##                                                                            ##
@@ -84,7 +84,7 @@ use sigtrap 'handler' => \&signalHandler, 'normal-signals';
 
 my %opt = (
 	loggingType => 'access', # Default logging type
-	logDir => '/var/log/i-mscp' # Default script event log directory
+	logDir => '/var/log/imscp' # Default script event log directory
 );
 
 Getopt::Long::Configure(qw(no_ignore_case));
@@ -99,7 +99,7 @@ GetOptions(\%opt, 'loggingType|t=s', 'logDir|l=s');
 
 ################################################################################
 #
-# Load configuration from ispCP configuration file
+# Load configuration from i-MSCP configuration file
 #
 # @return int 0 on success, negative int otherwise
 #
@@ -107,10 +107,10 @@ sub getConf {
 
 	my $file;
 
-	if(-e '/usr/local/etc/i-mscp/i-mscp.conf'){
-		$file = '/usr/local/etc/i-mscp/i-mscp.conf';
-	} elsif(-e '/etc/i-mscp/i-mscp.conf') {
-		$file = '/etc/i-mscp/i-mscp.conf';
+	if(-e '/usr/local/etc/imscp/imscp.conf'){
+		$file = '/usr/local/etc/imscp/imscp.conf';
+	} elsif(-e '/etc/imscp/imscp.conf') {
+		$file = '/etc/imscp/imscp.conf';
 	} else {
 		return -1;
 	}
@@ -127,14 +127,14 @@ sub getConf {
 # Create/update all custom log files
 #
 # This subroutine is the handler that is responsible to grab and parse all error
-# log lines from apache and create the ispCP errors log files from them.
+# log lines from apache and create the i-MSCP errors log files from them.
 #
 # @return void
 #
 sub ErrorLogHandler {
 
 	eventLog(
-		'notice', 'ispCP Apache Logger started ErrorLog Handler -- ' .
+		'notice', 'i-MSCP Apache Logger started ErrorLog Handler -- ' .
 			'resuming normal operations'
 	);
 
@@ -147,7 +147,7 @@ sub ErrorLogHandler {
 			\/([\w\d.-]+)
 		/x;
 
-		# Error from ispCP Frontend ?
+		# Error from i-MSCP Frontend ?
 		$vhost = $main::cfg{'BASE_SERVER_VHOST'} if ($vhost eq 'master');
 
 		# Write the error log line in the default|domain.tld-error.log
@@ -173,14 +173,14 @@ sub ErrorLogHandler {
 # Create/update all custom log files
 #
 # This subroutine is the handler that is responsible to grab and parse all
-# custom log lines from apache and create the ispCP custom logfiles from them.
+# custom log lines from apache and create the i-MSCP custom logfiles from them.
 #
 # @return void
 #
 sub CustomLoghandler {
 
 	eventLog(
-		'notice', 'ispCP Apache Logger started CustomLog Handler -- ' .
+		'notice', 'i-MSCP Apache Logger started CustomLog Handler -- ' .
 			'resuming normal operations'
 	);
 
@@ -237,7 +237,7 @@ sub eventLog {
 	if(-d $opt{'logDir'}) {
 		if($priority ne 'debug' && $priority ne 'info' && $priority ne 'notice') {
 			*STDERR = cacheout '>>',
-				"$opt{'logDir'}/i-mscp-apache-logger.stderr";
+				"$opt{'logDir'}/imscp-apache-logger.stderr";
 			STDERR->autoflush(1);
 
 			print STDERR "[$date] [$priority] $message\n";
@@ -245,7 +245,7 @@ sub eventLog {
 			return 0;
 		} else {
 			*STDOUT = cacheout '>>',
-				"$opt{'logDir'}/i-mscp-apache-logger.stdout";
+				"$opt{'logDir'}/imscp-apache-logger.stdout";
 			STDOUT->autoflush(1);
 
 			print STDOUT "[$date] [$priority] $message\n";
@@ -289,13 +289,13 @@ sub signalHandler() {
 #                              Main program                                    #
 ################################################################################
 
-eventLog('notice', "Starting ispCP Apache logger (pid $$)");
+eventLog('notice', "Starting i-MSCP Apache logger (pid $$)");
 
-# Get ispCP configuration file
+# Get i-MSCP configuration file
 if(getConf() != 0) {
 	eventLog(
 		'err',
-		"Unable to load ispCP configuration from the i-mscp.conf file!"
+		"Unable to load i-MSCP configuration from the imscp.conf file!"
 	);
 
 } elsif (!-d $main::cfg{'APACHE_LOG_DIR'}) {

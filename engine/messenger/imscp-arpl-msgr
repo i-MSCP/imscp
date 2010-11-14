@@ -287,14 +287,14 @@ sub del_file {
 %main::cfg = ();
 
 if(!defined($main::cfg_file)) {
-	$main::cfg_file = '/etc/i-mscp/i-mscp.conf';
+	$main::cfg_file = '/etc/imscp/imscp.conf';
 }
 
 $main::cfg_re = '^([\_A-Za-z0-9]+) *= *([^\n\r]*)[\n\r]';
 
 use FindBin;
 use lib "$FindBin::Bin/";
-require 'i-mscp-db-keys.pl';
+require 'imscp-db-keys.pl';
 
 umask(027);
 
@@ -432,29 +432,29 @@ if ($main::cfg{'DEBUG'} != 0) {
 }
 
 if ($rs != 0) {
-	if( -d "$main::cfg{'LOG_DIR'}/i-mscp-arpl-msgr/") {
-		$main::ispcp_arpl_msgr_el =
-			"$main::cfg{'LOG_DIR'}i-mscp-arpl-msgr/i-mscp-arpl-msgr.el";
-		$main::ispcp_arpl_msgr_stdout =
-			"$main::cfg{'LOG_DIR'}/i-mscp-arpl-msgr/i-mscp-arpl-msgr.stdout";
-		$main::ispcp_arpl_msgr_stderr =
-			"$main::cfg{'LOG_DIR'}/i-mscp-arpl-msgr/i-mscp-arpl-msgr.stderr";
+	if( -d "$main::cfg{'LOG_DIR'}/imscp-arpl-msgr/") {
+		$main::imscp_arpl_msgr_el =
+			"$main::cfg{'LOG_DIR'}imscp-arpl-msgr/imscp-arpl-msgr.el";
+		$main::imscp_arpl_msgr_stdout =
+			"$main::cfg{'LOG_DIR'}/imscp-arpl-msgr/imscp-arpl-msgr.stdout";
+		$main::imscp_arpl_msgr_stderr =
+			"$main::cfg{'LOG_DIR'}/imscp-arpl-msgr/imscp-arpl-msgr.stderr";
 		chown(
 			$main::cfg{'MTA_MAILBOX_UID'},
 			$main::cfg{'MTA_MAILBOX_GID'},
-			($main::ispcp_arpl_msgr_stdout,$main::ispcp_arpl_msgr_stderr)
+			($main::imscp_arpl_msgr_stdout,$main::imscp_arpl_msgr_stderr)
 		);
 
 		umask(027);
 
-		open(STDOUT, ">", $main::ispcp_arpl_msgr_stdout) ||
+		open(STDOUT, ">", $main::imscp_arpl_msgr_stdout) ||
 			die "Can't redirect stdout";
-		open(STDERR, ">", $main::ispcp_arpl_msgr_stderr) ||
+		open(STDERR, ">", $main::imscp_arpl_msgr_stderr) ||
 			die "Can't redirect stderr";
 	}
 
 	print STDERR
-		"\nCRITICAL ERROR: Failed open /etc/i-mscp/i-mscp.conf! Maybe wrong permissions?\n" ;
+		"\nCRITICAL ERROR: Failed open /etc/imscp/imscp.conf! Maybe wrong permissions?\n" ;
 
 	exit 0;
 }
@@ -462,21 +462,21 @@ if ($rs != 0) {
 # debug dump files;
 $main::log_dir = $main::cfg{'LOG_DIR'};
 
-$main::ispcp_arpl_msgr_el =
-	"$main::log_dir/i-mscp-arpl-msgr/i-mscp-arpl-msgr.el";
-$main::ispcp_arpl_msgr_stdout =
-	"$main::log_dir/i-mscp-arpl-msgr/i-mscp-arpl-msgr.stdout";
-$main::ispcp_arpl_msgr_stderr =
-	"$main::log_dir/i-mscp-arpl-msgr/i-mscp-arpl-msgr.stderr";
+$main::imscp_arpl_msgr_el =
+	"$main::log_dir/imscp-arpl-msgr/imscp-arpl-msgr.el";
+$main::imscp_arpl_msgr_stdout =
+	"$main::log_dir/imscp-arpl-msgr/imscp-arpl-msgr.stdout";
+$main::imscp_arpl_msgr_stderr =
+	"$main::log_dir/imscp-arpl-msgr/imscp-arpl-msgr.stderr";
 
 chown(
 	$main::cfg{'MTA_MAILBOX_UID'},
 	$main::cfg{'MTA_MAILBOX_GID'},
-	($main::ispcp_arpl_msgr_stdout,$main::ispcp_arpl_msgr_stderr)
+	($main::imscp_arpl_msgr_stdout,$main::imscp_arpl_msgr_stderr)
 );
 
-open(STDOUT, ">", $main::ispcp_arpl_msgr_stdout) || die "Can't redirect stdout";
-open(STDERR, ">", $main::ispcp_arpl_msgr_stderr) || die "Can't redirect stderr";
+open(STDOUT, ">", $main::imscp_arpl_msgr_stdout) || die "Can't redirect stdout";
+open(STDERR, ">", $main::imscp_arpl_msgr_stderr) || die "Can't redirect stderr";
 
 #
 # common code: END
@@ -496,8 +496,8 @@ sub arpl_msgr_start_up {
 
 	# Let's clear Execution Logs, if any.
 
-	if (-e $main::ispcp_arpl_msgr_el) {
-		$rs = del_file($main::ispcp_arpl_msgr_el);
+	if (-e $main::imscp_arpl_msgr_el) {
+		$rs = del_file($main::imscp_arpl_msgr_el);
 
 		return $rs if ($rs != 0);
 	}
@@ -521,10 +521,10 @@ sub arpl_msgr_shut_down {
 	$main::db->disconnect();
 
 	if (!defined($main::engine_debug)) {
-		$rs = del_file($main::ispcp_arpl_msgr_stdout);
+		$rs = del_file($main::imscp_arpl_msgr_stdout);
 		return $rs if ($rs != 0);
 
-		$rs = del_file($main::ispcp_arpl_msgr_stderr);
+		$rs = del_file($main::imscp_arpl_msgr_stderr);
 		return $rs if ($rs != 0);
 
 		push_el(\@main::el, 'arpl_msgr_shut_down()', "delete debugfiles.");
@@ -800,7 +800,7 @@ sub arpl_msgr_engine {
 						$mail_to = $to_ma->address;
 					}
 
-					$mail_to=~s/\@i-mscp-arpl./\@/;
+					$mail_to=~s/\@imscp-arpl./\@/;
 
 					# Detect duplicates within 24h to avoid autoreplying loops
 					$sql = "
@@ -838,7 +838,7 @@ sub arpl_msgr_engine {
 						Type => "multipart/mixed; charset=utf-8",
 						'X-Autoresponse-From' => $mail_to,
 						'X-Mailer' =>
-							"ispCP $main::cfg{'Version'} Autoreply Manager"
+							"i-MSCP $main::cfg{'Version'} Autoreply Manager"
 					);
 
 					$out->attach(
@@ -898,7 +898,7 @@ $rs = undef;
 $rs = arpl_msgr_start_up();
 
 if ($rs != 0) {
-	dump_el(\@main::el, $main::ispcp_arpl_msgr_el);
+	dump_el(\@main::el, $main::imscp_arpl_msgr_el);
 
 	arpl_msgr_shut_down();
 
@@ -908,7 +908,7 @@ if ($rs != 0) {
 $rs = arpl_msgr_engine();
 
 if ($rs != 0) {
-	dump_el(\@main::el, $main::ispcp_arpl_msgr_el);
+	dump_el(\@main::el, $main::imscp_arpl_msgr_el);
 
 	arpl_msgr_shut_down();
 
@@ -918,7 +918,7 @@ if ($rs != 0) {
 $rs = arpl_msgr_shut_down();
 
 if ($rs != 0) {
-	dump_el(\@main::el, $main::ispcp_arpl_msgr_el);
+	dump_el(\@main::el, $main::imscp_arpl_msgr_el);
 
 	exit 1;
 }

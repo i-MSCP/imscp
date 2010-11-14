@@ -31,12 +31,12 @@
 
 use FindBin;
 use lib "$FindBin::Bin/..";
-require 'ispcp_common_code.pl';
+require 'imscp_common_code.pl';
 
 use strict;
 use warnings;
 
-our $backup_lock_file = "/tmp/i-mscp-backup-all.lock";
+our $backup_lock_file = "/tmp/imscp-backup-all.lock";
 
 sub lock_backup_all_system {
 

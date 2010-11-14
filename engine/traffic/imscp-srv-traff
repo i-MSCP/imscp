@@ -31,7 +31,7 @@
 
 use FindBin;
 use lib "$FindBin::Bin/..";
-require 'ispcp_common_code.pl';
+require 'imscp_common_code.pl';
 
 use strict;
 
@@ -45,9 +45,9 @@ sub srv_traff_start_up {
 
 	# Let's clear Execution Logs, if any.
 
-	if (-e $main::ispcp_srv_traff_el) {
+	if (-e $main::imscp_srv_traff_el) {
 
-		$rs = del_file($main::ispcp_srv_traff_el);
+		$rs = del_file($main::imscp_srv_traff_el);
 
 		return $rs if ($rs != 0);
 
@@ -119,17 +119,17 @@ sub srv_traff_engine {
 		my ($rs, $ref) = (undef, undef);
 
 		my ($input_log, $output_log) = (
-			"$main::log_dir/i-mscp-iptables-input.log",
-			"$main::log_dir/i-mscp-iptables-output.log"
+			"$main::log_dir/imscp-iptables-input.log",
+			"$main::log_dir/imscp-iptables-output.log"
 		);
 
 		push_el(\@main::el, 'srv_traff_engine()', 'Starting...');
 
-		$rs = sys_command("export COLUMNS=120;$main::cfg{CMD_IPTABLES} -nvxL ISPCP_INPUT 1>$input_log");
+		$rs = sys_command("export COLUMNS=120;$main::cfg{CMD_IPTABLES} -nvxL IMSCP_INPUT 1>$input_log");
 
 		return $rs if ($rs != 0);
 
-		$rs = sys_command("export COLUMNS=120;$main::cfg{CMD_IPTABLES} -nvxL ISPCP_OUTPUT 1>$output_log");
+		$rs = sys_command("export COLUMNS=120;$main::cfg{CMD_IPTABLES} -nvxL IMSCP_OUTPUT 1>$output_log");
 
 		return $rs if ($rs != 0);
 
@@ -228,12 +228,12 @@ sub srv_traff_engine {
 		return $rs if ($rs != 0);
 
 
-		$rs = sys_command("$main::cfg{CMD_IPTABLES} -Z ISPCP_INPUT");
+		$rs = sys_command("$main::cfg{CMD_IPTABLES} -Z IMSCP_INPUT");
 
 		return $rs if ($rs != 0);
 
 
-		$rs = sys_command("$main::cfg{CMD_IPTABLES} -Z ISPCP_OUTPUT");
+		$rs = sys_command("$main::cfg{CMD_IPTABLES} -Z IMSCP_OUTPUT");
 
 		return $rs if ($rs != 0);
 
@@ -255,7 +255,7 @@ $rs = srv_traff_start_up();
 
 if ($rs != 0) {
 
-	dump_el(\@main::el, $main::ispcp_srv_traff_el);
+	dump_el(\@main::el, $main::imscp_srv_traff_el);
 
 	srv_traff_shut_down();
 
@@ -268,7 +268,7 @@ $rs = srv_traff_engine();
 
 if ($rs != 0) {
 
-	dump_el(\@main::el, $main::ispcp_srv_traff_el);
+	dump_el(\@main::el, $main::imscp_srv_traff_el);
 
 	srv_traff_shut_down();
 
@@ -281,7 +281,7 @@ $rs = srv_traff_shut_down();
 
 if ($rs != 0) {
 
-	dump_el(\@main::el, $main::ispcp_srv_traff_el);
+	dump_el(\@main::el, $main::imscp_srv_traff_el);
 
 	exit 1;
 

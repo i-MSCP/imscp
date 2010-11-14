@@ -37,7 +37,7 @@
 use FindBin;
 use lib "$FindBin::Bin/";
 
-require 'ispcp_common_code.pl';
+require 'imscp_common_code.pl';
 
 use strict;
 use warnings;
@@ -66,8 +66,8 @@ sub dmn_mngr_start_up {
 	return $rs if ($rs != 0);
 
 	# Clear Execution Logs, if any
-	if (-e $main::ispcp_dmn_mngr_el) {
-		$rs = del_file($main::ispcp_dmn_mngr_el);
+	if (-e $main::imscp_dmn_mngr_el) {
+		$rs = del_file($main::imscp_dmn_mngr_el);
 		return $rs if ($rs != 0);
 	}
 
@@ -125,11 +125,11 @@ sub _dmn_add_named_cfg_data {
 	my $tpl_dir = "$cfg_dir/parts";
 	my $wrk_dir = "$cfg_dir/working";
 
-	# Load the working file from tpl directory (eg. /etc/i-mscp/bind/working/)
+	# Load the working file from tpl directory (eg. /etc/imscp/bind/working/)
 	($rs, $wrk_file) = get_file("$wrk_dir/named.conf");
 	return $rs if ($rs != 0);
 
-	## Load all needed templates from (eg. /etc/i-mscp/bind/parts/) - Begin
+	## Load all needed templates from (eg. /etc/imscp/bind/parts/) - Begin
 
 	my ($dta_b, $dta_e, $entry_b, $entry_e, $entry) = ('', '', '', '', '');
 
@@ -140,7 +140,7 @@ sub _dmn_add_named_cfg_data {
 	);
 	return $rs if ($rs != 0);
 
-	## Load all needed template from (eg. /etc/i-mscp/bind/parts/) - End
+	## Load all needed template from (eg. /etc/imscp/bind/parts/) - End
 
 	## Construct needed tags and entries - Begin
 
@@ -242,11 +242,11 @@ sub _dmn_del_named_cfg_data {
 	my $tpl_dir = "$cfg_dir/parts";
 	my $wrk_dir = "$cfg_dir/working";
 
-	# Load the working file from tpl directory (eg. /etc/i-mscp/bind/working/)
+	# Load the working file from tpl directory (eg. /etc/imscp/bind/working/)
 	($rs, $wrk_file) = get_file("$wrk_dir/named.conf");
 	return $rs if ($rs != 0);
 
-	## Load all needed templates from (eg. /etc/i-mscp/bind/parts/) - Begin
+	## Load all needed templates from (eg. /etc/imscp/bind/parts/) - Begin
 
 	my ($dta_b, $dta_e, $entry_b, $entry_e, $entry) = ('', '', '', '', '');
 
@@ -257,7 +257,7 @@ sub _dmn_del_named_cfg_data {
 	);
 	return $rs if ($rs != 0);
 
-	## Load all needed template from (eg. /etc/i-mscp/bind/parts/) - End
+	## Load all needed template from (eg. /etc/imscp/bind/parts/) - End
 
 	## Build needed tags and entries - Begin
 
@@ -1145,17 +1145,17 @@ sub dmn_add_httpd_cfg_data {
 	my $tpl_dir = "$conf_dir/apache/parts";
 	my $working_dir = "$conf_dir/apache/working";
 	my $backup_dir = "$conf_dir/apache/backup";
-	my $sys_cfg = "$main::cfg{'APACHE_SITES_DIR'}/i-mscp.conf";
-	my $working_cfg = "$working_dir/i-mscp.conf";
+	my $sys_cfg = "$main::cfg{'APACHE_SITES_DIR'}/imscp.conf";
+	my $working_cfg = "$working_dir/imscp.conf";
 
 	if (!-e $working_cfg) {
-		my $ispcp_base_tpl;
+		my $imscp_base_tpl;
 
-		($rs, $ispcp_base_tpl) = get_file($tpl_dir."/ispcp_base.tpl");
+		($rs, $imscp_base_tpl) = get_file($tpl_dir."/imscp_base.tpl");
 		return $rs if ($rs != 0);
 
 		($rs, $rdata) = store_file(
-			$working_cfg, $ispcp_base_tpl, 'root', 'root', 0600
+			$working_cfg, $imscp_base_tpl, 'root', 'root', 0600
 		);
 		return $rs if ($rs != 0);
 	}
@@ -1380,8 +1380,8 @@ sub dmn_del_httpd_cfg_data {
 	my $tpl_dir = "$conf_dir/apache/parts";
 	my $working_dir = "$conf_dir/apache/working";
 	my $backup_dir = "$conf_dir/apache/backup";
-	my $sys_cfg = "$main::cfg{'APACHE_SITES_DIR'}/i-mscp.conf";
-	my $working_cfg = "$working_dir/i-mscp.conf";
+	my $sys_cfg = "$main::cfg{'APACHE_SITES_DIR'}/imscp.conf";
+	my $working_cfg = "$working_dir/imscp.conf";
 	my $backup_cfg = "$backup_dir/httpd.conf." . time();
 
 	# Getting needed templates
@@ -2704,8 +2704,8 @@ sub dmn_add_crontab_data {
 	my $tpl_dir = "$conf_dir/cron.d/parts";
 	my $working_dir = "$conf_dir/cron.d/working";
 	my $backup_dir = "$conf_dir/cron.d/backup";
-	my $working_cfg = "$working_dir/i-mscp";
-	my $backup_cfg = "$backup_dir/i-mscp." . time();
+	my $working_cfg = "$working_dir/imscp";
+	my $backup_cfg = "$backup_dir/imscp." . time();
 
 	# Getting needed templates;
 
@@ -2788,7 +2788,7 @@ sub dmn_add_crontab_data {
 		);
 	} else {
 		$rs = sys_command_rs(
-			"$main::cfg{'CMD_CP'} /etc/cron.d/i-mscp $backup_cfg"
+			"$main::cfg{'CMD_CP'} /etc/cron.d/imscp $backup_cfg"
 		);
 	}
 
@@ -2837,8 +2837,8 @@ sub dmn_del_crontab_data {
 	my $tpl_dir = "$conf_dir/cron.d/parts";
 	my $working_dir = "$conf_dir/cron.d/working";
 	my $backup_dir = "$conf_dir/cron.d/backup";
-	my $working_cfg = "$working_dir/i-mscp";
-	my $backup_cfg = "$backup_dir/i-mscp." . time();
+	my $working_cfg = "$working_dir/imscp";
+	my $backup_cfg = "$backup_dir/imscp." . time();
 
 	# Getting needed templates;
 
@@ -2908,7 +2908,7 @@ sub dmn_del_crontab_data {
 		);
 	} else {
 		$rs = sys_command_rs(
-			"$main::cfg{'CMD_CP'} /etc/cron.d/i-mscp $backup_cfg"
+			"$main::cfg{'CMD_CP'} /etc/cron.d/imscp $backup_cfg"
 		);
 	}
 
@@ -2962,8 +2962,8 @@ sub dmn_add_bkp_crontab_data {
 	my $tpl_dir = "$conf_dir/cron.d/parts";
 	my $working_dir = "$conf_dir/cron.d/working";
 	my $backup_dir = "$conf_dir/cron.d/backup";
-	my $working_cfg = "$working_dir/i-mscp";
-	my $backup_cfg = "$backup_dir/i-mscp." . time;
+	my $working_cfg = "$working_dir/imscp";
+	my $backup_cfg = "$backup_dir/imscp." . time;
 
 	#
 	# Getting needed templates;
@@ -3042,7 +3042,7 @@ sub dmn_add_bkp_crontab_data {
 		);
 	} else {
 		$rs = sys_command_rs(
-			"$main::cfg{'CMD_CP'} /etc/cron.d/i-mscp $backup_cfg"
+			"$main::cfg{'CMD_CP'} /etc/cron.d/imscp $backup_cfg"
 		);
 	}
 
@@ -3093,8 +3093,8 @@ sub dmn_del_bkp_crontab_data {
 	my $tpl_dir = "$conf_dir/cron.d/parts";
 	my $working_dir = "$conf_dir/cron.d/working";
 	my $backup_dir = "$conf_dir/cron.d/backup";
-	my $working_cfg = "$working_dir/i-mscp";
-	my $backup_cfg = "$backup_dir/i-mscp." . time;
+	my $working_cfg = "$working_dir/imscp";
+	my $backup_cfg = "$backup_dir/imscp." . time;
 	#
 	# Getting needed templates;
 	#
@@ -3162,7 +3162,7 @@ sub dmn_del_bkp_crontab_data {
 		);
 	} else {
 		$rs = sys_command_rs(
-			"$main::cfg{'CMD_CP'} /etc/cron.d/i-mscp $backup_cfg"
+			"$main::cfg{'CMD_CP'} /etc/cron.d/imscp $backup_cfg"
 		);
 	}
 
@@ -3259,7 +3259,7 @@ sub dmn_add_awstats_cfg_data {
 
 	my $entry = '';
 
-	($rs, $entry) = get_tpl($tpl_dir, 'awstats.ispcp_tpl.conf');
+	($rs, $entry) = get_tpl($tpl_dir, 'awstats.imscp_tpl.conf');
 	return $rs if ($rs != 0);
 
 	#
@@ -3422,8 +3422,8 @@ sub dmn_add_awstats_cron {
 	my $tpl_dir = "$conf_dir/cron.d/parts";
 	my $working_dir = "$conf_dir/cron.d/working";
 	my $backup_dir = "$conf_dir/cron.d/backup";
-	my $working_cfg = "$working_dir/i-mscp";
-	my $backup_cfg = "$backup_dir/i-mscp." . time;
+	my $working_cfg = "$working_dir/imscp";
+	my $backup_cfg = "$backup_dir/imscp." . time;
 	my $user_lang = 'en';
 	my $awstats_root_dir = $main::cfg{'AWSTATS_ROOT_DIR'};
 	my $awstats_engine_dir = $main::cfg{'AWSTATS_ENGINE_DIR'};
@@ -3572,7 +3572,7 @@ sub dmn_add_awstats_cron {
 		);
 	} else {
 		$rs = sys_command_rs(
-			"$main::cfg{'CMD_CP'} /etc/cron.d/i-mscp $backup_cfg"
+			"$main::cfg{'CMD_CP'} /etc/cron.d/imscp $backup_cfg"
 		);
 	}
 
@@ -3620,8 +3620,8 @@ sub dmn_del_awstats_cron {
 	my $tpl_dir = "$conf_dir/cron.d/parts";
 	my $working_dir = "$conf_dir/cron.d/working";
 	my $backup_dir = "$conf_dir/cron.d/backup";
-	my $working_cfg = "$working_dir/i-mscp";
-	my $backup_cfg = "$backup_dir/i-mscp." . time;
+	my $working_cfg = "$working_dir/imscp";
+	my $backup_cfg = "$backup_dir/imscp." . time;
 
 	#
 	# Getting needed templates;
@@ -3683,7 +3683,7 @@ sub dmn_del_awstats_cron {
 		);
 	} else {
 		$rs = sys_command_rs(
-			"$main::cfg{'CMD_CP'} /etc/cron.d/i-mscp $backup_cfg"
+			"$main::cfg{'CMD_CP'} /etc/cron.d/imscp $backup_cfg"
 		);
 	}
 
@@ -4336,7 +4336,7 @@ my $rs;
 $rs = dmn_mngr_start_up();
 
 if ($rs != 0) {
-	dump_el(\@main::el, $main::ispcp_dmn_mngr_el);
+	dump_el(\@main::el, $main::imscp_dmn_mngr_el);
 	dmn_mngr_shut_down();
 
 	exit 1;
@@ -4345,7 +4345,7 @@ if ($rs != 0) {
 $rs = dmn_mngr_engine();
 
 if ($rs != 0) {
-	dump_el(\@main::el, $main::ispcp_dmn_mngr_el);
+	dump_el(\@main::el, $main::imscp_dmn_mngr_el);
 	dmn_mngr_shut_down();
 
 	exit 1;
@@ -4354,7 +4354,7 @@ if ($rs != 0) {
 $rs = dmn_mngr_shut_down();
 
 if ($rs != 0) {
-	dump_el(\@main::el, $main::ispcp_dmn_mngr_el);
+	dump_el(\@main::el, $main::imscp_dmn_mngr_el);
 
 	exit 1;
 }

@@ -31,7 +31,7 @@
 
 
 SELFDIR=$(dirname "$0")
-. $SELFDIR/i-mscp-permission-functions.sh
+. $SELFDIR/imscp-permission-functions.sh
 # for spacing
 echo -n "	Setting GUI Permissions: ";
 
@@ -57,7 +57,7 @@ recursive_set_permissions "$ROOT_DIR/gui/tools/webmail/data" \
 
 # Decryption keys allow root access to the database, so they must only be
 # accessible by the panel user.
-set_permissions "$ROOT_DIR/gui/include/i-mscp-db-keys.php" \
+set_permissions "$ROOT_DIR/gui/include/imscp-db-keys.php" \
 	$PANEL_USER $PANEL_GROUP 0400
 
 # Main virtual webhosts directory must be owned by root and readable by all

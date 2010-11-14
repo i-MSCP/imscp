@@ -26,12 +26,12 @@
 #    http://isp-control.net
 #
 
-# Load the required entries from i-mscp's configuration
-if [ -f /usr/local/etc/i-mscp/i-mscp.conf ]
+# Load the required entries from i-MSCP's configuration
+if [ -f /usr/local/etc/imscp/imscp.conf ]
 then
-	CONF=/usr/local/etc/i-mscp/i-mscp.conf
+	CONF=/usr/local/etc/imscp/imscp.conf
 else
-	CONF=/etc/i-mscp/i-mscp.conf
+	CONF=/etc/imscp/imscp.conf
 fi
 for a in `cat $CONF  | grep -E '(^ROOT_DIR|^APACHE_WWW_DIR|^PHP_STARTER_DIR)' | sed -e 's/ //g'`; do
 	export $a

@@ -31,7 +31,7 @@
 
 use FindBin;
 use lib "$FindBin::Bin/";
-require 'ispcp_common_code.pl';
+require 'imscp_common_code.pl';
 use strict;
 use warnings;
 

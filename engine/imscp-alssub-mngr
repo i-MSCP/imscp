@@ -37,7 +37,7 @@
 use FindBin;
 use lib "$FindBin::Bin/";
 
-require 'ispcp_common_code.pl';
+require 'imscp_common_code.pl';
 
 use strict;
 use warnings;
@@ -75,8 +75,8 @@ sub alssub_mngr_start_up {
 	return -1 if ($rs != 0);
 
 	# Clear execution logs, if any
-	if (-e $main::ispcp_alssub_mngr_el) {
-		$rs = del_file($main::ispcp_alssub_mngr_el);
+	if (-e $main::imscp_alssub_mngr_el) {
+		$rs = del_file($main::imscp_alssub_mngr_el);
 		return -1 if ($rs != 0);
 	}
 
@@ -317,8 +317,8 @@ sub alssub_add_httpd_cfg_data {
 	my $sysUser				= "$main::cfg{APACHE_SUEXEC_USER_PREF}@$data{domain_uid}";
 	my $sysGroup			= "$main::cfg{APACHE_SUEXEC_USER_PREF}@$data{'domain_gid'}";
 	my $cfgDir				= $main::cfg{'CONF_DIR'};
-	my $sysFile				= "$main::cfg{APACHE_SITES_DIR}/i-mscp.conf";
-	my $wrkFile				= "$cfgDir/apache/working/i-mscp.conf";
+	my $sysFile				= "$main::cfg{APACHE_SITES_DIR}/imscp.conf";
+	my $wrkFile				= "$cfgDir/apache/working/imscp.conf";
 	my $bkpFile				= "$cfgDir/apache/backup/httpd.conf." . time;
 
 	# Getting needed templates
@@ -428,7 +428,7 @@ sub alssub_add_httpd_cfg_data {
 	if($subAlsStatus eq 'toadd' || $rs == -5) {
 		push_el(
 			\@main::el, 'alssub_add_httpd_cfg_data()',
-			'[WARNING] vhost entry was not found in i-mscp.conf file! ' .
+			'[WARNING] vhost entry was not found in imscp.conf file! ' .
 			'New one will be added now!'
 		) if($rs == -5);
 
@@ -498,8 +498,8 @@ sub alssub_del_httpd_cfg_data {
 
 	my $subAlsName	= "@$data{subdomain_alias_name}.@$data{alias_name}";
 	my $cfgDir		= $main::cfg{'CONF_DIR'};
-	my $sysFile		= "$main::cfg{APACHE_SITES_DIR}/i-mscp.conf";
-	my $wrkFile		= "$cfgDir/apache/working/i-mscp.conf";
+	my $sysFile		= "$main::cfg{APACHE_SITES_DIR}/imscp.conf";
+	my $wrkFile		= "$cfgDir/apache/working/imscp.conf";
 	my $bkpFile		= "$cfgDir/apache/backup/httpd.conf." . time;
 
 	# Getting needed templates
@@ -1349,7 +1349,7 @@ sub alssub_mngr_engine {
 my $rs = alssub_mngr_start_up();
 
 if ($rs != 0) {
-	dump_el(\@main::el, $main::ispcp_alssub_mngr_el);
+	dump_el(\@main::el, $main::imscp_alssub_mngr_el);
 	alssub_mngr_shut_down();
 
 	exit 1;
@@ -1358,7 +1358,7 @@ if ($rs != 0) {
 $rs = alssub_mngr_engine();
 
 if ($rs != 0) {
-	dump_el(\@main::el, $main::ispcp_alssub_mngr_el);
+	dump_el(\@main::el, $main::imscp_alssub_mngr_el);
 	alssub_mngr_shut_down();
 
 	exit 1;
@@ -1367,7 +1367,7 @@ if ($rs != 0) {
 $rs = alssub_mngr_shut_down();
 
 if ($rs != 0) {
-	dump_el(\@main::el, $main::ispcp_alssub_mngr_el);
+	dump_el(\@main::el, $main::imscp_alssub_mngr_el);
 
 	exit 1;
 }

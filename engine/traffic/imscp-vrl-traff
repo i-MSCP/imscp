@@ -31,7 +31,7 @@
 
 use FindBin;
 use lib "$FindBin::Bin/..";
-require 'ispcp_common_code.pl';
+require 'imscp_common_code.pl';
 
 use strict;
 use warnings;
@@ -75,8 +75,8 @@ sub gen_log_file {
 
 	if (! -e $src_file) {
 		push_el(
-			\@main::el, 
-			'gen_log_file()', 
+			\@main::el,
+			'gen_log_file()',
 			"WARNING: File '$src_file' does not exist!"
 		);
 		return (0, '_no_');
@@ -88,14 +88,14 @@ sub gen_log_file {
 	my %logdb;
 	my ($recPos, $recLine) = (0, '');
 
-	# Creating the logdb file where the log position for each log reside if not 
+	# Creating the logdb file where the log position for each log reside if not
 	# already created
 	if (! -e "$logdb_file") {
 		$rs = sys_command("$main::cfg{'CMD_TOUCH'} $logdb_file");
 		if ($rs != 0) {
 			push_el(
-				\@main::el, 
-				'gen_log_file()', 
+				\@main::el,
+				'gen_log_file()',
 				"ERROR: Unable to create the lobdb file '$logdb_file'!"
 			);
 			return ($rs, '');
@@ -104,32 +104,32 @@ sub gen_log_file {
 
 	# @TODO:
 	# This is unefficient because gen_log_file is called once for every log file
-	# to be processed. Therefore, the *whole* logdb file is read at each call, 
-	# causing a lot of re-readings. Thus, logdb reading should be done once at 
+	# to be processed. Therefore, the *whole* logdb file is read at each call,
+	# causing a lot of re-readings. Thus, logdb reading should be done once at
 	# the beggining of this script and, similarly, logdb writting should be done
 	# just once at the end.
 	push_el(
-		\@main::el, 
-		'gen_log_file()', 
+		\@main::el,
+		'gen_log_file()',
 		"Taking the domain log positions from '$logdb_file'..."
 	);
 	$rs = open (LOGDB,'<',"$logdb_file");
 	if (!defined($rs)) {
 		push_el(
-			\@main::el, 
-			'gen_log_file()', 
+			\@main::el,
+			'gen_log_file()',
 			"ERROR: Cannot open '$logdb_file' for reading !"
 		);
 		return (-1, '');
 	}
-	
+
 	while (<LOGDB>) {
 		chomp;
 		my ($logdb_key,$logdb_val) = split(' ', $_, 2);
 		$logdb{$logdb_key} = $logdb_val;
 	}
 	close(LOGDB);
-	
+
  	if (exists($logdb{$fname})) {
 		($recPos, $recLine) = split(' ', $logdb{$fname}, 2);
 		$recLine = '' if (!defined($recLine)) ;
@@ -139,25 +139,25 @@ sub gen_log_file {
 	$rs = open(SRC_FILE, '<', $src_file);
 	if (!defined($rs)) {
 		push_el(
-			\@main::el, 
-			'gen_log_file()', 
+			\@main::el,
+			'gen_log_file()',
 			"ERROR: Cannot open '$src_file' for reading !"
 		);
 		return (-1, '');
 	}
-	
+
 	# Retrieve the current first line
 	my $curLine = <SRC_FILE> || '';
 	$curLine =~ s/\n//;
 	seek(SRC_FILE, 0, SEEK_SET);
-	
+
 	# If the line is empty, there's no data on the logfile so we can safely skip
-	# it this time. Rotated logfiles will be detected later on, when there's 
+	# it this time. Rotated logfiles will be detected later on, when there's
 	# data in the logfile.
 	if (!$curLine) {
 		push_el(
-			\@main::el, 
-			'gen_log_file', 
+			\@main::el,
+			'gen_log_file',
 			"Logfile contains no data, so skip it for now."
 		);
 		close(SRC_FILE);
@@ -168,8 +168,8 @@ sub gen_log_file {
 	$rs = open(DST_FILE, '>', $dest_file);
 	if (!defined($rs)) {
 		push_el(
-			\@main::el, 
-			'gen_log_file()', 
+			\@main::el,
+			'gen_log_file()',
 			"ERROR: Cannot open '$dest_file' for writing !"
 		);
 		close(SRC_FILE);
@@ -186,11 +186,11 @@ sub gen_log_file {
 		if (-e $old_src_file) {
 			push_el(
 				\@main::el,
-				'gen_log_file', 
+				'gen_log_file',
 				"Logfile has been rotated, parsing '$old_src_file' from position $recPos."
 			);
 			$rs = open(OLD_SRC_FILE, '<', $old_src_file);
-			
+
 			if (defined($rs)) {
 				seek(OLD_SRC_FILE, $recPos, SEEK_SET);
 				while(<OLD_SRC_FILE>) {
@@ -199,14 +199,14 @@ sub gen_log_file {
 				close(OLD_SRC_FILE);
 			} else {
 				push_el(
-					\@main::el, 
+					\@main::el,
 					'gen_log_file',
 					"WARNING: Cannot open '$old_src_file' for reading!"
 				);
 			}
 		} else {
 			push_el(
-				\@main::el, 
+				\@main::el,
 				'gen_log_file',
 				"Logfile has been rotated, but '$old_src_file' doesn't exist."
 			);
@@ -223,12 +223,12 @@ sub gen_log_file {
 	$recPos = tell(SRC_FILE);
 	close(SRC_FILE);
 	close(DST_FILE);
- 
+
 	# Let's write the new position back to the log db
 	$logdb{$fname} = "$recPos $curLine";
 	push_el(
-		\@main::el, 
-		'gen_log_file()', 
+		\@main::el,
+		'gen_log_file()',
 		"Saving new domain log positions in '$logdb_file'..."
 	);
 
@@ -254,7 +254,7 @@ sub gen_log_file {
 sub collect_http_traffic_from_log {
 
 	my ($key, $value) = @_;
-	my ($rs, $rdata, $timestamp, $sum, $rows, $sql) = 
+	my ($rs, $rdata, $timestamp, $sum, $rows, $sql) =
 		(undef, undef, time(), 0, undef, undef);
 
 	# timestamp has floor down for the last half'n our to make timestamps in
@@ -293,9 +293,9 @@ sub collect_http_traffic_from_log {
 		$sql="
 			SELECT
 				COUNT(`domain_id`)
-			FROM 
+			FROM
 				`domain_traffic`
-			WHERE 
+			WHERE
 				`domain_id` = '$value'
 				AND
 				`dtraff_time` >= UNIX_TIMESTAMP(CURRENT_DATE())
@@ -341,7 +341,7 @@ sub collect_http_traffic_from_log {
 		($rs, $rdata) = doSQL($sql);
 		return ($rs, '') if ($rs != 0);
 	}
-	
+
 	return (0, $timestamp);
 }
 
@@ -363,7 +363,7 @@ sub collect_http_traffic {
 
 	while (($key,$value) = each(%main::sub_id_name)) {
 		($rs, $timestamp) = collect_http_traffic_from_log(
-				"$value.$main::domain_id_name{$main::sub_id_parentid{$key}}", 
+				"$value.$main::domain_id_name{$main::sub_id_parentid{$key}}",
 				$main::sub_id_parentid{$key}
 			);
 		return ($rs, '') if ($rs != 0);
@@ -381,8 +381,8 @@ sub collect_ftp_traffic {
 	my ($key, $value, $id, $rdata, $traffic_size, $traffic_domain);
 
 	my ($rs, $rlog) = gen_log_file(
-		$main::cfg{'FTP_TRAFF_LOG'}, 
-		$main::cfg{'TRAFF_LOG_DIR'}, 
+		$main::cfg{'FTP_TRAFF_LOG'},
+		$main::cfg{'TRAFF_LOG_DIR'},
 		$main::cfg{'LOG_DIR'}
 	);
 	return $rs if ($rs != 0);
@@ -392,8 +392,8 @@ sub collect_ftp_traffic {
 
 		if (!defined($res)) {
 			push_el(
-				\@main::el, 
-				'collect_ftp_traffic()', 
+				\@main::el,
+				'collect_ftp_traffic()',
 				"ERROR: Cannot open '$rlog' for reading!"
 			);
 			return (-1, '');
@@ -406,7 +406,7 @@ sub collect_ftp_traffic {
 				$traffic_size = $1;
 				$traffic_domain = $2;
 
-				if($traffic_domain =~ /(.*)(\.)(.*\.)(.*)$/ && 
+				if($traffic_domain =~ /(.*)(\.)(.*\.)(.*)$/ &&
 					!exists $main::ftp_traffic{$traffic_domain}) {
 					$main::ftp_traffic{$3.$4} += $traffic_size;
 				} else {
@@ -434,12 +434,12 @@ sub collect_ftp_traffic {
 
 				$sql="
 					SELECT
-						COUNT(`domain_id`) 
+						COUNT(`domain_id`)
 					FROM
 						`domain_traffic`
-					WHERE 
-						`domain_id` = '$id' 
-					AND 
+					WHERE
+						`domain_id` = '$id'
+					AND
 						`dtraff_time` >= UNIX_TIMESTAMP(CURRENT_DATE())
 					;";
 
@@ -451,7 +451,7 @@ sub collect_ftp_traffic {
 						INSERT INTO
 							`domain_traffic`
 						(
-							`domain_id`, `dtraff_time`, `dtraff_web`, 
+							`domain_id`, `dtraff_time`, `dtraff_web`,
 							`dtraff_ftp`, `dtraff_mail`, `dtraff_pop`
 						) VALUES (
 							'$id', '$timestamp', '0', $value, '0', '0'
@@ -483,17 +483,17 @@ sub collect_mail_traffic {
 
 	my ($timestamp) = @_;
 
-	my ($key, $value, $id, $rdata, $traffic_size, $traffic_domain, 
+	my ($key, $value, $id, $rdata, $traffic_size, $traffic_domain,
 		$smtp_from_domain, $smtp_to_domain);
 
 	my ($cat, $grep, $awk) = (
-		$main::cfg{'CMD_CAT'}, 
-		$main::cfg{'CMD_GREP'}, 
+		$main::cfg{'CMD_CAT'},
+		$main::cfg{'CMD_GREP'},
 		$main::cfg{'CMD_AWK'}
 	);
 	my ($rs, $rlog) = gen_log_file(
-		$main::cfg{'MAIL_TRAFF_LOG'}, 
-		$main::cfg{'TRAFF_LOG_DIR'}, 
+		$main::cfg{'MAIL_TRAFF_LOG'},
+		$main::cfg{'TRAFF_LOG_DIR'},
 		$main::cfg{'LOG_DIR'}
 	);
 	return $rs if ($rs != 0);
@@ -511,7 +511,7 @@ sub collect_mail_traffic {
 		if (exists $main::cfg{'MAIL_LOG_INC_AMAVIS'} && $main::cfg{'MAIL_LOG_INC_AMAVIS'}) {
 			# Logs including AMAVIS/SPAMASSASSIN/CLAMAV entries
 			$cmd = "$cat $smtp_delivery_log|$awk '{if ( \$10 != \"?\" && " .
-				"!(\$5 ~ /localhost|127.0.0.1/ && \$6 ~ /localhost|127.0.0.1/)) " . 
+				"!(\$5 ~ /localhost|127.0.0.1/ && \$6 ~ /localhost|127.0.0.1/)) " .
 				"print substr(\$3, index(\$3, \"@\")+1, length(\$3)), " .
 				"substr(\$4, index(\$4, \"@\")+1, length(\$4)),\$10;}' 1>$smtp_log";
 		} else {
@@ -533,8 +533,8 @@ sub collect_mail_traffic {
 
 		if (!defined($res)) {
 			push_el(
-				\@main::el, 
-				'collect_mail_traffic()', 
+				\@main::el,
+				'collect_mail_traffic()',
 				"ERROR: Cannot open '$smtp_log' for reading !"
 			);
 			return (-1, '');
@@ -548,12 +548,12 @@ sub collect_mail_traffic {
 				$smtp_to_domain = $2;
 				$traffic_size = $3;
 
-				if ($smtp_from_domain =~ /(.*)(\.)(.*\.)(.*)$/ && 
+				if ($smtp_from_domain =~ /(.*)(\.)(.*\.)(.*)$/ &&
 					!exists $main::smtp_traffic{$smtp_from_domain}) {
 					$smtp_from_domain = $3.$4;
 				}
 
-				if ($smtp_to_domain =~ /(.*)(\.)(.*\.)(.*)$/ && 
+				if ($smtp_to_domain =~ /(.*)(\.)(.*\.)(.*)$/ &&
 					!exists $main::smtp_traffic{$smtp_to_domain}) {
 					$smtp_to_domain = $3.$4;
 				}
@@ -579,26 +579,26 @@ sub collect_mail_traffic {
 		return $rs if ($rs != 0);
 
 		# IMAP accounting
-		$rs = sys_command("$cat $rlog|$grep 'imap'|$grep 'user='|$grep 'body='|" . 
+		$rs = sys_command("$cat $rlog|$grep 'imap'|$grep 'user='|$grep 'body='|" .
 			"$grep -v 'ip=\\[::ffff:127.0.0.1\\]'|$awk '{print \$7,\$9," .
 			"substr(\$10,1,length(\$10)-1);}' 1>$imap_log");
 		return $rs if ($rs != 0);
-		
+
 		# IMAP accounting for Dovecot
-		# This should not harm normal IMAP accounting in any way. If Dovecot is 
+		# This should not harm normal IMAP accounting in any way. If Dovecot is
 		# not used, nothing will be appended to imap_log.
 		$rs = sys_command("$cat $rlog|$grep 'IMAP'|$grep 'Logged out bytes'|$awk '" .
 			"/IMAP/ {split(\$10,result,\"=\"); split(result[2],oper,\"/\");" .
 			"print \"user=\"substr(\$6,6,length(\$6)-7) \", headers=0, " .
-			"body=\" oper[1]+oper[2]}'>>$imap_log"); 
+			"body=\" oper[1]+oper[2]}'>>$imap_log");
 		return $rs if ($rs != 0);
 
 		$res = open(F, '<', $imap_log);
 
 		if (!defined($res)) {
 			push_el(
-				\@main::el, 
-				'collect_mail_traffic()', 
+				\@main::el,
+				'collect_mail_traffic()',
 				"ERROR: Cannot open '$imap_log' for reading !"
 			);
 			return (-1, '');
@@ -613,7 +613,7 @@ sub collect_mail_traffic {
 				$ma =~ /^([^\@]+)\@([^\n]+)\n$/;
 				$traffic_domain = $2;
 
-				if ($traffic_domain =~ /(.*)(\.)(.*\.)(.*)$/ 
+				if ($traffic_domain =~ /(.*)(\.)(.*\.)(.*)$/
 					&& !exists $main::po_traffic{$traffic_domain}) {
 					$main::po_traffic{$3.$4} += $sum;
 				} else {
@@ -636,7 +636,7 @@ sub collect_mail_traffic {
 
 		if (!defined($res)) {
 			push_el(
-				\@main::el, 
+				\@main::el,
 				'collect_mail_traffic()',
 				"ERROR: Cannot open '$imap_log' for reading !");
 			return (-1, '');
@@ -651,7 +651,7 @@ sub collect_mail_traffic {
 				$ma =~ /^([^\@]+)\@([^\n]+)\n$/;
 				$traffic_domain = $2;
 
-				if ($traffic_domain =~ /(.*)(\.)(.*\.)(.*)$/ && 
+				if ($traffic_domain =~ /(.*)(\.)(.*\.)(.*)$/ &&
 					!exists $main::po_traffic{$traffic_domain}) {
 					$main::po_traffic{$3.$4} += $sum;
 				} else {
@@ -687,7 +687,7 @@ sub collect_mail_traffic {
 
 		if (!defined($res)) {
 			push_el(
-				\@main::el, 
+				\@main::el,
 				'collect_mail_traffic()',
 				"ERROR: Cannot open '$pop3_log' for reading !");
 			return (-1, '');
@@ -702,7 +702,7 @@ sub collect_mail_traffic {
 				$ma =~ /^([^\@]+)\@([^\n]+)\n$/;
 				$traffic_domain = $2;
 
-				if ($traffic_domain =~ /(.*)(\.)(.*\.)(.*)$/ && 
+				if ($traffic_domain =~ /(.*)(\.)(.*\.)(.*)$/ &&
 					!exists $main::po_traffic{$traffic_domain}) {
 					$main::po_traffic{$3.$4} += $sum;
 				} else {
@@ -720,13 +720,13 @@ sub collect_mail_traffic {
 			"$grep 'retr='|$grep -v 'ip=\\[::ffff:127.0.0.1\\]'|$awk " .
 			"'{print \$7,\$9,substr(\$10,1,length(\$10)-1);}' 1>$pop3_log");
 		return $rs if ($rs != 0);
-		
+
 		$res = open(F, '<', $pop3_log);
 
 		if (!defined($res)) {
 			push_el(
-				\@main::el, 
-				'collect_mail_traffic()', 
+				\@main::el,
+				'collect_mail_traffic()',
 				"ERROR: Cannot open '$pop3_log' for reading !");
 			return (-1, '');
 		}
@@ -740,7 +740,7 @@ sub collect_mail_traffic {
 				$ma =~ /^([^\@]+)\@([^\n]+)\n$/;
 				$traffic_domain = $2;
 
-				if($traffic_domain =~ /(.*)(\.)(.*\.)(.*)$/ 
+				if($traffic_domain =~ /(.*)(\.)(.*\.)(.*)$/
 					&& !exists $main::po_traffic{$traffic_domain}) {
 					$main::po_traffic{$3.$4} += $sum;
 				} else {
@@ -772,12 +772,12 @@ sub collect_mail_traffic {
 
 				$sql = "
 						SELECT
-							COUNT(`domain_id`) 
-						FROM 
-							`domain_traffic` 
-						WHERE 
-							`domain_id` = '$id' 
-							AND 
+							COUNT(`domain_id`)
+						FROM
+							`domain_traffic`
+						WHERE
+							`domain_id` = '$id'
+							AND
 							`dtraff_time` >= UNIX_TIMESTAMP(CURRENT_DATE())
 						;";
 
@@ -821,12 +821,12 @@ sub collect_mail_traffic {
 				my $sql = undef;
 
 				$sql = "
-						SELECT 
-							COUNT(`domain_id`) 
-						FROM 
+						SELECT
+							COUNT(`domain_id`)
+						FROM
 							`domain_traffic`
-						WHERE 
-							`domain_id` = '$id' 
+						WHERE
+							`domain_id` = '$id'
 							AND
 							`dtraff_time` >= UNIX_TIMESTAMP(CURRENT_DATE())
 						;";
@@ -875,8 +875,8 @@ sub vrl_traff_start_up {
 	push_el(\@main::el, 'vrl_traff_start_up()', 'Starting...');
 
 	# Clear Execution Logs, if any
-	if (-e $main::ispcp_vrl_traff_el) {
-		$rs = del_file($main::ispcp_vrl_traff_el);
+	if (-e $main::imscp_vrl_traff_el) {
+		$rs = del_file($main::imscp_vrl_traff_el);
 		return $rs if ($rs != 0);
 	}
 
@@ -968,7 +968,7 @@ my $rs = undef;
 $rs = vrl_traff_start_up();
 
 if ($rs != 0) {
-	dump_el(\@main::el, $main::ispcp_vrl_traff_el);
+	dump_el(\@main::el, $main::imscp_vrl_traff_el);
 	vrl_traff_shut_down();
 	exit 1;
 }
@@ -985,7 +985,7 @@ if ($rs != 0) {
 $rs = vrl_traff_shut_down();
 
 if ($rs != 0) {
-	dump_el(\@main::el, $main::ispcp_vrl_traff_el);
+	dump_el(\@main::el, $main::imscp_vrl_traff_el);
 	exit 1;
 }
 

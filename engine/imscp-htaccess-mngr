@@ -43,7 +43,7 @@ no warnings 'once';
 
 use FindBin;
 use lib "$FindBin::Bin/";
-require 'ispcp_common_code.pl';
+require 'imscp_common_code.pl';
 
 # Unique identifier of a database record related to a protected area
 $main::htuser_task_id = undef;
@@ -67,8 +67,8 @@ sub htaccess_mngr_start_up {
 	return $rs if ($rs != 0);
 
 	# Let's clear Execution Logs, if any.
-	if (-e $main::ispcp_htaccess_mngr_el) {
-		$rs = del_file($main::ispcp_htaccess_mngr_el);
+	if (-e $main::imscp_htaccess_mngr_el) {
+		$rs = del_file($main::imscp_htaccess_mngr_el);
 		return $rs if ($rs != 0);
 	}
 
@@ -162,7 +162,7 @@ sub htaccess_add_user_system_data {
 	if(-e "$www_dir/$dmn_name/htdocs.disabled" && $path =~ m@^/htdocs(/.*)?$@) {
 		$path = defined $1 ? "/htdocs.disabled$1" : '/htdocs.disabled';
 	}
-	
+
 	my $htaccess_file = "$www_dir/$dmn_name$path/.htaccess";
 
 	my $unames = '';
@@ -280,7 +280,7 @@ sub htaccess_add_group_system_data {
 	if(-e "$www_dir/$dmn_name/htdocs.disabled" && $path =~ m@^/htdocs(/.*)?$@) {
 		$path = defined $1 ? "/htdocs.disabled$1" : '/htdocs.disabled';
 	}
-	
+
 	my $htaccess_file = "$www_dir/$dmn_name$path/.htaccess";
 
 	my $ugroups = '';
@@ -301,7 +301,7 @@ sub htaccess_add_group_system_data {
 
 		$ugroups .= $rdata->[0]->[0] . ' ';
 	}
-	
+
 	# Remove trailing space
 	$ugroups =~ s/\s$//;
 
@@ -551,7 +551,7 @@ sub htaccess_mngr_engine {
 my $rs = htaccess_mngr_start_up();
 
 if ($rs != 0) {
-	pop_el(\@main::el, $main::ispcp_htaccess_mngr_el);
+	pop_el(\@main::el, $main::imscp_htaccess_mngr_el);
 	htaccess_mngr_shut_down();
 	exit 1;
 }
@@ -559,7 +559,7 @@ if ($rs != 0) {
 $rs = htaccess_mngr_engine();
 
 if ($rs != 0) {
-	pop_el(\@main::el, $main::ispcp_htaccess_mngr_el);
+	pop_el(\@main::el, $main::imscp_htaccess_mngr_el);
 	htaccess_mngr_shut_down();
 	exit 1;
 }
@@ -567,7 +567,7 @@ if ($rs != 0) {
 $rs = htaccess_mngr_shut_down();
 
 if ($rs != 0) {
-	pop_el(\@main::el, $main::ispcp_htaccess_mngr_el);
+	pop_el(\@main::el, $main::imscp_htaccess_mngr_el);
 	exit 1;
 }
 

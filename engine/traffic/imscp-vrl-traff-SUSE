@@ -31,7 +31,7 @@
 
 use FindBin;
 use lib "$FindBin::Bin/..";
-require 'ispcp_common_code.pl';
+require 'imscp_common_code.pl';
 
 %main::ftp_traffic = ();
 
@@ -688,9 +688,9 @@ sub vrl_traff_start_up {
 
     # Let's clear Execution Logs, if any.
 
-    if (-e $main::ispcp_vrl_traff_el) {
+    if (-e $main::imscp_vrl_traff_el) {
 
-        $rs = del_file($main::ispcp_vrl_traff_el);
+        $rs = del_file($main::imscp_vrl_traff_el);
 
         return $rs if ($rs != 0);
 
@@ -806,7 +806,7 @@ $rs = vrl_traff_start_up();
 
 if ($rs != 0) {
 
-    dump_el(\@main::el, $main::ispcp_vrl_traff_el);
+    dump_el(\@main::el, $main::imscp_vrl_traff_el);
 
     vrl_traff_shut_down();
 
@@ -819,7 +819,7 @@ $rs = vrl_traff_engine();
 
 if ($rs != 0) {
 
-    dump_el(\@main::el, $main::ispcp_vrl_traff_el);
+    dump_el(\@main::el, $main::imscp_vrl_traff_el);
 
     vrl_traff_shut_down();
 
@@ -832,7 +832,7 @@ $rs = vrl_traff_shut_down();
 
 if ($rs != 0) {
 
-    dump_el(\@main::el, $main::ispcp_vrl_traff_el);
+    dump_el(\@main::el, $main::imscp_vrl_traff_el);
 
     exit 1;
 

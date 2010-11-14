@@ -28,17 +28,17 @@
 #    http://isp-control.net
 #
 
-# read needed entries from i-mscp.conf
-CONF_FILE="/etc/i-mscp/i-mscp.conf"
-if [ -f /usr/local/etc/i-mscp/i-mscp.conf ]
+# read needed entries from imscp.conf
+CONF_FILE="/etc/imscp/imscp.conf"
+if [ -f /usr/local/etc/imscp/imscp.conf ]
 then
-    CONF_FILE="/usr/local/etc/i-mscp/i-mscp.conf"
+    CONF_FILE="/usr/local/etc/imscp/imscp.conf"
 fi
 
 OLD_IFS=$IFS
 IFS=$
 
-# Reading needed entries from i-mscp.conf
+# Reading needed entries from imscp.conf
 for a in $(grep -E '^(APACHE_|CMD_|DEBUG|LOG_DIR|MR_LOCK|MTA_MAILBOX_|ROOT_|PHP_STARTER_DIR)' \
 ${CONF_FILE} | sed 's/\s*=\s*\(.*\)/="\1"/'); do
 	 eval $a

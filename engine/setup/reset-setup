@@ -27,17 +27,17 @@
 #
 ########################################################################
 #
-# This Script only resets the ispCP Setup, it WON'T uninstall ispCP!!
+# This Script only resets the i-MSCP Setup, it WON'T uninstall ispCP!!
 # Afterwards a new install is possible. Use it, if you had an installation
 # error during setup.
 #
-# Keep attention: The ispCP database will be deleted with all its content!
+# Keep attention: The i-MSCP database will be deleted with all its content!
 #
 ########################################################################
 
 use FindBin;
 use lib "$FindBin::Bin/..";
-require 'ispcp_common_code.pl';
+require 'imscp_common_code.pl';
 use strict;
 use warnings;
 
@@ -49,7 +49,7 @@ my $user_delete	= $main::cfg{'CMD_USERDEL'};
 my $database	= $main::cfg{'DATABASE_NAME'};
 
 ## MAIN
-print STDOUT "Re-setting ISPCP Setup!\n";
+print STDOUT "Re-setting I-MSCP Setup!\n";
 print STDOUT "========================\n";
 
 if ($main::cfg{'ROOT_GROUP'} eq "wheel") {

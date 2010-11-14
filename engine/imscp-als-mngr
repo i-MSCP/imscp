@@ -37,7 +37,7 @@
 use FindBin;
 use lib "$FindBin::Bin/";
 
-require 'ispcp_common_code.pl';
+require 'imscp_common_code.pl';
 
 use strict;
 use warnings;
@@ -62,8 +62,8 @@ sub als_mngr_start_up {
 	return $rs if ($rs != 0);
 
 	# Let's clear Execution Logs, if any.
-	if (-e $main::ispcp_als_mngr_el) {
-		$rs = del_file($main::ispcp_als_mngr_el);
+	if (-e $main::imscp_als_mngr_el) {
+		$rs = del_file($main::imscp_als_mngr_el);
 		return $rs if ($rs != 0);
 	}
 
@@ -155,12 +155,12 @@ sub als_add_named_cfg_data {
 	## Saving the current production file if it exist - End
 	#
 
-	# Loading the working file from tpl directory (eg. /etc/i-mscp/bind/working/)
+	# Loading the working file from tpl directory (eg. /etc/imscp/bind/working/)
 	($rs, $wrk_file) = get_file("$wrk_dir/named.conf");
 	return $rs if ($rs != 0);
 
 	#
-	## Loading all needed templates from (eg. /etc/i-mscp/bind/parts/) - Begin
+	## Loading all needed templates from (eg. /etc/imscp/bind/parts/) - Begin
 	#
 
 	my ($dta_b, $dta_e, $entry_b, $entry_e, $entry) = ('', '', '', '', '');
@@ -183,7 +183,7 @@ sub als_add_named_cfg_data {
 	return $rs if ($rs != 0);
 
 	#
-	## Loading all needed template from (eg. /etc/i-mscp/bind/parts/) - End
+	## Loading all needed template from (eg. /etc/imscp/bind/parts/) - End
 	#
 
 	#
@@ -331,12 +331,12 @@ sub als_del_named_cfg_data {
 	## Saving the current production file if it exist - End
 	#
 
-	# Loading the working file from tpl directory (eg. /etc/i-mscp/bind/working/)
+	# Loading the working file from tpl directory (eg. /etc/imscp/bind/working/)
 	($rs, $wrk_file) = get_file("$wrk_dir/named.conf");
 	return $rs if ($rs != 0);
 
 	#
-	## Loading all needed templates from (eg. /etc/i-mscp/bind/parts/) - Begin
+	## Loading all needed templates from (eg. /etc/imscp/bind/parts/) - Begin
 	#
 
 	my ($dta_b, $dta_e, $entry_b, $entry_e, $entry) = ('', '', '', '', '');
@@ -359,7 +359,7 @@ sub als_del_named_cfg_data {
 	return $rs if ($rs != 0);
 
 	#
-	## Loading all needed template from (eg. /etc/i-mscp/bind/parts/) - End
+	## Loading all needed template from (eg. /etc/imscp/bind/parts/) - End
 	#
 
 	#
@@ -1085,8 +1085,8 @@ sub als_add_httpd_cfg_data {
 	my $tpl_dir = "$conf_dir/apache/parts";
 	my $working_dir = "$conf_dir/apache/working";
 	my $backup_dir = "$conf_dir/apache/backup";
-	my $sys_cfg = "$main::cfg{'APACHE_SITES_DIR'}/i-mscp.conf";
-	my $working_cfg = "$working_dir/i-mscp.conf";
+	my $sys_cfg = "$main::cfg{'APACHE_SITES_DIR'}/imscp.conf";
+	my $working_cfg = "$working_dir/imscp.conf";
 	my $timestamp = time;
 	my $backup_cfg = "$backup_dir/httpd.conf.$timestamp";
 
@@ -1393,8 +1393,8 @@ sub als_del_httpd_cfg_data {
 	my $tpl_dir = "$conf_dir/apache/parts";
 	my $working_dir = "$conf_dir/apache/working";
 	my $backup_dir = "$conf_dir/apache/backup";
-	my $sys_cfg = "$main::cfg{'APACHE_SITES_DIR'}/i-mscp.conf";
-	my $working_cfg = "$working_dir/i-mscp.conf";
+	my $sys_cfg = "$main::cfg{'APACHE_SITES_DIR'}/imscp.conf";
+	my $working_cfg = "$working_dir/imscp.conf";
 	my $timestamp = time;
 	my $backup_cfg = "$backup_dir/httpd.conf.$timestamp";
 
@@ -2971,7 +2971,7 @@ sub als_add_awstats_cfg_data {
 	my $entry = '';
 	($rs, $entry) = get_tpl(
 		$tpl_dir,
-		'awstats.ispcp_tpl.conf'
+		'awstats.imscp_tpl.conf'
 	);
 	return $rs if ($rs != 0);
 
@@ -3167,9 +3167,9 @@ sub als_add_awstats_cron {
 	my $tpl_dir = "$conf_dir/cron.d/parts";
 	my $working_dir= "$conf_dir/cron.d/working";
 	my $backup_dir  = "$conf_dir/cron.d/backup";
-	my $working_cfg = "$working_dir/i-mscp";
+	my $working_cfg = "$working_dir/imscp";
 	my $timestamp = time;
-	my $backup_cfg = "$backup_dir/i-mscp.$timestamp";
+	my $backup_cfg = "$backup_dir/imscp.$timestamp";
 	my $user_lang = "en";
 	my $awstats_root_dir= $main::cfg{'AWSTATS_ROOT_DIR'};
 	my $awstats_engine_dir = $main::cfg{'AWSTATS_ENGINE_DIR'};
@@ -3373,7 +3373,7 @@ sub als_add_awstats_cron {
 				"/var/cron/tabs/root $backup_cfg"
 			);
 	} else {
-		$rs = sys_command_rs("$main::cfg{'CMD_CP'} /etc/cron.d/i-mscp $backup_cfg");
+		$rs = sys_command_rs("$main::cfg{'CMD_CP'} /etc/cron.d/imscp $backup_cfg");
 	}
 
 	return $rs if ($rs != 0);
@@ -3419,9 +3419,9 @@ sub als_del_awstats_cron {
 	my $tpl_dir = "$conf_dir/cron.d/parts";
 	my $working_dir = "$conf_dir/cron.d/working";
 	my $backup_dir = "$conf_dir/cron.d/backup";
-	my $working_cfg  = "$working_dir/i-mscp";
+	my $working_cfg  = "$working_dir/imscp";
 	my $timestamp = time;
-	my $backup_cfg = "$backup_dir/i-mscp.$timestamp";
+	my $backup_cfg = "$backup_dir/imscp.$timestamp";
 
 	#
 	# Getting needed templates;
@@ -3515,7 +3515,7 @@ sub als_del_awstats_cron {
 	} else {
 		$rs = sys_command_rs(
 			"$main::cfg{'CMD_CP'} " .
-			"/etc/cron.d/i-mscp $backup_cfg"
+			"/etc/cron.d/imscp $backup_cfg"
 		);
 	}
 
@@ -3874,7 +3874,7 @@ my $rs = undef;
 $rs = als_mngr_start_up();
 
 if ($rs != 0) {
-	dump_el(\@main::el, $main::ispcp_als_mngr_el);
+	dump_el(\@main::el, $main::imscp_als_mngr_el);
 	als_mngr_shut_down();
 	exit 1;
 }
@@ -3882,7 +3882,7 @@ if ($rs != 0) {
 $rs = als_mngr_engine();
 
 if ($rs != 0) {
-	dump_el(\@main::el, $main::ispcp_als_mngr_el);
+	dump_el(\@main::el, $main::imscp_als_mngr_el);
 	als_mngr_shut_down();
 	exit 1;
 }
@@ -3890,7 +3890,7 @@ if ($rs != 0) {
 $rs = als_mngr_shut_down();
 
 if ($rs != 0) {
-	dump_el(\@main::el, $main::ispcp_als_mngr_el);
+	dump_el(\@main::el, $main::imscp_als_mngr_el);
 	exit 1;
 }
 

@@ -26,7 +26,7 @@
 #    http://isp-control.net
 #
 
-for a in `cat /etc/i-mscp/i-mscp.conf | grep -E '(APACHE_WWW_DIR|GUI_ROOT_DIR|APACHE_USER|APACHE_GROUP)'| sed -e 's/ //g'`
+for a in `cat /etc/imscp/imscp.conf | grep -E '(APACHE_WWW_DIR|GUI_ROOT_DIR|APACHE_USER|APACHE_GROUP)'| sed -e 's/ //g'`
 do
 export $a
 done
