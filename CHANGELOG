@@ -4,5 +4,3 @@ i-MSCP ChangeLog
 2010-11-13 Daniel Andreca
 	- ENGINE:
 		* Fixed #3: Defect - Wrong DNS entry when using multiple IP for alternative URL to reach your website
-	- PACKAGE:
-		* Some update
