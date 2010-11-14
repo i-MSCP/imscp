@@ -27,7 +27,7 @@
 #    http://isp-control.net
 #
 
-# Rotation for user logs for ispCP traffic count
+# Rotation for user logs for i-MSCP traffic count
 #
 /var/log/apache2/users/*.log {
   weekly
@@ -39,7 +39,7 @@
   create 640 root root
   sharedscripts
   prerotate
-    /srv/www/i-mscp/engine/traffic/i-mscp-srv-traff >/var/log/i-mscp/i-mscp-srv-traff.log 2>&1
+    /srv/www/imscp/engine/traffic/imscp-srv-traff >/var/log/imscp/imscp-srv-traff.log 2>&1
   endscript
   postrotate
     if [ -f "`. /etc/apache2/envvars ; echo ${APACHE_PID_FILE:-/var/run/apache2.pid}`" ]; then
@@ -72,8 +72,8 @@
   create 640 root root
   sharedscripts
   prerotate
-    if [ `cat /etc/i-mscp/i-mscp.conf | grep -c "AWSTATS_ACTIVE = yes"` = 1 ]; then
-      perl /srv/www/i-mscp/engine/awstats/awstats_updateall.pl now -awstatsprog=/usr/lib/cgi-bin/awstats.pl >/dev/null 2>&1
+    if [ `cat /etc/imscp/imscp.conf | grep -c "AWSTATS_ACTIVE = yes"` = 1 ]; then
+      perl /srv/www/imscp/engine/awstats/awstats_updateall.pl now -awstatsprog=/usr/lib/cgi-bin/awstats.pl >/dev/null 2>&1
     fi
   endscript
   postrotate
@@ -83,9 +83,9 @@
   endscript
 }
 
-# Rotation for i-mscp-apache-logger logfiles
+# Rotation for imscp-apache-logger logfiles
 #
-"/var/log/i-mscp/i-mscp-apache-logger.stderr" /var/log/i-mscp/i-mscp-apache-logger.stdout {
+"/var/log/imscp/imscp-apache-logger.stderr" /var/log/imscp/imscp-apache-logger.stdout {
   weekly
   rotate 2
   size 10M
@@ -113,7 +113,7 @@
   endscript
 }
 
-# ProFTPd traffic rotation for ispCP traffic count
+# ProFTPd traffic rotation for i-MSCP traffic count
 #
 /var/log/proftpd/ftp_traff.log {
   daily
@@ -122,7 +122,7 @@
   compress
   delaycompress
   prerotate
-    /srv/www/i-mscp/engine/traffic/i-mscp-vrl-traff-SUSE >/var/log/i-mscp/i-mscp-vrl-traff.log 2>&1
+    /srv/www/imscp/engine/traffic/imscp-vrl-traff-SUSE >/var/log/imscp/imscp-vrl-traff.log 2>&1
   endscript
   postrotate
     if [ -e /var/run/syslog-ng.pid ]; then

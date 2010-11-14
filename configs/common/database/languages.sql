@@ -53,9 +53,9 @@ CREATE TABLE `lang_EnglishBritain` (
 --
 
 INSERT INTO `lang_EnglishBritain` (`msgid`, `msgstr`) VALUES
-('ispcp_languageSetlocaleValue', 'en_GB'),
-('ispcp_table', 'EnglishBritain'),
-('ispcp_language', 'English (GB)'),
+('imscp_languageSetlocaleValue', 'en_GB'),
+('imscp_table', 'EnglishBritain'),
+('imscp_language', 'English (GB)'),
 ('encoding', 'UTF-8'),
 ('Incorrect domain name syntax', 'Incorrect <i>domain name</i> syntax'),
 ('Incorrect forward syntax', 'Incorrect <i>forward</i> syntax!'),
