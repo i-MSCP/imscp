@@ -1,5 +1,5 @@
 <?php defined("NET2FTP") or die("Direct access to this location is not allowed."); ?>
-<!-- Template /skins/ispCP/view1.template.php begin -->
+<!-- Template /skins/iMSCP/view1.template.php begin -->
 
 <?php /* ----- Text ----- */ ?>
 <?php if ($filetype == "text") { ?>
@@ -33,4 +33,4 @@
 
 <?php	} // end else?>
 
-<!-- Template /skins/ispCP/view1.template.php end -->
+<!-- Template /skins/iMSCP/view1.template.php end -->

@@ -1,5 +1,5 @@
 <?php defined("NET2FTP") or die("Direct access to this location is not allowed."); ?>
-<!-- Template /skins/ispCP/findstring2.template.php begin -->
+<!-- Template /skins/iMSCP/findstring2.template.php begin -->
 
 <input type="hidden" name="entry"     value="">
 
@@ -36,4 +36,4 @@
 <?php		} // end for ?>
 		</table>
 <?php	} // end else ?>
-<!-- Template /skins/ispCP/findstring2.template.php end -->
+<!-- Template /skins/iMSCP/findstring2.template.php end -->

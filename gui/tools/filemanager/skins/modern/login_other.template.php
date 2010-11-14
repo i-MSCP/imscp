@@ -1,5 +1,5 @@
 <?php defined("NET2FTP") or die("Direct access to this location is not allowed."); ?>
-<!-- Template /skins/ispCP/login_other.template.php begin -->
+<!-- Template /skins/iMSCP/login_other.template.php begin -->
 <?php require_once($net2ftp_globals["application_skinsdir"] . "/" . $net2ftp_globals["skin"] . "/header_login.template.php"); ?>
 	<div id="main">
 		<div id="mainleft">
@@ -45,4 +45,4 @@
 		<div style="clear: both"></div>
 	</div>
 <?php require_once($net2ftp_globals["application_skinsdir"] . "/" . $net2ftp_globals["skin"] . "/footer.template.php"); ?>
-<!-- Template /skins/ispCP/login_other.template.php end -->
+<!-- Template /skins/iMSCP/login_other.template.php end -->

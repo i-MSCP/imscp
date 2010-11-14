@@ -15,7 +15,7 @@
 	</div>
 	<div id="head">
 		<div id="headleft">
-			<a href="http://www.net2ftp.com" target="_blank"><img src="skins/ispCP/images/img/logo.png" alt="net2ftp" style="width: 193px; height: 59px; border: 0;" /></a>
+			<a href="http://www.net2ftp.com" target="_blank"><img src="skins/iMSCP/images/img/logo.png" alt="net2ftp" style="width: 193px; height: 59px; border: 0;" /></a>
 		</div>
 		<div style="float: right; text-align: right;">
 		</div>

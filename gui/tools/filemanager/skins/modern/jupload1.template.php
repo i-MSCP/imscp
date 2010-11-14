@@ -1,5 +1,5 @@
 <?php defined("NET2FTP") or die("Direct access to this location is not allowed."); ?>
-<!-- Template /skins/ispCP/jupload1.template.php begin -->
+<!-- Template /skins/iMSCP/jupload1.template.php begin -->
 <applet
 	code="JUpload/startup.class"
 	archive="plugins/jupload/jupload.jar"
@@ -57,4 +57,4 @@ Alternatively, use net2ftp's normal upload or upload-and-unzip functionality.
 	<li> <?php echo __("If the destination file already exists, it will be overwritten"); ?></li>
 </ul>
 </div><br />
-<!-- Template /skins/ispCP/jupload1.template.php end -->
+<!-- Template /skins/iMSCP/jupload1.template.php end -->

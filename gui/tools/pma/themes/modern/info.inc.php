@@ -11,6 +11,6 @@
 /**
  * Theme information
  */
-$theme_name = 'ispCP Modern';
+$theme_name = 'i-MSCP Modern';
 $theme_full_version = '3.2';
 ?>

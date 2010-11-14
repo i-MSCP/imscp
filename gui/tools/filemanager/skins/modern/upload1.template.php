@@ -1,5 +1,5 @@
 <?php defined("NET2FTP") or die("Direct access to this location is not allowed."); ?>
-<!-- Template /skins/ispCP/upload1.template.php begin -->
+<!-- Template /skins/iMSCP/upload1.template.php begin -->
 <?php echo __("Upload to directory:"); ?> <input type="text" style="width: 300px;" name="directory" value="<?php echo $net2ftp_globals["directory_html"]; ?>" />
 <?php printActionIcon("listdirectories", "createDirectoryTreeWindow('" . $net2ftp_globals["directory_js"] . "','" . $formname . ".directory');"); ?>
 <br /><br />
@@ -34,4 +34,4 @@
 	<li> <?php echo __("If the destination file already exists, it will be overwritten"); ?></li>
 </ul>
 </div><br />
-<!-- Template /skins/ispCP/upload1.template.php end -->
+<!-- Template /skins/iMSCP/upload1.template.php end -->

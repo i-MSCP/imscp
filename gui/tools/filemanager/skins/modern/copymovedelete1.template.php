@@ -1,5 +1,5 @@
 <?php defined("NET2FTP") or die("Direct access to this location is not allowed."); ?>
-<!-- Template /skins/ispCP/copymovedelete1.template.php begin -->
+<!-- Template /skins/iMSCP/copymovedelete1.template.php begin -->
 
 <?php /* ----- Copy or Move: print header table ----- */ ?>
 <?php	if ($net2ftp_globals["state2"] == "copy" || $net2ftp_globals["state2"] == "move") { ?>
@@ -82,4 +82,4 @@
 <?php		} // end if ?>
 <?php	} // end for ?>
 
-<!-- Template /skins/ispCP/copymovedelete1.template.php end -->
+<!-- Template /skins/iMSCP/copymovedelete1.template.php end -->

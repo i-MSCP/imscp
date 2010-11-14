@@ -32,7 +32,7 @@ $config_version = '1.4.0';
  * Organization's name
  * @global string $org_name
  */
-$org_name = "ispCP Omega";
+$org_name = "i-MSCP Omega";
 
 /**
  * Organization's logo picture (blank if none)
@@ -58,7 +58,7 @@ $org_logo_height = '111';
  * This is the web page title that appears at the top of the browser window.
  * @global string $org_title
  */
-$org_title = "ispCP Omega";
+$org_title = "i-MSCP Omega";
 
 /**
  * Signout page
@@ -680,7 +680,7 @@ $theme_css = SM_PATH . 'themes/css/omega.css';
  */
 
 $theme[0]['PATH'] = SM_PATH . 'themes/omega_theme.php';
-$theme[0]['NAME'] = 'ispCP Omega';
+$theme[0]['NAME'] = 'i-MSCP Omega';
 
 /**
  * LDAP server(s)

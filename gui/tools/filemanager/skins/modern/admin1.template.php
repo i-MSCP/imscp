@@ -1,5 +1,5 @@
 <?php defined("NET2FTP") or die("Direct access to this location is not allowed."); ?>
-<!-- Template /skins/ispCP/admin1.template.php begin -->
+<!-- Template /skins/iMSCP/admin1.template.php begin -->
 
 <input type="hidden" name="input_admin_username" value="<?php echo $input_admin_username; ?>" />
 <input type="hidden" name="input_admin_password" value="<?php echo $input_admin_password; ?>" />
@@ -34,4 +34,4 @@ else {
 <h2><?php echo __("Setup MySQL tables"); ?></h2><br />
 <input type="button" class="smallbutton" value="<?php echo __("Go"); ?>" onclick="document.forms['AdminForm'].state.value='admin_createtables'; document.forms['AdminForm'].submit();" /> <?php echo __("Create the MySQL database tables"); ?><br /><br />
 
-<!-- Template /skins/ispCP/admin1.template.php end -->
+<!-- Template /skins/iMSCP/admin1.template.php end -->

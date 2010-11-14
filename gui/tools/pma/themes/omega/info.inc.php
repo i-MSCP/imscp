@@ -6,10 +6,10 @@
  *
  * @version $Id$
  * @package phpMyAdmin-theme
- * @subpackage ispCP_Omega
+ * @subpackage iMSCP_Omega
  */
 
-$theme_name = 'ispCP Omega';
+$theme_name = 'i-MSCP Omega';
 $theme_version = 3;
 $theme_generation = 3;
 ?>

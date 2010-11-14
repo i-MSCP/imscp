@@ -5,7 +5,7 @@
  *
  * @version $Id$
  * @package phpMyAdmin-theme
- * @subpackage ispCP_Omega
+ * @subpackage iMSCP_Omega
  */
 
     if (isset($GLOBALS['PMA_Config']) && $GLOBALS['PMA_Config']->get('fontsize') !== null) {

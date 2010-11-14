@@ -1,5 +1,5 @@
 <?php defined("NET2FTP") or die("Direct access to this location is not allowed."); ?>
-<!-- Template /skins/ispCP/chmod1.template.php begin -->
+<!-- Template /skins/iMSCP/chmod1.template.php begin -->
 <table style="border-color: #000000; border-style: solid; border-width: 1px; padding: 5px;">
 	<tr><td>
 		<table border="0" cellspacing="2" cellpadding="2" style="margin-<?php echo __("left"); ?>: 5px;">
@@ -64,4 +64,4 @@
 
 <?php } // end for ?>
 
-<!-- Template /skins/ispCP/chmod1.template.php end -->
+<!-- Template /skins/iMSCP/chmod1.template.php end -->
