@@ -28,11 +28,11 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/i-mscp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
 $tpl = new iMSCP_pTemplate();
 
@@ -49,7 +49,7 @@ $tpl->define_dynamic('als_add_button', 'page');
 
 $tpl->assign(
 	array(
-		'TR_ALIAS_PAGE_TITLE'	=> tr('ispCP - Manage Domain/Alias'),
+		'TR_ALIAS_PAGE_TITLE'	=> tr('i-MSCP - Manage Domain/Alias'),
 		'THEME_COLOR_PATH'		=> "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET'			=> tr('encoding'),
 		'ISP_LOGO'				=> get_logo($_SESSION['user_id']),
@@ -103,8 +103,8 @@ unset_messages();
  * @todo Use prepared statements (min. with placeholders like ":search_for")
  */
 function generate_als_list(&$tpl, $reseller_id, &$als_err) {
-	$sql = ispCP_Registry::get('Db');
-	$cfg = ispCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
 
 	// NXW: Unused variables so..
 	/*

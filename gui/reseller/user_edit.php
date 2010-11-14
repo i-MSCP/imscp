@@ -28,9 +28,9 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/i-mscp-lib.php';
+require '../include/imscp-lib.php';
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
 check_login(__FILE__);
 
@@ -51,7 +51,7 @@ $tpl->define_dynamic('ip_entry', 'page');
 
 $tpl->assign(
 	array(
-		'TR_EDIT_USER_PAGE_TITLE'	=> tr('ispCP - Users/Edit'),
+		'TR_EDIT_USER_PAGE_TITLE'	=> tr('i-MSCP - Users/Edit'),
 		'THEME_COLOR_PATH'			=> "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET'				=> tr('encoding'),
 		'ISP_LOGO'					=> get_logo($_SESSION['user_id']),
@@ -180,7 +180,7 @@ function load_user_data_page($user_id) {
 	global $street_two, $mail, $phone;
 	global $fax;
 
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$reseller_id = $_SESSION['user_id'];
 
@@ -236,7 +236,7 @@ function gen_edituser_page(&$tpl) {
 		$firm, $zip, $gender, $city, $state, $country, $street_one, $street_two,
 		$phone, $fax;
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	if ($customer_id == NULL) {
 		$customer_id = '';
@@ -279,8 +279,8 @@ function update_data_in_db($hpid) {
 		$firm, $zip, $gender, $city, $state, $country, $street_one, $street_two,
 		$mail, $phone, $fax, $inpass, $admin_login;
 
-	$sql = ispCP_Registry::get('Db');
-	$cfg = ispCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$reseller_id = $_SESSION['user_id'];
 

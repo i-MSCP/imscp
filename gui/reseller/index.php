@@ -28,9 +28,9 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/i-mscp-lib.php';
+require '../include/imscp-lib.php';
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
 check_login(__FILE__, $cfg->PREVENT_EXTERNAL_LOGIN_RESELLER);
 
@@ -127,7 +127,7 @@ function gen_disk_usage(&$tpl, $usage, $max_usage, $bars_max) {
 function generate_page_data(&$tpl, $reseller_id, $reseller_name) {
 	global $crnt_month, $crnt_year;
 
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$crnt_month = date("m");
 	$crnt_year = date("Y");
@@ -287,7 +287,7 @@ function generate_page_data(&$tpl, $reseller_id, $reseller_name) {
 }
 
 function gen_messages_table(&$tpl, $admin_id) {
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$query = "
 		SELECT
@@ -328,7 +328,7 @@ function gen_messages_table(&$tpl, $admin_id) {
 
 $tpl->assign(
 	array(
-		'TR_RESELLER_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Reseller/Main Index'),
+		'TR_RESELLER_MAIN_INDEX_PAGE_TITLE' => tr('i-MSCP - Reseller/Main Index'),
 		'TR_SAVE' => tr('Save'),
 		'TR_MESSAGES' => tr('Messages'),
 		'TR_LANGUAGE' => tr('Language'),

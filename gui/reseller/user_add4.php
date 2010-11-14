@@ -28,11 +28,11 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/i-mscp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/user_add4.tpl');
@@ -114,7 +114,7 @@ gen_logged_from($tpl);
 
 $tpl->assign(
 	array(
-		'TR_ADD_USER_PAGE_TITLE' => tr('ispCP - User/Add user'),
+		'TR_ADD_USER_PAGE_TITLE' => tr('i-MSCP - User/Add user'),
 		'TR_MANAGE_DOMAIN_ALIAS' => tr('Manage domain alias'),
 		'TR_ADD_ALIAS' => tr('Add domain alias'),
 		'TR_DOMAIN_NAME' => tr('Domain name'),
@@ -147,7 +147,7 @@ if ($cfg->DUMP_GUI_DEBUG) {
 function init_empty_data() {
 	global $cr_user_id, $alias_name, $domain_ip, $forward, $forward_prefix, $mount_point, $tpl;
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$cr_user_id = $alias_name = $domain_ip = $forward = $mount_point = '';
 
@@ -208,7 +208,7 @@ function init_empty_data() {
  * Show data fields
  */
 function gen_al_page(&$tpl, $reseller_id) {
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$dmn_id = $_SESSION['dmn_id'];
 
@@ -254,7 +254,7 @@ function add_domain_alias(&$sql, &$err_al) {
 	global $cr_user_id, $alias_name, $domain_ip, $forward, $forward_prefix,
 		$mount_point, $validation_err_msg;
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$cr_user_id = $dmn_id = $_SESSION['dmn_id'];
 	$alias_name = strtolower(clean_input($_POST['ndomain_name']));
@@ -278,7 +278,7 @@ function add_domain_alias(&$sql, &$err_al) {
 	// Should be perfomed after domain names syntax validation now
 	$alias_name = encode_idna($alias_name);
 
-	if (ispcp_domain_exists($alias_name, $_SESSION['user_id'])) {
+	if (imscp_domain_exists($alias_name, $_SESSION['user_id'])) {
 		$err_al = tr('Domain with that name already exists on the system!');
 	} else if (!validates_mpoint($mount_point) && $mount_point != '/') {
 		$err_al = tr("Incorrect mount point syntax");
