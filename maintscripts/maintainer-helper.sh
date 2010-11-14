@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# ispCP helper library for distribution maintenace scripts
+# i-MSCP helper library for distribution maintenace scripts
 #
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
@@ -31,7 +31,7 @@
 #
 
 ################################################################################
-# Note to ispCP distributions. maintainers:
+# Note to i-MSCP distributions. maintainers:
 #
 # This library provide a set of functions that can be used in your maintenance
 # scripts.
@@ -39,7 +39,7 @@
 # Currently, only a few helper functions to display the titles and error
 # messages are provided.
 #
-# Also, when you include this file into your script, some ispCP configuration
+# Also, when you include this file into your script, some i-MSCP configuration
 # parameters obtained from the 'imscp.conf' file are exported in your script.
 #
 # To use library, you must include it at the beginning of your
@@ -49,16 +49,16 @@
 #
 
 ################################################################################
-#                      ispCP Omega configuration variables                     #
+#                      i-MSCP Omega configuration variables                     #
 ################################################################################
 
-# Retrieving the main ispCP configuration file path
+# Retrieving the main i-MSCP configuration file path
 if [ -f "/etc/imscp/imscp.conf" ] ; then
     CONF_FILE=/etc/imscp/imscp.conf
 elif [ -f "/usr/local/etc/imscp/imscp.conf" ] ; then
     CONF_FILE=/usr/local/etc/imscp/imscp.conf
 else
-    printf "\033[1;31m[Error]\033[0m ispCP configuration file not found!\n"
+    printf "\033[1;31m[Error]\033[0m i-MSCP configuration file not found!\n"
     exit 1
 fi
 
@@ -79,8 +79,8 @@ if [ $DEBUG -eq 1 ]; then
   set -x
 fi
 
-# ispCP Omega version
-ISPCP_VERSION=$(echo $Version | sed -e 's/\s\+\|[a-z]//gi')
+# i-MSCP version
+IMSCP_VERSION=$(echo $Version | sed -e 's/\s\+\|[a-z]//gi')
 
 ################################################################################
 #                                   Logging                                    #

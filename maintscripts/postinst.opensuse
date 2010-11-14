@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# ispCP post installation script for openSUSE 11.3
+# i-MSCP post installation script for openSUSE 11.3
 #
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
@@ -123,7 +123,7 @@ case "$1" in
 		fi
 
 		if [ -f /etc/imscp/postfix/smtpd.conf ] ; then
-			# Building the new smtpd.conf file from the ispCP template
+			# Building the new smtpd.conf file from the i-MSCP template
 			sed '
 				s/{MTA_SASL_LOG_LEVEL}/'"$MTA_SASL_LOG_LEVEL"'/
 				s/{MTA_SASL_PWCHECK_METHOD}/'"$MTA_SASL_PWCHECK_METHOD"'/
@@ -253,7 +253,7 @@ case "$1" in
 						tput rc && tput ed
 						stty echo
 
-						# Encrypt the password with ispCP keys
+						# Encrypt the password with i-MSCP keys
 						cd /srv/www/imscp/engine
 						encryptedPwd=$(perl -e 'require "imscp_common_code.pl"; ($rs, $pwd) = encrypt_db_password('"$PWD1"'); print $pwd;')
 

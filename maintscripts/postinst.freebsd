@@ -49,17 +49,17 @@ case "$1" in
 
 		print_title "System Init configuration:"
 
-		# Add the needed ispCP Services to /etc/rc.conf for autoboot
-		# and check if the ispCP Part exist
+		# Add the needed i-MSCP Services to /etc/rc.conf for autoboot
+		# and check if the i-MSCP Part exist
 		if [ -f "/etc/rc.conf" ] ; then
-			# Get the current /etc/rc.conf content without the ispCP configuration
+			# Get the current /etc/rc.conf content without the i-MSCP configuration
 			# part if it exists
-			CUR_CONF=$($CMD_SED -e '/^# Needed ispCP Services - Begin/,/^# Needed ispCP Services - End/d' /etc/rc.conf)
+			CUR_CONF=$($CMD_SED -e '/^# Needed i-MSCP Services - Begin/,/^# Needed i-MSCP Services - End/d' /etc/rc.conf)
 			printf "$CUR_CONF\n" > /etc/rc.conf
 		fi
 
 cat << EOF >> /etc/rc.conf
-# Needed ispCP Services - Begin
+# Needed i-MSCP Services - Begin
 proftpd_enable="YES"
 mysql_enable="YES"
 apache22_http_accept_enable="YES"
@@ -83,7 +83,7 @@ sendmail_enable="NO"
 sendmail_submit_enable="NO"
 sendmail_outbound_enable="NO"
 sendmail_msp_queue_enable="NO"
-# Needed ispCP Services - End
+# Needed i-MSCP Services - End
 EOF
 
 		print_status
