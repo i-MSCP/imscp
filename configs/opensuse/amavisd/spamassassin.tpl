@@ -30,7 +30,7 @@
 #
 # If you do not want this file to be regenerated from scratch during ispCP
 # update process, change the 'SPAMASSASSIN_REGENERATE' parameter value to 'no' in
-# the i-mscp.conf file.
+# the imscp.conf file.
 
 # SpamAssassin local.cf template file
 

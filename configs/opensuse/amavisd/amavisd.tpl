@@ -79,7 +79,7 @@ $nanny_details_level = 2; # nanny verbosity: 1: traditional, 2: detailed
 $enable_dkim_verification = 1; # enable DKIM signatures verification
 $enable_dkim_signing = 1; # load DKIM signing code, keys defined by dkim_key
 
-@local_domains_maps = (read_hash("/etc/i-mscp/amavisd/working/amavisd.domains"));
+@local_domains_maps = (read_hash("/etc/imscp/amavisd/working/amavisd.domains"));
 
 @mynetworks = qw(127.0.0.0/8 [::1] [FE80::]/10 [FEC0::]/10 10.0.0.0/24);
 
@@ -450,7 +450,7 @@ $banned_filename_re = new_RE(
                 [qr'^(inkjetplanet|marketopt|MakeMoney)\d*@'i => 5.0],
             ),
 
-			read_hash("/etc/i-mscp/amavisd/working/sender_scores_sitewide"),
+			read_hash("/etc/imscp/amavisd/working/sender_scores_sitewide"),
 
 			{ # a hash-type lookup table (associative array)
 				'nobody@cert.org' => -3.0,
