@@ -151,7 +151,7 @@ class iMSCP_Config_Handler_File extends iMSCP_Config_Handler {
 					$pathFile = '/usr/local/etc/imscp/imscp.conf';
 					break;
 				default:
-					$pathFile = '/etc/i-mscp/imscp.conf';
+					$pathFile = '/etc/imscp/imscp.conf';
 			}
 		}
 
