@@ -28,11 +28,11 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/i-mscp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
 $tpl = new iMSCP_pTemplate();
 
@@ -50,7 +50,7 @@ $tpl->define_dynamic('to_alias_subdomain', 'page');
 
 function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$dmn_name = decode_idna($dmn_name);
 
@@ -95,7 +95,7 @@ function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
 
 function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$ok_status = $cfg->ITEM_OK_STATUS;
 
@@ -165,7 +165,7 @@ function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 
 function gen_dmn_sub_list(&$tpl, &$sql, $dmn_id, $dmn_name, $post_check) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$ok_status = $cfg->ITEM_OK_STATUS;
 
@@ -238,7 +238,7 @@ function gen_dmn_sub_list(&$tpl, &$sql, $dmn_id, $dmn_name, $post_check) {
 
 function gen_dmn_als_sub_list(&$tpl, &$sql, $dmn_id, $post_check) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$ok_status = $cfg->ITEM_OK_STATUS;
 
@@ -314,7 +314,7 @@ function gen_dmn_als_sub_list(&$tpl, &$sql, $dmn_id, $post_check) {
 
 function schedule_mail_account(&$sql, $domain_id, $dmn_name, $mail_acc) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$mail_auto_respond = false;
 	$mail_auto_respond_text = '';
@@ -458,7 +458,7 @@ function schedule_mail_account(&$sql, $domain_id, $dmn_name, $mail_acc) {
 
 function check_mail_acc_data(&$sql, $dmn_id, $dmn_name) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$mail_type_normal = isset($_POST['mail_type_normal']) ? $_POST['mail_type_normal'] : false;
 	$mail_type_forward = isset($_POST['mail_type_forward']) ? $_POST['mail_type_forward'] : false;
@@ -479,7 +479,7 @@ function check_mail_acc_data(&$sql, $dmn_id, $dmn_name) {
 	}
 
 	$mail_acc = strtolower(clean_input($_POST['username']));
-	if (ispcp_check_local_part($mail_acc) == "0") {
+	if (imscp_check_local_part($mail_acc) == "0") {
 		set_page_message(tr("Invalid Mail Localpart Format used!"));
 		return false;
 	}
@@ -623,7 +623,7 @@ if (isset($_SESSION['email_support']) && $_SESSION['email_support'] == "no") {
 
 $tpl->assign(
 	array(
-		'TR_CLIENT_ADD_MAIL_ACC_PAGE_TITLE'	=> tr('ispCP - Client/Add Mail User'),
+		'TR_CLIENT_ADD_MAIL_ACC_PAGE_TITLE'	=> tr('i-MSCP - Client/Add Mail User'),
 		'THEME_COLOR_PATH'					=> "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET'						=> tr('encoding'),
 		'ISP_LOGO'							=> get_logo($_SESSION['user_id'])

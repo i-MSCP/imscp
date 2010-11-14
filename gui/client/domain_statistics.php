@@ -28,11 +28,11 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/i-mscp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/domain_statistics.tpl');
@@ -47,7 +47,7 @@ $tpl->define_dynamic('traff_item', 'traff_list');
 
 function gen_page_date(&$tpl, $month, $year) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	for ($i = 1; $i <= 12; $i++) {
 		$tpl->assign(
@@ -83,7 +83,7 @@ function gen_page_post_data(&$tpl, $current_month, $current_year) {
 
 function get_domain_trafic($from, $to, $domain_id) {
 
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$query = "
 		SELECT
@@ -123,7 +123,7 @@ function gen_dmn_traff_list(&$tpl, &$sql, $month, $year, $user_id) {
 	global $web_trf, $ftp_trf, $smtp_trf, $pop_trf,
 	$sum_web, $sum_ftp, $sum_mail, $sum_pop;
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$domain_admin_id = $_SESSION['user_id'];
 	$query = "
@@ -310,7 +310,7 @@ function gen_dmn_traff_list(&$tpl, &$sql, $month, $year, $user_id) {
 
 $tpl->assign(
 	array(
-		'TR_CLIENT_DOMAIN_STATISTICS_PAGE_TITLE' => tr('ispCP - Client/Domain Statistics'),
+		'TR_CLIENT_DOMAIN_STATISTICS_PAGE_TITLE' => tr('i-MSCP - Client/Domain Statistics'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])

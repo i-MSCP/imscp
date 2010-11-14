@@ -28,11 +28,11 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/i-mscp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/domains_manage.tpl');
@@ -136,7 +136,7 @@ function gen_user_dns_list(&$tpl, &$sql, $user_id) {
 
 function gen_user_dns_action($action, $dns_id, $status) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	if ($status == $cfg->ITEM_OK_STATUS) {
 		return array(tr($action), 'dns_'.strtolower($action).'.php?edit_id='.$dns_id);
@@ -149,7 +149,7 @@ function gen_user_dns_action($action, $dns_id, $status) {
 
 function gen_user_sub_action($sub_id, $sub_status) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	if ($sub_status === $cfg->ITEM_OK_STATUS) {
 		return array(tr('Delete'), "subdomain_delete.php?id=$sub_id");
@@ -160,7 +160,7 @@ function gen_user_sub_action($sub_id, $sub_status) {
 
 function gen_user_alssub_action($sub_id, $sub_status) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	if ($sub_status === $cfg->ITEM_OK_STATUS) {
 		return array(tr('Delete'), "alssub_delete.php?id=$sub_id");
@@ -171,7 +171,7 @@ function gen_user_alssub_action($sub_id, $sub_status) {
 
 function gen_user_sub_forward($sub_id, $sub_status, $url_forward, $dmn_type) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	if ($sub_status === $cfg->ITEM_OK_STATUS) {
 		return array(
@@ -299,7 +299,7 @@ function gen_user_sub_list(&$tpl, &$sql, $user_id) {
 
 function gen_user_als_action($als_id, $als_status) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	if ($als_status === $cfg->ITEM_OK_STATUS) {
 		return array(tr('Delete'), 'alias_delete.php?id=' . $als_id);
@@ -393,7 +393,7 @@ function gen_user_als_list(&$tpl, &$sql, $user_id) {
 
 $tpl->assign(
 	array(
-		'TR_CLIENT_MANAGE_DOMAINS_PAGE_TITLE'	=> tr('ispCP - Client/Manage Domains'),
+		'TR_CLIENT_MANAGE_DOMAINS_PAGE_TITLE'	=> tr('i-MSCP - Client/Manage Domains'),
 		'THEME_COLOR_PATH'						=> "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET'							=> tr('encoding'),
 		'ISP_LOGO'								=> get_logo($_SESSION['user_id'])

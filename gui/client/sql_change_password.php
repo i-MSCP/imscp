@@ -28,11 +28,11 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/i-mscp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/sql_change_password.tpl');
@@ -50,7 +50,7 @@ if (isset($_GET['id'])) {
 // page functions.
 function change_sql_user_pass(&$sql, $db_user_id, $db_user_name) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	if (!isset($_POST['uaction'])) {
 		return;
@@ -88,7 +88,7 @@ function change_sql_user_pass(&$sql, $db_user_id, $db_user_name) {
 
 	$user_pass = $_POST['pass'];
 
-	// update user pass in the i-mscp sql_user table;
+	// update user pass in the i-MSCP sql_user table;
 	$query = "
 		UPDATE
 			`sql_user`
@@ -142,7 +142,7 @@ if (isset($_SESSION['sql_support']) && $_SESSION['sql_support'] == "no") {
 
 $tpl->assign(
 	array(
-		'TR_CLIENT_SQL_CHANGE_PASSWORD_PAGE_TITLE' => tr('ispCP - Client/Change SQL User Password'),
+		'TR_CLIENT_SQL_CHANGE_PASSWORD_PAGE_TITLE' => tr('i-MSCP - Client/Change SQL User Password'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])

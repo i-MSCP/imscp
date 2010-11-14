@@ -28,11 +28,11 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/i-mscp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
 $tpl = new iMSCP_pTemplate();
 
@@ -67,7 +67,7 @@ function get_alias_mount_point(&$sql, $alias_name) {
 
 function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$dmn_name = decode_idna($dmn_name);
 
@@ -100,7 +100,7 @@ function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
 
 function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$ok_status = $cfg->ITEM_OK_STATUS;
 
@@ -161,7 +161,7 @@ function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 
 function gen_dmn_sub_list(&$tpl, &$sql, $dmn_id, $dmn_name, $post_check) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$ok_status = $cfg->ITEM_OK_STATUS;
 	$query = "
@@ -361,7 +361,7 @@ function get_ftp_user_uid(&$sql, $dmn_name, $ftp_user, $ftp_user_gid) {
 
 function add_ftp_user(&$sql, $dmn_name) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$username = strtolower(clean_input($_POST['username']));
 
@@ -411,7 +411,7 @@ function add_ftp_user(&$sql, $dmn_name) {
 		$ftp_home = str_replace('//', '/', $ftp_home);
 		// Check for $ftp_vhome existence
 		// Create a virtual filesystem (it's important to use =&!)
-		$vfs = new ispCP_VirtualFileSystem($dmn_name, $sql);
+		$vfs = new iMSCP_VirtualFileSystem($dmn_name, $sql);
 		// Check for directory existence
 		$res = $vfs->exists($ftp_vhome);
 
@@ -448,7 +448,7 @@ function add_ftp_user(&$sql, $dmn_name) {
 
 function check_ftp_acc_data(&$tpl, &$sql, $dmn_id, $dmn_name) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	if (!isset($_POST['username']) || $_POST['username'] === '') {
 		set_page_message(tr('Please enter FTP account username!'));
@@ -578,7 +578,7 @@ function gen_page_js(&$tpl) {
 
 $tpl->assign(
 	array(
-		'TR_CLIENT_ADD_FTP_ACC_PAGE_TITLE' => tr('ispCP - Client/Add FTP User'),
+		'TR_CLIENT_ADD_FTP_ACC_PAGE_TITLE' => tr('i-MSCP - Client/Add FTP User'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])

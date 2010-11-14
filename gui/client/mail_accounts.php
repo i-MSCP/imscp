@@ -28,11 +28,11 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/i-mscp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page',$cfg->CLIENT_TEMPLATE_PATH . '/mail_accounts.tpl');
@@ -48,7 +48,7 @@ $tpl->define_dynamic('table_list', 'page');
 
 $tpl->assign(
 	array(
-		'TR_CLIENT_MANAGE_USERS_PAGE_TITLE'	=> tr('ispCP - Client/Manage Users'),
+		'TR_CLIENT_MANAGE_USERS_PAGE_TITLE'	=> tr('i-MSCP - Client/Manage Users'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
@@ -66,7 +66,7 @@ $tpl->assign(
  */
 function gen_user_mail_action($mail_id, $mail_status) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	if ($mail_status === $cfg->ITEM_OK_STATUS) {
 		return array(
@@ -93,7 +93,7 @@ function gen_user_mail_action($mail_id, $mail_status) {
 function gen_user_mail_auto_respond(
 	$tpl, $mail_id, $mail_type, $mail_status, $mail_auto_respond) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	if ($mail_status === $cfg->ITEM_OK_STATUS) {
 		if ($mail_auto_respond == false) {
@@ -143,7 +143,7 @@ function gen_user_mail_auto_respond(
  * Must be documented
  *
  * @param iMSCP_pTemplate $tpl reference to pTemplate object
- * @param ispCP_Databse $sql reference to ispcp_Database object
+ * @param iMSCP_Databse $sql reference to imscp_Database object
  * @param int $dmn_id domain name id
  * @param string $dmn_name domain name
  * @return int number of domain mails adresses
@@ -265,7 +265,7 @@ function gen_page_dmn_mail_list($tpl, $sql, $dmn_id, $dmn_name) {
  * Must be documented
  *
  * @param iMSCP_pTemplate $tpl reference to the template object
- * @param iMSCP_Database $sql reference to the ispcp_Database object
+ * @param iMSCP_Database $sql reference to the imscp_Database object
  * @param int $dmn_id domain name id
  * @param strinc $dmn_name domain name
  * @return int number of subdomain mails addresses
@@ -652,7 +652,7 @@ function gen_page_als_mail_list($tpl, $sql, $dmn_id, $dmn_name) {
 function gen_page_lists($tpl, $sql, $user_id) {
 
 	global $dmn_id;
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	list($dmn_id,$dmn_name,,,,,,,$dmn_mailacc_limit
 	) = get_domain_default_props($sql, $user_id);

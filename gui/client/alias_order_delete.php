@@ -32,7 +32,7 @@
  * @todo use db prepared statements
  */
 
-require '../include/i-mscp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 

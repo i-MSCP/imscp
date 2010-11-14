@@ -53,7 +53,7 @@ function _getLoginCredentials($dbUserId) {
 	/**
 	 * @var $db iMSCP_Database_ResultSet
 	 */
-	$db = ispCP_Registry::get('Db');
+	$db = iMSCP_Registry::get('Db');
 
 	// @todo Should be optimized
 	$query = "
@@ -174,7 +174,7 @@ function pmaAuth($dbUserId) {
  */
 
 // Include all needed libraries and process to the ispCP initialization
-require '../include/i-mscp-lib.php';
+require '../include/imscp-lib.php';
 
 // Check login
 check_login(__FILE__);

@@ -28,9 +28,9 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/i-mscp-lib.php';
+require '../include/imscp-lib.php';
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
 check_login(__FILE__, $cfg->PREVENT_EXTERNAL_LOGIN_CLIENT);
 
@@ -234,7 +234,7 @@ function check_user_permissions(&$tpl, $dmn_sqld_limit, $dmn_sqlu_limit, $dmn_ph
  * Calculate the usege traffic/ return array (persent/value)
  */
 function make_traff_usege($domain_id) {
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$res = exec_query($sql, "SELECT `domain_id` FROM `domain` WHERE `domain_admin_id` = ?", $domain_id);
 	$dom_id = $res->fetchRow();
@@ -482,7 +482,7 @@ check_permissions($tpl);
 
 $tpl->assign(
 	array(
-		'TR_CLIENT_MAIN_INDEX_PAGE_TITLE' 	=> tr('ispCP - Client/Main Index'),
+		'TR_CLIENT_MAIN_INDEX_PAGE_TITLE' 	=> tr('i-MSCP - Client/Main Index'),
 		'THEME_COLOR_PATH'			=> "../themes/$theme_color",
 		'THEME_CHARSET'				=> tr('encoding'),
 		'ISP_LOGO'				=> get_logo($_SESSION['user_id']),

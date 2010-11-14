@@ -28,11 +28,11 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/i-mscp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/subdomain_edit.tpl');
@@ -41,7 +41,7 @@ $tpl->define_dynamic('logged_from', 'page');
 
 $tpl->assign(
 	array(
-	'TR_EDIT_SUBDOMAIN_PAGE_TITLE'	=> tr('ispCP - Manage Subdomain/Edit Subdomain'),
+	'TR_EDIT_SUBDOMAIN_PAGE_TITLE'	=> tr('i-MSCP - Manage Subdomain/Edit Subdomain'),
 	'THEME_COLOR_PATH'				=> "../themes/{$cfg->USER_INITIAL_THEME}",
 	'THEME_CHARSET'					=> tr('encoding'),
 	'ISP_LOGO'						=> get_logo($_SESSION['user_id'])
@@ -298,7 +298,7 @@ function check_fwd_data(&$tpl, &$sql, $subdomain_id, $dmn_type) {
 			';
 		}
 
-		exec_query($sql, $query, array($forward_url, ispCP_Registry::get('Config')->ITEM_CHANGE_STATUS, $subdomain_id));
+		exec_query($sql, $query, array($forward_url, iMSCP_Registry::get('Config')->ITEM_CHANGE_STATUS, $subdomain_id));
 
 		send_request();
 

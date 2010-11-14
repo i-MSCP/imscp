@@ -25,12 +25,12 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require_once '../include/i-mscp-lib.php';
+require_once '../include/imscp-lib.php';
 require_once '../include/Net_DNS/DNS.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/dns_edit.tpl');
@@ -44,8 +44,8 @@ $add_mode = preg_match('~dns_add.php~', $_SERVER['REQUEST_URI']);
 $tpl->assign(
 	array(
 		'TR_EDIT_DNS_PAGE_TITLE'	=> ($add_mode)
-			? tr("ispCP - Manage Domain Alias/Add DNS zone's record")
-			: tr("ispCP - Manage Domain Alias/Edit DNS zone's record"),
+			? tr("i-MSCP - Manage Domain Alias/Add DNS zone's record")
+			: tr("i-MSCP - Manage Domain Alias/Edit DNS zone's record"),
 		'THEME_COLOR_PATH'			=> "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET'				=> tr('encoding'),
 		'ISP_LOGO'					=> get_logo($_SESSION['user_id']),
@@ -152,7 +152,7 @@ function mysql_get_enum(&$sql, $object, &$default = null) {
  */
 function create_options($data, $value = null) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$res = '';
 	reset($data);
@@ -225,7 +225,7 @@ function decode_zone_data($data) {
 function gen_editdns_page(&$tpl, $edit_id) {
 
 	global $sql, $DNS_allowed_types;
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	list(
 		$dmn_id, $dmn_name,,,,,,,,,,,,,,,,,,,,,$dmn_dns
@@ -454,7 +454,7 @@ function validate_NAME($domain, &$err) {
 function check_fwd_data(&$tpl, $edit_id) {
 
 	global $sql;
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$add_mode = $edit_id === true;
 
@@ -653,7 +653,7 @@ function check_fwd_data(&$tpl, $edit_id) {
 			);
 		}
 
-		// Send request to ispCP daemon
+		// Send request to i-MSCP daemon
 		send_request();
 
 		$admin_login = $_SESSION['user_logged'];
