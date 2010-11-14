@@ -105,9 +105,9 @@ case "$1" in
 		progress
 
 		# Saving package configuration file if needed
-		if [ ! -f /etc/i-mscp/postfix/backup/smtpd.conf.system -a -f /etc/sasl2/smtpd.conf ] ; then
-			cp -a /etc/sasl2/smtpd.conf /etc/i-mscp/postfix/backup/smtpd.conf.system >> $LOGFILE 2>&1 || failed
-			chmod 0600 /etc/i-mscp/postfix/backup/smtpd.conf.system >> $LOGFILE 2>&1 || failed
+		if [ ! -f /etc/imscp/postfix/backup/smtpd.conf.system -a -f /etc/sasl2/smtpd.conf ] ; then
+			cp -a /etc/sasl2/smtpd.conf /etc/imscp/postfix/backup/smtpd.conf.system >> $LOGFILE 2>&1 || failed
+			chmod 0600 /etc/imscp/postfix/backup/smtpd.conf.system >> $LOGFILE 2>&1 || failed
 			progress
 		fi
 
@@ -116,20 +116,20 @@ case "$1" in
 		print_title 'SASL configuration: '
 
 		# Saving current production file if one exists
-		if [ -f /etc/i-mscp/postfix/working/smtpd.conf ] ; then
-			cp -p /etc/i-mscp/postfix/working/smtpd.conf \
-				/etc/i-mscp/postfix/backup/smtpd.conf.$(date +%s) >> $LOGFILE 2>&1 || failed
+		if [ -f /etc/imscp/postfix/working/smtpd.conf ] ; then
+			cp -p /etc/imscp/postfix/working/smtpd.conf \
+				/etc/imscp/postfix/backup/smtpd.conf.$(date +%s) >> $LOGFILE 2>&1 || failed
 			progress
 		fi
 
-		if [ -f /etc/i-mscp/postfix/smtpd.conf ] ; then
+		if [ -f /etc/imscp/postfix/smtpd.conf ] ; then
 			# Building the new smtpd.conf file from the ispCP template
 			sed '
 				s/{MTA_SASL_LOG_LEVEL}/'"$MTA_SASL_LOG_LEVEL"'/
 				s/{MTA_SASL_PWCHECK_METHOD}/'"$MTA_SASL_PWCHECK_METHOD"'/
 				s/{MTA_SASL_AUXPROP_PLUGIN}/'"$MTA_SASL_AUXPROP_PLUGIN"'/
 				s/{MTA_SASL_MECH_LIST}/'"$MTA_SASL_MECH_LIST"'/
-			' < /etc/i-mscp/postfix/smtpd.conf >/etc/i-mscp/postfix/working/smtpd.conf
+			' < /etc/imscp/postfix/smtpd.conf >/etc/imscp/postfix/working/smtpd.conf
 
 			progress
 		else
@@ -137,11 +137,11 @@ case "$1" in
 		fi
 
 		# Fixing permissions
-		chmod 0600 /etc/i-mscp/postfix/working/smtpd.conf >> $LOGFILE 2>&1 || failed
+		chmod 0600 /etc/imscp/postfix/working/smtpd.conf >> $LOGFILE 2>&1 || failed
 		progress
 
 		# Installing the new file in the production directory
-		cp -p /etc/i-mscp/postfix/working/smtpd.conf $ETC_SASL_CONF_FILE >> $LOGFILE 2>&1 || failed
+		cp -p /etc/imscp/postfix/working/smtpd.conf $ETC_SASL_CONF_FILE >> $LOGFILE 2>&1 || failed
 		progress
 
 		# Applying all changes
@@ -188,15 +188,15 @@ case "$1" in
 
 		if [ $CMD_AMAVIS != 'no' ] ; then
 			# First does some backup if needed
-			if [ -f /etc/i-mscp/amavisd/working/amavisd.domains ] ; then
-				cp -p /etc/i-mscp/amavisd/working/amavisd.domains \
-					/etc/i-mscp/amavisd/backup/amavisd.domains.$(date +%s) >> $LOGFILE 2>&1 || failed
+			if [ -f /etc/imscp/amavisd/working/amavisd.domains ] ; then
+				cp -p /etc/imscp/amavisd/working/amavisd.domains \
+					/etc/imscp/amavisd/backup/amavisd.domains.$(date +%s) >> $LOGFILE 2>&1 || failed
 				progress
 			fi
 
-			if [ -f /etc/i-mscp/amavisd/working/sender_scores_sitewide ] ; then
-				cp -p /etc/i-mscp/amavisd/working/sender_scores_sitewide \
-					/etc/i-mscp/amavisd/backup/sender_scores_sitewide.$(date +%s) >> $LOGFILE 2>&1 || failed
+			if [ -f /etc/imscp/amavisd/working/sender_scores_sitewide ] ; then
+				cp -p /etc/imscp/amavisd/working/sender_scores_sitewide \
+					/etc/imscp/amavisd/backup/sender_scores_sitewide.$(date +%s) >> $LOGFILE 2>&1 || failed
 				progress
 			fi
 
@@ -207,28 +207,28 @@ case "$1" in
 
 			if [ $AMAVIS_REGENERATE = 'yes' ] ; then
 				# Saving package configuration file if needed
-				if [ ! -f /etc/i-mscp/amavisd/backup/amavisd.conf.system -a -f /etc/amavisd.conf ] ; then
-					cp -a /etc/amavisd.conf /etc/i-mscp/amavisd/backup/amavisd.conf.system >> $LOGFILE 2>&1 || failed
-					chmod 0640 /etc/i-mscp/amavisd/backup/amavisd.conf.conf.system >> $LOGFILE 2>&1 || failed
+				if [ ! -f /etc/imscp/amavisd/backup/amavisd.conf.system -a -f /etc/amavisd.conf ] ; then
+					cp -a /etc/amavisd.conf /etc/imscp/amavisd/backup/amavisd.conf.system >> $LOGFILE 2>&1 || failed
+					chmod 0640 /etc/imscp/amavisd/backup/amavisd.conf.conf.system >> $LOGFILE 2>&1 || failed
 					progress
 				fi
 
 				# Saving current production file if one exists
-				if [ -f /etc/i-mscp/amavisd/working/amavisd.conf ] ; then
-					cp -p /etc/i-mscp/amavisd/working/amavisd.conf \
-						/etc/i-mscp/amavisd/backup/amavisd.conf.$(date +%s) >> $LOGFILE 2>&1 || failed
+				if [ -f /etc/imscp/amavisd/working/amavisd.conf ] ; then
+					cp -p /etc/imscp/amavisd/working/amavisd.conf \
+						/etc/imscp/amavisd/backup/amavisd.conf.$(date +%s) >> $LOGFILE 2>&1 || failed
 					progress
 				fi
 
 				# Build the new amavisd.conf configuration file
-				if [ -f /etc/i-mscp/amavisd/amavisd.tpl ] ; then
+				if [ -f /etc/imscp/amavisd/amavisd.tpl ] ; then
 					sed '
 						s/{AMAVIS_DOMAIN}/'"$AMAVIS_DOMAIN"'/
 						s/{AMAVIS_HOSTNAME}/'"$AMAVIS_HOSTNAME"'/
 						s/{AMAVIS_LOG_LEVEL}/'"$AMAVIS_LOG_LEVEL"'/
 						s/{BASE_SERVER_IP}/'"$BASE_SERVER_IP"'/
 						s/{DEFAULT_ADMIN_ADDRESS}/'"$DEFAULT_ADMIN_ADDRESS"'/
-					' < /etc/i-mscp/amavisd/amavisd.tpl >/tmp/amavisd.conf
+					' < /etc/imscp/amavisd/amavisd.tpl >/tmp/amavisd.conf
 
 					progress
 				else
@@ -254,15 +254,15 @@ case "$1" in
 						stty echo
 
 						# Encrypt the password with ispCP keys
-						cd /srv/www/i-mscp/engine
-						encryptedPwd=$(perl -e 'require "i-mscp_common_code.pl"; ($rs, $pwd) = encrypt_db_password('"$PWD1"'); print $pwd;')
+						cd /srv/www/imscp/engine
+						encryptedPwd=$(perl -e 'require "imscp_common_code.pl"; ($rs, $pwd) = encrypt_db_password('"$PWD1"'); print $pwd;')
 
 						# Storing password
 						sed -i 's/^\s*\(AMAVIS_SQL_PASSWORD =\).*/\1'"$encryptedPwd"'/' \
-							/etc/i-mscp/i-mscp.conf
+							/etc/imscp/imscp.conf
 					else
-						cd /srv/www/i-mscp/engine
-						$PWD=$(perl -e 'require "i-mscp_common_code.pl"; ($rs, $pwd) = decrypt_db_password('"$AMAVIS_SQL_PASSWORD"'); print $pwd;')
+						cd /srv/www/imscp/engine
+						$PWD=$(perl -e 'require "imscp_common_code.pl"; ($rs, $pwd) = decrypt_db_password('"$AMAVIS_SQL_PASSWORD"'); print $pwd;')
 					fi
 
 					sed -i '
@@ -283,21 +283,21 @@ case "$1" in
 				fi
 
 				# Storing the working file
-				mv /tmp/amavisd.conf /etc/i-mscp/amavisd/working
+				mv /tmp/amavisd.conf /etc/imscp/amavisd/working
 
 				# Setting permissions
-				chown root:vscan /etc/i-mscp/amavisd/working/amavisd.conf
-				chmod 640 /etc/i-mscp/amavisd/working/amavisd.conf
+				chown root:vscan /etc/imscp/amavisd/working/amavisd.conf
+				chmod 640 /etc/imscp/amavisd/working/amavisd.conf
 
 				# Installing the new file in the production directory
-				cp -p /etc/i-mscp/amavisd/working/amavisd.conf /etc/amavisd.conf >> $LOGFILE 2>&1 || failed
+				cp -p /etc/imscp/amavisd/working/amavisd.conf /etc/amavisd.conf >> $LOGFILE 2>&1 || failed
 
 				progress
 			fi
 
 			# Updapting main.cf to activate Amavisd service
-			sed -i 's/#content_filter/content_filter/' /etc/i-mscp/postfix/working/main.cf
-			cp -p /etc/i-mscp/postfix/working/main.cf /etc/postfix/main.cf
+			sed -i 's/#content_filter/content_filter/' /etc/imscp/postfix/working/main.cf
+			cp -p /etc/imscp/postfix/working/main.cf /etc/postfix/main.cf
 
 			progress
 
@@ -306,14 +306,14 @@ case "$1" in
 				/# Postfix to Amavisd/{:label;/^$/q;n;s/^#//;t label;}
 				/# Amavisd to postfix/{:label;/^$/q;n;s/^#//;t label;}
 				/# Amavisd  -/{:label;/^$/q;n;s/^#//;t label;}
-			' /etc/i-mscp/postfix/working/master.cf
+			' /etc/imscp/postfix/working/master.cf
 
-			cp -p /etc/i-mscp/postfix/working/master.cf /etc/postfix/master.cf
+			cp -p /etc/imscp/postfix/working/master.cf /etc/postfix/master.cf
 
 			progress
 		else
-			rm -f /etc/i-mscp/amavisd/working/amavisd.domains
-			rm -f /etc/i-mscp/amavisd/working/sender_scores_sitewide
+			rm -f /etc/imscp/amavisd/working/amavisd.domains
+			rm -f /etc/imscp/amavisd/working/sender_scores_sitewide
 
 			progress
 		fi
@@ -324,16 +324,16 @@ case "$1" in
 
 		if [ $CMD_AMAVIS != 'no' -a $SPAMASSASSIN_REGENERATE = 'yes' ] ; then
 			# Saving package configuration file if needed
-			if [ ! -f /etc/i-mscp/amavisd/backup/local.cf.system -a -f /etc/mail/spamassassin/local.cf ] ; then
-				cp -a /etc/mail/spamassassin/local.cf /etc/i-mscp/amavisd/backup/local.cf.system >> $LOGFILE 2>&1 || failed
-				chmod 0640 /etc/i-mscp/amavisd/backup/local.cf.system >> $LOGFILE 2>&1 || failed
+			if [ ! -f /etc/imscp/amavisd/backup/local.cf.system -a -f /etc/mail/spamassassin/local.cf ] ; then
+				cp -a /etc/mail/spamassassin/local.cf /etc/imscp/amavisd/backup/local.cf.system >> $LOGFILE 2>&1 || failed
+				chmod 0640 /etc/imscp/amavisd/backup/local.cf.system >> $LOGFILE 2>&1 || failed
 				progress
 			fi
 
 			# Saving current production file if one exists
 			if [ -f /etc/mail/spamassassin/local.cf ] ; then
 				cp -p /etc/mail/spamassassin/local.cf \
-					/etc/i-mscp/amavisd/backuplocal.cf.$(date +%s) >> $LOGFILE 2>&1 || failed
+					/etc/imscp/amavisd/backuplocal.cf.$(date +%s) >> $LOGFILE 2>&1 || failed
 				progress
 			fi
 		fi

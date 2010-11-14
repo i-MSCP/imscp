@@ -29,7 +29,7 @@
 use FindBin;
 
 use lib "$FindBin::Bin/../engine";
-require 'ispcp_common_methods.pl';
+require 'imscp_common_methods.pl';
 
 use strict;
 use warnings;

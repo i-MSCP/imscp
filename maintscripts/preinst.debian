@@ -50,21 +50,21 @@ case "$1" in
 		if $CMD_GREP -qe "--inet=.*60000" /etc/default/postgrey; then
 			print_title "Postgrey configuration (Updating listening port):"
 
-			# Updating the i-mscp.conf file here to revert back to the old port
-			if test -f /etc/i-mscp/i-mscp.old.conf; then
+			# Updating the imscp.conf file here to revert back to the old port
+			if test -f /etc/imscp/imscp.old.conf; then
 				$CMD_SED -i s'/\(PORT_POSTGREY.*=.*\)10023/\160000/' \
-					/etc/i-mscp/i-mscp.old.conf >> $LOGFILE 2>&1 || failed \
-						"The script was unable to update the Postgrey listening port in your\n\t i-mscp.old.conf file!";
+					/etc/imscp/imscp.old.conf >> $LOGFILE 2>&1 || failed \
+						"The script was unable to update the Postgrey listening port in your\n\t imscp.old.conf file!";
 			fi
 
 			$CMD_SED -i s'/\(PORT_POSTGREY.*=.*\)10023/\160000/' \
-				/etc/i-mscp/i-mscp.conf >> $LOGFILE 2>&1 || failed \
-					"The script was unable to update the Postgrey listening port in your\n\t i-mscp.conf file!";
+				/etc/imscp/imscp.conf >> $LOGFILE 2>&1 || failed \
+					"The script was unable to update the Postgrey listening port in your\n\t imscp.conf file!";
 
 			# Updating database.sql file only on install
 			if [ "$1" = "install" ] ; then
 				$CMD_SED -i s'/10023\(;tcp;POSTGREY\)/60000\1/' \
-					/etc/i-mscp/database/database.sql >> $LOGFILE 2>&1 || failed \
+					/etc/imscp/database/database.sql >> $LOGFILE 2>&1 || failed \
                         "The script was unable to update the Postgrey listening port in the\n\t database schema!";
 			fi
 

@@ -77,13 +77,13 @@ postgrey_enable="YES"
 saslauthd_enable="YES"
 spamd_enable="NO"
 amavisd_enable="NO"
-ispcp_daemon_enable="YES"
+imscp_daemon_enable="YES"
 # Disable Sendmail, because of Postfix
 sendmail_enable="NO"
 sendmail_submit_enable="NO"
 sendmail_outbound_enable="NO"
 sendmail_msp_queue_enable="NO"
-# Needed ispCP Services - End 
+# Needed ispCP Services - End
 EOF
 
 		print_status
@@ -91,10 +91,10 @@ EOF
 		## Patch AWStats & PHP Temp-Script
 
 		print_title "Patch AWStats & PHP Temp-Script:"
-	
+
 		$CMD_SED s/"\/etc\/awstats"/"\/usr\/local\/etc\/awstats"/g $ROOT_DIR/engine/awstats/awstats_updateall.pl > $ROOT_DIR/engine/awstats/awstats_updateall.pl
-		$CMD_SED -i'.bak' -e s"/bin\/bash/usr\/local\/bin\/bash"/ $ROOT_DIR/engine/tools/ispcpphptemp.sh
-	
+		$CMD_SED -i'.bak' -e s"/bin\/bash/usr\/local\/bin\/bash"/ $ROOT_DIR/engine/tools/imscpphptemp.sh
+
 		print_status
 
 		## FastCGI Apache module Configuration
@@ -108,7 +108,7 @@ EOF
 			if [ "$PHP_FASTCGI" = "fastcgi" ]; then
 				# Ensure that fcgid is *not* enabled
 				$CMD_SED -i'.bak' '/[^#]*LoadModule.*mod_fcgid.so/d' $HTTPDCONF
-				$CMD_SED -i'.bak' '/[^#]*Include.*etc\/apache22\/extra\/fcgid_ispcp.conf/d' $HTTPDCONF
+				$CMD_SED -i'.bak' '/[^#]*Include.*etc\/apache22\/extra\/fcgid_imscp.conf/d' $HTTPDCONF
 
 				# ... and fastcgi *is* enabled
 				if ! $CMD_GREP -q "^[^#]*LoadModule.*mod_fastcgi.so" $HTTPDCONF; then
@@ -121,8 +121,8 @@ EOF
 					echo 'Include etc/apache22/Includes/*.conf' >> $HTTPDCONF
 				fi
 
-				if ! $CMD_GREP -q "^[^#]*Include.*etc/apache22/extra/fastcgi_ispcp.conf" $HTTPDCONF; then
-					echo 'Include etc/apache22/extra/fastcgi_ispcp.conf' >> $HTTPDCONF
+				if ! $CMD_GREP -q "^[^#]*Include.*etc/apache22/extra/fastcgi_imscp.conf" $HTTPDCONF; then
+					echo 'Include etc/apache22/extra/fastcgi_imscp.conf' >> $HTTPDCONF
 				fi
 
 				# Create needed Folder for FastCGI-Socket and set correct Permissions
@@ -132,15 +132,15 @@ EOF
 			else
 				# Ensure that fastcgi is *not* enabled
 				$CMD_SED -i'.bak' '/[^#]*LoadModule.*mod_fastcgi.so/d' $HTTPDCONF
-				$CMD_SED -i'.bak' '/[^#]*Include.*etc\/apache22\/extra\/fastcgi_ispcp.conf/d' $HTTPDCONF
+				$CMD_SED -i'.bak' '/[^#]*Include.*etc\/apache22\/extra\/fastcgi_imscp.conf/d' $HTTPDCONF
 
 				# ... and fcgid *is*
 				if ! $CMD_GREP -q "^[^#]*LoadModule.*mod_fcgid.so" $HTTPDCONF; then
 					echo 'LoadModule fcgid_module libexec/apache22/mod_fcgid.so' >> $HTTPDCONF
 				fi
 
-				if ! $CMD_GREP -q "^[^#]*Include.*etc/apache22/extra/fcgid_ispcp.conf" $HTTPDCONF; then
-					echo 'Include etc/apache22/extra/fcgid_ispcp.conf' >> $HTTPDCONF
+				if ! $CMD_GREP -q "^[^#]*Include.*etc/apache22/extra/fcgid_imscp.conf" $HTTPDCONF; then
+					echo 'Include etc/apache22/extra/fcgid_imscp.conf' >> $HTTPDCONF
 				fi
 
 				# Create needed Folder for fcgid-Socket and set correct Permissions
@@ -157,19 +157,19 @@ EOF
 		print_title "Postfix configuration:"
 
 		# SASL postfix configuration
-		if [ ! -f /usr/local/etc/i-mscp/postfix/backup/smtpd.conf.system ] && [ -f /usr/local/lib/sasl2/smtpd.conf ]; then
-			$CMD_CP -a /usr/local/lib/sasl2/smtpd.conf /usr/local/etc/i-mscp/postfix/backup/smtpd.conf.system >> $LOGFILE 2>&1 || failed
-			$CMD_CHMOD 0600 /usr/local/etc/i-mscp/postfix/backup/smtpd.conf.system >> $LOGFILE 2>&1 || failed
+		if [ ! -f /usr/local/etc/imscp/postfix/backup/smtpd.conf.system ] && [ -f /usr/local/lib/sasl2/smtpd.conf ]; then
+			$CMD_CP -a /usr/local/lib/sasl2/smtpd.conf /usr/local/etc/imscp/postfix/backup/smtpd.conf.system >> $LOGFILE 2>&1 || failed
+			$CMD_CHMOD 0600 /usr/local/etc/imscp/postfix/backup/smtpd.conf.system >> $LOGFILE 2>&1 || failed
 		fi
 
 		# First we build a new config file with the available smtpd.conf template
-		($CMD_CAT /usr/local/etc/i-mscp/postfix/smtpd.conf) |
+		($CMD_CAT /usr/local/etc/imscp/postfix/smtpd.conf) |
 		$CMD_SED "
 			s/{MTA_SASL_LOG_LEVEL}/$MTA_SASL_LOG_LEVEL/
 			s/{MTA_SASL_PWCHECK_METHOD}/$MTA_SASL_PWCHECK_METHOD/
 			s/{MTA_SASL_MECH_LIST}/$(echo $MTA_SASL_MECH_LIST | sed 's/,/ /g')/
 		" >/tmp/smtpd.conf.tmp || failed
-	
+
 		if [ "$MTA_SASL_AUXPROP_PLUGIN" != "no" ]; then
 			$CMD_SED -i'.bak' "s/{MTA_SASL_AUXPROP_PLUGIN}/$MTA_SASL_AUXPROP_PLUGIN/" /tmp/smtpd.conf.tmp || failed
 		else
@@ -182,13 +182,13 @@ EOF
 			newmd5=`$CMD_MD5 /tmp/smtpd.conf.tmp | cut -d' ' -f4`
 
 			if [ "$oldmd5" != "$newmd5" ]; then
-				$CMD_CP -p /tmp/smtpd.conf.tmp /usr/local/etc/i-mscp/postfix/backup/smtpd.conf.i-mscp >> $LOGFILE 2>&1 || failed
+				$CMD_CP -p /tmp/smtpd.conf.tmp /usr/local/etc/imscp/postfix/backup/smtpd.conf.imscp >> $LOGFILE 2>&1 || failed
 			fi
 		fi
 
-		$CMD_CP -p /usr/local/etc/i-mscp/postfix/backup/smtpd.conf.i-mscp $MTA_SASL_CONF_FILE >> $LOGFILE 2>&1 || failed
-		$CMD_CHMOD 0600 $MTA_SASL_CONF_FILE /usr/local/etc/i-mscp/postfix/backup/smtpd.conf.i-mscp >> $LOGFILE 2>&1 || failed
-	
+		$CMD_CP -p /usr/local/etc/imscp/postfix/backup/smtpd.conf.imscp $MTA_SASL_CONF_FILE >> $LOGFILE 2>&1 || failed
+		$CMD_CHMOD 0600 $MTA_SASL_CONF_FILE /usr/local/etc/imscp/postfix/backup/smtpd.conf.imscp >> $LOGFILE 2>&1 || failed
+
 		# Create Folders and copy needed Files for a chroot Postfix
 		if [ ! -d /var/spool/postfix/etc ]; then
 			mkdir -p /var/spool/postfix/etc >> $LOGFILE 2>&1 || failed
@@ -209,7 +209,7 @@ EOF
 		## Rkhunter & Sendmail
 
 		print_title "Enable Rkhunter & disable Sendmail:"
-	
+
 		# Add rkhunter to periodic for daily updates and disable sendmail
 		if [ ! -f "/etc/periodic.conf" ] ; then
 			touch /etc/periodic.conf >> $LOGFILE 2>&1 || failed
@@ -220,7 +220,7 @@ EOF
 		echo 'daily_status_mail_rejects_enable="NO"' >> /etc/periodic.conf
 		echo 'daily_status_include_submit_mailq="NO"' >> /etc/periodic.conf
 		echo 'daily_submit_queuerun="NO"' >> /etc/periodic.conf
- 
+
 		# Here, we use screen as a workaround to hide the rkhunter output
 		$CMD_SCREEN -qd -m /usr/local/bin/rkhunter --propupd --nolog -q
 
@@ -234,7 +234,7 @@ EOF
 		print_title "Cron configuration:"
 
 		if [ ! -f "/var/cron/tabs/root" ] ; then
-			crontab /usr/local/etc/i-mscp/cron.d/i-mscp >> $LOGFILE 2>&1 || failed
+			crontab /usr/local/etc/imscp/cron.d/imscp >> $LOGFILE 2>&1 || failed
 		fi
 
 		print_status
