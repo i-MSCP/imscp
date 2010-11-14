@@ -5,9 +5,9 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
         <meta http-equiv="X-UA-Compatible" content="IE=8" />
-        <title>{TR_ADMIN_ISPCP_DEBUGGER_PAGE_TITLE}</title>
+        <title>{TR_ADMIN_IMSCP_DEBUGGER_PAGE_TITLE}</title>
         <meta name="robots" content="nofollow, noindex" />
-        <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css" />
+        <link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
         <!--[if IE 6]>
         <script type="text/javascript" src="{THEME_COLOR_PATH}/js/DD_belatedPNG_0.0.8a-min.js"></script>
         <script type="text/javascript">
@@ -19,8 +19,8 @@
         <div class="header">
             {MAIN_MENU}
             <div class="logo">
-                <img src="{THEME_COLOR_PATH}/images/ispcp_logo.png" alt="IspCP logo" />
-                <img src="{THEME_COLOR_PATH}/images/ispcp_webhosting.png" alt="IspCP omega" />
+                <img src="{THEME_COLOR_PATH}/images/imscp_logo.png" alt="i-MSCP logo" />
+                <img src="{THEME_COLOR_PATH}/images/imscp_webhosting.png" alt="i-MSCP" />
             </div>
         </div>
         <div class="location">
@@ -33,7 +33,7 @@
             </ul>
             <ul class="path">
                 <li><a href="system_info.php">{TR_MENU_SYSTEM_TOOLS}</a></li>
-                <li><a href="ispcp_debugger.php">{TR_DEBUGGER_TITLE}</a></li>
+                <li><a href="imscp_debugger.php">{TR_DEBUGGER_TITLE}</a></li>
             </ul>
         </div>
         <div class="left_menu">
@@ -59,7 +59,7 @@
                 <tr>
                     <td>
                         <td>&nbsp;</td>
-			  {TR_DOMAIN_NAME} - <a href="ispcp_debugger.php?action=change_status&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
+			  {TR_DOMAIN_NAME} - <a href="imscp_debugger.php?action=change_status&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
                         <span style="color:red;">{TR_DOMAIN_ERROR}</span>
                     </td>
                 </tr>
@@ -79,7 +79,7 @@
                 <tr>
                     <td>&nbsp;</td>
                     <td>
-			  {TR_ALIAS_NAME} - <a href="ispcp_debugger.php?action=change_status&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
+			  {TR_ALIAS_NAME} - <a href="imscp_debugger.php?action=change_status&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
                         <span style="color:red;">{TR_ALIAS_ERROR}</span>
                     </td>
                 </tr>
@@ -99,7 +99,7 @@
                 <tr>
                     <td>&nbsp;</td>
                     <td>
-			  {TR_SUBDOMAIN_NAME} - <a href="ispcp_debugger.php?action=change_status&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
+			  {TR_SUBDOMAIN_NAME} - <a href="imscp_debugger.php?action=change_status&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
                         <span style="color:red;">{TR_SUBDOMAIN_ERROR}</span>
                     </td>
                 </tr>
@@ -119,7 +119,7 @@
                 <tr>
                     <td>&nbsp;</td>
                     <td>
-			  {TR_SUBDOMAIN_ALIAS_NAME} - <a href="ispcp_debugger.php?action=change_status&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
+			  {TR_SUBDOMAIN_ALIAS_NAME} - <a href="imscp_debugger.php?action=change_status&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
                         <span style="color:red;">{TR_SUBDOMAIN_ALIAS_ERROR}</span>
                     </td>
                 </tr>
@@ -139,7 +139,7 @@
                 <tr>
                     <td>&nbsp;</td>
                     <td>
-			  {TR_MAIL_NAME} - <a href="ispcp_debugger.php?action=change_status&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
+			  {TR_MAIL_NAME} - <a href="imscp_debugger.php?action=change_status&amp;id={CHANGE_ID}&amp;type={CHANGE_TYPE}" class="link">{TR_CHANGE_STATUS}</a><br />
                         <span style="color:red;">{TR_MAIL_ERROR}</span></td>
                 </tr>
                 <!-- EDP: mail_list -->
@@ -151,13 +151,13 @@
                 </tr>
                 <tr>
                     
-                    <td><a href="ispcp_debugger.php?action=run_engine" class="link">{EXEC_COUNT} {TR_EXEC_REQUESTS}</a></td>
+                    <td><a href="imscp_debugger.php?action=run_engine" class="link">{EXEC_COUNT} {TR_EXEC_REQUESTS}</a></td>
                 </tr>
             </table>
             <!-- EDP: props_list -->
            </div>
         <div class="footer">
-            ispCP {VERSION}<br />build: {BUILDDATE}<br />Codename: {CODENAME}
+            i-MSCP {VERSION}<br />build: {BUILDDATE}<br />Codename: {CODENAME}
         </div>
     </body>
 </html>

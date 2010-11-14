@@ -5,7 +5,7 @@
 		<meta name="robots" content="nofollow, noindex">
 		<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}">
 		<meta http-equiv="Content-Style-Type" content="text/css">
-		<link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css">
+		<link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css">
 	</head>
 
 	<body style="color:#000000">
@@ -41,7 +41,7 @@
 					<table width="453" align="center">
 						<tr>
 							<td align="right" class="login">
-								Powered by <a class="login" href="http://www.isp-control.net" target="_blank">ispCP Omega</a>
+								Powered by <a class="login" href="http://www.i-mscp.net" target="_blank">i-MSCP</a>
 							</td>
 						</tr>
 					</table>

@@ -5,9 +5,9 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
         <meta http-equiv="X-UA-Compatible" content="IE=8" />
-        <title>{TR_ADMIN_ISPCP_UPDATES_PAGE_TITLE}</title>
+        <title>{TR_ADMIN_IMSCP_UPDATES_PAGE_TITLE}</title>
         <meta name="robots" content="nofollow, noindex" />
-        <link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css" />
+        <link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
         <!--[if IE 6]>
         <script type="text/javascript" src="{THEME_COLOR_PATH}/js/DD_belatedPNG_0.0.8a-min.js"></script>
         <script type="text/javascript">
@@ -22,8 +22,8 @@
             {MAIN_MENU}
 
             <div class="logo">
-                <img src="{THEME_COLOR_PATH}/images/ispcp_logo.png" alt="IspCP logo" />
-                <img src="{THEME_COLOR_PATH}/images/ispcp_webhosting.png" alt="IspCP omega" />
+                <img src="{THEME_COLOR_PATH}/images/imscp_logo.png" alt="i-MSCP logo" />
+                <img src="{THEME_COLOR_PATH}/images/imscp_webhosting.png" alt="i-MSCP" />
             </div>
         </div>
 
@@ -37,7 +37,7 @@
             </ul>
             <ul class="path">
                 <li><a href="system_info.php">{TR_MENU_SYSTEM_TOOLS}</a></li>
-                <li><a href="ispcp_updates.php">{TR_UPDATES_TITLE}</a></li>
+                <li><a href="imscp_updates.php">{TR_UPDATES_TITLE}</a></li>
             </ul>
         </div>
 
@@ -69,7 +69,7 @@
         </div>
 
         <div class="footer">
-            ispCP {VERSION}<br />build: {BUILDDATE}<br />Codename: {CODENAME}
+            i-MSCP {VERSION}<br />build: {BUILDDATE}<br />Codename: {CODENAME}
         </div>
     </body>
 </html>
