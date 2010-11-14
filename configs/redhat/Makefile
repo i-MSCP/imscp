@@ -34,7 +34,7 @@ export
 install:
 
 	if test $(HOST_OS) = redhat ; then \
-		cp ./i-mscp.conf $(SYSTEM_CONF) ; \
+		cp ./imscp.conf $(SYSTEM_CONF) ; \
 		cd ./apache && $(MAKE) install ; cd .. ; \
 		cd ./awstats && $(MAKE) install ; cd .. ; \
 		cd ./bind && $(MAKE) install ; cd .. ; \
@@ -50,7 +50,7 @@ install:
 uninstall:
 
 	if test $(HOST_OS) = redhat ; then \
-		rm -rf $(SYSTEM_CONF)/i-mscp.conf ;  \
+		rm -rf $(SYSTEM_CONF)/imscp.conf ;  \
 		cd ./apache && $(MAKE) uninstall ; cd .. ; \
 		cd ./awstats && $(MAKE) uninstall ; cd .. ; \
 		cd ./bind && $(MAKE) uninstall ; cd .. ; \

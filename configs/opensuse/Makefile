@@ -34,7 +34,7 @@ export
 install:
 
 	if test $(HOST_OS) = opensuse ; then \
-		cp ./i-mscp.conf $(SYSTEM_CONF) ; \
+		cp ./imscp.conf $(SYSTEM_CONF) ; \
 		cd ./amavisd && $(MAKE) install ; cd .. ; \
 		cd ./apache && $(MAKE) install ; cd .. ; \
 		cd ./awstats && $(MAKE) install ; cd .. ; \
@@ -51,7 +51,7 @@ install:
 uninstall:
 
 	if test $(HOST_OS) = opensuse ; then \
-		rm -rf $(SYSTEM_CONF)/i-mscp.conf ;  \
+		rm -rf $(SYSTEM_CONF)/imscp.conf ;  \
 		cd ./amavisd && $(MAKE) uninstall ; cd.. ; \
 		cd ./apache && $(MAKE) uninstall ; cd .. ; \
 		cd ./awstats && $(MAKE) uninstall ; cd .. ; \

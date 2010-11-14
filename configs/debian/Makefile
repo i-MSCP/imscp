@@ -33,7 +33,7 @@ export
 
 install:
 	if test $(HOST_OS) = debian  ; then \
-		cp ./i-mscp.conf $(SYSTEM_CONF) ; \
+		cp ./imscp.conf $(SYSTEM_CONF) ; \
 		(cd ./apache && $(MAKE) install &); \
 		(cd ./awstats && $(MAKE) install &); \
 		(cd ./bind && $(MAKE) install &); \
@@ -48,7 +48,7 @@ install:
 
 uninstall:
 	if test $(HOST_OS) = debian ; then \
-		rm -rf $(SYSTEM_CONF)/i-mscp.conf ;  \
+		rm -rf $(SYSTEM_CONF)/imscp.conf ;  \
 		(cd ./apache && $(MAKE) uninstall &); \
 		(cd ./awstats && $(MAKE) uninstall &); \
 		(cd ./bind && $(MAKE) uninstall &); \
