@@ -73,7 +73,7 @@ localhost:10025 inet  n -       n       -      -        smtpd
    -o mynetworks=127.0.0.0/8
    -o strict_rfc821_envelopes=yes
 
-# ispCP autoresponder
+# i-MSCP autoresponder
 imscp-arpl unix  -      n       n       -       -       pipe
   flags=O user=vmail argv=/var/www/imscp/engine/messenger/imscp-arpl-msgr
 

@@ -28,9 +28,9 @@
 
 # ispCP ω Omega specific:
 #
-# If you do not want this file to be regenerated from scratch during ispCP
+# If you do not want this file to be regenerated from scratch during i-MSCP
 # update process, change the 'AMAVIS_REGENERATE' parameter value to 'no' in the
-# i-mscp.conf file.
+# imscp.conf file.
 
 use strict;
 
@@ -51,7 +51,7 @@ $TEMPBASE = "$MYHOME/tmp"; # working directory, needs to exist, -T
 $ENV{TMPDIR} = $TEMPBASE; # environment variable TMPDIR, used by SA, etc.
 $QUARANTINEDIR = '/var/spool/amavis/virusmails'; # -Q
 $X_HEADER_TAG  = 'X-Virus-Scanned'; # after-default
-$X_HEADER_LINE = "ispCP MailStorm at $myhostname";  # after-default
+$X_HEADER_LINE = "i-MSCP MailStorm at $myhostname";  # after-default
 $allowed_added_header_fields{lc('X-Spam-Checker-Version')} = 1;
 # $quarantine_subdir_levels = 1; # add level of subdirs to disperse quarantine
 # $release_format = 'resend'; # 'attach', 'plain', 'resend'

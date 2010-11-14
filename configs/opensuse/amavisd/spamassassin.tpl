@@ -26,9 +26,9 @@
 #    http://isp-control.net
 #
 
-# ispCP ω Omega specific:
+# i-MSCP specific:
 #
-# If you do not want this file to be regenerated from scratch during ispCP
+# If you do not want this file to be regenerated from scratch during i-MSCP
 # update process, change the 'SPAMASSASSIN_REGENERATE' parameter value to 'no' in
 # the imscp.conf file.
 

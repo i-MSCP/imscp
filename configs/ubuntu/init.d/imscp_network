@@ -103,7 +103,7 @@ add_rules() {
 	${IPTABLES} -N IMSCP_INPUT 2>> "$LOGFILE"
 	${IPTABLES} -N IMSCP_OUTPUT 2>> "$LOGFILE"
 
-	# All traffic should jump through ISPCP tables before anything else
+	# All traffic should jump through IMSCP tables before anything else
 	${IPTABLES} -I INPUT -j IMSCP_INPUT 2>> "$LOGFILE"
 	${IPTABLES} -I OUTPUT -j IMSCP_OUTPUT 2>> "$LOGFILE"
 
