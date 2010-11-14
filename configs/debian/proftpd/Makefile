@@ -43,8 +43,8 @@ install:
 		$(SYSTEM_MAKE_DIRS) $(ROOT_CONF)/proftpd ; \
 	fi
 
-	$(SYSTEM_MAKE_DIRS) $(ROOT_CONF)/proftpd/i-mscp
-	cp ./root_domain.conf $(ROOT_CONF)/proftpd/i-mscp
+	$(SYSTEM_MAKE_DIRS) $(ROOT_CONF)/proftpd/imscp
+	cp ./root_domain.conf $(ROOT_CONF)/proftpd/imscp
 
 	if [ -e /etc/proftpd.conf ] ; then \
 		mv /etc/proftpd.conf /etc/proftpd.conf.bak ; \
