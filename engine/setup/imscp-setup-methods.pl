@@ -3515,7 +3515,7 @@ sub additional_tasks{
 
 	subtitle('i-MSCP Rkhunter configuration:');
 	my $rs = setup_rkhunter();
-	print_status($rs, 'exit_on_error');
+	print_status($rs);
 
 	subtitle('i-MSCP System cleanup:');
 	system_cleanup();

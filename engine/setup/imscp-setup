@@ -776,12 +776,6 @@ sub setup_engine {
 	title('GUI setup');
 	setup_gui_cfg();
 
-	spacer();
-
-	# Additional tasks
-	title('Additional tasks');
-	additional_tasks();
-
 	# Starting dist. maintainer post-installation script if one exists
 	if(-e "$main::cfg{'ROOT_DIR'}/engine/setup/postinst") {
 		spacer();
@@ -804,6 +798,12 @@ sub setup_engine {
 	subtitle('Starting all services: ');
 	start_services();
 	print_status(0);
+
+	spacer();
+
+	# Additional tasks
+	title('Additional tasks');
+	additional_tasks();
 
 	spacer();
 
