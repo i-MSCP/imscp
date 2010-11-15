@@ -28,13 +28,13 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/ispcp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/sql_database_add.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
@@ -48,7 +48,7 @@ $tpl->define_dynamic('mysql_prefix_all', 'page');
 
 function gen_page_post_data(&$tpl) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	if ($cfg->MYSQL_PREFIX === 'yes') {
 		$tpl->assign('MYSQL_PREFIX_YES', '');
@@ -93,7 +93,7 @@ function gen_page_post_data(&$tpl) {
 /**
  * Check if a database with same name already exists
  *
- * @param  ispCP_Database $sql ispCP_Database instance
+ * @param  iMSCP_Database $sql iMSCP_Database instance
  * @param  string $db_name database name to be checked
  * @return boolean TRUE if database exists, false otherwise
  */
@@ -114,7 +114,7 @@ function check_db_name($sql, $db_name) {
 
 function add_sql_database(&$sql, $user_id) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	if (!isset($_POST['uaction'])) return;
 
@@ -219,7 +219,7 @@ function check_sql_permissions($sql, $user_id) {
 
 $tpl->assign(
 	array(
-		'TR_CLIENT_ADD_SQL_DATABASE_PAGE_TITLE' => tr('ispCP - Client/Add SQL Database'),
+		'TR_CLIENT_ADD_SQL_DATABASE_PAGE_TITLE' => tr('i-MSCP - Client/Add SQL Database'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])

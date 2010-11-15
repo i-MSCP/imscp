@@ -218,7 +218,7 @@ class PHPExcel_CachedObjectStorage_Memcache extends PHPExcel_CachedObjectStorage
 
 			parent::__construct($parent);
 		}
-	}	//	function __construct()
+	}	//	function iMSCP_Bootstrap()
 
 
 	public function failureCallback($host, $port) {

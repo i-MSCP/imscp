@@ -1259,11 +1259,11 @@ msgstr "Možete nahrať iba textové súbory!"
 
 #, fuzzy
 msgid "Could not read language file!"
-msgstr "Nemože prečítať ispcp súbor s prekladom!"
+msgstr "Nemože prečítať i-mscp súbor s prekladom!"
 
 #, fuzzy
 msgid "Uploaded file is not a valid language file!"
-msgstr "Nemože prečítať ispcp súbor s prekladom!"
+msgstr "Nemože prečítať i-mscp súbor s prekladom!"
 
 msgid "Uploaded file does not contain the language information!"
 msgstr ""

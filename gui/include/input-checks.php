@@ -69,7 +69,7 @@ function check_input($value = '') {
 			if (preg_match($VAR, $value) > 0) {
 				$message = "Possible hacking attempt. Script terminated.";
 				write_log($message);
-				throw new ispCP_Exception(tr($message));
+				throw new iMSCP_Exception(tr($message));
 			}
 		}
 	}
@@ -185,7 +185,7 @@ function tojs($text) {
  */
 function chk_password($password, $num = 50, $permitted = "") {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	if ($num > 255) {
 		$num = 255;
@@ -269,7 +269,7 @@ function chk_email($email, $num = 50) {
 /**
  * @todo document this function
  */
-function ispcp_check_local_part($email, $num = 50) {
+function imscp_check_local_part($email, $num = 50) {
 	if (strlen($email) > $num) {
 		return false;
 	}
@@ -324,7 +324,7 @@ function ispcp_check_local_part($email, $num = 50) {
 function validates_dname($dname, $subdname_process = false) {
 
 	global $validation_err_msg;
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 	$validation_err_msg = tr('Wrong domain name syntax or number of labels');
 
 	$max_labels = ($subdname_process) ? 99 : $cfg->MAX_DNAMES_LABELS;
@@ -391,7 +391,7 @@ function validates_dname($dname, $subdname_process = false) {
  */
 function validates_subdname($subdname, $dname) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 	global $validation_err_msg;
 	$validation_err_msg = tr('Wrong subdomain syntax or number of labels!');
 
@@ -519,7 +519,7 @@ function _validates_dname_label($label) {
  */
 function _validates_tld($tld) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 	global $validation_err_msg;
 	$validation_err_msg = tr('Wrong Top Level Domain syntax: <b>%s</b>', $tld);
 
@@ -606,7 +606,7 @@ function _validates_tld($tld) {
 function _validates_sld($sld) {
 
 	global $validation_err_msg;
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	if ($cfg->SLD_STRICT_VALIDATION) {
 
@@ -704,18 +704,18 @@ function isACE($label) {
  */
 
 /**
- * Function for checking ispcp limits.
+ * Function for checking i-MSCP limits.
  *
- * @param string $data ispcp 'limit' field data (by default valids are numbers greater equal 0)
+ * @param string $data i-MSCP 'limit' field data (by default valids are numbers greater equal 0)
  * @param mixed $extra single extra permitted value or array of permitted values
  * @return boolean	false	incorrect syntax (ranges)
  * 					true	correct syntax (ranges)
- * @example ispcp_limit_check($_POST['domains_limit'], null)
- * @example ispcp_limit_check($_POST['ftp_accounts_limit'])
+ * @example iMSCP_limit_check($_POST['domains_limit'], null)
+ * @example iMSCP_limit_check($_POST['ftp_accounts_limit'])
  *
  * @todo foreach and "=" inner this loop is unusual
  */
-function ispcp_limit_check($data, $extra = -1) {
+function imscp_limit_check($data, $extra = -1) {
 	if ($extra !== null && !is_bool($extra)) {
 		if (is_array($extra)) {
 			$nextra = '';
@@ -815,7 +815,7 @@ function get_session($value) {
  * @return numeric The id of the admin who owns the id $id of $type type
  */
 function who_owns_this($id, $type = 'dmn', $forcefinal = false) {
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$who = null;
 	// Fix $type according to type or by alias
@@ -1046,7 +1046,7 @@ function who_owns_this($id, $type = 'dmn', $forcefinal = false) {
 		if ($r['query']) {
 			$matches = array();
 			if (!preg_match('/SELECT[ \t]+`([\w]+)`[ \t]+FROM/i', $r['query'], $matches)) {
-				throw new ispCP_Exception(tr('Unknown Error'));
+				throw new iMSCP_Exception(tr('Unknown Error'));
 			}
 			$select = $matches[1];
 			$rs = exec_query($sql, $r['query'], $id);

@@ -3424,7 +3424,7 @@ msgid "Your message was sent!"
 msgstr "A sua mensagem foi enviada!"
 
 msgid "ispCP - Support system - New ticket"
-msgstr "ispcp - Sistema de suporte - Novo bilhete"
+msgstr "i-mscp - Sistema de suporte - Novo bilhete"
 
 msgid "New ticket"
 msgstr "Novo bilhete"

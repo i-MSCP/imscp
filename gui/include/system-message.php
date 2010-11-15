@@ -34,7 +34,7 @@
  */
 function system_message($msg, $backButtonDestination = '') {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$theme_color = (isset($_SESSION['user_theme']))
 		? $_SESSION['user_theme']
@@ -44,7 +44,7 @@ function system_message($msg, $backButtonDestination = '') {
 		$backButtonDestination = "javascript:history.go(-1)";
 	}
 
-	$tpl = new ispCP_pTemplate();
+	$tpl = new iMSCP_pTemplate();
 
 	// If we are on the login page, path will be like this
 	$template = $cfg->LOGIN_TEMPLATE_PATH . '/system-message.tpl';
@@ -63,11 +63,11 @@ function system_message($msg, $backButtonDestination = '') {
 	$tpl->define('page', $template);
 
 	// Small workaround to be able to use the system_message() function during
-	// IspCP initialization process without i18n support
+	// i-MSCP initialization process without i18n support
 	if (function_exists('tr')) {
 		$tpl->assign(
 			array(
-				'TR_SYSTEM_MESSAGE_PAGE_TITLE' => tr('ispCP Error'),
+				'TR_SYSTEM_MESSAGE_PAGE_TITLE' => tr('i-MSCP Error'),
 				'THEME_COLOR_PATH' => '/themes/' . $theme_color,
 				'THEME_CHARSET' => tr('encoding'),
 				'TR_BACK' => tr('Back'),
@@ -79,7 +79,7 @@ function system_message($msg, $backButtonDestination = '') {
 	} else {
 		$tpl->assign(
 			array(
-				'TR_SYSTEM_MESSAGE_PAGE_TITLE' => 'ispCP Error',
+				'TR_SYSTEM_MESSAGE_PAGE_TITLE' => 'i-MSCP Error',
 				'THEME_COLOR_PATH' => '/themes/' . $theme_color,
 				'THEME_CHARSET' => 'encoding',
 				'TR_BACK' => 'Back',

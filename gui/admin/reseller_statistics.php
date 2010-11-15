@@ -28,13 +28,13 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/ispcp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/reseller_statistics.tpl');
 $tpl->define_dynamic('page_message', 'page');
@@ -50,7 +50,7 @@ $tpl->define_dynamic('scroll_next', 'page');
 
 $tpl->assign(
 	array(
-		'TR_ADMIN_RESELLER_STATISTICS_PAGE_TITLE' => tr('ispCP - Reseller statistics'),
+		'TR_ADMIN_RESELLER_STATISTICS_PAGE_TITLE' => tr('i-MSCP - Reseller statistics'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
@@ -74,8 +74,8 @@ function generate_page(&$tpl) {
 
 	global $month, $year;
 
-	$cfg = ispCP_Registry::get('Config');
-	$sql = ispCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
 
 	$start_index = 0;
 

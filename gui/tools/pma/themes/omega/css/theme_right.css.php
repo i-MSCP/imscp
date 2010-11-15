@@ -5,7 +5,7 @@
  *
  * @version $Id$
  * @package phpMyAdmin-theme
- * @subpackage ispCP_Omega
+ * @subpackage iMSCP_Omega
  */
     // unplanned execution path
     if (!defined('PMA_MINIMUM_COMMON')) {

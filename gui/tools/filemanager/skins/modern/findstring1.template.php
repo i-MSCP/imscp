@@ -1,5 +1,5 @@
 <?php defined("NET2FTP") or die("Direct access to this location is not allowed."); ?>
-<!-- Template /skins/ispCP/findstring1.template.php begin -->
+<!-- Template /skins/iMSCP/findstring1.template.php begin -->
 <?php /* ----- List of selected entries ----- */ ?>
 <?php	for ($i=1; $i<=sizeof($list["all"]); $i++) { ?>
 <?php		printDirFileProperties($i, $list["all"][$i], "hidden", ""); ?>
@@ -48,4 +48,4 @@
     });
 </script>
 
-<!-- Template /skins/ispCP/findstring1.template.php end -->
+<!-- Template /skins/iMSCP/findstring1.template.php end -->

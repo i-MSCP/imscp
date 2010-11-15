@@ -1,5 +1,5 @@
 <?php defined("NET2FTP") or die("Direct access to this location is not allowed."); ?>
-<!-- Template /skins/ispCP/unzip1.template.php begin -->
+<!-- Template /skins/iMSCP/unzip1.template.php begin -->
 
 <table style="border-color: #000000; border-style: solid; border-width: 1px; padding: 10px;">
 	<tr><td>
@@ -26,4 +26,4 @@
 
 <?php	} // end for ?>
 
-<!-- Template /skins/ispCP/unzip1.template.php end -->
+<!-- Template /skins/iMSCP/unzip1.template.php end -->

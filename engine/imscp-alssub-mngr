@@ -1,0 +1,1375 @@
+#!/usr/bin/perl
+
+# ispCP ω (OMEGA) a Virtual Hosting Control Panel
+# Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
+# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
+#
+# Version: $Id$
+#
+# The contents of this file are subject to the Mozilla Public License
+# Version 1.1 (the "License"); you may not use this file except in
+# compliance with the License. You may obtain a copy of the License at
+# http://www.mozilla.org/MPL/
+#
+# Software distributed under the License is distributed on an "AS IS"
+# basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+# License for the specific language governing rights and limitations
+# under the License.
+#
+# The Original Code is "VHCS - Virtual Hosting Control System".
+#
+# The Initial Developer of the Original Code is moleSoftware GmbH.
+# Portions created by Initial Developer are Copyright (C) 2001-2006
+# by moleSoftware GmbH. All Rights Reserved.
+# Portions created by the ispCP Team are Copyright (C) 2006-2010 by
+# isp Control Panel. All Rights Reserved.
+#
+# The ispCP ω Home Page is:
+#
+#    http://isp-control.net
+#
+
+################################################################################
+## Program Short Desciption:                                                  ##
+##  Subdomain Manager - Manage all data related to one domain alias subdomain ##
+################################################################################
+
+use FindBin;
+use lib "$FindBin::Bin/";
+
+require 'imscp_common_code.pl';
+
+use strict;
+use warnings;
+
+# Hide the "used only once: possible typo" warnings
+no warnings 'once';
+
+################################################################################
+##                               SUBROUTINES                                  ##
+################################################################################
+
+################################################################################
+##
+## Perform startup tasks
+##
+## @return int 0 on success, negative int on failure
+##
+sub alssub_mngr_start_up {
+
+	push_el(\@main::el, 'alssub_mngr_start_up()', 'Starting...');
+
+	# Getting task id (domain alias subdomain id) to be processed
+	if (defined $ARGV[0] && $ARGV[0] ne '') {
+		$main::alssub_task_id = $ARGV[0];
+	} else {
+		push_el(
+			\@main::el, 'alssub_mngr_start_up()', '[ERROR] Undefined ARGV...'
+		);
+
+		return -1;
+	}
+
+	# Checking for master process
+	my $rs = check_master();
+	return -1 if ($rs != 0);
+
+	# Clear execution logs, if any
+	if (-e $main::imscp_alssub_mngr_el) {
+		$rs = del_file($main::imscp_alssub_mngr_el);
+		return -1 if ($rs != 0);
+	}
+
+	push_el(\@main::el, 'alssub_mngr_start_up()', 'Ending...');
+
+	0;
+}
+
+################################################################################
+##
+## Perform shutdown tasks
+##
+sub alssub_mngr_shut_down {
+
+	push_el(\@main::el, 'alssub_mngr_shut_down()', 'Starting...');
+	push_el(\@main::el, 'alssub_mngr_shut_down()', 'Ending...');
+
+	0;
+}
+
+################################################################################
+##                Domain alias subdomain DNS records managment                 #
+################################################################################
+
+################################################################################
+##
+## Add domain alias subdomain DNS records
+##
+## Note: Also called on 'change'
+##
+## @param hashref $data Domain alias subdomain data
+## @return int 0 on success, negative int on failure
+##
+sub alssub_add_named_db_data {
+
+	push_el(\@main::el, 'alssub_add_named_db_data()', 'Starting...');
+
+	my ($data) = @_;
+
+	if (!defined $data || $data eq '') {
+		push_el(
+			\@main::el, 'alssub_add_named_db_data()',
+			'[ERROR]: Undefined Input Data...'
+		);
+
+		return -1;
+	}
+
+	my $subAlsStatus = @$data{'subdomain_alias_status'};
+	my $dmnAlsName = @$data{'alias_name'};
+	my $cfgDir = $main::cfg{'CONF_DIR'};
+	my $wrkFile = "$cfgDir/bind/working/$dmnAlsName.db";
+	my $sysFile = "$main::cfg{BIND_DB_DIR}/$dmnAlsName.db";
+	my $bkpFile = "$cfgDir/bind/backup/$dmnAlsName.db." . time;
+
+	# Getting needed templates
+	my ($rs, $dbSubEntryB, $dbSubEntry, $dbSubEntryE) = get_tpl(
+		"$cfgDir/bind/parts", 'db_sub_entry_b.tpl', 'db_sub_entry.tpl',
+		'db_sub_entry_e.tpl'
+	);
+	return -1 if ($rs != 0);
+
+	# Preparing templates
+	($rs, my $dbSubEntryBv, $dbSubEntry, my $dbSubEntryEv) = prep_tpl(
+		{
+			'{SUB_NAME}' => "@$data{subdomain_alias_name}.$dmnAlsName",
+			'{DMN_IP}' => @$data{'ip_number'},
+			'{DMN_NAME}' => $dmnAlsName
+		},
+		$dbSubEntryB, $dbSubEntry, $dbSubEntryE
+	);
+	return -1 if ($rs != 0);
+
+	# Getting current domain db working file content
+	($rs, my $wrkFileContent) = get_file($wrkFile);
+	return -1 if ($rs != 0);
+
+	if($subAlsStatus eq 'change') {
+		# Replacing current subdomain DNS records
+		($rs, $wrkFileContent) = repl_tag(
+			$dbSubEntryBv, $dbSubEntryEv, $wrkFileContent,
+			"$dbSubEntryBv$dbSubEntry$dbSubEntryEv",
+			'alssub_add_named_db_data()'
+		);
+		return -1 if($rs != 0 && $rs != -5);
+	}
+
+	# Adding subdomain DNS records
+	# Acts also as recovery process on `change` if DNS records were not found
+	if($subAlsStatus eq 'toadd' || $rs == -5) {
+		push_el(
+			\@main::el, 'alssub_add_named_db_data()',
+			'[WARNING] DNS records entries was not found in db file! ' .
+			'New entries will be added now!'
+		) if($rs == -5);
+
+		($rs, $wrkFileContent) = add_tag(
+			$dbSubEntryB, $dbSubEntryE, $wrkFileContent,
+			"$dbSubEntryBv$dbSubEntry$dbSubEntryEv\n"
+		);
+
+		return -1 if($rs != 0);
+	}
+
+	# Updating serial number according RFC 1912
+	$rs = getSerialNumber(\$dmnAlsName, \$wrkFileContent, \$wrkFileContent);
+	return -1 if ($rs != 0);
+
+	# Backup current production file before replace it
+	if(-e $sysFile) {
+		$rs = sys_command_rs("$main::cfg{CMD_CP} -p $sysFile $bkpFile");
+		return -1 if ($rs != 0);
+	}
+
+	# Storage and installation of the new production file
+	for ($wrkFile, $sysFile) {
+		$rs = store_file(
+			$_, $wrkFileContent, $main::cfg{'ROOT_USER'},
+			$main::cfg{'ROOT_GROUP'}, 0644
+		);
+		return -1 if ($rs != 0);
+	}
+
+	push_el(\@main::el, 'alssub_add_named_db_data()', 'Ending...');
+
+	0;
+}
+
+################################################################################
+##
+## Delete domain alias subdomain DNS records
+##
+## @param hashref $data Domain alias subdomain data
+## @return int 0 on success, negative int on failure
+##
+sub alssub_del_named_db_data {
+
+	push_el(\@main::el, 'alssub_del_named_db_data()', 'Starting...');
+
+	my ($data) = @_;
+
+	if (!defined $data || $data eq '') {
+		push_el(
+			\@main::el, 'alssub_del_named_db_data()',
+			'[ERROR] Undefined Input Data...'
+		);
+
+		return -1;
+	}
+
+	my $dmnAlsName = @$data{'alias_name'};
+	my $cfgDir = $main::cfg{'CONF_DIR'};
+	my $wrkFile = "$cfgDir/bind/working/$dmnAlsName.db";
+	my $sysFile = "$main::cfg{BIND_DB_DIR}/$dmnAlsName.db";
+	my $bkpFile = "$cfgDir/bind/backup/$dmnAlsName.db." . time;
+
+	# Getting needed templates
+	my ($rs, $dbSubEntryB, $dbSubEntryE) = get_tpl(
+		"$cfgDir/bind/parts", 'db_sub_entry_b.tpl', 'db_sub_entry_e.tpl'
+	);
+	return -1 if ($rs != 0);
+
+	# Preparing  templates
+	($rs, $dbSubEntryB, $dbSubEntryE) = prep_tpl(
+		{'{SUB_NAME}' => "@$data{subdomain_alias_name}.$dmnAlsName"},
+		$dbSubEntryB, $dbSubEntryE
+	);
+	return -1 if ($rs != 0);
+
+	# Getting current domain db working file content
+	($rs, my $wrkFileContent) = get_file($wrkFile);
+	return -1 if ($rs != 0);
+
+	# Deleting subdomain DNS records if it exist
+	($rs, $wrkFileContent) = del_tag(
+		$dbSubEntryB, "$dbSubEntryE\n", $wrkFileContent
+	);
+	return -1 if ($rs != 0 && $rs != -5);
+
+	# Updating serial number according RFC 1912
+	$rs = getSerialNumber(\$dmnAlsName, \$wrkFileContent, \$wrkFileContent);
+	return -1 if ($rs != 0);
+
+	# Backup current production file before replace it
+	if(-e $sysFile) {
+		$rs = sys_command_rs("$main::cfg{CMD_CP} -p $sysFile $bkpFile");
+		return -1 if ($rs != 0);
+	}
+
+	# Storage and installation of the new production file
+	for ($wrkFile, $sysFile) {
+		$rs = store_file(
+			$_, $wrkFileContent, $main::cfg{'ROOT_USER'},
+			$main::cfg{'ROOT_GROUP'}, 0644
+		);
+		return -1 if ($rs != 0);
+	}
+
+	push_el(\@main::el, 'alssub_del_named_db_data()', 'Ending...');
+
+	0;
+}
+
+################################################################################
+##                 Domain alias subdomain Httpd data managment                 #
+################################################################################
+
+################################################################################
+##
+## Add domain alias subdomain httpd configuration data
+##
+## Note: Also called on 'change'
+##
+## @param hashref $data Domain alias subdomain data
+## @return int 0 on success, negative int on failure
+##
+sub alssub_add_httpd_cfg_data {
+
+	push_el(\@main::el, 'alssub_add_httpd_cfg_data()', 'Starting...');
+
+	my ($data) = @_;
+
+	if (!defined $data || $data eq '') {
+		push_el(
+			\@main::el, 'alssub_add_httpd_cfg_data()',
+			'[ERROR] Undefined Input Data...'
+		);
+
+		return -1;
+	}
+
+	my $parentDmnName		= @$data{'domain_name'};
+	my $subAlsStatus		= @$data{'subdomain_alias_status'};
+	my $dmnAlsName			= @$data{'alias_name'};
+	my $subRdrURI			= @$data{'subdomain_alias_url_forward'};
+	my $subAlsName			= "@$data{subdomain_alias_name}.$dmnAlsName";
+	my $subAlsMountPoint	= @$data{'subdomain_alias_mount'};
+	my $sysUser				= "$main::cfg{APACHE_SUEXEC_USER_PREF}@$data{domain_uid}";
+	my $sysGroup			= "$main::cfg{APACHE_SUEXEC_USER_PREF}@$data{'domain_gid'}";
+	my $cfgDir				= $main::cfg{'CONF_DIR'};
+	my $sysFile				= "$main::cfg{APACHE_SITES_DIR}/imscp.conf";
+	my $wrkFile				= "$cfgDir/apache/working/imscp.conf";
+	my $bkpFile				= "$cfgDir/apache/backup/httpd.conf." . time;
+
+	# Getting needed templates
+	my (
+		$rs, $dgB, $dgE, $subB, $subEnt, $subE, $subCGIb, $subCGIent, $subCGIe,
+		$subPHPonB, $subPHPon, $subPHPonE, $subPHPoffB, $subPHPoff,$subPHPoffE,
+		$subCustom, $subRDRb, $subRDRent, $subRDRe
+	) = get_tpl (
+		"$cfgDir/apache/parts", 'dg_b.tpl', 'dg_e.tpl', 'sub_b.tpl',
+		'sub_entry.tpl', 'sub_e.tpl', 'sub_cgi_b.tpl', 'sub_cgi_entry.tpl',
+		'sub_cgi_e.tpl', 'sub_php2_b.tpl', 'sub_php2_entry.tpl',
+		'sub_php2_e.tpl', 'sub_php_b.tpl', 'sub_php_entry.tpl', 'sub_php_e.tpl',
+		'custom.conf.tpl', 'sub_rdr_b.tpl', 'sub_rdr_entry.tpl', 'sub_rdr_e.tpl'
+	);
+	return -1 if ($rs != 0);
+
+	# Preparing templates
+	(
+		$rs, $dgB, $dgE, my $subBv, $subEnt, my $subEv, $subCGIb, $subCGIent,
+		$subCGIe, $subPHPon, $subCustom, $subRDRent
+	) = prep_tpl(
+		{
+			'{DMN_NAME}'					=> $parentDmnName,
+			'{DMN_GRP}'						=> $parentDmnName,
+			'{URI}'							=> !$subRdrURI ? 'no' : $subRdrURI,
+			'{STARTER_DIR}'					=> $main::cfg{'PHP_STARTER_DIR'},
+			'{PHP_VERSION}'					=> $main::cfg{'PHP_VERSION'},
+			'{BASE_SERVER_VHOST}'			=> $main::cfg{'BASE_SERVER_VHOST'},
+			'{BASE_SERVER_VHOST_PREFIX}'	=> $main::cfg{'BASE_SERVER_VHOST_PREFIX'},
+			'{WWW_DIR}'						=> $main::cfg{'APACHE_WWW_DIR'},
+			'{SUB_NAME}'					=> $subAlsName,
+			'{SELF}'						=> $subAlsName,
+			'{SUB_IP}'						=> @$data{'ip_number'},
+			'{MOUNT_POINT}'					=> $subAlsMountPoint,
+			'{GUI_ROOT_DIR}'				=> $main::cfg{'GUI_ROOT_DIR'},
+			'{PEAR_DIR}'					=> $main::cfg{'PEAR_DIR'},
+			'{CUSTOM_SITES_CONFIG_DIR}'		=> 	$main::cfg{'APACHE_CUSTOM_SITES_CONFIG_DIR'},
+			'{SUEXEC_USER}'					=> $sysUser,
+			'{SUEXEC_GROUP}'				=> $sysGroup
+		},
+		$dgB, $dgE, $subB, $subEnt, $subE, $subCGIb, $subCGIent, $subCGIe,
+		$subPHPon, $subCustom, $subRDRent
+	);
+
+	# Enabling or disabling redirect
+	($rs, $subEnt) = repl_tag(
+		$subRDRb, $subRDRe, $subEnt, (!$subRdrURI || $subRdrURI eq 'no') ?
+		"$subRDRb$subRDRe" : "$subRDRb$subRDRent$subRDRe",
+		'alssub_add_httpd_cfg_data()'
+	);
+	return -1 if ($rs != 0);
+
+	# Enabling or disabling CGI support according parent domain properties
+	($rs, $subEnt) = repl_tag(
+		$subCGIb, $subCGIe, $subEnt, (@$data{'domain_cgi'} eq 'yes') ?
+		"$subCGIb$subCGIent$subCGIe" : "$subCGIb$subCGIe",
+		'alssub_add_httpd_cfg_data()'
+	);
+	return -1 if ($rs != 0);
+
+	# Enabling or disabling PHP support according parent domain properties
+	if(@$data{'domain_php'} eq 'yes') {
+		($rs, $subEnt) = repl_tag(
+			$subPHPonB, $subPHPonE, $subEnt, "$subPHPonB$subPHPon$subPHPonE",
+			'alssub_add_httpd_cfg_data()'
+		);
+		return -1 if ($rs != 0);
+
+		($rs, $subEnt) = repl_tag(
+			$subPHPoffB, $subPHPoffE, $subEnt,"$subPHPoffB$subPHPoffE",
+			'alssub_add_httpd_cfg_data()'
+		);
+		return -1 if($rs != 0);
+	} else {
+		($rs, $subEnt) = repl_tag(
+			$subPHPonB, $subPHPonE, $subEnt,  "$subPHPonB$subPHPonE",
+			'alssub_add_httpd_cfg_data()'
+		);
+		return -1 if ($rs != 0);
+
+		($rs, $subEnt) = repl_tag(
+			$subPHPoffB, $subPHPoffE, $subEnt,
+			"$subPHPoffB$subPHPoff$subPHPoffE", 'alssub_add_httpd_cfg_data()'
+		);
+		return -1 if ($rs != 0);
+	}
+
+	# Getting current working file content
+	($rs, my $wrkFileContent) = get_file($wrkFile);
+	return -1 if($rs != 0);
+
+	# Getting current domain group entry
+	($rs, my $dmnGroupEntry) = get_tag($dgB, $dgE, $wrkFileContent);
+	return -1 if($rs != 0);
+
+	# On 'change', just replace subdomain entry in domain group entry
+	if($subAlsStatus eq 'change') {
+		($rs, $dmnGroupEntry) = repl_tag(
+			$subBv, $subEv, $dmnGroupEntry, "$subBv$subEnt$subEv",
+			'alssub_add_httpd_cfg_data()'
+		);
+		return -1 if($rs != 0 && $rs != -5);
+	}
+
+	# Adding subdomain entry in domain group entry
+	# Acts also as recovery process on `change` if subdomain entry was not found
+	if($subAlsStatus eq 'toadd' || $rs == -5) {
+		push_el(
+			\@main::el, 'alssub_add_httpd_cfg_data()',
+			'[WARNING] vhost entry was not found in imscp.conf file! ' .
+			'New one will be added now!'
+		) if($rs == -5);
+
+		($rs, $dmnGroupEntry) = add_tag(
+			$subB, $subE, $dmnGroupEntry, "$subBv$subEnt$subEv\n"
+		);
+		return -1 if($rs != 0);
+	}
+
+	# Replacing current domain group entry
+	($rs, $wrkFileContent) = repl_tag(
+		$dgB, $dgE, $wrkFileContent, "$dmnGroupEntry",
+		'alssub_add_httpd_cfg_data()'
+	);
+	return -1 if($rs != 0);
+
+	# Backup current production file before replace it
+	if(-e $sysFile) {
+		$rs = sys_command_rs("$main::cfg{CMD_CP} -p $sysFile $bkpFile");
+		return -1 if ($rs != 0);
+	}
+
+	# Storage and installation of the new production file
+	for ($wrkFile, $sysFile) {
+		$rs = store_file(
+			$_, $wrkFileContent, $main::cfg{'ROOT_USER'},
+			$main::cfg{'ROOT_GROUP'}, 0644
+		);
+		return -1 if ($rs != 0);
+	}
+
+	# Creating custom domain configuration file if it don't already exist
+	if (!-e "$main::cfg{APACHE_CUSTOM_SITES_CONFIG_DIR}/$subAlsName.conf" ) {
+		$rs = store_file(
+			"$main::cfg{APACHE_CUSTOM_SITES_CONFIG_DIR}/$subAlsName.conf",
+			$subCustom, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644
+		);
+		return -1 if ($rs != 0);
+	}
+
+	push_el(\@main::el, 'alssub_add_httpd_cfg_data()', 'Ending...');
+
+	0;
+}
+
+################################################################################
+##
+## Delete domain alias subdomain httpd configuration data
+##
+## @param hashref $data Domain alias subdomain data
+## @return int 0 on success, negative int on failure
+##
+sub alssub_del_httpd_cfg_data {
+
+	push_el(\@main::el, 'alssub_del_httpd_cfg_data()', 'Starting...');
+
+	my ($data) = @_;
+
+	if (!defined $data || $data eq '') {
+		push_el(
+			\@main::el, 'alssub_del_httpd_cfg_data()',
+			'[ERROR] Undefined Input Data...'
+		);
+
+		return -1;
+	}
+
+	my $subAlsName	= "@$data{subdomain_alias_name}.@$data{alias_name}";
+	my $cfgDir		= $main::cfg{'CONF_DIR'};
+	my $sysFile		= "$main::cfg{APACHE_SITES_DIR}/imscp.conf";
+	my $wrkFile		= "$cfgDir/apache/working/imscp.conf";
+	my $bkpFile		= "$cfgDir/apache/backup/httpd.conf." . time;
+
+	# Getting needed templates
+	my ($rs, $SubEntryB, $SubEntryE) = get_tpl(
+		"$cfgDir/apache/parts", 'sub_b.tpl', 'sub_e.tpl'
+	);
+	return -1 if ($rs != 0);
+
+	# Preparing templates
+	($rs, $SubEntryB, $SubEntryE) = prep_tpl(
+		{'{SUB_NAME}' => $subAlsName}, $SubEntryB, $SubEntryE
+	);
+	return -1 if ($rs != 0);
+
+	# Getting current working file content
+	($rs, my $wrkFileContent) = get_file($wrkFile);
+	return -1 if ($rs != 0);
+
+	# Deleting subdomain entry if it exist
+	($rs, $wrkFileContent) = del_tag(
+		$SubEntryB, "$SubEntryE\n", $wrkFileContent
+	);
+	return -1 if ($rs != 0 && $rs != -5);
+
+	# Backup current production file before replace it
+	if(-e $sysFile) {
+		$rs = sys_command_rs("$main::cfg{CMD_CP} -p $sysFile $bkpFile");
+		return -1 if ($rs != 0);
+	}
+
+	# Storage and installation of the new production file
+	for ($wrkFile, $sysFile) {
+		$rs = store_file(
+			$_, $wrkFileContent, $main::cfg{'ROOT_USER'},
+			$main::cfg{'ROOT_GROUP'}, 0644
+		);
+		return -1 if ($rs != 0);
+	}
+
+	push_el(\@main::el, 'alssub_del_httpd_cfg_data()', 'Ending...');
+
+	0;
+}
+
+################################################################################
+##
+## Add domain alias subdomain httpd file data
+##
+## Note: Also called on 'change'
+##
+## @param hashref $data Domain alias subdomain data
+## @return int 0 on success, negative int on failure
+##
+sub alssub_add_httpd_file_data {
+
+	push_el(\@main::el, 'alssub_add_httpd_file_data()', 'Starting...');
+
+	my ($data) = @_;
+
+	if (!defined $data || $data eq '') {
+		push_el(
+			\@main::el, 'alssub_add_httpd_file_data()',
+			'[ERROR] Undefined Input Data...'
+		);
+
+		return -1;
+	}
+
+	my $dmnAlsName	= @$data{'alias_name'};
+	my $subAlsName	= "@$data{subdomain_alias_name}.$dmnAlsName";
+	my $subAlsDir	= "$main::cfg{APACHE_WWW_DIR}/@$data{domain_name}" .
+		@$data{'subdomain_alias_mount'};
+	my $sysUser		= "$main::cfg{APACHE_SUEXEC_USER_PREF}@$data{domain_uid}";
+	my $sysGroup	= "$main::cfg{APACHE_SUEXEC_USER_PREF}@$data{domain_gid}";
+
+	# Creating subdomain dir if it don't already exist or just set these perms
+	my $rs = make_dir($subAlsDir, $sysUser, $sysGroup, 0755);
+	return -1 if ($rs != 0);
+
+	# Creating cgi-bin dir if it don't already exist or just set these perms
+	$rs= make_dir("$subAlsDir/cgi-bin", $sysUser, $sysGroup, 0755);
+	return -1 if ($rs != 0);
+
+	## Creating phptmp dir if it don't already exist or just set these perms
+	$rs = make_dir(
+		"$subAlsDir/phptmp", $sysUser, $main::cfg{'APACHE_GROUP'}, 0770
+	);
+	return -1 if ($rs != 0);
+
+	# Creating htdocs directory with default page if it don't already exist
+	if (!-e "$subAlsDir/htdocs/") {
+
+		$rs = make_dir("$subAlsDir/htdocs", $sysUser, $sysGroup, 0755);
+		return -1 if ($rs != 0);
+
+		# Get default index.html default page content
+		($rs, my $indexTpl) = get_file(
+			"$main::cfg{ROOT_DIR}/gui/domain_default_page/index.html"
+		);
+		return -1 if ($rs != 0);
+
+		# Preparing index.html default page
+		my $rVar = {
+			'{DOMAIN_NAME}'					=> \$subAlsName,
+			'{BASE_SERVER_VHOST_PREFIX}'	=>
+				\$main::cfg{'BASE_SERVER_VHOST_PREFIX'},
+			'{BASE_SERVER_VHOST}'			=> \$main::cfg{'BASE_SERVER_VHOST'}
+		};
+
+		for (keys %$rVar){
+			($rs, $indexTpl) = repl_var($_, $indexTpl, ${$rVar->{$_}});
+			return -1 if($rs != 0);
+		}
+
+		# Installation of the index.html default page
+		$rs = store_file(
+			"$subAlsDir/htdocs/index.html", $indexTpl, $sysUser, $sysGroup, 0644
+		);
+		return -1 if ($rs != 0);
+
+		# Installing all needed images for index.html default page
+		$rs = sys_command_rs(
+			"$main::cfg{CMD_CP} -Rp $main::cfg{ROOT_DIR}/gui/" .
+				"domain_default_page/images $subAlsDir/htdocs/"
+			);
+		return -1 if ($rs != 0);
+
+		# Setting user/group and perms for all images
+		$rs = setfmode("$subAlsDir/htdocs/images/", $sysUser, $sysGroup, 0755);
+		return -1 if ($rs != 0);
+
+		for (glob "$subAlsDir/htdocs/images/*") {
+			$rs = setfmode($_, $sysUser, $sysGroup, 0644);
+			return -1 if ($rs != 0);
+		}
+	} else { # htdocs directory already exists, just set these perms
+			$rs = setfmode("$subAlsDir/htdocs/", $sysUser, $sysGroup, 0755);
+			return -1 if ($rs != 0);
+	}
+
+	push_el(\@main::el, 'alssub_add_httpd_file_data()', 'Ending...');
+
+	0;
+}
+
+################################################################################
+##
+## Delete domain alias subdomain httpd file data
+##
+## @param hashref $data Domain alias subdomain data
+## @return int 0 on success, negative int on failure
+##
+sub alssub_del_httpd_file_data {
+
+	push_el(\@main::el, 'alssub_del_httpd_file_data()', 'Starting...');
+
+	my ($data) = @_;
+
+	my ($rs, $rdata) = (undef, undef);
+
+	if (!defined $data || $data eq '') {
+		push_el(
+			\@main::el, 'sub_del_httpd_file_data()',
+			'[ERROR] Undefined Input Data...'
+		);
+
+		return -1;
+	}
+
+	my $dmn_id		= @$data{'domain_id'};
+	my $dmn_name	= @$data{'domain_name'};
+	my $duid		= @$data{'domain_uid'};
+	my $dgid		= @$data{'domain_gid'};
+	my $subals_id	= @$data{'subdomain_alias_id'};
+	my $mount_point	= @$data{'subdomain_alias_mount'};
+	my $www_dir		= $main::cfg{'APACHE_WWW_DIR'};
+
+	my $subAlsName = "@$data{subdomain_alias_name}.@$data{'alias_name'}";
+	my $subAlsDir = "$main::cfg{APACHE_WWW_DIR}/@$data{'domain_name'}" .
+		@$data{'subdomain_alias_mount'};
+
+	# Deleting custom httpd configuration file if it exist
+	if (-e "$main::cfg{APACHE_CUSTOM_SITES_CONFIG_DIR}/$subAlsName.conf" ) {
+		$rs = del_file(
+			"$main::cfg{APACHE_CUSTOM_SITES_CONFIG_DIR}/$subAlsName.conf"
+		);
+		return -1 if ($rs != 0);
+	}
+
+	return 0 if ($mount_point eq '/' || $mount_point eq '');
+
+	($rs, $rdata) = get_domain_mount_points($dmn_id);
+	return $rs if ($rs != 0);
+
+	my @to_save = check_mount_point_in_use('alias_subdomain', $dmn_id, $subals_id, $mount_point, $rdata);
+
+	($rs, my %to_restore) = save_as_temp_folder("$www_dir/$dmn_name", @to_save);
+	return $rs if ($rs != 0);
+
+
+	#
+	# Domain WWW directories;
+	#
+
+	# Deleting subdomain main dirctory if it exist
+	if(-e $subAlsDir) {
+		my $rs = del_dir($subAlsDir);
+		return -1 if($rs != 0);
+	}
+
+	$rs = restore_list_folder(0755, $duid, $dgid, %to_restore);
+	return $rs if ($rs != 0);
+
+	push_el(\@main::el, 'alssub_del_httpd_file_data()', 'Ending...');
+
+	0;
+}
+
+################################################################################
+##
+## Add domain alias subdomain httpd data
+##
+## Note: Also called on 'change'
+##
+## @param hashref $data Domain alias subdomain data
+## @return int 0 on success, negative int on failure
+##
+sub alssub_add_httpd_data {
+
+	push_el(\@main::el, 'alssub_add_httpd_data()', 'Starting...');
+
+	my ($data) = @_;
+
+	if (!defined $data || $data eq '') {
+		push_el(
+			\@main::el, 'alssub_add_httpd_data()',
+			'[ERROR] Undefined Input Data...'
+		);
+
+		return -1;
+	}
+
+	my $rs = alssub_add_httpd_cfg_data($data);
+	return -1 if ($rs != 0);
+
+	$rs = alssub_add_httpd_file_data($data);
+	return -1 if ($rs != 0);
+
+	push_el(\@main::el, 'alssub_add_httpd_data()', 'Ending...');
+
+	0;
+}
+
+################################################################################
+##
+## Delete domain alias subdomain httpd data
+##
+## @param hashref $data Domain alias subdomain data
+## @return int 0 on success, negative int on failure
+##
+sub alssub_del_httpd_data {
+
+	push_el(\@main::el, 'alssub_del_httpd_data()', 'Starting...');
+
+	my ($data) = @_;
+
+	if (!defined $data || $data eq '') {
+		push_el(
+			\@main::el, 'alssub_del_httpd_data()',
+			'[ERROR] Undefined Input Data...'
+		);
+
+		return -1;
+	}
+
+	my $rs = alssub_del_httpd_cfg_data($data);
+	return -1 if ($rs != 0);
+
+	$rs = alssub_del_httpd_file_data($data);
+	return -1 if ($rs != 0);
+
+	push_el(\@main::el, 'alssub_del_httpd_data()', 'Ending...');
+
+	0;
+}
+
+################################################################################
+##                             MTA data managment                              #
+################################################################################
+
+################################################################################
+##
+## Add domain alias subdomain mta configuration data
+##
+## Note: Also called on 'change'
+##
+## @param hashref $data Domain alias subdomain data
+## @return int 0 on success, negative int on failure
+##
+sub alssub_add_mta_cfg_data {
+
+	push_el(\@main::el, 'alssub_add_mta_cfg_data()', 'Starting...');
+
+	my ($data) = @_;
+
+	if (!defined $data || $data eq '') {
+		push_el(
+			\@main::el, 'alssub_add_mta_cfg_data()',
+			'[ERROR] Undefined Input Data...'
+		);
+
+		return -1;
+	}
+
+	my $subAlsName	= "@$data{subdomain_alias_name}.@$data{alias_name}";
+	my $cfgDir		= $main::cfg{'CONF_DIR'};
+	my $sysFile		= $main::cfg{'MTA_VIRTUAL_DMN_HASH'};
+	my $wrkFile		= "$cfgDir/postfix/working/domains";
+	my $bkpFile		= "$cfgDir/postfix/backup/domains." . time;
+
+	# Getting current working file content
+	my ($rs, $wrkFileContent) = get_file($wrkFile);
+	return -1 if ($rs != 0);
+
+	# Adding/Replacing subdomain entry
+	$wrkFileContent =~ s/^$subAlsName\t\t\t[^\n]+\n//gim;
+	$wrkFileContent .= "$subAlsName\t\t\tvalssub-entry\n";
+
+	# Backup current production file before replace it
+	if(-e $sysFile) {
+		$rs = sys_command_rs("$main::cfg{CMD_CP} -p $sysFile $bkpFile");
+		return -1 if($rs != 0);
+	}
+
+	# Storage and installation of the new production file
+	for ($wrkFile, $sysFile) {
+		$rs = store_file(
+			$_, $wrkFileContent, $main::cfg{'ROOT_USER'},
+			$main::cfg{'ROOT_GROUP'}, 0644
+		);
+		return -1 if ($rs != 0);
+	}
+
+	# Updating 'domains' lookup table
+	$rs = sys_command_rs("$main::cfg{CMD_POSTMAP} $sysFile");
+	return -1 if ($rs != 0);
+
+	push_el(\@main::el, 'alssub_add_mta_cfg_data()', 'Ending...');
+
+	0;
+}
+
+################################################################################
+##
+## Delete domain alias subdomain mta configuration data
+##
+## @param hashref $data Domain alias subdomain data
+## @return int 0 on success, negative int on failure
+##
+sub alssub_del_mta_cfg_data {
+
+	push_el(\@main::el, 'alssub_del_mta_cfg_data()', 'Starting...');
+
+	my ($data) = @_;
+
+	if (!defined $data || $data eq '') {
+		push_el(
+			\@main::el, 'alssub_del_mta_cfg_data()',
+			'[ERROR] Undefined Input Data...'
+		);
+
+		return -1;
+	}
+
+	my $subAlsName	= "@$data{subdomain_alias_name}.@$data{alias_name}";
+	my $cfgDir		= $main::cfg{'CONF_DIR'};
+	my $sysFile		= $main::cfg{'MTA_VIRTUAL_DMN_HASH'};
+	my $wrkFile		= "$cfgDir/postfix/working/domains";
+	my $bkpFile		= "$cfgDir/postfix/backup/domains." . time;
+
+	# Getting current working file content
+	my ($rs, $wrkFileContent) = get_file($wrkFile);
+	return -1 if ($rs != 0);
+
+	# Deleting subdomain entry if any exist
+	$wrkFileContent =~ s/^$subAlsName\t\t\t[^\n]+\n//gim;
+
+	# Backup current production file before replace it
+	if(-e $sysFile) {
+		$rs = sys_command_rs("$main::cfg{CMD_CP} -p $sysFile $bkpFile");
+		return -1 if ($rs != 0);
+	}
+
+	# Storage and installation of the new production file
+	for ($wrkFile, $sysFile) {
+		$rs = store_file(
+			$_, $wrkFileContent, $main::cfg{'ROOT_USER'},
+			$main::cfg{'ROOT_GROUP'}, 0644
+		);
+		return -1 if ($rs != 0);
+	}
+
+	# Updating 'domains' lookup table
+	$rs = sys_command_rs("$main::cfg{CMD_POSTMAP} $sysFile");
+	return -1 if ($rs != 0);
+
+	push_el(\@main::el, 'alssub_del_mta_cfg_data()', 'Ending...');
+
+	0;
+}
+
+################################################################################
+##
+## Add domain alias subdomain mta file data
+##
+## Note: Also called on 'change'
+##
+## @param hashref $data Domain alias subdomain data
+## @return int 0 on success, negative int on failure
+##
+sub alssub_add_mta_file_data {
+
+	push_el(\@main::el, 'alssub_add_mta_file_data()', 'Starting...');
+
+	my ($data) = @_;
+
+	if (!defined $data || $data eq '') {
+		push_el(
+			\@main::el, 'alssub_add_mta_file_data()',
+			'[ERROR] Undefined Input Data...'
+		);
+
+		return -1;
+	}
+
+	# Creating mail directory if it don't already exist or just set these perms
+	my $rs = make_dir(
+		"$main::cfg{MTA_VIRTUAL_MAIL_DIR}/@$data{subdomain_alias_name}." .
+			@$data{'alias_name'}, $main::cfg{'MTA_MAILBOX_UID_NAME'},
+			$main::cfg{'MTA_MAILBOX_GID_NAME'}, 0700
+	);
+	return -1 if ($rs != 0);
+
+	push_el(\@main::el, 'alssub_add_mta_file_data()', 'Ending...');
+
+	0;
+}
+
+################################################################################
+##
+## Delete domain alias subdomain mta file data
+##
+## @param hashref $data Domain alias subdomain data
+## @return int 0 on success, negative int on failure
+##
+sub alssub_del_mta_file_data {
+
+	push_el(\@main::el, 'alssub_del_mta_file_data()', 'Starting...');
+
+	my ($data) = @_;
+
+	if (!defined $data || $data eq '') {
+		push_el(
+			\@main::el, 'alssub_del_mta_file_data()',
+			'[ERROR] Undefined Input Data...'
+		);
+
+		return -1;
+	}
+
+	my $subAlsMailDir = $main::cfg{'MTA_VIRTUAL_MAIL_DIR'} .
+		"/@$data{subdomain_alias_name}.@$data{alias_name}";
+
+	# Remove virtual mail directory if it exist
+	if(-e $subAlsMailDir) {
+		my $rs = del_dir($subAlsMailDir);
+		return -1 if ($rs != 0);
+	}
+
+	push_el(\@main::el, 'alssub_del_mta_file_data()', 'Ending...');
+
+	0;
+}
+
+################################################################################
+##
+## Add domain alias subdomain mta data
+##
+## Note: Also called on 'change'
+##
+## @param hashref $data Domain alias subdomain data
+## @return int 0 on success, negative int on failure
+##
+sub alssub_add_mta_data {
+
+	push_el(\@main::el, 'alssub_add_mta_data()', 'Starting...');
+
+	my ($data) = @_;
+
+	if (!defined $data || $data eq '') {
+		push_el(
+			\@main::el, 'alssub_add_mta_data()',
+			'[ERROR] Undefined Input Data...'
+		);
+
+		return -1;
+	}
+
+	my $rs = alssub_add_mta_cfg_data($data);
+	return -1 if ($rs != 0);
+
+	$rs = alssub_add_mta_file_data($data);
+	return -1 if ($rs != 0);
+
+	push_el(\@main::el, 'alssub_add_mta_data()', 'Ending...');
+
+	0;
+}
+
+################################################################################
+##
+## Delete domain alias subdomain mta data
+##
+## @param hashref $data domain alias subdomain data
+## @return int 0 on success, negative int on failure
+##
+sub alssub_del_mta_data {
+
+	push_el(\@main::el, 'alssub_del_mta_data()', 'Starting...');
+
+	my ($data) = @_;
+
+	if (!defined $data || $data eq '') {
+		push_el(
+			\@main::el, 'alssub_del_mta_data()',
+			'[ERROR] Undefined Input Data...'
+		);
+
+		return -1;
+	}
+
+	my $rs = alssub_del_mta_cfg_data($data);
+	return -1 if ($rs != 0);
+
+	$rs = alssub_del_mta_file_data($data);
+	return -1 if ($rs != 0);
+
+	push_el(\@main::el, 'alssub_del_mta_data()', 'Ending...');
+
+	0;
+}
+
+################################################################################
+##                           Proftpd data managment                            #
+################################################################################
+
+################################################################################
+##
+## Add domain alias subdomain proftpd configuration data
+##
+## Note: Also called on 'change'
+##
+## @param hashref $data Domain alias subdomain data
+## @return int 0 on success, negative int on failure
+##
+sub alssub_add_proftpd_cfg_data {
+
+	push_el(\@main::el, 'alssub_add_proftpd_cfg_data()', 'Starting...');
+
+	my ($data) = @_;
+
+	if (!defined $data || $data eq '') {
+		push_el(
+			\@main::el, 'alssub_add_proftpd_cfg_data()',
+			'[ERROR] Undefined Input Data...'
+		);
+		return -1;
+	}
+
+	my $subAlsFname	= "@$data{subdomain_alias_name}.@$data{alias_name}.conf";
+	my $wrkFile		= "$main::cfg{CONF_DIR}/proftpd/working/$subAlsFname";
+	my $sysFile		= "$main::cfg{FTPD_CONF_DIR}/$subAlsFname";
+
+	# Getting needed template
+	my ($rs, $entry) = get_file(
+		"$main::cfg{CONF_DIR}/proftpd/parts/proftpd.conf.tpl"
+	);
+	return -1 if ($rs != 0);
+
+	# Prepare template
+	($rs, $entry) = repl_var(
+		'{PATH}', $entry, "$main::cfg{APACHE_WWW_DIR}/@$data{domain_name}" .
+			@$data{'subdomain_alias_mount'}
+	);
+	return -1 if ($rs != 0);
+
+	# Storage and installation of the new production file
+	for ($wrkFile, $sysFile) {
+		$rs = store_file(
+			$_, $entry, $main::cfg{'ROOT_USER'}, $main::cfg{'ROOT_GROUP'}, 0644
+		);
+		return -1 if ($rs != 0);
+	}
+
+	push_el(\@main::el, 'alssub_add_proftpd_cfg_data()', 'Ending...');
+
+	0;
+}
+
+################################################################################
+##
+## Delete domain alias subdomain proftpd configuration data
+##
+## @param hashref $data Domain alias subdomain data
+## @return int 0 on success, negative int on failure
+##
+sub alssub_del_proftpd_cfg_data {
+
+	push_el(\@main::el, 'alssub_del_proftpd_cfg_data()', 'Starting...');
+
+	my ($data) = @_;
+
+	if (!defined $data || $data eq '') {
+		push_el(
+			\@main::el, 'alssub_del_proftpd_cfg_data()',
+			'[ERROR] Undefined Input Data...'
+		);
+
+		return -1;
+	}
+
+	my $subAlsFname	= "@$data{subdomain_alias_name}.@$data{alias_name}.conf";
+	my $wrkFile		= "$main::cfg{CONF_DIR}/proftpd/working/$subAlsFname";
+	my $sysFile		= "$main::cfg{FTPD_CONF_DIR}/$subAlsFname";
+
+	# Removing working and production files
+	for ($wrkFile, $sysFile) {
+		if(-e $_) {
+			my $rs = del_file($_);
+			return -1 if ($rs != 0);
+		}
+	}
+
+	push_el(\@main::el, 'alssub_del_proftpd_cfg_data()', 'Ending...');
+
+	0;
+}
+
+################################################################################
+##                           High level subroutines                            #
+################################################################################
+
+################################################################################
+##
+## Add domain alias subdomain data
+##
+## @param hashref $data Domain alias subdomain data
+## @return int 0 on success, negative int on failure
+##
+sub alssub_add_data {
+
+	push_el(\@main::el, 'alssub_add_data()', 'Starting...');
+
+	my ($data) = @_;
+
+	if (!defined $data || $data eq '') {
+		push_el(
+			\@main::el, 'alssub_add_data()', '[ERROR] Undefined Input Data...'
+		);
+
+		return -1;
+	}
+
+	if($main::cfg{'CMD_FTPD'} ne 'no') {
+		my $rs = alssub_add_proftpd_cfg_data($data);
+		return -1 if ($rs != 0);
+	}
+
+	if($main::cfg{'CMD_NAMED'} ne 'no') {
+		my $rs = alssub_add_named_db_data($data);
+		return -1 if ($rs != 0);
+	}
+
+	if($main::cfg{'CMD_HTTPD'} ne 'no') {
+		my $rs = alssub_add_httpd_data($data);
+		return -1 if ($rs != 0);
+	}
+
+	if($main::cfg{'CMD_MTA'} ne 'no') {
+		my $rs = alssub_add_mta_data($data);
+		return -1 if ($rs != 0);
+	}
+
+	push_el(\@main::el, 'alssub_add_data()', 'Ending...');
+
+	0;
+}
+
+################################################################################
+##
+## Delete domain alias subdomain data
+##
+## @param hashref $data Domain alias subdomain data
+## @return int 0 on success, negative int on failure
+##
+sub alssub_del_data {
+
+	push_el(\@main::el, 'alssub_del_data()', 'Starting...');
+
+	my ($data) = @_;
+
+	if (!defined $data || $data eq '') {
+		push_el(
+			\@main::el, 'alssub_del_data()', '[ERROR] Undefined Input Data...'
+		);
+
+		return -1;
+	}
+
+	if($main::cfg{'CMD_FTPD'} ne 'no') {
+		my $rs = alssub_del_proftpd_cfg_data($data);
+		return -1 if ($rs != 0);
+	}
+
+	if($main::cfg{'CMD_NAMED'} ne 'no') {
+		my $rs = alssub_del_named_db_data($data);
+		return -1 if ($rs != 0);
+	}
+
+	if($main::cfg{'CMD_HTTPD'} ne 'no') {
+		my $rs = alssub_del_httpd_data($data);
+		return -1 if ($rs != 0);
+	}
+
+	if($main::cfg{'CMD_MTA'} ne 'no') {
+		my $rs = alssub_del_mta_data($data);
+		return -1 if ($rs != 0);
+	}
+
+	push_el(\@main::el, 'alssub_del_data()', 'Ending...');
+
+	0;
+}
+
+################################################################################
+##
+## Perform all tasks to add/change/delete data for one domain alias subdomain
+##
+## @global int $main::sub_task_id Subdomain id to be processed
+## @return int 0 on success, negative int on failure
+##
+sub alssub_mngr_engine {
+
+	push_el(\@main::el, 'alssub_mngr_engine()', 'Starting...');
+
+	my $sql = "
+		SELECT
+			`t1`.`subdomain_alias_id`, `t1`.`subdomain_alias_name`,
+			`t1`.`subdomain_alias_mount`, `t1`.`subdomain_alias_status`,
+			`t1`.`subdomain_alias_url_forward`,
+			`t2`.`alias_name`, `t3`.`domain_id`, `t3`.`domain_name`,
+			`t3`.`domain_gid`, `t3`.`domain_uid`, `t3`.`domain_php`,
+			`t3`.`domain_cgi`, `t4`.`ip_number`
+		FROM
+			`subdomain_alias` AS `t1`, `domain_aliasses` AS `t2`,
+			`domain` AS `t3`, `server_ips` AS `t4`
+		WHERE
+			`t1`.`alias_id` = `t2`.`alias_id`
+		AND
+			`t2`.`domain_id` = `t3`.`domain_id`
+		AND
+			`t2`.`alias_ip_id` = `t4`.`ip_id`
+		AND
+			`t1`.`subdomain_alias_id` = $main::alssub_task_id
+		;
+	";
+
+	# Get all required subdomain data
+	my ($rs, $rows) = doHashSQL($sql, 'subdomain_alias_id');
+	return -1 if ($rs != 0);
+
+	my $entry = @$rows{$main::alssub_task_id};
+	my $subAlsStatus = @$entry{'subdomain_alias_status'};
+
+	push_el(
+		\@main::el, 'alssub_mngr_engine()',
+		"Process all $subAlsStatus tasks for @$entry{subdomain_alias_name}." .
+			@$entry{'alias_name'}
+	);
+
+	# Adding/change subdomain data
+	if($subAlsStatus eq 'toadd' || $subAlsStatus eq 'change') {
+		$rs = alssub_add_data($entry);
+	} elsif($subAlsStatus eq 'delete') { # Delete subdomain data
+		$rs = alssub_del_data($entry);
+	} else { # Unknown task type
+		push_el(
+			\@main::el, 'alssub_mngr_engine()',
+			"[ERROR] Unknown task type: `$subAlsStatus`!"
+		);
+
+		return -1;
+	}
+
+	if($subAlsStatus eq 'delete' && $rs == 0) {
+		$sql = "
+			DELETE FROM
+				`subdomain_alias`
+			WHERE
+				`subdomain_alias_id` = $main::alssub_task_id
+			;
+		";
+	} else {
+		if($rs == 0) {
+			$subAlsStatus = q/'ok'/;
+		} else {
+			my ($subroutineName, $msg) = split(
+				/$main::el_sep/, pop_el(\@main::el)
+			);
+			$subAlsStatus = $main::db->quote("$subroutineName | $msg");
+		}
+
+		$sql = "
+			UPDATE
+				`subdomain_alias`
+			SET
+				`subdomain_alias_status` = $subAlsStatus
+			WHERE
+				`subdomain_alias_id` = $main::alssub_task_id
+			;
+		";
+	}
+
+	# Update domain alias subdomain status or remove entry on delete
+	($rs) = doSQL($sql);
+	return -1 if ($rs != 0);
+
+	push_el(\@main::el, 'alssub_mngr_engine()', 'Ending...');
+
+	0;
+}
+
+################################################################################
+##                               MAIN PROGRAM                                 ##
+################################################################################
+
+my $rs = alssub_mngr_start_up();
+
+if ($rs != 0) {
+	dump_el(\@main::el, $main::imscp_alssub_mngr_el);
+	alssub_mngr_shut_down();
+
+	exit 1;
+}
+
+$rs = alssub_mngr_engine();
+
+if ($rs != 0) {
+	dump_el(\@main::el, $main::imscp_alssub_mngr_el);
+	alssub_mngr_shut_down();
+
+	exit 1;
+}
+
+$rs = alssub_mngr_shut_down();
+
+if ($rs != 0) {
+	dump_el(\@main::el, $main::imscp_alssub_mngr_el);
+
+	exit 1;
+}
+
+exit 0;

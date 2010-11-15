@@ -28,13 +28,13 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/ispcp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/reseller_add.tpl');
 $tpl->define_dynamic('page_message', 'page');
@@ -45,7 +45,7 @@ $tpl->define_dynamic('rsl_ip_item', 'rsl_ip_list');
 
 $tpl->assign(
 	array(
-		'TR_ADMIN_ADD_RESELLER_PAGE_TITLE' => tr('ispCP - Admin/Manage users/Add reseller'),
+		'TR_ADMIN_ADD_RESELLER_PAGE_TITLE' => tr('i-MSCP - Admin/Manage users/Add reseller'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
@@ -57,7 +57,7 @@ $tpl->assign(
  */
 function get_server_ip(&$tpl, &$sql) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$query = "
 		SELECT
@@ -140,7 +140,7 @@ function get_server_ip(&$tpl, &$sql) {
 function add_reseller(&$tpl, &$sql) {
 
 	global $reseller_ips;
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_reseller') {
 		if (check_user_data()) {
@@ -396,8 +396,8 @@ function check_user_data() {
 
 	global $reseller_ips;
 
-	$cfg = ispCP_Registry::get('Config');
-	$sql = ispCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
 
 	$username = clean_input($_POST['username']);
 
@@ -441,32 +441,32 @@ function check_user_data() {
 
 		return false;
 	}
-	if (!ispcp_limit_check($_POST['nreseller_max_domain_cnt'], null)) {
+	if (!imscp_limit_check($_POST['nreseller_max_domain_cnt'], null)) {
 		set_page_message(tr("Incorrect domains limit!"));
 
 		return false;
 	}
-	if (!ispcp_limit_check($_POST['nreseller_max_subdomain_cnt'], -1)) {
+	if (!imscp_limit_check($_POST['nreseller_max_subdomain_cnt'], -1)) {
 		set_page_message(tr("Incorrect subdomains limit!"));
 
 		return false;
 	}
-	if (!ispcp_limit_check($_POST['nreseller_max_alias_cnt'], -1)) {
+	if (!imscp_limit_check($_POST['nreseller_max_alias_cnt'], -1)) {
 		set_page_message(tr('Incorrect aliases limit!'));
 
 		return false;
 	}
-	if (!ispcp_limit_check($_POST['nreseller_max_ftp_cnt'], -1)) {
+	if (!imscp_limit_check($_POST['nreseller_max_ftp_cnt'], -1)) {
 		set_page_message(tr('Incorrect FTP accounts limit!'));
 
 		return false;
 	}
-	if (!ispcp_limit_check($_POST['nreseller_max_mail_cnt'], -1)) {
+	if (!imscp_limit_check($_POST['nreseller_max_mail_cnt'], -1)) {
 		set_page_message(tr('Incorrect mail accounts limit!'));
 
 		return false;
 	}
-	if (!ispcp_limit_check($_POST['nreseller_max_sql_db_cnt'], -1)) {
+	if (!imscp_limit_check($_POST['nreseller_max_sql_db_cnt'], -1)) {
 		set_page_message(tr('Incorrect SQL databases limit!'));
 
 		return false;
@@ -476,7 +476,7 @@ function check_user_data() {
 
 		return false;
 	}
-	if (!ispcp_limit_check($_POST['nreseller_max_sql_user_cnt'], -1)) {
+	if (!imscp_limit_check($_POST['nreseller_max_sql_user_cnt'], -1)) {
 		set_page_message(tr('Incorrect SQL users limit!'));
 
 		return false;
@@ -486,12 +486,12 @@ function check_user_data() {
 
 		return false;
 	}
-	if (!ispcp_limit_check($_POST['nreseller_max_traffic'], null)) {
+	if (!imscp_limit_check($_POST['nreseller_max_traffic'], null)) {
 		set_page_message(tr('Incorrect traffic limit!'));
 
 		return false;
 	}
-	if (!ispcp_limit_check($_POST['nreseller_max_disk'], null)) {
+	if (!imscp_limit_check($_POST['nreseller_max_disk'], null)) {
 		set_page_message(tr('Incorrect disk quota limit!'));
 
 		return false;

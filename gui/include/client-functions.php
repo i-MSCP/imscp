@@ -153,7 +153,7 @@ function get_domain_running_als_cnt(&$sql, $domain_id) {
 
 function get_domain_running_mail_acc_cnt(&$sql, $domain_id) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$qr_dmn = "
 		SELECT
@@ -272,7 +272,7 @@ function get_domain_running_mail_acc_cnt(&$sql, $domain_id) {
 
 function get_domain_running_dmn_ftp_acc_cnt(&$sql, $domain_id) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 	$ftp_separator = $cfg->FTP_USERNAME_SEPARATOR;
 
 	$query = "
@@ -307,7 +307,7 @@ function get_domain_running_dmn_ftp_acc_cnt(&$sql, $domain_id) {
 
 function get_domain_running_sub_ftp_acc_cnt(&$sql, $domain_id) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 	$ftp_separator = $cfg->FTP_USERNAME_SEPARATOR;
 
 	$query = "
@@ -362,7 +362,7 @@ function get_domain_running_sub_ftp_acc_cnt(&$sql, $domain_id) {
 
 function get_domain_running_als_ftp_acc_cnt(&$sql, $domain_id) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$ftp_separator = $cfg->FTP_USERNAME_SEPARATOR;
 
@@ -481,8 +481,8 @@ function get_domain_running_props_cnt(&$sql, $domain_id) {
 
 function gen_client_mainmenu(&$tpl, $menu_file) {
 
-	$cfg = ispCP_Registry::get('Config');
-	$sql = ispCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
 
 	$tpl->define_dynamic('menu', $menu_file);
 	$tpl->define_dynamic('isactive_awstats', 'menu');
@@ -525,8 +525,8 @@ function gen_client_mainmenu(&$tpl, $menu_file) {
 			'TR_MENU_CATCH_ALL_MAIL' => tr('Catch all'),
 			'TR_MENU_ADD_ALIAS' => tr('Add alias'),
 			'TR_MENU_UPDATE_HP' => tr('Update Hosting Package'),
-			'SUPPORT_SYSTEM_PATH' => $cfg->ISPCP_SUPPORT_SYSTEM_PATH,
-			'SUPPORT_SYSTEM_TARGET' => $cfg->ISPCP_SUPPORT_SYSTEM_TARGET,
+			'SUPPORT_SYSTEM_PATH' => $cfg->IMSCP_SUPPORT_SYSTEM_PATH,
+			'SUPPORT_SYSTEM_TARGET' => $cfg->IMSCP_SUPPORT_SYSTEM_TARGET,
 			'WEBMAIL_PATH' => $cfg->WEBMAIL_PATH,
 			'WEBMAIL_TARGET' => $cfg->WEBMAIL_TARGET,
 			'PMA_PATH' => $cfg->PMA_PATH,
@@ -562,7 +562,7 @@ function gen_client_mainmenu(&$tpl, $menu_file) {
 			$menu_name = $rs->fields['menu_name'];
 			$menu_link = get_menu_vars($rs->fields['menu_link']);
 			$menu_target = $rs->fields['menu_target'];
-			$menu_link = str_replace('{ispcp_uname}', $_SESSION['user_logged'], $menu_link);
+			$menu_link = str_replace('{imscp_uname}', $_SESSION['user_logged'], $menu_link);
 
 			if ($menu_target !== '') {
 				$menu_target = 'target="' . tohtml($menu_target) . '"';
@@ -633,7 +633,7 @@ function gen_client_mainmenu(&$tpl, $menu_file) {
 
 	$rs = exec_query($sql, $query, $_SESSION['user_created_by']);
 
-	if (!$cfg->ISPCP_SUPPORT_SYSTEM || $rs->fields['support_system'] == 'no') {
+	if (!$cfg->IMSCP_SUPPORT_SYSTEM || $rs->fields['support_system'] == 'no') {
 		$tpl->assign('ISACTIVE_SUPPORT', '');
 	}
 
@@ -653,8 +653,8 @@ function gen_client_mainmenu(&$tpl, $menu_file) {
 
 function gen_client_menu(&$tpl, $menu_file) {
 
-	$cfg = ispCP_Registry::get('Config');
-	$sql = ispCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
 
 	$tpl->define_dynamic('menu', $menu_file);
 	$tpl->define_dynamic('custom_buttons', 'menu');
@@ -695,8 +695,8 @@ function gen_client_menu(&$tpl, $menu_file) {
 			'TR_MENU_CATCH_ALL_MAIL' => tr('Catch all'),
 			'TR_MENU_ADD_ALIAS' => tr('Add alias'),
 			'TR_MENU_UPDATE_HP' => tr('Update Hosting Package'),
-			'SUPPORT_SYSTEM_PATH' => $cfg->ISPCP_SUPPORT_SYSTEM_PATH,
-			'SUPPORT_SYSTEM_TARGET' => $cfg->ISPCP_SUPPORT_SYSTEM_TARGET,
+			'SUPPORT_SYSTEM_PATH' => $cfg->IMSCP_SUPPORT_SYSTEM_PATH,
+			'SUPPORT_SYSTEM_TARGET' => $cfg->IMSCP_SUPPORT_SYSTEM_TARGET,
 			'WEBMAIL_PATH' => $cfg->WEBMAIL_PATH,
 			'WEBMAIL_TARGET' => $cfg->WEBMAIL_TARGET,
 			'PMA_PATH' => $cfg->PMA_PATH,
@@ -765,7 +765,7 @@ function gen_client_menu(&$tpl, $menu_file) {
 
 	$rs = exec_query($sql, $query, $_SESSION['user_created_by']);
 
-	if (!$cfg->ISPCP_SUPPORT_SYSTEM || $rs->fields['support_system'] == 'no') {
+	if (!$cfg->IMSCP_SUPPORT_SYSTEM || $rs->fields['support_system'] == 'no') {
 		$tpl->assign('SUPPORT_SYSTEM', '');
 	}
 
@@ -963,7 +963,7 @@ function sql_delete_user(&$sql, $dmn_id, $db_user_id) {
 		user_goto('sql_manage.php');
 	}
 
-	// remove from ispcp sql_user table.
+	// remove from i-MSCP sql_user table.
 	$query = 'DELETE FROM `sql_user` WHERE `sqlu_id` = ?';
 	exec_query($sql, $query, $db_user_id);
 
@@ -1116,7 +1116,7 @@ function delete_sql_database(&$sql, $dmn_id, $db_id) {
 	exec_query($sql, $query);
 
 	write_log($_SESSION['user_logged'] . ": delete SQL database: " . $db_name);
-	// delete desired database from the ispcp sql_database table;
+	// delete desired database from the i-MSCP sql_database table;
 
 	$query = "
 		DELETE FROM
@@ -1149,7 +1149,7 @@ function get_gender_by_code($code, $nullOnBad = false) {
 
 function mount_point_exists($dmn_id, $mnt_point) {
 
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$query = "
 		SELECT

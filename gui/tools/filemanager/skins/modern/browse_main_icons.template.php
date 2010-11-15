@@ -1,5 +1,5 @@
 <?php defined("NET2FTP") or die("Direct access to this location is not allowed."); ?>
-<!-- Template /skins/ispCP/browse_main_icons.template.php begin -->
+<!-- Template /skins/iMSCP/browse_main_icons.template.php begin -->
 
 <script type="text/javascript"><!--\n";	
 function setColor_js(i, checkbox_hidden) {
@@ -271,4 +271,4 @@ function setColor_js(i, checkbox_hidden) {
 
 	</div>
 <?php require_once($net2ftp_globals["application_skinsdir"] . "/" . $net2ftp_globals["skin"] . "/footer.template.php"); ?>
-<!-- Template /skins/ispCP/browse_main_icons.template.php end -->
+<!-- Template /skins/iMSCP/browse_main_icons.template.php end -->

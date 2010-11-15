@@ -28,13 +28,13 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/ispcp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/user_add2.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
@@ -53,7 +53,7 @@ if (isset($cfg->HOSTING_PLANS_LEVEL)
 
 $tpl->assign(
 	array(
-			'TR_CLIENT_CHANGE_PERSONAL_DATA_PAGE_TITLE' => tr('ispCP - User/Add user(step2)'),
+			'TR_CLIENT_CHANGE_PERSONAL_DATA_PAGE_TITLE' => tr('i-MSCP - User/Add user(step2)'),
 			'THEME_COLOR_PATH'							=> "../themes/{$cfg->USER_INITIAL_THEME}",
 			'THEME_CHARSET'								=> tr('encoding'),
 			'ISP_LOGO'									=> get_logo($_SESSION['user_id'])
@@ -180,7 +180,7 @@ function get_init_au2_page(&$tpl) {
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;
 	global $hp_traff, $hp_disk, $hp_backup, $hp_dns;
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$tpl->assign(
 			array(
@@ -218,7 +218,7 @@ function get_hp_data($hpid, $admin_id) {
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;
 	global $hp_traff, $hp_disk, $hp_backup, $hp_dns;
 
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$query = "SELECT `name`, `props` FROM `hosting_plans` WHERE `reseller_id` = ? AND `id` = ?";
 
@@ -260,7 +260,7 @@ function check_user_data(&$tpl) {
 	global $hp_traff, $hp_disk, $hp_dmn, $hp_backup, $hp_dns;
 	global $dmn_chp;
 
-	//$sql = ispCP_Registry::get('Db');
+	//$sql = iMSCP_Registry::get('Db');
 
 	$ehp_error = array();
 
@@ -332,30 +332,30 @@ function check_user_data(&$tpl) {
 		) = check_reseller_permissions($_SESSION['user_id'], 'all_permissions');
 	if ($rsub_max == "-1") {
 		$hp_sub = "-1";
-	} elseif (!ispcp_limit_check($hp_sub, -1)) {
+	} elseif (!imscp_limit_check($hp_sub, -1)) {
 		$ehp_error[] = tr('Incorrect subdomains limit!');
 	}
 	if ($rals_max == "-1") {
 		$hp_als = "-1";
-	} elseif (!ispcp_limit_check($hp_als, -1)) {
+	} elseif (!imscp_limit_check($hp_als, -1)) {
 		$ehp_error[] = tr('Incorrect aliases limit!');
 	}
 
 	if ($rmail_max == "-1") {
 		$hp_mail = "-1";
-	} elseif (!ispcp_limit_check($hp_mail, -1)) {
+	} elseif (!imscp_limit_check($hp_mail, -1)) {
 		$ehp_error[] = tr('Incorrect mail accounts limit!');
 	}
 
 	if ($rftp_max == "-1") {
 		$hp_ftp = "-1";
-	} elseif (!ispcp_limit_check($hp_ftp, -1)) {
+	} elseif (!imscp_limit_check($hp_ftp, -1)) {
 		$ehp_error[] = tr('Incorrect FTP accounts limit!');
 	}
 
 	if ($rsql_db_max == "-1") {
 		$hp_sql_db = "-1";
-	} elseif (!ispcp_limit_check($hp_sql_db, -1)) {
+	} elseif (!imscp_limit_check($hp_sql_db, -1)) {
 		$ehp_error[] = tr('Incorrect SQL databases limit!');
 	} else if ($hp_sql_user != -1 && $hp_sql_db == -1) {
 		$ehp_error[] = tr('SQL users limit is <i>disabled</i>!');
@@ -363,17 +363,17 @@ function check_user_data(&$tpl) {
 
 	if ($rsql_user_max == "-1") {
 		$hp_sql_user = "-1";
-	} elseif (!ispcp_limit_check($hp_sql_user, -1)) {
+	} elseif (!imscp_limit_check($hp_sql_user, -1)) {
 		$ehp_error[] = tr('Incorrect SQL users limit!');
 	} else if ($hp_sql_user == -1 && $hp_sql_db != -1) {
 		$ehp_error[] = tr('SQL databases limit is not <i>disabled</i>!');
 	}
 
-	if (!ispcp_limit_check($hp_traff, null)) {
+	if (!imscp_limit_check($hp_traff, null)) {
 		$ehp_error[] = tr('Incorrect traffic limit!');
 	}
 
-	if (!ispcp_limit_check($hp_disk, null)) {
+	if (!imscp_limit_check($hp_disk, null)) {
 		$ehp_error[] = tr('Incorrect disk quota limit!');
 	}
 
@@ -392,7 +392,7 @@ function check_user_data(&$tpl) {
  */
 function check_hosting_plan_name($admin_id) {
 	global $hp_name;
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$query = "SELECT `id` FROM `hosting_plans` WHERE `name` = ? AND `reseller_id` = ?";
 	$res = exec_query($sql, $query, array($hp_name, $admin_id));

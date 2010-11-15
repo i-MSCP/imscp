@@ -29,13 +29,13 @@
  */
 
 // Begin page line
-require '../include/ispcp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/orders.tpl');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('page_message', 'page');
@@ -50,7 +50,7 @@ $tpl->define_dynamic('scroll_next', 'page');
 
 $tpl->assign(
 	array(
-		'TR_RESELLER_MAIN_INDEX_PAGE_TITLE'	=> tr('ispCP - Reseller/Order management'),
+		'TR_RESELLER_MAIN_INDEX_PAGE_TITLE'	=> tr('i-MSCP - Reseller/Order management'),
 		'THEME_COLOR_PATH'					=> "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET'						=> tr('encoding'),
 		'ISP_LOGO'							=> get_logo($_SESSION['user_id'])
@@ -62,7 +62,7 @@ $tpl->assign(
  */
 
 function gen_order_page(&$tpl, &$sql, $user_id) {
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$start_index = 0;
 	// NXW: Unused variable so...

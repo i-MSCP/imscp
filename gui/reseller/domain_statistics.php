@@ -28,13 +28,13 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/ispcp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/domain_statistics.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
@@ -45,7 +45,7 @@ $tpl->define_dynamic('traffic_table_item', 'traffic_table');
 
 $tpl->assign(
 	array(
-		'TR_ADMIN_DOMAIN_STATISTICS_PAGE_TITLE' => tr('ispCP - Domain Statistics Data'),
+		'TR_ADMIN_DOMAIN_STATISTICS_PAGE_TITLE' => tr('i-MSCP - Domain Statistics Data'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
@@ -74,7 +74,7 @@ if (!is_numeric($domain_id) || !is_numeric($month) || !is_numeric($year)) {
 }
 
 function get_domain_trafic($from, $to, $domain_id) {
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 	$reseller_id = $_SESSION['user_id'];
 	$query = "
 		SELECT
@@ -121,8 +121,8 @@ function generate_page(&$tpl, $domain_id) {
 	global $web_trf, $ftp_trf, $smtp_trf, $pop_trf;
 	global $sum_web, $sum_ftp, $sum_mail, $sum_pop;
 
-	$sql = ispCP_Registry::get('Db');
-	$cfg = ispCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
 
 	// NXW: Unused variables so..
 	/*

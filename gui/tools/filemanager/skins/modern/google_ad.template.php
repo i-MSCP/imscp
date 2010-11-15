@@ -1,5 +1,5 @@
 <?php defined("NET2FTP") or die("Direct access to this location is not allowed."); ?>
-<!-- Template /skins/ispCP/google_ad.template.php begin -->
+<!-- Template /skins/iMSCP/google_ad.template.php begin -->
 <?php if ($net2ftp_settings["show_google_ads"] == "yes") { ?>
 <div style="text-align: center;">
 <script type="text/javascript"><!--
@@ -17,4 +17,4 @@ google_color_text = "000000";
 <script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
 </div>
 <?php } // end if ?>
-<!-- Template /skins/ispCP/google_ad.template.php end -->
+<!-- Template /skins/iMSCP/google_ad.template.php end -->

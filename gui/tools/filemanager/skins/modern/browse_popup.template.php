@@ -1,5 +1,5 @@
 <?php defined("NET2FTP") or die("Direct access to this location is not allowed."); ?>
-<!-- Template /skins/ispCP/browse_popup.template.php begin -->
+<!-- Template /skins/iMSCP/browse_popup.template.php begin -->
 <form id="DirectoryTreeForm"  action="<?php echo $net2ftp_globals["action_url"]; ?>" method="post">
 <?php printLoginInfo(); ?>
 <input type="hidden" name="state"  value="browse" />
@@ -27,4 +27,4 @@
 </select>
 </form>
 <br />
-<!-- Template /skins/ispCP/browse_popup.template.php end -->
+<!-- Template /skins/iMSCP/browse_popup.template.php end -->

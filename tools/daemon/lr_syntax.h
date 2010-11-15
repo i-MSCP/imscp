@@ -22,11 +22,11 @@
 
 #include <sys/time.h>
 
-#define LOG_DIR "/var/log/ispcp"
+#define LOG_DIR "/var/log/imscp"
 
-#define STDOUT_LOG "ispcp_daemon-stdout.log"
+#define STDOUT_LOG "imscp_daemon-stdout.log"
 
-#define STDERR_LOG "ispcp_daemon-stderr.log"
+#define STDERR_LOG "imscp_daemon-stderr.log"
 
 extern char *message(int message_number);
 

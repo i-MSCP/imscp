@@ -1,5 +1,5 @@
 <?php defined("NET2FTP") or die("Direct access to this location is not allowed."); ?>
-<!-- Template /skins/ispCP/install1.template.php begin -->
+<!-- Template /skins/iMSCP/install1.template.php begin -->
 
 <?php echo __("The net2ftp installer script has been copied to the FTP server."); ?><br />
 <?php echo __("This script runs on your web server and requires PHP to be installed."); ?><br /><br />
@@ -12,4 +12,4 @@
 <?php echo __("Should this link not be correct, enter the URL manually in your web browser."); ?><br />
 </div>
 
-<!-- Template /skins/ispCP/install1.template.php end -->
+<!-- Template /skins/iMSCP/install1.template.php end -->

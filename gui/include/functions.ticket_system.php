@@ -32,7 +32,7 @@
  * Checks if the ticket system is globally enabled and if the specific user has
  * the right to access it.
  *
- * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author	Benedikt Heintel <benedikt.heintel@i-mscp.net>
  * @since	1.0.7
  * @version	1.0.0
  *
@@ -41,12 +41,12 @@
  * @return boolean
  */
 function hasTicketSystem($user_id = null) {
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
-	if (!$cfg->ISPCP_SUPPORT_SYSTEM) {
+	if (!$cfg->IMSCP_SUPPORT_SYSTEM) {
 		return false;
 	} elseif ($user_id !== null) {
-		$sql = ispCP_Registry::get('Db');
+		$sql = iMSCP_Registry::get('Db');
 
 		$query = "
 		  SELECT
@@ -76,7 +76,7 @@ function hasTicketSystem($user_id = null) {
  *	3 - read (if status was 2 or 4)
  *	4 - answered by client
  *
- * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author	Benedikt Heintel <benedikt.heintel@i-mscp.net>
  * @since	1.0.7
  * @version	1.0.0
  *
@@ -84,7 +84,7 @@ function hasTicketSystem($user_id = null) {
  * @return int				ticket status ID
  */
 function getTicketStatus($ticket_id) {
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$query = "
 		SELECT
@@ -115,7 +115,7 @@ function getTicketStatus($ticket_id) {
  *	3 - read (if status was 2 or 4)
  *	4 - answered by client
  *
- * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author	Benedikt Heintel <benedikt.heintel@i-mscp.net>
  * @since	1.0.7
  * @version	1.0.0
  *
@@ -123,7 +123,7 @@ function getTicketStatus($ticket_id) {
  * @param int $ticket_status	new status ID
  */
 function changeTicketStatus($ticket_id, $ticket_status) {
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$query = "
 		UPDATE
@@ -150,7 +150,7 @@ function changeTicketStatus($ticket_id, $ticket_status) {
 /**
  * Creates the ticket and informs the recipient.
  *
- * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author	Benedikt Heintel <benedikt.heintel@i-mscp.net>
  * @since	1.0.7
  * @version	1.0.0
  *
@@ -163,10 +163,10 @@ function changeTicketStatus($ticket_id, $ticket_status) {
  */
 function createTicket($user_id, $admin_id, $urgency, $subject, $message,
 		$userLevel) {
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	if ($userLevel < 1 || $userLevel > 2)
-		throw ispcp_Exception("ERROR: User level is not valid!");
+		throw imscp_Exception("ERROR: User level is not valid!");
 
 	$ticket_date = time();
 	$subject = clean_input($subject);
@@ -198,7 +198,7 @@ function createTicket($user_id, $admin_id, $urgency, $subject, $message,
 /**
  * Updates the ticket with a new answer and informs the recipient.
  *
- * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author	Benedikt Heintel <benedikt.heintel@i-mscp.net>
  * @since	1.0.7
  * @version	1.0.0
  *
@@ -212,7 +212,7 @@ function createTicket($user_id, $admin_id, $urgency, $subject, $message,
  */
 function updateTicket($ticket_id, $user_id, $urgency,
 		$subject, $message, $ticketLevel, $userLevel) {
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$ticket_date = time();
 	$subject = clean_input($subject);
@@ -296,7 +296,7 @@ function updateTicket($ticket_id, $user_id, $urgency,
  * @return int					the user's level (1 = user, 2 = super)
  */
 function getUserLevel($ticket_id) {
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
     // Get info about the type of message
     $query = "
@@ -316,7 +316,7 @@ function getUserLevel($ticket_id) {
 /**
  * Close the given ticket (status 0).
  *
- * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author	Benedikt Heintel <benedikt.heintel@i-mscp.net>
  * @since	1.0.7
  * @version	1.0.0
  *
@@ -330,7 +330,7 @@ function closeTicket($ticket_id) {
 /**
  * Open the given ticket (Status 3).
  *
- * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author	Benedikt Heintel <benedikt.heintel@i-mscp.net>
  * @since	1.0.7
  * @version	1.0.0
  *
@@ -345,7 +345,7 @@ function openTicket($ticket_id) {
  * Get priority as translated string.
  *
  * @author		ispCP Team
- * @author		Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author		Benedikt Heintel <benedikt.heintel@i-mscp.net>
  * @version		1.0.1
  *
  * @param int $ticket_urgency	values from 1 to 4
@@ -369,7 +369,7 @@ function getTicketUrgency($ticket_urgency) {
 /**
  * Gets the sender of a ticket answer.
  *
- * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author	Benedikt Heintel <benedikt.heintel@i-mscp.net>
  * @since	1.0.7
  * @version	1.0.0
  *
@@ -377,7 +377,7 @@ function getTicketUrgency($ticket_urgency) {
  * @return String			the formatted ticket sender
  */
 function getTicketSender($ticket_id) {
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$query = "
 		SELECT
@@ -413,8 +413,8 @@ function getTicketSender($ticket_id) {
  * @return date				last date
  */
 function ticketGetLastDate($ticket_id) {
-	$cfg = ispCP_Registry::get('Config');
-	$sql = ispCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
 
 	$query = "
 		SELECT
@@ -440,7 +440,7 @@ function ticketGetLastDate($ticket_id) {
 /**
  * Generates the list with all closed tickets
  *
- * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author	Benedikt Heintel <benedikt.heintel@i-mscp.net>
  * @since	1.0.7
  * @version	1.0.0
  *
@@ -452,7 +452,7 @@ function ticketGetLastDate($ticket_id) {
  * @param String $status	status of the tickets: 'open' and 'closed' allowed
  */
 function generateTicketList(&$tpl, $user_id, $start, $count, $userLevel, $status) {
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$count_query = "
 		SELECT
@@ -580,7 +580,7 @@ function generateTicketList(&$tpl, $user_id, $start, $count, $userLevel, $status
 /**
  * Gets the content of the selected ticket and generates its output.
  *
- * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author	Benedikt Heintel <benedikt.heintel@i-mscp.net>
  * @since	1.0.7
  * @version	1.0.0
  *
@@ -590,8 +590,8 @@ function generateTicketList(&$tpl, $user_id, $start, $count, $userLevel, $status
  * @param int $screenwidth	the width of the display
  */
 function showTicketContent(&$tpl, $ticket_id, $user_id, $screenwidth) {
-	$cfg = ispCP_Registry::get('Config');
-	$sql = ispCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
 
 	$query = "
 		SELECT
@@ -653,7 +653,7 @@ function showTicketContent(&$tpl, $ticket_id, $user_id, $screenwidth) {
 /**
  * Gets the answers of the selected ticket and generates its output.
  *
- * @author	Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author	Benedikt Heintel <benedikt.heintel@i-mscp.net>
  * @since	1.0.7
  * @version	1.0.0
  *
@@ -662,8 +662,8 @@ function showTicketContent(&$tpl, $ticket_id, $user_id, $screenwidth) {
  * @param int $screenwidth	the width of the display
  */
 function showTicketReplies(&$tpl, $ticket_id, $screenwidth) {
-	$cfg = ispCP_Registry::get('Config');
-	$sql = ispCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
 
 	$query = "
 		SELECT
@@ -720,8 +720,8 @@ function showTicketReplies(&$tpl, $ticket_id, $screenwidth) {
 function sendTicketNotification($to_id, $from_id, $ticket_subject, 
 		$ticket_message, $ticket_status, $urgency) {
 
-	$cfg = ispCP_Registry::get('Config');
-	$sql = ispCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
 
 	// To information
 	$query = "SELECT
@@ -803,7 +803,7 @@ function sendTicketNotification($to_id, $from_id, $ticket_subject,
 	$headers = "From: " . $from . "\n" .
 				"MIME-Version: 1.0\nContent-Type: text/plain; " .
 				"charset=utf-8\nContent-Transfer-Encoding: 8bit\n" .
-				"X-Mailer: ispCP " . $cfg->Version . " Tickets Mailer";
+				"X-Mailer: i-MSCP " . $cfg->Version . " Tickets Mailer";
 
 	$mail_result = mail($to, encode($subject), $message, $headers);
 	$mail_status = ($mail_result) ? 'OK' : 'NOT OK';
@@ -821,7 +821,7 @@ function sendTicketNotification($to_id, $from_id, $ticket_subject,
  * @param int $ticket_id	Ticket ID
  */
 function deleteTicket($ticket_id) {
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$query = "
 		DELETE FROM
@@ -846,7 +846,7 @@ function deleteTicket($ticket_id) {
  * @param int $user_id		the user's ID
  */
 function deleteTickets($status, $user_id) {
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$query = "
 		DELETE FROM

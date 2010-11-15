@@ -1,8 +1,9 @@
 #!/usr/bin/make -f
 
-# ispCP ω (OMEGA) a Virtual Hosting Control Panel
+# i-MSCP internet Multi Server Control Panel
 # Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
 # Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2010 by internet Multi Server Control Panel - http://i-mscp.sf.net
 #
 # Version: $Id$
 #
@@ -23,10 +24,12 @@
 # by moleSoftware GmbH. All Rights Reserved.
 # Portions created by the ispCP Team are Copyright (C) 2006-2010 by
 # isp Control Panel. All Rights Reserved.
+# Portions created by the i-msCP Team are Copyright (C) 2010 by
+# internet Multi Server Control Panel. All Rights Reserved.
 #
-# The ispCP ω Home Page is:
+# The i-MSCP Home Page is:
 #
-#    http://isp-control.net
+#    http://i-mscp.sf.net
 #
 
 export
@@ -34,15 +37,15 @@ export
 DAEMON_DIR=$(SYSTEM_ROOT)/daemon
 
 
-build: daemon/ispcp_daemon
+build: daemon/imscp_daemon
 
-daemon/ispcp_daemon:
+daemon/imscp_daemon:
 	(cd ./daemon; \
-	$(MAKE) ispcp_daemon;)
+	$(MAKE) imscp_daemon;)
 
 install: build
 	$(SYSTEM_MAKE_DIRS) $(DAEMON_DIR)
-	cp ./daemon/ispcp_daemon $(DAEMON_DIR)
+	cp ./daemon/imscp_daemon $(DAEMON_DIR)
 
 uninstall:
 

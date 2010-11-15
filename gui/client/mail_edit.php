@@ -28,13 +28,13 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/ispcp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/mail_edit.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
@@ -45,7 +45,7 @@ $tpl->define_dynamic('forward_mail', 'page');
 
 function edit_mail_account(&$tpl, &$sql) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	if (!isset($_GET['id']) || $_GET['id'] === '' || !is_numeric($_GET['id'])) {
 		set_page_message(tr('Email account not found!'));
@@ -191,7 +191,7 @@ function edit_mail_account(&$tpl, &$sql) {
 
 function update_email_pass($sql) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	if (!isset($_POST['uaction'])) {
 		return false;
@@ -236,7 +236,7 @@ function update_email_pass($sql) {
 
 function update_email_forward(&$tpl, &$sql) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	if (!isset($_POST['uaction'])) {
 		return false;
@@ -309,7 +309,7 @@ function update_email_forward(&$tpl, &$sql) {
 
 $tpl->assign(
 	array(
-		'TR_CLIENT_EDIT_EMAIL_PAGE_TITLE'	=> tr('ispCP - Manage Mail and FTP / Edit mail account'),
+		'TR_CLIENT_EDIT_EMAIL_PAGE_TITLE'	=> tr('i-MSCP - Manage Mail and FTP / Edit mail account'),
 		'THEME_COLOR_PATH'					=> "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET'						=> tr('encoding'),
 		'ISP_LOGO'							=> get_logo($_SESSION['user_id'])

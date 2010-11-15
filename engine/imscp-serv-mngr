@@ -1,0 +1,220 @@
+#!/usr/bin/perl
+
+# ispCP ω (OMEGA) a Virtual Hosting Control Panel
+# Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
+# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
+#
+# Version: $Id$
+#
+# The contents of this file are subject to the Mozilla Public License
+# Version 1.1 (the "License"); you may not use this file except in
+# compliance with the License. You may obtain a copy of the License at
+# http://www.mozilla.org/MPL/
+#
+# Software distributed under the License is distributed on an "AS IS"
+# basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+# License for the specific language governing rights and limitations
+# under the License.
+#
+# The Original Code is "VHCS - Virtual Hosting Control System".
+#
+# The Initial Developer of the Original Code is moleSoftware GmbH.
+# Portions created by Initial Developer are Copyright (C) 2001-2006
+# by moleSoftware GmbH. All Rights Reserved.
+# Portions created by the ispCP Team are Copyright (C) 2006-2010 by
+# isp Control Panel. All Rights Reserved.
+#
+# The ispCP ω Home Page is:
+#
+#    http://isp-control.net
+#
+
+use FindBin;
+use lib "$FindBin::Bin/";
+require 'imscp_common_code.pl';
+
+use strict;
+use warnings;
+
+sub serv_mngr_start_up {
+
+	push_el(\@main::el, 'serv_mngr_start_up()', 'Starting...');
+
+	my $rs;
+
+	# checking for master process;
+	$rs = check_master();
+	return $rs if ($rs != 0);
+
+	# Let's clear Execution Logs, if any.
+
+	if (-e $main::imscp_serv_mngr_el) {
+		$rs = del_file($main::imscp_serv_mngr_el);
+		return $rs if ($rs != 0);
+	}
+
+	$main::changed_dmn_cnt = $ARGV[0]."";
+	$main::changed_sub_cnt = $ARGV[1]."";
+	$main::changed_als_cnt = $ARGV[2]."";
+	$main::changed_mail_cnt = $ARGV[3]."";
+	$main::changed_alssub_cnt = $ARGV[4]."";
+
+	push_el(\@main::el, 'serv_mngr_start_up()', 'Ending...');
+
+	0;
+}
+
+sub serv_mngr_shut_down {
+
+	push_el(\@main::el, 'serv_mngr_shut_down()', 'Starting...');
+	push_el(\@main::el, 'serv_mngr_shut_down()', 'Ending...');
+
+	0;
+}
+
+sub restart_httpd {
+
+	push_el(\@main::el, 'restart_httpd()', 'Starting...');
+
+	my ($rs, $stdErr) = sys_command_stderr("$main::cfg{'CMD_HTTPD_CTL'} configtest");
+
+	if($rs == 0) {
+		push_el(\@main::el, 'restart_httpd()', 'Reloading...');
+		($rs, $stdErr) = sys_command_stderr("$main::cfg{'CMD_HTTPD_CTL'} graceful");
+	}
+
+	send_error_mail(
+		'restart_httpd()',
+		"The following error was found in your Apache config file:\n\n" .
+		"$stdErr\n\nPlease try to correct it and restart your Apache server!"
+	)if ($rs != 0);
+
+	push_el(\@main::el, 'restart_httpd()', 'Ending...');
+
+	$rs;
+}
+
+sub serv_mngr_engine {
+
+	push_el(\@main::el, 'serv_mngr_engine()', 'Starting...');
+
+	my $cmd;
+
+	if ($main::changed_mail_cnt > 0 || $main::changed_dmn_cnt > 0 ||
+		$main::changed_sub_cnt > 0) {
+
+		if ($main::cfg{'CMD_AUTHD'} ne 'no') {
+			$cmd = $main::cfg{'CMD_AUTHD'};
+			sys_command_rs("$cmd stop");
+		}
+
+		if ($main::cfg{'CMD_AMAVIS'} ne 'no') {
+			$cmd = $main::cfg{'CMD_AMAVIS'};
+			sys_command_rs("$cmd stop");
+		}
+
+		if ($main::cfg{'CMD_IMAP'} ne 'no') {
+			$cmd = $main::cfg{'CMD_IMAP'};
+			sys_command_rs("$cmd stop");
+		}
+
+		if ($main::cfg{'CMD_POP'} ne 'no') {
+			$cmd = $main::cfg{'CMD_POP'};
+			sys_command_rs("$cmd stop");
+		}
+	}
+
+	if ($main::changed_dmn_cnt > 0 || $main::changed_sub_cnt > 0 ||
+		$main::changed_als_cnt > 0 || $main::changed_alssub_cnt > 0) {
+
+		# TODO move to rndc
+		if ($main::cfg{'CMD_NAMED'} ne 'no') {
+			$cmd = $main::cfg{'CMD_NAMED'};
+			sys_command_rs("$cmd restart");
+		}
+	}
+
+	if ($main::changed_sub_cnt > 0 || $main::changed_als_cnt > 0 ||
+		$main::changed_alssub_cnt > 0) {
+
+		if ($main::cfg{'CMD_FTPD'} ne 'no') {
+			$cmd = $main::cfg{'CMD_FTPD'};
+			sys_command_rs("$cmd restart");
+		}
+	}
+
+	if ($main::changed_mail_cnt > 0 || $main::changed_dmn_cnt > 0 ||
+		$main::changed_sub_cnt > 0 || $main::changed_als_cnt > 0) {
+
+		# Ensure that postfix is running - Do nothing if running
+		if ($main::cfg{'CMD_MTA'} ne 'no') {
+			$cmd = $main::cfg{'CMD_MTA'};
+			sys_command_rs("$cmd start");
+		}
+
+		if ($main::cfg{'CMD_AUTHD'} ne 'no') {
+			$cmd = $main::cfg{'CMD_AUTHD'};
+			sys_command_rs("$cmd start");
+		}
+
+		if ($main::cfg{'CMD_AMAVIS'} ne 'no') {
+			$cmd = $main::cfg{'CMD_AMAVIS'};
+			sys_command_rs("$cmd start");
+		}
+
+		if ($main::cfg{'CMD_IMAP'} ne 'no') {
+			$cmd = $main::cfg{'CMD_IMAP'};
+			sys_command_rs("$cmd start");
+		}
+
+		if ($main::cfg{'CMD_POP'} ne 'no') {
+			$cmd = $main::cfg{'CMD_POP'};
+			sys_command_rs("$cmd start");
+		}
+	}
+
+	if ($main::changed_dmn_cnt > 0 || $main::changed_sub_cnt > 0 ||
+		$main::changed_als_cnt > 0 || $main::changed_alssub_cnt > 0) {
+
+		if ($main::cfg{'CMD_HTTPD'} ne 'no') {
+			my $rs = restart_httpd();
+			return $rs if ($rs != 0);
+		}
+	}
+
+	push_el(\@main::el, 'serv_mngr_engine()', 'Ending...');
+
+	0;
+}
+
+my $rs;
+
+$rs = serv_mngr_start_up();
+
+if ($rs != 0) {
+	dump_el(\@main::el, $main::imscp_serv_mngr_el);
+
+	serv_mngr_shut_down();
+
+	exit 1;
+}
+
+$rs = serv_mngr_engine();
+
+if ($rs != 0) {
+	dump_el(\@main::el, $main::imscp_serv_mngr_el);
+
+	serv_mngr_shut_down();
+
+	exit 1;
+}
+
+$rs = serv_mngr_shut_down();
+
+if ($rs != 0) {
+	dump_el(\@main::el, $main::imscp_serv_mngr_el);
+
+	exit 1;
+}
+
+exit 0;

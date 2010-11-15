@@ -28,11 +28,11 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/ispcp-lib.php';
+require '../include/imscp-lib.php';
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 
 $tpl->define_dynamic('page', $cfg->PURCHASE_TEMPLATE_PATH . '/package_info.tpl');
 $tpl->define_dynamic('purchase_list', 'page');
@@ -63,7 +63,7 @@ function translate_sse($value) {
 
 function gen_plan_details(&$tpl, &$sql, $user_id, $plan_id) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
 		$query = "
@@ -172,12 +172,12 @@ if (isset($_GET['id']) && $bcoid) {
 		$user_id = $_GET['user_id'];
 		$_SESSION['user_id'] = $user_id;
 	} else {
-		throw new ispCP_Exception_Production(
+		throw new iMSCP_Exception_Production(
 			tr('You do not have permission to access this interface!')
 		);
 	}
 } else {
-	throw new ispCP_Exception_Production(
+	throw new iMSCP_Exception_Production(
 		tr('You do not have permission to access this interface!')
 	);
 }
@@ -220,7 +220,7 @@ $tpl->assign(
 		'TR_CUSTOM_LOGS'		=> tr('Custom Apache Logs'),
 		'TR_ONLINE_SUPPORT'		=> tr('Web & E-Mail Support'),
 		'TR_OWN_DOMAIN'			=> tr('Your Own Domain'),
-		'TR_ISPCP'				=> tr('ispCP Control Panel'),
+		'TR_IMSCP'				=> tr('i-MSCP Control Panel'),
 		'TR_UPDATES'			=> tr('Automatic Updates'),
 		'TR_PRICE'				=> tr('Price'),
 		'TRR_PRICE'				=> tr('Package Price'),

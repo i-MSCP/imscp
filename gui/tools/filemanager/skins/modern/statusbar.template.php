@@ -1,10 +1,10 @@
 <?php defined("NET2FTP") or die("Direct access to this location is not allowed."); ?>
-<!-- Template /skins/ispCP/statusbar.template.php begin -->
+<!-- Template /skins/iMSCP/statusbar.template.php begin -->
 <script type="text/javascript" src="<?php echo $net2ftp_globals["application_rootdir_url"]; ?>/skins/<?php echo $net2ftp_globals["skin"]; ?>/status/status.js"></script>
 <?php require_once($net2ftp_globals["application_skinsdir"] . "/" . $net2ftp_globals["skin"] . "/status/status.template.php"); ?>
 	<div id="head">
 		<div id="headleft">
-			<a href="http://www.isp-control.net" target="_blank"><?php echo printPngImage($net2ftp_globals["image_url"] . "/img/logo.png", "ispCP", "width: 193px; height: 59px; border: 0;"); ?></a>
+			<a href="http://www.i-mscp.net" target="_blank"><?php echo printPngImage($net2ftp_globals["image_url"] . "/img/logo.png", "i-MSCP", "width: 193px; height: 59px; border: 0;"); ?></a>
 		</div>
 		<div style="padding-top:8px; float: <?php echo __("right"); ?>; text-align: <?php echo __("right"); ?>;">
 			<form id="StatusbarForm" method="post" action="<?php echo $net2ftp_globals["action_url"]; ?>">
@@ -22,4 +22,4 @@
 			</form>
 		</div>
  	</div>
-<!-- Template /skins/ispCP/statusbar.template.php end -->
+<!-- Template /skins/iMSCP/statusbar.template.php end -->

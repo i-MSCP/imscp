@@ -28,13 +28,13 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/ispcp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/password_change.tpl');
 $tpl->define_dynamic('page_message', 'page');
@@ -42,7 +42,7 @@ $tpl->define_dynamic('logged_from', 'page');
 
 $tpl->assign(
 	array(
-		'TR_CLIENT_CHANGE_PASSWORD_PAGE_TITLE' => tr('ispCP - Client/Change Password'),
+		'TR_CLIENT_CHANGE_PASSWORD_PAGE_TITLE' => tr('i-MSCP - Client/Change Password'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
@@ -86,7 +86,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_pass') {
 
 function check_udata($id, $pass) {
 
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$query = "
 		SELECT

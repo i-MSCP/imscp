@@ -28,13 +28,13 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/ispcp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/settings_lostpassword.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
@@ -81,7 +81,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 
 $tpl->assign(
 	array(
-		'TR_LOSTPW_EMAL_SETUP' => tr('ispCP - Admin/Lostpw email setup'),
+		'TR_LOSTPW_EMAL_SETUP' => tr('i-MSCP - Admin/Lostpw email setup'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])

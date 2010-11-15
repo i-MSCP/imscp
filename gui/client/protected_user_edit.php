@@ -32,13 +32,13 @@
  * @todo use db prepared statements
  */
 
-require '../include/ispcp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/puser_edit.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('usr_msg', 'page');
@@ -49,7 +49,7 @@ $tpl->define_dynamic('pgroups', 'page');
 
 $tpl->assign(
 	array(
-		'TR_CLIENT_WEBTOOLS_PAGE_TITLE'	=> tr('ispCP - Client/Webtools'),
+		'TR_CLIENT_WEBTOOLS_PAGE_TITLE'	=> tr('i-MSCP - Client/Webtools'),
 		'THEME_COLOR_PATH'				=> "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET'					=> tr('encoding'),
 		'ISP_LOGO'						=> get_logo($_SESSION['user_id'])
@@ -58,7 +58,7 @@ $tpl->assign(
 
 function pedit_user(&$tpl, &$sql, &$dmn_id, &$uuser_id) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] == 'modify_user') {
 		// we have to add the user

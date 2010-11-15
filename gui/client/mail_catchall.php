@@ -32,13 +32,13 @@
 /**
  * @todo use DB prepared statements!
  */
-require '../include/ispcp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/mail_catchall.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
@@ -50,7 +50,7 @@ $tpl->define_dynamic('catchall_item', 'page');
 
 function gen_user_mail_action($mail_id, $mail_status) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	if ($mail_status === $cfg->ITEM_OK_STATUS) {
 		return array(tr('Delete'), "mail_delete.php?id=$mail_id", "mail_edit.php?id=$mail_id");
@@ -61,7 +61,7 @@ function gen_user_mail_action($mail_id, $mail_status) {
 
 function gen_user_catchall_action($mail_id, $mail_status) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	if ($mail_status === $cfg->ITEM_ADD_STATUS) {
 		return array(tr('N/A'), '#'); // Addition in progress
@@ -352,7 +352,7 @@ function gen_page_lists(&$tpl, &$sql, $user_id)
 
 $tpl->assign(
 	array(
-		'TR_CLIENT_MANAGE_USERS_PAGE_TITLE'	=> tr('ispCP - Client/Manage Users'),
+		'TR_CLIENT_MANAGE_USERS_PAGE_TITLE'	=> tr('i-MSCP - Client/Manage Users'),
 		'THEME_COLOR_PATH'					=> "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET'						=> tr('encoding'),
 		'ISP_LOGO'							=> get_logo($_SESSION['user_id'])

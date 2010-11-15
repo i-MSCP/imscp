@@ -5,7 +5,7 @@
 		<meta http-equiv="Content-Style-Type" content="text/css" />
 		<meta http-equiv="Content-Script-Type" content="text/javascript" />
 		<meta name="robots" content="nofollow, noindex" />
-		<link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css" />
+		<link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript">
 			<!--
 			function CopyText(inputname) {

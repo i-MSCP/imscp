@@ -1,4 +1,4 @@
-ispCP ω (OMEGA) HowTo Install for OpenBSD
+i-MSCP HowTo Install for OpenBSD
 ================================================================================
 For other Linux distributions please check the other INSTALL files.
 ================================================================================
@@ -16,20 +16,20 @@ Table of Content
 ================================================================================
 1) Version Info
 ---------------
-ispCP ω Version: 1.0.7
+i-MSCP Version:		1.0.0
 INSTALL Script:		2.6
 Maintainer:
-Homepage:			http://www.isp-contol.net
+Homepage:			http://i-mscp.sf.net
 Distros:			OpenBSD
 
 ================================================================================
 2) Requirements
 ---------------
-There is no must have for a system using ispCP ω. This is only a recommendation:
+There is no must have for a system using i-MSCP. This is only a recommendation:
 
 Pentium III or K6-4 with 500 MHz
 512 MB RAM
-100 MB disk space (only for install of ispCP ω)
+100 MB disk space (only for install of i-MSCP)
 Debian (or even any other *NIX-Distribution)
 
 All OpenBSD required packages are listed in
@@ -38,14 +38,14 @@ All OpenBSD required packages are listed in
 ================================================================================
 3) Introduction
 ---------------
-ISPCP ω delivers a complete hosting automation appliance by offering significant
+i-MSCP delivers a complete hosting automation appliance by offering significant
 security, total-cost-of-ownership, and performance advantages over competing
 commercial solutions.
 
-With ispCP ω you can configure your server and applications, create user with
+With i-MSCP you can configure your server and applications, create user with
 domains with a few point-and-click operations that take less than a minute.
 There is no limit to the number of resellers, users and domains that can be
-created. The core of ispCP ω are 3 easy-to-use, web-based control panels. ispCP
+created. The core of i-MSCP are 3 easy-to-use, web-based control panels. i-MSCP
 provides graphic user interfaces for the administrators, resellers and users.
 
 ================================================================================
@@ -55,10 +55,10 @@ Make sure you are logged in as root and MySQL is running.
 
 1. Untar or unzip the distribution files to a secure directory:
 	# cd /usr/local/src
-	# tar xjvf ispcp-omega-1.0.7.tar.bz2
+	# tar xjvf imscp-1.0.0.tar.bz2
 
 2. Change to the newly created directory:
-	# cd ./ispcp-omega-1.0.7
+	# cd ./imscp-1.0.0
 
 3. Install the required modules
 	install all packages from packagelist 'openbsd-packages'
@@ -87,7 +87,7 @@ Make sure you are logged in as root and MySQL is running.
    if package p5-MIME-tools can't be installed, install it with cpan
 	cpan> install MIME::Tools
 
-4. (optional) Check the ispcp.conf and adapt it to your requirements.
+4. (optional) Check the imscp.conf and adapt it to your requirements.
 
 5. Build the System by using make:
 	# make -f Makefile.inc install
@@ -97,22 +97,22 @@ Make sure you are logged in as root and MySQL is running.
 	# ln -s /usr/local/libexec/makedatprog /usr/local/bin/makedatprog
 
 6. Copy all the directories into your system (you may make backups)
-	# cp -Rv /tmp/ispcp/* /
+	# cp -Rv /tmp/imscp/* /
 
 7. Now it's time to set up the frontend. Change into the engine directory:
-	# cd /usr/local/www/apache22/ispcp/engine/setup
+	# cd /usr/local/www/apache22/imscp/engine/setup
 
 7a. Set the MySQL password, if not set:
 	# /usr/local/share/mysql/mysql.server start
 	# mysqladmin -u root password YOUR_PASSWORD
 
 8. Start the engine setup:
-	# perl ispcp-setup
+	# perl imscp-setup
 
-9. Install ispCP ω step-by-step
+9. Install i-MSCP step-by-step
 
 	If you get no error, all went good; if you get one, look at
-	http://isp-control.net to solve the problem.
+	http://i-mscp.sf.net to solve the problem.
 
 10. Edit /etc/rc.local and add the following lines:
 	# mkdir -p /var/run/courier-imap
@@ -124,7 +124,7 @@ Make sure you are logged in as root and MySQL is running.
 	# /usr/local/share/mysql/mysql.server start
 	# mkdir -p /var/run/proftpd
 	# /etc/proftpd.rc start
-	# /etc/ispcp_daemon.rc start
+	# /etc/imscp_daemon.rc start
 
 11. Edit /etc/rc.conf.local and add the following lines:
 	# ntpd_flags=             # enabled during install
@@ -136,7 +136,7 @@ Make sure you are logged in as root and MySQL is running.
 
 12. Edit /var/www/conf/httpd.conf and insert
 	# AddType application/x-httpd-php .php
-	# Include /var/www/conf/ispcp.conf to the last line
+	# Include /var/www/conf/imscp.conf to the last line
 
 13. Run following commands to activate php module extensions
 	# /usr/local/sbin/phpxs -s
@@ -165,23 +165,23 @@ Make sure you are logged in as root and MySQL is running.
 	# mkpop3dcert
 
 17. Clean the temporary folders:
-	# rm -fR /tmp/ispcp
+	# rm -fR /tmp/imscp
 
 
 ================================================================================
 5) Update
 ---------
-NOTE: ispCP ω can only be updated from post 1.0.0. If you have a
-version prior 1.0.0 (final release) installed, update to ispCP ω 1.0.0 first.
+NOTE: i-MSCP can only be updated from post 1.0.0. If you have a
+version prior 1.0.0 (final release) installed, update to i-MSCP 1.0.0 first.
 
 Make sure you are logged in as root and MySQL is running.
 
 1. Untar or unzip the distribution files to a secure directory:
 	# cd /usr/local/src
-	# tar xjvf ispcp-omega-1.0.7.tar.bz2
+	# tar xjvf imscp-1.0.0.tar.bz2
 
 2. Change to the newly created directory:
-	# cd ./ispcp-omega-1.0.7
+	# cd ./imscp-1.0.0
 
 3. Install the required modules
 	install all packages from packagelist 'openbsd-packages'
@@ -210,49 +210,46 @@ Make sure you are logged in as root and MySQL is running.
    if package p5-MIME-tools can't be installed, install it with cpan
 	cpan> install MIME::Tools
 
-4. (optional) Check the ispcp.conf and adapt it to your requirements.
+4. (optional) Check the imscp.conf and adapt it to your requirements.
 
-5. Stop the ispcp_deamon and build the System by using make:
-	# /etc/init.d/ispcp_daemon stop
+5. Stop the imscp_daemon and build the System by using make:
+	# /etc/init.d/imscp_daemon stop
 	# make -f Makefile.inc install
 
 6. Backup files
-	# cp -v /usr/local/www/apache22/ispcp/engine/ispcp-db-keys.pl /tmp/ispcp/usr/local/www/apache22/ispcp/engine/
-	# cp -v /usr/local/www/apache22/ispcp/engine/messenger/ispcp-db-keys.pl /tmp/ispcp/usr/local/www/apache22/ispcp/engine/messenger/
-	# cp -v /usr/local/www/apache22/ispcp/gui/include/ispcp-db-keys.php /tmp/ispcp/usr/local/www/apache22/ispcp/gui/include/
-	# cp -v /var/www/ispcp/gui/themes/user_logos/* /tmp/ispcp/var/www/ispcp/gui/themes/user_logos/
-	# cp -v /var/www/ispcp/gui/tools/webmail/data/* /tmp/ispcp/var/www/ispcp/gui/tools/webmail/data/
-
-	For ispCP Omega prior version 1.0.7 RC2
-	# cp -v /var/www/ispcp/gui/tools/pma/config.inc.php /tmp/ispcp/etc/ispcp/pma/working/
+	# cp -v /usr/local/www/apache22/imscp/engine/imscp-db-keys.pl /tmp/imscp/usr/local/www/apache22/imscp/engine/
+	# cp -v /usr/local/www/apache22/imscp/engine/messenger/imscp-db-keys.pl /tmp/imscp/usr/local/www/apache22/imscp/engine/messenger/
+	# cp -v /usr/local/www/apache22/imscp/gui/include/imscp-db-keys.php /tmp/imscp/usr/local/www/apache22/imscp/gui/include/
+	# cp -v /var/www/imscp/gui/themes/user_logos/* /tmp/imscp/var/www/imscp/gui/themes/user_logos/
+	# cp -v /var/www/imscp/gui/tools/webmail/data/* /tmp/imscp/var/www/imscp/gui/tools/webmail/data/
 
 7. Delete old files to avoid security risks:
-	# rm -Rf /var/www/ispcp/engine/
-	# rm -Rf /var/www/ispcp/gui/{admin,client,include,orderpanel,themes,reseller}/
-	# rm -Rf /var/www/ispcp/gui/tools/{pma/,filemanager/,webmail/,index.php}
-	# rm -Rf /var/www/ispcp/gui/{*.php,favicon.ico,robots.txt}
+	# rm -Rf /var/www/imscp/engine/
+	# rm -Rf /var/www/imscp/gui/{admin,client,include,orderpanel,themes,reseller}/
+	# rm -Rf /var/www/imscp/gui/tools/{pma/,filemanager/,webmail/,index.php}
+	# rm -Rf /var/www/imscp/gui/{*.php,favicon.ico,robots.txt}
 
 8. Copy /usr and /var directories into your system (you may make backups)
-	# cp -Rv /tmp/ispcp/usr/* /usr/
-	# cp -Rv /tmp/ispcp/var/* /var/
+	# cp -Rv /tmp/imscp/usr/* /usr/
+	# cp -Rv /tmp/imscp/var/* /var/
 
-9. Backup ispcp.conf and copy the /etc directory into your system (you may make backups):
-	# mv -v /etc/ispcp/ispcp.conf /etc/ispcp/ispcp.old.conf
-	# cp -Rv /tmp/ispcp/etc/* /etc/
+9. Backup imscp.conf and copy the /etc directory into your system (you may make backups):
+	# mv -v /etc/imscp/imscp.conf /etc/imscp/imscp.old.conf
+	# cp -Rv /tmp/imscp/etc/* /etc/
 
 10. Now it's time to update your installation. Change into the engine directory:
-	# cd /var/www/ispcp/engine/setup
+	# cd /var/www/imscp/engine/setup
 
 11. Start the engine update:
-	# perl ispcp-update
+	# perl imscp-update
 
-12. Update ispCP ω step-by-step
+12. Update i-MSCP step-by-step
 
 	If you get no error, all went good; if you get one, look at
-	http://isp-control.net to solve the problem.
+	http://i-mscp.sf.net to solve the problem.
 
 13. Clean the temporary folders:
-	# rm -fR /tmp/ispcp/
+	# rm -fR /tmp/imscp/
 
 ================================================================================
 6) Uninstall
@@ -260,10 +257,10 @@ Make sure you are logged in as root and MySQL is running.
 Make sure you are logged in as root and MySQL is running.
 
 1. Change into the engine directory:
-	# cd /var/www/ispcp/engine/setup
+	# cd /var/www/imscp/engine/setup
 
 2. Start the uninstall script:
-	# perl ispcp-uninstall
+	# perl imscp-uninstall
 
 3. Clean up your system
 
@@ -271,12 +268,12 @@ Make sure you are logged in as root and MySQL is running.
 7) Credits
 ----------
 
-ispCP ω is a project of ispCP | isp Control Panel.
-ispCP, ispCP ω, isp Control Panel, the ispCP logo and the ω Logo are trademarks
-of the ispCP | isp Control Panel Project Team.
+i-MSCP is a project of i-MSCP | internet Multi Server Control Panel.
+i-MSCP, internet Multi Server Control Panel and the i-MSCP logo are trademarks
+of the i-MSCP | internet Multi Server Control Panel Project Team.
 
-Please visit our site under http://isp-control.net for further information on
-ispCP ω, ispCP and other themes.
+Please visit our site under http://i-mscp.sf.net for further information on
+i-MSCP and other themes.
 
-We hope you enjoy using ispCP ω. If you like it, help us, to make it better. We
+We hope you enjoy using i-MSCP. If you like it, help us, to make it better. We
 would be glad on any help provided!

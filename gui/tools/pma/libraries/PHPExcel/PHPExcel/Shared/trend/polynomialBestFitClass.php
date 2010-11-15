@@ -162,6 +162,6 @@ class PHPExcel_Polynomial_Best_Fit extends PHPExcel_Best_Fit
 				$this->_error = True;
 			}
 		}
-	}	//	function __construct()
+	}	//	function iMSCP_Bootstrap()
 
 }	//	class polynomialBestFit

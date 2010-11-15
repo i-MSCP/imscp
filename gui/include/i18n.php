@@ -43,7 +43,7 @@
  */
 function curlang($newlang = null, $force = false) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 	static $language = null;
 
 	// We store old value so if $language is changed old value is returned
@@ -77,8 +77,8 @@ function curlang($newlang = null, $force = false) {
  *
  * @access public
  * @version 2.3
- * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
- * @author Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
+ * @author Benedikt Heintel <benedikt.heintel@i-mscp.net>
+ * @author Laurent Declercq (nuxwin) <laurent.declercq@i-mscp.net>
  * @author Raphael Geissert (2007)
  * @param string $msgid string to translate
  * @param mixed $substitution Prevent the returned string from being replaced
@@ -124,7 +124,7 @@ function tr($msgid, $substitution = false) {
 				;
 			";
 
-			$stmt = ispCP_Registry::get('Pdo')->prepare($query);
+			$stmt = iMSCP_Registry::get('Pdo')->prepare($query);
 		}
 
 		// Execute the query
@@ -174,7 +174,7 @@ function tr($msgid, $substitution = false) {
  *
  * @access public
  * @version 1.0
- * @author Benedikt Heintel <benedikt.heintel@ispcp.net>
+ * @author Benedikt Heintel <benedikt.heintel@i-mscp.net>
  * @param string $string String to replace chars
  * @return String with replaced chars
  */

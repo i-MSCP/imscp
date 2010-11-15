@@ -1,5 +1,5 @@
 <?php defined("NET2FTP") or die("Direct access to this location is not allowed."); ?>
-<!-- Template /skins/ispCP/advanced_ftpserver1.template.php begin -->
+<!-- Template /skins/iMSCP/advanced_ftpserver1.template.php begin -->
 <?php echo __("Connection settings:"); ?>
 <table border="0" cellspacing="2" cellpadding="2" style="margin-<?php echo __("left"); ?>: 20px;">
 	<tr>
@@ -27,4 +27,4 @@
 		<td><input type="text" class="input" name="troubleshoot_directory" value="<?php echo $net2ftp_globals["directory_html"]; ?>"></td>
 	</tr>
 </table>
-<!-- Template /skins/ispCP/advanced_ftpserver1.template.php end -->
+<!-- Template /skins/iMSCP/advanced_ftpserver1.template.php end -->

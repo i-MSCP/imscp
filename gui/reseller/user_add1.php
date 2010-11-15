@@ -28,13 +28,13 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/ispcp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/user_add1.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
@@ -44,7 +44,7 @@ $tpl->define_dynamic('personalize', 'page');
 
 $tpl->assign(
 	array(
-		'TR_CLIENT_CHANGE_PERSONAL_DATA_PAGE_TITLE'	=> tr('ispCP - Users/Add user'),
+		'TR_CLIENT_CHANGE_PERSONAL_DATA_PAGE_TITLE'	=> tr('i-MSCP - Users/Add user'),
 		'THEME_COLOR_PATH'							=> "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET'								=> tr('encoding'),
 		'ISP_LOGO'									=> get_logo($_SESSION['user_id']),
@@ -80,7 +80,7 @@ $tpl->assign(
 		'TR_YES'					=> tr('yes'),
 		'TR_NO'						=> tr('no'),
 		'TR_NEXT_STEP'				=> tr('Next step'),
-		'TR_DMN_HELP'				=> tr("You do not need 'www.' ispCP will add it on its own.")
+		'TR_DMN_HELP'				=> tr("You do not need 'www.' i-MSCP will add it on its own.")
 	)
 );
 
@@ -115,8 +115,8 @@ function check_user_data() {
 	global $dmn_pt;
 	global $validation_err_msg;
 
-	$sql = ispCP_Registry::get('Db');
-	$cfg = ispCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
 
 	// personal template
 	$even_txt = '';
@@ -149,7 +149,7 @@ function check_user_data() {
 	// Should be perfomed after domain names syntax validation now
 	$dmn_name = encode_idna($dmn_name);
 
-	if (ispcp_domain_exists($dmn_name, $_SESSION['user_id'])) {
+	if (imscp_domain_exists($dmn_name, $_SESSION['user_id'])) {
 		$even_txt = tr('Domain with that name already exists on the system!');
 	} else if ($dmn_name == $cfg->BASE_SERVER_VHOST) {
 		$even_txt = tr('Master domain cannot be used!');
@@ -196,7 +196,7 @@ function check_user_data() {
  * Show empty page
  */
 function get_empty_au1_page(&$tpl) {
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$tpl->assign(
 		array(
@@ -225,7 +225,7 @@ function get_data_au1_page(&$tpl) {
 	//global $dmn_chp; // choosed hosting plan;
 	global $dmn_pt; // personal template
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$tpl->assign(
 		array(
@@ -256,8 +256,8 @@ function get_data_au1_page(&$tpl) {
 function get_hp_data_list(&$tpl, $reseller_id) {
 	global $dmn_chp;
 
-	$sql = ispCP_Registry::get('Db');
-	$cfg = ispCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
 
 	if (isset($cfg->HOSTING_PLANS_LEVEL)
 		&& $cfg->HOSTING_PLANS_LEVEL === 'admin') {

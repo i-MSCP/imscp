@@ -41,7 +41,7 @@ if (isset($_SESSION['user_id'])
 
 function get_user_gui_props(&$sql, $user_id) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$query = "
 		SELECT
@@ -110,8 +110,8 @@ function format_message($message) {
  */
 function get_menu_vars($menu_link) {
 
-	$cfg = ispCP_Registry::get('Config');
-	$sql = ispCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
 
 	$user_id = $_SESSION['user_id'];
 
@@ -188,7 +188,7 @@ function get_menu_vars($menu_link) {
  */
 function gen_def_layout(&$tpl, $user_def_layout) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 	$layouts = array('blue', 'green', 'red', 'yellow');
 
 	foreach ($layouts as $layout) {

@@ -28,13 +28,13 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/ispcp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page',  $cfg->RESELLER_TEMPLATE_PATH . '/domain_delete.tpl');
 $tpl->define_dynamic('mail_list', 'page');
 $tpl->define_dynamic('ftp_list', 'page');
@@ -52,7 +52,7 @@ $tpl->define_dynamic('logged_from', 'page');
 
 $tpl->assign(
 	array(
-		'TR_PAGE_TITLE' => tr('ispCP - Delete Domain'),
+		'TR_PAGE_TITLE' => tr('i-MSCP - Delete Domain'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id']),

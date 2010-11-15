@@ -28,11 +28,11 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/ispcp-lib.php';
+require '../include/imscp-lib.php';
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->PURCHASE_TEMPLATE_PATH . '/addon.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('purchase_header', 'page');
@@ -53,7 +53,7 @@ function addon_domain($dmn_name) {
 	// Should be performed after domain name validation now
 	$dmn_name = encode_idna(strtolower($dmn_name));
 
-	if (ispcp_domain_exists($dmn_name, 0) || $dmn_name == ispCP_Registry::get('Config')->BASE_SERVER_VHOST) {
+	if (imscp_domain_exists($dmn_name, 0) || $dmn_name == iMSCP_Registry::get('Config')->BASE_SERVER_VHOST) {
 		set_page_message(tr('Domain already exists on the system!'));
 		return;
 	}
@@ -64,7 +64,7 @@ function addon_domain($dmn_name) {
 
 function is_plan_available(&$sql, $plan_id, $user_id) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
 		$query = "
@@ -113,17 +113,17 @@ if (isset($_SESSION['user_id'])) {
 		if (is_plan_available($sql, $plan_id, $user_id)) {
 			$_SESSION['plan_id'] = $plan_id;
 		} else {
-			throw new ispCP_Exception_Production(
+			throw new iMSCP_Exception_Production(
 				tr('This hosting plan is not available for purchase')
 			);
 		}
 	} else {
-		throw new ispCP_Exception_Production(
+		throw new iMSCP_Exception_Production(
 			tr('You do not have permission to access this interface!')
 		);
 	}
 } else {
-	throw new ispCP_Exception_Production(
+	throw new iMSCP_Exception_Production(
 		tr('You do not have permission to access this interface!')
 	);
 }

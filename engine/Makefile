@@ -2,7 +2,7 @@
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
 #
 # Version: $Id$
 #
@@ -67,64 +67,64 @@ install:
 
 	cd ./traffic && $(MAKE) install
 
-	$(CMD_INSTALL) ./ispcp_common_code.pl $(SYSTEM_ENGINE_ROOT)
-	$(CMD_INSTALL) ./ispcp_common_methods.pl $(SYSTEM_ENGINE_ROOT)
+	$(CMD_INSTALL) ./imscp_common_code.pl $(SYSTEM_ENGINE_ROOT)
+	$(CMD_INSTALL) ./imscp_common_methods.pl $(SYSTEM_ENGINE_ROOT)
 
 	# keys needed for ispCP engine;
-	$(CMD_INSTALL) ./ispcp-db-keys.pl $(SYSTEM_ENGINE_ROOT)
+	$(CMD_INSTALL) ./imscp-db-keys.pl $(SYSTEM_ENGINE_ROOT)
 
 	# one more copy for auto replay system;
-	$(CMD_INSTALL) ./ispcp-db-keys.pl $(SYSTEM_ENGINE_ROOT)/messenger
+	$(CMD_INSTALL) ./imscp-db-keys.pl $(SYSTEM_ENGINE_ROOT)/messenger
 
-	$(CMD_INSTALL) ./ispcp-apache-logger $(SYSTEM_ENGINE_ROOT)
-	$(CMD_INSTALL) ./ispcp-rqst-mngr $(SYSTEM_ENGINE_ROOT)
-	$(CMD_INSTALL) ./ispcp-dmn-mngr $(SYSTEM_ENGINE_ROOT)
-	$(CMD_INSTALL) ./ispcp-sub-mngr $(SYSTEM_ENGINE_ROOT)
-	$(CMD_INSTALL) ./ispcp-alssub-mngr $(SYSTEM_ENGINE_ROOT)
-	$(CMD_INSTALL) ./ispcp-als-mngr $(SYSTEM_ENGINE_ROOT)
-	$(CMD_INSTALL) ./ispcp-htusers-mngr $(SYSTEM_ENGINE_ROOT)
-	$(CMD_INSTALL) ./ispcp-htaccess-mngr $(SYSTEM_ENGINE_ROOT)
-	$(CMD_INSTALL) ./ispcp-htgroups-mngr $(SYSTEM_ENGINE_ROOT)
-	$(CMD_INSTALL) ./ispcp-mbox-mngr $(SYSTEM_ENGINE_ROOT)
-	$(CMD_INSTALL) ./ispcp-serv-mngr $(SYSTEM_ENGINE_ROOT)
-	$(CMD_INSTALL) ./ispcp-db-passwd $(SYSTEM_ENGINE_ROOT)
+	$(CMD_INSTALL) ./imscp-apache-logger $(SYSTEM_ENGINE_ROOT)
+	$(CMD_INSTALL) ./imscp-rqst-mngr $(SYSTEM_ENGINE_ROOT)
+	$(CMD_INSTALL) ./imscp-dmn-mngr $(SYSTEM_ENGINE_ROOT)
+	$(CMD_INSTALL) ./imscp-sub-mngr $(SYSTEM_ENGINE_ROOT)
+	$(CMD_INSTALL) ./imscp-alssub-mngr $(SYSTEM_ENGINE_ROOT)
+	$(CMD_INSTALL) ./imscp-als-mngr $(SYSTEM_ENGINE_ROOT)
+	$(CMD_INSTALL) ./imscp-htusers-mngr $(SYSTEM_ENGINE_ROOT)
+	$(CMD_INSTALL) ./imscp-htaccess-mngr $(SYSTEM_ENGINE_ROOT)
+	$(CMD_INSTALL) ./imscp-htgroups-mngr $(SYSTEM_ENGINE_ROOT)
+	$(CMD_INSTALL) ./imscp-mbox-mngr $(SYSTEM_ENGINE_ROOT)
+	$(CMD_INSTALL) ./imscp-serv-mngr $(SYSTEM_ENGINE_ROOT)
+	$(CMD_INSTALL) ./imscp-db-passwd $(SYSTEM_ENGINE_ROOT)
 
 	$(CMD_INSTALL) ./awstats/awstats_buildstaticpages.pl $(SYSTEM_ENGINE_ROOT)/awstats
 	$(CMD_INSTALL) ./awstats/awstats_updateall.pl $(SYSTEM_ENGINE_ROOT)/awstats
 
-	$(CMD_INSTALL) ./backup/ispcp-bk-task $(SYSTEM_ENGINE_ROOT)/backup
-	$(CMD_INSTALL) ./backup/ispcp-backup-all $(SYSTEM_ENGINE_ROOT)/backup
-	$(CMD_INSTALL) ./backup/ispcp-backup-ispcp $(SYSTEM_ENGINE_ROOT)/backup
+	$(CMD_INSTALL) ./backup/imscp-bk-task $(SYSTEM_ENGINE_ROOT)/backup
+	$(CMD_INSTALL) ./backup/imscp-backup-all $(SYSTEM_ENGINE_ROOT)/backup
+	$(CMD_INSTALL) ./backup/imscp-backup-imscp $(SYSTEM_ENGINE_ROOT)/backup
 
-	$(CMD_INSTALL) ./quota/ispcp-dsk-quota $(SYSTEM_ENGINE_ROOT)/quota
+	$(CMD_INSTALL) ./quota/imscp-dsk-quota $(SYSTEM_ENGINE_ROOT)/quota
 
-	$(CMD_INSTALL) ./messenger/ispcp-arpl-msgr $(SYSTEM_ENGINE_ROOT)/messenger
+	$(CMD_INSTALL) ./messenger/imscp-arpl-msgr $(SYSTEM_ENGINE_ROOT)/messenger
 
-	$(CMD_INSTALL) ./setup/ispcp-permission-functions.sh $(SYSTEM_ENGINE_ROOT)/setup
+	$(CMD_INSTALL) ./setup/imscp-permission-functions.sh $(SYSTEM_ENGINE_ROOT)/setup
 	$(CMD_INSTALL) ./setup/set-engine-permissions.sh $(SYSTEM_ENGINE_ROOT)/setup
 	$(CMD_INSTALL) ./setup/set-gui-permissions.sh $(SYSTEM_ENGINE_ROOT)/setup
 	$(CMD_INSTALL) ./setup/reset-setup $(SYSTEM_ENGINE_ROOT)/setup
-	$(CMD_INSTALL) ./setup/ispcp-setup $(SYSTEM_ENGINE_ROOT)/setup
-	$(CMD_INSTALL) ./setup/ispcp-setup-methods.pl $(SYSTEM_ENGINE_ROOT)/setup
-	$(CMD_INSTALL) ./setup/ispcp-update $(SYSTEM_ENGINE_ROOT)/setup
-	$(CMD_INSTALL) ./setup/ispcp-uninstall $(SYSTEM_ENGINE_ROOT)/setup
+	$(CMD_INSTALL) ./setup/imscp-setup $(SYSTEM_ENGINE_ROOT)/setup
+	$(CMD_INSTALL) ./setup/imscp-setup-methods.pl $(SYSTEM_ENGINE_ROOT)/setup
+	$(CMD_INSTALL) ./setup/imscp-update $(SYSTEM_ENGINE_ROOT)/setup
+	$(CMD_INSTALL) ./setup/imscp-uninstall $(SYSTEM_ENGINE_ROOT)/setup
 	$(CMD_INSTALL) ./setup/updDB.php $(SYSTEM_ENGINE_ROOT)/setup
 
 	cp -dR ./setup/PerlVendor $(SYSTEM_ENGINE_ROOT)/setup
 	cp -dR ./setup/PerlLib $(SYSTEM_ENGINE_ROOT)/setup
 
-	$(CMD_INSTALL) ./tools/ispcp-del-logs.sh $(SYSTEM_ENGINE_ROOT)/tools
-	$(CMD_INSTALL) ./tools/ispcp-del-phptemp.sh $(SYSTEM_ENGINE_ROOT)/tools
-	$(CMD_INSTALL) ./tools/ispcp-httpd-logs-mngr $(SYSTEM_ENGINE_ROOT)/tools
-	$(CMD_INSTALL) ./tools/ispcp-net-interfaces-mngr $(SYSTEM_ENGINE_ROOT)/tools
+	$(CMD_INSTALL) ./tools/imscp-del-logs.sh $(SYSTEM_ENGINE_ROOT)/tools
+	$(CMD_INSTALL) ./tools/imscp-del-phptemp.sh $(SYSTEM_ENGINE_ROOT)/tools
+	$(CMD_INSTALL) ./tools/imscp-httpd-logs-mngr $(SYSTEM_ENGINE_ROOT)/tools
+	$(CMD_INSTALL) ./tools/imscp-net-interfaces-mngr $(SYSTEM_ENGINE_ROOT)/tools
 
-	$(CMD_INSTALL) ./traffic/ispcp-srv-traff $(SYSTEM_ENGINE_ROOT)/traffic
-	$(CMD_INSTALL) ./traffic/ispcp-vrl-traff $(SYSTEM_ENGINE_ROOT)/traffic
+	$(CMD_INSTALL) ./traffic/imscp-srv-traff $(SYSTEM_ENGINE_ROOT)/traffic
+	$(CMD_INSTALL) ./traffic/imscp-vrl-traff $(SYSTEM_ENGINE_ROOT)/traffic
 
 	if test $(HOST_OS) = suse ; then \
-		$(CMD_INSTALL) ./traffic/ispcp-vrl-traff-SUSE $(SYSTEM_ENGINE_ROOT)/traffic; \
+		$(CMD_INSTALL) ./traffic/imscp-vrl-traff-SUSE $(SYSTEM_ENGINE_ROOT)/traffic; \
 	elif test $(HOST_OS) = opensuse ; then \
-		$(CMD_INSTALL) ./traffic/ispcp-vrl-traff-SUSE $(SYSTEM_ENGINE_ROOT)/traffic; \
+		$(CMD_INSTALL) ./traffic/imscp-vrl-traff-SUSE $(SYSTEM_ENGINE_ROOT)/traffic; \
 	fi
 
 uninstall:

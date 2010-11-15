@@ -125,7 +125,7 @@ function get_cnt_of_user(&$sql, $user_type) {
  */
 function records_rlike_count($field, $table, $where, $value, $a, $b) {
 
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	if($where != '') {
 		$query = "
@@ -158,7 +158,7 @@ function records_rlike_count($field, $table, $where, $value, $a, $b) {
 
 function remove_users_common_properties($id_user) {
 
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$query = "
 		DELETE FROM
@@ -237,7 +237,7 @@ function is_subdir_of($base_domain, $subdomain, $realPath = true) {
 	return (count($t) > 1 && $t[0] === '');
 }
 
-/* Unused functions moved from include/ispcp-function.php */
+/* Unused functions moved from include/imscp-function.php */
 
 function escape_user_data($data) {
 
@@ -255,7 +255,7 @@ function strip_html($input) {
 /* Unused functions moved from include/layout-functions.php */
 
 function check_language_exist($lang_table) {
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	return (in_array($lang_table, $sql->metaTables()) == true) ? true : false;
 }
@@ -299,7 +299,7 @@ function add_domain_extras(&$dmn_id, &$admin_id, &$sql) {
 function get_reseller_detail_count($tablename, $ua) {
 	global $sql;
 
-	$delstatus = ispCP_Config::getInstance()->get('ITEM_DELETE_STATUS');
+	$delstatus = iMSCP_Config::getInstance()->get('ITEM_DELETE_STATUS');
 
 	$query = "SELECT COUNT(*) AS cnt FROM `".$tablename;
 	if ($tablename == 'ftp_users') {
@@ -336,7 +336,7 @@ function check_query($exclude = array()) {
 		$message = "Your PHP version is older than 4.2.2!";
 		write_log($message);
 
-		throw new ispCP_Exception("Error:  $message");
+		throw new iMSCP_Exception("Error:  $message");
 	}
 
 	if (!is_array($exclude)) {
@@ -353,7 +353,7 @@ function check_query($exclude = array()) {
 				$message = "Possible SQL injection detected: $key=>$value. <b>${matches[0]}</b>. Script terminated.";
 				write_log($message);
 
-				throw new ispCP_Exception("<b>WARNING</b>: $message");
+				throw new iMSCP_Exception("<b>WARNING</b>: $message");
 			}
 		} else {
 			foreach ($value as $skey => $svalue) {
@@ -362,7 +362,7 @@ function check_query($exclude = array()) {
 						$message = "Possible SQL injection detected: $skey=>$svalue <b>${matches[0]}</b>. Script terminated.";
 						write_log($message);
 
-						throw new ispCP_Exception("<b>WARNING</b>: $message");
+						throw new iMSCP_Exception("<b>WARNING</b>: $message");
 					}
 				}
 			}

@@ -21,7 +21,7 @@
  * @package     ispCP
  * @subpackage  client_sql
  * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @author      Laurent Declercq <laurent.declercq@ispcp.net>
+ * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
  * @since       1.0.7
  * @version     SVN: $Id$
  * @replace     client/sql_auth.php
@@ -42,7 +42,7 @@
 /**
  * Get database login credentials
  *
- * @author Laurent Declercq <laurent.declercq@ispcp.net>
+ * @author Laurent Declercq <laurent.declercq@i-mscp.net>
  * @since  1.0.7
  * @access private
  * @param  int $dbUserId Database user unique identifier
@@ -51,9 +51,9 @@
 function _getLoginCredentials($dbUserId) {
 
 	/**
-	 * @var $db ispCP_Database_ResultSet
+	 * @var $db iMSCP_Database_ResultSet
 	 */
-	$db = ispCP_Registry::get('Db');
+	$db = iMSCP_Registry::get('Db');
 
 	// @todo Should be optimized
 	$query = "
@@ -87,7 +87,7 @@ function _getLoginCredentials($dbUserId) {
 /**
  * Creates all cookies for PhpMyAdmin
  *
- * @author Laurent Declercq <laurent.declercq@ispcp.net>
+ * @author Laurent Declercq <laurent.declercq@i-mscp.net>
  * @since  1.0.7
  * @access private
  * @param  array $cookies Array that contains cookies definitions for PMA
@@ -103,7 +103,7 @@ function _pmaCreateCookies($cookies) {
 /**
  * PhpMyAdmin authentication
  *
- * @author Laurent Declercq <laurent.declercq@ispcp.net>
+ * @author Laurent Declercq <laurent.declercq@i-mscp.net>
  * @since  1.0.7
  * @param  int $dbUserId Database user unique identifier
  * @return bool TRUE on success, FALSE otherwise
@@ -174,7 +174,7 @@ function pmaAuth($dbUserId) {
  */
 
 // Include all needed libraries and process to the ispCP initialization
-require '../include/ispcp-lib.php';
+require '../include/imscp-lib.php';
 
 // Check login
 check_login(__FILE__);

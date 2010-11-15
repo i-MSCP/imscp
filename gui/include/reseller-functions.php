@@ -44,8 +44,8 @@ define('MT_ALSSUB_CATCHALL', 'alssub_catchall');
 
 function gen_reseller_mainmenu(&$tpl, $menu_file) {
 
-	$cfg = ispCP_Registry::get('Config');
-	$sql = ispCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
 
 	$tpl->define_dynamic('menu', $menu_file);
 	$tpl->define_dynamic('isactive_support', 'menu');
@@ -72,8 +72,8 @@ function gen_reseller_mainmenu(&$tpl, $menu_file) {
 			'TR_MENU_LOGOUT' => tr('Logout'),
 			'TR_MENU_OVERVIEW' => tr('Overview'),
 			'TR_MENU_LANGUAGE' => tr('Language'),
-			'SUPPORT_SYSTEM_PATH' => $cfg->ISPCP_SUPPORT_SYSTEM_PATH,
-			'SUPPORT_SYSTEM_TARGET' => $cfg->ISPCP_SUPPORT_SYSTEM_TARGET,
+			'SUPPORT_SYSTEM_PATH' => $cfg->IMSCP_SUPPORT_SYSTEM_PATH,
+			'SUPPORT_SYSTEM_TARGET' => $cfg->IMSCP_SUPPORT_SYSTEM_TARGET,
 			'TR_MENU_ORDERS' => tr('Manage Orders'),
 			'TR_MENU_ORDER_SETTINGS' => tr('Order settings'),
 			'TR_MENU_ORDER_EMAIL' => tr('Order email setup'),
@@ -133,7 +133,7 @@ function gen_reseller_mainmenu(&$tpl, $menu_file) {
 
 	$rs = exec_query($sql, $query, $_SESSION['user_id']);
 
-	if (!$cfg->ISPCP_SUPPORT_SYSTEM || $rs->fields['support_system'] == 'no') {
+	if (!$cfg->IMSCP_SUPPORT_SYSTEM || $rs->fields['support_system'] == 'no') {
 		$tpl->assign('ISACTIVE_SUPPORT', '');
  	}
 
@@ -145,8 +145,8 @@ function gen_reseller_mainmenu(&$tpl, $menu_file) {
  */
 function gen_reseller_menu(&$tpl, $menu_file) {
 
-	$cfg = ispCP_Registry::get('Config');
-	$sql = ispCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
 
 	$tpl->define_dynamic('menu', $menu_file);
 
@@ -176,8 +176,8 @@ function gen_reseller_menu(&$tpl, $menu_file) {
 			'TR_MENU_LANGUAGE' => tr('Language'),
 			'ALIAS_MENU' => (!check_reseller_permissions($_SESSION['user_id'], 'alias'))
 				? '' : $tpl->parse('ALIAS_MENU', '.alias_menu'),
-			'SUPPORT_SYSTEM_PATH' => $cfg->ISPCP_SUPPORT_SYSTEM_PATH,
-			'SUPPORT_SYSTEM_TARGET' => $cfg->ISPCP_SUPPORT_SYSTEM_TARGET,
+			'SUPPORT_SYSTEM_PATH' => $cfg->IMSCP_SUPPORT_SYSTEM_PATH,
+			'SUPPORT_SYSTEM_TARGET' => $cfg->IMSCP_SUPPORT_SYSTEM_TARGET,
 			'TR_MENU_ORDERS' => tr('Manage Orders'),
 			'TR_MENU_ORDER_SETTINGS' => tr('Order settings'),
 			'TR_MENU_ORDER_EMAIL' => tr('Order email setup'),
@@ -240,7 +240,7 @@ function gen_reseller_menu(&$tpl, $menu_file) {
 
 	$rs = exec_query($sql, $query, $_SESSION['user_id']);
 
-	if (!$cfg->ISPCP_SUPPORT_SYSTEM || $rs->fields['support_system'] == 'no') {
+	if (!$cfg->IMSCP_SUPPORT_SYSTEM || $rs->fields['support_system'] == 'no') {
 		$tpl->assign('ISACTIVE_SUPPORT', '');
 	}
 	if (isset($cfg->HOSTING_PLANS_LEVEL) && strtolower($cfg->HOSTING_PLANS_LEVEL) === 'admin') {
@@ -296,7 +296,7 @@ function get_reseller_default_props(&$sql, $reseller_id) {
  * Making users props
  */
 function generate_reseller_user_props($reseller_id) {
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 	// Init with empty variables
 	$rdmn_current = 0;
 	$rdmn_max = 0;
@@ -456,7 +456,7 @@ function generate_reseller_user_props($reseller_id) {
  */
 function get_user_traffic($user_id) {
 
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 	global $crnt_month, $crnt_year;
 
 	$query = "
@@ -552,8 +552,8 @@ function get_user_traffic($user_id) {
  */
 function get_user_props($user_id) {
 
-	$cfg = ispCP_Registry::get('Config');
-	$sql = ispCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
 
 	$query = "
 		SELECT
@@ -632,8 +632,8 @@ function get_user_props($user_id) {
  */
 function generate_ip_list(&$tpl, &$reseller_id) {
 
-	$cfg = ispCP_Registry::get('Config');
-	$sql = ispCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
 	global $domain_ip;
 
 	$query = "
@@ -688,7 +688,7 @@ function check_ruser_data(&$tpl, $noPass) {
 	global $street_two, $mail, $phone;
 	global $fax, $inpass, $domain_ip;
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$user_add_error = '_off_';
 	$inpass_re = '';
@@ -772,7 +772,7 @@ function check_ruser_data(&$tpl, $noPass) {
 	}
 	/* we don't want to validate Customer ID, First and Second name and also ZIP
 
-	  else if (!ispcp_limit_check($customer_id)) {
+	  else if (!imscp_limit_check($customer_id)) {
 		$user_add_error = tr('Incorrect customer ID syntax!');
 	} else if (!chk_username($first_name, 40)) {
 
@@ -780,7 +780,7 @@ function check_ruser_data(&$tpl, $noPass) {
 	} else if (!chk_username($last_name, 40)) {
 
 		$user_add_error = tr('Incorrect second name length or syntax!');
-	} else if (!ispcp_limit_check($zip)) {
+	} else if (!imscp_limit_check($zip)) {
 
 		$user_add_error = tr('Incorrect post code length or syntax!');
 	} */
@@ -802,7 +802,7 @@ function check_ruser_data(&$tpl, $noPass) {
  */
 function translate_dmn_status($status) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	switch ($status) {
 		case $cfg->ITEM_OK_STATUS:
@@ -829,8 +829,8 @@ function translate_dmn_status($status) {
 /**
  * Check if the domain already exist
  */
-function ispcp_domain_exists($domain_name, $reseller_id) {
-	$sql = ispCP_Registry::get('Db');
+function imscp_domain_exists($domain_name, $reseller_id) {
+	$sql = iMSCP_Registry::get('Db');
 	// query to check if the domain name exist in the table for domains/accounts
 	$query_domain = "
 		SELECT
@@ -940,7 +940,7 @@ function ispcp_domain_exists($domain_name, $reseller_id) {
 	} else {
 		return true;
 	}
-} // end of ispcp_domain_exists()
+} // end of iMSCP_domain_exists()
 
 /**
  * @todo see inline comment, about the messed up code
@@ -1073,7 +1073,7 @@ function gen_manage_domain_query(&$search_query, &$count_query,
 function gen_manage_domain_search_options(&$tpl, $search_for, $search_common,
 	$search_status) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	if ($search_for === 'n/a' && $search_common === 'n/a'
 		&& $search_status === 'n/a') {
@@ -1206,7 +1206,7 @@ function gen_manage_domain_search_options(&$tpl, $search_for, $search_common,
  */
 function gen_def_language(&$tpl, &$sql, $user_def_language) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 	$languages = array();
 	$htmlSelected = $cfg->HTML_SELECTED;
 	$query = "SHOW TABLES LIKE 'lang_%'";
@@ -1224,7 +1224,7 @@ function gen_def_language(&$tpl, &$sql, $user_def_language) {
 			FROM
 				`$lang_table`
 			WHERE
-				`msgid` = 'ispcp_language'
+				`msgid` = 'iMSCP_language'
 			;
 		";
 
@@ -1236,7 +1236,7 @@ function gen_def_language(&$tpl, &$sql, $user_def_language) {
 			FROM
 				`$lang_table`
 			WHERE
-				`msgid` = 'ispcp_languageSetlocaleValue'
+				`msgid` = 'iMSCP_languageSetlocaleValue'
 			;
 		";
 
@@ -1509,7 +1509,7 @@ function reseller_limits_check(&$sql, &$err_msg, $reseller_id, $hpid, $newprops 
 function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail,
 	$order_id) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$data = get_order_email($admin_id);
 
@@ -1564,15 +1564,15 @@ function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail,
 	$headers .= "MIME-Version: 1.0\n";
 	$headers .= "Content-Type: text/plain; charset=utf-8\n";
 	$headers .= "Content-Transfer-Encoding: 8bit\n";
-	$headers .= "X-Mailer: ispCP " . $cfg->Version . " Service Mailer";
+	$headers .= "X-Mailer: i-MSCP " . $cfg->Version . " Service Mailer";
 
 	mail($to, $subject, $message, $headers);
 }
 
 function send_alias_order_email($alias_name) {
 
-	$cfg = ispCP_Registry::get('Config');
-	$sql = ispCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
 
 	$user_id = $_SESSION['user_id'];
 
@@ -1630,7 +1630,7 @@ function send_alias_order_email($alias_name) {
 	$headers .= "MIME-Version: 1.0\n";
 	$headers .= "Content-Type: text/plain; charset=utf-8\n";
 	$headers .= "Content-Transfer-Encoding: 8bit\n";
-	$headers .= "X-Mailer: ispCP {$cfg->Version} Service Mailer";
+	$headers .= "X-Mailer: i-MSCP {$cfg->Version} Service Mailer";
 
 	$mail_result = mail($to, $subject, $message, $headers);
 
@@ -1644,8 +1644,8 @@ function send_alias_order_email($alias_name) {
 function client_mail_add_default_accounts($dmn_id, $user_email, $dmn_part,
 	$dmn_type = 'domain', $sub_id = 0) {
 
-	$cfg = ispCP_Registry::get('Config');
-	$sql = ispCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
 
 	if ($cfg->CREATE_DEFAULT_EMAIL_ADDRESSES) {
 
@@ -1710,8 +1710,8 @@ function client_mail_add_default_accounts($dmn_id, $user_email, $dmn_part,
  */
 function recalc_reseller_c_props($reseller_id) {
 
-	$cfg = ispCP_Registry::get('Config');
-	$sql = ispCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
 
 	$delstatus = $cfg->ITEM_DELETE_STATUS;
 
@@ -1813,7 +1813,7 @@ function update_reseller_c_props($reseller_id) {
  */
 function get_reseller_id($domain_id) {
 
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$query = "
 		SELECT
@@ -1844,7 +1844,7 @@ function get_reseller_id($domain_id) {
  */
 function check_reseller_permissions($reseller_id, $permission) {
 
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	list($rdmn_current, $rdmn_max,
 			$rsub_current, $rsub_max,

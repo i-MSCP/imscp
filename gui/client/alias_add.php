@@ -28,13 +28,13 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/ispcp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/alias_add.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
@@ -64,7 +64,7 @@ check_permissions($tpl);
 
 $tpl->assign(
 	array(
-		'TR_CLIENT_ADD_ALIAS_PAGE_TITLE' => tr('ispCP Client : Add Alias'),
+		'TR_CLIENT_ADD_ALIAS_PAGE_TITLE' => tr('i-MSCP Client : Add Alias'),
 		'TR_MANAGE_DOMAIN_ALIAS' => tr('Manage domain alias'),
 		'TR_ADD_ALIAS' => tr('Add domain alias'),
 		'TR_DOMAIN_NAME' => tr('Domain name'),
@@ -73,7 +73,7 @@ $tpl->assign(
 		'TR_DOMAIN_IP' => tr('Domain IP'),
 		'TR_FORWARD' => tr('Forward to URL'),
 		'TR_ADD' => tr('Add alias'),
-		'TR_DMN_HELP' => tr("You do not need 'www.' ispCP will add it on its own."),
+		'TR_DMN_HELP' => tr("You do not need 'www.' i-MSCP will add it on its own."),
 		'TR_JS_EMPTYDATA' => tr("Empty data or wrong field!"),
 		'TR_JS_WDNAME' => tr("Wrong domain name!"),
 		'TR_JS_MPOINTERROR' => tr("Please write mount point!"),
@@ -151,7 +151,7 @@ function gen_al_page(&$tpl, $reseller_id) {
 
 	global $alias_name, $forward, $forward_prefix, $mount_point;
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	if (isset($_POST['status']) && $_POST['status'] == 1) {
 
@@ -203,7 +203,7 @@ function add_domain_alias(&$sql, &$err_al) {
 	global $cr_user_id, $alias_name, $domain_ip, $forward, $forward_prefix,
 		$mount_point, $validation_err_msg;
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$cr_user_id = $domain_id = get_user_domain_id($sql, $_SESSION['user_id']);
 	$alias_name	= strtolower($_POST['ndomain_name']);
@@ -245,7 +245,7 @@ function add_domain_alias(&$sql, &$err_al) {
 	// Should be perfomed after domain names syntax validation now
 	$alias_name = encode_idna($alias_name);
 
-	if (ispcp_domain_exists($alias_name, 0)) {
+	if (imscp_domain_exists($alias_name, 0)) {
 	 $err_al = tr('Domain with that name already exists on the system!');
 	} else if (!validates_mpoint($mount_point) && $mount_point != '/') {
 		$err_al = tr("Incorrect mount point syntax");

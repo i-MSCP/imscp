@@ -28,20 +28,20 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/ispcp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/alias_edit.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 
 $tpl->assign(
 	array(
-		'TR_EDIT_ALIAS_PAGE_TITLE' => tr('ispCP - Manage Domain Alias/Edit Alias'),
+		'TR_EDIT_ALIAS_PAGE_TITLE' => tr('i-MSCP - Manage Domain Alias/Edit Alias'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
@@ -121,8 +121,8 @@ unset_messages();
  */
 function gen_editalias_page(&$tpl, $edit_id) {
 
-	$cfg = ispCP_Registry::get('Config');
-	$sql = ispCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
 
 	// Get data from sql
 	list($domain_id) = get_domain_default_props($sql, $_SESSION['user_id']);
@@ -193,8 +193,8 @@ function gen_editalias_page(&$tpl, $edit_id) {
  */
 function check_fwd_data(&$tpl, $alias_id) {
 
-	$cfg = ispCP_Registry::get('Config');
-	$sql = ispCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
 
 	$forward_url = strtolower(clean_input($_POST['forward']));
 	$status = $_POST['status'];

@@ -19,17 +19,17 @@
  * under the License.
  */
 
-define('ISPCP_LOG_ERROR', 	0);
-define('ISPCP_LOG_WARNING',	1);
-define('ISPCP_LOG_INFO',	2);
-define('ISPCP_LOG_DEBUG',	3);
+define('IMSCP_LOG_ERROR', 	0);
+define('IMSCP_LOG_WARNING',	1);
+define('IMSCP_LOG_INFO',	2);
+define('IMSCP_LOG_DEBUG',	3);
 
 abstract class BaseController
 {
 	/**
 	 * current log level
 	 */
-	public $log_level = ISPCP_LOG_ERROR;
+	public $log_level = IMSCP_LOG_ERROR;
 	/**
 	 * number of error messages
 	 */
@@ -38,15 +38,15 @@ abstract class BaseController
 	/**
 	 * output message dependend to log level
 	 * @param string $message message to log
-	 * @param integer $level log level (see literals ISPCP_LOG_*)
+	 * @param integer $level log level (see literals IMSCP_LOG_*)
 	 */
-	protected function logMessage($message, $level = ISPCP_LOG_ERROR)
+	protected function logMessage($message, $level = IMSCP_LOG_ERROR)
 	{
 	    if ($this->log_level >= $level) {
 	        echo $message . "\n";
 			flush();
 	    }
-	    if ($level == ISPCP_LOG_ERROR) {
+	    if ($level == IMSCP_LOG_ERROR) {
 	    	$this->errorCount++;
 	    }
 	}
@@ -59,7 +59,7 @@ abstract class BaseController
 	 */
 	protected function shellExecute($cmd, &$a)
 	{
-		$this->logMessage($cmd, ISPCP_LOG_INFO);
+		$this->logMessage($cmd, IMSCP_LOG_INFO);
 		return exec($cmd, $a);
 	}
 

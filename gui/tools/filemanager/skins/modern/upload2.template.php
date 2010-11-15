@@ -1,5 +1,5 @@
 <?php defined("NET2FTP") or die("Direct access to this location is not allowed."); ?>
-<!-- Template /skins/ispCP/upload2.template.php begin -->
+<!-- Template /skins/iMSCP/upload2.template.php begin -->
 <table style="border-color: #000000; border-style: solid; border-width: 1px; padding: 10px; margin-<?php echo __("right"); ?>: 100px; margin-bottom: 30px;">
 	<tr>
 		<td>
@@ -35,4 +35,4 @@
 <?php			printActionIcon("forward", $forward_onclick, ""); ?>
 
 <?php	require_once($net2ftp_globals["application_skinsdir"] . "/" . $net2ftp_globals["skin"] . "/upload1.template.php"); ?>
-<!-- Template /skins/ispCP/upload2.template.php end -->
+<!-- Template /skins/iMSCP/upload2.template.php end -->

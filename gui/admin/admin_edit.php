@@ -28,11 +28,11 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/ispcp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
 if (isset($_GET['edit_id'])) {
 	$edit_id = $_GET['edit_id'];
@@ -42,7 +42,7 @@ if (isset($_GET['edit_id'])) {
 	user_goto('manage_users.php');
 }
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/admin_edit.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('hosting_plans', 'page');
@@ -58,7 +58,7 @@ $tpl->assign(
 function update_data(&$sql) {
 
 	global $edit_id;
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	if (isset($_POST['Submit']) && isset($_POST['uaction']) && $_POST['uaction'] === 'edit_user') {
 		if (check_user_data()) {
@@ -288,7 +288,7 @@ if (isset($_POST['genpass'])) {
 
 $tpl->assign(
 	array(
-		'TR_ADMIN_EDIT_USER_PAGE_TITLE'	=> ($rs->fields['admin_type'] == 'admin' ? tr('ispCP - Admin/Manage users/Edit Administrator') : tr('ispCP - Admin/Manage users/Edit User')),
+		'TR_ADMIN_EDIT_USER_PAGE_TITLE'	=> ($rs->fields['admin_type'] == 'admin' ? tr('i-MSCP - Admin/Manage users/Edit Administrator') : tr('i-MSCP - Admin/Manage users/Edit User')),
 		'TR_EMPTY_OR_WORNG_DATA'		=> tr('Empty data or wrong field!'),
 		'TR_PASSWORD_NOT_MATCH'			=> tr("Passwords don't match!"),
 		'TR_EDIT_ADMIN'					=> ($rs->fields['admin_type'] == 'admin' ? tr('Edit admin') : tr('Edit user')),

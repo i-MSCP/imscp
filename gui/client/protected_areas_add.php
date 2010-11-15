@@ -28,13 +28,13 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/ispcp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/protect_it.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
@@ -44,7 +44,7 @@ $tpl->define_dynamic('unprotect_it', 'page');
 
 $tpl->assign(
 	array(
-		'TR_CLIENT_WEBTOOLS_PAGE_TITLE' => tr('ispCP - Client/Webtools'),
+		'TR_CLIENT_WEBTOOLS_PAGE_TITLE' => tr('i-MSCP - Client/Webtools'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
@@ -56,7 +56,7 @@ $tpl->assign(
  */
 function protect_area(&$tpl, &$sql, $dmn_id) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	if (!isset($_POST['uaction']) || $_POST['uaction'] != 'protect_it') {
 		return;
@@ -99,7 +99,7 @@ function protect_area(&$tpl, &$sql, $dmn_id) {
 
 	// Check for existing directory
 	// We need to use the virtual file system
-	$vfs = new ispCP_VirtualFileSystem($domain, $sql);
+	$vfs = new iMSCP_VirtualFileSystem($domain, $sql);
 	$res = $vfs->exists($path);
 	if (!$res) {
 		set_page_message(tr("%s doesn't exist", $path));
@@ -199,7 +199,7 @@ SQL_QUERY;
 
 function gen_protect_it(&$tpl, &$sql, &$dmn_id) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	if (!isset($_GET['id'])) {
 		$edit = 'no';

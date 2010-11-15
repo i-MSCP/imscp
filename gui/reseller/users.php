@@ -28,13 +28,13 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/ispcp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/users.tpl');
 $tpl->define_dynamic('users_list', 'page');
 $tpl->define_dynamic('user_entry', 'users_list');
@@ -49,7 +49,7 @@ $tpl->define_dynamic('edit_option', 'page');
 
 $tpl->assign(
 	array(
-		'TR_CLIENT_CHANGE_PERSONAL_DATA_PAGE_TITLE' => tr('ispCP - Users'),
+		'TR_CLIENT_CHANGE_PERSONAL_DATA_PAGE_TITLE' => tr('i-MSCP - Users'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id']),
@@ -132,8 +132,8 @@ unset_messages();
 
 function generate_users_list(&$tpl, $admin_id) {
 
-	$sql = ispCP_Registry::get('Db');
-	$cfg = ispCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$rows_per_page = $cfg->DOMAIN_ROWS_PER_PAGE;
 

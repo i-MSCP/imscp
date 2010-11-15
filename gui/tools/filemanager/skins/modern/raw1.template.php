@@ -1,5 +1,5 @@
 <?php defined("NET2FTP") or die("Direct access to this location is not allowed."); ?>
-<!-- Template /skins/ispCP/raw1.template.php begin -->
+<!-- Template /skins/iMSCP/raw1.template.php begin -->
 <?php echo __("List of commands:"); ?> <br />
 <textarea name="command" rows="5" cols="100" wrap="off">
 <?php echo $command; ?>
@@ -13,4 +13,4 @@
 <?php		echo $net2ftp_output["ftp_raw"][$i]; ?>
 <?php } // end for ?>
 </textarea>
-<!-- Template /skins/ispCP/raw1.template.php end -->
+<!-- Template /skins/iMSCP/raw1.template.php end -->

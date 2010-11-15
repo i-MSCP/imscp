@@ -143,7 +143,7 @@ class PHPExcel_CachedObjectStorage_DiscISAM extends PHPExcel_CachedObjectStorage
 			$this->_fileName = sys_get_temp_dir().'/PHPExcel.'.$baseUnique.'.cache';
 			$this->_fileHandle = fopen($this->_fileName,'a+');
 		}
-	}	//	function __construct()
+	}	//	function iMSCP_Bootstrap()
 
 
 	public function __destruct() {

@@ -27,11 +27,11 @@
  * @license		http://www.mozilla.org/MPL/ MPL 1.1
  */
 
-// Boot IspCP
-ispCP_Bootstrap::boot();
+// Boot i-MSCP
+iMSCP_Bootstrap::boot();
 
-// Get a reference to a ispCP_Config_Handler_File instance
-$config = new ispCP_Config_Handler_File();
+// Get a reference to a iMSCP_Config_Handler_File instance
+$config = new iMSCP_Config_Handler_File();
 
 // Set some configuration parameters
 
@@ -115,7 +115,7 @@ $config->MAX_DNAMES_LABELS = 1;
 $config->MAX_SUBDNAMES_LABELS = 1;
 
 // Enable or disable support system
-$config->ISPCP_SUPPORT_SYSTEM = true;
+$config->IMSCP_SUPPORT_SYSTEM = true;
 
 // Enable or disable lost password support
 $config->LOSTPASSWORD = true;
@@ -184,7 +184,7 @@ $config->PASSWD_STRONG = true;
 
 // The virtual host file from Apache which contains our virtual host
 // entries
-$config->SERVER_VHOST_FILE = $config->APACHE_SITES_DIR . '/ispcp.conf';
+$config->SERVER_VHOST_FILE = $config->APACHE_SITES_DIR . '/imscp.conf';
 
 // The minimum level for a message to be sent to DEFAULT_ADMIN_ADDRESS
 // PHP's E_USER_* values are used for simplicity:
@@ -221,8 +221,8 @@ $config->PREVENT_EXTERNAL_LOGIN_CLIENT = true;
 // Automatic search for new version
 $config->CHECK_FOR_UPDATES = true;
 
-if(!$config->ISPCP_SUPPORT_SYSTEM_TARGET) {
-	$config->ISPCP_SUPPORT_SYSTEM_TARGET = '_self';
+if(!$config->IMSCP_SUPPORT_SYSTEM_TARGET) {
+	$config->IMSCP_SUPPORT_SYSTEM_TARGET = '_self';
 }
 
 # Converting some possible IDN to ACE (see #2476)
@@ -232,7 +232,7 @@ $config->BASE_SERVER_VHOST = encode_idna($config->BASE_SERVER_VHOST);
 $config->DATABASE_HOST = encode_idna($config->DATABASE_HOST);
 
 // Initialize the application
-IspCP_Initializer::run($config);
+iMSCP_Initializer::run($config);
 
 // Remove useless variable
 unset($config);

@@ -23,7 +23,7 @@
  * @category    ispCP
  * @package     ispCP_Setup
  * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @author      Laurent Declercq <laurent.declercq@ispcp.net>
+ * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
  * @version     SVN: $Id$
  * @link        http://isp-control.net ispCP Home Site
  * @license     http://www.mozilla.org/MPL/ MPL 1.1
@@ -40,11 +40,11 @@ if(preg_match('/^\{GUI_ROOT_DIR\}$/', $gui_root_dir)) {
 }
 
 try {
-	// Include ispCP core libraries and initialize the environment
-	require_once $gui_root_dir . '/include/ispcp-lib.php';
+	// Include i-MSCP core libraries and initialize the environment
+	require_once $gui_root_dir . '/include/imscp-lib.php';
 
-	// Gets an ispCP_Update_Database instance
-	$dbUpdate = ispCP_Update_Database::getInstance();
+	// Gets an iMSCP_Update_Database instance
+	$dbUpdate = iMSCP_Update_Database::getInstance();
 
 	if(!$dbUpdate->executeUpdates()) {
 		print "\n[ERROR]: " .$dbUpdate->getErrorMessage() . "\n\n";
@@ -62,6 +62,6 @@ try {
 	exit(1);
 }
 
-print "\n[INFO]: ispCP database update succeeded!\n\n";
+print "\n[INFO]: i-MSCP database update succeeded!\n\n";
 
 exit(0);

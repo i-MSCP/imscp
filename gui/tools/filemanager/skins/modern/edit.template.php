@@ -1,5 +1,5 @@
 <?php defined("NET2FTP") or die("Direct access to this location is not allowed."); ?>
-<!-- Template /skins/ispCP/edit.template.php begin -->
+<!-- Template /skins/iMSCP/edit.template.php begin -->
 <form id="<?php echo $formname; ?>" action="<?php echo $net2ftp_globals["action_url"]; ?>" method="post">
 <?php	printLoginInfo(); ?>
 <input type="hidden" name="state"        value="edit" />
@@ -85,4 +85,4 @@
 </table>
 </form>
 
-<!-- Template /skins/ispCP/edit.template.php end -->
+<!-- Template /skins/iMSCP/edit.template.php end -->

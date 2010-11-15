@@ -1,4 +1,4 @@
-ispCP ω (OMEGA) HowTo Install for Slackware 12
+i-MSCP HowTo Install for Slackware 12
 ================================================================================
 For other Linux distributions please check the other INSTALL files.
 ================================================================================
@@ -16,20 +16,20 @@ Table of Content
 ================================================================================
 1) Version Info
 ---------------
-ispCP ω Version:	1.0.7
+i-MSCP Version:		1.0.0
 INSTALL Script:		1.2
 Maintainer:
-Homepage:			http://www.isp-contol.net
+Homepage:			http://i-mscp.sf.net
 Linux Distros:		Slackware 12
 
 ================================================================================
 2) Requirements
 ---------------
-There is no must have for a system using ispCP ω. This is only a recommendation:
+There is no must have for a system using i-MSCP. This is only a recommendation:
 
 Pentium III or K6-4 with 500 MHz
 512 MB RAM
-100 MB disk space (only for install of ispCP ω)
+100 MB disk space (only for install of i-MSCP)
 Debian (or even any other *NIX-Distribution)
 
 All CentOS required packages are listed in
@@ -38,14 +38,14 @@ All CentOS required packages are listed in
 ================================================================================
 3) Introduction
 ---------------
-ispCP ω delivers a complete hosting automation appliance by offering significant
+i-MSCP delivers a complete hosting automation appliance by offering significant
 security, total-cost-of-ownership, and performance advantages over competing
 commercial solutions.
 
-With ispCP ω you can configure your server and applications, create user with
+With i-MSCP you can configure your server and applications, create user with
 domains with a few point-and-click operations that take less than a minute.
 There is no limit to the number of resellers, users and domains that can be
-created. The core of ispCP ω are 3 easy-to-use, web-based control panels. ispCP
+created. The core of i-MSCP are 3 easy-to-use, web-based control panels. i-MSCP
 provides graphic user interfaces for the administrators, resellers and users.
 
 ================================================================================
@@ -67,12 +67,12 @@ Please have a look in the CentOS INSTALL file
 7) Credits
 ----------
 
-ispCP ω is a project of ispCP | isp Control Panel.
-ispCP, ispCP ω, isp Control Panel, the ispCP logo and the ω Logo are trademarks
-of the ispCP | isp Control Panel Project Team.
+i-MSCP is a project of i-MSCP | internet Multi Server Control Panel.
+i-MSCP, internet Multi Server Control Panel and the i-MSCP logo are trademarks
+of the i-MSCP | internet Multi Server Control Panel Project Team.
 
-Please visit our site under http://isp-control.net for further information on
-ispCP ω, ispCP and other themes.
+Please visit our site under http://i-mscp.sf.net for further information on
+i-MSCP and other themes.
 
-We hope you enjoy using ispCP ω. If you like it, help us, to make it better. We
+We hope you enjoy using i-MSCP. If you like it, help us, to make it better. We
 would be glad on any help provided!

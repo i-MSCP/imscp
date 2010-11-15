@@ -130,7 +130,7 @@ $net2ftp_settings["max_consumption_ipaddress_nr_of_ftpservers"] = 50; // per IP 
 $net2ftp_settings["check_homedirectory"] = "yes";
 
 // ----------------------------------------------------------------------------------
-// TEMP DIR OVERRIDING (ispCP Mod to avoid PHP error)
+// TEMP DIR OVERRIDING (iMSCP Mod to avoid PHP error)
 // ----------------------------------------------------------------------------------
 $tmpdir = realpath(dirname(__FILE__) . '../../phptmp');
 $_ENV['PHP_TMPDIR'] = $tmpdir;

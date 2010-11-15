@@ -1,10 +1,10 @@
 #!/bin/sh
 #
-# ispCP pre-installation script for Ubuntu
+# i-MSCP pre-installation script for Ubuntu
 #
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
-# author    Laurent Declercq <laurent.declercq@ispcp.net>
+# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
+# author    Laurent Declercq <laurent.declercq@i-mscp.net>
 # version   1.0.1
 #
 # SVN: $Id$
@@ -43,26 +43,26 @@ case "$1" in
 	install|upgrade)
 
 		# Fix for #2224 Postgrey - Port changed to 10023 for some distributions
-		# @author Laurent Declercq <laurent.declercq@ispcp.net>
+		# @author Laurent Declercq <laurent.declercq@i-mscp.net>
 		# @since  1.0.7 (rc2)
 		if $CMD_GREP -qe "--inet=.*60000" /etc/default/postgrey; then
 			print_title "Postgrey configuration (Updating listening port):"
 
-			# Updating the ispcp.conf file here to revert back to the old port
-			if test -f /etc/ispcp/ispcp.old.conf; then
+			# Updating the imscp.conf file here to revert back to the old port
+			if test -f /etc/imscp/imscp.old.conf; then
 				$CMD_SED -i s'/\(PORT_POSTGREY.*=.*\)10023/\160000/' \
-					/etc/ispcp/ispcp.old.conf >> $LOGFILE 2>&1 || failed \
-						"The script was unable to update the Postgrey listening port in your\n\t ispcp.old.conf file!";
+					/etc/imscp/imscp.old.conf >> $LOGFILE 2>&1 || failed \
+						"The script was unable to update the Postgrey listening port in your\n\t imscp.old.conf file!";
 			fi
 
 			$CMD_SED -i s'/\(PORT_POSTGREY.*=.*\)10023/\160000/' \
-				/etc/ispcp/ispcp.conf >> $LOGFILE 2>&1 || failed \
-					"The script was unable to update the Postgrey listening port in your\n\t ispcp.conf file!";
+				/etc/imscp/imscp.conf >> $LOGFILE 2>&1 || failed \
+					"The script was unable to update the Postgrey listening port in your\n\t imscp.conf file!";
 
 			# Updating database.sql file only on install
 			if [ "$1" = "install" ] ; then
 				$CMD_SED -i s'/10023\(;tcp;POSTGREY\)/60000\1/' \
-					/etc/ispcp/database/database.sql >> $LOGFILE 2>&1 || failed \
+					/etc/imscp/database/database.sql >> $LOGFILE 2>&1 || failed \
                         "The script was unable to update the Postgrey listening port in the\n\t database schema!";
 			fi
 

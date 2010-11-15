@@ -1,10 +1,10 @@
 #!/bin/sh
 
-# ispCP helper library for distribution maintenace scripts
+# i-MSCP helper library for distribution maintenace scripts
 #
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
-# author	Laurent Declercq <laurent.declercq@ispcp.net>
+# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
+# author	Laurent Declercq <laurent.declercq@i-mscp.net>
 # version	1.0.3
 #
 # SVN: $Id$
@@ -31,7 +31,7 @@
 #
 
 ################################################################################
-# Note to ispCP distributions. maintainers:
+# Note to i-MSCP distributions. maintainers:
 #
 # This library provide a set of functions that can be used in your maintenance
 # scripts.
@@ -39,8 +39,8 @@
 # Currently, only a few helper functions to display the titles and error
 # messages are provided.
 #
-# Also, when you include this file into your script, some ispCP configuration
-# parameters obtained from the 'ispcp.conf' file are exported in your script.
+# Also, when you include this file into your script, some i-MSCP configuration
+# parameters obtained from the 'imscp.conf' file are exported in your script.
 #
 # To use library, you must include it at the beginning of your
 # script like this:
@@ -49,23 +49,23 @@
 #
 
 ################################################################################
-#                      ispCP Omega configuration variables                     #
+#                      i-MSCP Omega configuration variables                     #
 ################################################################################
 
-# Retrieving the main ispCP configuration file path
-if [ -f "/etc/ispcp/ispcp.conf" ] ; then
-    CONF_FILE=/etc/ispcp/ispcp.conf
-elif [ -f "/usr/local/etc/ispcp/ispcp.conf" ] ; then
-    CONF_FILE=/usr/local/etc/ispcp/ispcp.conf
+# Retrieving the main i-MSCP configuration file path
+if [ -f "/etc/imscp/imscp.conf" ] ; then
+    CONF_FILE=/etc/imscp/imscp.conf
+elif [ -f "/usr/local/etc/imscp/imscp.conf" ] ; then
+    CONF_FILE=/usr/local/etc/imscp/imscp.conf
 else
-    printf "\033[1;31m[Error]\033[0m ispCP configuration file not found!\n"
+    printf "\033[1;31m[Error]\033[0m i-MSCP configuration file not found!\n"
     exit 1
 fi
 
 OLD_IFS=$IFS
 IFS=$
 
-# Reading needed entries from ispcp.conf
+# Reading needed entries from imscp.conf
 for a in $(grep -E '^(AMAVIS|APACHE_|BASE_SERVER_IP|CMD_|DEBUG|DATABASE_HOST|DEFAULT_ADMIN_ADDRESS|ETC_|LOG_DIR|MTA_|ROOT_|PHP_FASTCGI|SPAMASSASSIN|Version)' \
 ${CONF_FILE} | sed 's/\s*=\s*\(.*\)/="\1"/') ; do
 	 eval $a
@@ -79,15 +79,15 @@ if [ $DEBUG -eq 1 ]; then
   set -x
 fi
 
-# ispCP Omega version
-ISPCP_VERSION=$(echo $Version | sed -e 's/\s\+\|[a-z]//gi')
+# i-MSCP version
+IMSCP_VERSION=$(echo $Version | sed -e 's/\s\+\|[a-z]//gi')
 
 ################################################################################
 #                                   Logging                                    #
 ################################################################################
 
 # Log file path
-LOGFILE="$LOG_DIR/setup/ispcp-$0-$1.log"
+LOGFILE="$LOG_DIR/setup/imscp-$0-$1.log"
 
 # Make sure that the log directory exists
 /usr/bin/install -d $LOG_DIR/setup -m 0755 -o $ROOT_USER -g $ROOT_GROUP

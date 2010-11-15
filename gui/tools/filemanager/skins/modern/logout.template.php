@@ -1,9 +1,9 @@
 <?php defined("NET2FTP") or die("Direct access to this location is not allowed."); ?>
-<!-- Template /skins/ispCP/logout.php begin -->
+<!-- Template /skins/iMSCP/logout.php begin -->
 <div id="container">
 	<div id="head">
 		<div id="headleft">
-			<a href="http://www.isp-control.net" target="_blank"><?php echo printPngImage($net2ftp_globals["image_url"] . "/img/logo.png", "ispCP", "width: 193px; height: 59px; border: 0;"); ?></a>
+			<a href="http://www.i-mcsp.net" target="_blank"><?php echo printPngImage($net2ftp_globals["image_url"] . "/img/logo.png", "i-MSCP", "width: 193px; height: 59px; border: 0;"); ?></a>
 		</div>
 		<div id="headright">
 		</div>
@@ -19,4 +19,4 @@
 	</div>
 
 <?php require_once($net2ftp_globals["application_skinsdir"] . "/" . $net2ftp_globals["skin"] . "/footer.template.php"); ?>
-<!-- Template /skins/ispCP/logout.php end -->
+<!-- Template /skins/iMSCP/logout.php end -->

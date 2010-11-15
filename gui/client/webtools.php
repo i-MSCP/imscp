@@ -28,13 +28,13 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-include '../include/ispcp-lib.php';
+include '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/webtools.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('active_awstats', 'page');
@@ -43,7 +43,7 @@ $tpl->define_dynamic('logged_from', 'page');
 
 $tpl->assign(
 	array(
-		'TR_CLIENT_WEBTOOLS_PAGE_TITLE' => tr('ISPCP - Client/Webtools'),
+		'TR_CLIENT_WEBTOOLS_PAGE_TITLE' => tr('i-MSCP - Client/Webtools'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])

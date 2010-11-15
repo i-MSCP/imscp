@@ -28,11 +28,11 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/ispcp-lib.php';
+require '../include/imscp-lib.php';
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 
 $tpl->define_dynamic('page', $cfg->PURCHASE_TEMPLATE_PATH . '/index.tpl');
 $tpl->define_dynamic('purchase_list', 'page');
@@ -46,7 +46,7 @@ $tpl->define_dynamic('purchase_footer', 'page');
 
 function gen_packages_list(&$tpl, &$sql, $user_id) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
 		$query = "
@@ -83,7 +83,7 @@ function gen_packages_list(&$tpl, &$sql, $user_id) {
 	}
 
 	if ($rs->recordCount() == 0) {
-		throw new ispCP_Exception_Production(
+		throw new iMSCP_Exception_Production(
 			tr('No available hosting packages')
 		);
 	} else {

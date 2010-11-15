@@ -28,13 +28,13 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/ispcp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/mail_catchall_add.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
@@ -53,7 +53,7 @@ if (isset($_GET['id'])) {
 function gen_dynamic_page_data(&$tpl, &$sql, $id) {
 
 	global $domain_id;
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	list($dmn_id,
 		$dmn_name,
@@ -284,7 +284,7 @@ function gen_dynamic_page_data(&$tpl, &$sql, $id) {
 
 function create_catchall_mail_account(&$sql, $id) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	list($realId, $type) = explode(';', $id);
 	// Check if user is owner of the domain
@@ -456,7 +456,7 @@ function create_catchall_mail_account(&$sql, $id) {
 
 $tpl->assign(
 	array(
-		'TR_CLIENT_CREATE_CATCHALL_PAGE_TITLE'	=> tr('ispCP - Client/Create CatchAll Mail Account'),
+		'TR_CLIENT_CREATE_CATCHALL_PAGE_TITLE'	=> tr('i-MSCP - Client/Create CatchAll Mail Account'),
 		'THEME_COLOR_PATH'						=> "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET'							=> tr('encoding'),
 		'ISP_LOGO'								=> get_logo($_SESSION['user_id'])

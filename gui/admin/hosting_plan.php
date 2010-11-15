@@ -29,17 +29,17 @@
  */
 
 // Begin page line
-require '../include/ispcp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
 if (strtolower($cfg->HOSTING_PLANS_LEVEL) != 'admin') {
 	user_goto('index.php');
 }
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/hosting_plan.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('hosting_plans', 'page');
@@ -51,7 +51,7 @@ $tpl->define_dynamic('hp_menu_add', 'page');
 
 $tpl->assign(
 		array(
-			'TR_ADMIN_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Administrator/Hosting Plan Management'),
+			'TR_ADMIN_MAIN_INDEX_PAGE_TITLE' => tr('i-MSCP - Administrator/Hosting Plan Management'),
 			'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 			'THEME_CHARSET' => tr('encoding'),
 			'ISP_LOGO' => get_logo($_SESSION['user_id'])
@@ -125,8 +125,8 @@ function gen_hp_message() {
  */
 function gen_hp_table(&$tpl, $reseller_id) {
 
-	$cfg = ispCP_Registry::get('Config');
-	$sql = ispCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
 
 	$query = "
 		SELECT

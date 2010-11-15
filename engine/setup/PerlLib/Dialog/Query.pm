@@ -1,7 +1,7 @@
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
 #
-# Author: Laurent Declercq <laurent.declercq@ispcp.net>
+# Author: Laurent Declercq <laurent.declercq@i-mscp.net>
 # Version: $Id$
 #
 # The contents of this file are subject to the Mozilla Public License
@@ -50,26 +50,26 @@ $HOSTNAME_ERROR = 'The hostname is not a valid domain name!';
 $ETH = 'Please enter the system network address [%s]: ';
 $ETH_ERROR = 'IP address not valid, please retry!';
 
-$VHOST = 'Please enter the domain name where ispCP OMEGA will be reachable on [%s]: ';
+$VHOST = 'Please enter the domain name where i-MSCP will be reachable on [%s]: ';
 $VHOST_ERROR = 'The domain name is not valid!';
 
 $DB_HOST = 'Please enter SQL server hostname [localhost]: ';
 $DB_HOST_ERROR = 'Wrong SQL hostname! See RFC 1123 for more information...';
 
-$DB_NAME = 'Please enter ispCP OMEGA SQL database name [ispcp]: ';
+$DB_NAME = 'Please enter i-MSCP SQL database name [imscp]: ';
 
-$DB_USER = 'Please enter ispCP OMEGA SQL user name [root]: ';
+$DB_USER = 'Please enter i-MSCP SQL user name [root]: ';
 
-$DB_PASSWORD = 'Please enter ispCP OMEGA SQL password [none]: ';
-$DB_PASSWORD_CONFIRM = 'Please repeat ispCP OMEGA SQL password: ';
+$DB_PASSWORD = 'Please enter i-MSCP SQL password [none]: ';
+$DB_PASSWORD_CONFIRM = 'Please repeat i-MSCP SQL password: ';
 $DB_PASSWORD_ERROR = 'Passwords do not match!';
 
-$DB_FTP_USER = 'Please enter ispCP FTP SQL user [vftp]: ';
-$DB_FTP_USER_ERROR = 'FTP SQL user must not be identical to the ispCP OMEGA SQL user!';
+$DB_FTP_USER = 'Please enter i-MSCP FTP SQL user [vftp]: ';
+$DB_FTP_USER_ERROR = 'FTP SQL user must not be identical to the i-MSCP SQL user!';
 
-$DB_FTP_PASSWORD = 'Please enter ispCP OMEGA FTP SQL user password [auto generate]: ';
-$DB_FTP_PASSWORD_CONFIRM = 'Please repeat ispCP OMEGA ftp SQL user password: ';
-$DB_FTP_PASSWORD_NOTICE = 'ispCP ftp SQL user password set to: %s';
+$DB_FTP_PASSWORD = 'Please enter i-MSCP FTP SQL user password [auto generate]: ';
+$DB_FTP_PASSWORD_CONFIRM = 'Please repeat i-MSCP ftp SQL user password: ';
+$DB_FTP_PASSWORD_NOTICE = 'i-MSCP ftp SQL user password set to: %s';
 $DB_FTP_PASSWORD_ERROR = 'Passwords do not match!';
 
 $ADMIN = 'Please enter administrator login name [admin]: ';
@@ -93,12 +93,12 @@ $RESOLVER_ERROR = 'You entered an unrecognized value, please retry!';
 $MYSQL_PREFIX = 'Use MySQL Prefix? Possible values: [i]nfront, [b]ehind, [n]one. [none]: ';
 $MYSQL_PREFIX_ERROR = 'You entered an unrecognized value, please retry!';
 
-$DB_PMA_USER = 'Please enter ispCP OMEGA PMA control user [%s]: ';
-$DB_PMA_USER_ERROR_1 = 'ispCP OMEGA PMA control user must not be identical to system SQL user!';
-$DB_PMA_USER_ERROR_2 = 'ispCP OMEGA PMA control user must not be identical to FTP SQL user!';
+$DB_PMA_USER = 'Please enter i-MSCP PMA control user [%s]: ';
+$DB_PMA_USER_ERROR_1 = 'i-MSCP PMA control user must not be identical to system SQL user!';
+$DB_PMA_USER_ERROR_2 = 'i-MSCP PMA control user must not be identical to FTP SQL user!';
 
-$DB_PMA_PASSWORD = 'Please enter ispCP OMEGA PMA control user password [auto generate]: ';
-$DB_PMA_PASSWORD_CONFIRM = 'Please repeat ispCP OMEGA PMA control user password: ';
+$DB_PMA_PASSWORD = 'Please enter i-MSCP PMA control user password [auto generate]: ';
+$DB_PMA_PASSWORD_CONFIRM = 'Please repeat i-MSCP PMA control user password: ';
 $DB_PMA_PASSWORD_NOTICE = 'PMA control user password set to: %s';
 $DB_PMA_PASSWORD_ERROR = 'Passwords do not match!';
 

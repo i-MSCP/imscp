@@ -1,5 +1,5 @@
 <?php defined("NET2FTP") or die("Direct access to this location is not allowed."); ?>
-<!-- Template /skins/ispCP/advanced_webserver1.template.php begin -->
+<!-- Template /skins/iMSCP/advanced_webserver1.template.php begin -->
 
 <ul>
 
@@ -105,4 +105,4 @@
 		</li>
 	</ul></li>
 
-<!-- Template /skins/ispCP/advanced_webserver1.template.php end -->
+<!-- Template /skins/iMSCP/advanced_webserver1.template.php end -->

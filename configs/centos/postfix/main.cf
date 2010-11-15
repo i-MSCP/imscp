@@ -1,6 +1,6 @@
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
 #
 # Version: $Id$
 #
@@ -39,7 +39,7 @@ myhostname                   = {MTA_HOSTNAME}
 mydomain                     = {MTA_LOCAL_DOMAIN}
 myorigin                     = $myhostname
 
-smtpd_banner                 = $myhostname ESMTP ispCP {MTA_VERSION} Managed
+smtpd_banner                 = $myhostname ESMTP i-MSCP {MTA_VERSION} Managed
 setgid_group                 = postdrop
 
 # Receiving messages parameters
@@ -72,8 +72,8 @@ recipient_delimiter          = +
 local_destination_recipient_limit = 1
 local_recipient_maps         = unix:passwd.byname $alias_database
 
-# ispCP Autoresponder parameters
-ispcp-arpl_destination_recipient_limit = 1
+# i-MSCP Autoresponder parameters
+imscp-arpl_destination_recipient_limit = 1
 
 # Delivering virtual messages parameters
 virtual_mailbox_base         = {MTA_VIRTUAL_MAIL_DIR}

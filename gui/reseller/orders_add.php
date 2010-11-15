@@ -28,11 +28,11 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/ispcp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
 $reseller_id = $_SESSION['user_id'];
 
@@ -140,7 +140,7 @@ if (!validates_dname($dmn_user_name)) {
 	user_goto('orders.php');
 }
 
-if (ispcp_domain_exists($dmn_user_name, $_SESSION['user_id'])) {
+if (imscp_domain_exists($dmn_user_name, $_SESSION['user_id'])) {
 	set_page_message(tr('Domain with that name already exists on the system!'));
 	unset($_SESSION['domain_ip']);
 	user_goto('orders.php');
@@ -267,7 +267,7 @@ $query = "
 $res = exec_query($sql, $query, array($record_id, $user_def_lang,
 		$user_theme_color));
 
-// send query to the ispcp daemon
+// send query to the i-mscp daemon
 send_request();
 
 $admin_login = $_SESSION['user_logged'];

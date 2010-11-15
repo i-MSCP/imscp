@@ -28,13 +28,13 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/ispcp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/domain_edit.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('ip_entry', 'page');
@@ -53,7 +53,7 @@ if (isset($cfg->HOSTING_PLANS_LEVEL)
 
 $tpl->assign(
 	array(
-		'TR_EDIT_DOMAIN_PAGE_TITLE'	=> tr('ispCP - Domain/Edit'),
+		'TR_EDIT_DOMAIN_PAGE_TITLE'	=> tr('i-MSCP - Domain/Edit'),
 		'THEME_COLOR_PATH'			=> "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET'				=> tr('encoding'),
 		'ISP_LOGO'					=> get_logo($_SESSION['user_id'])
@@ -163,7 +163,7 @@ function load_user_data($user_id, $domain_id) {
 	*/
 	global $sub, $als, $mail, $ftp, $sql_db, $sql_user, $traff, $disk;
 
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$query = "
 		SELECT
@@ -209,8 +209,8 @@ function load_additional_data($user_id, $domain_id) {
 	global $cgi_supp, $username, $allowbackup;
 	global $dns_supp;
 
-	$sql = ispCP_Registry::get('Db');
-	$cfg = ispCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
 
 	// Get domain data
 	$query = "
@@ -296,7 +296,7 @@ function gen_editdomain_page(&$tpl) {
 	global $username, $allowbackup;
 	global $dns_supp;
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	// Fill in the fields
 	$domain_name = decode_idna($domain_name);
@@ -430,31 +430,31 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 
 	if ($rsub_max == "-1") {
 		$sub = "-1";
-	} elseif (!ispcp_limit_check($sub, -1)) {
+	} elseif (!imscp_limit_check($sub, -1)) {
 		$ed_error .= tr('Incorrect subdomains limit!');
 	}
 
 	if ($rals_max == "-1") {
 		$als = "-1";
-	} elseif (!ispcp_limit_check($als, -1)) {
+	} elseif (!imscp_limit_check($als, -1)) {
 		$ed_error .= tr('Incorrect aliases limit!');
 	}
 
 	if ($rmail_max == "-1") {
 		$mail = "-1";
-	} elseif (!ispcp_limit_check($mail, -1)) {
+	} elseif (!imscp_limit_check($mail, -1)) {
 		$ed_error .= tr('Incorrect mail accounts limit!');
 	}
 
 	if ($rftp_max == "-1") {
 		$ftp = "-1";
-	} elseif (!ispcp_limit_check($ftp, -1)) {
+	} elseif (!imscp_limit_check($ftp, -1)) {
 		$ed_error .= tr('Incorrect FTP accounts limit!');
 	}
 
 	if ($rsql_db_max == "-1") {
 		$sql_db = "-1";
-	} elseif (!ispcp_limit_check($sql_db, -1)) {
+	} elseif (!imscp_limit_check($sql_db, -1)) {
 		$ed_error .= tr('Incorrect SQL users limit!');
 	} else if ($sql_db == -1 && $sql_user != -1) {
 		$ed_error .= tr('SQL databases limit is <i>disabled</i>!');
@@ -462,16 +462,16 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 
 	if ($rsql_user_max == "-1") {
 		$sql_user = "-1";
-	} elseif (!ispcp_limit_check($sql_user, -1)) {
+	} elseif (!imscp_limit_check($sql_user, -1)) {
 		$ed_error .= tr('Incorrect SQL databases limit!');
 	} else if ($sql_user == -1 && $sql_db != -1) {
 		$ed_error .= tr('SQL users limit is <i>disabled</i>!');
 	}
 
-	if (!ispcp_limit_check($traff, null)) {
+	if (!imscp_limit_check($traff, null)) {
 		$ed_error .= tr('Incorrect traffic limit!');
 	}
-	if (!ispcp_limit_check($disk, null)) {
+	if (!imscp_limit_check($disk, null)) {
 		$ed_error .= tr('Incorrect disk quota limit!');
 	}
 

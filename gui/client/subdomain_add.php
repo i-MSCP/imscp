@@ -28,13 +28,13 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/ispcp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/subdomain_add.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
@@ -84,7 +84,7 @@ function check_subdomain_permissions($sql, $user_id) {
 
 function gen_user_add_subdomain_data(&$tpl, &$sql, $user_id) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$subdomain_name = $subdomain_mnt_pt = $forward = $forward_prefix = '';
 
@@ -165,7 +165,7 @@ function gen_user_add_subdomain_data(&$tpl, &$sql, $user_id) {
 
 function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$ok_status = $cfg->ITEM_OK_STATUS;
 
@@ -225,7 +225,7 @@ function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 function subdmn_exists(&$sql, $user_id, $domain_id, $sub_name) {
 	global $dmn_name;
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	if ($_POST['dmn_type'] == 'als') {
 		$query_subdomain = "
@@ -341,7 +341,7 @@ function subdmn_mnt_pt_exists(&$sql, $user_id, $domain_id, $sub_name, $sub_mnt_p
 
 function subdomain_schedule(&$sql, $user_id, $domain_id, $sub_name, $sub_mnt_pt, $forward) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$status_add = $cfg->ITEM_ADD_STATUS;
 
@@ -517,7 +517,7 @@ if (isset($_SESSION['subdomain_support']) && $_SESSION['subdomain_support'] == "
 
 $tpl->assign(
 	array(
-		'TR_CLIENT_ADD_SUBDOMAIN_PAGE_TITLE' => tr('ispCP - Client/Add Subdomain'),
+		'TR_CLIENT_ADD_SUBDOMAIN_PAGE_TITLE' => tr('i-MSCP - Client/Add Subdomain'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
@@ -541,7 +541,7 @@ $tpl->assign(
 		'TR_DIR_TREE_SUBDOMAIN_MOUNT_POINT'	=> tr('Directory tree mount point'),
 		'TR_FORWARD'						=> tr('Forward to URL'),
 		'TR_ADD'							=> tr('Add'),
-		'TR_DMN_HELP'						=> tr('You do not need \'www.\' ispCP will add it on its own.'),
+		'TR_DMN_HELP'						=> tr('You do not need \'www.\' i-MSCP will add it on its own.'),
 		'TR_ENABLE_FWD'						=> tr('Enable Forward'),
 		'TR_ENABLE'							=> tr('Enable'),
 		'TR_DISABLE'						=> tr('Disable'),

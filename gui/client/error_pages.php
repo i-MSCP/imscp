@@ -28,13 +28,13 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/ispcp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/error_pages.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
@@ -45,7 +45,7 @@ function write_error_page(&$sql, $user_id, $eid) {
 
 	$error = $_POST['error'];
 	$file = '/errors/' . $eid . '.html';
-	$vfs = new ispCP_VirtualFileSystem($_SESSION['user_logged'], $sql);
+	$vfs = new iMSCP_VirtualFileSystem($_SESSION['user_logged'], $sql);
 
 	return $vfs->put($file, $error);
 }
@@ -73,7 +73,7 @@ $domain = "http://www." . $domain;
 
 $tpl->assign(
 	array(
-		'TR_CLIENT_ERROR_PAGE_TITLE' => tr('ispCP - Client/Manage Error Custom Pages'),
+		'TR_CLIENT_ERROR_PAGE_TITLE' => tr('i-MSCP - Client/Manage Error Custom Pages'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id']),

@@ -2,7 +2,7 @@
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
 #
 # Version: $Id$
 #
@@ -34,7 +34,7 @@ export
 install:
 
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_CONF)/awstats
-	cp ./awstats.ispcp_tpl.conf $(SYSTEM_CONF)/awstats
+	cp ./awstats.imscp_tpl.conf $(SYSTEM_CONF)/awstats
 
 uninstall:
 

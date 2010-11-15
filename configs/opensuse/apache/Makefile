@@ -2,7 +2,7 @@
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
 #
 # Version: $Id$
 #
@@ -38,7 +38,7 @@ install:
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_CONF)/apache
 	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)
 	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/conf.d
-	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/ispcp
+	$(SYSTEM_MAKE_DIRS) $(ROOT_APACHE_CONF)/imscp
 
 	cp ./httpd.conf $(SYSTEM_CONF)/apache
 	cp ./00_master.conf $(SYSTEM_CONF)/apache
@@ -48,9 +48,9 @@ install:
 	cp -R ./parts $(SYSTEM_CONF)/apache
 	cp -R ./working $(SYSTEM_CONF)/apache
 
-	cp ./httpd.conf $(SYSTEM_CONF)/apache/parts/ispcp_base.tpl
-	cp ./fastcgi.conf $(SYSTEM_CONF)/apache/fastcgi_ispcp.conf
-	cp ./fcgid_ispcp.conf $(SYSTEM_CONF)/apache/fcgid_ispcp.conf
+	cp ./httpd.conf $(SYSTEM_CONF)/apache/parts/imscp_base.tpl
+	cp ./fastcgi.conf $(SYSTEM_CONF)/apache/fastcgi_imscp.conf
+	cp ./fcgid_imscp.conf $(SYSTEM_CONF)/apache/fcgid_imscp.conf
 
 uninstall:
 

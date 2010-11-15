@@ -28,13 +28,13 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/ispcp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('dir_item', 'page');
@@ -45,12 +45,12 @@ $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/ftp_choose_dir.tpl')
 
 function gen_directories(&$tpl) {
 
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 	// Initialize variables
 	$path = isset($_GET['cur_dir']) ? $_GET['cur_dir'] : '';
 	$domain = $_SESSION['user_logged'];
 	// Create the virtual file system and open it so it can be used
-	$vfs = new ispCP_VirtualFileSystem($domain, $sql);
+	$vfs = new iMSCP_VirtualFileSystem($domain, $sql);
 	// Get the directory listing
 	$list = $vfs->ls($path);
 	if (!$list) {
@@ -74,7 +74,7 @@ function gen_directories(&$tpl) {
 	// Show directories only
 	foreach ($list as $entry) {
 		// Skip non-directory entries
-		if ($entry['type'] != ispCP_VirtualFileSystem::VFS_TYPE_DIR) {
+		if ($entry['type'] != iMSCP_VirtualFileSystem::VFS_TYPE_DIR) {
 			continue;
 		}
 		// Skip '.' and '..'
@@ -109,7 +109,7 @@ function gen_directories(&$tpl) {
 
 $tpl->assign(
 	array(
-		'TR_CLIENT_WEBTOOLS_PAGE_TITLE' => tr('ispCP - Client/Webtools'),
+		'TR_CLIENT_WEBTOOLS_PAGE_TITLE' => tr('i-MSCP - Client/Webtools'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])

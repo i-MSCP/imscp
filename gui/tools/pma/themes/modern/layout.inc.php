@@ -6,7 +6,7 @@
  *
  * @version $Id: layout.inc.php 11273 2008-05-12 16:27:54Z lem9 $
  * @package phpMyAdmin-theme
- * @subpackage ispCP
+ * @subpackage i-MSCP
  */
 
 /**

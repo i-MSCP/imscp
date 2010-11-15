@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
 #
 # Version: $Id$
 #
@@ -28,9 +28,9 @@
 
 # ispCP ω Omega specific:
 #
-# If you do not want this file to be regenerated from scratch during ispCP
+# If you do not want this file to be regenerated from scratch during i-MSCP
 # update process, change the 'AMAVIS_REGENERATE' parameter value to 'no' in the
-# ispcp.conf file.
+# imscp.conf file.
 
 use strict;
 
@@ -51,7 +51,7 @@ $TEMPBASE = "$MYHOME/tmp"; # working directory, needs to exist, -T
 $ENV{TMPDIR} = $TEMPBASE; # environment variable TMPDIR, used by SA, etc.
 $QUARANTINEDIR = '/var/spool/amavis/virusmails'; # -Q
 $X_HEADER_TAG  = 'X-Virus-Scanned'; # after-default
-$X_HEADER_LINE = "ispCP MailStorm at $myhostname";  # after-default
+$X_HEADER_LINE = "i-MSCP MailStorm at $myhostname";  # after-default
 $allowed_added_header_fields{lc('X-Spam-Checker-Version')} = 1;
 # $quarantine_subdir_levels = 1; # add level of subdirs to disperse quarantine
 # $release_format = 'resend'; # 'attach', 'plain', 'resend'
@@ -79,7 +79,7 @@ $nanny_details_level = 2; # nanny verbosity: 1: traditional, 2: detailed
 $enable_dkim_verification = 1; # enable DKIM signatures verification
 $enable_dkim_signing = 1; # load DKIM signing code, keys defined by dkim_key
 
-@local_domains_maps = (read_hash("/etc/ispcp/amavisd/working/amavisd.domains"));
+@local_domains_maps = (read_hash("/etc/imscp/amavisd/working/amavisd.domains"));
 
 @mynetworks = qw(127.0.0.0/8 [::1] [FE80::]/10 [FEC0::]/10 10.0.0.0/24);
 
@@ -450,7 +450,7 @@ $banned_filename_re = new_RE(
                 [qr'^(inkjetplanet|marketopt|MakeMoney)\d*@'i => 5.0],
             ),
 
-			read_hash("/etc/ispcp/amavisd/working/sender_scores_sitewide"),
+			read_hash("/etc/imscp/amavisd/working/sender_scores_sitewide"),
 
 			{ # a hash-type lookup table (associative array)
 				'nobody@cert.org' => -3.0,

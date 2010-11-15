@@ -28,13 +28,13 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/ispcp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/hosting_plan_update.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('def_language', 'page');
@@ -66,7 +66,7 @@ function check_update_current_value($curr, $new) {
 
 function gen_hp(&$tpl, &$sql, $user_id) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	// get domain id
 	$query = "
@@ -436,7 +436,7 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 
 $tpl->assign(
 	array(
-		'TR_CLIENT_UPDATE_HP'	=> tr('ispCP - Update hosting plan'),
+		'TR_CLIENT_UPDATE_HP'	=> tr('i-MSCP - Update hosting plan'),
 		'THEME_COLOR_PATH'		=> "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET'			=> tr('encoding'),
 		'ISP_LOGO'				=> get_logo($_SESSION['user_id'])
@@ -448,7 +448,7 @@ $tpl->assign(
  */
 function add_new_order(&$tpl, &$sql, $order_id, $user_id) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	// get domain id
 	$query = "
@@ -583,11 +583,11 @@ function add_new_order(&$tpl, &$sql, $order_id, $user_id) {
 
 	$headers = "From: " . $from . "\n";
 	$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 7bit\n";
-	$headers .= "X-Mailer: ispCP auto mailer";
+	$headers .= "X-Mailer: i-MSCP auto mailer";
 
-	$subject = tr("[ispCP OrderPanel] - You have an update order", true);
+	$subject = tr("[i-MSCP OrderPanel] - You have an update order", true);
 
-	$message = tr("You have an update order for the account %s\n\nPlease login into your ispCP control panel at %s for more details",
+	$message = tr("You have an update order for the account %s\n\nPlease login into your i-MSCP control panel at %s for more details",
 		true,
 		$_SESSION['user_logged'],
 		$cfg->BASE_SERVER_VHOST_PREFIX . $cfg->BASE_SERVER_VHOST);

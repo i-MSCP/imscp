@@ -28,13 +28,13 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/ispcp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/manage_reseller_owners.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('hosting_plans', 'page');
@@ -48,7 +48,7 @@ $tpl->define_dynamic('select_admin_option', 'select_admin');
  */
 function gen_reseller_table(&$tpl, &$sql) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$query = "
 		SELECT
@@ -204,7 +204,7 @@ function update_reseller_owner($sql) {
 
 $tpl->assign(
 	array(
-		'TR_ADMIN_MANAGE_RESELLER_OWNERS_PAGE_TITLE' => tr('ispCP - Admin/Manage users/Reseller assignment'),
+		'TR_ADMIN_MANAGE_RESELLER_OWNERS_PAGE_TITLE' => tr('i-MSCP - Admin/Manage users/Reseller assignment'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])

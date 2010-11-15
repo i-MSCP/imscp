@@ -1,5 +1,5 @@
 <?php defined("NET2FTP") or die("Direct access to this location is not allowed."); ?>
-<!-- Template /skins/ispCP/google_login_adsense.template.php begin -->
+<!-- Template /skins/iMSCP/google_login_adsense.template.php begin -->
 <?php if ($net2ftp_settings["show_google_ads"] == "yes") { 
 if     ($net2ftp_globals["language"] == "de") { $google_cpa_choice = "CAAQ-arsiwIaCHOQv-ERh6OOKNOV5HQ"; }
 elseif ($net2ftp_globals["language"] == "fr") { $google_cpa_choice = "CAAQkePuiwIaCO3UAjw69sk6KNGZ5HQ"; }
@@ -23,4 +23,4 @@ google_ad_channel = "4022212193";
 <script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 </script>
 <?php } // end if ?>
-<!-- Template /skins/ispCP/google_login_adsense.template.php end -->
+<!-- Template /skins/iMSCP/google_login_adsense.template.php end -->

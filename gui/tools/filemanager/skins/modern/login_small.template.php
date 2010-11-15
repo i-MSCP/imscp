@@ -1,5 +1,5 @@
 <?php defined("NET2FTP") or die("Direct access to this location is not allowed."); ?>
-<!-- Template /skins/ispCP/login_small.template.php begin -->
+<!-- Template /skins/iMSCP/login_small.template.php begin -->
 <form id="<?php echo $formname; ?>" action="<?php echo $net2ftp_globals["action_url"]; ?>" <?php echo $enctype; ?> method="post">
 <?php	printLoginInfo(); ?>
 <input type="hidden" name="state"          value="<?php echo $go_to_state;  ?>" />
@@ -78,4 +78,4 @@
 <script type="text/javascript"><!--
   document.forms['LoginForm'].<?php echo $focus; ?>.focus();
 //--></script>
-<!-- Template /skins/ispCP/login_small.template.php end -->
+<!-- Template /skins/iMSCP/login_small.template.php end -->

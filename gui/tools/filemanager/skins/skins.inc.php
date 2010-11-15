@@ -29,7 +29,7 @@ function getSkinArray() {
 	global $net2ftp_globals;
 
 // -------------------------------------------------------------------------
-// ispCP Omega  
+// i-MSCP
 // -------------------------------------------------------------------------
 	$skinArray["omega"]["name"]             = __("omega");
 	$skinArray["omega"]["iconset"]          = "nuvola";

@@ -28,9 +28,9 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require 'include/ispcp-lib.php';
+require 'include/imscp-lib.php';
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
 if (isset($_GET['logout'])) {
 	unset_user_login_data();
@@ -67,16 +67,16 @@ $theme_color = isset($_SESSION['user_theme'])
 	? $_SESSION['user_theme']
 	: $cfg->USER_INITIAL_THEME;
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 
 if (($cfg->MAINTENANCEMODE
-		|| ispCP_Update_Database::getInstance()->checkUpdateExists())
+		|| iMSCP_Update_Database::getInstance()->checkUpdateExists())
 	&& !isset($_GET['admin'])) {
 
 	$tpl->define_dynamic('page', $cfg->LOGIN_TEMPLATE_PATH . '/maintenancemode.tpl');
 	$tpl->assign(
 		array(
-			'TR_PAGE_TITLE'		=> tr('ispCP Omega a Virtual Hosting Control System'),
+			'TR_PAGE_TITLE'		=> tr('i-MSCP a Virtual Hosting Control System'),
 			'THEME_COLOR_PATH'	=> $cfg->LOGIN_TEMPLATE_PATH,
 			'THEME_CHARSET'		=> tr('encoding'),
 			'TR_MESSAGE'		=> nl2br(tohtml($cfg->MAINTENANCEMODE_MESSAGE)),
@@ -90,14 +90,14 @@ if (($cfg->MAINTENANCEMODE
 
 	$tpl->assign(
 		array(
-			'TR_MAIN_INDEX_PAGE_TITLE'	=> tr('ispCP Omega a Virtual Hosting Control System'),
+			'TR_MAIN_INDEX_PAGE_TITLE'	=> tr('i-MSCP a Virtual Hosting Control System'),
 			'THEME_COLOR_PATH'			=> $cfg->LOGIN_TEMPLATE_PATH,
 			'THEME_CHARSET'				=> tr('encoding'),
 			'TR_LOGIN'					=> tr('Login'),
 			'TR_USERNAME'				=> tr('Username'),
 			'TR_PASSWORD'				=> tr('Password'),
 			'TR_LOGIN_INFO'				=> tr('Please enter your login information'),
-			// @todo: make this configurable by ispcp-lib
+			// @todo: make this configurable by i-mscp-lib
 			'TR_SSL_LINK'               => isset($_SERVER['HTTPS']) ? 'http://' . htmlentities($_SERVER['HTTP_HOST']) : 'https://' . htmlentities($_SERVER['HTTP_HOST']),
 			'TR_WEBMAIL_SSL_LINK'       => "webmail",
 			'TR_FTP_SSL_LINK'           => "ftp",

@@ -28,13 +28,13 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/ispcp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/settings_layout.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
@@ -56,7 +56,7 @@ if (get_own_logo($_SESSION['user_id']) !== $cfg->IPS_LOGO_PATH . '/isp_logo.gif'
 function save_layout() {
 	global $theme_color;
 
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'save_layout') {
 
@@ -143,7 +143,7 @@ function update_logo() {
 
 
 function update_user_gui_props($file_name, $user_id) {
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$query = "
 		UPDATE
@@ -159,7 +159,7 @@ function update_user_gui_props($file_name, $user_id) {
 
 $tpl->assign(
 	array(
-		'TR_RESELLER_LAYOUT_DATA_PAGE_TITLE'	=> tr('ispCP - Reseller/Change Personal Data'),
+		'TR_RESELLER_LAYOUT_DATA_PAGE_TITLE'	=> tr('i-MSCP - Reseller/Change Personal Data'),
 		'THEME_COLOR_PATH'						=> "../themes/{$cfg->USER_INITIAL_THEME}",
 		'OWN_LOGO'								=> get_own_logo($_SESSION['user_id']),
 		'THEME_CHARSET'							=> tr('encoding'),

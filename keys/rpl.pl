@@ -1,8 +1,8 @@
 #!/usr/bin/perl
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
-# author	Laurent Declercq <laurent.declercq@ispcp.net>
+# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
+# author	Laurent Declercq <laurent.declercq@i-mscp.net>
 #
 # Version: $Id$
 #
@@ -29,7 +29,7 @@
 use FindBin;
 
 use lib "$FindBin::Bin/../engine";
-require 'ispcp_common_methods.pl';
+require 'imscp_common_methods.pl';
 
 use strict;
 use warnings;

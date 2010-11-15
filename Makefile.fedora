@@ -2,7 +2,7 @@
 
 # ispCP ω (OMEGA) a Virtual Hosting Control Panel
 # Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
 #
 # Version: $Id$
 #
@@ -30,16 +30,16 @@
 #
 
 ifndef INST_PREF
-        INST_PREF=/tmp/ispcp
+        INST_PREF=/tmp/imscp
 endif
 
 HOST_OS=fedora
 
 ROOT_CONF=$(INST_PREF)/etc
 
-SYSTEM_ROOT=$(INST_PREF)/var/www/ispcp
-SYSTEM_CONF=$(INST_PREF)/etc/ispcp
-SYSTEM_LOG=$(INST_PREF)/var/log/ispcp
+SYSTEM_ROOT=$(INST_PREF)/var/www/imscp
+SYSTEM_CONF=$(INST_PREF)/etc/imscp
+SYSTEM_LOG=$(INST_PREF)/var/log/imscp
 SYSTEM_APACHE_BACK_LOG=$(INST_PREF)/var/log/httpd/backup
 SYSTEM_VIRTUAL=$(INST_PREF)/var/www/virtual
 SYSTEM_AWSTATS=$(INST_PREF)/var/www/awstats
@@ -58,7 +58,7 @@ install:
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_CONF)
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_ROOT)
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_LOG)
-	$(SYSTEM_MAKE_DIRS) $(SYSTEM_LOG)/ispcp-arpl-msgr
+	$(SYSTEM_MAKE_DIRS) $(SYSTEM_LOG)/imscp-arpl-msgr
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_VIRTUAL)
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_FCGI)
 	$(SYSTEM_MAKE_DIRS) $(SYSTEM_SCOREBOARDS)

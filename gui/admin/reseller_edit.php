@@ -31,9 +31,9 @@
 /**
  * Include core libraries
  */
-require '../include/ispcp-lib.php';
+require '../include/imscp-lib.php';
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
 /*******************************************************************************
  * Functions
@@ -45,7 +45,7 @@ $cfg = ispCP_Registry::get('Config');
  * Return an array of cleaned input data. For performance reasons, the cleanup
  * is performed only once.
  *
- * @author Laurent Declercq (nuxwin) <laurent.declercq@ispcp.net>
+ * @author Laurent Declercq (nuxwin) <laurent.declercq@i-mscp.net>
  * @since rxxxx
  * @return array cleaned data
  */
@@ -98,7 +98,7 @@ function get_clean_input_data() {
  */
 function check_data(&$errFields) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	// Get needed data
 	$rdata =& get_data();
@@ -167,7 +167,7 @@ function check_data(&$errFields) {
 	 * Check for new domains limit
 	 */
 
-	if (ispcp_limit_check($rdata['max_dmn_cnt'], null)) {
+	if (imscp_limit_check($rdata['max_dmn_cnt'], null)) {
 		$rs = _check_new_limit(
 			$rdata['max_dmn_cnt'], $rdmn_current,
 			$udmn_current, $udmn_uf, tr('Domains')
@@ -185,7 +185,7 @@ function check_data(&$errFields) {
 	 * Check for new subdomains limit
 	 */
 
-	if (ispcp_limit_check($rdata['max_sub_cnt'])) {
+	if (imscp_limit_check($rdata['max_sub_cnt'])) {
 		$rs = _check_new_limit(
 			$rdata['max_sub_cnt'], $rsub_current,
 			$usub_current, $usub_uf, tr('Subdomains')
@@ -203,7 +203,7 @@ function check_data(&$errFields) {
 	 * Check for new domain alias limit
 	 */
 
-	if (ispcp_limit_check($rdata['max_als_cnt'])) {
+	if (imscp_limit_check($rdata['max_als_cnt'])) {
 		$rs = _check_new_limit(
 			$rdata['max_als_cnt'], $rals_current,
 			$uals_current, $uals_uf, tr('Aliases')
@@ -221,7 +221,7 @@ function check_data(&$errFields) {
 	 * Check for new mail accounts limit
 	 */
 
-	if (ispcp_limit_check($rdata['max_mail_cnt'])) {
+	if (imscp_limit_check($rdata['max_mail_cnt'])) {
 		$rs = _check_new_limit(
 			$rdata['max_mail_cnt'], $rmail_current,
 			$umail_current, $umail_uf, tr('Mail')
@@ -239,7 +239,7 @@ function check_data(&$errFields) {
 	 * Check for new Ftp accounts limit
 	 */
 
-	if (ispcp_limit_check($rdata['max_ftp_cnt'])) {
+	if (imscp_limit_check($rdata['max_ftp_cnt'])) {
 		$rs = _check_new_limit(
 			$rdata['max_ftp_cnt'], $rftp_current,
 			$uftp_current, $uftp_uf, tr('FTP')
@@ -257,7 +257,7 @@ function check_data(&$errFields) {
 	 * Check for new Sql databases limit
 	 */
 
-	if (!$rs = ispcp_limit_check($rdata['max_sql_db_cnt'])) {
+	if (!$rs = imscp_limit_check($rdata['max_sql_db_cnt'])) {
 		set_page_message(tr('Incorrect SQL databases limit!'));
 	} else if ($rdata['max_sql_db_cnt'] == -1 && $rdata['max_sql_user_cnt'] != -1) {
 		set_page_message(
@@ -279,7 +279,7 @@ function check_data(&$errFields) {
 	 * Check for new Sql users limit
 	 */
 
-	if (!$rs = ispcp_limit_check($rdata['max_sql_user_cnt'])) {
+	if (!$rs = imscp_limit_check($rdata['max_sql_user_cnt'])) {
 		set_page_message(tr('Incorrect SQL users limit!'));
 	} else if ($rdata['max_sql_db_cnt'] != -1
 		&& $rdata['max_sql_user_cnt'] == -1) {
@@ -302,7 +302,7 @@ function check_data(&$errFields) {
 	 * Check for new traffic limit
 	 */
 
-	if (ispcp_limit_check($rdata['max_traff_amnt'], null)) {
+	if (imscp_limit_check($rdata['max_traff_amnt'], null)) {
 		$rs = _check_new_limit(
 			$rdata['max_traff_amnt'], $rtraff_current,
 			$utraff_current / 1024 / 1024, $utraff_uf,
@@ -321,7 +321,7 @@ function check_data(&$errFields) {
 	 * Check for new diskspace limit
 	 */
 
-	if (ispcp_limit_check($rdata['max_disk_amnt'], null)) {
+	if (imscp_limit_check($rdata['max_disk_amnt'], null)) {
 		$rs = _check_new_limit(
 			$rdata['max_disk_amnt'], $rdisk_current,
 			$udisk_current / 1024 / 1024, $udisk_uf,
@@ -463,7 +463,7 @@ function check_user_ip_data($reseller_id, $r_ips, $u_ips) {
  */
 function get_reseller_prop($reseller_id) {
 
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$query = "
 		SELECT
@@ -509,8 +509,8 @@ function get_reseller_prop($reseller_id) {
  */
 function get_servers_ips(&$tpl, $rip_lst) {
 
-	$cfg = ispCP_Registry::get('Config');
-	$sql = ispCP_Registry::get('Db');
+	$cfg = iMSCP_Registry::get('Config');
+	$sql = iMSCP_Registry::get('Db');
 
 	$query = "
 		SELECT
@@ -603,7 +603,7 @@ function get_servers_ips(&$tpl, $rip_lst) {
  */
 function have_reseller_ip_users($reseller_id, $ip, &$ip_num, &$ip_name) {
 
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	$query = "
 		SELECT
@@ -663,7 +663,7 @@ function update_reseller() {
 	$rdata =& get_data();
 
 	// Get database instance
-	$sql = ispCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('Db');
 
 	/**
 	 * Update reseller additional data
@@ -735,7 +735,7 @@ function update_reseller() {
  * Note: The template instance must always be passed as
  * parameter of this function during the first call.
  *
- * @author Laurent Declercq (Nuxwin) <laurent.declercq@ispcp.net>
+ * @author Laurent Declercq (Nuxwin) <laurent.declercq@i-mscp.net>
  * @since r2561
  * [@param object &$tpl reference to the template instance]
  * @return array reseller properties and additional data
@@ -746,7 +746,7 @@ function &get_data(&$tpl = false) {
 
 	if (empty($rdata) && $tpl !== false) {
 
-		$sql = ispCP_Registry::get('Db');
+		$sql = iMSCP_Registry::get('Db');
 
 		// Update action
 		if (isset($_POST['uaction']) && $_POST['uaction'] == 'update_reseller') {
@@ -794,7 +794,7 @@ function &get_data(&$tpl = false) {
  *
  * Highlighting erroneous input fields with a appropriate color
  *
- * @author Laurent Declercq (Nuxwin) <laurent.declercq@ispcp.net>
+ * @author Laurent Declercq (Nuxwin) <laurent.declercq@i-mscp.net>
  * @Since r2587
  * @param object &$tpl reference to the template instance
  * @param array &$errFields reference to the array of error fields indicators
@@ -846,7 +846,7 @@ if (isset($_REQUEST['edit_id']) && !isset($_POST['Cancel'])) {
 			exit;
 	}
 
-	$tpl = new ispCP_pTemplate();
+	$tpl = new iMSCP_pTemplate();
 	$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH .'/reseller_edit.tpl');
 	$tpl->define_dynamic('page_message', 'page');
 	$tpl->define_dynamic('hosting_plans', 'page');
@@ -857,7 +857,7 @@ if (isset($_REQUEST['edit_id']) && !isset($_POST['Cancel'])) {
 	$tpl->assign(
 		array(
 			'TR_ADMIN_EDIT_RESELLER_PAGE_TITLE' =>
-				tr('ispCP - Admin/Manage users/Edit Reseller'),
+				tr('i-MSCP - Admin/Manage users/Edit Reseller'),
 			'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 			'THEME_CHARSET' => tr('encoding'),
 			'ISP_LOGO' => get_logo($_SESSION['user_id'])
@@ -1010,7 +1010,7 @@ $tpl->assign(
 		'TR_RESET' => tr('Reset'),
 		'TR_GENERATED_PWD' => tr('Generated password:'),
 		'TR_CTRL+C' => tr('Type `CTRL+C` to copy the generated password in the clipboard.'),
-		'TR_EVENT_NOTICE' => html_entity_decode(htmlspecialchars_decode(tr('ispCP NOTICE:\n\nThe `Enter` key is disabled for performance reasons!\nInstead, use the %s button to update the data.', '`'.tr('Update').'`')), ENT_QUOTES, 'UTF-8'),
+		'TR_EVENT_NOTICE' => html_entity_decode(htmlspecialchars_decode(tr('i-MSCP NOTICE:\n\nThe `Enter` key is disabled for performance reasons!\nInstead, use the %s button to update the data.', '`'.tr('Update').'`')), ENT_QUOTES, 'UTF-8'),
 
 		'USERNAME' => tohtml($rdata['admin_name']),
 		'EMAIL' => tohtml($rdata['email']),

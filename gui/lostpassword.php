@@ -28,23 +28,23 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require 'include/ispcp-lib.php';
+require 'include/imscp-lib.php';
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
 if (!$cfg->LOSTPASSWORD) {
-	throw new ispCP_Exception_Production(
+	throw new iMSCP_Exception_Production(
 		tr('Retrieving lost passwords is currently not possible')
 	);
 }
 
 // check for gd >= 2.x
 if (!check_gd()) {
-	throw new ispCP_Exception("ERROR: php-extension 'gd' not loaded!");
+	throw new iMSCP_Exception("ERROR: php-extension 'gd' not loaded!");
 }
 
 if (!captcha_fontfile_exists()) {
-	throw new ispCP_Exception("ERROR: captcha fontfile not found!");
+	throw new iMSCP_Exception("ERROR: captcha fontfile not found!");
 }
 
 // remove old uniqkeys
@@ -60,11 +60,11 @@ if (isset($_GET['key'])) {
 	if ($_GET['key'] != "") {
 		check_input($_GET['key']);
 
-		$tpl = new ispCP_pTemplate();
+		$tpl = new iMSCP_pTemplate();
 		$tpl->define('page', $cfg->LOGIN_TEMPLATE_PATH . '/lostpassword_message.tpl');
 		$tpl->assign(
 			array(
-				'TR_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Virtual Hosting Control System'),
+				'TR_MAIN_INDEX_PAGE_TITLE' => tr('i-MSCP - Virtual Hosting Control System'),
 				'THEME_COLOR_PATH' => "themes/$theme_color",
 				'THEME_CHARSET' => tr('encoding')
 			)
@@ -103,11 +103,11 @@ if (isset($_POST['uname'])) {
 		check_input(trim($_POST['uname']));
 		check_input($_POST['capcode']);
 
-		$tpl = new ispCP_pTemplate();
+		$tpl = new iMSCP_pTemplate();
 		$tpl->define('page', $cfg->LOGIN_TEMPLATE_PATH . '/lostpassword_message.tpl');
 		$tpl->assign(
 			array(
-				'TR_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Virtual Hosting Control System'),
+				'TR_MAIN_INDEX_PAGE_TITLE' => tr('i-MSCP - Virtual Hosting Control System'),
 				'THEME_COLOR_PATH' => "themes/$theme_color",
 				'THEME_CHARSET' => tr('encoding')
 			)
@@ -142,11 +142,11 @@ if (isset($_POST['uname'])) {
 unblock($cfg->BRUTEFORCE_BLOCK_TIME, 'captcha');
 is_ipaddr_blocked(null, 'captcha', true);
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 $tpl->define('page', $cfg->LOGIN_TEMPLATE_PATH . '/lostpassword.tpl');
 $tpl->assign(
 	array(
-		'TR_MAIN_INDEX_PAGE_TITLE' => tr('ispCP - Virtual Hosting Control System'),
+		'TR_MAIN_INDEX_PAGE_TITLE' => tr('i-MSCP - Virtual Hosting Control System'),
 		'THEME_COLOR_PATH' => $cfg->LOGIN_TEMPLATE_PATH,
 		'THEME_CHARSET' => tr('encoding'),
 		'TR_CAPCODE' => tr('Security code'),

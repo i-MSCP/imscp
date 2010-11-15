@@ -1,5 +1,5 @@
 <?php defined("NET2FTP") or die("Direct access to this location is not allowed."); ?>
-<!-- Template /skins/ispCP/manage.template.php begin -->
+<!-- Template /skins/iMSCP/manage.template.php begin -->
 	<div id="main">
 <?php		printTitleIcon(); ?>
 		<h1><?php echo $title; ?></h1>			
@@ -31,4 +31,4 @@
 		</form>
 	</div>
 <?php require_once($net2ftp_globals["application_skinsdir"] . "/" . $net2ftp_globals["skin"] . "/footer.template.php"); ?>
-<!-- Template /skins/ispCP/manage.template.php end -->
+<!-- Template /skins/iMSCP/manage.template.php end -->

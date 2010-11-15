@@ -4521,10 +4521,10 @@ msgstr ""
 "ezarpena"
 
 msgid "ispCP - Reseller: Support System: View Ticket"
-msgstr "ispcp - Bersaltzailea : Euskarri Sistema: Ikusi Txartela"
+msgstr "i-mscp - Bersaltzailea : Euskarri Sistema: Ikusi Txartela"
 
 msgid "ispCP - Users/Add user"
-msgstr "ispcp - Erabitlzaileak/Gehitu erabiltzailea"
+msgstr "i-mscp - Erabitlzaileak/Gehitu erabiltzailea"
 
 msgid "1 Month"
 msgstr "Hilabete 1"

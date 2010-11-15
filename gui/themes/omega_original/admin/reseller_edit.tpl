@@ -5,10 +5,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css" />
+<link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/jquery.js"></script>
-<script type="text/javascript" src="{THEME_COLOR_PATH}/css/jquery.ispcpTooltips.js"></script>
-<script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
+<script type="text/javascript" src="{THEME_COLOR_PATH}/css/jquery.imscpTooltips.js"></script>
+<script type="text/javascript" src="{THEME_COLOR_PATH}/css/imscp.js"></script>
 <!--[if lt IE 7.]>
 <script defer type="text/javascript" src="{THEME_COLOR_PATH}/css/pngfix.js"></script>
 <![endif]-->
@@ -38,7 +38,7 @@
 							val($(this).val()).
 							insertAfter('input[name=pass'+i+']').select().
 							// Create tooltip linked to the create text input field
-							ispCPtooltips({msg:'{TR_CTRL+C}'}).
+							iMSCPtooltips({msg:'{TR_CTRL+C}'}).
 							// Restore input password field on mouseout
 							mouseout(function(){$(this).remove();$(':password').show();
 								}
@@ -61,7 +61,7 @@
 			datatype:'text',
 			beforeSend:function(xhr){xhr.setRequestHeader('Accept','text/plain');},
 			success:function(r){$(':password').val(r).attr('readonly',true);gpwd=true;},
-			error:ispCPajxError
+			error:iMSCPajxError
 		});
 
 		// Adds event handlers for the ajax spinner
@@ -95,7 +95,7 @@
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="height:100%;padding:0;margin:0 auto;">
 	<tr>
-		<td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" width="195" height="56" border="0" alt="ispCP Logogram" /></td>
+		<td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" width="195" height="56" border="0" alt="i-MSCP Logogram" /></td>
 		<td style="height: 56px; width:100%; background-color: #0f0f0f"><img src="{THEME_COLOR_PATH}/images/top/top_left_bg.jpg" width="582" height="56" border="0" alt="" /></td>
 		<td style="width: 73px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_right.jpg" width="73" height="56" border="0" alt="" /></td>
 	</tr>

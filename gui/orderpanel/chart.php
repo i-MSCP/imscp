@@ -28,11 +28,11 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/ispcp-lib.php';
+require '../include/imscp-lib.php';
 
-$cfg = ispCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('Config');
 
-$tpl = new ispCP_pTemplate();
+$tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->PURCHASE_TEMPLATE_PATH . '/chart.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('purchase_header', 'page');
@@ -46,7 +46,7 @@ $tpl->define_dynamic('purchase_footer', 'page');
 
 function gen_chart(&$tpl, &$sql, $user_id, $plan_id) {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	if (isset($cfg->HOSTING_PLANS_LEVEL)&& $cfg->HOSTING_PLANS_LEVEL == 'admin') {
 		$query = "
@@ -175,7 +175,7 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['plan_id'])) {
 	$user_id = $_SESSION['user_id'];
 	$plan_id = $_SESSION['plan_id'];
 } else {
-	throw new ispCP_Exception_Production(
+	throw new iMSCP_Exception_Production(
 		tr('You do not have permission to access this interface!')
 	);
 }

@@ -25,13 +25,13 @@
  * isp Control Panel. All Rights Reserved.
  */
 
-require '../include/ispcp-lib.php';
+require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
 if (isset($_GET['edit_id']) && $_GET['edit_id'] !== '') {
 
-	$cfg = ispCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
 
 	$dns_id = (int) $_GET['edit_id'];
 	$dmn_id = get_user_domain_id($sql, $_SESSION['user_id']);
