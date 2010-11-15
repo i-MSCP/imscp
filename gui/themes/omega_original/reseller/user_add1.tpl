@@ -6,9 +6,13 @@
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
+<link href="{THEME_COLOR_PATH}/css/jquery.ui.datepicker.css" rel="stylesheet" type="text/css" />
+
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/jquery.js"></script>
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/jquery.imscpTooltips.js"></script>
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/imscp.js"></script>
+<script type="text/javascript" src="{THEME_COLOR_PATH}/css/jquery.ui.core.js"></script>
+<script type="text/javascript" src="{THEME_COLOR_PATH}/css/jquery.ui.datepicker.js"></script>
 <!--[if lt IE 7.]>
 <script defer type="text/javascript" src="{THEME_COLOR_PATH}/css/pngfix.js"></script>
 <![endif]-->
@@ -33,7 +37,7 @@
 </tr>
 <!-- EDP: logged_from -->
 <tr>
-<td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" width="195" height="56" border="0" alt="i-MSCP Logogram" /></td>
+<td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" width="195" height="56" border="0" alt="iMSCP Logogram" /></td>
 <td style="height: 56px; width:100%; background-color: #0f0f0f"><img src="{THEME_COLOR_PATH}/images/top/top_left_bg.jpg" width="582" height="56" border="0" alt="" /></td>
 <td style="width: 73px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_right.jpg" width="73" height="56" border="0" alt="" /></td>
 </tr>
@@ -82,15 +86,17 @@
 		      <tr>
                         <td width="25">&nbsp;</td>
                         <td class="content2" width="200">{TR_DOMAIN_EXPIRE}</td>
-                        <td class="content"><select name="dmn_expire">
-							<option value="0"{EXPIRE_NEVER_SET}>{TR_DOMAIN_EXPIRE_NEVER}</option>
-							<option value="1"{EXPIRE_1_MONTH_SET}>{TR_DOMAIN_EXPIRE_1_MONTH}</option>
-							<option value="2"{EXPIRE_2_MONTH_SET}>{TR_DOMAIN_EXPIRE_2_MONTHS}</option>
-							<option value="3"{EXPIRE_3_MONTH_SET}>{TR_DOMAIN_EXPIRE_3_MONTHS}</option>
-							<option value="6"{EXPIRE_6_MONTH_SET}>{TR_DOMAIN_EXPIRE_6_MONTHS}</option>
-							<option value="12"{EXPIRE_1_YEAR_SET}>{TR_DOMAIN_EXPIRE_1_YEAR}</option>
-							<option value="24"{EXPIRE_2_YEARS_SET}>{TR_DOMAIN_EXPIRE_2_YEARS}</option>
-						</select>
+                        <td class="content">
+						<script>
+							$(function() {
+								$( "#datepicker" ).datepicker();
+							});
+						</script>
+					<div class="content">
+						<p>Date: <input type="text" id="datepicker" name="dmn_expire_date"> (MM/DD/YYYY) <input type="checkbox" name="neverexpire" checked="checked"> Never Expire</p>
+ 
+					</div>
+
                         </td>
                       </tr>
                       <!-- BDP: add_user -->
