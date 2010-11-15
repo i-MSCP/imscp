@@ -1,13 +1,11 @@
 #!/bin/sh
 
-# i-MSCP helper library for distribution maintenace scripts
+# i-MSCP a internet Multi Server Control Panel
 #
-# ispCP ω (OMEGA) a Virtual Hosting Control Panel
-# Copyright (C) 2006-2010 by isp Control Panel - http://i-mscp.net
-# author	Laurent Declercq <laurent.declercq@i-mscp.net>
-# version	1.0.3
+# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2010 by internet Multi Server Control Panel - http://i-mscp.net
 #
-# SVN: $Id$
+# Version: $Id$
 #
 # The contents of this file are subject to the Mozilla Public License
 # Version 1.1 (the "License"); you may not use this file except in
@@ -25,9 +23,12 @@
 # Portions created by Initial Developer are Copyright (C) 2006-2010 by
 # isp Control Panel. All Rights Reserved.
 #
-# The ispCP ω Home Page is:
+# Portions created by the i-MSCP Team are Copyright (C) 2010 by
+# internet Multi Server Control Panel. All Rights Reserved.
 #
-#    http://isp-control.net
+# The i-MSCP Home Page is:
+#
+#    http://i-mscp.net
 #
 
 ################################################################################

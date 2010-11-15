@@ -1,7 +1,7 @@
 %define version 1.0.2.20090822
 
 License: MPL LGPL
-Name: i-mscp
+Name: i-MSCP
 Version: %{version}
 Release: 0%{dist}
 URL: http://i-mscp.net/
