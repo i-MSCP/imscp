@@ -95,7 +95,7 @@ class iMSCP_Update_Version extends iMSCP_Update {
 	 */
 	protected function _getNextVersion() {
 
-		$last_update = "http://www.isp-control.net/latest.txt";
+		$last_update = "http://i-mscp.net/latest.txt";
 		ini_set('user_agent', 'Mozilla/5.0');
 		$timeout = 2;
 		$old_timeout = ini_set('default_socket_timeout', $timeout);
