@@ -32,7 +32,7 @@
 /***
  * Script short description:
  *
- * This script allows PhpMyAdmin authentication from ispCP
+ * This script allows PhpMyAdmin authentication from i-MSCP
  */
 
 /*******************************************************************************
@@ -173,7 +173,7 @@ function pmaAuth($dbUserId) {
  * Main program
  */
 
-// Include all needed libraries and process to the ispCP initialization
+// Include all needed libraries and process to the i-MSCP initialization
 require '../include/imscp-lib.php';
 
 // Check login

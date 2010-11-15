@@ -116,7 +116,7 @@ if (isset($_GET['edit_id']) && $_GET['edit_id'] !== '') {
 		);
 	}
 
-	// Send request to ispCP daemon
+	// Send request to i-MSCP daemon
 	send_request();
 
 	write_log(
