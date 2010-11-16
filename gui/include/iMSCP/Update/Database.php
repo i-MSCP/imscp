@@ -1,6 +1,6 @@
 <?php
 /**
- * ispCP ω (OMEGA) a Virtual Hosting Control System
+ * i-MSCP a internet Multi Server Control Panel
  *
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
@@ -17,20 +17,24 @@
  * The Initial Developer of the Original Code is ispCP Team.
  * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
+ * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	ispCP
+ * @category	i-MSCP
  * @package		iMSCP_Update
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @copyright 	2006-2010 by ispCP | http://i-mscp.net
  * @author 		ispCP Team
+ * @author 		i-MSCP Team
  * @version 	SVN: $Id$
- * @link		http://isp-control.net ispCP Home Site
+ * @link		http://i-mscp.net i-MSCP Home Site
  * @license		http://www.mozilla.org/MPL/ MPL 1.1
  */
 
 /**
  * Class for database updates
  *
- * @category	ispCP
+ * @category	i-MSCP
  * @package		iMSCP_Update
  * @author		Daniel Andreca <sci2tech@gmail.com>
  * @version		1.0.1
