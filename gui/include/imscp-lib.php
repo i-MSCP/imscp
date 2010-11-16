@@ -131,11 +131,6 @@ require_once 'i18n.php';
 require_once 'system-message.php';
 
 /**
- * SQL convenience functions
- */
-require_once 'sql.php';
-
-/**
  * Authentication functions
  */
 require_once 'login-functions.php';
