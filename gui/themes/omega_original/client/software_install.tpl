@@ -6,24 +6,22 @@
 <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<link href="{THEME_COLOR_PATH}/css/ispcp.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="{THEME_COLOR_PATH}/css/ispcp.js"></script>
+<link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="{THEME_COLOR_PATH}/css/imscp.js"></script>
 <script language="JavaScript" type="text/JavaScript">
-<!--
+/*<![CDATA[
 function OpenTree()
 {
   libwindow=window.open("ftp_choose_dir.php","Hello","menubar=no,width=470,height=350,scrollbars=yes");
   
 }
-//-->
-<!--
-	function set_installpath() {
-		var inputvars = document.forms[0].elements['selected_domain'].value;
-		inputvars = inputvars.toLowerCase();
-		var splitinputvars = inputvars.split(";");
-		document.forms[0].elements['other_dir'].value = splitinputvars[4];
-	}
-//-->
+function set_installpath() {
+	var inputvars = document.forms[0].elements['selected_domain'].value;
+	inputvars = inputvars.toLowerCase();
+	var splitinputvars = inputvars.split(";");
+	document.forms[0].elements['other_dir'].value = splitinputvars[4];
+}
+/*]]>*/
 </script>
 </head>
 <body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif','{THEME_COLOR_PATH}/images/icons/email_a.gif','{THEME_COLOR_PATH}/images/icons/ftp_a.gif','{THEME_COLOR_PATH}/images/icons/custom_link_a.gif')">
@@ -37,7 +35,7 @@ function OpenTree()
 </tr>
 <!-- EDP: logged_from -->
 <tr>
-<td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" width="195" height="56" border="0" alt="ispCP Logogram" /></td>
+<td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" width="195" height="56" border="0" alt="i-MSCP Logogram" /></td>
 <td style="height: 56px; width:100%; background-color: #0f0f0f"><img src="{THEME_COLOR_PATH}/images/top/top_left_bg.jpg" width="582" height="56" border="0" alt="" /></td>
 <td style="width: 73px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_right.jpg" width="73" height="56" border="0" alt="" /></td>
 </tr>
