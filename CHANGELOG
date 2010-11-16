@@ -1,6 +1,10 @@
 i-MSCP ChangeLog
 ~~~~~~~~~~~~~~~~
 
+2010-11-16 Laurent Declercq
+	- GUI:
+		* Fixed #5 Update - jQuery - version 1.4.3 available
+
 2010-11-16 Sascha Bay
 	- GUI:
 		* Fixed #10: IP-Overview for admin and reseller
