@@ -124,7 +124,7 @@ sub pkt_add_data {
 							software_version		=>	'',
 							software_language		=>	'',
 							software_type			=>	'',
-                            software_db 			=>	'',
+							software_db 			=>	'',
 							software_prefix			=>	'',
 							software_link			=>	'',
 							software_desc			=>	''
