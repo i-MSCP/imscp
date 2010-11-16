@@ -119,7 +119,8 @@ sub pkt_add_data {
 	$rs = sys_command_rs("$main::cfg{'CMD_CP'} $sw_src_path-$sw_software_id.tar.gz $sw_tmp_path/");
 	$rs = sys_command_rs("$main::cfg{'CMD_TAR'} -xzf $sw_tmp_path/$sw_software_archive-$sw_software_id.tar.gz");
 	if (-e $sw_install_xml_file && -e $sw_uninstall_xml_file && -d $sw_tmp_path."/sql/" && -d $sw_tmp_path."/web/") {
-		our %INSTALL_DATA = (software_installfile	=>	'',
+		our %INSTALL_DATA = (
+							software_installfile		=>	'',
 							software_name			=>	'',
 							software_version		=>	'',
 							software_language		=>	'',
@@ -128,7 +129,7 @@ sub pkt_add_data {
 							software_prefix			=>	'',
 							software_link			=>	'',
 							software_desc			=>	''
-							);
+						);
 		my $parser = new XML::Parser ();
 		$parser->setHandlers (
 							Start   => \&startElement,
