@@ -1,9 +1,9 @@
 <?php
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * ispCP ω (OMEGA) a Virtual Hosting Control System
+ * i-MSCP a internet Multi Server Control Panel
  *
- * phpMyAdmin configuration file preedided by ispCP
+ * phpMyAdmin configuration file preedided by i-MSCP
  *
  * All directives are explained in Documentation.html and on phpMyAdmin
  * wiki <http://wiki.phpmyadmin.net>.
@@ -11,8 +11,10 @@
  * @version     $Id$
  * @package     phpMyAdmin
  * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @link        http://isp-control.net
+ * @copyright   2010 by i-MSCP | http://i-mscp.net
+ * @link        http://i-mscp.net
  * @author      ispCP Team
+ * @author      i-MSCP Team
  */
 
 /*

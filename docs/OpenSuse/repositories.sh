@@ -1,13 +1,11 @@
 #!/bin/sh
+
+# i-MSCP a internet Multi Server Control Panel
 #
-# ispCP repositories install script for OpenSuse 11.3
+# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2010 by internet Multi Server Control Panel - http://i-mscp.net
 #
-# ispCP ω (OMEGA) a Virtual Hosting Control Panel
-# Copyright (C) 2006-2009 by isp Control Panel - http://i-mscp.net
-#
-# author Laurent Declercq <laurent.declercq@i-mscp.net>
-# version 1.0.0
-# SVN: $Id$
+# Version: $Id$
 #
 # The contents of this file are subject to the Mozilla Public License
 # Version 1.1 (the "License"); you may not use this file except in
@@ -22,12 +20,16 @@
 # The Original Code is "ispCP ω (OMEGA) a Virtual Hosting Control Panel".
 #
 # The Initial Developer of the Original Code is ispCP Team.
-# Portions created by Initial Developer are Copyright (C) 2006-2009 by
+# Portions created by Initial Developer are Copyright (C) 2006-2010 by
 # isp Control Panel. All Rights Reserved.
 #
-# The ispCP ω Home Page is:
+# Portions created by the i-MSCP Team are Copyright (C) 2010 by
+# internet Multi Server Control Panel. All Rights Reserved.
 #
-#    http://isp-control.net
+# The i-MSCP Home Page is:
+#
+#    http://i-mscp.net
+#
 
 
 ZYPPER_BIN=/usr/bin/zypper

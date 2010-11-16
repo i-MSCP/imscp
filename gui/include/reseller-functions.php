@@ -182,6 +182,7 @@ function gen_reseller_menu(&$tpl, $menu_file) {
 			'TR_MENU_ORDER_SETTINGS' => tr('Order settings'),
 			'TR_MENU_ORDER_EMAIL' => tr('Order email setup'),
 			'TR_MENU_LOSTPW_EMAIL' => tr('Lostpw email setup'),
+			'TR_MENU_IP_USAGE' => tr('IP usage'),
 			'VERSION' => $cfg->Version,
 			'BUILDDATE' => $cfg->BuildDate,
 			'CODENAME' => $cfg->CodeName

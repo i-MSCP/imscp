@@ -1115,7 +1115,7 @@ function delete_sql_database(&$sql, $dmn_id, $db_id) {
 	$query = "DROP DATABASE IF EXISTS $db_name;";
 	exec_query($sql, $query);
 
-	write_log($_SESSION['user_logged'] . ": delete SQL database: " . $db_name);
+	write_log($_SESSION['user_logged'] . ": delete SQL database: " . tohtml($db_name));
 	// delete desired database from the i-MSCP sql_database table;
 
 	$query = "

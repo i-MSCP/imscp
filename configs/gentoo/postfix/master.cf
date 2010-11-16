@@ -52,7 +52,8 @@ scache	  unix	-	-	-	-	1	scache
 # @copyright	2006-2010 by ispCP | http://isp-control.net
 # @copyright    2010 by i-MSCP | http://www.i-mscp.net
 # @version		SVN: $Id$
-# @link			http://isp-control.net
+# @link			http://www.i-mscp.net
+# @author		ispCP Team
 # @author		i-MSCP Team
 # ====================================================================
 # for AMaViS and spam filter support

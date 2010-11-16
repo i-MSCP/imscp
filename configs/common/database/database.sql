@@ -1,9 +1,11 @@
 --
--- ISPCP ω (OMEGA) a Virtual Hosting Control Panel
--- Copyright (c) 2001-2006 by moleSoftware GmbH
--- Copyright (c) 2006-2010 by ispCP | http://isp-control.net
+-- i-MSCP a internet Multi Server Control Panel
 --
--- Version: $Id: database.sql 3398 2010-10-03 20:17:41Z nuxwin $
+-- Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
+-- Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+-- Copyright (C) 2010 by internet Multi Server Control Panel - http://i-mscp.net
+--
+-- Version: $Id: imscp_common_methods.pl 3684 2010-11-15 14:21:06Z sci2tech $
 --
 -- The contents of this file are subject to the Mozilla Public License
 -- Version 1.1 (the "License"); you may not use this file except in
@@ -20,12 +22,16 @@
 -- The Initial Developer of the Original Code is moleSoftware GmbH.
 -- Portions created by Initial Developer are Copyright (C) 2001-2006
 -- by moleSoftware GmbH. All Rights Reserved.
+--
 -- Portions created by the ispCP Team are Copyright (C) 2006-2010 by
 -- isp Control Panel. All Rights Reserved.
 --
--- The ispCP ω Home Page is:
+-- Portions created by the i-MSCP Team are Copyright (C) 2010 by
+-- internet Multi Server Control Panel. All Rights Reserved.
 --
---    http://isp-control.net
+-- The i-MSCP Home Page is:
+--
+--    http://i-mscp.net
 --
 -- --------------------------------------------------------
 
@@ -126,7 +132,7 @@ INSERT INTO `config` (`name`, `value`) VALUES
 ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
 ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
 ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-('DATABASE_REVISION', '45');
+('DATABASE_REVISION', '46');
 
 -- --------------------------------------------------------
 

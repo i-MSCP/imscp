@@ -233,8 +233,6 @@ function update_user_props($user_id, $props) {
 
 		$update_status = $cfg->ITEM_CHANGE_STATUS;
 
-		// check if we have to wait some system update
-		check_for_lock_file();
 		// ... and go update
 
 		// update the domain

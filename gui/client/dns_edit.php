@@ -1,11 +1,13 @@
 <?php
 /**
- * ispCP ω (OMEGA) a Virtual Hosting Control System
+ * i-MSCP a internet Multi Server Control Panel
  *
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @copyright 	2010 by i-MSCP | http://i-mscp.net
  * @version 	SVN: $Id$
- * @link 		http://isp-control.net
+ * @link 		http://i-mscp.net
  * @author 		ispCP Team
+ * @author 		i-MSCP Team
  *
  * @license
  * The contents of this file are subject to the Mozilla Public License

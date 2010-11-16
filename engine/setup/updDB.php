@@ -1,6 +1,11 @@
 <?php
 /**
- * ispCP ω (OMEGA) a Virtual Hosting Control System
+ * i-MSCP a internet Multi Server Control Panel
+ *
+ * Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+ * Copyright (C) 2010 by internet Multi Server Control Panel - http://i-mscp.net
+ *
+ * Version: $Id$
  *
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
@@ -17,16 +22,14 @@
  * The Initial Developer of the Original Code is ispCP Team.
  * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
  *
- * @category    ispCP
- * @package     ispCP_Setup
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
- * @version     SVN: $Id$
- * @link        http://isp-control.net ispCP Home Site
- * @license     http://www.mozilla.org/MPL/ MPL 1.1
+ * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ * internet Multi Server Control Panel. All Rights Reserved.
+ *
+ * The i-MSCP Home Page is:
+ *
+ *    http://i-mscp.net
+ *
  */
 
 // GUI root directory absolute path

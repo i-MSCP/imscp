@@ -613,7 +613,7 @@ function block_ipaddr($ipaddr, $type = 'General') {
 
 	write_log(
 			"$type protection, <b><i> " .
-				htmlspecialchars($ipaddr, ENT_QUOTES, "UTF-8") .
+				tohtml($ipaddr) .
 					"</i></b> blocked for " . $cfg->BRUTEFORCE_BLOCK_TIME .
 						" minutes."
 	);
@@ -661,7 +661,7 @@ function register_user($uname, $upass) {
 	check_ipaddr();
 
 	if (!username_exists($uname)) {
-		write_log("Login error, <b><i>".$uname."</i></b> unknown username");
+		write_log("Login error, <b><i>".tohtml($uname)."</i></b> unknown username");
 		system_message(
 			tr('You entered an incorrect username/password.'),
 			$backButtonDestination
@@ -882,7 +882,7 @@ function check_login($fName = null, $preventExternalLogin = true) {
 
 				write_log(
 					'Warning! user |' . $userLoggued . '| requested |' .
-						$_SERVER['REQUEST_URI'] . '| with REQUEST_METHOD |' .
+						tohtml($_SERVER['REQUEST_URI']) . '| with REQUEST_METHOD |' .
 							$_SERVER['REQUEST_METHOD'] . '|'
 				);
 			}

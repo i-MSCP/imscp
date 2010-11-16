@@ -296,7 +296,9 @@ function sendpassword($uniqkey) {
 		$mail_result = mail($to, $subject, $message, $headers);
 
 		$mail_status = ($mail_result) ? 'OK' : 'NOT OK';
-
+		
+		$from = tohtml($from);
+		
 		write_log("Lostpassword activated: To: |$to|, From: |$from|, Status: |$mail_status| !", E_USER_NOTICE);
 
 		return true;
@@ -383,7 +385,9 @@ function requestpassword($admin_name) {
 	$mail_result = mail($to, encode($subject), $message, $headers);
 
 	$mail_status = ($mail_result) ? 'OK' : 'NOT OK';
-
+	
+	$from = tohtml($from);
+	
 	write_log("Lostpassword send: To: |$to|, From: |$from|, Status: |$mail_status| !", E_USER_NOTICE);
 
 	return true;

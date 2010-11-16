@@ -22,7 +22,7 @@ INSTALL file:		2.4
 postinst script:	1.0.6
 preinst script:		1.0.1
 Maintainer:			Laurent Declercq (Nuxwin) <laurent.declercq@i-mscp.net>
-Homepage:			http://i-mscp.sf.net
+Homepage:			http://i-mscp.net
 Linux Distros:		openSuse 11.3
 
 ================================================================================
@@ -140,7 +140,7 @@ Note: For all questions, answer "a" (trust always).
 14. Install i-MSCP step-by-step
 
 	If you get no error, all went good ; if you get one, look at
-	http://i-mscp.sf.net to solve the problem.
+	http://i-mscp.net to solve the problem.
 
 15. Clean the temporary folders:
 	# rm -Rf /tmp/imscp
@@ -223,7 +223,7 @@ Note: For all questions, answer "a" (trust always).
 13. Update i-MSCP step-by-step
 
 	If you get no error, all went good; if you get one, look at
-	http://i-mscp.sf.net to solve the problem.
+	http://i-mscp.net to solve the problem.
 
 14. Clean the temporary folders:
 	# rm -Rf /tmp/imscp/
@@ -251,7 +251,7 @@ i-MSCP is a project of i-MSCP | internet Multi Server Control Panel.
 i-MSCP, internet Multi Server Control Panel and the i-MSCP logo are trademarks
 of the i-MSCP | internet Multi Server Control Panel Project Team.
 
-Please visit our site under http://i-mscp.sf.net for further information on
+Please visit our site under http://i-mscp.net for further information on
 i-MSCP and other themes.
 
 We hope you enjoy using i-MSCP. If you like it, help us, to make it better. We

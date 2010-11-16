@@ -19,7 +19,7 @@ Default order
 1. makemsgs
 	Use the shell script "makemsgs" to get all strings from GUI php files within
 	the i-mscp.pot file. But be aware that this will remove all existing
-	strings in ispCP.pot that aren't hardcoded in the GUI PHP files.
+	strings in i-MSCP.pot that aren't hardcoded in the GUI PHP files.
 
 2. updateToPot
 	Use the shell script "updateToPot" to merge automatically the new i-mscp.pot
@@ -39,7 +39,7 @@ Default order
 5. create language text files
 	Create/export language specific (.ini-like) text files with a language tool
 	out of language specific *.po files. These text files can be used to upload
-	them to the ispCP GUI panel.
+	them to the i-MSCP GUI panel.
 
 	See http://atomo64.puffinhost.com/i-mscp/poconverter.php for the online
 	generator.

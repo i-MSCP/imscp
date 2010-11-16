@@ -807,6 +807,10 @@ function sendTicketNotification($to_id, $from_id, $ticket_subject,
 
 	$mail_result = mail($to, encode($subject), $message, $headers);
 	$mail_status = ($mail_result) ? 'OK' : 'NOT OK';
+	
+	$toname = tohtml($toname);
+	$fromname = tohtml($fromname);
+	
 	write_log(sprintf(
 						"%s send ticket To: %s, From: %s, Status: %s!",
 						$_SESSION['user_logged'],
