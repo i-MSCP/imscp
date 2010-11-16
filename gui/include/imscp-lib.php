@@ -159,4 +159,3 @@ require_once 'lostpassword-functions.php';
 require_once 'emailtpl-functions.php';
 require_once 'layout-functions.php';
 require_once 'functions.ticket_system.php';
-require_once 'debug.php';
