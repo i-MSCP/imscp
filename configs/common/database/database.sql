@@ -653,21 +653,6 @@ CREATE TABLE `subdomain_alias` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `suexec_props`
---
-
-CREATE TABLE `suexec_props` (
-  `id` int(10) unsigned NOT NULL auto_increment,
-  `uid` int(10) unsigned default NULL,
-  `gid` int(10) unsigned default NULL,
-  `usr` varchar(255) collate utf8_unicode_ci default NULL,
-  `grp` varchar(255) collate utf8_unicode_ci default NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `tickets`
 --
 
