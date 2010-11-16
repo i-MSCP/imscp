@@ -1,6 +1,10 @@
 i-MSCP ChangeLog
 ~~~~~~~~~~~~~~~~
 
+2010-11-16 Sascha Bay
+	- GUI:
+		* Fixed #10: IP-Overview for admin and reseller
+
 2010-11-15 Daniel Andreca
 	- ENGINE:
 		* RKhunter update fail should not fail instalation

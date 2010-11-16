@@ -233,6 +233,7 @@ function gen_admin_menu(&$tpl, $menu_file) {
 			'TR_MENU_SETTINGS' => tr('Settings'),
 			'TR_GENERAL_SETTINGS' => tr('General settings'),
 			'TR_SERVERPORTS' => tr('Server ports'),
+			'TR_MENU_IP_USAGE' => tr('IP usage'),
 			'VERSION' => $cfg->Version,
 			'BUILDDATE' => $cfg->BuildDate,
 			'CODENAME' => $cfg->CodeName

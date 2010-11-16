@@ -25,6 +25,12 @@
      <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
     </tr>
     <tr>
+    	<td><a href="ip_usage.php" class="submenu">{TR_MENU_IP_USAGE}</a></td>
+    </tr>
+    <tr>
+     <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
+    </tr>
+    <tr>
      <td>&nbsp;</td>
     </tr>
     <tr>
