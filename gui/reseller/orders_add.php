@@ -146,8 +146,6 @@ if (imscp_domain_exists($dmn_user_name, $_SESSION['user_id'])) {
 	user_goto('orders.php');
 }
 
-check_for_lock_file();
-
 $query = "
 	INSERT INTO `admin` (
 		`admin_name`, `admin_pass`, `admin_type`, `domain_created`,

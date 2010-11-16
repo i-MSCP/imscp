@@ -343,7 +343,6 @@ function add_domain_alias(&$sql, &$err_al) {
 
 	// Begin add new alias domain
 	$alias_name = htmlspecialchars($alias_name, ENT_QUOTES, "UTF-8");
-	check_for_lock_file();
 
 	exec_query($sql,
 		"INSERT INTO `domain_aliasses` (`domain_id`, `alias_name`, `alias_mount`, ".
