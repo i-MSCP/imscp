@@ -1844,6 +1844,24 @@ class iMSCP_Update_Database extends iMSCP_Update {
 
 		return $sqlUpd;
 	}
+	/**
+	 * Fixed some CSRF issues in admin log
+	 * 
+	 *  @author Thomas Wacker <thomas.wacker@ispcp.net>
+	 *  @since r3695
+	 *  @return array
+	 */
+	protected function _databaseUpdate_46() {
+		$sqlUpd = array();
+		
+		$sqlUpd[] = "
+			TRUNCATE TABLE
+				`log`
+			;
+		";
+		
+		return $sqlUpd;
+	}
 
 	/*
 	 * DO NOT CHANGE ANYTHING BELOW THIS LINE!

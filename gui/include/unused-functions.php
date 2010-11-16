@@ -350,6 +350,9 @@ function check_query($exclude = array()) {
 
 		if (!is_array($value)) {
 			if (match_sqlinjection($value, $matches)) {
+				$value = tohtml($value);
+				$key = tohtml($key);
+				$matches[0] = tohtml($matches[0]);
 				$message = "Possible SQL injection detected: $key=>$value. <b>${matches[0]}</b>. Script terminated.";
 				write_log($message);
 
@@ -359,6 +362,9 @@ function check_query($exclude = array()) {
 			foreach ($value as $skey => $svalue) {
 				if (!is_array($svalue)) {
 					if (match_sqlinjection($svalue, $matches)) {
+						$svalue = tohtml($svalue);
+						$skey = tohtml($skey);
+						$matches[0] = tohtml($matches[0]);
 						$message = "Possible SQL injection detected: $skey=>$svalue <b>${matches[0]}</b>. Script terminated.";
 						write_log($message);
 

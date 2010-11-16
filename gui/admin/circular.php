@@ -167,7 +167,7 @@ function send_reseller_message(&$sql) {
 	}
 
 	set_page_message(tr('You send email to your users successfully!'));
-	write_log('Mass email was sent from ' . $sender_name . '<' . $sender_email . '>!');
+	write_log('Mass email was sent from ' . tohtml($sender_name) . '<' . $sender_email . '>!');
 }
 
 function send_circular(&$tpl, &$sql) {

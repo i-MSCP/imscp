@@ -1737,7 +1737,10 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname,
 	$headers .= "X-Mailer: i-MSCP {$cfg->Version} Service Mailer";
 	$mail_result = mail($to, $subject, $message, $headers);
 	$mail_status = ($mail_result) ? 'OK' : 'NOT OK';
-
+	
+	$name = tohtml($name);
+	$from_name = tohtml($from_name);
+	
 	write_log("$admin_login: Auto Add User To: |$name <$uemail>|, From: " .
 		"|$from_name <$from_email>|, Status: |$mail_status|!");
 }

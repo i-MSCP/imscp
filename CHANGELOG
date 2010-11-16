@@ -4,6 +4,7 @@ i-MSCP ChangeLog
 2010-11-16 Sascha Bay
 	- GUI:
 		* Fixed #10: IP-Overview for admin and reseller
+		* Fixed #12: Some CSRF issues in admin log
 
 2010-11-15 Daniel Andreca
 	- ENGINE:
