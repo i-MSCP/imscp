@@ -94,6 +94,8 @@ install:
 	$(CMD_INSTALL) ./imscp-mbox-mngr $(SYSTEM_ENGINE_ROOT)
 	$(CMD_INSTALL) ./imscp-serv-mngr $(SYSTEM_ENGINE_ROOT)
 	$(CMD_INSTALL) ./imscp-db-passwd $(SYSTEM_ENGINE_ROOT)
+	$(CMD_INSTALL) ./imscp-sw-mngr $(SYSTEM_ENGINE_ROOT)
+	$(CMD_INSTALL) ./imscp-pkt-mngr $(SYSTEM_ENGINE_ROOT)
 
 	$(CMD_INSTALL) ./awstats/awstats_buildstaticpages.pl $(SYSTEM_ENGINE_ROOT)/awstats
 	$(CMD_INSTALL) ./awstats/awstats_updateall.pl $(SYSTEM_ENGINE_ROOT)/awstats

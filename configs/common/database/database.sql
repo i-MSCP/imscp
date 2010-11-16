@@ -132,7 +132,7 @@ INSERT INTO `config` (`name`, `value`) VALUES
 ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
 ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
 ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-('DATABASE_REVISION', '46');
+('DATABASE_REVISION', '47');
 
 -- --------------------------------------------------------
 
@@ -698,4 +698,61 @@ CREATE TABLE `user_gui_props` (
   `layout` varchar(255) collate utf8_unicode_ci default '',
   `logo` varchar(255) collate utf8_unicode_ci NOT NULL default '0',
   UNIQUE KEY `id` (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `web_software`
+--
+
+CREATE TABLE `web_software` (
+  `software_id` int(10) unsigned NOT NULL auto_increment,
+  `software_master_id` int(10) unsigned NOT NULL default '0',
+  `reseller_id` int(10) unsigned NOT NULL default '0',
+  `software_name` varchar(100) character set utf8 collate utf8_unicode_ci NOT NULL,
+  `software_version` varchar(20) character set utf8 collate utf8_unicode_ci NOT NULL,
+  `software_language` varchar(15) character set utf8 collate utf8_unicode_ci NOT NULL,
+  `software_type` varchar(20) character set utf8 collate utf8_unicode_ci NOT NULL,
+  `software_db` tinyint(1) NOT NULL,
+  `software_archive` varchar(100) character set utf8 collate utf8_unicode_ci NOT NULL,
+  `software_installfile` varchar(100) character set utf8 collate utf8_unicode_ci NOT NULL,
+  `software_prefix` varchar(50) character set utf8 collate utf8_unicode_ci NOT NULL,
+  `software_link` varchar(100) character set utf8 collate utf8_unicode_ci NOT NULL,
+  `software_desc` mediumtext character set utf8 collate utf8_unicode_ci NOT NULL,
+  `software_active` int(1) NOT NULL,
+  `software_status` varchar(15) character set utf8 collate utf8_unicode_ci NOT NULL,
+  `rights_add_by` int(10) unsigned NOT NULL default '0',
+  `software_depot` varchar(15) character set utf8 collate utf8_unicode_ci NOT NULL NOT NULL DEFAULT 'no',
+  PRIMARY KEY  (`software_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `web_software_inst`
+--
+
+CREATE TABLE `web_software_inst` (
+  `domain_id` int(10) unsigned NOT NULL,
+  `alias_id` int(10) unsigned NOT NULL default '0',
+  `subdomain_id` int(10) unsigned NOT NULL default '0',
+  `subdomain_alias_id` int(10) unsigned NOT NULL default '0',
+  `software_id` int(10) NOT NULL,
+  `software_master_id` int(10) unsigned NOT NULL default '0',
+  `software_res_del` int(1) NOT NULL default '0',
+  `software_name` varchar(100) character set utf8 collate utf8_unicode_ci NOT NULL,
+  `software_version` varchar(20) character set utf8 collate utf8_unicode_ci NOT NULL,
+  `software_language` varchar(15) character set utf8 collate utf8_unicode_ci NOT NULL,
+  `path` varchar(255) character set utf8 collate utf8_unicode_ci NOT NULL default '0',
+  `software_prefix` varchar(50) character set utf8 collate utf8_unicode_ci NOT NULL default '0',
+  `db` varchar(100) character set utf8 collate utf8_unicode_ci NOT NULL default '0',
+  `database_user` varchar(100) character set utf8 collate utf8_unicode_ci NOT NULL default '0',
+  `database_tmp_pwd` varchar(100) character set utf8 collate utf8_unicode_ci NOT NULL default '0',
+  `install_username` varchar(100) character set utf8 collate utf8_unicode_ci NOT NULL default '0',
+  `install_password` varchar(100) character set utf8 collate utf8_unicode_ci NOT NULL default '0',
+  `install_email` varchar(100) character set utf8 collate utf8_unicode_ci NOT NULL default '0',
+  `software_status` varchar(15) character set utf8 collate utf8_unicode_ci NOT NULL,
+  `software_depot` varchar(15) character set utf8 collate utf8_unicode_ci NOT NULL NOT NULL DEFAULT 'no',
+  KEY `software_id` (`software_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

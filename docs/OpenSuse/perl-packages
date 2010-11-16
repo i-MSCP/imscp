@@ -17,3 +17,4 @@ MIME::Parser
 Net::LibIDN
 Term::ReadKey
 Term::ReadPassword
+XML::Parser

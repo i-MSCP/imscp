@@ -10,3 +10,4 @@ Net::SNMP
 Crypt::Blowfish
 Term::ReadPassword
 HTML::Entities
+XML::Parser

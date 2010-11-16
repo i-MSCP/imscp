@@ -52,6 +52,7 @@ libsnmp-session-perl
 libterm-readkey-perl
 libterm-readpassword-perl
 libtimedate-perl
+libxml-parser-perl
 libmysqlclient16
 locales
 lsb-base

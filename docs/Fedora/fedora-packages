@@ -74,6 +74,7 @@ perl-TimeDate
 perl-URI
 perl-Unix-Syslog
 perl-HTML-Parser
+perl-XML-Parser
 php
 php-bcmath
 php-cli

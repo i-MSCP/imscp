@@ -53,6 +53,7 @@ install:
 	cp -dR ./reseller $(SYSTEM_GUI_ROOT)
 	cp -dR ./client $(SYSTEM_GUI_ROOT)
 	cp -dR ./include $(SYSTEM_GUI_ROOT)
+	cp -dR ./software $(SYSTEM_GUI_ROOT)
 
 	cp -dR ./domain_default_page $(SYSTEM_GUI_ROOT)
 	cp -dR ./domain_disable_page $(SYSTEM_GUI_ROOT)
