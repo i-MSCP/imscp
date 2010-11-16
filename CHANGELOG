@@ -8,7 +8,7 @@ i-MSCP ChangeLog
 
 2010-11-15 Daniel Andreca
 	- ENGINE:
-		* RKhunter update fail should not fail instalation
+		* RKhunter update fail must not stop i-MSCP setup
 
 2010-11-13 Daniel Andreca
 	- ENGINE:
