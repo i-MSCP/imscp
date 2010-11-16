@@ -33,7 +33,7 @@
 
 ################################################################################
 ## Script description:                                                        ##
-##  imscp-apache-logger - iMSCP apache logfiles handling                      ##
+##  imscp-apache-logger - i-MSCP apache logfiles handling                      ##
 ##                                                                            ##
 ## I. CustomLog handler:                                                      ##
 ##                                                                            ##
