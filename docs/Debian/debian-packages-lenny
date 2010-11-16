@@ -52,7 +52,6 @@ libterm-readkey-perl
 libterm-readpassword-perl
 libhtml-parser-perl
 libtimedate-perl
-libxml-parser-perl
 libmysqlclient15off
 locales
 lsb-base

@@ -70,7 +70,6 @@ perl-TermReadKey
 perl-TimeDate
 perl-URI
 perl-Unix-Syslog
-perl-XML-Parser
 php
 php-bcmath
 php-cli
