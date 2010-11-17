@@ -554,7 +554,7 @@ sub mngr_engine {
 			`alias_id`,
 			`subdomain_id`,
 			`subdomain_alias_id`,
-			`software_id, path`,
+			`software_id`, path`,
 			`software_prefix`,
 			`db`,
 			`database_user`,
@@ -573,7 +573,9 @@ sub mngr_engine {
 			`domain_id`
 	";
 	($rs, $rdata) = doSQL($sql);
+	return $rs if($rs != 0);
 	my $sw_count = @$rdata;
+	
 	if ($sw_count > 0) {
 		use Digest::MD5 qw(md5_hex);
 		foreach (@$rdata) {
@@ -635,7 +637,9 @@ sub mngr_engine {
 			`reseller_id`
 	";
 	($rs, $rdata) = doSQL($sql);
+	return $rs if($rs != 0);
 	$sw_count = @$rdata;
+	
 	if ($sw_count > 0) {
 		foreach (@$rdata) {
 			my $row = $_;

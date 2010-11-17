@@ -703,7 +703,7 @@ function gen_client_menu(&$tpl, $menu_file) {
 			'TR_MENU_CATCH_ALL_MAIL' => tr('Catch all'),
 			'TR_MENU_ADD_ALIAS' => tr('Add alias'),
 			'TR_MENU_UPDATE_HP' => tr('Update Hosting Package'),
-			'TR_SOFTWARE_MENU' => tr('i-MSCP application installer')
+			'TR_SOFTWARE_MENU' => tr('i-MSCP application installer'),
 			'SUPPORT_SYSTEM_PATH' => $cfg->IMSCP_SUPPORT_SYSTEM_PATH,
 			'SUPPORT_SYSTEM_TARGET' => $cfg->IMSCP_SUPPORT_SYSTEM_TARGET,
 			'WEBMAIL_PATH' => $cfg->WEBMAIL_PATH,

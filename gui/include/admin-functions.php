@@ -238,7 +238,7 @@ function gen_admin_menu(&$tpl, $menu_file) {
 			'TR_GENERAL_SETTINGS' => tr('General settings'),
 			'TR_SERVERPORTS' => tr('Server ports'),
 			'TR_MENU_IP_USAGE' => tr('IP usage'),
-			'TR_MENU_MANAGE_SOFTWARE' => tr('i-MSCP application management')
+			'TR_MENU_MANAGE_SOFTWARE' => tr('i-MSCP application management'),
 			'VERSION' => $cfg->Version,
 			'BUILDDATE' => $cfg->BuildDate,
 			'CODENAME' => $cfg->CodeName
