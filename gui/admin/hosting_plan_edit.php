@@ -93,7 +93,7 @@ $tpl->assign(
 		'TR_MAX_TRAFFIC' => tr('Traffic limit [MB]<br><i>(0 unlimited)</i>'),
 		'TR_DISK_LIMIT' => tr('Disk limit [MB]<br><i>(0 unlimited)</i>'),
 		'TR_PHP' => tr('PHP'),
-		'TR_SOFTWARE_SUPP'	=> tr('Software installation'),
+		'TR_SOFTWARE_SUPP'	=> tr('i-MSCP application installer'),
 		'TR_CGI' => tr('CGI / Perl'),
 		'TR_DNS' => tr('Allow adding records to DNS zone (EXPERIMENTAL)'),
 		'TR_BACKUP' => tr('Backup'),
@@ -358,7 +358,7 @@ function check_data_iscorrect(&$tpl) {
 	}
 	
 	if ($hp_php == "_no_" && $hp_allowsoftware == "_yes_") {
-		$ahp_error[] = tr('The software installer needs PHP to enable it!');
+		$ahp_error[] = tr('The i-MSCP application installer needs PHP to enable it!');
 	}
 
 	if (!is_numeric($_POST['hp_price'])) {

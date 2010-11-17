@@ -91,7 +91,7 @@ $tpl->assign(
 		'TR_YES'				=> tr('Yes'),
 		'TR_NO'					=> tr('No'),
 		'TR_DMN_EXP_HELP' 		=> tr("In case 'Domain expire' is 'N/A', the expiration date will be set from today."),
-		'TR_SOFTWARE_SUPP' 		=> tr('Software installation')
+		'TR_SOFTWARE_SUPP' 		=> tr('i-MSCP application installer')
 	)
 );
 
@@ -416,10 +416,10 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 		$ed_error .= tr('Incorrect disk quota limit!');
 	}
 	if ($domain_php == "no" && $domain_software_allowed == "yes") {
-		$ed_error .= tr('The software installer needs PHP to enable it!');
+		$ed_error .= tr('The i-MSCP application installer needs PHP to enable!');
 	}
 	if (get_reseller_sw_installer($reseller_id) == "no" && $domain_software_allowed == "yes") {
-		$ed_error .= tr('The software installer of the users reseller is not activated!');
+		$ed_error .= tr('The i-MSCP application installer of the users reseller is not activated!');
 	}
 
 	// $user_props = generate_user_props($user_id);

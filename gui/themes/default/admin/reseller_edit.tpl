@@ -58,8 +58,10 @@
                 <fieldset>
                     <legend>{TR_CORE_DATA}</legend>
                     <table>
-                        <td><label for="username">{TR_USERNAME}</label></td>
-                        <td>{USERNAME}</td>
+                        <tr>
+                            <td><label for="username">{TR_USERNAME}</label></td>
+                            <td>{USERNAME}</td>
+                        </tr>
                         <tr>
                             <td><label for="password">{TR_PASSWORD}</label></td>
                             <td>

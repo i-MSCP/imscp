@@ -1825,6 +1825,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 
 		return $sqlUpd;
 	}
+
 	/**
 	 * Allows to protect custom DNS records against deletion
 	 *
@@ -1848,6 +1849,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 
 		return $sqlUpd;
 	}
+
 	/**
 	 * Fixed some CSRF issues in admin log
 	 * 
@@ -1858,11 +1860,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	protected function _databaseUpdate_46() {
 		$sqlUpd = array();
 		
-		$sqlUpd[] = "
-			TRUNCATE TABLE
-				`log`
-			;
-		";
+		$sqlUpd[] = "TRUNCATE TABLE `log`;";
 		
 		return $sqlUpd;
 	}
@@ -1964,6 +1962,21 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	 	return $sqlUpd;
 		
 	 }
+
+	/**
+	 * Removed unused 'suexec_props' table
+	 *
+	 *  @author Laurent Declercq <laurent.declercq@ispcp.net>
+	 *  @since r3709
+	 *  @return array
+	 */
+	protected function _databaseUpdate_47() {
+		$sqlUpd = array();
+
+		$sqlUpd[] = "DROP TABLE IF EXISTS `suexec_props`;";
+
+		return $sqlUpd;
+	}
 
 	/*
 	 * DO NOT CHANGE ANYTHING BELOW THIS LINE!

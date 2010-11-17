@@ -107,7 +107,7 @@ if($imscp_db_pass_key != '{KEY}' && $imscp_db_pass_iv != '{IV}') {
  * Include i-MSCP common functions
  */
 require_once 'net_idna/idna_convert.class.php';
-require_once INCLUDEPATH . '/imscp-functions.php';
+require_once INCLUDEPATH . '/common-functions.php';
 require_once INCLUDEPATH . '/deprecated.php';
 
 /**
@@ -129,11 +129,6 @@ require_once 'i18n.php';
  * @deprecated Deprecated since 1.0.6 - Will be replaced by iMSCP_Exception
  */
 require_once 'system-message.php';
-
-/**
- * SQL convenience functions
- */
-require_once 'sql.php';
 
 /**
  * Authentication functions
@@ -159,4 +154,3 @@ require_once 'lostpassword-functions.php';
 require_once 'emailtpl-functions.php';
 require_once 'layout-functions.php';
 require_once 'functions.ticket_system.php';
-require_once 'debug.php';

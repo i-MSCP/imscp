@@ -662,3 +662,122 @@ function encrypt_db_password($db_pass) {
 		);
 	}
 }
+
+/**
+ * Convenience method to execute a query
+ *
+ * <b>Note:</b> You may pass additional parameters. They will be treated as
+ * though you called PDOStatement::setFetchMode() on the resultant statement
+ * object that is wrapped by the iMSCP_Database_ResultSet object.
+ *
+ * @see iMSCP_Database::execute()
+ * @throws iMSCP_Exception_Database
+ * @param  iMSCP_Database $db iMSCP_Database instance
+ * @param string $query SQL statement to be executed
+ * @param array|int|string $parameters OPTIONAL parameters that represents
+ * data to bind to the placeholders for prepared statement, or an integer
+ * that represents the Fetch mode for Sql statement. The fetch mode must be
+ * one of the PDO::FETCH_* constants
+ * @param int|string|object $parameters OPTIONAL parameter for SQL statement
+ * only. Can be a colum number, an object, a class name (depending of the
+ * Fetch mode used)
+ * @param array $parameters OPTIONAL parameter for Sql statements only. Can
+ * be an array that contains constructor arguments. (See PDO::FETCH_CLASS)
+ * @return iMSCP_Database_ResultSet Returns an iMSCP_Database_ResultSet object
+ **/
+function execute_query($db, $query, $parameters = null) {
+
+	if(!is_null($parameters)) {
+		$parameters = func_get_args();
+		array_shift($parameters);
+		$stmt = call_user_func_array(array($db, 'execute'), $parameters);
+	} else {
+		$stmt = $db->execute($query);
+	}
+
+	if ($stmt == false)
+		throw new iMSCP_Exception_Database($db->getLastErrorMessage());
+
+	return $stmt;
+}
+
+/**
+ * Convenience method to prepare and execute a query
+ *
+ * <b>Note:</b> On failure, and if the $failDie parameter is set to TRUE, this
+ * function sends a mail to the administrator with some relevant information
+ * such as the debug information if the
+ * {@link iMSCP_Exception_Writer_Mail writer} is active.
+ *
+ * @throws iMSCP_Exception_Database
+ * @param iMSCP_Database $db iMSCP_Database Instance
+ * @param string $query SQL statement
+ * @param string|int|array $bind Data to bind to the placeholders
+ * @param boolean $failDie If TRUE, throws an iMSCP_Exception_Database exception
+ * on failure
+ * @return iMSCP_Database_ResultSet Return a iMSCP_Database_ResultSet object
+ * that represents a result set or FALSE on failure if $failDie is set to FALSE
+ */
+function exec_query($db, $query, $bind = null, $failDie = true) {
+
+	if(!($stmt = $db->prepare($query)) || !($stmt = $db->execute($stmt, $bind))) {
+		if($failDie) {
+			throw new iMSCP_Exception_Database(
+				$db->getLastErrorMessage() . " - Query: $query"
+			);
+		}
+	}
+
+	return $stmt;
+}
+
+/**
+ * Function quoteIdentifier
+ *
+ * @todo document this function
+ */
+function quoteIdentifier($identifier) {
+
+	$db = iMSCP_Registry::get('Db');
+
+	$identifier = str_replace(
+		$db->nameQuote, '\\' . $db->nameQuote, $identifier
+	);
+
+	return $db->nameQuote . $identifier . $db->nameQuote;
+}
+
+/**
+ * Debug function
+ *
+ * @return void
+ */
+function dump_gui_debug() {
+	echo '<span style="color:#00f;text-decoration:underline;">Content of <strong>$_SESSION</strong>:<br /></span>';
+	echo '<pre>';
+	echo htmlentities(print_r($_SESSION, true));
+	echo '</pre>';
+	echo '<span style="color:#00f;text-decoration:underline;">Content of <strong>$_POST</strong>:<br /></span>';
+	echo '<pre>';
+	echo htmlentities(print_r($_POST, true));
+	echo '</pre>';
+	echo '<span style="color:#00f;text-decoration:underline;">Content of <strong>$_GET</strong>:<br /></span>';
+	echo '<pre>';
+	echo htmlentities(print_r($_GET, true));
+	echo '</pre>';
+	echo '<span style="color:#00f;text-decoration:underline;">Content of <strong>$_COOKIE</strong>:<br /></span>';
+	echo '<pre>';
+	echo htmlentities(print_r($_COOKIE, true));
+	echo '</pre>';
+	echo '<span style="color:#00f;text-decoration:underline;">Content of <strong>$_FILES</strong>:<br /></span>';
+	echo '<pre>';
+	echo htmlentities(print_r($_FILES, true));
+	echo '</pre>';
+
+	/* Activate debug code if needed
+	echo '<span style="color:#00f;text-decoration:underline;">Content of <strong>$_SERVER</strong>:<br /></span>';
+	echo '<pre>';
+	echo htmlentities(print_r($_SERVER, true));
+	echo '</pre>';
+	*/
+}

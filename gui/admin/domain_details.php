@@ -82,7 +82,7 @@ $tpl->assign(
 		'TR_DOMALIAS_ACCOUNTS'	=> tr('Domain aliases'),
 		'TR_UPDATE_DATA'		=> tr('Submit changes'),
 		'TR_BACK'				=> tr('Back'),
-		'TR_SOFTWARE_SUPP' 		=> tr('Software installation')
+		'TR_SOFTWARE_SUPP' 		=> tr('i-MSCP application installer')
 	)
 );
 
