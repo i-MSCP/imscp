@@ -49,6 +49,7 @@ $tpl->define_dynamic('mail_edit', 'page');
 $tpl->define_dynamic('ftp_edit', 'page');
 $tpl->define_dynamic('sql_db_edit', 'page');
 $tpl->define_dynamic('sql_user_edit', 'page');
+$tpl->define_dynamic('t_software_support', 'page');
 
 if (isset($cfg->HOSTING_PLANS_LEVEL)
 	&& $cfg->HOSTING_PLANS_LEVEL === 'admin') {
@@ -107,12 +108,14 @@ $tpl->assign(
 		'TR_CANCEL'							=> tr('Cancel'),
 		'TR_YES'							=> tr('Yes'),
 		'TR_NO'								=> tr('No'),
-		'TR_DMN_EXP_HELP'					=> tr("In case 'Domain expire' is 'N/A', the expiration date will be set from today.")
+		'TR_DMN_EXP_HELP'					=> tr("In case 'Domain expire' is 'N/A', the expiration date will be set from today."),
+		'TR_SOFTWARE_SUPP' 					=> tr('i-MSCP application installer')
 	)
 );
 
 gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
 gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_users_manage.tpl');
+get_reseller_software_permission (&$tpl,&$sql,$_SESSION['user_id']);
 
 gen_logged_from($tpl);
 
@@ -165,7 +168,7 @@ function load_user_data($user_id, $domain_id) {
 	global $username;
 	global $dns_supp;
 	*/
-	global $sub, $als, $mail, $ftp, $sql_db, $sql_user, $traff, $disk;
+	global $sub, $als, $mail, $ftp, $sql_db, $sql_user, $traff, $disk, $software_supp;
 
 	$sql = iMSCP_Registry::get('Db');
 
@@ -212,6 +215,7 @@ function load_additional_data($user_id, $domain_id) {
 	global $domain_name, $domain_expires, $domain_ip, $php_sup;
 	global $cgi_supp, $username, $allowbackup;
 	global $dns_supp;
+	global $software_supp;
 
 	$sql = iMSCP_Registry::get('Db');
 	$cfg = iMSCP_Registry::get('Config');
@@ -226,7 +230,8 @@ function load_additional_data($user_id, $domain_id) {
 			`domain_cgi`,
 			`domain_admin_id`,
 			`allowbackup`,
-			`domain_dns`
+			`domain_dns`,
+			`domain_software_allowed`
 		FROM
 			`domain`
 		WHERE
@@ -254,6 +259,7 @@ function load_additional_data($user_id, $domain_id) {
 	$allowbackup		= $data['allowbackup'];
 	$domain_admin_id	= $data['domain_admin_id'];
 	$dns_supp			= $data['domain_dns'];
+	$software_supp 		= $data['domain_software_allowed'];
 	// Get IP of domain
 	$query = "
 		SELECT
@@ -298,7 +304,7 @@ function gen_editdomain_page(&$tpl) {
 	global $mail, $ftp, $sql_db;
 	global $sql_user, $traff, $disk;
 	global $username, $allowbackup;
-	global $dns_supp;
+	global $dns_supp, $software_supp;
 
 	$cfg = iMSCP_Registry::get('Config');
 
@@ -371,6 +377,8 @@ function gen_editdomain_page(&$tpl) {
 			'CGI_NO'					=> ($cgi_supp != 'yes') ? $cfg->HTML_SELECTED : '',
 			'DNS_YES'					=> ($dns_supp == 'yes') ? $cfg->HTML_SELECTED : '',
 			'DNS_NO'					=> ($dns_supp != 'yes') ? $cfg->HTML_SELECTED : '',
+			'SOFTWARE_YES'				=> ($software_supp == 'yes') ? $cfg->HTML_SELECTED : '',
+			'SOFTWARE_NO'				=> ($software_supp != 'yes') ? $cfg->HTML_SELECTED : '',
 			'VL_DOMAIN_NAME'			=> tohtml($domain_name),
 			'VL_DOMAIN_EXPIRE'			=> $domain_expires,
 			'VL_DOMAIN_IP'				=> $domain_ip,
@@ -403,7 +411,7 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 
 	global $sub, $als, $mail, $ftp, $sql_db, $sql_user, $traff, $disk, $sql,
 		$domain_php, $domain_cgi, $allowbackup, $domain_dns, $domain_expires,
-		$domain_new_expire;
+		$domain_new_expire, $domain_software_allowed;
 
 	$domain_new_expire = clean_input($_POST['dmn_expire']);
 	$sub 			= clean_input($_POST['dom_sub']);
@@ -420,6 +428,7 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 	$domain_cgi		= preg_replace("/\_/", "", $_POST['domain_cgi']);
 	$domain_dns		= preg_replace("/\_/", "", $_POST['domain_dns']);
 	$allowbackup	= preg_replace("/\_/", "", $_POST['backup']);
+	$domain_software_allowed = preg_replace("/\_/", "", $_POST['domain_software_allowed']);
 
 	$ed_error = '';
 
@@ -477,6 +486,9 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 	}
 	if (!imscp_limit_check($disk, null)) {
 		$ed_error .= tr('Incorrect disk quota limit!');
+	}
+	if ($domain_php == "no" && $domain_software_allowed == "yes") {
+		$ed_error .= tr('The i-MSCP application installer needs PHP to enable it!');
 	}
 
 	// $user_props = generate_user_props($user_id);
@@ -559,7 +571,8 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 		$user_props .= "$domain_php;";
 		$user_props .= "$domain_cgi;";
 		$user_props .= "$allowbackup;";
-		$user_props .= "$domain_dns";
+		$user_props .= "$domain_dns;";
+		$user_props .= "$domain_software_allowed";
 		update_user_props($user_id, $user_props);
 
 		$domain_expires = $_SESSION['domain_expires'];

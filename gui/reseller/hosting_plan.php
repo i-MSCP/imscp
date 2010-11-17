@@ -194,30 +194,54 @@ function gen_hp_table(&$tpl, $reseller_id) {
 			: '';
 
 		$i = 1;
+		$orders_count = 0;
 		while ($data = $rs->fetchRow()) {
+			list(
+				$hp_php,
+				$hp_cgi,
+				$hp_sub,
+				$hp_als,
+				$hp_mail,
+				$hp_ftp,
+				$hp_sql_db,
+				$hp_sql_user,
+				$hp_traff,
+				$hp_disk,
+				$hp_backup,
+				$hp_dns,
+				$hp_allowsoftware
+			) = explode(";", $data['props']);
+			
+			if($hp_allowsoftware == "_no_" || $hp_allowsoftware == "" || $hp_allowsoftware == "_yes_" && get_reseller_sw_installer($reseller_id) == "yes") {
+				$orders_count++;
+				$tpl->assign(array('CLASS_TYPE_ROW' => ($i % 2 == 0) ? 'content' : 'content2'));
 
-			$tpl->assign(array('CLASS_TYPE_ROW' => ($i % 2 == 0) ? 'content' : 'content2'));
+				$status = ($data['status']) ? tr('Enabled') : tr('Disabled');
 
-			$status = ($data['status']) ? tr('Enabled') : tr('Disabled');
+				$tpl->assign(
+					array(
+						'PLAN_NOM' => $i++,
+						'PLAN_NAME' => tohtml($data['name']),
+						'PLAN_NAME2' => addslashes(clean_html($data['name'])),
+						'PLAN_ACTION' => tr('Delete'),
+						'PLAN_SHOW' => tr('Show hosting plan'),
+						'PURCHASING' => $status,
+						'CUSTOM_ORDERPANEL_ID' => $coid,
+						'HP_ID' => $data['id'],
+						'RESELLER_ID' => $_SESSION['user_id']
+					)
+				);
 
-			$tpl->assign(
-				array(
-					'PLAN_NOM' => $i++,
-					'PLAN_NAME' => tohtml($data['name']),
-					'PLAN_NAME2' => addslashes(clean_html($data['name'])),
-					'PLAN_ACTION' => tr('Delete'),
-					'PLAN_SHOW' => tr('Show hosting plan'),
-					'PURCHASING' => $status,
-					'CUSTOM_ORDERPANEL_ID' => $coid,
-					'HP_ID' => $data['id'],
-					'RESELLER_ID' => $_SESSION['user_id']
-				)
-			);
-
-			$tpl->parse('HP_ENTRY', '.hp_entry');
+				$tpl->parse('HP_ENTRY', '.hp_entry');
+			}
 		}
 
-		$tpl->parse('HP_TABLE', 'hp_table');
+		if ($orders_count == 0) {
+			set_page_message(tr('Hosting plans not found!'));
+			$tpl->assign('HP_TABLE', '');
+		} else {
+			$tpl->parse('HP_TABLE', 'hp_table');
+		}
 	}
 
 }
