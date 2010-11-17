@@ -105,8 +105,20 @@ if (isset($_POST['Button']) && $_SESSION['software_upload_token'] == $_POST['sen
 				INSERT INTO
 					`web_software`
 						(
-							`reseller_id`, `software_name`, `software_version`, `software_language`, `software_type`, `software_db`, `software_archive`, 
-							`software_installfile`, `software_prefix`, `software_link`, `software_desc`, `software_active`, `software_status`, `software_depot`
+							`reseller_id`, 
+							`software_name`, 
+							`software_version`, 
+							`software_language`, 
+							`software_type`, 
+							`software_db`, 
+							`software_archive`, 
+							`software_installfile`, 
+							`software_prefix`, 
+							`software_link`, 
+							`software_desc`, 
+							`software_active`, 
+							`software_status`, 
+							`software_depot`
 						)
 				VALUES
 						(
@@ -118,10 +130,18 @@ if (isset($_POST['Button']) && $_SESSION['software_upload_token'] == $_POST['sen
 					$sql,
 					$query,
 					array(
-						$user_id, "waiting_for_input", "waiting_for_input",
-						"waiting_for_input", "waiting_for_input", "0",
-						$filename, "waiting_for_input", "waiting_for_input",
-						"waiting_for_input", "waiting_for_input", "1",
+						$user_id, 
+						"waiting_for_input", 
+						"waiting_for_input",
+						"waiting_for_input", 
+						"waiting_for_input", 
+						"0",
+						$filename, 
+						"waiting_for_input", 
+						"waiting_for_input",
+						"waiting_for_input", 
+						"waiting_for_input", 
+						"1",
 						"toadd", "yes"
 					)
 				);
@@ -285,26 +305,26 @@ function get_avail_software (&$tpl, &$sql) {
 	$rs = exec_query($sql, $query, array());
 	if ($rs->recordCount() > 0) {
 		while(!$rs->EOF) {
-			$import_url = "software_import.php?id=".$rs->fields['id'];
-			$act_url = "software_activate.php?id=".$rs->fields['id'];
-			$del_url = "software_delete.php?id=".$rs->fields['id'];
-			$dow_url = "software_download.php?id=".$rs->fields['id'];
+			$import_url 	= "software_import.php?id=".$rs->fields['id'];
+			$act_url 	= "software_activate.php?id=".$rs->fields['id'];
+			$del_url 	= "software_delete.php?id=".$rs->fields['id'];
+			$dow_url 	= "software_download.php?id=".$rs->fields['id'];
 			$tpl->assign(
 					array(
-						'TR_NAME' => $rs->fields['name'],
-						'TR_TOOLTIP' => $rs->fields['description'],
-						'TR_VERSION' => $rs->fields['version'],
-						'TR_LANGUAGE' => $rs->fields['language'],
-						'TR_TYPE' => $rs->fields['type'],
-						'TR_RESELLER' => $rs->fields['reseller'],
+						'TR_NAME' 	=> $rs->fields['name'],
+						'TR_TOOLTIP' 	=> $rs->fields['description'],
+						'TR_VERSION' 	=> $rs->fields['version'],
+						'TR_LANGUAGE'	=> $rs->fields['language'],
+						'TR_TYPE' 	=> $rs->fields['type'],
+						'TR_RESELLER' 	=> $rs->fields['reseller'],
 						'DOWNLOAD_LINK' => $dow_url,
-						'TR_DOWNLOAD' => tr('Download'),
+						'TR_DOWNLOAD'	=> tr('Download'),
 						'ACTIVATE_LINK' => $act_url,
-						'IMPORT_LINK' => $import_url,
+						'IMPORT_LINK' 	=> $import_url,
 						'TR_ACTIVATION' => tr('Activate'),
-						'TR_IMPORT' => tr('Import'),
-						'DELETE_LINK' => $del_url,
-						'TR_DELETE' => tr('Delete'),
+						'TR_IMPORT' 	=> tr('Import'),
+						'DELETE_LINK' 	=> $del_url,
+						'TR_DELETE' 	=> tr('Delete')
 						)
 					);
 			$tpl->parse('LIST_SOFTWARE', '.list_software');
@@ -365,21 +385,21 @@ function get_avail_softwaredepot (&$tpl, &$sql) {
 				$rights_url = "software_rights.php?id=".$rs->fields['id'];
 				$tpl->assign(
 						array(
-							'TR_NAME' => $rs->fields['name'],
-							'LINK_COLOR' => '#000000',
-							'TR_TOOLTIP' => $rs->fields['description'],
-							'TR_VERSION' => $rs->fields['version'],
-							'TR_LANGUAGE' => $rs->fields['language'],
-							'TR_TYPE' => $rs->fields['type'],
-							'TR_ADMIN' => $rs->fields['admin'],
-							'DOWNLOAD_LINK' => $dow_url,
-							'TR_DOWNLOAD' => tr('Download'),
-							'DELETE_LINK' => $del_url,
-							'TR_DELETE' => tr('Delete'),
-							'SOFTWARE_ICON' => 'edit',
-							'SOFTWARE_RIGHTS_LINK' => $rights_url,
-							'RIGHTS_LINK' => tr('Rights'),
-							'TR_SOFTWARE_RIGHTS' => tr('Softwarerights'),
+							'TR_NAME' 		=> $rs->fields['name'],
+							'LINK_COLOR' 		=> '#000000',
+							'TR_TOOLTIP' 		=> $rs->fields['description'],
+							'TR_VERSION' 		=> $rs->fields['version'],
+							'TR_LANGUAGE' 		=> $rs->fields['language'],
+							'TR_TYPE' 		=> $rs->fields['type'],
+							'TR_ADMIN' 		=> $rs->fields['admin'],
+							'DOWNLOAD_LINK' 	=> $dow_url,
+							'TR_DOWNLOAD' 		=> tr('Download'),
+							'DELETE_LINK' 		=> $del_url,
+							'TR_DELETE' 		=> tr('Delete'),
+							'SOFTWARE_ICON' 	=> 'edit',
+							'SOFTWARE_RIGHTS_LINK' 	=> $rights_url,
+							'RIGHTS_LINK' 		=> tr('Rights'),
+							'TR_SOFTWARE_RIGHTS' 	=> tr('Softwarerights')
 							)
 						);
 			} else {
@@ -387,84 +407,84 @@ function get_avail_softwaredepot (&$tpl, &$sql) {
 					$del_url = "software_delete.php?id=".$rs->fields['id'];
 					$tpl->assign(
 							array(
-								'TR_NAME' => tr('Installing your uploaded package. Please refresh this site.'),
-								'LINK_COLOR' => '#FF0000',
-								'TR_VERSION' => '',
-								'TR_LANGUAGE' => '',
-								'TR_TOOLTIP' => tr('The package will be installed automaticly to your system after upload.<br />Refresh your site to see the new status!'),
-								'TR_DOWNLOAD' => '',
-								'DOWNLOAD_LINK' => '',
-								'DELETE_LINK' => $del_url,
-								'TR_DELETE' => tr('Delete'),
-								'TR_TYPE' => '<font color="#FF0000">'.tr('installing').'</font>',
-								'TR_ADMIN' => $rs->fields['admin'],
-								'SOFTWARE_ICON' => 'disabled',
-								'RIGHTS_LINK' => '',
-								'TR_SOFTWARE_RIGHTS' => '',
-								'SOFTWARE_RIGHTS_LINK' => ''
+								'TR_NAME' 		=> tr('Installing your uploaded package. Please refresh this site.'),
+								'LINK_COLOR' 		=> '#FF0000',
+								'TR_VERSION' 		=> '',
+								'TR_LANGUAGE'		=> '',
+								'TR_TOOLTIP' 		=> tr('The package will be installed automaticly to your system after upload.<br />Refresh your site to see the new status!'),
+								'TR_DOWNLOAD' 		=> '',
+								'DOWNLOAD_LINK' 	=> '',
+								'DELETE_LINK' 		=> $del_url,
+								'TR_DELETE' 		=> tr('Delete'),
+								'TR_TYPE' 		=> '<font color="#FF0000">'.tr('installing').'</font>',
+								'TR_ADMIN' 		=> $rs->fields['admin'],
+								'SOFTWARE_ICON' 	=> 'disabled',
+								'RIGHTS_LINK' 		=> '',
+								'TR_SOFTWARE_RIGHTS' 	=> '',
+								'SOFTWARE_RIGHTS_LINK' 	=> ''
 							)
 						);
 					} else {
 						if($rs->fields['swstatus'] == "delete") {
 							$tpl->assign(
 									array(
-										'TR_NAME' => tr('Failure in the package. Deleting!'),
-										'LINK_COLOR' => '#FF0000',
-										'TR_VERSION' => '',
-										'TR_LANGUAGE' => '',
-										'TR_TOOLTIP' => tr('There is an Error inside your package. Please check it!<br />Refresh your site to see the new status!'),
-										'TR_DOWNLOAD' => '',
-										'DOWNLOAD_LINK' => '',
-										'DELETE_LINK' => '',
-										'TR_DELETE' => '',
-										'TR_TYPE' => '<font color="#FF0000">'.tr('deleting').'</font>',
-										'TR_ADMIN' => $rs->fields['admin'],
-										'SOFTWARE_ICON' => 'delete',
-										'RIGHTS_LINK' => '',
-										'TR_SOFTWARE_RIGHTS' => '',
-										'SOFTWARE_RIGHTS_LINK' => ''
+										'TR_NAME' 		=> tr('Failure in the package. Deleting!'),
+										'LINK_COLOR' 		=> '#FF0000',
+										'TR_VERSION' 		=> '',
+										'TR_LANGUAGE' 		=> '',
+										'TR_TOOLTIP' 		=> tr('There is an Error inside your package. Please check it!<br />Refresh your site to see the new status!'),
+										'TR_DOWNLOAD' 		=> '',
+										'DOWNLOAD_LINK' 	=> '',
+										'DELETE_LINK' 		=> '',
+										'TR_DELETE' 		=> '',
+										'TR_TYPE' 		=> '<font color="#FF0000">'.tr('deleting').'</font>',
+										'TR_ADMIN' 		=> $rs->fields['admin'],
+										'SOFTWARE_ICON' 	=> 'delete',
+										'RIGHTS_LINK' 		=> '',
+										'TR_SOFTWARE_RIGHTS' 	=> '',
+										'SOFTWARE_RIGHTS_LINK' 	=> ''
 									)
 								);
 							set_page_message(tr('Your package is corrupt. Please correct it!'));
 						} elseif (preg_match("/double_depot_/i", $rs->fields['swstatus'])) {
 							$tpl->assign(
 									array(
-										'TR_NAME' => tr('Package already exist in the software depot!'),
-										'LINK_COLOR' => '#FF0000',
-										'TR_VERSION' => '',
-										'TR_LANGUAGE' => '',
-										'TR_TOOLTIP' => tr('Check your software depot uploads!<br />It is not allowed to upload this package two times.<br />Refresh your site to see the new status!'),
-										'TR_DOWNLOAD' => '',
-										'DOWNLOAD_LINK' => '',
-										'DELETE_LINK' => '',
-										'TR_DELETE' => '',
-										'TR_TYPE' => '<font color="#FF0000">'.tr('deleting').'</font>',
-										'TR_ADMIN' => $rs->fields['admin'],
-										'SOFTWARE_ICON' => 'delete',
-										'RIGHTS_LINK' => '',
-										'TR_SOFTWARE_RIGHTS' => '',
-										'SOFTWARE_RIGHTS_LINK' => ''
+										'TR_NAME' 		=> tr('Package already exist in the software depot!'),
+										'LINK_COLOR' 		=> '#FF0000',
+										'TR_VERSION' 		=> '',
+										'TR_LANGUAGE' 		=> '',
+										'TR_TOOLTIP' 		=> tr('Check your software depot uploads!<br />It is not allowed to upload this package two times.<br />Refresh your site to see the new status!'),
+										'TR_DOWNLOAD' 		=> '',
+										'DOWNLOAD_LINK' 	=> '',
+										'DELETE_LINK' 		=> '',
+										'TR_DELETE' 		=> '',
+										'TR_TYPE' 		=> '<font color="#FF0000">'.tr('deleting').'</font>',
+										'TR_ADMIN' 		=> $rs->fields['admin'],
+										'SOFTWARE_ICON' 	=> 'delete',
+										'RIGHTS_LINK' 		=> '',
+										'TR_SOFTWARE_RIGHTS' 	=> '',
+										'SOFTWARE_RIGHTS_LINK' 	=> ''
 									)
 								);
 							set_page_message(tr('This package already exist in the software depot!'));
 						} elseif (preg_match("/double_res_/i", $rs->fields['swstatus'])) {
 							$tpl->assign(
 									array(
-										'TR_NAME' => tr('Package already exist in the reseller depot!'),
-										'LINK_COLOR' => '#FF0000',
-										'TR_VERSION' => '',
-										'TR_LANGUAGE' => '',
-										'TR_TOOLTIP' => tr('Check the reseller uploads!<br />It is not allowed to upload this package two times.<br />Refresh your site to see the new status!'),
-										'TR_DOWNLOAD' => '',
-										'DOWNLOAD_LINK' => '',
-										'DELETE_LINK' => '',
-										'TR_DELETE' => '',
-										'TR_TYPE' => '<font color="#FF0000">'.tr('deleting').'</font>',
-										'TR_ADMIN' => $rs->fields['admin'],
-										'SOFTWARE_ICON' => 'delete',
-										'RIGHTS_LINK' => '',
-										'TR_SOFTWARE_RIGHTS' => '',
-										'SOFTWARE_RIGHTS_LINK' => ''
+										'TR_NAME' 		=> tr('Package already exist in the reseller depot!'),
+										'LINK_COLOR' 		=> '#FF0000',
+										'TR_VERSION' 		=> '',
+										'TR_LANGUAGE' 		=> '',
+										'TR_TOOLTIP' 		=> tr('Check the reseller uploads!<br />It is not allowed to upload this package two times.<br />Refresh your site to see the new status!'),
+										'TR_DOWNLOAD' 		=> '',
+										'DOWNLOAD_LINK' 	=> '',
+										'DELETE_LINK' 		=> '',
+										'TR_DELETE' 		=> '',
+										'TR_TYPE' 		=> '<font color="#FF0000">'.tr('deleting').'</font>',
+										'TR_ADMIN' 		=> $rs->fields['admin'],
+										'SOFTWARE_ICON' 	=> 'delete',
+										'RIGHTS_LINK' 		=> '',
+										'TR_SOFTWARE_RIGHTS' 	=> '',
+										'SOFTWARE_RIGHTS_LINK' 	=> ''
 									)
 								);
 							$exist_software_id = substr (strrchr ($rs->fields['swstatus'], "_"), 1);
@@ -544,12 +564,12 @@ function get_reseller_software (&$tpl, &$sql) {
 			}
 			$tpl->assign(
 					array(
-						'RESELLER_NAME' => $rs->fields['reseller'],
-						'RESELLER_ID' => $rs->fields['reseller_id'],
-						'RESELLER_COUNT_SWDEPOT' => $rscountswdepot->fields['swdepot'],
-						'RESELLER_COUNT_WAITING' => $rscountwaiting->fields['waiting'],
-						'RESELLER_COUNT_ACTIVATED' => $rscountactivated->fields['activated'],
-						'RESELLER_SOFTWARE_IN_USE' => $sw_in_use
+						'RESELLER_NAME' 		=> $rs->fields['reseller'],
+						'RESELLER_ID' 			=> $rs->fields['reseller_id'],
+						'RESELLER_COUNT_SWDEPOT' 	=> $rscountswdepot->fields['swdepot'],
+						'RESELLER_COUNT_WAITING' 	=> $rscountwaiting->fields['waiting'],
+						'RESELLER_COUNT_ACTIVATED' 	=> $rscountactivated->fields['activated'],
+						'RESELLER_SOFTWARE_IN_USE' 	=> $sw_in_use
 						)
 					);
 			$tpl->parse('LIST_RESELLER', '.list_reseller');
@@ -583,40 +603,40 @@ $res_cnt = get_reseller_software (&$tpl, &$sql);
 
 $tpl->assign(
 		array(
-			'TR_SOFTWARE_DEPOT' => tr('Softwaredepot'),
-			'SOFTWARE_UPLOAD_TOKEN' => generate_software_upload_token(),
-			'TR_SOFTWARE_ADMIN' => tr('Admin'),
-			'TR_SOFTWARE_RIGHTS' => tr('Softwarerights'),
-			'TR_SOFTWAREDEPOT_COUNT' => tr('Softwaredepot total'),
-			'TR_SOFTWAREDEPOT_NUM' => $swdepot_cnt,
-			'TR_UPLOAD_SOFTWARE' => tr('Softwaredepot upload'),
-			'TR_SOFTWARE_FILE' => tr('Choose file (Max: %1$d MB)', ini_get('upload_max_filesize')),
-			'TR_SOFTWARE_URL' => tr('or remote file (Max: %1$d MB)', formatFilesize($cfg->MAX_REMOTE_FILESIZE)),
-			'TR_UPLOAD_SOFTWARE_BUTTON' => tr('Upload now'),
-			'TR_AWAITING_ACTIVATION' => tr('Awaiting Activation'),
-			'TR_ACTIVATED_SOFTWARE' => tr('Reseller software list'),
-			'TR_SOFTWARE_NAME' => tr('Application'),
-			'TR_SOFTWARE_VERSION' => tr('App-Version'),
-			'TR_SOFTWARE_LANGUAGE' => tr('Language'),
-			'TR_SOFTWARE_TYPE' => tr('Type'),
-			'TR_SOFTWARE_RESELLER' => tr('Reseller'),
-			'TR_SOFTWARE_IMPORT' => tr('Depot import'),
-			'TR_SOFTWARE_DOWNLOAD' => tr('Download'),
-			'TR_SOFTWARE_ACTIVATION' => tr('Activate'),
-			'TR_SOFTWARE_DELETE' => tr('Delete'),
-			'TR_SOFTWARE_ACT_COUNT' => tr('Software total'),
-			'TR_SOFTWARE_ACT_NUM' => $sw_cnt,
-			'TR_RESELLER_NAME' => tr('Reseller'),
-			'TR_RESELLER_ACT_COUNT' => tr('Reseller total'),
-			'TR_RESELLER_ACT_NUM' => $res_cnt,
-			'TR_RESELLER_COUNT_SWDEPOT' => tr('Softwaredepot'),
-			'TR_RESELLER_COUNT_WAITING' => tr('Waiting for activation'),
-			'TR_RESELLER_COUNT_ACTIVATED' => tr('Activated software'),
-			'TR_RESELLER_SOFTWARE_IN_USE' => tr('Total installations'),
-			'TR_MESSAGE_ACTIVATE' => tr('Are you sure you want to activate this package?', true),
-			'TR_MESSAGE_IMPORT' => tr('Are you sure you want to import this package into the software depot?', true),
-			'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete this package?', true),
-			'TR_ADMIN_SOFTWARE_PAGE_TITLE' => tr('ispCP - Software management'),
+			'TR_SOFTWARE_DEPOT' 					=> tr('Softwaredepot'),
+			'SOFTWARE_UPLOAD_TOKEN' 				=> generate_software_upload_token(),
+			'TR_SOFTWARE_ADMIN' 					=> tr('Admin'),
+			'TR_SOFTWARE_RIGHTS' 					=> tr('Softwarerights'),
+			'TR_SOFTWAREDEPOT_COUNT' 				=> tr('Softwaredepot total'),
+			'TR_SOFTWAREDEPOT_NUM' 					=> $swdepot_cnt,
+			'TR_UPLOAD_SOFTWARE' 					=> tr('Softwaredepot upload'),
+			'TR_SOFTWARE_FILE' 					=> tr('Choose file (Max: %1$d MB)', ini_get('upload_max_filesize')),
+			'TR_SOFTWARE_URL' 					=> tr('or remote file (Max: %1$d MB)', formatFilesize($cfg->MAX_REMOTE_FILESIZE)),
+			'TR_UPLOAD_SOFTWARE_BUTTON' 				=> tr('Upload now'),
+			'TR_AWAITING_ACTIVATION' 				=> tr('Awaiting Activation'),
+			'TR_ACTIVATED_SOFTWARE' 				=> tr('Reseller software list'),
+			'TR_SOFTWARE_NAME' 					=> tr('Application'),
+			'TR_SOFTWARE_VERSION' 					=> tr('App-Version'),
+			'TR_SOFTWARE_LANGUAGE' 					=> tr('Language'),
+			'TR_SOFTWARE_TYPE' 					=> tr('Type'),
+			'TR_SOFTWARE_RESELLER' 					=> tr('Reseller'),
+			'TR_SOFTWARE_IMPORT' 					=> tr('Depot import'),
+			'TR_SOFTWARE_DOWNLOAD' 					=> tr('Download'),
+			'TR_SOFTWARE_ACTIVATION' 				=> tr('Activate'),
+			'TR_SOFTWARE_DELETE' 					=> tr('Delete'),
+			'TR_SOFTWARE_ACT_COUNT'					=> tr('Software total'),
+			'TR_SOFTWARE_ACT_NUM' 					=> $sw_cnt,
+			'TR_RESELLER_NAME' 					=> tr('Reseller'),
+			'TR_RESELLER_ACT_COUNT' 				=> tr('Reseller total'),
+			'TR_RESELLER_ACT_NUM' 					=> $res_cnt,
+			'TR_RESELLER_COUNT_SWDEPOT' 				=> tr('Softwaredepot'),
+			'TR_RESELLER_COUNT_WAITING' 				=> tr('Waiting for activation'),
+			'TR_RESELLER_COUNT_ACTIVATED' 				=> tr('Activated software'),
+			'TR_RESELLER_SOFTWARE_IN_USE' 				=> tr('Total installations'),
+			'TR_MESSAGE_ACTIVATE' 					=> tr('Are you sure you want to activate this package?', true),
+			'TR_MESSAGE_IMPORT' 					=> tr('Are you sure you want to import this package into the software depot?', true),
+			'TR_MESSAGE_DELETE' 					=> tr('Are you sure you want to delete this package?', true),
+			'TR_ADMIN_SOFTWARE_PAGE_TITLE' 				=> tr('ispCP - Software management')
 			)
 	);
 

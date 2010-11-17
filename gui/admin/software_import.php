@@ -74,11 +74,21 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 			INSERT INTO
 				`web_software`
 					(
-						`software_master_id`, `reseller_id`, `software_name`,
-						`software_version`, `software_language`, `software_type`,
-						`software_db`, `software_archive`, `software_installfile`,
-						`software_prefix`, `software_link`, `software_desc`,
-						`software_active`, `software_status`, `rights_add_by`,
+						`software_master_id`, 
+						`reseller_id`, 
+						`software_name`,
+						`software_version`, 
+						`software_language`, 
+						`software_type`,
+						`software_db`, 
+						`software_archive`, 
+						`software_installfile`,
+						`software_prefix`, 
+						`software_link`, 
+						`software_desc`,
+						`software_active`, 
+						`software_status`, 
+						`rights_add_by`,
 						`software_depot`
 					)
 			VALUES

@@ -43,15 +43,15 @@ $tpl->define_dynamic('page_message', 'page');
 function gen_page_data(&$tpl, &$sql) {
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'send_delmessage') {
 		$tpl->assign(
-				array(
-					'DELETE_MESSAGE_TEXT' => clean_input($_POST['delete_msg_text'], false)
+			array(
+				'DELETE_MESSAGE_TEXT' => clean_input($_POST['delete_msg_text'], false)
 				)
 			);
 	} else {
 		$tpl->assign(
-				array(
-					'DELETE_MESSAGE_TEXT' =>'',
-					'MESSAGE' => ''
+			array(
+				'DELETE_MESSAGE_TEXT'	=> '',
+				'MESSAGE' 		=> ''
 				)
 			);
 	}
@@ -154,17 +154,17 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 
 		$tpl->assign(
 				array(
-					'TR_MANAGE_SOFTWARE_PAGE_TITLE' => tr('ispCP - Software Management'),
-					'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-					'THEME_CHARSET' => tr('encoding'),
-					'ISP_LOGO' => get_logo($_SESSION['user_id']),
-					'TR_DELETE_SEND_TO' => tr('Send message to'),
-					'TR_DELETE_MESSAGE_TEXT' => tr('Message'),
-					'TR_DELETE_SOFTWARE' => tr('Message to reseller before deleting the software'),
-					'TR_DELETE_DATA' => tr('Reseller data'),
-					'TR_SEND_MESSAGE' => tr('Delete software and send message'),
-					'SOFTWARE_ID' => $software_id,
-					'RESELLER_ID' => $rs->fields['reseller_id']
+					'TR_MANAGE_SOFTWARE_PAGE_TITLE' 	=> tr('ispCP - Software Management'),
+					'THEME_COLOR_PATH' 			=> "../themes/{$cfg->USER_INITIAL_THEME}",
+					'THEME_CHARSET' 			=> tr('encoding'),
+					'ISP_LOGO' 				=> get_logo($_SESSION['user_id']),
+					'TR_DELETE_SEND_TO' 			=> tr('Send message to'),
+					'TR_DELETE_MESSAGE_TEXT' 		=> tr('Message'),
+					'TR_DELETE_SOFTWARE' 			=> tr('Message to reseller before deleting the software'),
+					'TR_DELETE_DATA' 			=> tr('Reseller data'),
+					'TR_SEND_MESSAGE' 			=> tr('Delete software and send message'),
+					'SOFTWARE_ID' 				=> $software_id,
+					'RESELLER_ID' 				=> $rs->fields['reseller_id']
 					)
 			);
 	}
