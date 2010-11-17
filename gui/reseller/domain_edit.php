@@ -8,7 +8,6 @@
  * @version 	SVN: $Id$
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
- * @author 		i-MSCP Team
  *
  * @license
  * The contents of this file are subject to the Mozilla Public License
@@ -28,8 +27,6 @@
  * by moleSoftware GmbH. All Rights Reserved.
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
- * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
 require '../include/imscp-lib.php';
@@ -405,6 +402,7 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 		$domain_php, $domain_cgi, $allowbackup, $domain_dns, $domain_expires,
 		$domain_new_expire;
 
+    $datepicker     = clean_input($_POST['dmn_expire_date']);
 	$domain_new_expire = clean_input($_POST['dmn_expire']);
 	$sub 			= clean_input($_POST['dom_sub']);
 	$als 			= clean_input($_POST['dom_alias']);
@@ -561,7 +559,7 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 		$user_props .= "$allowbackup;";
 		$user_props .= "$domain_dns";
 		update_user_props($user_id, $user_props);
-
+/*
 		$domain_expires = $_SESSION['domain_expires'];
 
 		if ($domain_expires != 0 && $domain_new_expire != 0) {
@@ -571,6 +569,12 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 		} elseif ($domain_expires == 0 && $domain_new_expire != 0) {
 			$domain_expires = time() + ($domain_new_expire * 2635200);
 		}
+ */
+        if($_POST['neverexpire'] != "checked"){
+            $domain_expires = datepicker_reseller_convert($datepicker);
+        } else {
+            $domain_expires = "0";
+        }
 		update_expire_date($user_id, $domain_expires);
 
 		$reseller_props = "$rdmn_current;$rdmn_max;";

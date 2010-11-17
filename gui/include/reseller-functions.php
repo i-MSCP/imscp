@@ -1887,3 +1887,15 @@ function check_reseller_permissions($reseller_id, $permission) {
 
 	return true;
 }
+
+/**
+ * Convert datepicker date to Unix-Timestamp
+ *
+ * @author Peter Ziergoebel <info@fisa4.de>
+ * @since 1.0.0 (i-MSCP)
+ * @param string $time A date/time string
+ * @return int Unix timestamp
+ */
+function datepicker_reseller_convert($time){
+    return strtotime($time);
+}

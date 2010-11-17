@@ -88,9 +88,31 @@
 							$(function() {
 								$( "#datepicker" ).datepicker();
 							});
+							$(document).ready(function(){
+                                // Tooltips - begin
+                                $('#dmn_help').iMSCPtooltips({msg:"{TR_DMN_HELP}"});
+                                // Tooltips - end
+
+                                $('#datepicker').change(function() {
+                                    if($(this).val() != '') {
+                                        $('#neverexpire').attr('disabled', 'disabled')
+                                    } else {
+                                        $('#neverexpire').removeAttr('disabled');
+                                    }
+                                });
+
+                                $('#neverexpire').change(function() {
+                                    if($(this).is(':checked')) {
+                                        $('#datepicker').attr('disabled', 'disabled')
+                                    } else {
+                                        $('#datepicker').removeAttr('disabled');
+                                    }
+                                });
+
+                            });
 						</script>
 						<div class="content">
-							<p>Date: <input type="text" id="datepicker" name="dmn_expire_date"> (MM/DD/YYYY) <input type="checkbox" name="neverexpire" checked="checked"> Never Expire</p>
+							<p>Date: <input type="text" id="datepicker" name="dmn_expire_date"> (MM/DD/YYYY) or Check for <strong>never Expire</strong> <input type="checkbox" name="neverexpire" id="neverexpire"></p>
  						</div>
 			    </td>
                       </tr>

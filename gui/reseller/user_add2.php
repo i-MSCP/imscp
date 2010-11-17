@@ -8,7 +8,6 @@
  * @version 	SVN: $Id$
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
- * @author 		i-MSCP Team
  *
  * @license
  * The contents of this file are subject to the Mozilla Public License
@@ -28,8 +27,6 @@
  * by moleSoftware GmbH. All Rights Reserved.
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
- * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
 require '../include/imscp-lib.php';
@@ -161,12 +158,13 @@ if ($cfg->DUMP_GUI_DEBUG) {
  */
 function get_pageone_param() {
 	global $dmn_name;
-	global $dmn_expire;
+	global $dmn_expire, $neverexpire;
 	global $dmn_chp;
 
 	if (isset($_SESSION['dmn_name'])) {
 		$dmn_name = $_SESSION['dmn_name'];
 		$dmn_expire = $_SESSION['dmn_expire'];
+        $neverexpire = $_SESSION['neverexpire'];
 		$dmn_chp = $_SESSION['dmn_tpl'];
 	} else {
 		return false;

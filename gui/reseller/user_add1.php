@@ -8,7 +8,6 @@
  * @version 	SVN: $Id$
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
- * @author 		i-MSCP Team
  *
  * @license
  * The contents of this file are subject to the Mozilla Public License
@@ -28,8 +27,6 @@
  * by moleSoftware GmbH. All Rights Reserved.
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
- * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
 require '../include/imscp-lib.php';
@@ -89,6 +86,12 @@ $tpl->assign(
 );
 
 if (isset($_POST['uaction'])) {
+
+    echo '<pre>';
+        print_r($_REQUEST);
+    echo '</pre>';
+    exit;
+
 	if (!check_user_data()) {
 		get_data_au1_page($tpl);
 	}
@@ -114,7 +117,7 @@ unset_messages();
  */
 function check_user_data() {
 	global $dmn_name; // domain name
-	global $dmn_expire; // Domain expire date
+	global $dmn_expire, $neverexpire; // Domain expire date
 	global $dmn_chp; // choosed hosting plan
 	global $dmn_pt;
 	global $validation_err_msg;
@@ -134,6 +137,10 @@ function check_user_data() {
 
 	if (isset($_POST['dmn_expire'])) {
 		$dmn_expire = $_POST['dmn_expire'];
+	}
+
+    if (isset($_POST['neverexpire'])) {
+		$neverexpire = $_POST['neverexpire'];
 	}
 
 	if (isset($_POST['dmn_tpl'])) {
@@ -172,6 +179,7 @@ function check_user_data() {
 		// send through the session the data
 		$_SESSION['dmn_name']	= $dmn_name;
 		$_SESSION['dmn_expire']	= $dmn_expire;
+        $_SESSION['neverexpire']= $neverexpire;
 		$_SESSION['dmn_tpl']	= $dmn_chp;
 		$_SESSION['chtpl']		= $dmn_pt;
 		$_SESSION['step_one']	= "_yes_";
@@ -184,6 +192,7 @@ function check_user_data() {
 			// send through the session the data
 			$_SESSION['dmn_name']	= $dmn_name;
 			$_SESSION['dmn_expire']	= $dmn_expire;
+            $_SESSION['neverexpire']= $neverexpire;
 			$_SESSION['dmn_tpl']	= $dmn_chp;
 			$_SESSION['chtpl']		= $dmn_pt;
 			$_SESSION['step_one']	= "_yes_";
@@ -225,7 +234,7 @@ function get_empty_au1_page(&$tpl) {
  */
 function get_data_au1_page(&$tpl) {
 	global $dmn_name; // Domain name
-	global $dmn_expire; // Domain expire date
+	global $dmn_expire, $neverexpire; // Domain expire date
 	//global $dmn_chp; // choosed hosting plan;
 	global $dmn_pt; // personal template
 
