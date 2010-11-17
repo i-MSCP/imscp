@@ -13,7 +13,7 @@
 <div id="outer">
   <div id="middle">
     <div id="inner">
-    
+    I'm the king
 		<form name="login_frm" action="index.php" method="post">
 			<!-- BDP: page_message -->
 				<div class="warning">
