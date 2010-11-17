@@ -79,6 +79,7 @@ $tpl->assign(
 				'TR_MAX_TRAFFIC'			=> tr('Traffic limit [MB]<br><i>(0 unlimited)</i>'),
 				'TR_DISK_LIMIT'				=> tr('Disk limit [MB]<br><i>(0 unlimited)</i>'),
 				'TR_PHP'					=> tr('PHP'),
+				'TR_SOFTWARE_SUPP'			=> tr('Software installation'),
 				'TR_CGI'					=> tr('CGI / Perl'),
 				'TR_DNS'					=> tr('Allow adding records to DNS zone (EXPERIMENTAL)'),
 				'TR_BACKUP'					=> tr('Backup'),
@@ -157,6 +158,8 @@ function gen_empty_ahp_page(&$tpl) {
 					'TR_PHP_NO'				=> $cfg->HTML_CHECKED,
 					'TR_CGI_YES'			=> '',
 					'TR_CGI_NO'				=> $cfg->HTML_CHECKED,
+					'VL_SOFTWAREY'			=> '',
+					'VL_SOFTWAREN'			=> $cfg->HTML_CHECKED,
 					'VL_BACKUPD'			=> '',
 					'VL_BACKUPS'			=> '',
 					'VL_BACKUPF'			=> '',
@@ -183,7 +186,7 @@ function gen_data_ahp_page(&$tpl) {
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;
 	global $hp_traff, $hp_disk;
 	global $price, $setup_fee, $value, $payment, $status;
-	global $hp_backup, $hp_dns;
+	global $hp_backup, $hp_dns, $hp_allowsoftware;
 	global $tos;
 
 	$cfg = iMSCP_Registry::get('Config');
@@ -212,6 +215,8 @@ function gen_data_ahp_page(&$tpl) {
 			array(
 					'TR_PHP_YES'	=> ($hp_php == '_yes_') ? $cfg->HTML_CHECKED : '',
 					'TR_PHP_NO'		=> ($hp_php == '_no_') ? $cfg->HTML_CHECKED : '',
+					'VL_SOFTWAREY'	=> ($hp_allowsoftware == '_yes_') ? $cfg->HTML_CHECKED : '',
+					'VL_SOFTWAREN'	=> ($hp_allowsoftware == '_no_') ? $cfg->HTML_CHECKED : '',
 					'TR_CGI_YES'	=> ($hp_cgi == '_yes_') ? $cfg->HTML_CHECKED : '',
 					'TR_CGI_NO'		=> ($hp_cgi == '_no_') ? $cfg->HTML_CHECKED : '',
 					'VL_BACKUPD'	=> ($hp_backup == '_dmn_') ? $cfg->HTML_CHECKED : '',
@@ -237,7 +242,7 @@ function check_data_correction(&$tpl) {
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;
 	global $hp_traff, $hp_disk;
 	global $price, $setup_fee, $value, $payment, $status;
-	global $hp_backup, $hp_dns;
+	global $hp_backup, $hp_dns, $hp_allowsoftware;
 	global $tos;
 
 	$ahp_error 		= array();
@@ -282,6 +287,10 @@ function check_data_correction(&$tpl) {
 	if (isset($_POST['dns'])) {
 		$hp_dns = $_POST['dns'];
 	}
+	
+	if (isset($_POST['software_allowed'])) {
+		$hp_allowsoftware = $_POST['software_allowed'];
+	}
 
 	if (isset($_POST['backup'])) {
 		$hp_backup = $_POST['backup'];
@@ -325,6 +334,9 @@ function check_data_correction(&$tpl) {
 	if (!imscp_limit_check($hp_disk, null)) {
 		$ahp_error[] = tr('Incorrect disk quota limit!');
 	}
+	if($hp_php == "_no_" && $hp_allowsoftware == "_yes_") {
+		$ahp_error[] = tr('The software installer needs PHP to enable it!');
+	}
 
 	if (empty($ahp_error)) {
 		$tpl->assign('MESSAGE', '');
@@ -346,7 +358,7 @@ function save_data_to_db(&$tpl, $admin_id) {
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;
 	global $hp_traff, $hp_disk;
 	global $price, $setup_fee, $value, $payment, $status;
-	global $hp_backup, $hp_dns;
+	global $hp_backup, $hp_dns, $hp_allowsoftware;
 	global $tos;
 
 	$sql = iMSCP_Registry::get('Db');
@@ -372,7 +384,7 @@ function save_data_to_db(&$tpl, $admin_id) {
 		$tpl->assign('MESSAGE', tr('Hosting plan with entered name already exists!'));
 		// $tpl->parse('AHP_MESSAGE', 'ahp_message');
 	} else {
-		$hp_props = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;$hp_disk;$hp_backup;$hp_dns";
+		$hp_props = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;$hp_disk;$hp_backup;$hp_dns;$hp_allowsoftware";
 		$query = "
 			INSERT INTO
 				hosting_plans(
