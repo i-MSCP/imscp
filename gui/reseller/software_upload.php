@@ -102,8 +102,18 @@ if (isset($_POST['Button']) && $_SESSION['software_upload_token'] == $_POST['sen
 				INSERT INTO
 					`web_software`
 						(
-							`reseller_id`, `software_name`, `software_version`, `software_language`, `software_type`, `software_db`,
-							`software_archive`, `software_installfile`, `software_prefix`, `software_link`, `software_desc`, `software_status`
+							`reseller_id`,
+							`software_name`,
+							`software_version`,
+							`software_language`,
+							`software_type`,
+							`software_db`,
+							`software_archive`,
+							`software_installfile`,
+							`software_prefix`,
+							`software_link`,
+							`software_desc`,
+							`software_status`
 						)
 				VALUES
 						(
@@ -111,7 +121,21 @@ if (isset($_POST['Button']) && $_SESSION['software_upload_token'] == $_POST['sen
 							?, ?, ?, ?, ?, ?
 						)
 			";
-		$rs = exec_query($sql, $query, array($user_id, "waiting_for_input", "waiting_for_input", "waiting_for_input", "waiting_for_input", "0", $filename, "waiting_for_input", "waiting_for_input", "waiting_for_input", "waiting_for_input", "toadd"));
+		$rs = exec_query($sql, $query, array(
+							$user_id, 
+							"waiting_for_input", 
+							"waiting_for_input", 
+							"waiting_for_input", 
+							"waiting_for_input", 
+							"0", 
+							$filename, 
+							"waiting_for_input", 
+							"waiting_for_input", 
+							"waiting_for_input", 
+							"waiting_for_input", 
+							"toadd"
+							)
+						);
 		$sw_id = $sql->Insert_ID();
 		if ($file == 0) {
 			$dest_dir = $cfg->GUI_SOFTWARE_DIR.'/'.$user_id.'/'.$filename.'-'.$sw_id.$extension;
@@ -338,49 +362,49 @@ function get_avail_software (&$tpl, &$sql, $user_id) {
 						$swinstalled_domain .= "</ul>";
 						$tpl->assign(
 									array(
-										'SW_INSTALLED' => $swinstalled_domain
+										'SW_INSTALLED'	=> $swinstalled_domain
 									)
 								);
 					} else {
 						$tpl->assign(
 									array(
-										'SW_INSTALLED' => tr('This package is not installed yet')
+										'SW_INSTALLED'	=> tr('This package is not installed yet')
 									)
 								);
 					}
 					
 					$tpl->assign(
 							array(
-								'SW_NAME' => $rs->fields['name'],
-								'LINK_COLOR' => '#000000',
-								'SW_VERSION' => $rs->fields['version'],
-								'SW_LANGUAGE' => $rs->fields['language'],
-								'SW_DESCRIPTION' => $rs->fields['description'],
-								'SW_TYPE' => $rs->fields['type'],
-								'DELETE' => $url,
-								'TR_DELETE' => tr('Delete'),
+								'SW_NAME' 		=> $rs->fields['name'],
+								'LINK_COLOR' 		=> '#000000',
+								'SW_VERSION' 		=> $rs->fields['version'],
+								'SW_LANGUAGE' 		=> $rs->fields['language'],
+								'SW_DESCRIPTION' 	=> $rs->fields['description'],
+								'SW_TYPE' 		=> $rs->fields['type'],
+								'DELETE' 		=> $url,
+								'TR_DELETE' 		=> tr('Delete'),
 								'WAITING_SOFTWARE_LIST' => '',
-								'SOFTWARE_ICON' => 'delete'
+								'SOFTWARE_ICON' 	=> 'delete'
 							)
 						);
 					if ($rs->fields['swactive'] == "0"){
 						$tpl->assign(
 								array(
-									'SW_STATUS' => tr('waiting for activation')
+									'SW_STATUS'	=> tr('waiting for activation')
 								)
 							);
 					} 
 					elseif ($rs->fields['swactive'] == "1" && $rs->fields['softwaredepot'] == "yes"){
 						$tpl->assign(
 								array(
-									'SW_STATUS' => tr('activated (Softwaredepot)')
+									'SW_STATUS'	=> tr('activated (Softwaredepot)')
 								)
 							);
 					}
 					else {
 						$tpl->assign(
 								array(
-									'SW_STATUS' => tr('activated')
+									'SW_STATUS'	=> tr('activated')
 								)
 							);
 					}
@@ -389,64 +413,64 @@ function get_avail_software (&$tpl, &$sql, $user_id) {
 						$url = "software_delete.php?id=".$rs->fields['id'];
 						$tpl->assign(
 								array(
-									'SW_NAME' => tr('Installing your uploaded package. Please refresh the site.'),
-									'LINK_COLOR' => '#FF0000',
-									'SW_VERSION' => '',
-									'SW_LANGUAGE' => '',
-									'SW_DESCRIPTION' => tr('After your upload the package it will be installed on your systems.<br />Refresh your site to see the new status!'),
-									'SW_TYPE' => '',
-									'DELETE' => $url,
-									'TR_DELETE' => tr('Delete'),
-									'SW_STATUS' => tr('installing'),
-									'SOFTWARE_ICON' => 'disabled'
+									'SW_NAME' 		=> tr('Installing your uploaded package. Please refresh the site.'),
+									'LINK_COLOR' 		=> '#FF0000',
+									'SW_VERSION' 		=> '',
+									'SW_LANGUAGE'		=> '',
+									'SW_DESCRIPTION' 	=> tr('After your upload the package it will be installed on your systems.<br />Refresh your site to see the new status!'),
+									'SW_TYPE' 		=> '',
+									'DELETE' 		=> $url,
+									'TR_DELETE' 		=> tr('Delete'),
+									'SW_STATUS' 		=> tr('installing'),
+									'SOFTWARE_ICON' 	=> 'disabled'
 								)
 							);
 					} else {
 						if($rs->fields['swstatus'] == "delete") {
 							$tpl->assign(
 									array(
-										'SW_NAME' => tr('Failure in package. Deleting!'),
-										'LINK_COLOR' => '#FF0000',
-										'SW_VERSION' => '',
-										'SW_LANGUAGE' => '',
-										'SW_DESCRIPTION' => tr('Check your package. There is an error inside!<br />Refresh your site to see the new status!'),
-										'SW_TYPE' => '',
-										'DELETE' => '',
-										'TR_DELETE' => '',
-										'SW_STATUS' => tr('deleting'),
-										'SOFTWARE_ICON' => 'disabled'
+										'SW_NAME' 		=> tr('Failure in package. Deleting!'),
+										'LINK_COLOR' 		=> '#FF0000',
+										'SW_VERSION' 		=> '',
+										'SW_LANGUAGE' 		=> '',
+										'SW_DESCRIPTION'	=> tr('Check your package. There is an error inside!<br />Refresh your site to see the new status!'),
+										'SW_TYPE' 		=> '',
+										'DELETE' 		=> '',
+										'TR_DELETE' 		=> '',
+										'SW_STATUS' 		=> tr('deleting'),
+										'SOFTWARE_ICON' 	=> 'disabled'
 									)
 								);
 							set_page_message(tr('The package is corrupt. Please correct it!'));
 						} elseif (preg_match("/double_depot_/i", $rs->fields['swstatus'])) {
 							$tpl->assign(
 									array(
-										'SW_NAME' => tr('Package already exist in the software depot!'),
-										'LINK_COLOR' => '#FF0000',
-										'SW_VERSION' => '',
-										'SW_LANGUAGE' => '',
-										'SW_DESCRIPTION' => tr('Please contact the administrator!<br />Ask him for the permissions to use this package.<br />It is not allowed to upload this packet two times.<br />Refresh your site to see the new status!'),
-										'SW_TYPE' => '',
-										'DELETE' => '',
-										'TR_DELETE' => '',
-										'SW_STATUS' => tr('deleting'),
-										'SOFTWARE_ICON' => 'disabled'
+										'SW_NAME' 		=> tr('Package already exist in the software depot!'),
+										'LINK_COLOR' 		=> '#FF0000',
+										'SW_VERSION' 		=> '',
+										'SW_LANGUAGE'	 	=> '',
+										'SW_DESCRIPTION' 	=> tr('Please contact the administrator!<br />Ask him for the permissions to use this package.<br />It is not allowed to upload this packet two times.<br />Refresh your site to see the new status!'),
+										'SW_TYPE' 		=> '',
+										'DELETE' 		=> '',
+										'TR_DELETE' 		=> '',
+										'SW_STATUS' 		=> tr('deleting'),
+										'SOFTWARE_ICON' 	=> 'disabled'
 									)
 								);
 							set_page_message(tr('This package already exist in the administrator software depot!'));
 						} elseif (preg_match("/double_res_/i", $rs->fields['swstatus'])) {
 							$tpl->assign(
 									array(
-										'SW_NAME' => tr('Package already exist in your software depot!'),
-										'LINK_COLOR' => '#FF0000',
-										'SW_VERSION' => '',
-										'SW_LANGUAGE' => '',
-										'SW_DESCRIPTION' => tr('Check your own uploads!<br />Ask the administrator if you don\'t find the package.<br />It is not allowed to upload this packages two times.<br />Refresh your site to see the new status!'),
-										'SW_TYPE' => '',
-										'DELETE' => '',
-										'TR_DELETE' => '',
-										'SW_STATUS' => tr('deleting'),
-										'SOFTWARE_ICON' => 'disabled'
+										'SW_NAME' 		=> tr('Package already exist in your software depot!'),
+										'LINK_COLOR' 		=> '#FF0000',
+										'SW_VERSION' 		=> '',
+										'SW_LANGUAGE' 		=> '',
+										'SW_DESCRIPTION' 	=> tr('Check your own uploads!<br />Ask the administrator if you don\'t find the package.<br />It is not allowed to upload this packages two times.<br />Refresh your site to see the new status!'),
+										'SW_TYPE' 		=> '',
+										'DELETE' 		=> '',
+										'TR_DELETE' 		=> '',
+										'SW_STATUS' 		=> tr('deleting'),
+										'SOFTWARE_ICON' 	=> 'disabled'
 									)
 								);
 							set_page_message(tr('This package already exist in your software depot!'));
@@ -469,8 +493,8 @@ function get_avail_software (&$tpl, &$sql, $user_id) {
 		} else {
 			$tpl->assign(
 					array(
-						'NO_SOFTWARE' => tr('You do not have any software uploaded yet'),
-						'LIST_SOFTWARE' => ''
+						'NO_SOFTWARE' 	=> tr('You do not have any software uploaded yet'),
+						'LIST_SOFTWARE'	=> ''
 					)
 				);
 			$tpl->parse('NO_SOFTWARE_LIST', '.no_software_list');
@@ -479,7 +503,7 @@ function get_avail_software (&$tpl, &$sql, $user_id) {
 	} else {
 		$tpl->assign(
 				array(
-					'NO_SOFTWARE' => tr('You do not have permissions to upload software'),
+					'NO_SOFTWARE' 	=> tr('You do not have permissions to upload software'),
 					'LIST_SOFTWARE' => ''
 				)
 			);
@@ -490,7 +514,7 @@ function get_avail_software (&$tpl, &$sql, $user_id) {
 
 $tpl->assign(
 		array(
-			'TR_MANAGE_SOFTWARE_PAGE_TITLE' => tr('ispCP - Software Management'),
+			'TR_MANAGE_SOFTWARE_PAGE_TITLE'	=> tr('ispCP - Software Management'),
 			"../themes/{$cfg->USER_INITIAL_THEME}",
 			'THEME_CHARSET' => tr('encoding'),
 			'ISP_LOGO' => get_logo($_SESSION['user_id'])
@@ -501,34 +525,34 @@ $sw_cnt = get_avail_software (&$tpl, &$sql, $_SESSION['user_id']);
 
 $tpl->assign(
 		array(
-			'TR_UPLOADED_SOFTWARE' => tr('Software available'),
-			'TR_SOFTWARE_NAME' => tr('Software-Synonym'),
-			'TR_SOFTWARE_VERSION' => tr('Software-Version'),
-			'TR_SOFTWARE_LANGUAGE' => tr('Language'),
-			'TR_SOFTWARE_STATUS' => tr('Software status'),
-			'TR_SOFTWARE_TYPE' => tr('Type'),
-			'TR_SOFTWARE_DELETE' => tr('Action'),
-			'TR_SOFTWARE_COUNT' => tr('Software total'),
-			'TR_SOFTWARE_NUM' => $sw_cnt,
-			'TR_UPLOAD_SOFTWARE' => tr('Software upload'),
-			'TR_SOFTWARE_DB' => tr('Requires Database?'),
-			'TR_SOFTWARE_DB_PREFIX' => tr('Database prefix'),
-			'TR_SOFTWARE_HOME' => tr('Link to authors homepage'),
-			'TR_SOFTWARE_DESC' => tr('Description'),
-			'SOFTWARE_UPLOAD_TOKEN' => generate_software_upload_token(),
-			'TR_SOFTWARE_FILE' => tr('Choose file (Max: %1$d MB)', ini_get('upload_max_filesize')),
-			'TR_SOFTWARE_URL' => tr('or remote file (Max: %1$d MB)', formatFilesize($cfg->MAX_REMOTE_FILESIZE)),
-			'TR_UPLOAD_SOFTWARE_BUTTON' => tr('Upload now'),
+			'TR_UPLOADED_SOFTWARE' 		=> tr('Software available'),
+			'TR_SOFTWARE_NAME'		=> tr('Software-Synonym'),
+			'TR_SOFTWARE_VERSION' 		=> tr('Software-Version'),
+			'TR_SOFTWARE_LANGUAGE' 		=> tr('Language'),
+			'TR_SOFTWARE_STATUS' 		=> tr('Software status'),
+			'TR_SOFTWARE_TYPE' 		=> tr('Type'),
+			'TR_SOFTWARE_DELETE' 		=> tr('Action'),
+			'TR_SOFTWARE_COUNT' 		=> tr('Software total'),
+			'TR_SOFTWARE_NUM' 		=> $sw_cnt,
+			'TR_UPLOAD_SOFTWARE' 		=> tr('Software upload'),
+			'TR_SOFTWARE_DB' 		=> tr('Requires Database?'),
+			'TR_SOFTWARE_DB_PREFIX' 	=> tr('Database prefix'),
+			'TR_SOFTWARE_HOME' 		=> tr('Link to authors homepage'),
+			'TR_SOFTWARE_DESC' 		=> tr('Description'),
+			'SOFTWARE_UPLOAD_TOKEN' 	=> generate_software_upload_token(),
+			'TR_SOFTWARE_FILE' 		=> tr('Choose file (Max: %1$d MB)', ini_get('upload_max_filesize')),
+			'TR_SOFTWARE_URL' 		=> tr('or remote file (Max: %1$d MB)', formatFilesize($cfg->MAX_REMOTE_FILESIZE)),
+			'TR_UPLOAD_SOFTWARE_BUTTON' 	=> tr('Upload now'),
 			'TR_UPLOAD_SOFTWARE_PAGE_TITLE'	=> tr('ispCP - Software management'),
-			'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete this package?', true),
-			'TR_SOFTWARE_NAME_ASC' => 'software_upload.php?sortby=name&order=asc',
-			'TR_SOFTWARE_NAME_DESC' => 'software_upload.php?sortby=name&order=desc',
-			'TR_SOFTWARE_TYPE_ASC' => 'software_upload.php?sortby=type&order=asc',
-			'TR_SOFTWARE_TYPE_DESC' => 'software_upload.php?sortby=type&order=desc',
-			'TR_SOFTWARE_STATUS_ASC' => 'software_upload.php?sortby=status&order=asc',
-			'TR_SOFTWARE_STATUS_DESC' => 'software_upload.php?sortby=status&order=desc',
-			'TR_LANGUAGE_ASC' => 'software_upload.php?sortby=language&order=asc',
-			'TR_LANGUAGE_DESC' => 'software_upload.php?sortby=language&order=desc'
+			'TR_MESSAGE_DELETE' 		=> tr('Are you sure you want to delete this package?', true),
+			'TR_SOFTWARE_NAME_ASC' 		=> 'software_upload.php?sortby=name&order=asc',
+			'TR_SOFTWARE_NAME_DESC' 	=> 'software_upload.php?sortby=name&order=desc',
+			'TR_SOFTWARE_TYPE_ASC' 		=> 'software_upload.php?sortby=type&order=asc',
+			'TR_SOFTWARE_TYPE_DESC' 	=> 'software_upload.php?sortby=type&order=desc',
+			'TR_SOFTWARE_STATUS_ASC' 	=> 'software_upload.php?sortby=status&order=asc',
+			'TR_SOFTWARE_STATUS_DESC' 	=> 'software_upload.php?sortby=status&order=desc',
+			'TR_LANGUAGE_ASC' 		=> 'software_upload.php?sortby=language&order=asc',
+			'TR_LANGUAGE_DESC' 		=> 'software_upload.php?sortby=language&order=desc'
 		)
 	);
 
