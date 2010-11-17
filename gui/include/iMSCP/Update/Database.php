@@ -1970,7 +1970,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	 *  @since r3709
 	 *  @return array
 	 */
-	protected function _databaseUpdate_47() {
+	protected function _databaseUpdate_48() {
 		$sqlUpd = array();
 
 		$sqlUpd[] = "DROP TABLE IF EXISTS `suexec_props`;";
