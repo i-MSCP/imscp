@@ -131,6 +131,13 @@
             <td width="230" class="content2">{FTP_ACCOUNTS}</td>
           </tr>
           <!-- BDP: t_sql2_support -->
+          <!-- BDP: t_software_allowed -->
+ 			<tr>
+ 				<td width="25">&nbsp;</td>
+ 				<td class="content">{SW_ALLOWED}</td>
+ 				<td width="230" class="content2">{SW_MSG}</td>
+ 			</tr>
+ 		  <!-- EDP: t_software_allowed -->
           <tr>
             <td width="25">&nbsp;</td>
             <td class="content">{TR_SQL_DATABASES}</td>

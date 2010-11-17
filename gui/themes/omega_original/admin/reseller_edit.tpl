@@ -226,6 +226,26 @@
 													<input type="text" name="nreseller_max_disk" value="{MAX_DISK_AMOUNT}" style="width:140px;{DISK_ERR}" class="textinput" />
 												</td>
 											</tr>
+											<!-- BDP: t_software_menu -->
+											<tr>
+ 												<td width="25">&nbsp;</td>
+ 												<td class="content2" width="200">{TR_SOFTWARE_SUPP}</td>
+ 												<td class="content"><select name="domain_software_allowed" id="domain_software_allowed">
+ 													<option value="yes" {SOFTWARE_YES}>{TR_YES}</option>
+ 													<option value="no" {SOFTWARE_NO}>{TR_NO}</option>
+ 													</select>
+ 												</td>
+ 											</tr>
+ 											<tr>
+ 												<td width="25">&nbsp;</td>
+												<td class="content2" width="200">{TR_SOFTWAREDEPOT_SUPP}</td>
+												<td class="content"><select name="domain_softwaredepot_allowed" id="domain_softwaredepot_allowed">
+													<option value="yes" {SOFTWAREDEPOT_YES}>{TR_YES}</option>
+													<option value="no" {SOFTWAREDEPOT_NO}>{TR_NO}</option>
+													</select>
+												</td>
+											</tr>
+											<!-- EDP: t_software_menu -->
 											<tr>
 												<td width="25">&nbsp;</td>
 												<td class="content2" width="200">{TR_SUPPORT_SYSTEM}</td>

@@ -69,6 +69,13 @@
                       <td class="content2" width="193">{TR_CGI_SUPP}</td>
                       <td class="content" colspan="2">{VL_CGI_SUPP}</td>
                     </tr>
+                    <!-- BDP: t_software_support -->
+ 					<tr>
+ 						<td width="25">&nbsp;</td>
+ 						<td class="content2" width="193">{TR_SOFTWARE_SUPP}</td>
+ 						<td  class="content" colspan="2">{VL_SOFTWARE_SUPP}</td>
+ 					</tr>
+ 					<!-- EDP: t_software_support -->
 					<tr>
 					  <td width="25">&nbsp;</td>
 					  <td class="content2" width="193">{TR_BACKUP_SUPPORT}</td>

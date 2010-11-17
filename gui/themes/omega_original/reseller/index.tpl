@@ -104,6 +104,13 @@
             <td class="content">{DISK}</td>
             <td width="230" class="content2">{DISK_MSG}</td>
           </tr>
+          <!-- BDP: software_allowed -->
+ 			<tr>
+ 				<td width="25">&nbsp;</td>
+ 				<td class="content">{SW_ALLOWED}</td>
+ 				<td width="230" class="content2">{SW_MSG}</td>
+ 			</tr>
+ 		  <!-- EDP: software_allowed -->
           <!-- BDP: msg_entry -->
           <tr>
             <td>&nbsp;</td>
