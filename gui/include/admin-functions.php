@@ -238,6 +238,7 @@ function gen_admin_menu(&$tpl, $menu_file) {
 			'TR_GENERAL_SETTINGS' => tr('General settings'),
 			'TR_SERVERPORTS' => tr('Server ports'),
 			'TR_MENU_IP_USAGE' => tr('IP usage'),
+			'TR_MENU_MANAGE_SOFTWARE' => tr('i-MSCP application management')
 			'VERSION' => $cfg->Version,
 			'BUILDDATE' => $cfg->BuildDate,
 			'CODENAME' => $cfg->CodeName
@@ -2572,4 +2573,285 @@ RIC;
 
 	$tpl->assign('PURCHASE_HEADER', $header);
 	$tpl->assign('PURCHASE_FOOTER', $footer);
+}
+
+function generate_software_upload_token(){
+	$token = md5(uniqid(microtime(), true));
+	$_SESSION['software_upload_token'] = $token;
+	return $token;
+}
+
+function update_existing_client_installations_res_upload($software_id, $software_name, $software_version, $software_language, $reseller_id, $software_master_id=0, $sw_depot=false){
+	global $cfg, $sql;
+	
+	$query = "
+		SELECT
+			`domain_id`
+		FROM
+			`domain`
+		WHERE
+			`domain_software_allowed` = 'yes'
+		AND
+			`domain_created_id` = ?
+	";
+	$res = exec_query($sql, $query, array($reseller_id));
+	if ($res->RecordCount() > 0) {
+		while(!$res->EOF) {
+			if ($sw_depot) {
+				$updatequery = "
+							UPDATE
+									`web_software_inst`
+							SET
+									`software_id` = ?,
+									`software_master_id` = ?,
+									`software_res_del` = 0
+							WHERE
+									`software_name` = ?
+							AND
+									`software_version` = ?
+							AND
+									`software_language` = ?
+							AND
+									`software_res_del` = 1
+							AND
+									`domain_id` = ?
+							";
+				exec_query(
+							$sql,
+							$updatequery,
+							array(
+								$software_id, $software_master_id, $software_name,
+								$software_version, $software_language, $res->fields['domain_id']
+								)
+							);
+			} else {
+				$updatequery = "
+							UPDATE
+									`web_software_inst`
+							SET
+									`software_id` = ?,
+									`software_res_del` = 0
+							WHERE
+									`software_name` = ?
+							AND
+									`software_version` = ?
+							AND
+									`software_language` = ?
+							AND
+									`software_res_del` = 1
+							AND
+									`domain_id` = ?
+							";
+				exec_query(
+							$sql,
+							$updatequery,
+							array(
+								$software_id, $software_name, $software_version,
+								$software_language, $res->fields['domain_id']
+								)
+							);
+			}
+			$res->MoveNext();
+		}
+	}
+}
+
+function update_existing_client_installations_sw_depot($software_id, $software_master_id, $reseller_id){
+	global $cfg, $sql;
+	
+	$query = "
+		SELECT
+			`domain_id`
+		FROM
+			`domain`
+		WHERE
+			`domain_software_allowed` = 'yes'
+		AND
+			`domain_created_id` = ?
+	";
+	$res = exec_query($sql, $query, $reseller_id);
+	if ($res->RecordCount() > 0) {
+		while(!$res->EOF) {
+			$updatequery = "
+						UPDATE
+								`web_software_inst`
+						SET
+								`software_id` = ?,
+								`software_res_del` = 0
+						WHERE
+								`software_master_id` = ?
+						AND
+								`software_res_del` = 1
+						AND
+								`domain_id` = ?
+						";
+			exec_query(
+						$sql,
+						$updatequery,
+						array(
+							$software_id, $software_master_id, $res->fields['domain_id']
+							)
+						);
+			$res->MoveNext();
+		}
+	}
+}
+
+function get_reseller_sw_installer($reseller_id) {
+	global $cfg, $sql;
+	
+	$query = "
+		SELECT
+			`software_allowed`
+		FROM
+			`reseller_props`
+		WHERE
+			`reseller_id` = ?
+	";
+	$res = exec_query($sql, $query, $reseller_id);
+	return $res->fields['software_allowed'];
+}
+
+function send_activated_sw($reseller_id, $file_name, $sw_id) {
+	global $cfg, $sql;
+
+	$query = "
+		SELECT
+			`admin_name` as reseller,
+			`created_by`,
+			`email` as res_email
+		FROM
+			`admin`
+		WHERE
+			`admin_id` = ?
+	";
+
+	$res = exec_query($sql, $query, $reseller_id);
+
+	$to_name = $res->fields['reseller'];
+	$to_email = $res->fields['res_email'];
+	$admin_id = $res->fields['created_by'];
+
+	$query = "
+		SELECT
+			`email` as adm_email,
+			`admin_name` as admin
+		FROM
+			`admin`
+		WHERE
+			`admin_id` = ?
+	";
+
+	$res = exec_query($sql, $query, $admin_id);
+
+	$from_name = $res->fields['admin'];
+	$from_email = $res->fields['adm_email'];
+
+	if($from_name) {
+		$from = "\"" . encode($from_name) . "\" <" . $from_email . ">";
+	} else {
+		$from = $from_email;
+	}
+
+	$search = array();
+	$replace = array();
+	$search [] = '{ADMIN}';
+	$replace[] = $from_name;
+	$search [] = '{SOFTWARE}';
+	$replace[] = $file_name;
+	$search [] = '{SOFTWARE_ID}';
+	$replace[] = $sw_id;
+	$search [] = '{RESELLER}';
+	$replace[] = $to_name;
+
+	$headers = "From: ". $from . "\n";
+	$headers .= "MIME-Version: 1.0\n" . "Content-Type: text/plain; charset=utf-8\n" . "Content-Transfer-Encoding: 8bit\n" . "X-Mailer: i-MSCP " . $cfg['Version'] . " Service Mailer";
+
+	$subject = tr('{ADMIN} activated your software package');
+	$message = tr('Dear {RESELLER},
+	Your uploaded a software package was succesful activated by {ADMIN}.
+
+	Details:
+	Package Name: {SOFTWARE}
+	Package ID: {SOFTWARE_ID}
+
+	Please login into your i-MSCP control panel for more details.', true);
+
+	$subject = str_replace($search, $replace, $subject);
+	$message = str_replace($search, $replace, $message);
+	$subject = encode($subject);
+	$mail_result = mail($to_email, $subject, $message, $headers);
+}
+
+function send_deleted_sw($reseller_id, $file_name, $sw_id, $subjectinput, $messageinput) {
+	global $cfg, $sql;
+	
+	$query = "
+		SELECT
+			`admin_name` as reseller,
+			`created_by`,
+			`email` as res_email
+		FROM
+			`admin`
+		WHERE
+			`admin_id` = ?
+	";
+
+	$res = exec_query($sql, $query, $reseller_id);
+
+	$to_name = $res->fields['reseller'];
+	$to_email = $res->fields['res_email'];
+	$admin_id = $res->fields['created_by'];
+
+	$query = "
+		SELECT
+			`email` as adm_email,
+			`admin_name` as admin
+		FROM
+			`admin`
+		WHERE
+			`admin_id` = ?
+	";
+
+	$res = exec_query($sql, $query, $admin_id);
+
+	$from_name = $res->fields['admin'];
+	$from_email = $res->fields['adm_email'];
+
+	if($from_name) {
+		$from = "\"" . encode($from_name) . "\" <" . $from_email . ">";
+	} else {
+		$from = $from_email;
+	}
+
+	$search = array();
+	$replace = array();
+	$search [] = '{ADMIN}';
+	$replace[] = $from_name;
+	$search [] = '{SOFTWARE}';
+	$replace[] = $file_name;
+	$search [] = '{SOFTWARE_ID}';
+	$replace[] = $sw_id;
+	$search [] = '{RESELLER}';
+	$replace[] = $to_name;
+
+	$headers = "From: ". $from . "\n";
+	$headers .= "MIME-Version: 1.0\n" . "Content-Type: text/plain; charset=utf-8\n" . "Content-Transfer-Encoding: 8bit\n" . "X-Mailer: i-MSCP " . $cfg['Version'] . " Service Mailer";
+	
+	// lets send mail to the reseller => new order
+	$subject = tr($subjectinput.' was deleted by {ADMIN}!');
+	$message = tr('Dear {RESELLER},
+	Your uploaded software was deleted by {ADMIN}.
+
+	Details:
+	Package Name: {SOFTWARE}
+	Package ID: {SOFTWARE_ID}
+
+	Message from {ADMIN}:
+	'.$messageinput, true);
+
+	$subject = str_replace($search, $replace, $subject);
+	$message = str_replace($search, $replace, $message);
+	$subject = encode($subject);
+	$mail_result = mail($to_email, $subject, $message, $headers);
 }

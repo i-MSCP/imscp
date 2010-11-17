@@ -205,7 +205,7 @@ function update_user_props($user_id, $props) {
 
 	list(
 		,$sub_max,,$als_max,,$mail_max,,$ftp_max,,$sql_db_max,,$sql_user_max,
-		$traff_max,$disk_max,$domain_php,$domain_cgi,,$domain_dns
+		$traff_max,$disk_max,$domain_php,$domain_cgi,,$domain_dns,$domain_software_allowed
 	) = explode (';', $props);
 
 	// have to check if PHP and/or CGI and/or IP change
@@ -224,11 +224,13 @@ function update_user_props($user_id, $props) {
 			`domain_cgi` = ?
 		AND
 			`domain_dns` = ?
+		AND
+			`domain_software_allowed` = ?
 		;
 	";
 
 	$rs = exec_query(
-		$db, $query, array($user_id, $domain_php, $domain_cgi, $domain_dns)
+		$db, $query, array($user_id, $domain_php, $domain_cgi, $domain_dns, $domain_software_allowed)
 	);
 
 	if ($rs->recordCount() == 0) {
@@ -256,7 +258,8 @@ function update_user_props($user_id, $props) {
 				`domain_disk_limit` = ?,
 				`domain_php` = ?,
 				`domain_cgi` = ?,
-				`domain_dns` = ?
+				`domain_dns` = ?,
+				`domain_software_allowed` = ?
 			WHERE
 				`domain_id` = ?
 			;
@@ -268,7 +271,7 @@ function update_user_props($user_id, $props) {
 			array(
 				$domain_last_modified, $mail_max, $ftp_max, $traff_max,
 				$sql_db_max, $sql_user_max, $update_status, $als_max, $sub_max,
-				$disk_max, $domain_php, $domain_cgi, $domain_dns, $user_id
+				$disk_max, $domain_php, $domain_cgi, $domain_dns, $domain_software_allowed, $user_id
 			)
 		);
 
@@ -780,4 +783,79 @@ function dump_gui_debug() {
 	echo htmlentities(print_r($_SERVER, true));
 	echo '</pre>';
 	*/
+}
+
+function get_client_software_permission (&$tpl,&$sql,$user_id) {
+	$query = "
+		SELECT
+			`domain_software_allowed`,
+			`domain_ftpacc_limit`
+		FROM
+			`domain`
+		WHERE
+			`domain_admin_id` = ?
+	";
+	$rs = exec_query($sql, $query, array($user_id));
+	if ($rs->fields('domain_software_allowed') == 'yes' && $rs->fields('domain_ftpacc_limit') != "-1") {
+		$tpl->assign(
+				array(
+					'SOFTWARE_SUPPORT' => tr('yes'),
+					'TR_SOFTWARE_MENU' => tr('i-MSCP application installer'),
+					'SOFTWARE_MENU' => tr('yes'),
+					'TR_INSTALLATION' => tr('Installation details'),
+					'TR_INSTALLATION_INFORMATION' => tr('Please set now the Username and Password for the later Login in the Application. (Required fiels!)'),
+					'TR_INSTALL_USER' => tr('Login username'),
+					'TR_INSTALL_PWD' => tr('Login password'),
+					'TR_INSTALL_EMAIL' => tr('Emailadress'),
+					'SW_MSG' => tr('enabled'),
+					'SW_ALLOWED' => tr('i-MSCP application installer'),
+					'TR_SOFTWARE_DESCRIPTION' => tr('Application Description')
+				)
+			);
+		$tpl->parse('T_SOFTWARE_SUPPORT', '.t_software_support');
+		$tpl->parse('T_SOFTWARE_MENU', '.t_software_menu');
+	} else {
+		$tpl->assign(
+				array(
+					'T_SOFTWARE_SUPPORT' => '',
+					'T_SOFTWARE_MENU' => '',
+					'SOFTWARE_ITEM' => '',
+					'TR_INSTALLATION' => tr('You do not have permissions to install application yet'),
+					'TR_SOFTWARE_DESCRIPTION' => tr('You do not have permissions to install application yet'),
+					'SW_MSG' => tr('disabled'),
+					'SW_ALLOWED' => tr('i-MSCP application installer')
+				)
+			);
+	}
+}
+
+function get_reseller_software_permission (&$tpl,&$sql,$reseller_id) {
+	$query = "
+		SELECT
+			`software_allowed`
+		FROM
+			`reseller_props`
+		WHERE
+			`reseller_id` = ?
+	";
+	$rs = exec_query($sql, $query, array($reseller_id));
+	if ($rs->fields('software_allowed') == 'yes') {
+		$tpl->assign(
+				array(
+					'SOFTWARE_SUPPORT' => tr('yes'),
+					'SW_ALLOWED' => tr('i-MSCP application installer'),
+					'SW_MSG' => tr('enabled')
+				)
+			);
+		$tpl->parse('T_SOFTWARE_SUPPORT', '.t_software_support'); 
+	} else {
+		$tpl->assign(
+				array(
+					'SOFTWARE_SUPPORT' => tr('no'),
+					'SW_ALLOWED' => tr('i-MSCP application installer'),
+					'SW_MSG' => tr('disabled'),
+					'T_SOFTWARE_SUPPORT' => ''
+				)
+			);
+	}
 }
