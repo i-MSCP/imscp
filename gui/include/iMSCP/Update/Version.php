@@ -1,6 +1,6 @@
 <?php
 /**
- * ispCP ω (OMEGA) a Virtual Hosting Control System
+ * i-MSCP a internet Multi Server Control Panel
  *
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
@@ -17,13 +17,17 @@
  * The Initial Developer of the Original Code is ispCP Team.
  * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
+ * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	ispCP
+ * @category	i-MSCP
  * @package		iMSCP_Update
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @copyright 	2010 by i-MSCP | http://i-mscp.net
  * @author 		ispCP Team
+ * @author 		i-MSCP Team
  * @version 	SVN: $Id$
- * @link		http://isp-control.net ispCP Home Site
+ * @link		http://i-mscp.net i-MSCP Home Site
  * @license		http://www.mozilla.org/MPL/ MPL 1.1
  */
 
@@ -95,7 +99,7 @@ class iMSCP_Update_Version extends iMSCP_Update {
 	 */
 	protected function _getNextVersion() {
 
-		$last_update = "http://www.isp-control.net/latest.txt";
+		$last_update = "http://i-mscp.net/latest.txt";
 		ini_set('user_agent', 'Mozilla/5.0');
 		$timeout = 2;
 		$old_timeout = ini_set('default_socket_timeout', $timeout);

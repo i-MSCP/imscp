@@ -490,6 +490,10 @@ legend, h3 {
     margin-bottom: -1em;
 }
 
+/* Hack to fix firefox's bad legend positioning */
+@-moz-document url-prefix() {
+    legend { top: -1.5em; }
+}
 
 /***********************************************************************************
  * ICONS

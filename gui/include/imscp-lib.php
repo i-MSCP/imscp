@@ -1,6 +1,6 @@
 <?php
 /**
- * ispCP ω (OMEGA) a Virtual Hosting Control System
+ * i-MSCP a internet Multi Server Control Panel
  *
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
@@ -17,16 +17,20 @@
  * The Initial Developer of the Original Code is ispCP Team.
  * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
+ * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * @category	ispCP
- * @package		ispCP
+ * @category	i-MSCP
+ * @package		i-MSCP
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @copyright   2010 by i-MSCP | http://i-mscp.net
  * @author 		ispCP Team
+ * @author		i-MSCP Team
  * @author 	    Laurent Declercq <laurent.declercq@i-mscp.net>
  * @version 	SVN: $Id$
- * @link		http://isp-control.net ispCP Home Site
+ * @link        http://i-mscp.net i-MSCP Home Site
  * @license		http://www.mozilla.org/MPL/ MPL 1.1
  */
 
@@ -103,7 +107,7 @@ if($imscp_db_pass_key != '{KEY}' && $imscp_db_pass_iv != '{IV}') {
  * Include i-MSCP common functions
  */
 require_once 'net_idna/idna_convert.class.php';
-require_once INCLUDEPATH . '/imscp-functions.php';
+require_once INCLUDEPATH . '/common-functions.php';
 require_once INCLUDEPATH . '/deprecated.php';
 
 /**
@@ -125,11 +129,6 @@ require_once 'i18n.php';
  * @deprecated Deprecated since 1.0.6 - Will be replaced by iMSCP_Exception
  */
 require_once 'system-message.php';
-
-/**
- * SQL convenience functions
- */
-require_once 'sql.php';
 
 /**
  * Authentication functions
@@ -155,4 +154,3 @@ require_once 'lostpassword-functions.php';
 require_once 'emailtpl-functions.php';
 require_once 'layout-functions.php';
 require_once 'functions.ticket_system.php';
-require_once 'debug.php';

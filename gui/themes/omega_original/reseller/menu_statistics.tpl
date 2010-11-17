@@ -10,8 +10,20 @@
   </td>
  </tr>
  <tr>
-				  <td style="width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/menu_bg.jpg); vertical-align: top;">
+<td style="width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/menu_bg.jpg); vertical-align: top;">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><a href="user_statistics.php" class="submenu">{TR_MENU_OVERVIEW}</a></td>
+  </tr>
+  <tr>
+    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
+  </tr>
+  <tr>
+    <td><a href="ip_usage.php" class="submenu">{TR_MENU_IP_USAGE}</a></td>
+  </tr>
+  <tr>
+    <td height="3" width="193"><img src="{THEME_COLOR_PATH}/images/top/menu_separator.jpg" height="3" width="193" alt="" /></td>
+  </tr>
     <tr>
     <td>&nbsp;</td>
   </tr>

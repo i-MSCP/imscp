@@ -112,6 +112,15 @@
                             <td><label for="nreseller_max_disk">{TR_MAX_DISK_AMOUNT}</label></td>
                             <td><input type="text" name="nreseller_max_disk" id="nreseller_max_disk" value="{MAX_DISK_AMOUNT}"/></td>
                         </tr>
+                        <tr>
+                            <td>{TR_SUPPORT_SYSTEM}</td>
+                            <td>
+                                <input type="radio" checked="checked" name="support_system" id="support_system_yes" value="yes"/>
+                                <label for="support_system_yes">{TR_YES}</label>
+                                <input type="radio" name="support_system" id="support_system_no" value="no"/>
+                                <label for="support_system_no">{TR_NO}</label>
+                            </td>
+                        </tr>
                     </table>
                 </fieldset>
 

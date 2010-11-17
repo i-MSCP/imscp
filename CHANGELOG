@@ -1,6 +1,19 @@
 i-MSCP ChangeLog
 ~~~~~~~~~~~~~~~~
 
+2010-11-16 Laurent Declercq
+	- GUI:
+		* Fixed #5 Update - jQuery - version 1.4.3 available
+
+2010-11-16 Sascha Bay
+	- GUI:
+		* Fixed #10: IP-Overview for admin and reseller
+		* Fixed #12: Some CSRF issues in admin log
+
+2010-11-15 Daniel Andreca
+	- ENGINE:
+		* RKhunter update fail must not stop i-MSCP setup
+
 2010-11-13 Daniel Andreca
 	- ENGINE:
 		* Fixed #3: Defect - Wrong DNS entry when using multiple IP for alternative URL to reach your website

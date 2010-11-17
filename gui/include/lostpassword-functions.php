@@ -1,12 +1,14 @@
 <?php
 /**
- * ispCP ω (OMEGA) a Virtual Hosting Control System
+ * i-MSCP a internet Multi Server Control Panel
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @copyright 	2010 by i-MSCP | http://i-mscp.net
  * @version 	SVN: $Id$
- * @link 		http://isp-control.net
+ * @link 		http://i-mscp.net
  * @author 		ispCP Team
+ * @author 		i-MSCP Team
  *
  * @license
  * The contents of this file are subject to the Mozilla Public License
@@ -26,6 +28,8 @@
  * by moleSoftware GmbH. All Rights Reserved.
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
+ * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
 function check_gd() {
@@ -296,7 +300,9 @@ function sendpassword($uniqkey) {
 		$mail_result = mail($to, $subject, $message, $headers);
 
 		$mail_status = ($mail_result) ? 'OK' : 'NOT OK';
-
+		
+		$from = tohtml($from);
+		
 		write_log("Lostpassword activated: To: |$to|, From: |$from|, Status: |$mail_status| !", E_USER_NOTICE);
 
 		return true;
@@ -383,7 +389,9 @@ function requestpassword($admin_name) {
 	$mail_result = mail($to, encode($subject), $message, $headers);
 
 	$mail_status = ($mail_result) ? 'OK' : 'NOT OK';
-
+	
+	$from = tohtml($from);
+	
 	write_log("Lostpassword send: To: |$to|, From: |$from|, Status: |$mail_status| !", E_USER_NOTICE);
 
 	return true;

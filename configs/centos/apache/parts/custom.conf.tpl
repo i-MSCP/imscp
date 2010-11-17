@@ -1,4 +1,3 @@
-
 #
 # Custom apache configuration for {SELF}
 #

@@ -1,12 +1,14 @@
 <?php
 /**
- * ispCP ω (OMEGA) a Virtual Hosting Control System
+ * i-MSCP a internet Multi Server Control Panel
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @copyright 	2010 by i-MSCP | http://i-mscp.net
  * @version 	SVN: $Id$
- * @link 		http://isp-control.net
+ * @link 		http://i-mscp.net
  * @author 		ispCP Team
+ * @author 		i-MSCP Team
  *
  * @license
  * The contents of this file are subject to the Mozilla Public License
@@ -26,6 +28,8 @@
  * by moleSoftware GmbH. All Rights Reserved.
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
+ * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
 /**
@@ -613,7 +617,7 @@ function block_ipaddr($ipaddr, $type = 'General') {
 
 	write_log(
 			"$type protection, <b><i> " .
-				htmlspecialchars($ipaddr, ENT_QUOTES, "UTF-8") .
+				tohtml($ipaddr) .
 					"</i></b> blocked for " . $cfg->BRUTEFORCE_BLOCK_TIME .
 						" minutes."
 	);
@@ -661,7 +665,7 @@ function register_user($uname, $upass) {
 	check_ipaddr();
 
 	if (!username_exists($uname)) {
-		write_log("Login error, <b><i>".$uname."</i></b> unknown username");
+		write_log("Login error, <b><i>".tohtml($uname)."</i></b> unknown username");
 		system_message(
 			tr('You entered an incorrect username/password.'),
 			$backButtonDestination
@@ -882,7 +886,7 @@ function check_login($fName = null, $preventExternalLogin = true) {
 
 				write_log(
 					'Warning! user |' . $userLoggued . '| requested |' .
-						$_SERVER['REQUEST_URI'] . '| with REQUEST_METHOD |' .
+						tohtml($_SERVER['REQUEST_URI']) . '| with REQUEST_METHOD |' .
 							$_SERVER['REQUEST_METHOD'] . '|'
 				);
 			}

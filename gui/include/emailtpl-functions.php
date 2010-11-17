@@ -1,12 +1,14 @@
 <?php
 /**
- * ispCP ω (OMEGA) a Virtual Hosting Control System
+ * i-MSCP a internet Multi Server Control Panel
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @copyright 	2010 by i-MSCP | http://i-mscp.net
  * @version 	SVN: $Id$
- * @link 		http://isp-control.net
+ * @link 		http://i-mscp.net
  * @author 		ispCP Team
+ * @author 		i-MSCP Team
  *
  * @license
  * The contents of this file are subject to the Mozilla Public License
@@ -24,8 +26,10 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
- * Portions created by the iMSCP Team are Copyright (C) 2006-2010 by
+ * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
+ * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
 function get_email_tpl_data($admin_id, $tpl_name) {

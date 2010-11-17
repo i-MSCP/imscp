@@ -1,11 +1,13 @@
 <?php
 /**
- * ispCP ω (OMEGA) a Virtual Hosting Control System
+ * i-MSCP a internet Multi Server Control Panel
  *
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
+ * @copyright 	2010 by i-MSCP | http://i-mscp.net
  * @version 	SVN: $Id$
- * @link 		http://isp-control.net
+ * @link 		http://i-mscp.net
  * @author 		ispCP Team
+ * @author 		i-MSCP Team
  *
  * @license
  * The contents of this file are subject to the Mozilla Public License
@@ -116,7 +118,7 @@ if (isset($_GET['edit_id']) && $_GET['edit_id'] !== '') {
 		);
 	}
 
-	// Send request to ispCP daemon
+	// Send request to i-MSCP daemon
 	send_request();
 
 	write_log(

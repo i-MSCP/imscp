@@ -58,9 +58,6 @@
             <!-- BDP: database_update_message -->
             <div class="warning">{DATABASE_UPDATE}</div>
             <!-- EDP: database_update_message -->
-            <!-- BDP: critical_update_message -->
-            <div class="warning">{CRITICAL_MESSAGE}</div>
-            <!-- EDP: critical_update_message -->
 
             <h2 class="general"><span>{TR_GENERAL_INFORMATION}</span></h2>
 
