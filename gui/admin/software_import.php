@@ -121,7 +121,7 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 			)
 		);
 					
-		$sw_id = $sql->Insert_ID();
+		$sw_id = $sql->insertId();
 		update_existing_client_installations_res_upload(
 			$sw_id, $rs->fields['software_name'], $rs->fields['software_version'],
 			$rs->fields['software_language'], $rs->fields['reseller_id'], $rs->fields['software_id'],

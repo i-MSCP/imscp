@@ -156,7 +156,7 @@ function delete_user($user_id) {
  * @param integer $user_id Reseller ID to delete software pakets
  */
 function delete_reseller_software($user_id) {
-	global $sql;
+	global $sql, $cfg;
 
 	$query = "
 		SELECT
@@ -170,13 +170,13 @@ function delete_reseller_software($user_id) {
 	$res = exec_query($sql, $query, array($user_id));
 	if ($res->RecordCount() > 0) {
 		while (!$res ->EOF) {
-			$del_path = Config::get('GUI_SOFTWARE_DIR')."/".$user_id."/".$res->fields['software_archive']."-".$res->fields['software_id'].".tar.gz";
+			$del_path = $cfg->GUI_SOFTWARE_DIR."/".$user_id."/".$res->fields['software_archive']."-".$res->fields['software_id'].".tar.gz";
 			@unlink($del_path);
 			$res->MoveNext();
 		}
-		$del_dir = Config::get('GUI_SOFTWARE_DIR')."/".$user_id."/";
-		@rmdir($del_dir);
 	}
+	$del_dir = $cfg->GUI_SOFTWARE_DIR."/".$user_id."/";
+	if(is_dir($del_dir)) @rmdir($del_dir);
 }
 
 /**

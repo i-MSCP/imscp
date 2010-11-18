@@ -136,7 +136,7 @@ if (isset($_POST['Button']) && $_SESSION['software_upload_token'] == $_POST['sen
 							"toadd"
 							)
 						);
-		$sw_id = $sql->Insert_ID();
+		$sw_id = $sql->insertId();
 		if ($file == 0) {
 			$dest_dir = $cfg->GUI_SOFTWARE_DIR.'/'.$user_id.'/'.$filename.'-'.$sw_id.$extension;
 			if (!is_dir($cfg->GUI_SOFTWARE_DIR.'/'.$user_id)) {
@@ -268,6 +268,7 @@ if (isset($_POST['Button']) && $_SESSION['software_upload_token'] == $_POST['sen
 
 // Begin function block
 function get_avail_software (&$tpl, &$sql, $user_id) {
+	global $cfg;
 	$query = "
 		SELECT
 			`software_allowed`

@@ -124,7 +124,7 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 									$rs->fields['software_active'], "ok", $user_id, "yes"
 								)
 						);
-						$sw_id = $sql->Insert_ID();
+						$sw_id = $sql->insertId();
 						update_existing_client_installations_sw_depot($sw_id, $software_id, $rs2->fields['reseller_id']);
 					}
 					$rs2->MoveNext();
@@ -153,7 +153,7 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 						"ok", $user_id, "yes"
 					)
 			);
-			$sw_id = $sql->Insert_ID();
+			$sw_id = $sql->insertId();
 			update_existing_client_installations_sw_depot($sw_id, $software_id, $reseller_id);
 		}
 		set_page_message(tr('Rights succesfully added.'));

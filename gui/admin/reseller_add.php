@@ -328,9 +328,9 @@ function add_reseller(&$tpl, &$sql) {
 				$gender
 			);
 			
-			@mkdir(Config::get('GUI_SOFTWARE_DIR')."/".$new_admin_id,0755,true);
-			#@chown(Config::get('GUI_SOFTWARE_DIR')."/".$new_admin_id, "vu2000");
-			#@chgrp(Config::get('GUI_SOFTWARE_DIR')."/".$new_admin_id, "www-data");
+			@mkdir($cfg->GUI_SOFTWARE_DIR."/".$new_admin_id,0755,true);
+			#@chown($cfg->GUI_SOFTWARE_DIR."/".$new_admin_id, "vu2000");
+			#@chgrp($cfg->GUI_SOFTWARE_DIR."/".$new_admin_id, "www-data");
 
 			$_SESSION['reseller_added'] = 1;
 

@@ -145,7 +145,7 @@ if (isset($_POST['Button']) && $_SESSION['software_upload_token'] == $_POST['sen
 						"toadd", "yes"
 					)
 				);
-		$sw_id = $sql->Insert_ID();
+		$sw_id = $sql->insertId();
 		if ($file == 0) {
 			$dest_dir = $cfg->GUI_SOFTWARE_DEPOT_DIR.'/'.$filename.'-'.$sw_id.$extension;
 			if (!is_dir($cfg->GUI_SOFTWARE_DEPOT_DIR)) {
@@ -344,6 +344,7 @@ function get_avail_software (&$tpl, &$sql) {
 }
 
 function get_avail_softwaredepot (&$tpl, &$sql) {
+	global $cfg;
 	$query="
 		SELECT
 			a.`software_id` as id,
