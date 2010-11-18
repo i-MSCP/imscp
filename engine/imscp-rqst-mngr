@@ -547,7 +547,9 @@ sub mngr_engine {
 	#
 	# software installation BEGIN
 	#
-
+	
+	push_el(\@main::el, 'apps_installer_engine()', 'Starting...');
+	
 	$sql = "
 		SELECT
 			`domain_id`,
@@ -578,6 +580,7 @@ sub mngr_engine {
 	
 	my $sw_count = @$rdata;
 	if ($sw_count > 0) {
+		push_el(\@main::el, 'imscp_sw_mngr_engine()', 'Starting...');
 		use Digest::MD5 qw(md5_hex);
 		foreach (@$rdata) {
 			my $row = $_;
@@ -615,6 +618,7 @@ sub mngr_engine {
 				sys_command_rs("$main::cfg{'CMD_RM'} -rf /tmp/sw-$sw_domain_id-$sw_software_id");
 			}
 		}
+		push_el(\@main::el, 'imscp_sw_mngr_engine()', 'Ending...');
 	}
 
 	$sql = "
@@ -636,6 +640,7 @@ sub mngr_engine {
 	
 	$sw_count = @$rdata;
 	if ($sw_count > 0) {
+		push_el(\@main::el, 'imscp_pkt_mngr_engine()', 'Starting...');
 		foreach (@$rdata) {
 			my $row = $_;
 			my ($sw_software_id, $sw_reseller_id, $sw_software_archive, $sw_software_status, $sw_software_depot) = (@$row[0], @$row[1], @$row[2], @$row[3], @$row[4]);
@@ -662,8 +667,11 @@ sub mngr_engine {
 				sys_command_rs("$main::cfg{'CMD_RM'} -rf /tmp/sw-$sw_software_archive-$sw_software_id");
 			}
 		}
+		push_el(\@main::el, 'imscp_pkt_mngr_engine()', 'Ending...');
 	}
-  
+  	
+  	push_el(\@main::el, 'apps_installer_engine()', 'Ending...');
+  	
 	#
 	# software installation END
 	#

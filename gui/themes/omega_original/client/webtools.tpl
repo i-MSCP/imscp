@@ -125,8 +125,7 @@
               </table>
              </td>
             </tr>
-			<!-- BDP: active_awstats -->
-			<!-- BDP: t_software_support -->
+            <!-- BDP: t_software_support -->
  			<tr>
  				<td>&nbsp;</td>
  				<td class="content">
@@ -140,6 +139,7 @@
  				</td>
  			</tr>
  			<!-- EDP: t_software_support -->
+			<!-- BDP: active_awstats -->
             <tr>
              <td>&nbsp;</td>
              <td class="content">

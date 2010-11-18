@@ -36,7 +36,7 @@ check_login(__FILE__);
 
 $cfg = iMSCP_Registry::get('Config');
 
-$tpl = new pTemplate();
+$tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/software_install.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('software_item', 'page');
