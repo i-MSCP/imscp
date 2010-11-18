@@ -205,12 +205,12 @@ if (isset($_POST['Submit2'])) {
 	} elseif ($rspath->recordCount() > 0) {
 		set_page_message(tr('Please select another directory! '.$rspath->fields['swname'].' ('.$rspath->fields['swversion'].') is installed there!'));
 	} else {
-		$sw_db_required = $rs->fields['software_db'];
-		$sw_software_name = $rs->fields['software_name'];
-		$sw_software_version = $rs->fields['software_version'];
-		$software_master_id = $rs->fields['software_master_id'];
-		$software_depot = $rs->fields['software_depot'];
-		$software_language = $rs->fields['software_language'];
+		$sw_db_required 		= $rs->fields['software_db'];
+		$sw_software_name 		= $rs->fields['software_name'];
+		$sw_software_version 		= $rs->fields['software_version'];
+		$software_master_id 		= $rs->fields['software_master_id'];
+		$software_depot 		= $rs->fields['software_depot'];
+		$software_language 		= $rs->fields['software_language'];
 		
 		
 		$query = "
@@ -269,32 +269,32 @@ if (isset($_POST['Submit2'])) {
 	if($rs->fields['software_db'] == "1") {
 		$tpl->assign(
 				array(
-					'VAL_OTHER_DIR' => $other_dir,
-					'CHECKED_CREATEDIR' =>  ($createdir === '1') ? $cfg->HTML_CHECKED : '',
-					'VAL_INSTALL_USERNAME' => $install_username,
-					'VAL_INSTALL_PASSWORD' => $install_password,
-					'VAL_INSTALL_EMAIL' => $install_email
+					'VAL_OTHER_DIR' 		=> $other_dir,
+					'CHECKED_CREATEDIR' 		=>  ($createdir === '1') ? $cfg->HTML_CHECKED : '',
+					'VAL_INSTALL_USERNAME' 		=> $install_username,
+					'VAL_INSTALL_PASSWORD' 		=> $install_password,
+					'VAL_INSTALL_EMAIL' 		=> $install_email
 				)
 			);
 	} else {
 		$tpl->assign(
 				array(
-					'VAL_OTHER_DIR' => $other_dir,
-					'CHECKED_CREATEDIR' =>  ($createdir === '1') ? $cfg->HTML_CHECKED : '',
-					'VAL_INSTALL_USERNAME' => $install_username,
-					'VAL_INSTALL_PASSWORD' => $install_password,
-					'VAL_INSTALL_EMAIL' => $install_email
+					'VAL_OTHER_DIR' 		=> $other_dir,
+					'CHECKED_CREATEDIR' 		=>  ($createdir === '1') ? $cfg->HTML_CHECKED : '',
+					'VAL_INSTALL_USERNAME' 		=> $install_username,
+					'VAL_INSTALL_PASSWORD' 		=> $install_password,
+					'VAL_INSTALL_EMAIL' 		=> $install_email
 				)
 			);
 	}
 } else {
 	$tpl->assign(
 			array(
-				'VAL_OTHER_DIR' => '/htdocs',
-				'CHECKED_CREATEDIR' =>  '',
-				'VAL_INSTALL_USERNAME' => '',
-				'VAL_INSTALL_PASSWORD' => '',
-				'VAL_INSTALL_EMAIL' => ''
+				'VAL_OTHER_DIR' 	=> '/htdocs',
+				'CHECKED_CREATEDIR' 	=>  '',
+				'VAL_INSTALL_USERNAME' 	=> '',
+				'VAL_INSTALL_PASSWORD' 	=> '',
+				'VAL_INSTALL_EMAIL' 	=> ''
 			)
 		);
 }
@@ -392,9 +392,9 @@ function gen_user_domain_list(&$tpl, &$sql, $user_id) {
 			}
 			$tpl->assign(
 				array(
-					'SELECTED_DOMAIN' => $selecteddomain,
-					'DOMAIN_NAME_VALUES' => $domain_id.';'.$rsaliase->fields['alias_id'].';0;0;'.$rsaliase->fields['alias_mount'].'/htdocs',
-					'DOMAIN_NAME' => decode_idna($rsaliase->fields['alias_name']),
+					'SELECTED_DOMAIN' 	=> $selecteddomain,
+					'DOMAIN_NAME_VALUES' 	=> $domain_id.';'.$rsaliase->fields['alias_id'].';0;0;'.$rsaliase->fields['alias_mount'].'/htdocs',
+					'DOMAIN_NAME' 		=> decode_idna($rsaliase->fields['alias_name']),
 				)
 			);
 			$tpl->parse('SHOW_DOMAIN_LIST', '.show_domain_list');
@@ -413,9 +413,9 @@ function gen_user_domain_list(&$tpl, &$sql, $user_id) {
 			$subdomainname = $rssubdomain->fields['subdomain_name'].".".$rssubdomain->fields['domain_name'];
 			$tpl->assign(
 				array(
-					'SELECTED_DOMAIN' => $selecteddomain,
-					'DOMAIN_NAME_VALUES' => $domain_id.';0;'.$rssubdomain->fields['subdomain_id'].';0;'.$rssubdomain->fields['subdomain_mount'].'/htdocs',
-					'DOMAIN_NAME' => decode_idna($subdomainname),
+					'SELECTED_DOMAIN' 	=> $selecteddomain,
+					'DOMAIN_NAME_VALUES' 	=> $domain_id.';0;'.$rssubdomain->fields['subdomain_id'].';0;'.$rssubdomain->fields['subdomain_mount'].'/htdocs',
+					'DOMAIN_NAME'		=> decode_idna($subdomainname),
 				)
 			);
 			$tpl->parse('SHOW_DOMAIN_LIST', '.show_domain_list');
@@ -434,9 +434,9 @@ function gen_user_domain_list(&$tpl, &$sql, $user_id) {
 			$aliassubdomainname = $rssubaliase->fields['subdomain_alias_name'].".".$rssubaliase->fields['alias_name'];
 			$tpl->assign(
 				array(
-					'SELECTED_DOMAIN' => $selecteddomain,
-					'DOMAIN_NAME_VALUES' => $domain_id.';0;0;'.$rssubaliase->fields['subdomain_alias_id'].';'.$rssubaliase->fields['subdomain_alias_mount'].'/htdocs',
-					'DOMAIN_NAME' => decode_idna($aliassubdomainname),
+					'SELECTED_DOMAIN' 	=> $selecteddomain,
+					'DOMAIN_NAME_VALUES' 	=> $domain_id.';0;0;'.$rssubaliase->fields['subdomain_alias_id'].';'.$rssubaliase->fields['subdomain_alias_mount'].'/htdocs',
+					'DOMAIN_NAME' 		=> decode_idna($aliassubdomainname),
 				)
 			);
 			$tpl->parse('SHOW_DOMAIN_LIST', '.show_domain_list');
@@ -444,19 +444,19 @@ function gen_user_domain_list(&$tpl, &$sql, $user_id) {
 		}
 		$tpl->assign(
 				array(
-					'DOMAINSTANDARD_NAME_VALUES' => $domain_id.';0;0;0;/htdocs',
-					'DOMAINSTANDARD_NAME' => decode_idna($rsdomain->fields['domain_name']),
+					'DOMAINSTANDARD_NAME_VALUES' 	=> $domain_id.';0;0;0;/htdocs',
+					'DOMAINSTANDARD_NAME' 		=> decode_idna($rsdomain->fields['domain_name']),
 				)
 			);
 	} else {
 		$tpl->assign(
 				array(
-					'SELECTED_DOMAIN' => $selecteddomain,
-					'DOMAIN_NAME_VALUES' => '',
-					'DOMAIN_NAME' => '',
-					'DOMAINSTANDARD_NAME_VALUES' => $domain_id.';0;0;0;/htdocs',
-					'DOMAINSTANDARD_NAME' => decode_idna($rsdomain->fields['domain_name']),
-					'SHOW_DOMAIN_LIST' => ''
+					'SELECTED_DOMAIN' 		=> $selecteddomain,
+					'DOMAIN_NAME_VALUES' 		=> '',
+					'DOMAIN_NAME' 			=> '',
+					'DOMAINSTANDARD_NAME_VALUES' 	=> $domain_id.';0;0;0;/htdocs',
+					'DOMAINSTANDARD_NAME' 		=> decode_idna($rsdomain->fields['domain_name']),
+					'SHOW_DOMAIN_LIST' 		=> ''
 				)
 			);
 	}
@@ -538,8 +538,8 @@ function check_db_avail(&$tpl, &$sql, $dmn_id, $dmn_sqld_limit) {
 				}
 				$tpl -> assign(
 						array(
-							'DB_NAME' => $rs->fields['sqld_name'],
-							'SELECTED_DB' => $selecteddb
+							'DB_NAME' 	=> $rs->fields['sqld_name'],
+							'SELECTED_DB' 	=> $selecteddb
 							)
 						);
 				$tpl->parse('INSTALLDB_ITEM', '.installdb_item');
@@ -550,25 +550,25 @@ function check_db_avail(&$tpl, &$sql, $dmn_id, $dmn_sqld_limit) {
 		if($existdbuser == 0) {
 			$tpl->assign(
 					array(
-						'SOFTWARE_INSTALL' => ''
+						'SOFTWARE_INSTALL' 	=> ''
 					)
 				);
 		}
 		$tpl -> assign(
 					array(
-						'ADD_DATABASE_MESSAGE' => '',
-						'CREATE_MESSAGE_DB' => ''
+						'ADD_DATABASE_MESSAGE' 	=> '',
+						'CREATE_MESSAGE_DB' 	=> ''
 					)
 				);
 		$tpl->parse('SELECT_INSTALLDB', 'select_installdb');
 	} else {
 		$tpl -> assign(
 					array(
-						'SELECT_INSTALLDBUSER' => '',
-						'SOFTWAREDBUSER_MESSAGE' => '',
-						'SELECT_INSTALLDB' => '',
-						'ADD_DATABASE_MESSAGE' => tr('At first you must create a database!'),
-						'SOFTWARE_INSTALL' => ''
+						'SELECT_INSTALLDBUSER' 		=> '',
+						'SOFTWAREDBUSER_MESSAGE' 	=> '',
+						'SELECT_INSTALLDB' 		=> '',
+						'ADD_DATABASE_MESSAGE' 		=> tr('At first you must create a database!'),
+						'SOFTWARE_INSTALL' 		=> ''
 					)
 				);
 		$tpl -> parse('CREATE_MESSAGE_DB', '.create_message_db');
@@ -576,7 +576,7 @@ function check_db_avail(&$tpl, &$sql, $dmn_id, $dmn_sqld_limit) {
   if($rs -> recordCount() < $dmn_sqld_limit OR $dmn_sqld_limit == 0) {
 	$tpl -> assign(
 				array(
-					'ADD_DB_LINK' => 'sql_database_add.php',
+					'ADD_DB_LINK' 	=> 'sql_database_add.php',
 					'BUTTON_ADD_DB' => tr('Add new database')
 				)
 			);
@@ -584,10 +584,10 @@ function check_db_avail(&$tpl, &$sql, $dmn_id, $dmn_sqld_limit) {
   } else {
 	$tpl -> assign(
 				array(
-					'CREATE_MESSAGE_DB' => '',
-					'ADD_DB_LINK' => '',
-					'BUTTON_ADD_DB' => '',
-					'CREATE_DB' => ''
+					'CREATE_MESSAGE_DB' 	=> '',
+					'ADD_DB_LINK' 		=> '',
+					'BUTTON_ADD_DB' 	=> '',
+					'CREATE_DB' 		=> ''
 				)
 			);
   }
@@ -666,15 +666,15 @@ function get_software_props (&$tpl, &$sql, $dmn_id, $software_id, $dmn_created_i
  	} else {
 		$tpl -> assign (
 					array(
-						'SOFTWARE_DB' => tr('no'),
-						'REQUIRE_INSTALLDB' => ''
+						'SOFTWARE_DB' 		=> tr('no'),
+						'REQUIRE_INSTALLDB' 	=> ''
 					)
 				);
 	}
 	$tpl -> assign (
 				array(
-					'TR_SOFTWARE_NAME' => $rs -> fields['software_name'],
-					'SOFTWARE_TYPE' => $rs -> fields['software_type']
+					'TR_SOFTWARE_NAME' 	=> $rs -> fields['software_name'],
+					'SOFTWARE_TYPE' 	=> $rs -> fields['software_type']
 				)
 			);
 	$tpl -> parse('SOFTWARE_ITEM', '.software_item');
@@ -743,20 +743,20 @@ check_permissions($tpl);
 
 $tpl -> assign(
 			array(
-				'TR_INSTALL_SOFTWARE' => tr('Install Software'),
-				'TR_NAME' => tr('Software'),
-				'TR_TYPE' => tr('Type'),
-				'TR_DB' => tr('Database required'),
-				'TR_SELECT_DOMAIN' => tr('Select Domain'),
-				'TR_BACK' => tr('back'),
-				'TR_INSTALL' => tr('install'),
-				'TR_PATH' => tr('Install path'),
-				'CHOOSE_DIR' => tr('Choose dir'),
-				'CREATEDIR_MESSAGE' => tr('Create directory, if not exist!'),
-				'TR_SELECT_DB' => tr('Select database'),
-				'TR_SQL_USER' => tr('SQL-User'),
-				'TR_SQL_PWD' => tr('Password'),
-				'TR_SOFTWARE_MENU' => tr('Software installation'),
+				'TR_INSTALL_SOFTWARE' 		=> tr('Install Software'),
+				'TR_NAME' 			=> tr('Software'),
+				'TR_TYPE' 			=> tr('Type'),
+				'TR_DB' 			=> tr('Database required'),
+				'TR_SELECT_DOMAIN' 		=> tr('Select Domain'),
+				'TR_BACK' 			=> tr('back'),
+				'TR_INSTALL' 			=> tr('install'),
+				'TR_PATH' 			=> tr('Install path'),
+				'CHOOSE_DIR' 			=> tr('Choose dir'),
+				'CREATEDIR_MESSAGE' 		=> tr('Create directory, if not exist!'),
+				'TR_SELECT_DB' 			=> tr('Select database'),
+				'TR_SQL_USER' 			=> tr('SQL-User'),
+				'TR_SQL_PWD' 			=> tr('Password'),
+				'TR_SOFTWARE_MENU' 		=> tr('Software installation'),
 				'TR_CLIENT_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Application Management')
 			)
 		);
