@@ -87,7 +87,7 @@ if (isset($_POST['Submit2'])) {
 	//Check dir exists
     $sql = iMSCP_Registry::get('Db');
     $domain = $_SESSION['user_logged'];
-    $vfs = new vfs($domain, $sql);
+    $vfs = new iMSCP_VirtualFileSystem($domain, $sql);
     $list = $vfs->ls($other_dir);
     //Check dir exists
 	
