@@ -146,14 +146,14 @@ function get_installed_res_software (&$tpl, &$sql, $reseller_id) {
 				}
 				$tpl->assign(
 						array(
-							'LINK_COLOR' => '#000000',
-							'TR_TOOLTIP' => $rs->fields['description'],
-							'TR_VERSION' => $rs->fields['version'],
-							'TR_LANGUAGE' => $rs->fields['language'],
-							'TR_TYPE' => $rs->fields['type'],
-							'TR_ADMIN' => 'List',
-							'TR_RESELLER' => $rs->fields['admin'],
-							'TR_SOFTWARE_DEPOT' => tr($rs->fields['admin'].'`s - Software'),
+							'LINK_COLOR' 		=> '#000000',
+							'TR_TOOLTIP' 		=> $rs->fields['description'],
+							'TR_VERSION' 		=> $rs->fields['version'],
+							'TR_LANGUAGE' 		=> $rs->fields['language'],
+							'TR_TYPE' 		=> $rs->fields['type'],
+							'TR_ADMIN' 		=> 'List',
+							'TR_RESELLER' 		=> $rs->fields['admin'],
+							'TR_SOFTWARE_DEPOT' 	=> tr($rs->fields['admin'].'`s - Software')
 							)
 						);
 			$tpl->parse('LIST_SOFTWAREDEPOT', '.list_softwaredepot');
@@ -264,12 +264,12 @@ function get_reseller_software (&$tpl, &$sql) {
 			}
 			$tpl->assign(
 					array(
-						'RESELLER_NAME' => $rs->fields['reseller'],
-						'RESELLER_ID' => $rs->fields['reseller_id'],
-						'RESELLER_COUNT_SWDEPOT' => $rscountswdepot->fields['swdepot'],
-						'RESELLER_COUNT_WAITING' => $rscountwaiting->fields['waiting'],
-						'RESELLER_COUNT_ACTIVATED' => $rscountactivated->fields['activated'],
-						'RESELLER_SOFTWARE_IN_USE' => $sw_in_use
+						'RESELLER_NAME' 		=> $rs->fields['reseller'],
+						'RESELLER_ID' 			=> $rs->fields['reseller_id'],
+						'RESELLER_COUNT_SWDEPOT' 	=> $rscountswdepot->fields['swdepot'],
+						'RESELLER_COUNT_WAITING' 	=> $rscountwaiting->fields['waiting'],
+						'RESELLER_COUNT_ACTIVATED' 	=> $rscountactivated->fields['activated'],
+						'RESELLER_SOFTWARE_IN_USE' 	=> $sw_in_use
 						)
 					);
 			$tpl->parse('LIST_RESELLER', '.list_reseller');
@@ -302,24 +302,24 @@ $res_cnt = get_reseller_software (&$tpl, &$sql, $_GET['id']);
 
 $tpl->assign(
 		array(
-			'TR_SOFTWARE_INSTALLED' => tr('Installed on'),
-			'TR_SOFTWARE_RIGHTS' => tr('Softwarerights'),
-			'TR_SOFTWAREDEPOT_COUNT' => tr('Software total'),
-			'TR_SOFTWAREDEPOT_NUM' => $software_cnt,
-			'TR_AWAITING_ACTIVATION' => tr('Awaiting Activation'),
-			'TR_ACTIVATED_SOFTWARE' => tr('Reseller list'),
-			'TR_SOFTWARE_NAME' => tr('Application'),
-			'TR_SOFTWARE_VERSION' => tr('App-Version'),
-			'TR_SOFTWARE_LANGUAGE' => tr('Language'),
-			'TR_SOFTWARE_TYPE' => tr('Type'),
-			'TR_RESELLER_NAME' => tr('Reseller'),
-			'TR_RESELLER_ACT_COUNT' => tr('Reseller total'),
-			'TR_RESELLER_ACT_NUM' => $res_cnt,
-			'TR_RESELLER_COUNT_SWDEPOT' => tr('Softwaredepot'),
-			'TR_RESELLER_COUNT_WAITING' => tr('Waiting for activation'),
-			'TR_RESELLER_COUNT_ACTIVATED' => tr('Activated software'),
-			'TR_RESELLER_SOFTWARE_IN_USE' => tr('Total installations'),
-			'TR_ADMIN_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Application Management'),
+			'TR_SOFTWARE_INSTALLED' 		=> tr('Installed on'),
+			'TR_SOFTWARE_RIGHTS' 			=> tr('Softwarerights'),
+			'TR_SOFTWAREDEPOT_COUNT' 		=> tr('Software total'),
+			'TR_SOFTWAREDEPOT_NUM' 			=> $software_cnt,
+			'TR_AWAITING_ACTIVATION' 		=> tr('Awaiting Activation'),
+			'TR_ACTIVATED_SOFTWARE' 		=> tr('Reseller list'),
+			'TR_SOFTWARE_NAME' 			=> tr('Application'),
+			'TR_SOFTWARE_VERSION' 			=> tr('App-Version'),
+			'TR_SOFTWARE_LANGUAGE' 			=> tr('Language'),
+			'TR_SOFTWARE_TYPE' 			=> tr('Type'),
+			'TR_RESELLER_NAME' 			=> tr('Reseller'),
+			'TR_RESELLER_ACT_COUNT' 		=> tr('Reseller total'),
+			'TR_RESELLER_ACT_NUM' 			=> $res_cnt,
+			'TR_RESELLER_COUNT_SWDEPOT' 		=> tr('Softwaredepot'),
+			'TR_RESELLER_COUNT_WAITING' 		=> tr('Waiting for activation'),
+			'TR_RESELLER_COUNT_ACTIVATED' 		=> tr('Activated software'),
+			'TR_RESELLER_SOFTWARE_IN_USE' 		=> tr('Total installations'),
+			'TR_ADMIN_SOFTWARE_PAGE_TITLE' 		=> tr('i-MSCP - Application Management')
 			)
 	);
 
