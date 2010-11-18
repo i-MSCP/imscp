@@ -180,6 +180,7 @@ CREATE TABLE `domain` (
   `domain_cgi` varchar(15) collate utf8_unicode_ci default NULL,
   `allowbackup` varchar(8) collate utf8_unicode_ci NOT NULL default 'full',
   `domain_dns` varchar(15) collate utf8_unicode_ci NOT NULL default 'no',
+  `domain_software_allowed` varchar(15) collate utf8_unicode_ci NOT NULL default 'no',
   UNIQUE KEY `domain_id` (`domain_id`),
   UNIQUE KEY `domain_name` (`domain_name`),
   KEY `i_domain_admin_id` (`domain_admin_id`)
@@ -532,6 +533,8 @@ CREATE TABLE `reseller_props` (
   `support_system` ENUM( 'yes', 'no' ) NOT NULL DEFAULT 'yes',
   `customer_id` varchar(200) collate utf8_unicode_ci default NULL,
   `reseller_ips` text collate utf8_unicode_ci,
+  `software_allowed` varchar(15) collate utf8_general_ci NOT NULL default 'no',
+  `softwaredepot_allowed` varchar(15) collate utf8_general_ci NOT NULL default 'yes',
   UNIQUE KEY `id` (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

@@ -150,10 +150,10 @@ function get_installed_res_software (&$tpl, &$sql, $reseller_id) {
 							'TR_TOOLTIP' 		=> $rs->fields['description'],
 							'TR_VERSION' 		=> $rs->fields['version'],
 							'TR_LANGUAGE' 		=> $rs->fields['language'],
-							'TR_TYPE' 		=> $rs->fields['type'],
-							'TR_ADMIN' 		=> 'List',
+							'TR_TYPE' 			=> $rs->fields['type'],
+							'TR_ADMIN' 			=> 'List',
 							'TR_RESELLER' 		=> $rs->fields['admin'],
-							'TR_SOFTWARE_DEPOT' 	=> tr($rs->fields['admin'].'`s - Software')
+							'TR_SOFTWARE_DEPOT' => tr('%1$s`s - Software', $rs->fields['admin'])
 							)
 						);
 			$tpl->parse('LIST_SOFTWAREDEPOT', '.list_softwaredepot');

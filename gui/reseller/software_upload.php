@@ -515,7 +515,7 @@ function get_avail_software (&$tpl, &$sql, $user_id) {
 $tpl->assign(
 		array(
 			'TR_MANAGE_SOFTWARE_PAGE_TITLE'	=> tr('i-MSCP - Application Management'),
-			"../themes/{$cfg->USER_INITIAL_THEME}",
+			'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 			'THEME_CHARSET' => tr('encoding'),
 			'ISP_LOGO' => get_logo($_SESSION['user_id'])
 		)
