@@ -84,11 +84,11 @@ function get_reseller_rights (&$tpl, &$sql, $software_id) {
 			$remove_rights_url = "software_change_rights.php?id=".$rs->fields['software_master_id']."&reseller_id=".$rs->fields['reseller_id'];
 			$tpl->assign(
 					array(
-						'RESELLER' => $rs->fields['reseller'],
-						'ADMINISTRATOR' => $added_by,
-						'TR_REMOVE_RIGHT' => tr('Remove'),
-						'TR_MESSAGE_REMOVE' => tr('Are you sure to remove the permissions ?', true),
-						'REMOVE_RIGHT_LINK' => $remove_rights_url,
+						'RESELLER'		=> $rs->fields['reseller'],
+						'ADMINISTRATOR' 	=> $added_by,
+						'TR_REMOVE_RIGHT' 	=> tr('Remove'),
+						'TR_MESSAGE_REMOVE' 	=> tr('Are you sure to remove the permissions ?', true),
+						'REMOVE_RIGHT_LINK' 	=> $remove_rights_url
 						)
 					);
 			$tpl->parse('LIST_RESELLER', '.list_reseller');
@@ -141,10 +141,10 @@ function get_reseller_list (&$tpl, &$sql, $software_id) {
 			if ($rs2->recordCount() === 0){
 				$tpl->assign(
 						array(
-							'ALL_RESELLER_NAME' => tr('All reseller'),
-							'RESELLER_ID' => $rs->fields['reseller_id'],
-							'RESELLER_NAME' => $rs->fields['reseller'],
-							'SOFTWARE_ID_VALUE' => $software_id,
+							'ALL_RESELLER_NAME' 	=> tr('All reseller'),
+							'RESELLER_ID' 		=> $rs->fields['reseller_id'],
+							'RESELLER_NAME' 	=> $rs->fields['reseller'],
+							'SOFTWARE_ID_VALUE' 	=> $software_id
 						)
 					);
 				$tpl->parse('RESELLER_ITEM', '.reseller_item');
@@ -159,8 +159,8 @@ function get_reseller_list (&$tpl, &$sql, $software_id) {
 			$tpl->assign(
 					array(
 						'NO_RESELLER_AVAILABLE' => tr('No Reseller available to add the permissions'),
-						'SELECT_RESELLER' => '',
-						'RESELLER_ITEM' => ''
+						'SELECT_RESELLER' 	=> '',
+						'RESELLER_ITEM' 	=> ''
 					)
 				);
 			$tpl->parse('NO_SELECT_RESELLER', '.no_select_reseller');
@@ -169,8 +169,8 @@ function get_reseller_list (&$tpl, &$sql, $software_id) {
 		$tpl->assign(
 				array(
 					'NO_RESELLER_AVAILABLE' => tr('No Reseller available to add the permissions'),
-					'SELECT_RESELLER' => '',
-					'RESELLER_ITEM' => ''
+					'SELECT_RESELLER' 	=> '',
+					'RESELLER_ITEM' 	=> ''
 				)
 			);
 		$tpl->parse('NO_SELECT_RESELLER', '.no_select_reseller');
@@ -217,17 +217,17 @@ $query = "
 $rs = exec_query($sql, $query, $software_id);
 $tpl->assign(
 		array(
-			'TR_SOFTWARE_DEPOT' => tr('Softwaredepot'),
-			'TR_SOFTWARE_NAME' => tr($rs->fields['software_name'].' - (Version: '.$rs->fields['software_version'].', Language: '.$rs->fields['software_language'].')'),
-			'TR_ADD_RIGHTS' => tr('Add permissions for reseller to software:'),
-			'TR_RESELLER' => tr('Reseller'),
-			'TR_REMOVE_RIGHTS' => tr('Remove permissions'),
-			'TR_RESELLER_COUNT' => tr('Reseller with permissions total'),
-			'TR_RESELLER_NUM' => $res_cnt,
-			'TR_ADDED_BY' => tr('Added by'),
-			'TR_ADD_RIGHTS_BUTTON' => tr('Add permissions'),
-			'TR_SOFTWARE_RIGHTS' => tr('Software permissions'),
-			'TR_ADMIN_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Application Management (Permissions)'),
+			'TR_SOFTWARE_DEPOT' 		=> tr('Softwaredepot'),
+			'TR_SOFTWARE_NAME' 		=> tr($rs->fields['software_name'].' - (Version: '.$rs->fields['software_version'].', Language: '.$rs->fields['software_language'].')'),
+			'TR_ADD_RIGHTS' 		=> tr('Add permissions for reseller to software:'),
+			'TR_RESELLER' 			=> tr('Reseller'),
+			'TR_REMOVE_RIGHTS' 		=> tr('Remove permissions'),
+			'TR_RESELLER_COUNT' 		=> tr('Reseller with permissions total'),
+			'TR_RESELLER_NUM' 		=> $res_cnt,
+			'TR_ADDED_BY' 			=> tr('Added by'),
+			'TR_ADD_RIGHTS_BUTTON' 		=> tr('Add permissions'),
+			'TR_SOFTWARE_RIGHTS' 		=> tr('Software permissions'),
+			'TR_ADMIN_SOFTWARE_PAGE_TITLE' 	=> tr('i-MSCP - Application Management (Permissions)')
 			)
 	);
 
