@@ -1,6 +1,9 @@
 i-MSCP ChangeLog
 ~~~~~~~~~~~~~~~~
-
+2010-11-18 Björn Romanski
+	- GUI:
+	         * Update Net_IDNA to 0.6.9
+	         
 2010-11-16 Laurent Declercq
 	- GUI:
 		* Fixed #5 Update - jQuery - version 1.4.3 available
