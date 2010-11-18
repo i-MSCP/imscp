@@ -406,7 +406,7 @@ $tpl -> assign(
 				'TR_SOFTWARE_AVAILABLE' => tr('Apps available'),
 				'TR_DELETE' => tr('Delete'),
 				'TR_SOFTWARE_MENU' => tr('Software installation'),
-				'TR_CLIENT_SOFTWARE_PAGE_TITLE' => tr('ispCP - Software management'),
+				'TR_CLIENT_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Application Management'),
 				'TR_SOFTWARE_ASC' => 'software.php?sortby=name&order=asc',
 				'TR_SOFTWARE_DESC' => 'software.php?sortby=name&order=desc',
 				'TR_TYPE_ASC' => 'software.php?sortby=type&order=asc',

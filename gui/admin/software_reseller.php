@@ -290,7 +290,7 @@ function get_reseller_software (&$tpl, &$sql) {
 
 $tpl->assign(
 		array(
-			'TR_MANAGE_SOFTWARE_PAGE_TITLE' => tr('ispCP - Software Management'),
+			'TR_MANAGE_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Application Management'),
 			'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 			'THEME_CHARSET' => tr('encoding'),
 			'ISP_LOGO' => get_logo($_SESSION['user_id'])
@@ -319,7 +319,7 @@ $tpl->assign(
 			'TR_RESELLER_COUNT_WAITING' => tr('Waiting for activation'),
 			'TR_RESELLER_COUNT_ACTIVATED' => tr('Activated software'),
 			'TR_RESELLER_SOFTWARE_IN_USE' => tr('Total installations'),
-			'TR_ADMIN_SOFTWARE_PAGE_TITLE' => tr('ispCP - Software management'),
+			'TR_ADMIN_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Application Management'),
 			)
 	);
 

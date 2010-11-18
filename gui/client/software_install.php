@@ -757,7 +757,7 @@ $tpl -> assign(
 				'TR_SQL_USER' => tr('SQL-User'),
 				'TR_SQL_PWD' => tr('Password'),
 				'TR_SOFTWARE_MENU' => tr('Software installation'),
-				'TR_CLIENT_SOFTWARE_PAGE_TITLE' => tr('ispCP - Software management')
+				'TR_CLIENT_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Application Management')
 			)
 		);
 

@@ -590,7 +590,7 @@ function get_reseller_software (&$tpl, &$sql) {
 
 $tpl->assign(
 		array(
-			'TR_MANAGE_SOFTWARE_PAGE_TITLE' => tr('ispCP - Software Management'),
+			'TR_MANAGE_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Application Management'),
 			'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 			'THEME_CHARSET' => tr('encoding'),
 			'ISP_LOGO' => get_logo($_SESSION['user_id'])
@@ -636,7 +636,7 @@ $tpl->assign(
 			'TR_MESSAGE_ACTIVATE' 					=> tr('Are you sure you want to activate this package?', true),
 			'TR_MESSAGE_IMPORT' 					=> tr('Are you sure you want to import this package into the software depot?', true),
 			'TR_MESSAGE_DELETE' 					=> tr('Are you sure you want to delete this package?', true),
-			'TR_ADMIN_SOFTWARE_PAGE_TITLE' 				=> tr('ispCP - Software management')
+			'TR_ADMIN_SOFTWARE_PAGE_TITLE' 				=> tr('i-MSCP - Application Management')
 			)
 	);
 

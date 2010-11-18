@@ -194,7 +194,7 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 
 $tpl->assign(
 		array(
-			'TR_MANAGE_SOFTWARE_PAGE_TITLE' => tr('ispCP - Software Management (Permissions)'),
+			'TR_MANAGE_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Application Management (Permissions)'),
 			'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 			'THEME_CHARSET' => tr('encoding'),
 			'ISP_LOGO' => get_logo($_SESSION['user_id'])
@@ -227,7 +227,7 @@ $tpl->assign(
 			'TR_ADDED_BY' => tr('Added by'),
 			'TR_ADD_RIGHTS_BUTTON' => tr('Add permissions'),
 			'TR_SOFTWARE_RIGHTS' => tr('Software permissions'),
-			'TR_ADMIN_SOFTWARE_PAGE_TITLE' => tr('ispCP - Software management (Permissions)'),
+			'TR_ADMIN_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Application Management (Permissions)'),
 			)
 	);
 

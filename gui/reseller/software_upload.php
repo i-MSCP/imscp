@@ -514,7 +514,7 @@ function get_avail_software (&$tpl, &$sql, $user_id) {
 
 $tpl->assign(
 		array(
-			'TR_MANAGE_SOFTWARE_PAGE_TITLE'	=> tr('ispCP - Software Management'),
+			'TR_MANAGE_SOFTWARE_PAGE_TITLE'	=> tr('i-MSCP - Application Management'),
 			"../themes/{$cfg->USER_INITIAL_THEME}",
 			'THEME_CHARSET' => tr('encoding'),
 			'ISP_LOGO' => get_logo($_SESSION['user_id'])
@@ -543,7 +543,7 @@ $tpl->assign(
 			'TR_SOFTWARE_FILE' 		=> tr('Choose file (Max: %1$d MB)', ini_get('upload_max_filesize')),
 			'TR_SOFTWARE_URL' 		=> tr('or remote file (Max: %1$d MB)', formatFilesize($cfg->MAX_REMOTE_FILESIZE)),
 			'TR_UPLOAD_SOFTWARE_BUTTON' 	=> tr('Upload now'),
-			'TR_UPLOAD_SOFTWARE_PAGE_TITLE'	=> tr('ispCP - Software management'),
+			'TR_UPLOAD_SOFTWARE_PAGE_TITLE'	=> tr('i-MSCP - Application Management'),
 			'TR_MESSAGE_DELETE' 		=> tr('Are you sure you want to delete this package?', true),
 			'TR_SOFTWARE_NAME_ASC' 		=> 'software_upload.php?sortby=name&order=asc',
 			'TR_SOFTWARE_NAME_DESC' 	=> 'software_upload.php?sortby=name&order=desc',
