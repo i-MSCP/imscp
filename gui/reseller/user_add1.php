@@ -69,13 +69,7 @@ $tpl->assign(
 		'TR_CORE_DATA'				=> tr('Core data'),
 		'TR_DOMAIN_NAME'			=> tr('Domain name'),
 		'TR_DOMAIN_EXPIRE'			=> tr('Domain expire'),
-		'TR_DOMAIN_EXPIRE_NEVER'	=> tr('Never'),
-		'TR_DOMAIN_EXPIRE_1_MONTH'	=> tr('1 Month'),
-		'TR_DOMAIN_EXPIRE_2_MONTHS'	=> tr('2 Months'),
-		'TR_DOMAIN_EXPIRE_3_MONTHS'	=> tr('3 Months'),
-		'TR_DOMAIN_EXPIRE_6_MONTHS'	=> tr('6 Months'),
-		'TR_DOMAIN_EXPIRE_1_YEAR'	=> tr('1 Year'),
-		'TR_DOMAIN_EXPIRE_2_YEARS'	=> tr('2 Years'),
+		'TR_EXPIRE_CHECKBOX'	    => tr('or Check for <strong>never Expire</strong>'),
 		'TR_CHOOSE_HOSTING_PLAN'	=> tr('Choose hosting plan'),
 		'TR_PERSONALIZE_TEMPLATE'	=> tr('Personalise template'),
 		'TR_YES'					=> tr('yes'),
@@ -86,11 +80,6 @@ $tpl->assign(
 );
 
 if (isset($_POST['uaction'])) {
-
-    echo '<pre>';
-        print_r($_REQUEST);
-    echo '</pre>';
-    exit;
 
 	if (!check_user_data()) {
 		get_data_au1_page($tpl);
@@ -215,14 +204,7 @@ function get_empty_au1_page(&$tpl) {
 		array(
 			'DMN_NAME_VALUE'		=> '',
 			'CHTPL1_VAL'			=> '',
-			'CHTPL2_VAL'			=> $cfg->HTML_CHECKED,
-			'EXPIRE_NEVER_SET'		=> $cfg->HTML_SELECTED,
-			'EXPIRE_1_MONTH_SET'	=> '',
-			'EXPIRE_2_MONTH_SET'	=> '',
-			'EXPIRE_3_MONTH_SET'	=> '',
-			'EXPIRE_6_MONTH_SET'	=> '',
-			'EXPIRE_1_YEAR_SET'		=> '',
-			'EXPIRE_2_YEARS_SET'	=> ''
+			'CHTPL2_VAL'			=> $cfg->HTML_CHECKED
 		)
 	);
 
@@ -245,20 +227,6 @@ function get_data_au1_page(&$tpl) {
 			'DMN_NAME_VALUE' => tohtml($dmn_name),
 			'CHTPL1_VAL' => $dmn_pt === "_yes_" ? $cfg->HTML_CHECKED : '',
 			'CHTPL2_VAL' => $dmn_pt === "_yes_" ? '' : $cfg->HTML_CHECKED,
-			'EXPIRE_NEVER_SET' =>
-				($dmn_expire === '0') ? $cfg->HTML_SELECTED : '',
-			'EXPIRE_1_MONTH_SET' =>
-				($dmn_expire === '1') ? $cfg->HTML_SELECTED : '',
-			'EXPIRE_2_MONTH_SET' =>
-				($dmn_expire === '2') ? $cfg->HTML_SELECTED : '',
-			'EXPIRE_3_MONTH_SET' =>
-				($dmn_expire === '3') ? $cfg->HTML_SELECTED : '',
-			'EXPIRE_6_MONTH_SET' =>
-				($dmn_expire === '6') ? $cfg->HTML_SELECTED : '',
-			'EXPIRE_1_YEAR_SET' =>
-				($dmn_expire === '12') ? $cfg->HTML_SELECTED : '',
-			'EXPIRE_2_YEARS_SET' =>
-				($dmn_expire === '24') ? $cfg->HTML_SELECTED : '',
 		)
 	);
 } // End of get_data_au1_page()

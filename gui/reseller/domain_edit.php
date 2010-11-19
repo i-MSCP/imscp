@@ -73,15 +73,6 @@ $tpl->assign(
 		'TR_DOMAIN_NAME'					=> tr('Domain name'),
 		'TR_DOMAIN_EXPIRE'					=> tr('Domain expire'),
 		'TR_DOMAIN_NEW_EXPIRE'				=> tr('New expire date'),
-		'TR_DOMAIN_EXPIRE_UNCHANGED'		=> tr('Unchanged'),
-		'TR_DOMAIN_EXPIRE_NEVER'			=> tr('Never'),
-		'TR_DOMAIN_EXPIRE_MIN_1_MONTH'		=> tr('- 1 Month'),
-		'TR_DOMAIN_EXPIRE_PLUS_1_MONTH'		=> tr('+ 1 Month'),
-		'TR_DOMAIN_EXPIRE_PLUS_2_MONTHS'	=> tr('+ 2 Months'),
-		'TR_DOMAIN_EXPIRE_PLUS_3_MONTHS'	=> tr('+ 3 Months'),
-		'TR_DOMAIN_EXPIRE_PLUS_6_MONTHS'	=> tr('+ 6 Months'),
-		'TR_DOMAIN_EXPIRE_PLUS_1_YEAR'		=> tr('+ 1 Year'),
-		'TR_DOMAIN_EXPIRE_PLUS_2_YEARS'		=> tr('+ 2 Years'),
 		'TR_DOMAIN_IP'						=> tr('Domain IP'),
 		'TR_PHP_SUPP'						=> tr('PHP support'),
 		'TR_CGI_SUPP'						=> tr('CGI support'),
@@ -104,6 +95,7 @@ $tpl->assign(
 		'TR_CANCEL'							=> tr('Cancel'),
 		'TR_YES'							=> tr('Yes'),
 		'TR_NO'								=> tr('No'),
+        'TR_EXPIRE_CHECKBOX'                => tr('or Check for <strong>never Expire</strong>'),
 		'TR_DMN_EXP_HELP'					=> tr("In case 'Domain expire' is 'N/A', the expiration date will be set from today.")
 	)
 );
@@ -208,7 +200,7 @@ function load_user_data($user_id, $domain_id) {
 function load_additional_data($user_id, $domain_id) {
 	global $domain_name, $domain_expires, $domain_ip, $php_sup;
 	global $cgi_supp, $username, $allowbackup;
-	global $dns_supp;
+	global $dns_supp, $domain_expires_date;
 
 	$sql = iMSCP_Registry::get('Db');
 	$cfg = iMSCP_Registry::get('Config');
@@ -240,10 +232,12 @@ function load_additional_data($user_id, $domain_id) {
 
 	if ($domain_expires == 0) {
 		$domain_expires = tr('N/A');
+        $domain_expires_date = '0';
 	} else {
 		$date_formt = $cfg->DATE_FORMAT;
-		$domain_expires = date($date_formt, $domain_expires);
-	}
+        $domain_expires_date = date("m/d/Y", $domain_expires);
+        $domain_expires = date($date_formt, $domain_expires);
+    }
 
 	$domain_ip_id		= $data['domain_ip_id'];
 	$php_sup			= $data['domain_php'];
@@ -295,7 +289,8 @@ function gen_editdomain_page(&$tpl) {
 	global $mail, $ftp, $sql_db;
 	global $sql_user, $traff, $disk;
 	global $username, $allowbackup;
-	global $dns_supp;
+	global $dns_supp, $domain_expires_date;
+    global $neverexpire;
 
 	$cfg = iMSCP_Registry::get('Config');
 
@@ -344,6 +339,24 @@ function gen_editdomain_page(&$tpl) {
 		);
 	}
 
+    if($domain_expires_date === '0')    {
+        $tpl->assign(
+            array(
+                'VL_DOMAIN_EXPIRE_DATE' => '',
+                'VL_NEVEREXPIRE'        => 'checked',
+                'VL_DISABLED'           => 'disabled',
+            )
+        );
+    } else {
+        $tpl->assign(
+            array(
+                'VL_DOMAIN_EXPIRE_DATE'	=> $domain_expires_date,
+                'VL_NEVEREXPIRE'        => '',
+                'VL_DISABLED_NE'        => 'disabled',
+            )
+        );
+    }
+
 	list(
 		$rsub_max,
 		$rals_max,
@@ -371,6 +384,7 @@ function gen_editdomain_page(&$tpl) {
 			'VL_DOMAIN_NAME'			=> tohtml($domain_name),
 			'VL_DOMAIN_EXPIRE'			=> $domain_expires,
 			'VL_DOMAIN_IP'				=> $domain_ip,
+            'DOMAIN_EXPIRES_DATE'       => $domain_expires_date,
 			'VL_DOM_SUB'				=> $sub,
 			'VL_DOM_ALIAS'				=> $als,
 			'VL_DOM_MAIL_ACCOUNT'		=> $mail,
@@ -380,15 +394,6 @@ function gen_editdomain_page(&$tpl) {
 			'VL_TRAFFIC'				=> $traff,
 			'VL_DOM_DISK'				=> $disk,
 			'VL_USER_NAME'				=> tohtml($username),
-			'EXPIRE_UNCHANGED_SET'		=> ($domain_new_expire === '0') ? $cfg->HTML_SELECTED : '',
-			'EXPIRE_NEVER_SET'			=> ($domain_new_expire === 'OFF') ? $cfg->HTML_SELECTED : '',
-			'EXPIRE_1_MIN_MONTH_SET'	=> ($domain_new_expire === '-1') ? $cfg->HTML_SELECTED : '',
-			'EXPIRE_1_PLUS_MONTH_SET'	=> ($domain_new_expire === '1') ? $cfg->HTML_SELECTED : '',
-			'EXPIRE_2_PLUS_MONTH_SET'	=> ($domain_new_expire === '2') ? $cfg->HTML_SELECTED : '',
-			'EXPIRE_3_PLUS_MONTH_SET'	=> ($domain_new_expire === '3') ? $cfg->HTML_SELECTED : '',
-			'EXPIRE_6_PLUS_MONTH_SET'	=> ($domain_new_expire === '6') ? $cfg->HTML_SELECTED : '',
-			'EXPIRE_1_PLUS_YEAR_SET'	=> ($domain_new_expire === '12') ? $cfg->HTML_SELECTED : '',
-			'EXPIRE_2_PLUS_YEARS_SET'	=> ($domain_new_expire === '24') ? $cfg->HTML_SELECTED : '',
 		)
 	);
 } // End of gen_editdomain_page()
@@ -400,7 +405,7 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 
 	global $sub, $als, $mail, $ftp, $sql_db, $sql_user, $traff, $disk, $sql,
 		$domain_php, $domain_cgi, $allowbackup, $domain_dns, $domain_expires,
-		$domain_new_expire;
+		$domain_new_expire, $domain_expires_date;
 
     $datepicker     = clean_input($_POST['dmn_expire_date']);
 	$domain_new_expire = clean_input($_POST['dmn_expire']);
@@ -559,18 +564,10 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 		$user_props .= "$allowbackup;";
 		$user_props .= "$domain_dns";
 		update_user_props($user_id, $user_props);
-/*
-		$domain_expires = $_SESSION['domain_expires'];
 
-		if ($domain_expires != 0 && $domain_new_expire != 0) {
-			$domain_expires = $domain_expires + ($domain_new_expire * 2635200);
-		} elseif ($domain_new_expire == "OFF") {
-			$domain_expires = "0";
-		} elseif ($domain_expires == 0 && $domain_new_expire != 0) {
-			$domain_expires = time() + ($domain_new_expire * 2635200);
-		}
- */
-        if($_POST['neverexpire'] != "checked"){
+
+        // Date-Picker domain expire update
+        if($_POST['neverexpire'] != "on"){
             $domain_expires = datepicker_reseller_convert($datepicker);
         } else {
             $domain_expires = "0";

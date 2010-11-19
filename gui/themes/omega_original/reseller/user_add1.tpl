@@ -113,7 +113,7 @@
 
 						</script>
 					<div class="content">
-						<p>Date: <input type="text" id="datepicker" name="dmn_expire"> (MM/DD/YYYY) or Check for <strong>never Expire</strong> <input type="checkbox" name="neverexpire" id="neverexpire" class="neverexpire" ></p>
+						<p>Date: <input type="text" id="datepicker" name="dmn_expire"> (MM/DD/YYYY) {TR_EXPIRE_CHECKBOX} <input type="checkbox" name="neverexpire" id="neverexpire" class="neverexpire" ></p>
 
 					</div>
 

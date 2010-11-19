@@ -359,19 +359,12 @@ function add_user_data($reseller_id) {
 
 	$record_id = $sql->insertId();
 
-    if($neverexpire != "checked"){
+    if($neverexpire != "on"){
             $domain_expires = datepicker_reseller_convert($dmn_expire);
         } else {
             $domain_expires = "0";
         }
     $expire = $domain_expires;
-/*
-	$expire = $dmn_expire * 2635200; // months * 30.5 days
-
-	if (!empty($expire)) {
-		$expire = time() + $expire;
- 	}
- */
 
 	$query = "
 		INSERT INTO `domain` (

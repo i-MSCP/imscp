@@ -23,6 +23,35 @@
 		// Tooltips - end
 	});
 /*]]>*/
+
+$(function() {
+	$( "#datepicker" ).datepicker();
+	});
+	$(document).ready(function(){
+    // Tooltips - begin
+    $('#dmn_help').iMSCPtooltips({msg:"{TR_DMN_HELP}"});
+    // Tooltips - end
+
+    $('#datepicker').change(function() {
+        if($(this).val() != '') {
+            $('#neverexpire').attr('disabled', 'disabled')
+        } else {
+            $('#neverexpire').removeAttr('disabled');
+                }
+            }
+        );
+
+            $('#neverexpire').change(function() {
+                if($(this).is(':checked')) {
+                    $('#datepicker').attr('disabled', 'disabled')
+                } else {
+                    $('#datepicker').removeAttr('disabled');
+                        }
+            }
+        );
+
+    }
+);
 </script>
 </head>
 
@@ -84,37 +113,10 @@
                         <td width="25">&nbsp;</td>
                         <td class="content2" width="193">{TR_DOMAIN_NEW_EXPIRE} <img id="dmn_exp_help" src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" alt="" /></td>
                         <td class="content">
-						<script>
-							$(function() {
-								$( "#datepicker" ).datepicker();
-							});
-							$(document).ready(function(){
-                                // Tooltips - begin
-                                $('#dmn_help').iMSCPtooltips({msg:"{TR_DMN_HELP}"});
-                                // Tooltips - end
-
-                                $('#datepicker').change(function() {
-                                    if($(this).val() != '') {
-                                        $('#neverexpire').attr('disabled', 'disabled')
-                                    } else {
-                                        $('#neverexpire').removeAttr('disabled');
-                                    }
-                                });
-
-                                $('#neverexpire').change(function() {
-                                    if($(this).is(':checked')) {
-                                        $('#datepicker').attr('disabled', 'disabled')
-                                    } else {
-                                        $('#datepicker').removeAttr('disabled');
-                                    }
-                                });
-
-                            });
-						</script>
-						<div class="content">
-							<p>Date: <input type="text" id="datepicker" name="dmn_expire_date"> (MM/DD/YYYY) or Check for <strong>never Expire</strong> <input type="checkbox" name="neverexpire" id="neverexpire"></p>
- 						</div>
-			    </td>
+						    <div class="content">
+							    <p>Date: <input type="text" id="datepicker" name="dmn_expire_date" value="{VL_DOMAIN_EXPIRE_DATE}" {VL_DISABLED}> (MM/DD/YYYY) {TR_EXPIRE_CHECKBOX} <input type="checkbox" name="neverexpire" id="neverexpire" {VL_NEVEREXPIRE} {VL_DISABLED_NE}></p>
+ 						    </div>
+			            </td>
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>
