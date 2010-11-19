@@ -38,12 +38,9 @@ use strict;
 use XML::Parser;
 use warnings;
 
-my $sw_software_id = $ARGV[0];
-my $sw_reseller_id = $ARGV[1];
-my $sw_software_archive = $ARGV[2];
-my $sw_status = $ARGV[3];
-my $sw_software_depot = $ARGV[4];
-
+#Decoding data which pushed from another script
+my $decoded_pushstring = decode_base64($ARGV[0]);
+my ($sw_software_id,$sw_reseller_id,$sw_software_archive,$sw_status,$sw_software_depot)=split(/,/, $decoded_pushstring);
 
 sub pkt_mngr_start_up {
 	my ($rs, $rdata) = (undef, undef);
@@ -88,7 +85,6 @@ sub pkt_mngr_start_up {
 	# getting task id and domain record id;
 	#
 
-	$main::sw_software_id = $ARGV[0];
 	return 0;
 }
 
