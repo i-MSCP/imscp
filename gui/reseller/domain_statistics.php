@@ -128,24 +128,12 @@ function generate_page(&$tpl, $domain_id) {
 	$sql = iMSCP_Registry::get('Db');
 	$cfg = iMSCP_Registry::get('Config');
 
-	// NXW: Unused variables so..
-	/*
-	$fdofmnth = mktime(0, 0, 0, $month, 1, $year);
-	$ldofmnth = mktime(1, 0, 0, $month + 1, 0, $year);
-	*/
-
 	if ($month == date('m') && $year == date('Y')) {
 		$curday = date('j');
 	} else {
 		$tmp = mktime(1, 0, 0, $month + 1, 0, $year);
 		$curday = date('j', $tmp);
 	}
-
-	// NXW: Unused variables so...
-	/*
-	$curtimestamp = time();
-	$firsttimestamp = mktime(0, 0, 0, $month, 1, $year);
-	*/
 
 	$all[0] = 0;
 	$all[1] = 0;
@@ -169,12 +157,8 @@ function generate_page(&$tpl, $domain_id) {
 			WHERE
 				`domain_id` = ? AND `dtraff_time` >= ? AND `dtraff_time` <= ?
 		";
-		// NXW: Unused variable so..
-		// $rs = exec_query($sql, $query, array($domain_id, $ftm, $ltm));
 		exec_query($sql, $query, array($domain_id, $ftm, $ltm));
 
-		// NXW: Unused variable so..
-		// $has_data = false;
 		list($web_trf, $ftp_trf, $pop_trf, $smtp_trf) = get_domain_trafic($ftm, $ltm, $domain_id);
 
 		if ($web_trf == 0 && $ftp_trf == 0 && $smtp_trf == 0 && $pop_trf == 0) {

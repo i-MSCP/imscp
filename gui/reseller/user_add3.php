@@ -8,7 +8,6 @@
  * @version 	SVN: $Id$
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
- * @author 		i-MSCP Team
  *
  * @license
  * The contents of this file are subject to the Mozilla Public License
@@ -28,8 +27,6 @@
  * by moleSoftware GmbH. All Rights Reserved.
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
- * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
 require '../include/imscp-lib.php';
@@ -138,10 +135,14 @@ if ($cfg->DUMP_GUI_DEBUG) {
  * Get data from previous page
  */
 function init_in_values() {
-	global $dmn_name, $dmn_expire, $dmn_user_name, $hpid;
+	global $dmn_name, $dmn_expire, $neverexpire, $dmn_user_name, $hpid;
 
 	if (isset($_SESSION['dmn_expire'])) {
 		$dmn_expire = $_SESSION['dmn_expire'];
+	}
+
+    if (isset($_SESSION['neverexpire'])) {
+		$neverexpire = $_SESSION['neverexpire'];
 	}
 
 	if (isset($_SESSION['step_one'])) {
@@ -251,7 +252,7 @@ function add_user_data($reseller_id) {
 	global $city, $state, $country, $street_one;
 	global $street_two, $mail, $phone;
 	global $fax, $inpass, $domain_ip;
-	global $dns, $backup;
+	global $dns, $backup, $neverexpire;
 
 	$sql = iMSCP_Registry::get('Db');
 	$cfg = iMSCP_Registry::get('Config');
@@ -320,6 +321,8 @@ function add_user_data($reseller_id) {
 		return;
 	}
 
+	check_for_lock_file();
+
 	$query = "
 		INSERT INTO `admin` (
 			`admin_name`, `admin_pass`, `admin_type`, `domain_created`,
@@ -356,11 +359,12 @@ function add_user_data($reseller_id) {
 
 	$record_id = $sql->insertId();
 
-	$expire = $dmn_expire * 2635200; // months * 30.5 days
-
-	if (!empty($expire)) {
-		$expire = time() + $expire;
- 	}
+    if($neverexpire != "on"){
+            $domain_expires = datepicker_reseller_convert($dmn_expire);
+        } else {
+            $domain_expires = "0";
+        }
+    $expire = $domain_expires;
 
 	$query = "
 		INSERT INTO `domain` (

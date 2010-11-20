@@ -52,36 +52,11 @@ function substract_from_reseller_props($reseller_id, $domain_id) {
 			$rdisk_current, $rdisk_max
 	) = generate_reseller_props($reseller_id);
 
-	// NXW: Unused variable so ..
-	/*
-	list($sub_current, $sub_max,
-		$als_current, $als_max,
-		$mail_current, $mail_max,
-		$ftp_current, $ftp_max,
-		$sql_db_current, $sql_db_max,
-		$sql_user_current, $sql_user_max,
-		$traff_max, $disk_max
-	) = generate_user_props($domain_id);
-	*/
 	list(
 		$sub_current,,$als_current,,$mail_current,,$ftp_current,,
 		$sql_db_current,,$sql_user_current
 	) = generate_user_props($domain_id);
 
-	// NXW: Unused variable so ..
-	/*
-	list($tmpval1,
-		$tmpval2,
-		$tmpval3,
-		$tmpval4,
-		$tmpval5,
-		$tmpval16,
-		$traff_current,
-		$disk_current,
-		$tmpval7,
-		$tmpval8
-	) = generate_user_traffic($domain_id);
-	*/
 	list(,,,,,,$traff_current,$disk_current) = generate_user_traffic($domain_id);
 
 	$rdmn_current -= 1;

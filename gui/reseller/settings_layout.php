@@ -75,8 +75,6 @@ function save_layout() {
 				`user_id` = ?
 		";
 
-		// NXW: Unused variable so...
-		//$rs = exec_query($sql, $query, array($user_layout, $user_id));
 		exec_query($sql, $query, array($user_layout, $user_id));
 		$theme_color = $user_layout;
 		$_SESSION['user_theme_color'] = $user_layout;

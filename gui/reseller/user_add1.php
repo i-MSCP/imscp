@@ -8,7 +8,6 @@
  * @version 	SVN: $Id$
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
- * @author 		i-MSCP Team
  *
  * @license
  * The contents of this file are subject to the Mozilla Public License
@@ -28,8 +27,6 @@
  * by moleSoftware GmbH. All Rights Reserved.
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
- * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
 require '../include/imscp-lib.php';
@@ -72,13 +69,7 @@ $tpl->assign(
 		'TR_CORE_DATA'				=> tr('Core data'),
 		'TR_DOMAIN_NAME'			=> tr('Domain name'),
 		'TR_DOMAIN_EXPIRE'			=> tr('Domain expire'),
-		'TR_DOMAIN_EXPIRE_NEVER'	=> tr('Never'),
-		'TR_DOMAIN_EXPIRE_1_MONTH'	=> tr('1 Month'),
-		'TR_DOMAIN_EXPIRE_2_MONTHS'	=> tr('2 Months'),
-		'TR_DOMAIN_EXPIRE_3_MONTHS'	=> tr('3 Months'),
-		'TR_DOMAIN_EXPIRE_6_MONTHS'	=> tr('6 Months'),
-		'TR_DOMAIN_EXPIRE_1_YEAR'	=> tr('1 Year'),
-		'TR_DOMAIN_EXPIRE_2_YEARS'	=> tr('2 Years'),
+		'TR_EXPIRE_CHECKBOX'	    => tr('or Check for <strong>never Expire</strong>'),
 		'TR_CHOOSE_HOSTING_PLAN'	=> tr('Choose hosting plan'),
 		'TR_PERSONALIZE_TEMPLATE'	=> tr('Personalise template'),
 		'TR_YES'					=> tr('yes'),
@@ -89,6 +80,7 @@ $tpl->assign(
 );
 
 if (isset($_POST['uaction'])) {
+
 	if (!check_user_data()) {
 		get_data_au1_page($tpl);
 	}
@@ -114,7 +106,7 @@ unset_messages();
  */
 function check_user_data() {
 	global $dmn_name; // domain name
-	global $dmn_expire; // Domain expire date
+	global $dmn_expire, $neverexpire; // Domain expire date
 	global $dmn_chp; // choosed hosting plan
 	global $dmn_pt;
 	global $validation_err_msg;
@@ -134,6 +126,10 @@ function check_user_data() {
 
 	if (isset($_POST['dmn_expire'])) {
 		$dmn_expire = $_POST['dmn_expire'];
+	}
+
+    if (isset($_POST['neverexpire'])) {
+		$neverexpire = $_POST['neverexpire'];
 	}
 
 	if (isset($_POST['dmn_tpl'])) {
@@ -172,6 +168,7 @@ function check_user_data() {
 		// send through the session the data
 		$_SESSION['dmn_name']	= $dmn_name;
 		$_SESSION['dmn_expire']	= $dmn_expire;
+        $_SESSION['neverexpire']= $neverexpire;
 		$_SESSION['dmn_tpl']	= $dmn_chp;
 		$_SESSION['chtpl']		= $dmn_pt;
 		$_SESSION['step_one']	= "_yes_";
@@ -184,6 +181,7 @@ function check_user_data() {
 			// send through the session the data
 			$_SESSION['dmn_name']	= $dmn_name;
 			$_SESSION['dmn_expire']	= $dmn_expire;
+            $_SESSION['neverexpire']= $neverexpire;
 			$_SESSION['dmn_tpl']	= $dmn_chp;
 			$_SESSION['chtpl']		= $dmn_pt;
 			$_SESSION['step_one']	= "_yes_";
@@ -206,14 +204,7 @@ function get_empty_au1_page(&$tpl) {
 		array(
 			'DMN_NAME_VALUE'		=> '',
 			'CHTPL1_VAL'			=> '',
-			'CHTPL2_VAL'			=> $cfg->HTML_CHECKED,
-			'EXPIRE_NEVER_SET'		=> $cfg->HTML_SELECTED,
-			'EXPIRE_1_MONTH_SET'	=> '',
-			'EXPIRE_2_MONTH_SET'	=> '',
-			'EXPIRE_3_MONTH_SET'	=> '',
-			'EXPIRE_6_MONTH_SET'	=> '',
-			'EXPIRE_1_YEAR_SET'		=> '',
-			'EXPIRE_2_YEARS_SET'	=> ''
+			'CHTPL2_VAL'			=> $cfg->HTML_CHECKED
 		)
 	);
 
@@ -225,7 +216,7 @@ function get_empty_au1_page(&$tpl) {
  */
 function get_data_au1_page(&$tpl) {
 	global $dmn_name; // Domain name
-	global $dmn_expire; // Domain expire date
+	global $dmn_expire, $neverexpire; // Domain expire date
 	//global $dmn_chp; // choosed hosting plan;
 	global $dmn_pt; // personal template
 
@@ -236,20 +227,6 @@ function get_data_au1_page(&$tpl) {
 			'DMN_NAME_VALUE' => tohtml($dmn_name),
 			'CHTPL1_VAL' => $dmn_pt === "_yes_" ? $cfg->HTML_CHECKED : '',
 			'CHTPL2_VAL' => $dmn_pt === "_yes_" ? '' : $cfg->HTML_CHECKED,
-			'EXPIRE_NEVER_SET' =>
-				($dmn_expire === '0') ? $cfg->HTML_SELECTED : '',
-			'EXPIRE_1_MONTH_SET' =>
-				($dmn_expire === '1') ? $cfg->HTML_SELECTED : '',
-			'EXPIRE_2_MONTH_SET' =>
-				($dmn_expire === '2') ? $cfg->HTML_SELECTED : '',
-			'EXPIRE_3_MONTH_SET' =>
-				($dmn_expire === '3') ? $cfg->HTML_SELECTED : '',
-			'EXPIRE_6_MONTH_SET' =>
-				($dmn_expire === '6') ? $cfg->HTML_SELECTED : '',
-			'EXPIRE_1_YEAR_SET' =>
-				($dmn_expire === '12') ? $cfg->HTML_SELECTED : '',
-			'EXPIRE_2_YEARS_SET' =>
-				($dmn_expire === '24') ? $cfg->HTML_SELECTED : '',
 		)
 	);
 } // End of get_data_au1_page()
