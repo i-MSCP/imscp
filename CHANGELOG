@@ -1,6 +1,10 @@
 i-MSCP ChangeLog
 ~~~~~~~~~~~~~~~~
 
+2010-11-20 Peter Ziergoebel
+	- GUI:
+		* New feature: Date picker for  domain expire input fields 
+
 2010-11-16 Laurent Declercq
 	- GUI:
 		* Fixed #5 Update - jQuery - version 1.4.3 available
