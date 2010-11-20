@@ -226,8 +226,6 @@ function check_fwd_data(&$tpl, $alias_id) {
 	$forward_url = strtolower(clean_input($_POST['forward']));
 	// unset errors
 	$ed_error = '_off_';
-	// NXW: Unused variable so...
-	// $admin_login = '';
 
 	if (isset($_POST['status']) && $_POST['status'] == 1) {
 		$forward_prefix = clean_input($_POST['forward_prefix']);
@@ -294,11 +292,6 @@ function check_fwd_data(&$tpl, $alias_id) {
 
 		send_request();
 
-		// NXW: oh my god... Should be review...
-		/*
-		$admin_login = $_SESSION['user_logged'];
-		write_log("$admin_login: changes domain alias forward: " . $rs->fields['t1.alias_name']);
-		*/
 		unset($_SESSION['edit_ID']);
 		$tpl->assign('MESSAGE', "");
 		return true;

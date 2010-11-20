@@ -69,13 +69,9 @@ function gen_order_page(&$tpl, &$sql, $user_id) {
 	$cfg = iMSCP_Registry::get('Config');
 
 	$start_index = 0;
-	// NXW: Unused variable so...
-	// $current_psi = 0;
 
 	if (isset($_GET['psi']) && is_numeric($_GET['psi'])) {
 		$start_index = $_GET['psi'];
-		// NXW: Unused variable so...
-		// $current_psi = $_GET['psi'];
 	}
 
 	$rows_per_page = $cfg->DOMAIN_ROWS_PER_PAGE;

@@ -144,17 +144,9 @@ gen_editdomain_page($tpl);
  * Load data from sql
  */
 function load_user_data($user_id, $domain_id) {
-
-	// NXW: Some unused variables so...
-	/*
-	global $domain_name, $domain_expires, $domain_ip, $php_sup;
-	global $cgi_supp , $sub, $als;
-	global $mail, $ftp, $sql_db;
-	global $sql_user, $traff, $disk;
-	global $username;
-	global $dns_supp;
-	*/
-	global $sub, $als, $mail, $ftp, $sql_db, $sql_user, $traff, $disk;
+	global $sub, $als, $mail;
+    global $ftp, $sql_db, $sql_user;
+    global $traff, $disk;
 
 	$sql = iMSCP_Registry::get('Db');
 
@@ -177,17 +169,6 @@ function load_user_data($user_id, $domain_id) {
 		user_goto('users.php?psi=last');
 	}
 
-	// NXW: Unused variables so...
-	/*
-	list($a, $sub,
-		$b, $als,
-		$c, $mail,
-		$d, $ftp,
-		$e, $sql_db,
-		$f, $sql_user,
-		$traff, $disk
-	) = generate_user_props($domain_id);
-	*/
 	list(,$sub,,$als,,$mail,,$ftp,,$sql_db,,$sql_user,$traff,$disk) =
 		generate_user_props($domain_id);
 
@@ -506,8 +487,6 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 		$rdisk_current, $rdisk_max
 	) = get_reseller_default_props($sql, $reseller_id);
 
-	// NXW: Unused variables so...
-	//list($a, $b, $c, $d, $e, $f, $utraff_current, $udisk_current, $i, $h) = generate_user_traffic($user_id);
 	list(,,,,,,$utraff_current, $udisk_current) = generate_user_traffic($user_id);
 
 	if (empty($ed_error)) {
