@@ -780,11 +780,13 @@ function gen_user_list(&$tpl, &$sql) {
 			$tpl->parse('USR_DELETE_LINK', 'usr_delete_link');
 
 			if($rs->fields['domain_status'] == $cfg->ITEM_OK_STATUS) {
-				$status_icon = 'ok.png';
+                $status = 'ok';
+                $status_txt = tr('Ok');
 				$status_url = 'domain_status_change.php?domain_id=' .
 					$rs->fields['domain_id'];
 			} elseif($rs->fields['domain_status'] == $cfg->ITEM_DISABLED_STATUS) {
-				$status_icon = 'disabled.png';
+                $status = 'disabled';
+                $status_txt = tr('Disabled');
 				$status_url = 'domain_status_change.php?domain_id=' .
 					$rs->fields['domain_id'];
 			} elseif($rs->fields['domain_status'] == $cfg->ITEM_ADD_STATUS
@@ -794,17 +796,21 @@ function gen_user_list(&$tpl, &$sql) {
 				|| $rs->fields['domain_status'] == $cfg->ITEM_TODISABLED_STATUS
 				|| $rs->fields['domain_status'] == $cfg->ITEM_DELETE_STATUS) {
 
-				$status_icon = 'reload.png';
+                $status = 'reload';
+                $status_txt = tr('Reload');
 				$status_url = '#';
 			} else {
-				$status_icon = 'error.png';
+                $status = 'error';
+                $status_txt = tr('Error');
 				$status_url = 'domain_details.php?domain_id=' .
 					$rs->fields['domain_id'];
 			}
 
 			$tpl->assign(
 				array(
-					'STATUS_ICON' => $status_icon,
+					'STATUS_ICON' => $status.'.png', // Only used in omega_original
+                    'STATUS' => $status,
+                    'TR_STATUS' => $status_txt,
 					'URL_CHANGE_STATUS' => $status_url,
 				)
 			);
