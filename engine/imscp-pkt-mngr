@@ -115,7 +115,7 @@ sub pkt_add_data {
 	$rs = sys_command_rs("$main::cfg{'CMD_TAR'} -xzf $sw_tmp_path/$sw_software_archive-$sw_software_id.tar.gz");
 	if (-e $sw_install_xml_file && -e $sw_uninstall_xml_file && -d $sw_tmp_path."/sql/" && -d $sw_tmp_path."/web/") {
 		our %INSTALL_DATA = (
-							software_installfile		=>	'',
+							software_installfile	=>	'',
 							software_name			=>	'',
 							software_version		=>	'',
 							software_language		=>	'',
@@ -218,13 +218,13 @@ sub pkt_add_data {
 					FROM
 						`web_software`
 					WHERE
-						`software_name` = '".$INSTALL_DATA{software_name}."'
+						`software_name`     = '".$INSTALL_DATA{software_name}."'
 					AND
-						`software_version` = '".$INSTALL_DATA{software_version}."'
+						`software_version`  = '".$INSTALL_DATA{software_version}."'
 					AND 
 						`software_language` = '".$INSTALL_DATA{software_language}."'
 					AND
-						`software_depot` = 'no'
+						`software_depot`    = 'no'
 				";
 			}else{
 				$sql = "
@@ -233,15 +233,15 @@ sub pkt_add_data {
 					FROM
 						`web_software`
 					WHERE
-						`software_name` = '".$INSTALL_DATA{software_name}."'
+						`software_name`     = '".$INSTALL_DATA{software_name}."'
 					AND
-						`software_version` = '".$INSTALL_DATA{software_version}."'
+						`software_version`  = '".$INSTALL_DATA{software_version}."'
 					AND
 						`software_language` = '".$INSTALL_DATA{software_language}."'
 					AND
-						`reseller_id` = ".$sw_reseller_id."
+						`reseller_id`       = ".$sw_reseller_id."
 					AND
-						`software_depot` = 'no'
+						`software_depot`    = 'no'
 				";
 			}
 			($rs, $rdata) = doSQL($sql);
@@ -252,15 +252,15 @@ sub pkt_add_data {
 				FROM
 					`web_software`
 				WHERE
-					`software_name` = '".$INSTALL_DATA{software_name}."'
+					`software_name`         = '".$INSTALL_DATA{software_name}."'
 				AND
-					`software_version` = '".$INSTALL_DATA{software_version}."'
+					`software_version`      = '".$INSTALL_DATA{software_version}."'
 				AND
-					`software_language` = '".$INSTALL_DATA{software_language}."'
+					`software_language`     = '".$INSTALL_DATA{software_language}."'
 				AND
-					`software_master_id` = 0
+					`software_master_id`    = 0
 				AND
-					`software_depot` = 'yes'
+					`software_depot`        = 'yes'
 			";
 			($rs, $rdata2) = doSQL($sql);
 			$sw_count_swdepot = @$rdata2;
@@ -271,9 +271,9 @@ sub pkt_add_data {
 						UPDATE
 							`web_software`
 						SET
-							`software_status` = 'double_res_".@$existing_swrestid[0]."'
+							`software_status`   = 'double_res_".@$existing_swrestid[0]."'
 						WHERE
-							`software_id` = $sw_software_id
+							`software_id`       = $sw_software_id
 					";
 				} elsif ($sw_count_swdepot > 0) {
 					$existing_swdepotid = @$rdata2[0];
@@ -281,9 +281,9 @@ sub pkt_add_data {
 						UPDATE
 							`web_software`
 						SET
-							`software_status` = 'double_depot_".@$existing_swdepotid[0]."'
+							`software_status`   = 'double_depot_".@$existing_swdepotid[0]."'
 						WHERE
-							`software_id` = $sw_software_id
+							`software_id`       = $sw_software_id
 					";
 				}
 				$rs = doSQL($sql);
@@ -292,18 +292,18 @@ sub pkt_add_data {
 					UPDATE
 						`web_software`
 					SET 
-						`software_name` = '".$INSTALL_DATA{software_name}."',
-						`software_version` = '".$INSTALL_DATA{software_version}."',
-						`software_language` = '".$INSTALL_DATA{software_language}."',
-						`software_type` = '".$INSTALL_DATA{software_type}."',
-						`software_db` = '".$INSTALL_DATA{software_db}."',
-						`software_installfile` = '".$INSTALL_DATA{software_installfile}."',
-						`software_prefix` = '".$INSTALL_DATA{software_prefix}."',
-						`software_link` = '".$INSTALL_DATA{software_link}."',
-						`software_desc` = '".$INSTALL_DATA{software_desc}."',
-						`software_status` = 'ready'
+						`software_name`         = '".$INSTALL_DATA{software_name}."',
+						`software_version`      = '".$INSTALL_DATA{software_version}."',
+						`software_language`     = '".$INSTALL_DATA{software_language}."',
+						`software_type`         = '".$INSTALL_DATA{software_type}."',
+						`software_db`           = '".$INSTALL_DATA{software_db}."',
+						`software_installfile`  = '".$INSTALL_DATA{software_installfile}."',
+						`software_prefix`       = '".$INSTALL_DATA{software_prefix}."',
+						`software_link`         = '".$INSTALL_DATA{software_link}."',
+						`software_desc`         = '".$INSTALL_DATA{software_desc}."',
+						`software_status`       = 'ready'
 					WHERE
-						`software_id` = $sw_software_id
+						`software_id`           = $sw_software_id
 				";
 				$rs = doSQL($sql);
 			}
@@ -313,9 +313,9 @@ sub pkt_add_data {
 				UPDATE
 					`web_software`
 				SET
-					`software_status` = 'delete'
+					`software_status`   = 'delete'
 				WHERE
-					`software_id` = $sw_software_id
+					`software_id`       = $sw_software_id
 			";
 			$rs = doSQL($sql);
 			$rs = sys_command_rs("$main::cfg{'CMD_RM'} -rf $sw_tmp_path");
@@ -326,9 +326,9 @@ sub pkt_add_data {
 			UPDATE
 				`web_software`
 			SET
-				`software_status` = 'delete'
+				`software_status`   = 'delete'
 			WHERE
-				`software_id` = $sw_software_id
+				`software_id`       = $sw_software_id
 		";
 		$rs = doSQL($sql);
 		$rs = sys_command_rs("$main::cfg{'CMD_RM'} -rf $sw_tmp_path");
@@ -348,20 +348,20 @@ sub pkt_mngr_engine {
 	my $query;
 	my $sw_src_path = "";
 	
-	my $gui_software_dir = $main::cfg{'GUI_SOFTWARE_DIR'};
-	my $gui_softwaredepot_dir = $main::cfg{'GUI_SOFTWARE_DEPOT_DIR'};
-	my $software_tmp_dir = $main::cfg{'SOFTWARE_TMP_DIR'};
+	my $gui_software_dir        = $main::cfg{'GUI_SOFTWARE_DIR'};
+	my $gui_softwaredepot_dir   = $main::cfg{'GUI_SOFTWARE_DEPOT_DIR'};
+	my $software_tmp_dir        = $main::cfg{'SOFTWARE_TMP_DIR'};
 	if ($sw_software_depot eq 'yes') {
-		$sw_src_path = "$gui_softwaredepot_dir/$sw_software_archive";
+		$sw_src_path            = "$gui_softwaredepot_dir/$sw_software_archive";
 	}else{
-		$sw_src_path = "$gui_software_dir/$sw_reseller_id/$sw_software_archive";
+		$sw_src_path            = "$gui_software_dir/$sw_reseller_id/$sw_software_archive";
 	}
-	my $sw_tmp_path = "$software_tmp_dir/sw-$sw_software_archive-$sw_software_id";
-	my $sw_install_xml_file = "$software_tmp_dir/sw-$sw_software_archive-$sw_software_id/xml/install.xml";
-	my $sw_uninstall_xml_file = "$software_tmp_dir/sw-$sw_software_archive-$sw_software_id/xml/uninstall.xml";
+	my $sw_tmp_path             = "$software_tmp_dir/sw-$sw_software_archive-$sw_software_id";
+	my $sw_install_xml_file     = "$software_tmp_dir/sw-$sw_software_archive-$sw_software_id/xml/install.xml";
+	my $sw_uninstall_xml_file   = "$software_tmp_dir/sw-$sw_software_archive-$sw_software_id/xml/uninstall.xml";
 	if ($sw_status eq 'toadd') {
-		my @entry = ($sw_software_id, $sw_software_archive, $sw_src_path, $sw_tmp_path, $sw_install_xml_file, $sw_uninstall_xml_file, $sw_reseller_id);
-		$rs = pkt_add_data(@entry);
+		my @entry               = ($sw_software_id, $sw_software_archive, $sw_src_path, $sw_tmp_path, $sw_install_xml_file, $sw_uninstall_xml_file, $sw_reseller_id);
+		$rs                     = pkt_add_data(@entry);
 		return $rs if ($rs != 0);
 	}
 	push_el(\@main::el, 'pkt_mngr_engine()', 'Ending software package engine...');
