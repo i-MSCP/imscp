@@ -101,6 +101,9 @@ if (($cfg->MAINTENANCEMODE
 			'TR_USERNAME'				=> tr('Username'),
 			'TR_PASSWORD'				=> tr('Password'),
 			'TR_LOGIN_INFO'				=> tr('Please enter your login information'),
+			'TR_PHPMYADMIN'				=> tr('phpMyAdmin'),
+			'TR_FILEMANAGER'			=> tr('File Manager'),
+			'TR_WEBMAIL'				=> tr('Webmail'),
 			// @todo: make this configurable by i-mscp-lib
 			'TR_SSL_LINK'               => isset($_SERVER['HTTPS']) ? 'http://' . htmlentities($_SERVER['HTTP_HOST']) : 'https://' . htmlentities($_SERVER['HTTP_HOST']),
 			'TR_WEBMAIL_SSL_LINK'       => "webmail",
