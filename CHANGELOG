@@ -7,6 +7,14 @@ i-MSCP ChangeLog
 	- FEATURE
 		* New build system
 
+2010-11-20 Peter Ziergoebel
+	- GUI:
+		* New feature: Date picker for  domain expire input fields
+
+2010-11-16 Laurent Declercq
+	- GUI:
+		* Fixed #5 Update - jQuery - version 1.4.3 available
+
 2010-11-16 Sascha Bay
 	- GUI:
 		* Fixed #10: IP-Overview for admin and reseller
@@ -14,7 +22,7 @@ i-MSCP ChangeLog
 
 2010-11-15 Daniel Andreca
 	- ENGINE:
-		* RKhunter update fail should not fail instalation
+		* RKhunter update fail should not fail installation
 
 2010-11-13 Daniel Andreca
 	- ENGINE:
