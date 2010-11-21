@@ -1212,7 +1212,7 @@ sub exit_msg {
 			"An error occurred during $context process!\n" .
 			"\tCorrect it and re-run this program.\n\n\tLog files are stored " .
 			"in $main::cfg{'LOG_DIR'}/setup\n\tYou can also find help at ".
-			 "http://isp-control.net/forum\n\n";
+			 "http://forum.i-mscp.net\n\n";
 	}
 
 	if(defined $userMsg && $userMsg ne '') {
