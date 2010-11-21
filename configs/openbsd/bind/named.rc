@@ -1,0 +1,40 @@
+#! /bin/sh
+#
+
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+DAEMON=/usr/sbin/named
+PID=/var/run/named.pid
+NAME=named
+DESC=named
+
+
+test -f $DAEMON || exit 0
+
+set -e
+
+case "$1" in
+  start)
+	echo -n "Starting $DESC: "
+	$DAEMON
+	echo "$NAME."
+	;;
+  stop)
+	echo -n "Stopping $DESC: "
+	if [ -f "$PID" ]; then
+	kill -9 `cat $PID`
+	rm -f $PID
+	fi
+	echo "$NAME."
+	;;
+  restart|force-reload)
+	$0 stop
+	$0 start
+	echo "$NAME."
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart|force-reload}" >&2
+	exit 1
+	;;
+esac
+
+exit 0
