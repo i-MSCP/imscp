@@ -1,6 +1,12 @@
 i-MSCP ChangeLog
 ~~~~~~~~~~~~~~~~
 
+2010-11-21 Daniel Andreca
+	- CONFIGS:
+		* Fixed #23: Merge Config files if not Distribution specific
+	- FEATURE
+		* New build system
+
 2010-11-16 Sascha Bay
 	- GUI:
 		* Fixed #10: IP-Overview for admin and reseller
