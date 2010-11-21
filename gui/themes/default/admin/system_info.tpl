@@ -132,7 +132,7 @@
                     <td>{MOUNT}</td>
                     <td>{TYPE}</td>
                     <td>{PARTITION}</td>
-                    <td>{PERCENT} %</td>
+                    <td>{PERCENT}%</td>
                     <td>{FREE}</td>
                     <td>{USED}</td>
                     <td>{SIZE}</td>
