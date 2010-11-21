@@ -137,6 +137,8 @@ sub sw_add_data {
 	}
 	$rs = sys_command_rs("$main::cfg{'CMD_CP'} -rRp $sw_tmp_path/web/. $sw_dest_path/");
 	$rs = sys_command_rs("$main::cfg{'CMD_CHOWN'} -R $uid:$gid $sw_dest_path/*");
+	$rs = sys_command_rs("find $sw_dest_path/ -type d -print0 | xargs -r -0 $main::cfg{'CMD_CHOWN'} 0755");
+	$rs = sys_command_rs("find $sw_dest_path/ -type f -print0 | xargs -r -0 $main::cfg{'CMD_CHOWN'} 0644");
 	
 	#Encoding data to push to another script
 	my $imscp_software_install_pushstring = encode_base64("install,$sw_software_db,$sw_software_prefix,$sw_database,$sw_database_user,$sw_database_tmp_pwd,$sw_install_username,$sw_install_password,$sw_install_email,$domain_name,$sw_dest_path,$sw_path");
@@ -216,7 +218,7 @@ sub sw_del_data {
 		return $rs if ($rs != 0);
 			
 		#Encoding data to push to another script
-		my $imscp_software_uninstall_pushstring = encode_base64("delete,$sw_software_db,$sw_software_prefix,$sw_database,$sw_database_user,$sw_database_tmp_pwd,$sw_install_username,$sw_install_password,$sw_install_email,$domain_name,$sw_dest_path,$sw_path");
+		my $imscp_software_uninstall_pushstring = encode_base64("uninstall,$sw_software_db,$sw_software_prefix,$sw_database,$sw_database_user,$sw_database_tmp_pwd,$sw_install_username,$sw_install_password,$sw_install_email,$domain_name,$sw_dest_path,$sw_path");
 			
 		$rs = sys_command_rs("perl $sw_tmp_path/$sw_software_installfile \"$imscp_software_uninstall_pushstring\"");
 		$rs = sys_command_rs("$main::cfg{'CMD_RM'} -rf $sw_tmp_path");
