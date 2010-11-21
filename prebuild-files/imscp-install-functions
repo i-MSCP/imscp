@@ -1,0 +1,276 @@
+#!/bin/sh
+
+# i-MSCP a internet Multi Server Control Panel
+#
+# Copyright (C) 2010 by internet Multi Server Control Panel - http://i-mscp.net
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+# or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+# for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>
+#
+# The Original Code is "i-MSCP internet Multi Server Control Panel".
+#
+# The Initial Developer of the Original Code is i-MSCP Team.
+# Portions created by Initial Developer are Copyright (C) 22010 by
+# internet Multi Server Control Panel. All Rights Reserved.
+#
+# @category		i-MSCP
+# @copyright	2010 by i-MSCP | http://i-mscp.net
+# @author		Daniel Andreca <sci2tech@i-mscp.net>
+# @version		SVN: $Id: Database.php 3702 2010-11-16 14:20:55Z sci2tech $
+# @link			http://i-mscp.net i-MSCP Home Site
+# @license		http://www.gnu.org/licenses/ GPL v2
+
+testCommand() {
+		printf "Testing for ${1} command... ";
+		A=$(which "${1}")
+		XX=$?
+		if [ "${XX}" = "0" ]; then
+			printf "${1} found ${A} "
+			eval ${1}=$A
+			oktxt
+			printf "\n"
+		else
+			printf "NOT FOUND ${1}!!! "
+			if [ "${2}" != "0" ]; then
+				failtxt
+				printf "\n"
+			else
+				warntxt
+				printf "\n"
+			fi
+		fi
+	return $XX;
+}
+testAnyCommand() {
+	local _rval=${2}
+	rs=1
+	for COMM in $1; do
+		testCommand "${COMM}" 0
+		if [ $? = "0" ]; then
+			rs=0
+			eval $_rval=\$$COMM
+			return
+		fi
+	done
+	if [ $rs != "0" ]; then
+		printf  "None of following ${1} where found "
+		failtxt
+	fi
+}
+sys_folder() {
+	eval ${1}="${2}"
+	eval dir="\$${1}"
+	if [ ${dir} ]; then
+		if [ -d ${dir} ]; then ${rm} -r ${dir}; fi
+		${mkdir} -p ${dir};
+		if [ $? != 0 ]; then printf "Can not create $dir"; warntxt; printf "\n";
+		else printf "Create $dir"; oktxt; printf "\n";
+		fi
+	fi
+}
+make_folder() {
+	eval dir="${1}"
+	if [ ${dir} ]; then
+		if [ -d ${dir} ]; then ${rm} -r ${dir}; fi
+		${mkdir} ${dir};
+		if [ $? != 0 ]; then printf "Can not create folder $dir"; warntxt; printf "\n";
+		else printf "Create folder $dir"; oktxt; printf "\n";
+		fi
+	fi
+}
+make_file() {
+	eval file=${1}
+	if [ ${file} ]; then
+		if [ -f ${file} ]; then ${rm} ${file}; fi
+		${touch} ${file};
+		if [ $? != 0 ]; then printf "Can not create file $file"; warntxt; printf "\n";
+		else printf "Create file $file"; oktxt; printf "\n";
+		fi
+	fi
+}
+copy_config_file() {
+	eval file="${1}"
+	if [ "${file}" ]; then
+		source=$(basename ${file})
+		destination=$(dirname ${file})
+		if [ ! -e "${source}" ] && [ ! -e "${COMMON_PATH}$FOLDER/${source}" ]; then
+			printf "Not found ${source} in ${OS_PATH}${FOLDER} or ${COMMON_PATH}$FOLDER";
+			warntxt;
+			WARNINGS=1;
+			printf "\n";
+			return;
+		fi
+		if [ -e "${source}" ]; then
+			if [ -d "${source}" ]; then
+				$cp -R "${COMMON_PATH}$FOLDER/${source}" "${destination}";
+			fi
+			$cp -fR "${source}" "${destination}";
+		else
+			$cp -R "${COMMON_PATH}$FOLDER/${source}" "${destination}";
+		fi
+		if [ $? != 0 ]; then
+			printf "Can not copy file $file"; failtxt;
+		else
+			printf "Copy file $file"; oktxt; printf "\n";
+		fi
+	fi
+}
+copy_file() {
+	eval file=${1}
+	if [ "${file}" ]; then
+		source=$(basename "${file}")
+		destination=$(dirname "${file}")
+		eval "$cp -R ${source} ${destination}";
+		if [ $? != 0 ]; then
+			printf "Can not copy file $file"; failtxt;
+		else
+			printf "Copy file $file"; oktxt; printf "\n";
+		fi
+	fi
+}
+chown_file() {
+	_chown_file $(echo ${1} | awk -F "|" '{print $1" "$2}')
+}
+_chown_file() {
+	eval file=${2}
+	eval owner=${1}
+	if [ "${file}" ]; then
+		eval "${chown} -R $owner $file"
+		if [ $? != 0 ]; then printf "Can not change owner $file"; warntxt; printf "\n";WARNINGS=1;
+		else printf "Change owner $file"; oktxt; printf "\n";
+		fi
+	fi
+}
+chmod_file() {
+	_chmod_file $(echo ${1} | awk -F "|" '{print $1" "$2}')
+}
+_chmod_file(){
+	eval file=${2}
+	eval mode=${1}
+	if [ "${file}" ]; then
+		eval "${chmod} -R $mode $file"
+		if [ $? != 0 ]; then printf "Can not mode $file"; warntxt; printf "\n";WARNINGS=1;
+		else printf "Change mode $file"; oktxt; printf "\n";
+		fi
+	fi
+}
+specific() {
+	VFILE=$(echo "$SELFDIR/$1" | tr [:upper:] [:lower:])
+	if [ ! -f "$VFILE" ];then
+		colortxt 'yellow' "$VFILE not found"; failtxt;
+	fi
+	. $VFILE
+
+	process_install
+}
+process_file() {
+	OS_PATH=${SELFDIR}/configs/${_os}/
+	COMMON_PATH=${SELFDIR}/configs/common/
+	for FOLDER in "" $(find $SELFDIR/configs/common/ -maxdepth 1 -type d | awk -F "${SELFDIR}/configs/common/" '{print $2}');
+	do
+		if [ ${FOLDER} ]; then INSTALL=${OS_PATH}${FOLDER}/install; else INSTALL=${OS_PATH}${FOLDER}install; fi
+		if [ ! -e ${OS_PATH}${FOLDER} ]; then
+			printf "${OS_PATH}${FOLDER} not exists"; warntxt; printf "\n";
+			WARNINGS=1;
+		else
+			. ${INSTALL};
+			cd ${OS_PATH}${FOLDER}
+			process_install
+			cd ${SELFDIR}
+		fi
+	done
+}
+process_install() {
+		for folders in $SYSTEM_FOLDERS; do
+			sys_folder $(echo $folders | awk -F "=" '{print $1" "$2}')
+		done
+		SYSTEM_FOLDERS=''
+		for folders in $FOLDERS; do
+			make_folder $(echo $folders | awk -F "=" '{print $1" "$2}')
+		done
+		FOLDERS=''
+		for file in $COPY_CONFIG_FILE; do
+			copy_config_file $file
+		done
+		COPY_CONFIG_FILE=''
+		for file in $COPY_FILE; do
+			copy_file $file
+		done
+		COPY_FILE=''
+		for file in $CREATE_FILE; do
+			make_file $file
+		done
+		CREATE_FILE=''
+		for file in $CHOWN_FILE; do
+			chown_file $file
+		done
+		CHOWN_FILE=''
+		for file in $CHMOD_FILE; do
+			chmod_file $file
+		done
+		CHMOD_FILE=''
+}
+builddaemon() {
+	cd ${SELFDIR}/tools/daemon
+	$rm -vrf *~
+	$rm -vrf *.o
+	$rm -vrf imscp_daemon
+	make
+	if [ $? = 0 ]; then
+		printf "Daemon builded successful"; oktxt; printf "\n"
+	else
+		printf "Fail build daemon"; failtxt; printf "\n"
+	fi
+	make_folder ${SYSTEM_ROOT}/daemon
+	copy_file ${SYSTEM_ROOT}/daemon/imscp_daemon
+	cd ${SELFDIR}
+}
+engine() {
+	ENGINE=${SELFDIR}/engine/
+	for FOLDER in "" $(find $ENGINE -maxdepth 1 -type d | awk -F "$ENGINE" '{print $2}');
+	do
+		if [ ${FOLDER} ]; then INSTALL=${ENGINE}${FOLDER}/install; else INSTALL=${ENGINE}${FOLDER}install; fi
+		cd ${ENGINE}${FOLDER}
+		if [ -f ${INSTALL} ]; then
+			. ${INSTALL}
+			process_install
+		fi
+		cd ${SELFDIR}
+	done
+
+}
+gui() {
+	copy_file "${SYSTEM_ROOT}/gui"
+}
+key() {
+	make_folder "${SYSTEM_ROOT}/keys"
+	cd "${SELFDIR}/keys"
+	copy_file "${SYSTEM_ROOT}/keys/rpl.pl"
+	cd "${SELFDIR}"
+}
+maintainer() {
+	SYSTEM_SETUP_ROOT=${SYSTEM_ROOT}/engine/setup
+	cd "${SELFDIR}/maintscripts"
+	if [ -f preinst.${_os} ] || [ -f postinst.${_os} ]; then
+		copy_file ${SYSTEM_SETUP_ROOT}/maintainer-helper.sh
+	fi
+
+	if [ -f preinst.${_os} ]; then
+		copy_file ${SYSTEM_SETUP_ROOT}/preinst/preinst.${_os}
+	fi
+
+	if [ -f postinst.${_os} ]; then \
+		copy_file ${SYSTEM_SETUP_ROOT}/postinst/postinst.${_os}
+	fi
+	cd "${SELFDIR}"
+}
