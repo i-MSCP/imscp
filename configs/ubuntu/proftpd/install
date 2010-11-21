@@ -36,6 +36,7 @@ FOLDERS='
 	${ROOT_CONF}/proftpd
 	${ROOT_CONF}/proftpd/imscp
 ';
+
 COPY_CONFIG_FILE='
 	${SYSTEM_CONF}/proftpd/backup
 	${SYSTEM_CONF}/proftpd/parts
@@ -43,6 +44,7 @@ COPY_CONFIG_FILE='
 	${ROOT_CONF}/proftpd/imscp/root_domain.conf
 	${SYSTEM_CONF}/proftpd/proftpd.conf
 ';
+
 COPY_FILE=''
 CREATE_FILE=''
 CHOWN_FILE=''

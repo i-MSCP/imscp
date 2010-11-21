@@ -35,6 +35,7 @@ FOLDERS='
 	${SYSTEM_CONF}/postfix
 	${ROOT_POSTFIX_CONF}/imscp
 ';
+
 COPY_CONFIG_FILE='
 	${SYSTEM_CONF}/postfix/main.cf
 	${SYSTEM_CONF}/postfix/master.cf
@@ -43,6 +44,7 @@ COPY_CONFIG_FILE='
 	${SYSTEM_CONF}/postfix/working
 	${SYSTEM_CONF}/postfix/imscp
 ';
+
 COPY_FILE=''
 CREATE_FILE=''
 CHOWN_FILE=''

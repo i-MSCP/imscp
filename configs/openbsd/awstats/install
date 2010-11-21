@@ -34,9 +34,11 @@ SYSTEM_FOLDERS=''
 FOLDERS='
 	${SYSTEM_CONF}/awstats
 ';
+
 COPY_CONFIG_FILE='
 	${SYSTEM_CONF}/awstats/awstats.imscp_tpl.conf
 ';
+
 COPY_FILE=''
 CREATE_FILE=''
 CHOWN_FILE=''

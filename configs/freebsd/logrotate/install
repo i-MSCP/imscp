@@ -35,6 +35,7 @@ FOLDERS='';
 COPY_CONFIG_FILE='
 	$(ROOT_CONF)/logrotate.conf/imscp
 ';
+
 COPY_FILE=''
 CREATE_FILE=''
 CHOWN_FILE=''

@@ -34,11 +34,13 @@ SYSTEM_FOLDERS=''
 FOLDERS='
 	${SYSTEM_CONF}/courier
 ';
+
 COPY_CONFIG_FILE='
 	${SYSTEM_CONF}/courier/userdb
 	${SYSTEM_CONF}/courier/backup
 	${SYSTEM_CONF}/courier/working
 ';
+
 COPY_FILE=''
 CREATE_FILE=''
 CHOWN_FILE=''

@@ -51,6 +51,7 @@ testCommand() {
 		fi
 	return $XX;
 }
+
 testAnyCommand() {
 	local _rval=${2}
 	rs=1
@@ -67,6 +68,7 @@ testAnyCommand() {
 		failtxt
 	fi
 }
+
 sys_folder() {
 	eval ${1}="${2}"
 	eval dir="\$${1}"
@@ -78,6 +80,7 @@ sys_folder() {
 		fi
 	fi
 }
+
 make_folder() {
 	eval dir="${1}"
 	if [ ${dir} ]; then
@@ -88,6 +91,7 @@ make_folder() {
 		fi
 	fi
 }
+
 make_file() {
 	eval file=${1}
 	if [ ${file} ]; then
@@ -98,6 +102,7 @@ make_file() {
 		fi
 	fi
 }
+
 copy_config_file() {
 	eval file="${1}"
 	if [ "${file}" ]; then
@@ -125,6 +130,7 @@ copy_config_file() {
 		fi
 	fi
 }
+
 copy_file() {
 	eval file=${1}
 	if [ "${file}" ]; then
@@ -138,9 +144,11 @@ copy_file() {
 		fi
 	fi
 }
+
 chown_file() {
 	_chown_file $(echo ${1} | awk -F "|" '{print $1" "$2}')
 }
+
 _chown_file() {
 	eval file=${2}
 	eval owner=${1}
@@ -151,9 +159,11 @@ _chown_file() {
 		fi
 	fi
 }
+
 chmod_file() {
 	_chmod_file $(echo ${1} | awk -F "|" '{print $1" "$2}')
 }
+
 _chmod_file(){
 	eval file=${2}
 	eval mode=${1}
@@ -164,6 +174,7 @@ _chmod_file(){
 		fi
 	fi
 }
+
 specific() {
 	VFILE=$(echo "$SELFDIR/$1" | tr [:upper:] [:lower:])
 	if [ ! -f "$VFILE" ];then
@@ -173,6 +184,7 @@ specific() {
 
 	process_install
 }
+
 process_file() {
 	OS_PATH=${SELFDIR}/configs/${_os}/
 	COMMON_PATH=${SELFDIR}/configs/common/
@@ -190,6 +202,7 @@ process_file() {
 		fi
 	done
 }
+
 process_install() {
 		for folders in $SYSTEM_FOLDERS; do
 			sys_folder $(echo $folders | awk -F "=" '{print $1" "$2}')
@@ -220,6 +233,7 @@ process_install() {
 		done
 		CHMOD_FILE=''
 }
+
 builddaemon() {
 	cd ${SELFDIR}/tools/daemon
 	$rm -vrf *~
@@ -235,6 +249,7 @@ builddaemon() {
 	copy_file ${SYSTEM_ROOT}/daemon/imscp_daemon
 	cd ${SELFDIR}
 }
+
 engine() {
 	ENGINE=${SELFDIR}/engine/
 	for FOLDER in "" $(find $ENGINE -maxdepth 1 -type d | awk -F "$ENGINE" '{print $2}');
@@ -249,15 +264,18 @@ engine() {
 	done
 
 }
+
 gui() {
 	copy_file "${SYSTEM_ROOT}/gui"
 }
+
 key() {
 	make_folder "${SYSTEM_ROOT}/keys"
 	cd "${SELFDIR}/keys"
 	copy_file "${SYSTEM_ROOT}/keys/rpl.pl"
 	cd "${SELFDIR}"
 }
+
 maintainer() {
 	SYSTEM_SETUP_ROOT=${SYSTEM_ROOT}/engine/setup
 	cd "${SELFDIR}/maintscripts"

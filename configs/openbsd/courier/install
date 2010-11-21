@@ -41,6 +41,7 @@ COPY_CONFIG_FILE='
 	${SYSTEM_CONF}/courier/working
 	${ROOT_CONF}/sasldb2
 ';
+
 COPY_FILE=''
 CREATE_FILE=''
 CHOWN_FILE=''

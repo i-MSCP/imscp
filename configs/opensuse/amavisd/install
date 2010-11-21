@@ -43,6 +43,7 @@ COPY_CONFIG_FILE='
 	${SYSTEM_CONF}/amavisd/sender_scores_sitewide
 	${SYSTEM_CONF}/amavisd/spamassassin.tpl
 ';
+
 COPY_FILE=''
 CREATE_FILE=''
 CHOWN_FILE=''

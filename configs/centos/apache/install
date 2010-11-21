@@ -50,6 +50,7 @@ COPY_CONFIG_FILE='
 	${SYSTEM_CONF}/apache/fastcgi_imscp.conf/fastcgi.conf
 	${SYSTEM_CONF}/apache/fcgid_imscp.conf
 ';
+
 COPY_FILE=''
 CREATE_FILE=''
 CHOWN_FILE=''

@@ -42,11 +42,13 @@ COPY_CONFIG_FILE='
 	${SYSTEM_CONF}/bind/working
 	${ROOT_CONF}/named.rc
 ';
+
 COPY_FILE=''
 CREATE_FILE=''
 CHOWN_FILE='
 	root:wheel|${ROOT_CONF}/named.rc
 '
+
 CHMOD_FILE='
 	0700|${ROOT_CONF}/named.rc
 '

@@ -44,9 +44,11 @@ COPY_CONFIG_FILE='
 	${ROOT_CONF}/proftpd/imscp/root_domain.conf
 	${SYSTEM_CONF}/proftpd/proftpd.conf
 ';
+
 COPY_FILE=''
 CREATE_FILE='
 	${SYSTEM_PROFTPD_LOG}/ftp_traff.log
 '
+
 CHOWN_FILE=''
 CHMOD_FILE=''

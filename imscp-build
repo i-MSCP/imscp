@@ -47,7 +47,11 @@ title "Detecting OS"
 detect_os
 
 NewTest="dialog"
-if ([ "${DIST}" = 'FreeBSD' ] || [ "${DIST}" = 'OpenBSD' ]) ; then NewTest="c${NewTest}"; fi
+
+if ([ "${DIST}" = 'FreeBSD' ] || [ "${DIST}" = 'OpenBSD' ]) ; then
+	NewTest="c${NewTest}";
+fi
+
 testAnyCommand ${NewTest} 'DIALOG';
 
 testroot
@@ -59,16 +63,21 @@ _AvailableOS="Centos Debian Fedora FreeBSD Gentoo OpenBSD Opensuse Ubuntu"
 while [ ! $OS ]; do
 	OS=$(msgopts 'Select operating system' "${_AvailableOS} Neither" "${DIST}" 3>&1 1>&2 2>&3)
 
-	if [ "${OS}" = "Neither" ]; then colortxt 'yellow' "Not supported distribution "; failtxt; fi
+	if [ "${OS}" = "Neither" ]; then
+		colortxt 'yellow' "Not supported distribution ";
+		failtxt;
+	fi
 
-	if [ "${OS}" = "" ]; then msgbox "\nYou must select one distribution or Neither " "Please select operating system";
-	elif [ "${OS}" != "${DIST}" ]; then msgask "\nAre sure you want continue with $OS?" "We have detected ${DIST}"|| OS=
+	if [ "${OS}" = "" ]; then
+		msgbox "\nYou must select one distribution or Neither " "Please select operating system";
+	elif [ "${OS}" != "${DIST}" ]; then
+		msgask "\nAre sure you want continue with $OS?" "We have detected ${DIST}" || OS=
 	fi
 done
 
 TEXT=$(cat README | sed -e "s/'/\"/g")
 msgbox "${TEXT}" 'i-MSCP preinstall script'
-#
+
 title "Loading $OS specific variable"
 specific "prebuild-files/${OS}-variable"
 oktxt "Done"; printf "\n"
@@ -97,7 +106,7 @@ oktxt "Done"; printf "\n"
 title "Maintainer scripts"
 maintainer
 oktxt "Done"; printf "\n"
-#
+
 TEXT=$(cat ${SELFDIR}/docs/${DIST}/INSTALL | sed -e "s/'/\"/g")
 msgbox "${TEXT}" 'i-MSCP preinstall script'
 
@@ -107,10 +116,10 @@ else
 	msgbox "\n\\Z2 -> Finished without errors" 'i-MSCP preinstall script'
 fi
 
-TEXT="\nYou can proceed to instalation/update. If you do not know how \nplease type:\n\n\\Z1cat ${SELFDIR}/docs/${DIST}/INSTALL\n\n\\Znand read carefully. All steps are crucial\n\n"
+TEXT="\nYou can proceed to installation/update. If you do not know how \nplease type:\n\n\\Z1cat ${SELFDIR}/docs/${DIST}/INSTALL\n\n\\Znand read carefully. All steps are crucial\n\n"
 msgbox "${TEXT}" 'i-MSCP preinstall script'
 
-colortxt 'green' "\nYou can proceed to instalation/update. If you do not know how \n"\
+colortxt 'green' "\nYou can proceed to installation/update. If you do not know how \n"\
 "please type:\n\n"
 colortxt 'red' "cat ${SELFDIR}/docs/${DIST}/INSTALL\n\n"
 colortxt 'green' "and read carefully. All steps are crucial\n\n"
@@ -120,6 +129,3 @@ if [ $WARNINGS ]; then
 else
 	printf "Finished without errors ";oktxt;printf "\n";
 fi
-
-
-

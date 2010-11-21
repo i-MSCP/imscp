@@ -34,9 +34,11 @@ SYSTEM_FOLDERS=''
 FOLDERS='
 	${ROOT_CONF}/cron.d
 ';
+
 COPY_CONFIG_FILE='
 	${ROOT_CONF}/cron.d/imscp.phptemp
 ';
+
 COPY_FILE=''
 CREATE_FILE=''
 CHOWN_FILE=''

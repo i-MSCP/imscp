@@ -46,6 +46,7 @@ COPY_CONFIG_FILE='
 	${SYSTEM_CONF}/postfix/imscp
 	${ROOT_SASL2_CONF}/smtpd.conf
 ';
+
 COPY_FILE=''
 CREATE_FILE=''
 CHOWN_FILE=''

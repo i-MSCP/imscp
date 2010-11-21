@@ -35,12 +35,14 @@ SYSTEM_FOLDERS=''
 FOLDERS='
 	${SYSTEM_CONF}/cron.d
 ';
+
 COPY_CONFIG_FILE='
 	${SYSTEM_CONF}/cron.d/imscp
 	${SYSTEM_CONF}/cron.d/backup
 	${SYSTEM_CONF}/cron.d/parts
 	${SYSTEM_CONF}/cron.d/working
 ';
+
 COPY_FILE=''
 CREATE_FILE=''
 CHOWN_FILE=''

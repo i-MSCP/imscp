@@ -67,9 +67,11 @@ colorStart(){
 		fi
 	fi
 }
+
 colorEnd(){
 	 printf "\033[0m"
 }
+
 colortxt() {
 	local  _color="${1}" _text="${2}"
 	if [ -z "${_color}" ]; then
@@ -82,16 +84,19 @@ colortxt() {
 	fi
 	colorStart "${_color}"; printf "${_text}"; colorEnd;
 }
+
 oktxt() {
 	local _text=$1
 	if [ -z $_text ]; then _text='ok'; fi
 	printf '[ '; colortxt 'green' $_text; printf " ]"
 }
+
 warntxt() {
 	local _text="${1}"
 	if [ -z $_text ]; then _text='warning'; fi
 	printf '[ '; colortxt 'yellow' "${_text}"; printf " ]"
 }
+
 failtxt() {
 	local _text="${1}"
 	if [ -z "$_text" ]; then _text='fail'; fi
@@ -99,9 +104,11 @@ failtxt() {
 	printf '[ '; colortxt 'red' 'EXITING...'; printf " ]\n"
 	exit
 }
+
 title() {
 	printf "\n\033[4m${1}\033[0m\n";
 }
+
 getSize() {
 	test -x /usr/bin/tty && CONSOLE=`/usr/bin/tty`
 	test -z "$CONSOLE" && CONSOLE=/dev/console
@@ -109,6 +116,7 @@ getSize() {
 	SCREEN_W=${SIZE#*\ }
 	SCREEN_H=${SIZE%%\ *}
 }
+
 setDimensions() {
 	getSize
 	if [ "$SCREEN_W" -gt 0 ]; then MAX_W=$(($SCREEN_W-2)); fi
@@ -124,11 +132,13 @@ setDimensions() {
 	if [ "$DIALOG_W" -gt "$MAX_W" ]; then DIALOG_W=$MAX_W; fi
 	if [ "$DIALOG_H" -gt "$MAX_H" ]; then DIALOG_H=$(($MAX_H-1)); fi
 }
+
 msgbox() {
 	setDimensions "$1"
 	if [ "${2}" ]; then params="--title '${2}'"; fi
 	eval "$DIALOG --colors ${params} --msgbox '${1}' ${DIALOG_H} ${DIALOG_W}"
 }
+
 msgopts() {
 	local _params='' _title="${1}" _options="${2}" _default="${3}" _size=''
 	if ( [ -z "${1}" ] || [ -z "${2}" ] || [ -z "${3}" ] ); then colortxt "makeopts need 3 parameter! none provided!!! "; failtxt; exit 1; fi
@@ -143,6 +153,7 @@ msgopts() {
 	setDimensions "$1"
 	eval "$DIALOG --radiolist '${_title}' $(($_size+$DIALOG_H)) ${DIALOG_W} ${_size} ${_params}"
 }
+
 msgask() {
 	setDimensions "${1}"
 	if [ "${2}" ]; then params="--title '${2}'"; fi

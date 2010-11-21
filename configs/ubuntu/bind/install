@@ -34,12 +34,14 @@ SYSTEM_FOLDERS=''
 FOLDERS='
 	${SYSTEM_CONF}/bind
 ';
+
 COPY_CONFIG_FILE='
 	${SYSTEM_CONF}/bind/named.conf
 	${SYSTEM_CONF}/bind/backup
 	${SYSTEM_CONF}/bind/parts
 	${SYSTEM_CONF}/bind/working
 ';
+
 COPY_FILE=''
 CREATE_FILE=''
 CHOWN_FILE=''

@@ -33,6 +33,7 @@
 FOLDERS='
 	${SYSTEM_CONF}/database
 ';
+
 COPY_CONFIG_FILE='
 	${SYSTEM_CONF}/database/amavisd.sql
 	${SYSTEM_CONF}/database/database.sql
@@ -40,11 +41,8 @@ COPY_CONFIG_FILE='
 	${SYSTEM_CONF}/database/spamassassin.sql
 
 ';
+
 COPY_FILE=''
 CREATE_FILE=''
 CHOWN_FILE=''
 CHMOD_FILE=''
-
-
-
-

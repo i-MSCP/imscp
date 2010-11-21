@@ -39,9 +39,9 @@ detect_os() {
 		export DIST="OpenBSD"
 	elif [ "${HOST_OS}" = "Linux" ]; then
 		testCommand "lsb_release"
-		export DIST=$($lsb_release -si)
-		export VER=$($lsb_release -sr)
-		export CODENAME=$($lsb_release -sc)
+		export DIST=$(lsb_release -si)
+		export VER=$(lsb_release -sr)
+		export CODENAME=$(lsb_release -sc)
 	fi
 }
 

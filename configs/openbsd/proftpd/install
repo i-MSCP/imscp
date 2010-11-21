@@ -45,11 +45,13 @@ COPY_CONFIG_FILE='
 	${SYSTEM_CONF}/proftpd/proftpd.conf
 	${ROOT_CONF}/proftpd.rc
 ';
+
 COPY_FILE=''
 CREATE_FILE=''
 CHOWN_FILE='
 	root:wheel|${ROOT_CONF}/proftpd.rc
 '
+
 CHMOD_FILE='
 	0700|${ROOT_CONF}/proftpd.rc
 '

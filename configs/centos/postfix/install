@@ -44,6 +44,7 @@ COPY_CONFIG_FILE='
 	${SYSTEM_CONF}/postfix/working
 	${SYSTEM_CONF}/postfix/imscp
 ';
+
 COPY_FILE=''
 CREATE_FILE=''
 CHOWN_FILE=''

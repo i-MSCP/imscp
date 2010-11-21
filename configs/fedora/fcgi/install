@@ -34,11 +34,13 @@ SYSTEM_FOLDERS=''
 FOLDERS='
 	${SYSTEM_CONF}/fcgi
 ';
+
 COPY_CONFIG_FILE='
 	${SYSTEM_CONF}/fcgi/backup
 	${SYSTEM_CONF}/fcgi/parts
 	${SYSTEM_CONF}/fcgi/working
 ';
+
 COPY_FILE=''
 CREATE_FILE=''
 CHOWN_FILE=''

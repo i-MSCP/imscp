@@ -34,9 +34,11 @@ SYSTEM_FOLDERS=''
 FOLDERS='
 	${ROOT_CONF}/logrotate.d
 ';
+
 COPY_CONFIG_FILE='
 	${ROOT_CONF}/logrotate.d/imscp
 ';
+
 COPY_FILE=''
 CREATE_FILE=''
 CHOWN_FILE=''

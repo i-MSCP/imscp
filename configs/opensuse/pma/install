@@ -34,11 +34,13 @@ SYSTEM_FOLDERS=''
 FOLDERS='
 	${SYSTEM_CONF}/pma
 ';
+
 COPY_CONFIG_FILE='
 	${SYSTEM_CONF}/pma/config.inc.tpl
 	${SYSTEM_CONF}/pma/backup
 	${SYSTEM_CONF}/pma/working
 ';
+
 COPY_FILE=''
 CREATE_FILE=''
 CHOWN_FILE=''

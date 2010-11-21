@@ -40,9 +40,11 @@ COPY_CONFIG_FILE='
 	${SYSTEM_CONF}/courier/backup
 	${SYSTEM_CONF}/courier/working
 ';
+
 COPY_FILE=''
 CREATE_FILE='
 	${INST_PREF}/var/log/mail.log
 '
+
 CHOWN_FILE=''
 CHMOD_FILE=''

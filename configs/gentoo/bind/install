@@ -41,6 +41,7 @@ COPY_CONFIG_FILE='
 	${SYSTEM_CONF}/bind/parts
 	${SYSTEM_CONF}/bind/working
 ';
+
 COPY_FILE=''
 CREATE_FILE=''
 CHOWN_FILE=''

@@ -38,6 +38,7 @@ FOLDERS='
 	${ROOT_APACHE_CONF}/mods-available
 	${ROOT_APACHE_CONF}/imscp
 ';
+
 COPY_CONFIG_FILE='
 	${SYSTEM_CONF}/apache/httpd.conf
 	${SYSTEM_CONF}/apache/00_master.conf
@@ -49,6 +50,7 @@ COPY_CONFIG_FILE='
 	${SYSTEM_CONF}/apache/fastcgi_imscp.conf
 	${SYSTEM_CONF}/apache/fcgid_imscp.conf
 ';
+
 COPY_FILE=''
 CREATE_FILE=''
 CHOWN_FILE=''
