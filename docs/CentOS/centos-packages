@@ -23,6 +23,7 @@ libdbi-dbd-mysql
 libmcrypt
 libtool-ltdl
 redhat-lsb
+dialog
 lzma
 mod_fcgid
 mod_perl

@@ -4,8 +4,11 @@ i-MSCP ChangeLog
 2010-11-21 Daniel Andreca
 	- CONFIGS:
 		* Fixed #23: Merge Config files if not Distribution specific
+		* Fixed #24: Missing Program "Dialog" in pagackelist
 	- FEATURE
 		* New build system
+	- DOCS
+		* Fixed #25: Little Error in INSTALL
 
 2010-11-20 Peter Ziergoebel
 	- GUI:

@@ -53,6 +53,7 @@
 /usr/ports/devel/p5-Term-ReadKey
 /usr/ports/devel/p5-File-MimeInfo
 /usr/ports/devel/p5-File-Copy-Recursive
+/usr/ports/devel/cdialog
 /usr/ports/mail/p5-MIME-Tools
 /usr/ports/textproc/p5-YAML
 /usr/ports/sysutils/screen
