@@ -8,7 +8,7 @@
  * @version 	SVN: $Id$
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
- * @author 		i-MSCP Team
+ * @author		i-MSCP Team
  *
  * @license
  * The contents of this file are subject to the Mozilla Public License
@@ -36,6 +36,9 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
+/**
+ * @var $cfg iMSCP_Config_Handler_File
+ */
 $cfg = iMSCP_Registry::get('Config');
 
 $tpl = new iMSCP_pTemplate();
@@ -55,10 +58,8 @@ $tpl->assign(
 	)
 );
 
-/*
- *
+/**
  * static page messages.
- *
  */
 
 gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
@@ -72,13 +73,7 @@ $tpl->assign(
 		'TR_CORE_DATA'				=> tr('Core data'),
 		'TR_DOMAIN_NAME'			=> tr('Domain name'),
 		'TR_DOMAIN_EXPIRE'			=> tr('Domain expire'),
-		'TR_DOMAIN_EXPIRE_NEVER'	=> tr('Never'),
-		'TR_DOMAIN_EXPIRE_1_MONTH'	=> tr('1 Month'),
-		'TR_DOMAIN_EXPIRE_2_MONTHS'	=> tr('2 Months'),
-		'TR_DOMAIN_EXPIRE_3_MONTHS'	=> tr('3 Months'),
-		'TR_DOMAIN_EXPIRE_6_MONTHS'	=> tr('6 Months'),
-		'TR_DOMAIN_EXPIRE_1_YEAR'	=> tr('1 Year'),
-		'TR_DOMAIN_EXPIRE_2_YEARS'	=> tr('2 Years'),
+		'TR_EXPIRE_CHECKBOX'		=> tr('or Check for <strong>never Expire</strong>'),
 		'TR_CHOOSE_HOSTING_PLAN'	=> tr('Choose hosting plan'),
 		'TR_PERSONALIZE_TEMPLATE'	=> tr('Personalise template'),
 		'TR_YES'					=> tr('yes'),
@@ -89,6 +84,7 @@ $tpl->assign(
 );
 
 if (isset($_POST['uaction'])) {
+
 	if (!check_user_data()) {
 		get_data_au1_page($tpl);
 	}
@@ -113,27 +109,32 @@ unset_messages();
  * Check correction of entered users data
  */
 function check_user_data() {
-	global $dmn_name; // domain name
-	global $dmn_expire; // Domain expire date
-	global $dmn_chp; // choosed hosting plan
-	global $dmn_pt;
-	global $validation_err_msg;
 
-	$sql = iMSCP_Registry::get('Db');
+	global $dmn_name, $dmn_expire, $neverexpire, $dmn_chp, $dmn_pt, $validation_err_msg;
+
+	/**
+ 	 * @var $cfg iMSCP_Config_Handler_File
+ 	 */
 	$cfg = iMSCP_Registry::get('Config');
+
+	/**
+ 	 * @var $sql iMSCP_Database
+ 	 */
+	$sql = iMSCP_Registry::get('Db');
 
 	// personal template
 	$even_txt = '';
 
 	if (isset($_POST['dmn_name'])) {
 		$dmn_name = strtolower(trim($_POST['dmn_name']));
-
-		// Should be perfomed after domain names syntax validation now
-		//$dmn_name = encode_idna($dmn_name);
 	}
 
 	if (isset($_POST['dmn_expire'])) {
 		$dmn_expire = $_POST['dmn_expire'];
+	}
+
+	if (isset($_POST['neverexpire'])) {
+		$neverexpire = $_POST['neverexpire'];
 	}
 
 	if (isset($_POST['dmn_tpl'])) {
@@ -160,8 +161,7 @@ function check_user_data() {
 	}
 
 	// we have plans only for admins
-	if (isset($cfg->HOSTING_PLANS_LEVEL)
-		&& $cfg->HOSTING_PLANS_LEVEL === 'admin') {
+	if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
 		$dmn_pt = '_no_';
 	}
 
@@ -172,6 +172,7 @@ function check_user_data() {
 		// send through the session the data
 		$_SESSION['dmn_name']	= $dmn_name;
 		$_SESSION['dmn_expire']	= $dmn_expire;
+		$_SESSION['neverexpire']= $neverexpire;
 		$_SESSION['dmn_tpl']	= $dmn_chp;
 		$_SESSION['chtpl']		= $dmn_pt;
 		$_SESSION['step_one']	= "_yes_";
@@ -184,6 +185,7 @@ function check_user_data() {
 			// send through the session the data
 			$_SESSION['dmn_name']	= $dmn_name;
 			$_SESSION['dmn_expire']	= $dmn_expire;
+			$_SESSION['neverexpire']= $neverexpire;
 			$_SESSION['dmn_tpl']	= $dmn_chp;
 			$_SESSION['chtpl']		= $dmn_pt;
 			$_SESSION['step_one']	= "_yes_";
@@ -200,20 +202,17 @@ function check_user_data() {
  * Show empty page
  */
 function get_empty_au1_page(&$tpl) {
+
+	/**
+	 * @var $cfg iMSCP_Config_Handler_File
+	 */
 	$cfg = iMSCP_Registry::get('Config');
 
 	$tpl->assign(
 		array(
-			'DMN_NAME_VALUE'		=> '',
-			'CHTPL1_VAL'			=> '',
-			'CHTPL2_VAL'			=> $cfg->HTML_CHECKED,
-			'EXPIRE_NEVER_SET'		=> $cfg->HTML_SELECTED,
-			'EXPIRE_1_MONTH_SET'	=> '',
-			'EXPIRE_2_MONTH_SET'	=> '',
-			'EXPIRE_3_MONTH_SET'	=> '',
-			'EXPIRE_6_MONTH_SET'	=> '',
-			'EXPIRE_1_YEAR_SET'		=> '',
-			'EXPIRE_2_YEARS_SET'	=> ''
+			'DMN_NAME_VALUE'	=> '',
+			'CHTPL1_VAL'		=> '',
+			'CHTPL2_VAL'		=> $cfg->HTML_CHECKED
 		)
 	);
 
@@ -223,12 +222,13 @@ function get_empty_au1_page(&$tpl) {
 /**
  * Show first page of add user with data
  */
-function get_data_au1_page(&$tpl) {
-	global $dmn_name; // Domain name
-	global $dmn_expire; // Domain expire date
-	//global $dmn_chp; // choosed hosting plan;
-	global $dmn_pt; // personal template
+function get_data_au1_page($tpl) {
 
+	global $dmn_name, $dmn_pt;
+
+	/**
+	 * @var $cfg iMSCP_Config_Handler_File
+	 */
 	$cfg = iMSCP_Registry::get('Config');
 
 	$tpl->assign(
@@ -236,20 +236,6 @@ function get_data_au1_page(&$tpl) {
 			'DMN_NAME_VALUE' => tohtml($dmn_name),
 			'CHTPL1_VAL' => $dmn_pt === "_yes_" ? $cfg->HTML_CHECKED : '',
 			'CHTPL2_VAL' => $dmn_pt === "_yes_" ? '' : $cfg->HTML_CHECKED,
-			'EXPIRE_NEVER_SET' =>
-				($dmn_expire === '0') ? $cfg->HTML_SELECTED : '',
-			'EXPIRE_1_MONTH_SET' =>
-				($dmn_expire === '1') ? $cfg->HTML_SELECTED : '',
-			'EXPIRE_2_MONTH_SET' =>
-				($dmn_expire === '2') ? $cfg->HTML_SELECTED : '',
-			'EXPIRE_3_MONTH_SET' =>
-				($dmn_expire === '3') ? $cfg->HTML_SELECTED : '',
-			'EXPIRE_6_MONTH_SET' =>
-				($dmn_expire === '6') ? $cfg->HTML_SELECTED : '',
-			'EXPIRE_1_YEAR_SET' =>
-				($dmn_expire === '12') ? $cfg->HTML_SELECTED : '',
-			'EXPIRE_2_YEARS_SET' =>
-				($dmn_expire === '24') ? $cfg->HTML_SELECTED : '',
 		)
 	);
 } // End of get_data_au1_page()
@@ -257,26 +243,28 @@ function get_data_au1_page(&$tpl) {
 /**
  * Get list with hosting plan for selection
  */
-function get_hp_data_list(&$tpl, $reseller_id) {
+function get_hp_data_list($tpl, $reseller_id) {
+
 	global $dmn_chp;
 
-	$sql = iMSCP_Registry::get('Db');
+	/**
+	 * @var $cfg iMSCP_Config_Handler_File
+	 */
 	$cfg = iMSCP_Registry::get('Config');
+
+	/**
+	 * @var $sql iMSCP_Database
+	 */
+	$sql = iMSCP_Registry::get('Db');
+
 
 	if (isset($cfg->HOSTING_PLANS_LEVEL)
 		&& $cfg->HOSTING_PLANS_LEVEL === 'admin') {
 		$query = "
 			SELECT
-				t1.`id`,
-				t1.`reseller_id`,
-				t1.`name`,
-				t1.`props`,
-				t1.`status`,
-				t2.`admin_id`,
-				t2.`admin_type`
+				t1.`id`, t1.`reseller_id`, t1.`name`, t1.`props`, t1.`status`, t2.`admin_id`, t2.`admin_type`
 			FROM
-				`hosting_plans` AS t1,
-				`admin` AS t2
+				`hosting_plans` AS t1, `admin` AS t2
 			WHERE
 				t2.`admin_type` = ?
 			AND
@@ -299,10 +287,7 @@ function get_hp_data_list(&$tpl, $reseller_id) {
 	} else {
 		$query = "
 			SELECT
-				`id`,
-				`name`,
-				`props`,
-				`status`
+				`id`, `name`, `props`, `status`
 			FROM
 				`hosting_plans`
 			WHERE
@@ -352,7 +337,6 @@ function get_hp_data_list(&$tpl, $reseller_id) {
 		}
 
 	} else {
-		// set_page_message(tr('You have no hosting plans. Please add first hosting plan or contact your system administrator.'));
 		$tpl->assign('ADD_USER', '');
 	}
 } // End of get_hp_data_list()

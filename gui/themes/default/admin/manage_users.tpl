@@ -148,6 +148,7 @@
                     <option value="lname" {M_LAST_NAME_SELECTED}>{M_LAST_NAME}</option>
                     <option value="firm" {M_COMPANY_SELECTED}>{M_COMPANY}</option>
                     <option value="city" {M_CITY_SELECTED}>{M_CITY}</option>
+                    <option value="state" {M_STATE_SELECTED}>{M_STATE}</option>
                     <option value="country" {M_COUNTRY_SELECTED}>{M_COUNTRY}</option>
                 </select>
                 <select name="search_status">
@@ -170,7 +171,7 @@
                 </tr>
                 <!-- BDP: usr_item -->
                 <tr>
-                    <td><a href="#" onclick="action_status('{URL_CHNAGE_STATUS}', '{USR_USERNAME}')" class="icon i_{STATUS_ICON}">{STATUS_ICON}</a></td>
+                    <td><a href="#" onclick="action_status('{URL_CHNAGE_STATUS}', '{USR_USERNAME}')" class="icon i_{STATUS}">{TR_STATUS}</a></td>
                     <td><a href="http://www.{USR_USERNAME}/" target="_blank" class="icon i_goto">{USR_USERNAME}</a></td>
                     <td>{USER_CREATED_ON}</td>
                     <td>{USR_CREATED_BY}</td>

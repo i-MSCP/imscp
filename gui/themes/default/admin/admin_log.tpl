@@ -77,6 +77,21 @@
                 </tr>
                 <!-- EDP: log_row -->
             </table>
+            <div class="paginator">
+                <!-- BDP: scroll_next_gray -->
+                    <a class="icon i_next_gray" href="#">&nbsp;</a>
+                <!-- EDP: scroll_next_gray -->
+                <!-- BDP: scroll_next -->
+                    <a class="icon i_next" href="admin_log.php?psi={NEXT_PSI}" title="next">next</a>
+                <!-- EDP: scroll_next -->
+                <!-- BDP: scroll_prev -->
+                    <a class="icon i_prev" href="admin_log.php?psi={PREV_PSI}" title="previous">previous</a>
+                <!-- EDP: scroll_prev -->
+                <!-- BDP: scroll_prev_gray -->
+                    <a class="icon i_prev_gray" href="#">&nbsp;</a>
+                <!-- EDP: scroll_prev_gray -->
+            </div>
+
 
         </div>
         <div class="footer">

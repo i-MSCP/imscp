@@ -142,6 +142,40 @@
                 <table>
                     <br />
                     <fieldset>
+                        <legend>{TR_DNAMES_VALIDATION_SETTINGS}</legend>
+                    </fieldset>
+                    <tr>
+                        <td width="200"><label for="tld_strict_validation">{TR_TLD_STRICT_VALIDATION}</label></td>
+                        <td>
+                            <select name="tld_strict_validation" id="tld_strict_validation">
+                                <option value="0" {TLD_STRICT_VALIDATION_OFF}>{TR_DISABLED}</option>
+                                <option value="1" {TLD_STRICT_VALIDATION_ON}>{TR_ENABLED}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="200"><label for="sld_strict_validation">{TR_SLD_STRICT_VALIDATION}</label></td>
+                        <td>
+                            <select name="sld_strict_validation" id="sld_strict_validation">
+                                <option value="0" {SLD_STRICT_VALIDATION_OFF}>{TR_DISABLED}</option>
+                                <option value="1" {SLD_STRICT_VALIDATION_ON}>{TR_ENABLED}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="200"><label for="max_dnames_labels">{TR_MAX_DNAMES_LABELS}</label></td>
+                        <td>
+                            <input name="max_dnames_labels" type="text" id="max_dnames_labels" value="{MAX_DNAMES_LABELS_VALUE}" maxlength="2" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="200"><label for="max_subdnames_labels">{TR_MAX_SUBDNAMES_LABELS}</label></td>
+                        <td><input name="max_subdnames_labels" type="text" id="max_subdnames_labels" value="{MAX_SUBDNAMES_LABELS_VALUE}" maxlength="2" /></td>
+                    </tr>
+                </table>
+                <table>
+                    <br />
+                    <fieldset>
                         <legend>{TR_MAIL_SETTINGS}</legend>
                     </fieldset>
                     <tr>
@@ -188,10 +222,10 @@
                             </select></td>
                     </tr>
                     <tr>
-                        <td width="200"><label for="show_serverload">{TR_SHOW_SERVERLOAD}</label></td>
-                        <td><select name="show_serverload" id="show_serverload">
-                                <option value="0" {SHOW_SERVERLOAD_SELECTED_OFF}>{TR_DISABLED}</option>
-                                <option value="1" {SHOW_SERVERLOAD_SELECTED_ON}>{TR_ENABLED}</option>
+                        <td width="200"><label for="show_compression_size">{TR_SHOW_COMPRESSION_SIZE}</label></td>
+                        <td><select name="show_compression_size" id="show_compression_size">
+                                <option value="0" {SHOW_COMPRESSION_SIZE_SELECTED_OFF}>{TR_DISABLED}</option>
+                                <option value="1" {SHOW_COMPRESSION_SIZE_SELECTED_ON}>{TR_ENABLED}</option>
                             </select></td>
                     </tr>
                     <tr>

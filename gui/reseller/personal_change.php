@@ -142,8 +142,6 @@ function update_reseller_personal_data(&$sql, $user_id) {
 			`admin_id` = ?
 	";
 
-	// NXW: Unused variable so...
-	// $rs = exec_query($sql, $query, array($fname, $lname, $firm, $zip, $city, $state, $country, $email, $phone, $fax, $street1, $street2, $gender, $user_id));
 	exec_query(
 			$sql,
 			$query,

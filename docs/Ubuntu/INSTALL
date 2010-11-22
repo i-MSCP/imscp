@@ -76,7 +76,7 @@ provides graphic user interfaces for the administrators, resellers and users.
 4. (optional) Check the i-mscp.conf and adapt it to your requirements.
 
 5. Build the System by using make:
-	# sudo make -f Makefile.ubuntu install
+	# sudo # ./imscp-build
 
 6. Copy all the directories into your system (you may make backups)
 	# sudo cp -Rv /tmp/imscp/* /

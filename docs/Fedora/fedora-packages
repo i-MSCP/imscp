@@ -97,3 +97,5 @@ tar
 unixODBC
 unzip
 wget
+redhat-lsb
+dialog

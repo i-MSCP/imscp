@@ -56,6 +56,7 @@ libmysqlclient16
 locales
 lsb-base
 lsb-release
+dialog
 lynx
 lzma
 make

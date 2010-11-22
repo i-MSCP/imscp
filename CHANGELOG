@@ -4,6 +4,19 @@ i-MSCP ChangeLog
 	- GUI:
 	         * Update Net_IDNA to 0.6.9
 	         
+2010-11-21 Daniel Andreca
+	- CONFIGS:
+		* Fixed #23: Merge Config files if not Distribution specific
+		* Fixed #24: Missing Program "Dialog" in pagackelist
+	- FEATURE
+		* New build system
+	- DOCS
+		* Fixed #25: Little Error in INSTALL
+
+2010-11-20 Peter Ziergoebel
+	- GUI:
+		* New feature: Date picker for  domain expire input fields
+
 2010-11-16 Laurent Declercq
 	- GUI:
 		* Fixed #5 Update - jQuery - version 1.4.3 available
@@ -15,7 +28,7 @@ i-MSCP ChangeLog
 
 2010-11-15 Daniel Andreca
 	- ENGINE:
-		* RKhunter update fail must not stop i-MSCP setup
+		* RKhunter update fail should not fail installation
 
 2010-11-13 Daniel Andreca
 	- ENGINE:

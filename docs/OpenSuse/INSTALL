@@ -105,7 +105,7 @@ Note: For all questions, answer "a" (trust always).
 
 7. Build the System by using make:
 
-	# make -f Makefile.opensuse install
+	# ./imscp-build
 
 8. Copy all the directories into your system (you may make backups before):
 

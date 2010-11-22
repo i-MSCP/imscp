@@ -343,7 +343,7 @@ class iMSCP_SystemInfo {
 					$filesystem[$i]['mount'] 	= $line[0];
 					$filesystem[$i]['fstype'] 	= $line[1];
 					$filesystem[$i]['disk'] 	= $line[6];
-					$filesystem[$i]['percent'] 	= $line[5];
+					$filesystem[$i]['percent'] 	= substr($line[5],0,-1); // Remove % from the end of the string
 					$filesystem[$i]['used'] 	= $line[3];
 					$filesystem[$i]['size'] 	= $line[2];
 					$filesystem[$i]['free'] 	= $line[4];

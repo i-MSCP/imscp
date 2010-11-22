@@ -54,11 +54,21 @@
             <h2 class="update"><span>{TR_UPDATES_TITLE}</span></h2>
             <!-- BDP: props_list -->
             <table class="description">
+                <!-- BDP: table_header -->
                 <tr>
-                    <th>{TR_UPDATE}</th>
+                    <th>{TR_AVAILABLE_UPDATES}</th>
+                </tr>
+                <!-- EDP: table_header -->
+                <!-- BDP: update_message -->
+                <tr>
+                    <td>{TR_MESSAGE}</td>
+                </tr>
+                <!-- EDP: update_message -->
+                <!-- BDP: update_infos -->
+                <tr>
+                    <td>{TR_UPDATE}</td>
                     <td>{UPDATE}</td>
                 </tr>
-                <!-- BDP: update_infos -->
                 <tr>
                     <th>{TR_INFOS}</th>
                     <td>{INFOS}</td>

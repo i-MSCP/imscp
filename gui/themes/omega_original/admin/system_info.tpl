@@ -196,7 +196,7 @@
         <td nowrap="nowrap" class="content">{MOUNT}</td>
         <td nowrap="nowrap" class="content">{TYPE}</td>
         <td nowrap="nowrap" class="content">{PARTITION}</td>
-        <td nowrap="nowrap" align="center" class="content">{PERCENT}</td>
+        <td nowrap="nowrap" align="center" class="content">{PERCENT}%</td>
         <td nowrap="nowrap" align="right" class="content">{FREE}</td>
         <td nowrap="nowrap" align="right" class="content">{USED}</td>
         <td nowrap="nowrap" align="right" class="content">{SIZE}</td>

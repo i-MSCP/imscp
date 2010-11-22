@@ -1,14 +1,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>{TR_EDIT_DOMAIN_PAGE_TITLE}</title>
 <meta name="robots" content="nofollow, noindex" />
 <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
+<link href="{THEME_COLOR_PATH}/css/jquery.ui.datepicker.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/jquery.js"></script>
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/jquery.imscpTooltips.js"></script>
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/imscp.js"></script>
+<script type="text/javascript" src="{THEME_COLOR_PATH}/css/jquery.ui.core.js"></script>
+<script type="text/javascript" src="{THEME_COLOR_PATH}/css/jquery.ui.datepicker.js"></script>
 <!--[if lt IE 7.]>
 <script defer type="text/javascript" src="{THEME_COLOR_PATH}/css/pngfix.js"></script>
 <![endif]-->
@@ -21,6 +23,35 @@
 		// Tooltips - end
 	});
 /*]]>*/
+
+$(function() {
+	$( "#datepicker" ).datepicker();
+	});
+	$(document).ready(function(){
+    // Tooltips - begin
+    $('#dmn_help').iMSCPtooltips({msg:"{TR_DMN_HELP}"});
+    // Tooltips - end
+
+    $('#datepicker').change(function() {
+        if($(this).val() != '') {
+            $('#neverexpire').attr('disabled', 'disabled')
+        } else {
+            $('#neverexpire').removeAttr('disabled');
+                }
+            }
+        );
+
+            $('#neverexpire').change(function() {
+                if($(this).is(':checked')) {
+                    $('#datepicker').attr('disabled', 'disabled')
+                } else {
+                    $('#datepicker').removeAttr('disabled');
+                        }
+            }
+        );
+
+    }
+);
 </script>
 </head>
 
@@ -33,7 +64,7 @@
 </tr>
 <!-- EDP: logged_from -->
 <tr>
-<td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" width="195" height="56" border="0" alt="i-MSCP Logogram" /></td>
+<td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" width="195" height="56" border="0" alt="iMSCP Logogram" /></td>
 <td style="height: 56px; width:100%; background-color: #0f0f0f"><img src="{THEME_COLOR_PATH}/images/top/top_left_bg.jpg" width="582" height="56" border="0" alt="" /></td>
 <td style="width: 73px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_right.jpg" width="73" height="56" border="0" alt="" /></td>
 </tr>
@@ -81,17 +112,11 @@
                       <tr>
                         <td width="25">&nbsp;</td>
                         <td class="content2" width="193">{TR_DOMAIN_NEW_EXPIRE} <img id="dmn_exp_help" src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" alt="" /></td>
-                        <td class="content"><select name="dmn_expire">
-							<option value="0" {EXPIRE_UNCHANGED_SET}>{TR_DOMAIN_EXPIRE_UNCHANGED}</option>
-							<option value="OFF" {EXPIRE_NEVER_SET}>{TR_DOMAIN_EXPIRE_NEVER}</option>
-							<option value="-1" {EXPIRE_1_MIN_MONTH_SET}>{TR_DOMAIN_EXPIRE_MIN_1_MONTH}</option>
-							<option value="1" {EXPIRE_1_PLUS_MONTH_SET}>{TR_DOMAIN_EXPIRE_PLUS_1_MONTH}</option>
-							<option value="2" {EXPIRE_2_PLUS_MONTH_SET}>{TR_DOMAIN_EXPIRE_PLUS_2_MONTHS}</option>
-							<option value="3" {EXPIRE_3_PLUS_MONTH_SET}>{TR_DOMAIN_EXPIRE_PLUS_3_MONTHS}</option>
-							<option value="6" {EXPIRE_6_PLUS_MONTH_SET}>{TR_DOMAIN_EXPIRE_PLUS_6_MONTHS}</option>
-							<option value="12" {EXPIRE_1_PLUS_YEAR_SET}>{TR_DOMAIN_EXPIRE_PLUS_1_YEAR}</option>
-							<option value="24" {EXPIRE_2_PLUS_YEARS_SET}>{TR_DOMAIN_EXPIRE_PLUS_2_YEARS}</option>
-						</select></td>
+                        <td class="content">
+						    <div class="content">
+							    <p>Date: <input type="text" id="datepicker" name="dmn_expire_date" value="{VL_DOMAIN_EXPIRE_DATE}" {VL_DISABLED}> (MM/DD/YYYY) {TR_EXPIRE_CHECKBOX} <input type="checkbox" name="neverexpire" id="neverexpire" {VL_NEVEREXPIRE} {VL_DISABLED_NE}></p>
+ 						    </div>
+			            </td>
                       </tr>
                       <tr>
                         <td width="25">&nbsp;</td>
@@ -147,6 +172,7 @@
                         </td>
                       </tr>
                       <tr>
+
                         <td width="25">&nbsp;</td>
                         <td class="content2" width="193">{TR_BACKUP}</td>
                         <td class="content">

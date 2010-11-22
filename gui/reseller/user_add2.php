@@ -8,7 +8,7 @@
  * @version 	SVN: $Id$
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
- * @author 		i-MSCP Team
+ * @author		i-MSCP Team
  *
  * @license
  * The contents of this file are subject to the Mozilla Public License
@@ -36,6 +36,9 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
+/**
+ * @var $cfg iMSCP_Config_Handler_File
+ */
 $cfg = iMSCP_Registry::get('Config');
 
 $tpl = new iMSCP_pTemplate();
@@ -111,9 +114,7 @@ if (!get_pageone_param()) {
 	user_goto('user_add1.php');
 }
 
-if (isset($_POST['uaction'])
-	&& ("user_add2_nxt" === $_POST['uaction'])
-	&& (!isset($_SESSION['step_one']))) {
+if (isset($_POST['uaction']) && ("user_add2_nxt" === $_POST['uaction']) && (!isset($_SESSION['step_one']))) {
 	if (check_user_data($tpl)) {
 		$_SESSION["step_two_data"] = "$dmn_name;0;";
 		$_SESSION["ch_hpprops"] = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;$hp_disk;$hp_backup;$hp_dns;$hp_allowsoftware";
@@ -133,14 +134,9 @@ get_init_au2_page($tpl);
 get_reseller_software_permission (&$tpl,&$sql,$_SESSION['user_id']);
 gen_page_message($tpl);
 
-list(
-	$rsub_max,
-	$rals_max,
-	$rmail_max,
-	$rftp_max,
-	$rsql_db_max,
-	$rsql_user_max
-	) = check_reseller_permissions($_SESSION['user_id'], 'all_permissions');
+list($rsub_max, $rals_max, $rmail_max, $rftp_max, $rsql_db_max, $rsql_user_max) = check_reseller_permissions(
+	$_SESSION['user_id'], 'all_permissions'
+);
 
 if ($rsub_max == "-1") $tpl->assign('ALIAS_ADD', '');
 if ($rals_max == "-1") $tpl->assign('SUBDOMAIN_ADD', '');
@@ -155,7 +151,6 @@ $tpl->prnt();
 if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
-//unset_messages();
 
 // Function declaration
 
@@ -163,30 +158,32 @@ if ($cfg->DUMP_GUI_DEBUG) {
  * get param of previous page
  */
 function get_pageone_param() {
-	global $dmn_name;
-	global $dmn_expire;
-	global $dmn_chp;
+
+	global $dmn_name, $dmn_expire, $neverexpire, $dmn_chp;
 
 	if (isset($_SESSION['dmn_name'])) {
 		$dmn_name = $_SESSION['dmn_name'];
 		$dmn_expire = $_SESSION['dmn_expire'];
+        $neverexpire = $_SESSION['neverexpire'];
 		$dmn_chp = $_SESSION['dmn_tpl'];
 	} else {
 		return false;
 	}
 
 	return true;
-} // End of get_pageone_param()
+}
 
 /**
  * Show page with initial data fields
  */
-function get_init_au2_page(&$tpl) {
-	global $hp_name, $hp_php, $hp_cgi;
-	global $hp_sub, $hp_als, $hp_mail;
-	global $hp_ftp, $hp_sql_db, $hp_sql_user;
-	global $hp_traff, $hp_disk, $hp_backup, $hp_dns, $hp_allowsoftware;
+function get_init_au2_page($tpl) {
 
+	global $hp_name, $hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff,
+		$hp_disk, $hp_backup, $hp_dns, $hp_allowsoftware;
+
+	/**
+	 * @var $cfg iMSCP_Config_Handler_File
+	 */
 	$cfg = iMSCP_Registry::get('Config');
 
 	$tpl->assign(
@@ -215,18 +212,19 @@ function get_init_au2_page(&$tpl) {
 				'VL_SOFTWAREN'		=> ($hp_allowsoftware === '_no_') ? $cfg->HTML_CHECKED : ''
 			)
 	);
-
-} // End of get_init_au2_page()
+}
 
 /**
  * Get data for hosting plan
  */
 function get_hp_data($hpid, $admin_id) {
-	global $hp_name, $hp_php, $hp_cgi;
-	global $hp_sub, $hp_als, $hp_mail;
-	global $hp_ftp, $hp_sql_db, $hp_sql_user;
-	global $hp_traff, $hp_disk, $hp_backup, $hp_dns, $hp_allowsoftware;
 
+	global $hp_name, $hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff,
+		$hp_disk, $hp_backup, $hp_dns, $hp_allowsoftware;
+
+	/**
+	 * @var $sql iMSCP_Database
+	 */
 	$sql = iMSCP_Registry::get('Db');
 
 	$query = "SELECT `name`, `props` FROM `hosting_plans` WHERE `reseller_id` = ? AND `id` = ?";
@@ -238,8 +236,9 @@ function get_hp_data($hpid, $admin_id) {
 
 		$props = $data['props'];
 
-		list($hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db,
-			$hp_sql_user, $hp_traff, $hp_disk, $hp_backup, $hp_dns, $hp_allowsoftware) = explode(";", $props);
+		list(
+			$hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk,
+			$hp_backup, $hp_dns, $hp_allowsoftware) = explode(';', $props);
 
 		$hp_name = $data['name'];
 	} else {
@@ -263,12 +262,10 @@ function get_hp_data($hpid, $admin_id) {
 /**
  * Check validity of input data
  */
-function check_user_data(&$tpl) {
-	global $hp_name, $hp_php, $hp_cgi;
-	global $hp_sub, $hp_als, $hp_mail;
-	global $hp_ftp, $hp_sql_db, $hp_sql_user;
-	global $hp_traff, $hp_disk, $hp_dmn, $hp_backup, $hp_dns;
-	global $dmn_chp, $hp_allowsoftware;
+function check_user_data($tpl) {
+
+	global $hp_name, $hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff,
+		$hp_disk, $hp_dmn, $hp_backup, $hp_dns, $hp_allowsoftware;
 
 	//$sql = iMSCP_Registry::get('Db');
 
@@ -337,18 +334,16 @@ function check_user_data(&$tpl) {
 
 	// Begin checking...
 	list(
-		$rsub_max,
-		$rals_max,
-		$rmail_max,
-		$rftp_max,
-		$rsql_db_max,
-		$rsql_user_max
-		) = check_reseller_permissions($_SESSION['user_id'], 'all_permissions');
+		$rsub_max, $rals_max, $rmail_max, $rftp_max, $rsql_db_max, $rsql_user_max) = check_reseller_permissions(
+		$_SESSION['user_id'], 'all_permissions'
+	);
+
 	if ($rsub_max == "-1") {
 		$hp_sub = "-1";
 	} elseif (!imscp_limit_check($hp_sub, -1)) {
 		$ehp_error[] = tr('Incorrect subdomains limit!');
 	}
+
 	if ($rals_max == "-1") {
 		$hp_als = "-1";
 	} elseif (!imscp_limit_check($hp_als, -1)) {
@@ -409,7 +404,12 @@ function check_user_data(&$tpl) {
  * Check if hosting plan with this name already exists!
  */
 function check_hosting_plan_name($admin_id) {
+
 	global $hp_name;
+
+	/**
+	 * @var $sql iMSCP_Database
+	 */
 	$sql = iMSCP_Registry::get('Db');
 
 	$query = "SELECT `id` FROM `hosting_plans` WHERE `name` = ? AND `reseller_id` = ?";

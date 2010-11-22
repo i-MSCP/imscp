@@ -308,8 +308,6 @@ function get_sql_user_count($sql) {
 		;
 	";
 
-	// NXW hu ? fase here ? I don't think...
-	// $rs = exec_query($sql, $query, false);
 	$rs = exec_query($sql, $query);
 
 	return $rs->recordCount();
@@ -761,8 +759,6 @@ function gen_user_list(&$tpl, &$sql) {
 			}
 
 			// Get disk usage by user
-			// NXW Reported as unused by IDE profiler so...
-			// $traffic = get_user_traffic($rs->fields['domain_id']);
 			$tpl->assign(
 				array(
 					'USR_DELETE_SHOW' 			=> '',
@@ -783,11 +779,13 @@ function gen_user_list(&$tpl, &$sql) {
 			$tpl->parse('USR_DELETE_LINK', 'usr_delete_link');
 
 			if($rs->fields['domain_status'] == $cfg->ITEM_OK_STATUS) {
-				$status_icon = 'ok.png';
+                $status = 'ok';
+                $status_txt = tr('Ok');
 				$status_url = 'domain_status_change.php?domain_id=' .
 					$rs->fields['domain_id'];
 			} elseif($rs->fields['domain_status'] == $cfg->ITEM_DISABLED_STATUS) {
-				$status_icon = 'disabled.png';
+                $status = 'disabled';
+                $status_txt = tr('Disabled');
 				$status_url = 'domain_status_change.php?domain_id=' .
 					$rs->fields['domain_id'];
 			} elseif($rs->fields['domain_status'] == $cfg->ITEM_ADD_STATUS
@@ -797,17 +795,21 @@ function gen_user_list(&$tpl, &$sql) {
 				|| $rs->fields['domain_status'] == $cfg->ITEM_TODISABLED_STATUS
 				|| $rs->fields['domain_status'] == $cfg->ITEM_DELETE_STATUS) {
 
-				$status_icon = 'reload.png';
+                $status = 'reload';
+                $status_txt = tr('Reload');
 				$status_url = '#';
 			} else {
-				$status_icon = 'error.png';
+                $status = 'error';
+                $status_txt = tr('Error');
 				$status_url = 'domain_details.php?domain_id=' .
 					$rs->fields['domain_id'];
 			}
 
 			$tpl->assign(
 				array(
-					'STATUS_ICON' => $status_icon,
+					'STATUS_ICON' => $status.'.png', // Only used in omega_original
+                    'STATUS' => $status,
+                    'TR_STATUS' => $status_txt,
 					'URL_CHANGE_STATUS' => $status_url,
 				)
 			);
@@ -1699,7 +1701,6 @@ AUTO_LOG_MSG;
 				;
 			";
 
-			// NXW: Hu, don't die on failed query ?
 			// Change this to be compatible with PDO Exception only
 			exec_query($sql, $query, $log_message, false);
 		}
@@ -1917,10 +1918,6 @@ function change_domain_status(&$sql, $domain_id, $domain_name, $action,
 			;
 		";
 
-		// NXW: Unused result so..
-		// $rs2 = exec_query(
-		//	$sql, $query, array($mail_pass, $mail_status, $mail_id)
-		//);
 		exec_query(
 			$sql, $query, array($mail_pass, $mail_status, $mail_id)
 		);

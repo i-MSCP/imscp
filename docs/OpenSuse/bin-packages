@@ -19,6 +19,7 @@ cyrus-sasl
 cyrus-sasl-crammd5
 cyrus-sasl-digestmd5
 cyrus-sasl-plain
+dialog
 gcc
 gzip
 iptables
@@ -26,6 +27,7 @@ lha
 libidn-devel
 liblzma0
 libmysqlclient-devel
+lsb-release
 make
 mhash
 mysql-community-server

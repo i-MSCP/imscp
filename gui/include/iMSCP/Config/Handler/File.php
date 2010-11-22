@@ -117,7 +117,8 @@ require_once  INCLUDEPATH . '/iMSCP/Config/Handler.php';
  * @property bool CHECK_FOR_UPDATES If TRUE, update cheching is enabled
  * @property string IMSCP_SUPPORT_SYSTEM_TARGET
  * @property string BASE_SERVER_VHOST_PREFIX
- *
+ * @property string DATE_FORMAT
+ * @property string BASE_SERVER_VHOST
  * @package		iMSCP_Config
  * @subpackage	Handler
  * @author		Benedikt Heintel <benedikt.heintel@i-mscp.net>

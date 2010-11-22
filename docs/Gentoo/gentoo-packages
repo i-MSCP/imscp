@@ -28,6 +28,7 @@ dev-perl/Term-ReadPassword
 dev-perl/XML-Parser
 dev-perl/crypt-cbc
 dev-python/pyzor
+dev-util/dialog
 mail-filter/amavisd-new
 mail-filter/dcc
 mail-filter/postgrey
@@ -46,6 +47,7 @@ net-libs/courier-authlib
 net-mail/courier-imap
 net-misc/curl
 sys-devel/gettext
+sys-apps/lsb-release
 www-apache/mod_fcgid
 www-client/lynx
 www-servers/apache
