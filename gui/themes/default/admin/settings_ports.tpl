@@ -8,6 +8,7 @@
         <title>{TR_ADMIN_SETTINGS_PAGE_TITLE}</title>
         <meta name="robots" content="nofollow, noindex" />
         <link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.js"></script>
         <script type="text/javascript" src="{THEME_COLOR_PATH}/js/imscp.js"></script>
         <!--[if IE 6]>
         <script type="text/javascript" src="{THEME_COLOR_PATH}/js/DD_belatedPNG_0.0.8a-min.js"></script>
@@ -16,24 +17,38 @@
         </script>
         <![endif]-->
         <script type="text/javascript">
-            <!--
-            function action_delete(url, service) {
-                if (!confirm(sprintf("{TR_MESSAGE_DELETE}", service)))
-                    return false;
-                location = url;
-            }
+            /*<![CDATA[*/
+	    function action_delete(url, service) {
+		    if (!confirm(sprintf("{TR_MESSAGE_DELETE}", service)))
+			    return false;
+		    location = url;
+	    }
 
-            function enable_for_post() {
-                for (var i = 0; i < document.frmsettings.length; i++) {
-                    for (var j = 0; j < document.frmsettings.elements[i].length; j++) {
-                        if (document.frmsettings.elements[i].name == "port_type[]") {
-                            document.frmsettings.elements[i].disabled = false;
-                        }
-                    }
-                }
-                return true;
-            }
-            //-->
+	    function enable_for_post() {
+		    for (var i = 0; i < document.frm_to_updt.length; i++) {
+			    for (var j = 0; j < document.frm_to_updt.elements[i].length; j++) {
+				    if (document.frm_to_updt.elements[i].name == 'port_type[]') {
+					    document.frm_to_updt.elements[i].disabled = false;
+				    }
+			    }
+		    }
+		    return true;
+	    }
+
+	    var error_fields_ids = {ERROR_FIELDS_IDS};
+
+	    $(document).ready(function(){
+
+	     $.each(error_fields_ids, function(){
+	      $('#'+this).css({'border' : '1px solid red', 'font-weight' : 'bolder'});
+	     });
+
+	     $('input[name=submitForReset]').click(
+	      function(){$('input[name=uaction]').val('reset');}
+	     );
+
+	    });
+            /*]]>*/
         </script>
     </head>
     <body>
@@ -55,6 +70,7 @@
                 <li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
             </ul>
             <ul class="path">
+		<li><a href="settings.php">{TR_GENERAL_SETTINGS}</a></li>
                 <li><a href="settings_ports.php">{TR_SERVERPORTS}</a></li>
             </ul>
         </div>
@@ -69,85 +85,85 @@
             <div class="warning">{MESSAGE}</div>
             <!-- EDP: page_message -->
 
-            <!-- BDP: tickets_list -->
             <h2 class="settings"><span>{TR_SERVERPORTS}</span></h2>
             <form name="frmsettings" method="post" action="settings_ports.php" onsubmit="return enable_for_post();">             
                 <table>
                     <tr>
-                        <td<strong>{TR_SERVICE}</strong></td>
-                        <td><strong>{TR_IP}</strong></td>
-                        <td><strong>{TR_PORT}</strong></td>
-                        <td><strong>{TR_PROTOCOL}</strong></td>
-                        <td"><strong>{TR_SHOW}</strong></td>
-                        <td><strong>{TR_ACTION}</strong></td>
+                        <th>{TR_SERVICE}</th>
+                        <th>{TR_IP}</th>
+                        <th>{TR_PORT}</th>
+                        <th>{TR_PROTOCOL}</th>
+                        <th>{TR_SHOW}</th>
+                        <th>{TR_ACTION}</th>
                     </tr>
-                    <!-- BDP: service_ports -->                  
-                    <td><b>{SERVICE}</b></td>
-                    <input name="var_name[]" type="hidden" id="var_name{NUM}" value="{VAR_NAME}" />
-                    <input name="custom[]" type="hidden" id="custom{NUM}" value="{CUSTOM}" />
-                    <td class="{CLASS}">
-                        <input name="ip[]" type="text" class="textinput" id="ip{NUM}" value="{IP}" maxlength="15" {PORT_READONLY} />
-                </td>
-                <td class="{CLASS}">
-                    <input name="port[]" type="text" class="textinput" id="port{NUM}" style="width:50px" value="{PORT}" maxlength="5" {PORT_READONLY} />
-            </td>
-            <td class="{CLASS}">
-                <select name="port_type[]" id="port_type{NUM}" {PROTOCOL_READONLY}>
-                        <option value="udp" {SELECTED_UDP}>{TR_UDP}</option>
-                    <option value="tcp" {SELECTED_TCP}>{TR_TCP}</option>
-                </select>
-            </td>
-            <td class="{CLASS}">
-                <select name="show_val[]" id="show_val{NUM}">
-                    <option value="1" {SELECTED_ON}>{TR_ENABLED}</option>
-                    <option value="0" {SELECTED_OFF}>{TR_DISABLED}</option>
-                </select>
-            </td>
-            <td class="{CLASS}" width="100" nowrap="nowrap">
-                <!-- BDP: port_delete_show -->
-													{TR_DELETE}
-                <!-- EDP: port_delete_show -->
-                <!-- BDP: port_delete_link -->
-                <a class="icon i_delete" href="#" onclick="action_delete('{URL_DELETE_USR}', '{NAME}')">{TR_DELETE}</a>                
-                <!-- EDP: port_delete_link -->
-            </td>
-            </tr>
-            <!-- EDP: service_ports -->
-        </table>
-        <br />
-        <td><b>{TR_ADD}</b></td>
-        <table>
-            <tr>
-                <td><input name="name_new" type="text" class="textinput" id="service" value="" maxlength="25"/></td>
-                <td><input name="ip_new" type="text" class="textinput" id="ip" style="" value="" maxlength="15" /></td>
-                <td><input name="port_new" type="text" class="textinput" id="port" style="width:50px" value="" maxlength="6" /></td>
-                <td>
-                    <select name="port_type_new" id="port_type">
-                        <option value="udp">{TR_UDP}</option>
-                        <option value="tcp" selected="selected">{TR_TCP}</option>
-                    </select>
-                </td>
-                <td>
-                    <select name="show_val_new" id="show_val">
-                        <option value="1" selected="selected">{TR_ENABLED}</option>
-                        <option value="0">{TR_DISABLED}</option>
-                    </select>
-                </td>
-                <td class="{CLASS}" width="100" nowrap="nowrap">&nbsp;</td>
-            </tr>
-            <tr>
-        </table>
-        <br />
-        <td>&nbsp;</td>
-        <td colspan="6">
-            <input type="hidden" name="uaction" value="apply" />
-            <input name="Submit" type="submit" class="button" value="{TR_APPLY_CHANGES}" />
-        </td>
-        </tr>
-    </form>
-</div>
-<div class="footer">
-    i-MSCP {VERSION}<br />build: {BUILDDATE}<br />Codename: {CODENAME}
-</div>
-</body>
+                    <!-- BDP: service_ports -->
+		    <tr>
+			<td>
+			    <b>{SERVICE}</b>
+			    <input name="var_name[]" type="hidden" id="var_name{NUM}" value="{VAR_NAME}" />
+			    <input name="custom[]" type="hidden" id="custom{NUM}" value="{CUSTOM}" />
+			</td>
+			<td>
+			    <input name="ip[]" type="text" id="ip{NUM}" value="{IP}" maxlength="15" {PORT_READONLY} />
+			</td>
+			<td>
+			    <input name="port[]" type="text" id="port{NUM}" value="{PORT}" maxlength="5" {PORT_READONLY} />
+			</td>
+			<td>
+			    <select name="port_type[]" id="port_type{NUM}" {PROTOCOL_READONLY}>
+				<option value="udp" {SELECTED_UDP}>{TR_UDP}</option>
+				<option value="tcp" {SELECTED_TCP}>{TR_TCP}</option>
+			    </select>
+			</td>
+			<td>
+			    <select name="show_val[]" id="show_val{NUM}">
+				<option value="1" {SELECTED_ON}>{TR_ENABLED}</option>
+				<option value="0" {SELECTED_OFF}>{TR_DISABLED}</option>
+			    </select>
+			</td>
+			<td>
+			    <!-- BDP: port_delete_show -->
+			    {TR_DELETE}
+			    <!-- EDP: port_delete_show -->
+			    <!-- BDP: port_delete_link -->
+			    <a class="icon i_delete" href="#" onclick="action_delete('{URL_DELETE}', '{NAME}')">{TR_DELETE}</a>
+			    <!-- EDP: port_delete_link -->
+			</td>
+		    </tr>
+		    <!-- EDP: service_ports -->
+
+		    <tr>
+			<td><input name="name_new" type="text" id="service" value="" maxlength="25"/></td>
+			<td><input name="ip_new" type="text" id="ip" style="" value="" maxlength="15" /></td>
+			<td><input name="port_new" type="text" class="textinput" id="port" value="" maxlength="6" /></td>
+			<td>
+			    <select name="port_type_new" id="port_type">
+				<option value="udp">{TR_UDP}</option>
+				<option value="tcp" selected="selected">{TR_TCP}</option>
+			    </select>
+			</td>
+			<td>
+			    <select name="show_val_new" id="show_val">
+				<option value="1" selected="selected">{TR_ENABLED}</option>
+				<option value="0">{TR_DISABLED}</option>
+			    </select>
+			</td>
+			<td>&nbsp;</td>
+		    </tr>
+
+
+		</table>
+  
+		<div class="buttons">
+		    <input name="Submit" type="submit" value="{TR_APPLY_CHANGES}" />
+		    <input type="hidden" name="uaction" value="apply" />
+		</div>
+	
+	    </form>
+	</div>
+
+	<div class="footer">
+	    i-MSCP {VERSION}<br />build: {BUILDDATE}<br />Codename: {CODENAME}
+	</div>
+    </body>
 </html>
