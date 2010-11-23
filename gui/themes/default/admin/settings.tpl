@@ -8,12 +8,24 @@
         <title>{TR_ADMIN_SETTINGS_PAGE_TITLE}</title>
         <meta name="robots" content="nofollow, noindex" />
         <link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.js"></script>
+		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.imscpTooltips.js"></script>
         <!--[if IE 6]>
         <script type="text/javascript" src="{THEME_COLOR_PATH}/js/DD_belatedPNG_0.0.8a-min.js"></script>
         <script type="text/javascript">
             DD_belatedPNG.fix('*');
         </script>
         <![endif]-->
+        <script type="text/javascript">
+		/*<![CDATA[*/
+			$(document).ready(function(){
+				// Tooltips - begin
+				$('#tld_help').iMSCPtooltips({msg:"{TR_TLD_STRICT_VALIDATION_HELP}"});
+				$('#sld_help').iMSCPtooltips({msg:"{TR_SLD_STRICT_VALIDATION_HELP}"});
+				// Tooltips - end
+			});
+		/*]]>*/
+	</script>
     </head>
 
     <body>
@@ -145,7 +157,7 @@
                         <legend>{TR_DNAMES_VALIDATION_SETTINGS}</legend>
                     </fieldset>
                     <tr>
-                        <td width="200"><label for="tld_strict_validation">{TR_TLD_STRICT_VALIDATION}</label></td>
+                        <td width="200"><label for="tld_strict_validation">{TR_TLD_STRICT_VALIDATION}</label><img id="tld_help" class="help_icon" src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" alt="" /></td>
                         <td>
                             <select name="tld_strict_validation" id="tld_strict_validation">
                                 <option value="0" {TLD_STRICT_VALIDATION_OFF}>{TR_DISABLED}</option>
@@ -154,7 +166,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td width="200"><label for="sld_strict_validation">{TR_SLD_STRICT_VALIDATION}</label></td>
+                        <td width="200"><label for="sld_strict_validation">{TR_SLD_STRICT_VALIDATION}</label><img id="sld_help" class="help_icon" src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" alt="" /></td>
                         <td>
                             <select name="sld_strict_validation" id="sld_strict_validation">
                                 <option value="0" {SLD_STRICT_VALIDATION_OFF}>{TR_DISABLED}</option>
