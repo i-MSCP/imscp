@@ -43,11 +43,11 @@ COPY_CONFIG_FILE='
 COPY_FILE=''
 CREATE_FILE=''
 CHOWN_FILE='
-	root:wheel|${ROOT_CONF}/init.d/imscp_network
-	root:wheel|${ROOT_CONF}/init.d/imscp_daemon
+	root:wheel|${ROOT_CONF}/rc.d/imscp_network
+	root:wheel|${ROOT_CONF}/rc.d/imscp_daemon
 '
 
 CHMOD_FILE='
-	0755|${ROOT_CONF}/init.d/imscp_network
-	0755|${ROOT_CONF}/init.d/imscp_daemon
+	0755|${ROOT_CONF}/rc.d/imscp_network
+	0755|${ROOT_CONF}/rc.d/imscp_daemon
 '

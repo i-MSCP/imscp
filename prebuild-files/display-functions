@@ -115,6 +115,8 @@ getSize() {
 	SIZE=$(stty size < $CONSOLE)
 	SCREEN_W=${SIZE#*\ }
 	SCREEN_H=${SIZE%%\ *}
+	if [ $SCREEN_W -eq 0 ];then SCREEN_W=80; fi
+	if [ $SCREEN_H -eq 0 ];then SCREEN_H=40; fi
 }
 
 setDimensions() {
@@ -151,7 +153,7 @@ msgopts() {
 	done
 	_size=$(echo "${_options}" | wc -w)
 	setDimensions "$1"
-	eval "$DIALOG --radiolist '${_title}' $(($_size+$DIALOG_H)) ${DIALOG_W} ${_size} ${_params}"
+	eval "$DIALOG --radiolist '${_title}' $(($_size+$DIALOG_H)) ${DIALOG_W}  ${_size} ${_params}"
 }
 
 msgask() {

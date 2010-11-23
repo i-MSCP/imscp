@@ -1,5 +1,3 @@
-
-
 <?xml version="1.0" encoding="{THEME_CHARSET}" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -10,12 +8,92 @@
         <title>{TR_ADMIN_EDIT_RESELLER_PAGE_TITLE}</title>
         <meta name="robots" content="nofollow, noindex" />
         <link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.js"></script>
+		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.imscpTooltips.js"></script>
+		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/imscp.js"></script>
         <!--[if IE 6]>
         <script type="text/javascript" src="{THEME_COLOR_PATH}/js/DD_belatedPNG_0.0.8a-min.js"></script>
         <script type="text/javascript">
             DD_belatedPNG.fix('*');
         </script>
         <![endif]-->
+        <script language="JavaScript" type="text/JavaScript">
+		/*<![CDATA[*/
+		
+			/*
+		 	 * Global variable - TRUE if a password was generated, FALSE otherwise
+		 	 */
+			gpwd=false;
+		
+			$(document).ready(function(){
+				$(':password').each(
+					function(i) {
+						// We ensure's the passwords fields are empty after on load because several
+						// browsers fill them with the cached password (eg. Gecko's based browsers)
+						$(this).val('').
+						// Create text input field to display generated password on mouseover
+						mouseover(
+							function(){
+								if(gpwd){
+									// First, hide the password field
+									$(this).hide();
+									// Now create the text input field
+									$('<input />').attr({type:'text',name:'ipwd'+i}).
+									css({float:'left',width:'210px'}).addClass('textinput').
+									val($(this).val()).
+									insertAfter('input[name=pass'+i+']').select().
+									// Create tooltip linked to the create text input field
+									iMSCPtooltips({msg:'{TR_CTRL+C}'}).
+									// Restore input password field on mouseout
+									mouseout(function(){$(this).remove();$(':password').show();
+										}
+									);
+								}
+							}
+						);
+					}
+				);
+		
+				// Create and adds the ajax spinner
+				$('<img>').attr({src:'{THEME_COLOR_PATH}/images/ajax/small-spinner.gif'}).
+					addClass('small-spinner').insertAfter($(':password'));
+		
+				// Configure the request for password generation
+				$.ajaxSetup({
+					url: $(location).attr('pathname'),
+					type:'POST',
+					data:'edit_id={EDIT_ID}&uaction=genpass',
+					datatype:'text',
+					beforeSend:function(xhr){xhr.setRequestHeader('Accept','text/plain');},
+					success:function(r){$(':password').val(r).attr('readonly',true);gpwd=true;},
+					error:iMSCPajxError
+				});
+		
+				// Adds event handlers for the ajax spinner
+				$(':password ~ img').ajaxStart(function(){$(this).show()});
+				$(':password ~ img').ajaxStop(function(){$(this).hide()});
+		
+				// Adds event handler for the password generation button
+				$('input[name=genpass]').click(function(){$.ajax();}).attr('disabled',false);
+		
+				// Adds event handler for the reset button
+				$('input[name=pwdreset]').click(
+					function(){gpwd=false;$(':password').val('').attr('readonly',false);}
+				);
+		
+				// Disable the 'Enter' key to prevent multiples validation/updates process
+				$(':input').live('keypress',function(e){
+					if(e.keyCode==13){e.preventDefault();alert('{TR_EVENT_NOTICE}');}
+				});
+		
+				// Hover effect on several input elements (type submit and button)
+				$(':submit,:button').hover(
+					function(){$(this).addClass('buttonHover');},
+					function(){$(this).removeClass('buttonHover');}
+				);
+			});
+		/*]]>*/
+		</script>
     </head>
 
     <body>
@@ -65,13 +143,16 @@
                         <tr>
                             <td><label for="password">{TR_PASSWORD}</label></td>
                             <td>
-                                <input type="password" name="pass" id="password" value="{VAL_PASSWORD}"/>
-                                <input name="genpass" type="submit" class="button" value=" {TR_PASSWORD_GENERATE} " />
+                                <input type="password" name="pass0" id="password" value="{VAL_PASSWORD}" style="float:left;{PWD_ERR}" />
+                                <div class="buttons" style="float:right">
+                                	<input name="genpass" type="button" id="genpass" value="{TR_PASSWORD_GENERATE}" style="margin-right:5px;" />
+                                	<input name="pwdreset" type="button" id="pwdreset" value="{TR_RESET}" />
+                                </div>
                             </td>
                         </tr>
                         <tr>
                             <td><label for="pass_rep">{TR_PASSWORD_REPEAT}</label></td>
-                            <td><input type="password" name="pass" id="pass_rep" value="{VAL_PASSWORD}"/></td>
+                            <td><input type="password" name="pass1" id="pass_rep" value="{VAL_PASSWORD}" style="float:left;{PWDR_ERR}" /></td>
                         </tr>
 
                         <tr>

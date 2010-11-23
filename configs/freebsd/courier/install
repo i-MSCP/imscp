@@ -43,6 +43,6 @@ COPY_CONFIG_FILE='
 ';
 
 COPY_FILE=''
-CREATE_FILE=''
+CREATE_FILE='${SYSTEM_CONF}/courier/backup/authdaemonrc.system'
 CHOWN_FILE=''
 CHMOD_FILE=''

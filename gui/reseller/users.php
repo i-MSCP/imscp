@@ -275,8 +275,10 @@ function generate_users_list(&$tpl, $admin_id) {
 		while (!$rs->EOF) {
 			if ($rs->fields['domain_status'] == $cfg->ITEM_OK_STATUS) {
 				$status_icon = "ok.png";
+				$status_domain = "ok";
 			} else if ($rs->fields['domain_status'] == $cfg->ITEM_DISABLED_STATUS) {
 				$status_icon = "disabled.png";
+				$status_domain = "disabled";
 			} else if ($rs->fields['domain_status'] == $cfg->ITEM_ADD_STATUS
 				|| $rs->fields['domain_status'] == $cfg->ITEM_CHANGE_STATUS
 				|| $rs->fields['domain_status'] == $cfg->ITEM_TOENABLE_STATUS
@@ -284,13 +286,16 @@ function generate_users_list(&$tpl, $admin_id) {
 				|| $rs->fields['domain_status'] == $cfg->ITEM_TODISABLED_STATUS
 				|| $rs->fields['domain_status'] == $cfg->ITEM_DELETE_STATUS) {
 				$status_icon = "reload.png";
+				$status_domain = "reload";
 			} else {
 				$status_icon = "error.png";
+				$status_domain = "error";
 			}
 			$status_url = $rs->fields['domain_id'];
 
 			$tpl->assign(
 				array(
+					'STATUS_DOMAIN'	=> $status_domain,
 					'STATUS_ICON' => $status_icon,
 					'URL_CHANGE_STATUS' => $status_url,
 				)
