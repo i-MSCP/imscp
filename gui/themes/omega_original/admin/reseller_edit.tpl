@@ -230,19 +230,17 @@
 											<tr>
  												<td width="25">&nbsp;</td>
  												<td class="content2" width="200">{TR_SOFTWARE_SUPP}</td>
- 												<td class="content"><select name="domain_software_allowed" id="domain_software_allowed">
- 													<option value="yes" {SOFTWARE_YES}>{TR_YES}</option>
- 													<option value="no" {SOFTWARE_NO}>{TR_NO}</option>
- 													</select>
- 												</td>
+ 												<td class="content">
+													<input name="domain_software_allowed" value="yes" {SOFTWARE_YES} type="radio" />{TR_YES}
+													<input name="domain_software_allowed" value="no" {SOFTWARE_NO} type="radio" />{TR_NO}
+												</td>
  											</tr>
  											<tr>
  												<td width="25">&nbsp;</td>
 												<td class="content2" width="200">{TR_SOFTWAREDEPOT_SUPP}</td>
-												<td class="content"><select name="domain_softwaredepot_allowed" id="domain_softwaredepot_allowed">
-													<option value="yes" {SOFTWAREDEPOT_YES}>{TR_YES}</option>
-													<option value="no" {SOFTWAREDEPOT_NO}>{TR_NO}</option>
-													</select>
+												<td class="content">
+													<input name="domain_softwaredepot_allowed" value="yes" {SOFTWAREDEPOT_YES} type="radio" />{TR_YES}
+													<input name="domain_softwaredepot_allowed" value="no" {SOFTWAREDEPOT_NO} type="radio" />{TR_NO}
 												</td>
 											</tr>
 											<!-- EDP: t_software_menu -->

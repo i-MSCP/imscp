@@ -7,7 +7,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
         <meta http-equiv="X-UA-Compatible" content="IE=8" />
-        <title>{TR_ADMIN_ADD_RESELLER_PAGE_TITLE}</title>
+        <title>{TR_ADMIN_EDIT_RESELLER_PAGE_TITLE}</title>
         <meta name="robots" content="nofollow, noindex" />
         <link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
         <!--[if IE 6]>
@@ -114,6 +114,33 @@
                         <tr>
                             <td><label for="nreseller_max_disk">{TR_MAX_DISK_AMOUNT}</label></td>
                             <td><input type="text" name="nreseller_max_disk" id="nreseller_max_disk" value="{MAX_DISK_AMOUNT}"/></td>
+                        </tr>
+                        <tr>
+							<td>{TR_SOFTWARE_SUPP}</td>
+							<td>
+								<input type="radio" name="domain_software_allowed" id="name="software_allowed_yes" value="yes" {SOFTWARE_YES} />
+								<label for="software_allowed_yes">{TR_YES}</label>
+								<input type="radio" name="domain_software_allowed" id="name="software_allowed_no" value="no" {SOFTWARE_NO} />
+								<label for="software_allowed_no">{TR_NO}</label>
+							</td>
+						</tr>
+						<tr>
+							<td>{TR_SOFTWAREDEPOT_SUPP}</td>
+							<td>
+								<input type="radio" name="domain_softwaredepot_allowed" id="name="softwaredepot_allowed_yes" value="yes" {SOFTWAREDEPOT_YES} />
+								<label for="softwaredepot_allowed_yes">{TR_YES}</label>
+								<input type="radio" name="domain_softwaredepot_allowed" id="name="softwaredepot_allowed_no" value="no" {SOFTWAREDEPOT_NO} />
+								<label for="softwaredepot_allowed_no">{TR_NO}</label>
+							</td>
+						</tr>
+                        <tr>
+                            <td>{TR_SUPPORT_SYSTEM}</td>
+                            <td>
+                                <input type="radio" name="support_system" id="support_system_yes" value="yes" {SUPPORT_YES} />
+                                <label for="support_system_yes">{TR_YES}</label>
+                                <input type="radio" name="support_system" id="support_system_no" value="no" {SUPPORT_NO}/>
+                                <label for="support_system_no">{TR_NO}</label>
+                            </td>
                         </tr>
                     </table>
                 </fieldset>

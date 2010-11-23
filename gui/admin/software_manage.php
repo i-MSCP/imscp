@@ -67,7 +67,7 @@ function formatFilesize($byte) {
 	return $byte." ".$string;
 }
 
-if (isset($_POST['Button']) && $_SESSION['software_upload_token'] == $_POST['send_software_upload_token']) {
+if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['send_software_upload_token']) {
 	$success = 1;
 	unset($_SESSION['software_upload_token']);
 	if ($_FILES['sw_file']['name'] != '' AND !empty($_POST['sw_wget'])) {

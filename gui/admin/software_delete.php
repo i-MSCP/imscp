@@ -57,7 +57,6 @@ function gen_page_data(&$tpl, &$sql) {
 	}
 }
 if (isset($_GET['id']) || isset($_POST['id'])) {
-	$showmessage = 1;
 	if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 		$software_id = $_GET['id'];
 	} elseif (isset($_POST['id']) && is_numeric($_POST['id'])) {
@@ -130,7 +129,6 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 		$res = exec_query($sql, $delete_master, $rs->fields['software_id']);
 		set_page_message(tr('Software was deleted.'));
 		header('Location: software_manage.php');
-		gen_page_message($tpl);
 	}else{
 		if(isset($_POST['id']) && is_numeric($_POST['id']) && $_POST['uaction'] === 'send_delmessage') {
 			if (!empty($_POST['id']) && !empty($_POST['delete_msg_text'])) {
@@ -149,9 +147,8 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 			} else {
 				set_page_message(tr('Fill out a message text!'));
 			}
-			gen_page_message($tpl);
 		}
-
+		
 		$tpl->assign(
 				array(
 					'TR_MANAGE_SOFTWARE_PAGE_TITLE' 	=> tr('i-MSCP - Application Management'),
@@ -161,6 +158,7 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 					'TR_DELETE_SEND_TO' 			=> tr('Send message to'),
 					'TR_DELETE_MESSAGE_TEXT' 		=> tr('Message'),
 					'TR_DELETE_SOFTWARE' 			=> tr('Message to reseller before deleting the software'),
+					'TR_DELETE_RESELLER_SOFTWARE' 	=> tr('Delete reseller software'),
 					'TR_DELETE_DATA' 			=> tr('Reseller data'),
 					'TR_SEND_MESSAGE' 			=> tr('Delete software and send message'),
 					'SOFTWARE_ID' 				=> $software_id,
@@ -172,7 +170,9 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 	gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_users_manage.tpl');
 
 	gen_page_data ($tpl, $sql);
-
+	
+	gen_page_message($tpl);
+	
 	$tpl->parse('PAGE', 'page');
 
 	$tpl->prnt();

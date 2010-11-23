@@ -217,6 +217,7 @@ $query = "
 $rs = exec_query($sql, $query, $software_id);
 $tpl->assign(
 		array(
+			'SOFTWARE_RIGHTS_ID'	=> $software_id,
 			'TR_SOFTWARE_DEPOT' 		=> tr('Softwaredepot'),
 			'TR_SOFTWARE_NAME' 		=> tr($rs->fields['software_name'].' - (Version: '.$rs->fields['software_version'].', Language: '.$rs->fields['software_language'].')'),
 			'TR_ADD_RIGHTS' 		=> tr('Add permissions for reseller to software:'),

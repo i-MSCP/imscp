@@ -151,7 +151,7 @@
 		      <td  class="content"><input type="text" name="sw_wget" value="{VAL_WGET}" size="60" class="textinput" /></td>
 		    </tr>
                     <tr>
-                      <td colspan="3" nowrap><input name="Button" type="submit" class="button" value="{TR_UPLOAD_SOFTWARE_BUTTON}" /><input type="hidden" name="send_software_upload_token" id="send_software_upload_token" value="{SOFTWARE_UPLOAD_TOKEN}" /></td>
+                      <td colspan="3" nowrap><input name="upload" type="submit" class="button" value="{TR_UPLOAD_SOFTWARE_BUTTON}" /><input type="hidden" name="send_software_upload_token" id="send_software_upload_token" value="{SOFTWARE_UPLOAD_TOKEN}" /></td>
                     </tr>
                   </table>
 		  </form>

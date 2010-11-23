@@ -112,6 +112,24 @@
                             <td><label for="nreseller_max_disk">{TR_MAX_DISK_AMOUNT}</label></td>
                             <td><input type="text" name="nreseller_max_disk" id="nreseller_max_disk" value="{MAX_DISK_AMOUNT}"/></td>
                         </tr>
+						<tr>
+							<td>{TR_SOFTWARE_ALLOWED}</td>
+							<td>
+								<input type="radio" name="nreseller_software_allowed" id="name="software_allowed_yes" value="yes" {VL_SOFTWAREY} />
+								<label for="software_allowed_yes">{TR_YES}</label>
+								<input type="radio" name="nreseller_software_allowed" id="name="software_allowed_no" value="no" {VL_SOFTWAREN} />
+								<label for="software_allowed_no">{TR_NO}</label>
+							</td>
+						</tr>
+						<tr>
+							<td>{TR_SOFTWAREDEPOT_ALLOWED}</td>
+							<td>
+								<input type="radio" name="nreseller_softwaredepot_allowed" id="name="softwaredepot_allowed_yes" value="yes" {VL_SOFTWAREDEPOTY} />
+								<label for="softwaredepot_allowed_yes">{TR_YES}</label>
+								<input type="radio" name="nreseller_softwaredepot_allowed" id="name="softwaredepot_allowed_no" value="no" {VL_SOFTWAREDEPOTN} />
+								<label for="softwaredepot_allowed_no">{TR_NO}</label>
+							</td>
+						</tr>
                         <tr>
                             <td>{TR_SUPPORT_SYSTEM}</td>
                             <td>

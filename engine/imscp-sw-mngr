@@ -136,9 +136,16 @@ sub sw_add_data {
 		$rs = sys_command_rs("$main::cfg{'CMD_TAR'} -xzf $sw_tmp_path/$sw_software_archive-$sw_software_id.tar.gz");
 	}
 	$rs = sys_command_rs("$main::cfg{'CMD_CP'} -rRp $sw_tmp_path/web/. $sw_dest_path/");
+	my $check_xargs = sys_command_rs("echo 'test' | xargs -r >/dev/null 2>&1;");
+	my $XARGSVAR;
+	if($check_xargs == 0) {
+		$XARGSVAR = "xargs -r";
+	} else {
+		$XARGSVAR = "xargs";
+	}
+	$rs = sys_command_rs("find $sw_dest_path/ -type d -print0 | $XARGSVAR -0 $main::cfg{'CMD_CHMOD'} 0755");
+	$rs = sys_command_rs("find $sw_dest_path/ -type f -print0 | $XARGSVAR -0 $main::cfg{'CMD_CHMOD'} 0644");
 	$rs = sys_command_rs("$main::cfg{'CMD_CHOWN'} -R $uid:$gid $sw_dest_path/*");
-	$rs = sys_command_rs("find $sw_dest_path/ -type d -print0 | xargs -r -0 $main::cfg{'CMD_CHOWN'} 0755");
-	$rs = sys_command_rs("find $sw_dest_path/ -type f -print0 | xargs -r -0 $main::cfg{'CMD_CHOWN'} 0644");
 	
 	#Encoding data to push to another script
 	my $imscp_software_install_pushstring = encode_base64("install,$sw_software_db,$sw_software_prefix,$sw_database,$sw_database_user,$sw_database_tmp_pwd,$sw_install_username,$sw_install_password,$sw_install_email,$domain_name,$sw_dest_path,$sw_path");

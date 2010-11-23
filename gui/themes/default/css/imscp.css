@@ -573,6 +573,7 @@ legend, h3 {
 .body .user { background-image: url(../images/content/table_icon_user.png); }
 .body .users { background-image: url(../images/content/table_icon_users.png); }
 .body .users2 { background-image: url(../images/content/table_icon_users2.png); }
+.body .apps_installer { background-image: url(../images/content/table_icon_app_installer_cd_big.png); }
 /* Content icons (link icons) */
 .i_add_user { background-image: url(../images/icons/add_user.png); }
 .i_awstatsicon { background-image: url(../images/icons/awstatsicon.png); }

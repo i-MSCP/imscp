@@ -128,7 +128,15 @@
 								<input type="radio" id="backup_no" name="backup" value="_no_" {VL_BACKUPN} /><label for="backup_no">{TR_BACKUP_NO}</label>
 							</td>
 						</tr>
-
+						<!-- BDP: t_software_support -->
+ 						<tr>
+ 							<td>{TR_SOFTWARE_SUPP}</td>
+ 							<td>
+ 								<input type="radio" name="software_allowed" value="_yes_" {VL_SOFTWAREY} id="software_allowed_yes" /><label for="software_allowed_yes">{TR_YES}</label>
+								<input type="radio" name="software_allowed" value="_no_" {VL_SOFTWAREN} id="software_allowed_no" /><label for="software_allowed_no">{TR_NO}</label>
+							</td>
+ 						</tr>
+ 						<!-- EDP: t_software_support -->
 					</table>
 				</fieldset>
 

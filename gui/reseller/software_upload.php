@@ -64,7 +64,7 @@ function formatFilesize($byte) {
 	return $byte." ".$string;
 }
 
-if (isset($_POST['Button']) && $_SESSION['software_upload_token'] == $_POST['send_software_upload_token']) {
+if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['send_software_upload_token']) {
 	$success = 1;
 	unset($_SESSION['software_upload_token']);
 	if ($_FILES['sw_file']['name'] != '' AND !empty($_POST['sw_wget'])) {
@@ -526,34 +526,35 @@ $sw_cnt = get_avail_software (&$tpl, &$sql, $_SESSION['user_id']);
 
 $tpl->assign(
 		array(
-			'TR_UPLOADED_SOFTWARE' 		=> tr('Software available'),
-			'TR_SOFTWARE_NAME'		=> tr('Software-Synonym'),
-			'TR_SOFTWARE_VERSION' 		=> tr('Software-Version'),
-			'TR_SOFTWARE_LANGUAGE' 		=> tr('Language'),
-			'TR_SOFTWARE_STATUS' 		=> tr('Software status'),
-			'TR_SOFTWARE_TYPE' 		=> tr('Type'),
-			'TR_SOFTWARE_DELETE' 		=> tr('Action'),
-			'TR_SOFTWARE_COUNT' 		=> tr('Software total'),
-			'TR_SOFTWARE_NUM' 		=> $sw_cnt,
-			'TR_UPLOAD_SOFTWARE' 		=> tr('Software upload'),
-			'TR_SOFTWARE_DB' 		=> tr('Requires Database?'),
-			'TR_SOFTWARE_DB_PREFIX' 	=> tr('Database prefix'),
-			'TR_SOFTWARE_HOME' 		=> tr('Link to authors homepage'),
-			'TR_SOFTWARE_DESC' 		=> tr('Description'),
-			'SOFTWARE_UPLOAD_TOKEN' 	=> generate_software_upload_token(),
-			'TR_SOFTWARE_FILE' 		=> tr('Choose file (Max: %1$d MB)', ini_get('upload_max_filesize')),
-			'TR_SOFTWARE_URL' 		=> tr('or remote file (Max: %1$d MB)', formatFilesize($cfg->MAX_REMOTE_FILESIZE)),
+			"GENERAL_INFO"					=> tr("General information"),
+			'TR_UPLOADED_SOFTWARE' 			=> tr('Software available'),
+			'TR_SOFTWARE_NAME'				=> tr('Software-Synonym'),
+			'TR_SOFTWARE_VERSION' 			=> tr('Software-Version'),
+			'TR_SOFTWARE_LANGUAGE' 			=> tr('Language'),
+			'TR_SOFTWARE_STATUS' 			=> tr('Software status'),
+			'TR_SOFTWARE_TYPE' 				=> tr('Type'),
+			'TR_SOFTWARE_DELETE' 			=> tr('Action'),
+			'TR_SOFTWARE_COUNT' 			=> tr('Software total'),
+			'TR_SOFTWARE_NUM' 				=> $sw_cnt,
+			'TR_UPLOAD_SOFTWARE' 			=> tr('Software upload'),
+			'TR_SOFTWARE_DB' 				=> tr('Requires Database?'),
+			'TR_SOFTWARE_DB_PREFIX' 		=> tr('Database prefix'),
+			'TR_SOFTWARE_HOME' 				=> tr('Link to authors homepage'),
+			'TR_SOFTWARE_DESC' 				=> tr('Description'),
+			'SOFTWARE_UPLOAD_TOKEN' 		=> generate_software_upload_token(),
+			'TR_SOFTWARE_FILE' 				=> tr('Choose file (Max: %1$d MB)', ini_get('upload_max_filesize')),
+			'TR_SOFTWARE_URL' 				=> tr('or remote file (Max: %1$d MB)', formatFilesize($cfg->MAX_REMOTE_FILESIZE)),
 			'TR_UPLOAD_SOFTWARE_BUTTON' 	=> tr('Upload now'),
 			'TR_UPLOAD_SOFTWARE_PAGE_TITLE'	=> tr('i-MSCP - Application Management'),
-			'TR_MESSAGE_DELETE' 		=> tr('Are you sure you want to delete this package?', true),
-			'TR_SOFTWARE_NAME_ASC' 		=> 'software_upload.php?sortby=name&order=asc',
-			'TR_SOFTWARE_NAME_DESC' 	=> 'software_upload.php?sortby=name&order=desc',
-			'TR_SOFTWARE_TYPE_ASC' 		=> 'software_upload.php?sortby=type&order=asc',
-			'TR_SOFTWARE_TYPE_DESC' 	=> 'software_upload.php?sortby=type&order=desc',
-			'TR_SOFTWARE_STATUS_ASC' 	=> 'software_upload.php?sortby=status&order=asc',
-			'TR_SOFTWARE_STATUS_DESC' 	=> 'software_upload.php?sortby=status&order=desc',
-			'TR_LANGUAGE_ASC' 		=> 'software_upload.php?sortby=language&order=asc',
-			'TR_LANGUAGE_DESC' 		=> 'software_upload.php?sortby=language&order=desc'
+			'TR_MESSAGE_DELETE' 			=> tr('Are you sure you want to delete this package?', true),
+			'TR_SOFTWARE_NAME_ASC' 			=> 'software_upload.php?sortby=name&order=asc',
+			'TR_SOFTWARE_NAME_DESC' 		=> 'software_upload.php?sortby=name&order=desc',
+			'TR_SOFTWARE_TYPE_ASC' 			=> 'software_upload.php?sortby=type&order=asc',
+			'TR_SOFTWARE_TYPE_DESC' 		=> 'software_upload.php?sortby=type&order=desc',
+			'TR_SOFTWARE_STATUS_ASC' 		=> 'software_upload.php?sortby=status&order=asc',
+			'TR_SOFTWARE_STATUS_DESC' 		=> 'software_upload.php?sortby=status&order=desc',
+			'TR_LANGUAGE_ASC' 				=> 'software_upload.php?sortby=language&order=asc',
+			'TR_LANGUAGE_DESC' 				=> 'software_upload.php?sortby=language&order=desc'
 		)
 	);
 

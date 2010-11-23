@@ -574,7 +574,7 @@ $tpl->assign(
 		'TR_YES' => tr('yes'),
 		'TR_NO' => tr('no'),
 		'TR_SUPPORT_SYSTEM' => tr('Support system'),
-		'TR_SOFTWARE_ALLOWED' => tr('Apps installer<br><i>(1-click install)</i>'),
+		'TR_SOFTWARE_ALLOWED' => tr('i-MSCP application installer'),
 		'TR_SOFTWAREDEPOT_ALLOWED' => tr('Can use softwaredepot'),
 
 		'TR_RESELLER_IPS' => tr('Reseller IPs'),
