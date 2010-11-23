@@ -394,6 +394,7 @@ check_permissions($tpl);
 
 $tpl -> assign(
 			array(
+				'TR_SOFTWARE_MENU_PATH'	=> tr('i-MSCP - application installer'),
 				'TR_MANAGE_USERS' 		=> tr('Manage users'),
 				'TR_INSTALL_SOFTWARE' 		=> tr('Install software'),
 				'TR_SOFTWARE' 			=> tr('Software'),

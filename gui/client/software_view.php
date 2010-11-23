@@ -176,7 +176,7 @@ function get_software_props (&$tpl, &$sql, $dmn_id, $software_id, $dmn_created_i
 						'SOFTWARE_LANGUAGE' 		=> $rs -> fields['software_language'],
 						'SOFTWARE_TYPE' 		=> $rs -> fields['software_type'],
 						'SOFTWARE_LINK' 		=> $sw_link,
-						'SOFTWARE_DESC' 		=> nl2br($rs -> fields['software_desc'])
+						'SOFTWARE_DESC' 		=> nl2br(wordwrap($rs -> fields['software_desc'],200, "\n", true))
 					)
 				);
 		check_is_installed($tpl, $sql, $dmn_id, $software_id);
@@ -213,6 +213,7 @@ function gen_page_lists(&$tpl, &$sql, $user_id) {
          $dmn_php,
          $dmn_cgi) = get_domain_default_props($sql, $user_id);
 	get_software_props ($tpl, $sql, $dmn_id, $software_id, $dmn_created_id, $dmn_sqld_limit);
+	return $software_id;
 }
 
 //
@@ -221,7 +222,7 @@ function gen_page_lists(&$tpl, &$sql, $user_id) {
 
 $tpl -> assign(
 			array(
-				'TR_CLIENT_VIEW_SOFTWARE_PAGE_TITLE' 	=> tr('ispCP - Software details'),
+				'TR_CLIENT_VIEW_SOFTWARE_PAGE_TITLE' 	=> tr('i-MSCP - Software details'),
 				'THEME_COLOR_PATH' 			=> "../themes/{$cfg->USER_INITIAL_THEME}",
 				'THEME_CHARSET' 			=> tr('encoding'),
 				'ISP_LOGO' 				=> get_logo($_SESSION['user_id'])
@@ -236,7 +237,7 @@ if (isset($_SESSION['software_support']) && $_SESSION['software_support'] == "no
 	$tpl -> assign('NO_SOFTWARE', '');
 }
 
-gen_page_lists($tpl, $sql, $_SESSION['user_id']);
+$software_id = gen_page_lists($tpl, $sql, $_SESSION['user_id']);
 
 //
 // static page messages.
@@ -254,6 +255,9 @@ check_permissions($tpl);
 
 $tpl -> assign(
 			array(
+				'TR_SOFTWARE_MENU_PATH'	=> tr('i-MSCP - application installer'),
+				'TR_SOFTWARE_VIEW_PATH'	=> tr('Software details'),
+				'SOFTWARE_ID'			=> $software_id,
 				'TR_MANAGE_USERS' 	=> tr('Manage users'),
 				'TR_VIEW_SOFTWARE' 	=> tr('Software details'),
 				'TR_NAME' 		=> tr('Software'),

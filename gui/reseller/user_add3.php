@@ -252,7 +252,7 @@ function add_user_data($reseller_id) {
 	global $city, $state, $country, $street_one;
 	global $street_two, $mail, $phone;
 	global $fax, $inpass, $domain_ip;
-	global $dns, $backup, $software_allowed;
+	global $dns, $backup, $neverexpire, $software_allowed;
 
 	$sql = iMSCP_Registry::get('Db');
 	$cfg = iMSCP_Registry::get('Config');

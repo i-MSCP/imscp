@@ -9,7 +9,7 @@
 <link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="{THEME_COLOR_PATH}/css/imscp.js"></script>
 <script language="JavaScript" type="text/JavaScript">
-/*<![CDATA[
+/*<![CDATA[*/
 function OpenTree()
 {
   libwindow=window.open("ftp_choose_dir.php","Hello","menubar=no,width=470,height=350,scrollbars=yes");
