@@ -1,6 +1,10 @@
 i-MSCP ChangeLog
 ~~~~~~~~~~~~~~~~
 
+2010-11-23 Daniel Andreca
+	- CONFIGS:
+		* Fixed #26: Warnings in build script being installed via serial console
+
 2010-11-21 Daniel Andreca
 	- CONFIGS:
 		* Fixed #23: Merge Config files if not Distribution specific
