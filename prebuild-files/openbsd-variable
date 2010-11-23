@@ -50,6 +50,9 @@ SYSTEM_FOLDERS='
 
 				ROOT_POSTFIX_CONF=${ROOT_CONF}/postfix
 '
-FOLDERS='${SYSTEM_LOG}/imscp-arpl-msgr'
+FOLDERS='
+	${SYSTEM_LOG}/imscp-arpl-msgr
+	${SYSTEM_CONF}/courier/backup
+'
 COPY_FILE=''
 CREATE_FILE='${SYSTEM_CONF}/courier/backup/authdaemonrc.system'
