@@ -29,13 +29,14 @@
 
         <div class="location">
             <div class="location-area icons-left">
-                <h1 class="general">{TR_MENU_SETTINGS}</h1>
+                <h1 class="settings">{TR_GENERAL_SETTINGS}</h1>
             </div>
             <ul class="location-menu">
                 <!-- <li><a class="help" href="#">Help</a></li> -->
                 <li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
             </ul>
-            <ul class="path">                
+            <ul class="path">
+		<li><a href="settings.php">{TR_GENERAL_SETTINGS}</a></li>
                 <li><a href="settings_layout.php">{TR_LAYOUT_SETTINGS}</a></li>
             </ul>
         </div>
@@ -45,32 +46,43 @@
         </div>
 
         <div class="body">
+
             <!-- BDP: page_message -->
             <div class="warning">{MESSAGE}</div>
             <!-- EDP: page_message -->
+
             <h2 class="multilanguage"><span>{TR_LAYOUT_SETTINGS}</span></h2>
-            <form enctype="multipart/form-data" name="set_layout" method="post" action="settings_layout.php">
-                <table>
-                    <tr>
-                        <td colspan="2"><strong>{TR_UPLOAD_LOGO}</strong></td>
-                    </tr>
-                    <tr>
-                        <td width="40">&nbsp;</td>
-                        <td width="200">{TR_LOGO_FILE}</td>
-                        <td><input type="file" name="logo_file" size="40" /></td>
-                    </tr>
-                    <tr>
-                </table>
-                <br />
-                            <input name="upload_logo" type="submit" class="button" value=" {TR_UPLOAD} " />
-                            <input name="delete_logo" type="submit" class="button" value=" {TR_REMOVE} " />                        
-                    </tr>
-                    <tr>
-                        <td colspan="2" nowrap="nowrap"><img src="{OWN_LOGO}" alt="reseller logo" /></td>
-                    </tr>
-                </table>
+
+            <form enctype="multipart/form-data" method="post" action="settings_layout.php">
+		<fieldset>
+		    <legend>{TR_UPLOAD_LOGO}</legend>
+		    <table>
+			<tr>
+			    <td>{TR_LOGO_FILE}</td>
+			    <td><input type="file" name="logo_file" size="40" /></td>
+			</tr>
+		    </table>
+		    <div class="buttons">
+			<input type="hidden" name="uaction" value="upload_logo" />
+			<input name="upload_logo" type="submit" class="button" value="{TR_UPLOAD}" />
+		    </div>
+		</fieldset>
+	    </form>
+
+	    <!-- BDP: logo_remove_button -->
+	    <form enctype="multipart/form-data" method="post" action="settings_layout.php">
+		<fieldset>
+		    <legend>{TR_REMOVE}</legend>
+		    <p><img src="{OWN_LOGO}" alt="reseller logo" /></p>
+		    <div class="buttons">
+			<input type="hidden" name="uaction" value="delete_logo" />
+			<input name="upload_logo" type="submit" class="button" value="{TR_REMOVE}" />
+		    </div>
+		</fieldset>
             </form>
-                <!-- end of content -->
+	    <!-- EDP: logo_remove_button -->
+
+            <!-- end of content -->
         </div>
     </body>
 </html>

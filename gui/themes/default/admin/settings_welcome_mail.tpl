@@ -27,13 +27,14 @@
         </div>
         <div class="location">
             <div class="location-area icons-left">
-                <h1 class="general">{TR_MENU_SETTINGS}</h1>
+                <h1 class="settings">{TR_MENU_SETTINGS}</h1>
             </div>
             <ul class="location-menu">
                 <!-- <li><a class="help" href="#">Help</a></li> -->
                 <li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
             </ul>
             <ul class="path">
+		<li><a href="settings.php">{TR_GENERAL_SETTINGS}</a></li>
                 <li><a href="ip_manage.php">{TR_EMAIL_SETUP}</a></li>
             </ul>
         </div>
@@ -46,66 +47,69 @@
             <!-- EDP: page_message -->
 
             <!-- BDP: tickets_list -->
-            <h2 class="support"><span>{TR_EMAIL_SETUP}</span></h2>
-            <fieldset>
-                <legend>{TR_MESSAGE_TEMPLATE_INFO}</legend>
-            </fieldset>
-            <form name="admin_email_setup" method="post" action="settings_welcome_mail.php">
-                <table>                    
-                    <tr>                        
-                        <td width="200"><b>{TR_USER_LOGIN_NAME}</b></td>
-                        <td>{USERNAME}</td>
-                    </tr>
-                    <tr>                        
-                        <td><b>{TR_USER_PASSWORD}</b></td>
-                        <td>{PASSWORD}</td>
-                    </tr>
-                    <tr>                        
-                        <td><b>{TR_USER_REAL_NAME}</b></td>
-                        <td>{NAME}</td>
-                    </tr>
-                    <tr>                        
-                        <td><b>{TR_USERTYPE}</b></td>
-                        <td>{USERTYPE}</td>
-                    </tr>
-                    <tr>                        
-                        <td><b>{TR_BASE_SERVER_VHOST}</b></td>
-                        <td>{BASE_SERVER_VHOST}</td>
-                    </tr>
-                    <tr>                        
-                        <td><b>{TR_BASE_SERVER_VHOST_PREFIX}</b></td>
-                        <td>{BASE_SERVER_VHOST_PREFIX}</td>
-                    </tr>
-                </table>
-                <br />
+            <h2 class="email"><span>{TR_EMAIL_SETUP}</span></h2>
+	    <form name="admin_email_setup" method="post" action="settings_welcome_mail.php">
+		<fieldset>
+		    <legend>{TR_MESSAGE_TEMPLATE_INFO}</legend>
+            
+		    <table>
+			<tr>
+			    <td width="200"><strong>{TR_USER_LOGIN_NAME}</strong></td>
+			    <td>{USERNAME}</td>
+			</tr>
+			<tr>
+			    <td><strong>{TR_USER_PASSWORD}</strong></td>
+			    <td>{PASSWORD}</td>
+			</tr>
+			<tr>
+			    <td><strong>{TR_USER_REAL_NAME}</strong></td>
+			    <td>{NAME}</td>
+			</tr>
+			<tr>
+			    <td><strong>{TR_USERTYPE}</strong></td>
+			    <td>{USERTYPE}</td>
+			</tr>
+			<tr>
+			    <td><strong>{TR_BASE_SERVER_VHOST}</strong></td>
+			    <td>{BASE_SERVER_VHOST}</td>
+			</tr>
+			<tr>
+			    <td><strong>{TR_BASE_SERVER_VHOST_PREFIX}</strong></td>
+			    <td>{BASE_SERVER_VHOST_PREFIX}</td>
+			</tr>
+		    </table>
+		</fieldset>
+
                 <fieldset>
                     <legend>{TR_MESSAGE_TEMPLATE}</legend>
-                </fieldset>
-                <table>                    
-                    <tr>
-                        <td width="25"&nbsp;</td>
-                        <td width="25"><label for="auto_subject"><b>{TR_SUBJECT}</b></label></td>
-                        <td><input type="text" name="auto_subject" id="auto_subject" value="{SUBJECT_VALUE}" style="width:80%" class="textinput"/>
-                        </td>                        
-                    </tr>
-                    <tr>
-                        <td>&nbsp;</td>
-                        <td><label for="auto_message"<b>{TR_MESSAGE}</b></label></td>
-                        <td><textarea name="auto_message" id="auto_message" style="width:80%" class="textinput2" cols="80" rows="30">{MESSAGE_VALUE}</textarea>
-                        </td>
-                    </tr>
-                    <tr>                        
-                        <td><b>{TR_SENDER_EMAIL}</b></td>
-                        <td class="content">{SENDER_EMAIL_VALUE}</td>
-                    </tr>
-                    <tr>                        
-                        <td><b>{TR_SENDER_NAME}</b></td>
-                        <td>{SENDER_NAME_VALUE}</td>
-                    </tr>
-                </table>
-                <br />
-                <td><input name="Submit" type="submit" class="button" value="{TR_APPLY_CHANGES}" /></td>
-                <input type="hidden" name="uaction" value="email_setup" />
+
+		    <table>
+			<tr>
+			    <td><label for="auto_subject"><strong>{TR_SUBJECT}</strong></label></td>
+			    <td><input type="text" name="auto_subject" id="auto_subject" value="{SUBJECT_VALUE}" style="width:80%" />
+			    </td>
+			</tr>
+			<tr>
+			    <td><label for="auto_message"<strong>{TR_MESSAGE}</strong></label></td>
+			    <td>
+				<textarea name="auto_message" id="auto_message" style="width:80%" cols="80" rows="20">{MESSAGE_VALUE}</textarea>
+			    </td>
+			</tr>
+			<tr>
+			    <td><strong>{TR_SENDER_EMAIL}</strong></td>
+			    <td>{SENDER_EMAIL_VALUE}</td>
+			</tr>
+			<tr>
+			    <td><strong>{TR_SENDER_NAME}</strong></td>
+			    <td>{SENDER_NAME_VALUE}</td>
+			</tr>
+		    </table>
+		</fieldset>
+                
+		<div class="buttons">
+		    <input name="Submit" type="submit" value="{TR_APPLY_CHANGES}" />
+		    <input type="hidden" name="uaction" value="email_setup" />
+		</div>
             </form>
         </div>
         <div class="footer">
