@@ -8,13 +8,48 @@
 		<title>{TR_EDIT_DOMAIN_PAGE_TITLE}</title>
 		<meta name="robots" content="nofollow, noindex" />
 		<link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
+		<link href="{THEME_COLOR_PATH}/css/jquery.ui.datepicker.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/imscp.js"></script>
+		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.js"></script>
+		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.imscpTooltips.js"></script>
+		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.ui.core.js"></script>
+		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.ui.datepicker.js"></script>
 		<!--[if IE 6]>
 		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/DD_belatedPNG_0.0.8a-min.js"></script>
 		<script type="text/javascript">
 			DD_belatedPNG.fix('*');
 		</script>
 		<![endif]-->
+		<script language="JavaScript" type="text/JavaScript">
+		/*<![CDATA[*/
+			$(document).ready(function(){
+				// Tooltips - begin
+				$('#dmn_exp_help').iMSCPtooltips({msg:"{TR_DMN_EXP_HELP}"});
+				// Tooltips - end
+			});
+		
+			$(function() {
+				$( "#datepicker" ).datepicker();
+			});
+			$(document).ready(function(){
+				$('#datepicker').change(function() {
+					if($(this).val() != '') {
+						$('#neverexpire').attr('disabled', 'disabled')
+					} else {
+						$('#neverexpire').removeAttr('disabled');
+					}
+				});
+			
+				$('#neverexpire').change(function() {
+					if($(this).is(':checked')) {
+						$('#datepicker').attr('disabled', 'disabled')
+					} else {
+						$('#datepicker').removeAttr('disabled');
+					}
+				});		
+			});
+		/*]]>*/
+		</script>
 	</head>
 
 	<body>
@@ -67,21 +102,11 @@
 					</tr>
 
 					<tr>
-						<td>{TR_DOMAIN_NEW_EXPIRE}
-						<!-- TODO: Implement tooltip functionality
-							<span class="icon i_help" onmouseover="showTip('dmn_exp_help', event)" onmouseout="hideTip('dmn_exp_help')" />
-						-->
-						</td>
-						<td><select id="dmn_expire" name="dmn_expire">
-								<option value="0">{TR_DOMAIN_EXPIRE_UNCHANGED}</option>
-								<option value="-1">{TR_DOMAIN_EXPIRE_MIN_1_MONTH}</option>
-								<option value="1">{TR_DOMAIN_EXPIRE_PLUS_1_MONTH}</option>
-								<option value="2">{TR_DOMAIN_EXPIRE_PLUS_2_MONTHS}</option>
-								<option value="3">{TR_DOMAIN_EXPIRE_PLUS_3_MONTHS}</option>
-								<option value="12">{TR_DOMAIN_EXPIRE_PLUS_6_MONTHS}</option>
-								<option value="24">{TR_DOMAIN_EXPIRE_PLUS_1_YEAR}</option>
-								<option value="24">{TR_DOMAIN_EXPIRE_PLUS_2_YEARS}</option>
-							</select>
+						<td>{TR_DOMAIN_NEW_EXPIRE} <span class="icon i_help" id="dmn_exp_help">Help</span></td>
+						<td>
+							<div class="content">
+								<input type="text" id="datepicker" name="dmn_expire_date" value="{VL_DOMAIN_EXPIRE_DATE}" {VL_DISABLED}> (MM/DD/YYYY) {TR_EXPIRE_CHECKBOX} <input type="checkbox" name="neverexpire" id="neverexpire" {VL_NEVEREXPIRE} {VL_DISABLED_NE} />
+ 						    </div>
 						</td>
 					</tr>
 					<tr>

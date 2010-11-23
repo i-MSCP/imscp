@@ -17,16 +17,16 @@
 		<![endif]-->
 		<script type="text/javascript">
 			/* <![CDATA[ */
-			function action_status(url, dmn_name) {
+			function action_status(dom_id, dmn_name) {
 				if (!confirm(sprintf("{TR_MESSAGE_CHANGE_STATUS}", dmn_name)))
 					return false;
-				location = url;
+					location = ("domain_status_change.php?domain_id=" + dom_id);
 			}
 
 			function action_delete(url, dmn_name) {
 				if (!confirm(sprintf("{TR_MESSAGE_DELETE_ACCOUNT}", dmn_name)))
 					return false;
-				location = url;
+					location = url;
 			}
 			/* ]]> */
 		</script>
@@ -102,10 +102,10 @@
 				<tbody>
 					<!-- BDP: user_entry -->
 					<tr>
-						<td><a href="#" onclick="action_status('{URL_CHANGE_STATUS}', '{NAME}')" class="icon i_{STATUS_ICON}">{STATUS_ICON}</a></td>
+						<td><a href="#" onclick="action_status('{URL_CHANGE_STATUS}', '{NAME}')" class="icon i_{STATUS_DOMAIN}">{STATUS_DOMAIN}</a></td>
 						<td><a href="http://{NAME}/" target="_blank" class="icon i_goto">{NAME}</a></td>
 						<td>{CREATION_DATE}</td>
-						<td>{DISK_USAGE} of {DISK_LIMIT} MB</td>
+						<td>{DISK_USAGE}</td>
 
 						<td>
 							<a class="icon i_identity" href="domain_details.php?domain_id={DOMAIN_ID}">{TR_DETAILS}</a>

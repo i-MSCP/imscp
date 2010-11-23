@@ -49,7 +49,6 @@
 		</div>
 
 		<div class="body">
-			<div id="dmn_help" class="tooltip">{TR_DMN_HELP}</div>
 
 			<!-- BDP: page_message -->
 			<div class="warning">{MESSAGE}</div>

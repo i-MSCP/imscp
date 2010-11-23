@@ -8,13 +8,44 @@
 		<title>{TR_CLIENT_CHANGE_PERSONAL_DATA_PAGE_TITLE}</title>
 		<meta name="robots" content="nofollow, noindex" />
 		<link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
+		<link href="{THEME_COLOR_PATH}/css/jquery.ui.datepicker.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/imscp.js"></script>
+		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.js"></script>
+		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.imscpTooltips.js"></script>
+		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.ui.core.js"></script>
+		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.ui.datepicker.js"></script>
 		<!--[if IE 6]>
 		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/DD_belatedPNG_0.0.8a-min.js"></script>
 		<script type="text/javascript">
 			DD_belatedPNG.fix('*');
 		</script>
 		<![endif]-->
+		<script language="JavaScript" type="text/JavaScript">
+		/*<![CDATA[*/
+			$(document).ready(function(){
+				// Tooltips - begin
+				$('#dmn_help').iMSCPtooltips({msg:"{TR_DMN_HELP}"});
+				// Tooltips - end
+		
+				$('#datepicker').change(function() {
+				    if($(this).val() != '') {
+				        $('#neverexpire').attr('disabled', 'disabled')
+				    } else {
+				        $('#neverexpire').removeAttr('disabled');
+				    }
+		        });
+		
+				$('#neverexpire').change(function() {
+				    if($(this).is(':checked')) {
+				        $('#datepicker').attr('disabled', 'disabled')		        
+				    } else {
+				        $('#datepicker').removeAttr('disabled');
+				    }
+		        });
+		
+			});
+		/*]]>*/
+		</script>
 	</head>
 
 	<body>
@@ -48,7 +79,6 @@
 		</div>
 
 		<div class="body">
-			<div id="dmn_help" class="tooltip">{TR_DMN_HELP}</div>
 
 			<!-- BDP: page_message -->
 			<div class="warning">{MESSAGE}</div>
@@ -61,22 +91,21 @@
 					<legend>{TR_CORE_DATA}</legend>
 					<table>
 						<tr>
-							<td>{TR_DOMAIN_NAME} <span class="icon i_help" onmouseover="showTip('dmn_help', event)" onmouseout="hideTip('dmn_help')" >Help</span></td>
+							<td>{TR_DOMAIN_NAME} <span class="icon i_help" id="dmn_help">Help</span></td>
 							<td><input type="text" name="dmn_name" value="{DMN_NAME_VALUE}"/></td>
 						</tr>
 						<!-- BDP: expire -->
 							<tr>
 								<td><label for="dmn_expire">{TR_DOMAIN_EXPIRE}</label></td>
 								<td>
-									<select id="dmn_expire" name="dmn_expire">
-										<option value="0">{TR_DOMAIN_EXPIRE_NEVER}</option>
-										<option value="1">{TR_DOMAIN_EXPIRE_1_MONTH}</option>
-										<option value="2">{TR_DOMAIN_EXPIRE_2_MONTHS}</option>
-										<option value="3">{TR_DOMAIN_EXPIRE_3_MONTHS}</option>
-										<option value="6">{TR_DOMAIN_EXPIRE_6_MONTHS}</option>
-										<option value="12">{TR_DOMAIN_EXPIRE_1_YEAR}</option>
-										<option value="24">{TR_DOMAIN_EXPIRE_2_YEARS}</option>
-									</select>
+									<script>
+										$(function() {
+											$( "#datepicker" ).datepicker();
+										});
+									</script>
+									<div>
+										<input type="text" id="datepicker" name="dmn_expire"> (MM/DD/YYYY) {TR_EXPIRE_CHECKBOX} <input type="checkbox" name="neverexpire" id="neverexpire" class="neverexpire" />
+									</div>
 								</td>
 							</tr>
 						<!-- BDP: add_user -->

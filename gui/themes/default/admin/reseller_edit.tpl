@@ -1,5 +1,3 @@
-
-
 <?xml version="1.0" encoding="{THEME_CHARSET}" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -12,7 +10,7 @@
         <link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.js"></script>
 		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.imscpTooltips.js"></script>
-		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/imscp.js"></script
+		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/imscp.js"></script>
         <!--[if IE 6]>
         <script type="text/javascript" src="{THEME_COLOR_PATH}/js/DD_belatedPNG_0.0.8a-min.js"></script>
         <script type="text/javascript">
@@ -146,8 +144,10 @@
                             <td><label for="password">{TR_PASSWORD}</label></td>
                             <td>
                                 <input type="password" name="pass0" id="password" value="{VAL_PASSWORD}" style="float:left;{PWD_ERR}" />
-                                <input name="pwdreset" type="button" id="pwdreset" value="{TR_RESET}" style="float:right;margin-right:5px;" />
-                                <input name="genpass" type="button" id="genpass" value="{TR_PASSWORD_GENERATE}" style="float:right;" />
+                                <div class="buttons" style="float:right">
+                                	<input name="genpass" type="button" id="genpass" value="{TR_PASSWORD_GENERATE}" style="margin-right:5px;" />
+                                	<input name="pwdreset" type="button" id="pwdreset" value="{TR_RESET}" />
+                                </div>
                             </td>
                         </tr>
                         <tr>

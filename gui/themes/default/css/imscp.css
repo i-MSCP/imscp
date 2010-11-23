@@ -639,10 +639,6 @@ legend, h3 {
 
 /************************************ ToolTip *********************************/
 
-.help_icon {
-	margin-left: 5px;
-}
-
 .tooltip_bg {
 	background-color:	#1284A8;
 	position:			absolute;
