@@ -9,6 +9,8 @@
 		<meta name="robots" content="nofollow, noindex" />
 		<link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/imscp.js"></script>
+		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.js"></script>
+		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.imscpTooltips.js"></script>
 		<!--[if IE 6]>
 		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/DD_belatedPNG_0.0.8a-min.js"></script>
 		<script type="text/javascript">
@@ -17,6 +19,11 @@
 		<![endif]-->
 		<script type="text/javascript">
 		/* <![CDATA[ */
+		$(document).ready(function(){
+			// Tooltips - begin
+			$('#fwd_help').iMSCPtooltips({msg:"{TR_FWD_HELP}"});
+			// Tooltips - end
+		});
 		function begin_js() {
 			if (typeof(document.forms[0].elements['mail_forward']) != 'undefined') {
 				if (document.forms[0].elements['mail_forward'].checked == false) {
@@ -71,7 +78,6 @@
 		</div>
 
 		<div class="body">
-			<div id="fwd_help" class="tooltip">{TR_FWD_HELP}</div>
 
 			<!-- BDP: page_message -->
 			<div class="warning">{MESSAGE}</div>
@@ -96,8 +102,7 @@
 							</tr>
 							<tr>
 								<td>
-									<label for="forward_list">{TR_FORWARD_TO}</label>
-									<span class="icon i_help" onmouseover="showTip('fwd_help', event)" onmouseout="hideTip('fwd_help')" >Help</span>
+									<label for="forward_list">{TR_FORWARD_TO}</label><span class="icon i_help" id="fwd_help">Help</span>
 								</td>
 								<td><textarea name="forward_list" id="forward_list" cols="35" rows="5">{FORWARD_LIST}</textarea></td>
 							</tr>
@@ -107,8 +112,7 @@
 						<table>
 							<tr>
 			   					<td>
-			   						<label for="forward_list">{TR_FORWARD_TO}</label>
-			   						<span class="icon i_help" onmouseover="showTip('fwd_help', event)" onmouseout="hideTip('fwd_help')" >Help</span>
+			   						<label for="forward_list">{TR_FORWARD_TO}</label><span class="icon i_help" id="fwd_help">Help</span>
 		   						</td>
 			   					<td><textarea name="forward_list" cols="35" rows="5">{FORWARD_LIST}</textarea></td>
 			   				</tr>

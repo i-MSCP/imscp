@@ -9,82 +9,90 @@
 		<meta name="robots" content="nofollow, noindex" />
 		<link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/imscp.js"></script>
+		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.js"></script>
+		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.imscpTooltips.js"></script>
 		<!--[if IE 6]>
 		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/DD_belatedPNG_0.0.8a-min.js"></script>
 		<script type="text/javascript">
 			DD_belatedPNG.fix('*');
 		</script>
 		<![endif]-->
-		<script type="text/javascript">
-		/* <![CDATA[ */
-		function changeType() {
-			if (document.forms[0].elements['mail_type_normal'].checked == true) {
-				document.forms[0].pass.disabled = false;
-				document.forms[0].pass_rep.disabled = false;
-			} else {
-				document.forms[0].pass.disabled = true;
-				document.forms[0].pass_rep.disabled = true;
-			}
-			if (document.forms[0].elements['mail_type_forward'].checked == true) {
-				document.forms[0].forward_list.disabled = false;
-			} else {
-				document.forms[0].forward_list.disabled = true;
-			}
-		}
-
-		function begin_js() {
-			if (document.getElementsByName('als_id').length !== 0) {
-				if (document.getElementById('dmn_type2').checked) {
-					document.forms[0].als_id.disabled = false;
+		<script language="JavaScript" type="text/JavaScript">
+		/*<![CDATA[*/
+			$(document).ready(function(){
+				// Tooltips - begin
+				$('#fwd_help').iMSCPtooltips({msg:"{TR_FWD_HELP}"});
+				// Tooltips - end
+			});
+		
+			function changeType() {
+				if (document.forms[0].elements['mail_type_normal'].checked == true) {
+					document.forms[0].pass.disabled = false;
+					document.forms[0].pass_rep.disabled = false;
 				} else {
-					document.forms[0].als_id.disabled = true;
+					document.forms[0].pass.disabled = true;
+					document.forms[0].pass_rep.disabled = true;
 				}
-			}
-			if (document.getElementsByName('sub_id').length !== 0) {
-				if (document.getElementById('dmn_type3').checked) {
-					document.forms[0].sub_id.disabled = false;
+				if (document.forms[0].elements['mail_type_forward'].checked == true) {
+					document.forms[0].forward_list.disabled = false;
 				} else {
-					document.forms[0].sub_id.disabled = true;
+					document.forms[0].forward_list.disabled = true;
 				}
 			}
-			if (document.getElementsByName('als_sub_id').length !== 0) {
-				if (document.getElementById('dmn_type4').checked) {
-					document.forms[0].als_sub_id.disabled = false;
-				} else {
-					document.forms[0].als_sub_id.disabled = true;
+		
+			function begin_js() {
+				if (document.getElementsByName('als_id').length !== 0) {
+					if (document.getElementById('dmn_type2').checked) {
+						document.forms[0].als_id.disabled = false;
+					} else {
+						document.forms[0].als_id.disabled = true;
+					}
+				}
+				if (document.getElementsByName('sub_id').length !== 0) {
+					if (document.getElementById('dmn_type3').checked) {
+						document.forms[0].sub_id.disabled = false;
+					} else {
+						document.forms[0].sub_id.disabled = true;
+					}
+				}
+				if (document.getElementsByName('als_sub_id').length !== 0) {
+					if (document.getElementById('dmn_type4').checked) {
+						document.forms[0].als_sub_id.disabled = false;
+					} else {
+						document.forms[0].als_sub_id.disabled = true;
+					}
+				}
+		//		document.forms[0].pass.disabled = false;
+		//		document.forms[0].pass_rep.disabled = false;
+		//		document.forms[0].forward_list.disabled = true;
+				changeType();
+				document.forms[0].username.focus();
+			}
+		
+			function changeDom(what) {
+				if (document.getElementsByName('als_id').length !== 0) {
+					if (what == "alias") {
+						document.forms[0].als_id.disabled = false;
+					} else {
+						document.forms[0].als_id.disabled = true;
+					}
+				}
+				if (document.getElementsByName('sub_id').length !== 0) {
+					if (what == "subdom") {
+						document.forms[0].sub_id.disabled = false;
+					} else  {
+						document.forms[0].sub_id.disabled = true;
+					}
+				}
+				if (document.getElementsByName('als_sub_id').length !== 0) {
+					if (what == "als_subdom") {
+						document.forms[0].als_sub_id.disabled = false;
+					} else {
+						document.forms[0].als_sub_id.disabled = true;
+					}
 				}
 			}
-//			document.forms[0].pass.disabled = false;
-//			document.forms[0].pass_rep.disabled = false;
-//			document.forms[0].forward_list.disabled = true;
-			changeType();
-			document.forms[0].username.focus();
-		}
-
-		function changeDom(what) {
-			if (document.getElementsByName('als_id').length !== 0) {
-				if (what == "alias") {
-					document.forms[0].als_id.disabled = false;
-				} else {
-					document.forms[0].als_id.disabled = true;
-				}
-			}
-			if (document.getElementsByName('sub_id').length !== 0) {
-				if (what == "subdom") {
-					document.forms[0].sub_id.disabled = false;
-				} else  {
-					document.forms[0].sub_id.disabled = true;
-				}
-			}
-			if (document.getElementsByName('als_sub_id').length !== 0) {
-				if (what == "als_subdom") {
-					document.forms[0].als_sub_id.disabled = false;
-				} else {
-					document.forms[0].als_sub_id.disabled = true;
-				}
-			}
-		}
-		/* ]]> */
+		/*]]>*/
 		</script>
 	</head>
 
@@ -120,7 +128,6 @@
 		</div>
 
 		<div class="body">
-			<div id="fwd_help" class="tooltip">{TR_FWD_HELP}</div>
 
 			<!-- BDP: page_message -->
 			<div class="warning">{MESSAGE}</div>
@@ -202,8 +209,7 @@
 					</tr>
 					<tr>
 						<td>
-							<label for="forward_list">{TR_FORWARD_TO}</label>
-			   				<span class="icon i_help" onmouseover="showTip('fwd_help', event)" onmouseout="hideTip('fwd_help')" >Help</span>
+							<label for="forward_list">{TR_FORWARD_TO}</label><span class="icon i_help" id="fwd_help">Help</span>
 						</td>
 						<td><textarea id="forward_list" name="forward_list" cols="35" rows="5">{FORWARD_LIST}</textarea></td>
 					</tr>
