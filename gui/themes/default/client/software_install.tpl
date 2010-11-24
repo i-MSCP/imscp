@@ -162,10 +162,12 @@
 		    					</tr>
 								<tr>
 									<td colspan="2">
-										<input name="Submit" type="submit" onClick="MM_goToURL('parent','software.php');return document.MM_returnValue" value="{TR_BACK}" />
-										<!-- BDP: software_install -->
-										<input name="Submit2" type="submit" value="{TR_INSTALL}" />
-                   						<!-- EDP: software_install -->
+										<div class="buttons">
+											<input name="Submit" type="submit" class="button" onClick="MM_goToURL('parent','software.php');return document.MM_returnValue" value="{TR_BACK}" />
+											<!-- BDP: software_install -->
+											<input name="Submit2" type="submit" class="button" value="{TR_INSTALL}" />
+	                   						<!-- EDP: software_install -->
+                   						</div>
 									</td>
 								</tr>
 								<!-- EDP: software_item -->

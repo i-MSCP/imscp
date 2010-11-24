@@ -21,12 +21,12 @@
         /*<![CDATA[*/
 			$(document).ready(function(){
 				// Tooltips - begin
-			$('a.swtooltip').sw_iMSCPtooltips('a.title');
+				$('span.i_app_installer').sw_iMSCPtooltips('span.title');
 				// Tooltips - end
 			});
 			$(document).ready(function(){
 				// Tooltips - begin
-				$('a.swtooltipstatus').iMSCPtooltips('a.title');
+				$('span.i_help').iMSCPtooltips('span.title');
 				// Tooltips - end
 			});
 		/*]]>*/
@@ -84,8 +84,8 @@
 				<!-- EDP: no_softwaredepot_list -->
 				<!-- BDP: list_softwaredepot -->
 				<tr>
-					<td><img src="{THEME_COLOR_PATH}/images/icons/cd.png" width="16" height="16" align="middle" />&nbsp;<a href="#" class="swtooltip" title="{TR_TOOLTIP}"><font color="{LINK_COLOR}">{TR_NAME}</font></a></td>
-					<td><a href="#" class="swtooltipstatus" title="{SW_INSTALLED}"><font color="{LINK_COLOR}">{TR_ADMIN}</font></a></td>
+					<td><span class="icon i_app_installer" title="{TR_TOOLTIP}">{TR_NAME}</span></td>
+					<td align="center"><span class="icon i_help" id="tld_help" title="{SW_INSTALLED}">help</span></td>
 					<td>{TR_VERSION}</td>
 					<td>{TR_LANGUAGE}</td>
 					<td>{TR_TYPE}</td>

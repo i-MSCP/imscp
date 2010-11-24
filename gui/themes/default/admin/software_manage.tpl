@@ -21,7 +21,7 @@
         /*<![CDATA[*/
 			$(document).ready(function(){
 				// Tooltips - begin
-				$('a.swtooltip').sw_iMSCPtooltips('a.title');
+				$('span.i_app_installer').sw_iMSCPtooltips('span.title');
 				// Tooltips - end
 			});
 			function action_delete() {
@@ -89,8 +89,11 @@
 									<td><input type="text" name="sw_wget" value="{VAL_WGET}" size="60" /></td>
 								</tr>
 								<tr>
-									<td><input name="upload" type="submit" value="{TR_UPLOAD_SOFTWARE_BUTTON}" />
-									<input type="hidden" name="send_software_upload_token" id="send_software_upload_token" value="{SOFTWARE_UPLOAD_TOKEN}" />
+									<td colspan="2">
+										<div class="buttons">
+											<input name="upload" type="submit" class="button" value="{TR_UPLOAD_SOFTWARE_BUTTON}" />
+											<input type="hidden" name="send_software_upload_token" id="send_software_upload_token" value="{SOFTWARE_UPLOAD_TOKEN}" />
+										</div>
 									</td>
 								</tr>
 							</table>
@@ -116,14 +119,14 @@
 				<!-- EDP: no_softwaredepot_list -->
 				<!-- BDP: list_softwaredepot -->
 				<tr>
-					<td><img src="{THEME_COLOR_PATH}/images/icons/cd.png" width="16" height="16" align="middle" />&nbsp;<a href="#" class="swtooltip" title="{TR_TOOLTIP}"><font color="{LINK_COLOR}">{TR_NAME}</font></a></td>
+					<td><span class="icon i_app_installer" title="{TR_TOOLTIP}">{TR_NAME}</span></td>
 					<td>{TR_VERSION}</td>
 					<td>{TR_LANGUAGE}</td>
 					<td>{TR_TYPE}</td>
 					<td>{TR_ADMIN}</td>
-					<td nowrap align="center"><img src="{THEME_COLOR_PATH}/images/content/table_icon_update.png" width="16" height="16" border="0" align="middle" /><a target="_blank" href="{DOWNLOAD_LINK}">{TR_DOWNLOAD}</a></td>
-					<td nowrap align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="middle" /> <a href="{DELETE_LINK}" onClick="return action_delete()">{TR_DELETE}</a></td>
-					<td nowrap align="center"><img src="{THEME_COLOR_PATH}/images/icons/{SOFTWARE_ICON}.png" width="16" height="16" border="0" align="middle" /><a href="{SOFTWARE_RIGHTS_LINK}">{RIGHTS_LINK}</a></td>
+					<td align="center"><span class="icon i_app_download"><a target="_blank" href="{DOWNLOAD_LINK}">{TR_DOWNLOAD}</a></span></td>
+					<td align="center"><span class="icon i_delete"><a href="{DELETE_LINK}" onClick="return action_delete()">{TR_DELETE}</a></span></td>
+					<td align="center"><span class="icon i_{SOFTWARE_ICON}"><a href="{SOFTWARE_RIGHTS_LINK}">{RIGHTS_LINK}</a></span></td>
 				</tr>
 				<!-- EDP: list_softwaredepot -->
 				<tr>
@@ -151,15 +154,15 @@
 				<!-- EDP: no_software_list -->
 				<!-- BDP: list_software -->
 				<tr>
-					<td><img src="{THEME_COLOR_PATH}/images/icons/app_installer_cd.png" width="16" height="16" align="middle" />&nbsp;<a href="#" class="swtooltip" title="{TR_TOOLTIP}">{TR_NAME}</a></td>
+					<td><span class="icon i_app_installer" title="{TR_TOOLTIP}">{TR_NAME}</span></td>
 					<td>{TR_VERSION}</td>
 					<td>{TR_LANGUAGE}</td>
 					<td>{TR_TYPE}</td>
 					<td>{TR_RESELLER}</td>
-					<td align="center"><img src="{THEME_COLOR_PATH}/images/content/table_icon_update.png" width="16" height="16" border="0" align="middle" /><a href="{IMPORT_LINK}" onClick="return action_import()">{TR_IMPORT}</a></td>
-					<td align="center"><img src="{THEME_COLOR_PATH}/images/content/table_icon_update.png" width="16" height="16" border="0" align="middle" /><a target="_blank" href="{DOWNLOAD_LINK}">{TR_DOWNLOAD}</a></td>
-					<td align="center"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" align="middle" /> <a href="{ACTIVATE_LINK}" onClick="return action_activate()">{TR_ACTIVATION}</a></td>
-					<td align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="middle" /> <a href="{DELETE_LINK}" onClick="return action_delete()">{TR_DELETE}</a></td>
+					<td align="center"><span class="icon i_app_download"><a href="{IMPORT_LINK}" onClick="return action_import()">{TR_IMPORT}</a></span></td>
+					<td align="center"><span class="icon i_app_download"><a target="_blank" href="{DOWNLOAD_LINK}">{TR_DOWNLOAD}</a></span></td>
+					<td align="center"><span class="icon i_edit"><a href="{ACTIVATE_LINK}" onClick="return action_activate()">{TR_ACTIVATION}</a></span></td>
+					<td align="center"><span class="icon i_delete"><a href="{DELETE_LINK}" onClick="return action_delete()">{TR_DELETE}</a></span></td>
 				</tr>
 				<!-- EDP: list_software -->
 				<tr>

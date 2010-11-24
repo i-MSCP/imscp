@@ -57,29 +57,29 @@
             	<tr>
 					<td>
 						<form name="admin_delete_email" method="post" action="software_delete.php">
-							<table width="100%" cellpadding="5" cellspacing="5">
+							<table>
 	                            <tr>
-	                            	<td>&nbsp;</td>
 	                            	<td colspan="2">{TR_DELETE_DATA}</td>
 	                            </tr>
 	                            <tr>
-	                              	<td>&nbsp;</td>
 	                              	<td>{TR_DELETE_SEND_TO}</td>
 	                              	<td>{DELETE_SOFTWARE_RESELLER}</td>
                             	</tr>
                             	<tr>
-                              		<td>&nbsp;</td>
                               		<td style="width:200px; vertical-align:top;">{TR_DELETE_MESSAGE_TEXT}</td>
                               		<td><textarea name="delete_msg_text" style="width:80%" cols="80" rows="20">{DELETE_MESSAGE_TEXT}</textarea></td>
                             	</tr>
                             	<tr>
-                              		<td>&nbsp;</td>
-                              		<td colspan="2"><input name="Submit" type="submit" value="{TR_SEND_MESSAGE}" /></td>
+                              		<td colspan="2">
+                              			<div class="buttons">
+                              				<input name="Submit" type="submit" class="button" value="{TR_SEND_MESSAGE}" />
+                              				<input type="hidden" name="uaction" value="send_delmessage" />
+											<input type="hidden" name="id" value="{SOFTWARE_ID}" />
+											<input type="hidden" name="reseller_id" value="{RESELLER_ID}" />
+                              			</div>
+                              		</td>
                             	</tr>
                         	</table>
-                        	<input type="hidden" name="uaction" value="send_delmessage" />
-							<input type="hidden" name="id" value="{SOFTWARE_ID}" />
-							<input type="hidden" name="reseller_id" value="{RESELLER_ID}" />
 						</form>					
 					</td>
 				</tr>

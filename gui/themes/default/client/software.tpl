@@ -21,7 +21,7 @@
         /*<![CDATA[*/
 			$(document).ready(function(){
 				// Tooltips - begin
-			$('a.swtooltip').sw_iMSCPtooltips('a.title');
+				$('span.i_app_installer').sw_iMSCPtooltips('span.title');
 				// Tooltips - end
 			});
 			function action_delete(url) {
@@ -93,14 +93,13 @@
 				<!-- BDP: t_software_support -->
 				<!-- BDP: software_item -->
 				<tr>
-					<td><img src="{THEME_COLOR_PATH}/images/icons/cd.png" width="14" height="14" align="middle" /> <a href="{VIEW_SOFTWARE_SCRIPT}" class="swtooltip" title="{SOFTWARE_DESCRIPTION}">{SOFTWARE_NAME}</a></td>
+					<td><span class="icon i_app_installer" title="{SOFTWARE_DESCRIPTION}"><a href="{VIEW_SOFTWARE_SCRIPT}">{SOFTWARE_NAME}</a></span></td>
 					<td align="center">{SOFTWARE_VERSION}</td>
 					<td align="center">{SOFTWARE_LANGUAGE}</td>
 					<td align="center">{SOFTWARE_TYPE}</td>
 					<td align="center">{SOFTWARE_NEED_DATABASE}</td>
 					<td align="center">{SOFTWARE_STATUS}</td>
-					<td align="center"><img src="{THEME_COLOR_PATH}/images/icons/{SOFTWARE_ICON}.png" width="16" height="16" border="0" align="middle" /> <a href="#" <!-- BDP: software_action_delete -->  onClick="return action_delete('{SOFTWARE_ACTION_SCRIPT}')" <!-- EDP: software_action_delete --><!-- BDP: software_action_install -->  onClick="return action_install('{SOFTWARE_ACTION_SCRIPT}')" <!-- EDP: software_action_install --> >{SOFTWARE_ACTION}</a>
-					</td>
+					<td align="center"><span class="icon i_{SOFTWARE_ICON}"><a href="#" <!-- BDP: software_action_delete -->  onClick="return action_delete('{SOFTWARE_ACTION_SCRIPT}')" <!-- EDP: software_action_delete --><!-- BDP: software_action_install -->  onClick="return action_install('{SOFTWARE_ACTION_SCRIPT}')" <!-- EDP: software_action_install --> >{SOFTWARE_ACTION}</a></span></td>
 				</tr>
 				<!-- EDP: software_item -->
 				<!-- EDP: t_software_support -->

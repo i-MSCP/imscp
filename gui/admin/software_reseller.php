@@ -119,30 +119,14 @@ function get_installed_res_software (&$tpl, &$sql, $reseller_id) {
 						$rs2->moveNext();
 					}
 					$swinstalled_domain .= "</ul>";
-					$tpl->assign(
-							array(
-								'SW_INSTALLED' => $swinstalled_domain
-							)
-						);
+					$tpl->assign('SW_INSTALLED', $swinstalled_domain);
 				} else {
-					$tpl->assign(
-							array(
-								'SW_INSTALLED' => tr('This package is not installed')
-							)
-						);
+					$tpl->assign('SW_INSTALLED', tr('This package is not installed'));
 				}
 				if ($rs->fields['swdepot'] == "yes") {
-					$tpl->assign(
-							array(
-								'TR_NAME' => tr($rs->fields['name'].' - (Softwaredepot)')
-								)
-							);
+					$tpl->assign('TR_NAME', tr('%1$s - (Softwaredepot)', $rs->fields['name']));
 				} else {
-					$tpl->assign(
-							array(
-								'TR_NAME' => $rs->fields['name']
-								)
-							);
+					$tpl->assign('TR_NAME', $rs->fields['name']);
 				}
 				$tpl->assign(
 						array(
@@ -161,13 +145,20 @@ function get_installed_res_software (&$tpl, &$sql, $reseller_id) {
 		}
 		$tpl->assign('NO_SOFTWAREDEPOT_LIST', '');
 	} else {
-		$query="SELECT `admin_name` as admin FROM `admin` WHERE `admin_id` = ?";
+		$query="
+			SELECT
+				`admin_name` as admin
+			FROM
+				`admin`
+			WHERE
+				`admin_id` = ?
+		";
 		$reseller = exec_query($sql, $query, $reseller_id);
 		if ($reseller->recordCount() > 0) {
 			$tpl->assign(
 					array(
 						'NO_SOFTWAREDEPOT' => tr('No software available!'),
-						'TR_SOFTWARE_DEPOT' => tr($reseller->fields['admin'].'`s - Software'),
+						'TR_SOFTWARE_DEPOT' => tr('%1$s`s - Software', $reseller->fields['admin']),
 						)
 					);
 			$tpl->parse('NO_SOFTWAREDEPOT_LIST', '.no_softwaredepot_list');
@@ -253,7 +244,9 @@ function get_reseller_software (&$tpl, &$sql) {
 					FROM
 						`web_software_inst`
 					WHERE
-						`software_id` IN (".implode(',', $software_ids ).")
+						`software_id`
+					IN
+						(".implode(',', $software_ids ).")
 					AND
 						`software_status` = 'ok'
 				";
@@ -264,8 +257,8 @@ function get_reseller_software (&$tpl, &$sql) {
 			}
 			$tpl->assign(
 					array(
-						'RESELLER_NAME' 		=> $rs->fields['reseller'],
-						'RESELLER_ID' 			=> $rs->fields['reseller_id'],
+						'RESELLER_NAME' 			=> $rs->fields['reseller'],
+						'RESELLER_ID' 				=> $rs->fields['reseller_id'],
 						'RESELLER_COUNT_SWDEPOT' 	=> $rscountswdepot->fields['swdepot'],
 						'RESELLER_COUNT_WAITING' 	=> $rscountwaiting->fields['waiting'],
 						'RESELLER_COUNT_ACTIVATED' 	=> $rscountactivated->fields['activated'],
@@ -277,11 +270,7 @@ function get_reseller_software (&$tpl, &$sql) {
 		}
 		$tpl->assign('NO_RESELLER_LIST', '');
 	} else {
-		$tpl->assign(
-				array(
-					'NO_RESELLER' => tr('No reseller with activated software installer found!')
-					)
-				);
+		$tpl->assign('NO_RESELLER', tr('No reseller with activated software installer found!'));
 		$tpl->parse('NO_RESELLER_LIST', '.no_reseller_list');
 		$tpl->assign('LIST_RESELLER', '');
 	}
@@ -291,9 +280,9 @@ function get_reseller_software (&$tpl, &$sql) {
 $tpl->assign(
 		array(
 			'TR_MANAGE_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Application Management'),
-			'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-			'THEME_CHARSET' => tr('encoding'),
-			'ISP_LOGO' => get_logo($_SESSION['user_id'])
+			'THEME_COLOR_PATH'				=> "../themes/{$cfg->USER_INITIAL_THEME}",
+			'THEME_CHARSET'					=> tr('encoding'),
+			'ISP_LOGO'						=> get_logo($_SESSION['user_id'])
 			)
 	);
 

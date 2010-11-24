@@ -98,7 +98,7 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 	$rs_res = exec_query($sql, $query_res, $rs->fields['reseller_id']);
 	$tpl->assign(
 			array(
-				'DELETE_SOFTWARE_RESELLER' => $rs_res->fields['admin_name'].' ('.$rs_res->fields['email'].')'
+				'DELETE_SOFTWARE_RESELLER' => tr('%1$s (%2$s)', $rs_res->fields['admin_name'], $rs_res->fields['email'])
 			)
 		);
 	if($rs->fields['software_depot'] == "yes") {
@@ -152,17 +152,17 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 		$tpl->assign(
 				array(
 					'TR_MANAGE_SOFTWARE_PAGE_TITLE' 	=> tr('i-MSCP - Application Management'),
-					'THEME_COLOR_PATH' 			=> "../themes/{$cfg->USER_INITIAL_THEME}",
-					'THEME_CHARSET' 			=> tr('encoding'),
-					'ISP_LOGO' 				=> get_logo($_SESSION['user_id']),
-					'TR_DELETE_SEND_TO' 			=> tr('Send message to'),
-					'TR_DELETE_MESSAGE_TEXT' 		=> tr('Message'),
-					'TR_DELETE_SOFTWARE' 			=> tr('Message to reseller before deleting the software'),
-					'TR_DELETE_RESELLER_SOFTWARE' 	=> tr('Delete reseller software'),
-					'TR_DELETE_DATA' 			=> tr('Reseller data'),
-					'TR_SEND_MESSAGE' 			=> tr('Delete software and send message'),
-					'SOFTWARE_ID' 				=> $software_id,
-					'RESELLER_ID' 				=> $rs->fields['reseller_id']
+					'THEME_COLOR_PATH' 					=> "../themes/{$cfg->USER_INITIAL_THEME}",
+					'THEME_CHARSET' 					=> tr('encoding'),
+					'ISP_LOGO' 							=> get_logo($_SESSION['user_id']),
+					'TR_DELETE_SEND_TO'					=> tr('Send message to'),
+					'TR_DELETE_MESSAGE_TEXT'			=> tr('Message'),
+					'TR_DELETE_SOFTWARE'				=> tr('Message to reseller before deleting the software'),
+					'TR_DELETE_RESELLER_SOFTWARE'		=> tr('Delete reseller software'),
+					'TR_DELETE_DATA'					=> tr('Reseller data'),
+					'TR_SEND_MESSAGE'					=> tr('Delete software and send message'),
+					'SOFTWARE_ID'						=> $software_id,
+					'RESELLER_ID'						=> $rs->fields['reseller_id']
 					)
 			);
 	}

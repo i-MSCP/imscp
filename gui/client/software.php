@@ -73,14 +73,14 @@ function gen_user_software_action($software_id, $dmn_id, &$sql, &$tpl) {
 		$software_icon = 'edit';
 	} else {
 		if ($sw->fields['software_status'] == 'ok') {
-			$software_status 	= 'installed';
-			$software_icon 		= 'delete';
+			$software_status = 'installed';
+			$software_icon = 'delete';
 		} elseif($sw->fields['software_status'] == 'toadd') {
-			$software_status 	= 'installing';
-			$software_icon 		= 'disabled';
+			$software_status = 'installing';
+			$software_icon = 'disabled';
 		} elseif($sw->fields['software_status'] == 'delete') {
-			$software_status	= 'deleting';
-			$software_icon 		= 'delete';
+			$software_status = 'deleting';
+			$software_icon = 'delete';
 		} else {
 			$software_status = 'n/a';
 			$software_icon = 'disabled';
@@ -173,16 +173,8 @@ function gen_software_list(&$tpl, &$sql, $dmn_id, $dmn_name, $reseller_id, $admi
 				} elseif($deleted_sw->fields['software_status'] == 'toadd') {
 					$delsoftware_status = 'installing';
 					$del_software_action_script="software_delete.php?id=".$deleted_sw->fields['software_id'];
-					$tpl->assign(
-							array(
-								'DEL_SOFTWARE_ACTION' 	=> tr('Uninstall')
-							)
-						);
-					$tpl->assign(
-							array(
-								'TR_RES_MESSAGE_DELETE' => tr('Are you sure you want to delete this package?', true)
-							)
-						);
+					$tpl->assign('DEL_SOFTWARE_ACTION', tr('Uninstall'));
+					$tpl->assign('TR_RES_MESSAGE_DELETE',tr('Are you sure you want to delete this package?', true));
 				} elseif($deleted_sw->fields['software_status'] == 'delete') {
 					$delsoftware_status = 'deleting';
 					$del_software_action_script="";
@@ -199,8 +191,8 @@ function gen_software_list(&$tpl, &$sql, $dmn_id, $dmn_name, $reseller_id, $admi
 				$software_version = $deleted_sw->fields['software_version'];
 				$tpl -> assign(
                             array(
-								'SOFTWARE_DEL_RES_MESSAGE' 	=> tr('This Package (%s, V%s) was deleted by your reseller. You can only uninstall this package!<br />Please delete the files and database for this package manually!', $software_name, $software_version),
-								'DEL_SOFTWARE_STATUS' 		=> $delsoftware_status,
+								'SOFTWARE_DEL_RES_MESSAGE' 		=> tr('This Package (%s, V%s) was deleted by your reseller. You can only uninstall this package!<br />Please delete the files and database for this package manually!', $software_name, $software_version),
+								'DEL_SOFTWARE_STATUS' 			=> $delsoftware_status,
 								'DEL_SOFTWARE_ACTION_SCRIPT' 	=> $del_software_action_script
 							)
 						);
@@ -263,7 +255,7 @@ function gen_software_list(&$tpl, &$sql, $dmn_id, $dmn_name, $reseller_id, $admi
 			$tpl->assign(
 					array(
 						'NO_SOFTWARE_AVAIL' 	=> tr('No software available'),
-						'ASC_DESC_BUTTON' 	=> ''
+						'ASC_DESC_BUTTON' 		=> ''
 					)
 				);
 			$tpl->parse('NO_SOFTWARE_SUPPORT', '.no_software_support');
@@ -282,30 +274,22 @@ function gen_software_list(&$tpl, &$sql, $dmn_id, $dmn_name, $reseller_id, $admi
 					$tpl);
 				$tpl -> assign(
 							array(
-								'SOFTWARE_NAME' 		=> $rs -> fields['software_name'],
+								'SOFTWARE_NAME' 			=> $rs -> fields['software_name'],
 								'SOFTWARE_DESCRIPTION'		=> $rs -> fields['software_desc'],
-								'SOFTWARE_VERSION' 		=> $rs -> fields['software_version'],
+								'SOFTWARE_VERSION' 			=> $rs -> fields['software_version'],
 								'SOFTWARE_LANGUAGE' 		=> $rs -> fields['software_language'],
-								'SOFTWARE_TYPE' 		=> $rs -> fields['software_type'],
-								'SOFTWARE_STATUS' 		=> $software_status,
-								'SOFTWARE_ACTION' 		=> $software_action,
+								'SOFTWARE_TYPE' 			=> $rs -> fields['software_type'],
+								'SOFTWARE_STATUS' 			=> $software_status,
+								'SOFTWARE_ACTION' 			=> $software_action,
 								'SOFTWARE_ACTION_SCRIPT' 	=> $software_action_script,
 								'VIEW_SOFTWARE_SCRIPT' 		=> $view_software_script,
-								'SOFTWARE_ICON' 		=> $software_icon
+								'SOFTWARE_ICON' 			=> $software_icon
 							)
 						);
 				if($rs -> fields['software_db'] == '1'){
-					$tpl -> assign(
-								array(
-									'SOFTWARE_NEED_DATABASE' => tr('required')
-								)
-							);
+					$tpl -> assign('SOFTWARE_NEED_DATABASE', tr('required'));
 				} else {
-					$tpl -> assign(
-								array(
-									'SOFTWARE_NEED_DATABASE' => tr('not required')
-								)
-							);
+					$tpl -> assign('SOFTWARE_NEED_DATABASE', tr('not required'));
 				}
 				if($software_status == "installed") {
 					$tpl->parse('SOFTWARE_ACTION_DELETE', 'software_action_delete');
@@ -351,7 +335,7 @@ function gen_page_lists(&$tpl, &$sql, $user_id) {
          $dmn_php,
          $dmn_cgi) = get_domain_default_props($sql, $user_id);
     $software_poss = gen_software_list($tpl, $sql, $dmn_id, $dmn_name, $dmn_created_id, $_SESSION['user_id']);
-    $tpl -> assign(array('TOTAL_SOFTWARE_AVAILABLE' => $software_poss));
+    $tpl -> assign('TOTAL_SOFTWARE_AVAILABLE', $software_poss);
 
 	$tpl->parse('SOFTWARE_MESSAGE', 'software_message');
 }
@@ -363,9 +347,9 @@ function gen_page_lists(&$tpl, &$sql, $user_id) {
 $tpl -> assign(
 			array(
 				'TR_CLIENT_MANAGE_USERS_PAGE_TITLE' 	=> tr('ispCP - Client/Manage Users'),
-				'THEME_COLOR_PATH' 			=> "../themes/{$cfg->USER_INITIAL_THEME}",
-				'THEME_CHARSET' 			=> tr('encoding'),
-				'ISP_LOGO' 				=> get_logo($_SESSION['user_id'])
+				'THEME_COLOR_PATH' 						=> "../themes/{$cfg->USER_INITIAL_THEME}",
+				'THEME_CHARSET' 						=> tr('encoding'),
+				'ISP_LOGO' 								=> get_logo($_SESSION['user_id'])
 			)
 		);
 
@@ -394,30 +378,30 @@ check_permissions($tpl);
 
 $tpl -> assign(
 			array(
-				'TR_SOFTWARE_MENU_PATH'	=> tr('i-MSCP - application installer'),
-				'TR_MANAGE_USERS' 		=> tr('Manage users'),
-				'TR_INSTALL_SOFTWARE' 		=> tr('Install software'),
-				'TR_SOFTWARE' 			=> tr('Software'),
-				'TR_VERSION' 			=> tr('Version'),
-				'TR_LANGUAGE' 			=> tr('Language'),
-				'TR_TYPE' 			=> tr('Type'),
-				'TR_NEED_DATABASE' 		=> tr('Database'),
-				'TR_STATUS' 			=> tr('Status'),
-				'TR_ACTION' 			=> tr('Action'),
-				'TR_SOFTWARE_AVAILABLE' 	=> tr('Apps available'),
-				'TR_DELETE' 			=> tr('Delete'),
-				'TR_SOFTWARE_MENU' 		=> tr('Software installation'),
+				'TR_SOFTWARE_MENU_PATH'			=> tr('i-MSCP - application installer'),
+				'TR_MANAGE_USERS' 				=> tr('Manage users'),
+				'TR_INSTALL_SOFTWARE' 			=> tr('Install software'),
+				'TR_SOFTWARE' 					=> tr('Software'),
+				'TR_VERSION' 					=> tr('Version'),
+				'TR_LANGUAGE' 					=> tr('Language'),
+				'TR_TYPE' 						=> tr('Type'),
+				'TR_NEED_DATABASE' 				=> tr('Database'),
+				'TR_STATUS' 					=> tr('Status'),
+				'TR_ACTION' 					=> tr('Action'),
+				'TR_SOFTWARE_AVAILABLE' 		=> tr('Apps available'),
+				'TR_DELETE' 					=> tr('Delete'),
+				'TR_SOFTWARE_MENU' 				=> tr('Software installation'),
 				'TR_CLIENT_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Application Management'),
-				'TR_SOFTWARE_ASC'		=> 'software.php?sortby=name&order=asc',
-				'TR_SOFTWARE_DESC' 		=> 'software.php?sortby=name&order=desc',
-				'TR_TYPE_ASC'			=> 'software.php?sortby=type&order=asc',
-				'TR_TYPE_DESC' 			=> 'software.php?sortby=type&order=desc',
-				'TR_NEED_DATABASE_ASC' 		=> 'software.php?sortby=database&order=asc',
-				'TR_NEED_DATABASE_DESC'		=> 'software.php?sortby=database&order=desc',
-				'TR_STATUS_ASC' 		=> 'software.php?sortby=status&order=asc',
-				'TR_STATUS_DESC'		=> 'software.php?sortby=status&order=desc',
-				'TR_LANGUAGE_ASC' 		=> 'software.php?sortby=language&order=asc',
-				'TR_LANGUAGE_DESC' 		=> 'software.php?sortby=language&order=desc'
+				'TR_SOFTWARE_ASC'				=> 'software.php?sortby=name&order=asc',
+				'TR_SOFTWARE_DESC' 				=> 'software.php?sortby=name&order=desc',
+				'TR_TYPE_ASC'					=> 'software.php?sortby=type&order=asc',
+				'TR_TYPE_DESC' 					=> 'software.php?sortby=type&order=desc',
+				'TR_NEED_DATABASE_ASC' 			=> 'software.php?sortby=database&order=asc',
+				'TR_NEED_DATABASE_DESC'			=> 'software.php?sortby=database&order=desc',
+				'TR_STATUS_ASC' 				=> 'software.php?sortby=status&order=asc',
+				'TR_STATUS_DESC'				=> 'software.php?sortby=status&order=desc',
+				'TR_LANGUAGE_ASC' 				=> 'software.php?sortby=language&order=asc',
+				'TR_LANGUAGE_DESC' 				=> 'software.php?sortby=language&order=desc'
 			)
 		);
 

@@ -236,34 +236,23 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 		}
 		if ($upload == 1) {
 			$tpl->assign(
-					array(
-						'VAL_WGET' => ''
-					)
-				);
+						array(
+							'VAL_WGET'	=> '',
+							'SW_INSTALLED'	=> ''
+						)
+					);
 			send_request();
 			set_page_message(tr('File was successfully uploaded.'));
 		} else {
-			$tpl->assign(
-					array(
-						'VAL_WGET' => $sw_wget
-					)
-				);
+			$tpl->assign('VAL_WGET', $sw_wget);
 		}
 	} else {
-		$tpl->assign(
-				array(
-					'VAL_WGET' => $_POST['sw_wget']
-				)
-			);
+		$tpl->assign('VAL_WGET', $_POST['sw_wget']);
 
 	}
 } else {
 	unset($_SESSION['software_upload_token']);
-	$tpl->assign(
-			array(
-				'VAL_WGET' => ''
-			)
-		);
+	$tpl->assign('VAL_WGET', '');
 }
 
 // Begin function block
@@ -327,7 +316,13 @@ function get_avail_software (&$tpl, &$sql, $user_id) {
 			while(!$rs->EOF) {
 				if($rs->fields['swstatus'] == "ok" || $rs->fields['swstatus'] == "ready") {
 					if($rs->fields['swstatus'] == "ready") {
-						$updatequery = "UPDATE `web_software` set software_status = 'ok' WHERE `software_id` = ?";
+						$updatequery = "
+							UPDATE
+								`web_software`
+							SET	`software_status` = 'ok'
+							WHERE
+								`software_id` = ?
+						";
 						exec_query($sql, $updatequery, $rs->fields['id']);
 						send_new_sw_upload ($user_id,$rs->fields['filename'].".tar.gz",$rs->fields['id']);
 						set_page_message(tr('Package installed successfully... Awaiting release from Admin!'));
@@ -361,66 +356,46 @@ function get_avail_software (&$tpl, &$sql, $user_id) {
 							$rs2->moveNext();
 						}
 						$swinstalled_domain .= "</ul>";
-						$tpl->assign(
-									array(
-										'SW_INSTALLED'	=> $swinstalled_domain
-									)
-								);
+						$tpl->assign('SW_INSTALLED', $swinstalled_domain);
 					} else {
-						$tpl->assign(
-									array(
-										'SW_INSTALLED'	=> tr('This package is not installed yet')
-									)
-								);
+						$tpl->assign('SW_INSTALLED', tr('This package is not installed yet'));
 					}
 					
 					$tpl->assign(
 							array(
-								'SW_NAME' 		=> $rs->fields['name'],
-								'LINK_COLOR' 		=> '#000000',
-								'SW_VERSION' 		=> $rs->fields['version'],
-								'SW_LANGUAGE' 		=> $rs->fields['language'],
-								'SW_DESCRIPTION' 	=> $rs->fields['description'],
-								'SW_TYPE' 		=> $rs->fields['type'],
-								'DELETE' 		=> $url,
-								'TR_DELETE' 		=> tr('Delete'),
+								'SW_NAME' 				=> $rs->fields['name'],
+								'LINK_COLOR' 			=> '#000000',
+								'SW_VERSION' 			=> $rs->fields['version'],
+								'SW_LANGUAGE' 			=> $rs->fields['language'],
+								'SW_DESCRIPTION' 		=> $rs->fields['description'],
+								'SW_TYPE' 				=> $rs->fields['type'],
+								'DELETE' 				=> $url,
+								'TR_DELETE' 			=> tr('Delete'),
 								'WAITING_SOFTWARE_LIST' => '',
-								'SOFTWARE_ICON' 	=> 'delete'
+								'SOFTWARE_ICON' 		=> 'delete'
 							)
 						);
 					if ($rs->fields['swactive'] == "0"){
-						$tpl->assign(
-								array(
-									'SW_STATUS'	=> tr('waiting for activation')
-								)
-							);
+						$tpl->assign('SW_STATUS', tr('waiting for activation'));
 					} 
 					elseif ($rs->fields['swactive'] == "1" && $rs->fields['softwaredepot'] == "yes"){
-						$tpl->assign(
-								array(
-									'SW_STATUS'	=> tr('activated (Softwaredepot)')
-								)
-							);
+						$tpl->assign('SW_STATUS', tr('activated (Softwaredepot)'));
 					}
 					else {
-						$tpl->assign(
-								array(
-									'SW_STATUS'	=> tr('activated')
-								)
-							);
+						$tpl->assign('SW_STATUS', tr('activated'));
 					}
 				} else {
 					if($rs->fields['swstatus'] == "toadd") {
 						$url = "software_delete.php?id=".$rs->fields['id'];
 						$tpl->assign(
 								array(
-									'SW_NAME' 		=> tr('Installing your uploaded package. Please refresh the site.'),
+									'SW_NAME'			=> tr('Installing your uploaded package. Please refresh the site.'),
 									'LINK_COLOR' 		=> '#FF0000',
 									'SW_VERSION' 		=> '',
 									'SW_LANGUAGE'		=> '',
-									'SW_DESCRIPTION' 	=> tr('After your upload the package it will be installed on your systems.<br />Refresh your site to see the new status!'),
-									'SW_TYPE' 		=> '',
-									'DELETE' 		=> $url,
+									'SW_DESCRIPTION'	=> tr('After your upload the package it will be installed on your systems.<br />Refresh your site to see the new status!'),
+									'SW_TYPE' 			=> '',
+									'DELETE' 			=> $url,
 									'TR_DELETE' 		=> tr('Delete'),
 									'SW_STATUS' 		=> tr('installing'),
 									'SOFTWARE_ICON' 	=> 'disabled'
@@ -430,13 +405,13 @@ function get_avail_software (&$tpl, &$sql, $user_id) {
 						if($rs->fields['swstatus'] == "delete") {
 							$tpl->assign(
 									array(
-										'SW_NAME' 		=> tr('Failure in package. Deleting!'),
+										'SW_NAME' 			=> tr('Failure in package. Deleting!'),
 										'LINK_COLOR' 		=> '#FF0000',
 										'SW_VERSION' 		=> '',
 										'SW_LANGUAGE' 		=> '',
 										'SW_DESCRIPTION'	=> tr('Check your package. There is an error inside!<br />Refresh your site to see the new status!'),
-										'SW_TYPE' 		=> '',
-										'DELETE' 		=> '',
+										'SW_TYPE' 			=> '',
+										'DELETE' 			=> '',
 										'TR_DELETE' 		=> '',
 										'SW_STATUS' 		=> tr('deleting'),
 										'SOFTWARE_ICON' 	=> 'disabled'
@@ -446,13 +421,13 @@ function get_avail_software (&$tpl, &$sql, $user_id) {
 						} elseif (preg_match("/double_depot_/i", $rs->fields['swstatus'])) {
 							$tpl->assign(
 									array(
-										'SW_NAME' 		=> tr('Package already exist in the software depot!'),
+										'SW_NAME' 			=> tr('Package already exist in the software depot!'),
 										'LINK_COLOR' 		=> '#FF0000',
 										'SW_VERSION' 		=> '',
 										'SW_LANGUAGE'	 	=> '',
 										'SW_DESCRIPTION' 	=> tr('Please contact the administrator!<br />Ask him for the permissions to use this package.<br />It is not allowed to upload this packet two times.<br />Refresh your site to see the new status!'),
-										'SW_TYPE' 		=> '',
-										'DELETE' 		=> '',
+										'SW_TYPE' 			=> '',
+										'DELETE' 			=> '',
 										'TR_DELETE' 		=> '',
 										'SW_STATUS' 		=> tr('deleting'),
 										'SOFTWARE_ICON' 	=> 'disabled'
@@ -462,13 +437,13 @@ function get_avail_software (&$tpl, &$sql, $user_id) {
 						} elseif (preg_match("/double_res_/i", $rs->fields['swstatus'])) {
 							$tpl->assign(
 									array(
-										'SW_NAME' 		=> tr('Package already exist in your software depot!'),
+										'SW_NAME' 			=> tr('Package already exist in your software depot!'),
 										'LINK_COLOR' 		=> '#FF0000',
 										'SW_VERSION' 		=> '',
 										'SW_LANGUAGE' 		=> '',
 										'SW_DESCRIPTION' 	=> tr('Check your own uploads!<br />Ask the administrator if you don\'t find the package.<br />It is not allowed to upload this packages two times.<br />Refresh your site to see the new status!'),
-										'SW_TYPE' 		=> '',
-										'DELETE' 		=> '',
+										'SW_TYPE' 			=> '',
+										'DELETE' 			=> '',
 										'TR_DELETE' 		=> '',
 										'SW_STATUS' 		=> tr('deleting'),
 										'SOFTWARE_ICON' 	=> 'disabled'
@@ -516,9 +491,9 @@ function get_avail_software (&$tpl, &$sql, $user_id) {
 $tpl->assign(
 		array(
 			'TR_MANAGE_SOFTWARE_PAGE_TITLE'	=> tr('i-MSCP - Application Management'),
-			'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-			'THEME_CHARSET' => tr('encoding'),
-			'ISP_LOGO' => get_logo($_SESSION['user_id'])
+			'THEME_COLOR_PATH'				=> "../themes/{$cfg->USER_INITIAL_THEME}",
+			'THEME_CHARSET'					=> tr('encoding'),
+			'ISP_LOGO'						=> get_logo($_SESSION['user_id'])
 		)
 	);
 

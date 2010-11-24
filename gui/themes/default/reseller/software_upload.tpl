@@ -21,12 +21,12 @@
         /*<![CDATA[*/
 			$(document).ready(function(){
 				// Tooltips - begin
-				$('a.swtooltip').sw_iMSCPtooltips('a.title');
+				$('span.i_app_installer').sw_iMSCPtooltips('span.title');
 				// Tooltips - end
 			});
 			$(document).ready(function(){
 				// Tooltips - begin
-				$('a.swtooltipstatus').iMSCPtooltips('a.title');
+				$('span.i_app_installed').iMSCPtooltips('span.title');
 				// Tooltips - end
 			});
 			function action_delete() {
@@ -89,12 +89,12 @@
 				<!-- EDP: no_software_list -->
 				<!-- BDP: list_software -->
 				<tr>
-					<td><img src="{THEME_COLOR_PATH}/images/icons/cd.png" width="16" height="16" align="middle" />&nbsp;<a href="#" class="swtooltip" title="{SW_DESCRIPTION}"><font color="{LINK_COLOR}">{SW_NAME}</font></a></td>
+					<td><span class="icon i_app_installer" title="{SW_DESCRIPTION}">{SW_NAME}</span></td>
 					<td>{SW_VERSION}</td>
 					<td>{SW_LANGUAGE}</td>
-					<td><a href="#" class="swtooltipstatus" title="{SW_INSTALLED}"><font color="{LINK_COLOR}">{SW_STATUS}</font></a></td>
+					<td><span class="icon i_app_installed" title="{SW_INSTALLED}">{SW_STATUS}</span></td>
 					<td>{SW_TYPE}</td>
-					<td><img src="{THEME_COLOR_PATH}/images/icons/{SOFTWARE_ICON}.png" width="16" height="16" border="0" align="middle" /> <a href="{DELETE}" onclick="return action_delete()">{TR_DELETE}</a></td>
+					<td><span class="icon i_{SOFTWARE_ICON}"><a href="{DELETE}" onclick="return action_delete()">{TR_DELETE}</a></span></td>
 				</tr>
 				<!-- EDP: list_software -->
 				<tr>
@@ -117,8 +117,11 @@
 									<td><input type="text" name="sw_wget" value="{VAL_WGET}" size="60" /></td>
 								</tr>
 								<tr>
-									<td><input name="upload" type="submit" value="{TR_UPLOAD_SOFTWARE_BUTTON}" />
-									<input type="hidden" name="send_software_upload_token" id="send_software_upload_token" value="{SOFTWARE_UPLOAD_TOKEN}" />
+									<td colspan="2">
+										<div class="buttons">
+											<input name="upload" type="submit" class="button" value="{TR_UPLOAD_SOFTWARE_BUTTON}" />
+											<input type="hidden" name="send_software_upload_token" id="send_software_upload_token" value="{SOFTWARE_UPLOAD_TOKEN}" />
+										</div>
 									</td>
 								</tr>
 							</table>	

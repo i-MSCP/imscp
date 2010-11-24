@@ -95,15 +95,15 @@ function check_is_installed(&$tpl, &$sql, $dmn_id, $software_id) {
 	} else {
 		$tpl -> assign(
 					array(
-						'SOFTWARE_INSTALL_BUTTON' 	=> '',
-						'SOFTWARE_STATUS' 		=> tr('installed'),
-						'SOFTWARE_INSTALL_PATH' 	=> $is_inst->fields['path'],
-						'SOFTWARE_INSTALL_DATABASE' 	=> $is_inst->fields['db'],
-						'TR_SOFTWARE_INFO' 		=> tr('Installation infos'),
-						'TR_SOFTWARE_STATUS' 		=> tr('Software status:'),
-						'TR_SOFTWARE_INSTALL_PATH' 	=> tr('Installation path:'),
+						'SOFTWARE_INSTALL_BUTTON'		=> '',
+						'SOFTWARE_STATUS'				=> tr('installed'),
+						'SOFTWARE_INSTALL_PATH'			=> $is_inst->fields['path'],
+						'SOFTWARE_INSTALL_DATABASE'		=> $is_inst->fields['db'],
+						'TR_SOFTWARE_INFO'				=> tr('Installation infos'),
+						'TR_SOFTWARE_STATUS'			=> tr('Software status:'),
+						'TR_SOFTWARE_INSTALL_PATH'		=> tr('Installation path:'),
 						'TR_SOFTWARE_INSTALL_DATABASE' 	=> tr('Used database:'),
-						'SOFTWARE_INSTALL' 		=> ''
+						'SOFTWARE_INSTALL'				=> ''
 					)
 				);
 		$tpl -> parse('INSTALLED_SOFTWARE_INFO', '.installed_software_info');
@@ -134,11 +134,7 @@ function get_software_props (&$tpl, &$sql, $dmn_id, $software_id, $dmn_created_i
 		";
 		$rs = exec_query($sql, $software_props, array($software_id, $dmn_created_id));
 		if ($rs -> fields['software_db'] == 1) {
-			$tpl -> assign(
-						array(
-							'SOFTWARE_DB'	 => tr('yes')
-						)
-					);
+			$tpl -> assign('SOFTWARE_DB', tr('yes'));
 			if ($dmn_sqld_limit == '-1') { 
 				$tpl -> assign(
 							array(
@@ -173,7 +169,7 @@ function get_software_props (&$tpl, &$sql, $dmn_id, $software_id, $dmn_created_i
 					array(
 						'SOFTWARE_NAME' 		=> $rs -> fields['software_name'],
 						'SOFTWARE_VERSION' 		=> $rs -> fields['software_version'],
-						'SOFTWARE_LANGUAGE' 		=> $rs -> fields['software_language'],
+						'SOFTWARE_LANGUAGE' 	=> $rs -> fields['software_language'],
 						'SOFTWARE_TYPE' 		=> $rs -> fields['software_type'],
 						'SOFTWARE_LINK' 		=> $sw_link,
 						'SOFTWARE_DESC' 		=> nl2br(wordwrap($rs -> fields['software_desc'],200, "\n", true))
@@ -222,10 +218,10 @@ function gen_page_lists(&$tpl, &$sql, $user_id) {
 
 $tpl -> assign(
 			array(
-				'TR_CLIENT_VIEW_SOFTWARE_PAGE_TITLE' 	=> tr('i-MSCP - Software details'),
-				'THEME_COLOR_PATH' 			=> "../themes/{$cfg->USER_INITIAL_THEME}",
-				'THEME_CHARSET' 			=> tr('encoding'),
-				'ISP_LOGO' 				=> get_logo($_SESSION['user_id'])
+				'TR_CLIENT_VIEW_SOFTWARE_PAGE_TITLE'	=> tr('i-MSCP - Software details'),
+				'THEME_COLOR_PATH'						=> "../themes/{$cfg->USER_INITIAL_THEME}",
+				'THEME_CHARSET'							=> tr('encoding'),
+				'ISP_LOGO'								=> get_logo($_SESSION['user_id'])
 			)
 		);
 
@@ -258,18 +254,18 @@ $tpl -> assign(
 				'TR_SOFTWARE_MENU_PATH'	=> tr('i-MSCP - application installer'),
 				'TR_SOFTWARE_VIEW_PATH'	=> tr('Software details'),
 				'SOFTWARE_ID'			=> $software_id,
-				'TR_MANAGE_USERS' 	=> tr('Manage users'),
-				'TR_VIEW_SOFTWARE' 	=> tr('Software details'),
-				'TR_NAME' 		=> tr('Software'),
-				'TR_VERSION'		=> tr('Version'),
-				'TR_LANGUAGE' 		=> tr('Language'),
-				'TR_TYPE'		=> tr('Type'),
-				'TR_DB' 		=> tr('Database required'),
-				'TR_LINK' 		=> tr('Homepage'),
-				'TR_DESC' 		=> tr('Description'),
-				'TR_BACK' 		=> tr('Back'),
-				'TR_INSTALL' 		=> tr('Install'),
-				'TR_SOFTWARE_MENU' 	=> tr('Software installation')
+				'TR_MANAGE_USERS' 		=> tr('Manage users'),
+				'TR_VIEW_SOFTWARE' 		=> tr('Software details'),
+				'TR_NAME' 				=> tr('Software'),
+				'TR_VERSION'			=> tr('Version'),
+				'TR_LANGUAGE' 			=> tr('Language'),
+				'TR_TYPE'				=> tr('Type'),
+				'TR_DB' 				=> tr('Database required'),
+				'TR_LINK' 				=> tr('Homepage'),
+				'TR_DESC' 				=> tr('Description'),
+				'TR_BACK' 				=> tr('Back'),
+				'TR_INSTALL' 			=> tr('Install'),
+				'TR_SOFTWARE_MENU' 		=> tr('Software installation')
 			)
 		);
 

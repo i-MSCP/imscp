@@ -84,9 +84,11 @@
 								</tr>
 								<tr>
 									<td colspan="3">
-										<input name="Button" type="submit" class="button" value="{TR_ADD_RIGHTS_BUTTON}" />
-										<input type="hidden" value="add" name="change" />
-										<input type="hidden" value="{SOFTWARE_ID_VALUE}" name="id" />
+											<div class="buttons">
+												<input name="Button" type="submit" class="button" value="{TR_ADD_RIGHTS_BUTTON}" />
+												<input type="hidden" value="add" name="change" />
+												<input type="hidden" value="{SOFTWARE_ID_VALUE}" name="id" />
+											</div>
 									</td>
 								</tr>
 							</table>
@@ -108,7 +110,7 @@
 				<tr>
 					<td>{RESELLER}</td>
 					<td>{ADMINISTRATOR}</td>
-					<td align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" align="middle" /> <a href="{REMOVE_RIGHT_LINK}" onClick="return action_remove_right()">{TR_REMOVE_RIGHT}</a></td>
+					<td align="center"><span class="icon i_delete"><a href="{REMOVE_RIGHT_LINK}" onClick="return action_remove_right()">{TR_REMOVE_RIGHT}</a></span></td>
 				</tr>
 				<!-- EDP: list_reseller -->
 				<tr>

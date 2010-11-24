@@ -116,12 +116,14 @@
 				</tr>
 				<!-- EDP: installed_software_info -->
 				<tr>
-					<td>
+					<td colspan="2">
 					<form name="buttons" method="post" action="#">
-						<input name="Submit" type="submit" onclick="MM_goToURL('parent','software.php');return document.MM_returnValue" value="{TR_BACK}" />
-						<!-- BDP: software_install -->
-						<input name="Submit2" type="submit" onclick="MM_goToURL('parent','{SOFTWARE_INSTALL_BUTTON}');return document.MM_returnValue" value="{TR_INSTALL}" />
-                   		<!-- EDP: software_install -->
+						<div class="buttons">
+							<input name="Submit" type="submit" class="button" onclick="MM_goToURL('parent','software.php');return document.MM_returnValue" value="{TR_BACK}" />
+							<!-- BDP: software_install -->
+							<input name="Submit2" type="submit" class="button" onclick="MM_goToURL('parent','{SOFTWARE_INSTALL_BUTTON}');return document.MM_returnValue" value="{TR_INSTALL}" />
+	                   		<!-- EDP: software_install -->
+                   		</div>
 					</form>
 					</td>
 				</tr>
