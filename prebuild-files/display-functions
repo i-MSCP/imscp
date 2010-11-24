@@ -26,7 +26,7 @@
 # @category		i-MSCP
 # @copyright	2010 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@i-mscp.net>
-# @version		SVN: $Id: Database.php 3702 2010-11-16 14:20:55Z sci2tech $
+# @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/ GPL v2
 
@@ -63,50 +63,53 @@ colorStart(){
 			white="1;37"
 		eval _temp=\$${_color}
 		if [ ! -z "${_temp}" ]; then
-			 printf "\033[${_temp}m"
+			 writelog "\033[${_temp}m"
 		fi
 	fi
 }
 
 colorEnd(){
-	 printf "\033[0m"
+	 writelog "\033[0m"
 }
 
 colortxt() {
 	local  _color="${1}" _text="${2}"
 	if [ -z "${_color}" ]; then
-		printf "[ERROR] colortxt: Not enought parameters!\n"
+		writelog "[ERROR] colortxt: Not enought parameters!\n"
 		exit 1
 	fi
 	if [ -z "${_text}" ]; then
 		_color=''
 		_text="${1}"
 	fi
-	colorStart "${_color}"; printf "${_text}"; colorEnd;
+	colorStart "${_color}"; writelog "${_text}"; colorEnd;
 }
 
 oktxt() {
 	local _text=$1
 	if [ -z $_text ]; then _text='ok'; fi
-	printf '[ '; colortxt 'green' $_text; printf " ]"
+	_text=$(echo "$_text" | tr [:lower:] [:upper:])
+	writelog ' [ '; colortxt 'green' $_text; writelog " ]"
 }
 
 warntxt() {
 	local _text="${1}"
 	if [ -z $_text ]; then _text='warning'; fi
-	printf '[ '; colortxt 'yellow' "${_text}"; printf " ]"
+	_text=$(echo "$_text" | tr [:lower:] [:upper:])
+	writelog ' [ '; colortxt 'yellow' "${_text}"; writelog " ]"
 }
 
 failtxt() {
 	local _text="${1}"
 	if [ -z "$_text" ]; then _text='fail'; fi
-	printf '[ '; colortxt 'red' "${_text}"; printf " ]\n"
-	printf '[ '; colortxt 'red' 'EXITING...'; printf " ]\n"
+	_text=$(echo "$_text" | tr [:lower:] [:upper:])
+	writelog ' [ '; colortxt 'red' "${_text}"; writelog " ]\n"
+	writelog '[ '; colortxt 'red' 'EXITING...'; writelog " ]\n"
 	exit
 }
 
 title() {
-	printf "\n\033[4m${1}\033[0m\n";
+	writelog "\n\033[4m${1}\033[0m\n";
 }
 
 getSize() {

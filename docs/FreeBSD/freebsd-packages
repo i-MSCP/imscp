@@ -47,6 +47,7 @@
 /usr/ports/net/p5-PlRPC
 /usr/ports/net/p5-URI
 /usr/ports/www/p5-libwww
+/usr/ports/devel/p5-Class-Load
 /usr/ports/devel/p5-DateTime
 /usr/ports/devel/p5-DateTime-TimeZone
 /usr/ports/devel/p5-Term-ReadPassword

@@ -4,6 +4,10 @@ i-MSCP ChangeLog
 	- GUI:
 	         * Update Net_IDNA to 0.6.9
 	         
+2010-11-24 Daniel Andreca
+	- CONFIGS:
+		* Fixed #27: Add logger to build script
+
 2010-11-23 Daniel Andreca
 	- CONFIGS:
 		* Fixed #26: Warnings in build script being installed via serial console

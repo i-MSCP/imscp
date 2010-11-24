@@ -26,22 +26,27 @@
 # @category		i-MSCP
 # @copyright	2010 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@i-mscp.net>
-# @version		SVN: $Id: install 3845 2010-11-24 08:33:51Z sci2tech $
+# @version		SVN: $Id: Database.php 3702 2010-11-16 14:20:55Z sci2tech $
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/ GPL v2
 
-SYSTEM_FOLDERS=''
-FOLDERS='';
-COPY_CONFIG_FILE='';
-COPY_FILE='
-	${SYSTEM_ENGINE_ROOT}/awstats/awstats_*
-';
-CREATE_FILE=''
-CHOWN_FILE='
-	root:'${root_group}'|${SYSTEM_ENGINE_ROOT}/awstats/awstats_*
-'
-CHMOD_FILE='
-	0700|${SYSTEM_ENGINE_ROOT}/awstats/awstats_*
-'
-
-
+writelog() {
+	_logline="${1}";
+	printf "${1}";
+	_logline=$(printf "$_logline" | sed -r 's~'$(echo "\033")'\[[0-9;]{1,4}m~~g'; printf x);
+	_logline="${_logline%x}"
+	if [ "${SYSTEM_LOG}" ]; then
+		if [ "${FlushTXT}" ]; then
+			LOG=$(echo ${SYSTEM_LOG}| sed 's~'${INST_PREF}'~~g');
+			${mkdir} -p "${LOG}"
+			#if [ -f "${LOG}/imscp-build.log" ]; then ${rm} "${LOG}/imscp-build.log"; fi
+			${touch} "${LOG}/imscp-build.log"
+			${chmod} 0660 "${LOG}/imscp-build.log"
+			printf "${FlushTXT}${_logline}" >> "${LOG}/imscp-build.log"
+			FlushTXT='';
+		fi
+		printf "${_logline}" >> "${LOG}/imscp-build.log"
+	else
+		FlushTXT="${FlushTXT}${_logline}"
+	fi
+}
