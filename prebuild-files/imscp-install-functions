@@ -26,27 +26,27 @@
 # @category		i-MSCP
 # @copyright	2010 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@i-mscp.net>
-# @version		SVN: $Id: Database.php 3702 2010-11-16 14:20:55Z sci2tech $
+# @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/ GPL v2
 
 testCommand() {
-		printf "Testing for ${1} command... ";
+		writelog "Testing for ${1} command...";
 		A=$(which "${1}")
 		XX=$?
 		if [ "${XX}" = "0" ]; then
-			printf "${1} found ${A} "
+			writelog "${1} found ${A}"
 			eval ${1}=$A
 			oktxt
-			printf "\n"
+			writelog "\n"
 		else
-			printf "NOT FOUND ${1}!!! "
+			writelog "NOT FOUND ${1}!!!"
 			if [ "${2}" != "0" ]; then
 				failtxt
-				printf "\n"
+				writelog "\n"
 			else
 				warntxt
-				printf "\n"
+				writelog "\n"
 			fi
 		fi
 	return $XX;
@@ -64,7 +64,7 @@ testAnyCommand() {
 		fi
 	done
 	if [ $rs != "0" ]; then
-		printf  "None of following ${1} where found "
+		writelog  "None of following ${1} where found"
 		failtxt
 	fi
 }
@@ -75,8 +75,10 @@ sys_folder() {
 	if [ ${dir} ]; then
 		if [ -d ${dir} ]; then ${rm} -r ${dir}; fi
 		${mkdir} -p ${dir};
-		if [ $? != 0 ]; then printf "Can not create $dir"; warntxt; printf "\n";
-		else printf "Create $dir"; oktxt; printf "\n";
+		if [ $? != 0 ]; then
+			writelog "Can not create folder $dir"; warntxt; writelog "\n";
+			WARNINGS="$WARNINGS\nCan not create folder $dir";
+		else writelog "Create $dir"; oktxt; writelog "\n";
 		fi
 	fi
 }
@@ -86,8 +88,9 @@ make_folder() {
 	if [ ${dir} ]; then
 		if [ -d ${dir} ]; then ${rm} -r ${dir}; fi
 		${mkdir} ${dir};
-		if [ $? != 0 ]; then printf "Can not create folder $dir"; warntxt; printf "\n";
-		else printf "Create folder $dir"; oktxt; printf "\n";
+		if [ $? != 0 ]; then writelog "Can not create folder $dir"; warntxt; writelog "\n";
+			WARNINGS="$WARNINGS\nCan not create folder $dir";
+		else writelog "Create folder $dir"; oktxt; writelog "\n";
 		fi
 	fi
 }
@@ -97,8 +100,10 @@ make_file() {
 	if [ ${file} ]; then
 		if [ -f ${file} ]; then ${rm} ${file}; fi
 		${touch} ${file};
-		if [ $? != 0 ]; then printf "Can not create file $file"; warntxt; printf "\n";
-		else printf "Create file $file"; oktxt; printf "\n";
+		if [ $? != 0 ]; then
+			writelog "Can not create file $file"; warntxt; writelog "\n";
+			WARNINGS="$WARNINGS\nCan not create file $file";
+		else writelog "Create file $file"; oktxt; writelog "\n";
 		fi
 	fi
 }
@@ -109,10 +114,10 @@ copy_config_file() {
 		source=$(basename ${file})
 		destination=$(dirname ${file})
 		if [ ! -e "${source}" ] && [ ! -e "${COMMON_PATH}$FOLDER/${source}" ]; then
-			printf "Not found ${source} in ${OS_PATH}${FOLDER} or ${COMMON_PATH}$FOLDER";
+			writelog "Not found ${source} in ${OS_PATH}${FOLDER} or ${COMMON_PATH}$FOLDER";
 			warntxt;
-			WARNINGS=1;
-			printf "\n";
+			WARNINGS="$WARNINGS\nNot found ${source} in ${OS_PATH}${FOLDER} or ${COMMON_PATH}$FOLDER";
+			writelog "\n";
 			return;
 		fi
 		if [ -e "${source}" ]; then
@@ -124,9 +129,9 @@ copy_config_file() {
 			$cp -R "${COMMON_PATH}$FOLDER/${source}" "${destination}";
 		fi
 		if [ $? != 0 ]; then
-			printf "Can not copy file $file"; failtxt;
+			writelog "Can not copy file $file"; failtxt;
 		else
-			printf "Copy file $file"; oktxt; printf "\n";
+			writelog "Copy file $file"; oktxt; writelog "\n";
 		fi
 	fi
 }
@@ -138,9 +143,9 @@ copy_file() {
 		destination=$(dirname "${file}")
 		eval "$cp -R ${source} ${destination}";
 		if [ $? != 0 ]; then
-			printf "Can not copy file $file"; failtxt;
+			writelog "Can not copy file $file"; failtxt;
 		else
-			printf "Copy file $file"; oktxt; printf "\n";
+			writelog "Copy file $file"; oktxt; writelog "\n";
 		fi
 	fi
 }
@@ -154,8 +159,10 @@ _chown_file() {
 	eval owner=${1}
 	if [ "${file}" ]; then
 		eval "${chown} -R $owner $file"
-		if [ $? != 0 ]; then printf "Can not change owner $file"; warntxt; printf "\n";WARNINGS=1;
-		else printf "Change owner $file"; oktxt; printf "\n";
+		if [ $? != 0 ]; then
+			writelog "Can not change owner $file"; warntxt; writelog "\n";
+			WARNINGS="$WARNINGS\nCan not change owner $file";
+		else writelog "Change owner $file"; oktxt; writelog "\n";
 		fi
 	fi
 }
@@ -169,8 +176,10 @@ _chmod_file(){
 	eval mode=${1}
 	if [ "${file}" ]; then
 		eval "${chmod} -R $mode $file"
-		if [ $? != 0 ]; then printf "Can not mode $file"; warntxt; printf "\n";WARNINGS=1;
-		else printf "Change mode $file"; oktxt; printf "\n";
+		if [ $? != 0 ]; then
+			writelog "Can not mode $file"; warntxt; writelog "\n";
+			WARNINGS="$WARNINGS\nCan not mode $file";
+		else writelog "Change mode $file"; oktxt; writelog "\n";
 		fi
 	fi
 }
@@ -190,10 +199,11 @@ process_file() {
 	COMMON_PATH=${SELFDIR}/configs/common/
 	for FOLDER in "" $(find $SELFDIR/configs/common/ -maxdepth 1 -type d | awk -F "${SELFDIR}/configs/common/" '{print $2}');
 	do
+		if [ "${FOLDER}" = '.svn' ]; then continue; fi
 		if [ ${FOLDER} ]; then INSTALL=${OS_PATH}${FOLDER}/install; else INSTALL=${OS_PATH}${FOLDER}install; fi
 		if [ ! -e ${OS_PATH}${FOLDER} ]; then
-			printf "${OS_PATH}${FOLDER} not exists"; warntxt; printf "\n";
-			WARNINGS=1;
+			writelog "${OS_PATH}${FOLDER} not exists"; warntxt; writelog "\n";
+			WARNINGS="$WARNINGS\n${OS_PATH}${FOLDER} not exists";
 		else
 			. ${INSTALL};
 			cd ${OS_PATH}${FOLDER}
@@ -241,9 +251,9 @@ builddaemon() {
 	$rm -vrf imscp_daemon
 	make
 	if [ $? = 0 ]; then
-		printf "Daemon builded successful"; oktxt; printf "\n"
+		writelog "Daemon builded successful"; oktxt; writelog "\n"
 	else
-		printf "Fail build daemon"; failtxt; printf "\n"
+		writelog "Fail build daemon"; failtxt; writelog "\n"
 	fi
 	make_folder ${SYSTEM_ROOT}/daemon
 	copy_file ${SYSTEM_ROOT}/daemon/imscp_daemon

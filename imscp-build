@@ -26,7 +26,7 @@
 # @category		i-MSCP
 # @copyright	2010 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@i-mscp.net>
-# @version		SVN: $Id: Database.php 3702 2010-11-16 14:20:55Z sci2tech $
+# @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/ GPL v2
 
@@ -37,10 +37,11 @@ SELFDIR=$(pwd)
 . $SELFDIR/prebuild-files/imscp-install-functions
 . $SELFDIR/prebuild-files/display-functions
 . $SELFDIR/prebuild-files/so-functions
-
+. $SELFDIR/prebuild-files/log-functions
 
 title "Check available commands"
-COMMANDS="which uname tr mkdir rm pwd id touch pwd cp chown chmod install"
+
+COMMANDS="which uname tr mkdir rm pwd id touch pwd cp chown chmod printf"
 for COMM in ${COMMANDS}; do testCommand ${COMM}; done
 
 title "Detecting OS"
@@ -56,7 +57,7 @@ testAnyCommand ${NewTest} 'DIALOG';
 
 testroot
 
-printf 'All tests... '; oktxt "PASS"; printf "\n"
+writelog 'All tests... '; oktxt "PASS"; writelog "\n"
 
 _AvailableOS="Centos Debian Fedora FreeBSD Gentoo OpenBSD Opensuse Ubuntu"
 
@@ -80,38 +81,38 @@ msgbox "${TEXT}" 'i-MSCP preinstall script'
 
 title "Loading $OS specific variable"
 specific "prebuild-files/${OS}-variable"
-oktxt "Done"; printf "\n"
+oktxt "Done"; writelog "\n"
 
 _os=$(echo "$OS" | tr [:upper:] [:lower:])
 title "Proccess $_os specific configuration files"
 process_file
-oktxt "Done"; printf "\n"
+oktxt "Done"; writelog "\n"
 
 title "Daemon build"
 builddaemon
-oktxt "Done"; printf "\n"
+oktxt "Done"; writelog "\n"
 
 title "Engine setup"
 engine
-oktxt "Done"; printf "\n"
+oktxt "Done"; writelog "\n"
 
 title "GUI setup"
 gui
-oktxt "Done"; printf "\n"
+oktxt "Done"; writelog "\n"
 
 title "Key setup"
 key
-oktxt "Done"; printf "\n"
+oktxt "Done"; writelog "\n"
 
 title "Maintainer scripts"
 maintainer
-oktxt "Done"; printf "\n"
+oktxt "Done"; writelog "\n"
 
 TEXT=$(cat ${SELFDIR}/docs/${DIST}/INSTALL | sed -e "s/'/\"/g")
 msgbox "${TEXT}" 'i-MSCP preinstall script'
 
-if [ $WARNINGS ]; then
-	msgbox "\n\\Zb -> Finished but with errors" 'i-MSCP preinstall script'
+if [ "${WARNINGS}" ]; then
+	msgbox "\n\\Zb -> Finished but with errors:\n${WARNINGS}" 'i-MSCP preinstall script'
 else
 	msgbox "\n\\Z2 -> Finished without errors" 'i-MSCP preinstall script'
 fi
@@ -124,8 +125,9 @@ colortxt 'green' "\nYou can proceed to installation/update. If you do not know h
 colortxt 'red' "cat ${SELFDIR}/docs/${DIST}/INSTALL\n\n"
 colortxt 'green' "and read carefully. All steps are crucial\n\n"
 
-if [ $WARNINGS ]; then
-	warntxt;printf "Finished but with errors ";warntxt;printf "\n";
+if [ "${WARNINGS}" ]; then
+	warntxt; writelog "Finished but with errors"; warntxt; writelog ":\n";
+	writelog "${WARNINGS}\n"
 else
-	printf "Finished without errors ";oktxt;printf "\n";
+	writelog "Finished without errors";oktxt;writelog "\n";
 fi

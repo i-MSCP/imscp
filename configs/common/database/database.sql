@@ -5,7 +5,7 @@
 -- Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
 -- Copyright (C) 2010 by internet Multi Server Control Panel - http://i-mscp.net
 --
--- Version: $Id: imscp_common_methods.pl 3684 2010-11-15 14:21:06Z sci2tech $
+-- Version: $Id$
 --
 -- The contents of this file are subject to the Mozilla Public License
 -- Version 1.1 (the "License"); you may not use this file except in

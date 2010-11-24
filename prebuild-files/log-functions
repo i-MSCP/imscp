@@ -26,29 +26,27 @@
 # @category		i-MSCP
 # @copyright	2010 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@i-mscp.net>
-# @version		SVN: $Id$
+# @version		SVN: $Id: Database.php 3702 2010-11-16 14:20:55Z sci2tech $
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/ GPL v2
 
-SYSTEM_FOLDERS='
-				INST_PREF=/tmp/imscp
-				ROOT_CONF=${INST_PREF}/etc
-				SYSTEM_ROOT=${INST_PREF}/var/www/imscp
-				SYSTEM_CONF=${INST_PREF}/etc/imscp
-				SYSTEM_LOG=${INST_PREF}/var/log/imscp
-				SYSTEM_APACHE_BACK_LOG=${INST_PREF}/var/log/apache2/backup
-				SYSTEM_VIRTUAL=${INST_PREF}/var/www/virtual
-				SYSTEM_AWSTATS=${INST_PREF}/var/www/awstats
-				SYSTEM_FCGI=${INST_PREF}/var/www/fcgi
-				SYSTEM_SCOREBOARDS=${INST_PREF}/var/www/scoreboards
-				SYSTEM_MAIL_VIRTUAL=${INST_PREF}/var/mail/virtual
-
-				ROOT_APACHE_CONF=${ROOT_CONF}/apache2
-
-				ROOT_POSTFIX_CONF=${ROOT_CONF}/postfix
-
-				ROOT_COURIER_CONF=${ROOT_CONF}/courier
-'
-FOLDERS='${SYSTEM_LOG}/imscp-arpl-msgr'
-COPY_FILE=''
-CREATE_FILE=''
+writelog() {
+	_logline="${1}";
+	printf "${1}";
+	_logline=$(printf "$_logline" | sed -r 's~'$(echo "\033")'\[[0-9;]{1,4}m~~g'; printf x);
+	_logline="${_logline%x}"
+	if [ "${SYSTEM_LOG}" ]; then
+		if [ "${FlushTXT}" ]; then
+			LOG=$(echo ${SYSTEM_LOG}| sed 's~'${INST_PREF}'~~g');
+			${mkdir} -p "${LOG}"
+			#if [ -f "${LOG}/imscp-build.log" ]; then ${rm} "${LOG}/imscp-build.log"; fi
+			${touch} "${LOG}/imscp-build.log"
+			${chmod} 0660 "${LOG}/imscp-build.log"
+			printf "${FlushTXT}${_logline}" >> "${LOG}/imscp-build.log"
+			FlushTXT='';
+		fi
+		printf "${_logline}" >> "${LOG}/imscp-build.log"
+	else
+		FlushTXT="${FlushTXT}${_logline}"
+	fi
+}
