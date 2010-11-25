@@ -43,7 +43,7 @@ $tpl->define_dynamic('purchase_list', 'page');
 $tpl->define_dynamic('purchase_message', 'page');
 $tpl->define_dynamic('purchase_header', 'page');
 $tpl->define_dynamic('purchase_footer', 'page');
-$tpl->define_dynamic('isenabled', 'page');
+$tpl->define_dynamic('t_software_support', 'page');
 
 /*
  * functions start
@@ -99,7 +99,7 @@ function gen_plan_details(&$tpl, &$sql, $user_id, $plan_id) {
 		user_goto('index.php?user_id=' . $user_id);
 	} else {
 		$props = $rs->fields['props'];
-		list($hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk, $hp_backup, $hp_dns) = explode(";", $props);
+		list($hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk, $hp_backup, $hp_dns, $hp_allowsoftware) = explode(";", $props);
 
 		$price = $rs->fields['price'];
 		$setup_fee = $rs->fields['setup_fee'];
@@ -135,6 +135,7 @@ function gen_plan_details(&$tpl, &$sql, $user_id, $plan_id) {
 				'HDD'			=> $hp_disk,
 				'TRAFFIC'		=> $hp_traff,
 				'PHP'			=> translate_sse($hp_php),
+				'SOFTWARE'		=> translate_sse($hp_allowsoftware),
 				'CGI'			=> translate_sse($hp_cgi),
 				'DNS'			=> translate_sse($hp_dns),
 				'BACKUP'		=> translate_sse($hp_backup),
@@ -211,6 +212,7 @@ $tpl->assign(
 		'TR_ERROR_PAGES'		=> tr('Custom Error Pages'),
 		'TR_HTACCESS'			=> tr('Protected Areas'),
 		'TR_PHP_SUPPORT'		=> tr('PHP support'),
+		'TR_SOFTWARE_SUPPORT'   => tr('i-MSCP application installer'),
 		'TR_CGI_SUPPORT'		=> tr('CGI support'),
 		'TR_DNS_SUPPORT'		=> tr('Manual DNS support'),
 		'TR_MYSQL_SUPPORT'		=> tr('SQL support'),

@@ -1,213 +1,199 @@
 <?xml version="1.0" encoding="{THEME_CHARSET}" ?>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<title>{TR_RESELLER_MAIN_INDEX_PAGE_TITLE}</title>
-<meta name="robots" content="nofollow, noindex" />
-<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
-<meta http-equiv="Content-Style-Type" content="text/css" />
-<meta http-equiv="Content-Script-Type" content="text/javascript" />
-<link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="{THEME_COLOR_PATH}/css/imscp.js"></script>
-</head>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
+        <meta http-equiv="X-UA-Compatible" content="IE=8" />
+        <title>{TR_RESELLER_MAIN_INDEX_PAGE_TITLE}</title>
+        <meta name="robots" content="nofollow, noindex" />
+        <link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="{THEME_COLOR_PATH}/js/imscp.js"></script>
+        <!--[if IE 6]>
+        <script type="text/javascript" src="{THEME_COLOR_PATH}/js/DD_belatedPNG_0.0.8a-min.js"></script>
+        <script type="text/javascript">
+            DD_belatedPNG.fix('*');
+        </script>
+        <![endif]-->
+	</head>
 
-<body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
-<table width="100%" border="0" cellspacing="0" cellpadding="0" style="height:100%;padding:0;margin:0 auto;">
-<tr>
-<td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" width="195" height="56" border="0" alt="i-MSCP Logogram" /></td>
-<td style="height: 56px; width:100%; background-color: #0f0f0f"><img src="{THEME_COLOR_PATH}/images/top/top_left_bg.jpg" width="582" height="56" border="0" alt="" /></td>
-<td style="width: 73px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_right.jpg" width="73" height="56" border="0" alt="" /></td>
-</tr>
-	<tr>
-		<td style="width: 195px; vertical-align: top;">{MENU}</td>
-	    <td colspan="2" style="vertical-align: top;"><table style="width: 100%; padding:0;margin:0;" cellspacing="0">
-				<tr style="height:95px;">
-				  <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
-					<td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" width="73" height="95" border="0" alt="" /></td>
-				</tr>
-				<tr>
-				  <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-                    <tr>
-                      <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
-                          <tr>
-                            <td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_serverstatus.png" width="25" height="25" alt="" /></td>
-                            <td colspan="2" class="title">{TR_EDIT_HOSTING_PLAN}</td>
-                          </tr>
-                      </table></td>
-                      <td width="27" align="right">&nbsp;</td>
-                    </tr>
-                    <tr>
-                      <td valign="top"><form name="reseller_edit_host_plant_frm" method="post" action="hosting_plan_edit.php">
-                          <table width="100%" cellspacing="3">
-                            <tr>
-                              <td align="left">&nbsp;</td>
-                              <td colspan="2" align="left" class="content3"><b>{TR_HOSTING PLAN PROPS}</b></td>
-                            </tr>
-                            <!-- BDP: page_message -->
-                            <tr>
-                              <td>&nbsp;</td>
-                              <td colspan="2" class="title"><span class="message">{MESSAGE}</span></td>
-                            </tr>
-                            <!-- EDP: page_message -->
-                            <tr>
-                              <td width="25">&nbsp;</td>
-                              <td class="content2" width="193">{TR_TEMPLATE_NAME}</td>
-                              <td class="content"><input type="text" {READONLY} name="hp_name"  value="{HP_NAME_VALUE}" style="width:210px" class="textinput" />
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>&nbsp;</td>
-                              <td class="content2">{TR_TEMPLATE_DESCRIPTON}</td>
-                              <td class="content"><textarea name="hp_description" {READONLY} class="textinput2" style="width:210px" cols="40" rows="8">{HP_DESCRIPTION_VALUE}</textarea></td>
-                            </tr>
-                            <tr>
-                              <td width="25">&nbsp;</td>
-                              <td class="content2" width="193">{TR_MAX_SUBDOMAINS}</td>
-                              <td class="content"><input type="text" {READONLY} name="hp_sub" value="{TR_MAX_SUB_LIMITS}" style="width:100px" class="textinput" />
-                              </td>
-                            </tr>
-                            <tr>
-                              <td width="25">&nbsp;</td>
-                              <td class="content2" width="193">{TR_MAX_ALIASES}</td>
-                              <td width="242" class="content"><input type="text" {READONLY} name="hp_als" value="{TR_MAX_ALS_VALUES}" style="width:100px" class="textinput" />
-                              </td>
-                            </tr>
-                            <tr>
-                              <td width="25">&nbsp;</td>
-                              <td class="content2" width="193">{TR_MAX_MAILACCOUNTS}</td>
-                              <td class="content"><input type="text" {READONLY} name="hp_mail" value="{HP_MAIL_VALUE}" style="width:100px" class="textinput" />
-                              </td>
-                            </tr>
-                            <tr>
-                              <td width="25">&nbsp;</td>
-                              <td class="content2" width="193">{TR_MAX_FTP}</td>
-                              <td class="content"><input type="text" {READONLY} name="hp_ftp" value="{HP_FTP_VALUE}" style="width:100px" class="textinput" />
-                              </td>
-                            </tr>
-                            <tr>
-                              <td width="25">&nbsp;</td>
-                              <td class="content2" width="193">{TR_MAX_SQL}</td>
-                              <td class="content"><input type="text" {READONLY} name="hp_sql_db" value="{HP_SQL_DB_VALUE}" style="width:100px" class="textinput" />
-                              </td>
-                            </tr>
-                            <tr>
-                              <td width="25">&nbsp;</td>
-                              <td class="content2" width="193">{TR_MAX_SQL_USERS}</td>
-                              <td class="content"><input type="text" {READONLY} name="hp_sql_user" value="{HP_SQL_USER_VALUE}" style="width:100px" class="textinput" />
-                              </td>
-                            </tr>
-                            <tr>
-                              <td width="25">&nbsp;</td>
-                              <td class="content2" width="193">{TR_MAX_TRAFFIC}</td>
-                              <td class="content"><input type="text" {READONLY} name="hp_traff" value="{HP_TRAFF_VALUE}" style="width:100px" class="textinput" />
-                              </td>
-                            </tr>
-                            <tr>
-                              <td width="20">&nbsp;</td>
-                              <td class="content2" width="193">{TR_DISK_LIMIT}</td>
-                              <td class="content"><input type="text" {READONLY} name="hp_disk" value="{HP_DISK_VALUE}" style="width:100px" class="textinput" />
-                              </td>
-                            </tr>
-                            <tr>
-                              <td width="25">&nbsp;</td>
-                              <td class="content2" width="193">{TR_PHP}</td>
-                              <td class="content"><input type="radio" {DISBLED} name="php" value="_yes_" {TR_PHP_YES} />
-                                {TR_YES}
-                                <input type="radio" {DISBLED} name="php" value="_no_" {TR_PHP_NO} />
-                                {TR_NO}</td>
-                            </tr>
-                            <tr>
-                              <td width="25">&nbsp;</td>
-                              <td class="content2" width="193">{TR_CGI}</td>
-                              <td class="content"><input type="radio" {DISBLED} name="cgi" value="_yes_" {TR_CGI_YES} />
-                                {TR_YES}
-                                <input type="radio" {DISBLED} name="cgi" value="_no_" {TR_CGI_NO} />
-                                {TR_NO}</td>
-                            </tr>
-                            <tr>
-                              <td width="25">&nbsp;</td>
-                              <td class="content2" width="193">{TR_DNS}</td>
-                              <td class="content"><input type="radio" {DISBLED} name="dns" value="_yes_" {TR_DNS_YES} />
-                                {TR_YES}
-                                <input type="radio" {DISBLED} name="dns" value="_no_" {TR_DNS_NO} />
-                                {TR_NO}</td>
-                            </tr>
-                            <tr>
-                             <td width="25">&nbsp;</td>
-                             <td class="content2" width="193">{TR_BACKUP}</td>
-                              <td class="content"><input name="backup" type="radio" {DISBLED} value="_dmn_" {VL_BACKUPD} />
-                                {TR_BACKUP_DOMAIN}
-                                <input type="radio" {DISBLED} name="backup" value="_sql_" {VL_BACKUPS} />
-                                {TR_BACKUP_SQL}
-				<input name="backup" type="radio" {DISBLED} value="_full_" {VL_BACKUPF} />
-                                {TR_BACKUP_FULL}
-                                <input type="radio" {DISBLED} name="backup" value="_no_" {VL_BACKUPN} />
-                                {TR_BACKUP_NO}
-			      </td>
-                            </tr>
-                            <tr>
-								<td width="25">&nbsp;</td>
-								<td class="content2" width="193">{TR_SOFTWARE_SUPP}</td>
-								<td class="content"><input type="radio" {DISBLED} name="software_allowed" value="_yes_" {TR_SOFTWARE_YES} />
-								{TR_YES}
-								<input type="radio" {DISBLED} name="software_allowed" value="_no_" {TR_SOFTWARE_NO} />
-								{TR_NO}</td>
-								</td>
-							</tr>
-                            <tr>
-                              <td>&nbsp;</td>
-                              <td colspan="2" class="content3"><b>{TR_BILLING_PROPS}</b></td>
-                            </tr>
-                            <tr>
-                              <td>&nbsp;</td>
-                              <td class="content2">{TR_PRICE}</td>
-                              <td class="content"><input name="hp_price" type="text" {READONLY} class="textinput" id="hp_price" style="width:100px" value="{HP_PRICE}" /></td>
-                            </tr>
-                            <tr>
-                              <td>&nbsp;</td>
-                              <td class="content2">{TR_SETUP_FEE}</td>
-                              <td class="content"><input name="hp_setupfee" type="text" {READONLY} class="textinput" id="hp_setupfee" style="width:100px" value="{HP_SETUPFEE}" /></td>
-                            </tr>
-                            <tr>
-                              <td>&nbsp;</td>
-                              <td class="content2">{TR_VALUE}</td>
-                              <td class="content"><input name="hp_currency" {READONLY} type="text" class="textinput" id="hp_currency" style="width:100px" value="{HP_CURRENCY}" />
-                                  <small>{TR_EXAMPLE}</small></td>
-                            </tr>
-                            <tr>
-                              <td>&nbsp;</td>
-                              <td class="content2">{TR_PAYMENT}</td>
-                              <td class="content"><input name="hp_payment" {READONLY} type="text" class="textinput" id="hp_payment" style="width:100px" value="{HP_PAYMENT}" /></td>
-                            </tr>
-                            <tr>
-                              <td>&nbsp;</td>
-                              <td class="content2">{TR_STATUS}</td>
-                              <td class="content"><input type="radio" {DISBLED} name="status" value="1" {TR_STATUS_YES} />
-                                {TR_YES}
-                                <input type="radio" {DISBLED} name="status" value="0" {TR_STATUS_NO} />
-                                {TR_NO}</td>
-                            </tr>
-                            <tr>
-                              <td>&nbsp;</td>
-                              <td colspan="2"><!-- BDP: form -->
-                                  <input name="Submit" type="submit" class="button" value=" {TR_UPDATE_PLAN} " /></td>
-                              <!-- EDP: form -->
-                            </tr>
-                            <tr>
-                              <td colspan="3"><input type="hidden" name="uaction" value="add_plan" />
-                              </td>
-                            </tr>
-                          </table>
-                      </form></td>
-                      <td>&nbsp;</td>
-                    </tr>
-                    <tr>
-                      <td>&nbsp;</td>
-                      <td>&nbsp;</td>
-                    </tr>
-                  </table></td>
-				</tr>
-			</table></td>
-	</tr>
-</table>
-</body>
+	<body>
+		<div class="header">
+            {MAIN_MENU}
+
+            <div class="logo">
+                <img src="{THEME_COLOR_PATH}/images/imscp_logo.png" alt="i-MSCP logo" />
+                <img src="{THEME_COLOR_PATH}/images/imscp_webhosting.png" alt="i-MSCP" />
+            </div>
+        </div>
+
+		<div class="location">
+			<div class="location-area icons-left">
+				<h1 class="hosting_plans">{TR_MENU_HOSTING_PLANS}</h1>
+			</div>
+			<ul class="location-menu">
+				<!-- <li><a class="help" href="#">Help</a></li> -->
+                <li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
+			</ul>
+			<ul class="path">
+				<li><a href="hosting_plan.php">{TR_MENU_HOSTING_PLANS}</a></li>
+				<li><a href="hosting_plan_edit.php?hpid={HOSTING_PLAN_ID}">{TR_EDIT_HOSTING_PLAN}</a></li>
+			</ul>
+		</div>
+
+		<div class="left_menu">
+			{MENU}
+		</div>
+
+
+		<div class="body">
+		
+			<!-- BDP: page_message -->
+			<div class="warning">{MESSAGE}</div>
+			<!-- EDP: page_message -->
+			
+			<h2 class="hosting_plans"><span>{TR_EDIT_HOSTING_PLAN}</span></h2>
+			
+			<form name="reseller_edit_host_plant_frm" method="post" action="hosting_plan_edit.php">
+				<fieldset>
+					<legend>{TR_HOSTING PLAN PROPS}</legend>
+					<table>
+						<tr>
+							<td><label for="hp_name">{TR_TEMPLATE_NAME}</label></td>
+							<td><input id="" type="text" name="hp_name" value="{HP_NAME_VALUE}" {READONLY}/></td>
+						</tr>
+						<tr>
+							<td><label for="hp_description">{TR_TEMPLATE_DESCRIPTON}</label></td>
+							<td><textarea id="hp_description" name="hp_description" cols="40" rows="8" {READONLY}>{HP_DESCRIPTION_VALUE}</textarea></td>
+						</tr>
+						<tr>
+							<td><label for="hp_sub">{TR_MAX_SUBDOMAINS}</label></td>
+							<td><input id="hp_sub"  type="text" name="hp_sub" value="{TR_MAX_SUB_LIMITS}" {READONLY}/></td>
+						</tr>
+						<tr>
+							<td><label for="hp_als">{TR_MAX_ALIASES}</label></td>
+							<td><input id="hp_als" type="text" name="hp_als" value="{TR_MAX_ALS_VALUES}" {READONLY} /></td>
+						</tr>
+						<tr>
+							<td><label for="hp_mail">{TR_MAX_MAILACCOUNTS}</label></td>
+							<td><input id="hp_mail" type="text" name="hp_mail" value="{HP_MAIL_VALUE}"  {READONLY}/></td>
+						</tr>
+						<tr>
+							<td><label for="hp_ftp">{TR_MAX_FTP}</label></td>
+							<td><input id="hp_ftp" type="text" name="hp_ftp" value="{HP_FTP_VALUE}"  {READONLY}/></td>
+						</tr>
+						<tr>
+							<td><label for="hp_sql_db">{TR_MAX_SQL}</label></td>
+							<td><input id="hp_sql_db" type="text" name="hp_sql_db" value="{HP_SQL_DB_VALUE}"  {READONLY}/></td>
+						</tr>
+						<tr>
+							<td><label for="hp_sql_user">{TR_MAX_SQL_USERS}</label></td>
+							<td><input id="hp_sql_user" type="text" name="hp_sql_user" value="{HP_SQL_USER_VALUE}" {READONLY} /></td>
+						</tr>
+						<tr>
+							<td><label for="hp_traff">{TR_MAX_TRAFFIC}</label></td>
+							<td><input id="hp_traff" type="text" name="hp_traff" value="{HP_TRAFF_VALUE}" {READONLY} /></td>
+						</tr>
+						<tr>
+							<td><label for="hp_disk">{TR_DISK_LIMIT}</label></td>
+							<td><input id="hp_disk"  type="text" name="hp_disk" value="{HP_DISK_VALUE}"  {READONLY}/></td>
+						</tr>
+						<tr>
+							<td>{TR_PHP}</td>
+							<td>
+								<input type="radio" name="php" value="_yes_" {TR_PHP_YES} id="php_yes" {DISBLED}/><label for="php_yes">{TR_YES}</label>
+								<input type="radio" name="php" value="_no_" {TR_PHP_NO} id="php_no"  {DISBLED}/><label for="php_no">{TR_NO}</label>
+							</td>
+						</tr>
+						<tr>
+							<td>{TR_CGI}</td>
+							<td>
+								<input type="radio" name="cgi" value="_yes_" {TR_CGI_YES} id="cgi_yes" {DISBLED}/><label for="cgi_yes">{TR_YES}</label>
+								<input type="radio" name="cgi" value="_no_" {TR_CGI_NO} id="cgi_no"  {DISBLED}/><label for="cgi_no">{TR_NO}</label>
+							</td>
+						</tr>
+						<tr>
+							<td>{TR_DNS}</td>
+							<td>
+								<input type="radio" name="dns" value="_yes_" {TR_DNS_YES} id="dns_yes" {DISBLED}/><label for="dns_yes">{TR_YES}</label>
+								<input type="radio" name="dns" value="_no_" {TR_DNS_NO} id="dns_no" {DISBLED} /><label for="dns_no">{TR_NO}</label>
+							</td>
+						</tr>
+						<tr>
+							<td>{TR_BACKUP}</td>
+							<td>
+								<input type="radio" name="backup" value="_dmn_" {VL_BACKUPD} id="backup_dmn" {DISBLED}/><label for="backup_dmn">{TR_BACKUP_DOMAIN}</label>
+								<input type="radio" name="backup" value="_sql_" {VL_BACKUPS} id="backup_sql"  {DISBLED}/><label for="backup_sql">{TR_BACKUP_SQL}</label>
+								<input type="radio" name="backup" value="_full_" {VL_BACKUPF} id="backup_full"  {DISBLED}/><label for="backup_full">{TR_BACKUP_FULL}</label>
+								<input type="radio" name="backup" value="_no_" {VL_BACKUPN} id="backup_none"  {DISBLED}/><label for="backup_none">{TR_BACKUP_NO}</label>
+							</td>
+						</tr>
+						<!-- BDP: t_software_support -->
+						<tr>
+ 							<td>{TR_SOFTWARE_SUPP}</td>
+ 							<td>
+ 								<input type="radio" {DISBLED} name="software_allowed" value="_yes_" {TR_SOFTWARE_YES} id="software_allowed_yes" /><label for="software_allowed_yes">{TR_YES}</label>
+								<input type="radio" {DISBLED} name="software_allowed" value="_no_" {TR_SOFTWARE_NO} id="software_allowed_no" /><label for="software_allowed_no">{TR_NO}</label>
+							</td>
+ 						</tr>
+ 						<!-- EDP: t_software_support -->
+					</table>
+				</fieldset>
+				<fieldset>
+					<legend>{TR_BILLING_PROPS}</legend>
+					<table>
+						<tr>
+							<td><label for="hp_price">{TR_PRICE}</label></td>
+							<td><input name="hp_price" type="text" id="hp_price" value="{HP_PRICE}" {READONLY} /></td>
+						</tr>
+						<tr>
+							<td><label for="hp_setupfee">{TR_SETUP_FEE}</label></td>
+							<td><input name="hp_setupfee" type="text" id="hp_setupfee" value="{HP_SETUPFEE}"  {READONLY}/></td>
+						</tr>
+						<tr>
+							<td><label for="hp_currency">{TR_VALUE}</label></td>
+							<td><input name="hp_currency" type="text" id="hp_currency" value="{HP_CURRENCY}" {READONLY} /><span class="legend">{TR_EXAMPLE}</span></td>
+						</tr>
+						<tr>
+							<td><label for="hp_payment">{TR_PAYMENT}</label></td>
+							<td><input name="hp_payment" type="text" id="hp_payment" value="{HP_PAYMENT}"  {READONLY}/></td>
+						</tr>
+						<tr>
+							<td>{TR_STATUS}</td>
+							<td>
+								<input type="radio" name="status" value="1" {TR_STATUS_YES} id="status_yes" {DISBLED}/><label for="status_yes">{TR_YES}</label>
+								<input type="radio" name="status" value="0" {TR_STATUS_NO} id="status_no"  {DISBLED}/><label for="status_no">{TR_NO}</label>
+							</td>
+						</tr>
+					</table>
+				</fieldset>
+				<fieldset>
+					<legend>{TR_TOS_PROPS}</legend>
+					<table>
+						<!-- TOS --> 
+						<tr>
+							<td colspan="2">{TR_TOS_NOTE}</td>
+						</tr>
+						<tr>
+							<td>{TR_TOS_DESCRIPTION}</td>
+							<td>
+								<textarea name="hp_tos" cols="70" rows="8">{HP_TOS_VALUE}</textarea>
+							</td>
+						</tr>
+						<!-- TOS END -->
+					</table>
+				</fieldset>
+				<!-- BDP: form -->
+					<div class="buttons">
+						<input name="Submit" type="submit" value="{TR_UPDATE_PLAN}" />
+					</div>
+					<input type="hidden" name="uaction" value="add_plan" />
+				<!-- EDP: form -->
+			</form>
+		</div>
+		<div class="footer">
+			i-MSCP {VERSION}<br />build: {BUILDDATE}<br />Codename: {CODENAME}
+		</div>
+
+	</body>
 </html>
