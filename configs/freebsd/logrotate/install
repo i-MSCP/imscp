@@ -33,7 +33,7 @@
 SYSTEM_FOLDERS=''
 FOLDERS='';
 COPY_CONFIG_FILE='
-	$(ROOT_CONF)/logrotate.conf/imscp
+	${ROOT_CONF}/logrotate.conf/imscp
 ';
 
 COPY_FILE=''
