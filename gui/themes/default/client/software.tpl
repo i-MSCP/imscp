@@ -21,7 +21,7 @@
         /*<![CDATA[*/
 			$(document).ready(function(){
 				// Tooltips - begin
-				$('span.i_app_installer').sw_iMSCPtooltips('span.title');
+				$('a.i_app_installer').sw_iMSCPtooltips('a.title');
 				// Tooltips - end
 			});
 			function action_delete(url) {
@@ -82,24 +82,24 @@
 			<h2 class="apps_installer"><span>{TR_INSTALL_SOFTWARE}</span></h2>
 			<table>
 				<tr>
-					<th><div style="float:left">{TR_SOFTWARE}</div><div style="float:right"><a href="{TR_SOFTWARE_ASC}"><img src="{THEME_COLOR_PATH}/images/icons/asc.gif" width="16" height="16" border="0" /></a><a href="{TR_SOFTWARE_DESC}"><img src="{THEME_COLOR_PATH}/images/icons/desc.gif" width="16" height="16" border="0" /></a></div></th>
+					<th><div style="float:left">{TR_SOFTWARE}</div><div style="float:left"><a href="{TR_SOFTWARE_ASC}" class="app_icon i_app_asc"></a><a href="{TR_SOFTWARE_DESC}" class="app_icon i_app_desc"></a></div></th>
 					<th align="center" width="70">{TR_VERSION}</th>
-					<th align="center" width="100"><div style="float:left">{TR_LANGUAGE}</div><div style="float:right"><a href="{TR_LANGUAGE_ASC}"><img src="{THEME_COLOR_PATH}/images/icons/asc.gif" width="16" height="16" border="0" /></a><a href="{TR_LANGUAGE_DESC}"><img src="{THEME_COLOR_PATH}/images/icons/desc.gif" width="16" height="16" border="0" /></a></div></th>
-					<th align="center" width="70"><div style="float:left">{TR_TYPE}</div><div style="float:right"><a href="{TR_TYPE_ASC}"><img src="{THEME_COLOR_PATH}/images/icons/asc.gif" width="16" height="16" border="0" /></a><a href="{TR_TYPE_DESC}"><img src="{THEME_COLOR_PATH}/images/icons/desc.gif" width="16" height="16" border="0" /></a></div></th>
-					<th align="center" width="90"><div style="float:left">{TR_NEED_DATABASE}</div><div style="float:right"><a href="{TR_NEED_DATABASE_ASC}"><img src="{THEME_COLOR_PATH}/images/icons/asc.gif" width="16" height="16" border="0" /></a><a href="{TR_NEED_DATABASE_DESC}"><img src="{THEME_COLOR_PATH}/images/icons/desc.gif" width="16" height="16" border="0" /></a></div></th>
+					<th align="center" width="100"><div style="float:left">{TR_LANGUAGE}</div><div style="float:left"><a href="{TR_LANGUAGE_ASC}" class="app_icon i_app_asc"></a><a href="{TR_LANGUAGE_DESC}" class="app_icon i_app_desc"></a></div></th>
+					<th align="center" width="70"><div style="float:left">{TR_TYPE}</div><div style="float:left"><a href="{TR_TYPE_ASC}" class="app_icon i_app_asc"></a><a href="{TR_TYPE_DESC}" class="app_icon i_app_desc"></a></div></th>
+					<th align="center" width="100"><div style="float:left">{TR_NEED_DATABASE}</div><div style="float:left"><a href="{TR_NEED_DATABASE_ASC}" class="app_icon i_app_asc"></a><a href="{TR_NEED_DATABASE_DESC}" class="app_icon i_app_desc"></a></div></th>
 					<th align="center" width="90">{TR_STATUS}</th>
 					<th align="center" width="150">{TR_ACTION}</th>
 				</tr>
 				<!-- BDP: t_software_support -->
 				<!-- BDP: software_item -->
 				<tr>
-					<td><span class="icon i_app_installer" title="{SOFTWARE_DESCRIPTION}"><a href="{VIEW_SOFTWARE_SCRIPT}">{SOFTWARE_NAME}</a></span></td>
+					<td><a href="{VIEW_SOFTWARE_SCRIPT}" class="icon i_app_installer" title="{SOFTWARE_DESCRIPTION}">{SOFTWARE_NAME}</a></td>
 					<td align="center">{SOFTWARE_VERSION}</td>
 					<td align="center">{SOFTWARE_LANGUAGE}</td>
 					<td align="center">{SOFTWARE_TYPE}</td>
 					<td align="center">{SOFTWARE_NEED_DATABASE}</td>
 					<td align="center">{SOFTWARE_STATUS}</td>
-					<td align="center"><span class="icon i_{SOFTWARE_ICON}"><a href="#" <!-- BDP: software_action_delete -->  onClick="return action_delete('{SOFTWARE_ACTION_SCRIPT}')" <!-- EDP: software_action_delete --><!-- BDP: software_action_install -->  onClick="return action_install('{SOFTWARE_ACTION_SCRIPT}')" <!-- EDP: software_action_install --> >{SOFTWARE_ACTION}</a></span></td>
+					<td align="center"><a href="#" class="icon i_{SOFTWARE_ICON}" <!-- BDP: software_action_delete -->  onClick="return action_delete('{SOFTWARE_ACTION_SCRIPT}')" <!-- EDP: software_action_delete --><!-- BDP: software_action_install -->  onClick="return action_install('{SOFTWARE_ACTION_SCRIPT}')" <!-- EDP: software_action_install --> >{SOFTWARE_ACTION}</a></td>
 				</tr>
 				<!-- EDP: software_item -->
 				<!-- EDP: t_software_support -->

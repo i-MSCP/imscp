@@ -124,9 +124,9 @@
 					<td>{TR_LANGUAGE}</td>
 					<td>{TR_TYPE}</td>
 					<td>{TR_ADMIN}</td>
-					<td align="center"><span class="icon i_app_download"><a target="_blank" href="{DOWNLOAD_LINK}">{TR_DOWNLOAD}</a></span></td>
-					<td align="center"><span class="icon i_delete"><a href="{DELETE_LINK}" onClick="return action_delete()">{TR_DELETE}</a></span></td>
-					<td align="center"><span class="icon i_{SOFTWARE_ICON}"><a href="{SOFTWARE_RIGHTS_LINK}">{RIGHTS_LINK}</a></span></td>
+					<td align="center"><a target="_blank" class="icon i_app_download" href="{DOWNLOAD_LINK}">{TR_DOWNLOAD}</a></td>
+					<td align="center"><a href="{DELETE_LINK}" class="icon i_delete" onClick="return action_delete()">{TR_DELETE}</a></td>
+					<td align="center"><a href="{SOFTWARE_RIGHTS_LINK}" class="icon i_{SOFTWARE_ICON}">{RIGHTS_LINK}</a></td>
 				</tr>
 				<!-- EDP: list_softwaredepot -->
 				<tr>
@@ -159,10 +159,10 @@
 					<td>{TR_LANGUAGE}</td>
 					<td>{TR_TYPE}</td>
 					<td>{TR_RESELLER}</td>
-					<td align="center"><span class="icon i_app_download"><a href="{IMPORT_LINK}" onClick="return action_import()">{TR_IMPORT}</a></span></td>
-					<td align="center"><span class="icon i_app_download"><a target="_blank" href="{DOWNLOAD_LINK}">{TR_DOWNLOAD}</a></span></td>
-					<td align="center"><span class="icon i_edit"><a href="{ACTIVATE_LINK}" onClick="return action_activate()">{TR_ACTIVATION}</a></span></td>
-					<td align="center"><span class="icon i_delete"><a href="{DELETE_LINK}" onClick="return action_delete()">{TR_DELETE}</a></span></td>
+					<td align="center"><a href="{IMPORT_LINK}" class="icon i_app_download" onClick="return action_import()">{TR_IMPORT}</a></td>
+					<td align="center"><a href="{DOWNLOAD_LINK}" class="icon i_app_download" target="_blank">{TR_DOWNLOAD}</a></td>
+					<td align="center"><a href="{ACTIVATE_LINK}" class="icon i_edit" onClick="return action_activate()">{TR_ACTIVATION}</a></td>
+					<td align="center"><a href="{DELETE_LINK}" class="icon i_delete" onClick="return action_delete()">{TR_DELETE}</a></td>
 				</tr>
 				<!-- EDP: list_software -->
 				<tr>

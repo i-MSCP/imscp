@@ -75,11 +75,11 @@
 			<h2 class="apps_installer"><span>{TR_UPLOADED_SOFTWARE}</span></h2>
 			<table>
             	<tr>
-					<th><div style="float:left">{TR_SOFTWARE_NAME}</div><div style="float:right"><a href="{TR_SOFTWARE_NAME_ASC}"><img src="{THEME_COLOR_PATH}/images/icons/asc.gif" width="16" height="16" border="0" /></a><a href="{TR_SOFTWARE_NAME_DESC}"><img src="{THEME_COLOR_PATH}/images/icons/desc.gif" width="16" height="16" border="0" /></a></div></th>
+					<th><div style="float:left">{TR_SOFTWARE_NAME}</div><div style="float:left"><a href="{TR_SOFTWARE_NAME_ASC}" class="app_icon i_app_asc"></a><a href="{TR_SOFTWARE_NAME_DESC}" class="app_icon i_app_desc"></div></th>
 					<th width="100">{TR_SOFTWARE_VERSION}</th>
-					<th width="130"><div style="float:left">{TR_SOFTWARE_LANGUAGE}</div><div style="float:right"><a href="{TR_LANGUAGE_ASC}"><img src="{THEME_COLOR_PATH}/images/icons/asc.gif" width="16" height="16" border="0" /></a><a href="{TR_LANGUAGE_DESC}"><img src="{THEME_COLOR_PATH}/images/icons/desc.gif" width="16" height="16" border="0" /></a></div></th>
-					<th width="130"><div style="float:left">{TR_SOFTWARE_STATUS}</div><div style="float:right"><a href="{TR_SOFTWARE_STATUS_ASC}"><img src="{THEME_COLOR_PATH}/images/icons/asc.gif" width="16" height="16" border="0" /></a><a href="{TR_SOFTWARE_STATUS_DESC}"><img src="{THEME_COLOR_PATH}/images/icons/desc.gif" width="16" height="16" border="0" /></a></div></th>
-					<th width="130"><div style="float:left">{TR_SOFTWARE_TYPE}</div><div style="float:right"><a href="{TR_SOFTWARE_TYPE_ASC}"><img src="{THEME_COLOR_PATH}/images/icons/asc.gif" width="16" height="16" border="0" /></a><a href="{TR_SOFTWARE_TYPE_DESC}"><img src="{THEME_COLOR_PATH}/images/icons/desc.gif" width="16" height="16" border="0" /></a></div></th>
+					<th width="100"><div style="float:left">{TR_SOFTWARE_LANGUAGE}</div><div style="float:left"><a href="{TR_LANGUAGE_ASC}" class="app_icon i_app_asc"></a><a href="{TR_LANGUAGE_DESC}" class="app_icon i_app_desc"></a></div></th>
+					<th width="130"><div style="float:left">{TR_SOFTWARE_STATUS}</div><div style="float:left"><a href="{TR_SOFTWARE_STATUS_ASC}" class="app_icon i_app_asc"></a><a href="{TR_SOFTWARE_STATUS_DESC}" class="app_icon i_app_desc"></a></div></th>
+					<th width="130"><div style="float:left">{TR_SOFTWARE_TYPE}</div><div style="float:left"><a href="{TR_SOFTWARE_TYPE_ASC}" class="app_icon i_app_asc"></a><a href="{TR_SOFTWARE_TYPE_DESC}" class="app_icon i_app_desc"></div></th>
 					<th align="center" width="100">{TR_SOFTWARE_DELETE}</th>
 				</tr>
 				<!-- BDP: no_software_list -->
@@ -94,7 +94,7 @@
 					<td>{SW_LANGUAGE}</td>
 					<td><span class="icon i_app_installed" title="{SW_INSTALLED}">{SW_STATUS}</span></td>
 					<td>{SW_TYPE}</td>
-					<td><span class="icon i_{SOFTWARE_ICON}"><a href="{DELETE}" onclick="return action_delete()">{TR_DELETE}</a></span></td>
+					<td><a href="{DELETE}" class="icon i_{SOFTWARE_ICON}" onclick="return action_delete()">{TR_DELETE}</a></td>
 				</tr>
 				<!-- EDP: list_software -->
 				<tr>

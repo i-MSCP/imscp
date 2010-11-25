@@ -129,6 +129,17 @@ dd {
 .buttons input[type="checkbox"] {
     height: auto;
 }
+.app_icon {
+    background-position: top left;
+    background-repeat: no-repeat;
+    padding-left: 20px;
+    height: 16px;
+    line-height: 16px;
+    display: -moz-inline-block;
+    display: inline-block;
+    margin: 0 -5px 0 5px;
+    float: right;
+}
 
 .icon {
     background-position: top left;
@@ -627,6 +638,8 @@ legend, h3 {
 .i_app_installer { background-image: url(../images/icons/app_installer_cd.png); }
 .i_app_installed { background-image: url(../images/icons/help.png); }
 .i_app_download { background-image: url(../images/icons/app_installer_download.png); }
+.i_app_asc { background-image: url(../images/icons/app_installer_asc.gif); }
+.i_app_desc { background-image: url(../images/icons/app_installer_desc.gif); }
 
 /*********************************** Ajax Spinner *****************************/
 
