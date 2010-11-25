@@ -35,7 +35,6 @@
 
 			<div class="logo">
 				<img src="{THEME_COLOR_PATH}/images/imscp_logo.png" alt="i-MSCP logo" />
-				<img src="{THEME_COLOR_PATH}/images/imscp_webhosting.png" alt="i-MSCP" />
 			</div>
 		</div>
 
