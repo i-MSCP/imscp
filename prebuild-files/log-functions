@@ -33,13 +33,13 @@
 writelog() {
 	_logline="${1}";
 	printf "${1}";
-	_logline=$(printf "$_logline" | sed -r 's~'$(echo "\033")'\[[0-9;]{1,4}m~~g'; printf x);
+	_logline=$(printf "${_logline}x" | awk '{sub(/\033\[[0-9;]*m/, "")}1';);
 	_logline="${_logline%x}"
 	if [ "${SYSTEM_LOG}" ]; then
 		if [ "${FlushTXT}" ]; then
 			LOG=$(echo ${SYSTEM_LOG}| sed 's~'${INST_PREF}'~~g');
 			${mkdir} -p "${LOG}"
-			#if [ -f "${LOG}/imscp-build.log" ]; then ${rm} "${LOG}/imscp-build.log"; fi
+			if [ -f "${LOG}/imscp-build.log" ]; then ${rm} "${LOG}/imscp-build.log"; fi
 			${touch} "${LOG}/imscp-build.log"
 			${chmod} 0660 "${LOG}/imscp-build.log"
 			printf "${FlushTXT}${_logline}" >> "${LOG}/imscp-build.log"

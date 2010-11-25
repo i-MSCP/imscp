@@ -431,7 +431,7 @@ function gen_users_list(&$tpl, $reseller_id) {
 		$tpl->assign(
 			array(
 				'USER' => $domain_id,
-				'USER_DOMAIN_ACCOUN' => tohtml($domain_name),
+				'USER_DOMAIN_ACCOUNT' => tohtml($domain_name),
 				'SELECTED' => $selected
 			)
 		);

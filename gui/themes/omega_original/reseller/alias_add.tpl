@@ -89,7 +89,7 @@
                         <td class="content2">{TR_DOMAIN_ACCOUNT}</td>
                         <td class="content"><select name="usraccounts" size="5" class="textinput2">
                             <!-- BDP: user_entry -->
-                            <option value="{USER}" {SELECTED}>{USER_DOMAIN_ACCOUN}</option>
+                            <option value="{USER}" {SELECTED}>{USER_DOMAIN_ACCOUNT}</option>
                             <!-- EDP: user_entry -->
                         </select></td>
                       </tr>

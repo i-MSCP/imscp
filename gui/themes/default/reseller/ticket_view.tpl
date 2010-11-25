@@ -39,7 +39,7 @@
 				<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
 			</ul>
 			<ul class="path">
-				<li><a class="settings" href="ticket_system.php">{TR_MENU_QUESTIONS_AND_COMMENTS}</a></li>
+				<li><a href="ticket_system.php">{TR_MENU_QUESTIONS_AND_COMMENTS}</a></li>
 				<li>{TR_VIEW_SUPPORT_TICKET}</li>
 			</ul>
 		</div>

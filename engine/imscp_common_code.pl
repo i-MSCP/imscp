@@ -73,9 +73,7 @@ if ($main::db_pass_key eq '{KEY}' || $main::db_pass_iv eq '{IV}') {
 		"wait...\n";
 
 	print STDOUT "\tIf it takes to long, please check: ".
-	 "http://i-mscp.net/documentation/frequently_asked_questions/what".
-	 "_does_generating_database_keys_it_may_take_some_time_please_wait..._on_".
-	 "setup_mean\n";
+	 "http://i-mscp.net/dokuwiki/doku.php?id=keyrpl\n";
 
 	$rs = sys_command(
 		"perl $main::cfg{'ROOT_DIR'}/keys/rpl.pl " .

@@ -7,6 +7,8 @@ i-MSCP ChangeLog
 2010-11-24 Daniel Andreca
 	- CONFIGS:
 		* Fixed #27: Add logger to build script
+	- ENGINE:
+		* Fixed #29: Wrong link during Setup
 
 2010-11-23 Daniel Andreca
 	- CONFIGS:

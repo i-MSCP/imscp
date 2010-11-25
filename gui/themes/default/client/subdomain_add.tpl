@@ -9,20 +9,44 @@
 		<meta name="robots" content="nofollow, noindex" />
 		<link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/imscp.js"></script>
+		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.js"></script>
+		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.imscpTooltips.js"></script>
 		<!--[if IE 6]>
 		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/DD_belatedPNG_0.0.8a-min.js"></script>
 		<script type="text/javascript">
 			DD_belatedPNG.fix('*');
 		</script>
 		<![endif]-->
-		<script type="text/javascript">
-		/* <![CDATA[ */
-		function makeUser() {
-			var subname  = document.forms[0].elements['subdomain_name'].value;
-			subname = subname.toLowerCase();
-			document.forms[0].elements['subdomain_mnt_pt'].value = "/" + subname;
-		}
-		/* ]]> */
+		<script language="JavaScript" type="text/JavaScript">
+			/*<![CDATA[*/
+				$(document).ready(function(){
+					// Tooltips - begin
+					$('#dmn_help').iMSCPtooltips({msg:"{TR_DMN_HELP}"});
+					// Tooltips - end
+				});
+
+				function makeUser() {
+					var subname  = document.forms[0].elements['subdomain_name'].value;
+					subname = subname.toLowerCase();
+					document.forms[0].elements['subdomain_mnt_pt'].value = "/" + subname;
+				}
+
+				function setRatioAlias(){
+					document.forms[0].elements['dmn_type'][1].checked = true;
+				}
+
+				function setForwardReadonly(obj){
+					if(obj.value == 1) {
+						document.forms[0].elements['forward'].readOnly = false;
+						document.forms[0].elements['forward_prefix'].disabled = false;
+					} else {
+						document.forms[0].elements['forward'].readOnly = true;
+						document.forms[0].elements['forward'].value = '';
+						document.forms[0].elements['forward_prefix'].disabled = true;
+					}
+				}
+
+			/*]]>*/
 		</script>
 	</head>
 	<body>
@@ -57,8 +81,7 @@
 		</div>
 
 		<div class="body">
-			<div id="fwd_help" class="tooltip">{TR_DMN_HELP}</div>
-
+		
 			<!-- BDP: page_message -->
 				<div class="warning">{MESSAGE}</div>
 			<!-- EDP: page_message -->
@@ -68,9 +91,7 @@
 				<table>
 					<tr>
 						<td>
-							<label for="subdomain_name">{TR_SUBDOMAIN_NAME}</label>
-							<span class="icon i_help" onmouseover="showTip('fwd_help', event)" onmouseout="hideTip('fwd_help')" >Help</span>
-						</td>
+							<label for="subdomain_name">{TR_SUBDOMAIN_NAME}</label><span class="icon i_help" id="dmn_help">Help</span>
 						<td>
 							<input type="text" name="subdomain_name" id="subdomain_name" value="{SUBDOMAIN_NAME}"  onblur="makeUser();" />
 						</td>
@@ -88,8 +109,12 @@
 						</td>
 					</tr>
 					<tr>
-						<td><label for="subdomain_mnt_pt">{TR_DIR_TREE_SUBDOMAIN_MOUNT_POINT}</label></td>
-						<td><input type="text" name="subdomain_mnt_pt" id="subdomain_mnt_pt" value="{SUBDOMAIN_MOUNT_POINT}" /></td>
+						<td>
+							<label for="subdomain_mnt_pt">{TR_DIR_TREE_SUBDOMAIN_MOUNT_POINT}</label>
+						</td>
+						<td>
+							<input type="text" name="subdomain_mnt_pt" id="subdomain_mnt_pt" value="{SUBDOMAIN_MOUNT_POINT}" />
+						</td>
 					</tr>
 				</table>
 

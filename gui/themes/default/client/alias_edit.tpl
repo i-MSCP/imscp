@@ -15,6 +15,20 @@
 			DD_belatedPNG.fix('*');
 		</script>
 		<![endif]-->
+		<script language="JavaScript" type="text/JavaScript">
+		/*<![CDATA[*/
+			function setForwardReadonly(obj){
+				if(obj.value == 1) {
+					document.forms[0].elements['forward'].readOnly = false;
+					document.forms[0].elements['forward_prefix'].disabled = false;
+				} else {
+					document.forms[0].elements['forward'].readOnly = true;
+					document.forms[0].elements['forward'].value = '';
+					document.forms[0].elements['forward_prefix'].disabled = true;
+				}
+			}
+		/* ]]> */
+		</script>
 	</head>
 	<body>
 		<div class="header">
@@ -49,7 +63,6 @@
 		</div>
 
 		<div class="body">
-			<div id="fwd_help" class="tooltip">{TR_FWD_HELP}</div>
 
 			<!-- BDP: page_message -->
 				<div class="warning">{MESSAGE}</div>
@@ -72,17 +85,21 @@
 						<tr>
 							<td>{TR_ENABLE_FWD}</td>
 							<td>
-								<input type="radio" name="status" id="status1" {CHECK_EN} value="1" /> <label for="status1">{TR_ENABLE}</label><br />
-								<input type="radio" name="status" id="status2" {CHECK_DIS} value="0" /> <label for="status2">{TR_DISABLE}</label>
+								<input type="radio" name="status" id="status_enable"{CHECK_EN} value="1" onChange="setForwardReadonly(this);" /><label for="status_enable">{TR_ENABLE}</label><br />
+							<input type="radio" name="status" id="status_disable"{CHECK_DIS} value="0" onChange="setForwardReadonly(this);" /><label for="status_disable">{TR_DISABLE}</label>
 							</td>
 						</tr>
 						<tr>
 							<td>
 								<label for="forward">{TR_FORWARD}</label>
-								<span class="icon i_help" onmouseover="showTip('fwd_help', event)" onmouseout="hideTip('fwd_help')" >Help</span>
 							</td>
 							<td>
-								<input name="forward" type="text" id="forward" value="{FORWARD}" />
+								<select name="forward_prefix" style="vertical-align:middle"{DISABLE_FORWARD}>
+									<option value="{TR_PREFIX_HTTP}"{HTTP_YES}>{TR_PREFIX_HTTP}</option>
+									<option value="{TR_PREFIX_HTTPS}"{HTTPS_YES}>{TR_PREFIX_HTTPS}</option>
+									<option value="{TR_PREFIX_FTP}"{FTP_YES}>{TR_PREFIX_FTP}</option>
+								</select>
+								<input name="forward" type="text" class="textinput" id="forward" value="{FORWARD}"{READONLY_FORWARD} />
 							</td>
 						</tr>
 					</table>

@@ -109,7 +109,8 @@ failtxt() {
 }
 
 title() {
-	writelog "\n\033[4m${1}\033[0m\n";
+	writelog "\033[4m${1}";
+	writelog "\033[0m\n";
 }
 
 getSize() {
