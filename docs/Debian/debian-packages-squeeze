@@ -24,7 +24,7 @@ libapache2-mod-fcgid
 libberkeleydb-perl
 libc6-dev
 libexpat1
-libexpat-dev
+libexpat1-dev
 libcrypt-blowfish-perl
 libcrypt-cbc-perl
 libcrypt-passwdmd5-perl
