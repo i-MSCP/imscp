@@ -125,6 +125,20 @@
               </table>
              </td>
             </tr>
+            <!-- BDP: t_software_support -->
+ 			<tr>
+ 				<td>&nbsp;</td>
+ 				<td class="content">
+ 					<table width="100%"  border="00" cellspacing="0" cellpadding="0">
+ 						<tr>
+ 							<td width="65"><a href="software.php"><img src="{THEME_COLOR_PATH}/images/icons/cd_big.png" width="46" height="46" border="0"></a></td>
+ 							<td><a href="software.php" class="link">{TR_SOFTWARE_MENU}</a><br>
+ 							{TR_SOFTWARE_SUPPORT}</td>
+ 						</tr>
+ 					</table>
+ 				</td>
+ 			</tr>
+ 			<!-- EDP: t_software_support -->
 			<!-- BDP: active_awstats -->
             <tr>
              <td>&nbsp;</td>

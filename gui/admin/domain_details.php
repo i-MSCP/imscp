@@ -45,10 +45,10 @@ $tpl->define_dynamic('custom_buttons', 'page');
 
 $tpl->assign(
 	array(
-		'TR_DETAILS_DOMAIN_PAGE_TITLE'	=> tr('i-MSCP - Domain/Details'),
+		'TR_DETAILS_DOMAIN_PAGE_TITLE'			=> tr('i-MSCP - Domain/Details'),
 		'THEME_COLOR_PATH'				=> "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET'					=> tr('encoding'),
-		'ISP_LOGO'						=> get_logo($_SESSION['user_id']),
+		'ISP_LOGO'					=> get_logo($_SESSION['user_id']),
 	)
 );
 
@@ -63,25 +63,26 @@ $tpl->assign(
 		'TR_DOMAIN_DETAILS'		=> tr('Domain details'),
 		'TR_DOMAIN_NAME'		=> tr('Domain name'),
 		'TR_DOMAIN_IP'			=> tr('Domain IP'),
-		'TR_STATUS'				=> tr('Status'),
+		'TR_STATUS'			=> tr('Status'),
 		'TR_PHP_SUPP'			=> tr('PHP support'),
 		'TR_CGI_SUPP'			=> tr('CGI support'),
 		'TR_DNS_SUPP'			=> tr('Manual DNS support (EXPERIMENTAL)'),
 		'TR_BACKUP_SUPPORT'		=> tr('Backup support'),
 		'TR_MYSQL_SUPP'			=> tr('MySQL support'),
 		'TR_TRAFFIC'			=> tr('Traffic in MB'),
-		'TR_DISK'				=> tr('Disk in MB'),
+		'TR_DISK'			=> tr('Disk in MB'),
 		'TR_FEATURE'			=> tr('Feature'),
-		'TR_USED'				=> tr('Used'),
-		'TR_LIMIT'				=> tr('Limit'),
+		'TR_USED'			=> tr('Used'),
+		'TR_LIMIT'			=> tr('Limit'),
 		'TR_MAIL_ACCOUNTS'		=> tr('Mail accounts'),
 		'TR_FTP_ACCOUNTS'		=> tr('FTP accounts'),
-		'TR_SQL_DB_ACCOUNTS'	=> tr('SQL databases'),
-		'TR_SQL_USER_ACCOUNTS'	=> tr('SQL users'),
-		'TR_SUBDOM_ACCOUNTS'	=> tr('Subdomains'),
-		'TR_DOMALIAS_ACCOUNTS'	=> tr('Domain aliases'),
+		'TR_SQL_DB_ACCOUNTS'		=> tr('SQL databases'),
+		'TR_SQL_USER_ACCOUNTS'		=> tr('SQL users'),
+		'TR_SUBDOM_ACCOUNTS'		=> tr('Subdomains'),
+		'TR_DOMALIAS_ACCOUNTS'		=> tr('Domain aliases'),
 		'TR_UPDATE_DATA'		=> tr('Submit changes'),
-		'TR_BACK'				=> tr('Back')
+		'TR_BACK'			=> tr('Back'),
+		'TR_SOFTWARE_SUPP' 		=> tr('i-MSCP application installer')
 	)
 );
 
@@ -297,20 +298,21 @@ function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
 	// Fill in the fields
 	$tpl->assign(
 		array(
-			'DOMAIN_ID'					=> $data['domain_id'],
-			'VL_DOMAIN_NAME'			=> tohtml(decode_idna($data['domain_name'])),
-			'VL_DOMAIN_IP'				=> $ipdat['ip_number'] . ' (' . $ipdat['ip_alias'] . ')',
-			'VL_STATUS'					=> $dstatus,
-			'VL_PHP_SUPP'				=> ($data['domain_php'] == 'yes') ? tr('Enabled') : tr('Disabled'),
-			'VL_CGI_SUPP'				=> ($data['domain_cgi'] == 'yes') ? tr('Enabled') : tr('Disabled'),
-			'VL_DNS_SUPP'				=> ($data['domain_dns'] == 'yes') ? tr('Enabled') : tr('Disabled'),
-			'VL_MYSQL_SUPP'				=> ($data['domain_sqld_limit'] >= 0) ? tr('Enabled') : tr('Disabled'),
+			'DOMAIN_ID'			=> $data['domain_id'],
+			'VL_DOMAIN_NAME'		=> tohtml(decode_idna($data['domain_name'])),
+			'VL_DOMAIN_IP'			=> $ipdat['ip_number'] . ' (' . $ipdat['ip_alias'] . ')',
+			'VL_STATUS'			=> $dstatus,
+			'VL_PHP_SUPP'			=> ($data['domain_php'] == 'yes') ? tr('Enabled') : tr('Disabled'),
+			'VL_CGI_SUPP'			=> ($data['domain_cgi'] == 'yes') ? tr('Enabled') : tr('Disabled'),
+			'VL_DNS_SUPP'			=> ($data['domain_dns'] == 'yes') ? tr('Enabled') : tr('Disabled'),
+			'VL_MYSQL_SUPP'			=> ($data['domain_sqld_limit'] >= 0) ? tr('Enabled') : tr('Disabled'),
+			'VL_SOFTWARE_SUPP'		=> ($data['domain_software_allowed'] == 'yes') ? tr('Enabled') : tr('Disabled'),
 			'VL_TRAFFIC_PERCENT'		=> $traffic_percent,
-			'VL_TRAFFIC_USED'			=> sizeit($domain_all_traffic),
-			'VL_TRAFFIC_LIMIT'			=> sizeit($domain_traffic_limit, 'MB'),
-			'VL_DISK_PERCENT'			=> $disk_percent,
-			'VL_DISK_USED'				=> $domduh,
-			'VL_DISK_LIMIT'				=> sizeit($data['domain_disk_limit'], 'MB'),
+			'VL_TRAFFIC_USED'		=> sizeit($domain_all_traffic),
+			'VL_TRAFFIC_LIMIT'		=> sizeit($domain_traffic_limit, 'MB'),
+			'VL_DISK_PERCENT'		=> $disk_percent,
+			'VL_DISK_USED'			=> $domduh,
+			'VL_DISK_LIMIT'			=> sizeit($data['domain_disk_limit'], 'MB'),
 			'VL_MAIL_ACCOUNTS_USED'		=> $dat3['mcnt'],
 			'VL_MAIL_ACCOUNTS_LIIT'		=> $mail_limit,
 			'VL_FTP_ACCOUNTS_USED'		=> $used_ftp_acc,

@@ -51,6 +51,7 @@ $tpl->define_dynamic('mail_add', 'page');
 $tpl->define_dynamic('ftp_add', 'page');
 $tpl->define_dynamic('sql_db_add', 'page');
 $tpl->define_dynamic('sql_user_add', 'page');
+$tpl->define_dynamic('t_software_support', 'page');
 
 // check if we have only hosting plans for admins - reseller should not edit them
 if (isset($cfg->HOSTING_PLANS_LEVEL)
@@ -77,33 +78,34 @@ gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_users_manage.tpl')
 gen_logged_from($tpl);
 
 $tpl->assign(
-	array(
-		'TR_ADD_USER'					=> tr('Add user'),
-		'TR_HOSTING_PLAN_PROPERTIES'	=> tr('Hosting plan properties'),
-		'TR_TEMPLATE_NAME'				=> tr('Template name'),
-		'TR_MAX_DOMAIN'					=> tr('Max domains<br><i>(-1 disabled, 0 unlimited)</i>'),
-		'TR_MAX_SUBDOMAIN'				=> tr('Max subdomains<br><i>(-1 disabled, 0 unlimited)</i>'),
-		'TR_MAX_DOMAIN_ALIAS'			=> tr('Max aliases<br><i>(-1 disabled, 0 unlimited)</i>'),
-		'TR_MAX_MAIL_COUNT'				=> tr('Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>'),
-		'TR_MAX_FTP'					=> tr('FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>'),
-		'TR_MAX_SQL_DB'					=> tr('SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>'),
-		'TR_MAX_SQL_USERS'				=> tr('SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>'),
-		'TR_MAX_TRAFFIC'				=> tr('Traffic limit [MB]<br><i>(0 unlimited)</i>'),
-		'TR_MAX_DISK_USAGE'				=> tr('Disk limit [MB]<br><i>(0 unlimited)</i>'),
-		'TR_PHP'						=> tr('PHP'),
-		'TR_CGI'						=> tr('CGI / Perl'),
-		'TR_BACKUP'						=> tr('Backup'),
-		'TR_BACKUP_DOMAIN'				=> tr('Domain'),
-		'TR_BACKUP_SQL'					=> tr('SQL'),
-		'TR_BACKUP_FULL'				=> tr('Full'),
-		'TR_BACKUP_NO'					=> tr('No'),
-		'TR_DNS'						=> tr('Manual DNS support (EXPERIMENTAL)'),
-		'TR_YES'						=> tr('yes'),
-		'TR_NO'							=> tr('no'),
-		'TR_NEXT_STEP'					=> tr('Next step'),
-		'TR_APACHE_LOGS'				=> tr('Apache logs'),
-		'TR_AWSTATS'					=> tr('Awstats')
-	)
+		array(
+			'TR_ADD_USER'					=> tr('Add user'),
+			'TR_HOSTING_PLAN_PROPERTIES'	=> tr('Hosting plan properties'),
+			'TR_TEMPLATE_NAME'				=> tr('Template name'),
+			'TR_MAX_DOMAIN'					=> tr('Max domains<br><i>(-1 disabled, 0 unlimited)</i>'),
+			'TR_MAX_SUBDOMAIN'				=> tr('Max subdomains<br><i>(-1 disabled, 0 unlimited)</i>'),
+			'TR_MAX_DOMAIN_ALIAS'			=> tr('Max aliases<br><i>(-1 disabled, 0 unlimited)</i>'),
+			'TR_MAX_MAIL_COUNT'				=> tr('Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>'),
+			'TR_MAX_FTP'					=> tr('FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>'),
+			'TR_MAX_SQL_DB'					=> tr('SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>'),
+			'TR_MAX_SQL_USERS'				=> tr('SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>'),
+			'TR_MAX_TRAFFIC'				=> tr('Traffic limit [MB]<br><i>(0 unlimited)</i>'),
+			'TR_MAX_DISK_USAGE'				=> tr('Disk limit [MB]<br><i>(0 unlimited)</i>'),
+			'TR_PHP'						=> tr('PHP'),
+			'TR_CGI'						=> tr('CGI / Perl'),
+			'TR_BACKUP'						=> tr('Backup'),
+			'TR_BACKUP_DOMAIN'				=> tr('Domain'),
+			'TR_BACKUP_SQL'					=> tr('SQL'),
+			'TR_BACKUP_FULL'				=> tr('Full'),
+			'TR_BACKUP_NO'					=> tr('No'),
+			'TR_DNS'						=> tr('Manual DNS support (EXPERIMENTAL)'),
+			'TR_YES'						=> tr('yes'),
+			'TR_NO'							=> tr('no'),
+			'TR_NEXT_STEP'					=> tr('Next step'),
+			'TR_APACHE_LOGS'				=> tr('Apache logs'),
+			'TR_AWSTATS'					=> tr('Awstats'),
+			'TR_SOFTWARE_SUPP'				=> tr('i-MSCP application installer')
+		)
 );
 
 if (!get_pageone_param()) {
@@ -115,7 +117,7 @@ if (!get_pageone_param()) {
 if (isset($_POST['uaction']) && ("user_add2_nxt" === $_POST['uaction']) && (!isset($_SESSION['step_one']))) {
 	if (check_user_data($tpl)) {
 		$_SESSION["step_two_data"] = "$dmn_name;0;";
-		$_SESSION["ch_hpprops"] = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;$hp_disk;$hp_backup;$hp_dns";
+		$_SESSION["ch_hpprops"] = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;$hp_disk;$hp_backup;$hp_dns;$hp_allowsoftware";
 
 		if (reseller_limits_check($sql, $ehp_error, $_SESSION['user_id'], 0, $_SESSION["ch_hpprops"])) {
 			user_goto('user_add3.php');
@@ -129,6 +131,7 @@ if (isset($_POST['uaction']) && ("user_add2_nxt" === $_POST['uaction']) && (!iss
 }
 
 get_init_au2_page($tpl);
+get_reseller_software_permission (&$tpl,&$sql,$_SESSION['user_id']);
 gen_page_message($tpl);
 
 list($rsub_max, $rals_max, $rmail_max, $rftp_max, $rsql_db_max, $rsql_user_max) = check_reseller_permissions(
@@ -176,7 +179,7 @@ function get_pageone_param() {
 function get_init_au2_page($tpl) {
 
 	global $hp_name, $hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff,
-		$hp_disk, $hp_backup, $hp_dns;
+		$hp_disk, $hp_backup, $hp_dns, $hp_allowsoftware;
 
 	/**
 	 * @var $cfg iMSCP_Config_Handler_File
@@ -184,28 +187,30 @@ function get_init_au2_page($tpl) {
 	$cfg = iMSCP_Registry::get('Config');
 
 	$tpl->assign(
-		array(
-			'VL_TEMPLATE_NAME'	=> tohtml($hp_name),
-			'MAX_DMN_CNT'		=> '',
-			'MAX_SUBDMN_CNT'	=> $hp_sub,
-			'MAX_DMN_ALIAS_CNT'	=> $hp_als,
-			'MAX_MAIL_CNT'		=> $hp_mail,
-			'MAX_FTP_CNT'		=> $hp_ftp,
-			'MAX_SQL_CNT'		=> $hp_sql_db,
-			'VL_MAX_SQL_USERS'	=> $hp_sql_user,
-			'VL_MAX_TRAFFIC'	=> $hp_traff,
-			'VL_MAX_DISK_USAGE'	=> $hp_disk,
-			'VL_PHPY'			=> ($hp_php === '_yes_') ? $cfg->HTML_CHECKED : '',
-			'VL_PHPN'			=> ($hp_php === '_no_') ? $cfg->HTML_CHECKED : '',
-			'VL_CGIY'			=> ($hp_cgi === '_yes_') ? $cfg->HTML_CHECKED : '',
-			'VL_CGIN'			=> ($hp_cgi === '_no_') ? $cfg->HTML_CHECKED : '',
-			'VL_BACKUPD'		=> ($hp_backup === '_dmn_') ? $cfg->HTML_CHECKED : '',
-			'VL_BACKUPS'		=> ($hp_backup === '_sql_') ? $cfg->HTML_CHECKED : '',
-			'VL_BACKUPF'		=> ($hp_backup === '_full_') ? $cfg->HTML_CHECKED : '',
-			'VL_BACKUPN'		=> ($hp_backup === '_no_') ? $cfg->HTML_CHECKED : '',
-			'VL_DNSY'			=> ($hp_dns === '_yes_') ? $cfg->HTML_CHECKED : '',
-			'VL_DNSN'			=> ($hp_dns === '_no_') ? $cfg->HTML_CHECKED : ''
-		)
+			array(
+				'VL_TEMPLATE_NAME'	=> tohtml($hp_name),
+				'MAX_DMN_CNT'		=> '',
+				'MAX_SUBDMN_CNT'	=> $hp_sub,
+				'MAX_DMN_ALIAS_CNT'	=> $hp_als,
+				'MAX_MAIL_CNT'		=> $hp_mail,
+				'MAX_FTP_CNT'		=> $hp_ftp,
+				'MAX_SQL_CNT'		=> $hp_sql_db,
+				'VL_MAX_SQL_USERS'	=> $hp_sql_user,
+				'VL_MAX_TRAFFIC'	=> $hp_traff,
+				'VL_MAX_DISK_USAGE'	=> $hp_disk,
+				'VL_PHPY'			=> ($hp_php === '_yes_') ? $cfg->HTML_CHECKED : '',
+				'VL_PHPN'			=> ($hp_php === '_no_') ? $cfg->HTML_CHECKED : '',
+				'VL_CGIY'			=> ($hp_cgi === '_yes_') ? $cfg->HTML_CHECKED : '',
+				'VL_CGIN'			=> ($hp_cgi === '_no_') ? $cfg->HTML_CHECKED : '',
+				'VL_BACKUPD'		=> ($hp_backup === '_dmn_') ? $cfg->HTML_CHECKED : '',
+				'VL_BACKUPS'		=> ($hp_backup === '_sql_') ? $cfg->HTML_CHECKED : '',
+				'VL_BACKUPF'		=> ($hp_backup === '_full_') ? $cfg->HTML_CHECKED : '',
+				'VL_BACKUPN'		=> ($hp_backup === '_no_') ? $cfg->HTML_CHECKED : '',
+				'VL_DNSY'			=> ($hp_dns === '_yes_') ? $cfg->HTML_CHECKED : '',
+				'VL_DNSN'			=> ($hp_dns === '_no_') ? $cfg->HTML_CHECKED : '',
+				'VL_SOFTWAREY'		=> ($hp_allowsoftware === '_yes_') ? $cfg->HTML_CHECKED : '',
+				'VL_SOFTWAREN'		=> ($hp_allowsoftware === '_no_') ? $cfg->HTML_CHECKED : ''
+			)
 	);
 }
 
@@ -215,7 +220,7 @@ function get_init_au2_page($tpl) {
 function get_hp_data($hpid, $admin_id) {
 
 	global $hp_name, $hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff,
-		$hp_disk, $hp_backup, $hp_dns;
+		$hp_disk, $hp_backup, $hp_dns, $hp_allowsoftware;
 
 	/**
 	 * @var $sql iMSCP_Database
@@ -233,7 +238,7 @@ function get_hp_data($hpid, $admin_id) {
 
 		list(
 			$hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk,
-			$hp_backup, $hp_dns) = explode(';', $props);
+			$hp_backup, $hp_dns, $hp_allowsoftware) = explode(';', $props);
 
 		$hp_name = $data['name'];
 	} else {
@@ -250,6 +255,7 @@ function get_hp_data($hpid, $admin_id) {
 			$hp_disk = '';
 			$hp_backup = '_no_';
 			$hp_dns = '_no_';
+			$hp_allowsoftware = '_no_';
 	}
 } // End of get_hp_data()
 
@@ -259,7 +265,7 @@ function get_hp_data($hpid, $admin_id) {
 function check_user_data($tpl) {
 
 	global $hp_name, $hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff,
-		$hp_disk, $hp_dmn, $hp_backup, $hp_dns;
+		$hp_disk, $hp_dmn, $hp_backup, $hp_dns, $hp_allowsoftware;
 
 	//$sql = iMSCP_Registry::get('Db');
 
@@ -321,6 +327,10 @@ function check_user_data($tpl) {
 	if (isset($_POST['dns'])) {
 		$hp_dns = $_POST['dns'];
 	}
+	
+	if (isset($_POST['software_allowed'])) {
+		$hp_allowsoftware = $_POST['software_allowed'];
+	}
 
 	// Begin checking...
 	list(
@@ -374,6 +384,10 @@ function check_user_data($tpl) {
 
 	if (!imscp_limit_check($hp_disk, null)) {
 		$ehp_error[] = tr('Incorrect disk quota limit!');
+	}
+	
+	if ($hp_php == "_no_" && $hp_allowsoftware == "_yes_") {
+		$ehp_error[] = tr('The i-MSCP application installer needs PHP to enable it!');
 	}
 
 	if (empty($ehp_error) && empty($_SESSION['user_page_message'])) {

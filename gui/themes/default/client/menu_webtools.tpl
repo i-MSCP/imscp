@@ -9,6 +9,9 @@
 		<li><a href="{WEBMAIL_PATH}">{TR_WEBMAIL}</a></li>
 	<!-- EDP: active_email -->
 	<li><a href="{FILEMANAGER_PATH}">{TR_FILEMANAGER}</a></li>
+	<!-- BDP: t_software_menu -->
+ 	<li><a href="software.php">{TR_SOFTWARE_MENU}</a></li>
+	<!-- EDP: t_software_menu -->
 	<!-- BDP: active_awstats -->
 	<li><a href="{AWSTATS_PATH}">{TR_AWSTATS}</a></li>
 	<!-- EDP: active_awstats -->

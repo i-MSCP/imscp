@@ -48,6 +48,7 @@ $tpl->define_dynamic('mail_edit', 'page');
 $tpl->define_dynamic('ftp_edit', 'page');
 $tpl->define_dynamic('sql_db_edit', 'page');
 $tpl->define_dynamic('sql_user_edit', 'page');
+$tpl->define_dynamic('t_software_support', 'page');
 
 /**
  * static page messages.
@@ -82,6 +83,7 @@ $tpl->assign(
 		'TR_MAX_SQL_USERS' => tr('SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>'),
 		'TR_MAX_TRAFFIC' => tr('Traffic limit [MB]<br><i>(0 unlimited)</i>'),
 		'TR_DISK_LIMIT' => tr('Disk limit [MB]<br><i>(0 unlimited)</i>'),
+		'TR_SOFTWARE_SUPP'	=> tr('i-MSCP application installer'),
 		'TR_PHP' => tr('PHP'),
 		'TR_CGI' => tr('CGI / Perl'),
 		'TR_DNS' => tr('Allow adding records to DNS zone (EXPERIMENTAL)'),
@@ -131,6 +133,9 @@ if (isset($_POST['uaction']) && ('add_plan' === $_POST['uaction'])) {
 	$tpl->assign('MESSAGE', "");
 }
 
+if (isset($cfg->HOSTING_PLANS_LEVEL)
+	&& $cfg->HOSTING_PLANS_LEVEL === 'reseller') get_reseller_software_permission (&$tpl,&$sql,$_SESSION['user_id']);
+	
 gen_page_message($tpl);
 
 $tpl->parse('PAGE', 'page');
@@ -179,7 +184,9 @@ function restore_form(&$tpl, &$sql) {
 			'VL_BACKUPF' => ($_POST['backup'] == '_full_') ? $cfg->HTML_CHECKED : '',
 			'VL_BACKUPN' => ($_POST['backup']== '_no_') ? $cfg->HTML_CHECKED : '',
 			'TR_STATUS_YES' => ($_POST['status']) ? $cfg->HTML_CHECKED : '',
-			'TR_STATUS_NO' => (!$_POST['status']) ? $cfg->HTML_CHECKED : ''
+			'TR_STATUS_NO' => (!$_POST['status']) ? $cfg->HTML_CHECKED : '',
+			'TR_SOFTWARE_YES' => ($_POST['software_allowed'] == '_yes_') ? $cfg->HTML_CHECKED : '',
+			'TR_SOFTWARE_NO' => ($_POST['software_allowed'] == '_no_') ? $cfg->HTML_CHECKED : '',
 		)
 	);
 } // end of function restore_form()
@@ -248,7 +255,7 @@ function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
 
 	list(
 		$hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db,
-		$hp_sql_user, $hp_traff, $hp_disk, $hp_backup, $hp_dns
+		$hp_sql_user, $hp_traff, $hp_disk, $hp_backup, $hp_dns, $hp_allowsoftware
 	) = explode(';', $props);
 
 	$hp_name = $data['name'];
@@ -317,6 +324,8 @@ function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
 			'VL_BACKUPN' => ($hp_backup == '_no_') ? $cfg->HTML_CHECKED : '',
 			'TR_STATUS_YES' => ($status) ? $cfg->HTML_CHECKED : '',
 			'TR_STATUS_NO' => (!$status) ? $cfg->HTML_CHECKED : '',
+			'TR_SOFTWARE_YES' => ($hp_allowsoftware == '_yes_') ? $cfg->HTML_CHECKED : '',
+			'TR_SOFTWARE_NO' => ($hp_allowsoftware == '_no_' || !$hp_allowsoftware) ? $cfg->HTML_CHECKED : ''
 		)
 	);
 } // end of gen_load_ehp_page()
@@ -331,7 +340,7 @@ function check_data_iscorrect(&$tpl) {
 	global $hp_traff, $hp_disk;
 	global $hpid;
 	global $price, $setup_fee;
-	global $hp_backup, $hp_dns;
+	global $hp_backup, $hp_dns, $hp_allowsoftware;
 
 	$ahp_error = array();
 	$hp_name = clean_input($_POST['hp_name']);
@@ -370,6 +379,16 @@ function check_data_iscorrect(&$tpl) {
 
     if (isset($_POST['backup'])) {
     	$hp_backup = $_POST['backup'];
+    }
+    
+    if (isset($_POST['software_allowed'])) {
+    	$hp_allowsoftware = $_POST['software_allowed'];
+    } else {
+    	$hp_allowsoftware = "_no_";
+    }
+    
+    if ($hp_php == "_no_" && $hp_allowsoftware == "_yes_") {
+    	$ahp_error[] = tr('The i-MSCP application installer needs PHP to enable it!');
     }
 
     list(
@@ -456,7 +475,7 @@ function save_data_to_db() {
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;
 	global $hp_traff, $hp_disk;
 	global $hpid;
-	global $hp_backup, $hp_dns;
+	global $hp_backup, $hp_dns, $hp_allowsoftware;
 //	global $tos;
 
 	$sql = iMSCP_Registry::get('Db');
@@ -471,7 +490,7 @@ function save_data_to_db() {
 	$tos = clean_input($_POST['hp_tos']);
 
 	$hp_props = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;" .
-		"$hp_sql_user;$hp_traff;$hp_disk;$hp_backup;$hp_dns";
+		"$hp_sql_user;$hp_traff;$hp_disk;$hp_backup;$hp_dns;$hp_allowsoftware";
 
 	$admin_id = $_SESSION['user_id'];
 

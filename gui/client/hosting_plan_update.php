@@ -219,210 +219,228 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 			$hp_traff,
 			$hp_disk,
 			$hp_backup,
-			$hp_dns
+			$hp_dns,
+			$hp_allowsoftware
 		) = explode(";", $rs->fields['props']);
-
-		$details = '';
-		$warning_msgs = $error_msgs = array();
-
-		if ($hp_php === '_yes_') {
-			$details = tr('PHP Support: enabled') . "<br />";
-			$php = "yes";
+		
+		if($hp_allowsoftware == "_yes_" && get_reseller_sw_installer($_SESSION['user_created_by']) == "no") {
+			$rs->MoveNext();
 		} else {
-			$details = tr('PHP Support: disabled') . "<br />";
-			$php = "no";
-
-			if ($current['domain_php'] == 'yes') {
-				$warning_msgs[] = tr("You have PHP enabled, but the new hosting plan doesn't has this feature.");
-			}
-		}
-
-		if ($hp_cgi === '_yes_') {
-			$cgi = "yes";
-			$details .= tr('CGI Support: enabled') . "<br />";
-		} else {
-			$cgi = "no";
-			$details .= tr('CGI Support: disabled') . "<br />";
-
-			if ($current['domain_cgi'] == 'yes') {
-				$warning_msgs[] = tr("You have CGI enabled, but the new hosting plan doesn't has this feature.");
-			}
-		}
-
-		if ($hp_dns === '_yes_') {
-			$dns = "yes";
-			$details .= tr('DNS Support: enabled') . "<br />";
-		} else {
-			$dns = "no";
-			$details .= tr('DNS Support: disabled') . "<br />";
-
-			if ($current['domain_dns'] == 'yes') {
-				$warning_msgs[] = tr("You have DNS enabled, but the new hosting plan doesn't has this feature.");
-			}
-		}
-
-		$traffic = get_user_traffic($domain_id);
-
-		$curr_value = $traffic[7] / 1048576; // convert disk usage to MB
-
-		if (!check_update_current_value($curr_value, $hp_disk)) {
-			$error_msgs[] = tr("You have more disk space in use than the new hosting plan limits.");
-		}
-
-		$hdd_usage = tr('Disk limit') . ": " . translate_limit_value($hp_disk, true) . "<br />";
-
-		$curr_value = $traffic[10] / 1048576; // convert max. traffic to MB
-
-		if (!check_update_current_value($curr_value, $hp_traff)) {
-			$warning_msgs[] = tr("You did have more traffic than the new hosting plan limits.");
-		}
-
-		$traffic_usage = tr('Traffic limit') . ": " . translate_limit_value($hp_traff, true);
-
-		$curr_value = get_domain_running_als_cnt($sql, $domain_id);
-
-		if (!check_update_current_value($curr_value, $hp_als)) {
-			$error_msgs[] = tr("You have more aliases in use than the new hosting plan limits.");
-		}
-
-		$details .= tr('Aliases') . ": " . translate_limit_value($hp_als) . "<br />";
-
-		$curr_value = get_domain_running_sub_cnt($sql, $domain_id);
-
-		if (!check_update_current_value($curr_value, $hp_sub)) {
-			$error_msgs[] = tr("You have more subdomains in use than the new hosting plan limits.");
-		}
-
-		$details .= tr('Subdomains') . ": " . translate_limit_value($hp_sub) . "<br />";
-
-		$curr_value = get_domain_running_mail_acc_cnt($sql, $domain_id);
-
-		if (!check_update_current_value($curr_value[0], $hp_mail)) {
-			$error_msgs[] = tr("You have more Email addresses in use than the new hosting plan limits.");
-		}
-
-		$details .= tr('Emails') . ": " . translate_limit_value($hp_mail) . "<br />";
-
-		$curr_value = get_domain_running_ftp_acc_cnt($sql, $domain_id);
-
-		if (!check_update_current_value($curr_value[0], $hp_ftp)) {
-			$error_msgs[] = tr("You have more FTP accounts in use than the new hosting plan limits.");
-		}
-
-		$details .= tr('FTPs') . ": " . translate_limit_value($hp_ftp) . "<br />";
-
-		$curr_value = get_domain_running_sqld_acc_cnt($sql, $domain_id);
-
-		if (!check_update_current_value($curr_value, $hp_sql_db)) {
-			$error_msgs[] = tr("You have more SQL databases in use than the new hosting plan limits.");
-		}
-
-		$details .= tr('SQL Databases') . ": " . translate_limit_value($hp_sql_db) . "<br />";
-
-		$curr_value = get_domain_running_sqlu_acc_cnt($sql, $domain_id);
-
-		if (!check_update_current_value($curr_value, $hp_sql_user)) {
-			$error_msgs[] = tr("You have more SQL database users in use than the new hosting plan limits.");
-		}
-
-		$details .= tr('SQL Users') . ": " . translate_limit_value($hp_sql_user) . "<br />";
-
-		$details .= $hdd_usage . $traffic_usage;
-
-		$price = $rs->fields['price'];
-
-		if ($price == 0 || $price == '') {
-			$price = tr('free of charge');
-		} else {
-			$price = $price . " " . $rs->fields['value'] . " " . $rs->fields['payment'];
-		}
-
-		$check_query = "
-			SELECT
-				`domain_id`
-			FROM
-				`domain`
-			WHERE
-				`domain_admin_id` = ?
-			AND
-				`domain_mailacc_limit` = ?
-			AND
-				`domain_ftpacc_limit` = ?
-			AND
-				`domain_traffic_limit` = ?
-			AND
-				`domain_sqld_limit` = ?
-			AND
-				`domain_sqlu_limit` = ?
-			AND
-				`domain_alias_limit` = ?
-			AND
-				`domain_subd_limit` = ?
-			AND
-				`domain_disk_limit` = ?
-			AND
-				`domain_php` = ?
-			AND
-				`domain_cgi` = ?
-			AND
-				`domain_dns` = ?
-		";
-
-		$check = exec_query($sql, $check_query,
-			array(
-				$_SESSION['user_id'],
-				$hp_mail, $hp_ftp, $hp_traff,
-				$hp_sql_db, $hp_sql_user,
-				$hp_als, $hp_sub, $hp_disk,
-				$php, $cgi, $dns
-			)
-		);
-
-		if ($check->recordCount() == 0) {
-
-			$link_purchase = '<a href="hosting_plan_update.php?'
-				. $purchase_link.'='.$rs->fields['id']
-				. '" class="linkdark">';
-
-			if ($purchase_link == 'order_id' && count($error_msgs) > 0) {
-				$link_purchase = tr('You cannot update to this hosting plan, see notices in text.');
-				if (count($warning_msgs) > 0) {
-					$warning_text = '<br /><br /><strong>'.tr('Warning:').'</strong><br />'.implode('<br />', $warning_msgs);
-				} else {
-					$warning_text = '';
-				}
-				$warning_text .= '<br /><br /><strong>'.tr('Caution:').'</strong><br />'.implode('<br />', $error_msgs);
-			} elseif ($purchase_link == 'order_id' && count($warning_msgs) > 0) {
-				$warning_text = '<br /><br /><strong>'.tr('Warning:').'</strong><br />'.implode('<br />', $warning_msgs);
-				$link_purchase .= tr('I understand the warnings - Purchase!');
-				$link_purchase .= '</a>';
+			$details = '';
+			$warning_msgs = $error_msgs = array();
+			
+			if ($hp_php === '_yes_') {
+				$details = tr('PHP Support: enabled') . "<br />";
+				$php = "yes";
 			} else {
-				$warning_text = '';
-				$link_purchase .= '{TR_PURCHASE}</a>';
+				$details = tr('PHP Support: disabled') . "<br />";
+				$php = "no";
+				if ($current['domain_php'] == 'yes') {
+					$warning_msgs[] = tr("You have PHP enabled, but the new hosting plan doesn't has this feature.");
+				}
 			}
 
-			$tpl->assign(
+			if ($hp_cgi === '_yes_') {
+				$cgi = "yes";
+				$details .= tr('CGI Support: enabled') . "<br />";
+			} else {
+				$cgi = "no";
+				$details .= tr('CGI Support: disabled') . "<br />";
+	
+				if ($current['domain_cgi'] == 'yes') {
+					$warning_msgs[] = tr("You have CGI enabled, but the new hosting plan doesn't has this feature.");
+				}
+			}
+
+			if ($hp_dns === '_yes_') {
+				$dns = "yes";
+				$details .= tr('DNS Support: enabled') . "<br />";
+			} else {
+				$dns = "no";
+				$details .= tr('DNS Support: disabled') . "<br />";
+	
+				if ($current['domain_dns'] == 'yes') {
+					$warning_msgs[] = tr("You have DNS enabled, but the new hosting plan doesn't has this feature.");
+				}
+			}
+			
+			if ($hp_allowsoftware === '_yes_') {
+				$software = "yes";
+				$details .= tr('i-MSCP application installer: enabled') . "<br />";
+			} else {
+				$software = "no";
+				$details .= tr('i-MSCP application installer: disabled') . "<br />";
+			}
+			
+			if ($current['domain_software_allowed'] == 'yes') {
+				$warning_msgs[] = tr("You have the i-MSCP application installer enabled, but the new hosting plan doesn't has this feature.");
+			}
+
+			$traffic = get_user_traffic($domain_id);
+	
+			$curr_value = $traffic[7] / 1048576; // convert disk usage to MB
+	
+			if (!check_update_current_value($curr_value, $hp_disk)) {
+				$error_msgs[] = tr("You have more disk space in use than the new hosting plan limits.");
+			}
+	
+			$hdd_usage = tr('Disk limit') . ": " . translate_limit_value($hp_disk, true) . "<br />";
+	
+			$curr_value = $traffic[10] / 1048576; // convert max. traffic to MB
+	
+			if (!check_update_current_value($curr_value, $hp_traff)) {
+				$warning_msgs[] = tr("You did have more traffic than the new hosting plan limits.");
+			}
+	
+			$traffic_usage = tr('Traffic limit') . ": " . translate_limit_value($hp_traff, true);
+	
+			$curr_value = get_domain_running_als_cnt($sql, $domain_id);
+	
+			if (!check_update_current_value($curr_value, $hp_als)) {
+				$error_msgs[] = tr("You have more aliases in use than the new hosting plan limits.");
+			}
+	
+			$details .= tr('Aliases') . ": " . translate_limit_value($hp_als) . "<br />";
+	
+			$curr_value = get_domain_running_sub_cnt($sql, $domain_id);
+	
+			if (!check_update_current_value($curr_value, $hp_sub)) {
+				$error_msgs[] = tr("You have more subdomains in use than the new hosting plan limits.");
+			}
+	
+			$details .= tr('Subdomains') . ": " . translate_limit_value($hp_sub) . "<br />";
+	
+			$curr_value = get_domain_running_mail_acc_cnt($sql, $domain_id);
+	
+			if (!check_update_current_value($curr_value[0], $hp_mail)) {
+				$error_msgs[] = tr("You have more Email addresses in use than the new hosting plan limits.");
+			}
+	
+			$details .= tr('Emails') . ": " . translate_limit_value($hp_mail) . "<br />";
+	
+			$curr_value = get_domain_running_ftp_acc_cnt($sql, $domain_id);
+	
+			if (!check_update_current_value($curr_value[0], $hp_ftp)) {
+				$error_msgs[] = tr("You have more FTP accounts in use than the new hosting plan limits.");
+			}
+	
+			$details .= tr('FTPs') . ": " . translate_limit_value($hp_ftp) . "<br />";
+	
+			$curr_value = get_domain_running_sqld_acc_cnt($sql, $domain_id);
+	
+			if (!check_update_current_value($curr_value, $hp_sql_db)) {
+				$error_msgs[] = tr("You have more SQL databases in use than the new hosting plan limits.");
+			}
+	
+			$details .= tr('SQL Databases') . ": " . translate_limit_value($hp_sql_db) . "<br />";
+	
+			$curr_value = get_domain_running_sqlu_acc_cnt($sql, $domain_id);
+	
+			if (!check_update_current_value($curr_value, $hp_sql_user)) {
+				$error_msgs[] = tr("You have more SQL database users in use than the new hosting plan limits.");
+			}
+	
+			$details .= tr('SQL Users') . ": " . translate_limit_value($hp_sql_user) . "<br />";
+	
+			$details .= $hdd_usage . $traffic_usage;
+	
+			$price = $rs->fields['price'];
+	
+			if ($price == 0 || $price == '') {
+				$price = tr('free of charge');
+			} else {
+				$price = $price . " " . $rs->fields['value'] . " " . $rs->fields['payment'];
+			}
+	
+			$check_query = "
+				SELECT
+					`domain_id`
+				FROM
+					`domain`
+				WHERE
+					`domain_admin_id` = ?
+				AND
+					`domain_mailacc_limit` = ?
+				AND
+					`domain_ftpacc_limit` = ?
+				AND
+					`domain_traffic_limit` = ?
+				AND
+					`domain_sqld_limit` = ?
+				AND
+					`domain_sqlu_limit` = ?
+				AND
+					`domain_alias_limit` = ?
+				AND
+					`domain_subd_limit` = ?
+				AND
+					`domain_disk_limit` = ?
+				AND
+					`domain_php` = ?
+				AND
+					`domain_cgi` = ?
+				AND
+					`domain_dns` = ?
+				AND
+					`domain_software_allowed` = ?
+			";
+	
+			$check = exec_query($sql, $check_query,
 				array(
-					'HP_NAME'			=> tohtml($rs->fields['name']),
-					'HP_DESCRIPTION'	=> tohtml($rs->fields['description']),
-					'HP_DETAILS'		=> $details.$warning_text,
-					'HP_COSTS'			=> tohtml($price),
-					'ID'				=> $rs->fields['id'],
-					'TR_PURCHASE'		=> $purchase_text,
-					'LINK'				=> $purchase_link,
-					'TR_HOSTING_PLANS'	=> $hp_title,
-					'ITHEM'				=> ($i % 2 == 0) ? 'content' : 'content2',
-					'LINK_PURCHASE'		=> $link_purchase
+					$_SESSION['user_id'],
+					$hp_mail, $hp_ftp, $hp_traff,
+					$hp_sql_db, $hp_sql_user,
+					$hp_als, $hp_sub, $hp_disk,
+					$php, $cgi, $dns, $software
 				)
 			);
-
-			$tpl->parse('HOSTING_PLANS', '.hosting_plans');
-			$tpl->parse('HP_ORDER', '.hp_order');
-			$i++;
+	
+			if ($check->recordCount() == 0) {
+	
+				$link_purchase = '<a href="hosting_plan_update.php?'
+					. $purchase_link.'='.$rs->fields['id']
+					. '" class="linkdark">';
+	
+				if ($purchase_link == 'order_id' && count($error_msgs) > 0) {
+					$link_purchase = tr('You cannot update to this hosting plan, see notices in text.');
+					if (count($warning_msgs) > 0) {
+						$warning_text = '<br /><br /><strong>'.tr('Warning:').'</strong><br />'.implode('<br />', $warning_msgs);
+					} else {
+						$warning_text = '';
+					}
+					$warning_text .= '<br /><br /><strong>'.tr('Caution:').'</strong><br />'.implode('<br />', $error_msgs);
+				} elseif ($purchase_link == 'order_id' && count($warning_msgs) > 0) {
+					$warning_text = '<br /><br /><strong>'.tr('Warning:').'</strong><br />'.implode('<br />', $warning_msgs);
+					$link_purchase .= tr('I understand the warnings - Purchase!');
+					$link_purchase .= '</a>';
+				} else {
+					$warning_text = '';
+					$link_purchase .= '{TR_PURCHASE}</a>';
+				}
+	
+				$tpl->assign(
+					array(
+						'HP_NAME'			=> tohtml($rs->fields['name']),
+						'HP_DESCRIPTION'	=> tohtml($rs->fields['description']),
+						'HP_DETAILS'		=> $details.$warning_text,
+						'HP_COSTS'			=> tohtml($price),
+						'ID'				=> $rs->fields['id'],
+						'TR_PURCHASE'		=> $purchase_text,
+						'LINK'				=> $purchase_link,
+						'TR_HOSTING_PLANS'	=> $hp_title,
+						'ITHEM'				=> ($i % 2 == 0) ? 'content' : 'content2',
+						'LINK_PURCHASE'		=> $link_purchase
+					)
+				);
+	
+				$tpl->parse('HOSTING_PLANS', '.hosting_plans');
+				$tpl->parse('HP_ORDER', '.hp_order');
+				$i++;
+			}
+			$purchase_text = tr('Purchase');
+			$purchase_link = 'order_id';
+			$rs->moveNext();
 		}
-		$purchase_text = tr('Purchase');
-		$purchase_link = 'order_id';
-		$rs->moveNext();
 	}
 	if ($i == 0) {
 		$tpl->assign(
@@ -491,7 +509,7 @@ function add_new_order(&$tpl, &$sql, $order_id, $user_id) {
 
 	$error_msgs = array();
 	$rs = exec_query($sql, $query, $order_id);
-	list($hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk, $hp_backup, $hp_dns) = explode(";", $rs->fields['props']);
+	list($hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk, $hp_backup, $hp_dns, $hp_allowsoftware) = explode(";", $rs->fields['props']);
 
 	$traffic = get_user_traffic($domain_id);
 

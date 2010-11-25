@@ -74,6 +74,10 @@
             		<td>{VL_DNS_SUPP}</td>
             	</tr>
             	<tr>
+					<td>{TR_SOFTWARE_SUPP}</td>
+					<td>{VL_SOFTWARE_SUPP}</td>
+				</tr>
+            	<tr>
             		<td>{TR_MYSQL_SUPP}</td>
             		<td>{VL_MYSQL_SUPP}</td>
                 </tr>

@@ -102,6 +102,12 @@
 					<td>{TR_FTP_ACCOUNTS}</td>
 					<td>{FTP_ACCOUNTS}</td>
 				</tr>
+				<!-- BDP: t_software_allowed -->
+				<tr>
+ 					<td>{SW_ALLOWED}</td>
+					<td>{SW_MSG}</td>
+				</tr>
+				<!-- EDP: t_software_allowed -->
 				<!-- BDP: t_sdm_support -->
 				<tr>
 					<td>{TR_SQL_DATABASES}</td>

@@ -50,9 +50,9 @@ $tpl->define_dynamic('page_message', 'page');
 $tpl->assign(
 	array(
 			'TR_RESELLER_MAIN_INDEX_PAGE_TITLE'	=> tr('i-MSCP - Administrator/Add hosting plan'),
-			'THEME_COLOR_PATH'					=> "../themes/{$cfg->USER_INITIAL_THEME}",
-			'THEME_CHARSET'						=> tr('encoding'),
-			'ISP_LOGO'							=> get_logo($_SESSION['user_id'])
+			'THEME_COLOR_PATH'			=> "../themes/{$cfg->USER_INITIAL_THEME}",
+			'THEME_CHARSET'				=> tr('encoding'),
+			'ISP_LOGO'				=> get_logo($_SESSION['user_id'])
 	)
 );
 
@@ -69,44 +69,45 @@ $tpl->assign(
 		array(
 				'TR_ADD_HOSTING_PLAN'		=> tr('Add hosting plan'),
 				'TR_HOSTING PLAN PROPS'		=> tr('Hosting plan properties'),
-				'TR_TEMPLATE_NAME'			=> tr('Template name'),
-				'TR_MAX_SUBDOMAINS'			=> tr('Max subdomains<br><i>(-1 disabled, 0 unlimited)</i>'),
-				'TR_MAX_ALIASES'			=> tr('Max aliases<br><i>(-1 disabled, 0 unlimited)</i>'),
+				'TR_TEMPLATE_NAME'		=> tr('Template name'),
+				'TR_MAX_SUBDOMAINS'		=> tr('Max subdomains<br><i>(-1 disabled, 0 unlimited)</i>'),
+				'TR_MAX_ALIASES'		=> tr('Max aliases<br><i>(-1 disabled, 0 unlimited)</i>'),
 				'TR_MAX_MAILACCOUNTS'		=> tr('Mail accounts limit<br><i>(-1 disabled, 0 unlimited)</i>'),
-				'TR_MAX_FTP'				=> tr('FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>'),
-				'TR_MAX_SQL'				=> tr('SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>'),
-				'TR_MAX_SQL_USERS'			=> tr('SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>'),
-				'TR_MAX_TRAFFIC'			=> tr('Traffic limit [MB]<br><i>(0 unlimited)</i>'),
-				'TR_DISK_LIMIT'				=> tr('Disk limit [MB]<br><i>(0 unlimited)</i>'),
-				'TR_PHP'					=> tr('PHP'),
-				'TR_CGI'					=> tr('CGI / Perl'),
-				'TR_DNS'					=> tr('Allow adding records to DNS zone (EXPERIMENTAL)'),
-				'TR_BACKUP'					=> tr('Backup'),
-				'TR_BACKUP_DOMAIN'			=> tr('Domain'),
-				'TR_BACKUP_SQL'				=> tr('SQL'),
-				'TR_BACKUP_FULL'			=> tr('Full'),
-				'TR_BACKUP_NO'				=> tr('No'),
-				'TR_APACHE_LOGS'			=> tr('Apache logfiles'),
-				'TR_AWSTATS'				=> tr('AwStats'),
-				'TR_YES'					=> tr('yes'),
-				'TR_NO'						=> tr('no'),
-				'TR_BILLING_PROPS'			=> tr('Billing Settings'),
-				'TR_PRICE'					=> tr('Price'),
-				'TR_SETUP_FEE'				=> tr('Setup fee'),
-				'TR_VALUE'					=> tr('Currency'),
-				'TR_PAYMENT'				=> tr('Payment period'),
-				'TR_STATUS'					=> tr('Available for purchasing'),
+				'TR_MAX_FTP'			=> tr('FTP accounts limit<br><i>(-1 disabled, 0 unlimited)</i>'),
+				'TR_MAX_SQL'			=> tr('SQL databases limit<br><i>(-1 disabled, 0 unlimited)</i>'),
+				'TR_MAX_SQL_USERS'		=> tr('SQL users limit<br><i>(-1 disabled, 0 unlimited)</i>'),
+				'TR_MAX_TRAFFIC'		=> tr('Traffic limit [MB]<br><i>(0 unlimited)</i>'),
+				'TR_DISK_LIMIT'			=> tr('Disk limit [MB]<br><i>(0 unlimited)</i>'),
+				'TR_PHP'			=> tr('PHP'),
+				'TR_SOFTWARE_SUPP'		=> tr('i-MSCP application installer'),
+				'TR_CGI'			=> tr('CGI / Perl'),
+				'TR_DNS'			=> tr('Allow adding records to DNS zone (EXPERIMENTAL)'),
+				'TR_BACKUP'			=> tr('Backup'),
+				'TR_BACKUP_DOMAIN'		=> tr('Domain'),
+				'TR_BACKUP_SQL'			=> tr('SQL'),
+				'TR_BACKUP_FULL'		=> tr('Full'),
+				'TR_BACKUP_NO'			=> tr('No'),
+				'TR_APACHE_LOGS'		=> tr('Apache logfiles'),
+				'TR_AWSTATS'			=> tr('AwStats'),
+				'TR_YES'			=> tr('yes'),
+				'TR_NO'				=> tr('no'),
+				'TR_BILLING_PROPS'		=> tr('Billing Settings'),
+				'TR_PRICE'			=> tr('Price'),
+				'TR_SETUP_FEE'			=> tr('Setup fee'),
+				'TR_VALUE'			=> tr('Currency'),
+				'TR_PAYMENT'			=> tr('Payment period'),
+				'TR_STATUS'			=> tr('Available for purchasing'),
 				'TR_TEMPLATE_DESCRIPTON'	=> tr('Description'),
-				'TR_EXAMPLE'				=> tr('(e.g. EUR)'),
+				'TR_EXAMPLE'			=> tr('(e.g. EUR)'),
 
 			// BEGIN TOS
-				'TR_TOS_PROPS'				=> tr('Term Of Service'),
-				'TR_TOS_NOTE'				=> tr('<b>Optional:</b> Leave this field empty if you do not want term of service for this hosting plan.'),
+				'TR_TOS_PROPS'			=> tr('Term Of Service'),
+				'TR_TOS_NOTE'			=> tr('<b>Optional:</b> Leave this field empty if you do not want term of service for this hosting plan.'),
 				'TR_TOS_DESCRIPTION'		=> tr('Text Only'),
 
 			// END TOS
 
-				'TR_ADD_PLAN'				=> tr('Add plan')
+				'TR_ADD_PLAN'			=> tr('Add plan')
 		)
 );
 
@@ -147,22 +148,24 @@ function gen_empty_ahp_page(&$tpl) {
 					'HP_SQL_DB_VALUE'		=> '',
 					'HP_SQL_USER_VALUE'		=> '',
 					'HP_TRAFF_VALUE'		=> '',
-					'HP_PRICE'				=> '',
+					'HP_PRICE'			=> '',
 					'HP_SETUPFEE'			=> '',
-					'HP_VELUE'				=> '',
+					'HP_VELUE'			=> '',
 					'HP_PAYMENT'			=> '',
-					'HP_DESCRIPTION_VALUE'	=> '',
+					'HP_DESCRIPTION_VALUE'		=> '',
 					'HP_DISK_VALUE'			=> '',
 					'TR_PHP_YES'			=> '',
-					'TR_PHP_NO'				=> $cfg->HTML_CHECKED,
+					'TR_PHP_NO'			=> $cfg->HTML_CHECKED,
 					'TR_CGI_YES'			=> '',
-					'TR_CGI_NO'				=> $cfg->HTML_CHECKED,
+					'TR_CGI_NO'			=> $cfg->HTML_CHECKED,
+					'VL_SOFTWAREY'			=> '',
+					'VL_SOFTWAREN'			=> $cfg->HTML_CHECKED,
 					'VL_BACKUPD'			=> '',
 					'VL_BACKUPS'			=> '',
 					'VL_BACKUPF'			=> '',
 					'VL_BACKUPN'			=> $cfg->HTML_CHECKED,
 					'TR_DNS_YES'			=> '',
-					'TR_DNS_NO'				=> $cfg->HTML_CHECKED,
+					'TR_DNS_NO'			=> $cfg->HTML_CHECKED,
 					'TR_STATUS_YES'			=> $cfg->HTML_CHECKED,
 					'TR_STATUS_NO'			=> '',
 					'HP_TOS_VALUE'			=> ''
@@ -183,7 +186,7 @@ function gen_data_ahp_page(&$tpl) {
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;
 	global $hp_traff, $hp_disk;
 	global $price, $setup_fee, $value, $payment, $status;
-	global $hp_backup, $hp_dns;
+	global $hp_backup, $hp_dns, $hp_allowsoftware;
 	global $tos;
 
 	$cfg = iMSCP_Registry::get('Config');
@@ -199,10 +202,10 @@ function gen_data_ahp_page(&$tpl) {
 					'HP_SQL_USER_VALUE'		=> tohtml($hp_sql_user),
 					'HP_TRAFF_VALUE'		=> tohtml($hp_traff),
 					'HP_DISK_VALUE'			=> tohtml($hp_disk),
-					'HP_DESCRIPTION_VALUE'	=> tohtml($description),
-					'HP_PRICE'				=> tohtml($price),
+					'HP_DESCRIPTION_VALUE'		=> tohtml($description),
+					'HP_PRICE'			=> tohtml($price),
 					'HP_SETUPFEE'			=> tohtml($setup_fee),
-					'HP_VELUE'				=> tohtml($value),
+					'HP_VELUE'			=> tohtml($value),
 					'HP_PAYMENT'			=> tohtml($payment),
 					'HP_TOS_VALUE'			=> tohtml($tos)
 			)
@@ -210,18 +213,20 @@ function gen_data_ahp_page(&$tpl) {
 
 	$tpl->assign(
 			array(
-					'TR_PHP_YES'	=> ($hp_php == '_yes_') ? $cfg->HTML_CHECKED : '',
+					'TR_PHP_YES'		=> ($hp_php == '_yes_') ? $cfg->HTML_CHECKED : '',
 					'TR_PHP_NO'		=> ($hp_php == '_no_') ? $cfg->HTML_CHECKED : '',
-					'TR_CGI_YES'	=> ($hp_cgi == '_yes_') ? $cfg->HTML_CHECKED : '',
+					'VL_SOFTWAREY'		=> ($hp_allowsoftware == '_yes_') ? $cfg->HTML_CHECKED : '',
+					'VL_SOFTWAREN'		=> ($hp_allowsoftware == '_no_') ? $cfg->HTML_CHECKED : '',
+					'TR_CGI_YES'		=> ($hp_cgi == '_yes_') ? $cfg->HTML_CHECKED : '',
 					'TR_CGI_NO'		=> ($hp_cgi == '_no_') ? $cfg->HTML_CHECKED : '',
-					'VL_BACKUPD'	=> ($hp_backup == '_dmn_') ? $cfg->HTML_CHECKED : '',
-					'VL_BACKUPS'	=> ($hp_backup == '_sql_') ? $cfg->HTML_CHECKED : '',
-					'VL_BACKUPF'	=> ($hp_backup == '_full_') ? $cfg->HTML_CHECKED : '',
-					'VL_BACKUPN'	=> ($hp_backup == '_no_') ? $cfg->HTML_CHECKED : '',
-					'TR_DNS_YES'	=> ($hp_dns == '_yes_') ? $cfg->HTML_CHECKED : '',
+					'VL_BACKUPD'		=> ($hp_backup == '_dmn_') ? $cfg->HTML_CHECKED : '',
+					'VL_BACKUPS'		=> ($hp_backup == '_sql_') ? $cfg->HTML_CHECKED : '',
+					'VL_BACKUPF'		=> ($hp_backup == '_full_') ? $cfg->HTML_CHECKED : '',
+					'VL_BACKUPN'		=> ($hp_backup == '_no_') ? $cfg->HTML_CHECKED : '',
+					'TR_DNS_YES'		=> ($hp_dns == '_yes_') ? $cfg->HTML_CHECKED : '',
 					'TR_DNS_NO'		=> ($hp_dns == '_no_') ? $cfg->HTML_CHECKED : '',
-					'TR_STATUS_YES'	=> ($status) ? $cfg->HTML_CHECKED : '',
-					'TR_STATUS_NO'	=> (!$status) ? $cfg->HTML_CHECKED : ''
+					'TR_STATUS_YES'		=> ($status) ? $cfg->HTML_CHECKED : '',
+					'TR_STATUS_NO'		=> (!$status) ? $cfg->HTML_CHECKED : ''
 			)
 	);
 
@@ -237,7 +242,7 @@ function check_data_correction(&$tpl) {
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;
 	global $hp_traff, $hp_disk;
 	global $price, $setup_fee, $value, $payment, $status;
-	global $hp_backup, $hp_dns;
+	global $hp_backup, $hp_dns, $hp_allowsoftware;
 	global $tos;
 
 	$ahp_error 		= array();
@@ -248,10 +253,10 @@ function check_data_correction(&$tpl) {
 	$hp_mail		= clean_input($_POST['hp_mail']);
 	$hp_ftp			= clean_input($_POST['hp_ftp']);
 	$hp_sql_db		= clean_input($_POST['hp_sql_db']);
-	$hp_sql_user	= clean_input($_POST['hp_sql_user']);
+	$hp_sql_user		= clean_input($_POST['hp_sql_user']);
 	$hp_traff		= clean_input($_POST['hp_traff']);
 	$hp_disk		= clean_input($_POST['hp_disk']);
-	$description	= clean_input($_POST['hp_description']);
+	$description		= clean_input($_POST['hp_description']);
 	$value			= clean_input($_POST['hp_value']);
 	$payment		= clean_input($_POST['hp_payment']);
 	$status			= $_POST['status'];
@@ -281,6 +286,10 @@ function check_data_correction(&$tpl) {
 
 	if (isset($_POST['dns'])) {
 		$hp_dns = $_POST['dns'];
+	}
+	
+	if (isset($_POST['software_allowed'])) {
+		$hp_allowsoftware = $_POST['software_allowed'];
 	}
 
 	if (isset($_POST['backup'])) {
@@ -325,6 +334,9 @@ function check_data_correction(&$tpl) {
 	if (!imscp_limit_check($hp_disk, null)) {
 		$ahp_error[] = tr('Incorrect disk quota limit!');
 	}
+	if($hp_php == "_no_" && $hp_allowsoftware == "_yes_") {
+		$ahp_error[] = tr('The i-MSCP application installer needs PHP to enable it!');
+	}
 
 	if (empty($ahp_error)) {
 		$tpl->assign('MESSAGE', '');
@@ -346,7 +358,7 @@ function save_data_to_db(&$tpl, $admin_id) {
 	global $hp_ftp, $hp_sql_db, $hp_sql_user;
 	global $hp_traff, $hp_disk;
 	global $price, $setup_fee, $value, $payment, $status;
-	global $hp_backup, $hp_dns;
+	global $hp_backup, $hp_dns, $hp_allowsoftware;
 	global $tos;
 
 	$sql = iMSCP_Registry::get('Db');
@@ -372,7 +384,7 @@ function save_data_to_db(&$tpl, $admin_id) {
 		$tpl->assign('MESSAGE', tr('Hosting plan with entered name already exists!'));
 		// $tpl->parse('AHP_MESSAGE', 'ahp_message');
 	} else {
-		$hp_props = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;$hp_disk;$hp_backup;$hp_dns";
+		$hp_props = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;$hp_disk;$hp_backup;$hp_dns;$hp_allowsoftware";
 		$query = "
 			INSERT INTO
 				hosting_plans(

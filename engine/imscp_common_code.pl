@@ -212,4 +212,17 @@ $main::imscp_bk_task_el = "$main::log_dir/imscp-bk-task.el";
 $main::imscp_srv_traff_el = "$main::log_dir/imscp-srv-traff.el";
 $main::imscp_dsk_quota_el = "$main::log_dir/imscp-dsk-quota.el";
 
+################################################################################
+# imscp_apps-installer_logs variables
+#
+$main::imscp_sw_mngr = "$main::root_dir/engine/imscp-sw-mngr";
+$main::imscp_sw_mngr_el = "$main::log_dir/imscp-sw-mngr.el";
+$main::imscp_sw_mngr_stdout = "$main::log_dir/imscp-sw-mngr.stdout";
+$main::imscp_sw_mngr_stderr = "$main::log_dir/imscp-sw-mngr.stderr";
+
+$main::imscp_pkt_mngr = "$main::root_dir/engine/imscp-pkt-mngr";
+$main::imscp_pkt_mngr_el = "$main::log_dir/imscp-pkt-mngr.el";
+$main::imscp_pkt_mngr_stdout = "$main::log_dir/imscp-pkt-mngr.stdout";
+$main::imscp_pkt_mngr_stderr = "$main::log_dir/imscp-pkt-mngr.stderr";
+
 1;

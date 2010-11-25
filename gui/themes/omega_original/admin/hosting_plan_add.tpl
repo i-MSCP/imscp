@@ -139,6 +139,14 @@
                               </td>
                             </tr>
                             <tr>
+								<td width="25">&nbsp;</td>
+								<td class="content2" width="200">{TR_SOFTWARE_SUPP}</td>
+								<td class="content"><input name="software_allowed" type="radio" value="_yes_" {VL_SOFTWAREY} />
+								{TR_YES}
+								<input type="radio" name="software_allowed" value="_no_" {VL_SOFTWAREN} />
+								{TR_NO}</td>
+							</tr>
+                            <tr>
                               <td>&nbsp;</td>
                               <td colspan="2" class="content3"><b>{TR_BILLING_PROPS}</b></td>
                             </tr>

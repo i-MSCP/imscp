@@ -140,6 +140,17 @@ $(function() {
                           </select>
                         </td>
                       </tr>
+                      <!-- BDP: t_software_support -->
+ 						<tr>
+ 							<td width="25">&nbsp;</td>
+ 							<td class="content2" width="193">{TR_SOFTWARE_SUPP}</td>
+ 							<td class="content"><select name="domain_software_allowed" id="domain_software_allowed">
+ 							<option value="yes" {SOFTWARE_YES}>{TR_YES}</option>
+ 							<option value="no" {SOFTWARE_NO}>{TR_NO}</option>
+ 							</select>
+ 							</td>
+ 						</tr>
+ 					  <!-- EDP: t_software_support -->
                       <tr>
                         <td width="25">&nbsp;</td>
                         <td class="content2" width="193">{TR_CGI_SUPP}</td>

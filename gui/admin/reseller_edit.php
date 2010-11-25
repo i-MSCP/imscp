@@ -87,7 +87,9 @@ function get_clean_input_data() {
 			'pass' => clean_input($_POST['pass0']),
 			'pass_rep' => clean_input($_POST['pass1']),
 			'edit_username' => clean_input($_POST['edit_username']),
-			'edit_id' => clean_input($_POST['edit_id'])
+			'edit_id' => clean_input($_POST['edit_id']),
+			'domain_software_allowed' => clean_input($_POST['domain_software_allowed']),
+			'domain_softwaredepot_allowed' => clean_input($_POST['domain_softwaredepot_allowed'])
 		);
 	}
 
@@ -475,6 +477,7 @@ function get_reseller_prop($reseller_id) {
 			`country`, `email`, `phone`, `fax`, `street1`, `street2`, `max_dmn_cnt`,
 			`max_sub_cnt`, `max_als_cnt`, `max_mail_cnt`, `max_ftp_cnt`,
 			`max_sql_db_cnt`, `max_sql_user_cnt`, `max_traff_amnt`, `max_disk_amnt`,
+			`software_allowed`, `softwaredepot_allowed`,
 			r.`support_system` AS support_system, r.`customer_id` AS customer_id,
 			`reseller_ips` AS rip_lst, `gender`
 		FROM
@@ -699,7 +702,73 @@ function update_reseller() {
 	}
 
 	exec_query($sql, $query, $qparams);
-
+	
+	if($rdata['domain_software_allowed'] == "no") {
+ 		$query_user = "
+ 			UPDATE
+ 				`domain`
+ 			SET
+ 				`domain_software_allowed` = ?
+ 			WHERE
+ 				`domain_created_id` = ?
+ 		";
+		exec_query(
+ 			$sql,
+			$query_user,
+ 			array(
+ 				$rdata['domain_software_allowed'], $rdata['edit_id']
+ 			)
+ 		);
+ 	}
+ 	if ($domain_softwaredepot_allowed == "no") {
+ 		$query = "
+ 			SELECT
+ 				`software_id`
+			FROM
+				`web_software`
+			WHERE
+				`software_depot` = 'yes'
+			AND
+				`reseller_id` = ?
+ 		";
+ 		$rs = exec_query(
+ 				$sql,
+ 				$query,
+ 				array(
+ 					$edit_id
+ 				)
+ 			);
+	 	if ($rs->RecordCount() > 0) {
+			while(!$rs->EOF) {
+				$update = "
+					UPDATE
+						`web_software_inst`
+					SET
+						`software_res_del` = '1'
+					WHERE
+						`software_id` = ?
+				";
+				exec_query(
+					$sql,
+					$update,
+					array(
+						$rs->fields['software_id']
+					)
+				);
+			$rs->MoveNext();
+			}
+			$delete_rights = "
+				DELETE FROM
+					`web_software`
+				WHERE
+					`software_depot` = 'yes'
+				AND
+					`reseller_id` = ?
+			";
+			exec_query($sql, $delete_rights, array($edit_id));
+	 	}
+	}
+ 
 	/**
 	 * Update reseller properties
 	 */
@@ -711,7 +780,8 @@ function update_reseller() {
 			`reseller_ips` = ?, `max_dmn_cnt` = ?, `max_sub_cnt` = ?,
 			`max_als_cnt` = ?, `max_mail_cnt` = ?, `max_ftp_cnt` = ?,
 			`max_sql_db_cnt` = ?, `max_sql_user_cnt` = ?, `max_traff_amnt` = ?,
-			`max_disk_amnt` = ?, `support_system` = ?, `customer_id` = ?
+			`max_disk_amnt` = ?, `support_system` = ?, `customer_id` = ?,
+			`software_allowed` = ?, `softwaredepot_allowed` = ?
 		WHERE
 			`reseller_id` = ?
 	";
@@ -725,7 +795,8 @@ function update_reseller() {
 			$rdata['max_mail_cnt'], $rdata['max_ftp_cnt'],
 			$rdata['max_sql_db_cnt'], $rdata['max_sql_user_cnt'],
 			$rdata['max_traff_amnt'], $rdata['max_disk_amnt'],
-			$rdata['support_system'], $rdata['customer_id'], $rdata['edit_id']
+			$rdata['support_system'], $rdata['customer_id'], $rdata['domain_software_allowed'],
+			$rdata['domain_softwaredepot_allowed'], $rdata['edit_id']
 		)
 	);
 
@@ -987,6 +1058,12 @@ $tpl->assign(
 			tr('Disk limit [MB]<br><i>(0 unlimited)</i>'),
 		'TR_YES' => tr('yes'),
 		'TR_NO' => tr('no'),
+		'TR_SOFTWARE_SUPP' => tr('i-MSCP application installer'),
+		'TR_SOFTWAREDEPOT_SUPP' => tr('Can use softwaredepot'),
+		'SOFTWARE_YES' => ($rdata['software_allowed'] == 'yes') ? $cfg->HTML_CHECKED : '',
+		'SOFTWARE_NO' => ($rdata['software_allowed'] != 'yes') ? $cfg->HTML_CHECKED : '',
+		'SOFTWAREDEPOT_YES'	=> ($rdata['softwaredepot_allowed'] == 'yes') ? $cfg->HTML_CHECKED : '',
+		'SOFTWAREDEPOT_NO' => ($rdata['softwaredepot_allowed'] != 'yes') ? $cfg->HTML_CHECKED : '',
 		'TR_SUPPORT_SYSTEM' => tr('Support system'),
 		'TR_RESELLER_IPS' => tr('Reseller IPs'),
 		'TR_ADDITIONAL_DATA' => tr('Additional data'),

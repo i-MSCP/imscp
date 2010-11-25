@@ -150,6 +150,16 @@
                             {TR_BACKUP_NO}</td>
                         </tr>
                         <tr>
+                        <!-- BDP: t_software_support -->
+ 						<tr>
+ 							<td width="25">&nbsp;</td>
+ 							<td class="content2" width="200">{TR_SOFTWARE_SUPP}</td>
+ 							<td class="content"><input name="software_allowed" type="radio" value="_yes_" {VL_SOFTWAREY} />
+ 							{TR_YES}
+ 							<input type="radio" name="software_allowed" value="_no_" {VL_SOFTWAREN} />
+ 							{TR_NO}</td>
+ 						</tr>
+ 						<!-- EDP: t_software_support -->
                           <td>&nbsp;</td>
                           <td colspan="2"><input name="Submit" type="submit" class="button" value="{TR_NEXT_STEP}" /></td>
                         </tr>

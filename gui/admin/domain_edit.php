@@ -64,33 +64,34 @@ $tpl->assign(
 $tpl->assign(
 	array(
 		'TR_EDIT_DOMAIN'		=> tr('Edit Domain'),
-		'TR_DOMAIN_PROPERTIES'	=> tr('Domain properties'),
+		'TR_DOMAIN_PROPERTIES'		=> tr('Domain properties'),
 		'TR_DOMAIN_NAME'		=> tr('Domain name'),
 		'TR_DOMAIN_IP'			=> tr('Domain IP'),
 		'TR_DOMAIN_EXPIRE'		=> tr('Domain expire'),
-		'TR_DOMAIN_NEW_EXPIRE'	=> tr('New expire date'),
+		'TR_DOMAIN_NEW_EXPIRE'		=> tr('New expire date'),
 		'TR_PHP_SUPP'			=> tr('PHP support'),
 		'TR_CGI_SUPP'			=> tr('CGI support'),
 		'TR_DNS_SUPP'			=> tr('Manual DNS support (EXPERIMENTAL)'),
 		'TR_SUBDOMAINS'			=> tr('Max subdomains<br /><i>(-1 disabled, 0 unlimited)</i>'),
-		'TR_ALIAS'				=> tr('Max aliases<br /><i>(-1 disabled, 0 unlimited)</i>'),
+		'TR_ALIAS'			=> tr('Max aliases<br /><i>(-1 disabled, 0 unlimited)</i>'),
 		'TR_MAIL_ACCOUNT'		=> tr('Mail accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>'),
 		'TR_FTP_ACCOUNTS'		=> tr('FTP accounts limit <br /><i>(-1 disabled, 0 unlimited)</i>'),
-		'TR_SQL_DB'				=> tr('SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>'),
+		'TR_SQL_DB'			=> tr('SQL databases limit <br /><i>(-1 disabled, 0 unlimited)</i>'),
 		'TR_SQL_USERS'			=> tr('SQL users limit <br /><i>(-1 disabled, 0 unlimited)</i>'),
 		'TR_TRAFFIC'			=> tr('Traffic limit [MB] <br /><i>(0 unlimited)</i>'),
-		'TR_DISK'				=> tr('Disk limit [MB] <br /><i>(0 unlimited)</i>'),
+		'TR_DISK'			=> tr('Disk limit [MB] <br /><i>(0 unlimited)</i>'),
 		'TR_USER_NAME'			=> tr('Username'),
-		'TR_BACKUP'				=> tr('Backup'),
+		'TR_BACKUP'			=> tr('Backup'),
 		'TR_BACKUP_DOMAIN'		=> tr('Domain'),
 		'TR_BACKUP_SQL'			=> tr('SQL'),
 		'TR_BACKUP_FULL'		=> tr('Full'),
 		'TR_BACKUP_NO'			=> tr('No'),
 		'TR_UPDATE_DATA'		=> tr('Submit changes'),
-		'TR_CANCEL'				=> tr('Cancel'),
-		'TR_YES'				=> tr('Yes'),
-		'TR_NO'					=> tr('No'),
-		'TR_DMN_EXP_HELP' 		=> tr("In case 'Domain expire' is 'N/A', the expiration date will be set from today.")
+		'TR_CANCEL'			=> tr('Cancel'),
+		'TR_YES'			=> tr('Yes'),
+		'TR_NO'				=> tr('No'),
+		'TR_DMN_EXP_HELP' 		=> tr("In case 'Domain expire' is 'N/A', the expiration date will be set from today."),
+		'TR_SOFTWARE_SUPP' 		=> tr('i-MSCP application installer')
 	)
 );
 
@@ -152,7 +153,7 @@ function load_user_data($user_id, $domain_id) {
 	global $mail, $ftp, $sql_db;
 	global $sql_user, $traff, $disk;
 	global $username;
-	global $dns_supp;
+	global $dns_supp, $software_supp;
 
 	$query = "
 		SELECT
@@ -189,7 +190,7 @@ function load_additional_data($user_id, $domain_id) {
 
 	global $domain_name, $domain_expires, $domain_ip, $php_sup;
 	global $cgi_supp, $username, $allowbackup;
-	global $dns_supp;
+	global $dns_supp, $software_supp;
 
 	$cfg = iMSCP_Registry::get('Config');
 	$sql = iMSCP_Registry::get('Db');
@@ -204,7 +205,8 @@ function load_additional_data($user_id, $domain_id) {
 			`domain_cgi`,
 			`domain_admin_id`,
 			`allowbackup`,
-			`domain_dns`
+			`domain_dns`,
+			`domain_software_allowed`
 		FROM
 			`domain`
 		WHERE
@@ -227,11 +229,12 @@ function load_additional_data($user_id, $domain_id) {
  	}
 
 	$domain_ip_id		= $data['domain_ip_id'];
-	$php_sup			= $data['domain_php'];
-	$cgi_supp			= $data['domain_cgi'];
+	$php_sup		= $data['domain_php'];
+	$cgi_supp		= $data['domain_cgi'];
 	$allowbackup		= $data['allowbackup'];
 	$domain_admin_id	= $data['domain_admin_id'];
-	$dns_supp			= $data['domain_dns'];
+	$dns_supp		= $data['domain_dns'];
+	$software_supp 		= $data['domain_software_allowed'];
 
 	// Get IP of domain
 	$query = "
@@ -276,7 +279,7 @@ function gen_editdomain_page(&$tpl) {
 	global $mail, $ftp, $sql_db;
 	global $sql_user, $traff, $disk;
 	global $username, $allowbackup;
-	global $dns_supp;
+	global $dns_supp, $software_supp;
 
 	$cfg = iMSCP_Registry::get('Config');
 
@@ -290,57 +293,59 @@ function gen_editdomain_page(&$tpl) {
 	if ($allowbackup === 'dmn') {
 		$tpl->assign(
 			array(
-				'BACKUP_DOMAIN' => $cfg->HTML_SELECTED,
-				'BACKUP_SQL' => '',
-				'BACKUP_FULL' => '',
-				'BACKUP_NO' => '',
+				'BACKUP_DOMAIN' 	=> $cfg->HTML_SELECTED,
+				'BACKUP_SQL' 		=> '',
+				'BACKUP_FULL' 		=> '',
+				'BACKUP_NO' 		=> '',
 			)
 		);
 	} elseif ($allowbackup === 'sql')  {
 		$tpl->assign(
 			array(
-				'BACKUP_DOMAIN' => '',
-				'BACKUP_SQL' => $cfg->HTML_SELECTED,
-				'BACKUP_FULL' => '',
-				'BACKUP_NO' => '',
+				'BACKUP_DOMAIN' 	=> '',
+				'BACKUP_SQL' 		=> $cfg->HTML_SELECTED,
+				'BACKUP_FULL'		=> '',
+				'BACKUP_NO' 		=> '',
 			)
 		);
 	} elseif ($allowbackup === 'full')  {
 		$tpl->assign(
 			array(
-				'BACKUP_DOMAIN' => '',
-				'BACKUP_SQL' => '',
-				'BACKUP_FULL' => $cfg->HTML_SELECTED,
-				'BACKUP_NO' => '',
+				'BACKUP_DOMAIN' 	=> '',
+				'BACKUP_SQL' 		=> '',
+				'BACKUP_FULL' 		=> $cfg->HTML_SELECTED,
+				'BACKUP_NO' 		=> '',
 			)
 		);
 	} elseif ($allowbackup === 'no')  {
 		$tpl->assign(
 			array(
-				'BACKUP_DOMAIN' => '',
-				'BACKUP_SQL' => '',
-				'BACKUP_FULL' => '',
-				'BACKUP_NO' => $cfg->HTML_SELECTED,
+				'BACKUP_DOMAIN' 	=> '',
+				'BACKUP_SQL' 		=> '',
+				'BACKUP_FULL'		=> '',
+				'BACKUP_NO' 		=> $cfg->HTML_SELECTED,
 			)
 		);
 	}
 
 	$tpl->assign(
 		array(
-			'PHP_YES'				=> ($php_sup == 'yes') ? $cfg->HTML_SELECTED : '',
-			'PHP_NO'				=> ($php_sup != 'yes') ? $cfg->HTML_SELECTED : '',
-			'CGI_YES'				=> ($cgi_supp == 'yes') ? $cfg->HTML_SELECTED : '',
-			'CGI_NO'				=> ($cgi_supp != 'yes') ? $cfg->HTML_SELECTED : '',
-			'DNS_YES'				=> ($dns_supp == 'yes') ? $cfg->HTML_SELECTED : '',
-			'DNS_NO'				=> ($dns_supp != 'yes') ? $cfg->HTML_SELECTED : '',
+			'PHP_YES'			=> ($php_sup == 'yes') ? $cfg->HTML_SELECTED : '',
+			'PHP_NO'			=> ($php_sup != 'yes') ? $cfg->HTML_SELECTED : '',
+			'CGI_YES'			=> ($cgi_supp == 'yes') ? $cfg->HTML_SELECTED : '',
+			'CGI_NO'			=> ($cgi_supp != 'yes') ? $cfg->HTML_SELECTED : '',
+			'DNS_YES'			=> ($dns_supp == 'yes') ? $cfg->HTML_SELECTED : '',
+			'DNS_NO'			=> ($dns_supp != 'yes') ? $cfg->HTML_SELECTED : '',
+			'SOFTWARE_YES'			=> ($software_supp == 'yes') ? $cfg->HTML_SELECTED : '',
+			'SOFTWARE_NO'			=> ($software_supp != 'yes') ? $cfg->HTML_SELECTED : '',
 			'VL_DOMAIN_NAME'		=> tohtml($domain_name),
 			'VL_DOMAIN_IP'			=> $domain_ip,
 			'VL_DOMAIN_EXPIRE'		=> $domain_expires,
 			'VL_DOM_SUB'			=> $sub,
 			'VL_DOM_ALIAS'			=> $als,
-			'VL_DOM_MAIL_ACCOUNT'	=> $mail,
+			'VL_DOM_MAIL_ACCOUNT'		=> $mail,
 			'VL_FTP_ACCOUNTS'		=> $ftp,
-			'VL_SQL_DB'				=> $sql_db,
+			'VL_SQL_DB'			=> $sql_db,
 			'VL_SQL_USERS'			=> $sql_user,
 			'VL_TRAFFIC'			=> $traff,
 			'VL_DOM_DISK'			=> $disk,
@@ -359,23 +364,24 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 	global $sql_db, $sql_user, $traff;
 	global $disk, $sql, $domain_ip, $domain_php;
 	global $domain_cgi, $allowbackup;
-	global $domain_dns;
+	global $domain_dns, $domain_software_allowed;
 
 	$domain_new_expire = clean_input($_POST['dmn_expire']);
 
-	$sub			= clean_input($_POST['dom_sub']);
-	$als			= clean_input($_POST['dom_alias']);
-	$mail			= clean_input($_POST['dom_mail_acCount']);
-	$ftp			= clean_input($_POST['dom_ftp_acCounts']);
-	$sql_db			= clean_input($_POST['dom_sqldb']);
-	$sql_user		= clean_input($_POST['dom_sql_users']);
-	$traff			= clean_input($_POST['dom_traffic']);
-	$disk			= clean_input($_POST['dom_disk']);
-	//$domain_ip		= $_POST['domain_ip'];
-	$domain_php		= preg_replace("/\_/", "", $_POST['domain_php']);
-	$domain_cgi		= preg_replace("/\_/", "", $_POST['domain_cgi']);
-	$domain_dns		= preg_replace("/\_/", "", $_POST['domain_dns']);
-	$allowbackup	= preg_replace("/\_/", "", $_POST['backup']);
+	$sub				= clean_input($_POST['dom_sub']);
+	$als				= clean_input($_POST['dom_alias']);
+	$mail				= clean_input($_POST['dom_mail_acCount']);
+	$ftp				= clean_input($_POST['dom_ftp_acCounts']);
+	$sql_db				= clean_input($_POST['dom_sqldb']);
+	$sql_user			= clean_input($_POST['dom_sql_users']);
+	$traff				= clean_input($_POST['dom_traffic']);
+	$disk				= clean_input($_POST['dom_disk']);
+	//$domain_ip			= $_POST['domain_ip'];
+	$domain_php			= preg_replace("/\_/", "", $_POST['domain_php']);
+	$domain_cgi			= preg_replace("/\_/", "", $_POST['domain_cgi']);
+	$domain_dns			= preg_replace("/\_/", "", $_POST['domain_dns']);
+	$allowbackup			= preg_replace("/\_/", "", $_POST['backup']);
+	$domain_software_allowed	= preg_replace("/\_/", "", $_POST['domain_software_allowed']);
 
 	$ed_error = '';
 
@@ -408,6 +414,12 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 	}
 	if (!imscp_limit_check($disk, null)) {
 		$ed_error .= tr('Incorrect disk quota limit!');
+	}
+	if ($domain_php == "no" && $domain_software_allowed == "yes") {
+		$ed_error .= tr('The i-MSCP application installer needs PHP to enable!');
+	}
+	if (get_reseller_sw_installer($reseller_id) == "no" && $domain_software_allowed == "yes") {
+		$ed_error .= tr('The i-MSCP application installer of the users reseller is not activated!');
 	}
 
 	// $user_props = generate_user_props($user_id);
@@ -487,7 +499,8 @@ function check_user_data(&$tpl, &$sql, $reseller_id, $user_id) {
 		$user_props .= "$domain_php;";
 		$user_props .= "$domain_cgi;";
 		$user_props .= "$allowbackup;";
-		$user_props .= "$domain_dns";
+		$user_props .= "$domain_dns;";
+		$user_props .= "$domain_software_allowed";
 		update_user_props($user_id, $user_props);
 
 		$domain_expires = $_SESSION['domain_expires'];

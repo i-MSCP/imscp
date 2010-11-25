@@ -59,6 +59,8 @@ recursive_set_permissions "$ROOT_DIR/gui/tools/filemanager/temp" \
 	$PANEL_USER $APACHE_GROUP 0750 0640
 recursive_set_permissions "$ROOT_DIR/gui/tools/webmail/data" \
 	$PANEL_USER $APACHE_GROUP 0750 0640
+recursive_set_permissions "$ROOT_DIR/gui/software" \
+	$PANEL_USER $APACHE_GROUP 0755 0644
 
 # Decryption keys allow root access to the database, so they must only be
 # accessible by the panel user.

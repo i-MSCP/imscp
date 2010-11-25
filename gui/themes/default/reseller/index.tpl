@@ -103,6 +103,12 @@
 					<td>{SQL_USERS}</td>
 					<td>{SQL_USER_MSG}</td>
 				</tr>
+				<!-- BDP: software_allowed -->
+				<tr>
+	 				<td>{SW_ALLOWED}</td>
+	 				<td>{SW_MSG}</td>
+				</tr>
+				<!-- EDP: software_allowed -->
 			</table>
 
 			<!-- BDP: traff_warn -->
