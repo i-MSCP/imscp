@@ -41,7 +41,7 @@ SELFDIR=$(pwd)
 
 title "Check available commands"
 
-COMMANDS="which uname tr mkdir rm pwd id touch pwd cp chown chmod printf"
+COMMANDS="which uname tr mkdir rm pwd id touch pwd cp chown chmod printf awk sed"
 for COMM in ${COMMANDS}; do testCommand ${COMM}; done
 
 title "Detecting OS"
