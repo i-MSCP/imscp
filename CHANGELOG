@@ -1,9 +1,10 @@
 i-MSCP ChangeLog
 ~~~~~~~~~~~~~~~~
-2010-11-18 Björn Romanski
-	- GUI:
-	         * Update Net_IDNA to 0.6.9
-	         
+
+2010-11-25 Sascha Bay
+	- PACKAGES:
+		Added application installer feature
+
 2010-11-24 Daniel Andreca
 	- CONFIGS:
 		* Fixed #27: Add logger to build script
@@ -26,6 +27,10 @@ i-MSCP ChangeLog
 2010-11-20 Peter Ziergoebel
 	- GUI:
 		* New feature: Date picker for  domain expire input fields
+
+2010-11-18 BjÃ¶rn Romanski
+	- GUI:
+		* Update Net_IDNA to 0.6.9
 
 2010-11-16 Laurent Declercq
 	- GUI:
