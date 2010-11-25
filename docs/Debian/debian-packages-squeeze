@@ -23,6 +23,7 @@ libapache2-mod-fastcgi
 libapache2-mod-fcgid
 libberkeleydb-perl
 libc6-dev
+libexpat1
 libcrypt-blowfish-perl
 libcrypt-cbc-perl
 libcrypt-passwdmd5-perl
@@ -44,6 +45,7 @@ libnet-dns-perl
 libnet-libidn-perl
 libnet-netmask-perl
 libnet-smtp-server-perl
+libxml-parser-perl
 libperl5.10
 libsasl2-2
 libsasl2-modules
