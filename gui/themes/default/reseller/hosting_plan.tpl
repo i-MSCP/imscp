@@ -59,10 +59,12 @@
 
 
 		<div class="body">
-				<h2 class="serverstatus"><span>{TR_HOSTING_PLANS}</span></h2>
+		
 				<!-- BDP: page_message -->
 					<div class="warning">{MESSAGE}</div>
 				<!-- EDP: page_message -->
+				
+				<h2 class="hosting_plans"><span>{TR_HOSTING_PLANS}</span></h2>
 
 				<!-- BDP: hp_table -->
 					<table>

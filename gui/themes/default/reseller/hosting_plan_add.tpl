@@ -168,6 +168,22 @@
 							</tr>
 						</table>
 					</fieldset>
+					<fieldset>
+						<legend>{TR_TOS_PROPS}</legend>
+						<table>
+							<!-- TOS --> 
+							<tr>
+								<td colspan="2">{TR_TOS_NOTE}</td>
+							</tr>
+							<tr>
+								<td>{TR_TOS_DESCRIPTION}</td>
+								<td>
+									<textarea name="hp_tos" cols="70" rows="8">{HP_TOS_VALUE}</textarea>
+								</td>
+							</tr>
+							<!-- TOS END -->
+						</table>
+					</fieldset
 					<div class="buttons">
 						<input name="Submit" type="submit" value="{TR_ADD_PLAN}" />
 					</div>

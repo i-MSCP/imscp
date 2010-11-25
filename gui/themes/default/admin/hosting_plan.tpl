@@ -1,87 +1,99 @@
 <?xml version="1.0" encoding="{THEME_CHARSET}" ?>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<title>{TR_ADMIN_MAIN_INDEX_PAGE_TITLE}</title>
-<meta name="robots" content="nofollow, noindex" />
-<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
-<meta http-equiv="Content-Style-Type" content="text/css" />
-<meta http-equiv="Content-Script-Type" content="text/javascript" />
-<link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="{THEME_COLOR_PATH}/css/imscp.js"></script>
-<script type="text/javascript">
-<!--
-function delete_account(url, plan) {
-	return confirm(sprintf("{TR_MESSAGE_DELETE}", plan))
-}
-//-->
-</script>
-</head>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
+        <meta http-equiv="X-UA-Compatible" content="IE=8" />
+        <title>{TR_ADMIN_MAIN_INDEX_PAGE_TITLE}</title>
+        <meta name="robots" content="nofollow, noindex" />
+        <link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="{THEME_COLOR_PATH}/js/imscp.js"></script>
+        <!--[if IE 6]>
+        <script type="text/javascript" src="{THEME_COLOR_PATH}/js/DD_belatedPNG_0.0.8a-min.js"></script>
+        <script type="text/javascript">
+            DD_belatedPNG.fix('*');
+        </script>
+        <![endif]-->
+		<script type="text/javascript">
+		/* <![CDATA[ */
+		function action_delete(url, subject) {
+			if (!confirm(sprintf("{TR_MESSAGE_DELETE}", subject)))
+				return false;
+			location = url;
+		}
+		/* ]]> */
+		</script>
+	</head>
 
-<body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
-<table width="100%" border="0" cellspacing="0" cellpadding="0" style="height:100%;padding:0;margin:0 auto;">
-<tr>
-<td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" width="195" height="56" border="0" alt="i-MSCP Logogram" /></td>
-<td style="height: 56px; width:100%; background-color: #0f0f0f"><img src="{THEME_COLOR_PATH}/images/top/top_left_bg.jpg" width="582" height="56" border="0" alt="" /></td>
-<td style="width: 73px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_right.jpg" width="73" height="56" border="0" alt="" /></td>
-</tr>
-	<tr>
-		<td style="width: 195px; vertical-align: top;">{MENU}</td>
-	    <td colspan="2" style="vertical-align: top;"><table style="width: 100%; padding:0;margin:0;" cellspacing="0">
-				<tr style="height:95px;">
-				  <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
-					<td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" width="73" height="95" border="0" alt="" /></td>
-				</tr>
-				<tr>
-				  <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-                    <tr>
-                      <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
-                          <tr>
-                            <td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_serverstatus.png" width="25" height="25" alt="" /></td>
-                            <td colspan="2" class="title">{TR_HOSTING_PLANS}</td>
-                          </tr>
-                      </table></td>
-                      <td width="27" align="right">&nbsp;</td>
-                    </tr>
-                    <tr>
-                      <td valign="top"><table width="100%" cellspacing="3">
-                          <!-- BDP: page_message -->
-                          <tr>
-                      <td width="35">&nbsp;</td>
-                            <td colspan="5" class="title"><span class="message">{MESSAGE}</span></td>
-                          </tr>
-                          <!-- EDP: page_message -->
-                          <!-- BDP: hp_table -->
-                          <tr>
-                      <td width="35" align="center">&nbsp;</td>
-                            <td class="content3" width="50" align="center"><span class="menu"><b>{TR_NOM}</b></span></td>
-                            <td class="content3"><b>{TR_PLAN_NAME}</b></td>
-                            <td width="100" align="center" class="content3"><strong>{TR_PURCHASING}</strong></td>
-                            <td width="200" colspan="2" align="center" class="content3"><b>{TR_ACTION}</b></td>
-                          </tr>
-                          <!-- BDP: hp_entry -->
-                          <tr class="hl">
-                      		<td width="35" align="center">&nbsp;</td>
-                            <td class="{CLASS_TYPE_ROW}" width="50" align="center">{PLAN_NOM}</td>
-                      		<td class="{CLASS_TYPE_ROW}"><a href="../orderpanel/package_info.php?coid={CUSTOM_ORDERPANEL_ID}&amp;user_id={ADMIN_ID}&amp;id={HP_ID}" target="_blank" title="{PLAN_SHOW}">{PLAN_NAME}</a></td>
-                            <td align="center" class="{CLASS_TYPE_ROW}">{PURCHASING}</td>
-                            <td class="{CLASS_TYPE_ROW}" align="center"><img src="{THEME_COLOR_PATH}/images/icons/edit.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="hosting_plan_edit.php?hpid={HP_ID}" class="link">{TR_EDIT}</a></td>
-                      		<!-- BDP: hp_delete -->
-                            <td class="{CLASS_TYPE_ROW}" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="hosting_plan_delete.php?hpid={HP_ID}" onclick="return delete_account('hosting_plan_delete.php?hpid={HP_ID}', '{PLAN_NAME2}')" class="link">{PLAN_ACTION}</a></td>
-                      		<!-- EDP: hp_delete -->
-                          </tr>
-                          <!-- EDP: hp_entry -->
-                          <!-- EDP: hp_table -->
-                      </table></td>
-                      <td>&nbsp;</td>
-                    </tr>
-                    <tr>
-                      <td>&nbsp;</td>
-                      <td>&nbsp;</td>
-                    </tr>
-                  </table></td>
-				</tr>
-			</table></td>
-	</tr>
-</table>
-</body>
+	<body>
+		<div class="header">
+            {MAIN_MENU}
+
+            <div class="logo">
+                <img src="{THEME_COLOR_PATH}/images/imscp_logo.png" alt="i-MSCP logo" />
+                <img src="{THEME_COLOR_PATH}/images/imscp_webhosting.png" alt="i-MSCP" />
+            </div>
+        </div>
+
+		<div class="location">
+			<div class="location-area icons-left">
+				<h1 class="hosting_plans">{TR_MENU_HOSTING_PLANS}</h1>
+			</div>
+			<ul class="location-menu">
+				<!-- <li><a class="help" href="#">Help</a></li> -->
+                <li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
+			</ul>
+			<ul class="path">
+				<li><a href="hosting_plan.php">{TR_MENU_HOSTING_PLANS}</a></li>
+				<li><a href="hosting_plan.php">{TR_MENU_OVERVIEW}</a></li>
+			</ul>
+		</div>
+
+		<div class="left_menu">
+			{MENU}
+		</div>
+
+
+		<div class="body">
+		
+			<!-- BDP: page_message -->
+			<div class="warning">{MESSAGE}</div>
+			<!-- EDP: page_message -->
+				
+			<h2 class="hosting_plans"><span>{TR_HOSTING_PLANS}</span></h2>
+				
+			<!-- BDP: hp_table -->
+			<table>
+				<thead>
+					<tr>
+						<th>{TR_NOM}</th>
+						<th>{TR_PLAN_NAME}</th>
+						<th>{TR_PURCHASING}</th>
+						<th>{TR_ACTION}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- BDP: hp_entry -->
+					<tr>
+						<td>{PLAN_NOM}</td>
+						<td><a href="../orderpanel/package_info.php?coid={CUSTOM_ORDERPANEL_ID}&amp;user_id={ADMIN_ID}&amp;id={HP_ID}" target="_blank" title="{PLAN_SHOW}">{PLAN_NAME}</a></td>
+						<td>{PURCHASING}</td>
+						<td>
+							<a href="hosting_plan_edit.php?hpid={HP_ID}" class="icon i_edit">{TR_EDIT}</a>
+							<!-- BDP: hp_delete -->
+							<a href="#" onclick="return action_delete('hosting_plan_delete.php?hpid={HP_ID}', '{PLAN_NAME2}')" class="icon i_delete">{PLAN_ACTION}</a>
+							<!-- EDP: hp_delete -->
+						</td>
+					</tr>
+					<!-- EDP: hp_entry -->
+				</tbody>
+			</table>
+			<!-- EDP: hp_table -->
+		</div>
+		<div class="footer">
+			i-MSCP {VERSION}<br />build: {BUILDDATE}<br />Codename: {CODENAME}
+		</div>
+
+	</body>
 </html>

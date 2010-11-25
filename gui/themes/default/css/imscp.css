@@ -578,6 +578,7 @@ legend, h3 {
 .body .password { background-image: url(../images/content/table_icon_password.png); }
 .body .purchasing { background-image: url(../images/content/table_icon_purchasing.png); }
 .body .serverstatus { background-image: url(../images/content/table_icon_serverstatus.png); }
+.body .hosting_plans { background-image: url(../images/content/table_icon_hosting_plans.png); }
 .body .settings { background-image: url(../images/content/table_icon_settings.png); }
 .body .sql { background-image: url(../images/content/table_icon_sql.png); }
 .body .stats { background-image: url(../images/content/table_icon_stats.png); }
