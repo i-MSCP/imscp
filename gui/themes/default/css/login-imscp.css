@@ -5,7 +5,8 @@
 form {
 	text-align: left;
 	width: 316px;
-	min-height : 339px;
+	min-height: 339px;
+    height: 339px;
 	background-image: url('../images/login/logon_black.png');
 	background-repeat: no-repeat;
 	background-position: center top;
@@ -13,9 +14,11 @@ form {
 }
 
 form fieldset {
+    position: absolute;
+    top:180px;
 	width : 270px;
 	margin : 0 auto;
-	margin-top : 180px;
+	/*margin-top : 180px;*/
 	padding : 0;
 }
 
@@ -107,6 +110,7 @@ div.toolbox div a.webmail{
 	width: 100%;
 	text-align: center;
 }  /* for explorer only*/
+
 #middle[id] {
 	display: table-cell;
 	vertical-align: middle;
@@ -117,6 +121,7 @@ div.toolbox div a.webmail{
 	top: -50%;
 	text-align: left;
 }  /* for explorer only */
+
 #inner {
 	width: 200px;
 	margin-left: auto;
