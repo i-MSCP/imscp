@@ -63,7 +63,7 @@ a {
 div.toolbox a{
 	display : block;
 	text-align : center;
-	color : blue;
+	color: blue;
 	line-height : 2em;
 	text-decoration : underline;
 }
