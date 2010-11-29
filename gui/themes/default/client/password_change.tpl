@@ -67,8 +67,8 @@
 					</tr>
 				</table>
 				<div class="buttons">
-					<input type="submit" name="Submit" value="{TR_UPDATE_PASSWORD}" />
 					<input type="hidden" name="uaction" value="updt_pass" />
+					<input type="submit" name="Submit" value="{TR_UPDATE_PASSWORD}" />
 				</div>
 			</form>
 		</div>
