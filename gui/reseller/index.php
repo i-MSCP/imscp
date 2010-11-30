@@ -353,7 +353,7 @@ gen_def_layout($tpl, $user_def_layout);
 
 gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_general_information.tpl');
 gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_general_information.tpl');
-get_reseller_software_permission (&$tpl,&$sql,$_SESSION['user_id']);
+get_reseller_software_permission ($tpl, $sql,$_SESSION['user_id']);
 
 gen_system_message($tpl, $sql);
 
@@ -368,4 +368,5 @@ $tpl->prnt();
 if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
+
 unset_messages();

@@ -497,7 +497,7 @@ $tpl->assign(
 		)
 	);
 
-$sw_cnt = get_avail_software (&$tpl, &$sql, $_SESSION['user_id']);
+$sw_cnt = get_avail_software ($tpl, $sql, $_SESSION['user_id']);
 
 $tpl->assign(
 		array(
@@ -538,7 +538,7 @@ gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_general_informatio
 
 gen_logged_from($tpl);
 
-get_reseller_software_permission (&$tpl,&$sql,$_SESSION['user_id']);
+get_reseller_software_permission ($tpl, $sql, $_SESSION['user_id']);
 
 gen_page_message($tpl);
 
@@ -551,4 +551,3 @@ if ($cfg->DUMP_GUI_DEBUG) {
 }
 
 unset_messages();
-?>

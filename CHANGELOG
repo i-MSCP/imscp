@@ -4,10 +4,12 @@ i-MSCP ChangeLog
 2010-11-30 Laurent Declercq
 	- GUI
 		* Added properties description in iMSCP_Config_Handler_File to avoid warnings with some IDE
-		* Fixed: Warning that cause break (encoding error): Call-time pass-by-reference has been deprecated... in
-		admin/software_manage.php (Line 652,653, 654)
-		* Fixed wrong alignement for form fields in admin/admin_add.tpl
-		* Some refactorization tasks in admin/software_manage.php
+		* Fixed: Warning that cause break (encoding error): Call-time pass-by-reference has been deprecated... in:
+			- admin/software_manage.php (Lines 652, 653, 654)
+			- reseller/index.php (line 356)
+			- /var/www/imscp/gui/reseller/software_upload.php (Line 500, 541)
+		* Fixed wrong alignment for form fields in admin/admin_add.tpl
+		* Some re-factorization tasks in admin/software_manage.php
 
 2010-11-25 Sascha Bay
 	- PACKAGE:
