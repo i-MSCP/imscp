@@ -8,6 +8,7 @@ i-MSCP ChangeLog
 			- admin/software_manage.php (Lines 652, 653, 654)
 			- reseller/index.php (line 356)
 			- reseller/software_upload.php (Lines 500, 541)
+		* Fixed: Wrong vertical aligment for login box
 		* Removed useless 'tr' admin/admin_add.tpl
 		* Some re-factorization tasks in admin/software_manage.php
 
