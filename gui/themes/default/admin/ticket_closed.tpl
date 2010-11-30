@@ -53,7 +53,7 @@
 
         <div class="body">
             <!-- BDP: page_message -->
-            <div class="warning">{MESSAGE}</div>
+            <div class="info">{MESSAGE}</div>
             <!-- EDP: page_message -->
 
             <!-- BDP: tickets_list -->

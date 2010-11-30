@@ -62,14 +62,14 @@
         <div class="body">
 
             <!-- BDP: page_message -->
-            <div class="warning">{MESSAGE}</div>
+            <div class="info">{MESSAGE}</div>
             <!-- EDP: page_message -->
 
 
             <h2 class="users"><span>{TR_ADMINISTRATORS}</span></h2>
 
             <!-- BDP: admin_message -->
-            <div class="warning">{ADMIN_MESSAGE}</div>
+            <div class="info">{ADMIN_MESSAGE}</div>
             <!-- EDP: admin_message -->
 
             <!-- BDP: props_list -->
@@ -105,7 +105,7 @@
             <h2 class="users"><span>{TR_RESELLERS}</span></h2>
 
             <!-- BDP: rsl_message -->
-            <div class="warning">{RSL_MESSAGE}</div>
+            <div class="info">{RSL_MESSAGE}</div>
             <!-- EDP: rsl_message -->
 
             <!-- BDP: rsl_list -->
@@ -135,7 +135,7 @@
             <h2 class="users"><span>{TR_USERS}</span></h2>
 
             <!-- BDP: usr_message -->
-            <div class="warning">{USR_MESSAGE}</div>
+            <div class="info">{USR_MESSAGE}</div>
             <!-- EDP: usr_message -->
 
             <form action="manage_users.php" method="post" name="search_user" id="search_user">

@@ -48,7 +48,7 @@
         <div class="body">
 
             <!-- BDP: page_message -->
-            <div class="warning">{MESSAGE}</div>
+            <div class="info">{MESSAGE}</div>
             <!-- EDP: page_message -->
 
             <h2 class="general"><span>{TR_RESELLER_STATISTICS}</span></h2>

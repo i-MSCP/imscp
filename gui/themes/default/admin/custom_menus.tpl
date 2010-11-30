@@ -55,7 +55,7 @@
 
         <div class="body">
             <!-- BDP: page_message -->
-            <div class="warning">{MESSAGE}</div>
+            <div class="info">{MESSAGE}</div>
             <!-- EDP: page_message -->
 
             <h2 class="support"><span>{TR_TITLE_CUSTOM_MENUS}</span></h2>

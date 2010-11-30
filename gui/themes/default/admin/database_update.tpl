@@ -45,7 +45,7 @@
             <!-- EDP: page_message -->
 
             <!-- BDP: database_update_message -->
-            <div class="warning">{TR_UPDATE_MESSAGE}</div>
+            <div class="info">{TR_UPDATE_MESSAGE}</div>
             <!-- EDP: database_update_message -->
 
             <h2 class="update"><span>{TR_UPDATES_TITLE}</span></h2>

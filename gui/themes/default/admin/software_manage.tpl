@@ -113,7 +113,7 @@
 				</tr>
 				<!-- BDP: no_softwaredepot_list -->
 				<tr>
-					<td colspan="8"><div class="warning">{NO_SOFTWAREDEPOT}</div></td>
+					<td colspan="8"><div class="info">{NO_SOFTWAREDEPOT}</div></td>
 				</tr>
 				<!-- EDP: no_softwaredepot_list -->
 				<!-- BDP: list_softwaredepot -->
@@ -148,7 +148,7 @@
 				</tr>
 				<!-- BDP: no_software_list -->
 				<tr>
-					<td colspan="9"><div class="warning">{NO_SOFTWARE}</div></td>
+					<td colspan="9"><div class="info">{NO_SOFTWARE}</div></td>
 				</tr>
 				<!-- EDP: no_software_list -->
 				<!-- BDP: list_software -->
@@ -180,7 +180,7 @@
 				</tr>
 				<!-- BDP: no_reseller_list -->
 				<tr>
-					<td colspan="5"><div class="warning">{NO_RESELLER}</div></td>
+					<td colspan="5"><div class="info">{NO_RESELLER}</div></td>
 				</tr>
 				<!-- EDP: no_reseller_list -->
 				<!-- BDP: list_reseller -->
