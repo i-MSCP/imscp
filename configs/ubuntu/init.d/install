@@ -39,8 +39,6 @@ FOLDERS='
 COPY_CONFIG_FILE='
 	${ROOT_CONF}/init.d/imscp_daemon
 	${ROOT_CONF}/init.d/imscp_network
-	${ROOT_CONF}/default/imscp_daemon/imscp_daemon.default
-	${ROOT_CONF}/default/imscp_network/imscp_network.default
 ';
 
 COPY_FILE=''
