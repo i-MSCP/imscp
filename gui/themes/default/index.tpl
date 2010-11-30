@@ -26,7 +26,7 @@
 							<label>{TR_USERNAME}:<input type="text" name="uname" id="uname" value="" maxlength="255" tabindex="1"></label>
 							<label>{TR_PASSWORD}:<input type="password" name="upass" id="upass" value="" maxlength="255" tabindex="2"></label>
 							<div class="buttons">
-								<input style="text-align:left;padding-left:15px;" type="submit" name="lpwd" value="{TR_LOSTPW}" tabindex="2" onclick="location.href='lostpassword.php';return false"/>&nbsp;&nbsp;&nbsp;
+								<input style="text-align:left;padding-left:15px;" type="button" name="lpwd" value="{TR_LOSTPW}" tabindex="2" onclick="location.href='lostpassword.php';return false"/>&nbsp;&nbsp;&nbsp;
 								<input type="submit" name="Submit" value="{TR_LOGIN}" tabindex="3" />
 							</div>
 							<!-- /* Uncomment this to show the ssl switch */
