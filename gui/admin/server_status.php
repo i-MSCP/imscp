@@ -139,7 +139,7 @@ class status {
 		}
 		else {
 			write_log(sprintf('FIXME: %s:%d' . "\n" . 'Unknown connection type %s',__FILE__, __LINE__, $type));
-			die('FIXME: ' . __FILE__ . ':' . __LINE__);
+			throw new iMSCP_Exception('FIXME: ' . __FILE__ . ': ' . __LINE__);
 		}
 
 		if (!$fp)
