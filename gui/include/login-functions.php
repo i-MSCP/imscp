@@ -310,13 +310,11 @@ function unblock($timeout = null, $type = 'bruteforce') {
 			write_log(
 				sprintf(
 					'FIXME: %s:%d' . "\n" . 'Unknown unblock reason %s',
-					__FILE__,
-					__LINE__,
-					$type
+					__FILE__, __LINE__, $type
 				)
 			);
 
-			die('FIXME: '.__FILE__.':'.__LINE__);
+			throw new iMSCP_Exception('FIXME: '.__FILE__.':'.__LINE__);
 	}
 
 	exec_query($sql, $query, array($max, $timeout));
@@ -386,13 +384,11 @@ function is_ipaddr_blocked($ipaddr = null, $type = 'bruteforce',
 			write_log(
 				sprintf(
 					'FIXME: %s:%d' . "\n" . 'Unknown block reason %s',
-					__FILE__,
-					__LINE__,
-					$type
+					__FILE__, __LINE__, $type
 				)
 			);
 
-			die('FIXME: '.__FILE__.':'.__LINE__);
+			throw new iMSCP_Exception('FIXME: '.__FILE__.':'.__LINE__);
 	}
 
 	$res = exec_query($sql, $query, array($ipaddr, $max));

@@ -60,7 +60,9 @@ function createImage($strSessionVar) {
 
 	$iRandVal = strrand(8, $strSessionVar);
 
-	$im = imagecreate($x, $y) or die('Cannot initialize new GD image stream.');
+	if(!($im = imagecreate($x, $y))) {
+		throw new iMSCP_Exception('Cannot initialize new GD image stream.');
+	}
 
 	$background_color = imagecolorallocate($im, $rgBgColor[0],
 		$rgBgColor[1],
@@ -162,7 +164,7 @@ function setPassword($uniqkey, $upass) {
 	$sql = iMSCP_Registry::get('Db');
 
 	if ($uniqkey == '') {
-		die();
+		exit;
 	}
 
 	$query = "

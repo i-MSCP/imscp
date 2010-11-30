@@ -642,14 +642,7 @@ function calculate_user_dvals($data, $u, &$umax, &$r, $rmax, &$err, $obj) {
 			return;
 		}
 	} else if ($rmax > 0 && $umax == 0) {
-		// We Can't Get Here! This clone is present only for sample purposes;
-		if ($data == -1) {
-			die("FIXME: ". __FILE__ .":". __LINE__);
-		} else if ($data == 0) {
-			die("FIXME: ". __FILE__ .":". __LINE__);
-		} else if ($data > 0) {
-			die("FIXME: ". __FILE__ .":". __LINE__);
-		}
+		throw new iMSCP_Exception("FIXME: ". __FILE__ .":". __LINE__);
 	} else if ($rmax > 0 && $umax > 0) {
 		if ($data == -1) {
 			if ($u > 0) {

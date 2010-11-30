@@ -248,7 +248,7 @@ class iMSCP_Exception_Handler implements SplSubject, IteratorAggregate, Countabl
 		// Notify all writers
 		$this->notify();
 
-		die();
+		exit;
 	}
 
 	/**
@@ -347,7 +347,7 @@ class iMSCP_Exception_Handler implements SplSubject, IteratorAggregate, Countabl
 					trigger_error($message, E_USER_ERROR);
 				} else {
 					$this->exceptionHandler(new iMSCP_Exception($message));
-					die();
+					exit;
 				}
 			}
 		}

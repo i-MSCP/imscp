@@ -1958,7 +1958,7 @@ function change_domain_status(&$sql, $domain_id, $domain_name, $action,
 		header('Location: users.php?psi=last');
 	}
 
-	die();
+	exit();
 }
 
 /**

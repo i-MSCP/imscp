@@ -61,7 +61,7 @@ function system_message($msg, $backButtonDestination = '') {
 	if (!is_file($template)) {
 		// And if we don't find the template, we'll just die displaying error
 		// message
-		die($msg);
+		throw new iMSCP_Exception($msg);
 	}
 
 	$tpl->define('page', $template);

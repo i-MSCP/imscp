@@ -940,7 +940,7 @@ function user_trans_mail_type($mail_type) {
  */
 function user_goto($dest) {
 	header('Location: ' . $dest);
-	die('FIXME: ' . __FILE__ . ':' . __LINE__);
+	exit;
 }
 
 function count_sql_user_by_name(&$sql, $sqlu_name) {

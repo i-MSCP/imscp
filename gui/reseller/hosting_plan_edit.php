@@ -36,6 +36,9 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
+/**
+ * @var $cfg iMSCP_Config_Handler_File
+ */
 $cfg = iMSCP_Registry::get('Config');
 
 $tpl = new iMSCP_pTemplate();
@@ -117,7 +120,7 @@ $tpl->assign(
  * Dynamic page process
  */
 
-if (isset($_POST['uaction']) && ('add_plan' === $_POST['uaction'])) {
+if (isset($_POST['uaction']) && ('add_plan' == $_POST['uaction'])) {
 	// Process data
 	if (check_data_iscorrect($tpl)) { // Save data to db
 		save_data_to_db();
@@ -131,7 +134,7 @@ if (isset($_POST['uaction']) && ('add_plan' === $_POST['uaction'])) {
 	}
 
 	gen_load_ehp_page($tpl, $sql, $hpid, $_SESSION['user_id']);
-	$tpl->assign('MESSAGE', "");
+	$tpl->assign('MESSAGE', '');
 }
 
 if (isset($cfg->HOSTING_PLANS_LEVEL)
@@ -153,7 +156,11 @@ if ($cfg->DUMP_GUI_DEBUG) {
 /**
  * Restore form on any error
  */
-function restore_form(&$tpl, &$sql) {
+function restore_form($tpl, $sql) {
+
+	/**
+	 * @var $cfg iMSCP_Config_Handler_File
+	 */
 	$cfg = iMSCP_Registry::get('Config');
 
 	$tpl->assign(
@@ -196,6 +203,10 @@ function restore_form(&$tpl, &$sql) {
  * Generate load data from sql for requested hosting plan
  */
 function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
+
+	/**
+	 * @var $cfg iMSCP_Config_Handler_File
+	 */
 	$cfg = iMSCP_Registry::get('Config');
 
 	$_SESSION['hpid'] = $hpid;
@@ -334,14 +345,10 @@ function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
 /**
  * Check correction of input data
  */
-function check_data_iscorrect(&$tpl) {
-	global $hp_name, $hp_php, $hp_cgi;
-	global $hp_sub, $hp_als, $hp_mail;
-	global $hp_ftp, $hp_sql_db, $hp_sql_user;
-	global $hp_traff, $hp_disk;
-	global $hpid;
-	global $price, $setup_fee;
-	global $hp_backup, $hp_dns, $hp_allowsoftware;
+function check_data_iscorrect($tpl) {
+
+	global $hp_name, $hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff,
+		$hp_disk, $hpid, $price, $setup_fee, $hp_backup, $hp_dns, $hp_allowsoftware;
 
 	$ahp_error = array();
 	$hp_name = clean_input($_POST['hp_name']);
@@ -393,13 +400,9 @@ function check_data_iscorrect(&$tpl) {
     }
 
     list(
-		$rsub_max,
-		$rals_max,
-		$rmail_max,
-		$rftp_max,
-		$rsql_db_max,
-		$rsql_user_max
-		) = check_reseller_permissions($_SESSION['user_id'], 'all_permissions');
+		$rsub_max, $rals_max, $rmail_max, $rftp_max, $rsql_db_max, $rsql_user_max) = check_reseller_permissions(
+		$_SESSION['user_id'], 'all_permissions'
+	);
 
 	if ($rsub_max == "-1") {
 		$hp_sub = "-1";
@@ -470,15 +473,13 @@ function check_data_iscorrect(&$tpl) {
  * Add new host plan to DB
  */
 function save_data_to_db() {
-	global $tpl;
-	global $hp_name, $hp_php, $hp_cgi;
-	global $hp_sub, $hp_als, $hp_mail;
-	global $hp_ftp, $hp_sql_db, $hp_sql_user;
-	global $hp_traff, $hp_disk;
-	global $hpid;
-	global $hp_backup, $hp_dns, $hp_allowsoftware;
+	global $tpl, $hp_name, $hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff,
+	$hp_disk, $hpid, $hp_backup, $hp_dns, $hp_allowsoftware;
 //	global $tos;
 
+	/**
+	 * @var $sql iMSCP_Database
+	 */
 	$sql = iMSCP_Registry::get('Db');
 
 	$err_msg = '';
@@ -541,4 +542,4 @@ function save_data_to_db() {
 	}
 } // end of save_data_to_db()
 
-die();
+exit;
