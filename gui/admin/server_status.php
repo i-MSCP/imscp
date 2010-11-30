@@ -97,21 +97,19 @@ class status {
 			}
 			else {
 				write_log(sprintf('FIXME: %s:%d' . "\n" . 'Unknown connection type %s',__FILE__, __LINE__, $this->all[$i]['type']));
-				die('FIXME: ' . __FILE__ . ':' . __LINE__);
+				throw new iMSCP_Exception('FIXME: ' . __FILE__ . ': ' . __LINE__);
 			}
 
 			if ($fp) {
 				$this->all[$i]['status'] = true;
 				if ($this->log) {
 					$this->AddLog($this->all[$i]['ip'], $this->all[$i]['port'], $this->all[$i]['service'], $this->all[$i]['type'], 'TRUE');
-					// $this->StatusUp(mysql_insert_id());
 				}
 			}
 			else {
 				$this->all[$i]['status'] = false;
 				if ($this->log) {
 					$this->AddLog($this->all[$i]['ip'], $this->all[$i]['port'], $this->all[$i]['service'], $this->all[$i]['type'], 'FALSE');
-					// $this->StatusDown(mysql_insert_id());
 				}
 			}
 
