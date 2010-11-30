@@ -34,6 +34,9 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
+/**
+ * @var $cfg iMSCP_Config_Handler_File
+ */
 $cfg = iMSCP_Registry::get('Config');
 
 if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
@@ -135,4 +138,3 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 	set_page_message(tr('Wrong software id.'));
 	header('Location: software_manage.php');
 }
-?>

@@ -34,6 +34,9 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
+/**
+ * @var $cfg iMSCP_Config_Handler_File
+ */
 $cfg = iMSCP_Registry::get('Config');
 
 $tpl = new iMSCP_pTemplate();
@@ -55,8 +58,7 @@ $tpl -> define_dynamic('t_software_support', 'page');
 // page functions.
 //
 
-
-function gen_user_software_action($software_id, $dmn_id, &$sql, &$tpl) {
+function gen_user_software_action($software_id, $dmn_id, $sql, $tpl) {
 	$find_software = "
 		SELECT
 			`software_status`
@@ -123,7 +125,7 @@ function gen_user_software_action($software_id, $dmn_id, &$sql, &$tpl) {
     }
 }
 
-function gen_software_list(&$tpl, &$sql, $dmn_id, $dmn_name, $reseller_id, $admin_id) {
+function gen_software_list($tpl, $sql, $dmn_id, $dmn_name, $reseller_id, $admin_id) {
 	global $counter, $delcounter;
 	$query = "
 		SELECT
@@ -313,30 +315,11 @@ function gen_software_list(&$tpl, &$sql, $dmn_id, $dmn_name, $reseller_id, $admi
 	}
 }
 
-function gen_page_lists(&$tpl, &$sql, $user_id) {
-    list($dmn_id,
-         $dmn_name,
-         $dmn_gid,
-         $dmn_uid,
-         $dmn_created_id,
-         $dmn_created,
-         $dmn_last_modified,
-         $dmn_mailacc_limit,
-         $dmn_ftpacc_limit,
-         $dmn_traff_limit,
-         $dmn_sqld_limit,
-         $dmn_sqlu_limit,
-         $dmn_status,
-         $dmn_als_limit,
-         $dmn_subd_limit,
-         $dmn_ip_id,
-         $dmn_disk_limit,
-         $dmn_disk_usage,
-         $dmn_php,
-         $dmn_cgi) = get_domain_default_props($sql, $user_id);
+function gen_page_lists($tpl, $sql, $user_id) {
+
+    list($dmn_id,$dmn_name,,,$dmn_created_id,) = get_domain_default_props($sql, $user_id);
     $software_poss = gen_software_list($tpl, $sql, $dmn_id, $dmn_name, $dmn_created_id, $_SESSION['user_id']);
     $tpl -> assign('TOTAL_SOFTWARE_AVAILABLE', $software_poss);
-
 	$tpl->parse('SOFTWARE_MESSAGE', 'software_message');
 }
 
@@ -345,13 +328,13 @@ function gen_page_lists(&$tpl, &$sql, $user_id) {
 //
 
 $tpl -> assign(
-			array(
-				'TR_CLIENT_MANAGE_USERS_PAGE_TITLE' 	=> tr('ispCP - Client/Manage Users'),
-				'THEME_COLOR_PATH' 						=> "../themes/{$cfg->USER_INITIAL_THEME}",
-				'THEME_CHARSET' 						=> tr('encoding'),
-				'ISP_LOGO' 								=> get_logo($_SESSION['user_id'])
-			)
-		);
+	array(
+		'TR_CLIENT_MANAGE_USERS_PAGE_TITLE' 	=> tr('ispCP - Client/Manage Users'),
+		'THEME_COLOR_PATH' 						=> "../themes/{$cfg->USER_INITIAL_THEME}",
+		'THEME_CHARSET' 						=> tr('encoding'),
+		'ISP_LOGO' 								=> get_logo($_SESSION['user_id'])
+	)
+);
 
 //
 // dynamic page data.
@@ -372,47 +355,45 @@ gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_webtools.tpl');
 
 gen_logged_from($tpl);
 
-get_client_software_permission (&$tpl,&$sql,$_SESSION['user_id']);
+get_client_software_permission($tpl, $sql,$_SESSION['user_id']);
 
 check_permissions($tpl);
 
 $tpl -> assign(
-			array(
-				'TR_SOFTWARE_MENU_PATH'			=> tr('i-MSCP - application installer'),
-				'TR_MANAGE_USERS' 				=> tr('Manage users'),
-				'TR_INSTALL_SOFTWARE' 			=> tr('Install software'),
-				'TR_SOFTWARE' 					=> tr('Software'),
-				'TR_VERSION' 					=> tr('Version'),
-				'TR_LANGUAGE' 					=> tr('Language'),
-				'TR_TYPE' 						=> tr('Type'),
-				'TR_NEED_DATABASE' 				=> tr('Database'),
-				'TR_STATUS' 					=> tr('Status'),
-				'TR_ACTION' 					=> tr('Action'),
-				'TR_SOFTWARE_AVAILABLE' 		=> tr('Apps available'),
-				'TR_DELETE' 					=> tr('Delete'),
-				'TR_SOFTWARE_MENU' 				=> tr('Software installation'),
-				'TR_CLIENT_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Application Management'),
-				'TR_SOFTWARE_ASC'				=> 'software.php?sortby=name&order=asc',
-				'TR_SOFTWARE_DESC' 				=> 'software.php?sortby=name&order=desc',
-				'TR_TYPE_ASC'					=> 'software.php?sortby=type&order=asc',
-				'TR_TYPE_DESC' 					=> 'software.php?sortby=type&order=desc',
-				'TR_NEED_DATABASE_ASC' 			=> 'software.php?sortby=database&order=asc',
-				'TR_NEED_DATABASE_DESC'			=> 'software.php?sortby=database&order=desc',
-				'TR_STATUS_ASC' 				=> 'software.php?sortby=status&order=asc',
-				'TR_STATUS_DESC'				=> 'software.php?sortby=status&order=desc',
-				'TR_LANGUAGE_ASC' 				=> 'software.php?sortby=language&order=asc',
-				'TR_LANGUAGE_DESC' 				=> 'software.php?sortby=language&order=desc'
-			)
-		);
+	array(
+		'TR_SOFTWARE_MENU_PATH'			=> tr('i-MSCP - application installer'),
+		'TR_MANAGE_USERS' 				=> tr('Manage users'),
+		'TR_INSTALL_SOFTWARE' 			=> tr('Install software'),
+		'TR_SOFTWARE' 					=> tr('Software'),
+		'TR_VERSION' 					=> tr('Version'),
+		'TR_LANGUAGE' 					=> tr('Language'),
+		'TR_TYPE' 						=> tr('Type'),
+		'TR_NEED_DATABASE' 				=> tr('Database'),
+		'TR_STATUS' 					=> tr('Status'),
+		'TR_ACTION' 					=> tr('Action'),
+		'TR_SOFTWARE_AVAILABLE' 		=> tr('Apps available'),
+		'TR_DELETE' 					=> tr('Delete'),
+		'TR_SOFTWARE_MENU' 				=> tr('Software installation'),
+		'TR_CLIENT_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Application Management'),
+		'TR_SOFTWARE_ASC'				=> 'software.php?sortby=name&order=asc',
+		'TR_SOFTWARE_DESC' 				=> 'software.php?sortby=name&order=desc',
+		'TR_TYPE_ASC'					=> 'software.php?sortby=type&order=asc',
+		'TR_TYPE_DESC' 					=> 'software.php?sortby=type&order=desc',
+		'TR_NEED_DATABASE_ASC' 			=> 'software.php?sortby=database&order=asc',
+		'TR_NEED_DATABASE_DESC'			=> 'software.php?sortby=database&order=desc',
+		'TR_STATUS_ASC' 				=> 'software.php?sortby=status&order=asc',
+		'TR_STATUS_DESC'				=> 'software.php?sortby=status&order=desc',
+		'TR_LANGUAGE_ASC' 				=> 'software.php?sortby=language&order=asc',
+		'TR_LANGUAGE_DESC' 				=> 'software.php?sortby=language&order=desc'
+	)
+);
 
 gen_page_message($tpl);
 
 $tpl -> parse('PAGE', 'page');
-
 $tpl -> prnt();
 
 if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
 unset_messages();
-?>

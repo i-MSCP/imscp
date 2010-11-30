@@ -34,6 +34,9 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
+/**
+ * @var $cfg iMSCP_Config_Handler_File
+ */
 $cfg = iMSCP_Registry::get('Config');
 
 $tpl = new iMSCP_pTemplate();
@@ -303,7 +306,7 @@ if (isset($_POST['Submit2'])) {
 // page functions.
 //
 
-function gen_user_domain_list(&$tpl, &$sql, $user_id) {
+function gen_user_domain_list($tpl, $sql, $user_id) {
 	global $selecteddomain;
 	$domain_id = get_user_domain_id($sql, $user_id);
 	
@@ -461,7 +464,7 @@ function gen_user_domain_list(&$tpl, &$sql, $user_id) {
 			);
 	}
 }
-function check_db_user_list(&$tpl, &$sql, $db_id) {
+function check_db_user_list($tpl, $sql, $db_id) {
 	global $count;
 	$query = "
 		SELECT
@@ -589,7 +592,7 @@ function check_db_avail(&$tpl, &$sql, $dmn_id, $dmn_sqld_limit) {
   }
 }
 	
-function check_software_avail(&$sql, $software_id, $dmn_created_id) {
+function check_software_avail($sql, $software_id, $dmn_created_id) {
   $check_avail = "
 		SELECT
 			`reseller_id` AS reseller
@@ -628,8 +631,8 @@ function check_is_installed(&$tpl, &$sql, $dmn_id, $software_id) {
   }
 }
 
-function get_software_props (&$tpl, &$sql, $dmn_id, $software_id, $dmn_created_id, $dmn_sqld_limit) {
-  if (!check_software_avail(&$sql, $software_id, $dmn_created_id)) {
+function get_software_props ($tpl, $sql, $dmn_id, $software_id, $dmn_created_id, $dmn_sqld_limit) {
+  if (!check_software_avail($sql, $software_id, $dmn_created_id)) {
 	set_page_message(tr('Software not found!'));
 	header('Location: software.php');
 	die();
@@ -673,7 +676,7 @@ function get_software_props (&$tpl, &$sql, $dmn_id, $software_id, $dmn_created_i
   }
 }
 
-function gen_page_lists(&$tpl, &$sql, $user_id) {
+function gen_page_lists($tpl, $sql, $user_id) {
 	if (!isset($_GET['id']) || $_GET['id'] === '' || !is_numeric($_GET['id'])) {
 		set_page_message(tr('Software not found!'));
 		header('Location: software.php');
@@ -681,26 +684,7 @@ function gen_page_lists(&$tpl, &$sql, $user_id) {
 	} else {
 		$software_id = $_GET['id'];
 	}
-    list($dmn_id,
-         $dmn_name,
-         $dmn_gid,
-         $dmn_uid,
-         $dmn_created_id,
-         $dmn_created,
-         $dmn_last_modified,
-         $dmn_mailacc_limit,
-         $dmn_ftpacc_limit,
-         $dmn_traff_limit,
-         $dmn_sqld_limit,
-         $dmn_sqlu_limit,
-         $dmn_status,
-         $dmn_als_limit,
-         $dmn_subd_limit,
-         $dmn_ip_id,
-         $dmn_disk_limit,
-         $dmn_disk_usage,
-         $dmn_php,
-         $dmn_cgi) = get_domain_default_props($sql, $user_id);
+    list($dmn_id,$dmn_name,,,$dmn_created_id,,,,,,$dmn_sqld_limit) = get_domain_default_props($sql, $user_id);
 	get_software_props ($tpl, $sql, $dmn_id, $software_id, $dmn_created_id, $dmn_sqld_limit);
 	return $software_id;
 }
@@ -729,37 +713,36 @@ gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_webtools.tpl');
 
 gen_logged_from($tpl);
 
-get_client_software_permission (&$tpl,&$sql,$_SESSION['user_id']);
+get_client_software_permission ($tpl, $sql,$_SESSION['user_id']);
 
 check_permissions($tpl);
 
 
 $tpl -> assign(
-			array(
-				'TR_SOFTWARE_MENU_PATH'			=> tr('i-MSCP - application installer'),
-				'TR_INSTALL_SOFTWARE'			=> tr('Install Software'),
-				'SOFTWARE_ID'					=> $software_id,
-				'TR_NAME'						=> tr('Software'),
-				'TR_TYPE'						=> tr('Type'),
-				'TR_DB'							=> tr('Database required'),
-				'TR_SELECT_DOMAIN'				=> tr('Select Domain'),
-				'TR_BACK'						=> tr('back'),
-				'TR_INSTALL'					=> tr('install'),
-				'TR_PATH'						=> tr('Install path'),
-				'CHOOSE_DIR'					=> tr('Choose dir'),
-				'CREATEDIR_MESSAGE'				=> tr('Create directory, if not exist!'),
-				'TR_SELECT_DB'					=> tr('Select database'),
-				'TR_SQL_USER'					=> tr('SQL-User'),
-				'TR_SQL_PWD'					=> tr('Password'),
-				'TR_SOFTWARE_MENU'				=> tr('Software installation'),
-				'TR_CLIENT_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Application Management')
-			)
-		);
+	array(
+		'TR_SOFTWARE_MENU_PATH'			=> tr('i-MSCP - application installer'),
+		'TR_INSTALL_SOFTWARE'			=> tr('Install Software'),
+		'SOFTWARE_ID'					=> $software_id,
+		'TR_NAME'						=> tr('Software'),
+		'TR_TYPE'						=> tr('Type'),
+		'TR_DB'							=> tr('Database required'),
+		'TR_SELECT_DOMAIN'				=> tr('Select Domain'),
+		'TR_BACK'						=> tr('back'),
+		'TR_INSTALL'					=> tr('install'),
+		'TR_PATH'						=> tr('Install path'),
+		'CHOOSE_DIR'					=> tr('Choose dir'),
+		'CREATEDIR_MESSAGE'				=> tr('Create directory, if not exist!'),
+		'TR_SELECT_DB'					=> tr('Select database'),
+		'TR_SQL_USER'					=> tr('SQL-User'),
+		'TR_SQL_PWD'					=> tr('Password'),
+		'TR_SOFTWARE_MENU'				=> tr('Software installation'),
+		'TR_CLIENT_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Application Management')
+	)
+);
 
 gen_page_message($tpl);
 
 $tpl -> parse('PAGE', 'page');
-
 $tpl -> prnt();
 
 if ($cfg->DUMP_GUI_DEBUG) {
@@ -767,4 +750,3 @@ if ($cfg->DUMP_GUI_DEBUG) {
 }
 
 unset_messages();
-?>

@@ -34,6 +34,9 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
+/**
+ * @var $cfg iMSCP_Config_Handler_File
+ */
 $cfg = iMSCP_Registry::get('Config');
 
 $tpl = new iMSCP_pTemplate();
@@ -46,7 +49,7 @@ $tpl->define_dynamic('no_select_reseller', 'page');
 $tpl->define_dynamic('select_reseller', 'page');
 $tpl->define_dynamic('reseller_item', 'page');
 
-function get_reseller_rights (&$tpl, &$sql, $software_id) {
+function get_reseller_rights ($tpl, $sql, $software_id) {
 	$query = "
 		SELECT 
 			a.`software_id`,
@@ -108,7 +111,7 @@ function get_reseller_rights (&$tpl, &$sql, $software_id) {
 	return $rs->recordCount();
 }	
 
-function get_reseller_list (&$tpl, &$sql, $software_id) {
+function get_reseller_list ($tpl, $sql, $software_id) {
 	$query = "
 		SELECT 
 			a.`reseller_id`,
@@ -201,8 +204,8 @@ $tpl->assign(
 			)
 	);
 
-$res_cnt = get_reseller_rights (&$tpl, &$sql, $software_id);
-$res_list = get_reseller_list (&$tpl, &$sql, $software_id);
+$res_cnt = get_reseller_rights ($tpl, $sql, $software_id);
+$res_list = get_reseller_list ($tpl, $sql, $software_id);
 
 $query = "
 	SELECT
@@ -248,4 +251,3 @@ if ($cfg->DUMP_GUI_DEBUG) {
 }
 
 unset_messages();
-?>

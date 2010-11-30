@@ -7,8 +7,8 @@ i-MSCP ChangeLog
 		* Fixed: Warnings that cause breaks (encoding errors): Call-time pass-by-reference has been deprecated... in:
 			- admin/software_manage.php (Lines 652, 653, 654)
 			- reseller/index.php (line 356)
-			- reseller/software_upload.php (Line 500, 541)
-		* Fixed wrong alignment for form fields in admin/admin_add.tpl
+			- reseller/software_upload.php (Lines 500, 541)
+		* Removed useless 'tr' admin/admin_add.tpl
 		* Some re-factorization tasks in admin/software_manage.php
 
 2010-11-25 Sascha Bay

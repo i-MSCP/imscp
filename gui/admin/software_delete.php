@@ -34,13 +34,16 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
+/**
+ * @var $cfg iMSCP_Config_Handler_File
+ */
 $cfg = iMSCP_Registry::get('Config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/software_delete.tpl');
 $tpl->define_dynamic('page_message', 'page');
 
-function gen_page_data(&$tpl, &$sql) {
+function gen_page_data($tpl, $sql) {
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'send_delmessage') {
 		$tpl->assign(
 			array(
@@ -186,4 +189,3 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 	set_page_message(tr('Wrong software id.'));
 	header('Location: software_manage.php');
 }
-?>

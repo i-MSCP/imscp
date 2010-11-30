@@ -84,4 +84,3 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 	set_page_message(tr('Wrong software id.'));
 	header('Location: software.php');
 }
-?>

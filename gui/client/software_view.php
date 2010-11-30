@@ -34,6 +34,9 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
+/**
+ * @var $cfg iMSCP_Config_Handler_File
+ */
 $cfg = iMSCP_Registry::get('Config');
 
 $tpl = new iMSCP_pTemplate();
@@ -50,7 +53,7 @@ $tpl -> define_dynamic('no_software', 'page');
 // page functions.
 //
 
-function check_software_avail(&$sql, $software_id, $dmn_created_id) {
+function check_software_avail($sql, $software_id, $dmn_created_id) {
 	$check_avail = "
 		SELECT
 			`reseller_id` AS reseller
@@ -69,7 +72,7 @@ function check_software_avail(&$sql, $software_id, $dmn_created_id) {
   	}
 }
 
-function check_is_installed(&$tpl, &$sql, $dmn_id, $software_id) {
+function check_is_installed($tpl, $sql, $dmn_id, $software_id) {
 	$is_installed = "
 		SELECT
 			`software_id`,
@@ -110,8 +113,9 @@ function check_is_installed(&$tpl, &$sql, $dmn_id, $software_id) {
 	}
 }
 
-function get_software_props (&$tpl, &$sql, $dmn_id, $software_id, $dmn_created_id, $dmn_sqld_limit) {
-	if (!check_software_avail(&$sql, $software_id, $dmn_created_id)) {
+function get_software_props ($tpl, $sql, $dmn_id, $software_id, $dmn_created_id, $dmn_sqld_limit) {
+
+	if (!check_software_avail($sql, $software_id, $dmn_created_id)) {
 		set_page_message(tr('Software not found!'));
 		header('Location: software.php');
 		die();
@@ -180,7 +184,7 @@ function get_software_props (&$tpl, &$sql, $dmn_id, $software_id, $dmn_created_i
 	}
 }
 
-function gen_page_lists(&$tpl, &$sql, $user_id) {
+function gen_page_lists($tpl, $sql, $user_id) {
 	if (!isset($_GET['id']) || $_GET['id'] === '' || !is_numeric($_GET['id'])) {
 		set_page_message(tr('Software not found!'));
 		header('Location: software.php');
@@ -188,26 +192,7 @@ function gen_page_lists(&$tpl, &$sql, $user_id) {
 	} else {
 		$software_id = $_GET['id'];
 	}
-    list($dmn_id,
-         $dmn_name,
-         $dmn_gid,
-         $dmn_uid,
-         $dmn_created_id,
-         $dmn_created,
-         $dmn_last_modified,
-         $dmn_mailacc_limit,
-         $dmn_ftpacc_limit,
-         $dmn_traff_limit,
-         $dmn_sqld_limit,
-         $dmn_sqlu_limit,
-         $dmn_status,
-         $dmn_als_limit,
-         $dmn_subd_limit,
-         $dmn_ip_id,
-         $dmn_disk_limit,
-         $dmn_disk_usage,
-         $dmn_php,
-         $dmn_cgi) = get_domain_default_props($sql, $user_id);
+    list($dmn_id, $dmn_name,,,$dmn_created_id,,,,,,$dmn_sqld_limit,) = get_domain_default_props($sql, $user_id);
 	get_software_props ($tpl, $sql, $dmn_id, $software_id, $dmn_created_id, $dmn_sqld_limit);
 	return $software_id;
 }
@@ -217,13 +202,13 @@ function gen_page_lists(&$tpl, &$sql, $user_id) {
 //
 
 $tpl -> assign(
-			array(
-				'TR_CLIENT_VIEW_SOFTWARE_PAGE_TITLE'	=> tr('i-MSCP - Software details'),
-				'THEME_COLOR_PATH'						=> "../themes/{$cfg->USER_INITIAL_THEME}",
-				'THEME_CHARSET'							=> tr('encoding'),
-				'ISP_LOGO'								=> get_logo($_SESSION['user_id'])
-			)
-		);
+	array(
+		'TR_CLIENT_VIEW_SOFTWARE_PAGE_TITLE'	=> tr('i-MSCP - Software details'),
+		'THEME_COLOR_PATH'						=> "../themes/{$cfg->USER_INITIAL_THEME}",
+		'THEME_CHARSET'							=> tr('encoding'),
+		'ISP_LOGO'								=> get_logo($_SESSION['user_id'])
+	)
+);
 
 //
 // dynamic page data.
@@ -250,29 +235,28 @@ check_permissions($tpl);
 
 
 $tpl -> assign(
-			array(
-				'TR_SOFTWARE_MENU_PATH'	=> tr('i-MSCP - application installer'),
-				'TR_SOFTWARE_VIEW_PATH'	=> tr('Software details'),
-				'SOFTWARE_ID'			=> $software_id,
-				'TR_MANAGE_USERS' 		=> tr('Manage users'),
-				'TR_VIEW_SOFTWARE' 		=> tr('Software details'),
-				'TR_NAME' 				=> tr('Software'),
-				'TR_VERSION'			=> tr('Version'),
-				'TR_LANGUAGE' 			=> tr('Language'),
-				'TR_TYPE'				=> tr('Type'),
-				'TR_DB' 				=> tr('Database required'),
-				'TR_LINK' 				=> tr('Homepage'),
-				'TR_DESC' 				=> tr('Description'),
-				'TR_BACK' 				=> tr('Back'),
-				'TR_INSTALL' 			=> tr('Install'),
-				'TR_SOFTWARE_MENU' 		=> tr('Software installation')
-			)
-		);
+	array(
+		'TR_SOFTWARE_MENU_PATH'	=> tr('i-MSCP - application installer'),
+		'TR_SOFTWARE_VIEW_PATH'	=> tr('Software details'),
+		'SOFTWARE_ID'			=> $software_id,
+		'TR_MANAGE_USERS' 		=> tr('Manage users'),
+		'TR_VIEW_SOFTWARE' 		=> tr('Software details'),
+		'TR_NAME' 				=> tr('Software'),
+		'TR_VERSION'			=> tr('Version'),
+		'TR_LANGUAGE' 			=> tr('Language'),
+		'TR_TYPE'				=> tr('Type'),
+		'TR_DB' 				=> tr('Database required'),
+		'TR_LINK' 				=> tr('Homepage'),
+		'TR_DESC' 				=> tr('Description'),
+		'TR_BACK' 				=> tr('Back'),
+		'TR_INSTALL' 			=> tr('Install'),
+		'TR_SOFTWARE_MENU' 		=> tr('Software installation')
+	)
+);
 
 gen_page_message($tpl);
 
 $tpl -> parse('PAGE', 'page');
-
 $tpl -> prnt();
 
 if ($cfg->DUMP_GUI_DEBUG) {
@@ -280,4 +264,3 @@ if ($cfg->DUMP_GUI_DEBUG) {
 }
 
 unset_messages();
-?>

@@ -34,6 +34,9 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
+/**
+ * @var $cfg iMSCP_Config_Handler_File
+ */
 $cfg = iMSCP_Registry::get('Config');
 
 $tpl = new iMSCP_pTemplate();
@@ -60,7 +63,7 @@ if (isset($_GET['id'])){
 	header('Location: software_manage.php');
 }
 
-function get_installed_res_software (&$tpl, &$sql, $reseller_id) {
+function get_installed_res_software ($tpl, $sql, $reseller_id) {
 	$query="
 		SELECT
 			a.`software_id` as id,
@@ -171,7 +174,7 @@ function get_installed_res_software (&$tpl, &$sql, $reseller_id) {
 	return $rs->recordCount();
 }
 
-function get_reseller_software (&$tpl, &$sql) {
+function get_reseller_software ($tpl, $sql) {
 	$query="
 		SELECT
 			t1.`admin_id` as reseller_id,
@@ -286,8 +289,8 @@ $tpl->assign(
 			)
 	);
 
-$software_cnt = get_installed_res_software (&$tpl, &$sql, $_GET['id']);
-$res_cnt = get_reseller_software (&$tpl, &$sql, $_GET['id']);
+$software_cnt = get_installed_res_software ($tpl, $sql, $_GET['id']);
+$res_cnt = get_reseller_software ($tpl, $sql, $_GET['id']);
 
 $tpl->assign(
 		array(
@@ -329,4 +332,3 @@ if ($cfg->DUMP_GUI_DEBUG) {
 }
 
 unset_messages();
-?>

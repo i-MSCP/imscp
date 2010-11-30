@@ -185,4 +185,3 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 	set_page_message(tr('Wrong software id.'));
 	header('Location: software_manage.php');
 }
-?>
