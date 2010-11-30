@@ -134,10 +134,10 @@ $config->LOSTPASSWORD_CAPTCHA_WIDTH = 280;
 $config->LOSTPASSWORD_CAPTCHA_HEIGHT = 70;
 
 // Captcha background color
-$config->LOSTPASSWORD_CAPTCHA_BGCOLOR = array(229, 243, 252);
+$config->LOSTPASSWORD_CAPTCHA_BGCOLOR = array(176,222,245);
 
 // Captcha text color
-$config->LOSTPASSWORD_CAPTCHA_TEXTCOLOR = array(0, 53, 92);
+$config->LOSTPASSWORD_CAPTCHA_TEXTCOLOR = array(1, 53, 920);
 
 /**
  * Captcha ttf fontfiles (have to be under compatible open source license)

@@ -6,73 +6,33 @@
 		<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}">
 		<meta http-equiv="Content-Style-Type" content="text/css">
 		<meta http-equiv="Content-Script-Type" content="text/javascript">
-		<link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css">
+		<!--<link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css">-->
+        <link href="themes/default/css/login-imscp.css" rel="stylesheet" type="text/css">
+        <!--[if IE 6]>
+        <script type="text/javascript" src="../themes/default/js/DD_belatedPNG_0.0.8a-min.js"></script>
+        <script type="text/javascript">
+            DD_belatedPNG.fix('*');
+        </script>
+        <![endif]-->
 	</head>
-
 	<body onload="document.frm.uname.focus()">
-		<table cellpadding="0" cellspacing="0" width="100%" style="height:100%">
-			<tr>
-				<td style="vertical-align:middle; text-align:center;">
-					<table width="453" align="center" style="border:solid 1px #CCCCCC;" cellpadding="0" cellspacing="0">
-						<tr>
-							<td>
-								<table width="453" border="0" align="center" cellpadding="0" cellspacing="0">
-									<tr>
-										<td width="453" height="69" class="loginTop">&nbsp;</td>
-									</tr>
-									<tr>
-										<td>
-											<form name="frm" action="lostpassword.php" method="post">
-												<table width="453" border="0" cellspacing="0" cellpadding="0">
-													<tr>
-														<td width="45" rowspan="6"></td>
-														<td colspan="2"><div class="login_text"><label for="capcode">{TR_IMGCAPCODE}<br><strong>{TR_CAPCODE}</strong></label></div></td>
-													</tr>
-													<tr>
-														<td colspan="2"><input name="capcode" type="text" class="textinput" id="capcode" style="width:210px" value=""></td>
-													</tr>
-													<tr>
-														<td colspan="6" class="imgcapcode_description_text"><p>{TR_IMGCAPCODE_DESCRIPTION}</p></td>
-													</tr>
-													<tr>
-														<td width="106"><br></td>
-													</tr>
-													<tr>
-														<td colspan="2">
-															<div class="login_text"><label for="uname"><strong>{TR_USERNAME}</strong></label></div>
-														</td>
-													</tr>
-													<tr>
-														<td colspan="2"><input name="uname" id="uname" type="text" class="textinput" style="width:210px" value=""></td>
-													</tr>
-													<tr>
-														<td colspan="3">&nbsp;</td>
-													</tr>
-													<tr>
-														<td>&nbsp;</td>
-														<td align="left" valign="bottom"><input type="submit" name="Submit" class="button" value="   {TR_SEND}   "></td>
-														<td width="302" align="right" valign="bottom"><a class="login" href="index.php">{TR_BACK}</a></td>
-													</tr>
-												</table>
-											</form>
-										</td>
-									</tr>
-									<tr>
-										<td>&nbsp;</td>
-									</tr>
-								</table>
-							</td>
-						</tr>
-					</table>
-					<table width="453" align="center">
-						<tr>
-							<td align="right" class="login">
-								Powered by <a class="login" href="http://www.i-mscp.net" target="_blank">i-MSCP</a>
-							</td>
-						</tr>
-					</table>
-				</td>
-			</tr>
-		</table>
+		<div id="outer">
+			<div id="middle" style="border: 1px solid black">
+				<div id="inner">
+					<form name="lpwd_frm" action="lostpassword.php" method="post" >
+						<fieldset style="top:140px;">
+							<label>{TR_IMGCAPCODE}</label>
+							<label>{TR_CAPCODE}:<input type="text" name="uname" id="uname" value="" maxlength="255" tabindex="1"></label>
+							<label>{TR_USERNAME}:<input type="password" name="upass" id="upass" value="" maxlength="255" tabindex="2"></label>
+							<div class="buttons" style="margin-top:10px;">
+								<input type="submit" name="lpwd" value="{TR_BACK}" tabindex="2" onclick="location.href='index.php';return false"/>&nbsp;&nbsp;&nbsp;
+								<input style="padding-left:3px;" type="submit" name="Submit" value="{TR_SEND}" tabindex="3" />
+							</div>
+						</fieldset>
+					</form>
+				</div>
+				<div class="info" style="width:450px;position: relative;top:-50%;margin-left:auto;margin-right: auto;">{TR_IMGCAPCODE_DESCRIPTION}</div>
+			</div>
+		</div>
 	</body>
 </html>
