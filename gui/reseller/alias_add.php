@@ -280,7 +280,7 @@ function add_domain_alias(&$sql, &$err_al) {
 		VALUES
 				(?, ?, ?, ?, ?, ?)
 	";
-	exec_query($sql, $query, ($cr_user_id, $alias_name, $mount_point, $cfg->ITEM_ADD_STATUS, $domain_ip, $forward));
+	exec_query($sql, $query, array($cr_user_id, $alias_name, $mount_point, $cfg->ITEM_ADD_STATUS, $domain_ip, $forward));
 
 	$als_id = $sql->insertId();
 
