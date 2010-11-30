@@ -32,20 +32,9 @@
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
-require '../include/imscp-lib.php';
-
-check_login(__FILE__);
-
-$cfg = iMSCP_Registry::get('Config');
-
-$tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/subdomain_add.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('logged_from', 'page');
-$tpl->define_dynamic('als_list', 'page');
-
-// page functions.
-
+/**
+ *  Functions
+ */
 function gen_page_msg(&$tpl, $erro_txt) {
 
 	if ($erro_txt != '_off_') {
@@ -144,7 +133,7 @@ function gen_user_add_subdomain_data(&$tpl, &$sql, $user_id) {
 			)
 		);
 		$subdomain_name = clean_input($_POST['subdomain_name']);
-		$subdomain_mnt_pt = clean_input($_POST['subdomain_mnt_pt']);
+		$subdomain_mnt_pt = array_encode_idna(clean_input($_POST['subdomain_mnt_pt']), true);
 	} else {
 		$check_en = '';
 		$check_dis = 'checked="checked"';
@@ -413,8 +402,7 @@ function check_subdomain_data(&$tpl, &$sql, &$err_sub, $user_id, $dmn_name) {
 		//$sub_name = encode_idna($sub_name);
 
 		if (isset($_POST['subdomain_mnt_pt']) && $_POST['subdomain_mnt_pt'] !== '') {
-			$sub_mnt_pt = strtolower($_POST['subdomain_mnt_pt']);
-			$sub_mnt_pt = array_encode_idna($sub_mnt_pt, true);
+			$sub_mnt_pt = array_encode_idna(strtolower($_POST['subdomain_mnt_pt']), true);
 		} else {
 			$sub_mnt_pt = "/";
 		}
@@ -458,12 +446,12 @@ function check_subdomain_data(&$tpl, &$sql, &$err_sub, $user_id, $dmn_name) {
 
 		if (subdmn_exists($sql, $user_id, $domain_id, $sub_name)) {
 			$err_sub = tr('Subdomain already exists or is not allowed!');
-		} elseif (mount_point_exists($dmn_id, array_decode_idna($sub_mnt_pt, true))) {
+		} elseif (mount_point_exists($dmn_id, array_encode_idna($sub_mnt_pt, true))) {
 			$err_sub = tr('Mount point already in use!');
 		} elseif (!validates_mpoint($sub_mnt_pt)) {
 			$err_sub = tr('Incorrect mount point syntax!');
 		} elseif ($_POST['status'] == 1) {
-			$surl = @parse_url($forward_prefix.$forward);
+			$surl = @parse_url($forward_prefix.decode_idna($forward));
 			if ($surl === false) {
 				$err_sub = tr('Wrong domain part in forward URL!');
 			} else {
@@ -473,6 +461,7 @@ function check_subdomain_data(&$tpl, &$sql, &$err_sub, $user_id, $dmn_name) {
 				} else {
 					$ret = validates_dname($domain, true);
 				}
+				$domain = encode_idna($surl['host']);
 				if (!$ret) {
 					$err_sub = tr('Wrong domain part in forward URL!');
 				} else {
@@ -500,8 +489,8 @@ function check_subdomain_data(&$tpl, &$sql, &$err_sub, $user_id, $dmn_name) {
 			}
 		} else {
 			// now let's fix the mountpoint
-			$mount_point = array_decode_idna($mount_point, true);
-			$sub_mnt_pt = array_decode_idna($sub_mnt_pt, true);
+			$mount_point = array_encode_idna($mount_point, true);
+			$sub_mnt_pt = array_encode_idna($sub_mnt_pt, true);
 		}
 		if ('_off_' !== $err_sub) {
 			return;
@@ -512,57 +501,98 @@ function check_subdomain_data(&$tpl, &$sql, &$err_sub, $user_id, $dmn_name) {
 	}
 }
 
-// common page data.
+/**
+ * Main program
+ */
 
-// check user sql permission
-if (isset($_SESSION['subdomain_support']) && $_SESSION['subdomain_support'] == "no") {
-	header('Location: index.php');
+require '../include/imscp-lib.php';
+
+check_login(__FILE__);
+
+$cfg = iMSCP_Registry::get('Config');
+
+// Avoid useless work during Ajax request
+if(!is_xhr()) {
+	$tpl = new iMSCP_pTemplate();
+	$tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/subdomain_add.tpl');
+	$tpl->define_dynamic('page_message', 'page');
+	$tpl->define_dynamic('logged_from', 'page');
+	$tpl->define_dynamic('als_list', 'page');
+	
+	// page functions.
+	
+	
+	// common page data.
+	
+	// check user sql permission
+	if (isset($_SESSION['subdomain_support']) && $_SESSION['subdomain_support'] == "no") {
+		header('Location: index.php');
+	}
+	
+	$tpl->assign(
+		array(
+			'TR_CLIENT_ADD_SUBDOMAIN_PAGE_TITLE' => tr('i-MSCP - Client/Add Subdomain'),
+			'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+			'THEME_CHARSET' => tr('encoding'),
+			'ISP_LOGO' => get_logo($_SESSION['user_id'])
+		)
+	);
+	
+	// static page messages.
+	
+	gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_manage_domains.tpl');
+	gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_manage_domains.tpl');
+	
+	gen_logged_from($tpl);
+	
+	check_permissions($tpl);
+	
+	$tpl->assign(
+		array(
+			'TR_ADD_SUBDOMAIN'					=> tr('Add subdomain'),
+			'TR_SUBDOMAIN_DATA'					=> tr('Subdomain data'),
+			'TR_SUBDOMAIN_NAME'					=> tr('Subdomain name'),
+			'TR_DIR_TREE_SUBDOMAIN_MOUNT_POINT'	=> tr('Directory tree mount point'),
+			'TR_FORWARD'						=> tr('Forward to URL'),
+			'TR_ADD'							=> tr('Add'),
+			'TR_DMN_HELP'						=> tr('You do not need \'www.\' i-MSCP will add it on its own.'),
+			'TR_ENABLE_FWD'						=> tr('Enable Forward'),
+			'TR_ENABLE'							=> tr('Enable'),
+			'TR_DISABLE'						=> tr('Disable'),
+			'TR_PREFIX_HTTP'					=> 'http://',
+			'TR_PREFIX_HTTPS'					=> 'https://',
+			'TR_PREFIX_FTP'						=> 'ftp://'
+		)
+	);
 }
-
-$tpl->assign(
-	array(
-		'TR_CLIENT_ADD_SUBDOMAIN_PAGE_TITLE' => tr('i-MSCP - Client/Add Subdomain'),
-		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => get_logo($_SESSION['user_id'])
-	)
-);
-
-// static page messages.
-
-gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_manage_domains.tpl');
-gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_manage_domains.tpl');
-
-gen_logged_from($tpl);
-
-check_permissions($tpl);
-
-$tpl->assign(
-	array(
-		'TR_ADD_SUBDOMAIN'					=> tr('Add subdomain'),
-		'TR_SUBDOMAIN_DATA'					=> tr('Subdomain data'),
-		'TR_SUBDOMAIN_NAME'					=> tr('Subdomain name'),
-		'TR_DIR_TREE_SUBDOMAIN_MOUNT_POINT'	=> tr('Directory tree mount point'),
-		'TR_FORWARD'						=> tr('Forward to URL'),
-		'TR_ADD'							=> tr('Add'),
-		'TR_DMN_HELP'						=> tr('You do not need \'www.\' i-MSCP will add it on its own.'),
-		'TR_ENABLE_FWD'						=> tr('Enable Forward'),
-		'TR_ENABLE'							=> tr('Enable'),
-		'TR_DISABLE'						=> tr('Disable'),
-		'TR_PREFIX_HTTP'					=> 'http://',
-		'TR_PREFIX_HTTPS'					=> 'https://',
-		'TR_PREFIX_FTP'						=> 'ftp://'
-	)
-);
 
 $err_txt = '_off_';
 
-// dynamic page data.
+/**
+ * Dispatches the request
+ */
 
-$dmn_name = check_subdomain_permissions($sql, $_SESSION['user_id']);
-gen_user_add_subdomain_data($tpl, $sql, $_SESSION['user_id']);
-
-check_subdomain_data($tpl, $sql, $err_txt, $_SESSION['user_id'], $dmn_name);
+if(isset($_POST['uaction'])) {
+	if($_POST['uaction'] == 'toASCII') { // Ajax request
+		header('Content-Type: text/plain; charset=utf-8');
+		header('Cache-Control: no-cache, private');
+		// backward compatibility for HTTP/1.0
+		header('Pragma: no-cache');
+		header("HTTP/1.0 200 Ok");
+		
+		// Todo check return value here before echo...
+		echo "/".encode_idna(strtolower($_POST['subdomain']));
+		exit;
+	} elseif($_POST['uaction'] == 'add_subd') {
+		$dmn_name = check_subdomain_permissions($sql, $_SESSION['user_id']);
+		gen_user_add_subdomain_data($tpl, $sql, $_SESSION['user_id']);
+		check_subdomain_data($tpl, $sql, $err_txt, $_SESSION['user_id'], $dmn_name);
+	} else {
+		throw new iMSCP_Exception(tr("Error: unknown action! {$_POST['uaction']}"));
+	}
+} else { // Default view
+	gen_user_add_subdomain_data($tpl, $sql, $_SESSION['user_id']);
+}
 
 gen_page_msg($tpl, $err_txt);
 

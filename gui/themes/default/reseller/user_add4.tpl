@@ -5,23 +5,51 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
 		<meta http-equiv="X-UA-Compatible" content="IE=8" />
-		<title>{TR_CLIENT_CHANGE_PERSONAL_DATA_PAGE_TITLE}</title>
+		<title>{TR_ADD_USER_PAGE_TITLE}</title>
 		<meta name="robots" content="nofollow, noindex" />
 		<link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/imscp.js"></script>
+		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.js"></script>
+		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.imscpTooltips.js"></script>
 		<!--[if IE 6]>
 		<script type="text/javascript" src="{THEME_COLOR_PATH}/js/DD_belatedPNG_0.0.8a-min.js"></script>
 		<script type="text/javascript">
 			DD_belatedPNG.fix('*');
 		</script>
 		<![endif]-->
-		<script type="text/javascript">
-		/* <![CDATA[ */
-		function makeUser() {
-			var dname = document.forms[0].elements['ndomain_name'].value;
-			dname = dname.toLowerCase();
-			document.forms[0].elements['ndomain_mpoint'].value = "/" + dname;
-		}
+		<script language="JavaScript" type="text/JavaScript">
+		/*<![CDATA[*/
+			$(document).ready(function(){
+				// Tooltips - begin
+				$('#dmn_help').iMSCPtooltips({msg:"{TR_DMN_HELP}"});
+				// Tooltips - end
+				
+				// Request for encode_idna request
+				$('input[name=ndomain_name]').blur(function(){
+					dmnName = $('#ndomain_name').val();
+					// Configure the request for encode_idna request
+					$.ajaxSetup({
+					url: $(location).attr('pathname'),
+						type:'POST',
+						data: 'domain=' + dmnName + '&uaction=toASCII',
+						datatype: 'text',
+						beforeSend: function(xhr){xhr.setRequestHeader('Accept','text/plain');},
+						success: function(r){$('#ndomain_mpoint').val(r);},
+						error: iMSCPajxError
+					});
+					$.ajax();
+				});			
+			});
+			function setForwardReadonly(obj){
+				if(obj.value == 1) {
+					document.forms[0].elements['forward'].readOnly = false;
+					document.forms[0].elements['forward_prefix'].disabled = false;
+				} else {
+					document.forms[0].elements['forward'].readOnly = true;
+					document.forms[0].elements['forward'].value = '';
+					document.forms[0].elements['forward_prefix'].disabled = true;
+				}
+			}
 		/* ]]> */
 		</script>
 	</head>
@@ -57,8 +85,6 @@
 		</div>
 
 		<div class="body">
-			<div id="dmn_help" class="tooltip">{TR_DMN_HELP}</div>
-			<div id="fwd_help" class="tooltip">{TR_FWD_HELP}</div>
 
 			<!-- BDP: page_message -->
 			<div class="warning">{MESSAGE}</div>
@@ -71,30 +97,35 @@
 					<table>
 						<thead>
 							<tr>
-								<th>{TR_DOMAIN_ALIS}</th>
+								<th>{TR_DOMAIN_ALIAS}</th>
+								<th>{TR_FORWARD}</th>
 								<th>{TR_STATUS}</th>
 							</tr>
 						</thead>
 						<tbody>
 							<!-- BDP: alias_entry -->
 								<tr>
-									<td>{DOMAIN_ALIS}</td>
+									<td>{DOMAIN_ALIAS}</td>
+									<td>{FORWARD_URL}</td>
 									<td>{STATUS}</td>
 								</tr>
 							<!-- EDP: alias_entry -->
 						</tbody>
 					</table>
+					<br />
 				<!-- EDP: alias_list -->
-
-				<fieldset>
-					<legend>{TR_ADD_ALIAS}</legend>
-					<table>
+				<table>
+					<thead>
+						<tr>
+							<th colspan="2">{TR_ADD_ALIAS}</th>
+						</tr>
+					</thead>
+					<tbody>
 						<tr>
 							<td>
-								<label for="ndomain_name">{TR_DOMAIN_NAME}</label>
-								<span class="icon i_help" onmouseover="showTip('dmn_help', event)" onmouseout="hideTip('dmn_help')" >Help</span>
+								<label for="ndomain_name">{TR_DOMAIN_NAME}</label><span class="icon i_help" id="dmn_help">Help</span>
 							</td>
-							<td><input id="ndomain_name" name="ndomain_name" type="text" value="{DOMAIN}" onblur="makeUser();" /></td>
+							<td><input id="ndomain_name" name="ndomain_name" type="text" value="{DOMAIN}" /></td>
 						</tr>
 						<tr>
 							<td><label for="ndomain_mpoint">{TR_MOUNT_POINT}</label></td>
@@ -102,13 +133,28 @@
 						</tr>
 						<tr>
 							<td>
-								<label for="forward">{TR_FORWARD}</label>
-								<span class="icon i_help" onmouseover="showTip('fwd_help', event)" onmouseout="hideTip('fwd_help')" >Help</span>
+								<label for="status">{TR_ENABLE_FWD}</label>
 							</td>
-							<td><input name="forward" type="text" id="forward" value="{FORWARD}" /></td>
+							<td>
+								<input type="radio" name="status" id="status_enable"{CHECK_EN} value="1" onChange="setForwardReadonly(this);" /><label for="status_enable">{TR_ENABLE}</label><br />
+								<input type="radio" name="status" id="status_disable"{CHECK_DIS} value="0" onChange="setForwardReadonly(this);" /><label for="status_disable">{TR_DISABLE}</label>
+							</td>
 						</tr>
-					</table>
-				</fieldset>
+						<tr>
+							<td>
+								<label for="forward">{TR_FORWARD}</label>
+							</td>
+							<td>
+								<select name="forward_prefix" style="vertical-align:middle"{DISABLE_FORWARD}>
+									<option value="{TR_PREFIX_HTTP}"{HTTP_YES}>{TR_PREFIX_HTTP}</option>
+									<option value="{TR_PREFIX_HTTPS}"{HTTPS_YES}>{TR_PREFIX_HTTPS}</option>
+									<option value="{TR_PREFIX_FTP}"{FTP_YES}>{TR_PREFIX_FTP}</option>
+								</select>
+								<input name="forward" type="text" class="textinput" id="forward" value="{FORWARD}"{READONLY_FORWARD} />
+							</td>
+						</tr>
+					</tbody>
+				</table>
 
 				<div class="buttons">
 					<input name="Submit" type="submit" value="{TR_ADD}" />

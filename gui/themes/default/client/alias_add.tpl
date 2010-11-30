@@ -23,14 +23,24 @@
 				// Tooltips - begin
 				$('#dmn_help').iMSCPtooltips({msg:"{TR_DMN_HELP}"})
 				// Tooltips - end
+				
+				// Request for encode_idna request
+				$('input[name=ndomain_name]').blur(function(){
+					dmnName = $('#ndomain_name').val();
+					// Configure the request for encode_idna request
+					$.ajaxSetup({
+					url: $(location).attr('pathname'),
+						type:'POST',
+						data: 'domain=' + dmnName + '&uaction=toASCII',
+						datatype: 'text',
+						beforeSend: function(xhr){xhr.setRequestHeader('Accept','text/plain');},
+						success: function(r){$('#ndomain_mpoint').val(r);},
+						error: iMSCPajxError
+					});
+					$.ajax();
+				});
 			});
-		
-			function makeUser() {
-				var dname = document.forms[0].elements['ndomain_name'].value;
-				dname = dname.toLowerCase();
-				document.forms[0].elements['ndomain_mpoint'].value = "/" + dname;
-			}
-		
+
 			function setForwardReadonly(obj){
 				if(obj.value == 1) {
 					document.forms[0].elements['forward'].readOnly = false;
@@ -93,7 +103,7 @@
 								<div style="text-align:right;">http://</div>
 							</td>
 							<td>
-								<input name="ndomain_name" id="ndomain_name" type="text" value="{DOMAIN}" onblur="makeUser();" />
+								<input name="ndomain_name" id="ndomain_name" type="text" value="{DOMAIN}" />
 							</td>
 						</tr>
 						<tr>

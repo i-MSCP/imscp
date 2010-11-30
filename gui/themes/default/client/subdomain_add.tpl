@@ -23,14 +23,24 @@
 					// Tooltips - begin
 					$('#dmn_help').iMSCPtooltips({msg:"{TR_DMN_HELP}"});
 					// Tooltips - end
+					
+					// Request for encode_idna request
+					$('input[name=subdomain_name]').blur(function(){
+						subdmnName = $('#subdomain_name').val();
+						// Configure the request for encode_idna request
+						$.ajaxSetup({
+						url: $(location).attr('pathname'),
+							type:'POST',
+							data: 'subdomain=' + subdmnName + '&uaction=toASCII',
+							datatype: 'text',
+							beforeSend: function(xhr){xhr.setRequestHeader('Accept','text/plain');},
+							success: function(r){$('#subdomain_mnt_pt').val(r);},
+							error: iMSCPajxError
+						});
+						$.ajax();
+					});
 				});
-
-				function makeUser() {
-					var subname  = document.forms[0].elements['subdomain_name'].value;
-					subname = subname.toLowerCase();
-					document.forms[0].elements['subdomain_mnt_pt'].value = "/" + subname;
-				}
-
+				
 				function setRatioAlias(){
 					document.forms[0].elements['dmn_type'][1].checked = true;
 				}
@@ -91,8 +101,9 @@
 					<tr>
 						<td>
 							<label for="subdomain_name">{TR_SUBDOMAIN_NAME}</label><span class="icon i_help" id="dmn_help">Help</span>
+						</td>
 						<td>
-							<input type="text" name="subdomain_name" id="subdomain_name" value="{SUBDOMAIN_NAME}"  onblur="makeUser();" />
+							<input type="text" name="subdomain_name" id="subdomain_name" value="{SUBDOMAIN_NAME}" />
 						</td>
 						<td>
 							<input type="radio" name="dmn_type" value="dmn" {SUB_DMN_CHECKED}" />{DOMAIN_NAME}
@@ -111,8 +122,30 @@
 						<td>
 							<label for="subdomain_mnt_pt">{TR_DIR_TREE_SUBDOMAIN_MOUNT_POINT}</label>
 						</td>
-						<td>
+						<td colspan=2">
 							<input type="text" name="subdomain_mnt_pt" id="subdomain_mnt_pt" value="{SUBDOMAIN_MOUNT_POINT}" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label for="status">{TR_ENABLE_FWD}</label>
+						</td>
+						<td colspan=2">
+							<input type="radio" name="status" {CHECK_EN} value="1" onChange='setForwardReadonly(this);' />{TR_ENABLE}<br />
+							<input type="radio" name="status" {CHECK_DIS} value="0" onChange='setForwardReadonly(this);' />{TR_DISABLE}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label for="forward">{TR_FORWARD}</label>
+						</td>
+						<td colspan=2">
+							<select name="forward_prefix" style="vertical-align:middle"{DISABLE_FORWARD}>
+								<option value="{TR_PREFIX_HTTP}"{HTTP_YES}>{TR_PREFIX_HTTP}</option>
+								<option value="{TR_PREFIX_HTTPS}"{HTTPS_YES}>{TR_PREFIX_HTTPS}</option>
+								<option value="{TR_PREFIX_FTP}"{FTP_YES}>{TR_PREFIX_FTP}</option>
+							</select>
+							<input name="forward" type="text" class="textinput" id="forward" style="width:170px" value="{FORWARD}"{READONLY_FORWARD} />
 						</td>
 					</tr>
 				</table>

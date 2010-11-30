@@ -32,104 +32,15 @@
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
-require '../include/imscp-lib.php';
-
-check_login(__FILE__);
-
-$cfg = iMSCP_Registry::get('Config');
-
-$tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/alias_add.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('logged_from', 'page');
-$tpl->define_dynamic('user_entry', 'page');
-$tpl->define_dynamic('ip_entry', 'page');
-
-$tpl->assign(
-	array(
-		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => get_logo($_SESSION['user_id'])
-	)
-);
-
-$reseller_id = $_SESSION['user_id'];
-
 /**
- * static page messages.
+ *  Functions
  */
 
-gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
-gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_users_manage.tpl');
-
-gen_logged_from($tpl);
-
-$tpl->assign(
-	array(
-		'TR_CLIENT_ADD_ALIAS_PAGE_TITLE' => tr('i-MSCP Reseller: Add Alias'),
-		'TR_MANAGE_DOMAIN_ALIAS' => tr('Manage domain alias'),
-		'TR_ADD_ALIAS' => tr('Add domain alias'),
-		'TR_DOMAIN_NAME' => tr('Domain name'),
-		'TR_DOMAIN_ACCOUNT' => tr('User account'),
-		'TR_MOUNT_POINT' => tr('Directory mount point'),
-		'TR_DOMAIN_IP' => tr('Domain IP'),
-		'TR_FORWARD' => tr('Forward to URL'),
-		'TR_ADD' => tr('Add alias'),
-		'TR_DMN_HELP' => tr("You do not need 'www.' i-MSCP will add it on its own."),
-		'TR_JS_EMPTYDATA' => tr("Empty data or wrong field!"),
-		'TR_JS_WDNAME' => tr("Wrong domain name!"),
-		'TR_JS_MPOINTERROR' => tr("Please write mount point!"),
-		'TR_ENABLE_FWD' => tr("Enable Forward"),
-		'TR_ENABLE' => tr("Enable"),
-		'TR_DISABLE' => tr("Disable"),
-		'TR_PREFIX_HTTP' => 'http://',
-		'TR_PREFIX_HTTPS' => 'https://',
-		'TR_PREFIX_FTP' => 'ftp://'
-	)
-);
-
-list($rdmn_current, $rdmn_max,
-	$rsub_current, $rsub_max,
- 	$rals_current, $rals_max,
- 	$rmail_current, $rmail_max,
- 	$rftp_current, $rftp_max,
- 	$rsql_db_current, $rsql_db_max,
- 	$rsql_user_current, $rsql_user_max,
- 	$rtraff_current, $rtraff_max,
- 	$rdisk_current, $rdisk_max
- 	) = get_reseller_default_props($sql, $_SESSION['user_id']);
-
-if ($rals_max != 0 && $rals_current >= $rals_max) {
-	$_SESSION['almax'] = '_yes_';
-}
-
-if (!check_reseller_permissions($reseller_id, 'alias') ||
-	isset($_SESSION['almax'])) {
-	user_goto('alias.php');
-}
-
-$err_txt = '_off_';
-if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_alias') {
-	add_domain_alias($sql, $err_txt);
-} else {
-	// Init fields
-	init_empty_data();
-	$tpl->assign("PAGE_MESSAGE", "");
-}
-
-gen_al_page($tpl, $_SESSION['user_id']);
-gen_page_msg($tpl, $err_txt);
-// gen_page_message($tpl);
-$tpl->parse('PAGE', 'page');
-
-$tpl->prnt();
-
-if ($cfg->DUMP_GUI_DEBUG) {
-	dump_gui_debug();
-}
-// Begin function declaration lines
-
+/**
+ * Must be documented
+ */
 function init_empty_data() {
+
 	global $cr_user_id, $alias_name, $domain_ip, $forward, $mount_point;
 
 	$cr_user_id = $alias_name = $domain_ip = $forward = $mount_point = '';
@@ -139,39 +50,14 @@ function init_empty_data() {
  * Show data fields
  */
 function gen_al_page(&$tpl, $reseller_id) {
+
 	global $alias_name, $forward, $forward_prefix, $mount_point;
 
 	$sql = iMSCP_Registry::get('Db');
 	$cfg = iMSCP_Registry::get('Config');
 
-	// Unused variables
-	/*
-	list($udmn_current, $udmn_max, $udmn_uf,
-		$usub_current, $usub_max, $usub_uf,
-		$uals_current, $uals_max, $uals_uf,
-		$umail_current, $umail_max, $umail_uf,
-		$uftp_current, $uftp_max, $uftp_uf,
-		$usql_db_current, $usql_db_max, $usql_db_uf,
-		$usql_user_current, $usql_user_max, $usql_user_uf,
-		$utraff_current, $utraff_max, $utraff_uf,
-		$udisk_current, $udisk_max, $udisk_uf
-	) = generate_reseller_user_props($reseller_id);
-	*/
 	list(,,,,,,$uals_current) = generate_reseller_user_props($reseller_id);
 
-	// Unused variables
-	/*
-	list($rdmn_current, $rdmn_max,
-		$rsub_current, $rsub_max,
-		$rals_current, $rals_max,
-		$rmail_current, $rmail_max,
-		$rftp_current, $rftp_max,
-		$rsql_db_current, $rsql_db_max,
-		$rsql_user_current, $rsql_user_max,
-		$rtraff_current, $rtraff_max,
-		$rdisk_current, $rdisk_max
-	) = get_reseller_default_props($sql, $reseller_id);
-	*/
 	list(,,,,,$rals_max) = get_reseller_default_props($sql, $reseller_id);
 
 	if ($uals_current >= $rals_max && $rals_max != "0") {
@@ -183,7 +69,7 @@ function gen_al_page(&$tpl, $reseller_id) {
 		if ($_POST['status'] == 1) {
 			$check_en = $cfg->HTML_CHECKED;
 			$check_dis = '';
-			$forward = strtolower(clean_input($_POST['forward']));
+			$forward = encode_idna(strtolower(clean_input($_POST['forward'])));
 			$tpl->assign(
 				array(
 					'READONLY_FORWARD'	=> '',
@@ -226,8 +112,8 @@ function gen_al_page(&$tpl, $reseller_id) {
 	$tpl->assign(
 		array(
 			'DOMAIN' => tohtml(decode_idna($alias_name)),
-			'MP' => tohtml(decode_idna($mount_point)),
-			'FORWARD' => tohtml($forward),
+			'MP' => tohtml($mount_point),
+			'FORWARD' => tohtml(encode_idna($forward)),
 			'CHECK_EN' => $check_en,
 			'CHECK_DIS' => $check_dis,
 		)
@@ -237,6 +123,9 @@ function gen_al_page(&$tpl, $reseller_id) {
 	gen_users_list($tpl, $reseller_id);
 } // End of gen_al_page()
 
+/**
+ * Must be documented
+ */
 function add_domain_alias(&$sql, &$err_al) {
 
 	global $cr_user_id, $alias_name, $domain_ip, $forward, $forward_prefix,
@@ -249,7 +138,7 @@ function add_domain_alias(&$sql, &$err_al) {
 	$mount_point = array_encode_idna(strtolower($_POST['ndomain_mpoint']), true);
 
 	if ($_POST['status'] == 1) {
-		$forward = strtolower(clean_input($_POST['forward']));
+		$forward = encode_idna(strtolower(clean_input($_POST['forward'])));
 		$forward_prefix = clean_input($_POST['forward_prefix']);
 	} else {
 		$forward = 'no';
@@ -284,7 +173,7 @@ function add_domain_alias(&$sql, &$err_al) {
 	} else if ($alias_name == $cfg->BASE_SERVER_VHOST) {
 		$err_al = tr('Master domain cannot be used!');
 	} else if ($_POST['status'] == 1) {
-		$aurl = @parse_url($forward_prefix.$forward);
+		$aurl = @parse_url($forward_prefix.decode_idna($forward));
 		if ($aurl === false) {
 			$err_al = tr("Wrong address in forward URL!");
 		} else {
@@ -294,6 +183,7 @@ function add_domain_alias(&$sql, &$err_al) {
 			} else {
 				$ret = validates_dname($domain, true);
 			}
+			$domain = encode_idna($aurl['host']);
 			if (!$ret) {
 				$err_al = tr("Wrong domain part in forward URL!");
 			} else {
@@ -320,22 +210,57 @@ function add_domain_alias(&$sql, &$err_al) {
 			}
 		}
 	} else {
-		// now let's fix the mountpoint
-		$mount_point = array_decode_idna($mount_point, true);
-
-		$res = exec_query($sql, "SELECT `domain_id` FROM `domain_aliasses` WHERE `alias_name` = ?", $alias_name);
-		$res2 = exec_query($sql, "SELECT `domain_id` FROM `domain` WHERE `domain_name` = ?", $alias_name);
+		$query = "
+			SELECT 
+				`domain_id`
+			FROM
+				`domain_aliasses`
+			WHERE
+				`alias_name` = ?
+		";
+		$res = exec_query($sql, $query, $alias_name);
+		
+		$query = "
+			SELECT
+				`domain_id`
+			FROM
+				`domain`
+			WHERE
+				`domain_name` = ?
+		";
+		$res2 = exec_query($sql, $query, $alias_name);
 		if ($res->rowCount() > 0 || $res2->rowCount() > 0) {
 			// we already have domain with this name
 			$err_al = tr("Domain with this name already exist");
 		}
 
-		$query = "SELECT COUNT(`subdomain_id`) AS cnt FROM `subdomain` WHERE `domain_id` = ? AND `subdomain_mount` = ?";
+		$query = "
+			SELECT
+				COUNT(`subdomain_id`) AS cnt
+			FROM
+				`subdomain`
+			WHERE
+				`domain_id` = ?
+			AND
+				`subdomain_mount` = ?
+		";
 		$subdomres = exec_query($sql, $query, array($cr_user_id, $mount_point));
 		$subdomdata = $subdomres->fetchRow();
-		$query = "SELECT COUNT(`subdomain_alias_id`) AS alscnt FROM `subdomain_alias` WHERE `alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?) AND `subdomain_alias_mount` = ?";
+		$query = "
+			SELECT
+				COUNT(`subdomain_alias_id`) AS alscnt
+			FROM
+				`subdomain_alias`
+			WHERE
+				`alias_id`
+			IN
+				(SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)
+			AND
+				`subdomain_alias_mount` = ?
+		";
 		$alssubdomres = exec_query($sql, $query, array($cr_user_id, $mount_point));
 		$alssubdomdata = $alssubdomres->fetchRow();
+
 		if ($subdomdata['cnt'] > 0 || $alssubdomdata['alscnt'] > 0) {
 			$err_al = tr("There is a subdomain with the same mount point!");
 		}
@@ -347,11 +272,15 @@ function add_domain_alias(&$sql, &$err_al) {
 
 	// Begin add new alias domain
 	$alias_name = htmlspecialchars($alias_name, ENT_QUOTES, "UTF-8");
-
-	exec_query($sql,
-		"INSERT INTO `domain_aliasses` (`domain_id`, `alias_name`, `alias_mount`, ".
-		 "`alias_status`, `alias_ip_id`, `url_forward`) VALUES (?, ?, ?, ?, ?, ?)",
-		array($cr_user_id, $alias_name, $mount_point, $cfg->ITEM_ADD_STATUS, $domain_ip, $forward));
+	
+	$query = "
+		INSERT INTO
+			`domain_aliasses`
+				(`domain_id`, `alias_name`, `alias_mount`, `alias_status`, `alias_ip_id`, `url_forward`)
+		VALUES
+				(?, ?, ?, ?, ?, ?)
+	";
+	exec_query($sql, $query, ($cr_user_id, $alias_name, $mount_point, $cfg->ITEM_ADD_STATUS, $domain_ip, $forward));
 
 	$als_id = $sql->insertId();
 
@@ -362,8 +291,9 @@ function add_domain_alias(&$sql, &$err_al) {
 	$user_email = $rs->fields['email'];
 
 	// Create the 3 default addresses if wanted
-	if ($cfg->CREATE_DEFAULT_EMAIL_ADDRESSES)
+	if ($cfg->CREATE_DEFAULT_EMAIL_ADDRESSES) {
 		client_mail_add_default_accounts($cr_user_id, $user_email, $alias_name, 'alias', $als_id);
+	}
 
 	send_request();
 	$admin_login = $_SESSION['user_logged'];
@@ -373,6 +303,9 @@ function add_domain_alias(&$sql, &$err_al) {
 	user_goto('alias.php');
 } // End of add_domain_alias();
 
+/**
+ * Must be documented
+ */
 function gen_users_list(&$tpl, $reseller_id) {
 	global $cr_user_id;
 	$sql = iMSCP_Registry::get('Db');
@@ -438,14 +371,132 @@ function gen_users_list(&$tpl, $reseller_id) {
 		$i++;
 		$tpl->parse('USER_ENTRY', '.user_entry');
 	} // end of loop
+
 	return true;
 } // End of gen_users_list()
 
+/**
+ * Must be documented
+ */
 function gen_page_msg(&$tpl, $error_txt) {
+
 	if ($error_txt != '_off_') {
 		$tpl->assign('MESSAGE', $error_txt);
 		$tpl->parse('PAGE_MESSAGE', 'page_message');
 	} else {
 		$tpl->assign('PAGE_MESSAGE', '');
 	}
-} // End of gen_page_msg()
+}
+
+/**
+ * Main program
+ */
+
+require '../include/imscp-lib.php';
+
+check_login(__FILE__);
+
+$cfg = iMSCP_Registry::get('Config');
+
+// Avoid useless work during Ajax request
+if(!is_xhr()) {
+	$tpl = new iMSCP_pTemplate();
+	$tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/alias_add.tpl');
+	$tpl->define_dynamic('page_message', 'page');
+	$tpl->define_dynamic('logged_from', 'page');
+	$tpl->define_dynamic('user_entry', 'page');
+	$tpl->define_dynamic('ip_entry', 'page');
+
+	$tpl->assign(
+		array(
+			'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+			'THEME_CHARSET' => tr('encoding'),
+			'ISP_LOGO' => get_logo($_SESSION['user_id'])
+		)
+	);
+
+	$reseller_id = $_SESSION['user_id'];
+
+	/**
+ 	 * static page messages.
+ 	 */
+	gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
+	gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_users_manage.tpl');
+	gen_logged_from($tpl);
+
+	$tpl->assign(
+		array(
+			'TR_CLIENT_ADD_ALIAS_PAGE_TITLE' => tr('i-MSCP Reseller: Add Alias'),
+			'TR_MANAGE_DOMAIN_ALIAS' => tr('Manage domain alias'),
+			'TR_ADD_ALIAS' => tr('Add domain alias'),
+			'TR_DOMAIN_NAME' => tr('Domain name'),
+			'TR_DOMAIN_ACCOUNT' => tr('User account'),
+			'TR_MOUNT_POINT' => tr('Directory mount point'),
+			'TR_DOMAIN_IP' => tr('Domain IP'),
+			'TR_FORWARD' => tr('Forward to URL'),
+			'TR_ADD' => tr('Add alias'),
+			'TR_DMN_HELP' => tr("You do not need 'www.' i-MSCP will add it on its own."),
+			'TR_JS_EMPTYDATA' => tr("Empty data or wrong field!"),
+			'TR_JS_WDNAME' => tr("Wrong domain name!"),
+			'TR_JS_MPOINTERROR' => tr("Please write mount point!"),
+			'TR_ENABLE_FWD' => tr("Enable Forward"),
+			'TR_ENABLE' => tr("Enable"),
+			'TR_DISABLE' => tr("Disable"),
+			'TR_PREFIX_HTTP' => 'http://',
+			'TR_PREFIX_HTTPS' => 'https://',
+			'TR_PREFIX_FTP' => 'ftp://'
+		)
+	);
+
+	list(
+		$rdmn_current, $rdmn_max, $rsub_current, $rsub_max, $rals_current, $rals_max,
+ 		$rmail_current, $rmail_max, $rftp_current, $rftp_max, $rsql_db_current, $rsql_db_max,
+ 		$rsql_user_current, $rsql_user_max, $rtraff_current, $rtraff_max, $rdisk_current, $rdisk_max
+ 	) = get_reseller_default_props($sql, $_SESSION['user_id']);
+
+	if ($rals_max != 0 && $rals_current >= $rals_max) {
+		$_SESSION['almax'] = '_yes_';
+	}
+
+	if (!check_reseller_permissions($reseller_id, 'alias') ||
+		isset($_SESSION['almax'])) {
+		user_goto('alias.php');
+		exit;
+	}
+}
+$err_txt = '_off_';
+
+/**
+ * Dispatches the request
+ */
+
+if(isset($_POST['uaction'])) {
+	if($_POST['uaction'] == 'toASCII') { // Ajax request
+		header('Content-Type: text/plain; charset=utf-8');
+		header('Cache-Control: no-cache, private');
+		// backward compatibility for HTTP/1.0
+		header('Pragma: no-cache');
+		header("HTTP/1.0 200 Ok");
+		
+		// Todo check return value here before echo...
+		echo "/".encode_idna(strtolower($_POST['domain']));
+		exit;
+	} elseif($_POST['uaction'] == 'add_alias') {
+		add_domain_alias($sql, $err_txt);
+	} else {
+		throw new iMSCP_Exception(tr("Error: unknown action! {$_POST['uaction']}"));
+	}
+} else { // Default view
+	init_empty_data();
+	$tpl->assign("PAGE_MESSAGE", '');
+}
+
+gen_al_page($tpl, $_SESSION['user_id']);
+gen_page_msg($tpl, $err_txt);
+
+$tpl->parse('PAGE', 'page');
+$tpl->prnt();
+
+if ($cfg->DUMP_GUI_DEBUG) {
+	dump_gui_debug();
+}
