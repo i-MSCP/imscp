@@ -151,6 +151,7 @@ colortxt 'green' "and read carefully. All steps are crucial\n\n"
 if [ "${WARNINGS}" ]; then
 	warntxt; writelog "Finished but with errors"; warntxt; writelog ":\n";
 	writelog "${WARNINGS}\n"
+	#Not for this :). Shame to user ;)
 	writelog "A log file can be found in ${LOG}/imscp-build.log";writelog "\n";
 else
 	writelog "Finished without errors";oktxt;writelog "\n";
