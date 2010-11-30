@@ -1,18 +1,18 @@
 #!/bin/bash
 
 # Variables
-CURRENTVERSION="1.0.4"
-TARGETVERSION="1.0.5"
+CURRENTVERSION="1.0.0"
+TARGETVERSION="1.0.0"
 SVNLOCATION="branches"
-SVNFOLDER="omega-"${TARGETVERSION}
+SVNFOLDER="i-mscp-"${TARGETVERSION}
 RELEASEFOLDER="i-mscp-"${SVNFOLDER}
-FTPFOLDER="ispCP Omega "${TARGETVERSION}
+FTPFOLDER="i-MSCP "${TARGETVERSION}
 FTPUSER="" // Insert Sourceforge Username
 
-SVNSTRING="http://www.isp-control.net/ispcp_svn/"${SVNLOCATION}"/"${SVNFOLDER}
+SVNSTRING="https://i-mscp.svn.sourceforge.net/svnroot/i-mscp/"${SVNLOCATION}"/"${SVNFOLDER}
 
 # Cleanup
-rm -rf i-mscp-omega-*
+rm -rf i-mscp-*
 
 # Pull the code from svn
 svn export $SVNSTRING
@@ -26,7 +26,7 @@ echo ${CURRENTBUILDDATE}
 
 mv ${SVNFOLDER} ${RELEASEFOLDER}
 
-# Release preperations
+# Release preparations
 #rpl -R "Version = ${CURRENTVERSION} OMEGA" "Version = ${TARGETVERSION} OMEGA" ${RELEASEFOLDER}/configs
 #rpl -R "BuildDate = ${CURRENTBUILDDATE}" "BuildDate = ${TARGETBUILDDATE}" ${RELEASEFOLDER}/*/i-mscp.conf
 #rpl -R "${CURRENTVERSION}" "${TARGETVERSION}" ${RELEASEFOLDER}/docs/*/INSTALL
@@ -51,9 +51,9 @@ fi
 
 touch ./ftpbatch.sh
 
-echo -ne "cd /home/frs/project/i/is/i-mscp/ispCP\ Omega\n" >> ftpbatch.sh
-echo -ne "mkdir ispCP\ Omega\ ${TARGETVERSION}\n" >> ftpbatch.sh
-echo -ne "cd ispCP\ Omega\ ${TARGETVERSION}\n" >> ftpbatch.sh
+echo -ne "cd /home/frs/project/i/i-/i-mscp/i-MSCP\n" >> ftpbatch.sh
+echo -ne "mkdir i-MSCP\ ${TARGETVERSION}\n" >> ftpbatch.sh
+echo -ne "cd i-MSCP\ ${TARGETVERSION}\n" >> ftpbatch.sh
 echo -ne "put ${RELEASEFOLDER}.zip\n" >> ftpbatch.sh
 echo -ne "put ${RELEASEFOLDER}.zip.sum\n" >> ftpbatch.sh
 echo -ne "put ${RELEASEFOLDER}.7z\n" >> ftpbatch.sh
