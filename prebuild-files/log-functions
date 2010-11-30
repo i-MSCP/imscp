@@ -30,23 +30,45 @@
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/ GPL v2
 
+# writelog() {{{
+#
+# Read line for output and pass to stdout. Same line after is cleaned is
+# cached in FlushTXT variable until SYSTEM_LOG variable get defined, then
+# stripped line is saved in folder saved in SYSTEM_LOG as file imscp-build.log
+# @param string ${1}	text to output in both log and stdout
+# @return	void
 writelog() {
 	_logline="${1}";
 	printf "${1}";
+	# strip format from text. New line are striped when returning from subshell
+	# so to preserve we postpend a x char
 	_logline=$(printf "${_logline}x" | awk '{sub(/\033\[[0-9;]*m/, "")}1';);
+	# strip ending x char
 	_logline="${_logline%x}"
+	# If SYSTEM_LOG is defined
 	if [ "${SYSTEM_LOG}" ]; then
+		# and if FlushTXT variable is not empty
 		if [ "${FlushTXT}" ]; then
+			# LOG will contain path to folder to save log after stripping $tmp part
 			LOG=$(echo ${SYSTEM_LOG}| sed 's~'${INST_PREF}'~~g');
+			# Create LOG forlder if not exists
 			${mkdir} -p "${LOG}"
+			# remove old log file if exits
 			if [ -f "${LOG}/imscp-build.log" ]; then ${rm} "${LOG}/imscp-build.log"; fi
+			# create as empty file
 			${touch} "${LOG}/imscp-build.log"
+			# make readable by root only
 			${chmod} 0660 "${LOG}/imscp-build.log"
-			printf "${FlushTXT}${_logline}" >> "${LOG}/imscp-build.log"
+			# append line to previous saved in FlushTXT and save into log
+			printf "${FlushTXT}" >> "${LOG}/imscp-build.log"
+			# empty FlushTXT not to be saved again
 			FlushTXT='';
 		fi
+		# and if FlushTXT variable is empty print line to log file
 		printf "${_logline}" >> "${LOG}/imscp-build.log"
 	else
+		# If SYSTEM_LOG is not defined save it into
 		FlushTXT="${FlushTXT}${_logline}"
 	fi
 }
+# }}}

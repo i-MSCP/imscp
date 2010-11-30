@@ -30,15 +30,20 @@
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/ GPL v2
 
+#get script folder
 SELFDIR=$(dirname "$0")
+#since script folder can be specified as relative path change to folder
 cd $SELFDIR
+#and get full path using pwd
 SELFDIR=$(pwd)
 
+#load function files
 . $SELFDIR/prebuild-files/imscp-install-functions
 . $SELFDIR/prebuild-files/display-functions
 . $SELFDIR/prebuild-files/so-functions
 . $SELFDIR/prebuild-files/log-functions
 
+#checks section
 title "Check available commands"
 
 COMMANDS="which uname tr mkdir rm pwd id touch pwd cp chown chmod printf awk sed"
@@ -47,42 +52,55 @@ for COMM in ${COMMANDS}; do testCommand ${COMM}; done
 title "Detecting OS"
 detect_os
 
+#since *bsd and linux use different name for Come on dialog!
 NewTest="dialog"
 
 if ([ "${DIST}" = 'FreeBSD' ] || [ "${DIST}" = 'OpenBSD' ]) ; then
 	NewTest="c${NewTest}";
 fi
-
+#test if dialog is available
 testAnyCommand ${NewTest} 'DIALOG';
 
+#test if script run as root
 testroot
 
+#if we are here all test passed so display a message
 writelog 'All tests... '; oktxt "PASS"; writelog "\n"
 
+#list of suported distribution
 _AvailableOS="Centos Debian Fedora FreeBSD Gentoo OpenBSD Opensuse Ubuntu"
 
 while [ ! $OS ]; do
-	OS=$(msgopts 'Select operating system' "${_AvailableOS} Neither" "${DIST}" 3>&1 1>&2 2>&3)
+	#check with user if we corectly detected OS
+	OS=$(msgopts 'Select operating system' "${_AvailableOS} Exit" "${DIST}" 3>&1 1>&2 2>&3)
 
-	if [ "${OS}" = "Neither" ]; then
-		colortxt 'yellow' "Not supported distribution ";
-		failtxt;
+	#If user select neither (incorect detection?) exit
+	if [ "${OS}" = "Exit" ]; then
+		colortxt 'yellow' "\nUser abort\n";
+		colortxt 'red' "EXIT\n";
+		exit
 	fi
 
+	#No selection?
 	if [ "${OS}" = "" ]; then
 		msgbox "\nYou must select one distribution or Neither " "Please select operating system";
+	#If user select different SO from detected one ask if he is sure
 	elif [ "${OS}" != "${DIST}" ]; then
 		msgask "\nAre sure you want continue with $OS?" "We have detected ${DIST}" || OS=
 	fi
 done
+#we have an OS / Distribution selected
 
+#Display a marketing message
 TEXT=$(cat README | sed -e "s/'/\"/g")
 msgbox "${TEXT}" 'i-MSCP preinstall script'
 
+#Load OS / Distribution specific operation list
 title "Loading $OS specific variable"
 specific "prebuild-files/${OS}-variable"
 oktxt "Done"; writelog "\n"
 
+#Process configuration list
 _os=$(echo "$OS" | tr [:upper:] [:lower:])
 title "Proccess $_os specific configuration files"
 process_file
@@ -108,26 +126,32 @@ title "Maintainer scripts"
 maintainer
 oktxt "Done"; writelog "\n"
 
+#Display how to install
 TEXT=$(cat ${SELFDIR}/docs/${DIST}/INSTALL | sed -e "s/'/\"/g")
 msgbox "${TEXT}" 'i-MSCP preinstall script'
 
+#If warning messages where issued sumarize using dialog
 if [ "${WARNINGS}" ]; then
 	msgbox "\n\\Zb -> Finished but with errors:\n${WARNINGS}" 'i-MSCP preinstall script'
 else
 	msgbox "\n\\Z2 -> Finished without errors" 'i-MSCP preinstall script'
 fi
 
+#Congratulate user for developers beeing good enought to guess any stupid thing can happend =)) (dialog style)
 TEXT="\nYou can proceed to installation/update. If you do not know how \nplease type:\n\n\\Z1cat ${SELFDIR}/docs/${DIST}/INSTALL\n\n\\Znand read carefully. All steps are crucial\n\n"
 msgbox "${TEXT}" 'i-MSCP preinstall script'
 
+#And again same thing in console to be last output. Make sure user read it :) Sorry, no picture for now, just text
 colortxt 'green' "\nYou can proceed to installation/update. If you do not know how \n"\
 "please type:\n\n"
 colortxt 'red' "cat ${SELFDIR}/docs/${DIST}/INSTALL\n\n"
 colortxt 'green' "and read carefully. All steps are crucial\n\n"
 
+#Sumarize of warnings (shame to devs if any)
 if [ "${WARNINGS}" ]; then
 	warntxt; writelog "Finished but with errors"; warntxt; writelog ":\n";
 	writelog "${WARNINGS}\n"
+	writelog "A log file can be found in ${LOG}/imscp-build.log";writelog "\n";
 else
 	writelog "Finished without errors";oktxt;writelog "\n";
 fi

@@ -30,24 +30,36 @@
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/ GPL v2
 
+# detect_os() {{{
+#
+# Determine operating system saving in script wide variale HOST_OS
+# If SO is Linux also save flavour as DIST, version as VER and codename as CODENAME
+# @return	void
 detect_os() {
 	HOST_OS=$(uname)
+	# If error executing uname exit
 	if [ $? -ne 0 ];then printf "Can not guess operating system"; failtxt 'fail'; exit 1; fi
 	if [ "${HOST_OS}" = "FreeBSD" ]; then
 		export DIST="FreeBSD"
 	elif [ "${HOST_OS}" = "OpenBSD" ]; then
 		export DIST="OpenBSD"
 	elif [ "${HOST_OS}" = "Linux" ]; then
+		# get lsb_version full path in $lsb_variable
 		testCommand "lsb_release"
-		export DIST=$(lsb_release -si)
-		export VER=$(lsb_release -sr)
-		export CODENAME=$(lsb_release -sc)
+		export DIST=$($lsb_release -si)
+		export VER=$($lsb_release -sr)
+		export CODENAME=$($lsb_release -sc)
 	fi
 }
+# }}}
 
+# testroot() {{{
+#
+# Check if script is running as root user if not exit
+# @return	void
 testroot(){
 	title 'Testing for root'
 	local _ERR='You must be root to install'
 	if [ $(id -u) -ne 0 ]; then msgbox "$_ERR"; failtxt "$_ERR"; fi
 }
-
+# }}}
