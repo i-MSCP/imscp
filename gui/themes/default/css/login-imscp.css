@@ -63,6 +63,7 @@ a {
 	background-image: url('../images/login/i_lock.png');
 }
 
+/*
 .lostpwd {
 	width: 316px;
 	height: 32px;
@@ -79,7 +80,7 @@ a {
     text-decoration: underline;
     color: rgb(51, 51, 255);
 }
-
+*/
 .toolsbox {
 	margin-top:30px;
 	width: 316px;
