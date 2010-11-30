@@ -17,7 +17,7 @@
 	</head>
 	<body onload="document.frm.uname.focus()">
 		<div id="outer">
-			<div id="middle" style="border: 1px solid black">
+			<div id="middle">
 				<div id="inner">
 					<form name="lpwd_frm" action="lostpassword.php" method="post" >
 						<fieldset style="top:140px;">
