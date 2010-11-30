@@ -340,7 +340,7 @@ form table tbody td textarea{
     background: transparent url(../images/background/mainmenu_left.png) no-repeat top left;
     height: 64px;
     text-align: right;
-    _width: 3px;
+    /*width: 3px;*/
 }
 .main_menu ul {
     margin: 0 0 0 11px;
