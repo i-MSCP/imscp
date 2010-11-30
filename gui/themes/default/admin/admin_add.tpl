@@ -72,7 +72,6 @@
                             <td><label for="email">{TR_EMAIL}</label></td>
                             <td><input type="text" name="email" id="email" value="{EMAIL}"/></td>
                         </tr>
-                        <tr>
                     </table>
                 </fieldset>
 

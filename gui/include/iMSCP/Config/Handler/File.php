@@ -117,8 +117,11 @@ require_once  INCLUDEPATH . '/iMSCP/Config/Handler.php';
  * @property bool CHECK_FOR_UPDATES If TRUE, update cheching is enabled
  * @property string IMSCP_SUPPORT_SYSTEM_TARGET
  * @property string BASE_SERVER_VHOST_PREFIX
- * @property string DATE_FORMAT
- * @property string BASE_SERVER_VHOST
+ * @property string DATE_FORMAT Date format
+ * @property string BASE_SERVER_VHOST Base server vhost
+ * @property string GUI_SOFTWARE_DEPOT_DIR Application software repository directory
+ * @property string MAX_REMOTE_FILESIZE Max size for remote application package
+ *
  * @package		iMSCP_Config
  * @subpackage	Handler
  * @author		Benedikt Heintel <benedikt.heintel@i-mscp.net>
