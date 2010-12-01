@@ -104,7 +104,7 @@
 				<!-- EDP: t_software_support -->
 				<!-- BDP: no_software_support -->
 				<tr>
-					<td colspan="7"><div class="warning">{NO_SOFTWARE_AVAIL}</div></td>
+					<td colspan="7"><div class="info">{NO_SOFTWARE_AVAIL}</div></td>
 				</tr>
 				<!-- EDP: no_software_support -->
 				<!-- BDP: software_total -->

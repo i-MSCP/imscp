@@ -63,7 +63,7 @@
             <table>
             	<!-- BDP: no_select_reseller -->
 				<tr>
-					<td colspan="3"><div class="warning">{NO_RESELLER_AVAILABLE}</div></td>
+					<td colspan="3"><div class="info">{NO_RESELLER_AVAILABLE}</div></td>
 				</tr>
 				<!-- EDP: no_select_reseller -->
 				<!-- BDP: select_reseller -->
@@ -102,7 +102,7 @@
 				</tr>
 				<!-- BDP: no_reseller_list -->
 				<tr>
-					<td colspan="3"><div class="warning">{NO_RESELLER}</div></td>
+					<td colspan="3"><div class="info">{NO_RESELLER}</div></td>
 				</tr>
 				<!-- EDP: no_reseller_list -->
 				<!-- BDP: list_reseller -->
