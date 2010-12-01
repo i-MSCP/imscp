@@ -467,11 +467,11 @@ function check_ipaddr($ipAddress = null, $type = 'bruteforce') {
 		$captchaCount = $data['captcha_count'];
 
 		if ($type == 'bruteforce' && $loginCount > $cfg->BRUTEFORCE_MAX_LOGIN) {
-			block_ipaddr($ipaddr, 'Login');
+			block_ipaddr($ipAddress, 'Login');
 		}
 
 		if ($type == 'captcha' && $captchaCount > $cfg->BRUTEFORCE_MAX_CAPTCHA) {
-			block_ipaddr($ipaddr, 'CAPTCHA');
+			block_ipaddr($ipAddress, 'CAPTCHA');
 		}
 
 		if ($cfg->BRUTEFORCE_BETWEEN) {
@@ -512,7 +512,7 @@ function check_ipaddr($ipAddress = null, $type = 'bruteforce') {
 
 			exec_query($sql, $query, $ipAddress);
 		} else {
-			write_log("Login error, <b><i>$ipaddr</i></b> wait " . ($btime - time()) . " seconds", E_USER_NOTICE);
+			write_log("Login error, <b><i>$ipAddress</i></b> wait " . ($btime - time()) . " seconds", E_USER_NOTICE);
 			iMSCP_Registry::set('backButtonDestination', $cfg->BASE_SERVER_VHOST_PREFIX . $cfg->BASE_SERVER_VHOST);
 			throw new iMSCP_Exception_Production(tr('You have to wait %d seconds.', $btime - time()));
 		}
