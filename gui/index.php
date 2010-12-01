@@ -52,11 +52,8 @@ if (isset($_POST['uname']) && isset($_POST['upass']) && !empty($_POST['uname']) 
 	check_input(trim($_POST['uname']));
 	check_input(trim($_POST['upass']));
 
-	if (register_user($uname, $_POST['upass'])) {
-		redirect_to_level_page();
-	}
-
-	user_goto('index.php');
+	register_user($uname, $_POST['upass']);
+	//user_goto('index.php');
 }
 
 if (check_user_login() && !redirect_to_level_page()) {
@@ -76,7 +73,7 @@ if (($cfg->MAINTENANCEMODE || iMSCP_Update_Database::getInstance()->checkUpdateE
 	$tpl->define_dynamic('page', $cfg->LOGIN_TEMPLATE_PATH . '/maintenancemode.tpl');
 	$tpl->assign(
 		array(
-			'TR_PAGE_TITLE'		=> tr('i-MSCP a Virtual Hosting Control System'),
+			'TR_PAGE_TITLE'		=> tr('i-MSCP i-MSCP - Multi Server Control Panel'),
 			'THEME_COLOR_PATH'	=> $cfg->LOGIN_TEMPLATE_PATH,
 			'THEME_CHARSET'		=> tr('encoding'),
 			'TR_MESSAGE'		=> nl2br(tohtml($cfg->MAINTENANCEMODE_MESSAGE)),
@@ -89,13 +86,12 @@ if (($cfg->MAINTENANCEMODE || iMSCP_Update_Database::getInstance()->checkUpdateE
 
 	$tpl->assign(
 		array(
-			'TR_MAIN_INDEX_PAGE_TITLE'	=> tr('i-MSCP a Virtual Hosting Control System'),
+			'TR_MAIN_INDEX_PAGE_TITLE'	=> tr('i-MSCP - Multi Server Control Panel'),
 			'THEME_COLOR_PATH'			=> $cfg->LOGIN_TEMPLATE_PATH,
 			'THEME_CHARSET'				=> tr('encoding'),
 			'TR_LOGIN'					=> tr('Login'),
 			'TR_USERNAME'				=> tr('Username'),
 			'TR_PASSWORD'				=> tr('Password'),
-			//'TR_LOGIN_INFO'				=> tr('Please enter your login information'),
 			'TR_PHPMYADMIN'				=> tr('phpMyAdmin'),
 			'TR_FILEMANAGER'			=> tr('FileManager'),
 			'TR_WEBMAIL'				=> tr('Webmail'),
@@ -122,6 +118,4 @@ gen_page_message($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg->DUMP_GUI_DEBUG) {
-	dump_gui_debug();
-}
+if ($cfg->DUMP_GUI_DEBUG) dump_gui_debug();
