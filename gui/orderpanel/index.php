@@ -26,30 +26,23 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
+ *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
+ * 
  * Portions created by the i-MSCP Team are Copyright (C) 2010 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
-require '../include/imscp-lib.php';
-
-$cfg = iMSCP_Registry::get('Config');
-
-$tpl = new iMSCP_pTemplate();
-
-$tpl->define_dynamic('page', $cfg->PURCHASE_TEMPLATE_PATH . '/index.tpl');
-$tpl->define_dynamic('purchase_list', 'page');
-$tpl->define_dynamic('purchase_message', 'page');
-$tpl->define_dynamic('purchase_header', 'page');
-$tpl->define_dynamic('purchase_footer', 'page');
-
-/*
- * functions start
+/***********************************************************************************************************************
+ * functions
  */
 
-function gen_packages_list(&$tpl, &$sql, $user_id) {
+function gen_packages_list($tpl, $sql, $user_id) {
 
+	/**
+ 	 * @var $cfg iMSCP_Config_Handler_File
+ 	 */
 	$cfg = iMSCP_Registry::get('Config');
 
 	if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
@@ -87,9 +80,7 @@ function gen_packages_list(&$tpl, &$sql, $user_id) {
 	}
 
 	if ($rs->recordCount() == 0) {
-		throw new iMSCP_Exception_Production(
-			tr('No available hosting packages')
-		);
+		throw new iMSCP_Exception_Production(tr('No available hosting packages'));
 	} else {
 		while (!$rs->EOF) {
 			$description = $rs->fields['description'];
@@ -112,21 +103,34 @@ function gen_packages_list(&$tpl, &$sql, $user_id) {
 				)
 			);
 
-			$tpl->parse('PURCHASE_LIST', '.purchase_list');
+			$tpl->parse('PURCHASELIST', '.purchase_list');
 
 			$rs->moveNext();
 		}
 	}
 }
 
-/*
- * functions end
+/***********************************************************************************************************************
+ * Main script
  */
 
-/*
- *
+require '../include/imscp-lib.php';
+
+/**
+ * @var $cfg iMSCP_Config_Handler_File
+ */
+$cfg = iMSCP_Registry::get('Config');
+
+$tpl = new iMSCP_pTemplate();
+
+$tpl->define_dynamic('page', $cfg->PURCHASE_TEMPLATE_PATH . '/index.tpl');
+$tpl->define_dynamic('purchase_list', 'page');
+$tpl->define_dynamic('purchase_message', 'page');
+$tpl->define_dynamic('purchase_header', 'page');
+$tpl->define_dynamic('purchase_footer', 'page');
+
+/**
  * static page messages.
- *
  */
 $coid = isset($cfg->CUSTOM_ORDERPANEL_ID) ? $cfg->CUSTOM_ORDERPANEL_ID : '';
 $bcoid = (empty($coid) || (isset($_GET['coid']) && $_GET['coid'] == $coid));
@@ -137,8 +141,9 @@ if (isset($_GET['user_id']) && is_numeric($_GET['user_id']) && $bcoid) {
 } else if (isset($_SESSION['user_id'])) {
 	$user_id = $_SESSION['user_id'];
 } else {
-	system_message(tr('You do not have permission to access this interface!'));
+	throw new iMSCP_Exception_Production(tr('You do not have permission to access this interface!'));
 }
+
 unset($_SESSION['plan_id']);
 
 gen_purchase_haf($tpl, $sql, $user_id);
@@ -146,17 +151,11 @@ gen_packages_list($tpl, $sql, $user_id);
 
 gen_page_message($tpl);
 
-$tpl->assign(
-	array(
-		'THEME_CHARSET' => tr('encoding'),
-	)
-);
+$tpl->assign(array('THEME_CHARSET' => tr('encoding'),));
 
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg->DUMP_GUI_DEBUG) {
-	dump_gui_debug();
-}
+if ($cfg->DUMP_GUI_DEBUG) dump_gui_debug();
 
 unset_messages();

@@ -124,13 +124,6 @@ require_once INCLUDEPATH . '/environment.php';
 require_once 'i18n.php';
 
 /**
- * System message functions
- *
- * @deprecated Deprecated since 1.0.6 - Will be replaced by iMSCP_Exception
- */
-require_once 'system-message.php';
-
-/**
  * Authentication functions
  */
 require_once 'login-functions.php';

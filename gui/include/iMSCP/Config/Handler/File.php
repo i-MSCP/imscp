@@ -121,6 +121,7 @@ require_once  INCLUDEPATH . '/iMSCP/Config/Handler.php';
  * @property string BASE_SERVER_VHOST Base server vhost
  * @property string GUI_SOFTWARE_DEPOT_DIR Application software repository directory
  * @property string MAX_REMOTE_FILESIZE Max size for remote application package
+ * @property int CUSTOM_ORDERPANEL_ID Custom order panel id
  *
  * @package		iMSCP_Config
  * @subpackage	Handler
