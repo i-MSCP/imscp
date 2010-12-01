@@ -8,6 +8,7 @@
 		<link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css">
 	</head>
 
+<!--
 	<body style="color:#000000">
 		<table cellpadding="0" cellspacing="0" width="100%" style="height:100%">
 			<tr>
@@ -49,4 +50,5 @@
 			</tr>
 		</table>
 	</body>
+-->
 </html>
