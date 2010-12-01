@@ -38,10 +38,10 @@ cd $SELFDIR
 SELFDIR=$(pwd)
 
 #load function files
-. $SELFDIR/prebuild-files/imscp-install-functions
-. $SELFDIR/prebuild-files/display-functions
-. $SELFDIR/prebuild-files/so-functions
-. $SELFDIR/prebuild-files/log-functions
+. $SELFDIR/library/shell/imscp-install-functions
+. $SELFDIR/library/shell/display-functions
+. $SELFDIR/library/shell/so-functions
+. $SELFDIR/library/shell/log-functions
 
 #checks section
 title "Check available commands"
@@ -78,7 +78,7 @@ while [ ! $OS ]; do
 	if [ "${OS}" = "Exit" ]; then
 		colortxt 'yellow' "\nUser abort\n";
 		colortxt 'red' "EXIT\n";
-		exit
+		exit 2
 	fi
 
 	#No selection?
@@ -97,7 +97,7 @@ msgbox "${TEXT}" 'i-MSCP preinstall script'
 
 #Load OS / Distribution specific operation list
 title "Loading $OS specific variable"
-specific "prebuild-files/${OS}-variable"
+specific "library/shell/build-files/${OS}-variable"
 oktxt "Done"; writelog "\n"
 
 #Process configuration list

@@ -26,40 +26,31 @@
 # @category		i-MSCP
 # @copyright	2010 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@i-mscp.net>
-# @version		SVN: $Id$
+# @version		SVN: $Id: opensuse-variable 3845 2010-11-24 08:33:51Z sci2tech $
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/ GPL v2
 
-# detect_os() {{{
-#
-# Determine operating system saving in script wide variale HOST_OS
-# If SO is Linux also save flavour as DIST, version as VER and codename as CODENAME
-# @return	void
-detect_os() {
-	HOST_OS=$(uname)
-	# If error executing uname exit
-	if [ $? -ne 0 ];then printf "Can not guess operating system"; failtxt 'fail'; exit 1; fi
-	if [ "${HOST_OS}" = "FreeBSD" ]; then
-		export DIST="FreeBSD"
-	elif [ "${HOST_OS}" = "OpenBSD" ]; then
-		export DIST="OpenBSD"
-	elif [ "${HOST_OS}" = "Linux" ]; then
-		# get lsb_version full path in $lsb_variable
-		testCommand "lsb_release"
-		export DIST=$($lsb_release -si)
-		export VER=$($lsb_release -sr)
-		export CODENAME=$($lsb_release -sc)
-	fi
-}
-# }}}
+SYSTEM_FOLDERS='
+				INST_PREF=/tmp/imscp
+				ROOT_CONF=${INST_PREF}/etc
+				SYSTEM_ROOT=${INST_PREF}/srv/www/imscp
+				SYSTEM_CONF=${INST_PREF}/etc/imscp
+				SYSTEM_LOG=${INST_PREF}/var/log/imscp
+				SYSTEM_APACHE_BACK_LOG=${INST_PREF}/var/log/apache2/backup
+				SYSTEM_VIRTUAL=${INST_PREF}/srv/www/virtual
+				SYSTEM_AWSTATS=${INST_PREF}/srv/www/awstats
+				SYSTEM_FCGI=${INST_PREF}/srv/www/fcgi
+				SYSTEM_SCOREBOARDS=${INST_PREF}/srv/www/scoreboards
+				SYSTEM_MAIL_VIRTUAL=${INST_PREF}/var/spool/mail/virtual
 
-# testroot() {{{
-#
-# Check if script is running as root user if not exit
-# @return	void
-testroot(){
-	title 'Testing for root'
-	local _ERR='You must be root to install'
-	if [ $(id -u) -ne 0 ]; then msgbox "$_ERR"; failtxt "$_ERR"; fi
-}
-# }}}
+				ROOT_APACHE_CONF=${ROOT_CONF}/apache2
+
+				ROOT_COURIER_CONF=${ROOT_CONF}/courier
+				ROOT_AUTHLIB_CONF=${ROOT_CONF}/authlib
+
+				ROOT_POSTFIX_CONF=${ROOT_CONF}/postfix
+'
+FOLDERS='${SYSTEM_LOG}/imscp-arpl-msgr'
+COPY_FILE=''
+CREATE_FILE=''
+

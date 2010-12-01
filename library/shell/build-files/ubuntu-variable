@@ -26,7 +26,7 @@
 # @category		i-MSCP
 # @copyright	2010 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@i-mscp.net>
-# @version		SVN: $Id$
+# @version		SVN: $Id: ubuntu-variable 3845 2010-11-24 08:33:51Z sci2tech $
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/ GPL v2
 
@@ -52,5 +52,3 @@ SYSTEM_FOLDERS='
 FOLDERS='${SYSTEM_LOG}/imscp-arpl-msgr'
 COPY_FILE=''
 CREATE_FILE=''
-CHOWN_FILE=''
-CHMOD_FILE=''

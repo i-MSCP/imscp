@@ -26,31 +26,31 @@
 # @category		i-MSCP
 # @copyright	2010 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@i-mscp.net>
-# @version		SVN: $Id$
+# @version		SVN: $Id: debian-variable 3845 2010-11-24 08:33:51Z sci2tech $
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/ GPL v2
 
 SYSTEM_FOLDERS='
 				INST_PREF=/tmp/imscp
 				ROOT_CONF=${INST_PREF}/etc
-				SYSTEM_ROOT=${INST_PREF}/srv/www/imscp
+				SYSTEM_ROOT=${INST_PREF}/var/www/imscp
 				SYSTEM_CONF=${INST_PREF}/etc/imscp
 				SYSTEM_LOG=${INST_PREF}/var/log/imscp
 				SYSTEM_APACHE_BACK_LOG=${INST_PREF}/var/log/apache2/backup
-				SYSTEM_VIRTUAL=${INST_PREF}/srv/www/virtual
-				SYSTEM_AWSTATS=${INST_PREF}/srv/www/awstats
-				SYSTEM_FCGI=${INST_PREF}/srv/www/fcgi
-				SYSTEM_SCOREBOARDS=${INST_PREF}/srv/www/scoreboards
-				SYSTEM_MAIL_VIRTUAL=${INST_PREF}/var/spool/mail/virtual
+				SYSTEM_VIRTUAL=${INST_PREF}/var/www/virtual
+				SYSTEM_AWSTATS=${INST_PREF}/var/www/awstats
+				SYSTEM_FCGI=${INST_PREF}/var/www/fcgi
+				SYSTEM_SCOREBOARDS=${INST_PREF}/var/www/scoreboards
+				SYSTEM_MAIL_VIRTUAL=${INST_PREF}/var/mail/virtual
 
 				ROOT_APACHE_CONF=${ROOT_CONF}/apache2
 
-				ROOT_COURIER_CONF=${ROOT_CONF}/courier
-				ROOT_AUTHLIB_CONF=${ROOT_CONF}/authlib
-
 				ROOT_POSTFIX_CONF=${ROOT_CONF}/postfix
+
+				ROOT_COURIER_CONF=${ROOT_CONF}/courier
 '
 FOLDERS='${SYSTEM_LOG}/imscp-arpl-msgr'
 COPY_FILE=''
 CREATE_FILE=''
-
+CHOWN_FILE=''
+CHMOD_FILE=''

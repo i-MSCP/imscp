@@ -26,7 +26,7 @@
 # @category		i-MSCP
 # @copyright	2010 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@i-mscp.net>
-# @version		SVN: $Id$
+# @version		SVN: $Id: imscp-install-functions 3917 2010-11-30 21:20:52Z sci2tech $
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/ GPL v2
 
@@ -447,6 +447,7 @@ builddaemon() {
 	fi
 	make_folder ${SYSTEM_ROOT}/daemon
 	copy_file ${SYSTEM_ROOT}/daemon/imscp_daemon
+	make clean
 	cd ${SELFDIR}
 }
 # }}}

@@ -26,7 +26,7 @@
 # @category		i-MSCP
 # @copyright	2010 by i-MSCP | http://i-mscp.net
 # @author		Daniel Andreca <sci2tech@i-mscp.net>
-# @version		SVN: $Id$
+# @version		SVN: $Id: centos-variable 3845 2010-11-24 08:33:51Z sci2tech $
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/ GPL v2
 
@@ -36,21 +36,17 @@ SYSTEM_FOLDERS='
 				SYSTEM_ROOT=${INST_PREF}/var/www/imscp
 				SYSTEM_CONF=${INST_PREF}/etc/imscp
 				SYSTEM_LOG=${INST_PREF}/var/log/imscp
-				SYSTEM_PROFTPD_LOG=${INST_PREF}/var/log/proftpd
-				SYSTEM_APACHE_BACK_LOG=${INST_PREF}/var/log/apache2/backup
-				SYSTEM_APACHE_USERS_LOG=${INST_PREF}/var/log/apache2/users
+				SYSTEM_APACHE_BACK_LOG=${INST_PREF}/var/log/httpd/backup
 				SYSTEM_VIRTUAL=${INST_PREF}/var/www/virtual
 				SYSTEM_AWSTATS=${INST_PREF}/var/www/awstats
 				SYSTEM_FCGI=${INST_PREF}/var/www/fcgi
 				SYSTEM_SCOREBOARDS=${INST_PREF}/var/www/scoreboards
-				SYSTEM_MAIL_VIRTUAL=${INST_PREF}/var/spool/mail/virtual
-				POSTFIX_SASLDB2_DIR=${INST_PREF}/etc/sasl2
+				SYSTEM_MAIL_VIRTUAL=${INST_PREF}/var/mail/virtual
 
-				ROOT_APACHE_CONF=${ROOT_CONF}/apache2
+				ROOT_APACHE_CONF=${ROOT_CONF}/httpd
 
 				ROOT_COURIER_CONF=${ROOT_CONF}/courier
-				ROOT_AUTHLIB_CONF=${ROOT_CONF}/courier/authlib
-				ROOT_COURIER_IMAP_CONF=${ROOT_CONF}/courier-imap
+				ROOT_AUTHLIB_CONF=${ROOT_CONF}/authlib
 
 				ROOT_POSTFIX_CONF=${ROOT_CONF}/postfix
 '
