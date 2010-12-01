@@ -55,10 +55,10 @@ $tpl->define_dynamic('hp_menu_add', 'page');
 
 $tpl->assign(
 		array(
-			'TR_ADMIN_MAIN_INDEX_PAGE_TITLE' => tr('i-MSCP - Administrator/Hosting Plan Management'),
-			'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-			'THEME_CHARSET' => tr('encoding'),
-			'ISP_LOGO' => get_logo($_SESSION['user_id'])
+			'TR_ADMIN_MAIN_INDEX_PAGE_TITLE'    => tr('i-MSCP - Administrator/Hosting Plan Management'),
+			'THEME_COLOR_PATH'                  => "../themes/{$cfg->USER_INITIAL_THEME}",
+			'THEME_CHARSET'                     => tr('encoding'),
+			'ISP_LOGO'                          => get_logo($_SESSION['user_id'])
 		)
 );
 
@@ -74,14 +74,14 @@ gen_hp_table($tpl, $_SESSION['user_id']);
 
 $tpl->assign(
 		array(
-			'TR_HOSTING_PLANS' => tr('Hosting plans'),
-			'TR_PAGE_MENU' => tr('Manage hosting plans'),
-			'TR_PURCHASING' => tr('Purchasing'),
-			'TR_ADD_HOSTING_PLAN' => tr('Add hosting plan'),
+			'TR_HOSTING_PLANS'      => tr('Hosting plans'),
+			'TR_PAGE_MENU'          => tr('Manage hosting plans'),
+			'TR_PURCHASING'         => tr('Purchasing'),
+			'TR_ADD_HOSTING_PLAN'   => tr('Add hosting plan'),
 			'TR_TITLE_ADD_HOSTING_PLAN' => tr('Add new user hosting plan'),
-			'TR_BACK' => tr('Back'),
-			'TR_TITLE_BACK' => tr('Return to previous menu'),
-			'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s')
+			'TR_BACK'               => tr('Back'),
+			'TR_TITLE_BACK'         => tr('Return to previous menu'),
+			'TR_MESSAGE_DELETE'     => tr('Are you sure you want to delete %s?', true, '%s')
 		)
 );
 
@@ -161,11 +161,11 @@ function gen_hp_table(&$tpl, $reseller_id) {
 
 		$tpl->assign(
 			array(
-				'TR_HOSTING_PLANS' => tr('Hosting plans'),
-				'TR_NOM' => tr('No.'),
-				'TR_EDIT' => $tr_edit,
-				'TR_PLAN_NAME' => tr('Name'),
-				'TR_ACTION' => tr('Action')
+				'TR_HOSTING_PLANS'  => tr('Hosting plans'),
+				'TR_NOM'            => tr('No.'),
+				'TR_EDIT'           => $tr_edit,
+				'TR_PLAN_NAME'      => tr('Name'),
+				'TR_ACTION'         => tr('Action')
 			)
 		);
 
@@ -178,15 +178,15 @@ function gen_hp_table(&$tpl, $reseller_id) {
 
 			$tpl->assign(
 				array(
-					'PLAN_NOM' => $i++,
-					'PLAN_NAME' => tohtml($data['name']),
-					'PLAN_NAME2' => addslashes(clean_html($data['name'], true)),
-					'PLAN_ACTION' => tr('Delete'),
-					'PLAN_SHOW' => tr('Show hosting plan'),
-					'PURCHASING' => $status,
-					'CUSTOM_ORDERPANEL_ID' => $coid,
-					'HP_ID' => $data['id'],
-					'ADMIN_ID' => $_SESSION['user_id']
+					'PLAN_NOM'              => $i++,
+					'PLAN_NAME'             => tohtml($data['name']),
+					'PLAN_NAME2'            => addslashes(clean_html($data['name'], true)),
+					'PLAN_ACTION'           => tr('Delete'),
+					'PLAN_SHOW'             => tr('Show hosting plan'),
+					'PURCHASING'            => $status,
+					'CUSTOM_ORDERPANEL_ID'  => $coid,
+					'HP_ID'                 => $data['id'],
+					'ADMIN_ID'              => $_SESSION['user_id']
 				)
 			);
 			$tpl->parse('HP_ENTRY', '.hp_entry');

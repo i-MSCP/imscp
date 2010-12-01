@@ -490,7 +490,7 @@ gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_general_information.tp
 
 gen_logged_from($tpl);
 
-get_client_software_permission (&$tpl,&$sql,$_SESSION['user_id']);
+get_client_software_permission ($tpl,$sql,$_SESSION['user_id']);
 
 gen_system_message($tpl, $sql);
 
@@ -519,10 +519,10 @@ $tpl->assign(
 		'TR_SQL_USERS' 				=> tr('SQL users'),
 		'TR_MESSAGES' 				=> tr('Support system'),
 		'TR_LANGUAGE' 				=> tr('Language'),
-		'TR_CHOOSE_DEFAULT_LANGUAGE' 		=> tr('Choose default language'),
-		'TR_SAVE' 				=> tr('Save'),
+		'TR_CHOOSE_DEFAULT_LANGUAGE'=> tr('Choose default language'),
+		'TR_SAVE' 				    => tr('Save'),
 		'TR_LAYOUT' 				=> tr('Layout'),
-		'TR_CHOOSE_DEFAULT_LAYOUT' 		=> tr('Choose default layout'),
+		'TR_CHOOSE_DEFAULT_LAYOUT' 	=> tr('Choose default layout'),
 		'TR_TRAFFIC_USAGE' 			=> tr('Traffic usage'),
 		'TR_DISK_USAGE'				=> tr('Disk usage'),
 		'TR_DMN_TMP_ACCESS'			=> tr('Alternative URL to reach your website')

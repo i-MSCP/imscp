@@ -129,7 +129,7 @@ if (isset($_POST['uaction']) && ('add_plan' === $_POST['uaction'])) {
 	gen_empty_ahp_page($tpl);
 }
 
-get_reseller_software_permission (&$tpl,&$sql,$_SESSION['user_id']);
+get_reseller_software_permission ($tpl,$sql,$_SESSION['user_id']);
 gen_page_message($tpl);
 
 list(
@@ -141,12 +141,12 @@ list(
 	$rsql_user_max
 	) = check_reseller_permissions($_SESSION['user_id'], 'all_permissions');
 
-if ($rsub_max == "-1") $tpl->assign('ALIAS_ADD', '');
-if ($rals_max == "-1") $tpl->assign('SUBDOMAIN_ADD', '');
-if ($rmail_max == "-1") $tpl->assign('MAIL_ADD', '');
-if ($rftp_max == "-1") $tpl->assign('FTP_ADD', '');
-if ($rsql_db_max == "-1") $tpl->assign('SQL_DB_ADD', '');
-if ($rsql_user_max == "-1") $tpl->assign('SQL_USER_ADD', '');
+if ($rsub_max       == "-1") $tpl->assign('ALIAS_ADD', '');
+if ($rals_max       == "-1") $tpl->assign('SUBDOMAIN_ADD', '');
+if ($rmail_max      == "-1") $tpl->assign('MAIL_ADD', '');
+if ($rftp_max       == "-1") $tpl->assign('FTP_ADD', '');
+if ($rsql_db_max    == "-1") $tpl->assign('SQL_DB_ADD', '');
+if ($rsql_user_max  == "-1") $tpl->assign('SQL_USER_ADD', '');
 
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
