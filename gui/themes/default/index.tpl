@@ -26,7 +26,9 @@
 							<label>{TR_USERNAME}:<input type="text" name="uname" id="uname" value="" maxlength="255" tabindex="1"></label>
 							<label>{TR_PASSWORD}:<input type="password" name="upass" id="upass" value="" maxlength="255" tabindex="2"></label>
 							<div class="buttons">
+							<!-- BDP: lostpwd -->
 								<input style="text-align:left;padding-left:15px;" type="button" name="lpwd" value="{TR_LOSTPW}" tabindex="2" onclick="location.href='lostpassword.php';return false"/>&nbsp;&nbsp;&nbsp;
+							<!-- EDP: lostpwd -->
 								<input type="submit" name="Submit" value="{TR_LOGIN}" tabindex="3" />
 							</div>
 							<!-- /* Uncomment this to show the ssl switch */
@@ -38,9 +40,9 @@
 					</form>
 					<div class="toolsbox">
     					<ul class="icons">
-       						<li><a class="pma" href="{TR_PMA_SSL_LINK}">PhpMyAdmin</a></li>
-       						<li><a class="filemanager" href="{TR_FTP_SSL_LINK}">FileManager</a></li>
-       						<li><a class="webmail" href="{TR_WEBMAIL_SSL_LINK}">Webmail</a></li>
+       						<li><a class="pma" href="{TR_PMA_LINK}">PhpMyAdmin</a></li>
+       						<li><a class="filemanager" href="{TR_FTP_LINK}">FileManager</a></li>
+       						<li><a class="webmail" href="{TR_WEBMAIL_LINK}">Webmail</a></li>
    						</ul>
 					</div>
 				</div>

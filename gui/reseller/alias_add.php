@@ -337,8 +337,10 @@ function gen_users_list(&$tpl, $reseller_id) {
 	if ($ar->rowCount() == 0) {
 		set_page_message(tr('There is no user records for this reseller to add an alias for.'));
 		user_goto('alias.php');
+		/*
 		$tpl->assign('USER_ENTRY', '');
 		return false;
+		 */
 	}
 
 	$i = 1;
@@ -469,7 +471,6 @@ if(!is_xhr()) {
 	if (!check_reseller_permissions($reseller_id, 'alias') ||
 		isset($_SESSION['almax'])) {
 		user_goto('alias.php');
-		exit;
 	}
 }
 $err_txt = '_off_';

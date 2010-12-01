@@ -808,7 +808,6 @@ if (isset($_GET['action'])) {
 			default:
 				set_page_message(tr('Unknown type!'));
 				user_goto('imscp_debugger.php');
-				break;
 		}
 
 		$rs = exec_query($sql, $query, $_GET['id']);
