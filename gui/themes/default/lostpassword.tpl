@@ -40,7 +40,7 @@
 						<fieldset style="top:140px;">
 							<label>{TR_IMGCAPCODE}</label>
 							<label>{TR_CAPCODE}:<input type="text" name="uname" id="uname" value="" maxlength="255" tabindex="1"></label>
-							<label>{TR_USERNAME}:<input type="password" name="capcode" value="" maxlength="255" tabindex="2"></label>
+							<label>{TR_USERNAME}:<input type="text" name="capcode" value="" maxlength="255" tabindex="2"></label>
 							<div class="buttons" style="margin-top:10px;">
 								<input type="submit" name="back" value="{TR_BACK}" tabindex="2" onclick="location.href='index.php';return false"/>&nbsp;&nbsp;&nbsp;
 								<input style="padding-left:3px;" type="submit" name="Submit" value="{TR_SEND}" tabindex="3" />
