@@ -49,7 +49,7 @@
 
 		<div class="body">
 			<!-- BDP: page_message -->
-			<div class="warning">{MESSAGE}</div>
+			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
 
 			<h2 class="password"><span>{TR_CHANGE_SQL_USER_PASSWORD}</span></h2>

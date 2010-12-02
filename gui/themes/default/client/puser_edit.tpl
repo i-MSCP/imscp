@@ -53,7 +53,7 @@
 			<h2 class="users"><span>{TR_UPDATE_USER}</span></h2>
 
 			<!-- BDP: page_message -->
-			<div class="warning">{MESSAGE}</div>
+			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
 
 			<form name="edit_user" method="post" action="protected_user_edit.php">

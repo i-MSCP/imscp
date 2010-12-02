@@ -59,7 +59,7 @@
 			<h2 class="htaccess"><span>{TR_HTACCESS}</span></h2>
 
 			<!-- BDP: page_message -->
-			<div class="warning">{MESSAGE}</div>
+			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
 
 			<!-- BDP: protected_areas -->

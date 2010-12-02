@@ -68,7 +68,7 @@
 
 		<div class="body">
 			<!-- BDP: page_message -->
-			<div class="warning">{MESSAGE}</div>
+			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
 
 			<form name="edit_ftp_acc_frm" method="post" action="protected_areas_add.php">

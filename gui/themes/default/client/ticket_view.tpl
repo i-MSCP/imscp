@@ -49,7 +49,7 @@
 
 		<div class="body">
 			<!-- BDP: page_message -->
-			<div class="warning">{MESSAGE}</div>
+			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
 
 			<h2 class="support"><span>{TR_VIEW_SUPPORT_TICKET}</span></h2>
