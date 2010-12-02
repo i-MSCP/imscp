@@ -81,12 +81,8 @@ iMSCP_Registry::setAlias(
  * Another optional writers will be attached to this object during
  * initialization process.
  */
-iMSCP_Registry::get('exceptionHandler')->attach(
-	new iMSCP_Exception_Writer_Browser(
-		// hardcoded here but will be improved later
-		'themes/omega_original/system-message.tpl'
-	)
-);
+iMSCP_Registry::get('exceptionHandler')
+	->attach(new iMSCP_Exception_Writer_Browser('themes/default/system-message.tpl'));
 
 /**
  * Encryption data

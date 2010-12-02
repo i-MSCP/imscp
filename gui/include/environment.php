@@ -34,7 +34,7 @@
 // Boot i-MSCP
 iMSCP_Bootstrap::boot();
 
-// Get a reference to a iMSCP_Config_Handler_File instance
+// Creating new iMSCP_Config_Handler_File instance
 $config = new iMSCP_Config_Handler_File();
 
 // Set some configuration parameters
@@ -53,7 +53,7 @@ $config->ADMIN_TEMPLATE_PATH =  "../$tpl_path/admin";
 $config->RESELLER_TEMPLATE_PATH = "../$tpl_path/reseller";
 $config->CLIENT_TEMPLATE_PATH = "../$tpl_path/client";
 
-// Set the isCP logo path
+// Set the user logo path
 $config->IPS_LOGO_PATH = '../themes/user_logos';
 
 // Set the order panel templates path
@@ -150,7 +150,7 @@ $fonts = array(
 	'StayPuft.ttf'
 );
 
-// Set random catcha font file
+// Set random captcha font file
 $config->LOSTPASSWORD_CAPTCHA_FONT = INCLUDEPATH . '/fonts/' .
 	$fonts[mt_rand(0, count($fonts)-1)];
 

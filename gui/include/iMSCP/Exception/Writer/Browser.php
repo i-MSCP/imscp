@@ -55,7 +55,7 @@ require_once  INCLUDEPATH . '/iMSCP/Exception/Writer.php';
  * @subpackage	Writer
  * @author		Laurent Declercq <laurent.declercq@i-mscp.net>
  * @since		1.0.7
- * @version		1.0.3
+ * @version		1.0.4
  * @todo		Display more information like trace on debug mode.
  */
 class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer {
@@ -114,10 +114,8 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer {
 	public function update(SplSubject $exceptionHandler) {
 
 		// Always write the real exception message if we are the admin
-		if(isset($_SESSION) && ((isset($_SESSION['logged_from']) &&
-			$_SESSION['logged_from'] == 'admin') ||
-				isset($_SESSION['user_type']) &&
-					$_SESSION['user_type'] == 'admin')) {
+		if(isset($_SESSION) && ((isset($_SESSION['logged_from']) && $_SESSION['logged_from'] == 'admin') ||
+			isset($_SESSION['user_type']) && $_SESSION['user_type'] == 'admin')) {
 
 			$this->_message = $exceptionHandler->getException()->getMessage();
 
@@ -159,7 +157,7 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer {
 
 		$this->_pTemplate->assign(
 			array(
-				'THEME_COLOR_PATH' => '/themes/' . 'omega_original',
+				'THEME_COLOR_PATH' => '/themes/' . 'default',
 				'BACKBUTTONDESTINATION' => $backButtonDest,
 				'MESSAGE' => $this->_message
 			)
