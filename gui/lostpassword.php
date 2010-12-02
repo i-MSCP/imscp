@@ -81,7 +81,7 @@ $tpl->assign(
 			'To avoid abuse, we ask you to write the combination of letters on the picture above into the field "Security code"'
 		),
 		'TR_IMGCAPCODE' => '<img src="imagecode.php" width="' . $cfg->LOSTPASSWORD_CAPTCHA_WIDTH . '" height="' .
-			$cfg->LOSTPASSWORD_CAPTCHA_HEIGHT . '" border="0" alt="captcha image">',
+			$cfg->LOSTPASSWORD_CAPTCHA_HEIGHT . '" border="0" alt="captcha image" />',
 		'TR_USERNAME' => tr('Username'),
 		'TR_SEND' => tr('Get password'),
 		'TR_BACK' => tr('Back')

@@ -4,11 +4,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en">
 	<head>
 		<title>{TR_MAIN_INDEX_PAGE_TITLE}</title>
-		<meta name="robots" content="nofollow, noindex">
-		<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}">
-		<meta http-equiv="Content-Style-Type" content="text/css">
-		<meta http-equiv="Content-Script-Type" content="text/javascript">
-		<link href="{THEME_COLOR_PATH}/css/login-imscp.css" rel="stylesheet" type="text/css">
+		<meta name="robots" content="nofollow, noindex" />
+		<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
+		<meta http-equiv="Content-Style-Type" content="text/css" />
+		<meta http-equiv="Content-Script-Type" content="text/javascript" />
+		<link href="{THEME_COLOR_PATH}/css/login-imscp.css" rel="stylesheet" type="text/css" />
 		<!--[if IE 6]>
 			<script type="text/javascript" src="themes/default/js/DD_belatedPNG_0.0.8a-min.js"></script>
 			<script type="text/javascript">
@@ -39,8 +39,8 @@
 				<div id="inner">
 					<form name="login_frm" action="index.php" method="post">
 						<fieldset>
-							<label>{TR_USERNAME}:<input type="text" name="uname" id="uname" value="" maxlength="255" tabindex="1"></label>
-							<label>{TR_PASSWORD}:<input type="password" name="upass" id="upass" value="" maxlength="255" tabindex="2"></label>
+							<label>{TR_USERNAME}:<input type="text" name="uname" id="uname" value="" maxlength="255" tabindex="1" /></label>
+							<label>{TR_PASSWORD}:<input type="password" name="upass" id="upass" value="" maxlength="255" tabindex="2" /></label>
 							<div class="buttons">
 							<!-- BDP: lostpwd_button -->
 								<input style="text-align:left;padding-left:15px;" type="button" name="lostpwd" value="{TR_LOSTPW}" tabindex="2" onclick="location.href='lostpassword.php';return false"/>&nbsp;&nbsp;&nbsp;
