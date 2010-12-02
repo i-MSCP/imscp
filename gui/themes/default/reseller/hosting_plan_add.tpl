@@ -51,7 +51,7 @@
 		<div class="body">
 				<h2 class="serverstatus"><span>{TR_ADD_HOSTING_PLAN}</span></h2>
 				<!-- BDP: page_message -->
-					<div class="warning">{MESSAGE}</div>
+					<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 				<!-- EDP: page_message -->
 
 				<form name="reseller_add_host_plant_frm" method="post" action="hosting_plan_add.php">

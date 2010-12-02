@@ -52,7 +52,7 @@
 			<h2 class="email"><span>{TR_MENU_ORDER_EMAIL}</span></h2>
 
 			<!-- BDP: page_message -->
-   				<div class="warning">{MESSAGE}</div>
+   				<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 	   		<!-- EDP: page_message -->
 
 			<form name="order_email" method="post" action="order_email.php">

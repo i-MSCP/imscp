@@ -61,7 +61,7 @@
 			<!-- BDP: props_list -->
 				<h2 class="billing"><span>{TR_MANAGE_ORDERS}</span></h2>
 				<!-- BDP: page_message -->
-					<div class="warning">{MESSAGE}</div>
+					<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 				<!-- EDP: page_message -->
 
 				<!-- BDP: orders_table -->
