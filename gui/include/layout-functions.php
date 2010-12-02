@@ -75,6 +75,15 @@ function get_user_gui_props($sql, $user_id) {
 	}
 }
 
+/**
+ * Generate page message (info, warning, error)
+ *
+ * Note: The default message type is set to 'info'.
+ * See the set_page_message() function for more information. 
+ *
+ * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
+ * @return void
+ */
 function gen_page_message($tpl) {
 
 	if (!isset($_SESSION['user_page_message'])) {
@@ -83,6 +92,8 @@ function gen_page_message($tpl) {
 	} else {
 		if(iMSCP_Registry::isRegistered('messageCls')) {
 			$tpl->assign('MESSAGE_CLS', iMSCP_Registry::get('messageCls'));
+		} else {
+			$tpl->assign('MESSAGE_CLS', 'info');
 		}
 
 		$tpl->assign('MESSAGE', $_SESSION['user_page_message']);
@@ -90,6 +101,20 @@ function gen_page_message($tpl) {
 	}
 }
 
+/**
+ * Set page message
+ *
+ * This function allow to set a message (info, warning, error) that will be displayed on page reload.
+ *
+ * You can change default message type (info) like this:
+ *
+ * Example for error message:
+ * iMSCP_Registry::set('messageCls', 'error');
+ * set_page_message('An error occurred here!);
+ *
+ * @param  string $message The message
+ * @return void
+ */
 function set_page_message($message) {
 
 	if (isset($_SESSION['user_page_message'])) {
