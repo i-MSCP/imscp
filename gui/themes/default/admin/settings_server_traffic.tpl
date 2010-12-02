@@ -42,7 +42,7 @@
         </div>
         <div class="body">
             <!-- BDP: page_message -->
-            <div class="warning">{MESSAGE}</div>
+            <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->
 
 	    <h2 class="settings"><span>{TR_SERVER_TRAFFIC_SETTINGS}</span></h2>

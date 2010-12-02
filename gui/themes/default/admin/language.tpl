@@ -47,7 +47,7 @@
         <div class="body">
 
             <!-- BDP: page_message -->
-            <div class="warning">{MESSAGE}</div>
+            <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->
 
             <h2 class="multilanguage"><span>{TR_CHOOSE_DEFAULT_LANGUAGE}</span></h2>

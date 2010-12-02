@@ -64,7 +64,7 @@
         <div class="body">
         
         	<!-- BDP: page_message -->
-            <div class="warning">{MESSAGE}</div>
+            <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->
             
             <h2 class="apps_installer"><span>{TR_SOFTWARE_DEPOT}</span></h2>
