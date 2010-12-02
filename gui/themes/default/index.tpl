@@ -47,10 +47,10 @@
 							<!-- EDP: lostpwd_button -->
 								<input type="submit" name="Submit" value="{TR_LOGIN}" tabindex="3" />
 							</div>
-							<!-- /* Uncomment this to show the ssl switch */ -->
+							<!-- /* Uncomment this to show the ssl switch */
 							<div style="margin-top:15px;">
 								<a class="icon i_lock" href="{TR_SSL_LINK}" title="{TR_SSL_DESCRIPTION}">{TR_SSL_DESCRIPTION}</a>
-							</div>
+							</div> -->
 						</fieldset>
 					</form>
 					<div class="toolsbox">
