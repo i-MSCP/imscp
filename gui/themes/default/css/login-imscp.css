@@ -2,6 +2,77 @@
 
 @IMPORT url("simple-imscp.css");
 
+.body {
+	margin:0;
+	padding:0;
+	background: #eeeeee;
+}
+
+.header {
+	height: 50px;
+	margin-bottom:100px;
+	background: url(../images/background/stripe.png) repeat-x top left;
+	color: #ffffff;
+	border-bottom: 3px solid #666666;
+}
+
+
+#logo {
+	float: left;
+	text-align: center;
+	top: 50%;
+	display: table;
+	height: 48px;
+	padding-left: 5px;
+}
+
+#logoInner {
+	display: table-cell;
+	padding-top: 10px;
+	font-size: 15px;
+	font-weight: bold;
+}
+
+#logoInner img {
+	vertical-align: middle;
+}
+
+#copyright {
+	float: right;
+	color: #cccccc;
+	text-align: right;
+	padding-right: 5px;
+	display: table;
+	height: 48px;
+}
+
+#copyrightInner {
+	display: table-cell;
+	padding-top: 10px;
+}
+
+#copyrightInner a {
+	color: #ffffff;
+	text-decoration: none;
+}
+
+#copyrightInner a:hover {
+	color: rgb(92,186,218);
+	text-decoration: underline;
+}
+
+.message {
+	position:absolute;
+	top:53px;
+	left:200px;
+	right:200px;
+	width: 400px;
+	margin: 0px auto;
+	min-height: 22px;
+	border-width: 2px;
+	border-top:none;
+}
+
 form {
 	text-align: left;
 	width: 316px;
@@ -10,7 +81,6 @@ form {
 	background-image: url('../images/login/logon_blue.png');
 	background-repeat: no-repeat;
 	background-position: center top;
-	border: solid 1px #fff;
 }
 
 form fieldset {
@@ -28,12 +98,11 @@ label{
 	text-align : right;
 	margin-top : 5px;
 }
+
 label input{
 	width : 180px;
 	margin-left : 1em;
 } 
-
-form table {}
 
 .buttons {
 	margin-top:30px;
@@ -63,24 +132,6 @@ a {
 	background-image: url('../images/login/i_lock.png');
 }
 
-/*
-.lostpwd {
-	width: 316px;
-	height: 32px;
-	margin: auto auto;
-}
-
-.lostpwd a {
-	display: block;
-	color: #000;
-	text-align: center;
-}
-
-.lostpwd a:hover, .toolsLinks .active {
-    text-decoration: underline;
-    color: rgb(51, 51, 255);
-}
-*/
 .toolsbox {
 	margin-top:30px;
 	width: 316px;
@@ -153,8 +204,8 @@ a {
 }
 
 #outer {
-	height: 100%;
-	overflow: hidden;
+	/*height: 100%;*/
+	/*overflow: hidden;*/
 	position: relative;
 	width: 100%;
 }
@@ -162,6 +213,7 @@ a {
 	display: table;
 	position: static;
 }
+
 #middle {
 	position: absolute;
 	top: 50%;

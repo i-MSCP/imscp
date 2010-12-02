@@ -313,7 +313,7 @@ function sendpassword($uniqkey) {
 	return false;
 }
 
-function requestpassword($admin_name) {
+function requestPassword($admin_name) {
 
 	$cfg = iMSCP_Registry::get('Config');
 	$sql = iMSCP_Registry::get('Db');

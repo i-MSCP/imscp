@@ -1,5 +1,7 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
+<?xml version="1.0" encoding="{THEME_CHARSET}" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en">
 	<head>
 		<title>{TR_MAIN_INDEX_PAGE_TITLE}</title>
 		<meta name="robots" content="nofollow, noindex">
@@ -15,11 +17,27 @@
         </script>
         <![endif]-->
 	</head>
-	<body onload="document.frm.uname.focus()">
+	<body onload="document.lostpwd_frm.uname.focus()" class="body">
+		<div class="header">
+			<div id="logo">
+				<div id="logoInner">
+					<img src="themes/default/images/imscp_logo32.png" alt="{productLongName}" />
+					<span>{productLongName}</span>
+				</div>
+			</div>
+			<div id="copyright">
+				<div id="copyrightInner">
+					<a href="{productLink}" target="blank">{productCopyright}</a>
+				</div>
+			</div>
+		</div>
+		<!-- BDP: page_message -->
+		<div class="{MESSAGE_CLS} message">{MESSAGE}</div>
+		<!-- EDP: page_message -->
 		<div id="outer">
 			<div id="middle">
 				<div id="inner">
-					<form name="lpwd_frm" action="lostpassword.php" method="post" >
+					<form name="lostpwd_frm" action="lostpassword.php" method="post" >
 						<fieldset style="top:140px;">
 							<label>{TR_IMGCAPCODE}</label>
 							<label>{TR_CAPCODE}:<input type="text" name="uname" id="uname" value="" maxlength="255" tabindex="1"></label>

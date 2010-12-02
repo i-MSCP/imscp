@@ -44,7 +44,7 @@ $cfg = iMSCP_Registry::get('Config');
 
 // Lost password feature is disabled ?
 if (!$cfg->LOSTPASSWORD) {
-	throw new iMSCP_Exception_Production(tr('Retrieving lost passwords is currently not possible!'));
+	user_goto('/index.php');
 }
 
 // Check for gd library availability
@@ -61,98 +61,73 @@ if (!captcha_fontfile_exists()) {
 removeOldKeys($cfg->LOSTPASSWORD_TIMEOUT);
 
 // Set the theme
-if (isset($_SESSION['user_theme'])) {
-	$theme_color = $_SESSION['user_theme'];
-} else {
-	$theme_color = $cfg->USER_INITIAL_THEME;
-}
+isset($_SESSION['user_theme']) ? $theme_color = $_SESSION['user_theme'] : $theme_color = $cfg->USER_INITIAL_THEME;
 
-// A request for new password was received (user was clicked on the link he was received by mail)
+// Creating new iMSCP_pTemplate instance
+$tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic('page_message', 'page');
+$tpl->define_dynamic('page', $cfg->LOGIN_TEMPLATE_PATH . '/lostpassword.tpl');
+
+$tpl->assign(
+	array(
+		'TR_MAIN_INDEX_PAGE_TITLE' => tr('i-MSCP - Multi Server Control Panel - Lost password'),
+		'THEME_COLOR_PATH' => $cfg->LOGIN_TEMPLATE_PATH,
+		'THEME_CHARSET' => tr('encoding'),
+		'productLongName' => tr('internet Multi Server Control Panel'),
+		'productLink' => 'http://www.i-mscp.net',
+		'productCopyright' => tr('© Copyright 2010 i-MSCP Team<br/>All Rights Reserved'),
+		'TR_CAPCODE' => tr('Security code'),
+		'TR_IMGCAPCODE_DESCRIPTION' => tr(
+			'To avoid abuse, we ask you to write the combination of letters on the picture above into the field "Security code"'
+		),
+		'TR_IMGCAPCODE' => '<img src="imagecode.php" width="' . $cfg->LOSTPASSWORD_CAPTCHA_WIDTH . '" height="' .
+			$cfg->LOSTPASSWORD_CAPTCHA_HEIGHT . '" border="0" alt="captcha image">',
+		'TR_USERNAME' => tr('Username'),
+		'TR_SEND' => tr('Get password'),
+		'TR_BACK' => tr('Back')
+	)
+);
+
+// A request for new password was validated (User clicked on the link he has received by mail)
 if (isset($_GET['key']) && $_GET['key'] != '') {
+	// Check key
+	check_input($_GET['key']);
 
-		// Check key
-		check_input($_GET['key']);
-
-		if (sendpassword($_GET['key'])) {
-			$tpl = new iMSCP_pTemplate();
-			$tpl->define('page', $cfg->LOGIN_TEMPLATE_PATH . '/lostpassword_message.tpl');
-			$tpl->assign(
-				array(
-					'TR_MAIN_INDEX_PAGE_TITLE' => tr('i-MSCP - Multi Server Control Panel'),
-					'THEME_COLOR_PATH' => "themes/$theme_color",
-					'THEME_CHARSET' => tr('encoding')
-				)
-			);
-
-			$tpl->assign(
-				array(
-					'TR_MESSAGE' => tr('Your new password has been sent.'),
-					'TR_LINK' => '<a class="link" href="index.php">' . tr('Login') . '</a>' // Todo Change this...
-				)
-			);
-		} else {
-			iMSCP_Registry::set('BACKBUTTONDESTINATION', 'index.php');
-			throw new iMSCP_Exception_Production(tr('New password could not been sent! Ask your administrator.'));
-		}
+	// Sending new password
+	if (sendpassword($_GET['key'])) {
+		set_page_message(tr('Your new password has been sent. Check your mail.'));
+	} else {
+		iMSCP_Registry::set('messageCls', 'error');
+		set_page_message(tr('New password has not been sent. Ask your administrator.'));
+	}
 } elseif (isset($_POST['uname'])) { // Request for new password
 
-	// Check if we are not blocked (bruteforce feature)
+	// Check if we are not blocked (brute force feature)
 	check_ipaddr(getipaddr(), 'captcha');
 
 	if ($_POST['uname'] != '' && isset($_SESSION['image']) && isset($_POST['capcode'])) {
 		check_input(trim($_POST['uname']));
 		check_input($_POST['capcode']);
 
-		if ($_SESSION['image'] == $_POST['capcode'] && requestpassword($_POST['uname'])) {
-			$tpl = new iMSCP_pTemplate();
-			$tpl->define('page', $cfg->LOGIN_TEMPLATE_PATH . '/lostpassword_message.tpl');
-			$tpl->assign(
-				array(
-					'TR_MAIN_INDEX_PAGE_TITLE' => tr('i-MSCP - Virtual Hosting Control System'),
-					'THEME_COLOR_PATH' => "themes/$theme_color",
-					'THEME_CHARSET' => tr('encoding')
-				)
-			);
-
-			$tpl->assign(
-				array(
-					'TR_MESSAGE' => tr(
-						'Your password request has been initiated. You will receive an email with instructions to complete the process. This reset request will expire in %s minutes.',
-						$cfg->LOSTPASSWORD_TIMEOUT
-					),
-					'TR_LINK' => '<a class="link" href="index.php">' . tr('Back') . '</a>' // Todo Change this...
-				)
+		if ($_SESSION['image'] == $_POST['capcode'] && requestPassword($_POST['uname'])) {
+			set_page_message(
+				tr('Your password request has been initiated. You will receive an email with instructions to complete the process. This reset request will expire in %s minutes.')
 			);
 		} else {
-			throw new iMSCP_Exception_Production(tr('User or security code are incorrect!'));
+			iMSCP_Registry::set('messageCls', 'error');
+			set_page_message(tr('User or security code are incorrect!'));
 		}
 	} else {
-		throw new iMSCP_Exception_Production(tr('All fields are required!'));
+		iMSCP_Registry::set('messageCls', 'error');
+		set_page_message(tr('All fields are required!'));
 	}
 } else { // Lost password form (Default)
-
 	unblock($cfg->BRUTEFORCE_BLOCK_TIME, 'captcha');
 	is_ipaddr_blocked(null, 'captcha', true);
-
-	$tpl = new iMSCP_pTemplate();
-	$tpl->define('page', $cfg->LOGIN_TEMPLATE_PATH . '/lostpassword.tpl');
-	$tpl->assign(
-		array(
-			'TR_MAIN_INDEX_PAGE_TITLE' => tr('i-MSCP - Virtual Hosting Control System'),
-			'THEME_COLOR_PATH' => $cfg->LOGIN_TEMPLATE_PATH,
-			'THEME_CHARSET' => tr('encoding'),
-			'TR_CAPCODE' => tr('Security code'),
-			'TR_IMGCAPCODE_DESCRIPTION' => tr(
-				'To avoid abuse, we ask you to write the combination of letters on the picture above into the field "Security code"'
-			),
-			'TR_IMGCAPCODE' => '<img src="imagecode.php" width="' . $cfg->LOSTPASSWORD_CAPTCHA_WIDTH . '" height="' .
-				$cfg->LOSTPASSWORD_CAPTCHA_HEIGHT . '" border="0" alt="captcha image">',
-			'TR_USERNAME' => tr('Username'),
-			'TR_SEND' => tr('Get password'),
-			'TR_BACK' => tr('Back')
-		)
-	);
 }
+
+// Generate page message
+gen_page_message($tpl);
 
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();

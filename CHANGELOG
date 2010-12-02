@@ -1,6 +1,12 @@
 i-MSCP ChangeLog
 ~~~~~~~~~~~~~~~~
 
+2010-12-02 Laurent Declercq
+	- GUI:
+		* Improved gen_page_message() function to be able to choose message type (info|warning|error)
+		* Improved both login and lost password pages
+		* Fixed #35: Defect - Missing back stick in SQL
+
 2010-11-30 Laurent Declercq
 	- GUI
 		* Added properties description in iMSCP_Config_Handler_File to avoid warnings with some IDE

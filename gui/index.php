@@ -46,14 +46,17 @@ if (isset($_GET['logout'])) {
 do_session_timeout();
 init_login();
 
-if (isset($_POST['uname']) && isset($_POST['upass']) && !empty($_POST['uname']) && !empty($_POST['upass'])) {
-	$uname = encode_idna($_POST['uname']);
+if (isset($_POST['uname']) && isset($_POST['upass'])) {
+	if(!empty($_POST['uname']) && !empty($_POST['upass'])) {
+		$uname = encode_idna($_POST['uname']);
 
-	check_input(trim($_POST['uname']));
-	check_input(trim($_POST['upass']));
-
-	register_user($uname, $_POST['upass']);
-	//user_goto('index.php');
+		check_input(trim($_POST['uname']));
+		check_input(trim($_POST['upass']));
+		register_user($uname, $_POST['upass']);
+	} else {
+		iMSCP_Registry::set('messageCls', 'error');
+		set_page_message(tr('All fields are required!'));
+	}
 }
 
 if (check_user_login() && !redirect_to_level_page()) {
@@ -66,14 +69,14 @@ $theme_color = isset($_SESSION['user_theme']) ? $_SESSION['user_theme'] : $cfg->
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('lostpwd', 'page');
+$tpl->define_dynamic('lostpwd_button', 'page');
 
 if (($cfg->MAINTENANCEMODE || iMSCP_Update_Database::getInstance()->checkUpdateExists()) && !isset($_GET['admin'])) {
 
 	$tpl->define_dynamic('page', $cfg->LOGIN_TEMPLATE_PATH . '/maintenancemode.tpl');
 	$tpl->assign(
 		array(
-			'TR_PAGE_TITLE'		=> tr('i-MSCP i-MSCP - Multi Server Control Panel'),
+			'TR_PAGE_TITLE'		=> tr('i-MSCP - Multi Server Control Panel'),
 			'THEME_COLOR_PATH'	=> $cfg->LOGIN_TEMPLATE_PATH,
 			'THEME_CHARSET'		=> tr('encoding'),
 			'TR_MESSAGE'		=> nl2br(tohtml($cfg->MAINTENANCEMODE_MESSAGE)),
@@ -86,9 +89,12 @@ if (($cfg->MAINTENANCEMODE || iMSCP_Update_Database::getInstance()->checkUpdateE
 
 	$tpl->assign(
 		array(
-			'TR_MAIN_INDEX_PAGE_TITLE'	=> tr('i-MSCP - Multi Server Control Panel'),
+			'TR_MAIN_INDEX_PAGE_TITLE'	=> tr('i-MSCP - Multi Server Control Panel / Login'),
 			'THEME_COLOR_PATH'			=> $cfg->LOGIN_TEMPLATE_PATH,
 			'THEME_CHARSET'				=> tr('encoding'),
+			'productLongName'			=> tr('internet Multi Server Control Panel'),
+			'productLink'				=> 'http://www.i-mscp.net',
+			'productCopyright'			=> tr('© Copyright 2010 i-MSCP Team<br/>All Rights Reserved'),
 			'TR_LOGIN'					=> tr('Login'),
 			'TR_USERNAME'				=> tr('Username'),
 			'TR_PASSWORD'				=> tr('Password'),
@@ -110,7 +116,7 @@ if (($cfg->MAINTENANCEMODE || iMSCP_Update_Database::getInstance()->checkUpdateE
 if ($cfg->LOSTPASSWORD) {
 	$tpl->assign('TR_LOSTPW', tr('Lost password'));
 } else {
-	$tpl->assign('LOSTPWD', '');
+	$tpl->assign('LOSTPWD_BUTTON', '');
 }
 
 gen_page_message($tpl);
