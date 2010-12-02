@@ -152,14 +152,18 @@ class iMSCP_Config_Handler_File extends iMSCP_Config_Handler {
 	public function __construct($pathFile = null) {
 
 		if(is_null($pathFile)) {
-			switch (PHP_OS) {
-				case 'FreeBSD':
-				case 'OpenBSD':
-				case 'NetBSD':
-					$pathFile = '/usr/local/etc/imscp/imscp.conf';
-					break;
-				default:
-					$pathFile = '/etc/imscp/imscp.conf';
+			if (getenv('IMSCP_CONF')) {
+				$pathFile = getEnv('IMSCP_CONF');
+			} else {
+				switch (PHP_OS) {
+					case 'FreeBSD':
+					case 'OpenBSD':
+					case 'NetBSD':
+						$pathFile = '/usr/local/etc/imscp/imscp.conf';
+						break;
+					default:
+						$pathFile = '/etc/imscp/imscp.conf';
+				}
 			}
 		}
 
