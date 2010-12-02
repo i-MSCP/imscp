@@ -101,7 +101,7 @@ gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_webtools.tpl');
 
 gen_logged_from($tpl);
 
-get_client_software_permission (&$tpl,&$sql,$_SESSION['user_id']);
+get_client_software_permission ($tpl, $sql,$_SESSION['user_id']);
 
 check_permissions($tpl);
 
