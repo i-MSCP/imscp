@@ -32,9 +32,7 @@
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
-if (isset($_SESSION['user_id'])
-	&& !isset($_SESSION['logged_from'])
-	&& !isset($_SESSION['logged_from_id'])) {
+if (isset($_SESSION['user_id']) && !isset($_SESSION['logged_from']) && !isset($_SESSION['logged_from_id'])) {
 	list($user_def_lang, $user_def_layout) = get_user_gui_props($sql, $_SESSION['user_id']);
 
 	$_SESSION['user_theme'] = $user_def_layout;
@@ -43,8 +41,11 @@ if (isset($_SESSION['user_id'])
 
 // THEME_COLOR management stuff.
 
-function get_user_gui_props(&$sql, $user_id) {
+function get_user_gui_props($sql, $user_id) {
 
+	/**
+	 * @var $cfg iMSCP_Config_Handler_File
+	 */
 	$cfg = iMSCP_Registry::get('Config');
 
 	$query = "
@@ -74,12 +75,16 @@ function get_user_gui_props(&$sql, $user_id) {
 	}
 }
 
-function gen_page_message(&$tpl) {
+function gen_page_message($tpl) {
 
 	if (!isset($_SESSION['user_page_message'])) {
 		$tpl->assign('PAGE_MESSAGE', '');
 		$tpl->assign('MESSAGE', '');
 	} else {
+		if(iMSCP_Registry::isRegistered('messageCls')) {
+			$tpl->assign('MESSAGE_CLS', iMSCP_Registry::get('messageCls'));
+		}
+
 		$tpl->assign('MESSAGE', $_SESSION['user_page_message']);
 		unset($_SESSION['user_page_message']);
 	}
@@ -102,10 +107,13 @@ function set_page_message($message) {
  * @return	String		a single string with <br /> tags
  */
 function format_message($message) {
-	$string = "";
+
+	$string = '';
+
 	foreach ($message as $msg) {
 		$string .= $msg . "<br />\n";
 	}
+
 	return $string;
 }
 
@@ -114,7 +122,14 @@ function format_message($message) {
  */
 function get_menu_vars($menu_link) {
 
+	/**
+	 * @var $cfg iMSCP_Config_Handler_File
+	 */
 	$cfg = iMSCP_Registry::get('Config');
+
+	/**
+	 * @var $sql iMSCP_Database
+	 */
 	$sql = iMSCP_Registry::get('Db');
 
 	$user_id = $_SESSION['user_id'];
@@ -129,6 +144,7 @@ function get_menu_vars($menu_link) {
 		WHERE
 			`admin_id` = ?
 	";
+
 	$rs = exec_query($sql, $query, $user_id);
 
 	$search = array();
@@ -190,9 +206,13 @@ function get_menu_vars($menu_link) {
 /**
  * @todo currently not being used because there's only one layout/theme
  */
-function gen_def_layout(&$tpl, $user_def_layout) {
+function gen_def_layout($tpl, $user_def_layout) {
 
+	/**
+	 * @var $cfg iMSCP_Config_Handler_File
+	 */
 	$cfg = iMSCP_Registry::get('Config');
+
 	$layouts = array('blue', 'green', 'red', 'yellow');
 
 	foreach ($layouts as $layout) {

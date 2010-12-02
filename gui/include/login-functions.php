@@ -563,7 +563,7 @@ function deny_access() {
  * @throw iMSCP_Exception|iMSCP_Exception_Production
  * @param string $userName User name
  * @param string $userPassword User password
- * @return void
+ * @return FALSE on error
  */
 function register_user($userName, $userPassword) {
 
@@ -581,7 +581,10 @@ function register_user($userName, $userPassword) {
 
 	if (!username_exists($userName)) {
 		write_log("Login error, <b><i>" . tohtml($userName) . "</i></b> unknown username");
-		throw new iMSCP_Exception_Production(tr('You entered an incorrect username!'));
+
+		iMSCP_Registry::set('messageCls', 'error');
+		set_page_message(tr('You entered an incorrect username!'));
+		return false;
 	}
 
 	$userData = array();
@@ -592,9 +595,9 @@ function register_user($userName, $userPassword) {
 
 		write_log("Login error, <b><i>" . $userName . "</i></b> system currently in maintenance mode");
 
-		throw new iMSCP_Exception_Production(
-			tr('System is currently under maintenance! Only administrators can login.')
-		);
+		iMSCP_Registry::set('messageCls', 'info');
+		set_page_message(tr('System is currently under maintenance! Only administrators can login.'));
+		return false;
 	}
 
 	if (crypt($userPassword, $userData['admin_pass']) == $userData['admin_pass'] ||
@@ -612,7 +615,10 @@ function register_user($userName, $userPassword) {
 
 		if ($userData['admin_type'] == 'user' && is_userdomain_expired($userName)) {
 			write_log(tr("%s's domain expired!", $userName));
-			throw new iMSCP_Exception_Production(tr("%s's domain expired!", $userName));
+
+			iMSCP_Registry::set('messageCls', 'warning');
+			set_page_message(tr("%s's domain expired!", $userName));
+			return false;
 		}
 
 		$sessionId = session_id();
@@ -631,7 +637,10 @@ function register_user($userName, $userPassword) {
 		write_log($userName . " logged in.");
 	} else {
 		write_log($userName . ' entered incorrect password.');
-		throw new iMSCP_Exception_Production(tr('You entered an incorrect password!'));
+
+		iMSCP_Registry::set('messageCls', 'error');
+		set_page_message(tr('You entered an incorrect password!'));
+		return false;
 	}
 
 	// Redirect the user to his level interface
@@ -802,7 +811,7 @@ function change_user_interface($fromId, $toId) {
 	while (1) { // used to easily exit
 		$query = '
 			SELECT
-				admin_id`, `admin_name`, `admin_pass`, `admin_type`, `email`, `created_by`
+				`admin_id`, `admin_name`, `admin_pass`, `admin_type`, `email`, `created_by`
 			FROM
 				`admin`
 			WHERE
@@ -839,11 +848,11 @@ function change_user_interface($fromId, $toId) {
 		$allowedChanges['reseller']['user'] = 'index.php';
 		$allowedChanges['reseller']['BACK'] = 'users.php?psi=last';
 
-		if (!isset($allowed_changes[$fromAdminType][$toAdminType]) || ($toAdminType == $fromAdminType &&
+		if (!isset($allowedChanges[$fromAdminType][$toAdminType]) || ($toAdminType == $fromAdminType &&
 			$fromAdminType != 'admin')) {
 
 			if (isset($_SESSION['logged_from_id']) && $_SESSION['logged_from_id'] == $toId) {
-				$index = $allowed_changes[$fromAdminType]['BACK'];
+				$index = $allowedChanges[$fromAdminType]['BACK'];
                 $restore = true;
 			} else {
 				set_page_message(tr('You do not have permission to access this interface!'));
@@ -851,7 +860,7 @@ function change_user_interface($fromId, $toId) {
 			}
 		}
 
-		$index = $index ? $index : $allowed_changes[$fromAdminType][$toAdminType];
+		$index = $index ? $index : $allowedChanges[$fromAdminType][$toAdminType];
 
 		unset_user_login_data(false, $restore);
 
