@@ -39,6 +39,11 @@ check_login(__FILE__);
  */
 $cfg = iMSCP_Registry::get('Config');
 
+/**
+ * @var $sql iMSCP_Database
+ */
+$sql = iMSCP_Registry::get('Db');
+
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/software_install.tpl');
 $tpl->define_dynamic('page_message', 'page');
@@ -88,7 +93,6 @@ if (isset($_POST['Submit2'])) {
 		$createdir = '0';
 	}
 	//Check dir exists
-    $sql = iMSCP_Registry::get('Db');
     $domain = $_SESSION['user_logged'];
     $vfs = new iMSCP_VirtualFileSystem($domain, $sql);
     $list = $vfs->ls($other_dir);
@@ -128,7 +132,7 @@ if (isset($_POST['Submit2'])) {
 			`path` = ?
 	";
 	$rspath = exec_query($sql, $querypath, array($dmn_id, $other_dir));
-	list ($posted_domain_id, $posted_aliasdomain_id, $posted_subdomain_id, $posted_aliassubdomain_id, $posted_mountpath) = split(';', $_POST['selected_domain']);
+	list ($posted_domain_id, $posted_aliasdomain_id, $posted_subdomain_id, $posted_aliassubdomain_id, $posted_mountpath) = explode(';', $_POST['selected_domain']);
 	if(($posted_aliasdomain_id + $posted_subdomain_id + $posted_aliassubdomain_id) > 0){
 		if($posted_aliasdomain_id > 0){
 			$querydomainpath = "
@@ -307,7 +311,16 @@ if (isset($_POST['Submit2'])) {
 //
 
 function gen_user_domain_list($tpl, $sql, $user_id) {
-	global $selecteddomain;
+	/**
+	* @var $cfg iMSCP_Config_Handler_File
+	*/
+	$cfg = iMSCP_Registry::get('Config');
+	
+	/**
+	 * @var $sql iMSCP_Database
+	 */
+	$sql = iMSCP_Registry::get('Db');
+	
 	$domain_id = get_user_domain_id($sql, $user_id);
 	
 	//Get Domain Data
@@ -465,7 +478,17 @@ function gen_user_domain_list($tpl, $sql, $user_id) {
 	}
 }
 function check_db_user_list($tpl, $sql, $db_id) {
-	global $count;
+	/**
+	* @var $cfg iMSCP_Config_Handler_File
+	*/
+	$cfg = iMSCP_Registry::get('Config');;
+	
+	/**
+	 * @var $sql iMSCP_Database
+	 */
+	$sql = iMSCP_Registry::get('Db');
+	
+	$count = 0;
 	$query = "
 		SELECT
 			`sqlu_id`, `sqlu_name`
@@ -519,8 +542,18 @@ function check_db_user_list($tpl, $sql, $db_id) {
 }
 
 function check_db_avail(&$tpl, &$sql, $dmn_id, $dmn_sqld_limit) {
-  $existdbuser = 0;
-  $check_db = "
+	/**
+	* @var $cfg iMSCP_Config_Handler_File
+	*/
+	$cfg = iMSCP_Registry::get('Config');
+	
+	/**
+	 * @var $sql iMSCP_Database
+	 */
+	$sql = iMSCP_Registry::get('Db');
+	
+	$existdbuser = 0;
+	$check_db = "
 		SELECT
 			`sqld_id`,
 			`sqld_name`
@@ -531,24 +564,24 @@ function check_db_avail(&$tpl, &$sql, $dmn_id, $dmn_sqld_limit) {
 		ORDER BY
 			`sqld_name` ASC
 	";
-  $rs = exec_query($sql, $check_db, $dmn_id);
-  if ($rs->recordCount() > 0) {
-	while (!$rs->EOF) {
-				if (isset($_POST['selected_db']) && $_POST['selected_db'] == $rs->fields['sqld_name']){
-					$selecteddb = $cfg->HTML_SELECTED;
-					}else{
-					$selecteddb = '';
-				}
-				$tpl -> assign(
+	$rs = exec_query($sql, $check_db, $dmn_id);
+	if ($rs->recordCount() > 0) {
+		while (!$rs->EOF) {
+			if (isset($_POST['selected_db']) && $_POST['selected_db'] == $rs->fields['sqld_name']){
+				$selecteddb = $cfg->HTML_SELECTED;
+			}else{
+				$selecteddb = '';
+			}
+			$tpl -> assign(
 						array(
 							'DB_NAME' 		=> $rs->fields['sqld_name'],
 							'SELECTED_DB' 	=> $selecteddb
 							)
-						);
-				$tpl->parse('INSTALLDB_ITEM', '.installdb_item');
-				$existdbuser = check_db_user_list($tpl, $sql, $rs->fields['sqld_id']);
-				$existdbuser = +$existdbuser;
-				$rs->moveNext();
+					);
+			$tpl->parse('INSTALLDB_ITEM', '.installdb_item');
+			$existdbuser = check_db_user_list($tpl, $sql, $rs->fields['sqld_id']);
+			$existdbuser = +$existdbuser;
+			$rs->moveNext();
 		}
 		if($existdbuser == 0) {
 			$tpl->assign('SOFTWARE_INSTALL', '');
@@ -572,108 +605,121 @@ function check_db_avail(&$tpl, &$sql, $dmn_id, $dmn_sqld_limit) {
 				);
 		$tpl -> parse('CREATE_MESSAGE_DB', '.create_message_db');
 	}
-  if($rs -> recordCount() < $dmn_sqld_limit OR $dmn_sqld_limit == 0) {
-	$tpl -> assign(
-				array(
-					'ADD_DB_LINK' 	=> 'sql_database_add.php',
-					'BUTTON_ADD_DB' => tr('Add new database')
-				)
-			);
-	$tpl -> parse('CREATE_DB', '.create_db');
-  } else {
-	$tpl -> assign(
-				array(
-					'CREATE_MESSAGE_DB' => '',
-					'ADD_DB_LINK' 		=> '',
-					'BUTTON_ADD_DB' 	=> '',
-					'CREATE_DB' 		=> ''
-				)
-			);
-  }
+	if($rs -> recordCount() < $dmn_sqld_limit OR $dmn_sqld_limit == 0) {
+		$tpl -> assign(
+					array(
+						'ADD_DB_LINK' 	=> 'sql_database_add.php',
+						'BUTTON_ADD_DB' => tr('Add new database')
+					)
+				);
+		$tpl -> parse('CREATE_DB', '.create_db');
+	} else {
+		$tpl -> assign(
+					array(
+						'CREATE_MESSAGE_DB' => '',
+						'ADD_DB_LINK' 		=> '',
+						'BUTTON_ADD_DB' 	=> '',
+						'CREATE_DB' 		=> ''
+					)
+				);
+  	}
 }
 	
 function check_software_avail($sql, $software_id, $dmn_created_id) {
-  $check_avail = "
-		SELECT
-			`reseller_id` AS reseller
-		FROM
-			`web_software`
-		WHERE
-			`software_id` = ?
-		AND
-			`reseller_id` = ?
+	/**
+	 * @var $sql iMSCP_Database
+	 */
+	$sql = iMSCP_Registry::get('Db');
+	
+	$check_avail = "
+			SELECT
+				`reseller_id` AS reseller
+			FROM
+				`web_software`
+			WHERE
+				`software_id` = ?
+			AND
+				`reseller_id` = ?
 	";
-  $sa = exec_query($sql, $check_avail, array($software_id, $dmn_created_id));
-  if ($sa -> recordCount() == 0) {
-	return FALSE;
-  } else {
-	return TRUE;
-  }
+  	$sa = exec_query($sql, $check_avail, array($software_id, $dmn_created_id));
+  	if ($sa -> recordCount() == 0) {
+		return FALSE;
+  	} else {
+		return TRUE;
+  	}
 }
 
 function check_is_installed(&$tpl, &$sql, $dmn_id, $software_id) {
-  $is_installed = "
-		SELECT
-			`software_id`
-		FROM
-			`web_software_inst`
-		WHERE
-			`domain_id` = ?
-		AND
-			`software_id` = ?
+	/**
+	 * @var $sql iMSCP_Database
+	 */
+	$sql = iMSCP_Registry::get('Db');
+  	$is_installed = "
+			SELECT
+				`software_id`
+			FROM
+				`web_software_inst`
+			WHERE
+				`domain_id` = ?
+			AND
+				`software_id` = ?
 	";
-  $is_inst = exec_query($sql, $is_installed, array($dmn_id, $software_id));
-  if ($is_inst -> recordCount() == 0) {
-	$tpl -> assign ('SOFTWARE_INSTALL_BUTTON', 'software_install.php?id='.$software_id);
-	$tpl -> parse('SOFTWARE_INSTALL', '.software_install');
-  } else {
-	$tpl -> assign ('SOFTWARE_INSTALL', '');
-  }
+  	$is_inst = exec_query($sql, $is_installed, array($dmn_id, $software_id));
+  	if ($is_inst -> recordCount() == 0) {
+		$tpl -> assign ('SOFTWARE_INSTALL_BUTTON', 'software_install.php?id='.$software_id);
+		$tpl -> parse('SOFTWARE_INSTALL', '.software_install');
+  	} else {
+		$tpl -> assign ('SOFTWARE_INSTALL', '');
+  	}
 }
 
 function get_software_props ($tpl, $sql, $dmn_id, $software_id, $dmn_created_id, $dmn_sqld_limit) {
-  if (!check_software_avail($sql, $software_id, $dmn_created_id)) {
-	set_page_message(tr('Software not found!'));
-	header('Location: software.php');
-	exit;
-  } else {
-	gen_user_domain_list($tpl, $sql, $_SESSION['user_id']);
-	$software_props = "
-		SELECT
-			`software_name`,
-			`software_type`,
-			`software_db`
-		FROM
-			`web_software`
-		WHERE
-			`software_id` = ?
-		AND
-			`reseller_id` = ?
-	";
-	$rs = exec_query($sql, $software_props, array($software_id, $dmn_created_id));
-	check_is_installed($tpl, $sql, $dmn_id, $software_id);
-	if ($rs -> fields['software_db'] == 1) {
-		$tpl -> assign ('SOFTWARE_DB', tr('yes'));
-		if ($dmn_sqld_limit == '-1') { 
-			$tpl -> parse('REQUIRE_INSTALLDB', '.require_installdb');
+	/**
+	 * @var $sql iMSCP_Database
+	 */
+	$sql = iMSCP_Registry::get('Db');
+  	if (!check_software_avail($sql, $software_id, $dmn_created_id)) {
+		set_page_message(tr('Software not found!'));
+		header('Location: software.php');
+		exit;
+  	} else {
+		gen_user_domain_list($tpl, $sql, $_SESSION['user_id']);
+		$software_props = "
+			SELECT
+				`software_name`,
+				`software_type`,
+				`software_db`
+			FROM
+				`web_software`
+			WHERE
+				`software_id` = ?
+			AND
+				`reseller_id` = ?
+		";
+		$rs = exec_query($sql, $software_props, array($software_id, $dmn_created_id));
+		check_is_installed($tpl, $sql, $dmn_id, $software_id);
+		if ($rs -> fields['software_db'] == 1) {
+			$tpl -> assign ('SOFTWARE_DB', tr('yes'));
+			if ($dmn_sqld_limit == '-1') { 
+				$tpl -> parse('REQUIRE_INSTALLDB', '.require_installdb');
+			}
+			check_db_avail($tpl, $sql, $dmn_id, $dmn_sqld_limit);
+ 		} else {
+			$tpl -> assign (
+						array(
+							'SOFTWARE_DB' 			=> tr('no'),
+							'REQUIRE_INSTALLDB' 	=> ''
+						)
+					);
 		}
-		check_db_avail($tpl, $sql, $dmn_id, $dmn_sqld_limit);
- 	} else {
 		$tpl -> assign (
 					array(
-						'SOFTWARE_DB' 			=> tr('no'),
-						'REQUIRE_INSTALLDB' 	=> ''
+						'TR_SOFTWARE_NAME' 	=> $rs -> fields['software_name'],
+						'SOFTWARE_TYPE' 	=> $rs -> fields['software_type']
 					)
 				);
-	}
-	$tpl -> assign (
-				array(
-					'TR_SOFTWARE_NAME' 	=> $rs -> fields['software_name'],
-					'SOFTWARE_TYPE' 	=> $rs -> fields['software_type']
-				)
-			);
-	$tpl -> parse('SOFTWARE_ITEM', '.software_item');
-  }
+		$tpl -> parse('SOFTWARE_ITEM', '.software_item');
+  	}
 }
 
 function gen_page_lists($tpl, $sql, $user_id) {
