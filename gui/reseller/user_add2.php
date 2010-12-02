@@ -131,7 +131,7 @@ if (isset($_POST['uaction']) && ("user_add2_nxt" === $_POST['uaction']) && (!iss
 }
 
 get_init_au2_page($tpl);
-get_reseller_software_permission (&$tpl,&$sql,$_SESSION['user_id']);
+get_reseller_software_permission ($tpl,$sql,$_SESSION['user_id']);
 gen_page_message($tpl);
 
 list($rsub_max, $rals_max, $rmail_max, $rftp_max, $rsql_db_max, $rsql_user_max) = check_reseller_permissions(

@@ -1,6 +1,10 @@
 i-MSCP ChangeLog
 ~~~~~~~~~~~~~~~~
 
+2010-12-02 Sascha Bay
+	- GUI:
+		* Fixed #36: Deprecated: Call-time pass
+
 2010-12-02 Laurent Declercq
 	- GUI:
 		* Improved gen_page_message() function to be able to choose message type (info|warning|error)
