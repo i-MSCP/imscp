@@ -26,89 +26,108 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
+ *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
+ *
  * Portions created by the i-MSCP Team are Copyright (C) 2010 by
- * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
+ * i-MSCP  - internet Multi Server Control Panel. All Rights Reserved.
  */
 
+/**
+ * Check if the GD library is loaded
+ *
+ * @return bool TRUE if loaded, false otherwise
+ */
 function check_gd() {
+
 	return function_exists('imagecreatetruecolor');
 }
 
 /**
- * @todo use file_exists in try-catch block
+ * Check if a captcha font file exists
+ *
+ * @return bool TRUE if the file exists, FALSE otherwise
  */
 function captcha_fontfile_exists() {
 
+	/**
+	 * @var $cfg iMSCP_Config_Handler_File
+	 */
 	$cfg = iMSCP_Registry::get('Config');
 
 	return file_exists($cfg->LOSTPASSWORD_CAPTCHA_FONT);
 }
 
+/**
+ * Create captcha image
+ *
+ * @throws iMSCP_Exception
+ * @param  $strSessionVar
+ * @return void
+ */
 function createImage($strSessionVar) {
 
+	/**
+	 * @var $cfg iMSCP_Config_Handler_File
+	 */
 	$cfg = iMSCP_Registry::get('Config');
 
-	$rgBgColor = $cfg->LOSTPASSWORD_CAPTCHA_BGCOLOR;
-	$rgTextColor = $cfg->LOSTPASSWORD_CAPTCHA_TEXTCOLOR;
+	$rgBgColor		= $cfg->LOSTPASSWORD_CAPTCHA_BGCOLOR;
+	$rgTextColor	= $cfg->LOSTPASSWORD_CAPTCHA_TEXTCOLOR;
+	$x				= $cfg->LOSTPASSWORD_CAPTCHA_WIDTH;
+	$y				= $cfg->LOSTPASSWORD_CAPTCHA_HEIGHT;
+	$font			= $cfg->LOSTPASSWORD_CAPTCHA_FONT;
 
-	$x = $cfg->LOSTPASSWORD_CAPTCHA_WIDTH;
-	$y = $cfg->LOSTPASSWORD_CAPTCHA_HEIGHT;
+	$iRandVal = strRandom(8, $strSessionVar);
 
-	$font = $cfg->LOSTPASSWORD_CAPTCHA_FONT;
-
-	$iRandVal = strrand(8, $strSessionVar);
-
-	if(!($im = imagecreate($x, $y))) {
+	if(!($image = imagecreate($x, $y))) {
 		throw new iMSCP_Exception('Cannot initialize new GD image stream.');
 	}
 
-	$background_color = imagecolorallocate($im, $rgBgColor[0],
-		$rgBgColor[1],
-		$rgBgColor[2]);
+	imagecolorallocate($image, $rgBgColor[0], $rgBgColor[1], $rgBgColor[2]);
 
-	$text_color = imagecolorallocate($im, $rgTextColor[0],
-		$rgTextColor[1],
-		$rgTextColor[2]);
+	$textColor = imagecolorallocate($image, $rgTextColor[0], $rgTextColor[1], $rgTextColor[2]);
+	$white = imagecolorallocate($image, 0xFF, 0xFF, 0xFF);
 
-	$white = imagecolorallocate($im, 0xFF, 0xFF, 0xFF);
+	imagettftext($image, 34, 0, 10, 50, $textColor, $font, $iRandVal);
 
-	imagettftext($im, 34, 0, 5, 50,
-		$text_color,
-		$font,
-		$iRandVal);
-	// some obfuscation
-	for ($i = 0; $i < 3; $i++) {
+	// Some obfuscation
+	for ($i = 0; $i < 5; $i++) {
 		$x1 = mt_rand(0, $x - 1);
-
 		$y1 = mt_rand(0, round($y / 10, 0));
-
 		$x2 = mt_rand(0, round($x / 10, 0));
-
 		$y2 = mt_rand(0, $y - 1);
 
-		imageline($im, $x1, $y1, $x2, $y2, $white);
+		imageline($image, $x1, $y1, $x2, $y2, $white);
 
 		$x1 = mt_rand(0, $x - 1);
-
 		$y1 = $y - mt_rand(1, round($y / 10, 0));
-
 		$x2 = $x - mt_rand(1, round($x / 10, 0));
-
 		$y2 = mt_rand(0, $y - 1);
 
-		imageline($im, $x1, $y1, $x2, $y2, $white);
+		imageline($image, $x1, $y1, $x2, $y2, $white);
 	}
+
 	// send Header
 	header("Content-type: image/png");
+
 	// create and send PNG image
-	imagepng($im);
+	imagepng($image);
+
 	// destroy image from server
-	imagedestroy($im);
+	imagedestroy($image);
 }
 
-function strrand($length, $strSessionVar) {
+/**
+ * Generate random string
+ *
+ * @param  $length
+ * @param  $strSessionVar
+ * @return string A random string
+ */
+function strRandom($length, $strSessionVar) {
+
 	$str = '';
 
 	while (strlen($str) < $length) {
@@ -124,188 +143,190 @@ function strrand($length, $strSessionVar) {
 	return $_SESSION[$strSessionVar];
 }
 
+/**
+ * Remove old keys
+ *
+ * @param  $ttl
+ * @return void
+ */
 function removeOldKeys($ttl) {
+
+	/**
+	 * @var $sql iMSCP_Database
+	 */
 	$sql = iMSCP_Registry::get('Db');
 
 	$boundary = date('Y-m-d H:i:s', time() - $ttl * 60);
 
-	$query = "
-		UPDATE
-			`admin`
-		SET
-			`uniqkey` = NULL,
-			`uniqkey_time` = NULL
-		WHERE
-			`uniqkey_time` < ?
-	";
+	$query = "UPDATE `admin` SET `uniqkey` = NULL, `uniqkey_time` = NULL WHERE `uniqkey_time` < ?;";
 
 	exec_query($sql, $query, $boundary);
 }
 
-function setUniqKey($admin_name, $uniqkey) {
+/**
+ * Set unique key
+ *
+ * @param  $adminName
+ * @param  $uniqueKey
+ * @return void
+ */
+function setUniqKey($adminName, $uniqueKey) {
+
+	/**
+	 * @var $sql iMSCP_Database
+	 */
 	$sql = iMSCP_Registry::get('Db');
 
 	$timestamp = date('Y-m-d H:i:s', time());
 
-	$query = "
-		UPDATE
-			`admin`
-		SET
-			`uniqkey` = ?,
-			`uniqkey_time` = ?
-		WHERE
-			`admin_name` = ?
-	";
+	$query = "UPDATE `admin` SET `uniqkey` = ?, `uniqkey_time` = ? WHERE `admin_name` = ?;";
 
-	exec_query($sql, $query, array($uniqkey, $timestamp, $admin_name));
-}
-
-function setPassword($uniqkey, $upass) {
-	$sql = iMSCP_Registry::get('Db');
-
-	if ($uniqkey == '') {
-		exit;
-	}
-
-	$query = "
-		UPDATE
-			`admin`
-		SET
-			`admin_pass` = ?
-		WHERE
-			`uniqkey` = ?
-	";
-
-	exec_query($sql, $query, array(crypt_user_pass($upass), $uniqkey));
-}
-
-function uniqkeyexists($uniqkey) {
-	$sql = iMSCP_Registry::get('Db');
-
-	$query = "
-		SELECT
-			`uniqkey`
-		FROM
-			`admin`
-		WHERE
-			`uniqkey` = ?
-	";
-
-	$res = exec_query($sql, $query, $uniqkey);
-
-	return ($res->recordCount() != 0) ? true : false;
+	exec_query($sql, $query, array($uniqueKey, $timestamp, $adminName));
 }
 
 /**
+ * Set password
+ *
+ * @param  $uniqueKey
+ * @param  $userPassword
+ * @return void
+ */
+function setPassword($uniqueKey, $userPassword) {
+
+	/**
+	 * @var $sql iMSCP_Database
+	 */
+	$sql = iMSCP_Registry::get('Db');
+
+	if ($uniqueKey == '') exit;
+
+	$query = "UPDATE `admin` SET `admin_pass` = ? WHERE `uniqkey` = ?;";
+
+	exec_query($sql, $query, array(crypt_user_pass($userPassword), $uniqueKey));
+}
+
+/**
+ * Check unique key existence
+ *
+ * @param  $uniqueKey
+ * @return bool TRUE of the key exists, FALSE otherwise
+ */
+function uniqueKeyExists($uniqueKey) {
+
+	/**
+	 * @var $sql iMSCP_Database
+	 */
+	$sql = iMSCP_Registry::get('Db');
+
+	$query = "SELECT `uniqkey` FROM `admin` WHERE `uniqkey` = ?;";
+
+	$stmt = exec_query($sql, $query, $uniqueKey);
+
+	return ($stmt->recordCount() != 0) ? true : false;
+}
+
+
+/**
+ * generate unique key
+ *
+ * @return string Unique key
  * @todo use more secure hash algorithm (see PHP mcrypt extension)
  */
 function uniqkeygen() {
-	$uniqkey = '';
 
-	while ((uniqkeyexists($uniqkey)) || (!$uniqkey)) {
-		$uniqkey = md5(uniqid(mt_rand()));
+	$uniqueKey = '';
+
+	while ((uniqueKeyExists($uniqueKey)) || (!$uniqueKey)) {
+		$uniqueKey = md5(uniqid(mt_rand()));
 	}
 
-	return $uniqkey;
+	return $uniqueKey;
 }
 
-function sendpassword($uniqkey) {
+/**
+ * Send password
+ *
+ * @param  $uniqueKey
+ * @return bool TRUE on success, FALST otherwise
+ */
+function sendPassword($uniqueKey) {
 
+	/**
+	 * @var $cfg iMSCP_Config_Handler_File
+	 */
 	$cfg = iMSCP_Registry::get('Config');
+
+	/**
+	 * @var $sql iMSCP_Database
+	 */
 	$sql = iMSCP_Registry::get('Db');
 
-	$query = "
-		SELECT
-			`admin_name`, `created_by`, `fname`, `lname`, `email`
-		FROM
-			`admin`
-		WHERE
-			`uniqkey` = ?
-	";
+	$query = "SELECT `admin_name`, `created_by`, `fname`, `lname`, `email` FROM `admin` WHERE `uniqkey` = ?;";
 
-	$res = exec_query($sql, $query, $uniqkey);
+	$stmt = exec_query($sql, $query, $uniqueKey);
 
-	if ($res->recordCount() == 1) {
-		$admin_name = $res->fields['admin_name'];
+	if ($stmt->recordCount() == 1) {
+		$adminName = $stmt->fields['admin_name'];
+		$createdBy = $stmt->fields['created_by'];
+		$adminFirstName = $stmt->fields['fname'];
+		$adminLastName = $stmt->fields['lname'];
+		$to = $stmt->fields['email'];
 
-		$created_by = $res->fields['created_by'];
+		$userPassword = passgen();
 
-		$admin_fname = $res->fields['fname'];
+		setPassword($uniqueKey, $userPassword);
 
-		$admin_lname = $res->fields['lname'];
+		write_log('Lostpassword: ' . $adminName . ': password updated');
 
-		$to = $res->fields['email'];
+		$query = "UPDATE `admin` SET `uniqkey` = ?, `uniqkey_time` = ? WHERE `uniqkey` = ?;";
 
-		$upass = passgen();
+		exec_query($sql, $query, array('', '', $uniqueKey));
 
-		setPassword($uniqkey, $upass);
-
-		write_log('Lostpassword: ' . $admin_name . ': password updated');
-
-		$query = "
-			UPDATE
-				`admin`
-			SET
-				`uniqkey` = ?,
-				`uniqkey_time` = ?
-			WHERE
-				`uniqkey` = ?
-		";
-
-		$rs = exec_query($sql, $query, array('', '', $uniqkey));
-
-		if ($created_by == 0) { $created_by = 1; }
+		if ($createdBy == 0) { $created_by = 1; }
 
 		$data = get_lostpassword_password_email($created_by);
 
-		$from_name = $data['sender_name'];
-
-		$from_email = $data['sender_email'];
-
+		$fromName = $data['sender_name'];
+		$fromEmail = $data['sender_email'];
 		$subject = $data['subject'];
-
 		$message = $data['message'];
 
-		$base_vhost = $cfg->BASE_SERVER_VHOST;
+		$baseVhost = $cfg->BASE_SERVER_VHOST;
+		$baseVhostPrefix = $cfg->BASE_SERVER_VHOST_PREFIX;
 
-		$base_vhost_prefix = $cfg->BASE_SERVER_VHOST_PREFIX;
-
-		if ($from_name) {
-			$from = '"' . $from_name . '" <' . $from_email . '>';
+		if ($fromName) {
+			$from = '"' . $fromName . '" <' . $fromEmail . '>';
 		} else {
-			$from = $from_email;
+			$from = $fromEmail;
 		}
 
 		$search = array();
 		$replace = array();
 
 		$search [] = '{USERNAME}';
-		$replace[] = $admin_name;
+		$replace[] = $adminName;
 		$search [] = '{NAME}';
-		$replace[] = $admin_fname . " " . $admin_lname;
+		$replace[] = $adminFirstName . " " . $adminLastName;
 		$search [] = '{PASSWORD}';
-		$replace[] = $upass;
+		$replace[] = $userPassword;
 		$search [] = '{BASE_SERVER_VHOST}';
-		$replace[] = $base_vhost;
+		$replace[] = $baseVhost;
 		$search [] = '{BASE_SERVER_VHOST_PREFIX}';
-		$replace[] = $base_vhost_prefix;
+		$replace[] = $baseVhostPrefix;
 
 		$subject = str_replace($search, $replace, $subject);
 		$message = str_replace($search, $replace, $message);
 
 		$headers = 'From: ' . $from . "\n";
-
 		$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 7bit\n";
-
 		$headers .= 'X-Mailer: i-MSCP lostpassword mailer';
 
-		$mail_result = mail($to, $subject, $message, $headers);
-
-		$mail_status = ($mail_result) ? 'OK' : 'NOT OK';
+		$mailResult = mail($to, $subject, $message, $headers);
+		$mailStatus = ($mailResult) ? 'OK' : 'NOT OK';
 		
 		$from = tohtml($from);
 		
-		write_log("Lostpassword activated: To: |$to|, From: |$from|, Status: |$mail_status| !", E_USER_NOTICE);
+		write_log("Lostpassword activated: To: |$to|, From: |$from|, Status: |$mailStatus| !", E_USER_NOTICE);
 
 		return true;
 	}
@@ -313,73 +334,77 @@ function sendpassword($uniqkey) {
 	return false;
 }
 
-function requestPassword($admin_name) {
+/**
+ * Request password
+ *
+ * @param  $adminName
+ * @return bool TRUE on success, FALSE otherwise
+ */
+function requestPassword($adminName) {
 
+	/**
+	 * @var $cfg iMSCP_Config_Handler_File
+	 */
 	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('Config');
+
+	/**
+	 * @var $sql iMSCP_Database
+	 */
 	$sql = iMSCP_Registry::get('Db');
 
-	$query = "
-		SELECT
-			`created_by`, `fname`, `lname`, `email`
-		FROM
-			`admin`
-		WHERE
-			`admin_name` = ?
-	";
+	$query = "SELECT `created_by`, `fname`, `lname`, `email` FROM `admin` WHERE `admin_name` = ?;";
 
-	$res = exec_query($sql, $query, $admin_name);
+	$stmt = exec_query($sql, $query, $adminName);
 
-	if ($res->recordCount() == 0) {
-		return false;
-	}
+	if ($stmt->recordCount() == 0) return false;
 
-	$created_by = $res->fields['created_by'];
-	$admin_fname = $res->fields['fname'];
-	$admin_lname = $res->fields['lname'];
-	$to = $res->fields['email'];
+	$createdBy = $stmt->fields['created_by'];
+	$adminFirstName = $stmt->fields['fname'];
+	$adminLastName = $stmt->fields['lname'];
+	$to = $stmt->fields['email'];
 
-	$uniqkey = uniqkeygen();
+	$uniqueKey = uniqkeygen();
 
-	setUniqKey($admin_name, $uniqkey);
+	setUniqKey($adminName, $uniqueKey);
 
-	write_log("Lostpassword: " . $admin_name . ": uniqkey created", E_USER_NOTICE);
+	write_log("Lostpassword: " . $adminName . ": uniqkey created", E_USER_NOTICE);
 
-	if ($created_by == 0) {
-		$created_by = 1;
-	}
+	if ($createdBy == 0) $createdBy = 1;
 
-	$data = get_lostpassword_activation_email($created_by);
 
-	$from_name = $data['sender_name'];
-	$from_email = $data['sender_email'];
+	$data = get_lostpassword_activation_email($createdBy);
+
+	$fromName = $data['sender_name'];
+	$fromEmail = $data['sender_email'];
 	$subject = $data['subject'];
 	$message = $data['message'];
 
-	$base_vhost = $cfg->BASE_SERVER_VHOST;
-	$base_vhost_prefix = $cfg->BASE_SERVER_VHOST_PREFIX;
+	$baseVhost = $cfg->BASE_SERVER_VHOST;
+	$baseVhostPrefix = $cfg->BASE_SERVER_VHOST_PREFIX;
 
-	if ($from_name) {
-		$from = '"' . $from_name . "\" <" . $from_email . ">";
+	if ($fromName) {
+		$from = '"' . $fromName . "\" <" . $fromEmail . ">";
 	} else {
-		$from = $from_email;
+		$from = $fromEmail;
 	}
 
-	$prot = isset($_SERVER['https']) ? 'https' : 'http';
-	$link = $prot . '://' . $_SERVER["HTTP_HOST"] . $_SERVER["PHP_SELF"] . '?key=' . $uniqkey;
+	$protocol = isset($_SERVER['https']) ? 'https' : 'http';
+	$link = $protocol . '://' . $_SERVER["HTTP_HOST"] . $_SERVER["PHP_SELF"] . '?key=' . $uniqueKey;
 
 	$search = array();
 	$replace = array();
 
 	$search [] = '{USERNAME}';
-	$replace[] = $admin_name;
+	$replace[] = $adminName;
 	$search [] = '{NAME}';
-	$replace[] = $admin_fname . " " . $admin_lname;
+	$replace[] = $adminFirstName . " " . $adminLastName;
 	$search [] = '{LINK}';
 	$replace[] = $link;
 	$search [] = '{BASE_SERVER_VHOST}';
-	$replace[] = $base_vhost;
+	$replace[] = $baseVhost;
 	$search [] = '{BASE_SERVER_VHOST_PREFIX}';
-	$replace[] = $base_vhost_prefix;
+	$replace[] = $baseVhostPrefix;
 
 	$subject = str_replace($search, $replace, $subject);
 	$message = str_replace($search, $replace, $message);
@@ -388,13 +413,13 @@ function requestPassword($admin_name) {
 	$headers .= "MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\nContent-Transfer-Encoding: 8bit\n";
 	$headers .= 'X-Mailer: i-MSCP lostpassword mailer';
 
-	$mail_result = mail($to, encode($subject), $message, $headers);
+	$mailResult = mail($to, encode($subject), $message, $headers);
 
-	$mail_status = ($mail_result) ? 'OK' : 'NOT OK';
+	$mailStatus = ($mailResult) ? 'OK' : 'NOT OK';
 	
 	$from = tohtml($from);
 	
-	write_log("Lostpassword send: To: |$to|, From: |$from|, Status: |$mail_status| !", E_USER_NOTICE);
+	write_log("Lostpassword send: To: |$to|, From: |$from|, Status: |$mailStatus| !", E_USER_NOTICE);
 
 	return true;
 }

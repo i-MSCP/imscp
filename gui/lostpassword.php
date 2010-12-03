@@ -94,7 +94,7 @@ if (isset($_GET['key']) && $_GET['key'] != '') {
 	check_input($_GET['key']);
 
 	// Sending new password
-	if (sendpassword($_GET['key'])) {
+	if (sendPassword($_GET['key'])) {
 		set_page_message(tr('Your new password has been sent. Check your mail.'));
 	} else {
 		iMSCP_Registry::set('messageCls', 'error');
