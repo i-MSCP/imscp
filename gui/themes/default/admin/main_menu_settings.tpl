@@ -1,6 +1,6 @@
 <div class="main_menu">
     <ul class="icons">
-        <li><a class="general" class="active" href="index.php">{TR_MENU_GENERAL_INFORMATION}</a></li>
+        <li><a class="general active" href="index.php">{TR_MENU_GENERAL_INFORMATION}</a></li>
         <li><a class="manage_users" href="manage_users.php">{TR_MENU_MANAGE_USERS}</a></li>
         <!-- BDP: hosting_plans -->
         <li><a class="hosting_plans" href="hosting_plan.php">{TR_MENU_HOSTING_PLANS}</a></li>
