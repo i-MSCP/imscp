@@ -26,7 +26,7 @@
 			</div>
 			<div id="copyright">
 				<div id="copyrightInner">
-					<a href="{productLink}" target="blank">{productCopyright}</a>
+					<a href="{productLink}" target="blank" tabindex="8">{productCopyright}</a>
 				</div>
 			</div>
 		</div>
@@ -43,9 +43,9 @@
 							<label>{TR_PASSWORD}:<input type="password" name="upass" id="upass" value="" maxlength="255" tabindex="2" /></label>
 							<div class="buttons">
 							<!-- BDP: lostpwd_button -->
-								<input style="text-align:left;padding-left:15px;" type="button" name="lostpwd" value="{TR_LOSTPW}" tabindex="2" onclick="location.href='lostpassword.php';return false"/>&nbsp;&nbsp;&nbsp;
+								<input style="text-align:left;padding-left:15px;" type="button" name="lostpwd" value="{TR_LOSTPW}" tabindex="7" onclick="location.href='lostpassword.php';return false"/>&nbsp;&nbsp;&nbsp;
 							<!-- EDP: lostpwd_button -->
-								<input type="submit" name="Submit" value="{TR_LOGIN}" tabindex="3" />
+								<input type="submit" name="" value="{TR_LOGIN}" tabindex="3" />
 							</div>
 							<!-- /* Uncomment this to show the ssl switch */
 							<div style="margin-top:15px;">
@@ -55,9 +55,9 @@
 					</form>
 					<div class="toolsbox">
     					<ul class="icons">
-       						<li><a class="pma" href="{TR_PMA_LINK}">PhpMyAdmin</a></li>
-       						<li><a class="filemanager" href="{TR_FTP_LINK}">FileManager</a></li>
-       						<li><a class="webmail" href="{TR_WEBMAIL_LINK}">Webmail</a></li>
+       						<li><a class="pma" href="{TR_PMA_LINK}" tabindex="4">PhpMyAdmin</a></li>
+       						<li><a class="filemanager" href="{TR_FTP_LINK}" tabindex="5">FileManager</a></li>
+       						<li><a class="webmail" href="{TR_WEBMAIL_LINK}" tabindex="6">Webmail</a></li>
    						</ul>
 					</div>
 				</div>

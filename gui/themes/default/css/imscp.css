@@ -2,7 +2,7 @@
  * PAGE LAYOUT
  ***********************************************************************************/
 
-body,html {
+body, html {
     min-height: 100%;
     min-width: 850px;
     margin: 0;
@@ -11,6 +11,7 @@ body,html {
     font-family: arial;
     font-size: 12px;
 }
+
 html {
     position: relative;
 }
@@ -65,14 +66,14 @@ h2 {
     background-repeat: no-repeat;
     margin: 1em 0 0;
 }
+
 h2 span {
     display: block;
     border-bottom: 1px solid #ccc;
     margin-right: -33px;
 }
-h3 {
-    
-}
+
+h3 {}
 
 form {
     margin: 0.5em 0;
@@ -87,6 +88,7 @@ a {
     color: #009;
     outline: none;
 }
+
 a:hover, a:focus {
     text-decoration: underline;
 }
@@ -120,6 +122,7 @@ dd {
     border-width:1px;
     font-weight: bold;
 }
+
 .buttons input:hover, .buttons input:focus {
     color: rgb(92,186,218);
     cursor: pointer;
@@ -128,6 +131,7 @@ dd {
 .buttons input[type="checkbox"] {
     height: auto;
 }
+
 .app_icon {
     background-position: top left;
     background-repeat: no-repeat;
@@ -151,14 +155,17 @@ dd {
     margin: 0 5px;
     float: right;
 }
+
 .icon.big{
 		line-height : 44px;
 		height : 44px;
 		padding-left : 48px;
 }
+
 .icon:first-child {
     margin-right: 0;
 }
+
 table .icon {
     float: none;
 }
@@ -166,6 +173,7 @@ table .icon {
 .paginator {
     margin: 0.5em 0;
 }
+
 .paginator .icon {
     width: 0px;
     overflow: hidden;
@@ -226,6 +234,7 @@ table .icon {
 	max-width : 1994px;
 	position : relative;
 }
+
 .graph span{
 	display : block;
 	min-width : 3px;
@@ -235,6 +244,7 @@ table .icon {
 	width : 0;
 	background-position : left top;
 }
+
 .graph strong{
 	display : block;
 	position : absolute;
@@ -265,6 +275,7 @@ form table tbody td textarea{
     height: 33px;
     z-Index: 999;
 }
+
 .location-area h1 {
     font-size: 13px;
     padding: 0;
@@ -274,6 +285,7 @@ form table tbody td textarea{
     margin: 0 0 0 10px;
     background-repeat: no-repeat;
 }
+
 .location-menu {
     float: right;
     list-style-type: none;
@@ -282,11 +294,13 @@ form table tbody td textarea{
     height: 25px;
     line-height: 25px;
 }
+
 .location-menu li {
     display: inline;
     margin: 0;
     padding: 0;
 }
+
 .location-menu a {
     color: #f00;
     font-weight: bold;
@@ -296,6 +310,7 @@ form table tbody td textarea{
     line-height: 25px;
     display: inline-block;
 }
+
 .location-menu .help { background-image: url(../images/user/help.png); }
 .location-menu .logout { background-image: url(../images/user/logout.png); }
 .location-menu .backadmin { background-image: url(../images/user/backadmin.png); }
@@ -315,6 +330,7 @@ form table tbody td textarea{
     margin: 0;
     font-size: 11px;
 }
+
 .path a:hover {
     color: rgb(92,186,218);
 }
@@ -324,10 +340,12 @@ form table tbody td textarea{
     margin: 0;
     padding: 0;
 }
+
 .path li:before {
     content: "\0020 \0020 \0020 \00BB \0020";
     color: #fff;
 }
+
 .path li:first-child:before {
     content: "";
 }
@@ -342,17 +360,20 @@ form table tbody td textarea{
     text-align: right;
     /*width: 3px;*/
 }
+
 .main_menu ul {
     margin: 0 0 0 11px;
     padding: 0 10px 0 0;
     background: transparent url(../images/background/mainmenu_bg.png) repeat-x top left;
     height: 64px;
 }
+
 .main_menu li {
     margin: 0;
     padding: 0;
     display: inline;
 }
+
 .main_menu a {
     margin: 10px 0 0 5px;
     display: inline-block;
@@ -368,6 +389,7 @@ form table tbody td textarea{
     float: left;
     display: block;
 }
+
 .main_menu a, x:-moz-any-link, x:default {
     float: none;
     display: inline-block;
@@ -389,16 +411,19 @@ form table tbody td textarea{
     padding-bottom: 60px;
     background: transparent url(../images/background/left_top_bg.jpg) no-repeat top;
 }
+
 .left_menu ul {
     margin: 10px 0;
     padding: 0;
     list-style: none;
 }
+
 .left_menu li {
     margin: 0;
     padding: 0;
     display: inline;
 }
+
 .left_menu a {
     color: #fff;
     display: block;
@@ -407,21 +432,25 @@ form table tbody td textarea{
     background: transparent url(../images/background/bullet.png) no-repeat 3px center;
     margin: 2px;
 }
+
 .left_menu a:hover {
     background-image: url(../images/background/bullet_hover.png);
     color: rgb(92,186,218);
 }
+
 .left_menu table {
     width: 100%;
     border-collapse: collapse;
     margin: 10px 0;
 }
+
 .left_menu th {
     background: #000 url(../images/background/top_bar_bg.jpg) repeat-x top left;
     padding: 5px 0 5px 20px;
     text-align: left;
     font-size: 12px;
 }
+
 .left_menu td {
     padding: 5px 0 5px 20px;
 }
@@ -434,16 +463,20 @@ form table tbody td textarea{
     width: 100%;
     border-collapse: collapse;
 }
+
 .body tr {
     border: 1px solid rgb(223,223,223);
     background: #fff;
 }
+
 .body tr.line_top{
 	border-top : 3px solid #000; 
 }
+
 .body tr:nth-child(odd) {
     background: #eee;
 }
+
 .body tfoot td,
 .body th {
     background: #000 url(../images/background/top_bar_bg.jpg) repeat-x;
@@ -455,39 +488,48 @@ form table tbody td textarea{
     border-top: 1px solid #000;
     border-bottom: 1px solid #000;
 }
+
 .body th:first-child {
     border-left: 1px solid #000;
 }
+
 .body th:last-child {
     border-right: 1px solid #000;
 }
+
 .description th {
     background: transparent;
     color: #000;
     border-top: 1px solid #dfdfdf;
     border-bottom: 1px solid #dfdfdf;
 }
+
 .description th:first-child {
     border-left: 1px solid #dfdfdf;
 }
+
 .description th:last-child {
     border-right: 1px solid #dfdfdf;
 }
+
 .body th a{
 	color : #fff;
 }
+
 .body td {
     padding: 5px;
     white-space: nowrap;
     border-top: 1px solid rgb(223,223,223);
     border-bottom: 1px solid rgb(223,223,223);
 }
+
 fieldset {
     padding: 2em 0 0;
     margin: 0 0 1em;
     border: none;
     position: relative;
 }
+
 legend, h3 {
     padding: 0;
     position: absolute;
@@ -541,6 +583,7 @@ legend, h3 {
 .main_menu .statistics:hover { background-image: url(../images/menu/statistics_a.png); }
 .main_menu .support:hover { background-image: url(../images/menu/support_a.png); }
 .main_menu .webtools:hover { background-image: url(../images/menu/webtools_a.png); }
+
 /* Left menu heading icons */
 .location .custom_link { background-image: url(../images/menu/custom_link.png); }
 .location .database { background-image: url(../images/menu/database.png); }
@@ -555,6 +598,7 @@ legend, h3 {
 .location .statistics { background-image: url(../images/menu/statistics.png); }
 .location .support { background-image: url(../images/menu/support.png); }
 .location .webtools { background-image: url(../images/menu/webtools.png); }
+
 /* Content icons (table_icons) */
 .body .adminlog { background-image: url(../images/content/table_icon_adminlog.png); }
 .body .billing { background-image: url(../images/content/table_icon_billing.png); }
@@ -590,6 +634,7 @@ legend, h3 {
 .body .users { background-image: url(../images/content/table_icon_users.png); }
 .body .users2 { background-image: url(../images/content/table_icon_users2.png); }
 .body .apps_installer { background-image: url(../images/content/table_icon_app_installer_cd_big.png); }
+
 /* Content icons (link icons) */
 .i_add_user { background-image: url(../images/icons/add_user.png); }
 .i_awstatsicon { background-image: url(../images/icons/awstatsicon.png); }
@@ -751,4 +796,3 @@ form table td{
 	height:				32px;
 	width:				32px;
 }
-

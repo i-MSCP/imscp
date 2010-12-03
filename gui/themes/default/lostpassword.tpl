@@ -8,13 +8,13 @@
 		<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
 		<meta http-equiv="Content-Style-Type" content="text/css" />
 		<meta http-equiv="Content-Script-Type" content="text/javascript" />
-        <link href="themes/default/css/login-imscp.css" rel="stylesheet" type="text/css" />
-        <!--[if IE 6]>
-        <script type="text/javascript" src="themes/default/js/DD_belatedPNG_0.0.8a-min.js"></script>
-        <script type="text/javascript">
-            DD_belatedPNG.fix('*');
-        </script>
-        <![endif]-->
+		<link href="themes/default/css/login-imscp.css" rel="stylesheet" type="text/css" />
+		<!--[if IE 6]>
+		<script type="text/javascript" src="themes/default/js/DD_belatedPNG_0.0.8a-min.js"></script>
+		<script type="text/javascript">
+			DD_belatedPNG.fix('*');
+		</script>
+		<![endif]-->
 	</head>
 	<body onload="document.lostpwd_frm.uname.focus()" class="body">
 		<div class="header">
@@ -26,7 +26,7 @@
 			</div>
 			<div id="copyright">
 				<div id="copyrightInner">
-					<a href="{productLink}" target="blank">{productCopyright}</a>
+					<a href="{productLink}" target="blank" tabindex="4">{productCopyright}</a>
 				</div>
 			</div>
 		</div>
@@ -38,7 +38,7 @@
 				<div id="inner">
 					<form name="lostpwd_frm" action="lostpassword.php" method="post" >
 						<fieldset style="top:140px;">
-							<label>{TR_IMGCAPCODE}</label>
+							<span>{TR_IMGCAPCODE}</span>
 							<label>{TR_CAPCODE}:<input type="text" name="uname" id="uname" value="" maxlength="255" tabindex="1" /></label>
 							<label>{TR_USERNAME}:<input type="text" name="capcode" value="" maxlength="255" tabindex="2" /></label>
 							<div class="buttons" style="margin-top:10px;">

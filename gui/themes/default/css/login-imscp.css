@@ -1,6 +1,14 @@
-@CHARSET "UTF-8";
+@charset "UTF-8";
+@import url("imscp.css");
 
-@IMPORT url("simple-imscp.css");
+body, html{
+    min-width: 150px;
+    background-image : none;
+}
+
+h2{
+	left : 0;
+}
 
 .body {
 	margin:0;
@@ -15,7 +23,6 @@
 	color: #ffffff;
 	border-bottom: 3px solid #666666;
 }
-
 
 #logo {
 	float: left;
@@ -89,6 +96,12 @@ form fieldset {
 	width : 300px;
 	margin: 0 auto;
 	padding : 0;
+}
+
+fieldset span {
+	display:block;
+	width:100%;
+	text-align : right;
 }
 
 label{
@@ -209,6 +222,7 @@ a {
 	position: relative;
 	width: 100%;
 }
+
 #outer[id] {
 	display: table;
 	position: static;
@@ -227,14 +241,16 @@ a {
 	position: static;
 }
 
+/* for explorer only */
 #inner {
 	position: relative;
 	top: -50%;
 	text-align: left;
-}  /* for explorer only */
+}
 
+/* for all browsers*/
 #inner {
 	width: 316px;
 	margin-left: auto;
 	margin-right: auto;
-} /* for all browsers*/
+}
