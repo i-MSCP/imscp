@@ -217,7 +217,7 @@ class PHPExcel_CachedObjectStorage_Wincache extends PHPExcel_CachedObjectStorage
 
 			parent::__construct($parent);
 		}
-	}	//	function iMSCP_Bootstrap()
+	}	//	function __construct()
 
 
 	public function __destruct() {

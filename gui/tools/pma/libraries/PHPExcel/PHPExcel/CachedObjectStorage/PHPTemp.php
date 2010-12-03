@@ -144,7 +144,7 @@ class PHPExcel_CachedObjectStorage_PHPTemp extends PHPExcel_CachedObjectStorage_
 		if (is_null($this->_fileHandle)) {
 			$this->_fileHandle = fopen('php://temp/maxmemory:'.$this->_memoryCacheSize,'a+');
 		}
-	}	//	function iMSCP_Bootstrap()
+	}	//	function __construct()
 
 
 	public function __destruct() {

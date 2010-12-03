@@ -1,6 +1,10 @@
 i-MSCP ChangeLog
 ~~~~~~~~~~~~~~~~
 
+2010-12-03 Sascha Bay
+	- TOOLS: 
+		* Fixed #40: Updated phpMyAdmin to version 3.3.8.1
+		
 2010-12-02 Sascha Bay
 	- GUI:
 		* Fixed #36: Deprecated: Call-time pass

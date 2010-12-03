@@ -114,7 +114,7 @@ class LUDecomposition {
 		} else {
 			throw new Exception(JAMAError(ArgumentTypeException));
 		}
-	}	//	function iMSCP_Bootstrap()
+	}	//	function __construct()
 
 
 	/**

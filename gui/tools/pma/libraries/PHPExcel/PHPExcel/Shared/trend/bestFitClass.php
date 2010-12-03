@@ -326,6 +326,6 @@ class PHPExcel_Best_Fit
 		$this->_valueCount = $nY;
 		$this->_xValues = $xValues;
 		$this->_yValues = $yValues;
-	}	//	function iMSCP_Bootstrap()
+	}	//	function __construct()
 
 }	//	class bestFit

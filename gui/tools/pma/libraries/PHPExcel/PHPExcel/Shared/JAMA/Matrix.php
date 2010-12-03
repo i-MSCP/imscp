@@ -141,7 +141,7 @@ class Matrix {
 		} else {
 			throw new Exception(JAMAError(PolymorphicArgumentException));
 		}
-	}	//	function iMSCP_Bootstrap()
+	}	//	function __construct()
 
 
 	/**

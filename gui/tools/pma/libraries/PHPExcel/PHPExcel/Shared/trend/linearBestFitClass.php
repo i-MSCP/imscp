@@ -68,6 +68,6 @@ class PHPExcel_Linear_Best_Fit extends PHPExcel_Best_Fit
 		if (parent::__construct($yValues, $xValues) !== False) {
 			$this->_linear_regression($yValues, $xValues, $const);
 		}
-	}	//	function iMSCP_Bootstrap()
+	}	//	function __construct()
 
 }	//	class linearBestFit

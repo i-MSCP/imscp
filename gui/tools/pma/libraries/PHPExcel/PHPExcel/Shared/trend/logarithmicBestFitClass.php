@@ -77,6 +77,6 @@ class PHPExcel_Logarithmic_Best_Fit extends PHPExcel_Best_Fit
 		if (parent::__construct($yValues, $xValues) !== False) {
 			$this->_logarithmic_regression($yValues, $xValues, $const);
 		}
-	}	//	function iMSCP_Bootstrap()
+	}	//	function __construct()
 
 }	//	class logarithmicBestFit

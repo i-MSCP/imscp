@@ -1657,7 +1657,7 @@ class PHPExcel_Calculation {
 				self::$_validLocaleLanguages[] = $filename;
 			}
 		}
-	}	//	function iMSCP_Bootstrap()
+	}	//	function __construct()
 
 
 	/**
