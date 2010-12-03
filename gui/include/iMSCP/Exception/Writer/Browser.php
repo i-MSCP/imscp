@@ -150,16 +150,18 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer {
 
 
 		if(iMSCP_Registry::isRegistered('backButtonDestination')) {
-			$backButtonDest = iMSCP_Registry::get('backButtonDestination');
+			$backButtonDestination = iMSCP_Registry::get('backButtonDestination');
 		} else {
-			$backButtonDest = 'javascript:history.go(-1)';
+			$backButtonDestination = 'javascript:history.go(-1)';
 		}
 
 		$this->_pTemplate->assign(
 			array(
 				'THEME_COLOR_PATH' => '/themes/' . 'default',
-				'BACKBUTTONDESTINATION' => $backButtonDest,
-				'MESSAGE' => $this->_message
+				'BACK_BUTTON_DESTINATION' => $backButtonDestination,
+				'MESSAGE_TITLE' => 'An exception occured',
+				'MESSAGE' => $this->_message,
+				'productLink' => 'http://www.i-mscp.net',
 			)
 		);
 
@@ -167,10 +169,12 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer {
 		if (function_exists('tr')) {
 			$this->_pTemplate->assign(
 				array(
-					'TR_SYSTEM_MESSAGE_PAGE_TITLE' => tr('i-MSCP Error'),
+					'TR_EXCEPTION_PAGE_TITLE' => tr('i-MSCP - internet Multi Server Control Panel - Exception'),
 					'THEME_CHARSET' => tr('encoding'),
+					'productLongName' => tr('internet Multi Server Control Panel'),
+					'productCopyright' => tr('© Copyright 2010 i-MSCP Team<br/>All Rights Reserved'),
+					'MESSAGE_TITLE' => tr('An exception occured'),
 					'TR_BACK' => tr('Back'),
-					'TR_ERROR_MESSAGE' => tr('Error Message'),
 
 				)
 			);
@@ -180,7 +184,8 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer {
 					'TR_SYSTEM_MESSAGE_PAGE_TITLE' => 'iMSCP Error',
 					'THEME_CHARSET' => 'UTF-8',
 					'TR_BACK' => 'Back',
-					'TR_ERROR_MESSAGE' => 'Error Message',
+					'productLongName' => 'internet Multi Server Control Panel',
+					'productCopyright' => '© Copyright 2010 i-MSCP Team<br/>All Rights Reserved'
 				)
 			);
 		}

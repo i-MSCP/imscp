@@ -2,7 +2,7 @@
  * PAGE LAYOUT
  ***********************************************************************************/
 
-body, html {
+body,html {
     min-height: 100%;
     min-width: 850px;
     margin: 0;
@@ -65,7 +65,7 @@ h2 {
     padding-left: 33px;
     height: 33px;
     background-repeat: no-repeat;
-    /*background-position: top left;*/
+    background-position: top left;
     margin: 1em 0 0;
 }
 

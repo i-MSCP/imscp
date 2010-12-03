@@ -68,7 +68,7 @@
  * <code>
  * iMSCP_Exception_Handler::getInstance()->attach(
  *  new iMSCP_Exception_Writer_Browser(
- *		'themes/omega_original/system-message.tpl'
+ *		'themes/default/exception.tpl'
  *  )
  * );
  * </code>

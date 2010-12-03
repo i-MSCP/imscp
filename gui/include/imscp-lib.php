@@ -82,7 +82,7 @@ iMSCP_Registry::setAlias(
  * initialization process.
  */
 iMSCP_Registry::get('exceptionHandler')
-	->attach(new iMSCP_Exception_Writer_Browser('themes/default/system-message.tpl'));
+	->attach(new iMSCP_Exception_Writer_Browser('themes/default/exception.tpl'));
 
 /**
  * Encryption data
