@@ -48,15 +48,15 @@
             <!-- BDP: props_list -->
             <table class="description">
                 <tr>
-                    <th>{TR_KERNEL}</th>
+                    <th width="300">{TR_KERNEL}</th>
                     <td>{KERNEL}</td>
                 </tr>
                 <tr>
-                    <th>{TR_UPTIME}</th>
+                    <th width="300">{TR_UPTIME}</th>
                     <td>{UPTIME}</td>
                 </tr>
                 <tr>
-                    <th>{TR_LOAD}</th>
+                    <th width="300">{TR_LOAD}</th>
                     <td>{LOAD}</td>
                 </tr>
             </table>
@@ -65,23 +65,23 @@
             <h2 class="tools"><span>{TR_CPU_SYSTEM_INFO}</span></h2>
             <table class="description">
                 <tr>
-                    <th>{TR_CPU_MODEL}</th>
-                    <td>{CPU_MODEL}</td>
+                    <th width="300">{TR_CPU_MODEL}</th>
+                    <td >{CPU_MODEL}</td>
                 </tr>
                 <tr>
-                    <th>{TR_CPU_COUNT}</th>
+                    <th width="300">{TR_CPU_COUNT}</th>
                     <td>{CPU_COUNT}</td>
                 </tr>
                 <tr>
-                    <th>{TR_CPU_MHZ}</th>
+                    <th width="300">{TR_CPU_MHZ}</th>
                     <td>{CPU_MHZ}</td>
                 </tr>
                 <tr>
-                    <th>{TR_CPU_CACHE}</th>
+                    <th width="300">{TR_CPU_CACHE}</th>
                     <td>{CPU_CACHE}</td>
                 </tr>
                 <tr>
-                    <th>{TR_CPU_BOGOMIPS}</th>
+                    <th width="300">{TR_CPU_BOGOMIPS}</th>
                     <td>{CPU_BOGOMIPS}</td>
                 </tr>
             </table>
