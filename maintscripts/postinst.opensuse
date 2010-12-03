@@ -46,7 +46,7 @@ case "$1" in
 	configure)
 
 		# Disabling default FastCGI/Fcgid packages configuration files
-		# ispCP provides these own configuration files
+		# i-MSCP provides these own configuration files
 		print_title 'Apache configuration: '
 
 		if [ -f /etc/apache2/conf.d/mod_fastcgi.conf ] ; then
