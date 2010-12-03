@@ -22,7 +22,7 @@
 				</div>
 			</div>
 		</div>
-		<div id="zh">
+		<div id="box">
 			<div id="boxHeader"></div>
 			<div id="content">
 				<h1>{MESSAGE_TITLE}</h1>
