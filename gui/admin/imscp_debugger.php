@@ -709,7 +709,7 @@ $tpl->define_dynamic('htaccess_list', 'page');
 $tpl->assign(
 	array(
 		'TR_ADMIN_IMSCP_DEBUGGER_PAGE_TITLE' => tr(
-			'i-MSCP - Virtual Hosting Control System'
+			'i-MSCP - Multi Server Control Panel'
 		),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
