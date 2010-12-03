@@ -1,6 +1,6 @@
 <div class="main_menu">
 	<ul class="icons">
-		<li><a class="general" class="active" href="index.php">{TR_MENU_GENERAL_INFORMATION}</a></li>
+		<li><a class="general active" href="index.php">{TR_MENU_GENERAL_INFORMATION}</a></li>
 		<!-- BDP: isactive_domain -->
 		<li><a class="domains" href="domains_manage.php">{TR_MENU_MANAGE_DOMAINS}</a></li>
 		<!-- EDP: isactive_domain -->
