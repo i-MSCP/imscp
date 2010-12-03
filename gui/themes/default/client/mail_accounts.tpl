@@ -108,14 +108,14 @@
 					<!-- EDP: mail_item -->
 				</tbody>
 			</table>
-
+			<!-- BDP: default_mails_form -->
 			<form action="mail_accounts.php" method="post" name="showdefault" id="showdefault">
 				<div class="buttons">
-				  	<input name="Submit" type="submit" class="button" value="{TR_SHOW_DEFAULT_EMAILS}" />
+					<input type="hidden" name="uaction" value="{VL_DEFAULT_EMAILS_BUTTON}" />
+		    		<input name="Submit" type="submit" class="button" value="{TR_DEFAULT_EMAILS_BUTTON}" />
 				</div>
-				<input type="hidden" name="uaction" value="show" />
 			</form>
-
+			<!-- EDP: default_mails_form -->
 		</div>
 
 		<div class="footer">

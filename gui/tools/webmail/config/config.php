@@ -32,7 +32,7 @@ $config_version = '1.4.0';
  * Organization's name
  * @global string $org_name
  */
-$org_name = "i-MSCP internet Multi Server Control Panel";
+$org_name = "i-MSCP";
 
 /**
  * Organization's logo picture (blank if none)
