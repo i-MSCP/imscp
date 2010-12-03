@@ -12,7 +12,7 @@
 		<div class="header">
 			<div id="logo">
 				<div id="logoInner">
-					<img src="themes/default/images/imscp_logo32.png" alt="{productLongName}" />
+					<img src="/themes/default/images/imscp_logo32.png" alt="{productLongName}" />
 					<span>{productLongName}</span>
 				</div>
 			</div>

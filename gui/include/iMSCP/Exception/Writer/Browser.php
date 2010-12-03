@@ -158,7 +158,7 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer {
 			array(
 				'THEME_COLOR_PATH' => '/themes/' . 'default',
 				'BACK_BUTTON_DESTINATION' => $backButtonDestination,
-				'MESSAGE_TITLE' => 'An exception occured',
+				'MESSAGE_TITLE' => 'An exception occurred',
 				'MESSAGE' => $this->_message,
 				'productLink' => 'http://www.i-mscp.net',
 			)
@@ -172,7 +172,7 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer {
 					'THEME_CHARSET' => tr('encoding'),
 					'productLongName' => tr('internet Multi Server Control Panel'),
 					'productCopyright' => tr('© Copyright 2010 i-MSCP Team<br/>All Rights Reserved'),
-					'MESSAGE_TITLE' => tr('An exception occured'),
+					'MESSAGE_TITLE' => tr('An exception occurred'),
 					'TR_BACK' => tr('Back'),
 
 				)
