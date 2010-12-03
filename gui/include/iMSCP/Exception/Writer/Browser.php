@@ -183,9 +183,10 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer {
 				array(
 					'TR_SYSTEM_MESSAGE_PAGE_TITLE' => 'iMSCP Error',
 					'THEME_CHARSET' => 'UTF-8',
-					'TR_BACK' => 'Back',
 					'productLongName' => 'internet Multi Server Control Panel',
-					'productCopyright' => '© Copyright 2010 i-MSCP Team<br/>All Rights Reserved'
+					'productCopyright' => '© Copyright 2010 i-MSCP Team<br/>All Rights Reserved',
+					'MESSAGE_TITLE' => 'An exception occured',
+					'TR_BACK' => 'Back'
 				)
 			);
 		}
