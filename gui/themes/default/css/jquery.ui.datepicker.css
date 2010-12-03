@@ -67,3 +67,23 @@
     width: 200px; /*must have*/
     height: 200px; /*must have*/
 }
+
+
+/* IMSCP start */
+.ui-datepicker {
+	background-color:#27369D; cursor:pointer
+}
+
+.ui-datepicker .ui-datepicker-prev {
+	color: rgb(255,255,255);
+}
+.ui-datepicker .ui-datepicker-next {
+	color: rgb(255,255,255);
+}
+.ui-state-default {
+	color: rgb(255,255,255);
+}
+.ui-state-default:hover {
+	 color: rgb(92,186,218);
+}
+/* IMSCP end */
