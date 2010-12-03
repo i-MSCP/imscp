@@ -113,7 +113,7 @@ $cfg['IconvExtraParams'] 				= '//TRANSLIT';
 $cfg['GD2Available'] 					= 'yes';
 $cfg['BrowseMIME'] 						= true;
 /* Changes the default Theme */
-$cfg['ThemeDefault'] 					= 'omega';
+$cfg['ThemeDefault'] 					= 'imscp';
 /* switch off new 'hex as binaray' mode */
 $cfg['DisplayBinaryAsHex'] 				= false;
 ?>

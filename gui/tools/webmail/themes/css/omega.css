@@ -29,9 +29,9 @@ pre {
 
 body {
 	font-family: Verdana;
-	background-image: url(../../skins/omega/header_right_bg.png);
+	background-image: url(../../skins/omega/stripe.png);
 	font-size: 0.8em;
-	background-repeat: no-repeat;
+	background-repeat: repeat-x;
 	/* background-attachment: fixed; */
 	text-align: center;
 	}

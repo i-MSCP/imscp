@@ -32,7 +32,7 @@ $config_version = '1.4.0';
  * Organization's name
  * @global string $org_name
  */
-$org_name = "i-MSCP Omega";
+$org_name = "i-MSCP internet Multi Server Control Panel";
 
 /**
  * Organization's logo picture (blank if none)
@@ -58,7 +58,7 @@ $org_logo_height = '111';
  * This is the web page title that appears at the top of the browser window.
  * @global string $org_title
  */
-$org_title = "i-MSCP Omega";
+$org_title = "i-MSCP internet Multi Server Control Panel";
 
 /**
  * Signout page
@@ -92,7 +92,7 @@ $frame_top = '_top';
  * option set to true.
  * @global string $provider_name
  */
-$provider_name = 'isp-control.net';
+$provider_name = 'i-mscp.net';
 
 /**
  * Provider URI
@@ -103,7 +103,7 @@ $provider_name = 'isp-control.net';
  * option set to true.
  * @global string $provider_uri
  */
-$provider_uri = 'http://www.isp-control.net';
+$provider_uri = 'http://www.i-mscp.net';
 
 /*** Server Settings ***/
 /**
@@ -672,15 +672,15 @@ $config_location_base = '';
  * @global string $theme_css
  */
 $theme_default = 0;
-$theme_css = SM_PATH . 'themes/css/omega.css';
+$theme_css = SM_PATH . 'themes/css/imscp.css';
 
 /**
  * Listing of installed themes
  * @global array $theme
  */
 
-$theme[0]['PATH'] = SM_PATH . 'themes/omega_theme.php';
-$theme[0]['NAME'] = 'i-MSCP Omega';
+$theme[0]['PATH'] = SM_PATH . 'themes/imscp_theme.php';
+$theme[0]['NAME'] = 'i-MSCP internet Multi Server Control Panel';
 
 /**
  * LDAP server(s)
