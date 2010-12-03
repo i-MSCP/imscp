@@ -51,7 +51,7 @@
 #
 
 ################################################################################
-#                      i-MSCP Omega configuration variables                     #
+#                      i-MSCP configuration variables                          #
 ################################################################################
 
 # Retrieving the main i-MSCP configuration file path
