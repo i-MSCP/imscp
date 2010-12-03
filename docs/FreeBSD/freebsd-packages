@@ -57,4 +57,5 @@
 /usr/ports/devel/cdialog
 /usr/ports/mail/p5-MIME-Tools
 /usr/ports/textproc/p5-YAML
+/usr/ports/textproc/gsed
 /usr/ports/sysutils/screen
