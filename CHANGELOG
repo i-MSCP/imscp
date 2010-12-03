@@ -6,6 +6,9 @@ i-MSCP ChangeLog
 		* Fixed #39: Cosmetics - Missing background for the datepicker header
 
 2010-12-03 Sascha Bay
+	- GUI:
+		* Fixed #37: Cosmetics - Hosting plan Header Color
+		* Fixed #38: Defect - Missing checkbox for hostingplan Terms of Service
 	- TOOLS: 
 		* Fixed #40: Updated phpMyAdmin to version 3.3.8.1
 

@@ -94,7 +94,6 @@
 			<td class="content2"><strong>{TOTAL}</strong></td>
 		</tr>
 
-
 		<tr>
 			<td colspan="2"><label for="capcode">{TR_IMGCAPCODE}<br /><strong>{TR_CAPCODE}</strong></label></td>
 		</tr>
@@ -104,8 +103,17 @@
 		<tr>
 			<td colspan="2" class="imgcapcode_description_text"><p>{TR_IMGCAPCODE_DESCRIPTION}</p></td>
 		</tr>
-
-
+		<!-- BDP: tos_field -->
+		<tr>
+			<td width="200" colspan="2" class="content2"><strong>{TR_TOS_PROPS}</strong></td>
+		</tr>
+		<tr>
+			<td colspan="2" class="content"><textarea readonly="readonly" style="width=400px" cols="50" rows="5">{TOS}</textarea></td>
+		</tr>
+		<tr>
+			<td class="content2" colspan="2"><input type="checkbox" name="tosAccept" value="1" />{TR_TOS_ACCEPT}</td>
+		</tr>
+		<!-- EDP: tos_field -->
 		<tr>
 			<td colspan="2">&nbsp;</td>
 		</tr>
