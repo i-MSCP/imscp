@@ -161,7 +161,7 @@ class iMSCP_Filter_Compress_Gzip {
 				$this->_mode = $mode;
 			} else {
 				throw new iMSCP_Exception(
-				'iMSCP_Filter_Compress_Gzip error: Unknown filter mode!'
+					'iMSCP_Filter_Compress_Gzip error: Unknown filter mode!'
 				);
 			}
 		} else {
@@ -173,7 +173,6 @@ class iMSCP_Filter_Compress_Gzip {
 		if(in_array(
 			$compressionLevel,
 			range($this->_minCompressionLevel, $this->_maxCompressionLevel))) {
-
 			$this->_compressionLevel = $compressionLevel;
 		} else {
 			throw new iMSCP_Exception(
@@ -207,10 +206,8 @@ class iMSCP_Filter_Compress_Gzip {
 
 		// Act as filter for the PHP ob_start function
 		if($this->_mode === self::FILTER_BUFFER) {
-			if(ini_get('output_handler') != 'ob_gzhandler'
-				&& !ini_get('zlib.output_compression')
-				&& !headers_sent() && connection_status() == CONNECTION_NORMAL
-				&& $this->_getEncoding()
+			if(ini_get('output_handler') != 'ob_gzhandler' && !ini_get('zlib.output_compression') && !headers_sent()
+				&& connection_status() == CONNECTION_NORMAL && $this->_getEncoding()
 				&& strcmp(substr($data, 0, 2), "\x1f\x8b")) {
 
 					if($this->compressionInformation && !is_xhr()) {
@@ -255,16 +252,13 @@ class iMSCP_Filter_Compress_Gzip {
 
 		$directory = dirname($filePath);
 
-		if(is_dir($directory) && is_writable($directory) &&
-		    $gzipData !== false) {
-
+		if(is_dir($directory) && is_writable($directory) && $gzipData !== false) {
 			$fileHandle = fopen($filePath, 'w');
 			fwrite($fileHandle, $gzipData);
 			fclose($fileHandle);
 		} else {
 			throw new iMSCP_Exception(
-				"iMSCP_GzipFilter error: `$filePath` is not a valid " .
-					"directory or is not writable!"
+				"iMSCP_GzipFilter error: `$filePath` is not a valid directory or is not writable!"
 			);
 		}
 	}
@@ -345,9 +339,7 @@ class iMSCP_Filter_Compress_Gzip {
 			"-->\n";
 
 		$this->_data .= $compressionInformation;
-
 		$gzipData = $this->_getEncodedData();
-
 		$this->_gzipDataSize = strlen($gzipData);
 
 		return $gzipData;

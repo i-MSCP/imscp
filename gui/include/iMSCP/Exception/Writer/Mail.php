@@ -124,9 +124,7 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer {
 		}
 
 		if($ret === false) {
-			throw new iMSCP_Exception(
-				'iMSCP_Exception_Writer_Mail error: Invalid email address!'
-			);
+			throw new iMSCP_Exception('iMSCP_Exception_Writer_Mail error: Invalid email address!');
 		} else {
 			$this->_to = $to;
 		}
@@ -151,12 +149,8 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer {
 
 		$exception = $exceptionHandler->getException();
 
-		$this->_message = str_replace(
-			array("\t", '<br />'), array('', "\n"), $exception->getMessage()
-		);
-
+		$this->_message = str_replace(array("\t", '<br />'), array('', "\n"), $exception->getMessage());
 		$this->prepareMail($exception);
-
 		$this->_loadCache();
 
 		if(!$this->_isAlreadySent()) {
@@ -173,12 +167,13 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer {
 	 */
 	protected function _loadCache() {
 
+		/**
+		 * @var $dbConfig iMSCP_Config_Handler_Db
+		 */
 		if(iMSCP_Registry::isRegistered('Db_Config')) {
 			$dbConfig = iMSCP_Registry::get('Db_Config');
 
-			if(isset($dbConfig->MAIL_BODY_FOOTPRINTS) &&
-				is_serialized($dbConfig->MAIL_BODY_FOOTPRINTS)) {
-
+			if(isset($dbConfig->MAIL_BODY_FOOTPRINTS) && is_serialized($dbConfig->MAIL_BODY_FOOTPRINTS)) {
 				$this->_cache = unserialize($dbConfig->MAIL_BODY_FOOTPRINTS);
 			}
 		}
@@ -192,6 +187,9 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer {
 	protected function _updateCache() {
 
 		if(!empty($this->_cache) && iMSCP_Registry::isRegistered('Db_Config')) {
+				/**
+		 		 * @var $dbConfig iMSCP_Config_Handler_Db
+		 		 */
 				$dbConfig = iMSCP_Registry::get('Db_Config');
 				$dbConfig->MAIL_BODY_FOOTPRINTS = serialize($this->_cache);
 		}
@@ -205,9 +203,7 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer {
 	 */
 	protected function _isAlreadySent() {
 
-		if(array_key_exists($this->_footprint, $this->_cache)
-			&& $this->_cache[$this->_footprint] > time()) {
-
+		if(array_key_exists($this->_footprint, $this->_cache) && $this->_cache[$this->_footprint] > time()) {
 			return true;
 		}
 
@@ -224,13 +220,14 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer {
 	public function cleanCache() {
 
 		if(iMSCP_Registry::isRegistered('Db_Config')) {
+			/**
+		 	 * @var $dbConfig iMSCP_Config_Handler_Db
+		 	 */
 			$dbConfig = iMSCP_Registry::get('Db_Config');
 
-			if(isset($dbConfig->MAIL_BODY_FOOTPRINTS) &&
-				is_serialized($dbConfig->MAIL_BODY_FOOTPRINTS)) {
+			if(isset($dbConfig->MAIL_BODY_FOOTPRINTS) && is_serialized($dbConfig->MAIL_BODY_FOOTPRINTS)) {
 
 				$cache = unserialize($dbConfig->MAIL_BODY_FOOTPRINTS);
-
 				$now = time();
 
 				foreach($cache as $footprint => $expireTime) {
@@ -260,9 +257,7 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer {
 	 */
 	protected function _cacheFootprint() {
 
-		$this->_cache[$this->_footprint] = strtotime(
-			"+{$this->_expiryTime} hour"
-		);
+		$this->_cache[$this->_footprint] = strtotime("+{$this->_expiryTime} hour");
 	}
 
 	/**
@@ -299,8 +294,7 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer {
 
 		// Body
 		$this->_body ="Dear admin,\n\n";
-		$this->_body .=
-			'An exception with the following message was raised in file ' .
+		$this->_body .= 'An exception with the following message was raised in file ' .
 			$exception->getFile() . ' (Line: ' . $exception->getLine() . "):\n\n";
 
 		$this->_body .= str_repeat('=', 65) . "\n\n";
@@ -314,20 +308,17 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer {
 		if(count($exception->getTrace()) != 0) {
 			foreach ($exception->getTrace() as $trace) {
 					if(isset($trace['file'])) {
-						$this->_body .=
-							"File: {$trace['file']} (Line: {$trace['line']})\n";
+						$this->_body .= "File: {$trace['file']} (Line: {$trace['line']})\n";
 					}
 
 					if(isset($trace['class'])) {
-						$this->_body .=
-							"Method: {$trace['class']}::{$trace['function']}()\n";
+						$this->_body .= "Method: {$trace['class']}::{$trace['function']}()\n";
 					} elseif(isset($trace['function'])) {
 						$this->_body .= "Function: {$trace['function']}()\n";
 					}
 			}
 		} else {
-			$this->_body .= 'File: ' . $exception->getFile() . ' (Line: ' .
-				$exception->getLine() . ")\n";
+			$this->_body .= 'File: ' . $exception->getFile() . ' (Line: ' . $exception->getLine() . ")\n";
 			$this->_body .= "Function: main()\n";
 		}
 
@@ -342,17 +333,14 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer {
 			'REMOTE_ADDR', 'SERVER_ADDR') as $key) {
 
 			if(isset($_SERVER[$key]) && $_SERVER[$key] != '' ) {
-				$this->_body .=
-					ucwords(strtolower(str_replace('_', ' ', $key))) .
-						": {$_SERVER["$key"]}\n";
+				$this->_body .= ucwords(strtolower(str_replace('_', ' ', $key))) . ": {$_SERVER["$key"]}\n";
 			}
 		}
 
 		$this->_body .= "\n" . str_repeat('_', 60) . "\n";
 		$this->_body .= self::NAME . "\n";
 		$this->_body .="\n\nNote: If the same exception is raised several " .
-			"times, this mail will not be re-send before " .
-				"{$this->_expiryTime} hours.\n";
+			"times, this mail will not be re-send before {$this->_expiryTime} hours.\n";
 		$this->_body = wordwrap($this->_body, 70, "\n");
 	}
 

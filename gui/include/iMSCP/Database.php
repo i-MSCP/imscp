@@ -163,9 +163,7 @@ class iMSCP_Database {
 	public static function getInstance($connection = 'default') {
 
 		if (!isset(self::$_instances[$connection])) {
-			throw new iMSCP_Exception_Database(
-				"Error: The Database connection $connection doesn't exists!"
-			);
+			throw new iMSCP_Exception_Database("Error: The Database connection $connection doesn't exists!");
 		}
 
 		return self::$_instances[$connection];
@@ -183,9 +181,7 @@ class iMSCP_Database {
 	public static function getRawInstance($connection = 'default') {
 
 		if (!isset(self::$_instances[$connection])) {
-			throw new iMSCP_Exception_Database(
-				"Error: The Database connection $connection doesn't exists!"
-			);
+			throw new iMSCP_Exception_Database("Error: The Database connection $connection doesn't exists!");
 		}
 
 		return self::$_instances[$connection]->_db;
@@ -209,9 +205,7 @@ class iMSCP_Database {
 	public function prepare($stmt, $driver_options = null) {
 
 		if (version_compare(PHP_VERSION, '5.2.5', '<')) {
-			if (preg_match('/(ALTER |CREATE |DROP |GRANT |REVOKE |FLUSH )/i',
-				$stmt)) {
-
+			if (preg_match('/(ALTER |CREATE |DROP |GRANT |REVOKE |FLUSH )/i', $stmt)) {
 				$this->_db->setAttribute(PDO::MYSQL_ATTR_DIRECT_QUERY, true);
 			} else {
 				$this->_db->setAttribute(PDO::MYSQL_ATTR_DIRECT_QUERY, false);
@@ -307,9 +301,7 @@ class iMSCP_Database {
 			}
 		} elseif(!is_null($parameters)) {
 			$parameters = func_get_args();
-			$rs = call_user_func_array(
-				array($this->_db, 'query'), $parameters
-			);
+			$rs = call_user_func_array(array($this->_db, 'query'), $parameters);
 		} else {
 			$rs = $this->_db->query($stmt);
 		}
@@ -317,8 +309,7 @@ class iMSCP_Database {
 		if($rs) {
 			return  new iMSCP_Database_ResultSet($rs === true ? $stmt : $rs);
 		} else {
-			$errorInfo =
-				is_string($stmt) ? $this->errorInfo() : $stmt->errorInfo();
+			$errorInfo = is_string($stmt) ? $this->errorInfo() : $stmt->errorInfo();
 
 			if(isset($errorInfo[2])) {
 				$this->_lastErrorCode = $errorInfo[0];

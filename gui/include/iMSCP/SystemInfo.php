@@ -299,6 +299,9 @@ class iMSCP_SystemInfo {
 	 */
 	private function _getFileSystemInfo() {
 
+		/**
+		 * @var $cfg iMSCP_Config_Handler_File
+		 */
 		$cfg = iMSCP_Registry::get('Config');
 
 		$filesystem = array();
@@ -315,11 +318,7 @@ class iMSCP_SystemInfo {
 		 *	P: Show in POSIX format
 		 */
         $pipes = array(); // satisfy warning
-		$proc = proc_open(
-			$cfg->CMD_DF . ' -TP',
-			$descriptorspec,
-			$pipes
-		);
+		$proc = proc_open($cfg->CMD_DF . ' -TP', $descriptorspec, $pipes);
 
 		if (is_resource($proc)) {
 			// Read data from stream (Pipe 1)
@@ -431,6 +430,9 @@ class iMSCP_SystemInfo {
 	 */
 	private function _getRAMInfo() {
 
+		/**
+		 * @var $cfg iMSCP_Config_Handler_File
+		 */
 		$cfg = iMSCP_Registry::get('Config');
 
 		$ram = array('total' => 0, 'free' => 0, 'used' => 0);
@@ -500,6 +502,9 @@ class iMSCP_SystemInfo {
 	 */
 	private function _getSwapInfo() {
 
+		/**
+		 * @var $cfg iMSCP_Config_Handler_File
+		 */
 		$cfg = iMSCP_Registry::get('Config');
 
 		$swap = array('total' => 0, 'free' => 0, 'used' => 0);
@@ -686,6 +691,9 @@ class iMSCP_SystemInfo {
 	 */
 	protected function sysctl($args) {
 
+		/**
+		 * @var $cfg iMSCP_Config_Handler_File
+		 */
 		$cfg = iMSCP_Registry::get('Config');
 
 		$descriptorspec = array(
@@ -696,9 +704,7 @@ class iMSCP_SystemInfo {
 
 		$pipes = array(); // satisfy warning
 
-		$proc = proc_open(
-			$cfg->CMD_SYSCTL . ' -n ' . $args, $descriptorspec, $pipes
-		);
+		$proc = proc_open($cfg->CMD_SYSCTL . ' -n ' . $args, $descriptorspec, $pipes);
 
 		if (is_resource($proc)) {
 			// Read data from stream (Pipe 1)
@@ -721,5 +727,4 @@ class iMSCP_SystemInfo {
 
 		return $this->_error;
 	}
-
 }

@@ -85,6 +85,9 @@ class iMSCP_Update_Version extends iMSCP_Update {
 	 */
 	protected function _getCurrentVersion() {
 
+		/**
+		 * @var $cfg iMSCP_Config_Handler_File
+		 */
 		$cfg = iMSCP_Registry::get('Config');
 
 		return (int) $cfg->BuildDate;
@@ -107,9 +110,7 @@ class iMSCP_Update_Version extends iMSCP_Update {
 		ini_set('default_socket_timeout', $old_timeout);
 
 		if (!is_resource($dh2)) {
-			$this->_addErrorMessage(
-				tr("Couldn't check for updates! Website not reachable.")
-			);
+			$this->_addErrorMessage(tr("Couldn't check for updates! Website not reachable."));
 
 			return false;
 		}
@@ -128,8 +129,7 @@ class iMSCP_Update_Version extends iMSCP_Update {
 	 */
 	public function checkUpdateExists() {
 
-		return ($this->_getNextVersion() > $this->_currentVersion)
-			? true : false;
+		return ($this->_getNextVersion() > $this->_currentVersion) ? true : false;
 	}
 
 	/**

@@ -114,9 +114,7 @@ class iMSCP_Config {
 						'create is not yet implemented!'
 				);
 			} elseif (!class_exists($className, true)) {
-				throw new iMSCP_Exception(
-					"Error: The class $className is not reachable!"
-				);
+				throw new iMSCP_Exception("Error: The class $className is not reachable!");
     		} elseif (!is_subclass_of($className, 'iMSCP_Config_Handler')) {
 				throw new iMSCP_Exception(
 					'Error: Only iMSCP_Config_Handler objects can be handled ' .

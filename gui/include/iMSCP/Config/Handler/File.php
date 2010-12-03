@@ -123,6 +123,29 @@ require_once  INCLUDEPATH . '/iMSCP/Config/Handler.php';
  * @property string MAX_REMOTE_FILESIZE Max size for remote application package
  * @property int CUSTOM_ORDERPANEL_ID Custom order panel id
  * @property int DATABASE_REVISION Last database revision
+ * @property int CRITICAL_UPDATE_REVISION Last critical update revision
+ * @property string AWSTATS_GROUP_AUTH Awstats group authentication
+ * @property string BASE_SERVER_IP Base server IP
+ * @property string PORT_POSTGREY Posgrey port
+ * @property int BuildDate i-MSCP package Build date
+ * @property string DATABASE_UTF8 tell whether or not use UTF-8 for database communication
+ * @property string PHP_TIMEZONE PHP timezone
+ * @property int DEBUG Debug mode
+ * @property string DEFAULT_ADMIN_ADDRESS Default mail address for administrator
+ * @property string GUI_EXCEPTION_WRITERS Exception writer list
+ * @property string DATABASE_USER i-MSCP database username
+ * @property string DATABASE_PASSWORD i-MSCP database password
+ * @property string DATABASE_TYPE Database type
+ * @property string DATABASE_HOST Database hostname
+ * @property string DATABASE_NAME Database name
+ * @property string CMD_IFCONFIG Path to ifconfig
+ * @property string CMD_DF Path to df
+ * @property string CMD_VMSTAT Path to vmstat
+ * @property string CMD_SWAPCTL Path to swapctl
+ * @property string CMD_SYSCTL path to sysctl
+ * @property string GUI_ROOT_DIR path to GUI
+ * @property string CMD_SHELL Path to shell interpreter
+ * @property string FTP_HOMEDIR Ftp home directory
  *
  * @package		iMSCP_Config
  * @subpackage	Handler
@@ -185,9 +208,7 @@ class iMSCP_Config_Handler_File extends iMSCP_Config_Handler {
 		$fd = @file_get_contents($this->_pathFile);
 
 		if ($fd === false) {
-			throw new iMSCP_Exception(
-				"Error: Unable to open the configuration file `{$this->_pathFile}`!"
-			);
+			throw new iMSCP_Exception("Error: Unable to open the configuration file `{$this->_pathFile}`!");
 		}
 
 		$lines = explode(PHP_EOL, $fd);
@@ -195,7 +216,6 @@ class iMSCP_Config_Handler_File extends iMSCP_Config_Handler {
 		foreach ($lines as $line) {
 			if (!empty($line) && $line[0] != '#' && strpos($line, '=')) {
 				list($key, $value) = explode('=', $line, 2);
-
 				$this[trim($key)] = trim($value);
 			}
 		}

@@ -55,7 +55,7 @@ require_once  INCLUDEPATH . '/iMSCP/Exception/Writer.php';
  * @subpackage	Writer
  * @author		Laurent Declercq <laurent.declercq@i-mscp.net>
  * @since		1.0.7
- * @version		1.0.4
+ * @version		1.0.5
  * @todo		Display more information like trace on debug mode.
  */
 class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer {
@@ -118,7 +118,6 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer {
 			isset($_SESSION['user_type']) && $_SESSION['user_type'] == 'admin')) {
 
 			$this->_message = $exceptionHandler->getException()->getMessage();
-
 		} else {
 
 			$productionException = $exceptionHandler->getProductionException();

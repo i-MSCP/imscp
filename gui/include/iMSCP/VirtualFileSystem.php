@@ -102,21 +102,15 @@ class iMSCP_VirtualFileSystem {
 	 */
 	public function __construct($domain, $db) {
 
+		/**
+		 * @var $cfg iMSCP_Config_Handler_File
+		 */
 		$cfg = iMSCP_Registry::get('Config');
 
 		$this->_domain = $domain;
 		$this->_db = $db;
 
-		defined('VFS_TMP_DIR') or define(
-			'VFS_TMP_DIR', "$cfg->GUI_ROOT_DIR/phptmp");
-		/*
-		if (!defined('VFS_TMP_DIR')) {
-			define(
-				'VFS_TMP_DIR',
-				Config::getInstance()->get('GUI_ROOT_DIR') . '/phptmp'
-			);
-		}
-		*/
+		defined('VFS_TMP_DIR') or define('VFS_TMP_DIR', "$cfg->GUI_ROOT_DIR/phptmp");
 
 		$_ENV['PHP_TMPDIR'] = VFS_TMP_DIR;
 		$_ENV['TMPDIR'] = VFS_TMP_DIR;
@@ -126,8 +120,7 @@ class iMSCP_VirtualFileSystem {
 	}
 
 	/**
-	 * Destructor, ensure that we logout and remove the
-	 * temporary user
+	 * Destructor, ensure that we logout and remove the temporary user
 	 *
 	 * @return void
 	 */
@@ -137,7 +130,7 @@ class iMSCP_VirtualFileSystem {
 	}
 
 	/**
-	 * Sets ispCP DB handler used by this class
+	 * Sets database handler used by this class
 	 *
 	 *
 	 * @param iMSCP_Database $db iMSCP_Database database instance
@@ -275,8 +268,8 @@ class iMSCP_VirtualFileSystem {
 		}
 
 		// Actually get the listing
-		$dirname = dirname($file);
-		$list = $this->ls($dirname);
+		$directoryName = dirname($file);
+		$list = $this->ls($directoryName);
 
 		if (!$list) {
 			return false;
@@ -380,19 +373,14 @@ class iMSCP_VirtualFileSystem {
 	 */
 	protected function _createTmpUser() {
 
+		/**
+		 * @var $cfg iMSCP_Config_Handler_File
+		 */
 		$cfg = iMSCP_Registry::get('Config');
 
 		// Get domain data
 		$query = "
-			SELECT
-				`domain_uid`,
-				`domain_gid`
-			FROM
-				`domain`
-			WHERE
-				`domain_name` = ?
-			;
-		";
+			SELECT `domain_uid`, `domain_gid` FROM `domain` WHERE `domain_name` = ?;";
 
 		$rs = exec_query($this->_db, $query, $this->_domain);
 
@@ -403,7 +391,7 @@ class iMSCP_VirtualFileSystem {
 		// Generate a random userid and password
 		$user = uniqid('tmp_') . '@' . $this->_domain;
 		$this->_passwd = uniqid('tmp_', true);
-		$passwd = crypt_user_pass_with_salt($this->_passwd);
+		$password = crypt_user_pass_with_salt($this->_passwd);
 
 		// Create the temporary user
 		$query = "
@@ -417,14 +405,9 @@ class iMSCP_VirtualFileSystem {
 		";
 
 		$rs = exec_query(
-			$this->_db,
-			$query,
+			$this->_db, $query,
 			array(
-				$user,
-				$passwd,
-				$rs->fields['domain_uid'],
-				$rs->fields['domain_gid'],
-				$cfg->CMD_SHELL,
+				$user, $password, $rs->fields['domain_uid'], $rs->fields['domain_gid'], $cfg->CMD_SHELL,
 				"{$cfg->FTP_HOMEDIR}/{$this->_domain}"
 			)
 		);
@@ -446,13 +429,7 @@ class iMSCP_VirtualFileSystem {
 	 */
 	protected function _removeTmpUser() {
 
-		$query = "
-			DELETE FROM
-				`ftp_users`
-			WHERE
-				`userid` = ?
-			;
-		";
+		$query = "DELETE FROM `ftp_users` WHERE `userid` = ?;";
 
 		$rs = exec_query($this->_db, $query, $this->_user);
 

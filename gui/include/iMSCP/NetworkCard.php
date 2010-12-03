@@ -103,6 +103,7 @@ class iMSCP_NetworkCard {
 
 		if (($result = @file_get_contents($filename)) === false) {
 			$this->_errors .= sprintf(tr('File %s does not exists or cannot be reached!'), $filename);
+
 			return '';
 		}
 
@@ -175,6 +176,7 @@ class iMSCP_NetworkCard {
 
 		if (!empty($strError) || $return_value != 0) {
 			$strError .= "\nReturn value: " . $return_value;
+
 			return false;
 		}
 
@@ -188,6 +190,9 @@ class iMSCP_NetworkCard {
 	 */
 	private function _populateInterfaces() {
 
+		/**
+		 * @var $cfg iMSCP_Config_Handler_File
+		 */
 		$cfg = iMSCP_Registry::get('Config');
 
 		$err = '';
@@ -216,10 +221,7 @@ class iMSCP_NetworkCard {
 			array_diff($this->_interfacesInfo[1], $this->_interfaces);
 
 		$this->_availableInterfaces = array_diff(
-			$this->_interfaces,
-			$this->_offlineInterfaces,
-			$this->_virtualInterfaces,
-			array('lo')
+			$this->_interfaces, $this->_offlineInterfaces, $this->_virtualInterfaces, array('lo')
 		);
 	}
 
@@ -254,9 +256,7 @@ class iMSCP_NetworkCard {
 		$key = array_search($ip,$this->_interfacesInfo[2]);
 
 		if ($key === false) {
-			$this->_errors .= sprintf(
-				tr("This IP (%s) is not assigned to any network card!"), $ip
-			);
+			$this->_errors .= sprintf(tr("This IP (%s) is not assigned to any network card!"), $ip);
 		} else {
 			return $this->_interfacesInfo[1][$key];
 		}

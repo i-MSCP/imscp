@@ -94,9 +94,7 @@ class iMSCP_Registry {
 		$instance = self::getInstance();
 
 		if (!$instance->isRegistered($index)) {
-			throw new iMSCP_Exception(
-				"Error: Data `$index` is not registered!"
-			);
+			throw new iMSCP_Exception("Error: Data `$index` is not registered!");
 		}
 
 		return $instance->$index;

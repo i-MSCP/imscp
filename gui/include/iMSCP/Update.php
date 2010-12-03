@@ -182,7 +182,15 @@ abstract class iMSCP_Update {
 	 */
 	public function executeUpdates() {
 
+		/**
+		 * @var $sql PDO
+		 */
 		$sql = iMSCP_Registry::get('Pdo');
+
+
+		/**
+		 * @var $dbConfig iMSCP_Config_Handler_Db
+		 */
 		$dbConfig = iMSCP_Registry::get('Db_Config');
 
 		$engine_run_request = false;
@@ -235,11 +243,9 @@ abstract class iMSCP_Update {
 
 				// Extended error message
 				if(PHP_SAPI != 'cli') {
-					$errorMessage .= ':<br /><br />' . $e->getMessage() .
-						'<br /><br />Query: ' . trim($query);
+					$errorMessage .= ':<br /><br />' . $e->getMessage() . '<br /><br />Query: ' . trim($query);
 				} else {
-					$errorMessage .= ":\n\n" . $e->getMessage() .
-						"\nQuery: " . trim($query);
+					$errorMessage .= ":\n\n" . $e->getMessage() . "\nQuery: " . trim($query);
 				}
 
 				$this->_addErrorMessage($errorMessage);

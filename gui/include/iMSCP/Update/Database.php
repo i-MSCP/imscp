@@ -1310,6 +1310,10 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	protected function _databaseUpdate_32() {
 
 		$sqlUpd = array();
+
+		/**
+		 * @var $sql iMSCP_Database
+		 */
 		$sql = iMSCP_Registry::get('Db');
 
 		$query = "
@@ -1367,7 +1371,14 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	 */
 	protected function _databaseUpdate_33() {
 
+		/**
+		 * @var $cfg iMSCP_Config_Handler_File
+		 */
 		$cfg = iMSCP_Registry::get('Config');
+
+		/**
+		 * @var $sql iMSCP_Database
+		 */
 		$sql = iMSCP_Registry::get('Db');
 
 		$sqlUpd = array();
@@ -1807,10 +1818,17 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	 */
 	protected function _databaseUpdate_43() {
 
+		/**
+		 * @var $cfg iMSCP_Config_Handler_File
+		 */
 		$cfg = new iMSCP_Config_Handler_File();
-		$DbConfig = iMSCP_Registry::get('Db_Config');
-		$DbConfig->PORT_POSTGREY =
-			"{$cfg->PORT_POSTGREY};tcp;POSTGREY;1;1;localhost";
+
+		/**
+		 * @var $dbConfig iMSCP_Config_Handler_Db
+		 */
+		$dbConfig = iMSCP_Registry::get('Db_Config');
+
+		$dbConfig->PORT_POSTGREY = "{$cfg->PORT_POSTGREY};tcp;POSTGREY;1;1;localhost";
 
 		return array();
 	}

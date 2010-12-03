@@ -37,6 +37,8 @@
  * such as setting the include_path, initializing logging, database and
  * more.
  *
+ * @property _config iMSCP_Config_Handler_File
+ *
  * @category    ispCP
  * @package     iMSCP_Initializer
  * @author      Laurent declercq <laurent.declercq@i-mscp.net>
@@ -83,8 +85,7 @@ class iMSCP_Initializer {
 	 * object
 	 * @return iMSCP_Initializer The iMSCP_Initializer instance
 	 */
-	public static function run($command = '_processAll',
-		iMSCP_Config_Handler_File $config = null) {
+	public static function run($command = '_processAll', iMSCP_Config_Handler_File $config = null) {
 
 		if(!self::$_initialized) {
 
@@ -98,16 +99,11 @@ class iMSCP_Initializer {
 				$command = '_processCLI';
 			}
 
-			$initializer = new self(
-				is_object($config) ? $config : new iMSCP_Config_Handler_File()
-			);
-
+			$initializer = new self(is_object($config) ? $config : new iMSCP_Config_Handler_File());
 			$initializer->$command();
 
 		} else {
-			throw new iMSCP_Exception(
-				'Error: i-MSCP is already fully initialized!'
-			);
+			throw new iMSCP_Exception('Error: i-MSCP is already fully initialized!');
 		}
 
 		return $initializer;
@@ -248,18 +244,14 @@ class iMSCP_Initializer {
 		$php_version = substr(phpversion(), 0, 5);
 
 		if(!version_compare($php_version, '5.1.4', '>=')) {
-			$err_msg = sprintf(
-				'Error: PHP version is %s. Version 5.1.4 or later is required!',
-				$php_version
-			);
+			$err_msg = sprintf('Error: PHP version is %s. Version 5.1.4 or later is required!', $php_version);
 
 		// We will use SPL interfaces like SplObserver, SplSubject
 		// Note: Both ArrayAccess and Iterator interfaces are part of PHP core,
 		// so, we can do the checking here without any problem.
 		} elseif($php_version < '5.3.0' && !extension_loaded('SPL')) {
-			$err_msg =
-				'Error: Standard PHP Library (SPL) was not detected! ' .
-				'See http://php.net/manual/en/book.spl.php for more information!';
+			$err_msg = 'Error: Standard PHP Library (SPL) was not detected! See http://php.net/manual/en/book.spl.php' .
+				' for more information!';
 		} else {
 			return;
 		}
@@ -329,9 +321,7 @@ class iMSCP_Initializer {
 		$ps = PATH_SEPARATOR;
 
 		// Get the current PHP include path string and transform it in array
-		$include_path = explode(
-			$ps, str_replace('.' . $ps, '', DEFAULT_INCLUDE_PATH)
-		);
+		$include_path = explode($ps, str_replace('.' . $ps, '', DEFAULT_INCLUDE_PATH));
 
 		// Adds the ispCP gui/include ABSPATH to the PHP include_path
 		array_unshift($include_path, dirname(dirname(__FILE__)));
@@ -373,11 +363,8 @@ class iMSCP_Initializer {
 		try {
 
 			$connection = iMSCP_Database::connect(
-				$this->_config->DATABASE_USER,
-				decrypt_db_password($this->_config->DATABASE_PASSWORD),
-				$this->_config->DATABASE_TYPE,
-				$this->_config->DATABASE_HOST,
-				$this->_config->DATABASE_NAME
+				$this->_config->DATABASE_USER, decrypt_db_password($this->_config->DATABASE_PASSWORD),
+				$this->_config->DATABASE_TYPE, $this->_config->DATABASE_HOST, $this->_config->DATABASE_NAME
 			);
 
 		} catch(PDOException $e) {
@@ -412,8 +399,7 @@ class iMSCP_Initializer {
 		ini_set('default_charset', 'UTF-8');
 
 		// Switch optionally to utf8 based communication with the database
-		if (isset($this->_config->DATABASE_UTF8) &&
-			$this->_config->DATABASE_UTF8 == 'yes') {
+		if (isset($this->_config->DATABASE_UTF8) && $this->_config->DATABASE_UTF8 == 'yes') {
 
 			$db = iMSCP_Registry::get('Db');
 
@@ -445,18 +431,15 @@ class iMSCP_Initializer {
 		// Timezone is not set in the php.ini file ?
 		if(ini_get('date.timezone') == '') {
 
-			$timezone = (isset($this->_config->PHP_TIMEZONE) &&
-				$this->_config->PHP_TIMEZONE != '')
+			$timezone = (isset($this->_config->PHP_TIMEZONE) && $this->_config->PHP_TIMEZONE != '')
 					? $this->_config->PHP_TIMEZONE : 'UTC';
 
 			if(!date_default_timezone_set($timezone)) {
 				throw new iMSCP_Exception(
-					'Error: Invalid timezone identifier set in your ' .
-					'imscp.conf file! Please fix this error and re-run the ' .
-					'imscp-update script to fix the value in all your ' .
-					'customers\' php.ini files. The current list of valid ' .
-					'identifiers is available at the <a href="http://www.php.net/ ' .
-					'manual/en/timezones.php" target="_blank">PHP Homepage</a> .'
+					'Error: Invalid timezone identifier set in your imscp.conf file! Please fix this error and re-run' .
+					' the imscp-update script to fix the value in all your customers\' php.ini files. The current' .
+					' list of valid identifiers is available at the <a href="http://www.php.net/manual/en/' .
+					'timezones.php" target="_blank">PHP Homepage</a> .'
 				);
 			}
 		}

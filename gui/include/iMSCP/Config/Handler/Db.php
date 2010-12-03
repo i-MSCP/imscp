@@ -42,6 +42,11 @@ require_once  INCLUDEPATH . '/iMSCP/Config/Handler.php';
  * iMSCP_Config_Handler adapter class to handle configuration parameters that
  * are stored in database.
  *
+ * @property string MAIL_BODY_FOOTPRINTS Mail body footprint
+ * @property int MAIL_WRITER_EXPIRY_TIME Mail writer expiry time
+ * @property string PORT_POSTGREY Posgrey port
+ * @property int FAILED_UPDATE Failed database update
+ *
  * @package     iMSCP_Config
  * @subpackage  Handler
  * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
@@ -177,12 +182,9 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator {
 
 		if(is_array($params)) {
 
-			if(!array_key_exists('db', $params) ||
-				!($params['db'] instanceof PDO)) {
+			if(!array_key_exists('db', $params) || !($params['db'] instanceof PDO)) {
 
-				throw new iMSCP_Exception(
-					'Error: A PDO instance is requested for ' . __CLASS__
-				);
+				throw new iMSCP_Exception('Error: A PDO instance is requested for ' . __CLASS__);
 			}
 
 			$this->_db = $params['db'];
@@ -203,9 +205,7 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator {
 			}
 
 		} elseif(!$params instanceof PDO) {
-			throw new iMSCP_Exception(
-				'Error: PDO instance requested for ' . __CLASS__
-			);
+			throw new iMSCP_Exception('Error: PDO instance requested for ' . __CLASS__);
 		}
 
 		$this->_db = $params;
@@ -261,9 +261,7 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator {
 	public function get($key) {
 
 		if (!isset($this->_parameters[$key])) {
-			throw new iMSCP_Exception(
-				"Error: Configuration variable `$key` is missing!"
-			);
+			throw new iMSCP_Exception("Error: Configuration variable `$key` is missing!");
 		}
 
 		return $this->_parameters[$key];
@@ -339,13 +337,9 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator {
 	public function countQueries($queriesCounterType) {
 
 		if($queriesCounterType == 'update') {
-
 			return $this->_updateQueriesCounter;
-
 		} elseif($queriesCounterType == 'insert') {
-
 			return $this->_insertQueriesCounter;
-
 		} else {
 			throw new iMSCP_Exception('Error: Unknown queries counter!');
 		}
@@ -361,13 +355,9 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator {
 	public function resetQueriesCounter($queriesCounterType) {
 
 		if($queriesCounterType == 'update') {
-
 			$this->_updateQueriesCounter = 0;
-
 		} elseif($queriesCounterType == 'insert') {
-
 			 $this->_insertQueriesCounter = 0;
-
 		} else {
 			throw new iMSCP_Exception('Error: Unknown queries counter!');
 		}
@@ -412,9 +402,7 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator {
 				$this->_parameters[$row[$keyColumn]] = $row[$valueColumn];
 			}
 		} else {
-			throw new iMSCP_Exception(
-				'Error: Could not get configuration parameters from database!'
-			);
+			throw new iMSCP_Exception('Error: Could not get configuration parameters from database!');
 		}
 	}
 
@@ -509,9 +497,7 @@ class iMSCP_Config_Handler_Db extends iMSCP_Config_Handler implements iterator {
 		}
 
 		if(!$this->_deleteStmt->execute()) {
-			throw new iMSCP_Exception_Database(
-				'Error: Unable to delete the configuration parameter in the database!'
-			);
+			throw new iMSCP_Exception_Database('Error: Unable to delete the configuration parameter in the database!');
 		}
 	}
 
