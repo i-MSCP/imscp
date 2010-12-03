@@ -89,7 +89,7 @@
 						<!-- BDP: user_list -->
 							<tr>
 								<td>{DB_USER}</td>
-								<td><a href="sql_auth.php?id={USER_ID}" class="icon i_pma">{TR_PHP_MYADMIN}</a>
+								<td><a href="pma_auth.php?id={USER_ID}" class="icon i_pma">{TR_PHP_MYADMIN}</a>
 								<a href="sql_change_password.php?id={USER_ID}"
 									class="icon i_change_password">{TR_CHANGE_PASSWORD}</a> <a href="#"
 									class="icon i_delete"
