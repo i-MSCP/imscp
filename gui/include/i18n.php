@@ -128,7 +128,7 @@ function tr($msgid, $substitution = false) {
 				;
 			";
 
-			$stmt = iMSCP_Registry::get('Pdo')->prepare($query);
+			$stmt = iMSCP_Registry::get('pdo')->prepare($query);
 		}
 
 		// Execute the query

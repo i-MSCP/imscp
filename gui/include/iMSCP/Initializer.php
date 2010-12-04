@@ -299,7 +299,7 @@ class iMSCP_Initializer {
 		/*
 		if(in_array('database', $writerObservers)) {
 			$exceptionHandler->attach(
-				new iMSCP_Exception_Writer_Db(iMSCP_Registry::get('Pdo'))
+				new iMSCP_Exception_Writer_Db(iMSCP_Registry::get('pdo'))
 			);
 		}
 		*/
@@ -375,7 +375,7 @@ class iMSCP_Initializer {
 
 		// Register both Database and PDO instances for shared access
 		iMSCP_Registry::set('db', $connection);
-		iMSCP_Registry::set('Pdo', iMSCP_Database::getRawInstance());
+		iMSCP_Registry::set('pdo', iMSCP_Database::getRawInstance());
 
 		// Will be changed
 		$GLOBALS['sql'] =  iMSCP_Registry::get('db');
@@ -459,7 +459,7 @@ class iMSCP_Initializer {
 	protected function _processConfiguration() {
 
 		// We get an iMSCP_Config_Handler_Db object
-		$dbConfig = new iMSCP_Config_Handler_Db(iMSCP_Registry::get('Pdo'));
+		$dbConfig = new iMSCP_Config_Handler_Db(iMSCP_Registry::get('pdo'));
 
 		// Now, we can override our basis configuration object with parameter
 		// that come from the database

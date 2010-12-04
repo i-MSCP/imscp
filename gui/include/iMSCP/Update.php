@@ -185,7 +185,7 @@ abstract class iMSCP_Update {
 		/**
 		 * @var $sql PDO
 		 */
-		$sql = iMSCP_Registry::get('Pdo');
+		$sql = iMSCP_Registry::get('pdo');
 
 
 		/**
