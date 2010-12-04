@@ -118,7 +118,7 @@ if ($cfg->LOSTPASSWORD) {
 	$tpl->assign('LOSTPWD_BUTTON', '');
 }
 
-gen_page_message($tpl);
+generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();

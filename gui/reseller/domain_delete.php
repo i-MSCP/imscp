@@ -78,7 +78,7 @@ gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_users_manage.tpl')
 
 gen_logged_from($tpl);
 
-gen_page_message($tpl);
+generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();

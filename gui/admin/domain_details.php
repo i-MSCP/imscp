@@ -89,7 +89,7 @@ $tpl->assign(
 gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
 gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_users_manage.tpl');
 
-gen_page_message($tpl);
+generatePageMessage($tpl);
 
 // Get user id that comes for manage domain
 if (!isset($_GET['domain_id'])) {
@@ -107,7 +107,7 @@ if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
 
-unset_messages();
+unsetMessages();
 
 // Begin function block
 

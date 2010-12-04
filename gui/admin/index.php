@@ -26,30 +26,33 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
+ *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
+ * 
  * Portions created by the i-MSCP Team are Copyright (C) 2010 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
-require '../include/imscp-lib.php';
 
-$cfg = iMSCP_Registry::get('config');
+/***********************************************************************************************************************
+ * Functions
+ */
 
-check_login(__FILE__, $cfg->PREVENT_EXTERNAL_LOGIN_ADMIN);
+/**
+ * Generate system message
+ *
+ * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
+ * @return void
+ */
+function generateSystemMessage($tpl) {
 
-$tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/index.tpl');
-$tpl->define_dynamic('def_language', 'page');
-$tpl->define_dynamic('def_layout', 'page');
-$tpl->define_dynamic('no_messages', 'page');
-$tpl->define_dynamic('msg_entry', 'page');
-$tpl->define_dynamic('update_message', 'page');
-$tpl->define_dynamic('database_update_message', 'page');
-$tpl->define_dynamic('traff_warn', 'page');
+	/**
+	 * @var $sql iMSCP_Database
+	 */
+	$sql = iMSCP_Registry::get('db');
 
-function gen_system_message(&$tpl, &$sql) {
-	$user_id = $_SESSION['user_id'];
+	$userId = $_SESSION['user_id'];
 
 	$query = "
 		SELECT
@@ -62,18 +65,19 @@ function gen_system_message(&$tpl, &$sql) {
 			`ticket_status` IN ('1', '2')
 		AND
 			`ticket_reply` = 0
+		;
 	";
 
-	$rs = exec_query($sql, $query, $user_id);
+	$rs = exec_query($sql, $query, $userId);
 
-	$num_question = $rs->fields('cnum');
+	$numQuestion = $rs->fields('cnum');
 
-	if ($num_question == 0) {
+	if ($numQuestion == 0) {
 		$tpl->assign(array('MSG_ENTRY' => ''));
 	} else {
 		$tpl->assign(
 			array(
-				'TR_NEW_MSGS' => tr('You have <b>%d</b> new support questions', $num_question),
+				'TR_NEW_MSGS' => tr('You have <b>%d</b> new support questions', $numQuestion),
 				'TR_VIEW' => tr('View')
 			)
 		);
@@ -82,13 +86,27 @@ function gen_system_message(&$tpl, &$sql) {
 	}
 }
 
-function get_update_infos(&$tpl) {
+/**
+ * Get update information
+ *
+ * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
+ * @return bool
+ */
+function getUpdateInfo($tpl) {
 
+	/**
+	 * @var $cfg iMSCP_Config_Handler_File
+	 */
 	$cfg = iMSCP_Registry::get('config');
-	$sql = iMSCP_Registry::get('db');
 
 	if (iMSCP_Update_Database::getInstance()->checkUpdateExists()) {
-		$tpl->assign(array('DATABASE_UPDATE' => '<a href="database_update.php" class="link">' . tr('A database update is available') . '</a>'));
+		$tpl->assign(
+			array(
+				'DATABASE_UPDATE' => '<a href="database_update.php" class="link">' .
+				tr('A database update is available') . '</a>'
+			)
+		);
+
 		$tpl->parse('DATABASE_UPDATE_MESSAGE', 'database_update_message');
 	} else {
 		$tpl->assign(array('DATABASE_UPDATE_MESSAGE' => ''));
@@ -97,11 +115,18 @@ function get_update_infos(&$tpl) {
 	if (!$cfg->CHECK_FOR_UPDATES) {
 		$tpl->assign(array('UPDATE' => tr('Update checking is disabled!')));
 		$tpl->parse('UPDATE_MESSAGE', 'update_message');
+
 		return false;
 	}
 
 	if (iMSCP_Update_Version::getInstance()->checkUpdateExists()) {
-		$tpl->assign(array('UPDATE' => '<a href="imscp_updates.php" class="link">' . tr('New i-MSCP update is now available') . '</a>'));
+		$tpl->assign(
+			array(
+				'UPDATE' => '<a href="imscp_updates.php" class="link">' .
+				tr('New i-MSCP update is now available') . '</a>'
+			)
+		);
+
 		$tpl->parse('UPDATE_MESSAGE', 'update_message');
 	} else {
 		if (iMSCP_Update_Version::getInstance()->getErrorMessage() != "") {
@@ -113,16 +138,26 @@ function get_update_infos(&$tpl) {
 	}
 }
 
-function gen_server_trafic(&$tpl, &$sql) {
+/**
+ * Generate server traffic
+ * 
+ * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
+ * @return void
+ */
+function generateServerTraffic($tpl) {
+
+	/**
+	 * @var $sql iMSCP_Database
+	 */
+	$sql = iMSCP_Registry::get('db');
+
 	$query = "SELECT `straff_max`, `straff_warn` FROM `straff_settings`";
 
 	$rs = exec_query($sql, $query);
 
 	$straff_max = (($rs->fields['straff_max']) * 1024) * 1024;
-
-	$fdofmnth = mktime(0, 0, 0, date("m"), 1, date("Y"));
-
-	$ldofmnth = mktime(1, 0, 0, date("m") + 1, 0, date("Y"));
+	$fdofmnth = mktime(0, 0, 0, date('m'), 1, date('Y'));
+	$ldofmnth = mktime(1, 0, 0, date('m') + 1, 0, date('Y'));
 
 	$query = "
 		SELECT
@@ -148,8 +183,7 @@ function gen_server_trafic(&$tpl, &$sql) {
 	}
 
 	if (($straff_max != 0 || $straff_max != '') && ($mtraff > $straff_max)) {
-		$tpl->assign('TR_TRAFFIC_WARNING', tr('You are exceeding your traffic limit!')
-			);
+		$tpl->assign('TR_TRAFFIC_WARNING', tr('You are exceeding your traffic limit!'));
 	} else {
 		$tpl->assign('TRAFF_WARN', '');
 	}
@@ -158,6 +192,7 @@ function gen_server_trafic(&$tpl, &$sql) {
 
 	$traff_msg = '';
     $percent = 0;
+
 	if ($straff_max == 0) {
 		$traff_msg = tr('%1$d%% [%2$s of unlimited]', $pr, sizeit($mtraff));
 	} else {
@@ -174,11 +209,28 @@ function gen_server_trafic(&$tpl, &$sql) {
 	);
 }
 
-/*
- *
- * static page messages.
- *
+/***********************************************************************************************************************
+ * Main script
  */
+
+require '../include/imscp-lib.php';
+
+/**
+ * @var $cfg iMSCP_Config_Handler_File
+ */
+$cfg = iMSCP_Registry::get('config');
+
+check_login(__FILE__, $cfg->PREVENT_EXTERNAL_LOGIN_ADMIN);
+
+$tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/index.tpl');
+
+$tpl->define_dynamic('msg_entry', 'page');
+$tpl->define_dynamic('update_message', 'page');
+$tpl->define_dynamic('database_update_message', 'page');
+$tpl->define_dynamic('traff_warn', 'page');
+
+// static page messages.
 
 $tpl->assign(
 	array(
@@ -192,21 +244,17 @@ $tpl->assign(
 gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_general_information.tpl');
 gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_general_information.tpl');
 
-get_admin_general_info($tpl, $sql);
+getAdminGeneralInfo($tpl, $sql);
 
-get_update_infos($tpl);
+getUpdateInfo($tpl);
+generateSystemMessage($tpl);
+generateServerTraffic($tpl);
 
-gen_system_message($tpl, $sql);
-
-gen_server_trafic($tpl, $sql);
-
-gen_page_message($tpl);
+generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg->DUMP_GUI_DEBUG) {
-	dump_gui_debug();
-}
+unsetMessages();
 
-unset_messages();
+if ($cfg->DUMP_GUI_DEBUG) dump_gui_debug();

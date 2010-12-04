@@ -121,7 +121,7 @@ if (isset($_POST['uaction']) && ('add_plan' === $_POST['uaction'])) {
 	gen_empty_ahp_page($tpl);
 }
 
-gen_page_message($tpl);
+generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();

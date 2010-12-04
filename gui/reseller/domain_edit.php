@@ -110,7 +110,7 @@ gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_users_man
 gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_users_manage.tpl');
 get_reseller_software_permission ($tpl,$sql,$_SESSION['user_id']);
 gen_logged_from($tpl);
-gen_page_message($tpl);
+generatePageMessage($tpl);
 
 if (isset($_POST['uaction']) && ('sub_data' === $_POST['uaction'])) {
 	// Process data
@@ -738,4 +738,4 @@ if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
 
-unset_messages();
+unsetMessages();

@@ -540,7 +540,7 @@ gen_logged_from($tpl);
 
 get_reseller_software_permission ($tpl, $sql, $_SESSION['user_id']);
 
-gen_page_message($tpl);
+generatePageMessage($tpl);
 
 $tpl->assign('LAYOUT', '');
 $tpl->parse('PAGE', 'page');
@@ -550,4 +550,4 @@ if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
 
-unset_messages();
+unsetMessages();

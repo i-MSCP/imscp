@@ -425,7 +425,7 @@ if(isset($_POST['uaction'])) {
 }
 
 gen_al_page($tpl, $_SESSION['user_id']);
-gen_page_message($tpl);
+generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();

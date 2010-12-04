@@ -122,7 +122,7 @@ if (isset($cfg->HOSTING_PLANS_LEVEL)
 
 generate_users_list($tpl, $_SESSION['user_id']);
 check_externel_events($tpl);
-gen_page_message($tpl);
+generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
@@ -130,7 +130,7 @@ $tpl->prnt();
 if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
-unset_messages();
+unsetMessages();
 
 // Begin function block
 

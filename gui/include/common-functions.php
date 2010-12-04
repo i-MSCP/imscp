@@ -463,7 +463,7 @@ function is_basicString($string) {
  *
  * @return void
  */
-function unset_messages() {
+function unsetMessages() {
 
 	$glToUnset = array();
 	$glToUnset[] = 'user_page_message';

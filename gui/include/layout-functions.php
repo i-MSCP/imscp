@@ -84,7 +84,7 @@ function get_user_gui_props($sql, $user_id) {
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @return void
  */
-function gen_page_message($tpl) {
+function generatePageMessage($tpl) {
 
 	if (!isset($_SESSION['user_page_message'])) {
 		$tpl->assign('PAGE_MESSAGE', '');

@@ -97,7 +97,7 @@ $tpl->assign(
 
 gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
 gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_users_manage.tpl');
-gen_page_message($tpl);
+generatePageMessage($tpl);
 
 if (isset($_POST['uaction']) && ('sub_data' === $_POST['uaction'])) {
 	// Process data
@@ -690,4 +690,4 @@ if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
 
-unset_messages();
+unsetMessages();

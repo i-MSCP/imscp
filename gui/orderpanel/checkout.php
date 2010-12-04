@@ -170,7 +170,7 @@ if ((isset($_SESSION['fname']) && $_SESSION['fname'] != '')
 }
 
 gen_purchase_haf($tpl, $sql, $user_id);
-gen_page_message($tpl);
+generatePageMessage($tpl);
 
 $tpl->assign(
 	array(

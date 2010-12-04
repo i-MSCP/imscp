@@ -130,7 +130,7 @@ if (isset($_POST['uaction']) && ('add_plan' === $_POST['uaction'])) {
 }
 
 get_reseller_software_permission ($tpl,$sql,$_SESSION['user_id']);
-gen_page_message($tpl);
+generatePageMessage($tpl);
 
 list(
 	$rsub_max,

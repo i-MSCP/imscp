@@ -359,7 +359,7 @@ gen_system_message($tpl, $sql);
 
 // static page messages.
 
-gen_page_message($tpl);
+generatePageMessage($tpl);
 
 $tpl->assign('LAYOUT', '');
 $tpl->parse('PAGE', 'page');
@@ -369,4 +369,4 @@ if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
 
-unset_messages();
+unsetMessages();

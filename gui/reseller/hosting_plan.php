@@ -85,7 +85,7 @@ $tpl->assign(
 );
 
 gen_hp_message($tpl);
-gen_page_message($tpl);
+generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
@@ -249,4 +249,4 @@ function gen_hp_table(&$tpl, $reseller_id) {
 if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
-unset_messages();
+unsetMessages();

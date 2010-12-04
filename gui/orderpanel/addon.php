@@ -141,7 +141,7 @@ if (isset($_POST['domainname']) && $_POST['domainname'] != '') {
 }
 
 gen_purchase_haf($tpl, $sql, $user_id);
-gen_page_message($tpl);
+generatePageMessage($tpl);
 
 $tpl->assign(
 	array(
@@ -160,4 +160,4 @@ if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
 
-unset_messages();
+unsetMessages();

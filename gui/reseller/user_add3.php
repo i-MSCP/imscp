@@ -96,7 +96,7 @@ $tpl->assign(
 
 if (!init_in_values()) {
 	set_page_message(tr("Domain data has been altered. Please enter again"));
-	unset_messages();
+	unsetMessages();
 	user_goto('user_add1.php');
 }
 
@@ -116,7 +116,7 @@ if (isset($_POST['uaction'])
 }
 
 gen_user_add3_page($tpl);
-gen_page_message($tpl);
+generatePageMessage($tpl);
 
 if (!check_reseller_permissions($_SESSION['user_id'], 'alias')) {
 	$tpl->assign('ALIAS_ADD', '');

@@ -110,7 +110,7 @@ $tpl->assign(
 
 if (!get_pageone_param()) {
 	set_page_message(tr("Domain data has been altered. Please enter again"));
-	unset_messages();
+	unsetMessages();
 	user_goto('user_add1.php');
 }
 
@@ -132,7 +132,7 @@ if (isset($_POST['uaction']) && ("user_add2_nxt" === $_POST['uaction']) && (!iss
 
 get_init_au2_page($tpl);
 get_reseller_software_permission ($tpl,$sql,$_SESSION['user_id']);
-gen_page_message($tpl);
+generatePageMessage($tpl);
 
 list($rsub_max, $rals_max, $rmail_max, $rftp_max, $rsql_db_max, $rsql_user_max) = check_reseller_permissions(
 	$_SESSION['user_id'], 'all_permissions'

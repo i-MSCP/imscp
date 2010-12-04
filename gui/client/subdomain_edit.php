@@ -131,7 +131,7 @@ $tpl->prnt();
 if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
-unset_messages();
+unsetMessages();
 
 // Begin function block
 

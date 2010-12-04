@@ -15,17 +15,14 @@
         </script>
         <![endif]-->
     </head>
-
     <body>
 
         <div class="header">
             {MAIN_MENU}
-
             <div class="logo">
                 <img src="{THEME_COLOR_PATH}/images/imscp_logo.png" alt="i-MSCP logo" />
             </div>
         </div>
-
         <div class="location">
             <div class="location-area icons-left">
                 <h1 class="general">{TR_GENERAL_INFORMATION}</h1>
@@ -42,26 +39,26 @@
         <div class="left_menu">
             {MENU}
         </div>
-
         <div class="body">
     
             <!-- BDP: page_message -->
             <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->
+
             <!-- BDP: msg_entry -->
             <div class="warning">{TR_NEW_MSGS}</div>
             <!-- EDP: msg_entry -->
+
             <!-- BDP: update_message -->
             <div class="info">{UPDATE}</div>
             <!-- EDP: update_message -->
+
             <!-- BDP: database_update_message -->
             <div class="warning">{DATABASE_UPDATE}</div>
             <!-- EDP: database_update_message -->
 
             <h2 class="general"><span>{TR_GENERAL_INFORMATION}</span></h2>
 
-
-            <!-- BDP: props_list -->
             <table>
                 <tr>
                     <td>{TR_ACCOUNT_NAME}</td>
@@ -117,7 +114,6 @@
             <div class="graph"><span style="width:{TRAFFIC_PERCENT}%">&nbsp;</span></div>
         
         </div>
-
         <div class="footer">
             i-MSCP {VERSION}<br />build: {BUILDDATE}<br />Codename: {CODENAME}
         </div>

@@ -174,7 +174,7 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 
 	gen_page_data ($tpl, $sql);
 	
-	gen_page_message($tpl);
+	generatePageMessage($tpl);
 	
 	$tpl->parse('PAGE', 'page');
 
@@ -184,7 +184,7 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 		dump_gui_debug();
 	}
 
-	unset_messages();
+	unsetMessages();
 } else {
 	set_page_message(tr('Wrong software id.'), 'error');
 	header('Location: software_manage.php');

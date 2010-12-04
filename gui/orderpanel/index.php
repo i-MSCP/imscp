@@ -155,7 +155,7 @@ unset($_SESSION['plan_id']);
 gen_purchase_haf($tpl, $sql, $user_id);
 gen_packages_list($tpl, $sql, $user_id);
 
-gen_page_message($tpl);
+generatePageMessage($tpl);
 
 $tpl->assign(array('THEME_CHARSET' => tr('encoding'),));
 
@@ -164,4 +164,4 @@ $tpl->prnt();
 
 if ($cfg->DUMP_GUI_DEBUG) dump_gui_debug();
 
-unset_messages();
+unsetMessages();

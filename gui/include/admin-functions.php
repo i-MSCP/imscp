@@ -313,7 +313,7 @@ function get_sql_user_count($sql) {
 	return $rs->recordCount();
 }
 
-function get_admin_general_info(&$tpl, &$sql) {
+function getAdminGeneralInfo(&$tpl, &$sql) {
 
 	$cfg = iMSCP_Registry::get('config');
 

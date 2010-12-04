@@ -111,7 +111,7 @@ $tpl->assign(
 	)
 );
 
-gen_page_message($tpl);
+generatePageMessage($tpl);
 
 get_update_infos($tpl);
 
@@ -122,4 +122,4 @@ if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
 
-unset_messages();
+unsetMessages();
