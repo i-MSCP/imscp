@@ -54,8 +54,7 @@ if (isset($_POST['uname']) && isset($_POST['upass'])) {
 		check_input(trim($_POST['upass']));
 		register_user($uname, $_POST['upass']);
 	} else {
-		iMSCP_Registry::set('messageCls', 'error');
-		set_page_message(tr('All fields are required!'));
+		set_page_message(tr('All fields are required!'), 'error');
 	}
 }
 
