@@ -52,7 +52,7 @@ class iMSCP_Services implements iterator {
 	 *
 	 * @var string
 	 */
-	private $_queriedService;
+	private $_queriedService = null;
 
 	/**
 	 * Constructor
@@ -73,11 +73,13 @@ class iMSCP_Services implements iterator {
 
 		// Retrieve all services
 		foreach($dbConfig as $service => $serviceProperties) {
+
 			if(substr($service, 0, 5) == 'PORT_') {
 				$this->_services[$service] = explode(';', $serviceProperties);
+
 				if($this->_services[$service][5] == '') {
 					$this->_services[$service][5] = $cfg->BASE_SERVER_IP;
-				} elseif($this->_services[$service][5] = '127.0.0.1') {
+				} elseif($this->_services[$service][5] == '127.0.0.1') {
 					$this->_services[$service][5] = 'localhost';
 				}
 			}
