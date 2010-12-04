@@ -102,7 +102,7 @@ if($imscp_db_pass_key != '{KEY}' && $imscp_db_pass_iv != '{IV}') {
 /**
  * Include i-MSCP common functions
  */
-require_once 'net_idna/idna_convert.class.php';
+require_once 'vendor/net_idna/idna_convert.class.php';
 require_once INCLUDEPATH . '/common-functions.php';
 require_once INCLUDEPATH . '/deprecated.php';
 

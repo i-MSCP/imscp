@@ -28,7 +28,7 @@
  */
 
 require_once '../include/imscp-lib.php';
-require_once '../include/Net_DNS/DNS.php';
+require_once '../include/vendor/Net_DNS/DNS.php';
 
 check_login(__FILE__);
 
