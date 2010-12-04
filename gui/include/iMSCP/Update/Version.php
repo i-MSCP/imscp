@@ -88,7 +88,7 @@ class iMSCP_Update_Version extends iMSCP_Update {
 		/**
 		 * @var $cfg iMSCP_Config_Handler_File
 		 */
-		$cfg = iMSCP_Registry::get('Config');
+		$cfg = iMSCP_Registry::get('config');
 
 		return (int) $cfg->BuildDate;
 	}

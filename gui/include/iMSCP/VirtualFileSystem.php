@@ -105,7 +105,7 @@ class iMSCP_VirtualFileSystem {
 		/**
 		 * @var $cfg iMSCP_Config_Handler_File
 		 */
-		$cfg = iMSCP_Registry::get('Config');
+		$cfg = iMSCP_Registry::get('config');
 
 		$this->_domain = $domain;
 		$this->_db = $db;
@@ -376,7 +376,7 @@ class iMSCP_VirtualFileSystem {
 		/**
 		 * @var $cfg iMSCP_Config_Handler_File
 		 */
-		$cfg = iMSCP_Registry::get('Config');
+		$cfg = iMSCP_Registry::get('config');
 
 		// Get domain data
 		$query = "

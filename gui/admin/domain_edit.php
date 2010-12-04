@@ -36,7 +36,7 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/domain_edit.tpl');
@@ -192,7 +192,7 @@ function load_additional_data($user_id, $domain_id) {
 	global $cgi_supp, $username, $allowbackup;
 	global $dns_supp, $software_supp;
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 	$sql = iMSCP_Registry::get('Db');
 
 	// Get domain data
@@ -281,7 +281,7 @@ function gen_editdomain_page(&$tpl) {
 	global $username, $allowbackup;
 	global $dns_supp, $software_supp;
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	// Fill in the fields
 	$domain_name = decode_idna($domain_name);

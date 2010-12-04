@@ -36,7 +36,7 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 
@@ -78,7 +78,7 @@ function generate_page(&$tpl) {
 
 	global $month, $year;
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 	$sql = iMSCP_Registry::get('Db');
 
 	$start_index = 0;

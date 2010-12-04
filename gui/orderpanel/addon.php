@@ -34,7 +34,7 @@
 
 require '../include/imscp-lib.php';
 
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->PURCHASE_TEMPLATE_PATH . '/addon.tpl');
@@ -57,7 +57,7 @@ function addon_domain($dmn_name) {
 	// Should be performed after domain name validation now
 	$dmn_name = encode_idna(strtolower($dmn_name));
 
-	if (imscp_domain_exists($dmn_name, 0) || $dmn_name == iMSCP_Registry::get('Config')->BASE_SERVER_VHOST) {
+	if (imscp_domain_exists($dmn_name, 0) || $dmn_name == iMSCP_Registry::get('config')->BASE_SERVER_VHOST) {
 		set_page_message(tr('Domain already exists on the system!'));
 		return;
 	}
@@ -68,7 +68,7 @@ function addon_domain($dmn_name) {
 
 function is_plan_available(&$sql, $plan_id, $user_id) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
 		$query = "

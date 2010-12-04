@@ -36,7 +36,7 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/subdomain_edit.tpl');
@@ -302,7 +302,7 @@ function check_fwd_data(&$tpl, &$sql, $subdomain_id, $dmn_type) {
 			';
 		}
 
-		exec_query($sql, $query, array($forward_url, iMSCP_Registry::get('Config')->ITEM_CHANGE_STATUS, $subdomain_id));
+		exec_query($sql, $query, array($forward_url, iMSCP_Registry::get('config')->ITEM_CHANGE_STATUS, $subdomain_id));
 
 		send_request();
 

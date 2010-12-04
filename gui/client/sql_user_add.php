@@ -36,7 +36,7 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/sql_user_add.tpl');
@@ -145,7 +145,7 @@ function get_sqluser_list_of_current_db(&$sql, $db_id) {
 
 function gen_sql_user_list(&$sql, &$tpl, $user_id, $db_id) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$first_passed = true;
 	$user_found = false;
@@ -220,7 +220,7 @@ function check_db_user(&$sql, $db_user) {
  */
 function add_sql_user(&$sql, $user_id, $db_id) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	if (!isset($_POST['uaction'])) {
 		return;
@@ -366,7 +366,7 @@ function add_sql_user(&$sql, $user_id, $db_id) {
 
 function gen_page_post_data(&$tpl, $db_id) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	if ($cfg->MYSQL_PREFIX === 'yes') {
 		$tpl->assign('MYSQL_PREFIX_YES', '');

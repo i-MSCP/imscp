@@ -36,7 +36,7 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/imscp_updates.tpl');
@@ -57,7 +57,7 @@ $tpl->assign(
 /* BEGIN common functions */
 function get_update_infos(&$tpl) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	if (!$cfg->CHECK_FOR_UPDATES) {
 		$tpl->assign(

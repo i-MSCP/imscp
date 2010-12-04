@@ -45,7 +45,7 @@
  * @return boolean
  */
 function hasTicketSystem($user_id = null) {
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	if (!$cfg->IMSCP_SUPPORT_SYSTEM) {
 		return false;
@@ -417,7 +417,7 @@ function getTicketSender($ticket_id) {
  * @return date				last date
  */
 function ticketGetLastDate($ticket_id) {
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 	$sql = iMSCP_Registry::get('Db');
 
 	$query = "
@@ -594,7 +594,7 @@ function generateTicketList(&$tpl, $user_id, $start, $count, $userLevel, $status
  * @param int $screenwidth	the width of the display
  */
 function showTicketContent(&$tpl, $ticket_id, $user_id, $screenwidth) {
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 	$sql = iMSCP_Registry::get('Db');
 
 	$query = "
@@ -666,7 +666,7 @@ function showTicketContent(&$tpl, $ticket_id, $user_id, $screenwidth) {
  * @param int $screenwidth	the width of the display
  */
 function showTicketReplies(&$tpl, $ticket_id, $screenwidth) {
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 	$sql = iMSCP_Registry::get('Db');
 
 	$query = "
@@ -724,7 +724,7 @@ function showTicketReplies(&$tpl, $ticket_id, $screenwidth) {
 function sendTicketNotification($to_id, $from_id, $ticket_subject, 
 		$ticket_message, $ticket_status, $urgency) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 	$sql = iMSCP_Registry::get('Db');
 
 	// To information

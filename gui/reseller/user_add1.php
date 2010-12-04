@@ -39,7 +39,7 @@ check_login(__FILE__);
 /**
  * @var $cfg iMSCP_Config_Handler_File
  */
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/user_add1.tpl');
@@ -115,7 +115,7 @@ function check_user_data() {
 	/**
  	 * @var $cfg iMSCP_Config_Handler_File
  	 */
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	/**
  	 * @var $sql iMSCP_Database
@@ -206,7 +206,7 @@ function get_empty_au1_page(&$tpl) {
 	/**
 	 * @var $cfg iMSCP_Config_Handler_File
 	 */
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$tpl->assign(
 		array(
@@ -229,7 +229,7 @@ function get_data_au1_page($tpl) {
 	/**
 	 * @var $cfg iMSCP_Config_Handler_File
 	 */
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$tpl->assign(
 		array(
@@ -250,7 +250,7 @@ function get_hp_data_list($tpl, $reseller_id) {
 	/**
 	 * @var $cfg iMSCP_Config_Handler_File
 	 */
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	/**
 	 * @var $sql iMSCP_Database

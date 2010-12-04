@@ -36,7 +36,7 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 /**
  * Returns the number of requests that still to run
@@ -48,7 +48,7 @@ $cfg = iMSCP_Registry::get('Config');
  */
 function count_requests($sql, $statusField, $tableName) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$query = "
 		SELECT
@@ -85,7 +85,7 @@ function count_requests($sql, $statusField, $tableName) {
  */
 function get_error_domains($sql, $tpl) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$ok_status = $cfg->ITEM_OK_STATUS;
 	$disabled_status = $cfg->ITEM_DISABLED_STATUS;
@@ -162,7 +162,7 @@ function get_error_domains($sql, $tpl) {
  */
 function get_error_aliases($sql, $tpl) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$ok_status = $cfg->ITEM_OK_STATUS;
 	$disabled_status = $cfg->ITEM_DISABLED_STATUS;
@@ -245,7 +245,7 @@ function get_error_aliases($sql, $tpl) {
  */
 function get_error_subdomains($sql, $tpl) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$ok_status = $cfg->ITEM_OK_STATUS;
 	$disabled_status = $cfg->ITEM_DISABLED_STATUS;
@@ -323,7 +323,7 @@ function get_error_subdomains($sql, $tpl) {
  */
 function get_error_alias_subdomains($sql, $tpl) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$ok_status = $cfg->ITEM_OK_STATUS;
 	$disabled_status = $cfg->ITEM_DISABLED_STATUS;
@@ -405,7 +405,7 @@ function get_error_alias_subdomains($sql, $tpl) {
  */
 function get_error_mails($sql, $tpl) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$ok_status = $cfg->ITEM_OK_STATUS;
 	$disabled_status = $cfg->ITEM_DISABLED_STATUS;
@@ -571,7 +571,7 @@ function get_error_mails($sql, $tpl) {
 
 function get_error_htaccess($sql, $tpl) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$ok_status = $cfg->ITEM_OK_STATUS;
 	$delete_status = $cfg->ITEM_DELETE_STATUS;

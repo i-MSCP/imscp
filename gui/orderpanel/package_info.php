@@ -34,7 +34,7 @@
 
 require '../include/imscp-lib.php';
 
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 
@@ -67,7 +67,7 @@ function translate_sse($value) {
 
 function gen_plan_details(&$tpl, &$sql, $user_id, $plan_id) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
 		$query = "

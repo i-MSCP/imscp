@@ -159,7 +159,7 @@ function get_domain_running_als_cnt(&$sql, $domain_id) {
 
 function get_domain_running_mail_acc_cnt(&$sql, $domain_id) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$qr_dmn = "
 		SELECT
@@ -278,7 +278,7 @@ function get_domain_running_mail_acc_cnt(&$sql, $domain_id) {
 
 function get_domain_running_dmn_ftp_acc_cnt(&$sql, $domain_id) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 	$ftp_separator = $cfg->FTP_USERNAME_SEPARATOR;
 
 	$query = "
@@ -313,7 +313,7 @@ function get_domain_running_dmn_ftp_acc_cnt(&$sql, $domain_id) {
 
 function get_domain_running_sub_ftp_acc_cnt(&$sql, $domain_id) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 	$ftp_separator = $cfg->FTP_USERNAME_SEPARATOR;
 
 	$query = "
@@ -368,7 +368,7 @@ function get_domain_running_sub_ftp_acc_cnt(&$sql, $domain_id) {
 
 function get_domain_running_als_ftp_acc_cnt(&$sql, $domain_id) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$ftp_separator = $cfg->FTP_USERNAME_SEPARATOR;
 
@@ -487,7 +487,7 @@ function get_domain_running_props_cnt(&$sql, $domain_id) {
 
 function gen_client_mainmenu(&$tpl, $menu_file) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 	$sql = iMSCP_Registry::get('Db');
 
 	$tpl->define_dynamic('menu', $menu_file);
@@ -660,7 +660,7 @@ function gen_client_mainmenu(&$tpl, $menu_file) {
 
 function gen_client_menu(&$tpl, $menu_file) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 	$sql = iMSCP_Registry::get('Db');
 
 	$tpl->define_dynamic('menu', $menu_file);

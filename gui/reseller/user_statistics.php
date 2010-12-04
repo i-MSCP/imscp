@@ -36,7 +36,7 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/reseller_user_statistics.tpl');
@@ -83,7 +83,7 @@ $tpl->assign(
 
 function generate_page(&$tpl, $reseller_id, $reseller_name) {
 	$sql = iMSCP_Registry::get('Db');
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$rows_per_page = (int)($cfg->DOMAIN_ROWS_PER_PAGE / 2);
 

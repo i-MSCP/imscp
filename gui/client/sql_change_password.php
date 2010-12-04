@@ -36,7 +36,7 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/sql_change_password.tpl');
@@ -54,7 +54,7 @@ if (isset($_GET['id'])) {
 // page functions.
 function change_sql_user_pass(&$sql, $db_user_id, $db_user_name) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	if (!isset($_POST['uaction'])) {
 		return;

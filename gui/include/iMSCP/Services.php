@@ -64,7 +64,7 @@ class iMSCP_Services implements iterator {
 		/**
 		 * @var $cfg iMSCP_Config_Handler_File
 		 */
-		$cfg = iMSCP_Registry::get('Config');
+		$cfg = iMSCP_Registry::get('config');
 
 		/**
 		 * @var $dbConfig iMSCP_Config_Handler_Db

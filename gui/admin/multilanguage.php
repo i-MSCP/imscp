@@ -51,7 +51,7 @@ function showLang($tpl) {
 	/**
 	 * @var $cfg iMSCP_Config_Handler_File
 	 */
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	/**
 	 * @var $sql iMSCP_Database
@@ -455,7 +455,7 @@ check_login(__FILE__);
 /**
  * @var $cfg iMSCP_Config_Handler_File
  */
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/multilanguage.tpl');

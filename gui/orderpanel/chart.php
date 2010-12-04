@@ -34,7 +34,7 @@
 
 require '../include/imscp-lib.php';
 
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->PURCHASE_TEMPLATE_PATH . '/chart.tpl');
@@ -50,7 +50,7 @@ $tpl->define_dynamic('purchase_footer', 'page');
 
 function gen_chart(&$tpl, &$sql, $user_id, $plan_id) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	if (isset($cfg->HOSTING_PLANS_LEVEL)&& $cfg->HOSTING_PLANS_LEVEL == 'admin') {
 		$query = "

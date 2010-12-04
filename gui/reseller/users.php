@@ -36,7 +36,7 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/users.tpl');
@@ -137,7 +137,7 @@ unset_messages();
 function generate_users_list(&$tpl, $admin_id) {
 
 	$sql = iMSCP_Registry::get('Db');
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$rows_per_page = $cfg->DOMAIN_ROWS_PER_PAGE;
 

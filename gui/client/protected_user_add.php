@@ -36,7 +36,7 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/puser_uadd.tpl');
@@ -58,7 +58,7 @@ $tpl->assign(
 
 function padd_user(&$tpl, &$sql, $dmn_id) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] == 'add_user') {
 		// we have to add the user

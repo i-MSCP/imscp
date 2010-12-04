@@ -75,7 +75,7 @@ function encode($in_str, $charset = 'UTF-8') {
 
 function gen_admin_mainmenu(&$tpl, $menu_file) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 	$sql = iMSCP_Registry::get('Db');
 
 	$tpl->define_dynamic('menu', $menu_file);
@@ -190,7 +190,7 @@ function gen_admin_mainmenu(&$tpl, $menu_file) {
 
 function gen_admin_menu(&$tpl, $menu_file) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 	$sql = iMSCP_Registry::get('Db');
 
 	$tpl->define_dynamic('menu', $menu_file);
@@ -315,7 +315,7 @@ function get_sql_user_count($sql) {
 
 function get_admin_general_info(&$tpl, &$sql) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$tpl->assign(
 		array(
@@ -383,7 +383,7 @@ function get_admin_general_info(&$tpl, &$sql) {
 
 function gen_admin_list(&$tpl, &$sql) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$query = "
 		SELECT
@@ -490,7 +490,7 @@ function gen_admin_list(&$tpl, &$sql) {
 
 function gen_reseller_list(&$tpl, &$sql) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$query = "
 		SELECT
@@ -596,7 +596,7 @@ function gen_reseller_list(&$tpl, &$sql) {
 
 function gen_user_list(&$tpl, &$sql) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$start_index = 0;
 	$rows_per_page = $cfg->DOMAIN_ROWS_PER_PAGE;
@@ -1109,7 +1109,7 @@ function generate_reseller_users_props($reseller_id) {
 */
 function generate_user_props($user_id) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 	$sql = iMSCP_Registry::get('Db');
 
 	$query = "
@@ -1494,7 +1494,7 @@ function sub_records_rlike_count($field, $table, $where, $value, $subfield,
 function gen_select_lists(&$tpl, $user_month, $user_year) {
 
 	global $crnt_month, $crnt_year;
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	if(!$user_month == '' || !$user_year == '') {
 		$crnt_month = $user_month;
@@ -1550,7 +1550,7 @@ function get_user_name($user_id) {
 
 function get_logo($user_id) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 	$sql = iMSCP_Registry::get('Db');
 
 	// check which logo we should return:
@@ -1591,7 +1591,7 @@ function get_own_logo($user_id) {
 */
 function get_admin_logo($user_id) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 	$sql = iMSCP_Registry::get('Db');
 
 	$query = "
@@ -1631,7 +1631,7 @@ function calc_bar_value($value, $value_max, $bar_width) {
 function write_log($msg, $level = E_USER_WARNING) {
 
 	global $send_log_to;
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 	$sql = iMSCP_Registry::get('Db');
 
 	if(isset($_SERVER['REMOTE_ADDR'])) {
@@ -1710,7 +1710,7 @@ AUTO_LOG_MSG;
 function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname,
 	$ulname, $utype, $gender = '') {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$admin_login = $_SESSION['user_logged'];
 	$data = get_welcome_email($admin_id, 'user');
@@ -1846,7 +1846,7 @@ function gen_logged_from(&$tpl) {
 function change_domain_status(&$sql, $domain_id, $domain_name, $action,
 	$location) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	if($action == 'disable') {
 		$new_status = $cfg->ITEM_TODISABLED_STATUS;
@@ -2105,7 +2105,7 @@ function gen_admin_domain_query(&$search_query, &$count_query, $start_index,
 function gen_admin_domain_search_options(&$tpl, $search_for, $search_common,
 	$search_status) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	if($search_for == 'n/a' && $search_common == 'n/a' &&
 		$search_status == 'n/a') {
@@ -2241,7 +2241,7 @@ function gen_admin_domain_search_options(&$tpl, $search_for, $search_common,
 */
 function delete_domain($domain_id, $goto, $breseller = false) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 	$sql = iMSCP_Registry::get('Db');
 
 	// Get uid and gid of domain user
@@ -2523,7 +2523,7 @@ function delete_domain($domain_id, $goto, $breseller = false) {
 */
 function gen_purchase_haf(&$tpl, &$sql, $user_id, $encode = false) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$query = "
 		SELECT

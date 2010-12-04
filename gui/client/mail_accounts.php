@@ -36,7 +36,7 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page',$cfg->CLIENT_TEMPLATE_PATH . '/mail_accounts.tpl');
@@ -70,7 +70,7 @@ $tpl->assign(
  */
 function gen_user_mail_action($mail_id, $mail_status) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	if ($mail_status === $cfg->ITEM_OK_STATUS) {
 		return array(
@@ -97,7 +97,7 @@ function gen_user_mail_action($mail_id, $mail_status) {
 function gen_user_mail_auto_respond(
 	$tpl, $mail_id, $mail_type, $mail_status, $mail_auto_respond) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	if ($mail_status === $cfg->ITEM_OK_STATUS) {
 		if ($mail_auto_respond == false) {
@@ -656,7 +656,7 @@ function gen_page_als_mail_list($tpl, $sql, $dmn_id, $dmn_name) {
 function gen_page_lists($tpl, $sql, $user_id) {
 
 	global $dmn_id;
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	list($dmn_id,$dmn_name,,,,,,,$dmn_mailacc_limit
 	) = get_domain_default_props($sql, $user_id);

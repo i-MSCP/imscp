@@ -33,7 +33,7 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/user_add3.tpl');
@@ -180,7 +180,7 @@ function gen_user_add3_page(&$tpl) {
 		$first_name, $last_name, $gender, $firm, $zip, $city, $state, $country,
 		$street_one, $street_two, $mail, $phone, $fax;
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$dmn_user_name = decode_idna($dmn_user_name);
 	// Fill in the fields
@@ -255,7 +255,7 @@ function add_user_data($reseller_id) {
 	global $dns, $backup, $neverexpire, $software_allowed;
 
 	$sql = iMSCP_Registry::get('Db');
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	// Let's get Desired Hosting Plan Data;
 	$err_msg = '';

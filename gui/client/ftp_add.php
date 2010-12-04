@@ -36,7 +36,7 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 
@@ -71,7 +71,7 @@ function get_alias_mount_point(&$sql, $alias_name) {
 
 function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$dmn_name = decode_idna($dmn_name);
 
@@ -104,7 +104,7 @@ function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
 
 function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$ok_status = $cfg->ITEM_OK_STATUS;
 
@@ -165,7 +165,7 @@ function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 
 function gen_dmn_sub_list(&$tpl, &$sql, $dmn_id, $dmn_name, $post_check) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$ok_status = $cfg->ITEM_OK_STATUS;
 	$query = "
@@ -365,7 +365,7 @@ function get_ftp_user_uid(&$sql, $dmn_name, $ftp_user, $ftp_user_gid) {
 
 function add_ftp_user(&$sql, $dmn_name) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$username = strtolower(clean_input($_POST['username']));
 
@@ -452,7 +452,7 @@ function add_ftp_user(&$sql, $dmn_name) {
 
 function check_ftp_acc_data(&$tpl, &$sql, $dmn_id, $dmn_name) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	if (!isset($_POST['username']) || $_POST['username'] === '') {
 		set_page_message(tr('Please enter FTP account username!'), 'error');

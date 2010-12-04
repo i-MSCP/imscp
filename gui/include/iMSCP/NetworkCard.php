@@ -193,7 +193,7 @@ class iMSCP_NetworkCard {
 		/**
 		 * @var $cfg iMSCP_Config_Handler_File
 		 */
-		$cfg = iMSCP_Registry::get('Config');
+		$cfg = iMSCP_Registry::get('config');
 
 		$err = '';
 		$message = $this->executeExternal($cfg->CMD_IFCONFIG, $err);

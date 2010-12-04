@@ -37,7 +37,7 @@ require '../include/imscp-lib.php';
 check_login(__FILE__);
 
 // Get a reference to the Config object
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/settings.tpl');

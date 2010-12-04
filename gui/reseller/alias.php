@@ -36,7 +36,7 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 
@@ -108,7 +108,7 @@ unset_messages();
  */
 function generate_als_list(&$tpl, $reseller_id, &$als_err) {
 	$sql = iMSCP_Registry::get('Db');
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	list(,,,,,,$uals_current) = generate_reseller_user_props($reseller_id);
 

@@ -52,7 +52,7 @@ function gen_packages_list($tpl, $sql, $user_id) {
 	/**
  	 * @var $cfg iMSCP_Config_Handler_File
  	 */
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL == 'admin') {
 		$query = "
@@ -125,7 +125,7 @@ require '../include/imscp-lib.php';
 /**
  * @var $cfg iMSCP_Config_Handler_File
  */
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 

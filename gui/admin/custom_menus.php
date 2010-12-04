@@ -155,7 +155,7 @@ function delete_button(&$sql) {
 
 function edit_button(&$tpl, &$sql) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	if ($_GET['edit_id'] === '' || !is_numeric($_GET['edit_id'])) {
 		set_page_message(tr('Missing or incorrect data input!'), 'error');
@@ -284,7 +284,7 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/custom_menus.tpl');

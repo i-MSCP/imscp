@@ -40,7 +40,7 @@ require 'include/imscp-lib.php';
 /**
  * @var $cfg iMSCP_Config_Handler_File
  */
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 // Lost password feature is disabled ?
 if (!$cfg->LOSTPASSWORD) {

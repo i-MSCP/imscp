@@ -37,7 +37,7 @@ require 'include/imscp-lib.php';
 /**
  * @var $cfg iMSCP_Config_Handler_File
  */
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 if (isset($_GET['logout'])) {
 	unset_user_login_data();

@@ -54,7 +54,7 @@ function gen_al_page(&$tpl, $reseller_id) {
 	global $alias_name, $forward, $forward_prefix, $mount_point;
 
 	$sql = iMSCP_Registry::get('Db');
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	list(,,,,,,$uals_current) = generate_reseller_user_props($reseller_id);
 
@@ -130,7 +130,7 @@ function add_domain_alias(&$sql, &$err_al) {
 
 	global $cr_user_id, $alias_name, $domain_ip, $forward, $forward_prefix,
 		$mount_point, $validation_err_msg;
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$cr_user_id = $_POST['usraccounts'];
 
@@ -317,7 +317,7 @@ function add_domain_alias(&$sql, &$err_al) {
 function gen_users_list(&$tpl, $reseller_id) {
 	global $cr_user_id;
 	$sql = iMSCP_Registry::get('Db');
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$query = "
 		SELECT
@@ -406,7 +406,7 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 // Avoid useless work during Ajax request
 if(!is_xhr()) {

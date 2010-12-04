@@ -189,7 +189,7 @@ function tojs($text) {
  */
 function chk_password($password, $num = 50, $permitted = "") {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	if ($num > 255) {
 		$num = 255;
@@ -328,7 +328,7 @@ function imscp_check_local_part($email, $num = 50) {
 function validates_dname($dname, $subdname_process = false) {
 
 	global $validation_err_msg;
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 	$validation_err_msg = tr('Wrong domain name syntax or number of labels');
 
 	$max_labels = ($subdname_process) ? 99 : $cfg->MAX_DNAMES_LABELS;
@@ -395,7 +395,7 @@ function validates_dname($dname, $subdname_process = false) {
  */
 function validates_subdname($subdname, $dname) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 	global $validation_err_msg;
 	$validation_err_msg = tr('Wrong subdomain syntax or number of labels!');
 
@@ -523,7 +523,7 @@ function _validates_dname_label($label) {
  */
 function _validates_tld($tld) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 	global $validation_err_msg;
 	$validation_err_msg = tr('Wrong Top Level Domain syntax: <b>%s</b>', $tld);
 
@@ -610,7 +610,7 @@ function _validates_tld($tld) {
 function _validates_sld($sld) {
 
 	global $validation_err_msg;
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	if ($cfg->SLD_STRICT_VALIDATION) {
 

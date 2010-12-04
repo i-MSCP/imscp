@@ -46,7 +46,7 @@ function get_user_gui_props($sql, $user_id) {
 	/**
 	 * @var $cfg iMSCP_Config_Handler_File
 	 */
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$query = "
 		SELECT
@@ -151,7 +151,7 @@ function get_menu_vars($menu_link) {
 	/**
 	 * @var $cfg iMSCP_Config_Handler_File
 	 */
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	/**
 	 * @var $sql iMSCP_Database
@@ -237,7 +237,7 @@ function gen_def_layout($tpl, $user_def_layout) {
 	/**
 	 * @var $cfg iMSCP_Config_Handler_File
 	 */
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$layouts = array('blue', 'green', 'red', 'yellow');
 

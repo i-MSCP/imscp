@@ -1374,7 +1374,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 		/**
 		 * @var $cfg iMSCP_Config_Handler_File
 		 */
-		$cfg = iMSCP_Registry::get('Config');
+		$cfg = iMSCP_Registry::get('config');
 
 		/**
 		 * @var $sql iMSCP_Database

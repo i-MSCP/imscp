@@ -36,7 +36,7 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 
@@ -61,7 +61,7 @@ $tpl->assign(
 
 function gen_ip_action($ip_id, $status) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	if ($status == $cfg->ITEM_OK_STATUS) {
 		return array(tr('Remove IP'), 'ip_delete.php?delete_id=' . $ip_id);
@@ -72,7 +72,7 @@ function gen_ip_action($ip_id, $status) {
 
 function show_IPs(&$tpl, &$sql) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$query = "
 		SELECT
@@ -131,7 +131,7 @@ function show_IPs(&$tpl, &$sql) {
 function add_ip(&$tpl, &$sql) {
 
 	global $ip_number, $domain, $alias, $ip_card;
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_ip') {
 		if (check_user_data()) {

@@ -36,7 +36,7 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 if (strtolower($cfg->HOSTING_PLANS_LEVEL) != 'admin') {
 	user_goto('index.php');
@@ -136,7 +136,7 @@ if ($cfg->DUMP_GUI_DEBUG) {
  */
 function gen_empty_ahp_page(&$tpl) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$tpl->assign(
 			array(
@@ -189,7 +189,7 @@ function gen_data_ahp_page(&$tpl) {
 	global $hp_backup, $hp_dns, $hp_allowsoftware;
 	global $tos;
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$tpl->assign(
 			array(

@@ -34,7 +34,7 @@
 
 require '../include/imscp-lib.php';
 
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 check_login(__FILE__, $cfg->PREVENT_EXTERNAL_LOGIN_CLIENT);
 

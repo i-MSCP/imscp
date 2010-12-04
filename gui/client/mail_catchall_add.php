@@ -36,7 +36,7 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/mail_catchall_add.tpl');
@@ -57,7 +57,7 @@ if (isset($_GET['id'])) {
 function gen_dynamic_page_data(&$tpl, &$sql, $id) {
 
 	global $domain_id;
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	list($dmn_id,
 		$dmn_name,
@@ -288,7 +288,7 @@ function gen_dynamic_page_data(&$tpl, &$sql, $id) {
 
 function create_catchall_mail_account(&$sql, $id) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	list($realId, $type) = explode(';', $id);
 	// Check if user is owner of the domain

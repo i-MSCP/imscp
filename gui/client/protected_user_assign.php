@@ -36,7 +36,7 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/puser_assign.tpl');
@@ -166,7 +166,7 @@ function gen_user_assign(&$tpl, &$sql, &$dmn_id) {
 
 function add_user_to_group(&$tpl, &$sql, &$dmn_id) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] == 'add'
 		&& isset($_POST['groups']) && !empty($_POST['groups'])
@@ -222,7 +222,7 @@ function add_user_to_group(&$tpl, &$sql, &$dmn_id) {
 
 function delete_user_from_group(&$tpl, &$sql, &$dmn_id) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] == 'remove'
 		&& isset($_POST['groups_in']) && !empty($_POST['groups_in'])

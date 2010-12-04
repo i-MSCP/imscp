@@ -40,7 +40,7 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/mail_catchall.tpl');
@@ -54,7 +54,7 @@ $tpl->define_dynamic('catchall_item', 'page');
 
 function gen_user_mail_action($mail_id, $mail_status) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	if ($mail_status === $cfg->ITEM_OK_STATUS) {
 		return array(tr('Delete'), "mail_delete.php?id=$mail_id", "mail_edit.php?id=$mail_id");
@@ -65,7 +65,7 @@ function gen_user_mail_action($mail_id, $mail_status) {
 
 function gen_user_catchall_action($mail_id, $mail_status) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	if ($mail_status === $cfg->ITEM_ADD_STATUS) {
 		return array(tr('N/A'), '#'); // Addition in progress

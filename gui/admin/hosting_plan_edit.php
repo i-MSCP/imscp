@@ -36,7 +36,7 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 if (strtolower($cfg->HOSTING_PLANS_LEVEL) != 'admin') {
 	user_goto('index.php');
@@ -162,7 +162,7 @@ if ($cfg->DUMP_GUI_DEBUG) {
  */
 function restore_form(&$tpl) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$tpl->assign(
 		array(
@@ -205,7 +205,7 @@ function restore_form(&$tpl) {
  */
 function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$_SESSION['hpid'] = $hpid;
 

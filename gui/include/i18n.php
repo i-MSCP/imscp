@@ -47,7 +47,7 @@
  */
 function curlang($newlang = null, $force = false) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 	static $language = null;
 
 	// We store old value so if $language is changed old value is returned

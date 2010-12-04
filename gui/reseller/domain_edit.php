@@ -39,7 +39,7 @@ check_login(__FILE__);
 /**
  * @var $cfg iMSCP_Config_Handler_File
  */
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/domain_edit.tpl');
@@ -187,7 +187,7 @@ function load_additional_data($user_id, $domain_id) {
 	/**
 	 * @var $cfg iMSCP_Config_Handler_File
 	 */
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	/**
 	 * @var $sql iMSCP_Database
@@ -277,7 +277,7 @@ function gen_editdomain_page($tpl) {
 	/**
 	 * @var $cfg iMSCP_Config_Handler_File
 	 */
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	// Fill in the fields
 	$domain_name = decode_idna($domain_name);

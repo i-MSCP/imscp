@@ -77,7 +77,7 @@ function check_subdomain_permissions($sql, $user_id) {
 
 function gen_user_add_subdomain_data(&$tpl, &$sql, $user_id) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$subdomain_name = $subdomain_mnt_pt = $forward = $forward_prefix = '';
 
@@ -158,7 +158,7 @@ function gen_user_add_subdomain_data(&$tpl, &$sql, $user_id) {
 
 function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$ok_status = $cfg->ITEM_OK_STATUS;
 
@@ -218,7 +218,7 @@ function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 function subdmn_exists(&$sql, $user_id, $domain_id, $sub_name) {
 	global $dmn_name;
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	if ($_POST['dmn_type'] == 'als') {
 		$query_subdomain = "
@@ -334,7 +334,7 @@ function subdmn_mnt_pt_exists(&$sql, $user_id, $domain_id, $sub_name, $sub_mnt_p
 
 function subdomain_schedule(&$sql, $user_id, $domain_id, $sub_name, $sub_mnt_pt, $forward) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$status_add = $cfg->ITEM_ADD_STATUS;
 
@@ -509,7 +509,7 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 // Avoid useless work during Ajax request
 if(!is_xhr()) {

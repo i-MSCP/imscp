@@ -54,7 +54,7 @@ function captcha_fontfile_exists() {
 	/**
 	 * @var $cfg iMSCP_Config_Handler_File
 	 */
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	return file_exists($cfg->LOSTPASSWORD_CAPTCHA_FONT);
 }
@@ -71,7 +71,7 @@ function createImage($strSessionVar) {
 	/**
 	 * @var $cfg iMSCP_Config_Handler_File
 	 */
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$rgBgColor		= $cfg->LOSTPASSWORD_CAPTCHA_BGCOLOR;
 	$rgTextColor	= $cfg->LOSTPASSWORD_CAPTCHA_TEXTCOLOR;
@@ -254,7 +254,7 @@ function sendPassword($uniqueKey) {
 	/**
 	 * @var $cfg iMSCP_Config_Handler_File
 	 */
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	/**
 	 * @var $sql iMSCP_Database
@@ -345,8 +345,8 @@ function requestPassword($adminName) {
 	/**
 	 * @var $cfg iMSCP_Config_Handler_File
 	 */
-	$cfg = iMSCP_Registry::get('Config');
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
+	$cfg = iMSCP_Registry::get('config');
 
 	/**
 	 * @var $sql iMSCP_Database

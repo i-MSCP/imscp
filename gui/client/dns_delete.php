@@ -33,7 +33,7 @@ check_login(__FILE__);
 
 if (isset($_GET['edit_id']) && $_GET['edit_id'] !== '') {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$dns_id = (int) $_GET['edit_id'];
 	$dmn_id = get_user_domain_id($sql, $_SESSION['user_id']);

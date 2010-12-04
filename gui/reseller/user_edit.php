@@ -34,7 +34,7 @@
 
 require '../include/imscp-lib.php';
 
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 check_login(__FILE__);
 
@@ -240,7 +240,7 @@ function gen_edituser_page(&$tpl) {
 		$firm, $zip, $gender, $city, $state, $country, $street_one, $street_two,
 		$phone, $fax;
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	if ($customer_id == NULL) {
 		$customer_id = '';
@@ -284,7 +284,7 @@ function update_data_in_db($hpid) {
 		$mail, $phone, $fax, $inpass, $admin_login;
 
 	$sql = iMSCP_Registry::get('Db');
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$reseller_id = $_SESSION['user_id'];
 

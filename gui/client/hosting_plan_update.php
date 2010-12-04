@@ -36,7 +36,7 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/hosting_plan_update.tpl');
@@ -70,7 +70,7 @@ function check_update_current_value($curr, $new) {
 
 function gen_hp(&$tpl, &$sql, $user_id) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	// get domain id
 	$query = "
@@ -470,7 +470,7 @@ $tpl->assign(
  */
 function add_new_order(&$tpl, &$sql, $order_id, $user_id) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	// get domain id
 	$query = "

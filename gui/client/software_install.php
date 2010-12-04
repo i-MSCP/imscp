@@ -37,7 +37,7 @@ check_login(__FILE__);
 /**
  * @var $cfg iMSCP_Config_Handler_File
  */
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 /**
  * @var $sql iMSCP_Database
@@ -314,7 +314,7 @@ function gen_user_domain_list($tpl, $sql, $user_id) {
 	/**
 	* @var $cfg iMSCP_Config_Handler_File
 	*/
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 	
 	/**
 	 * @var $sql iMSCP_Database
@@ -481,7 +481,7 @@ function check_db_user_list($tpl, $sql, $db_id) {
 	/**
 	* @var $cfg iMSCP_Config_Handler_File
 	*/
-	$cfg = iMSCP_Registry::get('Config');;
+	$cfg = iMSCP_Registry::get('config');;
 	
 	/**
 	 * @var $sql iMSCP_Database
@@ -545,7 +545,7 @@ function check_db_avail(&$tpl, &$sql, $dmn_id, $dmn_sqld_limit) {
 	/**
 	* @var $cfg iMSCP_Config_Handler_File
 	*/
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 	
 	/**
 	 * @var $sql iMSCP_Database

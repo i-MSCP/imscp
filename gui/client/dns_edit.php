@@ -32,7 +32,7 @@ require_once '../include/Net_DNS/DNS.php';
 
 check_login(__FILE__);
 
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/dns_edit.tpl');
@@ -154,7 +154,7 @@ function mysql_get_enum(&$sql, $object, &$default = null) {
  */
 function create_options($data, $value = null) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$res = '';
 	reset($data);
@@ -227,7 +227,7 @@ function decode_zone_data($data) {
 function gen_editdns_page(&$tpl, $edit_id) {
 
 	global $sql, $DNS_allowed_types;
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	list(
 		$dmn_id, $dmn_name,,,,,,,,,,,,,,,,,,,,,$dmn_dns
@@ -456,7 +456,7 @@ function validate_NAME($domain, &$err) {
 function check_fwd_data(&$tpl, $edit_id) {
 
 	global $sql;
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$add_mode = $edit_id === true;
 

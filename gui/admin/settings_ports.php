@@ -254,7 +254,7 @@ function add_update_services($mode) {
 function show_services(&$tpl) {
 
 	// Gets reference to the iMSCP_ConfigHandler_File object
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	// Gets the needed data
 
@@ -444,7 +444,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] != 'reset') {
 
 // Show and Error pages
 } else {
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$tpl = new iMSCP_pTemplate();
 	$tpl->define_dynamic(

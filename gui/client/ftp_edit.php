@@ -36,7 +36,7 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 if (isset($_GET['id'])) {
 	$ftp_acc = $_GET['id'];
@@ -55,7 +55,7 @@ $tpl->define_dynamic('logged_from', 'page');
 
 function gen_page_dynamic_data(&$tpl, &$sql, $ftp_acc) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$query = "
 		SELECT
@@ -93,7 +93,7 @@ function gen_page_dynamic_data(&$tpl, &$sql, $ftp_acc) {
 function update_ftp_account(&$sql, $ftp_acc, $dmn_name) {
 
 	global $other_dir;
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	// Create a virtual filesystem (it's important to use =&!)
 	$vfs = new iMSCP_VirtualFileSystem($dmn_name, $sql);

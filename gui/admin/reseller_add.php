@@ -36,7 +36,7 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 
@@ -61,7 +61,7 @@ $tpl->assign(
  */
 function get_server_ip(&$tpl, &$sql) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$query = "
 		SELECT
@@ -144,7 +144,7 @@ function get_server_ip(&$tpl, &$sql) {
 function add_reseller(&$tpl, &$sql) {
 
 	global $reseller_ips;
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_reseller') {
 		if (check_user_data()) {
@@ -420,7 +420,7 @@ function check_user_data() {
 
 	global $reseller_ips;
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 	$sql = iMSCP_Registry::get('Db');
 
 	$username = clean_input($_POST['username']);

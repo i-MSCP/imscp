@@ -36,7 +36,7 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/mail_edit.tpl');
@@ -49,7 +49,7 @@ $tpl->define_dynamic('forward_mail', 'page');
 
 function edit_mail_account(&$tpl, &$sql) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	if (!isset($_GET['id']) || $_GET['id'] === '' || !is_numeric($_GET['id'])) {
 		set_page_message(tr('Email account not found!'), 'error');
@@ -195,7 +195,7 @@ function edit_mail_account(&$tpl, &$sql) {
 
 function update_email_pass($sql) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	if (!isset($_POST['uaction'])) {
 		return false;
@@ -240,7 +240,7 @@ function update_email_pass($sql) {
 
 function update_email_forward(&$tpl, &$sql) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	if (!isset($_POST['uaction'])) {
 		return false;

@@ -44,7 +44,7 @@ function do_session_timeout() {
 	/**
 	 * @var $cfg iMSCP_Config_Handler_File
 	 */
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	/**
 	 * @var $sql iMSCP_Database
@@ -103,7 +103,7 @@ function init_login() {
 	/**
 	 * @var $cfg iMSCP_Config_Handler_File
 	 */
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	// Just make sure to expire counters in case BRUTEFORCE is turned off
 	unblock($cfg->BRUTEFORCE_BLOCK_TIME);
@@ -205,7 +205,7 @@ function is_userdomain_ok($userName) {
 	/**
 	 * @var $cfg iMSCP_Config_Handler_File
 	 */
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	/**
 	 * @var $sql iMSCP_Database
@@ -238,7 +238,7 @@ function unblock($timeout = null, $type = 'bruteforce') {
 	/**
 	 * @var $cfg iMSCP_Config_Handler_File
 	 */
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	/**
 	 * @var $sql iMSCP_Database
@@ -308,7 +308,7 @@ function is_ipaddr_blocked($ipAddress = null, $type = 'bruteforce', $autoDeny = 
 	/**
 	 * @var $cfg iMSCP_Config_Handler_File
 	 */
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	/**
 	 * @var $cfg iMSCP_Database
@@ -360,7 +360,7 @@ function shall_user_wait($ipAddress = null, $displayMessage = true) {
 	/**
 	 * @var $cfg iMSCP_Config_Handler_File
 	 */
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	/**
 	 * @var $sql iMSCP_Database
@@ -414,7 +414,7 @@ function check_ipaddr($ipAddress = null, $type = 'bruteforce') {
 	/**
 	 * @var $cfg iMSCP_Config_Handler_File
 	 */
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	/**
 	 * @var $sql iMSCP_Database
@@ -530,7 +530,7 @@ function block_ipaddr($ipAddress, $type = 'General') {
 	/**
 	 * @var $cfg iMSCP_Config_Handler_File
 	 */
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	write_log(
 		"$type protection, <b><i> " . tohtml($ipAddress) . "</i></b> blocked for " . $cfg->BRUTEFORCE_BLOCK_TIME .
@@ -551,7 +551,7 @@ function deny_access() {
 	/**
 	 * @var $cfg iMSCP_Config_Handler_File
 	 */
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	iMSCP_Registry::set('backButtonDestination', $cfg->BASE_SERVER_VHOST_PREFIX . $cfg->BASE_SERVER_VHOST);
 	throw new iMSCP_Exception_Production(tr('You have been blocked for %d minutes.', $cfg->BRUTEFORCE_BLOCK_TIME));
@@ -570,7 +570,7 @@ function register_user($userName, $userPassword) {
 	/**
 	 * @var $cfg iMSCP_Config_Handler_File
 	 */
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	/**
 	 * @var $cfg iMSCP_Database
@@ -653,7 +653,7 @@ function check_user_login() {
 	/**
 	 * @var $cfg iMSCP_Config_Handler_File
 	 */
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	/**
 	 * @var $sql iMSCP_Database

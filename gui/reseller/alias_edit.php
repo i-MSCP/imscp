@@ -36,7 +36,7 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/alias_edit.tpl');
@@ -125,7 +125,7 @@ unset_messages();
  */
 function gen_editalias_page(&$tpl, $edit_id) {
 	$sql = iMSCP_Registry::get('Db');
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$reseller_id = $_SESSION['user_id'];
 
@@ -221,7 +221,7 @@ function gen_editalias_page(&$tpl, $edit_id) {
 function check_fwd_data(&$tpl, $alias_id) {
 
 	$sql = iMSCP_Registry::get('Db');
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$forward_url = strtolower(clean_input($_POST['forward']));
 	// unset errors

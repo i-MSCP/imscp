@@ -36,7 +36,7 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/personal_change.tpl');
@@ -60,7 +60,7 @@ gen_reseller_personal_data($tpl, $sql, $_SESSION['user_id']);
 
 
 function gen_reseller_personal_data(&$tpl, &$sql, $user_id) {
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$query = "
 		SELECT

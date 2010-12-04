@@ -39,7 +39,7 @@ check_login(__FILE__);
 /**
  * @var $cfg iMSCP_Config_Handler_File
  */
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 // Test if we have a proper delete_id.
 if (!isset($_GET['delete_lang'])) {

@@ -129,7 +129,7 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer {
 			$this->_to = $to;
 		}
 
-		$config = iMSCP_Registry::get('Config');
+		$config = iMSCP_Registry::get('config');
 
 		// Set Mail body footprints expiry time
 		$config->afterInitialize(array($this, 'setExpiryTime'));

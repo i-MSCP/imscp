@@ -42,7 +42,7 @@ function check_for_lock_file() {
 	/**
 	 * @var iMSCP_Config_Handler_File $cfg
 	 */
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$fh = fopen($cfg->MR_LOCK_FILE, 'r');
 
@@ -92,7 +92,7 @@ function send_request() {
 	/**
 	 * @var iMSCP_Config_Handler_File $cfg
 	 */
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	$code = 999;
 
@@ -196,7 +196,7 @@ function update_user_props($user_id, $props) {
 	/**
 	 * @var iMSCP_Config_Handler_File $cfg
 	 */
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	/**
 	 * @var iMSCP_Database $db

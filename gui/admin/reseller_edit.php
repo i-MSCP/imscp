@@ -37,7 +37,7 @@
  */
 require '../include/imscp-lib.php';
 
-$cfg = iMSCP_Registry::get('Config');
+$cfg = iMSCP_Registry::get('config');
 
 /*******************************************************************************
  * Functions
@@ -104,7 +104,7 @@ function get_clean_input_data() {
  */
 function check_data(&$errFields) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 
 	// Get needed data
 	$rdata =& get_data();
@@ -526,7 +526,7 @@ function get_reseller_prop($reseller_id) {
  */
 function get_servers_ips(&$tpl, $rip_lst) {
 
-	$cfg = iMSCP_Registry::get('Config');
+	$cfg = iMSCP_Registry::get('config');
 	$sql = iMSCP_Registry::get('Db');
 
 	$query = "
