@@ -116,7 +116,7 @@ class iMSCP_Initializer {
 	 */
 	protected function __construct(iMSCP_Config_Handler $config) {
 
-		$this->_config = iMSCP_Registry::set('Config', $config);
+		$this->_config = iMSCP_Registry::set('config', $config);
 	}
 
 	/**
@@ -374,7 +374,7 @@ class iMSCP_Initializer {
 		}
 
 		// Register both Database and PDO instances for shared access
-		iMSCP_Registry::set('Db', $connection);
+		iMSCP_Registry::set('db', $connection);
 		iMSCP_Registry::set('Pdo', iMSCP_Database::getRawInstance());
 
 		// Will be changed
@@ -466,7 +466,7 @@ class iMSCP_Initializer {
 		$this->_config->replaceWith($dbConfig);
 
 		// Finally, we register the iMSCP_Config_Handler_Db for shared access
-		iMSCP_Registry::set('Db_Config', $dbConfig);
+		iMSCP_Registry::set('dbConfig', $dbConfig);
 	}
 
 	/**
