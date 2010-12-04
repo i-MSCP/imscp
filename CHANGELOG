@@ -5,6 +5,8 @@ i-MSCP ChangeLog
 	- GUI:
 		* Added iMSCP_Services class to be able to get services properties and their status
 		* Added i-MSCP daemon service properties in database
+		* Fixed: Database update from frontend is broken
+		* Fixed: Pages messages are not displayed correctly
 		* Rewritten the admin/server_status.php script
 
 2010-12-03 Laurent Declercq

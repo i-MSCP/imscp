@@ -97,8 +97,7 @@ if (isset($_GET['key']) && $_GET['key'] != '') {
 	if (sendPassword($_GET['key'])) {
 		set_page_message(tr('Your new password has been sent. Check your mail.'));
 	} else {
-		iMSCP_Registry::set('messageCls', 'error');
-		set_page_message(tr('New password has not been sent. Ask your administrator.'));
+		set_page_message(tr('New password has not been sent. Ask your administrator.'), 'error');
 	}
 } elseif (isset($_POST['uname'])) { // Request for new password
 
@@ -114,12 +113,10 @@ if (isset($_GET['key']) && $_GET['key'] != '') {
 				tr('Your password request has been initiated. You will receive an email with instructions to complete the process. This reset request will expire in %s minutes.')
 			);
 		} else {
-			iMSCP_Registry::set('messageCls', 'error');
-			set_page_message(tr('User or security code are incorrect!'));
+			set_page_message(tr('User or security code are incorrect!'), 'error');
 		}
 	} else {
-		iMSCP_Registry::set('messageCls', 'error');
-		set_page_message(tr('All fields are required!'));
+		set_page_message(tr('All fields are required!'), 'error');
 	}
 } else { // Lost password form (Default)
 	unblock($cfg->BRUTEFORCE_BLOCK_TIME, 'captcha');

@@ -582,8 +582,7 @@ function register_user($userName, $userPassword) {
 	if (!username_exists($userName)) {
 		write_log("Login error, <b><i>" . tohtml($userName) . "</i></b> unknown username");
 
-		iMSCP_Registry::set('messageCls', 'error');
-		set_page_message(tr('You entered an incorrect username!'));
+		set_page_message(tr('You entered an incorrect username!'), 'error');
 		return false;
 	}
 
@@ -595,7 +594,6 @@ function register_user($userName, $userPassword) {
 
 		write_log("Login error, <b><i>" . $userName . "</i></b> system currently in maintenance mode");
 
-		iMSCP_Registry::set('messageCls', 'info');
 		set_page_message(tr('System is currently under maintenance! Only administrators can login.'));
 		return false;
 	}
@@ -616,8 +614,7 @@ function register_user($userName, $userPassword) {
 		if ($userData['admin_type'] == 'user' && is_userdomain_expired($userName)) {
 			write_log(tr("%s's domain expired!", $userName));
 
-			iMSCP_Registry::set('messageCls', 'warning');
-			set_page_message(tr("%s's domain expired!", $userName));
+			set_page_message(tr("%s's domain expired!", $userName), 'warning');
 			return false;
 		}
 
@@ -638,8 +635,7 @@ function register_user($userName, $userPassword) {
 	} else {
 		write_log($userName . ' entered incorrect password.');
 
-		iMSCP_Registry::set('messageCls', 'error');
-		set_page_message(tr('You entered an incorrect password!'));
+		set_page_message(tr('You entered an incorrect password!'), 'error');
 		return false;
 	}
 

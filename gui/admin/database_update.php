@@ -32,86 +32,77 @@
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
+// Include needed libraries
 require '../include/imscp-lib.php';
 
+// Check for login
 check_login(__FILE__);
 
+/**
+ * @var $cfg iMSCP_Config_Handler_File
+ */
 $cfg = iMSCP_Registry::get('Config');
+
+/**
+ * @var $dbUpdate iMSCP_Update_Database
+ */
 $dbUpdate = iMSCP_Update_Database::getInstance();
 
-if(isset($_POST['execute']) && $_POST['execute'] == 'update') {
+if(isset($_POST['uaction']) && $_POST['uaction'] == 'update') {
 
-	// Execute all available db updates and redirect back to database_update.php
-
+	// Execute all available db updates
 	if(!$dbUpdate->executeUpdates()) {
 		throw new iMSCP_Exception($dbUpdate->getErrorMessage());
 	}
 
-	header('Location: ' . $_SERVER['PHP_SELF']);
-} else {
+	// Set success page message
+	set_page_message('All database update were successfully applied', 'success');
 
-	$tpl = new iMSCP_pTemplate();
-	$tpl->define_dynamic(
-		'page', $cfg->ADMIN_TEMPLATE_PATH . '/database_update.tpl'
-	);
-	$tpl->define_dynamic('page_message', 'page');
-	$tpl->define_dynamic('database_update_message', 'page');
-	$tpl->define_dynamic('database_update_infos', 'page');
-	$tpl->define_dynamic('table_header', 'page');
+	// Redirect back to database_update.php
+	user_goto($_SERVER['PHP_SELF']);
+}
 
+$tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/database_update.tpl');
+$tpl->define_dynamic('page_message', 'page');
+$tpl->define_dynamic('database_update', 'page');
+
+$tpl->assign(
+	array(
+		'TR_PAGE_TITLE'	=> tr('i-MSCP - Admin / System tools / Database Update'),
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => get_logo($_SESSION['user_id']),
+		'TR_SECTION_TITLE' => tr('Database updates')
+	)
+);
+
+gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_system_tools.tpl');
+gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_system_tools.tpl');
+
+if($dbUpdate->checkUpdateExists()) {
 	$tpl->assign(
 		array(
-			'TR_ADMIN_IMSCP_UPDATES_PAGE_TITLE'	=>
-				tr('i-MSCP - Multi Server Control Panel'),
-			'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-			'THEME_CHARSET' => tr('encoding'),
-			'ISP_LOGO' => get_logo($_SESSION['user_id'])
-		)
-	);
-
-	gen_admin_mainmenu(
-		$tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_system_tools.tpl'
-	);
-	gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_system_tools.tpl');
-	gen_page_message($tpl);
-
-	$tpl->assign(
-		array(
-			'TR_UPDATES_TITLE' => tr('Database updates'),
 			'TR_AVAILABLE_UPDATES' => tr('Available database updates'),
 			'TR_UPDATE' => tr('Update'),
-			'TR_INFOS' => tr('Update details')
+			'TR_INFOS' => tr('Update details'),
+			'UPDATE' => tr('New Database update is now available'),
+			'INFOS' => tr("No provided"), // Todo add system to be able to rpovide some info
+			'TR_EXECUTE_UPDATE' => tr('Execute updates')
 		)
 	);
-
-	if($dbUpdate->checkUpdateExists()) {
-		$tpl->assign(
-			array(
-				'UPDATE_MESSAGE' => '',
-				'DATABASE_UPDATE_MESSAGE' => '',
-				'UPDATE' => tr('New Database update is now available'),
-				'INFOS' => tr('Do you want to execute the Updates now?'),
-				'TR_EXECUTE_UPDATE' => tr('Execute updates')
-			)
-		);
-
-		$tpl->parse('DATABASE_UPDATE_INFOS', 'database_update_infos');
-	} else {
-		$tpl->assign(
-			array(
-				'TR_UPDATE_MESSAGE' => tr('No database updates available'),
-				'DATABASE_UPDATE_INFOS' => '',
-				'TABLE_HEADER' => ''
-			)
-		);
-
-		$tpl->parse('DATABASE_UPDATE_MESSAGE', 'database_update_message');
-	}
-
-	$tpl->parse('PAGE', 'page');
-	$tpl->prnt();
-
-	if ($cfg->DUMP_GUI_DEBUG) {
-		dump_gui_debug();
-	}
+} else {
+	$tpl->assign('DATABASE_UPDATE', '');
+	set_page_message('No database updates available');
 }
+
+gen_page_message($tpl);
+
+$tpl->parse('PAGE', 'page');
+$tpl->prnt();
+
+if ($cfg->DUMP_GUI_DEBUG) {
+	dump_gui_debug();
+}
+
+unset_messages();

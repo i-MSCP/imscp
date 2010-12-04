@@ -468,7 +468,6 @@ function unset_messages() {
 	$glToUnset = array();
 	$glToUnset[] = 'user_page_message';
 	$glToUnset[] = 'user_updated';
-	$glToUnset[] = 'user_updated';
 	$glToUnset[] = 'dmn_tpl';
 	$glToUnset[] = 'chtpl';
 	$glToUnset[] = 'step_one';
