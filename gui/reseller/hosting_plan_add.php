@@ -407,7 +407,7 @@ function save_data_to_db(&$tpl, $admin_id) {
 	global $hp_backup, $hp_dns, $hp_allowsoftware;
 	global $tos;
 
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 	$err_msg = '';
 
 	$query = "SELECT `id` FROM `hosting_plans` WHERE `name` = ? AND `reseller_id` = ?";

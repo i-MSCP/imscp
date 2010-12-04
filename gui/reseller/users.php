@@ -136,7 +136,7 @@ unset_messages();
 
 function generate_users_list(&$tpl, $admin_id) {
 
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 	$cfg = iMSCP_Registry::get('config');
 
 	$rows_per_page = $cfg->DOMAIN_ROWS_PER_PAGE;

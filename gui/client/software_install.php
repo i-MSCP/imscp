@@ -42,7 +42,7 @@ $cfg = iMSCP_Registry::get('config');
 /**
  * @var $sql iMSCP_Database
  */
-$sql = iMSCP_Registry::get('Db');
+$sql = iMSCP_Registry::get('db');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/software_install.tpl');
@@ -319,7 +319,7 @@ function gen_user_domain_list($tpl, $sql, $user_id) {
 	/**
 	 * @var $sql iMSCP_Database
 	 */
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 	
 	$domain_id = get_user_domain_id($sql, $user_id);
 	
@@ -486,7 +486,7 @@ function check_db_user_list($tpl, $sql, $db_id) {
 	/**
 	 * @var $sql iMSCP_Database
 	 */
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 	
 	$count = 0;
 	$query = "
@@ -550,7 +550,7 @@ function check_db_avail(&$tpl, &$sql, $dmn_id, $dmn_sqld_limit) {
 	/**
 	 * @var $sql iMSCP_Database
 	 */
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 	
 	$existdbuser = 0;
 	$check_db = "
@@ -629,7 +629,7 @@ function check_software_avail($sql, $software_id, $dmn_created_id) {
 	/**
 	 * @var $sql iMSCP_Database
 	 */
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 	
 	$check_avail = "
 			SELECT
@@ -653,7 +653,7 @@ function check_is_installed(&$tpl, &$sql, $dmn_id, $software_id) {
 	/**
 	 * @var $sql iMSCP_Database
 	 */
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
   	$is_installed = "
 			SELECT
 				`software_id`
@@ -677,7 +677,7 @@ function get_software_props ($tpl, $sql, $dmn_id, $software_id, $dmn_created_id,
 	/**
 	 * @var $sql iMSCP_Database
 	 */
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
   	if (!check_software_avail($sql, $software_id, $dmn_created_id)) {
 		set_page_message(tr('Software not found!'), 'error');
 		header('Location: software.php');

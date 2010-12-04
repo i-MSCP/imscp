@@ -114,7 +114,7 @@ unset_messages();
 function gen_detaildom_page(&$tpl, $user_id, $domain_id) {
 
 	$cfg = iMSCP_Registry::get('config');
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	// Get domain data
 	$query = "

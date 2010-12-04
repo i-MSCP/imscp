@@ -49,7 +49,7 @@ function do_session_timeout() {
 	/**
 	 * @var $sql iMSCP_Database
 	 */
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$ttl = time() - $cfg->SESSION_TIMEOUT * 60;
 
@@ -74,7 +74,7 @@ function session_exists($sessionId) {
 	/**
 	 * @var $cfg iMSCP_Config_Handler_File
 	 */
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 	$ip = getipaddr();
 
 	$query = "SELECT `session_id`, `ipaddr` FROM `login` WHERE `session_id` = ? AND `ipaddr` = ?;";
@@ -124,7 +124,7 @@ function username_exists($userName) {
 	/**
 	 * @var $cfg iMSCP_Config_Handler_File
 	 */
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$userName = encode_idna($userName);
 
@@ -146,7 +146,7 @@ function get_userdata($userName) {
 	/**
 	 * @var $sql iMSCP_Database
 	 */
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$query = 'SELECT * FROM `admin` WHERE `admin_name` = ?;';
 
@@ -166,7 +166,7 @@ function is_userdomain_expired($userName) {
 	/**
 	 * @var $sql iMSCP_Database
 	 */
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$userData = get_userdata($userName);
 
@@ -210,7 +210,7 @@ function is_userdomain_ok($userName) {
 	/**
 	 * @var $sql iMSCP_Database
 	 */
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$userData = get_userdata($userName);
 
@@ -243,7 +243,7 @@ function unblock($timeout = null, $type = 'bruteforce') {
 	/**
 	 * @var $sql iMSCP_Database
 	 */
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	if (is_null($timeout)) $timeout = $cfg->BRUTEFORCE_BLOCK_TIME;
 
@@ -313,7 +313,7 @@ function is_ipaddr_blocked($ipAddress = null, $type = 'bruteforce', $autoDeny = 
 	/**
 	 * @var $cfg iMSCP_Database
 	 */
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	if (is_null($ipAddress)) {
 		$ipAddress = getipaddr();
@@ -365,7 +365,7 @@ function shall_user_wait($ipAddress = null, $displayMessage = true) {
 	/**
 	 * @var $sql iMSCP_Database
 	 */
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	if (!$cfg->BRUTEFORCE) return false;
 	if (is_null($ipAddress)) $ipAddress = getipaddr();
@@ -419,7 +419,7 @@ function check_ipaddr($ipAddress = null, $type = 'bruteforce') {
 	/**
 	 * @var $sql iMSCP_Database
 	 */
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	if (is_null($ipAddress)) {
 		$ipAddress = getipaddr();
@@ -575,7 +575,7 @@ function register_user($userName, $userPassword) {
 	/**
 	 * @var $cfg iMSCP_Database
 	 */
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	check_ipaddr();
 
@@ -658,7 +658,7 @@ function check_user_login() {
 	/**
 	 * @var $sql iMSCP_Database
 	 */
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$sessionId = session_id();
 
@@ -802,7 +802,7 @@ function change_user_interface($fromId, $toId) {
 	/**
 	 * @var $sql iMSCP_Database
 	 */
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$index = null;
 
@@ -912,7 +912,7 @@ function unset_user_login_data($ignorePreserve = false, $restore = false) {
 	/**
 	 * @var sql iMSCP_Database
 	 */
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	if (isset($_SESSION['user_logged'])) {
 

@@ -151,7 +151,7 @@ function load_user_data($user_id, $domain_id) {
 
 	global $sub, $als, $mail, $ftp, $sql_db, $sql_user, $traff, $disk, $software_supp;
 
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$query = "
 		SELECT
@@ -192,7 +192,7 @@ function load_additional_data($user_id, $domain_id) {
 	/**
 	 * @var $sql iMSCP_Database
 	 */
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 
 	// Get domain data

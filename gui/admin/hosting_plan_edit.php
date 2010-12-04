@@ -425,7 +425,7 @@ function save_data_to_db() {
 	global $hp_backup, $hp_dns;
 	//global $tos;
 
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$description 	= clean_input($_POST['hp_description']);
 	$price 		= clean_input($_POST['hp_price']);

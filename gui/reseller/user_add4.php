@@ -53,7 +53,7 @@ function gen_al_page(&$tpl, $reseller_id) {
 	
 	global $alias_name, $forward, $forward_prefix, $mount_point;
 
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 	$cfg = iMSCP_Registry::get('config');
 
 	$dmn_id = $_SESSION['dmn_id'];

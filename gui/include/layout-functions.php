@@ -156,7 +156,7 @@ function get_menu_vars($menu_link) {
 	/**
 	 * @var $sql iMSCP_Database
 	 */
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$user_id = $_SESSION['user_id'];
 

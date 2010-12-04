@@ -639,7 +639,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 
 		$sqlUpd = array();
 
-		$sql = iMSCP_Registry::get('Db');
+		$sql = iMSCP_Registry::get('db');
 
 		$query	= "
 			SELECT
@@ -769,7 +769,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 
 		$sqlUpd = array();
 
-		$sql = iMSCP_Registry::get('Db');
+		$sql = iMSCP_Registry::get('db');
 
 		$query	= "
 			SELECT
@@ -822,7 +822,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 
 		$sqlUpd = array();
 
-		$sql = iMSCP_Registry::get('Db');
+		$sql = iMSCP_Registry::get('db');
 
 		$add = "\n\nYou have to click the following link to continue the domain creation process.\n\n{ACTIVATE_LINK}\n";
 
@@ -929,7 +929,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	 */
 	 protected function _databaseUpdate_24() {
 
-		$sql = iMSCP_Registry::get('Db');
+		$sql = iMSCP_Registry::get('db');
 		$sqlUpd = array();
 
 		/**
@@ -1214,7 +1214,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	protected function _databaseUpdate_30() {
 
 		$sqlUpd = array();
-		$sql = iMSCP_Registry::get('Db');
+		$sql = iMSCP_Registry::get('db');
 
 		$query = "
 			SELECT
@@ -1269,7 +1269,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	protected function _databaseUpdate_31() {
 
 		$sqlUpd = array();
-		$sql = iMSCP_Registry::get('Db');
+		$sql = iMSCP_Registry::get('db');
 
 		// Test added to prevent error if old version of
 		// self::database_databaseUpdate_29() was already applyed
@@ -1314,7 +1314,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 		/**
 		 * @var $sql iMSCP_Database
 		 */
-		$sql = iMSCP_Registry::get('Db');
+		$sql = iMSCP_Registry::get('db');
 
 		$query = "
 			SELECT
@@ -1379,7 +1379,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 		/**
 		 * @var $sql iMSCP_Database
 		 */
-		$sql = iMSCP_Registry::get('Db');
+		$sql = iMSCP_Registry::get('db');
 
 		$sqlUpd = array();
 
@@ -1601,7 +1601,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	protected function _databaseUpdate_35() {
 
 		$sqlUpd = array();
-		$sql = iMSCP_Registry::get('Db');
+		$sql = iMSCP_Registry::get('db');
 
 		// For domain traffic
 		$query = "

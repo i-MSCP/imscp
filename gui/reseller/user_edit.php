@@ -184,7 +184,7 @@ function load_user_data_page($user_id) {
 	global $street_two, $mail, $phone;
 	global $fax;
 
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$reseller_id = $_SESSION['user_id'];
 
@@ -283,7 +283,7 @@ function update_data_in_db($hpid) {
 		$firm, $zip, $gender, $city, $state, $country, $street_one, $street_two,
 		$mail, $phone, $fax, $inpass, $admin_login;
 
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 	$cfg = iMSCP_Registry::get('config');
 
 	$reseller_id = $_SESSION['user_id'];

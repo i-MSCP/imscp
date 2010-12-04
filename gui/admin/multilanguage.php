@@ -56,7 +56,7 @@ function showLang($tpl) {
 	/**
 	 * @var $sql iMSCP_Database
 	 */
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$tables = $sql->metaTables();
 
@@ -219,7 +219,7 @@ function importLanguageFile() {
 			return;
 		}
 
-		$sql = iMSCP_Registry::get('Db');
+		$sql = iMSCP_Registry::get('db');
 
 		$lang_table = 'lang_' . $ab['imscp_table'];
 		$lang_update = false;

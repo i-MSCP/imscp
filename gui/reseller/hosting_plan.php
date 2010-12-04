@@ -129,7 +129,7 @@ function gen_hp_message(&$tpl) {
 function gen_hp_table(&$tpl, $reseller_id) {
 	global $external_event;
 
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 	$cfg = iMSCP_Registry::get('config');
 
 	if (isset($cfg->HOSTING_PLANS_LEVEL)

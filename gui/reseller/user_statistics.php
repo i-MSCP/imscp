@@ -82,7 +82,7 @@ $tpl->assign(
 );
 
 function generate_page(&$tpl, $reseller_id, $reseller_name) {
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 	$cfg = iMSCP_Registry::get('config');
 
 	$rows_per_page = (int)($cfg->DOMAIN_ROWS_PER_PAGE / 2);

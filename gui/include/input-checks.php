@@ -819,7 +819,7 @@ function get_session($value) {
  * @return numeric The id of the admin who owns the id $id of $type type
  */
 function who_owns_this($id, $type = 'dmn', $forcefinal = false) {
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$who = null;
 	// Fix $type according to type or by alias

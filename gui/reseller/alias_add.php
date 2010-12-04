@@ -53,7 +53,7 @@ function gen_al_page(&$tpl, $reseller_id) {
 
 	global $alias_name, $forward, $forward_prefix, $mount_point;
 
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 	$cfg = iMSCP_Registry::get('config');
 
 	list(,,,,,,$uals_current) = generate_reseller_user_props($reseller_id);
@@ -316,7 +316,7 @@ function add_domain_alias(&$sql, &$err_al) {
  */
 function gen_users_list(&$tpl, $reseller_id) {
 	global $cr_user_id;
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 	$cfg = iMSCP_Registry::get('config');
 
 	$query = "

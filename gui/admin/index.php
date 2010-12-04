@@ -85,7 +85,7 @@ function gen_system_message(&$tpl, &$sql) {
 function get_update_infos(&$tpl) {
 
 	$cfg = iMSCP_Registry::get('config');
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	if (iMSCP_Update_Database::getInstance()->checkUpdateExists()) {
 		$tpl->assign(array('DATABASE_UPDATE' => '<a href="database_update.php" class="link">' . tr('A database update is available') . '</a>'));

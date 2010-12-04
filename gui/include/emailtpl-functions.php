@@ -34,7 +34,7 @@
 
 function get_email_tpl_data($admin_id, $tpl_name) {
 
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$query = "
 		SELECT
@@ -93,7 +93,7 @@ function get_email_tpl_data($admin_id, $tpl_name) {
 
 function set_email_tpl_data($admin_id, $tpl_name, $data) {
 
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$query = "
 		SELECT

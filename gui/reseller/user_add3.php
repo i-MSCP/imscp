@@ -254,7 +254,7 @@ function add_user_data($reseller_id) {
 	global $fax, $inpass, $domain_ip;
 	global $dns, $backup, $neverexpire, $software_allowed;
 
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 	$cfg = iMSCP_Registry::get('config');
 
 	// Let's get Desired Hosting Plan Data;

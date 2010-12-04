@@ -46,7 +46,7 @@
  * @deprecated since 1.0.6
  */
 function setConfig_Value($name, $value) {
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$query = "SELECT `name` FROM `config` WHERE `name`= ?";
 

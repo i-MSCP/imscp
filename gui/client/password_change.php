@@ -90,7 +90,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_pass') {
 
 function check_udata($id, $pass) {
 
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$query = "
 		SELECT

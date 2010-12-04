@@ -42,7 +42,7 @@ $cfg = iMSCP_Registry::get('config');
 /**
  * @var $sql iMSCP_Database
  */
-$sql = iMSCP_Registry::get('Db');
+$sql = iMSCP_Registry::get('db');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/software_manage.tpl');

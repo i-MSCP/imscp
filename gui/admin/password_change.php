@@ -55,7 +55,7 @@ $tpl->assign(
 function update_password() {
 
 	$cfg = iMSCP_Registry::get('config');
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_pass') {
 		if (empty($_POST['pass']) || empty($_POST['pass_rep']) || empty($_POST['curr_pass'])) {
@@ -105,7 +105,7 @@ function update_password() {
 
 function check_udata($id, $pass) {
 
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$query = "
 		SELECT

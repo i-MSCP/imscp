@@ -124,7 +124,7 @@ unset_messages();
  * Show user data
  */
 function gen_editalias_page(&$tpl, $edit_id) {
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 	$cfg = iMSCP_Registry::get('config');
 
 	$reseller_id = $_SESSION['user_id'];
@@ -220,7 +220,7 @@ function gen_editalias_page(&$tpl, $edit_id) {
  */
 function check_fwd_data(&$tpl, $alias_id) {
 
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 	$cfg = iMSCP_Registry::get('config');
 
 	$forward_url = strtolower(clean_input($_POST['forward']));

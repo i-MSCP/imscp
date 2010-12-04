@@ -87,7 +87,7 @@ function gen_page_post_data(&$tpl, $current_month, $current_year) {
 
 function get_domain_trafic($from, $to, $domain_id) {
 
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$query = "
 		SELECT

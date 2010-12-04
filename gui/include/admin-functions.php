@@ -76,7 +76,7 @@ function encode($in_str, $charset = 'UTF-8') {
 function gen_admin_mainmenu(&$tpl, $menu_file) {
 
 	$cfg = iMSCP_Registry::get('config');
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$tpl->define_dynamic('menu', $menu_file);
 	$tpl->define_dynamic('isactive_support', 'menu');
@@ -191,7 +191,7 @@ function gen_admin_mainmenu(&$tpl, $menu_file) {
 function gen_admin_menu(&$tpl, $menu_file) {
 
 	$cfg = iMSCP_Registry::get('config');
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$tpl->define_dynamic('menu', $menu_file);
 	$tpl->define_dynamic('custom_buttons', 'menu');
@@ -882,7 +882,7 @@ function get_admin_manage_users(&$tpl, &$sql) {
 
 function generate_reseller_props($reseller_id) {
 
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$query = "
 		SELECT
@@ -924,7 +924,7 @@ function generate_reseller_props($reseller_id) {
 
 function generate_reseller_users_props($reseller_id) {
 
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$rdmn_current 			= 0;
 	$rdmn_max 			= 0;
@@ -1110,7 +1110,7 @@ function generate_reseller_users_props($reseller_id) {
 function generate_user_props($user_id) {
 
 	$cfg = iMSCP_Registry::get('config');
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$query = "
 		SELECT
@@ -1194,7 +1194,7 @@ function generate_user_props($user_id) {
 */
 function records_count($table, $where, $value) {
 
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	if($where != '') {
 		if($value != '') {
@@ -1243,7 +1243,7 @@ function records_count($table, $where, $value) {
 function sub_records_count($field, $table, $where, $value, $subfield, $subtable,
 	$subwhere, $subgroupname) {
 
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	if($where != '') {
 		$query = "
@@ -1330,7 +1330,7 @@ function sub_records_count($field, $table, $where, $value, $subfield, $subtable,
 function generate_user_traffic($user_id) {
 
 	global $crnt_month, $crnt_year;
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$from_timestamp = mktime(0, 0, 0, $crnt_month, 1, $crnt_year);
 
@@ -1433,7 +1433,7 @@ function make_usage_vals($current, $max) {
 function sub_records_rlike_count($field, $table, $where, $value, $subfield,
 	$subtable, $subwhere, $a, $b) {
 
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	if($where != '') {
 		$query = "
@@ -1531,7 +1531,7 @@ function gen_select_lists(&$tpl, $user_month, $user_year) {
 
 function get_user_name($user_id) {
 
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$query = "
 		SELECT
@@ -1551,7 +1551,7 @@ function get_user_name($user_id) {
 function get_logo($user_id) {
 
 	$cfg = iMSCP_Registry::get('config');
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	// check which logo we should return:
 	$query = "
@@ -1592,7 +1592,7 @@ function get_own_logo($user_id) {
 function get_admin_logo($user_id) {
 
 	$cfg = iMSCP_Registry::get('config');
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$query = "
 		SELECT
@@ -1632,7 +1632,7 @@ function write_log($msg, $level = E_USER_WARNING) {
 
 	global $send_log_to;
 	$cfg = iMSCP_Registry::get('config');
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	if(isset($_SERVER['REMOTE_ADDR'])) {
 		$client_ip = $_SERVER['REMOTE_ADDR'];
@@ -1769,7 +1769,7 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname,
 
 function update_reseller_props($reseller_id, $props) {
 
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	if($props == '') {
 		return;
@@ -2242,7 +2242,7 @@ function gen_admin_domain_search_options(&$tpl, $search_for, $search_common,
 function delete_domain($domain_id, $goto, $breseller = false) {
 
 	$cfg = iMSCP_Registry::get('config');
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	// Get uid and gid of domain user
 	$query = "

@@ -40,7 +40,7 @@ check_login(__FILE__);
 
 if (isset($_GET['export_lang']) && $_GET['export_lang'] !== '') {
 
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 	$language_table = $_GET['export_lang'];
 
 	$query = "

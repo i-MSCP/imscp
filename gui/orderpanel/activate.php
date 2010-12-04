@@ -47,7 +47,7 @@ function validate_order_key($order_id, $key) {
 	$cfg = iMSCP_Registry::get('config');
 
 	$result = false;
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 	$query = "
 		SELECT
 			*
@@ -77,7 +77,7 @@ function validate_order_key($order_id, $key) {
 function confirm_order($order_id) {
 
 	$cfg = iMSCP_Registry::get('config');
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$query = "
 		SELECT

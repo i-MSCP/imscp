@@ -378,7 +378,7 @@ class iMSCP_Initializer {
 		iMSCP_Registry::set('Pdo', iMSCP_Database::getRawInstance());
 
 		// Will be changed
-		$GLOBALS['sql'] =  iMSCP_Registry::get('Db');
+		$GLOBALS['sql'] =  iMSCP_Registry::get('db');
 	}
 
 	/**
@@ -399,7 +399,7 @@ class iMSCP_Initializer {
 		// Switch optionally to utf8 based communication with the database
 		if (isset($this->_config->DATABASE_UTF8) && $this->_config->DATABASE_UTF8 == 'yes') {
 
-			$db = iMSCP_Registry::get('Db');
+			$db = iMSCP_Registry::get('db');
 
 			if(!$db->execute('SET NAMES `utf8`;')) {
 				throw new iMSCP_Exception(

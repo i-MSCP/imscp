@@ -154,7 +154,7 @@ function removeOldKeys($ttl) {
 	/**
 	 * @var $sql iMSCP_Database
 	 */
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$boundary = date('Y-m-d H:i:s', time() - $ttl * 60);
 
@@ -175,7 +175,7 @@ function setUniqKey($adminName, $uniqueKey) {
 	/**
 	 * @var $sql iMSCP_Database
 	 */
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$timestamp = date('Y-m-d H:i:s', time());
 
@@ -196,7 +196,7 @@ function setPassword($uniqueKey, $userPassword) {
 	/**
 	 * @var $sql iMSCP_Database
 	 */
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	if ($uniqueKey == '') exit;
 
@@ -216,7 +216,7 @@ function uniqueKeyExists($uniqueKey) {
 	/**
 	 * @var $sql iMSCP_Database
 	 */
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$query = "SELECT `uniqkey` FROM `admin` WHERE `uniqkey` = ?;";
 
@@ -259,7 +259,7 @@ function sendPassword($uniqueKey) {
 	/**
 	 * @var $sql iMSCP_Database
 	 */
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$query = "SELECT `admin_name`, `created_by`, `fname`, `lname`, `email` FROM `admin` WHERE `uniqkey` = ?;";
 
@@ -351,7 +351,7 @@ function requestPassword($adminName) {
 	/**
 	 * @var $sql iMSCP_Database
 	 */
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$query = "SELECT `created_by`, `fname`, `lname`, `email` FROM `admin` WHERE `admin_name` = ?;";
 

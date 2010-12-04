@@ -126,7 +126,7 @@ unset_messages();
 function gen_editalias_page(&$tpl, $edit_id) {
 
 	$cfg = iMSCP_Registry::get('config');
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	// Get data from sql
 	list($domain_id) = get_domain_default_props($sql, $_SESSION['user_id']);
@@ -198,7 +198,7 @@ function gen_editalias_page(&$tpl, $edit_id) {
 function check_fwd_data(&$tpl, $alias_id) {
 
 	$cfg = iMSCP_Registry::get('config');
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$forward_url = strtolower(clean_input($_POST['forward']));
 	$status = $_POST['status'];

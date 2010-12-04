@@ -130,7 +130,7 @@ function update_logo() {
 
 function update_user_logo($file_name, $user_id) {
 
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$query = "
 		UPDATE

@@ -247,7 +247,7 @@ function check_user_permissions(&$tpl, $dmn_sqld_limit, $dmn_sqlu_limit, $dmn_ph
  * Calculate the usege traffic/ return array (persent/value)
  */
 function make_traff_usege($domain_id) {
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$res = exec_query($sql, "SELECT `domain_id` FROM `domain` WHERE `domain_admin_id` = ?", $domain_id);
 	$dom_id = $res->fetchRow();

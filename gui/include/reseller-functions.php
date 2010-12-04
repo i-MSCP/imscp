@@ -49,7 +49,7 @@ define('MT_ALSSUB_CATCHALL', 'alssub_catchall');
 function gen_reseller_mainmenu(&$tpl, $menu_file) {
 
 	$cfg = iMSCP_Registry::get('config');
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$tpl->define_dynamic('menu', $menu_file);
 	$tpl->define_dynamic('isactive_support', 'menu');
@@ -151,7 +151,7 @@ function gen_reseller_mainmenu(&$tpl, $menu_file) {
 function gen_reseller_menu(&$tpl, $menu_file) {
 
 	$cfg = iMSCP_Registry::get('config');
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$tpl->define_dynamic('menu', $menu_file);
 
@@ -320,7 +320,7 @@ function get_reseller_default_props(&$sql, $reseller_id) {
  * Making users props
  */
 function generate_reseller_user_props($reseller_id) {
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 	// Init with empty variables
 	$rdmn_current = 0;
 	$rdmn_max = 0;
@@ -480,7 +480,7 @@ function generate_reseller_user_props($reseller_id) {
  */
 function get_user_traffic($user_id) {
 
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 	global $crnt_month, $crnt_year;
 
 	$query = "
@@ -577,7 +577,7 @@ function get_user_traffic($user_id) {
 function get_user_props($user_id) {
 
 	$cfg = iMSCP_Registry::get('config');
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$query = "
 		SELECT
@@ -657,7 +657,7 @@ function get_user_props($user_id) {
 function generate_ip_list(&$tpl, &$reseller_id) {
 
 	$cfg = iMSCP_Registry::get('config');
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 	global $domain_ip;
 
 	$query = "
@@ -854,7 +854,7 @@ function translate_dmn_status($status) {
  * Check if the domain already exist
  */
 function imscp_domain_exists($domain_name, $reseller_id) {
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 	// query to check if the domain name exist in the table for domains/accounts
 	$query_domain = "
 		SELECT
@@ -1596,7 +1596,7 @@ function send_order_emails($admin_id, $domain_name, $ufname, $ulname, $uemail,
 function send_alias_order_email($alias_name) {
 
 	$cfg = iMSCP_Registry::get('config');
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$user_id = $_SESSION['user_id'];
 
@@ -1669,7 +1669,7 @@ function client_mail_add_default_accounts($dmn_id, $user_email, $dmn_part,
 	$dmn_type = 'domain', $sub_id = 0) {
 
 	$cfg = iMSCP_Registry::get('config');
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	if ($cfg->CREATE_DEFAULT_EMAIL_ADDRESSES) {
 
@@ -1735,7 +1735,7 @@ function client_mail_add_default_accounts($dmn_id, $user_email, $dmn_part,
 function recalc_reseller_c_props($reseller_id) {
 
 	$cfg = iMSCP_Registry::get('config');
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$delstatus = $cfg->ITEM_DELETE_STATUS;
 
@@ -1837,7 +1837,7 @@ function update_reseller_c_props($reseller_id) {
  */
 function get_reseller_id($domain_id) {
 
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$query = "
 		SELECT
@@ -1868,7 +1868,7 @@ function get_reseller_id($domain_id) {
  */
 function check_reseller_permissions($reseller_id, $permission) {
 
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	list($rdmn_current, $rdmn_max,
 			$rsub_current, $rsub_max,

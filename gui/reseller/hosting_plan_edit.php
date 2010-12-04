@@ -480,7 +480,7 @@ function save_data_to_db() {
 	/**
 	 * @var $sql iMSCP_Database
 	 */
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$err_msg = '';
 	$description = clean_input($_POST['hp_description']);

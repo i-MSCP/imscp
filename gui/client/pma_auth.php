@@ -56,7 +56,7 @@ function _getLoginCredentials($dbUserId) {
 	/**
 	 * @var $db iMSCP_Database_ResultSet
 	 */
-	$db = iMSCP_Registry::get('Db');
+	$db = iMSCP_Registry::get('db');
 
 	// @todo Should be optimized
 	$query = "

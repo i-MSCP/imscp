@@ -60,7 +60,7 @@ if (get_own_logo($_SESSION['user_id']) !== $cfg->IPS_LOGO_PATH . '/isp_logo.gif'
 function save_layout() {
 	global $theme_color;
 
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'save_layout') {
 
@@ -145,7 +145,7 @@ function update_logo() {
 
 
 function update_user_gui_props($file_name, $user_id) {
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$query = "
 		UPDATE

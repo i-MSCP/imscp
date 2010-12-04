@@ -205,7 +205,7 @@ function update_reseller_user($sql) {
 }
 
 function check_user_data() {
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$query = "
 		SELECT
@@ -279,7 +279,7 @@ function check_user_data() {
 
 function manage_reseller_limits($dest_reseller, $src_reseller, $users, &$err) {
 
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	list($dest_dmn_current, $dest_dmn_max,
 		$dest_sub_current, $dest_sub_max,
@@ -458,7 +458,7 @@ function calculate_reseller_dvals(&$dest, $dest_max, &$src, $src_max, $umax, &$e
 
 function check_ip_sets($dest, $users, &$err) {
 
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$users_array = explode(";", $users);
 

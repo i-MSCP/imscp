@@ -79,7 +79,7 @@ function generate_page(&$tpl) {
 	global $month, $year;
 
 	$cfg = iMSCP_Registry::get('config');
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$start_index = 0;
 

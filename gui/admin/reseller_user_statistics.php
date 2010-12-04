@@ -90,7 +90,7 @@ function generate_page(&$tpl, $reseller_id, $reseller_name) {
 
 	global $rid;
 	$cfg = iMSCP_Registry::get('config');
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$start_index = 0;
 

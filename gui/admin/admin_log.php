@@ -60,7 +60,7 @@ $tpl->assign(
 function generate_page(&$tpl) {
 
 	$cfg = iMSCP_Registry::get('config');
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$start_index = 0;
 	$rows_per_page = 15;
@@ -181,7 +181,7 @@ function generate_page(&$tpl) {
 }
 
 function clear_log() {
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'clear_log') {
 		$query = null;

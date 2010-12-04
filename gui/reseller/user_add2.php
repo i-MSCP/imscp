@@ -225,7 +225,7 @@ function get_hp_data($hpid, $admin_id) {
 	/**
 	 * @var $sql iMSCP_Database
 	 */
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$query = "SELECT `name`, `props` FROM `hosting_plans` WHERE `reseller_id` = ? AND `id` = ?";
 
@@ -267,7 +267,7 @@ function check_user_data($tpl) {
 	global $hp_name, $hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff,
 		$hp_disk, $hp_dmn, $hp_backup, $hp_dns, $hp_allowsoftware;
 
-	//$sql = iMSCP_Registry::get('Db');
+	//$sql = iMSCP_Registry::get('db');
 
 	$ehp_error = array();
 
@@ -410,7 +410,7 @@ function check_hosting_plan_name($admin_id) {
 	/**
 	 * @var $sql iMSCP_Database
 	 */
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$query = "SELECT `id` FROM `hosting_plans` WHERE `name` = ? AND `reseller_id` = ?";
 	$res = exec_query($sql, $query, array($hp_name, $admin_id));

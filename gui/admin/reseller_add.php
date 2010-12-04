@@ -421,7 +421,7 @@ function check_user_data() {
 	global $reseller_ips;
 
 	$cfg = iMSCP_Registry::get('config');
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$username = clean_input($_POST['username']);
 

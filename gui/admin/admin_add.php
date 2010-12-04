@@ -226,7 +226,7 @@ function add_user(&$tpl, &$sql) {
 function check_user_data() {
 
 	$cfg = iMSCP_Registry::get('config');
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	if (!validates_username($_POST['username'])) {
 		set_page_message(tr("Incorrect username length or syntax!"), 'error');

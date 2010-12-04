@@ -479,7 +479,7 @@ function check_user_ip_data($reseller_id, $r_ips, $u_ips) {
  */
 function get_reseller_prop($reseller_id) {
 
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$query = "
 		SELECT
@@ -527,7 +527,7 @@ function get_reseller_prop($reseller_id) {
 function get_servers_ips(&$tpl, $rip_lst) {
 
 	$cfg = iMSCP_Registry::get('config');
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$query = "
 		SELECT
@@ -620,7 +620,7 @@ function get_servers_ips(&$tpl, $rip_lst) {
  */
 function have_reseller_ip_users($reseller_id, $ip, &$ip_num, &$ip_name) {
 
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	$query = "
 		SELECT
@@ -680,7 +680,7 @@ function update_reseller() {
 	$rdata =& get_data();
 
 	// Get database instance
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	/**
 	 * Update reseller additional data
@@ -831,7 +831,7 @@ function &get_data(&$tpl = false) {
 
 	if (empty($rdata) && $tpl !== false) {
 
-		$sql = iMSCP_Registry::get('Db');
+		$sql = iMSCP_Registry::get('db');
 
 		// Update action
 		if (isset($_POST['uaction']) && $_POST['uaction'] == 'update_reseller') {

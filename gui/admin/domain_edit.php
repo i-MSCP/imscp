@@ -146,7 +146,7 @@ gen_editdomain_page($tpl);
  */
 function load_user_data($user_id, $domain_id) {
 
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	global $domain_name, $domain_expires, $domain_ip, $php_sup;
 	global $cgi_supp , $sub, $als;
@@ -193,7 +193,7 @@ function load_additional_data($user_id, $domain_id) {
 	global $dns_supp, $software_supp;
 
 	$cfg = iMSCP_Registry::get('config');
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	// Get domain data
 	$query = "

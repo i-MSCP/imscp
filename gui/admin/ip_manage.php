@@ -219,7 +219,7 @@ function check_user_data() {
 
 function IP_exists() {
 
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	global $ip_number;
 

@@ -166,7 +166,7 @@ function send_request() {
  */
 function update_expire_date ($user_id, $domain_new_expire ) {
 
-	$db = iMSCP_Registry::get('Db');
+	$db = iMSCP_Registry::get('db');
 
 	$query = "
 		UPDATE
@@ -201,7 +201,7 @@ function update_user_props($user_id, $props) {
 	/**
 	 * @var iMSCP_Database $db
 	 */
-	$db = iMSCP_Registry::get('Db');
+	$db = iMSCP_Registry::get('db');
 
 	list(
 		,$sub_max,,$als_max,,$mail_max,,$ftp_max,,$sql_db_max,,$sql_user_max,
@@ -740,7 +740,7 @@ function exec_query($db, $query, $bind = null, $failDie = true) {
  */
 function quoteIdentifier($identifier) {
 
-	$db = iMSCP_Registry::get('Db');
+	$db = iMSCP_Registry::get('db');
 
 	$identifier = str_replace(
 		$db->nameQuote, '\\' . $db->nameQuote, $identifier

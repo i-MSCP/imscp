@@ -120,7 +120,7 @@ function check_user_data() {
 	/**
  	 * @var $sql iMSCP_Database
  	 */
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 	// personal template
 	$even_txt = '';
@@ -255,7 +255,7 @@ function get_hp_data_list($tpl, $reseller_id) {
 	/**
 	 * @var $sql iMSCP_Database
 	 */
-	$sql = iMSCP_Registry::get('Db');
+	$sql = iMSCP_Registry::get('db');
 
 
 	if (isset($cfg->HOSTING_PLANS_LEVEL)
