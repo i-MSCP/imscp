@@ -7,6 +7,7 @@ i-MSCP ChangeLog
 		* Added i-MSCP daemon service properties in database
 		* Fixed: Database update from frontend is broken
 		* Fixed: Pages messages are not displayed correctly
+		* Fixed: Unable to switch back (Reseller to Admin)
 		* Rewritten the admin/server_status.php script
 
 2010-12-03 Laurent Declercq

@@ -785,10 +785,12 @@ function check_login($fileName = null, $preventExternalLogin = true) {
 	}
 }
 
+
+
 /**
  * Switch between user's interfaces
  *
- * This function allows to switch bettwen user's interfaces for admin and
+ * This function allows to switch between user's interfaces for admin and
  * reseller user accounts.
  *
  * @param  $fromId User's id that want switch to an other user's interface
@@ -804,8 +806,8 @@ function change_user_interface($fromId, $toId) {
 
 	$index = null;
 
-	while (1) { // used to easily exit
-		$query = '
+	while (1) {
+		$query = "
 			SELECT
 				`admin_id`, `admin_name`, `admin_pass`, `admin_type`, `email`, `created_by`
 			FROM
@@ -813,14 +815,13 @@ function change_user_interface($fromId, $toId) {
 			WHERE
 				binary `admin_id` = ?
 			;
-		';
-
+		";
 
 		$rsFrom = exec_query($sql, $query, $fromId);
 		$rsTo = exec_query($sql, $query, $toId);
 
 		if (($rsFrom->recordCount()) != 1 || ($rsTo->recordCount()) != 1) {
-			set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
+			set_page_message(tr('User does not exist or you do not have permission to access this interface!'), 'warning');
 			break;
 		}
 
@@ -828,7 +829,7 @@ function change_user_interface($fromId, $toId) {
 		$toUserData = $rsTo->fetchRow();
 
 		if (!is_userdomain_ok($toUserData['admin_name'])) {
-			set_page_message(tr("%s's account status is not ok!", decode_idna($toUserData['admin_name'])));
+			set_page_message(tr("%s's account status is not ok!", decode_idna($toUserData['admin_name'])), 'warning');
 			break;
 		}
 
@@ -848,10 +849,10 @@ function change_user_interface($fromId, $toId) {
 			$fromAdminType != 'admin')) {
 
 			if (isset($_SESSION['logged_from_id']) && $_SESSION['logged_from_id'] == $toId) {
-				$index = $allowedChanges[$fromAdminType]['BACK'];
+				$index = $allowedChanges[$toAdminType]['BACK'];
                 $restore = true;
 			} else {
-				set_page_message(tr('You do not have permission to access this interface!'));
+				set_page_message(tr('You do not have permission to access this interface!'), 'error');
 				break;
 			}
 		}
@@ -868,22 +869,12 @@ function change_user_interface($fromId, $toId) {
 
 		}
 
-		// Ticket 830 - remove the 'logged_from' if back from user
 		if ($fromAdminType == 'user') {
-			// maybe integrated in the construction above...
-			unset($_SESSION['logged_from']);
-			unset($_SESSION['logged_from_id']);
+			unset($_SESSION['logged_from'], $_SESSION['logged_from_id']);
 		}
 
 		// we gonna kill all sessions and globals if user get back to admin level
-		unset($_SESSION['admin_name']);
-		unset($_SESSION['admin_id']);
-
-		unset($GLOBALS['admin_name']);
-		unset($GLOBALS['admin_id']);
-
-		// no more sessions and globals to kill - they were always killed -
-		// rest in peace
+		unset($_SESSION['admin_name'], $_SESSION['admin_id'], $GLOBALS['admin_name'], $GLOBALS['admin_id']);
 
 		$_SESSION['user_logged'] = $toUserData['admin_name'];
 		$_SESSION['user_pass'] = $toUserData['admin_pass'];
@@ -893,19 +884,9 @@ function change_user_interface($fromId, $toId) {
 		$_SESSION['user_created_by'] = $toUserData['created_by'];
 		$_SESSION['user_login_time'] = time();
 
-		$query = '
-			INSERT INTO
-				`login` (
-					`session_id`, `ipaddr`, `user_name`, `lastaccess`
-				) VALUES (
-					?, ?, ?, ?
-				)
-			;
-		';
+		$query = "INSERT INTO login (`session_id`, `ipaddr`, `user_name`, `lastaccess`) VALUES (?, ?, ?, ?);";
 
-		exec_query(
-			$sql, $query, array(session_id(), getipaddr(), $toUserData['admin_name'], $_SESSION['user_login_time'])
-		);
+		exec_query($sql, $query, array(session_id(), getipaddr(), $toUserData['admin_name'], $_SESSION['user_login_time']));
 
 		write_log(
 			sprintf(

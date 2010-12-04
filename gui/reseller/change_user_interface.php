@@ -32,16 +32,20 @@
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
+// Include needed libraries
 require '../include/imscp-lib.php';
 
+// Check for login
 check_login(__FILE__);
 
-// let's back to admin interface - am I admin or what ? :-)
+// logged from admin to reseller - switch back to admin
+if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id']) && isset($_GET['action']) &&
+	$_GET['action'] == 'go_back') {
 
-if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id'])
-	&& isset($_GET['action']) && $_GET['action'] == "go_back") {
 	change_user_interface($_SESSION['user_id'], $_SESSION['logged_from_id']);
-} else if (isset($_SESSION['user_id']) && isset($_GET['to_id'])) {
+
+// Switch to customer
+} elseif (isset($_SESSION['user_id']) && isset($_GET['to_id'])) {
 
 	$to_id = $_GET['to_id'];
 
@@ -49,16 +53,12 @@ if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id'])
 	if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id'])) {
 		$from_id = $_SESSION['logged_from_id'];
 	} else { // reseller:
-
 		$from_id = $_SESSION['user_id'];
 
 		if (who_owns_this($to_id, 'client') != $from_id) {
-
-			set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
-
+			set_page_message(tr('User does not exist or you do not have permission to access this interface!'), 'warning');
 			user_goto('users.php?psi=last');
 		}
-
 	}
 
     // Remember some data
@@ -68,9 +68,11 @@ if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id'])
         if (isset($_SESSION['search_status'])) {
             $_SESSION['uistack']['search_status'] = $_SESSION['search_status'];
         }
+
         if (isset($_SESSION['search_common'])) {
             $_SESSION['uistack']['search_common'] = $_SESSION['search_common'];
         }
+
         if (isset($_SESSION['search_page'])) {
             $_SESSION['uistack']['search_page'] = $_SESSION['search_page'];
         }
