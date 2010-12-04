@@ -92,7 +92,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 		|| (!is_number($domain_rows_per_page))
 		|| (!is_number($max_dnames_labels))
 		|| (!is_number($max_subdnames_labels))) {
-		set_page_message(tr('ERROR: Only positive numbers are allowed !'));
+		set_page_message(tr('Error: Only positive numbers are allowed!'), 'error');
 	} else if ($domain_rows_per_page < 1) {
 		$domain_rows_per_page = 1;
 	} else if ($max_dnames_labels < 1) {
@@ -141,26 +141,20 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 
 		// An Update was been made in the database ?
 		if($updt_count > 0) {
-			set_page_message(
-				tr('%d configuration parameter(s) was updated!', $updt_count)
-			);
+			set_page_message(tr('%d configuration parameter(s) was updated!', $updt_count), 'success');
 		}
 
 		if($new_count > 0){
-			set_page_message(
-				tr('%d configuration parameter(s) was created!', $new_count)
-			);
+			set_page_message(tr('%d configuration parameter(s) was created!', $new_count), 'success');
 		}
 
 		if($new_count == 0 && $updt_count == 0){
-			set_page_message(tr("Nothing's been changed!"));
+			set_page_message(tr("Nothing's been changed!"), 'warning');
 		}
 	}
 }
 
-$coid = isset($cfg->CUSTOM_ORDERPANEL_ID)
-	? $cfg->CUSTOM_ORDERPANEL_ID
-	: '';
+$coid = isset($cfg->CUSTOM_ORDERPANEL_ID) ? $cfg->CUSTOM_ORDERPANEL_ID : '';
 
 $tpl->assign(
 	array(

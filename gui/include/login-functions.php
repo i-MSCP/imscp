@@ -850,7 +850,7 @@ function change_user_interface($fromId, $toId) {
 
 			if (isset($_SESSION['logged_from_id']) && $_SESSION['logged_from_id'] == $toId) {
 				$index = $allowedChanges[$toAdminType]['BACK'];
-                $restore = true;
+				$restore = true;
 			} else {
 				set_page_message(tr('You do not have permission to access this interface!'), 'error');
 				break;
@@ -873,7 +873,6 @@ function change_user_interface($fromId, $toId) {
 			unset($_SESSION['logged_from'], $_SESSION['logged_from_id']);
 		}
 
-		// we gonna kill all sessions and globals if user get back to admin level
 		unset($_SESSION['admin_name'], $_SESSION['admin_id'], $GLOBALS['admin_name'], $GLOBALS['admin_id']);
 
 		$_SESSION['user_logged'] = $toUserData['admin_name'];

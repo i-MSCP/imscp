@@ -437,91 +437,100 @@ function check_user_data() {
 	$rs = exec_query($sql, $query, $username);
 
 	if ($rs->recordCount() != 0) {
-		set_page_message(tr('This user name already exist!'));
+		set_page_message(tr('This user name already exist!'), 'warning');
 
 		return false;
 	}
 	if (!validates_username(clean_input($_POST['username']))) {
-		set_page_message(tr("Incorrect username length or syntax!"));
+		set_page_message(tr("Incorrect username length or syntax!"), 'error');
 
 		return false;
 	}
 	if (!chk_password($_POST['pass'])) {
 		if ($cfg->PASSWD_STRONG) {
-			set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS));
+			set_page_message(
+				sprintf(
+					tr('The password must be at least %s long and contain letters and numbers to be valid.'),
+					$cfg->PASSWD_CHARS
+				),
+				'error'
+			);
 		} else {
-			set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), $cfg->PASSWD_CHARS));
+			set_page_message(
+				sprintf(
+					tr('Password data is shorter than %s signs or includes not permitted signs!'),
+					$cfg->PASSWD_CHARS
+				), 'error'
+			);
 		}
 
 		return false;
 	}
 	if ($_POST['pass'] != $_POST['pass_rep']) {
-		set_page_message(tr("Entered passwords do not match!"));
+		set_page_message(tr("Entered passwords do not match!"), 'error');
 
 		return false;
 	}
 	if (!chk_email(clean_input($_POST['email']))) {
-		set_page_message(tr("Incorrect email syntax!"));
+		set_page_message(tr("Incorrect email syntax!"), 'error');
 
 		return false;
 	}
 	if (!imscp_limit_check($_POST['nreseller_max_domain_cnt'], null)) {
-		set_page_message(tr("Incorrect domains limit!"));
+		set_page_message(tr("Incorrect domains limit!"), 'error');
 
 		return false;
 	}
 	if (!imscp_limit_check($_POST['nreseller_max_subdomain_cnt'], -1)) {
-		set_page_message(tr("Incorrect subdomains limit!"));
+		set_page_message(tr("Incorrect subdomains limit!"), 'error');
 
 		return false;
 	}
 	if (!imscp_limit_check($_POST['nreseller_max_alias_cnt'], -1)) {
-		set_page_message(tr('Incorrect aliases limit!'));
+		set_page_message(tr('Incorrect aliases limit!'), 'error');
 
 		return false;
 	}
 	if (!imscp_limit_check($_POST['nreseller_max_ftp_cnt'], -1)) {
-		set_page_message(tr('Incorrect FTP accounts limit!'));
+		set_page_message(tr('Incorrect FTP accounts limit!'), 'error');
 
 		return false;
 	}
 	if (!imscp_limit_check($_POST['nreseller_max_mail_cnt'], -1)) {
-		set_page_message(tr('Incorrect mail accounts limit!'));
+		set_page_message(tr('Incorrect mail accounts limit!'), 'error');
 
 		return false;
 	}
 	if (!imscp_limit_check($_POST['nreseller_max_sql_db_cnt'], -1)) {
-		set_page_message(tr('Incorrect SQL databases limit!'));
+		set_page_message(tr('Incorrect SQL databases limit!'), 'error');
 
 		return false;
-	} else if ($_POST['nreseller_max_sql_db_cnt'] == -1
-		&& $_POST['nreseller_max_sql_user_cnt'] != -1) {
-		set_page_message(tr('SQL databases limit is <i>disabled</i> but SQL users limit not!'));
+	} else if ($_POST['nreseller_max_sql_db_cnt'] == -1 && $_POST['nreseller_max_sql_user_cnt'] != -1) {
+		set_page_message(tr('SQL databases limit is <i>disabled</i> but SQL users limit not!'), 'error');
 
 		return false;
 	}
 	if (!imscp_limit_check($_POST['nreseller_max_sql_user_cnt'], -1)) {
-		set_page_message(tr('Incorrect SQL users limit!'));
+		set_page_message(tr('Incorrect SQL users limit!'), 'error');
 
 		return false;
-	} else if ($_POST['nreseller_max_sql_db_cnt'] != -1
-		&& $_POST['nreseller_max_sql_user_cnt'] == -1) {
-		set_page_message(tr('SQL users limit is <i>disabled</i> but SQL databases limit not!'));
+	} else if ($_POST['nreseller_max_sql_db_cnt'] != -1 && $_POST['nreseller_max_sql_user_cnt'] == -1) {
+		set_page_message(tr('SQL users limit is <i>disabled</i> but SQL databases limit not!'), 'error');
 
 		return false;
 	}
 	if (!imscp_limit_check($_POST['nreseller_max_traffic'], null)) {
-		set_page_message(tr('Incorrect traffic limit!'));
+		set_page_message(tr('Incorrect traffic limit!'), 'error');
 
 		return false;
 	}
 	if (!imscp_limit_check($_POST['nreseller_max_disk'], null)) {
-		set_page_message(tr('Incorrect disk quota limit!'));
+		set_page_message(tr('Incorrect disk quota limit!'), 'error');
 
 		return false;
 	}
 	if ($reseller_ips == '') {
-		set_page_message(tr('You must assign at least one IP number for a reseller!'));
+		set_page_message(tr('You must assign at least one IP number for a reseller!'), 'error');
 
 		return false;
 	}

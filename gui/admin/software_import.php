@@ -52,7 +52,7 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 	";
 	$rs = exec_query($sql, $query, $_GET['id']);
 	if ($rs->recordCount() != 1) {
-		set_page_message(tr('Wrong software id.'));
+		set_page_message(tr('Wrong software id.'), 'error');
 		header('Location: software_manage.php');
 	} else {
 		$source_file = $cfg->GUI_SOFTWARE_DIR.'/'.$rs->fields['reseller_id'].'/'.$rs->fields['software_archive'].'-'.$rs->fields['software_id'].'.tar.gz';
@@ -131,10 +131,10 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 			true
 		);
 		
-		set_page_message(tr('Software was imported succesfully.'));
+		set_page_message(tr('Software was imported succesfully.'), 'success');
 		header('Location: software_manage.php');
 	}
 } else {
-	set_page_message(tr('Wrong software id.'));
+	set_page_message(tr('Wrong software id.'), 'error');
 	header('Location: software_manage.php');
 }

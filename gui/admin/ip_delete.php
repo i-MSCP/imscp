@@ -44,7 +44,7 @@ if (!isset($_GET['delete_id'])) {
 }
 
 if (!is_numeric($_GET['delete_id'])) {
-	set_page_message(tr('You cannot delete the last active IP address!'));
+	set_page_message(tr('You cannot delete the last active IP address!'), 'error');
 	user_goto('ip_manage.php');
 }
 
@@ -65,7 +65,7 @@ $rs = exec_query($sql, $query, $delete_id);
 if ($rs->fields['dcnt'] > 0) {
 	// ERROR - we have domain(s) that use this IP
 
-	set_page_message(tr('Error: we have a domain using this IP!'));
+	set_page_message(tr('Error: we have a domain using this IP!'), 'error');
 
 	user_goto('ip_manage.php');
 }
@@ -76,7 +76,7 @@ $res = exec_query($sql, $query);
 
 while (($data = $res->fetchRow())) {
 	if (preg_match("/$delete_id;/", $data['reseller_ips'])) {
-		set_page_message(tr('Error: we have a reseller using this IP!'));
+		set_page_message(tr('Error: we have a reseller using this IP!'), 'error');
 		user_goto('ip_manage.php');
 	}
 }
@@ -113,6 +113,6 @@ $rs = exec_query($sql, $query, array($cfg->ITEM_DELETE_STATUS, $delete_id));
 
 send_request();
 
-set_page_message(tr('IP was deleted!'));
+set_page_message(tr('IP was deleted!'), 'success');
 
 user_goto('ip_manage.php');

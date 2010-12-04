@@ -806,18 +806,18 @@ if (isset($_GET['action'])) {
 				";
 				break;
 			default:
-				set_page_message(tr('Unknown type!'));
+				set_page_message(tr('Unknown type!'), 'error');
 				user_goto('imscp_debugger.php');
 		}
 
 		$rs = exec_query($sql, $query, $_GET['id']);
 
 		if ($rs !== false) {
-			set_page_message(tr('Done'));
+			set_page_message(tr('Done'), 'success');
 			user_goto('imscp_debugger.php');
 		} else {
 			$msg = tr('Unknown Error') . '<br />' . $sql->errorMsg();
-			set_page_message($msg);
+			set_page_message($msg, 'error');
 			user_goto('imscp_debugger.php');
 		}
 	}

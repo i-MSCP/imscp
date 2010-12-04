@@ -85,21 +85,21 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 	unset($_SESSION['software_upload_token']);
 
 	if ($_FILES['sw_file']['name'] != '' AND !empty($_POST['sw_wget'])) {
-		set_page_message(tr('You have to choose between file-upload and wget-function.'));
+		set_page_message(tr('You have to choose between file-upload and wget-function.'), 'error');
 		$success = 0;
 	} elseif ($_FILES['sw_file']['name'] == '' AND empty($_POST['sw_wget'])) {
-		set_page_message(tr('You must select a file to upload/download.'));
+		set_page_message(tr('You must select a file to upload/download.'), 'error');
 		$success = 0;
 	} else {
 		if ($_FILES['sw_file']['name'] && $_FILES['sw_file']['name'] != "none") {
 			if (substr($_FILES['sw_file']['name'], -7) != '.tar.gz') {
-				set_page_message(tr('File needs to be a .tar.gz-archive'));
+				set_page_message(tr('File needs to be a .tar.gz-archive'), 'error');
 				$success = 0;
 			}
 			$file = 0;
 		} else {
 			if (substr($_POST['sw_wget'], -7) != '.tar.gz') {
-				set_page_message(tr('File needs to be a .tar.gz-archive'));
+				set_page_message(tr('File needs to be a .tar.gz-archive'), 'error');
 				$success = 0;
 			}
 			$file = 1;
@@ -157,9 +157,12 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 
 				$sw_wget = '';
 
-				set_page_message(tr(
-					'ERROR: Could not upload file. Max. upload filesize (%1$d MB) reached?',
-					ini_get('upload_max_filesize'))
+				set_page_message(
+					tr(
+						'Error: Could not upload file. Max. upload filesize (%1$d MB) reached?',
+						ini_get('upload_max_filesize')
+					),
+					'error'
 				);
 
 				$upload = 0;
@@ -202,9 +205,12 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 					exec_query($sql, $query, $sw_id);
 
 					$show_max_remote_filesize = formatFilesize($cfg->MAX_REMOTE_FILESIZE);
-					set_page_message(tr(
-						'ERROR: Your remote filesize (%1$d B) is lower than 1 Byte. Please check your URL!',
-						$show_remote_file_size)
+					set_page_message(
+						tr(
+							'Error: Your remote filesize (%1$d B) is lower than 1 Byte. Please check your URL!',
+							$show_remote_file_size
+						),
+						'error'
 					);
 
 					$upload = 0;
@@ -213,9 +219,12 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 					$query = "DELETE FROM `web_software` WHERE `software_id` = ?;";
 					exec_query($sql, $query, $sw_id);
 					$show_max_remote_filesize = formatFilesize($cfg->MAX_REMOTE_FILESIZE);
-					set_page_message(tr(
-						'ERROR: Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB',
-						$show_max_remote_filesize, $show_remote_file_size)
+					set_page_message(
+						tr(
+							'Error: Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB',
+							$show_max_remote_filesize, $show_remote_file_size
+						),
+						'error'
 					);
 
 					$upload = 0;
@@ -229,7 +238,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 						// Delete software entry
 						$query = "DELETE FROM `web_software` WHERE`software_id` = ?;";
 						exec_query($sql, $query, $sw_id);
-						set_page_message(tr('ERROR: Remote File not found!'));
+						set_page_message(tr('Error: Remote File not found!'), 'error');
 						$upload = 0;
 					}
 				}
@@ -237,7 +246,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 				// Delete software entry
 				$query = "DELETE FROM `web_software` WHERE `software_id` = ?;";
 				exec_query($sql, $query, $sw_id);
-				set_page_message(tr('ERROR: Could not upload the file. File not found!'));
+				set_page_message(tr('Error: Could not upload the file. File not found!'), 'error');
 				$upload = 0;
 			}
 		}
@@ -245,7 +254,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 		if ($upload == 1) {
 			$tpl->assign(array('VAL_WGET' => ''));
 			send_request();
-			set_page_message(tr('File was successfully uploaded.'));	
+			set_page_message(tr('File was successfully uploaded.'), 'success');	
 		} else {
 			$tpl->assign(array('VAL_WGET' => $sw_wget));
 		}
@@ -351,7 +360,7 @@ function get_avail_softwaredepot ($tpl, $sql) {
 				if($rs->fields['swstatus'] == 'ready') {
 					$updatequery = "UPDATE `web_software` SET `software_status` = 'ok' WHERE `software_id` = ?;";
 					exec_query($sql, $updatequery, $rs->fields['id']);
-					set_page_message(tr('Package installed successfully!'));
+					set_page_message(tr('Package installed successfully!'), 'success');
 				}
 
 				$del_url = 'software_delete.php?id=' . $rs->fields['id'];
@@ -425,7 +434,7 @@ function get_avail_softwaredepot ($tpl, $sql) {
 								)
 							);
 
-							set_page_message(tr('Your package is corrupt. Please correct it!'));
+							set_page_message(tr('Your package is corrupt. Please correct it!'), 'error');
 						} elseif (preg_match('/double_depot_/i', $rs->fields['swstatus'])) {
 							$tpl->assign(
 								array(
@@ -449,7 +458,7 @@ function get_avail_softwaredepot ($tpl, $sql) {
 								)
 							);
 
-							set_page_message(tr('This package already exist in the software depot!'));
+							set_page_message(tr('This package already exist in the software depot!'), 'warning');
 						} elseif (preg_match('/double_res_/i', $rs->fields['swstatus'])) {
 							$tpl->assign(
 								array(
@@ -487,9 +496,12 @@ function get_avail_softwaredepot ($tpl, $sql) {
 							";
 
 							$rs_res = exec_query($sql, $query, $exist_software_id);
-							set_page_message(tr(
-								'This package already exist in the depot of the reseller "%1$s"!',
-								$rs_res->fields['resellername'])
+							set_page_message(
+								tr(
+									'This package already exist in the depot of the reseller "%1$s"!',
+									$rs_res->fields['resellername']
+								),
+								'warning'
 							);
 						}
 

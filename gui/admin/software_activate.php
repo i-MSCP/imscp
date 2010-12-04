@@ -49,7 +49,7 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 	";
 	$rs = exec_query($sql, $query, $_GET['id']);
 	if ($rs->recordCount() != 1) {
-		set_page_message(tr('Wrong software id.'));
+		set_page_message(tr('Wrong software id.'), 'error');
 		header('Location: software_manage.php');
 	} else {
 		$update="
@@ -88,10 +88,10 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 			$res->fields['software_id']
 		);
 		
-		set_page_message(tr('Software was activated.'));
+		set_page_message(tr('Software was activated.'), 'success');
 		header('Location: software_manage.php');
 	}
 } else {
-	set_page_message(tr('Wrong software id.'));
+	set_page_message(tr('Wrong software id.'), 'error');
 	header('Location: software_manage.php');
 }

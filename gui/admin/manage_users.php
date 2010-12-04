@@ -83,31 +83,31 @@ if (isset($_POST['details']) && !empty($_POST['details'])) {
 if (isset($_SESSION['user_added'])) {
 	unset($_SESSION['user_added']);
 
-	set_page_message(tr('User added'));
+	set_page_message(tr('User added'), 'success');
 } else if (isset($_SESSION['reseller_added'])) {
 	unset($_SESSION['reseller_added']);
 
-	set_page_message(tr('Reseller added'));
+	set_page_message(tr('Reseller added'), 'success');
 } else if (isset($_SESSION['user_updated'])) {
 	unset($_SESSION['user_updated']);
 
-	set_page_message(tr('User updated'));
+	set_page_message(tr('User updated'), 'success');
 } else if (isset($_SESSION['user_deleted'])) {
 	unset($_SESSION['user_deleted']);
 
-	set_page_message(tr('User deleted'));
+	set_page_message(tr('User deleted'), 'success');
 } else if (isset($_SESSION['email_updated'])) {
 	unset($_SESSION['email_updated']);
 
-	set_page_message(tr('Email Updated'));
+	set_page_message(tr('Email Updated'), 'success');
 } else if (isset($_SESSION['hdomain'])) {
 	unset($_SESSION['hdomain']);
 
-	set_page_message(tr('This user has a domain!<br>To delete the user first delete the domain!'));
+	set_page_message(tr('This user has a domain!<br>To delete the user first delete the domain!'), 'error');
 } else if (isset($_SESSION['user_disabled'])) {
 	unset($_SESSION['user_disabled']);
 
-	set_page_message(tr('User was disabled'));
+	set_page_message(tr('User was disabled'), 'success');
 }
 
 /*

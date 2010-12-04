@@ -54,12 +54,12 @@ if (isset($_GET['id'])){
 	if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 		$reseller_id = $_GET['id'];
 	} else {
-		set_page_message(tr('Wrong reseller id.'));
+		set_page_message(tr('Wrong reseller id.'), 'error');
 		header('Location: software_manage.php');
 	}
 
 } else {
-	set_page_message(tr('Wrong reseller id.'));
+	set_page_message(tr('Wrong reseller id.'), 'error');
 	header('Location: software_manage.php');
 }
 
@@ -167,7 +167,7 @@ function get_installed_res_software ($tpl, $sql, $reseller_id) {
 			$tpl->parse('NO_SOFTWAREDEPOT_LIST', '.no_softwaredepot_list');
 			$tpl->assign('LIST_SOFTWAREDEPOT', '');
 		} else {
-			set_page_message(tr('Wrong reseller id.'));
+			set_page_message(tr('Wrong reseller id.'), 'error');
 			header('Location: software_manage.php');
 		}
 	}

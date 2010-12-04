@@ -100,25 +100,25 @@ function gen_hp_message() {
 
 	if (isset($_SESSION["hp_added"]) && $_SESSION["hp_added"] == '_yes_') {
 		// $external_event = '_on_';
-		set_page_message(tr('Hosting plan added!'));
+		set_page_message(tr('Hosting plan added!'), 'success');
 		unset($_SESSION["hp_added"]);
 		if (isset($GLOBALS['hp_added']))
 			unset($GLOBALS['hp_added']);
 	} else if (isset($_SESSION["hp_deleted"]) && $_SESSION["hp_deleted"] == '_yes_') {
 		// $external_event = '_on_';
-		set_page_message(tr('Hosting plan deleted!'));
+		set_page_message(tr('Hosting plan deleted!'), 'success');
 		unset($_SESSION["hp_deleted"]);
 		if (isset($GLOBALS['hp_deleted']))
 			unset($GLOBALS['hp_deleted']);
 	} else if (isset($_SESSION["hp_updated"]) && $_SESSION["hp_updated"] == '_yes_') {
 		// $external_event = '_on_';
-		set_page_message(tr('Hosting plan updated!'));
+		set_page_message(tr('Hosting plan updated!'), 'success');
 		unset($_SESSION["hp_updated"]);
 		if (isset($GLOBALS['hp_updated']))
 			unset($GLOBALS['hp_updated']);
 	} else if (isset($_SESSION["hp_deleted_ordererror"]) && $_SESSION["hp_deleted_ordererror"] == '_yes_') {
 		//$external_event = '_on_';
-		set_page_message(tr('Hosting plan can\'t be deleted, there are orders!'));
+		set_page_message(tr('Hosting plan can\'t be deleted, there are orders!'), 'error');
 		unset($_SESSION["hp_deleted_ordererror"]);
 	}
 
@@ -151,7 +151,7 @@ function gen_hp_table(&$tpl, $reseller_id) {
 
 	if ($rs->rowCount() == 0) {
 		// if ($externel_event == '_off_') {
-		set_page_message(tr('Hosting plans not found!'));
+		set_page_message(tr('Hosting plans not found!'), 'error');
 		// }
 		$tpl->assign('HP_TABLE', '');
 	} else { // There are data for hosting plans :-)

@@ -186,12 +186,12 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 	} elseif (isset($_POST['id']) && is_numeric($_POST['id'])) {
 		$software_id = $_POST['id'];
 	} else {
-		set_page_message(tr('Wrong software id.'));
+		set_page_message(tr('Wrong software id.'), 'error');
 		header('Location: software_manage.php');
 	}
 
 } else {
-	set_page_message(tr('Wrong software id.'));
+	set_page_message(tr('Wrong software id.'), 'error');
 	header('Location: software_manage.php');
 }
 

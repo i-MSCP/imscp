@@ -96,18 +96,18 @@ function add_new_button(&$sql) {
 		$button_view = $_POST['bview'];
 
 		if (empty($button_name) || empty($button_link)) {
-			set_page_message(tr('Missing or incorrect data input!'));
+			set_page_message(tr('Missing or incorrect data input!'), 'error');
 			return;
 		}
 
 		if (!filter_var($button_link, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED | FILTER_FLAG_HOST_REQUIRED)) {
-			set_page_message(tr('Invalid URL!'));
+			set_page_message(tr('Invalid URL!'), 'error');
 			return;
 		}
 
 		if (!empty($button_target)
 			&& !in_array($button_target, array('_blank', '_parent', '_self', '_top'))) {
-			set_page_message(tr('Invalid target!'));
+			set_page_message(tr('Invalid target!'), 'error');
 			return;
 		}
 
@@ -127,14 +127,14 @@ function add_new_button(&$sql) {
 				$button_link,
 				$button_target));
 
-		set_page_message(tr('Custom menu data updated successful!'));
+		set_page_message(tr('Custom menu data updated successful!'), 'success');
 		return;
 	}
 }
 
 function delete_button(&$sql) {
 	if ($_GET['delete_id'] === '' || !is_numeric($_GET['delete_id'])) {
-		set_page_message(tr('Missing or incorrect data input!'));
+		set_page_message(tr('Missing or incorrect data input!'), 'error');
 		return;
 	} else {
 		$delete_id = $_GET['delete_id'];
@@ -148,7 +148,7 @@ function delete_button(&$sql) {
 
 		$rs = exec_query($sql, $query, $delete_id);
 
-		set_page_message(tr('Custom menu deleted successful!'));
+		set_page_message(tr('Custom menu deleted successful!'), 'success');
 		return;
 	}
 }
@@ -158,7 +158,7 @@ function edit_button(&$tpl, &$sql) {
 	$cfg = iMSCP_Registry::get('Config');
 
 	if ($_GET['edit_id'] === '' || !is_numeric($_GET['edit_id'])) {
-		set_page_message(tr('Missing or incorrect data input!'));
+		set_page_message(tr('Missing or incorrect data input!'), 'error');
 		return;
 	} else {
 		$edit_id = $_GET['edit_id'];
@@ -174,7 +174,7 @@ function edit_button(&$tpl, &$sql) {
 
 		$rs = exec_query($sql, $query, $edit_id);
 		if ($rs->recordCount() == 0) {
-			set_page_message(tr('Missing or incorrect data input!'));
+			set_page_message(tr('Missing or incorrect data input!'), 'error');
 			$tpl->assign('EDIT_BUTTON', '');
 			return;
 		} else {
@@ -239,18 +239,18 @@ function update_button(&$sql) {
 		$button_id = $_POST['eid'];
 
 		if (empty($button_name) || empty($button_link) || empty($button_id)) {
-			set_page_message(tr('Missing or incorrect data input!'));
+			set_page_message(tr('Missing or incorrect data input!'), 'error');
 			return;
 		}
 
 		if (!filter_var($button_link, FILTER_VALIDATE_URL, FILTER_FLAG_SCHEME_REQUIRED | FILTER_FLAG_HOST_REQUIRED)) {
-			set_page_message(tr('Invalid URL!'));
+			set_page_message(tr('Invalid URL!'), 'error');
 			return;
 		}
 
 		if (!empty($button_target)
 			&& !in_array($button_target, array('_blank', '_parent', '_self', '_top'))) {
-			set_page_message(tr('Invalid target!'));
+			set_page_message(tr('Invalid target!'), 'error');
 			return;
 		}
 
@@ -275,7 +275,7 @@ function update_button(&$sql) {
 			)
 		);
 
-		set_page_message(tr('Custom menu data updated successful!'));
+		set_page_message(tr('Custom menu data updated successful!'), 'success');
 		return;
 	}
 }

@@ -67,7 +67,7 @@ function gen_user_table(&$tpl, &$sql) {
 	$rs = exec_query($sql, $query);
 
 	if ($rs->recordCount() == 0) {
-		set_page_message(tr('Reseller or user list is empty!'));
+		set_page_message(tr('Reseller or user list is empty!'), 'error');
 		user_goto('manage_users.php');
 	}
 
@@ -160,7 +160,7 @@ function gen_user_table(&$tpl, &$sql) {
 
 
 	if ($rs->recordCount() == 0) {
-		set_page_message(tr('User list is empty!'));
+		set_page_message(tr('User list is empty!'), 'warning');
 
 		$tpl->assign('RESELLER_LIST', '');
 	} else {
@@ -200,7 +200,7 @@ function update_reseller_user($sql) {
 	if (isset($_POST['uaction'])
 		&& $_POST['uaction'] === 'move_user'
 		&& check_user_data()) {
-		set_page_message(tr('User was moved'));
+		set_page_message(tr('User was moved'), 'success');
 	}
 }
 
@@ -236,11 +236,11 @@ function check_user_data() {
 	}
 
 	if ($selected_users == '') {
-		set_page_message(tr('Please select some user(s)!'));
+		set_page_message(tr('Please select some user(s)!'), 'error');
 
 		return false;
 	} else if ($_POST['src_reseller'] == $_POST['dst_reseller']) {
-		set_page_message(tr('Source and destination reseller are the same!'));
+		set_page_message(tr('Source and destination reseller are the same!'), 'error');
 
 		return false;
 	}
@@ -269,7 +269,7 @@ function check_user_data() {
 	}
 
 	if ($mru_error != '_off_') {
-		set_page_message($mru_error);
+		set_page_message($mru_error, 'error');
 
 		return false;
 	}

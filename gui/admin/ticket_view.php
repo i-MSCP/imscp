@@ -92,17 +92,20 @@ if (isset($_GET['ticket_id'])) {
 			openTicket($ticket_id);
 		} elseif (empty($_POST['user_message'])) {
 			// no message check->error
-			set_page_message(tr('Please type your message!'));
+			set_page_message(tr('Please type your message!'), 'error');
 		} else {
-			updateTicket($ticket_id, $user_id, $_POST['urgency'],
-					$_POST['subject'], $_POST['user_message'], 2, 3);
+			updateTicket(
+				$ticket_id, $user_id, $_POST['urgency'],
+				$_POST['subject'], $_POST['user_message'], 2, 3
+			);
+
 			user_goto('ticket_system.php');
 		}
 	}
 
 	showTicketContent($tpl, $ticket_id, $user_id, $screenwidth);
 } else {
-	set_page_message(tr('Ticket not found!'));
+	set_page_message(tr('Ticket not found!'), 'error');
 
 	user_goto('ticket_system.php');
 }

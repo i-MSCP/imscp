@@ -182,14 +182,14 @@ function importLanguageFile() {
 	$file = $_FILES['lang_file']['tmp_name'];
 
 	if (empty($_FILES['lang_file']['name']) || !is_readable($file)) {
-		set_page_message(tr('Upload file error!'));
+		set_page_message(tr('Upload file error!'), 'error');
 		return;
 	}
 
 	if ($file_type != 'text/plain' && $file_type != 'application/octet-stream'
 		&& $file_type != 'text/x-gettext-translation') {
 
-		set_page_message(tr('You can upload only text files!'));
+		set_page_message(tr('You can upload only text files!'), 'warning');
 		return;
 	} else {
 		if ($file_type == 'text/x-gettext-translation') {
@@ -200,10 +200,10 @@ function importLanguageFile() {
 
 		if (is_int($ab)) {
 			if ($ab == 1) {
-				set_page_message(tr('Could not read language file!'));
+				set_page_message(tr('Could not read language file!'), 'error');
 				return;
 			} elseif ($ab == 2) {
-				set_page_message(tr('Uploaded file is not a valid language file!'));
+				set_page_message(tr('Uploaded file is not a valid language file!'), 'error');
 				return;
 			}
 		}
@@ -215,9 +215,7 @@ function importLanguageFile() {
 				$ab['imscp_languageSetlocaleValue']
 			) || !preg_match('/^[a-z0-9()]+$/Di', $ab['imscp_table'])) {
 
-			set_page_message(
-				tr('Uploaded file does not contain the language information!')
-			);
+			set_page_message(tr('Uploaded file does not contain the language information!'), 'error');
 			return;
 		}
 
@@ -269,7 +267,7 @@ function importLanguageFile() {
 				)
 			);
 
-			set_page_message(tr('New language installed!'));
+			set_page_message(tr('New language installed!'), 'success');
 		} else {
 			write_log(
 				tr(
@@ -278,7 +276,7 @@ function importLanguageFile() {
 				)
 			);
 
-			set_page_message(tr('Language was updated!'));
+			set_page_message(tr('Language was updated!'), 'success');
 		}
 	}
 }

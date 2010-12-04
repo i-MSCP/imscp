@@ -120,16 +120,27 @@ function update_data(&$sql) {
 				$edit_id = $_POST['edit_id'];
 
 				if ($_POST['pass'] != $_POST['pass_rep']) {
-					set_page_message(tr("Entered passwords do not match!"));
+					set_page_message(tr("Entered passwords do not match!"), 'error');
 
 					user_goto('admin_edit.php?edit_id=' . $edit_id);
 				}
 
 				if (!chk_password($_POST['pass'])) {
 					if ($cfg->PASSWD_STRONG) {
-						set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS));
+						set_page_message(
+							sprintf(
+								tr('The password must be at least %s long and contain letters and numbers to be valid.'),
+								$cfg->PASSWD_CHARS
+							),
+							'error'
+						);
 					} else {
-						set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), $cfg->PASSWD_CHARS));
+						set_page_message(
+							sprintf(
+								tr('Password data is shorter than %s signs or includes not permitted signs!'),
+								$cfg->PASSWD_CHARS
+							), 'error'
+						);
 					}
 
 					user_goto('admin_edit.php?edit_id=' . $edit_id);
@@ -230,7 +241,7 @@ function update_data(&$sql) {
 
 function check_user_data() {
 	if (!chk_email($_POST['email'])) {
-		set_page_message(tr("Incorrect email length or syntax!"));
+		set_page_message(tr("Incorrect email length or syntax!"), 'error');
 
 		return false;
 	}

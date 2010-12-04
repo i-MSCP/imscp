@@ -223,10 +223,10 @@ function add_update_services($mode) {
 	// Prepare data and messages for error page
 	if(!empty($error_fields_ids)) {
 		to_session($mode);
-		set_page_message(implode('<br />', array_unique($messages)));
+		set_page_message(implode('<br />', array_unique($messages)), 'error');
 	// Prepares message for page on add
 	} elseif($mode) {
-		set_page_message(tr('Service port was added!'));
+		set_page_message(tr('Service port was added!'), 'success');
 	// Prepares message for page on update
 	} else {
 		// gets the number of queries that were been executed
@@ -234,9 +234,9 @@ function add_update_services($mode) {
 
 		// An Update was been made in the database ?
 		if($updt_count > 0) {
-			set_page_message(tr('%d Service(s) port was updated!', $updt_count));
+			set_page_message(tr('%d Service(s) port was updated!', $updt_count), 'success');
 		} else {
-			set_page_message(tr("Nothing's been changed!"));
+			set_page_message(tr("Nothing's been changed!"), 'warning');
 		}
 	}
 } // end add_update_services()
@@ -395,7 +395,7 @@ function delete_service($port_name) {
 	$db_cfg = iMSCP_Registry::get('Db_Config');
 
 	if (!isset($db_cfg->$port_name)) {
-		set_page_message(tr('ERROR: Unknown service port name!'));
+		set_page_message(tr('Error: Unknown service port name!'), 'error');
 
 		return;
 	}
@@ -414,10 +414,10 @@ function delete_service($port_name) {
 			get_session('user_logged') . ": Removed service port $port_name!"
 		);
 
-		set_page_message(tr('Service port was removed!'));
+		set_page_message(tr('Service port was removed!'), 'success');
 	} else {
 		set_page_message(
-			tr('ERROR: You are not allowed to remove this port entry!')
+			tr('Error: You are not allowed to remove this port entry!', 'error')
 		);
 	}
 }

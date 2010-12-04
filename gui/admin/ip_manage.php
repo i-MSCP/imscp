@@ -148,7 +148,7 @@ function add_ip(&$tpl, &$sql) {
 
 			send_request();
 
-			set_page_message(tr('New IP was added!'));
+			set_page_message(tr('New IP was added!'), 'success');
 
 			write_log("{$_SESSION['user_logged']}: adds new IPv4 address: {$ip_number}!");
 
@@ -212,7 +212,7 @@ function check_user_data() {
 	if ($err_msg == '_off_') {
 		return true;
 	} else {
-		set_page_message($err_msg);
+		set_page_message($err_msg, 'error');
 		return false;
 	}
 }
@@ -243,7 +243,7 @@ function IP_exists() {
 function show_Network_Cards(&$tpl, &$interfaces) {
 
 	if ($interfaces->getErrors() != '') {
-		set_page_message($interfaces->getErrors());
+		set_page_message($interfaces->getErrors(), 'error');
 	}
 	if ($interfaces->getAvailableInterface() != array()) {
 		foreach ($interfaces->getAvailableInterface() as $interface) {

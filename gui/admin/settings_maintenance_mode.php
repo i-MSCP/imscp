@@ -65,7 +65,7 @@ if (isset($_POST['uaction']) AND $_POST['uaction'] == 'apply') {
 
 	$cfg->replaceWith($db_cfg);
 
-	set_page_message(tr('Settings saved !'));
+	set_page_message(tr('Settings saved !'), 'success');
 }
 
 if ($cfg->MAINTENANCEMODE) {

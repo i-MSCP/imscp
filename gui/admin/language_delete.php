@@ -50,7 +50,7 @@ $delete_lang = $_GET['delete_lang'];
 
 // ERROR - we have domains that use this IP
 if ($delete_lang == $cfg->USER_INITIAL_LANG) {
-	set_page_message("Error we can't delete system default language!");
+	set_page_message("Error we can't delete system default language!", 'error');
 
 	user_goto('multilanguage.php');
 }
@@ -69,7 +69,7 @@ $rs = exec_query($sql, $query, $delete_lang);
 
 // ERROR - we have domains that use this IP
 if ($rs->recordCount () > 0) {
-	set_page_message('Error we have user that uses that language!');
+	set_page_message(tr('Error we have user that uses that language!'), 'error');
 
 	user_goto('multilanguage.php');
 }
@@ -80,6 +80,6 @@ $rs = exec_query($sql, $query);
 
 write_log(sprintf("%s removed language: %s", $_SESSION['user_logged'], $delete_lang));
 
-set_page_message(tr('Language was removed!'));
+set_page_message(tr('Language was removed!'), 'success');
 
 user_goto('multilanguage.php');

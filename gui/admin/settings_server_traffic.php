@@ -69,11 +69,11 @@ function update_server_settings(&$sql) {
 	$traffic_warning = $_POST['traffic_warning'];
 
 	if (!is_numeric($max_traffic) || !is_numeric($traffic_warning)) {
-		set_page_message(tr('Wrong data input!'));
+		set_page_message(tr('Wrong data input!'), 'error');
 	}
 
 	if ($traffic_warning > $max_traffic) {
-		set_page_message(tr('Warning traffic is bigger than max traffic!'));
+		set_page_message(tr('Warning traffic is bigger than max traffic!'), 'warning');
 
 		return;
 	}
@@ -94,10 +94,10 @@ function update_server_settings(&$sql) {
 	";
 	$rs = exec_query($sql, $query, array($max_traffic, $traffic_warning));
 
-	set_page_message(tr('Server traffic settings updated successfully!'));
+	set_page_message(tr('Server traffic settings updated successfully!'), 'success');
 }
 
-function generate_server_data(&$tpl, &$sql) {
+function generate_server_data($tpl, $sql) {
 
 	$query = "
 		SELECT

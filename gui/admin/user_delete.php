@@ -77,7 +77,7 @@ if (isset($_GET['delete_id']) && is_numeric($_GET['delete_id'])) {
 	&& isset($_POST['delete']) && $_POST['delete'] == 1) {
 	delete_domain((int)$_POST['domain_id'], 'manage_users.php');
 } else {
-	set_page_message(tr('Wrong domain ID!'));
+	set_page_message(tr('Wrong domain ID!'), 'error');
 	user_goto('manage_users.php');
 }
 
@@ -115,7 +115,7 @@ function delete_user($user_id) {
 	$data = $res->fetchRow();
 	$type = $data['admin_type'];
 	if (empty($type) || $type == 'user') {
-		set_page_message(tr('Invalid user id!'));
+		set_page_message(tr('Invalid user id!'), 'error');
 		user_goto('manage_users.php');
 	}
 
@@ -136,7 +136,7 @@ function delete_user($user_id) {
 			try {
 				unlink($cfg->IPS_LOGO_PATH . '/' . $reseller_logo);
 			} catch(Exception $e) {
-				set_page_message(tr('Logo could not be deleted:') . " " . $e->getMessage());
+				set_page_message(tr('Logo could not be deleted:') . " " . $e->getMessage(), 'error');
 			}
 		}
 	}
@@ -202,10 +202,10 @@ function validate_user_deletion($user_id) {
 		if ($type == 'admin' || $type == 'reseller') {
 			$result = true;
 		} else {
-			set_page_message(tr('Invalid user id!'));
+			set_page_message(tr('Invalid user id!'), 'error');
 		}
 	} else {
-		set_page_message(tr('There are active domains of reseller/admin!'));
+		set_page_message(tr('There are active domains of reseller/admin!'), 'error');
 	}
 
 	return $result;
@@ -224,7 +224,7 @@ function validate_domain_deletion($domain_id) {
 	$res = exec_query($sql, $query, $domain_id);
 	$data = $res->fetchRow();
 	if ($data['domain_id'] == 0) {
-		set_page_message(tr('Wrong domain ID!'));
+		set_page_message(tr('Wrong domain ID!'), 'error');
 		user_goto('manage_users.php');
 	}
 

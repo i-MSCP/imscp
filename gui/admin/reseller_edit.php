@@ -120,14 +120,20 @@ function check_data(&$errFields) {
 			if ($cfg->PASSWD_STRONG) {
 				set_page_message(
 					sprintf(
-						tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS)
+						tr('The password must be at least %s long and contain letters and numbers to be valid.'),
+						$cfg->PASSWD_CHARS
+					),
+					'error'
 				);
 
 			} else {
 
 				set_page_message(
 					sprintf(
-						tr('Password data is shorter than %s signs or includes not permitted signs!'),$cfg->PASSWD_CHARS)
+						tr('Password data is shorter than %s signs or includes not permitted signs!'),
+						$cfg->PASSWD_CHARS
+					),
+					'error'
 				);
 			}
 
@@ -135,7 +141,7 @@ function check_data(&$errFields) {
 		}
 
 		if ($_POST['pass0'] != $_POST['pass1']) {
-			set_page_message(tr('Entered passwords do not match!'));
+			set_page_message(tr('Entered passwords do not match!'), 'error');
 
 			$errFields[] = 'PWD_ERR';
 			$errFields[] = 'PWDR_ERR';
@@ -147,7 +153,7 @@ function check_data(&$errFields) {
 	 */
 
 	if (!chk_email($rdata['email'])) {
-		set_page_message(tr('Incorrect email syntax!'));
+		set_page_message(tr('Incorrect email syntax!'), 'error');
 
 		$errFields[] = 'EMAIL_ERR';
 	}
@@ -179,7 +185,7 @@ function check_data(&$errFields) {
 			$udmn_current, $udmn_uf, tr('Domains')
 		);
 	} else {
-		set_page_message(tr('Incorrect domains limit!'));
+		set_page_message(tr('Incorrect domains limit!'), 'error');
 		$rs = false;
 	}
 
@@ -197,7 +203,7 @@ function check_data(&$errFields) {
 			$usub_current, $usub_uf, tr('Subdomains')
 		);
 	} else {
-		set_page_message(tr('Incorrect subdomains limit!'));
+		set_page_message(tr('Incorrect subdomains limit!'), 'error');
 		$rs = false;
 	}
 
@@ -215,7 +221,7 @@ function check_data(&$errFields) {
 			$uals_current, $uals_uf, tr('Aliases')
 		);
 	} else {
-		set_page_message(tr('Incorrect aliases limit!'));
+		set_page_message(tr('Incorrect aliases limit!'), 'error');
 		$rs = false;
 	}
 
@@ -233,7 +239,7 @@ function check_data(&$errFields) {
 			$umail_current, $umail_uf, tr('Mail')
 		);
 	} else {
-		set_page_message(tr('Incorrect mail accounts limit!'));
+		set_page_message(tr('Incorrect mail accounts limit!'), 'error');
 		$rs = false;
 	}
 
@@ -251,7 +257,7 @@ function check_data(&$errFields) {
 			$uftp_current, $uftp_uf, tr('FTP')
 		);
 	} else {
-		set_page_message(tr('Incorrect FTP accounts limit!'));
+		set_page_message(tr('Incorrect FTP accounts limit!'), 'error');
 		$rs = false;
 	}
 
@@ -264,10 +270,10 @@ function check_data(&$errFields) {
 	 */
 
 	if (!$rs = imscp_limit_check($rdata['max_sql_db_cnt'])) {
-		set_page_message(tr('Incorrect SQL databases limit!'));
+		set_page_message(tr('Incorrect SQL databases limit!'), 'error');
 	} else if ($rdata['max_sql_db_cnt'] == -1 && $rdata['max_sql_user_cnt'] != -1) {
 		set_page_message(
-			tr('SQL databases limit is <i>disabled</i> but SQL users limit not!')
+			tr('SQL databases limit is <i>disabled</i> but SQL users limit not!'), 'error'
 		);
 		$rs = false;
 	} else {
@@ -286,11 +292,11 @@ function check_data(&$errFields) {
 	 */
 
 	if (!$rs = imscp_limit_check($rdata['max_sql_user_cnt'])) {
-		set_page_message(tr('Incorrect SQL users limit!'));
+		set_page_message(tr('Incorrect SQL users limit!'), 'error');
 	} else if ($rdata['max_sql_db_cnt'] != -1
 		&& $rdata['max_sql_user_cnt'] == -1) {
 		set_page_message(
-			tr('SQL users limit is <i>disabled</i> but SQL databases limit not!')
+			tr('SQL users limit is <i>disabled</i> but SQL databases limit not!'), 'error'
 		);
 		$rs = false;
 	} else {
@@ -315,7 +321,7 @@ function check_data(&$errFields) {
 			tr('Web Traffic')
 		);
 	} else {
-		set_page_message(tr('Incorrect traffic limit!'));
+		set_page_message(tr('Incorrect traffic limit!'), 'error');
 		$rs = false;
 	}
 
@@ -334,7 +340,7 @@ function check_data(&$errFields) {
 			tr('Disk storage')
 		);
 	} else {
-		set_page_message(tr('Incorrect disk quota limit!'));
+		set_page_message(tr('Incorrect disk quota limit!'), 'error');
 		$rs = false;
 	}
 
@@ -348,7 +354,7 @@ function check_data(&$errFields) {
 
 	if ($rdata['reseller_ips'] == '') {
 		set_page_message(
-			tr('You must assign at least one IP number for a reseller!')
+			tr('You must assign at least one IP number for a reseller!'), 'error'
 		);
 	}
 
@@ -385,42 +391,46 @@ function _check_new_limit($new_limit, $assigned_by_reseller, $used_by_customers,
 			// If the new limit is < to the already used accounts/limits by users
 			if ($new_limit < $used_by_customers && $new_limit != -1) {
 				set_page_message(
-					tr("This reseller's customers are using/have more/higher <b>%s</b> accounts/limits than the new limit you entered.", $service_name)
+					tr("This reseller's customers are using/have more/higher <b>%s</b> accounts/limits than the new limit you entered.", $service_name),
+					'error'
 				);
 
 			// If the new limit is < to the already assigned accounts/limits by reseller
 			} elseif ($new_limit < $assigned_by_reseller && $new_limit != -1) {
 				set_page_message(
-					tr('This reseller has already assigned more/higher <b>%s</b> accounts/limits than the new limit you entered.', $service_name)
+					tr('This reseller has already assigned more/higher <b>%s</b> accounts/limits than the new limit you entered.', $service_name),
+					'error'
 				);
 
 			// If the new limit is -1 (disabled) and the already used accounts/limits by users is greater 0
 			} elseif ($new_limit == -1 && $used_by_customers > 0) {
 				set_page_message(
-					tr("This reseller's customers are using/have more/higher <b>%s</b> accounts/limits than the new limit you entered.", $service_name)
+					tr("This reseller's customers are using/have more/higher <b>%s</b> accounts/limits than the new limit you entered.", $service_name),
+					'error'
 				);
 
 			// If the new limit is -1 (disabled) and the already assigned accounts/limits by reseller is greater 0
 			} elseif ($new_limit == -1 && $assigned_by_reseller > 0) {
 				set_page_message(
-					tr('This reseller has already assigned more/higher <b>%s</b> accounts/limits than the new limit you entered.', $service_name)
+					tr('This reseller has already assigned more/higher <b>%s</b> accounts/limits than the new limit you entered.', $service_name),
+					'error'
 				);
 			}
 
 		// One or more reseller's customers have unlimited rights
 		} elseif ($new_limit != 0) {
 			set_page_message(
-				tr('This reseller has customer(s) with unlimited rights for the <b>%s</b> service!', $service_name)
+				tr('This reseller has customer(s) with unlimited rights for the <b>%s</b> service!', $service_name),
+				'error'
 			);
 
 			set_page_message(
-				tr('If you want to limit the reseller, you must first limit its customers!')
+				tr('If you want to limit the reseller, you must first limit its customers!'), 'error'
 			);
 		}
 	}
 
-	if (isset($_SESSION['user_page_message']) &&
-		$err_state < strlen($_SESSION['user_page_message'])) {
+	if (isset($_SESSION['user_page_message']) && $err_state < strlen($_SESSION['user_page_message'])) {
 		return false;
 	}
 
@@ -451,7 +461,7 @@ function check_user_ip_data($reseller_id, $r_ips, $u_ips) {
 					$ip_msg = "$ip_num ($ip_name)";
 
 					set_page_message(
-						tr('This reseller has domains assigned to the <b>%s</b> address!', $ip_msg)
+						tr('This reseller has domains assigned to the <b>%s</b> address!', $ip_msg), 'error'
 					);
 
 					break;
@@ -492,7 +502,7 @@ function get_reseller_prop($reseller_id) {
 
 	if ($rs->recordCount() <= 0) {
 			set_page_message(
-				tr('ERROR: The reseller account you trying to edit does not exist!')
+				tr('ERROR: The reseller account you trying to edit does not exist!'), 'error'
 			);
 
 			user_goto('manage_users.php');
@@ -984,7 +994,7 @@ if (isset($_REQUEST['edit_id']) && !isset($_POST['Cancel'])) {
 		} else { // An error was occured during data checking
 			set_page_message(
 				'<br />' .
-				tr('ERROR: One or more errors was found! Please, correct them and try again!')
+				tr('ERROR: One or more errors was found! Please, correct them and try again!'), 'error'
 			);
 		}
 
@@ -997,7 +1007,7 @@ if (isset($_REQUEST['edit_id']) && !isset($_POST['Cancel'])) {
 			set_page_message(
 				'<br />' .
 				tr('Reseller data inconsistency!') . ' ' .
-				tr('Please, read the message(s) above and trying to correct!')
+				tr('Please, read the message(s) above and trying to correct!'), 'error'
 			);
 		}
 	}

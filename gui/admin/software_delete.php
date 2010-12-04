@@ -65,7 +65,7 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 	} elseif (isset($_POST['id']) && is_numeric($_POST['id'])) {
 		$software_id = $_POST['id'];
 	} else {
-		set_page_message(tr('Wrong software id.'));
+		set_page_message(tr('Wrong software id.'), 'error');
 		header('Location: software_manage.php');
 	}
 	
@@ -85,7 +85,7 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 	$rs = exec_query($sql, $query, $software_id);
 	
 	if ($rs->recordCount() != 1) {
-		set_page_message(tr('Wrong software id.'));
+		set_page_message(tr('Wrong software id.'), 'error');
 		header('Location: software_manage.php');
 	}
 
@@ -130,7 +130,7 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 		";
 		$res = exec_query($sql, $delete, $rs->fields['software_id']);
 		$res = exec_query($sql, $delete_master, $rs->fields['software_id']);
-		set_page_message(tr('Software was deleted.'));
+		set_page_message(tr('Software was deleted.'), 'success');
 		header('Location: software_manage.php');
 	}else{
 		if(isset($_POST['id']) && is_numeric($_POST['id']) && $_POST['uaction'] === 'send_delmessage') {
@@ -145,10 +145,10 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 						`software_id` = ?
 				";
 				$res = exec_query($sql, $delete, $rs->fields['software_id']);
-				set_page_message(tr('Software was deleted.'));
+				set_page_message(tr('Software was deleted.'), 'success');
 				header('Location: software_manage.php');
 			} else {
-				set_page_message(tr('Fill out a message text!'));
+				set_page_message(tr('Fill out a message text!'), 'error');
 			}
 		}
 		
@@ -186,6 +186,6 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 
 	unset_messages();
 } else {
-	set_page_message(tr('Wrong software id.'));
+	set_page_message(tr('Wrong software id.'), 'error');
 	header('Location: software_manage.php');
 }
