@@ -26,16 +26,23 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
+ *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
+ * 
  * Portions created by the i-MSCP Team are Copyright (C) 2010 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
+// Include needed libraries
 require '../include/imscp-lib.php';
 
+// Check for login
 check_login(__FILE__);
 
+/**
+ * @var $cfg iMSCP_Config_Handler_File
+ */
 $cfg = iMSCP_Registry::get('Config');
 
 $tpl = new iMSCP_pTemplate();
@@ -45,190 +52,13 @@ $tpl->define_dynamic('service_status', 'page');
 
 $tpl->assign(
 	array(
-		'TR_ADMIN_SERVER_STATUS_PAGE_TITLE' => tr('i-MSCP Admin / System Tools / Server Status'),
+		'TR_ADMIN_SERVER_STATUS_PAGE_TITLE' => tr('i-MSCP Admin / General Information / Server Status'),
 		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' => tr('encoding'),
 		'ISP_LOGO' => get_logo($_SESSION['user_id'])
 	)
 );
 
-/*
- * Site functions
- */
-
-/**
- * @todo respect naming convention: getSth not GetSth and class Status not status
- */
-class status {
-	var $all = array();
-	var $log = false;
-
-	/**
-	 * AddService adds a service to a multi-dimensional array
-	 */
-	function AddService($ip, $port, $service, $type) {
-		$small_array = array('ip' => $ip, 'port' => $port, 'service' => $service, 'type' => $type, 'status' => '');
-		array_push($this->all, $small_array);
-		return $this->all;
-	}
-
-	/**
-	 * GetCount returns the number of services added
-	 */
-	function GetCount() {
-		return count($this->all);
-	}
-
-	/**
-	 * CheckStatus checks the status
-	 */
-	function CheckStatus($timeout = 5) {
-		for ($i = 0, $x = $this->GetCount() - 1; $i <= $x; $i++) {
-			$ip = $this->all[$i]['ip'];
-			$port = $this->all[$i]['port'];
-			$errno = null;
-			$errstr = null;
-
-			if ($this->all[$i]['type'] == 'tcp') {
-				$fp = @fsockopen($ip, $port, $errno, $errstr, $timeout);
-			}
-			else if ($this->all[$i]['type'] == 'udp') {
-				$fp = @fsockopen('udp://' . $ip, $port, $errno, $errstr, $timeout);
-			}
-			else {
-				write_log(sprintf('FIXME: %s:%d' . "\n" . 'Unknown connection type %s',__FILE__, __LINE__, $this->all[$i]['type']));
-				throw new iMSCP_Exception('FIXME: ' . __FILE__ . ': ' . __LINE__);
-			}
-
-			if ($fp) {
-				$this->all[$i]['status'] = true;
-				if ($this->log) {
-					$this->AddLog($this->all[$i]['ip'], $this->all[$i]['port'], $this->all[$i]['service'], $this->all[$i]['type'], 'TRUE');
-				}
-			}
-			else {
-				$this->all[$i]['status'] = false;
-				if ($this->log) {
-					$this->AddLog($this->all[$i]['ip'], $this->all[$i]['port'], $this->all[$i]['service'], $this->all[$i]['type'], 'FALSE');
-				}
-			}
-
-			if ($fp)
-				fclose($fp);
-		}
-	}
-
-	/**
-	 * GetStatus a unecessary function to return the status
-	 */
-	function GetStatus() {
-		return $this->all;
-	}
-
-	/**
-	 * GetSingleStatus will get the status of single address
-	 */
-	function GetSingleStatus($ip, $port, $type, $timeout = 5) {
-		$errno = null;
-		$errstr = null;
-		if ($type == 'tcp') {
-			$fp = @fsockopen($ip, $port, $errno, $errstr, $timeout);
-		}
-		else if ($type == 'udp') {
-			$fp = @fsockopen('udp://' . $ip, $port, $errno, $errstr, $timeout);
-		}
-		else {
-			write_log(sprintf('FIXME: %s:%d' . "\n" . 'Unknown connection type %s',__FILE__, __LINE__, $type));
-			throw new iMSCP_Exception('FIXME: ' . __FILE__ . ': ' . __LINE__);
-		}
-
-		if (!$fp)
-			return false;
-
-		fclose($fp);
-		return true;
-	}
-}
-
-function get_server_status(&$tpl, &$sql) {
-
-	$cfg = iMSCP_Registry::get('Config');
-
-	$query = "
-		SELECT
-			*
-		FROM
-			`config`
-		WHERE
-			`name` LIKE 'PORT_%'
-		ORDER BY
-			`name` ASC
-	";
-
-	$rs = exec_query($sql, $query);
-
-	$imscp_status = new status;
-
-	// Enable logging?
-	$imscp_status->log = false; // Default is false
-	$imscp_status->AddService('localhost', 9876, 'i-MSCP Daemon', 'tcp');
-
-	// Dynamic added Ports
-	while (!$rs->EOF) {
-		$value = (count(explode(";", $rs->fields['value'])) < 6)
-			? $rs->fields['value'].';'
-			: $rs->fields['value'];
-		list($port, $protocol, $name, $status, $custom, $ip) = explode(";", $value);
-		if ($status) {
-			$imscp_status->AddService(($ip == '127.0.0.1' ? 'localhost' : (empty($ip) ? $cfg->BASE_SERVER_IP : $ip)), (int)$port, $name, $protocol);
-		}
-
-		$rs->moveNext();
-	} // end while
-
-	$imscp_status->CheckStatus(5);
-	$data = $imscp_status->GetStatus();
-	$up = tr('UP');
-	$down = tr('DOWN');
-
-	for ($i = 0, $cnt_data = count($data); $i < $cnt_data; $i++) {
-		if ($data[$i]['status']) {
-			$img = $up;
-			$class = "content up";
-		} else {
-			$img = '<b>' . $down . '</b>';
-			$class = "content down";
-		}
-
-		if ($data[$i]['port'] == 23) { // 23 = telnet
-			if ($data[$i]['status']) {
-				$class = 'content2 down';
-				$img = '<b>' . $up . '</b>';
-			} else {
-				$class = 'content2 up';
-				$img = $down;
-			}
-		}
-
-		$tpl->assign(
-			array(
-				'HOST' => $data[$i]['ip'],
-				'PORT' => $data[$i]['port'],
-				'SERVICE' => tohtml($data[$i]['service']),
-				'STATUS' => $img,
-				'CLASS' => $class,
-			)
-		);
-
-		$tpl->parse('SERVICE_STATUS', '.service_status');
-	}
-}
-
-/*
- *
- * static page messages.
- *
- */
 gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_general_information.tpl');
 gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_general_information.tpl');
 
@@ -241,9 +71,28 @@ $tpl->assign(
 	)
 );
 
-get_server_status($tpl, $sql);
+// Services status string
+$running = tr('UP');
+$down = tr('DOWN');
 
-gen_page_message($tpl);
+$services = new iMSCP_Services();
+
+foreach($services as $serviceName => $properties) {
+
+	$serviceState = $services->isRunning();
+
+	$tpl->assign(
+		array(
+			'HOST' =>  $services->getIp(),
+			'PORT' => $services->getPort(),
+			'SERVICE' => $services->getName(),
+			'STATUS' => $serviceState ? "<b>$running</b>" : $down,
+			'CLASS' => $serviceState ? 'up' : 'down'
+		)
+	);
+
+	$tpl->parse('SERVICE_STATUS', '.service_status');
+}
 
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
@@ -251,5 +100,3 @@ $tpl->prnt();
 if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
-
-unset_messages();

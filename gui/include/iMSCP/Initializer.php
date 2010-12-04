@@ -37,8 +37,6 @@
  * such as setting the include_path, initializing logging, database and
  * more.
  *
- * @property _config iMSCP_Config_Handler_File
- *
  * @category    ispCP
  * @package     iMSCP_Initializer
  * @author      Laurent declercq <laurent.declercq@i-mscp.net>

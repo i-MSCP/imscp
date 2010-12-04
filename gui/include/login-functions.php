@@ -839,7 +839,7 @@ function change_user_interface($fromId, $toId) {
 		$toAdminType = strtolower($toUserData['admin_type']);
 		$fromAdminType = strtolower($fromUserData['admin_type']);
 
-		$allowed_changes = array();
+		$allowedChanges = array();
 
 		$allowedChanges['admin']['admin'] = 'manage_users.php';
 		$allowedChanges['admin']['BACK'] = 'manage_users.php';
