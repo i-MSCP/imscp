@@ -69,7 +69,7 @@ class iMSCP_Services implements iterator {
 		/**
 		 * @var $dbConfig iMSCP_Config_Handler_Db
 		 */
-		$dbConfig = iMSCP_Registry::get('Db_Config');
+		$dbConfig = iMSCP_Registry::get('dbConfig');
 
 		// Retrieve all services
 		foreach($dbConfig as $service => $serviceProperties) {

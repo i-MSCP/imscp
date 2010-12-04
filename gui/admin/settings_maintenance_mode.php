@@ -58,7 +58,7 @@ if (isset($_POST['uaction']) AND $_POST['uaction'] == 'apply') {
 	$maintenancemode = $_POST['maintenancemode'];
 	$maintenancemode_message = clean_input($_POST['maintenancemode_message']);
 
-	$db_cfg = iMSCP_Registry::get('Db_Config');
+	$db_cfg = iMSCP_Registry::get('dbConfig');
 
 	$db_cfg->MAINTENANCEMODE = $maintenancemode;
 	$db_cfg->MAINTENANCEMODE_MESSAGE = $maintenancemode_message;

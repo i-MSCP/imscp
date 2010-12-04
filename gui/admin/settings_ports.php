@@ -106,7 +106,7 @@ function to_session($mode) {
 function validates_service($name, $ip, $port, $proto, $show, $index = '') {
 
 	// Get a reference to the iMSCP_ConfigHandler_Db instance
-	$db_cfg = iMSCP_Registry::get('Db_Config');
+	$db_cfg = iMSCP_Registry::get('dbConfig');
 
 	// Get a reference to the array that contain all errors messages
 	$messages = &iMSCP_Registry::get('Page_Messages');
@@ -167,7 +167,7 @@ function validates_service($name, $ip, $port, $proto, $show, $index = '') {
 function add_update_services($mode) {
 
 	// Gets a reference to the iMSCP_ConfigHandler_Db instance
-	$db_cfg = iMSCP_Registry::get('Db_Config');
+	$db_cfg = iMSCP_Registry::get('dbConfig');
 
 	// Create a pool for messages on error and gets a reference to him
 	$messages = &iMSCP_Registry::set('Page_Messages', array());
@@ -263,7 +263,7 @@ function show_services(&$tpl) {
 		unset($_SESSION['error_on_updt']);
 		$services = array_keys($values->toArray());
 	} else {
-		$values = iMSCP_Registry::get('Db_Config');
+		$values = iMSCP_Registry::get('dbConfig');
 
 		// Filter function to get only the services ports names
 		$filter = create_function(
@@ -392,7 +392,7 @@ function show_services(&$tpl) {
  */
 function delete_service($port_name) {
 
-	$db_cfg = iMSCP_Registry::get('Db_Config');
+	$db_cfg = iMSCP_Registry::get('dbConfig');
 
 	if (!isset($db_cfg->$port_name)) {
 		set_page_message(tr('Error: Unknown service port name!'), 'error');

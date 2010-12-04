@@ -1826,7 +1826,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 		/**
 		 * @var $dbConfig iMSCP_Config_Handler_Db
 		 */
-		$dbConfig = iMSCP_Registry::get('Db_Config');
+		$dbConfig = iMSCP_Registry::get('dbConfig');
 
 		$dbConfig->PORT_POSTGREY = "{$cfg->PORT_POSTGREY};tcp;POSTGREY;1;1;localhost";
 
@@ -1982,7 +1982,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 		/**
 		 * @var $dbConfig iMSCP_Config_Handler_Db
 		 */
-		$dbConfig = iMSCP_Registry::get('Db_Config');
+		$dbConfig = iMSCP_Registry::get('dbConfig');
 		$dbConfig->PORT_IMSCP_DAEMON = "9876;tcp;i-MSCP Daemon;1;0;127.0.0.1";
 
 		return array();

@@ -102,7 +102,7 @@ abstract class iMSCP_Update {
 	 */
 	protected function _getCurrentVersion() {
 
-		$dbConfig = iMSCP_Registry::get('Db_Config');
+		$dbConfig = iMSCP_Registry::get('dbConfig');
 
 		return (int) $dbConfig->get($this->_databaseVariableName);
 	}
@@ -191,7 +191,7 @@ abstract class iMSCP_Update {
 		/**
 		 * @var $dbConfig iMSCP_Config_Handler_Db
 		 */
-		$dbConfig = iMSCP_Registry::get('Db_Config');
+		$dbConfig = iMSCP_Registry::get('dbConfig');
 
 		$engine_run_request = false;
 

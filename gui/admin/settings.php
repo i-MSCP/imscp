@@ -102,7 +102,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'apply') {
 	} else {
 
 		// Get a reference to the DB_Config Objects
-		$db_cfg = iMSCP_Registry::get('Db_Config');
+		$db_cfg = iMSCP_Registry::get('dbConfig');
 
 		$db_cfg->LOSTPASSWORD = $lostpwd;
 		$db_cfg->LOSTPASSWORD_TIMEOUT = $lostpwd_timeout;

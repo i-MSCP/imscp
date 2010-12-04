@@ -170,8 +170,8 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer {
 		/**
 		 * @var $dbConfig iMSCP_Config_Handler_Db
 		 */
-		if(iMSCP_Registry::isRegistered('Db_Config')) {
-			$dbConfig = iMSCP_Registry::get('Db_Config');
+		if(iMSCP_Registry::isRegistered('dbConfig')) {
+			$dbConfig = iMSCP_Registry::get('dbConfig');
 
 			if(isset($dbConfig->MAIL_BODY_FOOTPRINTS) && is_serialized($dbConfig->MAIL_BODY_FOOTPRINTS)) {
 				$this->_cache = unserialize($dbConfig->MAIL_BODY_FOOTPRINTS);
@@ -186,11 +186,11 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer {
 	 */
 	protected function _updateCache() {
 
-		if(!empty($this->_cache) && iMSCP_Registry::isRegistered('Db_Config')) {
+		if(!empty($this->_cache) && iMSCP_Registry::isRegistered('dbConfig')) {
 				/**
 		 		 * @var $dbConfig iMSCP_Config_Handler_Db
 		 		 */
-				$dbConfig = iMSCP_Registry::get('Db_Config');
+				$dbConfig = iMSCP_Registry::get('dbConfig');
 				$dbConfig->MAIL_BODY_FOOTPRINTS = serialize($this->_cache);
 		}
 	}
@@ -219,11 +219,11 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer {
 	 */
 	public function cleanCache() {
 
-		if(iMSCP_Registry::isRegistered('Db_Config')) {
+		if(iMSCP_Registry::isRegistered('dbConfig')) {
 			/**
 		 	 * @var $dbConfig iMSCP_Config_Handler_Db
 		 	 */
-			$dbConfig = iMSCP_Registry::get('Db_Config');
+			$dbConfig = iMSCP_Registry::get('dbConfig');
 
 			if(isset($dbConfig->MAIL_BODY_FOOTPRINTS) && is_serialized($dbConfig->MAIL_BODY_FOOTPRINTS)) {
 
@@ -351,11 +351,11 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer {
 	 */
 	public function setExpiryTime() {
 
-		if(iMSCP_Registry::isRegistered('Db_Config')) {
+		if(iMSCP_Registry::isRegistered('dbConfig')) {
 			/**
 			 * @var $dbConfig iMSCP_Config_Handler_Db
 			 */
-			$dbConfig = iMSCP_Registry::get('Db_Config');
+			$dbConfig = iMSCP_Registry::get('dbConfig');
 			if($dbConfig->exists('MAIL_WRITER_EXPIRY_TIME')) {
 				$this->_expiryTime = $dbConfig->MAIL_WRITER_EXPIRY_TIME;
 			}
