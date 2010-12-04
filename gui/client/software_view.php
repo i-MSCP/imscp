@@ -116,7 +116,7 @@ function check_is_installed($tpl, $sql, $dmn_id, $software_id) {
 function get_software_props ($tpl, $sql, $dmn_id, $software_id, $dmn_created_id, $dmn_sqld_limit) {
 
 	if (!check_software_avail($sql, $software_id, $dmn_created_id)) {
-		set_page_message(tr('Software not found!'));
+		set_page_message(tr('Software not found!'), 'error');
 		header('Location: software.php');
 		exit;
 	} else {
@@ -186,7 +186,7 @@ function get_software_props ($tpl, $sql, $dmn_id, $software_id, $dmn_created_id,
 
 function gen_page_lists($tpl, $sql, $user_id) {
 	if (!isset($_GET['id']) || $_GET['id'] === '' || !is_numeric($_GET['id'])) {
-		set_page_message(tr('Software not found!'));
+		set_page_message(tr('Software not found!'), 'error');
 		header('Location: software.php');
 		exit;
 	} else {

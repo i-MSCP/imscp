@@ -68,7 +68,7 @@ function check_email_user(&$sql) {
 	$rs = exec_query($sql, $query, array($mail_id, $dmn_name));
 
 	if ($rs->recordCount() == 0) {
-		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
+		set_page_message(tr('User does not exist or you do not have permission to access this interface!'), 'error');
 		user_goto('mail_accounts.php');
 	}
 }
@@ -101,7 +101,7 @@ function gen_page_dynamic_data(&$tpl, &$sql, $mail_id, $read_from_db) {
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'enable_arsp') {
 		if (empty($_POST['arsp_message'])) {
 			$tpl->assign('ARSP_MESSAGE', '');
-			set_page_message(tr('Please type your mail autorespond message!'));
+			set_page_message(tr('Please type your mail autorespond message!'), 'error');
 			return;
 		}
 

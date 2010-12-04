@@ -63,7 +63,7 @@ function check_email_user(&$sql) {
 	$mail_acc = $rs->fields['mail_acc'];
 
 	if ($rs->recordCount() == 0) {
-		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
+		set_page_message(tr('User does not exist or you do not have permission to access this interface!'), 'error');
 		user_goto('mail_accounts.php');
 	}
 }

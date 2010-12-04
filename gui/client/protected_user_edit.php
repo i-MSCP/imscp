@@ -69,14 +69,14 @@ function pedit_user(&$tpl, &$sql, &$dmn_id, &$uuser_id) {
 		if (isset($_POST['pass']) && isset($_POST['pass_rep'])) {
 			if (!chk_password($_POST['pass'])) {
 				if ($cfg->PASSWD_STRONG) {
-					set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS));
+					set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS), 'error');
 				} else {
-					set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), $cfg->PASSWD_CHARS));
+					set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), $cfg->PASSWD_CHARS), 'error');
 				}
 				return;
 			}
 			if ($_POST['pass'] !== $_POST['pass_rep']) {
-				set_page_message(tr('Passwords do not match!'));
+				set_page_message(tr('Passwords do not match!'), 'error');
 				return;
 			}
 

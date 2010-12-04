@@ -125,7 +125,7 @@ function add_sql_database(&$sql, $user_id) {
 	// let's generate database name.
 
 	if (empty($_POST['db_name'])) {
-		set_page_message(tr('Please type database name!'));
+		set_page_message(tr('Please type database name!'), 'error');
 		return;
 	}
 
@@ -144,18 +144,18 @@ function add_sql_database(&$sql, $user_id) {
 	}
 
 	if (strlen($db_name) > $cfg->MAX_SQL_DATABASE_LENGTH) {
-		set_page_message(tr('Database name is too long!'));
+		set_page_message(tr('Database name is too long!'), 'error');
 		return;
 	}
 
 	// have we such database in the system!?
 	if (check_db_name($sql, $db_name)) {
-		set_page_message(tr('Specified database name already exists!'));
+		set_page_message(tr('Specified database name already exists!'), 'error');
 		return;
 	}
 	// are wildcards used?
 	if (preg_match("/[%|\?]+/", $db_name)) {
-		set_page_message(tr('Wildcards such as %% and ? are not allowed!'));
+		set_page_message(tr('Wildcards such as %% and ? are not allowed!'), 'error');
 		return;
 	}
 
@@ -174,7 +174,7 @@ function add_sql_database(&$sql, $user_id) {
 	update_reseller_c_props(get_reseller_id($dmn_id));
 
 	write_log($_SESSION['user_logged'] . ": adds new SQL database: " . tohtml($db_name));
-	set_page_message(tr('SQL database created successfully!'));
+	set_page_message(tr('SQL database created successfully!'), 'success');
 	user_goto('sql_manage.php');
 }
 
@@ -216,7 +216,7 @@ function check_sql_permissions($sql, $user_id) {
 	list($sqld_acc_cnt, $sqlu_acc_cnt) = get_domain_running_sql_acc_cnt($sql, $dmn_id);
 
 	if ($dmn_sqld_limit != 0 && $sqld_acc_cnt >= $dmn_sqld_limit) {
-		set_page_message(tr('SQL accounts limit reached!'));
+		set_page_message(tr('SQL accounts limit reached!'), 'error');
 		user_goto('sql_manage.php');
 	}
 }

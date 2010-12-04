@@ -160,7 +160,7 @@ function gen_user_table(&$tpl, &$sql) {
 
 
 	if ($rs->recordCount() == 0) {
-		set_page_message(tr('User list is empty!'), 'warning');
+		set_page_message(tr('User list is empty!'));
 
 		$tpl->assign('RESELLER_LIST', '');
 	} else {

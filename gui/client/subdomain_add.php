@@ -56,7 +56,7 @@ function check_subdomain_permissions($sql, $user_id) {
 	$sub_cnt = get_domain_running_sub_cnt($sql, $dmn_id);
 
 	if ($dmn_subd_limit != 0 && $sub_cnt >= $dmn_subd_limit) {
-		set_page_message(tr('Subdomains limit reached!'));
+		set_page_message(tr('Subdomains limit reached!'), 'error');
 		user_goto('domains_manage.php');
 	}
 

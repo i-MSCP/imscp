@@ -48,6 +48,6 @@ check_db_sql_perms($sql, $db_id);
 
 delete_sql_database($sql, $dmn_id, $db_id);
 
-set_page_message(tr('SQL database was removed successfully!'));
+set_page_message(tr('SQL database was removed successfully!'), 'success');
 
 user_goto('sql_manage.php');

@@ -92,7 +92,7 @@ function check_sql_permissions(&$tpl, $sql, $user_id, $db_id, $sqluser_available
 
 	if ($dmn_sqlu_limit != 0 && $sqlu_acc_cnt >= $dmn_sqlu_limit) {
 		if (!$sqluser_available) {
-			set_page_message(tr('SQL users limit reached!'));
+			set_page_message(tr('SQL users limit reached!'), 'error');
 			user_goto('sql_manage.php');
 		} else {
 			$tpl->assign('CREATE_SQLUSER', '');
@@ -118,7 +118,7 @@ function check_sql_permissions(&$tpl, $sql, $user_id, $db_id, $sqluser_available
 	$rs = exec_query($sql, $query, array($db_id, $dmn_name));
 
 	if ($rs->recordCount() == 0) {
-		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
+		set_page_message(tr('User does not exist or you do not have permission to access this interface!'), 'error');
 		user_goto('sql_manage.php');
 	}
 }
@@ -229,34 +229,34 @@ function add_sql_user(&$sql, $user_id, $db_id) {
 	// let's check user input
 
 	if (empty($_POST['user_name']) && !isset($_POST['Add_Exist'])) {
-		set_page_message(tr('Please type user name!'));
+		set_page_message(tr('Please type user name!'), 'error');
 		return;
 	}
 
 	if (empty($_POST['pass']) && empty($_POST['pass_rep'])
 		&& !isset($_POST['Add_Exist'])) {
-		set_page_message(tr('Please type user password!'));
+		set_page_message(tr('Please type user password!'), 'error');
 		return;
 	}
 
 	if ((isset($_POST['pass']) && isset($_POST['pass_rep']))
 		&& $_POST['pass'] !== $_POST['pass_rep']
 		&& !isset($_POST['Add_Exist'])) {
-		set_page_message(tr('Entered passwords do not match!'));
+		set_page_message(tr('Entered passwords do not match!'), 'error');
 		return;
 	}
 
 	if (isset($_POST['pass'])
 		&& strlen($_POST['pass']) > $cfg->MAX_SQL_PASS_LENGTH
 		&& !isset($_POST['Add_Exist'])) {
-		set_page_message(tr('Too user long password!'));
+		set_page_message(tr('Too user long password!'), 'error');
 		return;
 	}
 
 	if (isset($_POST['pass'])
 		&& !preg_match('/^[[:alnum:]:!*+#_.-]+$/', $_POST['pass'])
 		&& !isset($_POST['Add_Exist'])) {
-		set_page_message(tr('Don\'t use special chars like "@, $, %..." in the password!'));
+		set_page_message(tr('Don\'t use special chars like "@, $, %..." in the password!'), 'error');
 		return;
 	}
 
@@ -264,9 +264,9 @@ function add_sql_user(&$sql, $user_id, $db_id) {
 		&& !chk_password($_POST['pass'])
 		&& !isset($_POST['Add_Exist'])) {
 		if ($cfg->PASSWD_STRONG) {
-			set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS));
+			set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS), 'error');
 		} else {
-			set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), $cfg->PASSWD_CHARS));
+			set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), $cfg->PASSWD_CHARS), 'error');
 		}
 		return;
 	}
@@ -276,7 +276,7 @@ function add_sql_user(&$sql, $user_id, $db_id) {
 		$rs = exec_query($sql, $query, $_POST['sqluser_id']);
 
 		if ($rs->recordCount() == 0) {
-			set_page_message(tr('SQL-user not found! Maybe it was deleted by another user!'));
+			set_page_message(tr('SQL-user not found! Maybe it was deleted by another user!'), 'warning');
 			return;
 		}
 		$user_pass = decrypt_db_password($rs->fields['sqlu_pass']);
@@ -309,20 +309,20 @@ function add_sql_user(&$sql, $user_id, $db_id) {
 	}
 
 	if (strlen($db_user) > $cfg->MAX_SQL_USER_LENGTH) {
-		set_page_message(tr('User name too long!'));
+		set_page_message(tr('User name too long!'), 'error');
 		return;
 	}
 	// are wildcards used?
 
 	if (preg_match("/[%|\?]+/", $db_user)) {
-		set_page_message(tr('Wildcards such as %% and ? are not allowed!'));
+		set_page_message(tr('Wildcards such as %% and ? are not allowed!'), 'error');
 		return;
 	}
 
 	// have we such sql user in the system?!
 
 	if (check_db_user($sql, $db_user) && !isset($_POST['Add_Exist'])) {
-		set_page_message(tr('Specified SQL username name already exists!'));
+		set_page_message(tr('Specified SQL username name already exists!'), 'error');
 		return;
 	}
 
@@ -360,7 +360,7 @@ function add_sql_user(&$sql, $user_id, $db_id) {
 	exec_query($sql, $query, array($db_user, "%", $user_pass));
 
 	write_log($_SESSION['user_logged'] . ": add SQL user: " . tohtml($db_user));
-	set_page_message(tr('SQL user successfully added!'));
+	set_page_message(tr('SQL user successfully added!'), 'success');
 	user_goto('sql_manage.php');
 }
 

@@ -64,9 +64,9 @@ if (!hasTicketSystem($reseller_id)) {
 
 if (isset($_POST['uaction'])) {
 	if (empty($_POST['subj'])) {
-		set_page_message(tr('Please specify message subject!'));
+		set_page_message(tr('Please specify message subject!'), 'error');
 	} else if (empty($_POST['user_message'])) {
-		set_page_message(tr('Please type your message!'));
+		set_page_message(tr('Please type your message!'), 'error');
 	} else {
 		createTicket($_SESSION['user_id'], $_SESSION['user_created_by'],
 				$_POST['urgency'], $_POST['subj'], $_POST['user_message'], 1);

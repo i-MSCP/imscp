@@ -113,7 +113,7 @@ function gen_user_assign(&$tpl, &$sql, &$dmn_id) {
 	$rs = exec_query($sql, $query, $dmn_id);
 
 	if ($rs->recordCount() == 0) {
-		set_page_message(tr('You have no groups!'));
+		set_page_message(tr('You have no groups!'), 'error');
 		user_goto('protected_user_manage.php');
 	} else {
 		$added_in = 0;

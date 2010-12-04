@@ -65,7 +65,7 @@ function padd_group(&$tpl, &$sql, $dmn_id) {
 		// we have to add the group
 		if (isset($_POST['groupname'])) {
 			if (!validates_username($_POST['groupname'])) {
-				set_page_message(tr('Invalid group name!'));
+				set_page_message(tr('Invalid group name!'), 'error');
 				return;
 			}
 
@@ -102,11 +102,11 @@ function padd_group(&$tpl, &$sql, $dmn_id) {
 				write_log("$admin_login: add group (protected areas): $groupname");
 				user_goto('protected_user_manage.php');
 			} else {
-				set_page_message(tr('Group already exists!'));
+				set_page_message(tr('Group already exists!'), 'error');
 				return;
 			}
 		} else {
-			set_page_message(tr('Invalid group name!'));
+			set_page_message(tr('Invalid group name!'), 'error');
 			return;
 		}
 	} else {

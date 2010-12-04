@@ -76,7 +76,7 @@ $tpl->assign(
 // dynamic page data.
 
 if (!isset($_GET['eid'])) {
-	set_page_message(tr('Server error - please choose error page'));
+	set_page_message(tr('Server error - please choose error page'), 'error');
 	user_goto('error_pages.php');
 } else {
 	$eid = intval($_GET['eid']);

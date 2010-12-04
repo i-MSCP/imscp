@@ -49,6 +49,6 @@ check_usr_sql_perms($sql, $db_user_id);
 sql_delete_user($sql, $dmn_id, $db_user_id);
 
 write_log($_SESSION['user_logged'].": deletes SQL user ".$db_user_id."!");
-set_page_message(tr('SQL user was removed successfully!'));
+set_page_message(tr('SQL user was removed successfully!'), 'success');
 
 user_goto('sql_manage.php');

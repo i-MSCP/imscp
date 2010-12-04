@@ -583,7 +583,7 @@ function add_new_order(&$tpl, &$sql, $order_id, $user_id) {
 		$_SESSION['user_created_by'], $order_id, $date, $_SESSION['user_logged'],
 		$user_id, '', '', '', '', '', '', '', '', '', '', '', '', $status
 	));
-	set_page_message(tr('Your request for hosting pack update was added successfully'));
+	set_page_message(tr('Your request for hosting pack update was added successfully'), 'success');
 
 	$query = "
 		SELECT
@@ -629,7 +629,7 @@ function del_order(&$tpl, &$sql, $order_id, $user_id) {
 	";
 
 	$rs = exec_query($sql, $query, array($_SESSION['user_created_by'], $user_id));
-	set_page_message(tr('Your request for hosting pack update was removed successfully'));
+	set_page_message(tr('Your request for hosting pack update was removed successfully'), 'success');
 }
 
 /*

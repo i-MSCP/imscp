@@ -52,7 +52,7 @@ function edit_mail_account(&$tpl, &$sql) {
 	$cfg = iMSCP_Registry::get('Config');
 
 	if (!isset($_GET['id']) || $_GET['id'] === '' || !is_numeric($_GET['id'])) {
-		set_page_message(tr('Email account not found!'));
+		set_page_message(tr('Email account not found!'), 'error');
 		user_goto('mail_accounts.php');
 	} else {
 		$mail_id = $_GET['id'];
@@ -77,7 +77,7 @@ function edit_mail_account(&$tpl, &$sql) {
 	$rs = exec_query($sql, $query, array($mail_id, $dmn_name));
 
 	if ($rs->recordCount() == 0) {
-		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
+		set_page_message(tr('User does not exist or you do not have permission to access this interface!'), 'error');
 		user_goto('mail_accounts.php');
 	} else {
 		$mail_acc = $rs->fields['mail_acc'];
@@ -216,16 +216,16 @@ function update_email_pass($sql) {
 	$mail_account = clean_input($_POST['mail_account']);
 
 	if (trim($pass) === '' || trim($pass_rep) === '' || $mail_id === '' || !is_numeric($mail_id)) {
-		set_page_message(tr('Password data is missing!'));
+		set_page_message(tr('Password data is missing!'), 'error');
 		return false;
 	} else if ($pass !== $pass_rep) {
-		set_page_message(tr('Entered passwords differ!'));
+		set_page_message(tr('Entered passwords differ!'), 'error');
 		return false;
 	} else if (!chk_password($pass, 50, "/[`\xb4'\"\\\\\x01-\x1f\015\012|<>^$]/i")) { // Not permitted chars
 		if ($cfg->PASSWD_STRONG) {
-			set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS));
+			set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS), 'error');
 		} else {
-			set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), $cfg->PASSWD_CHARS));
+			set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), $cfg->PASSWD_CHARS), 'error');
 		}
 		return false;
 	} else {
@@ -263,10 +263,10 @@ function update_email_forward(&$tpl, &$sql) {
 			$value = trim($value);
 			if (!chk_email($value) && $value !== '') {
 				// @todo ERROR .. strange :) not email in this line - warning
-				set_page_message(tr("Mail forward list error!"));
+				set_page_message(tr("Mail forward list error!"), 'error');
 				return false;
 			} else if ($value === '') {
-				set_page_message(tr("Mail forward list error!"));
+				set_page_message(tr("Mail forward list error!"), 'error');
 				return false;
 			}
 			$mail_accs[] = $value;
@@ -325,7 +325,7 @@ $tpl->assign(
 edit_mail_account($tpl, $sql);
 
 if (update_email_pass($sql) && update_email_forward($tpl, $sql)) {
-	set_page_message(tr("Mail were updated successfully!"));
+	set_page_message(tr("Mail were updated successfully!"), 'success');
 	send_request();
 	user_goto('mail_accounts.php');
 }

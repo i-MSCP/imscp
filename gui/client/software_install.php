@@ -194,23 +194,23 @@ if (isset($_POST['Submit2'])) {
 		$sql_pass = $rsdatabase->fields['sqlu_pass'];
 	}
 	if($rs->fields['software_db'] == "1" && !$db_selected) {		
-		set_page_message(tr('Please select the correct user for your database!'));
+		set_page_message(tr('Please select the correct user for your database!'), 'error');
 	} elseif(empty($install_username) || empty($install_password) || empty($install_email)) {
-		set_page_message(tr('You have to fill out inputs!'));
+		set_page_message(tr('You have to fill out inputs!'), 'error');
 	} elseif (!chk_password($install_password)){
 		if ($cfg->PASSWD_STRONG) {
-			set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS));
+			set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS), 'error');
 		} else {
-			set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), $cfg->PASSWD_CHARS));
+			set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), $cfg->PASSWD_CHARS), 'error');
 		}
 	} elseif(!preg_match("/htdocs/",$other_dir)){
-		set_page_message(tr('You cant\'t install outside from htdocs!'));
+		set_page_message(tr('You cant\'t install outside from htdocs!'), 'error');
 	} elseif(($posted_aliasdomain_id + $posted_subdomain_id + $posted_aliassubdomain_id) > 0 && !preg_match("/".$domain_path."/",$other_dir)){
-		set_page_message(tr('You choose a directory, which doesn\'t match with the domain directory!'));
+		set_page_message(tr('You choose a directory, which doesn\'t match with the domain directory!'), 'error');
 	} elseif(!$list && $createdir === '0'){
-			set_page_message(tr('The directory -%1$s- doesn\'t exist. Please create it!', $other_dir));
+			set_page_message(tr('The directory -%1$s- doesn\'t exist. Please create it!', $other_dir), 'error');
 	} elseif ($rspath->recordCount() > 0) {
-		set_page_message(tr('Please select another directory! %1$s (%2$s) is installed there!', $rspath->fields['swname'], $rspath->fields['swversion']));
+		set_page_message(tr('Please select another directory! %1$s (%2$s) is installed there!', $rspath->fields['swname'], $rspath->fields['swversion']), 'error');
 	} else {
 		$sw_db_required = $rs->fields['software_db'];
 		$sw_software_name = $rs->fields['software_name'];
@@ -679,7 +679,7 @@ function get_software_props ($tpl, $sql, $dmn_id, $software_id, $dmn_created_id,
 	 */
 	$sql = iMSCP_Registry::get('Db');
   	if (!check_software_avail($sql, $software_id, $dmn_created_id)) {
-		set_page_message(tr('Software not found!'));
+		set_page_message(tr('Software not found!'), 'error');
 		header('Location: software.php');
 		exit;
   	} else {
@@ -724,7 +724,7 @@ function get_software_props ($tpl, $sql, $dmn_id, $software_id, $dmn_created_id,
 
 function gen_page_lists($tpl, $sql, $user_id) {
 	if (!isset($_GET['id']) || $_GET['id'] === '' || !is_numeric($_GET['id'])) {
-		set_page_message(tr('Software not found!'));
+		set_page_message(tr('Software not found!'), 'error');
 		header('Location: software.php');
 		exit;
 	} else {

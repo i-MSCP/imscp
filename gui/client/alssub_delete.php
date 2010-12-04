@@ -67,7 +67,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 	$rs = exec_query($sql, $query, $sub_id);
 
 	if ($rs->fields['cnt'] > 0) {
-		set_page_message(tr('Subdomain you are trying to remove has email accounts !<br>First remove them!'));
+		set_page_message(tr('Subdomain you are trying to remove has email accounts !<br>First remove them!'), 'error');
 		user_goto('domains_manage.php');
 	}
 

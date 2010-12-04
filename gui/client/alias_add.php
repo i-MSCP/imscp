@@ -69,7 +69,7 @@ function check_client_domainalias_counts($sql, $user_id) {
 	$als_cnt = get_domain_running_als_cnt($sql, $dmn_id);
 
 	if ($dmn_als_limit != 0 && $als_cnt >= $dmn_als_limit) {
-		set_page_message(tr('Domain alias limit reached!'));
+		set_page_message(tr('Domain alias limit reached!'), 'error');
 		user_goto('domains_manage.php');
 	}
 }

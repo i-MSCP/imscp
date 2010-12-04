@@ -105,7 +105,7 @@ $query = "SELECT `mail_id` FROM `mail_users` WHERE `mail_acc` = ? OR `mail_acc` 
 $res_tmp = exec_query($sql, $query, array($mail_name, "$mail_name,%", "%,$mail_name,%", "%,$mail_name"));
 $num = $res_tmp->rowCount();
 if ($num > 0) {
-	set_page_message(tr('Please delete first CatchAll account for this email!'));
+	set_page_message(tr('Please delete first CatchAll account for this email!'), 'error');
 	$_SESSION['catchall_assigned'] = 1;
 	user_goto('mail_accounts.php');
 }

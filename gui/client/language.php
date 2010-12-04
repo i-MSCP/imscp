@@ -65,7 +65,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'save_lang') {
 	$rs = exec_query($sql, $query, array($user_lang, $user_id));
 	unset($_SESSION['user_def_lang']);
 	$_SESSION['user_def_lang'] = $user_lang;
-	set_page_message(tr('User language updated successfully!'));
+	set_page_message(tr('User language updated successfully!'), 'success');
 }
 
 // Makes sure that the language selected is the client's language

@@ -93,7 +93,7 @@ function gen_dynamic_page_data(&$tpl, &$sql, $id) {
 		$alssub_mail_acc_cnt) = get_domain_running_mail_acc_cnt($sql, $dmn_id);
 
 	if ($dmn_mailacc_limit != 0 && $mail_acc_cnt >= $dmn_mailacc_limit) {
-		set_page_message(tr('Mail accounts limit reached!'));
+		set_page_message(tr('Mail accounts limit reached!'), 'error');
 		user_goto('mail_catchall.php');
 	}
 
@@ -293,7 +293,7 @@ function create_catchall_mail_account(&$sql, $id) {
 	list($realId, $type) = explode(';', $id);
 	// Check if user is owner of the domain
 	if (!preg_match('(normal|alias|subdom|alssub)', $type) || who_owns_this($realId, $type) != $_SESSION['user_id']) {
-		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
+		set_page_message(tr('User does not exist or you do not have permission to access this interface!'), 'error');
 		user_goto('mail_catchall.php');
 	}
 
@@ -417,10 +417,10 @@ function create_catchall_mail_account(&$sql, $id) {
 				$value = trim($value);
 				if (!chk_email($value) && $value !== '') {
 					// @todo ERROR .. strange :) not email in this line - warning
-					set_page_message(tr("Mail forward list error!"));
+					set_page_message(tr("Mail forward list error!"), 'error');
 					return;
 				} else if ($value === '') {
-					set_page_message(tr("Mail forward list error!"));
+					set_page_message(tr("Mail forward list error!"), 'error');
 					return;
 				}
 				$mail_acc[] = $value;

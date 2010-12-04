@@ -331,7 +331,7 @@ function get_ftp_user_uid(&$sql, $dmn_name, $ftp_user, $ftp_user_gid) {
 
 	$rs = exec_query($sql, $query, array($ftp_user, $ftp_user_gid));
 	if ($rs->recordCount() > 0) {
-		set_page_message(tr('FTP account already exists!'));
+		set_page_message(tr('FTP account already exists!'), 'error');
 		return -1;
 	}
 
@@ -370,7 +370,7 @@ function add_ftp_user(&$sql, $dmn_name) {
 	$username = strtolower(clean_input($_POST['username']));
 
 	if (!validates_username($username)) {
-		set_page_message(tr("Incorrect username length or syntax!"));
+		set_page_message(tr("Incorrect username length or syntax!"), 'error');
 		return;
 	}
 
@@ -395,7 +395,7 @@ function add_ftp_user(&$sql, $dmn_name) {
 			break;
 		// Unknown domain type (?)
 		default:
-			set_page_message(tr('Unknown domain type'));
+			set_page_message(tr('Unknown domain type'), 'error');
 			return;
 			break;
 	}
@@ -407,7 +407,7 @@ function add_ftp_user(&$sql, $dmn_name) {
 		// Check for updirs ".."
 		$res = preg_match("/\.\./", $ftp_vhome);
 		if ($res !== 0) {
-			set_page_message(tr('Incorrect mount point length or syntax'));
+			set_page_message(tr('Incorrect mount point length or syntax'), 'error');
 			return;
 		}
 		$ftp_home = $cfg->FTP_HOMEDIR . "/$dmn_name/" . $ftp_vhome;
@@ -420,7 +420,7 @@ function add_ftp_user(&$sql, $dmn_name) {
 		$res = $vfs->exists($ftp_vhome);
 
 		if (!$res) {
-			set_page_message(tr('%s does not exist', $ftp_vhome));
+			set_page_message(tr('%s does not exist', $ftp_vhome), 'error');
 			return;
 		}
 	} // End of user-specified mount-point
@@ -446,7 +446,7 @@ function add_ftp_user(&$sql, $dmn_name) {
 	update_reseller_c_props($domain_props[4]);
 
 	write_log($_SESSION['user_logged'] . ": add new FTP account: $ftp_user");
-	set_page_message(tr('FTP account added!'));
+	set_page_message(tr('FTP account added!'), 'success');
 	user_goto('ftp_accounts.php');
 }
 
@@ -455,43 +455,43 @@ function check_ftp_acc_data(&$tpl, &$sql, $dmn_id, $dmn_name) {
 	$cfg = iMSCP_Registry::get('Config');
 
 	if (!isset($_POST['username']) || $_POST['username'] === '') {
-		set_page_message(tr('Please enter FTP account username!'));
+		set_page_message(tr('Please enter FTP account username!'), 'error');
 		return;
 	}
 
 	if (!isset($_POST['pass']) || empty($_POST['pass'])
 		|| !isset($_POST['pass_rep'])
 		|| $_POST['pass_rep'] === '') {
-		set_page_message(tr('Password is missing!'));
+		set_page_message(tr('Password is missing!'), 'error');
 		return;
 	}
 
 	if ($_POST['pass'] !== $_POST['pass_rep']) {
-		set_page_message(tr('Entered passwords do not match!'));
+		set_page_message(tr('Entered passwords do not match!'), 'error');
 		return;
 	}
 
 	if (!chk_password($_POST['pass'])) {
 		if ($cfg->PASSWD_STRONG) {
-			set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS));
+			set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS), 'error');
 		} else {
-			set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), $cfg->PASSWD_CHARS));
+			set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), $cfg->PASSWD_CHARS), 'error');
 		}
 		return;
 	}
 
 	if ($_POST['dmn_type'] === 'sub' && $_POST['sub_id'] === 'n/a') {
-		set_page_message(tr('Subdomain list is empty! You cannot add FTP accounts there!'));
+		set_page_message(tr('Subdomain list is empty! You cannot add FTP accounts there!'), 'error');
 		return;
 	}
 
 	if ($_POST['dmn_type'] === 'als' && $_POST['als_id'] === 'n/a') {
-		set_page_message(tr('Alias list is empty! You cannot add FTP accounts there!'));
+		set_page_message(tr('Alias list is empty! You cannot add FTP accounts there!'), 'error');
 		return;
 	}
 
 	if (isset($_POST['use_other_dir']) && $_POST['use_other_dir'] === 'on' && empty($_POST['other_dir'])) {
-		set_page_message(tr('Please specify other FTP account dir!'));
+		set_page_message(tr('Please specify other FTP account directory!'), 'error');
 		return;
 	}
 
@@ -527,7 +527,7 @@ function gen_page_ftp_acc_props(&$tpl, &$sql, $user_id) {
 	list($ftp_acc_cnt, $dmn_ftp_acc_cnt, $sub_ftp_acc_cnt, $als_ftp_acc_cnt) = get_domain_running_ftp_acc_cnt($sql, $dmn_id);
 
 	if ($dmn_ftpacc_limit != 0 && $ftp_acc_cnt >= $dmn_ftpacc_limit) {
-		set_page_message(tr('FTP accounts limit reached!'));
+		set_page_message(tr('FTP accounts limit reached!'), 'error');
 		user_goto('ftp_accounts.php');
 	} else {
 		if (!isset($_POST['uaction'])) {

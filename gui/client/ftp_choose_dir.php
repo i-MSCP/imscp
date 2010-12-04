@@ -58,7 +58,7 @@ function gen_directories(&$tpl) {
 	// Get the directory listing
 	$list = $vfs->ls($path);
 	if (!$list) {
-		set_page_message(tr('Cannot open directory!<br>Please contact your administrator!'));
+		set_page_message(tr('Cannot open directory!<br>Please contact your administrator!'), 'error');
 		return;
 	}
 	// Show parent directory link

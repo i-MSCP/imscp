@@ -69,7 +69,7 @@ if (isset($_GET['edit_id']) && $_GET['edit_id'] !== '') {
 		// Back to the main page
 		user_goto('domains_manage.php');
 	} elseif($rs->fields['protected'] == 'yes') {
-		set_page_message(tr('You are not allowed to remove this DNS record!'));
+		set_page_message(tr('You are not allowed to remove this DNS record!'), 'error');
 		user_goto('domains_manage.php');
 	}
 

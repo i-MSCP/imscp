@@ -123,7 +123,7 @@ function pmaAuth($dbUserId) {
 			)
 		);
 	} else {
-		set_page_message(tr('Error: Unknown SQL user id!'));
+		set_page_message(tr('Error: Unknown SQL user id!'), 'error');
 
 		return false;
 	}
@@ -161,7 +161,7 @@ function pmaAuth($dbUserId) {
 	$headers = get_headers($pmaUri, true);
 
 	if(!$headers || !isset($headers['Location'])) {
-		set_page_message(tr('Error: An error occurred while authentication!'));
+		set_page_message(tr('Error: An error occurred while authentication!'), 'error');
 
 		return false;
 	} else {

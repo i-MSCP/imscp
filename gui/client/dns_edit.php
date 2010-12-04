@@ -287,7 +287,7 @@ function gen_editdns_page(&$tpl, $edit_id) {
 
 	// Protection against edition (eg. for external mail MX record)
 	if($protected == 'yes') {
-		set_page_message(tr('You are not allowed to edit this DNS record!'));
+		set_page_message(tr('You are not allowed to edit this DNS record!'), 'error');
 		not_allowed();
 	}
 

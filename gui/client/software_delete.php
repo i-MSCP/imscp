@@ -49,7 +49,7 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 	";
 	$rs = exec_query($sql, $query, array($_GET['id'], $dmn_id));
 	if ($rs->recordCount() != 1) {
-		set_page_message(tr('Wrong software id.'));
+		set_page_message(tr('Wrong software id.'), 'error');
 		header('Location: software.php');
 	} else {
 		if ($rs->fields['software_res_del'] === '1') {
@@ -62,7 +62,7 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 					`domain_id` = ?
 			";
 			$res = exec_query($sql, $delete, array($_GET['id'], $dmn_id));
-			set_page_message(tr('Software deleted successful.'));
+			set_page_message(tr('Software deleted successful.'), 'success');
 		}else{
 			$delete = "
 				UPDATE
@@ -81,6 +81,6 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 			header('Location: software.php');
 	}
 } else {
-	set_page_message(tr('Wrong software id.'));
+	set_page_message(tr('Wrong software id.'), 'error');
 	header('Location: software.php');
 }

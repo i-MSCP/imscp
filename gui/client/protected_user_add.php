@@ -64,19 +64,19 @@ function padd_user(&$tpl, &$sql, $dmn_id) {
 		// we have to add the user
 		if (isset($_POST['username']) && isset($_POST['pass']) && isset($_POST['pass_rep'])) {
 			if (!validates_username($_POST['username'])) {
-				set_page_message(tr('Wrong username!'));
+				set_page_message(tr('Wrong username!'), 'error');
 				return;
 			}
 			if (!chk_password($_POST['pass'])) {
 				if ($cfg->PASSWD_STRONG) {
-					set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS));
+					set_page_message(sprintf(tr('The password must be at least %s long and contain letters and numbers to be valid.'), $cfg->PASSWD_CHARS), 'error');
 				} else {
-					set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), $cfg->PASSWD_CHARS));
+					set_page_message(sprintf(tr('Password data is shorter than %s signs or includes not permitted signs!'), $cfg->PASSWD_CHARS), 'error');
 				}
 				return;
 			}
 			if ($_POST['pass'] !== $_POST['pass_rep']) {
-				set_page_message(tr('Passwords do not match!'));
+				set_page_message(tr('Passwords do not match!'), 'error');
 				return;
 			}
 			$status = $cfg->ITEM_ADD_STATUS;
@@ -113,7 +113,7 @@ function padd_user(&$tpl, &$sql, $dmn_id) {
 				write_log("$admin_login: add user (protected areas): $uname");
 				user_goto('protected_user_manage.php');
 			} else {
-				set_page_message(tr('User already exist !'));
+				set_page_message(tr('User already exist !'), 'error');
 				return;
 			}
 		}
