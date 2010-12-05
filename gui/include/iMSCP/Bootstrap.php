@@ -44,7 +44,7 @@ defined('INCLUDEPATH') or define('INCLUDEPATH', dirname(dirname(__FILE__)));
  *
  * @package		iMSCP_Bootstrap
  * @author		Laurent Declercq <laurent.declercq@i-mscp.net>
- * @since		1.0.7
+ * @since		1.0.7 (ispCP)
  * @version		1.0.4
  */
 class iMSCP_Bootstrap {

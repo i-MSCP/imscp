@@ -47,7 +47,7 @@
  * @package		iMSCP_Filter
  * @subpackage	Compress
  * @author		Laurent declercq <laurent.declercq@i-mscp.net>
- * @since		1.0.7
+ * @since       1.0.7 (ispCP)
  * @version		1.0.4
  * @replace		spOutput class
  */

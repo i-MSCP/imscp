@@ -77,8 +77,8 @@ $down = tr('DOWN');
 
 $services = new iMSCP_Services();
 
-foreach($services as $serviceName => $properties) {
-
+foreach($services as $service) {
+	$services->setService($services->key($services), false);
 	$serviceState = $services->isRunning();
 
 	$tpl->assign(
@@ -97,6 +97,4 @@ foreach($services as $serviceName => $properties) {
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg->DUMP_GUI_DEBUG) {
-	dump_gui_debug();
-}
+if ($cfg->DUMP_GUI_DEBUG) dump_gui_debug();

@@ -39,7 +39,7 @@
  * @package		iMSCP_Exception
  * @subpackage	Writer
  * @author		Laurent Declercq <laurent.declercq@i-mscp.net>
- * @since		1.0.7
+ * @since       1.0.7 (ispCP)
  * @version		1.0.1
  */
 abstract class iMSCP_Exception_Writer implements SplObserver {

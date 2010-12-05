@@ -40,7 +40,7 @@ require_once  INCLUDEPATH . '/iMSCP/Exception.php';
  *
  * @package		iMSCP_Exception
  * @author		Laurent declercq <laurent.declercq@i-mscp.net>
- * @since		1.0.7
+ * @since       1.0.7 (ispCP)
  * @version		1.0.0
  */
 class iMSCP_Exception_Database extends iMSCP_Exception {}

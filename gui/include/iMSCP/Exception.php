@@ -34,8 +34,8 @@
  * ispCP default Exception
  *
  * @package		iMSCP_Exception
- * @author		Laurent Declercq (nuxwin) <laurent.declercq@i-mscp.net>
- * @since		1.0.7
+ * @author		Laurent Declercq <laurent.declercq@i-mscp.net>
+ * @since       1.0.7 (ispCP)
  * @version		1.0.0
  */
 class iMSCP_Exception extends Exception {}

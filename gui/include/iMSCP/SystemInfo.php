@@ -37,7 +37,7 @@
  * @category    ispCP
  * @package		iMSCP_SystemInfo
  * @author      Benedikt Heintel <benedikt.heintel@i-mscp.net>
- * @since       1.0.7
+ * @since       1.0.7 (ispCP)
  * @version     1.0.2
  */
 class iMSCP_SystemInfo {

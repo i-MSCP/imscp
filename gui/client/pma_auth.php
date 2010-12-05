@@ -17,15 +17,15 @@
  * The Initial Developer of the Original Code is ispCP Team.
  * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
+ * 
  * Portions created by the i-MSCP Team are Copyright (C) 2010 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  *
  * @package     i-MSCP
- * @subpackage  client_sql
+ * @subpackage  client
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010 by i-MSCP | http://i-mscp.net
  * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
- * @since       1.0.7
  * @version     SVN: $Id$
  * @replace     client/sql_auth.php
  * @link        http://i-mscp.net i-MSCP Home Site
@@ -91,9 +91,9 @@ function _getLoginCredentials($dbUserId) {
  * Creates all cookies for PhpMyAdmin
  *
  * @author Laurent Declercq <laurent.declercq@i-mscp.net>
- * @since  1.0.7
+ * @since  1.0.7 (ispCP)
  * @access private
- * @param  array $cookies Array that contains cookies definitions for PMA
+ * @param  array $cookies Array that contains cookies definitions for PhpMyadmin
  * @return void
  */
 function _pmaCreateCookies($cookies) {
@@ -107,7 +107,7 @@ function _pmaCreateCookies($cookies) {
  * PhpMyAdmin authentication
  *
  * @author Laurent Declercq <laurent.declercq@i-mscp.net>
- * @since  1.0.7
+ * @since  1.0.7 (ispCP)
  * @param  int $dbUserId Database user unique identifier
  * @return bool TRUE on success, FALSE otherwise
  */
@@ -130,14 +130,10 @@ function pmaAuth($dbUserId) {
 
 	// Prepares PhpMyadmin absolute Uri to use
 	if(isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS'])) {
-		$port = ($_SERVER['SERVER_PORT'] != '443')
-			? ':' . $_SERVER['SERVER_PORT'] : '';
-
+		$port = ($_SERVER['SERVER_PORT'] != '443') ? ':' . $_SERVER['SERVER_PORT'] : '';
 		$pmaUri = "https://{$_SERVER['SERVER_NAME']}$port/pma/";
 	} else {
-		$port = ($_SERVER['SERVER_PORT'] != '80')
-			? ':' . $_SERVER['SERVER_PORT'] : '';
-
+		$port = ($_SERVER['SERVER_PORT'] != '80') ? ':' . $_SERVER['SERVER_PORT'] : '';
 		$pmaUri = "http://{$_SERVER['SERVER_NAME']}$port/pma/";
 	}
 

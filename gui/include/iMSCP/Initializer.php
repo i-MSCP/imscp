@@ -39,8 +39,8 @@
  *
  * @category    ispCP
  * @package     iMSCP_Initializer
- * @author      Laurent declercq <laurent.declercq@i-mscp.net>
- * @since       1.0.7
+ * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
+ * @since       1.0.7 (ispCP)
  * @version     1.1.2
  */
 class iMSCP_Initializer {

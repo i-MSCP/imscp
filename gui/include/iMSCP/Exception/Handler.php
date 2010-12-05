@@ -92,7 +92,7 @@
  * @package		iMSCP_Exception
  * @subpackage	Handler
  * @author		Laurent Declercq <laurent.declercq@i-mscp.net>
- * @since		1.0.7
+ * @since       1.0.7 (ispCP)
  * @version		1.0.3
  */
 class iMSCP_Exception_Handler implements SplSubject, IteratorAggregate, Countable {

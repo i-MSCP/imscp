@@ -34,10 +34,10 @@
  * @package     iMSCP_Initializer
  * @copyright 	2010 by i-MSCP | http://i-mscp.net
  * @author		Laurent Declercq <laurent.declercq@i-mscp.net>
- * @Since		i-MSCP 1.0.0
+ * @Since		1.0.0 (i-MSCP)
  * @version		1.0.0
  */
-class iMSCP_Services implements iterator {
+class iMSCP_Services implements iterator, countable {
 
 	/**
 	 * Array of services where each key is a service name and each associated value is
@@ -71,7 +71,7 @@ class iMSCP_Services implements iterator {
 		 */
 		$dbConfig = iMSCP_Registry::get('dbConfig');
 
-		// Retrieve all services
+		// Retrieve all services properties
 		foreach($dbConfig as $service => $serviceProperties) {
 
 			if(substr($service, 0, 5) == 'PORT_') {
@@ -89,42 +89,6 @@ class iMSCP_Services implements iterator {
 	}
 
 	/**
-	 * Get a service property value
-	 *
-	 * @throws iMSCP_Exception
-	 * @param  string $serviceName Service name
-	 * @param  int $index Service property index
-	 * @return mixed Service property value
-	 */
-	private function _getProperty($serviceName, $index) {
-
-		if(!is_null($this->_queriedService)) {
-			return $this->_services[$this->_queriedService][$index];
-		} else {
-			throw new iMSCP_Exception('Service name to be queried is not set!');
-		}
-	}
-
-	/**
-	 * Get service status
-	 *
-	 * @param  $serviceName
-	 * @return bool TRUE if the service is currently running, FALSE otherwise
-	 */
-	private function _getStatus() {
-
-		ini_set('default_socket_timeout', 3);
-
-		if(($fp = @fsockopen($this->getProtocol() . '://' . $this->getIp(), $this->getPort()))) {
-			fclose($fp);
-
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
 	 * Set service to be queried
 	 * 
 	 * @throws iMSCP_Exception
@@ -134,7 +98,7 @@ class iMSCP_Services implements iterator {
 	 */
 	public function setService($serviceName, $normalize = true) {
 
-		// Normalise service name
+		// Normalise service name (ex. 'dns' to 'PORT_DNS')
 		if($normalize) {
 			$normalizedServiceName = 'PORT_' . strtoupper($serviceName);
 		} else {
@@ -149,7 +113,7 @@ class iMSCP_Services implements iterator {
 	}
 
 	/**
-	 * Get service port
+	 * Get service listening port
 	 *
 	 * @param  string $serviceName Service name
 	 * @return array
@@ -258,26 +222,11 @@ class iMSCP_Services implements iterator {
 	/**
 	 * Returns the key of the current element
 	 *
-	 * Note: For convenience reason, this method also set the current service to be queried. That allows this
-	 * construction:
-	 * 
-	 * <code>
-	 * $services = new iMSCP_ServicesStatus();
-	 *
-	 * foreach($services as $serviceName => properties) {
-	 * 	echo $services->getPort();
-	 *  echo $services->getIp();
-	 * }
-	 * <code>
-	 *
 	 * @return string Return the key of the current element or NULL on failure
 	 */
 	public function key() {
 
-		$key = key($this->_services);
-		$this->setService($key, false);
-
-		return $key;
+		return key($this->_services);
 	}
 
 	/**
@@ -311,5 +260,51 @@ class iMSCP_Services implements iterator {
 	public function valid() {
 
 		return array_key_exists(key($this->_services), $this->_services);
+	}
+
+	/**
+	 * Count number of service
+	 *
+	 * @return int The custom count as an integer.
+	 */
+	public function count() {
+
+		return count($this->_services);
+	}
+
+	/**
+	 * Get a service property value
+	 *
+	 * @throws iMSCP_Exception
+	 * @param  string $serviceName Service name
+	 * @param  int $index Service property index
+	 * @return mixed Service property value
+	 */
+	private function _getProperty($serviceName, $index) {
+
+		if(!is_null($this->_queriedService)) {
+			return $this->_services[$this->_queriedService][$index];
+		} else {
+			throw new iMSCP_Exception('Service name to be queried is not set!');
+		}
+	}
+
+	/**
+	 * Get service status
+	 *
+	 * @param  $serviceName Service name
+	 * @return bool TRUE if the service is currently running, FALSE otherwise
+	 */
+	private function _getStatus() {
+
+		ini_set('default_socket_timeout', 3);
+
+		if(($fp = @fsockopen($this->getProtocol() . '://' . $this->getIp(), $this->getPort()))) {
+			fclose($fp);
+
+			return true;
+		}
+
+		return false;
 	}
 }
