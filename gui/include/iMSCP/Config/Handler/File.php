@@ -145,8 +145,11 @@ require_once  INCLUDEPATH . '/iMSCP/Config/Handler.php';
  * @property string CMD_SYSCTL path to sysctl
  * @property string GUI_ROOT_DIR path to GUI
  * @property string CMD_SHELL Path to shell interpreter
- * @property string FTP_HOMEDIR Ftp home directory
+ * @property string FTP_HOMEDIR Ftp home directoryVersion
  * @property string SERVER_HOSTNAME Server hostname
+ * @property string IMSCP_SUPPORT_SYSTEM_PATH
+ * @property string Version
+ * @property string CodeName
  *
  * @package		iMSCP_Config
  * @subpackage	Handler
