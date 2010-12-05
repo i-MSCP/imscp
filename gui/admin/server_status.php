@@ -78,20 +78,25 @@ $down = tr('DOWN');
 $services = new iMSCP_Services();
 
 foreach($services as $service) {
+
 	$services->setService($services->key($services), false);
-	$serviceState = $services->isRunning();
 
-	$tpl->assign(
-		array(
-			'HOST' =>  $services->getIp(),
-			'PORT' => $services->getPort(),
-			'SERVICE' => $services->getName(),
-			'STATUS' => $serviceState ? "<b>$running</b>" : $down,
-			'CLASS' => $serviceState ? 'up' : 'down'
-		)
-	);
+	if($services->isVisible()) {
 
-	$tpl->parse('SERVICE_STATUS', '.service_status');
+		$serviceState = $services->isRunning();
+
+		$tpl->assign(
+			array(
+				'HOST' =>  $services->getIp(),
+				'PORT' => $services->getPort(),
+				'SERVICE' => $services->getName(),
+				'STATUS' => $serviceState ? "<b>$running</b>" : $down,
+				'CLASS' => $serviceState ? 'up' : 'down'
+			)
+		);
+
+		$tpl->parse('SERVICE_STATUS', '.service_status');
+	}
 }
 
 $tpl->parse('PAGE', 'page');

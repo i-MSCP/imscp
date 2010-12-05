@@ -5,6 +5,8 @@ i-MSCP ChangeLog
 	- GUI:
 		* Fixed: Setting services ports feature is broken since new template integration
 		* Fixed: Wrong service port name...
+		* Fixed: Services that are not visible are not hidden
+		* Fixed: Optional services should not be visible on server status page
 
 2010-12-04 Laurent Declercq
 	- GUI:

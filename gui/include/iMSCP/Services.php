@@ -158,21 +158,6 @@ class iMSCP_Services implements iterator, countable {
 	}
 
 	/**
-	 * Get service type
-	 *
-	 * @param  string $serviceName Service name
-	 * @return array
-	 */
-	public function getType($serviceName = null) {
-
-		if(!is_null($serviceName)) {
-			$this->setService($serviceName);
-		}
-
-		return $this->_getProperty($this->_queriedService, 4);
-	}
-
-	/**
 	 * Get service IP
 	 *
 	 * @param  string $serviceName Service name
@@ -185,6 +170,36 @@ class iMSCP_Services implements iterator, countable {
 		}
 
 		return $this->_getProperty($this->_queriedService, 5);
+	}
+
+	/**
+	 * Check if the service is read only
+	 *
+	 * @param  $serviceName Service name
+	 * @return bool
+	 */
+	public function isReadOnly($serviceName = null) {
+
+		if(!is_null($serviceName)) {
+			$this->setService($serviceName);
+		}
+
+		return (bool) (!$this->_getProperty($this->_queriedService, 4));
+	}
+
+	/**
+	 * Check if the service is visible
+	 *
+	 * @param  $serviceName Service name
+	 * @return bool
+	 */
+	public function isVisible($serviceName = null) {
+
+		if(!is_null($serviceName)) {
+			$this->setService($serviceName);
+		}
+
+		return (bool) $this->_getProperty($this->_queriedService, 3);
 	}
 
 	/**
