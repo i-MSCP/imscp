@@ -176,7 +176,7 @@ class iMSCP_Services implements iterator, countable {
 	 * Check if the service is read only
 	 *
 	 * @param  $serviceName Service name
-	 * @return bool
+	 * @return bool TRUE if the service is read only, FALSE otherwise
 	 */
 	public function isReadOnly($serviceName = null) {
 
@@ -191,7 +191,7 @@ class iMSCP_Services implements iterator, countable {
 	 * Check if the service is visible
 	 *
 	 * @param  $serviceName Service name
-	 * @return bool
+	 * @return bool TRUE if the service is visible, FALSE otherwise
 	 */
 	public function isVisible($serviceName = null) {
 
