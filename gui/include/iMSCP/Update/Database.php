@@ -1971,23 +1971,33 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	 }
 
 	/**
-	 * Add i-MSCP daemon service properties
+	 * Add i-MSCP daemon service properties (moved to 50)
 	 *
 	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
 	 * @since r3985
 	 * @return array
 	 */
 	 protected function _databaseUpdate_49() {
+		return array();
+	 }
+
+	/**
+	 * Add i-MSCP daemon service properties
+	 *
+	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
+	 * @since r4004
+	 * @return array
+	 */
+	 protected function _databaseUpdate_50() {
 
 		/**
 		 * @var $dbConfig iMSCP_Config_Handler_Db
 		 */
 		$dbConfig = iMSCP_Registry::get('dbConfig');
-		$dbConfig->PORT_IMSCP_DAEMON = "9876;tcp;i-MSCP Daemon;1;0;127.0.0.1";
+		$dbConfig->PORT_IMSCP_DAEMON = "9876;tcp;i-MSCP-Daemon;1;0;127.0.0.1";
 
 		return array();
 	 }
-
 	/*
 	 * DO NOT CHANGE ANYTHING BELOW THIS LINE!
 	 */

@@ -112,7 +112,7 @@ CREATE TABLE `config` (
 --
 
 INSERT INTO `config` (`name`, `value`) VALUES
-('PORT_IMSCP_DAEMON', '9876;tcp;i-MSCP Daemon;1;0;127.0.0.1'),
+('PORT_IMSCP_DAEMON', '9876;tcp;i-MSCP-Daemon;1;0;127.0.0.1'),
 ('PORT_FTP', '21;tcp;FTP;1;0;'),
 ('PORT_SSH', '22;tcp;SSH;1;0;'),
 ('PORT_TELNET', '23;tcp;TELNET;1;0;'),
@@ -133,7 +133,7 @@ INSERT INTO `config` (`name`, `value`) VALUES
 ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
 ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
 ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-('DATABASE_REVISION', '49');
+('DATABASE_REVISION', '50');
 
 -- --------------------------------------------------------
 

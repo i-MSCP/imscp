@@ -1,6 +1,11 @@
 i-MSCP ChangeLog
 ~~~~~~~~~~~~~~~~
 
+2010-12-05 Laurent Declercq
+	- GUI:
+		* Fixed: Setting services ports feature is broken since new template integration
+		* Fixed: Wrong service port name...
+
 2010-12-04 Laurent Declercq
 	- GUI:
 		* Added iMSCP_Services class to be able to get services properties and their status
