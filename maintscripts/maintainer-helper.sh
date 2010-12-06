@@ -57,8 +57,14 @@
 # Retrieving the main i-MSCP configuration file path
 if [ -f "/etc/imscp/imscp.conf" ] ; then
     CONF_FILE=/etc/imscp/imscp.conf
+	CMD_SED=`which sed`
 elif [ -f "/usr/local/etc/imscp/imscp.conf" ] ; then
     CONF_FILE=/usr/local/etc/imscp/imscp.conf
+	    if [ -f "$(which gsed)" ]; then
+           CMD_SED=`which gsed`
+        else
+          printf "\033[1;31m[Error]\033[0m gsed not found!\n"
+        fi
 else
     printf "\033[1;31m[Error]\033[0m i-MSCP configuration file not found!\n"
     exit 1
@@ -69,7 +75,7 @@ IFS=$
 
 # Reading needed entries from imscp.conf
 for a in $(grep -E '^(AMAVIS|APACHE_|BASE_SERVER_IP|CMD_|DEBUG|DATABASE_HOST|DEFAULT_ADMIN_ADDRESS|ETC_|LOG_DIR|MTA_|ROOT_|PHP_FASTCGI|SPAMASSASSIN|Version)' \
-${CONF_FILE} | sed 's/\s*=\s*\(.*\)/="\1"/') ; do
+${CONF_FILE} | $CMD_SED 's/\s*=\s*\(.*\)/="\1"/') ; do
 	 eval $a
 done
 
@@ -82,7 +88,7 @@ if [ $DEBUG -eq 1 ]; then
 fi
 
 # i-MSCP version
-IMSCP_VERSION=$(echo $Version | sed -e 's/\s\+\|[a-z]//gi')
+IMSCP_VERSION=$(echo $Version | $CMD_SED -e 's/\s\+\|[a-z]//gi')
 
 ################################################################################
 #                                   Logging                                    #

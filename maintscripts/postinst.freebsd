@@ -95,12 +95,12 @@ EOF
 		print_title 'Patch AWStats & PHP Temp-Script: '
 
 		$CMD_SED s/"\/etc\/awstats"/"\/usr\/local\/etc\/awstats"/g $ROOT_DIR/engine/awstats/awstats_updateall.pl > $ROOT_DIR/engine/awstats/awstats_updateall.pl
-		$CMD_SED -i'.bak' -e s"/bin\/bash/usr\/local\/bin\/bash"/ $ROOT_DIR/engine/tools/imscpphptemp.sh
+		$CMD_SED -i'.bak' -e s"/bin\/bash/usr\/local\/bin\/bash"/ $ROOT_DIR/engine/tools/imscp-del-phptemp.sh
 
 		print_status
 
 		# FastCGI Apache module Configuration
-		print_title 'FastCGI - Apache module configuration: '
+		print_title 'Apache configuration: '
 
 		# Enable FastCGI module (fcgid|fastcgi) and add them to httpd.conf
 		if [ ! -z "$PHP_FASTCGI" ] ; then
@@ -167,7 +167,7 @@ EOF
 		$CMD_SED "
 			s/{MTA_SASL_LOG_LEVEL}/$MTA_SASL_LOG_LEVEL/
 			s/{MTA_SASL_PWCHECK_METHOD}/$MTA_SASL_PWCHECK_METHOD/
-			s/{MTA_SASL_MECH_LIST}/$(echo $MTA_SASL_MECH_LIST | sed 's/,/ /g')/
+			s/{MTA_SASL_MECH_LIST}/$(echo $MTA_SASL_MECH_LIST | $CMD_SED 's/,/ /g')/
 		" >/tmp/smtpd.conf.tmp || failed
 
 		if [ "$MTA_SASL_AUXPROP_PLUGIN" != "no" ]; then
@@ -175,7 +175,12 @@ EOF
 		else
 			$CMD_SED -i'.bak' '/auxprop_plugin: {MTA_SASL_AUXPROP_PLUGIN}/d' /tmp/smtpd.conf.tmp || failed
 		fi
+		
+		print_status
 
+		# SASL Configuration
+		print_title 'SASL configuration: '
+		
 		# Update SASL configuration file if needed
 		if [ -f "$MTA_SASL_CONF_FILE" ] ; then
 			oldmd5=`$CMD_MD5 $MTA_SASL_CONF_FILE | cut -d' ' -f4`
@@ -220,6 +225,11 @@ EOF
 		echo 'daily_status_include_submit_mailq="NO"' >> /etc/periodic.conf
 		echo 'daily_submit_queuerun="NO"' >> /etc/periodic.conf
 
+		print_status
+		
+		# Rkhunter update
+		print_title 'Rkhunter - Updapting files properties: '
+		
 		# Use screen as a workaround to hide the rkhunter output
 		$CMD_SCREEN -qd -m /usr/local/bin/rkhunter --propupd --nolog -q
 
