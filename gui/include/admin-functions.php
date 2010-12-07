@@ -87,6 +87,9 @@ function gen_admin_mainmenu($tpl, $menu_file) {
 	 */
 	$cfg = iMSCP_Registry::get('config');
 
+	/**
+	 * @var $sql iMSCP_Database
+	 */
 	$sql = iMSCP_Registry::get('db');
 
 	$tpl->define_dynamic('menu', $menu_file);
@@ -94,55 +97,55 @@ function gen_admin_mainmenu($tpl, $menu_file) {
 	$tpl->define_dynamic('custom_buttons', 'menu');
 	$tpl->assign(
 		array(	
-			'TR_MENU_GENERAL_INFORMATION'			=> tr('General information'),
-			'TR_MENU_HOSTING_PLANS' 			=> tr('Manage hosting plans'),
-			'TR_MENU_SYSTEM_TOOLS' 				=> tr('System tools'),
-			'TR_MENU_MANAGE_USERS' 				=> tr('Manage users'),
-			'TR_MENU_STATISTICS' 				=> tr('Statistics'),
-			'SUPPORT_SYSTEM_PATH' 				=> $cfg->IMSCP_SUPPORT_SYSTEM_PATH,
-			'SUPPORT_SYSTEM_TARGET' 			=> $cfg->IMSCP_SUPPORT_SYSTEM_TARGET,
-			'TR_MENU_SUPPORT_SYSTEM' 			=> tr('Support system'),
-			'TR_MENU_SETTINGS' 				=> tr('Settings'),
-			'TR_MENU_GENERAL_INFORMATION' 			=> tr('General information'),
-			'TR_MENU_HOSTING_PLANS'				=> tr('Manage hosting plans'),
-			'TR_MENU_SYSTEM_TOOLS' 				=> tr('System tools'),
-			'TR_MENU_MANAGE_USERS' 				=> tr('Manage users'),
-			'TR_MENU_STATISTICS' 				=> tr('Statistics'),
-			'SUPPORT_SYSTEM_PATH' 				=> $cfg->IMSCP_SUPPORT_SYSTEM_PATH,
-			'SUPPORT_SYSTEM_TARGET' 			=> $cfg->IMSCP_SUPPORT_SYSTEM_TARGET,
-			'TR_MENU_SUPPORT_SYSTEM' 			=> tr('Support system'),
-			'TR_MENU_SETTINGS' 				=> tr('Settings'),
-			'TR_MENU_CHANGE_PASSWORD' 			=> tr('Change password'),
-			'TR_MENU_CHANGE_PERSONAL_DATA' 			=> tr('Change personal data'),
-			'TR_MENU_ADD_ADMIN' 				=> tr('Add admin'),
-			'TR_MENU_ADD_RESELLER' 				=> tr('Add reseller'),
-			'TR_MENU_RESELLER_ASIGNMENT' 			=> tr('Reseller assignment'),
-			'TR_MENU_USER_ASIGNMENT' 			=> tr('User assignment'),
-			'TR_MENU_EMAIL_SETUP' 				=> tr('Email setup'),
-			'TR_MENU_CIRCULAR' 				=> tr('Email marketing'),
-			'TR_MENU_ADD_HOSTING' 				=> tr('Add hosting plan'),
-			'TR_MENU_RESELLER_STATISTICS' 			=> tr('Reseller statistics'),
-			'TR_MENU_SERVER_STATISTICS' 			=> tr('Server statistics'),
-			'TR_MENU_ADMIN_LOG' 				=> tr('Admin log'),
-			'TR_MENU_MANAGE_IPS' 				=> tr('Manage IPs'),
-			'TR_MENU_SYSTEM_INFO' 				=> tr('System info'),
-			'TR_MENU_I18N' 					=> tr('Internationalisation'),
-			'TR_MENU_LANGUAGE' 				=> tr('Language'),
-			'TR_MENU_LAYOUT_TEMPLATES' 			=> tr('Layout'),
-			'TR_MENU_LOGOUT' 				=> tr('Logout'),
-			'TR_MENU_QUESTIONS_AND_COMMENTS' 		=> tr('Support system'),
-			'TR_MENU_SERVER_TRAFFIC_SETTINGS' 		=> tr('Server traffic settings'),
-			'TR_MENU_SERVER_STATUS' 			=> tr('Server status'),
-			'TR_MENU_IMSCP_UPDATE' 				=> tr('i-MSCP updates'),
-			'TR_MENU_IMSCP_DATABASE_UPDATE' 		=> tr('i-MSCP database updates'),
-			'TR_MENU_IMSCP_DEBUGGER' 			=> tr('i-MSCP debugger'),
-			'TR_CUSTOM_MENUS' 				=> tr('Custom menus'),
-			'TR_MENU_OVERVIEW' 				=> tr('Overview'),
-			'TR_MENU_MANAGE_SESSIONS' 			=> tr('User sessions'),
-			'TR_MENU_LOSTPW_EMAIL' 				=> tr('Lostpw email setup'),
-			'TR_MAINTENANCEMODE' 				=> tr('Maintenance mode'),
-			'TR_GENERAL_SETTINGS' 				=> tr('General settings'),
-			'TR_SERVERPORTS' 				=> tr('Server ports')
+			'TR_MENU_GENERAL_INFORMATION'       => tr('General information'),
+			'TR_MENU_HOSTING_PLANS'             => tr('Manage hosting plans'),
+			'TR_MENU_SYSTEM_TOOLS'              => tr('System tools'),
+			'TR_MENU_MANAGE_USERS'              => tr('Manage users'),
+			'TR_MENU_STATISTICS'                => tr('Statistics'),
+			'SUPPORT_SYSTEM_PATH'               => $cfg->IMSCP_SUPPORT_SYSTEM_PATH,
+			'SUPPORT_SYSTEM_TARGET'             => $cfg->IMSCP_SUPPORT_SYSTEM_TARGET,
+			'TR_MENU_SUPPORT_SYSTEM'            => tr('Support system'),
+			'TR_MENU_SETTINGS'                  => tr('Settings'),
+			'TR_MENU_GENERAL_INFORMATION'       => tr('General information'),
+			'TR_MENU_HOSTING_PLANS'             => tr('Manage hosting plans'),
+			'TR_MENU_SYSTEM_TOOLS'              => tr('System tools'),
+			'TR_MENU_MANAGE_USERS'              => tr('Manage users'),
+			'TR_MENU_STATISTICS'                => tr('Statistics'),
+			'SUPPORT_SYSTEM_PATH'               => $cfg->IMSCP_SUPPORT_SYSTEM_PATH,
+			'SUPPORT_SYSTEM_TARGET'             => $cfg->IMSCP_SUPPORT_SYSTEM_TARGET,
+			'TR_MENU_SUPPORT_SYSTEM'            => tr('Support system'),
+			'TR_MENU_SETTINGS'                  => tr('Settings'),
+			'TR_MENU_CHANGE_PASSWORD'           => tr('Change password'),
+			'TR_MENU_CHANGE_PERSONAL_DATA'      => tr('Change personal data'),
+			'TR_MENU_ADD_ADMIN'                 => tr('Add admin'),
+			'TR_MENU_ADD_RESELLER'              => tr('Add reseller'),
+			'TR_MENU_RESELLER_ASIGNMENT'        => tr('Reseller assignment'),
+			'TR_MENU_USER_ASIGNMENT'            => tr('User assignment'),
+			'TR_MENU_EMAIL_SETUP'               => tr('Email setup'),
+			'TR_MENU_CIRCULAR'                  => tr('Email marketing'),
+			'TR_MENU_ADD_HOSTING'               => tr('Add hosting plan'),
+			'TR_MENU_RESELLER_STATISTICS'       => tr('Reseller statistics'),
+			'TR_MENU_SERVER_STATISTICS'         => tr('Server statistics'),
+			'TR_MENU_ADMIN_LOG'                 => tr('Admin log'),
+			'TR_MENU_MANAGE_IPS'                => tr('Manage IPs'),
+			'TR_MENU_SYSTEM_INFO'               => tr('System info'),
+			'TR_MENU_I18N'                      => tr('Internationalisation'),
+			'TR_MENU_LANGUAGE'                  => tr('Language'),
+			'TR_MENU_LAYOUT_TEMPLATES'          => tr('Layout'),
+			'TR_MENU_LOGOUT'                    => tr('Logout'),
+			'TR_MENU_QUESTIONS_AND_COMMENTS'    => tr('Support system'),
+			'TR_MENU_SERVER_TRAFFIC_SETTINGS'   => tr('Server traffic settings'),
+			'TR_MENU_SERVER_STATUS'             => tr('Server status'),
+			'TR_MENU_IMSCP_UPDATE'              => tr('i-MSCP updates'),
+			'TR_MENU_IMSCP_DATABASE_UPDATE'     => tr('i-MSCP database updates'),
+			'TR_MENU_IMSCP_DEBUGGER'            => tr('i-MSCP debugger'),
+			'TR_CUSTOM_MENUS'                   => tr('Custom menus'),
+			'TR_MENU_OVERVIEW'                  => tr('Overview'),
+			'TR_MENU_MANAGE_SESSIONS'           => tr('User sessions'),
+			'TR_MENU_LOSTPW_EMAIL'              => tr('Lostpw email setup'),
+			'TR_MAINTENANCEMODE'                => tr('Maintenance mode'),
+			'TR_GENERAL_SETTINGS'               => tr('General settings'),
+			'TR_SERVERPORTS'                    => tr('Server ports')
 		)
 	);
 
@@ -167,10 +170,10 @@ function gen_admin_mainmenu($tpl, $menu_file) {
 
 			$tpl->assign(
 				array(
-					'BUTTON_LINK' 	=> tohtml($menu_link),
-					'BUTTON_NAME' 	=> tohtml($menu_name),
+					'BUTTON_LINK'   => tohtml($menu_link),
+					'BUTTON_NAME'   => tohtml($menu_name),
 					'BUTTON_TARGET' => $menu_target,
-					'BUTTON_ID' 	=> $i
+					'BUTTON_ID'     => $i
 				)
 			);
 
@@ -214,51 +217,51 @@ function gen_admin_menu($tpl, $menu_file) {
 	$tpl->define_dynamic('custom_buttons', 'menu');
 	$tpl->assign(
 		array(
-			'TR_MENU_GENERAL_INFORMATION' 			=> tr('General information'),
-			'TR_MENU_CHANGE_PASSWORD' 			=> tr('Change password'),
-			'TR_MENU_CHANGE_PERSONAL_DATA' 			=> tr('Change personal data'),
-			'TR_MENU_MANAGE_USERS' 				=> tr('Manage users'),
-			'TR_MENU_ADD_ADMIN' 				=> tr('Add admin'),
-			'TR_MENU_ADD_RESELLER' 				=> tr('Add reseller'),
-			'TR_MENU_RESELLER_ASIGNMENT' 			=> tr('Reseller assignment'),
-			'TR_MENU_USER_ASIGNMENT' 			=> tr('User assignment'),
-			'TR_MENU_EMAIL_SETUP' 				=> tr('Email setup'),
-			'TR_MENU_CIRCULAR' 				=> tr('Email marketing'),
-			'TR_MENU_HOSTING_PLANS' 			=> tr('Manage hosting plans'),
-			'TR_MENU_ADD_HOSTING' 				=> tr('Add hosting plan'),
-			'TR_MENU_ROOTKIT_LOG' 				=> tr('Rootkit Log'),
-			'TR_MENU_RESELLER_STATISTICS' 			=> tr('Reseller statistics'),
-			'TR_MENU_SERVER_STATISTICS' 			=> tr('Server statistics'),
-			'TR_MENU_ADMIN_LOG' 				=> tr('Admin log'),
-			'TR_MENU_MANAGE_IPS' 				=> tr('Manage IPs'),
-			'TR_MENU_SUPPORT_SYSTEM' 			=> tr('Support system'),
-			'TR_MENU_SYSTEM_INFO' 				=> tr('System info'),
-			'TR_MENU_I18N' 					=> tr('Internationalisation'),
-			'TR_MENU_LANGUAGE' 				=> tr('Language'),
-			'TR_MENU_LAYOUT_TEMPLATES' 			=> tr('Layout'),
-			'TR_MENU_LOGOUT' 				=> tr('Logout'),
-			'TR_MENU_QUESTIONS_AND_COMMENTS' 		=> tr('Support system'),
-			'TR_MENU_STATISTICS' 				=> tr('Statistics'),
-			'TR_MENU_SYSTEM_TOOLS' 				=> tr('System tools'),
-			'TR_MENU_SERVER_TRAFFIC_SETTINGS'		=> tr('Server traffic settings'),
-			'TR_MENU_SERVER_STATUS' 			=> tr('Server status'),
-			'TR_MENU_IMSCP_UPDATE' 				=> tr('i-MSCP updates'),
-			'TR_MENU_IMSCP_DEBUGGER' 			=> tr('i-MSCP debugger'),
-			'TR_CUSTOM_MENUS' 				=> tr('Custom menus'),
-			'TR_MENU_OVERVIEW' 				=> tr('Overview'),
-			'TR_MENU_MANAGE_SESSIONS' 			=> tr('User sessions'),
-			'SUPPORT_SYSTEM_PATH' 				=> $cfg->IMSCP_SUPPORT_SYSTEM_PATH,
-			'SUPPORT_SYSTEM_TARGET' 			=> $cfg->IMSCP_SUPPORT_SYSTEM_TARGET,
-			'TR_MENU_LOSTPW_EMAIL' 				=> tr('Lostpw email setup'),
-			'TR_MAINTENANCEMODE' 				=> tr('Maintenance mode'),
-			'TR_MENU_SETTINGS' 				=> tr('Settings'),
-			'TR_GENERAL_SETTINGS' 				=> tr('General settings'),
-			'TR_SERVERPORTS' 				=> tr('Server ports'),
-			'TR_MENU_IP_USAGE' 				=> tr('IP usage'),
-			'TR_MENU_MANAGE_SOFTWARE' 			=> tr('Application management'),
-			'VERSION' 					=> $cfg->Version,
-			'BUILDDATE' 					=> $cfg->BuildDate,
-			'CODENAME' 					=> $cfg->CodeName
+			'TR_MENU_GENERAL_INFORMATION'       => tr('General information'),
+			'TR_MENU_CHANGE_PASSWORD'           => tr('Change password'),
+			'TR_MENU_CHANGE_PERSONAL_DATA'      => tr('Change personal data'),
+			'TR_MENU_MANAGE_USERS'              => tr('Manage users'),
+			'TR_MENU_ADD_ADMIN'                 => tr('Add admin'),
+			'TR_MENU_ADD_RESELLER'              => tr('Add reseller'),
+			'TR_MENU_RESELLER_ASIGNMENT'        => tr('Reseller assignment'),
+			'TR_MENU_USER_ASIGNMENT'            => tr('User assignment'),
+			'TR_MENU_EMAIL_SETUP'               => tr('Email setup'),
+			'TR_MENU_CIRCULAR'                  => tr('Email marketing'),
+			'TR_MENU_HOSTING_PLANS'             => tr('Manage hosting plans'),
+			'TR_MENU_ADD_HOSTING'               => tr('Add hosting plan'),
+			'TR_MENU_ROOTKIT_LOG'               => tr('Rootkit Log'),
+			'TR_MENU_RESELLER_STATISTICS'       => tr('Reseller statistics'),
+			'TR_MENU_SERVER_STATISTICS'         => tr('Server statistics'),
+			'TR_MENU_ADMIN_LOG'                 => tr('Admin log'),
+			'TR_MENU_MANAGE_IPS'                => tr('Manage IPs'),
+			'TR_MENU_SUPPORT_SYSTEM'            => tr('Support system'),
+			'TR_MENU_SYSTEM_INFO'               => tr('System info'),
+			'TR_MENU_I18N'                      => tr('Internationalisation'),
+			'TR_MENU_LANGUAGE'                  => tr('Language'),
+			'TR_MENU_LAYOUT_TEMPLATES'          => tr('Layout'),
+			'TR_MENU_LOGOUT'                    => tr('Logout'),
+			'TR_MENU_QUESTIONS_AND_COMMENTS'    => tr('Support system'),
+			'TR_MENU_STATISTICS'                => tr('Statistics'),
+			'TR_MENU_SYSTEM_TOOLS'              => tr('System tools'),
+			'TR_MENU_SERVER_TRAFFIC_SETTINGS'   => tr('Server traffic settings'),
+			'TR_MENU_SERVER_STATUS'             => tr('Services status'),
+			'TR_MENU_IMSCP_UPDATE'              => tr('i-MSCP updates'),
+			'TR_MENU_IMSCP_DEBUGGER'            => tr('i-MSCP debugger'),
+			'TR_CUSTOM_MENUS'                   => tr('Custom menus'),
+			'TR_MENU_OVERVIEW'                  => tr('Overview'),
+			'TR_MENU_MANAGE_SESSIONS'           => tr('User sessions'),
+			'SUPPORT_SYSTEM_PATH'               => $cfg->IMSCP_SUPPORT_SYSTEM_PATH,
+			'SUPPORT_SYSTEM_TARGET'             => $cfg->IMSCP_SUPPORT_SYSTEM_TARGET,
+			'TR_MENU_LOSTPW_EMAIL'              => tr('Lostpw email setup'),
+			'TR_MAINTENANCEMODE'                => tr('Maintenance mode'),
+			'TR_MENU_SETTINGS'                  => tr('Settings'),
+			'TR_GENERAL_SETTINGS'               => tr('General settings'),
+			'TR_SERVERPORTS'                    => tr('Services ports'),
+			'TR_MENU_IP_USAGE'                  => tr('IP usage'),
+			'TR_MENU_MANAGE_SOFTWARE'           => tr('Application management'),
+			'VERSION'                           => $cfg->Version,
+			'BUILDDATE'                         => $cfg->BuildDate,
+			'CODENAME'                          => $cfg->CodeName
 		)
 	);
 
@@ -283,10 +286,10 @@ function gen_admin_menu($tpl, $menu_file) {
 
 			$tpl->assign(
 				array(
-					'BUTTON_LINK' 		=> tohtml($menu_link),
-					'BUTTON_NAME' 		=> tohtml($menu_name),
-					'BUTTON_TARGET' 	=> $menu_target,
-					'BUTTON_ID' 		=> $i
+					'BUTTON_LINK'       => tohtml($menu_link),
+					'BUTTON_NAME'       => tohtml($menu_name),
+					'BUTTON_TARGET'     => $menu_target,
+					'BUTTON_ID'         => $i
 				)
 			);
 
@@ -308,13 +311,14 @@ function gen_admin_menu($tpl, $menu_file) {
 }
 
 /**
+ * Must be documented
+ *
  * @param	iMSCP_Database $sql iMSCP_Database instance
  * @return
  */
 function get_sql_user_count($sql) {
 
-	$query = "
-		SELECT DISTINCT `sqlu_name` FROM `sql_user`;";
+	$query = "SELECT DISTINCT `sqlu_name` FROM `sql_user`;";
 
 	$rs = exec_query($sql, $query);
 
@@ -322,6 +326,8 @@ function get_sql_user_count($sql) {
 }
 
 /**
+ * Must be documented
+ *
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @param  iMSCP_Database $sql iMSCP_Database instance
  * @return void
@@ -335,21 +341,21 @@ function getAdminGeneralInfo($tpl, $sql) {
 
 	$tpl->assign(
 		array(
-			'TR_GENERAL_INFORMATION' 	=> tr('General information'),
-			'TR_ACCOUNT_NAME' 		=> tr('Account name'),
-			'TR_ADMIN_USERS' 		=> tr('Admin users'),
-			'TR_RESELLER_USERS' 		=> tr('Reseller users'),
-			'TR_NORMAL_USERS' 		=> tr('Normal users'),
-			'TR_DOMAINS' 			=> tr('Domains'),
-			'TR_SUBDOMAINS' 		=> tr('Subdomains'),
-			'TR_DOMAINS_ALIASES' 		=> tr('Domain aliases'),
-			'TR_MAIL_ACCOUNTS' 		=> tr('Mail accounts'),
-			'TR_FTP_ACCOUNTS' 		=> tr('FTP accounts'),
-			'TR_SQL_DATABASES' 		=> tr('SQL databases'),
-			'TR_SQL_USERS' 			=> tr('SQL users'),
-			'TR_SYSTEM_MESSAGES' 		=> tr('System messages'),
-			'TR_NO_NEW_MESSAGES' 		=> tr('No new messages'),
-			'TR_SERVER_TRAFFIC' 		=> tr('Server traffic')
+			'TR_GENERAL_INFORMATION'    => tr('General information'),
+			'TR_ACCOUNT_NAME'           => tr('Account name'),
+			'TR_ADMIN_USERS'            => tr('Admin users'),
+			'TR_RESELLER_USERS'         => tr('Reseller users'),
+			'TR_NORMAL_USERS'           => tr('Normal users'),
+			'TR_DOMAINS'                => tr('Domains'),
+			'TR_SUBDOMAINS'             => tr('Subdomains'),
+			'TR_DOMAINS_ALIASES'        => tr('Domain aliases'),
+			'TR_MAIL_ACCOUNTS'          => tr('Mail accounts'),
+			'TR_FTP_ACCOUNTS'           => tr('FTP accounts'),
+			'TR_SQL_DATABASES'          => tr('SQL databases'),
+			'TR_SQL_USERS'              => tr('SQL users'),
+			'TR_SYSTEM_MESSAGES'        => tr('System messages'),
+			'TR_NO_NEW_MESSAGES'        => tr('No new messages'),
+			'TR_SERVER_TRAFFIC'         => tr('Server traffic')
 		)
 	);
 
@@ -371,18 +377,18 @@ function getAdminGeneralInfo($tpl, $sql) {
 
 	$tpl->assign(
 		array(
-			'ACCOUNT_NAME' 		=> $_SESSION['user_logged'],
-			'ADMIN_USERS' 		=> records_count('admin', 'admin_type', 'admin'),
-			'RESELLER_USERS' 	=> records_count('admin', 'admin_type', 'reseller'),
-			'NORMAL_USERS' 		=> records_count('admin', 'admin_type', 'user'),
-			'DOMAINS' 		=> records_count('domain', '', ''),
-			'SUBDOMAINS' 		=> records_count('subdomain', '', '') +
-					records_count('subdomain_alias', 'subdomain_alias_id', '', ''),
-			'DOMAINS_ALIASES' 	=> records_count('domain_aliasses', '', ''),
-			'MAIL_ACCOUNTS' 	=> $show_total_emails,
-			'FTP_ACCOUNTS' 		=> records_count('ftp_users', '', ''),
-			'SQL_DATABASES' 	=> records_count('sql_database', '', ''),
-			'SQL_USERS' 		=> get_sql_user_count($sql)
+			'ACCOUNT_NAME'      => $_SESSION['user_logged'],
+			'ADMIN_USERS'       => records_count('admin', 'admin_type', 'admin'),
+			'RESELLER_USERS'    => records_count('admin', 'admin_type', 'reseller'),
+			'NORMAL_USERS'      => records_count('admin', 'admin_type', 'user'),
+			'DOMAINS'           => records_count('domain', '', ''),
+			'SUBDOMAINS'        => records_count('subdomain', '', '') +
+				records_count('subdomain_alias', 'subdomain_alias_id', '', ''),
+			'DOMAINS_ALIASES'   => records_count('domain_aliasses', '', ''),
+			'MAIL_ACCOUNTS'     => $show_total_emails,
+			'FTP_ACCOUNTS'      => records_count('ftp_users', '', ''),
+			'SQL_DATABASES'     => records_count('sql_database', '', ''),
+			'SQL_USERS'         => get_sql_user_count($sql)
 		)
 	);
 }
@@ -420,8 +426,8 @@ function gen_admin_list($tpl, $sql) {
 	if($rs->recordCount() == 0) {
 		$tpl->assign(
 			array(
-				'ADMIN_MESSAGE' 		=> tr('Administrators list is empty!'),
-				'ADMIN_LIST' 			=> ''
+				'ADMIN_MESSAGE' => tr('Administrators list is empty!'),
+				'ADMIN_LIST'    => ''
 			)
 		);
 
@@ -429,10 +435,10 @@ function gen_admin_list($tpl, $sql) {
 	} else {
 		$tpl->assign(
 			array(
-				'TR_ADMIN_USERNAME' 		=> tr('Username'),
-				'TR_ADMIN_CREATED_ON' 		=> tr('Creation date'),
-				'TR_ADMIN_CREATED_BY'		=> tr('Created by'),
-				'TR_ADMIN_OPTIONS' 		=> tr('Options')
+				'TR_ADMIN_USERNAME'     => tr('Username'),
+				'TR_ADMIN_CREATED_ON'   => tr('Creation date'),
+				'TR_ADMIN_CREATED_BY'   => tr('Created by'),
+				'TR_ADMIN_OPTIONS'      => tr('Options')
 			)
 		);
 
@@ -465,14 +471,11 @@ function gen_admin_list($tpl, $sql) {
 			} else {
 				$tpl->assign(
 					array(
-						'ADMIN_DELETE_SHOW' 		=> '',
-						'TR_DELETE' 			=> tr('Delete'),
-						'URL_DELETE_ADMIN' 		=> 
-								'user_delete.php?delete_id=' .
-								$rs->fields['admin_id'] .
-								'&amp;delete_username=' .
-								$rs->fields['admin_name'],
-						'ADMIN_USERNAME' 		=> tohtml($rs->fields['admin_name'])
+						'ADMIN_DELETE_SHOW'     => '',
+						'TR_DELETE'             => tr('Delete'),
+						'URL_DELETE_ADMIN'      => 'user_delete.php?delete_id=' . $rs->fields['admin_id'] .
+							'&amp;delete_username=' . $rs->fields['admin_name'],
+						'ADMIN_USERNAME'        => tohtml($rs->fields['admin_name'])
 					)
 				);
 
@@ -481,12 +484,11 @@ function gen_admin_list($tpl, $sql) {
 
 			$tpl->assign(
 				array(
-					'ADMIN_USERNAME' 		=> tohtml($rs->fields['admin_name']),
-					'ADMIN_CREATED_ON' 		=> tohtml($admin_created),
-					'ADMIN_CREATED_BY' 		=> ($rs->fields['created_by'] != null)
+					'ADMIN_USERNAME'        => tohtml($rs->fields['admin_name']),
+					'ADMIN_CREATED_ON'      => tohtml($admin_created),
+					'ADMIN_CREATED_BY'      => ($rs->fields['created_by'] != null)
 						? tohtml($rs->fields['created_by']) : tr("System"),
-					'URL_EDIT_ADMIN' 		=> 'admin_edit.php?edit_id=' .
-						$rs->fields['admin_id']
+					'URL_EDIT_ADMIN'        => 'admin_edit.php?edit_id=' . $rs->fields['admin_id']
 				)
 			);
 
@@ -534,8 +536,8 @@ function gen_reseller_list($tpl, $sql) {
 	if($rs->recordCount() == 0) {
 		$tpl->assign(
 			array(
-				'RSL_MESSAGE' 		=> tr('Resellers list is empty!'),
-				'RSL_LIST' 		=> ''
+				'RSL_MESSAGE'   => tr('Resellers list is empty!'),
+				'RSL_LIST'      => ''
 			)
 		);
 
@@ -543,26 +545,23 @@ function gen_reseller_list($tpl, $sql) {
 	} else {
 		$tpl->assign(
 			array(
-				'TR_RSL_USERNAME' 	=> tr('Username'),
-				'TR_RSL_CREATED_BY' 	=> tr('Created by'),
-				'TR_RSL_OPTIONS'	=> tr('Options')
+				'TR_RSL_USERNAME'   => tr('Username'),
+				'TR_RSL_CREATED_BY' => tr('Created by'),
+				'TR_RSL_OPTIONS'    => tr('Options')
 			)
 		);
 
 		$i = 0;
 
 		while(!$rs->EOF) {
-			$tpl->assign(
-				array(
-					'RSL_CLASS' 	=> ($i % 2 == 0) ? 'content' : 'content2',
-				)
-			);
+			// @todo Not longer needed with the new theme
+			$tpl->assign('RSL_CLASS', ($i % 2 == 0) ? 'content' : 'content2');
 
 			if($rs->fields['created_by'] == '') {
 				$tpl->assign(
 					array(
-						'TR_DELETE' 		=> tr('Delete'),
-						'RSL_DELETE_LINK'	=> '',
+						'TR_DELETE'         => tr('Delete'),
+						'RSL_DELETE_LINK'   => '',
 					)
 				);
 
@@ -570,16 +569,13 @@ function gen_reseller_list($tpl, $sql) {
 			} else {
 				$tpl->assign(
 					array(
-						'RSL_DELETE_SHOW' 			=> '',
-						'TR_DELETE'				=> tr('Delete'),
-						'URL_DELETE_RSL' 			=> 'user_delete.php?delete_id=' .
-									$rs->fields['admin_id'] . 
-									'&amp;delete_username=' .
-									$rs->fields['admin_name'],
-						'TR_CHANGE_USER_INTERFACE' 		=> tr('Switch to user interface'),
-						'GO_TO_USER_INTERFACE' 			=> tr('Switch'),
-						'URL_CHANGE_INTERFACE' 			=> 'change_user_interface.php?to_id=' .	
-									$rs->fields['admin_id']
+						'RSL_DELETE_SHOW'           => '',
+						'TR_DELETE'                 => tr('Delete'),
+						'URL_DELETE_RSL'            => 'user_delete.php?delete_id=' . $rs->fields['admin_id'] .
+							'&amp;delete_username=' . $rs->fields['admin_name'],
+						'TR_CHANGE_USER_INTERFACE'  => tr('Switch to user interface'),
+						'GO_TO_USER_INTERFACE'      => tr('Switch'),
+						'URL_CHANGE_INTERFACE'      => 'change_user_interface.php?to_id=' .	$rs->fields['admin_id']
 					)
 				);
 
@@ -597,11 +593,10 @@ function gen_reseller_list($tpl, $sql) {
 
 			$tpl->assign(
 				array(
-					'RSL_USERNAME' 				=> tohtml($rs->fields['admin_name']),
-					'RESELLER_CREATED_ON' 			=> tohtml($reseller_created),
-					'RSL_CREATED_BY' 			=> tohtml($rs->fields['created_by']),
-					'URL_EDIT_RSL' 				=> 'reseller_edit.php?edit_id=' .
-							$rs->fields['admin_id']
+					'RSL_USERNAME'          => tohtml($rs->fields['admin_name']),
+					'RESELLER_CREATED_ON'   => tohtml($reseller_created),
+					'RSL_CREATED_BY'        => tohtml($rs->fields['created_by']),
+					'URL_EDIT_RSL'          => 'reseller_edit.php?edit_id=' . $rs->fields['admin_id']
 				)
 			);
 
@@ -654,13 +649,8 @@ function gen_user_list($tpl, $sql) {
 
 	if(isset($_SESSION['search_for'])) {
 		gen_admin_domain_query(
-			$search_query,
-			$count_query,
-			$start_index,
-			$rows_per_page,
-			$_SESSION['search_for'],
-			$_SESSION['search_common'],
-			$_SESSION['search_status']
+			$search_query, $count_query, $start_index, $rows_per_page, $_SESSION['search_for'],
+			$_SESSION['search_common'], $_SESSION['search_status']
 		);
 
 		gen_admin_domain_search_options(
@@ -672,16 +662,7 @@ function gen_user_list($tpl, $sql) {
 
 		$rs = exec_query($sql, $count_query);
 	} else {
-		gen_admin_domain_query(
-			$search_query,
-			$count_query,
-			$start_index,
-			$rows_per_page,
-			'n/a',
-			'n/a',
-			'n/a'
-		);
-
+		gen_admin_domain_query($search_query, $count_query, $start_index, $rows_per_page, 'n/a', 'n/a', 'n/a');
 		gen_admin_domain_search_options($tpl, 'n/a', 'n/a', 'n/a');
 
 		$rs = exec_query($sql, $count_query);
@@ -695,12 +676,12 @@ function gen_user_list($tpl, $sql) {
 		if(isset($_SESSION['search_for'])) {
 			$tpl->assign(
 				array(
-					'USR_MESSAGE'		=>	tr('Not found user records matching the search criteria!'),
-					'USR_LIST' 		=> '',
-					'SCROLL_PREV' 		=> '',
-					'SCROLL_NEXT' 		=> '',
-					'TR_VIEW_DETAILS' 	=> tr('view aliases'),
-					'SHOW_DETAILS' 		=> 'show',
+					'USR_MESSAGE'       =>	tr('Not found user records matching the search criteria!'),
+					'USR_LIST'          => '',
+					'SCROLL_PREV'       => '',
+					'SCROLL_NEXT'       => '',
+					'TR_VIEW_DETAILS'   => tr('view aliases'),
+					'SHOW_DETAILS'      => 'show',
 				)
 			);
 
@@ -710,12 +691,12 @@ function gen_user_list($tpl, $sql) {
 		} else {
 			$tpl->assign(
 				array(
-					'USR_MESSAGE' 		=> tr('Users list is empty!'),
-					'USR_LIST' 		=> '',
-					'SCROLL_PREV' 		=> '',
-					'SCROLL_NEXT' 		=> '',
-					'TR_VIEW_DETAILS' 	=> tr('view aliases'),
-					'SHOW_DETAILS' 		=> 'show',
+					'USR_MESSAGE'       => tr('Users list is empty!'),
+					'USR_LIST'          => '',
+					'SCROLL_PREV'       => '',
+					'SCROLL_NEXT'       => '',
+					'TR_VIEW_DETAILS'   => tr('view aliases'),
+					'SHOW_DETAILS'      => 'show',
 				)
 			);
 		}
@@ -729,8 +710,8 @@ function gen_user_list($tpl, $sql) {
 		} else {
 			$tpl->assign(
 				array(
-					'SCROLL_PREV_GRAY' 	=> '',
-					'PREV_PSI' 		=> $prev_si
+					'SCROLL_PREV_GRAY'  => '',
+					'PREV_PSI'          => $prev_si
 				)
 			);
 		}
@@ -750,8 +731,8 @@ function gen_user_list($tpl, $sql) {
 
 		$tpl->assign(
 			array(
-				'TR_USR_USERNAME' 	=> tr('Username'),
-				'TR_USR_CREATED_BY' 	=> tr('Created by'),
+				'TR_USR_USERNAME'   => tr('Username'),
+				'TR_USR_CREATED_BY' => tr('Created by'),
 				'TR_USR_OPTIONS' 	=> tr('Options'),
 				'TR_USER_STATUS'	=> tr('Status'),
 				'TR_DETAILS' 		=> tr('Details')
@@ -759,11 +740,8 @@ function gen_user_list($tpl, $sql) {
 		);
 
 		while(!$rs->EOF) {
-			$tpl->assign(
-				array(
-					'USR_CLASS' => ($i % 2 == 0) ? 'content' : 'content2',
-				)
-			);
+			// @todo Not longer needed with the new theme
+			$tpl->assign('USR_CLASS' , ($i % 2 == 0) ? 'content' : 'content2');
 
 			// user status icon
 			$domain_created_id = $rs->fields['domain_created_id'];
@@ -792,18 +770,16 @@ function gen_user_list($tpl, $sql) {
 			// Get disk usage by user
 			$tpl->assign(
 				array(
-					'USR_DELETE_SHOW' 			=> '',
-					'DOMAIN_ID' 				=> $rs->fields['domain_id'],
-					'TR_DELETE' 				=> tr('Delete'),
-					'URL_DELETE_USR' 			=> 'user_delete.php?domain_id=' .
-							$rs->fields['domain_id'],
-					'TR_CHANGE_USER_INTERFACE' 		=> tr('Switch to user interface'),
-					'GO_TO_USER_INTERFACE' 			=> tr('Switch'),
-					'URL_CHANGE_INTERFACE' 			=> 'change_user_interface.php?to_id=' .
-							$rs->fields['domain_admin_id'],
-					'USR_USERNAME'				=> tohtml($rs->fields['domain_name']),
-					'TR_EDIT_DOMAIN' 			=> tr('Edit domain'),
-					'TR_EDIT_USR' 				=> tr('Edit user')
+					'USR_DELETE_SHOW'           => '',
+					'DOMAIN_ID'                 => $rs->fields['domain_id'],
+					'TR_DELETE'                 => tr('Delete'),
+					'URL_DELETE_USR'            => 'user_delete.php?domain_id=' . $rs->fields['domain_id'],
+					'TR_CHANGE_USER_INTERFACE'  => tr('Switch to user interface'),
+					'GO_TO_USER_INTERFACE'      => tr('Switch'),
+					'URL_CHANGE_INTERFACE'      => 'change_user_interface.php?to_id=' . $rs->fields['domain_admin_id'],
+					'USR_USERNAME'              => tohtml($rs->fields['domain_name']),
+					'TR_EDIT_DOMAIN'            => tr('Edit domain'),
+					'TR_EDIT_USR'               => tr('Edit user')
 				)
 			);
 
@@ -867,15 +843,14 @@ function gen_user_list($tpl, $sql) {
 
 			$tpl->assign(
 				array(
-					'USR_USERNAME' 				=> tohtml($admin_name),
-					'USER_CREATED_ON' 			=> tohtml($domain_created),
-					'USER_EXPIRES_ON' 			=> $domain_expires,
-					'USR_CREATED_BY' 			=> tohtml($created_by_name),
-					'USR_OPTIONS' 				=> '',
-					'URL_EDIT_USR' 				=> 'admin_edit.php?edit_id=' .
-								$rs->fields['domain_admin_id'],
-					'TR_MESSAGE_CHANGE_STATUS' 		=> tr('Are you sure you want to change the status of domain account?', true),
-					'TR_MESSAGE_DELETE' 			=> tr('Are you sure you want to delete %s?', true, '%s'),
+					'USR_USERNAME'              => tohtml($admin_name),
+					'USER_CREATED_ON'           => tohtml($domain_created),
+					'USER_EXPIRES_ON'           => $domain_expires,
+					'USR_CREATED_BY'            => tohtml($created_by_name),
+					'USR_OPTIONS'               => '',
+					'URL_EDIT_USR'              => 'admin_edit.php?edit_id=' . $rs->fields['domain_admin_id'],
+					'TR_MESSAGE_CHANGE_STATUS'  => tr('Are you sure you want to change the status of domain account?', true),
+					'TR_MESSAGE_DELETE'         => tr('Are you sure you want to delete %s?', true, '%s'),
 				)
 			);
 
@@ -891,7 +866,7 @@ function gen_user_list($tpl, $sql) {
 }
 
 /**
- *
+ * Must be documented
  *
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @param  iMSCP_Database $sql iMSCP_Database instance
@@ -901,14 +876,14 @@ function get_admin_manage_users($tpl, $sql) {
 
 	$tpl->assign(
 		array(
-			'TR_MANAGE_USERS' 			=> tr('Manage users'),
-			'TR_ADMINISTRATORS'	 		=> tr('Administrators'),
-			'TR_RESELLERS' 				=> tr('Resellers'),
-			'TR_USERS' 				=> tr('Users'),
-			'TR_SEARCH' 				=> tr('Search'),
-			'TR_CREATED_ON' 			=> tr('Creation date'),
-			'TR_EXPIRES_ON' 			=> tr('Expire date'),
-			'TR_MESSAGE_DELETE' 			=> tr('Are you sure you want to delete %s?', true, '%s'),
+			'TR_MANAGE_USERS'       => tr('Manage users'),
+			'TR_ADMINISTRATORS'     => tr('Administrators'),
+			'TR_RESELLERS'          => tr('Resellers'),
+			'TR_USERS'              => tr('Users'),
+			'TR_SEARCH'             => tr('Search'),
+			'TR_CREATED_ON'         => tr('Creation date'),
+			'TR_EXPIRES_ON'         => tr('Expire date'),
+			'TR_MESSAGE_DELETE'     => tr('Are you sure you want to delete %s?', true, '%s'),
 			'TR_EDIT' 				=> tr("Edit")
 		)
 	);
@@ -928,15 +903,7 @@ function generate_reseller_props($reseller_id) {
 
 	$sql = iMSCP_Registry::get('db');
 
-	$query = "
-		SELECT
-			*
-		FROM
-			`reseller_props`
-		WHERE
-			`reseller_id` = ?
-		;
-	";
+	$query = "SELECT * FROM `reseller_props` WHERE `reseller_id` = ?;";
 
 	$rs = exec_query($sql, $query, $reseller_id);
 
@@ -945,24 +912,12 @@ function generate_reseller_props($reseller_id) {
 	}
 
 	return array(
-		$rs->fields['current_dmn_cnt'],
-		$rs->fields['max_dmn_cnt'],
-		$rs->fields['current_sub_cnt'],
-		$rs->fields['max_sub_cnt'],
-		$rs->fields['current_als_cnt'],
-		$rs->fields['max_als_cnt'],
-		$rs->fields['current_mail_cnt'],
-		$rs->fields['max_mail_cnt'],
-		$rs->fields['current_ftp_cnt'],
-		$rs->fields['max_ftp_cnt'],
-		$rs->fields['current_sql_db_cnt'],
-		$rs->fields['max_sql_db_cnt'],
-		$rs->fields['current_sql_user_cnt'],
-		$rs->fields['max_sql_user_cnt'],
-		$rs->fields['current_traff_amnt'],
-		$rs->fields['max_traff_amnt'],
-		$rs->fields['current_disk_amnt'],
-		$rs->fields['max_disk_amnt']
+		$rs->fields['current_dmn_cnt'], $rs->fields['max_dmn_cnt'], $rs->fields['current_sub_cnt'],
+		$rs->fields['max_sub_cnt'], $rs->fields['current_als_cnt'], $rs->fields['max_als_cnt'],
+		$rs->fields['current_mail_cnt'], $rs->fields['max_mail_cnt'], $rs->fields['current_ftp_cnt'],
+		$rs->fields['max_ftp_cnt'], $rs->fields['current_sql_db_cnt'], $rs->fields['max_sql_db_cnt'],
+		$rs->fields['current_sql_user_cnt'], $rs->fields['max_sql_user_cnt'], $rs->fields['current_traff_amnt'],
+		$rs->fields['max_traff_amnt'], $rs->fields['current_disk_amnt'], $rs->fields['max_disk_amnt']
 	);
 }
 
@@ -976,43 +931,35 @@ function generate_reseller_users_props($reseller_id) {
 
 	$sql = iMSCP_Registry::get('db');
 
-	$rdmn_current 			= 0;
-	$rdmn_max 			= 0;
-	$rdmn_uf 			= '_off_';
-	$rsub_current 			= 0;
-	$rsub_max 			= 0;
-	$rsub_uf 			= '_off_';
-	$rals_current 			= 0;
-	$rals_max 			= 0;
-	$rals_uf 			= '_off_';
-	$rmail_current 			= 0;
-	$rmail_max 			= 0;
-	$rmail_uf 			= '_off_';
-	$rftp_current 			= 0;
-	$rftp_max 			= 0;
-	$rftp_uf 			= '_off_';
-	$rsql_db_current 		= 0;
-	$rsql_db_max 			= 0;
-	$rsql_db_uf 			= '_off_';
-	$rsql_user_current 		= 0;
-	$rsql_user_max 			= 0;
-	$rsql_user_uf 			= '_off_';
-	$rtraff_current 		= 0;
-	$rtraff_max 			= 0;
-	$rtraff_uf			= '_off_';
-	$rdisk_current 			= 0;
-	$rdisk_max 			= 0;
-	$rdisk_uf 			= '_off_';
+	$rdmn_current       = 0;
+	$rdmn_max           = 0;
+	$rdmn_uf            = '_off_';
+	$rsub_current       = 0;
+	$rsub_max           = 0;
+	$rsub_uf            = '_off_';
+	$rals_current       = 0;
+	$rals_max           = 0;
+	$rals_uf            = '_off_';
+	$rmail_current      = 0;
+	$rmail_max          = 0;
+	$rmail_uf           = '_off_';
+	$rftp_current       = 0;
+	$rftp_max           = 0;
+	$rftp_uf            = '_off_';
+	$rsql_db_current    = 0;
+	$rsql_db_max        = 0;
+	$rsql_db_uf         = '_off_';
+	$rsql_user_current  = 0;
+	$rsql_user_max      = 0;
+	$rsql_user_uf       = '_off_';
+	$rtraff_current     = 0;
+	$rtraff_max         = 0;
+	$rtraff_uf          = '_off_';
+	$rdisk_current      = 0;
+	$rdisk_max          = 0;
+	$rdisk_uf           = '_off_';
 
-	$query = "
-		SELECT
-			`admin_id`
-		FROM
-			`admin`
-		WHERE
-			`created_by` = ?
-		;
-	";
+	$query = "SELECT `admin_id` FROM `admin` WHERE `created_by` = ?;";
 
 	$rs = exec_query($sql, $query, $reseller_id);
 
@@ -1038,8 +985,6 @@ function generate_reseller_users_props($reseller_id) {
 			$sql_user_current, $sql_user_max, $traff_max, $disk_max
 		) = generate_user_props($user_id);
 
-		//list($a, $b, $c, $d, $e, $f, $traff_current, $disk_current, $g, $h
-		//) = generate_user_traffic($user_id);
 		list(,,,,,,$traff_current, $disk_current) = generate_user_traffic($user_id);
 
 		$rdmn_current += 1;
@@ -1111,20 +1056,16 @@ function generate_reseller_users_props($reseller_id) {
 	}
 
 	return array(
-		$rdmn_current, $rdmn_max, $rdmn_uf,
-		$rsub_current, $rsub_max, $rsub_uf,
-		$rals_current, $rals_max, $rals_uf,
-		$rmail_current, $rmail_max, $rmail_uf,
-		$rftp_current, $rftp_max, $rftp_uf,
-		$rsql_db_current, $rsql_db_max, $rsql_db_uf,
-		$rsql_user_current, $rsql_user_max, $rsql_user_uf,
-		$rtraff_current, $rtraff_max, $rtraff_uf,
+		$rdmn_current, $rdmn_max, $rdmn_uf, $rsub_current, $rsub_max, $rsub_uf, $rals_current, $rals_max, $rals_uf,
+		$rmail_current, $rmail_max, $rmail_uf, $rftp_current, $rftp_max, $rftp_uf, $rsql_db_current, $rsql_db_max,
+		$rsql_db_uf, $rsql_user_current, $rsql_user_max, $rsql_user_uf, $rtraff_current, $rtraff_max, $rtraff_uf,
 		$rdisk_current, $rdisk_max, $rdisk_uf
 	);
 }
 
 /**
  * Generate user's properties
+ *
  * @param  $user_id
  * @return array
  */
@@ -1196,13 +1137,14 @@ function generate_user_props($user_id) {
 	$disk_max = $rs->fields['domain_disk_limit'];
 
 	return array(
-		$sub_current, $sub_max, $als_current, $als_max, $mail_current, $mail_max,
-		$ftp_current, $ftp_max, $sql_db_current, $sql_db_max, $sql_user_current,
-		$sql_user_max, $traff_max, $disk_max
+		$sub_current, $sub_max, $als_current, $als_max, $mail_current, $mail_max, $ftp_current, $ftp_max,
+		$sql_db_current, $sql_db_max, $sql_user_current, $sql_user_max, $traff_max, $disk_max
 	);
 }
 
 /**
+ * Must be documented
+ *
  * @param  $table
  * @param  $where
  * @param  $value
@@ -1232,6 +1174,8 @@ function records_count($table, $where, $value) {
 }
 
 /**
+ * Must be documented
+ *
  * @param  $field
  * @param  $table
  * @param  $where
@@ -1349,13 +1293,9 @@ function generate_user_traffic($user_id) {
 
 		$query = "
 			SELECT
-				IFNULL(SUM(`dtraff_web`), 0) AS web,
-				IFNULL(SUM(`dtraff_ftp`), 0) AS ftp,
-				IFNULL(SUM(`dtraff_mail`), 0) AS smtp,
-				IFNULL(SUM(`dtraff_pop`), 0) AS pop,
-				IFNULL(SUM(`dtraff_web`), 0) +
-				IFNULL(SUM(`dtraff_ftp`), 0) +
-				IFNULL(SUM(`dtraff_mail`), 0) +
+				IFNULL(SUM(`dtraff_web`), 0) AS web, IFNULL(SUM(`dtraff_ftp`), 0) AS ftp,
+				IFNULL(SUM(`dtraff_mail`), 0) AS smtp, IFNULL(SUM(`dtraff_pop`), 0) AS pop,
+				IFNULL(SUM(`dtraff_web`), 0) + IFNULL(SUM(`dtraff_ftp`), 0) + IFNULL(SUM(`dtraff_mail`), 0) +
 				IFNULL(SUM(`dtraff_pop`), 0) AS total
 			FROM
 				`domain_traffic`
@@ -1378,6 +1318,8 @@ function generate_user_traffic($user_id) {
 }
 
 /**
+ * Must be documented
+ *
  * @param  $current
  * @param  $max
  * @return
@@ -1397,6 +1339,8 @@ function make_usage_vals($current, $max) {
 }
 
 /**
+ * Must be documented
+ *
  * @param  $field
  * @param  $table
  * @param  $where
@@ -1449,6 +1393,8 @@ function sub_records_rlike_count($field, $table, $where, $value, $subfield, $sub
 }
 
 /**
+ * Must be documented
+ *
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @param  $user_month
  * @param  $user_year
@@ -1485,6 +1431,8 @@ function gen_select_lists($tpl, $user_month, $user_year) {
 }
 
 /**
+ * Must be documented
+ *
  * @param  $user_id
  * @return
  */
@@ -1503,6 +1451,8 @@ function get_user_name($user_id) {
 }
 
 /**
+ * Must be documented
+ *
  * @param  $user_id
  * @return string
  */
@@ -1519,15 +1469,7 @@ function get_logo($user_id) {
 	$sql = iMSCP_Registry::get('db');
 
 	// check which logo we should return:
-	$query = "
-		SELECT
-			`admin_id`, `created_by`, `admin_type`
-		FROM
-			`admin`
-		WHERE
-			`admin_id` = ?
-		;
-	";
+	$query = "SELECT `admin_id`, `created_by`, `admin_type` FROM `admin` WHERE `admin_id` = ?;";
 
 	$rs = exec_query($sql, $query, $user_id);
 
@@ -1543,6 +1485,8 @@ function get_logo($user_id) {
 }
 
 /**
+ * Must be documented
+ *
  * @param  $user_id
  * @return string
  */
@@ -1552,6 +1496,8 @@ function get_own_logo($user_id) {
 }
 
 /**
+ * Must be documented
+ *
  * @param  $user_id
  * @return string
  */
@@ -1581,6 +1527,8 @@ function get_admin_logo($user_id) {
 }
 
 /**
+ * Must be documented
+ *
  * @param  $value
  * @param  $value_max
  * @param  $bar_width
@@ -1597,6 +1545,8 @@ function calc_bar_value($value, $value_max, $bar_width) {
 }
 
 /**
+ * Must be documented
+ *
  * @param  $msg
  * @param int $level
  * @return void
@@ -1668,12 +1618,7 @@ AUTO_LOG_MSG;
 			$mail_status = ($mail_result) ? 'OK' : 'NOT OK';
 			$log_message = "$admin_login: Logging Daemon Mail To: |$to|, " .
 					"From: |$admin_email|, Status: |$mail_status|!";
-			$query = "
-				INSERT INTO
-					`log` (`log_time`,`log_message`)
-				VALUES(NOW(), ?)
-				;
-			";
+			$query = "INSERT INTO `log` (`log_time`,`log_message`) VALUES(NOW(), ?);";
 
 			// Change this to be compatible with PDO Exception only
 			exec_query($sql, $query, $log_message, false);
@@ -1682,6 +1627,8 @@ AUTO_LOG_MSG;
 }
 
 /**
+ * Must be documented
+ *
  * @param  $admin_id
  * @param  $uname
  * @param  $upass
@@ -1755,6 +1702,8 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ul
 }
 
 /**
+ * Must be documented
+ *
  * @param  $reseller_id
  * @param  $props
  * @return iMSCP_Database_ResultSet
@@ -1768,9 +1717,9 @@ function update_reseller_props($reseller_id, $props) {
 
 	if($props == '') return;
 
-	list($dmn_current, $dmn_max, $sub_current, $sub_max, $als_current, $als_max,
-		$mail_current, $mail_max, $ftp_current, $ftp_max, $sql_db_current,
-		$sql_db_max,$sql_user_current, $sql_user_max, $traff_current, $traff_max,
+	list(
+		$dmn_current, $dmn_max, $sub_current, $sub_max, $als_current, $als_max, $mail_current, $mail_max, $ftp_current,
+		$ftp_max, $sql_db_current, $sql_db_max,$sql_user_current, $sql_user_max, $traff_current, $traff_max,
 		$disk_current, $disk_max
 	) = explode(";", $props);
 
@@ -1778,24 +1727,10 @@ function update_reseller_props($reseller_id, $props) {
 		UPDATE
 			`reseller_props`
 		SET
-			`current_dmn_cnt` = ?,
-			`max_dmn_cnt` = ?,
-			`current_sub_cnt` = ?,
-			`max_sub_cnt` = ?,
-			`current_als_cnt` = ?,
-			`max_als_cnt` = ?,
-			`current_mail_cnt` = ?,
-			`max_mail_cnt` = ?,
-			`current_ftp_cnt` = ?,
-			`max_ftp_cnt` = ?,
-			`current_sql_db_cnt` = ?,
-			`max_sql_db_cnt` = ?,
-			`current_sql_user_cnt` = ?,
-			`max_sql_user_cnt` = ?,
-			`current_traff_amnt` = ?,
-			`max_traff_amnt` = ?,
-			`current_disk_amnt` = ?,
-			`max_disk_amnt` = ?
+			`current_dmn_cnt` = ?, `max_dmn_cnt` = ?, `current_sub_cnt` = ?, `max_sub_cnt` = ?, `current_als_cnt` = ?,
+			`max_als_cnt` = ?, `current_mail_cnt` = ?, `max_mail_cnt` = ?, `current_ftp_cnt` = ?, `max_ftp_cnt` = ?,
+			`current_sql_db_cnt` = ?, `max_sql_db_cnt` = ?, `current_sql_user_cnt` = ?, `max_sql_user_cnt` = ?,
+			`current_traff_amnt` = ?, `max_traff_amnt` = ?, `current_disk_amnt` = ?, `max_disk_amnt` = ?
 		WHERE
 			`reseller_id` = ?
 		;
@@ -1814,6 +1749,8 @@ function update_reseller_props($reseller_id, $props) {
 }
 
 /**
+ * Must be documented
+ *
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @return void
  */
@@ -1938,6 +1875,8 @@ function change_domain_status($sql, $domain_id, $domain_name, $action, $location
 }
 
 /**
+ * Must be documented
+ *
  * @param  $search_query
  * @param  $count_query
  * @param  $start_index
@@ -1947,21 +1886,20 @@ function change_domain_status($sql, $domain_id, $domain_name, $action, $location
  * @param  $search_status
  * @return void
  */
-function gen_admin_domain_query(&$search_query, &$count_query, $start_index, $rows_per_page, $search_for, $search_common, $search_status) {
+function gen_admin_domain_query(&$search_query, &$count_query, $start_index, $rows_per_page, $search_for, $search_common,
+	$search_status) {
 
-	if($search_for == 'n/a' && $search_common == 'n/a' &&
-		$search_status == 'n/a') {
+	if($search_for == 'n/a' && $search_common == 'n/a' && $search_status == 'n/a') {
 
 		// We have pure list query;
 		$count_query = "SELECT COUNT(*) AS `cnt` FROM `domain`;";
 
 		$search_query = "SELECT * FROM `domain` ORDER BY `domain_name` ASC LIMIT $start_index, $rows_per_page;";
-	} else if($search_for === '' && $search_status != '') {
+	} else if($search_for == '' && $search_status != '') {
 		if($search_status == 'all') {
 			$add_query = '';
 		} else {
-			$add_query = " WHERE `domain_status` = '$search_status';
-			";
+			$add_query = " WHERE `domain_status` = '$search_status';";
 		}
 
 		$count_query = "SELECT COUNT(*) AS `cnt` FROM `domain` $add_query;";
@@ -2036,6 +1974,8 @@ function gen_admin_domain_query(&$search_query, &$count_query, $start_index, $ro
 }
 
 /**
+ * Must be documented
+ *
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @param  $search_for
  * @param  $search_common
@@ -2053,87 +1993,87 @@ function gen_admin_domain_search_options($tpl, $search_for, $search_common, $sea
 		$search_status == 'n/a') {
 
 		// we have no search and let's generate search fields empty
-		$domain_selected 			= $cfg->HTML_SELECTED;
-		$customerid_selected 			= '';
-		$lastname_selected 			= '';
-		$company_selected 			= '';
-		$city_selected 				= '';
-		$state_selected 			= '';
-		$country_selected 			= '';
-		$all_selected 				= $cfg->HTML_SELECTED;
-		$ok_selected 				= '';
-		$suspended_selected 			= '';
+		$domain_selected        = $cfg->HTML_SELECTED;
+		$customerid_selected    = '';
+		$lastname_selected      = '';
+		$company_selected       = '';
+		$city_selected          = '';
+		$state_selected         = '';
+		$country_selected       = '';
+		$all_selected           = $cfg->HTML_SELECTED;
+		$ok_selected            = '';
+		$suspended_selected     = '';
 	}
 
 	if($search_common == 'domain_name') {
-		$domain_selected 			= $cfg->HTML_SELECTED;
-		$customerid_selected 			= '';
-		$lastname_selected 			= '';
-		$company_selected 			= '';
-		$city_selected 				= '';
-		$state_selected 			= '';
-		$country_selected 			= '';
+		$domain_selected        = $cfg->HTML_SELECTED;
+		$customerid_selected    = '';
+		$lastname_selected      = '';
+		$company_selected       = '';
+		$city_selected          = '';
+		$state_selected         = '';
+		$country_selected       = '';
 	} elseif($search_common == 'customer_id') {
-		$domain_selected 			= '';
-		$customerid_selected 			= $cfg->HTML_SELECTED;
-		$lastname_selected 			= '';
-		$company_selected 			= '';
-		$city_selected 				= '';
-		$state_selected 			= '';
-		$country_selected 			= '';
+		$domain_selected        = '';
+		$customerid_selected    = $cfg->HTML_SELECTED;
+		$lastname_selected      = '';
+		$company_selected       = '';
+		$city_selected          = '';
+		$state_selected         = '';
+		$country_selected       = '';
 	} elseif($search_common == 'lname') {
-		$domain_selected 			= '';
-		$customerid_selected 			= '';
-		$lastname_selected 			= $cfg->HTML_SELECTED;
-		$company_selected 			= '';
-		$city_selected 				= '';
-		$state_selected 			= '';
-		$country_selected 			= '';
+		$domain_selected        = '';
+		$customerid_selected    = '';
+		$lastname_selected      = $cfg->HTML_SELECTED;
+		$company_selected       = '';
+		$city_selected          = '';
+		$state_selected         = '';
+		$country_selected       = '';
 	} elseif($search_common === 'firm') {
-		$domain_selected 			= '';
-		$customerid_selected 			= '';
-		$lastname_selected 			= '';
-		$company_selected 			= $cfg->HTML_SELECTED;
-		$city_selected 				= '';
-		$state_selected 			= '';
-		$country_selected 			= '';
+		$domain_selected        = '';
+		$customerid_selected    = '';
+		$lastname_selected      = '';
+		$company_selected       = $cfg->HTML_SELECTED;
+		$city_selected          = '';
+		$state_selected         = '';
+		$country_selected       = '';
 	} elseif($search_common == 'city') {
-		$domain_selected 			= '';
-		$customerid_selected 			= '';
-		$lastname_selected 			= '';
-		$company_selected 			= '';
-		$city_selected 				= $cfg->HTML_SELECTED;
-		$state_selected 			= '';
-		$country_selected 			= '';
+		$domain_selected        = '';
+		$customerid_selected    = '';
+		$lastname_selected      = '';
+		$company_selected       = '';
+		$city_selected          = $cfg->HTML_SELECTED;
+		$state_selected         = '';
+		$country_selected       = '';
 	} elseif($search_common == 'state') {
-		$domain_selected 			= '';
-		$customerid_selected 			= '';
-		$lastname_selected 			= '';
-		$company_selected 			= '';
-		$city_selected 				= '';
-		$state_selected 			= $cfg->HTML_SELECTED;
-		$country_selected 			= '';
+		$domain_selected        = '';
+		$customerid_selected    = '';
+		$lastname_selected      = '';
+		$company_selected       = '';
+		$city_selected          = '';
+		$state_selected         = $cfg->HTML_SELECTED;
+		$country_selected       = '';
 	} elseif($search_common == 'country') {
-		$domain_selected 			= '';
-		$customerid_selected 			= '';
-		$lastname_selected 			= '';
-		$company_selected 			= '';
-		$city_selected 				= '';
-		$state_selected 			= '';
-		$country_selected 			= $cfg->HTML_SELECTED;
+		$domain_selected        = '';
+		$customerid_selected    = '';
+		$lastname_selected      = '';
+		$company_selected       = '';
+		$city_selected          = '';
+		$state_selected         = '';
+		$country_selected       = $cfg->HTML_SELECTED;
 	}
 
 	if($search_status == 'all') {
-		$all_selected = $cfg->HTML_SELECTED;
-		$ok_selected = '';
+		$all_selected       = $cfg->HTML_SELECTED;
+		$ok_selected        = '';
 		$suspended_selected = '';
 	} elseif($search_status == 'ok') {
-		$all_selected = '';
-		$ok_selected = $cfg->HTML_SELECTED;
+		$all_selected       = '';
+		$ok_selected        = $cfg->HTML_SELECTED;
 		$suspended_selected = '';
 	} elseif($search_status == 'disabled') {
-		$all_selected = '';
-		$ok_selected = '';
+		$all_selected       = '';
+		$ok_selected        = '';
 		$suspended_selected = $cfg->HTML_SELECTED;
 	}
 
@@ -2145,29 +2085,29 @@ function gen_admin_domain_search_options($tpl, $search_for, $search_common, $sea
 
 	$tpl->assign(
 		array(
-			'M_DOMAIN_NAME' => tr('Domain name'),
-			'M_CUSTOMER_ID' => tr('Customer ID'),
-			'M_LAST_NAME' => tr('Last name'),
-			'M_COMPANY' => tr('Company'),
-			'M_CITY' => tr('City'),
-			'M_STATE' => tr('State/Province'),
-			'M_COUNTRY' => tr('Country'),
-			'M_ALL' => tr('All'),
-			'M_OK' => tr('OK'),
-			'M_SUSPENDED' => tr('Suspended'),
-			'M_ERROR' => tr('Error'),
+			'M_DOMAIN_NAME'             => tr('Domain name'),
+			'M_CUSTOMER_ID'             => tr('Customer ID'),
+			'M_LAST_NAME'               => tr('Last name'),
+			'M_COMPANY'                 => tr('Company'),
+			'M_CITY'                    => tr('City'),
+			'M_STATE'                   => tr('State/Province'),
+			'M_COUNTRY'                 => tr('Country'),
+			'M_ALL'                     => tr('All'),
+			'M_OK'                      => tr('OK'),
+			'M_SUSPENDED'               => tr('Suspended'),
+			'M_ERROR'                   => tr('Error'),
 
 			// selected area	
-			'M_DOMAIN_NAME_SELECTED' => $domain_selected,
-			'M_CUSTOMER_ID_SELECTED' => $customerid_selected,
-			'M_LAST_NAME_SELECTED' => $lastname_selected,
-			'M_COMPANY_SELECTED' => $company_selected,
-			'M_CITY_SELECTED' => $city_selected,
-			'M_STATE_SELECTED' => $state_selected,
-			'M_COUNTRY_SELECTED' => $country_selected,
-			'M_ALL_SELECTED' => $all_selected,
-			'M_OK_SELECTED' => $ok_selected,
-			'M_SUSPENDED_SELECTED' => $suspended_selected,
+			'M_DOMAIN_NAME_SELECTED'    => $domain_selected,
+			'M_CUSTOMER_ID_SELECTED'    => $customerid_selected,
+			'M_LAST_NAME_SELECTED'      => $lastname_selected,
+			'M_COMPANY_SELECTED'        => $company_selected,
+			'M_CITY_SELECTED'           => $city_selected,
+			'M_STATE_SELECTED'          => $state_selected,
+			'M_COUNTRY_SELECTED'        => $country_selected,
+			'M_ALL_SELECTED'            => $all_selected,
+			'M_OK_SELECTED'             => $ok_selected,
+			'M_SUSPENDED_SELECTED'      => $suspended_selected,
 		)
 	);
 }
@@ -2260,14 +2200,7 @@ function delete_domain($domain_id, $goto, $breseller = false) {
 	}
 
 	if(count($alias_a) > 0) {
-		$query = "
-			UPDATE
-				`subdomain_alias`
-			SET
-				`subdomain_alias_status` = ?
-			WHERE
-				`alias_id` IN (
-		";
+		$query = "UPDATE `subdomain_alias` SET `subdomain_alias_status` = ? WHERE `alias_id` IN (";
 
 		$query .= implode(',', $alias_a);
 		$query .= ")";
@@ -2354,9 +2287,11 @@ function delete_domain($domain_id, $goto, $breseller = false) {
 }
 
 /**
- * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
- * @param  $sql
- * @param  $user_id
+ * Must be documented
+ *
+ * @param iMSCP_pTemplate $tpl iMSCP_pTemplate instance
+ * @param $sql
+ * @param $user_id
  * @param bool $encode
  * @return void
  */
@@ -2367,15 +2302,7 @@ function gen_purchase_haf($tpl, $sql, $user_id, $encode = false) {
 	 */
 	$cfg = iMSCP_Registry::get('config');
 
-	$query = "
-		SELECT
-			`header`, `footer`
-		FROM
-			`orders_settings`
-		WHERE
-			`user_id` = ?
-		;
-	";
+	$query = "SELECT `header`, `footer` FROM `orders_settings` WHERE `user_id` = ?;";
 
 	if(isset($_SESSION['user_theme'])) {
 		$theme = $_SESSION['user_theme'];
@@ -2431,6 +2358,8 @@ RIC;
 }
 
 /**
+ * Must be documented
+ *
  * @return string
  */
 function generate_software_upload_token() {
@@ -2442,6 +2371,8 @@ function generate_software_upload_token() {
 }
 
 /**
+ * Must be documented
+ *
  * @param  $software_id
  * @param  $software_name
  * @param  $software_version
@@ -2459,16 +2390,7 @@ function update_existing_client_installations_res_upload($software_id, $software
 	 */
 	$sql = iMSCP_Registry::get('db');
 	
-	$query = "
-		SELECT
-			`domain_id`
-		FROM
-			`domain`
-		WHERE
-			`domain_software_allowed` = 'yes'
-		AND
-			`domain_created_id` = ?
-	";
+	$query = "SELECT `domain_id` FROM `domain` WHERE `domain_software_allowed` = 'yes' AND `domain_created_id` = ?;";
 
 	$res = exec_query($sql, $query, array($reseller_id));
 
@@ -2532,6 +2454,8 @@ function update_existing_client_installations_res_upload($software_id, $software
 }
 
 /**
+ * Must be documented
+ *
  * @param  $software_id
  * @param  $software_master_id
  * @param  $reseller_id
@@ -2544,17 +2468,7 @@ function update_existing_client_installations_sw_depot($software_id, $software_m
 	 */
 	$sql = iMSCP_Registry::get('db');
 	
-	$query = "
-		SELECT
-			`domain_id`
-		FROM
-			`domain`
-		WHERE
-			`domain_software_allowed` = 'yes'
-		AND
-			`domain_created_id` = ?
-		;
-	";
+	$query = "SELECT `domain_id` FROM `domain` WHERE `domain_software_allowed` = 'yes' AND `domain_created_id` = ?;";
 
 	$res = exec_query($sql, $query, $reseller_id);
 
@@ -2582,6 +2496,8 @@ function update_existing_client_installations_sw_depot($software_id, $software_m
 }
 
 /**
+ * Must be documented
+ *
  * @param  $reseller_id
  * @return
  */
@@ -2600,6 +2516,8 @@ function get_reseller_sw_installer($reseller_id) {
 }
 
 /**
+ * Must be documented
+ *
  * @param  $reseller_id
  * @param  $file_name
  * @param  $sw_id
@@ -2609,14 +2527,7 @@ function send_activated_sw($reseller_id, $file_name, $sw_id) {
 
 	global $cfg, $sql;
 
-	$query = "
-		SELECT
-			`admin_name` as reseller, `created_by`, `email` as res_email
-		FROM
-			`admin`
-		WHERE
-			`admin_id` = ?
-	";
+	$query = "SELECT `admin_name` as reseller, `created_by`, `email` as res_email FROM `admin` WHERE`admin_id` = ?;";
 
 	$res = exec_query($sql, $query, $reseller_id);
 
@@ -2624,15 +2535,7 @@ function send_activated_sw($reseller_id, $file_name, $sw_id) {
 	$to_email = $res->fields['res_email'];
 	$admin_id = $res->fields['created_by'];
 
-	$query = "
-		SELECT
-			`email` as adm_email, `admin_name` as admin
-		FROM
-			`admin`
-		WHERE
-			`admin_id` = ?
-		;
-	";
+	$query = "SELECT `email` as adm_email, `admin_name` as admin FROM `admin` WHERE `admin_id` = ?;";
 
 	$res = exec_query($sql, $query, $admin_id);
 
@@ -2677,6 +2580,8 @@ function send_activated_sw($reseller_id, $file_name, $sw_id) {
 }
 
 /**
+ * Must be documented
+ *
  * @param  $reseller_id
  * @param  $file_name
  * @param  $sw_id
@@ -2688,15 +2593,7 @@ function send_deleted_sw($reseller_id, $file_name, $sw_id, $subjectinput, $messa
 
 	global $cfg, $sql;
 	
-	$query = "
-		SELECT
-			`admin_name` as reseller, `created_by`, `email` as res_email
-		FROM
-			`admin`
-		WHERE
-			`admin_id` = ?
-		;
-	";
+	$query = "SELECT `admin_name` as reseller, `created_by`, `email` as res_email FROM `admin` WHERE `admin_id` = ?;";
 
 	$res = exec_query($sql, $query, $reseller_id);
 
@@ -2704,15 +2601,7 @@ function send_deleted_sw($reseller_id, $file_name, $sw_id, $subjectinput, $messa
 	$to_email = $res->fields['res_email'];
 	$admin_id = $res->fields['created_by'];
 
-	$query = "
-		SELECT
-			`email` as adm_email, `admin_name` as admin
-		FROM
-			`admin`
-		WHERE
-			`admin_id` = ?
-		;
-	";
+	$query = "SELECT `email` as adm_email, `admin_name` as admin FROM `admin` WHERE `admin_id` = ?;";
 
 	$res = exec_query($sql, $query, $admin_id);
 
