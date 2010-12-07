@@ -18,7 +18,7 @@ Table of Content
 1) Version Info
 ---------------
 i-MSCP Version:		1.0.0
-INSTALL Script:		4.8
+INSTALL Script:		4.9
 Maintainer:			BeNe
 Homepage:			http://i-mscp.net
 Distros:			FreeBSD
@@ -60,7 +60,6 @@ If not create a rndc.key file:
 	# tar xjvf imscp-1.0.0.tar.bz2
 
 2. Install Ports and Portmaster:
-	# portsnap update
 	# portsnap fetch extract
 	# cd /usr/ports/ports-mgmt/portmaster
 	# make install clean
@@ -123,7 +122,7 @@ If not create a rndc.key file:
 	x WRAP
 	x MYSQL
 
-	postfix 2.7.1,1 Options
+	postfix 2.7.2,1 Options
 
 	x PCRE
 	x SASL2
@@ -141,7 +140,7 @@ If not create a rndc.key file:
 	x IPV6
 	x AUTH_USERDB
 
-	cyrus-sasl 2.1.23 Options
+	cyrus-sasl 2.1.23_1 Options
 
 	x BDB
 	x MYSQL
