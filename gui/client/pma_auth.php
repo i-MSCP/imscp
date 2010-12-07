@@ -32,7 +32,7 @@
  * @license     http://www.mozilla.org/MPL/ MPL 1.1
  */
 
-/***
+/***********************************************************************************************************************
  * Script short description:
  *
  * This script allows PhpMyAdmin authentication from i-MSCP
@@ -123,7 +123,7 @@ function pmaAuth($dbUserId) {
 			)
 		);
 	} else {
-		set_page_message(tr('Error: Unknown SQL user id!'), 'error');
+		set_page_message(tr('Unknown SQL user id!'), 'error');
 
 		return false;
 	}
@@ -168,14 +168,14 @@ function pmaAuth($dbUserId) {
 	return true;
 }
 
-/*******************************************************************************
+/***********************************************************************************************************************
  * Main program
  */
 
-// Include all needed libraries and process to the i-MSCP initialization
+// Include all needed libraries
 require '../include/imscp-lib.php';
 
-// Check login
+// Check for login
 check_login(__FILE__);
 
 /**

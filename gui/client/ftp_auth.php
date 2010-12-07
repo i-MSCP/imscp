@@ -1,6 +1,6 @@
 <?php
 /**
- * i-MSCP - internet Multi Server Control Panel
+ * i-MSCP a internet Multi Server Control Panel
  *
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
@@ -12,29 +12,29 @@
  * License for the specific language governing rights and limitations
  * under the License.
  *
- * The Original Code is "i-MSCP - internet Multi Server Control Panel".
+ * The Original Code is i-MSCP - Multi Server Control Panel.
  *
  * The Initial Developer of the Original Code is i-MSCP Team.
- * Portions created by Initial Developer are Copyright (C) 2010 by
- * i-MSCP a internet Multi Server Control Panel. All Rights Reserved
+ * Portions created by Initial Developer are Copyright (C) 2010
+ * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category i-MSCP
- * @copyright 2010 by i-MSCP | http://i-mscp.net
- * @author William Lightning <kassah@gmail.com>
- * @version SVN: $Id$
- * @link http://i-mscp.net i-MSCP Home Site
- * @license http://www.mozilla.org/MPL/ MPL 1.1
+ * @category    i-MSCP
+ * @copyright   2010 by ispCP | http://i-mscp.net
+ * @author      William Lightning <kassah@gmail.com>
+ * @version     SVN: $Id$
+ * @link        http://i-mscp.net i-MSCP Home Site
+ * @license     http://www.mozilla.org/MPL/ MPL 1.1
  */
 
-/***
+/***********************************************************************************************************************
  * Script short description:
  *
  * This script allows net2ftp authentication from i-MSCP
  *
- * borrowed heavily from pma_auth.php by Laurent Declercq <laurent.declercq@i-mscp.net>
+ * Borrowed heavily from client/pma_auth.php by Laurent Declercq <laurent.declercq@i-mscp.net>
  */
 
-/**
+/***********************************************************************************************************************
  *  Functions
  */
 
@@ -113,31 +113,27 @@ function net2ftpAuth($userId) {
 			array(
 				'username' => $credentials[0],
 				'password' => stripcslashes($credentials[1]),
-                                'ftpserver' => 'localhost',
-                                'ftpserverport' => '21',
-                                'directory' => '',
-                                'language' => 'en',
-                                'ftpmode' => 'automatic',
-                                'state' => 'browse',
-                                'state2' => 'main'
+				'ftpserver' => 'localhost',
+				'ftpserverport' => '21',
+				'directory' => '',
+				'language' => 'en',
+				'ftpmode' => 'automatic',
+				'state' => 'browse',
+				'state2' => 'main'
 			)
 		);
 	} else {
-		set_page_message(tr('Error: Unknown FTP user id!'));
+		set_page_message(tr('Unknown FTP user id!'), 'error');
 
 		return false;
 	}
 
 	// Prepares Net2FTP absolute Uri to use
 	if(isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS'])) {
-		$port = ($_SERVER['SERVER_PORT'] != '443')
-			? ':' . $_SERVER['SERVER_PORT'] : '';
-
+		$port = ($_SERVER['SERVER_PORT'] != '443') ? ':' . $_SERVER['SERVER_PORT'] : '';
 		$net2ftpUri = "https://{$_SERVER['SERVER_NAME']}$port/ftp/";
 	} else {
-		$port = ($_SERVER['SERVER_PORT'] != '80')
-			? ':' . $_SERVER['SERVER_PORT'] : '';
-
+		$port = ($_SERVER['SERVER_PORT'] != '80') ? ':' . $_SERVER['SERVER_PORT'] : '';
 		$net2ftpUri = "http://{$_SERVER['SERVER_NAME']}$port/ftp/";
 	}
 
@@ -169,7 +165,7 @@ function net2ftpAuth($userId) {
 	return true;
 }
 
-/**
+/***********************************************************************************************************************
  * Main program
  */
 
