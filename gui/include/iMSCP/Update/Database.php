@@ -1998,6 +1998,28 @@ class iMSCP_Update_Database extends iMSCP_Update {
 
 		return array();
 	 }
+	 
+	/**
+	 * Added field for on-click-logon from the ftp-user site(such as PMA)
+	 *
+	 * @author William Lightning <kassah@gmail.com>
+	 * @todo Add @since docbook comment.
+	 * @return array
+	*/
+	protected function _databaseUpdate_51() {
+		$sqlUpd = array();
+
+		$sqlUpd[] = "
+			ALTER IGNORE TABLE
+				`ftp_users`
+			ADD
+				`rawpasswd` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL
+			AFTER
+				`passwd`;
+		";
+
+		return $sqlUpd;
+	}
 	/*
 	 * DO NOT CHANGE ANYTHING BELOW THIS LINE!
 	 */

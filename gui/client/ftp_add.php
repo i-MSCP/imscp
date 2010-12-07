@@ -432,15 +432,16 @@ function add_ftp_user(&$sql, $dmn_name) {
 
 	$ftp_shell = $cfg->CMD_SHELL;
 	$ftp_passwd = crypt_user_pass_with_salt($_POST['pass']);
+	$ftp_rawpasswd = encrypt_db_password($_POST['pass']);
 
 	$query = "
 		INSERT INTO ftp_users
-			(`userid`, `passwd`, `uid`, `gid`, `shell`, `homedir`)
+			(`userid`, `passwd`, `rawpasswd`, `uid`, `gid`, `shell`, `homedir`)
 		VALUES
-			(?, ?, ?, ?, ?, ?)
+			(?, ?, ?, ?, ?, ?, ?)
 	";
 
-	$rs = exec_query($sql, $query, array($ftp_user, $ftp_passwd, $ftp_uid, $ftp_gid, $ftp_shell, $ftp_home));
+	$rs = exec_query($sql, $query, array($ftp_user, $ftp_passwd, $ftp_rawpasswd, $ftp_uid, $ftp_gid, $ftp_shell, $ftp_home));
 
 	$domain_props = get_domain_default_props($sql, $_SESSION['user_id']);
 	update_reseller_c_props($domain_props[4]);

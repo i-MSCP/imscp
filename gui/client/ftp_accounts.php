@@ -166,6 +166,7 @@ $tpl->assign(
 		'TR_FTP_USERS' => tr('FTP users'),
 		'TR_FTP_ACCOUNT' => tr('FTP account'),
 		'TR_FTP_ACTION' => tr('Action'),
+		'TR_LOGINAS' => tr('Login As'),
 		'TR_EDIT' => tr('Edit'),
 		'TR_DELETE' => tr('Delete'),
 		'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s')

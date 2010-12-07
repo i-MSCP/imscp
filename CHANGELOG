@@ -3,6 +3,7 @@ i-MSCP ChangeLog
 
 2010-12-07 Sascha Bay
 	- CONFIGS: Fixed: exceeds MaxRequestLen while php upload
+	- GUI: Adding on-click-logon ftp-user
 
 2010-12-07 Laurent Declercq
 		Fixed: Call to undefined method iMSCP_Database::close()
