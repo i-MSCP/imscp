@@ -52,14 +52,21 @@ class Net_DNS_RR_SRV extends Net_DNS_RR
             if ($this->rdlength > 0) {
                 $a = unpack("@$offset/npreference/nweight/nport", $data);
                 $offset += 6;
-                list($target, $offset) = Net_DNS_Packet::dn_expand($data, $offset);
+                $packet = new Net_DNS_Packet();
+
+                list($target, $offset) = $packet->dn_expand($data, $offset);
                 $this->preference = $a['preference'];
                 $this->weight = $a['weight'];
                 $this->port = $a['port'];
                 $this->target = $target;
             }
+        } elseif (is_array($data)) {
+            $this->preference = $data['preference'];
+            $this->weight = $data['weight'];
+            $this->port = $data['port'];
+            $this->target = $data['target'];
         } else {
-            preg_match("@([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+(.+)[ \t]*$@", $data, $regs);
+            preg_match("/([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+(.+)[ \t]*$/", $data, $regs);
             $this->preference = $regs[1];
             $this->weight = $regs[2];
             $this->port = $regs[3];

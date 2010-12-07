@@ -18,18 +18,20 @@
 */
 
 /* Include files {{{ */
-require_once("RR/A.php");
-require_once("RR/AAAA.php");
-require_once("RR/NS.php");
-require_once("RR/CNAME.php");
-require_once("RR/PTR.php");
-require_once("RR/SOA.php");
-require_once("RR/MX.php");
-require_once("RR/TSIG.php");
-require_once("RR/TXT.php");
-require_once("RR/HINFO.php");
-require_once("RR/SRV.php");
-require_once("RR/NAPTR.php");
+require_once("Net/DNS/RR/A.php");
+require_once("Net/DNS/RR/AAAA.php");
+require_once("Net/DNS/RR/NS.php");
+require_once("Net/DNS/RR/CNAME.php");
+require_once("Net/DNS/RR/PTR.php");
+require_once("Net/DNS/RR/SOA.php");
+require_once("Net/DNS/RR/MX.php");
+require_once("Net/DNS/RR/TSIG.php");
+require_once("Net/DNS/RR/TXT.php");
+require_once("Net/DNS/RR/HINFO.php");
+require_once("Net/DNS/RR/SRV.php");
+require_once("Net/DNS/RR/NAPTR.php");
+require_once("Net/DNS/RR/RP.php");
+require_once("Net/DNS/RR/SPF.php");
 /* }}} */
 /* Net_DNS_RR object definition {{{ */
 /**
@@ -89,7 +91,7 @@ class Net_DNS_RR
     /* Net_DNS_RR::new_from_data($name, $ttl, $rrtype, $rrclass, $rdlength, $data, $offset) {{{ */
     function &new_from_data($name, $rrtype, $rrclass, $ttl, $rdlength, $data, $offset)
     {
-        $rr = &new Net_DNS_RR('getRR');
+        $rr = new Net_DNS_RR('getRR');
         $rr->name = $name;
         $rr->type = $rrtype;
         $rr->class = $rrclass;
@@ -107,7 +109,7 @@ class Net_DNS_RR
     /* Net_DNS_RR::new_from_string($rrstring, $update_type = '') {{{ */
     function &new_from_string($rrstring, $update_type = '')
     {
-        $rr = &new Net_DNS_RR('getRR');
+        $rr = new Net_DNS_RR('getRR');
         $ttl = 0;
         $parts = preg_split('/[\s]+/', $rrstring);
         while (count($parts) > 0) {
@@ -187,20 +189,23 @@ class Net_DNS_RR
 
             if (class_exists('Net_DNS_RR_' . $rrtype)) {
                 $scn = 'Net_DNS_RR_' . $rrtype;
-                return new $scn($rr, $rdata);
-            } else {
-                return $rr;
+
+                $obj = new $scn($rr, $rdata);
+                return $obj;
             }
-        } else {
-            return null;
+
+            return $rr;
+
         }
+
+        return null;
     }
 
     /* }}} */
     /* Net_DNS_RR::new_from_array($rrarray) {{{ */
     function &new_from_array($rrarray)
     {
-        $rr = &new Net_DNS_RR('getRR');
+        $rr = new Net_DNS_RR('getRR');
         foreach ($rrarray as $k => $v) {
             $rr->{strtolower($k)} = $v;
         }
@@ -220,12 +225,14 @@ class Net_DNS_RR
         if (strlen($rr->rdata)) {
             $rr->rdlength = strlen($rr->rdata);
         }
-        if (class_exists('Net_DNS_RR_' . $rr->rrtype)) {
-            $scn = 'Net_DNS_RR_' . $rr->rrtype;
-            return new $scn($rr, $rr->rdata);
-        } else {
-            return $rr;
+        if (class_exists('Net_DNS_RR_' . $rr->type)) {
+            $scn = 'Net_DNS_RR_' . $rr->type;
+
+            $obj = new $scn($rr, !empty($rr->rdata) ? $rr->rdata : $rrarray);
+            return $obj;
         }
+
+        return $rr;
     }
 
     /* }}} */

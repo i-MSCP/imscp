@@ -53,8 +53,10 @@ class Net_DNS_RR_SOA extends Net_DNS_RR
 
         if ($offset) {
             if ($this->rdlength > 0) {
-                list($mname, $offset) = Net_DNS_Packet::dn_expand($data, $offset);
-                list($rname, $offset) = Net_DNS_Packet::dn_expand($data, $offset);
+                $packet = new Net_DNS_Packet();
+
+                list($mname, $offset) = $packet->dn_expand($data, $offset);
+                list($rname, $offset) = $packet->dn_expand($data, $offset);
 
                 $a = unpack("@$offset/N5soavals", $data);
                 $this->mname = $mname;
@@ -65,8 +67,16 @@ class Net_DNS_RR_SOA extends Net_DNS_RR
                 $this->expire = $a['soavals4'];
                 $this->minimum = $a['soavals5'];
             }
+        } elseif (is_array($data)) {
+            $this->mname = $data['mname'];
+            $this->rname = $data['rname'];
+            $this->serial = $data['serial'];
+            $this->refresh = $data['refresh'];
+            $this->retry = $data['retry'];
+            $this->expire = $data['expire'];
+            $this->minimum = $data['minimum'];
         } else {
-            if (preg_match("@([^ \t]+)[ \t]+([^ \t]+)[ \t]+([0-9]+)[^ \t]+([0-9]+)[^ \t]+([0-9]+)[^ \t]+([0-9]+)[^ \t]*$@", $string, $regs))
+            if (preg_match("/([^ \t]+)[ \t]+([^ \t]+)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]*$/", $data, $regs))
             {
                 $this->mname = preg_replace('/(.*)\.$/', '\\1', $regs[1]);
                 $this->rname = preg_replace('/(.*)\.$/', '\\1', $regs[2]);

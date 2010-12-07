@@ -48,9 +48,12 @@ class Net_DNS_RR_NS extends Net_DNS_RR
 
         if ($offset) {
             if ($this->rdlength > 0) {
-                list($nsdname, $offset) = Net_DNS_Packet::dn_expand($data, $offset);
+                $packet = new Net_DNS_Packet();
+                list($nsdname, $offset) = $packet->dn_expand($data, $offset);
                 $this->nsdname = $nsdname;
             }
+        } elseif (is_array($data)) {
+            $this->nsdname = $data['nsdname'];
         } else {
             $this->nsdname = preg_replace("/[ \t]+(.+)[ \t]*$/", '\\1', $data);
         }

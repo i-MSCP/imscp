@@ -50,12 +50,16 @@ class Net_DNS_RR_MX extends Net_DNS_RR
             if ($this->rdlength > 0) {
                 $a = unpack("@$offset/npreference", $data);
                 $offset += 2;
-                list($exchange, $offset) = Net_DNS_Packet::dn_expand($data, $offset);
+                $packet = new Net_DNS_Packet();
+                list($exchange, $offset) = $packet->dn_expand($data, $offset);
                 $this->preference = $a['preference'];
                 $this->exchange = $exchange;
             }
+        } elseif (is_array($data)) {
+            $this->preference = $data['preference'];
+            $this->exchange = $data['exchange'];
         } else {
-            preg_match("@([0-9]+)[ \t]+(.+)[ \t]*$@", $data, $regs);
+            preg_match("/([0-9]+)[ \t]+(.+)[ \t]*$/", $data, $regs);
             $this->preference = $regs[1];
             $this->exchange = preg_replace('/(.*)\.$/', '\\1', $regs[2]);
         }

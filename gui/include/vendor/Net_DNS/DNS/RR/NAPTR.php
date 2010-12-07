@@ -54,10 +54,12 @@ class Net_DNS_RR_NAPTR extends Net_DNS_RR
             if ($this->rdlength > 0) {
                 $a = unpack("@$offset/norder/npreference", $data);
                 $offset += 4;
+                $packet = new Net_DNS_Packet();
+
                 list($flags, $offset) = Net_DNS_Packet::label_extract($data, $offset);
                 list($services, $offset) = Net_DNS_Packet::label_extract($data, $offset);
                 list($regex, $offset) = Net_DNS_Packet::label_extract($data, $offset);
-                list($replacement, $offset) = Net_DNS_Packet::dn_expand($data, $offset);
+                list($replacement, $offset) = $packet->dn_expand($data, $offset);
 
                 $this->order = $a['order'];
                 $this->preference = $a['preference'];
@@ -66,10 +68,17 @@ class Net_DNS_RR_NAPTR extends Net_DNS_RR
                 $this->regex = $regex;
                 $this->replacement = $replacement;
             }
+        } elseif (is_array($data)) {
+            $this->order = $data['order'];
+            $this->preference = $data['preference'];
+            $this->flags = $data['flags'];
+            $this->services = $data['services'];
+            $this->regex = $data['regex'];
+            $this->replacement = $data['replacement'];
         } else {
             $data = str_replace('\\\\', chr(1) . chr(1), $data); /* disguise escaped backslash */
             $data = str_replace('\\"', chr(2) . chr(2), $data); /* disguise \" */
-            preg_match('@([0-9]+)[ \t]+([0-9]+)[ \t]+("[^"]*"|[^ \t]*)[ \t]+("[^"]*"|[^ \t]*)[ \t]+("[^"]*"|[^ \t]*)[ \t]+(.*?)[ \t]*$@', $data, $regs);
+            preg_match('/([0-9]+)[ \t]+([0-9]+)[ \t]+("[^"]*"|[^ \t]*)[ \t]+("[^"]*"|[^ \t]*)[ \t]+("[^"]*"|[^ \t]*)[ \t]+(.*?)[ \t]*$/', $data, $regs);
             $this->preference = $regs[1];
             $this->weight = $regs[2];
             foreach($regs as $idx => $value) {

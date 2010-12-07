@@ -58,10 +58,12 @@ class Net_DNS_RR_TSIG extends Net_DNS_RR
 
         if ($offset) {
             if ($this->rdlength > 0) {
-                list($alg, $offset) = Net_DNS_Packet::dn_expand($data, $offset);
+                $packet = new Net_DNS_Packet();
+
+                list($alg, $offset) = $packet->dn_expand($data, $offset);
                 $this->algorithm = $alg;
 
-                $d = unpack("\@$offset/nth/Ntl/nfudge/nmac_size", $data);
+                $d = unpack("@$offset/nth/Ntl/nfudge/nmac_size", $data);
                 $time_high = $d['th'];
                 $time_low = $d['tl'];
                 $this->time_signed = $time_low;
@@ -78,10 +80,22 @@ class Net_DNS_RR_TSIG extends Net_DNS_RR
                 $this->other_len = $d['olen'];
                 $offset += 6;
 
-                $odata = substr($data, $offset, $this->other_len);
-                $d = unpack('nodata_high/Nodata_low', $odata);
-                $this->other_data = $d['odata_low'];
+                if ($this->other_len) {
+                    $odata = substr($data, $offset, $this->other_len);
+                    $d = unpack('nodata_high/Nodata_low', $odata);
+                    $this->other_data = $d['odata_low'];
+                }
             }
+        } elseif (is_array($data)) {
+            $this->key = $data['key'];
+            $this->algorithm = $data['algorithm'];
+            $this->time_signed = $data['time_signed'];
+            $this->fudge = $data['fudge'];
+            $this->mac = $data['mac'];
+            $this->original_id = $data['original_id'];
+            $this->error = $data['error'];
+            $this->other_len = $data['other_len'];
+            $this->other_data = $data['other_data'];
         } else {
             if (strlen($data) && preg_match('/^(.*)$/', $data, $regs)) {
                 $this->key = $regs[1];
@@ -182,8 +196,7 @@ class Net_DNS_RR_TSIG extends Net_DNS_RR
                 $sigdata .= pack('nN', 0, $this->other_data);
             }
 
-            //$this->mac = mhash(MHASH_MD5, $sigdata, $key);
-            $this->mac = $this->hmac($sigdata, $key, 'md5');
+            $this->mac = $this->hmac_md5($sigdata, $key);
             $this->mac_size = strlen($this->mac);
 
             /*
@@ -222,14 +235,28 @@ class Net_DNS_RR_TSIG extends Net_DNS_RR
     // Calculate HMAC according to RFC2104
     // http://www.ietf.org/rfc/rfc2104.txt
     // posted by mina86 at tlen dot pl on http://php.net/manual/en/function.md5.php
+    /**
+     * @deprecated
+     */
     function hmac($data, $key, $hash = 'md5', $blocksize = 64) {
-        if (strlen($key)>$blocksize) {
-            $key = pack('H*', $hash($key));
+        if ($hash === 'md5') {
+            return $this->hmac_md5($data, $key);
         }
-        $key  = str_pad($key, $blocksize, chr(0));
-        $ipad = str_repeat(chr(0x36), $blocksize);
-        $opad = str_repeat(chr(0x5c), $blocksize);
-        return $hash(($key^$opad) . pack('H*', $hash(($key^$ipad) . $data)));
+
+        return false;
+    }
+
+    /* Net_DNS_RR_TSIG::hmac_md5() {{{ */
+    // Calculate HMAC according to RFC2104
+    // http://www.ietf.org/rfc/rfc2104.txt
+    function hmac_md5($data, $key) {
+        if (strlen($key)>64) {
+            $key = md5($key, true);
+        }
+        $key  = str_pad($key, 64, chr(0));
+        $ipad = str_repeat(chr(0x36), 64);
+        $opad = str_repeat(chr(0x5c), 64);
+        return md5(($key^$opad) . md5(($key^$ipad) . $data, true), true);
     }
     /* }}} */
 }

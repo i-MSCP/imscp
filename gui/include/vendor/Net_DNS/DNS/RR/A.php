@@ -56,8 +56,10 @@ class Net_DNS_RR_A extends Net_DNS_RR
                     $aparts['b4'];
                 $this->address = $addr;
             }
+        } elseif (is_array($data)) {
+            $this->address = $data['address'];
         } else {
-            if (strlen($data) && preg_match("@([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)[ \t]*$@", $data, $regs)) {
+            if (strlen($data) && preg_match("/([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)[ \t]*$/", $data, $regs)) {
                 if (($regs[1] >= 0 && $regs[1] <= 255) &&
                         ($regs[2] >= 0 && $regs[2] <= 255) &&
                         ($regs[3] >= 0 && $regs[3] <= 255) &&
@@ -81,7 +83,7 @@ class Net_DNS_RR_A extends Net_DNS_RR
     /* Net_DNS_RR_A::rr_rdata($packet, $offset) {{{ */
     function rr_rdata($packet, $offset)
     {
-        $aparts = preg_split('/\./', $this->address);
+        $aparts = explode('.', $this->address);
         if (count($aparts) == 4) {
             return pack('c4', $aparts[0], $aparts[1], $aparts[2], $aparts[3]);
         }
