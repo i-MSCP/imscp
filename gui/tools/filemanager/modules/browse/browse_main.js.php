@@ -1,6 +1,6 @@
 <?php
 header("Content-type: text/javascript");
-if (isset($_GET["skin"]) == true && $_GET["skin"] == "india") { $extracheck = "|| (state == 'edit' && state2 == '') || state == 'view' || state == 'update'"; }
+if (isset($_GET["skin"]) == true && $_GET["skin"] == "imscp") { $extracheck = "|| (state == 'edit' && state2 == '') || state == 'view' || state == 'update'"; }
 else { $extracheck = ""; }
 ?>
 

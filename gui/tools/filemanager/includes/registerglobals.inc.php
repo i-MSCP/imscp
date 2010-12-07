@@ -667,7 +667,7 @@ function validateSkin($skin) {
 		elseif (getBrowser("platform") == "Mobile") { return "mobile"; }
 		elseif (getBrowser("platform") == "iPhone") { return "iphone"; }
 		elseif (isset($skinArray[$net2ftp_settings["default_skin"]]) == true) { return $net2ftp_settings["default_skin"]; }
-		else                                        { return "india"; }
+		else                                        { return "imscp"; }
 	}
 
 } // end validateSkin

@@ -31,15 +31,15 @@ function getSkinArray() {
 // -------------------------------------------------------------------------
 // i-MSCP
 // -------------------------------------------------------------------------
-	$skinArray["omega"]["name"]             = __("omega");
-	$skinArray["omega"]["iconset"]          = "nuvola";
-	$skinArray["omega"]["image_url"]        = $net2ftp_globals["application_rootdir_url"] . "/skins/omega/images";
-	$skinArray["omega"]["icon_size_mime"]   = "16";
+	$skinArray["imscp"]["name"]             = __("imscp");
+	$skinArray["imscp"]["iconset"]          = "nuvola";
+	$skinArray["imscp"]["image_url"]        = $net2ftp_globals["application_rootdir_url"] . "/skins/imscp/images";
+	$skinArray["imscp"]["icon_size_mime"]   = "16";
 
-	$skinArray["omega"]["name"]             = __("modern");
-	$skinArray["omega"]["iconset"]          = "nuvola";
-	$skinArray["omega"]["image_url"]        = $net2ftp_globals["application_rootdir_url"] . "/skins/modern/images";
-	$skinArray["omega"]["icon_size_mime"]   = "16";
+	$skinArray["imscp"]["name"]             = __("modern");
+	$skinArray["imscp"]["iconset"]          = "nuvola";
+	$skinArray["imscp"]["image_url"]        = $net2ftp_globals["application_rootdir_url"] . "/skins/modern/images";
+	$skinArray["imscp"]["icon_size_mime"]   = "16";
 
 	return $skinArray;
 
@@ -71,7 +71,7 @@ function printSkinSelect($fieldname, $onchange, $style, $class) {
 
 	if     ($net2ftp_globals["skin"] != "")        { $currentskin = $net2ftp_globals["skin"]; }
 	elseif ($net2ftp_globals["cookie_skin"] != "") { $currentskin = $net2ftp_globals["cookie_skin"]; }
-	else                                           { $currentskin = "omega"; }
+	else                                           { $currentskin = "imscp"; }
 
 	if ($onchange == "") { $onchange_full = ""; }
 	else                 { $onchange_full = "onchange=\"$onchange\""; }
