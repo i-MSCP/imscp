@@ -109,7 +109,7 @@ If not create a rndc.key file:
  	x SUEXEC
 	x CGID
 
-	proftpd 1.3.3c_1 Options
+	proftpd 1.3.3c_3 Options
 
 	x CTRLS
 	x IFSESSION
@@ -293,6 +293,16 @@ If not create a rndc.key file:
 	x SSL
 	x GNUPG
 	x RAZOR
+	
+	gsed 4.2.1_2 Options
+	
+	x NLS
+	
+	screen 4.0.3_9 Options
+	
+	x INFO
+	x MAN
+	x NETHACK
 
 5. Configure the system.
 	# rehash

@@ -36,10 +36,12 @@
 #
 
 # read needed entries from imscp.conf
-CONF_FILE="/etc/imscp/imscp.conf"
-if [ -f /usr/local/etc/imscp/imscp.conf ]
-then
+if [ -f "/etc/imscp/imscp.conf" ] ; then
+	CONF_FILE="/etc/imscp/imscp.conf"
+		CMD_SED=`which sed`
+elif [ -f /usr/local/etc/imscp/imscp.conf ] ; then
     CONF_FILE="/usr/local/etc/imscp/imscp.conf"
+		CMD_SED=`which gsed`
 fi
 
 OLD_IFS=$IFS
@@ -47,7 +49,7 @@ IFS=$
 
 # Reading needed entries from imscp.conf
 for a in $(grep -E '^(APACHE_|CMD_|DEBUG|LOG_DIR|MR_LOCK|MTA_MAILBOX_|ROOT_|PHP_STARTER_DIR)' \
-${CONF_FILE} | sed 's/\s*=\s*\(.*\)/="\1"/'); do
+${CONF_FILE} | $CMD_SED 's/\s*=\s*\(.*\)/="\1"/'); do
 	 eval $a
 done
 
