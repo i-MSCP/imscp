@@ -20,7 +20,7 @@
  *
  * @category i-MSCP
  * @copyright 2006-2010 by ispCP | http://i-mscp.net
- * @author i-MSCP Team
+ * @author Sacha Bay <sascha.bay@i-mscp.net>
  * @version SVN: $Id: Database.php 3702 2010-11-16 14:20:55Z thecry $
  * @link http://i-mscp.net i-MSCP Home Site
  * @license http://www.mozilla.org/MPL/ MPL 1.1

@@ -12,19 +12,15 @@
  * License for the specific language governing rights and limitations
  * under the License.
  *
- * The Original Code is "ispCP - ISP Control Panel".
+ * The Original Code is "i-MSCP - Multi Server Control Panel".
  *
- * The Initial Developer of the Original Code is ispCP Team.
- * Portions created by Initial Developer are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
- * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
+ * The Initial Developer of the Original Code is i-MSCP Team.
+ * Portions created by Initial Developer are Copyright (C) 2010 by
+ * i-MSCP a internet Multi Server Control Panel. All Rights Reserved
  *
  * @category i-MSCP
- * @copyright 2006-2010 by ispCP | http://isp-control.net
  * @copyright 2006-2010 by ispCP | http://i-mscp.net
- * @author ispCP Team
- * @author i-MSCP Team
+ * @author Sacha Bay <sascha.bay@i-mscp.net>
  * @version SVN: $Id: Database.php 3702 2010-11-16 14:20:55Z thecry $
  * @link http://i-mscp.net i-MSCP Home Site
  * @license http://www.mozilla.org/MPL/ MPL 1.1
@@ -33,8 +29,6 @@
 /**
  *  Functions
  */
-
-// form data
 
 function formatFilesize($byte) {
 	$string = 'Byte';
