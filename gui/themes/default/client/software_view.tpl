@@ -99,7 +99,10 @@
 				</tr>
 				<!-- BDP: installed_software_info -->
 				<tr>
-					<td colspan="2">{TR_SOFTWARE_INFO}</td>
+					<td colspan="2">&nbsp;</td>
+                </tr>
+				<tr>
+					<th colspan="2">{TR_SOFTWARE_INFO}</th>
                 </tr>
 				<tr>
 					<td width="150">{TR_SOFTWARE_STATUS}</td>
