@@ -30,26 +30,12 @@
  * @license http://www.mozilla.org/MPL/ MPL 1.1
  */
 
-require '../include/imscp-lib.php';
-
-check_login(__FILE__);
-
 /**
- * @var $cfg iMSCP_Config_Handler_File
+ *  Functions
  */
-$cfg = iMSCP_Registry::get('config');
 
-$tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/software_rights.tpl');
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('logged_from', 'page');
-$tpl->define_dynamic('list_reseller', 'page');
-$tpl->define_dynamic('no_reseller_list', 'page');
-$tpl->define_dynamic('no_select_reseller', 'page');
-$tpl->define_dynamic('select_reseller', 'page');
-$tpl->define_dynamic('reseller_item', 'page');
-
-function get_reseller_rights ($tpl, $sql, $software_id) {
+function get_reseller_rights ($tpl, $sql, $software_id) {#
+	
 	$query = "
 		SELECT 
 			a.`software_id`,
@@ -112,6 +98,7 @@ function get_reseller_rights ($tpl, $sql, $software_id) {
 }	
 
 function get_reseller_list ($tpl, $sql, $software_id) {
+	
 	$query = "
 		SELECT 
 			a.`reseller_id`,
@@ -179,6 +166,36 @@ function get_reseller_list ($tpl, $sql, $software_id) {
 		$tpl->parse('NO_SELECT_RESELLER', '.no_select_reseller');
 	}
 }
+
+/**
+ * Main program
+ */
+
+require '../include/imscp-lib.php';
+
+check_login(__FILE__);
+
+/**
+ * @var $cfg iMSCP_Config_Handler_File
+ */
+$cfg = iMSCP_Registry::get('config');
+
+/**
+ * @var $sql iMSCP_Database
+ */
+$sql = iMSCP_Registry::get('db');
+
+$tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/software_rights.tpl');
+$tpl->define_dynamic('page_message', 'page');
+$tpl->define_dynamic('logged_from', 'page');
+$tpl->define_dynamic('list_reseller', 'page');
+$tpl->define_dynamic('no_reseller_list', 'page');
+$tpl->define_dynamic('no_select_reseller', 'page');
+$tpl->define_dynamic('select_reseller', 'page');
+$tpl->define_dynamic('reseller_item', 'page');
+
+
 
 if (isset($_GET['id']) || isset($_POST['id'])) {
 	if (isset($_GET['id']) && is_numeric($_GET['id'])) {

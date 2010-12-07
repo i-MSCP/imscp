@@ -39,6 +39,11 @@ check_login(__FILE__);
  */
 $cfg = iMSCP_Registry::get('config');
 
+/**
+ * @var $sql iMSCP_Database
+ */
+$sql = iMSCP_Registry::get('db');
+
 if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 	$query="
 		SELECT

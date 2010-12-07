@@ -30,30 +30,12 @@
  * @license http://www.mozilla.org/MPL/ MPL 1.1
  */
 
-require '../include/imscp-lib.php';
-
-check_login(__FILE__);
-
 /**
- * @var $cfg iMSCP_Config_Handler_File
+ *  Functions
  */
-$cfg = iMSCP_Registry::get('config');
-
-$tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/software_view.tpl');
-$tpl -> define_dynamic('page_message', 'page');
-$tpl -> define_dynamic('logged_from', 'page');
-$tpl -> define_dynamic('software_message', 'page');
-$tpl -> define_dynamic('software_install', 'page');
-$tpl -> define_dynamic('installed_software_info', 'page');
-$tpl -> define_dynamic('software_item', 'page');
-$tpl -> define_dynamic('no_software', 'page');
-
-//
-// page functions.
-//
 
 function check_software_avail($sql, $software_id, $dmn_created_id) {
+	
 	$check_avail = "
 		SELECT
 			`reseller_id` AS reseller
@@ -73,6 +55,7 @@ function check_software_avail($sql, $software_id, $dmn_created_id) {
 }
 
 function check_is_installed($tpl, $sql, $dmn_id, $software_id) {
+	
 	$is_installed = "
 		SELECT
 			`software_id`,
@@ -197,9 +180,29 @@ function gen_page_lists($tpl, $sql, $user_id) {
 	return $software_id;
 }
 
-//
-// common page data.
-//
+/**
+ * Main program
+ */
+
+require '../include/imscp-lib.php';
+
+check_login(__FILE__);
+
+/**
+ * @var $cfg iMSCP_Config_Handler_File
+ */
+$cfg = iMSCP_Registry::get('config');
+
+$tpl = new iMSCP_pTemplate();
+$tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/software_view.tpl');
+$tpl -> define_dynamic('page_message', 'page');
+$tpl -> define_dynamic('logged_from', 'page');
+$tpl -> define_dynamic('software_message', 'page');
+$tpl -> define_dynamic('software_install', 'page');
+$tpl -> define_dynamic('installed_software_info', 'page');
+$tpl -> define_dynamic('software_item', 'page');
+$tpl -> define_dynamic('no_software', 'page');
+
 
 $tpl -> assign(
 	array(
@@ -210,19 +213,12 @@ $tpl -> assign(
 	)
 );
 
-//
-// dynamic page data.
-//
-
 if (isset($_SESSION['software_support']) && $_SESSION['software_support'] == "no") {
 	$tpl -> assign('NO_SOFTWARE', '');
 }
 
 $software_id = gen_page_lists($tpl, $sql, $_SESSION['user_id']);
 
-//
-// static page messages.
-//
 
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_webtools.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_webtools.tpl');

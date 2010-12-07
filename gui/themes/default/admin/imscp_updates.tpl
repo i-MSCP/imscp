@@ -55,12 +55,12 @@
             <table class="description">
                 <!-- BDP: table_header -->
                 <tr>
-                    <th>{TR_AVAILABLE_UPDATES}</th>
+                    <th colspan="2">{TR_AVAILABLE_UPDATES}</th>
                 </tr>
                 <!-- EDP: table_header -->
                 <!-- BDP: update_message -->
                 <tr>
-                    <td>{TR_MESSAGE}</td>
+                    <td colspan="2">{TR_MESSAGE}</td>
                 </tr>
                 <!-- EDP: update_message -->
                 <!-- BDP: update_infos -->

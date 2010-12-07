@@ -34,6 +34,11 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
+/**
+ * @var $sql iMSCP_Database
+ */
+$sql = iMSCP_Registry::get('db');
+
 if (isset($_GET['id']) || isset($_POST['id'])) {
 	if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 		$software_id = $_GET['id'];
