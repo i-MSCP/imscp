@@ -131,8 +131,7 @@ class iMSCP_Database {
 	 * @return iMSCP_Database An iMSCP_Database instance that represents the
 	 * connection to the database
 	 */
-	public static function connect($user, $pass, $type, $host, $name,
-		$connection = 'default', $driver_options = null) {
+	public static function connect($user, $pass, $type, $host, $name, $connection = 'default', $driver_options = null) {
 
 		if(is_array($connection)) {
 			$driver_options = $connection;
@@ -140,7 +139,7 @@ class iMSCP_Database {
 		}
 
 		if (isset(self::$_instances[$connection])) {
-			self::$_instances[$connection]->close();
+			self::$_instances[$connection] = null;
 		}
 
 		return self::$_instances[$connection] = new self(
