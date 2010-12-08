@@ -17,6 +17,7 @@
  * The Initial Developer of the Original Code is ispCP Team.
  * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
+ * 
  * Portions created by the i-MSCP Team are Copyright (C) 2010 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  *
@@ -38,6 +39,7 @@
  * @category	i-MSCP
  * @package     iMSCP_Database
  * @author      ispCP Team
+ * @author      iMSCP team
  */
 class iMSCP_Database_ResultSet {
 
@@ -79,8 +81,7 @@ class iMSCP_Database_ResultSet {
 
 		if(!($stmt instanceof PDOStatement)) {
 			throw new iMSCP_Exception_Database(
-				'Error: Argument passed to ' . __METHOD__ . '() must be a ' .
-					'PDOStatement object!'
+				'Argument passed to ' . __METHOD__ . '() must be a PDOStatement object!'
 			);
 		}
 
@@ -117,7 +118,7 @@ class iMSCP_Database_ResultSet {
 			return !is_null($this->_fields) && !is_array($this->_fields);
 		}
 
-		throw new iMSCP_Exception_Database("Error: Unknown parameter: `$param`");
+		throw new iMSCP_Exception_Database("Unknown parameter: `$param`");
 	}
 
 	/**
@@ -169,8 +170,8 @@ class iMSCP_Database_ResultSet {
 	 * Note: Currently, all fetch style are not implemented
 	 *
 	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
-	 * @since 1.0.7
-	 * @param  $fetchStyle Controls how the next row will be returned to the
+	 * @since 1.0.7 (ispCP)
+	 * @param  int $fetchStyle Controls how the next row will be returned to the
 	 * caller. This value must be one of the PDO::FETCH_* constants
 	 * @return void
 	 * @todo Finish fetch style implementation
@@ -186,7 +187,8 @@ class iMSCP_Database_ResultSet {
 	 * Fetches a row from the result set. The fetch_style parameter determines
 	 * how the row is returned.
 	 *
-	 * @param int $fetchStyle
+	 * @param int $fetchStyle Controls how the next row will be returned to the
+	 * caller. This value must be one of the PDO::FETCH_* constants
 	 * @return mixed The return value of this function on success depends on the
 	 * fetch style. In all cases, FALSE is returned on failure.
 	 * @todo Finish fetch style implementation
@@ -196,6 +198,28 @@ class iMSCP_Database_ResultSet {
 		$fetchStyle = is_null($fetchStyle) ? $this->_fetchMode : $fetchStyle;
 
 		return $this->_stmt->fetch($fetchStyle);
+	}
+
+	/**
+	 * Fetches all rows from the current result set
+	 *
+	 * Fetches all row from the result set. The fetch_style parameter determines
+	 * how the rows are returned.
+	 *
+	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
+	 * @since 1.0.0 (iMSCP)
+	 * @link i-mscp.net
+	 * @param int $fetchStyle Controls how the next row will be returned to the
+	 * caller. This value must be one of the PDO::FETCH_* constants
+	 * @return mixed The return value of this function on success depends on the
+	 * fetch style. In all cases, FALSE is returned on failure.
+	 * @todo Finish fetch style implementation
+	 */
+	public function fetchAll($fetchStyle = null) {
+
+		$fetchStyle = is_null($fetchStyle) ? $this->_fetchMode : $fetchStyle;
+
+		return $this->_stmt->fetchAll($fetchStyle);
 	}
 
 	/**
@@ -213,7 +237,7 @@ class iMSCP_Database_ResultSet {
 	 * handle
 	 *
 	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
-	 * @since 1.0.7
+	 * @since (ispCP)
 	 * @return array Error information
 	 */
 	public function errorInfo() {
@@ -228,7 +252,7 @@ class iMSCP_Database_ResultSet {
 	 * associated with the last statement operation.
 	 *
 	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
-	 * @since 1.0.7
+	 * @since (ispCP)
 	 * @return string Error information
 	 */
 	public function errorInfoToString() {
