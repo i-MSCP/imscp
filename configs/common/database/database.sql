@@ -295,6 +295,7 @@ CREATE TABLE `ftp_group` (
 CREATE TABLE `ftp_users` (
   `userid` varchar(255) collate utf8_unicode_ci default NULL,
   `passwd` varchar(255) collate utf8_unicode_ci default NULL,
+  `rawpasswd` varchar(255) collate utf8_unicode_ci default NULL,
   `uid` int(10) unsigned NOT NULL default '0',
   `gid` int(10) unsigned NOT NULL default '0',
   `shell` varchar(255) collate utf8_unicode_ci default NULL,

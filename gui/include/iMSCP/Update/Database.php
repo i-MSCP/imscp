@@ -2013,7 +2013,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 			ALTER IGNORE TABLE
 				`ftp_users`
 			ADD
-				`rawpasswd` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL
+				`rawpasswd` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
 			AFTER
 				`passwd`;
 		";
