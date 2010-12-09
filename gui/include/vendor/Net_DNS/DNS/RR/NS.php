@@ -71,7 +71,7 @@ class Net_DNS_RR_NS extends Net_DNS_RR
 
     /* }}} */
     /* Net_DNS_RR_NS::rr_rdata($packet, $offset) {{{ */
-    function rr_rdata($packet, $offset)
+    function rr_rdata(&$packet, $offset)
     {
         if (strlen($this->nsdname)) {
             return $packet->dn_comp($this->nsdname, $offset);

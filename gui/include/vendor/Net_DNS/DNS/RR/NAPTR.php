@@ -105,7 +105,7 @@ class Net_DNS_RR_NAPTR extends Net_DNS_RR
 
     /* }}} */
     /* Net_DNS_RR_NAPTR::rr_rdata($packet, $offset) {{{ */
-    function rr_rdata($packet, $offset)
+    function rr_rdata(&$packet, $offset)
     {
         if ($this->preference) {
             $rdata  = pack('nn', $this->order, $this->preference);

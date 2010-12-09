@@ -72,7 +72,7 @@ class Net_DNS_RR_PTR extends Net_DNS_RR
 
     /* }}} */
     /* Net_DNS_RR_PTR::rr_rdata($packet, $offset) {{{ */
-    function rr_rdata($packet, $offset)
+    function rr_rdata(&$packet, $offset)
     {
         if (strlen($this->ptrdname)) {
             return $packet->dn_comp($this->ptrdname, $offset);

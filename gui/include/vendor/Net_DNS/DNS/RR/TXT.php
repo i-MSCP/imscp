@@ -87,7 +87,7 @@ class Net_DNS_RR_TXT extends Net_DNS_RR
 
     /* }}} */
     /* Net_DNS_RR_TXT::rr_rdata($packet, $offset) {{{ */
-    function rr_rdata($packet, $offset)
+    function rr_rdata(&$packet, $offset)
     {
         if ($this->text) {
             $rdata  = pack('C', strlen($this->text)) . $this->text;

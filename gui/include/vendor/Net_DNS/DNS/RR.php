@@ -18,20 +18,20 @@
 */
 
 /* Include files {{{ */
-require_once("Net/DNS/RR/A.php");
-require_once("Net/DNS/RR/AAAA.php");
-require_once("Net/DNS/RR/NS.php");
-require_once("Net/DNS/RR/CNAME.php");
-require_once("Net/DNS/RR/PTR.php");
-require_once("Net/DNS/RR/SOA.php");
-require_once("Net/DNS/RR/MX.php");
-require_once("Net/DNS/RR/TSIG.php");
-require_once("Net/DNS/RR/TXT.php");
-require_once("Net/DNS/RR/HINFO.php");
-require_once("Net/DNS/RR/SRV.php");
-require_once("Net/DNS/RR/NAPTR.php");
-require_once("Net/DNS/RR/RP.php");
-require_once("Net/DNS/RR/SPF.php");
+require_once("RR/A.php");
+require_once("RR/AAAA.php");
+require_once("RR/NS.php");
+require_once("RR/CNAME.php");
+require_once("RR/PTR.php");
+require_once("RR/SOA.php");
+require_once("RR/MX.php");
+require_once("RR/TSIG.php");
+require_once("RR/TXT.php");
+require_once("RR/HINFO.php");
+require_once("RR/SRV.php");
+require_once("RR/NAPTR.php");
+require_once("RR/RP.php");
+require_once("RR/SPF.php");
 /* }}} */
 /* Net_DNS_RR object definition {{{ */
 /**

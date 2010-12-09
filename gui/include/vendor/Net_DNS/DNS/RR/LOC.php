@@ -178,7 +178,7 @@ class Net_DNS_RR_LOC extends Net_DNS_RR
      *
      * @return string
      */
-    function rr_rdata($packet, $offset)
+    function rr_rdata(&$packet, $offset)
     {    
         if (!$this->parsed) {
             $this->parse_data();

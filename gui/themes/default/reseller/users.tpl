@@ -69,7 +69,7 @@
 			<!-- EDP: page_message -->
 
 			<form action="users.php" method="post" name="search_user" id="search_user">
-				<a class="icon i_show_alias" href="#" onclick="return sbmt(document.forms[0],'{SHOW_DETAILS}');">{TR_VIEW_DETAILS}</a>
+				<a class="icon i_show_alias" href="#" onClick="return sbmt_details(document.forms[0],'{SHOW_DETAILS}');">{TR_VIEW_DETAILS}</a>
 				<input name="search_for" type="text" value="{SEARCH_FOR}" />
 				<select name="search_common">
 					<option value="domain_name" {M_DOMAIN_NAME_SELECTED}>{M_DOMAIN_NAME}</option>
@@ -86,6 +86,7 @@
 				</select>
 				<input name="Submit" type="submit" value="{TR_SEARCH}" />
 				<input type="hidden" name="uaction" value="go_search" />
+				<input type="hidden" name="details" value="" />
 			</form>
 			<!-- BDP: users_list -->
 			<table>

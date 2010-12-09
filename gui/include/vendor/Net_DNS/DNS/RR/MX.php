@@ -77,7 +77,7 @@ class Net_DNS_RR_MX extends Net_DNS_RR
 
     /* }}} */
     /* Net_DNS_RR_MX::rr_rdata($packet, $offset) {{{ */
-    function rr_rdata($packet, $offset)
+    function rr_rdata(&$packet, $offset)
     {
         if (preg_match('/^[0-9]+$/', $this->preference)) {
             $rdata = pack('n', $this->preference);

@@ -113,7 +113,7 @@ class Net_DNS_RR_SOA extends Net_DNS_RR
 
     /* }}} */
     /* Net_DNS_RR_SOA::rr_rdata($packet, $offset) {{{ */
-    function rr_rdata($packet, $offset)
+    function rr_rdata(&$packet, $offset)
     {
         if (strlen($this->mname)) {
             $rdata = $packet->dn_comp($this->mname, $offset);

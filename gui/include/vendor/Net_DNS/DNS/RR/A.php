@@ -81,7 +81,7 @@ class Net_DNS_RR_A extends Net_DNS_RR
     }
     /* }}} */
     /* Net_DNS_RR_A::rr_rdata($packet, $offset) {{{ */
-    function rr_rdata($packet, $offset)
+    function rr_rdata(&$packet, $offset)
     {
         $aparts = explode('.', $this->address);
         if (count($aparts) == 4) {

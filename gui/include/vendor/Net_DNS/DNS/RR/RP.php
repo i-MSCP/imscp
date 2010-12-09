@@ -79,7 +79,7 @@ class Net_DNS_RR_RP extends Net_DNS_RR
 
     /* }}} */
     /* Net_DNS_RR_RP::rr_rdata($packet, $offset) {{{ */
-    function rr_rdata($packet, $offset)
+    function rr_rdata(&$packet, $offset)
     {
         if (strlen($this->mboxdname) > 0) {
 
