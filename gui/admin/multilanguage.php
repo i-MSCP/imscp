@@ -189,7 +189,10 @@ function importLanguageFile() {
 	if ($file_type != 'text/plain' && $file_type != 'application/octet-stream'
 		&& $file_type != 'text/x-gettext-translation') {
 
-		set_page_message(tr('You can upload only text files!'), 'warning');
+		set_page_message(tr
+                ('You can upload only text files!'),
+                'error'
+        );
 		return;
 	} else {
 		if ($file_type == 'text/x-gettext-translation') {
@@ -208,16 +211,19 @@ function importLanguageFile() {
 			}
 		}
 
-		if (empty($ab['imscp_languageSetlocaleValue']) ||
-			empty($ab['imscp_table']) || empty($ab['imscp_language']) ||
-			!preg_match(
-				'/^[a-z]{2}(_[A-Z]{2}){0,1}$/Di',
-				$ab['imscp_languageSetlocaleValue']
-			) || !preg_match('/^[a-z0-9()]+$/Di', $ab['imscp_table'])) {
+        if (empty($ab['ispcp_languageSetlocaleValue']) ||
+                 empty($ab['ispcp_table'])
+                || empty($ab['ispcp_language'])
+                || !preg_match('/^[a-z]{2}(_[A-Z]{2}){0,1}$/Di',$ab['ispcp_languageSetlocaleValue'])
+                || !preg_match('/^[a-z0-9()]+$/Di', $ab['ispcp_table']))
+                        {
+                        set_page_message(
+                                tr('Uploaded file does not contain language information!'),
+                                'error'
+                                );
+                                return;
+                        }
 
-			set_page_message(tr('Uploaded file does not contain the language information!'), 'error');
-			return;
-		}
 
 		$sql = iMSCP_Registry::get('db');
 
@@ -239,9 +245,10 @@ function importLanguageFile() {
 
 		$query = "
 			CREATE TABLE `$lang_table` (
-				`msgid` text collate utf8_unicode_ci,
-				`msgstr` text collate utf8_unicode_ci,
-				KEY `msgid` (msgid(25))
+				`msgid`     text collate utf8_unicode_ci,
+				`msgstr`    text collate utf8_unicode_ci,
+				 KEY        `msgid` (msgid(25)
+				 )
 			) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 		";
 
@@ -292,10 +299,10 @@ function _importTextFile($file) {
     if(!($fp= fopen($file, 'r'))) return 1;
 
     $ab = array(
-        'imscp_languageRevision' => '',
-        'imscp_languageSetlocaleValue' => '',
-        'imscp_table' => '',
-        'imscp_language' => ''
+        'imscp_languageRevision'        => '',
+        'imscp_languageSetlocaleValue'  => '',
+        'imscp_table'                   => '',
+        'imscp_language'                => ''
     );
 
     $errors = 0;
@@ -338,10 +345,10 @@ function _importGettextFile($file, $filename) {
     if (empty($content)) return 1;
 
     $ab = array(
-        'imscp_languageRevision' => '',
-        'imscp_languageSetlocaleValue' => '',
-        'imscp_table' => '',
-        'imscp_language' => ''
+        'imscp_languageRevision'        => '',
+        'imscp_languageSetlocaleValue'  => '',
+        'imscp_table'                   => '',
+        'imscp_language'                => ''
     );
 
     // Parse all messages
@@ -468,10 +475,10 @@ $tpl->define_dynamic('lang_def', 'lang_row');
 
 $tpl->assign(
 	array(
-		'TR_ADMIN_I18N_PAGE_TITLE' => tr('i-MSCP - Admin/Internationalisation'),
-		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+		'TR_ADMIN_I18N_PAGE_TITLE'  => tr('i-MSCP - Admin/Internationalisation'),
+		'THEME_COLOR_PATH'          => "../themes/{$cfg->USER_INITIAL_THEME}",
+		'THEME_CHARSET'             => tr('encoding'),
+		'ISP_LOGO'                  => get_logo($_SESSION['user_id'])
 	)
 );
 
@@ -490,20 +497,20 @@ gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_settings.tpl');
 
 $tpl->assign(
 	array(
-		'TR_MULTILANGUAGE' => tr('Internationalisation'),
-		'TR_INSTALLED_LANGUAGES' => tr('Installed languages'),
-		'TR_LANGUAGE' => tr('Language'),
-		'TR_MESSAGES' => tr('Messages'),
-		'TR_LANG_REV' => tr('Date'),
-		'TR_DEFAULT' => tr('Panel Default'),
-		'TR_ACTION' => tr('Action'),
-		'TR_SAVE' => tr('Save'),
-		'TR_INSTALL_NEW_LANGUAGE' => tr('Install new language'),
-		'TR_LANGUAGE_FILE' => tr('Language file'),
-		'ISP_LOGO' => get_logo($_SESSION['user_id']),
-		'TR_INSTALL' => tr('Install'),
-		'TR_EXPORT' => tr('Export'),
-		'TR_MESSAGE_DELETE' =>
+		'TR_MULTILANGUAGE'          => tr('Internationalisation'),
+		'TR_INSTALLED_LANGUAGES'    => tr('Installed languages'),
+		'TR_LANGUAGE'               => tr('Language'),
+		'TR_MESSAGES'               => tr('Messages'),
+		'TR_LANG_REV'               => tr('Date'),
+		'TR_DEFAULT'                => tr('Panel Default'),
+		'TR_ACTION'                 => tr('Action'),
+		'TR_SAVE'                   => tr('Save'),
+		'TR_INSTALL_NEW_LANGUAGE'   => tr('Install new language'),
+		'TR_LANGUAGE_FILE'          => tr('Language file'),
+		'ISP_LOGO'                  => get_logo($_SESSION['user_id']),
+		'TR_INSTALL'                => tr('Install'),
+		'TR_EXPORT'                 => tr('Export'),
+		'TR_MESSAGE_DELETE'         =>
 			tr('Are you sure you want to delete %s?', true, '%s'),
 	)
 );
