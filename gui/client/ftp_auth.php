@@ -19,6 +19,7 @@
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
  * @category    i-MSCP
+ * @subpackage  client
  * @copyright   2010 by ispCP | http://i-mscp.net
  * @author      William Lightning <kassah@gmail.com>
  * @version     SVN: $Id$
