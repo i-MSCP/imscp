@@ -68,10 +68,10 @@ function gen_directories(&$tpl) {
 	$tpl->assign('ACTION_LINK', '');
 	$tpl->assign(
 		array(
-			'ACTION'	=> '',
-			'ICON'		=> 'parent',
-			'DIR_NAME'	=> tr('Parent Directory'),
-			'LINK'		=> 'ftp_choose_dir.php?cur_dir=' . $parent,
+			'ACTION' => '',
+			'ICON' => "parent",
+			'DIR_NAME' => tr('Parent Directory'),
+			'LINK' => 'ftp_choose_dir.php?cur_dir=' . $parent,
 		)
 	);
 	$tpl->parse('DIR_ITEM', '.dir_item');
@@ -87,17 +87,25 @@ function gen_directories(&$tpl) {
 		}
 		// Check for .htaccess existence to display another icon
 		$dr = $path . '/' . $entry['file'];
-		// Create the directory link
-		$tpl->assign(
-			array(
-				'DIR_NAME'	=> tohtml($entry['file']),
-				'CHOOSE_IT'	=> $dr,
-				'LINK'		=> 'ftp_choose_dir.php?cur_dir='.$dr,
-			)
-		);
+		$tfile = $dr . '/.htaccess';
+		if ($vfs->exists($tfile)) {
+			$image = "locked";
+		} else {
+			$image = "folder";
+		}
 		$forbidden_Dir_Names = ('/backups|disabled|errors|logs|phptmp/i');
 		$forbidden = preg_match($forbidden_Dir_Names, $entry['file']);
 		($forbidden === 1) ? $tpl->assign('ACTION_LINK', '') : $tpl->parse('ACTION_LINK', 'action_link');
+		// Create the directory link
+		$tpl->assign(
+			array(
+				'PROTECT_IT' => "protected_areas_add.php?file=".$dr,
+				'ICON' => $image,
+				'DIR_NAME' => tohtml($entry['file']),
+				'CHOOSE_IT' => $dr,
+				'LINK' => "ftp_choose_dir.php?cur_dir=".$dr,
+			)
+		);
 		$tpl->parse('DIR_ITEM' , '.dir_item');
 	}
 }
@@ -106,10 +114,10 @@ function gen_directories(&$tpl) {
 
 $tpl->assign(
 	array(
-		'TR_CLIENT_WEBTOOLS_PAGE_TITLE'	=> tr('i-MSCP - Client/Webtools'),
-		'THEME_COLOR_PATH'				=> "../themes/{$cfg->USER_INITIAL_THEME}",
-		'THEME_CHARSET'					=> tr('encoding'),
-		'ISP_LOGO'						=> get_logo($_SESSION['user_id'])
+		'TR_CLIENT_WEBTOOLS_PAGE_TITLE' => tr('i-MSCP - Client/Webtools'),
+		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+		'THEME_CHARSET' => tr('encoding'),
+		'ISP_LOGO' => get_logo($_SESSION['user_id'])
 	)
 );
 
@@ -117,10 +125,9 @@ gen_directories($tpl);
 
 $tpl->assign(
 	array(
-		'TR_DIRECTORY_TREE'	=> tr('Directory tree'),
-		'TR_DIRS'			=> tr('Directories'),
-		'TR__ACTION'		=> tr('Action'),
-		'CHOOSE'			=> tr('Choose')
+		'TR_DIRECTORY_TREE' => tr('Directory tree'),
+		'TR_DIRS' => tr('Directories'),
+		'TR__ACTION' => tr('Action')
 	)
 );
 
