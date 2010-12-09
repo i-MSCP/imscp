@@ -2,65 +2,53 @@
 
 # i-MSCP a internet Multi Server Control Panel
 #
-# Copyright (C) 2001-2006 by moleSoftware GmbH - http://www.molesoftware.com
-# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
 # Copyright (C) 2010 by internet Multi Server Control Panel - http://i-mscp.net
 #
-# Version: $Id$
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
 #
-# The contents of this file are subject to the Mozilla Public License
-# Version 1.1 (the "License"); you may not use this file except in
-# compliance with the License. You may obtain a copy of the License at
-# http://www.mozilla.org/MPL/
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+# or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+# for more details.
 #
-# Software distributed under the License is distributed on an "AS IS"
-# basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
-# License for the specific language governing rights and limitations
-# under the License.
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>
 #
-# The Original Code is "VHCS - Virtual Hosting Control System".
+# The Original Code is "i-MSCP internet Multi Server Control Panel".
 #
-# The Initial Developer of the Original Code is moleSoftware GmbH.
-# Portions created by Initial Developer are Copyright (C) 2001-2006
-# by moleSoftware GmbH. All Rights Reserved.
-#
-# Portions created by the ispCP Team are Copyright (C) 2006-2010 by
-# isp Control Panel. All Rights Reserved.
-#
-# Portions created by the i-MSCP Team are Copyright (C) 2010 by
+# The Initial Developer of the Original Code is i-MSCP Team.
+# Portions created by Initial Developer are Copyright (C) 22010 by
 # internet Multi Server Control Panel. All Rights Reserved.
 #
-# The i-MSCP Home Page is:
-#
-#    http://i-mscp.net
-#
+# @category		i-MSCP
+# @copyright	2010 by i-MSCP | http://i-mscp.net
+# @author		Daniel Andreca <sci2tech@i-mscp.net>
+# @version		SVN: $Id$
+# @link			http://i-mscp.net i-MSCP Home Site
+# @license		http://www.gnu.org/licenses/ GPL v2
 
-ifneq (,$(findstring noopt,$(DAEMON_OPTIONS)))
-	CFLAGS += -O0
-else
-	CFLAGS += -O3
-endif
+EXEC = imscp_daemon
 
-OBJS = imscp_daemon.o message.o daemon_init.o say.o signal-handlers.o\
+CC = gcc -ansi -Wall -Wstrict-prototypes -pedantic $(CFLAGS)
+
+CFLAGS = -g -O2
+
+OBJECTS = $(EXEC).o message.o daemon_init.o say.o signal-handlers.o\
 receive_data.o send_data.o take_connection.o send_line.o recv_line.o\
 helo_cmd.o helo_syntax.o lr_cmd.o lr_syntax.o bye_cmd.o bye_syntax.o
 
-BUILD = gcc -ansi -Wall -Wstrict-prototypes -pedantic $(CFLAGS)
+$(EXEC): clean $(OBJECTS)
+	$(CC) $(CFLAGS) $(OBJECTS) -o $@
+	strip -s $@
+	@echo "Compilation done"
 
-COMPILE = gcc -ansi -Wall -Wstrict-prototypes -pedantic -c $(CFLAGS)
-
-imscp_daemon: $(OBJS)
-	$(BUILD) -o imscp_daemon $(OBJS)
-ifeq (,$(findstring nostrip,$(DAEMON_OPTIONS)))
-	strip -s imscp_daemon
-endif
-
-%.o: %.c %.h
-	$(COMPILE) -o $@ $*.c
+%.o : %.c
+	$(CC) -c $(CFLAGS) $<
 
 clean:
-	rm -rf *~
-	rm -rf *.o
-	rm -rf imscp_daemon
+	rm -f *.o *~ $(EXEC)
 
 .PHONY: clean
