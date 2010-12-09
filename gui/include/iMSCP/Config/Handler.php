@@ -48,7 +48,7 @@
  * @subpackage  Handler
  * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
  * @since       1.0.7 (ispCP)
- * @version     1.0.6
+ * @version     1.0.7
  */
 class iMSCP_Config_Handler implements ArrayAccess {
 
@@ -106,7 +106,7 @@ class iMSCP_Config_Handler implements ArrayAccess {
 	public function get($key) {
 
 		if (!$this->exists($key)) {
-			throw new iMSCP_Exception("Error: Configuration variable `$key` is missing!");
+			throw new iMSCP_Exception("Configuration variable `$key` is missing!");
 		}
 
 		return $this->$key;
@@ -138,14 +138,12 @@ class iMSCP_Config_Handler implements ArrayAccess {
 	/**
 	 * Replaces all parameters of this object with parameters from another
 	 *
-	 * This method replace the parameters values of this object with the same
-	 * values from another {@link iMSCP_Config_Handler} object.
+	 * This method replace the parameters values of this object with the same values from another
+	 * {@link iMSCP_Config_Handler} object.
 	 *
-	 * If a key from this object exists in the second object, its value will be
-	 * replaced by the value from the second object. If the key exists in the
-	 * second object, and not in the first, it will be created in the first
-	 * object. All keys in this object that don't exist in the second object
-	 * will be left untouched.
+	 * If a key from this object exists in the second object, its value will be replaced by the value from the second
+	 * object. If the key exists in the second object, and not in the first, it will be created in the first object. All
+	 * keys in this object that don't exist in the second object will be left untouched.
 	 *
 	 * <b>Note:</b> This method is not recursive.
 	 *
@@ -181,11 +179,9 @@ class iMSCP_Config_Handler implements ArrayAccess {
 	}
 
 	/**
-	 * Adds a callback which will be executed after i-MSCP has been fully
-	 * initialized
+	 * Adds a callback which will be executed after i-MSCP has been fully initialized
 	 *
-	 * Useful for per-environment configuration which depends on the i-MSCP being
-	 * fully initialized.
+	 * Useful for per-environment configuration which depends on the i-MSCP being fully initialized.
 	 *
 	 * Callbacks can be defined in a PHP call_user_func() function format.
 	 *
@@ -207,7 +203,7 @@ class iMSCP_Config_Handler implements ArrayAccess {
 		}
 
 		if(!is_callable($tmp['callback'])) {
-			throw new iMSCP_Exception('Error: Callback can not be accessed!');
+			throw new iMSCP_Exception('Callback can not be accessed!');
 		}
 
 		$this->_afterInitializeCallbacks[] = array(
