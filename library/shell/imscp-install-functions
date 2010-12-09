@@ -512,10 +512,14 @@ maintainer() {
 
 	if [ -f preinst.${_os} ]; then
 		copy_file ${SYSTEM_SETUP_ROOT}/preinst/preinst.${_os}
+		chown_file "0:0|${SYSTEM_SETUP_ROOT}/preinst"
+		chmod_file "0750|${SYSTEM_SETUP_ROOT}/preinst"
 	fi
 
 	if [ -f postinst.${_os} ]; then \
 		copy_file ${SYSTEM_SETUP_ROOT}/postinst/postinst.${_os}
+		chown_file "0:0|${SYSTEM_SETUP_ROOT}/postinst"
+		chmod_file "0750|${SYSTEM_SETUP_ROOT}/postinst"
 	fi
 	cd "${SELFDIR}"
 }

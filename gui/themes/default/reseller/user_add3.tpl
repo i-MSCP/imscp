@@ -145,8 +145,8 @@
 							<td><input type="text" name="userphone" id="userphone" value="{VL_PHONE}" /></td>
 						</tr>
 						<tr>
-							<td><label for="userphone">{TR_PHONE}</label></td>
-							<td><input type="text" name="userphone" id="userphone" value="{VL_PHONE}" /></td>
+							<td><label for="userfax">{TR_FAX}</label></td>
+							<td><input type="text" name="userfax" id="userfax" value="{VL_FAX}" /></td>
 						</tr>
 					</table>
 				</fieldset>

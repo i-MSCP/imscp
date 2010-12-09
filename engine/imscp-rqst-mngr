@@ -145,7 +145,7 @@ sub mngr_engine_process{
 			del_file($stderr);
 		}
 
-		return $rs if ($rs != 0);
+		return $rs if ($rs != 0 && (!defined($ARGV[0]) || $ARGV[0] ne 'update'));
 	}
 
 	push_el(\@main::el, 'mngr_engine_process()', 'Ending...');
@@ -515,7 +515,7 @@ sub mngr_engine {
 		"subdomain aliasses count: $alssub_count"
 	);
 	if (($dmn_count > 0 || $sub_count > 0 || $als_count > 0 || $mail_count > 0 ||
-		$alssub_count > 0) && (!defined($ARGV[0]) || $ARGV[0] eq '')) {
+		$alssub_count > 0) && (!defined($ARGV[0]) || $ARGV[0] ne 'update')) {
 		$rs = sys_command(
 			"$main::imscp_serv_mngr $dmn_count $sub_count $als_count " .
 			"$mail_count $alssub_count 1>$main::imscp_serv_mngr_stdout " .
@@ -543,13 +543,13 @@ sub mngr_engine {
 	} else {
 		push_el(\@main::el, 'mngr_engine()', 'Not restarting servers...');
 	}
-	
+
 	#
 	# software installation BEGIN
 	#
-	
+
 	push_el(\@main::el, 'apps_installer_engine()', 'Starting...');
-	
+
 	$sql = "
 		SELECT
 			`domain_id`,
@@ -571,45 +571,48 @@ sub mngr_engine {
 		FROM
 			`web_software_inst`
 		WHERE
-			`software_status` != 'ok'
+			`software_status`
+		IN (
+			'toadd',
+			'delete'
+		)
 		ORDER BY
 			`domain_id`
 	";
 	($rs, $rdata) = doSQL($sql);
 	return $rs if($rs != 0);
-	
+
 	my $sw_count = @$rdata;
 	if ($sw_count > 0) {
 		push_el(\@main::el, 'imscp_sw_mngr_engine()', 'Starting...');
 		foreach (@$rdata) {
 			my $row = $_;
 			my ($sw_domain_id, $sw_aliasdomain_id, $sw_subdomain_id, $sw_aliassubdomain_id, $sw_software_id, $sw_path, $sw_software_prefix, $sw_database, $sw_database_user, $sw_database_tmp_pwd, $sw_install_username, $sw_install_password, $sw_install_email, $sw_software_status, $sw_software_depot, $sw_software_master_id) = (@$row[0], @$row[1], @$row[2], @$row[3], @$row[4], @$row[5], @$row[6], @$row[7], @$row[8], @$row[9], @$row[10], @$row[11], @$row[12], @$row[13], @$row[14], @$row[15]);
-			if ($sw_software_status eq "toadd" || $sw_software_status eq "delete") {
-				
-				#Encoding data to push to another script
-				my $imscp_sw_mngr_pushstring = encode_base64("$sw_domain_id,$sw_software_id,$sw_path,$sw_software_prefix,$sw_database,$sw_database_user,$sw_database_tmp_pwd,$sw_install_username,$sw_install_password,$sw_install_email,$sw_software_status,$sw_software_depot,$sw_software_master_id,$sw_aliasdomain_id,$sw_subdomain_id,$sw_aliassubdomain_id");
-				
-				push_el(\@main::el, 'mngr_engine()', "processing encoded pushtring: $imscp_sw_mngr_pushstring.")
+
+			#Encoding data to push to another script
+			my $imscp_sw_mngr_pushstring = encode_base64("$sw_domain_id,$sw_software_id,$sw_path,$sw_software_prefix,$sw_database,$sw_database_user,$sw_database_tmp_pwd,$sw_install_username,$sw_install_password,$sw_install_email,$sw_software_status,$sw_software_depot,$sw_software_master_id,$sw_aliasdomain_id,$sw_subdomain_id,$sw_aliassubdomain_id");
+
+			push_el(\@main::el, 'mngr_engine()', "processing encoded pushtring: $imscp_sw_mngr_pushstring.")
 				if (defined($main::engine_debug));
-				$rs = sys_command("$main::imscp_sw_mngr \"$imscp_sw_mngr_pushstring\" 1>$main::imscp_sw_mngr_stdout 2>$main::imscp_sw_mngr_stderr");
-				if ($rs != 0) {
-					if (-e $main::imscp_sw_mngr_el) {
-						my $rs1 = undef;
-						pop_el(\@main::el); # removing 'sys_command()' error message;
-						($rs1, $rdata) = get_el_error($main::imscp_sw_mngr_el);
-						return $rs1 if ($rs1 != 0);
-						push_el(\@main::el, $main::imscp_sw_mngr, $rdata);
-					}
-					if (!defined($main::engine_debug)) {
-						del_file($main::imscp_sw_mngr_stdout); del_file($main::imscp_sw_mngr_stderr);
-					}
-					return $rs;
+			$rs = sys_command("$main::imscp_sw_mngr \"$imscp_sw_mngr_pushstring\" 1>$main::imscp_sw_mngr_stdout 2>$main::imscp_sw_mngr_stderr");
+
+			if ($rs != 0) {
+				if (-e $main::imscp_sw_mngr_el) {
+					my $rs1 = undef;
+					pop_el(\@main::el); # removing 'sys_command()' error message;
+					($rs1, $rdata) = get_el_error($main::imscp_sw_mngr_el);
+					return $rs1 if ($rs1 != 0);
+					push_el(\@main::el, $main::imscp_sw_mngr, $rdata);
 				}
-				if (!defined($main::engine_debug)) {
-					del_file($main::imscp_sw_mngr_stdout); del_file($main::imscp_sw_mngr_stderr);
-				}
-				sys_command_rs("$main::cfg{'CMD_RM'} -rf /tmp/sw-$sw_domain_id-$sw_software_id");
 			}
+
+			sys_command_rs("$main::cfg{'CMD_RM'} -rf /tmp/sw-$sw_domain_id-$sw_software_id");
+
+			if (!defined($main::engine_debug)) {
+				del_file($main::imscp_sw_mngr_stdout);
+				del_file($main::imscp_sw_mngr_stderr);
+			}
+			return $rs if($rs!=0);
 		}
 		push_el(\@main::el, 'imscp_sw_mngr_engine()', 'Ending...');
 	}
@@ -624,51 +627,50 @@ sub mngr_engine {
 		FROM
 			`web_software`
 		WHERE
-			`software_status` != 'ok'
+			`software_status` = 'toadd'
 		ORDER BY
 			`reseller_id`
 	";
 	($rs, $rdata) = doSQL($sql);
 	return $rs if($rs != 0);
-	
+
 	$sw_count = @$rdata;
 	if ($sw_count > 0) {
 		push_el(\@main::el, 'imscp_pkt_mngr_engine()', 'Starting...');
 		foreach (@$rdata) {
 			my $row = $_;
 			my ($sw_software_id, $sw_reseller_id, $sw_software_archive, $sw_software_status, $sw_software_depot) = (@$row[0], @$row[1], @$row[2], @$row[3], @$row[4]);
-			if ($sw_software_status eq "toadd") {
-			
-				#Encoding data to push to another script
-				my $imscp_pkt_mngr_pushstring = encode_base64("$sw_software_id,$sw_reseller_id,$sw_software_archive,$sw_software_status,$sw_software_depot");
-				
-				push_el(\@main::el, 'mngr_engine()', "processing encoded pushtring: $imscp_pkt_mngr_pushstring.")
+
+			#Encoding data to push to another script
+			my $imscp_pkt_mngr_pushstring = encode_base64("$sw_software_id,$sw_reseller_id,$sw_software_archive,$sw_software_status,$sw_software_depot");
+
+			push_el(\@main::el, 'mngr_engine()', "processing encoded pushtring: $imscp_pkt_mngr_pushstring.")
 				if (defined($main::engine_debug));
-				$rs = sys_command("$main::imscp_pkt_mngr \"$imscp_pkt_mngr_pushstring\" 1>$main::imscp_pkt_mngr_stdout 2>$main::imscp_pkt_mngr_stderr");
-				if ($rs != 0) {
-					if (-e $main::imscp_pkt_mngr_el) {
-						my $rs1 = undef;
-						pop_el(\@main::el); # removing 'sys_command()' error message;
-						($rs1, $rdata) = get_el_error($main::imscp_pkt_mngr_el);
-						return $rs1 if ($rs1 != 0);
-						push_el(\@main::el, $main::imscp_pkt_mngr, $rdata);
-					}
-					if (!defined($main::engine_debug)) {
-						del_file($main::imscp_pkt_mngr_stdout); del_file($main::imscp_pkt_mngr_stderr);
-					}
-					return $rs;
+			$rs = sys_command("$main::imscp_pkt_mngr \"$imscp_pkt_mngr_pushstring\" 1>$main::imscp_pkt_mngr_stdout 2>$main::imscp_pkt_mngr_stderr");
+
+			if ($rs != 0) {
+				if (-e $main::imscp_pkt_mngr_el) {
+					my $rs1 = undef;
+					pop_el(\@main::el); # removing 'sys_command()' error message;
+					($rs1, $rdata) = get_el_error($main::imscp_pkt_mngr_el);
+					return $rs1 if ($rs1 != 0);
+					push_el(\@main::el, $main::imscp_pkt_mngr, $rdata);
 				}
-				if (!defined($main::engine_debug)) {
-					del_file($main::imscp_pkt_mngr_stdout); del_file($main::imscp_pkt_mngr_stderr);
-				}
-				sys_command_rs("$main::cfg{'CMD_RM'} -rf /tmp/sw-$sw_software_archive-$sw_software_id");
 			}
+
+			if (!defined($main::engine_debug)) {
+				del_file($main::imscp_pkt_mngr_stdout);
+				del_file($main::imscp_pkt_mngr_stderr);
+			}
+
+			return $rs if($rs != 0 );
+			sys_command_rs("$main::cfg{'CMD_RM'} -rf /tmp/sw-$sw_software_archive-$sw_software_id");
 		}
 		push_el(\@main::el, 'imscp_pkt_mngr_engine()', 'Ending...');
 	}
-  	
+
   	push_el(\@main::el, 'apps_installer_engine()', 'Ending...');
-  	
+
 	#
 	# software installation END
 	#
