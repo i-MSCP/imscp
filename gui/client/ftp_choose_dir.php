@@ -67,7 +67,7 @@ function gen_directories($tpl) {
 	// Get the directory listing
 	$list = $vfs->ls($path);
 
-	if ($list) {
+	if (!$list) {
 		set_page_message(tr('Cannot open directory! Please contact your administrator!'), 'error');
 		$tpl->assign('FTP_CHOOSER', '');
 		return;

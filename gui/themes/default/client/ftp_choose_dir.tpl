@@ -61,7 +61,7 @@
 							<a href="#" onclick="CopyText('{CHOOSE_IT}');return false;">{CHOOSE}</a>
 							<input type="hidden" name="{CHOOSE_IT}" value="{CHOOSE_IT}" />
 							<!-- EDP: action_link -->
-							<!--&nbsp;-->
+							&nbsp;
 						</td>
 						<!-- EDP: list_item -->
 					</tr>
