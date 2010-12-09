@@ -6,6 +6,7 @@ i-MSCP ChangeLog
 		Added iMSCP_Database_ResultSet::fetchAll() method to be able to fetches all rows from the current result set
 		iMSCP_Config_Handler: Some re-factorization tasks
 		iMSCP_Config_Handler_Db: Added counter for delete queries + some re-factorization tasks
+		IMSCP_Database: Added quote() method + some re-factorization tasks
 
 2010-12-08 Sascha Bay
 	- MAINTSCRIPTS:

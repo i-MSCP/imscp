@@ -1,6 +1,6 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
@@ -17,8 +17,9 @@
  * The Initial Developer of the Original Code is ispCP Team.
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
+ *
  * Portions created by the i-MSCP Team are Copyright (C) 2010 by
- * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
+ * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
  * @category	i-MSCP
  * @package		iMSCP_Database
@@ -37,7 +38,7 @@
  * @category	i-MSCP
  * @package		iMSCP_Database
  * @author		ispCP Team
- * @author		Laurent Declercq <laurent.declercq@nuxwin.com>
+ * @author		Laurent Declercq <laurent.declercq@i-mscp.net>
  */
 class iMSCP_Database {
 
@@ -57,14 +58,14 @@ class iMSCP_Database {
 
 
 	/**
-	 * Error code from last error occured
+	 * Error code from last error occurred
 	 *
 	 * @var int
 	 */
 	protected $_lastErrorCode = '';
 
 	/**
-	 * Message from last error occured
+	 * Message from last error occurred
 	 *
 	 * @var string
 	 */
@@ -81,8 +82,7 @@ class iMSCP_Database {
 	 * Creates a PDO object and connects to the database
 	 *
 	 * According the PDO implementation, a PDOException is raised on error
-	 * See {@link http://www.php.net/manual/en/pdo.construct.php} for more
-	 * information about this issue.
+	 * See {@link http://www.php.net/manual/en/pdo.construct.php} for more information about this issue.
 	 *
 	 * <b>Note:</b> This class implements the Singleton design pattern
 	 *
@@ -95,13 +95,9 @@ class iMSCP_Database {
 	 * @param array $driver_options OPTIONAL Driver options
 	 * @return void
 	 */
-	private function __construct($user, $pass, $type, $host, $name,
-		$driver_options = array()) {
+	private function __construct($user, $pass, $type, $host, $name, $driver_options = array()) {
 
-		$this->_db = new PDO(
-			$type . ':host=' . $host . ';dbname=' . $name, $user, $pass,
-			$driver_options
-		);
+		$this->_db = new PDO($type . ':host=' . $host . ';dbname=' . $name, $user, $pass, $driver_options);
 
 		// NXW: This is bad for future support of another RDBMS.
 		$this->_db->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, true);
@@ -162,7 +158,7 @@ class iMSCP_Database {
 	public static function getInstance($connection = 'default') {
 
 		if (!isset(self::$_instances[$connection])) {
-			throw new iMSCP_Exception_Database("Error: The Database connection $connection doesn't exists!");
+			throw new iMSCP_Exception_Database("The Database connection $connection doesn't exists!");
 		}
 
 		return self::$_instances[$connection];
@@ -180,7 +176,7 @@ class iMSCP_Database {
 	public static function getRawInstance($connection = 'default') {
 
 		if (!isset(self::$_instances[$connection])) {
-			throw new iMSCP_Exception_Database("Error: The Database connection $connection doesn't exists!");
+			throw new iMSCP_Exception_Database("The Database connection $connection doesn't exists!");
 		}
 
 		return self::$_instances[$connection]->_db;
@@ -189,22 +185,20 @@ class iMSCP_Database {
 	/**
 	 * Prepares a SQL statement
 	 *
-	 * The SQL statement can contains zero or more named or question mark
-	 * parameters markers for which real values will be substituted when the
-	 * statement will be executed.
+	 * The SQL statement can contains zero or more named or question mark parameters markers for which real values will
+	 * be substituted when the statement will be executed.
 	 *
 	 * See {@link http://www.php.net/manual/en/pdo.prepare.php}
 	 *
-	 * @param string $stmt Sql statement to be prepared
-	 * @param array $driver_options OPTIONAL Attribute values for the
-	 * PDOStatement object
-	 * @return PDOStatement A PDOStatement instance or FALSE on failure. If
-	 * prepared statements are emulated by PDO, FALSE is never returned.
+	 * @param string $sql Sql statement to be prepared
+	 * @param array $driver_options OPTIONAL Attribute values for the PDOStatement object
+	 * @return PDOStatement A PDOStatement instance or FALSE on failure. If prepared statements are emulated by PDO,
+	 * FALSE is never returned.
 	 */
-	public function prepare($stmt, $driver_options = null) {
+	public function prepare($sql, $driver_options = null) {
 
 		if (version_compare(PHP_VERSION, '5.2.5', '<')) {
-			if (preg_match('/(ALTER |CREATE |DROP |GRANT |REVOKE |FLUSH )/i', $stmt)) {
+			if (preg_match('/(ALTER |CREATE |DROP |GRANT |REVOKE |FLUSH )/i', $sql)) {
 				$this->_db->setAttribute(PDO::MYSQL_ATTR_DIRECT_QUERY, true);
 			} else {
 				$this->_db->setAttribute(PDO::MYSQL_ATTR_DIRECT_QUERY, false);
@@ -212,18 +206,19 @@ class iMSCP_Database {
 		}
 
 		if(is_array($driver_options)) {
-			$rs = $this->_db->prepare($stmt, $driver_options);
+			$stmt = $this->_db->prepare($sql, $driver_options);
 		} else {
-			$rs = $this->_db->prepare($stmt);
+			$stmt = $this->_db->prepare($sql);
 		}
 
-		if(!$rs) {
+		if(!$stmt) {
 			$errorInfo = $this->errorInfo();
 			$this->_lastErrorMessage = $errorInfo[2];
+
 			return false;
 		}
 
-		return $rs;
+		return $stmt;
 	}
 
 	/**
@@ -231,13 +226,11 @@ class iMSCP_Database {
 	 *
 	 * <b>SQL Statement:</b>
 	 *
-	 * For a SQL statement, the first argument should be a string that
-	 * represents the SQL statement to prepare and execute. All data inside the
-	 * query should be properly escaped for prevent any SQL code injection.
+	 * For a SQL statement, the first argument should be a string that represents the SQL statement to prepare and
+	 * execute. All data inside the query should be properly escaped for prevent any SQL code injection.
 	 *
-	 * For a SQL statement, you may also pass additional arguments. They will be
-	 * treated as though you called PDOStatement::setFetchMode() on the resultant
-	 * PDOStatement object that is wrapped by the DatabaseResult object.
+	 * For a SQL statement, you may also pass additional arguments. They will be treated as though you called
+	 * PDOStatement::setFetchMode() on the resultant PDOStatement object that is wrapped by the DatabaseResult object.
 	 *
 	 * <i>Usage example:</i>
 	 * <code>
@@ -246,17 +239,14 @@ class iMSCP_Database {
 	 *
 	 * <b>Prepared statement:</b>
 	 *
-	 * For a prepared statement, the first argument should be a PDOStatement
-	 * object that represents a prepared statement. As second argument, and only
-	 * if the prepared statement has parameter markers, you must pass an array,
-	 * an interger or a string that represents data to bind to the placeholders.
+	 * For a prepared statement, the first argument should be a PDOStatement object that represents a prepared statement.
+	 * As second argument, and only if the prepared statement has parameter markers, you must pass an array, an integer
+	 * or a string that represents data to bind to the placeholders.
 	 *
-	 * <b>Note:</b> string or integer can only be used when only one parameter
-	 * marker is present in the prepared statement and only for question mark
-	 * placeholder. For named placeholders you must always pass data in an array.
+	 * <b>Note:</b> string or integer can only be used when only one parameter marker is present in the prepared
+	 * statement and only for question mark placeholder. For named placeholders you must always pass data in an array.
 	 *
-	 * Also, you can't mix both parameters markers type in the same SQL
- 	 * statement.
+	 * Also, you can't mix both parameters markers type in the same SQL statement.
 	 *
 	 * <i>Usage example:</i>
 	 * <code>
@@ -276,19 +266,15 @@ class iMSCP_Database {
 	 * );
 	 * </code>
 	 *
-	 * @param PDOStatement|string $stmt A PDOStatement for prepared statement or
-	 * a string that represents a SQL statement
-	 * @param mixed $parameters OPTIONAL parameters that represents data to bind
-	 * to the placeholders for prepared statement, or an integer that represents
-	 * the Fetch mode for SQL statement. The fetch mode must be one of the
+	 * @param PDOStatement|string $stmt A PDOStatement for prepared statement or a string that represents a SQL statement
+	 * @param mixed $parameters OPTIONAL parameters that represents data to bind to the placeholders for prepared
+	 * statement, or an integer that represents the Fetch mode for SQL statement. The fetch mode must be one of the
 	 * PDO::FETCH_* constants.
-	 * @param mixed $colno OPTIONAL parameter for SQL statement only. Can
-	 * be a colum number, an object, a class name (depending of the
-	 * Fetch mode used).
-	 * @param array $object OPTIONAL parameter for SQL statements only. Can
-	 * be an array that contains constructor arguments. (See PDO::FETCH_CLASS)
-	 * @return iMSCP_Database_ResultSet Returns a DatabaseResult object that
-	 * represents a result set or FALSE on failure.
+	 * @param mixed $colno OPTIONAL parameter for SQL statement only. Can be a colum number, an object, a class name
+	 * (depending of the Fetch mode used).
+	 * @param array $object OPTIONAL parameter for SQL statements only. Can be an array that contains constructor
+	 * arguments. (See PDO::FETCH_CLASS)
+	 * @return iMSCP_Database_ResultSet Returns a DatabaseResult object that represents a result set or FALSE on failure.
 	 */
 	public function execute($stmt, $parameters = null) {
 
@@ -333,8 +319,7 @@ class iMSCP_Database {
 
 		$result = $this->_db->query('SHOW TABLES');
 
-		while ($result instanceof PDOStatement &&
-			$row = $result->fetch(PDO::FETCH_NUM)) {
+		while ($result instanceof PDOStatement && $row = $result->fetch(PDO::FETCH_NUM)) {
 			$tables[] = $row[0];
 		}
 
@@ -352,10 +337,24 @@ class iMSCP_Database {
 	}
 
 	/**
+	 * Quotes a string for use in a query
+	 *
+	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
+	 * @since 1.0.0 (iMSCP)
+	 * @link i-mscp.net
+	 * @param $string The string to be quoted.
+	 * @param int $param Provides a data type hint for drivers that have alternate quoting styles.
+	 * @return string A quoted string that is theoretically safe to pass into an SQL statement
+	 */
+	public function quote($string, $parameterType = null) {
+
+		return $this->_db->quote($string, $parameterType);
+	}
+
+	/**
 	 * Sets an attribute on the database handle
 	 *
-	 * See @link http://www.php.net/manual/en/book.pdo.php} PDO guideline for
-	 * more information about this.
+	 * See @link http://www.php.net/manual/en/book.pdo.php} PDO guideline for more information about this.
 	 *
 	 * @since r2013
 	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
@@ -401,8 +400,7 @@ class iMSCP_Database {
 	/**
 	 * Rolls back the current transaction
 	 *
-	 * Rolls back the current transaction, as initiated by the
-	 * {@link startTransaction()} method.
+	 * Rolls back the current transaction, as initiated by the {@link startTransaction()} method.
 	 *
 	 * @since r2013
 	 * @author Laurent Declercq <laurent.declerq@i-mscp.net>
@@ -431,8 +429,7 @@ class iMSCP_Database {
 	/**
 	 * Gets the last error message
 	 *
-	 * This method returns the last error message set by the {@link execute()}
-	 * or {@link prepare()} methods.
+	 * This method returns the last error message set by the {@link execute()} or {@link prepare()} methods.
 	 *
 	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
 	 * @since 1.0.7
@@ -447,8 +444,7 @@ class iMSCP_Database {
 	/**
 	 * Stringified error information
 	 *
-	 * This method returns a stringified version of the error information
-	 * associated with the last database operation.
+	 * This method returns a stringified version of the error information associated with the last database operation.
 	 *
 	 * @return string Error information associated with the last database
 	 * operation
@@ -461,11 +457,9 @@ class iMSCP_Database {
 	/**
 	 * Error information associated with the last operation on the database
 	 *
-	 * This method returns a array that contains error information associated
-	 * with the last database operation.
+	 * This method returns a array that contains error information associated with the last database operation.
 	 *
-	 * @return array Array that contains error information associated with the
-	 * last database operation
+	 * @return array Array that contains error information associated with the last database operation
 	 */
 	public function errorInfo() {
 
