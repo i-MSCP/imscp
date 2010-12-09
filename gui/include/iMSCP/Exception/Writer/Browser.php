@@ -1,6 +1,6 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
@@ -17,6 +17,7 @@
  * The Initial Developer of the Original Code is ispCP Team.
  * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
+ * 
  * Portions created by the i-MSCP Team are Copyright (C) 2010 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  *
@@ -55,7 +56,7 @@ require_once  INCLUDEPATH . '/iMSCP/Exception/Writer.php';
  * @subpackage	Writer
  * @author		Laurent Declercq <laurent.declercq@i-mscp.net>
  * @since       1.0.7 (ispCP)
- * @version		1.0.5
+ * @version		1.0.6
  * @todo		Display more information like trace on debug mode.
  */
 class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer {
@@ -65,7 +66,7 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer {
 	 *
 	 * @var iMSCP_pTemplate
 	 */
-	protected $_pTemplate = null;
+	protected $_view = null;
 
 	/**
 	 * Template file path
@@ -81,9 +82,8 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer {
 	 */
 	public function __construct($templateFile = '') {
 
-		if($templateFile !='') {
-			if(is_readable($templateFile = $templateFile) ||
-				is_readable($templateFile = "../$templateFile")) {
+		if($templateFile != '') {
+			if(is_readable($templateFile = $templateFile) || is_readable($templateFile = "../$templateFile")) {
 
 				$this->_templateFile = $templateFile;
 			}
@@ -98,8 +98,8 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer {
 	 */
 	protected function _write() {
 
-		if($this->_pTemplate != null) {
-			$this->_pTemplate->prnt();
+		if($this->_view != null) {
+			$this->_view->prnt();
 		} else {
 			echo $this->_message;
 		}
@@ -130,7 +130,7 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer {
 		}
 
 		if($this->_templateFile != null) {
-			$this->_prepareTemplate();
+			$this->_render();
 		}
 
 		// Finally, we write the output
@@ -142,10 +142,10 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer {
 	 *
 	 * @return void
 	 */
-	protected function _prepareTemplate() {
+	protected function _render() {
 
-		$this->_pTemplate = new iMSCP_pTemplate();
-		$this->_pTemplate->define('page', $this->_templateFile);
+		$this->_view = new iMSCP_pTemplate();
+		$this->_view->define('page', $this->_templateFile);
 
 
 		if(iMSCP_Registry::isRegistered('backButtonDestination')) {
@@ -154,7 +154,7 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer {
 			$backButtonDestination = 'javascript:history.go(-1)';
 		}
 
-		$this->_pTemplate->assign(
+		$this->_view->assign(
 			array(
 				'THEME_COLOR_PATH' => '/themes/' . 'default',
 				'BACK_BUTTON_DESTINATION' => $backButtonDestination,
@@ -166,7 +166,7 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer {
 
 		// i18n support is available ?
 		if (function_exists('tr')) {
-			$this->_pTemplate->assign(
+			$this->_view->assign(
 				array(
 					'TR_EXCEPTION_PAGE_TITLE' => tr('i-MSCP - internet Multi Server Control Panel - Exception'),
 					'THEME_CHARSET' => tr('encoding'),
@@ -178,9 +178,9 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer {
 				)
 			);
 		} else {
-			$this->_pTemplate->assign(
+			$this->_view->assign(
 				array(
-					'TR_SYSTEM_MESSAGE_PAGE_TITLE' => 'iMSCP Error',
+					'TR_SYSTEM_MESSAGE_PAGE_TITLE' => 'i-MSCP - internet Multi Server Control Panel - Exception',
 					'THEME_CHARSET' => 'UTF-8',
 					'productLongName' => 'internet Multi Server Control Panel',
 					'productCopyright' => '© Copyright 2010 i-MSCP Team<br/>All Rights Reserved',
@@ -190,6 +190,6 @@ class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer {
 			);
 		}
 
-		$this->_pTemplate->parse('PAGE', 'page');
+		$this->_view->parse('PAGE', 'page');
 	} // end prepareTemplate()
 }

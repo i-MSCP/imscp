@@ -17,8 +17,9 @@
  * The Initial Developer of the Original Code is ispCP Team.
  * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
+ * 
  * Portions created by the i-MSCP Team are Copyright (C) 2010 by
- * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
+ * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
  * @category	i-MSCP
  * @package		iMSCP_Exception
@@ -35,25 +36,22 @@
 /**
  * i-MSCP Exception Handler class
  *
- * This class is responsible to handle all uncaught exceptions. This class is an
- * observable subject. An object that implements {@link iMSCP_Exception_Writer}
- * interface can listen events of this class. This class has only one event that
- * occurs when an uncaught exceptions is raised.
+ * This class is responsible to handle all uncaught exceptions. This class is an observable subject. An object that
+ * implements {@link iMSCP_Exception_Writer} interface can listen events of this class. This class has only one event
+ * that occurs when an uncaught exceptions is raised.
  *
  * <b>What's the event:</b>
  *
- * When an uncaught exception is raised, the exception handler defined by this
- * class notify all these writers by passing the iMSCP_Exception_Handler
- * instance to it. After, each observer should call the {@link getException()}
- * method to get the exception and do whatever they want with it.
+ * When an uncaught exception is raised, the exception handler defined by this class notify all these writers by passing
+ * the iMSCP_Exception_Handler instance to it. After, each observer should call the {@link getException()} method to get
+ * the exception and do whatever they want with it.
  *
- * In production, a secondary {@link iMSCP_Exception_Production} object is
- * created. Each writer that writes on the client browser must check if this
- * exception exists and use it in place of the real {@link $_exception} that was
+ * In production, a secondary {@link iMSCP_Exception_Production} object is created. Each writer that writes on the
+ * client browser must check if this exception exists and use it in place of the real {@link $_exception} that was
  * raised to avoid revealing important information about the environment.
  *
- * See the {@link getProductionException} method to learn how to check if an
- * {@link iMSCP_Exception_Production exception} was created and how to get it.
+ * See the {@link getProductionException} method to learn how to check if an {@link iMSCP_Exception_Production exception}
+ * was created and how to get it.
  *
  * <b>Writer observer responsibility can be :</b>
  *
@@ -67,9 +65,7 @@
  * <b>Usage example:</b>
  * <code>
  * iMSCP_Exception_Handler::getInstance()->attach(
- *  new iMSCP_Exception_Writer_Browser(
- *		'themes/default/exception.tpl'
- *  )
+ *  new iMSCP_Exception_Writer_Browser('themes/default/exception.tpl')
  * );
  * </code>
  *
@@ -78,8 +74,7 @@
  *  1. We create an instance of the {@link iMSCP_Exception_Handler} class
  *  2. We attach an {@link iMSCP_Exception_Writer} that will listen this class
  *
- * See iMSCP/Exception/Writer for a list of availables
- *	{@link iMSCP_Exception_Writer writers}.
+ * See iMSCP/Exception/Writer for a list of available {@link iMSCP_Exception_Writer writers}.
  *
  * <b>Note:</b>
  *
@@ -93,7 +88,7 @@
  * @subpackage	Handler
  * @author		Laurent Declercq <laurent.declercq@i-mscp.net>
  * @since       1.0.7 (ispCP)
- * @version		1.0.3
+ * @version		1.0.4
  */
 class iMSCP_Exception_Handler implements SplSubject, IteratorAggregate, Countable {
 
@@ -107,8 +102,8 @@ class iMSCP_Exception_Handler implements SplSubject, IteratorAggregate, Countabl
 	/**
 	 * Production exception
 	 *
-	 * This variable can contains an {@link iMSCP_Exception_Production} object
-	 * depending of the current execution context (Development|Production)
+	 * This variable can contains an {@link iMSCP_Exception_Production} object depending of the current execution
+	 * context (Development|Production)
 	 *
 	 * @see getProductionException()
 	 * @var iMSCP_Exception_Production
@@ -154,8 +149,7 @@ class iMSCP_Exception_Handler implements SplSubject, IteratorAggregate, Countabl
 	/**
 	 * Get an iMSCP_Exception_Handler instance
 	 *
-	 * Returns an {@link iMSCP_Exception_Handler} instance, only creating it if
-	 * it doesn't already exist.
+	 * Returns an {@link iMSCP_Exception_Handler} instance, only creating it if it doesn't already exist.
 	 *
 	 * @return iMSCP_Exception_Handler
 	 */
@@ -171,9 +165,8 @@ class iMSCP_Exception_Handler implements SplSubject, IteratorAggregate, Countabl
 	/**
 	 * Reset the current instance
 	 *
-	 * This method reset the current {@link $_instance} of this class. So,
-	 * all writers are automatically removed and then, the exception handler
-	 * is set to the new instance {@link $_instance}.
+	 * This method reset the current {@link $_instance} of this class. So, all writers are automatically removed and
+	 * then, the exception handler is set to the new instance {@link $_instance}.
 	 *
 	 * @param boolean $setHandler If TRUE, recreate the instance automatically
 	 * @return iMSCP_Exception_Handler|null
@@ -188,8 +181,7 @@ class iMSCP_Exception_Handler implements SplSubject, IteratorAggregate, Countabl
 	/**
 	 * Sets exception handler
 	 *
-	 * This method set the {@link exceptionHandler() exception handler} that
-	 * is used for all uncaught exceptions.
+	 * This method set the {@link exceptionHandler() exception handler} that is used for all uncaught exceptions.
 	 *
 	 * @see exceptionHandler()
 	 * @return iMSCP_Exception_Handler
@@ -218,13 +210,12 @@ class iMSCP_Exception_Handler implements SplSubject, IteratorAggregate, Countabl
 	/**
 	 * Exception Handler
 	 *
-	 * This is the exception handler provided by this class.
-	 * This method act like an exception handler for all uncaught exceptions.
+	 * This is the exception handler provided by this class. This method act like an exception handler for all uncaught
+	 * exceptions.
 	 *
-	 * <b>Note:</b> In production, this exception handler create a secondary
-	 * iMSCP_Exception_Production object. This exception should be used by all
-	 * writers that write on the client browser in place of the real raised
-	 * exception to avoid revealing important information about the environment.
+	 * <b>Note:</b> In production, this exception handler create a secondary iMSCP_Exception_Production object. This
+	 * exception should be used by all writers that write on the client browser in place of the real raised exception to
+	 * avoid revealing important information about the environment.
 	 *
 	 * @see setHandler()
 	 * @see unsetHandler()
@@ -254,8 +245,7 @@ class iMSCP_Exception_Handler implements SplSubject, IteratorAggregate, Countabl
 	/**
 	 * Accessor method to get the exception raised
 	 *
-	 * This methods should be used by the {@link iMSCP_Exception_Writer} writers
-	 * to get the exception raised.
+	 * This methods should be used by the {@link iMSCP_Exception_Writer} writers to get the exception raised.
 	 *
 	 * @return Exception The iMSCP_Exception if exists; FALSE otherwise
 	 */
@@ -271,8 +261,7 @@ class iMSCP_Exception_Handler implements SplSubject, IteratorAggregate, Countabl
 	/**
 	 * Accessor method to get the iMSCP_Exception_Production object
 	 *
-	 * <b>Note:</b> The {@link iMSCP_Exception_Production} is only raised in
-	 * production.
+	 * <b>Note:</b> The {@link iMSCP_Exception_Production} is only raised in production.
 	 *
 	 * @return iMSCP_Exception_Production|false
 	 */
@@ -288,8 +277,7 @@ class iMSCP_Exception_Handler implements SplSubject, IteratorAggregate, Countabl
 	/**
 	 * Attach a writer that listen all events
 	 *
-	 * @param iMSCP_Exception_Writer $writer Writer that listen events of this
-	 * object
+	 * @param iMSCP_Exception_Writer $writer Writer that listen events of this object
 	 * @return iMSCP_Exception_Handler The iMSCP_Exception_Handler instance
 	 */
 	public function attach(SplObserver $writer) {
@@ -302,8 +290,7 @@ class iMSCP_Exception_Handler implements SplSubject, IteratorAggregate, Countabl
 	/**
 	 * Dettach an observer that listen events of this class
 	 *
-	 * @param iMSCP_Exception_Writer $writer Writer that listen events of this
-	 *	class
+	 * @param iMSCP_Exception_Writer $writer Writer that listen events of this class
 	 * @return iMSCP_Exception_Handler The iMSCP_Exception_Handler instance
 	 */
 	public function detach(SplObserver $writer) {
@@ -316,9 +303,8 @@ class iMSCP_Exception_Handler implements SplSubject, IteratorAggregate, Countabl
 	/**
 	 * Notify all observers that listen events of this class
 	 *
-	 * This method notify all these attached observers by calling their update()
-	 * method. The {@link $_instance instance} is passed to each writer as
-	 * argument of the argument of their update() method.
+	 * This method notify all these attached observers by calling their update() method. The {@link $_instance instance}
+	 * is passed to each writer as argument of the argument of their update() method.
 	 *
 	 * @throws iMSCP_Exception
 	 * @return void
@@ -339,9 +325,8 @@ class iMSCP_Exception_Handler implements SplSubject, IteratorAggregate, Countabl
 				$lastMessage = $e->getMessage();
 
 				$message =
-					"Error: The Exception Writer `$writerName` was unable" .
-					" to write the following message: $previousMessage! Reason: " .
-					$lastMessage;
+					"Error: The Exception Writer `$writerName` was unable to write the following message: " .
+						"$previousMessage! Reason: $lastMessage";
 
 				if(!count($this)) {
 					trigger_error($message, E_USER_ERROR);

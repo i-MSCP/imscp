@@ -1,6 +1,6 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
@@ -17,6 +17,7 @@
  * The Initial Developer of the Original Code is ispCP Team.
  * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
+ * 
  * Portions created by the i-MSCP Team are Copyright (C) 2010 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  *
@@ -39,7 +40,7 @@ require_once  INCLUDEPATH . '/iMSCP/Exception.php';
  * Exception used on production by iMSCP_Exception_Handler
  *
  * @package		iMSCP_Exception
- * @author		Laurent declercq <laurent.declercq@i-mscp.net>
+ * @author		Laurent Declercq <laurent.declercq@i-mscp.net>
  * @since       1.0.7 (ispCP)
  * @version		1.0.0
  */
