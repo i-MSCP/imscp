@@ -36,76 +36,87 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
+/**
+ * @var $cfg iMSCP_Config_Handler_File
+ */
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
-$tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('logged_from', 'page');
-$tpl->define_dynamic('dir_item', 'page');
-$tpl->define_dynamic('action_link', 'page');
-$tpl->define_dynamic('list_item', 'page');
+
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/ftp_choose_dir.tpl');
+$tpl->define_dynamic('page_message', 'page');
+$tpl->define_dynamic('ftp_chooser', 'page');
+$tpl->define_dynamic('dir_item', 'ftp_chooser');
+$tpl->define_dynamic('list_item', 'dir_item');
+$tpl->define_dynamic('action_link', 'list_item');
 
+function gen_directories($tpl) {
 
-function gen_directories(&$tpl) {
-
+	/**
+	 * @var $sql iMSCP_Database
+	 */
 	$sql = iMSCP_Registry::get('db');
+
 	// Initialize variables
 	$path = isset($_GET['cur_dir']) ? $_GET['cur_dir'] : '';
 	$domain = $_SESSION['user_logged'];
+
 	// Create the virtual file system and open it so it can be used
 	$vfs = new iMSCP_VirtualFileSystem($domain, $sql);
+
 	// Get the directory listing
 	$list = $vfs->ls($path);
-	if (!$list) {
-		set_page_message(tr('Cannot open directory!<br>Please contact your administrator!'), 'error');
+
+	if ($list) {
+		set_page_message(tr('Cannot open directory! Please contact your administrator!'), 'error');
+		$tpl->assign('FTP_CHOOSER', '');
 		return;
 	}
 	// Show parent directory link
 	$parent = explode('/', $path);
 	array_pop($parent);
 	$parent = implode('/', $parent);
+
 	$tpl->assign('ACTION_LINK', '');
+
 	$tpl->assign(
 		array(
-			'ACTION' => '',
-			'ICON' => "parent",
-			'DIR_NAME' => tr('Parent Directory'),
-			'LINK' => 'ftp_choose_dir.php?cur_dir=' . $parent,
+			'ACTION'	=> '',
+			'ICON'		=> 'parent',
+			'DIR_NAME'	=> tr('Parent Directory'),
+			'LINK'		=> 'ftp_choose_dir.php?cur_dir=' . $parent,
 		)
 	);
+
 	$tpl->parse('DIR_ITEM', '.dir_item');
+
 	// Show directories only
 	foreach ($list as $entry) {
 		// Skip non-directory entries
 		if ($entry['type'] != iMSCP_VirtualFileSystem::VFS_TYPE_DIR) {
 			continue;
 		}
+
 		// Skip '.' and '..'
 		if ($entry['file'] == '.' || $entry['file'] == '..') {
 			continue;
 		}
+
 		// Check for .htaccess existence to display another icon
 		$dr = $path . '/' . $entry['file'];
-		$tfile = $dr . '/.htaccess';
-		if ($vfs->exists($tfile)) {
-			$image = "locked";
-		} else {
-			$image = "folder";
-		}
-		$forbidden_Dir_Names = ('/backups|disabled|errors|logs|phptmp/i');
-		$forbidden = preg_match($forbidden_Dir_Names, $entry['file']);
-		($forbidden === 1) ? $tpl->assign('ACTION_LINK', '') : $tpl->parse('ACTION_LINK', 'action_link');
 		// Create the directory link
 		$tpl->assign(
 			array(
-				'PROTECT_IT' => "protected_areas_add.php?file=".$dr,
-				'ICON' => $image,
-				'DIR_NAME' => tohtml($entry['file']),
-				'CHOOSE_IT' => $dr,
-				'LINK' => "ftp_choose_dir.php?cur_dir=".$dr,
+				'DIR_NAME'	=> tohtml($entry['file']),
+				'CHOOSE_IT'	=> $dr,
+				'LINK'		=> 'ftp_choose_dir.php?cur_dir='.$dr,
 			)
 		);
+
+		$forbidden_Dir_Names = ('/backups|disabled|errors|logs|phptmp/i');
+		$forbidden = preg_match($forbidden_Dir_Names, $entry['file']);
+		($forbidden == 1) ? $tpl->assign('ACTION_LINK', '') : $tpl->parse('ACTION_LINK', 'action_link');
+
 		$tpl->parse('DIR_ITEM' , '.dir_item');
 	}
 }
@@ -114,10 +125,10 @@ function gen_directories(&$tpl) {
 
 $tpl->assign(
 	array(
-		'TR_CLIENT_WEBTOOLS_PAGE_TITLE' => tr('i-MSCP - Client/Webtools'),
-		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => get_logo($_SESSION['user_id'])
+		'TR_CLIENT_WEBTOOLS_PAGE_TITLE'	=> tr('i-MSCP - Client/Webtools'),
+		'THEME_COLOR_PATH'				=> "../themes/{$cfg->USER_INITIAL_THEME}",
+		'THEME_CHARSET'					=> tr('encoding'),
+		'ISP_LOGO'						=> get_logo($_SESSION['user_id'])
 	)
 );
 
@@ -125,9 +136,10 @@ gen_directories($tpl);
 
 $tpl->assign(
 	array(
-		'TR_DIRECTORY_TREE' => tr('Directory tree'),
-		'TR_DIRS' => tr('Directories'),
-		'TR__ACTION' => tr('Action')
+		'TR_DIRECTORY_TREE'	=> tr('Directory tree'),
+		'TR_DIRS'			=> tr('Directories'),
+		'TR_ACTION'		    => tr('Action'),
+		'CHOOSE'			=> tr('Choose')
 	)
 );
 
@@ -136,8 +148,6 @@ generatePageMessage($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg->DUMP_GUI_DEBUG) {
-	dump_gui_debug();
-}
-
 unsetMessages();
+
+if ($cfg->DUMP_GUI_DEBUG) dump_gui_debug();
