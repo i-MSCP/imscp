@@ -38,9 +38,13 @@
 					<tr>
 						<!-- BDP: list_item -->
 							<td><a href="{LINK}" class="icon i_bc_{ICON}">{DIR_NAME}</a></td>
-							<!-- BDP: action_link -->
-								<td><a href="javascript:CopyText('{CHOOSE_IT}');" class="icon i_choose">{CHOOSE}</a><input type="hidden" name="{CHOOSE_IT}" value="{CHOOSE_IT}" /></td>
-							<!-- EDP: action_link -->
+							<td>
+								<!-- BDP: action_link -->
+								<a href="javascript:CopyText('{CHOOSE_IT}');" class="icon i_choose">{CHOOSE}</a>
+								<input type="hidden" name="{CHOOSE_IT}" value="{CHOOSE_IT}" />
+								<!-- EDP: action_link -->
+								&nbsp;
+							</td>
 						<!-- EDP: list_item -->
 					</tr>
 				<!-- EDP: dir_item -->
