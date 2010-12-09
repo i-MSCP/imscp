@@ -124,10 +124,6 @@
                             <td><input type="text" name="country" id="country" value="{COUNTRY}"/></td>
                         </tr>
                         <tr>
-                            <td><label for="email">{TR_EMAIL}</label></td>
-                            <td><input type="text" name="email" id="email" value="{EMAIL}"/></td>
-                        </tr>
-                        <tr>
                             <td><label for="phone">{TR_PHONE}</label></td>
                             <td><input type="text" name="phone" id="phone" value="{PHONE}"/></td>
                         </tr>

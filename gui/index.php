@@ -70,14 +70,22 @@ $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('lostpwd_button', 'page');
 
+	$tpl->assign(
+		array(
+			'productLongName'	=> tr('internet Multi Server Control Panel'),
+			'productLink'		=> 'http://www.i-mscp.net',
+			'productCopyright'	=> tr('© Copyright 2010 i-MSCP Team<br/>All Rights Reserved'),
+			'THEME_CHARSET'		=> tr('encoding'),
+			'THEME_COLOR_PATH'	=> $cfg->LOGIN_TEMPLATE_PATH,
+		)
+	);
+
 if (($cfg->MAINTENANCEMODE || iMSCP_Update_Database::getInstance()->checkUpdateExists()) && !isset($_GET['admin'])) {
 
 	$tpl->define_dynamic('page', $cfg->LOGIN_TEMPLATE_PATH . '/maintenancemode.tpl');
 	$tpl->assign(
 		array(
 			'TR_PAGE_TITLE'		=> tr('i-MSCP - Multi Server Control Panel'),
-			'THEME_COLOR_PATH'	=> $cfg->LOGIN_TEMPLATE_PATH,
-			'THEME_CHARSET'		=> tr('encoding'),
 			'TR_MESSAGE'		=> nl2br(tohtml($cfg->MAINTENANCEMODE_MESSAGE)),
 			'TR_ADMINLOGIN'		=> tr('Administrator login')
 		)
@@ -89,11 +97,6 @@ if (($cfg->MAINTENANCEMODE || iMSCP_Update_Database::getInstance()->checkUpdateE
 	$tpl->assign(
 		array(
 			'TR_MAIN_INDEX_PAGE_TITLE'	=> tr('i-MSCP - Multi Server Control Panel / Login'),
-			'THEME_COLOR_PATH'			=> $cfg->LOGIN_TEMPLATE_PATH,
-			'THEME_CHARSET'				=> tr('encoding'),
-			'productLongName'			=> tr('internet Multi Server Control Panel'),
-			'productLink'				=> 'http://www.i-mscp.net',
-			'productCopyright'			=> tr('© Copyright 2010 i-MSCP Team<br/>All Rights Reserved'),
 			'TR_LOGIN'					=> tr('Login'),
 			'TR_USERNAME'				=> tr('Username'),
 			'TR_PASSWORD'				=> tr('Password'),

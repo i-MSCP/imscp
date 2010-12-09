@@ -55,7 +55,7 @@
                 <table>
                     <tr>
                         <td><label for="maintenancemode_message">{TR_MESSAGE}</label></td>
-                        <td><textarea name="maintenancemode_message" id="maintenancemode_message" cols="80" rows="30">{MESSAGE_VALUE}</textarea></td>
+                        <td><textarea name="maintenancemode_message" id="maintenancemode_message" cols="80" rows="15">{MESSAGE_VALUE}</textarea></td>
                     </tr>
                     <tr>
                         <td><label for="maintenancemode">{TR_MAINTENANCEMODE}</label></td>
