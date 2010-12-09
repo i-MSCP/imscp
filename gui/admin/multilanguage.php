@@ -210,12 +210,12 @@ function importLanguageFile() {
 				return;
 			}
 		}
-
-        if (empty($ab['ispcp_languageSetlocaleValue']) ||
-                 empty($ab['ispcp_table'])
-                || empty($ab['ispcp_language'])
-                || !preg_match('/^[a-z]{2}(_[A-Z]{2}){0,1}$/Di',$ab['ispcp_languageSetlocaleValue'])
-                || !preg_match('/^[a-z0-9()]+$/Di', $ab['ispcp_table']))
+            //funk this Language Error! Language: upload bug removed, not copied by Benedict.
+        if (empty($ab['imscp_languageSetlocaleValue']) ||
+                 empty($ab['imscp_table'])
+                || empty($ab['imscp_language'])
+                || !preg_match('/^[a-z]{2}(_[A-Z]{2}){0,1}$/Di',$ab['imscp_languageSetlocaleValue'])
+                || !preg_match('/^[a-z0-9()]+$/Di', $ab['imscp_table']))
                         {
                         set_page_message(
                                 tr('Uploaded file does not contain language information!'),
