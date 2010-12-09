@@ -923,7 +923,10 @@ function unset_user_login_data($ignorePreserve = false, $restore = false) {
 		exec_query($sql, $query, array($sessionId, $adminName));
 	}
 
-	$preserveList = array('user_def_lang', 'user_theme', 'uistack', 'user_page_message');
+	$preserveList = array(
+		'user_def_lang', 'user_theme', 'uistack', 'user_page_message', 'user_page_message_cls'
+	);
+
 	$preserveVals = array();
 
 	if (!$ignorePreserve) {
