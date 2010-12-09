@@ -105,9 +105,10 @@ check_permissions($tpl);
 
 $tpl->assign(
 	array(
-		'TR_LANGUAGE' => tr('Language'),
-		'TR_CHOOSE_DEFAULT_LANGUAGE' => tr('Choose default language'),
-		'TR_SAVE' => tr('Save'),
+		'TR_GENERAL_INFO'				=> tr('General information'),
+		'TR_LANGUAGE'					=> tr('Language'),
+		'TR_CHOOSE_DEFAULT_LANGUAGE'	=> tr('Choose default language'),
+		'TR_SAVE'						=> tr('Save')
 	)
 );
 

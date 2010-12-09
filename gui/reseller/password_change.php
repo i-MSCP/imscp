@@ -120,6 +120,7 @@ gen_logged_from($tpl);
 
 $tpl->assign(
 	array(
+		'TR_GENERAL_INFO'		=> tr('General information'),
 		'TR_CHANGE_PASSWORD' 	=> tr('Change password'),
 		'TR_PASSWORD_DATA' 		=> tr('Password data'),
 		'TR_PASSWORD' 			=> tr('Password'),

@@ -182,6 +182,7 @@ gen_logged_from($tpl);
 
 $tpl->assign(
 	array(
+		'TR_GENERAL_INFO'			=> tr('General information'),
 		'TR_LAYOUT_SETTINGS'		=> tr('Layout settings'),
 		'TR_INSTALLED_LAYOUTS'		=> tr('Installed layouts'),
 		'TR_LAYOUT_NAME'			=> tr('Layout name'),
@@ -193,7 +194,7 @@ $tpl->assign(
 		'TR_LOGO_FILE'				=> tr('Logo file'),
 		'TR_UPLOAD'					=> tr('Upload'),
 		'TR_REMOVE'					=> tr('Remove'),
-		'TR_CHOOSE_DEFAULT_LAYOUT'	=> tr('Choose default layout'),
+		'TR_CHOOSE_DEFAULT_LAYOUT'	=> tr('Choose default layout')
 	)
 );
 

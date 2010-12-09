@@ -29,7 +29,7 @@
 
 		<div class="location">
 			<div class="location-area icons-left">
-				<h1 class="general">{TR_MENU_MANAGE_USERS}</h1>
+				<h1 class="general">{TR_GENERAL_INFO}</h1>
 			</div>
 			<ul class="location-menu">
 				<!-- <li><a class="help" href="#">Help</a></li> -->
@@ -37,7 +37,7 @@
 				<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
 			</ul>
 			<ul class="path">
-				<li><a href="index.php">{TR_MENU_MANAGE_USERS}</a></li>
+				<li><a href="index.php">{TR_GENERAL_INFO}</a></li>
 				<li><a href="password_change.php">{TR_CHOOSE_DEFAULT_LANGUAGE}</a></li>
 			</ul>
 		</div>

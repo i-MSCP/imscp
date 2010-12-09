@@ -28,14 +28,14 @@
 
 		<div class="location">
 			<div class="location-area icons-left">
-				<h1 class="general">{TR_MENU_MANAGE_USERS}</h1>
+				<h1 class="general">{TR_GENERAL_INFO}</h1>
 			</div>
 			<ul class="location-menu">
 				<li><a class="backadmin" href="change_user_interface.php?action=go_back">{YOU_ARE_LOGGED_AS}</a></li>
 				<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
 			</ul>
 			<ul class="path">
-				<li><a href="index.php">{TR_MENU_MANAGE_USERS}</a></li>
+				<li><a href="index.php">{TR_GENERAL_INFO}</a></li>
 				<li><a href="personal_change.php">{TR_PERSONAL_DATA}</a></li>
 			</ul>
 		</div>

@@ -167,6 +167,7 @@ gen_logged_from($tpl);
 
 $tpl->assign(
 	array(
+		'TR_GENERAL_INFO'			=> tr('General information'),
 		'TR_CHANGE_PERSONAL_DATA'	=> tr('Change personal data'),
 		'TR_PERSONAL_DATA'			=> tr('Personal data'),
 		'TR_FIRST_NAME'				=> tr('First name'),
