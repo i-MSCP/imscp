@@ -13,8 +13,6 @@
 			/* <![CDATA[ */
 				body,html {
 					min-width:0%;
-					min-height:0%;
-					height:0%;
 					background:transparent;
 				}
 
