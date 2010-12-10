@@ -37,43 +37,50 @@
 return array(
     array(
         'label' => 'General Information',
+	    'module' => 'admin',
         'controller' => 'index',
         'action' => 'index',
 	    'class' => 'general'
     ),
     array(
         'label' => 'Manage Users',
+	    'module' => 'admin',
         'controller' => 'users',
         'action' => 'index',
 	    'class' => 'manage_users'
     ),
     array(
         'label' => 'Hosting Plans',
+	    'module' => 'admin',
         'controller' => 'plans',
         'action' => 'index',
 	    'class' => 'hosting_plans',
-	    'visible' => 1,
+	    'visible' => 1
     ),
     array(
         'label' => 'System Tools',
+	    'module' => 'admin',
         'controller' => 'tools',
         'action' => 'index',
 	    'class' => 'webtools'
     ),
     array(
         'label' => 'Statistics',
+	    'module' => 'admin',
         'controller' => 'statistics',
         'action' => 'index',
 	    'class' => 'general'
     ),
     array(
         'label' => 'Support System',
+	    'module' => 'admin',
         'controller' => 'support',
         'action' => 'index',
 	    'class' => 'support',
     ),
     array(
         'label' => 'Settings',
+	    'module' => 'admin',
         'controller' => 'settings',
         'action' => 'index',
 	    'class' => 'settings'

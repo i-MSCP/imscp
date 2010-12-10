@@ -37,64 +37,73 @@
 return array(
     array(
         'label' => 'General Information',
+	    'module' => 'client',
         'controller' => 'index',
         'action' => 'index',
 	    'class' => 'general'
     ),
     array(
         'label' => 'Manage Domains',
+	    'module' => 'client',
         'controller' => 'index',
         'action' => 'index',
 	    'class' => 'domains',
-	    'visible' => 1,
+	    'visible' => 1
     ),
     array(
         'label' => 'Email Accounts',
         'controller' => 'index',
+	    'module' => 'client',
         'action' => 'index',
 	    'class' => 'email',
-	    'visible' => 1,
+	    'visible' => 1
     ),
     array(
         'label' => 'Ftp Accounts',
+	    'module' => 'client',
         'controller' => 'index',
         'action' => 'index',
 	    'class' => 'ftp',
-	    'visible' => 1,
+	    'visible' => 1
     ),
     array(
         'label' => 'Databases',
+	    'module' => 'client',
         'controller' => 'index',
         'action' => 'index',
 	    'class' => 'database',
-	    'visible' => 1,
+	    'visible' => 1
     ),
     array(
         'label' => 'Webtools',
+	    'module' => 'client',
         'controller' => 'index',
         'action' => 'index',
 	    'class' => 'webtools',
-	    'visible' => 1,
+	    'visible' => 1
     ),
     array(
         'label' => 'Statistics',
+	    'module' => 'client',
         'controller' => 'index',
         'action' => 'index',
 	    'class' => 'statistics',
-	    'visible' => 1,
+	    'visible' => 1
     ),
     array(
         'label' => 'Support System',
+	    'module' => 'client',
         'controller' => 'index',
         'action' => 'index',
 	    'class' => 'support',
-	    'visible' => 1,
+	    'visible' => 1
     ),
     array(
         'label' => 'Custom Menus',
+	    'module' => 'client',
         'controller' => 'index',
         'action' => 'index',
 	    'class' => 'custom_link',
-	    'visible' => 1,
+	    'visible' => 1
     )
 );

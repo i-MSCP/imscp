@@ -37,41 +37,47 @@
 return array(
     array(
         'label' => 'General Information',
+	    'module' => 'reseller',
         'controller' => 'index',
         'action' => 'index',
 	    'class' => 'general'
     ),
     array(
         'label' => 'Manage Users',
+	    'module' => 'reseller',
         'controller' => 'index',
         'action' => 'index',
 	    'class' => 'manage_users'
     ),
     array(
         'label' => 'Hosting Plans',
+	    'module' => 'reseller',
         'controller' => 'index',
         'action' => 'index',
 	    'class' => 'hosting_plans',
-	    'visible' => 1,
+	    'visible' => 1
     ),
     array(
         'label' => 'Orders',
+	    'module' => 'reseller',
         'controller' => 'index',
         'action' => 'index',
 	    'class' => 'purchasing'
     ),
     array(
         'label' => 'Support System',
+	    'module' => 'reseller',
         'controller' => 'index',
         'action' => 'index',
 	    'class' => 'support',
-	    'visible' => 1,
+	    'visible' => 1
     ),
     array(
         'label' => 'Custom Menus',
+	    'module' => 'reseller',
         'controller' => 'index',
         'action' => 'index',
 	    'class' => 'custom_link',
-	    'visible' => 1,
+	    'visible' => 1
     )
 );
