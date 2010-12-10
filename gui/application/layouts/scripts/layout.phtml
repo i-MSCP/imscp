@@ -18,17 +18,22 @@
 	<body>
 		<div class="header">
 			<div class="main_menu">
-				<?php echo $this->navigation()->menu($this->mainMenu)->setPartial('menus/_main.phtml', 'admin'); ?>
+				<?php echo $this->navigation()->menu($this->mainMenu); ?>
 			</div>
 			<div class="logo"><img src="/themes/default/images/imscp_logo.png" alt="i-MSCP logo" /></div>
 		</div>
 		<div class="location">
-			<div class="location-area icons-left"><h1 class="settings">{TR_MENU_SETTINGS}</h1></div>
+			<div class="location-area icons-left">
+	            <!--<h1 class="settings"></h1>-->
+
+	            <?php echo $this->navigation()->breadcrumbs($this->mainMenu)->setMinDepth(0)->setLinkLast(true)->setSeparator('');?>
+                    <!--{TR_MENU_SETTINGS}-->
+	        </div>
 			<ul class="location-menu">
 				<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
 			</ul>
 	        <ul class="path">
-				<!--<?php //echo $this->navigation()->menu($this->leftMenu)->setPartial('menus/_left.phtml', 'admin'); ?>-->
+	            <?php //echo $this->navigation()->breadcrumbs($this->mainMenu)->setMinDepth(0)->setLinkLast(true)->setSeparator(" >> "); ?>
 	        </ul>
 		</div>
 		<div class="left_menu">

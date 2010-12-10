@@ -43,38 +43,38 @@ return array(
     ),
     array(
         'label' => 'Manage Users',
-        'controller' => 'index',
+        'controller' => 'users',
         'action' => 'index',
 	    'class' => 'manage_users'
     ),
     array(
         'label' => 'Hosting Plans',
-        'controller' => 'index',
+        'controller' => 'plans',
         'action' => 'index',
 	    'class' => 'hosting_plans',
 	    'visible' => 1,
     ),
     array(
         'label' => 'System Tools',
-        'controller' => 'index',
+        'controller' => 'tools',
         'action' => 'index',
 	    'class' => 'webtools'
     ),
     array(
         'label' => 'Statistics',
-        'controller' => 'index',
+        'controller' => 'statistics',
         'action' => 'index',
 	    'class' => 'general'
     ),
     array(
         'label' => 'Support System',
-        'controller' => 'index',
+        'controller' => 'support',
         'action' => 'index',
 	    'class' => 'support',
     ),
     array(
         'label' => 'Settings',
-        'controller' => 'index',
+        'controller' => 'settings',
         'action' => 'index',
 	    'class' => 'settings'
     )
