@@ -2,7 +2,7 @@
 <projectProfile type="default" version="1.10">
   <projectDirectory>
     <projectProfileFile filesystemName=".zfproject.xml"/>
-    <applicationDirectory classNamePrefix="Application_">
+    <applicationDirectory classNamePrefix="iMSCP_">
       <apisDirectory enabled="false"/>
       <configsDirectory>
         <applicationConfigFile type="ini"/>
