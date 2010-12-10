@@ -1,6 +1,6 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
@@ -17,8 +17,9 @@
  * The Initial Developer of the Original Code is ispCP Team.
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
+ *
  * Portions created by the i-MSCP Team are Copyright (C) 2010 by
- * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
+ * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
  * @category	i-MSCP
  * @package     iMSCP_Config
@@ -32,19 +33,17 @@
  */
 
 /**
- * This class wraps the creation and manipulation of the iMSCP_Config_Handler
- * objects
+ * This class wraps the creation and manipulation of the iMSCP_Config_Handler objects
  *
  * <b>Important consideration:</b>
  *
- * This class implement the <i>Singleton design pattern</i>, so, each type of
- * {@link iMSCP_Config_Handler} objects are instanciated only once.
+ * This class implement the <i>Singleton design pattern</i>, so, each type of {@link iMSCP_Config_Handler} objects are
+ * instantiated only once.
  *
- * If you want use several instances of an iMSCP_Config_Handler object (e.g: To
- * handle separate configuration parameters that are stored in another container
- * such as a configuration file linked to a specific plugin) you should not use
- * this class. Instead of this, register your own iMSCP_Config_Handler objects
- * into the iMSCP_Registry object to be able to use them from all contexts.
+ * If you want use several instances of an iMSCP_Config_Handler object (e.g: To handle separate configuration parameters
+ * that are stored in another container such as a configuration file linked to a specific plugin) you should not use
+ * this class. Instead of this, register your own iMSCP_Config_Handler objects into the iMSCP_Registry object to be able
+ * to use them from all contexts.
  *
  * <b>Usage example:</b>
  * <code>
@@ -60,8 +59,7 @@
  *
  * See {@link iMSCP_Registry} for more information.
  *
- * To resume, the iMSCP_Config class acts as a registry for the
- * iMSCP_Config_Handler objects where the registered values
+ * To resume, the iMSCP_Config class acts as a registry for the iMSCP_Config_Handler objects where the registered values
  * (that are iMSCP_Config_Handler objects) are indexed by they class name.
  *
  * @package		iMSCP_Config
@@ -83,8 +81,7 @@ class iMSCP_Config {
 	/**#@-*/
 
 	/**
-	 * Array that contain references to {@link iMSCP_Config_Handler} objects
-	 * indexed by they class name
+	 * Array that contain references to {@link iMSCP_Config_Handler} objects indexed by they class name
 	 *
 	 * @staticvar array
 	 */
@@ -93,15 +90,13 @@ class iMSCP_Config {
 	/**
 	 * Get a iMSCP_Config_Handler instance
 	 *
-	 * Returns a reference to a {@link iMSCP_Config_Handler} instance, only
-	 * creating it if it doesn't already exist.
+	 * Returns a reference to a {@link iMSCP_Config_Handler} instance, only creating it if it doesn't already exist.
 	 *
 	 * The default handler object is set to {@link iMSCP_Config_Handler_File}
 	 *
 	 * @throws iMSCP_Exception
 	 * @param string $className iMSCP_Config_Handler class name
-	 * @param mixed $params Parameters that are passed to iMSCP_Config_Handler
-	 * object constructor
+	 * @param mixed $params Parameters that are passed to iMSCP_Config_Handler object constructor
 	 * @return iMSCP_Config_Handler An iMSCP_Config_Handler instance
 	 */
 	public static function getInstance($className = self::FILE, $params = null) {

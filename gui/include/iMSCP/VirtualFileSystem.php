@@ -1,6 +1,6 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
@@ -17,8 +17,9 @@
  * The Initial Developer of the Original Code is ispCP Team.
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
+ *
  * Portions created by the i-MSCP Team are Copyright (C) 2010 by
- * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
+ * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
  * @category	i-MSCP
  * @package		iMSCP_VirtualFileSystem
@@ -32,8 +33,7 @@
 /**
  * Virtual File System class
  *
- * This class provides a FTP layer that allows to browse and edit all customer's
- * files from the ispCP control Panel.
+ * This class provides a FTP layer that allows to browse and edit all customer's files from the ispCP control Panel.
  *
  * @category	i-MSCP
  * @package		iMSCP_VirtualFileSystem
@@ -90,11 +90,9 @@ class iMSCP_VirtualFileSystem {
 	/**
 	 * Constructor - Create a new Virtual File System
 	 *
-	 * Creates a new Virtual File System object for the
-	 * specified domain.
+	 * Creates a new Virtual File System object for the specified domain.
 	 *
-	 * Warning! $domain parameter is not sanitized, so this is
-	 * left as work for the caller.
+	 * Warning! $domain parameter is not sanitized, so this is left as work for the caller.
 	 *
 	 * @param string $domain Domain name of the new VFS.
 	 * @param iMSCP_Database $db iMSCP_Database instance.
@@ -207,8 +205,7 @@ class iMSCP_VirtualFileSystem {
 	/**
 	 * Get directory listing
 	 *
-	 * Get the directory listing of a specified dir,
-	 * either in short (default) or long mode.
+	 * Get the directory listing of a specified dir, either in short (default) or long mode.
 	 *
 	 * @param string $dirname VFS directory path.
 	 * @return array An array of directory entries, FALSE on failure.
@@ -234,17 +231,11 @@ class iMSCP_VirtualFileSystem {
 
 		for ($i = 0, $len = count($list); $i < $len; $i++) {
 			$parts = preg_split("/[\s]+/", $list[$i], 9);
+
 			$list[$i] = array(
-				'perms' => $parts[0],
-				'number' => $parts[1],
-				'owner' => $parts[2],
-				'group' => $parts[3],
-				'size' => $parts[4],
-				'month' => $parts[5],
-				'day' => $parts[6],
-				'time' => $parts[7],
-				'file' => $parts[8],
-				'type' => substr($parts[0], 0, 1),
+				'perms' => $parts[0], 'number' => $parts[1], 'owner' => $parts[2], 'group' => $parts[3],
+				'size' => $parts[4], 'month' => $parts[5], 'day' => $parts[6], 'time' => $parts[7],
+				'file' => $parts[8], 'type' => substr($parts[0], 0, 1),
 			);
 		}
 
@@ -301,8 +292,7 @@ class iMSCP_VirtualFileSystem {
 	 * Retrieves a file from the virtual file system
 	 *
 	 * @param string $file VFS file path.
-	 * @param int $mode VFS transfer mode. Must be either {@link self::VFS_ASCII}
-	 *	or {@link self::VFS_BINARY}.
+	 * @param int $mode VFS transfer mode. Must be either {@link self::VFS_ASCII} or {@link self::VFS_BINARY}.
 	 * @return boolean TRUE on success, FALSE on failure.
 	 */
 	public function get($file, $mode = self::VFS_ASCII) {
@@ -323,6 +313,7 @@ class iMSCP_VirtualFileSystem {
 
 		// Retrieve file contents
 		$res = file_get_contents($tmp);
+
 		// Delete temporary file
 		unlink($tmp);
 
@@ -334,8 +325,7 @@ class iMSCP_VirtualFileSystem {
 	 *
 	 * @param string $file VFS file path.
 	 * @param string $content File contents.
-	 * @param int $mode VFS transfer mode. Must be either {@link self::VFS_ASCII}
-	 * or {@link self::VFS_BINARY}.
+	 * @param int $mode VFS transfer mode. Must be either {@link self::VFS_ASCII} or {@link self::VFS_BINARY}.
 	 * @return boolean TRUE on success or FALSE on failure.
 	 */
 	public function put($file, $content, $mode = self::VFS_ASCII) {
@@ -347,6 +337,7 @@ class iMSCP_VirtualFileSystem {
 
 		// Get a temporary file name
 		$tmp = tempnam(VFS_TMP_DIR, 'vfs_');
+
 		// Save temporary file
 		$res = file_put_contents($tmp, $content);
 
@@ -379,8 +370,7 @@ class iMSCP_VirtualFileSystem {
 		$cfg = iMSCP_Registry::get('config');
 
 		// Get domain data
-		$query = "
-			SELECT `domain_uid`, `domain_gid` FROM `domain` WHERE `domain_name` = ?;";
+		$query = "SELECT `domain_uid`, `domain_gid` FROM `domain` WHERE `domain_name` = ?;";
 
 		$rs = exec_query($this->_db, $query, $this->_domain);
 
@@ -436,4 +426,3 @@ class iMSCP_VirtualFileSystem {
 		return $rs ? true : false;
 	}
 }
-

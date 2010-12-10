@@ -1,6 +1,6 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
@@ -17,8 +17,9 @@
  * The Initial Developer of the Original Code is ispCP Team.
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
+ *
  * Portions created by the i-MSCP Team are Copyright (C) 2010 by
- * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
+ * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
  * @category	i-MSCP
  * @package     iMSCP_Update
@@ -79,7 +80,7 @@ abstract class iMSCP_Update {
 	protected $_errorMessage = '';
 
 	/**
-	 * This class implements the sigleton design pattern
+	 * This class implements the singleton design pattern
 	 *
 	 * @return void
 	 */
@@ -89,7 +90,7 @@ abstract class iMSCP_Update {
 	}
 
 	/**
-	 * This class implements the sigleton design pattern
+	 * This class implements the singleton design pattern
 	 *
 	 * @return void
 	 */
@@ -172,9 +173,8 @@ abstract class iMSCP_Update {
 	/**
 	 * Executes all available updates
 	 *
-	 * This method executes all available updates. If a query provided by an
-	 * update fail, the succeeded queries from this update will not executed
-	 * again.
+	 * This method executes all available updates. If a query provided by an update fail, the succeeded queries from
+	 * this update will not executed again.
 	 *
 	 * @return boolean TRUE on success, FALSE otherwise
 	 * @todo Should be more generic (Only the database variable should be
@@ -186,7 +186,6 @@ abstract class iMSCP_Update {
 		 * @var $sql PDO
 		 */
 		$sql = iMSCP_Registry::get('pdo');
-
 
 		/**
 		 * @var $dbConfig iMSCP_Config_Handler_Db

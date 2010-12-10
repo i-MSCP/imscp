@@ -1,6 +1,6 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
@@ -17,8 +17,9 @@
  * The Initial Developer of the Original Code is ispCP Team.
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
+ *
  * Portions created by the i-MSCP Team are Copyright (C) 2010 by
- * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
+ * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
  * @category	i-MSCP
  * @package		iMSCP_NetworkCard
@@ -147,11 +148,7 @@ class iMSCP_NetworkCard {
 
 		$strBuffer = '';
 
-		$descriptorspec = array(
-			0 => array('pipe', 'r'),
-			1 => array('pipe', 'w'),
-			2 => array('pipe', 'w')
-		);
+		$descriptorspec = array(0 => array('pipe', 'r'), 1 => array('pipe', 'w'), 2 => array('pipe', 'w'));
 
 		$pipes = array();
 		$process = proc_open($strProgram, $descriptorspec, $pipes);
@@ -217,8 +214,7 @@ class iMSCP_NetworkCard {
 		$this->_offlineInterfaces =
 			array_diff($this->_interfaces, $this->_interfacesInfo[1]);
 
-		$this->_virtualInterfaces =
-			array_diff($this->_interfacesInfo[1], $this->_interfaces);
+		$this->_virtualInterfaces = array_diff($this->_interfacesInfo[1], $this->_interfaces);
 
 		$this->_availableInterfaces = array_diff(
 			$this->_interfaces, $this->_offlineInterfaces, $this->_virtualInterfaces, array('lo')
@@ -253,7 +249,7 @@ class iMSCP_NetworkCard {
 	 */
 	public function ip2NetworkCard($ip) {
 
-		$key = array_search($ip,$this->_interfacesInfo[2]);
+		$key = array_search($ip, $this->_interfacesInfo[2]);
 
 		if ($key === false) {
 			$this->_errors .= sprintf(tr("This IP (%s) is not assigned to any network card!"), $ip);

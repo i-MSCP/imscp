@@ -1,6 +1,6 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
@@ -17,8 +17,9 @@
  * The Initial Developer of the Original Code is ispCP Team.
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
+ *
  * Portions created by the i-MSCP Team are Copyright (C) 2010 by
- * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
+ * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
  * @category	i-MSCP
  * @package		iMSCP_SystemInfo
@@ -31,14 +32,15 @@
  */
 
 /**
- * This class provides the functionallitiy needed by {@see admin/system_info.php}
+ * This class provides the functionality needed by {@see admin/system_info.php}
  * for Linux and BSD systems.
  *
  * @category    ispCP
  * @package		iMSCP_SystemInfo
- * @author      Benedikt Heintel <benedikt.heintel@i-mscp.net>
  * @since       1.0.7 (ispCP)
  * @version     1.0.2
+ * @todo This class must be rewritten since Benedikt Heintel from the ispCP project was used some code from another GPL
+ * project without mention any source... 
  */
 class iMSCP_SystemInfo {
 
@@ -127,15 +129,11 @@ class iMSCP_SystemInfo {
 	private function _getCPUInfo() {
 
 		$cpu = array(
-			'model' => tr('N/A'),
-			'cpus' => tr('N/A'),
-			'cpuspeed' => tr('N/A'),
-			'cache' => tr('N/A'),
+			'model' => tr('N/A'), 'cpus' => tr('N/A'), 'cpuspeed' => tr('N/A'), 'cache' => tr('N/A'),
 			'bogomips' => tr('N/A')
 		);
 
-		if ($this->_os == 'FreeBSD' || $this->_os == 'OpenBSD' ||
-			$this->_os == 'NetBSD') {
+		if ($this->_os == 'FreeBSD' || $this->_os == 'OpenBSD' || $this->_os == 'NetBSD') {
 
 			$tmp = array();
 
@@ -243,12 +241,8 @@ class iMSCP_SystemInfo {
 				// Originally made by Sven Blumenstein <bazik@gentoo.org> in
 				// 2004 Modified by Tom Weustink <freshy98@gmx.net> in 2004
 				$sparclist = array(
-					'SUNW,UltraSPARC@0,0',
-					'SUNW,UltraSPARC-II@0,0',
-					'SUNW,UltraSPARC@1c,0',
-					'SUNW,UltraSPARC-IIi@1c,0',
-					'SUNW,UltraSPARC-II@1c,0',
-					'SUNW,UltraSPARC-IIe@0,0'
+					'SUNW,UltraSPARC@0,0', 'SUNW,UltraSPARC-II@0,0', 'SUNW,UltraSPARC@1c,0', 'SUNW,UltraSPARC-IIi@1c,0',
+					'SUNW,UltraSPARC-II@1c,0', 'SUNW,UltraSPARC-IIe@0,0'
 				);
 
 				foreach ($sparclist as $sparc) {
@@ -363,8 +357,7 @@ class iMSCP_SystemInfo {
 
 		$kernel = tr('N/A');
 
-		if ($this->_os == 'FreeBSD' || $this->_os == 'OpenBSD' ||
-			$this->_os == 'NetBSD') {
+		if ($this->_os == 'FreeBSD' || $this->_os == 'OpenBSD' || $this->_os == 'NetBSD') {
 
 			if ($kernel_raw = $this->sysctl('kern.version')) {
 				$kernel_arr = explode(':', $kernel_raw);
@@ -397,8 +390,7 @@ class iMSCP_SystemInfo {
 
 		$load = array(tr('N/A'), tr('N/A'), tr('N/A'));
 
-		if ($this->_os == 'FreeBSD' || $this->_os == 'OpenBSD' ||
-			$this->_os == 'NetBSD') {
+		if ($this->_os == 'FreeBSD' || $this->_os == 'OpenBSD' || $this->_os == 'NetBSD') {
 
 			if ($load_raw = $this->sysctl('vm.loadavg')) {
 				$load_raw = preg_replace('/{\s/', '', $load_raw);
@@ -526,9 +518,7 @@ class iMSCP_SystemInfo {
 
 			$pipes = array(); // satisfy warning
 
-			$proc = proc_open(
-				$cfg->CMD_SWAPCTL . $args, $descriptorspec, $pipes
-			);
+			$proc = proc_open($cfg->CMD_SWAPCTL . $args, $descriptorspec, $pipes);
 
 			if (is_resource($proc)) {
 				// Read data from stream (Pipe 1)
@@ -588,6 +578,7 @@ class iMSCP_SystemInfo {
 	 * @return string|Translated Uptime information
 	 */
 	private function _getUptime() {
+
 		$up = 0;
 		$uptime_str = tr('N/A');
 
@@ -647,7 +638,7 @@ class iMSCP_SystemInfo {
 	}
 
 	/**
-	 * Gets the content of a file if sucessful or and error otherwise.
+	 * Gets the content of a file if successful or and error otherwise.
 	 *
 	 * @param dtring $filename Path to file
 	 * @return bool|string
@@ -671,8 +662,7 @@ class iMSCP_SystemInfo {
 	}
 
 	/**
-	 * This function emulates PHP 5.3's strstr behavior if used as
-	 * strstr($haystack, $needle, true)
+	 * This function emulates PHP 5.3's strstr behavior if used as strstr($haystack, $needle, true)
 	 *
 	 * @param $haystack
 	 * @param $needle

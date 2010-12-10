@@ -1,6 +1,6 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
@@ -17,8 +17,9 @@
  * The Initial Developer of the Original Code is ispCP Team.
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
+ *
  * Portions created by the i-MSCP Team are Copyright (C) 2010 by
- * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
+ * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
  * @category	i-MSCP
  * @package		iMSCP_Registry
@@ -64,8 +65,7 @@ class iMSCP_Registry {
 	/**
 	 * Get an iMSCP_Registry instance
 	 *
-	 * Returns an {@link iMSCP_Registry} instance, only creating it if it
-	 * doesn't already exist.
+	 * Returns an {@link iMSCP_Registry} instance, only creating it if it doesn't already exist.
 	 *
 	 * @return iMSCP_Registry An iMSCP_Registry instance
 	 */
@@ -81,9 +81,8 @@ class iMSCP_Registry {
 	/**
 	 * Getter method to retrieve registered data
 	 *
-	 * <b>Note:</b> If you want get a reference for data that is not an object, you
-	 * should always use this method and not accessed it directly like an object
-	 * member.
+	 * <b>Note:</b> If you want get a reference for data that is not an object, you should always use this method and
+	 * not accessed it directly like an object member.
 	 *
 	 * @throws iMSCP_Exception
 	 * @param string $index Data key name
@@ -103,8 +102,7 @@ class iMSCP_Registry {
 	/**
 	 * Overloading on inaccessible members
 	 *
-	 * This method raises an {@link iMSCP_Exception} if a member is inaccessible
-	 * for reading.
+	 * This method raises an {@link iMSCP_Exception} if a member is inaccessible for reading.
 	 *
 	 * @throws iMSCP_Exception
 	 * @param string $index Data key name
@@ -135,15 +133,13 @@ class iMSCP_Registry {
 	/**
 	 * Setter method to register data by reference.
 	 *
-	 * This method take sense for the singleton objects that provide a method
-	 * to recreate the instance. When the object instance is reseted, the alias
-	 * that iq registered in the registry will refer to the new instance. It's
-	 * not the case with data that were registered with the {@link set()} method
-	 * because registered values for objects are objects identifiers and not
-	 * real aliases.
+	 * This method take sense for the singleton objects that provide a method to recreate the instance. When the object
+	 * instance is reseted, the alias that iq registered in the registry will refer to the new instance. It's not the
+	 * case with data that were registered with the {@link set()} method because registered values for objects are
+	 * objects identifiers and not real aliases.
 	 *
-	 * See the {@link http://www.php.net/manual/en/language.oop5.references.php
-	 * Php documentation} for more information about this issue.
+	 * See the {@link http://www.php.net/manual/en/language.oop5.references.php Php documentation} for more information
+	 * about this issue.
 	 *
 	 * @param string $index Data key name
 	 * @param mixed $value Data value

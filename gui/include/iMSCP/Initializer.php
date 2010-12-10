@@ -1,6 +1,6 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
@@ -17,8 +17,9 @@
  * The Initial Developer of the Original Code is ispCP Team.
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
+ *
  * Portions created by the i-MSCP Team are Copyright (C) 2010 by
- * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
+ * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
  * @category	i-MSCP
  * @package     iMSCP_Initializer
@@ -33,9 +34,8 @@
 /**
  * ispCP Initializer class
  *
- * The initializer is responsible for processing the ispCP configuration,
- * such as setting the include_path, initializing logging, database and
- * more.
+ * The initializer is responsible for processing the ispCP configuration, such as setting the include_path, initializing
+ * logging, database and more.
  *
  * @category    ispCP
  * @package     iMSCP_Initializer
@@ -62,25 +62,22 @@ class iMSCP_Initializer {
 	/**
 	 * Runs the initializer
 	 *
-	 * By default, this will invoke the {@link _processAll}  or
-	 * {@link _processCLI} methods, which simply executes all of the
-	 * initialization routines for execution context. Alternately, you can
-	 * specify explicitly which initialization methods you want:
+	 * By default, this will invoke the {@link _processAll}  or {@link _processCLI} methods, which simply executes all
+	 * of the initialization routines for execution context. Alternately, you can specify explicitly which
+	 * initialization methods you want:
 	 *
 	 * <i>Usage example:</i>
 	 * <code>
 	 *	iMSCP_Initializer::run('_setIncludePath')
 	 * </code>
 	 *
-	 * This is useful if you only want the include_path path initialized,
-	 * without incurring the overhead of completely loading the entire
-	 * environment.
+	 * This is useful if you only want the include_path path initialized, without incurring the overhead of completely
+	 * loading the entire environment.
 	 *
 	 * @throws iMSCP_Exception
-	 * @param string|iMSCP_Config_Handler_File $command Initializer method to be
-	 *	executed or an iMSCP_Config_Handler_File object
-	 * @param iMSCP_Config_Handler_File $config Optional iMSCP_Config_Handler_File
-	 * object
+	 * @param string|iMSCP_Config_Handler_File $command Initializer method to be executed or an
+	 * iMSCP_Config_Handler_File object
+	 * @param iMSCP_Config_Handler_File $config Optional iMSCP_Config_Handler_File object
 	 * @return iMSCP_Initializer The iMSCP_Initializer instance
 	 */
 	public static function run($command = '_processAll', iMSCP_Config_Handler_File $config = null) {
@@ -101,15 +98,14 @@ class iMSCP_Initializer {
 			$initializer->$command();
 
 		} else {
-			throw new iMSCP_Exception('Error: i-MSCP is already fully initialized!');
+			throw new iMSCP_Exception('i-MSCP is already fully initialized!');
 		}
 
 		return $initializer;
 	}
 
 	/**
-	 * Create a new Initializer instance that references the given
-	 * {@link iMSCP_Config_Handler_File} instance
+	 * Create a new Initializer instance that references the given {@link iMSCP_Config_Handler_File} instance
 	 *
 	 * @param iMSCP_Config_Handler_File $config iMSCP_Config_Handler_File object
 	 * @return void
@@ -214,23 +210,17 @@ class iMSCP_Initializer {
 	 */
 	protected function _setDisplayErrors() {
 
-		if($this->_config->DEBUG) {
-			ini_set('display_errors', 1);
-		} else {
-			ini_set('display_errors', 0);
-		}
+		$this->_config->DEBUG ? ini_set('display_errors', 1) : ini_set('display_errors', 0);
 	}
 
 	/**
 	 * Check for PHP version and Standard PHP library availability
 	 *
-	 * ispCP uses interfaces and classes that come from the Standard Php library
-	 * under PHP version 5.1.4. This methods ensures that the PHP version used
-	 * is more recent or equal to the PHP version 5.1.4 and that the SPL is
-	 * loaded.
+	 * ispCP uses interfaces and classes that come from the Standard Php library under PHP version 5.1.4. This methods
+	 * ensures that the PHP version used is more recent or equal to the PHP version 5.1.4 and that the SPL is loaded.
 	 *
-	 * <b>Note:</b> ispCP requires PHP 5.1.4 or later because some SPL
-	 * interfaces were not stable in earlier versions of PHP.
+	 * <b>Note:</b> ispCP requires PHP 5.1.4 or later because some SPL interfaces were not stable in earlier versions of
+	 * PHP.
 	 *
 	 * @throws iMSCP_Exception
 	 * @return void
@@ -242,13 +232,13 @@ class iMSCP_Initializer {
 		$php_version = substr(phpversion(), 0, 5);
 
 		if(!version_compare($php_version, '5.1.4', '>=')) {
-			$err_msg = sprintf('Error: PHP version is %s. Version 5.1.4 or later is required!', $php_version);
+			$err_msg = sprintf('PHP version is %s. Version 5.1.4 or later is required!', $php_version);
 
 		// We will use SPL interfaces like SplObserver, SplSubject
 		// Note: Both ArrayAccess and Iterator interfaces are part of PHP core,
 		// so, we can do the checking here without any problem.
 		} elseif($php_version < '5.3.0' && !extension_loaded('SPL')) {
-			$err_msg = 'Error: Standard PHP Library (SPL) was not detected! See http://php.net/manual/en/book.spl.php' .
+			$err_msg = 'Standard PHP Library (SPL) was not detected! See http://php.net/manual/en/book.spl.php' .
 				' for more information!';
 		} else {
 			return;
@@ -289,10 +279,7 @@ class iMSCP_Initializer {
 			$admin_email = $this->_config->DEFAULT_ADMIN_ADDRESS;
 
 			if($admin_email != '') {
-
-				$exceptionHandler->attach(
-					new iMSCP_Exception_Writer_Mail($admin_email)
-				);
+				$exceptionHandler->attach(new iMSCP_Exception_Writer_Mail($admin_email));
 			}
 		}
 
@@ -345,9 +332,8 @@ class iMSCP_Initializer {
 	/**
 	 * Establishes the connection to the database
 	 *
-	 * This methods establishes the default connection to the database by using
-	 * configuration parameters that come from the basis configuration object
-	 * and then, register the {@link iMSCP_Database} instance in the
+	 * This methods establishes the default connection to the database by using configuration parameters that come from
+	 * the basis configuration object and then, register the {@link iMSCP_Database} instance in the
 	 * {@link iMSCP_Registry} for shared access.
 	 *
 	 * A PDO instance is also registered in the registry for shared access.
@@ -413,12 +399,11 @@ class iMSCP_Initializer {
 	/**
 	 * Sets timezone
 	 *
-	 * This method ensures that the timezone is set to avoid any error with PHP
-	 * versions equal or later than version 5.3.x
+	 * This method ensures that the timezone is set to avoid any error with PHP versions equal or later than version
+	 * 5.3.x
 	 *
-	 * This method acts by checking the `date.timezone` value, and sets it to
-	 * the value from the ispCP PHP_TIMEZONE parameter if exists and if it not
-	 * empty or to 'UTC' otherwise. If the timezone identifier is invalid, an
+	 * This method acts by checking the `date.timezone` value, and sets it to the value from the ispCP PHP_TIMEZONE
+	 * parameter if exists and if it not empty or to 'UTC' otherwise. If the timezone identifier is invalid, an
 	 * {@link iMSCP_Exception} exception is raised.
 	 *
 	 * @throws iMSCP_Exception
@@ -446,13 +431,11 @@ class iMSCP_Initializer {
 	/**
 	 * Load configuration parameters from the database
 	 *
-	 * This function retrieves all the parameters from the database and merge
-	 * them with the basis configuration object.
+	 * This function retrieves all the parameters from the database and merge them with the basis configuration object.
 	 *
-	 * Parameters that exists in the basis configuration object will be replaced
-	 * by them that come from the database. The basis configuration object
-	 * contains parameters that come from the i-mscp.conf configuration file or
-	 * any parameter defined in the {@link environment.php} file.
+	 * Parameters that exists in the basis configuration object will be replaced by them that come from the database.
+	 * The basis configuration object contains parameters that come from the i-mscp.conf configuration file or any
+	 * parameter defined in the {@link environment.php} file.
 	 *
 	 * @return void
 	 */
@@ -472,9 +455,8 @@ class iMSCP_Initializer {
 	/**
 	 * Initialize the PHP output buffering / spGzip filter
 	 *
-	 * <b>Note:</b> The hight level (like 8, 9) for compression are not
-	 * recommended for performances reasons. The obtained gain with these levels
-	 * is very small compared to the intermediate level like 6,7.
+	 * <b>Note:</b> The hight level (like 8, 9) for compression are not recommended for performances reasons. The
+	 * obtained gain with these levels is very small compared to the intermediate level like 6,7.
 	 *
 	 * @return void
 	 */
@@ -482,10 +464,7 @@ class iMSCP_Initializer {
 
 		// Create a new filter that will be applyed on the buffer output
 		$filter = iMSCP_Registry::set(
-			'bufferFilter',
-			new iMSCP_Filter_Compress_Gzip(
-				iMSCP_Filter_Compress_Gzip::FILTER_BUFFER
-			)
+			'bufferFilter', new iMSCP_Filter_Compress_Gzip(iMSCP_Filter_Compress_Gzip::FILTER_BUFFER)
 		);
 
 		// Show compression information in HTML comment ?
@@ -503,7 +482,7 @@ class iMSCP_Initializer {
 	 * <b>Note:</b> Not Yet Implemented
 	 *
 	 * @return void
-	 * @todo Ask Jochen for the new i18n library and initilization processing
+	 * @todo Ask Jochen for the new i18n library and initialization processing
 	 */
 	protected function _initializeI18n() {}
 
@@ -528,8 +507,7 @@ class iMSCP_Initializer {
 	/**
 	 * Load all plugins
 	 *
-	 * This method loads all the active plugins. Only plugins for the current
-	 * execution context are loaded.
+	 * This method loads all the active plugins. Only plugins for the current execution context are loaded.
 	 *
 	 * <b>Note:</b> Not used at this moment (testing in progress...)
 	 *
@@ -555,9 +533,7 @@ class iMSCP_Initializer {
 
 		if(!empty($callbacks)) {
 			foreach($callbacks as $callback) {
-				call_user_func_array(
-					$callback['callback'], $callback['parameters']
-				);
+				call_user_func_array($callback['callback'], $callback['parameters']);
 			}
 		}
 	}

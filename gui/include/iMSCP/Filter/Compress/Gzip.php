@@ -1,6 +1,6 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
@@ -17,8 +17,9 @@
  * The Initial Developer of the Original Code is ispCP Team.
  * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
+ *
  * Portions created by the i-MSCP Team are Copyright (C) 2010 by
- * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
+ * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
  * @category	i-MSCP
  * @package		iMSCP_Filter
@@ -34,11 +35,9 @@
 /**
  * Gzip Filter class
  *
- * This class provides filter that allow to compress a string in GZIP file
- * format.
+ * This class provides filter that allow to compress a string in GZIP file format.
  *
- * This filter can be used both for create a standard gz file, and as filter for
- * the PHP ob_start() function.
+ * This filter can be used both for create a standard gz file, and as filter for the PHP ob_start() function.
  *
  * This filter compresses the data by using the GZIP format specifications
  * according the rfc 1952.
@@ -75,11 +74,9 @@ class iMSCP_Filter_Compress_Gzip {
 	const FILTER_FILE = 1;
 
 	/**
-	 * Tells whether information about compression should be added as HTML
-	 * comments
+	 * Tells whether information about compression should be added as HTML comments
 	 *
-	 * It's not recommended to use it in production to avoid multiple
-	 * compression work.
+	 * It's not recommended to use it in production to avoid multiple compression work.
 	 *
 	 * <b>Note:</b>Not usable in {@link self::FILTER_FILE} mode
 	 *
@@ -137,8 +134,8 @@ class iMSCP_Filter_Compress_Gzip {
 	protected $_gzipDataSize = 0;
 
 	/**
-	 * Tells if the filter should act as callback function for the PHP ob_start
-	 * function or as simple filter for standard gz file creation.
+	 * Tells if the filter should act as callback function for the PHP ob_start function or as simple filter for
+	 * standard gz file creation.
 	 *
 	 * @var int
 	 */
@@ -147,10 +144,8 @@ class iMSCP_Filter_Compress_Gzip {
 	/**
 	 * Constructor Create a new
 	 *
-	 * @param int $mode Tells if the filter should act as callback function for
-	 * the PHP ob_start function or as function for create a standard gz file.
-	 * The filter mode must be one of the iMSCP_Filter_Compress_Gzip::FILTER_*
-	 * constants.
+	 * @param int $mode Tells if the filter should act as callback function for the PHP ob_start function or as function
+	 * for create a standard gz file. The filter mode must be one of the iMSCP_Filter_Compress_Gzip::FILTER_* constants.
 	 * @param int $compressionLevel Compression level
 	 * @return void
 	 */
@@ -160,14 +155,10 @@ class iMSCP_Filter_Compress_Gzip {
 			if($mode === self::FILTER_BUFFER or $mode === self::FILTER_FILE) {
 				$this->_mode = $mode;
 			} else {
-				throw new iMSCP_Exception(
-					'iMSCP_Filter_Compress_Gzip error: Unknown filter mode!'
-				);
+				throw new iMSCP_Exception('iMSCP_Filter_Compress_Gzip error: Unknown filter mode!');
 			}
 		} else {
-			throw new iMSCP_Exception(
-				'iMSCP_Filter_Compress_Gzip error: Zlib Compression library is not loaded!'
-			);
+			throw new iMSCP_Exception('iMSCP_Filter_Compress_Gzip error: Zlib Compression library is not loaded!');
 		}
 
 		if(in_array(
@@ -175,26 +166,22 @@ class iMSCP_Filter_Compress_Gzip {
 			range($this->_minCompressionLevel, $this->_maxCompressionLevel))) {
 			$this->_compressionLevel = $compressionLevel;
 		} else {
-			throw new iMSCP_Exception(
-				'iMSCP_Filter_Compress_Gzip error: Wrong value for compression level!'
-			);
+			throw new iMSCP_Exception('iMSCP_Filter_Compress_Gzip error: Wrong value for compression level!');
 		}
 	}
 
 	/**
 	 * Gzip Filter
 	 *
-	 * This method can be used both for create standard gz files, and as filter
-	 * for the ob_start() function to help facilitate sending gzip encoded data
-	 * to the clients browsers that support the gzip content-coding.
+	 * This method can be used both for create standard gz files, and as filter for the ob_start() function to help
+	 * facilitate sending gzip encoded data to the clients browsers that support the gzip content-coding.
 	 *
-	 * According the PHP documentation, when used as filter for the ob_start()
-	 * function, and if any error occurs, FALSE is returned and then, content is
-	 * sent to the client browser without compression. Note that FALSE is also
+	 * According the PHP documentation, when used as filter for the ob_start() function, and if any error occurs, FALSE
+	 * is returned and then, content is sent to the client browser without compression. Note that FALSE is also
 	 * returned when the data are already encoded.
 	 *
-	 * If used in {@link self::FILTER_FILE} mode and if the $filePath is not
-	 * specified, the encoded string is returned instead of be written in a file.
+	 * If used in {@link self::FILTER_FILE} mode and if the $filePath is not specified, the encoded string is returned
+	 * instead of be written in a file.
 	 *
 	 * @param string $data Data to be compressed
 	 * @param [string $filePath File path to be used for gz file creation]
@@ -276,8 +263,7 @@ class iMSCP_Filter_Compress_Gzip {
 	/**
 	 * Check and sets the acceptable content-coding for compression
 	 *
-	 * @return boolean TRUE if the client browser accept gzip content-coding as
-	 * response, FALSE otherwise
+	 * @return boolean TRUE if the client browser accept gzip content-coding as response, FALSE otherwise
 	 */
 	protected function _getEncoding() {
 
@@ -300,8 +286,7 @@ class iMSCP_Filter_Compress_Gzip {
 	/**
 	 * Send headers
 	 *
-	 * Note: Only called when the filter is used as callback function of the
-	 * PHP ob_start function.
+	 * Note: Only called when the filter is used as callback function of the PHP ob_start function.
 	 *
 	 * @return void
 	 */
@@ -314,8 +299,7 @@ class iMSCP_Filter_Compress_Gzip {
 	/**
 	 * Adds compression information as HTML comment
 	 *
-	 * Note: Only called when the filter is used as callback function of the
-	 * PHP ob_start function.
+	 * Note: Only called when the filter is used as callback function of the PHP ob_start function.
 	 *
 	 * @param string $gzipData Encoded data in gzip file format
 	 * @param string $time Time for data compression
