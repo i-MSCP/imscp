@@ -26,8 +26,9 @@
     </head>
 	<body>
 		<div class="header">
-			<!-- todo partial for main menu -->
-			{MAIN_MENU}
+			<div class="main_menu">
+				<?php echo $this->navigation()->menu(); ?>
+			</div>
 			<div class="logo"><img src="themes/default/images/imscp_logo.png" alt="i-MSCP logo" /></div>
 		</div>
 		<div class="location">
@@ -35,9 +36,10 @@
 			<ul class="location-menu">
 				<li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
 			</ul>
-			<ul class="path">
+			<?php echo $this->navigation()->breadcrumbs()->setMinDepth(0)->setLinkLast(true)->setSeparator(" >> "); ?>
+			<!--<ul class="path">
 				<li><a href="settings.php">{TR_SETTINGS}</a></li>
-			</ul>
+			</ul>-->
 		</div>
 		<div class="left_menu">
 			<!-- todo partial for left menu -->

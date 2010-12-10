@@ -33,30 +33,55 @@
  * @license     http://www.gnu.org/licenses/ GPL v2
  */
 
-class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
-{
-
-	/**
-	 * initialize the html Doctype to be used in all views
-	 *
-	 * @return void
-	 */
-	protected function initDoctype() {
-
-		$this->bootstrap('view');
-		$view = $this->getResource('view');
-		$view->doctype('XHTML1_STRICT');
-	}
-
-	/**
-	 * Initialize the main menu
-	 * 
-	 * @return Zend_Navigation
-	 * @todo per module menu
-	 */
-	protected function _initMainMenu()    {
-
-        $view = $this->bootstrap('layout')->getResource('layout')->getView();
-        $view->navigation(new Zend_Navigation(include(APPLICATION_PATH . '/configs/menus/main_admin.php')));
-	}
-}
+// Admin main menu
+return array(
+    array(
+        'label' => 'General information',
+        'controller' => 'index',
+        'action' => 'index',
+	    'class' => 'general'
+    ),
+    array(
+        'label' => 'Manage hosting plans',
+        'controller' => 'index',
+        'action' => 'index',
+	    'visible' => 0,
+	    'class' => 'hosting_plans'
+    ),
+    array(
+        'label' => 'System tools',
+        'controller' => 'index',
+        'action' => 'index',
+	    'class' => 'webtools'
+    ),
+    array(
+        'label' => 'Manage users',
+        'controller' => 'index',
+        'action' => 'index',
+	    'class' => 'manage_users'
+    ),
+    array(
+        'label' => 'Statistics',
+        'controller' => 'index',
+        'action' => 'index',
+	    'class' => 'general'
+    ),
+    array(
+        'label' => 'Support system',
+        'controller' => 'index',
+        'action' => 'index',
+	    'class' => 'support',
+    ),
+    array(
+        'label' => 'Support system',
+        'controller' => 'index',
+        'action' => 'index',
+	    'class' => 'general',
+    ),
+    array(
+        'label' => 'Settings',
+        'controller' => 'index',
+        'action' => 'index',
+	    'class' => 'settings'
+    ),
+);

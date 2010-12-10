@@ -157,6 +157,19 @@ dd {
     float: right;
 }
 
+/* class icon to zend */
+.navigation {
+    background-position: top left;
+    background-repeat: no-repeat;
+    padding-left: 20px;
+    height: 16px;
+    line-height: 16px;
+    display: -moz-inline-block;
+    display: inline-block;
+    margin: 0 5px;
+    float: right;
+}
+
 .icon {
     background-position: top left;
     background-repeat: no-repeat;
