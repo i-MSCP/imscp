@@ -1,6 +1,10 @@
 i-MSCP ChangeLog
 ~~~~~~~~~~~~~~~~
 
+2010-12-09 Sascha Bay
+	- GUI:
+		Fixed #49: Some improvements on multilanguage.php
+
 2010-12-09 Laurent Declercq
 	- GUI:
 		Added iMSCP_Database_ResultSet::fetchAll() method to be able to fetches all rows from the current result set
@@ -10,7 +14,7 @@ i-MSCP ChangeLog
 
 2010-12-08 Sascha Bay
 	- MAINTSCRIPTS:
-		Fixed: #48 Licence header for create_release.sh
+		Fixed #48: Licence header for create_release.sh
 
 2010-12-07 Sascha Bay
 	- CONFIGS:

@@ -127,7 +127,9 @@ function showLang($tpl) {
 					'TR_UNINSTALL' => tr('N/A'),
 					'LANG_DELETE_LINK' => '',
 					'LANGUAGE' => tohtml($language_name),
-					'LANGUAGE_REVISION' => $language_revision
+					'LANGUAGE_REVISION' => $language_revision,
+					'LANG_VALUE_CHECKED' => $cfg->HTML_CHECKED,
+					'LANG_VALUE' => $tr_langcode
 				)
 			);
 
@@ -140,7 +142,9 @@ function showLang($tpl) {
 						"language_delete.php?delete_lang=lang_{$dat[1]}",
 					'LANG_DELETE_SHOW' => '',
 					'LANGUAGE' => tohtml($language_name),
-					'LANGUAGE_REVISION' => $language_revision
+					'LANGUAGE_REVISION' => $language_revision,
+					'LANG_VALUE_CHECKED' => '',
+					'LANG_VALUE' => $tr_langcode
 				)
 			);
 
@@ -502,7 +506,7 @@ $tpl->assign(
 		'TR_LANGUAGE'               => tr('Language'),
 		'TR_MESSAGES'               => tr('Messages'),
 		'TR_LANG_REV'               => tr('Date'),
-		'TR_DEFAULT'                => tr('Panel Default'),
+		'TR_DEFAULT'                => tr('Panel default language'),
 		'TR_ACTION'                 => tr('Action'),
 		'TR_SAVE'                   => tr('Save'),
 		'TR_INSTALL_NEW_LANGUAGE'   => tr('Install new language'),

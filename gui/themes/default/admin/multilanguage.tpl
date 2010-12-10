@@ -16,13 +16,33 @@
         </script>
         <![endif]-->
         <script type="text/javascript">
-            <!--
-            function action_delete(url, language) {
-                if (!confirm(sprintf("{TR_MESSAGE_DELETE}", language)))
-                    return false;
-                location = url;
-            }
-            //-->
+		/*<![CDATA[*/
+		
+			function action_delete(url, language) {
+		
+				if (!confirm(sprintf("{TR_MESSAGE_DELETE}", language)))
+					return false;
+		
+				location = url;
+			}
+		
+			// Overrides exportation url to enable/disable gzip compression
+			//
+			// author Laurent Declercq <laurent.declercq@i-mscp.net>
+			// Since 1.0.6
+			function override_export_url(ob) {
+		
+				regexp = new RegExp('[a-z_]*([0-9]+)');
+				link = document.getElementById('url_export' + regexp.exec(ob.id)[1]);
+		
+				if(ob.checked) {
+					link.href = link.href + '&compress=1';
+				} else {
+					link.href = link.href. substring(0, link.href.indexOf('&compress'));
+				}
+			}
+		
+		/*]]>*/
         </script>
     </head>
 
@@ -76,17 +96,15 @@
                         <td><span class="icon i_locale">{LANGUAGE}</span></td>
                         <td>{MESSAGES}</td>
                         <td>{LANGUAGE_REVISION}</td>
-                        <td><!-- BDP: lang_def -->
-                            {DEFAULT}
-                            <!-- EDP: lang_def -->
-                                        <!-- BDP: lang_radio -->
-                            <input type="radio" name="default_language" value="{LANG_VALUE}" />
+                        <td>
+							<!-- BDP: lang_radio -->
+                            	<input type="radio" name="default_language" value="{LANG_VALUE}" {LANG_VALUE_CHECKED}" />
                             <!-- EDP: lang_radio -->
                         </td>
-                        <td><a class="icon i_details" href="{URL_EXPORT}" target="_blank">{TR_EXPORT}</a>
+                        <td><a class="icon i_details" href="{URL_EXPORT}" id="url_export{INDEX}" target="_blank">{TR_EXPORT}</a><input id="gz_export{INDEX}" type="checkbox" onClick="override_export_url(this)" style="vertical-align:middle;margin-bottom:3px;" /><span style="font-size:8px;vertical-align:middle;">{TR_GZIPPED}</span>
                             <!-- BDP: lang_delete_show -->
-                <!-- EDP: lang_delete_show -->
-                <!-- BDP: lang_delete_link -->
+                			<!-- EDP: lang_delete_show -->
+							<!-- BDP: lang_delete_link -->
                             <a class="icon i_delete" href="#" onclick="action_delete('{URL_DELETE}', '{LANGUAGE}')">{TR_UNINSTALL}</a>
                             <!-- EDP: lang_delete_link -->
                         </td>
