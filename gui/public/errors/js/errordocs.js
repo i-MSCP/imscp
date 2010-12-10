@@ -1,4 +1,3 @@
-<?php
 /**
  * i-MSCP - internet Multi Server Control Panel
  *
@@ -25,17 +24,16 @@
  *
  * @category    i-MSCP
  * @copyright   2010 by i-MSCP | http://i-mscp.net
- * @author      Zend Tools
  * @author      i-MSCP Team
- * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
  * @version     SVN: $Id$
  * @link        http://i-mscp.net i-MSCP Home Site
  * @license     http://www.gnu.org/licenses/ GPL v2
  */
 
-class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
-{
-
-
+function get_path() {
+	if (document.location.pathname !== undefined) {
+		return document.location.pathname.replace( /[<]/g, "&lt;").replace(/[>]/g, "&gt;");
+	} else {
+		return "&nbsp;";
+	}
 }
-
