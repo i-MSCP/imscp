@@ -36,29 +36,29 @@
 // Admin main menu
 return array(
     array(
-        'label' => 'General information',
+        'label' => 'General Information',
         'controller' => 'index',
         'action' => 'index',
 	    'class' => 'general'
     ),
     array(
-        'label' => 'Manage hosting plans',
-        'controller' => 'index',
-        'action' => 'index',
-	    'visible' => 0,
-	    'class' => 'hosting_plans'
-    ),
-    array(
-        'label' => 'System tools',
-        'controller' => 'index',
-        'action' => 'index',
-	    'class' => 'webtools'
-    ),
-    array(
-        'label' => 'Manage users',
+        'label' => 'Manage Users',
         'controller' => 'index',
         'action' => 'index',
 	    'class' => 'manage_users'
+    ),
+    array(
+        'label' => 'Hosting Plans',
+        'controller' => 'index',
+        'action' => 'index',
+	    'class' => 'hosting_plans',
+	    'visible' => 1,
+    ),
+    array(
+        'label' => 'System Tools',
+        'controller' => 'index',
+        'action' => 'index',
+	    'class' => 'webtools'
     ),
     array(
         'label' => 'Statistics',
@@ -67,21 +67,15 @@ return array(
 	    'class' => 'general'
     ),
     array(
-        'label' => 'Support system',
+        'label' => 'Support System',
         'controller' => 'index',
         'action' => 'index',
 	    'class' => 'support',
-    ),
-    array(
-        'label' => 'Support system',
-        'controller' => 'index',
-        'action' => 'index',
-	    'class' => 'general',
     ),
     array(
         'label' => 'Settings',
         'controller' => 'index',
         'action' => 'index',
 	    'class' => 'settings'
-    ),
+    )
 );

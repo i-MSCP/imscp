@@ -33,55 +33,45 @@
  * @license     http://www.gnu.org/licenses/ GPL v2
  */
 
-// Admin main menu
+// Reseller main menu
 return array(
     array(
-        'label' => 'funk',
+        'label' => 'General Information',
         'controller' => 'index',
         'action' => 'index',
 	    'class' => 'general'
     ),
     array(
-        'label' => 'Manage hosting plans',
-        'controller' => 'index',
-        'action' => 'index',
-	    'visible' => 0,
-	    'class' => 'hosting_plans'
-    ),
-    array(
-        'label' => 'System tools',
-        'controller' => 'index',
-        'action' => 'index',
-	    'class' => 'webtools'
-    ),
-    array(
-        'label' => 'Manage users',
+        'label' => 'Manage Users',
         'controller' => 'index',
         'action' => 'index',
 	    'class' => 'manage_users'
     ),
     array(
-        'label' => 'Statistics',
+        'label' => 'Hosting Plans',
         'controller' => 'index',
         'action' => 'index',
-	    'class' => 'general'
+	    'class' => 'hosting_plans',
+	    'visible' => 1,
     ),
     array(
-        'label' => 'Support system',
+        'label' => 'Orders',
+        'controller' => 'index',
+        'action' => 'index',
+	    'class' => 'purchasing'
+    ),
+    array(
+        'label' => 'Support System',
         'controller' => 'index',
         'action' => 'index',
 	    'class' => 'support',
+	    'visible' => 1,
     ),
     array(
-        'label' => 'Support system',
+        'label' => 'Custom Menus',
         'controller' => 'index',
         'action' => 'index',
-	    'class' => 'general',
-    ),
-    array(
-        'label' => 'Settings',
-        'controller' => 'index',
-        'action' => 'index',
-	    'class' => 'settings'
-    ),
+	    'class' => 'custom_link',
+	    'visible' => 1,
+    )
 );
