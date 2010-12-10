@@ -41,22 +41,23 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	 *
 	 * @return void
 	 */
-	protected function initDoctype() {
+	protected function _initDoctype() {
 
 		$this->bootstrap('view');
 		$view = $this->getResource('view');
-		$view->doctype('XHTML1_STRICT');
+		$view->doctype('XHTML1_TRANSITIONAL');
 	}
 
 	/**
-	 * Initialize the main menu
-	 * 
-	 * @return Zend_Navigation
+	 * Initialize the main and left menus
+	 *
+	 * @return void
 	 * @todo per module menu
 	 */
-	protected function _initMainMenu()    {
+	protected function _initMenus()    {
 
         $view = $this->bootstrap('layout')->getResource('layout')->getView();
-        $view->navigation(new Zend_Navigation(include(APPLICATION_PATH . '/configs/menus/main_admin.php')));
+        $view->mainMenu = new Zend_Navigation(include(APPLICATION_PATH . '/configs/menus/main_admin.php'));
+        //$view->leftMenu = new Zend_Navigation(include(APPLICATION_PATH . '/configs/menus/left_admin.php'));
 	}
 }
