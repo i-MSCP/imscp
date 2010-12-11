@@ -38,6 +38,14 @@ class ErrorController extends Zend_Controller_Action
 
     public function errorAction()
     {
+	    $this->_helper->layout->setLayout('simple');
+
+	    // Set some variable (will be moved at base controller later)
+	    $this->view->pageTitle = 'i-MSCP - internet Multi Server Control Panel - Exception';
+	    $this->view->productLongName = 'internet Multi Server Control Panel';
+	    $this->view->productLink = 'http://www.i-mscp.net';
+	    $this->view->productCopyright = '© Copyright 2010 i-MSCP Team<br/>All Rights Reserved';
+
         $errors = $this->_getParam('error_handler');
         
         if (!$errors) {
@@ -83,7 +91,4 @@ class ErrorController extends Zend_Controller_Action
         $log = $bootstrap->getResource('Log');
         return $log;
     }
-
-
 }
-
