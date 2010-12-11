@@ -44,7 +44,7 @@ class ErrorController extends Zend_Controller_Action
 	    $this->view->pageTitle = 'i-MSCP - internet Multi Server Control Panel - Exception';
 	    $this->view->productLongName = 'internet Multi Server Control Panel';
 	    $this->view->productLink = 'http://www.i-mscp.net';
-	    $this->view->productCopyright = '© Copyright 2010 i-MSCP Team<br/>All Rights Reserved';
+	    $this->view->productCopyright = '&copy; Copyright 2010 i-MSCP Team<br/>All Rights Reserved';
 
         $errors = $this->_getParam('error_handler');
         
