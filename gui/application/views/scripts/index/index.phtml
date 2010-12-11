@@ -1,43 +1,32 @@
-<style>
-    a:link,
-    a:visited
-    {
-        color: #0398CA;
-    }
-
-    span#zf-name
-    {
-        color: #91BE3F;
-    }
-
-    div#welcome
-    {
-        color: #FFFFFF;
-        background-image: url(http://framework.zend.com/images/bkg_header.jpg);
-        width:  600px;
-        height: 400px;
-        border: 2px solid #444444;
-        overflow: hidden;
-        text-align: center;
-    }
-
-    div#more-information
-    {
-        background-image: url(http://framework.zend.com/images/bkg_body-bottom.gif);
-        height: 100%;
-    }
-</style>
-<div id="welcome">
-    <h1>Welcome to the <span id="zf-name">Zend Framework!</span></h1>
-
-    <h3>This is your project's main page</h3>
-
-    <div id="more-information">
-        <p><img src="http://framework.zend.com/images/PoweredBy_ZF_4LightBG.png" /></p>
-        <p>
-            Helpful Links: <br />
-            <a href="http://framework.zend.com/">Zend Framework Website</a> |
-            <a href="http://framework.zend.com/manual/en/">Zend Framework Manual</a>
-        </p>
-    </div>
-</div>
+		<!-- BDP: page_message -->
+		<div class="{MESSAGE_CLS} message">{MESSAGE}</div>
+		<!-- EDP: page_message -->
+		<div id="outer">
+			<div id="middle">
+				<div id="inner">
+					<form name="login_frm" action="index.php" method="post">
+						<fieldset>
+							<label>Username:<input type="text" name="uname" id="uname" value="" maxlength="255" tabindex="1" /></label>
+							<label>Password:<input type="password" name="upass" id="upass" value="" maxlength="255" tabindex="2" /></label>
+							<div class="buttons">
+							<!-- BDP: lostpwd_button -->
+								<input style="text-align:left;padding-left:15px;" type="button" name="lostpwd" value="Lost Password" tabindex="7" onclick="location.href='lostpassword.php';return false"/>&nbsp;&nbsp;&nbsp;
+							<!-- EDP: lostpwd_button -->
+								<input type="submit" name="" value="Login" tabindex="3" />
+							</div>
+							<!-- /* Uncomment this to show the ssl switch */
+							<div style="margin-top:15px;">
+								<a class="icon i_lock" href="{TR_SSL_LINK}" title="{TR_SSL_DESCRIPTION}">{TR_SSL_DESCRIPTION}</a>
+							</div> -->
+						</fieldset>
+					</form>
+					<div class="toolsbox">
+    					<ul class="icons">
+       						<li><a class="pma" href="{TR_PMA_LINK}" tabindex="4">PhpMyAdmin</a></li>
+       						<li><a class="filemanager" href="{TR_FTP_LINK}" tabindex="5">FileManager</a></li>
+       						<li><a class="webmail" href="{TR_WEBMAIL_LINK}" tabindex="6">Webmail</a></li>
+   						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
