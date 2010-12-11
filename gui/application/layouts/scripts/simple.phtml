@@ -3,18 +3,20 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en">
 	<head>
-		<title>i-MSCP - internet Multi Server Control Panel / Login</title>
-		<meta name="robots" content="nofollow, noindex" />
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<meta http-equiv="Content-Style-Type" content="text/css" />
-		<meta http-equiv="Content-Script-Type" content="text/javascript" />
-		<link href="/themes/default/css/simple.css" rel="stylesheet" type="text/css" />
-		<!--[if IE 6]>
-			<script type="text/javascript" src="/themes/default/js/DD_belatedPNG_0.0.8a-min.js"></script>
-			<script type="text/javascript">
-				DD_belatedPNG.fix('*');
-			</script>
-		<![endif]-->
+		<?php
+			$this->headTitle('i-MSCP - internet Multi Server Control Panel / Login');
+			$this->headMeta()->appendName('robots', 'nofollow, noindex')
+				->appendHttpEquiv('Content-Type', 'text/html; charset=UTF-8')
+				->appendHttpEquiv('X-UA-Compatible', 'IE=8')
+				->appendHttpEquiv('Content-Style-Type', 'text/css')
+				->appendHttpEquiv('Content-Script-Type', 'text/javascript');
+			$this->headLink()->appendStylesheet('/themes/default/css/simple.css')
+                 ->headLink(array('rel' => 'favicon', 'href' => '/favicon.ico'),'PREPEND');
+			$this->headScript()->appendFile('/themes/default/js/DD_belatedPNG_0.0.8a-min.js', 'text/javascript', array('conditional' => 'IE 6'))
+				->appendScript("DD_belatedPNG.fix('*');" . PHP_EOL, 'text/javascript', array('conditional' => 'IE 6'));
+			echo $this->headTitle(), PHP_EOL, $this->headMeta(), PHP_EOL, $this->headLink(), PHP_EOL, $this->headScript(), PHP_EOL;
+		?>
+
 	</head>
 	<body onload="document.login_frm.uname.focus()" class="body">
 		<div class="header">
@@ -26,7 +28,7 @@
 			</div>
 			<div id="copyright">
 				<div id="copyrightInner">
-					<a href="{productLink}" target="blank" tabindex="8">
+					<a href="http://www.i-mscp.net" target="blank" tabindex="8">
 						&copy; Copyright 2010 i-MSCP Team<br/>All Rights Reserved
 					</a>
 				</div>
