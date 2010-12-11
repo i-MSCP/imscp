@@ -38,7 +38,7 @@ class ErrorController extends Zend_Controller_Action
 
     public function errorAction()
     {
-	    $this->_helper->layout->setLayout('simple');
+	    $this->_helper->layout->disableLayout();
 
 	    // Set some variable (will be moved at base controller later)
 	    $this->view->pageTitle = 'i-MSCP - internet Multi Server Control Panel - Exception';
