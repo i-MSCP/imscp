@@ -57,7 +57,12 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	protected function _initMenus()    {
 
         $view = $this->bootstrap('layout')->getResource('layout')->getView();
-        $view->mainMenu = new Zend_Navigation(include(APPLICATION_PATH . '/configs/menus/main_admin.php'));
+
+        $config = new Zend_Config_Xml(APPLICATION_PATH .'/configs/menus/main_admin.xml', 'main_menu');
+        $view->mainMenu = new Zend_Navigation($config);
+
+		//$view->mainMenu = new Zend_Navigation(include(APPLICATION_PATH . '/configs/menus/main_admin.php'));
+        //$view->mainMenu = new Zend_Navigation(include(APPLICATION_PATH . '/configs/menus/main_admin.php'));
         //$view->leftMenu = new Zend_Navigation(include(APPLICATION_PATH . '/configs/menus/left_admin.php'));
 	}
 }
