@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * i-MSCP - internet Multi Server Control Panel
+ *
+ * Copyright (C) 2010 by internet Multi Server Control Panel - http://i-mscp.net
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>
+ *
+ * The Original Code is "i-MSCP - internet Multi Server Control Panel".
+ *
+ * The Initial Developer of the Original Code is i-MSCP Team.
+ * Portions created by Initial Developer are Copyright (C) 2010 by
+ * internet Multi Server Control Panel. All Rights Reserved.
+ *
+ * @category    i-MSCP
+ * @copyright   2010 by i-MSCP | http://i-mscp.net
+ * @author      Zend Tools
+ * @author      i-MSCP Team
+ * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
+ * @version     SVN: $Id$
+ * @link        http://i-mscp.net i-MSCP Home Site
+ * @license     http://www.gnu.org/licenses/ GPL v2
+ */
+-->
+<config>
+	<main_menu>
+		<general_information>
+			<label>General Information</label>
+			<module>client</module>
+			<controller>index</controller>
+			<action>index</action>
+			<class>general</class>
+		</general_information>
+		<manage_domains>
+			<label>Manage Domains</label>
+			<module>client</module>
+			<controller>index</controller>
+			<action>index</action>
+			<class>domains</class>
+			<visible>1</visible>
+		</manage_domains>
+		<email_accounts>
+			<label>Email Accounts</label>
+			<module>client</module>
+			<controller>index</controller>
+			<action>index</action>
+			<class>email</class>
+			<visible>1</visible>
+		</email_accounts>
+		<ftp_accounts>
+			<label>Ftp Accounts</label>
+			<module>client</module>
+			<controller>index</controller>
+			<action>index</action>
+			<class>ftp</class>
+			<visible>1</visible>
+		</ftp_accounts>
+		<databases>
+			<label>Databases</label>
+			<module>client</module>
+			<controller>index</controller>
+			<action>index</action>
+			<class>database</class>
+			<visible>1</visible>
+		</databases>
+		<webtools>
+			<label>Webtools</label>
+			<module>client</module>
+			<controller>index</controller>
+			<action>index</action>
+			<class>webtools</class>
+			<visible>1</visible>
+		</webtools>
+		<statistics>
+			<label>Statistics</label>
+			<modules>client</modules>
+			<controller>index</controller>
+			<action>index</action>
+			<class>statistics</class>
+			<visible>1</visible>
+		</statistics>
+		<support_system>
+			<label>Support System</label>
+			<module>client</module>
+			<controller>index</controller>
+			<action>index</action>
+			<class>support</class>
+			<visible>1</visible>
+		</support_system>
+		<custom_menus>
+			<label>Custom menus</label>
+			<module>client</module>
+			<controller>index</controller>
+			<action>index</action>
+			<class>custom_link</class>
+			<visible>1</visible>
+		</custom_menus>
+	</main_menu>
+</config>
