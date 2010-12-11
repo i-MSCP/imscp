@@ -33,36 +33,18 @@
  * @license     http://www.gnu.org/licenses/ GPL v2
  */
 
-class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
+class Client_Bootstrap extends Zend_Application_Module_Bootstrap
 {
-
-	/**
-	 * initialize the html Doctype to be used in all views
-	 *
-	 * @return void
-	 */
-	protected function _initDoctype() {
-
-		$this->bootstrap('view');
-		$view = $this->getResource('view');
-		$view->doctype('XHTML1_TRANSITIONAL');
-	}
-
 	/**
 	 * Initialize the main and left menus
 	 *
 	 * @return void
 	 * @todo per module menu
 	 */
-	protected function _initMenus()    {
+	protected function _initMenus() {
 
-        //$view = $this->bootstrap('layout')->getResource('layout')->getView();
-
-        //$config = new Zend_Config_Xml(APPLICATION_PATH .'/configs/menus/main_admin.xml', 'main_menu');
-        //$view->mainMenu = new Zend_Navigation($config);
-
-		//$view->mainMenu = new Zend_Navigation(include(APPLICATION_PATH . '/configs/menus/main_admin.php'));
-        //$view->mainMenu = new Zend_Navigation(include(APPLICATION_PATH . '/configs/menus/main_admin.php'));
-        //$view->leftMenu = new Zend_Navigation(include(APPLICATION_PATH . '/configs/menus/left_admin.php'));
+		$this->getApplication()->view->mainMenu = new Zend_Navigation(
+			new Zend_Config_Xml(APPLICATION_PATH .'/configs/menus/main_client.xml', 'main_menu')
+		);
 	}
 }
