@@ -1,0 +1,8 @@
+<ul class="path">
+<?php
+	foreach ($this->pages as $page) {
+		$class = $page->getClass();
+		echo "<h1 class=\"$class\">" . $page->getLabel() . '</h1>', PHP_EOL;
+	}
+?>
+</ul>

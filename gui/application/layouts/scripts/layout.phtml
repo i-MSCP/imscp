@@ -24,13 +24,18 @@
 			<div class="logo"><img src="/themes/default/images/imscp_logo.png" alt="i-MSCP logo" /></div>
 		</div>
 		<div class="location">
-			<div class="location-area icons-left">{TR_MENU_TITLE}</div>
+			<div class="location-area icons-left">
+				<?php
+					echo $this->navigation($this->mainMenu)->breadcrumbs()->setPartial('_sections.phtml')
+					->setLinkLast(true)->setMinDepth(0)->setMaxDepth(1);
+				?>
+			</div>
 			<ul class="location-menu">
 				<li><a class="logout" href="../index.php?logout">Logout</a></li>
 			</ul>
 			<?php
-				echo $this->navigation($this->mainMenu)->breadcrumbs()->setPartial('_breadcrumbs.phtml')->setLinkLast(false)
-					->setMinDepth(0)->setSeparator(' >> ');
+				echo $this->navigation($this->mainMenu)->breadcrumbs()->setPartial('_breadcrumbs.phtml')
+					->setLinkLast(false)->setMinDepth(0)->setSeparator(' >> ');
 			?>
 		</div>
 		<div class="left_menu">
