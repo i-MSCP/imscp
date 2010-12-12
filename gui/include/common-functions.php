@@ -886,7 +886,7 @@ function get_application_installer_conf () {
 }
 
 /**
- * Get all software packages from database since last update from the webdepot
+ * Get all software packages from database since last update from the websoftware depot
  *
  * @since 1.0.0
  * @author Sascha Bay (TheCry) <sascha.bay@i-mscp.net>
@@ -939,7 +939,7 @@ function get_webdepot_software_list (&$tpl,$user_id) {
 }
 
 /**
- * Update database from the webdepot package xml list
+ * Update database from the websoftware depot xml file list
  *
  * @since 1.0.0
  * @author Sascha Bay (TheCry) <sascha.bay@i-mscp.net>
