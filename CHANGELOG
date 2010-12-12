@@ -1,6 +1,12 @@
 i-MSCP ChangeLog
 ~~~~~~~~~~~~~~~~
 
+2010-12-12 Sascha Bay
+	- GUI:
+		Added new feature * Websoftware depot * to the i-MSCP app installer
+		Added new feature * i-MSCP app installer options *
+        Fixed some error in the app installer
+
 2010-12-09 Sascha Bay
 	- GUI:
 		Fixed #49: Some improvements on multilanguage.php

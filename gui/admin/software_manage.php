@@ -448,13 +448,57 @@ $sql = iMSCP_Registry::get('db');
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/software_manage.tpl');
 $tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('list_software', 'page');
 $tpl->define_dynamic('no_software_list', 'page');
 $tpl->define_dynamic('list_softwaredepot', 'page');
 $tpl->define_dynamic('no_softwaredepot_list', 'page');
 $tpl->define_dynamic('no_reseller_list', 'page');
 $tpl->define_dynamic('list_reseller', 'page');
+$tpl->define_dynamic('webdepot_list', 'page');
+$tpl->define_dynamic('list_webdepotsoftware', 'page');
+$tpl->define_dynamic('no_webdepotsoftware_list', 'page');
+
+list(
+    $use_webdepot,
+    $webdepot_xml_url,
+    $webdepot_last_update
+) = get_application_installer_conf();
+
+if($use_webdepot) {
+    $error = "";
+
+    if (isset($_POST['uaction']) && $_POST['uaction'] == "updatewebdepot") {
+        //$xml_file =  @file_get_contents(encode_idna(strtolower(clean_input($_POST['webdepot_xml_url']))));
+        $xml_file = @file_get_contents($webdepot_xml_url);
+        if (!strpos($xml_file, 'i-MSCP websoftware depot list')) {
+            set_page_message(tr("Unable to read xml file for web softwares!"), 'error');
+            $error = 1;
+        }
+        if(!$error) {
+            update_webdepot_software_list($tpl,$webdepot_xml_url,$webdepot_last_update);
+        }
+    }
+    $packages_cnt = get_webdepot_software_list($tpl,$_SESSION['user_id']);
+    
+    $tpl->assign(
+        array(
+            'TR_WEBDEPOT'                   => tr('i-MSCP application installer web software depot'),
+            'TR_APPLY_CHANGES'              => tr('Update from web depot'),
+            'TR_PACKAGE_TITLE'              => tr('Package title'),
+            'TR_PACKAGE_INSTALL_TYPE'       => tr('Package install type'),
+            'TR_PACKAGE_VERSION'            => tr('Package version'),
+            'TR_PACKAGE_LANGUAGE'           => tr('Package language'),
+            'TR_PACKAGE_TYPE'               => tr('Package type'),
+            'TR_PACKAGE_VENDOR_HP'          => tr('Package vendor HP'),
+            'TR_PACKAGE_ACTION'             => tr('Package actions'),
+            'TR_WEBDEPOTSOFTWARE_COUNT'     => tr('Web software depot packages total'),
+            'TR_WEBDEPOTSOFTWARE_ACT_NUM'   => $packages_cnt
+        )
+    );
+    $tpl->parse('WEBDEPOT_LIST', '.webdepot_list');
+} else {
+    $tpl->assign('WEBDEPOT_LIST', '');
+}
 
 
 if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['send_software_upload_token']) {
@@ -552,14 +596,12 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 
 			// Reading filesize
    			$parts = parse_url($sw_wget);
-   			$connection = fsockopen($parts['host'], 80, $errno, $errstr, 30);
+   			$connection = @fsockopen($parts['host'], 80, $errno, $errstr, 30);
 
    			if($connection) {
    				fputs($connection, 'GET ' . $sw_wget . " HTTP/1.1\r\nHost: " . $parts['host'] . "\r\n\r\n");
    				$size = 0;
-
 				$length = null;
-   				//while(!isset($length) || ($size <= 500 && !feof($connection))) {
 				while(is_null($length) || ($size <= 500 && !feof($connection))) {
    					$tstr = fgets($connection, 128);
    					$size += strlen($tstr);
@@ -568,20 +610,13 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
    						$length = substr($tstr, 15);
    					}
    				}
-
-   				if($length) {
-					$remote_file_size = $length;
-				} else {
-					$remote_file_size = 0;
-				}
-
+   				($length) ? $remote_file_size = $length : $remote_file_size = 0;
 				$show_remote_file_size = formatFilesize($remote_file_size);
 
 				if($remote_file_size < 1){
 					// Delete software entry
 					$query = "DELETE FROM `web_software` WHERE `software_id` = ?;";
 					exec_query($sql, $query, $sw_id);
-
 					$show_max_remote_filesize = formatFilesize($cfg->MAX_REMOTE_FILESIZE);
 					set_page_message(
 						tr(
@@ -609,7 +644,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 				} else {
 					$remote_file = @file_get_contents($sw_wget);
 					if($remote_file) {
-						$output_file = fopen($dest_dir, 'w+');
+						$output_file = @fopen($dest_dir, 'w+');
 						fwrite($output_file,$remote_file);
 						fclose($output_file);
 					} else {
@@ -699,7 +734,6 @@ $tpl->assign(
 gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
 gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_users_manage.tpl');
 
-gen_logged_from($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');

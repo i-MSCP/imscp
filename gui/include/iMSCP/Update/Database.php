@@ -2020,6 +2020,80 @@ class iMSCP_Update_Database extends iMSCP_Update {
 
 		return $sqlUpd;
 	}
+
+    /**
+	 * Adding apps-installer new options
+	 *
+	 * @author		Sascha Bay (TheCry) <worst.case@gmx.de>
+	 * @since		r4036
+	 *
+	 * @access		protected
+	 * @return		array
+	 */
+	 protected function _databaseUpdate_52() {
+	 	$sqlUpd = array();
+	 	$sqlUpd[]	= "
+	 		CREATE TABLE IF NOT EXISTS
+	 			`web_software_depot` (
+					`package_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+					`package_install_type` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
+					`package_title` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+					`package_version` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+					`package_language` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
+					`package_type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+					`package_description` mediumtext character set utf8 collate utf8_unicode_ci NOT NULL,
+					`package_vendor_hp` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+					`package_download_link` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+					`package_signature_link` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+					PRIMARY KEY (`package_id`)
+                ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1
+			;
+		";
+
+		$sqlUpd[]	= "
+			CREATE TABLE IF NOT EXISTS
+				`web_software_options` (
+                    `use_webdepot` tinyint(1) unsigned NOT NULL DEFAULT '1',
+                    `webdepot_xml_url` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+                    `webdepot_last_update` datetime NOT NULL
+                ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+			;
+		";
+
+         $sqlUpd[] = "
+			INSERT INTO
+				`web_software_options` (`use_webdepot`, `webdepot_xml_url`, `webdepot_last_update`)
+			VALUES
+				('1', 'http://app-pkg.i-mscp.net/imscp_webdepot_list.xml', '0000-00-00 00:00:00')
+			;
+		";
+
+         $sqlUpd[] = "
+			ALTER TABLE
+				`web_software`
+			ADD
+				`software_installtype` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL
+			AFTER
+				`reseller_id`;
+		";
+
+         $sqlUpd[] = "
+			UPDATE
+				`web_software`
+			SET
+				`software_installtype` = 'install'
+				;
+		";
+
+         $sqlUpd[] = "
+			ALTER TABLE
+				`reseller_props`
+			ADD
+				`websoftwaredepot_allowed` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL DEFAULT 'yes'
+		";
+
+         return $sqlUpd;
+     }
 	/*
 	 * DO NOT CHANGE ANYTHING BELOW THIS LINE!
 	 */

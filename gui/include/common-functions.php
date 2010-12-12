@@ -858,3 +858,152 @@ function get_reseller_software_permission (&$tpl,&$sql,$reseller_id) {
 			);
 	}
 }
+
+/**
+ * Get all config data from i-MSCP application installer
+ *
+ * @since 1.0.0
+ * @author Sascha Bay (TheCry) <sascha.bay@i-mscp.net>
+ * @return array
+ */
+function get_application_installer_conf () {
+	/**
+     * @var $sql iMSCP_Database
+     */
+    $sql = iMSCP_Registry::get('db');
+
+    $query = "
+		SELECT
+			*
+		FROM
+			`web_software_options`
+		;
+	";
+    $rs = exec_query($sql, $query);
+    return array(
+		$rs->fields['use_webdepot'], $rs->fields['webdepot_xml_url'], $rs->fields['webdepot_last_update']
+	);
+}
+
+/**
+ * Get all software packages from database since last update from the webdepot
+ *
+ * @since 1.0.0
+ * @author Sascha Bay (TheCry) <sascha.bay@i-mscp.net>
+ * @return record result
+ */
+function get_webdepot_software_list (&$tpl,$user_id) {
+	/**
+     * @var $sql iMSCP_Database
+     */
+    $sql = iMSCP_Registry::get('db');
+
+    $query = "
+		SELECT
+			*
+		FROM
+			`web_software_depot`
+		ORDER BY
+		    `package_install_type` ASC,
+		    `package_title` ASC
+		;
+	";
+    $rs = exec_query($sql, $query);
+    if ($rs->recordCount() > 0) {
+        while(!$rs->EOF) {
+            
+            $tpl->assign(
+				array(
+					'TR_PACKAGE_NAME'       => $rs->fields['package_title'],
+					'TR_PACKAGE_TOOLTIP'        => $rs->fields['package_description'],
+                    'TR_PACKAGE_INSTALL_TYPE' 	=> $rs->fields['package_install_type'],
+                    'TR_PACKAGE_VERSION'        => $rs->fields['package_version'],
+                    'TR_PACKAGE_LANGUAGE'       => $rs->fields['package_language'],
+                    'TR_PACKAGE_TYPE'           => $rs->fields['package_type'],
+                    'TR_PACKAGE_VENDOR_HP'      => ($rs->fields['package_vendor_hp'] == "") ? tr('N/A') : '<a href="'.$rs->fields['package_vendor_hp'].'" target="_blank">'.tr('Vendor hompage').'</a>',
+                    'PACKAGE_HTTP_URL'          => $rs->fields['package_download_link'],
+                    'TR_PACKAGE_INSTALL'        => tr('Start installation'),
+                    'TR_MESSAGE_INSTALL'        => tr('Are you sure to install this package from the webdepot?', true)
+				)
+			);
+            $tpl->parse('LIST_WEBDEPOTSOFTWARE', '.list_webdepotsoftware');
+            $rs->moveNext();
+        }
+        $tpl->assign('NO_WEBDEPOTSOFTWARE_LIST', '');
+    } else {
+        $tpl->assign('NO_WEBDEPOTSOFTWARE_AVAILABLE', tr('No software in webdepot found!'));
+		$tpl->parse('NO_WEBDEPOTSOFTWARE_LIST', '.no_webdepotsoftware_list');
+		$tpl->assign('LIST_WEBDEPOTSOFTWARE', '');
+    }
+    return $rs->recordCount();
+}
+
+/**
+ * Update database from the webdepot package xml list
+ *
+ * @since 1.0.0
+ * @author Sascha Bay (TheCry) <sascha.bay@i-mscp.net>
+
+ */
+function update_webdepot_software_list (&$tpl,$XML_URL,$webdepot_last_update) {
+	/**
+     * @var $sql iMSCP_Database
+     */
+    $sql = iMSCP_Registry::get('db');
+
+    $opts = array(
+            'http' => array(
+            'user_agent' => 'PHP libxml agent',
+        )
+    );
+    $context = stream_context_create($opts);
+    libxml_set_streams_context($context);
+
+    $webdepot_xml_file = new DOMDocument('1.0', 'iso-8859-1');
+    $webdepot_xml_file->load($XML_URL);
+    $XML_FILE = simplexml_import_dom($webdepot_xml_file);
+    if(utf8_decode($XML_FILE->LAST_UPDATE->DATE) != $webdepot_last_update) {
+         $truncatequery = "
+            TRUNCATE TABLE
+                `web_software_depot`
+            ;
+        ";
+        exec_query($sql, $truncatequery);
+        foreach($XML_FILE->PACKAGE as $output) {
+            if(!empty($output->INSTALL_TYPE) && !empty($output->INSTALL_TYPE) && !empty($output->INSTALL_TYPE) && !empty($output->INSTALL_TYPE) &&
+                !empty($output->INSTALL_TYPE) && !empty($output->INSTALL_TYPE) && !empty($output->INSTALL_TYPE) && !empty($output->INSTALL_TYPE) &&
+                !empty($output->INSTALL_TYPE)) {
+                $query = "
+                    INSERT INTO
+                        `web_software_depot`
+                            (
+                                `package_install_type`, `package_title`, `package_version`, `package_language`, `package_type`,
+                                `package_description`, `package_vendor_hp`, `package_download_link`, `package_signature_link`
+                            ) VALUES (
+                                ?, ?, ?, ?, ?, ?, ?, ?, ?
+                            )
+                    ;
+                ";
+                $rs = exec_query(
+                    $sql, $query,
+                        array(
+                            utf8_decode(clean_input($output->INSTALL_TYPE)), utf8_decode(clean_input($output->TITLE)), utf8_decode(clean_input($output->VERSION)), utf8_decode(clean_input($output->LANGUAGE)),
+                            utf8_decode(clean_input($output->TYPE)), utf8_decode(clean_input($output->DESCRIPTION)), encode_idna(utf8_decode(strtolower(clean_input($output->VENDOR_HP)))), encode_idna(utf8_decode(strtolower(clean_input($output->DOWNLOAD_LINK)))),
+                            encode_idna(utf8_decode(strtolower(clean_input($output->SIGNATURE_LINK))))
+                        )
+                );
+            }
+        }
+        $updatequery = "
+            UPDATE
+                `web_software_options`
+            SET
+                `webdepot_last_update` = '".$XML_FILE->LAST_UPDATE->DATE."'
+            ;
+        ";
+        exec_query($sql, $updatequery);
+        set_page_message(tr("Websoftware depot list was updated"), 'info');
+    } else {
+        set_page_message(tr("No update for the websoftware depot list available"), 'warning');
+    }
+}

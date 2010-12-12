@@ -269,6 +269,7 @@ function add_reseller(&$tpl, &$sql) {
 			$nreseller_max_disk = clean_input($_POST['nreseller_max_disk']);
 			$nreseller_software_allowed = clean_input($_POST['nreseller_software_allowed']);
 			$nreseller_softwaredepot_allowed = clean_input($_POST['nreseller_softwaredepot_allowed']);
+            $nreseller_websoftwaredepot_allowed = clean_input($_POST['nreseller_websoftwaredepot_allowed']);
 			$customer_id = clean_input($_POST['customer_id']);
 			$support_system = clean_input($_POST['support_system']);
 
@@ -285,7 +286,8 @@ function add_reseller(&$tpl, &$sql) {
 					`max_traff_amnt`, `current_traff_amnt`,
 					`max_disk_amnt`, `current_disk_amnt`,
 					`support_system`, `customer_id`,
-					`software_allowed`, `softwaredepot_allowed`
+					`software_allowed`, `softwaredepot_allowed`,
+					`websoftwaredepot_allowed`
 				) VALUES (
 					?, ?,
 					?, '0',
@@ -298,7 +300,8 @@ function add_reseller(&$tpl, &$sql) {
 					?, '0',
 					?, '0',
 					?, ?,
-					?, ?
+					?, ?,
+					?
 				)
 				";
 
@@ -315,7 +318,8 @@ function add_reseller(&$tpl, &$sql) {
 					$support_system,
 					$customer_id,
 					$nreseller_software_allowed,
-					$nreseller_softwaredepot_allowed)
+					$nreseller_softwaredepot_allowed,
+                    $nreseller_websoftwaredepot_allowed)
 			);
 
 			send_add_user_auto_msg($user_id,
@@ -368,10 +372,13 @@ function add_reseller(&$tpl, &$sql) {
 					'MAX_DISK_AMOUNT' => clean_input($_POST['nreseller_max_disk'], true),
 					'SOFTWARE_ALLOWED' => clean_input($_POST['nreseller_software_allowed'],true),
 					'SOFTWAREDEPOT_ALLOWED' => clean_input($_POST['nreseller_softwaredepot_allowed'],true),
+                    'WEBSOFTWAREDEPOT_ALLOWED' => clean_input($_POST['nreseller_websoftwaredepot_allowed'],true),
 					'VL_SOFTWAREY' => (($_POST['nreseller_software_allowed'] == 'yes') ? $cfg->HTML_CHECKED : ''),
 					'VL_SOFTWAREN' => (($_POST['nreseller_software_allowed'] != 'yes') ? $cfg->HTML_CHECKED : ''),
 					'VL_SOFTWAREDEPOTY' => (($_POST['nreseller_softwaredepot_allowed'] == 'yes') ? $cfg->HTML_CHECKED : ''),
-					'VL_SOFTWAREDEPOTN' => (($_POST['nreseller_softwaredepot_allowed'] != 'yes') ? $cfg->HTML_CHECKED : '')
+					'VL_SOFTWAREDEPOTN' => (($_POST['nreseller_softwaredepot_allowed'] != 'yes') ? $cfg->HTML_CHECKED : ''),
+                    'VL_WEBSOFTWAREDEPOTY' => (($_POST['nreseller_websoftwaredepot_allowed'] == 'yes') ? $cfg->HTML_CHECKED : ''),
+					'VL_WEBSOFTWAREDEPOTN' => (($_POST['nreseller_websoftwaredepot_allowed'] != 'yes') ? $cfg->HTML_CHECKED : '')
 				)
 			);
 		}
@@ -410,7 +417,8 @@ function add_reseller(&$tpl, &$sql) {
 				'SOFTWARE_ALLOWED' => '',
 				'SOFTWAREDEPOT_ALLOWED' => '',
 				'VL_SOFTWAREN' => $cfg->HTML_CHECKED,
-				'VL_SOFTWAREDEPOTY' => $cfg->HTML_CHECKED
+				'VL_SOFTWAREDEPOTY' => $cfg->HTML_CHECKED,
+                'VL_WEBSOFTWAREDEPOTY' => $cfg->HTML_CHECKED
 			)
 		);
 	}
@@ -584,7 +592,8 @@ $tpl->assign(
 		'TR_NO' => tr('no'),
 		'TR_SUPPORT_SYSTEM' => tr('Support system'),
 		'TR_SOFTWARE_ALLOWED' => tr('i-MSCP application installer'),
-		'TR_SOFTWAREDEPOT_ALLOWED' => tr('Can use softwaredepot'),
+		'TR_SOFTWAREDEPOT_ALLOWED' => tr('Can use software depot'),
+        'TR_WEBSOFTWAREDEPOT_ALLOWED' => tr('Can use websoftware depot'),
 
 		'TR_RESELLER_IPS' => tr('Reseller IPs'),
 

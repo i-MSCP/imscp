@@ -48,6 +48,33 @@ function formatFilesize($byte) {
 	return $byte." ".$string;
 }
 
+/**
+ * Check wheter the reseller has access to the websoftware depot
+ *
+ * @since 1.0.0
+ * @author Sascha Bay (TheCry) <sascha.bay@i-mscp.net>
+ * @return result of websoftwaredepot_allowed
+ */
+function ask_reseller_is_allowed_web_depot ($user_id) {
+
+    /**
+     * @var $sql iMSCP_Database
+     */
+    $sql = iMSCP_Registry::get('db');
+
+    $query = "
+		SELECT
+			`websoftwaredepot_allowed`
+		FROM
+			`reseller_props`
+		WHERE
+			`reseller_id` = ?
+	";
+	$rs = exec_query($sql, $query, $user_id);
+
+    return $rs->fields['websoftwaredepot_allowed'];
+}
+
 function get_avail_software ($tpl, $sql, $user_id) {
 
 	/**
@@ -310,6 +337,54 @@ $tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('list_software', 'page');
 $tpl->define_dynamic('no_software_list', 'page');
 $tpl->define_dynamic('t_software_support', 'page');
+$tpl->define_dynamic('webdepot_list', 'page');
+$tpl->define_dynamic('list_webdepotsoftware', 'page');
+$tpl->define_dynamic('no_webdepotsoftware_list', 'page');
+
+if(ask_reseller_is_allowed_web_depot($_SESSION['user_id']) == "yes") {
+    list(
+        $use_webdepot,
+        $webdepot_xml_url,
+        $webdepot_last_update
+    ) = get_application_installer_conf();
+    
+    if($use_webdepot) {
+        $error = "";
+        if (isset($_POST['uaction']) && $_POST['uaction'] == "updatewebdepot") {
+            //$xml_file =  @file_get_contents(encode_idna(strtolower(clean_input($_POST['webdepot_xml_url']))));
+            $xml_file = @file_get_contents($webdepot_xml_url);
+            if (!strpos($xml_file, 'i-MSCP websoftware depot list')) {
+                set_page_message(tr("Unable to read xml file for web softwares!"), 'error');
+                $error = 1;
+            }
+            if(!$error) {
+                update_webdepot_software_list($tpl,$webdepot_xml_url,$webdepot_last_update);
+            }
+        }
+        $packages_cnt = get_webdepot_software_list($tpl,$_SESSION['user_id']);
+
+        $tpl->assign(
+            array(
+                'TR_WEBDEPOT'                   => tr('i-MSCP application installer web software depot'),
+                'TR_APPLY_CHANGES'              => tr('Update from web depot'),
+                'TR_PACKAGE_TITLE'              => tr('Package title'),
+                'TR_PACKAGE_INSTALL_TYPE'       => tr('Package install type'),
+                'TR_PACKAGE_VERSION'            => tr('Package version'),
+                'TR_PACKAGE_LANGUAGE'           => tr('Package language'),
+                'TR_PACKAGE_TYPE'               => tr('Package type'),
+                'TR_PACKAGE_VENDOR_HP'          => tr('Package vendor HP'),
+                'TR_PACKAGE_ACTION'             => tr('Package actions'),
+                'TR_WEBDEPOTSOFTWARE_COUNT'     => tr('Web software depot packages total'),
+                'TR_WEBDEPOTSOFTWARE_ACT_NUM'   => $packages_cnt
+            )
+        );
+        $tpl->parse('WEBDEPOT_LIST', '.webdepot_list');
+    } else {
+        $tpl->assign('WEBDEPOT_LIST', '');
+    }
+} else {
+    $tpl->assign('WEBDEPOT_LIST', '');
+}
 
 if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['send_software_upload_token']) {
 	$success = 1;

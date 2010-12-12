@@ -184,7 +184,6 @@ $sql = iMSCP_Registry::get('db');
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/software_rights.tpl');
 $tpl->define_dynamic('page_message', 'page');
-$tpl->define_dynamic('logged_from', 'page');
 $tpl->define_dynamic('list_reseller', 'page');
 $tpl->define_dynamic('no_reseller_list', 'page');
 $tpl->define_dynamic('no_select_reseller', 'page');
@@ -250,8 +249,6 @@ $tpl->assign(
 
 gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
 gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_users_manage.tpl');
-
-gen_logged_from($tpl);
 
 generatePageMessage($tpl);
 

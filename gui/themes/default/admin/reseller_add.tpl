@@ -112,19 +112,28 @@
 						<tr>
 							<td>{TR_SOFTWARE_ALLOWED}</td>
 							<td>
-								<input type="radio" name="nreseller_software_allowed" id="name="software_allowed_yes" value="yes" {VL_SOFTWAREY} />
-								<label for="software_allowed_yes">{TR_YES}</label>
-								<input type="radio" name="nreseller_software_allowed" id="name="software_allowed_no" value="no" {VL_SOFTWAREN} />
-								<label for="software_allowed_no">{TR_NO}</label>
+								<input type="radio" name="nreseller_software_allowed" id="nreseller_software_allowed_yes" value="yes" {VL_SOFTWAREY} />
+								<label for="nreseller_software_allowed_yes">{TR_YES}</label>
+								<input type="radio" name="nreseller_software_allowed" id="nreseller_software_allowed_no" value="no" {VL_SOFTWAREN} />
+								<label for="nreseller_software_allowed_no">{TR_NO}</label>
 							</td>
 						</tr>
 						<tr>
 							<td>{TR_SOFTWAREDEPOT_ALLOWED}</td>
 							<td>
-								<input type="radio" name="nreseller_softwaredepot_allowed" id="name="softwaredepot_allowed_yes" value="yes" {VL_SOFTWAREDEPOTY} />
+								<input type="radio" name="nreseller_softwaredepot_allowed" id="softwaredepot_allowed_yes" value="yes" {VL_SOFTWAREDEPOTY} />
 								<label for="softwaredepot_allowed_yes">{TR_YES}</label>
-								<input type="radio" name="nreseller_softwaredepot_allowed" id="name="softwaredepot_allowed_no" value="no" {VL_SOFTWAREDEPOTN} />
+								<input type="radio" name="nreseller_softwaredepot_allowed" id="softwaredepot_allowed_no" value="no" {VL_SOFTWAREDEPOTN} />
 								<label for="softwaredepot_allowed_no">{TR_NO}</label>
+							</td>
+						</tr>
+						<tr>
+							<td>{TR_WEBSOFTWAREDEPOT_ALLOWED}</td>
+							<td>
+								<input type="radio" name="nreseller_websoftwaredepot_allowed" id="websoftwaredepot_allowed_yes" value="yes" {VL_WEBSOFTWAREDEPOTY} />
+								<label for="websoftwaredepot_allowed_yes">{TR_YES}</label>
+								<input type="radio" name="nreseller_websoftwaredepot_allowed" id="websoftwaredepot_allowed_no" value="no" {VL_WEBSOFTWAREDEPOTN} />
+								<label for="websoftwaredepot_allowed_no">{TR_NO}</label>
 							</td>
 						</tr>
                         <tr>

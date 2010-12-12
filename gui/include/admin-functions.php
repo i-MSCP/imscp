@@ -259,6 +259,7 @@ function gen_admin_menu($tpl, $menu_file) {
 			'TR_SERVERPORTS'                    => tr('Services ports'),
 			'TR_MENU_IP_USAGE'                  => tr('IP usage'),
 			'TR_MENU_MANAGE_SOFTWARE'           => tr('Application management'),
+            'TR_MENU_SOFTWARE_OPTIONS'          => tr('Application options'),
 			'VERSION'                           => $cfg->Version,
 			'BUILDDATE'                         => $cfg->BuildDate,
 			'CODENAME'                          => $cfg->CodeName

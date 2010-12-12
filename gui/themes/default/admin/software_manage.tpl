@@ -20,7 +20,7 @@
         <script language="JavaScript" type="text/JavaScript">
         /*<![CDATA[*/
 			$(document).ready(function(){
-				// Tooltips - begin
+				//Tooltips - begin
 				$('span.i_app_installer').sw_iMSCPtooltips('span.title');
 				// Tooltips - end
 			});
@@ -35,6 +35,12 @@
 			function action_import() {
 				if (!confirm("{TR_MESSAGE_IMPORT}"))
 				return false;
+			}
+			function action_install(url) {
+				if (!confirm("{TR_MESSAGE_INSTALL}"))
+				return false;
+				document.getElementById('sw_wget').value = url;
+                document.getElementById('sw_upload_form').submit();
 			}
 		/*]]>*/
 		</script>
@@ -77,20 +83,21 @@
             <table>
             	<tr>
 					<td>
-						<form action="software_manage.php" method="post" enctype="multipart/form-data">
+						<form action="software_manage.php" name="sw_upload_form" id="sw_upload_form" method="post" enctype="multipart/form-data">
 							<table>
 								<tr>
 									<td width="200">{TR_SOFTWARE_FILE}</td>
-									<td><input type="file" name="sw_file" size="60" /></td>
+									<td><input type="file" name="sw_file" id="sw_file" size="60" /></td>
 								</tr>
 								<tr>
 									<td width="200">{TR_SOFTWARE_URL}</td>
-									<td><input type="text" name="sw_wget" value="{VAL_WGET}" size="60" /></td>
+									<td><input type="text" name="sw_wget" id="sw_wget" value="{VAL_WGET}" size="60" /></td>
 								</tr>
 								<tr>
 									<td colspan="2">
 										<div class="buttons">
-											<input name="upload" type="submit" class="button" value="{TR_UPLOAD_SOFTWARE_BUTTON}" />
+											<input type="button" class="button" value="{TR_UPLOAD_SOFTWARE_BUTTON}" onClick="javascript:document.getElementById('sw_upload_form').submit();" />
+											<input name="upload" type="hidden" value="upload" />
 											<input type="hidden" name="send_software_upload_token" id="send_software_upload_token" value="{SOFTWARE_UPLOAD_TOKEN}" />
 										</div>
 									</td>
@@ -103,13 +110,13 @@
 				<table>
 				<tr>
 					<th>{TR_SOFTWARE_NAME}</th>
-					<th width="60">{TR_SOFTWARE_VERSION}</td>
-					<th width="60">{TR_SOFTWARE_LANGUAGE}</td>
-					<th width="60">{TR_SOFTWARE_TYPE}</td>
-					<th width="120">{TR_SOFTWARE_ADMIN}</td>
-					<th align="center" width="65">{TR_SOFTWARE_DOWNLOAD}</td>
-					<th align="center" width="65">{TR_SOFTWARE_DELETE}</td>
-					<th align="center" width="90">{TR_SOFTWARE_RIGHTS}</td>
+					<th width="60">{TR_SOFTWARE_VERSION}</th>
+					<th width="60">{TR_SOFTWARE_LANGUAGE}</th>
+					<th width="60">{TR_SOFTWARE_TYPE}</th>
+					<th width="120">{TR_SOFTWARE_ADMIN}</th>
+					<th align="center" width="65">{TR_SOFTWARE_DOWNLOAD}</th>
+					<th align="center" width="65">{TR_SOFTWARE_DELETE}</th>
+					<th align="center" width="90">{TR_SOFTWARE_RIGHTS}</th>
 				</tr>
 				<!-- BDP: no_softwaredepot_list -->
 				<tr>
@@ -132,19 +139,63 @@
 					<th colspan="8">{TR_SOFTWAREDEPOT_COUNT}:&nbsp;{TR_SOFTWAREDEPOT_NUM}</th>
 				</tr>
 			</table>
+			<!-- BDP: webdepot_list -->
+			<br />
+			<h2 class="apps_installer"><span>{TR_WEBDEPOT}</span></h2>
+			<table>
+				<tr>
+					<th>{TR_PACKAGE_TITLE}</th>
+					<th width="120">{TR_PACKAGE_INSTALL_TYPE}</th>
+					<th width="120">{TR_PACKAGE_VERSION}</th>
+					<th width="120">{TR_PACKAGE_LANGUAGE}</th>
+					<th width="120">{TR_PACKAGE_TYPE}</th>
+					<th width="120">{TR_PACKAGE_VENDOR_HP}</th>
+					<th width="120">{TR_PACKAGE_ACTION}</th>
+				</tr>
+				<!-- BDP: no_webdepotsoftware_list -->
+				<tr>
+					<td colspan="7"><div class="info">{NO_WEBDEPOTSOFTWARE_AVAILABLE}</div></td>
+				</tr>
+				<!-- EDP: no_webdepotsoftware_list -->
+				<!-- BDP: list_webdepotsoftware -->
+				<tr>
+					<td><span class="icon i_app_installer" title="{TR_PACKAGE_TOOLTIP}">{TR_PACKAGE_NAME}</span></td>
+					<td align="center">{TR_PACKAGE_INSTALL_TYPE}</td>
+					<td align="center">{TR_PACKAGE_VERSION}</td>
+					<td align="center">{TR_PACKAGE_LANGUAGE}</td>
+					<td align="center">{TR_PACKAGE_TYPE}</td>
+					<td align="center">{TR_PACKAGE_VENDOR_HP}</td>
+					<td align="center"><a href="#" onClick="return action_install('{PACKAGE_HTTP_URL}')">{TR_PACKAGE_INSTALL}</a></td>
+				</tr>
+				<!-- EDP: list_webdepotsoftware -->
+				<tr>
+                    <td colspan="7">
+                        <form action="software_manage.php" method="post" name="update_webdepot" id="update_webdepot">
+                            <div class="buttons">
+                                <input name="Submit" type="submit" class="button" value="{TR_APPLY_CHANGES}" />
+                                <input type="hidden" name="uaction" value="updatewebdepot" />
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+				<tr>
+					<th colspan="7">{TR_WEBDEPOTSOFTWARE_COUNT}:&nbsp;{TR_WEBDEPOTSOFTWARE_ACT_NUM}</th>
+				</tr>
+			</table>
+			<!-- EDP: webdepot_list -->
 			<br />
 			<h2 class="apps_installer"><span>{TR_AWAITING_ACTIVATION}</span></h2>
 			<table>
 				<tr>
-					<th>{TR_SOFTWARE_NAME}</td>
-					<th width="60">{TR_SOFTWARE_VERSION}</td>
-					<th width="60">{TR_SOFTWARE_LANGUAGE}</td>
-					<th width="60">{TR_SOFTWARE_TYPE}</td>
-					<th width="120">{TR_SOFTWARE_RESELLER}</td>
-					<th align="center" width="65">{TR_SOFTWARE_IMPORT}</td>
-					<th align="center" width="65">{TR_SOFTWARE_DOWNLOAD}</td>
-					<th align="center" width="65">{TR_SOFTWARE_ACTIVATION}</td>
-					<th align="center" width="65">{TR_SOFTWARE_DELETE}</td>
+					<th>{TR_SOFTWARE_NAME}</th>
+					<th width="60">{TR_SOFTWARE_VERSION}</th>
+					<th width="60">{TR_SOFTWARE_LANGUAGE}</th>
+					<th width="60">{TR_SOFTWARE_TYPE}</th>
+					<th width="120">{TR_SOFTWARE_RESELLER}</th>
+					<th align="center" width="65">{TR_SOFTWARE_IMPORT}</th>
+					<th align="center" width="65">{TR_SOFTWARE_DOWNLOAD}</th>
+					<th align="center" width="65">{TR_SOFTWARE_ACTIVATION}</th>
+					<th align="center" width="65">{TR_SOFTWARE_DELETE}</th>
 				</tr>
 				<!-- BDP: no_software_list -->
 				<tr>
@@ -165,14 +216,14 @@
 				</tr>
 				<!-- EDP: list_software -->
 				<tr>
-					<th colspan="9">{TR_SOFTWARE_ACT_COUNT}:&nbsp;{TR_SOFTWARE_ACT_NUM}</td>
+					<th colspan="9">{TR_SOFTWARE_ACT_COUNT}:&nbsp;{TR_SOFTWARE_ACT_NUM}</th>
 				</tr>
 			</table>
 			<br />
 			<h2 class="apps_installer"><span>{TR_ACTIVATED_SOFTWARE}</span></h2>
 			<table>
 				<tr>
-					<th>{TR_RESELLER_NAME}</td>
+					<th>{TR_RESELLER_NAME}</th>
 					<th align="center" width="150">{TR_RESELLER_COUNT_SWDEPOT}</th>
 					<th align="center" width="150">{TR_RESELLER_COUNT_WAITING}</th>
 					<th align="center" width="150">{TR_RESELLER_COUNT_ACTIVATED}</th>
@@ -193,7 +244,7 @@
 				</tr>
 				<!-- EDP: list_reseller -->
 				<tr>
-					<th colspan="5">{TR_RESELLER_ACT_COUNT}:&nbsp;{TR_RESELLER_ACT_NUM}</td>
+					<th colspan="5">{TR_RESELLER_ACT_COUNT}:&nbsp;{TR_RESELLER_ACT_NUM}</th>
 				</tr>
 			</table>
         	<div class="paginator">

@@ -116,6 +116,7 @@ sub pkt_add_data {
 	$rs = sys_command_rs("$main::cfg{'CMD_TAR'} -xzf $sw_tmp_path/$sw_software_archive-$sw_software_id.tar.gz");
 	if (-e $sw_install_xml_file && -e $sw_uninstall_xml_file && -d $sw_tmp_path."/sql/" && -d $sw_tmp_path."/web/") {
 		our %INSTALL_DATA = (
+		                    software_installtype	=>	'',
 							software_installfile	=>	'',
 							software_name			=>	'',
 							software_version		=>	'',
@@ -137,6 +138,10 @@ sub pkt_add_data {
 		sub startElement {
 			my ($parseinst, $element, %attrs) = @_;
 			SWITCH: {
+			    if ($element eq "software_installtype") {
+					$tag = "software_installtype";
+					last SWITCH;
+				}
 				if ($element eq "software_installfile") {
 					$tag = "software_installfile";
 					last SWITCH;
@@ -180,7 +185,7 @@ sub pkt_add_data {
 		}
 		sub characterData {
 			my( $parseinst, $data ) = @_;
-			if (($tag eq "software_installfile") || ($tag eq "software_name") || ($tag eq "software_version") || ($tag eq "software_language") || ($tag eq "software_type")  || ($tag eq "software_db")) {
+			if (($tag eq "software_installtype") || ($tag eq "software_installfile") || ($tag eq "software_name") || ($tag eq "software_version") || ($tag eq "software_language") || ($tag eq "software_type")  || ($tag eq "software_db")) {
 				$data =~ s/\n|\t//g;
 				if ($data ne "") {
 					$INSTALL_DATA{$tag} .= $data;
@@ -192,7 +197,7 @@ sub pkt_add_data {
 				}
 			}
 		}
-		if ($INSTALL_DATA{software_installfile} ne ""  && -e $sw_tmp_path."/".$INSTALL_DATA{software_installfile} && $INSTALL_DATA{software_name} ne "" && $INSTALL_DATA{software_version} ne "" && $INSTALL_DATA{software_language} ne "" && $INSTALL_DATA{software_type} ne "" &&
+		if ($INSTALL_DATA{software_installtype} ne "" && $INSTALL_DATA{software_installfile} ne ""  && -e $sw_tmp_path."/".$INSTALL_DATA{software_installfile} && $INSTALL_DATA{software_name} ne "" && $INSTALL_DATA{software_version} ne "" && $INSTALL_DATA{software_language} ne "" && $INSTALL_DATA{software_type} ne "" &&
 			$INSTALL_DATA{software_db} ne "" && $INSTALL_DATA{software_prefix} ne "" && $INSTALL_DATA{software_link} ne "" &&
 			$INSTALL_DATA{software_desc} ne "" && grep $_ eq $INSTALL_DATA{software_language}, @allowed_languages){
 			if ($INSTALL_DATA{software_db} ne "true") {
@@ -219,13 +224,15 @@ sub pkt_add_data {
 					FROM
 						`web_software`
 					WHERE
-						`software_name`     = '".$INSTALL_DATA{software_name}."'
+					    `software_installtype`  = '".$INSTALL_DATA{software_installtype}."'
 					AND
-						`software_version`  = '".$INSTALL_DATA{software_version}."'
+						`software_name`         = '".$INSTALL_DATA{software_name}."'
+					AND
+						`software_version`      = '".$INSTALL_DATA{software_version}."'
 					AND 
-						`software_language` = '".$INSTALL_DATA{software_language}."'
+						`software_language`     = '".$INSTALL_DATA{software_language}."'
 					AND
-						`software_depot`    = 'no'
+						`software_depot`        = 'no'
 				";
 			}else{
 				$sql = "
@@ -234,15 +241,17 @@ sub pkt_add_data {
 					FROM
 						`web_software`
 					WHERE
-						`software_name`     = '".$INSTALL_DATA{software_name}."'
+					    `software_installtype`  = '".$INSTALL_DATA{software_installtype}."'
 					AND
-						`software_version`  = '".$INSTALL_DATA{software_version}."'
+						`software_name`         = '".$INSTALL_DATA{software_name}."'
 					AND
-						`software_language` = '".$INSTALL_DATA{software_language}."'
+						`software_version`      = '".$INSTALL_DATA{software_version}."'
 					AND
-						`reseller_id`       = ".$sw_reseller_id."
+						`software_language`     = '".$INSTALL_DATA{software_language}."'
 					AND
-						`software_depot`    = 'no'
+						`reseller_id`           = ".$sw_reseller_id."
+					AND
+						`software_depot`        = 'no'
 				";
 			}
 			($rs, $rdata) = doSQL($sql);
@@ -253,6 +262,8 @@ sub pkt_add_data {
 				FROM
 					`web_software`
 				WHERE
+				    `software_installtype`  = '".$INSTALL_DATA{software_installtype}."'
+				AND
 					`software_name`         = '".$INSTALL_DATA{software_name}."'
 				AND
 					`software_version`      = '".$INSTALL_DATA{software_version}."'
@@ -292,7 +303,8 @@ sub pkt_add_data {
 				$sql = "
 					UPDATE
 						`web_software`
-					SET 
+					SET
+					    `software_installtype`  = '".$INSTALL_DATA{software_installtype}."',
 						`software_name`         = '".$INSTALL_DATA{software_name}."',
 						`software_version`      = '".$INSTALL_DATA{software_version}."',
 						`software_language`     = '".$INSTALL_DATA{software_language}."',

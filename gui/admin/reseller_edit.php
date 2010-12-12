@@ -89,7 +89,8 @@ function get_clean_input_data() {
 			'edit_username' => clean_input($_POST['edit_username']),
 			'edit_id' => clean_input($_POST['edit_id']),
 			'domain_software_allowed' => clean_input($_POST['domain_software_allowed']),
-			'domain_softwaredepot_allowed' => clean_input($_POST['domain_softwaredepot_allowed'])
+			'domain_softwaredepot_allowed' => clean_input($_POST['domain_softwaredepot_allowed']),
+            'domain_websoftwaredepot_allowed' => clean_input($_POST['domain_websoftwaredepot_allowed'])
 		);
 	}
 
@@ -487,7 +488,7 @@ function get_reseller_prop($reseller_id) {
 			`country`, `email`, `phone`, `fax`, `street1`, `street2`, `max_dmn_cnt`,
 			`max_sub_cnt`, `max_als_cnt`, `max_mail_cnt`, `max_ftp_cnt`,
 			`max_sql_db_cnt`, `max_sql_user_cnt`, `max_traff_amnt`, `max_disk_amnt`,
-			`software_allowed`, `softwaredepot_allowed`,
+			`software_allowed`, `softwaredepot_allowed`, `websoftwaredepot_allowed`,
 			r.`support_system` AS support_system, r.`customer_id` AS customer_id,
 			`reseller_ips` AS rip_lst, `gender`
 		FROM
@@ -791,7 +792,7 @@ function update_reseller() {
 			`max_als_cnt` = ?, `max_mail_cnt` = ?, `max_ftp_cnt` = ?,
 			`max_sql_db_cnt` = ?, `max_sql_user_cnt` = ?, `max_traff_amnt` = ?,
 			`max_disk_amnt` = ?, `support_system` = ?, `customer_id` = ?,
-			`software_allowed` = ?, `softwaredepot_allowed` = ?
+			`software_allowed` = ?, `softwaredepot_allowed` = ?, `websoftwaredepot_allowed` = ?
 		WHERE
 			`reseller_id` = ?
 	";
@@ -806,7 +807,7 @@ function update_reseller() {
 			$rdata['max_sql_db_cnt'], $rdata['max_sql_user_cnt'],
 			$rdata['max_traff_amnt'], $rdata['max_disk_amnt'],
 			$rdata['support_system'], $rdata['customer_id'], $rdata['domain_software_allowed'],
-			$rdata['domain_softwaredepot_allowed'], $rdata['edit_id']
+			$rdata['domain_softwaredepot_allowed'], $rdata['domain_websoftwaredepot_allowed'], $rdata['edit_id']
 		)
 	);
 
@@ -1069,11 +1070,14 @@ $tpl->assign(
 		'TR_YES' => tr('yes'),
 		'TR_NO' => tr('no'),
 		'TR_SOFTWARE_SUPP' => tr('i-MSCP application installer'),
-		'TR_SOFTWAREDEPOT_SUPP' => tr('Can use softwaredepot'),
+		'TR_SOFTWAREDEPOT_SUPP' => tr('Can use software depot'),
+        'TR_WEBSOFTWAREDEPOT_SUPP' => tr('Can use websoftware depot'),
 		'SOFTWARE_YES' => ($rdata['software_allowed'] == 'yes') ? $cfg->HTML_CHECKED : '',
 		'SOFTWARE_NO' => ($rdata['software_allowed'] != 'yes') ? $cfg->HTML_CHECKED : '',
 		'SOFTWAREDEPOT_YES'	=> ($rdata['softwaredepot_allowed'] == 'yes') ? $cfg->HTML_CHECKED : '',
 		'SOFTWAREDEPOT_NO' => ($rdata['softwaredepot_allowed'] != 'yes') ? $cfg->HTML_CHECKED : '',
+        'WEBSOFTWAREDEPOT_YES'	=> ($rdata['websoftwaredepot_allowed'] == 'yes') ? $cfg->HTML_CHECKED : '',
+		'WEBSOFTWAREDEPOT_NO' => ($rdata['websoftwaredepot_allowed'] != 'yes') ? $cfg->HTML_CHECKED : '',
 		'TR_SUPPORT_SYSTEM' => tr('Support system'),
 		'TR_RESELLER_IPS' => tr('Reseller IPs'),
 		'TR_ADDITIONAL_DATA' => tr('Additional data'),

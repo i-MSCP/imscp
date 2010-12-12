@@ -198,19 +198,28 @@
                         <tr>
 							<td>{TR_SOFTWARE_SUPP}</td>
 							<td>
-								<input type="radio" name="domain_software_allowed" id="name="software_allowed_yes" value="yes" {SOFTWARE_YES} />
+								<input type="radio" name="domain_software_allowed" id="software_allowed_yes" value="yes" {SOFTWARE_YES} />
 								<label for="software_allowed_yes">{TR_YES}</label>
-								<input type="radio" name="domain_software_allowed" id="name="software_allowed_no" value="no" {SOFTWARE_NO} />
+								<input type="radio" name="domain_software_allowed" id="software_allowed_no" value="no" {SOFTWARE_NO} />
 								<label for="software_allowed_no">{TR_NO}</label>
 							</td>
 						</tr>
 						<tr>
 							<td>{TR_SOFTWAREDEPOT_SUPP}</td>
 							<td>
-								<input type="radio" name="domain_softwaredepot_allowed" id="name="softwaredepot_allowed_yes" value="yes" {SOFTWAREDEPOT_YES} />
+								<input type="radio" name="domain_softwaredepot_allowed" id="softwaredepot_allowed_yes" value="yes" {SOFTWAREDEPOT_YES} />
 								<label for="softwaredepot_allowed_yes">{TR_YES}</label>
-								<input type="radio" name="domain_softwaredepot_allowed" id="name="softwaredepot_allowed_no" value="no" {SOFTWAREDEPOT_NO} />
+								<input type="radio" name="domain_softwaredepot_allowed" id="softwaredepot_allowed_no" value="no" {SOFTWAREDEPOT_NO} />
 								<label for="softwaredepot_allowed_no">{TR_NO}</label>
+							</td>
+						</tr>
+						<tr>
+							<td>{TR_WEBSOFTWAREDEPOT_SUPP}</td>
+							<td>
+								<input type="radio" name="domain_websoftwaredepot_allowed" id="websoftwaredepot_allowed_yes" value="yes" {WEBSOFTWAREDEPOT_YES} />
+								<label for="websoftwaredepot_allowed_yes">{TR_YES}</label>
+								<input type="radio" name="domain_websoftwaredepot_allowed" id="websoftwaredepot_allowed_no" value="no" {WEBSOFTWAREDEPOT_NO} />
+								<label for="websoftwaredepot_allowed_no">{TR_NO}</label>
 							</td>
 						</tr>
                         <tr>
