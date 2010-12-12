@@ -37,21 +37,21 @@
 				<!--<a href="{BACK_BUTTON_DESTINATION}" target="_self">{TR_BACK}</a>-->
 			</div>
 		</div>
-<!--
-  <?php //if (isset($this->exception)): ?>
+
+  <?php if (isset($this->exception)): ?>
 
   <h3>Exception information:</h3>
-  <p><b>Message:</b> <?php //echo $this->exception->getMessage() ?></p>
+  <p><b>Message:</b> <?php echo $this->exception->getMessage() ?></p>
 
   <h3>Stack trace:</h3>
-  <pre><?php //echo $this->exception->getTraceAsString() ?>
+  <pre><?php echo $this->exception->getTraceAsString() ?>
   </pre>
 
   <h3>Request Parameters:</h3>
-  <pre><?php //echo var_export($this->request->getParams(), true) ?>
+  <pre><?php echo var_export($this->request->getParams(), true) ?>
   </pre>
-  <?php //endif ?>
--->
+  <?php endif ?>
+
 	</body>
 </html>
 

@@ -38,14 +38,26 @@ class iMSCP_MenuLoaderPlugin extends Zend_Controller_plugin_Abstract
 	public function preDispatch(Zend_Controller_Request_Abstract $request) {
 
 		$moduleName = strtolower($request->getModuleName());
+		$controllerName = strtolower($request->getControllerName());
 
 		switch($moduleName) {
 			case 'admin':
 			case 'reseller':
 			case 'client':
-				Zend_Registry::get('view')->mainMenu = new Zend_Navigation(
-					new Zend_Config_Xml(APPLICATION_PATH . "/configs/menus/main_$moduleName.xml", 'main_menu')
-				);
+				$view = Zend_Registry::get('view');
+
+				$view->mainMenu =  $view->navigation(
+					new Zend_Navigation(
+						new Zend_Config_Xml(APPLICATION_PATH . "/configs/menus/main_$moduleName.xml")
+					)
+				)->getContainer();
+
+				$view->leftMenu = $view->navigation(
+					new Zend_Navigation(
+						new Zend_Config_Xml(APPLICATION_PATH . "/configs/menus/left_$moduleName.xml",$controllerName)
+					)
+				)->getContainer();
+
 			break;
 		}
     }

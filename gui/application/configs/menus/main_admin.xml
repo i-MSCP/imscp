@@ -34,56 +34,55 @@
  * @license     http://www.gnu.org/licenses/ GPL v2
  */
 -->
-<config>
-	<main_menu>
-		<general_information>
-			<label>General Information</label>
-			<module>admin</module>
-			<controller>index</controller>
-			<class>general</class>
-		</general_information>
-		<manage_users>
-            <label>Manage Users</label>
-	        <module>admin</module>
-            <controller>users</controller>
-            <action>index</action>
-	        <class>manage_users</class>
-		</manage_users>
-		<hosting_plans>
-            <label>Hosting Plans</label>
-	        <module>admin</module>
-            <controller>plan</controller>
-            <action>index</action>
-	        <class>hosting_plans</class>
-	        <visible>1</visible>
-		</hosting_plans>
-		<system_tools>
-			<label>System Tools</label>
-	        <module>admin</module>
-            <controller>tools</controller>
-            <action>index</action>
-	        <class>webtools</class>
-		</system_tools>
-		<statistics>
-            <label>Statistics</label>
-	        <module>admin</module>
-            <controller>statistics</controller>
-            <action>index</action>
-	        <class>general</class>
-		</statistics>
-		<support_system>
-            <label>Support System</label>
-	        <module>admin</module>
-            <controller>support</controller>
-            <action>index</action>
-	        <class>support</class>
-		</support_system>
+
+<main_menu>
+	<general_information>
+		<label>General Information</label>
+		<module>admin</module>
+		<title>General information</title>
+		<class>general</class>
+	</general_information>
+	<manage_users>
+		<label>Manage Users</label>
+		<module>admin</module>
+		<controller>users</controller>
+		<title>Manage users</title>
+		<class>manage_users</class>
+	</manage_users>
+	<hosting_plans>
+		<label>Hosting Plans</label>
+		<module>admin</module>
+		<controller>plan</controller>
+		<title>Hosting plans</title>
+		<class>hosting_plans</class>
+		<visible>1</visible>
+	</hosting_plans>
+	<system_tools>
+		<label>System Tools</label>
+		<module>admin</module>
+		<controller>tools</controller>
+		<title>System tools</title>
+		<class>webtools</class>
+	</system_tools>
+	<statistics>
+		<label>Statistics</label>
+		<module>admin</module>
+		<controller>statistics</controller>
+		<title>View statistics</title>
+		<class>general</class>
+	</statistics>
+	<support_system>
+		<label>Support System</label>
+		<module>admin</module>
+		<controller>support</controller>
+		<title>Support system</title>
+		<class>support</class>
+	</support_system>
 		<settings>
-            <label>Settings</label>
-	        <module>admin</module>
-            <controller>settings</controller>
-            <action>index</action>
-	        <class>settings</class>
-		</settings>
-	</main_menu>
-</config>
+		<label>Settings</label>
+		<module>admin</module>
+		<controller>settings</controller>
+		<title>Settings</title>
+		<class>settings</class>
+	</settings>
+</main_menu>

@@ -19,7 +19,7 @@
 	<body>
 		<div class="header">
 			<div class="main_menu">
-				<?php echo $this->navigation($this->mainMenu)->menu(); ?>
+				<?php echo $this->navigation()->menu($this->mainMenu);?>
 			</div>
 			<div class="logo"><img src="/themes/default/images/imscp_logo.png" alt="i-MSCP logo" /></div>
 		</div>
@@ -29,12 +29,12 @@
 				<li><a class="logout" href="../index.php?logout">Logout</a></li>
 			</ul>
 			<?php
-				echo $this->navigation()->breadcrumbs()->setPartial('_breadcrumbs.phtml')->setLinkLast(false)
+				echo $this->navigation($this->mainMenu)->breadcrumbs()->setPartial('_breadcrumbs.phtml')->setLinkLast(false)
 					->setMinDepth(0)->setSeparator(' >> ');
 			?>
 		</div>
 		<div class="left_menu">
-			<!-- todo left menu -->
+			<?php echo $this->navigation()->menu($this->leftMenu);?>
 		</div>
 		<?php echo $this->layout()->content; ?>
 		<div class="footer">i-MSCP 1.0.0<br />build: 111210<br />Codename: Phoenix</div>
