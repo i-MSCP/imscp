@@ -25,28 +25,27 @@
  *
  * @category    i-MSCP
  * @copyright   2010 by i-MSCP | http://i-mscp.net
+ * @author      Zend Tools
  * @author      i-MSCP Team
  * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
  * @version     SVN: $Id$
  * @link        http://i-mscp.net i-MSCP Home Site
  * @license     http://www.gnu.org/licenses/ GPL v2
- * @note: I'm not sure is better way to do... Will be checked later...
  */
-class iMSCP_MenuLoaderPlugin extends Zend_Controller_plugin_Abstract
+
+class Client_IndexController extends Zend_Controller_Action
 {
 
-	public function preDispatch(Zend_Controller_Request_Abstract $request) {
-
-		$moduleName = strtolower($request->getModuleName());
-
-		switch($moduleName) {
-			case 'admin':
-			case 'reseller':
-			case 'client':
-				Zend_Registry::get('view')->mainMenu = new Zend_Navigation(
-					new Zend_Config_Xml(APPLICATION_PATH . "/configs/menus/main_$moduleName.xml", 'main_menu')
-				);
-			break;
-		}
+    public function init()
+    {
+        /* Initialize action controller here */
     }
+
+    public function indexAction()
+    {
+        // action body
+    }
+
+
 }
+
