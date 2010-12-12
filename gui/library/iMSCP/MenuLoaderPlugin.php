@@ -25,29 +25,29 @@
  *
  * @category    i-MSCP
  * @copyright   2010 by i-MSCP | http://i-mscp.net
- * @author      Zend Tools
  * @author      i-MSCP Team
  * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
  * @version     SVN: $Id$
  * @link        http://i-mscp.net i-MSCP Home Site
  * @license     http://www.gnu.org/licenses/ GPL v2
+ * @note: I'm not sure is better way to do... Will be checked later...
  */
-
-class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
+class iMSCP_MenuLoaderPlugin extends Zend_Controller_plugin_Abstract
 {
 
-	/**
-	 * initialize the html Doctype to be used in all views
-	 *
-	 * @return void
-	 */
-	protected function _initDoctype() {
+    public function postDispatch(Zend_Controller_Request_Abstract $request) {
 
-		$this->bootstrap('view');
-		$view = $this->getResource('view');
-		$view->doctype('XHTML1_TRANSITIONAL');
 
-		// Register the view to use it later
-		Zend_Registry::set('view', $view);
-	}
+		$moduleName = strtolower($request->getModuleName());
+
+		switch($moduleName) {
+			case 'admin':
+		    case 'reseller':
+			case 'client':
+				$view = Zend_Registry::get('view');
+				$view->mainMenu = new Zend_Navigation(
+					new Zend_Config_Xml(APPLICATION_PATH . "/configs/menus/main_$moduleName.xml", 'main_menu')
+				);
+		}
+    }
 }

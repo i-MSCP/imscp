@@ -35,16 +35,5 @@
 
 class Client_Bootstrap extends Zend_Application_Module_Bootstrap
 {
-	/**
-	 * Initialize the main and left menus
-	 *
-	 * @return void
-	 * @todo per module menu
-	 */
-	protected function _initMenus() {
 
-		$this->getApplication()->view->mainMenu = new Zend_Navigation(
-			new Zend_Config_Xml(APPLICATION_PATH .'/configs/menus/main_client.xml', 'main_menu')
-		);
-	}
 }
