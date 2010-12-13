@@ -1,11 +1,15 @@
 i-MSCP ChangeLog
 ~~~~~~~~~~~~~~~~
 
+2010-12-12 Daniel Andreca
+	- GUI:
+		Fixed #50: Patch to fix the exception when switching users ( Ratatoille please stop copy and think before)
+
 2010-12-12 Sascha Bay
 	- GUI:
 		Added new feature * Websoftware depot * to the i-MSCP app installer
 		Added new feature * i-MSCP app installer options *
-        Fixed some error in the app installer
+		Fixed some error in the app installer
 
 2010-12-09 Sascha Bay
 	- GUI:
@@ -55,7 +59,7 @@ i-MSCP ChangeLog
 	- GUI:
 		* Fixed #37: Cosmetics - Hosting plan Header Color
 		* Fixed #38: Defect - Missing checkbox for hostingplan Terms of Service
-	- TOOLS: 
+	- TOOLS:
 		* Fixed #40: Updated phpMyAdmin to version 3.3.8.1
 
 2010-12-02 Sascha Bay

@@ -29,7 +29,7 @@
  *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * 
+ *
  * Portions created by the i-MSCP Team are Copyright (C) 2010 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
@@ -883,7 +883,7 @@ function change_user_interface($fromId, $toId) {
 		$_SESSION['user_created_by'] = $toUserData['created_by'];
 		$_SESSION['user_login_time'] = time();
 
-		$query = "INSERT INTO login (`session_id`, `ipaddr`, `user_name`, `lastaccess`) VALUES (?, ?, ?, ?);";
+		$query = "REPLACE INTO login (`session_id`, `ipaddr`, `user_name`, `lastaccess`) VALUES (?, ?, ?, ?);";
 
 		exec_query($sql, $query, array(session_id(), getipaddr(), $toUserData['admin_name'], $_SESSION['user_login_time']));
 
