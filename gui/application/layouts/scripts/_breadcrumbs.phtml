@@ -1,6 +1,6 @@
-<ul class="path">
-<?php foreach ($this->pages as $page)
-	$page->setClass('');
-	echo '<li>' . $this->breadcrumbs()->htmlify($page) . '</li>', PHP_EOL;
+<?php
+	foreach($this->pages as  $page) {
+		$page->setClass('');
+		echo '<li>' . $this->breadcrumbs()->htmlify($page) . '</li>', PHP_EOL;
+	}
 ?>
-</ul>

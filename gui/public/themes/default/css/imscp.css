@@ -99,6 +99,10 @@ a:hover, a:focus {
     text-decoration: underline;
 	color: rgb(92,186,218);
 }
+/*Added for Zend_Navigation*/
+.active a{
+	color: rgb(92,186,218);
+}
 
 dl {
     margin-left: 2em;
@@ -427,6 +431,7 @@ form table tbody td textarea{
 
 .left_menu ul {
     margin: 10px 0;
+	margin-left:13px;
     padding: 0;
     list-style: none;
 }
@@ -443,6 +448,7 @@ form table tbody td textarea{
     padding: 5px 18px;
     font-weight: bold;
     background: transparent url(../images/background/bullet.png) no-repeat 3px center;
+	background-position:0%;
     margin: 2px;
 }
 
@@ -583,19 +589,20 @@ legend, h3 {
 .main_menu .statistics { background-image: url(../images/menu/statistics.png); }
 .main_menu .support { background-image: url(../images/menu/support.png); }
 .main_menu .webtools { background-image: url(../images/menu/webtools.png); }
-.main_menu .custom_link:hover { background-image: url(../images/menu/custom_link_a.png); }
-.main_menu .database:hover { background-image: url(../images/menu/database_a.png); }
-.main_menu .domains:hover { background-image: url(../images/menu/domains_a.png); }
-.main_menu .email:hover { background-image: url(../images/menu/email_a.png); }
-.main_menu .ftp:hover { background-image: url(../images/menu/ftp_a.png); }
-.main_menu .general:hover { background-image: url(../images/menu/general_a.png); }
-.main_menu .hosting_plans:hover { background-image: url(../images/menu/hosting_plans_a.png); }
-.main_menu .manage_users:hover { background-image: url(../images/menu/manage_users_a.png); }
-.main_menu .purchasing:hover { background-image: url(../images/menu/purchasing_a.png); }
-.main_menu .settings:hover { background-image: url(../images/menu/settings_a.png); }
-.main_menu .statistics:hover { background-image: url(../images/menu/statistics_a.png); }
-.main_menu .support:hover { background-image: url(../images/menu/support_a.png); }
-.main_menu .webtools:hover { background-image: url(../images/menu/webtools_a.png); }
+
+.main_menu .custom_link:hover, .active .custom_link { background-image: url(../images/menu/custom_link_a.png); }
+.main_menu .database:hover, .active .database  { background-image: url(../images/menu/database_a.png); }
+.main_menu .domains:hover, .active .domains { background-image: url(../images/menu/domains_a.png); }
+.main_menu .email:hover, .active .email { background-image: url(../images/menu/email_a.png); }
+.main_menu .ftp:hover, .active .ftp { background-image: url(../images/menu/ftp_a.png); }
+.main_menu .general:hover,.active .general { background-image: url(../images/menu/general_a.png); }
+.main_menu .hosting_plans:hover, .active .hosting_plans  { background-image: url(../images/menu/hosting_plans_a.png); }
+.main_menu .manage_users:hover, .active .manage_users { background-image: url(../images/menu/manage_users_a.png); }
+.main_menu .purchasing:hover, .active .purchasing { background-image: url(../images/menu/purchasing_a.png); }
+.main_menu .settings:hover, .active .settings { background-image: url(../images/menu/settings_a.png); }
+.main_menu .statistics:hover, .active .statistics { background-image: url(../images/menu/statistics_a.png); }
+.main_menu .support:hover, .active .support { background-image: url(../images/menu/support_a.png); }
+.main_menu .webtools:hover, .active .webtools { background-image: url(../images/menu/webtools_a.png); }
 
 /* Left menu heading icons */
 .location .custom_link { background-image: url(../images/menu/custom_link.png); }
@@ -809,4 +816,9 @@ form table td{
 	background:			url(../images/tooltips/info.png) no-repeat;
 	height:				32px;
 	width:				32px;
+}
+
+/*Added for Zend_Navigation*/
+.active a{
+	color: rgb(92,186,218);
 }

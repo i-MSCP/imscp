@@ -29,6 +29,10 @@
             </controllerFile>
             <controllerFile controllerName="Users">
               <actionMethod actionName="index"/>
+              <actionMethod actionName="addAdmin"/>
+            </controllerFile>
+            <controllerFile controllerName="HostingPlans">
+              <actionMethod actionName="index"/>
             </controllerFile>
           </controllersDirectory>
           <formsDirectory enabled="false"/>
@@ -40,6 +44,9 @@
                 <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Users">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="HostingPlans">
                 <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
             </viewScriptsDirectory>
@@ -107,6 +114,9 @@
           <viewControllerScriptsDirectory forControllerName="LostPassword">
             <viewScriptFile forActionName="index"/>
           </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Users">
+            <viewScriptFile forActionName="addAdmin"/>
+          </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
         <viewFiltersDirectory enabled="false"/>
@@ -147,6 +157,7 @@
           <testApplicationControllerFile filesystemName="IndexControllerTest.php"/>
           <testApplicationControllerFile filesystemName="UsersControllerTest.php"/>
           <testApplicationControllerFile filesystemName="UsersControllerTest.php"/>
+          <testApplicationControllerFile filesystemName="HostingPlansControllerTest.php"/>
         </testApplicationControllerDirectory>
       </testApplicationDirectory>
       <testLibraryDirectory>

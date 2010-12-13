@@ -34,55 +34,157 @@
  * @license     http://www.gnu.org/licenses/ GPL v2
  */
 -->
-
-<main_menu>
+<config>
+	<nav>
 	<general_information>
 		<label>General Information</label>
 		<module>admin</module>
-		<title>General information</title>
 		<class>general</class>
+		<pages>
+			<Overview>
+				<label>Overview</label>
+				<module>admin</module>
+			</Overview>
+			<change_password>
+				<label>Change password</label>
+				<module>admin</module>
+				<controller>users</controller>
+				<action>change-password</action>
+			</change_password>
+			<change_personal_data>
+				<label>Change personal data</label>
+				<module>admin</module>
+				<controller>users</controller>
+				<action>change-data</action>
+			</change_personal_data>
+			<language>
+				<label>Language</label>
+				<module>admin</module>
+				<controller>language</controller>
+			</language>
+			<services_status>
+				<label>Services status</label>
+				<module>admin</module>
+				<controller>services</controller>
+				<action>status</action>
+			</services_status>
+			<admin_log>
+				<label>Admin logs</label>
+				<module>admin</module>
+				<controller>log</controller>
+			</admin_log>
+		</pages>
 	</general_information>
+
+
 	<manage_users>
 		<label>Manage Users</label>
 		<module>admin</module>
 		<controller>users</controller>
-		<title>Manage users</title>
 		<class>manage_users</class>
+		<pages>
+			<Overview>
+				<label>Overview</label>
+				<module>admin</module>
+				<controller>users</controller>
+			</Overview>
+			<add_admin>
+				<label>Add admin</label>
+				<module>admin</module>
+				<controller>users</controller>
+				<action>add-admin</action>
+			</add_admin>
+			<add_reseller>
+				<label>Add reseller</label>
+				<module>admin</module>
+				<controller>users</controller>
+				<action>add-reseller</action>
+			</add_reseller>
+			<reseller_assignment>
+				<label>Reseller assignment</label>
+				<module>admin</module>
+				<controller>users</controller>
+				<action>reseller-assign</action>
+			</reseller_assignment>
+			<user_assignment>
+				<label>User assignment</label>
+				<module>admin</module>
+				<controller>users</controller>
+				<action>user-assign</action>
+			</user_assignment>
+			<email_marketing>
+				<label>Email marketing</label>
+				<module>admin</module>
+				<controller>email</controller>
+				<action>mass</action>
+			</email_marketing>
+			<users_sessions>
+				<label>Users sessions</label>
+				<module>admin</module>
+				<controller>users</controller>
+				<action>session</action>
+			</users_sessions>
+			<application_management>
+				<label>Application management</label>
+				<module>admin</module>
+				<controller>application-installer</controller>
+			</application_management>
+		</pages>
 	</manage_users>
+
+
 	<hosting_plans>
 		<label>Hosting Plans</label>
 		<module>admin</module>
-		<controller>plan</controller>
+		<controller>hosting-plans</controller>
 		<title>Hosting plans</title>
 		<class>hosting_plans</class>
-		<visible>1</visible>
+		<pages>
+			<Overview>
+				<label>Overview</label>
+				<module>admin</module>
+				<controller>hosting-plans</controller>
+			</Overview>
+			<add_hosting_plan>
+				<label>Add hosting plan</label>
+				<module>admin</module>
+				<controller>hosting-plans</controller>
+				<action>add</action>
+			</add_hosting_plan>
+		</pages>
 	</hosting_plans>
+
+
 	<system_tools>
 		<label>System Tools</label>
 		<module>admin</module>
 		<controller>tools</controller>
-		<title>System tools</title>
 		<class>webtools</class>
 	</system_tools>
+
+
 	<statistics>
 		<label>Statistics</label>
 		<module>admin</module>
 		<controller>statistics</controller>
-		<title>View statistics</title>
 		<class>general</class>
 	</statistics>
+
+
 	<support_system>
 		<label>Support System</label>
 		<module>admin</module>
 		<controller>support</controller>
-		<title>Support system</title>
 		<class>support</class>
 	</support_system>
-		<settings>
+
+
+	<settings>
 		<label>Settings</label>
 		<module>admin</module>
 		<controller>settings</controller>
-		<title>Settings</title>
 		<class>settings</class>
 	</settings>
-</main_menu>
+
+</nav>
+</config>

@@ -6,7 +6,6 @@ class Admin_UsersController extends Zend_Controller_Action
     public function init()
     {
         /* Initialize action controller here */
-	    $this->view->menuSection = 'Manage Users';
     }
 
     public function indexAction()
@@ -14,6 +13,13 @@ class Admin_UsersController extends Zend_Controller_Action
         // action body
     }
 
+    public function addAdminAction()
+    {
+        // action body
+    }
+
 
 }
+
+
 

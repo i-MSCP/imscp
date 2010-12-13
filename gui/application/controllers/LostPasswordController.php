@@ -33,20 +33,88 @@
  * @license     http://www.gnu.org/licenses/ GPL v2
  */
 
+/**
+ * Lost Password controller
+ *
+ * @author Laurent Declercq <l.declercq@i-mscp.net>
+ * @version DRAFT (to be finished)
+ */
 class LostPasswordController extends Zend_Controller_Action
 {
 
+	/**
+	 * Initialize the controller
+	 * 
+	 * @return void
+	 */
     public function init()
     {
-        /* Initialize action controller here */
 	    $this->_helper->layout->setLayout('simple');
     }
 
+	/**
+	 * Default action
+	 * 
+	 * @return void
+	 */
     public function indexAction()
     {
-        // action body
+	    $request = $this->getRequest();
+
+	    if($request->isPost()) {
+		    $captchaInputData = $request->getParam('captcha');
+
+			if($this->isValidCaptcha($captchaInputData)) {
+				// do - sendrequest
+			} else {
+				// flash notice
+			}
+	    }
+
+		$this->view->captchaCode =  $this->generateCaptcha();
     }
 
+	/**
+	 * Generate a captcha
+	 *
+	 * @return string Unique captcha identifier
+	 */
+	protected function generateCaptcha() {
 
+		$captcha = new Zend_Captcha_Image(
+			array(
+				'Timeout' => 200,
+				'Wordlen' => 8,
+				'Height' => 50,
+				'Font' => APPLICATION_PATH . '/fonts/Essays1743.ttf',
+				'Width' => 190,
+				'FontSize' => 25,
+				'ImgDir' => PUBLIC_PATH . '/captcha',
+				'ImgUrl' => '/captcha',
+				'ImgAlt' => 'Captcha code',
+				'Expiration' => 300
+			)
+		);
+
+		// Generate captcha
+		$this->view->captchaId = $captcha->generate();
+
+		// Return captcha identifier
+		return $captcha->render($this->view);
+	}
+
+	/**
+	 * Validate captcha
+	 * 
+	 * @param  $captcha
+	 * @return bool TRUE on success, FALSE otherwise
+	 */
+	protected function isValidCaptcha($captcha) {
+
+		$captchaSession = new Zend_Session_Namespace('Zend_Form_Captcha_' . $captcha['id']);
+		$captchaIterator = $captchaSession->getIterator();
+		$captchaWord = $captchaIterator['word'];
+
+		return ($captchaWord && $captcha['input'] == $captchaWord);
+	}
 }
-

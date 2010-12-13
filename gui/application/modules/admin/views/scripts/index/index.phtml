@@ -1,0 +1,75 @@
+        <div class="body">
+
+            <!-- BDP: page_message -->
+            <div class="info"><?php echo $this->messages[0]?></div>
+            <!-- EDP: page_message -->
+
+            <!-- BDP: msg_entry -->
+            <!--<div class="warning">{TR_NEW_MSGS}</div>-->
+            <!-- EDP: msg_entry -->
+
+            <!-- BDP: update_message -->
+            <!--<div class="info">{UPDATE}</div>-->
+            <!-- EDP: update_message -->
+
+            <!-- BDP: database_update_message -->
+            <!--<div class="warning">{DATABASE_UPDATE}</div>-->
+            <!-- EDP: database_update_message -->
+
+            <h2 class="general"><span>General information</span></h2>
+
+            <table>
+                <tr>
+                    <td>Account name</td>
+                    <td>{ACCOUNT_NAME}</td>
+                </tr>
+                <tr>
+                    <td>Admin users</td>
+                    <td>{ADMIN_USERS}</td>
+                </tr>
+                <tr>
+                    <td>Reseller users</td>
+                    <td>{RESELLER_USERS}</td>
+                </tr>
+                <tr>
+                    <td>Normal users</td>
+                    <td>{NORMAL_USERS}</td>
+                </tr>
+                <tr>
+                    <td>Domains</td>
+                    <td>{DOMAINS}</td>
+                </tr>
+                <tr>
+                    <td>Subdomains</td>
+                    <td>{SUBDOMAINS}</td>
+                </tr>
+                <tr>
+                    <td>Domain aliases</td>
+                    <td>{DOMAINS_ALIASES}</td>
+                </tr>
+                <tr>
+                    <td>Mail accounts</td>
+                    <td>{MAIL_ACCOUNTS}</td>
+                </tr>
+                <tr>
+                    <td>FTP accounts</td>
+                    <td>{FTP_ACCOUNTS}</td>
+                </tr>
+                <tr>
+                    <td>SQL databases</td>
+                    <td>{SQL_DATABASES}</td>
+                </tr>
+                <tr>
+                    <td>SQL users</td>
+                    <td>{SQL_USERS}</td>
+                </tr>
+            </table>
+
+            <h2 class="traffic"><span>Server traffic</span></h2>
+            <!-- BDP: traff_warn -->
+            <div class="warning">{TR_TRAFFIC_WARNING}</div>
+            <!-- EDP: traff_warn -->
+            {TRAFFIC_WARNING}
+            <div class="graph"><span style="width:{TRAFFIC_PERCENT}%">&nbsp;</span></div>
+
+        </div>

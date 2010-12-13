@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <?php echo $this->doctype() ?>
+
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en">
     <head>
 		<?php
@@ -19,27 +20,24 @@
 	<body>
 		<div class="header">
 			<div class="main_menu">
-				<?php echo $this->navigation()->menu($this->mainMenu);?>
+				<?php echo $this->navigation()->menu()->setMaxDepth(0)->setUlClass('icon'); ?>
 			</div>
 			<div class="logo"><img src="/themes/default/images/imscp_logo.png" alt="i-MSCP logo" /></div>
 		</div>
 		<div class="location">
-			<div class="location-area icons-left">
-				<?php
-					echo $this->navigation($this->mainMenu)->breadcrumbs()->setPartial('_sections.phtml')
-					->setLinkLast(true)->setMinDepth(0)->setMaxDepth(1);
-				?>
-			</div>
-			<ul class="location-menu">
-				<li><a class="logout" href="../index.php?logout">Logout</a></li>
-			</ul>
-			<?php
-				echo $this->navigation($this->mainMenu)->breadcrumbs()->setPartial('_breadcrumbs.phtml')
-					->setLinkLast(false)->setMinDepth(0)->setSeparator(' >> ');
-			?>
+		    <div class="location-area icons-left">
+		        <?php echo $this->navigation()->breadcrumbs()->setPartial('_sections.phtml')->setMinDepth(0)->setMaxDepth(0);?>
+		    </div>
+		    <ul class="location-menu">
+		        <li><a class="logout" href="../index.php?logout">Logout</a></li>
+		    </ul>
+		    <ul class="path">
+				<?php echo $this->navigation()->breadcrumbs()->setMaxDepth(2)->setPartial('_breadcrumbs.phtml');?>
+		    </ul>
 		</div>
 		<div class="left_menu">
-			<?php echo $this->navigation()->menu($this->leftMenu);?>
+			<?php echo $this->navigation()->menu()->setOnlyActiveBranch(true)->setRenderParents(false)->setUlClass('')->setMinDepth(1)->setMaxDepth(0);
+			?>
 		</div>
 		<?php echo $this->layout()->content; ?>
 		<div class="footer">i-MSCP 1.0.0<br />build: 111210<br />Codename: Phoenix</div>

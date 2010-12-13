@@ -24,7 +24,6 @@
  *
  * @category    i-MSCP
  * @copyright   2010 by i-MSCP | http://i-mscp.net
- * @author      Zend Tools
  * @author      i-MSCP Team
  * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
  * @version     SVN: $Id$
@@ -35,6 +34,10 @@
 // Define path to application directory
 defined('APPLICATION_PATH')
     || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../application'));
+
+// Define path to public directory
+defined('PUBLIC_PATH')
+    || define('PUBLIC_PATH', realpath(APPLICATION_PATH . '/../public'));
 
 // Define application environment
 defined('APPLICATION_ENV')

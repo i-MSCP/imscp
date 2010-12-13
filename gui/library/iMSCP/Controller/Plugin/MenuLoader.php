@@ -27,38 +27,31 @@
  * @copyright   2010 by i-MSCP | http://i-mscp.net
  * @author      i-MSCP Team
  * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
- * @version     SVN: $Id$
+ * @version     SVN: $Id: MenuLoaderPlugin.php 4100 2010-12-12 08:16:01Z nuxwin $
  * @link        http://i-mscp.net i-MSCP Home Site
  * @license     http://www.gnu.org/licenses/ GPL v2
  * @note: I'm not sure is better way to do... Will be checked later...
  */
-class iMSCP_MenuLoaderPlugin extends Zend_Controller_plugin_Abstract
+class iMSCP_Controller_Plugin_MenuLoader extends Zend_Controller_plugin_Abstract
 {
 
-	public function preDispatch(Zend_Controller_Request_Abstract $request) {
+	public function routeShutdown(Zend_Controller_Request_Abstract $request) {
 
 		$moduleName = strtolower($request->getModuleName());
-		$controllerName = strtolower($request->getControllerName());
 
 		switch($moduleName) {
 			case 'admin':
 			case 'reseller':
 			case 'client':
-				$view = Zend_Registry::get('view');
-
-				$view->mainMenu =  $view->navigation(
+				Zend_Registry::get('view')->navigation(
 					new Zend_Navigation(
-						new Zend_Config_Xml(APPLICATION_PATH . "/configs/menus/main_$moduleName.xml")
+						new Zend_Config_Xml(APPLICATION_PATH . "/configs/menus/main_$moduleName.xml", 'nav')
 					)
-				)->getContainer();
-
-				$view->leftMenu = $view->navigation(
-					new Zend_Navigation(
-						new Zend_Config_Xml(APPLICATION_PATH . "/configs/menus/left_$moduleName.xml",$controllerName)
-					)
-				)->getContainer();
+				);
 
 			break;
 		}
+
+		return $request;
     }
 }
