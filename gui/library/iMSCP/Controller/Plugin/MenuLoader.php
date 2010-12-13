@@ -30,14 +30,20 @@
  * @version     SVN: $Id: MenuLoaderPlugin.php 4100 2010-12-12 08:16:01Z nuxwin $
  * @link        http://i-mscp.net i-MSCP Home Site
  * @license     http://www.gnu.org/licenses/ GPL v2
- * @note: I'm not sure is better way to do... Will be checked later...
+ * @version 1.0.0
  */
 class iMSCP_Controller_Plugin_MenuLoader extends Zend_Controller_plugin_Abstract
 {
 
+	/**
+	 * Load menu according user level
+	 *
+	 * @param Zend_Controller_Request_Abstract $request
+	 * @return Zend_Controller_Request_Abstract
+	 */
 	public function routeShutdown(Zend_Controller_Request_Abstract $request) {
 
-		$moduleName = strtolower($request->getModuleName());
+		$moduleName = $request->getModuleName();
 
 		switch($moduleName) {
 			case 'admin':
@@ -45,7 +51,7 @@ class iMSCP_Controller_Plugin_MenuLoader extends Zend_Controller_plugin_Abstract
 			case 'client':
 				Zend_Registry::get('view')->navigation(
 					new Zend_Navigation(
-						new Zend_Config_Xml(APPLICATION_PATH . "/configs/menus/main_$moduleName.xml", 'nav')
+						new Zend_Config_Xml(APPLICATION_PATH . "/configs/menus/$moduleName.xml", 'nav')
 					)
 				);
 
@@ -53,5 +59,5 @@ class iMSCP_Controller_Plugin_MenuLoader extends Zend_Controller_plugin_Abstract
 		}
 
 		return $request;
-    }
+	}
 }
