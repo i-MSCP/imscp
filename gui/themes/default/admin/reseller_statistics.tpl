@@ -28,7 +28,7 @@
 
         <div class="location">
             <div class="location-area icons-left">
-                <h1 class="statistics">{TR_MENU_STATISTICS}</h1>
+                <h1 class="statistics">{TR_MENU_RESELLER_STATISTICS}</h1>
             </div>
             <ul class="location-menu">
                 <!-- <li><a class="help" href="#">Help</a></li> -->

@@ -229,6 +229,7 @@ gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_statistics.tpl');
 $tpl->assign(
 	array(
 		'TR_DOMAIN_STATISTICS' => tr('Domain statistics'),
+        'TR_RESELLER_USER_STATISTICS' => tr('Reseller users table'),
 		'TR_MONTH' => tr('Month'),
 		'TR_YEAR' => tr('Year'),
 		'TR_SHOW' => tr('Show'),

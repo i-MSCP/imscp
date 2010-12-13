@@ -27,7 +27,7 @@
 
 		<div class="location">
 			<div class="location-area icons-left">
-				<h1 class="statistics">{TR_MENU_STATISTICS}</h1>
+				<h1 class="statistics">{TR_MENU_RESELLER_STATISTICS}</h1>
 			</div>
 			<ul class="location-menu">
 				<!-- <li><a class="help" href="#">Help</a></li> -->
@@ -35,7 +35,7 @@
 			</ul>
 			<ul class="path">
             	<li><a href="server_statistic.php">{TR_MENU_STATISTICS}</a></li>
-                <li><a href="reseller_statistic.php">{TR_RESELLER_STATISTICS}</a></li>
+                <li><a href="reseller_statistic.php">{TR_MENU_RESELLER_STATISTICS}</a></li>
                 <li>{TR_RESELLER_USER_STATISTICS}</li>
 			</ul>
 		</div>
