@@ -30,9 +30,15 @@
  * @version     SVN: $Id: MenuLoaderPlugin.php 4100 2010-12-12 08:16:01Z nuxwin $
  * @link        http://i-mscp.net i-MSCP Home Site
  * @license     http://www.gnu.org/licenses/ GPL v2
- * @version 1.0.0
  */
-class iMSCP_Controller_Plugin_MenuLoader extends Zend_Controller_plugin_Abstract
+
+/**
+ * Plugin that Load menu according user level
+ *
+ * @author Laurent Declercq <l.declercq@i-mscp.net>
+ * @version DRAFT (to be finished)
+ */
+class iMSCP_Controller_Plugin_MenuLoader extends Zend_Controller_Plugin_Abstract
 {
 
 	/**
