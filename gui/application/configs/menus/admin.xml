@@ -38,34 +38,6 @@
 				<label>Overview</label>
 				<module>admin</module>
 			</Overview>
-			<change_password>
-				<label>Change password</label>
-				<module>admin</module>
-				<controller>users</controller>
-				<action>change-password</action>
-			</change_password>
-			<change_personal_data>
-				<label>Change personal data</label>
-				<module>admin</module>
-				<controller>users</controller>
-				<action>change-data</action>
-			</change_personal_data>
-			<language>
-				<label>Language</label>
-				<module>admin</module>
-				<controller>language</controller>
-			</language>
-			<services_status>
-				<label>Services status</label>
-				<module>admin</module>
-				<controller>services</controller>
-				<action>status</action>
-			</services_status>
-			<admin_log>
-				<label>Admin logs</label>
-				<module>admin</module>
-				<controller>log</controller>
-			</admin_log>
 		</pages>
 	</general_information>
 
@@ -81,47 +53,6 @@
 				<module>admin</module>
 				<controller>users</controller>
 			</Overview>
-			<add_admin>
-				<label>Add admin</label>
-				<module>admin</module>
-				<controller>users</controller>
-				<action>add-admin</action>
-			</add_admin>
-			<add_reseller>
-				<label>Add reseller</label>
-				<module>admin</module>
-				<controller>users</controller>
-				<action>add-reseller</action>
-			</add_reseller>
-			<reseller_assignment>
-				<label>Reseller assignment</label>
-				<module>admin</module>
-				<controller>users</controller>
-				<action>reseller-assign</action>
-			</reseller_assignment>
-			<user_assignment>
-				<label>User assignment</label>
-				<module>admin</module>
-				<controller>users</controller>
-				<action>user-assign</action>
-			</user_assignment>
-			<email_marketing>
-				<label>Email marketing</label>
-				<module>admin</module>
-				<controller>email</controller>
-				<action>mass</action>
-			</email_marketing>
-			<users_sessions>
-				<label>Users sessions</label>
-				<module>admin</module>
-				<controller>users</controller>
-				<action>session</action>
-			</users_sessions>
-			<application_management>
-				<label>Application management</label>
-				<module>admin</module>
-				<controller>application-installer</controller>
-			</application_management>
 		</pages>
 	</manage_users>
 
