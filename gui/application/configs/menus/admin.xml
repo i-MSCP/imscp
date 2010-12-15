@@ -132,19 +132,6 @@
 		<controller>hosting-plans</controller>
 		<title>Hosting plans</title>
 		<class>hosting_plans</class>
-		<pages>
-			<Overview>
-				<label>Overview</label>
-				<module>admin</module>
-				<controller>hosting-plans</controller>
-			</Overview>
-			<add_hosting_plan>
-				<label>Add hosting plan</label>
-				<module>admin</module>
-				<controller>hosting-plans</controller>
-				<action>add</action>
-			</add_hosting_plan>
-		</pages>
 	</hosting_plans>
 
 
