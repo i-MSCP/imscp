@@ -26,11 +26,37 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
+/***********************************************************************************************************************
+ * Script shot description
+ *
+ *  This is the entry point of the iMSCP Application (frontend). This script will load Zend_Application and instantiate
+ *  it by passing:
+ * 
+ *  - The current environment
+ *  - Options for bootstrapping
+ *
+ *  The options for bootstrapping can include the path to the file containing the bootstrap class and optionally:
+ *
+ *  - Any extra include path to set
+ *  - Any php.ini setting to initialize
+ *  - The class name for the bootstrap (if not Bootstrap)
+ *  - Resource prefix to path pairs to use
+ *  - Any resources to use (by class name or short name)
+ *  - Additional path to a configuration file to load
+ *  - Additional configuration options 
+ *
+ * Note:
+ *  Options may be an array, a Zend_Config object, or the path to a configuration file. For now, it's the application.ini
+ *  configuration file.
+ */
+
 // Define path to application directory
-defined('APPLICATION_PATH') || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../application'));
+defined('APPLICATION_PATH')
+	|| define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../application'));
 
 // Define path to public directory
-defined('PUBLIC_PATH') || define('PUBLIC_PATH', realpath(APPLICATION_PATH . '/../public'));
+defined('PUBLIC_PATH')
+	|| define('PUBLIC_PATH', realpath(APPLICATION_PATH . '/../public'));
 
 // Define application environment
 defined('APPLICATION_ENV')
@@ -51,5 +77,9 @@ set_include_path(
 require_once 'Zend/Application.php';
 
 // Create application, bootstrap, and run
-$application = new Zend_Application(APPLICATION_ENV, APPLICATION_PATH . '/configs/application.ini');
+$application = new Zend_Application(
+	APPLICATION_ENV,
+	APPLICATION_PATH . '/configs/application.ini'
+);
+
 $application->bootstrap()->run();
