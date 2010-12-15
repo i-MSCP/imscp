@@ -150,7 +150,7 @@
 					<th width="120">{TR_PACKAGE_LANGUAGE}</th>
 					<th width="120">{TR_PACKAGE_TYPE}</th>
 					<th width="120">{TR_PACKAGE_VENDOR_HP}</th>
-					<th width="120">{TR_PACKAGE_ACTION}</th>
+					<th width="180">{TR_PACKAGE_ACTION}</th>
 				</tr>
 				<!-- BDP: no_webdepotsoftware_list -->
 				<tr>
@@ -165,7 +165,12 @@
 					<td align="center">{TR_PACKAGE_LANGUAGE}</td>
 					<td align="center">{TR_PACKAGE_TYPE}</td>
 					<td align="center">{TR_PACKAGE_VENDOR_HP}</td>
+					<!-- BDP: package_install_link -->
 					<td align="center"><a href="#" onClick="return action_install('{PACKAGE_HTTP_URL}')">{TR_PACKAGE_INSTALL}</a></td>
+					<!-- EDP: package_install_link -->
+					<!-- BDP: package_info_link -->
+					<td align="left"><span class="icon i_help">Help</span>{TR_PACKAGE_INSTALL}</td>
+					<!-- EDP: package_info_link -->
 				</tr>
 				<!-- EDP: list_webdepotsoftware -->
 				<tr>

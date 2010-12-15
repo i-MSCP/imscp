@@ -340,6 +340,8 @@ $tpl->define_dynamic('t_software_support', 'page');
 $tpl->define_dynamic('webdepot_list', 'page');
 $tpl->define_dynamic('list_webdepotsoftware', 'page');
 $tpl->define_dynamic('no_webdepotsoftware_list', 'page');
+$tpl->define_dynamic('package_install_link', 'page');
+$tpl->define_dynamic('package_info_link', 'page');
 
 if(ask_reseller_is_allowed_web_depot($_SESSION['user_id']) == "yes") {
     list(

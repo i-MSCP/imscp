@@ -886,6 +886,111 @@ function get_application_installer_conf () {
 }
 
 /**
+ * Check wheter the package is still installed this system
+ *
+ * @since 1.0.0
+ * @author Sascha Bay (TheCry) <sascha.bay@i-mscp.net>
+ * @return result array
+ */
+function check_package_is_installed ($package_installtype, $package_name, $package_version, $package_language, $user_id) {
+    /**
+     * @var $sql iMSCP_Database
+     */
+    $sql = iMSCP_Registry::get('db');
+
+    $query = "
+        SELECT
+            `admin_type`,
+            `admin_name`
+        FROM
+            `admin`
+        WHERE
+            `admin_id` = '".$user_id."'
+        ;
+    ";
+    $rs_admin_type = exec_query($sql, $query);
+    if($rs_admin_type->fields['admin_type'] == "admin") {
+        $query = "
+            SELECT
+                `software_id`
+            FROM
+                `web_software`
+            WHERE
+                `software_installtype`  = '".$package_installtype."'
+            AND
+                `software_name`         = '".$package_name."'
+            AND
+                `software_version`      = '".$package_version."'
+            AND
+                `software_language`     = '".$package_language."'
+            AND
+                `software_depot`        = 'no'
+            ;
+        ";
+    } else {
+        $query = "
+            SELECT
+                `software_id`
+            FROM
+                `web_software`
+            WHERE
+                `software_installtype`  = '".$package_installtype."'
+            AND
+                `software_name`         = '".$package_name."'
+            AND
+                `software_version`      = '".$package_version."'
+            AND
+                `software_language`     = '".$package_language."'
+            AND
+                `reseller_id`           = '".$user_id."'
+            AND
+                `software_depot`        = 'no'
+            ;
+        ";
+    }
+    $rs = exec_query($sql, $query);
+    $sw_count_res = $rs->recordCount();
+
+    $query = "
+        SELECT
+            `software_id`
+        FROM
+            `web_software`
+        WHERE
+            `software_installtype`  = '".$package_installtype."'
+        AND
+            `software_name`         = '".$package_name."'
+        AND
+            `software_version`      = '".$package_version."'
+        AND
+            `software_language`     = '".$package_language."'
+        AND
+            `software_master_id`    = '0'
+        AND
+            `software_depot`        = 'yes'
+        ;
+    ";
+    $rs = exec_query($sql, $query);
+    $sw_count_swdepot = $rs->recordCount();
+
+    if($sw_count_res > 0 || $sw_count_swdepot > 0) {
+        if($sw_count_res > 0) {
+            return array(
+		        true, "reseller"
+	        );
+        } else {
+            return array(
+		        true, "sw_depot"
+	        );
+        }
+    } else {
+        return array(
+		    false, "not_installed"
+	    );
+    }
+}
+
+/**
  * Get all software packages from database since last update from the websoftware depot
  *
  * @since 1.0.0
@@ -911,7 +1016,7 @@ function get_webdepot_software_list (&$tpl,$user_id) {
     $rs = exec_query($sql, $query);
     if ($rs->recordCount() > 0) {
         while(!$rs->EOF) {
-            
+
             $tpl->assign(
 				array(
 					'TR_PACKAGE_NAME'       => $rs->fields['package_title'],
@@ -920,12 +1025,38 @@ function get_webdepot_software_list (&$tpl,$user_id) {
                     'TR_PACKAGE_VERSION'        => $rs->fields['package_version'],
                     'TR_PACKAGE_LANGUAGE'       => $rs->fields['package_language'],
                     'TR_PACKAGE_TYPE'           => $rs->fields['package_type'],
-                    'TR_PACKAGE_VENDOR_HP'      => ($rs->fields['package_vendor_hp'] == "") ? tr('N/A') : '<a href="'.$rs->fields['package_vendor_hp'].'" target="_blank">'.tr('Vendor hompage').'</a>',
-                    'PACKAGE_HTTP_URL'          => $rs->fields['package_download_link'],
-                    'TR_PACKAGE_INSTALL'        => tr('Start installation'),
-                    'TR_MESSAGE_INSTALL'        => tr('Are you sure to install this package from the webdepot?', true)
+                    'TR_PACKAGE_VENDOR_HP'      => ($rs->fields['package_vendor_hp'] == "") ? tr('N/A') : '<a href="'.$rs->fields['package_vendor_hp'].'" target="_blank">'.tr('Vendor hompage').'</a>'
 				)
 			);
+            list(
+                $is_installed,
+                $installed_on
+            ) = check_package_is_installed (
+                    $rs->fields['package_install_type'], $rs->fields['package_title'],
+                    $rs->fields['package_version'], $rs->fields['package_language'],
+                    $user_id
+                );
+            if($is_installed) {
+                $tpl->assign(
+				    array(
+                        'PACKAGE_HTTP_URL'          => '',
+                        'TR_PACKAGE_INSTALL'        => ($installed_on == "sw_depot") ? tr('Installed in software depot') : tr('Installed in reseller depot'),
+                        'TR_MESSAGE_INSTALL'        => ''
+				    )
+			    );
+                $tpl->parse('PACKAGE_INFO_LINK', 'package_info_link');
+                $tpl->assign('PACKAGE_INSTALL_LINK', '');
+            } else {
+                $tpl->assign(
+				    array(
+                        'PACKAGE_HTTP_URL'          => $rs->fields['package_download_link'],
+                        'TR_PACKAGE_INSTALL'        => tr('Start installation'),
+                        'TR_MESSAGE_INSTALL'        => tr('Are you sure to install this package from the webdepot?', true)
+				    )
+			    );
+                $tpl->parse('PACKAGE_INSTALL_LINK', 'package_install_link');
+                $tpl->assign('PACKAGE_INFO_LINK', '');
+            }
             $tpl->parse('LIST_WEBDEPOTSOFTWARE', '.list_webdepotsoftware');
             $rs->moveNext();
         }

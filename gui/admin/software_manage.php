@@ -457,6 +457,8 @@ $tpl->define_dynamic('list_reseller', 'page');
 $tpl->define_dynamic('webdepot_list', 'page');
 $tpl->define_dynamic('list_webdepotsoftware', 'page');
 $tpl->define_dynamic('no_webdepotsoftware_list', 'page');
+$tpl->define_dynamic('package_install_link', 'page');
+$tpl->define_dynamic('package_info_link', 'page');
 
 list(
     $use_webdepot,

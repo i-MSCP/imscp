@@ -1,6 +1,10 @@
 i-MSCP ChangeLog
 ~~~~~~~~~~~~~~~~
 
+2010-12-15 Sascha Bay
+	- GUI:
+	    Fixed #51: Enhancement - Change Package actions if software is installed
+
 2010-12-12 Daniel Andreca
 	- GUI:
 		Fixed #50: Patch to fix the exception when switching users ( Ratatoille please stop copy and think before)
