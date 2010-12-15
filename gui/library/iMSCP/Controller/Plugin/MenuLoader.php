@@ -49,7 +49,10 @@ class iMSCP_Controller_Plugin_MenuLoader extends Zend_Controller_Plugin_Abstract
 			case 'admin':
 			case 'reseller':
 			case 'client':
-				Zend_Registry::get('view')->navigation(
+				// Getting the view resource
+				$view = Zend_Controller_Front::getInstance()->getParam('bootstrap')->getResource('view');
+
+				$view->navigation(
 					new Zend_Navigation(
 						new Zend_Config_Xml(APPLICATION_PATH . "/configs/menus/$moduleName.xml", 'nav')
 					)

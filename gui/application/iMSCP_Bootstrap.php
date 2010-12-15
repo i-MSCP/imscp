@@ -26,7 +26,11 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
-class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
+
+/**
+ * 
+ */
+class iMSCP_Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
 
 	/**
@@ -39,8 +43,5 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$this->bootstrap('view');
 		$view = $this->getResource('view');
 		$view->doctype('XHTML1_TRANSITIONAL');
-
-		// Register the view to use it later
-		Zend_Registry::set('view', $view);
 	}
 }
