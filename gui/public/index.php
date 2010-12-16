@@ -50,36 +50,58 @@
  *  configuration file.
  */
 
-// Define path to application directory
-defined('APPLICATION_PATH')
-	|| define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../application'));
+/**
+ * Check PHP version
+ */
+if (version_compare(phpversion(), '5.2.0', '<') === true) {
+    die('ERROR: Your PHP version is ' . phpversion() . '. i-MSCP requires PHP 5.2.0 or newer.');
+}
 
-// Define path to public directory
-defined('PUBLIC_PATH')
-	|| define('PUBLIC_PATH', realpath(APPLICATION_PATH . '/../public'));
+// Error reporting
+error_reporting(E_ALL|E_STRICT);
+
+// Path and directory separators
+defined('DS') ||define('DS', DIRECTORY_SEPARATOR);
+defined('PS') || define('PS', PATH_SEPARATOR);
+
+// Define path to application and public directories
+defined('APPLICATION_PATH') || define('APPLICATION_PATH', realpath(dirname(__FILE__) . DS . '..' . DS .'application'));
+defined('PUBLIC_PATH')      || define('PUBLIC_PATH', realpath(APPLICATION_PATH . DS . '..' . DS . 'public'));
 
 // Define application environment
 defined('APPLICATION_ENV')
 	|| define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
 
 // Ensure library/ is on include_path
-set_include_path(
-	implode(
-		PATH_SEPARATOR,
-		array(
-            realpath(APPLICATION_PATH . '/../library'),
-            get_include_path(),
-		)
-	)
-);
+set_include_path(implode(PS, array(realpath(APPLICATION_PATH . DS . '..' . DS . 'library'), get_include_path())));
+
+/**
+ * Load main i-MSCP configuration file
+ */
+if(file_exists('/etc/imscp/imscp.xml')) {
+	$config = '/etc/imscp/imscp.xml';
+} elseif(file_exists('/usr/local/etc/imscp.xml')) {
+	$config = '/usr/local/etc/imscp.xml';
+} else {
+	die('Error: Unable to reach the main i-MSCP configuration file!');
+}
+
+/** Zend_Config_Xml **/
+require_once 'Zend/Config/Xml.php';
+
+try {
+	$config = new Zend_Config_Xml($config, 'all');
+	$config = $config->toArray();
+} catch(Exception $e) {
+	die('Error: Unable to parse the main i-MSCP configuration file. Please check syntax.');
+}
 
 /** Zend_Application */
 require_once 'Zend/Application.php';
 
-// Create application, bootstrap, and run
-$application = new Zend_Application(
-	APPLICATION_ENV,
-	APPLICATION_PATH . '/configs/application.ini'
-);
+// Create application bootstrap, and run
+$imscp = new Zend_Application(APPLICATION_ENV, APPLICATION_PATH . DS . 'configs' . DS . 'imscp.ini');
 
-$application->bootstrap()->run();
+// Merge main configuration with current configuration, bootstrap, and run
+$config = $imscp->mergeOptions($imscp->getOptions(), $config);
+$imscp->setOptions($config)->bootstrap()->run();
