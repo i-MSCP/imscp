@@ -89,7 +89,7 @@ if(file_exists('/etc/imscp/imscp.xml')) {
 
 $cachedCfgFile = 'imscp.' . filemtime($sysCfgFile) . '.php';
 
-if(!file_exists(APPLICATION_PATH . DS . 'cache' . DS . $cachedCfgFile)) {
+if(!file_exists(APPLICATION_PATH . DS . 'cache' . DS . $cachedCfgFile) || APPLICATION_ENV != 'production') {
 	try {
 		// Loading local configuration file
 		require_once 'Zend/Config/Ini.php';
@@ -102,29 +102,25 @@ if(!file_exists(APPLICATION_PATH . DS . 'cache' . DS . $cachedCfgFile)) {
 		// Merging system and local configuration files
 		$config->merge($sysCfg);
 
-		// Creating cached file from merged configuration files (only in production)
+		// Process configuration file caching only in production
 		if(APPLICATION_ENV == 'production') {
 			require_once 'Zend/Config/Writer/Array.php';
 			$writer = new Zend_Config_Writer_Array();
 			$writer->write(APPLICATION_PATH . DS . 'cache' . DS .$cachedCfgFile, $config, true);
-		}
 
+			// Removing old cached configuration file if one exists
+			foreach(scandir(APPLICATION_PATH . DS . 'cache') as $fileName) {
+				if(preg_match('/^imscp\.[0-9]+\.php$/', $fileName) && $fileName != $cachedCfgFile) {
+					@unlink(APPLICATION_PATH . DS . 'cache' . DS .$fileName);
+				}
+			}
+		}
+		// Process some cleanup
+		unset($sysCfgFile, $cachedCfgFile, $sysCfg, $fileName);
 	} catch(Exception $e) {
 		(APPLICATION_ENV == 'development')
 			? die('Error: ' . $e->getMessage()) : "Error: An unrecoverable error occurred!";
 	}
-
-	// Removing old cached configuration file if one exists
-	foreach(scandir(APPLICATION_PATH . DS . 'cache') as $fileName) {
-		if(preg_match('/^imscp\.[0-9]+\.php$/', $fileName) && $fileName != $cachedCfgFile) {
-			if(!@unlink(APPLICATION_PATH . DS . 'cache' . DS .$fileName)) {
-				// todo log
-			}
-		}
-	}
-
-	// Process some cleanup
-	unset($sysCfgFile, $cachedCfgFile, $sysCfg, $fileName);
 } else {
 	$config = include_once APPLICATION_PATH . DS . 'cache' . DS .$cachedCfgFile;
 	$config = $config['frontend'];
