@@ -68,17 +68,8 @@ defined('PS') || define('PS', PATH_SEPARATOR);
 defined('APPLICATION_PATH') || define('APPLICATION_PATH', realpath(dirname(__FILE__) . DS . '..' . DS .'application'));
 defined('PUBLIC_PATH')      || define('PUBLIC_PATH', realpath(APPLICATION_PATH . DS . '..' . DS . 'public'));
 
-// Define application environment
-defined('APPLICATION_ENV')
-	|| define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
-
 // Ensure library/ is on include_path
 set_include_path(implode(PS, array(realpath(APPLICATION_PATH . DS . '..' . DS . 'library'), get_include_path())));
-
-/**
- * Load main i-MSCP configuration file
- */
-
 
 /**
  * Determine main ispCP configuration file path
@@ -97,7 +88,7 @@ if(!file_exists(APPLICATION_PATH . DS . 'cache' . DS . $cachedCfgFile)) {
 	try {
 		// Loading local configuration file
 		require_once 'Zend/Config/Ini.php';
-		$config = new Zend_Config_Ini(APPLICATION_PATH . DS . 'configs' . DS . 'imscp.ini', APPLICATION_ENV, true);
+		$config = new Zend_Config_Ini(APPLICATION_PATH . DS . 'configs' . DS . 'imscp.ini', 'frontend', true);
 
 		// Loading system configuration file
 		require_once 'Zend/Config/Xml.php';
@@ -129,7 +120,7 @@ if(!file_exists(APPLICATION_PATH . DS . 'cache' . DS . $cachedCfgFile)) {
 	unset($sysCfgFile, $cachedCfgFile, $sysCfg, $fileName);
 } else {
 	$config = include_once APPLICATION_PATH . DS . 'cache' . DS .$cachedCfgFile;
-	$config = $config[APPLICATION_ENV];
+	$config = $config['frontend'];
 }
 
 /** Zend_Application */
@@ -138,7 +129,7 @@ require_once 'Zend/Application.php';
 // Loading main configuration
 
 // Create aplication,
-$imscp = new Zend_Application(APPLICATION_ENV, $config);
+$imscp = new Zend_Application('frontend', $config);
 
 // Process some cleanup
 unset($config);

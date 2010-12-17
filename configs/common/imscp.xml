@@ -28,7 +28,7 @@
  */
 -->
 <config>
-	<all>
+		<frontend>
 		<app>
 			<name>i-MSCP</name>
 			<codename>phoenix</codename>
@@ -36,24 +36,32 @@
 			<build>20101215</build>
 		</app>
 		<phpSettings>
+			<display_startup_errors>1</display_startup_errors>
 			<display_errors>1</display_errors>
 			<date>
-				<timezone>{PHP_TIMEZONE}</timezone>
+				<timezone>UTC</timezone>
 			</date>
 		</phpSettings>
 		<resources>
+			<frontController>
+				<params>
+					<displayExceptions>1</displayExceptions>
+				</params>
+			</frontController>
 			<view>
 				<encoding>UTF-8</encoding>
 			</view>
 			<db>
 				<params>
 					<charset>utf8</charset>
-					<host>{DB_HOST}</host>
-					<username>{DB_USER}</username>
+					<host>localhost</host>
+					<username>root</username>
 					<password>{DB_PASSWORD}</password>
-					<dbname>{DB_NAME}</dbname>
+					<dbname>imscp</dbname>
 				</params>
 			</db>
 		</resources>
-	</all>
+		</frontend>
+		<engine>
+		</engine>
 </config>
