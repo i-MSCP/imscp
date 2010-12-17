@@ -60,6 +60,11 @@ if (version_compare(phpversion(), '5.2.0', '<') === true) {
 // Error reporting
 error_reporting(E_ALL|E_STRICT);
 
+
+// Define application environment
+defined('APPLICATION_ENV')
+	|| define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
+
 // Path and directory separators
 defined('DS') ||define('DS', DIRECTORY_SEPARATOR);
 defined('PS') || define('PS', PATH_SEPARATOR);
@@ -97,10 +102,12 @@ if(!file_exists(APPLICATION_PATH . DS . 'cache' . DS . $cachedCfgFile)) {
 		// Merging system and local configuration files
 		$config->merge($sysCfg);
 
-		// Creating cached file from merged configuration files
-		require_once 'Zend/Config/Writer/Array.php';
-		$writer = new Zend_Config_Writer_Array();
-		$writer->write(APPLICATION_PATH . DS . 'cache' . DS .$cachedCfgFile, $config, true);
+		// Creating cached file from merged configuration files (only in production)
+		if(APPLICATION_ENV == 'production') {
+			require_once 'Zend/Config/Writer/Array.php';
+			$writer = new Zend_Config_Writer_Array();
+			$writer->write(APPLICATION_PATH . DS . 'cache' . DS .$cachedCfgFile, $config, true);
+		}
 
 	} catch(Exception $e) {
 		(APPLICATION_ENV == 'development')
@@ -128,11 +135,11 @@ require_once 'Zend/Application.php';
 
 // Loading main configuration
 
-// Create aplication,
-$imscp = new Zend_Application('frontend', $config);
+// Create application,
+$imscp = new Zend_Application(APPLICATION_ENV, $config);
 
 // Process some cleanup
 unset($config);
 
-// Boostrap and run
+// Bootstrap and run
 $imscp->bootstrap()->run();
