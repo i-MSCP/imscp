@@ -29,7 +29,7 @@
 /***********************************************************************************************************************
  * Script shot description
  *
- *  This is the entry point of the iMSCP Application (frontend). This script will load Zend_Application and instantiate
+ *  This is the entry point of the iMSCP application. This script will load Zend_Application and instantiate
  *  it by passing:
  * 
  *  - The current environment
@@ -50,20 +50,24 @@
  *  configuration file.
  */
 
-/**
- * Check PHP version
- */
-if (version_compare(phpversion(), '5.2.0', '<') === true) {
-    die('ERROR: Your PHP version is ' . phpversion() . '. i-MSCP requires PHP 5.2.0 or newer.');
-}
-
 // Error reporting
 error_reporting(E_ALL|E_STRICT);
-
 
 // Define application environment
 defined('APPLICATION_ENV')
 	|| define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
+
+/**
+ * Check PHP version
+ */
+if (version_compare(phpversion(), '5.2.0', '<') === true) {
+	if(APPLICATION_ENV != 'production') {
+		die('Error: Your PHP version is ' . phpversion() . '. i-MSCP requires PHP 5.2.0 or newer.');
+	} else {
+		header('Location: /500.html');
+		exit;
+	}
+}
 
 // Path and directory separators
 defined('DS') ||define('DS', DIRECTORY_SEPARATOR);
@@ -71,7 +75,7 @@ defined('PS') || define('PS', PATH_SEPARATOR);
 
 // Define path to application and public directories
 defined('APPLICATION_PATH') || define('APPLICATION_PATH', realpath(dirname(__FILE__) . DS . '..' . DS .'application'));
-defined('PUBLIC_PATH')      || define('PUBLIC_PATH', realpath(APPLICATION_PATH . DS . '..' . DS . 'public'));
+defined('PUBLIC_PATH') || define('PUBLIC_PATH', realpath(APPLICATION_PATH . DS . '..' . DS . 'public'));
 
 // Ensure library/ is on include_path
 set_include_path(implode(PS, array(realpath(APPLICATION_PATH . DS . '..' . DS . 'library'), get_include_path())));
@@ -84,22 +88,22 @@ if(file_exists('/etc/imscp/imscp.xml')) {
 } elseif(file_exists('/usr/local/etc/imscp.xml')) {
 	$sysCfgFile = '/usr/local/etc/imscp.xml';
 } else {
-	die('Error: Unable to reach the main i-MSCP configuration file!');
+	die('Error: Unable to found the system i-MSCP configuration file!');
 }
 
 $cachedCfgFile = 'imscp.' . filemtime($sysCfgFile) . '.php';
 
 if(!file_exists(APPLICATION_PATH . DS . 'cache' . DS . $cachedCfgFile) || APPLICATION_ENV != 'production') {
 	try {
-		// Loading local configuration file
+		// Load local configuration file
 		require_once 'Zend/Config/Ini.php';
 		$config = new Zend_Config_Ini(APPLICATION_PATH . DS . 'configs' . DS . 'imscp.ini', 'frontend', true);
 
-		// Loading system configuration file
+		// Load system configuration file
 		require_once 'Zend/Config/Xml.php';
 		$sysCfg = new Zend_Config_Xml($sysCfgFile, 'frontend');
 
-		// Merging system and local configuration files
+		// Merge system and local configuration files
 		$config->merge($sysCfg);
 
 		// Process configuration file caching only in production
@@ -110,19 +114,25 @@ if(!file_exists(APPLICATION_PATH . DS . 'cache' . DS . $cachedCfgFile) || APPLIC
 
 			// Removing old cached configuration file if one exists
 			foreach(scandir(APPLICATION_PATH . DS . 'cache') as $fileName) {
-				if(preg_match('/^imscp\.[0-9]+\.php$/', $fileName) && $fileName != $cachedCfgFile) {
-					@unlink(APPLICATION_PATH . DS . 'cache' . DS .$fileName);
+				if($fileName != $cachedCfgFile && preg_match('/^imscp\.[0-9]+\.php$/', $fileName)) {
+					@unlink(APPLICATION_PATH . DS . 'cache' . DS . $fileName);
 				}
 			}
 		}
+
 		// Process some cleanup
 		unset($sysCfgFile, $cachedCfgFile, $sysCfg, $fileName);
+
 	} catch(Exception $e) {
-		(APPLICATION_ENV == 'development')
-			? die('Error: ' . $e->getMessage()) : "Error: An unrecoverable error occurred!";
+		if(APPLICATION_ENV != 'production') {
+			die('Error: ' . $e->getMessage());
+		} else {
+			header('Location: /500.html');
+			exit;
+		}
 	}
 } else {
-	$config = include_once APPLICATION_PATH . DS . 'cache' . DS .$cachedCfgFile;
+	$config = include_once(APPLICATION_PATH . DS . 'cache' . DS .$cachedCfgFile);
 	$config = $config['frontend'];
 }
 
