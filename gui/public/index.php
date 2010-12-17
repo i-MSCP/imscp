@@ -77,7 +77,7 @@ defined('PUBLIC_PATH')      || define('PUBLIC_PATH', realpath(APPLICATION_PATH .
 set_include_path(implode(PS, array(realpath(APPLICATION_PATH . DS . '..' . DS . 'library'), get_include_path())));
 
 /**
- * Determine main ispCP configuration file path
+ * Determine system i-MSCP configuration file path
  */
 if(file_exists('/etc/imscp/imscp.xml')) {
 	$sysCfgFile = '/etc/imscp/imscp.xml';
@@ -132,8 +132,6 @@ if(!file_exists(APPLICATION_PATH . DS . 'cache' . DS . $cachedCfgFile)) {
 
 /** Zend_Application */
 require_once 'Zend/Application.php';
-
-// Loading main configuration
 
 // Create application,
 $imscp = new Zend_Application(APPLICATION_ENV, $config);
