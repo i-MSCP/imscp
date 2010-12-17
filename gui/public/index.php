@@ -78,30 +78,70 @@ set_include_path(implode(PS, array(realpath(APPLICATION_PATH . DS . '..' . DS . 
 /**
  * Load main i-MSCP configuration file
  */
+
+
+/**
+ * Determine main ispCP configuration file path
+ */
 if(file_exists('/etc/imscp/imscp.xml')) {
-	$config = '/etc/imscp/imscp.xml';
+	$sysCfgFile = '/etc/imscp/imscp.xml';
 } elseif(file_exists('/usr/local/etc/imscp.xml')) {
-	$config = '/usr/local/etc/imscp.xml';
+	$sysCfgFile = '/usr/local/etc/imscp.xml';
 } else {
 	die('Error: Unable to reach the main i-MSCP configuration file!');
 }
 
-/** Zend_Config_Xml **/
-require_once 'Zend/Config/Xml.php';
+$cachedCfgFile = 'imscp.' . filemtime($sysCfgFile) . '.php';
 
-try {
-	$config = new Zend_Config_Xml($config, 'all');
-	$config = $config->toArray();
-} catch(Exception $e) {
-	die('Error: Unable to parse the main i-MSCP configuration file. Please check syntax.');
+if(!file_exists(APPLICATION_PATH . DS . 'cache' . DS . $cachedCfgFile)) {
+	try {
+		// Loading local configuration file
+		require_once 'Zend/Config/Ini.php';
+		$config = new Zend_Config_Ini(APPLICATION_PATH . DS . 'configs' . DS . 'imscp.ini', APPLICATION_ENV, true);
+
+		// Loading system configuration file
+		require_once 'Zend/Config/Xml.php';
+		$sysCfg = new Zend_Config_Xml($sysCfgFile, 'frontend');
+
+		// Merging system and local configuration files
+		$config->merge($sysCfg);
+
+		// Creating cached file from merged configuration files
+		require_once 'Zend/Config/Writer/Array.php';
+		$writer = new Zend_Config_Writer_Array();
+		$writer->write(APPLICATION_PATH . DS . 'cache' . DS .$cachedCfgFile, $config, true);
+
+	} catch(Exception $e) {
+		(APPLICATION_ENV == 'development')
+			? die('Error: ' . $e->getMessage()) : "Error: An unrecoverable error occurred!";
+	}
+
+	// Removing old cached configuration file if one exists
+	foreach(scandir(APPLICATION_PATH . DS . 'cache') as $fileName) {
+		if(preg_match('/^imscp\.[0-9]+\.php$/', $fileName) && $fileName != $cachedCfgFile) {
+			if(!@unlink(APPLICATION_PATH . DS . 'cache' . DS .$fileName)) {
+				// todo log
+			}
+		}
+	}
+
+	// Process some cleanup
+	unset($sysCfgFile, $cachedCfgFile, $sysCfg, $fileName);
+} else {
+	$config = include_once APPLICATION_PATH . DS . 'cache' . DS .$cachedCfgFile;
+	$config = $config[APPLICATION_ENV];
 }
 
 /** Zend_Application */
 require_once 'Zend/Application.php';
 
-// Create application bootstrap, and run
-$imscp = new Zend_Application(APPLICATION_ENV, APPLICATION_PATH . DS . 'configs' . DS . 'imscp.ini');
+// Loading main configuration
 
-// Merge main configuration with current configuration, bootstrap, and run
-$config = $imscp->mergeOptions($imscp->getOptions(), $config);
-$imscp->setOptions($config)->bootstrap()->run();
+// Create aplication,
+$imscp = new Zend_Application(APPLICATION_ENV, $config);
+
+// Process some cleanup
+unset($config);
+
+// Boostrap and run
+$imscp->bootstrap()->run();
