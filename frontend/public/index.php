@@ -94,7 +94,7 @@ if(file_exists('/etc/imscp/imscp.xml')) {
 
 $cachedCfgFile = 'imscp.' . filemtime($sysCfgFile) . '.php';
 
-if(!file_exists(ROOT_PATH . DS . 'cache' . DS . $cachedCfgFile) || APPLICATION_ENV != 'production') {
+if(!file_exists(ROOT_PATH . DS . 'data' . DS . 'cache' . DS . $cachedCfgFile) || APPLICATION_ENV != 'production') {
 	try {
 		// Load local configuration file
 		require_once 'Zend/Config/Ini.php';
@@ -111,12 +111,12 @@ if(!file_exists(ROOT_PATH . DS . 'cache' . DS . $cachedCfgFile) || APPLICATION_E
 		if(APPLICATION_ENV == 'production') {
 			require_once 'Zend/Config/Writer/Array.php';
 			$writer = new Zend_Config_Writer_Array();
-			$writer->write(ROOT_PATH . DS . 'cache' . DS .$cachedCfgFile, $config, true);
+			$writer->write(ROOT_PATH . DS . 'data' . DS . 'cache' . DS .$cachedCfgFile, $config, true);
 
 			// Removing old cached configuration file if one exists
-			foreach(scandir(ROOT_PATH . DS . 'cache') as $fileName) {
+			foreach(scandir(ROOT_PATH . DS . 'data' . DS . 'cache') as $fileName) {
 				if($fileName != $cachedCfgFile && preg_match('/^imscp\.[0-9]+\.php$/', $fileName)) {
-					@unlink(ROOT_PATH . DS . 'cache' . DS . $fileName);
+					@unlink(ROOT_PATH . DS . 'data' . DS . 'cache' . DS . $fileName);
 				}
 			}
 		}
@@ -133,7 +133,7 @@ if(!file_exists(ROOT_PATH . DS . 'cache' . DS . $cachedCfgFile) || APPLICATION_E
 		}
 	}
 } else {
-	$config = include_once(ROOT_PATH . DS . 'cache' . DS .$cachedCfgFile);
+	$config = include_once(ROOT_PATH . DS . 'data' . DS . 'cache' . DS .$cachedCfgFile);
 	$config = $config['frontend'];
 }
 
