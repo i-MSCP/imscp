@@ -74,6 +74,7 @@ defined('DS') ||define('DS', DIRECTORY_SEPARATOR);
 defined('PS') || define('PS', PATH_SEPARATOR);
 
 // Define path to application and public directories
+defined('ROOT_PATH') || define('ROOT_PATH', realpath(dirname(__FILE__) . DS . '..'));
 defined('APPLICATION_PATH') || define('APPLICATION_PATH', realpath(dirname(__FILE__) . DS . '..' . DS .'application'));
 defined('PUBLIC_PATH') || define('PUBLIC_PATH', realpath(APPLICATION_PATH . DS . '..' . DS . 'public'));
 
@@ -93,7 +94,7 @@ if(file_exists('/etc/imscp/imscp.xml')) {
 
 $cachedCfgFile = 'imscp.' . filemtime($sysCfgFile) . '.php';
 
-if(!file_exists(APPLICATION_PATH . DS . 'cache' . DS . $cachedCfgFile) || APPLICATION_ENV != 'production') {
+if(!file_exists(ROOT_PATH . DS . 'cache' . DS . $cachedCfgFile) || APPLICATION_ENV != 'production') {
 	try {
 		// Load local configuration file
 		require_once 'Zend/Config/Ini.php';
@@ -113,9 +114,9 @@ if(!file_exists(APPLICATION_PATH . DS . 'cache' . DS . $cachedCfgFile) || APPLIC
 			$writer->write(APPLICATION_PATH . DS . 'cache' . DS .$cachedCfgFile, $config, true);
 
 			// Removing old cached configuration file if one exists
-			foreach(scandir(APPLICATION_PATH . DS . 'cache') as $fileName) {
+			foreach(scandir(ROOT_PATH . DS . 'cache') as $fileName) {
 				if($fileName != $cachedCfgFile && preg_match('/^imscp\.[0-9]+\.php$/', $fileName)) {
-					@unlink(APPLICATION_PATH . DS . 'cache' . DS . $fileName);
+					@unlink(ROOT_PATH . DS . 'cache' . DS . $fileName);
 				}
 			}
 		}
@@ -132,7 +133,7 @@ if(!file_exists(APPLICATION_PATH . DS . 'cache' . DS . $cachedCfgFile) || APPLIC
 		}
 	}
 } else {
-	$config = include_once(APPLICATION_PATH . DS . 'cache' . DS .$cachedCfgFile);
+	$config = include_once(ROOT_PATH . DS . 'cache' . DS .$cachedCfgFile);
 	$config = $config['frontend'];
 }
 
