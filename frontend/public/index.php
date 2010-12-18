@@ -111,7 +111,7 @@ if(!file_exists(ROOT_PATH . DS . 'cache' . DS . $cachedCfgFile) || APPLICATION_E
 		if(APPLICATION_ENV == 'production') {
 			require_once 'Zend/Config/Writer/Array.php';
 			$writer = new Zend_Config_Writer_Array();
-			$writer->write(APPLICATION_PATH . DS . 'cache' . DS .$cachedCfgFile, $config, true);
+			$writer->write(ROOT_PATH . DS . 'cache' . DS .$cachedCfgFile, $config, true);
 
 			// Removing old cached configuration file if one exists
 			foreach(scandir(ROOT_PATH . DS . 'cache') as $fileName) {
