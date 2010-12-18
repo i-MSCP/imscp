@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# ispCP ω (OMEGA) a Virtual Hosting Control System
+# i-MSCP a internet Multi Server Control Panel
 #
-# @copyright 	2006-2010 by ispCP | http://isp-control.net
-# @link 		http://isp-control.net
+# Copyright (C) 2006-2010 by isp Control Panel - http://isp-control.net
+# Copyright (C) 2010 by internet Multi Server Control Panel - http://i-mscp.net
+#
 # @author 		Jochen Manz <jochen.manz@gmx.de>
-# @copyright    2010 by internet Multi Server Control Panel - http://i-mscp.net
 #
 # @license
 # The contents of this file are subject to the Mozilla Public License
@@ -36,8 +36,8 @@ rm -rf i-mscp-*
 svn export $SVNSTRING
 
 # Builddate
-ISPCPCONF="${SVNFOLDER}\configs\debian\i-mscp.conf"
-CURRENTBUILDDATE=$(grep BuildDate ${ISPCPCONF} | cut -d "=" -f 2 | sed 's/ //g')
+IMSCPCONF="${SVNFOLDER}\configs\debian\imscp.conf"
+CURRENTBUILDDATE=$(grep BuildDate ${IMSCPCONF} | cut -d "=" -f 2 | sed 's/ //g')
 TARGETBUILDDATE=$(date -u +"%Y%m%d")
 
 echo ${CURRENTBUILDDATE}
@@ -45,8 +45,8 @@ echo ${CURRENTBUILDDATE}
 mv ${SVNFOLDER} ${RELEASEFOLDER}
 
 # Release preparations
-#rpl -R "Version = ${CURRENTVERSION} OMEGA" "Version = ${TARGETVERSION} OMEGA" ${RELEASEFOLDER}/configs
-#rpl -R "BuildDate = ${CURRENTBUILDDATE}" "BuildDate = ${TARGETBUILDDATE}" ${RELEASEFOLDER}/*/i-mscp.conf
+#rpl -R "Version = ${CURRENTVERSION}" "Version = ${TARGETVERSION}" ${RELEASEFOLDER}/configs
+#rpl -R "BuildDate = ${CURRENTBUILDDATE}" "BuildDate = ${TARGETBUILDDATE}" ${RELEASEFOLDER}/*/imscp.conf
 #rpl -R "${CURRENTVERSION}" "${TARGETVERSION}" ${RELEASEFOLDER}/docs/*/INSTALL
 
 # Create the needed Archives
@@ -63,7 +63,7 @@ md5sum ${RELEASEFOLDER}.zip > ${RELEASEFOLDER}.zip.sum
 md5sum ${RELEASEFOLDER}.7z > ${RELEASEFOLDER}.7z.sum
 
 # Fill the batch file for sftp
-if [ -e ./ftpbatch.sh ]; then 
+if [ -e ./ftpbatch.sh ]; then
 	rm -rf ./ftpbatch.sh
 fi
 

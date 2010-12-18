@@ -17,7 +17,7 @@
 # License along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 
-# This script will convert all EOL to Unix format in all ispCP package files.
+# This script will convert all EOL to Unix format in all iMSCP package files.
 # An EOL will be also added at end of files if missing
 # This script should live and be called from the ./contrib directory
 

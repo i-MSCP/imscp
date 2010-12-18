@@ -1,6 +1,6 @@
 <?php
 /**
- * ispCP ω (OMEGA) complete domain backup/restore tool
+ * iMSCP complete domain backup/restore tool
  * Restore application
  *
  * @copyright 	2010 Thomas Wacker

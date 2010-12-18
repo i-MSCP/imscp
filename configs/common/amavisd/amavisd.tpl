@@ -31,7 +31,7 @@
 #    http://i-mscp.net
 #
 
-# ispCP ω Omega specific:
+# iMSCP specific:
 #
 # If you do not want this file to be regenerated from scratch during i-MSCP
 # update process, change the 'AMAVIS_REGENERATE' parameter value to 'no' in the

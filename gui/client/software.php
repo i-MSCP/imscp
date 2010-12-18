@@ -19,7 +19,7 @@
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
  * @category i-MSCP
- * @copyright 2010 by ispCP | http://i-mscp.net
+ * @copyright 2010 by i-MSCP | http://i-mscp.net
  * @author Sacha Bay <sascha.bay@i-mscp.net>
  * @version SVN: $Id$
  * @link http://i-mscp.net i-MSCP Home Site
@@ -98,7 +98,7 @@ function gen_user_software_action($software_id, $dmn_id, $sql, $tpl) {
 }
 
 function gen_software_list($tpl, $sql, $dmn_id, $dmn_name, $reseller_id, $admin_id) {
-	
+
 	global $counter, $delcounter;
 	$query = "
 		SELECT
@@ -184,7 +184,7 @@ function gen_software_list($tpl, $sql, $dmn_id, $dmn_name, $reseller_id, $admin_
 				);
 			$tpl -> parse('DEL_SOFTWARE_SUPPORT', '.del_software_support');
 		}
-		
+
 		if (isset($_GET['sortby']) && isset($_GET['order'])) {
 			if ($_GET['order'] === "asc" || $_GET['order'] === "desc") {
 				if ($_GET['sortby'] === "name") {
@@ -204,7 +204,7 @@ function gen_software_list($tpl, $sql, $dmn_id, $dmn_name, $reseller_id, $admin_
 		} else {
 			$ordertype = "`software_name` ASC, `software_type` ASC";
 		}
-		
+
 		$list_query = "
 			SELECT
 				`software_id`,
@@ -223,7 +223,7 @@ function gen_software_list($tpl, $sql, $dmn_id, $dmn_name, $reseller_id, $admin_
 			ORDER BY
 				$ordertype
 		";
-				
+
 		$rs = exec_query($sql, $list_query, $reseller_id);
 		if ($rs -> recordCount() == 0) {
 			$tpl->assign('SOFTWARE_ITEM', '');
@@ -275,7 +275,7 @@ function gen_software_list($tpl, $sql, $dmn_id, $dmn_name, $reseller_id, $admin_
 				$rs->moveNext();
 				$counter ++;
 			}
-			return $rs -> recordCount();		
+			return $rs -> recordCount();
 		}
 	} else {
 		$tpl->assign(
@@ -330,7 +330,7 @@ if(isset($_SESSION['software_support']) && $_SESSION['software_support'] == "no"
 
 $tpl -> assign(
 	array(
-		'TR_CLIENT_MANAGE_USERS_PAGE_TITLE' 	=> tr('ispCP - Client/Manage Users'),
+		'TR_CLIENT_MANAGE_USERS_PAGE_TITLE' 	=> tr('i-MSCP - Client/Manage Users'),
 		'THEME_COLOR_PATH' 						=> "../themes/{$cfg->USER_INITIAL_THEME}",
 		'THEME_CHARSET' 						=> tr('encoding'),
 		'ISP_LOGO' 								=> get_logo($_SESSION['user_id']),

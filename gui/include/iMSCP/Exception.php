@@ -32,7 +32,7 @@
  */
 
 /**
- * ispCP default Exception
+ * i-MSCP default Exception
  *
  * @package		iMSCP_Exception
  * @author		Laurent Declercq <laurent.declercq@i-mscp.net>

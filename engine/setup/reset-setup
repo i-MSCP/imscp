@@ -33,7 +33,7 @@
 
 ########################################################################
 #
-# This Script only resets the i-MSCP Setup, it WON'T uninstall ispCP!!
+# This Script only resets the i-MSCP Setup, it WON'T uninstall iMSCP!!
 # Afterwards a new install is possible. Use it, if you had an installation
 # error during setup.
 #

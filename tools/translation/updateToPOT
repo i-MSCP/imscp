@@ -34,7 +34,7 @@
 # description:
 #
 # updates/merges all language specific .po files with strings of the
-# main file ispcp.pot
+# main file imscp.pot
 #
 
 set -e
@@ -53,7 +53,7 @@ fi
 
 for i in *.po; do
 	echo $i
-	msgmerge -U $i ispCP.pot
+	msgmerge -U $i iMSCP.pot
 done
 
 exit 0

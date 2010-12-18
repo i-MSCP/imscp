@@ -33,7 +33,7 @@
 /**
  * Virtual File System class
  *
- * This class provides a FTP layer that allows to browse and edit all customer's files from the ispCP control Panel.
+ * This class provides a FTP layer that allows to browse and edit all customer's files from the i-MSCP.
  *
  * @category	i-MSCP
  * @package		iMSCP_VirtualFileSystem

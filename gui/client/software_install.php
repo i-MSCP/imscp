@@ -19,7 +19,7 @@
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
  * @category i-MSCP
- * @copyright 2010 by ispCP | http://i-mscp.net
+ * @copyright 2010 by i-MSCP | http://i-mscp.net
  * @author Sacha Bay <sascha.bay@i-mscp.net>
  * @version SVN: $Id$
  * @link http://i-mscp.net i-MSCP Home Site
@@ -31,19 +31,19 @@
  */
 
 function gen_user_domain_list($tpl, $sql, $user_id) {
-	
+
 	/**
 	* @var $cfg iMSCP_Config_Handler_File
 	*/
 	$cfg = iMSCP_Registry::get('config');
-	
+
 	/**
 	 * @var $sql iMSCP_Database
 	 */
 	$sql = iMSCP_Registry::get('db');
-	
+
 	$domain_id = get_user_domain_id($sql, $user_id);
-	
+
 	//Get Domain Data
 	$querydomain = "
 		SELECT
@@ -56,7 +56,7 @@ function gen_user_domain_list($tpl, $sql, $user_id) {
 			`domain_id` = ?
 	";
 	$rsdomain = exec_query($sql, $querydomain, $domain_id);
-	
+
 	//Get Aliase
 	$queryaliase = "
 		SELECT
@@ -73,7 +73,7 @@ function gen_user_domain_list($tpl, $sql, $user_id) {
 			`domain_id` = ?
 	";
 	$rsaliase = exec_query($sql, $queryaliase, $domain_id);
-	
+
 	//Get Subdomains
 	$querysubdomain = "
 		SELECT
@@ -91,7 +91,7 @@ function gen_user_domain_list($tpl, $sql, $user_id) {
 			`subdomain`.`domain_id` = ?
 	";
 	$rssubdomain = exec_query($sql, $querysubdomain, $domain_id);
-	
+
 	//Get Subaliase
 	$querysubaliase = "
 		SELECT
@@ -109,13 +109,13 @@ function gen_user_domain_list($tpl, $sql, $user_id) {
 			`domain_id` = ?
 	";
 	$rssubaliase = exec_query($sql, $querysubaliase, $domain_id);
-	
+
 	if (isset($_POST['selected_domain'])){
 		list ($posted_domain_id, $posted_aliasdomain_id, $posted_subdomain_id, $posted_aliassubdomain_id, $posted_mountpath) = explode(";", $_POST['selected_domain']);
 	} else {
 		$selecteddomain = '';
 	}
-	
+
 	if (($rsaliase->recordCount() + $rssubdomain->recordCount() + $rssubaliase->recordCount()) > 0) {
 		while (!$rsaliase->EOF) {
 			if (isset($_POST['selected_domain']) && $posted_aliasdomain_id != 0){
@@ -199,17 +199,17 @@ function gen_user_domain_list($tpl, $sql, $user_id) {
 	}
 }
 function check_db_user_list($tpl, $sql, $db_id) {
-	
+
 	/**
 	* @var $cfg iMSCP_Config_Handler_File
 	*/
 	$cfg = iMSCP_Registry::get('config');;
-	
+
 	/**
 	 * @var $sql iMSCP_Database
 	 */
 	$sql = iMSCP_Registry::get('db');
-	
+
 	$count = 0;
 	$query = "
 		SELECT
@@ -264,17 +264,17 @@ function check_db_user_list($tpl, $sql, $db_id) {
 }
 
 function check_db_avail(&$tpl, &$sql, $dmn_id, $dmn_sqld_limit) {
-	
+
 	/**
 	* @var $cfg iMSCP_Config_Handler_File
 	*/
 	$cfg = iMSCP_Registry::get('config');
-	
+
 	/**
 	 * @var $sql iMSCP_Database
 	 */
 	$sql = iMSCP_Registry::get('db');
-	
+
 	$existdbuser = 0;
 	$check_db = "
 		SELECT
@@ -347,14 +347,14 @@ function check_db_avail(&$tpl, &$sql, $dmn_id, $dmn_sqld_limit) {
 				);
   	}
 }
-	
+
 function check_software_avail($sql, $software_id, $dmn_created_id) {
-	
+
 	/**
 	 * @var $sql iMSCP_Database
 	 */
 	$sql = iMSCP_Registry::get('db');
-	
+
 	$check_avail = "
 			SELECT
 				`reseller_id` AS reseller
@@ -374,12 +374,12 @@ function check_software_avail($sql, $software_id, $dmn_created_id) {
 }
 
 function check_is_installed(&$tpl, &$sql, $dmn_id, $software_id) {
-	
+
 	/**
 	 * @var $sql iMSCP_Database
 	 */
 	$sql = iMSCP_Registry::get('db');
-	
+
   	$is_installed = "
 			SELECT
 				`software_id`
@@ -400,12 +400,12 @@ function check_is_installed(&$tpl, &$sql, $dmn_id, $software_id) {
 }
 
 function get_software_props ($tpl, $sql, $dmn_id, $software_id, $dmn_created_id, $dmn_sqld_limit) {
-	
+
 	/**
 	 * @var $sql iMSCP_Database
 	 */
 	$sql = iMSCP_Registry::get('db');
-	
+
   	if (!check_software_avail($sql, $software_id, $dmn_created_id)) {
 		set_page_message(tr('Software not found!'), 'error');
 		header('Location: software.php');
@@ -428,7 +428,7 @@ function get_software_props ($tpl, $sql, $dmn_id, $software_id, $dmn_created_id,
 		check_is_installed($tpl, $sql, $dmn_id, $software_id);
 		if ($rs -> fields['software_db'] == 1) {
 			$tpl -> assign ('SOFTWARE_DB', tr('yes'));
-			if ($dmn_sqld_limit == '-1') { 
+			if ($dmn_sqld_limit == '-1') {
 				$tpl -> parse('REQUIRE_INSTALLDB', '.require_installdb');
 			}
 			check_db_avail($tpl, $sql, $dmn_id, $dmn_sqld_limit);
@@ -464,7 +464,7 @@ function gen_page_lists($tpl, $sql, $user_id) {
 }
 
 function check_db_connection($sql_database, $sql_user, $sql_pass) {
-	
+
 	/**
 	 * @var $cfg iMSCP_Config_Handler_File
 	 */
@@ -550,7 +550,7 @@ if (isset($_POST['Submit2'])) {
     $vfs = new iMSCP_VirtualFileSystem($domain, $sql);
     $list = $vfs->ls($other_dir);
     //Check dir exists
-	
+
 	list($dmn_id,
 		$dmn_name,
 		$dmn_gid,
@@ -571,8 +571,8 @@ if (isset($_POST['Submit2'])) {
 		$dmn_disk_usage,
 		$dmn_php,
 		$dmn_cgi) = get_domain_default_props($sql, $_SESSION['user_id']);
-	
-	
+
+
 	$querypath = "
 		SELECT
 			`software_name` as swname,
@@ -641,11 +641,11 @@ if (isset($_POST['Submit2'])) {
 				`sqlu_name` = ?
 		";
 		$rsdatabase = exec_query($sql, $querydbuser, $sql_user);
-		
+
 		$db_connection_ok = check_db_connection($selected_db, $sql_user, $rsdatabase->fields['sqlu_pass']);
 		$sql_pass = $rsdatabase->fields['sqlu_pass'];
 	}
-	if($rs->fields['software_db'] == "1" && !$db_connection_ok) {		
+	if($rs->fields['software_db'] == "1" && !$db_connection_ok) {
 		set_page_message(tr('Please select the correct user for your database!'), 'error');
 	} elseif(empty($install_username) || empty($install_password) || empty($install_email)) {
 		set_page_message(tr('You have to fill out inputs!'), 'error');
@@ -670,8 +670,8 @@ if (isset($_POST['Submit2'])) {
 		$software_master_id = $rs->fields['software_master_id'];
 		$software_depot = $rs->fields['software_depot'];
 		$software_language = $rs->fields['software_language'];
-		
-		
+
+
 		$query = "
 			SELECT
 				`software_prefix`
@@ -681,7 +681,7 @@ if (isset($_POST['Submit2'])) {
 				`software_id` = ?
 		";
 		$rs = exec_query($sql, $query, $_GET['id']);
-		
+
 		$prefix = $rs->fields['software_prefix'];
 		if($sw_db_required == "1") {
 			$query="
@@ -689,7 +689,7 @@ if (isset($_POST['Submit2'])) {
 					`web_software_inst`
 						(
 							`domain_id`, `alias_id`, `subdomain_id`, `subdomain_alias_id`, `software_id`,
-							`software_master_id`, `software_name`, `software_version`, `software_language`, `path`, 
+							`software_master_id`, `software_name`, `software_version`, `software_language`, `path`,
 							`software_prefix`, `db`, `database_user`, `database_tmp_pwd`, `install_username`,
 							`install_password`, `install_email`, `software_status`, `software_depot`
 						)
@@ -708,7 +708,7 @@ if (isset($_POST['Submit2'])) {
 					`web_software_inst`
 						(
 							`domain_id`, `alias_id`, `subdomain_id`, `subdomain_alias_id`, `software_id`,
-							`software_master_id`, `software_name`, `software_version`, `software_language`, `path`, 
+							`software_master_id`, `software_name`, `software_version`, `software_language`, `path`,
 							`software_prefix`, `db`, `database_user`, `database_tmp_pwd`, `install_username`,
 							`install_password`, `install_email`, `software_status`, `software_depot`
 						)
@@ -760,7 +760,7 @@ if (isset($_POST['Submit2'])) {
 
 $tpl -> assign(
 			array(
-				'TR_CLIENT_INSTALL_SOFTWARE_PAGE_TITLE' => tr('ispCP - Install Software'),
+				'TR_CLIENT_INSTALL_SOFTWARE_PAGE_TITLE' => tr('i-MSCP - Install Software'),
 				'THEME_COLOR_PATH' 						=> "../themes/{$cfg->USER_INITIAL_THEME}",
 				'THEME_CHARSET' 						=> tr('encoding'),
 				'ISP_LOGO'								=> get_logo($_SESSION['user_id'])

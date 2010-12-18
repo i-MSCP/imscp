@@ -118,7 +118,7 @@ scache    unix  -       -       n       -       1       scache
 #   -o local_header_rewrite_clients=
 
 #
-# ispCP auto responder service
+# iMSCP auto responder service
 #
 
 imscp-arpl unix  -      n       n       -       -       pipe

@@ -32,15 +32,15 @@
  */
 
 /**
- * ispCP Initializer class
+ * i-MSCP Initializer class
  *
- * The initializer is responsible for processing the ispCP configuration, such as setting the include_path, initializing
+ * The initializer is responsible for processing the i-MSCP configuration, such as setting the include_path, initializing
  * logging, database and more.
  *
- * @category    ispCP
+ * @category    i-MSCP
  * @package     iMSCP_Initializer
  * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
- * @since       1.0.7 (ispCP)
+ * @since       1.0.0
  * @version     1.1.2
  */
 class iMSCP_Initializer {
@@ -216,10 +216,10 @@ class iMSCP_Initializer {
 	/**
 	 * Check for PHP version and Standard PHP library availability
 	 *
-	 * ispCP uses interfaces and classes that come from the Standard Php library under PHP version 5.1.4. This methods
+	 * i-MSCP uses interfaces and classes that come from the Standard Php library under PHP version 5.1.4. This methods
 	 * ensures that the PHP version used is more recent or equal to the PHP version 5.1.4 and that the SPL is loaded.
 	 *
-	 * <b>Note:</b> ispCP requires PHP 5.1.4 or later because some SPL interfaces were not stable in earlier versions of
+	 * <b>Note:</b> i-MSCP requires PHP 5.1.4 or later because some SPL interfaces were not stable in earlier versions of
 	 * PHP.
 	 *
 	 * @throws iMSCP_Exception
@@ -308,7 +308,7 @@ class iMSCP_Initializer {
 		// Get the current PHP include path string and transform it in array
 		$include_path = explode($ps, str_replace('.' . $ps, '', DEFAULT_INCLUDE_PATH));
 
-		// Adds the ispCP gui/include ABSPATH to the PHP include_path
+		// Adds the i-MSCP gui/include ABSPATH to the PHP include_path
 		array_unshift($include_path, dirname(dirname(__FILE__)));
 
 		// Transform array of path to string and set the new PHP include_path
@@ -402,7 +402,7 @@ class iMSCP_Initializer {
 	 * This method ensures that the timezone is set to avoid any error with PHP versions equal or later than version
 	 * 5.3.x
 	 *
-	 * This method acts by checking the `date.timezone` value, and sets it to the value from the ispCP PHP_TIMEZONE
+	 * This method acts by checking the `date.timezone` value, and sets it to the value from the i-MSCP PHP_TIMEZONE
 	 * parameter if exists and if it not empty or to 'UTC' otherwise. If the timezone identifier is invalid, an
 	 * {@link iMSCP_Exception} exception is raised.
 	 *

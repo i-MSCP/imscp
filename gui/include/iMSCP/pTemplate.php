@@ -36,7 +36,7 @@
  */
 
 /**
- * Class pTemplate is the ispCP template engine.
+ * Class pTemplate is the i-MSCP template engine.
  *
  * @category	i-MSCP
  * @package		iMSCP_pTemplate

@@ -141,7 +141,7 @@ abstract class iMSCP_Update {
 	}
 
 	/**
-	 * Sends a request to the ispCP daemon
+	 * Sends a request to the i-MSCP daemon
 	 *
 	 * @return void
 	 */

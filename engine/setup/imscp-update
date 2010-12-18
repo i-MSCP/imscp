@@ -717,7 +717,7 @@ sub update_engine {
 
 	spacer();
 
-	## IspCP database
+	## i-MSCP database
 	title('i-MSCP database');
 	subtitle('Update i-MSCP database schema:');
 	$rs = update_database_schema();
