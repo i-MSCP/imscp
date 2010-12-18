@@ -76,7 +76,7 @@ class LostPasswordController extends Zend_Controller_Action
 
 		$captcha = new Zend_Captcha_Image(
 			array(
-				'Timeout' => 200,
+				'Timeout' => 60,
 				'Wordlen' => 8,
 				'Height' => 50,
 				'Font' => ROOT_PATH . DS . 'data' . DS . 'fonts' . DS . 'Arial.ttf',
@@ -85,7 +85,7 @@ class LostPasswordController extends Zend_Controller_Action
 				'ImgDir' => PUBLIC_PATH . '/captcha',
 				'ImgUrl' => '/captcha',
 				'ImgAlt' => 'Captcha code',
-				'Expiration' => 300
+				'Expiration' => 80
 			)
 		);
 
