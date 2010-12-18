@@ -33,15 +33,4 @@
 class iMSCP_Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
 
-	/**
-	 * initialize the html Doctype to be used in all views
-	 *
-	 * @return void
-	 */
-	protected function _initDoctype() {
-
-		$this->bootstrap('view');
-		$view = $this->getResource('view');
-		$view->doctype('XHTML1_TRANSITIONAL');
-	}
 }
