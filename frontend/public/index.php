@@ -75,11 +75,11 @@ defined('PS') || define('PS', PATH_SEPARATOR);
 
 // Define path to application and public directories
 defined('ROOT_PATH') || define('ROOT_PATH', realpath(dirname(__FILE__) . DS . '..'));
-defined('APPLICATION_PATH') || define('APPLICATION_PATH', realpath(dirname(__FILE__) . DS . '..' . DS .'application'));
-defined('PUBLIC_PATH') || define('PUBLIC_PATH', realpath(APPLICATION_PATH . DS . '..' . DS . 'public'));
+defined('PUBLIC_PATH') || define('PUBLIC_PATH', ROOT_PATH . DS . 'public');
+defined('APPLICATION_PATH') || define('APPLICATION_PATH', ROOT_PATH . DS .'application');
 
 // Ensure library/ is on include_path
-set_include_path(implode(PS, array(realpath(APPLICATION_PATH . DS . '..' . DS . 'library'), get_include_path())));
+set_include_path(implode(PS, array(ROOT_PATH . DS . 'library', get_include_path())));
 
 /**
  * Determine system i-MSCP configuration file path
