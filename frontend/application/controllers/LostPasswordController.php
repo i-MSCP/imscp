@@ -79,7 +79,7 @@ class LostPasswordController extends Zend_Controller_Action
 				'Timeout' => 200,
 				'Wordlen' => 8,
 				'Height' => 50,
-				'Font' => ROOT_PATH . DS . 'data' . DS . 'fonts' . DS . 'watermark.ttf',
+				'Font' => ROOT_PATH . DS . 'data' . DS . 'fonts' . DS . 'Arial.ttf',
 				'Width' => 190,
 				'FontSize' => 25,
 				'ImgDir' => PUBLIC_PATH . '/captcha',
