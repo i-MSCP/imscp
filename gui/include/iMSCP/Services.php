@@ -30,7 +30,7 @@
 /**
  * Class that allows to get services properties and their status
  *
- * @category	ispCP
+ * @category	i-MSCP
  * @package     iMSCP_Initializer
  * @copyright 	2010 by i-MSCP | http://i-mscp.net
  * @author		Laurent Declercq <laurent.declercq@i-mscp.net>

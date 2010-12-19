@@ -49,7 +49,7 @@ require_once  INCLUDEPATH . '/iMSCP/Config/Handler.php';
  * @property string ADMIN_TEMPLATE_PATH Admin templates path
  * @property string RESELLER_TEMPLATE_PATH Reseller templates path
  * @property string CLIENT_TEMPLATE_PATH Client templates path
- * @property string IPS_LOGO_PATH isp logo path
+ * @property string ISP_LOGO_PATH isp logo path
  * @property string PURCHASE_TEMPLATE_PATH Purchase templates path
  * @property string HTML_CHECKED Html attribute for preselected input element
  * @property string HTML_DISABLED Html attribute for disabled input element

@@ -134,7 +134,7 @@ function delete_user($user_id) {
 		// delete reseller logo if exists
 		if (!empty($reseller_logo) && $reseller_logo !== 0) {
 			try {
-				unlink($cfg->IPS_LOGO_PATH . '/' . $reseller_logo);
+				unlink($cfg->ISP_LOGO_PATH . '/' . $reseller_logo);
 			} catch(Exception $e) {
 				set_page_message(tr('Logo could not be deleted:') . " " . $e->getMessage(), 'error');
 			}

@@ -1477,7 +1477,7 @@ function get_logo($user_id) {
 	if($rs->fields['admin_type'] == 'admin') {
 		return get_admin_logo($user_id);
 	} else {
-		if(get_admin_logo($rs->fields['created_by']) == $cfg->IPS_LOGO_PATH . '/isp_logo.gif') {
+		if(get_admin_logo($rs->fields['created_by']) == $cfg->ISP_LOGO_PATH . '/isp_logo.gif') {
 			return get_admin_logo($user_id);
 		} else {
 			return get_admin_logo($rs->fields['created_by']);
@@ -1521,9 +1521,9 @@ function get_admin_logo($user_id) {
 	$user_logo = $rs->fields['logo'];
 
 	if(empty($user_logo)) { // default logo
-		return $cfg->IPS_LOGO_PATH . '/isp_logo.gif';
+		return $cfg->ISP_LOGO_PATH . '/isp_logo.gif';
 	} else {
-		return $cfg->IPS_LOGO_PATH . '/' . $user_logo;
+		return $cfg->ISP_LOGO_PATH . '/' . $user_logo;
 	}
 }
 

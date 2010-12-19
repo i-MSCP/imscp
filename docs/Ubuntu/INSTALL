@@ -93,7 +93,7 @@ provides graphic user interfaces for the administrators, resellers and users.
 9. Install i-MSCP step-by-step
 
 	If you get no error, all went good; if you get one, look at
-	http://is-mscp.sf.net to solve the problem.
+	http://i-mscp.net to solve the problem.
 
 10. Activate php mcrypt extension for Ubuntu
 	# sudo touch /etc/php5/conf.d/mcrypt.ini
@@ -170,7 +170,7 @@ Make sure you are logged in as root and MySQL is running.
 11. Update i-MSCP step-by-step
 
 	If you get no error, all went good; if you get one, look at
-	http://is-mscp.sf.net to solve the problem.
+	http://i-mscp.net to solve the problem.
 
 12. Clean the temporary folders:
 	# sudo rm -fR /tmp/imscp/

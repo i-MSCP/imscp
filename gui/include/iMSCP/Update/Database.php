@@ -251,7 +251,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	}
 
 	/**
-	 * Fix for ticket #1196 http://www.isp-control.net/i-mscp/ticket/1196.
+	 * Fix for ticket #1196 http://www.isp-control.net/ispcp/ticket/1196.
 	 *
 	 * @author Benedikt Heintel <benedikt.heintel@i-mscp.net>
 	 * @version 1.0.0
@@ -290,7 +290,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	}
 
 	/**
-	 * Fix for ticket #1346 http://www.isp-control.net/i-mscp/ticket/1346.
+	 * Fix for ticket #1346 http://www.isp-control.net/ispcp/ticket/1346.
 	 *
 	 * @author Benedikt Heintel <benedikt.heintel@i-mscp.net>
 	 * @version 1.0.0
@@ -321,7 +321,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	}
 
 	/**
-	 * Fix for ticket #755 http://www.isp-control.net/i-mscp/ticket/755.
+	 * Fix for ticket #755 http://www.isp-control.net/ispcp/ticket/755.
 	 *
 	 * @author Markus Milkereit
 	 * @version 1.0.0
@@ -346,7 +346,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	}
 
 	/**
-	 * Fix for ticket #1509 http://www.isp-control.net/i-mscp/ticket/1509.
+	 * Fix for ticket #1509 http://www.isp-control.net/ispcp/ticket/1509.
 	 *
 	 * @author Benedikt Heintel <benedikt.heintel@i-mscp.net>
 	 * @version 1.0.0
@@ -380,7 +380,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	}
 
 	/**
-	 * Fix for ticket #1571 http://www.isp-control.net/i-mscp/ticket/1571.
+	 * Fix for ticket #1571 http://www.isp-control.net/ispcp/ticket/1571.
 	 *
 	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @version 1.0.0
@@ -396,7 +396,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	}
 
 	/**
-	 * Fix for ticket #1610 http://www.isp-control.net/i-mscp/ticket/1610.
+	 * Fix for ticket #1610 http://www.isp-control.net/ispcp/ticket/1610.
 	 *
 	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @version 1.0.0
@@ -427,7 +427,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	}
 
 	/**
-	 * Fix for ticket #1664 http://www.isp-control.net/i-mscp/ticket/1664.
+	 * Fix for ticket #1664 http://www.isp-control.net/ispcp/ticket/1664.
 	 *
 	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @version 1.0.0
@@ -460,7 +460,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	}
 
 	/**
-	 * Fix for ticket #1620 http://www.isp-control.net/i-mscp/ticket/1620.
+	 * Fix for ticket #1620 http://www.isp-control.net/ispcp/ticket/1620.
 	 *
 	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @version 1.0.0
@@ -604,7 +604,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 
 	/**
 	 * update SMTP-SSL to the original Port list, see ticket #1806
-	 * http://www.isp-control.net/i-mscp/ticket/1806.
+	 * http://www.isp-control.net/ispcp/ticket/1806.
 	 *
 	 * @author Christian Hernmarck
 	 * @version 1.0.1
@@ -628,7 +628,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 
 	/**
 	 * Clean ticket database: Remove html entities from subjects and messages
-	 * Related to ticket #1721 http://www.isp-control.net/i-mscp/ticket/1721.
+	 * Related to ticket #1721 http://www.isp-control.net/ispcp/ticket/1721.
 	 *
 	 * @author Thomas Wacker
 	 * @version 1.0.1
@@ -688,7 +688,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	}
 
 	/**
-	 * Fix for ticket #1810 http://www.isp-control.net/i-mscp/ticket/1810.
+	 * Fix for ticket #1810 http://www.isp-control.net/ispcp/ticket/1810.
 	 *
 	 * @author Daniel Andreca <sci2tech@gmail.com>
 	 * @version 1.0.1
@@ -909,7 +909,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	}
 
 	/**
-	 * Fixes for ticket #1985 http://www.isp-control.net/i-mscp/ticket/1985.
+	 * Fixes for ticket #1985 http://www.isp-control.net/ispcp/ticket/1985.
 	 *
 	 * This db update provides the following:
 	 * Fixes for hosting plans properties:
@@ -1054,7 +1054,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	 }
 
 	/**
-	 * Fixes for ticket #2000 http://www.isp-control.net/i-mscp/ticket/1985.
+	 * Fixes for ticket #2000 http://www.isp-control.net/ispcp/ticket/1985.
 	 *
 	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
 	 * @version 1.0.2
@@ -1079,7 +1079,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	}
 
 	/**
-	 * Fixes for ticket #2047 http://www.isp-control.net/i-mscp/ticket/2047.
+	 * Fixes for ticket #2047 http://www.isp-control.net/ispcp/ticket/2047.
 	 *
 	 * @author Benedikt Heintel <benedikt.heintel@i-mscp.net>
 	 * @version 1.0.2
@@ -1130,7 +1130,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	/**
 	 * Adding Support System Control:
 	 * Admin can Enable and Disable Reseller's support system from frontend,
-	 * belongs to ticket #1121 @see http://isp-control.net/i-mscp/ticket/1121
+	 * belongs to ticket #1121 @see http://isp-control.net/ispcp/ticket/1121
 	 *
 	 * @author Sebastian Sellmeier
 	 * @version 1.0.1
@@ -1201,7 +1201,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	}
 
 	/**
-	 * Fix for ticket #2265 http://www.isp-control.net/i-mscp/ticket/2265
+	 * Fix for ticket #2265 http://www.isp-control.net/ispcp/ticket/2265
 	 *
 	 * This update adding slash as first char if doesn't exists and remove
 	 * double and trailling slash in the relative paths of `.htaccess` files
@@ -1298,7 +1298,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	}
 
 	/**
-	 * Fix for ticket #2195 http://www.isp-control.net/i-mscp/ticket/2195
+	 * Fix for ticket #2195 http://www.isp-control.net/ispcp/ticket/2195
 	 *
 	 * Remove all user gui properties that are orphan in the 'user_gui_props'
 	 * database table.
@@ -1467,7 +1467,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 			 * Old Critical Update #2
 			 *
 			 * Create default group for statistics
-			 * Fix for ticket #1571 http://www.isp-control.net/i-mscp/ticket/1571
+			 * Fix for ticket #1571 http://www.isp-control.net/ispcp/ticket/1571
 			 *
 			 * @author Daniel Andreca <sci2tech@gmail.com>
 			 * @version 1.0.0
@@ -1519,7 +1519,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 			 * Old Critical Update #3
 			 *
 			 * Create default group for statistics
-			 * Fix for ticket #1571 http://www.isp-control.net/i-mscp/ticket/1571.
+			 * Fix for ticket #1571 http://www.isp-control.net/ispcp/ticket/1571.
 			 *
 			 * @author Daniel Andreca <sci2tech@gmail.com>
 			 * @version 1.0.0
@@ -1568,7 +1568,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	}
 
 	/**
-	 * Fix for ticket #2345 http://www.isp-control.net/i-mscp/ticket/2345
+	 * Fix for ticket #2345 http://www.isp-control.net/ispcp/ticket/2345
 	 *
 	 * Deletes the 'Show Server Load' option and the related variable
 	 *
@@ -1588,7 +1588,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	}
 
 	/**
-	 * Fix for ticket #2201 http://www.isp-control.net/i-mscp/ticket/2201
+	 * Fix for ticket #2201 http://www.isp-control.net/ispcp/ticket/2201
 	 * Fix for Ticket #2452: Update from v1.0.6 will fail on
 	 * Deletes the now useless column `correction` from table `domain_traffic`
 	 *
@@ -1651,7 +1651,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	}
 
 	/**
-	 * Fix for ticket #2371 http://isp-control.net/i-mscp/ticket/2371
+	 * Fix for ticket #2371 http://isp-control.net/ispcp/ticket/2371
 	 *
 	 * i-MSCP GUI fails to login via IPv6
 	 *
@@ -1682,7 +1682,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	}
 
 	/**
-	 * Fix for ticket #2319 http://isp-control.net/i-mscp/ticket/2319
+	 * Fix for ticket #2319 http://isp-control.net/ispcp/ticket/2319
 	 *
 	 * Old Database tables does not support UTF8
 	 *

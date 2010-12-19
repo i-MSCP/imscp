@@ -18,13 +18,17 @@
  * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  *
- * @category	ispCP
+ * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
+ *
+ * @category	i-MSCP
  * @package	package
  * @subpackage	subpackage
  * @copyright	2006-2010 by ispCP | http://isp-control.net
+ * @copyright 	2010 by i-MSCP | http://i-mscp.net
  * @author	Klaas Tammling <klaas.tammling@st-city.net>
  * @version	SVN: $Id$
- * @link	http://isp-control.net ispCP Home Site
+ * @link	http://i-mscp.net i-MSCP Home Site
  * @license	http://www.mozilla.org/MPL/ MPL 1.1
  * @filesource
  */

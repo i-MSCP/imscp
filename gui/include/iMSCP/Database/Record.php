@@ -39,7 +39,7 @@
  *
  * @property bool readOnly
  *
- * @category	iMSCP
+ * @category	i-MSCP
  * @package     iMSCP_Database
  * @copyright 	2010 by i-MSCP | http://i-mscp.net
  * @author		Laurent Declercq <laurent.declercq@i-mscp.net>

@@ -35,7 +35,7 @@
  * This class provides the functionality needed by {@see admin/system_info.php}
  * for Linux and BSD systems.
  *
- * @category    ispCP
+ * @category    i-MSCP
  * @package		iMSCP_SystemInfo
  * @since       1.0.7 (ispCP)
  * @version     1.0.2

@@ -51,7 +51,7 @@ update_logo();
 
 gen_def_layout($tpl, $cfg->USER_INITIAL_THEME);
 
-if (get_own_logo($_SESSION['user_id']) !== $cfg->IPS_LOGO_PATH . '/isp_logo.gif') {
+if (get_own_logo($_SESSION['user_id']) !== $cfg->ISP_LOGO_PATH . '/isp_logo.gif') {
 	$tpl->parse('LOGO_REMOVE_BUTTON', '.logo_remove_button');
 } else {
 	$tpl->assign('LOGO_REMOVE_BUTTON', '');
