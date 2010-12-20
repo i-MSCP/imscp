@@ -48,15 +48,15 @@ sub _init{
 		iMSCP::Prerequish->new()->test('_all');
 		tie %main::configs, "iMSCP::Config";
 		$self->decodeDBData();
-		$self->lock($main::configs{MAIN_LOCK_FILE});
+		$self->lock($main::configs{main_lock_file});
 
 		my %setting = (AutoCommit => 0, PrintError => 0);
 		my $db = iMSCP::Database::Database->new(
-			DATABASE_TYPE		=> $main::configs{dbtype},
-			DATABASE_HOST		=> $main::configs{dbhost},
+			DATABASE_TYPE		=> $main::configs{type},
+			DATABASE_HOST		=> $main::configs{host},
 			DATABASE_NAME		=> $main::configs{dbname},
 			DATABASE_PASSWORD	=> $main::dbpass,
-			DATABASE_USER		=> $main::configs{dbusername},
+			DATABASE_USER		=> $main::configs{username},
 			DATABASE_SETTINGS	=> \%setting
 		);
 
@@ -86,13 +86,13 @@ sub lock{
 sub decodeDBData{
 	debug((caller(0))[3].': Starting...');
 
-	my $pass = $main::configs{dbpassword};
+	my $pass = $main::configs{password};
 
 	if(!defined($pass) || $pass eq ''){
 		iMSCP::Exception->new()->exception('Undefined mysql password');
 	}
 
-	do $main::configs{CONF_DIR}.'/key/imscp-db-keys';
+	do $main::configs{config_dir}.'/key/imscp-db-keys';
 	if (length($main::db_pass_key) != 32 || length($main::db_pass_iv) != 8) {
 		iMSCP::Exception->new()->exception('KEY or IV has invalid length');
 	}

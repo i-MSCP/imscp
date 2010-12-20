@@ -44,7 +44,7 @@ sub imscp_rqst_init {
 	use iMSCP::Boot;
 
 	my $x = iMSCP::Boot->new();
-	$main::output = $main::configs{LOG_DIR}.'/'.((caller(0))[1]);
+	$main::output = $main::configs{log_dir}.'/'.((caller(0))[1]);
 	umask(027);
 
 	debug((caller(0))[3].': Ending...');
@@ -89,6 +89,9 @@ my $x = iMSCP::Database::Database->getInstance()->doQuery('Database', 'Show data
 while(my ($key, $value) = each(%$x)){
 	debug($value->{'Database'});
 }
+
+$main::configs{debug} = 'a';
+
 flushLogs();
 
 do 'imscp-htusers-mngr';
@@ -96,6 +99,6 @@ my $xxx = "aaaa\n";
 my $code = sub {imscp_htusers_entry($xxx)};
 &$code('aaa');
 
-$main::configs{DEBUG} = 'a';
+
 
 exit 0;

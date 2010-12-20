@@ -69,7 +69,7 @@ BEGIN{
 );
 
 sub flushLogs{
-	my $display = $main::configs{DEBUG};
+	my $display = $main::configs{debug};
 	my $log=Log::Message::Simple->stack_as_string;
 
 	if($main::output){
