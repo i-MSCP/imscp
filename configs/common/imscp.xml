@@ -58,7 +58,7 @@
 					<host>localhost</host>
 					<username>root</username>
 					<password>{DB_PASSWORD}</password>
-					<dbname>imscp-eu</dbname>
+					<dbname>imscp</dbname>
 				</params>
 			</db>
 		</resources>
