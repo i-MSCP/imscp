@@ -29,7 +29,7 @@
 /**
  * Class that allow to manage plug-ing configuration
  */
-class iMSCP_Plugin_Config {
+class iMSCP_Core_Plugin_Config {
 
 	/**
 	 * Get plugin information from a plugin about.xml file

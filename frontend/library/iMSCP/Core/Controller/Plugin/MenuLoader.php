@@ -32,7 +32,7 @@
  * @author Laurent Declercq <l.declercq@i-mscp.net>
  * @version DRAFT (to be finished)
  */
-class iMSCP_Controller_Plugin_MenuLoader extends Zend_Controller_Plugin_Abstract
+class iMSCP_Core_Controller_Plugin_MenuLoader extends Zend_Controller_Plugin_Abstract
 {
 
 	/**
