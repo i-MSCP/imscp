@@ -54,14 +54,18 @@
 			<db>
 				<params>
 					<charset>utf8</charset>
+					<type>mysql</type>
 					<host>localhost</host>
 					<username>root</username>
 					<password>{DB_PASSWORD}</password>
-					<dbname>imscp</dbname>
+					<dbname>imscp-eu</dbname>
 				</params>
 			</db>
 		</resources>
 		</frontend>
+		<backend>
+			<debug>1</debug>
+		</backend>
 		<paths>
 			<config_dir>/etc/imscp</config_dir>
 			<log_dir>/var/log/imscp</log_dir>
