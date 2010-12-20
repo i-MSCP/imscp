@@ -62,6 +62,7 @@
 			</db>
 		</resources>
 		</frontend>
-		<engine>
-		</engine>
+		<paths>
+			<CONF_DIR>/etc/imspcp</CONF_DIR>
+		</paths>
 </config>

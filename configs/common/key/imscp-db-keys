@@ -1,0 +1,2 @@
+$main::db_pass_key = '{key}';
+$main::db_pass_iv = '{iv}';
