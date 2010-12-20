@@ -64,5 +64,7 @@
 		</frontend>
 		<paths>
 			<CONF_DIR>/etc/imspcp</CONF_DIR>
+			<LOG_DIR>/var/log/imscp</LOG_DIR>
+			<MAIN_LOCK_FILE>/tmp/imscp.lock</MAIN_LOCK_FILE>
 		</paths>
 </config>
