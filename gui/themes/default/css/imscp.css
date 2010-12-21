@@ -321,7 +321,7 @@ form table tbody td textarea{
     list-style-type: none;
     display: inline;
     margin: 0;
-    padding: 0;
+    padding: 14;
 }
 .path a {
     color: #fff;
