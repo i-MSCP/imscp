@@ -30,9 +30,8 @@
 /**
  * 
  */
-class iMSCP_Bootstrap extends Zend_Application_Bootstrap_Bootstrap
+class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
-
 	/**
 	 * Init routes
 	 *
