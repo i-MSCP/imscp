@@ -33,4 +33,52 @@
 class iMSCP_Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
 
+	/**
+	 * Init routes
+	 *
+	 * @return void
+	 */
+	protected function _initRoutes()
+	{
+		$this->bootstrap('FrontController');
+        $frontController = $this->getResource('FrontController');
+
+		// Getting all modules names
+		$modulesDirectory = APPLICATION_PATH . DS . 'modules';
+		$modulesNames = array();
+		foreach (new DirectoryIterator($modulesDirectory) as $directory) {
+            if ($directory->isDot() || !$directory->isDir()) continue;
+            $directory = $directory->getFilename();
+            if ($directory == '.svn') continue;
+            $modulesNames[] = $directory;
+		}
+
+		// Retrieving all routes config files
+		$routesConfigFiles = array();
+		foreach ($modulesNames as $moduleName) {
+			$routesDirectory = APPLICATION_PATH . DS . 'modules' . DS . $moduleName . DS . 'config' . DS . 'routes';
+			if (!is_dir($routesDirectory)) continue;
+			$directoryIterator = new DirectoryIterator($routesDirectory);
+			foreach ($directoryIterator as $file) {
+                if ($file->isDot() || $file->isDir()) continue;
+                $routesConfigFilesName = $file->getFilename();
+                if (preg_match('/^[^a-z]/i', $routesConfigFilesName)) continue;
+                $routesConfigFiles[] = $routesDirectory . DS . $routesConfigFilesName;
+            }
+		}
+
+		// Creating new Zend_Controller_Router_Rewrite instance
+		$routes = new Zend_Controller_Router_Rewrite();
+
+		// Add routes - start
+		foreach ($routesConfigFiles as $routesConfigFile) {
+			$routesConfig = new Zend_Config_Ini($routesConfigFile, 'routes');
+			$routes->addConfig($routesConfig, 'routes');
+		}
+
+		// Setting routes
+		$frontController->setRouter($routes);
+		// Don't use default route
+		$frontController->getRouter()->removeDefaultRoutes();
+	}
 }

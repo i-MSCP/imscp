@@ -29,6 +29,7 @@
 -->
 <config>
 	<nav>
+<!--
 	<general_information>
 		<label>General Information</label>
 		<module>admin</module>
@@ -40,23 +41,40 @@
 			</Overview>
 		</pages>
 	</general_information>
+-->
 
-
-	<manage_users>
+	<users>
 		<label>Manage Users</label>
-		<module>admin</module>
-		<controller>users</controller>
+		<module>core</module>
+		<controller>user</controller>
 		<class>manage_users</class>
+		<route>core_user_list</route>
 		<pages>
-			<Overview>
+			<list>
 				<label>Overview</label>
-				<module>admin</module>
-				<controller>users</controller>
-			</Overview>
+				<module>core</module>
+				<controller>user</controller>
+				<action>list</action>
+				<route>core_user_list</route>
+			</list>
+			<add>
+				<label>Add user</label>
+				<module>core</module>
+				<controller>user</controller>
+				<action>add</action>
+				<route>core_user_add</route>
+			</add>
+			<changepassword>
+				<label>Change password</label>
+				<module>core</module>
+				<controller>user</controller>
+				<action>changepassword</action>
+				<route>core_user_changepassword</route>
+			</changepassword>
 		</pages>
-	</manage_users>
+	</users>
 
-
+<!--
 	<hosting_plans>
 		<label>Hosting Plans</label>
 		<module>admin</module>
@@ -96,6 +114,6 @@
 		<controller>settings</controller>
 		<class>settings</class>
 	</settings>
-
+-->
 </nav>
 </config>

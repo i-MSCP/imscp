@@ -78,7 +78,7 @@ defined('ROOT_PATH') || define('ROOT_PATH', realpath(dirname(__FILE__) . DS . '.
 defined('PUBLIC_PATH') || define('PUBLIC_PATH', ROOT_PATH . DS . 'public');
 defined('APPLICATION_PATH') || define('APPLICATION_PATH', ROOT_PATH . DS .'application');
 
-// Ensure library/ is on include_path
+// Ensure library/ is in include_path
 set_include_path(implode(PS, array(ROOT_PATH . DS . 'library', get_include_path())));
 
 /**

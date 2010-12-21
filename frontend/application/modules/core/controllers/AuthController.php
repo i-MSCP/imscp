@@ -21,46 +21,24 @@
  * @copyright   2010 by i-MSCP | http://i-mscp.net
  * @author      i-MSCP Team
  * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
- * @version     SVN: $Id$
+ * @version     SVN: $Id: admin.xml 4117 2010-12-15 16:09:52Z nuxwin $
  * @link        http://www.i-mscp.net i-MSCP Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
-/**
- * Plugin that Load menu according user level
- *
- * @author Laurent Declercq <l.declercq@i-mscp.net>
- * @version DRAFT (to be finished)
- * @TODO build menus per modules
- */
-class iMSCP_Core_Controller_Plugin_MenuLoader extends Zend_Controller_Plugin_Abstract
+class Core_AuthController extends Zend_Controller_Action
 {
 
-	/**
-	 * Load menu according user level
-	 *
-	 * @param Zend_Controller_Request_Abstract $request
-	 * @return Zend_Controller_Request_Abstract
-	 */
-	public function routeShutdown(Zend_Controller_Request_Abstract $request) {
+    public function init()
+    {
+        $this->_helper->layout->setLayout('simple');
+    }
 
-		$view = Zend_Controller_Front::getInstance()->getParam('bootstrap')->getResource('view');
-		$url = $view->url();
-		$moduleName = substr($url, 1, strpos($url, '/', 1) - 1);
+    public function indexAction()
+    {
+        // action body
+    }
 
-		switch($moduleName) {
-			case 'admin':
-			case 'reseller':
-			case 'client':
-				$view->navigation(
-					new Zend_Navigation(
-						new Zend_Config_Xml(APPLICATION_PATH . "/configs/menus/$moduleName.xml", 'nav')
-					)
-				);
 
-			break;
-		}
-
-		return $request;
-	}
 }
+
