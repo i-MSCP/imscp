@@ -21,7 +21,7 @@
  * @copyright   2010 by i-MSCP | http://i-mscp.net
  * @author      i-MSCP Team
  * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
- * @version     SVN: $Id$
+ * @version     SVN: $Id: LostPasswordController.php 4138 2010-12-18 23:21:09Z nuxwin $
  * @link        http://www.i-mscp.net i-MSCP Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
@@ -32,24 +32,14 @@
  * @author Laurent Declercq <l.declercq@i-mscp.net>
  * @version DRAFT (to be finished)
  */
-class LostPasswordController extends Zend_Controller_Action
+class Core_LostPasswordController extends Zend_Controller_Action
 {
 
-	/**
-	 * Initialize the controller
-	 * 
-	 * @return void
-	 */
     public function init()
     {
-	    $this->_helper->layout->setLayout('simple');
+        $this->_helper->layout->setLayout('simple');
     }
 
-	/**
-	 * Default action
-	 * 
-	 * @return void
-	 */
     public function indexAction()
     {
 	    $request = $this->getRequest();
@@ -98,7 +88,7 @@ class LostPasswordController extends Zend_Controller_Action
 
 	/**
 	 * Validate captcha
-	 * 
+	 *
 	 * @param  $captcha
 	 * @return bool TRUE on success, FALSE otherwise
 	 */
