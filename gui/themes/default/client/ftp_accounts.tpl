@@ -82,12 +82,14 @@
 				<!-- EDP: ftps_total -->
 				<tbody>
 					<!-- BDP: ftp_item -->
+					<tr>
 						<td>{FTP_ACCOUNT}</td>
 						<td>
 							<a href="ftp_auth.php?id={UID}" class="icon i_filemanager">{TR_LOGINAS}</a>
 							<a href="ftp_edit.php?id={UID}" class="icon i_edit">{TR_EDIT}</a>
 							<a href="#" class="icon i_delete" onclick="action_delete('ftp_delete.php?id={UID}', '{FTP_ACCOUNT}')">{TR_DELETE}</a>
 						</td>
+					</tr>
 					<!-- EDP: ftp_item -->
 				</tbody>
 			</table>
