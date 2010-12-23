@@ -18,7 +18,7 @@
 --
 -- @category	i-MSCP
 -- @copyright	2010 by i-MSCP | http://i-mscp.net
--- @author		Laurent Declercq <laurent.declercq@i-mscp.net>
+-- @author		i-MSCP team
 -- @version		SVN: $Id: imscp-build 3933 2010-12-01 19:35:32Z sci2tech $
 -- @link		http://i-mscp.net i-MSCP Home Site
 -- @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
