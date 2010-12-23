@@ -16,6 +16,9 @@
           <apisDirectory enabled="false"/>
           <configsDirectory enabled="false"/>
           <controllersDirectory>
+	       <controllerFile controllerName="Error">
+		       <actionMethod actionName="error"/>
+	       </controllerFile>
             <controllerFile controllerName="User">
               <actionMethod actionName="index"/>
               <actionMethod actionName="add"/>
@@ -40,6 +43,9 @@
           </modelsDirectory>
           <viewsDirectory>
             <viewScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Error">
+                <viewScriptFile forActionName="error"/>
+              </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="User">
                 <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
