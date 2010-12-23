@@ -1,0 +1,6 @@
+<?php
+	foreach($this->pages as  $page) {
+		$page->setClass('');
+		echo '<li>' . $this->breadcrumbs()->htmlify($page) . '</li>', PHP_EOL;
+	}
+?>

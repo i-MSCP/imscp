@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?php echo $this->doctype() ?>
+
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en">
+    <head>
+		<?php
+			$this->headTitle('i-MSCP - internet Multi Server Control Panel');
+			$this->headMeta()->appendName('robots', 'nofollow, noindex')
+				->appendHttpEquiv('Content-Type', 'text/html; charset=UTF-8')
+				->appendHttpEquiv('X-UA-Compatible', 'IE=8')
+				->appendHttpEquiv('Content-Style-Type', 'text/css')
+				->appendHttpEquiv('Content-Script-Type', 'text/javascript');
+			$this->headLink()->appendStylesheet('/themes/default/css/imscp.css')
+                 ->headLink(array('rel' => 'favicon', 'href' => '/favicon.ico'),'PREPEND');
+			$this->headScript()->appendFile('/themes/default/js/DD_belatedPNG_0.0.8a-min.js', 'text/javascript', array('conditional' => 'IE 6'))
+				->appendScript("DD_belatedPNG.fix('*');" . PHP_EOL, 'text/javascript', array('conditional' => 'IE 6'));
+			echo $this->headTitle(), PHP_EOL, $this->headMeta(), PHP_EOL, $this->headLink(), PHP_EOL, $this->headScript(), PHP_EOL;
+		?>
+    </head>
+	<body>
+		<div class="header">
+			<div class="main_menu">
+				<?php echo $this->navigation()->menu()->setMaxDepth(0)->setUlClass('icon'); ?>
+			</div>
+			<div class="logo"><img src="/themes/default/images/imscp_logo.png" alt="i-MSCP logo" /></div>
+		</div>
+		<div class="location">
+		    <div class="location-area icons-left">
+		        <?php echo $this->navigation()->breadcrumbs()->setPartial('_sections.phtml')->setMinDepth(0)->setMaxDepth(0);?>
+		    </div>
+		    <ul class="location-menu">
+		        <li><a class="logout" href="../index.php?logout">Logout</a></li>
+		    </ul>
+		    <ul class="path">
+				<?php echo $this->navigation()->breadcrumbs()->setMaxDepth(1)->setPartial('_breadcrumbs.phtml');?>
+		    </ul>
+		</div>
+		<div class="left_menu">
+			<?php echo $this->navigation()->menu()->setOnlyActiveBranch(true)->setRenderParents(false)->setUlClass('')->setMinDepth(1)->setMaxDepth(0);
+			?>
+		</div>
+		<div class="body">
+			<?php echo $this->layout()->content; ?>
+		</div>
+		<div class="footer">i-MSCP 1.0.0<br />build: 111210<br />Codename: Phoenix</div>
+    </body>
+</html>

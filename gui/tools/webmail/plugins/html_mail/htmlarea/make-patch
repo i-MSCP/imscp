@@ -1,1 +1,0 @@
-cvs diff -D "$1" -kk -u -N -d . > ~/work/htmlarea-patch
