@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS `alias` (
   `created_on` datetime DEFAULT NULL,
   `expire_on` datetime DEFAULT NULL,
   `status` varchar(15) COLLATE utf8_unicode_ci DEFAULT 'add',
+  `error` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -29,6 +30,8 @@ CREATE TABLE IF NOT EXISTS `database` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
   `name` int(64) unsigned NOT NULL,
+  `status` varchar(15) COLLATE utf8_unicode_ci DEFAULT 'add',
+  `error` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -47,6 +50,22 @@ CREATE TABLE IF NOT EXISTS `database_sqluser` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `sqluser`
+--
+
+CREATE TABLE IF NOT EXISTS `sqluser` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `username` varchar(16) COLLATE utf8_unicode_ci NOT NULL,
+  `password` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `status` varchar(15) COLLATE utf8_unicode_ci DEFAULT 'add',
+  `error` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `domain`
 --
 
@@ -56,9 +75,48 @@ CREATE TABLE IF NOT EXISTS `domain` (
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `created_on` datetime DEFAULT NULL,
   `expire_on` datetime DEFAULT NULL,
-  `status` varchar(8) COLLATE utf8_unicode_ci DEFAULT 'add',
+  `status` varchar(15) COLLATE utf8_unicode_ci DEFAULT 'add',
+  `error` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `subdomain`
+--
+
+CREATE TABLE IF NOT EXISTS `subdomain` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `parent_id` int(10) unsigned NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `created_on` datetime DEFAULT NULL,
+  `status` varchar(15) COLLATE utf8_unicode_ci DEFAULT 'add',
+  `error` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user`
+--
+
+CREATE TABLE IF NOT EXISTS `user` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `role_id` int(10) unsigned NOT NULL,
+  `parent_id` int(10) unsigned DEFAULT NULL,
+  `username` varchar(8) COLLATE utf8_unicode_ci NOT NULL,
+  `password` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `created_on` datetime DEFAULT NULL,
+  `updated_on` datetime DEFAULT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT '0',
+  `status` varchar(15) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT 'add',
+  `error` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -177,55 +235,6 @@ CREATE TABLE IF NOT EXISTS `role` (
 CREATE TABLE IF NOT EXISTS `role_page` (
   `id_role` int(11) unsigned NOT NULL,
   `id_page` int(11) unsigned NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `sqluser`
---
-
-CREATE TABLE IF NOT EXISTS `sqluser` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `username` varchar(16) COLLATE utf8_unicode_ci NOT NULL,
-  `password` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `subdomain`
---
-
-CREATE TABLE IF NOT EXISTS `subdomain` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `parent_id` int(10) unsigned NOT NULL,
-  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `created_on` datetime DEFAULT NULL,
-  `status` varchar(15) COLLATE utf8_unicode_ci DEFAULT 'add',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `user`
---
-
-CREATE TABLE IF NOT EXISTS `user` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `role_id` int(10) unsigned NOT NULL,
-  `parent_id` int(10) unsigned DEFAULT NULL,
-  `username` varchar(8) COLLATE utf8_unicode_ci NOT NULL,
-  `password` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `created_on` datetime DEFAULT NULL,
-  `updated_on` datetime DEFAULT NULL,
-  `is_active` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `username` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
