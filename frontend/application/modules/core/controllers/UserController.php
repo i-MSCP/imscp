@@ -21,7 +21,7 @@
  * @copyright   2010 by i-MSCP | http://i-mscp.net
  * @author      i-MSCP Team
  * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
- * @version     SVN: $Id: admin.xml 4117 2010-12-15 16:09:52Z nuxwin $
+ * @version     SVN: $Id$
  * @link        http://www.i-mscp.net i-MSCP Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
@@ -56,7 +56,12 @@ class Core_UserController extends Zend_Controller_Action
 
     public function listAction()
     {
-        // action body
+	    $users = new Core_Model_DbTable_User();
+	    $users = $users->fetchAll($users->select()->order('username'));
+	    //print $users->username;
+		echo '<pre>';
+	        print_r($users);
+	    echo '</pre>';
     }
 
 }

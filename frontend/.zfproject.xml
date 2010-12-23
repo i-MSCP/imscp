@@ -7,12 +7,7 @@
       <configsDirectory>
         <applicationConfigFile type="ini"/>
       </configsDirectory>
-      <controllersDirectory>
-        <controllerFile controllerName="Index">
-          <actionMethod actionName="index"/>
-        </controllerFile>
-        <controllerFile controllerName="Error"/>
-      </controllersDirectory>
+      <controllersDirectory/>
       <formsDirectory enabled="false"/>
       <layoutsDirectory enabled="false"/>
       <modelsDirectory/>
@@ -41,6 +36,7 @@
             <dbTableDirectory>
               <dbTableFile dbTableName="User"/>
             </dbTableDirectory>
+            <modelFile modelName="User"/>
           </modelsDirectory>
           <viewsDirectory>
             <viewScriptsDirectory>
@@ -73,9 +69,6 @@
       </modulesDirectory>
       <viewsDirectory>
         <viewScriptsDirectory>
-          <viewControllerScriptsDirectory forControllerName="Error">
-            <viewScriptFile forActionName="error"/>
-          </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
         <viewFiltersDirectory enabled="false"/>
@@ -115,6 +108,7 @@
           <testApplicationControllerFile filesystemName="UserControllerTest.php"/>
           <testApplicationControllerFile filesystemName="AuthControllerTest.php"/>
           <testApplicationControllerFile filesystemName="LostPaswordControllerTest.php"/>
+          <testApplicationControllerFile filesystemName="PluginControllerTest.php"/>
         </testApplicationControllerDirectory>
       </testApplicationDirectory>
       <testLibraryDirectory>

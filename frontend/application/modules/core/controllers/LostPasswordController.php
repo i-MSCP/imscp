@@ -21,7 +21,7 @@
  * @copyright   2010 by i-MSCP | http://i-mscp.net
  * @author      i-MSCP Team
  * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
- * @version     SVN: $Id: LostPasswordController.php 4138 2010-12-18 23:21:09Z nuxwin $
+ * @version     SVN: $Id$
  * @link        http://www.i-mscp.net i-MSCP Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
