@@ -26,49 +26,209 @@
  * @link        http://www.i-mscp.net i-MSCP Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
+
+ // Debian configuration file
+
 -->
 <config>
-		<frontend>
 		<app>
 			<name>i-MSCP</name>
 			<codename>phoenix</codename>
 			<version>1.0.0</version>
 			<build>20101215</build>
 		</app>
-		<phpSettings>
-			<display_startup_errors>1</display_startup_errors>
-			<display_errors>1</display_errors>
-			<date>
+		<admin_default_mail/>
+		<servers>
+			<server>
+				<distribution>debian</distribution>
+				<hostname/>
+				<ip></ip>
+				<root_user>root</root_user>
+				<root_group>root</root_group>
+				<!-- list of active services on this server -->
+				<services>
+					<apache/>
+					<awstats/>
+					<courier/>
+					<chkrootkit/>
+					<fcgid/>
+					<imscp_daemon/>
+					<named/>
+					<local_dns_resolver/>
+					<postfix/>
+					<proftpd/>
+					<rootkit/>
+				</services>
+			</server>
+			<!-- sample for other server that provide slave DNS service -->
+			<server>
+				<distribution>debian</distribution>
+				<hostname/>
+				<ip></ip>
+				<!-- list of active services on this server -->
+				<services>
+					<named>
+						<!-- any default options can be overridden -->
+						<options>
+							<type>slave</type>
+						</options>
+					</named>
+				</services>
+			</server>
+		</servers>
+		<frontend>
+			<phpSettings>
+				<display_startup_errors>1</display_startup_errors>
+				<display_errors>1</display_errors>
+				<date>
 				<timezone>UTC</timezone>
-			</date>
-		</phpSettings>
-		<resources>
-			<frontController>
-				<params>
-					<displayExceptions>1</displayExceptions>
-				</params>
-			</frontController>
-			<view>
-				<encoding>UTF-8</encoding>
-			</view>
-			<db>
-				<params>
-					<charset>utf8</charset>
-					<type>mysql</type>
-					<host>localhost</host>
-					<username>root</username>
-					<password>{DB_PASSWORD}</password>
-					<dbname>imscp</dbname>
-				</params>
-			</db>
-		</resources>
+				</date>
+			</phpSettings>
+			<resources>
+				<frontController>
+					<params>
+						<displayExceptions>1</displayExceptions>
+					</params>
+				</frontController>
+				<view>
+					<encoding>UTF-8</encoding>
+				</view>
+				<db>
+					<params>
+						<charset>utf8</charset>
+						<type>mysql</type>
+						<host/>
+						<username/>
+						<password/>
+						<dbname/>
+					</params>
+				</db>
+			</resources>
 		</frontend>
-		<backend>
-			<debug>1</debug>
-		</backend>
-		<paths>
-			<config_dir>/etc/imscp</config_dir>
-			<log_dir>/var/log/imscp</log_dir>
-			<main_lock_file>/tmp/imscp.lock</main_lock_file>
-		</paths>
+		<apache>
+			<user>www-data</user>
+			<group>www-data</group>
+			<frontend_user>imscp</frontend_user>
+			<frontend_group>imscp</frontend_group>
+			<paths>
+				<config_dir>/etc/apache2</config_dir>
+				<user_config_dir>/etc/apache2/imscp</user_config_dir>
+				<modules_dir>/etc/apache2/mods-available</modules_dir>
+				<vhosts_dir>/etc/apache2/sites-available</vhosts_dir>
+				<log_dir>/var/log/apache2</log_dir>
+				<user_log_dir>/var/www/apache2/users</user_log_dir>
+				<backup_log_dir>/var/log/apache2/backup</backup_log_dir>
+				<virtual_dir>/var/www/virtual</virtual_dir>
+			</paths>
+		</apache>
+		<awstats>
+			<!-- Allowed values are : dynamic|static -->
+			<mode>dynamic</mode>
+			<authentication_group>statistics</authentication_group>
+			<paths>
+				<config_dir>/etc/awstats</config_dir>
+				<cache_dir>/var/cache/dir</cache_dir>
+				<engine_dir>/var/www/ispcp/engine/awstats</engine_dir>
+				<resource_dir>/usr/share/awstats</resource_dir>
+				<lib_dir>/usr/lib/cgi-bin</lib_dir>
+			</paths>
+		</awstats>
+		<courier>
+			<paths>
+				<config_dir>/etc/courier</config_dir>
+			</paths>
+		</courier>
+		<!-- Please dovecot's experts, write this section -->
+		<dovecot/>
+		<chkrootkit>
+			<paths>
+				<log_file>/var/log/chkrootkit.log</log_file>
+			</paths>
+		</chkrootkit>
+		<fcgi>
+			<paths>
+				<starter_dir>/var/www/imscp/fcgi-starter</starter_dir>
+				<fcgid>
+					<fcgid_conf_file>/etc/apache/mods-available/fcgid_imscp.conf</fcgid_conf_file>
+					<fcgid_load_file>/etc/apache/mods-available/fcgid_imscp.load</fcgid_load_file>
+				</fcgid>
+				<fastcgi />
+			</paths>
+		</fcgi>
+		<imscp>
+			<paths>
+				<config_dir>/etc/imscp</config_dir>
+				<root_dir>/var/www/imscp</root_dir>
+				<frontend_dir>/var/www/imscp/frontend</frontend_dir>
+				<frontend_public_dir>/var/www/imscp/frontend/public</frontend_public_dir>
+				<frontend_tools_dir>/var/www/imscp/frontend/tools</frontend_tools_dir>
+				<backend_dir>/var/www/imscp/backend</backend_dir>
+				<lock_file>/tmp/imscp.lock</lock_file>
+				<log_dir>/var/log/imscp</log_dir>
+			</paths>
+		</imscp>
+		<imscp_daemon>
+			<listen_ip>127.0.0.1</listen_ip>
+			<listen_port>9876</listen_port>
+			<path>
+				<binary>/var/www/imscp/engine/daemon/imscp-daemon</binary>
+				<pid_file>/var/run/imscp-daemon</pid_file>
+				<log_dir>/var/www/imscp/daemon</log_dir>
+			</path>
+		</imscp_daemon>
+		<named>
+			<type>master</type>
+			<paths>
+				<config_file>/etc/bind/named.conf</config_file>
+				<imscp_config_file>/etc/bind/imscp.conf</imscp_config_file>
+				<config_db_dir>/var/cache/bind</config_db_dir>
+			</paths>
+		</named>
+		<php>
+			<version>5</version>
+			<paths>
+				<cgi_binary>/usr/bin/php5-cgi</cgi_binary>
+			</paths>
+		</php>
+		<proftpd>
+			<paths>
+				<config_file>/etc/proftpd/proftpd.conf</config_file>
+				<user_config_dir>/etc/proftpd/imscp</user_config_dir>
+			</paths>
+		</proftpd>
+		<postfix>
+			<mailbox_user>vmail</mailbox_user>
+			<mailbox_uid>1004</mailbox_uid>
+			<mailbox_group>mail</mailbox_group>
+			<mailbox_gid>8</mailbox_gid>
+			<paths>
+				<config_dir>/etc/postfix</config_dir>
+				<virtual_config_dir>/etc/postfix/imscp</virtual_config_dir>
+				<virtual_alias_hash_file>/etc/postfix/imscp/aliases</virtual_alias_hash_file>
+				<virtual_domain_hash_file>/etc/postfix/imscp/domains</virtual_domain_hash_file>
+				<virtual_mailbox_hash_file>/etc/postfix/imscp/mailboxes</virtual_mailbox_hash_file>
+				<virtual_transport_hash_file>/etc/postfix_imscp/transport</virtual_transport_hash_file>
+				<relay_domain_file>/etc/postfix/imscp/relay_domain</relay_domain_file>
+				<sender_access_hash_file>/etc/postfix/imscp/sender-access</sender_access_hash_file>
+				<main_config_file>/etc/postfix/main.cf</main_config_file>
+				<master_config_file>/etc/postfix/master.cf</master_config_file>
+				<local_alias_hash_file>/etc/aliases</local_alias_hash_file>
+				<mail_dir>/var/mail</mail_dir>
+				<virtual_mail_dir>/var/mail/virtual</virtual_mail_dir>
+				<sasldb_file>etc/sasldb2</sasldb_file>
+				<jailed_sasldb_file>/var/spool/postfix/etc/sasldb2</jailed_sasldb_file>
+			</paths>
+		</postfix>
+		<rkhunter>
+			<paths>
+				<log_file>/var/log/rkhunter.log</log_file>
+			</paths>
+		</rkhunter>
+		<local_dns_resolver>
+			<paths>
+				<config_file>/etc/resolv.conf</config_file>
+			</paths>
+		</local_dns_resolver>
+		<miscellaneous/>
+		<debug>1</debug>
 </config>
