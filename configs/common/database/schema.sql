@@ -282,7 +282,3 @@ CREATE TABLE IF NOT EXISTS `widget` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Todo tables mail, protected_zone
---
