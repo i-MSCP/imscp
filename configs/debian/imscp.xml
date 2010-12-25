@@ -38,6 +38,7 @@
 			<build>20101215</build>
 		</app>
 		<admin_default_mail/>
+		<base_server_vhost/>
 		<servers>
 			<server>
 				<distribution>debian</distribution>
