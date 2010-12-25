@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# version: SVN: $Id$
+
 umask 022
 
 PHPRC="{IMSCP_FCGI_DIR}/{DOMAIN_NAME}/php"
