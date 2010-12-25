@@ -42,7 +42,7 @@
 			<server>
 				<distribution>debian</distribution>
 				<hostname/>
-				<ip></ip>
+				<ip/>
 				<root_user>root</root_user>
 				<root_group>root</root_group>
 				<!-- list of active services on this server -->
@@ -64,7 +64,7 @@
 			<server>
 				<distribution>debian</distribution>
 				<hostname/>
-				<ip></ip>
+				<ip/>
 				<!-- list of active services on this server -->
 				<services>
 					<named>
@@ -81,7 +81,7 @@
 				<display_startup_errors>1</display_startup_errors>
 				<display_errors>1</display_errors>
 				<date>
-				<timezone>UTC</timezone>
+					<timezone>UTC</timezone>
 				</date>
 			</phpSettings>
 			<resources>
