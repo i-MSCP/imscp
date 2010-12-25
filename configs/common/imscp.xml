@@ -22,7 +22,7 @@
  * @copyright   2010 by i-MSCP | http://i-mscp.net
  * @author      i-MSCP Team
  * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
- * @version     SVN: $Id: admin.xml 4117 2010-12-15 16:09:52Z nuxwin $
+ * @version     SVN: $Id$
  * @link        http://www.i-mscp.net i-MSCP Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
@@ -215,7 +215,7 @@
 				<local_alias_hash_file>/etc/aliases</local_alias_hash_file>
 				<mail_dir>/var/mail</mail_dir>
 				<virtual_mail_dir>/var/mail/virtual</virtual_mail_dir>
-				<sasldb_file>etc/sasldb2</sasldb_file>
+				<sasldb_file>/etc/sasldb2</sasldb_file>
 				<jailed_sasldb_file>/var/spool/postfix/etc/sasldb2</jailed_sasldb_file>
 			</paths>
 		</postfix>
