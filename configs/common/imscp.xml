@@ -170,11 +170,11 @@
 		<imscp_daemon>
 			<listen_ip>127.0.0.1</listen_ip>
 			<listen_port>9876</listen_port>
-			<path>
+			<paths>
 				<binary>/var/www/imscp/engine/daemon/imscp-daemon</binary>
 				<pid_file>/var/run/imscp-daemon</pid_file>
 				<log_dir>/var/www/imscp/daemon</log_dir>
-			</path>
+			</paths>
 		</imscp_daemon>
 		<named>
 			<type>master</type>
