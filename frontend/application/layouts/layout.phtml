@@ -3,19 +3,11 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en">
     <head>
-		<?php
-			$this->headTitle('i-MSCP - internet Multi Server Control Panel');
-			$this->headMeta()->appendName('robots', 'nofollow, noindex')
-				->appendHttpEquiv('Content-Type', 'text/html; charset=UTF-8')
-				->appendHttpEquiv('X-UA-Compatible', 'IE=8')
-				->appendHttpEquiv('Content-Style-Type', 'text/css')
-				->appendHttpEquiv('Content-Script-Type', 'text/javascript');
-			$this->headLink()->appendStylesheet('/themes/default/css/imscp.css')
-                 ->headLink(array('rel' => 'favicon', 'href' => '/favicon.ico'),'PREPEND');
-			$this->headScript()->appendFile('/themes/default/js/DD_belatedPNG_0.0.8a-min.js', 'text/javascript', array('conditional' => 'IE 6'))
-				->appendScript("DD_belatedPNG.fix('*');" . PHP_EOL, 'text/javascript', array('conditional' => 'IE 6'));
-			echo $this->headTitle(), PHP_EOL, $this->headMeta(), PHP_EOL, $this->headLink(), PHP_EOL, $this->headScript(), PHP_EOL;
-		?>
+	    <?php $this->headLink()->appendStylesheet('/themes/default/css/imscp.css')?>
+		<?php echo $this->headTitle(), PHP_EOL; ?>
+		<?php echo $this->headMeta(), PHP_EOL; ?>
+		<?php echo $this->headLink(), PHP_EOL; ?>
+		<?php echo $this->headScript(), PHP_EOL ?>
     </head>
 	<body>
 		<div class="header">
