@@ -14,7 +14,7 @@
 			<div class="main_menu">
 				<?php echo $this->navigation()->menu()->setMaxDepth(0)->setUlClass('icon'); ?>
 			</div>
-			<div class="logo"><img src="/themes/default/images/imscp_logo.png" alt="i-MSCP logo" /></div>
+			<div class="logo"><img src="/themes/default/images/imscp_logo.png" alt="i-MSCP" /></div>
 		</div>
 		<div class="location">
 		    <div class="location-area icons-left">
@@ -34,6 +34,11 @@
 		<div class="body">
 			<?php echo $this->layout()->content; ?>
 		</div>
-		<div class="footer">i-MSCP 1.0.0<br />build: 111210<br />Codename: Phoenix</div>
+		<div class="footer">
+			<?php
+				echo $this->productShortName . ' ' . $this->productVersion . '<br />Codename: ' . $this->productCodeName .
+					'<br />Build: ' . $this->productBuild;
+			?>
+		</div>
     </body>
 </html>

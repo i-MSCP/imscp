@@ -54,10 +54,19 @@ class iMSCP_Bootstrap_Resource_View extends Zend_Application_Resource_ResourceAb
 		// Create view
 		$view = new Zend_View($this->getOptions());
 
+		// product information (Todo get these information from the config file)
+		$view->productShortName = 'i-MSCP';
+		$view->productLongName = "internet Multi Server Control Panel";
+		$view->productCodeName = 'Phoenix';
+		$view->productVersion = '1.0.0';
+		$view->productBuild = '20101226';
+		$view->productCopyright = '&copy; Copyright 2010 i-MSCP Team<br/>All Rights Reserved';
+
+
 		// Set doctype
 		$view->doctype('XHTML1_TRANSITIONAL');
 
-		$view->headTitle('i-MSCP - internet Multi Server Control Panel');
+		$view->headTitle($view->productShortName . ' - ' . $view->productLongName);
 
 		// Define common Meta
 		$view->headMeta()->appendName('robots', 'nofollow, noindex')
