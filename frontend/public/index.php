@@ -102,16 +102,20 @@ if(!file_exists(ROOT_PATH . DS . 'data' . DS . 'cache' . DS . $cachedCfgFile) ||
 
 		// Load system configuration file
 		require_once 'Zend/Config/Xml.php';
-		$sysCfg = new Zend_Config_Xml($sysCfgFile, 'frontend');
+		$sysCfg = new Zend_Config_Xml($sysCfgFile);
 
-		// Merge system and local configuration files
-		$config->merge($sysCfg);
+		// Merge system and local configuration files (only needed sections)
+		$config->merge($sysCfg->get('product'));
+		$config->merge($sysCfg->get('frontend'));
 
 		// Process configuration file caching only in production
 		if(APPLICATION_ENV == 'production') {
 			require_once 'Zend/Config/Writer/Array.php';
 			$writer = new Zend_Config_Writer_Array();
 			$writer->write(ROOT_PATH . DS . 'data' . DS . 'cache' . DS .$cachedCfgFile, $config, true);
+
+			// Fixing correct permissions
+			chmod(ROOT_PATH . DS . 'data' . DS . 'cache' . DS .$cachedCfgFile, 0640);
 
 			// Removing old cached configuration file if one exists
 			foreach(scandir(ROOT_PATH . DS . 'data' . DS . 'cache') as $fileName) {

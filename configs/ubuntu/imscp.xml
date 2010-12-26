@@ -28,17 +28,17 @@
  */
 -->
 <config>
-		<app>
+		<product>
 			<name>i-MSCP</name>
-			<codename>phoenix</codename>
+			<codename>Phoenix</codename>
 			<version>1.0.0</version>
-			<build>20101215</build>
-		</app>
+			<build>20101226</build>
+		</product>
 		<admin_default_mail/>
 		<base_server_vhost/>
 		<servers>
 			<server>
-				<distribution>debian</distribution>
+				<distribution>Debian</distribution>
 				<hostname/>
 				<ip/>
 				<root_user>root</root_user>
@@ -60,7 +60,7 @@
 			</server>
 			<!-- sample for other server that provide slave DNS service -->
 			<server>
-				<distribution>debian</distribution>
+				<distribution>Debian</distribution>
 				<hostname/>
 				<ip/>
 				<!-- list of active services on this server -->

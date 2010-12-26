@@ -51,18 +51,18 @@ class iMSCP_Bootstrap_Resource_View extends Zend_Application_Resource_ResourceAb
 	 */
 	public function getView() {
 
-		// Get application information
-		$applicationInfo = $this->getBootstrap()->getApplication()->getOption('app');
-
 		// Create view
 		$view = new Zend_View($this->getOptions());
 
+		// Get application
+		$application = $this->getBootstrap()->getApplication();
+
 		// Product information
-		$view->productShortName = $applicationInfo['name'];
+		$view->productShortName = $application->getOption('name');
 		$view->productLongName = "internet Multi Server Control Panel";
-		$view->productCodeName = $applicationInfo['codename'];
-		$view->productVersion = $applicationInfo['version'];
-		$view->productBuild = $applicationInfo['build'];
+		$view->productCodeName = $application->getOption('codename');
+		$view->productVersion = $application->getOption('version');;
+		$view->productBuild = $application->getOption('build');
 		$view->productCopyright = '&copy; Copyright 2010 - 2011 i-MSCP Team<br/>All Rights Reserved';
 
 		$view->doctype('XHTML1_TRANSITIONAL');
