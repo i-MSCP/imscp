@@ -4,7 +4,7 @@
 		<div id="outer">
 			<div id="middle">
 				<div id="inner">
-					<form name="lostpwd_frm"  action="index" method="post" >
+					<form name="lostpwd_frm"  action="<?php echo $this->url(); ?>" method="post" >
 						<fieldset style="top:160px;">
 							<span><?php echo $this->captchaCode?></span>
 							<label>Code:<input type="text" name="captcha[input]" value="" maxlength="255" tabindex="1" /></label>
