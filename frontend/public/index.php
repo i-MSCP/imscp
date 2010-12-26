@@ -84,7 +84,9 @@ set_include_path(implode(PS, array(ROOT_PATH . DS . 'library', get_include_path(
 /**
  * Determine system i-MSCP configuration file path
  */
-if(file_exists('/etc/imscp/imscp.xml')) {
+if(file_exists(getenv('IMSCP_CONFXML'))) {
+	$sysCfgFile = getenv('IMSCP_CONFXML');
+} elseif(file_exists('/etc/imscp/imscp.xml')) {
 	$sysCfgFile = '/etc/imscp/imscp.xml';
 } elseif(file_exists('/usr/local/etc/imscp.xml')) {
 	$sysCfgFile = '/usr/local/etc/imscp.xml';
