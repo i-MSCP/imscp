@@ -29,7 +29,7 @@
 /**
  * i-MSCP Core authentication plugin
  *
- * @author Laurent Declercq <l.declercq@i-mscp.net>
+ * @author Laurent Declercq <laurent.declercq@i-mscp.net>
  * @version DRAFT (to be finished)
  */
 class iMSCP_Core_Controller_Plugin_Auth extends Zend_Controller_Plugin_Abstract

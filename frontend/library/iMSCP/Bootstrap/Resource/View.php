@@ -29,7 +29,7 @@
 /**
  * Plugin resource that initialize the view
  *
- * @author Laurent Declercq <laurent.declercq@nuxwin.com>
+ * @author Laurent Declercq <laurent.declercq@i-mscp.net>
  * @version 1.0.0
  */
 class iMSCP_Bootstrap_Resource_View extends Zend_Application_Resource_ResourceAbstract {
@@ -78,13 +78,27 @@ class iMSCP_Bootstrap_Resource_View extends Zend_Application_Resource_ResourceAb
 		// Define favicon
 		$view->headLink(array('rel' => 'favicon', 'href' => '/favicon.ico'));
 
+		// Acttivate jQuery
+		$view->addHelperPath('ZendX/JQuery/View/Helper/', 'ZendX_JQuery_View_Helper');
+		$jquery = $view->jQuery();
+		$jquery->enable();
+		
+		// For convenience reason, we use our own copy of jQuery library
+		$rmode = ZendX_JQuery::RENDER_JQUERY_ON_LOAD | ZendX_JQuery::RENDER_SOURCES;
+
+		$jquery->setRenderMode($rmode);
+		// TODO move jquery library outside the default theme directory to
+		// allow reusability by any other theme
+		$jquery->addJavascriptFile('/themes/default/js/jquery.js');
+
 		// Define common js scripts
 		$view->headScript()->appendFile(
 			'/themes/default/js/DD_belatedPNG_0.0.8a-min.js', 'text/javascript', array('conditional' => 'IE 6')
 		) ->appendScript("DD_belatedPNG.fix('*');", 'text/javascript', array('conditional' => 'IE 6'));
 
         $viewRenderer = Zend_Controller_Action_HelperBroker::getStaticHelper('ViewRenderer');
-        $viewRenderer->setView($view);
+		// Registering the view object as default view
+		$viewRenderer->setView($view);
 
         return $view;
 	}

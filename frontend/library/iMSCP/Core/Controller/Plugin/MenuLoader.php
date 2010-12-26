@@ -29,7 +29,7 @@
 /**
  * Plugin that Load menu according user level
  *
- * @author Laurent Declercq <l.declercq@i-mscp.net>
+ * @author Laurent Declercq <laurent.declercq@i-mscp.net>
  * @version DRAFT (to be finished)
  * @TODO build menus per modules
  */
