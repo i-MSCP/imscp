@@ -14,11 +14,11 @@
 			<div class="main_menu">
 				<?php echo $this->navigation()->menu()->setMaxDepth(0)->setUlClass('icon'); ?>
 			</div>
-			<div class="logo"><img src="/themes/default/images/imscp_logo.png" alt="i-MSCP" /></div>
+			<div class="logo"><img src="/themes/default/images/imscp_logo.png" alt="<?php echo $this->productShortName;?>" /></div>
 		</div>
 		<div class="location">
 		    <div class="location-area icons-left">
-		        <?php echo $this->navigation()->breadcrumbs()->setPartial('_sections.phtml')->setMinDepth(0)->setMaxDepth(0);?>
+		        <?php echo $this->navigation()->breadcrumbs()->setPartial('_section.phtml')->setMinDepth(0)->setMaxDepth(0);?>
 		    </div>
 		    <ul class="location-menu">
 		        <li><a class="logout" href="../index.php?logout">Logout</a></li>
@@ -28,17 +28,13 @@
 		    </ul>
 		</div>
 		<div class="left_menu">
-			<?php echo $this->navigation()->menu()->setOnlyActiveBranch(true)->setRenderParents(false)->setUlClass('')->setMinDepth(1)->setMaxDepth(0);
-			?>
+			<?php echo $this->navigation()->menu()->setOnlyActiveBranch(true)->setRenderParents(false)->setUlClass('')->setMinDepth(1)->setMaxDepth(0);?>
 		</div>
 		<div class="body">
 			<?php echo $this->layout()->content; ?>
 		</div>
 		<div class="footer">
-			<?php
-				echo $this->productShortName . ' ' . $this->productVersion . '<br />Codename: ' . $this->productCodeName .
-					'<br />Build: ' . $this->productBuild;
-			?>
+			<?php echo $this->productShortName . ' ' . $this->productVersion . '<br />Codename: ' . $this->productCodeName . '<br />Build: ' . $this->productBuild;?>
 		</div>
     </body>
 </html>
