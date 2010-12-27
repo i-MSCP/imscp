@@ -22,7 +22,7 @@
 		        <?php echo $this->navigation()->breadcrumbs()->setPartial('_section.phtml')->setMinDepth(0)->setMaxDepth(0);?>
 		    </div>
 		    <ul class="location-menu">
-		        <li><a class="logout" href="../index.php?logout">Logout</a></li>
+		        <li><a class="logout" href="<?php echo $this->url(array(),'core_auth_logout');?>">Logout</a></li>
 		    </ul>
 		    <ul class="path">
 				<?php echo $this->navigation()->breadcrumbs()->setMaxDepth(1)->setPartial('_breadcrumbs.phtml');?>

@@ -37,15 +37,18 @@ class Core_AuthController extends Zend_Controller_Action
     public function indexAction()
     {
 	    $auth = Zend_Auth::getInstance();
+
 	    // If we're already logged in, just redirect
 	    if ($auth->hasIdentity()) {
 		    $this->successRedirect();
 	    }
+
         $request = $this->getRequest();
 	    $this->view->message = null;
 	    if ($request->isPost()) {
-		    $username = $request->getParam('uname');
-		    $password = $request->getParam('upass');
+		    $username = $request->getParam('username');
+		    $password = $request->getParam('password');
+
 		    if ($username == 'admin' && $password == 'password') {
 			    $auth->getStorage()->write(1);
 			    $this->successRedirect();
