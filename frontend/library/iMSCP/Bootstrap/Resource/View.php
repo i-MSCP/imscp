@@ -78,8 +78,13 @@ class iMSCP_Bootstrap_Resource_View extends Zend_Application_Resource_ResourceAb
 		// Define favicon
 		$view->headLink(array('rel' => 'favicon', 'href' => '/favicon.ico'));
 
-		// Acttivate jQuery
-		$view->addHelperPath('ZendX/JQuery/View/Helper/', 'ZendX_JQuery_View_Helper');
+		// Define common js scripts
+		$view->headScript()->appendFile(
+			'/themes/default/js/DD_belatedPNG_0.0.8a-min.js', 'text/javascript', array('conditional' => 'IE 6')
+		) ->appendScript("DD_belatedPNG.fix('*');", 'text/javascript', array('conditional' => 'IE 6'));
+
+		// Activate jQuery
+		$view->addHelperPath('ZendX/JQuery/View/Helper', 'ZendX_JQuery_View_Helper');
 
 		/**
 		 * @var $jquery ZendX_JQuery_View_Helper
@@ -96,15 +101,10 @@ class iMSCP_Bootstrap_Resource_View extends Zend_Application_Resource_ResourceAb
 		$jquery->uiEnable();
 		
 		// For convenience reason, we use our own copy of jQuery library
-		//$rmode = ZendX_JQuery::RENDER_JQUERY_ON_LOAD | ZendX_JQuery::RENDER_SOURCES;
+		// $rmode = ZendX_JQuery::RENDER_JQUERY_ON_LOAD | ZendX_JQuery::RENDER_SOURCES;
 		// $jquery->setRenderMode($rmode);
 		// allow reusability by any other theme
-		//$jquery->addJavascriptFile('/themes/common/js/jQuery/jquery.js');
-
-		// Define common js scripts
-		$view->headScript()->appendFile(
-			'/themes/default/js/DD_belatedPNG_0.0.8a-min.js', 'text/javascript', array('conditional' => 'IE 6')
-		) ->appendScript("DD_belatedPNG.fix('*');", 'text/javascript', array('conditional' => 'IE 6'));
+		// $jquery->addJavascriptFile('/themes/common/js/jQuery/jquery.js');
 
         $viewRenderer = Zend_Controller_Action_HelperBroker::getStaticHelper('ViewRenderer');
 		// Registering the view object as default view

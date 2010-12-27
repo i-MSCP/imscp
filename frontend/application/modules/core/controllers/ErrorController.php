@@ -33,12 +33,6 @@ class Core_ErrorController extends Zend_Controller_Action
     {
 	    $this->_helper->layout->disableLayout();
 
-	    // Set some variable (will be moved at base controller later)
-	    $this->view->pageTitle = 'i-MSCP - internet Multi Server Control Panel - Exception';
-	    $this->view->productLongName = 'internet Multi Server Control Panel';
-	    $this->view->productLink = 'http://www.i-mscp.net';
-	    $this->view->productCopyright = '&copy; Copyright 2010 i-MSCP Team<br/>All Rights Reserved';
-
         $errors = $this->_getParam('error_handler');
 
         if (!$errors) {
@@ -72,7 +66,7 @@ class Core_ErrorController extends Zend_Controller_Action
             $this->view->exception = $errors->exception;
         }
 
-        $this->view->request   = $errors->request;
+        //$this->view->request   = $errors->request;
     }
 
     public function getLog()
