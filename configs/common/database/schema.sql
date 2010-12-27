@@ -32,24 +32,6 @@ use `{DATABASE_NAME}`;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `alias`
---
-
-CREATE TABLE IF NOT EXISTS `alias` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `parent_id` int(10) unsigned NOT NULL,
-  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `created_on` datetime DEFAULT NULL,
-  `expire_on` datetime DEFAULT NULL,
-  `status` varchar(15) COLLATE utf8_unicode_ci DEFAULT 'add',
-  `error` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `database`
 --
 
@@ -99,26 +81,11 @@ CREATE TABLE IF NOT EXISTS `sqluser` (
 CREATE TABLE IF NOT EXISTS `domain` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
+  `parent_id` int(10) unsigned DEFAULT NULL,
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `entity_type` varchar(15) COLLATE utf8_unicode_ci DEFAULT 'domain',
   `created_on` datetime DEFAULT NULL,
   `expire_on` datetime DEFAULT NULL,
-  `status` varchar(15) COLLATE utf8_unicode_ci DEFAULT 'add',
-  `error` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `subdomain`
---
-
-CREATE TABLE IF NOT EXISTS `subdomain` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `parent_id` int(10) unsigned NOT NULL,
-  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `created_on` datetime DEFAULT NULL,
   `status` varchar(15) COLLATE utf8_unicode_ci DEFAULT 'add',
   `error` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
