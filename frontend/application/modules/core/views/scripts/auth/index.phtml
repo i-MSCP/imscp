@@ -1,10 +1,10 @@
-		<!-- BDP: page_message -->
-		<!--<div class="{MESSAGE_CLS} message">{MESSAGE}</div>-->
-		<!-- EDP: page_message -->
+		<?php if ($this->message): ?>
+		<div class="<?php echo $this->message['type']; ?> message"><?php echo $this->message['message']; ?></div>
+		<?php endif; ?>
 		<div id="outer">
 			<div id="middle">
 				<div id="inner">
-					<form name="login_frm" action="index.php" method="post">
+					<form name="login_frm" action="<?php echo $this->url(); ?>" method="post">
 						<fieldset>
 							<label>Username:<input type="text" name="uname" id="uname" value="" maxlength="255" tabindex="1" /></label>
 							<label>Password:<input type="password" name="upass" id="upass" value="" maxlength="255" tabindex="2" /></label>
