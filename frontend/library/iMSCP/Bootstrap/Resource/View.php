@@ -80,16 +80,26 @@ class iMSCP_Bootstrap_Resource_View extends Zend_Application_Resource_ResourceAb
 
 		// Acttivate jQuery
 		$view->addHelperPath('ZendX/JQuery/View/Helper/', 'ZendX_JQuery_View_Helper');
+
+		/**
+		 * @var $jquery ZendX_JQuery_View_Helper
+		 */
 		$jquery = $view->jQuery();
-		$jquery->enable();
+
+		// Set jquery core and ui versions to be used
+		// See http://code.google.com/intl/fr/apis/libraries/devguide.html#jquery for available versions
+		$jquery->setVersion('1.4.4');
+		$jquery->setUiVersion('1.8.7');
+		$jquery->addStyleSheet('https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.7/themes/smoothness/jquery-ui.css');
+
+		// Will enable both jquery (core) and jquery (UI)
+		$jquery->uiEnable();
 		
 		// For convenience reason, we use our own copy of jQuery library
-		$rmode = ZendX_JQuery::RENDER_JQUERY_ON_LOAD | ZendX_JQuery::RENDER_SOURCES;
-
-		$jquery->setRenderMode($rmode);
-		// TODO move jquery library outside the default theme directory to
+		//$rmode = ZendX_JQuery::RENDER_JQUERY_ON_LOAD | ZendX_JQuery::RENDER_SOURCES;
+		// $jquery->setRenderMode($rmode);
 		// allow reusability by any other theme
-		$jquery->addJavascriptFile('/themes/default/js/jquery.js');
+		//$jquery->addJavascriptFile('/themes/common/js/jQuery/jquery.js');
 
 		// Define common js scripts
 		$view->headScript()->appendFile(
