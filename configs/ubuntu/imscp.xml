@@ -126,7 +126,7 @@
 			<paths>
 				<config_dir>/etc/awstats</config_dir>
 				<cache_dir>/var/cache/dir</cache_dir>
-				<engine_dir>/var/www/ispcp/engine/awstats</engine_dir>
+				<engine_dir>/var/www/imscp/engine/awstats</engine_dir>
 				<resource_dir>/usr/share/awstats</resource_dir>
 				<lib_dir>/usr/lib/cgi-bin</lib_dir>
 			</paths>
