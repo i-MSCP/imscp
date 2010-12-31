@@ -80,4 +80,36 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		// Don't use default route
 		$frontController->getRouter()->removeDefaultRoutes();
 	}
+
+
+	/**
+	 * Decrypt and set the database password
+	 * 
+	 * @throws Zend_Exception
+	 *
+	 * @return void
+	 * @Todo to be improved / Move in plugin resource
+	 */
+	protected function _initDatabasePassword() {
+
+		$configDir = is_dir('/etc/imscp/common') ? '/etc/imscp/common' : '/usr/local/etc/imscp/common'; 
+		$key = $iv = null;
+
+		// Loading key and initialization vector from common imscp-keys file
+		if(!($keysFile = file_get_contents($configDir . DS . 'imscp-keys')) || eval($keysFile) === false) {
+			throw new Zend_Exception('Unable to reach or evaluate the imscp-keys file!');
+		};
+
+		$config = $this->getOptions();
+
+		$password = new iMSCP_Utility_Password($config['resources']['db']['params']['password']);
+		$password = $password->setKey($key)->setIv($iv)->decrypt();
+
+		// oh my god...
+		$options = $this->mergeOptions(
+			$config, array('resources' => array('db' => array('params' => array('password' => $password))))
+		);
+
+		$this->setOptions($options);
+	}
 }
