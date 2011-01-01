@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010 by internet Multi Server Control Panel
+ * Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,7 +28,11 @@
 
 
 /**
- * 
+ * Bootstrap class
+ *
+ * @author Laurent Declercq <laurent.declercq@i-mscp.net>
+ * @since 1.0.0
+ * @version 1.0.0
  */
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
@@ -92,18 +96,10 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	 */
 	protected function _initDatabasePassword() {
 
-		$configDir = is_dir('/etc/imscp/common') ? '/etc/imscp/common' : '/usr/local/etc/imscp/common'; 
-		$key = $iv = null;
-
-		// Loading key and initialization vector from common imscp-keys file
-		if(!($keysFile = file_get_contents($configDir . DS . 'imscp-keys')) || eval($keysFile) === false) {
-			throw new Zend_Exception('Unable to reach or evaluate the imscp-keys file!');
-		};
-
 		$config = $this->getOptions();
 
 		$password = new iMSCP_Utility_Password($config['resources']['db']['params']['password']);
-		$password = $password->setKey($key)->setIv($iv)->decrypt();
+		$password = $password->setKey($config['imscp_key'])->setIv($config['imscp_iv'])->decrypt();
 
 		// oh my god...
 		$options = $this->mergeOptions(

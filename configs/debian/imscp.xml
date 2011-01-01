@@ -92,17 +92,14 @@
 						<displayExceptions>1</displayExceptions>
 					</params>
 				</frontController>
-				<view>
-					<encoding>UTF-8</encoding>
-				</view>
 				<db>
 					<!-- Will be cleaned at first release -->
 					<params>
 						<charset>utf8</charset>
 						<type>mysql</type>
 						<host>localhost</host>
-						<username>root</username>
-						<password>development</password>
+						<username></username>
+						<password></password>
 						<dbname>imscp</dbname>
 					</params>
 				</db>

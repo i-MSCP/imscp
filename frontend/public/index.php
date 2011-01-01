@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010 by internet Multi Server Control Panel
+ * Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -29,40 +29,28 @@
 /***********************************************************************************************************************
  * Script shot description
  *
- *  This is the entry point of the iMSCP application. This script will load Zend_Application and instantiate
+ *  This is the single entry point of the iMSCP Front end. This script will load Zend_Application and instantiate
  *  it by passing:
  * 
  *  - The current environment
  *  - Options for bootstrapping
- *
- *  The options for bootstrapping can include the path to the file containing the bootstrap class and optionally:
- *
- *  - Any extra include path to set
- *  - Any php.ini setting to initialize
- *  - The class name for the bootstrap (if not Bootstrap)
- *  - Resource prefix to path pairs to use
- *  - Any resources to use (by class name or short name)
- *  - Additional path to a configuration file to load
- *  - Additional configuration options 
- *
- * Note:
- *  Options may be an array, a Zend_Config object, or the path to a configuration file. For now, it's the application.ini
- *  configuration file.
  */
 
 // Error reporting
 error_reporting(E_ALL|E_STRICT);
+
+//define('APPLICATION_ENV', 'production');
 
 // Define application environment
 defined('APPLICATION_ENV')
 	|| define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
 
 /**
- * Check PHP version
+ * Check PHP version (5.2.4 or newer since ZF 1.7.0)
  */
-if (version_compare(phpversion(), '5.2.0', '<') === true) {
+if (version_compare(phpversion(), '5.2.4', '<') === true) {
 	if(APPLICATION_ENV != 'production') {
-		die('Error: Your PHP version is ' . phpversion() . '. i-MSCP requires PHP 5.2.0 or newer.');
+		die('Error: Your PHP version is ' . phpversion() . '. i-MSCP requires PHP 5.2.4 or newer.');
 	} else {
 		header('Location: /500.html');
 		exit;
@@ -81,18 +69,23 @@ defined('APPLICATION_PATH') || define('APPLICATION_PATH', ROOT_PATH . DS .'appli
 // Ensure library/ is in include_path
 set_include_path(implode(PS, array(ROOT_PATH . DS . 'library', get_include_path())));
 
-/**
- * Determine system i-MSCP configuration file path
- */
-if(file_exists(getenv('IMSCP_CONFXML'))) {
-	$sysCfgFile = getenv('IMSCP_CONFXML');
-} elseif(file_exists('/etc/imscp/imscp.xml')) {
-	$sysCfgFile = '/etc/imscp/imscp.xml';
-} elseif(file_exists('/usr/local/etc/imscp.xml')) {
-	$sysCfgFile = '/usr/local/etc/imscp.xml';
-} else {
-	die('Error: Unable to found the system i-MSCP configuration file!');
+// Determine system i-MSCP configuration file path
+if(is_dir('/etc/imscp/')) {
+	$configDir = '/etc/imscp';
+} elseif(is_dir('/usr/local/etc/imscp')) {
+	$configDir = '/usr/local/etc/imscp';
 }
+
+if(!file_exists($sysCfgFile = $configDir . DS  . 'imscp.xml')) {
+	if(APPLICATION_ENV != 'production') {
+		die('Error: Unable to found i-MSCP system configuration file!');
+	} else {
+		header('Location: /500.html');
+		exit;
+	}
+}
+
+$sysCfgFile = $configDir . DS  . 'imscp.xml';
 
 $cachedCfgFile = 'imscp.' . filemtime($sysCfgFile) . '.php';
 
@@ -106,6 +99,14 @@ if(!file_exists(ROOT_PATH . DS . 'data' . DS . 'cache' . DS . $cachedCfgFile) ||
 		require_once 'Zend/Config/Xml.php';
 		$sysCfg = new Zend_Config_Xml($sysCfgFile);
 
+		// Load imscp keys
+		if(($keysFile = file_get_contents($configDir . DS . 'common' . DS . 'imscp-keys')) && eval($keysFile) !== false) {
+			$config->imscp_key = $key;
+			$config->imscp_iv = $iv;
+		} else {
+			throw new Zend_Exception('Unable to reach or evaluate the imscp-keys file!');
+		}
+
 		// Merge system and local configuration files (only needed sections)
 		$config->merge($sysCfg->get('product'));
 		$config->merge($sysCfg->get('frontend'));
@@ -114,10 +115,10 @@ if(!file_exists(ROOT_PATH . DS . 'data' . DS . 'cache' . DS . $cachedCfgFile) ||
 		if(APPLICATION_ENV == 'production') {
 			require_once 'Zend/Config/Writer/Array.php';
 			$writer = new Zend_Config_Writer_Array();
-			$writer->write(ROOT_PATH . DS . 'data' . DS . 'cache' . DS .$cachedCfgFile, $config, true);
+			$writer->write(ROOT_PATH . DS . 'data' . DS . 'cache' . DS . $cachedCfgFile, $config, true);
 
-			// Fixing correct permissions
-			chmod(ROOT_PATH . DS . 'data' . DS . 'cache' . DS .$cachedCfgFile, 0640);
+			// Fixing correct permissions (This file should not be readable by everyone)
+			chmod(ROOT_PATH . DS . 'data' . DS . 'cache' . DS . $cachedCfgFile, 0640);
 
 			// Removing old cached configuration file if one exists
 			foreach(scandir(ROOT_PATH . DS . 'data' . DS . 'cache') as $fileName) {
@@ -128,7 +129,7 @@ if(!file_exists(ROOT_PATH . DS . 'data' . DS . 'cache' . DS . $cachedCfgFile) ||
 		}
 
 		// Process some cleanup
-		unset($sysCfgFile, $cachedCfgFile, $sysCfg, $fileName);
+		unset($sysCfgFile, $cachedCfgFile, $sysCfg, $fileName, $key, $iv);
 
 	} catch(Exception $e) {
 		if(APPLICATION_ENV != 'production') {
@@ -143,7 +144,7 @@ if(!file_exists(ROOT_PATH . DS . 'data' . DS . 'cache' . DS . $cachedCfgFile) ||
 	$config = $config['frontend'];
 }
 
-/** Zend_Application */
+// Zend_Application
 require_once 'Zend/Application.php';
 
 // Create application,
