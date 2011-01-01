@@ -1,3 +1,5 @@
+<?php $this->jQuery()->addOnload('$("#username").focus()');?>
+
 		<?php if ($this->message): ?>
 		<div class="<?php echo $this->message['type']; ?> message"><?php echo $this->message['message']; ?></div>
 		<?php endif; ?>
@@ -22,9 +24,9 @@
 					</form>
 					<div class="toolsbox">
     					<ul class="icons">
-       						<li><a class="pma" href="{TR_PMA_LINK}" tabindex="4">PhpMyAdmin</a></li>
-       						<li><a class="filemanager" href="{TR_FTP_LINK}" tabindex="5">FileManager</a></li>
-       						<li><a class="webmail" href="{TR_WEBMAIL_LINK}" tabindex="6">Webmail</a></li>
+       						<li><a class="pma" href="/pma" tabindex="4">PhpMyAdmin</a></li>
+       						<li><a class="filemanager" href="/filemanager" tabindex="5">FileManager</a></li>
+       						<li><a class="webmail" href="/webmail" tabindex="6">Webmail</a></li>
    						</ul>
 					</div>
 				</div>

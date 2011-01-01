@@ -8,12 +8,12 @@
 		<?php echo $this->headMeta(), PHP_EOL;?>
 		<?php echo $this->headLink(), PHP_EOL;?>
 		<?php echo $this->headScript(), PHP_EOL;?>
-	    <?php echo $this->jQuery();?>
+	    <?php echo $this->jQuery(), PHP_EOL;?>
     </head>
 	<body>
 		<div class="header">
 			<div class="main_menu">
-				<?php echo $this->navigation()->menu()->setMaxDepth(0)->setUlClass('icon'); ?>
+				<?php echo $this->navigation()->menu()->setMaxDepth(0)->setUlClass('icon');?>
 			</div>
 			<div class="logo"><img src="/themes/default/images/imscp_logo.png" alt="<?php echo $this->productShortName;?>" /></div>
 		</div>
@@ -32,7 +32,10 @@
 			<?php echo $this->navigation()->menu()->setOnlyActiveBranch(true)->setRenderParents(false)->setUlClass('')->setMinDepth(1)->setMaxDepth(0);?>
 		</div>
 		<div class="body">
-			<?php echo $this->layout()->content; ?>
+			<?php if ($this->message):?>
+			<div class="<?php echo $this->message['type']; ?> message"><?php echo $this->message['message']; ?></div>
+			<?php endif; ?>
+			<?php echo $this->layout()->content;?>
 		</div>
 		<div class="footer">
 			<?php echo $this->productShortName . ' ' . $this->productVersion . '<br />Codename: ' . $this->productCodeName . '<br />Build: ' . $this->productBuild;?>
