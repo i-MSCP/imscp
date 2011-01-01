@@ -31,7 +31,7 @@ require_once 'iMSCP/Utility/Password/Interface.php';
  * Class that allow to encrypt and decrypt password in CBC mode
  *
  * This class is currently used to decrypt the i-MSCP database password and also to
- * encrypt/decrypt all user passwords. For convenience reason the final string is
+ * encrypt/decrypt all user passwords. For storage reason, the final string is
  * encoded and decoded into and from the base64 encoding specified in RFC 2045.
  * 
  * @category iMSCP

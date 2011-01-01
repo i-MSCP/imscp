@@ -103,7 +103,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `role_id` int(10) unsigned NOT NULL,
   `parent_id` int(10) unsigned DEFAULT NULL,
   `username` varchar(8) COLLATE utf8_unicode_ci NOT NULL,
-  `password` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `password` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `created_on` datetime DEFAULT NULL,
   `updated_on` datetime DEFAULT NULL,
   `is_active` tinyint(1) NOT NULL DEFAULT '0',
