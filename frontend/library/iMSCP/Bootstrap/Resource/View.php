@@ -17,9 +17,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @category    i-MSCP
- * @copyright   2010 by i-MSCP | http://i-mscp.net
- * @author      i-MSCP Team
+ * @category    iMSCP
+ * @package     iMSCP_Bootstap
+ * @subpackage  Resource
+ * @copyright   2010 - 2011 by i-MSCP | http://i-mscp.net
  * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
  * @version     SVN: $Id$
  * @link        http://www.i-mscp.net i-MSCP Home Site
@@ -27,10 +28,16 @@
  */
 
 /**
- * Plugin resource that initialize the view
+ * View plugin resource that initialize the view
  *
- * @author Laurent Declercq <laurent.declercq@i-mscp.net>
- * @version 1.0.0
+ * @category    iMSCP
+ * @package     iMSCP_Boostrap
+ * @subpackage  Resource
+ * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
+ * @copyright   2010 - 2011 by i-MSCP | http://i-mscp.net
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+ * @since       1.0.0
+ * @version     1.0.0
  */
 class iMSCP_Bootstrap_Resource_View extends Zend_Application_Resource_ResourceAbstract {
 

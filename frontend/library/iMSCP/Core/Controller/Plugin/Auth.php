@@ -17,9 +17,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @category    i-MSCP
- * @copyright   2010 by i-MSCP | http://i-mscp.net
- * @author      i-MSCP Team
+ * @category    iMSCP
+ * @package     iMSCP_Controller
+ * @subpackage  Plugin
+ * @copyright   2010 - 2011 by i-MSCP | http://i-mscp.net
  * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
  * @version     SVN: $Id$
  * @link        http://www.i-mscp.net i-MSCP Home Site
@@ -27,9 +28,16 @@
  */
 
 /**
- * i-MSCP Core authentication plugin
+ * i-MSCP authentication plugin
  *
- * @author Laurent Declercq <laurent.declercq@i-mscp.net>
+ * @category    iMSCP
+ * @package     iMSCP_Controller
+ * @subpackage  Plugin
+ * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
+ * @copyright   2010 - 2011 by i-MSCP | http://i-mscp.net
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+ * @since       1.0.0
+ * @version     1.0.0
  * @version DRAFT (to be finished)
  */
 class iMSCP_Core_Controller_Plugin_Auth extends Zend_Controller_Plugin_Abstract
