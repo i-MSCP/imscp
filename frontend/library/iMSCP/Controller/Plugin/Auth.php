@@ -40,6 +40,6 @@
  * @version     1.0.0
  * @version DRAFT (to be finished)
  */
-class iMSCP_Core_Controller_Plugin_Auth extends Zend_Controller_Plugin_Abstract
+class iMSCP_Controller_Plugin_Auth extends Zend_Controller_Plugin_Abstract
 {
 }

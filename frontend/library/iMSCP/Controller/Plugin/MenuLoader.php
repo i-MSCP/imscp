@@ -40,7 +40,7 @@
  * @version     1.0.0
  * @TODO build menus per modules
  */
-class iMSCP_Core_Controller_Plugin_MenuLoader extends Zend_Controller_Plugin_Abstract
+class iMSCP_Controller_Plugin_MenuLoader extends Zend_Controller_Plugin_Abstract
 {
 
 	/**
