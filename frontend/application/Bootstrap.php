@@ -17,9 +17,9 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @category    i-MSCP
- * @copyright   2010 by i-MSCP | http://i-mscp.net
- * @author      i-MSCP Team
+ * @category    iMSCP
+ * @package     iMSCP_Bootstap
+ * @copyright   2010 - 2011 by i-MSCP | http://i-mscp.net
  * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
  * @version     SVN: $Id$
  * @link        http://www.i-mscp.net i-MSCP Home Site
@@ -30,12 +30,29 @@
 /**
  * Bootstrap class
  *
- * @author Laurent Declercq <laurent.declercq@i-mscp.net>
- * @since 1.0.0
- * @version 1.0.0
+ * @category    iMSCP
+ * @package     iMSCP_Boostrap
+ * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
+ * @copyright   2010 - 2011 by i-MSCP | http://i-mscp.net
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+ * @since       1.0.0
+ * @version     1.0.0
  */
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
+	/**
+	 * Store configuration object for further usage
+	 *
+	 * @return Zend_Config
+	 */
+	protected function _initConfig()
+	{
+		$config = new Zend_Config($this->getOptions(), true);
+		Zend_Registry::set('config', $config);
+
+		return $config;
+	}
+
 	/**
 	 * Init routes
 	 *
@@ -81,31 +98,25 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
 		// Setting routes
 		$frontController->setRouter($routes);
+
 		// Don't use default route
 		$frontController->getRouter()->removeDefaultRoutes();
 	}
 
 
 	/**
-	 * Decrypt and set the database password
+	 * Decrypt database password
 	 * 
 	 * @throws Zend_Exception
-	 *
-	 * @return void
-	 * @Todo to be improved / Move in plugin resource
+	 * @return Zend_Config
 	 */
-	protected function _initDatabasePassword() {
+	protected function _initDbPassword()
+	{
+		$config = Zend_Registry::get('config');
+		$filter = new iMSCP_Filter_Encrypt_McryptBase64($config->encryption);
+		$password = $filter->decrypt($config->resources->db->params->password);
+		$config->resources->db->params->password = $password;
 
-		$config = $this->getOptions();
-
-		$password = new iMSCP_Utility_Password($config['resources']['db']['params']['password']);
-		$password = $password->setKey($config['imscp_key'])->setIv($config['imscp_iv'])->decrypt();
-
-		// oh my god...
-		$options = $this->mergeOptions(
-			$config, array('resources' => array('db' => array('params' => array('password' => $password))))
-		);
-
-		$this->setOptions($options);
+		return $config;
 	}
 }

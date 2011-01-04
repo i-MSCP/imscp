@@ -86,7 +86,6 @@ if(!file_exists($sysCfgFile = $configDir . DS  . 'imscp.xml')) {
 }
 
 $sysCfgFile = $configDir . DS  . 'imscp.xml';
-
 $cachedCfgFile = 'imscp.' . filemtime($sysCfgFile) . '.php';
 
 if(!file_exists(ROOT_PATH . DS . 'data' . DS . 'cache' . DS . $cachedCfgFile) || APPLICATION_ENV != 'production') {
@@ -99,10 +98,10 @@ if(!file_exists(ROOT_PATH . DS . 'data' . DS . 'cache' . DS . $cachedCfgFile) ||
 		require_once 'Zend/Config/Xml.php';
 		$sysCfg = new Zend_Config_Xml($sysCfgFile);
 
-		// Load imscp keys
+		// Load imscp key and initialization vector for encryption
+		$key =  $iv = '';
 		if(($keysFile = file_get_contents($configDir . DS . 'common' . DS . 'imscp-keys')) && eval($keysFile) !== false) {
-			$config->imscp_key = $key;
-			$config->imscp_iv = $iv;
+			$config->encryption = array('key' => $key, 'vector' => $iv, 'salt' => true);
 		} else {
 			throw new Zend_Exception('Unable to reach or evaluate the imscp-keys file!');
 		}
@@ -140,7 +139,7 @@ if(!file_exists(ROOT_PATH . DS . 'data' . DS . 'cache' . DS . $cachedCfgFile) ||
 		}
 	}
 } else {
-	$config = include_once(ROOT_PATH . DS . 'data' . DS . 'cache' . DS .$cachedCfgFile);
+	$config = include_once(ROOT_PATH . DS . 'data' . DS . 'cache' . DS . $cachedCfgFile);
 	$config = $config['frontend'];
 }
 
