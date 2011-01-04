@@ -114,8 +114,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	{
 		$config = Zend_Registry::get('config');
 		$filter = new iMSCP_Filter_Encrypt_McryptBase64($config->encryption);
-		$password = $filter->decrypt($config->resources->db->params->password);
-		$config->resources->db->params->password = $password;
+		$password = $filter->decrypt($config->resources->doctrine->params->password);
+		$config->resources->doctrine->params->password = $password;
 
 		return $config;
 	}

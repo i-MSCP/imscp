@@ -48,7 +48,7 @@ class iMSCP_Bootstrap_Resource_Doctrine extends Zend_Application_Resource_Resour
 	 */
 	public function init()
 	{
-		$dbParams = Zend_Registry::get('config')->resources->db->params;
+		$dbParams = Zend_Registry::get('config')->resources->doctrine->params;
 		$doctrineConfig = Zend_Registry::get('config')->resources->doctrine;
 
 		if ($doctrineConfig->compiled == true && file_exists(ROOT_PATH . '/library/Doctrine.compiled.php')) {
@@ -105,7 +105,7 @@ class iMSCP_Bootstrap_Resource_Doctrine extends Zend_Application_Resource_Resour
 	 * @return string
 	 */
 	protected function _getDsn() {
-		$dbParams = Zend_Registry::get('config')->resources->db->params;
+		$dbParams = Zend_Registry::get('config')->resources->doctrine->params;
 		return "$dbParams->type://$dbParams->username:$dbParams->password@$dbParams->host/$dbParams->dbname";
 	}
 }

@@ -92,17 +92,16 @@
 						<displayExceptions>1</displayExceptions>
 					</params>
 				</frontController>
-				<db>
-					<!-- Will be cleaned at first release -->
+				<doctrine>
 					<params>
 						<charset>utf8</charset>
 						<type>mysql</type>
 						<host>localhost</host>
-						<username></username>
-						<password></password>
+						<username/>
+						<password/>
 						<dbname>imscp</dbname>
 					</params>
-				</db>
+				</doctrine>
 			</resources>
 		</frontend>
 		<apache>
