@@ -16,9 +16,9 @@
           <apisDirectory enabled="false"/>
           <configsDirectory enabled="false"/>
           <controllersDirectory>
-	       <controllerFile controllerName="Error">
-		       <actionMethod actionName="error"/>
-	       </controllerFile>
+            <controllerFile controllerName="Error">
+              <actionMethod actionName="error"/>
+            </controllerFile>
             <controllerFile controllerName="User">
               <actionMethod actionName="index"/>
               <actionMethod actionName="add"/>
@@ -38,6 +38,7 @@
           <modelsDirectory>
             <dbTableDirectory>
               <dbTableFile dbTableName="User"/>
+              <dbTableFile dbTableName="Role"/>
             </dbTableDirectory>
             <modelFile modelName="User"/>
           </modelsDirectory>
@@ -74,8 +75,7 @@
         </moduleDirectory>
       </modulesDirectory>
       <viewsDirectory>
-        <viewScriptsDirectory>
-        </viewScriptsDirectory>
+        <viewScriptsDirectory/>
         <viewHelpersDirectory/>
         <viewFiltersDirectory enabled="false"/>
       </viewsDirectory>
