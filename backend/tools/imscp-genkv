@@ -31,7 +31,7 @@ use Data::Dumper;
 
 $SIG{'INT'} = 'IGNORE';
 
-die('Error: Missing destination path argument!') if (!@ARGV);
+die('Error: Missing argument for destination path!') if (!@ARGV);
 
 my $destdir = $ARGV[0];
 

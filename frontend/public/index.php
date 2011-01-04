@@ -103,7 +103,7 @@ if(!file_exists(ROOT_PATH . DS . 'data' . DS . 'cache' . DS . $cachedCfgFile) ||
 		if(($keysFile = @file_get_contents($configDir . DS . 'common' . DS . 'imscp-kv')) && eval($keysFile) !== false) {
 			$config->encryption = array('key' => $key, 'vector' => $iv);
 		} else {
-			throw new Exception('Unable to reach or evaluate the imscp-keys file!');
+			throw new Exception('Unable to reach or evaluate the imscp-kv file!');
 		}
 
 		// Merge system and local configuration files (only needed sections)
