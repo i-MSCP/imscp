@@ -100,10 +100,10 @@ if(!file_exists(ROOT_PATH . DS . 'data' . DS . 'cache' . DS . $cachedCfgFile) ||
 
 		// Load imscp key and initialization vector for encryption
 		$key =  $iv = '';
-		if(($keysFile = file_get_contents($configDir . DS . 'common' . DS . 'imscp-kv')) && eval($keysFile) !== false) {
+		if(($keysFile = @file_get_contents($configDir . DS . 'common' . DS . 'imscp-kv')) && eval($keysFile) !== false) {
 			$config->encryption = array('key' => $key, 'vector' => $iv);
 		} else {
-			throw new Zend_Exception('Unable to reach or evaluate the imscp-keys file!');
+			throw new Exception('Unable to reach or evaluate the imscp-keys file!');
 		}
 
 		// Merge system and local configuration files (only needed sections)
