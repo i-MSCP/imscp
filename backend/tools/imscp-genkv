@@ -34,7 +34,7 @@ die('Error: Missing destination path argument!') if (!@ARGV);
 my $destdir = $ARGV[0];
 
 if(-e $destdir) {
-	open(F, '>', "$destdir/imscp-keys") or die("Error: Can't open file '$destdir/imscp-keys' for writing: $!");
+	open(F, '>', "$destdir/imscp-kv") or die("Error: Can't open file '$destdir/imscp-kv' for writing: $!");
 	print F Data::Dumper->Dump([Crypt::CBC->random_bytes(32), Crypt::CBC->random_bytes(8)], [qw(key iv)]);
 	close F;
 } else {

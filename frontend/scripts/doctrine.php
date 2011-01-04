@@ -81,7 +81,7 @@ try {
 
 	// Load imscp key and initialization vector for encryption
 	$key =  $iv = '';
-	if(($keysFile = file_get_contents($configDir . DS . 'common' . DS . 'imscp-keys')) && eval($keysFile) !== false) {
+	if(($keysFile = file_get_contents($configDir . DS . 'common' . DS . 'imscp-kv')) && eval($keysFile) !== false) {
 		$config->encryption = array('key' => $key, 'vector' => $iv);
 	} else {
 		throw new Zend_Exception('Unable to reach or evaluate the imscp-keys file!');
