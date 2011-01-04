@@ -86,6 +86,38 @@ class iMSCP_Filter_Encrypt_McryptBase64 extends Zend_Filter_Encrypt_Mcrypt {
 	}
 
 	/**
+	 * Initialises the cipher with the set key
+	 *
+	 * @throws Zend_Filter_Exception
+	 * @param  $cipher
+	 * @return iMSCP_Filter_Encrypt_McryptBase64
+	 */
+	protected function _initCipher($cipher)
+	{
+		if($this->_encryption['salt'] == true) {
+			parent::_initCipher($cipher);
+		} else {
+			$key = $this->_encryption['key'];
+			$keysizes = mcrypt_enc_get_supported_key_sizes($cipher);
+			$keyLength = strlen($key);
+			if((empty($keysizes) && ($keyLength > mcrypt_enc_get_key_size($cipher)|| $keyLength < 1))
+				&& !in_array($keyLength, $keysizes)
+			) {
+				require_once 'Zend/Filter/Exception.php';
+				throw new Zend_Filter_Exception('The given key has a wrong size for the set algorithm');
+			}
+
+			$result = mcrypt_generic_init($cipher, $key, $this->_encryption['vector']);
+			if ($result < 0) {
+				require_once 'Zend/Filter/Exception.php';
+				throw new Zend_Filter_Exception('Mcrypt could not be initialize with the given setting');
+			}
+		}
+
+		return $this;
+	}
+
+	/**
 	 * Pads block
 	 *
 	 * When the last block of plain text is shorter than the block size,
