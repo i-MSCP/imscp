@@ -1,0 +1,48 @@
+#!/usr/bin/perl
+#
+# i-MSCP - internet Multi Server Control Panel
+# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+#
+# @category		i-MSCP
+# @copyright	2010 by i-MSCP | http://i-mscp.net
+# @author		Laurent Declercq <laurent.declercq@i-mscp.net>
+# @version		SVN: $Id$
+# @link			http://i-mscp.net i-MSCP Home Site
+# @license      http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+
+use Crypt::CBC;
+use Data::Dumper;
+
+$SIG{'INT'} = 'IGNORE';
+
+die ('Error: Missing destination path!') if (!@ARGV);
+
+my $destdir = $ARGV[0];
+
+if(-e $destdir[0]) {
+	open(F, '>', "$destdir/imscp-keys") or die("Error: Can't open file '$destdir/imscp-keys' for writing: $!");
+
+	print F Data::Dumper->Dump(
+		[Crypt::CBC->random_bytes(32), Crypt::CBC->random_bytes(8)], [qw(key iv)]
+	);
+
+	close F;
+} else {
+	die("Error: Destination path don't exists!");
+}
+
+0;
