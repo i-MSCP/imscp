@@ -52,38 +52,38 @@
  */
 class iMSCP_Filter_Encrypt_McryptBase64 extends Zend_Filter_Encrypt_Mcrypt {
 
-    /**
-     * Defined by Zend_Filter_Interface
-     *
-     * Encrypts $value with the defined settings
-     *
-     * @param  string $value The content to encrypt
-     * @return string The encrypted content
-     */
-    public function encrypt($value)
-    {
-	    $blockSize = mcrypt_get_block_size($this->_encryption['algorithm'], $this->_encryption['mode']);
-	    $value = $this->_padding($value, $blockSize);
-	    $encrypted = $this->_toBase64(parent::encrypt($value));
+	/**
+	 * Defined by Zend_Filter_Interface
+	 *
+	 * Encrypts $value with the defined settings
+	 *
+	 * @param  string $value The content to encrypt
+	 * @return string The encrypted content
+	 */
+	public function encrypt($value)
+	{
+		$blockSize = mcrypt_get_block_size($this->_encryption['algorithm'], $this->_encryption['mode']);
+		$value = $this->_padding($value, $blockSize);
+		$encrypted = $this->_toBase64(parent::encrypt($value));
 
-	    return $encrypted;
-    }
+		return $encrypted;
+	}
 
-    /**
-     * Defined by Zend_Filter_Interface
-     *
-     * Decrypts $value with the defined settings
-     *
-     * @param  string $value Content to decrypt
-     * @return string The decrypted content
-     */
-    public function decrypt($value)
-    {
-	    $value = $this->_fromBase64($value);
-	    $decrypted = trim(parent::decrypt($value), "\x20");
+	/**
+	 * Defined by Zend_Filter_Interface
+	 *
+	 * Decrypts $value with the defined settings
+	 *
+	 * @param  string $value Content to decrypt
+	 * @return string The decrypted content
+	 */
+	public function decrypt($value)
+	{
+		$value = $this->_fromBase64($value);
+		$decrypted = trim(parent::decrypt($value), "\x20");
 
-	    return $decrypted;
-    }
+		return $decrypted;
+	}
 
 	/**
 	 * Pads block
@@ -97,7 +97,8 @@ class iMSCP_Filter_Encrypt_McryptBase64 extends Zend_Filter_Encrypt_Mcrypt {
 	 * @param  int $blockSize Block size
 	 * @return string Padded block
 	 */
-	protected function _padding($block, $blockSize) {
+	protected function _padding($block, $blockSize)
+	{
 		return $block . pack("A" . ($blockSize - strlen($block) % $blockSize), "\x20");
 	}
 
@@ -107,7 +108,8 @@ class iMSCP_Filter_Encrypt_McryptBase64 extends Zend_Filter_Encrypt_Mcrypt {
 	 * @param  string $value Value to be encoded
 	 * @return string Encoded value
 	 */
-	protected function _toBase64($value) {
+	protected function _toBase64($value)
+	{
 		return base64_encode($value);
 	}
 
@@ -117,7 +119,8 @@ class iMSCP_Filter_Encrypt_McryptBase64 extends Zend_Filter_Encrypt_Mcrypt {
 	 * @param  string $value Value to be decoded
 	 * @return string Decoded value
 	 */
-	protected function _fromBase64($value) {
+	protected function _fromBase64($value)
+	{
 		return base64_decode($value);
 	}
 }
