@@ -117,9 +117,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$password = $filter->decrypt($config->resources->db->params->password);
 		$config->resources->db->params->password = $password;
 
-		echo $config->resources->db->params->password;
-		exit;
-
 		return $config;
 	}
 }
