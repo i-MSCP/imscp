@@ -74,9 +74,9 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 			if (!is_dir($routesDirectory)) continue;
 			$directoryIterator = new DirectoryIterator($routesDirectory);
 			foreach ($directoryIterator as $file) {
-                if ($file->isDot() || $file->isDir()) continue;
-                $routesConfigFilesName = $file->getFilename();
-                if (preg_match('/^[^a-z]/i', $routesConfigFilesName)) continue;
+				if ($file->isDot() || $file->isDir()) continue;
+				$routesConfigFilesName = $file->getFilename();
+				if (preg_match('/^[^a-z]/i', $routesConfigFilesName)) continue;
 				$routesConfig = new Zend_Config_Ini($routesDirectory . DS . $routesConfigFilesName, 'routes');
 				$router->addConfig($routesConfig, 'routes');
             }
@@ -118,11 +118,11 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$default = $frontController->getDefaultModule();
 
 		foreach(array_keys($modules) as $module) {
-            if ($module === $default) continue;
-	        $moduleloader = new Zend_Application_Module_Autoloader(array(
-               'namespace' => $module,
-               'basePath'  => $front->getModuleDirectory($module))
-	        );
+			if ($module === $default) continue;
+			$moduleloader = new Zend_Application_Module_Autoloader(array(
+				'namespace' => $module,
+				'basePath'  => $front->getModuleDirectory($module))
+			);
 		}
 
 		return Zend_Loader_Autoloader::getInstance();
