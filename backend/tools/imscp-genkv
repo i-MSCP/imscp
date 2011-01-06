@@ -17,13 +17,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
-# @category		iMSCP
+# @category     iMSCP
 # @package      iMSCP_Backend
 # @subpackage   tools
-# @copyright	2010 - 2011 by i-MSCP | http://i-mscp.net
-# @author		Laurent Declercq <laurent.declercq@i-mscp.net>
-# @version		SVN: $Id$
-# @link			http://i-mscp.net i-MSCP Home Site
+# @copyright    2010 - 2011 by i-MSCP | http://i-mscp.net
+# @author       Laurent Declercq <laurent.declercq@i-mscp.net>
+# @version      SVN: $Id$
+# @link         http://i-mscp.net i-MSCP Home Site
 # @license      http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 use Crypt::CBC;
