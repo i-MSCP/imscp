@@ -61,11 +61,11 @@ class iMSCP_Bootstrap_Resource_Doctrine extends Zend_Application_Resource_Resour
 		$autoloader = Zend_Loader_Autoloader::getInstance();
 
 		// Adding Doctrine autoloader
-		$autoloader->pushAutoloader(array('Doctrine_Core', 'autoload'), 'Doctrine');
+		$autoloader->pushAutoloader(array('Doctrine_Core', 'autoload'), array('Doctrine', 'sfYaml'));
 
 		// Workaround to make  the 'sfYaml' librarie (from Doctrine) loadable
 		// See issue DC-288 (http://www.doctrine-project.org/jira/browse/DC-288)
-		$autoloader->pushAutoloader(array('Doctrine_Core', 'autoload'), 'sfYaml');
+		//$autoloader->pushAutoloader(array('Doctrine_Core', 'autoload'), 'sfYaml');
 
 		// Get Doctrine manager
 		$mngr = Doctrine_Manager::getInstance();
@@ -86,7 +86,7 @@ class iMSCP_Bootstrap_Resource_Doctrine extends Zend_Application_Resource_Resour
 		$mngr->setAttribute(Doctrine_Core::ATTR_AUTO_FREE_QUERY_OBJECTS, true);
 
 		// Connect to database
-		$mngr->openConnection($this->_getDsn());
+		$mngr->openConnection($this->_getDsn(), 'imscp');
 
 		// Set to utf8
 		$mngr->connection()->setCharset($dbParams->charset);
