@@ -31,13 +31,36 @@ use Data::Dumper;
 
 $SIG{'INT'} = 'IGNORE';
 
+# Generate printable random ASCII string
+#
+# Param: int $length string length to be generated
+# Return: scalar Printable ASCII random string
+sub randomString($) {
+	my ($length) = @_;
+	my $string = '';
+
+	while(length $string < $length) {
+		$pool = Crypt::CBC->random_bytes(100);
+		foreach(unpack "C*", $pool) {
+			next if $_ < 32 || $_ > 126;
+			length $string < $length ? $string .= chr $_ : last;
+		}
+	}
+
+	$string;
+}
+
+#
+## Main program
+#
+
 die('Error: Missing argument for destination path!') if (!@ARGV);
 
 my $destdir = $ARGV[0];
 
 if(-d $destdir) {
-	open(F, '>', "$destdir/imscp-kv") or die("Error: Can't open file '$destdir/imscp-kv' for writing: $!");
-	print F Data::Dumper->Dump([Crypt::CBC->random_bytes(32), Crypt::CBC->random_bytes(8)], [qw(key iv)]);
+	open(F, '>:utf8', "$destdir/imscp-kv") or die("Error: Can't open file '$destdir/imscp-kv' for writing: $!");
+	print F Data::Dumper->Dump([randomString(32), randomString(8)], [qw(key iv)]);
 	close F;
 } else {
 	die("Error: Destination path don't exists or is not a directory!");
