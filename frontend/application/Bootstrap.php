@@ -54,69 +54,77 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	}
 
 	/**
-	 * Init routes
+	 * Initialize routes
 	 *
-	 * @return void
+	 * @return Zend_Controller_Router_Interface
+	 * @todo Merge all routes and create cache file to improve IO performances - Move to resource plugin
 	 */
 	protected function _initRoutes()
 	{
 		$this->bootstrap('FrontController');
-        $frontController = $this->getResource('FrontController');
+		$frontController = $this->getResource('FrontController');
+		$modules = $frontController->getControllerDirectory();
 
-		// Getting all modules names
-		$modulesDirectory = APPLICATION_PATH . DS . 'modules';
-		$modulesNames = array();
-		foreach (new DirectoryIterator($modulesDirectory) as $directory) {
-            if ($directory->isDot() || !$directory->isDir()) continue;
-            $directory = $directory->getFilename();
-            if ($directory == '.svn') continue;
-            $modulesNames[] = $directory;
-		}
+		// Getting router object
+		$router = $frontController->getRouter();
 
-		// Retrieving all routes config files
-		$routesConfigFiles = array();
-		foreach ($modulesNames as $moduleName) {
-			$routesDirectory = APPLICATION_PATH . DS . 'modules' . DS . $moduleName . DS . 'config' . DS . 'routes';
+		// Retrieves each routes definition file for all modules and add them to the router
+		foreach(array_keys($modules) as $module) {
+			$routesDirectory = APPLICATION_PATH . DS . 'modules' . DS . $module . DS . 'config' . DS . 'routes';
 			if (!is_dir($routesDirectory)) continue;
 			$directoryIterator = new DirectoryIterator($routesDirectory);
 			foreach ($directoryIterator as $file) {
                 if ($file->isDot() || $file->isDir()) continue;
                 $routesConfigFilesName = $file->getFilename();
                 if (preg_match('/^[^a-z]/i', $routesConfigFilesName)) continue;
-                $routesConfigFiles[] = $routesDirectory . DS . $routesConfigFilesName;
+				$routesConfig = new Zend_Config_Ini($routesDirectory . DS . $routesConfigFilesName, 'routes');
+				$router->addConfig($routesConfig, 'routes');
             }
 		}
 
-		// Creating new Zend_Controller_Router_Rewrite instance
-		$routes = new Zend_Controller_Router_Rewrite();
+		// Removing default routes
+		$router->removeDefaultRoutes();
 
-		// Add routes - start
-		foreach ($routesConfigFiles as $routesConfigFile) {
-			$routesConfig = new Zend_Config_Ini($routesConfigFile, 'routes');
-			$routes->addConfig($routesConfig, 'routes');
-		}
-
-		// Setting routes
-		$frontController->setRouter($routes);
-
-		// Don't use default route
-		$frontController->getRouter()->removeDefaultRoutes();
+		return $router;
 	}
 
-
 	/**
-	 * Decrypt database password
+	 * Initialize database password by decrypting it
 	 * 
-	 * @throws Zend_Exception
-	 * @return Zend_Config
+	 * @return string Decrypted database password
 	 */
 	protected function _initDbPassword()
 	{
 		$config = Zend_Registry::get('config');
 		$filter = new iMSCP_Filter_Encrypt_McryptBase64($config->encryption);
-		$password = $filter->decrypt($config->resources->doctrine->params->password);
-		$config->resources->doctrine->params->password = $password;
+		$decryptedPassword = $filter->decrypt($config->resources->doctrine->params->password);
+		$config->resources->doctrine->params->password = $decryptedPassword;
 
-		return $config;
+		return $decryptedPassword;
+	}
+
+	/**
+	 * Initialize loaders for modules resource classes
+	 *
+	 * @return Zend_Loader_Autoloader
+	 * @todo Create our own Autoloader since we not need all default resource types for modules resource classes
+	 */
+	protected function _initAutoloader() {
+
+		$this->bootstrap('FrontController');
+		$frontController = $this->getResource('FrontController');
+
+		$modules = $frontController->getControllerDirectory();
+		$default = $frontController->getDefaultModule();
+
+		foreach(array_keys($modules) as $module) {
+            if ($module === $default) continue;
+	        $moduleloader = new Zend_Application_Module_Autoloader(array(
+               'namespace' => $module,
+               'basePath'  => $front->getModuleDirectory($module))
+	        );
+		}
+
+		return Zend_Loader_Autoloader::getInstance();
 	}
 }
