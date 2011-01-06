@@ -203,13 +203,4 @@ class UserController extends Zend_Controller_Action
 
 		return $roles;
 	}
-
-	/**
-	 *
-	 * @return void
-	 */
-	private function getPasswordHash() {
-		
-	}
-
 }
