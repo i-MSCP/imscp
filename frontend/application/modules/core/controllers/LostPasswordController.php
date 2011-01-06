@@ -17,9 +17,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * @category    i-MSCP
- * @copyright   2010 by i-MSCP | http://i-mscp.net
- * @author      i-MSCP Team
+ * @category    iMSCP
+ * @package     iMSCP_Core
+ * @subpackage  Controllers
+ * @copyright   2010 - 2011 by i-MSCP | http://i-mscp.net
  * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
  * @version     SVN: $Id$
  * @link        http://www.i-mscp.net i-MSCP Home Site
@@ -29,12 +30,18 @@
 /**
  * Lost Password controller
  *
- * @author Laurent Declercq <l.declercq@i-mscp.net>
- * @version DRAFT (to be finished)
+ * @category    iMSCP
+ * @package     iMSCP_Core
+ * @subpackage  Controllers
+ * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
+ * @copyright   2010 - 2011 by i-MSCP | http://i-mscp.net
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+ * @since       1.0.0
+ * @version     1.0.0
+ * @todo To be finished
  */
-class Core_LostPasswordController extends Zend_Controller_Action
+class LostPasswordController extends Zend_Controller_Action
 {
-
     public function init()
     {
         $this->_helper->layout->setLayout('simple');
