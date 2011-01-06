@@ -84,7 +84,7 @@ class UserController extends Zend_Controller_Action
 
 			// Saving new record
 			// TODO: add observer that will automatically schedule the task and send request to the daemon
-			$user->save();
+			//$user->save();
 
 			// TODO Flash messenger
 
