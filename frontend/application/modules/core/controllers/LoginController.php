@@ -73,15 +73,13 @@ class LoginController extends Zend_Controller_Action
 			    );
 		    }
 	    }
-/*
-	    echo '<pre>';
-			print_r(Zend_Controller_Front::getInstance());
-		echo '</pre>';
-		exit;
-
- */
     }
 
+	/**
+	 * Perform logout action
+	 *
+	 * @return void
+	 */
 	public function logoutAction() {
 		Zend_Auth::getInstance()->clearIdentity();
 		$this->_redirect('');
