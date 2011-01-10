@@ -26,6 +26,13 @@
 # @link         http://i-mscp.net i-MSCP Home Site
 # @license      http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
+########################################################################################################################
+# Script short description:
+#
+# This script is responsible to generate both key and initialization vector that are used for encrypt/decrypt some
+# password such as the i-MSCP database password.
+#
+
 use Crypt::CBC;
 use Data::Dumper;
 
