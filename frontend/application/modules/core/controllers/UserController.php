@@ -98,7 +98,10 @@ class UserController extends Zend_Controller_Action
 		if($this->inputFilter && $this->inputFilter->hasInvalid()) {
 			foreach($request->getParams() as $field => $value)
 				$this->view->$field = $value;
+		} else {
+			$this->view->is_active = true;
 		}
+
     }
 
 	/**
