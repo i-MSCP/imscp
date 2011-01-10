@@ -35,16 +35,16 @@
 			<tr>
 				<td width="200"><label for="is_active_yes">Activate user ?</label></td>
 				<td>
-					<input type="radio" name="is_active" id="is_active_yes" value="1" style="vertical-align:middle" <?php echo ($this->is_active) ? 'checked="checked"' : '';?>/>
+					<input type="radio" name="is_active" id="is_active_yes" class="buttons" value="1" style="vertical-align:middle" <?php echo ($this->is_active) ? 'checked="checked"' : '';?>/>
 					<span style="vertical-align:middle">Yes</span>
-					<input type="radio" name="is_active" id="is_active_no" value="0" style="vertical-align:middle" <?php echo (!$this->is_active) ? 'checked="checked"' : '';?>/>
+					<input type="radio" name="is_active" id="is_active_no" class="buttons" value="0" style="vertical-align:middle" <?php echo (!$this->is_active) ? 'checked="checked"' : '';?>/>
 					<span style="vertical-align:middle">No</span>
                 </td>
             </tr>
         </table>
     </fieldset>
 	<div class="buttons">
-	    <input name="submit" type="submit" class="button" value="Add user" />
-		<input type="reset" class="button" value="Reset" />
+	    <input name="submit" type="submit" class="buttons" value="Add user" />
+		<input type="reset" class="buttons" value="Reset" />
 	</div>
 </form>	
