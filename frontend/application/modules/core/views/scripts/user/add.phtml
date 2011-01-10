@@ -7,7 +7,7 @@
         <legend>User information:</legend>
         <table>
 			<tr>
-				<td><label for="role">User role</label></td>
+				<td width="200"><label for="role">User role</label></td>
 				<td>
 					<select name="role" id="role">
 					<?php foreach($this->roles as $role):?>
@@ -17,23 +17,23 @@
 				</td>
 			</tr>
             <tr>
-                <td><label for="username">Username</label></td>
+                <td width="200"><label for="username">Username</label></td>
                 <td><input type="text" name="username" id="username" maxlength="8" value="<?php echo $this->escape($this->username);?>"/></td>
             </tr>
             <tr>
-                <td><label for="password">Password</label></td>
+                <td width="200"><label for="password">Password</label></td>
                 <td><input type="password" name="password" id="password" maxlength="8" value="<?php echo $this->escape($this->password);?>"/></td>
             </tr>
             <tr>
-                <td><label for="password_confirm">Confirm password</label></td>
+                <td width="200"><label for="password_confirm">Confirm password</label></td>
                 <td><input type="password" name="password_confirm" id="password_confirm" maxlength="8" value="<?php echo $this->escape($this->passwordConfirm);?>"/></td>
             </tr>
             <tr>
-                <td><label for="email">Email address</label></td>
+                <td width="200"><label for="email">Email address</label></td>
                 <td><input type="text" name="email" id="email" maxlength="255" value="<?php echo $this->escape($this->email);?>"/></td>
             </tr>
 			<tr>
-				<td><label for="is_active_yes">Activate user ?</label></td>
+				<td width="200"><label for="is_active_yes">Activate user ?</label></td>
 				<td>
 					<input type="radio" name="is_active" id="is_active_yes" value="1" style="vertical-align:middle" <?php echo ($this->is_active) ? 'checked="checked"' : '';?>/>
 					<span style="vertical-align:middle">Yes</span>
