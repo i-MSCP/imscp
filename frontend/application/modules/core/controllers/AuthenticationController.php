@@ -19,7 +19,7 @@
  *
  * @category    iMSCP
  * @package     iMSCP_Core
- * @subpackage  Controllers
+ * @subpackage  Controllers_Authentication
  * @copyright   2010 - 2011 by i-MSCP | http://i-mscp.net
  * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
  * @version     SVN: $Id$
@@ -32,7 +32,7 @@
  *
  * @category    iMSCP
  * @package     iMSCP_Core
- * @subpackage  Controllers
+ * @subpackage  Controllers_Authentication
  * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
  * @copyright   2010 - 2011 by i-MSCP | http://i-mscp.net
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
@@ -40,7 +40,7 @@
  * @version     1.0.0
  * @todo To be finished
  */
-class LoginController extends Zend_Controller_Action
+class AuthenticationController extends Zend_Controller_Action
 {
 	/**
 	 * Initialize controller

@@ -25,8 +25,9 @@
               <actionMethod actionName="changepassword"/>
               <actionMethod actionName="list"/>
             </controllerFile>
-            <controllerFile controllerName="Login">
+            <controllerFile controllerName="Authentication">
               <actionMethod actionName="login"/>
+              <actionMethod actionName="logout"/>
             </controllerFile>
             <controllerFile controllerName="LostPasword">
               <actionMethod actionName="index"/>
@@ -52,7 +53,7 @@
               <viewControllerScriptsDirectory forControllerName="User">
                 <viewScriptFile forActionName="list"/>
               </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Login">
+              <viewControllerScriptsDirectory forControllerName="Authentication">
                 <viewScriptFile forActionName="login"/>
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="LostPasword">
