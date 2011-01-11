@@ -140,9 +140,6 @@ class UserController extends Zend_Controller_Action
 		if($this->inputFilter && $this->inputFilter->hasInvalid()) {
 			foreach($request->getParams() as $field => $value)
 				$this->view->$field = $value;
-		} else {
-			$randomPassword = iMSCP_Utilities_String_Random::alnum(8, 'mixed');
-			$this->view->password = $this->view->password_confirm = $randomPassword;
 		}
     }
 
