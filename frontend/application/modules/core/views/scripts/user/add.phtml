@@ -1,4 +1,21 @@
-<?php $this->jQuery()->addOnload('$("#username").focus()');?>
+<?php $this->jQuery()->addOnload('$("#username").focus();');?>
+
+<?php
+	$this->jQuery()->addOnload('
+		$("#password").keyup(function(){
+			$("#password_text").val($(this).val());
+		});
+
+		$("#password_text").keyup(function(){
+			$("#password").val($(this).val());
+		});
+
+		$("#show_password").click(function(){
+			$("#password").toggle();
+			$("#password_text").toggle();
+		});
+	');
+?>
 
 <h2 class="user"><span>Add new user</span></h2>
 
@@ -22,11 +39,15 @@
             </tr>
             <tr>
                 <td width="200"><label for="password">Password</label></td>
-                <td><input type="password" name="password" id="password" maxlength="8" value="<?php echo $this->escape($this->password);?>"/></td>
+                <td>
+	                <input type="password" name="password" id="password" maxlength="8" style="vertical-align:middle" value="<?php echo $this->escape($this->password);?>"/>
+	                <input type="text" name="password_text" id="password_text" maxlength="8" style="display:none;vertical-align:middle" value="<?php echo $this->escape($this->password);?>"/>
+	                <input type="button" name="show_password" id="show_password" style="vertical-align:middle" value="Show password"/>
+                </td>
             </tr>
             <tr>
                 <td width="200"><label for="password_confirm">Confirm password</label></td>
-                <td><input type="password" name="password_confirm" id="password_confirm" maxlength="8" value="<?php echo $this->escape($this->passwordConfirm);?>"/></td>
+                <td><input type="password" name="password_confirm" id="password_confirm" maxlength="8" value="<?php echo $this->escape($this->password_confirm);?>"/></td>
             </tr>
             <tr>
                 <td width="200"><label for="email">Email address</label></td>
