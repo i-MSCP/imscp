@@ -121,6 +121,29 @@ class UserController extends Zend_Controller_Action
 	 */
     public function changepasswordAction()
     {
+		$request = $this->getRequest();
+
+	    if($request->isPost() && $this->isValidInputData()) {
+		    // Getting form fields
+			$params = $this->inputFilter->getEscaped();
+
+			// Encrypt user password
+			$filter = new iMSCP_Filter_Encrypt_McryptBase64(Zend_Registry::get('config')->encryption);
+			$params['password'] = $filter->encrypt($params['password']);
+
+			// TODO update password in database - Flash messenger
+
+		    $this->_redirect('/admin/user/list');
+	    }
+
+		// Show values on error
+		if($this->inputFilter && $this->inputFilter->hasInvalid()) {
+			foreach($request->getParams() as $field => $value)
+				$this->view->$field = $value;
+		} else {
+			$randomPassword = iMSCP_Utilities_String_Random::alnum(8, 'mixed');
+			$this->view->password = $this->view->password_confirm = $randomPassword;
+		}
     }
 
 	/**
@@ -206,9 +229,5 @@ class UserController extends Zend_Controller_Action
 		}
 
 		return $roles;
-	}
-
-	protected function getRandomPassword() {
-		
 	}
 }
