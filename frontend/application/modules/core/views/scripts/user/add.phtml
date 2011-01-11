@@ -3,6 +3,7 @@
 	$("#password").keyup(function(){$("#password_text").val($(this).val());});
 	$("#password_text").keyup(function(){$("#password").val($(this).val());});
 	$("#show_password").click(function(){$("#password,#password_text").toggle();});
+	$("#show_password").toggle(function(){$(this).val("Hide password");},function(){$(this).val("Show password");});
 ');?>
 
 <h2 class="user"><span>Add new user</span></h2>
