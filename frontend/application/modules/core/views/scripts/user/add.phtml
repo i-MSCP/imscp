@@ -1,20 +1,18 @@
-<?php $this->jQuery()->addOnload('$("#username").focus();');?>
+<?php $this->jQuery()->addOnload('
+	$("#username").focus();
 
-<?php
-	$this->jQuery()->addOnload('
-		$("#password").keyup(function(){
-			$("#password_text").val($(this).val());
-		});
+	$("#password").keyup(function(){
+		$("#password_text").val($(this).val());
+	});
 
-		$("#password_text").keyup(function(){
-			$("#password").val($(this).val());
-		});
+	$("#password_text").keyup(function(){
+		$("#password").val($(this).val());
+	});
 
-		$("#show_password").click(function(){
-			$("#password").toggle();
-			$("#password_text").toggle();
-		});
-	');
+	$("#show_password").click(function(){
+		$("#password").toggle();
+		$("#password_text").toggle();
+	});');
 ?>
 
 <h2 class="user"><span>Add new user</span></h2>
