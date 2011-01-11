@@ -1,8 +1,8 @@
 <?php $this->jQuery()->addOnload('
 	$("#username").focus();
-	$("#password").keyup(function(){$("#password_text").val($(this).val());$("#password_confirm").val("");});
-	$("#password_text").keyup(function(){$("#password").val($(this).val());$("#password_confirm").val("");});
-	$("#show_password").click(function(){$("#password,#password_text").toggle();});
+	$("#password").keyup(function(){$("#password_text").val($(this).val());});
+	$("#password_text").keyup(function(){$("#password").val($(this).val());});
+	$("#show_password,").click(function(){$("#password,#password_text,#password_confirm,#password_confirm_text").toggle();});
 	$("#show_password").toggle(function(){$(this).val("Hide password");},function(){$(this).val("Show password");});
 ');?>
 
@@ -36,7 +36,10 @@
             </tr>
             <tr>
                 <td width="200"><label for="password_confirm">Confirm password</label></td>
-                <td><input type="password" name="password_confirm" id="password_confirm" maxlength="8" value="<?php echo $this->escape($this->password_confirm);?>"/></td>
+                <td>
+	                <input type="password" name="password_confirm" id="password_confirm" maxlength="8" value="<?php echo $this->escape($this->password_confirm);?>"/>
+	                <input type="text" name="password_confirm_text" id="password_confirm_text" maxlength="8" style="display:none;vertical-align:middle" value="<?php echo $this->escape($this->password_confirm);?>"/>
+	            </td>
             </tr>
             <tr>
                 <td width="200"><label for="email">Email address</label></td>
