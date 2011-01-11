@@ -57,31 +57,44 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	 * Initialize routes
 	 *
 	 * @return Zend_Controller_Router_Interface
-	 * @todo Merge all routes and create cache file to improve IO performances - Move to resource plugin
+	 * @todo Move to resource plugin
 	 */
 	protected function _initRoutes()
 	{
 		$this->bootstrap('FrontController');
 		$frontController = $this->getResource('FrontController');
-		$modules = $frontController->getControllerDirectory();
+
+		if(APPLICATION_ENV == 'production' && file_exists(ROOT_PATH . DS . 'data' . DS . 'cache' . DS . 'routes.php')) {
+			$routesConfig = new Zend_Config(include_once(ROOT_PATH . DS . 'data' . DS . 'cache' . DS . 'routes.php'));
+		} else {
+
+			$modules = $frontController->getControllerDirectory();
+			$routesConfig = new Zend_Config(array(), true);
+			// Retrieves each routes definition file for all modules and add them to the router
+			foreach(array_keys($modules) as $module) {
+				$routesDirectory = APPLICATION_PATH . DS . 'modules' . DS . $module . DS . 'config' . DS . 'routes';
+				if (!is_dir($routesDirectory)) continue;
+				$directoryIterator = new DirectoryIterator($routesDirectory);
+				foreach ($directoryIterator as $file) {
+					if ($file->isDot() || $file->isDir()) continue;
+					$routesConfigFilesName = $file->getFilename();
+					if (preg_match('/^[^a-z]/i', $routesConfigFilesName)) continue;
+					$routesConfig->merge(new Zend_Config_Ini($routesDirectory . DS . $routesConfigFilesName, 'routes'));
+                }
+			}
+			// Process configuration file caching only in production
+			if(APPLICATION_ENV == 'production') {
+				$writer = new Zend_Config_Writer_Array();
+				$writer->write(ROOT_PATH . DS . 'data' . DS . 'cache' . DS . 'routes.php', $routesConfig, true);
+				// Fixing correct permissions (This file should not be readable by everyone)
+				chmod(ROOT_PATH . DS . 'data' . DS . 'cache' . DS . 'routes.php', 0640);
+			}
+		}
 
 		// Getting router object
 		$router = $frontController->getRouter();
-
-		// Retrieves each routes definition file for all modules and add them to the router
-		foreach(array_keys($modules) as $module) {
-			$routesDirectory = APPLICATION_PATH . DS . 'modules' . DS . $module . DS . 'config' . DS . 'routes';
-			if (!is_dir($routesDirectory)) continue;
-			$directoryIterator = new DirectoryIterator($routesDirectory);
-			foreach ($directoryIterator as $file) {
-				if ($file->isDot() || $file->isDir()) continue;
-				$routesConfigFilesName = $file->getFilename();
-				if (preg_match('/^[^a-z]/i', $routesConfigFilesName)) continue;
-				$routesConfig = new Zend_Config_Ini($routesDirectory . DS . $routesConfigFilesName, 'routes');
-				$router->addConfig($routesConfig, 'routes');
-            }
-		}
-
+		// Add all routes in it
+		$router->addConfig($routesConfig, 'routes');
 		// Removing default routes
 		$router->removeDefaultRoutes();
 
