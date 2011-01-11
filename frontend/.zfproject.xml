@@ -20,7 +20,6 @@
               <actionMethod actionName="error"/>
             </controllerFile>
             <controllerFile controllerName="User">
-              <actionMethod actionName="index"/>
               <actionMethod actionName="add"/>
               <actionMethod actionName="edit"/>
               <actionMethod actionName="changepassword"/>
@@ -40,9 +39,6 @@
             <viewScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Error">
                 <viewScriptFile forActionName="error"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="User">
-                <viewScriptFile forActionName="index"/>
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="User">
                 <viewScriptFile forActionName="add"/>
