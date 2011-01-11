@@ -27,7 +27,7 @@
  */
 
 /***********************************************************************************************************************
- * Script shot description
+ * Script short description
  *
  *  This is the single entry point of the iMSCP Front end. This script will load Zend_Application and instantiate
  *  it by passing:

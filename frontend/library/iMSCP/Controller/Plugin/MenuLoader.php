@@ -49,7 +49,7 @@ class iMSCP_Controller_Plugin_MenuLoader extends Zend_Controller_Plugin_Abstract
 	 * @param Zend_Controller_Request_Abstract $request
 	 * @return Zend_Controller_Request_Abstract
 	 */
-	public function postDispatch(Zend_Controller_Request_Abstract $request) {
+	public function routeShutdown(Zend_Controller_Request_Abstract $request) {
 
 		$view = Zend_Controller_Front::getInstance()->getParam('bootstrap')->getResource('view');
 		$url = $view->url();
