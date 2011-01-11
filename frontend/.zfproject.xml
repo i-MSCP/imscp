@@ -26,7 +26,7 @@
               <actionMethod actionName="list"/>
             </controllerFile>
             <controllerFile controllerName="Login">
-              <actionMethod actionName="index"/>
+              <actionMethod actionName="login"/>
             </controllerFile>
             <controllerFile controllerName="LostPasword">
               <actionMethod actionName="index"/>
@@ -53,7 +53,7 @@
                 <viewScriptFile forActionName="list"/>
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="Login">
-                <viewScriptFile forActionName="index"/>
+                <viewScriptFile forActionName="login"/>
               </viewControllerScriptsDirectory>
               <viewControllerScriptsDirectory forControllerName="LostPasword">
                 <viewScriptFile forActionName="index"/>

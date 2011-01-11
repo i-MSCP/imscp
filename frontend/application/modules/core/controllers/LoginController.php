@@ -42,12 +42,22 @@
  */
 class LoginController extends Zend_Controller_Action
 {
+	/**
+	 * Initialize controller
+	 * 
+	 * @return void
+	 */
     public function init()
     {
         $this->_helper->layout->setLayout('simple');
     }
 
-    public function indexAction()
+	/**
+	 * Perform login action
+	 *
+	 * @return void
+	 */
+    public function loginAction()
     {
 	    $auth = Zend_Auth::getInstance();
 
