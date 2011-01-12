@@ -54,10 +54,6 @@ APPLICATION_DIRECTORY="../../application"
 
 # PHP Section
 /usr/bin/xgettext --language=PHP \
---package-name="i-MSCP" \
---package-version="1.0.0" \
---copyright-holder="i-MSCP Team" \
---msgid-bugs-address="i18n@i-mscp.net" \
 -d "i-MSCP" \
 --keyword="translate" \
 ${APPLICATION_DIRECTORY}/layouts/*.phtml \
@@ -71,7 +67,10 @@ ${APPLICATION_DIRECTORY}/modules/*/views/scripts/*/*.phtml \
 
 # XML Section
 /usr/bin/xgettext --language=Glade \
--d "i-MSCP" \
+--package-name="i-MSCP" \
+--package-version="1.0.0" \
+--copyright-holder="i-MSCP Team" \
+--msgid-bugs-address="i18n@i-mscp.net" \
 -d "i-MSCP" \
 --keyword="label" \
 ${APPLICATION_DIRECTORY}/configs/menus/*.xml \
