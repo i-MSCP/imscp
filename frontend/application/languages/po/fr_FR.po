@@ -21,7 +21,7 @@ msgstr "Activer l'utilisateur ?"
 
 #: ../../application/modules/core/views/scripts/user/add.phtml:9
 msgid "Add new user"
-msgstr "Ajout d'un nouvel utilisateur"
+msgstr "Ajouter un nouvel utilisateur"
 
 #: ../../application/modules/core/views/scripts/user/add.phtml:57
 #: ../../application/configs/menus/admin.xml:61
@@ -76,7 +76,7 @@ msgstr "Clients"
 #: ../../application/modules/core/views/scripts/user/list.phtml:42
 #: ../../application/modules/core/views/scripts/user/list.phtml:67
 msgid "Edit"
-msgstr "Editer"
+msgstr "Éditer"
 
 #: ../../application/modules/core/views/scripts/user/add.phtml:42
 msgid "Email address"
@@ -104,7 +104,7 @@ msgstr "Mot de passe perdu"
 
 #: ../../application/configs/menus/admin.xml:47
 msgid "Manage Users"
-msgstr "Gestion des utilisateurs"
+msgstr "Gérer les utilisateurs"
 
 #: ../../application/modules/core/views/scripts/error/error.phtml:33
 msgid "Message"
@@ -141,7 +141,7 @@ msgstr "Revendeurs"
 #: ../../application/modules/core/views/scripts/user/add.phtml:58
 #: ../../application/modules/core/views/scripts/user/changepassword.phtml:24
 msgid "Reset"
-msgstr "Reset"
+msgstr "Réinitialiser"
 
 #: ../../application/modules/core/views/scripts/authentication/login.phtml:18
 msgid "Secure connection"
@@ -166,7 +166,7 @@ msgstr "Pour éviter les abus, nous vous demandons d'écrire la combinaison de l
 
 #: ../../application/modules/core/views/scripts/user/add.phtml:13
 msgid "User information"
-msgstr "Information utilisateur"
+msgstr "Informations utilisateur"
 
 #: ../../application/modules/core/views/scripts/user/add.phtml:16
 msgid "User role"
