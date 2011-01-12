@@ -1,0 +1,206 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: i-MSCP 1.0.0\n"
+"Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
+"POT-Creation-Date: 2011-01-12 07:41+0100\n"
+"PO-Revision-Date: 2011-01-12 08:47+0100\n"
+"Last-Translator: Benjamin Hildebrand <bene@deluxe-styles.de>\n"
+"Language-Team: \n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../application/modules/core/views/scripts/user/add.phtml:46
+msgid "Activate user ?"
+msgstr "Benutzer aktivieren ?"
+
+#: ../../application/modules/core/views/scripts/user/add.phtml:9
+msgid "Add new user"
+msgstr "Neuen Benutzer hinzufügen"
+
+#: ../../application/modules/core/views/scripts/user/add.phtml:57
+#: ../../application/configs/menus/admin.xml:61
+msgid "Add user"
+msgstr "Benutzer hinzufügen"
+
+#: ../../application/modules/core/views/scripts/user/list.phtml:1
+msgid "Administrators"
+msgstr "Administratoren"
+
+#: ../../application/modules/core/views/scripts/error/error.phtml:31
+msgid "An exception occurred"
+msgstr "Eine Ausnahme ist aufgetreten"
+
+#: ../../application/modules/core/views/scripts/error/error.phtml:37
+#: ../../application/modules/core/views/scripts/lost-password/index.phtml:15
+msgid "Back"
+msgstr "Zurück"
+
+#: ../../application/modules/core/views/scripts/user/changepassword.phtml:3
+#: ../../application/modules/core/views/scripts/user/changepassword.phtml:23
+#: ../../application/configs/menus/admin.xml:68
+msgid "Change password"
+msgstr "Passwort ändern"
+
+#: ../../application/modules/core/views/scripts/lost-password/index.phtml:12
+msgid "Code"
+msgstr "Code"
+
+#: ../../application/modules/core/views/scripts/user/add.phtml:38
+#: ../../application/modules/core/views/scripts/user/changepassword.phtml:17
+msgid "Confirm password"
+msgstr "Passwort bestätigen"
+
+#: ../../application/modules/core/views/scripts/user/list.phtml:8
+#: ../../application/modules/core/views/scripts/user/list.phtml:33
+#: ../../application/modules/core/views/scripts/user/list.phtml:58
+msgid "Created by"
+msgstr "Erstellt von"
+
+#: ../../application/modules/core/views/scripts/user/list.phtml:7
+#: ../../application/modules/core/views/scripts/user/list.phtml:32
+#: ../../application/modules/core/views/scripts/user/list.phtml:57
+msgid "Creation date"
+msgstr "Erstellungsdatum"
+
+#: ../../application/modules/core/views/scripts/user/list.phtml:51
+msgid "Customers"
+msgstr "Kunden"
+
+#: ../../application/modules/core/views/scripts/user/list.phtml:17
+#: ../../application/modules/core/views/scripts/user/list.phtml:42
+#: ../../application/modules/core/views/scripts/user/list.phtml:67
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#: ../../application/modules/core/views/scripts/user/add.phtml:42
+msgid "Email address"
+msgstr "E-Mail adresse"
+
+#: ../../application/modules/core/views/scripts/authentication/login.phtml:26
+msgid "FileManager"
+msgstr "Dateimanager"
+
+#: ../../application/modules/core/views/scripts/user/add.phtml:6
+msgid "Hide password"
+msgstr "Password verstecken"
+
+#: ../../application/modules/core/views/scripts/authentication/login.phtml:15
+msgid "Login"
+msgstr "Anmelden"
+
+#: ../../application/layouts/layout.phtml:25
+msgid "Logout"
+msgstr "Abmelden"
+
+#: ../../application/modules/core/views/scripts/authentication/login.phtml:14
+msgid "Lost Password"
+msgstr "Passwort vergessen"
+
+#: ../../application/configs/menus/admin.xml:47
+msgid "Manage Users"
+msgstr "Benutzer verwalten"
+
+#: ../../application/modules/core/views/scripts/error/error.phtml:33
+msgid "Message"
+msgstr "Nachricht"
+
+#: ../../application/modules/core/views/scripts/user/changepassword.phtml:7
+msgid "New password"
+msgstr "Neues Passwort"
+
+#: ../../application/modules/core/views/scripts/user/list.phtml:9
+#: ../../application/modules/core/views/scripts/user/list.phtml:34
+#: ../../application/modules/core/views/scripts/user/list.phtml:59
+msgid "Options"
+msgstr "Optionen"
+
+#: ../../application/configs/menus/admin.xml:54
+msgid "Overview"
+msgstr "Übersicht"
+
+#: ../../application/modules/core/views/scripts/authentication/login.phtml:12
+#: ../../application/modules/core/views/scripts/user/add.phtml:30
+#: ../../application/modules/core/views/scripts/user/changepassword.phtml:10
+msgid "Password"
+msgstr "Passwort"
+
+#: ../../application/modules/core/views/scripts/authentication/login.phtml:25
+msgid "PhpMyAdmin"
+msgstr "PHPMyAdmin"
+
+#: ../../application/modules/core/views/scripts/user/list.phtml:26
+msgid "Resellers"
+msgstr "Reseller"
+
+#: ../../application/modules/core/views/scripts/user/add.phtml:58
+#: ../../application/modules/core/views/scripts/user/changepassword.phtml:24
+msgid "Reset"
+msgstr "Zurücksetzen"
+
+#: ../../application/modules/core/views/scripts/authentication/login.phtml:18
+msgid "Secure connection"
+msgstr "Sichere verbindung"
+
+#: ../../application/modules/core/views/scripts/lost-password/index.phtml:16
+msgid "Send request"
+msgstr "Anfrage senden"
+
+#: ../../application/modules/core/views/scripts/user/add.phtml:6
+#: ../../application/modules/core/views/scripts/user/add.phtml:34
+msgid "Show password"
+msgstr "Passwort anzeigen"
+
+#: ../../application/modules/core/views/scripts/error/error.phtml:43
+msgid "Stack trace"
+msgstr "Stack trace"
+
+#: ../../application/modules/core/views/scripts/lost-password/index.phtml:23
+msgid "To avoid abuse, we ask you to write the combination of letters on the picture above into the field \"Security code\""
+msgstr "Um Missbrauch zu vermeiden, bitte wir Sie die Kombination von Buchstaben auf dem Bild oben in das Feld zu schreiben \"Security code\""
+
+#: ../../application/modules/core/views/scripts/user/add.phtml:13
+msgid "User information"
+msgstr "Benutzer Information"
+
+#: ../../application/modules/core/views/scripts/user/add.phtml:16
+msgid "User role"
+msgstr "Benutzerrolle"
+
+#: ../../application/modules/core/views/scripts/authentication/login.phtml:11
+#: ../../application/modules/core/views/scripts/lost-password/index.phtml:13
+#: ../../application/modules/core/views/scripts/user/list.phtml:6
+#: ../../application/modules/core/views/scripts/user/list.phtml:31
+#: ../../application/modules/core/views/scripts/user/list.phtml:56
+msgid "Username"
+msgstr "Benutzername"
+
+#: ../../application/modules/core/views/scripts/authentication/login.phtml:27
+msgid "Webmail"
+msgstr "Webmail"
+
+#: ../../application/modules/core/views/scripts/user/list.phtml:23
+msgid "You have not admin yet"
+msgstr "Sie haben noch keinen Admin"
+
+#: ../../application/modules/core/views/scripts/user/list.phtml:73
+msgid "You have not customer yet"
+msgstr "Sie haben noch keinen Kunden"
+
+#: ../../application/modules/core/views/scripts/user/list.phtml:48
+msgid "You have not reseller yet"
+msgstr "Sie haben noch keinen Reseller"
+
+#: ../../application/modules/core/views/scripts/user/list.phtml:14
+msgid "n/a"
+msgstr "N/A"
+
+#: ../../application/modules/core/views/scripts/user/list.phtml:15
+msgid "system"
+msgstr "System"
+
+#: ../../application/modules/core/views/scripts/user/add.phtml:26
+msgid "username"
+msgstr "Benutzername"
+
