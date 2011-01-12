@@ -61,7 +61,6 @@ ${APPLICATION_DIRECTORY}/modules/*/controllers/*.php \
 ${APPLICATION_DIRECTORY}/modules/*/views/scripts/*/*.phtml \
 --from-code=utf-8 \
 --no-wrap \
---strict \
 -p ${LANGUAGE_DIRECTORY}/po \
 -o "iMSCP.pot"
 
@@ -76,7 +75,6 @@ ${APPLICATION_DIRECTORY}/modules/*/views/scripts/*/*.phtml \
 ${APPLICATION_DIRECTORY}/configs/menus/*.xml \
 --from-code=utf-8 \
 --no-wrap \
---strict \
 -p ${LANGUAGE_DIRECTORY}/po \
 -o "iMSCP.pot" -j -s
 
