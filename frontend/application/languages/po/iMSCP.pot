@@ -1,0 +1,201 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR i-MSCP Team
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: i-MSCP 1.0.0\n"
+"Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
+"POT-Creation-Date: 2011-01-12 06:24+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+#
+# File: ../../application/layouts/layout.phtml, line: 25
+msgid "Logout"
+msgstr ""
+#
+# File: ../../application/modules/core/views/scripts/authentication/login.phtml, line: 11
+# File: ../../application/modules/core/views/scripts/lost-password/index.phtml, line: 13
+# File: ../../application/modules/core/views/scripts/user/list.phtml, line: 6
+# File: ../../application/modules/core/views/scripts/user/list.phtml, line: 31
+# File: ../../application/modules/core/views/scripts/user/list.phtml, line: 56
+msgid "Username"
+msgstr ""
+#
+# File: ../../application/modules/core/views/scripts/authentication/login.phtml, line: 12
+# File: ../../application/modules/core/views/scripts/user/add.phtml, line: 30
+# File: ../../application/modules/core/views/scripts/user/changepassword.phtml, line: 10
+msgid "Password"
+msgstr ""
+#
+# File: ../../application/modules/core/views/scripts/authentication/login.phtml, line: 14
+msgid "Lost Password"
+msgstr ""
+#
+# File: ../../application/modules/core/views/scripts/authentication/login.phtml, line: 15
+msgid "Login"
+msgstr ""
+#
+# File: ../../application/modules/core/views/scripts/authentication/login.phtml, line: 18
+msgid "Secure connection"
+msgstr ""
+#
+# File: ../../application/modules/core/views/scripts/authentication/login.phtml, line: 25
+msgid "PhpMyAdmin"
+msgstr ""
+#
+# File: ../../application/modules/core/views/scripts/authentication/login.phtml, line: 26
+msgid "FileManager"
+msgstr ""
+#
+# File: ../../application/modules/core/views/scripts/authentication/login.phtml, line: 27
+msgid "Webmail"
+msgstr ""
+#
+# File: ../../application/modules/core/views/scripts/error/error.phtml, line: 31
+msgid "An exception occurred"
+msgstr ""
+#
+# File: ../../application/modules/core/views/scripts/error/error.phtml, line: 33
+msgid "Message"
+msgstr ""
+#
+# File: ../../application/modules/core/views/scripts/error/error.phtml, line: 37
+# File: ../../application/modules/core/views/scripts/lost-password/index.phtml, line: 15
+msgid "Back"
+msgstr ""
+#
+# File: ../../application/modules/core/views/scripts/error/error.phtml, line: 43
+msgid "Stack trace"
+msgstr ""
+#
+# File: ../../application/modules/core/views/scripts/lost-password/index.phtml, line: 12
+msgid "Code"
+msgstr ""
+#
+# File: ../../application/modules/core/views/scripts/lost-password/index.phtml, line: 16
+msgid "Send request"
+msgstr ""
+#
+# File: ../../application/modules/core/views/scripts/lost-password/index.phtml, line: 23
+msgid "To avoid abuse, we ask you to write the combination of letters on the picture above into the field \"Security code\""
+msgstr ""
+#
+# File: ../../application/modules/core/views/scripts/user/add.phtml, line: 6
+msgid "Hide password"
+msgstr ""
+#
+# File: ../../application/modules/core/views/scripts/user/add.phtml, line: 6
+# File: ../../application/modules/core/views/scripts/user/add.phtml, line: 34
+msgid "Show password"
+msgstr ""
+#
+# File: ../../application/modules/core/views/scripts/user/add.phtml, line: 9
+msgid "Add new user"
+msgstr ""
+#
+# File: ../../application/modules/core/views/scripts/user/add.phtml, line: 13
+msgid "User information"
+msgstr ""
+#
+# File: ../../application/modules/core/views/scripts/user/add.phtml, line: 16
+msgid "User role"
+msgstr ""
+#
+# File: ../../application/modules/core/views/scripts/user/add.phtml, line: 26
+msgid "username"
+msgstr ""
+#
+# File: ../../application/modules/core/views/scripts/user/add.phtml, line: 38
+# File: ../../application/modules/core/views/scripts/user/changepassword.phtml, line: 17
+msgid "Confirm password"
+msgstr ""
+#
+# File: ../../application/modules/core/views/scripts/user/add.phtml, line: 42
+msgid "Email address"
+msgstr ""
+#
+# File: ../../application/modules/core/views/scripts/user/add.phtml, line: 46
+msgid "Activate user ?"
+msgstr ""
+#
+# File: ../../application/modules/core/views/scripts/user/add.phtml, line: 57
+msgid "Add user"
+msgstr ""
+#
+# File: ../../application/modules/core/views/scripts/user/add.phtml, line: 58
+# File: ../../application/modules/core/views/scripts/user/changepassword.phtml, line: 24
+msgid "Reset"
+msgstr ""
+#
+# File: ../../application/modules/core/views/scripts/user/changepassword.phtml, line: 3
+# File: ../../application/modules/core/views/scripts/user/changepassword.phtml, line: 23
+msgid "Change password"
+msgstr ""
+#
+# File: ../../application/modules/core/views/scripts/user/changepassword.phtml, line: 7
+msgid "New password"
+msgstr ""
+#
+# File: ../../application/modules/core/views/scripts/user/list.phtml, line: 1
+msgid "Administrators"
+msgstr ""
+#
+# File: ../../application/modules/core/views/scripts/user/list.phtml, line: 7
+# File: ../../application/modules/core/views/scripts/user/list.phtml, line: 32
+# File: ../../application/modules/core/views/scripts/user/list.phtml, line: 57
+msgid "Creation date"
+msgstr ""
+#
+# File: ../../application/modules/core/views/scripts/user/list.phtml, line: 8
+# File: ../../application/modules/core/views/scripts/user/list.phtml, line: 33
+# File: ../../application/modules/core/views/scripts/user/list.phtml, line: 58
+msgid "Created by"
+msgstr ""
+#
+# File: ../../application/modules/core/views/scripts/user/list.phtml, line: 9
+# File: ../../application/modules/core/views/scripts/user/list.phtml, line: 34
+# File: ../../application/modules/core/views/scripts/user/list.phtml, line: 59
+msgid "Options"
+msgstr ""
+#
+# File: ../../application/modules/core/views/scripts/user/list.phtml, line: 14
+msgid "n/a"
+msgstr ""
+#
+# File: ../../application/modules/core/views/scripts/user/list.phtml, line: 15
+msgid "system"
+msgstr ""
+#
+# File: ../../application/modules/core/views/scripts/user/list.phtml, line: 17
+# File: ../../application/modules/core/views/scripts/user/list.phtml, line: 42
+# File: ../../application/modules/core/views/scripts/user/list.phtml, line: 67
+msgid "Edit"
+msgstr ""
+#
+# File: ../../application/modules/core/views/scripts/user/list.phtml, line: 23
+msgid "You have not admin yet"
+msgstr ""
+#
+# File: ../../application/modules/core/views/scripts/user/list.phtml, line: 26
+msgid "Resellers"
+msgstr ""
+#
+# File: ../../application/modules/core/views/scripts/user/list.phtml, line: 48
+msgid "You have not reseller yet"
+msgstr ""
+#
+# File: ../../application/modules/core/views/scripts/user/list.phtml, line: 51
+msgid "Customers"
+msgstr ""
+#
+# File: ../../application/modules/core/views/scripts/user/list.phtml, line: 73
+msgid "You have not customer yet"
+msgstr ""

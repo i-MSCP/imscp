@@ -1,0 +1,143 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: iMSCP V1.0.0\n"
+"Report-Msgid-Bugs-To: i18n@i-mscp.net\n"
+"POT-Creation-Date: 2011-01-12 06:03+0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Laurent Declercq <laurent.declercq@i-mscp.net>\n"
+"Language-Team: i-MSCP Team <i18n@i-mscp.net>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: English\n"
+"X-Poedit-Country: UNITED KINGDOM\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: translate\n"
+"X-Poedit-Basepath: /home/nuxwin/Bureau/i-MSCP-WORKSPACE/trunk/frontend/application\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"X-Poedit-SearchPath-0: /home/nuxwin/Bureau/i-MSCP-WORKSPACE/trunk/frontend/application\n"
+
+msgid "Logout"
+msgstr "Logout"
+
+msgid "Username"
+msgstr "Username"
+
+msgid "Password"
+msgstr "Password"
+
+msgid "Lost Password"
+msgstr "Lost Password"
+
+msgid "Login"
+msgstr "Login"
+
+msgid "Secure connection"
+msgstr "Secure connection"
+
+msgid "PhpMyAdmin"
+msgstr "PhpMyAdmin"
+
+msgid "FileManager"
+msgstr "FileManager"
+
+msgid "Webmail"
+msgstr "Webmail"
+
+msgid "An exception occurred"
+msgstr "An exception occurred"
+
+msgid "Message"
+msgstr "Message"
+
+msgid "Back"
+msgstr "Back"
+
+msgid "Stack trace"
+msgstr "Stack trace"
+
+msgid "Code"
+msgstr "Code"
+
+msgid "Send request"
+msgstr "Send request"
+
+msgid "To avoid abuse, we ask you to write the combination of letters on the picture above into the field \"Security code\""
+msgstr "To avoid abuse, we ask you to write the combination of letters on the picture above into the field \"Security code\""
+
+msgid "Hide password"
+msgstr "Hide password"
+
+msgid "Show password"
+msgstr "Show password"
+
+msgid "Add new user"
+msgstr "Add new user"
+
+msgid "User information"
+msgstr "User information"
+
+msgid "User role"
+msgstr "User role"
+
+msgid "username"
+msgstr "username"
+
+msgid "Confirm password"
+msgstr "Confirm password"
+
+msgid "Email address"
+msgstr "Email address"
+
+msgid "Activate user ?"
+msgstr "Activate user ?"
+
+msgid "Add user"
+msgstr "Add user"
+
+msgid "Reset"
+msgstr "Reset"
+
+msgid "Change password"
+msgstr "Change password"
+
+msgid "New password"
+msgstr "New password"
+
+msgid "Administrators"
+msgstr "Administrators"
+
+msgid "Creation date"
+msgstr "Creation date"
+
+msgid "Created by"
+msgstr "Created by"
+
+msgid "Options"
+msgstr "Options"
+
+msgid "n/a"
+msgstr "n/a"
+
+msgid "system"
+msgstr "system"
+
+msgid "Edit"
+msgstr "Edit"
+
+msgid "You have not admin yet"
+msgstr "You have not admin yet"
+
+msgid "Resellers"
+msgstr "Resellers"
+
+msgid "You have not reseller yet"
+msgstr "You have not reseller yet"
+
+msgid "Customers"
+msgstr "Customers"
+
+msgid "You have not customer yet"
+msgstr "You have not customer yet"
+
