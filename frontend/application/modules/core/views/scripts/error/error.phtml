@@ -15,36 +15,36 @@
 		<div class="header">
 			<div id="logo">
 				<div id="logoInner">
-					<img src="/themes/default/images/imscp_logo32.png" alt="<?php echo $this->productShortName ?>" />
-					<span><?php echo $this->productLongName ?></span>
+					<img src="/themes/default/images/imscp_logo32.png" alt="<?php echo $this->productShortName;?>" />
+					<span><?php echo $this->productLongName;?></span>
 				</div>
 			</div>
 			<div id="copyright">
 				<div id="copyrightInner">
-					<a href="http://www.imscp.net" target="blank" tabindex="8"><?php echo $this->productCopyright ?></a>
+					<a href="http://www.imscp.net" target="blank" tabindex="8"><?php echo $this->productCopyright;?></a>
 				</div>
 			</div>
 		</div>
 		<div id="box">
 			<div id="boxHeader"></div>
 			<div id="content">
-				<h1>An exception occurred</h1>
-				<?php if (isset($this->exception)): ?>
-				<p><strong>Message:</strong> <?php echo $this->exception->getMessage() ?></p>
+				<h1><?php echo $this->translate('An exception occurred');?></h1>
+				<?php if (isset($this->exception)):?>
+				<p><strong><?php echo $this->translate('Message');?>:</strong> <?php echo $this->exception->getMessage();?></p>
 				<?php else: ?>
-				<p><?php echo $this->message ?> !</p>
+				<p><?php echo $this->message;?></p>
 				<?php endif ?>
-				<a href="#" onclick="history.go(-1);return false;" target="_self">Back</a>
+				<a href="#" onclick="history.go(-1);return false;" target="_self"><?php echo $this->translate('Back');?></a>
 			</div>
 		</div>
 
-  <?php if (isset($this->exception)): ?>
+  <?php if (isset($this->exception)):?>
 <div style="margin-top:310px;padding:10px;">
-  <h4>Stack trace:</h4>
-  <pre ><?php echo $this->exception->getTraceAsString() ?></pre>
+  <h4><?php echo $this->translate('Stack trace');?>:</h4>
+  <pre ><?php echo $this->exception->getTraceAsString();?></pre>
 <!--
   <h4>Request Parameters:</h4>
-  <pre><?php //echo var_export($this->request->, true) ?></pre>
+  <pre><?php //echo var_export($this->request->, true); ?></pre>
 -->
   <?php endif ?>
 </div>
