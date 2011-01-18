@@ -95,7 +95,7 @@ h2 {
 h2 span {
     display: block;
     border-bottom: 1px solid #ccc;
-    margin-right: -33px;
+    margin-right: -20px;
 }
 
 h3 {}
@@ -342,7 +342,8 @@ form table tbody td textarea{
 }
 
 .location-menu a {
-    color: #f00;
+    /*color: #f00;*/
+	color:#fff;
     font-weight: bold;
     background: transparent no-repeat center left;
     padding: 0 5px 0 22px;
@@ -352,6 +353,7 @@ form table tbody td textarea{
 }
 
 .location-menu .help { background-image: url(../images/user/help.png); }
+.location-menu .logged-as { background-image: url(../images/icons/user.png) }
 .location-menu .logout { background-image: url(../images/user/logout.png); }
 .location-menu .backadmin { background-image: url(../images/user/backadmin.png); }
 
@@ -730,6 +732,9 @@ legend, h3 {
 .i_app_asc { background-image: url(../images/icons/app_installer_asc.gif); }
 .i_app_desc { background-image: url(../images/icons/app_installer_desc.gif); }
 
+.i_search { background-image: url(../images/icons/search.png); }
+.i_action_expand{ background-image: url(../images/icons/expand_actions.png); }
+
 /*********************************** Ajax Spinner *****************************/
 
 /* Used for form input element during ajax request */
@@ -844,4 +849,64 @@ form table td{
 /*Added for Zend_Navigation*/
 .active a{
 	color: rgb(92,186,218);
+}
+
+/****************************************
+ * WORK IN PROGRESS
+ */
+
+.action-box table {}
+
+/* First td in action-box*/
+.actions-box-header tr:first-child {
+	background-color:#161E73;
+	color:#fff;
+	font-weight:bold;
+}
+
+.actions-box-header tr:first-child a {
+	color:#fff;
+}
+
+.actions-box-header td span {
+	margin-right:5px;
+}
+
+.actions-box-body td {
+	background-color: rgb(176,222,245);;
+}
+
+.actions-box-body label {
+	display:block;
+}
+
+.actions-box-body div {
+	float:left;
+	margin-left:5px;
+}
+
+#search {
+	background-image: url(../images/icons/search.png);
+	background-repeat: no-repeat;
+	background-position:top right;
+}
+
+.required {
+	color: rgb(202,29,17);;
+	font-size:16px;
+}
+
+.icon_pageup {
+    background-position: top left;
+    background-repeat: no-repeat;
+    padding-left: 20px;
+    display: -moz-inline-block;
+    display: inline-block;
+    margin: 0 5px;
+    float: right;
+	cursor:pointer
+}
+
+#expandable {
+	cursor:pointer
 }

@@ -1,0 +1,183 @@
+<?php $this->jQuery()->addOnload('
+	$("#username").focus();
+	$("#password").keyup(function(){$("#password_text").val($(this).val());});
+	$("#password_text").keyup(function(){$("#password").val($(this).val());});
+	$("#show_password,").click(function(){$("#password,#password_text").toggle();});
+	$("#show_password").toggle(function(){$(this).val("' . $this->translate('Hide password') . '");},function(){$(this).val("' .$this->translate('Show password') .'");});
+	$("#system_password").keyup(function(){$("#system_password_text").val($(this).val());});
+	$("#system_password_text").keyup(function(){$("#system_password").val($(this).val());});
+	$("#show_system_password,").click(function(){$("#system_password,#system_password_text").toggle();});
+	$("#show_system_password").toggle(function(){$(this).val("' . $this->translate('Hide password') . '");},function(){$(this).val("' .$this->translate('Show password') .'");});
+');?>
+
+<h2 class="user"><span><?php echo $this->translate('Adding new customer');?><span class="icon_pageup i_bc_parent" onclick="history.go(-1);return false;"><?php echo $this->translate('Up Level');?></span></span></h2>
+
+<p><?php echo $this->translate("This is where you sign up a new customer to your hosting services. By this sign-up, you create a customer account in the Panel and a subscription to one of your hosting plans. The subscription can also provide a completely custom set of resources and services, not bound with any plans — for this, select 'None' next to the Service Plan.");?></p>
+
+<form name="addUserForm" method="post" action="<?php echo $this->url();?>">
+    <fieldset>
+        <legend><?php echo $this->translate('Contact information');?>:</legend>
+	    <table>
+		    <tr id="customer_contact_head">
+			    <td class="box-action" colspan="2">
+				    <span><?php echo $this->translate("Enter the customer contact and billing information");?></span>
+					<span style="float:right"><a onclick="$('#customer_contact_head ~ tr').toggle();return false;" href="#">Colapse</a></span>
+				</td>
+		    </tr>
+		    <tr>
+			    <td width="200"><label for="firstname"><?php echo $this->translate('Firstname');?> <span class="required">*</span></label></td>
+			    <td><input type="text" name="firstname" id="firstname" maxlength="30" value="<?php echo $this->escape($this->firstname);?>"/></td>
+		    </tr>
+		    <tr>
+			    <td width="200"><label for="lastname"><?php echo $this->translate('Lastname');?> <span class="required">*</span></label></td>
+			    <td><input type="text" name="lastname" id="lastname" maxlength="30" value="<?php echo $this->escape($this->lastname);?>"/></td>
+		    </tr>
+            <tr>
+                <td width="200"><label for="email"><?php echo $this->translate('Email address');?> <span class="required">*</span></label></td>
+                <td><input type="text" name="email" id="email" maxlength="255" value="<?php echo $this->escape($this->email);?>"/></td>
+            </tr>
+		    <tr>
+			    <td width="200"><label for="compagny"></label><?php echo $this->translate('Company name');?></td>
+			    <td><input type="text" name="compagny" id="compagny" value="<?php echo $this->escape($this->compagny);?>"/></td>
+		    </tr>
+		    <tr>
+			    <td width="200"><label for="phone"></label><?php echo $this->translate('Phone number');?></td>
+			    <td><input type="text" name="phone" id="phone" value="<?php echo $this->escape($this->phone);?>"/></td>
+		    </tr>
+		    <tr>
+			    <td width="200"><label for="fax"></label><?php echo $this->translate('Fax number');?></td>
+			    <td><input type="text" name="fax" id="fax" value="<?php echo $this->escape($this->fax);?>"/></td>
+		    </tr>
+		    <tr>
+			    <td width="200"><label for="address"></label><?php echo $this->translate('Address');?></td>
+			    <td><textarea rows="4" cols="27" name="address" id="address"><?php echo $this->escape($this->address);?></textarea></td>
+		    </tr>
+		    <tr>
+			    <td width="200"><label for="city"></label><?php echo $this->translate('City');?></td>
+			    <td><input type="text" name="city" id="city" value="<?php echo $this->escape($this->city);?>"/></td>
+		    </tr>
+		    <tr>
+			    <td width="200"><label for="state"></label><?php echo $this->translate('State/Province');?></td>
+			    <td><input type="text" name="state" id="state" value="<?php echo $this->escape($this->state);?>"/></td>
+		    </tr>
+		    <tr>
+			    <td width="200"><label for="zipcode"></label><?php echo $this->translate('Postal/ZIP code');?></td>
+			    <td><input type="text" name="zipcode" id="zipcode" value="<?php echo $this->escape($this->zipcode);?>"/></td>
+		    </tr>
+		    <tr>
+			    <td width="200"><label for="country"></label><?php echo $this->translate('Country');?></td>
+			    <td><input type="text" name="country" id="country" value="<?php echo $this->escape($this->country);?>"/></td>
+		    </tr>
+	    </table>
+	</fieldset>
+    <fieldset>
+        <legend><?php echo $this->translate('Access to Control Panel');?>:</legend>
+        <table>
+		    <tr id="access_to_panel_head">
+			    <td class="box-action" colspan="2">
+				    <span><?php echo $this->translate("Credentials that the customer will use to access his control panel");?></span>
+					<span style="float:right"><a onclick="$('#access_to_panel_head ~ tr').toggle();return false;" href="customer-create.phtml#">Colapse</a></span>
+				</td>
+		    </tr>
+            <tr>
+                <td width="200"><label for="username"><?php echo $this->translate('Username');?> <span class="required">*</span></label></td>
+                <td><input type="text" name="username" id="username" maxlength="8" value="<?php echo $this->escape($this->username);?>"/></td>
+            </tr>
+            <tr>
+                <td width="200"><label for="password"><?php echo $this->translate('Password');?> <span class="required">*</span></label></td>
+                <td>
+	                <input type="password" name="password" id="password" maxlength="8" style="vertical-align:middle" value="<?php echo $this->escape($this->password);?>"/>
+	                <input type="text" name="password_text" id="password_text" maxlength="8" style="display:none;vertical-align:middle" value="<?php echo $this->escape($this->password);?>"/>
+	                <input type="button" name="show_password" id="show_password" style="vertical-align:middle" value="<?php echo $this->translate('Show password');?>"/>
+                </td>
+            </tr>
+            <tr>
+                <td width="200"><label for="password_confirm"><?php echo $this->translate('Confirm password');?> <span class="required">*</span></label></td>
+                <td><input type="password" name="password_confirm" id="password_confirm" maxlength="8" value="<?php echo $this->escape($this->password_confirm);?>"/></td>
+            </tr>
+			<tr>
+				<td width="200"><label for="is_active_yes"><?php echo $this->translate('Activate user ?');?></label></td>
+				<td>
+					<input type="radio" name="is_active" id="is_active_yes" class="buttons" value="1" style="vertical-align:middle" <?php echo ($this->is_active) ? 'checked="checked"' : '';?>/>
+					<span style="vertical-align:middle"><?php echo $this->translate('Yes');?></span>
+					<input type="radio" name="is_active" id="is_active_no" class="buttons" value="0" style="vertical-align:middle" <?php echo (!$this->is_active) ? 'checked="checked"' : '';?>/>
+					<span style="vertical-align:middle"><?php echo $this->translate('No');?></span>
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+	<fieldset>
+		<legend><?php echo $this->translate('Website information');?>:</legend>
+        <table>
+		    <tr id="website_information_head">
+			    <td class="box-action" colspan="2">
+				    <span><?php echo $this->translate("Properties of the website provisioned together with the subscription");?></span>
+					<span style="float:right"><a onclick="$('#website_information_head ~ tr').toggle();return false;" href="customer-create.phtml#">Colapse</a></span>
+				</td>
+		    </tr>
+            <tr>
+                <td width="200"><label for="domain"><?php echo $this->translate('Domain name');?> <span class="required">*</span></label></td>
+                <td>www. <input type="text" name="domain" id="domain" maxlength="253" value="<?php echo $this->escape($this->domain);?>"/></td>
+            </tr>
+            <tr>
+                <td width="200"><label for="ip"><?php echo $this->translate('IP address');?></label></td>
+                <td>
+	                <select name="ip" id="ip">
+		                <option>192.168.100.100 (shared)</option>
+		                <option>192.168.100.102 (exclusive)</option>
+		            </select>
+	                <p style="margin-top:10px;color:#666">
+		                <?php echo $this->translate("IP address on which the website is hosted is a network address of the website's virtual host. This IP address will be used for all websites created within the subscription.");?>
+	                </p>
+                </td>
+	        </tr>
+            <tr>
+                <td width="200"><label for="system_username"><?php echo $this->translate('Username');?> <span class="required">*</span></label></td>
+                <td>
+	                <input type="text" name="system_username" id="system_username" maxlength="8" value="<?php echo $this->escape($this->system_username);?>"/>
+					<p style="margin-top:10px;color:#666">
+		                <?php echo $this->translate('System user account used to manage files and folders of the websites created within the subscription.');?>
+	                </p>
+                </td>
+            </tr>
+            <tr>
+                <td width="200"><label for="system_password"><?php echo $this->translate('Password');?> <span class="required">*</span></label></td>
+                <td>
+	                <input type="password" name="system_password" id="system_password" maxlength="8" style="vertical-align:middle" value="<?php echo $this->escape($this->password);?>"/>
+	                <input type="text" name="system_password_text" id="system_password_text" maxlength="8" style="display:none;vertical-align:middle" value="<?php echo $this->escape($this->system_password);?>"/>
+	                <input type="button" name="show_system_password" id="show_system_password" style="vertical-align:middle" value="<?php echo $this->translate('Show password');?>"/>
+                </td>
+            </tr>
+            <tr>
+                <td width="200"><label for="system_password_confirm"><?php echo $this->translate('Confirm password');?> <span class="required">*</span></label></td>
+                <td><input type="password" name="system_password_confirm" id="system_password_confirm" maxlength="8" value="<?php echo $this->escape($this->system_password_confirm);?>"/></td>
+            </tr>
+	    </table>
+	</fieldset>
+	<fieldset>
+		<legend><?php echo $this->translate('Subscription');?>:</legend>
+		<table>
+		    <tr id="subscription_head">
+			    <td class="box-action" colspan="2">
+				    <span><?php echo $this->translate('Default subscription');?></span>
+					<span style="float:right"><a onclick="$('#subscription_head ~ tr').toggle();return false;" href="customer-create.phtml#">Colapse</a></span>
+				</td>
+		    </tr>
+            <tr>
+                <td width="200"><label for="ip"><?php echo $this->translate('Service plan');?></label></td>
+                <td>
+	                <select name="ip" id="plan">
+		                <option>Plan 1</option>
+		                <option>Plan 2</option>
+		                <option><?php echo $this->translate('None');?></option>
+		            </select>
+                </td>
+            </tr>
+		</table>
+	</fieldset>
+	<div style="float:left;"><span class="required">*</span> <?php echo $this->translate('Required fields');?></div>
+	<div class="buttons">
+	    <input name="submit" type="submit" class="buttons" value="<?php echo $this->translate('Add');?>" />
+		<input type="reset" class="buttons" value="<?php echo $this->translate('Reset');?>" />
+	</div>
+</form>

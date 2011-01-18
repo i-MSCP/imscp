@@ -64,6 +64,45 @@
             <viewFiltersDirectory/>
           </viewsDirectory>
         </moduleDirectory>
+        <moduleDirectory moduleName="HostingServices">
+          <apisDirectory enabled="false"/>
+          <configsDirectory enabled="false"/>
+          <controllersDirectory>
+            <controllerFile controllerName="Account">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Subscription">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="ServicePlan">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="Overview">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+          </controllersDirectory>
+          <formsDirectory enabled="false"/>
+          <layoutsDirectory enabled="false"/>
+          <modelsDirectory/>
+          <viewsDirectory>
+            <viewScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Account">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Subscription">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="ServicePlan">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="Overview">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+            </viewScriptsDirectory>
+            <viewHelpersDirectory/>
+            <viewFiltersDirectory/>
+          </viewsDirectory>
+        </moduleDirectory>
       </modulesDirectory>
       <viewsDirectory>
         <viewScriptsDirectory/>
@@ -72,16 +111,16 @@
       </viewsDirectory>
       <bootstrapFile filesystemName="iMSCP_Bootstrap.php"/>
     </applicationDirectory>
-    <dataDirectory enabled="true">
-      <cacheDirectory enabled="true"/>
+    <dataDirectory>
+      <cacheDirectory/>
       <searchIndexesDirectory enabled="false"/>
       <localesDirectory enabled="false"/>
-      <logsDirectory enabled="true"/>
-      <sessionsDirectory enabled="true"/>
-      <uploadsDirectory enabled="true"/>
+      <logsDirectory/>
+      <sessionsDirectory/>
+      <uploadsDirectory/>
     </dataDirectory>
     <libraryDirectory>
-      <zfStandardLibraryDirectory enabled="true"/>
+      <zfStandardLibraryDirectory/>
     </libraryDirectory>
     <publicDirectory>
       <publicStylesheetsDirectory enabled="false"/>
@@ -102,6 +141,10 @@
           <testApplicationControllerFile filesystemName="UserControllerTest.php"/>
           <testApplicationControllerFile filesystemName="LoginControllerTest.php"/>
           <testApplicationControllerFile filesystemName="PluginControllerTest.php"/>
+          <testApplicationControllerFile filesystemName="AccountControllerTest.php"/>
+          <testApplicationControllerFile filesystemName="SubscriptionControllerTest.php"/>
+          <testApplicationControllerFile filesystemName="ServicePlanControllerTest.php"/>
+          <testApplicationControllerFile filesystemName="OverviewControllerTest.php"/>
         </testApplicationControllerDirectory>
       </testApplicationDirectory>
       <testLibraryDirectory>

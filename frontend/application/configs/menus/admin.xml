@@ -29,91 +29,91 @@
 -->
 <config>
 	<nav>
-<!--
-	<general_information>
-		<label>General Information</label>
-		<module>admin</module>
-		<class>general</class>
-		<pages>
-			<Overview>
-				<label>Overview</label>
-				<module>admin</module>
-			</Overview>
-		</pages>
-	</general_information>
--->
-
-	<users>
-		<label>Manage Users</label>
-		<module>core</module>
-		<controller>user</controller>
-		<class>manage_users</class>
-		<route>core_user_list</route>
-		<pages>
-			<list>
-				<label>Overview</label>
-				<module>core</module>
-				<controller>user</controller>
-				<action>list</action>
-				<route>core_user_list</route>
-			</list>
-			<add>
-				<label>Add user</label>
-				<module>core</module>
-				<controller>user</controller>
-				<action>add</action>
-				<route>core_user_add</route>
-			</add>
-			<changepassword>
-				<label>Change password</label>
-				<module>core</module>
-				<controller>user</controller>
-				<action>changepassword</action>
-				<route>core_user_changepassword</route>
-			</changepassword>
-		</pages>
-	</users>
-
-<!--
-	<hosting_plans>
-		<label>Hosting Plans</label>
-		<module>admin</module>
-		<controller>hosting-plans</controller>
-		<title>Hosting plans</title>
-		<class>hosting_plans</class>
-	</hosting_plans>
-
-
-	<system_tools>
-		<label>System Tools</label>
-		<module>admin</module>
-		<controller>tools</controller>
-		<class>webtools</class>
-	</system_tools>
-
-
-	<statistics>
-		<label>Statistics</label>
-		<module>admin</module>
-		<controller>statistics</controller>
-		<class>general</class>
-	</statistics>
-
-
-	<support_system>
-		<label>Support System</label>
-		<module>admin</module>
-		<controller>support</controller>
-		<class>support</class>
-	</support_system>
-
-
-	<settings>
-		<label>Settings</label>
-		<module>admin</module>
-		<controller>settings</controller>
-		<class>settings</class>
-	</settings>
--->
-</nav>
+		<page_1>
+			<label>Hosting Services</label>
+			<class>domains</class>
+			<module>HostingServices</module>
+			<controller>overview</controller>
+			<action>overview</action>
+			<route>hosting_services_overview</route>
+			<pages>
+				<page_1>
+					<label>Overview</label>
+					<module>HostingServices</module>
+					<controller>overview</controller>
+					<action>overview</action>
+					<route>hosting_services_overview</route>
+				</page_1>
+				<page_2>
+					<label>Customers</label>
+					<module>HostingServices</module>
+					<controller>account</controller>
+					<action>customers-list</action>
+					<route>hosting_services_account_customers_list</route>
+					<pages>
+						<page_1>
+							<label>Adding new customer</label>
+							<module>HostingServices</module>
+							<controller>account</controller>
+							<action>customer-create</action>
+							<route>hosting_services_account_customer_create</route>
+						</page_1>
+					</pages>
+				</page_2>
+				<page_3>
+					<label>Resellers</label>
+					<module>HostingServices</module>
+					<controller>account</controller>
+					<action>resellers-list</action>
+					<route>hosting_services_account_resellers_list</route>
+					<pages>
+						<page_1>
+							<label>Adding new reseller</label>
+							<module>HostingServices</module>
+							<controller>account</controller>
+							<action>reseller-create</action>
+							<route>hosting_services_account_reseller_create</route>
+						</page_1>
+					</pages>
+				</page_3>
+				<page_4>
+					<label>Domains</label>
+					<uri>#</uri>
+				</page_4>
+				<page_5>
+					<label>Subscriptions</label>
+					<uri>#</uri>
+				</page_5>
+				<page_6>
+					<label>Service Plans</label>
+					<uri>#</uri>
+				</page_6>
+			</pages>
+		</page_1>
+		<page_2>
+			<label>Customs Buttons</label>
+			<class>custom_link</class>
+			<uri>#</uri>
+		</page_2>
+		<page_3>
+			<label>Servers Management</label>
+			<class>general</class>
+			<uri>#</uri>
+		</page_3>
+		<page_4>
+			<label><![CDATA[Tools & Utilities]]></label>
+			<class>webtools</class>
+			<uri>#</uri>
+		</page_4>
+		<page_5>
+			<label>Support</label>
+			<class>support</class>
+			<uri>#</uri>
+		</page_5>
+		<page_6>
+			<label>My profil</label>
+			<class>manage_users</class>
+			<uri>#</uri>
+		</page_6>
+	</nav>
 </config>
