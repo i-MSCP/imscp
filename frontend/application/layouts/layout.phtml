@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <?php echo $this->doctype() ?>
 
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en">
@@ -21,11 +21,12 @@
 		    <div class="location-area icons-left">
 		        <?php echo $this->navigation()->breadcrumbs()->setPartial('_section.phtml')->setMinDepth(0)->setMaxDepth(0);?>
 		    </div>
-		    <ul class="location-menu">
-		        <li><a class="logout" href="<?php echo $this->url(array(),'core_authentication_logout');?>"><?php echo $this->translate('Logout');?></a></li>
-		    </ul>
 		    <ul class="path">
-				<?php echo $this->navigation()->breadcrumbs()->setMaxDepth(1)->setPartial('_breadcrumbs.phtml');?>
+				<?php echo $this->navigation()->breadcrumbs()->setMaxDepth(3)->setPartial('_breadcrumbs.phtml');?>
+		    </ul>
+		    <ul class="location-menu">
+			    <li><?php echo $this->translate('Logged in as');?> <a class="logged-as" style="color:#fff" href="<?php echo $this->url(array(),'core_authentication_logout');?>">Admin</a></li>
+		        <li><a class="logout" href="<?php echo $this->url(array(),'core_authentication_logout');?>"><?php echo $this->translate('Logout');?></a></li>
 		    </ul>
 		</div>
 		<div class="left_menu">
