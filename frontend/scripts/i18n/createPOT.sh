@@ -56,6 +56,7 @@ APPLICATION_DIRECTORY="../../application"
 /usr/bin/xgettext --language=PHP \
 -d "i-MSCP" \
 --keyword="translate" \
+--keyword="plural:1,2" \
 ${APPLICATION_DIRECTORY}/layouts/*.phtml \
 ${APPLICATION_DIRECTORY}/modules/*/controllers/*.php \
 ${APPLICATION_DIRECTORY}/modules/*/views/scripts/*/*.phtml \
@@ -72,6 +73,7 @@ ${APPLICATION_DIRECTORY}/modules/*/views/scripts/*/*.phtml \
 --msgid-bugs-address="i18n@i-mscp.net" \
 -d "i-MSCP" \
 --keyword="label" \
+--keyword="plural:1,2" \
 ${APPLICATION_DIRECTORY}/configs/menus/*.xml \
 --from-code=utf-8 \
 --no-wrap \
