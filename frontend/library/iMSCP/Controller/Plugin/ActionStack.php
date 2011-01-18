@@ -77,7 +77,16 @@ class iMSCP_Controller_Plugin_ActionStack extends Zend_Controller_Plugin_ActionS
 	 */
 	public function dispatchLoopStartup(Zend_Controller_Request_Abstract $request) {
 		$frontController = Zend_Controller_Front::getInstance();
-		$defaults = $frontController->getRouter()->getCurrentRoute()->getDefaults();
+
+		try {
+			$currentRoute = $frontController->getRouter()->getCurrentRoute();
+		} catch(Zend_Exception $e) {
+			return;
+		}
+
+		if($currentRoute == null) return $request;
+
+		$defaults = $currentRoute->getDefaults();
 
 		if(isset($defaults['actionStack'])) {
 			$defaults['actionStack'] = (array) $defaults['actionStack'];
@@ -110,7 +119,7 @@ class iMSCP_Controller_Plugin_ActionStack extends Zend_Controller_Plugin_ActionS
 		$count = sizeof($options);
 
 		if($count == 0) {
-			throw new Zend_Exception('Error: The actionStack plugin requires a least an action name !');
+			throw new Zend_Exception('Error: The actionStack plugin requires a least an action name!');
 		} elseif($count == 1) {
 			$options[] = $this->_controllerName;
 			$options[] = $this->_moduleName;
