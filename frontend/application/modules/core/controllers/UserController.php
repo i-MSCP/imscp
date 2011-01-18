@@ -47,73 +47,6 @@ class UserController extends Zend_Controller_Action
 	 */
 	protected $inputFilter;
 
-
-	/**
-	 * List all existent users (by roles)
-	 *
-	 * @return void
-	 */
-    public function listAction()
-    {
-    }
-
-	/**
-	 * Add new user
-	 *
-	 * @return void
-	 */
-    public function addAction()
-    {
-		$request = $this->getRequest();
-
-	    if($request->isPost() && $this->isValidInputData()) {
-		    // Getting form fields
-			$params = $this->inputFilter->getEscaped();
-
-			// Encrypt user password
-			$filter = new iMSCP_Filter_Encrypt_McryptBase64(Zend_Registry::get('config')->encryption);
-			$params['password'] = $filter->encrypt($params['password']);
-			$params['role_id'] = $params['role'];
-
-			// Creating new user record - To be replaced  - Doctrine issue
-			/*
-			$user = new Core_Model_DbTable_User();
-		    $user = $user->createRow($params);
-			$user->created_on = new Zend_Db_Expr('NOW()');
-			 */
-
-			// Saving new record
-			// TODO: add observer that will automatically schedule the task and send request to the daemon
-			//$user->save();
-
-			// TODO Flash messenger
-
-		    $this->_redirect('/admin/user/list');
-	    }
-
-		// Get all roles
-		$this->view->roles = $this->getRoles();
-
-		// Show values on error
-		if($this->inputFilter && $this->inputFilter->hasInvalid()) {
-			foreach($request->getParams() as $field => $value)
-				$this->view->$field = $value;
-		} else { // Default form
-			$randomPassword = iMSCP_Utilities_String_Random::alnum(8, 'mixed');
-			$this->view->password = $this->view->password_confirm = $randomPassword;
-			$this->view->is_active = true;
-		}
-    }
-
-	/**
-	 * Edit existent user
-	 *
-	 * @return void
-	 */
-    public function editAction()
-    {
-    }
-
 	/**
 	 * Change user password
 	 *
@@ -133,23 +66,68 @@ class UserController extends Zend_Controller_Action
 
 			// TODO update password in database - Flash messenger
 
-		    $this->_redirect('/admin/user/list');
-	    }
+			$this->_redirect('/admin/user/list');
+		}
 
 		// Show values on error
 		if($this->inputFilter && $this->inputFilter->hasInvalid()) {
 			foreach($request->getParams() as $field => $value)
 				$this->view->$field = $value;
 		}
-    }
+	}
+
+	/**
+	 * Create new user
+	 *
+	 * @return void
+	 */
+	protected function createAction()
+	{
+		$request = $this->getRequest();
+
+		if($request->isPost() && $this->isValidInputData()) {
+			// Getting form fields
+			$params = $this->inputFilter->getEscaped();
+
+			// Encrypt user password
+			$filter = new iMSCP_Filter_Encrypt_McryptBase64(Zend_Registry::get('config')->encryption);
+			$params['password'] = $filter->encrypt($params['password']);
+			$params['role_id'] = $params['role'];
+
+			// Creating new user record - To be replaced  - Doctrine issue
+			/*
+			$user = new Core_Model_DbTable_User();
+		    $user = $user->createRow($params);
+			$user->created_on = new Zend_Db_Expr('NOW()');
+			 */
+
+			// Saving new record
+			// TODO add observer that will automatically schedule the task and send request to the daemon
+			//$user->save();
+
+			// TODO Flash messenger
+
+			if($this->_helper)
+			$this->_redirect("/admin/hostingServices/{$role}s/list");
+		}
+
+		// Show values on error
+		if($this->inputFilter && $this->inputFilter->hasInvalid()) {
+			foreach($request->getParams() as $field => $value)
+				$this->view->$field = $value;
+		} else { // Default form
+			$randomPassword = iMSCP_Utilities_String_Random::alnum(8, 'mixed');
+			$this->view->password = $this->view->password_confirm = $randomPassword;
+			$this->view->is_active = true;
+		}
+	}
 
 	/**
 	 * Validate input data and set appropriate error message on error
 	 *
 	 * @return bool TRUE on success, FALSE otherwise
 	 */
-	private function isValidInputData() {
-
+	protected function isValidInputData() {
 		$request = $this->getRequest();
 
 		// TODO confirm password fields
@@ -159,6 +137,9 @@ class UserController extends Zend_Controller_Action
 			// the beginning and end of any input field value
 			array('*' => 'StringTrim'),
 			array(
+				'firstname' => 'alpha',
+				'lastname' => 'alpha',
+				'email' => 'EmailAddress', // check email address syntax
 				'username' => array(
 					// username is string of alphanumeric characters
 					'Alnum',
@@ -173,15 +154,16 @@ class UserController extends Zend_Controller_Action
 					'Alnum', // password is string of alphanumeric characters
 					// check min-max length for password
 					// TODO Making max-min length configurable
-					array('StringLength', 6, 8)),
-				'email' => 'EmailAddress', // check email address syntax
+					array('StringLength', 6, 8)
+
+				 ),
 				//'role' => array(
 					// check that role exists - To be replaced - Doctrine issue
 					// TODO Also check that the current user may assign this role
 				//	array('Db_RecordExists', 'role', 'id'),
 				//),
 				// check is_active field syntax
-				'is_active' => 'Int'
+				'is_active' => 'Int',
 			),
 			$request->getParams()
 		);
@@ -204,27 +186,5 @@ class UserController extends Zend_Controller_Action
 		}
 
 		return true;
-	}
-
-
-	/**
-	 * Retrieve all available roles
-	 * 
-	 * @return array
-	 */
-	protected function getRoles() {
-
-		// Mimic role model behavior as long is not ready
-		$roles = array();
-
-		foreach(array('administrator' => 1, 'reseller' => 2, 'customer' => 3) as $roleName => $id) {
-			$role = new stdClass();
-			$role->id = $id;
-			$role->role = $roleName;
-
-			$roles[] = $role;
-		}
-
-		return $roles;
 	}
 }
