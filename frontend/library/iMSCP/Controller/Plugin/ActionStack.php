@@ -79,8 +79,7 @@ class iMSCP_Controller_Plugin_ActionStack extends Zend_Controller_Plugin_ActionS
 		$frontController = Zend_Controller_Front::getInstance();
 
 		try {
-			$currentRoute = $frontController->getRouter()->getCurrentRoute();
-			$defaults = $currentRoute->getDefaults();
+			$defaults = $frontController->getRouter()->getCurrentRoute()->getDefaults();
 
 			if(isset($defaults['actionStack'])) {
 				$defaults['actionStack'] = (array) $defaults['actionStack'];
