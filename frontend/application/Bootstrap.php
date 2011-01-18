@@ -86,7 +86,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 			if ($module === $default) continue;
 			$moduleloader = new Zend_Application_Module_Autoloader(array(
 				'namespace' => $module,
-				'basePath'  => $front->getModuleDirectory($module))
+				'basePath'  => $frontController->getModuleDirectory($module))
 			);
 		}
 
