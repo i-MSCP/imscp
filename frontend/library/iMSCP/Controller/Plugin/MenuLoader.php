@@ -38,7 +38,6 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  * @since       1.0.0
  * @version     1.0.0
- * @TODO build menus per modules
  */
 class iMSCP_Controller_Plugin_MenuLoader extends Zend_Controller_Plugin_Abstract
 {
@@ -53,16 +52,14 @@ class iMSCP_Controller_Plugin_MenuLoader extends Zend_Controller_Plugin_Abstract
 
 		$view = Zend_Controller_Front::getInstance()->getParam('bootstrap')->getResource('view');
 		$url = $view->url();
-		$moduleName = substr($url, 1, strpos($url, '/', 1) - 1);
+		$level = substr($url, 1, strpos($url, '/', 1) - 1);
 
-		switch($moduleName) {
+		switch($level) {
 			case 'admin':
 			case 'reseller':
-			case 'client':
+			case 'customer':
 				$view->navigation(
-					new Zend_Navigation(
-						new Zend_Config_Xml(APPLICATION_PATH . "/configs/menus/$moduleName.xml", 'nav')
-					)
+					new Zend_Navigation(new Zend_Config_Xml(APPLICATION_PATH . "/configs/menus/$level.xml", 'nav'))
 				);
 
 			break;
