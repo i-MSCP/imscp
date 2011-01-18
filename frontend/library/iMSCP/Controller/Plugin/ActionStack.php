@@ -80,26 +80,22 @@ class iMSCP_Controller_Plugin_ActionStack extends Zend_Controller_Plugin_ActionS
 
 		try {
 			$currentRoute = $frontController->getRouter()->getCurrentRoute();
-		} catch(Zend_Exception $e) {
-			return;
-		}
+			$defaults = $currentRoute->getDefaults();
 
-		$defaults = $currentRoute->getDefaults();
+			if(isset($defaults['actionStack'])) {
+				$defaults['actionStack'] = (array) $defaults['actionStack'];
+				$request = $this->getRequest();
+				$this->_controllerName = $request->getControllerName();
+				$this->_moduleName = $request->getModuleName();
 
-		if(isset($defaults['actionStack'])) {
-			$defaults['actionStack'] = (array) $defaults['actionStack'];
-
-			$request = $this->getRequest();
-			$this->_controllerName = $request->getControllerName();
-			$this->_moduleName = $request->getModuleName();
-
-			foreach($defaults['actionStack'] as $action) {
-				list($action, $controller, $module) = $this->_getOptions($request, $action);
-				$this->pushStack(
-					new Zend_Controller_Request_Simple($action, $controller, $module, $request->getParams())
-				);
+				foreach($defaults['actionStack'] as $action) {
+					list($action, $controller, $module) = $this->_getOptions($request, $action);
+					$this->pushStack(
+						new Zend_Controller_Request_Simple($action, $controller, $module, $request->getParams())
+					);
+				}
 			}
-		}
+		} catch(Zend_Exception $e) {}
 
 		return $request;
 	}
