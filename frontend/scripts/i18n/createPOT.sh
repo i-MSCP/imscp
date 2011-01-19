@@ -42,7 +42,7 @@
 # II. XML files
 #
 # When you add translation strings in files, don't forget to check that the directories that contain your files are
-# correctly listed in the xgettext command of the PHP Section bellow. Also, don't forget to add all needed keywords.
+# correctly listed in the xgettext command of the XML Section bellow. Also, don't forget to add all needed keywords.
 #
 #
 ########################################################################################################################
