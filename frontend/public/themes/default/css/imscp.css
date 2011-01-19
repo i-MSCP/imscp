@@ -888,7 +888,7 @@ form table td{
 #search {
 	background-image: url(../images/icons/search.png);
 	background-repeat: no-repeat;
-	background-position:top right;
+	background-position:center right;
 }
 
 .required {
