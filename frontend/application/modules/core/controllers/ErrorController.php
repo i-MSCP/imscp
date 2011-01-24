@@ -48,7 +48,7 @@ class ErrorController extends Zend_Controller_Action
         $errors = $this->_getParam('error_handler');
 
         if (!$errors) {
-            $this->view->message = 'You have reached the error page';
+            $this->view->message = $this->view->translate('You have reached the error page');
             return;
         }
 
@@ -59,12 +59,12 @@ class ErrorController extends Zend_Controller_Action
 
                 // 404 error -- controller or action not found
                 $this->getResponse()->setHttpResponseCode(404);
-                $this->view->message = 'Page not found';
+                $this->view->message = $this->view->translate('Page not found');
                 break;
             default:
                 // application error
                 $this->getResponse()->setHttpResponseCode(500);
-                $this->view->message = 'Application error';
+                $this->view->message = $this->view->translate('Application error');
                 break;
         }
 
@@ -74,7 +74,7 @@ class ErrorController extends Zend_Controller_Action
         }
 
         // conditionally display exceptions
-        if ($this->getInvokeArg('displayExceptions') == true) {
+        if ($this->getInvokeArg('displayExceptions') == true && APPLICATION_ENV == 'development') {
             $this->view->exception = $errors->exception;
         }
 
