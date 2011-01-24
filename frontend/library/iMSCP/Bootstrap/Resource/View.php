@@ -65,12 +65,12 @@ class iMSCP_Bootstrap_Resource_View extends Zend_Application_Resource_ResourceAb
 		$application = $this->getBootstrap()->getApplication();
 
 		// Product information
-		$view->productShortName = $application->getOption('name');
-		$view->productLongName = "internet Multi Server Control Panel";
-		$view->productCodeName = $application->getOption('codename');
-		$view->productVersion = $application->getOption('version');;
-		$view->productBuild = $application->getOption('build');
-		$view->productCopyright = '&copy; Copyright 2010 - 2011 i-MSCP Team<br/>All Rights Reserved';
+		$view->assign('productShortName', $application->getOption('name'));
+		$view->assign('productLongName', "internet Multi Server Control Panel");
+		$view->assign('productCodeName', $application->getOption('codename'));
+		$view->assign('productVersion', $application->getOption('version'));
+		$view->assign('productBuild', $application->getOption('build'));
+		$view->assign('productCopyright', '&copy; Copyright 2010 - 2011 i-MSCP Team<br/>All Rights Reserved');
 
 		$view->doctype('XHTML1_STRICT');
 		$view->headTitle($view->productShortName . ' - ' . $view->productLongName . ' - ');
