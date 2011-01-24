@@ -101,8 +101,8 @@ class iMSCP_Bootstrap_Resource_View extends Zend_Application_Resource_ResourceAb
 		// Set jquery core and ui versions to be used
 		// See http://code.google.com/intl/fr/apis/libraries/devguide.html#jquery for available versions
 		$jquery->setVersion('1.4.4');
-		$jquery->setUiVersion('1.8.8');
-		$jquery->addStyleSheet('https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.8/themes/smoothness/jquery-ui.css');
+		$jquery->setUiVersion('1.8.9');
+		$jquery->addStyleSheet('https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/themes/smoothness/jquery-ui.css');
 
 		// Will enable both jquery (core) and jquery (UI)
 		$jquery->uiEnable();
