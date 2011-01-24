@@ -39,7 +39,7 @@
 // Error reporting
 error_reporting(E_ALL|E_STRICT);
 
-//define('APPLICATION_ENV', 'production');
+define('APPLICATION_ENV', 'development');
 
 // Define application environment
 defined('APPLICATION_ENV')
