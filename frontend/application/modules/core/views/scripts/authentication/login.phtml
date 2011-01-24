@@ -8,7 +8,7 @@
 		<div id="outer">
 			<div id="middle">
 				<div id="inner">
-					<form class="box_form" name="login_frm" action="<?php echo $this->url();?>" method="post">
+					<form class="box_form" action="<?php echo $this->url();?>" method="post">
 						<fieldset>
 							<label><?php echo $this->translate('Username');?>:<input type="text" name="username" id="username" value="" maxlength="255" tabindex="1" /></label>
 							<label><?php echo $this->translate('Password');?>:<input type="password" name="password" id="password" value="" maxlength="255" tabindex="2" /></label>
@@ -26,7 +26,7 @@
 								<div class="button_right"></div>
 							</div>
 							<div style="margin-top:20px;">
-								<a class="icon i_lock" href="/secure-connection" alt="<?php echo $this->translate('Secure connection');?>"><?php echo $this->translate('Secure connection');?></a>
+								<a class="icon i_lock" href="/secure-connection" title="<?php echo $this->translate('Secure connection');?>"><?php echo $this->translate('Secure connection');?></a>
 							</div>
 						</fieldset>
 					</form>
