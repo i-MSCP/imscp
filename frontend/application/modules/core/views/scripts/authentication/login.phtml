@@ -4,18 +4,28 @@
 		<?php if ($this->message):?>
 		<div class="<?php echo $this->message['type'];?> message"><?php echo $this->message['message'];?></div>
 		<?php endif; ?>
+
 		<div id="outer">
 			<div id="middle">
 				<div id="inner">
-					<form name="login_frm" action="<?php echo $this->url();?>" method="post">
+					<form class="box_form" name="login_frm" action="<?php echo $this->url();?>" method="post">
 						<fieldset>
 							<label><?php echo $this->translate('Username');?>:<input type="text" name="username" id="username" value="" maxlength="255" tabindex="1" /></label>
 							<label><?php echo $this->translate('Password');?>:<input type="password" name="password" id="password" value="" maxlength="255" tabindex="2" /></label>
-							<div class="buttons">
-								<input style="text-align:left;padding-left:15px;" type="button" name="lostpwd" value="<?php echo $this->translate('Lost Password');?>" tabindex="7" onclick="location.href='/lostpassword';return false"/>&nbsp;&nbsp;&nbsp;
-								<input type="submit" name="" value="<?php echo $this->translate('Login');?>" tabindex="3" />
+							<div class="buttons" style="height:25px;float:right">
+								<div class="button_left"></div>
+								<div class="button_center">
+									<input type="button" name="lostpwd" value="<?php echo $this->translate('Lost Password');?>" tabindex="7" onclick="location.href='/lostpassword';return false;" />
+								</div>
+								<div class="button_right"></div>
+
+								<div class="button_left"></div>
+								<div class="button_center">
+									<input type="submit" name="" value="<?php echo $this->translate('Login');?>" tabindex="3" />
+								</div>
+								<div class="button_right"></div>
 							</div>
-							<div style="margin-top:15px;">
+							<div style="margin-top:20px;">
 								<a class="icon i_lock" href="/secure-connection" alt="<?php echo $this->translate('Secure connection');?>"><?php echo $this->translate('Secure connection');?></a>
 							</div>
 						</fieldset>

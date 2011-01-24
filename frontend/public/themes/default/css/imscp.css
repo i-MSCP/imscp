@@ -26,52 +26,42 @@
  */
 
 body,html {
-    min-height: 100%;
-    min-width: 850px;
-    margin: 0;
-    padding: 0;
-    background: url(../images/background/left_bg.jpg) repeat-y top left;
-    font-family: arial;
-    font-size: 12px;
+    min-height:             100%;
+    min-width:              850px;
+    margin:                 0;
+    padding:                0;
+    font-family:            arial;
+    font-size:              12px;
 }
 
-html {
-    position: relative;
-    /*padding-bottom: 1em;*/
-}
+html {position: relative;}
 
 .header {
-    background: url(../images/background/top_bg.jpg) repeat-x top left;
-    overflow: hidden;
-    white-space: nowrap;
-    height: 89px;
-}
-
-.header .logo {
-    background: url(../images/background/top_left_bg.jpg) no-repeat;
+    overflow:               hidden;
+    white-space:            nowrap;
+    height:                 89px;
 }
 
 .location {
-    background: #000 url(../images/background/top_bar_bg.jpg) repeat-x top left;
-    color: #fff;
-    padding-left: 197px;
-    height: 25px;
-    line-height: 25px;
-    position: relative;
-    overflow: visible;
+    color:                  #fff;
+    padding-left:           197px;
+    height:                 25px;
+    line-height:            25px;
+    position:               relative;
+    overflow:               visible;
 }
 
 .body {
-    margin: 0 20px 0 240px;
+	margin:                 0 20px 0 240px;
 }
 
 .footer {
-    position: absolute; 
-    bottom: 10px;
-    text-align: center;
-    color: #fff;
-    width: 197px;
-    left: 0;
+    position:               absolute;
+    bottom:                 10px;
+    text-align:             center;
+    color:                  #fff;
+    width:                  197px;
+    left:                   0;
 }
 
 /***********************************************************************************
@@ -79,227 +69,226 @@ html {
  ***********************************************************************************/
 
 h2 {
-    font-family: Geneva,Arial,Helvetica,sans-serif;
-    font-size: 18px;
-    font-variant: small-caps;
-    font-weight: bold;
-    position: relative;
-    left: -33px;
-    padding-left: 33px;
-    height: 33px;
-    background-repeat: no-repeat;
-    background-position: top left;
-    margin: 1em 0 0;
+    font-family:            Geneva,Arial,Helvetica,sans-serif;
+    font-size:              18px;
+    font-variant:           small-caps;
+    font-weight:            bold;
+    position:               relative;
+    left:                   -33px;
+    padding-left:           33px;
+    height:                 33px;
+    background-repeat:      no-repeat;
+    background-position:    top left;
+    margin:                 1em 0 0;
 }
 
 h2 span {
-    display: block;
-    border-bottom: 1px solid #ccc;
-    margin-right: -20px;
+    display:                block;
+    border-bottom:          1px solid #ccc;
+    margin-right:           -20px;
 }
 
 h3 {}
 
 form {
-    margin: 0.5em 0;
+    margin:                 0.5em 0;
 }
 
 input {
-	padding-left:5px;
+	padding-left:           5px;
 }
 
 p {
-    margin: 0 0 1em;
+	margin:                 0 0 1em;
 }
 
 a {
-    text-decoration: none;
-    color: #009;
-    outline: none;
+    text-decoration:        none;
+    color:                  #009;
+    outline:                none;
 }
 
 a:hover, a:focus {
-    text-decoration: underline;
-	color: rgb(92,186,218);
+    text-decoration:        underline;
+	color:                  rgb(92,186,218);
 }
 /*Added for Zend_Navigation*/
 .active a{
-	color: rgb(92,186,218);
+	color:                  rgb(92,186,218);
 }
 
 dl {
-    margin-left: 2em;
+	margin-left:            2em;
 }
 
 dt {
-    font-weight: bold;
-    margin-top: 0.5em;
+    font-weight:            bold;
+    margin-top:             0.5em;
 }
 dd {
-    margin: 0;
+	margin:                 0;
 }
 
 .buttons {
-    text-align: right;
-    margin: 0.5em 0;
+    text-align:             right;
+    margin:                 0.5em 0;
 }
 
 .buttons input {
-    background: transparent url(../images/background/button.jpg) center left repeat-x;
-    height: 21px;
-    line-height: 21px;
-    padding: 0 10px;
-    color: #fff;
-    font-size: 12px;
-    border-color:#EEEEEE #000000 #000000 #EEEEEE;
-    border-style:solid;
-    border-width:1px;
-    font-weight: bold;
+    height:                 21px;
+    line-height:            21px;
+    padding:                0 10px;
+    color:                  #fff;
+    font-size:              12px;
+    border-color:           #eeeeee #000000 #000000 #eeeeee;
+    border-style:           solid;
+    border-width:           1px;
+    font-weight:            bold;
 }
 
 .buttons input:hover, .buttons input:focus {
-    color: rgb(92,186,218);
-    cursor: pointer;
+    color:                  rgb(92,186,218);
+    cursor:                 pointer;
 }
 
 .buttons input[type="checkbox"] {
-    height: auto;
+	height:                 auto;
 }
 
 .readonly {
-	background:none;
-	border:none;
-	cursor:default;
+	background:             none;
+	border:                 none;
+	cursor:                 default;
 }
 
 .app_icon {
-    background-position: top left;
-    background-repeat: no-repeat;
-    padding-left: 20px;
-    height: 16px;
-    line-height: 16px;
-    display: -moz-inline-block;
-    display: inline-block;
-    margin: 0 -5px 0 5px;
-    float: right;
+    background-position:    top left;
+    background-repeat:      no-repeat;
+    padding-left:           20px;
+    height:                 16px;
+    line-height:            16px;
+    display:                -moz-inline-block;
+    display:                inline-block;
+    margin:                 0 -5px 0 5px;
+    float:                  right;
 }
 
 .icon {
-    background-position: top left;
-    background-repeat: no-repeat;
-    padding-left: 20px;
-    height: 16px;
-    line-height: 16px;
-    display: -moz-inline-block;
-    display: inline-block;
-    margin: 0 5px;
-    float: right;
+	background-position:    top left;
+    background-repeat:      no-repeat;
+    padding-left:           20px;
+    height:                 16px;
+    line-height:            16px;
+    display:                -moz-inline-block;
+    display:                inline-block;
+    margin:                 0 5px;
+    float:                  right;
 }
 
 .icon.big{
-		line-height : 44px;
-		height : 44px;
-		padding-left : 48px;
+	line-height:            44px;
+	height:                 44px;
+	padding-left:           48px;
 }
 
 .icon:first-child {
-    margin-right: 0;
+	margin-right:           0;
 }
 
 table .icon {
-    float: none;
+	float:                  none;
 }
 
 .paginator {
-    margin: 0.5em 0;
+	margin:                 0.5em 0;
 }
 
 .paginator .icon {
-    width: 0px;
-    overflow: hidden;
-    height: 20px;
+    width:                  0px;
+    overflow:               hidden;
+    height:                 20px;
 }
 
 .warning, .success, .error, .info {
-    margin: 2em 1em 1em;
-    border: 1px solid;
-    padding: 15px 10px 15px 50px;
-    text-align: left;
-    background-repeat: no-repeat;
-    background-position: 10px center;
+    margin:                 2em 1em 1em;
+    border:                 1px solid;
+    padding:                15px 10px 15px 50px;
+    text-align:             left;
+    background-repeat:      no-repeat;
+    background-position:    10px center;
 }
 
 .warning {
-    color: rgb(149,74,0);
-    border-color: rgb(149,74,0);
-    background-color: rgb(255,236,156);
-    background-image: url(../images/messages/warning.png);
+    color:                  rgb(149,74,0);
+    border-color:           rgb(149,74,0);
+    background-color:       rgb(255,236,156);
+    background-image:       url(../images/messages/warning.png);
 }
 
 .success {
-    color: rgb(61,122,21);
-    border-color: rgb(61,122,21);
-    background-color: rgb(214,241,179);
-    background-image: url(../images/messages/success.png);
+    color:                  rgb(61,122,21);
+    border-color:           rgb(61,122,21);
+    background-color:       rgb(214,241,179);
+    background-image:       url(../images/messages/success.png);
 }
 
 .error {
-    color: rgb(202,29,17);
-    border-color: rgb(202,29,17);
-    background-color: rgb(253,191,173);
-    background-image: url(../images/messages/error.png);
+    color:                  rgb(202,29,17);
+    border-color:           rgb(202,29,17);
+    background-color:       rgb(253,191,173);
+    background-image:       url(../images/messages/error.png);
 }
 
 .info {
-    color: rgb(15,61,135);
-    border-color: rgb(15,61,135);
-    background-color: rgb(176,222,245);
-    background-image: url(../images/messages/info.png);
+    color:                  rgb(15,61,135);
+    border-color:           rgb(15,61,135);
+    background-color:       rgb(176,222,245);
+    background-image:       url(../images/messages/info.png);
 }
 
 .up {
-    color: rgb(61,122,21);
+	color:                  rgb(61,122,21);
 }
 
 .down {
-    color: rgb(202,29,17);
+	color:                  rgb(202,29,17);
 }
 
 .graph{
-	height : 20px;
-	background-image : url('../images/background/graph_empty.png');
-	background-position : right top;
-	background-repeat : no-repeat;
-	width : 100%;
-	max-width : 1994px;
-	position : relative;
+	height:                 20px;
+	background-image:       url('../images/background/graph_empty.png');
+	background-position:    right top;
+	background-repeat:      no-repeat;
+	width:                  100%;
+	max-width:              1994px;
+	position:               relative;
 }
 
 .graph span{
-	display : block;
-	min-width : 3px;
-	height : 20px;
-	background-image : url('../images/background/graph_full.png');
-	background-repeat : no-repeat;
-	width : 0;
-	background-position : left top;
+	display:                block;
+	min-width:              3px;
+	height:                 20px;
+	background-image:       url('../images/background/graph_full.png');
+	background-repeat:      no-repeat;
+	width:                  0;
+	background-position:    left top;
 }
 
 .graph strong{
-	display : block;
-	position : absolute;
-	left: 0;
-	top: 0;
-	color : #000;
-	line-height : 20px;
-	width : 100%;
-	text-align : center;
+	display:                block;
+	position:               absolute;
+	left:                   0;
+	top:                    0;
+	color:                  #000;
+	line-height:            20px;
+	width:                  100%;
+	text-align:             center;
 }
 
 form table tbody td input[type="text"],
 form table tbody td input[type="password"],
 form table tbody td textarea{
-	min-width : 200px;
+	min-width:              200px;
 }
 
 /***********************************************************************************
@@ -307,196 +296,199 @@ form table tbody td textarea{
  ***********************************************************************************/
 
 .location-area {
-    position: absolute;
-    left: 0;
-    top: 0;
-    margin: 0;
-    padding: 0;
-    height: 33px;
-    z-Index: 999;
+    position:               absolute;
+    left:                   0;
+    top:                    0;
+    margin:                 0;
+    padding:                0;
+    height:                 33px;
+    z-Index:                999;
 }
 
 .location-area h1 {
-    font-size: 13px;
-    padding: 0;
-    line-height: 25px;
-    height: 33px;
-    padding-left: 35px;
-    margin: 0 0 0 10px;
-    background-repeat: no-repeat;
+    font-size:              13px;
+    padding:                0;
+    line-height:            25px;
+    height:                 33px;
+    padding-left:           35px;
+    margin:                 0 0 0 10px;
+    background-repeat:      no-repeat;
 }
 
 .location-menu {
-    float: right;
-    list-style-type: none;
-    margin: -1px 10px 0;
-    padding: 0;
-    height: 25px;
-    line-height: 25px;
+    float:                  right;
+    list-style-type:        none;
+    margin:                 -1px 10px 0;
+    padding:                0;
+    height:                 25px;
+    line-height:            25px;
 }
 
 .location-menu li {
-    display: inline;
-    margin: 0;
-    padding: 0;
+    display:                inline;
+    margin:                 0;
+    padding:                0;
 }
 
 .location-menu a {
-    /*color: #f00;*/
-	color:#fff;
-    font-weight: bold;
-    background: transparent no-repeat center left;
-    padding: 0 5px 0 22px;
-    height: 25px;
-    line-height: 25px;
-    display: inline-block;
+	color:                  #fff;
+    font-weight:            bold;
+    background:             transparent no-repeat center left;
+    padding:                0 5px 0 22px;
+    height:                 25px;
+    line-height:            25px;
+    display:                inline-block;
 }
 
-.location-menu .help { background-image: url(../images/user/help.png); }
-.location-menu .logged-as { background-image: url(../images/icons/user.png) }
-.location-menu .logout { background-image: url(../images/user/logout.png); }
-.location-menu .backadmin { background-image: url(../images/user/backadmin.png); }
+.location-menu .help {
+	background-image:       url(../images/user/help.png);
+}
+
+.location-menu .logged-as {
+	background-image:       url(../images/icons/user.png);
+}
+
+.location-menu .logout {
+	background-image:       url(../images/user/logout.png);
+}
+
+.location-menu .backadmin {
+	background-image:       url(../images/user/backadmin.png);
+}
 
 .path {
-    list-style-type: none;
-    display: inline;
-    margin: 0;
-    padding: 0;
+    list-style-type:        none;
+    display:                inline;
+    margin:                 0;
+    padding:                0;
 }
 .path a {
-    color: #fff;
-    padding: 0 5px;
-    height: 25px;
-    line-height: 25px;
-    vertical-align: middle;
-    margin: 0;
-    font-size: 11px;
+    color:                  #fff;
+    padding:                0 5px;
+    height:                 25px;
+    line-height:            25px;
+    vertical-align:         middle;
+    margin:                 0;
+    font-size:              11px;
 }
 
 .path a:hover {
-    color: rgb(92,186,218);
+    color:                  rgb(92,186,218);
 }
 
 .path li {
-    display: inline;
-    margin: 0;
-    padding: 0;
+    display:                inline;
+    margin:                 0;
+    padding:                0;
 }
 
 .path li:before {
-    content: "\0020 \0020 \0020 \00BB \0020";
-    color: #fff;
+    content:                "\0020 \0020 \0020 \00BB \0020";
+    color:                  #fff;
 }
 
 .path li:first-child:before {
-    content: "";
+	content:                "";
 }
 
 /***********************************************************************************
  * MAIN MENU STYLE
  ***********************************************************************************/
 .main_menu {
-    float: right;
-    background: transparent url(../images/background/mainmenu_left.png) no-repeat top left;
-    height: 64px;
-    text-align: right;
-    /*_width: 3px;*/
+    float:                  right;
+    height:                 64px;
+    text-align:             right;
 }
 
 .main_menu ul {
-    margin: 0 0 0 11px;
-    padding: 0 10px 0 0;
-    background: transparent url(../images/background/mainmenu_bg.png) repeat-x top left;
-    height: 64px;
+    margin:                 0 0 0 11px;
+    padding:                0 10px 0 0;
+    height:                 64px;
 }
 
 .main_menu li {
-    margin: 0;
-    padding: 0;
-    display: inline;
+    margin:                 0;
+    padding:                0;
+    display:                inline;
 }
 
 .main_menu a {
-    margin: 10px 0 0 5px;
-    display: inline-block;
-    padding: 33px 0 0;
-    color: #fff;
-    background-position: top center;
-    background-repeat: no-repeat;
-    text-align: center;
+    margin:                 10px 0 0 5px;
+    display:                inline-block;
+    padding:                33px 0 0;
+    color:                  #fff;
+    background-position:    top center;
+    background-repeat:      no-repeat;
+    text-align:             center;
 }
 
 /* Firefox 1.x/2.x hack because they don't support inline-block! */
 .main_menu a, x:-moz-any-link {
-    float: left;
-    display: block;
+    float:                  left;
+    display:                block;
 }
 
 .main_menu a, x:-moz-any-link, x:default {
-    float: none;
-    display: inline-block;
+    float:                  none;
+    display:                inline-block;
 }
 /******* end of hack ******/
 
 .main_menu a:hover, .mail_menu .active {
-    text-decoration: underline;
-    color: rgb(92,186,218);
+    text-decoration:        underline;
+    color:                  rgb(92,186,218);
 }
 
 /***********************************************************************************
  * LEFT MENU STYLE
  ***********************************************************************************/
 .left_menu {
-    color: #fff;
-    width: 197px;
-    float: left;
-    padding-bottom: 60px;
-    background: transparent url(../images/background/left_top_bg.jpg) no-repeat top;
+    color:                  #fff;
+    width:                  197px;
+    float:                  left;
+    padding-bottom:         60px;
 }
 
 .left_menu ul {
-    margin: 10px 0;
-	margin-left:13px;
-    padding: 0;
-    list-style: none;
+    margin:                 10px 0;
+	margin-left:            13px;
+    padding:                0;
+    list-style:             none;
 }
 
 .left_menu li {
-    margin: 0;
-    padding: 0;
-    display: inline;
+    margin:                 0;
+    padding:                0;
+    display:                inline;
 }
 
 .left_menu a {
-    color: #fff;
-    display: block;
-    padding: 5px 18px;
-    font-weight: bold;
-    background: transparent url(../images/background/bullet.png) no-repeat 3px center;
-	background-position:0%;
-    margin: 2px;
+    color:                  #fff;
+    display:                block;
+    padding:                5px 18px;
+    font-weight:            bold;
+	background-position:    0%;
+    margin:                 2px;
 }
 
 .left_menu a:hover {
-    background-image: url(../images/background/bullet_hover.png);
-    color: rgb(92,186,218);
+    color:                  rgb(92,186,218);
 }
 
 .left_menu table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 10px 0;
+    width:                  100%;
+    border-collapse:        collapse;
+    margin:                 10px 0;
 }
 
 .left_menu th {
-    background: #000 url(../images/background/top_bar_bg.jpg) repeat-x top left;
-    padding: 5px 0 5px 20px;
-    text-align: left;
-    font-size: 12px;
+    padding:                5px 0 5px 20px;
+    text-align:             left;
+    font-size:              12px;
 }
 
 .left_menu td {
-    padding: 5px 0 5px 20px;
+    padding:                5px 0 5px 20px;
 }
 
 /***********************************************************************************
@@ -504,96 +496,96 @@ form table tbody td textarea{
  ***********************************************************************************/
 
 .body table {
-    width: 100%;
-    border-collapse: collapse;
+    width:                  100%;
+    border-collapse:        collapse;
 }
 
 .body tr {
-    border: 1px solid rgb(223,223,223);
-    background: #fff;
+    border:                 1px solid rgb(223,223,223);
+    background:             #fff;
 }
 
 .body tr.line_top{
-	border-top : 3px solid #000;
+	border-top:             3px solid #000;
 }
 
 .body tr:nth-child(odd) {
-    background: #eee;
+    background:             #eee;
 }
 
-.body tfoot td,
-.body th {
-    background: #000 url(../images/background/top_bar_bg.jpg) repeat-x;
-    white-space: nowrap;
-    color: #fff;
-    font-weight: bold;
-    text-align: left;
-    padding: 5px;
-    border-top: 1px solid #000;
-    border-bottom: 1px solid #000;
+.body tfoot td, .body th {
+    white-space:            nowrap;
+    color:                  #fff;
+    font-weight:            bold;
+    text-align:             left;
+    padding:                5px;
+    border-top:             1px solid #000;
+    border-bottom:          1px solid #000;
 }
 
 .body th:first-child {
-    border-left: 1px solid #000;
+    border-left:            1px solid #000;
 }
 
 .body th:last-child {
-    border-right: 1px solid #000;
+    border-right:           1px solid #000;
 }
 
 .description th {
-    background: transparent;
-    color: #000;
-    border-top: 1px solid #dfdfdf;
-    border-bottom: 1px solid #dfdfdf;
+    background:             transparent;
+    color:                  #000;
+    border-top:             1px solid #dfdfdf;
+    border-bottom:          1px solid #dfdfdf;
 }
 
 .description th:first-child {
-    border-left: 1px solid #dfdfdf;
+    border-left:            1px solid #dfdfdf;
 }
 
 .description th:last-child {
-    border-right: 1px solid #dfdfdf;
+    border-right:           1px solid #dfdfdf;
 }
 
 .body th a{
-	color : #fff;
+	color:                  #fff;
 }
 
 .body td {
-    padding: 5px;
+    padding:                5px;
    /* white-space: nowrap;*/
-    border-top: 1px solid rgb(223,223,223);
-    border-bottom: 1px solid rgb(223,223,223);
+    border-top:             1px solid rgb(223,223,223);
+    border-bottom:          1px solid rgb(223,223,223);
 }
 
 fieldset {
-    padding: 2em 0 0;
-    margin: 0 0 1em;
-    border: none;
-    position: relative;
+    padding:                2em 0 0;
+    margin:                 0 0 1em;
+    border:                 none;
+    position:               relative;
 }
 
 legend, h3 {
-    padding: 0;
-    position: absolute;
-    top: 0;
-    left: 0;
-    font-size: 14px;
-    font-family: arial;
-    font-weight: bold;
-    color: #000;
-    margin-bottom: -1em;
+    padding:                0;
+    position:               absolute;
+    top:                    0;
+    left:                   0;
+    font-size:              14px;
+    font-family:            arial;
+    font-weight:            bold;
+    color:                  #000;
+    margin-bottom:          -1em;
 }
 
 /* Hack to fix firefox's bad legend positioning */
 @-moz-document url-prefix() {
-    legend { top: -1.5em; }
+    legend {
+        top:                -1.5em;
+	}
 }
 
 .body .ip-segment {
-    min-width: 0;
-    width: 3em;
+    min-width:              0;
+    width:                  3em;
 }
 
 /***********************************************************************************
@@ -739,53 +731,53 @@ legend, h3 {
 
 /* Used for form input element during ajax request */
 .small-spinner {
-	display:			none;
-	width:				16px;
-	height:				16px;
-	margin-left:		5px;
-	vertical-align:		middle;
-	float:				left;
-	margin-top:			5px;
+	display:                none;
+	width:                  16px;
+	height:                 16px;
+	margin-left:            5px;
+	vertical-align:         middle;
+	float:                  left;
+	margin-top:             5px;
 }
 
 /************************************ ToolTip *********************************/
 
 .tooltip_bg {
-	background-color:	#1284A8;
-	position:			absolute;
-	z-index:			-1;
+	background-color:       #1284A8;
+	position:               absolute;
+	z-index:                -1;
 }
 
 .tooltip {
-	display:			none;
-	position:			absolute;
-	border: 			2px outset #fff;
-	width:				250px;
-	width:				auto;
-	z-index:			1;
+	display:                none;
+	position:               absolute;
+	border:                 2px outset #fff;
+	width:                  250px;
+	width:                  auto;
+	z-index:                1;
 }
 
 .tooltip span {
-	vertical-align:		middle;
-	display:			inline-block;
-	margin:				3px 0 3px 3px;
-	border:				none;
+	vertical-align:         middle;
+	display:                inline-block;
+	margin:                 3px 0 3px 3px;
+	border:                 none;
 }
 
 .tooltip_txt {
-	width:				208px;
-	font-family:		Verdana, sans-serif;
-	font-size:			7.8pt!important;
-	font-size:			6.5pt; /* ie */
-	font-weight:		bold;
-	color:				#fff;
-	margin-right:		3px!important;
+	width:                  208px;
+	font-family:            Verdana, sans-serif;
+	font-size:              7.8pt!important;
+	font-size:              6.5pt; /* ie */
+	font-weight:            bold;
+	color:                  #fff;
+	margin-right:           3px!important;
 }
 
 .tooltip_notice {
-	background:			url(../images/tooltips/info.png) no-repeat;
-	height:				32px;
-	width:				32px;
+	background:             url(../images/tooltips/info.png) no-repeat;
+	height:                 32px;
+	width:                  32px;
 }
 
 /**
@@ -793,8 +785,8 @@ legend, h3 {
  */
 
 .icon.i_help{
-	width : 0;
-	overflow : hidden;
+	width:                  0;
+	overflow:               hidden;
 }
 
 form table td{
@@ -802,53 +794,53 @@ form table td{
 }
 
 .isp_logo{
-	margin : 0 auto;
-	text-align : center;
+	margin:                 0 auto;
+	text-align:             center;
 }
 
 /************************************ SW-Installer ToolTip *********************************/
 
 .sw_tooltip_bg {
-	background-color:	#1284A8;
-	position:			absolute;
-	z-index:			-1;
+	background-color:       #1284A8;
+	position:			    absolute;
+	z-index:			    -1;
 }
 
 .sw_tooltip {
-	display:			none;
-	position:			absolute;
-	border: 			2px outset #fff;
-	width:				450px;
-	width:				auto;
-	z-index:			1;
+	display:			    none;
+	position:			    absolute;
+	border: 			    2px outset #fff;
+	width:				    450px;
+	width:				    auto;
+	z-index:			    1;
 }
 
 .sw_tooltip span {
-	vertical-align:		middle;
-	display:			inline-block;
-	margin:				3px 0 3px 3px;
-	border:				none;
+	vertical-align:		    middle;
+	display:			    inline-block;
+	margin:				    3px 0 3px 3px;
+	border:				    none;
 }
 
 .sw_tooltip_txt {
-	width:				408px;
-	font-family:		Verdana, sans-serif;
-	font-size:			7.8pt!important;
-	font-size:			6.5pt; /* ie */
-	font-weight:		bold;
-	color:				#fff;
-	margin-right:		3px!important;
+	width:				    408px;
+	font-family:		    Verdana, sans-serif;
+	font-size:			    7.8pt!important;
+	font-size:			    6.5pt; /* ie */
+	font-weight:		    bold;
+	color:				    #fff;
+	margin-right:		    3px!important;
 }
 
 .sw_tooltip_notice {
-	background:			url(../images/tooltips/info.png) no-repeat;
-	height:				32px;
-	width:				32px;
+	background:			    url(../images/tooltips/info.png) no-repeat;
+	height:				    32px;
+	width:				    32px;
 }
 
 /*Added for Zend_Navigation*/
 .active a{
-	color: rgb(92,186,218);
+	color:                  rgb(92,186,218);
 }
 
 /****************************************
@@ -859,54 +851,54 @@ form table td{
 
 /* First td in action-box*/
 .actions-box-header tr:first-child {
-	background-color:#161E73;
-	color:#fff;
-	font-weight:bold;
+	background-color:       #161E73;
+	color:                  #fff;
+	font-weight:            bold;
 }
 
 .actions-box-header tr:first-child a {
-	color:#fff;
+	color:                  #fff;
 }
 
 .actions-box-header td span {
-	margin-right:5px;
+	margin-right:           5px;
 }
 
 .actions-box-body td {
-	background-color: rgb(176,222,245);;
+	background-color:       rgb(176,222,245);
 }
 
 .actions-box-body label {
-	display:block;
+	display:                block;
 }
 
 .actions-box-body div {
-	float:left;
-	margin-left:5px;
+	float:                  left;
+	margin-left:            5px;
 }
 
 #search {
-	background-image: url(../images/icons/search.png);
-	background-repeat: no-repeat;
-	background-position:center right;
+	background-image:       url(../images/icons/search.png);
+	background-repeat:      no-repeat;
+	background-position:    center right;
 }
 
 .required {
-	color: rgb(202,29,17);;
-	font-size:16px;
+	color:                  rgb(202,29,17);
+	font-size:              16px;
 }
 
 .icon_pageup {
-    background-position: top left;
-    background-repeat: no-repeat;
-    padding-left: 20px;
-    display: -moz-inline-block;
-    display: inline-block;
-    margin: 0 5px;
-    float: right;
-	cursor:pointer
+    background-position:    top left;
+    background-repeat:      no-repeat;
+    padding-left:           20px;
+    display:                -moz-inline-block;
+    display:                inline-block;
+    margin:                 0 5px;
+    float:                  right;
+	cursor:                 pointer;
 }
 
 #expandable {
-	cursor:pointer
+	cursor:                 pointer;
 }

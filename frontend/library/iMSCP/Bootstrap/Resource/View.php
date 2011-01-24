@@ -72,7 +72,7 @@ class iMSCP_Bootstrap_Resource_View extends Zend_Application_Resource_ResourceAb
 		$view->productBuild = $application->getOption('build');
 		$view->productCopyright = '&copy; Copyright 2010 - 2011 i-MSCP Team<br/>All Rights Reserved';
 
-		$view->doctype('XHTML1_TRANSITIONAL');
+		$view->doctype('XHTML1_STRICT');
 		$view->headTitle($view->productShortName . ' - ' . $view->productLongName . ' - ');
 
 		// Define common Meta

@@ -4,6 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en">
     <head>
 	    <?php $this->headLink()->appendStylesheet('/themes/default/css/imscp.css')?>
+		<?php $this->headLink()->appendStylesheet('/themes/default/red/color.css')?>
 		<?php echo $this->headTitle(), PHP_EOL;?>
 		<?php echo $this->headMeta(), PHP_EOL;?>
 		<?php echo $this->headLink(), PHP_EOL;?>
@@ -40,6 +41,9 @@
 		</div>
 		<div class="footer">
 			<?php echo $this->productShortName . ' ' . $this->productVersion . '<br />Codename: ' . $this->productCodeName . '<br />Build: ' . $this->productBuild;?>
+			<p style="margin-top:10px">
+				<a href="http://validator.w3.org/check?uri=referer"><img style="border:none;" src="http://www.w3.org/Icons/valid-xhtml10-blue" alt="Valid XHTML 1.0 Transitional" height="31" width="88" /></a>
+			</p>
 		</div>
     </body>
 </html>
