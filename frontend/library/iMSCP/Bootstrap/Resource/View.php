@@ -111,7 +111,10 @@ class iMSCP_Bootstrap_Resource_View extends Zend_Application_Resource_ResourceAb
 		// $rmode = ZendX_JQuery::RENDER_JQUERY_ON_LOAD | ZendX_JQuery::RENDER_SOURCES;
 		// $jquery->setRenderMode($rmode);
 		// allow reusability by any other theme
-		// $jquery->addJavascriptFile('/themes/common/js/jQuery/jquery.js');
+		//$jquery->addJavascriptFile('/themes/common/js/jQuery/jquery.js');
+
+		// Add jquery tooltip plugin
+		$jquery->addJavascriptFile('/themes/default/js/jquery.imscpTooltips.js');
 
         $viewRenderer = Zend_Controller_Action_HelperBroker::getStaticHelper('ViewRenderer');
 		// Registering the view object as default view
