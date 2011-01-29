@@ -1,7 +1,7 @@
 #!/usr/bin/perl
-#
+
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+# Copyright (C) 2010 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,16 +18,15 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # @category		i-MSCP
-# @copyright	2010 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@i-mscp.net>
-# @version		SVN: $Id: imscp-build 3933 2010-12-01 19:35:32Z sci2tech $
+# @copyright	2010 - 2011 by i-MSCP | http://i-mscp.net
+# @author		Daniel Andreca <sci2tech@gmail.com>
+# @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license      http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
 use strict;
 use warnings;
-use Symbol;
-use Log::Message::Simple;
+
 
 no warnings 'once';
 
@@ -36,16 +35,17 @@ use FindBin;
 use lib "$FindBin::Bin/PerlLib";
 use lib "$FindBin::Bin/PerlLib/Vendor";
 
-require './imscp-common-code.pl';
+require 'imscp-common-code.pl';
+use iMSCP::Debug;
+use iMSCP::Scheduler;
 
 sub imscp_rqst_init {
 	debug((caller(0))[3].': Starting...');
 
-	use iMSCP::Boot;
-
-	my $x = iMSCP::Boot->new();
-	$main::output = $main::configs{log_dir}.'/'.((caller(0))[1]);
 	umask(027);
+
+	use iMSCP::Bootstrap;
+	iMSCP::Bootstrap->new(mode => 'normal');
 
 	debug((caller(0))[3].': Ending...');
 
@@ -54,51 +54,53 @@ sub imscp_rqst_init {
 
 sub imscp_rqst_clean {
 	debug((caller(0))[3].': Starting...');
-
 	debug((caller(0))[3].': Ending...');
-
 	0;
 }
-
-sub imscp_rqst_process {
+sub imscp_rqst_action{
+	my $rv		= 0;
 	debug((caller(0))[3].': Starting...');
+	my $sql = "SELECT * FROM `scheduled_task` WHERE `status` = ?";
+	my $data = iMSCP::Database::Database->getInstance()->doQuery('id', $sql, 'scheduled');
+	if(ref $data eq "HASH"){
+		debug("Trying to schedule processing for " . keys(%$data) . " users(s)");
+		#use Data::Dumper;
+		#debug Dumper $data;
+		iMSCP::Scheduler->new()->addAction($data) if(keys(%$data) >0 );
+	} else {
+		error($data);
+		$rv	= 1;
+	}
+	debug((caller(0))[3].': Ending...');
+	$rv;
+}
+
+sub imscp_rqst_dispatch {
+	debug((caller(0))[3].': Starting...');
+
+	my $rs = 0;
+	$rs |= imscp_rqst_action();
 
 	debug((caller(0))[3].': Ending...');
 
-	0;
+	$rs;
 }
 
 if (imscp_rqst_init()) {
 	imscp_rqst_clean();
-
 	exit 1;
 }
 
-if (imscp_rqst_process()) {
+if (imscp_rqst_dispatch()) {
 	imscp_rqst_clean();
-
 	exit 1;
 }
 
 if (imscp_rqst_clean()) {
 	exit 1;
 }
-
-my $x = iMSCP::Database::Database->getInstance()->doQuery('Database', 'Show databases;');
-
-while(my ($key, $value) = each(%$x)){
-	debug($value->{'Database'});
-}
-
-$main::configs{debug} = 'a';
-
-flushLogs();
-
-do 'imscp-htusers-mngr';
-my $xxx = "aaaa\n";
-my $code = sub {imscp_htusers_entry($xxx)};
-&$code('aaa');
+iMSCP::Scheduler->new()->processActions();
 
 
+0;
 
-exit 0;

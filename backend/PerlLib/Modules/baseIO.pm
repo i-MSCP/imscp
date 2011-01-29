@@ -20,9 +20,10 @@
 # @author		Daniel Andreca <sci2tech@gmail.com>
 # @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
-# @license      http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+# @license		http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package iMSCP::Database::Result;
+
+package Modules::baseIO;
 
 use strict;
 use warnings;
@@ -32,67 +33,18 @@ use vars qw/@ISA/;
 @ISA = ("Common::SimpleClass");
 use Common::SimpleClass;
 
-sub TIEHASH {
-	my $self = shift;
-	$self = $self->new(@_);
-
+sub getData{
 	debug((caller(0))[3].': Starting...');
-
-	debug((caller(0))[3].': Tieing ...');
-
 	debug((caller(0))[3].': Ending...');
-
-	return $self;
-};
-
-sub FIRSTKEY {
-	my $self	= shift;
-
-	debug((caller(0))[3].': Starting...');
-
-    my $a = scalar keys %{$self->{args}->{result}};
-
-    debug((caller(0))[3].': Ending...');
-
-    each %{$self->{args}->{result}};
+	return {};
 }
 
-sub NEXTKEY {
-	my $self	= shift;
+sub process{}
 
+sub DESTROY {
 	debug((caller(0))[3].': Starting...');
-
 	debug((caller(0))[3].': Ending...');
-
-	each %{$self->{args}->{result}};
 }
-
-sub FETCH {
-	my $self = shift;
-	my $key = shift;
-
-	debug((caller(0))[3].': Starting...');
-
-	debug((caller(0))[3].": Fetching $key");
-
-	debug((caller(0))[3].': Ending...');
-
-	$self->{args}->{result}->{$key} ? $self->{args}->{result}->{$key} : undef;
-};
-
-sub EXISTS {
-	my $self = shift;
-	my $key = shift;
-
-	debug((caller(0))[3].': Starting...');
-
-	debug((caller(0))[3].": Cheching key $key ...".(exists $self->{args}->{result}->{$key} ? 'exists' : 'not exists'));
-
-	debug((caller(0))[3].': Ending...');
-
-	$self->{args}->{result}->{$key} ? 1 : 0;
-};
-
-sub STORE {};
 
 1;
+

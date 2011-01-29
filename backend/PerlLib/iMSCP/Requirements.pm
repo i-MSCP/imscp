@@ -22,7 +22,7 @@
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license      http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package iMSCP::Database::Result;
+package iMSCP::Requirements;
 
 use strict;
 use warnings;
@@ -32,67 +32,92 @@ use vars qw/@ISA/;
 @ISA = ("Common::SimpleClass");
 use Common::SimpleClass;
 
-sub TIEHASH {
+sub test{
 	my $self = shift;
-	$self = $self->new(@_);
+	my $test = shift;
 
 	debug((caller(0))[3].': Starting...');
 
-	debug((caller(0))[3].': Tieing ...');
+	if($self->can($test)){
+		$self->$test();
+	} else {
+		error("Test $test is not available", 1);
+	}
 
 	debug((caller(0))[3].': Ending...');
-
-	return $self;
-};
-
-sub FIRSTKEY {
-	my $self	= shift;
-
-	debug((caller(0))[3].': Starting...');
-
-    my $a = scalar keys %{$self->{args}->{result}};
-
-    debug((caller(0))[3].': Ending...');
-
-    each %{$self->{args}->{result}};
 }
 
-sub NEXTKEY {
-	my $self	= shift;
+sub _all{
+	my $self = shift;
 
 	debug((caller(0))[3].': Starting...');
 
-	debug((caller(0))[3].': Ending...');
+	$self->_user();
+	$self->_modules();
+	$self->_externalProgram();
+	$self->_externalProgramVersions();
 
-	each %{$self->{args}->{result}};
+	debug((caller(0))[3].': Ending...');
+}
+sub _user{
+	my $self = shift;
+
+	debug((caller(0))[3].': Starting...');
+
+	iMSCP::Exception->new()->exception(sprintf('Must run as root')) if( $< != 0 );
+
+	debug((caller(0))[3].': Ending...');
 }
 
-sub FETCH {
+sub _modules{
 	my $self = shift;
-	my $key = shift;
 
 	debug((caller(0))[3].': Starting...');
 
-	debug((caller(0))[3].": Fetching $key");
+	my ($mod, $mod_missing) = (undef, undef);
+
+	for $mod (keys(%main::needed)) {
+		ITER: {
+			foreach my $prefix (@INC) {
+				my $realfilename = "$prefix/$mod.pm";
+				$realfilename =~ s!::!/!g;
+				if (-f $realfilename) {
+					$INC{$mod} = $realfilename;
+					eval "use $mod $main::needed{$mod}";
+					if($@){
+						$mod_missing .= ($mod_missing ? ', ' : '').$mod;
+					}
+					last ITER;
+				}
+			}
+			$mod_missing .= ($mod_missing ? ', ' : '').$mod;
+		}
+	}
 
 	debug((caller(0))[3].': Ending...');
 
-	$self->{args}->{result}->{$key} ? $self->{args}->{result}->{$key} : undef;
-};
+	iMSCP::Exception->new()->exception("Modules [$mod_missing] WAS NOT FOUND in your system...") if ($mod_missing) ;
+}
 
-sub EXISTS {
+sub _externalProgram{
 	my $self = shift;
-	my $key = shift;
 
 	debug((caller(0))[3].': Starting...');
 
-	debug((caller(0))[3].": Cheching key $key ...".(exists $self->{args}->{result}->{$key} ? 'exists' : 'not exists'));
+	error((caller(0))[3].': TODO');
 
 	debug((caller(0))[3].': Ending...');
+}
+sub _externalProgramVersions{
+	my $self = shift;
 
-	$self->{args}->{result}->{$key} ? 1 : 0;
-};
+	debug((caller(0))[3].': Starting...');
 
-sub STORE {};
+	error((caller(0))[3].': TODO');
+
+	debug((caller(0))[3].': Ending...');
+}
 
 1;
+
+__END__

@@ -1,7 +1,5 @@
-#!/usr/bin/perl
-#
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+# Copyright (C) 2010 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,64 +16,33 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # @category		i-MSCP
-# @copyright	2010 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@i-mscp.net>
-# @version		SVN: $Id: imscp-build 3933 2010-12-01 19:35:32Z sci2tech $
+# @copyright	2010 - 2011 by i-MSCP | http://i-mscp.net
+# @author		Daniel Andreca <sci2tech@gmail.com>
+# @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license      http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
+package Modules::user::SystemUser;
+
 use strict;
 use warnings;
-use Symbol;
-use Log::Message::Simple;
 
-no warnings 'once';
+use vars qw/@ISA/;
+@ISA = ("Common::SimpleClass");
+use Common::SimpleClass;
+use iMSCP::Debug;
 
-use FindBin;
-$main::libdir = "$FindBin::Bin/PerlLib/";
-
-require './imscp-common-code.pl';
-
-sub imscp_htusers_init {
-	debug((caller(0))[3].': Starting...');
-
-	$main::output = $main::configs{log_dir}.'/'.((caller(0))[1]);
-
-	#$main::task =
-	debug((caller(0))[3].': Ending...');
-
-	0;
-}
-
-sub imscp_htusers_clean {
-	debug((caller(0))[3].': Starting...');
-	debug((caller(0))[3].': Ending...');
-
-	0;
-}
-
-sub imscp_htusers_process {
+sub addUser{
 	debug((caller(0))[3].': Starting...');
 	debug((caller(0))[3].': Ending...');
 	0;
 }
 
-sub imscp_htusers_entry{
-	if (imscp_htusers_init(@_)) {
-		imscp_htusers_clean();
-		exit 1;
-	}
-
-	if (imscp_htusers_process()) {
-		imscp_htusers_clean();
-		exit 1;
-	}
-
-	if (imscp_htusers_clean()) {
-		exit 1;
-	}
-
-	flushLogs();
-
-	exit 0;
+sub _checkExists{
+	debug((caller(0))[3].': Starting...');
+	debug((caller(0))[3].': Ending...');
 }
+1;
+
+__END__
+

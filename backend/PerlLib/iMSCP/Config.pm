@@ -1,5 +1,5 @@
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+# Copyright (C) 2010 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -16,9 +16,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # @category		i-MSCP
-# @copyright	2010 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@i-mscp.net>
-# @version		SVN: $Id: imscp-build 3933 2010-12-01 19:35:32Z sci2tech $
+# @copyright	2010 - 2011 by i-MSCP | http://i-mscp.net
+# @author		Daniel Andreca <sci2tech@gmail.com>
+# @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license      http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -26,9 +26,9 @@ package iMSCP::Config;
 
 use strict;
 use warnings;
-use Tie::File;
-use Log::Message::Simple;
+use iMSCP::Debug;
 use Switch;
+use XML::Simple;
 
 use vars qw/@ISA/;
 @ISA = ("Common::SingletonClass");
@@ -42,6 +42,8 @@ sub TIEHASH {
 
 	debug((caller(0))[3].': Tieing ...');
 
+	$self->{prefix} = ();
+
 	$self->_loadConfig();
 	$self->_parseConfig($self->{conf});
 
@@ -54,9 +56,9 @@ sub FETCH {
 	my $self	= shift;
 	my $config	= shift;
 
-	debug((caller(0))[3].': Starting...');
+	debug((caller(0))[3].": Starting...");
 
-	debug(sprintf((caller(0))[3].': Fetching %s...', $config));
+	debug((caller(0))[3].": Fetching ${config}..." );
 
 	if (!exists($self->{configValues}->{$config})){
 		iMSCP::Exception->new()->exception(sprintf('Accessing non existing config value %s', $config));
@@ -90,7 +92,7 @@ sub _loadConfig{
 
 	switch ($^O) {
 		case /bsd$/ {
-			$self->{confFile} = '/usr/local/etc/imscp/imscp.conf';
+			$self->{confFile} = '/usr/local/etc/imscp/imscp.xml';
 		} else {
 			$self->{confFile} = '/etc/imscp/imscp.xml';
 		}
@@ -98,8 +100,7 @@ sub _loadConfig{
 
 	debug((caller(0))[3].': Config file ' . $self->{confFile});
 	iMSCP::Exception->new()->exception("Can`t use ".$self->{confFile}) unless -f $self->{confFile};
-	my $xml = new XML::Simple (NoAttr=>1, RootName=>'config');
-	$self->{conf} = $xml->XMLin($self->{confFile}, ForceArray => 1);
+	$self->{conf} = XML::Simple->new(NoAttr=>1, RootName=>'config')->XMLin($self->{confFile}, ForceArray => 1);
 
 	debug((caller(0))[3].': Ending...');
 }
@@ -108,19 +109,21 @@ sub _parseConfig{
 	my $self = shift;
 	my $hash = shift;
 
-	debug((caller(0))[3].': Starting...');
+	#debug((caller(0))[3].': Starting...');
 
 	foreach (keys %{$hash}){
+		push(@{$self->{prefix}}, $_);
 		if(ref($hash->{$_}[0]) eq 'HASH'){
-			debug((caller(0))[3].": $_ is a hash. Going recursive");
+			#debug((caller(0))[3].": $_ is a hash. Going recursive");
 			$self->_parseConfig(\%{$hash->{$_}[0]})
 		} else {
-			debug((caller(0))[3].": We have a value $_ -> $hash->{$_}[0]");
-			$self->{configValues}->{$_} = \$hash->{$_}[0];
+			#debug((caller(0))[3].": We have a value $_ -> $hash->{$_}[0]");
+			$self->{configValues}->{join("::", @{$self->{prefix}})} = \$hash->{$_}[0];
 		}
+		pop(@{$self->{prefix}});
 	}
 
-	debug((caller(0))[3].': Ending...');
+	#debug((caller(0))[3].': Ending...');
 }
 
 sub _replaceConfig{

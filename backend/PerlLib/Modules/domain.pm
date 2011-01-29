@@ -22,77 +22,62 @@
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license      http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package iMSCP::Database::Result;
+package Modules::domain;
 
 use strict;
 use warnings;
+
+use vars qw/@ISA $Dispatchers $decorating/;
+@ISA = ("Common::DecoratorClass");
+use Common::DecoratorClass;
 use iMSCP::Debug;
 
-use vars qw/@ISA/;
-@ISA = ("Common::SimpleClass");
-use Common::SimpleClass;
-
-sub TIEHASH {
-	my $self = shift;
-	$self = $self->new(@_);
-
-	debug((caller(0))[3].': Starting...');
-
-	debug((caller(0))[3].': Tieing ...');
-
-	debug((caller(0))[3].': Ending...');
-
-	return $self;
+$Dispatchers = {
+	pre		=> sub {pre(@_);},
+	post	=> sub {post(@_);}
 };
 
-sub FIRSTKEY {
-	my $self	= shift;
+$decorating = {
+	alias		=> 'domain',
+	domain		=> 'user',
+	subdomain	=> 'domain'
+};
 
+sub getData{
+	my $id	= shift;
 	debug((caller(0))[3].': Starting...');
-
-    my $a = scalar keys %{$self->{args}->{result}};
-
-    debug((caller(0))[3].': Ending...');
-
-    each %{$self->{args}->{result}};
+	my $sql = "SELECT * FROM `domain` WHERE `id` = ?";
+	my $data = iMSCP::Database::Database->getInstance()->doQuery('id', $sql, $id);
+	warning($data) if(ref $data ne "HASH");
+	debug((caller(0))[3].': Ending...');
+	return ref $data ne "HASH" ? $data : $data->{$id};
 }
-
-sub NEXTKEY {
-	my $self	= shift;
-
-	debug((caller(0))[3].': Starting...');
-
-	debug((caller(0))[3].': Ending...');
-
-	each %{$self->{args}->{result}};
+sub getDecorating{
+	my $data	= shift;
+	return $decorating->{$data->{entity_type}};
 }
+sub getParentId{
+	my $data		= shift;
+	return $data->{parent_id} ? $data->{parent_id} : $data->{user_id};
+}
+############
 
-sub FETCH {
+
+sub pre{
 	my $self = shift;
-	my $key = shift;
-
-	debug((caller(0))[3].': Starting...');
-
-	debug((caller(0))[3].": Fetching $key");
-
-	debug((caller(0))[3].': Ending...');
-
-	$self->{args}->{result}->{$key} ? $self->{args}->{result}->{$key} : undef;
-};
-
-sub EXISTS {
+	debug((caller(0))[3].": Starting... $self->{name} ");
+	debug((caller(0))[3].": Ending...$self->{name}");
+}
+sub post{
 	my $self = shift;
-	my $key = shift;
-
-	debug((caller(0))[3].': Starting...');
-
-	debug((caller(0))[3].": Cheching key $key ...".(exists $self->{args}->{result}->{$key} ? 'exists' : 'not exists'));
-
-	debug((caller(0))[3].': Ending...');
-
-	$self->{args}->{result}->{$key} ? 1 : 0;
-};
-
-sub STORE {};
-
+	debug((caller(0))[3].": Starting... $self->{name} ");
+	debug((caller(0))[3].": Ending...$self->{name}");
+}
+sub DESTROY {
+	my $self = shift;
+	debug((caller(0))[3].": Starting... $self->{name}");
+	debug((caller(0))[3].": Ending...$self->{name}");
+}
 1;
+
+__END__

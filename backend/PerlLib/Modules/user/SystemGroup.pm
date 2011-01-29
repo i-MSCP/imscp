@@ -22,77 +22,43 @@
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license      http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
-package iMSCP::Database::Result;
+package Modules::user::SystemGroup;
 
 use strict;
 use warnings;
-use iMSCP::Debug;
 
 use vars qw/@ISA/;
 @ISA = ("Common::SimpleClass");
 use Common::SimpleClass;
+use iMSCP::Debug;
 
-sub TIEHASH {
-	my $self = shift;
-	$self = $self->new(@_);
-
-	debug((caller(0))[3].': Starting...');
-
-	debug((caller(0))[3].': Tieing ...');
-
-	debug((caller(0))[3].': Ending...');
-
-	return $self;
-};
-
-sub FIRSTKEY {
+sub addGroup{
 	my $self	= shift;
-
 	debug((caller(0))[3].': Starting...');
-
-    my $a = scalar keys %{$self->{args}->{result}};
-
-    debug((caller(0))[3].': Ending...');
-
-    each %{$self->{args}->{result}};
+	debug((caller(0))[3]." Testing if exists ".$self->{args}->{data}->{username});
+	my $rs = $self->_checkExists($self->{args}->{data}->{username});
+	if($rs){
+		my $error = "User group ".$self->{args}->{data}->{username}." already exist";
+		warning((caller(0))[3].": $error", 0);
+		my $sql = "UPDATE `user` SET `error` = '$error' WHERE `id` = ?;";
+		iMSCP::Database::Database->getInstance()->doImediatQuery(undef, $sql, $self->{args}->{data}->{id});
+	}
+	debug((caller(0))[3].': Ending...');
+	$rs;
 }
-
-sub NEXTKEY {
-	my $self	= shift;
-
+sub deleteGroup{
 	debug((caller(0))[3].': Starting...');
-
 	debug((caller(0))[3].': Ending...');
-
-	each %{$self->{args}->{result}};
+	0;
 }
-
-sub FETCH {
-	my $self = shift;
-	my $key = shift;
-
+sub _checkExists{
+	my $self		= shift;
+	my $groupName	= shift;
 	debug((caller(0))[3].': Starting...');
-
-	debug((caller(0))[3].": Fetching $key");
-
 	debug((caller(0))[3].': Ending...');
-
-	$self->{args}->{result}->{$key} ? $self->{args}->{result}->{$key} : undef;
-};
-
-sub EXISTS {
-	my $self = shift;
-	my $key = shift;
-
-	debug((caller(0))[3].': Starting...');
-
-	debug((caller(0))[3].": Cheching key $key ...".(exists $self->{args}->{result}->{$key} ? 'exists' : 'not exists'));
-
-	debug((caller(0))[3].': Ending...');
-
-	$self->{args}->{result}->{$key} ? 1 : 0;
-};
-
-sub STORE {};
-
+	return getgrnam($groupName);
+}
 1;
+
+__END__
+

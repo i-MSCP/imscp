@@ -1,5 +1,5 @@
 # i-MSCP - internet Multi Server Control Panel
-# Copyright (C) 2010 - 2011 by internet Multi Server Control Panel
+# Copyright (C) 2010 by internet Multi Server Control Panel
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -16,9 +16,9 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 # @category		i-MSCP
-# @copyright	2010 by i-MSCP | http://i-mscp.net
-# @author		Daniel Andreca <sci2tech@i-mscp.net>
-# @version		SVN: $Id: imscp-build 3933 2010-12-01 19:35:32Z sci2tech $
+# @copyright	2010 - 2011 by i-MSCP | http://i-mscp.net
+# @author		Daniel Andreca <sci2tech@gmail.com>
+# @version		SVN: $Id$
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license      http://www.gnu.org/licenses/gpl-2.0.html GPL v2
 
@@ -26,7 +26,8 @@ package iMSCP::Database::Database;
 
 use strict;
 use warnings;
-use Log::Message::Simple;
+use DBI;
+use iMSCP::Debug;
 use iMSCP::Exception;
 use iMSCP::Database::Result;
 
@@ -78,7 +79,16 @@ sub setProperty{
 
 	debug((caller(0))[3].': Ending...');
 }
-
+sub doImediatQuery{
+	debug((caller(0))[3].': Starting...');
+	my $self			= shift;
+	my $key				= shift;
+	my $query			= shift || iMSCP::Exception->new()->exception("No query provided");
+	my @subs			= @_;
+	$self->doQuery($key, $query, @subs);
+	$self->endTransaction();
+	debug((caller(0))[3].': Ending...');
+}
 sub doQuery{
 	my $self			= shift;
 	my $key				= shift;
@@ -89,21 +99,34 @@ sub doQuery{
 
 	$self->{sth} = $self->{connection}->prepare($query) || iMSCP::Exception->new()->exception("Error while preparing query: $DBI::errstr");
 
-	debug((caller(0))[3].": $query");
+	debug((caller(0))[3].": $query with @subs");
 
 	if(@subs){
-		$self->{'sth'}->execute(@subs) || iMSCP::Exception->new()->exception("Error while executing query: $DBI::errstr");
+		return "Error while executing query: $DBI::errstr" unless $self->{'sth'}->execute(@subs);# || iMSCP::Exception->new()->exception("Error while executing query: $DBI::errstr");
 	} else {
-		$self->{'sth'}->execute() || iMSCP::Exception->new()->exception("Error while executing query: $DBI::errstr");
+		return "Error while executing query: $DBI::errstr" unless $self->{'sth'}->execute();# || iMSCP::Exception->new()->exception("Error while executing query: $DBI::errstr");
 	}
+	debug $key;
 
-	my $href = $self->{'sth'}->fetchall_hashref($key);
+	my $href = $self->{sth}->fetchall_hashref( eval "[ qw/$key/ ]" );
 
 	debug((caller(0))[3].': Ending...');
 
 	tie my %href , 'iMSCP::Database::Result', result => $href;
 
 	return \%href;
+}
+sub endTransaction{
+	debug((caller(0))[3].': Starting...');
+	my $self = shift;
+	$self->{connection}->commit();
+	debug((caller(0))[3].': Ending...');
+}
+sub rollback{
+	debug((caller(0))[3].': Starting...');
+	my $self = shift;
+	$self->{connection}->rollback();
+	debug((caller(0))[3].': Ending...');
 }
 
 1;
