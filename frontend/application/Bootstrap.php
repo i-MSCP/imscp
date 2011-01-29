@@ -69,6 +69,23 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	}
 
 	/**
+	 * Initialize session (dev version)
+	 * 
+	 * @return void
+	 */
+	protected function _initSession() {
+
+		$config = Zend_Registry::get('config');
+
+		// Session configuration (Should be done before starting it)
+		Zend_Session::setOptions($config->session->toArray());
+		Zend_Session::setOptions(array('save_path' => ROOT_PATH . DS . $config->session->save_path));
+		
+		// Start and register the session to share it
+		Zend_Registry::set('session', $session = new Zend_Session_Namespace($config->session->name));
+	}
+
+	/**
 	 * Initialize loaders for modules resource classes
 	 *
 	 * @return Zend_Loader_Autoloader
