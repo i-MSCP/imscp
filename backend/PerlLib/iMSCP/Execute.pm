@@ -27,7 +27,7 @@ package iMSCP::Execute;
 use strict;
 use warnings;
 
-use vars qw/@ISA @EXPORT_OK @EXPORT %EXPORT_TAGS/;
+use vars qw/@ISA @EXPORT/;
 use Exporter;
 
 use iMSCP::Debug;
