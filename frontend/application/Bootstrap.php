@@ -53,19 +53,18 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	}
 
 	/**
-	 * Initialize database password by decrypting it
+	 * Decrypt database password
 	 * 
-	 * @return string Decrypted database password
-	 * @todo Move in resource plugin (Doctrine)
+	 * @return void
 	 */
 	protected function _initDbPassword()
 	{
 		$config = Zend_Registry::get('config');
 		$filter = new iMSCP_Filter_Encrypt_McryptBase64($config->encryption);
-		$decryptedPassword = $filter->decrypt($config->resources->doctrine->params->password);
-		$config->resources->doctrine->params->password = $decryptedPassword;
-
-		return $decryptedPassword;
+		$decryptedPassword = $filter->decrypt($config->resources->db->params->password);
+		// We don't use doctrine for now
+		//$config->resources->doctrine->params->password = $decryptedPassword;
+		$config->resources->db->params->password = $decryptedPassword;
 	}
 
 	/**
@@ -89,7 +88,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	 * Initialize loaders for modules resource classes
 	 *
 	 * @return Zend_Loader_Autoloader
-	 * @todo Create our own Autoloader since we not need all default resource types for modules resource classes
 	 */
 	protected function _initAutoloader() {
 

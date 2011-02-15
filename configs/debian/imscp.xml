@@ -92,7 +92,7 @@
 						<displayExceptions>1</displayExceptions>
 					</params>
 				</frontController>
-				<doctrine>
+				<!--<doctrine>
 					<params>
 						<charset>utf8</charset>
 						<type>mysql</type>
@@ -101,7 +101,18 @@
 						<password/>
 						<dbname>imscp</dbname>
 					</params>
-				</doctrine>
+				</doctrine>-->
+				<db>
+				        <adapter>pdo_mysql</adapter>
+				        <isDefaultTableAdapter>true</isDefaultTableAdapter>
+				        <params>
+				                <charset>utf8</charset>
+				                <host>localhost</host>
+				                <username/>
+				                <password />
+				                <dbname>imscp</dbname>
+				        </params>
+				</db>
 			</resources>
 		</frontend>
 		<apache>

@@ -59,6 +59,16 @@ class AuthenticationController extends Zend_Controller_Action
 	 */
     public function loginAction()
     {
+	    // Getting db resource
+		$db = $this->getFrontController()->getParam('bootstrap')->getResource('db');
+
+		// Testing select (sample for William) you must adapt it
+		$stmt = $db->query('select * from `user`;');
+		echo '<pre>';
+			print_r($stmt->fetchAll());
+		echo '</pre>';
+		exit;
+
 	    $auth = Zend_Auth::getInstance();
 
 	    // If we're already logged in, just redirect
@@ -100,4 +110,3 @@ class AuthenticationController extends Zend_Controller_Action
 		$this->_redirect('admin/user/list');
 	}
 }
-
