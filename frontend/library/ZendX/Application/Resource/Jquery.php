@@ -28,6 +28,7 @@
  *   resources.Jquery.noconflictmode = false        ; default
  *   resources.Jquery.version = 1.7.1               ; <null>
  *   resources.Jquery.localpath = "/foo/bar"
+ *   resources.Jquery.enable = true
  *   resources.Jquery.uienable = true;
  *   resources.Jquery.ui_enable = true;
  *   resources.Jquery.uiversion = 0.7.7;
@@ -162,6 +163,14 @@ class ZendX_Application_Resource_Jquery
             $this->_view->JQuery()->uiEnable();
         } else {
             $this->_view->JQuery()->uiDisable();
+        }
+
+        if ((isset($options['enable']) && (bool) $options['enable'])
+           || !isset($options['enable']))
+        {
+            $this->_view->JQuery()->enable();
+        } else {
+            $this->_view->JQuery()->disable();
         }
     }
 }
