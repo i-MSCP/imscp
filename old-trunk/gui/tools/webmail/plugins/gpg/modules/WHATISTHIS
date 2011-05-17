@@ -1,5 +1,0 @@
-gpg/modules
-
-This is where the loadable modules for the GPG plugin are.
-
-They are called by the MOD functions in the rest of the code.
