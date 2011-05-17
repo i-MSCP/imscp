@@ -1,0 +1,131 @@
+# Khmer (km) mini Translation
+# Auk Piseth <piseth_dv@khmeros.info>, 2008.
+# Khoem Sokhem <khoemsokhem@khmeros.info>, 2009.
+# Copyright (c) 2008-2009 KhmerOS Project
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+msgid ""
+msgstr ""
+"Project-Id-Version: mini\n"
+"Report-Msgid-Bugs-To: Tomas Kuliavas <tokul@users.sourceforge.net>\n"
+"POT-Creation-Date: 2006-09-10 01:05+0200\n"
+"PO-Revision-Date: 2009-04-24 09:27+0700\n"
+"Last-Translator: Khoem Sokhem <khoemsokhem@khmeros.info>\n"
+"Language-Team: Khmer <en@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#: functions.php:34
+msgid "mini window"
+msgstr "បង្អួច​តូច"
+
+#: functions.php:49 mini.php:85 mini.php:96
+msgid "Mini SquirrelMail"
+msgstr "SquirrelMail តូច"
+
+#: functions.php:53
+msgid "Window width (in pixels)"
+msgstr "ទទឹង​បង្អួច (គិត​ជា​ភីកសែល)"
+
+#: functions.php:60
+msgid "Window height (in pixels)"
+msgstr "កម្ពស់​បង្អួច (គិត​ជា​ភីកសែល)"
+
+#: functions.php:67
+msgid "never"
+msgstr "កុំ"
+
+#: functions.php:70
+#, php-format
+msgid "%s second"
+msgid_plural "%s seconds"
+msgstr[0] "%s វិនាទី"
+
+#: functions.php:73
+#, php-format
+msgid "%s minute"
+msgid_plural "%s minutes"
+msgstr[0] "%s នាទី"
+
+#: functions.php:79
+msgid "Window refresh time"
+msgstr "ពេលវេលា​ធ្វើ​ឲ្យ​បង្អួច​ស្រស់"
+
+#: functions.php:87
+msgid "Window text size"
+msgstr "ទំហំ​អត្ថបទ​បង្អួច"
+
+#: functions.php:90
+msgid "Very small"
+msgstr "តូចណាស់"
+
+#: functions.php:91
+msgid "Small"
+msgstr "តូច"
+
+#: functions.php:92
+msgid "Normal"
+msgstr "ធម្មតា"
+
+#: functions.php:162
+msgid ""
+"This message has additional parts. Please use the main SquirrelMail "
+"interface to open them"
+msgstr "សារ​នេះ មាន​ផ្នែក​បន្ថែម ។ សូម​ប្រើ​ចំណុចប្រទាក់ SquirrelMail ចម្បង ដើម្បី​បើក​ពួកវា"
+
+#: functions.php:166 functions.php:178
+msgid ""
+"Could not find a text part. Please use the main SquirrelMail window to read "
+"this message"
+msgstr "មិនអាច​រក​ផ្នែក​អត្ថបទ​បានទេ ។ សូម​ប្រើ​បង្អួច SquirrelMail ចម្បង ដើម្បី​អាន​សារ​នេះ"
+
+#: functions.php:302 mini.php:123
+msgid "No subject"
+msgstr "គ្មាន​ប្រធាន​បទ"
+
+#: functions.php:314 functions.php:315 mini.php:130
+msgid "No sender"
+msgstr "គ្មាន​អ្នក​ផ្ញើ"
+
+#: mini.php:75 mini.php:139
+msgid "Back"
+msgstr "ថយក្រោយ"
+
+#: mini.php:78
+msgid "Refresh"
+msgstr "ធ្វើ​ឲ្យ​ស្រស់"
+
+#: mini.php:133 mini.php:174
+msgid "Subject"
+msgstr "ប្រធានបទ"
+
+#: mini.php:134 mini.php:176
+msgid "From"
+msgstr "ពី"
+
+#: mini.php:141
+msgid "Keep as new"
+msgstr "រក្សាទុក​ជា​សារ​ថ្មី"
+
+#: mini.php:148
+msgid "Folder"
+msgstr "ថត"
+
+#: mini.php:150
+msgid "New Mail"
+msgstr "សំបុត្រ​ថ្មី"
+
+#: mini.php:160
+msgid "INBOX"
+msgstr "ប្រអប់​ទទួល"
+
+#: mini.php:193
+msgid "No New Messages"
+msgstr "គ្មាន​សារ​ថ្មី"
+
+#: mini.php:209
+msgid "Close"
+msgstr "បិទ"
+

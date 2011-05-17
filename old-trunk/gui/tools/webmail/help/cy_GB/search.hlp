@@ -1,0 +1,78 @@
+<chapter>
+   <title>
+      Search
+   </title>
+   <summary>
+      Maen chwilio trwy ffolder am feini prawf penodol. 
+   </summary>
+   <description>
+      <p>
+Trwy ddefnyddior offer buddiol yma, gallwch chwilio trwy ffolder penodol am feini prawf penodol syn cyfateb i benawdau 
+maes gwahanol.
+      </p>
+   </description>
+</chapter>
+
+<section>
+   <title>
+      General Overview
+   </title>
+   <description>
+      <p>
+      Yr unig beth syn rhaid ei wneud yw dewis y ffolder y dymunwch ei chwilio, teipior meini prawf chwilio i mewn, ac yna de
+wis y rhan or neges y dymunwch ei chwilio. Pan fyddwch chin cyflwyno eich data, bydd y rhestr o negesau yn ymddangos o dan y 
+ffurflen chwilio. Gallwch ddewis y neges y dymunwch edrych arni, ai darllen yn union fel neges arferol.
+      </p>
+      <p>
+      Sylwch mai eich ffolder gweithredol ar hyn o bryd fydd yr un diofyn i chwilio drwyddo pan fyddwch chin darllen negesau 
+ac ynan mynd ir adran chwilio. Er enghraifft, os oeddech chin pori trwy eich ffolder "Friends" ac ynan clicio ar "Search", by
+dd "Friends" eisoes wedi ei dewis iw chwilio.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      What to search through
+   </title>
+   <description>
+      <p>
+      Ir chwith or maes mewnbwn, fe welwch chi restr gwympo o fannau syn bosib eu chwilio. Maer rhain yn cynnwys: Body, Every
+where, Subject, From, Cc, To       </p>
+      <p>
+      <b>Body</b> - Maen chwilio trwy gorff y neges. Dyma brif ran y neges lle maer deunydd pwysig wedi ei leoli.
+      </p>
+      <p>
+      <b>Everywhere</b> - Mae hwn yn chwilio popeth, yn cynnwys y pennawd cyfan ar gyfer y neges. Oni bai eich bod yn sicr ma
+i dymar hyn rydych chi ei eisiau, maen debyg nad dymar dewis i chi. Gall gynhyrchu canlyniadau na fyddech chin eu disgwyl fel
+ arfer.
+      </p>
+      <p>
+      <b>Subject</b> - Maen chwilio trwyr testunau am yr holl negesau.       </p>
+      <p>
+      <b>From</b> - Y sawl sydd wedi anfon y neges. Sylwch y gallai hyn fod yn fwy nar hyn syn cael ei arddangos yn y rhestr 
+ffolder. Mae maes "From" arferol yn cynnwys yr enw AR cyfeiriad e-bost, ond dim ond yr enw y bydd SquirrelMail yn ei arddango
+s fel arfer. Os yw eich meini prawf yn cyfateb ir cyfeiriad e-bost, ond nad ywn cael ei arddangos, bydd y neges honnon dal i 
+ddychwelyd fel pe bae wedi cyfateb.
+      </p>
+      <p>
+      <b>To</b> - Y sawl yr anfonwyd y neges ato/ati. Gall hwn fod yn nifer o gyfeiriadau, ac nid ywn un cyfeiriad e-bost yn 
+unig bob amser.
+      </p>
+      <p>
+      <b>Cc</b> - Yr un fath â "To", ar wahân ir sawl y copïwyd y neges iddo/iddi
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+   Recent Searches
+   </title>
+   <description>
+   Os ydych chi wedi galluogir dewis yma, maer dudalen Search yn arddangos hefyd olwg cyffredinol o hyd at 9 och chwiliadau m
+wyaf diweddar iw cyrchun gyflym. Cliciwch ar Search y drws nesaf ir chwiliad a restrwyd er mwyn ei wneud eto. Trwy gyfrwng y 
+cyswllt Save gallwch symud y chwiliad ir Saved Searches a fydd yn cael eu cadw hyd nes y byddwch chin pwyso Delete yn benodol
+. Cliciwch Forget i dynnu chwiliad or rhestr o chwiliadau diweddar.
+   </description>
+</section>

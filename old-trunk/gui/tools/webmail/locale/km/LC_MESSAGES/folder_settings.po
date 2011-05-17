@@ -1,0 +1,62 @@
+# Khmer (km) folder_settings Translation
+# Auk Piseth <piseth_dv@khmeros.info>, 2008.
+# Khoem Sokhem <khoemsokhem@khmeros.info>, 2009.
+# Copyright (c) 2008-2009 KhmerOS Project
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+msgid ""
+msgstr ""
+"Project-Id-Version: folder_settings\n"
+"POT-Creation-Date: 2005-09-21 20:28+0300\n"
+"PO-Revision-Date: 2009-04-24 09:25+0700\n"
+"Last-Translator: Khoem Sokhem <khoemsokhem@khmeros.info>\n"
+"Language-Team: Khmer <en@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: functions.php:21
+msgid "Folder Sorting Options"
+msgstr "ជម្រើស​តម្រៀប​ថត"
+
+#: functions.php:25
+msgid "Enable per-folder sorting"
+msgstr "អនុញ្ញាត​ការ​តម្រៀប​​ក្នុង ១ ថត"
+
+#: functions.php:31
+msgid "Default sort_order"
+msgstr "លំដាប់​តម្រៀប​លំនាំដើម"
+
+#: functions.php:34
+msgid "Date (descending)"
+msgstr "កាលបរិច្ឆេទ (តាម​លំដាប់​ចុះ)"
+
+#: functions.php:35
+msgid "Date (ascending)"
+msgstr "កាលបរិច្ឆេទ (តាម​លំដាប់​ឡើង)"
+
+#: functions.php:36
+msgid "From (descending)"
+msgstr "ពី (តាម​លំដាប់​ចុះ)"
+
+#: functions.php:37
+msgid "From (ascending)"
+msgstr "ពី (តាម​លំដាប់​ឡើង)"
+
+#: functions.php:38
+msgid "Subject (descending)"
+msgstr "ប្រធាន​បទ (តាម​លំដាប់​ចុះ)"
+
+#: functions.php:39
+msgid "Subject (ascending)"
+msgstr "ប្រធាន​បទ (តាម​លំដាប់​ឡើង)"
+
+#: functions.php:40
+msgid "Unsorted"
+msgstr "មិន​បាន​តម្រៀប"
+
+#: functions.php:68
+msgid "Folder Settings plugin should not be used with this SquirrelMail version."
+msgstr "កម្មវិធី​ជំនួយ ការ​កំណត់​ថត មិន​គួរ​ប្រើ​ជាមួយ​ SquirrelMail កំណែ​នេះ​ទេ ។"
+

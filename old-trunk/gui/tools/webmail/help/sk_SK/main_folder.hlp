@@ -1,0 +1,62 @@
+<chapter>
+   <title>
+      Index správ
+   </title>
+   <summary>
+      Toto meno môže znieť komplexne, ale je to len zoznam e-mailových správ,
+      ktoré sú v konkrétnom priečinku.
+   </summary>
+</chapter>
+
+<section>
+   <title>
+      Index správ
+   </title>
+   <description>
+      <p>
+      Po kliknutí na priečinok, ocitnete sa (v pravom rámci) v indexe správ. Ten
+      zobrazuje správy v zvolenom priečinku. Pod menu Voľba je riadok, ktorý
+      informuje, ktorú správu v poradí si prezeráte a koľko je všetkých správ.
+      </p><p>
+      Napríklad: Zobrazenie Správ <B>20</B> do <B>30</B> (45 celkovo od počtu
+      neprečítaných správ, ktorý je vpravo od hlavného priečinku).
+      </p><p>
+      Ďalšia je lišta obsahujúca štyri tlačidlá. Na ľavej strane je rolovací zoznam.
+      Na ľavej strane su práve prihlásené priečinky. Akákoľvek zvolená správa bude
+      presunutá po stisnutí tlačidla Presunúť. Naraz môžte presunúť aj viac správ.
+      Celkom na pravo lišty je tlačidlo na zmazanie označených správ. Len si
+      vyberte nepotrebnú správu a stisnite tlačidlo. Naľavo od tlačidla Odstrániť
+      sú dva tlačidlá ktoré vám umožnia označiť zvolené správy ako prečítané / 
+      neprečítané.
+      </p><p>
+	    Ďalšou je lišta obsahujúca 3 polia (Od, Dátum, a Predmet). iteto názvy rozdeľujú
+	    tabuľku správ do logických častí. Tieto vám povedia, kto poslal správu, alebo
+	    najmenej to, z akej e-mailovej adresy prišla správa. Dátum vám ukazuje, aký
+	    deň bola odoslaná správa.Predmet zobrazuje čo odosielateľ napísal ako predmet
+	    správy.
+	    <b>Poznámka:</b> Medzi Dátumom a Predmetom je malý neoznačený stĺpec. tu môže byť
+	    znak "+", "!" alebo "A".Ak uvidíte "+", znamená to, že správa ma prílohy.
+	    Ak uvidíte "A", znamená to, že na správu ste už odpovedali(A=Answered), a ak vidíte
+	    "!" znamená to, že správa je označená ako urgentná.
+      </p><p>
+      Čo ostáva, je aktuálna tabuľka správ. O neprečítaných správach ste informovaný
+      správou s tučným písmom, zvyšné správy sú normálnym textom.
+      V tabuľke sú 4.polia. Celkom vľavo je políčko výberu. Ak si ho zvolíte, na
+      zvolenej správa sa vykoná akcia, o ktorej sme už písali skôr(presun,
+      označovanie ako (ne)prečítané) a odstránenie).
+      Odkaz "Označiť všetko" na vrchu výpisu vám umožnuje označiť všetky políčka
+      pod ním naraz.<BR>
+      Pod názvom "Od" sú správy od odosielateľov. Pre zobrazenie správy kliknite
+      na predmet danej správy.
+      </p>
+      <p>
+      Ak vaša poštová schránka obsahuje veľa správ, výpis správ sa ako je
+      prednastavené, rozdelí do viacerých stránok. Aby ste si mohli prezrieť ďalšie
+      stránky,  použite odkazy Predchádzajúca a Ďalšia. Môžte tiež preskočiť priamo
+      do konkrétnej stránky kliknutím na číslo stránky(číslo označuje stránku).
+      Ak kliknete máte povolenú voľbu Zobraziť všetko, tak sa štandardné stránkovanie
+      deaktivuje a zobrazia sa všetky správy naraz na jednej veľkej stránke.
+      </p>
+      
+   </description>
+</section>

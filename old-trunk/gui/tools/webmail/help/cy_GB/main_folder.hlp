@@ -1,0 +1,78 @@
+<chapter>
+   <title>
+      Message Index
+   </title>
+   <summary>
+     Efallai fod yr enwn swnion gymhleth, ond dim ond y rhestr o negesau 
+     ebost sydd mewn ffolder arbennig yw hyn.
+   </summary>
+</chapter>
+
+<section>
+   <title>
+      The Message Index
+   </title>
+   <description>
+      <p>
+      Wedi i chi glicio ar ffolder, byddwch yn cael eich arwain (yn y 
+      ffrâm dde) ir mynegai negesau. Mae hwn yn rhestru neges
+      au yn y ffolder wedi ei dewis. O dan y ddewislen mae llinell 
+      syn eich hysbysu pa bost rydych chin edrych arno yn rhifol a 
+      beth yw eich cyfanswm
+      </p><p>
+      Er enghraifft: Edrych ar negesau <B>20</B> i <B>30</B> (cyfanswm o 45).
+      </p><p>
+      Sylwch y gall cyfanswm nifer y negesau fod yn wahanol i nifer 
+      y post nad yw wedi ei ddarllen, sydd ir dde or prif ffolder post.
+      </p><p>
+      Yn nesaf at hynny mae bar yn cynnwys pedwar botwm. Ar yr ochr chwith 
+      mae blwch rhestr gwympo. Maer blwch yn rhestrur ffolderi yr ydych 
+      wedi tanysgrifio amdanynt ar hyn o bryd. Bydd unrhyw neges wedi ei 
+      dewis yn cael ei symud ir ffolder a ddewiswyd pan wthiwch fotwm 
+      Move. Gallwch symud mwy nag un neges ar unwaith. Ir dde pellaf 
+      or bar yma mae botwm syn cael ei ddefnyddio i ddileu negesau wedi 
+      eu dewis. Yr unig beth syn rhaid ei wneud yw dewis Junk Mail a 
+      phwysor botwm. Ir chwith or botwm Delete mae dau fotwm syn fodd 
+      i chi farcio negesau wedi eu dewis naill ai fel Read neu Unread.
+      </p><p>
+          Yn dilyn hynny daw bar yn cynnwys tri maes (From, Date a Subject). 
+          Maer penawdau yma yn gwahanur tabl negesau yn rhannau rhesymegol. 
+          Mae From yn dweud wrthych chi pwy sydd wedi anfon y neges, 
+          neu o leiaf o ba gyfeiriad ebost y daeth. Mae Date yn dangos 
+          y diwrnod yr anfonwyd yr ebost. Mae Subject yn dangos y gair 
+          a deipiodd y sawl syn ei anfon yn destun. <b>Sylwch</b>: Rhwng 
+          y colofnau Date a Subject mae colofn fechan nad ywn cynnwys 
+          label. Gallai fod +, ! neu A yno. Os welwch chir + mae hyn yn 
+          golygu fod gan y neges atodiadau; os welwch chir A, mae hynnyn 
+          golygu eich bod wedi ateb y neges, ac os welwch chir !, yna 
+          roedd y neges wedi ei marcio fel un brys!
+      </p><p>
+          Yr hyn syn weddill ywr tabl negesau ei hun. Byddwch yn sylwi 
+          fod negesau nad ydych wedi eu darllen mewn llythrennau trwm
+          tra bo negesau yr edrychwyd arnynt mewn testun arferol. Maer 
+          tabl yma yn cynnwys pedwar maes. Ar y chwith pellaf mae blwch 
+          dewis. Oi ddewis, bydd y neges ar yr un llinell yn dilyn yr 
+          un drefn weithredu ag a drafodwyd or blaen (symud, marcio, 
+          darllen, heb ddarllen a dileu). Maer cyswllt Toggle 
+          All ar frig y rhestr yn fodd i chi wirior holl flychau 
+          dewis ar unwaith.
+	<br>
+          O dan y pennawd From bydd enwr sawl a anfonodd y neges wedi 
+          ei restru. Fawr o syndod meddech chi! Ond cofiwch, does dim
+          rhaid i chi ddarllen hwn! Y dyddiad syn cael ei restru 
+          nesaf ac, yn olaf, y testun.
+      </p>
+      <p>
+      Os yw eich blwch post yn cynnwys nifer o negesau, bydd y 
+      rhestr yn cael ei rhannu ar draws mwy nag un dudalen heb i 
+      chiorfod wneud dim, a bydd y dudalen gyntaf yn cael ei 
+      harddangos. I edrych ar y tudalennau eraill, defnyddiwch y 
+      cysylltau Previous a Next ar frig y rhestr negesau ac ar 
+      ei gwaelod. Gallwch hefyd neidio i dudalen benodol trwy glicio 
+      ar un or rhifau (mae pob un y cynrychioli tudalen). Os cliciwch 
+      chi ar Show All byddwch yn analluogir tudalennu (paginating), a 
+      bydd yr holl negesau yn cael eu harddangos ar un dudalen fawr.
+      </p>
+      
+   </description>
+</section>

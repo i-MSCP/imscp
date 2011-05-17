@@ -1,0 +1,483 @@
+# Khmer (km) check_quota Translation
+# Eng Vannak <evannak@khmeros.info>, 2008.
+# Khoem Sokhem <khoemsokhem@khmeros.info>, 2009.
+# Copyright (c) 2008-2009 KhmerOS Project
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+msgid ""
+msgstr ""
+"Project-Id-Version: check_quota\n"
+"Report-Msgid-Bugs-To: Kerem Erkan <kerem@keremerkan.net>\n"
+"POT-Creation-Date: 2007-10-24 00:22+0200\n"
+"PO-Revision-Date: 2009-04-24 09:22+0700\n"
+"Last-Translator: Khoem Sokhem <khoemsokhem@khmeros.info>\n"
+"Language-Team: Khmer <en@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: functions.php:185
+msgid "\"Check Quota\" Troubleshooting"
+msgstr "ដោះស្រាយ​បញ្ហា \"ពិនិត្យ​កូតា\""
+
+#: functions.php:187
+msgid "This page can aid you in troubleshooting the \"Check Quota\" plugin."
+msgstr "ទំព័រ​នេះ​អាច​ជួយ​អ្នក​ក្នុង​ការ​ដោះស្រាយ​បញ្ហា​កម្មវិធី​ជំនួយ \"ពិនិត្យ​កូតា\" ។"
+
+#: functions.php:292
+msgid "Quota Binary Output:"
+msgstr "ទិន្នផល​ប្រព័ន្ធ​គោល​ពីរ​កូតា ៖"
+
+#: functions.php:294 functions.php:401 functions.php:551 functions.php:626
+#: functions.php:654 functions.php:668 functions.php:689 functions.php:729
+msgid "Warning:"
+msgstr "ព្រមាន ៖"
+
+#: functions.php:294
+msgid "Quota binary did not give any output. Quotas may not be enabled."
+msgstr "ប្រព័ន្ធ​គោល​ពីរ​កូតា​មិន​ផ្ដល់​ទិន្នផល​ទេ ។ មិន​អាច​អនុញ្ញាត​កូតា​ទេ ។"
+
+#: functions.php:401 functions.php:689
+msgid ""
+"You do not have quotas enabled for your username, you will not see any "
+"informative graphs."
+msgstr "អ្នក​មិន​បាន​អនុញ្ញាត​កូតា​សម្រាប់​ឈ្មោះ​អ្នក​ប្រើ​របស់​អ្នក​ទេ អ្នក​នឹង​មិន​ឃើញ​ក្រាប​ព័ត៌មាន​ណា​ទេ ។"
+
+#: functions.php:486
+msgid "IMAP Command Sent:"
+msgstr "បាន​ផ្ញើ​ពាក្យ​បញ្ជា IMAP ៖"
+
+#: functions.php:487
+msgid "IMAP Response Received:"
+msgstr "បាន​ទទួល​ចម្លើយ​ពី IMAP ៖"
+
+#: functions.php:551
+msgid "Your IMAP server does not have IMAP4 QUOTA extension. Quotas not enabled."
+msgstr "ម៉ាស៊ីន​បម្រើ IMAP របស់​អ្នក​មិន​មាន​ផ្នែក​បន្ថែម IMAP4 QUOTA ។ មិន​បាន​អនុញ្ញាត​កូតា ។"
+
+#: functions.php:626
+msgid ""
+"Your username is not in user@domain format. cPanel quotas only work with "
+"that type of usernames for now."
+msgstr ""
+"ឈ្មោះ​ប្រើ​របស់​អ្នក​មិន​នៅ​ក្នុង​ទ្រង់ទ្រាយ user@domain ។ កូតា cPanel ធ្វើការ​តែ​ជាមួយ​ប្រភេទ​អ្នក​ប្រើ​"
+"នៅ​ទេ​ឥឡូវ​នេះ ។"
+
+#: functions.php:654
+msgid "Reseller information for your domain cannot be obtained."
+msgstr "មិន​អាច​យក​ព័ត៌មាន​លក់​បន្ត​សម្រាប់​ដែន​របស់​អ្នក ។"
+
+#: functions.php:661
+msgid "Quota File:"
+msgstr "ឯកសារ​កូតា ៖"
+
+#: functions.php:668
+msgid "Quota file for your domain does not exist or not readable."
+msgstr "ឯកសារ​កូតា​សម្រាប់​ដែន​ដែល​មិនមាន ឬ​មិន​អាច​អាន​បាន ។"
+
+#: functions.php:695
+msgid "Your cPanel Quota:"
+msgstr "កូតា cPanel របស់​អ្នក ៖"
+
+#: functions.php:700
+msgid "Mail Files Location:"
+msgstr "ទីតាំង​ឯកសារ​សំបុត្រ ៖"
+
+#: functions.php:708
+msgid "&quot;du&quot; Binary Output:"
+msgstr "ទិន្នផល​ប្រព័ន្ធ​គោល​ពីរ &quot;du&quot; ៖"
+
+#: functions.php:729
+msgid ""
+"&quot;du&quot; binary did not give any output. There may be some problem "
+"with that binary."
+msgstr "ប្រព័ន្ធ​គោល​ពីរ &quot;du&quot; មិន​ផ្ដល់​ទិន្នផល​ទេ ។ ប្រហែល​ជាមាន​បញ្ហា​ខ្លះ​ជាមួយ​ប្រព័ន្ធ​គោល​ពីរ​នោះ ។"
+
+#: functions.php:805 functions.php:816 functions.php:823
+msgid "Quota Usage:"
+msgstr "ការ​ប្រើប្រាស់​កូតា ៖"
+
+#: functions.php:807 functions.php:816 functions.php:823
+msgid "File Usage:"
+msgstr "ការ​ប្រើប្រាស់​ឯកសារ ៖"
+
+#: functions.php:994
+msgid "OVER QUOTA!"
+msgstr "លើស​កូតា!"
+
+#: functions.php:1174 functions.php:1193 functions.php:1221
+#: troubleshoot.php:308 troubleshoot.php:710
+msgid "WARNING:"
+msgstr "ព្រមាន ៖"
+
+#: functions.php:1175
+#, php-format
+msgid "Your quota usage is currently <b>%s%%</b>."
+msgstr "ការ​ប្រើប្រាស់​កូតា​របស់​អ្នក​បច្ចុប្បន្ន​គឺ <b>%s%%</b> ។"
+
+#: functions.php:1194 functions.php:1222
+#, php-format
+msgid "Your quota usage is currently %s%%."
+msgstr "ការ​ប្រើប្រាស់​កូតា​របស់​អ្នក​បច្ចុប្បន្ន​គឺ %s%% ។"
+
+#: functions.php:1195
+msgid ""
+"To avoid losing any email, you should immediately empty out your \"Trash\" "
+"and \"Sent\" folders and delete emails with large attachments."
+msgstr ""
+"ដើម្បីជៀសវាង​បាត់បង់​អ៊ីមែល អ្នក​គួរ​តែ​សម្អាត​ថត \"ធុង​សំរាម\" និង \"បាន​ផ្ញើ\" របស់​អ្នក និង​លុប​អ៊ីមែល​"
+"ដែល​មានឯកសារ​ភ្ជាប់​ធំ ។"
+
+#: functions.php:1205
+msgid ""
+"To avoid losing any email, you should immediately empty out your &quot;"
+"Trash&quot; and &quot;Sent&quot; folders and delete emails with large "
+"attachments."
+msgstr ""
+"ដើម្បី​ជៀសវាង​បាត់បង់​អ៊ីមែល អ្នក​គួរ​សម្អាត​ថត &quot;ធុង​សំរាម&quot; និង &quot;បាន​ផ្ញើ&quot; របស់​"
+"អ្នក និង​លុប​អ៊ីមែល​ដែល​មាន​ឯកសារ​ភ្ជាប់​ធំ ។"
+
+#: functions.php:1223
+msgid ""
+"You may want to make sure you empty out your \"Trash\" and clean your \"Sent"
+"\" folder."
+msgstr "អ្នក​អាច​ចង់​ធ្វើ​ឲ្យ​ប្រាកដ​ថា អ្នក​បាន​សម្អាត​ថត \"ធុង​សំរាម\" និង \"បាន​ផ្ញើ\" របស់​អ្នក ។"
+
+#: functions.php:1233
+msgid ""
+"You may want to make sure you empty out your &quot;Trash&quot; and clean "
+"your &quot;Sent&quot; folder."
+msgstr ""
+"អ្នក​អាច​ត្រូវការ​ធ្វើ​ឲ្យ​ប្រាកដ​ថា អ្នក​សម្អាត &quot;ធុង​សំរាម&quot; របស់​អ្នក និង​សម្អាត​ថត &quot;"
+"បាន​ផ្ញើ&quot; របស់​អ្នក ។"
+
+#: functions.php:1366
+msgid "%1 of %2"
+msgstr "%1 នៃ %2"
+
+#: functions.php:1368
+msgid "%1% of %2"
+msgstr "%1% នៃ %2"
+
+#: troubleshoot.php:64
+msgid "Mandatory Settings"
+msgstr "ការ​កំណត់​ដែល​ចាំបាច់"
+
+#: troubleshoot.php:68
+msgid "Quota Type:"
+msgstr "ប្រភេទ​កូតា ៖"
+
+#: troubleshoot.php:83 troubleshoot.php:104 troubleshoot.php:117
+#: troubleshoot.php:130 troubleshoot.php:149 troubleshoot.php:161
+#: troubleshoot.php:178 troubleshoot.php:185 troubleshoot.php:204
+#: troubleshoot.php:216 troubleshoot.php:233 troubleshoot.php:240
+#: troubleshoot.php:257 troubleshoot.php:264 troubleshoot.php:286
+#: troubleshoot.php:319 troubleshoot.php:338 troubleshoot.php:352
+#: troubleshoot.php:374 troubleshoot.php:393 troubleshoot.php:412
+#: troubleshoot.php:431 troubleshoot.php:450 troubleshoot.php:464
+#: troubleshoot.php:478 troubleshoot.php:497 troubleshoot.php:516
+#: troubleshoot.php:535 troubleshoot.php:556 troubleshoot.php:620
+#: troubleshoot.php:640 troubleshoot.php:664
+msgid "INVALID!"
+msgstr "មិន​ត្រឹមត្រូវ!"
+
+#: troubleshoot.php:83 troubleshoot.php:104 troubleshoot.php:286
+#: troubleshoot.php:319 troubleshoot.php:338 troubleshoot.php:352
+#: troubleshoot.php:374 troubleshoot.php:393 troubleshoot.php:412
+#: troubleshoot.php:431 troubleshoot.php:450 troubleshoot.php:464
+#: troubleshoot.php:478 troubleshoot.php:497 troubleshoot.php:516
+#: troubleshoot.php:535 troubleshoot.php:556 troubleshoot.php:620
+#: troubleshoot.php:640 troubleshoot.php:664
+msgid "Please read config.php file for possible values."
+msgstr "សូម​អាន​ឯកសារ config.php សម្រាប់​តម្លៃ​ដែល​អាច ។"
+
+#: troubleshoot.php:92
+msgid "Check UNIX Quotas:"
+msgstr "ពិនិត្យ​កូតា យូនីក ៖"
+
+#: troubleshoot.php:97
+msgid "On local server"
+msgstr "លើ​ម៉ាស៊ីន​បម្រើ​មូលដ្ឋាន"
+
+#: troubleshoot.php:100
+msgid "On remote server"
+msgstr "លើ​ម៉ាស៊ីន​បម្រើ​ពី​ចម្ងាយ"
+
+#: troubleshoot.php:110
+msgid "Remote Username:"
+msgstr "ឈ្មោះ​អ្នក​ប្រើ​ពី​ចម្ងាយ ៖"
+
+#: troubleshoot.php:117 troubleshoot.php:130 troubleshoot.php:150
+#: troubleshoot.php:161 troubleshoot.php:179 troubleshoot.php:185
+#: troubleshoot.php:205 troubleshoot.php:216 troubleshoot.php:234
+#: troubleshoot.php:240 troubleshoot.php:258 troubleshoot.php:264
+msgid "Please read INSTALL for details on setting this variable."
+msgstr "សូម​អាន ការ​ដំឡើង សម្រាប់​លម្អិត​អំពី​ការ​កំណត់​អថេរ​នេះ ។"
+
+#: troubleshoot.php:123
+msgid "Remote Server:"
+msgstr "ម៉ាស៊ីន​បម្រើ​ពី​ចម្ងាយ ៖"
+
+#: troubleshoot.php:138
+msgid "SUDO Binary:"
+msgstr "គោល​ពីរ SUDO ៖"
+
+#: troubleshoot.php:149 troubleshoot.php:178 troubleshoot.php:204
+#: troubleshoot.php:233
+msgid "file does not exist or not executable."
+msgstr "ឯកសារ​មិនមាន ឬ​មិន​អាច​ប្រតិបត្តិ​បាន ។"
+
+#: troubleshoot.php:155 troubleshoot.php:210
+msgid "INFO:"
+msgstr "ព័ត៌មាន ៖"
+
+#: troubleshoot.php:155 troubleshoot.php:210
+msgid "Remote checking is enabled, cannot check validity of this variable."
+msgstr "បាន​អនុញ្ញាត​ការ​ពិនិត្យ​ពី​ចម្ងាយ មិន​អាច​ពិនិត្យ​សុពលភាព​របស់​អថេរ​នេះ ។"
+
+#: troubleshoot.php:169
+msgid "SSH Binary:"
+msgstr "គោលពីរ SSH ៖"
+
+#: troubleshoot.php:193
+msgid "QUOTA Binary:"
+msgstr "គោល​ពីរ​កូតា ៖"
+
+#: troubleshoot.php:224
+msgid "DU Binary:"
+msgstr "គោល​ពីរ DU ៖"
+
+#: troubleshoot.php:248
+msgid "cPanel Root Folder:"
+msgstr "ថត Root cPanel ៖"
+
+#: troubleshoot.php:257
+msgid "directory does not exist or not readable."
+msgstr "ថត​មិន​មាន ឬ​មិន​អាច​អាន​បាន ។"
+
+#: troubleshoot.php:274
+msgid "Use Separate IMAP Connection:"
+msgstr "ប្រើ​ការ​តភ្ជាប់ IMAP ដោយ​ឡែក ៖"
+
+#: troubleshoot.php:279 troubleshoot.php:386 troubleshoot.php:405
+#: troubleshoot.php:490 troubleshoot.php:509 troubleshoot.php:549
+#: troubleshoot.php:657
+msgid "No"
+msgstr "ទេ"
+
+#: troubleshoot.php:282 troubleshoot.php:389 troubleshoot.php:408
+#: troubleshoot.php:493 troubleshoot.php:512 troubleshoot.php:552
+#: troubleshoot.php:660
+msgid "Yes"
+msgstr "បាទ/ចាស"
+
+#: troubleshoot.php:292
+msgid "Display Settings"
+msgstr "ការ​កំណត់​ការ​បង្ហាញ"
+
+#: troubleshoot.php:296
+msgid "Graph Type:"
+msgstr "ប្រភេទ​ក្រាប ៖"
+
+#: troubleshoot.php:301
+msgid "Standard HTML tables"
+msgstr "តារាង HTML ស្តង់ដារ"
+
+#: troubleshoot.php:304
+msgid "GD images"
+msgstr "រូបភាព GD"
+
+#: troubleshoot.php:308
+msgid "Your server does not have GD support."
+msgstr "ម៉ាស៊ីន​បម្រើ​របស់​អ្នក​មិន​គាំទ្រ GD ។"
+
+#: troubleshoot.php:309
+msgid "Graph type will revert to standard HTML tables."
+msgstr "ប្រភេទ​ក្រាប​នឹង​ត្រឡប់​ទៅ​តារាង HTML ស្តង់ដារ ។"
+
+#: troubleshoot.php:326
+msgid "Graph Location:"
+msgstr "ទីតាំង​ក្រាប ៖"
+
+#: troubleshoot.php:331
+msgid "Below folders list"
+msgstr "ខាងក្រោម​បញ្ជី​ថត"
+
+#: troubleshoot.php:334
+msgid "Above folders list"
+msgstr "ខាង​លើ​បញ្ជី​ថត"
+
+#: troubleshoot.php:345
+msgid "Font Size:"
+msgstr "ទំហំ​ពុម្ព​អក្សរ ៖"
+
+#: troubleshoot.php:359
+msgid "Graph Alignment:"
+msgstr "ការ​លៃ​តម្រូវ​ក្រាប ៖"
+
+#: troubleshoot.php:364
+msgid "Left"
+msgstr "ខាង​ឆ្វេង"
+
+#: troubleshoot.php:367
+msgid "Right"
+msgstr "ខាង​ស្ដាំ"
+
+#: troubleshoot.php:370
+msgid "Center"
+msgstr "កណ្ដាល"
+
+#: troubleshoot.php:381
+msgid "Use Horizontal Rules:"
+msgstr "ប្រើ​បន្ទាត់​ផ្ដេក ៖"
+
+#: troubleshoot.php:400
+msgid "Show Intro Texts:"
+msgstr "បង្ហាញ​អត្ថបទ​ណែនាំ ៖"
+
+#: troubleshoot.php:419
+msgid "Quota Details Location:"
+msgstr "ទីតាំង​លម្អិត​កូតា ៖"
+
+#: troubleshoot.php:424
+msgid "Below quota graph"
+msgstr "ខាងក្រោម​ក្រាប​កូតា"
+
+#: troubleshoot.php:427
+msgid "Above quota graph"
+msgstr "ខាងលើ​ក្រាប​កូតា"
+
+#: troubleshoot.php:438
+msgid "Show Quantity or Percent:"
+msgstr "បង្ហាញ​ចំនួន ឬ​ភាគរយ ៖"
+
+#: troubleshoot.php:443
+msgid "Show percent"
+msgstr "បង្ហាញ​ភាគរយ"
+
+#: troubleshoot.php:446
+msgid "Show quantity (size or count)"
+msgstr "បង្ហាញ​ចំនួន (ទំហំ ឬ​ចំនួន)"
+
+#: troubleshoot.php:457
+msgid "Yellow Alert Threshold:"
+msgstr "កម្រឹត​ពន្លឺ​ការ​ជូន​ដំណឹង​ពណ៌​លឿង ៖"
+
+#: troubleshoot.php:460 troubleshoot.php:474
+#, php-format
+msgid "%s%%"
+msgstr "%s%%"
+
+#: troubleshoot.php:471
+msgid "Red Alert Threshold:"
+msgstr "កម្រិត​ពណ៌​ការ​ជូន​ដំណឹង​ពណ៌​ក្រហម ៖"
+
+#: troubleshoot.php:485
+msgid "Show Yellow Alert Warning:"
+msgstr "បង្ហាញ​ការ​ព្រមាន​ពណ៌​លឿង ៖"
+
+#: troubleshoot.php:504
+msgid "Show Red Alert Warning:"
+msgstr "បង្ហាញ​ការ​ព្រមាន​ពណ៌​ក្រហម ៖"
+
+#: troubleshoot.php:523
+msgid "KB/MB Conversion:"
+msgstr "ការ​បម្លែង KB/MB ៖"
+
+#: troubleshoot.php:544
+msgid "Show Filesystems:"
+msgstr "បង្ហាញ​ប្រព័ន្ធ​ឯកសារ ៖"
+
+#: troubleshoot.php:563
+msgid "Override Settings"
+msgstr "បដិសេធ​ការ​កំណត់"
+
+#: troubleshoot.php:569
+msgid "Filesystem Aliases:"
+msgstr "ឈ្មោះ​ក្លែងក្លាយ​ប្រព័ន្ធ​ឯកសារ ៖"
+
+#: troubleshoot.php:572
+msgid "No aliases set"
+msgstr "មិន​បាន​កំណត់​ឈ្មោះ​ក្លែងក្លាយ"
+
+#: troubleshoot.php:578
+msgid "will be shown as"
+msgstr "នឹង​បង្ហាញ​ជា"
+
+#: troubleshoot.php:590
+msgid "Excluded Filesystems:"
+msgstr "ប្រព័ន្ធ​ឯកសារ​ដែល​ដក​ចេញ ៖"
+
+#: troubleshoot.php:593
+msgid "All filesystems with quota enabled will be shown."
+msgstr "ប្រព័ន្ធ​ឯកសារ​ទាំងអស់​ដែល​អនុញ្ញាត​កូតា​នឹង​បង្ហាញ ។"
+
+#: troubleshoot.php:600
+msgid "will be excluded from quota information."
+msgstr "នឹង​ត្រូវ​ដក​ចេញ​ពី​ព័ត៌មាន​កូតា ។"
+
+#: troubleshoot.php:612
+msgid "Override IMAP Size Quota:"
+msgstr "បដិសេធ​កូតា​ទំហំ IMAP ៖"
+
+#: troubleshoot.php:623 troubleshoot.php:643
+msgid "No override set"
+msgstr "មិន​បាន​កំណត់​បដិសេធ"
+
+#: troubleshoot.php:632
+msgid "Override IMAP Count Quota:"
+msgstr "បដិសេធ​កូតា​ចំនួន IMAP ៖"
+
+#: troubleshoot.php:636
+msgid "Files"
+msgstr "ឯកសារ"
+
+#: troubleshoot.php:652
+msgid "Always Refresh cPanel:"
+msgstr "ធ្វើ​ឲ្យ cPanel ស្រស់​ជានិច្ច ៖"
+
+#: troubleshoot.php:673 troubleshoot.php:676 troubleshoot.php:679
+msgid "Quota Output"
+msgstr "ទិន្ននផល​កូតា"
+
+#: troubleshoot.php:711
+msgid "You have"
+msgstr "អ្នក​មាន"
+
+#: troubleshoot.php:713
+msgid "error or warning"
+msgstr "កំហុស ឬ​ការ​ព្រមាន"
+
+#: troubleshoot.php:713
+msgid "errors or warnings"
+msgstr "កំហុស ឬ​ការ​ព្រមាន"
+
+#: troubleshoot.php:713
+msgid "in your configuration. You can find the details below."
+msgstr "ក្នុង​ការ​កំណត់​រចនាសម្ព័ន្ធ​របស់​អ្នក ។ អ្នក​អាច​រក​លម្អិត​ខាងក្រោម ។"
+
+#: troubleshoot.php:714
+msgid "Please correct"
+msgstr "សូម​កែ​សម្រួល"
+
+#: troubleshoot.php:714
+msgid "this error or warning"
+msgstr "កំហុស ឬ​ការ​ព្រមាន​នេះ"
+
+#: troubleshoot.php:714
+msgid "these errors or warnings"
+msgstr "កំហុស ឬ​ការ​ព្រមាន​ទាំងនេះ"
+
+#: troubleshoot.php:715
+msgid "in order to have &quot;Check Quota&quot; work properly."
+msgstr "ដើម្បី​ឲ្យ &quot;ការ​ពិនិត្យ​កូតា&quot; ធ្វើការ​យ៉ាង​ត្រឹមត្រូវ ។"
+
+#: troubleshoot.php:720
+msgid ""
+"Your configuration seems to be correct. &quot;Check Quota&quot; should work "
+"properly."
+msgstr ""
+"ការ​កំណត់​រចនា​សម្ព័ន្ធ​របស់​អ្នក​ហាក់​ដូចជា​ត្រឹមត្រូវ ។ &quot;ការ​ពិនិត្យ​កូតា&quot; គួរ​ធ្វើការ​យ៉ាង​"
+"ត្រឹមត្រូវ ។"
+

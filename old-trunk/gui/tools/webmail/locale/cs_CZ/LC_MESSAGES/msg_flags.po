@@ -1,0 +1,79 @@
+# Czech (cs_CZ) msg_flags Translation (SquirrelMail plugin)
+# Copyright (c) 2002-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Tomáš Drbohlav <tomas.drbohlav@mff.cuni.cz>, 2008.
+# $Id: msg_flags.pot 12740 2007-10-24 21:31:21Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: msg_flags 1.4.15a\n"
+"Report-Msgid-Bugs-To: Paul Lesniewski <paul@squirrelmail.org>\n"
+"POT-Creation-Date: 2007-10-27 17:43+0200\n"
+"PO-Revision-Date: 2009-05-01 15:48+0200\n"
+"Last-Translator: Tomáš Drbohlav <drb@karlov.mff.cuni.cz>\n"
+"Language-Team: Czech <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "This message is flagged"
+msgstr "Zpráva je označena příznakem"
+
+msgid "This message is high priority"
+msgstr "Zpráva má vysokou prioritou"
+
+msgid "This message is low priority"
+msgstr "Zpráva má nízkou prioritou"
+
+msgid "This message has an attachment"
+msgstr "Zpráva má přílohu"
+
+msgid "This message has been read"
+msgstr "Zpráva byla přečtena"
+
+msgid "This message is new"
+msgstr "Zpráva je nová"
+
+msgid "This message has been read & deleted"
+msgstr "Zpráva byla přečtena a smazána"
+
+msgid "This message is new & deleted"
+msgstr "Zpráva je nová a smazaná"
+
+msgid "This message has been read & answered"
+msgstr "Zpráva byla přečtena a zodpovězena"
+
+msgid "This message is new & answered"
+msgstr "Zpráva je nová a zodpovězená"
+
+msgid "Flag"
+msgstr "Označit"
+
+msgid "Unflag"
+msgstr "Odznačit"
+
+msgid "INBOX"
+msgstr "Doručená pošta"
+
+msgid "This message is Flagged"
+msgstr "Zpráva je označena příznakem"
+
+msgid "This message is High Priority"
+msgstr "Zpráva má vysokou prioritou"
+
+msgid "This message is Low Priority"
+msgstr "Zpráva má nízkou prioritou"
+
+msgid "This message is Mulitpart"
+msgstr "Zpráva má několik částí"
+
+msgid "This message is Read"
+msgstr "Zpráva je přečtená"
+
+msgid "This message is New"
+msgstr "Zpráva je nová"
+
+msgid " & Deleted"
+msgstr " a smazána"
+
+msgid " & Answered"
+msgstr " a zodpovězena"

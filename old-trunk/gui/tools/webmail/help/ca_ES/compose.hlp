@@ -1,0 +1,124 @@
+<chapter>
+   <title>
+      Redactar
+   </title>
+   <summary>
+      Amb aquesta opció, vostè podrà enviar missatges a diferent gent des de
+      SquirrelMail
+   </summary>
+   <description>
+      <p>
+      La opció del menú Redactar li portarà a una nova plana per redactar el
+      missatge. Aquí vostè trobarà diversos camps i botons. Depenent de com
+      hagi arribat a aquesta plana, alguns camps de la mateixa, podran estar
+      o no omplerts
+      </p>
+   </description>
+</chapter>
+
+<section>
+   <title>
+      A
+   </title>
+   <description>
+      <p>
+      Primer ha d'entrar la direcció de correu del destinatari o destinataris.
+      Per entrar més d'una direcció, separi-les amb el caràcter coma (",").
+      També pot utilitzar la llibreta de direccions fent clic al botó 
+      Direccions. No es preocupi si no pot veure totes les direccions a la
+      caixa de text (pot ser que algunes direccions quedin amagades a un dels
+      costats d'aquesta). 
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      CC
+   </title>
+   <description>
+      <p>
+      Esta desprès el <B>CC:</B>. CC es la abreviació per <B>C</B>arbon 
+      <B>C</B>opy (Copia carbó). Si vostè desitja enviar la copia del missatge
+      a alguna altra persona, es aquí on l'ha de posar. Els destinataris del
+      missatge veuran a la gent que li arriba aquesta copia carbó.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      BCC
+   </title>
+   <description>
+      <p>
+      BCC es la abreviació de <B>B</B>lind <B>C</B>arbon <B>C</B>opy 
+      (Copia Carbó Blindada). Utilitzi això per enviar la copia carbó 
+      blindada. El fet de que sigui blindada, implica que tothom que rebi
+      el missatge, veurà les direccions de <B>A:</B> i <B>CC:</B> però no
+      les del camp <B>BCC</B>.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Assumpte
+   </title>
+   <description>
+      <p>
+      Escrigui un títol que indiqui el motiu o contingut del missatge. Recordi
+      que aquest camp es el que es veurà en primer moment i un contingut
+      concret pot ser motiu de lectura o no del mateix, per part del receptor.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Botó de direccions
+   </title>
+   <description>
+      <p>
+      Aquest botó obrirà la llibreta de direccions. En aquesta llibreta es
+      mostraran totes les direccions que hi tinguem. També permetrà cercar
+      la direcció que contingui el text entrat a la caixa de text. Per 
+      seleccionar una direcció, només caldrà fer clic al damunt de la mateixa.
+      Més informació del llibre de direccions al capítol Direccions de l'ajut.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Missatge
+   </title>
+   <description>
+      <p>
+      Aquesta caixa de text es per escriure el text que es vol enviar. Si
+      s'ha creat una signatura, aquesta ja apareixerà introduïda dins 
+      d'aquesta.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Adjunt
+   </title>
+   <description>
+      <p>
+      Localitzat a la part de baix de la plana, aquesta opció permet que vostè
+      inclogui fitxers amb el missatge. El fitxer ha d'estar al seu ordinador
+      <I>local</I> o a la xarxa per adjuntar-lo. Un primer botó permet navegar
+      per buscar el fitxer a adjuntar. Una vegada trobat el fitxer, apareixerà
+      a la caixa de text Adjunt la direcció completa del fitxer. Per afegir-lo
+      a la llista d'adjunts, només cal fer clic al botó Afegir.
+      </p>
+      <p>
+      Una vegada que ja hi ha un o més d'un adjunt, apareix un botó que permet
+      esborrar el adjunts que es seleccionin amb la casella que cada adjunt 
+      te al costat.
+      <p>
+   </description>
+</section>

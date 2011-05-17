@@ -1,0 +1,122 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>{TR_RESELLER_MAIN_INDEX_PAGE_TITLE}</title>
+<meta name="robots" content="nofollow, noindex" />
+<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="{THEME_COLOR_PATH}/css/imscp.js"></script>
+<!--[if lt IE 7.]>
+<script defer type="text/javascript" src="{THEME_COLOR_PATH}/css/pngfix.js"></script>
+<![endif]-->
+  <script type="text/javascript">
+<!--
+function delete_order(url, domain) {
+	if (!confirm(sprintf("{TR_MESSAGE_DELETE_ACCOUNT}", domain)))
+		return false;
+	location = url;
+}
+//-->
+  </script>
+ </head>
+
+ <body onLoad="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.png','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.png','{THEME_COLOR_PATH}/images/icons/domains_a.png','{THEME_COLOR_PATH}/images/icons/general_a.png' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.png','{THEME_COLOR_PATH}/images/icons/webtools_a.png','{THEME_COLOR_PATH}/images/icons/statistics_a.png','{THEME_COLOR_PATH}/images/icons/support_a.png')">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" style="height:100%;padding:0;margin:0 auto;">
+<!-- BDP: logged_from -->
+<tr>
+ <td colspan="3" height="20" nowrap="nowrap" class="backButton">&nbsp;&nbsp;&nbsp;<a href="change_user_interface.php?action=go_back"><img src="{THEME_COLOR_PATH}/images/icons/close_interface.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /></a> {YOU_ARE_LOGGED_AS}</td>
+</tr>
+<!-- EDP: logged_from -->
+   <tr>
+    <td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" width="195" height="56" border="0" alt="i-MSCP Logogram" /></td>
+    <td style="height: 56px; width:100%; background-color: #0f0f0f"><img src="{THEME_COLOR_PATH}/images/top/top_left_bg.jpg" width="582" height="56" border="0" alt="" /></td>
+    <td style="width: 73px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_right.jpg" width="73" height="56" border="0" alt="" /></td>
+   </tr>
+   <tr>
+    <td style="width: 195px; vertical-align: top;">{MENU}</td>
+    <td colspan="2" style="vertical-align: top;">
+     <table style="width: 100%; padding:0;margin:0;" cellspacing="0">
+      <tr style="height:95px;">
+       <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
+       <td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" width="73" height="95" border="0" alt="" /></td>
+      </tr>
+      <tr>
+       <td colspan="3">
+	    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+         <tr>
+          <td align="left">
+		   <table width="100%" cellpadding="5" cellspacing="5">
+            <tr>
+             <td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_billing.png" width="25" height="25" alt="" /></td>
+             <td colspan="2" class="title">{TR_MANAGE_ORDERS}</td>
+            </tr>
+           </table>
+          </td>
+          <td width="27" align="right">&nbsp;</td>
+         </tr>
+         <tr>
+          <td>
+		   <!-- BDP: props_list -->
+           <table width="100%" cellspacing="3">
+            <!-- BDP: page_message -->
+            <tr>
+             <td width="35">&nbsp;</td>
+             <td colspan="7" class="title"><span class="message">{MESSAGE}<br /></span></td>
+            </tr>
+            <!-- EDP: page_message -->
+            <!-- BDP: orders_table -->
+            <tr>
+             <td width="35" align="center">&nbsp;</td>
+             <td class="content3" width="20" align="center"><span class="menu"><b>{TR_ID}</b></span></td>
+             <td class="content3"><b>{TR_DOMAIN}</b></td>
+             <td class="content3"><strong>{TR_HP}</strong></td>
+             <td class="content3"><strong>{TR_USER}</strong></td>
+             <td align="center" class="content3"><strong>{TR_STATUS}</strong></td>
+             <td width="200" colspan="2" align="center" class="content3"><b>{TR_ACTION}</b></td>
+            </tr>
+            <!-- BDP: order -->
+            <tr class="hl">
+             <td width="35" align="center">&nbsp;</td>
+             <td class="{ITEM_CLASS}" width="20" align="center">{ID}</td>
+             <td class="{ITEM_CLASS}">{DOMAIN}</td>
+             <td class="{ITEM_CLASS}">{HP}</td>
+             <td class="{ITEM_CLASS}">{USER}</td>
+             <td align="center" class="{ITEM_CLASS}">{STATUS}</td>
+             <td class="{ITEM_CLASS}" align="center"><img src="{THEME_COLOR_PATH}/images/icons/details.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="{LINK}" class="link">{TR_ADD}</a></td>
+             <td class="{ITEM_CLASS}" align="center"><img src="{THEME_COLOR_PATH}/images/icons/delete.png" width="16" height="16" border="0" style="vertical-align:middle" alt="" /> <a href="#" onClick="delete_order('orders_delete.php?order_id={ID}', '{DOMAIN}')" class="link">{TR_DELETE}</a></td>
+            </tr>
+            <!-- EDP: order -->
+            <!-- EDP: orders_table -->
+           </table>
+           <!-- EDP: props_list -->
+           <div align="right"><br />
+            <!-- BDP: scroll_prev_gray -->
+            <img src="{THEME_COLOR_PATH}/images/icons/flip/prev_gray.png" width="20" height="20" border="0" alt="" />
+            <!-- EDP: scroll_prev_gray -->
+            <!-- BDP: scroll_prev -->
+            <a href="orders.php?psi={PREV_PSI}"><img src="{THEME_COLOR_PATH}/images/icons/flip/prev.png" width="20" height="20" border="0" alt="" /></a>
+            <!-- EDP: scroll_prev -->
+            <!-- BDP: scroll_next_gray -->
+            &nbsp;<img src="{THEME_COLOR_PATH}/images/icons/flip/next_gray.png" width="20" height="20" border="0" alt="" />
+            <!-- EDP: scroll_next_gray -->
+            <!-- BDP: scroll_next -->
+            &nbsp;<a href="orders.php?psi={NEXT_PSI}"><img src="{THEME_COLOR_PATH}/images/icons/flip/next.png" width="20" height="20" border="0" alt="" /></a>
+            <!-- EDP: scroll_next -->
+           </div>
+		  </td>
+          <td>&nbsp;</td>
+         </tr>
+         <tr>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+         </tr>
+        </table>
+	   </td>
+      </tr>
+     </table>
+    </td>
+   </tr>
+  </table>
+ </body>
+</html>

@@ -1,0 +1,136 @@
+i-MSCP ChangeLog
+~~~~~~~~~~~~~~~~
+
+2010-12-15 Sascha Bay
+	- GUI:
+	    Fixed #51: Enhancement - Change Package actions if software is installed
+
+2010-12-12 Daniel Andreca
+	- GUI:
+		Fixed #50: Patch to fix the exception when switching users ( Ratatoille please stop copy and think before)
+
+2010-12-12 Sascha Bay
+	- GUI:
+		Added new feature * Websoftware depot * to the i-MSCP app installer
+		Added new feature * i-MSCP app installer options *
+		Fixed some error in the app installer
+
+2010-12-09 Sascha Bay
+	- GUI:
+		Fixed #49: Some improvements on multilanguage.php
+
+2010-12-09 Laurent Declercq
+	- GUI:
+		Added iMSCP_Database_ResultSet::fetchAll() method to be able to fetches all rows from the current result set
+		iMSCP_Config_Handler: Some re-factorization tasks
+		iMSCP_Config_Handler_Db: Added counter for delete queries + some re-factorization tasks
+		IMSCP_Database: Added quote() method + some re-factorization tasks
+
+2010-12-08 Sascha Bay
+	- MAINTSCRIPTS:
+		Fixed #48: Licence header for create_release.sh
+
+2010-12-07 Sascha Bay
+	- CONFIGS:
+		Fixed: Exceeding Fcgid (>= 2.3.6) Max Request Lenght (MaxRequestLenght) while PHP upload
+	- GUI:
+		Added on-click-logon ftp-user (Thanks to William Lightning)
+
+2010-12-07 Laurent Declercq
+		Fixed: Call to undefined method iMSCP_Database::close()
+
+2010-12-05 Laurent Declercq
+	- GUI:
+		* Fixed: Setting services ports feature is broken since new template integration
+		* Fixed: Wrong service port name...
+		* Fixed: Services that are not visible are not hidden
+		* Fixed: Optional services should not be visible on server status page
+
+2010-12-04 Laurent Declercq
+	- GUI:
+		* Added iMSCP_Services class to be able to get services properties and their status
+		* Added i-MSCP daemon service properties in database
+		* Fixed: Database update from frontend is broken
+		* Fixed: Pages messages are not displayed correctly
+		* Fixed: Unable to switch back (Reseller to Admin)
+		* Rewritten the admin/server_status.php script
+
+2010-12-03 Laurent Declercq
+	- GUI:
+		* Fixed #39: Cosmetics - Missing background for the datepicker header
+
+2010-12-03 Sascha Bay
+	- GUI:
+		* Fixed #37: Cosmetics - Hosting plan Header Color
+		* Fixed #38: Defect - Missing checkbox for hostingplan Terms of Service
+	- TOOLS:
+		* Fixed #40: Updated phpMyAdmin to version 3.3.8.1
+
+2010-12-02 Sascha Bay
+	- GUI:
+		* Fixed #36: Deprecated: Call-time pass
+
+2010-12-02 Laurent Declercq
+	- GUI:
+		* Improved gen_page_message() function to be able to choose message type (info|warning|error)
+		* Improved both login and lost password pages
+		* Fixed #35: Defect - Missing back stick in SQL
+
+2010-11-30 Laurent Declercq
+	- GUI
+		* Added properties description in iMSCP_Config_Handler_File to avoid warnings with some IDE
+		* Fixed: Warnings that cause breaks (encoding errors): Call-time pass-by-reference has been deprecated... in:
+			- admin/software_manage.php (Lines 652, 653, 654)
+			- reseller/index.php (line 356)
+			- reseller/software_upload.php (Lines 500, 541)
+		* Fixed: Wrong vertical aligment for login box
+		* Removed useless 'tr' admin/admin_add.tpl
+		* Some re-factorization tasks in admin/software_manage.php
+
+2010-11-25 Sascha Bay
+	- PACKAGE:
+		Added application installer feature
+
+2010-11-24 Daniel Andreca
+	- CONFIGS:
+		* Fixed #27: Add logger to build script
+	- ENGINE:
+		* Fixed #29: Wrong link during Setup
+
+2010-11-23 Daniel Andreca
+	- CONFIGS:
+		* Fixed #26: Warnings in build script being installed via serial console
+
+2010-11-21 Daniel Andreca
+	- CONFIGS:
+		* Fixed #23: Merge Config files if not Distribution specific
+		* Fixed #24: Missing Program "Dialog" in pagackelist
+	- FEATURE
+		* New build system
+	- DOCS
+		* Fixed #25: Little Error in INSTALL
+
+2010-11-20 Peter Ziergoebel
+	- GUI:
+		* New feature: Date picker for domain expire input fields
+
+2010-11-18 Björn Romanski
+	- GUI:
+		* Update Net_IDNA to 0.6.9
+
+2010-11-16 Laurent Declercq
+	- GUI:
+		* Fixed #5 Update - jQuery - version 1.4.4 available
+
+2010-11-16 Sascha Bay
+	- GUI:
+		* Fixed #10: IP-Overview for admin and reseller
+		* Fixed #12: Some CSRF issues in admin log
+
+2010-11-15 Daniel Andreca
+	- ENGINE:
+		* RKhunter update fail should not fail installation
+
+2010-11-13 Daniel Andreca
+	- ENGINE:
+		* Fixed #3: Defect - Wrong DNS entry when using multiple IP for alternative URL to reach your website

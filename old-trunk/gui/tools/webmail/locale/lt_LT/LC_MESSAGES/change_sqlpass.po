@@ -1,0 +1,136 @@
+# Lithuanian translation of 
+# SquirrelMail change_sqlpass plugin.
+# Copyright (C) 2003 Free Software Foundation, Inc
+# Copyright (c) 2006-2009 The SquirrelMail Project Team
+# Tomas Kuliavas <tokul@users.sourceforge.net>, 2003.
+# Tomas Kuliavas <tokul@users.sourceforge.net>, 2006.
+# $Id: change_sqlpass.po 13696 2009-05-14 06:27:08Z jervfors $
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: change_sqlpass 3.3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-05-28 11:18+0200\n"
+"PO-Revision-Date: 2006-06-21 08:57+0300\n"
+"Last-Translator: Tomas Kuliavas <tokul@users.sourceforge.net>\n"
+"Language-Team: Lithuanian <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit"
+
+msgid "Could not find Pear DB library"
+msgstr "Nepavyko įkelti Pear DB bibliotekos"
+
+msgid "Could not make database connection"
+msgstr "Nepavyko prisijungti prie duomenų bazės"
+
+#, php-format
+msgid "DATABASE ERROR: could not lookup force change password flag: %s"
+msgstr "DUOMENŲ BAZĖS KLAIDA: nepavyko nustatyti priverstinio slaptažodžio keitimo žymės: %s"
+
+#, php-format
+msgid ""
+"Force change password query result is: %s<br />Query was: %s<br /><br />"
+msgstr ""
+"Priverstinio slaptažodžio keitimo užklausos rezultatas: %s<br />Naudota užklausa: %s<br /><br />"
+
+msgid "Change Password"
+msgstr "Pakeisti slaptažodį"
+
+msgid "Use this to change your email password."
+msgstr "Čia Jūs galite pasikeisti naudojamą pašto slaptažodį."
+
+msgid ""
+"Password changed successfully.<br />Please use your new password to log in "
+"from now on."
+msgstr "Slaptažodis sėkmingai pakeistas.<br />Nuo šiol prisijungimo metu naudokite naująjį slaptažodį."
+
+msgid "Password change cancelled.<br />Your password has NOT been changed."
+msgstr "Slaptažodžio pakeitimas atšauktas.<br />Jūsų slaptažodis nebuvo pakeistas."
+
+msgid ""
+"Periodically, we ask that you change your password.  This is done to help "
+"maintain good security for your email account."
+msgstr "Sistema periodiškai prašo Jūsų pakeisti slaptažodį. Tai yra daroma siekiant"
+"pagerinti Jūsų pašto sąskaitos saugumą."
+
+msgid "Change Password - Secure"
+msgstr "Slaptažodžio keitimas - Saugus"
+
+msgid "Old Password"
+msgstr "Senas slaptažodis"
+
+msgid "New Password"
+msgstr "Naujas slaptažodis"
+
+msgid "Verify New Password"
+msgstr "Patvirtinkite naują slaptažodį"
+
+msgid "Submit"
+msgstr "Keisti"
+
+msgid "Cancel"
+msgstr "Atšaukti"
+
+#, php-format
+msgid "DATABASE ERROR: could not lookup salt: %s"
+msgstr "DUOMENŲ BAZĖS KLAIDA: nepavyko nustatyti kodavimo simbolių: %s"
+
+#, php-format
+msgid "Password query result is: %s<br />Query was: %s<br /><br />"
+msgstr "Slaptažodžio užklausos rezultatas: %s<br />Naudota užklausa: %s<br /><br />"
+
+msgid "You must type in your old password"
+msgstr "Jūs turite įvesti savo senąjį slaptažodį"
+
+msgid "Your old password is not correct"
+msgstr "Jūsų senasis slaptažodis yra neteisingas"
+
+#, php-format
+msgid "DATABASE ERROR: could not lookup old password: %s"
+msgstr "DUOMENŲ BAZĖS KLAIDA: nepavyko aptikti senojo slaptažodžio: %s"
+
+msgid "Your old password does not match"
+msgstr "Jūsų senasis slaptažodis yra neteisingas"
+
+msgid "You must type in a new password"
+msgstr "Jūs turite įvesti naują slaptažodį"
+
+#, php-format
+msgid "Your new password is too short.  It must be at least %s characters long"
+msgstr "Naujasis slaptažodis yra per trumpas. Slaptažodį turi sudaryti bent %s simboliai"
+
+#, php-format
+msgid ""
+"Your new password is too long.  It must be no more than %s characters long"
+msgstr "Naujasis slaptažodis yra per ilgas. Slaptažodis turi neviršyti %s simbolių"
+
+msgid "Please include at least one digit in your new password"
+msgstr "Naujame slaptažodyje turi būti bent vienas skaitmuo"
+
+msgid "Please include at least one upper-case letter in your new password"
+msgstr "Naujame slaptažodyje turi būti bent viena didžioji raidė"
+
+msgid "Please include at least one lower-case letter in your new password"
+msgstr "Naujame slaptažodyje turi būti bent viena mažoji raidė"
+
+msgid ""
+"Please include at least one non-alphanumeric character (such as @, - or _) "
+"in your new password"
+msgstr "Naujame slaptažodyje turi būti bent vienas ne raidinis ar skaitmeninis simbolis."
+"Pvz.: @ arba _."
+
+msgid "You must also type in your new password in the verify box"
+msgstr "Jūs turite dar kartą įvesti slaptažodį patvirtinimo laukelyje"
+
+msgid "Your new password does not match the verify password"
+msgstr "Naujasis slaptažodis nesutampa su slaptažodžiu įvestu patvirtinimo "
+"laukelyje"
+
+msgid "Your new password must be different than your old password"
+msgstr "Jūsų naujasis slaptažodis turi skirtis nuo senojo"
+
+#, php-format
+msgid "DATABASE ERROR: could not update password: %s"
+msgstr "DUOMENŲ BAZĖS KLAIDA: nepavyko atnaujinti slaptažodžio: %s"
+

@@ -1,0 +1,152 @@
+#
+# Postfix master process configuration file.  For details on the format
+# of the file, see the Postfix master(5) manual page.
+#
+# ==========================================================================
+# service type  private unpriv  chroot  wakeup  maxproc command + args
+#               (yes)   (yes)   (yes)   (never) (100)
+# ==========================================================================
+smtp      inet  n       -       y       -       -       smtpd
+
+# Used by clients that are standard compliant - port 587
+submission inet  n       -       y       -       -       smtpd
+   -o smtpd_etrn_restrictions=reject
+   -o smtpd_sasl_auth_enable=yes
+   -o smtpd_client_restrictions=permit_sasl_authenticated,reject
+
+# When using Amavisd, replace the service above by the following
+# submission inet  n       -       y       -       -       smtpd
+#   -o smtpd_etrn_restrictions=reject
+#   -o smtpd_sasl_auth_enable=yes
+#   -o content_filter=smtp-amavis:[127.0.0.1]:10026
+#   -o smtpd_client_restrictions=permit_sasl_authenticated,reject
+
+# smtps - Un-comment if TLS is avaiable/used
+#465      inet  n       -       y       -       -       smtpd
+#   -o smtpd_tls_wrappermode=yes
+#   -o smtpd_sasl_auth_enable=yes
+#   -o smtpd_client_restrictions=permit_sasl_authenticated,reject
+
+#628      inet  n       -       n       -       -       qmqpd
+pickup    fifo  n       -       y       60      1       pickup
+cleanup   unix  n       -       y       -       0       cleanup
+qmgr      fifo  n       -       n       300     1       qmgr
+#qmgr     fifo  n       -       n       300     1       oqmgr
+tlsmgr    unix  -       -       n       1000?   1       tlsmgr
+rewrite   unix  -       -       y       -       -       trivial-rewrite
+bounce    unix  -       -       y       -       0       bounce
+defer     unix  -       -       y       -       0       bounce
+trace     unix  -       -       n       -       0       bounce
+verify    unix  -       -       n       -       1       verify
+flush     unix  n       -       n       1000?   0       flush
+proxymap  unix  -       -       n       -       -       proxymap
+smtp      unix  -       -       n       -       -       smtp
+# When relaying mail as backup MX, disable fallback_relay to avoid MX loops
+relay     unix  -       -       n       -       -       smtp
+   -o fallback_relay=
+#   -o smtp_helo_timeout=5 -o smtp_connect_timeout=5
+showq     unix  n       -       y       -       -       showq
+error     unix  -       -       y       -       -       error
+discard   unix  -       -       n       -       -       discard
+local     unix  -       n       n       -       -       local
+virtual   unix  -       n       n       -       -       virtual
+lmtp      unix  -       -       y       -       -       lmtp
+anvil     unix  -       -       n       -       1       anvil
+scache    unix  -       -       n       -       1       scache
+
+# ====================================================================
+# i-MSCP a internet Multi Server Control Panel
+#
+# @copyright	2006-2010 by ispCP | http://isp-control.net
+# @copyright	2006-2010 by i-MSCP | http://i-mscp.net
+# @version		SVN: $Id$
+# @link			http://i-mscp.net
+# @author		ispCP Team
+# @author		i-MSCP Team
+# ====================================================================
+
+# Postfix to Amavisd
+#amavis    unix  -       -       y       -       2       smtp
+#   -o smtp_data_done_timeout=1200
+#   -o smtp_send_xforward_command=yes
+#   -o disable_dns_lookups=yes
+#   -o max_use=20
+
+# Amavisd to postfix (mails re-injection)
+#127.0.0.1:10025 inet  n -       y       -      -        smtpd
+#   -o content_filter=
+#   -o local_recipient_maps=
+#   -o relay_recipient_maps=
+#   -o smtpd_restriction_classes=
+#   -o smtpd_client_restrictions=
+#   -o smtpd_helo_restrictions=
+#   -o smtpd_sender_restrictions=
+#   -o smtpd_recipient_restrictions=permit_mynetworks,reject
+#   -o smtpd_data_restrictions=reject_unauth_pipelining
+#   -o smtpd_end_of_data_restrictions=
+#   -o mynetworks=127.0.0.0/8
+#   -o strict_rfc821_envelopes=yes
+#   -o smtpd_error_sleep_time=0
+#   -o smtpd_soft_error_limit=1001
+#   -o smtpd_hard_error_limit=1000
+#   -o smtpd_client_connection_count_limit=0
+#   -o smtpd_client_connection_rate_limit=0
+#   -o receive_override_options=no_address_mappings,no_header_body_checks,no_unknown_recipient_checks
+#   -o local_header_rewrite_clients=
+
+# Amavisd  - Notification only (to avoid no_address_mapping)
+#127.0.0.1:10029 inet n  -       y       -       -  smtpd
+#   -o content_filter=
+#   -o smtpd_delay_reject=no
+#   -o local_recipient_maps=
+#   -o relay_recipient_maps=
+#   -o smtpd_restriction_classes=
+#   -o smtpd_client_restrictions=
+#   -o smtpd_helo_restrictions=
+#   -o smtpd_sender_restrictions=
+#   -o smtpd_recipient_restrictions=permit_mynetworks,reject
+#   -o smtpd_data_restrictions=reject_unauth_pipelining
+#   -o smtpd_end_of_data_restrictions=
+#   -o mynetworks=127.0.0.0/8
+#   -o strict_rfc821_envelopes=yes
+#   -o smtpd_error_sleep_time=0
+#   -o smtpd_soft_error_limit=1001
+#   -o smtpd_hard_error_limit=1000
+#   -o smtpd_client_connection_count_limit=0
+#   -o smtpd_client_connection_rate_limit=0
+#   -o receive_override_options=no_header_body_checks,no_unknown_recipient_checks
+#   -o local_header_rewrite_clients=
+
+#
+# iMSCP auto responder service
+#
+
+imscp-arpl unix  -      n       n       -       -       pipe
+  flags=O user=vmail argv=/srv/www/imscp/engine/messenger/imscp-arpl-msgr
+
+# ====================================================================
+# Interfaces to non-Postfix software. Be sure to examine the manual
+# pages of the non-Postfix software to find out what options it wants.
+#
+# Many of the following services use the Postfix pipe(8) delivery
+# agent.  See the pipe(8) man page for information about ${recipient}
+# and other message envelope options.
+# ====================================================================
+#
+# maildrop. See the Postfix MAILDROP_README file for details.
+# Also specify in main.cf: maildrop_destination_recipient_limit=1
+#
+maildrop  unix  -       n       n       -       -       pipe
+  flags=DRhu user=vmail argv=/usr/local/bin/maildrop -d ${recipient}
+cyrus     unix  -       n       n       -       -       pipe
+  user=cyrus argv=/usr/lib/cyrus/bin/deliver -e -r ${sender} -m ${extension} ${user}
+uucp      unix  -       n       n       -       -       pipe
+  flags=Fqhu user=uucp argv=uux -r -n -z -a$sender - $nexthop!rmail ($recipient)
+ifmail    unix  -       n       n       -       -       pipe
+  flags=F user=ftn argv=/usr/lib/ifmail/ifmail -r $nexthop ($recipient)
+bsmtp     unix  -       n       n       -       -       pipe
+  flags=Fq. user=foo argv=/usr/local/sbin/bsmtp -f $sender $nexthop $recipient
+procmail  unix  -       n       n       -       -       pipe
+  flags=R user=nobody argv=/usr/bin/procmail -t -m /etc/procmailrc ${sender} ${recipient}
+retry     unix  -       -       n       -       -       error
+proxywrite unix -       -       n       -       1       proxymap

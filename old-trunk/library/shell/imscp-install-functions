@@ -1,0 +1,526 @@
+#!/bin/sh
+
+# i-MSCP a internet Multi Server Control Panel
+#
+# Copyright (C) 2010 by internet Multi Server Control Panel - http://i-mscp.net
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+# or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+# for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>
+#
+# The Original Code is "i-MSCP internet Multi Server Control Panel".
+#
+# The Initial Developer of the Original Code is i-MSCP Team.
+# Portions created by Initial Developer are Copyright (C) 22010 by
+# internet Multi Server Control Panel. All Rights Reserved.
+#
+# @category		i-MSCP
+# @copyright	2010 by i-MSCP | http://i-mscp.net
+# @author		Daniel Andreca <sci2tech@i-mscp.net>
+# @version		SVN: $Id: imscp-install-functions 3917 2010-11-30 21:20:52Z sci2tech $
+# @link			http://i-mscp.net i-MSCP Home Site
+# @license		http://www.gnu.org/licenses/ GPL v2
+
+# testCommand() {{{
+#
+# Check if a commend is available and if yes save path to it in $COMMAND variable
+# If is not available either exit with error (if ${2} is set and <> 0)
+# either trigger an warning
+# @param	string ${1}	Command
+# @param	string ${2}	Everithing != to 0 will trigger an error and script exit if command is not available
+# @return	integer	$XX Code returned by which command
+testCommand() {
+		writelog "Testing for ${1} command...";
+		A=$(which "${1}")
+		XX=$?
+		if [ "${XX}" = "0" ]; then
+			writelog "${1} found ${A}"
+			eval ${1}=$A
+			oktxt
+			writelog "\n"
+		else
+			writelog "NOT FOUND ${1}!!!"
+			if [ "${2}" != "0" ]; then
+				failtxt
+				writelog "\n"
+			else
+				warntxt
+				writelog "\n"
+			fi
+		fi
+	return $XX;
+}
+# }}}
+
+# testAnyCommand() {{{
+#
+# Get a list of equivalent commands and test if any is available. First
+# available command will de saved as variable name taken from seccond parameter
+# If none is available will trigger error and exit
+# @param string ${1}	list of equivalent commands
+# @param string ${2}	Name of variable that will contain path to command
+# @return	void
+testAnyCommand() {
+	local _rval=${2}
+	rs=1
+	for COMM in $1; do
+		testCommand "${COMM}" 0
+		if [ $? = "0" ]; then
+			rs=0
+			eval $_rval=\$$COMM
+			return
+		fi
+	done
+	if [ $rs != "0" ]; then
+		writelog  "None of following ${1} where found"
+		failtxt
+	fi
+}
+# }}}
+
+# sys_folder() {{{
+#
+# Create a varible name site wide available and store path to a folder
+# (after expanding any variable contained in path) then folder refered
+# by variable is created
+# @param string ${1}	variable name
+# @param string ${2}	folder path (can be saved as ${OTHER_VARIABLE}/SOME/PATH)
+# @return	void
+sys_folder() {
+	#expand variable path and save as ${1} variable
+	eval ${1}="${2}"
+	#dir will contain path to folder
+	eval dir="\$${1}"
+	#if variable is not empty
+	if [ ${dir} ]; then
+		#and if folder refered by variable exist delete it
+		if [ -d ${dir} ]; then ${rm} -r ${dir}; fi
+		#create an empty one
+		${mkdir} -p ${dir};
+		#trigger error if not success
+		if [ $? != 0 ]; then
+			writelog "Can not create folder $dir"; warntxt; writelog "\n";
+			WARNINGS="${WARNINGS}\nCan not create folder $dir";
+		else writelog "Create $dir"; oktxt; writelog "\n";
+		fi
+	fi
+}
+# }}}
+
+# make_folder() {{{
+#
+# Create a folder reffered by ${1} variable. No variable is exported
+# @param string ${1}	folder path (can be saved as ${OTHER_VARIABLE}/SOME/PATH)
+# @return	void
+make_folder() {
+	#dir will contain path to folder
+	eval dir="${1}"
+	#if variable is not empty
+	if [ ${dir} ]; then
+		#and if folder refered by variable exist delete it
+		if [ -d ${dir} ]; then ${rm} -r ${dir}; fi
+		#create an empty one
+		${mkdir} -p ${dir};
+		#trigger error if not success
+		if [ $? != 0 ]; then writelog "Can not create folder $dir"; warntxt; writelog "\n";
+			WARNINGS="${WARNINGS}\nCan not create folder $dir";
+		else writelog "Create folder $dir"; oktxt; writelog "\n";
+		fi
+	fi
+}
+# }}}
+
+# make_file() {{{
+#
+# Create a file reffered by ${1} variable. No variable is exported
+# @param string ${1}	file path (can be saved as ${OTHER_VARIABLE}/SOME/PATH/filename)
+# @return	void
+make_file() {
+	#file will contain path to folder
+	eval file=${1}
+	#if variable is not empty
+	if [ ${file} ]; then
+		#and if file refered by variable exist delete it
+		if [ -f ${file} ]; then ${rm} ${file}; fi
+		#create an empty one
+		${touch} ${file};
+		#trigger warning if not success
+		if [ $? != 0 ]; then
+			writelog "Can not create file $file"; warntxt; writelog "\n";
+			WARNINGS="${WARNINGS}\nCan not create file $file";
+		else writelog "Create file $file"; oktxt; writelog "\n";
+		fi
+	fi
+}
+# }}}
+
+# copy_config_file() {{{
+#
+# copy a file or folder from curent folder or if is not available from
+# common config folder into a folder and rename if new name is suplied
+# @param string ${1}	file to copy as /destinationpath/[newname/]filename
+# @return	void
+copy_config_file() {
+	#expand variable
+	eval file="${1}"
+	#if variable is not empty
+	if [ "${file}" ]; then
+		source=$(basename ${file})
+		destination=$(dirname ${file})
+		#if source is not in current folder or in common config folder trigger a warning
+		if [ ! -e "${source}" ] && [ ! -e "${COMMON_PATH}$FOLDER/${source}" ]; then
+			writelog "Not found ${source} in ${OS_PATH}${FOLDER} or ${COMMON_PATH}$FOLDER";
+			warntxt;
+			WARNINGS="${WARNINGS}\nNot found ${source} in ${OS_PATH}${FOLDER} or ${COMMON_PATH}$FOLDER";
+			writelog "\n";
+			return;
+		fi
+		#if source is in current folder
+		if [ -e "${source}" ]; then
+			#If is directory copy it recursive
+			if [ -d "${source}" ]; then
+				#first copy folder from common config file
+				$cp -R "${COMMON_PATH}$FOLDER/${source}" "${destination}";
+			fi
+			#then copy folder from source replacing versions from common folder
+			#with spcific distro
+			$cp -fR "${source}" "${destination}";
+		else
+			#if is not in current folder copy only version from common folder
+			$cp -R "${COMMON_PATH}$FOLDER/${source}" "${destination}";
+		fi
+		#trigger error if not success and exit
+		if [ $? != 0 ]; then
+			writelog "Can not copy file $file"; failtxt;
+		else
+			writelog "Copy file $file"; oktxt; writelog "\n";
+		fi
+	fi
+}
+# }}}
+
+# copy_file() {{{
+#
+# copy a file or folder from curent folder into a folder and rename if
+# new name is suplied
+# @param string ${1}	file to copy as /destinationpath/[newname/]filename
+# @return	void
+copy_file() {
+	#expand variable
+	eval file=${1}
+	#if variable not empty
+	if [ "${file}" ]; then
+		source=$(basename "${file}")
+		destination=$(dirname "${file}")
+		#copy file  as /destinationpath/[newname]
+		eval "$cp -R ${source} ${destination}";
+		#trigger error if not success and exit
+		if [ $? != 0 ]; then
+			writelog "Can not copy file $file"; failtxt;
+		else
+			writelog "Copy file $file"; oktxt; writelog "\n";
+		fi
+	fi
+}
+# }}}
+
+# chown_file() {{{
+#
+# Parse string in format owner:group|file into owner:group and file  then pass to _chown_file
+# @param string ${1}	mode and file/folder to chown
+# @return	void
+chown_file() {
+	_chown_file $(echo ${1} | awk -F "|" '{print $1" "$2}')
+}
+# }}}
+
+# _chown_file() {{{
+#
+# Change owner for file/folder
+# @param string ${1}	owner
+# @param string ${2}	file/folder
+# @return	void
+_chown_file() {
+	#expand file variable
+	eval file=${2}
+	#expand file variable
+	eval owner=${1}
+	if [ "${file}" ]; then
+		#change owner
+		eval "${chown} -R $owner $file"
+		#trigger warning if not succesfull
+		if [ $? != 0 ]; then
+			writelog "Can not change owner $file"; warntxt; writelog "\n";
+			WARNINGS="${WARNINGS}\nCan not change owner $file";
+		else writelog "Change owner $file"; oktxt; writelog "\n";
+		fi
+	fi
+}
+# }}}
+
+# chmod_file() {{{
+#
+# Parse string in format mode|file into mode and file then pass to _chmod_file
+# @param string ${1}	mode and file/folder to change
+# @return	void
+chmod_file() {
+	_chmod_file $(echo ${1} | awk -F "|" '{print $1" "$2}')
+}
+# }}}
+
+# _chmod_file() {{{
+#
+# Change access mode for file/folder
+# @param string ${1}	mode
+# @param string ${2}	file/folder
+# @return	void
+_chmod_file(){
+	#expand file variable
+	eval file=${2}
+	#expand file variable
+	eval mode=${1}
+	if [ "${file}" ]; then
+		#change permissions
+		eval "${chmod} -R $mode $file"
+		#trigger warning if not succesfull
+		if [ $? != 0 ]; then
+			writelog "Can not mode $file"; warntxt; writelog "\n";
+			WARNINGS="${WARNINGS}\nCan not mode $file";
+		else writelog "Change mode $file"; oktxt; writelog "\n";
+		fi
+	fi
+}
+# }}}
+
+# writelog() {{{
+#
+# Load distribution specific variable. For file format see process_install function
+# @param string ${1}	SO / Distribution name
+# @return	void
+# @see process_install
+specific() {
+	VFILE=$(echo "${SELFDIR}/${1}" | tr [:upper:] [:lower:])
+	if [ ! -f "$VFILE" ];then
+		colortxt 'yellow' "$VFILE not found"; failtxt;
+	fi
+	#load file
+	. $VFILE
+	#@see process_install
+	process_install
+}
+# }}}
+
+# process_file() {{{
+#
+# Parse config/common folders. For each folder in common file try to load
+# install file from corespond to distribution folder  (ex:configs/debian/proftpd)
+# in order to process config files depending on distribution specifics
+# requirements. $_os variable contain name of distribution / operation system
+# @return	void
+# @see process_install
+process_file() {
+	OS_PATH=${SELFDIR}/configs/${_os}/
+	COMMON_PATH=${SELFDIR}/configs/common/
+	#get list of folders from configs/common/
+	for FOLDER in "" $(find $SELFDIR/configs/common/ -maxdepth 1 -type d | awk -F "${SELFDIR}/configs/common/" '{print $2}');
+	do
+		#ignore subversion specific folder
+		if [ "${FOLDER}" = '.svn' ]; then
+			writelog "You should remove subversion specific folders (.svn)"; warntxt; writelog "\n";
+			#define a message to display for sumarize at end of script
+			WARNINGS="${WARNINGS}\nYou should remove subversion specific folders (.svn)";
+			continue;
+		fi
+		#if folder exits in distribution specific build path to install
+		#file in distribuiton coresponding folder
+		if [ ${FOLDER} ]; then INSTALL=${OS_PATH}${FOLDER}/install; else INSTALL=${OS_PATH}${FOLDER}install; fi
+		#trigger a warning if not exists
+		if [ ! -e ${OS_PATH}${FOLDER} ]; then
+			writelog "${OS_PATH}${FOLDER} not exists"; warntxt; writelog "\n";
+			#define a message to display for sumarize at end of script
+			WARNINGS="${WARNINGS}\n${OS_PATH}${FOLDER} not exists";
+		else
+			#trigger a warning if install file not exists
+			if [ ! -e ${INSTALL} ]; then
+				writelog "$${INSTALL} not exists"; warntxt; writelog "\n";
+				#define a message to display for sumarize at end of script
+				WARNINGS="${WARNINGS}\n${INSTALL} not exists";
+			else
+				#load install file
+				. ${INSTALL};
+				#change curent folder to distribution folder (ex:configs/debian/proftpd)
+				cd ${OS_PATH}${FOLDER}
+				#@see process_install
+				process_install
+				#Change back to root folder
+				cd ${SELFDIR}
+			fi
+		fi
+	done
+}
+# }}}
+
+# process_install() {{{
+#
+# ( [] paranthesis are used here to signal optional component)
+# Install file or folder containing any of variables:
+# SYSTEM_FOLDERS	list of variable that contain path to a folder to be created
+# 					Variable names can be used when build a path to a file or folder
+# 					format: VARIABLE_NAME=[${SYSTEM_FOLDER}]/path/to/folder
+# FOLDERS			list of variable that contain path to a folder to be created
+# 					format: ${SYSTEM_FOLDER}/path/to/folder
+# COPY_CONFIG_FILE	list of file or folders to be copied and if new name is
+# 					specificated, rename it. File / folder must be in working folder
+# 					If a folder is refered, first is copied folder from config/common then
+# 					if exists folder in working folder is copied overwriting any already
+# 					existing file.
+# 					If a file is refered is copied file from current folder. If file do
+# 					not exists in current folder, is copied variant from config/common path
+# 					format: ${SYSTEM_FOLDER}/path/to/copy/into/[newname]/file_or_folder_to_copy
+# COPY_FILE		list of file or folders to be copied and if new name is specificated, rename it.
+# 					File / folder must be in working folder
+# 					format: ${SYSTEM_FOLDER}/path/to/copy/into/[newname]/file_or_folder_to_copy
+# CREATE_FILE		list of variable that contain filenames to be created
+# 					format: ${DEFINED_SYSTEM_FOLDER_VARIABLE}/path/to/folder/file_name
+# CHOWN_FILE		list of variable that contain path to a folder / file to
+# 					change owner. If a folder is refered, new owner is set recursive
+# 					format: owner:group|${DEFINED_SYSTEM_FOLDER_VARIABLE}/path/to/folder_or_file
+# CHMOD_FILE		list of variable that contain path to a folder / file to
+# 					set permissions. If a folder is refered, new acceses are set recursive
+# 					format: permissions|${DEFINED_SYSTEM_FOLDER_VARIABLE}/path/to/folder_or_file
+# @return	void
+process_install() {
+		for folders in $SYSTEM_FOLDERS; do
+			sys_folder $(echo $folders | awk -F "=" '{print $1" "$2}')
+		done
+		SYSTEM_FOLDERS=''
+		for folders in $FOLDERS; do
+			make_folder $(echo $folders | awk -F "=" '{print $1" "$2}')
+		done
+		FOLDERS=''
+		for file in $COPY_CONFIG_FILE; do
+			copy_config_file $file
+		done
+		COPY_CONFIG_FILE=''
+		for file in $COPY_FILE; do
+			copy_file $file
+		done
+		COPY_FILE=''
+		for file in $CREATE_FILE; do
+			make_file $file
+		done
+		CREATE_FILE=''
+		for file in $CHOWN_FILE; do
+			chown_file $file
+		done
+		CHOWN_FILE=''
+		for file in $CHMOD_FILE; do
+			chmod_file $file
+		done
+		CHMOD_FILE=''
+}
+# }}}
+
+# builddaemon() {{{
+#
+# Build daemon
+# @return	void
+builddaemon() {
+	cd ${SELFDIR}/tools/daemon
+	$rm -vrf *~
+	$rm -vrf *.o
+	$rm -vrf imscp_daemon
+	make
+	if [ $? = 0 ]; then
+		writelog "Daemon builded successful"; oktxt; writelog "\n"
+	else
+		writelog "Fail build daemon"; failtxt; writelog "\n"
+	fi
+	make_folder ${SYSTEM_ROOT}/daemon
+	copy_file ${SYSTEM_ROOT}/daemon/imscp_daemon
+	make clean
+	cd ${SELFDIR}
+}
+# }}}
+
+# engine() {{{
+#
+# Parse engine folders and if file named install is found file is proccesed
+# @return	void
+# @see process_install
+engine() {
+	#path to engine folder
+	ENGINE=${SELFDIR}/engine/
+	for FOLDER in "" $(find $ENGINE -maxdepth 1 -type d | awk -F "$ENGINE" '{print $2}');
+	#read all contained folders
+	do
+		#build path to install file. Currebt folder will be represented as null so no / needed
+		if [ ${FOLDER} ]; then INSTALL=${ENGINE}${FOLDER}/install; else INSTALL=${ENGINE}${FOLDER}install; fi
+		cd ${ENGINE}${FOLDER}
+		#If install file exists load and process
+		if [ -f ${INSTALL} ]; then
+			. ${INSTALL}
+			process_install
+		fi
+		cd ${SELFDIR}
+	done
+
+}
+# }}}
+
+# gui() {{{
+#
+# Copy gui files
+# @param string ${1}	text to output in both log and stdout
+# @return	void
+gui() {
+	copy_file "${SYSTEM_ROOT}/gui"
+}
+# }}}
+
+# key() {{{
+#
+# Copy key files
+# @return	void
+key() {
+	make_folder "${SYSTEM_ROOT}/keys"
+	cd "${SELFDIR}/keys"
+	copy_file "${SYSTEM_ROOT}/keys/rpl.pl"
+	cd "${SELFDIR}"
+}
+# }}}
+
+# maintainer() {{{
+#
+# Copy maintainer script for current distribution if exists
+# @return	void
+maintainer() {
+	SYSTEM_SETUP_ROOT=${SYSTEM_ROOT}/engine/setup
+	cd "${SELFDIR}/maintscripts"
+	if [ -f preinst.${_os} ] || [ -f postinst.${_os} ]; then
+		copy_file ${SYSTEM_SETUP_ROOT}/maintainer-helper.sh
+	fi
+
+	if [ -f preinst.${_os} ]; then
+		copy_file ${SYSTEM_SETUP_ROOT}/preinst/preinst.${_os}
+		chown_file "0:0|${SYSTEM_SETUP_ROOT}/preinst"
+		chmod_file "0750|${SYSTEM_SETUP_ROOT}/preinst"
+	fi
+
+	if [ -f postinst.${_os} ]; then \
+		copy_file ${SYSTEM_SETUP_ROOT}/postinst/postinst.${_os}
+		chown_file "0:0|${SYSTEM_SETUP_ROOT}/postinst"
+		chmod_file "0750|${SYSTEM_SETUP_ROOT}/postinst"
+	fi
+	cd "${SELFDIR}"
+}
+# }}}

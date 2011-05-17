@@ -1,0 +1,94 @@
+<chapter>
+   <title>   
+      Folders
+   </title>   
+   <summary>
+     Gallwch storio negesau mewn gwahanol ffolderi. Mae hyn yn arbennig 
+     o ddefnyddiol os oes gennych chi lawer o e-bost ac eisiau cadw 
+     trefn arno. Maer dewis Folders yn fodd i chi drin eich ffolderi.
+   </summary>
+</chapter>
+
+<section>
+   <title>
+      Subscribed Folders and the Left Frame
+   </title>
+   <description>
+      <p>
+      Maer ffolderi sydd wedi cael eu tanysgrifio ar hyn o bryd wedi eu rhestru yn y man sydd wedi ei liwio ar y chwith. Gall
+wch osod y ffrâm yma i adnewyddun awtomatig yn y dudalen Options. Ar frig y ffrâm chwith mae pennawd mawr, amlwg. Os oes newi
+diadau wedi eu gwneud ir ffolderi a danysgrifiwyd trwy ddefnyddior eitem dewislen ffolderi, gallwch adnewyddur rhestr yma trw
+y ddefnyddior cyswllt o dan y teitl. Teitl y cyswllt yma yw refresh folder list.
+      </p><p>
+      Post sydd wedi ei dderbyn sydd yn y ffolder cyntaf a restrir. Ir dde or ffolder cyntaf mae rhif mewn cromfachau( ) syn 
+dangos sawl e-bost sydd <i>heb eu darllen</i>. Maer nifer yman debygol o fod yn wahanol i gyfanswm yr e-byst syn cael eu hard
+dangos yn y ffrâm dde. O dan y prif ffolder maen debyg y gwelwch chi ffolderi neu is-ffolderi eraill. Bydd lliwiaur ffolderi 
+yma yn newid yn ôl y themâu y byddwch yn eu dewis yn y dudalen Options.
+
+      </p>
+   </description>
+</section>   
+
+<section>
+   <title>
+      Delete
+   </title>
+   <description>
+      <p>
+      Gallwch ddileu unrhyw ffolder sydd wedi ei harddangos yn y blwch rhestr gwympo ir chwith or botwm Delete. Sylwch na fyd
+d y rhestr yma yn cynnwys yr holl ffolderi syn cael eu harddangos efallai. Allwch chi ddim dileu ffolderi arbennig fel eich f
+folder Sent neu Trash, ac ni allwch ddileu INBOX wrth gwrs.
+      </p>
+   </description>
+</section>
+
+
+<section>
+   <title>
+      Create
+   </title>
+   <description>
+      <p>
+Dim ond teipior enw rydych chin ei ddymuno i mewn ir blwch testun a phwysor botwm Create sydd angen ei wneud i greu ffo
+lderi. Os ydych chi eisiau ir ffolder yma fod yn is-ffolder o un arall, gallwch ddewis honno yn y blwch cwympo gydar rhestr o
+ ffolderi.
+      </p>
+      <p>
+      Ar rai gweinyddwyr post, mae dau fath o ffolder. Mae un syn cynnwys negesau, ac un syn cynnwys ffolderi. Efallai y gwel
+wch ddewis or enw Let this folder contain subfolders. Os welwch chi hynny ai archwilio, dim ond ffolderi y bydd y ffolder a g
+rëwch yn gallu ei ddal, ac nid unrhyw negesau. Fel arall, dim ond negesau y byddwch chin gallu eu storio ynddi, a dim ffolder
+i.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Rename
+   </title>
+   <description>
+      <p>
+Gallwch ailenwi unrhyw ffolder sydd wedi ei harddangos yn y blwch rhestr gwympo ir chwith or botwm Rename. Sylwch <b>na
+</b> all y rhestr yma gynnwys yr holl ffolderi sydd wedi eu harddangos yn y ffrâm chwith. Am resymau amlwg, allwch chi ddim a
+ilenwir ffolderi Sent, Trash na INBOX.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Unsubscribe and Subscribe
+   </title>
+   <description>
+      Diffiniadau:<br>
+      <i>Tanysgrifio</i>: Cofrestru ffolder âr gweinyddwr post, gan eich 
+                          galluogi chi iw weld yn y rhestriadau ffolderi.
+      <br><i>Dad-danysgrifio</i>: Y gwrthwyneb i danysgrifio. Mae hwn yn 
+                              dad-danysgrifio ffolder or gweinyddwr post.
+      <br><p>
+      Gallwch ddewis cymaint o ffolderi ag y dymunwch, naill ai or blwch tanysgrifio neur blwch dad-danysgrifio, yna cliciwch
+ ar y botwm o dan y blwch er mwyn i hyn ddigwydd. Byddwch yn sylwi fod y ffolderin symud ir blwch arall. Yna gallwch ail-dany
+sgrifio iddynt, neu ddad-danysgrifio eto fel y dymunwch.
+      </p>
+   </description>
+</section>

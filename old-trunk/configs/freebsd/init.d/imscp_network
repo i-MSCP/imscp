@@ -1,0 +1,103 @@
+#!/usr/local/bin/sh
+
+echo "Starting imscp_network: currently not ported to BSD"
+exit 0
+
+# i-MSCP a internet Multi Server Control Panel
+#
+# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2010 by internet Multi Server Control Panel - http://i-mscp.net
+#
+# Version: $Id$
+#
+# The contents of this file are subject to the Mozilla Public License
+# Version 1.1 (the "License"); you may not use this file except in
+# compliance with the License. You may obtain a copy of the License at
+# http://www.mozilla.org/MPL/
+#
+# Software distributed under the License is distributed on an "AS IS"
+# basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+# License for the specific language governing rights and limitations
+# under the License.
+#
+# The Original Code is "ispCP ω (OMEGA) a Virtual Hosting Control Panel".
+#
+# The Initial Developer of the Original Code is ispCP Team.
+# Portions created by Initial Developer are Copyright (C) 2006-2010 by
+# isp Control Panel. All Rights Reserved.
+#
+# Portions created by the i-MSCP Team are Copyright (C) 2010 by
+# internet Multi Server Control Panel. All Rights Reserved.
+#
+# The i-MSCP Home Page is:
+#
+#    http://i-mscp.net
+#
+
+### BEGIN INIT INFO
+# Provides:             imscp_network
+# Required-Start:       $network $local_fs $remote_fs
+# Required-Stop:
+# Should-Stop:          $local_fs
+# Default-Start:        2 3 4 5
+# Default-Stop:         0 1 6
+# Short-Description:    i-MSCP Network Traffic Logger
+#
+### END INIT INFO
+# Note: do not modify any of these vars here, use /etc/default/$NAME instead
+
+RMMOD="/sbin/rmmod"
+
+IPTABLES="/sbin/iptables"
+LOGDIR=/var/log/imscp
+LOGFILE=${LOGDIR}/${NAME}.log
+
+umask 027
+
+${RMMOD} ipchains 1>/tmp/imscp_network.log 2>/tmp/imscp_network.err.log
+
+# To monitor more ports, edit SERVICES variable add your own ports
+# (ftp, proxy, http, etc.)
+#
+# HTTP(S): 80 443
+# POP3(S): 110 995
+# IMAP4(S)): 143 993
+# MAIL(S): 25 465 587
+SERVICES="80 443 110 143 25 465 587 995 993"
+# To monitor more outgoing ports, edit SERVICES_OUT variable add your own ports
+# (mail, etc.)
+#
+# MAIL(S): 25 465 587
+SERVICES_OUT="25 465 587"
+
+#
+# firewall commet; if u have some kind of firewall
+# then this hurts...
+#
+# must be chnaged in future releases!
+# 1zo
+#
+# ${IPTABLES} -F INPUT
+# ${IPTABLES} -F OUTPUT
+# ${IPTABLES} -F FORWARD
+#
+
+# all traffic
+
+${IPTABLES} -I INPUT
+
+${IPTABLES} -I OUTPUT
+
+# Services from matrix basically receiving data
+for PORT in $SERVICES; do
+	${IPTABLES} -I IMSCP_INPUT  -p tcp --dport "$PORT" 2>> "$LOGFILE"
+	${IPTABLES} -I IMSCP_OUTPUT -p tcp --sport "$PORT" 2>> "$LOGFILE"
+done
+
+# Services from matrix basically sending data
+for PORT in $SERVICES_OUT; do
+	${IPTABLES} -I IMSCP_INPUT  -p tcp --sport "$PORT" 2>> "$LOGFILE"
+	${IPTABLES} -I IMSCP_OUTPUT -p tcp --dport "$PORT" 2>> "$LOGFILE"
+done
+
+exit 0

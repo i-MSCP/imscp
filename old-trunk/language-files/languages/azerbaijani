@@ -1,0 +1,14 @@
+ispcp_table = Azerbaijani
+ispcp_language = Azərbaycan dili - Azerbaijan
+ispcp_languageSetlocaleValue = az_AZ
+ispcp_languageRevision = 201009151932
+encoding = UTF-8
+Administrator login = Administrator ləqəbi
+Login = Ləqəb
+Username = İstifadəçi adı
+Password = Şifrə
+Please enter your login information = İstifadəçi adınız barədə məlumatı daxil edin
+Secure Connection = Təhlükəsiz qoşulma
+Normal Connection = Normal qoşulma
+Lost password = İtirilmiş şifrə
+Retrieving lost passwords is currently not possible = İtirilmiş şifrəni bərpa etmək hal-hazırda mümkün deyil.

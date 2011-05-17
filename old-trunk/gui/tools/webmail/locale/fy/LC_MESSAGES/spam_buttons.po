@@ -1,0 +1,67 @@
+# Frisian (fy) spam_buttons Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Rinse de Vries <rinsedevries@kde.nl>, 2007.
+# $Id: spam_buttons.pot 10877 2006-03-04 11:22:22Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: spam_buttons\n"
+"POT-Creation-Date: 2005-03-09 12:35-0800\n"
+"PO-Revision-Date: 2007-04-15 09:53+0200\n"
+"Last-Translator: Rinse de Vries <rinsedevries@kde.nl>\n"
+"Language-Team: Nederlands <kde-i18n-nl@kde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+
+msgid "Server replied: "
+msgstr "Tsjinner antwurdde: "
+
+msgid "Spam"
+msgstr "Spam"
+
+msgid "Not Spam"
+msgstr "Gjin spam"
+
+msgid "Successfully reported as spam"
+msgstr "Súksesfol rapportearre as spam"
+
+msgid "Successfully reported as non-spam"
+msgstr "Súksesfol rapportearre as net-spam"
+
+msgid "ERROR:"
+msgstr "FOUT:"
+
+msgid "ERROR: Counld not open temp file; check attachments directory permissions"
+msgstr "FOUT: koe tydlike triem net iepenje. Kontrolearje de tagongsrjochten foar de taheaksel-triemtafel."
+
+#, c-format
+msgid "ERROR %d: Problem reporting message ID %d: %s"
+msgstr "FOUT %d: probleem by it rapportearjen fan berjocht-ID %d: %s"
+
+#, c-format
+msgid "Error: Draft folder %s does not exist."
+msgstr "Fout: Konseptenmap %s bestiet net."
+
+msgid "Message Details"
+msgstr "Berjochtdetails"
+
+msgid "Bodystructure"
+msgstr "Berjochtstruktuer"
+
+msgid "Entity"
+msgstr "Entiteit"
+
+msgid "Content-Type"
+msgstr "Ynhâldstype"
+
+msgid "Name"
+msgstr "Namme"
+
+msgid "Encoding"
+msgstr "Kodearring"
+
+msgid "RFC822 Message body"
+msgstr "RFC822-berjochtfjild"
+

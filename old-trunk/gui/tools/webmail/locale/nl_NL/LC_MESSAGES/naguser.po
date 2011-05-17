@@ -1,0 +1,48 @@
+# Dutch (nl_NL) naguser Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Rinse de Vries <rinsedevries@kde.nl>, 2007.
+# $Id: naguser.pot 10886 2006-03-05 09:15:30Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: naguser\n"
+"POT-Creation-Date: 2004-05-12 21:10+0300\n"
+"PO-Revision-Date: 2007-04-04 00:11+0200\n"
+"Last-Translator: Rinse de Vries <rinsedevries@kde.nl>\n"
+"Language-Team: Dutch <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+
+msgid "Rules of engagement"
+msgstr "Gebruiksovereenkomst"
+
+msgid "You have to read and understand program usage rules:"
+msgstr "U hebt de regels voor het gebruiken van dit programma gelezen en begrepen:"
+
+msgid ""
+"Your browser does not support inline frames. Please read related document by "
+"checking usage instructions."
+msgstr "Uw browser biedt geen ondersteuning voor inline-frames. Lees het gerelateerde document door de gebruiksinstructies te controleren."
+
+msgid "Usage instructions"
+msgstr "Gebruiksinstructies"
+
+msgid "Yes, I understand"
+msgstr "Ja, ik begrijp het"
+
+msgid "Terms of service"
+msgstr "Servicevoorwaarden"
+
+msgid ""
+"URL to usage rules is not available. Please contact your system "
+"administrator."
+msgstr "Het URL-adres naar de gebruiksvoorwaarden is niet beschikbaar. Neem contact op met uw systeembeheerder."
+
+msgid "You can find interface usage rules by following the link."
+msgstr "U kunt de voorwaarden voor het gebruik van de interface vinden op de volgende link."
+
+msgid "Usage rules"
+msgstr "Gebruiksvoorwaarden"
+

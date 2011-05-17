@@ -1,0 +1,97 @@
+<chapter>
+   <title>   
+      Carpetas
+   </title>   
+   <summary>
+      Puede almacenar sus mensajes en distintas carpetas para 
+      organizarse mejor.
+   </summary>
+</chapter>
+
+<section>
+   <title>
+      Carpetas Suscritas y Panel Izquierdo
+   </title>
+   <description>
+      <p>
+      Las carpetas de correo a las que está suscrito están listadas
+      en el área de color izquierda. Este panel puede refrescarse
+      automáticamente a intervalos predeterminados en la página
+      de opciones, aunque puede refrescarse manualmente pulsando sobre
+      el enlace que aparece debajo del título del panel izquierdo.
+      </p><p>
+      La primera carpeta, INBOX, contiene los mensajes recibidos,
+      y a su derecha entre paréntesis, si los hay, el número de mensajes
+      que aun no se han <i>leido</i> la última vez que se refresco este 
+      panel. Bajo esta carpeta pueden haber una o más carpetas, según
+      la configuración de cada uno.
+      </p>
+   </description>
+</section>   
+
+<section>
+   <title>
+      Borrar
+   </title>
+   <description>
+      <p>
+      Puede borrar cualquiera de las carpetas que se muestra a la
+      izquierda de botón de borrar. Esta lista no tiene porque
+      contener todas las carpetas existentes, ya que las carpetas
+      especiales no pueden borrarse (INBOX, etc.)
+      </p>
+   </description>
+</section>
+
+
+<section>
+   <title>
+      Crear
+   </title>
+   <description>
+      <p>
+      Puede crear carpetas solo con indicar el nombre de la misma y pulsando
+      el botón de crear. Puede colocar una carpeta por debajo de otra, en
+      cuyo caso deberá de especificar la carpeta "madre" que a su vez
+      habrá sido creada activando la opción de : "Permitir a esta carpeta 
+      tener subcarpetas".
+      </p>
+      <p>
+      On some mail servers, there are two types of folders.
+      One that contains messages, and one that 
+      contains folders.  You may see an option called "Let this folder contain
+      subfolders."  If you do and you check that, the folder you create will
+      only be able to contain folders and not any messages.  Otherwise, you 
+      will only be able to store messages in it and not folders.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Renombrar
+   </title>
+   <description>
+      <p>
+      Puede renombrar todas las carpetas mostradas en el desplegable.
+      Notese que las carpetas especiales no pueden renombrarse.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Desubscribirse/Subscribirse
+   </title>
+   <description>
+      Definiciones:<br>
+      <i>Subscribirse</i>: Registra una carpeta en el servidor de correo, permitiéndole verla en la lista de carpetas.<br>
+      <i>Desubscribirse</i>: Lo contrario de subscribirse, da de baja una carpeta del servidor de correo.<br>
+      <br><p>
+      Puede elejir tantas carpetas como quiera, y luego pulsar sobre el
+      botón correspondiente para agregar o quitar carpetas. Verá como las
+      carpetas pasan de una caja a la otra cuando lo haga. Permitiéndole
+      revertir la operación a voluntad.
+      </p>
+   </description>
+</section>

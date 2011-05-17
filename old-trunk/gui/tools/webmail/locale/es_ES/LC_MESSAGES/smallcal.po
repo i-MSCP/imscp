@@ -1,0 +1,68 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Small Calendar SquirrelMail Plugin\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2003-10-12 19:40+0100\n"
+"Last-Translator: Philippe Mingo <philippe@squirrelmail.org>\n"
+"Language-Team: SPANISH <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "SMTWTFS"
+msgstr "DLMXJVS"
+
+msgid "Today"
+msgstr "Hoy"
+
+msgid "Color Picker"
+msgstr "Selector de Color"
+
+msgid "Click a box and the hexadecimal color will be shown <br>below.\r"
+msgstr "Haga click en una caja y se mostrará el color<br>hexadecimal debajo.\r"
+
+msgid "Hex Value"
+msgstr "Valor Hexadecimal"
+
+msgid "Small Calendar Options"
+msgstr "Opciones de Mini-Calendario"
+
+msgid "Small Calendar:"
+msgstr "Pequeño Calendario:"
+
+msgid "Show small calendar in left bar"
+msgstr "Pequeño calendario en barra izquierda"
+
+msgid "Use Default Theme:"
+msgstr "Usar Tema por Omisión:"
+
+msgid "This will override values below"
+msgstr "Esto sobreescribirá los valores de más abajo"
+
+msgid "Header Color:"
+msgstr "Color de Cabecera:"
+
+msgid "Day Color:"
+msgstr "Color del Día:"
+
+msgid "Today Color:"
+msgstr "Color de Hoy:"
+
+msgid "Event Color:"
+msgstr "Color de Acontecimiento:"
+
+msgid "Calendar separator:"
+msgstr "Separador de calendario:"
+
+msgid "Calendar size:"
+msgstr "Tamaño de Calendario:"
+
+msgid "Use Shared Calendar:"
+msgstr "Usar Calendario Compartido"
+
+msgid "Use the shared calendar selected below as your<br>small calendar (default is Personal calendar)"
+msgstr "Usar el calendario compartido seleccionado más<br>abajo como su \"pequeño\" calendario (por omisión <br>es el calendario Personal)."
+
+msgid "Shared Calendar:"
+msgstr "Calendario Compartido:"
+

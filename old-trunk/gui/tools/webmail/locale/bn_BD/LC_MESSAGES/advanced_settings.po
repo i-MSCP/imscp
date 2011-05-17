@@ -1,0 +1,71 @@
+# Bengali (bn_BD) advanced_settings Translation (SquirrelMail plugin)
+# Copyright (c) 2006-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Israt Jahan <israt@ankur.org.bd>, 2009.
+# $Id: advanced_settings.pot 12740 2007-10-24 21:31:21Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: advanced_settings 1.2.1.sm\n"
+"Report-Msgid-Bugs-To: Tomas Kuliavas <tokul@users.sourceforge.net>\n"
+"POT-Creation-Date: 2007-08-29 17:06+0300\n"
+"PO-Revision-Date: 2009-01-01 11:56+0600\n"
+"Last-Translator: Israt Jahan <israt@ankur.org.bd>\n"
+"Language-Team:  Bengali <ankur-bd-l10n@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: functions.php:29 functions.php:49
+msgid "Advanced Settings"
+msgstr "উন্নত মানসমূহ"
+
+#: functions.php:51
+msgid "You can control advanced interface options here."
+msgstr "আপনি এখানে উন্নত ইন্টারফেস পছন্দগুলো নিয়ন্ত্রণ করতে পারেন।"
+
+#. * Settings related to mailbox
+#: options.php:33
+msgid "Advanced Mailbox Options"
+msgstr "উন্নত চিঠিরবাক্সের পছন্দগুলো"
+
+#: options.php:38
+msgid "Auto expunge"
+msgstr "স্বয়ংক্রিয় মুছে ফেলা"
+
+#: options.php:44
+msgid "Use special folder color"
+msgstr "বিশেষ ফোল্ডার রং ব্যবহার করুন"
+
+#: options.php:51
+msgid "List special folders first"
+msgstr "বিশেষ ফোল্ডারগুলো প্রথমে তালিকাবদ্ধ করুন"
+
+#. * Message composition options
+#: options.php:58
+msgid "Advanced Message Composition Options"
+msgstr "উন্নত বার্তা লেখার পছন্দগুলো"
+
+#: options.php:62
+msgid "Use email priorities"
+msgstr "ইমেইল গুরুত্ব ব্যবহার করুন"
+
+#. * Settings related to address book
+#: options.php:67
+msgid "Advanced Address Book Options"
+msgstr "উন্নত ঠিকানা বই পছন্দগুলো"
+
+#: options.php:75
+msgid "Address Book Email Prefix"
+msgstr "ঠিকানা বইয়ের ইমেইল পূর্বশব্দ"
+
+#: options.php:78
+msgid "No Prefix"
+msgstr "কোন পূর্বশব্দ নেই"
+
+#: options.php:79
+msgid "Nickname"
+msgstr "ছদ্মনাম"
+
+#: options.php:80
+msgid "Name"
+msgstr "নাম"

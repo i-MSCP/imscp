@@ -1,0 +1,284 @@
+# Italian (it_IT) abook_import_export Translation (SquirrelMail plugin)
+# Copyright (c) 2000-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Roberto Bellandi <roberto@nettirrena.it>, 2006.
+# Andrea Volani <andreavola@gmail.com>, 2009.
+# $Id: $
+msgid ""
+msgstr ""
+"Project-Id-Version: abook_import_export 1.1\n"
+"Report-Msgid-Bugs-To: <http://sourceforge.net/projects/sm-plugins/>\n"
+"POT-Creation-Date: 2007-10-26 17:50+0200\n"
+"PO-Revision-Date: 2009-04-20 10:06+0100\n"
+"Last-Translator: Andrea Volani <andreavola@gmail.com>\n"
+"Language-Team: Italian <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: address_book_export.php:90 address_book_import.php:194
+msgid "You must use different symbols for text and field delimiters."
+msgstr "Devi usare caratteri diversi per il testo e per i separatori di campo."
+
+#: address_book_export.php:91 address_book_export.php:100
+#: address_book_import.php:118 address_book_import.php:394
+#, php-format
+msgid "Return to main %sAddress Book%s page."
+msgstr "Ritorna alla pagina principale %sAddress Book%s"
+
+#: address_book_export.php:99
+msgid "Selected address book is empty."
+msgstr "Agenda selezionata vuota."
+
+#. Detect PHP 4.2.0+ upload error codes (http://www.php.net/features.file-upload.errors)
+#: address_book_import.php:86
+msgid "Please select a file for uploading."
+msgstr "Selezionare un file da inviare."
+
+#: address_book_import.php:90
+msgid "The uploaded file exceeds PHP upload_max_filesize limits."
+msgstr ""
+"Il file inviato eccede la dimensione impostata in PHP variabile: "
+"upload_max_filesize limits."
+
+#: address_book_import.php:93
+msgid ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML."
+msgstr ""
+"Il file inviato eccede la direttiva MAX_FILE_SIZE specificata nel HTML."
+
+#: address_book_import.php:96
+msgid "The uploaded file was only partially uploaded."
+msgstr "Il file da inviare e stato solo parzilmente inviato."
+
+#: address_book_import.php:99
+msgid "No file was uploaded."
+msgstr "Nessun file inviato."
+
+#: address_book_import.php:102
+msgid "Missing a temporary directory."
+msgstr "Manca il percorso temporaneo."
+
+#: address_book_import.php:105
+msgid "Failed to write file to disk."
+msgstr "Fallita scrittura file sul disco."
+
+#. File upload stopped by extension. 'security library' is more user friendly.
+#: address_book_import.php:109
+msgid "File upload stopped by security library."
+msgstr "L'upload del file è stato interrotto dalla libreria di sicurezza."
+
+#: address_book_import.php:112
+msgid "Unknown upload error."
+msgstr "Errore invio file sconosciuto."
+
+#: address_book_import.php:121
+msgid "Upload error"
+msgstr "Errore invio"
+
+#. i18n: %s displays 'somenumber B', 'somenumber KB' or 'somenumber MB'.
+#: address_book_import.php:124
+#, php-format
+msgid ""
+"Imported CSV file is too big. Contact your system administrator, if you want "
+"to import files, that are bigger than %s."
+msgstr ""
+"File importato troppo grande. Contattare amministratore di sistema, se vuoi "
+"poter importare file che sono piu grandi di %s."
+
+#: address_book_import.php:167
+msgid "Error, could not open address file."
+msgstr "Errore non posso aprire il file con gli indirizzi"
+
+#. Title of column with row numbers
+#: address_book_import.php:284
+msgid "No#"
+msgstr "Nr#"
+
+#. Title of column with omit checkbox
+#: address_book_import.php:286
+msgid "Omit"
+msgstr "Escludi"
+
+#: address_book_import.php:338
+msgid "Add to address book: "
+msgstr "Aggiunge agli indirizzi"
+
+#. display import button only after table is loaded
+#: address_book_import.php:345
+msgid "Finish"
+msgstr "Finito"
+
+#. *
+#. * $csvdata is empty. User tried to import empty file or $error contains fatal
+#. * processing error message.
+#.
+#: address_book_import.php:352
+msgid "Nothing to import"
+msgstr "Niente da importare"
+
+#: address_book_import.php:353
+msgid "Return to Address Book"
+msgstr "Ritorna agli indirizzi"
+
+#: address_book_import.php:358
+msgid "The following rows have errors"
+msgstr "Le seguenti righe contengono errori"
+
+#. unable to move file to temp directory
+#: address_book_import.php:363
+msgid "Can't move uploaded file to attachment directory."
+msgstr "Non posso spostare il file inviato nel percorso degli allegati."
+
+#. $csvdata is not available or is not array.
+#: address_book_import.php:393
+msgid "Unable to access uploaded data. Contact your system administrator."
+msgstr ""
+"Impossibile accedere ai dati inviati. Contattare amministratore di sistema."
+
+#. displays row number that can't be imported. SquirrelMail
+#. address book backend error message is displayed after it.
+#: address_book_import.php:465
+#, php-format
+msgid "Row %d:"
+msgstr "Riga %d:"
+
+#: address_book_import.php:483
+msgid ""
+"There were errors uploading the data, as listed below. Entries not listed "
+"here were uploaded."
+msgstr ""
+"Ci sono errori inviando i dati, come elencato di seguito. Le righe non "
+"elencate qua sono state inserite."
+
+#: address_book_import.php:487
+msgid "Upload Completed!"
+msgstr "Invio completato!"
+
+#: address_book_import.php:489
+msgid "Click on the link below to verify your work."
+msgstr "Cliccare sul collegamento qua sotto per verificare la operazione."
+
+#: address_book_import.php:493
+msgid "Addresses"
+msgstr "Indirizzi"
+
+#: functions.php:101
+msgid "Single quotes (')"
+msgstr "Singolo apice (')"
+
+#: functions.php:102
+msgid "Double quotes (\")"
+msgstr "Doppio apice (\")"
+
+#: functions.php:103
+msgid "Comma (,)"
+msgstr "Virgola (,)"
+
+#: functions.php:104
+msgid "Semicolon (;)"
+msgstr "Punto e virgola (;)"
+
+#: functions.php:105
+msgid "Custom delimiter"
+msgstr "Separatore personalizzato"
+
+#: functions.php:112
+msgid "Address book import"
+msgstr "Importazione indirizzi"
+
+#: functions.php:125
+msgid "Select file:"
+msgstr "Seleziona file:"
+
+#: functions.php:130
+msgid "Max:"
+msgstr "Massimo:"
+
+#: functions.php:134
+msgid "Input character set:"
+msgstr "Set caratteri in ingresso:"
+
+#: functions.php:138 functions.php:187
+msgid "Field delimiter:"
+msgstr "Delimitatore di campo:"
+
+#: functions.php:142 functions.php:191
+msgid "Custom field delimiter:"
+msgstr "Delimitatore di campo personalizzato:"
+
+#: functions.php:148 functions.php:201
+msgid "Text delimiter:"
+msgstr "Delimitatore di testo:"
+
+#: functions.php:152 functions.php:205
+msgid "Custom text delimiter:"
+msgstr "Delimitatore di testo personalizzato:"
+
+#: functions.php:157
+msgid "Import CSV File"
+msgstr "Importa File indirizzi"
+
+#: functions.php:165 functions.php:529
+msgid "ERROR"
+msgstr "ERRORE"
+
+#: functions.php:167
+msgid "Address book uploads are disabled."
+msgstr "Invio indirizzi disabilitato."
+
+#: functions.php:175
+msgid "Address book export"
+msgstr "Esportazione indirizzi"
+
+#: functions.php:212
+msgid "Use address book:"
+msgstr "Utilizza indirizzi:"
+
+#: functions.php:219
+msgid "Export to CSV File"
+msgstr "Esporta file rubrica"
+
+#: functions.php:241
+#, php-format
+msgid "%s MB"
+msgstr "%s MB"
+
+#: functions.php:243
+#, php-format
+msgid "%s KB"
+msgstr "%s KB"
+
+#: functions.php:245
+#, php-format
+msgid "%s B"
+msgstr "%s B"
+
+#: functions.php:271
+msgid "Nickname"
+msgstr "Soprannome"
+
+#: functions.php:273
+msgid "First Name"
+msgstr "Nome"
+
+#: functions.php:275
+msgid "Last Name"
+msgstr "Cognome"
+
+#: functions.php:277
+msgid "Email"
+msgstr "Indirizzo E-Mail"
+
+#: functions.php:279
+msgid "Additional Info"
+msgstr "Informazioni supplementari"
+
+#: functions.php:281
+msgid "Do Not Include"
+msgstr "Escludi"
+
+#: functions.php:318
+msgid "LDIF import is not supported."
+msgstr "Importazione LDIF non supportata."

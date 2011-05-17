@@ -1,0 +1,81 @@
+# Dutch (nl_NL) templates Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Rinse de Vries <rinsedevries@kde.nl>, 2007.
+# $Id: templates.pot 10877 2006-03-04 11:22:22Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: templates\n"
+"POT-Creation-Date: 2005-10-24 21:02+0300\n"
+"PO-Revision-Date: 2007-04-04 01:02+0200\n"
+"Last-Translator: Rinse de Vries <rinsedevries@kde.nl>\n"
+"Language-Team: Dutch <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#, php-format
+msgid "Template file, %s, could not be opened. Contact your system administrator to resolve this issue."
+msgstr "Sjabloonbestand %s kon niet worden geopend. Neem contact op met uw systeembeheerder om dit probleem op te lossen."
+
+#, php-format
+msgid "Template file, %s, could not be written. Contact your system administrator to resolve this issue."
+msgstr "Sjabloonbestand %s kon niet worden geschreven. Neem contact op met uw systeembeheerder om dit probleem op te lossen."
+
+#, php-format
+msgid "Template file, %s, could not be copied from temporary file, %s. Contact your system administrator to resolve this issue."
+msgstr "Sjabloonbestand %s kon niet vanuit tijdelijk bestand, %s,  worden gekopieerd. Neem contact op met uw systeembeheerder om dit probleem op te lossen."
+
+msgid "You must be on WYSIWYG mode!"
+msgstr "U moet in WYSIWYG-modus zijn!"
+
+msgid "Add Template"
+msgstr "Sjabloon toevoegen"
+
+msgid "Templates"
+msgstr "Sjablonen"
+
+msgid "Create/Edit/Delete chunks of text that can be quickly added to messages."
+msgstr "Maak/bewerk/verwijder teksten die snel aan berichten kunnen worden toegevoegd."
+
+msgid "Append Templates before all existing text"
+msgstr "Slablonen vóór alle bestanden tekst invoegen"
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "No"
+msgstr "Nee"
+
+msgid "Add blank line before template text when appending"
+msgstr "Lege regel vóór sjabloontekst toevoegen bij het invoegen"
+
+msgid "Add blank line after template text when appending"
+msgstr "Lege regel na sjabloontekst toevoegen bij het invoegen"
+
+#, php-format
+msgid "Template %d"
+msgstr "Sjabloon %d"
+
+msgid "Options"
+msgstr "Opties"
+
+msgid "Add a New Template"
+msgstr "Een nieuw sjabloon toevoegen"
+
+msgid "Description"
+msgstr "Beschrijving"
+
+msgid "Template Text"
+msgstr "Sjabloontekst"
+
+msgid "Save / Update"
+msgstr "Opslaan / bijwerken"
+
+msgid "Delete"
+msgstr "Verwijderen"
+
+msgid "Move Up"
+msgstr "Omhoog"
+

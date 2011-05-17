@@ -1,0 +1,54 @@
+<chapter>
+   <title>
+      Lista (spis) wiadomo¶ci
+   </title>
+   <summary>
+      Nie jest to nic skomplikowanego lecz tylko wy¶wietlanie wiadomo¶ci pocztowych,
+      znajduj±cych siê w okre¶lonym folderze.
+   </summary>
+</chapter>
+
+<section>
+   <title>
+      Lista wiadomo¶ci
+   </title>
+   <description>
+      <p>
+     Po wybraniu - poprzez klikniêcie - foldera w lewej ramce, w prawej pojawi siê
+     jego indeks wiadomo¶ci, czyli zostan± wy¶wietlone wiadomo¶ci znajduj±ce siê
+     w wybranym folderze. Nad tabelk± zawieraj±c± listê wiadomo¶ci widnieje informacja
+     o aktualnie wy¶wietlanych na stronie wiadomo¶ciach oraz ca³kowitej ich liczbie w folderze.
+      </p><p>
+      Na przyk³ad: Przegl±danie wiadomo¶ci <b>20</b> do <b>30</b> (45 razem).
+      </p><p>
+      Nale¿y zauwa¿yæ, ¿e ca³kowita liczba wiadomo¶ci w folderze mo¿e ró¿niæ siê od liczby
+      wiadomo¶ci nieprzeczytanych, która wy¶wietlana jest po prawej stronie g³ównego foldera
+      poczty (w lewej ramce).
+      </p><p>
+     Poni¿ej informacji o wy¶wietlanych wiadomo¶ciach znajduje siê pasek wyboru z trzema
+     przyciskami. W pierwszym po lewej mo¿na wybraæ jeden folder z grupy folderów u¿ytkownika.
+     Ka¿da zaznaczona wiadomo¶æ zostanie przeniesiona do wybranego folderu po naci¶niêciu
+     przycisku <i>Przenie¶</i>. Mo¿na jednocze¶nie przenosiæ wszystkie zaznaczone wiadomo¶ci.
+     Po prawej stronie znajduje siê przycisk s³u¿±cy do usuwania wiadomo¶ci zatytu³owany
+     <i>Usuñ</i>. Wystarczy zaznaczyæ przeznaczone do skasowania wiadomo¶ci i klikn±æ ten
+     przycisk.
+      </p><p>
+      Jeszcze ni¿ej znajduje siê wiersz z trzema polami (<i>Od</i>, <i>Data</i>, <i>Temat</i>).
+      Nag³ówki te dziel± tabelê wiadomo¶ci na logiczne czê¶ci. <i>Od</i> okre¶la osobê,
+      która przys³a³a wiadomo¶æ lub przynajmniej adres poczty elektronicznej, z którego zosta³a
+	zaadresowana.
+      <i>Data</i> informuje o dniu i godzinie nadej¶cia wiadomo¶ci. <i>Temat</i> opisuje jej temat.
+      <br><b>Uwaga</b>: pomiêdzy kolumnami <i>Daty</i> i <i>Tematu</i> znajduje siê w±ska
+      kolumna bez tytu³u. Litera "A" - wy¶wietlana w tej kolumnie - oznacza, i¿ na wiadomo¶æ
+      zosta³a udzielona odpowied¼, symbol "!" okre¶la wiadomo¶æ jako piln±.
+      </p><p>
+     Pozostaje jeszcze tablica wiadomo¶ci. Ju¿ przejrzane wiadomo¶ci pisane s± zwyk³± czcionk±,
+     podczas gdy nieprzeczytane zostaj± <b>pogrubione</b>. W tablicy znajduj± siê cztery pola.
+     Pierwsze po lewej zawiera znacznik wyboru, s³u¿±cy do zaznaczania i odznaczania wiadomo¶ci.
+     Gdy wiadomo¶æ jest zaznaczona, mo¿na dokonywaæ na niej omówione wcze¶niej czynno¶ci
+     (przenoszenie, usuwanie). Pod nag³ówkiem <i>Od</i> opisany jest nadawca wiadomo¶ci.
+     Wiem, to zdumiewaj±ce! Ale przecie¿ nikt nie jest zmuszany do czytania tego dokumentu.
+     Nastêpnie okre¶lone s± data i czas oraz temat.
+      </p>
+   </description>
+</section>

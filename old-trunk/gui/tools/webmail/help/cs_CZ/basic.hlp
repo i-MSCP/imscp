@@ -1,0 +1,47 @@
+<chapter>
+   <title>
+      Úvod do systému SquirrelMail
+   </title>
+   <summary>
+      
+   </summary>
+   <description>
+      <p>
+      Co je ve skutečnosti systém <A HREF="http://www.squirrelmail.org/index.php3?from=1">SquirrelMail</A>?
+      SquirrelMail je webové rozhraní e-mailu vytvořený v <A HREF="http://www.php.net">PHP4</A>.
+      Byl vyvinut pro emailovou komunikaci kdekoliv na světě. Více informací o tom, jak funguje, naleznete <A HREF="http://imap.org">zde</A>.
+      </p>
+   </description>
+</chapter>   
+
+<section>
+   <title>
+      Základní informace
+   </title>
+   <description>
+      <p>
+      V případě jednoduchých otázek přejděte do části Nejčastěji pokládané otázky. 
+      </p>
+      <p>
+      SquirrelMail je rozložen do dvou hlavních čístí - rámců. Levý rámec zobrazuje 
+      aktuálně přihlášené složky. Více informací naleznete v sekci "Složky" této nápovědy.
+      </p>
+      <p>
+      V pravé části strany se realizuje veškerá činnost týkající se e-mailů. 
+      V horní části je umístěna nabídka. Zvolíte-li "Odhlásit", odhlásíte se po ukončení 
+      práce ze systému. Aktuální složka zobrazuje složku, ve které se zrovna nacházíte. 
+      Okamžitě po Vašem přihlášení se Vám zobrazí výchozí složka INBOX.
+      </p>
+      <p>
+      Pod horní lištou máte na výběr tyto možnosti:
+         <ul>
+            <li><b>Nová zpráva</b> - Vytvoří a odešle zprávu, ke které lze přikládat soubory.
+            <li><b>Adresář</b> - Obsahuje seznam adres, které jsou obsaženy ve Vašem adresáři.
+            <li><b>Složky</b> - Veškerá činnost týkající se složek se realizuje zde. Můžete zde odstraňovat, vytvářet, přejmenovávat složky, odhlašovat se a přihlašovat se do složek.
+            <li><b>Možnosti</b> - Mění nastavení SquirrelMailu. 
+            <li><b>Hledat</b> - Nástroj pro vyhledávání ve SquirrelMailu. 
+            <li><b>Nápověda</b> - Zde se právě nacházíte! 
+         </ul>
+      </p>
+   </description>
+</section>   

@@ -1,0 +1,42 @@
+# Vietnamese (vi) newuser_wiz Translation (SquirrelMail plugin)
+# Copyright © 1999-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Clytie Siddall <clytie@riverland.net.au>, 2008.
+# $Id: newuser_wiz.pot 11025 2006-04-05 19:23:55Z jervfors $
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: newuser_wiz 1.3.2\n"
+"Report-Msgid-Bugs-To: Angelo Bertolli <angelo.bertolli@gmail.com>\n"
+"POT-Creation-Date: 2006-04-03 09:09+0200\n"
+"PO-Revision-Date: 2008-03-10 19:33+1030\n"
+"Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
+"Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: LocFactoryEditor 1.7b1\n"
+
+#: functions.php:30
+msgid "Welcome to"
+msgstr ""
+"Chào mừng vào"
+
+#: functions.php:31
+msgid ""
+"Since it appears as though you're new to this system, please fill in the "
+"following information."
+msgstr "Có vẻ là bạn mới sử dụng hệ thống này: hãy điền vào thông tin sau."
+
+#: functions.php:33
+msgid "Full Name:"
+msgstr "Họ tên:"
+
+#: functions.php:34
+msgid "Email Address:"
+msgstr "Địa chỉ thư :"
+
+#: functions.php:36
+msgid "Submit"
+msgstr "Đệ trình"

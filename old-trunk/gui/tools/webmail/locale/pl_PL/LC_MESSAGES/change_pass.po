@@ -1,0 +1,76 @@
+# $Id: change_pass.po 13719 2009-05-18 12:02:52Z jervfors $
+# POLISH change_pass plugin translation.
+# Copyright (c) 2003-2009 The SquirrelMail Project Team
+# Sebastian Turzyñski <buzz@zamek.gda.pl>, 2003.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: change_pass\n"
+"POT-Creation-Date: 2003-09-12 12:12-0600\n"
+"PO-Revision-Date: 2003-09-30 13:20+0100\n"
+"Last-Translator: Sebastian Turzynski <buzz@zamek.gda.pl>\n"
+"Language-Team: Polish <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-2\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: options.php:36 setup.php:18
+msgid "Change Password"
+msgstr "Zmieñ has³o"
+
+#: options.php:77
+msgid "Closing Connection"
+msgstr "Zamykanie po³±czenia"
+
+#: options.php:137
+msgid "Connecting to Password Server"
+msgstr "£±czenie z serwerem hase³"
+
+#: options.php:141
+msgid "ERROR:"
+msgstr "B³±d:"
+
+#: options.php:52
+msgid "New Password"
+msgstr "Nowe has³o"
+
+#: options.php:51
+msgid "Old Password"
+msgstr "Stare has³o"
+
+#: options.php:173 setup.php:35
+msgid "Password changed successfully."
+msgstr "Has³o zosta³o zmienione pomy¶lnie."
+
+#: options.php:64
+msgid "Submit"
+msgstr "Potwierd¼"
+
+#: setup.php:20
+msgid ""
+"This connects to your local Password Server to change your email password."
+msgstr "£±czy z lokalnym serwerem hase³ aby zmieniæ has³o Twojego konta pocztowego."
+
+#: options.php:53
+msgid "Verify New Password"
+msgstr "Potwierd¼ nowe has³o"
+
+#: options.php:112
+msgid "You must also type in your new password in the verify box."
+msgstr "Musisz tak¿e wpisaæ nowe has³o w polu potwierdzenia."
+
+#: options.php:109
+msgid "You must type in a new password."
+msgstr "Musisz wpisaæ nowe has³o."
+
+#: options.php:106
+msgid "You must type in your old password."
+msgstr "Musisz wpisaæ stare has³o."
+
+#: options.php:115
+msgid "Your new password doesn't match the verify password."
+msgstr "Twoje nowe has³o nie odpowiada has³u wpisanemu w polu potwierdzenia has³a."
+
+#: options.php:118
+msgid "Your old password is not correct."
+msgstr "Twoje stare has³o nie jest prawid³owe."

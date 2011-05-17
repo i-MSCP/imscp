@@ -1,0 +1,109 @@
+<chapter>
+   <title>
+      Èesto postavljana pitanja
+   </title>   
+   <summary>
+      Jako èesto su ista pitanja postavljana od strana puno ljudi. Ovo je
+      lista tih standardnih pitanja koja se èesto postavljaju, i odgovori na njih.
+   </summary>
+</chapter>
+
+<section>
+   <title>
+      Mogu li koristiti vi¹e imena iz adresara?
+   </title>
+   <description>
+      <p>
+      Da. Adresar æe prikazati sve ¹to je pronaðeno u odnosu na va¹ upit
+      koji ste uneli u kuæicu za pretra¾ivanje. Ako je ispisano 10 imena,  
+      bilo koja kombinacija mo¾e da se iskoristi za polja <B>Prima:</B> ili <B>Kopija:</B> 
+      Sve izabrane adrese æe biti unete u odgovarajuæa polja kad se pritisne
+      dugme Koristi adrese.
+      </p>
+   </description>
+</section>   
+
+<section>
+   <title>
+      Mogu li dodati email adrese direktno iz emaila koji èitam?
+   </title>
+   <description>
+      <p>
+      Ne.  U ovo vreme ne mogu se dodati imena direktno iz primljene po¹te ukoliko
+      posebno nije dodata takva opcija, u kom sluèaju æe ispod poruke pisati "Take            Address" ili "Snimi adresu u imenik". Ukoliko toga nema, mo¾ete desnim klikom na
+      adresu da je iskopirate u clipboard i da je nakdnadno snimite u adresar.
+      SquirrelMail se konstantno razvija i mo¾e se desiti da æe se takve funkcije 
+      pojaviti kao standardne u buducim distribucijama.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Ko je napravio SquirrelMail?
+   </title>
+   <description>
+      <p>
+      Puno ljudi je pomoglo. Da biste dobili listu, mo¾ete posetiti na¹u 
+      web stranu <a href="http://www.squirrelmail.org" target=_top>www.squirrelmail.org</a>.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Sta je webmail?
+   </title>
+   <description>
+      <p>
+      U sluèaju SquirrelMail-a, dozvoljava vam pristup po¹ti putem IMAP protokola.
+      To znaèi da ne morate da pogaðate kako da pode¹avate tuðe preference da biste 
+      sa njihovog raèunara proèitali va¹ mail..
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Gde mogu koristiti ovaj webmail?
+   </title>
+   <description>
+      <p>
+      Bilo gde, gde postoji Internet browser (èitaè)
+      Be¾iæni pristup (WAP/WML) jo¹ uvek nije u fazi izrade dodu¹e.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Za¹to da koristim webmail umesto obiènog email klijenta?
+   </title>
+   <description>
+      <p>
+      Pitanje je da li æe webmail ikada u potpunosti biti dovoljno dobra 
+      zamena za obièan email klijent. Ali, ko zna? U svakom sluèaju, ako
+      ste ikada u kuæi prijatelja ili roðaka, na putu ili na poslu dalje
+      od va¹eg raèunara, a morate proveriti po¹tu, onda znate za¹to. 
+      Velika je muka prepode¹avati neèiji raèunar da prima va¹u po¹tu a da
+      time ne poremetite pode¹avanja koja veæ postoje na raèunaru. Potom
+      bi opet po zavr¹etku sve to trebalo da bri¹ete, e tada SquirrelMail 
+      dolazi kao adekvatna i odlièna zamena.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Kako sve ovo uop¹te radi?
+   </title>
+   <description>
+      <p>
+      SquirrelMail koristi IMAP protokol, informacije o protokolu
+      mo¾ete naæi <A HREF="http://imap.org"/>ovde</A>. Program takoðe 
+      koristi i svoje IMAP funkcije, a ne samo one ugraðene u PHP4. To
+      sve i nije toliko va¾no nikome osim onih koji odr¾avaju sistem, ali 
+      verujte nam na reè, oni to jako cene. 
+      </p>
+   </description>
+</section>

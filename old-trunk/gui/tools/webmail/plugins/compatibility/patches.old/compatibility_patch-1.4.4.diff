@@ -1,0 +1,10 @@
+--- ../include/validate.php.orig	2005-05-05 02:16:13.041876608 -0700
++++ ../include/validate.php	2005-05-05 02:16:10.068328656 -0700
+@@ -42,6 +42,7 @@
+ require_once(SM_PATH . 'functions/global.php');
+ require_once(SM_PATH . 'functions/strings.php');
+ require_once(SM_PATH . 'config/config.php');
++include_once(SM_PATH . 'plugins/compatibility/functions.php');
+ 
+ /* set the name of the session cookie */
+ if(isset($session_name) && $session_name) {

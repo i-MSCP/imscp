@@ -1,0 +1,56 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+# translation of show_user_and_ip.po to GREEK
+# This file is distributed under the same license as the PACKAGE package.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
+# Apostolos Katsinikas <apostolos@costeas-geitonas.gr>, 2005.
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: show_user_and_ip\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-01-27 13:45+0200\n"
+"PO-Revision-Date: 2005-01-28 15:00+0200\n"
+"Last-Translator: Apostolos Katsinikas <apostolos@costeas-geitonas.gr>\n"
+"Language-Team: LANGUAGE <el@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-7\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Your username:"
+msgstr "Το ψευδώνυμό σας:"
+
+msgid "Your IP address:"
+msgstr "Η IP διεύθυνσή σας:"
+
+msgid "Your Hostname:"
+msgstr "Hostname:"
+
+msgid "Welcome,"
+msgstr "Καλώς ήρθατε,"
+
+msgid "INFO:"
+msgstr "Πληροφορίες:"
+
+#, c-format
+msgid """your last connection was from <strong>%s%s</strong> on <strong>%s</strong>."
+msgstr """η τελευταία σας σύνδεση έγινε από τον υπολογιστή <strong>%s%s</strong> την <strong>%s</strong>."
+""
+
+msgid "Show username under folders list:"
+msgstr "Εμφάνιση ψευδωνύμου κάτω από τη λίστα φακέλων:"
+
+msgid "Yes"
+msgstr "Ναι"
+
+msgid "No"
+msgstr "Όχι"
+
+msgid "Show IP address under folders list:"
+msgstr "Εμφάνιση IP διεύθυνσης κάτω από τη λίστα φακέλων:"
+
+msgid "Show hostname under folders list:"
+msgstr "Εμφάνιση hostname κάτω από τη λίστα φακέλων:"

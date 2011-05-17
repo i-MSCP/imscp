@@ -1,0 +1,171 @@
+# Vietnamese (vi) archive_mail Translation (SquirrelMail plugin)
+# Copyright © 1999-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Clytie Siddall <clytie@riverland.net.au>, 2008.
+# $Id: archive_mail.pot 10877 2006-03-04 11:22:22Z jervfors $
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: archive_mail 1.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-07-31 11:09+0300\n"
+"PO-Revision-Date: 2007-07-29 22:42+0930\n"
+"Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
+"Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: LocFactoryEditor 1.6.4a5\n"
+
+#: ../includes/archive_mail_bottom.php:28
+msgid "Archive disabled (zlib not supported)"
+msgstr ""
+"Kho bị tắt (zlib không được hỗ trợ)"
+
+#: ../includes/archive_mail.php:27
+#: ../includes/archive_mail_bottom.php:32
+msgid "Archive"
+msgstr "Kho"
+
+#: ../includes/display_inside.php:39
+msgid "Format Emails as"
+msgstr "Định dạng thư là"
+
+#: ../includes/display_inside.php:45
+msgid "EML Messages"
+msgstr "Thư EML"
+
+#: ../includes/display_inside.php:50
+msgid "Mbox"
+msgstr "Mbox"
+
+#: ../includes/display_inside.php:55
+msgid "Maildir"
+msgstr "Maildir"
+
+#: ../includes/display_inside.php:65
+msgid "Separate Entities"
+msgstr "Thực thể riêng"
+
+#: ../includes/display_inside.php:70
+msgid "Save Attachments"
+msgstr ""
+"Lưu các đồ đính kèm"
+
+#: ../includes/display_inside.php:74
+msgid "Yes"
+msgstr "Có"
+
+#: ../includes/display_inside.php:77
+msgid "No"
+msgstr "Không"
+
+#: ../includes/display_inside.php:80
+#: ../includes/display_inside.php:188
+msgid "Save"
+msgstr "Lưu"
+
+#: ../includes/display_inside.php:87
+msgid "Separate Entities Options"
+msgstr ""
+"Tùy chọn Thực thể Riêng"
+
+#: ../includes/display_inside.php:90
+msgid "EML Messages Options"
+msgstr "Tùy chọn Thư EML"
+
+#: ../includes/display_inside.php:93
+msgid "Mbox Options"
+msgstr "Tùy chọn Mbox"
+
+#: ../includes/display_inside.php:96
+msgid "Maildir Options"
+msgstr "Tùy chọn Maildir"
+
+#: ../includes/display_inside.php:102
+msgid "Compress Type"
+msgstr "Kiểu nén"
+
+#: ../includes/display_inside.php:108
+msgid "Tar"
+msgstr ""
+"Tar"
+
+#: ../includes/display_inside.php:113
+msgid "Tar.GZ"
+msgstr "Tar.GZ"
+
+#: ../includes/display_inside.php:119
+msgid "Text"
+msgstr "Văn bản"
+
+#: ../includes/display_inside.php:125
+msgid "Zip"
+msgstr "Zip"
+
+#: ../includes/display_inside.php:131
+msgid "Email Filename"
+msgstr "Tên tập tin thư điện thư"
+
+#: ../includes/display_inside.php:137
+msgid "Numbered"
+msgstr "Đánh số"
+
+#: ../includes/display_inside.php:142
+#: ../includes/display_inside.php:147
+#: ../includes/display_inside.php:152
+#: ../includes/display_inside.php:162
+#: ../includes/display_inside.php:182
+#: ../includes/formats/separate.php:105
+#: ../includes/formats/separate.php:110
+#: ../includes/formats/separate.php:118
+msgid "Date"
+msgstr "Ngày"
+
+#: ../includes/display_inside.php:147
+#: ../includes/display_inside.php:157
+#: ../includes/display_inside.php:162
+#: ../includes/display_inside.php:167
+#: ../includes/display_inside.php:177
+msgid "Email"
+msgstr "Địa chỉ thư"
+
+#: ../includes/display_inside.php:152
+#: ../includes/display_inside.php:167
+#: ../includes/display_inside.php:172
+#: ../includes/display_inside.php:177
+#: ../includes/display_inside.php:182
+#: ../includes/formats/separate.php:102
+#: ../includes/formats/separate.php:107
+#: ../includes/formats/separate.php:112
+msgid "Subject"
+msgstr "Chủ đề"
+
+#: ../includes/display_options.php:23
+msgid "Archive Settings"
+msgstr "Thiết lập kho"
+
+#: ../includes/display_options.php:25
+msgid "These settings allow you to modify the way you archive messages."
+msgstr "Thiết lập này cho phép bạn sửa đổi cách lưu trữ các thư."
+
+#: ../includes/formats/separate.php:25
+msgid "m/d/Y g:i a"
+msgstr "m/d/Y g:i a"
+
+#: ../includes/formats/separate.php:42
+msgid "No Subject"
+msgstr "Không có Chủ đề"
+
+#: ../includes/formats/separate.php:103
+#: ../includes/formats/separate.php:108
+#: ../includes/formats/separate.php:114
+msgid "From"
+msgstr "Từ"
+
+#: ../includes/formats/separate.php:104
+#: ../includes/formats/separate.php:109
+#: ../includes/formats/separate.php:116
+msgid "To"
+msgstr "Cho"

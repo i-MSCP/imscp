@@ -1,0 +1,119 @@
+Apr 03, 2007 - version 3.3 re-release (03)
+- Added Dutch (nl_NL) translation (Thanks to
+  Sander Eerkes <sander@eerkes.eu>)
+- Added Japanese (ja_JP) translation (Thanks to
+  Neil J. MacNeil <nmo1574@apu.ac.jp>)
+- Added Russian (ru_RU) translation (Thanks to
+  Serguei Dukachev <admin@mfitness.ru>)
+- Added Spanish (es_ES) translation (Thanks to
+  Mariano Nieves <m.nieves@cgac.es>)
+
+Nov 12, 2006 - version 3.3 re-release (02)
+- Added Brazilian (pt_BR) translation (Thanks to
+  Fernando M. Morgenstern <fernando@tifacil.com.br>)
+
+Nov 02, 2006 - version 3.3 re-release (01)
+- Added Czech (cs_CZ) translation (Thanks to Pavel Janousek
+  <PaJaSoft@PaJaSoftovi.Cz>)
+- Added Finnish (fi_FI) translation (Thanks to Kari Mattsson
+  <kari@trivore.com>)
+
+Apr 18, 2005 - version 3.3
+- Because of a bug in strpos function of PHP, date was not
+  being translated correctly on some languages. This is
+  fixed (Thanks to Dario Jakopec <dario@henry.it>)
+- Added an option to align the information which is
+  displayed on the left pane, left, center or right.
+- Added Swedish (sv_SE) translation (Thanks to Fredrik Jervfors
+  <sqm_admin@fimbul.net> and Khedron Wilk <khedron@wilk.se>
+  They both sent the translations at the same time! But of course
+  I could put only one of them into the plugin)
+- Added Italian (it_IT) translation (Thanks again Dario...)
+
+Mar 02, 2005 - version 3.2
+- Changed the code to display nothing under the MOTD if it is
+  the first login of the user (Thanks to Rudy Rucker
+  <rudy@monkeybrains.net>)
+- Added Polish (pl_PL) translation (Thanks to Lukasz 'e2rd'
+  Sanocki <e2rd@toop.pl>)
+
+Jan 31, 2005 - version 3.1
+- Added an administrator configuration file which includes
+  the options for showing or hiding the hostname in MOTD,
+  changing the welcome message greeting and font size for
+  left pane.
+- Added an option to show or hide the hostname under the
+  folders list.
+- Changed the MOTD message string to one which uses sprintf
+  to be able to have better translation (Thanks to Fredrik
+  Jervfors <sqm_admin@fimbul.net>)
+- Changed the file inclusion behavior to avoid incompatibilities
+  with certain plugins (Thanks to Pascal Guinet
+  <pascal.guinet@inpes.sante.fr> for feedback)
+- Added German (de_DE) translation (Thanks to Kai Katzur
+  <kai@katzur.org>)
+- Added Greek (el_GR) translation (Thanks to Apostolos
+  Katsinikas <apostolos@costeas-geitonas.gr>). Politicians
+  and media: This is called Greek-Turkish friendship!
+- Added Hungarian (hu_HU) translation (Thanks to Szel Miklos
+  <mukka@pozor.hu>)
+- Added French (fr_FR) translation (Thanks again Pascal...)
+- Updated Turkish (tr_TR) translation.
+
+Jan 26, 2005 - version 3.0
+- Modified the plugin to be compatible with SquirrelMail 1.4.4
+- Incorporated the welcome message into the MOTD.
+- The welcome message also shows the last hostname now, if the user
+  logged in from a reverse resolvable IP address.
+- Split the options in the SquirrelMail Display Options page
+  into two seperate options so that user can choose to show
+  his/her username or IP address or both under the folders in the
+  left pane.
+- Translations for version 2.x of the plugin will not be compatible
+  with this version, so I have removed the translations.
+- Added Turkish (tr_TR) translation for the 3.x branch.
+
+Nov 17, 2003 - version 2.2.3
+- Fixed the problem with relative paths. Thanks to Tomas Kuliavas for pointing
+  out this problem.
+- Added Swedish (sv_SE) translations by Per Eric Rosen (Jan 23, 2004)
+
+Nov 10, 2003 - version 2.2.2
+- Removed the month and day strings from the po file as SquirrelMail
+  has them since 1.3.x release.
+- Added SM's index.php to document root of the plugin for redirection.
+- Modified the plugin to comply with SquirrelMail Plugin Standards.
+- This is the day our great leader Mustafa Kemal Ataturk passed away in 1938.
+  We remember his presence with all our respect...
+
+Nov 14, 2002 - version 2.2.1
+- The HTML codes were changed to be compatible with HTML 4.0. No
+  changes in the display.
+
+Nov 13, 2002 - version 2.2
+- The date string can be localised by the SquirrelMail's
+  squirrelmail.po date strings.
+
+Nov 11, 2002 - version 2.1.1
+- Changed the code because the date function was not showing the
+  actual date, but it was showing the number of days in current
+  month!
+
+Nov 08, 2002 - version 2.1
+- Quite fast, we got 2.1 :-)
+- Removed the forgotten 2 test variables (sometimes people can
+  get tired :-)
+- Added an option under Display Preferences to show and hide
+  the username and ip display on left.
+- Thanks to Tomas Kuliavas for his patient support.
+
+Nov 07, 2002 - version 2.0
+- Changed the code nearly completely. As there is a plugin
+  named "Username Display" and it did the username show part
+  of my plugin, I wrote a new code that will display the
+  username, last connection IP and last connection date over 
+  the motd only after he/she logs in (for once per session).
+- Still shows the username and ip under the folders list.
+
+Nov 01, 2002 - version 1.0
+- Initial release

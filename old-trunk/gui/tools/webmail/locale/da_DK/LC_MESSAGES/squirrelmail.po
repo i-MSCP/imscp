@@ -1,0 +1,4065 @@
+# Danish (da_DK) SquirrelMail Translation
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Kent B. Hansen <kent@squirrelmail.dk>, 2001.
+# Ole Dam Møller <odm@comx.dk>, 2009.
+# $Id: squirrelmail.po 13756 2009-05-24 13:56:18Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: SquirrelMail 1.4.18\n"
+"Report-Msgid-Bugs-To: SquirrelMail Internationalization <squirrelmail-"
+"i18n@lists.sourceforge.net>\n"
+"POT-Creation-Date: 2009-04-17 14:35+0200\n"
+"PO-Revision-Date: 2009-02-18 17:16+0100\n"
+"Last-Translator: Ole Dam Møller <odm@comx.dk>\n"
+"Language-Team: Danish <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Address Book"
+msgstr "Adressebog"
+
+msgid "All"
+msgstr "Alle"
+
+msgid "To"
+msgstr "Til"
+
+msgid "Cc"
+msgstr "Cc"
+
+msgid "Name"
+msgstr "Navn"
+
+msgid "E-mail"
+msgstr "E-mail"
+
+msgid "Info"
+msgstr "Information"
+
+msgid "Source"
+msgstr "Kilde"
+
+msgid "Bcc"
+msgstr "Bcc"
+
+msgid "Use Addresses"
+msgstr "Brug adresser"
+
+msgid "Cancel"
+msgstr "Fortryd"
+
+msgid "Address Book Search"
+msgstr "Søg i adressebog"
+
+msgid "Search for"
+msgstr "Søg efter"
+
+msgid "in"
+msgstr "i"
+
+msgid "All address books"
+msgstr "Alle adressebøger"
+
+msgid "Search"
+msgstr "Søg"
+
+msgid "List all"
+msgstr "Vis alle"
+
+#, php-format
+msgid "Unable to list addresses from %s"
+msgstr "Kunne ikke vise adresserne fra %s"
+
+msgid "Your search failed with the following error(s)"
+msgstr "Din søgning mislykkedes og gav denne fejlmelding"
+
+msgid "No persons matching your search were found"
+msgstr "Ingen personer matchede dine kriterier"
+
+msgid "Return"
+msgstr "Tilbage"
+
+msgid "Close"
+msgstr "Luk"
+
+msgid "Nickname"
+msgstr "Kaldenavn"
+
+msgid "Must be unique"
+msgstr "Skal være unikt"
+
+msgid "E-mail address"
+msgstr "E-mailadresse"
+
+msgid "Last name"
+msgstr "Efternavn"
+
+msgid "First name"
+msgstr "Fornavn"
+
+msgid "Additional info"
+msgstr "Andre informationer"
+
+msgid "Add to:"
+msgstr "Føj til:"
+
+msgid "No personal address book is defined. Contact administrator."
+msgstr "Du har ikke nogen personlig adressebog. Kontakt systemadministratoren."
+
+msgid "You can only edit one address at the time"
+msgstr "Du kan kun rette i én adresse ad gangen"
+
+msgid "Update address"
+msgstr "Opdatér adresse"
+
+msgid "ERROR"
+msgstr "FEJL"
+
+msgid "Please select address that you want to edit"
+msgstr "Vælg den adresse som du ønsker ar rette"
+
+msgid "Add address"
+msgstr "Tilføj adresse"
+
+msgid "Edit selected"
+msgstr "Ret den valgte"
+
+msgid "Delete selected"
+msgstr "Slet de(n) valgte"
+
+msgid "Compose to selected"
+msgstr "Skriv til de(n) valgte"
+
+msgid "sort by nickname"
+msgstr "sorter efter kaldenavn"
+
+msgid "sort by name"
+msgstr "sorter efter navn"
+
+msgid "sort by email"
+msgstr "sorter efter email"
+
+msgid "sort by info"
+msgstr "sorter efter information"
+
+#, php-format
+msgid "Add to %s"
+msgstr "Føj til %s"
+
+#, php-format
+msgid "%s wrote:"
+msgstr "%s skrev:"
+
+msgid "quote"
+msgstr "citat"
+
+msgid "who"
+msgstr "hvem"
+
+#, php-format
+msgid "On %s, %s wrote:"
+msgstr "Den %s, %s skrev:"
+
+msgid "Subject"
+msgstr "Emne"
+
+msgid "From"
+msgstr "Fra"
+
+msgid "Date"
+msgstr "Dato"
+
+msgid "Original Message"
+msgstr "Oprindelig e-mail"
+
+msgid "Draft Email Saved"
+msgstr "Kladde gemt"
+
+msgid "Could not move/copy file. File not attached"
+msgstr "Kunne ikke flytte/kopiere filen. Filen er ikke vedhæftet"
+
+msgid "Your draft has been saved."
+msgstr "Din kladde er gemt"
+
+msgid "Your mail has been sent."
+msgstr "Din e-mail er sendt"
+
+msgid "From:"
+msgstr "Fra:"
+
+msgid "To:"
+msgstr "Til:"
+
+msgid "Cc:"
+msgstr "Cc:"
+
+msgid "Bcc:"
+msgstr "Bcc:"
+
+msgid "Subject:"
+msgstr "Emne:"
+
+msgid "Send"
+msgstr "Send"
+
+msgid "Attach:"
+msgstr "Vedhæft:"
+
+msgid "Add"
+msgstr "Tilføj"
+
+msgid "Delete selected attachments"
+msgstr "Slet de(n) valgte vedhæftede filer"
+
+msgid ""
+"Because PHP file uploads are turned off, you can not attach files to this "
+"message. Please see your system administrator for details."
+msgstr ""
+"Fordi PHP fil upload er slået fra, kan du ikke vedhæfte filer til denne "
+"besked. Kontakt din systemadministrator for detaljer."
+
+msgid "Priority"
+msgstr "Prioritet"
+
+msgid "High"
+msgstr "Høj"
+
+msgid "Normal"
+msgstr "Normal"
+
+msgid "Low"
+msgstr "Lav"
+
+msgid "Receipt"
+msgstr "Kvittering"
+
+msgid "On Read"
+msgstr "Ved læsning"
+
+msgid "On Delivery"
+msgstr "Ved aflevering"
+
+msgid "Signature"
+msgstr "Signatur"
+
+msgid "Addresses"
+msgstr "Adresser"
+
+msgid "Save Draft"
+msgstr "Gem kladde"
+
+msgid "You have not filled in the \"To:\" field."
+msgstr "Du har ikke udfyldt \"Til:\" feltet."
+
+#, php-format
+msgid "Error: Draft folder %s does not exist."
+msgstr "Fejl: kladde mappen '%s' eksisterer ikke"
+
+msgid "Message not sent."
+msgstr "Beskeden ser ikke sendt."
+
+msgid "Server replied:"
+msgstr "Serveren svarede:"
+
+msgid "Illegal folder name. Please select a different name."
+msgstr "Ulovligt mappenavn. Vælg venligst et andet navn."
+
+msgid "Click here to go back"
+msgstr "Klik her for at gå tilbage"
+
+msgid "You have not selected a folder to delete. Please do so."
+msgstr "Du har ikke valgt hvilken mappe, som skal slettes."
+
+msgid "Delete Folder"
+msgstr "Slet mappe"
+
+#, php-format
+msgid "Are you sure you want to delete %s?"
+msgstr "Er du sikker på, at du vil slette %s?"
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "No"
+msgstr "Nej"
+
+msgid "Folders"
+msgstr "Mapper"
+
+msgid "Subscribed successfully."
+msgstr "Mappen er gjort aktiv."
+
+msgid "Unsubscribed successfully."
+msgstr "Mappen er gjort passiv."
+
+msgid "Deleted folder successfully."
+msgstr "Mappen er slettet."
+
+msgid "Created folder successfully."
+msgstr "Mappen er oprettet."
+
+msgid "Renamed successfully."
+msgstr "Mappen er omdøbt."
+
+msgid "Subscription Unsuccessful - Folder does not exist."
+msgstr "Kunne ikke gøres aktiv - mappen eksisterer ikke."
+
+msgid "refresh folder list"
+msgstr "opdatér mappeliste"
+
+msgid "Create Folder"
+msgstr "Opret mappe"
+
+msgid "as a subfolder of"
+msgstr "som en undermappe til"
+
+msgid "None"
+msgstr "Ingen"
+
+msgid "Let this folder contain subfolders"
+msgstr "Lad denne mappe indeholde undermapper"
+
+msgid "Create"
+msgstr "Opret"
+
+msgid "Rename a Folder"
+msgstr "Omdøb en mappe"
+
+msgid "Select a folder"
+msgstr "Vælg en mappe"
+
+msgid "Rename"
+msgstr "Omdøb"
+
+msgid "No folders found"
+msgstr "Ingen mapper fundet"
+
+msgid "Delete"
+msgstr "Slet"
+
+msgid "Unsubscribe"
+msgstr "Gør passiv"
+
+msgid "Subscribe"
+msgstr "Gør aktiv"
+
+msgid "No folders were found to unsubscribe from!"
+msgstr "Ingen mapper at gøre passive"
+
+msgid "No folders were found to subscribe to!"
+msgstr "Ingen mapper at gøre aktive"
+
+msgid "Subscribe to:"
+msgstr "Aktivér:"
+
+msgid "You have not selected a folder to rename. Please do so."
+msgstr "Du har ikke valgt hvilken mappe, som skal omdøbes."
+
+msgid "Rename a folder"
+msgstr "Omdøb en mappe"
+
+msgid "New name:"
+msgstr "Nyt navn:"
+
+msgid "Submit"
+msgstr "Gem"
+
+msgid "ERROR: Help files are not in the right format!"
+msgstr "FEJL: Hjælpefilerne er ikke i det rigtige format!"
+
+msgid "Help"
+msgstr "Hjælp"
+
+msgid ""
+"Help is not available in the selected language. It will be displayed in "
+"English instead."
+msgstr ""
+"Hjælpesiderne er ikke oversat til det valgte sprog, så de bliver vist på "
+"engelsk."
+
+msgid ""
+"Help is not available. Please contact your system administrator for "
+"assistance."
+msgstr ""
+"Hjælp er ikke tilgængelig. Rapportér denne fejl til systemadministratoren."
+
+msgid ""
+"This chapter is not available in the selected language. It will be displayed "
+"in English instead."
+msgstr ""
+"Kapitlet er ikke oversat til det valgte sprog, så de bliver vist på engelsk."
+
+msgid "This chapter is missing"
+msgstr "Kapitlet  mangler"
+
+#, php-format
+msgid "For some reason, chapter %s is not available."
+msgstr "Af en eller anden grund er kapitel %s ikke tilgængelig."
+
+msgid "Table of Contents"
+msgstr "Oversigt"
+
+msgid "Previous"
+msgstr "Forrige"
+
+msgid "Next"
+msgstr "Næste"
+
+msgid "Top"
+msgstr "Top"
+
+msgid "Viewing an image attachment"
+msgstr "Viser vedhæftet billede"
+
+msgid "View message"
+msgstr "Vis meddelelse"
+
+msgid "Download this as a file"
+msgstr "Download som en fil"
+
+msgid "INBOX"
+msgstr "Indbakke"
+
+# Missing:
+msgid "Purge"
+msgstr "Tøm"
+
+msgid "Last Refresh"
+msgstr "Sidste opdatering"
+
+msgid "Check mail"
+msgstr "Check mail"
+
+msgid "Login"
+msgstr "Login"
+
+#, php-format
+msgid "%s Logo"
+msgstr "%s Logo"
+
+#, php-format
+msgid "SquirrelMail version %s"
+msgstr "SquirrelMail version %s"
+
+msgid "By the SquirrelMail Project Team"
+msgstr "Af SquirrelMail-udviklingsholdet"
+
+#, php-format
+msgid "%s Login"
+msgstr "%s Login"
+
+msgid "Name:"
+msgstr "Kontonavn:"
+
+msgid "Password:"
+msgstr "Adgangskode:"
+
+msgid "No messages were selected."
+msgstr "Ingen beskeder valgt."
+
+msgid "Options"
+msgstr "Indstillinger"
+
+msgid "Message Highlighting"
+msgstr "Beskedfremhævning"
+
+msgid "New"
+msgstr "Ny"
+
+msgid "Done"
+msgstr "Færdig"
+
+msgid "To or Cc"
+msgstr "Til eller Cc"
+
+msgid "subject"
+msgstr "emne"
+
+msgid "Edit"
+msgstr "Ret"
+
+msgid "Up"
+msgstr "Op"
+
+msgid "Down"
+msgstr "Ned"
+
+msgid "No highlighting is defined"
+msgstr "Ingen fremhævning er valgt"
+
+msgid "Identifying name"
+msgstr "Betegnelse for denne markering"
+
+msgid "Color"
+msgstr "Farve"
+
+msgid "Dark Blue"
+msgstr "Mørk blå"
+
+msgid "Dark Green"
+msgstr "Mørk grøn"
+
+msgid "Dark Yellow"
+msgstr "Mørk gul"
+
+msgid "Dark Cyan"
+msgstr "Mørk blågrøn"
+
+msgid "Dark Magenta"
+msgstr "Mørk magenta"
+
+msgid "Light Blue"
+msgstr "Lys blå"
+
+msgid "Light Green"
+msgstr "Lys grøn"
+
+msgid "Light Yellow"
+msgstr "Lys gul"
+
+msgid "Light Cyan"
+msgstr "Lys blågrøn"
+
+msgid "Light Magenta"
+msgstr "Lys magenta"
+
+msgid "Dark Gray"
+msgstr "Mørk grå"
+
+msgid "Medium Gray"
+msgstr "Grå"
+
+msgid "Light Gray"
+msgstr "Lys grå"
+
+msgid "White"
+msgstr "Hvid"
+
+msgid "Other:"
+msgstr "Anden:"
+
+msgid "Ex: 63aa7f"
+msgstr "F.eks.: 63aa7f "
+
+msgid "Matches"
+msgstr "Kriterie"
+
+msgid "Editing identities is disabled."
+msgstr "Rettelse af identiteter er slået fra."
+
+msgid "Default Identity"
+msgstr "Standard identitet"
+
+#, php-format
+msgid "Alternate Identity %d"
+msgstr "Alternativ identitet %d"
+
+msgid "Add a New Identity"
+msgstr "Tilføj ny identitet"
+
+msgid "Advanced Identities"
+msgstr "Avancerede identiteter"
+
+msgid "Full Name"
+msgstr "Fuldt navn"
+
+msgid "E-Mail Address"
+msgstr "E-mailadresse"
+
+msgid "Reply To"
+msgstr "Svar til"
+
+msgid "Save / Update"
+msgstr "Gem / Opdater"
+
+msgid "Make Default"
+msgstr "Brug som standard"
+
+msgid "Move Up"
+msgstr "Flyt op"
+
+msgid "Index Order"
+msgstr "Indekssortering"
+
+msgid "Checkbox"
+msgstr "Afkrydsningsboks"
+
+msgid "Flags"
+msgstr "Markeringer"
+
+msgid "Size"
+msgstr "Størrelse"
+
+msgid ""
+"The index order is the order that the columns are arranged in the message "
+"index. You can add, remove, and move columns around to customize them to fit "
+"your needs."
+msgstr ""
+"Indeksrækkefølgen er måden kolonnerne er arrangeret påi beskedoversigten. Du "
+"kan tilføje, fjerne, og flytte kolonnerne rundt for at tilpasse dem til dine "
+"behov."
+
+msgid "up"
+msgstr "op"
+
+msgid "down"
+msgstr "ned"
+
+msgid "remove"
+msgstr "slet"
+
+msgid "Return to options page"
+msgstr "Tilbage til oversigten over indstillinger"
+
+msgid "Personal Information"
+msgstr "Personlig information"
+
+msgid "Display Preferences"
+msgstr "Formateringsindstillinger"
+
+msgid "Folder Preferences"
+msgstr "Mappeindstillinger"
+
+msgid "Error(s) occurred while saving your options"
+msgstr "Der opstod fejl mens dine indstillnger blev gemt"
+
+msgid "Some of your preference changes were not applied."
+msgstr "Visse af dine indstillings-ændringer blev ikke gennemført."
+
+msgid "Successfully Saved Options"
+msgstr "Indstillingerne er gemt"
+
+msgid "Refresh Folder List"
+msgstr "Opdatér mappeliste"
+
+msgid "Refresh Page"
+msgstr "Opdatér siden"
+
+msgid ""
+"This contains personal information about yourself such as your name, your "
+"email address, etc."
+msgstr ""
+"Her er dine personlige oplysninger, såsom dit navn, din e-mail-adresse m.v."
+
+msgid ""
+"You can change the way that SquirrelMail looks and displays information to "
+"you, such as the colors, the language, and other settings."
+msgstr "Her kan du indstille farver, sprog og andre generelle ting."
+
+msgid ""
+"Based upon given criteria, incoming messages can have different background "
+"colors in the message list. This helps to easily distinguish who the "
+"messages are from, especially for mailing lists."
+msgstr ""
+"Her kan du vælge en bestemt baggrundsfarve til bestemte typer e-mails, så de "
+"træder ud fra mængden. Dette hjælper med til let at overskue hvem en mail "
+"kommer fra, særligt ved maillister."
+
+msgid ""
+"These settings change the way your folders are displayed and manipulated."
+msgstr "Her bestemmer du, hvordan mapperne skal vises i mappelisten."
+
+msgid ""
+"The order of the message index can be rearranged and changed to contain the "
+"headers in any order you want."
+msgstr ""
+"Her kan du bestemme, hvordan dine beskeder skal vises - om afsender skal stå "
+"til venstre for dato osv."
+
+msgid "Message not printable"
+msgstr "Beskeden kan ikke udskrives"
+
+msgid "Attachments:"
+msgstr "Vedhæftede filer:"
+
+msgid "Unknown sender"
+msgstr "Ukendt afsender"
+
+msgid "Info:"
+msgstr "Information:"
+
+msgid "Size:"
+msgstr "Størrelse:"
+
+msgid "Type:"
+msgstr "Type:"
+
+msgid "Invalid URL"
+msgstr "Ugyldig URL"
+
+msgid "Printer Friendly"
+msgstr "Printervenlig"
+
+msgid "Print"
+msgstr "Udskriv"
+
+msgid "View Printable Version"
+msgstr "Vis printervenlig version"
+
+msgid "Read:"
+msgstr "Læs:"
+
+msgid "Your message"
+msgstr "Din besked"
+
+msgid "Sent"
+msgstr "Sendt"
+
+#, php-format
+msgid "Was displayed on %s"
+msgstr "Var vist %s"
+
+msgid "less"
+msgstr "mindre"
+
+msgid "more"
+msgstr "mere"
+
+msgid "Mailer"
+msgstr "Mailprogram"
+
+msgid "Read receipt"
+msgstr "Læs kvittering"
+
+msgid "sent"
+msgstr "sendt"
+
+msgid "requested"
+msgstr "anmodet"
+
+msgid ""
+"The message sender has requested a response to indicate that you have read "
+"this message. Would you like to send a receipt?"
+msgstr ""
+"Afsenderen har anmodet om en kvittering for at du har læst denne besked. Vil "
+"du sende en kvittering?"
+
+msgid "Send read receipt now"
+msgstr "Send kvittering nu"
+
+msgid "Search Results"
+msgstr "Søgeresultat"
+
+msgid "Message List"
+msgstr "Oversigt"
+
+msgid "Resume Draft"
+msgstr "Fortsæt på kladde"
+
+msgid "Edit Message as New"
+msgstr "Ret beskeden som en ny"
+
+msgid "View Message"
+msgstr "Vis meddelelse"
+
+msgid "Forward"
+msgstr "Videresend"
+
+msgid "Forward as Attachment"
+msgstr "Videresend som vedhæftet fil"
+
+msgid "Reply"
+msgstr "Svar"
+
+msgid "Reply All"
+msgstr "Svar til alle"
+
+msgid "View Full Header"
+msgstr "Vis hele headeren"
+
+msgid "Attachments"
+msgstr "Vedhæftede filer"
+
+msgid "You must be logged in to access this page."
+msgstr "Du skal være logget ind for at kunne se denne side."
+
+msgid "Folder:"
+msgstr "Mappe:"
+
+msgid "Saved Searches"
+msgstr "Gemte søgninger"
+
+msgid "edit"
+msgstr "ret"
+
+msgid "search"
+msgstr "søg"
+
+msgid "delete"
+msgstr "slet"
+
+msgid "Recent Searches"
+msgstr "Forrige søgninger"
+
+msgid "save"
+msgstr "gem"
+
+msgid "forget"
+msgstr "glem"
+
+msgid "Current Search"
+msgstr "Aktuel søgning"
+
+msgid "All Folders"
+msgstr "I alle mapper"
+
+msgid "Body"
+msgstr "Besked"
+
+msgid "Everywhere"
+msgstr "Overalt"
+
+msgid "No Messages Found"
+msgstr "Ingen beskeder fundet"
+
+msgid "Please enter something to search for"
+msgstr "Venligst indtast noget at søge efter"
+
+msgid "Signout"
+msgstr "Log ud"
+
+msgid "Sign Out"
+msgstr "Log ud"
+
+msgid "You have been successfully signed out."
+msgstr "Du er logget ud."
+
+msgid "Click here to log back in."
+msgstr "Klik her for at logge ind igen."
+
+msgid "Viewing a Business Card"
+msgstr "Viser visitkort"
+
+#, php-format
+msgid ""
+"vCard Version %s is not supported. Some information might not be converted "
+"correctly."
+msgstr ""
+"vCard version %s er ikke understøttet. Dele af informationen er muligvis "
+"ikke korrekt konverteret."
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "Web Page"
+msgstr "Hjemmeside"
+
+msgid "Organization / Department"
+msgstr "Organisation / Afdeling"
+
+msgid "Address"
+msgstr "Adresse"
+
+msgid "Work Phone"
+msgstr "Arbejdstelefon"
+
+msgid "Home Phone"
+msgstr "Hjemmetelefon"
+
+msgid "Cellular Phone"
+msgstr "Mobiltelefon"
+
+msgid "Fax"
+msgstr "Fax"
+
+msgid "Note"
+msgstr "Notits"
+
+msgid "Add to address book"
+msgstr "Tilføj til adressebogen"
+
+msgid "Title &amp; Org. / Dept."
+msgstr "Titel og organisation / afd."
+
+msgid "Viewing Full Header"
+msgstr "Viser hele headeren"
+
+msgid "Viewing a text attachment"
+msgstr "Viser vedhæftet tekst"
+
+msgid "View Unsafe Images"
+msgstr "Vis usikre billeder"
+
+msgid ""
+"Could not include PEAR database functions required for the database backend."
+msgstr ""
+"Kunne ikke inkludere de krævede PEAR database funktioner til databasen."
+
+#, php-format
+msgid "Is PEAR installed, and is the include path set correctly to find %s?"
+msgstr "Er PEAR installeret og er include path sat korrekt så %s kan findes?"
+
+msgid "Please contact your system administrator and report this error."
+msgstr "Rapportér denne fejl til systemadministratoren."
+
+msgid "Personal address book"
+msgstr "Personlig adressebog"
+
+#, php-format
+msgid "Database error: %s"
+msgstr "Databasefejl: %s"
+
+msgid "Address book is read-only"
+msgstr "Adressebogen er skrivebeskyttet"
+
+#. i18n: don't use html formating in translation
+#, php-format
+msgid "User \"%s\" already exists"
+msgstr "Brugernavnet &quot;%s&quot; er allerede i brug"
+
+#. i18n: don't use html formating in translation
+#, php-format
+msgid "User \"%s\" does not exist"
+msgstr "Brugernavnet &quot;%s&quot; eksisterer ikke"
+
+#, php-format
+msgid "User '%s' already exist."
+msgstr "Brugernavnet '%s' er allerede i brug."
+
+msgid "Not a file name"
+msgstr "Ikke et filnavn"
+
+msgid "No such file or directory"
+msgstr "Filen eller mappen eksisterer ikke"
+
+msgid "Open failed"
+msgstr "Kunne ikke åbne filen"
+
+msgid "Write failed"
+msgstr "Kunne ikke skrive"
+
+msgid "Unable to update"
+msgstr "Kunne ikke opdatere"
+
+msgid "Address book is corrupted. Required fields are missing."
+msgstr "Adressekartotek er beskadiget. Krævede felter er mangler."
+
+msgid "Address book entry is too big"
+msgstr "Adressebogsoplysninger for omfangsrige"
+
+msgid "Could not lock datafile"
+msgstr "Kunne ikke låse filen"
+
+msgid "Write to address book failed"
+msgstr "Kunne ikke skrive i adressebogen"
+
+msgid "Error initializing address book database."
+msgstr "Kunne ikke komme i kontakt med adressebogsdatabasen."
+
+#, php-format
+msgid "Error opening file %s"
+msgstr "Kunne ikke åbne filen %s"
+
+msgid "Global address book"
+msgstr "Global adressebog"
+
+msgid "Error initializing global address book."
+msgstr "Kunne ikke åbne den globale adressebog."
+
+#, php-format
+msgid "Error initializing LDAP server %s:"
+msgstr "Kunne ikke komme i kontakt med LDAP-serveren %s:"
+
+msgid "Click here to change the sorting of the address list"
+msgstr "Klik her for at ændre sortering af adresseliste"
+
+msgid "Invalid input data"
+msgstr "Ugyldig input"
+
+msgid "Name is missing"
+msgstr "Navnet mangler"
+
+msgid "E-mail address is missing"
+msgstr "E-mailadressen mangler"
+
+msgid "Nickname contains illegal characters"
+msgstr "Kaldenavnet indeholder ulovlige tegn"
+
+msgid "View"
+msgstr "Vis"
+
+msgid "View Business Card"
+msgstr "Vis visitkort"
+
+msgid "Your session has expired, but will be resumed after logging in again."
+msgstr "Din session er udløbet, men vil blive genoptaget efter nyt login."
+
+msgid "Sunday"
+msgstr "Søndag"
+
+msgid "Monday"
+msgstr "Mandag"
+
+msgid "Tuesday"
+msgstr "Tirsdag"
+
+msgid "Wednesday"
+msgstr "Onsdag"
+
+msgid "Thursday"
+msgstr "Torsdag"
+
+msgid "Friday"
+msgstr "Fredag"
+
+msgid "Saturday"
+msgstr "Lørdag"
+
+msgid "Sun"
+msgstr "Søn"
+
+msgid "Mon"
+msgstr "Man"
+
+msgid "Tue"
+msgstr "Tirs"
+
+msgid "Wed"
+msgstr "Ons"
+
+msgid "Thu"
+msgstr "Tors"
+
+msgid "Fri"
+msgstr "Fre"
+
+msgid "Sat"
+msgstr "Lør"
+
+msgid "January"
+msgstr "Januar"
+
+msgid "February"
+msgstr "Februar"
+
+msgid "March"
+msgstr "Marts"
+
+msgid "April"
+msgstr "April"
+
+msgid "May"
+msgstr "Maj"
+
+msgid "June"
+msgstr "Juni"
+
+msgid "July"
+msgstr "Juli"
+
+msgid "August"
+msgstr "August"
+
+msgid "September"
+msgstr "September"
+
+msgid "October"
+msgstr "Oktober"
+
+msgid "November"
+msgstr "November"
+
+msgid "December"
+msgstr "December"
+
+msgid "Jan"
+msgstr "Jan"
+
+msgid "Feb"
+msgstr "Feb"
+
+msgid "Mar"
+msgstr "Mar"
+
+msgid "Apr"
+msgstr "Apr"
+
+msgid "Ma&#121;"
+msgstr "Maj"
+
+msgid "Jun"
+msgstr "Jun"
+
+msgid "Jul"
+msgstr "Jul"
+
+msgid "Aug"
+msgstr "Aug"
+
+msgid "Sep"
+msgstr "Sep"
+
+msgid "Oct"
+msgstr "Okt"
+
+msgid "Nov"
+msgstr "Nov"
+
+msgid "Dec"
+msgstr "Dec"
+
+msgid "D, F j, Y g:i a"
+msgstr "l, j/n Y, h:i"
+
+msgid "D, F j, Y H:i"
+msgstr "D, F j, Y H:i"
+
+msgid "M j, Y"
+msgstr "j/n Y"
+
+msgid "g:i a"
+msgstr "h:i"
+
+msgid "H:i"
+msgstr "H:i"
+
+msgid "D, g:i a"
+msgstr "l, h:i"
+
+msgid "D, H:i"
+msgstr "D, H:i"
+
+#, php-format
+msgid "Preference database error (%s). Exiting abnormally"
+msgstr "Kunne ikke gemme indstillingerne i databasen (%s)."
+
+#, php-format
+msgid "Click here to return to %s"
+msgstr "Klik her for at gå tilbage til %s"
+
+msgid "Go to the login page"
+msgstr "Gå til login-siden"
+
+#, php-format
+msgid ""
+"Preference file, %s, does not exist. Log out, and log back in to create a "
+"default preference file."
+msgstr ""
+"Filen med indstillingerne, %s, eksisterer ikke. Log ud, og log ind igen for "
+"at oprette en standardfil."
+
+#, php-format
+msgid ""
+"Preference file, %s, could not be opened. Contact your system administrator "
+"to resolve this issue."
+msgstr ""
+"Filen med de gemte indstillinger (%s) kunne ikke åbnes. Kontakt "
+"systemadministratoren."
+
+#, php-format
+msgid ""
+"Preference file, %s, could not be written. Contact your system administrator "
+"to resolve this issue."
+msgstr ""
+"Filen med indstillinger (%s) kunne ikke gemmes. Kontakt "
+"systemadministratoren."
+
+#, php-format
+msgid ""
+"Preference file, %s, could not be copied from temporary file, %s. Contact "
+"your system administrator to resolve this issue."
+msgstr ""
+"Filen med de gemte indstillinger ,%s, kunne ikke kopieres fra den "
+"midlertidige fil. %s. Kontakt systemadministratoren."
+
+#, php-format
+msgid "Error opening %s"
+msgstr "Fejl ved åbning af %s"
+
+msgid "Default preference file not found or not readable!"
+msgstr "Kunne ikke finde eller læse filen med standardindstillinger!"
+
+msgid "Could not create initial preference file!"
+msgstr "Kunne ikke oprette filen med standardindstillingerne!"
+
+#, php-format
+msgid "%s should be writable by user %s"
+msgstr "%s skal kunne opdateres af brugeren %s"
+
+msgid "Signature is too big."
+msgstr "Signatur er for stor."
+
+#, php-format
+msgid ""
+"Signature file, %s, could not be opened. Contact your system administrator "
+"to resolve this issue."
+msgstr "Signaturfilen (%s) kunne ikke åbnes. Kontakt systemadministratoren."
+
+#, php-format
+msgid ""
+"Signature file, %s, could not be written. Contact your system administrator "
+"to resolve this issue."
+msgstr "Signaturfilen (%s) kunne ikke gemmes. Kontakt systemadministratoren."
+
+#, php-format
+msgid ""
+"Signature file, %s, could not be copied from temporary file, %s. Contact "
+"your system administrator to resolve this issue."
+msgstr ""
+"Signaturfilen (%s) kunne ikke kopieres fra temporær fil, %s. Kontakt "
+"systemadministratoren."
+
+msgid ""
+"You need to have PHP installed with the multibyte string function enabled "
+"(using configure option --enable-mbstring)."
+msgstr ""
+"Du skal have PHP installeret med &quot;multibyte string&quot; funktionen "
+"aktiveret. (brug konfigurationsparameteren --with-mbstring)."
+
+msgid "ERROR: No available IMAP stream."
+msgstr "FEJL: Ingen IMAP-strøm tilgængelig."
+
+msgid "ERROR: Connection dropped by IMAP server."
+msgstr "FEJL: Forbindelsen til IMAP serveren tabt."
+
+msgid "ERROR: Could not complete request."
+msgstr "FEJL : Kunne ikke fuldføre handlingen."
+
+msgid "Query:"
+msgstr "Forespørgsel:"
+
+msgid "Reason Given:"
+msgstr "Årsag:"
+
+msgid "ERROR: Bad or malformed request."
+msgstr "FEJL: Ugyldig forespørgsel. "
+
+msgid "Server responded:"
+msgstr "Serveren svarede:"
+
+msgid "ERROR: IMAP server closed the connection."
+msgstr "FEJL: IMAP-serveren afbrød forbindelsen."
+
+msgid "ERROR: Unknown IMAP response."
+msgstr "FEJL: Ukendt IMAP svar."
+
+#, php-format
+msgid "Error connecting to IMAP server: %s."
+msgstr "Kunne ikke få forbindelse til IMAP-serveren: %s."
+
+msgid "The IMAP server is reporting that plain text logins are disabled."
+msgstr "IMAP-serveren rapporterer, at klartekst login er slået fra."
+
+msgid "Using CRAM-MD5 or DIGEST-MD5 authentication instead may work."
+msgstr ""
+"Brug af CRAM-MD5 eller Digest-MD5 authentificering vil muligvis virke "
+"istedet."
+
+msgid "Also, the use of TLS may allow SquirrelMail to login."
+msgstr ""
+"Endvidere vil brugen af TLS muligvis tillade SquirrelMail at logge ind."
+
+#, php-format
+msgid "Bad request: %s"
+msgstr "Ugyldig forespørgsel: %s"
+
+#, php-format
+msgid "Unknown error: %s"
+msgstr "Ukendt fejl: %s"
+
+msgid "Read data:"
+msgstr "Læste data:"
+
+msgid "Unknown user or password incorrect."
+msgstr "Kontonavn eller adgangskode forkert."
+
+msgid "ERROR: Could not append message to"
+msgstr "FEJL: Kunne ikke tilføje meddelelsen til"
+
+msgid "Solution:"
+msgstr "Løsning:"
+
+msgid ""
+"Remove unneccessary messages from your folders. Start with your Trash folder."
+msgstr ""
+"Flyt unødvendige beskedder fra din mappe. Start med at tømme din papirkurv."
+
+#, php-format
+msgid "Invalid mailbox name: %s"
+msgstr "Ugyldigt mailbox navn: %s"
+
+msgid "(no subject)"
+msgstr "(intet emne)"
+
+msgid "Unknown Sender"
+msgstr "Ukendt afsender"
+
+msgid "Unknown response from IMAP server:"
+msgstr "Ukendt svar fra IMAP-serveren:"
+
+msgid "The server couldn't find the message you requested."
+msgstr "Serveren kunne ikke finde den forespurgte meddelse."
+
+msgid ""
+"Most probably your message list was out of date and the message has been "
+"moved away or deleted (perhaps by another program accessing the same "
+"mailbox)."
+msgstr ""
+"Sandsynligvis var din besked liste var forældet, og beskeden er blevet "
+"flyttet væk eller slettet (måske af et andet program der har adgang til den "
+"samme postkasse)."
+
+msgid "Unknown date"
+msgstr "Ukendt dato"
+
+msgid "A"
+msgstr "B"
+
+msgid "Thread sorting is not supported by your IMAP server."
+msgstr "Trådsortering er ikke supporteret af din IMAP-server."
+
+msgid "Server-side sorting is not supported by your IMAP server."
+msgstr "Serversortering er ikke supporteret af din IMAP-server."
+
+msgid "THIS FOLDER IS EMPTY"
+msgstr "Denne mappe er tom"
+
+msgid "Move Selected To"
+msgstr "Flyt valgte til"
+
+msgid "Transform Selected Messages"
+msgstr "Formattér de valgte beskeder"
+
+msgid "Move"
+msgstr "Flyt"
+
+msgid "Expunge"
+msgstr "Ryd op"
+
+msgid "Read"
+msgstr "Læst"
+
+msgid "Unread"
+msgstr "Ulæst"
+
+msgid "Unthread View"
+msgstr "Vis uden tråde"
+
+msgid "Thread View"
+msgstr "Vis med tråde"
+
+msgid "Toggle All"
+msgstr "Skift alle markeringer"
+
+msgid "Unselect All"
+msgstr "Ophæv alle markeringer"
+
+msgid "Select All"
+msgstr "Markér alle"
+
+#, php-format
+msgid "Viewing Messages: %s to %s (%s total)"
+msgstr "Viser beskederne: %s til %s (i alt %s)"
+
+#, php-format
+msgid "Viewing Message: %s (%s total)"
+msgstr "Viser beskeden: %s (i alt %s)"
+
+msgid "Paginate"
+msgstr "Opdel i sider"
+
+msgid "Show All"
+msgstr "Vis alle"
+
+msgid "SquirrelMail could not decode the bodystructure of the message"
+msgstr "SquirrelMail kunne ikke afkode strukturen i meddelelsens brødtekst"
+
+msgid "The bodystructure provided by your IMAP server:"
+msgstr "brødtekstens struktur fra din IMAP-server:"
+
+msgid ""
+"Body retrieval error. The reason for this is most probably that the message "
+"is malformed."
+msgstr ""
+"Kunne ikke hente beskedens tekst. Årsagen er formodentlig at beskeden ikke "
+"er formatteret korrekt."
+
+msgid "Command:"
+msgstr "Kommando:"
+
+msgid "Response:"
+msgstr "Svar:"
+
+msgid "Message:"
+msgstr "Besked:"
+
+msgid "FETCH line:"
+msgstr "FETCH linien:"
+
+msgid "Hide Unsafe Images"
+msgstr "Skjul usikre billeder"
+
+msgid "Download"
+msgstr "Hent"
+
+msgid "sec_remove_eng.png"
+msgstr "sec_remove_da_DK.png"
+
+msgid "This external link will open in a new window"
+msgstr "Dette eksterne link åbner i et nyt vindue"
+
+#, php-format
+msgid "Option Type '%s' Not Found"
+msgstr "Indstillingstype '%s' kunne ikke findes"
+
+msgid "Delete Selected"
+msgstr "Slet de(n) valgte"
+
+#, php-format
+msgid "Edit List Layout Type '%s' Not Found"
+msgstr "Ret liste visningstype '%s' kunne ikke findes"
+
+msgid "Current Folder"
+msgstr "Aktuel mappe"
+
+msgid "Compose"
+msgstr "Skriv ny"
+
+#, php-format
+msgid "Error creating directory %s."
+msgstr "Kunne ikke oprette mappen %s."
+
+msgid "Could not create hashed directory structure!"
+msgstr "Kunne ikke oprette mappestruktur!"
+
+msgid "Email delivery error"
+msgstr "Fejlrapport for aflevering"
+
+#, php-format
+msgid "Can't execute command '%s'."
+msgstr "Kan ikke udføre kommandoen '%s'."
+
+msgid "Can't open SMTP stream."
+msgstr "Kan ikke åbne SMTP stream."
+
+msgid "Service not available, closing channel"
+msgstr "Tjenesten er ikke tilgængelig, lukker kanal"
+
+msgid "A password transition is needed"
+msgstr "En ændring af password er nødvendig"
+
+msgid "Requested mail action not taken: mailbox unavailable"
+msgstr "Anmodede mail handling ikke gennemført: postkasse ikke fundet"
+
+msgid "Requested action aborted: error in processing"
+msgstr "Anmodede handling ikke gennemført: fejl i processering"
+
+msgid "Requested action not taken: insufficient system storage"
+msgstr "Anmodede handling ikke gennemført: utilstrækkelig diskplads"
+
+msgid "Temporary authentication failure"
+msgstr "Midlertidig authentificerings fejl"
+
+msgid "Syntax error; command not recognized"
+msgstr "Syntaksfejl; kommando ikke genkendt"
+
+msgid "Syntax error in parameters or arguments"
+msgstr "Syntaksfejl i parametre eller argumenter"
+
+msgid "Command not implemented"
+msgstr "Kommando ikke implementeret "
+
+msgid "Bad sequence of commands"
+msgstr "Forkert kommando sekvens"
+
+msgid "Command parameter not implemented"
+msgstr "Kommando parameter ikke implementeret"
+
+msgid "Authentication required"
+msgstr "Authentificering påkrævet"
+
+msgid "Authentication mechanism is too weak"
+msgstr "For svag autentifikationsmekanisme"
+
+msgid "Authentication failed"
+msgstr "Authentificering fejlede "
+
+msgid "Encryption required for requested authentication mechanism"
+msgstr "Kryptering er påkrævet for anmodet autentifikationsmetode"
+
+msgid "Requested action not taken: mailbox unavailable"
+msgstr "Anmodede handling ikke gennemført: postkasse ikke fundet"
+
+msgid "User not local; please try forwarding"
+msgstr "Bruger er ikke lokal; prøv videresendelse"
+
+msgid "Requested mail action aborted: exceeding storage allocation"
+msgstr "Anmodede mail handling underkendt: tildelt diskplads overskredet"
+
+msgid "Requested action not taken: mailbox name not allowed"
+msgstr "Anmodede handling underkendt: postkasse navn ikke tilladt"
+
+msgid "Transaction failed"
+msgstr "Transaktion fejlede "
+
+msgid "Unknown response"
+msgstr "Ukendt svar"
+
+msgid "General Display Options"
+msgstr "Generelle formatteringsindstillinger"
+
+msgid "Theme"
+msgstr "Tema"
+
+msgid "Default"
+msgstr "Standard"
+
+msgid "Custom Stylesheet"
+msgstr "Brugerdefineret stylesheet"
+
+msgid "Language"
+msgstr "Sprog"
+
+msgid "Use Javascript"
+msgstr "Brug JavaScript"
+
+msgid "Autodetect"
+msgstr "Autodetektér"
+
+msgid "Always"
+msgstr "Altid"
+
+msgid "Never"
+msgstr "Aldrig"
+
+msgid "Mailbox Display Options"
+msgstr "Mailboks formatteringsindstillinger"
+
+msgid "Number of Messages per Page"
+msgstr "Antal beskeder per side"
+
+msgid "Enable Alternating Row Colors"
+msgstr "Variér baggrundsfarven på hveranden række"
+
+msgid "Enable Page Selector"
+msgstr "Aktivér opdeling i sider"
+
+msgid "Maximum Number of Pages to Show"
+msgstr "Det maksimale antal sider som vises"
+
+msgid "Always Show Full Date"
+msgstr "Vis altid fuld dato"
+
+msgid "Length of From/To Field (0 for full)"
+msgstr "Længde af Fra/Til felt (0 til fuld)"
+
+msgid "Length of Subject Field (0 for full)"
+msgstr "Længde af Emne felt (0 til fuld)"
+
+msgid "Message Display and Composition"
+msgstr "Beskedformattering og -opbygning"
+
+msgid "Wrap Incoming Text At"
+msgstr "Ombryd modtagede beskeder ved"
+
+msgid "Width of Editor Window"
+msgstr "Bredde på skrivevinduet"
+
+msgid "Height of Editor Window"
+msgstr "Højde på skrivevinduet"
+
+msgid "Location of Buttons when Composing"
+msgstr "Placering af knapper når du skriver"
+
+msgid "Before headers"
+msgstr "Over adressefelterne"
+
+msgid "Between headers and message body"
+msgstr "Mellem adressefelterne og selve beskeden"
+
+msgid "After message body"
+msgstr "Under beskeden"
+
+msgid "Address Book Display Format"
+msgstr "Adressebog formatteringsindstilling"
+
+msgid "Javascript"
+msgstr "JavaScript"
+
+msgid "HTML"
+msgstr "HTML"
+
+msgid "Format of Addresses Added From Address Book"
+msgstr "Format af adresser tilføjet fra adressebog"
+
+msgid "No prefix/Address only"
+msgstr "Uden præfiks/Kun adresse"
+
+msgid "Nickname and address"
+msgstr "Kaldenavn og adresse"
+
+msgid "Full name and address"
+msgstr "Fuldt navn og adresse"
+
+msgid "Show HTML Version by Default"
+msgstr "Vis HTML-versionen som standard"
+
+msgid "Enable Forward as Attachment"
+msgstr "Aktivér videresending som vedhæftet fil"
+
+msgid "Include Me in CC when I Reply All"
+msgstr "Inkludér mig i Kopi-til når jeg svarer til alle"
+
+msgid "Enable Mailer Display"
+msgstr "Aktivér besked display"
+
+msgid "Display Attached Images with Message"
+msgstr "Vis vedhæftede billeder i beskeden"
+
+msgid "Enable Printer Friendly Clean Display"
+msgstr "Aktivér printervenlig formatering"
+
+msgid "Enable Mail Delivery Notification"
+msgstr "Gør opmærksom på ulæste beskeder"
+
+msgid "Compose Messages in New Window"
+msgstr "Skriv meddelelser i et nyt vindue"
+
+msgid "Width of Compose Window"
+msgstr "Bredde på skrivevinduet"
+
+msgid "Height of Compose Window"
+msgstr "Højde på skrivevinduet"
+
+msgid "Prepend Signature before Reply/Forward Text"
+msgstr "Tilføj signatur før svaret/den videresendte tekst"
+
+msgid "Prefix for Original Message when Replying"
+msgstr "Præfiks for oprindelig meddelse ved besvarelse"
+
+msgid "Cursor Position when Replying"
+msgstr "Markørposition ved besvarelse"
+
+msgid "To: field"
+msgstr "Til: felt"
+
+msgid "Focus in body"
+msgstr "Fokus i meddelse"
+
+msgid "Select body"
+msgstr "Vælg brødtekst"
+
+msgid "No focus"
+msgstr "Intet fokus"
+
+msgid "Sort by Received Date"
+msgstr "Sorter efter modtagelsesdatoen"
+
+msgid "Enable Thread Sort by References Header"
+msgstr "Aktivér sortering i tråde"
+
+msgid "Special Folder Options"
+msgstr "Specialmappe-indstillinger"
+
+msgid "Folder Path"
+msgstr "Sti til mapper"
+
+msgid "Do not use Trash"
+msgstr "Brug ikke papirkurven"
+
+msgid "Trash Folder"
+msgstr "Papirkurv"
+
+msgid "Do not use Drafts"
+msgstr "Brug ikke kladder"
+
+msgid "Draft Folder"
+msgstr "Kladder"
+
+msgid "Do not use Sent"
+msgstr "Gem ikke sendt post"
+
+msgid "Sent Folder"
+msgstr "Sendt"
+
+msgid "Folder List Options"
+msgstr "Mappeliste-indstillinger"
+
+msgid "Location of Folder List"
+msgstr "Placering af mappelisten"
+
+msgid "Left"
+msgstr "Til venstre"
+
+msgid "Right"
+msgstr "Til højre"
+
+msgid "pixels"
+msgstr "billedpunkter"
+
+msgid "Width of Folder List"
+msgstr "Bredde på mappelisten"
+
+msgid "Minutes"
+msgstr "Minutter"
+
+msgid "Seconds"
+msgstr "Sekunder"
+
+msgid "Minute"
+msgstr "Minut"
+
+msgid "Auto Refresh Folder List"
+msgstr "Opdatér automatisk mappelisten"
+
+msgid "Enable Unread Message Notification"
+msgstr "Gør opmærksom på ulæste beskeder"
+
+msgid "No Notification"
+msgstr "Nej"
+
+msgid "Only INBOX"
+msgstr "Kun i indbakken"
+
+msgid "Unread Message Notification Type"
+msgstr "Hvordan"
+
+msgid "Only Unseen"
+msgstr "Vis antal ulæste"
+
+msgid "Unseen and Total"
+msgstr "Vis antal ulæste og samlet antal"
+
+msgid "Enable Collapsable Folders"
+msgstr "Aktivér sammenklappelige mapper"
+
+msgid "Enable Cumulative Unread Message Notification"
+msgstr "Gør opmærksom på ulæste beskeder"
+
+msgid "Show Clock on Folders Panel"
+msgstr "Vis klokken i mappelisten"
+
+msgid "International date and time"
+msgstr "International dato og tid"
+
+msgid "American date and time"
+msgstr "Amerikansk dato og klokkeslæt"
+
+msgid "European date and time"
+msgstr "Europæisk dato og tid"
+
+msgid "Show weekday and time"
+msgstr "Vis ugedag og tid"
+
+msgid "Show time with seconds"
+msgstr "Vis tid med sekunder"
+
+msgid "Show time"
+msgstr "Vis tid"
+
+msgid "No Clock"
+msgstr "Intet ur"
+
+msgid "Hour Format"
+msgstr "Formatering"
+
+msgid "12-hour clock"
+msgstr "12-timers ur"
+
+msgid "24-hour clock"
+msgstr "24-timers ur"
+
+msgid "Memory Search"
+msgstr "Hukommelsessøgning"
+
+msgid "Disabled"
+msgstr "Deaktiveret"
+
+msgid "Folder Selection Options"
+msgstr "Mappeliste-indstillinger"
+
+msgid "Selection List Style"
+msgstr "Citationsstil"
+
+msgid "Long:"
+msgstr "Lang: "
+
+msgid "Folder"
+msgstr "Mappe"
+
+msgid "Subfolder"
+msgstr "Undermappe"
+
+msgid "Indented:"
+msgstr "Indrykket:"
+
+msgid "Delimited:"
+msgstr "Afgrænset:"
+
+msgid "You can't select INBOX as Trash folder."
+msgstr "Du kan ikke vælge INBOX som papirkurv."
+
+msgid "You can't select INBOX as Sent folder."
+msgstr "Du kan ikke vælge INBOX som udbakke."
+
+msgid "You can't select INBOX as Draft folder."
+msgstr "Du kan ikke vælge INBOX som kladde mappe"
+
+msgid "Name and Address Options"
+msgstr "Navn- og adresseindstillinger"
+
+msgid "E-mail Address"
+msgstr "E-mailadresse"
+
+msgid "Edit Advanced Identities"
+msgstr "Redigér avancerede identiteter"
+
+msgid "(discards changes made on this form so far)"
+msgstr "(drop ændringer lavet her indtil nu)"
+
+msgid "Multiple Identities"
+msgstr "Flere identiteter"
+
+msgid "Same as server"
+msgstr "Samme som serveren"
+
+msgid "Error opening timezone config, contact administrator."
+msgstr "Fejl ved åbning af tidszone konfiguration, kontakt administratoren."
+
+msgid "Timezone Options"
+msgstr "Tidszoneindstillinger"
+
+msgid "Your current timezone"
+msgstr "Din tidszone"
+
+msgid "Reply Citation Options"
+msgstr "Citationsindstillinger"
+
+msgid "Reply Citation Style"
+msgstr "Citationsstil"
+
+msgid "No Citation"
+msgstr "Ingen citation"
+
+msgid "AUTHOR Wrote"
+msgstr "FORFATTER skrev"
+
+msgid "On DATE, AUTHOR Wrote"
+msgstr "På DATO, FORFATTER skrev"
+
+msgid "Quote Who XML"
+msgstr "Citer hvem XML"
+
+msgid "User-Defined"
+msgstr "Brugerdefineret"
+
+msgid "User-Defined Citation Start"
+msgstr "Begyndelsen på brugerdefineret citation"
+
+msgid "User-Defined Citation End"
+msgstr "Afslutningen af brugerdefineret citation"
+
+msgid "Signature Options"
+msgstr "Signaturindstillinger"
+
+msgid "Use Signature"
+msgstr "Brug signatur"
+
+msgid "Prefix Signature with '-- ' Line"
+msgstr "Sæt '-- ' foran signaturen"
+
+msgid "Config File Version"
+msgstr "Konfigurationfilens version"
+
+msgid "SquirrelMail Version"
+msgstr "SquirrelMail version"
+
+msgid "PHP Version"
+msgstr "PHP version"
+
+msgid "Organization Preferences"
+msgstr "Organisationsindstillinger"
+
+msgid "Organization Name"
+msgstr "Organisationsnavn"
+
+msgid "Organization Logo"
+msgstr "Organisationslogo"
+
+msgid "Organization Logo Width"
+msgstr "Bredde af organisationslogo"
+
+msgid "Organization Logo Height"
+msgstr "Højde på organisationslogo"
+
+msgid "Organization Title"
+msgstr "Organisationstitel"
+
+msgid "Signout Page"
+msgstr "Logaf-side"
+
+msgid "Provider Link URI"
+msgstr "Provider Link URI"
+
+msgid "Provider Name"
+msgstr "Udbydernavn:"
+
+msgid "Top Frame"
+msgstr "Topramme"
+
+msgid "Server Settings"
+msgstr "Serverindstillinger"
+
+msgid "Mail Domain"
+msgstr "Postdomæne"
+
+msgid "IMAP Server Address"
+msgstr "IMAP-serveradresse"
+
+msgid "IMAP Server Port"
+msgstr "IMAP-serverport"
+
+msgid "IMAP Server Type"
+msgstr "IMAP-servertype"
+
+msgid "Cyrus IMAP server"
+msgstr "Cyrus IMAP-server"
+
+msgid "University of Washington's IMAP server"
+msgstr "University of Washingtons IMAP-server"
+
+msgid "Microsoft Exchange IMAP server"
+msgstr "Microsoft Exchange IMAP-server"
+
+msgid "Courier IMAP server"
+msgstr "Courier IMAP-server"
+
+msgid "Mac OS X Mailserver"
+msgstr "Mac OS X mailserver"
+
+msgid "hMailServer IMAP server"
+msgstr "hMailServer IMAP-server"
+
+msgid "Mercury/32 IMAP server"
+msgstr "Mercury/32 IMAP-server"
+
+msgid "Binc IMAP server"
+msgstr "Binc IMAP-server"
+
+msgid "Dovecot IMAP server"
+msgstr "Dovecot IMAP-server"
+
+msgid "Not one of the above servers"
+msgstr "Ingen af de ovenstående servere"
+
+msgid "IMAP Folder Delimiter"
+msgstr "IMAP-mappeafgrænser"
+
+msgid "Use &quot;detect&quot; to auto-detect."
+msgstr "Brug &quot;detect&quot; for automatisk detektion."
+
+msgid "Use TLS for IMAP Connections"
+msgstr "Brug TLS til IMAP forbindelser"
+
+msgid "Requires PHP 4.3.x! Experimental."
+msgstr "Kræver PHP 4.3.x! Experimental."
+
+msgid "IMAP Authentication Type"
+msgstr "IMAP authentificerings type"
+
+msgid "IMAP login"
+msgstr "IMAP login"
+
+msgid "Use Sendmail Binary"
+msgstr "Brug Sendmail"
+
+msgid "Choose &quot;no&quot; for SMTP"
+msgstr "Vælg &quot;no&quot; for SMTP"
+
+msgid "Sendmail Path"
+msgstr "Sendmail sti"
+
+msgid "Sendmail Arguments"
+msgstr "Sendmail argumenter"
+
+msgid "SMTP Server Address"
+msgstr "SMTP-serveradresse"
+
+msgid "SMTP Server Port"
+msgstr "SMTP-serverport"
+
+msgid "Use TLS for SMTP Connections"
+msgstr "Brug TLS til SMTP forbindelser"
+
+msgid "SMTP Authentication Type"
+msgstr "SMTP authentificeringsmetode"
+
+msgid "No SMTP auth"
+msgstr "Ingen SMTP authentificering"
+
+msgid "Login (plain text)"
+msgstr "Login (ukrypteret)"
+
+msgid "Custom SMTP AUTH username"
+msgstr "Særligt SMTP Auth brugernavn"
+
+msgid "Custom SMTP AUTH password"
+msgstr "Særligt SMTP Auth kodeord"
+
+msgid "POP3 Before SMTP?"
+msgstr "POP3 før SMTP?"
+
+msgid "Header Encryption Key"
+msgstr "Header Encryption Key"
+
+msgid "Invert Time"
+msgstr "Spejlvend klokken"
+
+msgid "Folders Defaults"
+msgstr "Mappestandarder"
+
+msgid "Default Folder Prefix"
+msgstr "Standard mappepræfix"
+
+msgid "Show Folder Prefix Option"
+msgstr "Vis mappepræfix indstilling"
+
+msgid "By default, move to trash"
+msgstr "Flyt til skraldespanden som standard"
+
+msgid "By default, move to sent"
+msgstr "Flyt til sendt som standard"
+
+msgid "By default, save as draft"
+msgstr "Gem som kladde som standard"
+
+msgid "List Special Folders First"
+msgstr "Vis specialmapper først"
+
+msgid "Show Special Folders Color"
+msgstr "Alternativ farve på specialmapper"
+
+msgid "Auto Expunge"
+msgstr "Automatisk oprydning"
+
+msgid "Default Sub. of INBOX"
+msgstr "Standard undermappe af indbakke"
+
+msgid "Show 'Contain Sub.' Option"
+msgstr "Vis 'Indeholder undermapper' indstillingen"
+
+msgid "Default Unseen Notify"
+msgstr "Gør opmærksom på ulæste beskeder"
+
+msgid "Default Unseen Type"
+msgstr "Standard for ulæste beskeder"
+
+msgid "Auto Create Special Folders"
+msgstr "Opret specialmapper automatisk"
+
+msgid "Auto delete folders"
+msgstr "Slet mapper automatisk"
+
+msgid "Enable /NoSelect folder fix"
+msgstr "Aktivér /NoSelect mappe fix"
+
+msgid "General Options"
+msgstr "Generelle indstillinger"
+
+msgid "Data Directory"
+msgstr "Datamappe"
+
+msgid "Temp Directory"
+msgstr "Temporær mappe"
+
+msgid "Hash Level"
+msgstr "Hashniveau"
+
+msgid "Hash Disabled"
+msgstr "Hash deaktiveret"
+
+msgid "Moderate"
+msgstr "Moderat"
+
+msgid "Medium"
+msgstr "Mellem"
+
+msgid "Default Left Size"
+msgstr "Standardstørrelse på mappepanel"
+
+msgid "Usernames in Lowercase"
+msgstr "Kontonavne med små bogstaver"
+
+msgid "Allow use of priority"
+msgstr "Tillad brug af prioritet"
+
+msgid "Hide SM attributions"
+msgstr "Skjul SM attributter"
+
+msgid "Enable use of delivery receipts"
+msgstr "Aktivér brug af kvitteringer"
+
+msgid "Allow editing of identities"
+msgstr "Tillad redigering af identiteter"
+
+msgid "Allow editing of full name"
+msgstr "Tillad redigering af det fulde navn"
+
+msgid "Remove username from headers"
+msgstr "Fjern brugernavn fra headers"
+
+msgid "Used only when identities can't be modified"
+msgstr "Benyttes kun såfremt identiteter ikke kan ændres"
+
+msgid "Use server-side sorting"
+msgstr "Benyt server-side sortering"
+
+msgid "Use server-side thread sorting"
+msgstr "Brug trådet serversortering"
+
+msgid "Allow server charset search"
+msgstr "Tillad server tegnsæt søgning"
+
+msgid "UID support"
+msgstr "UID understøttelse"
+
+msgid "PHP session name"
+msgstr "PHP sessionsnavn"
+
+msgid "Location base"
+msgstr "Basis beliggenhed"
+
+msgid "Message of the Day"
+msgstr "Dagens meddelelse"
+
+msgid "Database"
+msgstr "Database"
+
+msgid "Address book DSN"
+msgstr "DSN for adressebog"
+
+msgid "Address book table"
+msgstr "Adressebogstabel"
+
+msgid "Preferences DSN"
+msgstr "DSN for indstillinger"
+
+msgid "Preferences table"
+msgstr "Indstillingstabel"
+
+msgid "Preferences username field"
+msgstr "Indstillinger kontonavnsfelt"
+
+msgid "Preferences key field"
+msgstr "Indstillinger nøglefelt"
+
+msgid "Preferences value field"
+msgstr "Indstillinger værdifelt"
+
+msgid "Global address book DSN"
+msgstr "Global adressebog DSN"
+
+msgid "Global address book table"
+msgstr "Global adressebog tabel"
+
+msgid "Allow writing into global address book"
+msgstr "Tillad ændringer i den globale adressebog"
+
+msgid "Allow listing of global address book"
+msgstr "Tillad listing af den globale adressebog"
+
+msgid "Language settings"
+msgstr "Sprog indstillinger"
+
+msgid "Default Language"
+msgstr "Standardsprog"
+
+msgid "Default Charset"
+msgstr "Standard tegnsæt"
+
+msgid "Enable lossy encoding"
+msgstr "Aktiver unøjagtig konvertering"
+
+msgid "Address Books"
+msgstr "Adressebøger"
+
+msgid "Default Javascript Addressbook"
+msgstr "Standard Javascript adressebog"
+
+msgid "Global address book file"
+msgstr "Global adressebog fil"
+
+msgid "Allow writing into global address book file"
+msgstr "Tillad ændringer i den globale adressebogs fil"
+
+msgid "Themes"
+msgstr "Temaer"
+
+msgid "Style Sheet URL (css)"
+msgstr "Stilark URL (css)"
+
+msgid "Default theme"
+msgstr "Standard tema"
+
+msgid "Use index number of theme"
+msgstr "Benyt tema indeksnumre"
+
+msgid "Configuration Administrator"
+msgstr "Konfigurationsadministrator"
+
+msgid ""
+"Note: it is recommended that you configure your system using conf.pl, and "
+"not this plugin. conf.pl contains additional information regarding the "
+"purpose of variables and appropriate values, as well as additional "
+"verification steps."
+msgstr ""
+"Bemærk: Det anbefales, at du konfigurerer dit system via conf.pl, og ikke "
+"dette plugin. conf.pl indeholder supplerende oplysninger om formålet med "
+"variabler og passende værdier samt yderligere validering."
+
+msgid ""
+"Run or consult conf.pl should you run into difficulty with your "
+"configuration."
+msgstr ""
+"Kør eller tjek conf.pl såfremt du løber ind i problemer med din "
+"konfiguration."
+
+msgid "Theme Name"
+msgstr "Temanavn"
+
+msgid "Theme Path"
+msgstr "Temasti"
+
+msgid "Plugins"
+msgstr "Indstiksmoduler"
+
+#, php-format
+msgid "Plugin directory could not be found: %s"
+msgstr "Plugin mappe kunne ikke findes: %s"
+
+msgid "Change Settings"
+msgstr "Gem indstillingerne"
+
+msgid "Test Configuration"
+msgstr "Test konfiguration"
+
+msgid "Config file can't be opened. Please check config.php."
+msgstr ""
+"Konfigurationsfilen kan ikke åbnes. Vær venlig at kontrollere config.php."
+
+msgid "Administration"
+msgstr "Administration"
+
+msgid ""
+"This module allows administrators to manage SquirrelMail main configuration "
+"remotely."
+msgstr "Dette modul tillader administratorer at fjernkonfigurere SquirrelMail."
+
+msgid "Plugin is not enabled"
+msgstr "Plugin er ikke aktiveret"
+
+msgid "Submit a Bug Report"
+msgstr "Send fejlrapport"
+
+msgid ""
+"Before you send your bug report, please make sure to check this checklist "
+"for any common problems."
+msgstr ""
+"Før du sender din fejlrapport, skal du sørge for at kontrollere denne "
+"tjekliste for eventuelle almindeligt forekommende problemer."
+
+#, php-format
+msgid ""
+"Make sure that you are running the most recent copy of %s. You are currently "
+"using version %s."
+msgstr ""
+"Kontroller at du kører den seneste version af %s. Du bruger i øjeblikket "
+"version %s."
+
+#, php-format
+msgid ""
+"Check to see if your bug is already listed in the %sBug List%s on "
+"SourceForge. If it is, we already know about it and are trying to fix it."
+msgstr ""
+"Kontroller om din fejl allerede er opført i %s fejllisten %s på SourceForge. "
+"Hvis den er, så er vi allerede bekendt med problemet og forsøger at løse det."
+
+msgid ""
+"Try to make sure that you can repeat it. If the bug happens sporatically, "
+"try to document what you did when it happened. If it always occurs when you "
+"view a specific message, keep that message around so maybe we can see it."
+msgstr ""
+"Prøv at sørge for, at du kan gentage det. Hvis fejlen optræder sporadisk, så "
+"forsøg at dokumentere, hvad du gjorde, da det skete. Hvis det altid sker, "
+"når du vil se en bestemt meddelse, så gem venligst denne så vi kan se den."
+
+#, php-format
+msgid ""
+"If there were warnings displayed above, try to resolve them yourself. Read "
+"the guides in the %s directory where SquirrelMail was installed."
+msgstr ""
+"Hvis der blev vist advarsler ovenfor, så prøv at løse dem på egen hånd. Læs "
+"vejledninger i %s mappen, hvor SquirrelMail blev installeret."
+
+msgid ""
+"Pressing the button below will start a mail message to the developers of "
+"SquirrelMail that will contain a lot of information about your system, your "
+"browser, how SquirrelMail is set up, and your IMAP server. It will also "
+"prompt you for information. Just fill out the sections at the top. If you "
+"like, you can scroll down in the message to see what else is being sent."
+msgstr ""
+"Trykkes på knappen nedenfor startes en mail-besked til udviklerne af "
+"SquirrelMail, der vil indeholde en masse information om dit system, din "
+"browser, hvordan SquirrelMail er sat op, og din IMAP-server. Det vil også "
+"bede dig om oplysninger. Bare udfyld afsnittene øverst. Hvis du vil, kan du "
+"rulle ned i meddelelsen for at se, hvad der ellers bliver sendt."
+
+msgid ""
+"Please make sure to fill out as much information as you possibly can to give "
+"everyone a good chance of finding and removing the bug. Submitting your bug "
+"like this will not have it automatically added to the bug list on "
+"SourceForge, but someone who gets your message may add it for you."
+msgstr ""
+"Sørg for at udfylde så mange oplysninger som du overhovedet kan, for give "
+"alle den bedst mulige chance for at finde og fjerne fejlen. Indsendelse af "
+"fejl på denne måde vil ikke medføre at den automatisk føjes til fejllisten "
+"på SourceForge, men en person der får ser den tilføjer den muligvis for dig."
+
+msgid "This bug involves:"
+msgstr "Denne fejl vedrører:"
+
+msgid "the general program"
+msgstr "hovedprogram"
+
+msgid "a specific plugin"
+msgstr "et særligt plugin"
+
+msgid "Start Bug Report Form"
+msgstr "Begynd fejlrapport formular"
+
+msgid "Bug"
+msgstr "Fejl"
+
+msgid "Bug Reports"
+msgstr "Fejlrapporter"
+
+msgid "Show button in toolbar"
+msgstr "Vis knap i værktøjslinien"
+
+#, php-format
+msgid "Could not write calendar file %s"
+msgstr "Kunne ikke gemme kalenderfilen %s"
+
+msgid "TODAY"
+msgstr "I DAG"
+
+msgid "Go"
+msgstr "Begynd"
+
+msgid "l, F j Y"
+msgstr "l, j/n Y, H:i"
+
+msgid "ADD"
+msgstr "TILFØJ"
+
+msgid "EDIT"
+msgstr "RET"
+
+msgid "DEL"
+msgstr "SLET"
+
+msgid "Start time:"
+msgstr "Starttidspunkt:"
+
+msgid "Length:"
+msgstr "Længde:"
+
+msgid "Priority:"
+msgstr "Prioritet:"
+
+msgid "Title:"
+msgstr "Titel:"
+
+msgid "Set Event"
+msgstr "Tilføj hændelse"
+
+msgid "Event Has been added!"
+msgstr "Hændelsen er tilføjet!"
+
+msgid "Date:"
+msgstr "Dato:"
+
+msgid "m/d/Y"
+msgstr "m/d/Y"
+
+msgid "Time:"
+msgstr "Klokken:"
+
+msgid "Day View"
+msgstr "Vis dag"
+
+msgid "Do you really want to delete this event?"
+msgstr "Er du sikker på, at du vil slette denne hændelse?"
+
+msgid "Event deleted!"
+msgstr "Hændelsen er slettet!"
+
+msgid "Nothing to delete!"
+msgstr "Intet at slette!"
+
+msgid "Update Event"
+msgstr "Opdatér hændelse"
+
+msgid "Do you really want to change this event from:"
+msgstr "Er du sikker på, at du vil ændre denne hændelse fra:"
+
+msgid "to:"
+msgstr "til:"
+
+msgid "Event updated!"
+msgstr "Hændelsen er opdateret!"
+
+msgid "Month View"
+msgstr "Vis måned"
+
+msgid "0 min."
+msgstr "0 min."
+
+msgid "15 min."
+msgstr "15 min."
+
+msgid "30 min."
+msgstr "30 min."
+
+msgid "45 min."
+msgstr "45 min."
+
+msgid "1 hr."
+msgstr "1 t."
+
+msgid "1.5 hr."
+msgstr "1,5 t."
+
+msgid "2 hr."
+msgstr "2 t."
+
+msgid "2.5 hr."
+msgstr "2,5 t."
+
+msgid "3 hr."
+msgstr "3 t."
+
+msgid "3.5 hr."
+msgstr "3,5 t."
+
+msgid "4 hr."
+msgstr "4 t."
+
+msgid "5 hr."
+msgstr "5 t."
+
+msgid "6 hr."
+msgstr "6 t."
+
+msgid "Calendar"
+msgstr "Kalender"
+
+msgid "Delete &amp; Prev"
+msgstr "Slet &amp; forrige"
+
+msgid "Delete &amp; Next"
+msgstr "Slet &amp; næste"
+
+msgid "Move to:"
+msgstr "Flyt til:"
+
+msgid "Delete/Move/Next Buttons:"
+msgstr "Slet/Flyt/Næste knapper:"
+
+msgid "Display at top"
+msgstr "Vis øverst"
+
+msgid "with move option"
+msgstr "med flyttemulighed"
+
+msgid "Display at bottom"
+msgstr "Vis nederst"
+
+msgid ""
+"COMMERCIAL - This list contains servers that are verified spam senders. It "
+"is a pretty reliable list to scan spam from."
+msgstr ""
+"KOMMERCIEL - Denne serverliste indeholder verificerede spamsendere. Det er "
+"derfor en meget sikker liste at skanne spam fra."
+
+msgid ""
+"COMMERCIAL - Servers that are configured (or misconfigured) to allow spam to "
+"be relayed through their system will be banned with this. Another good one "
+"to use."
+msgstr ""
+"REKLAME - Servere der er konfigureret (eller fejlkonfigureret) til at "
+"tillade trediepart at afsende spam via systemet, vil blive stoppet af denne. "
+"Også et godt valg."
+
+msgid ""
+"COMMERCIAL - Dial-up users are often filtered out since they should use "
+"their ISP's mail servers to send mail. Spammers typically get a dial-up "
+"account and send spam directly from there."
+msgstr ""
+"REKLAME - Dial-up brugere filtreres ofte fra, da de burde bruge deres "
+"udbyderes mailservere til at afsende mail. Spammere bruger typisk en dial-up "
+"forbindelse til at sende spam direkte."
+
+msgid "COMMERCIAL - RBL+ Blackhole entries."
+msgstr "KOMMERCIEL - RBL+ Blackhole poster."
+
+msgid "COMMERCIAL - RBL+ OpenRelay entries."
+msgstr "KOMMERCIEL - RBL+ OpenRelay poster."
+
+msgid "COMMERCIAL - RBL+ Dial-up entries."
+msgstr "KOMMERCIEL - RBL+ Dial-up poster."
+
+msgid "FREE - Five-Ten-sg.com - Direct SPAM sources."
+msgstr "GRATIS - Five-Ten-sg.com - Direkte spamkilder."
+
+msgid "FREE - Five-Ten-sg.com - Dial-up lists - includes some DSL IPs."
+msgstr ""
+"GRATIS - Five-Ten-sg.com - Dial-up lister - Inkluderer nogle DSL "
+"internetudbydere."
+
+msgid "FREE - Five-Ten-sg.com - Bulk mailers that do not use confirmed opt-in."
+msgstr ""
+"GRATIS - Five-Ten-sg.com - Masse-mailere som ikke bruger bekræftede "
+"godkendelser."
+
+msgid "FREE - Five-Ten-sg.com - Other misc. servers."
+msgstr "GRATIS - Five-Ten-sg.com - Diverse andre servere."
+
+msgid "FREE - Five-Ten-sg.com - Single Stage servers."
+msgstr "GRATIS - Five-Ten-sg.com - Enkelttrin servere."
+
+msgid "FREE - Five-Ten-sg.com - SPAM Support servers."
+msgstr "GRATIS - Five-Ten-sg.com - Servere som støtter spammere."
+
+msgid "FREE - Five-Ten-sg.com - Web Form IPs."
+msgstr "GRATIS - Five_ten-sg.com - Webformular internetudbydere."
+
+msgid ""
+"FREE - Dorkslayers appears to include only really bad open relays outside "
+"the US to avoid being sued. Interestingly enough, their website recommends "
+"you NOT use their service."
+msgstr ""
+"GRATIS - Dorkslayers ser ud til, for at undgå retsforfølgelse, udelukkende "
+"at indeholde grelle åbne servere odenfor USA. Pudsigt nok anbefaler deres "
+"hjemmeside, at man IKKE bruger deres service."
+
+msgid "FREE - SPAMhaus - A list of well-known SPAM sources."
+msgstr "GRATIS - SPAMhaus - En liste over velkendte spamkilder."
+
+msgid ""
+"FREE, for now - SpamCop - An interesting solution that lists servers that "
+"have a very high spam to legit email ratio (85 percent or more)."
+msgstr ""
+"GRATIS, indtil videre - SpamCop - En interessant løsning, som indeholder "
+"servere som har et meget højt spam/ikke spam forhold (85% eller mere)."
+
+msgid "FREE - dev.null.dk - I don't have any detailed info on this list."
+msgstr ""
+"GRATIS - dev.null.dk - Jeg har ingen detaljerede oplysninger om denne liste."
+
+msgid "FREE - visi.com - Relay Stop List. Very conservative OpenRelay List."
+msgstr ""
+"GRATIS - visi.com - Relay Stop List. En meget konservativ list over åbne "
+"servere."
+
+msgid "FREE - ahbl.org Open Relays - Another list of Open Relays."
+msgstr "GRATIS -  ahbl.org Open Relays - Endnu en liste over åbne servere."
+
+msgid "FREE - ahbl.org SPAM Source - List of Direct SPAM Sources."
+msgstr "GRATIS -  ahbl.org SPAM Source - En liste over direkte spamkilder."
+
+msgid "FREE - ahbl.org SPAM ISPs - List of SPAM-friendly ISPs."
+msgstr ""
+"GRATIS -  ahbl.org SPAM ISPs - En liste over spamvenlige internetudbydere."
+
+msgid ""
+"FREE - Leadmon DUL - Another list of Dial-up or otherwise dynamically "
+"assigned IPs."
+msgstr ""
+"GRATIS - Leadmon DUL - Endnu en liste over dial-up, eller på anden måde "
+"dynamisk tildelte, ip-adresser."
+
+msgid ""
+"FREE - Leadmon SPAM Source - List of IPs Leadmon.net has received SPAM "
+"directly from."
+msgstr ""
+"GRATIS - Leadmon SPAM SOurce - En liste over internetudbydere hvorfra "
+"Leadmon direkte har modtaget spam."
+
+msgid ""
+"FREE - Leadmon Bulk Mailers - Bulk mailers that do not require confirmed opt-"
+"in or that have allowed known spammers to become clients and abuse their "
+"services."
+msgstr ""
+"GRATIS - Leadmon Bulk Mailers - Masse-mailere som ikke kræver bekræftet "
+"tilmelding, eller som har tilladt velkendte spammere at tilmelde sig og "
+"misbruge deres service."
+
+msgid ""
+"FREE - Leadmon Open Relays - Single Stage Open Relays that are not listed on "
+"other active RBLs."
+msgstr ""
+"GRATIS - Leadmon Open Relays - Enkelttrins åbne servere, som ikke er opført "
+"på andre aktive RBL'er."
+
+msgid ""
+"FREE - Leadmon Multi-stage - Multi-Stage Open Relays that are not listed on "
+"other active RBLs and that have sent SPAM to Leadmon.net."
+msgstr ""
+"GRATIS - Leadmon Multi Stage - Flertrins åbne servere, som ikke er opført på "
+"andre aktive RBL'er. og som har sendt spam til Leadmon.net."
+
+msgid ""
+"FREE - Leadmon SpamBlock - Sites on this listing have sent Leadmon.net "
+"direct SPAM from IPs in netblocks where the entire block has no DNS "
+"mappings. It's a list of BLOCKS of IPs being used by people who have SPAMmed "
+"Leadmon.net."
+msgstr ""
+"GRATIS - Leadmon SpamBlock - Liste over lokationer som har sendt spam "
+"direkte til Leadmon.net, og hvis IP-adresse ligger i et adresserum hvor hele "
+"adresserummet ikke har nogen DNS-post. Det er en liste over IP-adresserum, "
+"brugt af folk som har sendt spam til Leadmon.net."
+
+msgid ""
+"FREE, for now - Not Just Another Blacklist - Both Open Relays and Direct "
+"SPAM Sources."
+msgstr ""
+"GRATIS, indtil videre - Not Just Another Blacklist - Indeholder både åbne "
+"servere samt direkte spamkilder."
+
+msgid "FREE, for now - Not Just Another Blacklist - Dial-up IPs."
+msgstr ""
+"GRATIS, indtil videre - Not Just Another Blacklist - Dial-up ip-adresser."
+
+msgid "FREE - Distributed Sender Boycott List - Confirmed Relays"
+msgstr "GRATIS - Distributed Sender Boycott List - Bekræftede åbne servere"
+
+msgid "FREE - Distributed Sender Boycott List - Confirmed Multi-stage Relays"
+msgstr ""
+"GRATIS - Distributed Sender Boycott List - Bekræftede flertrins åbne servere"
+
+msgid "FREE - Distributed Sender Boycott List - UN-Confirmed Relays"
+msgstr ""
+"GRATIS - Distributed Sender Boycott List - Ikke-bekræftede åbne servere"
+
+msgid "WARNING! You must enter something to search for."
+msgstr "ADVARSEL! Du skal angive noget at søge efter."
+
+msgid ""
+"WARNING! Header filters should be of the format &quot;Header: value&quot;"
+msgstr "ADVARSEL! Header filtre skal være i formatet &quot;Header: værdi&quot;"
+
+msgid "Saved Scan type"
+msgstr "Skanningstype gemt"
+
+msgid "Message Filtering"
+msgstr "Beskedfiltrering"
+
+msgid "What to Scan:"
+msgstr "Hvad skal skannes:"
+
+msgid "All messages"
+msgstr "Alle beskeder"
+
+msgid "Only unread messages"
+msgstr "Kun ulæste beskeder"
+
+msgid "Save"
+msgstr "Gem"
+
+msgid "Match:"
+msgstr "Kriterie:"
+
+msgid "Header"
+msgstr "Header"
+
+msgid "Contains:"
+msgstr "Indeholder:"
+
+#, php-format
+msgid "If %s contains %s then move to %s"
+msgstr "Hvis %s indeholder %s, så flyt til %s"
+
+msgid "Message Filters"
+msgstr "Beskedfiltre"
+
+msgid ""
+"Filtering enables messages with different criteria to be automatically "
+"filtered into different folders for easier organization."
+msgstr ""
+"Filtrering tillader at beskeder med forskellige kriterier automatisk "
+"sorteres i forskellige mapper."
+
+msgid "SPAM Filters"
+msgstr "Spamfiltre"
+
+msgid ""
+"SPAM filters allow you to select from various DNS based blacklists to detect "
+"junk email in your INBOX and move it to another folder (like Trash)."
+msgstr ""
+"Spamfiltre lader dig vælge mellem forskellige DNS-baserede blacklister til "
+"at identificere spammails, samt flytte beskederne til en anden mappe (såsom "
+"skraldespanden)."
+
+msgid "You must select a spam folder."
+msgstr "Du skal vælge en spam mappe"
+
+msgid "You must select a scan type."
+msgstr "Du skal vælge en scan type"
+
+msgid "Spam Filtering"
+msgstr "Spamfiltrering"
+
+#, php-format
+msgid "WARNING! Tell the administrator to set the %s variable."
+msgstr "ADVARSEL! Bed din systemadministrator om at sætte %s variablen."
+
+msgid "Move spam to:"
+msgstr "Flyt spam til:"
+
+msgid ""
+"Moving spam directly to the trash may not be a good idea at first, since "
+"messages from friends and mailing lists might accidentally be marked as "
+"spam. Whatever folder you set this to, make sure that it gets cleaned out "
+"periodically, so that you don't have an excessively large mailbox hanging "
+"around."
+msgstr ""
+"Det er ikke nogen god ide at flytte spam direkte til skraldesanden i første "
+"omgang, da beskeder fra venner eller diverse mailinglister ved et uheld kan "
+"blive fejltaget for at være spam. Den mappe du vælger bør du rydde op i med "
+"jævne mellemrum, så den ikke optager for meget plads."
+
+msgid "Unread messages only"
+msgstr "Kun ulæste beskeder"
+
+msgid ""
+"The more messages scanned, the longer it takes. It's recommended to scan "
+"unread messages only. If a change to the filters is made, it's recommended "
+"to set it to scan all messages, then go view the INBOX, then come back and "
+"set it to scan unread messages only. That way, the new spam filters will be "
+"applied and even the spam you didn't catch with the old filters will be "
+"scanned."
+msgstr ""
+"Jo flere beskeder du skanner, jo længere tid tager det. Det anbefalse at du "
+"kun skanner nye beskeder. Hvis du ændrer dine filtre, så sæt den til at "
+"skanne alle beskeder, gå til din indbakke og kom så tilbage hertil og sæt "
+"den til kun at skanne nye beskeder. På den måde vil dine nye filtre også "
+"skanne de beskeder du allerede har liggende i din indbakke."
+
+#, php-format
+msgid "Spam is sent to %s."
+msgstr "Spam sendt til %s"
+
+msgid "not set yet"
+msgstr "endnu ikke sat"
+
+#, php-format
+msgid "Spam scan is limited to %s."
+msgstr "Spamskanning er begrænset til %s."
+
+msgid "ON"
+msgstr "Aktiveret"
+
+msgid "OFF"
+msgstr "Deaktiveret"
+
+#, php-format
+msgid "%s is not found."
+msgstr "%s er ikke fundet"
+
+msgid "Today's Fortune"
+msgstr "Dagens motto"
+
+msgid "Fortunes"
+msgstr "Mottoer"
+
+msgid "Show fortunes at top of mailbox"
+msgstr "Vis motto over postkasse"
+
+msgid "Plugin is disabled."
+msgstr "Pligin er ikke aktiveret"
+
+msgid "IMAP server information"
+msgstr "IMAP-server information"
+
+msgid ""
+"Run some test IMAP commands, displaying both the command and the result. "
+"These tests use the SquirrelMail IMAP commands and your current SquirrelMail "
+"configuration. Custom command strings can be used."
+msgstr ""
+"Udfør nogle test IMAP kommandoer, som viser både kommando og resultat. Disse "
+"tests bruger SquirrelMail IMAP kommandoer og din nuværende SquirrelMail "
+"konfiguration. Tilpassede kommando strenge kan anvendes."
+
+#, php-format
+msgid ""
+"This will send a message to %s requesting help for this list. You will "
+"receive an emailed response at the address below."
+msgstr ""
+"Dette vil sende en besked til %s for at spørge efter hjælp til denne liste. "
+"Du vil modtage en e-mail på adressen herunder."
+
+#, php-format
+msgid ""
+"This will send a message to %s requesting that you will be subscribed to "
+"this list. You will be subscribed with the address below."
+msgstr ""
+"Dette vil sende en besked til %s for at abonnere på denne liste. Du vil "
+"modtage beskeder på adressen herunder."
+
+#, php-format
+msgid ""
+"This will send a message to %s requesting that you will be unsubscribed from "
+"this list. It will try to unsubscribe the adress below."
+msgstr ""
+"Dette vil sende en besked til %s for at opsige abonnementet på denne liste. "
+"Det er adressen derunder, som vil blive afmeldt."
+
+#, php-format
+msgid "Unknown action: %s"
+msgstr "Ukendt handling: %s"
+
+msgid "Mailinglist"
+msgstr "Postliste"
+
+msgid "Send Mail"
+msgstr "Send e-mail"
+
+msgid "Post to List"
+msgstr "Skriv til listen"
+
+msgid "Reply to List"
+msgstr "Svar til listen"
+
+msgid "List Archives"
+msgstr "Listearkiver"
+
+msgid "Contact Listowner"
+msgstr "Kontakt liste-ejeren"
+
+msgid "Mailing List"
+msgstr "Postliste"
+
+msgid "No server specified"
+msgstr "Ingen server er angivet"
+
+msgid "Error "
+msgstr "Fejl "
+
+msgid "no login ID submitted"
+msgstr "intet login ID angivet"
+
+msgid "connection not established"
+msgstr "forbindelse ikke etableret"
+
+msgid "No password submitted"
+msgstr "Ingen adgangskode angivet"
+
+msgid "No connection to server"
+msgstr "Ingen forbindelse til serveren"
+
+msgid "No login ID submitted"
+msgstr "intet login ID angivet"
+
+msgid "No server banner"
+msgstr "Ingen serveroverskrift"
+
+msgid "abort"
+msgstr "afbryd"
+
+msgid "apop authentication failed"
+msgstr "apop: kontrol af adgangskode fejlede"
+
+msgid "Premature end of list"
+msgstr "Listen afbrudt for tidligt"
+
+msgid "Empty command string"
+msgstr "Tom kommandostring"
+
+msgid "connection does not exist"
+msgstr "forbindelse eksisterer ikke"
+
+msgid "No msg number submitted"
+msgstr "Ingen beskednumre sendt"
+
+msgid "Command failed "
+msgstr "Kommando fejlede "
+
+msgid "Remote POP server Fetching Mail"
+msgstr "Henter post på fjern POP-server"
+
+msgid "Select Server:"
+msgstr "Vælg server:"
+
+msgid "Password for"
+msgstr "Adgangskode til"
+
+msgid "Fetch Mail"
+msgstr "Hent mail"
+
+msgid "Fetching from "
+msgstr "Henter fra "
+
+msgid "Oops, "
+msgstr "Ups, "
+
+msgid "Opening IMAP server"
+msgstr "Åbner IMAP-server"
+
+msgid "Opening POP server"
+msgstr "Åbner POP-server"
+
+msgid "Login Failed:"
+msgstr "Login fejlede:"
+
+msgid "Login OK: No new messages"
+msgstr "Login OK: Ingen nye beskeder"
+
+msgid "Login OK: Inbox EMPTY"
+msgstr "Login OK: Indbakken er tom"
+
+#, php-format
+msgid "Login OK: Inbox contains %s messages"
+msgstr "Login OK: Indbakken indeholder %s beskedder"
+
+msgid "Fetching UIDL..."
+msgstr "Henter UIDL..."
+
+msgid "Server does not support UIDL."
+msgstr "Serveren supporterer ikke UIDL."
+
+msgid "Leaving messages on server..."
+msgstr "Efterlader post på serveren..."
+
+msgid "Deleting messages from server..."
+msgstr "Sletter post på serveren..."
+
+msgid "Fetching message "
+msgstr "Henter besked "
+
+msgid "Server error. Disconnect"
+msgstr "Serverfejl. Afbrudt"
+
+msgid "Reconnect from dead connection"
+msgstr "Gentilslut død forbindelse"
+
+msgid "Saving UIDL"
+msgstr "Gemmer UIDL"
+
+msgid "Refetching message "
+msgstr "Henter besked igen "
+
+msgid "Error Appending Message!"
+msgstr "Fejl under tilføjning af besked!"
+
+msgid "Closing POP"
+msgstr "Lukker POP"
+
+msgid "Logging out from IMAP"
+msgstr "Logger af IMAP"
+
+msgid "Message appended to mailbox"
+msgstr "Besked tilføjet mailboksen"
+
+#, php-format
+msgid "Message %d deleted from remote server!"
+msgstr "Besked %d slettet fra den fjerne server!"
+
+msgid "Delete failed:"
+msgstr "Slet fejlede:"
+
+msgid "Remote POP server settings"
+msgstr "Indstillinger for den fjern POP-server"
+
+msgid ""
+"You should be aware that the encryption used to store your password is not "
+"perfectly secure. However, if you are using pop, there is inherently no "
+"encryption anyway. Additionally, the encryption that we do to save it on the "
+"server can be undone by a hacker reading the source to this file."
+msgstr ""
+"Du skal være opmærksom på, at krypteringen som bruges til at gemme din "
+"adgangskode ikke er 100% sikker. Men pop-trafik er alligevel ikke krypteret. "
+"Endvidere kan krypteringen brydes, hvis en hacker læser sourcekoden til "
+"denne fil."
+
+msgid "If you leave password empty, it will be asked when you fetch mail."
+msgstr ""
+"Hvis du lader adgangskoden stå tom, vil den spørge efter adgangskoden, når "
+"du henter post."
+
+msgid "Encrypt passwords (informative only)"
+msgstr "Kryptér adgangskoder (kun til information)"
+
+msgid "Add Server"
+msgstr "Tilføj server"
+
+msgid "Server:"
+msgstr "Server:"
+
+msgid "Port:"
+msgstr "Port:"
+
+msgid "Alias:"
+msgstr "Kaldenavn:"
+
+msgid "Username:"
+msgstr "Konto:"
+
+msgid "Store in Folder:"
+msgstr "Gem i mappen:"
+
+msgid "Leave mail on server"
+msgstr "Efterlad post på serveren"
+
+msgid "Check mail at login"
+msgstr "Hent mail ved login"
+
+msgid "Check mail at folder refresh"
+msgstr "Hent mail ved mappeopdatering"
+
+msgid "Modify Server"
+msgstr "Ret server"
+
+msgid "Server Name:"
+msgstr "Servernavn:"
+
+msgid "Modify"
+msgstr "Ret"
+
+msgid "No servers known."
+msgstr "Ingen kendte server."
+
+msgid "Fetching Servers"
+msgstr "Henter servere"
+
+msgid "Confirm Deletion of a Server"
+msgstr "Bekræft sletning af server"
+
+msgid "Selected Server:"
+msgstr "Valgt server"
+
+msgid "Confirm delete of selected server?"
+msgstr "Bekræft sletning af valgte server?"
+
+msgid "Confirm Delete"
+msgstr "Bekræft sletning"
+
+msgid "Leave Mail on Server"
+msgstr "Efterlad post på serveren"
+
+msgid "Undefined Function"
+msgstr "Udefineret funktion"
+
+msgid "The function you requested is unknown."
+msgstr "Den efterspurgte funktion er ukendt."
+
+msgid "Fetch"
+msgstr "Hent"
+
+msgid "Warning, "
+msgstr "Advarsel, "
+
+msgid "Mail Fetch Result:"
+msgstr "Resultat af afhentning:"
+
+msgid "POP3 Fetch Mail"
+msgstr "Simpel POP3 posthenter"
+
+msgid ""
+"This configures settings for downloading email from a POP3 mailbox to your "
+"account on this server."
+msgstr ""
+"Her konfigureres indstillinger for at hente e-mails fra en POP3 konto til "
+"din konto på denne server."
+
+msgid "Message Details"
+msgstr "Besked detaljer"
+
+msgid "Bodystructure"
+msgstr "Mailstruktur"
+
+msgid "Entity"
+msgstr "Entitet"
+
+msgid "Content-Type"
+msgstr "Indholds-type"
+
+msgid "Encoding"
+msgstr "Encoding"
+
+msgid "RFC822 Message body"
+msgstr "RFC822 besked brødtekst"
+
+msgid "Close Window"
+msgstr "Luk vindue"
+
+msgid "Save Message"
+msgstr "Gem meddelelse"
+
+msgid "View Message details"
+msgstr "Vis meddelelse detaljer"
+
+msgid "New Mail Notification"
+msgstr "Besked ved ny mail"
+
+#, php-format
+msgid ""
+"The %s option will check ALL of your folders for unseen mail, not just the "
+"inbox for notification."
+msgstr ""
+"Valgmuligheden %s vil kontrollere alle dine mapper for ulæste beskeder, ikke "
+"kun din indbakke."
+
+msgid "Check all boxes, not just INBOX"
+msgstr "Kontrollér alle mapper, ikke kun indbakken"
+
+#, php-format
+msgid ""
+"Selecting the %s option will enable the showing of a popup window when "
+"unseen mail is in your folders (requires JavaScript)."
+msgstr ""
+"Hvis %s vælges, vil den åbne et nyt vindue, når der er ulæst post i dine "
+"mapper (kræver JavaScript)"
+
+msgid "Show popup window on new mail"
+msgstr "Vis popop-vindue ved nye beskeder"
+
+#, php-format
+msgid ""
+"Use the %s option to only check for messages that are recent. Recent "
+"messages are those that have just recently showed up and have not been "
+"\"viewed\" or checked yet. This can prevent being continuously annoyed by "
+"sounds or popups for unseen mail."
+msgstr ""
+"Brug %s for kun at kontrollere nye beskeder. Nye beskeder er dem, som lige "
+"er kommet, og som endnu ikke er \"vist\" eller læst. Dette kan forhindre at "
+"du konstant forstyrres af lyde eller popop-vinduer om ulæst post."
+
+msgid "Count only messages that are RECENT"
+msgstr "Kontrollér kun nye beskeder"
+
+#, php-format
+msgid ""
+"Selecting the %s option will change the title in some browsers to let you "
+"know when you have new mail (requires JavaScript). This will always tell you "
+"if you have new mail, even if you have %s enabled."
+msgstr ""
+"Når %s bruges, vil teksten i browserens titel vise når der er nye beskeder "
+"(kræver JavaScript). Dette vil altid vise når der er ulæst post, også selvom "
+"du har valgt %s."
+
+msgid "Change title on supported browsers"
+msgstr "Skift titel på understøttede browsere"
+
+#, php-format
+msgid ""
+"Select %s to turn on playing a media file when unseen mail is in your "
+"folders. When enabled, you can specify the media file to play in the "
+"provided file box."
+msgstr ""
+"Vælg %s for at afspille en mediefil når der er ulæst post i dine mapper. Når "
+"den er valgt, kan du specificere filen i den filboks som er til rådighed."
+
+msgid "Enable Media Playing"
+msgstr "Aktivér medieafspiller"
+
+#, php-format
+msgid ""
+"Select from the list of %s the media file to play when new mail arrives. If "
+"no file is specified, %s, no sound will be used."
+msgstr ""
+"Vælg fra listen over %s mediefilen som afspilles, når ny post modtages. Hvis "
+"ingen fil er angivet, %s, vil lyd ikke blive anvendt"
+
+msgid "Select server file"
+msgstr "Vælg serverfil"
+
+msgid "(none)"
+msgstr "(ingen)"
+
+msgid "requires JavaScript to work"
+msgstr "kræver JavaScript for at fungere"
+
+msgid "Width of popup window:"
+msgstr "Bredde på popop vinduet:"
+
+msgid "If set to 0, reverts to default value"
+msgstr "Hvis sat til 0 anvendes standard værdien"
+
+msgid "Height of popup window:"
+msgstr "Højde på popop vinduet:"
+
+msgid "Try"
+msgstr "Afprøv"
+
+msgid "Current File:"
+msgstr "Aktuel fil:"
+
+msgid "New Mail"
+msgstr "Ny post"
+
+msgid "SquirrelMail Notice:"
+msgstr "SquirrelMail besked:"
+
+#, php-format
+msgid "You have %s new message"
+msgstr "Du har %s ny besked"
+
+#, php-format
+msgid "You have %s new messages"
+msgstr "Du har %s nye beskeder"
+
+msgid "NewMail Options"
+msgstr "NyMail indstillinger"
+
+msgid ""
+"This configures settings for playing sounds and/or showing popup windows "
+"when new mail arrives."
+msgstr ""
+"Indstillinger for afspilning af lyde og/eller visning af popop-vinduer når "
+"der kommer ny post."
+
+#, php-format
+msgid "%s New Messages"
+msgstr "%s nye beskeder"
+
+#, php-format
+msgid "%s New Message"
+msgstr "%s ny besked"
+
+msgid "Test Sound"
+msgstr "Afprøv lyd"
+
+msgid "No sound specified"
+msgstr "Ingen lyd er angivet"
+
+msgid "Loading the sound..."
+msgstr "Henter lydfilen..."
+
+msgid "Sent Subfolders Options"
+msgstr "Indstillinger for Sendt-mappe"
+
+msgid "Use Sent Subfolders"
+msgstr "Brug Sendt-mappe"
+
+msgid "Monthly"
+msgstr "Månedlig"
+
+msgid "Quarterly"
+msgstr "Kvartalsvis"
+
+msgid "Yearly"
+msgstr "Årlig"
+
+msgid "Base Sent Folder"
+msgstr "Basis Sendt-mappe"
+
+msgid "Enabled"
+msgstr "Aktiveret"
+
+msgid "Disable it"
+msgstr "Deaktiver den"
+
+msgid "Enable it"
+msgstr "Aktiver"
+
+msgid "Spam reporting"
+msgstr "Spamrapportering"
+
+msgid "SpamCop link is:"
+msgstr "SpamCop link er:"
+
+msgid "Delete spam when reported:"
+msgstr "Slet spam når den rapporteres:"
+
+msgid "Only works with email-based reporting"
+msgstr "Virker kun med mail-baseret rapportering"
+
+msgid "Spam Reporting Method:"
+msgstr "Spam-rapporteringsmetode:"
+
+msgid "Quick email-based reporting"
+msgstr "Hurtig mail-baseret rapportering"
+
+msgid "Thorough email-based reporting"
+msgstr "Grundig mail-baseret rapportering"
+
+msgid "Web-based form"
+msgstr "Web-baseret formular"
+
+msgid "Save Method"
+msgstr "Metode for at gemme"
+
+msgid "Your SpamCop authorization code:"
+msgstr "Din SpamCop authorisationskode:"
+
+msgid "see below"
+msgstr "se nedenfor"
+
+msgid "Save ID"
+msgstr "Gem ID"
+
+msgid "About SpamCop"
+msgstr "Om SpamCop"
+
+msgid ""
+"SpamCop is a free service that greatly assists in finding the true source of "
+"the spam and helps in letting the proper people know about the abuse."
+msgstr ""
+"SpamCop er en gratis tjeneste, som i høj grad hjælper med at finde den "
+"oprindelige kilde til spam og hjælper med at fortælle rette folk om "
+"misbruget."
+
+#, php-format
+msgid ""
+"To use it, you must get a SpamCop authorization code. There is a free %ssign "
+"up page%s so you can use SpamCop."
+msgstr ""
+"For at bruge det, skal du have en SpamCop tilladelses kode. Der er en gratis "
+"%s timeldingsside %s, så du kan bruge SpamCop."
+
+msgid "Before you sign up, be warned"
+msgstr "Før du tilmelder dig skal du være opmærksom på"
+
+#, php-format
+msgid ""
+"Some users have reported that the email addresses used with SpamCop find "
+"their way onto spam lists. To be safe, you can just create an email "
+"forwarding account and have all SpamCop reports get sent to there. Also, if "
+"it gets flooded with spam, you can then just delete that account with no "
+"worries about losing your real email address. Just go create an email "
+"forwarder somewhere (%s has a %slist of places%s) so that messages from "
+"system administrators and what not can be sent to you."
+msgstr ""
+"Nogle brugere har rapporteret at den e-mail-adresse, der bruges med SpamCop "
+"finder vej til spam-lister. For at være på den sikre side, kan du oprette en "
+"e-mail videresendelse konto få alle SpamCop rapporter sendt der til. Såfremt "
+"den bliver oversvømmet med spam, kan du bare slette den pågældende konto "
+"uden bekymringer om at miste din rigtige email-adresse. Opret blot en e-mail "
+"vidresendelses konto et eller andet sted (%s har en %s liste over steder %"
+"s), således at beskeder fra systemadministratorer, og hvad der ikke kan "
+"sendes til dig."
+
+msgid ""
+"Once you have signed up with SpamCop and have received your SpamCop "
+"authorization code, you need to enable this plugin by clicking the link "
+"above. Once enabled, you go about your normal life. If you encounter a spam "
+"message in your mailbox, just view it. On the right-hand side, near the top "
+"of where the message is displayed, you will see a link to report this "
+"message as spam. Clicking on it brings you to a confirmation page. "
+"Confirming that you want the spam report sent will do different things with "
+"different reporting methods."
+msgstr ""
+"Når du har tilmeldt dig med SpamCop og har modtaget din SpamCop tilladelse "
+"kode, skal du aktivere dette plugin ved at klikke på linket ovenfor. Når "
+"aktiveret, kan du fortsætte som normalt. Hvis du støder på en spam-"
+"meddelelse i din postkasse, så kig blot på den. På højre side, øverst i hvor "
+"beskeden er vist, vil du se et link til at rapportere denne meddelelse som "
+"spam. Hvis du klikker på det, bringes du til en bekræftelsesside, hvor du "
+"bekræfter dit ønske om, at spam-rapport sendes og vil herefter gøre "
+"forskellige ting afhængig af den valgte rapporteringsmetode."
+
+msgid "Email-based reporting"
+msgstr "Email-baseret rapportering"
+
+msgid ""
+"Pressing the button forwards the message to the SpamCop service and will "
+"optionally delete the message. From there, you just need to go to your INBOX "
+"and quite soon a message should appear from SpamCop. (It gets sent to the "
+"account you registered with, so make sure that your mail forwarder works!) "
+"Open it up, click on the appropriate link at the top, and a new browser "
+"window will open."
+msgstr ""
+"Trykkes på knappen afsendes beskeden til SpamCop og vil eventuelt slette "
+"beskeden. Herfra kan du blot gå til din indbakke og ganske hurtigt skulle en "
+"besked  fra SpamCop ankomme. (Den bliver sendt til den konto, du er "
+"registreret med, så sørg for at din mail vidresendelse virker!). Åbn "
+"beskeden og klik på det relevante link øverst, og et nyt browservindue åbnes."
+
+msgid ""
+"Currently, the quick reporting just forwards the request to the thorough "
+"reporting. Also, it appears that this is for members (non-free) only. "
+"Hopefully this will change soon."
+msgstr ""
+"I øjeblikket er hurtig rapportering bare vidresendelse af anmodningen til "
+"grundig rapportering. Ligeledes fremgår det, at det kun er for medlemmer "
+"(ikke-gratis). Forhåbentlig vil dette vil ændre sig snart."
+
+msgid "Web-based reporting"
+msgstr "Web-baseret rapportering"
+
+msgid ""
+"When you press the button on the confirmation page, this will pop open a new "
+"browser window and the SpamCop service should appear inside. The message "
+"will not be deleted (working on that part), but you won't need to wait for a "
+"response email to start the spam reporting."
+msgstr ""
+"Når du trykker på knappen på bekræftelsessiden, vil et nyt browservindue "
+"åbnes hvori SpamCop serviceen bør forekomme. Beskeden vil ikke blive slettet "
+"(der arbejdes på den del), men du behøver ikke at vente på en svar email for "
+"at starte spam rapportering."
+
+msgid ""
+"The SpamCop service will display information as it finds it, so scroll down "
+"until you see a form button. It might pause a little while it is looking up "
+"information, so be a little patient. Read what it says, and submit the spam. "
+"Close the browser window. Press Cancel or click on the appropriate mail "
+"folder to see messages and/or delete the spam."
+msgstr ""
+"SpamCop tjenesten vil vise oplysninger, som den finder det, rul nedad indtil "
+"du ser en knap. Det kan tage lidt tid, mens information hentes frem, så vær "
+"lidt tålmodig. Læs, hvad der står og rapporter spam'en. Luk browservinduet. "
+"Tryk på Annuller, eller klik på den relevante mail mappe for at se beskeder "
+"og/eller slet spam beskeden."
+
+msgid "SpamCop service type"
+msgstr "SpamCop service type"
+
+msgid ""
+"Service type option allows selecting which SpamCop services you are using. "
+"Member services use different web reporting forms and does not display nags. "
+"You can purchase these services, if you want to support SpamCop."
+msgstr ""
+"Service type indstilling giver dig mulighed for at vælge hvilken SpamCop "
+"tjenester, du bruger. Medlem tjenester bruger forskellige web "
+"meldeformularer og viser ikke Nags. Du kan købe disse tjenester, hvis du "
+"ønsker at støtte SpamCop."
+
+msgid "More information"
+msgstr "Yderligere information"
+
+#, php-format
+msgid ""
+"For more information about SpamCop, it's services, spam in general, and many "
+"related topics, try reading through SpamCop's %sHelp and Feedback%s section."
+msgstr ""
+"For mere information om SpamCop, deres tjenester, spam i almindelighed, og "
+"andre relaterede emner, så prøv at gennemlæs SpamCop's %s hjælp og "
+"tilbagemeldings %s sektion."
+
+msgid "Report as Spam"
+msgstr "Rapportér som spam"
+
+msgid "SpamCop - Spam Reporting"
+msgstr "SpamCop - Spam-rapportering"
+
+msgid ""
+"Help fight the battle against unsolicited email. SpamCop reads the spam "
+"email and determines the correct addresses to send complaints to. Quite "
+"fast, really smart, and easy to use."
+msgstr ""
+"Hjælp i kampen mod post som man ikke har anmodet om. SpamCop læser spam-"
+"posten, og finder de rette adresser, som man kan klage til. Hurtigt, smart "
+"og let at bruge."
+
+msgid ""
+"Sending this spam report will give you back a reply with URLs that you can "
+"click on to properly report this spam message to the proper authorities. "
+"This is a free service. By pressing the \"Send Spam Report\" button, you "
+"agree to follow SpamCop's rules/terms of service/etc."
+msgstr ""
+"Afsendelse af denne spam-rapport vil give dig et svar tilbage med "
+"webadresser, som du kan klikke på for korrekt at rapportere denne spam-"
+"besked til de rette myndigheder. Dette er en gratis service. Ved at trykke "
+"på &quot;Send Spam Report&quot;-knappen, accepterer du at følge SpamCop's "
+"regler/Servicevilkår/osv."
+
+msgid "Cancel / Done"
+msgstr "Fortryd / Afslut"
+
+msgid "Send Spam Report"
+msgstr "Send spam rapport"
+
+msgid "SpellChecker Options"
+msgstr "Stavekontrolindstillinger"
+
+msgid ""
+"Here you may set up how your personal dictionary is stored, edit it, or "
+"choose which languages should be available to you when spell-checking."
+msgstr ""
+"Her kan du indstille hvordan din personlige ordbog gemmes, ændre i den eller "
+"vælge hvilke sprog som skal være tilgængelige, når du bruger stavekontrollen."
+
+msgid "Check Spelling"
+msgstr "Kør stavekontrol"
+
+msgid "Back to &quot;SpellChecker Options&quot; page"
+msgstr "Tilbage til stavekontrolindstillingerne"
+
+msgid "ATTENTION:"
+msgstr "OBS:"
+
+msgid ""
+"SquirrelSpell was unable to decrypt your personal dictionary. This is most "
+"likely due to the fact that you have changed your mailbox password. In order "
+"to proceed, you will have to supply your old password so that SquirrelSpell "
+"can decrypt your personal dictionary. It will be re-encrypted with your new "
+"password after this. If you haven't encrypted your dictionary, then it got "
+"mangled and is no longer valid. You will have to delete it and start anew. "
+"This is also true if you don't remember your old password -- without it, the "
+"encrypted data is no longer accessible."
+msgstr ""
+"SquirrelSpell kunne ikke dekryptere din personlige ordbog. Dette skyldes "
+"formodentlig af du har ændret din adgangskode. For at fortsætte bedes du "
+"angive din gamle adgangskode, så SquirrelSpell kan dekryptere din ordbog. "
+"Ordbogen vil derefter blive krypteret med din nuværende adgangskode.<br>Hvis "
+"din ordbog ikke er krypteret, er dataene blevet beskadiget, og kan ikke "
+"længere læses. Du må så slette din ordbog og oprette en ny. Det samme må "
+"gøres hvis du ikke længere kan huske din gamle adgangskode - uden denne er "
+"de krypterede data ikke tilgængelige."
+
+msgid "Delete my dictionary and start a new one"
+msgstr "Slet min ordbog og opret en ny"
+
+msgid "Decrypt my dictionary with my old password:"
+msgstr "Dekryptér min ordbog med min gamle adgangskode:"
+
+msgid "Proceed"
+msgstr "Fortsæt"
+
+msgid "You must make a choice"
+msgstr "Du skal foretage et valg"
+
+msgid ""
+"You can either delete your dictionary or type in the old password. Not both."
+msgstr ""
+"Du kan enten slette din ordbog eller angive din gamle adgangskode. Ikke "
+"begge dele."
+
+msgid "This will delete your personal dictionary file. Proceed?"
+msgstr "Er du sikker på, at du ønsker at slette din personlige ordbog?"
+
+msgid "Error Decrypting Dictionary"
+msgstr "Fejl under dekryptering af ordbogen"
+
+#, php-format
+msgid "Could not run the spellchecker command (%s)."
+msgstr "Kunne ikke køre stavekontrol kommando (%s)."
+
+msgid "Error while writing to pipe."
+msgstr "Fejl under skrivning til pipe."
+
+#, php-format
+msgid "Could not open temporary file '%s'."
+msgstr "Kunne ikke åbne den midlertidige fil '%s'."
+
+#, php-format
+msgid "Error while writing to temporary file '%s'."
+msgstr "Fejl under skrivning til midlertidig fil '%s'."
+
+#, php-format
+msgid "I tried to execute '%s', but it returned:"
+msgstr "Jeg forsøgte at udføre: '%s', men den svarede:"
+
+msgid "SquirrelSpell is misconfigured."
+msgstr "SquirrelSpell er ikke konfigureret korrekt."
+
+msgid "Spellcheck completed. Commit changes?"
+msgstr "Stavekontrollen er fuldført. Skal ændringerne gemmes?"
+
+msgid "No changes were made."
+msgstr "Ingen ændringer."
+
+msgid "Now saving your personal dictionary... Please wait."
+msgstr "Din personlige ordbog gemmes... Vent venligst."
+
+msgid "SquirrelSpell Results"
+msgstr "SquirrelSpell resultater"
+
+#, php-format
+msgid "Found %s errors"
+msgstr "%s fejl fundet"
+
+msgid "Line with an error:"
+msgstr "Linie med fejl:"
+
+msgid "Error:"
+msgstr "Fejl:"
+
+msgid "Suggestions:"
+msgstr "Forslag:"
+
+msgid "Suggestions"
+msgstr "Forslag"
+
+msgid "Change to:"
+msgstr "Erstat med:"
+
+msgid "Occurs times:"
+msgstr "Antal forekomster:"
+
+msgid "Change this word"
+msgstr "Erstat dette ord"
+
+msgid "Change"
+msgstr "Erstat"
+
+msgid "Change ALL occurances of this word"
+msgstr "Erstat alle forekomster af dette ord"
+
+msgid "Change All"
+msgstr "Erstat alle"
+
+msgid "Ignore this word"
+msgstr "Ignorér dette ord"
+
+msgid "Ignore"
+msgstr "Ignorér"
+
+msgid "Ignore ALL occurances this word"
+msgstr "Ignorér alle forekomster af dette ord"
+
+msgid "Ignore All"
+msgstr "Ignorér alle"
+
+msgid "Add this word to your personal dictionary"
+msgstr "Tilføj dette ord til din personlige ordbog"
+
+msgid "Add to Dic"
+msgstr "Tilføj ordbog"
+
+msgid "Close and Commit"
+msgstr "Gem og luk"
+
+msgid "The spellcheck is not finished. Really close and commit changes?"
+msgstr ""
+"Stavekontrollen er ikke færdig. Er du sikker på, at du vil gemme ændringerne "
+"og lukke?"
+
+msgid "Close and Cancel"
+msgstr "Afbryde og lukke"
+
+msgid "The spellcheck is not finished. Really close and discard changes?"
+msgstr ""
+"Stavekontrollen er ikke færdig. Er du sikker på, at du vil fortryde "
+"ændringerne og lukke?"
+
+msgid "No errors found"
+msgstr "Ingen fejl fundet"
+
+msgid "Your personal dictionary was erased."
+msgstr "Din personlige ordbog er slettet."
+
+msgid "Dictionary Erased"
+msgstr "Ordbog slettet"
+
+msgid ""
+"Your personal dictionary was erased. Please close this window and click "
+"\"Check Spelling\" button again to start your spellcheck over."
+msgstr ""
+"Din personlige ordbog er slettet. Vær venlig at lukke dette vindue, og klik "
+"på \"Kør stavekontrol\" for at køre stavekontrollen igen."
+
+msgid "Close this Window"
+msgstr "Luk dette vindue"
+
+msgid ""
+"Your personal dictionary was re-encrypted successfully. Now return to the "
+"&quot;SpellChecker options&quot; menu and make your selection again."
+msgstr ""
+"Din personlige ordbog blev krypteret korrekt. Returner til menuen &qout;"
+"Stavekontrolindstillinger&qout; og foretag dit valg igen."
+
+msgid "Successful re-encryption"
+msgstr "Vellykket re-kryptering"
+
+msgid ""
+"Your personal dictionary was re-encrypted successfully. Please close this "
+"window and click \"Check Spelling\" button again to start your spellcheck "
+"over."
+msgstr ""
+"Din personlige ordbog er krypteret korrekt. Vær venlig at lukke dette  "
+"vindue, og klik på \"Kør stavekontrol\" for at køre stavekontrollen igen."
+
+msgid "Dictionary re-encrypted"
+msgstr "Ordbog krypteret"
+
+msgid ""
+"Your personal dictionary has been encrypted and is now stored in an "
+"encrypted format."
+msgstr "Din personlige ordbog er krypteret og er nu gemt i krypteret format."
+
+msgid ""
+"Your personal dictionary has been decrypted and is now stored as plain text."
+msgstr "Din personlige ordbog er dekrypteret og er nu gemt i klar tekst."
+
+msgid "No action requested."
+msgstr "Ingen handling forespurgt."
+
+msgid "Personal Dictionary Crypto Settings"
+msgstr "Personlig ordbog krypteringsindstillinger"
+
+msgid "Personal Dictionary"
+msgstr "Personlig ordbog"
+
+msgid "No words in your personal dictionary."
+msgstr "Der er ingen ord i din personlige ordbog"
+
+msgid "Please check any words you wish to delete from your dictionary."
+msgstr "Marker de ord, som du ønsker at slette fra din ordbog."
+
+#, php-format
+msgid "%s dictionary"
+msgstr "%s ordbog"
+
+msgid "Delete checked words"
+msgstr "Slet markerede ord"
+
+msgid "Edit your Personal Dictionary"
+msgstr "Ret i din personlige ordbog"
+
+msgid "Please make your selection first."
+msgstr "Vær venlig at foretage et valg."
+
+msgid ""
+"This will encrypt your personal dictionary and store it in an encrypted "
+"format. Proceed?"
+msgstr ""
+"Dette vil kryptere og gemme din personlige ordbog. Skal der fortsættes?"
+
+msgid ""
+"This will decrypt your personal dictionary and store it in a plain text "
+"format. Proceed?"
+msgstr "Dette vil gemme din ordbog i klar tekst. Skal der fortsættes?"
+
+msgid "Your personal dictionary is currently encrypted."
+msgstr "Din personlige ordbog er lige nu krypteret."
+
+msgid ""
+"This helps protect your privacy in case the web-mail system gets compromized "
+"and your personal dictionary ends up stolen. It is currently encrypted with "
+"the password you use to access your mailbox, making it hard for anyone to "
+"see what is stored in your personal dictionary."
+msgstr ""
+"Dette hjælper med at beskytte dine personlige oplysninger i tilfælde af, at "
+"web-mail-system bliver kompromiteret og din personlige ordbog bliver "
+"stjålet. Den er i øjeblikket krypteret med adgangskode, som du bruger til at "
+"få adgang til din postkasse, hvilket gør det svært for nogen at se, hvad der "
+"er gemt i din personlige ordbog."
+
+msgid ""
+"If you forget your password, your personal dictionary will become "
+"unaccessible, since it can no longer be decrypted. If you change your "
+"mailbox password, SquirrelSpell will recognize it and prompt you for your "
+"old password in order to re-encrypt the dictionary with a new key."
+msgstr ""
+"Hvis du glemmer din adgangskode, vil din personlige ordbog blive "
+"utilgængelig, da den ikke længere kan dekrypteres. Hvis du ændrer din "
+"postkasse adgangskode vil SquirrelSpell bede dig om dit gamle password for "
+"at re-kryptere ordbog med den nye nøgle."
+
+msgid ""
+"Please decrypt my personal dictionary and store it in a clear-text format."
+msgstr "Dekryptér min personlige ordbog og gem den i klar tekst."
+
+msgid "Change crypto settings"
+msgstr "Skift krypteringsindstillinger"
+
+msgid "Your personal dictionary is currently not encrypted."
+msgstr "Din personlige ordbog er lige nu ikke krypteret."
+
+msgid ""
+"You may wish to encrypt your personal dictionary to protect your privacy in "
+"case the webmail system gets compromized and your personal dictionary file "
+"gets stolen. When encrypted, the file's contents look garbled and are hard "
+"to decrypt without knowing the correct key (which is your mailbox password)."
+msgstr ""
+"Du kan vælge at kryptere dine personlige ordbog for at beskytte dine "
+"personlige oplysninger i tilfælde af at webmail-systemet bliver "
+"kompromiteret og din personlige ordbog fil bliver stjålet. Når filen er "
+"krypteret vil filens indhold se forvansket ud og er vanskeligt at dekryptere "
+"uden at kende den korrekte nøgle (som er din postkasse password)."
+
+msgid ""
+"If you decide to encrypt your personal dictionary, you must remember that it "
+"gets &quot;hashed&quot; with your mailbox password. If you forget your "
+"mailbox password and the administrator changes it to a new value, your "
+"personal dictionary will become useless and will have to be created anew. "
+"However, if you or your system administrator change your mailbox password "
+"but you still have the old password at hand, you will be able to enter the "
+"old key to re-encrypt the dictionary with the new value."
+msgstr ""
+"Hvis du beslutter dig for at kryptere dine personlige ordbog, skal du huske, "
+"at det bliver  &quot;hashed &quot; med din postkasse adgangskode. Hvis du "
+"glemmer din adgangskode, og administratoren ændringer den til en ny værdi, "
+"vil din personlige ordbog blive ubrugelig og skal oprettes igen. Men hvis du "
+"eller din systemadministrator ændre din postkasse adgangskode, men du stadig "
+"har det gamle password ved hånden, vil du være i stand til at indtaste den "
+"gamle nøgle til re-kryptere ordbogen med den nye værdi."
+
+msgid ""
+"Please encrypt my personal dictionary and store it in an encrypted format."
+msgstr "Kryptér min personlige ordbog, og gem den som krypteret tekst."
+
+#, php-format
+msgid "Deleting the following entries from %s dictionary:"
+msgstr "Slet følgende poster fra %s ordbog:"
+
+msgid "All done!"
+msgstr "Færdig!"
+
+msgid "Personal Dictionary Updated"
+msgstr "Den personlige ordbog er opdateret"
+
+msgid "No changes requested."
+msgstr "Ingen ændringer."
+
+msgid "Please wait, communicating with the server..."
+msgstr "Vent venligst, der kommunikeres med serveren..."
+
+msgid ""
+"Please choose which dictionary you would like to use to spellcheck this "
+"message:"
+msgstr "Vælg hvilken ordbog du ønsker at benytte til stavekontrollen:"
+
+msgid "SquirrelSpell Initiating"
+msgstr "SquirrelSpell starter"
+
+msgid ", "
+msgstr ", "
+
+#, php-format
+msgid "Settings adjusted to: %s with %s as default dictionary."
+msgstr "Indstillingerne er ændret til: %s med %s som standard ordbog."
+
+#, php-format
+msgid "Using %s dictionary (system default) for spellcheck."
+msgstr "Bruger %s ordbog (systemstandard) til stavekontrol."
+
+msgid "International Dictionaries Preferences Updated"
+msgstr "Internationale ordbogsindstillinger er opdateret"
+
+msgid ""
+"Please check any available international dictionaries which you would like "
+"to use when spellchecking:"
+msgstr ""
+"Marker de tilgængelige internationale ordbøger, som du ønsker at bruge når "
+"du stavekontrollerer:"
+
+msgid "Make this dictionary my default selection:"
+msgstr "Brug denne ordbog som standard:"
+
+msgid "Make these changes"
+msgstr "Udfør disse ændringer"
+
+msgid "Add International Dictionaries"
+msgstr "Tilføj international ordbog"
+
+msgid "Please choose which options you wish to set up:"
+msgstr "Vælg de indstillinger som du ønsker at ændre:"
+
+msgid "Edit your personal dictionary"
+msgstr "Ret din personlige ordbog"
+
+msgid "Set up international dictionaries"
+msgstr "Indstil international ordbog"
+
+msgid "Encrypt or decrypt your personal dictionary"
+msgstr "Kryptér eller dekryptér din personlige ordbog"
+
+msgid "Personal dictionary encryption options are not available"
+msgstr "Personlig ordbog krypteringsindstillinger er ikke tilgængelige"
+
+msgid "SquirrelSpell Options Menu"
+msgstr "SquirrelSpell indstillingsmenu"
+
+msgid "Translator"
+msgstr "Oversætter"
+
+msgid "Saved Translation Options"
+msgstr "Gemte oversættelsesindstillinger"
+
+msgid "Your server options are as follows:"
+msgstr "Dine serverindstillinger er som følger:"
+
+msgid "Maximum of 150 words translated, powered by Systran"
+msgstr "Højst 150 ord oversat, drevet af Systran"
+
+#, php-format
+msgid "Number of supported language pairs: %s"
+msgstr "Antal understøttede sprogpar: %s"
+
+msgid "No known limits, powered by Systran"
+msgstr "ingen kendte grænser, drevet af Systran"
+
+msgid "No known limits, powered by Translation Experts' InterTran"
+msgstr "ingen kendte grænser, drevet af Translation Expert's InterTran"
+
+#, php-format
+msgid "Number of supported languages: %s"
+msgstr "Antal understøttede sprog: %s"
+
+msgid "Hellenic translations, no known limits, powered by Systran"
+msgstr "Hellenske oversættelser, ingen kendte grænser"
+
+msgid "Russian translations, maximum of 500 characters translated"
+msgstr "Russiske oversættelser, højst 500 tegn oversat"
+
+msgid ""
+"You also decide if you want the translation box displayed, and where it will "
+"be located."
+msgstr ""
+"Du bestemmer om du ønsker oversættelsesboksen vist, og hvor den skal "
+"placeres."
+
+msgid "Select your translator:"
+msgstr "Vælg din oversætter"
+
+msgid "When reading:"
+msgstr "Under læsning:"
+
+msgid "Show translation box"
+msgstr "Vis oversættelsesboks"
+
+msgid "to the left"
+msgstr "til venstre"
+
+msgid "in the center"
+msgstr "i midten"
+
+msgid "to the right"
+msgstr "til højre"
+
+msgid "Translate inside the SquirrelMail frames"
+msgstr "Oversæt i SquirrelMails rammer"
+
+msgid "Translation Options"
+msgstr "Oversættelsesindstillinger"
+
+msgid ""
+"Which translator should be used when you get messages in a different "
+"language?"
+msgstr ""
+"Hvilken oversætter skal benyttes når du modtager beskeder på et andet sprog?"
+
+#, php-format
+msgid "%s to %s"
+msgstr "%s til %s"
+
+msgid "Chinese, Simplified"
+msgstr "Kinesisk, forenklet"
+
+msgid "English"
+msgstr "Engelsk"
+
+msgid "Chinese, Traditional"
+msgstr "Kinesisk, traditionelt"
+
+msgid "Dutch"
+msgstr "Hollandsk"
+
+msgid "French"
+msgstr "Fransk"
+
+msgid "German"
+msgstr "Tysk"
+
+msgid "Greek"
+msgstr "Græsk"
+
+msgid "Italian"
+msgstr "Italiensk"
+
+msgid "Japanese"
+msgstr "Japansk"
+
+msgid "Korean"
+msgstr "Koreansk"
+
+msgid "Portuguese"
+msgstr "Portugisisk"
+
+msgid "Russian"
+msgstr "Russisk"
+
+msgid "Spanish"
+msgstr "Spansk"
+
+msgid "Translate"
+msgstr "Oversæt"
+
+msgid "Brazilian Portuguese"
+msgstr "Brasiliansk portugisisk"
+
+msgid "Bulgarian"
+msgstr "Bulgarsk"
+
+msgid "Croatian"
+msgstr "Kroatisk"
+
+msgid "Czech"
+msgstr "Tjekkisk"
+
+msgid "Danish"
+msgstr "Dansk"
+
+msgid "Filipino (Tagalog)"
+msgstr "Filippinsk (Tagalog)"
+
+msgid "Finnish"
+msgstr "Finsk"
+
+msgid "Hungarian"
+msgstr "Ungarsk"
+
+msgid "Icelandic"
+msgstr "Islandsk"
+
+msgid "Latin"
+msgstr "Latin"
+
+msgid "Latin American Spanish"
+msgstr "Latinamerikansk spansk"
+
+msgid "Norwegian"
+msgstr "Norsk"
+
+msgid "Polish"
+msgstr "Polsk"
+
+msgid "Romanian"
+msgstr "Rumænsk"
+
+msgid "Serbian"
+msgstr "Serbisk"
+
+msgid "Slovenian"
+msgstr "Slovensk"
+
+msgid "Swedish"
+msgstr "Svensk"
+
+msgid "Turkish"
+msgstr "Tyrkisk"
+
+msgid "Welsh"
+msgstr "Walisisk"
+
+msgid "Indonesian"
+msgstr "Indonesisk"
+
+msgid "to English"
+msgstr "til engelsk"
+
+msgid "from English"
+msgstr "fra engelsk"
+
+msgid "Interface language"
+msgstr "Grænsefladesprog"
+
+msgid "Translation direction"
+msgstr "Oversættelsesretning"
+
+msgid "Arabic"
+msgstr "Arabisk"
+
+msgid "Delivery error report"
+msgstr "Fejlrapport for aflevering"
+
+msgid "Undelivered Message Headers"
+msgstr "Headere fra ikke afleverede beskeder"
+
+msgid "This image has been removed for security reasons"
+msgstr "Dette billede er blevet fjernet af sikkerhedsmæssige årsager"

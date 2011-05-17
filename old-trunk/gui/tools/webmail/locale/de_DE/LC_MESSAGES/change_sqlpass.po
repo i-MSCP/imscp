@@ -1,0 +1,110 @@
+# Change_Mysqlpass SquirrelMail Plugin
+# Copyright (c) 2003-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the PACKAGE package.
+# Peter Troeger <troeger@netclients.de>, 2003.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: change_mysqlpass\n"
+"POT-Creation-Date: 2003-10-10 13:58+0200\n"
+"PO-Revision-Date: 2003-10-19 10:16+0300\n"
+"Last-Translator: Peter Troeger <troeger@netclients.de>\n"
+"Language-Team: German <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: setup.php:208
+msgid "Password change cancelled."
+msgstr "&Auml;nderung des Passwortes abgebrochen."
+
+#: setup.php:208
+msgid "Your password has NOT been changed."
+msgstr "Ihr Passwort wurde NICHT ge&auml;ndert."
+
+#: setup.php:211
+msgid "Password changed successfully."
+msgstr "Das Passwort wurde erfolgreich ge&auml;ndert."
+
+#: setup.php:208
+msgid "Please use your new password to log in from now on."
+msgstr "Bitte verwenden Sie ab sofort Ihr neues Passwort zum Anmelden."
+
+#: options.php:143
+msgid "Change Password"
+msgstr "Passwort &auml;ndern"
+
+#: options.php:143
+msgid "Secure"
+msgstr "Sicher"
+
+#: options.php:170
+msgid "Old Password"
+msgstr "Altes Passwort"
+
+#: options.php:174
+msgid "New Password"
+msgstr "Neues Passwort"
+
+#: options.php:178
+msgid "Verify New Password"
+msgstr "Wiederholung neues Passwort"
+
+#: options.php:184
+msgid "Submit"
+msgstr "Ausf&uuml;hren"
+
+#: options.php:189
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: options.php:227
+msgid "You must type in your old password."
+msgstr "Sie m&uuml;ssen ihr altes Passwort angeben."
+
+#: options.php:229
+msgid "You must type in a new password."
+msgstr "Sie m&uuml;ssen ein neues Passwort angeben."
+
+#: options.php:232
+msgid "You must also type in your new password in the verify box."
+msgstr "Sie m&uuml;ssen ihr neues Passwort zweimal eingeben."
+
+#: options.php:235
+msgid "Your new password does not match the verify password."
+msgstr "Ihr neues Passwort stimmt nicht mit der wiederholten Eingabe &uuml;berein."
+
+#: options.php:237
+msgid "Your old password is not correct."
+msgstr "Ihr altes Passwort ist nicht korrekt."
+
+#: options.php:240
+msgid "Your new password must be different than your old password."
+msgstr "Das neue Passwort muss sich vom alten Passwort unterscheiden."
+
+#: options.php:294
+msgid "Cannot connect to Database Server, please try later!"
+msgstr "Verbindung zur Datenbank ist nicht m&ouml;glich, bitte versuchen sie es sp&auml;ter erneut."
+
+#: options.php:299
+msgid "Database not found on server"
+msgstr "Die Datenbank konnte auf dem Server nicht gefunden werden."
+
+#: options.php:364
+msgid "SQL call failed, try again later."
+msgstr "Fehler beim SQL Aufruf, bitte versuchen sie es sp&auml;ter erneut."
+
+#: options.php:379 options.php:386
+msgid "Strange, your old password does not match the database... rejecting."
+msgstr "Unerwarteter Fehler, ihr altes Passwort stimmt nicht mit der Datenbank &uuml;berein... Vorgang wird abgebrochen."
+
+#: options.php:391
+msgid "Duplicate login entries detected, cannot change password!"
+msgstr "Es wurden doppelte Login-Eintr&auml;ge gefunden, Passwort kann nicht ge&auml;ndert werden."
+
+#: options.php:468
+msgid "Password change was not successful!"
+msgstr "Die &Auml;nderung war nicht erfolgreich !"
+
+msgid "Use this to change your email password."
+msgstr "Hier k&ouml;nnen Sie ihr eMail-Passwort &auml;ndern."

@@ -1,0 +1,51 @@
+<chapter>
+   <title>
+      Einf&uuml;hrung in SquirrelMail
+   </title>
+   <summary>
+      Mit SquirrelMail k&ouml;nnen Sie E-Mail im ganzen World Wide
+      Web benutzen. 
+   </summary>
+   <description>
+      <p>
+      Also was genau ist <A HREF="http://www.squirrelmail.org/index.php3?from=1">SquirrelMail</A>?
+      Es ist ein Web-Interface f&uuml;r E-Mail geschrieben in <A HREF="http://www.php.net">PHP4</A>.
+      Es wurde entwickelt um E-Mail-Zugang zu ihrem Server von der ganzen Welt &uuml;ber das Netz
+      zu gew&auml;hrleisten. Weitere Informationen &uuml;ber dies und das IMAP-Protocol kann
+      <A HREF="http://imap.org">hier</A> gefunden werden. 
+      </p>
+   </description>
+</chapter>   
+
+<section>
+   <title>
+      Grundlagen
+   </title>
+   <description>
+      <p>
+      Falls Sie nur eine kurze Frage haben, erw&auml;gen Sie bitte das FAQ (Die h„ufig gestellten Fragen). 
+      </p>
+      <p>
+      SquirrelMail besteht aus zwei Hauptsektionen genannt Frames.  Der 
+      linke Frame zeigt die aktuellen Ordner an.  Weitere Informationen 
+      &uuml;ber den linken Frame kann in der "Ordner" Sektion dieser Dokumentation gefunden werden.
+      </p>
+      <p>
+      Die rechte H&auml;lfte wird am meisten benutzt. Ganz oben auf der Seite ist 
+      eine Menuleiste.  Ausloggen wird Ihre Sitzung sicher beenden wenn sie fertig sind. 
+      Der aktuelle Ordner zeigt an in welchem Ordner Sie sich gerade befinden. 
+      Unmittelbar nach dem Einloggen befinden Sie sich standardm&auml;ssig im INBOX Ordner.
+      </p>
+      <p>
+      In der Menuleiste ganz oben haben Sie folgende Optionen:
+         <ul>
+            <li><b>Erstellen</b> - Ein E-Mail schreiben welches Attachments enthalten kann. 
+            <li><b>Addressen</b> - Enth&auml;lt eine Liste von Adressen aus Ihrem pers&ouml;nlichen Adressbuch.
+            <li><b>Ordner</b> - Ihre ganze Ordnereinstellungen k&ouml;nnen Sie hier vornehmen.  Sie k&ouml;nnen Ordner l&ouml;schen, erstellen, umbenennen, abonnieren und k&uuml;nden. 
+            <li><b>Optionen</b> - &Auml;nderungen vornehmen wie SquirrelMail reagiert und aussieht.
+            <li><b>Suche</b> - Mit diesem Werkzeug k&ouml;nnen Sie eine Mailbox nach einem Kriterium durchsuchen.
+            <li><b>Hilfe</b> - Sie befinden sich schon hier!
+         </ul>
+      </p>
+   </description>
+</section>   

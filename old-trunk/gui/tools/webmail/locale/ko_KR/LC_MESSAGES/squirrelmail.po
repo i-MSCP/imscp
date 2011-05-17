@@ -1,0 +1,4979 @@
+# Korean SquirrelMail Translation.
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+# J.I Kim" <aporie@netian.com>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: $Id: squirrelmail.po,v 1.1 2003/07/13 09:56:09 tokul Exp "
+"$\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-04-16 19:47+0200\n"
+"PO-Revision-Date: 2001-12-15 09:45+0200\n"
+"Last-Translator: J.I. Kim <aporie@netian.com>\n"
+"Language-Team: Korean <squirrelmail-i18n@lists.sourceforge.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=EUC-KR\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Address Book"
+msgstr "주소록"
+
+msgid "Name"
+msgstr "이름"
+
+msgid "E-mail"
+msgstr "전자메일"
+
+msgid "Info"
+msgstr "정보 사항"
+
+msgid "Source"
+msgstr "원본보기"
+
+msgid "To"
+msgstr "받는 사람"
+
+msgid "Cc"
+msgstr "참조"
+
+msgid "Bcc"
+msgstr "숨은 참조"
+
+#, fuzzy
+msgid "No persons matching your search were found"
+msgstr "당신이 찾고있는 사람이 없습니다."
+
+msgid "Search for"
+msgstr "찾기"
+
+msgid "in"
+msgstr " : "
+
+msgid "All address books"
+msgstr "전체 주소록"
+
+msgid "Search"
+msgstr "찾기"
+
+msgid "List all"
+msgstr "전체 목록"
+
+msgid "Close"
+msgstr "종료"
+
+#, php-format
+msgid "Unable to list addresses from %s"
+msgstr "%s(으)로부터 주소목록을 가져올 수 없습니다."
+
+msgid "Your search failed with the following error(s)"
+msgstr "다음과 같은 오류가 발생했습니다."
+
+msgid "All"
+msgstr "전체"
+
+msgid "Use Addresses"
+msgstr "주소록 사용"
+
+#, fuzzy
+msgid "Cancel"
+msgstr "변경"
+
+msgid "Address Book Search"
+msgstr "주소록 찾기"
+
+msgid "Return"
+msgstr "돌아가기"
+
+msgid "Nickname"
+msgstr "별명"
+
+msgid "Must be unique"
+msgstr "중복된 이름은 사용할 수 없습니다."
+
+msgid "E-mail address"
+msgstr "전자메일 주소"
+
+msgid "Last name"
+msgstr "성"
+
+msgid "First name"
+msgstr "이름"
+
+msgid "Additional info"
+msgstr "추가 정보"
+
+#, fuzzy
+msgid "Add to:"
+msgstr "%s에 추가"
+
+msgid "No personal address book is defined. Contact administrator."
+msgstr "개인 주소록이 정의되지 않았습니다. 관리자에게 연락하세요"
+
+msgid "You can only edit one address at the time"
+msgstr "한번에 하나의 주소만 편집할 수 있습니다."
+
+msgid "Update address"
+msgstr "주소 변경"
+
+msgid "ERROR"
+msgstr "오류"
+
+msgid "Please select address that you want to edit"
+msgstr ""
+
+msgid "Add address"
+msgstr "주소 추가"
+
+msgid "Edit selected"
+msgstr "선택한 주소 편집"
+
+msgid "Delete selected"
+msgstr "선택한 주소 삭제"
+
+#, php-format
+msgid "Add to %s"
+msgstr "%s에 추가"
+
+#, php-format
+msgid "%s wrote:"
+msgstr ""
+
+msgid "quote"
+msgstr "인용"
+
+msgid "who"
+msgstr "글쓴이"
+
+#, php-format
+msgid "On %s, %s wrote:"
+msgstr ""
+
+msgid "Subject"
+msgstr "제목"
+
+msgid "From"
+msgstr "보낸 사람"
+
+msgid "Date"
+msgstr "날짜"
+
+msgid "Original Message"
+msgstr "원래 메세지"
+
+msgid "Draft Email Saved"
+msgstr "이메일이 임시보관함에 저장되었습니다."
+
+msgid "Could not move/copy file. File not attached"
+msgstr "파일을 이동/복사할 수 없습니다. 파일이 첨부되지 않았습니다. "
+
+msgid "Draft Saved"
+msgstr "임시보관함에 저장되었습니다."
+
+#, fuzzy
+msgid "Your Message has been sent."
+msgstr "메세지가 전송되었습니다."
+
+msgid "From:"
+msgstr "보낸 사람:"
+
+msgid "Send"
+msgstr "전송"
+
+msgid "Attach:"
+msgstr "첨부"
+
+msgid "Add"
+msgstr "추가"
+
+msgid "Delete selected attachments"
+msgstr "선택한 첨부물 삭제"
+
+msgid "Priority"
+msgstr "우선순위"
+
+msgid "High"
+msgstr "높음"
+
+msgid "Normal"
+msgstr "보통"
+
+msgid "Low"
+msgstr "낮음"
+
+msgid "Receipt"
+msgstr "수신"
+
+msgid "On Read"
+msgstr "읽을 때"
+
+msgid "On Delivery"
+msgstr "배달시"
+
+msgid "Signature"
+msgstr "서명"
+
+msgid "Addresses"
+msgstr "주소록"
+
+msgid "Save Draft"
+msgstr "임시보관함에 저장"
+
+msgid "You have not filled in the \"To:\" field."
+msgstr "\"받는사람:\"란이 비었습니다."
+
+#, fuzzy, php-format
+msgid "Error: Draft folder %s does not exist."
+msgstr "사용자 '%s'(은)는 존재하지 않습니다."
+
+#, fuzzy
+msgid "Server replied:"
+msgstr "서버 응답: "
+
+msgid "Folders"
+msgstr "편지함"
+
+#, fuzzy
+msgid "Subscribed successfully."
+msgstr "편지함으로 사용"
+
+#, fuzzy
+msgid "Unsubscribed successfully."
+msgstr "편지함으로 사용하지 않음"
+
+#, fuzzy
+msgid "Deleted folder successfully."
+msgstr "편지함이 삭제되었습니다."
+
+#, fuzzy
+msgid "Created folder successfully."
+msgstr "편지함이 생성되었습니다."
+
+#, fuzzy
+msgid "Renamed successfully."
+msgstr "변경되었습니다."
+
+msgid "Subscription Unsuccessful - Folder does not exist."
+msgstr "메일함 사용 실패 - 폴더가 존재하지 않습니다."
+
+msgid "refresh folder list"
+msgstr "편지함 목록 갱신"
+
+msgid "Create Folder"
+msgstr "편지함 생성"
+
+msgid "as a subfolder of"
+msgstr "의 하위편지함으로"
+
+msgid "None"
+msgstr "없음"
+
+msgid "Let this folder contain subfolders"
+msgstr "이 편지함은 하위편지함을 갖습니다."
+
+msgid "Create"
+msgstr "만들기"
+
+msgid "Rename a Folder"
+msgstr "편지함 이름 변경"
+
+msgid "Select a folder"
+msgstr "편지함 선택"
+
+msgid "Rename"
+msgstr "이름변경"
+
+msgid "No folders found"
+msgstr "편지함이 없습니다."
+
+msgid "Delete Folder"
+msgstr "편지함 삭제"
+
+msgid "Delete"
+msgstr "삭제"
+
+msgid "Unsubscribe"
+msgstr "사용하지 않음"
+
+msgid "Subscribe"
+msgstr "사용함"
+
+msgid "No folders were found to unsubscribe from!"
+msgstr "사용하지 않기 위한 편지함이 없습니다."
+
+msgid "No folders were found to subscribe to!"
+msgstr "사용하기 위한 편지함이 없습니다."
+
+msgid "Subscribe to:"
+msgstr "사용함:"
+
+#, fuzzy
+msgid "Illegal folder name. Please select a different name."
+msgstr "편지함 이름이 잘못되었습니다. 다른이름을 사용하세요."
+
+msgid "Click here to go back"
+msgstr "되돌아가려면 여기를 누르세요."
+
+msgid "You have not selected a folder to delete. Please do so."
+msgstr "삭제할 편지함을 선택하시기 바랍니다."
+
+#, php-format
+msgid "Are you sure you want to delete %s?"
+msgstr "%s을(를) 삭제하시겠습니까?"
+
+msgid "Yes"
+msgstr "예"
+
+msgid "No"
+msgstr "아니오"
+
+msgid "You have not selected a folder to rename. Please do so."
+msgstr "이름을 변경할 편지함을 선택하시기 바랍니다."
+
+msgid "Rename a folder"
+msgstr "편지함 이름 변경"
+
+msgid "New name:"
+msgstr "새로운 이름:"
+
+msgid "Submit"
+msgstr "완료"
+
+msgid "ERROR: Help files are not in the right format!"
+msgstr "오류: 도움말 파일의 형식이 올바르지 않습니다!"
+
+msgid "Help"
+msgstr "도움말"
+
+#, fuzzy, php-format
+msgid ""
+"The help has not been translated to %s. It will be displayed in English "
+"instead."
+msgstr ""
+"이 도움말은 %s으(로) 번역되지 않았습니다. 번역되지 않은 메세지는 영어로 표시"
+"됩니다"
+
+msgid "Some or all of the help documents are not present!"
+msgstr "도움말의 일부 또는 전체가 없습니다!"
+
+msgid "Table of Contents"
+msgstr "목차"
+
+msgid "Previous"
+msgstr "이전"
+
+msgid "Next"
+msgstr "다음"
+
+msgid "Top"
+msgstr "위로"
+
+msgid "Viewing an image attachment"
+msgstr "첨부된 문서 보기"
+
+msgid "View message"
+msgstr "메세지 보기"
+
+msgid "Download this as a file"
+msgstr "파일로 다운받기"
+
+msgid "INBOX"
+msgstr "받은 편지함"
+
+#, fuzzy
+msgid "Purge"
+msgstr "비우기"
+
+msgid "Login"
+msgstr "로그인"
+
+#, php-format
+msgid "%s Logo"
+msgstr "%s 로고"
+
+#, php-format
+msgid "SquirrelMail version %s"
+msgstr "SquirrelMail 버전 %s"
+
+#, fuzzy
+msgid "By the SquirrelMail Project Team"
+msgstr "SquirrelMail 개발팀"
+
+#, php-format
+msgid "%s Login"
+msgstr "%s 로그인"
+
+msgid "Name:"
+msgstr "이름:"
+
+msgid "Password:"
+msgstr "비밀번호:"
+
+msgid "No messages were selected."
+msgstr "메세지가 선택되지 않았습니다."
+
+msgid "Personal Information"
+msgstr "개인 정보"
+
+msgid "Display Preferences"
+msgstr "화면 설정"
+
+msgid "Message Highlighting"
+msgstr "메세지 강조"
+
+msgid "Folder Preferences"
+msgstr "편지함 환경설정"
+
+msgid "Index Order"
+msgstr "인덱스 순서"
+
+msgid "Options"
+msgstr "환경 설정"
+
+msgid "Error(s) occurred while saving your options"
+msgstr ""
+
+msgid "Some of your preference changes were not applied."
+msgstr ""
+
+msgid "Successfully Saved Options"
+msgstr "설정상태가 저장되었습니다."
+
+msgid "Refresh Folder List"
+msgstr "편지함 갱신"
+
+msgid "Refresh Page"
+msgstr "페이지 갱신"
+
+msgid ""
+"This contains personal information about yourself such as your name, your "
+"email address, etc."
+msgstr "이름, 전자메일 주소등 개인정보를 저장합니다."
+
+msgid ""
+"You can change the way that SquirrelMail looks and displays information to "
+"you, such as the colors, the language, and other settings."
+msgstr "색상, 언어등 SquirrelMail의 겉모습을 변경합니다."
+
+#, fuzzy
+msgid ""
+"Based upon given criteria, incoming messages can have different background "
+"colors in the message list. This helps to easily distinguish who the "
+"messages are from, especially for mailing lists."
+msgstr ""
+"주어진 범주에 따라, 수신된 메세지는 메세지 목록에서 서로 다른 배경색으로 설정"
+"할 수 있습니다. 메세지를 보낸 사람을 쉽게 구분할 수 있으며, 특히 메일링리스"
+"트 구분에 도움이 됩니다."
+
+msgid ""
+"These settings change the way your folders are displayed and manipulated."
+msgstr "이 설정은 메일함 표시방법과 조작방식을 변경합니다."
+
+msgid ""
+"The order of the message index can be rearranged and changed to contain the "
+"headers in any order you want."
+msgstr ""
+"메세지 인덱스의 순서는 다시 정렬될수 있으며 당신이 원하는 순서로 변경할 수 있"
+"습니다."
+
+msgid "New"
+msgstr "새 편지"
+
+msgid "Done"
+msgstr "완료"
+
+msgid "To or Cc"
+msgstr "받는 사람 또는 참조"
+
+msgid "subject"
+msgstr "제목"
+
+msgid "Edit"
+msgstr "수정"
+
+msgid "Up"
+msgstr "위로"
+
+msgid "Down"
+msgstr "아래로"
+
+msgid "No highlighting is defined"
+msgstr "메세지 강조가 정의되지 않았습니다."
+
+msgid "Identifying name"
+msgstr "식별할 수 있는 이름"
+
+msgid "Color"
+msgstr "색상"
+
+msgid "Dark Blue"
+msgstr "Dark Blue"
+
+msgid "Dark Green"
+msgstr "Dark Green"
+
+msgid "Dark Yellow"
+msgstr "Dark Yellow"
+
+msgid "Dark Cyan"
+msgstr "Dark Cyan"
+
+msgid "Dark Magenta"
+msgstr "Dark Magenta"
+
+msgid "Light Blue"
+msgstr "Light Blue"
+
+msgid "Light Green"
+msgstr "Light Green"
+
+msgid "Light Yellow"
+msgstr "Light Yellow"
+
+msgid "Light Cyan"
+msgstr "Light Cyan"
+
+msgid "Light Magenta"
+msgstr "Light Magenta"
+
+msgid "Dark Gray"
+msgstr "Dark Gray"
+
+msgid "Medium Gray"
+msgstr "Medium Gray"
+
+msgid "Light Gray"
+msgstr "Light Gray"
+
+msgid "White"
+msgstr "White"
+
+msgid "Other:"
+msgstr "기타:"
+
+msgid "Ex: 63aa7f"
+msgstr "예: 63aa7f"
+
+msgid "Matches"
+msgstr "일치"
+
+#, php-format
+msgid "Alternate Identity %d"
+msgstr "대체 식별자 %d"
+
+msgid "Advanced Identities"
+msgstr "상세 설정"
+
+msgid "Default Identity"
+msgstr "기본 정보"
+
+msgid "Add a New Identity"
+msgstr "새로운 식별자 추가"
+
+msgid "Full Name"
+msgstr "전체 이름"
+
+msgid "E-Mail Address"
+msgstr "전자메일 주소"
+
+msgid "Reply To"
+msgstr "회신"
+
+msgid "Save / Update"
+msgstr "저장 / 갱신"
+
+msgid "Make Default"
+msgstr "기본 식별자로 사용"
+
+msgid "Move Up"
+msgstr "이동"
+
+msgid "Checkbox"
+msgstr "체크박스"
+
+msgid "Flags"
+msgstr "플래그"
+
+msgid "Size"
+msgstr "크기"
+
+#, fuzzy
+msgid ""
+"The index order is the order that the columns are arranged in the message "
+"index. You can add, remove, and move columns around to customize them to fit "
+"your needs."
+msgstr ""
+"인덱스 순서는 메세지 인덱스에 정렬된 칼럼 순서입니다. 당신의 필요에 따라 칼럼"
+"을 추가, 삭제, 이동 할 수 있습니다."
+
+msgid "up"
+msgstr "위로"
+
+msgid "down"
+msgstr "아래로"
+
+msgid "remove"
+msgstr "삭제"
+
+msgid "Return to options page"
+msgstr "환경 설정 페이지로 돌아가기"
+
+msgid "Message not printable"
+msgstr "메세지를 인쇄할 수 없습니다."
+
+msgid "Invalid URL"
+msgstr ""
+
+msgid "Printer Friendly"
+msgstr "출력용"
+
+msgid "Print"
+msgstr "인쇄"
+
+msgid "View Printable Version"
+msgstr "인쇄용 보기"
+
+msgid "Read:"
+msgstr "읽음:"
+
+msgid "Your message"
+msgstr "메세지"
+
+#, fuzzy
+msgid "Sent"
+msgstr "전송:"
+
+#, php-format
+msgid "Was displayed on %s"
+msgstr "%s으(로) 표시되었습니다."
+
+msgid "less"
+msgstr "숨김"
+
+msgid "more"
+msgstr "자세히"
+
+msgid "Unknown sender"
+msgstr "알 수 없는 전송자"
+
+msgid "Mailer"
+msgstr "메일러"
+
+msgid "Read receipt"
+msgstr ""
+
+#, fuzzy
+msgid "sent"
+msgstr "전송"
+
+msgid "requested"
+msgstr "요청되었습니다."
+
+msgid ""
+"The message sender has requested a response to indicate that you have read "
+"this message. Would you like to send a receipt?"
+msgstr ""
+"메세지 전송자가 이 메세지에 대한 회신 메일을 요청하였습니다. 답장을 보내시겠"
+"습니까?"
+
+msgid "Send read receipt now"
+msgstr "지금 답장 보내기"
+
+msgid "Search Results"
+msgstr "검색 결과"
+
+msgid "Message List"
+msgstr "메세지 목록"
+
+msgid "Resume Draft"
+msgstr "이메일 임시보관함 보기"
+
+msgid "Edit Message as New"
+msgstr "새메일로 메세지 편집"
+
+msgid "View Message"
+msgstr "메세지 보기"
+
+msgid "Forward"
+msgstr "전달"
+
+msgid "Forward as Attachment"
+msgstr "첨부파일로 전달"
+
+msgid "Reply"
+msgstr "회신"
+
+msgid "Reply All"
+msgstr "전체 회신"
+
+msgid "View Full Header"
+msgstr "전체 헤더 보기"
+
+msgid "Attachments"
+msgstr "첨부"
+
+msgid "You must be logged in to access this page."
+msgstr "이 페이지에 접근하기 위해서는 정당한 비밀번호가 있어야 합니다."
+
+msgid "Folder:"
+msgstr "편지함:"
+
+msgid "edit"
+msgstr "수정"
+
+msgid "search"
+msgstr "찾기"
+
+msgid "delete"
+msgstr "삭제"
+
+msgid "Recent Searches"
+msgstr "최근 검색"
+
+msgid "save"
+msgstr "저장"
+
+msgid "forget"
+msgstr "forget?"
+
+msgid "Current Search"
+msgstr "현재 찾기"
+
+msgid "All Folders"
+msgstr "전체 편지함"
+
+msgid "Body"
+msgstr "본문"
+
+msgid "Everywhere"
+msgstr "전체"
+
+msgid "No Messages Found"
+msgstr "메세지가 없습니다."
+
+#, fuzzy
+msgid "Signout"
+msgstr "웹메일 종료"
+
+msgid "Sign Out"
+msgstr "웹메일 종료"
+
+msgid "You have been successfully signed out."
+msgstr "웹메일이 종료되었습니다."
+
+msgid "Click here to log back in."
+msgstr "다시 로그인 하시려면 여기를 누르세요."
+
+msgid "Viewing a Business Card"
+msgstr "업무용 카드 보기"
+
+#, php-format
+msgid ""
+"vCard Version %s is not supported. Some information might not be converted "
+"correctly."
+msgstr ""
+
+msgid "Title"
+msgstr "제목"
+
+msgid "Email"
+msgstr "전자메일"
+
+msgid "Web Page"
+msgstr "웹 페이지"
+
+msgid "Organization / Department"
+msgstr "부서"
+
+msgid "Address"
+msgstr "주소록"
+
+msgid "Work Phone"
+msgstr "사무실 전화"
+
+msgid "Home Phone"
+msgstr "집 전화"
+
+msgid "Cellular Phone"
+msgstr "휴대폰"
+
+msgid "Fax"
+msgstr "팩스"
+
+msgid "Note"
+msgstr "참조"
+
+msgid "Add to Addressbook"
+msgstr "주소 추가"
+
+msgid "Title & Org. / Dept."
+msgstr "타이틀 및 부서"
+
+#, fuzzy
+msgid "Add to Address Book"
+msgstr "주소 추가"
+
+msgid "Viewing Full Header"
+msgstr "전체 헤더보기"
+
+msgid "Viewing a text attachment"
+msgstr "첨부된 문서 보기"
+
+msgid ""
+"Could not include PEAR database functions required for the database backend."
+msgstr ""
+
+#, php-format
+msgid "Is PEAR installed, and is the include path set correctly to find %s?"
+msgstr ""
+
+msgid "Please contact your system administrator and report this error."
+msgstr "이 오류에 대하여 관리자에게 도움을 요청하십시요."
+
+msgid "Personal address book"
+msgstr "개인 주소록"
+
+#, php-format
+msgid "Database error: %s"
+msgstr "데이타베이스 오류: %s"
+
+msgid "Addressbook is read-only"
+msgstr "주소록은 읽기전용입니다."
+
+#, php-format
+msgid "User '%s' already exist"
+msgstr "사용자 '%s'(은)는 이미 존재합니다."
+
+#, php-format
+msgid "User '%s' does not exist"
+msgstr "사용자 '%s'(은)는 존재하지 않습니다."
+
+msgid "Not a file name"
+msgstr "파일명이 아닙니다."
+
+msgid "No such file or directory"
+msgstr "그런 파일이나 디렉토리가 없습니다."
+
+msgid "Open failed"
+msgstr "열기 실패"
+
+msgid "Write failed"
+msgstr "쓰기 실패"
+
+msgid "Unable to update"
+msgstr "갱신 오류"
+
+msgid "Could not lock datafile"
+msgstr "데이타파일 잠금 오류"
+
+msgid "Write to addressbook failed"
+msgstr "주소록 작성 오류"
+
+msgid "Error initializing addressbook database."
+msgstr "주소록 데이타베이스 초기화 오류"
+
+#, php-format
+msgid "Error opening file %s"
+msgstr "파일 %s 열기 오류"
+
+msgid "Global address book"
+msgstr "전체 주소록"
+
+msgid "Error initializing global addressbook."
+msgstr "전역 주소록 초기화 오류"
+
+#, php-format
+msgid "Error initializing LDAP server %s:"
+msgstr "LDAP서버 %s 초기화 오류"
+
+msgid "Invalid input data"
+msgstr "입력값이 잘못되었습니다"
+
+msgid "Name is missing"
+msgstr "이름을 입력하세요"
+
+msgid "E-mail address is missing"
+msgstr "전자메일 주소를 입력하세요"
+
+msgid "Nickname contains illegal characters"
+msgstr "별명이 잘못된 문자를 포함하고 있습니다."
+
+#, fuzzy
+msgid "View"
+msgstr "보기"
+
+#, fuzzy
+msgid "View Business Card"
+msgstr "업무용 카드 보기"
+
+msgid "Sunday"
+msgstr "일"
+
+msgid "Monday"
+msgstr "월"
+
+msgid "Tuesday"
+msgstr "화"
+
+msgid "Wednesday"
+msgstr "수"
+
+msgid "Thursday"
+msgstr "목"
+
+msgid "Friday"
+msgstr "금"
+
+msgid "Saturday"
+msgstr "토"
+
+#, fuzzy
+msgid "Sun"
+msgstr "일"
+
+#, fuzzy
+msgid "Mon"
+msgstr "월"
+
+#, fuzzy
+msgid "Tue"
+msgstr "화"
+
+msgid "Wed"
+msgstr ""
+
+msgid "Thu"
+msgstr ""
+
+#, fuzzy
+msgid "Fri"
+msgstr "금"
+
+msgid "Sat"
+msgstr ""
+
+msgid "January"
+msgstr "1"
+
+msgid "February"
+msgstr "2"
+
+msgid "March"
+msgstr "3"
+
+msgid "April"
+msgstr "4"
+
+msgid "May"
+msgstr "5"
+
+msgid "June"
+msgstr "6"
+
+msgid "July"
+msgstr "7"
+
+msgid "August"
+msgstr "8"
+
+msgid "September"
+msgstr "9"
+
+msgid "October"
+msgstr "10"
+
+msgid "November"
+msgstr "11"
+
+msgid "December"
+msgstr "12"
+
+#, fuzzy
+msgid "Jan"
+msgstr "1"
+
+msgid "Feb"
+msgstr ""
+
+#, fuzzy
+msgid "Mar"
+msgstr "3"
+
+#, fuzzy
+msgid "Apr"
+msgstr "4"
+
+msgid "Ma&#121;"
+msgstr ""
+
+#, fuzzy
+msgid "Jun"
+msgstr "6"
+
+#, fuzzy
+msgid "Jul"
+msgstr "7"
+
+#, fuzzy
+msgid "Aug"
+msgstr "8"
+
+msgid "Sep"
+msgstr ""
+
+#, fuzzy
+msgid "Oct"
+msgstr "10"
+
+#, fuzzy
+msgid "Nov"
+msgstr "아니오"
+
+msgid "Dec"
+msgstr ""
+
+msgid "D, F j, Y g:i a"
+msgstr "Y-F-j, D, g:i a"
+
+#, fuzzy
+msgid "D, F j, Y H:i"
+msgstr "Y-F-j, D, G:i"
+
+msgid "M j, Y"
+msgstr "Y M j"
+
+msgid "g:i a"
+msgstr "g:i a"
+
+#, fuzzy
+msgid "H:i"
+msgstr "G:i"
+
+msgid "D, g:i a"
+msgstr "D, g:i a"
+
+#, fuzzy
+msgid "D, H:i"
+msgstr "D, G:i"
+
+#, php-format
+msgid "Preference database error (%s). Exiting abnormally"
+msgstr "설정파일 %s이(가) 없습니다. 비정상적으로 종료합니다."
+
+#, php-format
+msgid "Click here to return to %s"
+msgstr "%s(으)로 되돌아가려면 여기를 누르세요 "
+
+msgid "Go to the login page"
+msgstr "로그인 페이지로 이동"
+
+#, php-format
+msgid ""
+"Preference file, %s, does not exist. Log out, and log back in to create a "
+"default preference file."
+msgstr ""
+"설정파일 %s이(가) 없습니다. 먼저 로그아웃하시고, 기본 설정으로 만들기위해 다"
+"시 로그인 하세요"
+
+#, php-format
+msgid ""
+"Preference file, %s, could not be opened. Contact your system administrator "
+"to resolve this issue."
+msgstr ""
+"설정 파일 %s를(을) 열 수 없습니다. 이 문제를 해결하기 위해 시스템 관리자에게 "
+"문의하시기 바랍니다."
+
+#, php-format
+msgid ""
+"Preference file, %s, could not be written. Contact your system administrator "
+"to resolve this issue."
+msgstr ""
+"설정 파일 %s를(을) 쓸 수 없습니다. 이 문제를 해결하기 위해 시스템 관리자에게 "
+"문의하시기 바랍니다."
+
+#, fuzzy, php-format
+msgid ""
+"Preference file, %s, could not be copied from temporary file, %s. Contact "
+"your system administrator to resolve this issue."
+msgstr ""
+"설정 파일 %s를(을) 열 수 없습니다. 이 문제를 해결하기 위해 시스템 관리자에게 "
+"문의하시기 바랍니다."
+
+#, php-format
+msgid "Error opening %s"
+msgstr "%s 열기 오류"
+
+msgid "Default preference file not found or not readable!"
+msgstr "기본 설정파일이 없거나 읽을 수 없습니다!"
+
+msgid "Could not create initial preference file!"
+msgstr "초기 환경설정 파일을 만들지 못했습니다!"
+
+#, php-format
+msgid "%s should be writable by user %s"
+msgstr "%s은(는) 사용자 %s이(가) 쓰기권한을 갖고 있어야 합니다."
+
+#, fuzzy
+msgid "Signature is too big."
+msgstr "서명 설정"
+
+#, php-format
+msgid ""
+"Signature file, %s, could not be opened. Contact your system administrator "
+"to resolve this issue."
+msgstr ""
+"서명 파일 %s를(을) 열 수 없습니다. 이 문제를 해결하기 위해 시스템 관리자에게 "
+"문의하시기 바랍니다."
+
+#, php-format
+msgid ""
+"Signature file, %s, could not be written. Contact your system administrator "
+"to resolve this issue."
+msgstr ""
+"서명 파일 %s를(을) 쓸 수 없습니다. 이 문제를 해결하기 위해 시스템 관리자에게 "
+"문의하시기 바랍니다."
+
+#, fuzzy, php-format
+msgid ""
+"Signature file, %s, could not be copied from temporary file, %s. Contact "
+"your system administrator to resolve this issue."
+msgstr ""
+"서명 파일 %s를(을) 열 수 없습니다. 이 문제를 해결하기 위해 시스템 관리자에게 "
+"문의하시기 바랍니다."
+
+#, fuzzy
+msgid ""
+"You need to have php4 installed with the multibyte string function enabled "
+"(using configure option --enable-mbstring)."
+msgstr ""
+"멀티바이트 문자열 함수를 사용할 수 있도록 php4를 설치해야 합니다.(--with-"
+"mbstring  옵션을 추가해야 합니다.)"
+
+#, fuzzy
+msgid "ERROR: No available IMAP stream."
+msgstr "오류 : imapstream이 없습니다."
+
+#, fuzzy
+msgid "ERROR: Connection dropped by IMAP server."
+msgstr "IMAP 서버 연결 오류: %s."
+
+#, fuzzy
+msgid "ERROR: Could not complete request."
+msgstr "오류 : 요청이 중단되었습니다."
+
+msgid "Query:"
+msgstr "질의:"
+
+#, fuzzy
+msgid "Reason Given:"
+msgstr "사유:"
+
+#, fuzzy
+msgid "ERROR: Bad or malformed request."
+msgstr "오류 : 잘못된 응답."
+
+#, fuzzy
+msgid "Server responded:"
+msgstr "서버 응답: "
+
+msgid "ERROR: IMAP server closed the connection."
+msgstr ""
+
+#, fuzzy
+msgid "ERROR: Unknown IMAP response."
+msgstr "알 수 없는 응답"
+
+#, php-format
+msgid "Error connecting to IMAP server: %s."
+msgstr "IMAP 서버 연결 오류: %s."
+
+msgid "The IMAP server is reporting that plain text logins are disabled."
+msgstr ""
+
+msgid "Using CRAM-MD5 or DIGEST-MD5 authentication instead may work."
+msgstr ""
+
+msgid "Also, the use of TLS may allow SquirrelMail to login."
+msgstr ""
+
+#, php-format
+msgid "Bad request: %s"
+msgstr "잘못된 응답: %s"
+
+#, php-format
+msgid "Unknown error: %s"
+msgstr "알 수 없는 오류: %s"
+
+msgid "Read data:"
+msgstr "자료 읽기"
+
+msgid "Unknown user or password incorrect."
+msgstr "알 수 없는 사용자 또는 비밀번호 오류"
+
+#, fuzzy
+msgid "ERROR: Could not append message to"
+msgstr "오류 : 메세지를 추가할 수 없습니다"
+
+#, fuzzy
+msgid "Solution:"
+msgstr "해결:"
+
+msgid ""
+"Remove unneccessary messages from your folder and start with your Trash "
+"folder."
+msgstr "현재 메일함에서 불필요한 메세지를 삭제하며, 휴지통에서 시작합니다."
+
+msgid "(no subject)"
+msgstr "(제목 없음)"
+
+msgid "Unknown Sender"
+msgstr "알 수 없는 전송자"
+
+#, fuzzy
+msgid "Unknown response from IMAP server:"
+msgstr "IMAP 서버로부터 알 수 없는 응답을 받았습니다:"
+
+msgid "The server couldn't find the message you requested."
+msgstr ""
+
+msgid ""
+"Most probably your message list was out of date and the message has been "
+"moved away or deleted (perhaps by another program accessing the same "
+"mailbox)."
+msgstr ""
+
+msgid "Unknown date"
+msgstr "알 수 없는 일자"
+
+msgid "A"
+msgstr "A"
+
+#, fuzzy
+msgid "Thread sorting is not supported by your IMAP server."
+msgstr ""
+"쓰레드 정렬은 현재 IMAP 서버에서 지원되지 않습니다.<br>이 문제를 시스템 관리"
+"자에게 문의하시기 바랍니다."
+
+#, fuzzy
+msgid "Server-side sorting is not supported by your IMAP server."
+msgstr ""
+"서버 정렬은 현재 IMAP 서버에서 지원되지 않습니다.<br>이 문제를 시스템 관리자"
+"에게 문의하시기 바랍니다."
+
+msgid "THIS FOLDER IS EMPTY"
+msgstr "이 편지함은 비어 있습니다."
+
+msgid "Move Selected To"
+msgstr "선택한 메일 이동:"
+
+msgid "Transform Selected Messages"
+msgstr "메세지 표시"
+
+msgid "Move"
+msgstr "이동"
+
+msgid "Expunge"
+msgstr "비우기"
+
+msgid "mailbox"
+msgstr "메일박스"
+
+msgid "Read"
+msgstr "읽음"
+
+msgid "Unread"
+msgstr "읽지 않음"
+
+msgid "Unthread View"
+msgstr "쓰레드 숨김"
+
+msgid "Thread View"
+msgstr "쓰레드 보기"
+
+msgid "Toggle All"
+msgstr "전체 선택"
+
+msgid "Unselect All"
+msgstr "전체 선택해제"
+
+msgid "Select All"
+msgstr "전체 선택"
+
+#, fuzzy, php-format
+msgid "Viewing Messages: %s to %s (%s total)"
+msgstr "메세지 보기: <B>%s</B> - <B>%s</B> (전체: %s)"
+
+#, fuzzy, php-format
+msgid "Viewing Message: %s (%s total)"
+msgstr "메세지 보기: <b>1</b> (1개의 메세지)"
+
+msgid "Paginate"
+msgstr "페이지 만들기"
+
+msgid "Show All"
+msgstr "전체 보기"
+
+msgid "SquirrelMail could not decode the bodystructure of the message"
+msgstr "SquirrelMail이 메세지의 본문구조를 디코드할 수 없습니다."
+
+msgid "the provided bodystructure by your imap-server"
+msgstr "imap-server에서 제공된 본문구조"
+
+msgid ""
+"Body retrieval error. The reason for this is most probably that the message "
+"is malformed."
+msgstr ""
+"본문 읽기 오류. 이것의 원인은 대부분 메세지 형식이 잘못되었기 때문입니다."
+
+msgid "Command:"
+msgstr "명령어:"
+
+msgid "Response:"
+msgstr "응답:"
+
+msgid "Message:"
+msgstr "메세지:"
+
+msgid "FETCH line:"
+msgstr "가져온 라인:"
+
+msgid "Hide Unsafe Images"
+msgstr "안전하지 않은 그림 숨기기"
+
+msgid "View Unsafe Images"
+msgstr "안전하지 않은 그림 보기"
+
+#, fuzzy
+msgid "Download"
+msgstr "다운로드"
+
+msgid "sec_remove_eng.png"
+msgstr "sec_remove_ko_KR.png"
+
+msgid "This external link will open in a new window"
+msgstr ""
+
+#, php-format
+msgid "Option Type '%s' Not Found"
+msgstr "설정 형식 '%s'을(를) 찾을 수 없습니다."
+
+msgid "Current Folder"
+msgstr "현재 편지함"
+
+msgid "Compose"
+msgstr "편지 쓰기"
+
+#, php-format
+msgid "Error creating directory %s."
+msgstr "%s 디렉토리 생성 오류"
+
+msgid "Could not create hashed directory structure!"
+msgstr "해시된 디렉토리 만들기 오류!"
+
+msgid "Service not available, closing channel"
+msgstr "서비스가 제공되지 않습니다, 채널 닫음"
+
+msgid "A password transition is needed"
+msgstr "암호전송이 필요합니다."
+
+msgid "Requested mail action not taken: mailbox unavailable"
+msgstr "요청된 메일 명령 오류: mailbox 오류"
+
+msgid "Requested action aborted: error in processing"
+msgstr "요청된 메일 명령 취소: 처리 오류"
+
+msgid "Requested action not taken: insufficient system storage"
+msgstr "요청된 메일 명령 오류: 시스템 저장공간 부족"
+
+msgid "Temporary authentication failure"
+msgstr "일시적인 인증 오류"
+
+msgid "Syntax error; command not recognized"
+msgstr "구문 오류; 명령어 식별 오류"
+
+msgid "Syntax error in parameters or arguments"
+msgstr "구문 오류; 매개변수 오류"
+
+msgid "Command not implemented"
+msgstr "명령어 실행 오류"
+
+msgid "Bad sequence of commands"
+msgstr "잘못된 명령어 순서"
+
+msgid "Command parameter not implemented"
+msgstr "명령어 매개변수 오류"
+
+msgid "Authentication required"
+msgstr "인증이 필요합니다."
+
+msgid "Authentication mechanism is too weak"
+msgstr "인증 메커니즘이 너무 취약합니다."
+
+msgid "Authentication failed"
+msgstr "인증 실패 "
+
+msgid "Encryption required for requested authentication mechanism"
+msgstr "요청된 인증 메커니즘에 암호화를 필요로 합니다."
+
+msgid "Requested action not taken: mailbox unavailable"
+msgstr "요청 명령 오류: mailbox 오류"
+
+msgid "User not local; please try forwarding"
+msgstr "내부사용자가 아님; 포워딩을 하십시요"
+
+msgid "Requested mail action aborted: exceeding storage allocation"
+msgstr "요청 메일 명령 취소; 할당된 저장공간 초과"
+
+msgid "Requested action not taken: mailbox name not allowed"
+msgstr "요청 메일 명령 오류: mailbox 이름 오류"
+
+msgid "Transaction failed"
+msgstr "트랜잭션 실패 "
+
+msgid "Unknown response"
+msgstr "알 수 없는 응답"
+
+msgid "General Display Options"
+msgstr "일반적인 화면 설정"
+
+msgid "Theme"
+msgstr "테마"
+
+msgid "Default"
+msgstr "기본 값 사용"
+
+msgid "Custom Stylesheet"
+msgstr "사용자 스타일시트"
+
+msgid "Language"
+msgstr "언어"
+
+msgid "Use Javascript"
+msgstr "자바스크립트"
+
+msgid "Autodetect"
+msgstr "자동설정"
+
+msgid "Always"
+msgstr "항상"
+
+msgid "Never"
+msgstr "사용하지 않음"
+
+msgid "Mailbox Display Options"
+msgstr "편지함 보기 설정"
+
+#, fuzzy
+msgid "Number of Messages per Page"
+msgstr "기본 메세지 갯수"
+
+msgid "Enable Alternating Row Colors"
+msgstr "열별로 다른 색상 사용하기?"
+
+msgid "Enable Page Selector"
+msgstr "페이지 기능 사용"
+
+msgid "Maximum Number of Pages to Show"
+msgstr "페이지 최대 갯수"
+
+msgid "Always Show Full Date"
+msgstr ""
+
+msgid "Message Display and Composition"
+msgstr "메세지 보기 및 작성"
+
+msgid "Wrap Incoming Text At"
+msgstr "자동 줄 바꿈"
+
+#, fuzzy
+msgid "Width of Editor Window"
+msgstr "편집창 크기"
+
+#, fuzzy
+msgid "Height of Editor Window"
+msgstr "편집창 크기"
+
+msgid "Location of Buttons when Composing"
+msgstr "편지쓰기 버튼의 위치"
+
+msgid "Before headers"
+msgstr "헤더 앞에서 사용"
+
+msgid "Between headers and message body"
+msgstr "헤더와 메세지 본문사이"
+
+msgid "After message body"
+msgstr "메세지 본문뒤에서 사용"
+
+msgid "Addressbook Display Format"
+msgstr "주소록 출력형식"
+
+msgid "Javascript"
+msgstr "자바스크립트"
+
+msgid "HTML"
+msgstr "HTML"
+
+msgid "Show HTML Version by Default"
+msgstr "기본으로 HTML로 보기"
+
+msgid "Enable Forward as Attachment"
+msgstr "첨부파일로 전달 사용"
+
+msgid "Include CCs when Forwarding Messages"
+msgstr "메세지 전달시 참조 포함"
+
+msgid "Include Me in CC when I Reply All"
+msgstr "전체 회신시 참조에 자기자신 포함"
+
+msgid "Enable Mailer Display"
+msgstr "메일러 보기 설정"
+
+msgid "Display Attached Images with Message"
+msgstr "첨부된 이미지 보기"
+
+msgid "Enable Printer Friendly Clean Display"
+msgstr "인쇄용 화면 설정"
+
+msgid "Enable Mail Delivery Notification"
+msgstr "메일 배달 알림 사용"
+
+msgid "Compose Messages in New Window"
+msgstr "새로운 창에서 편지 작성"
+
+msgid "Width of Compose Window"
+msgstr "편지쓰기 창의 폭"
+
+msgid "Height of Compose Window"
+msgstr "편지쓰기 창의 높이"
+
+msgid "Append Signature before Reply/Forward Text"
+msgstr "회신/전달 텍스트에 서명 추가"
+
+msgid "Prefix for Original Message when Replying"
+msgstr ""
+
+msgid "Cursor Position when Replying"
+msgstr ""
+
+msgid "To: field"
+msgstr ""
+
+msgid "Focus in body"
+msgstr ""
+
+#, fuzzy
+msgid "Select body"
+msgstr "편지함 선택"
+
+#, fuzzy
+msgid "No focus"
+msgstr "시계 사용안함"
+
+#, fuzzy
+msgid "Sort by Received Date"
+msgstr "수신 일자별 정렬 사용"
+
+msgid "Enable Thread Sort by References Header"
+msgstr "참조 헤더별 쓰레드 정렬 사용"
+
+msgid "Special Folder Options"
+msgstr "특별한 편지함 설정"
+
+msgid "Folder Path"
+msgstr "편지함 경로"
+
+msgid "Do not use Trash"
+msgstr "사용하지 않습니다."
+
+msgid "Trash Folder"
+msgstr "휴지통"
+
+msgid "Do not use Drafts"
+msgstr "사용하지 않습니다."
+
+msgid "Draft Folder"
+msgstr "임시 보관함"
+
+msgid "Do not use Sent"
+msgstr "사용하지 않습니다."
+
+msgid "Sent Folder"
+msgstr "보낸 편지함"
+
+msgid "Folder List Options"
+msgstr "편지함 목록 설정"
+
+msgid "Location of Folder List"
+msgstr "편지함 목록의 위치"
+
+msgid "Left"
+msgstr "왼쪽"
+
+msgid "Right"
+msgstr "오른쪽"
+
+msgid "pixels"
+msgstr "픽셀"
+
+msgid "Width of Folder List"
+msgstr "편지함 목록의 폭"
+
+msgid "Minutes"
+msgstr "분"
+
+msgid "Seconds"
+msgstr "초"
+
+msgid "Minute"
+msgstr "분"
+
+msgid "Auto Refresh Folder List"
+msgstr "편지함목록 자동갱신 시간"
+
+msgid "Enable Unread Message Notification"
+msgstr "읽지않은 메세지 알림"
+
+msgid "No Notification"
+msgstr "사용 안함"
+
+msgid "Only INBOX"
+msgstr "받은 편지함만 사용"
+
+msgid "Unread Message Notification Type"
+msgstr "읽지않은 메세지 알림 방법"
+
+msgid "Only Unseen"
+msgstr "읽지않은 메세지만"
+
+msgid "Unseen and Total"
+msgstr "읽지않은 메세지와 전체메세지"
+
+msgid "Enable Collapsable Folders"
+msgstr "편지함을 트리구조로 사용"
+
+msgid "Enable Cumulative Unread Message Notification"
+msgstr "읽지 않음 메일 묶음 통지 사용"
+
+msgid "Show Clock on Folders Panel"
+msgstr "편지함 패널의 시간 형식"
+
+#, fuzzy
+msgid "International date and time"
+msgstr "국제 사전 추가"
+
+msgid "American date and time"
+msgstr ""
+
+#, fuzzy
+msgid "European date and time"
+msgstr "유럽 스페인어"
+
+msgid "Show weekday and time"
+msgstr ""
+
+msgid "Show time with seconds"
+msgstr ""
+
+#, fuzzy
+msgid "Show time"
+msgstr "시작 시간:"
+
+msgid "No Clock"
+msgstr "시계 사용안함"
+
+msgid "Hour Format"
+msgstr "시간 구분"
+
+msgid "12-hour clock"
+msgstr "12시간"
+
+msgid "24-hour clock"
+msgstr "24시간"
+
+msgid "Memory Search"
+msgstr "메모리 찾기"
+
+msgid "Disabled"
+msgstr "사용하지 않음"
+
+msgid "Folder Selection Options"
+msgstr "편지함 선택 설정"
+
+msgid "Selection List Style"
+msgstr "목록 선택 형식"
+
+#, fuzzy
+msgid "Long:"
+msgstr "Long: "
+
+#, fuzzy
+msgid "Folder"
+msgstr "편지함"
+
+#, fuzzy
+msgid "Subfolder"
+msgstr "보낸 편지함 하위폴더 사용"
+
+#, fuzzy
+msgid "Indented:"
+msgstr "Indented: "
+
+#, fuzzy
+msgid "Delimited:"
+msgstr "Delimited: "
+
+msgid "Name and Address Options"
+msgstr "이름 및 주소 설정"
+
+msgid "Email Address"
+msgstr "전자메일 주소"
+
+msgid "Edit Advanced Identities"
+msgstr "상세한 개인정보 설정"
+
+msgid "(discards changes made on this form so far)"
+msgstr "(이 폼을 올리시면 현재 입력 정보가 삭제됩니다.)"
+
+msgid "Multiple Identities"
+msgstr "다중 식별"
+
+msgid "Same as server"
+msgstr "서버와 동일"
+
+msgid "Error opening timezone config, contact administrator."
+msgstr "시간대 설정파일 읽기 오류, 관리자에게 문의."
+
+msgid "Timezone Options"
+msgstr "시간대 설정"
+
+msgid "Your current timezone"
+msgstr "현재 시간대"
+
+msgid "Reply Citation Options"
+msgstr "답글 인용문 형식"
+
+msgid "Reply Citation Style"
+msgstr "답글 인용문 형식"
+
+msgid "No Citation"
+msgstr "사용하지 않음"
+
+#, fuzzy
+msgid "AUTHOR Wrote"
+msgstr "AUTHOR 답글:"
+
+msgid "On DATE, AUTHOR Wrote"
+msgstr ""
+
+msgid "Quote Who XML"
+msgstr "Who XML 구문 사용"
+
+msgid "User-Defined"
+msgstr "사용자 정의"
+
+msgid "User-Defined Citation Start"
+msgstr "사용자 정의 회신 인용문"
+
+msgid "User-Defined Citation End"
+msgstr "사용자 정의 회신 인용문"
+
+msgid "Signature Options"
+msgstr "서명 설정"
+
+msgid "Use Signature"
+msgstr "서명을 사용하시겠습니까?"
+
+msgid "Prefix Signature with '-- ' Line"
+msgstr " '--' 로 서명 접두사 사용 ?"
+
+msgid "Take Address"
+msgstr "주소 추가"
+
+msgid "Address Book Take:"
+msgstr "주소록 추가박스:"
+
+msgid "Try to verify addresses"
+msgstr "주소 검증"
+
+msgid "Config File Version"
+msgstr "설정 파일 버전"
+
+#, fuzzy
+msgid "SquirrelMail Version"
+msgstr "SquirrelMail 버전"
+
+msgid "PHP Version"
+msgstr "PHP 버전"
+
+msgid "Organization Preferences"
+msgstr "부서 환경설정"
+
+msgid "Organization Name"
+msgstr "부서 이름"
+
+msgid "Organization Logo"
+msgstr "부서 로고"
+
+msgid "Organization Logo Width"
+msgstr "부서 로고 폭"
+
+msgid "Organization Logo Height"
+msgstr "부서 로고 높이"
+
+msgid "Organization Title"
+msgstr "부서 타이틀"
+
+msgid "Signout Page"
+msgstr "페이지 닫기"
+
+msgid "Provider Link URI"
+msgstr "링크 URI 제공자"
+
+msgid "Provider Name"
+msgstr "제공자 이름: "
+
+msgid "Top Frame"
+msgstr "상위 프레임"
+
+msgid "Server Settings"
+msgstr "서버 설정"
+
+msgid "Mail Domain"
+msgstr "메일 도메인"
+
+msgid "IMAP Server Address"
+msgstr "IMAP 서버 주소"
+
+msgid "IMAP Server Port"
+msgstr "IMAP 서버 포트"
+
+msgid "IMAP Server Type"
+msgstr "IMAP 서버 형식"
+
+msgid "Cyrus IMAP server"
+msgstr "Cyrus IMAP 서버"
+
+msgid "University of Washington's IMAP server"
+msgstr "워싱턴 대학의 IMAP 서버"
+
+msgid "Microsoft Exchange IMAP server"
+msgstr "마이크로소프트 익스체인지 IMAP 서버"
+
+msgid "Courier IMAP server"
+msgstr "Courier IMAP 서버"
+
+msgid "Mac OS X Mailserver"
+msgstr ""
+
+#, fuzzy
+msgid "hMailServer IMAP server"
+msgstr "Courier IMAP 서버"
+
+msgid "Not one of the above servers"
+msgstr "서버 연결 없음"
+
+msgid "IMAP Folder Delimiter"
+msgstr "IMAP 폴더 구분자"
+
+#, fuzzy
+msgid "Use &quot;detect&quot; to auto-detect."
+msgstr "자동검색을 위해 \"검색\"을 사용하세요"
+
+msgid "Use TLS for IMAP Connections"
+msgstr "IMAP 연결시 TLS 사용"
+
+msgid "Requires PHP 4.3.x! Experimental."
+msgstr "PHP 4.3.x 필요! 실험적."
+
+msgid "IMAP Authentication Type"
+msgstr "IMAP 인증 형태"
+
+#, fuzzy
+msgid "IMAP login"
+msgstr "POP3 로그인:"
+
+msgid "Use Sendmail Binary"
+msgstr "센드메일 바이너리 사용"
+
+msgid "Choose &quot;no&quot; for SMTP"
+msgstr ""
+
+msgid "Sendmail Path"
+msgstr "센드메일 경로"
+
+msgid "SMTP Server Address"
+msgstr "SMTP 서버 주소"
+
+msgid "SMTP Server Port"
+msgstr "SMTP 서버 포트"
+
+msgid "Use TLS for SMTP Connections"
+msgstr "SMTP 연결시 TLS 사용"
+
+msgid "SMTP Authentication Type"
+msgstr "SMTP 인증 형식 "
+
+msgid "No SMTP auth"
+msgstr ""
+
+msgid "Login (plain text)"
+msgstr ""
+
+msgid "POP3 Before SMTP?"
+msgstr "SMTP전 POP3?"
+
+msgid "Invert Time"
+msgstr "인버트 시간"
+
+msgid "Folders Defaults"
+msgstr "기본 편지함"
+
+msgid "Default Folder Prefix"
+msgstr "기본 편지함 머릿글"
+
+msgid "Show Folder Prefix Option"
+msgstr "편지함 머릿글 설정 보기"
+
+msgid "By default, move to trash"
+msgstr "기본으로, 휴지통으로 이동"
+
+msgid "By default, move to sent"
+msgstr "기본으로, 보낸편지함으로 이동"
+
+msgid "By default, save as draft"
+msgstr "기본으로, 임시편지함으로 이동"
+
+msgid "List Special Folders First"
+msgstr "특별한 편지함 목록 먼저"
+
+msgid "Show Special Folders Color"
+msgstr "특별한 편지함 색상 보기"
+
+msgid "Auto Expunge"
+msgstr "자동으로 비우기"
+
+msgid "Default Sub. of INBOX"
+msgstr "받은 편지함의 하위 편지함으로 기본설정"
+
+msgid "Show 'Contain Sub.' Option"
+msgstr "하위 편지함 보여주기 설정"
+
+msgid "Default Unseen Notify"
+msgstr "읽지 않은 메세지 통지 기본 설정"
+
+msgid "Default Unseen Type"
+msgstr "읽지 않은 메세지 기본 유형"
+
+msgid "Auto Create Special Folders"
+msgstr "특별한 편지함 자동 생성"
+
+msgid "Auto delete folders"
+msgstr "자동 삭제 편지함"
+
+msgid "Enable /NoSelect folder fix"
+msgstr "메일함 수정 할성화/NoSelect"
+
+msgid "General Options"
+msgstr "일반 설정 "
+
+msgid "Data Directory"
+msgstr "데이타 디렉토리"
+
+msgid "Temp Directory"
+msgstr "Temp 디렉토리"
+
+msgid "Hash Level"
+msgstr "해시 레벨"
+
+msgid "Hash Disabled"
+msgstr "사용하지 않음"
+
+msgid "Moderate"
+msgstr "관리자 승인"
+
+msgid "Medium"
+msgstr "중간"
+
+msgid "Default Left Size"
+msgstr "왼쪽 기본 크기"
+
+msgid "Usernames in Lowercase"
+msgstr "사용자 이름 소문자"
+
+msgid "Allow use of priority"
+msgstr "우선순위 사용 허가"
+
+msgid "Hide SM attributions"
+msgstr "SM 속성 숨기기"
+
+msgid "Enable use of delivery receipts"
+msgstr "배달 수신 사용"
+
+msgid "Allow editing of identities"
+msgstr "식별자 편집 허용"
+
+msgid "Allow editing of full name"
+msgstr "전체 이름 편집 가능"
+
+msgid "Use server-side sorting"
+msgstr "서버정렬 사용"
+
+msgid "Use server-side thread sorting"
+msgstr "서버 쓰레드 정렬 사용"
+
+msgid "Allow server charset search"
+msgstr "서버 문자셋 검색 허용"
+
+msgid "UID support"
+msgstr "UID 지원"
+
+msgid "PHP session name"
+msgstr "PHP 세션 이름"
+
+msgid "Message of the Day"
+msgstr "오늘의 메세지"
+
+msgid "Database"
+msgstr "데이타베이스"
+
+msgid "Address book DSN"
+msgstr "주소록 DSN"
+
+msgid "Address book table"
+msgstr "주소록 테이블"
+
+msgid "Preferences DSN"
+msgstr "환경설정 DSN"
+
+msgid "Preferences table"
+msgstr "환경설정 테이블"
+
+msgid "Preferences username field"
+msgstr "환경설정 이름 필드"
+
+msgid "Preferences key field"
+msgstr "환경설정 키 필드"
+
+msgid "Preferences value field"
+msgstr "환경설정 값 필드"
+
+#, fuzzy
+msgid "Global address book DSN"
+msgstr "전체 주소록"
+
+#, fuzzy
+msgid "Global address book table"
+msgstr "전체 주소록"
+
+#, fuzzy
+msgid "Allow writing into global address book"
+msgstr "전체 주소록을 변경할 수 없습니다."
+
+#, fuzzy
+msgid "Allow listing of global address book"
+msgstr "전체 주소록을 변경할 수 없습니다."
+
+#, fuzzy
+msgid "Language settings"
+msgstr "설정 변경"
+
+msgid "Default Language"
+msgstr "기본 언어"
+
+msgid "Default Charset"
+msgstr "기본 문자셋"
+
+msgid "Enable lossy encoding"
+msgstr ""
+
+#, fuzzy
+msgid "Address Books"
+msgstr "주소록"
+
+#, fuzzy
+msgid "Default Javascript Addressbook"
+msgstr "기본 자바스크립트 주소록"
+
+#, fuzzy
+msgid "Global address book file"
+msgstr "전체 주소록"
+
+#, fuzzy
+msgid "Allow writing into global address book file"
+msgstr "주소록 작성 오류"
+
+msgid "Themes"
+msgstr "테마"
+
+msgid "Style Sheet URL (css)"
+msgstr "스타일시트 URL (css)"
+
+msgid "Default theme"
+msgstr "기본 테마"
+
+msgid "Use index number of theme"
+msgstr "테마의 인덱스 번호 사용"
+
+msgid "Configuration Administrator"
+msgstr "관리자 설정"
+
+msgid ""
+"Note: it is recommended that you configure your system using conf.pl, and "
+"not this plugin. conf.pl contains additional information regarding the "
+"purpose of variables and appropriate values, as well as additional "
+"verification steps."
+msgstr ""
+
+msgid ""
+"Run or consult conf.pl should you run into difficulty with your "
+"configuration."
+msgstr ""
+
+msgid "Theme Name"
+msgstr "테마 이름"
+
+msgid "Theme Path"
+msgstr "테마 경로"
+
+msgid "Plugins"
+msgstr "플러그인"
+
+#, php-format
+msgid "Plugin directory could not be found: %s"
+msgstr ""
+
+msgid "Change Settings"
+msgstr "설정 변경"
+
+#, fuzzy
+msgid "Test Configuration"
+msgstr "학인 플래그 사용"
+
+msgid "Config file can't be opened. Please check config.php."
+msgstr "설정 파일을 열 수 없습니다. config.php파일을 확인하세요."
+
+msgid "Administration"
+msgstr "관리자"
+
+msgid ""
+"This module allows administrators to manage SquirrelMail main configuration "
+"remotely."
+msgstr ""
+"이 모듈은 관리자가 원격에서 SquirrelMail 기본 설정을 관리할 수 있도록 합니다."
+
+#, fuzzy
+msgid "Submit a Bug Report"
+msgstr "버그 전송:"
+
+msgid ""
+"Before you send your bug report, please make sure to check this checklist "
+"for any common problems."
+msgstr ""
+
+#, php-format
+msgid ""
+"Make sure that you are running the most recent copy of %s. You are currently "
+"using version %s."
+msgstr ""
+
+#, php-format
+msgid ""
+"Check to see if your bug is already listed in the %sBug List%s on "
+"SourceForge. If it is, we already know about it and are trying to fix it."
+msgstr ""
+
+msgid ""
+"Try to make sure that you can repeat it. If the bug happens sporatically, "
+"try to document what you did when it happened. If it always occurs when you "
+"view a specific message, keep that message around so maybe we can see it."
+msgstr ""
+
+#, php-format
+msgid ""
+"If there were warnings displayed above, try to resolve them yourself. Read "
+"the guides in the %s directory where SquirrelMail was installed."
+msgstr ""
+
+msgid ""
+"Pressing the button below will start a mail message to the developers of "
+"SquirrelMail that will contain a lot of information about your system, your "
+"browser, how SquirrelMail is set up, and your IMAP server. It will also "
+"prompt you for information. Just fill out the sections at the top. If you "
+"like, you can scroll down in the message to see what else is being sent."
+msgstr ""
+
+msgid ""
+"Please make sure to fill out as much information as you possibly can to give "
+"everyone a good chance of finding and removing the bug. Submitting your bug "
+"like this will not have it automatically added to the bug list on "
+"SourceForge, but someone who gets your message may add it for you."
+msgstr ""
+
+msgid "This bug involves"
+msgstr ""
+
+msgid "the general program"
+msgstr ""
+
+msgid "a specific plugin"
+msgstr ""
+
+#, fuzzy
+msgid "Start Bug Report Form"
+msgstr "버그 전송:"
+
+msgid "Bug"
+msgstr ""
+
+msgid "Bug Reports:"
+msgstr "버그 전송:"
+
+msgid "Show button in toolbar"
+msgstr "툴바에서 버튼 보여주기"
+
+msgid "TODAY"
+msgstr "오늘"
+
+msgid "Go"
+msgstr "이동"
+
+#, fuzzy, php-format
+msgid "Could not write calendar file %s"
+msgstr "초기 환경설정 파일을 만들지 못했습니다!"
+
+msgid "l, F j Y"
+msgstr "Y-F-j, I"
+
+msgid "ADD"
+msgstr "추가"
+
+msgid "EDIT"
+msgstr "편집"
+
+msgid "DEL"
+msgstr "삭제"
+
+msgid "Start time:"
+msgstr "시작 시간:"
+
+msgid "Length:"
+msgstr "길이:"
+
+msgid "Priority:"
+msgstr "우선순위:"
+
+msgid "Title:"
+msgstr "제목"
+
+msgid "Set Event"
+msgstr "일정 설정"
+
+msgid "Event Has been added!"
+msgstr "일정이 등록되었습니다!"
+
+msgid "Date:"
+msgstr "받은날짜:"
+
+msgid "Time:"
+msgstr "시간:"
+
+msgid "Day View"
+msgstr "일자 보기"
+
+msgid "Do you really want to delete this event?"
+msgstr "이 일정을 삭제하시겠습니까?"
+
+msgid "Event deleted!"
+msgstr "일정이 삭제되었습니다!"
+
+msgid "Nothing to delete!"
+msgstr "삭제할 일정이 없습니다!"
+
+msgid "Update Event"
+msgstr "일정 갱신"
+
+msgid "Do you really want to change this event from:"
+msgstr "이 일정을 정말로 수정하시겠습니까:"
+
+msgid "to:"
+msgstr "받는 사람:"
+
+msgid "Event updated!"
+msgstr "일정이 갱신되었습니다!"
+
+msgid "Month View"
+msgstr "월별 보기"
+
+msgid "0 min."
+msgstr "0 분."
+
+msgid "15 min."
+msgstr "15 분."
+
+#, fuzzy
+msgid "30 min."
+msgstr "0 분."
+
+msgid "45 min."
+msgstr "45 분."
+
+msgid "1 hr."
+msgstr "1 시간."
+
+msgid "1.5 hr."
+msgstr "1.5 시간"
+
+msgid "2 hr."
+msgstr "2 시간."
+
+msgid "2.5 hr."
+msgstr "2.5 시간"
+
+msgid "3 hr."
+msgstr "3 시간."
+
+msgid "3.5 hr."
+msgstr "3.5시간"
+
+msgid "4 hr."
+msgstr "4 시간"
+
+msgid "5 hr."
+msgstr "5 시간"
+
+msgid "6 hr."
+msgstr "6시간"
+
+msgid "Calendar"
+msgstr "일정"
+
+msgid "Delete & Prev"
+msgstr "삭제 & 이전"
+
+msgid "Delete & Next"
+msgstr "삭제 & 다음"
+
+msgid "Move to:"
+msgstr "이동 :"
+
+msgid "Delete/Move/Next Buttons:"
+msgstr "삭제/이동/다음 버튼:"
+
+msgid "Display at top"
+msgstr "상단에 표시"
+
+msgid "with move option"
+msgstr "이동 버튼과 함께"
+
+msgid "Display at bottom"
+msgstr "하단에 표시"
+
+msgid ""
+"COMMERCIAL - This list contains servers that are verified spam senders. It "
+"is a pretty reliable list to scan spam from."
+msgstr ""
+"상용 - 스팸 메일 전송자로 확인된 서버목록입니다. 해당 서버에서 온 메일에 대"
+"해 스팸 검사를 실행합니다."
+
+#, fuzzy
+msgid ""
+"COMMERCIAL - Servers that are configured (or misconfigured) to allow spam to "
+"be relayed through their system will be banned with this. Another good one "
+"to use."
+msgstr ""
+"상용 - 스팸으로 설정된(잘못 설정된) 서버는 그들의 시스템에서 메일중계를 허용"
+"하는 것으로 이 서버들의 메일은 수신금지합니다."
+
+#, fuzzy
+msgid ""
+"COMMERCIAL - Dial-up users are often filtered out since they should use "
+"their ISP's mail servers to send mail. Spammers typically get a dial-up "
+"account and send spam directly from there."
+msgstr ""
+"상용 - 전화사용자는 종종 그들이 ISP의 메일 서버로 메일을 보내기 때문에 필터링"
+"될 수 있습니다. 스패머는 전형적인 전화모뎀 사용자 계정을 사용하여 메일을 보냅"
+"니다."
+
+msgid "COMMERCIAL - RBL+ Blackhole entries."
+msgstr "상용 - RBL+ 블랙홀 목록"
+
+msgid "COMMERCIAL - RBL+ OpenRelay entries."
+msgstr "상용 - RBL+ 오픈릴레이 목록"
+
+msgid "COMMERCIAL - RBL+ Dial-up entries."
+msgstr "상용 - RBL+ 전화 접속 목록"
+
+msgid ""
+"FREE - ORDB was born when ORBS went off the air. It seems to have fewer "
+"false positives than ORBS did though."
+msgstr "무료 - ORDB는 ORBS이후에 생겨났습니다. ORBS보다 오류가 적어보입니다."
+
+msgid "FREE - Five-Ten-sg.com - Direct SPAM sources."
+msgstr "무료 - Five-Ten-sg.com - 스팸 소스 직접"
+
+msgid "FREE - Five-Ten-sg.com - Dial-up lists - includes some DSL IPs."
+msgstr "무료 - Five-Ten-sg.com - 전화접속 목록 - 일부 DSL IP 포함"
+
+msgid "FREE - Five-Ten-sg.com - Bulk mailers that do not use confirmed opt-in."
+msgstr "무료 - Five-Ten-sg.com - 벌크 메일러"
+
+msgid "FREE - Five-Ten-sg.com - Other misc. servers."
+msgstr "무료 - Five-Ten-sg.com - 기타 서버"
+
+msgid "FREE - Five-Ten-sg.com - Single Stage servers."
+msgstr "무료 - Five-Ten-sg.com - 단일 단계 서버"
+
+msgid "FREE - Five-Ten-sg.com - SPAM Support servers."
+msgstr "무료 - Five-Ten-sg.com - 스팸 지원 서버"
+
+msgid "FREE - Five-Ten-sg.com - Web Form IPs."
+msgstr "무료 - Five-Ten-sg.com - 웹폼 IP"
+
+msgid ""
+"FREE - Dorkslayers appears to include only really bad open relays outside "
+"the US to avoid being sued. Interestingly enough, their website recommends "
+"you NOT use their service."
+msgstr ""
+"무료 - Dorkslaers는 고소를 피하기 위해 미국이외의 나라의 잘못된 오픈 릴레이 "
+"서버만을 포함합니다. 흥미롭게도, 그들의 웹사이트는 자신의 서비스를 사용하지 "
+"말것을 권장합니다."
+
+msgid "FREE - SPAMhaus - A list of well-known SPAM sources."
+msgstr "무료 - SPAMhaus - 잘 알려진 스팸 목록"
+
+#, fuzzy
+msgid ""
+"FREE, for now - SpamCop - An interesting solution that lists servers that "
+"have a very high spam to legit email ratio (85 percent or more)."
+msgstr "현재는 무료 - SPAMCOP - "
+
+msgid "FREE - dev.null.dk - I don't have any detailed info on this list."
+msgstr "무료 - dev.null.dk - 이 목록에 대한 자세한 정보가 없습니다."
+
+msgid "FREE - visi.com - Relay Stop List. Very conservative OpenRelay List."
+msgstr "무료 - visi.com - 중계 중지서버 목록. 매우 보수적인 오픈중계 서버 목록"
+
+#, fuzzy
+msgid "FREE - ahbl.org Open Relays - Another list of Open Relays."
+msgstr "무료 - 2mbit.com 오픈 중계 - 또다른 오픈 중계 서버 목록"
+
+#, fuzzy
+msgid "FREE - ahbl.org SPAM Source - List of Direct SPAM Sources."
+msgstr "무료 - 2mbit.com 스팸 소스 - 다이렉트 스팸 소스 목록"
+
+#, fuzzy
+msgid "FREE - ahbl.org SPAM ISPs - List of SPAM-friendly ISPs."
+msgstr "무료 - 2mbit.com 스팸 ISP - SPAM으로 자주 사용되는 ISP 목록"
+
+msgid ""
+"FREE - Leadmon DUL - Another list of Dial-up or otherwise dynamically "
+"assigned IPs."
+msgstr "무료 - Leadmon DUL - 또다른 전화접속서버 목록 또는 다이나믹 서버"
+
+msgid ""
+"FREE - Leadmon SPAM Source - List of IPs Leadmon.net has received SPAM "
+"directly from."
+msgstr "무료 - Leadmon 스팸 목록 - Leadmon.net에서 SPAM으로 처리한 IP 목록"
+
+msgid ""
+"FREE - Leadmon Bulk Mailers - Bulk mailers that do not require confirmed opt-"
+"in or that have allowed known spammers to become clients and abuse their "
+"services."
+msgstr ""
+"무료 - Leadmon Bulk Mailers - 메일 수신허용을 확인하지 않는 벌크 메일러 또는 "
+"스패머가 클라이언트가 되어서 그들의 서비스를 남용할 수 있는 메일러"
+
+msgid ""
+"FREE - Leadmon Open Relays - Single Stage Open Relays that are not listed on "
+"other active RBLs."
+msgstr ""
+"무료 - Leadmon 오픈 중계 서버 - 다른 RBL에 없는 한단계의 오픈 중계 서버"
+
+msgid ""
+"FREE - Leadmon Multi-stage - Multi-Stage Open Relays that are not listed on "
+"other active RBLs and that have sent SPAM to Leadmon.net."
+msgstr ""
+"무료 - Leadmon 다단계 - 다른 RBL에는 없지만 Leadmon.net에는 스팸을 보낸 다단"
+"계 중계 서버"
+
+msgid ""
+"FREE - Leadmon SpamBlock - Sites on this listing have sent Leadmon.net "
+"direct SPAM from IPs in netblocks where the entire block has no DNS "
+"mappings. It's a list of BLOCKS of IPs being used by people who have SPAMmed "
+"Leadmon.net."
+msgstr ""
+"무료 - Leadmin SpamBlock - 스팸을 차단한 Leadmon.net 사람들이 사용하는 차단 "
+"IP 목록"
+
+msgid ""
+"FREE, for now - Not Just Another Blacklist - Both Open Relays and Direct "
+"SPAM Sources."
+msgstr "현재 무료 - 또다른 블랙 리스트 - 오픈 중계 서버와 직접 스팸원"
+
+msgid "FREE, for now - Not Just Another Blacklist - Dial-up IPs."
+msgstr "현재 무료 - 또다른 블랙 리스트 - 전화접속 IP 목록"
+
+msgid "FREE - Distributed Sender Boycott List - Confirmed Relays"
+msgstr "무료 - 분산 전송자 거부 목록 - 확인된 릴레이"
+
+msgid "FREE - Distributed Sender Boycott List - Confirmed Multi-stage Relays"
+msgstr "무료 - 분산 전송자 거부 목록 - 확인된 다단계 릴레이"
+
+msgid "FREE - Distributed Sender Boycott List - UN-Confirmed Relays"
+msgstr "무료 - 분산 전송자 거부 목록 - 확인되지 않은 릴레이"
+
+msgid "WARNING! You must enter something to search for."
+msgstr ""
+
+msgid ""
+"WARNING! Header filters should be of the format &quot;Header: value&quot;"
+msgstr ""
+
+msgid "Saved Scan type"
+msgstr "저장된 스캔 형식"
+
+msgid "Message Filtering"
+msgstr "메세지 필터링"
+
+msgid "What to Scan:"
+msgstr "스캔 대상:"
+
+msgid "All messages"
+msgstr "전체 메세지"
+
+msgid "Only unread messages"
+msgstr "새 메세지만"
+
+msgid "Save"
+msgstr "저장"
+
+msgid "Match:"
+msgstr "일치"
+
+msgid "Header"
+msgstr "헤더"
+
+msgid "Contains:"
+msgstr "내용물:"
+
+#, fuzzy, php-format
+msgid "If %s contains %s then move to %s"
+msgstr "만약 <b>%s</b>가 <b>%s</b>를 포함하면 <b>%s</b>로 이동합니다."
+
+msgid "Message Filters"
+msgstr "메세지 필터"
+
+msgid ""
+"Filtering enables messages with different criteria to be automatically "
+"filtered into different folders for easier organization."
+msgstr ""
+"메세지 필터링은 여러가지 범위에 따라 자동으로 서로 다른 편지함으로 이동 하게 "
+"함으로써 쉽게 관리할 수 있게 합니다."
+
+msgid "SPAM Filters"
+msgstr "스팸 필터"
+
+msgid ""
+"SPAM filters allow you to select from various DNS based blacklists to detect "
+"junk email in your INBOX and move it to another folder (like Trash)."
+msgstr ""
+"스팸 필터는 여러가지 DNS 기반 블랙리스트로부터 당신의 메일 수신함의 정크메일"
+"을 검사하여 특정 편지함(휴지통같은 곳)으로 이동합니다."
+
+#, fuzzy
+msgid "You must select a spam folder."
+msgstr "편지함 선택"
+
+#, fuzzy
+msgid "You must select a scan type."
+msgstr "하나를 선택해야 합니다."
+
+msgid "Spam Filtering"
+msgstr "스팸 필터링"
+
+#, fuzzy, php-format
+msgid "WARNING! Tell the administrator to set the %s variable."
+msgstr "경고! 관리자에세 SpamFilters_YourHop 변수 설정요청하세요."
+
+msgid "Move spam to:"
+msgstr "스팸 메일로 이동:"
+
+msgid ""
+"Moving spam directly to the trash may not be a good idea at first, since "
+"messages from friends and mailing lists might accidentally be marked as "
+"spam. Whatever folder you set this to, make sure that it gets cleaned out "
+"periodically, so that you don't have an excessively large mailbox hanging "
+"around."
+msgstr ""
+"스팸을 직접 휴지통으로 버리는 것은 좋은 방법이 아닙니다. 친구나 메일링 리스트"
+"에서 온 메일이 스팸으로 표시될 수도 있기 때문입니다.어떤 편지함을 설정하든지 "
+"정기적으로 그 편지함을 비워야 하는 것을 기억하시기 바랍니다. 그렇게 함으로써 "
+"편지함이 너무 커져버리는 것을 막을 수 있습니다."
+
+#, fuzzy
+msgid "Unread messages only"
+msgstr "새 메세지만"
+
+#, fuzzy
+msgid ""
+"The more messages scanned, the longer it takes. It's recommended to scan "
+"unread messages only. If a change to the filters is made, it's recommended "
+"to set it to scan all messages, then go view the INBOX, then come back and "
+"set it to scan unread messages only. That way, the new spam filters will be "
+"applied and even the spam you didn't catch with the old filters will be "
+"scanned."
+msgstr ""
+"많은 메세지를 검사하면 할수록, 시간이 더 걸립니다. 새로운 메세지에 대해서만 "
+"검사를 할 것을 권합니다. 만약 필터링을 변경하게 되면, 전체 메세지로 설정상태"
+"가 변경됩니다. 받은 편지함보기를 갔다가 돌아오신후 새메세지로 설정하시기 바랍"
+"니다. 그렇게 함으로써 새로운 스팸메일 필터링 규칙이 적용될 것입니다."
+
+#, fuzzy, php-format
+msgid "Spam is sent to %s."
+msgstr "스팸메일은 <b>%s</b>로 이동합니다."
+
+#, fuzzy
+msgid "not set yet"
+msgstr "[<i>아직 설정되지 않았습니다.</i>]"
+
+#, fuzzy, php-format
+msgid "Spam scan is limited to %s."
+msgstr "스팸메일 검사 <b>%s</b>메세지에 대해서 합니다."
+
+msgid "ON"
+msgstr "사용"
+
+msgid "OFF"
+msgstr "사용하지 않음"
+
+#, fuzzy, php-format
+msgid "%s is not found."
+msgstr " 찾지 못함."
+
+msgid "Today's Fortune"
+msgstr "오늘의 포츈."
+
+msgid "Fortunes:"
+msgstr "포츈:"
+
+msgid "Show fortunes at top of mailbox"
+msgstr "메일박스 상단에 포츈 보여주기"
+
+msgid "Plugin is disabled."
+msgstr ""
+
+msgid "IMAP server information"
+msgstr "IMAP 서버 정보"
+
+#, fuzzy
+msgid ""
+"Run some test IMAP commands, displaying both the command and the result. "
+"These tests use the SquirrelMail IMAP commands and your current SquirrelMail "
+"configuration. Custom command strings can be used."
+msgstr ""
+"약간의 IMAP 명령어를 실행합니다. 명령어와 그 결과를 보여줍니다. 이 테스트들"
+"은 SquirrelMail IMAP 명령어와 현재 SquirrelMail 설정을 사용합니다. 사용자 명"
+"령어 문자열도 사용할 수 있습니다."
+
+msgid "Mailinglist"
+msgstr "메일링 리스트"
+
+#, php-format
+msgid ""
+"This will send a message to %s requesting help for this list. You will "
+"receive an emailed response at the address below."
+msgstr ""
+"이 리스트에 대한 도움말 %s 요청 메세지를 보내게 됩니다. 이것은 아래의 주소로"
+"부터 이메일 회신을 받게 됩니다."
+
+#, php-format
+msgid ""
+"This will send a message to %s requesting that you will be subscribed to "
+"this list. You will be subscribed with the address below."
+msgstr ""
+"이 리스트를 가입하기 위한 %s 요청 메세지를 보내게 됩니다. 이것은 아래의 주소"
+"에 가입하기를 시도합니다."
+
+#, php-format
+msgid ""
+"This will send a message to %s requesting that you will be unsubscribed from "
+"this list. It will try to unsubscribe the adress below."
+msgstr ""
+"이 리스트를 탈퇴하기 위한 %s 요청 메세지를 보내게 됩니다. 이것은 아래의 주소"
+"에서 탈퇴하기를 시도합니다."
+
+msgid "Send Mail"
+msgstr "메일 보내기"
+
+msgid "Post to List"
+msgstr "리스트에 메일 보내기"
+
+msgid "Reply to List"
+msgstr "리스트에 회신"
+
+msgid "List Archives"
+msgstr "리스트 목록"
+
+msgid "Contact Listowner"
+msgstr "리스트관리자 연락처"
+
+msgid "Mailing List"
+msgstr "메일링 리스트"
+
+msgid "POP3 connect:"
+msgstr "POP3 연결:"
+
+msgid "No server specified"
+msgstr "서버를 지정하지 않았습니다."
+
+msgid "Error "
+msgstr "오류 "
+
+msgid "POP3 user:"
+msgstr "POP3 사용자:"
+
+msgid "no login ID submitted"
+msgstr "로그인 ID가 없습니다."
+
+msgid "connection not established"
+msgstr "연결되지 않았습니다."
+
+msgid "POP3 pass:"
+msgstr "POP3 패스워드:"
+
+msgid "No password submitted"
+msgstr "비밀번호가 없습니다."
+
+msgid "authentication failed "
+msgstr "인증 실패 "
+
+msgid "POP3 apop:"
+msgstr "POP3 apop:"
+
+msgid "No connection to server"
+msgstr "서버 연결 없음"
+
+msgid "No login ID submitted"
+msgstr "로그인 ID가 없습니다."
+
+msgid "No server banner"
+msgstr "차단된 서버가 없습니다."
+
+msgid "abort"
+msgstr "취소"
+
+msgid "apop authentication failed"
+msgstr "apop 인증 오류"
+
+msgid "POP3 login:"
+msgstr "POP3 로그인:"
+
+msgid "POP3 top:"
+msgstr "POP3 top:"
+
+msgid "POP3 pop_list:"
+msgstr "POP3 pop_list:"
+
+msgid "Premature end of list"
+msgstr "리스트의 끝이 비정상적입니다."
+
+msgid "POP3 get:"
+msgstr "POP3 가져오기:"
+
+msgid "POP3 last:"
+msgstr "POP3 last:"
+
+msgid "POP3 reset:"
+msgstr "POP3 초기화:"
+
+msgid "POP3 send_cmd:"
+msgstr "POP3 전송 명령어:"
+
+msgid "Empty command string"
+msgstr "명령어가 비어있습니다."
+
+msgid "POP3 quit:"
+msgstr "POP3 종료:"
+
+msgid "connection does not exist"
+msgstr "연결된 서버가 존재하지 않습니다."
+
+msgid "POP3 uidl:"
+msgstr "POP3 uidl:"
+
+msgid "POP3 delete:"
+msgstr "POP3 삭제:"
+
+msgid "No msg number submitted"
+msgstr "메세지 번호가 없습니다."
+
+msgid "Command failed "
+msgstr "명령어 실패"
+
+msgid "Remote POP server Fetching Mail"
+msgstr "원격 POP 서버에서 메일 가져오기"
+
+msgid "Select Server:"
+msgstr "서버 선택:"
+
+msgid "Password for"
+msgstr "비밀번호 "
+
+msgid "Fetch Mail"
+msgstr "메일 가져오기"
+
+msgid "Fetching from "
+msgstr "가져오기"
+
+msgid "Oops, "
+msgstr "에구에구,"
+
+msgid "Opening IMAP server"
+msgstr "IMAP 서버 열기"
+
+msgid "Opening POP server"
+msgstr "POP 서버 열기"
+
+msgid "Login Failed:"
+msgstr "로그인 실패:"
+
+msgid "Login OK: No new messages"
+msgstr "로그인 확인: 새로운 메세지가 없습니다"
+
+msgid "Login OK: Inbox EMPTY"
+msgstr "로그인 확인: 편지함이 비어있습니다."
+
+#, fuzzy, php-format
+msgid "Login OK: Inbox contains %s messages"
+msgstr "로그인 확인: 편지함에 [ 가 있습니다."
+
+msgid "Fetching UIDL..."
+msgstr "UIDL 가져오기..."
+
+msgid "Server does not support UIDL."
+msgstr "서버가 UIDL을 지원하지 않습니다."
+
+#, fuzzy
+msgid "Leaving mail on server..."
+msgstr "서버에 메일 남겨두기..."
+
+msgid "Deleting messages from server..."
+msgstr "서버에서 메세지 삭제하기..."
+
+msgid "Fetching message "
+msgstr "메세지 가져오기"
+
+#, fuzzy
+msgid "Server error. Disconnect"
+msgstr "서버 오류...연결종료"
+
+msgid "Reconnect from dead connection"
+msgstr "끊어진 연결 다시 연결"
+
+msgid "Saving UIDL"
+msgstr "UIDL 보관"
+
+msgid "Refetching message "
+msgstr "메세지 다시 가져오기"
+
+msgid "Error Appending Message!"
+msgstr "메세지 추가 오류"
+
+msgid "Closing POP"
+msgstr "POP서버 닫기"
+
+msgid "Logging out from IMAP"
+msgstr "IMAP 서버 로그아웃"
+
+msgid "Message appended to mailbox"
+msgstr "편지함에 메세지 추가"
+
+#, fuzzy, php-format
+msgid "Message %d deleted from remote server!"
+msgstr " 원격서버에서 삭제되었습니다!"
+
+msgid "Delete failed:"
+msgstr "삭제 오류:"
+
+msgid "Remote POP server settings"
+msgstr "원격 POP 서버 설정"
+
+#, fuzzy
+msgid ""
+"You should be aware that the encryption used to store your password is not "
+"perfectly secure. However, if you are using pop, there is inherently no "
+"encryption anyway. Additionally, the encryption that we do to save it on the "
+"server can be undone by a hacker reading the source to this file."
+msgstr ""
+"비밀번호를 저장하는데 사용하는 암호화는 완벽하게 안전한 것이 아님에 유의하시"
+"기 바랍니다. 또한, pop을 사용한다면, 암호화를 하지 않습니다. 더우기 서버에 저"
+"장하기 위해 사용하는 암호화는 해커가 파일에 접근하게 되는 경우 해독될 수 있습"
+"니다."
+
+#, fuzzy
+msgid "If you leave password empty, it will be asked when you fetch mail."
+msgstr "비밀번호를 비워두면, 메일을 가져올 때 비밀번호를 입력해야 합니다."
+
+msgid "Encrypt passwords (informative only)"
+msgstr "비밀번호 암호화"
+
+msgid "Add Server"
+msgstr "서버 추가"
+
+msgid "Server:"
+msgstr "서버:"
+
+msgid "Port:"
+msgstr "포트:"
+
+msgid "Alias:"
+msgstr "가명:"
+
+msgid "Username:"
+msgstr "사용자 이름:"
+
+msgid "Store in Folder:"
+msgstr "편지함에 보관:"
+
+#, fuzzy
+msgid "Leave mail on server"
+msgstr "서버상에 메일 남기기"
+
+#, fuzzy
+msgid "Check mail at login"
+msgstr "로그인시 메일 검사"
+
+#, fuzzy
+msgid "Check mail at folder refresh"
+msgstr "편지함 갱신 중 메일 검사"
+
+msgid "Modify Server"
+msgstr "서버 변경"
+
+msgid "Server Name:"
+msgstr "서버 이름: "
+
+msgid "Modify"
+msgstr "변경"
+
+#, fuzzy
+msgid "No servers known."
+msgstr "차단된 서버가 없습니다."
+
+msgid "Fetching Servers"
+msgstr "서버 목록 가져오기"
+
+msgid "Confirm Deletion of a Server"
+msgstr "서버 삭제 확인"
+
+msgid "Selected Server:"
+msgstr "선택된 서버:"
+
+msgid "Confirm delete of selected server?"
+msgstr "선택된 서버를 삭제하시겠습니까?"
+
+msgid "Confirm Delete"
+msgstr "삭제 확인"
+
+msgid "Leave Mail on Server"
+msgstr "서버상에 메일 남기기"
+
+msgid "Undefined Function"
+msgstr "설정되지 않은 기능"
+
+msgid "The function you requested is unknown."
+msgstr ""
+
+msgid "Fetch"
+msgstr "가져오기"
+
+msgid "Warning, "
+msgstr "경고, "
+
+msgid "Mail Fetch Result:"
+msgstr "메일 가져오기 결과:"
+
+#, fuzzy
+msgid "POP3 Fetch Mail"
+msgstr "간단한 POP3 메일 가져오기"
+
+#, fuzzy
+msgid ""
+"This configures settings for downloading email from a POP3 mailbox to your "
+"account on this server."
+msgstr ""
+"이 설정은 서버에서 당신의 계정으로 pop3 편지함으로부터 이메일을 다운받을 수 "
+"있게 설정합니다."
+
+msgid "Message Details"
+msgstr "상세 메세지"
+
+msgid "Bodystructure"
+msgstr ""
+
+#, fuzzy
+msgid "Entity"
+msgstr "수정"
+
+msgid "Content-Type"
+msgstr ""
+
+msgid "Encoding"
+msgstr ""
+
+#, fuzzy
+msgid "RFC822 Message body"
+msgstr "메세지 본문뒤에서 사용"
+
+msgid "Close Window"
+msgstr "창 닫기"
+
+msgid "Save Message"
+msgstr "메세지 저장"
+
+msgid "View Message details"
+msgstr "상세 메세지 보기"
+
+msgid "New Mail"
+msgstr "새로운 메일"
+
+msgid "SquirrelMail Notice:"
+msgstr "SquirrelMail 통지:"
+
+#, fuzzy, php-format
+msgid "You have %s new message"
+msgid_plural "You have %s new messages"
+msgstr[0] "새로운 메일이 도착했습니다!"
+msgstr[1] "새로운 메일이 도착했습니다!"
+
+#, fuzzy, php-format
+msgid "You have %s new messages"
+msgstr "새로운 메일이 도착했습니다!"
+
+msgid "New Mail Notification"
+msgstr "새로운 메일 통지"
+
+#, fuzzy, php-format
+msgid ""
+"The %s option will check ALL of your folders for unseen mail, not just the "
+"inbox for notification."
+msgstr ""
+"<b>받은 편지함을 제외한 모든 편지함 검사</b> 설정은 inbox(수신함)을 제외한 모"
+"든 메일함의 읽지 않은 메일을 검사합니다."
+
+msgid "Check all boxes, not just INBOX"
+msgstr "받은 편지함을 제외한 모든 편지함 검사"
+
+#, fuzzy, php-format
+msgid ""
+"Selecting the %s option will enable the showing of a popup window when "
+"unseen mail is in your folders (requires JavaScript)."
+msgstr ""
+"<b>팝업창 보여주기</b> 설정은 편지함에 읽지 않은 메세지가 있는 경우 팝업창을 "
+"보여줍니다. (이 기능은 자바스크립트를 사용합니다.)"
+
+msgid "Show popup window on new mail"
+msgstr "새로운 메일 도착시 팝업창 보여주기"
+
+#, fuzzy, php-format
+msgid ""
+"Use the %s option to only check for messages that are recent. Recent "
+"messages are those that have just recently showed up and have not been "
+"\"viewed\" or checked yet. This can prevent being continuously annoyed by "
+"sounds or popups for unseen mail."
+msgstr ""
+"<b>최근 메세지만</b> 설정은 메세지가 최근 메세지인지만 검사합니다. 최근 메세"
+"지는 메세지가 아직 \"읽은 메세지\"로 표시되지 않는 것을 나타냅니다. 이 것은 "
+"읽지 않은 메세지에 대해 사운드 연주나 팝업창 띄우기를 사용할때의 번거로움을 "
+"없애줍니다."
+
+msgid "Count only messages that are RECENT"
+msgstr "최근 메세지만 카운트"
+
+#, fuzzy, php-format
+msgid ""
+"Selecting the %s option will change the title in some browsers to let you "
+"know when you have new mail (requires JavaScript, and only works in IE but "
+"you won't see errors with other browsers). This will always tell you if you "
+"have new mail, even if you have %s enabled."
+msgstr ""
+"<b>제목 변경</b>설정은 새로운 메세지가 도착했을때 브라우저의 타이틀을 변경 합"
+"니다. (자바스크립트를 사용하며, IE에서만 동작하며 다른 브라우저에서는 아무런 "
+"효과가 없습니다. <b>최근 메세지만</b>기능을 사용하더라도  새로운 메일이 도착"
+"하면 항상 알려주게 됩니다."
+
+#, fuzzy
+msgid "Change title on supported browsers"
+msgstr "브라우저가 지원하면 제목 변경"
+
+#, fuzzy, php-format
+msgid ""
+"Select %s to turn on playing a media file when unseen mail is in your "
+"folders. When enabled, you can specify the media file to play in the "
+"provided file box."
+msgstr ""
+"읽지 않은 메세지가 편지함에 있는 경우 <b>미디어 연주 설정</b>을 선택하게 되"
+"면 미디어 파일을 연주합니다. 이 기능을 사용할때에는 연주할 미디어 파일을 명시"
+"해야 합니다."
+
+msgid "Enable Media Playing"
+msgstr "미디어 연주 설정"
+
+#, php-format
+msgid ""
+"Select from the list of %s the media file to play when new mail arrives. If "
+"no file is specified, %s, no sound will be used."
+msgstr ""
+
+#, fuzzy
+msgid "Select server file"
+msgstr "서버 파일 선택:"
+
+#, fuzzy
+msgid "(none)"
+msgstr "완료"
+
+msgid "requires JavaScript to work"
+msgstr "자바스크립트가 필요합니다."
+
+msgid "Try"
+msgstr "시도"
+
+msgid "Current File:"
+msgstr "현재 파일:"
+
+msgid "NewMail Options"
+msgstr "NewMail 설정"
+
+msgid ""
+"This configures settings for playing sounds and/or showing popup windows "
+"when new mail arrives."
+msgstr ""
+"새로운 메일이 도착했을때 사운드연주할 것인지 또는 팝업 창을 보여줄 것이지를 "
+"설정합니다."
+
+#, php-format
+msgid "%s New Messages"
+msgstr "%s 새 메세지"
+
+#, fuzzy, php-format
+msgid "%s New Message"
+msgid_plural "%s New Messages"
+msgstr[0] "%s 새 메세지"
+msgstr[1] "%s 새 메세지"
+
+msgid "Test Sound"
+msgstr "사운드 테스트"
+
+#, fuzzy
+msgid "No sound specified"
+msgstr "서버를 지정하지 않았습니다."
+
+msgid "Loading the sound..."
+msgstr "사운드 불러오기..."
+
+msgid "Sent Subfolders Options"
+msgstr "보낸 편지함 하위폴더 유형"
+
+msgid "Use Sent Subfolders"
+msgstr "보낸 편지함 하위폴더 사용"
+
+msgid "Monthly"
+msgstr "월별"
+
+msgid "Quarterly"
+msgstr "분기별"
+
+msgid "Yearly"
+msgstr "년별"
+
+msgid "Base Sent Folder"
+msgstr "보낸 편지함"
+
+#, fuzzy
+msgid "Enabled"
+msgstr "사용하지 않음"
+
+#, fuzzy
+msgid "Disable it"
+msgstr "사용하지 않음"
+
+msgid "Enable it"
+msgstr ""
+
+#, fuzzy
+msgid "Spam reporting"
+msgstr "스팸 필터링"
+
+msgid "SpamCop link is:"
+msgstr ""
+
+#, fuzzy
+msgid "Delete spam when reported:"
+msgstr "선택한 주소 삭제"
+
+msgid "Only works with email-based reporting"
+msgstr ""
+
+#, fuzzy
+msgid "Spam Reporting Method:"
+msgstr "SpamCop - 스팸 보고"
+
+msgid "Quick email-based reporting"
+msgstr ""
+
+msgid "Thorough email-based reporting"
+msgstr ""
+
+msgid "Web-based form"
+msgstr ""
+
+#, fuzzy
+msgid "Save Method"
+msgstr "메세지 저장"
+
+msgid "Your SpamCop authorization code:"
+msgstr ""
+
+msgid "see below"
+msgstr ""
+
+#, fuzzy
+msgid "Save ID"
+msgstr "저장"
+
+msgid "About SpamCop"
+msgstr ""
+
+msgid ""
+"SpamCop is a free service that greatly assists in finding the true source of "
+"the spam and helps in letting the proper people know about the abuse."
+msgstr ""
+
+#, php-format
+msgid ""
+"To use it, you must get a SpamCop authorization code. There is a free %ssign "
+"up page%s so you can use SpamCop."
+msgstr ""
+
+msgid "Before you sign up, be warned"
+msgstr ""
+
+#, php-format
+msgid ""
+"Some users have reported that the email addresses used with SpamCop find "
+"their way onto spam lists. To be safe, you can just create an email "
+"forwarding account and have all SpamCop reports get sent to there. Also, if "
+"it gets flooded with spam, you can then just delete that account with no "
+"worries about losing your real email address. Just go create an email "
+"forwarder somewhere (%s has a %slist of places%s) so that messages from "
+"system administrators and what not can be sent to you."
+msgstr ""
+
+msgid ""
+"Once you have signed up with SpamCop and have received your SpamCop "
+"authorization code, you need to enable this plugin by clicking the link "
+"above. Once enabled, you go about your normal life. If you encounter a spam "
+"message in your mailbox, just view it. On the right-hand side, near the top "
+"of where the message is displayed, you will see a link to report this "
+"message as spam. Clicking on it brings you to a confirmation page. "
+"Confirming that you want the spam report sent will do different things with "
+"different reporting methods."
+msgstr ""
+
+msgid "Email-based reporting"
+msgstr ""
+
+msgid ""
+"Pressing the button forwards the message to the SpamCop service and will "
+"optionally delete the message. From there, you just need to go to your INBOX "
+"and quite soon a message should appear from SpamCop. (It gets sent to the "
+"account you registered with, so make sure that your mail forwarder works!) "
+"Open it up, click on the appropriate link at the top, and a new browser "
+"window will open."
+msgstr ""
+
+msgid ""
+"Currently, the quick reporting just forwards the request to the thorough "
+"reporting. Also, it appears that this is for members (non-free) only. "
+"Hopefully this will change soon."
+msgstr ""
+
+msgid "Web-based reporting"
+msgstr ""
+
+msgid ""
+"When you press the button on the confirmation page, this will pop open a new "
+"browser window and the SpamCop service should appear inside. The message "
+"will not be deleted (working on that part), but you won't need to wait for a "
+"response email to start the spam reporting."
+msgstr ""
+
+msgid ""
+"The SpamCop service will display information as it finds it, so scroll down "
+"until you see a form button. It might pause a little while it is looking up "
+"information, so be a little patient. Read what it says, and submit the spam. "
+"Close the browser window. Press Cancel or click on the appropriate mail "
+"folder to see messages and/or delete the spam."
+msgstr ""
+
+msgid "SpamCop service type"
+msgstr ""
+
+msgid ""
+"Service type option allows selecting which SpamCop services you are using. "
+"Member services use different web reporting forms and does not display nags. "
+"You can purchase these services, if you want to support SpamCop."
+msgstr ""
+
+#, fuzzy
+msgid "More information"
+msgstr "IMAP 서버 정보"
+
+#, php-format
+msgid ""
+"For more information about SpamCop, it's services, spam in general, and many "
+"related topics, try reading through SpamCop's %sHelp and Feedback%s section."
+msgstr ""
+
+msgid "Report as Spam"
+msgstr "스팸으로 보고하기"
+
+msgid "SpamCop - Spam Reporting"
+msgstr "SpamCop - 스팸 보고"
+
+msgid ""
+"Help fight the battle against unsolicited email. SpamCop reads the spam "
+"email and determines the correct addresses to send complaints to. Quite "
+"fast, really smart, and easy to use."
+msgstr ""
+
+msgid ""
+"Sending this spam report will give you back a reply with URLs that you can "
+"click on to properly report this spam message to the proper authorities. "
+"This is a free service. By pressing the \"Send Spam Report\" button, you "
+"agree to follow SpamCop's rules/terms of service/etc."
+msgstr ""
+
+msgid "Cancel / Done"
+msgstr ""
+
+#, fuzzy
+msgid "Send Spam Report"
+msgstr "SpamCop - 스팸 보고"
+
+msgid "SpellChecker Options"
+msgstr "철자검사 설정"
+
+msgid ""
+"Here you may set up how your personal dictionary is stored, edit it, or "
+"choose which languages should be available to you when spell-checking."
+msgstr ""
+"여기에서는 개인 사전의 저장 방식을 설정, 수정 또는 철자 검사를 위해 어떤 언어"
+"를 사용할것인지를 설정할 수 있습니다."
+
+msgid "Check Spelling"
+msgstr "철자검사 시작"
+
+msgid "Back to &quot;SpellChecker Options&quot; page"
+msgstr "&quot;철자검사 설정&quot;페이지로 돌아가기"
+
+msgid "ATTENTION:"
+msgstr "주의:"
+
+#, fuzzy
+msgid ""
+"SquirrelSpell was unable to decrypt your personal dictionary. This is most "
+"likely due to the fact that you have changed your mailbox password. In order "
+"to proceed, you will have to supply your old password so that SquirrelSpell "
+"can decrypt your personal dictionary. It will be re-encrypted with your new "
+"password after this. If you haven't encrypted your dictionary, then it got "
+"mangled and is no longer valid. You will have to delete it and start anew. "
+"This is also true if you don't remember your old password -- without it, the "
+"encrypted data is no longer accessible."
+msgstr ""
+"철자검사가 개인 사전을 암호해제할 수 없습니다. 대부분의 경우 편지함의 암호를 "
+"변경했기 때문입니다. 계속 진행하기 위해서는 이전 암호로 변경해야 철자검색기"
+"가 개인 사전을 암호해제할 수 있습니다.이렇게 한후, 새로운 암호로 다시 암호화"
+"하시기 바랍니다. <br>만약 사전을 암호화하지 않았다면, 이 사전은 더이상 사용"
+"할 수 없습니다. 이 파일을 삭제하시고, 새로운것으로 다시 시작하시기 바랍니다. "
+"만약 이전암호를 기억하지 못할 경우에도 파일을 삭제하시기 바랍니다. 암호화된 "
+"파일에는 더이상 접근할 수 없습니다."
+
+msgid "Delete my dictionary and start a new one"
+msgstr "사전을 삭제하고 새로 시작합니다."
+
+msgid "Decrypt my dictionary with my old password:"
+msgstr "사전을 이전 암호로 해독"
+
+msgid "Proceed"
+msgstr "진행"
+
+msgid "You must make a choice"
+msgstr "하나를 선택해야 합니다."
+
+msgid ""
+"You can either delete your dictionary or type in the old password. Not both."
+msgstr "사전을 삭제하거나 기존 암호중 하나를 선택해야 합니다."
+
+msgid "This will delete your personal dictionary file. Proceed?"
+msgstr "개인사전파일을 삭제합니다. 계속하시겠습니까?"
+
+msgid "Error Decrypting Dictionary"
+msgstr "사전 암호해제 오류"
+
+msgid "Cute."
+msgstr "인용"
+
+#, php-format
+msgid "Could not run the spellchecker command (%s)."
+msgstr ""
+
+msgid "Error while writing to pipe."
+msgstr ""
+
+#, fuzzy, php-format
+msgid "Could not open temporary file '%s'."
+msgstr "데이타파일 잠금 오류"
+
+#, php-format
+msgid "Error while writing to temporary file '%s'."
+msgstr ""
+
+#, php-format
+msgid "I tried to execute '%s', but it returned:"
+msgstr "'%s' 을(를) 실행했지만, 그 결과는:"
+
+msgid "SquirrelSpell is misconfigured."
+msgstr "SquirrelSpell 설정 오류."
+
+msgid "Spellcheck completed. Commit changes?"
+msgstr "철자검사가 완료되었습니다. 변경사항을 반영하시겠습니까?"
+
+msgid "No changes were made."
+msgstr "변경사항이 없습니다."
+
+msgid "Now saving your personal dictionary... Please wait."
+msgstr "이제 개인 사전을 저장합니다... 잠시 기다리세요."
+
+msgid "SquirrelSpell Results"
+msgstr "SquirrelSpell 결과"
+
+#, php-format
+msgid "Found %s errors"
+msgstr "%s 오류 발견"
+
+msgid "Line with an error:"
+msgstr "오류 라인:"
+
+msgid "Error:"
+msgstr "오류:"
+
+msgid "Suggestions:"
+msgstr "제안:"
+
+msgid "Suggestions"
+msgstr "제안:"
+
+msgid "Change to:"
+msgstr "변경:"
+
+msgid "Occurs times:"
+msgstr "발생 시간:"
+
+msgid "Change this word"
+msgstr "이 단어 변경"
+
+msgid "Change"
+msgstr "변경"
+
+msgid "Change ALL occurances of this word"
+msgstr "이 단어 모두 변경"
+
+msgid "Change All"
+msgstr "모두 변경"
+
+msgid "Ignore this word"
+msgstr "이 단어 무시"
+
+msgid "Ignore"
+msgstr "무시"
+
+msgid "Ignore ALL occurances this word"
+msgstr "이 단어 모두 무시"
+
+msgid "Ignore All"
+msgstr "모두 무시"
+
+msgid "Add this word to your personal dictionary"
+msgstr "이 단어를 개인사전파일에 추가"
+
+msgid "Add to Dic"
+msgstr "사전에 추가"
+
+msgid "Close and Commit"
+msgstr "저장"
+
+msgid "The spellcheck is not finished. Really close and commit changes?"
+msgstr "철자검사가 완료되지 않았습니다. 변경사항을 반영하고 완료하시겠습니까?"
+
+msgid "Close and Cancel"
+msgstr "취소"
+
+msgid "The spellcheck is not finished. Really close and discard changes?"
+msgstr "철자검사가 완료되지 않았습니다. 변경사항을 취소하시겠습니까?"
+
+msgid "No errors found"
+msgstr "오류가 없습니다."
+
+#, fuzzy
+msgid ""
+"Your personal dictionary has been encrypted and is now stored in an "
+"encrypted format."
+msgstr ""
+"개인 사전이 <strong>암호화</strong>되었습니다. 이제 <strong>암호화된 포맷</"
+"strong>으로 저장되어집니다."
+
+#, fuzzy
+msgid ""
+"Your personal dictionary has been decrypted and is now stored as plain text."
+msgstr ""
+"개인 사전이 <strong>암호해제</strong>되었습니다. 이제 <strong> 일반 문서 포맷"
+"</strong>으로 저장되어집니다."
+
+msgid "Personal Dictionary Crypto Settings"
+msgstr "개인 사전 암호화 설정"
+
+msgid "Your personal dictionary was erased."
+msgstr "개인사전파일이 삭제되었습니다."
+
+msgid "Dictionary Erased"
+msgstr "사전 삭제"
+
+msgid ""
+"Your personal dictionary was erased. Please close this window and click "
+"\"Check Spelling\" button again to start your spellcheck over."
+msgstr ""
+"개인 사전이 삭제되었습니다. 이 창을 닫고 \"철자 검사\" 버튼을 다시 클릭하면 "
+"철자검사를 다시 시작할 수 있습니다."
+
+msgid "Close this Window"
+msgstr "창 닫기"
+
+msgid ""
+"Your personal dictionary was re-encrypted successfully. Now return to the "
+"&quot;SpellChecker options&quot; menu and make your selection again."
+msgstr ""
+"개인 사전의 재암호화가 완료되었습니다. 이제 &quot;철자검사 설정&quot; 메뉴로 "
+"돌아가서 다시 선택해주세요."
+
+#, fuzzy
+msgid "Successful re-encryption"
+msgstr "재 암호화 완료"
+
+msgid ""
+"Your personal dictionary was re-encrypted successfully. Please close this "
+"window and click \"Check Spelling\" button again to start your spellcheck "
+"over."
+msgstr ""
+"개인 사전이 재암호화되었습니다. 이 창을 닫고 \"철자 검사\" 버튼을 다시 클릭하"
+"여 철자검사를 다시 시작하세요."
+
+msgid "Dictionary re-encrypted"
+msgstr "사전 재암호화"
+
+msgid "Personal Dictionary"
+msgstr "개인 사전"
+
+msgid "No words in your personal dictionary."
+msgstr "개인사전에 단어가 없습니다."
+
+msgid "Please check any words you wish to delete from your dictionary."
+msgstr "사전에서 삭제하고자 하는 단어을 선택하시기 바랍니다."
+
+#, php-format
+msgid "%s dictionary"
+msgstr "%s 사전"
+
+msgid "Delete checked words"
+msgstr "선택한 단어 삭제"
+
+msgid "Edit your Personal Dictionary"
+msgstr "개인 사전 편집"
+
+msgid "Please make your selection first."
+msgstr "먼저 선택하세요."
+
+msgid ""
+"This will encrypt your personal dictionary and store it in an encrypted "
+"format. Proceed?"
+msgstr ""
+"이것은 개인 사전을 암호화하고 암호화된 포맷으로 저장합니다. 계속하시겠습니까?"
+
+#, fuzzy
+msgid ""
+"This will decrypt your personal dictionary and store it in a plain text "
+"format. Proceed?"
+msgstr ""
+"이것은 개인 사전을 암호해제하고 일반 문서 포맷으로 저장합니다. 계속하시겠습니"
+"까?"
+
+#, fuzzy
+msgid "Your personal dictionary is currently encrypted."
+msgstr "개인사전파일이 삭제되었습니다."
+
+msgid ""
+"This helps protect your privacy in case the web-mail system gets compromized "
+"and your personal dictionary ends up stolen. It is currently encrypted with "
+"the password you use to access your mailbox, making it hard for anyone to "
+"see what is stored in your personal dictionary."
+msgstr ""
+
+msgid ""
+"If you forget your password, your personal dictionary will become "
+"unaccessible, since it can no longer be decrypted. If you change your "
+"mailbox password, SquirrelSpell will recognize it and prompt you for your "
+"old password in order to re-encrypt the dictionary with a new key."
+msgstr ""
+
+msgid ""
+"Please decrypt my personal dictionary and store it in a clear-text format."
+msgstr "개인 사전을 암호해제하고 일반 문서 포맷으로 저장합니다."
+
+msgid "Change crypto settings"
+msgstr "암호화 설정 변경"
+
+#, fuzzy
+msgid "Your personal dictionary is currently not encrypted."
+msgstr "개인사전파일이 삭제되었습니다."
+
+msgid ""
+"You may wish to encrypt your personal dictionary to protect your privacy in "
+"case the webmail system gets compromized and your personal dictionary file "
+"gets stolen. When encrypted, the file's contents look garbled and are hard "
+"to decrypt without knowing the correct key (which is your mailbox password)."
+msgstr ""
+
+#, fuzzy
+msgid ""
+"If you decide to encrypt your personal dictionary, you must remember that it "
+"gets &quot;hashed&quot; with your mailbox password. If you forget your "
+"mailbox password and the administrator changes it to a new value, your "
+"personal dictionary will become useless and will have to be created anew. "
+"However, if you or your system administrator change your mailbox password "
+"but you still have the old password at hand, you will be able to enter the "
+"old key to re-encrypt the dictionary with the new value."
+msgstr ""
+"<p>개인 사전은 <strong>현재 암호화 되어 있지 않습니다.</strong>. 이것은 웹메"
+"일 시스템과 개인 사전 분실시 당신의 사생화를 보호할 수 있게 하기 위해 암호화 "
+"할 수 있습니다. 암호화를 하게 되면 파일의 내용은 뒤섞여 정확한 키(메일함의 암"
+"호)를 알지 못하는 경우 해독하기 어렵습니다.<p><strong>주의:</strong>개인 사전"
+"을 암호화하기로 결정했다면, 메일함의 암호를 기억해야 합니다. 만약 암호를 모르"
+"는 경우, 시스템 관리자가 새로운 암호를 설정하게 되면, 개인 사전은 쓸모없게 되"
+"어 새로 만들어야 합니다. 만약 암호를 변경하더라도 이전의 암호를 알고 있다면, "
+"새로운 값으로 사전을 재암호화할 수 있도록 이전 암호를 입력받게 될 것입니다."
+
+msgid ""
+"Please encrypt my personal dictionary and store it in an encrypted format."
+msgstr "개인 사전을 암호화하고 암호화된 포맷으로 저장합니다."
+
+#, fuzzy, php-format
+msgid "Deleting the following entries from %s dictionary:"
+msgstr "<strong>%s</strong> 사전에서 다음의 항목을 삭제합니다:"
+
+msgid "All done!"
+msgstr "모두 완료!"
+
+msgid "Personal Dictionary Updated"
+msgstr "개인 사전 갱신"
+
+msgid "No changes requested."
+msgstr "변경 사항 없음"
+
+msgid "Please wait, communicating with the server..."
+msgstr "서버와 통신하기 위해 잠시 기다려 주세요..."
+
+msgid ""
+"Please choose which dictionary you would like to use to spellcheck this "
+"message:"
+msgstr "이 메세지의 철자검사를 수행할 사전을 선택해 주세요."
+
+msgid "SquirrelSpell Initiating"
+msgstr "SquirrelSpell 초기화중"
+
+#, fuzzy, php-format
+msgid "Settings adjusted to: %s with %s as default dictionary."
+msgstr "설정 변경: 기본 사전 <strong>%s</strong>(<strong>%s</strong>)"
+
+#, fuzzy, php-format
+msgid "Using %s dictionary (system default) for spellcheck."
+msgstr "철자검사를 위해 <strong>%s</strong> 사전(시스템 기본)을 사용"
+
+msgid "International Dictionaries Preferences Updated"
+msgstr "국제 사전 환경설정 갱신"
+
+msgid ""
+"Please check any available international dictionaries which you would like "
+"to use when spellchecking:"
+msgstr "철자검사를 위해 사용가능한 국제 사전을 확인하세요"
+
+msgid "Make this dictionary my default selection:"
+msgstr "이 사전을 기본으로 설정함:"
+
+msgid "Make these changes"
+msgstr "변경"
+
+msgid "Add International Dictionaries"
+msgstr "국제 사전 추가"
+
+msgid "Please choose which options you wish to set up:"
+msgstr "설정하고자 하는 옵션을 선택하세요:"
+
+msgid "Edit your personal dictionary"
+msgstr "개인 사전 편집"
+
+msgid "Set up international dictionaries"
+msgstr "국제 사전 설정"
+
+msgid "Encrypt or decrypt your personal dictionary"
+msgstr "개인 사전 암호 및 해독"
+
+msgid "not available"
+msgstr "사용할 수 없습니다."
+
+msgid "SquirrelSpell Options Menu"
+msgstr "SquirrelSpell 설정 메뉴"
+
+msgid "Translator"
+msgstr "번역기"
+
+msgid "Saved Translation Options"
+msgstr "번역 설정 저장"
+
+msgid "Your server options are as follows:"
+msgstr "현재 서버의 환경 설정은 아래와 같습니다:"
+
+#, fuzzy
+msgid "Maximum of 150 words translated, powered by Systran"
+msgstr "10개의 언어쌍 사용, 최대 25 kb 까지 번역. Systran 사용"
+
+#, php-format
+msgid "Number of supported language pairs: %s"
+msgstr ""
+
+#, fuzzy
+msgid "No known limits, powered by Systran"
+msgstr "12개의 언어쌍을 사용. 제한사항 없음. Systran 번역기 사용"
+
+#, fuzzy
+msgid "No known limits, powered by Translation Experts' InterTran"
+msgstr ""
+"767개의 언어쌍을 사용합니다. 제한사항은 없습니다. Transaltion Experts의 "
+"InterTran 번역기를 사용합니다."
+
+#, php-format
+msgid "Number of supported languages: %s"
+msgstr ""
+
+#, fuzzy
+msgid "Hellenic translations, no known limits, powered by Systran"
+msgstr "12개의 언어쌍을 사용. 제한사항 없음. Systran 번역기 사용"
+
+#, fuzzy
+msgid "Russian translations, maximum of 500 characters translated"
+msgstr "13개의 언어쌍 사용. 최대 1000개의 문자허용. Systran 사용"
+
+msgid ""
+"You also decide if you want the translation box displayed, and where it will "
+"be located."
+msgstr "번역상자를 표시할것인지, 그리고 상자의 위치를 선택할 수 있습니다."
+
+msgid "Select your translator:"
+msgstr "번역기 선택:"
+
+msgid "When reading:"
+msgstr "읽은 시기:"
+
+msgid "Show translation box"
+msgstr "번역상자 보기"
+
+msgid "to the left"
+msgstr "왼쪽으로"
+
+msgid "in the center"
+msgstr "가운데로"
+
+msgid "to the right"
+msgstr "오른쪽으로"
+
+msgid "Translate inside the SquirrelMail frames"
+msgstr "SquirrelMail 프레임안에서 번역"
+
+msgid "Translation Options"
+msgstr "번역 설정"
+
+msgid ""
+"Which translator should be used when you get messages in a different "
+"language?"
+msgstr "다른 언어의 메세지를 수신했을때 어떤 번역기를 사용하시겠습니까?"
+
+#, php-format
+msgid "%s to %s"
+msgstr "%s을(를) %s(으)로 "
+
+msgid "Chinese, Simplified"
+msgstr ""
+
+msgid "English"
+msgstr "영어"
+
+msgid "Chinese, Traditional"
+msgstr ""
+
+msgid "Dutch"
+msgstr "네덜란드어"
+
+msgid "French"
+msgstr "프랑스어"
+
+msgid "German"
+msgstr "독일어"
+
+msgid "Greek"
+msgstr "그리스어"
+
+msgid "Italian"
+msgstr "이탈리아어"
+
+msgid "Japanese"
+msgstr "일본어"
+
+#, fuzzy
+msgid "Korean"
+msgstr "노르웨이"
+
+msgid "Portuguese"
+msgstr "포르투갈어"
+
+msgid "Russian"
+msgstr "러시아어"
+
+msgid "Spanish"
+msgstr "스페인어"
+
+msgid "Translate"
+msgstr "번역"
+
+msgid "Brazilian Portuguese"
+msgstr "브라질 포르투갈어"
+
+msgid "Bulgarian"
+msgstr "불가리아어"
+
+msgid "Croatian"
+msgstr "크로아티아"
+
+msgid "Czech"
+msgstr "체코어"
+
+msgid "Danish"
+msgstr "덴마크어"
+
+msgid "Filipino (Tagalog)"
+msgstr ""
+
+msgid "Finnish"
+msgstr "핀란드어"
+
+msgid "Hungarian"
+msgstr "헝가리어"
+
+msgid "Icelandic"
+msgstr "아이슬란드어"
+
+msgid "Latin"
+msgstr "라틴어"
+
+msgid "Latin American Spanish"
+msgstr "라틴 아메리카 스페인어"
+
+msgid "Norwegian"
+msgstr "노르웨이"
+
+msgid "Polish"
+msgstr "폴란드"
+
+msgid "Romanian"
+msgstr "루마니아어"
+
+msgid "Serbian"
+msgstr "세르비아"
+
+msgid "Slovenian"
+msgstr "슬로베니아"
+
+msgid "Swedish"
+msgstr "스웨덴"
+
+msgid "Turkish"
+msgstr "터키어"
+
+msgid "Welsh"
+msgstr "웨일스어"
+
+msgid "Indonesian"
+msgstr "인도네시아"
+
+#, fuzzy
+msgid "to English"
+msgstr "영어"
+
+#, fuzzy
+msgid "from English"
+msgstr "영어"
+
+#, fuzzy
+msgid "Interface language"
+msgstr "기본 언어"
+
+#, fuzzy
+msgid "Translation direction"
+msgstr "번역 설정"
+
+#, fuzzy, php-format
+msgid "About SquirrelMail %s"
+msgstr "SquirrelMail 버전 %s"
+
+msgid ""
+"SquirrelMail is the name of the program that provides access to your email "
+"via the web."
+msgstr ""
+
+#, php-format
+msgid ""
+"If you have questions about or problems with your mail account, passwords, "
+"abuse etc, please refer to your system administrator or provider%s."
+msgstr ""
+
+#, php-format
+msgid ""
+"They can assist you adequately with these issues. The SquirrelMail Project "
+"Team cannot help you with that. The %shelp system%s provides answers to "
+"frequently asked questions."
+msgstr ""
+
+#, php-format
+msgid ""
+"SquirrelMail is a feature rich, standards compliant webmail application "
+"written in PHP. It was made by a group of volunteers united in the "
+"SquirrelMail Project Team and is released as open source, free software "
+"under the %sGNU General Public License%s."
+msgstr ""
+
+#, php-format
+msgid ""
+"For more information about SquirrelMail and the SquirrelMail Project Team, "
+"see %sthe SquirrelMail website%s."
+msgstr ""
+
+#, fuzzy
+msgid "System information"
+msgstr "IMAP 서버 정보"
+
+#, fuzzy, php-format
+msgid "You are using SquirrelMail version: %s"
+msgstr "SquirrelMail 버전 %s"
+
+msgid "The administrator installed the following plugins:"
+msgstr ""
+
+msgid "none installed"
+msgstr ""
+
+msgid "sort by nickname"
+msgstr ""
+
+#, fuzzy
+msgid "sort by name"
+msgstr "성"
+
+msgid "sort by email"
+msgstr ""
+
+msgid "sort by info"
+msgstr ""
+
+#, fuzzy
+msgid "Add to address book"
+msgstr "주소 추가"
+
+msgid ""
+"Because PHP file uploads are turned off, you can not attach files to this "
+"message. Please see your system administrator for details."
+msgstr ""
+
+#, fuzzy
+msgid "No folders were found to unsubscribe from."
+msgstr "사용하지 않기 위한 편지함이 없습니다."
+
+#, fuzzy
+msgid "No folders were found to subscribe to."
+msgstr "사용하기 위한 편지함이 없습니다."
+
+msgid "Last Refresh"
+msgstr "최종 갱신시간"
+
+#, fuzzy
+msgid "Check mail"
+msgstr "로그인시 메일 검사"
+
+msgid "Save folder tree"
+msgstr "메일함 트리 저장"
+
+#, fuzzy
+msgid "SquirrelMail Webmail Application"
+msgstr "SquirrelMail 버전 %s"
+
+#, fuzzy
+msgid "Compose Preferences"
+msgstr "편지함 환경설정"
+
+msgid ""
+"Control the behaviour and layout of writing new mail messages, replying to "
+"and forwarding messages."
+msgstr ""
+
+#, fuzzy
+msgid "Received"
+msgstr "수신"
+
+#, fuzzy
+msgid "As Attachment"
+msgstr "첨부"
+
+msgid "Bypass Trash"
+msgstr ""
+
+msgid "Please enter something to search for"
+msgstr ""
+
+msgid "There must be at least one criteria to search for"
+msgstr ""
+
+#, fuzzy
+msgid "Error in criteria argument"
+msgstr "구문 오류; 매개변수 오류"
+
+msgid "(Illegal date)"
+msgstr ""
+
+msgid "(Wrong date)"
+msgstr ""
+
+#, fuzzy
+msgid "In"
+msgstr "정보 사항"
+
+msgid "(Missing argument)"
+msgstr ""
+
+msgid "(Spurious argument)"
+msgstr ""
+
+#, fuzzy
+msgid "Fold"
+msgstr "편지함"
+
+#, fuzzy
+msgid "Unfold"
+msgstr "정보 사항"
+
+#, fuzzy
+msgid "Saved Searches"
+msgstr "최근 검색"
+
+msgid "Missing"
+msgstr ""
+
+msgid "and&nbsp;subfolders:"
+msgstr ""
+
+msgid "Exclude Criteria:"
+msgstr ""
+
+#, fuzzy
+msgid "Search Criteria"
+msgstr "찾기"
+
+#, fuzzy
+msgid "Add New Criteria"
+msgstr "서버 추가"
+
+msgid "Remove Excluded Criteria"
+msgstr ""
+
+msgid "Remove All Criteria"
+msgstr ""
+
+#, fuzzy
+msgid "Not"
+msgstr "참조"
+
+msgid "Answered"
+msgstr ""
+
+#, fuzzy
+msgid "Before"
+msgstr "forget?"
+
+#, fuzzy
+msgid "Message Body"
+msgstr "메세지 "
+
+#, fuzzy
+msgid "Deleted"
+msgstr "삭제"
+
+#, fuzzy
+msgid "Draft"
+msgstr "임시보관함에 저장"
+
+#, fuzzy
+msgid "Flagged"
+msgstr "플래그"
+
+#, fuzzy
+msgid "Sent By"
+msgstr "전송:"
+
+#, fuzzy
+msgid "Header Field"
+msgstr "헤더"
+
+msgid "Keyword"
+msgstr ""
+
+msgid "Larger Than"
+msgstr ""
+
+msgid "Old"
+msgstr ""
+
+msgid "On"
+msgstr ""
+
+#, fuzzy
+msgid "Recent"
+msgstr "수신"
+
+#, fuzzy
+msgid "Seen"
+msgstr "전송"
+
+#, fuzzy
+msgid "Sent Before"
+msgstr "보낸 편지함"
+
+#, fuzzy
+msgid "Sent On"
+msgstr "전송:"
+
+msgid "Sent Since"
+msgstr ""
+
+#, fuzzy
+msgid "Since"
+msgstr "크기"
+
+msgid "Smaller Than"
+msgstr ""
+
+#, fuzzy
+msgid "Subject Contains"
+msgstr "내용물:"
+
+msgid "Header and Body"
+msgstr ""
+
+#, fuzzy
+msgid "Sent To"
+msgstr "보낸 편지함"
+
+msgid "And In"
+msgstr ""
+
+msgid "Or In"
+msgstr ""
+
+#, fuzzy
+msgid "And"
+msgstr "추가"
+
+msgid "Or"
+msgstr ""
+
+msgid "Standard search"
+msgstr ""
+
+msgid "Advanced search"
+msgstr ""
+
+#, fuzzy
+msgid "Folder List"
+msgstr "편지함"
+
+msgid "PHP install does not have LDAP support."
+msgstr ""
+
+msgid "Click here to change the sorting of the address list"
+msgstr ""
+
+msgid "Illegal folder name."
+msgstr ""
+
+#, php-format
+msgid "The name may not contain any of the following: %s"
+msgstr ""
+
+#, fuzzy
+msgid "Please select a different name."
+msgstr "편지함 이름이 잘못되었습니다. 다른이름을 사용하세요."
+
+#, fuzzy
+msgid "You have not selected a folder to subscribe. Please do so."
+msgstr "이름을 변경할 편지함을 선택하시기 바랍니다."
+
+#, fuzzy
+msgid "You have not selected a folder to unsubscribe. Please do so."
+msgstr "이름을 변경할 편지함을 선택하시기 바랍니다."
+
+msgid "Possible reason:"
+msgstr ""
+
+msgid "ERROR: Bad function call."
+msgstr ""
+
+#, fuzzy
+msgid "Reason:"
+msgstr "응답:"
+
+msgid ""
+"TLS is enabled, but this version of PHP does not support TLS sockets, or is "
+"missing the openssl extension."
+msgstr ""
+
+msgid ""
+"Your mailbox is not located at this server. Try a different server or "
+"consult your system administrator"
+msgstr ""
+
+#, fuzzy
+msgid "Unknown recipient"
+msgstr "알 수 없는 응답"
+
+msgid "Unflag"
+msgstr ""
+
+#, fuzzy
+msgid "Flag"
+msgstr "플래그"
+
+#, fuzzy
+msgid "Undelete"
+msgstr "삭제"
+
+#, fuzzy
+msgid "General Message Composition"
+msgstr "메세지 보기 및 작성"
+
+#, fuzzy
+msgid "Replying and Forwarding Messages"
+msgstr "메세지 전달시 참조 포함"
+
+msgid "Strip signature when replying"
+msgstr ""
+
+msgid "Enable Fancy Row Mouseover Highlighting"
+msgstr ""
+
+msgid "Message Flags Icon Theme"
+msgstr ""
+
+msgid "Show Flag / Unflag Buttons"
+msgstr ""
+
+#, fuzzy
+msgid "Use Compact Page Selector"
+msgstr "페이지 기능 사용"
+
+msgid "Length of From/To Field (0 for full)"
+msgstr ""
+
+msgid "Length of Subject Field (0 for full)"
+msgstr ""
+
+#, fuzzy
+msgid "Message Display Options"
+msgstr "일반적인 화면 설정"
+
+msgid "Show 'Delete & Prev/Next' Links"
+msgstr ""
+
+#, fuzzy
+msgid "Save Replies with Original Message"
+msgstr "원래 메세지"
+
+#, fuzzy, php-format
+msgid "%d Minute"
+msgid_plural "%d Minutes"
+msgstr[0] "분"
+msgstr[1] "분"
+
+msgid "Show only subscribed folders"
+msgstr ""
+
+msgid "XP"
+msgstr ""
+
+#, fuzzy
+msgid "Hide SquirrelMail Header"
+msgstr "전체 헤더 보기"
+
+#, fuzzy
+msgid "Search functions"
+msgstr "찾기"
+
+msgid "Only basic search"
+msgstr ""
+
+msgid "Only advanced search"
+msgstr ""
+
+msgid "Both search functions"
+msgstr ""
+
+msgid "Show alternative language names"
+msgstr ""
+
+msgid "Available languages"
+msgstr ""
+
+#, fuzzy
+msgid "Enable aggressive decoding"
+msgstr "페이지 기능 사용"
+
+msgid "Tweaks"
+msgstr ""
+
+msgid "Use advanced tree folder listing"
+msgstr ""
+
+#, fuzzy
+msgid "Use icons"
+msgstr "초"
+
+msgid "Use PHP recode functions"
+msgstr ""
+
+msgid "Use PHP iconv functions"
+msgstr ""
+
+msgid "Allow remote configuration test"
+msgstr ""
+
+msgid "Show System Specifications"
+msgstr ""
+
+#, fuzzy
+msgid "Search Mailing List Archives"
+msgstr "리스트 목록"
+
+msgid "Search SourceForge Bugtracker"
+msgstr ""
+
+#, fuzzy
+msgid "Search for words:"
+msgstr "찾기"
+
+msgid "Written by:"
+msgstr ""
+
+#, fuzzy
+msgid "Email addresses only"
+msgstr "전자메일 주소"
+
+#, fuzzy
+msgid "Mailing list:"
+msgstr "메일링 리스트"
+
+#, fuzzy
+msgid "SquirrelMail users list"
+msgstr "SquirrelMail 버전 %s"
+
+#, fuzzy
+msgid "SquirrelMail plugins list"
+msgstr "SquirrelMail 버전 %s"
+
+#, fuzzy
+msgid "SquirrelMail developers list"
+msgstr "SquirrelMail 버전 %s"
+
+#, fuzzy
+msgid "SquirrelMail internationalization list"
+msgstr "SquirrelMail 버전 %s"
+
+#, fuzzy
+msgid "Sort by:"
+msgstr "포트:"
+
+msgid "Relevance"
+msgstr ""
+
+#, fuzzy
+msgid "Search Archives"
+msgstr "검색 결과"
+
+#, fuzzy
+msgid "Reset Form"
+msgstr "편지함 삭제"
+
+msgid "Summary keyword:"
+msgstr ""
+
+#, fuzzy
+msgid "Sort By:"
+msgstr "포트:"
+
+msgid "ID"
+msgstr ""
+
+#, fuzzy
+msgid "Summary"
+msgstr "일"
+
+#, fuzzy
+msgid "Open Date"
+msgstr "열기 실패"
+
+#, fuzzy
+msgid "Close Date"
+msgstr "종료"
+
+#, fuzzy
+msgid "Submitter"
+msgstr "완료"
+
+msgid "Assignee"
+msgstr ""
+
+#, fuzzy
+msgid "Order:"
+msgstr "기타:"
+
+#, fuzzy
+msgid "Ascending"
+msgstr "전송"
+
+msgid "Descending"
+msgstr ""
+
+msgid "Search Bugtracker"
+msgstr ""
+
+msgid "You must type in a new password."
+msgstr ""
+
+msgid "You must also type in your new password in the verify box."
+msgstr ""
+
+msgid "Your new password does not match the verify password."
+msgstr ""
+
+msgid "You must type in your current password."
+msgstr ""
+
+#, fuzzy
+msgid "Your current password is not correct."
+msgstr "알 수 없는 사용자 또는 비밀번호 오류"
+
+#, php-format
+msgid "Your new password should be %s to %s characters long."
+msgstr ""
+
+#, fuzzy
+msgid "Your new password contains invalid characters."
+msgstr "별명이 잘못된 문자를 포함하고 있습니다."
+
+#, fuzzy
+msgid "Change Password"
+msgstr "이 단어 변경"
+
+#, fuzzy
+msgid "Current Password:"
+msgstr "비밀번호:"
+
+#, fuzzy
+msgid "New Password:"
+msgstr "비밀번호:"
+
+#, fuzzy
+msgid "Verify New Password:"
+msgstr "비밀번호:"
+
+msgid "Use this to change your email password."
+msgstr ""
+
+#, fuzzy
+msgid "User's Password"
+msgstr "비밀번호:"
+
+msgid "Current configuration requires LDAP support in PHP."
+msgstr ""
+
+msgid "Plugin is not configured correctly."
+msgstr ""
+
+#, php-format
+msgid "Setting of LDAP connection option %s to value %s failed."
+msgstr ""
+
+#, php-format
+msgid "Incorrect LDAP connection option: %s"
+msgstr ""
+
+msgid ""
+"Current PHP LDAP extension does not allow use of ldap_set_option() function."
+msgstr ""
+
+#, fuzzy
+msgid "Unable to use TLS."
+msgstr "갱신 오류"
+
+#, fuzzy, php-format
+msgid "Error: %s"
+msgstr "오류 "
+
+msgid "Unable to use LDAP TLS in current setup."
+msgstr ""
+
+msgid "Unable to bind to LDAP server."
+msgstr ""
+
+#, fuzzy, php-format
+msgid "Server replied: %s"
+msgstr "서버 응답: "
+
+msgid "Unable to find user's password attribute."
+msgstr ""
+
+msgid "Unable to rebind to LDAP server."
+msgstr ""
+
+msgid "LDAP server uses different attribute to store user's password."
+msgstr ""
+
+#, fuzzy
+msgid "Unable to connect to LDAP server."
+msgstr "서버 연결 없음"
+
+msgid "Unable to find user's DN."
+msgstr ""
+
+#, fuzzy
+msgid "Search error."
+msgstr "찾기"
+
+msgid "Multiple userid matches found."
+msgstr ""
+
+msgid "ldap_get_dn error."
+msgstr ""
+
+#, php-format
+msgid "Unsupported crypto: %s"
+msgstr ""
+
+msgid "PHP mhash extension is missing."
+msgstr ""
+
+msgid "System crypt library doesn't support standard DES crypt."
+msgstr ""
+
+msgid "System crypt library doesn't have MD5 support."
+msgstr ""
+
+msgid "System crypt library doesn't support extended DES crypt."
+msgstr ""
+
+msgid "System crypt library doesn't have Blowfish support."
+msgstr ""
+
+#, fuzzy
+msgid "unknown"
+msgstr "알 수 없는 일자"
+
+msgid "Unable to validate user's password."
+msgstr ""
+
+msgid "Blowfish is not supported by webserver's system crypt library."
+msgstr ""
+
+msgid "MD5 is not supported by webserver's system crypt library."
+msgstr ""
+
+msgid ""
+"Extended DES crypt is not supported by webserver's system crypt library."
+msgstr ""
+
+msgid ""
+"Standard DES crypt is not supported by webserver's system crypt library."
+msgstr ""
+
+msgid "PHP Curl extension is NOT available! Unable to change password!"
+msgstr ""
+
+msgid "Cannot change password! (Is user 'Self Configurable User' ?) (401)"
+msgstr ""
+
+#, fuzzy
+msgid "Cannot change password!"
+msgstr "이 단어 변경"
+
+msgid "Cannot connect to Database Server, please try later!"
+msgstr ""
+
+msgid "Database not found on server"
+msgstr ""
+
+msgid "SQL call failed, try again later."
+msgstr ""
+
+msgid "Duplicate login entries detected, cannot change password!"
+msgstr ""
+
+msgid "Password change was not successful!"
+msgstr ""
+
+msgid "Closing Connection"
+msgstr ""
+
+#, fuzzy
+msgid "Connecting to Password Server"
+msgstr "서버 연결 없음"
+
+msgid "No valid backend defined."
+msgstr ""
+
+msgid "Incorrent path to vmail.inc file."
+msgstr ""
+
+msgid "Invalid or corrupted vmail.inc file."
+msgstr ""
+
+msgid "Invalid user."
+msgstr ""
+
+#, fuzzy
+msgid "Empty domain"
+msgstr "명령어가 비어있습니다."
+
+#, fuzzy
+msgid "Empty domain password"
+msgstr "명령어가 비어있습니다."
+
+#, fuzzy
+msgid "Empty username"
+msgstr "사용자 이름:"
+
+msgid "Empty new password"
+msgstr ""
+
+#, fuzzy
+msgid "Server Capability response:"
+msgstr "서버 응답: "
+
+msgid ""
+"Select the IMAP commands you would like to run. Most commands require a "
+"selected mailbox so the select command is already setup. You can clear all "
+"the commands and test your own IMAP command strings. The commands are "
+"executed in order. The default values are simple IMAP commands using your "
+"default_charset and folder_prefix from SquirrelMail when needed."
+msgstr ""
+
+msgid ""
+"NOTE: These commands are live, any changes made will effect your current "
+"email account."
+msgstr ""
+
+#, fuzzy
+msgid "Select"
+msgstr "전체 선택"
+
+#, fuzzy
+msgid "Test Name"
+msgstr "테마 이름"
+
+#, fuzzy
+msgid "IMAP command string"
+msgstr "명령어가 비어있습니다."
+
+#, fuzzy
+msgid "Request:"
+msgstr "요청되었습니다."
+
+#, fuzzy
+msgid "No POP3 servers configured yet."
+msgstr "서버를 지정하지 않았습니다."
+
+#, fuzzy
+msgid "Click here to go to the options page."
+msgstr "다시 로그인 하시려면 여기를 누르세요."
+
+#, fuzzy, php-format
+msgid "Login OK: Inbox contains %s message"
+msgid_plural "Login OK: Inbox contains %s messages"
+msgstr[0] "로그인 확인: 편지함에 [ 가 있습니다."
+msgstr[1] "로그인 확인: 편지함에 [ 가 있습니다."
+
+#, fuzzy
+msgid "Width of popup window:"
+msgstr "편지쓰기 창의 폭"
+
+msgid "If set to 0, reverts to default value"
+msgstr ""
+
+#, fuzzy
+msgid "Height of popup window:"
+msgstr "편지쓰기 창의 높이"
+
+#, fuzzy
+msgid "uploaded media file"
+msgstr "내부 미디어 파일:"
+
+#, fuzzy
+msgid "none"
+msgstr "없음"
+
+#, fuzzy
+msgid "Upload Media File:"
+msgstr "내부 미디어 파일:"
+
+#, fuzzy
+msgid "Uploaded Media File:"
+msgstr "내부 미디어 파일:"
+
+#, fuzzy
+msgid "unavailable"
+msgstr "사용할 수 없습니다."
+
+#, php-format
+msgid "Media file %s will be removed, if you upload other media file."
+msgstr ""
+
+#, fuzzy
+msgid "Spam Service Type:"
+msgstr "IMAP 서버 형식"
+
+msgid "Free reporting"
+msgstr ""
+
+msgid "Member services"
+msgstr ""
+
+#, fuzzy
+msgid "Save Service Type"
+msgstr "저장된 스캔 형식"
+
+#, fuzzy
+msgid "SpamCop reporting"
+msgstr "SpamCop - 스팸 보고"
+
+#, fuzzy
+msgid "Translation Theme:"
+msgstr "번역"
+
+msgid ""
+"Selected translation engine is disabled. Please update your translation "
+"preferences."
+msgstr ""
+
+#, fuzzy
+msgid "Translation Preferences"
+msgstr "부서 환경설정"
+
+#, fuzzy
+msgid "Maximum of 25 kilobytes translated, powered by Systran"
+msgstr "10개의 언어쌍 사용, 최대 25 kb 까지 번역. Systran 사용"
+
+#, fuzzy
+msgid "No known limits, powered by GPLTrans (free, open source)"
+msgstr ""
+"8개의 언어쌍을 사용합니다. 제한사항은 없습니다. GTPTrans(프리, 오픈소스)의 도"
+"움을 받습니다."
+
+msgid "Transliterate unknown words:"
+msgstr ""
+
+msgid "When composing:"
+msgstr "작성 시기:"
+
+msgid "Not yet functional, currently does nothing"
+msgstr "아직 기능이 없습니다. 현재 동작하지 않습니다."
+
+msgid "Delivery error report"
+msgstr "전송 오류 보고"
+
+msgid "Undelivered Message Headers"
+msgstr "전송할 수 없는 메세지 헤더"
+
+msgid "This image has been removed for security reasons"
+msgstr ""
+
+#~ msgid "Unknown error"
+#~ msgstr "알 수 없는 오류"
+
+#~ msgid "To:"
+#~ msgstr "받는 사람:"
+
+#~ msgid "CC:"
+#~ msgstr "참조:"
+
+#~ msgid "BCC:"
+#~ msgstr "숨은 참조:"
+
+#~ msgid "Subject:"
+#~ msgstr "제목:"
+
+#~ msgid "said"
+#~ msgstr "님이 쓰시길"
+
+#~ msgid "Draft folder"
+#~ msgstr "임시 보관함"
+
+#~ msgid "Not available"
+#~ msgstr "사용할 수 없습니다."
+
+#~ msgid "CC"
+#~ msgstr "참조:"
+
+#~ msgid "Business Card"
+#~ msgstr "업무용 카드"
+
+#~ msgid "Click here to try again"
+#~ msgstr "다시 시도하려면 여기를 누르세요"
+
+#~ msgid "Unknown message number in reply from server: "
+#~ msgstr "알 수 없는 메세지 번호를 서버로부터 받았습니다:"
+
+#~ msgid "(unknown sender)"
+#~ msgstr "(알 수 없는 전송자)"
+
+#~ msgid "35 min."
+#~ msgstr "35 분."
+
+#~ msgid ""
+#~ "FREE - Osirusoft Relays - Osirusofts list of verified open relays. Seems "
+#~ "to include servers used by abuse@uunet.net auto-replies too."
+#~ msgstr "무료 - Osirusoft 중계 - abuse@uunet.net 자동 회신 사용 서버 포함"
+
+#~ msgid "FREE - Osirusoft Dialups - Osirusofts Dialup Spam Source list."
+#~ msgstr "무료 - Osirusoft 전화접속 - Osirusoft 전화접속 스팸 목록"
+
+#~ msgid ""
+#~ "FREE - Osirusoft Confirmed Spam Source - Sites that continually spam and "
+#~ "have been manually added after multiple nominations. Use with caution. "
+#~ "Seems to catch abuse auto-replies from some ISPs."
+#~ msgstr "무료 - Osirusoft에서 스팸을 확인하였습니다."
+
+#~ msgid ""
+#~ "FREE - Osirusoft Smart Hosts - List of hosts that are secure but relay "
+#~ "for other mail servers that are not secure."
+#~ msgstr ""
+#~ "무료 - Osirusoft 스마트 호스트 - 안전한 호스트이지만 다른 메일 서버로 중"
+#~ "계 기능은 안전하지 않은 호스트 목록"
+
+#~ msgid ""
+#~ "FREE - Osirusoft Spamware Developers - It is believed that these are IP "
+#~ "ranges of companies that are known to produce spam software. Seems to "
+#~ "catch abuse auto-replies from some ISPs."
+#~ msgstr ""
+#~ "무료 - Osirusoft 스팸웨어 개발자 - 스팸 소프트웨어를 만드는 것으로 알려진 "
+#~ "회사의 IP라고 생각됩니다. 어떤 ISP로부터 자동-회신 남용을 막는 것 같습니"
+#~ "다."
+
+#~ msgid ""
+#~ "FREE - Osirusoft Unconfirmed OptIn Servers - List of listservers that opt "
+#~ "users in without confirmation."
+#~ msgstr ""
+#~ "무료 - Osirusoft 확인되지 않은 OptIn 서버 - 확인과정없이 사용자가 opt 할 "
+#~ "수 있는 서버 목록"
+
+#~ msgid ""
+#~ "FREE - Osirusoft Insecure formmail.cgi scripts - List of insecure "
+#~ "formmail.cgi scripts. (planned)."
+#~ msgstr ""
+#~ "무료 - Osirusoft 안전하지 않은 formmail.cgi 스크립트 -  안전하지 않은 "
+#~ "formail.cgi 스크립트 목록(예정)"
+
+#~ msgid "FREE - Osirusoft Open Proxy Servers - List of Open Proxy Servers."
+#~ msgstr "무료 - Osirusoft 공개 프락시 서버 - 공개 프락시 서버 목록"
+
+#~ msgid "All Messages"
+#~ msgstr "모든 메세지"
+
+#~ msgid "POP3 noop:"
+#~ msgstr "POP3 noop:"
+
+#~ msgid "] messages"
+#~ msgstr "] 메세지"
+
+#~ msgid "No-one server in use. Try to add."
+#~ msgstr "사용중인 서버가 없습니다. 추가하시겠습니까."
+
+#~ msgid "Mofify a Server"
+#~ msgstr "서버 변경"
+
+#~ msgid "Hey! Wath do You are looking for?"
+#~ msgstr "이봐! 뭘 찾고 있는거야?"
+
+#~ msgid "Message details"
+#~ msgstr "상세 메세지"
+
+#~ msgid ""
+#~ "Select from the list of <b>server files</b> the media file to play when "
+#~ "new mail arrives.  Selecting <b>local media</b> will play the file "
+#~ "specified in the <b>local media file</b> box to play from the local "
+#~ "computer.  If no file is specified, the system will use a default from "
+#~ "the server."
+#~ msgstr ""
+#~ "<b>서버 파일 선택</b>은 새로운 메일이 도착했을 때 사용할 미디어 파일을 설"
+#~ "정합니다. <b>내부 미디어</b>에서 컴퓨터상의 <b>내부 미디어 파일</b>을 명시"
+#~ "할 수 있습니다. 만약 파일을 선택하지 않으면, 시스템은 서버의 기본값을 사용"
+#~ "하게 됩니다."
+
+#~ msgid "(local media)"
+#~ msgstr "(내부 미디어)"
+
+#~ msgid "New Mail Notification options saved"
+#~ msgstr "새메일 알림 설정이 저장되었습니다"
+
+#~ msgid ""
+#~ "<p>Your personal dictionary is <strong>currently encrypted</strong>. This "
+#~ "helps protect your privacy in case the web-mail system gets compromized "
+#~ "and your personal dictionary ends up stolen. It is currently encrypted "
+#~ "with the password you use to access your mailbox, making it hard for "
+#~ "anyone to see what is stored in your personal dictionary.</p> "
+#~ "<p><strong>ATTENTION:</strong> If you forget your password, your personal "
+#~ "dictionary will become unaccessible, since it can no longer be decrypted. "
+#~ "If you change your mailbox password, SquirrelSpell will recognize it and "
+#~ "prompt you for your old password in order to re-encrypt the dictionary "
+#~ "with a new key.</p>"
+#~ msgstr ""
+#~ "<p>개인 사전은 <strong>현재 암호화</strong>되어 있습니다. 이것은 웹메일 시"
+#~ "스템과 개인 사전 분실시 당신의 사생화를 보호할 수 있게 도와 줍니다. 현재 "
+#~ "메일함에 접근할 때 사용하는  암호로 암호화 되어 있기 때문에 개인사전에 저"
+#~ "장된 내용을 아무나 보기 어렵게 만듭니다.</p><p><strong>주의:</strong>만약 "
+#~ "암호를 모르는 경우, 개인 사전에 접근할 수 없어서, 암호해제를 할 수 없게 됩"
+#~ "니다. 만약 메일함의 암호를 변경하게 되는 경우, SquirrelSpell은 변경사항을 "
+#~ "인식하고 새로운 키로 사전을 재 암호화하기 위해 이전 암호를 요구하게 될 것"
+#~ "입니다.</p>"

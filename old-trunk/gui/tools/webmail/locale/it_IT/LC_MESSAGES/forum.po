@@ -1,0 +1,172 @@
+# Italian (it_IT) forum Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Andrea Volani <andreavola@gmail.com>, 2009.
+# $Id: compatibility.pot 10877 2006-03-04 11:22:22Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: forum 1.1\n"
+"Report-Msgid-Bugs-To: Sebastian Dolmen <sdolmen %AT% gmail %DOT% com>\n"
+"POT-Creation-Date: 2007-01-19 13:10+0100\n"
+"PO-Revision-Date: 2009-04-27 17:30+0100\n"
+"Last-Translator: Andrea Volani <andreavola@gmail.com>\n"
+"Language-Team: Italian <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: forum.php:52
+msgid "&nbsp;Forums"
+msgstr "&nbsp;Forum"
+
+#: forum.php:53
+msgid "Threads"
+msgstr "Discussioni"
+
+#: forum.php:54
+msgid "Last thread"
+msgstr "Ultima discussione"
+
+#: hooks.php:23
+msgid "Forum"
+msgstr "Forum"
+
+#: hooks.php:47
+msgid "Discussion board"
+msgstr "Forum di discussione"
+
+#: hooks.php:49
+msgid "A browser-based administrative interface."
+msgstr "Un' interfaccia amministrativa via browser."
+
+#: list.php:66 post.php:88 read.php:75
+msgid "Forum list"
+msgstr "Lista forum"
+
+#: list.php:66
+msgid "New thread"
+msgstr "Nuova discussione"
+
+#: list.php:72
+msgid "Current Page:"
+msgstr "Pagina corrente:"
+
+#: list.php:72
+msgid "of"
+msgstr "di"
+
+#: list.php:75 list.php:77
+msgid "Previous"
+msgstr "Precedente"
+
+#: list.php:80 list.php:82
+msgid "Next"
+msgstr "Successivo"
+
+#: list.php:88
+msgid "&nbsp;Subject"
+msgstr "&nbsp;Oggetto"
+
+#: list.php:89
+msgid "Views"
+msgstr "Visite"
+
+#: list.php:90
+msgid "Posts"
+msgstr "Messaggi"
+
+#: list.php:91
+msgid "Last post"
+msgstr "Ultimo messaggio"
+
+#: list.php:97 list.php:100
+msgid "by"
+msgstr "di"
+
+#: options.php:66 options.php:80
+msgid "Please fill in the name and the description."
+msgstr "Per favore inserisci il nome e la descrizione."
+
+#: options.php:110
+msgid "Options - Discussion board"
+msgstr "Opzioni - Forum di discussione"
+
+#: options.php:136 options.php:154 options.php:161 options.php:198
+msgid "Modify forum"
+msgstr "Modifica forum"
+
+#: options.php:142 options.php:179
+msgid "Name:"
+msgstr "Nome:"
+
+#: options.php:146 options.php:183
+msgid "Description:"
+msgstr "Descrizione:"
+
+#: options.php:151 options.php:188
+msgid "Forum will be visible"
+msgstr "Il forum sar&agrave; visibile"
+
+#: options.php:164
+msgid "Selected forum:"
+msgstr "Forum selezionato:"
+
+#: options.php:164
+msgid "Confirm delete of selected forum?"
+msgstr "Confermi l'eliminazione dei forum selezionati?"
+
+#: options.php:164
+msgid "Confirm delete"
+msgstr "Conferma eliminazione"
+
+#: options.php:173
+msgid "Create forum"
+msgstr "Crea forum"
+
+#: options.php:191
+msgid "Add this forum"
+msgstr "Aggiungi questo forum"
+
+#: options.php:203
+msgid "Forum name"
+msgstr "Nome forum"
+
+#: options.php:207
+msgid "Modify"
+msgstr "Modifica"
+
+#: options.php:207
+msgid "Delete"
+msgstr "Cancella"
+
+#: options.php:209
+msgid "No forum found."
+msgstr "Nessun forum trovato."
+
+#: post.php:72
+msgid "Please fill in the subject and the body."
+msgstr "Per favore inserisci l'oggetto e il testo."
+
+#: post.php:88 read.php:75
+msgid "Thread list"
+msgstr "Lista discussioni"
+
+#: post.php:101
+msgid "Subject"
+msgstr "Oggetto"
+
+#: post.php:107
+msgid "Post new topic"
+msgstr "Invia nuova discussione"
+
+#: read.php:63
+msgid "Please fill in the body of your reply."
+msgstr "Per favore inserisci il testo della tua risposta."
+
+#: read.php:108
+msgid "Reply"
+msgstr "Rispondi"
+
+#: read.php:114
+msgid "Post message"
+msgstr "Invia messaggio"

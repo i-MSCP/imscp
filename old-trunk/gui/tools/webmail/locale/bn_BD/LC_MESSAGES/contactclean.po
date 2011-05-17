@@ -1,0 +1,276 @@
+# Bengali (bn_BD) contactclean Translation (SquirrelMail plugin)
+# Copyright (c) 2003-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Israt Jahan <israt@ankur.org.bd>, 2009.
+# $Id: contactclean.pot 13047 2008-03-22 19:40:52Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: contactclean 3.3.1\n"
+"Report-Msgid-Bugs-To: Ian Rogers <admin@contactclean.com>\n"
+"POT-Creation-Date: 2007-10-27 00:30+0200\n"
+"PO-Revision-Date: 2008-12-30 11:16+0600\n"
+"Last-Translator: Israt Jahan <israt@ankur.org.bd>\n"
+"Language-Team:  Bengali <ankur-bd-l10n@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: addressbook_functions.php:12
+msgid "Verify Contacts in Addressbook(s)"
+msgstr "ঠিকানাবই(গুলোর) যোগাযোগ পরীক্ষা করুন"
+
+#: options.php:40 options.php:44
+msgid "Set E-mail Address"
+msgstr "ই-মেইল ঠিকানা নিযুক্ত করুন"
+
+#: options.php:49
+msgid ""
+"You need to set your address in the <a href=\"options.php?optpage=personal"
+"\">Personal Information options page</a>"
+msgstr ""
+" <a href=\"options.php?optpage=personal\"> ব্যক্তিগত তথ্য অপশনগুলোর পৃষ্ঠায় আপনার "
+"ঠিকানা দেয়া প্রয়োজন</a>"
+
+#: options.php:51
+msgid ""
+"Once you've done that, come back here to continue the ContactClean setup "
+msgstr "একবার এটি করলে, পুনরায় সেটি করতে যোগাযোগ পরিস্কার সেটআপে আসুন। "
+
+#: options.php:81
+msgid "Confirm or Register with ContactClean"
+msgstr "যোগাযোগপরিস্কার এর সাথে নিশ্চিত করুন বা নিবন্ধন করুন"
+
+#: options.php:85
+#, php-format
+msgid "Register with %s"
+msgstr "%s এর সাথে নিবন্ধন করুন"
+
+#: options.php:90
+msgid ""
+"If you don't have an account with ContactClean then you need to register "
+"before continuing further."
+msgstr ""
+"যদি আপনার যোগাযোগপরিস্কারের সাথে কোন একাউন্ট না থাকে, তবে আরও কাজ করতে হলে "
+"আপনাকে নিবন্ধন করতে হবে।"
+
+#: options.php:96
+msgid "Current email address"
+msgstr "বর্তমান ইমেইল ঠিকানা"
+
+#: options.php:100
+msgid "Previous email address"
+msgstr "আগের ইমেইল ঠিকানা"
+
+#: options.php:102
+msgid "optional"
+msgstr "ঐচ্ছিক"
+
+#: options.php:106
+msgid "Register Address"
+msgstr "তালিকা ভুক্ত ঠিকানা"
+
+#: options.php:113
+#, php-format
+msgid "Then fetch your %s and paste it in below."
+msgstr "আপনার %s নিয়ে আসুন এবং নীচে সাংটুন।"
+
+#: options.php:114
+msgid "search-license key"
+msgstr "লাইসেন্স কী অনুসন্ধান"
+
+#: options.php:128
+msgid "Signature Options"
+msgstr "স্বাক্ষর পছন্দসমূহ"
+
+#: options.php:134
+msgid "Set Signature"
+msgstr "স্বাক্ষর নিযুক্ত করা"
+
+#: options.php:139
+#, php-format
+msgid ""
+"You don't have a signature. <a %s>Click here</a> to set one and share "
+"ContactClean with others."
+msgstr ""
+"আপনার স্বাক্ষর নেই। একটি নিযুক্ত করতে এবং যোগাযোগপরিস্কার অন্যদের সাথে ভাগাভাগি "
+"করতে <a %s>এখানে ক্লিক করুন</a>।"
+
+#: options.php:147
+msgid ""
+"Keep in Touch - make sure your address book is up to date by using "
+"ContactClean's easy to use services. "
+msgstr ""
+"যোগাযোগ রাখুন - এটি নিশ্চিত করুন যে আপনার ঠিকানাবই যোগাযোগপরিস্কারের সহজ সেবা "
+"ব্যবহার করে হালনাগাদ আছে। "
+
+#: options.php:148
+msgid "To find out more go to www.ContactClean.com"
+msgstr "আরও জানতে www.ContactClean.com এ যান"
+
+#: options.php:171
+msgid "Signature"
+msgstr "স্বাক্ষর"
+
+#: options.php:179
+msgid "Use Signature"
+msgstr "স্বাক্ষর ব্যবহার করুন"
+
+#: options.php:185
+msgid "Prefix Signature with '-- ' Line"
+msgstr " '-- ' লাইন সহ ব্যক্তির নামের আগে ব্যবহৃত শব্দ স্বাক্ষর"
+
+#: options.php:195 verify.php:339
+msgid "Powered by"
+msgstr "দ্বারা চালিত"
+
+#: options.php:202
+msgid "See your account"
+msgstr "আপনার একাউন্ট দে‌খুন"
+
+#: options_functions.php:29
+msgid ""
+"Set your ContactClean account details to enable the Addressbook cleaning "
+"function."
+msgstr ""
+"ঠিকানা বইয়ের পরিস্কার করার ফাংশন সক্ষম করতে আপনার যোগাযোগপরিস্কার একাউন্ট নিযুক্ত "
+"করুন।"
+
+#: options_functions.php:46
+msgid "Register my Old Address(es) with ContactClean"
+msgstr "যোগাযোগপরিস্কারের সাথে আমার পুরাতন একাউন্ট(গুলো) নিবন্ধনকরুন"
+
+#: options_functions.php:48
+msgid "(discards changes made on this form so far)"
+msgstr "(এই ফরমে গঠিত পরিবর্তনগুলো মুছে দিন)"
+
+#: options_functions.php:51
+msgid "Previous Address"
+msgstr "পূর্ববর্তী ঠিকানা"
+
+#: verify.php:49
+msgid "You haven't set your email address yet."
+msgstr "আপনি এখনও আপনার ইমেইল ঠিকানা নিযুক্ত করেননি।"
+
+#: verify.php:52
+#, php-format
+msgid ""
+"You need to go to the <a href='%ssrc/options.php?optpage=personal'>Personal "
+"Information options page</a> and set your own email address before you can "
+"verify your address book"
+msgstr ""
+"আপনার <a href='%ssrc/options.php?optpage=personal'>ব্যক্তিগত তথ্য পছন্দ পৃষ্ঠা</"
+"a>তে যাওয়া প্রয়োজন এবং আপনার ঠিকানাবই পরীক্ষা করার পূর্বে আপনার ইমেইল ঠিকানা "
+"নিযুক্ত করতে হবে"
+
+#: verify.php:61
+msgid "You haven't set your ContactClean.com account key yet."
+msgstr "আপনি আপনার যোগাযোগপরিস্কার.com একাউন্ট কী এখনো নিযুক্ত করেননি।"
+
+#: verify.php:64
+#, php-format
+msgid ""
+"You need to go to the <a href='%ssrc/options.php?"
+"optpage=contactclean'>ContactClean options page</a>"
+msgstr ""
+"আপনার <a href='%ssrc/options.php?optpage=contactclean'>যোগাযোগপরিস্কার অপশনের "
+"পৃষ্ঠা</a>তে যাওয়া প্রয়োজন"
+
+#: verify.php:80
+msgid "No personal address book is defined. Contact your administrator."
+msgstr "ব্যক্তিগত ঠিকানাবই উল্লেখ নেই। আপনার প্রশাসকের সাথে যোগাযোগ করুন।"
+
+#: verify.php:93
+msgid "Nothing in the addressbook (is this what you expect?) - nothing to do"
+msgstr "ঠিকানা বইয়ে কিছু নেই (এটি কি আপনি আশা করেছিলেন?) - কিছু করার নেই"
+
+#: verify.php:122
+msgid "No quota returned. Some kind of soap error!!!"
+msgstr "কোন নির্দিষ্ট, নির্ধারিত অংশ ফিরে আসেনি। কিছু ধারাবহিক ত্রুটি!!!"
+
+#: verify.php:126
+msgid "You are out of quota. Please try again later"
+msgstr "আপনি নির্দিষ্ট, নির্ধারিত অংশের বাইরে। অনুগ্রহ করে পরে আবার চেষ্টা করুন"
+
+#: verify.php:209
+msgid ""
+"ERROR: You need to select some addresses to use the 'Replace Selected' "
+"button!"
+msgstr ""
+"ত্রুটি: 'নির্বাচিতটিকে স্থানান্তর' বোতাম ব্যবহার করতে আপনাকে কিছু ঠিকানা নির্বাচন "
+"করতে হবে!"
+
+#: verify.php:222
+msgid "Updating the addressbook"
+msgstr "ঠিকানাবই হালনাগাদ করছে"
+
+#: verify.php:234
+#, php-format
+msgid "Replacing %s with %s"
+msgstr "%2$s দ্বারা %1$s পুনঃস্থাপিত হচ্ছে"
+
+#: verify.php:237
+#, php-format
+msgid "Changed from %s => %s by ContactClean plugin %s"
+msgstr "যোগাযোগপরিস্কার প্লাগিন %3$s দ্বারা %1$s => %2$s তে পরিবর্তিত"
+
+#: verify.php:251
+msgid "ERROR"
+msgstr "ত্রুটি"
+
+#: verify.php:278
+msgid ""
+"The following new addresses have been found!<p>Select the ones you want to "
+"update in your addressbook.<p>"
+msgstr ""
+"নিম্নোক্ত নতুন ঠিকানা গুলো পাওয়া গেছে!<p>একটি নির্বাচন করুন যেটিকে আপনি আপনার "
+"ঠিকানা বইয়ে হালনাগাদ করতে চান।<p>"
+
+#: verify.php:286
+msgid "Nickname"
+msgstr "ছদ্মনাম"
+
+#: verify.php:287
+msgid "Name"
+msgstr "নাম"
+
+#: verify.php:288
+msgid "E-mail"
+msgstr "ই-মেইল"
+
+#: verify.php:289
+msgid "Replace?"
+msgstr "স্থলাভিষিক্ত?"
+
+#: verify.php:290
+msgid "Replace with"
+msgstr "দ্বারা স্থলাভিষিক্ত করা"
+
+#: verify.php:320
+msgid "Your address book seems completely up to date."
+msgstr "আপনার ঠিকানাবই সম্পূর্নভাবে হালনাগাদ হয়েছে বলে মনে হচ্ছে।"
+
+#: verify.php:321
+msgid "Check Again"
+msgstr "আবার পরীক্ষা করুন"
+
+#: verify.php:330
+msgid ""
+"% entries in your addressbook have been registered with the ContactClean.com "
+"database to await authorisation with the searchee. Please try again in a few "
+"days time in case you have been authorised to see some new addresses."
+msgstr ""
+"% এন্ট্রিগুলো আপনার ঠিকানা বইয়ে যোগাযোগ.com উপাত্তভান্ডারে অনুসন্ধানকারীদের অনুমতির "
+"অপেক্ষায় নিবন্ধনকৃত। আরও নতুন ঠিকানা দেখার অনুমতি পেতে অনুগ্রহ করে কিছু দিনের মধ্য "
+"আবার চেষ্টা করুন।"
+
+#: verify.php:376
+msgid "Replace selected"
+msgstr "নির্বাচিতটিকে স্থলাভিষিক্ত করুন"
+
+#: verify.php:377
+msgid "Replace all"
+msgstr "সব স্থলাভিষিক্ত করুন"
+
+#: verify.php:378
+msgid "Refresh"
+msgstr "সতেজ করুন"

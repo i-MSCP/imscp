@@ -1,0 +1,100 @@
+# Czech (cs_CZ) vkeyboard Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# PaJaSoft <pajasoft@pajasoftovi.cz>, 2005.
+# $Id: vkeyboard.po 13593 2009-04-24 16:20:57Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: vkeyboard 0.8\n"
+"Report-Msgid-Bugs-To: Daniel K. Imori <daniel@bastion.com.br>\n"
+"POT-Creation-Date: 2004-08-20 17:38-0300\n"
+"PO-Revision-Date: 2005-02-10 13:00-0100\n"
+"Last-Translator: PaJaSoft <pajasoft@pajasoftovi.cz>\n"
+"Language-Team: Czech <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: vkeyboard.php:115
+msgid " seconds."
+msgstr " sekundami."
+
+#: functions.php:49
+msgid "Are you using a public computer?"
+msgstr "<strong>Používáte právě veřejný počítač?</strong>"
+
+#: vkeyboard.php:161
+msgid "Clear"
+msgstr "Vyčistit"
+
+#: vkeyboard.php:166
+msgid "Close"
+msgstr "Zavřít"
+
+#: functions.php:51
+msgid "Enter your password with the "
+msgstr "Vložte Vaše heslo pomocí "
+
+#: vkeyboard.php:107
+msgid "Enter your password:"
+msgstr "Vložte Vaše heslo:"
+
+#: help.php:60
+msgid ""
+"For this, you must point the mouse and keep it for few seconds on the key "
+"that you want to type."
+msgstr ""
+"Nyní musíte nasměrovat Vaši myš na klávesu, kterou hodláte stisknout a  "
+"ponechat ji několik sekund v klidu."
+
+#: vkeyboard.php:109
+msgid "Help"
+msgstr "Nápověda"
+
+#: help.php:56
+msgid ""
+"It protects your password against keyloggers, which are hidden programs that "
+"capture everything that you type or click."
+msgstr ""
+"Chrání Vaše heslo proti programům typu keylogger, které jsou skryté a "
+"monitorují vše, co napíšete."
+
+#: help.php:54
+msgid "It's a keyboard that simulates a real keyboard. ;)"
+msgstr "Toto je klávesnice, která simuluje reálnou klávesnici. ;)"
+
+#: vkeyboard.php:156
+msgid "Login"
+msgstr "Přihlásit"
+
+#: functions.php:61
+msgid "Open Virtual Keyboard"
+msgstr "Otevři virtuální klávesnici"
+
+#: help.php:58
+msgid ""
+"So, you can increase your security, using the virtual keyboard and its "
+"\"automatic click\" function."
+msgstr ""
+"Použitím této virtuální klávesnice a funkce \"automatické klikání\" můžete "
+"zvýšit Vaši bezpečnost."
+
+#: vkeyboard.php:113
+msgid "The key will be pressed in "
+msgstr "Klávesa byla stištěna před "
+
+#: vkeyboard.php:52
+msgid "Virtual Keyboard"
+msgstr "virtuální klávesnice"
+
+#: help.php:46
+msgid "Virtual Keyboard: Help"
+msgstr "Teclado Virtual: Ajuda"
+
+#: help.php:51
+msgid "What's a virtual keyboard?"
+msgstr "Co je virtuální klávesnice?"
+
+#: functions.php:56
+msgid "virtual keyboard"
+msgstr "virtuální klávesnice."

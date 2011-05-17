@@ -1,0 +1,249 @@
+#!/bin/sh
+
+# i-MSCP a internet Multi Server Control Panel
+#
+# Copyright (C) 2010 by internet Multi Server Control Panel - http://i-mscp.net
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+# or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+# for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>
+#
+# The Original Code is "i-MSCP internet Multi Server Control Panel".
+#
+# The Initial Developer of the Original Code is i-MSCP Team.
+# Portions created by Initial Developer are Copyright (C) 22010 by
+# internet Multi Server Control Panel. All Rights Reserved.
+#
+# @category		i-MSCP
+# @copyright	2010 by i-MSCP | http://i-mscp.net
+# @author		Daniel Andreca <sci2tech@i-mscp.net>
+# @version		SVN: $Id: display-functions 3917 2010-11-30 21:20:52Z sci2tech $
+# @link			http://i-mscp.net i-MSCP Home Site
+# @license		http://www.gnu.org/licenses/ GPL v2
+
+# colorStart() {{{
+#
+# Start colorize text
+# @param string ${1}	color name
+# @return	void
+colorStart(){
+	local _color="${1}" _temp=
+	#if no color is specified assume red
+	if [ -z "${_color}" ]; then
+		_color='red'
+	fi
+	#if variable color is defined
+	if [ ! -z "${_color}" ]; then
+		#assign to variable code for color ($red variable will contain "0;31" string)
+		local \
+			black="0;30" \
+			dark_gray="1;30" \
+			red="0;31" \
+			light_red="1;31" \
+			green="0;32" \
+			light_green="1;32" \
+			brown="0;33" \
+			yellow="1;33" \
+			blue="0;34" \
+			light_blue="1;34" \
+			purple="0;35" \
+			light_purple="1;35" \
+			cyan="0;36" \
+			light_cyan="1;36" \
+			light_gray="0;37" \
+			white="1;37"
+		#assign to $_temp string contained in $color variable
+		eval _temp=\$${_color}
+		#if $_temp variable is not empty
+		if [ ! -z "${_temp}" ]; then
+			#write start code for color
+			writelog "\033[${_temp}m"
+		fi
+	fi
+}
+# }}}
+
+# colorEnd() {{{
+#
+# End formated output
+# @return	void
+colorEnd(){
+	#write end code for color
+	 writelog "\033[0m"
+}
+# }}}
+
+# colorEnd() {{{
+#
+# print a text in color
+# @param string ${1}	color to use
+# @param string ${2}	text to color
+# @return	void
+colortxt() {
+	local  _color="${1}" _text="${2}"
+	#if no color is specified trigger dev error
+	if [ -z "${_color}" ]; then
+		writelog "[ERROR] colortxt: Not enought parameters!\n"
+		exit 1
+	fi
+	#if no text is specified assume no color but text
+	if [ -z "${_text}" ]; then
+		_color=''
+		_text="${1}"
+	fi
+	#print text in color
+	colorStart "${_color}"; writelog "${_text}"; colorEnd;
+}
+# }}}
+
+# oktxt() {{{
+#
+# print a text in format [ $text ] using green color
+# @param string ${1}	text to write
+# @return	void
+oktxt() {
+	local _text=$1
+	#if $_text variable is empty assume ok as wanted text
+	if [ -z $_text ]; then _text='ok'; fi
+	_text=$(echo "$_text" | tr [:lower:] [:upper:])
+	writelog ' [ '; colortxt 'green' $_text; writelog " ]"
+}
+# }}}
+
+# warntxt() {{{
+#
+# print a text in format [ $text ] using yellow color
+# @param string ${1}	text to write
+# @return	void
+warntxt() {
+	local _text="${1}"
+	#if $_text variable is empty assume warning as wanted text
+	if [ -z $_text ]; then _text='warning'; fi
+	_text=$(echo "$_text" | tr [:lower:] [:upper:])
+	writelog ' [ '; colortxt 'yellow' "${_text}"; writelog " ]"
+}
+# }}}
+
+# failtxt() {{{
+#
+# print a text in format [ $text ] using red color and end script
+# @param string ${1}	text to write
+# @return	void
+failtxt() {
+	local _text="${1}"
+	#if $_text variable is empty assume fail as wanted text
+	if [ -z "$_text" ]; then _text='fail'; fi
+	_text=$(echo "$_text" | tr [:lower:] [:upper:])
+	writelog ' [ '; colortxt 'red' "${_text}"; writelog " ]\n"
+	writelog '[ '; colortxt 'red' 'EXITING...'; writelog " ]\n"
+	exit 1
+}
+# }}}
+
+# title() {{{
+#
+# print a text in using underline
+# @param string ${1}	text to write
+# @return	void
+title() {
+	writelog "\033[4m${1}";
+	writelog "\033[0m\n";
+}
+# }}}
+
+# getSize() {{{
+#
+# get line number and line height for used console
+# @return	void
+getSize() {
+	test -x /usr/bin/tty && CONSOLE=`/usr/bin/tty`
+	test -z "$CONSOLE" && CONSOLE=/dev/console
+	SIZE=$(stty size < $CONSOLE)
+	SCREEN_W=${SIZE#*\ }
+	SCREEN_H=${SIZE%%\ *}
+	#if can`t read dimensions (ex:serial console) assume default size
+	if [ $SCREEN_W -eq 0 ];then SCREEN_W=80; fi
+	if [ $SCREEN_H -eq 0 ];then SCREEN_H=40; fi
+}
+# }}}
+
+# setDimensions() {{{
+#
+# calculate max usable screen size for dialog output
+# @param string ${1}	text to display
+# @return	void
+setDimensions() {
+	getSize
+	if [ "$SCREEN_W" -gt 0 ]; then MAX_W=$(($SCREEN_W-2)); fi
+	if [ "$SCREEN_H" -gt 0 ]; then MAX_H=$(($SCREEN_H-2)); fi
+	TEXT_W=`echo "$1" | wc -L`
+	TEXT_H=`echo "$1" | wc -l`
+	DIALOG_H=$(($TEXT_H+8))
+	THRESH=$((2*$DIALOG_H))
+	DIALOG_W=$(($TEXT_W+8))
+	if [ $DIALOG_W -lt $THRESH ]; then DIALOG_W=$((2*$DIALOG_W)); fi
+	if [ "$DIALOG_W" -lt 20 ]; then DIALOG_W=20; fi
+	if [ "$DIALOG_H" -lt 10 ]; then DIALOG_H=10; fi
+	if [ "$DIALOG_W" -gt "$MAX_W" ]; then DIALOG_W=$MAX_W; fi
+	if [ "$DIALOG_H" -gt "$MAX_H" ]; then DIALOG_H=$(($MAX_H-1)); fi
+}
+# }}}
+
+# msgbox() {{{
+#
+# Display a dialog message box
+# @param string ${1}	text to display
+# @param string | null ${2}	if not null set window title
+# @return	void
+msgbox() {
+	setDimensions "$1"
+	if [ "${2}" ]; then params="--title '${2}'"; fi
+	eval "$DIALOG --colors ${params} --msgbox '${1}' ${DIALOG_H} ${DIALOG_W}"
+}
+# }}}
+
+# msgopts() {{{
+#
+# Display a dialog list of option
+# @param string ${1}	List title
+# @param string ${2}	Option list
+# @param string ${3}	default selected option
+# @return	void
+msgopts() {
+	local _params='' _title="${1}" _options="${2}" _default="${3}" _size=''
+	if ( [ -z "${1}" ] || [ -z "${2}" ] || [ -z "${3}" ] ); then colortxt "makeopts need 3 parameter! none provided!!! "; failtxt; exit 1; fi
+	#if option is equal default set as selected
+	for OPTION in ${_options}; do
+		if [ "${OPTION}" = "${_default}" ]; then
+			_params="$_params ${OPTION} '' ON"
+		else
+			_params="$_params ${OPTION} '' OFF"
+		fi
+	done
+	_size=$(echo "${_options}" | wc -w)
+	setDimensions "$1"
+	eval "$DIALOG --radiolist '${_title}' $(($_size+$DIALOG_H)) ${DIALOG_W}  ${_size} ${_params}"
+}
+# }}}
+
+# msgask() {{{
+#
+# Display a question windows
+# @param string ${1}	text to display
+# @param string | null ${2}	if not null set window title
+# @return	void
+msgask() {
+	setDimensions "${1}"
+	if [ "${2}" ]; then params="--title '${2}'"; fi
+	eval "${DIALOG} ${params} --yesno '${1}' ${DIALOG_H} ${DIALOG_W}"
+}
+# }}}

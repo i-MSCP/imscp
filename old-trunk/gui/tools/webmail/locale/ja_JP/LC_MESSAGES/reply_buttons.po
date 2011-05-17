@@ -1,0 +1,27 @@
+# Japanese (ja_JP) archive_mail translation (SquirrelMail plugin)
+# Copyright (c) 2005-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Andre Nicholson <andre@neo-anime.org>, 2005.
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-03-15 02:14+0100\n"
+"PO-Revision-Date: 2005-10-22 17:50-0400\n"
+"Last-Translator: Andre Nicholson <andre@neo-anime.org>\n"
+"Language-Team: Japanese  <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=euc-jp\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Show Reply Button Above Message List"
+msgstr "返信ボタンはメッセージ一の種類毎の上に表示する"
+
+msgid "Show Reply All Button Above Message List"
+msgstr "全員に返信ボタンはメッセージ一の種類毎の上に表示する"
+
+msgid "Reply"
+msgstr "返信"
+
+msgid "Reply All"
+msgstr "全員に返信"

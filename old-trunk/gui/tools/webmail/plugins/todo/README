@@ -1,0 +1,74 @@
+/*******************************************************************************
+
+    Author ......... Wolf Bergenheim
+    Contact ........ wolf@bergenheim.net
+    Home Site ...... http://wolf.bergenheim.net/src
+    Program ........ To-Do Reminder
+    Version ........ 0.5
+    Purpose ........ Storing and displaying reminders
+    Thanks To ...... Jimmy Conner for the Notes plugin, and
+		   	  		 Kerem Erkan for the show_user_and_ip plugin
+                     Tomas Kulivas for bugfixing / teasting with SM 1.4.2
+
+*******************************************************************************/
+
+--Purpose--
+
+    To store reminders (with a deadline, and optionally a priority).
+
+
+----[ Features
+
+	Remind on overdue tasks at login.
+	Display tasks in the left bar.
+	Indicate (with a color code) tasks that are overdue.
+	Configurable colors.
+	Optional priority.
+	Sorting on date and priority.
+
+----[ Installation
+
+    Install just like any other plugin, just untar it in the plugin directory,
+    it will create a directory called todo.
+    Run conf.pl and add it to your list, and you are rolling
+
+    Edit config.php to change the
+        max number of reminders
+        max size of a reminder (set to 0 to disable)
+        max size of all the reminders (set to 0 to disable)
+		color of the text, when a task is overdue.
+
+    
+
+----[ Future Changes
+
+	Perhaps hook it to a database? A cronjob to send reminder email?
+	i18 support Perhaps some new fields: completion %?
+
+    Got any ideas or complaints, please e-mail me!
+
+----[ Credits
+	
+	I shamelessly stole stuff from the show_ip_and_username, and notes
+	plugins. Thanks to the authors (Kerem Erkan and Jimmy Conner)of those
+	plugins (:. Tomas Kulivas was kind ennough to fix the Max todo items to
+	actually work (:
+
+----[ Changelog
+
+	 --- 0.5 ---
+	 	 Only Bugfixes. Thanks to Tomas Kulivas for bugfixing and 
+		 testing with SM 1.4.2. Tomas also fixed the Max number of
+		 todo items, so it actually works.
+
+	 --- 0.4 ---
+	 	 More Bugfixes. Added priority coloring.
+
+	 --- 0.3 ---
+	 	 Bugfixes. RG Off support.
+
+     --- 0.2 ---
+	 	 Added sorting and optional priority.  
+     --- 0.1 ---
+	 	 Initial release.
+

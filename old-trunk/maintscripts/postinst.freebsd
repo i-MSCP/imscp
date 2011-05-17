@@ -1,0 +1,255 @@
+#!/bin/sh
+
+# i-MSCP a internet Multi Server Control Panel
+#
+# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2010 by internet Multi Server Control Panel - http://i-mscp.net
+#
+# Author: Laurent Declercq <laurent.declercq@i-mscp.net>
+# Author: BeNe <bene@i-mscp.net>
+# Version: $Id$
+#
+# The contents of this file are subject to the Mozilla Public License
+# Version 1.1 (the "License"); you may not use this file except in
+# compliance with the License. You may obtain a copy of the License at
+# http://www.mozilla.org/MPL/
+#
+# Software distributed under the License is distributed on an "AS IS"
+# basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+# License for the specific language governing rights and limitations
+# under the License.
+#
+# The Original Code is "ispCP ? (OMEGA) a Virtual Hosting Control Panel".
+#
+# The Initial Developer of the Original Code is ispCP Team.
+# Portions created by Initial Developer are Copyright (C) 2006-2010 by
+# isp Control Panel. All Rights Reserved.
+#
+# Portions created by the i-MSCP Team are Copyright (C) 2010 by
+# internet Multi Server Control Panel. All Rights Reserved.
+#
+# The i-MSCP Home Page is:
+#
+#    http://i-mscp.net
+#
+
+# IMPORTANT:
+# This script must be idempotent.
+
+set -e
+
+# Including the helper library
+SELFDIR=$(dirname "$0")
+. $SELFDIR/maintainer-helper.sh
+
+CMD_MD5=/sbin/md5
+CMD_SCREEN=/usr/local/bin/screen
+
+case "$1" in
+
+    configure)
+
+		# System Init configuration
+		print_title 'System Init configuration: '
+
+		# Add the needed i-MSCP Services to /etc/rc.conf for the autostart
+		# Check if the i-MSCP part exist in config
+		if [ -f "/etc/rc.conf" ] ; then
+			# Get the current /etc/rc.conf content without the i-MSCP configuration
+			# part if it exists
+			CUR_CONF=$($CMD_SED -e '/^# Needed i-MSCP Services - Begin/,/^# Needed i-MSCP Services - End/d' /etc/rc.conf)
+			printf "$CUR_CONF\n" > /etc/rc.conf
+		fi
+
+cat << EOF >> /etc/rc.conf
+# Needed i-MSCP Services - Begin
+proftpd_enable="YES"
+mysql_enable="YES"
+apache22_http_accept_enable="YES"
+apache22_enable="YES"
+Cron_enable="YES"
+named_enable="YES"
+courier_authdaemond_enable="YES"
+courier_imap_imapd_enable="YES"
+courier_imap_imapd_ssl_enable="NO"
+courier_imap_pop3d_enable="YES"
+courier_imap_pop3d_ssl_enable="NO"
+postfix_enable="YES"
+policyd_weight_enable="YES"
+postgrey_enable="YES"
+saslauthd_enable="YES"
+spamd_enable="NO"
+amavisd_enable="NO"
+imscp_daemon_enable="YES"
+# Disable Sendmail, because of Postfix
+sendmail_enable="NO"
+sendmail_submit_enable="NO"
+sendmail_outbound_enable="NO"
+sendmail_msp_queue_enable="NO"
+# Needed i-MSCP Services - End
+EOF
+
+		print_status
+
+		# Patch AWStats & PHP Temp-Script
+		print_title 'Patch AWStats & PHP Temp-Script: '
+
+		$CMD_SED s/"\/etc\/awstats"/"\/usr\/local\/etc\/awstats"/g $ROOT_DIR/engine/awstats/awstats_updateall.pl > $ROOT_DIR/engine/awstats/awstats_updateall.pl
+		$CMD_SED -i'.bak' -e s"/bin\/bash/usr\/local\/bin\/bash"/ $ROOT_DIR/engine/tools/imscp-del-phptemp.sh
+
+		print_status
+
+		# FastCGI Apache module Configuration
+		print_title 'Apache configuration: '
+
+		# Enable FastCGI module (fcgid|fastcgi) and add them to httpd.conf
+		if [ ! -z "$PHP_FASTCGI" ] ; then
+			HTTPDCONF="/usr/local/etc/apache22/httpd.conf"
+
+			if [ "$PHP_FASTCGI" = "fastcgi" ]; then
+				# Ensure that fcgid is *NOT* enabled
+				$CMD_SED -i'.bak' '/[^#]*LoadModule.*mod_fcgid.so/d' $HTTPDCONF
+				$CMD_SED -i'.bak' '/[^#]*Include.*etc\/apache22\/extra\/fcgid_imscp.conf/d' $HTTPDCONF
+
+				# and ensure fastcgi *IS* enabled
+				if ! $CMD_GREP -q "^[^#]*LoadModule.*mod_fastcgi.so" $HTTPDCONF; then
+					# The LoadModule statement should be included before the
+					# following Include statement:
+					# Include etc/apache22/Includes/*.conf
+					$CMD_SED -i'.bak' '/Include etc\/apache22\/Includes\/\*\.conf/d' $HTTPDCONF
+
+					echo 'LoadModule fastcgi_module libexec/apache22/mod_fastcgi.so' >> $HTTPDCONF
+					echo 'Include etc/apache22/Includes/*.conf' >> $HTTPDCONF
+				fi
+
+				if ! $CMD_GREP -q "^[^#]*Include.*etc/apache22/extra/fastcgi_imscp.conf" $HTTPDCONF; then
+					echo 'Include etc/apache22/extra/fastcgi_imscp.conf' >> $HTTPDCONF
+				fi
+
+				# Create the needed folder for FastCGI-Socket and set correct permissions
+				mkdir -p /var/run/fastcgi
+				$CMD_CHOWN -R $APACHE_USER:$APACHE_GROUP /var/run/fastcgi >> $LOGFILE 2>&1 || failed
+				$CMD_CHMOD -R 0777 /var/run/fastcgi >> $LOGFILE 2>&1 || failed
+			else
+				# Ensure that fastcgi is *NOT* enabled
+				$CMD_SED -i'.bak' '/[^#]*LoadModule.*mod_fastcgi.so/d' $HTTPDCONF
+				$CMD_SED -i'.bak' '/[^#]*Include.*etc\/apache22\/extra\/fastcgi_imscp.conf/d' $HTTPDCONF
+
+				# and ensure fcgid *IS*
+				if ! $CMD_GREP -q "^[^#]*LoadModule.*mod_fcgid.so" $HTTPDCONF; then
+					echo 'LoadModule fcgid_module libexec/apache22/mod_fcgid.so' >> $HTTPDCONF
+				fi
+
+				if ! $CMD_GREP -q "^[^#]*Include.*etc/apache22/extra/fcgid_imscp.conf" $HTTPDCONF; then
+					echo 'Include etc/apache22/extra/fcgid_imscp.conf' >> $HTTPDCONF
+				fi
+
+				# Create needed Folder for fcgid-Socket and set correct Permissions
+				mkdir -p /var/run/fcgidsock
+				$CMD_CHOWN -R $APACHE_USER:$APACHE_GROUP /var/run/fcgidsock >> $LOGFILE 2>&1 || failed
+				$CMD_CHMOD -R 0777 /var/run/fcgidsock >> $LOGFILE 2>&1 || failed
+			fi
+		fi
+
+		print_status
+
+		# Postfix Configuration
+		print_title 'Postfix configuration: '
+
+		# SASL postfix configuration
+		if [ ! -f /usr/local/etc/imscp/postfix/backup/smtpd.conf.system ] && [ -f /usr/local/lib/sasl2/smtpd.conf ]; then
+			$CMD_CP -a /usr/local/lib/sasl2/smtpd.conf /usr/local/etc/imscp/postfix/backup/smtpd.conf.system >> $LOGFILE 2>&1 || failed
+			$CMD_CHMOD 0600 /usr/local/etc/imscp/postfix/backup/smtpd.conf.system >> $LOGFILE 2>&1 || failed
+		fi
+
+		# Building the new smtpd.conf file from the i-MSCP template
+		($CMD_CAT /usr/local/etc/imscp/postfix/smtpd.conf) |
+		$CMD_SED "
+			s/{MTA_SASL_LOG_LEVEL}/$MTA_SASL_LOG_LEVEL/
+			s/{MTA_SASL_PWCHECK_METHOD}/$MTA_SASL_PWCHECK_METHOD/
+			s/{MTA_SASL_MECH_LIST}/$(echo $MTA_SASL_MECH_LIST | $CMD_SED 's/,/ /g')/
+		" >/tmp/smtpd.conf.tmp || failed
+
+		if [ "$MTA_SASL_AUXPROP_PLUGIN" != "no" ]; then
+			$CMD_SED -i'.bak' "s/{MTA_SASL_AUXPROP_PLUGIN}/$MTA_SASL_AUXPROP_PLUGIN/" /tmp/smtpd.conf.tmp || failed
+		else
+			$CMD_SED -i'.bak' '/auxprop_plugin: {MTA_SASL_AUXPROP_PLUGIN}/d' /tmp/smtpd.conf.tmp || failed
+		fi
+		
+		print_status
+
+		# SASL Configuration
+		print_title 'SASL configuration: '
+		
+		# Update SASL configuration file if needed
+		if [ -f "$MTA_SASL_CONF_FILE" ] ; then
+			oldmd5=`$CMD_MD5 $MTA_SASL_CONF_FILE | cut -d' ' -f4`
+			newmd5=`$CMD_MD5 /tmp/smtpd.conf.tmp | cut -d' ' -f4`
+
+			if [ "$oldmd5" != "$newmd5" ]; then
+				$CMD_CP -p /tmp/smtpd.conf.tmp /usr/local/etc/imscp/postfix/backup/smtpd.conf.imscp >> $LOGFILE 2>&1 || failed
+			fi
+		fi
+
+		$CMD_CP -p /usr/local/etc/imscp/postfix/backup/smtpd.conf.imscp $MTA_SASL_CONF_FILE >> $LOGFILE 2>&1 || failed
+		$CMD_CHMOD 0600 $MTA_SASL_CONF_FILE /usr/local/etc/imscp/postfix/backup/smtpd.conf.imscp >> $LOGFILE 2>&1 || failed
+
+		# Create folders and copy needed files for a chrooted Postfix
+		if [ ! -d /var/spool/postfix/etc ]; then
+			mkdir -p /var/spool/postfix/etc >> $LOGFILE 2>&1 || failed
+			$CMD_CHMOD -R 755 /var/spool/postfix/etc >> $LOGFILE 2>&1 || failed
+			cd /etc
+			$CMD_CP host.conf localtime services resolv.conf /var/spool/postfix/etc >> $LOGFILE 2>&1 || failed
+		fi
+
+		# Move the sasldb2 into the chroot enviroment and create a symlink back to /etc/
+		if [ ! -d /var/spool/postfix/usr/local/etc ]; then
+			mkdir -p /var/spool/postfix/usr/local/etc/ >> $LOGFILE 2>&1 || failed
+			mv /usr/local/etc/sasldb2 /var/spool/postfix/usr/local/etc/sasldb2 >> $LOGFILE 2>&1 || failed
+			ln -s /var/spool/postfix/usr/local/etc/sasldb2 /usr/local/etc/sasldb2 >> $LOGFILE 2>&1 || failed
+		fi
+
+		print_status
+
+		# Rkhunter and Sendmail
+		print_title 'Enable Rkhunter and disable Sendmail: '
+
+		# Add rkhunter to periodic for daily updates and disable sendmail
+		if [ ! -f "/etc/periodic.conf" ] ; then
+			touch /etc/periodic.conf >> $LOGFILE 2>&1 || failed
+		fi
+
+		echo 'daily_rkhunter_update_enable="YES"' >> /etc/periodic.conf
+		echo 'daily_clean_hoststat_enable="NO"' >> /etc/periodic.conf
+		echo 'daily_status_mail_rejects_enable="NO"' >> /etc/periodic.conf
+		echo 'daily_status_include_submit_mailq="NO"' >> /etc/periodic.conf
+		echo 'daily_submit_queuerun="NO"' >> /etc/periodic.conf
+
+		print_status
+		
+		# Rkhunter update
+		print_title 'Rkhunter - Updapting files properties: '
+		
+		# Use screen as a workaround to hide the rkhunter output
+		$CMD_SCREEN -qd -m /usr/local/bin/rkhunter --propupd --nolog -q
+
+		print_status
+
+		# Install Cron
+		# TODO: 
+		# This check is not the best, we only check if the file exist and skip
+		# It does not check the content itself need for i-MSCP
+		print_title 'Cron configuration: '
+
+		if [ ! -f "/var/cron/tabs/root" ] ; then
+			crontab /usr/local/etc/imscp/cron.d/imscp >> $LOGFILE 2>&1 || failed
+		fi
+
+		print_status
+	;;
+	*)
+		exit 0
+	;;
+esac
+
+exit 0

@@ -1,0 +1,142 @@
+# Frisian (fy) mini Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Rinse de Vries <rinsedevries@kde.nl>, 2007.
+# $Id: mini.pot 11689 2006-09-10 09:52:24Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: mini\n"
+"Report-Msgid-Bugs-To: Tomas Kuliavas <tokul@users.sourceforge.net>\n"
+"POT-Creation-Date: 2006-09-10 01:05+0200\n"
+"PO-Revision-Date: 2007-04-14 12:01+0200\n"
+"Last-Translator: Rinse de Vries <rinsedevries@kde.nl>\n"
+"Language-Team: Frisian <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#: functions.php:34
+msgid "mini window"
+msgstr "miny-finster"
+
+#: functions.php:49
+#: mini.php:85
+#: mini.php:96
+msgid "Mini SquirrelMail"
+msgstr "Mini-SquirrelMail"
+
+#: functions.php:53
+msgid "Window width (in pixels)"
+msgstr "Finsterbreedte (yn piksels)"
+
+#: functions.php:60
+msgid "Window height (in pixels)"
+msgstr "Finsterhichte (yn piksels)"
+
+#: functions.php:67
+msgid "never"
+msgstr "nea"
+
+# wol net oersetten wurde....
+#: functions.php:70
+#, php-format
+msgid "%s second"
+msgid_plural "%s seconds"
+msgstr[0] "%s sekonde"
+msgstr[1] "%s  sekonden "
+
+# wol net oersetten wurde.....??
+# msgfmt fatal error x2
+#: functions.php:73
+#, php-format
+msgid "%s minute"
+msgid_plural "%s minutes"
+msgstr[0] "%s minuut"
+msgstr[1] "%s   minuten"
+
+#: functions.php:79
+msgid "Window refresh time"
+msgstr "Ferfarsktiid finster"
+
+#: functions.php:87
+msgid "Window text size"
+msgstr "Tekstgrutte finster"
+
+#: functions.php:90
+msgid "Very small"
+msgstr "Tige lyts"
+
+#: functions.php:91
+msgid "Small"
+msgstr "Lyts"
+
+#: functions.php:92
+msgid "Normal"
+msgstr "Normaal"
+
+#: functions.php:162
+msgid "This message has additional parts. Please use the main SquirrelMail interface to open them"
+msgstr "Dit berjocht hat oanfoljende ûnderdielen. Brûk de normale SquirrelMail-interface om se te iepenjen."
+
+#: functions.php:166
+#: functions.php:178
+msgid "Could not find a text part. Please use the main SquirrelMail window to read this message"
+msgstr "Koe gjin tekstgedeelte fine. Brûk it algemiene SquirrelMail-finster om dit berjocht te lêzen."
+
+#: functions.php:302
+#: mini.php:123
+msgid "No subject"
+msgstr "Gjin ûnderwerp"
+
+#: functions.php:314
+#: functions.php:315
+#: mini.php:130
+msgid "No sender"
+msgstr "Gjin ferstjoerder"
+
+#: mini.php:75
+#: mini.php:139
+msgid "Back"
+msgstr "Tebek"
+
+#: mini.php:78
+msgid "Refresh"
+msgstr "Ferfarskje"
+
+#: mini.php:133
+#: mini.php:174
+msgid "Subject"
+msgstr "Underwerp"
+
+#: mini.php:134
+#: mini.php:176
+msgid "From"
+msgstr "Fan"
+
+#: mini.php:141
+msgid "Keep as new"
+msgstr "As nij behâlde"
+
+#: mini.php:148
+msgid "Folder"
+msgstr "Map"
+
+#: mini.php:150
+msgid "New Mail"
+msgstr "Nije e-mail"
+
+# net oersetten  yn Postfak yn It liket my tadat INBOX op de SquirrelMail site ek stean bliuwt
+#: mini.php:160
+msgid "INBOX"
+msgstr "INBOX"
+
+#: mini.php:193
+msgid "No New Messages"
+msgstr "Gjin nije berjochten"
+
+#: mini.php:209
+msgid "Close"
+msgstr "Slute"
+

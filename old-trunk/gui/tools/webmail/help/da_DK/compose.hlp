@@ -1,0 +1,174 @@
+<chapter>
+   <title>
+      Skriv en e-mail
+   </title>
+   <summary>
+      Med denne funktion kan du fra SquirrelMail sende beskeder til
+      forskellige personer.
+   </summary>
+   <description>
+      <p>
+      Menupunktet "Skriv ny" vil føre dig til en side, hvor du kan skrive en ny
+      besked. På denne side er der et antal indtastningsfelter og en del knapper.
+      Afhængig af, hvordan du er kommet til siden kan nogle af disse felter
+      allerede være udfyldt.
+      </p>
+   </description>
+</chapter>
+
+<section>
+   <title>
+      Fra
+   </title>
+   <description>
+      <p>Feltet <B>Fra:</B> vil kun blive vist, hvis du har oprettet flere
+      identiteter (under Indstillinger, Personlig information). Hvis du har
+      oprettet flere identiteter kan du vælge hvilken identitet, du ønsker at
+      bruge, dvs. hvilket navn og hvilken e-mail adresse, der vil blive vist
+      som afsender af din besked
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Til
+   </title>
+   <description>
+      <p>
+      Det næste felt er <B>Til:</B>.  I dette felt skal du indtaste e-mail
+      adressen på den eller de personer, du vil sende beskeden til. Du kan
+      skrive så mange adresser som du vil, blot du adskiller dem med et komma.
+      Du kan også trykke på knappen "Adresser" for at udfylde feltet med
+      adresser fra din adressebog. Vær ikke bekymret, hvis du ikke kan se hele
+      adressen eller alle adresserne på én gang, selv om indholdet af feltet
+      forsvinder ud af skærmen vil den stadig bruge hele indholdet.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Kopi til
+   </title>
+   <description>
+      <p>
+      Det næste felt er <B>Kopi til:</B>.(Som også kaldes CC, der er en
+      forkortelse for Carbon Copy). Hvis du ønsker at sende en kopi af beskeden
+      til andre end modtagerne kan du tilføje dem her. Tænk på dette som en note,
+      hvor kun de personer, som noten direkte har indflydelse på, står i
+      <B>Til:</B> mens personer, for hvem det kunne have interesse som information
+      kan tilføjes i <B>Kopi til</B> eller <B>Blind kopi til</B> (se herunder). Du kan have så
+      mange adresser i hvert de tre felter som du ønsker.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Blind kopi til
+   </title>
+   <description>
+      <p>
+      <B>Blind kopi til:</B> (eller BCC - Blind Carbon Copy) kan bruges
+      til at sende en person en kopi af en besked, ligesom <B>Kopi til:</B>
+      Forskellen er, at de øvrige personer, der modtager e-mailen, <i>ikke</i>
+      kan se at personer i dette felt har fået en kopi af e-mailen.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Emne
+   </title>
+   <description>
+      <p>
+      Her indtaster du en relevant beskrivelse af det emne som beskeden omhandler.
+      Husk at en e-mail kan være en god og tidsbesparende ting - især hvis man
+      udfylder emnet præcist.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Adresser knappen
+   </title>
+   <description>
+      <p>
+      Denne knap åbner adressebogen. Her kan du søge efter de adresser, du gerne
+      vil sende din besked til. Adressebogen er beskrevet i detaljer i sit eget
+      kapitel - "<a href="help.php?chapter=5">Adresser</a>".
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Gem kladde knappen
+   </title>
+   <description>
+      <p>
+      Hvis du skriver på en besked men af en eller anden grund ikke er helt
+      færdig til at sende den endnu, kan du gemme den i din kladdemappe ved at
+      klikke på denne knap. Når du så senere er klar til at gøre din besked
+      færdig kan du finde den i din kladdemappe og klikke på den der. Så vil
+      du komme tilbage til siden, hvor du skriver nye beskeder, og din besked er
+      fyldt ud for dig med de oplysninger, du har gemt som kladden.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Prioritet
+   </title>
+   <description>
+      <p>
+      Hvis det er slået til af din systemadministrator vil der ved knapperne
+      være en liste over prioriteter. Her kan du vælge hvilken prioritet din
+      besked skal have. En besked med høj prioritet kan blive vist anderledes
+      for modtageren, så han er opmærksom på dens højere prioritet.
+      Vær opmærksom på kun at sende e-mails med høj prioritet, når det er
+      virkelig nødvendigt, da funktionaliteten ellers hurtigt vil blive udvandet.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Beskedens indhold
+   </title>
+   <description>
+      <p>
+      Det store tomme indtastningsfelt er der, hvor du skal skrive selve
+      beskedens indhold. Hvis du har slået signaturfunktionen til vil
+      signaturen allerede være indsat her.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Vedhæft
+   </title>
+   <description>
+      <p>
+      I bunde af siden findes funktionen til at vedhæfte filer til din e-mail.
+      Her kan du vælge en fil, der ligger på din <i>lokale</i> maskine eller
+      netværk og vedhæfte til beskeden, du er ved at skrive. Der er en gennemse
+      knap, der åbner et vindue med filstrukturen over din maskine, så du kan
+      finde den fil, du gerne vil vedhæfte. Du kan dog også indtaste hele stien
+      og filnavnet direkte. Herefter klikker du blot på "Tilføj"-knappen for at
+      vedhæfte den valgte fil. Du kan nu se den vedhæftede fil under
+      "Vedhæft"-feltet.
+      </p>
+      <p>
+      Så snart en eller flere filer er vedhæftet til en e-mail vil der desuden
+      dukke yderligere en knap op, nemlig "Slet de(n) valgte vedhæftede filer".
+      Ved at markere afkrydsningsfeltet ud for en eller flere vedhæftede filer
+      og klikke på denne knap kan du fjerne filerne fra e-mailen igen.
+      <p>
+   </description>
+</section>

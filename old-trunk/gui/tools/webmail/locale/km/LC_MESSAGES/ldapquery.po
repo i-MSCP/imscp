@@ -1,0 +1,860 @@
+# Khmer (km) ldapquery Translation
+# Khoem Sokhem <khoemsokhem@khmeros.info>, 2008, 2009.
+# Eng Vannak <evannak@khmeros.info>, 2008.
+# piseth <piseth_dv@khmeros.info>, 2008.
+# Copyright (c) 2008-2009 KhmerOS Project
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+msgid ""
+msgstr ""
+"Project-Id-Version: ldapquery\n"
+"Report-Msgid-Bugs-To: Tomas Kuliavas <tokul@users.sourceforge.net>\n"
+"POT-Creation-Date: 2006-03-26 17:23+0300\n"
+"PO-Revision-Date: 2009-04-24 09:26+0700\n"
+"Last-Translator: Khoem Sokhem <khoemsokhem@khmeros.info>\n"
+"Language-Team: Khmer <en@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: addressbook.php:64
+msgid "Personal address book is not available."
+msgstr "មិនមាន​សៀវភៅ​អាសយដ្ឋាន​ផ្ទាល់ខ្លួន​ទេ ។"
+
+#. checked email field
+#: addressbook.php:71
+msgid "Email address is not set or empty."
+msgstr "អាសយដ្ឋាន​អ៊ីមែល​មិន​ត្រូវ​បាន​កំណត់ ឬ​ទទេ ។"
+
+#. checked both name fields
+#: addressbook.php:74
+msgid "Name is not set or empty."
+msgstr "ឈ្មោះ​មិន​ត្រូវ​បាន​កំណត់ ឬ​ទទេ ។"
+
+#: addressbook.php:80
+#, php-format
+msgid "Nickname %s is already in use."
+msgstr "សម្មតិនាម %s គឺ​កំពុង​ប្រើ ។"
+
+#: addressbook.php:82
+msgid "Can't create address book entry."
+msgstr "មិនអាចប​ង្កើត​ធាតុ​សៀវភៅ​អាសយដ្ឋាន​បានទេ ។"
+
+#: addressbook.php:94
+msgid "Nickname: "
+msgstr "សម្មតិនាម ៖ "
+
+#: addressbook.php:97
+msgid "First name: "
+msgstr "នាម​ខ្លួន ៖ "
+
+#: addressbook.php:100
+msgid "Last name: "
+msgstr "នាម​ត្រកូល ៖ "
+
+#: addressbook.php:103
+msgid "E-mail: "
+msgstr "អ៊ីមែល ៖ "
+
+#: addressbook.php:106
+msgid "Info: "
+msgstr "ព័ត៌មាន ៖ "
+
+#: addressbook.php:109
+msgid "Add address"
+msgstr "បន្ថែម​អាសយដ្ឋាន​"
+
+#: addressbook.php:113
+msgid "Address book entry is saved."
+msgstr "បាន​រក្សាទុក​ធាតុ​សៀវភៅ​អាសយដ្ឋាន ។"
+
+#: addressbook.php:120
+msgid "Return to search results"
+msgstr "ត្រឡប់​ទៅ​កាន់​លទ្ធផល​ស្វែងរក"
+
+#: class.schema.php:43
+#, php-format
+msgid "Dublicate ldap attribute definition: %s."
+msgstr "ស្ទួន​ការ​កំណត់​គុណលក្ខណៈ ldap ៖ %s ។"
+
+#: class.schema.php:77
+#, php-format
+msgid "Dublicate ldap object definition: %s."
+msgstr "ស្ទួន​ការ​កំណត់​វត្ថុ ldap ៖ %s ។"
+
+#: class.schema.php:92
+msgid "Any"
+msgstr "ណាមួយ"
+
+#: functions.php:97
+msgid "Directory"
+msgstr "ថត"
+
+#: functions.php:116 functions.php:161
+msgid "Directory Preferences"
+msgstr "ចំណង់ចំណូលចិត្ត​ថត"
+
+#: functions.php:118
+msgid ""
+"These settings control what type of output you will see when you use the "
+"Directory link to search Directory Services."
+msgstr ""
+"ការ​កំណត់​ទាំងនេះ គ្រប់គ្រង​នូវ​ប្រភេទ​លទ្ធផល​ដែល​អ្នក​នឹង​ឃើញ​នៅពេល​ដែល​អ្នក​ប្រើ​តំណ​ថត​ដើម្បី​ស្វែងរក​សេវា​"
+"ថត ។"
+
+#: functions.php:281 functions.php:350
+msgid "No records found"
+msgstr "រក​មិនឃើញ​កំណត់ត្រា"
+
+#: functions.php:553
+msgid "Save"
+msgstr "រក្សាទុក"
+
+#: functions.php:555
+msgid "Add to address book"
+msgstr "បន្ថែម​ទៅ​សៀវភៅ​អាសយដ្ឋាន"
+
+#: functions.php:577
+msgid "Plugin requires PHP with LDAP support."
+msgstr "កម្មវិធី​ជំនួយ​ត្រូវការ​ការ​គាំទ្រ PHP ជាមួយ​នឹង LDAP ។ "
+
+#: functions.php:579
+msgid "LDAP address books are not configured in SquirrelMail configuration."
+msgstr "សៀវភៅ​អាសយដ្ឋាន LDAP មិន​បាន​កំណត់​រចនា​សម្ព័ន្ធ​ក្នុង​ការ​កំណត់​រចនា​សម្ព័ន្ធ SquirrelMail ទេ ។"
+
+#. Get the userdn to authenticate with
+#: ldapquery.php:59
+msgid "User DN:"
+msgstr "DN អ្នក​ប្រើ ៖"
+
+#. Get the user password
+#: ldapquery.php:63
+msgid "Password:"
+msgstr "ពាក្យ​សម្ងាត់ ៖"
+
+#. Get the objectclass the user wants to search for
+#: ldapquery.php:69
+msgid "Search For:"
+msgstr "ស្វែងរក ៖"
+
+#. Get the attribute the user wants to search by
+#: ldapquery.php:81
+msgid "Where:"
+msgstr "នៅ ៖"
+
+#: ldapquery.php:106 ldapquery.php:108
+msgid "Contains"
+msgstr "មាន"
+
+#: ldapquery.php:110 ldapquery.php:112
+msgid "Is"
+msgstr "គឺ"
+
+#. Sort By menu
+#: ldapquery.php:121
+msgid "Sort By:"
+msgstr "តម្រៀប​តាម ៖"
+
+#: ldapquery.php:136
+msgid "Search in:"
+msgstr "ស្វែងរក​ក្នុង ៖"
+
+#: ldapquery.php:141
+msgid "All LDAP address books"
+msgstr "សៀវភៅ​អាសយដ្ឋាន LDAP ទាំងអស់"
+
+#: ldapquery.php:158
+msgid "Search"
+msgstr "ស្វែងរក"
+
+#: ldapquery.php:165
+msgid "Search Results"
+msgstr "លទ្ធផល​ស្វែងរក"
+
+#: ldapquery.php:169
+#, php-format
+msgid "Comparetype is %s"
+msgstr "Comparetype គឺ %s"
+
+#: ldapquery.php:189
+#, php-format
+msgid "QUERY is %s"
+msgstr "សំណួរ​គឺ %s"
+
+#.
+#. * Used in debug mode
+#. * Example output "Querying: ldap-server-address on port some-port with base ldap-base-dn"
+#. * See http://www.php.net/sprintf if you want to rearrange order of arguments
+#.
+#: ldapquery.php:227
+#, php-format
+msgid "Querying: %s on port %d with base %s"
+msgstr "សំណួរ ៖ %s នៅ​លើ​ច្រក %d ដែល​មាន​គោល %s"
+
+#: ldapquery.php:234
+#, php-format
+msgid "Could not connect to LDAP server %s"
+msgstr "មិន​អាច​តភ្ជាប់​ទៅ​ម៉ាស៊ីន​បម្រើ LDAP %s"
+
+#: ldapquery.php:244 ldapquery.php:249 ldapquery.php:254
+msgid "Unable to bind to LDAP server"
+msgstr "មិន​អាច​ចង​ភ្ជាប់​ជាមូយ"
+
+#: ldapquery.php:266
+msgid "Nothing found!"
+msgstr "រក​មិន​ឃើញ​អ្វី​ទាំងអស់!"
+
+#: ldapquery.php:274
+#, php-format
+msgid "output type is %s"
+msgstr "ប្រភេទ​ទិន្នផល​គឺ %s"
+
+#: ldapquery.php:275
+#, php-format
+msgid "output sorted by %s"
+msgstr "តម្រៀប​ទិន្នផល​តាម %s"
+
+#: options.php:43
+msgid "Options - Directory Preferences"
+msgstr "ជម្រើស - ចំណូល​ចិត្ត​ថត"
+
+#: options.php:49
+msgid "Output types can be:"
+msgstr "ប្រភេទ​ទិន្នផល​អាច​ជា ៖"
+
+#: options.php:52 options.php:62
+msgid "One Table"
+msgstr "តារាង​មួយ"
+
+#: options.php:53
+msgid ""
+"One big table with one row per record found and each selected attribute as a "
+"separate column."
+msgstr "តារាង​ធំ​មួយ​ដែល​មាន​មួយ​ជួរ​ដេក​រក​ឃើញ​ក្នុង​មួយ​កំណត់​ត្រា  និង​គុណ​លក្ខណៈ​ដែល​បាន​ជ្រើស​នីមួយៗ​ជា​ជួរ​ឈរ​ដែល​បំបែក ។"
+
+#: options.php:54 options.php:63
+msgid "Multiple Tables"
+msgstr "តារាង​ច្រើន"
+
+#: options.php:55
+msgid ""
+"One table per record found with 2 columns for each table. One column "
+"contains attribute names and the 2nd column shows values for each "
+"attribute.  This format is best if you have many attributes selected or if "
+"the values for some of the attributes you have selected can be very long "
+"with no spaces (like labeledurl)."
+msgstr "តារាង​មួយ​ក្នុង​កំណត់ត្រា​មួយ​បាន​រកឃើញ​ដោយ​មាន​ជួរ​ឈរ ២ សម្រាប់​តារាង​នីមួយៗ ។ ជួរ​ឈរ​មួយ​មាន​ឈ្មោះ​គុណលក្ខណៈ ហើយ​ជួរឈរ​ទី ២ បង្ហាញ​អំពី​តម្លៃ​សម្រាប់​គុណលក្ខណៈ​នីមួយៗ ។ ទ្រង់ទ្រាយនេះ​គឺ​ល្អ​បំផុត​នៅពេល​ដែល​អ្នក​បាន​ជ្រើស​គុណលក្ខណៈ​ច្រើន ឬ​នៅពេល​ដែល​តម្លៃ​សម្រាប់​គុណលក្ខណៈ​ដែល​អ្នក​បាន​ជ្រើស​អាចវែង​ដោយ​គ្មាន​ដកឃ្លា (ដូចជា labeledurl) ។"
+
+#: options.php:60
+msgid "Select Output Type:"
+msgstr "ជ្រើស​ប្រភេទ​ទិន្នផល ៖"
+
+#: options.php:68
+msgid "Select Displayed Fields"
+msgstr "ជ្រើស​វាល​ដែល​បង្ហាញ"
+
+#: options.php:76
+msgid "Submit"
+msgstr "ដាក់​ស្នើ"
+
+#. openldap system schemas
+#: schema/core.php:20
+msgid "Common Name"
+msgstr "ឈ្មោះ​ទូទៅ"
+
+#: schema/core.php:23
+msgid "Knowledge Information"
+msgstr "ព័ត៌មាន​ចំណេះ​ដឹង"
+
+#: schema/core.php:25
+msgid "Surname"
+msgstr "នាម​ត្រកូល"
+
+#: schema/core.php:27
+msgid "Serial Number"
+msgstr "លេខ​សៀរៀល"
+
+#: schema/core.php:29
+msgid "Country Name"
+msgstr "ឈ្មោះ​ប្រទេស"
+
+#: schema/core.php:31
+msgid "Locality Name"
+msgstr "ឈ្មោះ​មូលដ្ឋាន"
+
+#: schema/core.php:33
+msgid "State or Province Name"
+msgstr "ឈ្មោះ​ខេត្ត ឬ​ក្រុង"
+
+#: schema/core.php:35
+msgid "Street Address"
+msgstr "អាសយដ្ឋាន​ផ្លូវ"
+
+#: schema/core.php:37
+msgid "Organisation Name"
+msgstr "ឈ្មោះ​អង្គការ"
+
+#: schema/core.php:39
+msgid "Organisational Unit Name"
+msgstr "ឈ្មោះ​ឯកតា​រៀបចំ"
+
+#: schema/core.php:41
+msgid "Title"
+msgstr "ចំណង​ជើង"
+
+#: schema/core.php:43
+msgid "Description"
+msgstr "ការ​ពិពណ៌នា"
+
+#: schema/core.php:45
+msgid "Search Guide"
+msgstr "មគ្គុទ្ទេសក៏​ស្វែងរក"
+
+#: schema/core.php:47
+msgid "Business Category"
+msgstr "ប្រភេទ​ពាណិជ្ជកម្ម"
+
+#: schema/core.php:49
+msgid "Postal Address"
+msgstr "អាសយដ្ឋាន​ប្រៃសណីយ៍"
+
+#: schema/core.php:51
+msgid "Postal Code"
+msgstr "លេខ​ប្រៃសណីយ៍"
+
+#: schema/core.php:53
+msgid "Post Office Box"
+msgstr "ប្រអប់​ប្រៃសនីយ៍"
+
+#: schema/core.php:55
+msgid "Physical Delivery Office Name"
+msgstr "ឈ្មោះ​ការិយាល័យ​ចែកចាយ​ពិត"
+
+#: schema/core.php:57
+msgid "Telephone Number"
+msgstr "លេខ​ទូរស័ព្ទ"
+
+#: schema/core.php:59
+msgid "Telex Number"
+msgstr "លេខ Telex"
+
+#: schema/core.php:61
+msgid "Teletex Terminal Identifier"
+msgstr "កម្មវិធី​កំណត់​អត្តសញ្ញាណ​ស្ថានីយ៍ Teletex"
+
+#: schema/core.php:63
+msgid "Facsimile (Fax) Telephone Number"
+msgstr "លេខ​ទូរស័ព្ទ Facsimile (ទូរសារ)"
+
+#: schema/core.php:66
+msgid "X.121 Address"
+msgstr "អាសយដ្ឋាន X.121"
+
+#: schema/core.php:68
+msgid "International ISDN Number"
+msgstr "លេខ ISDN អន្តរជាតិ"
+
+#: schema/core.php:70
+msgid "Registered Postal Address"
+msgstr "អាសយដ្ឋាន​ប្រៃសណីយ៍​ដែល​បាន​ចុះ​ឈ្មោះ"
+
+#: schema/core.php:72
+msgid "Destination Indicator"
+msgstr "អ្នក​ចង្អុលបង្ហាញ​ទិសដៅ"
+
+#: schema/core.php:74
+msgid "Preferred Delivery Method"
+msgstr "វិធីសាស្ត្រ​ចែក​រំលែក​ចំណូល​ចិត្ត"
+
+#: schema/core.php:76
+msgid "Presentation Address"
+msgstr "អាសយដ្ឋាន​ការ​បង្ហាញ"
+
+#: schema/core.php:78
+msgid "Supported Application Context"
+msgstr "មាតិកា​កម្មវិធី​ដែលបាន​គាំទ្រ"
+
+#: schema/core.php:80
+msgid "Member of a group"
+msgstr "សមាជិក​នៃ​ក្រុម"
+
+#: schema/core.php:82
+msgid "Owner"
+msgstr "ម្ចាស់"
+
+#: schema/core.php:84
+msgid "Occupant of role"
+msgstr "អ្នក​កាន់កាប់​តួ​នាទី"
+
+#: schema/core.php:86
+msgid "See also"
+msgstr "មើល​បន្ថែម"
+
+#: schema/core.php:88
+msgid "User Certificate"
+msgstr "វិញ្ញាបនបត្រ​អ្នក​ប្រើ"
+
+#: schema/core.php:90
+msgid "CA Certificate"
+msgstr "វិញ្ញាបនបត្រ CA"
+
+#: schema/core.php:92
+msgid "Authority Revocation List"
+msgstr "បញ្ជី​​ការ​ដក​ហូត​អាជ្ញាធរ"
+
+#: schema/core.php:94
+msgid "Certificate Revocation List"
+msgstr "បញ្ជី​ការ​ដក​ហូត​វិញ្ញាបនបត្រ"
+
+#: schema/core.php:96
+msgid "Cross Certificate Pair"
+msgstr "វិញ្ញាបនបត្រ​ឆ្លង​ពីរ"
+
+#: schema/core.php:98
+msgid "First Name"
+msgstr "នាម​ខ្លួន"
+
+#: schema/core.php:101
+msgid "Initials"
+msgstr "អាទិ​សង្កេត"
+
+#: schema/core.php:103
+msgid "Generation Qualifier"
+msgstr "កម្មវិធី​បំពេញ​ការ​បង្កើត"
+
+#: schema/core.php:105
+msgid "X.500 unique identifier"
+msgstr "កម្មវិធី​កំណត់​អត្តសញ្ញាណ​យូនីក X.500"
+
+#: schema/core.php:107
+msgid "DN qualifier"
+msgstr "កម្មវិធី​បំពេញ DN"
+
+#: schema/core.php:109
+msgid "Enhanced Search Guide"
+msgstr "មគ្គុទ្ទេសក៏​ស្វែងរក​ដែល​បាន​បង្កើន"
+
+#: schema/core.php:111
+msgid "Protocol Information"
+msgstr "ព័ត៌មាន​ពិធីការ"
+
+#: schema/core.php:113
+msgid "unique member of a group"
+msgstr "សមាជិក​មាន​តែ​មួយ​របស់​ក្រុម"
+
+#: schema/core.php:115
+msgid "House Identifier"
+msgstr "កម្មវិធី​កំណត់​អត្តសញ្ញាណ​ផ្ទះ"
+
+#: schema/core.php:117
+msgid "Supported Algorithms"
+msgstr "ក្បួន​ដោះស្រាយ​ដែល​គាំទ្រ"
+
+#: schema/core.php:119
+msgid "Delta Revocation List"
+msgstr "បញ្ជី​ការ​ដកហូត​ដែលតា"
+
+#. Attribute specifies a directory management domain (DMD),
+#. the administrative authority which operates the directory server.
+#: schema/core.php:123
+msgid "Name of DMD"
+msgstr "ឈ្មោះ​របស់ DMD"
+
+#: schema/core.php:125
+msgid "Labelled URI"
+msgstr "URI ដែល​មាន​ស្លាក"
+
+#: schema/core.php:127
+msgid "User ID"
+msgstr "លេខ​សម្គាល់​អ្នក​ប្រើ"
+
+#: schema/core.php:130
+msgid "Mail"
+msgstr "សំបុត្រ"
+
+#: schema/core.php:133
+msgid "Domain Component"
+msgstr "សមាសភាគ​ដែន"
+
+#: schema/core.php:136
+msgid "Associated Domain"
+msgstr "ដែន​ដែល​ភ្ជាប់"
+
+#: schema/core.php:138
+msgid "Email Address"
+msgstr "អាសយដ្ឋាន​អ៊ីមែល"
+
+#. * Object Classes
+#: schema/core.php:143 schema/cosine.php:84
+msgid "Country"
+msgstr "ប្រទេស"
+
+#: schema/core.php:145
+msgid "Locality"
+msgstr "មូលដ្ឋាន"
+
+#: schema/core.php:147
+msgid "Organisation"
+msgstr "អង្គការ"
+
+#: schema/core.php:149
+msgid "Organisational Unit"
+msgstr "ឯកតា​រៀបចំ"
+
+#: schema/core.php:151
+msgid "Person"
+msgstr "មនុស្ស"
+
+#: schema/core.php:153
+msgid "Organisational Person"
+msgstr "បុគ្គលរៀបចំ"
+
+#: schema/core.php:155
+msgid "Organisational Role"
+msgstr "តួនាទី​រៀបចំ"
+
+#: schema/core.php:157
+msgid "Group of Names"
+msgstr "ឈ្មោះ​ក្រុម"
+
+#: schema/core.php:159
+msgid "Residential Person"
+msgstr "លំនៅដ្ឋាន​ឯកជន"
+
+#: schema/core.php:161
+msgid "Application Process"
+msgstr "ដំណើរការ​កម្មវិធី"
+
+#: schema/core.php:163
+msgid "Application Entity"
+msgstr "អង្គភាព​កម្មវិធី"
+
+#. RFC2256: a directory system agent (a server)
+#: schema/core.php:166
+msgid "DSA"
+msgstr "DSA"
+
+#: schema/core.php:168
+msgid "Device"
+msgstr "ឧបករណ៍"
+
+#: schema/core.php:170
+msgid "Strong Authentication User"
+msgstr "អ្នកប្រើ​ការ​ផ្ទៀងផ្ទាត់​ភាពត្រឹមត្រូវ​ខ្លាំង"
+
+#: schema/core.php:172
+msgid "Certificate Authority"
+msgstr "អាជ្ញាធរ​វិញ្ញាបនបត្រ"
+
+#: schema/core.php:174
+msgid "Group of Unique Names"
+msgstr "ក្រុម​ឈ្មោះ​មាន​តែ​មួយ"
+
+#: schema/core.php:176
+msgid "User Security Information"
+msgstr "ព័ត៌មាន​សុវត្ថិភាព​របស់​អ្នក​ប្រើ"
+
+#: schema/core.php:178
+msgid "Certificate Authority V2"
+msgstr "អាជ្ញាធរ​វិញ្ញាបនបត្រ V2"
+
+#: schema/core.php:180
+msgid "CRL Distribution Point"
+msgstr "ចំណុច​ចែកចាយ CRL"
+
+#. a directory management domain object
+#: schema/core.php:183
+msgid "dmd"
+msgstr "dmd"
+
+#: schema/core.php:185
+msgid "PKI User"
+msgstr "អ្នក​ប្រើ PKI"
+
+#: schema/core.php:187
+msgid "PKI CA"
+msgstr "PKI CA"
+
+#: schema/core.php:189
+msgid "Delta CRL"
+msgstr "Delta CRL"
+
+#: schema/core.php:191
+msgid "Labeled URI Object"
+msgstr "វត្ថុ URI ដែល​មាន​ស្លាក"
+
+#: schema/core.php:193
+msgid "Simple Security Object"
+msgstr "វត្ថុ​សុវត្ថិភាព​ធម្មតា"
+
+#: schema/core.php:195
+msgid "DC Object"
+msgstr "វត្ថុ DC"
+
+#: schema/core.php:197
+msgid "UID Object"
+msgstr "វត្ថុ UID"
+
+#: schema/cosine.php:19
+msgid "Encoded Text or Address"
+msgstr "អត្ថបទ ឬ​អាសយដ្ឋាន​ដែល​បាន​អ៊ីនកូដ"
+
+#: schema/cosine.php:21
+msgid "Info"
+msgstr "ព័ត៌មាន"
+
+#. Favorite drink (noun)
+#: schema/cosine.php:24
+msgid "Drink"
+msgstr "ភេសជ្ជៈ"
+
+#: schema/cosine.php:27
+msgid "Room Number"
+msgstr "លេខ​បន្ទប់"
+
+#: schema/cosine.php:29
+msgid "Photo"
+msgstr "រូបថត"
+
+#: schema/cosine.php:31
+msgid "Category of user"
+msgstr "ប្រភេទ​អ្នក​ប្រើ"
+
+#: schema/cosine.php:33
+msgid "Host"
+msgstr "ម៉ាស៊ីន"
+
+#: schema/cosine.php:35
+msgid "Manager"
+msgstr "អ្នក​គ្រប់គ្រង"
+
+#: schema/cosine.php:37
+msgid "Document identifier"
+msgstr "កម្មវិធី​កំណត់​អត្តសញ្ញាណ​ឯកសារ"
+
+#: schema/cosine.php:39
+msgid "Document Title"
+msgstr "ចំណង​ជើង​ឯកសារ"
+
+#: schema/cosine.php:41
+msgid "Document version"
+msgstr "កំណែ​ឯកសារ"
+
+#: schema/cosine.php:43
+msgid "Document author"
+msgstr "អ្នក​និពន្ធ​ឯកសារ"
+
+#: schema/cosine.php:45
+msgid "Location of document"
+msgstr "ទីតាំង​ឯកសារ"
+
+#: schema/cosine.php:47
+msgid "Home Phone"
+msgstr "ទូរស័ព្ទ​នៅ​ផ្ទះ"
+
+#: schema/cosine.php:50
+msgid "Secretary"
+msgstr "លេខា"
+
+#: schema/cosine.php:52
+msgid "Other Mailbox"
+msgstr "ប្រអប់​សំបុត្រ​ផ្សេង​ទៀត"
+
+#. DNS A record entries
+#: schema/cosine.php:55
+msgid "A Record"
+msgstr "កំណត់​ត្រា"
+
+#. DNS MD record entries
+#: schema/cosine.php:58
+msgid "MD Record"
+msgstr "កំណត់​ត្រា MD"
+
+#. DNS MX record entries
+#: schema/cosine.php:61
+msgid "MX Record"
+msgstr "កំណត់​ត្រា MX"
+
+#. DNS NS record entries
+#: schema/cosine.php:64
+msgid "NS Record"
+msgstr "កំណត់​ត្រា NS"
+
+#. DNS SOA record entries
+#: schema/cosine.php:67
+msgid "SOA Record"
+msgstr "កំណត់​ត្រា SOA"
+
+#. DNS CNAME record entries
+#: schema/cosine.php:70
+msgid "CNAME Record"
+msgstr "កំណត់​ត្រា CNAME"
+
+#: schema/cosine.php:72
+msgid "Associated Name"
+msgstr "ឈ្មោះ​ដែល​ភ្ជាប់"
+
+#: schema/cosine.php:74
+msgid "Home Postal Address"
+msgstr "អាសយដ្ឋាន​គេហដ្ឋាន"
+
+#: schema/cosine.php:76
+msgid "Personal Title"
+msgstr "ងារ​ផ្ទាល់ខ្លួន"
+
+#: schema/cosine.php:78
+msgid "Mobile Phone Number"
+msgstr "លេខ​ទូរសព្ទ​ចល័ត"
+
+#: schema/cosine.php:81
+msgid "Pager"
+msgstr "ភេកយ័រ"
+
+#: schema/cosine.php:87
+msgid "Unique Identifier"
+msgstr "ឧបករណ៍​សម្គាល់​តែ​មួយ"
+
+#: schema/cosine.php:89
+msgid "Organizational status"
+msgstr "ស្ថានភាព​អង្គការ"
+
+#. Mail address in rfc733 format
+#: schema/cosine.php:92
+msgid "Janet mailbox"
+msgstr "ប្រអប់​សំបុត្រ Janet"
+
+#: schema/cosine.php:94
+msgid "Mail Preference Option"
+msgstr "ជម្រើស​ចំណូល​ចិត្ត​សំបុត្រ"
+
+#: schema/cosine.php:96
+msgid "Name of building"
+msgstr "ឈ្មោះ​អាគារ"
+
+#: schema/cosine.php:98
+msgid "DSA Quality"
+msgstr "គុណភាព DSA"
+
+#: schema/cosine.php:100
+msgid "Single Level Quality"
+msgstr "គុណភាព​កម្រិត​តែ​មួយ"
+
+#: schema/cosine.php:102
+msgid "Subtree Minimum Quality"
+msgstr "គុណភាព​អប្បបរមា​មែកធាងរង"
+
+#: schema/cosine.php:104
+msgid "Subtree Maximum Quality"
+msgstr "គុណភាព​អតិបរមា​មែកធាងរង"
+
+#: schema/cosine.php:106
+msgid "Personal Signature"
+msgstr "ហត្ថលេខា​ផ្ទាល់ខ្លួន"
+
+#. Redirection to other entry in directory
+#: schema/cosine.php:109
+msgid "DIT Redirect"
+msgstr "ប្ដូរ​ទិសដៅ DIT"
+
+#: schema/cosine.php:111
+msgid "Audio"
+msgstr "អូឌីយ៉ូ"
+
+#: schema/cosine.php:113
+msgid "Publisher of document"
+msgstr "អ្នក​បោះពុម្ព​ផ្សាយ​ឯកសារ"
+
+#: schema/cosine.php:116
+msgid "Pilot Person"
+msgstr "បុគ្គល​គំរូ"
+
+#: schema/cosine.php:119
+msgid "Account"
+msgstr "គណនី"
+
+#: schema/cosine.php:121
+msgid "Document"
+msgstr "ឯកសារ"
+
+#: schema/cosine.php:123
+msgid "Room"
+msgstr "បន្ទប់"
+
+#: schema/cosine.php:125
+msgid "Document Series"
+msgstr "ស៊េរី​ឯកសារ"
+
+#. can represent dns and nrs domain objects
+#: schema/cosine.php:128
+msgid "Domain"
+msgstr "ដែន"
+
+#: schema/cosine.php:130
+msgid "RFC822 Local Part"
+msgstr "ផ្នែក​មូលដ្ឋាន RFC822"
+
+#: schema/cosine.php:132
+msgid "DNS Domain"
+msgstr "ដែន DNS"
+
+#: schema/cosine.php:134
+msgid "Object related to domain"
+msgstr "វត្ថុ​ដែល​ទាក់ទង​ទៅ​និង​ដែន"
+
+#: schema/cosine.php:136
+msgid "Friendly Country"
+msgstr "ប្រទេស​ជា​មិត្ត"
+
+#: schema/cosine.php:138
+msgid "Pilot Organisation"
+msgstr "អង្គការ​គំរូ"
+
+#: schema/cosine.php:140
+msgid "Pilot DSA"
+msgstr "DSA គំរូ"
+
+#: schema/cosine.php:142
+msgid "Quality Labelled Data"
+msgstr "ទិន្នន័យ​ដែល​មាន​ស្លាក​មាន​គុណភាព"
+
+#: schema/inetorgperson.php:20
+msgid "Car License"
+msgstr "អជ្ញាបណ្ណ​រថយន្ត"
+
+#: schema/inetorgperson.php:22
+msgid "Department Number"
+msgstr "លេខ​នាយកដ្ឋាន"
+
+#: schema/inetorgperson.php:24
+msgid "Displayed Name"
+msgstr "ឈ្មោះ​បង្ហាញ"
+
+#: schema/inetorgperson.php:26
+msgid "Employee Number"
+msgstr "លេខ​និយោជិត"
+
+#: schema/inetorgperson.php:28
+msgid "Employee Type"
+msgstr "ប្រភេទ​និយោជិត"
+
+#: schema/inetorgperson.php:30
+msgid "JPEG Photo"
+msgstr "រូបភាព JPEG"
+
+#: schema/inetorgperson.php:32
+msgid "Preferred Language"
+msgstr "ភាសា​ចំណូល​ចិត្ត"
+
+#: schema/inetorgperson.php:34
+msgid "User SMIME Certificate"
+msgstr "វិញ្ញាបនបត្រ SMIME អ្នក​ប្រើ"
+
+#: schema/inetorgperson.php:36
+msgid "User PKCS12"
+msgstr "PKCS12 អ្នក​ប្រើ"
+
+#: schema/inetorgperson.php:38
+msgid "Internet Organizational Person"
+msgstr "បុគ្គល​រៀបចំ​តាម​អ៊ីនធឺណិត"
+

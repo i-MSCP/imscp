@@ -1,0 +1,103 @@
+<chapter>
+   <title>
+      Mapper
+   </title>
+   <summary>
+      Du kan gemme dine e-mails i forskellige mapper. Dette er især nyttigt
+      hvis du har mange e-mails, og ønsker at organisere dem. Mappefunktionerne
+      lader dig håndtere dine mapper.
+   </summary>
+</chapter>
+
+<section>
+   <title>
+      Aktive mapper og mappelisten
+   </title>
+   <description>
+      <p>
+      Mapper der er aktive kan du se i den farvede mappeliste
+      til venstre (eller højre, hvis du har ændret indstillingerne).
+      Denne liste kan under indstillingerne sættes op til automatisk
+      at opdatere sit indhold. Øverst i listen er en overskrift. Herunder
+      er et link, der kan bruges til manuelt at opdatere listen med.
+      Dette link hedder sjovt nok "Opdatér mappeliste".
+      </p><p>
+      Den første mappe er din indbakke, der indeholder modtagne e-mails.
+      Tallet til højre for indbakke angiver, hvor mange <i>ulæste</I> e-mails
+      der er i indbakken. Under indbakken kan der være yderligere mapper og
+      undermapper. Farverne for mapperne kan ændres med indstillingen temaer.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Slet
+   </title>
+   <description>
+      <p>
+      Du kan slette en hvilken som helst mappe, som er i listen til venstre
+      for "Slet"-knappen. Denne liste indeholder <b>ikke</b> nødvendigvis alle
+      dine mapper. Mapper med et specielt formål som sendt eller
+      papirkurven kan ikke slettes, ligesom du naturligvis ikke kan slette
+      din indbakke.
+      </p>
+   </description>
+</section>
+
+
+<section>
+   <title>
+      Opret mappe
+   </title>
+   <description>
+      <p>
+      Du kan oprette nye mapper ved at indtaste det ønskede navn i
+      indtastningsfeltet og trykke på "Opret"-knappen. Hvis den nye mappe skal
+      være en undermappe til en eksisterende mappe kan du vælge mappen, den skal
+      placeres under, i listen nedenunder indtastningsfeltet.
+      </p>
+      <p>
+      På visse mailservere er der to forskellige typer mapper. Mapper, der kan
+      indeholde beskeder, og mapper, der kan indehold undermapper. Der er måske
+      et afkrydsningsfelt, der hedder "Lad denne mappe indeholde undermapper".
+      Hvis dette felt findes og du afkrydser det kan der kun være undermapper
+      under den nye mappe, hvis du ikke afkrydser det kan mappen i stedet for
+      kun indeholde beskeder.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Omdøb en mappe
+   </title>
+   <description>
+      <p>
+      Du kan omdøbe en hvilken som helst mappe, der forefindes i listen til
+      venstre for "Omdøb"-knappen. Bemærk at denne liste <b>ikke</b> indeholder
+      alle dine mapper. Af indlysende årsager kan du ikke omdøbe indbakke, sendt
+      og papirkurv mapperne.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Gør passiv/Gør aktiv
+   </title>
+   <description>
+      Definitioner:<br>
+      <i>Gør aktiv</i>: At registrere en mappe på mailserveren, så du kan
+                        se mappens indhold i oversigten.<br>
+      <i>Gør passiv</i>: Det modsatte af "Gør aktiv".  Dette afregistrerer
+                      Mappen på mailserveren, så du ikke længere kan se den.<br>
+      <br><p>
+      Du kan vælge så mange mapper som du ønsker fra enten "Gør passiv" eller
+      "Gør aktiv" listen og herefter klikke på knappen under listen for enten
+      at gøre mapperne aktive eller passive. Du vil bemærke, at mapperne
+      herefter bliver flyttet til den anden liste. Du kan herefter naturligvis
+      gøre dem enten passive eller aktive igen.
+      </p>
+   </description>
+</section>

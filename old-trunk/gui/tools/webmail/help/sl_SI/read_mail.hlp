@@ -1,0 +1,160 @@
+<chapter>
+   <title>
+      Branje elektronske po¹te
+   </title>
+   <summary>
+      Zmo¾nost branja elektrnoske popte je najosnovnej¹a lastnost vsakega
+      odjemalca za elektrnosko po¹to. SquirrelMail ima poleg tega ¹e precej
+      dodatnih mo¾nosti. To poglaje jih podrobneje predstavi.
+   </summary>
+   <description>
+      <p>
+      Kliknite na naslov doloèenega sporoèila in to sporoèilo bo prikazano.
+      Opazili boste, da so naslovi elektronske po¹te in internetne povezave
+      delujoèi in s klikom na njih lahko po¹ljete po¹to, ali odprete internetno
+      stran. Naslednja ras priroèna znaèilnost je ta, da so sporoèila barvno
+      oznaèena glede na vsebino. Standard pri odgovarjanju je, da se citat
+      prej¹njega sporoèila oznaèi ">" pred vsako vrstico. SquirrelMail jih zazna,
+      in jih barvno oznaèi. Odgovorjeno sporoèilo bo imelo drugo barvo za citiran
+      tekst in drugo za novo vsebino. to deluje dva nivoja globoko.
+        Nad sporoèilo je prikazana tudi dodatna vrstica z menijem. Na levi strani
+      lahko izbri¹ete ali se vrnete v seznam, na sredini je mo¾na navigacija med
+      sooroèili, na desni pa so razliène mo¾nosti za elektronsko po¹to.
+      </p>
+   </description>
+</chapter>
+
+<section>
+   <title>
+      Sezna sporoèil
+   </title>
+   <description>
+      <p>
+      Kliknite na to povezavo za povratek v mapo iz katere ste pri¹li.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Bri¹i
+   </title>
+   <description>
+      <p>
+      Kliknite to povezavo, za vrisanje sporoèila, ki ga pravkar pregledujete.
+      Vse priloge tega sporoèila so prav tako pobrisane. Èe priloge potrebujte
+      jih najprej prenesite na svoj raèunalnik (pojasnjeno kasneje v poglavju).
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Navigacija
+   </title>
+   <description>
+      <p>
+      Na sredini menija so navigacijski gumbi. "Prej¹nje" je aktiven samo, èe
+      sporoèilo ni prvo. Klik na to povezavo bo pokazal prej¹nje sporoèilo, ne
+      da bi bilo treba v seznam sporoèil.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Naslednje
+   </title>
+   <description>
+      <p>
+      Kliknite na to povezavo za prikaz naslednjega sporoèila. Povezava je
+      aktivna samo, èe sporoèilo ni zadnje.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Posreduj
+   </title>
+   <description>
+      <p>
+      Na desni strani: povezava "posreduj" odpre okno "Novo sporoèilo" z
+      vsebino prej¹njega sporoèila pod oznako "--Originalno sporoèilo--".
+      "Fwd:" je dodan na zaèetek originalnega naslova in postavljen v pravo
+      polje. Veè polj èaka ¹e na va¹ vnos. Tekst lahko vpi¹ete tudi nad
+      originalno sporoèilo, èe ga ¾elite komentirati. Lahko dodate tudi
+      priloge.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Odgovori
+   </title>
+   <description>
+      <p>
+      Kliknite to povezavo, èe ¾elite odgovoriti po¹iljatelju sporoèila.
+      Na zaèetek naslova je dodana oznaka "Re:". Tekst originalnega
+      sporoèila je citiran v polju za tekst. Tokrat je pred vsako vrstico
+      dodan znak ">". Nekatere vrstice ne bodo imele te oznake, to je zaradi
+      preloma teksta in je neizogibno. Temu se lahko izognete tako, da
+      poveèate vrednost <i>Prelomi prihajajoèi tekst pri</i> na stani z
+      nastavitvami. Komentarje lahko vpisujete kjerkoli v tekstovnem polju.
+      Lahko dodate tudi priloge.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Odgovori vsem
+   </title>
+   <description>
+      <p>
+      Enako kot "Odgovori", le da bodo odgovor dobili vse naslovniki in ne
+      samo po¹iljatelj sporoèila.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Pregled celotnega zaglavja
+   </title>
+   <description>
+      <p>
+      Ta povezave prika¾e celotno zaglavje sporoèila. To kljuèuje pot, po kateri
+      je sporoèilo pri¹lo in ¹e veliko drugih podrobnosti o samem sporoèilu.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Prenesi to kot datoteko
+   </title>
+   <description>
+      <p>
+      Ta povezave se nahaja na dnu, tiki nad spodnjim menijem. S klikom nanjo
+      lahko to sporoèilo preneste na svoj raèunalnik in ga shranite kot tekstovno
+      datoteko. Poenostavljeno zaglavje bo pripeto na zaèetku sporoèila.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Priloge
+   </title>
+   <description>
+      <p>
+      Vse priloge poslane s prejetim soroèilom bodo prikazane na dnu sporoèila
+      v obarvanem okvirèku. Datoteka je prikazana kot povezava z opisom vrste
+      datoteke na desni. Klik na datoteko bo vsebino pokazal ali pa odprl okno
+      za prenos, odvisno od vsebine. Èe ¾elite datoteko prenesti na svoj
+      raèunalnik kliknite povezavo "download", ki je na desni.
+      </p>
+   </description>
+</section>

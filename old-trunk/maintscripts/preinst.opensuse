@@ -1,0 +1,107 @@
+#!/bin/sh
+
+# i-MSCP a internet Multi Server Control Panel
+#
+# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2010 by internet Multi Server Control Panel - http://i-mscp.net
+#
+# Author: Laurent Declercq <laurent.declercq@i-mscp.net>
+# Version: $Id: imscp-apache-logger 3687 2010-11-16 05:50:44Z sci2tech $
+#
+# The contents of this file are subject to the Mozilla Public License
+# Version 1.1 (the "License"); you may not use this file except in
+# compliance with the License. You may obtain a copy of the License at
+# http://www.mozilla.org/MPL/
+#
+# Software distributed under the License is distributed on an "AS IS"
+# basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+# License for the specific language governing rights and limitations
+# under the License.
+#
+# The Original Code is "ispCP ω (OMEGA) a Virtual Hosting Control Panel".
+#
+# The Initial Developer of the Original Code is ispCP Team.
+# Portions created by Initial Developer are Copyright (C) 2006-2010 by
+# isp Control Panel. All Rights Reserved.
+#
+# Portions created by the i-MSCP Team are Copyright (C) 2010 by
+# internet Multi Server Control Panel. All Rights Reserved.
+#
+# The i-MSCP Home Page is:
+#
+#    http://i-mscp.net
+#
+
+# IMPORTANT:
+# This script must be idempotent.
+
+set -e
+
+# Including the helper library
+SELFDIR=$(dirname "$0")
+. $SELFDIR/maintainer-helper.sh
+
+BASE_SERVICES="fam mysql"
+SWITCHABLE_SERVICES="${CMD_NAMED}%named ${CMD_HTTPD}%apache2 ${CMD_FTPD}%proftpd \
+${CMD_POSTGREY}%postgrey ${CMD_POLICYD_WEIGHT}%policyd-weight ${CMD_MTA}%postfix \
+${CMD_AUTHD}%courier-authdaemon ${CMD_IMAP}%courier-imap ${CMD_IMAP_SSL}%courier-imap-ssl \
+${CMD_POP}%courier-pop ${CMD_POP_SSL}%courier-pop-ssl"
+
+case "$1" in
+	install|upgrade)
+
+		# Disabling OpenSuse firewall
+		print_title "OpenSuSe firewall configuration:"
+		/sbin/SuSEfirewall2 off >> $LOGFILE 2>&1 || failed
+
+		print_status
+
+		# System Init Configuration
+		print_title "Enabling system init scripts: "
+
+		for service in $BASE_SERVICES ; do
+			/sbin/insserv -vfr $service >> $LOGFILE 2>&1 || failed
+			/sbin/insserv -v $service >> $LOGFILE 2>&1 || failed
+
+			progress
+		done
+
+		# Switchable services
+		for service in $SWITCHABLE_SERVICES ; do
+			srvname=$(echo $service | cut -d '%' -f 1 | sed 's/.*\/rc\(.*\)/\1/')
+
+			if [ $srvname != 'no' -a $srvname != 'NO' ] ; then
+				/sbin/insserv -vfr $srvname >> $LOGFILE 2>&1 || failed
+				/sbin/insserv -v $srvname >> $LOGFILE 2>&1 || failed
+			else
+				/sbin/insserv -vfr $(echo $service | cut -d '%' -f 2) >> $LOGFILE 2>&1 || failed
+			fi
+
+			progress
+		done
+
+		# Amavis and Cie...
+		if [ $CMD_AMAVIS != 'no' -a $CMD_AMAVIS != 'NO' ] ; then
+			/sbin/insserv -vfr amavis >> $LOGFILE 2>&1 || failed
+			/sbin/insserv -v amavis >> $LOGFILE 2>&1 || failed
+
+			if [ $CMD_CLAMD != 'no' -a $CMD_CLAMD != 'NO' ] ; then
+				/sbin/insserv -vfr clamd >> $LOGFILE 2>&1 || failed
+				/sbin/insserv -v clamd >> $LOGFILE 2>&1 || failed
+			fi
+		else
+			for service in amavis clamd ; do
+				/sbin/insserv -vfr $service >> $LOGFILE 2>&1 || failed
+			done
+		fi
+
+		progress
+
+		print_status
+	;;
+	*)
+		exit 0
+	;;
+esac
+
+exit 0

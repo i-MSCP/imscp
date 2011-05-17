@@ -1,0 +1,29 @@
+# translation of compatibility.po to Nynorsk
+# This file is distributed under the same license as the compatibility plugin.
+# Copyright (c) 2004-2009 The SquirrelMail Project Team
+# Ola Ketil Siqveland <olaketil@hotmail.com>, 2004-2006
+# $Id: compatibility.po 13696 2009-05-14 06:27:08Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: compatibility 2.0.4\n"
+"POT-Creation-Date: 2005-11-12 16:51+0200\n"
+"PO-Revision-Date: 2006-03-03 23:55+0100\n"
+"Last-Translator: Ola Ketil Siqveland <olaketil@hotmail.com>\n"
+"Language-Team: Nynorsk <nn@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Administrative error:"
+msgstr "Administrativ feil:"
+
+#, php-format
+msgid "The plugin %s has not been set up correctly."
+msgstr "Programtillegget %s er ikkje set opp rett."
+
+msgid "Please read the README or INSTALL files that came with the plugin."
+msgstr "Les README eller INSTALL filene som kom med programtillegget."
+
+#, php-format
+msgid "The file %s is missing."
+msgstr "Fila %s finst ikkje."

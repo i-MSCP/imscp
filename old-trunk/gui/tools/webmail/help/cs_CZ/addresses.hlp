@@ -1,0 +1,78 @@
+<chapter>
+   <title>
+      Adresář
+   </title>
+   <summary>
+      
+   </summary>
+   <description>
+      <p>
+      Adresář Vám umožní efektivnější práci ve SquirrelMailu. V adresáři 
+      můžete ukládat adresy nejčastějších příjemců Vašich zpráv.
+      </p>
+      <p>
+      Jestliže Váš prohlížeč podporuje Javascript, můžete si pomocí "Možnosti nastavení" 
+      zvolit adresář založený na Javasriptu. Systém SquirrelMail podporuje HTML 
+      seznamy adres, takže prohlížeče neumožňující Javascript mohou využívat 
+      SquirrelMail bez toho, aniž by nějaká funkce systému byla znemožněna. 
+      </p>
+   </description>
+</chapter>
+
+<section>
+   <title>
+      Přezdívka
+   </title>
+   <description>
+      <p>
+      Zde vložte jedinečnou přezdívku příjemce. 
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Emailová adresa
+   </title>
+   <description>
+      <p>
+      Tato položka musí obsahovat správnou adresu, která se skládá ze dvou částí - 
+      Vaše jméno a název domény (např.: eva@adam.cz). Jestliže je e-mailová adresa 
+      nesprávná, zpráva se Vám vrátí zpět do vaší schránky. 
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Informace
+   </title>
+   <description>
+      <p>
+      Do tohoto pole můžete vkládat další informace o příjemci zprávy. 
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Upravit nebo odstranit
+   </title>
+   <description>
+      <p>
+      Tyto funkce Vám umožní měnit nebo odstranit údaje ve svém adresáři. 
+      Vždy můžete upravovat pouze jeden záznam.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Přidat do osobního adresáře
+   </title>
+   <description>
+      <p>
+      Vyplněním údajů v prvních třech polích úspěšně zadáte do svého adresáře nový kontakt.
+      </p>
+   </description>
+</section>

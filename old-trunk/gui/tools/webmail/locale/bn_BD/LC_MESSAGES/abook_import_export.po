@@ -1,0 +1,279 @@
+# Bengali (bn_BD) abook_import_export Translation (SquirrelMail plugin)
+# Copyright (c) 2000-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Israt Jahan <israt@ankur.org.bd>, 2009.
+# $Id: abook_import_export.pot 12742 2007-10-26 23:15:55Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: abook_import_export 1.1\n"
+"Report-Msgid-Bugs-To: <http://sourceforge.net/projects/sm-plugins/>\n"
+"POT-Creation-Date: 2007-10-26 17:50+0200\n"
+"PO-Revision-Date: 2009-01-01 11:05+0600\n"
+"Last-Translator: Israt Jahan <israt@ankur.org.bd>\n"
+"Language-Team:  Bengali <ankur-bd-l10n@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: address_book_export.php:90 address_book_import.php:194
+msgid "You must use different symbols for text and field delimiters."
+msgstr ""
+"পাঠ্য এবং ক্ষেত্র সীমানির্দেশকের জন্য আপনাকে অবশ্যই ভিন্ন প্রতীক ব্যবহার করতে হবে।"
+
+#: address_book_export.php:91 address_book_export.php:100
+#: address_book_import.php:118 address_book_import.php:394
+#, php-format
+msgid "Return to main %sAddress Book%s page."
+msgstr "%1$sঠিকানা বই%2$s পৃষ্ঠা ফেরত পাঠায়।"
+
+#: address_book_export.php:99
+msgid "Selected address book is empty."
+msgstr "নির্বাচিত ঠিকানা বইটি খালি।"
+
+#. Detect PHP 4.2.0+ upload error codes (http://www.php.net/features.file-upload.errors)
+#: address_book_import.php:86
+msgid "Please select a file for uploading."
+msgstr "অনুগ্রহ করে আপলোড করার জন্য একটি ফাইল নির্বাচন করুন।"
+
+#: address_book_import.php:90
+msgid "The uploaded file exceeds PHP upload_max_filesize limits."
+msgstr "আপলোডকৃত ফাইলটি পিএইচপি_সর্বোচ্চ_ফাইলের আকার অতিক্রম করেছে।"
+
+#: address_book_import.php:93
+msgid ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML."
+msgstr "আপলোডকৃত ফাইলটি এইচটিএমএল এ উল্লেখিত সর্বোচ্চ_ফাইল_আকার অতিক্রম করছে।"
+
+#: address_book_import.php:96
+msgid "The uploaded file was only partially uploaded."
+msgstr "আপলোডকৃত ফাইলটি আংশিকভাবে আপলোড হয়েছিল।"
+
+#: address_book_import.php:99
+msgid "No file was uploaded."
+msgstr "কোন ফাইল আপলোড হয়নি।"
+
+#: address_book_import.php:102
+msgid "Missing a temporary directory."
+msgstr "একটি অস্থায়ী নির্দেশিকা হারিয়েছে।"
+
+#: address_book_import.php:105
+msgid "Failed to write file to disk."
+msgstr "ডিস্কে ফাইল লিখতে ব্যর্থ।"
+
+#. File upload stopped by extension. 'security library' is more user friendly.
+#: address_book_import.php:109
+msgid "File upload stopped by security library."
+msgstr "নিরাপত্তা লাইব্রেরী দ্বারা ফাইল আপলোড থামানো হয়েছে।"
+
+#: address_book_import.php:112
+msgid "Unknown upload error."
+msgstr "অজানা আপলোড ত্রুটি।"
+
+#: address_book_import.php:121
+msgid "Upload error"
+msgstr "আপলোড ত্রুটি"
+
+#. i18n: %s displays 'somenumber B', 'somenumber KB' or 'somenumber MB'.
+#: address_book_import.php:124
+#, php-format
+msgid ""
+"Imported CSV file is too big. Contact your system administrator, if you want "
+"to import files, that are bigger than %s."
+msgstr ""
+"আমদানিকৃত CVS ফাইলটি অনেক বেশী বড়। যদি আপনি %s এর থেকে বড়, ফাইলগুলো আমদানি "
+"করতে চান, তবে আপনার সিস্টেম প্রশাসকের সাথে যোগাযোগ করুন।"
+
+#: address_book_import.php:167
+msgid "Error, could not open address file."
+msgstr "ত্রুটি, ঠিকানা ফাইল খোলা যাবেনা।"
+
+#. Title of column with row numbers
+#: address_book_import.php:284
+msgid "No#"
+msgstr "না #"
+
+#. Title of column with omit checkbox
+#: address_book_import.php:286
+msgid "Omit"
+msgstr "বাদ দিন"
+
+#: address_book_import.php:338
+msgid "Add to address book: "
+msgstr "ঠিকানা বইয়ে যোগ করুন:"
+
+#. display import button only after table is loaded
+#: address_book_import.php:345
+msgid "Finish"
+msgstr "শেষ"
+
+#. *
+#. * $csvdata is empty. User tried to import empty file or $error contains fatal
+#. * processing error message.
+#.
+#: address_book_import.php:352
+msgid "Nothing to import"
+msgstr "আমদানি করার মতো কিছু নেই"
+
+#: address_book_import.php:353
+msgid "Return to Address Book"
+msgstr "ঠিকানা বইয়ে ফিরে যায়"
+
+#: address_book_import.php:358
+msgid "The following rows have errors"
+msgstr "নিম্নোক্ত সারিগুলোতে ত্রুটি আছে"
+
+#. unable to move file to temp directory
+#: address_book_import.php:363
+msgid "Can't move uploaded file to attachment directory."
+msgstr "আপলোডকৃত ফাইলগুলোকে সংযুক্তি নির্দেশিকায় সরাতে পারেনা।"
+
+#. $csvdata is not available or is not array.
+#: address_book_import.php:393
+msgid "Unable to access uploaded data. Contact your system administrator."
+msgstr "আপলোডকৃত ডাটায় প্রবেশ করতে অক্ষম। আপনার সিস্টেম প্রশাসকের সাথে যোগাযোগ করুন।"
+
+#. displays row number that can't be imported. SquirrelMail
+#. address book backend error message is displayed after it.
+#: address_book_import.php:465
+#, php-format
+msgid "Row %d:"
+msgstr "সাঁরি %d:"
+
+#: address_book_import.php:483
+msgid ""
+"There were errors uploading the data, as listed below. Entries not listed "
+"here were uploaded."
+msgstr ""
+"নিচে তালিকাবদ্ধ, ডাটা আপলোডে ত্রুটি ছিলো। তালিকাবদ্ধ নয় এমন এন্ট্রিগুলো আপলোড হয়েছে।"
+
+#: address_book_import.php:487
+msgid "Upload Completed!"
+msgstr "আপলোড সম্পন্ন হয়েছে!"
+
+#: address_book_import.php:489
+msgid "Click on the link below to verify your work."
+msgstr "আপনার কাজ পরীক্ষা করতে নিচের লিংকে ক্লিক করুন।"
+
+#: address_book_import.php:493
+msgid "Addresses"
+msgstr "ঠিকানাগুলো"
+
+#: functions.php:101
+msgid "Single quotes (')"
+msgstr "একক উদ্ধৃতি (')"
+
+#: functions.php:102
+msgid "Double quotes (\")"
+msgstr "দ্বিগুন উদ্ধৃতি (\")"
+
+#: functions.php:103
+msgid "Comma (,)"
+msgstr "কমা (,)"
+
+#: functions.php:104
+msgid "Semicolon (;)"
+msgstr "সেমিকোলন (;)"
+
+#: functions.php:105
+msgid "Custom delimiter"
+msgstr "মাপ অনুসারে তৈরী সীমানির্দেশক"
+
+#: functions.php:112
+msgid "Address book import"
+msgstr "ঠিকানা বই নিয়ে আসা"
+
+#: functions.php:125
+msgid "Select file:"
+msgstr "ফাইল নির্বাচন করুন:"
+
+#: functions.php:130
+msgid "Max:"
+msgstr "সর্বোচ্চ:"
+
+#: functions.php:134
+msgid "Input character set:"
+msgstr "ইনপুট অক্ষরের সেট:"
+
+#: functions.php:138 functions.php:187
+msgid "Field delimiter:"
+msgstr "ক্ষেত্র সীমানির্দেশক:"
+
+#: functions.php:142 functions.php:191
+msgid "Custom field delimiter:"
+msgstr "মাপ অনুসারে তৈরী সীমানির্দেশক:"
+
+#: functions.php:148 functions.php:201
+msgid "Text delimiter:"
+msgstr "পাঠ্য সীমানির্দেশক:"
+
+#: functions.php:152 functions.php:205
+msgid "Custom text delimiter:"
+msgstr "মাপ অনুসারে তৈরী সীমানির্দেশক:"
+
+#: functions.php:157
+msgid "Import CSV File"
+msgstr "CVS ফাইল নিয়ে আসা"
+
+#: functions.php:165 functions.php:529
+msgid "ERROR"
+msgstr "ত্রুটি"
+
+#: functions.php:167
+msgid "Address book uploads are disabled."
+msgstr "ঠিকানা বই আপলোড নিষ্ক্রিয়।"
+
+#: functions.php:175
+msgid "Address book export"
+msgstr "ঠিকানা বই পাঠানো"
+
+#: functions.php:212
+msgid "Use address book:"
+msgstr "ঠিকানা বই ব্যবহার করুন:"
+
+#: functions.php:219
+msgid "Export to CSV File"
+msgstr "CVS ফাইল নিয়ে আসুন"
+
+#: functions.php:241
+#, php-format
+msgid "%s MB"
+msgstr "%s মেগাবাইট"
+
+#: functions.php:243
+#, php-format
+msgid "%s KB"
+msgstr "%s কিলোবাইট"
+
+#: functions.php:245
+#, php-format
+msgid "%s B"
+msgstr "%s বাইট"
+
+#: functions.php:271
+msgid "Nickname"
+msgstr "ছদ্মনাম"
+
+#: functions.php:273
+msgid "First Name"
+msgstr "নামের প্রথমাংশ"
+
+#: functions.php:275
+msgid "Last Name"
+msgstr "নামের শেষাংশ"
+
+#: functions.php:277
+msgid "Email"
+msgstr "ইমেইল"
+
+#: functions.php:279
+msgid "Additional Info"
+msgstr "অন্যান্য তথ্য"
+
+#: functions.php:281
+msgid "Do Not Include"
+msgstr "সংযুক্ত নয়"
+
+#: functions.php:318
+msgid "LDIF import is not supported."
+msgstr "LDIF নিয়ে আসা সমর্থিত নয়।"

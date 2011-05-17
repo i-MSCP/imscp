@@ -1,0 +1,156 @@
+<chapter>
+   <title>
+      Reading an email message
+   </title>
+   <summary>
+Maer gallu i ddarllen neges e-bost yn un o nodweddion mwyaf sylfaenol unrhyw gleient e-bost. Fodd bynnag, mae gan Squir
+relMail nifer o nodweddion i chi ar gyfer yr adeg y byddwch yn darllen eich negesau. Mae hyn yn egluro beth y gall pob un oho
+nynt ei wneud.
+   </summary>
+   <description>
+      <p>
+Cliciwch ar destun post arbennig a bydd y neges honno yn cael ei dangos. Un peth y byddwch yn sylwi arno yw fod cyfeiri
+adau e-bost a chyfeiriadau gwe yn gysylltau byw fel y gallwch glicio arnynt ac anfon e-bost neu agor tudalen. Nodwedd arall a
+rbennig o hwylus yw fod llinynnau post wedi eu codio yn ôl lliw. Y dull safonol o ateb yw dyfynnur neges flaenorol â > cyn po
+b llinell. Mae SquirrelMail yn gweld hyn ac yn eu codio yn ôl lliw. Bydd gan neges sydd wedi ei hateb liw gwahanol ar yr ateb
+ oi gymharu âr testun newydd. Mae hwn yn gweithio ddwy haen i lawr. Mae bar dewislen arall yn cael ei gyflwyno yn awr o dan d
+dewisiadaur prif ddewislen. Maer bar yma mewn tair rhan. Ar yr ochr chwith gallwch ddileu neu ddychwelyd ir crynodeb. Yn y ca
+nol mae modd llywion uniongyrchol  rhwng negesau. Ar y dde, mae swyddogaethau postio amrywiol yn cael eu cyflwyno.
+      </p>
+   </description>
+</chapter>
+
+<section>
+   <title>
+      Message List
+   </title>
+   <description>
+      <p>
+      Cliciwch ar y cyswllt yma i ddychwelyd ir ffolder y daethoch ohono.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Delete
+   </title>
+   <description>
+      <p>
+ Cliciwch ar y cyswllt yma i ddileur neges syn cael ei gwylio ar hyn o bryd. Mae pob atodiad syn perthyn i bost syn 
+cael ei ddileu yn cael eu dileu hefyd. Gallwch atal atodiadau rhag cael eu colli trwy eu Llwytho i Lawr yn gyntaf (mae hyn yn
+ cael ei esbonio ymhellach ymlaen yn y bennod yma).<br>
+Yn y cyd-destun yma, mae dileun golygu y bydd y neges yn cael ei symud ir ffolder syn cael ei alwn Trash. Os ydych chi eisiau
+ cadwr neges wedir cyfan, edrychwch ar y ffolder Trash a symudwch y neges allan oddi yno.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Navigation
+   </title>
+   <description>
+      <p>
+Yng nghanol y bar mae botymau llywio. Bydd Previous yn gyswllt gweithredol os allwch ei ddefnyddio ac yn destun plaen f
+el arall. Bydd clicio ar y cyswllt yma yn dangos y neges flaenorol heb i chi orfod mynd yn ôl i edrych ar yr arddangosiad cry
+no o negesau. Maer un peth yn wir am y cyswllt Next a fydd yn eich symud ymlaen ir post syn dilyn yn syth ar ôl yr un yr ydyc
+h yn edrych arno.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Forward
+   </title>
+   <description>
+      <p>
+Ar y dde, bydd y cyswllt Forward, oi bwyso, yn agor y dudalen Compose syn cynnwys yr e-bost y buoch yn edrych arno or b
+laen mewn blwch testun o dan y tag "--Original Message--". Mae "Fwd:" wedi ei ychwanegu at y llinell destun wreiddiol ai osod
+ yn y maes cywir. Maer meysydd amrywiol ar gyfer anfon i gyfeiriad yn barod i chi eu llenwi. Gallwch osod y cyrchwr yn y blwc
+h testun er mwyn ychwanegu sylwadau ir testun sydd ynon barod. Gallwch ddefnyddior nodwedd atodiad hefyd.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Reply
+   </title>
+   <description>
+      <p>
+ ei ychwanegu at y llinell destun wreiddiol ai osod yn y maes testun. Unwaith eto, bydd testun y neges wreiddiol yn cael ei d
+dyfynnu yn y blwch testun. Y tro yma bydd y symbol ">" yn cael ei osod o flaen y testun gwreiddiol. Efallai y sylwch chi nad 
+oes gan ran or testun gwreiddiol y symbol ">". Mae hyn oherwydd lapio llinell a gall fod nad oes modd ei osgoi. Ceisiwch osod
+ y gwerth <i>Wrap incoming text</i> yn y dudalen Options i rif mwy. Efallai y bydd hyn yn helpu. Gallwch wneud sylwadau mewn 
+unrhyw ran or blwch testun yn ogystal âr neges a ddyfynnwyd. Gallwch ddefnyddior nodwedd atodiad hefyd.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Reply All
+   </title>
+   <description>
+      <p>
+Yr un ywr stori yma âr un am "reply" ac eithrior ffaith y bydd yr holl gyfeiriadau sydd wedi eu rhestru yn y pennawd  y
+n derbyn y post.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      View all headers
+   </title>
+   <description>
+      <p>
+Bydd hwn yn dangos y pennyn cyfan ar gyfer y neges e-bost. Mae hwn yn cynnwys y llwybr a ddilynodd y neges i gyrraedd y
+ma, a llawer o wybodaeth fanylach am y neges ei hun.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      View Printable Version
+   </title>
+   <description>
+      <p>
+Os ydych chi eisiau argraffu neges, efallai yr hoffech chi glicio ar y cyswllt yma. Maen rhoi ffenest newydd i chi syn 
+cynnwys y neges ond âr holl wybodaeth a dewislenni dianghenraid wedi eu tynnu oddi yno, yn barod iw hargraffu. Bydd clicio ar
+ y botwm Print yn y ffenest yma yn gwneud hynny. Pwyswch Close i ddychwelyd ich neges.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Download this as a file
+   </title>
+   <description>
+      <p>
+Ar y gwaelod, yn union uwchben y bar botymau fe welwch chir cyswllt yma. Mae clicio ar y cyswllt yma yn fodd i chi gadw
+ e-bost ar eich gyrrwr caled lleol fel neges destun blaen. Bydd pennawd syml wedi ei atodi i frig y neges hefyd.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Attachments
+   </title>
+   <description>
+      <p>
+      Bydd unrhyw atodiadau a anfonwyd ag e-bost a dderbyniwyd yn cael ei ddangos ar waelod y neges mewn blwch lliw. Cyflwyni
+r y ffeil fel cyswllt â disgrifiad or math o ffeil ydyw ir dde ohono. Bydd clicio ar enwr ffeil naill ain dangos yr atodiad n
+eun cyflwyno deialog wedi ei lwytho i lawr gan ddibynnu ar ba fath o ffeil ydyw. Os ydych chi eisiau llwythor ffeil i lawr (y
+n hytrach nag edrych arno o bosib), cliciwch ar y cyswllt "download" ar yr ochr dde.
+<BR>
+      Os yw eich porwr gwe yn cynnal y drefn edrych ar y math o atodiad ffeil, bydd cyswllt arall, sef "view" yn cael ei ardd
+angos syn dangos y ffeil yn eich porwr.
+      </p>
+   </description>
+</section>
