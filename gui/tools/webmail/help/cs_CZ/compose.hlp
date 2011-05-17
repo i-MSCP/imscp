@@ -1,0 +1,106 @@
+<chapter>
+   <title>
+      Nová zpráva
+   </title>
+   <summary>
+      
+   </summary>
+   <description>
+      <p>
+       
+      </p>
+   </description>
+</chapter>
+
+<section>
+   <title>
+      Komu
+   </title>
+   <description>
+      <p>
+      Do tohoto pole vepište e-mailovou adresu příjemce (příjemců) zprávy. 
+      Můžete zde vepsat libovolný počet jmen, musí však být odděleny čárkou. 
+      Vkládání adres můžete provést kliknutím na tlačítko adresář.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Kopie
+   </title>
+   <description>
+      <p>
+      Jestliže si přejete, aby zprávu obdrželo více příjemců, vložíte jejich 
+      adresu do tohoto pole. Do všech polí "Komu", "Kopie", Skrytá kopie" můžete 
+      vepisovat libovolný počet adres. Adresy osob, kterých se zpráva přímo týká, 
+      vepisujte do pole "Komu", adresy osoby, pro které je zpráva pouze informativní, 
+      vepisujte do pole "Kopie" a "Skrytá kopie". 
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Skrytá kopie
+   </title>
+   <description>
+      <p>
+      Adresy osob, jež uvedete zde, se nezobrazí v hlavičce zprávy osobám, které 
+      byly uvedeny v "Komu" a "Kopie". 
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Předmět
+   </title>
+   <description>
+      <p>
+      Zde uveďte titulek zprávy. 
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Adresář
+   </title>
+   <description>
+      <p>
+      Kliknutím na toto tlačítko otevřete adresář. Abyste vyhledali požadovanou 
+      adresu, musíte do pole "Hledat" zadat požadovaný text. Jestliže chcete, aby se 
+      Vám zobrazily všechny adresy v adresáři, vložte zde mezeru a klikněte 
+      na tlačítko "Odeslat". Pro detailní popis zvolte v nápovědě část "Adresář".
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Text zprávy
+   </title>
+   <description>
+      <p>
+      Prázdné okno je určeno k tomu, abyste zde vložili text zprávy. Pokud 
+      jste v možnostech zvolili automatický podpis, zobrazí se v dolní části zprávy. 
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Přiložit soubor
+   </title>
+   <description>
+      <p>
+      Tato funkce Vám umožňuje přikládat k Vaší zprávě soubory. Přikládaný soubor 
+      musí být uložen na Vašem pevném disku nebo na síti. Tlačítkem "Procházet" můžete 
+      volit cestu k danému souboru a přiložit ho ke zprávě. 
+      </p>
+      <p>
+      Takto přiložený soubor kdykoliv odstranit kliknutím na tlačítko "Odstranit."
+      <p>
+   </description>
+</section>

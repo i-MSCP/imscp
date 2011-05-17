@@ -1,0 +1,111 @@
+# Dutch (nl_NL) contactclean Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Rinse de Vries <rinsedevries@kde.nl>, 2007.
+# $Id: contactclean.pot 10877 2006-03-04 11:22:22Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: contactclean\n"
+"POT-Creation-Date: 2003-09-06 14:01+0300\n"
+"PO-Revision-Date: 2007-04-13 00:47+0200\n"
+"Last-Translator: Rinse de Vries <rinsedevries@kde.nl>\n"
+"Language-Team: Frisian <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+
+msgid "Verify Contacts in Addressbook(s)"
+msgstr "Contactpersonen in adresboek(en) verifiëren"
+
+msgid "Register my Old Address(es)"
+msgstr "Mijn oude adressen registreren"
+
+msgid "(discards changes made on this form so far)"
+msgstr "(wijzigingen tot nu toe in dit formulier negeren)"
+
+msgid "Previous address"
+msgstr "Vorig adres"
+
+msgid "Email Address History"
+msgstr "E-mailadresgeschiedenis"
+
+msgid "Current address"
+msgstr "Huidige adres"
+
+msgid "Old address"
+msgstr "Oud adres"
+
+msgid "Once you've registered an old address you can:"
+msgstr "Als u eenmaal een oud adres hebt geregistreerd kunt u:"
+
+msgid ""
+"You haven't set your email address yet. You need to go back to the Personal "
+"Information options page and set your own email before you can register any "
+"old addresses."
+msgstr "U hebt u e-mailadres nog niet ingesteld. U dient terug te gaan naar de pagina met opties voor persoonlijke informatie en uw eigen e-mailadres instellen voordat u een oud adres kunt registreren."
+
+msgid ""
+"You haven't set your email address yet.<br><br>You need to go to the "
+"Personal Information options page and set your own email address before you "
+"can verify your address book"
+msgstr "U hebt uw eigen e-mailadres nog niet ingesteld.<br><br>U dient terug te gaan naar de pagina met opties voor persoonlijke informatie om uw e-mailadres in te stellen voordat u uw adresboek kunt verifiëren."
+
+msgid "No personal address book is defined. Contact your administrator."
+msgstr "Er is geen persoonlijk adresboek gedefinieerd. Neem contact op met uw systeembeheerder."
+
+msgid "Nothing in the addressbook (is this what you expect?) - nothing to do"
+msgstr "Niets in het adresboek (had u dat verwacht? - niets te doen"
+
+msgid ""
+"ERROR: You need to select some addresses to use the 'Replace Selected' "
+"button!"
+msgstr "FOUT: Om de knop 'Selectie vervangen' te kunnen gebruiken dient u eerst enkele adressen te selecteren."
+
+msgid "Updating the addressbook"
+msgstr "Het adresboek bijwerken"
+
+#, c-format
+msgid "Replacing %s with %s"
+msgstr "Vervangt %s door %s"
+
+#, c-format
+msgid "Changed from %s => %s by ContactClean plugin %s"
+msgstr "Verandert van %s => %s door ContactClean-plugin %s"
+
+msgid "ERROR"
+msgstr "FOUT"
+
+msgid ""
+"The following new addresses have been found!<p>Select the ones you want to "
+"update in your addressbook.<p>"
+msgstr "De volgende nieuwe adressen zijn gevonden!<p>Selecteer degenen die u in uw adresboek wilt bijwerken."
+
+msgid "Nickname"
+msgstr "Bijnaam"
+
+msgid "Name"
+msgstr "Naam"
+
+msgid "E-mail"
+msgstr "E-mail"
+
+msgid "Replace?"
+msgstr "Vervangen?"
+
+msgid "Replace with"
+msgstr "Vervangen door"
+
+msgid "Your address book seems completely up to date."
+msgstr "Uw adresboek blijkt volledig up to date te zijn."
+
+msgid ""
+"Some parts of your addressbook search may have been registered with the "
+"MailLocate.com database to await authorisation with the searchee. Please try "
+"again in a few days time in case you have been authorised to see some new "
+"addresses."
+msgstr "Sommige delen van uw adresboekzoekopdracht kunnen autorisatie van de gezochte personen vereisen bij de MailLocate.com-database. Probeer het opnieuw over enkele dagen voor het geval dat u toestemming hebt gekregen om enkele nieuwe adressen te bekijken."
+
+msgid "Powered by"
+msgstr "Aangestuurd door"
+

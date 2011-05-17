@@ -1,0 +1,153 @@
+# Spanish (es_ES) serversidefilter Translation (SquirrelMail plugin)
+# Copyright (c) 2007-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Gonzalo Carmona Martinez <maidenero@hotmail.com>, 2007.
+# $Id: serversidefilter.pot 10877 2006-03-04 11:22:22Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: serversidefilter 1.42\n"
+"POT-Creation-Date: 2004-03-01 09:01-0600\n"
+"PO-Revision-Date: 2007-08-16 07:42:38+0000\n"
+"Last-Translator: Gonzalo Carmona Martinez <maidenero@hotmail.com>\n"
+"Language-Team: Spanish <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: options.php:62
+msgid "From"
+msgstr "De"
+
+#: options.php:62
+msgid "Subject"
+msgstr "Asunto"
+
+#: options.php:62
+msgid "To"
+msgstr "Para"
+
+#: options.php:62
+msgid "Cc"
+msgstr ""
+
+#: options.php:62
+msgid "Body"
+msgstr "Cuerpo"
+
+#: options.php:62
+msgid "Any Header"
+msgstr "Cabecera"
+
+#: options.php:62
+msgid "Anywhere"
+msgstr "Cualquier campo"
+
+#: options.php:63
+msgid "Contains"
+msgstr "Contiene"
+
+#: options.php:63
+msgid "Begins With"
+msgstr "Comienza con"
+
+#: options.php:63
+msgid "Ends With"
+msgstr "Termina con"
+
+#: options.php:63
+msgid "Is Exactly"
+msgstr "Es exactamente"
+
+#: options.php:63
+msgid "Matches Regex"
+msgstr "Expresion Regular"
+
+#: options.php:201
+msgid "Options"
+msgstr "Opciones"
+
+#: options.php:201 setup.php:29
+msgid "Mail Filters"
+msgstr "Filtros de Mensajes"
+
+#: options.php:208
+msgid "Enter A New Filter:"
+msgstr "Crear un Nuevo Filtro"
+
+#: options.php:213 recipie_functions.php:247
+msgid "If"
+msgstr "Si"
+
+#: options.php:216 options.php:248 options.php:271 recipie_functions.php:241
+#: recipie_functions.php:244 recipie_functions.php:250
+msgid "then"
+msgstr "entonces"
+
+#: options.php:219 options.php:250 recipie_functions.php:255
+#: recipie_functions.php:257 recipie_functions.php:259
+msgid "move"
+msgstr "mover"
+
+#: options.php:220 options.php:251 recipie_functions.php:255
+#: recipie_functions.php:257 recipie_functions.php:259
+msgid "copy"
+msgstr "copiar"
+
+#: options.php:221 options.php:252 recipie_functions.php:255
+#: recipie_functions.php:257 recipie_functions.php:259
+msgid "delete"
+msgstr "eliminar"
+
+#: options.php:226 options.php:255 options.php:277 recipie_functions.php:264
+msgid "Folder"
+msgstr "Carpeta"
+
+#: options.php:230 options.php:258 options.php:280 recipie_functions.php:267
+msgid "Email"
+msgstr "Email"
+
+#: options.php:248 options.php:271
+msgid "if message is marked as"
+msgstr "si el mensaje ha sido marcado como"
+
+#: options.php:248 recipie_functions.php:244
+msgid "SPAM"
+msgstr ""
+
+#: options.php:254 options.php:276 recipie_functions.php:261
+msgid "to"
+msgstr "a"
+
+#: options.php:262
+msgid "save new"
+msgstr "guardar nuevo"
+
+#: options.php:271 recipie_functions.php:241
+msgid "UNSURE"
+msgstr "NO SEGURO"
+
+#: options.php:288
+msgid "Existing Filters:"
+msgstr "Filtros Existentes:"
+
+#: options.php:295
+msgid "Notice:"
+msgstr "Advertencia:"
+
+#: options.php:295
+msgid ""
+"Use of these filters may prevent the reading of mail in non-IMAP mail "
+"clients."
+msgstr "El uso de estos filtros puede impedir la lectura de correo en clientes de correo no-IMAP"
+
+#: recipie_functions.php:36
+msgid "To or Cc"
+msgstr "Para o Cc"
+
+#: recipie_functions.php:241 recipie_functions.php:244
+msgid "If message is marked as"
+msgstr "Si el mensaje ha sido marcado como"
+
+#: setup.php:31
+msgid "Here you may set up server-side filters on all of your incoming mail."
+msgstr "Aqui puedes configurar filtros sobre todo el correo entrante"

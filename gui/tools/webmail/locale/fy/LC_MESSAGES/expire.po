@@ -1,0 +1,119 @@
+# Frisian (fy) expire Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Rinse de Vries <rinsedevries@kde.nl>, 2007.
+# $Id: expire.pot 11128 2006-05-13 09:22:15Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: expire\n"
+"Report-Msgid-Bugs-To: Florian Daeumling <jam@qv90.de>\n"
+"POT-Creation-Date: 2006-05-13 11:09+0200\n"
+"PO-Revision-Date: 2007-04-13 00:23+0200\n"
+"Last-Translator: Rinse de Vries <rinsedevries@kde.nl>\n"
+"Language-Team: Frisian <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#: functions.php:28
+#, php-format
+msgid "ERROR (%s): Can't load config file"
+msgstr "FOUT (%s): kin konfiguraasjetriem net lade"
+
+#: functions.php:49
+msgid "Cannot create option directory!"
+msgstr "Kin opsjemap net oanmeitsje!"
+
+#: functions.php:50
+#: functions.php:57
+#: functions.php:63
+#: functions.php:181
+#: functions.php:187
+#: functions.php:230
+msgid "Please contact system administrator."
+msgstr "Nim kontakt op mei de systeembehearder."
+
+#: functions.php:56
+msgid "Cannot create option file!"
+msgstr "Kin opsjetriem net oanmeitsje!"
+
+#: functions.php:62
+#: functions.php:186
+msgid "Cannot create temporary file!"
+msgstr "Kin tydlike triem net oanmeitsje!"
+
+#: functions.php:100
+msgid "Expiration"
+msgstr "Ferfaldatum"
+
+#: functions.php:106
+#: functions.php:125
+msgid "Expire emails in folder"
+msgstr "E-mails yn map ferrinne litte"
+
+#: functions.php:108
+#: functions.php:127
+msgid "Select a folder"
+msgstr "Selektearje in map"
+
+#: functions.php:112
+msgid "after"
+msgstr "nei"
+
+#: functions.php:114
+msgid "days"
+msgstr "dagen"
+
+#: functions.php:118
+msgid "Define"
+msgstr "Definiearje"
+
+#: functions.php:130
+#, php-format
+msgid "%s after %s days"
+msgstr "%s nei %s dagen"
+
+#: functions.php:135
+msgid "Delete"
+msgstr "Wiskje"
+
+#: functions.php:143
+msgid "Error"
+msgstr "Fout"
+
+#: functions.php:168
+msgid "This folder definition cannot be modified"
+msgstr "Dizze map-definysje kin net oanpast wurde"
+
+#: functions.php:180
+msgid "Cannot read option file!"
+msgstr "Kin opsjetriem net  lêze!"
+
+#: functions.php:198
+#, php-format
+msgid "Expiration modified successfully for folder %s."
+msgstr "Ferfaldatum súksesfol oanpast foar map %s."
+
+#: functions.php:211
+#, php-format
+msgid "Expiration deleted successfully for folder %s."
+msgstr "Ferfaldatum súksesfol wiske foar map %s."
+
+#: functions.php:220
+#, php-format
+msgid "Expiration set successfully for folder %s."
+msgstr "Ferfaldatum súksesfol ynsteld foar map %s."
+
+#: functions.php:229
+msgid "Cannot replace option file!"
+msgstr "Kin opsjetriem net ferfange!"
+
+#: options.php:27
+msgid "You have not selected a folder."
+msgstr "Jo hawwe gjin map selektearre."
+
+#: options.php:38
+msgid "You have not entered a valid number of days."
+msgstr "Jo hawwe gjin jildich oantal dagen ynfierd."
+

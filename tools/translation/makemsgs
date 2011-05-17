@@ -1,0 +1,68 @@
+#!/bin/sh
+
+# i-MSCP a internet Multi Server Control Panel
+#
+# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2010 by internet Multi Server Control Panel - http://i-mscp.net
+#
+# Version: $Id$
+#
+# The contents of this file are subject to the Mozilla Public License
+# Version 1.1 (the "License"); you may not use this file except in
+# compliance with the License. You may obtain a copy of the License at
+# http://www.mozilla.org/MPL/
+#
+# Software distributed under the License is distributed on an "AS IS"
+# basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+# License for the specific language governing rights and limitations
+# under the License.
+#
+# The Original Code is "ispCP ω (OMEGA) a Virtual Hosting Control Panel".
+#
+# The Initial Developer of the Original Code is ispCP Team.
+# Portions created by Initial Developer are Copyright (C) 2006-2010 by
+# isp Control Panel. All Rights Reserved.
+#
+# Portions created by the i-MSCP Team are Copyright (C) 2010 by
+# internet Multi Server Control Panel. All Rights Reserved.
+#
+# The i-MSCP Home Page is:
+#
+#    http://i-mscp.net
+#
+
+# description:
+#
+# creates the main imscp.pot file out of any found strings in the php files
+#
+# Warning: This script will remove any strings which aren't present in the GUI
+# php files, this means dynamic strings or strings out of the database will
+# ignored.
+#
+
+set -e
+
+if [ $1 ] && [ -d $1 ]; then
+	GUI=${1}/
+else
+	GUI=../../gui/
+fi
+
+if [ ! -f ${GUI}/index.php ]; then
+	if [ -f ${GUI}/gui/index.php ]; then
+		GUI=${GUI}/gui/
+	fi
+fi
+
+if [ ! -f ${GUI}/index.php ]; then
+	echo "${GUI} isn't a valid gui/ location!"
+	exit 1
+fi
+
+#/usr/bin/xgettext --language=PHP --output-dir=${GUI}../language-files/po --copyright-holder=iMSCP\ Team --keyword=tr --no-wrap ${GUI}*.php ${GUI}*/*.php --default-domain=iMSCP --output=iMSCP.pot
+/usr/bin/xgettext --language=PHP --output-dir=${GUI}../language-files/po --copyright-holder=iMSCP\ Team --keyword="tr,/*tr*/" --no-wrap ${GUI}/include/i18n.php ${GUI}*.php ${GUI}*/*.php --default-domain=iMSCP --output=iMSCP.pot --no-location --from-code=utf-8
+
+sed --in-place '/#. Please ignore this entry/d' ${GUI}../language-files/po/iMSCP.pot
+sed --in-place 's/msgid "encoding"/#. Please ignore this entry\nmsgid "encoding"/' ${GUI}../language-files/po/iMSCP.pot
+
+exit 0

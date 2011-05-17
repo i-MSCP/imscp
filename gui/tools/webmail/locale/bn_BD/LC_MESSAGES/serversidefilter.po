@@ -1,0 +1,154 @@
+# Bengali (bn_BD) serversidefilter Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Israt Jahan <israt@ankur.org.bd>, 2009.
+# $Id: serversidefilter.pot 10877 2006-03-04 11:22:22Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: serversidefilter 1.42\n"
+"POT-Creation-Date: 2004-03-01 09:01-0600\n"
+"PO-Revision-Date: 2008-12-25 15:24+0600\n"
+"Last-Translator: Israt Jahan <israt@ankur.org.bd>\n"
+"Language-Team:  Bengali <ankur-bd-l10n@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: options.php:62
+msgid "From"
+msgstr "হতে"
+
+#: options.php:62
+msgid "Subject"
+msgstr "বিষয়"
+
+#: options.php:62
+msgid "To"
+msgstr "প্রতি"
+
+#: options.php:62
+msgid "Cc"
+msgstr "অঅ"
+
+#: options.php:62
+msgid "Body"
+msgstr "মূল অংশ"
+
+#: options.php:62
+msgid "Any Header"
+msgstr "যেকোন শিরক"
+
+#: options.php:62
+msgid "Anywhere"
+msgstr "যেকোনখানে"
+
+#: options.php:63
+msgid "Contains"
+msgstr "ধারণ করে"
+
+#: options.php:63
+msgid "Begins With"
+msgstr "এর সাথে শুরু"
+
+#: options.php:63
+msgid "Ends With"
+msgstr "এর সাথে শেষ"
+
+#: options.php:63
+msgid "Is Exactly"
+msgstr "একদম এরকম"
+
+#: options.php:63
+msgid "Matches Regex"
+msgstr "মিলগুলো Regex"
+
+#: options.php:201
+msgid "Options"
+msgstr "পছন্দগুলো"
+
+#: options.php:201 setup.php:29
+msgid "Mail Filters"
+msgstr "চিঠি ফিল্টারগুলো"
+
+#: options.php:208
+msgid "Enter A New Filter:"
+msgstr "একটি নতুন ফিল্টার প্রবেশ করুন:"
+
+#: options.php:213 recipie_functions.php:247
+msgid "If"
+msgstr "যদি"
+
+#: options.php:216 options.php:248 options.php:271 recipie_functions.php:241
+#: recipie_functions.php:244 recipie_functions.php:250
+msgid "then"
+msgstr "তাহলে"
+
+#: options.php:219 options.php:250 recipie_functions.php:255
+#: recipie_functions.php:257 recipie_functions.php:259
+msgid "move"
+msgstr "সরানো"
+
+#: options.php:220 options.php:251 recipie_functions.php:255
+#: recipie_functions.php:257 recipie_functions.php:259
+msgid "copy"
+msgstr "অনুলিপি"
+
+#: options.php:221 options.php:252 recipie_functions.php:255
+#: recipie_functions.php:257 recipie_functions.php:259
+msgid "delete"
+msgstr "মুছে ফেলা"
+
+#: options.php:226 options.php:255 options.php:277 recipie_functions.php:264
+msgid "Folder"
+msgstr "ফোল্ডার"
+
+#: options.php:230 options.php:258 options.php:280 recipie_functions.php:267
+msgid "Email"
+msgstr "ইমেইল"
+
+#: options.php:248 options.php:271
+msgid "if message is marked as"
+msgstr "যদি বার্তাটি এভাবে চিহ্নিত হয়"
+
+#: options.php:248 recipie_functions.php:244
+msgid "SPAM"
+msgstr "স্প্যাম"
+
+#: options.php:254 options.php:276 recipie_functions.php:261
+msgid "to"
+msgstr "তে"
+
+#: options.php:262
+msgid "save new"
+msgstr "নতুন সংরক্ষন করুন"
+
+#: options.php:271 recipie_functions.php:241
+msgid "UNSURE"
+msgstr "অনিশ্চিত"
+
+#: options.php:288
+msgid "Existing Filters:"
+msgstr "উপস্থিত ফিল্টারগুলো"
+
+#: options.php:295
+msgid "Notice:"
+msgstr "বিজ্ঞাপন:"
+
+#: options.php:295
+msgid ""
+"Use of these filters may prevent the reading of mail in non-IMAP mail "
+"clients."
+msgstr ""
+"এই ফিল্টারের ব্যবহার আইম্যাপ নয় এমন মেইল গ্রাহকে চিঠি পড়া থেকে বিরত রাখতে পারে।"
+
+#: recipie_functions.php:36
+msgid "To or Cc"
+msgstr "প্রতি বা অঅ"
+
+#: recipie_functions.php:241 recipie_functions.php:244
+msgid "If message is marked as"
+msgstr "যদি বার্তাটি এভাবে চিহ্নিত হয়"
+
+#: setup.php:31
+msgid "Here you may set up server-side filters on all of your incoming mail."
+msgstr "এখানে আপনি সব আগত মেইলে সার্ভার-পক্ষে ফিল্টার নিযুক্ত করতে পারবেন।"

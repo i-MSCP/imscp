@@ -1,0 +1,38 @@
+# GPG Plugin for Squirrelmail system default config file
+#
+# Do not make changes to this file! 
+#
+# Changes for your local configuration should be made in 
+# the gpg_local_prefs.txt file
+#
+# $Id$
+#
+path_to_gpg=/usr/bin/gpg 
+allowprivatekeys=true 
+allowkeygeneration=true 
+requirepassphraseonkeydelete=true
+systemkeyring=false 
+keyservers=3
+keyserver0=pgp.mit.edu:11371
+keyserver1=wwwkeys.pgp.net:11371
+keyserver2=wwwkeys.eu.pgp.net:11371
+keystrengths=4
+keystrength0=1024
+keystrength1=2048
+keystrength2=3072
+keystrength3=4096
+default_keystrength=1024
+default_keyexpires=1y
+default_comment=Key generated on public webmail server
+maxfilesize=100000
+allowpassphrasecaching=false
+insecure_mem_warning=1
+systemsign_on_send=false
+systemencrypt_on_send=false
+expose_options_link=true
+expose_compose_buttons=true
+force_sign_on_send=false
+force_encrypt_on_send=false
+use_proc_open=true
+systemparse_openpgp_header=true
+systemgenerate_openpgp_header=true

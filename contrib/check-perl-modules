@@ -1,0 +1,81 @@
+#!/usr/bin/perl
+
+# i-MSCP a internet Multi Server Control Panel
+#
+# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2010 by internet Multi Server Control Panel - http://i-mscp.net
+#
+# Version: $Id$
+#
+# The contents of this file are subject to the Mozilla Public License
+# Version 1.1 (the "License"); you may not use this file except in
+# compliance with the License. You may obtain a copy of the License at
+# http://www.mozilla.org/MPL/
+#
+# Software distributed under the License is distributed on an "AS IS"
+# basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+# License for the specific language governing rights and limitations
+# under the License.
+#
+# The Original Code is "ispCP ω (OMEGA) a Virtual Hosting Control Panel".
+#
+# The Initial Developer of the Original Code is ispCP Team.
+# Portions created by Initial Developer are Copyright (C) 2006-2010 by
+# isp Control Panel. All Rights Reserved.
+#
+# Portions created by the i-MSCP Team are Copyright (C) 2010 by
+# internet Multi Server Control Panel. All Rights Reserved.
+#
+# The i-MSCP Home Page is:
+#
+#    http://i-mscp.net
+#
+
+my @needed = (strict, warnings, IO::Socket, DBI, DBD::mysql, Mail::Address, MIME::Entity,
+MIME::Parser, Crypt::CBC, Crypt::Blowfish, MIME::Base64,
+Term::ReadPassword, Net::LibIDN);
+
+my ($mod, $mod_err, $mod_missing) = ('', '_off_', '');
+
+for $mod (@needed) {
+    print STDERR "Checking for '$mod'...\t";
+
+    if (eval "require $mod") {
+        $mod -> import();
+        printf " Ok.\n";
+    } else {
+        print STDERR "CRITICAL ERROR: Module '$mod' WAS NOT FOUND !\n" ;
+
+        $mod_err = '_on_';
+
+        if ($mod_missing eq '') {
+            $mod_missing .= $mod;
+        } else {
+            $mod_missing .= ", $mod";
+        }
+    }
+}
+
+if ($mod_err eq '_on_') {
+    print STDERR "\nModules [$mod_missing] WERE NOT FOUND in your system...\n";
+    print STDERR "\nPlease INSTALL them before using i-MSCP !\n";
+    exit 1;
+} else {
+    $| = 1;
+}
+
+return 0;
+
+# hack for dh_perl
+
+require IO::Socket;
+require DBI;
+require DBD::mysql;
+require Mail::Address;
+require MIME::Entity;
+require MIME::Parser;
+require Crypt::CBC;
+require Crypt::Blowfish;
+require MIME::Base64;
+require Term::ReadPassword;
+require Net::LibIDN;

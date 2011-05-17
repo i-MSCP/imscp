@@ -1,0 +1,49 @@
+<chapter>
+   <title>
+      Inleiding Webmail
+   </title>
+   <summary>
+      Webmail stelt u in staat uw e-mail te lezen via het World Wide Web.
+   </summary>
+   <description>
+      <p>
+      Webmail is een applicatie waarmee u via het Internet overal ter wereld uw e-mail kunt 
+      lezen.
+      </p>
+   </description>
+</chapter>   
+
+<section>
+   <title>
+      De Basis
+   </title>
+   <description>
+      <p>
+      Als u een specifieke vraag heeft, kunt u de FAQ raadplegen.
+      </p>
+      <p>
+      Het WebMail venster is verdeeld in twee gedeelten (frames). Het
+      linkerframe geeft alle mappen weer die voor uw e-mailaccount op de server actief zijn. Meer
+      informatie over het linkerframe is te vinden in het onderdeel "Mappen"
+      van deze handleiding.
+      </p>
+      <p>
+      Het grotere rechtergedeelte is de plaats waar de meeste actie zal plaatsvinden.
+      Bovenin vindt u een menubalk. <I>Afmelden</I> zorgt ervoor dat u op een
+      veilige manier Webmail verlaat als u klaar bent. Achter <I>Huidige map</I>
+      staat in welke map op de server u zich momenteel bevindt.
+      Na het inloggen wordt standaard de inhoud van de map INBOX weergegeven.
+      </p>
+      <p>
+      Onder de bovenste balk vindt u is een menuregel met de voglende opties:
+         <ul>
+            <li><b>Nieuw bericht</b> - Hiermee kunt u nieuwe e-mailberichten opstellen en versturen. 
+            <li><b>Adressen</b> - Geeft toegang tot uw adresboek.
+            <li><b>Mappen</b> - Hier kunt u de mappen bewerken: toevoegen, verwijderen, hernoemen, etc.
+            <li><b>Opties</b> - Via dit menu kunt u instellingen wijzigen.
+            <li><b>Zoeken</b> - De zoekfunctie laat u zoeken door uw e-mailberichten.
+            <li><b>Help</b> - De helppagina's waarop u zich nu bevindt! 
+         </ul>
+      </p>
+   </description>
+</section>   

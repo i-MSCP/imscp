@@ -1,0 +1,64 @@
+<chapter>
+   <title>
+      Index Pesan
+   </title>
+   <summary>
+	Nama ini mungkin terlihat rumit ya ?? Akan tetapi ini hanyalah 
+	daftar dari surat yang ada di laci tertentu.
+   </summary>
+</chapter>
+
+<section>
+   <title>
+      Index Pesan
+   </title>
+   <description>
+      <p>
+	Setelah Anda mengklik suatu laci, Anda akan menuju ke index pesan 
+	(di bagian kanan) . Index ini menampilkan pesan dalam laci yang dipilih. 
+	Di bawah pilihan menu ada baris yang memberitahukan Anda surate 
+	yang sedang Anda baca secara bernomor dan jumlah surate Anda seluruhnya.
+      </p><p>
+	Contohnya: Menampilkan pesan <B>20</B> sampai <B>30</B> ( seluruhnya 45 )
+      </p><p>
+	Perlu diingat bahwa penghitungan jumlah seluruh pesan mungkin berbeda 
+	dari jumlah surat yang belum dibaca yang ada di laci surat utama.
+      </p><p>
+	Selanjutnya adalah sebuah baris yang berisi tiga tombol. Bagian 
+	kiri adalah kotak menu berisi daftar laci yang Anda miliki saat ini. 
+	Sembarang pesan yang dipilih akan dipindahkan ke laci yang ada bila 
+	tombol "Pindahkan" diklik. Anda dapat memindahkan banyak pesan dalam 
+	sekali klik. Bagian kanan baris ini adalah tombol untuk menghapus pesan 
+	yang dipilih. Anda tinggal memilih pesan tak berguna lalau klik tombol 
+	ini untuk menghapusnya.
+      </p><p>
+	Kemudian, baris ketiga berisi tiga kolom (Dari, Tanggal, dan 
+	Subyek). Tiga kop ini memisahkan tabel pesan ke dalam bagian-bagian 
+	logis. "Dari" memberitahukan Anda siapa yang telah mengirim pesan, atau 
+	setidaknya alamat surate asal pesan tersebut. "Tanggal" menampilkan 
+	tanggal pengiriman surate tersebut. "Subyek" menampilkan topik surate 
+	yang dikirimkan oleh pengirimnya. <b> Catatan: </b> Di antara kolom Tanggal 
+	dan Subyek ada kolom kecil yang tak bernama. Isinya bisa berupa "+", 
+	:!", atau "A" . Jika Anda melihat "+" maka berarti pesan tersebut 
+	mengandung sisipan file. Jisa berisi "A" berarti Anda sudah membalas 
+	pesan tersebut. Jika "!" itu adalah pesan yang sangat penting.  
+      </p><p>
+	Yang terakhir adalah tabel pesan yang sesungguhnya. Anda akan 
+	mendapati bahwa pesan yang belum dibaca berhuruf <B>tebal</B>, 
+	sedangkan yang sudah biasa saja hurufnya. Empat kolom terdapat dalam 
+	tabel ini. Di sebelah kiri adalah kotak pemilih. Apabila dipilih, pesan 
+	pada baris tersebut akan dikenai hal-hal yang sudah dibicarakan 
+	sebelumnya (memindahkan dan menghapus) . Di bawah kolom "Dari" 
+	ditampilkan si pengirim pesan . Selanjutnya adalah tanggal dan terakhir 
+	adalah subyek.
+      </p>
+      <p>
+        Jika kotak surat Anda berisi banyak pesan, daftar pesan akan 
+	dipecah menjadi beberapa halaman dan halaman pertama akan 
+	ditampilkan. Untuk melihat halaman lainnya, klik "Berikutnya" dan 
+	"Sebelumnya". Anda dapat berpindah ke suatu halaman dengan cepat 
+	bila mengklik sembarang nomor (tiap nomor mewakili satu halaman). 
+	Jika Anda mengklik "Tampilkan Semua", fungsi pemecah halaman ini 
+	akan dimatikan dan semua pesan akan ditampilkan sekaligus.
+   </description>
+</section>

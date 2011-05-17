@@ -1,0 +1,182 @@
+<chapter>
+   <title>
+      Compose
+   </title>
+   <summary>
+     Maer nodwedd yma yn fodd i chi anfon negesau i wahanol bobl o SquirrelMail.
+   </summary>
+   <description>
+      <p>
+      Bydd y ddewislen Compose yn mynd â chi i dudalen Compose newydd. Yma 
+      byddwch yn dod o hyd i sawl maes ac un neu ddau o fotymau. Gan ddibynnu 
+      ar sut y gwnaethoch chi gyrraedd y man gweld Compose, efallai y bydd 
+      rhai or meysydd yma wedi cael eu llenwin barod.
+      </p>
+   </description>
+</chapter>
+
+<section>
+   <title>
+      From
+   </title>
+   <description>
+      <p>
+      Dim ond os byddwch chi wedi galluogi  mwy nag un dynodiad (trwyr 
+      ddewislen Options, Personal Preferences) y bydd y maes <b>From:</b> yn 
+      cael ei arddangos. Os ydych chi wedi gwneud hyn gallwch ddewis pa 
+      ddynodiad yr hoffech chi ei ddefnyddio, h.y. pa enw a chyfeiriad 
+      e-bost syn ymddangos fel y llinell From ar eich negesau.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      To
+   </title>
+   <description>
+      <p>
+      Yn dilyn y maer maes <b>To:</b>. Yn y maes yma dylech deipio 
+      cyfeiriad e-bost yr unigolyn neur bobl rydych chin anfon y neges 
+      atynt. Gallwch deipio cynifer o gyfeiriadau ag y dymunwch, gan 
+      eu gwahanu ag atalnod. Gallwch hefyd bwysor botwm "Addresses" i 
+      lenwir maes. Peidiwch â phoeni os nad ywr cyfeiriad cyflawn yn 
+      cael ei arddangos. Mae hyd y maes yn un penodol, ond bydd popeth 
+      a rowch chi i mewn ynddo yn cael ei ddefnyddio, er y gall sgrolio 
+      ir dde neu ir chwith.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Cc
+   </title>
+   <description>
+      <p>
+      Yn dilyn hwnnw y maer maes <b>CC:</b>. Talfyriad am <b>C</b>arbon 
+      <b>C</b>opy yw CC. Os ydych chi eisiau anfon copi or neges i rywun 
+      arall dyma lle y byddech chin gwneud hynny. Meddyliwch am hyn yn 
+      yr un modd ag y mae memo yn cael ei osod. Gallwch gynnwys cynifer 
+      o bobl ag y dymunwch yn y meysydd <b>To:</b>, <b>CC:</b>, a 
+      <b>BCC:</b>. Dim ond y bobl syn cael eu heffeithion uniongyrchol 
+      gan y neges fyddai yn y maes <b>To:</b> tra byddair rhai syn 
+      derbyn y neges er gwybodaeth yn unig o bosib yn y meysydd 
+      <b>CC:</b> a <b>BCC:</b>.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Bcc
+   </title>
+   <description>
+      <p>
+      Talfyriad am <b>B</b>lind </b>C</b>arbon <b>C</b>opy yw BCC. 
+      Defnyddiwch hwn i anfon copi or e-bost i rywun <i>heb</i> ir rhai 
+      y mae eu henwau yn y meysydd <b>To:</b> neu <b>CC:</b> wybod amdano.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Subject
+   </title>
+   <description>
+      <p>
+      Teipiwch bennawd perthnasol yma. Cofiwch, gall e-bost arbed 
+      llawer iawn o amser ac un rheswm allweddol am hyn yw pennawd 
+      testun cywir.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Addresses Button
+   </title>
+   <description>
+      <p>
+      Bydd y botwm yma yn agor y llyfr cyfeiriadau wedi i flwch 
+      chwilio gael ei gyflwyno.. Maen rhaid i chi deipio rhywbeth i 
+      mewn ir blwch chwilio er mwyn cael canlyniad. Os ydych chi 
+      angen yr holl gyfeiriadau yn y llyfr cyfeiriadau, pwyswch y 
+      botwm List All. Mae gan y llyfr cyfeiriadau gymaint o 
+      swyddogaethau fel ei fod yn haeddu ei adran ei hun. Mae mwy o 
+      wybodaeth fanwl ar gael yn y bennod Cyfeiriadau.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Save Draft button
+   </title>
+   <description>
+      <p>
+      Os fuoch chin cyfansoddi neges ac nad ydych chin barod iw anfon 
+      eto am ryw reswm, gallwch ddefnyddior botwm yma i gadwr
+      neges yn y ffolder Drafts. Os fyddwch chi eisiau cwblhaur neges 
+      yn ddiweddarach ai anfon allan, ewch ir ffolder Drafts, agorwch 
+      y neges a byddwch yn dychwelyd ir dudalen Compose lle mae eich 
+      neges wedi ei llenwi i mewn.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Priority
+   </title>
+   <description>
+      <p>
+      Os yw gweinyddwr eich system wedi ei alluogi, bydd rhestr gwympo 
+      or enw "Priority" ar gael ir dde or botymau. Dyma lle gallwch 
+      ddewis pa mor bwysig ywr neges. Gallai neges â blaenoriaeth uchel 
+      gael ei chyflwyno mewn dull gwahanol gan raglen bost y sawl syn 
+      ei dderbyn. Sylwch y bydd gor-ddefnyddior swyddogaeth yma yn 
+      golygu na fydd yn cael yr un effaith.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Message Body
+   </title>
+   <description>
+      <p>
+      Diben y blwch mawr gwag yw cynnwys unrhyw beth y dymunwch ei roi 
+      ynddo. Os oes ffeil lofnod wedi ei chadw bydd honnon ymddangos 
+      yma hefyd. Dyma lle rydych yn teipio prif ran eich neges.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Attach
+   </title>
+   <description>
+      <p>
+      Ar waelod y dudalen Compose, maer nodwedd yma yn eich galluogi 
+      i gynnwys ffeil gydach e-bost. Rhaid ir ffeil yma fod wedi ei 
+      lleoli ar eich peiriant neu rwydwaith <i>lleol</i> os am ei 
+      atodi. Mae botwm  pori ar gael felly gallwch chwilio drwy 
+      strwythur eich cyfeiriaduron a chlicio ar y ffeil sydd iw 
+      chynnwys. Fel arall gallwch deipion uniongyrchol i mewn ir 
+      maes atodi os ydych chin gwybod beth yw enwr llwybr cyfan 
+      ac union enwr ffeil. Y cyfan sydd yn rhaid i chi ei wneud yw 
+      pwysor botwm Add i restrur ffeil a ddewiswyd yn atodiad a 
+      bydd yn ymddangos oddi tano.
+      </p>
+      <p>
+      Unwaith y bydd un ffeil o leiaf yn cael ei chyflwyno iw hatodi 
+      bydd botwm arall yn dod ir golwg. Gallwch ddileu un ffeil neu 
+      ragor a atodwyd trwy ddewis y ffeil neu ffeiliau tramgwyddus a 
+      phwysor botwm dileu atodiadau. a ddewiswyd.
+      <p>
+   </description>
+</section>

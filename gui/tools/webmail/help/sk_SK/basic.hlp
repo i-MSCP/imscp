@@ -1,0 +1,52 @@
+<chapter>
+   <title>
+      Úvod do SquirrelMail-u
+   </title>
+   <summary>
+      SquirrelMail vám umožňuje spôsob ako skontrolovať svoju poštu na intenete.
+   </summary>
+   <description>
+      <p>
+      Čo je vlastne <A HREF="http://www.squirrelmail.org/index.php3?from=1">SquirrelMail</A>?
+      Je to web rozhranie k e-mailom napísané v <A HREF="http://www.php.net">PHP4</A>.
+      Bol navrhnutý aby umožnil prístup k e-mailom na váš e-mail-ový server
+      kdekoľvek vo svete cez internet. Viac informácií ako to funguje a IMAP
+      protokol môžte nájsť na <A HREF="http://imap.org">here</A>.
+      </p>
+   </description>
+</chapter>   
+
+<section>
+   <title>
+      Základy
+   </title>
+   <description>
+      <p>
+      Ak máte len rýchlu otázku, mali by ste sa pozrieť na sekcie FAQ (Frequently
+      Asked Questions = Najčastejšie sa Pýtané Otázky).
+      </p>
+      <p>
+      SquirrelMail sa skladá z 2 hlavných sekcií nazývaných rámce (frames). Ľavý
+      rámec zobrazuje len priečinky. Viac informácií o ľavom rámci môžte nájsť
+      v sekcii pomocníka "Priečinky".
+      </p>
+      <p>
+      Na pravej strane sa nachádza vačšina nástrojov. Na vrchole stránky sa
+      nachádza menu. "Odhlásenie sa" vás bezpečne odhlási z programu, keď ho
+      ukončujete. Aktuálny priečinok zobrazuje v ktorom priečinku zobrazených v
+      ľavom rámci sa práve nachadzáte. Hneď ako sa prihlásite, je predvoleným
+      priečinkom "Doručená pošta".
+      </p>
+      <p>
+      Pod vrchnou lištou je rad možnosti v menu:
+         <ul>
+            <li><b>Nová správa</b> - Vytvaránie a posielanie správ, možte k nim ihneď pripojiť prílohu.
+            <li><b>Adresár</b> - Uchováva zoznam adries, ktoré obsahuje váš osobný adresár.
+            <li><b>Priečinky</b> - tu sa robia všetky operácie s priečinkami. Priečinky môžte vytvárať, mazať, premenovávať, prihlasovať a odhlasovať.
+            <li><b>Možnosti</b> - Zmena nastavení SquirrelMail-u, ako bude vyzerať a ako bude reagovať.
+            <li><b>Hľadať</b> - Tento nástroj vám umožňuje prehľadávať poštovú schránku na základe vami zadaných kritérií.
+            <li><b>Pomocník</b> - Práve ste tu! 
+         </ul>
+      </p>
+   </description>
+</section>   

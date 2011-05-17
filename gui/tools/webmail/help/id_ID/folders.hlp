@@ -1,0 +1,104 @@
+<chapter>
+   <title>   
+      Laci
+   </title>   
+   <summary>
+   Anda dapat menyimpan pesan dalam laci yang berbeda. Hal ini berguna 
+   bila Anda mendapatkan banyak surate dan ingin mengaturnya. Pilihan 
+   Laci memungkinkan manipulasi laci Anda.
+   </summary>
+</chapter>
+
+<section>
+   <title>
+   Laci yang terdaftar dan frame kiri
+   </title>
+   <description>
+      <p>
+	Laci yang saat ini terdaftar ditampilkan di tempat berwarna di 
+	sebelah kiri. Frame ini dapat diset untuk memperbaharui daftar laci 
+	secara mandiri dalam halaman Pilihan. Di bagian atas frame kiri 
+	terdapat judul yang besar dan tebal. Jika ada perubahan yang dibuat 
+	terhadap laci yang terdaftar dengan menggunakan menu Laci, daftar ini 
+	dapat diperbarui dengan menggunakan untai nara yang ada di bawahnya.
+      </p><p>
+	Laci pertama yang ditampilkan berisi surat yang masuk. Di
+	kanannya ada angka dalam tanda kurung "( )" yang melukiskan jumlah
+	surat yang <I>belum dibaca</I>. Angka ini bisa saja berbeda dengan
+	jumlah seluruh surate yang ditampilkan di frame kanan. Di bawah laci
+	utama terdapat laci lain atau laci-kecil. Warna dari laci ini akan
+	berubah seiring dengan pemilihan tema yang dibuat dalam halaman pilihan.
+      </p>
+   </description>
+</section>   
+
+<section>
+   <title>
+      Hapus
+   </title>
+   <description>
+      <p>
+	Anda dapat menghapus sembarang laci yang ditampilkan dalam
+	kotak menu laci yang ada di sebelah kiri tombol Hapus. Perlu dicatat
+	bahwa daftar ini mungkin <B>tidak</B> memasukkan semua laci yang
+	ditampilkan. Laci khusus seperti Kirim dan Sampah tidak dapat dihapus
+	dan sudah pasti Anda tidak dapat menghapus INBOX. 
+      </p>
+   </description>
+</section>
+
+
+<section>
+   <title>
+      Buat
+   </title>
+   <description>
+      <p>
+	Laci mudah dibuat dengan mengetikkan nama yang diinginkan ke
+	dalam kotak yang ada lalu klik tombol 'Buat'. Jika Anda ingin laci
+	tersebut menjadi laci-kecil dari laci yang lain, Anda dapat memilihnya
+	dalam kotak menu yang berisi daftar laci.
+      </p>
+      <p>
+	Pada beberapa server surate, ada dua macam laci. Satu berisi
+	pesan dan lainnya berisi laci-laci. Anda akan melihat pilihan "Izinkan
+	laci ini berisi laci-kecil." Jika Anda memilihnya, maka laci yang Anda
+	buat hanya bisa berisi laci-kecil dan bukan pesan/surat. Kalau tidak,
+	Anda hanya bisa menyimpan pesan di dalamnya dan bukan laci-kecil.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Ganti Nama
+   </title>
+   <description>
+      <p>
+	Anda dapat mengganti nama laci yang ditampilkan dalam kotak
+	menu daftar laci di sebelah kiri tombol Ganti Nama. Perlu dicatat bahwa
+	daftar ini <B>tidak</B> memasukkan semua laci yang ditampilkan di frame
+	kiri. Untuk alasan yang jelas, Anda tidak bisa menghapus laci Kirim,
+	Sampah, dan KOTAK SURAT.
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+	Daftarkan dan Buang
+   </title>
+   <description>
+	Definisi:<br>
+      <i>Daftarkan</i>: Untuk mendaftarkan suatu laci pada server yang 
+				memungkinkan Anda melihatnya dalam daftar laci..<br>
+      <i>Buang</i>: Kebalikan dari Daftarkan. Hal ini akan membuang
+			  laci dalam server..<br>
+      <br><p>
+	Anda dapat memilih sebanyak mungkin laci yang Anda inginkan
+	baik dari kotak Daftarkan maupun kotak Buang, lalu klik tombol di bawah
+	kotak tersebut. Anda akan melihat bahwa laci akan berpindah ke kotak
+	sebelahnya. Anda bisa melakukannya berulang kali.
+      </p>
+   </description>
+</section>

@@ -1,0 +1,89 @@
+<chapter>
+   <title>   
+      Složky
+   </title>   
+   <summary>
+      
+   </summary>
+</chapter>
+
+<section>
+   <title>
+      Přihlášené složky a levý rámec
+   </title>
+   <description>
+      <p>
+      Aktuálně přihlášené složky se zobrazují v barevné ploše. 
+      Pomocí volby "Možnosti nastavení" si můžete nastavit automatickou aktualizaci stránky. 
+      Pod tučným nadpisem "Složky" můžete stránku aktualizovat ručně 
+      kliknutím na "(aktualizovat seznam složek)". 
+      </p><p>
+      První uvedená složka obsahuje doručené zprávy. Číslo v závorkách 
+      označuje počet nepřečtených zpráv. Toto číslo se může lišit od celkového 
+      počtu zpráv zobrazených v pravém rámci. Pod složkou INBOX se zobrazují 
+      další složky a podsložky. Jejich barvu můžete libovolně měnit pomocí 
+      schématu v "Možnostech nastavení". 
+      </p>
+   </description>
+</section>   
+
+<section>
+   <title>
+      Odstranit
+   </title>
+   <description>
+      <p>
+      V rozbalovacím seznamu složek můžete odstraňovat složky. Tento seznam 
+      však nemusí obsahovat všechny zobrazené složky. Složku "Odeslaná pošta" 
+      nebo "Koš" nelze odstranit, stejně tak jako nemůže být odstraněna složka INBOX.
+      </p>
+   </description>
+</section>
+
+
+<section>
+   <title>
+      Vytvořit
+   </title>
+   <description>
+      <p>
+      Složky lze vytvořit zadáním názvu složky a kliknutím na tlačítko "Vytvořit". 
+      Jestliže si přejete, aby složka obsahovala podsložky, musíte tento požadavek 
+      zvolit v rozbalovacím seznamu složek.
+      </p>
+      <p>
+      Na některých mail serverech existují 2 druhy složek. Jedny obsahují zprávy, 
+      druhé složky. Jestliže pomocí volby "Možnosti nastavení" zvolíte "Složka může obsahovat podsložku", 
+      vytvořená složka bude obsahovat pouze složky. V opačném případě se budou ve složce 
+      uchovávat pouze zprávy. 
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Přejmenovat
+   </title>
+   <description>
+      <p>
+      Pomocí tlačítka "Přejmenovat" můžete libovolně složky přejmenovávat. 
+      Tento seznam nemusí obsahovat všechny složky zobrazené v levém rámci. 
+      Nelze přejmenovat složky "Odeslaná pošta", "Koš" a INBOX. 
+      </p>
+   </description>
+</section>
+
+<section>
+   <title>
+      Přihlásit a Odhlásit
+   </title>
+   <description>
+      Definice:<br>
+      <i>Přihlásit</i>: zaregistrovat složku na mail serveru tak, aby se zobrazovala v seznamu složek.<br>
+      <i>Odhlásit</i>: zrušit registraci na mail serveru.<br>
+
+      <br><p>
+     
+      </p>
+   </description>
+</section>

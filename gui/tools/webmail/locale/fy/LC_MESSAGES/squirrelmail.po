@@ -1,0 +1,4682 @@
+# translation of squirrelmail.po to
+# Rinse de Vries <rinsedevries@kde.nl>, 2007.
+# Frisian SquirrelMail Translation
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+msgid ""
+msgstr ""
+"Project-Id-Version: squirrelmail\n"
+"Report-Msgid-Bugs-To: SquirrelMail Internationalization <squirrelmail-i18n@lists.sourceforge.net>\n"
+"POT-Creation-Date: 2007-02-14 12:48+0100\n"
+"PO-Revision-Date: 2007-04-10 23:17+0200\n"
+"Last-Translator: Rinse de Vries <rinsedevries@kde.nl>\n"
+"Language-Team:  <kde-i18n-nl@kde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: KBabel 1.11.4\n"
+
+msgid "Address Book"
+msgstr "Adresboek"
+
+msgid "All"
+msgstr "Alles"
+
+msgid "To"
+msgstr "Oan"
+
+msgid "Cc"
+msgstr "CC"
+
+msgid "Name"
+msgstr "Namme"
+
+msgid "E-mail"
+msgstr "E-mail"
+
+msgid "Info"
+msgstr "Ynfo"
+
+msgid "Source"
+msgstr "Boarne"
+
+msgid "Bcc"
+msgstr "BCC"
+
+msgid "Use Addresses"
+msgstr "Brûk adressen"
+
+msgid "Cancel"
+msgstr "Ôfbrekke"
+
+msgid "Address Book Search"
+msgstr "Sykje yn adresboek"
+
+msgid "Search for"
+msgstr "Sykje nei"
+
+msgid "in"
+msgstr "yn"
+
+msgid "All address books"
+msgstr "Alle adresboeken"
+
+msgid "Search"
+msgstr "Sykje"
+
+msgid "List all"
+msgstr "Toan alles"
+
+#, php-format
+msgid "Unable to list addresses from %s"
+msgstr "Net mooglik om adressen te toanen fan %s"
+
+msgid "Your search failed with the following error(s)"
+msgstr "Jo sykopdracht is mislearre troch dizze flaters:"
+
+msgid "No persons matching your search were found"
+msgstr "Gjin persoanen fûn dy't foldogge oan de sykopdracht"
+
+msgid "Return"
+msgstr "Tebek"
+
+msgid "Close"
+msgstr "Slute"
+
+msgid "Nickname"
+msgstr "Bynamme"
+
+msgid "Must be unique"
+msgstr "Moat unyk wêze"
+
+msgid "E-mail address"
+msgstr "E-mailadres"
+
+msgid "Last name"
+msgstr "Efternamme"
+
+msgid "First name"
+msgstr "Foarnamme"
+
+msgid "Additional info"
+msgstr "Mear ynformaasje"
+
+msgid "Add to:"
+msgstr "Taheakje oan:"
+
+msgid "No personal address book is defined. Contact administrator."
+msgstr "Gjin persoanlik adresboek definiearre. Nim kontakt op mei jo systeembehearder."
+
+# &eacute;&eacute;n ferfange troch IEN ? krekt as yn it Ingelsk?
+msgid "You can only edit one address at the time"
+msgstr "Jo meie mar &eacute;&eacute;n adres tagelyk bewurkje"
+
+msgid "Update address"
+msgstr "Wurkje adresgegevens by"
+
+msgid "ERROR"
+msgstr "FOUT"
+
+msgid "Please select address that you want to edit"
+msgstr "Selektearje it adres dat jo wizigje wolle"
+
+msgid "Add address"
+msgstr "Adres taheakje"
+
+msgid "Edit selected"
+msgstr "Wizigje selektearre adres"
+
+msgid "Delete selected"
+msgstr "Wiskje selektearre adres"
+
+msgid "sort by nickname"
+msgstr "sortearje op bynamme"
+
+msgid "sort by name"
+msgstr "sortearje op namme"
+
+msgid "sort by email"
+msgstr "sortearje op e-mail"
+
+msgid "sort by info"
+msgstr "sortearje op ynfo"
+
+#, php-format
+msgid "Add to %s"
+msgstr "Taheakje oan %s"
+
+#, php-format
+msgid "%s wrote:"
+msgstr "%s skreaun:"
+
+msgid "quote"
+msgstr "sitaat"
+
+msgid "who"
+msgstr "fan"
+
+#, php-format
+msgid "On %s, %s wrote:"
+msgstr "Op %s, skreaun %s:"
+
+msgid "Subject"
+msgstr "Ûnderwerp"
+
+msgid "From"
+msgstr "Fan"
+
+msgid "Date"
+msgstr "Datum"
+
+msgid "Original Message"
+msgstr "Oarspronklik berjocht"
+
+msgid "Draft Email Saved"
+msgstr "Konsept e-mail bewarre"
+
+msgid "Could not move/copy file. File not attached"
+msgstr "Kin de triem net ferpleatse/kopieare. Triem net taheakke."
+
+# Oarspronklike oersetting yn NL wie .....is verzonden
+msgid "Your draft has been saved."
+msgstr "Jo berjocht is opslein"
+
+msgid "Your mail has been sent."
+msgstr "Jo berjocht is ferstjoerd."
+
+msgid "From:"
+msgstr "Fan:"
+
+msgid "To:"
+msgstr "Oan:"
+
+msgid "Cc:"
+msgstr "CC"
+
+msgid "Bcc:"
+msgstr "BCC"
+
+msgid "Subject:"
+msgstr "Ûnderwerp:"
+
+msgid "Send"
+msgstr "Ferstjoere"
+
+msgid "Attach:"
+msgstr "Taheaksel:"
+
+msgid "Add"
+msgstr "Taheakje"
+
+msgid "Delete selected attachments"
+msgstr "Wiskje selektearre taheaksels"
+
+msgid "Because PHP file uploads are turned off, you can not attach files to this message. Please see your system administrator for details."
+msgstr "Omdat it uploaden fan PHP-triemmen út stiet kinne jo gjin triemmen oan dit berjocht taheakje. Nim kontakt op mei jo systeembehearder foar mear details."
+
+msgid "Priority"
+msgstr "Prioriteit"
+
+msgid "High"
+msgstr "Heech"
+
+msgid "Normal"
+msgstr "Gewoan"
+
+msgid "Low"
+msgstr "Leech"
+
+msgid "Receipt"
+msgstr "Befêstiging"
+
+msgid "On Read"
+msgstr "By lêzen"
+
+msgid "On Delivery"
+msgstr "By ûntfangst"
+
+msgid "Signature"
+msgstr "Hântekening"
+
+msgid "Addresses"
+msgstr "Adressen"
+
+msgid "Save Draft"
+msgstr "Bewarje Konsept"
+
+msgid "You have not filled in the \"To:\" field."
+msgstr "Jo hawwe it \"Oan:\" fjild net ynfold."
+
+#, php-format
+msgid "Error: Draft folder %s does not exist."
+msgstr "Flater: Konseptenmap %s bestiet net."
+
+msgid "Message not sent."
+msgstr "Berjocht net printber"
+
+msgid "Server replied:"
+msgstr "Tsjinner reagearre:"
+
+msgid "Illegal folder name. Please select a different name."
+msgstr "Dizze mapnamme is net tastien. Graach in oare namme kieze."
+
+msgid "Click here to go back"
+msgstr "Klik hjir om werom te gean"
+
+msgid "You have not selected a folder to delete. Please do so."
+msgstr "Jo hawwe gjin map selektearre om te wiskjen. Graach al efkes dwaan."
+
+msgid "Delete Folder"
+msgstr "Map wiskje"
+
+#, php-format
+msgid "Are you sure you want to delete %s?"
+msgstr "Wolle jo %s echt wiskje?"
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "No"
+msgstr "Nee"
+
+msgid "Folders"
+msgstr "Mappen"
+
+msgid "Subscribed successfully."
+msgstr "Súksesfol oanmelden."
+
+msgid "Unsubscribed successfully."
+msgstr "Súksesfol ôfmelden."
+
+msgid "Deleted folder successfully."
+msgstr "Map súksesfol wiske."
+
+msgid "Created folder successfully."
+msgstr "Map súksesfol oanmakke"
+
+msgid "Renamed successfully."
+msgstr "Súksesfol werneamd."
+
+msgid "Subscription Unsuccessful - Folder does not exist."
+msgstr "Oanmelding net súksesfol - Map bestiet net."
+
+msgid "refresh folder list"
+msgstr "fernij mappenlist"
+
+msgid "Create Folder"
+msgstr "Map oanmeitsje"
+
+msgid "as a subfolder of"
+msgstr "as in submap fan"
+
+msgid "None"
+msgstr "Gjin"
+
+msgid "Let this folder contain subfolders"
+msgstr "Jou dizze map submappen"
+
+msgid "Create"
+msgstr "Oanmeitsje"
+
+msgid "Rename a Folder"
+msgstr "Werneam in map"
+
+msgid "Select a folder"
+msgstr "Selektear in map"
+
+msgid "Rename"
+msgstr "Omneame"
+
+msgid "No folders found"
+msgstr "Gjin mappen fûn"
+
+msgid "Delete"
+msgstr "Wiskje"
+
+msgid "Unsubscribe"
+msgstr "Útskriuwe"
+
+msgid "Subscribe"
+msgstr "Oanmelde"
+
+msgid "No folders were found to unsubscribe from!"
+msgstr "Gjin mappen fûn om by ôf te melden!"
+
+msgid "No folders were found to subscribe to!"
+msgstr "Gjin mappen fûn om by oan te melden!"
+
+msgid "Subscribe to:"
+msgstr "Oanmelde by:"
+
+msgid "You have not selected a folder to rename. Please do so."
+msgstr "Jo hawwe gjin map selektearre om te werneamen."
+
+msgid "Rename a folder"
+msgstr "Werneam in map"
+
+msgid "New name:"
+msgstr "Nije namme:"
+
+msgid "Submit"
+msgstr "Yntsjinje"
+
+msgid "ERROR: Help files are not in the right format!"
+msgstr "FOUT: Help-triemmen hawwe net de goede yndieling!"
+
+msgid "Help"
+msgstr "Help"
+
+msgid "Help is not available in the selected language. It will be displayed in English instead."
+msgstr "De helpsiden binne noch net oersetten yn de selektearre taal. Ze ferskine dêrom yn it Ingelsk."
+
+msgid "Help is not available. Please contact your system administrator for assistance."
+msgstr "De helpsiden binne net beskikber. Nim kontakt op mei jo systeembehearder en jou dizze flater troch."
+
+msgid "This chapter is not available in the selected language. It will be displayed in English instead."
+msgstr "Dit haadstik is noch net oersetten yn de selektearre taal. It wurdt dêrom toand yn it Ingelsk."
+
+msgid "This chapter is missing"
+msgstr "Haadstik ûntbrekt"
+
+#, php-format
+msgid "For some reason, chapter %s is not available."
+msgstr "Haadstik %s is net beskikber."
+
+msgid "Table of Contents"
+msgstr "Ynhâldsopjefte"
+
+msgid "Previous"
+msgstr "Foarrige"
+
+msgid "Next"
+msgstr "Fierder"
+
+msgid "Top"
+msgstr "Boppe"
+
+msgid "Viewing an image attachment"
+msgstr "Besjoch in taheakke ôfbyld"
+
+msgid "View message"
+msgstr "Besjoch berjocht"
+
+msgid "Download this as a file"
+msgstr "Download dit as in triem"
+
+msgid "INBOX"
+msgstr "INBOX"
+
+msgid "Purge"
+msgstr "Wiskje"
+
+msgid "Last Refresh"
+msgstr "Lêste fernijing"
+
+msgid "Check mail"
+msgstr "Fernij mapstruktuer"
+
+msgid "Login"
+msgstr "Oanmelde"
+
+#, php-format
+msgid "%s Logo"
+msgstr "%s Logo"
+
+#, php-format
+msgid "SquirrelMail version %s"
+msgstr "SquirrelMail-ferzje %s"
+
+msgid "By the SquirrelMail Project Team"
+msgstr "Troch it SquirrelMail projektteam"
+
+#, php-format
+msgid "%s Login"
+msgstr "%s Webmail - Oanmelde"
+
+msgid "Name:"
+msgstr "Namme:"
+
+msgid "Password:"
+msgstr "Wachtwurd:"
+
+msgid "No messages were selected."
+msgstr "Gjin berjochten selektearre."
+
+msgid "Options"
+msgstr "Opsjes"
+
+msgid "Message Highlighting"
+msgstr "Berjochten werjefte"
+
+msgid "New"
+msgstr "Nij"
+
+msgid "Done"
+msgstr "Dien"
+
+msgid "To or Cc"
+msgstr "Oan of CC"
+
+msgid "subject"
+msgstr "ûnderwerp"
+
+msgid "Edit"
+msgstr "Bewurkje"
+
+msgid "Up"
+msgstr "Omheech"
+
+msgid "Down"
+msgstr "Omleech"
+
+msgid "No highlighting is defined"
+msgstr "Gjin spesjale werjefte ynsteld"
+
+msgid "Identifying name"
+msgstr "Namme foar dizze werjefte"
+
+msgid "Color"
+msgstr "Kleur"
+
+msgid "Dark Blue"
+msgstr "Donkerblau"
+
+msgid "Dark Green"
+msgstr "Donkergrien"
+
+msgid "Dark Yellow"
+msgstr "Oker"
+
+msgid "Dark Cyan"
+msgstr "Donker syaan"
+
+msgid "Dark Magenta"
+msgstr "Pears"
+
+msgid "Light Blue"
+msgstr "Lila"
+
+msgid "Light Green"
+msgstr "Ljocht grien"
+
+msgid "Light Yellow"
+msgstr "Ljocht giel"
+
+msgid "Light Cyan"
+msgstr "Ljocht syaan"
+
+msgid "Light Magenta"
+msgstr "Rôze"
+
+msgid "Dark Gray"
+msgstr "Donkergriis"
+
+msgid "Medium Gray"
+msgstr "Middelgriis"
+
+msgid "Light Gray"
+msgstr "Ljocht griis"
+
+msgid "White"
+msgstr "Wyt"
+
+msgid "Other:"
+msgstr "Oars:"
+
+msgid "Ex: 63aa7f"
+msgstr "Bygelyks: 63aa7f"
+
+msgid "Matches"
+msgstr "Selektearje"
+
+msgid "Editing identities is disabled."
+msgstr "Bewurkjen fan identiteiten stiet út"
+
+msgid "Default Identity"
+msgstr "Standert identiteit"
+
+#, php-format
+msgid "Alternate Identity %d"
+msgstr "Identiteit %d"
+
+msgid "Add a New Identity"
+msgstr "Nije identiteit taheakje"
+
+msgid "Advanced Identities"
+msgstr "Avansearre identiteiten"
+
+msgid "Full Name"
+msgstr "Folsleine namme"
+
+msgid "E-Mail Address"
+msgstr "E-Mailadres"
+
+msgid "Reply To"
+msgstr "Antwurdadres"
+
+msgid "Save / Update"
+msgstr "Bewarje / Feroarje"
+
+msgid "Make Default"
+msgstr "Meitsje standert"
+
+msgid "Move Up"
+msgstr "Omheech ferpleatse"
+
+msgid "Index Order"
+msgstr "Kolomfolchoarder"
+
+msgid "Checkbox"
+msgstr "Karfakje"
+
+msgid "Flags"
+msgstr "Flaggen"
+
+msgid "Size"
+msgstr "Grutte"
+
+msgid "The index order is the order that the columns are arranged in the message index. You can add, remove, and move columns around to customize them to fit your needs."
+msgstr "De kolomfolchoarder is de folchoarder wêryn't de kolommen werjûn wurde yn it berjochtenoersjoch. Jo kinne kolommen taheakje, ferpleatse en wiskje."
+
+msgid "up"
+msgstr "omheech"
+
+msgid "down"
+msgstr "omleech"
+
+msgid "remove"
+msgstr "wiskje"
+
+msgid "Return to options page"
+msgstr "Tebek nei Opsjes"
+
+msgid "Personal Information"
+msgstr "Persoanlike ynformaasje"
+
+msgid "Display Preferences"
+msgstr "Werjefte foarkarren"
+
+msgid "Folder Preferences"
+msgstr "Map foarkarren"
+
+msgid "Error(s) occurred while saving your options"
+msgstr "Flater(en) fûn by it opslaan fan jo opsjes"
+
+msgid "Some of your preference changes were not applied."
+msgstr "Inkele fan jo foarkarren koenen net ynsteld wurde."
+
+msgid "Successfully Saved Options"
+msgstr "Persoanlike ynformaasje is opslein!"
+
+msgid "Refresh Folder List"
+msgstr "Mappenlist ferfarskje"
+
+msgid "Refresh Page"
+msgstr "Fernij side"
+
+msgid "This contains personal information about yourself such as your name, your email address, etc."
+msgstr "Hjiryn stiet persoanlike ynformaasje oer josels, lykas jo namme, jo e-mailadres, ensfh."
+
+msgid "You can change the way that SquirrelMail looks and displays information to you, such as the colors, the language, and other settings."
+msgstr "Jo kinne hjir sels ynstelle hoe't alles werjûn wurde moat. Hjir kinne ûnder oaren kleuren en de taal ynsteld wurde."
+
+msgid "Based upon given criteria, incoming messages can have different background colors in the message list. This helps to easily distinguish who the messages are from, especially for mailing lists."
+msgstr "Basearre op de opjûne kriteria kinne bepaalde ynkommende berjochten in oare eftergrûnkleur yn de berjochtenlist krije, sadat jo berjochten ienfâldich útinoar hâlde kinne."
+
+msgid "These settings change the way your folders are displayed and manipulated."
+msgstr "Dizze opsjes bepale hoe't jo mappen brûkt wurde en hoe't se der út sjogge."
+
+msgid "The order of the message index can be rearranged and changed to contain the headers in any order you want."
+msgstr "De kolomfolchoarder fan it berjochtenoersjoch kin hjir feroare wurde."
+
+msgid "Message not printable"
+msgstr "Berjocht net printber"
+
+msgid "Attachments:"
+msgstr "Taheaksels:"
+
+msgid "Unknown sender"
+msgstr "Ûnbekende ferstjoerder"
+
+msgid "Info:"
+msgstr "Ynformaasje:"
+
+msgid "Size:"
+msgstr "Grutte:"
+
+msgid "Type:"
+msgstr "Type:"
+
+msgid "Invalid URL"
+msgstr "Ferkeard foarme URL-adres"
+
+msgid "Printer Friendly"
+msgstr "Printer-freonlik"
+
+msgid "Print"
+msgstr "Printsje"
+
+msgid "View Printable Version"
+msgstr "Besjoch printer-freonlike ferzje"
+
+msgid "Read:"
+msgstr "Lêzen:"
+
+msgid "Your message"
+msgstr "Jo berjocht"
+
+msgid "Sent"
+msgstr "Ferstjoerd"
+
+#, php-format
+msgid "Was displayed on %s"
+msgstr "Is lêzen op %s"
+
+msgid "less"
+msgstr "minder"
+
+msgid "more"
+msgstr "mear"
+
+msgid "Mailer"
+msgstr "Mailprogramma"
+
+msgid "Read receipt"
+msgstr "Lêsbefêstiging"
+
+msgid "sent"
+msgstr "ferstjoerd"
+
+msgid "requested"
+msgstr "frege"
+
+msgid "The message sender has requested a response to indicate that you have read this message. Would you like to send a receipt?"
+msgstr "De ferstjoerder fan dit berjocht hat jo om in antwurd frege, sadat hy sjen kin dat jo dit berjocht lêzen hawwe. Wolle jo in lêsbefêstiging ferstjoere?"
+
+msgid "Send read receipt now"
+msgstr "Ferstjoer lêsbefêstiging no"
+
+msgid "Search Results"
+msgstr "Sykresultaten"
+
+msgid "Message List"
+msgstr "Berjochtenlist"
+
+msgid "Resume Draft"
+msgstr "Ferfetsje Konsept"
+
+msgid "Edit Message as New"
+msgstr "Bewurkje as nij berjocht"
+
+msgid "View Message"
+msgstr "Besjoch berjocht"
+
+msgid "Forward"
+msgstr "Foarút"
+
+msgid "Forward as Attachment"
+msgstr "Trochstjoere as taheaksel"
+
+msgid "Reply"
+msgstr "Beäntwurdzje"
+
+msgid "Reply All"
+msgstr "Allegear&nbsp;beäntwurdzje"
+
+msgid "View Full Header"
+msgstr "Besjoch alle berjochtynformaasje"
+
+msgid "Attachments"
+msgstr "Taheaksels"
+
+msgid "You must be logged in to access this page."
+msgstr "Jo hawwe in jildige brûkersnamme en wachtwurd nedich foar dizze side!"
+
+msgid "Folder:"
+msgstr "Map:"
+
+msgid "Saved Searches"
+msgstr "Opsleine sykopdrachten"
+
+msgid "edit"
+msgstr "Wizigje"
+
+msgid "search"
+msgstr "Sykje"
+
+msgid "delete"
+msgstr "Wiskje"
+
+msgid "Recent Searches"
+msgstr "Resinte sykopdrachten"
+
+msgid "save"
+msgstr "Bewarje"
+
+msgid "forget"
+msgstr "Ferjit"
+
+msgid "Current Search"
+msgstr "Hjoeddeiske map"
+
+msgid "All Folders"
+msgstr "Alle mappen"
+
+msgid "Body"
+msgstr "Ynhâld"
+
+msgid "Everywhere"
+msgstr "Oeral"
+
+msgid "No Messages Found"
+msgstr "Gjin berjochten fûn"
+
+msgid "Please enter something to search for"
+msgstr "Graach wat ynfolje om te sykjen"
+
+msgid "Signout"
+msgstr "Ofmelde"
+
+msgid "Sign Out"
+msgstr "Ofmelde"
+
+msgid "You have been successfully signed out."
+msgstr "Jo binne súksesfol ôfmelden."
+
+msgid "Click here to log back in."
+msgstr "Klik hjir om wer oan te melden."
+
+msgid "Viewing a Business Card"
+msgstr "Besjoch in besitekaartsje"
+
+#, php-format
+msgid "vCard Version %s is not supported. Some information might not be converted correctly."
+msgstr "vCard Versie %s wurdt net stipe. Bepaalde ynformaasje kin net goed werjûn wurde."
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "Web Page"
+msgstr "Webside"
+
+msgid "Organization / Department"
+msgstr "Organisaasje / Ofdieling"
+
+msgid "Address"
+msgstr "Adres"
+
+msgid "Work Phone"
+msgstr "Telefoan Wurk"
+
+msgid "Home Phone"
+msgstr "Telefoan (privee)"
+
+msgid "Cellular Phone"
+msgstr "Mobyl"
+
+msgid "Fax"
+msgstr "Faks"
+
+msgid "Note"
+msgstr "Notysje"
+
+msgid "Add to address book"
+msgstr "Taheakje oan adresboek"
+
+msgid "Title &amp; Org. / Dept."
+msgstr "Titel &amp; Org. / Ôfd."
+
+msgid "Viewing Full Header"
+msgstr "Besjoch alle berjochtynformaasje"
+
+msgid "Viewing a text attachment"
+msgstr "Besjoch in tekst taheaksel"
+
+msgid "View Unsafe Images"
+msgstr "Besjoch ûnfeilige figueren"
+
+msgid "Could not include PEAR database functions required for the database backend."
+msgstr "Kin de PEAR databank funksjes, foar de databank backend, net ynpasse."
+
+#, php-format
+msgid "Is PEAR installed, and is the include path set correctly to find %s?"
+msgstr "Is PEAR ynstallearre en is it paad derhinne goed ynfold om %s te finen? "
+
+msgid "Please contact your system administrator and report this error."
+msgstr "Nim kontakt op mei jo systeembehearder en jou dizze flater troch."
+
+msgid "Personal address book"
+msgstr "Persoanlik adresboek"
+
+#, php-format
+msgid "Database error: %s"
+msgstr "Databankflater: %s"
+
+msgid "Address book is read-only"
+msgstr "Adresboek is allinnich-lêze"
+
+#, php-format
+msgid "User \"%s\" already exists"
+msgstr "Brûker \"%s\" bestiet al"
+
+#, php-format
+msgid "User \"%s\" does not exist"
+msgstr "Brûker \"%s\" bestiet net"
+
+#, php-format
+msgid "User '%s' already exist."
+msgstr "Brûker \"%s\" bestiet al."
+
+msgid "Not a file name"
+msgstr "Gjin triemnamme"
+
+msgid "No such file or directory"
+msgstr "Gjin triem of map mei dizze namme"
+
+msgid "Open failed"
+msgstr "Iepenjen mislearre"
+
+msgid "Write failed"
+msgstr "Skriuwen mislearre"
+
+msgid "Unable to update"
+msgstr "Unmooglik om te fernijen"
+
+msgid "Address book is corrupted. Required fields are missing."
+msgstr "Adresboek is skansearre. Ferplichte fjilden ûntbrekke."
+
+msgid "Address book entry is too big"
+msgstr "Adresboekyngong is te grut"
+
+msgid "Could not lock datafile"
+msgstr "Kin datatriem net befeiligje"
+
+msgid "Write to address book failed"
+msgstr "Skriuwen nei adresboek mislearre"
+
+msgid "Error initializing address book database."
+msgstr "Flater by inisjalisearjen fan adresboek-databank."
+
+#, php-format
+msgid "Error opening file %s"
+msgstr "Flater: Kin triem %s net iepenje"
+
+msgid "Global address book"
+msgstr "Globaal adresboek"
+
+msgid "Error initializing global address book."
+msgstr "Flater by inisjalisearjen fan oerkoepeljend adresboek."
+
+#, php-format
+msgid "Error initializing LDAP server %s:"
+msgstr "Flater: kin LDAP tsjinner %s net inisjalisearje:"
+
+msgid "Click here to change the sorting of the address list"
+msgstr "Klik hjir om de folchoarder fan sortearring fan de adreslist te feroarjen"
+
+msgid "Invalid input data"
+msgstr "Ynfierde datum is net tastien"
+
+msgid "Name is missing"
+msgstr "Namme ûntbrekt"
+
+msgid "E-mail address is missing"
+msgstr "E-mailadres ûntbrekt"
+
+msgid "Nickname contains illegal characters"
+msgstr "Bynamme bestiet út illegale karakters"
+
+msgid "View"
+msgstr "Byld"
+
+msgid "View Business Card"
+msgstr "Besjoch besitekaartsje"
+
+msgid "Sunday"
+msgstr "snein"
+
+msgid "Monday"
+msgstr "moandei"
+
+msgid "Tuesday"
+msgstr "tiisdei"
+
+msgid "Wednesday"
+msgstr "woansdei"
+
+msgid "Thursday"
+msgstr "tongersdei"
+
+msgid "Friday"
+msgstr "freed"
+
+msgid "Saturday"
+msgstr "sneon"
+
+msgid "Sun"
+msgstr "Snein"
+
+msgid "Mon"
+msgstr "Moandei"
+
+msgid "Tue"
+msgstr "Tiisdei"
+
+msgid "Wed"
+msgstr "Woansdei"
+
+msgid "Thu"
+msgstr "Tongersdei"
+
+msgid "Fri"
+msgstr "Freed"
+
+msgid "Sat"
+msgstr "Sneon"
+
+msgid "January"
+msgstr "jannewaris"
+
+msgid "February"
+msgstr "febrewaris"
+
+msgid "March"
+msgstr "maart"
+
+msgid "April"
+msgstr "april"
+
+msgid "May"
+msgstr "mei"
+
+msgid "June"
+msgstr "juny"
+
+msgid "July"
+msgstr "july"
+
+msgid "August"
+msgstr "augustus"
+
+msgid "September"
+msgstr "septimber"
+
+msgid "October"
+msgstr "oktober"
+
+msgid "November"
+msgstr "novimber"
+
+msgid "December"
+msgstr "desimber"
+
+msgid "Jan"
+msgstr "jan"
+
+msgid "Feb"
+msgstr "feb"
+
+msgid "Mar"
+msgstr "mrt"
+
+msgid "Apr"
+msgstr "apr"
+
+msgid "Ma&#121;"
+msgstr "maa"
+
+msgid "Jun"
+msgstr "jun"
+
+msgid "Jul"
+msgstr "jul"
+
+msgid "Aug"
+msgstr "aug"
+
+msgid "Sep"
+msgstr "sep"
+
+msgid "Oct"
+msgstr "okt"
+
+msgid "Nov"
+msgstr "nov"
+
+msgid "Dec"
+msgstr "des"
+
+msgid "D, F j, Y g:i a"
+msgstr "D, j F, Y g:i a"
+
+msgid "D, F j, Y H:i"
+msgstr "D, j F, Y H:i"
+
+msgid "M j, Y"
+msgstr "j M, Y"
+
+msgid "g:i a"
+msgstr "g:i a"
+
+msgid "H:i"
+msgstr "H:i"
+
+msgid "D, g:i a"
+msgstr "D, g:i a"
+
+msgid "D, H:i"
+msgstr "D, H:i"
+
+#, php-format
+msgid "Preference database error (%s). Exiting abnormally"
+msgstr "Triem mei foarkarren (%s) net fûn. Programma ôfbrutsen."
+
+#, php-format
+msgid "Click here to return to %s"
+msgstr "Klik hjir om tebek te gean nei %s"
+
+msgid "Go to the login page"
+msgstr "Gean nei de oanmeldside"
+
+#, php-format
+msgid "Preference file, %s, does not exist. Log out, and log back in to create a default preference file."
+msgstr "Triem mei foarkarren, %s, bestiet net. Meld ôf, en meld wer oan om in standert foarkartriem oan te meitsjen."
+
+#, php-format
+msgid "Preference file, %s, could not be opened. Contact your system administrator to resolve this issue."
+msgstr "Triem mei foarkarren, %s, kin net iepene wurde. Nim kontakt op mei jo systeembehearder."
+
+#, php-format
+msgid "Preference file, %s, could not be written. Contact your system administrator to resolve this issue."
+msgstr "Triem mei foarkarren, %s, kin net skreaun wurde. Nim kontakt op mei jo systeembehearder."
+
+#, php-format
+msgid "Preference file, %s, could not be copied from temporary file, %s. Contact your system administrator to resolve this issue."
+msgstr "Triem mei foarkarren, %s, kin net kopiearre wurde fan de tydlike triem, %s. Nim kontakt op mei jo systeembehearder."
+
+#, php-format
+msgid "Error opening %s"
+msgstr "Flater by iepenjen fan %s"
+
+msgid "Default preference file not found or not readable!"
+msgstr "Standert triem mei foarkarren net fûn of net lêsber!"
+
+msgid "Could not create initial preference file!"
+msgstr "Kin triem mei foarkarren net oanmeitsje!"
+
+#, php-format
+msgid "%s should be writable by user %s"
+msgstr "%s heart skriuwber te wêzen foar brûker %s"
+
+msgid "Signature is too big."
+msgstr "Hântekening is te grut"
+
+#, php-format
+msgid "Signature file, %s, could not be opened. Contact your system administrator to resolve this issue."
+msgstr "Triem mei hântekeningen, %s, kin net iepene wurde. Nim kontakt op mei jo systeembehearder."
+
+#, php-format
+msgid "Signature file, %s, could not be written. Contact your system administrator to resolve this issue."
+msgstr "Triem mei hântekeningen, %s, kin net skreaun wurde. Nim kontakt op mei jo systeembehearder."
+
+#, php-format
+msgid "Signature file, %s, could not be copied from temporary file, %s. Contact your system administrator to resolve this issue."
+msgstr "Triem mei hântekeningen, %s, kin net kopiearre wurde fan de tydlike triem, %s. Nim kontakt op mei jo systeembehearder."
+
+msgid "You need to have PHP installed with the multibyte string function enabled (using configure option --enable-mbstring)."
+msgstr "Jo moatte PHP ynstallearre hawwe mei de multibyte string funksje ynskeakele (brûk ynstelle mei de opsje --enable-mbstring)."
+
+msgid "ERROR: No available IMAP stream."
+msgstr "FOUT: Imapstream net beskikber."
+
+msgid "ERROR: Connection dropped by IMAP server."
+msgstr "FOUT: Ferbining ferbrutsen troch IMAP tsjinner"
+
+msgid "ERROR: Could not complete request."
+msgstr "FOUT: Kin opdracht net ferwurkje."
+
+msgid "Query:"
+msgstr "Fersyk:"
+
+msgid "Reason Given:"
+msgstr "Reden:"
+
+msgid "ERROR: Bad or malformed request."
+msgstr "FOUT: Flatere of skansearre oanfraach."
+
+msgid "Server responded:"
+msgstr "Tsjinner reagearre:"
+
+msgid "ERROR: IMAP server closed the connection."
+msgstr "FOUT: IMAP tsjinner hat de ferbining ferbrutsen."
+
+msgid "ERROR: Unknown IMAP response."
+msgstr "FOUT: Unbekend IMAP antwurd."
+
+#, php-format
+msgid "Error connecting to IMAP server: %s."
+msgstr "Flater ferbûn mei IMAP-tsjinner: %s."
+
+msgid "The IMAP server is reporting that plain text logins are disabled."
+msgstr "De IMAP tsjinner jout oan dat aanmelden yn platte tekst útskeakele is."
+
+msgid "Using CRAM-MD5 or DIGEST-MD5 authentication instead may work."
+msgstr "It brûken fan CRAM-MD5 of DIGEST-MD5 ferifikaasjes soe wurkje kinne."
+
+msgid "Also, the use of TLS may allow SquirrelMail to login."
+msgstr "Mei it brûken fan TLS kan kinne jo faaks ek josels oanmelde by SquirrelMail."
+
+#, php-format
+msgid "Bad request: %s"
+msgstr "Unjildige opdracht: %s"
+
+#, php-format
+msgid "Unknown error: %s"
+msgstr "Unbekende flater: %s"
+
+msgid "Read data:"
+msgstr "Lês data:"
+
+msgid "Unknown user or password incorrect."
+msgstr "Unbekende brûker of ferkeard wachtwurd"
+
+msgid "ERROR: Could not append message to"
+msgstr "FOUT: Kin berjocht net taheakje oan"
+
+msgid "Solution:"
+msgstr "Oplossing:"
+
+msgid "Remove unneccessary messages from your folders. Start with your Trash folder."
+msgstr "Wiskje ûnnedige berjochten út jo mappen. Begjin yn jo Wiske Items map."
+
+#, php-format
+msgid "Invalid mailbox name: %s"
+msgstr "Unjildige postfeknamme: %s"
+
+msgid "(no subject)"
+msgstr "(gjin ûnderwerp)"
+
+msgid "Unknown Sender"
+msgstr "Unbekende ferstjoerder"
+
+msgid "Unknown response from IMAP server:"
+msgstr "Unbekend antwurd fan IMAP tsjinner:"
+
+msgid "The server couldn't find the message you requested."
+msgstr "De tsjinner kin jo opfrege berjocht net fine."
+
+msgid "Most probably your message list was out of date and the message has been moved away or deleted (perhaps by another program accessing the same mailbox)."
+msgstr "Jo berjochtenlist is wierskynlik ferâldere en it berjocht is fersetten of wiske (miskien trochdat in oar programma itselde postfak brûkt hat)."
+
+msgid "Unknown date"
+msgstr "Unbekende datum"
+
+msgid "A"
+msgstr "A"
+
+msgid "Thread sorting is not supported by your IMAP server."
+msgstr "Sortearje as beamstruktuer wurdt net stipe troch jo IMAP tsjinner."
+
+msgid "Server-side sorting is not supported by your IMAP server."
+msgstr "Tsjinner-side sortearje wurdt net stipe troch jo IMAP tsjinner."
+
+msgid "THIS FOLDER IS EMPTY"
+msgstr "DIZZE MAP IS LEECH"
+
+msgid "Move Selected To"
+msgstr "Ferpleats it selektearre nei"
+
+msgid "Transform Selected Messages"
+msgstr "Wizigje de selektearre berjochten"
+
+msgid "Move"
+msgstr "Ferpleatse"
+
+msgid "Expunge"
+msgstr "Leegje"
+
+msgid "Read"
+msgstr "Lêzen"
+
+msgid "Unread"
+msgstr "Net-lêzen"
+
+msgid "Unthread View"
+msgstr "Ferbergje beamstruktuer"
+
+msgid "Thread View"
+msgstr "Werjefte beamstruktuer"
+
+msgid "Toggle All"
+msgstr "(de)Selektearje alles"
+
+msgid "Unselect All"
+msgstr "Neat selektearje "
+
+msgid "Select All"
+msgstr "Alles selektearje"
+
+#, php-format
+msgid "Viewing Messages: %s to %s (%s total)"
+msgstr "Besjoch berjochten: %s t/m %s (%s totaal)"
+
+#, php-format
+msgid "Viewing Message: %s (%s total)"
+msgstr "Besjoch berjocht: %s (%s totaal)"
+
+msgid "Paginate"
+msgstr "siden nûmerje"
+
+msgid "Show All"
+msgstr "Toan alle"
+
+msgid "SquirrelMail could not decode the bodystructure of the message"
+msgstr "SquirrelMail kin de haadstruktuer fan it berjocht net dekodearje"
+
+msgid "The bodystructure provided by your IMAP server:"
+msgstr "De haadstruktuer troch jo IMAP-tsjinner:"
+
+msgid "Body retrieval error. The reason for this is most probably that the message is malformed."
+msgstr "Flater by opheljen ynhâld. De reden is wierskynlik dat der programmakoade yn it berjocht stiet dy't net dekodearre wurde kin troch SquirrelMail ."
+
+msgid "Command:"
+msgstr "Kommando:"
+
+msgid "Response:"
+msgstr "Antwurd:"
+
+msgid "Message:"
+msgstr "Berjocht:"
+
+msgid "FETCH line:"
+msgstr "FETCH rigel:"
+
+# NL figuren as plaatsjes oersetten ( Ing:images)
+msgid "Hide Unsafe Images"
+msgstr "Ferbergje ûnfeilige plaatsjes"
+
+msgid "Download"
+msgstr "Ynlade"
+
+# Yn NL net oersetten Yn it Frysk dan ek mar stean litte?
+# NL feroarje yn FY?
+msgid "sec_remove_eng.png"
+msgstr "sec_remove_f.png"
+
+msgid "This external link will open in a new window"
+msgstr "Dizze eksterne link sil iepenje yn in nij finster"
+
+#, php-format
+msgid "Option Type '%s' Not Found"
+msgstr "Opsje Type '%s' Net fûn"
+
+msgid "Current Folder"
+msgstr "Hjoeddeiske map"
+
+msgid "Compose"
+msgstr "Nij berjocht"
+
+#, php-format
+msgid "Error creating directory %s."
+msgstr "Flater by oanmeitsjen triemtafel %s."
+
+# hashed=???
+msgid "Could not create hashed directory structure!"
+msgstr "Kin gjin hashed triemtafelstruktuer oanmeitsje!"
+
+msgid "Email delivery error"
+msgstr "Besoargingsflater rapportaazje"
+
+#, php-format
+msgid "Can't execute command '%s'."
+msgstr "Kin kommando '%s' net útfiere."
+
+msgid "Can't open SMTP stream."
+msgstr "Kin SMTP-ferbining net iepenje."
+
+msgid "Service not available, closing channel"
+msgstr "Service net beskikber, kanaal wurdt ôfsluten"
+
+msgid "A password transition is needed"
+msgstr "Der is in wachtwurd nedich"
+
+msgid "Requested mail action not taken: mailbox unavailable"
+msgstr "Frege post aksje net útfierd: postfak net beskikber"
+
+msgid "Requested action aborted: error in processing"
+msgstr "Frege aksje ûnderbrutsen: flater yn fuortgongsproses"
+
+msgid "Requested action not taken: insufficient system storage"
+msgstr "Frege aksje net útfierd: te min romte beskikber op systeem"
+
+msgid "Temporary authentication failure"
+msgstr "Tydlike oanmeldingsflater"
+
+msgid "Syntax error; command not recognized"
+msgstr "Syntaks flater: kommando net werkend"
+
+msgid "Syntax error in parameters or arguments"
+msgstr "Syntaksflater yn parameters of arguminten"
+
+msgid "Command not implemented"
+msgstr "Kommando net ynboud"
+
+msgid "Bad sequence of commands"
+msgstr "Flatere folchoarder fan kommando's"
+
+msgid "Command parameter not implemented"
+msgstr "Kommando parameter net ynboud"
+
+msgid "Authentication required"
+msgstr "Ferifikaasje fereaske"
+
+msgid "Authentication mechanism is too weak"
+msgstr "Ferifikaasje meganisme is te swak"
+
+msgid "Authentication failed"
+msgstr "Ferifikaasje is mislearre"
+
+msgid "Encryption required for requested authentication mechanism"
+msgstr "Kodearring fereaske by it frege autorisaasje meganisme"
+
+msgid "Requested action not taken: mailbox unavailable"
+msgstr "Frege aksje net útfierd: postfak net beskikber"
+
+msgid "User not local; please try forwarding"
+msgstr "Brûker net lokaal; besykje om troch te stjoeren"
+
+msgid "Requested mail action aborted: exceeding storage allocation"
+msgstr "Frege postaksje ôfbrutsen: oer de takende opslachromte hinne"
+
+msgid "Requested action not taken: mailbox name not allowed"
+msgstr "Frege aksje net útfierd: postfaknamme net tastien"
+
+msgid "Transaction failed"
+msgstr "Transaksje mislearre"
+
+msgid "Unknown response"
+msgstr "Unbekend antwurd"
+
+msgid "General Display Options"
+msgstr "Algemiene werjefte opsjes"
+
+msgid "Theme"
+msgstr "Tema"
+
+msgid "Default"
+msgstr "Standert"
+
+msgid "Custom Stylesheet"
+msgstr "Oanpaste opmak"
+
+msgid "Language"
+msgstr "Taal"
+
+msgid "Use Javascript"
+msgstr "Brûken Javaskript"
+
+msgid "Autodetect"
+msgstr "Auto-ûntdekke"
+
+msgid "Always"
+msgstr "Altyd"
+
+msgid "Never"
+msgstr "Nea"
+
+msgid "Mailbox Display Options"
+msgstr "Werjefte opsjes foar Postfak"
+
+msgid "Number of Messages per Page"
+msgstr "Oantal berjochten per side"
+
+msgid "Enable Alternating Row Colors"
+msgstr "Brûk ôfwikseljende rigel kleuren"
+
+msgid "Enable Page Selector"
+msgstr "Side seleksje"
+
+msgid "Maximum Number of Pages to Show"
+msgstr "Maksimum oantal te toanen siden"
+
+msgid "Always Show Full Date"
+msgstr "Toan altyd de folsleine datum"
+
+msgid "Length of From/To Field (0 for full)"
+msgstr "Lingte fan it Fan/Oan fjild (0 foar ûnbeheind)"
+
+msgid "Length of Subject Field (0 for full)"
+msgstr "Lingte fan it ûnderwerp fjild (0 foar ûnbeheind)"
+
+msgid "Message Display and Composition"
+msgstr "Berjocht werjefte en komposysje"
+
+msgid "Wrap Incoming Text At"
+msgstr "Begjin in nije rigel nei dit oantal tekens"
+
+msgid "Width of Editor Window"
+msgstr "Breedte fan it tekstfinster"
+
+msgid "Height of Editor Window"
+msgstr "Hichte fan it tekstfinster"
+
+msgid "Location of Buttons when Composing"
+msgstr "Posysje fan de knoppen by skriuwen Nij Berjocht"
+
+msgid "Before headers"
+msgstr "Foar berjochtynformaasje"
+
+msgid "Between headers and message body"
+msgstr "Tusken berjochtynformaasje en berjochttekst"
+
+msgid "After message body"
+msgstr "Efter berjochttekst"
+
+msgid "Addressbook Display Format"
+msgstr "Adresboek werjefte"
+
+msgid "Javascript"
+msgstr "Javaskript"
+
+msgid "HTML"
+msgstr "HTML"
+
+msgid "Show HTML Version by Default"
+msgstr "Toan HTML ferzje standert"
+
+msgid "Enable Forward as Attachment"
+msgstr "Aktivearje trochstjoeren as taheaksel"
+
+msgid "Include CCs when Forwarding Messages"
+msgstr "Heakje CCs ta by trochstjoeren berjochten"
+
+msgid "Include Me in CC when I Reply All"
+msgstr "Heakje my ta yn CC as ik allinnich beäntwurdzje"
+
+msgid "Enable Mailer Display"
+msgstr "Aktivearje werjefte postprogramma"
+
+msgid "Display Attached Images with Message"
+msgstr "Toan taheakke ôfbyldingen by berjocht"
+
+msgid "Enable Printer Friendly Clean Display"
+msgstr "Aktivearje printerfreonlik skjin skerm"
+
+# wat al te frij oersetten?
+msgid "Enable Mail Delivery Notification"
+msgstr "Melding foar ôfleverjen fan berjochten aktivearje"
+
+msgid "Compose Messages in New Window"
+msgstr "Altyd berjochten opstelle yn nij finster"
+
+msgid "Width of Compose Window"
+msgstr "Breedte fan berjochtfinster"
+
+msgid "Height of Compose Window"
+msgstr "Hichte fan berjochtfinster"
+
+msgid "Prepend Signature before Reply/Forward Text"
+msgstr "Heakje hântekening ta _foar_ de beantwurde/trochstjoerde tekst"
+
+msgid "Prefix for Original Message when Replying"
+msgstr "Prefiks foar oarspronklik berjocht by beäntwurdzjen"
+
+msgid "Cursor Position when Replying"
+msgstr "Posysje fan kursor by beäntwurding"
+
+msgid "To: field"
+msgstr "Oan: fjld"
+
+msgid "Focus in body"
+msgstr "Fokus op berjochttekst"
+
+msgid "Select body"
+msgstr "Selektearje berjochttekst"
+
+msgid "No focus"
+msgstr "Gjin fokus"
+
+msgid "Sort by Received Date"
+msgstr "Brûk datum fan ûntfangst om te sortearjen"
+
+# net moai
+msgid "Enable Thread Sort by References Header"
+msgstr "Diskusjes sortearje op referinsjeberjochtkop"
+
+msgid "Special Folder Options"
+msgstr "Spesjale mapopsjes"
+
+msgid "Folder Path"
+msgstr "Mappenpaad"
+
+msgid "Do not use Trash"
+msgstr "Brûk Wiske Items net"
+
+msgid "Trash Folder"
+msgstr "Wiske Items"
+
+msgid "Do not use Drafts"
+msgstr "Brûk map Konsept net"
+
+msgid "Draft Folder"
+msgstr "Konsept map"
+
+msgid "Do not use Sent"
+msgstr "Brûk Ferstjoerde Items net"
+
+msgid "Sent Folder"
+msgstr "Ferstjoerde Items"
+
+msgid "Folder List Options"
+msgstr "Spesjale mapopsjes"
+
+msgid "Location of Folder List"
+msgstr "Posysje fan de mappenlist"
+
+msgid "Left"
+msgstr "Lofts"
+
+msgid "Right"
+msgstr "Rjochts"
+
+msgid "pixels"
+msgstr "piksels"
+
+msgid "Width of Folder List"
+msgstr "Breedte fan mappenlist"
+
+msgid "Minutes"
+msgstr "Minuten"
+
+msgid "Seconds"
+msgstr "Sekonden"
+
+msgid "Minute"
+msgstr "Minút"
+
+msgid "Auto Refresh Folder List"
+msgstr "Automatysk ferfarskjen fan de mappenlist om de"
+
+# notification weilitten
+msgid "Enable Unread Message Notification"
+msgstr "Aktivearje Net-Lêzen berjochten "
+
+msgid "No Notification"
+msgstr "Gjin meidieling"
+
+msgid "Only INBOX"
+msgstr "Allinnich INBOX"
+
+# notification type=??
+msgid "Unread Message Notification Type"
+msgstr "Net-lêzen berjocht meidieling type"
+
+msgid "Only Unseen"
+msgstr "Allinnich Net-Lêzen"
+
+msgid "Unseen and Total"
+msgstr "Net-lêzen en Totaal"
+
+msgid "Enable Collapsable Folders"
+msgstr "Aktivearje útklapbere mappen"
+
+# wat dogge wy mei notification?
+msgid "Enable Cumulative Unread Message Notification"
+msgstr "Aktivearje iderkear opnij Net-lêzen berjochten"
+
+msgid "Show Clock on Folders Panel"
+msgstr "Toan klok yn mappenbalke"
+
+msgid "International date and time"
+msgstr "Ynternasjonale datum en tiid"
+
+msgid "American date and time"
+msgstr "Amerikaanske datum en tiid"
+
+msgid "European date and time"
+msgstr "Europeeske datum en tiid"
+
+msgid "Show weekday and time"
+msgstr "Toan dei fan de wike en tiid"
+
+msgid "Show time with seconds"
+msgstr "Toan tiid mei sekonden"
+
+msgid "Show time"
+msgstr "Toan tiid"
+
+msgid "No Clock"
+msgstr "Gjin klok"
+
+msgid "Hour Format"
+msgstr "Oere formaat"
+
+msgid "12-hour clock"
+msgstr "12-oere klok"
+
+msgid "24-hour clock"
+msgstr "24-oere klok"
+
+msgid "Memory Search"
+msgstr "Unthâld oantal sykopdrachten"
+
+msgid "Disabled"
+msgstr "Útskeakele"
+
+msgid "Folder Selection Options"
+msgstr "Map seleksje opsjes"
+
+msgid "Selection List Style"
+msgstr "Seleksje werjefte mappenlist"
+
+msgid "Long:"
+msgstr "Lang:"
+
+msgid "Folder"
+msgstr "Map"
+
+msgid "Subfolder"
+msgstr "Submap"
+
+msgid "Indented:"
+msgstr "Ynsprongen:"
+
+msgid "Delimited:"
+msgstr "Skieden:"
+
+msgid "You can't select INBOX as Trash folder."
+msgstr "Jo kinne INBOX net as map foar Wiske Items selektearje."
+
+msgid "You can't select INBOX as Sent folder."
+msgstr "U kunt INBOX net as map foar Ferstjoerde Items selektearje."
+
+msgid "You can't select INBOX as Draft folder."
+msgstr "Jo kinne INBOX net as map foar Konsepten selektearje."
+
+msgid "Name and Address Options"
+msgstr "Namme en adres opsjes"
+
+msgid "E-mail Address"
+msgstr "E-mailadres"
+
+msgid "Edit Advanced Identities"
+msgstr "Wizigje avansearre identiteiten"
+
+msgid "(discards changes made on this form so far)"
+msgstr "(negear de feroaringen yn dit formulier)"
+
+msgid "Multiple Identities"
+msgstr "Meardere identiteiten"
+
+msgid "Same as server"
+msgstr "Deselde as tsjinner"
+
+msgid "Error opening timezone config, contact administrator."
+msgstr "Flater by iepenjen tiidsône konfiguraasje, nim kontakt op mei jo systeembehearder"
+
+msgid "Timezone Options"
+msgstr "Tiidsône opsjes"
+
+msgid "Your current timezone"
+msgstr "Jo hjoeddeiske tiidsône"
+
+msgid "Reply Citation Options"
+msgstr "Antwurdstyl sitearring"
+
+msgid "Reply Citation Style"
+msgstr "Antwurdstyl sitearring"
+
+msgid "No Citation"
+msgstr "Gjin sitearring"
+
+msgid "AUTHOR Wrote"
+msgstr "SKRIUWER skreaun"
+
+msgid "On DATE, AUTHOR Wrote"
+msgstr "Op DATUM, skreaun SKRIUWER"
+
+msgid "Quote Who XML"
+msgstr "Sitaat fan XML"
+
+msgid "User-Defined"
+msgstr "Definearre troch brûker"
+
+msgid "User-Defined Citation Start"
+msgstr "Troch brûker definearre sitearring Begjin"
+
+msgid "User-Defined Citation End"
+msgstr "Troch brûker definearre sitearring Ein"
+
+msgid "Signature Options"
+msgstr "Hântekening opsjes"
+
+msgid "Use Signature"
+msgstr "Heakje in hântekening ta"
+
+msgid "Prefix Signature with '-- ' Line"
+msgstr "Lit hântekening foarôfgean troch '-- '"
+
+msgid "Take Address"
+msgstr "Slaan e-mailadres op"
+
+msgid "Address Book Take:"
+msgstr "Knop daliks opslaan e-mailadres:"
+
+msgid "Try to verify addresses"
+msgstr "Besykje adressen te ferifiearjen"
+
+msgid "Config File Version"
+msgstr "Ferzje konfiguraasjetriem"
+
+msgid "SquirrelMail Version"
+msgstr "SquirrelMail Ferzje"
+
+msgid "PHP Version"
+msgstr "PHP ferzje"
+
+msgid "Organization Preferences"
+msgstr "Organisaasje Foarkarren"
+
+msgid "Organization Name"
+msgstr "Namme organisaasje"
+
+msgid "Organization Logo"
+msgstr "Logo organisaasje"
+
+msgid "Organization Logo Width"
+msgstr "Logo organisaasje breedte"
+
+msgid "Organization Logo Height"
+msgstr "Logo organisaasje hichte"
+
+msgid "Organization Title"
+msgstr "Titel organisaasje"
+
+msgid "Signout Page"
+msgstr "Ofmeldside"
+
+msgid "Provider Link URI"
+msgstr "Provider Link URI"
+
+msgid "Provider Name"
+msgstr "Namme provider"
+
+msgid "Top Frame"
+msgstr "Boppelâns"
+
+msgid "Server Settings"
+msgstr "Ynstellings Tsjinner"
+
+msgid "Mail Domain"
+msgstr "Mail domein"
+
+msgid "IMAP Server Address"
+msgstr "IMAP-tsjinner adres"
+
+msgid "IMAP Server Port"
+msgstr "IMAP-tsjinner poarte"
+
+msgid "IMAP Server Type"
+msgstr "IMAP-tsjinner type"
+
+msgid "Cyrus IMAP server"
+msgstr "Cyrus IMAP-tsjinner"
+
+msgid "University of Washington's IMAP server"
+msgstr "University of Washington's IMAP-tsjinner"
+
+msgid "Microsoft Exchange IMAP server"
+msgstr "Microsoft Exchange IMAP-tsjinner"
+
+msgid "Courier IMAP server"
+msgstr "Courier IMAP-tsjinner"
+
+msgid "Mac OS X Mailserver"
+msgstr "Mac OS X Mailtsjinner"
+
+msgid "hMailServer IMAP server"
+msgstr "hMailServer IMAP-tsjinner"
+
+msgid "Binc IMAP server"
+msgstr "Binc IMAP-tsjinner"
+
+msgid "Not one of the above servers"
+msgstr "Gjin fan de boppesteande tsjinners"
+
+msgid "IMAP Folder Delimiter"
+msgstr "IMAP map skiedingsteken"
+
+msgid "Use &quot;detect&quot; to auto-detect."
+msgstr "Brûk &quot;detect&quot; foar auto-deteksje."
+
+msgid "Use TLS for IMAP Connections"
+msgstr "Brûk TLS foar IMAP ferbiningen"
+
+msgid "Requires PHP 4.3.x! Experimental."
+msgstr "PHP 4.3.x fereaske! Experiminteel."
+
+msgid "IMAP Authentication Type"
+msgstr "IMAP autorisaasje type"
+
+msgid "IMAP login"
+msgstr "IMAP login"
+
+msgid "Use Sendmail Binary"
+msgstr "Brûk Sendmail"
+
+msgid "Choose &quot;no&quot; for SMTP"
+msgstr "Kies &quot;no&quot; foar SMTP"
+
+msgid "Sendmail Arguments"
+msgstr "Sendmail Parameters"
+
+msgid "Sendmail Path"
+msgstr "Sendmail Paad"
+
+msgid "SMTP Server Address"
+msgstr "SMTP-tsjinner adres"
+
+msgid "SMTP Server Port"
+msgstr "SMTP-tsjinner poarte"
+
+msgid "Use TLS for SMTP Connections"
+msgstr "Brûk TLS foar SMTP ferbiningen"
+
+msgid "SMTP Authentication Type"
+msgstr "SMTP autorisaasje type"
+
+msgid "No SMTP auth"
+msgstr "Gjin SMTP aut"
+
+msgid "Login (plain text)"
+msgstr "Oanmelde (platte tekst)"
+
+msgid "POP3 Before SMTP?"
+msgstr "POP3 foar SMTP?"
+
+msgid "Header Encryption Key"
+msgstr "Berjochtynformaasje befeiligingskaai"
+
+# invert
+msgid "Invert Time"
+msgstr "Tiidseleksje omdraaie"
+
+msgid "Folders Defaults"
+msgstr "Map foarkarren"
+
+msgid "Default Folder Prefix"
+msgstr "Standert map foarheaksel"
+
+msgid "Show Folder Prefix Option"
+msgstr "Toan map foarheaksel opsje"
+
+msgid "By default, move to trash"
+msgstr "Standert ferpleatse nei Wiske Items"
+
+msgid "By default, move to sent"
+msgstr "Standert ferpleatse nei Ferstjoerde Items"
+
+msgid "By default, save as draft"
+msgstr "Standert bewarje as Konsept"
+
+msgid "List Special Folders First"
+msgstr "Toan spesjale mappen earst"
+
+msgid "Show Special Folders Color"
+msgstr "Toan kleur spesjale mappen"
+
+msgid "Auto Expunge"
+msgstr "Automatysk leegje"
+
+msgid "Default Sub. of INBOX"
+msgstr "StandertSub. fan INBOX"
+
+msgid "Show 'Contain Sub.' Option"
+msgstr "Toan 'befet Sub.' opsje"
+
+msgid "Default Unseen Notify"
+msgstr "Standert Net-Lêzen berjochten"
+
+msgid "Default Unseen Type"
+msgstr "Standert Net-Lêzen type"
+
+msgid "Auto Create Special Folders"
+msgstr "Automatysk oanmeitsjen spesjale mappen"
+
+msgid "Auto delete folders"
+msgstr "Automatysk wiskjen mappen"
+
+msgid "Enable /NoSelect folder fix"
+msgstr "Ynskeakelje /Gjinseleksje map fix"
+
+msgid "General Options"
+msgstr "Algemiene opsjes"
+
+msgid "Data Directory"
+msgstr "Data triemtafel"
+
+msgid "Temp Directory"
+msgstr "Temp triemtafel"
+
+msgid "Hash Level"
+msgstr "Graad fan ûnderferdieling data triemtafel"
+
+msgid "Hash Disabled"
+msgstr "Underferdieling útskeakele"
+
+msgid "Moderate"
+msgstr "Medium 1"
+
+msgid "Medium"
+msgstr "Middel"
+
+msgid "Default Left Size"
+msgstr "Standert lofterôfmjitting"
+
+msgid "Usernames in Lowercase"
+msgstr "Brûkersnammen yn lytse letters"
+
+msgid "Allow use of priority"
+msgstr "Brûken fan prioriteiten tastean"
+
+msgid "Hide SM attributions"
+msgstr "Ferbergje SM eigenskippen"
+
+msgid "Enable use of delivery receipts"
+msgstr "Brûken fan ûntfangstbefêstigingen tastean"
+
+msgid "Allow editing of identities"
+msgstr "Wizigjen fan identiteiten tastean"
+
+msgid "Allow editing of full name"
+msgstr "Wizigjen folsleine namme tastean"
+
+msgid "Remove username from headers"
+msgstr "Wiskje brûkersnamme fan berjochtynformaasje"
+
+msgid "Used only when identities can't be modified"
+msgstr "Allinnich brûkt as identiteiten net feroare wurde kinne"
+
+msgid "Use server-side sorting"
+msgstr "Brûk sortearjen troch de tsjinner"
+
+msgid "Use server-side thread sorting"
+msgstr "Brûk sortearjen troch de tsjinner foar it sortearjen yn konfersaasjes"
+
+msgid "Allow server charset search"
+msgstr "Sykjen tekenset fan tsjinner tastean"
+
+msgid "UID support"
+msgstr "UID stipe"
+
+msgid "PHP session name"
+msgstr "PHP sesje namme"
+
+msgid "Location base"
+msgstr "Lokaasje-basis"
+
+msgid "Message of the Day"
+msgstr "Berjocht fan de dei"
+
+msgid "Database"
+msgstr "Databank"
+
+msgid "Address book DSN"
+msgstr "Adresboek DSN"
+
+msgid "Address book table"
+msgstr "Adresboek tabel"
+
+msgid "Preferences DSN"
+msgstr "Foarkarren DSN"
+
+msgid "Preferences table"
+msgstr "Foarkarren tabel"
+
+msgid "Preferences username field"
+msgstr "Foarkarren fjld brûkersnamme"
+
+msgid "Preferences key field"
+msgstr "Foarkarren fjild kaai"
+
+msgid "Preferences value field"
+msgstr "Foarkarren fjild wearde"
+
+msgid "Global address book DSN"
+msgstr "Globaal adresboek DSN"
+
+msgid "Global address book table"
+msgstr "Globaal adresboek tabel"
+
+msgid "Allow writing into global address book"
+msgstr "Skriuwen yn globale adresboek tastean"
+
+msgid "Allow listing of global address book"
+msgstr "Toanen fan globaal adresboek tastean"
+
+msgid "Language settings"
+msgstr "Taalynstellingen"
+
+msgid "Default Language"
+msgstr "Standert taal"
+
+msgid "Default Charset"
+msgstr "Standert set fan lettertekens"
+
+msgid "Enable lossy encoding"
+msgstr "Brûk ienfâldige kodearring"
+
+msgid "Address Books"
+msgstr "Adresboeken"
+
+msgid "Default Javascript Addressbook"
+msgstr "Standert Javaskript adresboek"
+
+msgid "Global address book file"
+msgstr "Globaal adresboek triem"
+
+msgid "Allow writing into global address book file"
+msgstr "Skriuwen yn globale adresboek triem tastean"
+
+msgid "Themes"
+msgstr "Thema's"
+
+msgid "Style Sheet URL (css)"
+msgstr "Styl sjabloan URL (css)"
+
+msgid "Default theme"
+msgstr "Standert tema"
+
+msgid "Use index number of theme"
+msgstr "Brûken yndeksnûmer fan tema"
+
+msgid "Configuration Administrator"
+msgstr "Konfiguraasje Systeembehearder"
+
+msgid "Note: it is recommended that you configure your system using conf.pl, and not this plugin. conf.pl contains additional information regarding the purpose of variables and appropriate values, as well as additional verification steps."
+msgstr "NB. It wurdt oanrikkemandearre om jo systeem te konfigurearjen mei conf.pl en net mei dizze plugin. Yn conf.pl stiet ekstra ynformaasje oer it doel en brûken fan de fariabelen en de krekte wearden en boppedat ekstra ferifikaasje stappen."
+
+msgid "Run or consult conf.pl should you run into difficulty with your configuration."
+msgstr "Brûk conf.pl as jo yn swierrichheden reitsje mei jo konfiguraasje."
+
+msgid "Theme Name"
+msgstr "Tema namme"
+
+msgid "Theme Path"
+msgstr "Thema paad"
+
+msgid "Plugins"
+msgstr "Plugins"
+
+#, php-format
+msgid "Plugin directory could not be found: %s"
+msgstr "Plugin triemtafel is net fûn: %s"
+
+msgid "Change Settings"
+msgstr "Feroarje ynstellingen"
+
+msgid "Test Configuration"
+msgstr "Test konfiguraasje"
+
+msgid "Config file can't be opened. Please check config.php."
+msgstr "Konfiguraasje triem kin net iepene wurde. Kontrolearje config.php."
+
+msgid "Administration"
+msgstr "Administraasje"
+
+msgid "This module allows administrators to manage SquirrelMail main configuration remotely."
+msgstr "Dizze module makket it systeembehearders mooglik de basiskonfiguraasje fan SquirrelMail op ôfstand te wizigjen."
+
+msgid "Submit a Bug Report"
+msgstr "Ferstjoer flater rapportaazje"
+
+msgid "Before you send your bug report, please make sure to check this checklist for any common problems."
+msgstr "Rin, foar it ferstjoeren fan jo flater rapportaazje, foarôf de kontrolelist mei algemien foarkommende problemen efkes troch."
+
+#, php-format
+msgid "Make sure that you are running the most recent copy of %s. You are currently using version %s."
+msgstr "Soargje dat jo de nijste ferzje fan %s hawwe. Jo brûke no ferzje %s."
+
+#, php-format
+msgid "Check to see if your bug is already listed in the %sBug List%s on SourceForge. If it is, we already know about it and are trying to fix it."
+msgstr "Kontrolearje oft jo flater foarkomt yn de %sBug List%s op SourceForge. At dit sa is, dan kenne wy de bug al en besykje dy te ferbetterjen."
+
+msgid "Try to make sure that you can repeat it. If the bug happens sporatically, try to document what you did when it happened. If it always occurs when you view a specific message, keep that message around so maybe we can see it."
+msgstr "Soargje dat jo de flater reprodusearje kinne. At de flater mar inkeldris foarkomt, besykje dan te omskriuwen wat jo dienen doe't de flater him foardie. At de flater hieltiten bart by in bepaald berjocht, bewarje dat berjocht dan, sadat wy it eventueel sjen kinne."
+
+#, php-format
+msgid "If there were warnings displayed above, try to resolve them yourself. Read the guides in the %s directory where SquirrelMail was installed."
+msgstr "At der flatermeldingen ferskine, besykje dizze dan sels op te lossen. Lês de hantliedings yn de %s triemtafel op it plak dêr't SquirrelMail ynstallearre is."
+
+msgid "Pressing the button below will start a mail message to the developers of SquirrelMail that will contain a lot of information about your system, your browser, how SquirrelMail is set up, and your IMAP server. It will also prompt you for information. Just fill out the sections at the top. If you like, you can scroll down in the message to see what else is being sent."
+msgstr "In druk op de knop hjirûnder sil in e-mail starte nei de ûntwikkelders fan SquirrelMail mei in soad ynformaasje oer jo systeem, jo blêder, hoe't SquirrelMail konfigurearre is en jo IMAP tsjinner. Jo sille ek frege wurde om ynformaasje yn te foljen. Fol allinnich de seksjes boppe-oan yn. At jo wolle kinne jo de hiele e-mail besjen hokker ynformaasje der noch mear ferstjoerd is."
+
+msgid "Please make sure to fill out as much information as you possibly can to give everyone a good chance of finding and removing the bug. Submitting your bug like this will not have it automatically added to the bug list on SourceForge, but someone who gets your message may add it for you."
+msgstr "Graach safolle mooglik ynformaasje ynfolje, sadat der in goede kans is dat de flater fûn wurdt en ferbettere wurde kin. Ferstjoeren fan de flater op dizze wize sil der net foar soargje dat hy automatysk op de bug list fan SourceForge byskreaun wurdt. Ien dy't it berjocht krijt soe him lykwols letter noch wol taheakje kinne."
+
+msgid "This bug involves:"
+msgstr "Dizze flater hat te krijen mei:"
+
+msgid "the general program"
+msgstr "it algemiene programma"
+
+msgid "a specific plugin"
+msgstr "in spesifike plugin"
+
+msgid "Start Bug Report Form"
+msgstr "Start flater rapportaazje"
+
+msgid "Bug"
+msgstr "Flater"
+
+msgid "Bug Reports:"
+msgstr "Flater rapportaazjes:"
+
+msgid "Show button in toolbar"
+msgstr "Toan knop yn menu"
+
+#, php-format
+msgid "Could not write calendar file %s"
+msgstr "Kin kalindertriem %s net weiskriuwe"
+
+msgid "TODAY"
+msgstr "HJOED"
+
+msgid "Go"
+msgstr "Gean nei"
+
+msgid "l, F j Y"
+msgstr "l, j F Y"
+
+msgid "ADD"
+msgstr "TAHEAKJE"
+
+msgid "EDIT"
+msgstr "WIZIGJE"
+
+msgid "DEL"
+msgstr "WISKJE"
+
+msgid "Start time:"
+msgstr "Oanfang:"
+
+msgid "Length:"
+msgstr "Duer:"
+
+msgid "Priority:"
+msgstr "Prioriteit:"
+
+msgid "Title:"
+msgstr "Titel:"
+
+msgid "Set Event"
+msgstr "Ofspraak taheakje"
+
+msgid "Event Has been added!"
+msgstr "Ofspraak is taheakke!"
+
+msgid "Date:"
+msgstr "Datum:"
+
+msgid "m/d/Y"
+msgstr "d/m/Y"
+
+msgid "Time:"
+msgstr "Tiid:"
+
+msgid "Day View"
+msgstr "Dei werjefte"
+
+msgid "Do you really want to delete this event?"
+msgstr "Wolle jo dizze ôfspraak echt wiskje?"
+
+msgid "Event deleted!"
+msgstr "Ofspraak wiske!"
+
+msgid "Nothing to delete!"
+msgstr "Neat te wiskjen!"
+
+msgid "Update Event"
+msgstr "Wizigje ôfspraak"
+
+msgid "Do you really want to change this event from:"
+msgstr "Wolle jo dizze ôfspraak echt op dizze wize wiskje? Fan:"
+
+msgid "to:"
+msgstr "nei:"
+
+msgid "Event updated!"
+msgstr "Ofspraak wizige!"
+
+msgid "Month View"
+msgstr "Moanne-werjefte"
+
+msgid "0 min."
+msgstr "0 min."
+
+msgid "15 min."
+msgstr "15 min."
+
+msgid "30 min."
+msgstr "30 min."
+
+msgid "45 min."
+msgstr "45 min."
+
+msgid "1 hr."
+msgstr "1 oere"
+
+msgid "1.5 hr."
+msgstr "1,5 oere"
+
+msgid "2 hr."
+msgstr "2 oere"
+
+msgid "2.5 hr."
+msgstr "2,5 oere"
+
+msgid "3 hr."
+msgstr "3 oere"
+
+msgid "3.5 hr."
+msgstr "3,5 oere"
+
+msgid "4 hr."
+msgstr "4 oere"
+
+msgid "5 hr."
+msgstr "5 oere"
+
+msgid "6 hr."
+msgstr "6 oere"
+
+msgid "Calendar"
+msgstr "Kalinder"
+
+msgid "Delete &amp; Prev"
+msgstr "Wiskje &amp; Foarrige"
+
+msgid "Delete &amp; Next"
+msgstr "Wiskje &amp; Folgjende"
+
+msgid "Move to:"
+msgstr "Ferpleatse nei:"
+
+msgid "Delete/Move/Next Buttons:"
+msgstr "Wiskje/Ferpleats/Folgjende knoppen:"
+
+msgid "Display at top"
+msgstr "toan boppe"
+
+msgid "with move option"
+msgstr "mei ferpleats opsje"
+
+msgid "Display at bottom"
+msgstr "toan ûnder"
+
+msgid "COMMERCIAL - This list contains servers that are verified spam senders. It is a pretty reliable list to scan spam from."
+msgstr "COMMERCIAL - Dizze list befet tsjinners dy't ferifiearre binne as spam ferstjoerders. It is in frijwat betroubere list om spam mei sykjen."
+
+msgid "COMMERCIAL - Servers that are configured (or misconfigured) to allow spam to be relayed through their system will be banned with this. Another good one to use."
+msgstr "COMMERCIAL - Tsjinners dy't konfigurearre binne om spam troch te jaan sille hjirmei blokkearre wurde."
+
+msgid "COMMERCIAL - Dial-up users are often filtered out since they should use their ISP's mail servers to send mail. Spammers typically get a dial-up account and send spam directly from there."
+msgstr "COMMERCIAL - Ynbel brûkers wurde faak filtere omdat hja harren ISP mailtsjinners brûke moatte om post mei te ferstjoeren. Spammers nimme faak in ynbelakkount om spam te ferstjoeren."
+
+msgid "COMMERCIAL - RBL+ Blackhole entries."
+msgstr "COMMERCIAL - RBL+ Blackhole yngongen."
+
+msgid "COMMERCIAL - RBL+ OpenRelay entries."
+msgstr "COMMERCIAL - RBL+ IepenRelay yngongen."
+
+msgid "COMMERCIAL - RBL+ Dial-up entries."
+msgstr "COMMERCIAL - RBL+ Dial-up yngongen."
+
+msgid "FREE - Five-Ten-sg.com - Direct SPAM sources."
+msgstr "FREE - Five-Ten-sg.com - Direct SPAM boarnen."
+
+msgid "FREE - Five-Ten-sg.com - Dial-up lists - includes some DSL IPs."
+msgstr "FREE - Five-Ten-sg.com - Dial-up lists - befet inkele DSL IPs."
+
+msgid "FREE - Five-Ten-sg.com - Bulk mailers that do not use confirmed opt-in."
+msgstr "FREE - Five-Ten-sg.com - Bulk mailers dy't gjin befêstiging fan brûkers brûke."
+
+msgid "FREE - Five-Ten-sg.com - Other misc. servers."
+msgstr "FREE - Five-Ten-sg.com - Oare tsjinners."
+
+msgid "FREE - Five-Ten-sg.com - Single Stage servers."
+msgstr "FREE - Five-Ten-sg.com - Single Stage tsjinners."
+
+msgid "FREE - Five-Ten-sg.com - SPAM Support servers."
+msgstr "FREE - Five-Ten-sg.com - SPAM Support tsjinners."
+
+msgid "FREE - Five-Ten-sg.com - Web Form IPs."
+msgstr "FREE - Five-Ten-sg.com - Web Form IPs."
+
+msgid "FREE - Dorkslayers appears to include only really bad open relays outside the US to avoid being sued. Interestingly enough, their website recommends you NOT use their service."
+msgstr "FREE - Dorkslayers befet allinnich echte iepen relays bûten de USA om oanklachten foar te kommen. Nijsgjirrich is dat harren webstee oanrikkemandearret om harren service NET te brûken."
+
+msgid "FREE - SPAMhaus - A list of well-known SPAM sources."
+msgstr "FREE - SPAMhaus - In list fan bekende SPAM boarnen."
+
+msgid "FREE, for now - SpamCop - An interesting solution that lists servers that have a very high spam to legit email ratio (85 percent or more)."
+msgstr "FREE, oant no ta - SPAMCOP - In nijsgjirrich alternatyf dat tsjinners befet mei in hege spam - e-mail ratio. (85% of mear)"
+
+msgid "FREE - dev.null.dk - I don't have any detailed info on this list."
+msgstr "FREE - dev.null.dk - Ik haw gjin detaillearre ynformaasje oer dizze list."
+
+msgid "FREE - visi.com - Relay Stop List. Very conservative OpenRelay List."
+msgstr "FREE - visi.com - Relay Stop List. Tige konservative OpenRelay List."
+
+msgid "FREE - ahbl.org Open Relays - Another list of Open Relays."
+msgstr "FREE - ahbl.org Open Relays - Oare list fan Iepen Relays."
+
+msgid "FREE - ahbl.org SPAM Source - List of Direct SPAM Sources."
+msgstr "FREE - ahbl.org SPAM Source - List fan Direct SPAM boarnen."
+
+msgid "FREE - ahbl.org SPAM ISPs - List of SPAM-friendly ISPs."
+msgstr "FREE - ahbl.org SPAM ISPs - List fan SPAM-freonlike ISPs."
+
+msgid "FREE - Leadmon DUL - Another list of Dial-up or otherwise dynamically assigned IPs."
+msgstr "FREE - Leadmon DUL - Oare list fan Ynbel of oare dynamysk tawiisde IPs."
+
+msgid "FREE - Leadmon SPAM Source - List of IPs Leadmon.net has received SPAM directly from."
+msgstr "FREE - Leadmon SPAM Source - List fan IPs wêr't Leadmon.net direkte SPAM fan krigen hat."
+
+msgid "FREE - Leadmon Bulk Mailers - Bulk mailers that do not require confirmed opt-in or that have allowed known spammers to become clients and abuse their services."
+msgstr "FREE - Leadmon Bulk Mailers - Bulk mailers dy't gjin ferifiearre opt-in fereaskje of dy't bekende spammers tastien hawwe om lid te wurden en harren services te misbrûken."
+
+msgid "FREE - Leadmon Open Relays - Single Stage Open Relays that are not listed on other active RBLs."
+msgstr "FREE - Leadmon Open Relays - Single Stage Open Relays dy't net op de list steane fan oare aktive RBLs."
+
+msgid "FREE - Leadmon Multi-stage - Multi-Stage Open Relays that are not listed on other active RBLs and that have sent SPAM to Leadmon.net."
+msgstr "FREE - Leadmon Multi-stage - Multi-Stage Open Relays dy't net op de list steane fan oare aktive RBLs en dy't SPAM ferstjoerd hawwe oan Leadmon.net."
+
+msgid "FREE - Leadmon SpamBlock - Sites on this listing have sent Leadmon.net direct SPAM from IPs in netblocks where the entire block has no DNS mappings. It's a list of BLOCKS of IPs being used by people who have SPAMmed Leadmon.net."
+msgstr "FREE - Leadmon SpamBlock - Sites op dizze list hawwe oan Leadmon.net direct SPAM ferstjoerd fan IPs yn netblocks wêrby't it hiele block gjin DNS mappings hat. It is in list fan BLOCKS fan IPs dy't brûkt wurde troch minsken dy't Leadmon.net SPAMme hawwe."
+
+msgid "FREE, for now - Not Just Another Blacklist - Both Open Relays and Direct SPAM Sources."
+msgstr "FREE - In oare swarte list - Beide Iepen Trochjouwers en Direkte SPAM Boarnen."
+
+msgid "FREE, for now - Not Just Another Blacklist - Dial-up IPs."
+msgstr "FREE - In oare swarte list - Ynbel IPs."
+
+msgid "FREE - Distributed Sender Boycott List - Confirmed Relays"
+msgstr "FREE - Distribuearre ferstjoerder boycot list - Befêstige relays"
+
+msgid "FREE - Distributed Sender Boycott List - Confirmed Multi-stage Relays"
+msgstr "FREE - Distribuearre ferstjoerder boycot list - Befêstige multi-stage relays"
+
+msgid "FREE - Distributed Sender Boycott List - UN-Confirmed Relays"
+msgstr "FREE - Distribuearre ferstjoerder boycot list - Unbefêstige relays"
+
+msgid "WARNING! You must enter something to search for."
+msgstr "WARSKOGING! Graach wat ynfolje om nei te sykjen."
+
+msgid "WARNING! Header filters should be of the format &quot;Header: value&quot;"
+msgstr "WARSKOGING! Berjochtkop filters moatte fan it neikommende formaat wêze: &quot;Berjochtkop: wearde&quot;"
+
+msgid "Saved Scan type"
+msgstr "Bewarre scan type"
+
+msgid "Message Filtering"
+msgstr "Berjocht filtering"
+
+msgid "What to Scan:"
+msgstr "Wat te scannen:"
+
+msgid "All messages"
+msgstr "Alle berjochten"
+
+msgid "Only unread messages"
+msgstr "Allinnich net-lêzen berjochten"
+
+msgid "Save"
+msgstr "Bewarje"
+
+msgid "Match:"
+msgstr "Selektearje op:"
+
+msgid "Header"
+msgstr "Berjochtkop"
+
+msgid "Contains:"
+msgstr "Befet:"
+
+#, php-format
+msgid "If %s contains %s then move to %s"
+msgstr "As %s befet %s ferpleats dan nei %s"
+
+msgid "Message Filters"
+msgstr "Berjochtfilters"
+
+msgid "Filtering enables messages with different criteria to be automatically filtered into different folders for easier organization."
+msgstr "Filtering soarget derfoar dat berjochten mei ferskate eigenskippen automatysk yn ferskate mappen dien wurde."
+
+msgid "SPAM Filters"
+msgstr "SPAM filters"
+
+msgid "SPAM filters allow you to select from various DNS based blacklists to detect junk email in your INBOX and move it to another folder (like Trash)."
+msgstr "SPAM filters stelle jo by steat om junk e-mail te detektearjen fan ferskate op DNS basearre swarte listen yn jo INBOX en it te ferpleatsen nei in oare map (bg. Wiske Items)."
+
+msgid "You must select a spam folder."
+msgstr "Jo moatte in spam map selektearje."
+
+msgid "You must select a scan type."
+msgstr "Jo moatte in scan type selektearje"
+
+msgid "Spam Filtering"
+msgstr "Spam Filtering"
+
+#, php-format
+msgid "WARNING! Tell the administrator to set the %s variable."
+msgstr "WARSKOGING! Freegje jo systeembehearder om de %s fariabele te aktivearjen"
+
+msgid "Move spam to:"
+msgstr "Ferpleats spam nei:"
+
+msgid "Moving spam directly to the trash may not be a good idea at first, since messages from friends and mailing lists might accidentally be marked as spam. Whatever folder you set this to, make sure that it gets cleaned out periodically, so that you don't have an excessively large mailbox hanging around."
+msgstr "It ferpleatsen fan spam nei de Wiske Items is eins gjin goed idee, omdat berjochten fan freonen en mailinglists soms automatysk markearre wurde as spam. Welke map jo ek selektearje, soargje dat de map geregeld lege wurdt, sadat jo nea in te grut postfak krije."
+
+msgid "Unread messages only"
+msgstr "Allinnich net-lêzen berjochten"
+
+msgid "The more messages scanned, the longer it takes. It's recommended to scan unread messages only. If a change to the filters is made, it's recommended to set it to scan all messages, then go view the INBOX, then come back and set it to scan unread messages only. That way, the new spam filters will be applied and even the spam you didn't catch with the old filters will be scanned."
+msgstr "Hoe mear berjochten jo scanne, hoe langer it duorret. Foarslein wurdt om allinnich nije berjochten te scannen. As jo in wiziging yn jo filters meitsje, dan wurdt de opsje -alle berjochten- aktivearre. Gean dan nei INBOX, kom werom en kies de opsje -allinnich nije berjochten- .  Sa sille jo nije spamfilters aktivearre wurde en jo scanne ek noch de spam dy't jo lêze mei de nije spamfilters."
+
+#, php-format
+msgid "Spam is sent to %s."
+msgstr "Spam wurdt ferpleatst nei %s"
+
+# der wie noch gjin NL oersetting
+msgid "not set yet"
+msgstr "noch net ynsteld"
+
+#, php-format
+msgid "Spam scan is limited to %s."
+msgstr "Spam scan wurdt beheind ta %s"
+
+msgid "ON"
+msgstr "OAN"
+
+msgid "OFF"
+msgstr "ÚT"
+
+#, php-format
+msgid "%s is not found."
+msgstr "%s is net fûn."
+
+msgid "Today's Fortune"
+msgstr "Utspraak fan hjoed"
+
+msgid "Fortunes:"
+msgstr "Utspraken:"
+
+msgid "Show fortunes at top of mailbox"
+msgstr "Toan utspraken boppe-oan it Postfak"
+
+msgid "Plugin is disabled."
+msgstr "Plugin is útskeakele"
+
+msgid "IMAP server information"
+msgstr "IMAP-tsjinner ynformaasje"
+
+msgid "Run some test IMAP commands, displaying both the command and the result. These tests use the SquirrelMail IMAP commands and your current SquirrelMail configuration. Custom command strings can be used."
+msgstr "Fier inkele IMAP kommando's út, it kommando en it resultaat wurde toand. Dizze testen brûke de SquirrelMail IMAP kommando's en jo besteande SquirrelMail konfiguraasje. Oanpaste kommandoregels kinne brûkt wurde."
+
+#, php-format
+msgid "This will send a message to %s requesting help for this list. You will receive an emailed response at the address below."
+msgstr "Dit sil in berjocht foar help by dizze list nei %s ferstjoere. Jo sille automatysk in antwurd ûntfange op it ûndersteande e-mailadres."
+
+#, php-format
+msgid "This will send a message to %s requesting that you will be subscribed to this list. You will be subscribed with the address below."
+msgstr "Dit sil in berjocht nei %s stjoere foar oanmelding by dizze list. Jo sille mei it ûndersteande e-mailadres oanmelden wurde."
+
+#, php-format
+msgid "This will send a message to %s requesting that you will be unsubscribed from this list. It will try to unsubscribe the adress below."
+msgstr "Dit sil in berjocht nei %s ferstjoere foar ôfmelding fan dizze list. It ûndersteande e-mailadres sil ôfmelden wurde."
+
+#, php-format
+msgid "Unknown action: %s"
+msgstr "Ûnbekende aksje: %s"
+
+msgid "Mailinglist"
+msgstr "Mailinglist"
+
+msgid "Send Mail"
+msgstr "Ferstjoer berjocht"
+
+msgid "Post to List"
+msgstr "Stjoer nei list"
+
+msgid "Reply to List"
+msgstr "Antwurd nei de list"
+
+msgid "List Archives"
+msgstr "List argiven"
+
+msgid "Contact Listowner"
+msgstr "Nim kontakt op mei list-eigener"
+
+msgid "Mailing List"
+msgstr "Post List"
+
+msgid "POP3 connect:"
+msgstr "POP3 ferbine:"
+
+msgid "No server specified"
+msgstr "Gjin tsjinneer spesifisearre"
+
+msgid "Error "
+msgstr "Flater"
+
+msgid "POP3 user:"
+msgstr "POP3 brûker:"
+
+msgid "no login ID submitted"
+msgstr "gjin brûkersnamme opjûn"
+
+msgid "connection not established"
+msgstr "gjin ferbining makke"
+
+# pass=wachtwurd?
+msgid "POP3 pass:"
+msgstr "POP3 wachtwurd:"
+
+msgid "No password submitted"
+msgstr "Gjin wachtwurd opjûn"
+
+msgid "POP3 apop:"
+msgstr "POP3 apop:"
+
+msgid "No connection to server"
+msgstr "Gjin ferbining mei tsjinner"
+
+msgid "No login ID submitted"
+msgstr "Gjin brûkersnamme opjûn"
+
+# findel is wat ûndúdlik. Haw keazen foar de Ing, banner, is bekender
+msgid "No server banner"
+msgstr "Gjin tsjinner skutblêd"
+
+msgid "abort"
+msgstr "ôfbrekke"
+
+msgid "apop authentication failed"
+msgstr "apop ferifikaasje mislearre"
+
+msgid "POP3 login:"
+msgstr "POP3 login:"
+
+msgid "POP3 top:"
+msgstr "POP3 top:"
+
+msgid "POP3 pop_list:"
+msgstr "POP3 pop_list:"
+
+msgid "Premature end of list"
+msgstr "Te betiid ein fan'e list"
+
+# get=...
+msgid "POP3 get:"
+msgstr "POP3 get:"
+
+# last=?
+msgid "POP3 last:"
+msgstr "POP3 last:"
+
+msgid "POP3 reset:"
+msgstr "POP3 reset:"
+
+# stean litte?
+msgid "POP3 send_cmd:"
+msgstr "POP3 send_cmd:"
+
+msgid "Empty command string"
+msgstr "Leech kommando"
+
+msgid "POP3 quit:"
+msgstr "POP3 quit:"
+
+msgid "connection does not exist"
+msgstr "ferbining bestiet net"
+
+msgid "POP3 uidl:"
+msgstr "POP3 uidl:"
+
+msgid "POP3 delete:"
+msgstr "POP3 delete:"
+
+msgid "No msg number submitted"
+msgstr "Gjin berjochtnûmer opjûn"
+
+msgid "Command failed "
+msgstr "Kommando mislearre"
+
+msgid "Remote POP server Fetching Mail"
+msgstr "Post ophelje fan eksterne POP-tsjinners"
+
+msgid "Select Server:"
+msgstr "Selektearje tsjinner:"
+
+msgid "Password for"
+msgstr "Wachtwurd foar"
+
+msgid "Fetch Mail"
+msgstr "Opheljen berjochten"
+
+msgid "Fetching from "
+msgstr "Opheljen fan "
+
+# oei as skrikreaksje?
+msgid "Oops, "
+msgstr "Oei, "
+
+msgid "Opening IMAP server"
+msgstr "Iepenjen IMAP-tsjinner"
+
+msgid "Opening POP server"
+msgstr "Iepenjen POP-tsjinner"
+
+msgid "Login Failed:"
+msgstr "Oanmelden mislearre:"
+
+msgid "Login OK: No new messages"
+msgstr "Oanmelden OK: Gjin nije berjochten"
+
+msgid "Login OK: Inbox EMPTY"
+msgstr "Oanmelden OK: Postfak YN  is LEECH"
+
+#, php-format
+msgid "Login OK: Inbox contains %s messages"
+msgstr "Oanmelden OK: INBOX hat %s berjochten"
+
+msgid "Fetching UIDL..."
+msgstr "Opheljen UIDL..."
+
+msgid "Server does not support UIDL."
+msgstr "Tsjinner stipet gjin UIDL."
+
+msgid "Leaving mail on server..."
+msgstr "Post bewarje op tsjinner..."
+
+msgid "Deleting messages from server..."
+msgstr "Berjochten wiskje fan tsjinner..."
+
+msgid "Fetching message "
+msgstr "Opheljen berjocht "
+
+msgid "Server error. Disconnect"
+msgstr "Tsjinner flater. Ferbining ferbrutsen"
+
+msgid "Reconnect from dead connection"
+msgstr "Werstel ferbrutsen ferbining"
+
+msgid "Saving UIDL"
+msgstr "UIDL opslaan"
+
+msgid "Refetching message "
+msgstr "Opnij berjocht ophelje "
+
+msgid "Error Appending Message!"
+msgstr "Flater by it taheakjen fan it berjocht!"
+
+msgid "Closing POP"
+msgstr "POP slute"
+
+# Moat dit net krekt oarsom wêze: dus ôfmelde fan IMAP?
+msgid "Logging out from IMAP"
+msgstr "Ôfmelde fan IMAP"
+
+msgid "Message appended to mailbox"
+msgstr "Berjocht taheakke oan postfak"
+
+#, php-format
+msgid "Message %d deleted from remote server!"
+msgstr "Berjocht %d wiske fan eksterne tsjinner!"
+
+msgid "Delete failed:"
+msgstr "Wiskjen mislearre:"
+
+msgid "Remote POP server settings"
+msgstr "Eksterne POP-tsjinner ynstellingen"
+
+msgid "You should be aware that the encryption used to store your password is not perfectly secure. However, if you are using pop, there is inherently no encryption anyway. Additionally, the encryption that we do to save it on the server can be undone by a hacker reading the source to this file."
+msgstr "Jo moatte derop betocht wêze dat de befeiliging dy't brûkt wurdt om jo wachtwurd op te slaan net perfekt is. Mar as jo POP brûke is der gewoanwei hielendal gjin befeiliging. De befeiliging dy't brûkt wurdt om jo wachtwurd op te slaan op de tsjinner kin ûngedien makke wurde troch in hacker troch de boarne fan dit triem te lêzen."
+
+msgid "If you leave password empty, it will be asked when you fetch mail."
+msgstr "As jo jo wachtwurd leech litte, sil it frege wurde by it opheljen fan jo post."
+
+msgid "Encrypt passwords (informative only)"
+msgstr "Befeiligje wachtwurden (allinnich ynformatyf)"
+
+msgid "Add Server"
+msgstr "Tsjinner taheakje"
+
+msgid "Server:"
+msgstr "Tsjinner:"
+
+msgid "Port:"
+msgstr "Poarte:"
+
+msgid "Alias:"
+msgstr "Alias:"
+
+msgid "Username:"
+msgstr "Brûkersnamme:"
+
+msgid "Store in Folder:"
+msgstr "Opslaan yn map:"
+
+msgid "Leave mail on server"
+msgstr "Bewarje post op tsjinner"
+
+msgid "Check mail at login"
+msgstr "Kontrolearje post by oanmelden"
+
+msgid "Check mail at folder refresh"
+msgstr "Kontrolearje post by fernijen fan mappen"
+
+msgid "Modify Server"
+msgstr "Bewurkje tsjinner"
+
+msgid "Server Name:"
+msgstr "Tsjinnernamme:"
+
+msgid "Modify"
+msgstr "Wizigje"
+
+msgid "No servers known."
+msgstr "Gjin tsjinners bekend."
+
+msgid "Fetching Servers"
+msgstr "Opheljen tsjinners"
+
+msgid "Confirm Deletion of a Server"
+msgstr "Befêstigje wiskjen fan in tsjinner"
+
+msgid "Selected Server:"
+msgstr "Selektearre tsjinner:"
+
+msgid "Confirm delete of selected server?"
+msgstr "Befêstigje it wiskjen fan de selektearre tsjinner"
+
+msgid "Confirm Delete"
+msgstr "Wiskjen befêstigje"
+
+msgid "Leave Mail on Server"
+msgstr "Bewarje post op tsjinner"
+
+msgid "Undefined Function"
+msgstr "Net definiearre funksje"
+
+msgid "The function you requested is unknown."
+msgstr "De funksje dêr't jo om fregen is ûnbekend."
+
+msgid "Fetch"
+msgstr "Opheljen"
+
+msgid "Warning, "
+msgstr "Warskôging, "
+
+msgid "Mail Fetch Result:"
+msgstr "Resultaten:"
+
+msgid "POP3 Fetch Mail"
+msgstr "POP3-tagong eksterne e-mailakkounts"
+
+msgid "This configures settings for downloading email from a POP3 mailbox to your account on this server."
+msgstr "Ynstellingen foar it laden fan e-mail fan in eksterne POP3-tsjinner nei jo akkount op dizze tsjinner."
+
+msgid "Message Details"
+msgstr "Berjochtdetails"
+
+msgid "Bodystructure"
+msgstr "Haadstruktuer berjocht"
+
+msgid "Entity"
+msgstr "Entiteit"
+
+msgid "Content-Type"
+msgstr "Ynhâld-Type"
+
+msgid "Encoding"
+msgstr "Kodearring"
+
+msgid "RFC822 Message body"
+msgstr "RFC822 Berjochttekst"
+
+msgid "Close Window"
+msgstr "Finster slute"
+
+msgid "Save Message"
+msgstr "Bewarje berjocht"
+
+msgid "View Message details"
+msgstr "Besjoch berjochtdetails"
+
+msgid "New Mail Notification"
+msgstr "Meidielingen by nije e-berjochten"
+
+#, php-format
+msgid "The %s option will check ALL of your folders for unseen mail, not just the inbox for notification."
+msgstr "De opsje %s sil ALLE mappen op nije berjochten kontrolearje en net allinnich de INBOX."
+
+msgid "Check all boxes, not just INBOX"
+msgstr "Kontrolearje alle mappen, net allinnich INBOX"
+
+#, php-format
+msgid "Selecting the %s option will enable the showing of a popup window when unseen mail is in your folders (requires JavaScript)."
+msgstr "Seleksje fan %s soarget foar aktivearring fan in popup as der in nij berjocht yn ien fan fo mappen ferskynt (Javaskript is nedich!)."
+
+msgid "Show popup window on new mail"
+msgstr "Toan popupfinster by nij berjocht"
+
+#, php-format
+msgid "Use the %s option to only check for messages that are recent. Recent messages are those that have just recently showed up and have not been \"viewed\" or checked yet. This can prevent being continuously annoyed by sounds or popups for unseen mail."
+msgstr "Brûk de opsje %s om allinnich te kontrolearjen op resinte berjochten. Resinte berjochten binne krekt binnenkomde berjochten dy't noch net besjoen of kontrolearre binne. Hjirtroch wurde jo net hieltiten troch popups of lûd lestich fallen by in nij berjocht."
+
+msgid "Count only messages that are RECENT"
+msgstr "Kontrolearje allinnich RESINT"
+
+#, php-format
+msgid "Selecting the %s option will change the title in some browsers to let you know when you have new mail (requires JavaScript, and only works in IE but you won't see errors with other browsers). This will always tell you if you have new mail, even if you have %s enabled."
+msgstr "De opsje %s sil yn guon blêders de titeloantsjutting feroarje by in nij berjocht. (Javaskript is nedich en it wurket allinnich mei IE (Internet Explorer). Jo sille gjin flaters sjen as jo in oare blêder brûke.) Dizze opsje sil jo altyd fertelle oft jo nije berjochten hawwe, ek al hawwe jo de opsje %s aktivearre."
+
+msgid "Change title on supported browsers"
+msgstr "Feroarje titeloantsjutting"
+
+#, php-format
+msgid "Select %s to turn on playing a media file when unseen mail is in your folders. When enabled, you can specify the media file to play in the provided file box."
+msgstr "Selektearje %s om in lûd hearre te litten as der in nij bejocht yn jo mappen ferskynt. Jo kinne sels ynstelle hokker lûd der te hearren is."
+
+msgid "Enable Media Playing"
+msgstr "Aktivearje ôf te spyljen lûd"
+
+#, php-format
+msgid "Select from the list of %s the media file to play when new mail arrives. If no file is specified, %s, no sound will be used."
+msgstr "Selektearje de triem dy't jo ôfspylje wolle by in nij berjocht fan de list mei %s. At der gjin triem keazen wurdt, %s, sil gjin lûd ôfspile wurde."
+
+msgid "Select server file"
+msgstr "Selektearje triem fan tsjinner"
+
+msgid "(none)"
+msgstr "(gjin)"
+
+msgid "requires JavaScript to work"
+msgstr "Javaskript is nedich"
+
+msgid "Try"
+msgstr "Probearje"
+
+msgid "Current File:"
+msgstr "Triem fan no:"
+
+msgid "New Mail"
+msgstr "Nij berjocht"
+
+msgid "SquirrelMail Notice:"
+msgstr "SquirrelMail meidieling:"
+
+# oersetting net twifeleftich, mar der ferskynt in ekstra finster foar inkeltal of meartal Ingelsk
+#, php-format
+msgid "You have %s new message"
+msgid_plural "You have %s new messages"
+msgstr[0] "Jo hawwe %s nij berjocht"
+msgstr[1] "Jo hawwe %s nije berjochten"
+
+#, php-format
+msgid "You have %s new messages"
+msgstr "Jo hawwe %s nije berjoichten"
+
+msgid "NewMail Options"
+msgstr "Nij Berjocht opsjes"
+
+msgid "This configures settings for playing sounds and/or showing popup windows when new mail arrives."
+msgstr "Opsjes foar it ôfspyljen fan lûden en/of it toanen fan popupfinsters at jo in nij berjocht ûntfange."
+
+#, php-format
+msgid "%s New Messages"
+msgstr "%s Nije berjochten"
+
+# oersetting net twifeleftich, mar der ferskynt in ekstra finster foar inkeltal of meartal Ingelsk
+#, php-format
+msgid "%s New Message"
+msgid_plural "%s New Messages"
+msgstr[0] "%s nije berjocht"
+msgstr[1] "%s nije berjochten"
+
+msgid "Test Sound"
+msgstr "Test lûd"
+
+msgid "No sound specified"
+msgstr "Gjin lûd spesifisearre"
+
+msgid "Loading the sound..."
+msgstr "Lûd wurdt laden ..."
+
+msgid "Sent Subfolders Options"
+msgstr "Ferstjoerde Items submap opsjes "
+
+msgid "Use Sent Subfolders"
+msgstr "Brûken Ferstjoerde Items submappen"
+
+msgid "Monthly"
+msgstr "Alle moannen"
+
+msgid "Quarterly"
+msgstr "Elk kwartaal"
+
+msgid "Yearly"
+msgstr "Alle jierren"
+
+msgid "Base Sent Folder"
+msgstr "Ferstjoerde Items basismap"
+
+msgid "Enabled"
+msgstr "Ynskeakele"
+
+msgid "Disable it"
+msgstr "Utsette"
+
+msgid "Enable it"
+msgstr "Aktivearje"
+
+msgid "Spam reporting"
+msgstr "Spamrapportaazje"
+
+msgid "SpamCop link is:"
+msgstr "SpamCop link is:"
+
+msgid "Delete spam when reported:"
+msgstr "Wiskje spam nei rapportaazje:"
+
+msgid "Only works with email-based reporting"
+msgstr "Wurket allinnich mei op e-mail basearre rapportaazje"
+
+msgid "Spam Reporting Method:"
+msgstr "Spamrapportaazje metoade:"
+
+msgid "Quick email-based reporting"
+msgstr "Flugge op e-mail basearre rapportaazje"
+
+msgid "Thorough email-based reporting"
+msgstr "Yngeande op e-mail basearre rapportaazje"
+
+msgid "Web-based form"
+msgstr "Webformulier"
+
+msgid "Save Method"
+msgstr "Bewarmetoade"
+
+msgid "Your SpamCop authorization code:"
+msgstr "Jo SpamCop autorisaasjekoade:"
+
+msgid "see below"
+msgstr "sjoch ûnder"
+
+msgid "Save ID"
+msgstr "Bewarje ID"
+
+msgid "About SpamCop"
+msgstr "Oer SpamCop"
+
+msgid "SpamCop is a free service that greatly assists in finding the true source of the spam and helps in letting the proper people know about the abuse."
+msgstr "SpamCop is in frije service dy't treflik helpt by it finen fan de echte boarne fan de spam en yn it ynformearjen fan yntegere minsken oer it misbrûk."
+
+#, php-format
+msgid "To use it, you must get a SpamCop authorization code. There is a free %ssign up page%s so you can use SpamCop."
+msgstr "Om it te brûken moatte jo in SpamCop autorisaasjekoade oanfreegje. Der is in frije %soanmeldingsside%s om SpamCop brûke te kinnen."
+
+msgid "Before you sign up, be warned"
+msgstr "Foardat jo jo oanmelde, wês wach"
+
+#, php-format
+msgid "Some users have reported that the email addresses used with SpamCop find their way onto spam lists. To be safe, you can just create an email forwarding account and have all SpamCop reports get sent to there. Also, if it gets flooded with spam, you can then just delete that account with no worries about losing your real email address. Just go create an email forwarder somewhere (%s has a %slist of places%s) so that messages from system administrators and what not can be sent to you."
+msgstr "Guon brûkers hawwe rapportearre dat de e-mailadressen dy't by SpamCop brûkt wurde op spamlisten telâne komme. Om feilich te wêzen kinne jo in e-mail forwarding account oanmeitsje en alle SpamCop rapportaazjes dêrhinne ferstjoere te litten. As dit e-mailadres oerspield wurdt mei spam, dan kinne jo it wiskje sûnder jo echte e-mailadres te ferliezen. Meitsje earne in e-mail forwarder  (%s hat in %slist mei plakken%s) sadat berjochten fan systeem administrators en oaren nei jo tastjoerd wurde kinne."
+
+msgid "Once you have signed up with SpamCop and have received your SpamCop authorization code, you need to enable this plugin by clicking the link above. Once enabled, you go about your normal life. If you encounter a spam message in your mailbox, just view it. On the right-hand side, near the top of where the message is displayed, you will see a link to report this message as spam. Clicking on it brings you to a confirmation page. Confirming that you want the spam report sent will do different things with different reporting methods."
+msgstr "As jo jo oanmelden hawwe by SpamCop en jo hawwe jo SpamCop autorisaasjekoade krigen, dan moatte jo dizze plugin aktivearje -- klik op de link hjirboppe. As jo in spamberjocht yn jo postfak fine, besjoch it dan. Oan de rjochterkant sille jo in link sjen om it berjocht as spam te rapportearjen. As jo hjirop klikke, dan krije jo in befêstigingsside te sjen. Befêstigje dat jo de spam rapportaazje ferstjoere wolle, sil ferskillende dingen dwaan mei ferskillende rapportaazje metoaden."
+
+msgid "Email-based reporting"
+msgstr "Op e-mail basearre rapportaazje"
+
+msgid "Pressing the button forwards the message to the SpamCop service and will optionally delete the message. From there, you just need to go to your INBOX and quite soon a message should appear from SpamCop. (It gets sent to the account you registered with, so make sure that your mail forwarder works!) Open it up, click on the appropriate link at the top, and a new browser window will open."
+msgstr "In druk op de knop stjoert it berjocht troch nei de SpamCop service en sil it berjocht opsjoneel wiskje. Yn jo INBOX sil no al gau in berjocht ferskine fan SpamCop. (It sil stjoerd wurde nei de troch jo registrearre akkount, dus soargje dat jo e-mail forwarder wurket!) Iepenje it berjocht en klik op de bypassende link boppe-oan. In nij blêderskerm sil iepene wurde."
+
+msgid "Currently, the quick reporting just forwards the request to the thorough reporting. Also, it appears that this is for members (non-free) only. Hopefully this will change soon."
+msgstr "Op dit stuit wurdt de flugge rapportaazje allinnich trochstjoerd nei de yngeande rapportaazje. Dizze is allinnich foar leden (net-frij). Hooplik sil dit mei gauwens feroarje."
+
+msgid "Web-based reporting"
+msgstr "Op it web basearre rapportaazje"
+
+msgid "When you press the button on the confirmation page, this will pop open a new browser window and the SpamCop service should appear inside. The message will not be deleted (working on that part), but you won't need to wait for a response email to start the spam reporting."
+msgstr "Wannear't jo drukke op de knop op de befêstigingsside, sil in nij blêder skerm him iepenje mei dêryn de SpamCop service. It berjocht sil net wiske wurde (wurdt oan wurke), mar jo hoege net te wachtsjen op in antwurdmail om de spamrapportaazje op te starten."
+
+msgid "The SpamCop service will display information as it finds it, so scroll down until you see a form button. It might pause a little while it is looking up information, so be a little patient. Read what it says, and submit the spam. Close the browser window. Press Cancel or click on the appropriate mail folder to see messages and/or delete the spam."
+msgstr "De SpamCop service sil fûne ynformaasje toane. Besjoch de side oant jo in formulierknop sjogge. Ofhinklik fan de ynformaasje, kin it wat langer duorje. Ferstjoer de spamrapportaazje. Slút it blêderskerm. Klik op Annulearje of klik op de map mei e-mail om de berjochten te sjen en/of de spam te wiskjen."
+
+msgid "SpamCop service type"
+msgstr "Spamcop Service Type"
+
+msgid "Service type option allows selecting which SpamCop services you are using. Member services use different web reporting forms and does not display nags. You can purchase these services, if you want to support SpamCop."
+msgstr "Mei de service type opsje kinne jo selektearje hokker spamcop services jo brûke. Brûkers services brûke oare webformulieren en toane gjin irritante ynformaasje. Jo kinne dizze services oanskaffe as jo SpamCop stypje wolle."
+
+msgid "More information"
+msgstr "Mear ynformaasje"
+
+#, php-format
+msgid "For more information about SpamCop, it's services, spam in general, and many related topics, try reading through SpamCop's %sHelp and Feedback%s section."
+msgstr "Foar mear ynformaasje oer SpamCop, de services, spam yn it algemien en annekse ûnderwerpen, besykje de seksje %sHelp en Feedback%s."
+
+msgid "Report as Spam"
+msgstr "Rapportearje as Spam"
+
+msgid "SpamCop - Spam Reporting"
+msgstr "SpamCop - Spamrapportaazje"
+
+msgid "Help fight the battle against unsolicited email. SpamCop reads the spam email and determines the correct addresses to send complaints to. Quite fast, really smart, and easy to use."
+msgstr "Help yn de striid tsjin net winske e-mail. SpamCop lêst de e-mail (spam) en bepaalt it krekte adres om in klacht hinne te stjoeren. Fluch, snoad en maklik yn gebrûk!"
+
+msgid "Sending this spam report will give you back a reply with URLs that you can click on to properly report this spam message to the proper authorities. This is a free service. By pressing the \"Send Spam Report\" button, you agree to follow SpamCop's rules/terms of service/etc."
+msgstr "Ferstjoeren fan dizze spamrapportaazje sil jo in antwurd ûntfange litte mei URLs, dy't jo oanklikke kinne om it berjocht as spam te markearjen by yntegere autoriteiten. Dit is in frije service. Troch te klikken op de knop \"Send Spam Report\", gean jo akkoard mei de betingsten fan SpamCop."
+
+msgid "Cancel / Done"
+msgstr "Annulearje / Klear"
+
+msgid "Send Spam Report"
+msgstr "Ferstjoer Spamrapportaazje"
+
+msgid "SpellChecker Options"
+msgstr "Staveringshifker opsjes"
+
+msgid "Here you may set up how your personal dictionary is stored, edit it, or choose which languages should be available to you when spell-checking."
+msgstr "Hjir kinne jo oanjaan hoe't jo persoanlike wurdboek opslein wurdt, wizigje it, of kies de talen dy't beskikber wêze moatte as jo de stavering kontrolearje."
+
+msgid "Check Spelling"
+msgstr "Staveringshifker"
+
+msgid "Back to &quot;SpellChecker Options&quot; page"
+msgstr "Tebek nei &quot;Staveringshifker Opsjes&quot; side"
+
+msgid "ATTENTION:"
+msgstr "TINK DEROM:"
+
+msgid "SquirrelSpell was unable to decrypt your personal dictionary. This is most likely due to the fact that you have changed your mailbox password. In order to proceed, you will have to supply your old password so that SquirrelSpell can decrypt your personal dictionary. It will be re-encrypted with your new password after this. If you haven't encrypted your dictionary, then it got mangled and is no longer valid. You will have to delete it and start anew. This is also true if you don't remember your old password -- without it, the encrypted data is no longer accessible."
+msgstr "SquirrelSpell kin jo persoanlike wurdboek net lêze. Dit komt grif troch it wizigjen fan jo postfak wachtwurd.Om troch te gean moatte jo jo âlde wachtwurd opjaan, sadat SquirrelSpell jo persoanlike wurdboek lêze kin. It sil hjirnei mei jo nije wachtwurd befeilige wurde. As jo jo wurdboek net befeilige hawwe, sil dizze net langer jildich wêze. Jo sille it wiskje moatte en in nije opjaan moatte. Dit jildt ek at jo jo âlde wachtwurd ferjitten binne. Sûnder wachtwurd binne jo data net mear tagonklik."
+
+msgid "Delete my dictionary and start a new one"
+msgstr "Wiskje myn wurdboek en start in nijen-ien"
+
+msgid "Decrypt my dictionary with my old password:"
+msgstr "Ûntsiferje myn wurdboek mei myn âlde wachtwurd:"
+
+msgid "Proceed"
+msgstr "Trochgean"
+
+msgid "You must make a choice"
+msgstr "Jo moatte in kar meitsje"
+
+msgid "You can either delete your dictionary or type in the old password. Not both."
+msgstr "Jo kinne jo wurdboek wiskje of it âlde wachtwurd yntype, net beide."
+
+msgid "This will delete your personal dictionary file. Proceed?"
+msgstr "Dit sil de triem mei jo persoanlik wurdboek wiskje. Trochgean?"
+
+msgid "Error Decrypting Dictionary"
+msgstr "Flater yn it ûntsiferjen fan it wurdboek"
+
+# cute=...?
+msgid "Cute."
+msgstr "Cute."
+
+#, php-format
+msgid "Could not run the spellchecker command (%s)."
+msgstr "Kin staveringshifker-kommando (%s) net útfiere."
+
+msgid "Error while writing to pipe."
+msgstr "Flater by it skriuwen nei piip"
+
+#, php-format
+msgid "Could not open temporary file '%s'."
+msgstr "Kin tydlike triem '%s' net iepenje"
+
+#, php-format
+msgid "Error while writing to temporary file '%s'."
+msgstr "Flater by it skriuwen nei tydlike triem '%s'."
+
+#, php-format
+msgid "I tried to execute '%s', but it returned:"
+msgstr "Der is besocht om '%s' te starten, maar it joech de melding:"
+
+msgid "SquirrelSpell is misconfigured."
+msgstr "SquirrelSpell is net goed ynsteld"
+
+msgid "Spellcheck completed. Commit changes?"
+msgstr "Staveringshifker is klear. Wizigingen taheakje?"
+
+msgid "No changes were made."
+msgstr "Der binne gjin feroarings oanbrocht."
+
+msgid "Now saving your personal dictionary... Please wait."
+msgstr "Opslaan fan jo persoanlik wurdboek ... efkes geduld graach."
+
+msgid "SquirrelSpell Results"
+msgstr "SquirrelSpell resultaten"
+
+#, php-format
+msgid "Found %s errors"
+msgstr "%s flaters fûn"
+
+msgid "Line with an error:"
+msgstr "Regel mei flater:"
+
+msgid "Error:"
+msgstr "Flater:"
+
+msgid "Suggestions:"
+msgstr "Suggestjes:"
+
+msgid "Suggestions"
+msgstr "Suggestjes"
+
+msgid "Change to:"
+msgstr "Feroarje yn:"
+
+msgid "Occurs times:"
+msgstr "Komt foar:"
+
+msgid "Change this word"
+msgstr "Feroarje dit wurd"
+
+msgid "Change"
+msgstr "Wizigje"
+
+# dêr't of wêr't ?
+msgid "Change ALL occurances of this word"
+msgstr "Feroarje ALLE plakken wêr't dit wurd foarkomt"
+
+msgid "Change All"
+msgstr "Feroarje alles"
+
+msgid "Ignore this word"
+msgstr "Negear dit wurd"
+
+msgid "Ignore"
+msgstr "Negearje"
+
+# wêr't / dêr't ??
+msgid "Ignore ALL occurances this word"
+msgstr "Negear ALLE plakken wêr't dit wurd foarkomt"
+
+msgid "Ignore All"
+msgstr "Negear alles"
+
+msgid "Add this word to your personal dictionary"
+msgstr "Heakje dit wurd ta oanjo persoanlik wurdboek"
+
+msgid "Add to Dic"
+msgstr "Heakje ta oan wb"
+
+msgid "Close and Commit"
+msgstr "Slút en heakje ta"
+
+msgid "The spellcheck is not finished. Really close and commit changes?"
+msgstr "De staveringshifker is net klear. Echt ôfslute en feroaringen taheakje?"
+
+msgid "Close and Cancel"
+msgstr "Ofslute en annulearje"
+
+msgid "The spellcheck is not finished. Really close and discard changes?"
+msgstr "De staveringshifker is net klear. Echt ôfslute en feroaringen negeare?"
+
+msgid "No errors found"
+msgstr "Gjin flaters fûn"
+
+msgid "Your personal dictionary was erased."
+msgstr "Jo persoanlik wurdboek is wiske"
+
+msgid "Dictionary Erased"
+msgstr "Wurdboek wiske"
+
+msgid "Your personal dictionary was erased. Please close this window and click \"Check Spelling\" button again to start your spellcheck over."
+msgstr "Jo persoanlik wurdboek is wiske. Slút dit finster en klik nochris op de \"Staveringshifker\" knop om jo stavering te kontrolearjen."
+
+msgid "Close this Window"
+msgstr "Slút dit finster"
+
+msgid "Your personal dictionary was re-encrypted successfully. Now return to the &quot;SpellChecker options&quot; menu and make your selection again."
+msgstr "Jo persoanlik wurdboek is súksesfol befeilige. Gean opnij nei it &quot;Staveringshifker opsjes&quot; menu en selektearje opnij."
+
+msgid "Successful re-encryption"
+msgstr "Súksesfolle befeiliging"
+
+msgid "Your personal dictionary was re-encrypted successfully. Please close this window and click \"Check Spelling\" button again to start your spellcheck over."
+msgstr "Jo persoanlik wurdboek is súksefol befeilige. Slút dit finster en klik opnij op de \"Staveringshifker\" knop om jo stavering te kontrolearjen."
+
+msgid "Dictionary re-encrypted"
+msgstr "Wurdboek befeilige"
+
+msgid "Your personal dictionary has been encrypted and is now stored in an encrypted format."
+msgstr "Jo persoanlik wurdboek is befeilige en is no opslein yn in befeilige formaat."
+
+msgid "Your personal dictionary has been decrypted and is now stored as plain text."
+msgstr "Jo persoanlik wurdboek is ûntsifere in is no opslein as platte tekst."
+
+msgid "No action requested."
+msgstr "Gjin aksje frege."
+
+msgid "Personal Dictionary Crypto Settings"
+msgstr "Persoanlik wurdboek befeiligingsynstellingen"
+
+msgid "Personal Dictionary"
+msgstr "Persoanlijk wurdboek"
+
+msgid "No words in your personal dictionary."
+msgstr "Gjin wurden in jo persoanlik wurdboek"
+
+msgid "Please check any words you wish to delete from your dictionary."
+msgstr "Selektearje de wurden dy't jo wiskje wolle út jo wurdboek."
+
+#, php-format
+msgid "%s dictionary"
+msgstr "%s wurdboek"
+
+msgid "Delete checked words"
+msgstr "Wiskje selektearre wurden"
+
+msgid "Edit your Personal Dictionary"
+msgstr "Wizigje jo persoanlik wurdboek"
+
+msgid "Please make your selection first."
+msgstr "Earst jo kar meitsje graach"
+
+msgid "This will encrypt your personal dictionary and store it in an encrypted format. Proceed?"
+msgstr "Dit befeilicht jo persoanlik wurdboek en slaat it op yn befeilige formaat. Trochgean?"
+
+msgid "This will decrypt your personal dictionary and store it in a plain text format. Proceed?"
+msgstr "Dit ûntsifert jo persoanlike wurdboek en slaat it yn platte tekst op. Trochgean?"
+
+msgid "Your personal dictionary is currently encrypted."
+msgstr "Jo persoanlik wurdboek is op't heden befeilige"
+
+msgid "This helps protect your privacy in case the web-mail system gets compromized and your personal dictionary ends up stolen. It is currently encrypted with the password you use to access your mailbox, making it hard for anyone to see what is stored in your personal dictionary."
+msgstr "Dit beskermet jo privacy yn gefal dat men jo webmail kreaket en dat men jo persoanlike wurdboek stelt. Dit is no befeilige mei it itselde wachtwurd dat ek tagong jout ta jo Postfak. It makket it dreech foar oaren om te sjen wat der yn jo persoanlik wurdboek stiet."
+
+msgid "If you forget your password, your personal dictionary will become unaccessible, since it can no longer be decrypted. If you change your mailbox password, SquirrelSpell will recognize it and prompt you for your old password in order to re-encrypt the dictionary with a new key."
+msgstr "Asjo jo eigen wachtwurd ferjitte dan wurdt jo persoanlik wurdboek ûntagonklik, omdat it net mear ûntsifere wurde kin. As jo postfak-wachtwurd feroaret, sil SquirrelSpell dit werkenne en jo freegje om jo âlde wachtwurd sadat jo wurdboek omset wurde kin."
+
+msgid "Please decrypt my personal dictionary and store it in a clear-text format."
+msgstr "Untsiferje myn persoanlik wurdboek en slaan it yn platte tekst op."
+
+msgid "Change crypto settings"
+msgstr "Feroarje befeiligingsynstellingen"
+
+msgid "Your personal dictionary is currently not encrypted."
+msgstr "Jo persoanlik wurdboek is op't heden net befeilige."
+
+msgid "You may wish to encrypt your personal dictionary to protect your privacy in case the webmail system gets compromized and your personal dictionary file gets stolen. When encrypted, the file's contents look garbled and are hard to decrypt without knowing the correct key (which is your mailbox password)."
+msgstr "Jo kinne jo persoanlik wurdboek befeiligje om jo privacy te beskermjen yn it gefal dat it webmail systeem kreake wurdt en jo persoanlike wurdboek stellen wurdt. As de triem befeilige is, sille der skiere tekens yn stean dy't net te ûnsiferjen binne sûnder de krekte kaai (jo inlog-wachtwurd)."
+
+msgid "If you decide to encrypt your personal dictionary, you must remember that it gets &quot;hashed&quot; with your mailbox password. If you forget your mailbox password and the administrator changes it to a new value, your personal dictionary will become useless and will have to be created anew. However, if you or your system administrator change your mailbox password but you still have the old password at hand, you will be able to enter the old key to re-encrypt the dictionary with the new value."
+msgstr "At jo beslute om jo wurdboek te befeiligjen mei jo wachtwurd dan meie jo dit net ferjitte. As jo jo wachtwurd ferjitte en de systeembehearder jout jo in nij wachtwurd dan wurdt jo wurdboek ûnlêsber en moatte jo in nije oanmeitsje. Maar at jo jo âlde wachtwurd noch witte en jo krije in nij wachtwurd dan kinne jo jo wurdboek noch ûntsiferje en opnij befeiligje mei it nije wachtwurd."
+
+msgid "Please encrypt my personal dictionary and store it in an encrypted format."
+msgstr "Befeiligje myn persoanlik wurdboek en slaan it op yn befeilige formaat."
+
+#, php-format
+msgid "Deleting the following entries from %s dictionary:"
+msgstr "Wiskje de kommende seleksjes fan %s wurdboek:"
+
+msgid "All done!"
+msgstr "Klear!"
+
+msgid "Personal Dictionary Updated"
+msgstr "Persoanlik wurdboek bywurke"
+
+msgid "No changes requested."
+msgstr "Gjin feroarings makke."
+
+msgid "Please wait, communicating with the server..."
+msgstr "Efkes wachtsje graach, kommunikaasje mei de tsjinner ..."
+
+msgid "Please choose which dictionary you would like to use to spellcheck this message:"
+msgstr "Kies in wurdboek dat jo brûke wolle om de stavering van dit berjocht te kontrolearjen:"
+
+msgid "SquirrelSpell Initiating"
+msgstr "Opstarten SquirrelSpell"
+
+#, php-format
+msgid "Settings adjusted to: %s with %s as default dictionary."
+msgstr "Ynstellingen feroare nei: %s mei %s as standert wurdboek."
+
+#, php-format
+msgid "Using %s dictionary (system default) for spellcheck."
+msgstr "%s wurdboek brûke as standert foar staveringshifker."
+
+msgid "International Dictionaries Preferences Updated"
+msgstr "Ynstellingen foar ynternasjonale wurdboeken bywurke"
+
+msgid "Please check any available international dictionaries which you would like to use when spellchecking:"
+msgstr "Kies beskikbere ynternasjonale wurdboeken dy't jo brûke wolle foar de staveringshifker."
+
+msgid "Make this dictionary my default selection:"
+msgstr "Stel dit wurdboek yn as standert:"
+
+msgid "Make these changes"
+msgstr "Meitsje dizze feroaringen"
+
+msgid "Add International Dictionaries"
+msgstr "Ynternasjonale wurdboeken taheakje"
+
+msgid "Please choose which options you wish to set up:"
+msgstr "Kies hokker opsjes jo ynstelle wolle:"
+
+msgid "Edit your personal dictionary"
+msgstr "Bewurkje jo persoanlik wurdboek"
+
+msgid "Set up international dictionaries"
+msgstr "Ynternsjonale wurdboeken ynstelle"
+
+msgid "Encrypt or decrypt your personal dictionary"
+msgstr "Befeiligje of ûntsiferje jo persoanlik wurdboek"
+
+msgid "Personal dictionary encryption options are not available"
+msgstr "Persoanlik wurdboek befeiligingsynstellingen binne net beskikber"
+
+msgid "SquirrelSpell Options Menu"
+msgstr "SquirrelSpell Opsjes Menu"
+
+msgid "Translator"
+msgstr "Oersetter"
+
+msgid "Saved Translation Options"
+msgstr "Oerset opsjes opslein"
+
+msgid "Your server options are as follows:"
+msgstr "Jo tsjinner opsjes binne:"
+
+msgid "Maximum of 150 words translated, powered by Systran"
+msgstr "Maksimum fan 150 wurden oersetten, oandreaun troch Systran"
+
+#, php-format
+msgid "Number of supported language pairs: %s"
+msgstr "Oantal stipe talenpearen: %s"
+
+msgid "No known limits, powered by Systran"
+msgstr "Gjin limiten bekend, oandreaun troch Systran "
+
+msgid "No known limits, powered by Translation Experts' InterTran"
+msgstr "Gjin limiten bekend, oandreaun troch Translation Experts's InterTran"
+
+#, php-format
+msgid "Number of supported languages: %s"
+msgstr "Oantal stipe talen: %s"
+
+msgid "Hellenic translations, no known limits, powered by Systran"
+msgstr "Grykske oersettingen, gjin limiten bekend, oandreaun troch Systran "
+
+msgid "Russian translations, maximum of 500 characters translated"
+msgstr "Russyske oersettingen, maksimum fan 500 tekens oersetten"
+
+msgid "You also decide if you want the translation box displayed, and where it will be located."
+msgstr "Wêr en wannear wolle jo it oersetfreem sjen?"
+
+msgid "Select your translator:"
+msgstr "Selektearje jo oersetter:"
+
+msgid "When reading:"
+msgstr "By it lêzen:"
+
+msgid "Show translation box"
+msgstr "Toan oersetfreem"
+
+msgid "to the left"
+msgstr "lofts"
+
+msgid "in the center"
+msgstr "yn it midden"
+
+msgid "to the right"
+msgstr "rjochts"
+
+msgid "Translate inside the SquirrelMail frames"
+msgstr "Oersette yn de SquirrelMail freems"
+
+msgid "Translation Options"
+msgstr "Oersetopsjes"
+
+msgid "Which translator should be used when you get messages in a different language?"
+msgstr "Hokker oersetter moat brûkt wurde as jo berjochten yn in oare taal krije?"
+
+#, php-format
+msgid "%s to %s"
+msgstr "%s in %s"
+
+msgid "Chinese, Simplified"
+msgstr "Sineesk, ienfâldich"
+
+msgid "English"
+msgstr "Ingelsk"
+
+msgid "Chinese, Traditional"
+msgstr "Sineesk, Tradysjoneel"
+
+msgid "Dutch"
+msgstr "Nederlânsk"
+
+msgid "French"
+msgstr "Frânsk"
+
+msgid "German"
+msgstr "Dútsk"
+
+msgid "Greek"
+msgstr "Gryks"
+
+msgid "Italian"
+msgstr "Italjaansk"
+
+msgid "Japanese"
+msgstr "Japansk"
+
+msgid "Korean"
+msgstr "Koreaansk"
+
+msgid "Portuguese"
+msgstr "Portugeesk"
+
+msgid "Russian"
+msgstr "Russysk"
+
+msgid "Spanish"
+msgstr "Spaansk"
+
+msgid "Translate"
+msgstr "Set oer"
+
+msgid "Brazilian Portuguese"
+msgstr "Brazyljaansk-Portugeesk"
+
+msgid "Bulgarian"
+msgstr "Bulgaarsk"
+
+msgid "Croatian"
+msgstr "Kroaatsk"
+
+msgid "Czech"
+msgstr "Tsjegysk"
+
+msgid "Danish"
+msgstr "Deensk"
+
+msgid "Filipino (Tagalog)"
+msgstr "Filipynsk (Tagalog)"
+
+msgid "Finnish"
+msgstr "Finsk"
+
+msgid "Hungarian"
+msgstr "Hongaarsk"
+
+msgid "Icelandic"
+msgstr "Yslânsk"
+
+msgid "Latin"
+msgstr "Latyn"
+
+msgid "Latin American Spanish"
+msgstr "Latyn Amerikaansk Spaansk"
+
+msgid "Norwegian"
+msgstr "Noarsk"
+
+msgid "Polish"
+msgstr "Poalsk"
+
+msgid "Romanian"
+msgstr "Roemeensk"
+
+msgid "Serbian"
+msgstr "Serbisk"
+
+msgid "Slovenian"
+msgstr "Sloveensk"
+
+msgid "Swedish"
+msgstr "Sweedsk"
+
+msgid "Turkish"
+msgstr "Turks"
+
+msgid "Welsh"
+msgstr "Wales"
+
+msgid "Indonesian"
+msgstr "Yndonesysk"
+
+msgid "to English"
+msgstr "nei Ingelsk"
+
+msgid "from English"
+msgstr "fan Ingelsk"
+
+msgid "Interface language"
+msgstr "Ynterface taal"
+
+msgid "Translation direction"
+msgstr "Oersetrjochting"
+
+msgid "Arabic"
+msgstr "Arabysk"
+
+#, php-format
+msgid "About SquirrelMail %s"
+msgstr "Oer SquirrelMail %s"
+
+msgid "SquirrelMail is the name of the program that provides access to your email via the web."
+msgstr "SquirrelMail is de namme fan it programma dat jo e-mail tagonklik makket oer it web."
+
+#, php-format
+msgid "If you have questions about or problems with your mail account, passwords, abuse etc, please refer to your system administrator or provider%s."
+msgstr "As jo fragen of problemen hawwe mei jo mailakkount, wachtwurden, misbrûk ensfh, nim dan kontakt op mei jo systeembehearder of provider%s."
+
+#, php-format
+msgid "They can assist you adequately with these issues. The SquirrelMail Project Team cannot help you with that. The %shelp system%s provides answers to frequently asked questions."
+msgstr "Hja kinne jo adekwaat helpe mei dizze saken. It SquirrelMail projektteam kin jo dêr net by helpe. Yn it %shelp systeem%s steane antwurden op de meast foarkommende fragen (FAQ)."
+
+#, php-format
+msgid "SquirrelMail is a feature rich, standards compliant webmail application written in PHP. It was made by a group of volunteers united in the SquirrelMail Project Team and is released as open source, free software under the %sGNU General Public License%s."
+msgstr "SquirrelMail is in webmail applikaasje skreaun yn PHP mei in soad mooglikheden en slút oan by de jildende standerts. It is ûntwikkele troch in groep ûntwikkelders feriene yn it SquirrelMail projektteam en as iepen boarne, frije software ûnder de %sGNU General Public License%s frij jûn."
+
+#, php-format
+msgid "For more information about SquirrelMail and the SquirrelMail Project Team, see %sthe SquirrelMail website%s."
+msgstr "Foar mear ynformaasje oer SquirrelMail en it SquirrelMail projektteam, sjoch %sde SquirrelMail webstee%s."
+
+msgid "System information"
+msgstr "Systeemynformaasje"
+
+#, php-format
+msgid "You are using SquirrelMail version: %s"
+msgstr "Jo brûke SquirrelMail ferzje: %s"
+
+msgid "The administrator installed the following plugins:"
+msgstr "De systeembehearder hat as plugins ynstallearre:"
+
+msgid "none installed"
+msgstr "net ynstallearre"
+
+msgid "Nothing to search"
+msgstr "Neat te sykjen"
+
+msgid "SquirrelMail Webmail Application"
+msgstr "SquirrelMail webmail applikaasje"
+
+msgid "Add New Identity"
+msgstr "Nije identiteit taheakje"
+
+msgid "Received"
+msgstr "Untfange"
+
+msgid "Compose Preferences"
+msgstr "Foarkarren opstellen nij berjocht"
+
+#, php-format
+msgid "Folder list should automatically %srefresh%s."
+msgstr "List mei mappen heart automatysk te %sferfarskjen%s"
+
+# wol of gjin %%
+#, php-format
+msgid "This page should automatically %srefresh%s."
+msgstr "Dizze side soe automatysk %sfernije%s moatte"
+
+msgid "Control the behaviour and layout of writing new mail messages, replying to and forwarding messages."
+msgstr "Stelt de foarkarren yn foar de layout en it skriuwen fan nije berjochten, plus Te Beantwurdzjen en Troch Te Stjoeren berjochten."
+
+msgid "Read Receipt"
+msgstr "Lêsbefêstiging"
+
+msgid "deleted"
+msgstr "Wiske"
+
+msgid "answered"
+msgstr "Beäntwurde"
+
+msgid "draft"
+msgstr "Konsept"
+
+# Wat soe hjir bedoeld wurde kinne?
+msgid "flagged"
+msgstr "Flagge"
+
+msgid "Status"
+msgstr "Tastân"
+
+msgid "View as plain text"
+msgstr "Werjaan as platte tekst"
+
+msgid "View as HTML"
+msgstr "Werjaan as HTML"
+
+msgid "There must be at least one criteria to search for"
+msgstr "Der moatte teminsten ien kritearium wêze om nei te sykjen"
+
+msgid "Error in criteria argument"
+msgstr "Syntaks flater yn it kritearium"
+
+msgid "(Illegal date)"
+msgstr "(Yllegale datum)"
+
+msgid "(Wrong date)"
+msgstr "(Ferkearde datum)"
+
+msgid "In"
+msgstr "Yn"
+
+msgid "(Missing argument)"
+msgstr "(Untbrekkend argumint)"
+
+msgid "(Spurious argument)"
+msgstr "(Falsk argumint)"
+
+msgid "Missing"
+msgstr "Ûntbrekt"
+
+msgid "Standard Search"
+msgstr "Standert sykopdrachten"
+
+msgid "Advanced search"
+msgstr "Avansearre sykopdrachten"
+
+msgid "Add New Criteria"
+msgstr "Nije kriteria taheakje"
+
+msgid "Remove Excluded Criteria"
+msgstr "Wiskje útslutende kriteria"
+
+msgid "Remove All Criteria"
+msgstr "Wiskje alle kritearia"
+
+msgid "Not"
+msgstr "Net"
+
+msgid "Answered"
+msgstr "Beäntwurdzje"
+
+msgid "Before"
+msgstr "Foardat"
+
+msgid "Message Body"
+msgstr "Berjochtfjild"
+
+msgid "Deleted"
+msgstr "Wiske"
+
+msgid "Draft"
+msgstr "Konsept"
+
+msgid "Flagged"
+msgstr "Flagge"
+
+msgid "Sent By"
+msgstr "Ferstjoerd troch"
+
+msgid "Header Field"
+msgstr "Berjochtkopfjild"
+
+msgid "Keyword"
+msgstr "Trefwurd"
+
+msgid "Larger Than"
+msgstr "Grutter as"
+
+msgid "Old"
+msgstr "Âld"
+
+msgid "On"
+msgstr "Oan"
+
+msgid "Recent"
+msgstr "Koartlyn"
+
+msgid "Seen"
+msgstr "Lêzen"
+
+msgid "Sent Before"
+msgstr "Ferstjoerd foardat"
+
+msgid "Sent On"
+msgstr "Ferstjoerd op"
+
+msgid "Sent Since"
+msgstr "Ferstjoerd sûnt"
+
+msgid "Since"
+msgstr "Sûnt"
+
+msgid "Smaller Than"
+msgstr "Lytser as"
+
+msgid "Subject Contains"
+msgstr "Underwerp befettet"
+
+msgid "Header and Body"
+msgstr "Berjochtkop en berjochttekst"
+
+msgid "Sent To"
+msgstr "Ferstjoerd oan"
+
+msgid "And In"
+msgstr "En yn"
+
+msgid "Or In"
+msgstr "Of yn"
+
+msgid "And"
+msgstr "En"
+
+msgid "Or"
+msgstr "Of"
+
+msgid "No RPC action given"
+msgstr "Gjin sitearring"
+
+# Gjin NL tekst beskikber
+msgid "No deletion ID given"
+msgstr "Gjin wiskje-ID opjûn"
+
+msgid "No mailbox given"
+msgstr "Gjin postfak opjûn"
+
+msgid "RPC action not understood"
+msgstr "RPA aksje net begrepen"
+
+msgid "PHP install does not have LDAP support."
+msgstr "PHP ynstallaasje hat gjin LDAP stipe."
+
+msgid "Removing entry from address book failed"
+msgstr "Adresboekyngong wiskje is mislearre"
+
+msgid "LDAP rename is not supported by used protocol version"
+msgstr "LDAP omneamen wurdt net stipe troch dizze protokol-ferzje"
+
+msgid "LDAP rename is not supported by used LDAP library. You can't change nickname"
+msgstr "LDAP omneamen wurdt net stipe troch de LDAP-bibleteek. Jo kinne de bynamme net feroarje"
+
+msgid "LDAP rename failed"
+msgstr "LDAP omneamen mislearre"
+
+msgid "Unable to remove some field values"
+msgstr "Net mooglik om guon fjildwearden te wiskjen"
+
+#, php-format
+msgid "Unable to rename user \"%s\" to \"%s\""
+msgstr "Kin brûker \"%s\" net werneame nei \"%s\""
+
+msgid "Error initializing other address books."
+msgstr "Flater by inisjalisearjen fan oare adresboeken."
+
+msgid "Unknown address book backend"
+msgstr "Unbekend adresboek backend"
+
+#, php-format
+msgid "%s %s"
+msgstr "%s %s"
+
+msgid "Could not open temporary file to store attachment. Contact your system administrator to resolve this issue."
+msgstr "Triem mei hântekeningen, %s, kin net kopiearre wurde fan de tydlike triem, %s. Nim kontakt op mei jo systeembehearder."
+
+msgid "Illegal folder name."
+msgstr "Yllegale mapnamme."
+
+#, php-format
+msgid "The name may not contain any of the following: %s"
+msgstr "De neikommende karakters meie net yn de namme stean: %s"
+
+msgid "Please select a different name."
+msgstr "Graach in oare namme kieze"
+
+msgid "You have not selected a folder to subscribe. Please do so."
+msgstr "Jo hawwe gjin map selektearre om oan te melden. Noch wol even dwaan graach."
+
+msgid "You have not selected a folder to unsubscribe. Please do so."
+msgstr "Jo hawwe gjin map selektearre om ôf te melden. Noch wol even dwaan graach."
+
+msgid "Possible reason:"
+msgstr "Mooglike oarsaak:"
+
+msgid "ERROR: Bad function call."
+msgstr "FOUT: Minne funksje oprop."
+
+msgid "Reason:"
+msgstr "Reden:"
+
+# opmerking tusken skrapkes der by setten...
+msgid "TLS is enabled, but this version of PHP does not support TLS sockets, or is missing the openssl extension."
+msgstr "TLS is aktivearre, mar dizze ferzje fan PHP stipet gjin TLS-sockets of mist it openssl-taheaksel (stip & trije tekens)."
+
+msgid "IMAP STARTTLS is enabled in SquirrelMail configuration, but used IMAP server does not support STARTTLS."
+msgstr "IMAP STARTTLS is ynskeakele yn de SquirrelMail-konfiguraasje, mar jo IMAP tsjinner stipet gjin STARTTLS."
+
+msgid "Unable to start TLS."
+msgstr "Unmooglik om TLS te brûken."
+
+msgid "IMAP STARTTLS is enabled in SquirrelMail configuration, but used PHP version does not support functions that allow to enable encryption on open socket."
+msgstr "IMAP STARTTLS is ynskeakele yn de SquirrelMail-konfiguraasje, mar jo PHP-ferzje stipet gjin funksjes dy't it fersiferjen op in iepen socket tastean."
+
+msgid "Your mailbox is not located at this server. Try a different server or consult your system administrator"
+msgstr "Jo postfak is net beskikber op dizze tsjinner. Besykje in oare tsjinner of nim kontakt op mei jo systeembehearder"
+
+msgid "Trash"
+msgstr "Jiskefet"
+
+msgid "Drafts"
+msgstr "Konsepten"
+
+msgid "Unknown recipient"
+msgstr "Unbekende ûntfanger"
+
+msgid "Unflag"
+msgstr "Untflagje"
+
+# flagje of flagge?
+msgid "Flag"
+msgstr "Flagge"
+
+msgid "Undelete"
+msgstr "Meitsje wiskjen ûngedaan"
+
+msgid "Bypass Trash"
+msgstr "Omsyl Wiske Items"
+
+msgid "Copy"
+msgstr "Kopiearje"
+
+msgid "unavailable"
+msgstr "net beskikber"
+
+msgid "Error"
+msgstr "Flater"
+
+msgid "Terminating SquirrelMail due to a fatal error"
+msgstr "SquirrelMail beëinige fanwege in fatale flater"
+
+msgid "Secure SMTP (TLS) is enabled in SquirrelMail configuration, but used PHP version does not support it."
+msgstr "Befeilige SMTP (TLS) is ynskeakele yn de SquirrelMail-konfiguraasje, mar jo PHP-ferzje stipet it net."
+
+msgid "TLS session is already activated."
+msgstr "TLS-sesje stiet al oan."
+
+msgid "SMTP STARTTLS is enabled in SquirrelMail configuration, but used SMTP server does not support it"
+msgstr "SMTP STARTTLS is ynskeakele yn de SquirrelMail-konfiguraasje, mar jo SMTP-tsjinner stipet it net"
+
+msgid "SMTP STARTTLS is enabled in SquirrelMail configuration, but used PHP version does not support functions that allow to enable encryption on open socket."
+msgstr "SMTP STARTTLS is ynskeakele yn de SquirrelMail-konfiguraasje, mar jo PHP-ferzje stipet gjin funksjes dy't it fersiferjen op in iepen socket tastean."
+
+# ek de Igelske stikjes oersetten. Wie yn NL stean litten
+msgid "Run \"configure\", choose option 4 (General options) and set option 10 (Disable server thread sort) to true)."
+msgstr "Typ \"ynstelle\", kies opsje 4 (Algemiene opsjes) en aktivearje opsje 10 (skeakelje tsjinner konversaasje út)."
+
+# Ingelsk foar in part stean litten
+msgid "Run \"configure\", choose option 4 (General options) and set option 11 (Disable server-side sorting) to true."
+msgstr "Typ \"ynstelle\", kies opsje 4 (Algemiene Opsjes) en aktivearje opsje 11 (Set tsjinner-side sorteare út)."
+
+msgid "Your used charset is not supported by your IMAP server."
+msgstr "Jo letertekenset wurdt net stipe troch jo IMAP tsjinner."
+
+msgid "Run \"configure\", choose option 4 (General options) and set option 12 (Allow server charset search) to false) or choose option 10 (Language settings) and set option 2 (Default charset) to a charset supported by your IMAP server."
+msgstr "Typ \"ynstelle\", kies opsje 4 (Algemiene opsjes) en aktivearje opsje 12 (Lettertekens tsjinner sykje tastean ) of kies opsje 10 (Taalynstellingen) en stel ûnder opsje 2 (Standert lettertekens) in tekenset yn dy't stipe wurdt troch jo IMAP tsjinner."
+
+msgid "Out of quota error."
+msgstr "Flater: oer kwota."
+
+msgid "An error occured when SquirrelMail appended a message to the mailbox as listed in this message."
+msgstr "Der is wat mis gien by it taheakjen fan in berjocht oan it postfak lykas beskreaun yn dit berjocht."
+
+msgid "Your IMAP server returned an error."
+msgstr "Jo IMAP tsjinner stjoerde in flater werom."
+
+msgid "IMAP server closed the connection."
+msgstr "IMAP tsjinner hat de ferbining ferbrutsen."
+
+msgid "General Message Composition"
+msgstr "Algemien berjocht werjefte opsjes"
+
+msgid "Replying and Forwarding Messages"
+msgstr "Te beäntwurdzjen en troch te stjoeren berjochten"
+
+msgid "Strip signature when replying"
+msgstr "Wiskje hântekening by beäntwurdzjen"
+
+# stean litten
+msgid "Skin"
+msgstr "Skin"
+
+msgid "Icon Theme"
+msgstr "Piktogrammen-tema"
+
+msgid "Default font style"
+msgstr "Standert lettertype"
+
+msgid "Font style"
+msgstr "Lettertype"
+
+msgid "Font size"
+msgstr "Lettergrutte"
+
+msgid "Default font size"
+msgstr "Standert lettergrutte"
+
+msgid "Enable Fancy Row Mouseover Highlighting"
+msgstr "Aktivearje it opljochtsjen fan de regel by mûsbeweging"
+
+msgid "Show Flag / Unflag Buttons"
+msgstr "Toan flagge / ûntflagje knoppen"
+
+msgid "Enable Message Copy Buttons"
+msgstr "Berjocht kopiear-knoppen ynskeakelje"
+
+msgid "Use Compact Page Selector"
+msgstr "Brûk Compact Page Selector"
+
+msgid "Message Display Options"
+msgstr "Berjocht werjefte opsjes"
+
+msgid "Height of inline frame"
+msgstr "Hichte fan it ynsetten ramt"
+
+msgid "Show 'Delete &amp; Prev/Next' Links"
+msgstr "Toan 'Wiskje &amp; Foarige/Folgjende' links"
+
+msgid "Translate Special Folders"
+msgstr "Set nammen oer fan spesjale mappen"
+
+msgid "Save Replies with Original Message"
+msgstr "Bewarje antwurd by oarspronklik berjocht"
+
+# wat te dawaan mei dûbele fak?
+#, php-format
+msgid "%d Minute"
+msgid_plural "%d Minutes"
+msgstr[0] "%d minút"
+msgstr[1] "%d minuten"
+
+msgid "Show only subscribed folders"
+msgstr "Toan allinnich oanmelde mappen"
+
+msgid "XP"
+msgstr "XP"
+
+msgid "Mercury/32 IMAP server"
+msgstr "Mercury/32 IMAP-tsjinner"
+
+msgid "IMAP Connection Security"
+msgstr "IMAP ferbiningsbefeiliging"
+
+msgid "Plain text connection"
+msgstr "Platte-tekstferbining"
+
+msgid "Secure IMAP (TLS) connection"
+msgstr "Befeilige IMAP (TLS) ferbining"
+
+msgid "IMAP STARTTLS connection"
+msgstr "IMAP STARTTLS ferbining"
+
+msgid "Requires higher PHP version and special functions. See SquirrelMail documentation."
+msgstr "Hjirfoar binne in hegere PHP-ferzje en spesjale funksjes fereaske. Sjoch de SquirrelMail-dokumintaasje."
+
+msgid "SMTP Connection Security"
+msgstr "SMTP ferbiningsbefeiliging"
+
+msgid "Custom SMTP AUTH username"
+msgstr "Spesifike SMTP AUTH brûkersnamme"
+
+msgid "Custom SMTP AUTH password"
+msgstr "Spesifyk SMTP AUTH wachtwurd"
+
+msgid "Disable server-side sorting"
+msgstr "Sortearjen troch tsjinner útskeakelje"
+
+msgid "Disable server-side thread sorting"
+msgstr "Konversaasje-sortearring troch tsjinner útskeakelje"
+
+msgid "Search functions"
+msgstr "Sykfunksjes"
+
+msgid "Only basic search"
+msgstr "Allinnich basis sykopdrachten"
+
+msgid "Only advanced search"
+msgstr "Allinnich avansearre sykopdrachten"
+
+msgid "Both search functions"
+msgstr "Beide sykfunksjes"
+
+msgid "Time Zone Configuration"
+msgstr "Tiidsône ynstelling"
+
+msgid "Standard GNU C time zones"
+msgstr "Standert GNU C tiidsônes"
+
+msgid "Strict time zones"
+msgstr "Strikt tiidsônes"
+
+msgid "Custom GNU C time zones"
+msgstr "Normale GNU C tiidsônes"
+
+msgid "Custom strict time zones"
+msgstr "Normale strikte tiidsônes"
+
+msgid "Size of username field"
+msgstr "Grutte fjild brûkersnamme"
+
+msgid "Size of key field"
+msgstr "Grutte fjild kaai"
+
+msgid "Size of value field"
+msgstr "Grutte fjild wearde"
+
+msgid "Show alternative language names"
+msgstr "Toan alternative taalnammen"
+
+msgid "Enable aggressive decoding"
+msgstr "Brûk agressive kodearring"
+
+msgid "Tweaks"
+msgstr "Tweaks"
+
+msgid "Use icons"
+msgstr "Brûk ikoanen"
+
+msgid "Use inline frames with HTML mails"
+msgstr "Brûk ynsetten ramten mei HTML berjochten"
+
+msgid "Use PHP recode functions"
+msgstr "Brûk PHP recode funksjes"
+
+msgid "Use PHP iconv functions"
+msgstr "Brûk PHP iconv funksjes"
+
+msgid "Allow remote configuration test"
+msgstr "Stean konfiguraasjetest op ôfstân ta"
+
+msgid "Address book file line length"
+msgstr "Adresboek regellingte"
+
+msgid "Templates"
+msgstr "Sjabloanen"
+
+msgid "Default font set"
+msgstr "Standert lettertypen"
+
+msgid "Default template"
+msgstr "Standert-styl"
+
+msgid "Fallback template"
+msgstr "Backup-styl"
+
+msgid "Show System Specifications"
+msgstr "Toan systeemspesifikaasjes"
+
+msgid "my email account"
+msgstr "myn e-mailakkount"
+
+msgid "Bug Reports"
+msgstr "Flater rapportaazjes"
+
+msgid "You must type in a new password."
+msgstr "Jo moatte in nij wachtwurd yntype."
+
+msgid "You must also type in your new password in the verify box."
+msgstr "Jo moatte jo nije wachtwurd ek yn it ferifikaasjefak yntype."
+
+msgid "Your new password does not match the verify password."
+msgstr "De beide nije wachtwurden komme net oerien."
+
+msgid "You must type in your current password."
+msgstr "Jo moatte it wachtwurd fan no yntype."
+
+msgid "Your current password is not correct."
+msgstr "Jo hjoeddeiske wachtwurd is net goed."
+
+#, php-format
+msgid "Your new password should be %s to %s characters long."
+msgstr "Jo nije wachtwurd moat bestean út %s oant %s karakters."
+
+msgid "Your new password contains invalid characters."
+msgstr "Jo nije wachtwurd hat illegale karakters."
+
+msgid "Change Password"
+msgstr "Wachtwurd wizigje"
+
+msgid "Current Password:"
+msgstr "Wachtwurd fan no:"
+
+msgid "New Password:"
+msgstr "Nij wachtwurd:"
+
+msgid "Verify New Password:"
+msgstr "Ferifiearje nij wachtwurd:"
+
+msgid "Use this to change your email password."
+msgstr "Brûk dit om jo e-mail wachtwurd te feroarjen."
+
+msgid "User's Password"
+msgstr "Wachtwurd brûker"
+
+msgid "Current configuration requires LDAP support in PHP."
+msgstr "Besteande konfiguraasje hat LDAP support nedich yn PHP."
+
+msgid "Plugin is not configured correctly."
+msgstr "Plugin is net goed konfigurearre."
+
+#, php-format
+msgid "Setting of LDAP connection option %s to value %s failed."
+msgstr "Feroaring fan LDAP ferbiningsopsje %s nei wearde %s mislearre."
+
+#, php-format
+msgid "Incorrect LDAP connection option: %s"
+msgstr "Flatere LDAP ferbiningsopsje: %s"
+
+msgid "Current PHP LDAP extension does not allow use of ldap_set_option() function."
+msgstr "Besteande PHP LDAP taheaksel stiet it  brûken fan de ldap_set_option() funksje net ta."
+
+msgid "Unable to use TLS."
+msgstr "Unmooglik om TLS te brûken."
+
+#, php-format
+msgid "Error: %s"
+msgstr "Flater: %s"
+
+msgid "Unable to use LDAP TLS in current setup."
+msgstr "Unmooglik om LDAP TLS te brûken yn besteande setup."
+
+msgid "Unable to bind to LDAP server."
+msgstr "Unmooglik om te binen oan de LDAP tsjinner."
+
+#, php-format
+msgid "Server replied: %s"
+msgstr "Tsjinner reagearre: %s"
+
+msgid "Unable to find user's password attribute."
+msgstr "Unmooglik om it wachtwurd fan de brûker te finen."
+
+msgid "Unable to rebind to LDAP server."
+msgstr "Unmooglik om te binen oan de LDAP tsjinner."
+
+msgid "LDAP server uses different attribute to store user's password."
+msgstr "LDAP tsjinner brûkt in ferskillende metoade om wachtwurden fan brûkers op te slaan."
+
+msgid "Unable to connect to LDAP server."
+msgstr "Gjin ferbining mei LDAP tsjinner."
+
+msgid "Unable to find user's DN."
+msgstr "Unmooglik om de DN fan de brûker te finen."
+
+msgid "Search error."
+msgstr "Sykje flater."
+
+msgid "Multiple userid matches found."
+msgstr "Meardere brûkersidentiteiten fûn."
+
+msgid "ldap_get_dn error."
+msgstr "ldap_get_dn flater."
+
+#, php-format
+msgid "Unsupported crypto: %s"
+msgstr "Krypto: %s net stipe"
+
+msgid "PHP mhash extension is missing or does not support selected crypto."
+msgstr "PHP mhash útwreiding mist of stipet de selektearre krypto net."
+
+msgid "System crypt library doesn't support standard DES crypt."
+msgstr "Systeem krypt bibleteek stipet gjin standert DES krypt."
+
+msgid "System crypt library doesn't have MD5 support."
+msgstr "Systeem krypt bibleteek hat gjin MD5 stipe."
+
+msgid "System crypt library doesn't support extended DES crypt."
+msgstr "Systeem krypt bibleteek stipet gjin útwreide DES krypt."
+
+msgid "System crypt library doesn't have Blowfish support."
+msgstr "Systeem krypt bibleteek hat gjin Blowfish stipe."
+
+msgid "unknown"
+msgstr "ûnbekend"
+
+msgid "Unable to validate user's password."
+msgstr "Unmooglik om wachtwurd fan de brûker te falidearjen."
+
+msgid "Blowfish is not supported by webserver's system crypt library."
+msgstr "Blowfish wurdt net stipe troch de systeem krypt bibleteek fan de webtsjinner."
+
+msgid "MD5 is not supported by webserver's system crypt library."
+msgstr "MD5 wurdt net stipe troch de systeem krypt bibleteek fan de webtsjinner."
+
+msgid "Extended DES crypt is not supported by webserver's system crypt library."
+msgstr "Utwreide DES krypt wurdt net stipe troch de systeem krypt bibleteek fan de webtsjinner."
+
+msgid "Standard DES crypt is not supported by webserver's system crypt library."
+msgstr "Standert DES krypt wurdt net stipe troch de systeem krypt bibleteek fan de webtsjinner."
+
+msgid "PHP Curl extension is NOT available! Unable to change password!"
+msgstr "Curl module NET beskikber! Unmooglik om wachtwurd te feroarjen!"
+
+msgid "Cannot change password! (Is user 'Self Configurable User' ?) (401)"
+msgstr "Kin it wachtwurd net feroarje! (Is de brûker 'Self Configurable User' ?) (401)"
+
+msgid "Cannot change password!"
+msgstr "Kin wachtwurd net feroarje!"
+
+msgid "Cannot connect to Database Server, please try later!"
+msgstr "Kin gjin ferbining meitsje mei de Databank Tsjinner, besykje it letter nochris!"
+
+msgid "Database not found on server"
+msgstr "Gjin databank fûn op de tsjinner"
+
+msgid "SQL call failed, try again later."
+msgstr "SQL call mislearre, besykje it letter nochris."
+
+msgid "Duplicate login entries detected, cannot change password!"
+msgstr "Dûbele oanmeldgegevens ûntdekt, kin wachtwurd net feroarje!"
+
+msgid "Password change was not successful!"
+msgstr "Wachtwurd feroarje is net slagge!"
+
+msgid "Plugin is unable to use PHP Pear DB libraries. PHP Pear includes must be available in your PHP include_path setting."
+msgstr "De plugin is net by steat om PHP Pear DB bibleteken te brûken. PHP Pear includes moatte beskikber wêze yn jo PHP include_path setting."
+
+msgid "Required change password backend configuration options are missing."
+msgstr "Fereaske backend konfiguraasjeopsjes foar it feroarjen fan wachtwurden ûntbrekke."
+
+#, php-format
+msgid "Connection error: %s"
+msgstr "Unbekende flater: %s"
+
+#, php-format
+msgid "Invalid table name: %s"
+msgstr "Unjildige tabelnamme: %s"
+
+msgid "User table is empty."
+msgstr "Brûkerstabel is leech."
+
+msgid "Invalid uid field."
+msgstr "Unjildich uid fjild."
+
+msgid "Invalid password field"
+msgstr "Unjildich wachtwurd fjild"
+
+msgid "Invalid domain field"
+msgstr "Unjildich domein fjild"
+
+#, php-format
+msgid "Query failed: %s"
+msgstr "Fersyk mislearre: %s"
+
+msgid "Unable to find user in user table."
+msgstr "Gjin brûker fûn yn brûkerstabel."
+
+msgid "Too many matches found in user table."
+msgstr "Te folle mooglikheden fûn yn brûkerstabel."
+
+msgid "Unable to detect password crypto algorithm."
+msgstr "Unmooglik om it algoritme fan wachtwurd krypto te efterheljen."
+
+msgid "Unable to encrypt new password."
+msgstr "Unmooglik om nij wachtwurd te befeiligjen."
+
+#, php-format
+msgid "Unable to set new password: %s"
+msgstr "Unmooglik om nij wachtwurd %s yn te stellen"
+
+msgid "Unable to use digest-md5 crypto."
+msgstr "Unmooglik om digest-md5 krypto te brûken."
+
+msgid "Closing Connection"
+msgstr "Ferbining slute"
+
+msgid "Connecting to Password Server"
+msgstr "Ferbine mei wachtwurdtsjinner"
+
+msgid "No valid backend defined."
+msgstr "Gjin jildige backend definiearre."
+
+msgid "Incorrent path to vmail.inc file."
+msgstr "Ferkeard paad nei vmail.inc triem."
+
+msgid "Invalid or corrupted vmail.inc file."
+msgstr "Unjildich of skansearre vmail.inc triem."
+
+msgid "Invalid user."
+msgstr "Ûnjildige brûker."
+
+msgid "Empty domain"
+msgstr "Leech domein"
+
+msgid "Empty domain password"
+msgstr "Leech domein wachtwurd"
+
+msgid "Empty username"
+msgstr "Lege brûkersnamme"
+
+msgid "Empty new password"
+msgstr "Leech nij wachtwurd"
+
+#, php-format
+msgid "Unable to execute \"%s\"."
+msgstr "Kin \"%s\" net útfiere."
+
+msgid "Server Capability response:"
+msgstr "Tsjinner fermogen: "
+
+msgid "Select the IMAP commands you would like to run. Most commands require a selected mailbox so the select command is already setup. You can clear all the commands and test your own IMAP command strings. The commands are executed in order. The default values are simple IMAP commands using your default_charset and folder_prefix from SquirrelMail when needed."
+msgstr "Selektearje de IMAP kommando's dy't jo útfiere wolle. De measte kommando's fereaskje in selektearre postfak dus it seleksjekommando is al ynfierd. Jo kinne alle kommando's wiskje om jo eigen IMAP kommando's út te fieren.De kommando's wurde op folchoarder útfierd. De standertwearden binne simpele IMAP kommando's dy't de standert_charset en folder_prefix fan SquirrelMail brûke."
+
+msgid "NOTE: These commands are live, any changes made will effect your current email account."
+msgstr "NB: Dizze kommando's binne echt, elke feroaring hat effekt op jo ynstelde e-mailakkount fan no."
+
+msgid "Select"
+msgstr "Selektearje"
+
+msgid "Test Name"
+msgstr "Test namme"
+
+msgid "IMAP command string"
+msgstr "IMAP kommando"
+
+msgid "Request:"
+msgstr "Fersyk:"
+
+msgid "Execution time:"
+msgstr "Utfiertiid:"
+
+#, php-format
+msgid "%s ms"
+msgstr "%s ms"
+
+msgid "Mailing Lists"
+msgstr "Postlisten"
+
+# Der wie gjin nL tekst beskikber
+msgid "Manage the (non-RFC-compliant) mailing lists that you are subscribed to for the purpose of providing one-click list replies when responding to list messages."
+msgstr "Behear de (net-oan RFC foldwaande) postlisten dêr't jo foar ynskreaun binne om mei ien-klik te antwurdzjen op listen mei berjochten."
+
+msgid "No POP3 servers configured yet."
+msgstr "Noch gjin POP3-tsjinners konfigurearre"
+
+msgid "Click here to go to the options page."
+msgstr "Klik hjir om nei de opsjes side te gean."
+
+#, php-format
+msgid "Fetching from %s"
+msgstr "Ophelje fan %s"
+
+msgid "Can't get mailbox status:"
+msgstr "Kin postfak status net opfreegje:"
+
+msgid "Fetching list of messages..."
+msgstr "Berjochtenlist ophelje...."
+
+# twa eksta fakken ferskine..
+#, php-format
+msgid "Login OK: Inbox contains %s message"
+msgid_plural "Login OK: Inbox contains %s messages"
+msgstr[0] "Oanmelden OK: yn de INBOX sit %s berjocht"
+msgstr[1] "Oanmelden OK: yn de INBOX sitte %s berjochten"
+
+#, php-format
+msgid "Fetching message %s."
+msgstr "Opheljen berjocht %s."
+
+msgid "Warning:"
+msgstr "Warskôging:"
+
+msgid "Authentication type:"
+msgstr "Autentikaasjetype:"
+
+msgid "USER"
+msgstr "BRUKER"
+
+msgid "APOP"
+msgstr "APOP"
+
+msgid "APOP or USER"
+msgstr "APOP of USER"
+
+msgid "Connection type:"
+msgstr "Ferbiningstype:"
+
+msgid "Plain text"
+msgstr "Platte tekst"
+
+msgid "Use TLS"
+msgstr "TLS brûke"
+
+msgid "Use StartTLS"
+msgstr "StartTLS brûke"
+
+msgid "The NewMail plugin will follow the Folder Preferences option &quot;Enable Unread Message Notification&quot;"
+msgstr "De NewMail plugin folget de Mapfoarkarren-opsje &quot;Ynskeakeljen net-lêzen berjochtynstellingen&quot;"
+
+msgid "Follow folder preferences"
+msgstr "Mapfoarkarren folgje"
+
+msgid "All folders"
+msgstr "Alle mappen"
+
+msgid "Special folders"
+msgstr "Spesjale mappen"
+
+msgid "Regular folders"
+msgstr "Gewoane mappen"
+
+msgid "Check for new messages in:"
+msgstr "Sjoch nei nije berjochten yn:"
+
+msgid "Width of popup window:"
+msgstr "Breedte fan popup finster:"
+
+msgid "If set to 0, reverts to default value"
+msgstr "Op stân 0  wurdt de standertwearde brûkt"
+
+msgid "Height of popup window:"
+msgstr "Hichte fan popup finster:"
+
+msgid "uploaded media file"
+msgstr "uploaded media bestand"
+
+msgid "none"
+msgstr "gjint"
+
+msgid "Upload Media File:"
+msgstr "Upload Mediatriem:"
+
+msgid "Uploaded Media File:"
+msgstr "Uploaded Mediatriem:"
+
+#, php-format
+msgid "Media file %s will be removed, if you upload other media file."
+msgstr "Mediatriem %s wurdt wiske as jo in oar media triem uploade."
+
+#, php-format
+msgid "%s notice:"
+msgstr "%s berjocht:"
+
+msgid "Warning"
+msgstr "Warskôging"
+
+msgid "There are some restrictions in Sent Subfolder options."
+msgstr "Der binne inkele beheiningen yn de opsjes foar de submap Ferstjoerde Items."
+
+msgid "Sent Subfolders plugin is misconfigured."
+msgstr "Plugin foar submappen Ferstjoerde Items is ferkeard konfigurearre."
+
+msgid "Save emails submitted to SpamCop:"
+msgstr "Bewarje e-mails tastjoerd oan SpamCop:"
+
+msgid "SpamCop reporting"
+msgstr "SpamCop rapportaazje"
+
+#, php-format
+msgid "Your %s dictionary is encrypted with password that differs from your current password."
+msgstr "Jo %s wurdboek is befeilige mei in wachtwurd dat oars is as it wachtwurd fan no."
+
+msgid "Invalid SquirrelSpell module."
+msgstr "Unjildige SquirrelSpell module."
+
+msgid "Unknown error"
+msgstr "Ûnbekende flater"
+
+msgid "SquirrelSpell error."
+msgstr "SquirrelSpell flater."
+
+# wer in dûbeld skermke
+#, php-format
+msgid "Found %d error"
+msgid_plural "Found %d errors"
+msgstr[0] "%d flater fûn"
+msgstr[1] "%d flaters fûn"
+
+#, php-format
+msgid "Using %s dictionary for spellcheck."
+msgstr "%s wurdboek brûkt troch staveringshifker."
+
+msgid "Translation Theme:"
+msgstr "Oersetting tema:"
+
+msgid "Selected translation engine is disabled. Please update your translation preferences."
+msgstr "De selektearre oersettingsmooglikheid is útskeakele. Fernij jo oersetopties"
+
+msgid "Translation Preferences"
+msgstr "Oersetopsjes"
+
+msgid "Maximum of 25 kilobytes translated, powered by Systran"
+msgstr "Maksimum fan 25 kilobytes oersetten, oandreaun troch by Systran"
+
+msgid "No known limits, powered by GPLTrans (free, open source)"
+msgstr "Gjin limiten, powered by GPLTrans (free, open source)"
+
+msgid "Transliterate unknown words:"
+msgstr "Unbekende wurden by de oersetting:"
+
+msgid "When composing:"
+msgstr "Under it skriuwen:"
+
+msgid "Not yet functional, currently does nothing"
+msgstr "Noch net funksjioneel, docht op't heden neat"
+
+msgid "Address book is empty"
+msgstr "Adresboek is leech"
+
+msgid "Address book search"
+msgstr "Sykje yn adresboek"
+
+msgid "Attachment"
+msgstr "Taheaksel"
+
+msgid "Attach"
+msgstr "Taheakje:"
+
+msgid "Max."
+msgstr "Maks."
+
+msgid "Receipts"
+msgstr "Befêstiging"
+
+# notifikaasje is wat ûnbekend. Alternatyf is...?
+msgid "SquirrelMail notice messages"
+msgstr "SquirrelMail meidielingen berjochten"
+
+msgid "Category:"
+msgstr "Kategory:"
+
+msgid "Tip:"
+msgstr "Tip:"
+
+msgid "More info:"
+msgstr "Mear ynformaasje:"
+
+msgid "No folders were found to unsubscribe from."
+msgstr "Gjin mappen fûn om by ôf te melden."
+
+msgid "No folders were found to subscribe to."
+msgstr "Gjin mappen fûn om by oan te melden"
+
+msgid "Message Flags"
+msgstr "Berjochtflaggen"
+
+msgid "Click here to change the sorting of the message list"
+msgstr "Klik hjir om de folchoarder fan sortearjen fan de berjochtenlist te feroarjen"
+
+msgid "Add/Edit"
+msgstr "Taheakje/Wizigje"
+
+msgid "Rule Conditions"
+msgstr "Regelkondysjes"
+
+msgid "Identifying Name"
+msgstr "Omskriuwing"
+
+msgid "To or cc"
+msgstr "Oan of CC"
+
+msgid "Other"
+msgstr "Oare"
+
+msgid "Save Changes"
+msgstr "Feroarje"
+
+msgid "Type"
+msgstr "Type"
+
+msgid "Requested"
+msgstr "Frege"
+
+msgid "Send Read Receipt Now"
+msgstr "Ferstjoer lêsbefêstiging no"
+
+msgid "Viewing HTML formatted email"
+msgstr "Besjoch e-mail yn HTML"
+
+msgid "As Attachment"
+msgstr "As taheaksel"
+
+msgid "Move To"
+msgstr "Ferpleatse Nei"
+
+msgid "Delete &amp; Previous"
+msgstr "Wiskje &amp; Foarrige"
+
+msgid "and subfolders"
+msgstr "en submappen"
+
+msgid "Exclude"
+msgstr "Utslute"
+
+msgid "Fold"
+msgstr "Ynklappe"
+
+msgid "Unfold"
+msgstr "Utklappe"
+
+msgid "Forget"
+msgstr "Ferjit"
+
+msgid "Email"
+msgstr "E-mail"
+
+msgid "Additional Info"
+msgstr "Mear ynformaasje"
+
+msgid "Folder List"
+msgstr "Mappenlist"
+
+msgid "Delivery error report"
+msgstr "Besoargingsflater rapportaazje"
+
+msgid "Undelivered Message Headers"
+msgstr "Berjochtkoppen ûnbestelber berjocht"
+
+msgid "This image has been removed for security reasons"
+msgstr "Dizze ôfbylding is om feiligheidsredenen wiske"
+

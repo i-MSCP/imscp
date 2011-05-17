@@ -1,0 +1,3 @@
+#!/bin/sh
+xgettext --keyword=_ -keyword=N_  --default-domain=preview_pane \
+    --no-location -C *.php --output=preview_pane.pot

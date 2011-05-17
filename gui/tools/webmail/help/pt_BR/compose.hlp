@@ -1,0 +1,95 @@
+<chapter>
+   <title>
+      Nova Mensagem
+   </title>
+   <summary>
+Com este recurso voc&ecirc; pode enviar e-mails para v&aacute;rias pessoas a partir 
+do SquirrelMail. </summary> <description> 
+<p> A op&ccedil;&atilde;o "Nova Mensagem" levará voc&ecirc; a uma nova página 
+  de composi&ccedil;&atilde;o onde voc&ecirc; encontrará v&aacute;rios campos 
+  para preencher e alguns bot&otilde;es. Dependendo do modo como tenha chegado 
+  a esta janela, algunos campos podem j&aacute; est&aacute; preenchidos.</p>
+   
+</description> </chapter> <section> 
+<title> Para</title>
+<description> 
+<p> O primeiro campo <b>Para:</b> Dever&aacute; ser preenchido com o(s) endere&ccedil;o(s) 
+  do(s) destinat&aacute;rio(s) da mensagem que ser&aacute; enviada. Voc&ecirc; 
+  poder&aacute; adicionar todos os endere&ccedil;os que quiser, sempre separados 
+  por v&iacute;rgulas. Também &eacute; poss&iacute;vel preencher este campo clicando 
+  o bot&atilde;o "Cat&aacute;logo Particular". N&atilde;o se preocupe se o endere&ccedil;o 
+  n&atilde;o estiver totalmente vis&iacute;vel. O campo tem um tamanho fixo, mas 
+  tudo que voc&ecirc; digitar ser&aacute; considerado, podendo observar como o 
+  conte&uacute;do desliza para a esquerda e para a direita at&eacute; mostrar 
+  o conte&uacute;do completo. </p>
+</description> </section> <section> 
+<title> Cc </title>
+<description> 
+<p> O campo seguinte <b>CC:</b> &eacute; uma abreviatura para <b>C</b>om <b>C</b>&oacute;pia 
+  para. Este campo cont&eacute;m os endere&ccedil;os das pessoas para quem voc&ecirc; 
+  deseja mandar uma c&oacute;pia da mensagem. Funciona de maneira similar ao campo 
+  <b>Para:</b>. Voc&ecirc; pode colocar quantas pessoas quiser nos campos <b>CC:</b>, 
+  <b>Para:</b> e <b>BCC:</b>. S&oacute; as pessoas cujo conte&uacute;do da mensagem 
+  tenha impacto direto devem estar no <b>Para:</b>, aqueles destinat&aacute;rios 
+  para os quais o conte&uacute;do da mesagem seja apenas informativo podem estar 
+  nos campos <b>CC:</b> e <b>BCC:</b>.</p>
+</description> </section> <section> 
+<title>
+      Bcc
+   </title>
+   <description>
+      
+<p> BCC permite indicar c&oacute;pias "cegas". Dito de outra maneira, as pessoas 
+  indicadas neste campo receber&atilde;o uma c&oacute;pia da mensagem sem que 
+  as pessoas indicadas nos campos <b>Para:</b> e <b>CC:</b> fiquem sabendo. </p>
+</description> </section> <section> 
+<title> Assunto</title>
+<description> 
+<p> Procure escolher um assunto identificador para sua mensagem, isto tornar&aacute; 
+  as coisas mais f&aacute;ceis e poupar&aacute; tempo para todo mundo. </p>
+</description> </section> <section> 
+<title> Bot&atilde;o "Cat&aacute;logo Particular" </title>
+<description> 
+<p> Este bot&atilde;o abre a agenda de endere&ccedil;os depois de apresentar um 
+  box de busca. Voc&ecirc; pode digitar algum texto no campo "Procurar por" e 
+  clicar o bot&atilde;o &quot;Pesquisar&quot; para obter endere&ccedil;os relacionados. 
+  Se voc&ecirc; desejar visualizar todos os endere&ccedil;os dispon&iacute;veis 
+  entre com um espa&ccedil;o e clique o bot&atilde;o &quot;Listar Cat&aacute;logo 
+  Selecionado&quot;. Devido &agrave;s suas diversas funcionalidades, a agenda 
+  de endere&ccedil;os merece sua pr&oacute;pia se&ccedil;&atilde;o de ajuda. Informa&ccedil;&otilde;es 
+  mais detalhadas est&atilde;o dipon&iacute;veis no cap&iacute;tulo &quot;Addresses". 
+</p>
+</description> </section> <section> 
+<title> Corpo da Mensagem </title>
+   <description>
+      
+<p> O box grande e vazio deve conter o corpo da mensagem. Aqui voc&ecirc; pode 
+  compor sua mensagem como bem quiser. Se voc&ecirc; tiver um arquivo de assinatura, 
+  ele aparecerá dentro deste box da maneira pr&eacute;-determinada. Este &eacute; 
+  o espa&ccedil;o que cont&eacute;m a mensagem propiamente dita. </p>
+   </description>
+</section>
+
+<section>
+   
+<title> Anexar</title>
+   <description>
+      
+<p> Ao final da página está o campo "Anexar:", que permite anexar um arquivo &agrave; 
+  sua mensagem. O arquivo deverá estar acess&iacute;vel em sua máquina ou em sua 
+  rede. O bot&atilde;o &quot;Browse&quot; permitirá buscar mais facilmente o arquivo, 
+  apesar de voc&ecirc; também poder escrever &agrave; m&atilde;o o caminho e o 
+  nome do arquivo se souber. Uma vez o campo preenchido, clique o bot&atilde;o 
+  &quot;Adicionar&quot; para que o arquivo seja vinculado ao email. Este processo 
+  pode tardar um pouco em fun&ccedil;&atilde;o do tamanho e da velocidade da conex&atilde;o, 
+  visto que nesse momento o arquivo &eacute; enviado ao servidor para que fique 
+  dispon&iacute;vel no momento do envio. Note que alguns servidores limitam o 
+  tamanho do arquivo, e no caso deste tamanho ser extrapolado, voc&ecirc; ser&aacute; 
+  comunicado com uma mensagem de erro. </p>
+<p> Se pelo menos um arquivo for adicionado, um outro bot&atilde;o ser&aacute; 
+  apresentado permitindo que a qualquer momento o(s) arquivo(s) anexado(s), ap&oacute;s 
+  ser(em) selecionado(s) atrav&eacute;s do(s) quadrinho(s) que aparece(m) ao lado 
+  esquerdo deste(s) arquivo(s), seja(m) exclu&iacute;do(s) da mensagem.
+<p>
+   </description>
+</section>

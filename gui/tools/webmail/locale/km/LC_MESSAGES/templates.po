@@ -1,0 +1,82 @@
+# Khmer (km) templates Translation
+# Khoem Sokhem <khoemsokhem@khmeros.info>, 2008, 2009.
+# Auk Piseth <piseth_dv@khmeros.info>, 2008.
+# Copyright (c) 2008-2009 KhmerOS Project
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+msgid ""
+msgstr ""
+"Project-Id-Version: templates\n"
+"POT-Creation-Date: 2005-10-24 21:02+0300\n"
+"PO-Revision-Date: 2009-04-24 09:33+0700\n"
+"Last-Translator: Khoem Sokhem <khoemsokhem@khmeros.info>\n"
+"Language-Team: Khmer <en@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#, php-format
+msgid "Template file, %s, could not be opened. Contact your system administrator to resolve this issue."
+msgstr "ឯកសារ​ពុម្ព %s ដែល​មិនអាច​​បើក​បាន ។ ទាក់ទង​អ្នក​គ្រប់គ្រង​ប្រព័ន្ធ​របស់​អ្នក​ដើម្បី​ដោះស្រាយ​បញ្ហា​នេះ ។"
+
+#, php-format
+msgid "Template file, %s, could not be written. Contact your system administrator to resolve this issue."
+msgstr "ឯកសារ​ពុម្ព %s មិន​អាច​សរសេរ​បានទេ ។ ទាក់ទង​អ្នក​គ្រប់គ្រង​ប្រព័ន្ធ​របស់​អ្នក​ដើម្បី​ដោះស្រាយ​បញ្ហា​នេះ ។"
+
+#, php-format
+msgid "Template file, %s, could not be copied from temporary file, %s. Contact your system administrator to resolve this issue."
+msgstr "ឯកសារ​ពុម្ព %s មិនអាច​ចម្លង​ចេញ​ពី​ឯកសារ​បណ្ដោះ​អាសន្ន​បានទេ %s ។ ទាក់ទង​អ្នក​គ្រប់គ្រង​ប្រព័ន្ធ​របស់​អ្នក​ដើម្បី​ដោះស្រាយ​បញ្ហា​នេះ ។"
+
+msgid "You must be on WYSIWYG mode!"
+msgstr "អ្នកត្រូវ​តែ​​ប្រើ​ជា​របៀប WYSIWYG !"
+
+msgid "Add Template"
+msgstr "បន្ថែម​ពុម្ព"
+
+msgid "Templates"
+msgstr "ពុម្ព"
+
+msgid "Create/Edit/Delete chunks of text that can be quickly added to messages."
+msgstr "បង្កើត/​កែសម្រួល​/លុប​កំណាត់​អត្ថបទ​ដែល​អាច​បន្ថែម​ទៅសារ​យ៉ាង​លឿន ។"
+
+msgid "Append Templates before all existing text"
+msgstr "បន្ថែម​ពុម្ព​មុនពេល​អត្ថបទ​ដែល​មាន​ទាំងអស់"
+
+msgid "Yes"
+msgstr "បាទ/​ចាស"
+
+msgid "No"
+msgstr "ទេ"
+
+msgid "Add blank line before template text when appending"
+msgstr "បន្ថែម​បន្ទាត់​ទទេ មុនពេល​បន្ថែម​អត្ថបទ​ពុម្ព"
+
+msgid "Add blank line after template text when appending"
+msgstr "បន្ថែម​បន្ទាត់​ទទេ បន្ទាប់​ពី​បន្ថែម​អត្ថបទ​ពុម្ព"
+
+#, php-format
+msgid "Template %d"
+msgstr "ពុម្ព %d"
+
+msgid "Options"
+msgstr "ជម្រើស"
+
+msgid "Add a New Template"
+msgstr "បន្ថែម​ពុម្ព​ថ្មី"
+
+msgid "Description"
+msgstr "សេចក្ដី​ពិពណ៌នា"
+
+msgid "Template Text"
+msgstr "អត្ថបទ​ពុម្ព"
+
+msgid "Save / Update"
+msgstr "រក្សាទុក / ធ្វើ​ឲ្យ​ទាន់សម័យ"
+
+msgid "Delete"
+msgstr "លុប"
+
+msgid "Move Up"
+msgstr "ផ្លាស់ទី​ឡើងលើ"
+

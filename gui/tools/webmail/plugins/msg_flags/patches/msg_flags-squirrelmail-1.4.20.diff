@@ -1,0 +1,157 @@
+--- ../../functions/mailbox_display.php.orig	2008-02-10 08:49:47.000000000 -0800
++++ ../../functions/mailbox_display.php	2008-06-11 06:41:00.000000000 -0700
+@@ -257,40 +257,68 @@
+                 echo html_tag( 'td', $td_str, 'left', $hlt_color );
+                 break;
+             case 5: /* flags */
+-                $stuff = false;
+                 $td_str = "<b><small>";
+ 
+-                if (isset($msg['FLAG_ANSWERED']) && $msg['FLAG_ANSWERED'] == true) {
+-                    // i18n: "A" is short for "Answered". Make sure that two icon strings aren't translated to the same character (only in 1.5).
+-                    $td_str .= _("A");
+-                    $stuff = true;
+-                }
+-                if ($msg['TYPE0'] == 'multipart' && $msg['TYPE1'] == 'mixed') {
+-                    $td_str .= '+';
+-                    $stuff = true;
++                sq_change_text_domain('msg_flags');
++                if (isset($msg['FLAG_FLAGGED']) && $msg['FLAG_FLAGGED'] == true) {
++                    $msg_alt = _("This message is flagged");
++                    $td_str .= '<img src="../plugins/msg_flags/images/flagged.gif" border="0" height="10" width="10" alt="'. $msg_alt .'" title="'. $msg_alt .'"> ';
+                 }
+                 if ($default_use_priority) {
+                     if ( ($msg['PRIORITY'] == 1) || ($msg['PRIORITY'] == 2) ) {
+-                        $td_str .= "<font color=\"$color[1]\">!</font>";
+-                        $stuff = true;
++                        $msg_alt = _("This message is high priority");
++                        $td_str .= '<img src="../plugins/msg_flags/images/prio_high.gif" border="0" height="10" width="5" alt="'. $msg_alt .'" title="'. $msg_alt .'"> ';
+                     }
+-                    if ($msg['PRIORITY'] == 5) {
+-                        $td_str .= "<font color=\"$color[8]\">?</font>";
+-                        $stuff = true;
++                    elseif ($msg['PRIORITY'] == 5) {
++                        $msg_alt = _("This message is low priority");
++                        $td_str .= '<img src="../plugins/msg_flags/images/prio_low.gif" border="0" height="10" width="5" alt="'. $msg_alt .'" title="'. $msg_alt .'"> ';
++                    }
++                    else {
++                        $td_str .= '<img src="../plugins/msg_flags/images/transparent.gif" border="0" height="10" width="6">';
+                     }
+                 }
++                if ($msg['TYPE0'] == 'multipart' && $msg['TYPE1'] == 'mixed') {
++                    $msg_alt = _("This message has an attachment");
++                    $td_str .= '<img src="../plugins/msg_flags/images/attach.gif" border="0" height="10" width="6" alt="'. $msg_alt .'" title="'. $msg_alt .'">';
++                }
++                else {
++                    $td_str .= '<img src="../plugins/msg_flags/images/transparent.gif" border="0" height="10" width="6">';
++                }
++
++                $msg_icon = '';
++
++                if (!isset($msg['FLAG_SEEN']) || $msg['FLAG_SEEN'] == true) {
++                    $msg_alt = _("This message has been read");
++                    $msg_icon .= '../plugins/msg_flags/images/msg_read';
++                } else {
++                    $msg_alt = _("This message is new");
++                    $msg_icon .= '../plugins/msg_flags/images/msg_new';
++                }
+                 if (isset($msg['FLAG_DELETED']) && $msg['FLAG_DELETED'] == true) {
+-                    $td_str .= "<font color=\"$color[1]\">D</font>";
+-                    $stuff = true;
++                    if (!isset($msg['FLAG_SEEN']) || $msg['FLAG_SEEN'] == true) {
++                        $msg_alt = _("This message has been read & deleted");
++                    } else {
++                        $msg_alt = _("This message is new & deleted");
++                    }
++                    $msg_icon .= '_deleted';
+                 }
+-                if (!$stuff) {
+-                    $td_str .= '&nbsp;';
++                if (isset($msg['FLAG_ANSWERED']) && $msg['FLAG_ANSWERED'] == true) {
++                    if (!isset($msg['FLAG_SEEN']) || $msg['FLAG_SEEN'] == true) {
++                        $msg_alt = _("This message has been read & answered");
++                    } else {
++                        $msg_alt = _("This message is new & answered");
++                    }
++                    $msg_icon .= '_reply';
+                 }
++                sq_change_text_domain('squirrelmail');
++
++                $td_str .= '<img src="' . $msg_icon . '.gif" border="0" alt="'. $msg_alt . '" title="' . $msg_alt . '" height="12" width="18" ></small></b>&nbsp;';
++
+                 do_hook("msg_envelope");
+                 $td_str .= '</small></b>';
+                 echo html_tag( 'td',
+                                $td_str,
+-                               'center',
++                               'right',
+                                $hlt_color,
+                                'nowrap' );
+                 break;
+@@ -758,6 +787,10 @@
+         echo getButton('SUBMIT', 'expungeButton',_("Expunge")) ."\n";
+     }
+ 
++    sq_change_text_domain('msg_flags');
++    echo getButton('SUBMIT', 'markFlagged',_("Flag"));
++    echo getButton('SUBMIT', 'markUnflagged',_("Unflag"));
++    sq_change_text_domain('squirrelmail');
+     echo getButton('SUBMIT', 'markRead',_("Read")) . "\n";
+     echo getButton('SUBMIT', 'markUnread',_("Unread")) . "\n";
+     echo getButton('SUBMIT', 'delete',_("Delete")) ."&nbsp;\n";
+--- ../../src/move_messages.php.orig	2008-06-11 06:40:48.000000000 -0700
++++ ../../src/move_messages.php	2008-06-11 06:41:00.000000000 -0700
+@@ -137,6 +137,8 @@
+ sqgetGlobalVar('markUnread',      $markUnread,      SQ_POST);
+ sqgetGlobalVar('attache',         $attache,         SQ_POST);
+ sqgetGlobalVar('location',        $location,        SQ_POST);
++sqgetGlobalVar('markFlagged',     $markFlagged,     SQ_POST); /* Added for Msg_Flags */
++sqgetGlobalVar('markUnflagged',   $markUnflagged,   SQ_POST); /* Added for Msg_Flags */
+ 
+ /* end of get globals */
+ 
+@@ -201,6 +203,10 @@
+                 sqimap_toggle_flag($imapConnection, $id, '\\Seen',true,true);
+             } else if (isset($markUnread)) {
+                 sqimap_toggle_flag($imapConnection, $id, '\\Seen',false,true);
++            } else if (isset($markFlagged)) {
++               sqimap_toggle_flag($imapConnection, $id, '\\Flagged',true,true);
++            } else if (isset($markUnflagged)) {
++                sqimap_toggle_flag($imapConnection, $id, '\\Flagged',false,true);
+             } else  {
+                 sqimap_msgs_list_delete($imapConnection, $mailbox, $id);
+                 if ($auto_expunge) {
+--- ../../src/left_main.php.orig	2008-06-11 06:40:43.000000000 -0700
++++ ../../src/left_main.php	2008-06-11 06:41:00.000000000 -0700
+@@ -76,8 +76,19 @@
+         $line .= "<font color=\"$color[11]\">";
+     }
+     if ( $mailbox == 'INBOX' ) {
++        $line .= '<img src="../images/inbox.png" border="0" height="16" width="16" style="vertical-align: bottom;" alt="'. _("INBOX") .'" title="'. _("INBOX") .'">&nbsp;';
+         $line .= _("INBOX");
++    } elseif ( $real_box == $draft_folder){
++        $line .= '<img src="../images/draft.png" border="0" height="16" width="16" style="vertical-align: middle;" alt="'. $mailbox .'" title="'. $mailbox .'">&nbsp;';
++        $line .= str_replace(array(' ','<','>'),array('&nbsp;','&lt;','&gt;'),$mailbox);
++    } elseif ( $real_box == $sent_folder){
++        $line .= '<img src="../images/senti.png" border="0" height="16" width="16" style="vertical-align: middle;" alt="'. $mailbox .'" title="'. $mailbox .'">&nbsp;';
++        $line .= str_replace(array(' ','<','>'),array('&nbsp;','&lt;','&gt;'),$mailbox);
++    } elseif ( $real_box == $trash_folder){
++        $line .= '<img src="../images/delitem.png" border="0" height="16" width="16" style="vertical-align: middle;" alt="'. $mailbox .'" title="'. $mailbox .'">&nbsp;';
++        $line .= str_replace(array(' ','<','>'),array('&nbsp;','&lt;','&gt;'),$mailbox);
+     } else {
++        $line .= '<img src="../images/folder.png" border="0" height="16" width="16" style="vertical-align: middle;" alt="'. $mailbox .'" title="'. $mailbox .'">&nbsp;';
+         $line .= str_replace(array(' ','<','>'),array('&nbsp;','&lt;','&gt;'),$mailbox);
+     }
+     if ($special_color == TRUE)
+@@ -179,9 +190,9 @@
+     $link = '<a target="left" style="text-decoration:none" ' .
+             'href="left_main.php?';
+     if ($boxes[$boxnum]['collapse'] == SM_BOX_COLLAPSED) {
+-        $link .= "unfold=$mailbox\">+";
++        $link .= "unfold=$mailbox\"><img src=\"../images/plus.png\" border=\"0\" height=\"7\" width=\"7\">";
+     } else {
+-        $link .= "fold=$mailbox\">-";
++        $link .= "fold=$mailbox\"><IMG src=\"../images/minus.png\" border=\"0\" height=\"7\" width=\"7\">";
+     }
+     $link .= '</a>';
+ 

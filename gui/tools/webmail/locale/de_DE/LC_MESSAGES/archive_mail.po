@@ -1,0 +1,115 @@
+# translation of archive_mail.po to 
+# SquirrelMail archive_main plugin
+# German translation
+# Copyright (c) 2004-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the plugin's package.
+# $Id: archive_mail.po 13696 2009-05-14 06:27:08Z jervfors $
+# Ferdie Ferdsen <ferdie@despam.de>, 2004.
+# Ralf Hildebrandt <Ralf.Hildebrandt@charite.de>, 2005.
+msgid ""
+msgstr ""
+"Project-Id-Version: archive_mail\n"
+"POT-Creation-Date: 2004-07-31 11:09+0300\n"
+"PO-Revision-Date: 2005-06-05 13:10+0200\n"
+"Last-Translator: Ralf Hildebrandt <Ralf.Hildebrandt@charite.de>\n"
+"Language-Team:  <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.9.1\n"
+
+msgid "Archive disabled (zlib not supported)"
+msgstr "Archivierung deaktiviert (zlib wird nicht unterstützt)"
+
+msgid "Archive"
+msgstr "Archivieren"
+
+msgid "Format Emails as"
+msgstr "Formatiere Emails als"
+
+msgid "EML Messages"
+msgstr "EML Nachrichten"
+
+msgid "Mbox"
+msgstr "Mbox"
+
+msgid "Maildir"
+msgstr "Maildir"
+
+msgid "Separate Entities"
+msgstr "Einzelne Entitäten"
+
+msgid "Save Attachments"
+msgstr "Speichere Dateianhänge"
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "No"
+msgstr "Nein"
+
+msgid "Save"
+msgstr "Speichern"
+
+msgid "Separate Entities Options"
+msgstr "Einzelne Emails Einstellungen"
+
+msgid "EML Messages Options"
+msgstr "Einstellungen für EML Nachrichten"
+
+msgid "Mbox Options"
+msgstr "Mbox Einstellungen"
+
+msgid "Maildir Options"
+msgstr "Maildir Einstellungen"
+
+msgid "Compress Type"
+msgstr "Kompressions Art"
+
+msgid "Tar"
+msgstr "Tar"
+
+msgid "Tar.GZ"
+msgstr "Tar.GZ"
+
+msgid "Text"
+msgstr "Text"
+
+msgid "Zip"
+msgstr "Zip"
+
+msgid "Email Filename"
+msgstr "Email Dateiname"
+
+msgid "Numbered"
+msgstr "Nummeriert"
+
+msgid "Date"
+msgstr "Datum"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Subject"
+msgstr "Betreff"
+
+msgid "Archive Settings"
+msgstr "Archivierungs Einstellungen"
+
+msgid "These settings allow you to modify the way you archive messages."
+msgstr ""
+"Hier können Sie die Einstellungen zum Archivieren ihrer Nachrichten "
+"vornehmen."
+
+msgid "m/d/Y g:i a"
+msgstr "m/d/Y g:i a"
+
+msgid "No Subject"
+msgstr "(Kein Betreff)"
+
+msgid "From"
+msgstr "From"
+
+msgid "To"
+msgstr "To"
+

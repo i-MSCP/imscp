@@ -1,0 +1,55 @@
+<chapter>
+   <title>
+      Introduction &agrave; SquirrelMail
+   </title>
+   <summary>
+      SquirrelMail est un logiciel vous permettant de consulter vos
+      mails depuis internet.
+   </summary>
+   <description>
+      <p>
+      Qu'est donc exactement  <A HREF="http://www.squirrelmail.org/index.php3?from=1">SquirrelMail</A> ?
+      C'est une interface web &agrave; &eacute;crite en <A HREF="http://www.php.net">PHP4</A>, vous permettant
+      de consulter vos e-mails. Il a &eacute;t&eacute; pr&eacute;vu pour permettre l'acc&egrave;s &agrave; votre 
+      serveur de messagerie de partout dans le monde grace &agrave; une interface web.
+      Pour plus d'informations &agrave; propos de son fonctionnement exact et du protocole 
+      IMAP, cliquez <A HREF="http://imap.org">ici</A>.
+      </p>
+   </description>
+</chapter>   
+
+<section>
+   <title>
+      Les Bases
+   </title>
+   <description>
+      <p>
+      Si vous avez des questions basiques, vous pouvez jeter un oeil aux FAQ.
+      </p>
+      <p>
+      SquirrelMail est divis&eacute; en deux parties appel&eacute;es
+      cadres. Le cadre de gauche liste les dossiers que vous avez s&eacute;lectionn&eacute;s.
+      (Consultez pour cela la rubrique "Dossiers" de l'aide).
+      </p>
+      <p>
+      La partie droite est l&agrave; o&ugrave; la majeure partie de 
+      l'action va se situer. Au sommet de la page se trouve une barre
+      de menus. Sign out vous permet de vous d&eacute;logger en 
+      douceur lorsque vous aurez termin&eacute;. Le Dossier Courant vous
+      indique le dossier; list&eacute; &agrave; gauche; dans lequel vous
+      vous trouvez. Juste apr&egrave;s votre connection vous serez par d&eacute;faut
+      dans la boite de r&eacute;ception. 
+      </p>
+      <p>
+      Sous la barre sup&eacute;rieure se trouve une rang&eacute;e de menus de s&eacute;lection:
+         <ul>
+            <li><b>Ecrire</b> - Ecrire et envoyer des emails pouvant inclure des fichiers attach&eacute;s. 
+            <li><b>Adresses</b> - Maintient une liste d'adresses contenue dans votre r&eacute;pertoire personnel.
+            <li><b>Dossiers</b> - Toutes les manipulations concernant les dossiers ont lieu ici. Vous pouvez effacer, cr&eacute;er, renommer, souscrire et vous désabonner des dossiers. 
+            <li><b>Options</b> - Modifie le comportement et l'aspect de SquirrelMail. 
+            <li><b>Recherches</b> - Avec cet outil, vous pouvez rechercher dans votre boite &agrave; lettre un crit&egrave;re donn&eacute;. 
+            <li><b>Aide</b> - Vous &ecirc;tes d&eacute;j&agrave; ici. 
+         </ul>
+      </p>
+   </description>
+</section>   

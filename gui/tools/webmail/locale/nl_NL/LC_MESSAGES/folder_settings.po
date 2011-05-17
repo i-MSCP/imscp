@@ -1,0 +1,61 @@
+# Dutch (nl_NL) folder_settings Translation (SquirrelMail plugin)
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Rinse de Vries <rinsedevries@kde.nl>, 2007.
+# $Id: folder_settings.pot 10877 2006-03-04 11:22:22Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: folder_settings\n"
+"POT-Creation-Date: 2005-09-21 20:28+0300\n"
+"PO-Revision-Date: 2007-04-02 21:33+0200\n"
+"Last-Translator: Rinse de Vries <rinsedevries@kde.nl>\n"
+"Language-Team: Dutch <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#: functions.php:21
+msgid "Folder Sorting Options"
+msgstr "Opties voor mapsortering"
+
+#: functions.php:25
+msgid "Enable per-folder sorting"
+msgstr "Per-map sortering activeren"
+
+#: functions.php:31
+msgid "Default sort_order"
+msgstr "Standaard sorteervolgorde"
+
+#: functions.php:34
+msgid "Date (descending)"
+msgstr "Datum (aflopend)"
+
+#: functions.php:35
+msgid "Date (ascending)"
+msgstr "Datum (oplopend)"
+
+#: functions.php:36
+msgid "From (descending)"
+msgstr "Van (aflopend)"
+
+#: functions.php:37
+msgid "From (ascending)"
+msgstr "Van (oplopend)"
+
+#: functions.php:38
+msgid "Subject (descending)"
+msgstr "Onderwerp (aflopend)"
+
+#: functions.php:39
+msgid "Subject (ascending)"
+msgstr "Onderwerp (oplopend)"
+
+#: functions.php:40
+msgid "Unsorted"
+msgstr "Ongesorteerd"
+
+#: functions.php:68
+msgid "Folder Settings plugin should not be used with this SquirrelMail version."
+msgstr "U kunt deze mapinstellingenplugin niet gebruiken met deze versie van SquirrelMail."
+

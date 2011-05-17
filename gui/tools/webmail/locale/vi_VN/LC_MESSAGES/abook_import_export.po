@@ -1,0 +1,288 @@
+# Vietnamese translation for abook_import_export (SquirrelMail Plugin).
+# Copyright © 2000-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Clytie Siddall <clytie@riverland.net.au>, 2008.
+# $Id: abook_import_export.pot 12742 2007-10-26 23:15:55Z jervfors $
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: abook_import_export 1.1\n"
+"Report-Msgid-Bugs-To: <http://sourceforge.net/projects/sm-plugins/>\n"
+"POT-Creation-Date: 2007-10-26 17:50+0200\n"
+"PO-Revision-Date: 2007-07-29 22:42+0930\n"
+"Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
+"Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: LocFactoryEditor 1.6.4a5\n"
+
+#: address_book_export.php:90
+#: address_book_import.php:194
+msgid "You must use different symbols for text and field delimiters."
+msgstr "Bạn cần phải dùng các ký hiệu khác nhau cho dấu tách kiểu văn bản và trường."
+
+#: address_book_export.php:91
+#: address_book_export.php:100
+#: address_book_import.php:118
+#: address_book_import.php:394
+#, php-format
+msgid "Return to main %sAddress Book%s page."
+msgstr "Trở về trang %sSổ địa chỉ%s chính."
+
+#: address_book_export.php:99
+msgid "Selected address book is empty."
+msgstr "Sổ địa chỉ đã chọn còn rỗng."
+
+#: address_book_import.php:86
+#. Detect PHP 4.2.0+ upload error codes (http://www.php.net/features.file-upload.errors)
+msgid "Please select a file for uploading."
+msgstr "Hãy chọn tập tin cần tải lên."
+
+#: address_book_import.php:90
+msgid "The uploaded file exceeds PHP upload_max_filesize limits."
+msgstr "Tập tin đã tải lên vượt quá sự hạn chế kích cỡ tập tin tối đa (upload_max_filesize) PHP."
+
+#: address_book_import.php:93
+msgid ""
+"The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
+"the HTML."
+msgstr "Tập tin đã tải lên vượt quá chỉ thị kích cỡ tập tin tối đa (MAX_FILE_SIZE) được ghi rõ trong mã HTML."
+
+#: address_book_import.php:96
+msgid "The uploaded file was only partially uploaded."
+msgstr "Tập tin đã tải lên chỉ được tải lên một phần."
+
+#: address_book_import.php:99
+msgid "No file was uploaded."
+msgstr "Chưa tải lên tập tin."
+
+#: address_book_import.php:102
+msgid "Missing a temporary directory."
+msgstr "Thiếu một thư mục tạm."
+
+#: address_book_import.php:105
+msgid "Failed to write file to disk."
+msgstr "Lỗi ghi tập tin vào đĩa."
+
+#: address_book_import.php:109
+#. File upload stopped by extension. 'security library' is more user friendly.
+msgid "File upload stopped by security library."
+msgstr "Tiến trình tải lên tập tin bị dừng chạy bởi thư viện bảo mật."
+
+#: address_book_import.php:112
+msgid "Unknown upload error."
+msgstr "Lỗi tải lên không rõ."
+
+#: address_book_import.php:121
+msgid "Upload error"
+msgstr "Lỗi tải lên"
+
+#: address_book_import.php:124
+#, php-format
+#. i18n: %s displays 'somenumber B', 'somenumber KB' or 'somenumber MB'.
+msgid ""
+"Imported CSV file is too big. Contact your system administrator, if you want "
+"to import files, that are bigger than %s."
+msgstr "Tập tin CSV đã nhập khẩu vẫn quá lớn. Hãy liên lạc với quản trị hệ thống nếu bạn muốn nhập tập tin lớn hơn %s."
+
+#: address_book_import.php:167
+msgid "Error, could not open address file."
+msgstr "Lỗi: không thể mở tập tin địa chỉ."
+
+#: address_book_import.php:284
+#. Title of column with row numbers
+msgid "No#"
+msgstr "Không có #"
+
+#: address_book_import.php:286
+#. Title of column with omit checkbox
+msgid "Omit"
+msgstr "Bỏ sót"
+
+#: address_book_import.php:338
+msgid "Add to address book: "
+msgstr "Thêm vào Sổ địa chỉ:"
+
+#: address_book_import.php:345
+#. display import button only after table is loaded
+msgid "Finish"
+msgstr "Kết thúc"
+
+#: address_book_import.php:352
+#. *
+#. * $csvdata is empty. User tried to import empty file or $error contains fatal
+#. * processing error message.
+#.
+msgid "Nothing to import"
+msgstr "Không có gì cần nhập"
+
+#: address_book_import.php:353
+msgid "Return to Address Book"
+msgstr "Trở về Sổ địa chỉ"
+
+#: address_book_import.php:358
+msgid "The following rows have errors"
+msgstr "Những hàng sau vẫn còn có lỗi"
+
+#: address_book_import.php:363
+#. unable to move file to temp directory
+msgid "Can't move uploaded file to attachment directory."
+msgstr "Không thể di chuyển tập tin đã tải lên sang thư mục đồ đính kèm."
+
+#: address_book_import.php:393
+#. $csvdata is not available or is not array.
+msgid "Unable to access uploaded data. Contact your system administrator."
+msgstr "Không thể truy cập đến dữ liệu đã tải lên. Hãy liên lạc quản trị hệ thống."
+
+#: address_book_import.php:465
+#, php-format
+#. displays row number that can't be imported. SquirrelMail
+#. address book backend error message is displayed after it.
+msgid "Row %d:"
+msgstr "Hàng %d:"
+
+#: address_book_import.php:483
+msgid ""
+"There were errors uploading the data, as listed below. Entries not listed "
+"here were uploaded."
+msgstr "Gặp lỗi khi tải lên dữ liệu, như được liệt kê bên dưới. Các mục nhập không phải được liệt kê ở đây thì đã được tải lên."
+
+#: address_book_import.php:487
+msgid "Upload Completed!"
+msgstr "Tiến trình tải lên đã chạy xong."
+
+#: address_book_import.php:489
+msgid "Click on the link below to verify your work."
+msgstr "Nhấn vào liên kết bên dưới để thẩm tra việc làm."
+
+#: address_book_import.php:493
+msgid "Addresses"
+msgstr "Địa chỉ"
+
+#: functions.php:101
+msgid "Single quotes (')"
+msgstr "Nháy đơn (')"
+
+#: functions.php:102
+msgid "Double quotes (\")"
+msgstr "Nháy kép (\")"
+
+#: functions.php:103
+msgid "Comma (,)"
+msgstr "Phẩy (,)"
+
+#: functions.php:104
+msgid "Semicolon (;)"
+msgstr "Chấm phẩy (;)"
+
+#: functions.php:105
+msgid "Custom delimiter"
+msgstr "Dấu tách tự chọn"
+
+#: functions.php:112
+msgid "Address book import"
+msgstr "Nhập Sổ địa chỉ"
+
+#: functions.php:125
+msgid "Select file:"
+msgstr "Chọn tập tin:"
+
+#: functions.php:130
+msgid "Max:"
+msgstr "Đại:"
+
+#: functions.php:134
+msgid "Input character set:"
+msgstr "Bộ ký tự nhập vào :"
+
+#: functions.php:138
+#: functions.php:187
+msgid "Field delimiter:"
+msgstr "Dấu tách trường:"
+
+#: functions.php:142
+#: functions.php:191
+msgid "Custom field delimiter:"
+msgstr "Dấu tách trường tự chọn:"
+
+#: functions.php:148
+#: functions.php:201
+msgid "Text delimiter:"
+msgstr "Dấu tách văn bản:"
+
+#: functions.php:152
+#: functions.php:205
+msgid "Custom text delimiter:"
+msgstr "Dấu tách văn bản tự chọn:"
+
+#: functions.php:157
+msgid "Import CSV File"
+msgstr "Nhập tập tin CSV"
+
+#: functions.php:165
+#: functions.php:529
+msgid "ERROR"
+msgstr "LỖI"
+
+#: functions.php:167
+msgid "Address book uploads are disabled."
+msgstr "Chức năng tải lên sổ địa chỉ hiện thời bị tắt."
+
+#: functions.php:175
+msgid "Address book export"
+msgstr "Xuất Sổ địa chỉ"
+
+#: functions.php:212
+msgid "Use address book:"
+msgstr "Dùng sổ địa chỉ: "
+
+#: functions.php:219
+msgid "Export to CSV File"
+msgstr "Xuất vào tập tin CSV"
+
+#: functions.php:241
+#, php-format
+msgid "%s MB"
+msgstr "%s MB"
+
+# Variable and unit: do not translate/ biến và đơn vị: đừng dịch
+#: functions.php:243
+#, php-format
+msgid "%s KB"
+msgstr "%s KB"
+
+#: functions.php:245
+#, php-format
+msgid "%s B"
+msgstr "%s B"
+
+#: functions.php:271
+msgid "Nickname"
+msgstr "Tên hiệu"
+
+#: functions.php:273
+msgid "First Name"
+msgstr "Tên"
+
+#: functions.php:275
+msgid "Last Name"
+msgstr "Họ"
+
+#: functions.php:277
+msgid "Email"
+msgstr "Địa chỉ thư"
+
+#: functions.php:279
+msgid "Additional Info"
+msgstr ""
+"Thông tin thêm "
+
+#: functions.php:281
+msgid "Do Not Include"
+msgstr "Đừng bao gồm"
+
+#: functions.php:318
+msgid "LDIF import is not supported."
+msgstr "Không hỗ trợ chức năng nhập LDIF."

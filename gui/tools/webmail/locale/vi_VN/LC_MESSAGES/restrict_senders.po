@@ -1,0 +1,173 @@
+# Vietnamese (vi) restrict_senders Translation (SquirrelMail plugin)
+# Copyright © 2003-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Clytie Siddall <clytie@riverland.net.au>, 2008.
+# $Id: restrict_senders.pot 12743 2007-10-27 11:27:09Z jervfors $
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: restrict_senders 1.2\n"
+"Report-Msgid-Bugs-To: Paul Lesniewski <paul@squirrelmail.org>\n"
+"POT-Creation-Date: 2007-10-27 12:25+0200\n"
+"PO-Revision-Date: 2008-03-10 23:44+1030\n"
+"Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
+"Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: LocFactoryEditor 1.7b3\n"
+
+#: functions.php:158
+msgid ""
+"We are sorry, but your account has been temporarily disabled due to "
+"suspicious activity.  If you feel we have done so by mistake, please contact "
+"us immediately to have your account reactivated."
+msgstr "Tiếc là tài khoản của bạn đã bị tắt tạm thời do hoạt động đáng ngờ. Nếu bạn thấy đây là một lỗi, hãy liên lạc với chúng tôi ngay lập tức để yêu cầu kích hoạt lại tài khoản này."
+
+#: functions.php:211
+#, php-format
+msgid "Too many outgoing recipients. Please limit number of recipients to %d."
+msgstr "Quá nhiều người nhận để gửi đi. Hãy hạn chế số người nhận thành %d."
+
+#: functions.php:225
+msgid ""
+"NOTICE: User \"###USERNAME###\" (domain \"###DOMAIN###\") has attempted to "
+"send an email with more than their allotted recipients: "
+"###NUMBER_RECIPIENTS###\n"
+"\n"
+"TO: ###TO###\n"
+"CC: ###CC###\n"
+"BCC: ###BCC###\n"
+"BODY: ###BODY###"
+msgstr "THÔNG BÁO : Người dùng « ###USERNAME### » (miền « ###DOMAIN### ») đã thử gửi một thư có quá nhiều người nhận."
+"###NUMBER_RECIPIENTS###\n"
+"\n"
+"CHO : ###TO###\n"
+"CC: ###CC###\n"
+"BCC: ###BCC###\n"
+"THÂN: ###BODY###"
+
+#: functions.php:279
+#, php-format
+msgid ""
+"Daily email limit has been reached. Please limit number of emails per day to "
+"%d."
+msgstr "Đã tới hạn chế thư điện tử hàng này. Hãy hạn chế số thư mỗi hàng thành %d."
+
+#: functions.php:293
+msgid ""
+"WARNING: User \"###USERNAME###\" (domain \"###DOMAIN###\") has attempted to "
+"send more than their allotted number of emails in one day: "
+"###NUMBER_MAILS_TODAY###\n"
+"\n"
+"To allow this user to send mail again today, remove the \"todays_email_count"
+"\" setting from their preferences.\n"
+"\n"
+"TO: ###TO###\n"
+"CC: ###CC###\n"
+"BCC: ###BCC###\n"
+"BODY: ###BODY###"
+msgstr "THÔNG BÁO : Người dùng « ###USERNAME### » (miền « ###DOMAIN### ») đã thử gửi quá nhiều thư trong một ngày:"
+"###NUMBER_MAILS_TODAY###\n"
+"\n"
+"Để cho phép người dùng này gửi lại thư hôm nay, hãy gỡ bỏ thiết lập « todays_email_count » khỏi tùy thích của họ.\n"
+"\n"
+"CHO : ###TO###\n"
+"CC: ###CC###\n"
+"BCC: ###BCC###\n"
+"THÂN: ###BODY###"
+
+#: functions.php:341
+msgid "All recipients are illegal destinations."
+msgstr "Mọi người nhận là đích đến không được phép."
+
+#: functions.php:517
+#, php-format
+msgid ""
+"NOTICE: User \"%s\" (domain \"%s\") has sent %d mass emails of %d or more "
+"recipients in the last %d minutes.\n"
+"\n"
+"Times:\n"
+"%s\n"
+"\n"
+"%s has been BANNED.\n"
+"\n"
+"To un-ban this user, remove the USER_IS_POSSIBLE_SPAMMER setting from their "
+"preferences.\n"
+"\n"
+"TO: %s\n"
+"CC: %s\n"
+"BCC: %s\n"
+"BODY: %s"
+msgstr "THÔNG BÁO : Người dùng « %s » (miền « %s ») đã gửi %d thư tín hàng loạt có ít nhất %d người nhận trong vòng %d phút.\n"
+"\n"
+"Giờ :\n"
+"%s\n"
+"\n"
+"%s thì đã BỊ CHẶN.\n"
+"\n"
+"Để hủy chặn người dùng này, hãy gỡ bỏ thiết lập « USER_IS_POSSIBLE_SPAMMER » khỏi tùy thích của họ.\n"
+"\n"
+"CHO : %s\n"
+"CC: %s\n"
+"BCC: %s\n"
+"THÂN: %s"
+
+#: functions.php:517
+#, php-format
+msgid " --- BANNED - %s"
+msgstr " --- BỊ CHẶN - %s"
+
+#: functions.php:1054
+#, php-format
+msgid ""
+"The \"%s\" plugin is not configured correctly.  The file \"%s\" has a syntax "
+"error on line %d."
+msgstr "Phần mở rộng « %s » không được cấu hình đúng. Tập tin « %s » có một lỗi cú pháp trên dòng %d."
+
+#: functions.php:1064
+#: functions.php:1066
+#: functions.php:1091
+#: functions.php:1093
+msgid "Message not sent."
+msgstr "Chưa gửi thư."
+
+#: functions.php:1084
+#, php-format
+msgid ""
+"The \"%s\" plugin is not configured correctly.  The file \"%s\" could not be "
+"opened."
+msgstr "Phần mở rộng « %s » không được cấu hình đúng. Tập tin « %s » không thể mở được."
+
+#: functions.php:1441
+msgid "User account:"
+msgstr "Tài khoản người dùng:"
+
+#: functions.php:1442
+msgid "Domain:"
+msgstr "Miền:"
+
+#: functions.php:1443
+msgid "Timestamp: "
+msgstr "Nhãn giờ :"
+
+#: functions.php:1444
+msgid "Delete account:"
+msgstr "Xoá tài khoản không:"
+
+#: functions.php:1446
+msgid "(must be logged into administrative interface)"
+msgstr "(phải đăng nhập vào giao diện quản trị)"
+
+#: functions.php:1452
+msgid "OFFENDING MESSAGE"
+msgstr "THƯ VI PHẠM"
+
+#: functions.php:1461
+msgid "OFFENDING SERVER ENVIRONMENT"
+msgstr "MÔI TRƯỜNG MÁY PHỤC VỤ VI PHẠM"
+
+#: functions.php:1485
+msgid "[WEBMAIL ABUSE]"
+msgstr "[LẠM DỤNG THƯ WEB]"

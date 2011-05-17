@@ -1,0 +1,818 @@
+#!/usr/bin/perl
+
+# i-MSCP a internet Multi Server Control Panel
+#
+# Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
+# Copyright (C) 2010 by internet Multi Server Control Panel - http://i-mscp.net
+#
+# Version: $Id$
+#
+# The contents of this file are subject to the Mozilla Public License
+# Version 1.1 (the "License"); you may not use this file except in
+# compliance with the License. You may obtain a copy of the License at
+# http://www.mozilla.org/MPL/
+#
+# Software distributed under the License is distributed on an "AS IS"
+# basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+# License for the specific language governing rights and limitations
+# under the License.
+#
+# The Original Code is "ispCP ω (OMEGA) a Virtual Hosting Control Panel".
+#
+# The Initial Developer of the Original Code is ispCP Team.
+# Portions created by Initial Developer are Copyright (C) 2006-2010 by
+# isp Control Panel. All Rights Reserved.
+#
+# Portions created by the i-MSCP Team are Copyright (C) 2010 by
+# internet Multi Server Control Panel. All Rights Reserved.
+#
+# The i-MSCP Home Page is:
+#
+#    http://i-mscp.net
+#
+
+# Note to dev:
+#
+# It's important for the recovery process that all the subroutines defined here
+# are idempotent. That wants mean that if a subroutine is called again and
+# again, the final result should be the same. For example, if an error occurs
+# and the script ends, and then the script is run again, the final result
+# should be identical as if the script was run once.
+
+use strict;
+use warnings;
+no warnings 'once';
+use feature 'state';
+use FindBin;
+use lib "$FindBin::Bin/..";
+use PerlVendor::Capture::Tiny qw/capture_merged/;
+
+require 'imscp_common_code.pl';
+require 'imscp-setup-methods.pl';
+
+# We use our own system() subroutine implementation
+# See in the imscp-setup-methods.pl file
+use subs 'system';
+
+################################################################################
+#                            Built-in subroutines overriding                   #
+################################################################################
+
+################################################################################
+# Execute a system command. This is an overridden for the system() function
+#
+# This subroutine overwrites the built-in function that allows to perform some
+# logging operation for the external commands output.
+#
+# See http://perldoc.perl.org/functions/system.html
+#
+sub system {
+	my @args = @_;
+
+	state $regExp = qr /(clear|preinst|postinst|tput)/o;
+
+	if($_[0] !~ $regExp) {
+		my $output = capture_merged { CORE::system(@args); };
+		chomp($output);
+		push_el(\@main::el, 'system()', "[DEBUG] $output") if $output ne '';
+	} else {
+		CORE::system(@args);
+	}
+}
+
+################################################################################
+#                                 Subroutines                                  #
+################################################################################
+
+################################################################################
+# User dialog
+#
+# @return void
+#
+sub user_dialog {
+
+	push_el(\@main::el, 'user_dialog()', 'Starting...');
+
+	welcome_note();
+	warn_msg();
+
+	push_el(\@main::el, 'user_dialog()', 'Ending...');
+}
+
+################################################################################
+# Display a welcome note and ask the user continue or not note
+#
+# @return void
+#
+sub welcome_note {
+
+	push_el(\@main::el, 'welcome_note()', 'Starting...');
+
+	# Clear screen
+	system('clear');
+
+	print colored( ['bold underline'],
+		"\n\tWelcome to i-MSCP '$main::cfg{'Version'}' Update Dialog.\n\n"),
+
+		"\tThis program will update your current i-MSCP installation on " .
+		"this\n\tserver.\n\tPlease make sure you did a backup of all your " .
+		"server data.\n\n",
+
+		colored(['bold blue'], "\t[NOTICE] ") .
+		"During the migration process some or all services might require to\n".
+		"\tbe shut down.\n\n",
+
+		colored(['bold yellow'], "\t[WARNING] ") .
+		"Only services that are not marked with 'NO' in your imscp.conf\n".
+		"\tconfiguration file will be processed by this program.\n\n";
+
+	do {
+		print "\tDo you want to continue ? [Y/n]: ";
+		chomp($_ = <STDIN>);
+	} while (!/^(y|yes|n|no|)$/i);
+
+	my $rdata = "\L$1";
+
+	# Exit with a notice if the user chooses to abort the update process
+	($rdata eq '' || $rdata eq 'y' || $rdata eq 'yes') or exit_msg(
+		0, colored(['bold blue'], "\n\t[NOTICE] ") .
+		"The update process was aborted by user...\n"
+	);
+
+	push_el(\@main::el, 'welcome_note()', 'Ending...');
+}
+
+################################################################################
+# Display a warn and ask the user continue or not
+#
+# @return void
+#
+sub warn_msg {
+
+	push_el(\@main::el, 'warn_msg()', 'Starting...');
+
+	system('clear');
+
+	print colored(['bold blue'], "\n\t[NOTICE] ") .
+		"Make sure you have read and performed all steps from\n".
+		"\tdocs/distro/INSTALL document (where distro is your linux " .
+		"distribution).\n\n";
+
+	do {
+		print "\n\tOptions:\n" . "\t\ty : Continue the update\n" .
+  			"\t\tn : Abort and exit\n" .
+  			"\t\ts : Select specific tasks to perform " .
+  			"(Not yet implemented)\n\n" if defined $1 && $1 eq '?';
+
+		print "\tDo you want to continue ? [Y/n/?]: ";
+		chomp($_ = <STDIN>);
+	} while (/^(\?)$/ || ! /^(y|yes|n|no|)$/i);
+
+	my $rdata = "\L$1";
+
+	# Exit with a notice if the user chooses to abort the update process
+	($rdata eq '' || $rdata eq 'y' || $rdata eq 'yes') or exit_msg(
+		0, colored(['bold blue'], "\n\t[NOTICE] ") .
+		"The update process was aborted by user...\n"
+	);
+
+	push_el(\@main::el, 'warn_msg()', 'Ending...');
+}
+
+################################################################################
+# Load old i-MSCP main configuration file
+#
+# @return void
+#
+sub load_old_imscp_cfg {
+
+	push_el(\@main::el, 'load_old_imscp_config()', 'Starting...');
+
+	my $old_imscp_cfg_file = '/etc/imscp/imscp.old.conf';
+
+	if(-f '/usr/local/etc/imscp/imscp.old.conf') {
+		$old_imscp_cfg_file = '/usr/local/etc/imscp/imscp.old.conf';
+	}
+
+	if (get_conf($old_imscp_cfg_file)) {
+		do {
+			print "\n\n\tPlease enter path to your imscp.old.conf " .
+				"[/etc/imscp/imscp.old.conf]: ";
+
+			chomp($old_imscp_cfg_file = <STDIN>);
+		} while (get_conf($old_imscp_cfg_file));
+	}
+
+	$main::ua{'old_cfg_file'} = $old_imscp_cfg_file;
+
+	push_el(\@main::el, 'load_old_imscp_config()', 'Ending...');
+
+	0;
+}
+
+################################################################################
+# Update i-MSCP main configuration file
+#
+# @return int 1 on success, other on failure
+#
+sub update_imscp_cfg {
+
+	push_el(\@main::el, 'update_imscp_cfg()', 'Starting...');
+
+	# Loading old i-MSCP configuration file as a string
+	my ($rs, $rdata) = get_file($main::ua{'old_cfg_file'});
+	return $rs if($rs != 0);
+
+	# Loading new configuration from [/usr/local]/etc/imscp/imscp.conf
+	$rs = get_conf();
+	return $rs if($rs != 0);
+
+	# For each cfg line
+	for (map{$$_."\n"} \split(/\n/, $rdata))	{
+		if(/$main::cfg_re/ && $1 !~ /^BuildDate|Version|CodeName$/) {
+			# If the old configuration key still exists in the new file
+			# and its value is different from existing
+			if(defined($main::cfg{$1}) && $main::cfg{$1} ne $2 ) {
+				# We restore old value
+				$rs = set_conf_val($1, $2);
+				return $rs if ($rs != 0);
+			}
+		}
+	}
+
+	# Store the updated configuration and reload it
+	$rs = store_conf();
+	return $rs if ($rs != 0);
+
+	push_el(\@main::el, 'update_imscp_cfg()', 'Ending...');
+
+	0;
+}
+
+################################################################################
+# Check for empty values in configuration file
+#
+# Only the configuration settings listed in the exception list can be empty.
+#
+# See main::cfg_recovery_process() for more information about the recovery
+# procedure
+#
+# @return int 0 on success, other on failure
+#
+sub check_imscp_cfg_file {
+
+	push_el(\@main::el, 'check_imscp_cfg_file()', 'Starting...');
+
+	my %exception = map {$_ => undef} qw(
+		DATABASE_PASSWORD SECONDARY_DNS IMSCP_SUPPORT_SYSTEM_TARGET
+		MYSQL_PREFIX_TYPE OTHER_ROOTKIT_LOG
+	);
+
+	my $empty_settings = [];
+
+	for (sort keys %main::cfg) {
+		if($main::cfg{$_} eq '' && !exists $exception{$_}) {
+			push @$empty_settings, $_;
+		}
+	}
+
+	# We switch to recovery process if one or more
+	# settings were an empty value
+	if (scalar @$empty_settings) {
+		my  $rs = cfg_recovery_process($empty_settings);
+		return $rs;
+	}
+
+	push_el(\@main::el, 'check_imscp_cfg_file()', 'Ending...');
+
+	0;
+}
+
+################################################################################
+# Recovery process for i-MSCP cfg settings who's have empty value
+#
+# If a specific dialog subroutine exists for handling the configuration setting,
+# it is called. Otherwise, a error message is returned to the user and the
+# program ends. If a configuration setting is not supported by the recovery
+# process, those who were already corrected are registered before the program
+# ends.
+#
+# The user can also choose not to run the recovery process. In this
+# case, the update process ends.
+#
+# @param ref to an array of i-MSCP setting names
+# @return int 0 on success, other on failure
+#
+sub cfg_recovery_process {
+
+	push_el(\@main::el, 'check_imscp_cfg_file()', 'Starting...');
+
+	# Reference to an array of settings that have unallowed empty value
+	my $settings = shift;
+	my ($rs, $msg, $rdata, $warn_msg);
+
+	# Map each setting to the appropriate dialog subroutine and the corresponding
+	# main::ua key name
+	#
+	# TODO:
+	#  - Add a trigger to check database connection if related settings are
+	#    changed
+	#  - Add a subroutine for the 'BASE_SERVER_VHOST' to prevent errors if the
+	#    DNS file doesn't exist
+	my $recovery_dispatcher = {
+		DEFAULT_ADMIN_ADDRESS => [\&ask_admin_email, 'admin_email'],
+		SERVER_HOSTNAME => [\&ask_hostname, 'hostname'],
+		BASE_SERVER_IP => [\&ask_eth, 'eth_ip'],
+		BASE_SERVER_VHOST => [\&ask_vhost, 'admin_vhost'],
+		DATABASE_HOST => [\&ask_db_host, 'db_host'],
+		DATABASE_NAME => [\&ask_db_name, 'db_name'],
+		DATABASE_USER => [\&ask_db_user, 'db_user'],
+		PHP_FASTCGI => [\&ask_fastcgi, 'php_fastcgi'],
+		PHP_TIMEZONE => [\&ask_timezone, 'php_timezone'],
+		LOCAL_DNS_RESOLVER => [\&ask_resolver, 'resolver']
+	};
+
+	# If several parameters are set to an empty value, we should ensure that the
+	# user has installed i-MSCP by asking this question
+	if (scalar(@$settings) >= 3) {
+		print colored(['bold yellow'], "\n\n\t[WARNING] ").
+			"Your i-MSCP configuration file has several settings set\n" .
+			"\tto an empty value!\n";
+
+		do {
+			print "\n\tAre you sure you have installed i-MSCP ? [Y/n]: ";
+			chomp($rdata = <STDIN>);
+		} while($rdata !~ /^(|y|n)$/i);
+
+		$msg = colored(['bold blue'], "\n\t[NOTICE] ") .
+			"The program ends now!\n\tPlease, run '$main::cfg{'ROOT_DIR'}/" .
+			"engine/setup/imscp-setup' instead!\n";
+
+		($rdata !~ /^n$/i) or exit_msg(1, $msg);
+	}
+
+	print colored(['bold yellow'], "\n\n\t[WARNING] ") .
+		"Your i-MSCP configuration file has missing parameters!\n" .
+		"\tThe update script will switch to recovery/upgrade mode now...\n";
+
+	do {
+		print "\n\tDo you want to continue [Y/n]: ";
+		chomp($rdata = <STDIN>);
+	} while($rdata !~ /^(|y|n)$/i);
+
+	# Exit with a notice if the user chooses to abort the recovery/update process
+	($rdata !~ /^n$/i) or exit_msg(0,
+		colored(['bold blue'], "\n\t[NOTICE] ") .
+		"The recovery/upgrade process was aborted by user...\n"
+	);
+
+	# For each setting, call the subroutine dialouge if available, otherwise,
+	# saves the value already changed and stops the program with an specific
+	# message.
+	for (@$settings) {
+		# If the recovery process can handle the setting
+		if (exists $recovery_dispatcher->{$_}) {
+
+			# Call related dialog subroutine
+			do {
+				($rs, $warn_msg) = &{$recovery_dispatcher->{$_}[0]}();
+				print STDERR $warn_msg if(defined($warn_msg) && $warn_msg ne '');
+			} while($rs != 0);
+
+			# Set the new configuration value
+			$rs = set_conf_val($_, $main::ua{$recovery_dispatcher->{$_}[1]});
+			return $rs if ($rs != 0);
+
+		# Otherwise, the program will end here with an error message
+		} else {
+			# Store already changed values in imscp.conf
+			$rs = store_conf();
+			return $rs if($rs != 0);
+
+			# Updates the reference file if needed
+			if($main::cfg_file ne $main::ua{'old_cfg_file'}) {
+				$rs = sys_command_rs(
+					"$main::cfg{CMD_CP} -f $main::cfg_file $main::ua{'old_cfg_file'}"
+				);
+				return $rs if($rs != 0);
+			}
+
+			$msg = colored(['bold blue'], "\n\t[NOTICE] ") .
+				"The setting '$_' can't be handle by\n\tthe recovery process!" .
+				"\n\n\tPlease, set it manually in your $main::ua{'old_cfg_file'}".
+				 "and\n\tre-run this script.\n\n\tThe program will end now !\n";
+
+			exit_msg(1, $msg);
+		}
+	}
+
+	# Store new configuration settings values and reload the imscp.conf
+	$rs = store_conf();
+	return $rs if($rs != 0);
+
+	# Updates the reference file if needed
+	if($main::cfg_file ne $main::ua{'old_cfg_file'}) {
+		$rs = sys_command_rs(
+			"$main::cfg{CMD_CP} -f $main::cfg_file $main::ua{'old_cfg_file'}"
+		);
+		return $rs if($rs != 0);
+	}
+
+	print colored(['bold blue'], "\n\t[NOTICE] ") .
+		" The recovery/upgrade process ended successfully!\n\tThe update " .
+		"process will continue normally now...\n\n";
+
+	print "\tPlease, type 'Enter' to continue...";
+	$rdata = <STDIN>;
+
+	push_el(\@main::el, 'check_imscp_cfg_file()', 'Ending...');
+
+	-5;
+}
+
+################################################################################
+# Update i-MSCP database schema
+#
+# @return int 1 on success, other on failure
+#
+sub update_database_schema {
+
+	push_el(\@main::el, 'update_database_schema()', 'Starting...');
+
+	my ($rs, $rdata) = get_file("$main::cfg{'ROOT_DIR'}/engine/setup/updDB.php");
+	return $rs if($rs != 0);
+
+	if($rdata =~ s/{GUI_ROOT_DIR}/$main::cfg{'GUI_ROOT_DIR'}/) {
+		$rs = save_file("$main::cfg{'ROOT_DIR'}/engine/setup/updDB.php", $rdata);
+		return $rs if($rs != 0);
+	}
+
+	$rs = sys_command_rs(
+		"$main::cfg{'CMD_PHP'} $main::cfg{'ROOT_DIR'}/engine/setup/updDB.php"
+	);
+	return $rs if($rs !=0);
+
+	push_el(\@main::el, 'update_database_schema()', 'Ending...');
+
+	0;
+}
+
+################################################################################
+# Rebuild all customers configuration files
+#
+# @return int 1 on success, other on failure
+#
+sub rebuild_customers_cfg {
+
+	push_el(\@main::el, 'rebuild_customers_cfg()', 'Starting...');
+
+	# Sets the DSN
+	@main::db_connect = (
+		"DBI:mysql:$main::db_name:$main::db_host", $main::db_user, $main::db_pwd
+	);
+
+	# We force reconnection to the database by removing the current
+	$main::db = undef;
+
+	my $tables = {
+		domain => 'domain_status', domain_aliasses => 'alias_status',
+		subdomain => 'subdomain_status', subdomain_alias => 'subdomain_alias_status',
+		mail_users => 'status', htaccess => 'status', htaccess_groups => 'status',
+		htaccess_users => 'status'
+	};
+
+	# Set status as 'change'
+	while (my ($table, $field) = each %$tables) {
+		my ($rs) = doSQL(
+			"
+				UPDATE
+					$table
+				SET
+					$field = 'change'
+				WHERE
+					($field = 'ok' OR $field = 'disabled')
+				;
+			"
+		);
+		return $rs if ($rs != 0);
+	}
+
+	# Unlock is needed here to be able to launch the imscp-rqst-mngr script
+	close $main::fh_lock_file if defined $main::fh_lock_file;
+
+	my $rs = sys_command("perl $main::imscp_rqst_mngr update");
+	return $rs if ($rs != 0);
+
+	push_el(\@main::el, 'rebuild_customers_cfg()', 'Ending...');
+
+	0;
+}
+
+################################################################################
+# Update old disabled domain style to new
+#
+# This method is called only if the BuildDate of the current
+# i-MSCP version installed is less than or equal to 20100228
+# @Since 1.0.0
+#
+# @return int 0 on success, other on failure
+#
+sub update_old_disabled_dmn_layout {
+
+	push_el(\@main::el, 'update_old_disabled_dmn_layout()', 'Starting...');
+
+	my ($rs, $rdata);
+
+	my $httpd_uid = getpwnam $main::cfg{'APACHE_USER'};
+	my $httpd_gid = getgrnam $main::cfg{'APACHE_GROUP'};
+	my $log_file = '/tmp/imscp-update-disabled_layout.log';
+
+	my $dsd_dmn_skel_dir = "$main::cfg{'GUI_ROOT_DIR'}/domain_disable_page";
+
+	# Find all disabled domains and  update the layout for each of them
+	# (eg /var/www/virtual/domain.tld.disabled)
+	foreach(map{m@(.*\.disabled)$@} glob "$main::cfg{'APACHE_WWW_DIR'}/*") {
+
+		# Disabling the DocumentRoot.
+		# Here, we verify that it has not already been done to allow the error
+		# recovery if the process fail
+		if(-e "$_/htdocs" && !-e "$_/htdocs.disabled") {
+			$rs = sys_command_rs(
+				"$main::cfg{'CMD_MV'} $_/htdocs $_/htdocs.disabled "
+			);
+			return $rs if($rs != 0);
+		}
+
+		# Copy the directory that contain the layout for disabled domains
+		$rs = sys_command_rs(
+			"$main::cfg{CMD_CP} -TRfp $dsd_dmn_skel_dir $_/htdocs"
+		);
+		return $rs if($rs != 0);
+
+		## Building the disabled page - Begin
+
+		# Get toUnicode domain name
+		my $unicode_dmn_name = undef;
+
+		if(m@.*/(.*)\.disabled$@) {
+			$unicode_dmn_name = idn_to_unicode($1, 'utf-8');
+		} else {
+			push_el(
+				\@main::el, 'update_old_disabled_dmn_layout()',
+				"[ERROR] Unable to retrieve the domain name from the path!"
+			);
+
+			return -1;
+		}
+
+		# Get the disabled raw page
+		($rs, $rdata) = get_file("$_/htdocs/index.html");
+		return $rs if ($rs != 0);
+
+		# Prepare tags
+		my %tag_hash = (
+			'{DOMAIN_NAME}' => $unicode_dmn_name,
+			'{BASE_SERVER_VHOST}' => $main::cfg{'BASE_SERVER_VHOST'}
+		);
+
+		# Replace tags
+		($rs, $rdata) = prep_tpl(\%tag_hash, $rdata);
+		return $rs if ($rs != 0);
+
+		# Store the file with proper permissions
+		$rs = store_file(
+			"$_/htdocs/index.html", $rdata, $main::cfg{'APACHE_USER'},
+			$main::cfg{'APACHE_GROUP'}, 0644
+		);
+		return $rs if ($rs != 0);
+
+		# Set permissions for the new DocumentRoot
+		$rs = setfmode(
+			"$_/htdocs", $main::cfg{'APACHE_USER'}, $main::cfg{'APACHE_GROUP'},
+			0755
+		);
+		return $rs if ($rs != 0);
+
+		# Set permissions for htdocs/images directory
+		$rs = setfmode(
+			"$_/htdocs/images", $main::cfg{'APACHE_USER'},
+			$main::cfg{'APACHE_GROUP'}, 0755
+		);
+		return $rs if ($rs != 0);
+
+		# Set permissions for all files under .../htdocs/images
+		chmod 0644, glob "$_/htdocs/images/*";
+		chown $httpd_uid, $httpd_gid, glob "$_/htdocs/images/*";
+
+		# Move (eg /var/www/virtual/domain.tld.disabled)
+		# To (eg /var/www/virtual/domain.tld)
+		if(m@(.*)\.disabled$@) {
+			$rs = sys_command_rs("$main::cfg{'CMD_MV'} $_ $1");
+			return $rs if($rs != 0);
+		} else {
+			push_el(
+				\@main::el, 'update_old_disabled_dmn_layout()',
+				"[ERROR] Unable to retrieve the domain name path!"
+			);
+
+			return -1;
+		}
+	}
+
+	push_el(\@main::el, 'update_old_disabled_dmn_layout()', 'Ending...');
+
+	0;
+}
+
+################################################################################
+#                            High level subroutines                            #
+################################################################################
+
+################################################################################
+# Starting update process
+#
+# @return void
+#
+sub update_startup {
+
+	push_el(\@main::el, 'update_startup()', 'Starting...');
+
+	# Fixing umask for logfiles permissions on creation (0640)
+	umask(027);
+
+	# Deleting log file if one exist
+	del_file('/tmp/imscp-setup.log');
+
+	# Ensuring that imscp-rqst-mngr is not running
+	# Note: The lock file will be released when needed
+	if(lock_system()) {
+		exit_msg(
+			-1, colored(['bold red'], "[ERROR] ") . "Unable to acquire lock!"
+		)
+	}
+
+	if(-e '/tmp/imscp-backup-all.lock') {
+		exit_msg(
+			0, colored(['bold blue'], '[NOTICE] ') .
+			"Backup engine is currently running. Aborting..."
+		);
+	}
+
+	push_el(\@main::el, 'update_startup()', 'Ending...');
+}
+
+################################################################################
+# Performs all update tasks
+#
+# @return void
+#
+sub update_engine {
+
+	push_el(\@main::el, 'update_engine()', 'Starting...');
+
+	##  Starting user dialog
+	user_dialog();
+
+	system('clear');
+	spacer();
+
+	# Starting i-MSCP installation
+	title('Starting i-MSCP update');
+
+	## Stopping services
+	subtitle('Stopping services: ');
+	stop_services();
+	print_status(0);
+
+	spacer();
+
+	## i-MSCP main configuration file - Begin
+	title('i-MSCP main configuration file');
+
+	# Loading old i-MSCP configuration file
+	subtitle('Loading old i-MSCP configuration file:');
+	my $rs = load_old_imscp_cfg();
+	print_status($rs, 'exit_on_error');
+
+	# Update i-MSCP configuration file
+	subtitle('Update i-MSCP configuration file:');
+	$rs = update_imscp_cfg();
+	print_status($rs, 'exit_on_error');
+
+	# Check configuration file
+	subtitle('Check i-MSCP configuration file:');
+	$rs = check_imscp_cfg_file();
+	$rs = 0 if($rs == -5);
+	print_status($rs, 'exit_on_error');
+
+	## Starting dist. maintainer pre-installation script if one exists
+	if(-e "$main::cfg{'ROOT_DIR'}/engine/setup/preinst") {
+		spacer();
+
+		title("Pre-installation tasks for $main::cfg{'DistName'}");
+		my $rs = preinst('upgrade');
+
+		exit_msg($rs) if ($rs != 0);
+	}
+
+	spacer();
+
+	## i-MSCP database
+	title('i-MSCP database');
+	subtitle('Update i-MSCP database schema:');
+	$rs = update_database_schema();
+	print_status($rs, 'exit_on_error');
+
+	spacer();
+
+	# i-MSCP Services configuration files
+	title('Rebuilding all services configuration files');
+	setup_services_cfg();
+
+	spacer();
+
+	## i-MSCP gui configuration files
+	title('Rebuilding all GUI configuration files');
+	setup_gui_cfg();
+
+	spacer();
+
+	## i-MSCP customers configuration files
+	title('Rebuilding all customers configuration files');
+	subtitle('Please wait, this may take some time:');
+
+	# First, we update old disabled domain style to new
+	if($main::cfg{'BuildDate'} <= 20100331) {
+		$rs = update_old_disabled_dmn_layout();
+		# Acts only if action was failed
+		print_status($rs, 'exit_on_error') if($rs != 0);
+	}
+
+	## Rebuilding all customers configuration files
+	$rs = rebuild_customers_cfg();
+	print_status($rs, 'exit_on_error');
+
+	spacer();
+
+	## Additional tasks
+	title('Additional tasks');
+	additional_tasks();
+
+	## Starting dist. maintainer post-installation script if one exists
+	if(-e "$main::cfg{'ROOT_DIR'}/engine/setup/postinst") {
+		spacer();
+
+		title("Post-installation tasks for $main::cfg{'DistName'}");
+		$rs = postinst('configure');
+
+		exit_msg($rs) if ($rs != 0);
+	}
+
+	spacer();
+
+	## i-MSCP files permissions
+	title('Permissions setup');
+	set_permissions();
+
+	spacer();
+
+	title('Finishing update');
+
+	## Stating services
+	subtitle('Starting services: ');
+	start_services();
+	print_status(0);
+
+	spacer();
+
+	push_el(\@main::el, 'update_engine()', 'Ending...');
+}
+
+################################################################################
+# Shutting down update process
+#
+# @return void
+#
+sub update_shutdown {
+
+	push_el(\@main::el, 'update_shutdown()', 'Starting...');
+
+	print colored(['bold underline'],
+		"\n\tCongratulations, you updated i-MSCP" .
+		"'$main::cfg{'Version'}' successfully!\n\n"),
+
+		"\tType http://$main::cfg{'BASE_SERVER_VHOST'} into your browser to " .
+		"log in\n\tto your panel.\n\n";
+
+	push_el(\@main::el, 'update_shutdown()', 'Ending...');
+}
+
+################################################################################
+#                                Main program                                  #
+################################################################################
+
+update_startup();
+update_engine();
+update_shutdown();
+
+exit 0;

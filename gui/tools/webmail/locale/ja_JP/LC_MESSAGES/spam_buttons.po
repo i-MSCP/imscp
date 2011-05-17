@@ -1,0 +1,66 @@
+# Japanese (ja_JP) spam_buttons translation (SquirrelMail plugin)
+# Copyright (c) 2005-2009 The SquirrelMail Project Team
+# This file is distributed under the same license as the SquirrelMail package.
+# Andre Nicholson <andre@neo-anime.org>, 2005.
+# $Id: spam_buttons.po 13693 2009-05-14 00:26:43Z jervfors $
+msgid ""
+msgstr ""
+"Project-Id-Version: spam_buttons\n"
+"POT-Creation-Date: 2005-03-09 12:35-0800\n"
+"PO-Revision-Date: 2005-09-23 23:17-0500\n"
+"Last-Translator: Andre Nicholson <andre@neo-anime.org>\n"
+"Language-Team: Japanese  <squirrelmail-i18n@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=euc-jp\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Server replied: "
+msgstr "サーバー応答："
+
+msgid "Spam"
+msgstr "スパム"
+
+msgid "Not Spam"
+msgstr "スパムではない"
+
+msgid "Successfully reported as spam"
+msgstr "順調にスパムのように届け出ました"
+
+msgid "Successfully reported as non-spam"
+msgstr "順調にスパムじゃないのように届け出ました"
+
+msgid "ERROR:"
+msgstr "エラー："
+
+msgid ""
+"ERROR: Counld not open temp file; check attachments directory permissions"
+msgstr "エラー：テンポラリファイルを開くことではありません。アタッチメントのディレクトリパーミッションをチェックします"
+
+#, php-format
+msgid "ERROR %d: Problem reporting message ID %d: %s"
+msgstr "エラー %d：%d のメッセージ識別子を届け出た問題：%s"
+
+#, php-format
+msgid "Error: Draft folder %s does not exist."
+msgstr "エラー：%s というの Draft フォルダがありません。"
+
+msgid "Message Details"
+msgstr "メッセージ詳細"
+
+msgid "Bodystructure"
+msgstr "本文構造"
+
+msgid "Entity"
+msgstr "本体"
+
+msgid "Content-Type"
+msgstr "内容型"
+
+msgid "Name"
+msgstr "名"
+
+msgid "Encoding"
+msgstr "コード化"
+
+msgid "RFC822 Message body"
+msgstr "RFC822 でメール本文"

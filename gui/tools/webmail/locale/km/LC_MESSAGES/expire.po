@@ -1,0 +1,113 @@
+# Khmer (km) expire Translation
+# Auk Piseth <piseth_dv@khmeros.info>, 2008.
+# Khoem Sokhem <khoemsokhem@khmeros.info>, 2009.
+# Copyright (c) 2008-2009 KhmerOS Project
+# Copyright (c) 1999-2009 The SquirrelMail Project Team
+msgid ""
+msgstr ""
+"Project-Id-Version: expire\n"
+"Report-Msgid-Bugs-To: Florian Daeumling <jam@qv90.de>\n"
+"POT-Creation-Date: 2006-05-13 11:09+0200\n"
+"PO-Revision-Date: 2009-04-24 09:24+0700\n"
+"Last-Translator: Khoem Sokhem <khoemsokhem@khmeros.info>\n"
+"Language-Team: Khmer <en@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: functions.php:28
+#, php-format
+msgid "ERROR (%s): Can't load config file"
+msgstr "កំហុស (%s) ៖ មិន​អាច​ផ្ទុក​ឯកសារ​កំណត់​រចនា​សម្ព័ន្ធ​បានទេ"
+
+#: functions.php:49
+msgid "Cannot create option directory!"
+msgstr "មិនអាច​បង្កើត​ថត​ជម្រើស​បានទេ !"
+
+#: functions.php:50 functions.php:57 functions.php:63 functions.php:181
+#: functions.php:187 functions.php:230
+msgid "Please contact system administrator."
+msgstr "សូម​ទាក់ទង​អ្នកគ្រប់គ្រង​ប្រព័ន្ធ ។"
+
+#: functions.php:56
+msgid "Cannot create option file!"
+msgstr "មិនអាច​បង្កើត​ឯកសារ​ជម្រើស !"
+
+#: functions.php:62 functions.php:186
+msgid "Cannot create temporary file!"
+msgstr "មិនអាច​បង្កើត​ឯកសារ​បណ្ដោះ​អាសន្ន​បានទេ !"
+
+#: functions.php:100
+msgid "Expiration"
+msgstr "ផុត​កំណត់"
+
+#: functions.php:106 functions.php:125
+msgid "Expire emails in folder"
+msgstr "ផុត​កំណត់​អ៊ីមែល​ក្នុង​សារ"
+
+#: functions.php:108 functions.php:127
+msgid "Select a folder"
+msgstr "ជ្រើស​ថត"
+
+#: functions.php:112
+msgid "after"
+msgstr "បន្ទាប់"
+
+#: functions.php:114
+msgid "days"
+msgstr "ថ្ងៃ"
+
+#: functions.php:118
+msgid "Define"
+msgstr "កំណត់"
+
+#: functions.php:130
+#, php-format
+msgid "%s after %s days"
+msgstr "%s បន្ទាប់​ពី %s ថ្ងៃ"
+
+#: functions.php:135
+msgid "Delete"
+msgstr "លុប"
+
+#: functions.php:143
+msgid "Error"
+msgstr "កំហុស"
+
+#: functions.php:168
+msgid "This folder definition cannot be modified"
+msgstr "ការ​កំណត់​ថត​នេះ មិនអាច​កែប្រែ​បានទេ"
+
+#: functions.php:180
+msgid "Cannot read option file!"
+msgstr "មិនអាច​អាន​ឯកសារ​ជម្រើស​បាន​ទេ !"
+
+#: functions.php:198
+#, php-format
+msgid "Expiration modified successfully for folder %s."
+msgstr "បាន​កែប្រែ​ការ​ផុត​កំណត់​ដោយ​ជោគជ័យ​សម្រាប់​ថត %s ។"
+
+#: functions.php:211
+#, php-format
+msgid "Expiration deleted successfully for folder %s."
+msgstr "បាន​លុប​ការ​ផុត​កំណត់​ដោយ​ជោគជ័យ​សម្រាប់​ថត %s ។"
+
+#: functions.php:220
+#, php-format
+msgid "Expiration set successfully for folder %s."
+msgstr "បាន​​កំណត់​ការ​ផុតកំណត់​ដោយ​ជោគជ័យ​សម្រាប់​ថត %s ។"
+
+#: functions.php:229
+msgid "Cannot replace option file!"
+msgstr "មិនអាច​ជំនួស​ឯកសារ​ជម្រើស​បានទេ !"
+
+#: options.php:27
+msgid "You have not selected a folder."
+msgstr "អ្នក​មិន​បាន​ជ្រើស​ថត​ទេ ។"
+
+#: options.php:38
+msgid "You have not entered a valid number of days."
+msgstr "អ្នក​មិនបាន​បញ្ចូល​ចំនួន​ថ្ងៃ​ត្រឹមត្រូវ​ទេ ។"
+

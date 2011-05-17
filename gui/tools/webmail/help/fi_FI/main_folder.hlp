@@ -1,0 +1,44 @@
+<chapter>
+   <title>
+      Viestilista
+   </title>
+   <summary>
+      Nimi voi tuntua oudolta mutta tämä on yksinkertaisesti lista
+      viesteistä kansiossa.
+   </summary>
+</chapter>
+
+<section>
+   <title>
+      Viestilista
+   </title>
+   <description>
+      <p>
+      Kun klikkaat kansion nimeä kansiolistalta niin sen kansion viestit
+      listataan näyttöön. Näytössä on myös ilmoitus siitä montako viestiä
+      sivulla on listattu ja montako viestiä kansiossa on kaikkiaan.
+      </p><p>
+      Esimerkiksi: Näytössä viestit <B>1 - 2</B> (2 Kaikkiaan)
+      </p><p>
+      Huomaa että viestien kokonaismäärä ei yleensä ole sama kuin ei luettujen
+      viestien määrä (kansiolistalla kansion nimen vieressä, jos sen
+      näyttäminen on asetuksissa valittu).
+      </p><p>
+      Seuraavana ruudulla on menupalkki jonka valintoja käyttäen voit siirtää
+      viestejä tästä kansiosta johonkin toiseen kansioon, tai poistaa viestejä. 
+      </p><p>
+          Listalla on otsikkotietoja lähettäjästä, päivämäärästä ja
+          aiheesta. Näitten esitystä voi muokata indeksijärjestysasetuksista.
+          <b>Huomaa:</b> Listalla saattaa olla myös pieni ruutu jossa voi
+          olla "+" "!" tai "A". Jos ruudussa on "+" merkki se tarkoittaa sitä
+          että viestissä on liitteitä. "A" tarkoittaa sitä että olet
+          vastannut viestiin. "!" tarkoittaa sitä että lähettäjä on
+          merkinnyt viestin tärkeäksi (urgent tai high priority).
+      </p><p>
+      Loppu onkin sitten viestien aiheita. Huomaat että ei luetut viestit
+      ovat <b>paksummalla</b> tekstillä kuin luetut. Vasemmassa laidassa on
+      valintaruutu joka merkitsemällä viesti voidaan poistaa tai siitää
+      kuten edellä on kerrottu.
+      </p>
+   </description>
+</section>
