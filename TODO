@@ -1,5 +1,0 @@
-Database schema:
-	- Tables mail and protected zone
-
-Routes
-	- Avoid to define all routes by using default routes
