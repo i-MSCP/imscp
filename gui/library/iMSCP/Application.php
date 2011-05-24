@@ -1,3 +1,3 @@
 <?php
 
-class iPMS_Application {}
+class iMSCP_Application {}
