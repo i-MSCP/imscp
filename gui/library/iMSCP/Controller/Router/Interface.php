@@ -39,31 +39,61 @@
 interface iMSCP_Controller_Router_Interface
 {
     /**
-     * Sets Front Controller object.
+     * Adds route to the routes stack.
      *
      * @abstract
-     * @param iMSCP_Controller_Front $controller
+     * @param iMSCP_Controller_Router_Route_Interface $route
      * @return iMSCP_Controller_Router_Interface
      */
-    public function setFrontController(iMSCP_Controller_Front $controller);
+    public function addRoute(iMSCP_Controller_Router_Route_Interface $route);
 
     /**
-     * Returns Front Controller object.
+     * Adds routes to the routes stack.
      *
      * @abstract
-     * @return iMSCP_Controller_Front
+     * @param array $routes
+     * @return iMSCP_Controller_Router_Interface
      */
-    public function getFrontController();
+    public function addRoutes(array $routes);
+
+    /**
+     * Remove a route from the routes stack.
+     *
+     * @abstract
+     * @thrown iMSCP_Controller_Router if the route name is not defined in the routes stack.
+     * @param  string $name route name
+     * @return iMSCP_Controller_Router_Interface
+     */
+    public function removeRoute($name);
+
+    /**
+     * Check if a named route is defined in the routes stack.
+     *
+     * @abstract
+     * @param  string $name route name
+     * @return bool
+     */
+    public function hasRoute($name);
+
+    /**
+     * Returns a route from the routes stack.
+     *
+     * @abstract
+     * @throws iMSCP_Controller_Router_Exception if the route name is not defined in the routes stack.
+     * @param  string $name route name
+     * @return iMSCP_Controller_Router_Route_Interface
+     */
+    public function getRoute($name);
 
     /**
      * Route a request and sets its controller and action.
      *
-     * If not route was found, an exception is thrown.
+     * If not route match the request, an exception is thrown.
      *
      * @abstract
      * @throws iMSCP_Controller_Router_Exception
-     * @param iMSCP_Controller_Request_Interface $dispatcher
+     * @param iMSCP_Controller_Request_Interface $request
      * @return iMSCP_Controller_Request_Interface
      */
-    public function route(iMSCP_Controller_Request_Interface $dispatcher);
+    public function route(iMSCP_Controller_Request_Interface $request);
 }
