@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * @category    iMSCP
- * @package     iMSCP_Application
+ * @package     iMSCP_Db
  * @copyright   2011 by i-MSCP Team
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     0.0.1
@@ -26,15 +26,18 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
+/** @see iMSCP_Exception */
+require_once 'iMSCP/Exception.php';
+
 /**
  * Db Exception class
  *
  * @category    iMSCP
- * @package     iMSCP_Application
+ * @package     iMSCP_Db
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     0.0.1
  */
-class iMSCP_Application_Exception extends iMSCP_Exception
+class iMSCP_Db_Exception extends iMSCP_Exception
 {
 
 }

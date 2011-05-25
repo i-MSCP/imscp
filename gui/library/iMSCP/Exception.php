@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * @category    iMSCP
- * @package     iMSCP_Application
+ * @package     iMSCP
  * @copyright   2011 by i-MSCP Team
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     0.0.1
@@ -27,14 +27,14 @@
  */
 
 /**
- * Db Exception class
+ * Exception class
  *
  * @category    iMSCP
- * @package     iMSCP_Application
+ * @package     iMSCP
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     0.0.1
  */
-class iMSCP_Application_Exception extends iMSCP_Exception
+class iMSCP_Exception extends Exception
 {
 
 }
