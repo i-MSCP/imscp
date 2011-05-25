@@ -27,7 +27,7 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
-/** @see Zend_Application_Exception */
+/** @see iMSCP_Application_Exception */
 require_once 'iMSCP/Application/Exception.php';
 
 /**
