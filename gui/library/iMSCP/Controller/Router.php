@@ -49,7 +49,7 @@ class iMSCP_Controller_Router implements iMSCP_Controller_Router_Interface
     /**
      * Retrieve Front Controller
      *
-     * @return Zend_Controller_Front
+     * @return iMSCP_Controller_Front
      */
     public function getFrontController()
     {

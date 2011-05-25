@@ -43,7 +43,7 @@ interface iMSCP_Controller_Router_Interface
      *
      * @abstract
      * @param iMSCP_Controller_Front $controller
-     * @return Zend_Controller_Router_Interface
+     * @return iMSCP_Controller_Router_Interface
      */
     public function setFrontController(iMSCP_Controller_Front $controller);
 

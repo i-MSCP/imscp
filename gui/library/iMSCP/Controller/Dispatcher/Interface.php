@@ -51,7 +51,7 @@ interface iMSCP_Controller_Dispatcher_Interface
      * Returns response object if one is set.
      *
      * @abstract
-     * @return Zend_Controller_Response_Abstract|null
+     * @return iMSCP_Controller_Response_Abstract|null
      */
     public function getResponse();
 
