@@ -37,7 +37,7 @@
 interface iMSCP_Uri_Interface
 {
     /**
-     * Returns a string representation of the URI
+     * Returns a string representation of the URI.
      *
      * @abstract
      * @return string
@@ -86,7 +86,8 @@ interface iMSCP_Uri_Interface
     public function getPort();
 
     /**
-     * Return the URI path component
+     * Returns the URI path component.
+     *
      * @abstract
      * @return string
      */
@@ -109,7 +110,7 @@ interface iMSCP_Uri_Interface
     public function getFragment();
 
     /**
-     * Is valid URI?
+     * Is a valid URI?
      *
      * @abstract
      * @return bool
