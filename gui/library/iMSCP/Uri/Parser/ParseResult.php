@@ -19,6 +19,7 @@
  *
  * @category    iMSCP
  * @package     iMSCP_URI
+ * @subpackage  parser
  * @copyright   2011 by i-MSCP Team
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     SVN: $Id$
@@ -26,17 +27,54 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
-/** @see iMSCP_Exception */
-require_once 'iMSCP/Exception.php';
+/** @see iMSCP_Uri_Parser_ResultMixin */
+require_once 'iMSCP/Uri/Parser/ResultMixin.php';
 
 /**
- * Uri Exception class
- *
+ * Parser Parse Result class.
+ * 
  * @category    iMSCP
  * @package     iMSCP_URI
+ * @subpackage  parser
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     0.0.1
  */
-class iMSCP_Uri_Exception extends iMSCP_Exception
+class iMSCP_Uri_Parser_ParseResult extends iMSCP_Uri_Parser_ResultMixin
 {
+	/**
+	 * Constructor.
+	 *
+	 * @param string $scheme Scheme component
+	 * @param string $authority Authority component
+	 * @param string $path Path component
+	 * @param string $params Param component
+	 * @param string $query Query component
+	 * @param string $fragment Fragment component
+	 */
+    public function __construct($scheme, $authority, $path, $params, $query,
+        $fragment)
+    {
+        parent::__construct(array($scheme,$authority, $path, $params, $query,
+                                 $fragment));
+    }
 
+	/**
+	 * Returns params component.
+	 *
+	 * @return string
+	 */
+	public function getParams()
+	{
+		return $this[3];
+	}
+
+	/**
+	 * Return string representation of this object.
+	 *
+	 * @return string
+	 */
+	public function getUri()
+	{
+		return iMSCP_Uri_Parser::getInstance()->unparseUri($this);
+	}
 }

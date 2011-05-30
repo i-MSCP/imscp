@@ -27,16 +27,18 @@
  */
 
 /** @see iMSCP_Exception */
-require_once 'iMSCP/Exception.php';
+require_once 'iMSCP/Uri/Exception.php';
 
 /**
- * Uri Exception class
+ * Uri Parser Exception class
  *
  * @category    iMSCP
  * @package     iMSCP_URI
+ * @subpackage  Parser
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     0.0.1
  */
-class iMSCP_Uri_Exception extends iMSCP_Exception
+class iMSCP_Uri_Parser_Exception extends iMSCP_Uri_Exception
 {
 
 }
