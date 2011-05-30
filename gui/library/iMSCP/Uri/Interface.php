@@ -21,7 +21,7 @@
  * @package     iMSCP_URI
  * @copyright   2011 by i-MSCP Team
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     0.0.1
+ * @version     SVN: $Id$
  * @link        http://www.i-mscp.net i-mscp Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
@@ -36,16 +36,11 @@
  */
 interface iMSCP_Uri_Interface
 {
-    /**
-     * Returns a string representation of the URI.
-     *
-     * @abstract
-     * @return string
-     */
-    public function getUri();
+
+    # Getter that access the basic components of the URI:
 
     /**
-     * Returns the URI scheme component.
+     * Returns the scheme component.
      *
      * @abstract
      * @return string
@@ -53,40 +48,15 @@ interface iMSCP_Uri_Interface
     public function getScheme();
 
     /**
-     * Returns username from the User Information Uri subcomponent of the URI Authority component.
+     * Returns the authority component.
      *
-     * @abstract
-     * @return string|null
-     */
-    public function getUsername();
-
-    /**
-     * Returns password from User Information subcomponent of the URI Authority component.
-     *
-     * @abstract
-     * @return string|null
-     */
-    public function getPassword();
-
-    /**
-     * Returns the host from the URI Authority component.
-     *
-     * Returns host from
      * @abstract
      * @return string
      */
-    public function getHost();
+    public function getAuthority();
 
     /**
-     * Returns the port from the URI authority component.
-     *
-     * @abstract
-     * @return int
-     */
-    public function getPort();
-
-    /**
-     * Returns the URI path component.
+     * Returns the path component.
      *
      * @abstract
      * @return string
@@ -109,11 +79,47 @@ interface iMSCP_Uri_Interface
      */
     public function getFragment();
 
+    # Additional attributes that provide access to parsed-out portions
+    # of the authority:
+
     /**
-     * Is a valid URI?
+     * Returns username from userinfo subcomponent.
      *
      * @abstract
-     * @return bool
+     * @return string|null
      */
-    public function isValid();
+    public function getUsername();
+
+    /**
+     * Returns password from userinfo subcomponent.
+     *
+     * @abstract
+     * @return string|null
+     */
+    public function getPassword();
+
+    /**
+     * Returns the hostname from authority component.
+     *
+     * Returns host from
+     * @abstract
+     * @return string
+     */
+    public function getHostname();
+
+    /**
+     * Returns the port from authority component.
+     *
+     * @abstract
+     * @return int
+     */
+    public function getPort();
+
+    /**
+     * Returns a string representation of an URI.
+     *
+     * @abstract
+     * @return string
+     */
+    public function getUri();
 }
