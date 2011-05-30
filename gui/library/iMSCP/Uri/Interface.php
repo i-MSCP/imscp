@@ -36,8 +36,7 @@
  */
 interface iMSCP_Uri_Interface
 {
-
-    # Getter that access the basic components of the URI:
+    # Getters that access the basic components of the URI:
 
     /**
      * Returns the scheme component.
@@ -79,11 +78,11 @@ interface iMSCP_Uri_Interface
      */
     public function getFragment();
 
-    # Additional attributes that provide access to parsed-out portions
+    # Additional getters that provide access to parsed-out portions
     # of the authority:
 
     /**
-     * Returns username from userinfo subcomponent.
+     * Returns user name from userinfo subcomponent.
      *
      * @abstract
      * @return string|null
