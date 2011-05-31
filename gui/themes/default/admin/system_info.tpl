@@ -139,6 +139,7 @@
                 <!-- EDP: disk_list_item -->
             </table>
             <!-- EDP: disk_list -->
+            <br />
         </div>
 
         <div class="footer">

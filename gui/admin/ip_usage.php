@@ -37,6 +37,7 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
@@ -45,19 +46,20 @@ $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/ip_usage.tpl');
 $tpl->define_dynamic('ip_row', 'page');
 $tpl->define_dynamic('domain_row', 'page');
 
-$tpl->assign(
-	array(
-		'TR_ADMIN_IP_USAGE_TITLE'		=> tr('i-MSCP - Admin/IP Usage'),
-		'THEME_COLOR_PATH'				=> "../themes/{$cfg->USER_INITIAL_THEME}",
-		'THEME_CHARSET'					=> tr('encoding'),
-		'ISP_LOGO'						=> get_logo($_SESSION['user_id'])
-	)
-);
+$tpl->assign(array(
+                  'TR_ADMIN_IP_USAGE_TITLE' => tr('i-MSCP - Admin/IP Usage'),
+                  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+                  'THEME_CHARSET' => tr('encoding'),
+                  'ISP_LOGO' => get_logo($_SESSION['user_id'])));
 
 /**
  * Generate List of Domains assigned to IPs
+ *
+ * @param  iMSCP_pTemplate $tpl
+ * @param  iMSCP_Database $sql
+ * @return void
  */
-function listIPDomains(&$tpl, &$sql) {
+function listIPDomains($tpl, $sql) {
 	
 	$query = "
 		SELECT
@@ -65,16 +67,17 @@ function listIPDomains(&$tpl, &$sql) {
 			`ip_number`
 		FROM
 			`server_ips`
+		;
 	";
 	
 	$rs = exec_query($sql, $query);
-	
-	while (!$rs->EOF) {
-		
-		$no_domains = false;
-		$no_alias_domains = false;
-		
-		$query = "
+
+    if ($rs->rowCount()) {
+        while (!$rs->EOF) {
+            $no_domains = false;
+            $no_alias_domains = false;
+
+            $query = "
 			SELECT 
 				`d`.`domain_name`, 
 				`a`.`admin_name`
@@ -88,28 +91,29 @@ function listIPDomains(&$tpl, &$sql) {
 				`d`.`domain_ip_id` = ?
 			ORDER BY 
 				`d`.`domain_name`
+			;
 		";
-		
-		$rs2 = exec_query($sql, $query, $rs->fields['ip_id']);
-		$domain_count = $rs2->recordCount();
-			
-		if ($rs2->recordCount() == 0) {
-			$no_domains = true;
-		}
 
-		while(!$rs2->EOF) {
-			$tpl->assign(
-				array(
-					'DOMAIN_NAME'	=>	$rs2->fields['domain_name'],
-					'RESELLER_NAME'	=>	$rs2->fields['admin_name'],
-				)
-			);
-			
-			$tpl->parse('DOMAIN_ROW', '.domain_row');
-			$rs2->moveNext();
-		}
-		
-		$query = "
+            $rs2 = exec_query($sql, $query, $rs->fields['ip_id']);
+            $domain_count = $rs2->recordCount();
+
+            if ($rs2->recordCount() == 0) {
+                $no_domains = true;
+            }
+
+            while (!$rs2->EOF) {
+                $tpl->assign(
+                    array(
+                         'DOMAIN_NAME' => $rs2->fields['domain_name'],
+                         'RESELLER_NAME' => $rs2->fields['admin_name'],
+                    )
+                );
+
+                $tpl->parse('DOMAIN_ROW', '.domain_row');
+                $rs2->moveNext();
+            }
+
+            $query = "
 			SELECT
 				`da`.`alias_name`, 
 				`a`.`admin_name`
@@ -127,69 +131,61 @@ function listIPDomains(&$tpl, &$sql) {
 				`da`.`alias_ip_id` = ?
 			ORDER BY 
 				`da`.`alias_name`
+		    ;
 		";
-		
-		$rs3 = exec_query($sql, $query, $rs->fields['ip_id']);
-		$alias_count = $rs3->recordCount();
 
-		if ($rs3->recordCount() == 0) {
-			$no_alias_domains = true;
-		}
-		
-		while(!$rs3->EOF) {		
-			$tpl->assign(
-				array(
-					'DOMAIN_NAME'	=>	$rs3->fields['alias_name'],
-					'RESELLER_NAME'	=>	$rs3->fields['admin_name'],
-				)
-			);
-	
-			$tpl->parse('DOMAIN_ROW', '.domain_row');
-			$rs3->moveNext();
-		}
-		
-		$tpl->assign(
-			array(
-				'IP'			=> $rs->fields['ip_number'],
-				'RECORD_COUNT'	=>	tr('Total Domains')." : ".($domain_count+$alias_count),
-			)
-		);
-		
-		if ($no_domains && $no_alias_domains) {
-			$tpl->assign(
-				array(
-					'DOMAIN_NAME'	=>	tr("No records found"),
-					'RESELLER_NAME'	=>	'',
-				)
-			);
-			$tpl->parse('DOMAIN_ROW', '.domain_row');
-		}
+            $rs3 = exec_query($sql, $query, $rs->fields['ip_id']);
+            $alias_count = $rs3->recordCount();
 
-		$tpl->parse('IP_ROW', '.ip_row');
-		$tpl->assign('DOMAIN_ROW', '');
-		$rs->moveNext();
-	} // end while
+            if ($rs3->recordCount() == 0) {
+                $no_alias_domains = true;
+            }
+
+            while (!$rs3->EOF) {
+                $tpl->assign(array(
+                                  'DOMAIN_NAME' => $rs3->fields['alias_name'],
+                                  'RESELLER_NAME' => $rs3->fields['admin_name']));
+
+                $tpl->parse('DOMAIN_ROW', '.domain_row');
+                $rs3->moveNext();
+            }
+
+            $tpl->assign(array(
+                              'IP' => $rs->fields['ip_number'],
+                              'RECORD_COUNT' => tr('Total Domains') . " : " .
+                                                ($domain_count + $alias_count)));
+
+            if ($no_domains && $no_alias_domains) {
+                $tpl->assign(array(
+                                  'DOMAIN_NAME' => tr("No records found"),
+                                  'RESELLER_NAME' => ''));
+
+                $tpl->parse('DOMAIN_ROW', '.domain_row');
+            }
+
+            $tpl->parse('IP_ROW', '.ip_row');
+            $tpl->assign('DOMAIN_ROW', '');
+            $rs->moveNext();
+        } // end while
+    } else {
+        $tpl->assign('STATISTICS', '');
+        set_page_message('No statistics available.', 'info');
+    }
 }
 
-/*
- *
- * static page messages.
- *
- */
 gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_statistics.tpl');
 gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_statistics.tpl');
 
 listIPDomains($tpl, $sql);
 
-$tpl->assign(
-	array(
-		'TR_SERVER_STATISTICS' => tr('Server statistics'),
-		'TR_IP_ADMIN_USAGE_STATISTICS' => tr('Admin/IP usage statistics'),
-		'TR_DOMAIN_NAME'	=>	tr('Domain Name'),
-		'TR_RESELLER_NAME'	=>	tr('Reseller Name'),
-	)
-);
+$tpl->assign(array(
+                  'TR_SERVER_STATISTICS' => tr('Server statistics'),
+                  'TR_IP_ADMIN_USAGE_STATISTICS' => tr('Admin/IP usage statistics'),
+                  'TR_DOMAIN_NAME' => tr('Domain Name'),
+                  'TR_RESELLER_NAME' => tr('Reseller Name')));
+
 generatePageMessage($tpl);
+
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
@@ -198,4 +194,3 @@ if ($cfg->DUMP_GUI_DEBUG) {
 }
 
 unsetMessages();
-?>

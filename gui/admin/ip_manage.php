@@ -70,7 +70,7 @@ function gen_ip_action($ip_id, $status) {
 	}
 }
 
-function show_IPs(&$tpl, &$sql) {
+function show_IPs($tpl, $sql) {
 
 	$cfg = iMSCP_Registry::get('config');
 
@@ -80,6 +80,7 @@ function show_IPs(&$tpl, &$sql) {
 		FROM
 			`server_ips`
 	";
+
 	$rs = exec_query($sql, $query);
 
 	$row = 1;
@@ -89,46 +90,54 @@ function show_IPs(&$tpl, &$sql) {
 		$single = true;
 	}
 
-	while (!$rs->EOF) {
-		$tpl->assign('IP_CLASS', ($row++ % 2 == 0) ? 'content' : 'content2');
+    if($rs->recordCount() > 0) {
+        while (!$rs->EOF) {
+            $tpl->assign('IP_CLASS', ($row++ % 2 == 0) ? 'content' : 'content2');
 
-		list($ip_action, $ip_action_script) = gen_ip_action($rs->fields['ip_id'], $rs->fields['ip_status']);
+            list($ip_action, $ip_action_script) = gen_ip_action($rs->fields['ip_id'], $rs->fields['ip_status']);
 
-		$tpl->assign(
-			array(
-				'IP'			=> $rs->fields['ip_number'],
-				'DOMAIN'		=> tohtml($rs->fields['ip_domain']),
-				'ALIAS'			=> tohtml($rs->fields['ip_alias']),
-				'NETWORK_CARD'	=> ($rs->fields['ip_card'] === NULL) ? '' : tohtml($rs->fields['ip_card'])
-			)
-		);
+            $tpl->assign(
+                array(
+                     'IP' => $rs->fields['ip_number'],
+                     'DOMAIN' => tohtml($rs->fields['ip_domain']),
+                     'ALIAS' => tohtml($rs->fields['ip_alias']),
+                     'NETWORK_CARD' => ($rs->fields['ip_card'] === NULL) ? ''
+                         : tohtml($rs->fields['ip_card'])
+                )
+            );
 
-		if ($single == true) {
-			$tpl->assign(
-				array(
-					'IP_DELETE_LINK' => '',
-					'IP_ACTION' => tr('N/A')
-				)
-			);
-			$tpl->parse('IP_DELETE_SHOW', 'ip_delete_show');
-		} else {
-			$tpl->assign(
-				array(
-					'IP_DELETE_SHOW'	=> '',
-					'IP_ACTION'			=> ($cfg->BASE_SERVER_IP == $rs->fields['ip_number']) ? tr('N/A') : $ip_action,
-					'IP_ACTION_SCRIPT'	=> ($cfg->BASE_SERVER_IP == $rs->fields['ip_number']) ? '#' : $ip_action_script
-				)
-			);
-			$tpl->parse('IP_DELETE_LINK', 'ip_delete_link');
-		}
+            if ($single == true) {
+                $tpl->assign(
+                    array(
+                         'IP_DELETE_LINK' => '',
+                         'IP_ACTION' => tr('N/A')
+                    )
+                );
+                $tpl->parse('IP_DELETE_SHOW', 'ip_delete_show');
+            } else {
+                $tpl->assign(
+                    array(
+                         'IP_DELETE_SHOW' => '',
+                         'IP_ACTION' => ($cfg->BASE_SERVER_IP == $rs->fields['ip_number'])
+                             ? tr('N/A') : $ip_action,
+                         'IP_ACTION_SCRIPT' => ($cfg->BASE_SERVER_IP == $rs->fields['ip_number'])
+                             ? '#' : $ip_action_script
+                    )
+                );
+                $tpl->parse('IP_DELETE_LINK', 'ip_delete_link');
+            }
 
-		$tpl->parse('IP_ROW', '.ip_row');
+            $tpl->parse('IP_ROW', '.ip_row');
 
-		$rs->moveNext();
-	} // end while
+            $rs->moveNext();
+        } // end while
+    } else { // Can occur only if the 'server_ips' database table was dropped
+        $tpl->assign('IP_AVAILABLE', '');
+        set_page_message(tr("No IP's available"), 'warning');
+    }
 }
 
-function add_ip(&$tpl, &$sql) {
+function add_ip($tpl, $sql) {
 
 	global $ip_number, $domain, $alias, $ip_card;
 	$cfg = iMSCP_Registry::get('config');
@@ -143,7 +152,8 @@ function add_ip(&$tpl, &$sql) {
 				VALUES
 					(?, ?, ?, ?, ?, ?)
 			";
-			$rs = exec_query($sql, $query, array($ip_number, htmlspecialchars($domain, ENT_QUOTES, "UTF-8"),
+
+			exec_query($sql, $query, array($ip_number, htmlspecialchars($domain, ENT_QUOTES, "UTF-8"),
 			htmlspecialchars($alias, ENT_QUOTES, "UTF-8"), htmlspecialchars($ip_card, ENT_QUOTES, "UTF-8"), NULL, $cfg->ITEM_ADD_STATUS));
 
 			send_request();
@@ -240,7 +250,7 @@ function IP_exists() {
 	return true;
 }
 
-function show_Network_Cards(&$tpl, &$interfaces) {
+function show_Network_Cards($tpl, $interfaces) {
 
 	if ($interfaces->getErrors() != '') {
 		set_page_message($interfaces->getErrors(), 'error');

@@ -151,7 +151,7 @@
                 <fieldset>
                     <legend>{TR_RESELLER_IPS}</legend>
                     <!-- BDP: rsl_ip_message -->
-                    <div class="warning">{MESSAGE}</div>
+                    <div class="warning">{RSL_IP_MESSAGE}</div>
                     <!-- EDP: rsl_ip_message -->
 
                     <!-- BDP: rsl_ip_list -->

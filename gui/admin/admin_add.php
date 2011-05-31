@@ -36,6 +36,7 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
@@ -51,7 +52,12 @@ $tpl->assign(
 	)
 );
 
-function add_user(&$tpl, &$sql) {
+/**
+ * @param  $tpl iMSCP_pTemplate
+ * @param  $sql iMSCP_Database
+ * @return void
+ */
+function add_user($tpl, $sql) {
 
 	$cfg = iMSCP_Registry::get('config');
 
@@ -123,7 +129,7 @@ function add_user(&$tpl, &$sql) {
 					)
 			";
 
-			$rs = exec_query($sql, $query, array($username,
+			exec_query($sql, $query, array($username,
 					$upass,
 					$user_id,
 					$fname,
@@ -159,7 +165,7 @@ function add_user(&$tpl, &$sql) {
 				) VALUES (?,?,?,?)
 			";
 
-			$rs = exec_query($sql, $query, array($new_admin_id,
+			exec_query($sql, $query, array($new_admin_id,
 					$user_def_lang,
 					$user_theme_color,
 					$user_logo));
@@ -223,6 +229,9 @@ function add_user(&$tpl, &$sql) {
 	} // end else
 }
 
+/**
+ * @return bool
+ */
 function check_user_data() {
 
 	$cfg = iMSCP_Registry::get('config');
@@ -286,12 +295,6 @@ function check_user_data() {
 
 	return true;
 }
-
-/*
- *
- * static page messages.
- *
- */
 
 gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
 gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_users_manage.tpl');

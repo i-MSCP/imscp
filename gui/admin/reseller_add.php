@@ -36,6 +36,7 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
@@ -59,7 +60,7 @@ $tpl->assign(
 /**
  * Get Server IPs
  */
-function get_server_ip(&$tpl, &$sql) {
+function get_server_ip($tpl, $sql) {
 
 	$cfg = iMSCP_Registry::get('config');
 
@@ -141,7 +142,12 @@ function get_server_ip(&$tpl, &$sql) {
 	return $reseller_ips;
 }
 
-function add_reseller(&$tpl, &$sql) {
+/**
+ * @param  $tpl
+ * @param  $sql
+ * @return void
+ */
+function add_reseller($tpl, $sql) {
 
 	global $reseller_ips;
 	$cfg = iMSCP_Registry::get('config');
@@ -208,7 +214,8 @@ function add_reseller(&$tpl, &$sql) {
 					?
 				)
 			";
-			$rs = exec_query($sql, $query, array($username,
+
+			exec_query($sql, $query, array($username,
 					$upass,
 					$user_id,
 					$fname,
@@ -248,7 +255,7 @@ function add_reseller(&$tpl, &$sql) {
 					(?, ?, ?, ?)
 			";
 
-			$rs = exec_query($sql, $query, array($new_admin_id,
+			exec_query($sql, $query, array($new_admin_id,
 					$user_def_lang,
 					$user_theme_color,
 					$user_logo)
@@ -305,7 +312,7 @@ function add_reseller(&$tpl, &$sql) {
 				)
 				";
 
-			$rs = exec_query($sql, $query, array($new_admin_id, $reseller_ips,
+			exec_query($sql, $query, array($new_admin_id, $reseller_ips,
 					$nreseller_max_domain_cnt,
 					$nreseller_max_subdomain_cnt,
 					$nreseller_max_alias_cnt,

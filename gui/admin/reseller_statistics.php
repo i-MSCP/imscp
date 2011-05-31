@@ -74,7 +74,7 @@ if (isset($_POST['month']) && isset($_POST['year'])) {
 	$year = $_GET['year'];
 }
 
-function generate_page(&$tpl) {
+function generate_page($tpl) {
 
 	global $month, $year;
 
@@ -105,9 +105,10 @@ function generate_page(&$tpl) {
 			`admin`
 		WHERE
 			`admin_type` = 'reseller'
+	    ;
 	";
 
-	$query = <<<SQL_QUERY
+	$query = "
 		SELECT
 			`admin_id`, `admin_name`
 		FROM
@@ -118,7 +119,8 @@ function generate_page(&$tpl) {
 			`admin_name` DESC
 		LIMIT
 			$start_index, $rows_per_page
-SQL_QUERY;
+		;
+    ";
 
 	$rs = exec_query($sql, $count_query);
 	$records_count = $rs->fields['cnt'];
@@ -135,7 +137,8 @@ SQL_QUERY;
 			)
 		);
 
-		set_page_message(tr('Not found reseller(s) in your system!'), 'error');
+		set_page_message(tr('No reseller is registered in your system!'), 'warning');
+        $tpl->assign('STATISTICS_FORM', '');
 		return;
 	} else {
 		$prev_si = $start_index - $rows_per_page;
@@ -176,7 +179,6 @@ SQL_QUERY;
 
 		while (!$rs->EOF) {
 			generate_reseller_entry($tpl, $rs->fields['admin_id'], $rs->fields['admin_name'], $row++);
-
 			$rs->moveNext();
 		}
 	}
@@ -184,7 +186,7 @@ SQL_QUERY;
 	$tpl->parse('TRAFFIC_TABLE', 'traffic_table');
 }
 
-function generate_reseller_entry(&$tpl, $reseller_id, $reseller_name, $row) {
+function generate_reseller_entry($tpl, $reseller_id, $reseller_name, $row) {
 	global $crnt_month, $crnt_year;
 
 	list($rdmn_current, $rdmn_max,
@@ -298,9 +300,7 @@ function generate_reseller_entry(&$tpl, $reseller_id, $reseller_name, $row) {
 }
 
 /*
- *
  * static page messages.
- *
  */
 
 $crnt_month = '';
@@ -309,7 +309,7 @@ $crnt_year = '';
 gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_statistics.tpl');
 gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_statistics.tpl');
 
-generate_page ($tpl);
+generate_page($tpl);
 
 $tpl->assign(
 	array(
