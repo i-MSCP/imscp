@@ -33,6 +33,9 @@ require_once 'iMSCP/Uri/Parser/ResultMixin.php';
 /**
  * Parser Parse Result class.
  *
+ * @property string params
+ * @property string uri
+ * 
  * @category    iMSCP
  * @package     iMSCP_URI
  * @subpackage  parser

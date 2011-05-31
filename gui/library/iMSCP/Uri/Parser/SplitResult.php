@@ -33,6 +33,8 @@ require_once 'iMSCP/Uri/Parser/ResultMixin.php';
 /**
  * Parser Split Result class.
  *
+ * @property string uri
+ *
  * @category    iMSCP
  * @package     iMSCP_URI
  * @subpackage  parser

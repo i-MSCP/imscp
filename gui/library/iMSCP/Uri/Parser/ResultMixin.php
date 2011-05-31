@@ -20,7 +20,7 @@
  * @category    iMSCP
  * @package     iMSCP_URI
  * @subpackage  parser
- * @copyright   2011 by i-MSCP Team
+ * @copyright   2010 - 2011 by the i-MSCP Team
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     SVN: $Id$
  * @link        http://www.i-mscp.net i-mscp Home Site
@@ -37,6 +37,16 @@ require_once 'iMSCP/Uri/Interface.php';
  * properties. The derived classes are responsible for checking the right number
  * of arguments were supplied to the constructor.
  *
+ * @property string scheme
+ * @property string authority
+ * @property string path
+ * @property string query
+ * @property string fragment
+ * @property string username
+ * @property string password
+ * @property string hostname
+ * @property string port
+ *
  * @category    iMSCP
  * @package     iMSCP_URI
  * @subpackage  Parser
@@ -46,11 +56,10 @@ require_once 'iMSCP/Uri/Interface.php';
 abstract class iMSCP_Uri_Parser_ResultMixin extends ArrayObject
     implements iMSCP_Uri_Interface
 {
-
     /**
      * Implements PHP magic getter to allow to retrieve frozen properties.
      *
-     * @param string $property
+     * @param string $property Property name
      * @return string
      */
     public function __get($property)
@@ -68,9 +77,9 @@ abstract class iMSCP_Uri_Parser_ResultMixin extends ArrayObject
 
     /**
      * Implements PHP magic setter to disallow any further modification (frozen
-     * object)..
+     * object).
      *
-     * @throw iMSCP_Uri_Result_Exception Since result objects are defaulted frozen..
+     * @throw iMSCP_Uri_Result_Exception Since result objects are defaulted frozen.
      * @param string $name
      * @param string $value
      * @return void
@@ -85,7 +94,7 @@ abstract class iMSCP_Uri_Parser_ResultMixin extends ArrayObject
     /**
      * Returns URI scheme component.
      *
-     * @return string Uri scheme component
+     * @return string URI scheme component
      */
     public function getScheme()
     {
@@ -95,7 +104,7 @@ abstract class iMSCP_Uri_Parser_ResultMixin extends ArrayObject
     /**
      * Returns URI authority component.
      *
-     * @return string Uri authority component
+     * @return string URI authority component
      */
     public function getAuthority()
     {
@@ -105,7 +114,7 @@ abstract class iMSCP_Uri_Parser_ResultMixin extends ArrayObject
     /**
      * Returns URI path component.
      *
-     * @return string Uri path component
+     * @return string URI path component
      */
     public function getPath()
     {
@@ -115,7 +124,7 @@ abstract class iMSCP_Uri_Parser_ResultMixin extends ArrayObject
     /**
      * Returns URI query component.
      *
-     * @return string Uri query component
+     * @return string URI query component
      */
     public function getQuery()
     {
@@ -126,7 +135,7 @@ abstract class iMSCP_Uri_Parser_ResultMixin extends ArrayObject
     /**
      * Returns URI fragment component.
      *
-     * @return string Uri fragment component
+     * @return string URI fragment component
      */
     public function getFragment()
     {
@@ -138,9 +147,9 @@ abstract class iMSCP_Uri_Parser_ResultMixin extends ArrayObject
      *
      * @return string|null User name if set, null otherwise
      */
-    protected function getUsername()
+    public function getUsername()
     {
-        $authority = $this['authority'];
+        $authority = $this->authority;
 
         if (strpos($authority, '@') !== false) {
             $userinfo = explode('@', $authority, 2);
@@ -160,9 +169,9 @@ abstract class iMSCP_Uri_Parser_ResultMixin extends ArrayObject
      *
      * @return string|null Password if set, null otherwise
      */
-    protected function getPassword()
+    public function getPassword()
     {
-        $authority = $this['authority'];
+        $authority = $this->authority;
 
         if (strpos($authority, '@') !== false) {
             $userinfo = explode('@', $authority, 2);
@@ -181,9 +190,9 @@ abstract class iMSCP_Uri_Parser_ResultMixin extends ArrayObject
      *
      * @return string|null Hostname if set, null otherwise
      */
-    protected function getHostname()
+    public function getHostname()
     {
-        $authority = explode('@', $this['authority'], 2);
+        $authority = explode('@', $this->authority, 2);
 
         if (strpos($authority[0], '[') !== false
             && strpos($authority[0], ']') !== false
@@ -204,7 +213,7 @@ abstract class iMSCP_Uri_Parser_ResultMixin extends ArrayObject
      *
      * @return int|null
      */
-    protected function getPort()
+    public function getPort()
     {
         // Todo
     }

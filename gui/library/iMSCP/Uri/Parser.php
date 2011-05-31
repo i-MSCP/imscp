@@ -20,7 +20,7 @@
  * @category    iMSCP
  * @package     iMSCP_URI
  * @subpackage  parser
- * @copyright   2011 by i-MSCP Team
+ * @copyright   2010 - 2011 by the i-MSCP Team
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     SVN: $Id$
  * @link        http://www.i-mscp.net i-mscp Home Site
@@ -34,7 +34,7 @@ require_once 'iMSCP/Uri/Parser/ParseResult.php';
 require_once 'iMSCP/Uri/Parser/SplitResult.php';
 
 /**
- * iMSCP Uri Parser
+ * iMSCP Uri Parser class
  *
  * This class defines a standart interface to break Uniform Resource Identifier
  * string up in components (addressing scheme, authority, path etc...), to combine
@@ -57,12 +57,10 @@ require_once 'iMSCP/Uri/Parser/SplitResult.php';
  * RFC 1738: Uniform Resource Locators (URL)
  *
  * RFC 3986 is considered the current standard and any future changes to
- * iMSCP_Uri_Parser class should conform with it. The iMSCP_URI class is currently
- * notentirely compliant with this RFC due to defacto scenarios for parsing,
- * and for backward compatibility purposes, some parsing quirks from older RFCs
+ * iMSCP_Uri_Parser class should conform with it. The iMSCP_Uri_Parser class is
+ * currently notentirely compliant with this RFC due to defacto scenarios for parsing,
+ * and for backward compatibility purposes, some parsing quirks from older RFCs 
  * are retained.
- *
- * Note: This parser is free off any regexp.
  *
  * @category    iMSCP
  * @package     iMSCP_URI
@@ -82,7 +80,7 @@ class iMSCP_Uri_Parser
     private static $_instance;
 
     /**
-     * List of schemes that can be relative.
+     * List of schemes that use relative.
      *
      * @var array
      */
@@ -162,6 +160,8 @@ class iMSCP_Uri_Parser
     }
 
     /**
+     * Returns an instance of this class.
+     * 
      * @static
      * @return iMSCP_Uri_Parser
      */
@@ -181,9 +181,8 @@ class iMSCP_Uri_Parser
      *
      * <scheme>://<authority>/<path>;<param>?<query>#<fragment>
      *
-     * This corresponds to the general structure of an URL like described i RFC 1808:
-     *
-     *     scheme://authority/path;parameters?query#fragment.
+     * This corresponds to the general structure of an URL like described in RFC
+     * 1808: scheme://authority/path;parameters?query#fragment.
      *
      * Modifications from RFC 1808 by RFC 2396:
      *     The BNF term <net_loc> has been replaced with <authority>
@@ -198,7 +197,7 @@ class iMSCP_Uri_Parser
      * authority only if it is properly introduced by '//'. Otherwise the input is
      * presumed to be a relative URL and thus to start with a path component.
      *
-     * If the scheme argument is specified, it gives the default addressing scheme,
+     * If the $scheme argument is specified, it gives the default addressing scheme,
      * to be used only if the URI does not specify one. The default value for this
      * argument is the empty string.
      *
@@ -224,7 +223,7 @@ class iMSCP_Uri_Parser
      * @param  string $uri URI reference
      * @param string $scheme URI scheme
      * @param bool $allowFragments
-     * @return iMSCP_Uri_ParserResult An instance of iMSCP_Uri_Result_Parser
+     * @return iMSCP_Uri_Parser_ParseResult
      */
     public function parseUri($uri, $scheme = '', $allowFragments = true)
     {
@@ -240,7 +239,7 @@ class iMSCP_Uri_Parser
     }
 
     /**
-     * Split params from URI
+     * Split params from an URI.
      *
      * @param string $uri
      * @return array
@@ -387,14 +386,14 @@ class iMSCP_Uri_Parser
      */
     public function unparseUri($data)
     {
-        $data = (array)$data;
         list($scheme, $authority, $uri, $params, $query, $fragment) = $data;
 
         if ($params) {
             $uri = $uri . ';' . $params;
         }
 
-        return $this->unsplitUri($scheme, $authority, $uri, $query, $fragment);
+        return $this->unsplitUri(array($scheme, $authority, $uri, $query,
+                                      $fragment));
     }
 
     /**
