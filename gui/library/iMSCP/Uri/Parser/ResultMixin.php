@@ -44,176 +44,178 @@ require_once 'iMSCP/Uri/Interface.php';
  * @version     0.0.1
  */
 abstract class iMSCP_Uri_Parser_ResultMixin extends ArrayObject
-    implements iMSCP_Uri_Interface {
+    implements iMSCP_Uri_Interface
+{
 
-	/**
-	 * Implements PHP magic getter to allow to retrieve frozen properties.
+    /**
+     * Implements PHP magic getter to allow to retrieve frozen properties.
      *
      * @param string $property
      * @return string
-	 */
-	public function __get($property)
-	{
-		$method = 'get' . strtolower($property);
+     */
+    public function __get($property)
+    {
+        $method = 'get' . strtolower($property);
 
-		if(!method_exists($this, $method)) {
-		    // Mimic default behavior on undefined property
-		    trigger_error('Undefined property: ' . __CLASS__ . '::' . $property,
+        if (!method_exists($this, $method)) {
+            // Mimic default behavior on undefined property
+            trigger_error('Undefined property: ' . __CLASS__ . '::' . $property,
                           E_USER_NOTICE);
-		}
+        }
 
         return $this->$method();
-	}
+    }
 
-	/**
-	 * Implements PHP magic setter to disallow any further modification (frozen
+    /**
+     * Implements PHP magic setter to disallow any further modification (frozen
      * object)..
-	 *
-	 * @throw iMSCP_Uri_Result_Exception Since result objects are defaulted frozen..
-	 * @param string $name
-	 * @param string $value
-	 * @return void
-	 */
-	public function __set($name, $value)
-	{
+     *
+     * @throw iMSCP_Uri_Result_Exception Since result objects are defaulted frozen..
+     * @param string $name
+     * @param string $value
+     * @return void
+     */
+    public function __set($name, $value)
+    {
         require_once 'iMSCP/Uri/Parser/Exception.php';
-		throw new iMSCP_Uri_Parser_Exception(
+        throw new iMSCP_Uri_Parser_Exception(
             'You cannot set or change properties on a frozen object.');
-	}
+    }
 
-	/**
-	 * Returns URI scheme component.
-	 *
-	 * @return string Uri scheme component
-	 */
-	public function getScheme()
-	{
-		return $this[0];
-	}
+    /**
+     * Returns URI scheme component.
+     *
+     * @return string Uri scheme component
+     */
+    public function getScheme()
+    {
+        return $this[0];
+    }
 
-	/**
-	 * Returns URI authority component.
-	 *
-	 * @return string Uri authority component
-	 */
-	public function getAuthority()
-	{
-		return $this[1];
-	}
+    /**
+     * Returns URI authority component.
+     *
+     * @return string Uri authority component
+     */
+    public function getAuthority()
+    {
+        return $this[1];
+    }
 
-	/**
-	 * Returns URI path component.
-	 *
-	 * @return string Uri path component
-	 */
-	public function getPath()
-	{
-		return $this[2];
-	}
+    /**
+     * Returns URI path component.
+     *
+     * @return string Uri path component
+     */
+    public function getPath()
+    {
+        return $this[2];
+    }
 
-	/**
-	 * Returns URI query component.
-	 *
-	 * @return string Uri query component
-	 */
-	public function getQuery()
-	{
-		end($this);
-		return prev($this);
-	}
+    /**
+     * Returns URI query component.
+     *
+     * @return string Uri query component
+     */
+    public function getQuery()
+    {
+        end($this);
+        return prev($this);
+    }
 
-	/**
-	 * Returns URI fragment component.
-	 *
-	 * @return string Uri fragment component
-	 */
-	public function getFragment()
-	{
-		return end($this);
-	}
+    /**
+     * Returns URI fragment component.
+     *
+     * @return string Uri fragment component
+     */
+    public function getFragment()
+    {
+        return end($this);
+    }
 
-	/**
-	 * Returns user name from userinfo subcomponent.
-	 *
-	 * @return string|null User name if set, null otherwise
-	 */
-	protected function getUsername()
-	{
-		$authority = $this['authority'];
+    /**
+     * Returns user name from userinfo subcomponent.
+     *
+     * @return string|null User name if set, null otherwise
+     */
+    protected function getUsername()
+    {
+        $authority = $this['authority'];
 
-		if(strpos($authority, '@') !== false) {
-			$userinfo = explode('@', $authority, 2);
+        if (strpos($authority, '@') !== false) {
+            $userinfo = explode('@', $authority, 2);
 
-			if(strpos($userinfo[0], ':') !== false) {
-				$userinfo = explode(':', $userinfo[0], 2);
-			}
+            if (strpos($userinfo[0], ':') !== false) {
+                $userinfo = explode(':', $userinfo[0], 2);
+            }
 
-			return $userinfo[0];
-		}
+            return $userinfo[0];
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	/**
-	 * Returns password from userinfo subcomponent.
-	 *
-	 * @return string|null Password if set, null otherwise
-	 */
-	protected function getPassword()
-	{
-		$authority = $this['authority'];
+    /**
+     * Returns password from userinfo subcomponent.
+     *
+     * @return string|null Password if set, null otherwise
+     */
+    protected function getPassword()
+    {
+        $authority = $this['authority'];
 
-		if(strpos($authority, '@') !== false) {
-			$userinfo = explode('@', $authority, 2);
-			if(strpos($userinfo[0], ':') !== false) {
-				$userinfo = explode(':', $userinfo[0], 2);
+        if (strpos($authority, '@') !== false) {
+            $userinfo = explode('@', $authority, 2);
+            if (strpos($userinfo[0], ':') !== false) {
+                $userinfo = explode(':', $userinfo[0], 2);
 
-				return $userinfo[1];
-			}
-		}
+                return $userinfo[1];
+            }
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	/**
-	 * Returns hostname from authority component.
-	 *
-	 * @return string|null Hostname if set, null otherwise
-	 */
-	protected function getHostname()
-	{
-		$authority = explode('@', $this['authority'], 2);
+    /**
+     * Returns hostname from authority component.
+     *
+     * @return string|null Hostname if set, null otherwise
+     */
+    protected function getHostname()
+    {
+        $authority = explode('@', $this['authority'], 2);
 
-		if(strpos($authority[0], '[') !== false
-           && strpos($authority[0], ']') !== false) {
+        if (strpos($authority[0], '[') !== false
+            && strpos($authority[0], ']') !== false
+        ) {
             // Todo
-		} elseif(strpos($authority[0], ':') !== false) {
+        } elseif (strpos($authority[0], ':') !== false) {
             // Todo
-		} elseif($authority[0] == '') {
-			return null;
-		}
+        } elseif ($authority[0] == '') {
+            return null;
+        }
 
-		return strtolower($authority[0]);
+        return strtolower($authority[0]);
 
-	}
+    }
 
-	/**
-	 * Returns port from authority.
-	 *
-	 * @return int|null
-	 */
-	protected function getPort()
-	{
-		// Todo
-	}
+    /**
+     * Returns port from authority.
+     *
+     * @return int|null
+     */
+    protected function getPort()
+    {
+        // Todo
+    }
 
-	/**
+    /**
      * Returns string representation of this object (An URI string)
-     * 
-	 * @return string
-	 */
-	public function __toString()
-	{
-		return $this->getUri();
-	}
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getUri();
+    }
 }

@@ -32,7 +32,7 @@ require_once 'iMSCP/Uri/Parser/ResultMixin.php';
 
 /**
  * Parser Split Result class.
- * 
+ *
  * @category    iMSCP
  * @package     iMSCP_URI
  * @subpackage  parser
@@ -41,27 +41,27 @@ require_once 'iMSCP/Uri/Parser/ResultMixin.php';
  */
 class iMSCP_Uri_Parser_SplitResult extends iMSCP_Uri_Parser_ResultMixin
 {
-	/**
-	 * Constructor.
-	 *
-	 * @param string $scheme Scheme component
-	 * @param string $authority Authority component
-	 * @param string $path Path component
-	 * @param string $query Query component
-	 * @param string $fragment Fragment component
-	 */
-	public function __construct($scheme, $authority, $path, $query, $fragment)
-	{
-		parent::__construct(array($scheme, $authority, $path, $query, $fragment));
-	}
+    /**
+     * Constructor.
+     *
+     * @param string $scheme Scheme component
+     * @param string $authority Authority component
+     * @param string $path Path component
+     * @param string $query Query component
+     * @param string $fragment Fragment component
+     */
+    public function __construct($scheme, $authority, $path, $query, $fragment)
+    {
+        parent::__construct(array($scheme, $authority, $path, $query, $fragment));
+    }
 
-	/**
-	 * Return string representation of this object.
-	 *
-	 * @return string
-	 */
-	public function getUri()
-	{
-		return iMSCP_Uri_Parser::getInstance()->unsplitUri($this);
-	}
+    /**
+     * Return string representation of this object.
+     *
+     * @return string
+     */
+    public function getUri()
+    {
+        return iMSCP_Uri_Parser::getInstance()->unsplitUri($this);
+    }
 }

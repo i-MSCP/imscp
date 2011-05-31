@@ -27,16 +27,11 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
  */
 
-/**
- * Provide generic interface for URI (Uniform Resource Identifier) according RFC
- * 3986.
- *
- * @category    iMSCP
- * @package     iMSCP_URI
- * @subpackage  parser
- * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     0.0.1
- */
+/** @see iMSCP_Uri_Parser_ParseResult*/
+require_once 'iMSCP/Uri/Parser/ParseResult.php';
+
+/** @see  iMSCP_Uri_Parser_SplitResult*/
+require_once 'iMSCP/Uri/Parser/SplitResult.php';
 
 /**
  * iMSCP Uri Parser
@@ -74,17 +69,17 @@
  * @subpackage  Parser
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     0.0.1
- * @todo        review documentation
- * @todo        unit tests
+ * @todo        Review documentation
+ * @todo        Unit tests
  */
 class iMSCP_Uri_Parser
 {
-	/**
-	 * Instance of this class
-	 *
-	 * @var iMSCP_Uri_Parser
-	 */
-	private static $_instance;
+    /**
+     * Instance of this class
+     *
+     * @var iMSCP_Uri_Parser
+     */
+    private static $_instance;
 
     /**
      * List of schemes that can be relative.
@@ -148,36 +143,36 @@ class iMSCP_Uri_Parser
      * @var array
      */
     private $_schemeCharacters =
-    	'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+-.';
+    'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+-.';
 
     /**
      * Singleton pattern implementation makes "new" unavailable.
      */
-	private function __construct()
-	{
-	}
+    private function __construct()
+    {
+    }
 
     /**
      * Singleton pattern implementation makes "clone" unavailable.
      *
      * @return void
      */
-	private function __clone()
-	{
-	}
+    private function __clone()
+    {
+    }
 
     /**
      * @static
      * @return iMSCP_Uri_Parser
      */
-	public static function getInstance()
-	{
-		if(null === self::$_instance) {
-			self::$_instance = new self;
-		}
+    public static function getInstance()
+    {
+        if (null === self::$_instance) {
+            self::$_instance = new self;
+        }
 
-		return self::$_instance;
-	}
+        return self::$_instance;
+    }
 
     /**
      * Parse an URI into 6 components.
@@ -187,15 +182,15 @@ class iMSCP_Uri_Parser
      * <scheme>://<authority>/<path>;<param>?<query>#<fragment>
      *
      * This corresponds to the general structure of an URL like described i RFC 1808:
-	 *
-     * 	scheme://authority/path;parameters?query#fragment.
-	 *
-	 * Modifications from RFC 1808 by RFC 2396:
-	 * 	The BNF term <net_loc> has been replaced with <authority>
-	 *
+     *
+     *     scheme://authority/path;parameters?query#fragment.
+     *
+     * Modifications from RFC 1808 by RFC 2396:
+     *     The BNF term <net_loc> has been replaced with <authority>
+     *
      * Each array item is a string, possibly empty. The components are not broken up
      * in smaller parts (for example, the authority is a single string), and %
-	 * escapes are not expanded. The delimiters as shown above are not part of the
+     * escapes are not expanded. The delimiters as shown above are not part of the
      * result, except for a leading slash in the path component, which is retained
      * if present.
      *
@@ -233,7 +228,7 @@ class iMSCP_Uri_Parser
      */
     public function parseUri($uri, $scheme = '', $allowFragments = true)
     {
-		list($s, $a, $u, $q, $f) = $this->splitUri($uri, $scheme, $allowFragments);
+        list($s, $a, $u, $q, $f) = $this->splitUri($uri, $scheme, $allowFragments);
 
         if (in_array($s, $this->_usesParams) && strpos($u, ';') !== false) {
             list($u, $p) = $this->_splitParams($u);
@@ -241,7 +236,7 @@ class iMSCP_Uri_Parser
             $p = '';
         }
 
-		return new iMSCP_Uri_Parser_ParseResult($s, $a, $u, $p, $q, $f);
+        return new iMSCP_Uri_Parser_ParseResult($s, $a, $u, $p, $q, $f);
     }
 
     /**
@@ -257,7 +252,7 @@ class iMSCP_Uri_Parser
 
             if ($i < 0) {
                 return array($uri, '');
-			}
+            }
         } else {
             $i = strpos($uri, ';');
         }
@@ -277,7 +272,7 @@ class iMSCP_Uri_Parser
         $delim = strlen($uri);
 
         foreach (array('/', '?', '#') as $c) {
-			if (($wdelim = strpos($uri, $c, $start)) !== false) {
+            if (($wdelim = strpos($uri, $c, $start)) !== false) {
                 $delim = ($delim > $wdelim) ? $wdelim : $delim;
             }
         }
@@ -291,8 +286,8 @@ class iMSCP_Uri_Parser
      * This methods split an URI into 5 components:
      *
      * <scheme>://<authority>/<path>?<query>#<fragment>
-	 *
-	 * This corresponds to the general structure of an URI like described i RFC 3986.
+     *
+     * This corresponds to the general structure of an URI like described i RFC 3986.
      *
      * @throws iMSCP_Uri_Exception
      * @param string $uri URI reference
@@ -302,7 +297,7 @@ class iMSCP_Uri_Parser
      */
     public function splitUri($uri, $scheme = '', $allowFragments = true)
     {
-        $allowFragments = (bool) $allowFragments;
+        $allowFragments = (bool)$allowFragments;
         $authority = $query = $fragment = '';
         $i = strpos($uri, ':');
 
@@ -316,7 +311,7 @@ class iMSCP_Uri_Parser
                     list($authority, $uri) = $this->_splitAuthority($uri, 2);
 
                     if (strpos($authority, '[' !== false) &&
-						strpos($authority, ']') === false
+                        strpos($authority, ']') === false
                     ) {
                         require_once 'iMSCP/Uri/Parser/Exception.php';
                         throw new iMSCP_Uri_Parser_Exception(
@@ -331,10 +326,10 @@ class iMSCP_Uri_Parser
                 }
 
                 return new iMSCP_Uri_Parser_SplitResult(
-					$scheme, $authority, $uri, $query, $fragment);
+                    $scheme, $authority, $uri, $query, $fragment);
             }
 
-            if (substr($uri, -1) == ':' || false == ctype_digit(substr($uri, $i+1))){
+            if (substr($uri, -1) == ':' || false == ctype_digit(substr($uri, $i + 1))) {
                 $c = substr($uri, 0, $i);
                 $count = strlen($c);
                 $ret = true;
@@ -357,7 +352,8 @@ class iMSCP_Uri_Parser
             list($authority, $uri) = $this->_splitAuthority($uri, 2);
 
             if (strpos($authority, '[' !== false)
-                && strpos($authority,']') ===  false) {
+                && strpos($authority, ']') === false
+            ) {
                 require_once 'iMSCP/Uri/Parser/Exception.php';
                 throw new iMSCP_Uri_Parser_Exception(
                     'Invalid literal IPv6 address detected in URL.');
@@ -365,8 +361,8 @@ class iMSCP_Uri_Parser
         }
 
         if ($allowFragments && in_array($scheme, $this->_usesFragment) &&
-			strpos($uri, '#') !== false
-		) {
+            strpos($uri, '#') !== false
+        ) {
             list($uri, $fragment) = explode('#', $uri, 2);
         }
 
@@ -375,153 +371,153 @@ class iMSCP_Uri_Parser
         }
 
         return new iMSCP_Uri_Parser_SplitResult(
-			$scheme, $authority, $uri, $query, $fragment);
+            $scheme, $authority, $uri, $query, $fragment);
     }
 
-	/**
-	 * Put a parsed URI back together again.
-	 *
-	 * This may result in a slightly different, but equivalent URI, if the URI that
-	 * was parsed originally had redundant delimiters, e.g. a ? with an empty query
-	 * (the draft states that these are equivalent).
-	 *
- 	 * @param array|iMSCP_Uri_Parser_ParseResult $data An array like returned
+    /**
+     * Put a parsed URI back together again.
+     *
+     * This may result in a slightly different, but equivalent URI, if the URI that
+     * was parsed originally had redundant delimiters, e.g. a ? with an empty query
+     * (the draft states that these are equivalent).
+     *
+     * @param array|iMSCP_Uri_Parser_ParseResult $data An array like returned
      *                                                 by {@link self::parseUri()}
      * @return string A string that represent an URI
-	 */
-	public function unparseUri($data)
-	{
-		$data = (array) $data;
-		list($scheme, $authority, $uri, $params, $query, $fragment) = $data;
+     */
+    public function unparseUri($data)
+    {
+        $data = (array)$data;
+        list($scheme, $authority, $uri, $params, $query, $fragment) = $data;
 
-		if($params) {
-			$uri = $uri . ';' . $params;
-		}
+        if ($params) {
+            $uri = $uri . ';' . $params;
+        }
 
-		return $this->unsplitUri($scheme, $authority, $uri, $query, $fragment);
-	}
+        return $this->unsplitUri($scheme, $authority, $uri, $query, $fragment);
+    }
 
-	/**
-	 * Unsplit an URI.
-	 *
-	 * Combine the elements of an array as returned by {@link self::splitUri()} into
-	 * a complete URI as a string. The data argument can be any five-item iterable.
-	 * This may result in a slightly different, but equivalent URI, if the URI that
-	 * was parsed originally had unnecessary delimiters (for example, a ? with an
-	 * empty query; the RFC states that these are equivalent).
-	 *
-	 * @param array|iMSCP_Uri_Parser_SplitResut $data An array like returned
+    /**
+     * Unsplit an URI.
+     *
+     * Combine the elements of an array as returned by {@link self::splitUri()} into
+     * a complete URI as a string. The data argument can be any five-item iterable.
+     * This may result in a slightly different, but equivalent URI, if the URI that
+     * was parsed originally had unnecessary delimiters (for example, a ? with an
+     * empty query; the RFC states that these are equivalent).
+     *
+     * @param array|iMSCP_Uri_Parser_SplitResut $data An array like returned
      *                                                by {@link self::splitUri()}
      * @return string A string that represent an URI
-	 */
-	public function unsplitUri($data)
-	{
-		list($scheme, $authority, $uri, $query, $fragment) = $data;
+     */
+    public function unsplitUri($data)
+    {
+        list($scheme, $authority, $uri, $query, $fragment) = $data;
 
-		if($authority || ($scheme && in_array($scheme, $this->_usesAuthority) &&
-			substr($uri, 0, 2) != '//')
-		) {
-			$uri = '//' . $authority . $uri;
-		}
-		if($scheme) {
-			$uri = $scheme . ':' . $uri;
-		}
-		if($query) {
-			$uri = $uri . '?' . $query;
-		}
-		if($fragment) {
-			$uri = $uri . '#' . $fragment;
-		}
+        if ($authority || ($scheme && in_array($scheme, $this->_usesAuthority) &&
+                           substr($uri, 0, 2) != '//')
+        ) {
+            $uri = '//' . $authority . $uri;
+        }
+        if ($scheme) {
+            $uri = $scheme . ':' . $uri;
+        }
+        if ($query) {
+            $uri = $uri . '?' . $query;
+        }
+        if ($fragment) {
+            $uri = $uri . '#' . $fragment;
+        }
 
-		return $uri;
-	}
+        return $uri;
+    }
 
-	/**
-	 * Join a base URL and a possibly relative URL to form an absolute interpretation
+    /**
+     * Join a base URL and a possibly relative URL to form an absolute interpretation
      * of the latter.
      *
      * Note: Not Yet Fully Implemented.
-	 *
-	 * @param string $base
-	 * @param string $url
-	 * @param bool $allowFragments
-	 * @return string An absolute URI
-	 */
-	public function joinUri($base, $url, $allowFragments = true)
-	{
-		if(empty($base)) {
-			return $url;
-		} elseif(empty($url)) {
-			return $base;
-		}
+     *
+     * @param string $base
+     * @param string $url
+     * @param bool $allowFragments
+     * @return string An absolute URI
+     */
+    public function joinUri($base, $url, $allowFragments = true)
+    {
+        if (empty($base)) {
+            return $url;
+        } elseif (empty($url)) {
+            return $base;
+        }
 
-		list(
+        list(
             $bscheme, $bauthority, $bpath, $bparams, $bquery, $bfragment
-        ) = $this->parseUri($base, '', $allowFragments);
+            ) = $this->parseUri($base, '', $allowFragments);
 
-		list($scheme, $authority, $path, $params, $query, $fragment) = $this->parseUri(
-			$url, $bscheme, $allowFragments
-		);
+        list($scheme, $authority, $path, $params, $query, $fragment) = $this->parseUri(
+            $url, $bscheme, $allowFragments
+        );
 
-		if($scheme != $bscheme || !in_array($scheme, $this->_usesRelative)) {
-			return $url;
-		}
+        if ($scheme != $bscheme || !in_array($scheme, $this->_usesRelative)) {
+            return $url;
+        }
 
-		if(in_array($scheme, $this->_usesAuthority)) {
-			if($authority) {
-				return $this->unparseUri(
+        if (in_array($scheme, $this->_usesAuthority)) {
+            if ($authority) {
+                return $this->unparseUri(
                     $scheme, $authority, $path, $params, $query, $fragment);
-			}
-			$authority = $bauthority;
-		}
+            }
+            $authority = $bauthority;
+        }
 
-		if(substr($path, 0, 1) == '/') {
-			return $this->unparseUri(
+        if (substr($path, 0, 1) == '/') {
+            return $this->unparseUri(
                 $scheme, $authority, $path, $params, $query, $fragment);
-		}
+        }
 
-		if(empty($path) && empty($params)) {
-			$path = $bpath;
-			$params = $bparams;
-			if(empty($query)) {
-				$query = $bquery;
-			}
+        if (empty($path) && empty($params)) {
+            $path = $bpath;
+            $params = $bparams;
+            if (empty($query)) {
+                $query = $bquery;
+            }
 
-			return $this->unparseUri(
+            return $this->unparseUri(
                 $scheme, $authority, $path, $params, $query, $fragment);
-		}
+        }
 
         return '';
-	}
+    }
 
-	/**
-	 * Removes any existing fragment from an URI.
-	 *
-	 * If $uri contains a fragment identifier, returns a modified version of $uri
-	 * with no fragment identifier, and the fragment identifier as a separate
-	 * string. If there is no fragment identifier in $uri, returns $uri unmodified
-	 * and an empty string.
-	 *
-	 * @param string $uri Uri to defragment.
-	 * @return array
-	 */
-	public function defragUri($uri)
-	{
-		if(strpos($uri, '#') !== false) {
-			list($s, $n, $p, $a, $q, $frag) = $this->parseUri($uri);
-			$defrag = $this->unparseUri($s, $n, $p, $a, $q, '');
+    /**
+     * Removes any existing fragment from an URI.
+     *
+     * If $uri contains a fragment identifier, returns a modified version of $uri
+     * with no fragment identifier, and the fragment identifier as a separate
+     * string. If there is no fragment identifier in $uri, returns $uri unmodified
+     * and an empty string.
+     *
+     * @param string $uri Uri to defragment.
+     * @return array
+     */
+    public function defragUri($uri)
+    {
+        if (strpos($uri, '#') !== false) {
+            list($s, $n, $p, $a, $q, $frag) = $this->parseUri($uri);
+            $defrag = $this->unparseUri($s, $n, $p, $a, $q, '');
 
-			return array($defrag, $frag);
-		}
+            return array($defrag, $frag);
+        }
 
-		return array($uri, '');
-	}
+        return array($uri, '');
+    }
 
     /**
      * @param  $string
      * @return void
      */
-	public function unquotes($string)
-	{
-	}
+    public function unquotes($string)
+    {
+    }
 }
