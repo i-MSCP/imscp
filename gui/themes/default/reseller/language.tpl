@@ -1,4 +1,3 @@
-
 <?xml version="1.0" encoding="{THEME_CHARSET}" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -16,17 +15,13 @@
 		</script>
 		<![endif]-->
 	</head>
-
 	<body>
-
 		<div class="header">
 			{MAIN_MENU}
-
 			<div class="logo">
 				<img src="{THEME_COLOR_PATH}/images/imscp_logo.png" alt="i-MSCP logo" />
 			</div>
 		</div>
-
 		<div class="location">
 			<div class="location-area icons-left">
 				<h1 class="general">{TR_GENERAL_INFO}</h1>
@@ -41,18 +36,15 @@
 				<li><a href="password_change.php">{TR_CHOOSE_DEFAULT_LANGUAGE}</a></li>
 			</ul>
 		</div>
-
 		<div class="left_menu">
 			{MENU}
 		</div>
-
 		<div class="body">
-
+			<h2 class="multilanguage"><span>{TR_CHOOSE_DEFAULT_LANGUAGE}</span></h2>
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
-
-			<h2 class="multilanguage"><span>{TR_CHOOSE_DEFAULT_LANGUAGE}</span></h2>
+            <!-- BDP: languages_available -->
 			<form name="client_change_language" method="post" action="language.php">
 				<table>
 					<tr>
@@ -72,12 +64,11 @@
 					<input type="hidden" name="uaction" value="save_lang" />
 				</div>
 			</form>
+            <!-- EDP: languages_available -->
 
 		</div>
-
 		<div class="footer">
 			i-MSCP {VERSION}<br />build: {BUILDDATE}<br />Codename: {CODENAME}
 		</div>
-
 	</body>
 </html>

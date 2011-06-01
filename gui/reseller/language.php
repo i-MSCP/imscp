@@ -34,8 +34,12 @@
 
 require '../include/imscp-lib.php';
 
+/************************************************************************************
+ * Main script
+ */
 check_login(__FILE__);
 
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
@@ -43,12 +47,6 @@ $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/language.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('def_language', 'page');
 $tpl->define_dynamic('logged_from', 'page');
-
-/*
- *
- * page actions.
- *
- */
 
 if (isset($_POST['uaction']) && $_POST['uaction'] === 'save_lang') {
 	$user_id = $_SESSION['user_id'];
@@ -62,6 +60,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'save_lang') {
 			`lang` = ?
 		WHERE
 			`user_id` = ?
+		;
 	";
 
 	$rs = exec_query($sql, $query, array($user_lang, $user_id));
@@ -81,36 +80,22 @@ if (!isset($_SESSION['logged_from']) && !isset($_SESSION['logged_from_id'])) {
 
 gen_def_language($tpl, $sql, $user_def_lang);
 
-$tpl->assign(
-	array(
-		'TR_CLIENT_LANGUAGE_TITLE' => tr('i-MSCP - Reseller/Change Language'),
-		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => get_logo($_SESSION['user_id'])
-	)
-);
-
-/*
- *
- * static page messages.
- *
- */
+$tpl->assign(array(
+                  'TR_CLIENT_LANGUAGE_TITLE' => tr('i-MSCP - Reseller/Change Language'),
+                  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+                  'THEME_CHARSET' => tr('encoding'),
+                  'ISP_LOGO' => get_logo($_SESSION['user_id'])));
 
 gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_general_information.tpl');
 gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_general_information.tpl');
-
 gen_logged_from($tpl);
-
 check_permissions($tpl);
 
-$tpl->assign(
-	array(
-		'TR_GENERAL_INFO'				=> tr('General information'),
-		'TR_LANGUAGE'					=> tr('Language'),
-		'TR_CHOOSE_DEFAULT_LANGUAGE'	=> tr('Choose default language'),
-		'TR_SAVE'						=> tr('Save')
-	)
-);
+$tpl->assign(array(
+                  'TR_GENERAL_INFO' => tr('General information'),
+                  'TR_LANGUAGE' => tr('Language'),
+                  'TR_CHOOSE_DEFAULT_LANGUAGE' => tr('Choose default language'),
+                  'TR_SAVE' => tr('Save')));
 
 generatePageMessage($tpl);
 
@@ -120,4 +105,5 @@ $tpl->prnt();
 if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
+
 unsetMessages();
