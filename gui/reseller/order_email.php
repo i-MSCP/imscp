@@ -34,8 +34,12 @@
 
 require '../include/imscp-lib.php';
 
+/************************************************************************************
+ * Main script
+ */
 check_login(__FILE__);
 
+/** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
@@ -44,12 +48,10 @@ $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 
 $user_id = $_SESSION['user_id'];
-
 $data = get_order_email($user_id);
 
 if (isset($_POST['uaction']) && $_POST['uaction'] == 'order_email') {
 	$data['subject'] = clean_input($_POST['auto_subject']);
-
 	$data['message'] = clean_input($_POST['auto_message']);
 
 	if ($data['subject'] == '') {
@@ -58,52 +60,39 @@ if (isset($_POST['uaction']) && $_POST['uaction'] == 'order_email') {
 		set_page_message(tr('Please specify message!'));
 	} else {
 		set_order_email($user_id, $data);
-
 		set_page_message (tr('Auto email template data updated!'));
 	}
 }
 
-/*
- *
- * static page messages.
- *
- */
-
-$tpl->assign(
-	array(
-		'TR_RESELLER_ORDER_EMAL' => tr('i-MSCP - Reseller/Order email setup'),
-		'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
-		'THEME_CHARSET' => tr('encoding'),
-		'ISP_LOGO' => get_logo($_SESSION['user_id'])
-	)
-);
+$tpl->assign(array(
+                  'TR_RESELLER_ORDER_EMAL' => tr('i-MSCP - Reseller/Order email setup'),
+                  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+                  'THEME_CHARSET' => tr('encoding'),
+                  'ISP_LOGO' => get_logo($_SESSION['user_id'])));
 
 gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_orders.tpl');
 gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_orders.tpl');
-
 gen_logged_from($tpl);
 
-$tpl->assign(
-	array(
-		'TR_EMAIL_SETUP' => tr('Email setup'),
-		'TR_MANAGE_ORDERS' => tr('Manage orders'),
-		'TR_MESSAGE_TEMPLATE_INFO' => tr('Message template info'),
-		'TR_USER_LOGIN_NAME' => tr('User login (system) name'),
-		'TR_USER_DOMAIN' => tr('Domain name'),
-		'TR_USER_REAL_NAME' => tr('User (first and last) name'),
-		'TR_ACTIVATION_LINK' => tr('Activation Link'),
-		'TR_MESSAGE_TEMPLATE' => tr('Message template'),
-		'TR_SUBJECT' => tr('Subject'),
-		'TR_MESSAGE' => tr('Message'),
-		'TR_SENDER_EMAIL' => tr('Senders email'),
-		'TR_SENDER_NAME' => tr('Senders name'),
-		'TR_APPLY_CHANGES' => tr('Apply changes'),
-		'SUBJECT_VALUE' => tohtml($data['subject']),
-		'MESSAGE_VALUE' => tohtml($data['message']),
-		'SENDER_EMAIL_VALUE' => tohtml($data['sender_email']),
-		'SENDER_NAME_VALUE' => tohtml($data['sender_name'])
-	)
-);
+$tpl->assign(array(
+                  'TR_EMAIL_SETUP' => tr('Email setup'),
+                  'TR_MANAGE_ORDERS' => tr('Manage orders'),
+                  'TR_MESSAGE_TEMPLATE_INFO' => tr('Message template info'),
+                  'TR_USER_LOGIN_NAME' => tr('User login (system) name'),
+                  'TR_USER_DOMAIN' => tr('Domain name'),
+                  'TR_USER_REAL_NAME' => tr('User (first and last) name'),
+                  'TR_ACTIVATION_LINK' => tr('Activation Link'),
+                  'TR_MESSAGE_TEMPLATE' => tr('Message template'),
+                  'TR_SUBJECT' => tr('Subject'),
+                  'TR_MESSAGE' => tr('Message'),
+                  'TR_SENDER_EMAIL' => tr('Senders email'),
+                  'TR_SENDER_NAME' => tr('Senders name'),
+                  'TR_APPLY_CHANGES' => tr('Apply changes'),
+                  'SUBJECT_VALUE' => tohtml($data['subject']),
+                  'MESSAGE_VALUE' => tohtml($data['message']),
+                  'SENDER_EMAIL_VALUE' => tohtml($data['sender_email']),
+                  'SENDER_NAME_VALUE' => tohtml(!empty($data['sender_name'])
+                        ? $data['sender_name'] : tr('Unknown'))));
 
 generatePageMessage($tpl);
 
@@ -113,4 +102,5 @@ $tpl->prnt();
 if ($cfg->DUMP_GUI_DEBUG) {
 	dump_gui_debug();
 }
+
 unsetMessages();
