@@ -395,7 +395,7 @@ function getAdminGeneralInfo($tpl, $sql) {
 }
 
 /**
- * Helper fuinction to enerate admin list template part.
+ * Helper function to generate admin list template part.
  *
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @param  iMSCP_Database $sql iMSCP_Database instance
@@ -1146,11 +1146,11 @@ function generate_user_props($domainId) {
 }
 
 /**
- * Returns  a count of items present in a database table with optional search criterias.
+ * Returns a count of items present in a database table with optional search criterias.
  *
  * @param  string $table Table name on which to operate
  * @param  string $where OPTIONAL SQL WHERE clause
- * @param  string $bind OPTIONAL value to bind to the placeholders
+ * @param  string $bind OPTIONAL value to bind to the placeholder
  * @return int Items count
  */
 function records_count($table, $where = '', $bind = '') {
