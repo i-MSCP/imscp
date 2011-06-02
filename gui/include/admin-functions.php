@@ -4,7 +4,7 @@
  *
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010 by i-MSCP | http://i-mscp.net
+ * @copyright 	2010-2011 by i-MSCP | http://i-mscp.net
  * @version     SVN: $Id$
  * @link 		http://i-mscp.net
  * @author 		ispCP Team
@@ -33,19 +33,19 @@
  */
 
 /**
- * Encode string to be valid as mail header
+ * Encode a string to be valid as mail header.
  *
  * @source php.net/manual/en/function.mail.php
  *
  * @param string $string String to be encoded [should be in the $charset charset]
- * @param string $charset charset in that string will be encoded
+ * @param string $charset OPTIONAL charset in that string will be encoded (defaulted to UTF-8)
  * @return string encoded string
  *
  * @todo need to check emails with ? and space in subject - some probs can occur
  */
 function encode($string, $charset = 'UTF-8') {
 
-	$string;
+	$string = (string) $string;
 
 	if($string && $charset) {
 		// define start delimiter, end delimiter and spacer
@@ -74,10 +74,10 @@ function encode($string, $charset = 'UTF-8') {
 }
 
 /**
- * Generate admin main menu
+ * Helper function to generate admin main menu template part.
  *
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
- * @param  $menu_file
+ * @param  string $menu_file Path to menu template file
  * @return void
  */
 function gen_admin_mainmenu($tpl, $menu_file) {
@@ -195,10 +195,10 @@ function gen_admin_mainmenu($tpl, $menu_file) {
 }
 
 /**
- * Generate admin menu
+ * Helper function to generates admin menu template part.
  *
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
- * @param  $menu_file
+ * @param  string $menu_file Path to menu template file
  * @return void
  */
 function gen_admin_menu($tpl, $menu_file) {
@@ -312,10 +312,10 @@ function gen_admin_menu($tpl, $menu_file) {
 }
 
 /**
- * Must be documented
+ * Returns count of SQL users.
  *
- * @param	iMSCP_Database $sql iMSCP_Database instance
- * @return
+ * @param iMSCP_Database $sql iMSCP_Database instance
+ * @return int Number of SQL users
  */
 function get_sql_user_count($sql) {
 
@@ -327,7 +327,7 @@ function get_sql_user_count($sql) {
 }
 
 /**
- * Must be documented
+ * Helper function to generate admin general information template part.
  *
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @param  iMSCP_Database $sql iMSCP_Database instance
@@ -395,7 +395,7 @@ function getAdminGeneralInfo($tpl, $sql) {
 }
 
 /**
- * Generate admin list
+ * Helper fuinction to enerate admin list template part.
  *
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @param  iMSCP_Database $sql iMSCP_Database instance
@@ -504,7 +504,7 @@ function gen_admin_list($tpl, $sql) {
 }
 
 /**
- * Generate reseller list
+ * Helper function to generate reseller list template part.
  *
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @param  iMSCP_Database $sql iMSCP_Database instance
@@ -612,7 +612,7 @@ function gen_reseller_list($tpl, $sql) {
 }
 
 /**
- * Generate users list
+ * Helper function to generate users list template part.
  *
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @param  iMSCP_Database $sql iMSCP_Database instance
@@ -867,7 +867,7 @@ function gen_user_list($tpl, $sql) {
 }
 
 /**
- * Must be documented
+ * Helper function to generate manage users template part.
  *
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @param  iMSCP_Database $sql iMSCP_Database instance
@@ -895,10 +895,10 @@ function get_admin_manage_users($tpl, $sql) {
 }
 
 /**
- * Generate reseller properties
+ * Returns reseller properties.
  *
- * @param  $reseller_id
- * @return array
+ * @param  int $reseller_id Reseller unique identifier
+ * @return array An array that contains reseller properties
  */
 function generate_reseller_props($reseller_id) {
 
@@ -923,10 +923,10 @@ function generate_reseller_props($reseller_id) {
 }
 
 /**
- * Generate reseller user's properties
+ * Returns reseller user's properties.
  *
- * @param  $reseller_id Reseller id
- * @return
+ * @param  int $reseller_id Reseller unique indentifier
+ * @return array
  */
 function generate_reseller_users_props($reseller_id) {
 
@@ -1065,12 +1065,13 @@ function generate_reseller_users_props($reseller_id) {
 }
 
 /**
- * Generate user's properties
+ * Returns domain properties.
  *
- * @param  $user_id
- * @return array
+ * @param  int $domainId Domain unique identifier
+ * @return array An array that contains domain properties
+ * @todo rename this function
  */
-function generate_user_props($user_id) {
+function generate_user_props($domainId) {
 
 	/**
 	 * @var $cfg iMSCP_Config_Handler_File
@@ -1084,21 +1085,21 @@ function generate_user_props($user_id) {
 
 	$query = "SELECT * FROM `domain` WHERE `domain_id` = ?;";
 
-	$rs = exec_query($sql, $query, $user_id);
+	$rs = exec_query($sql, $query, $domainId);
 
 	if($rs->rowCount() == 0) {
 		return array_fill(0, 14, 0);
 	}
 
-	$sub_current = records_count('subdomain', 'domain_id', $user_id);
+	$sub_current = records_count('subdomain', 'domain_id', $domainId);
 	$sub_max = $rs->fields['domain_subd_limit'];
-	$als_current = records_count('domain_aliasses', 'domain_id', $user_id);
+	$als_current = records_count('domain_aliasses', 'domain_id', $domainId);
 	$als_max = $rs->fields['domain_alias_limit'];
 
-	// This works with the admin option(Count default E-Mail addresses) is
+	// This works with the admin option (Count default E-Mail addresses) is
 	// working - TheCry
 	if($cfg->COUNT_DEFAULT_EMAIL_ADDRESSES) {
-		$mail_current = records_count('mail_users', "mail_type NOT RLIKE '_catchall' AND domain_id", $user_id);
+		$mail_current = records_count('mail_users', "mail_type NOT RLIKE '_catchall' AND domain_id", $domainId);
 	} else {
 		$where = "
 				`mail_acc` != 'abuse'
@@ -1110,27 +1111,28 @@ function generate_user_props($user_id) {
 				`mail_type` NOT RLIKE '_catchall'
 			AND
 				`domain_id`
+			;
 		";
 
-		$mail_current = records_count('mail_users', $where, $user_id);
+		$mail_current = records_count('mail_users', $where, $domainId);
 	}
 
 	$mail_max = $rs->fields['domain_mailacc_limit'];
 
 	$ftp_current = sub_records_rlike_count(
-		'domain_name', 'domain', 'domain_id', $user_id, 'userid', 'ftp_users', 'userid', '@', ''
+		'domain_name', 'domain', 'domain_id', $domainId, 'userid', 'ftp_users', 'userid', '@', ''
 	);
 
 	$ftp_current += sub_records_rlike_count(
-		'alias_name', 'domain_aliasses', 'domain_id', $user_id, 'userid', 'ftp_users', 'userid', '@', ''
+		'alias_name', 'domain_aliasses', 'domain_id', $domainId, 'userid', 'ftp_users', 'userid', '@', ''
 	);
 
 	$ftp_max = $rs->fields['domain_ftpacc_limit'];
-	$sql_db_current = records_count('sql_database', 'domain_id', $user_id);
+	$sql_db_current = records_count('sql_database', 'domain_id', $domainId);
 	$sql_db_max = $rs->fields['domain_sqld_limit'];
 
 	$sql_user_current = sub_records_count(
-		'sqld_id', 'sql_database', 'domain_id', $user_id, 'sqlu_id', 'sql_user', 'sqld_id', 'sqlu_name', ''
+		'sqld_id', 'sql_database', 'domain_id', $domainId, 'sqlu_id', 'sql_user', 'sqld_id', 'sqlu_name', ''
 	);
 
 	$sql_user_max = $rs->fields['domain_sqlu_limit'];
@@ -1144,34 +1146,35 @@ function generate_user_props($user_id) {
 }
 
 /**
- * Must be documented
+ * Returns  a count of items present in a database table with optional search criterias.
  *
- * @param  $table
- * @param  $where
- * @param  $value
- * @return
+ * @param  string $table Table name on which to operate
+ * @param  string $where OPTIONAL SQL WHERE clause
+ * @param  string $bind OPTIONAL value to bind to the placeholders
+ * @return int Items count
  */
-function records_count($table, $where, $value) {
+function records_count($table, $where = '', $bind = '') {
 
+    /** @var $sql iMSCP_Database */
 	$sql = iMSCP_Registry::get('db');
 
 	if($where != '') {
-		if($value != '') {
-			$query = "SELECT COUNT(*) AS `cnt` FROM $table WHERE $where = ?;";
+		if($bind != '') {
+			$query = "SELECT COUNT(*) AS `cnt` FROM `$table` WHERE $where = ?;";
 
-			$rs = exec_query($sql, $query, $value);
+			$rs = exec_query($sql, $query, $bind);
 		} else {
 			$query = "SELECT COUNT(*) AS `cnt` FROM $table WHERE $where;";
 
 			$rs = exec_query($sql, $query);
 		}
 	} else {
-		$query = "SELECT COUNT(*) AS `cnt` FROM $table;";
+		$query = "SELECT COUNT(*) AS `cnt` FROM `$table`;";
 
 		$rs = exec_query($sql, $query);
 	}
 
-	return $rs->fields['cnt'];
+	return (int) $rs->fields['cnt'];
 }
 
 /**
@@ -1189,6 +1192,7 @@ function records_count($table, $where, $value) {
  */
 function sub_records_count($field, $table, $where, $value, $subfield, $subtable, $subwhere, $subgroupname) {
 
+    /** @var $sql iMSCP_Database */
 	$sql = iMSCP_Registry::get('db');
 
 	if($where != '') {
@@ -1245,14 +1249,16 @@ function sub_records_count($field, $table, $where, $value, $subfield, $subtable,
 }
 
 /**
- * Generate user traffic
+ * Generate user traffic.
  *
- * @param  $user_id
- * @return
+ * @param  int $domainId Domain unique identifier
+ * @return array An array that contains traffic usage information
  */
-function generate_user_traffic($user_id) {
+function generate_user_traffic($domainId) {
 
 	global $crnt_month, $crnt_year;
+
+    /** @var $sql iMSCP_Database */
 	$sql = iMSCP_Registry::get('db');
 
 	$from_timestamp = mktime(0, 0, 0, $crnt_month, 1, $crnt_year);
@@ -1277,7 +1283,7 @@ function generate_user_traffic($user_id) {
 		;
 	";
 
-	$rs = exec_query($sql, $query, $user_id);
+	$rs = exec_query($sql, $query, $domainId);
 
 	if($rs->rowCount() == 0 || $rs->rowCount() > 1) {
 		write_log(
@@ -1321,9 +1327,9 @@ function generate_user_traffic($user_id) {
 /**
  * Must be documented
  *
- * @param  $current
- * @param  $max
- * @return
+ * @param  int $current
+ * @param  int $max
+ * @return int
  */
 function make_usage_vals($current, $max) {
 
@@ -1394,7 +1400,7 @@ function sub_records_rlike_count($field, $table, $where, $value, $subfield, $sub
 }
 
 /**
- * Must be documented
+ * Helper function to generate HTML list of months and years
  *
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @param  $user_month
@@ -1432,10 +1438,10 @@ function gen_select_lists($tpl, $user_month, $user_year) {
 }
 
 /**
- * Must be documented
+ * Returns user name matching identifier.
  *
- * @param  $user_id
- * @return
+ * @param  int $user_id User unique identifier
+ * @return string Username
  */
 function get_user_name($user_id) {
 
@@ -1452,9 +1458,9 @@ function get_user_name($user_id) {
 }
 
 /**
- * Must be documented
+ * Returns user logo path
  *
- * @param  $user_id
+ * @param  int $user_id User unique identifier
  * @return string
  */
 function get_logo($user_id) {
@@ -1486,9 +1492,9 @@ function get_logo($user_id) {
 }
 
 /**
- * Must be documented
+ * Returns admin logo path.
  *
- * @param  $user_id
+ * @param  int $user_id User unique identifier
  * @return string
  */
 function get_own_logo($user_id) {
@@ -1497,10 +1503,10 @@ function get_own_logo($user_id) {
 }
 
 /**
- * Must be documented
+ * Returns admin logo path.
  *
- * @param  $user_id
- * @return string
+ * @param  int $user_id User unique identifier
+ * @return string Admin logo path
  */
 function get_admin_logo($user_id) {
 
@@ -1546,10 +1552,10 @@ function calc_bar_value($value, $value_max, $bar_width) {
 }
 
 /**
- * Must be documented
+ * Writes a log message in the database and sends it to the administrator by email.
  *
- * @param  $msg
- * @param int $level
+ * @param  string $msg Message to log
+ * @param int $level Log level
  * @return void
  */
 function write_log($msg, $level = E_USER_WARNING) {
@@ -1703,20 +1709,25 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname, $ul
 }
 
 /**
- * Must be documented
+ * Update reseller properties.
  *
- * @param  $reseller_id
- * @param  $props
- * @return iMSCP_Database_ResultSet
+ * @param  int $reseller_id Reseller unique identifier.
+ * @param  array $props Array that contain new properties values
+ * @return iMSCP_Database_ResultSet|null
  */
 function update_reseller_props($reseller_id, $props) {
+
+    $props = (array) $props;
 
 	/**
 	 * @var $sql iMSCP_Database
 	 */
 	$sql = iMSCP_Registry::get('db');
 
-	if($props == '') return;
+	if(empty($props))
+    {
+        return null;
+    }
 
 	list(
 		$dmn_current, $dmn_max, $sub_current, $sub_max, $als_current, $als_max, $mail_current, $mail_max, $ftp_current,
@@ -1750,7 +1761,7 @@ function update_reseller_props($reseller_id, $props) {
 }
 
 /**
- * Must be documented
+ * Helper function to generate logged from template part.
  *
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @return void
@@ -1774,14 +1785,14 @@ function gen_logged_from($tpl) {
 }
 
 /**
- * Change domain status
+ * Change domain status (eg. Schedule an action to be performed by engine).
  *
  * @param  iMSCP_Database $sql iMSCP_Database instance
- * @param  $domain_id
- * @param  $domain_name
- * @param  $action
- * @param  $location
- * @return
+ * @param  int $domain_id Domain unique identifier
+ * @param  string $domain_name Domain name
+ * @param  string $action Action to schedule
+ * @param  string $location Location to go back after action scheduling
+ * @return void
  */
 function change_domain_status($sql, $domain_id, $domain_name, $action, $location) {
 
@@ -1975,12 +1986,12 @@ function gen_admin_domain_query(&$search_query, &$count_query, $start_index, $ro
 }
 
 /**
- * Must be documented
+ * Helper function to generate domain search form template part.
  *
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
- * @param  $search_for
- * @param  $search_common
- * @param  $search_status
+ * @param  string $search_for Object to search for
+ * @param  $search_common Commone object to search for
+ * @param  $search_status Object status to search for
  * @return void
  */
 function gen_admin_domain_search_options($tpl, $search_for, $search_common, $search_status) {
@@ -2114,19 +2125,19 @@ function gen_admin_domain_search_options($tpl, $search_for, $search_common, $sea
 }
 
 /**
- * Delete domain with all sub items (usage in admin and reseller)
+ * Delete domain with all sub items (usage in admin and reseller).
  *
- * @param integer $domain_id
+ * @param integer $domain_id Domain unique identifier
  * @param string $goto users.php or manage_users.php
  * @param boolean $breseller double check by reseller=current user
  */
 function delete_domain($domain_id, $goto, $breseller = false) {
 
-	/**
-	 * @var $cfg iMSCP_Config_Handler_File
-	 */
+
+	 /** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
+    /** @var $sql iMSCP_Database */
 	$sql = iMSCP_Registry::get('db');
 
 	// Get uid and gid of domain user
@@ -2359,9 +2370,10 @@ RIC;
 }
 
 /**
- * Must be documented
+ * Returns token.
  *
  * @return string
+ * @todo must be generic.
  */
 function generate_software_upload_token() {
 
@@ -2497,20 +2509,17 @@ function update_existing_client_installations_sw_depot($software_id, $software_m
 }
 
 /**
- * Must be documented
+ * Tells whether or not the software installer is available for a reseller.
  *
- * @param  $reseller_id
- * @return
+ * @param  int $reseller_id Reseller unique identifier
+ * @return string 'yes' if software installer is available, 'no' otherwise
  */
 function get_reseller_sw_installer($reseller_id) {
 
-	/**
-	 * @var $sql iMSCP_Database
-	 */
+	 /** @var $sql iMSCP_Database */
 	$sql = iMSCP_Registry::get('db');
 	
 	$query = "SELECT `software_allowed` FROM `reseller_props` WHERE `reseller_id` = ?;";
-
 	$stmt = exec_query($sql, $query, $reseller_id);
 
 	return $stmt->fields['software_allowed'];
