@@ -54,4 +54,55 @@ interface iMSCP_Controller_Request_Interface
      * @return boolean
      */
     public function isDispatched();
+
+    /**
+     * Returns request uri
+     *
+     * @abstract
+     * @return string
+     */
+    public function getRequestUri();
+
+    /**
+     * Sets URI on which operates
+     *
+     * @abstract
+     * @param string|iMSCP_Uri_Http $requestUri OPTIONNAL URI on which operates
+     * @return iMSCP_Controller_Request_Interface
+     */
+    public function setRequestUri($requestUri = null);
+
+    /**
+     * Returns the scheme component from the URI
+     *
+     * @abstract
+     * @return string
+     */
+    public function getScheme();
+
+    /**
+     * Returns query component of the URI.
+     *
+     * @abstract
+     * @return string
+     */
+    public function getQuery();
+
+    /**
+     * Sets the query component from the URI.
+     *
+     * @abstract
+     * @param  $query
+     * @return void
+     */
+    public function setQuery($query);
+
+    /**
+     * Returns the path component from the URI
+     *
+     * @abstract
+     * @return string
+     */
+    public function getPath();
+
 }

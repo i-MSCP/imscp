@@ -54,4 +54,11 @@ interface iMSCP_Controller_Router_Route_Interface
      * @return string Route name
      */
     public function getName();
+
+    /**
+     * @abstract
+     * @param  $pathInfo
+     * @return void
+     */
+    public function match($pathInfo);
 }

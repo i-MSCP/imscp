@@ -286,7 +286,8 @@ class iMSCP_Uri_Parser
      *
      * <scheme>://<authority>/<path>?<query>#<fragment>
      *
-     * This corresponds to the general structure of an URI like described i RFC 3986.
+     * This corresponds to the general structure of an URI like described in
+     * RFC 3986.
      *
      * @throws iMSCP_Uri_Exception
      * @param string $uri URI reference

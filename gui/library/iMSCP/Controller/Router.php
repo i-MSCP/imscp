@@ -42,36 +42,93 @@ require_once 'iMSCP/Controller/Router/Interface.php';
 class iMSCP_Controller_Router implements iMSCP_Controller_Router_Interface
 {
     /**
-     * @var iMSCP_Controller_Front
+     * Routes stack to match against.
+     *
+     * @var array()
      */
-    protected $_frontController;
+    protected $_routes = array();
+
 
     /**
-     * Retrieve Front Controller
+     * Matched route.
      *
-     * @return iMSCP_Controller_Front
+     * @var iMSCP_Controller_Router_Route_Interface|null
      */
-    public function getFrontController()
-    {
-        if (null !== $this->_frontController) {
-            return $this->_frontController;
-        }
+    protected $_matchedRoute = null;
 
-        require_once 'iMSCP/Controller/Front.php';
-        $this->_frontController = iMSCP_Controller_Front::getInstance();
-        return $this->_frontController;
+    /**
+     * Adds route to the routes stack.
+     * 
+     * @param iMSCP_Controller_Router_Route_Interface $route
+     * @return iMSCP_Controller_Router Provides fluent interface
+     */
+    public function addRoute(iMSCP_Controller_Router_Route_Interface $route)
+    {
+        $this->_routes[$route->getName()] = $route;
+
+        return $this;
     }
 
     /**
-     * Set Front Controller
-     *
-     * @param iMSCP_Controller_Front $controller
-     * @return iMSCP_Controller_Router_Interface
+     * Adds routes to the routes stack.
+     * 
+     * @param array $routes 
+     * @return iMSCP_Controller_Router Provides fluent interface
      */
-    public function setFrontController(iMSCP_Controller_Front $controller)
+    public function addRoutes(array $routes)
     {
-        $this->_frontController = $controller;
+        foreach($routes as $route) {
+            $this->addRoute($route);
+        }
+
         return $this;
+    }
+
+    /**
+     * Remove a route from the routes stack.
+     *
+     * @thrown iMSCP_Controller_Router if the route name is not defined in the routes stack.
+     * @param  string $name Route name
+     * @return iMSCP_Controller_Router Provides fluent interface
+     */
+    public function removeRoute($name)
+    {
+        if (!isset($this->_routes[$name])) {
+            require_once 'iMSCP/Controller/Router/Exception.php';
+            throw new iMSCP_Controller_Router_Exception("Route $name is not defined in the routes stack.");
+        }
+
+        unset($this->_routes[$name]);
+
+        return $this;
+    }
+
+    /**
+     * Check if a named route is defined in the routes stack.
+     *
+     * @param  string $name Route name
+     * @return bool
+     */
+    public function hasRoute($name)
+    {
+        return isset($this->_routes[$name]);
+    }
+
+    /**
+     * Returns a route from the routes stack.
+     * 
+     * @throws iMSCP_Controller_Router_Exception f the route name is not defined in the routes stack.
+     * @param  string $name Route name
+     * @return iMSCP_Controller_Router_Route_Interface
+     */
+    public function getRoute($name)
+    {
+        if (!isset($this->_routes[$name])) {
+            require_once 'iMSCP/Controller/Router/Exception.php';
+            throw new iMSCP_Controller_Router_Exception("Route $name is not defined in the routes stack.");
+        }
+
+        return $this->_routes[$name];
     }
 
     /**
@@ -80,11 +137,31 @@ class iMSCP_Controller_Router implements iMSCP_Controller_Router_Interface
      * If not route was found, an exception is thrown.
      *
      * @throws iMSCP_Controller_Router_Exception
-     * @param iMSCP_Controller_Request_Interface $dispatcher
+     * @param iMSCP_Controller_Request_Interface $request
      * @return iMSCP_Controller_Request_Interface
      */
-    public function route(iMSCP_Controller_Request_Interface $dispatcher)
+    public function route(iMSCP_Controller_Request_Interface $request)
     {
+        // Ensure we have a default route
+        if(empty($this->_routes)) {
+            require_once 'iMSCP/Controller/Router/Route/catchall.php';
+            $route = new iMSCP_Controller_Router_Route_Catchall();
+            $this->addRoute($route);
+        }
 
+        // retrieve URI path info from request object
+        $pathInfo = $request->getPathInfo();
+
+        foreach(array_reverse($this->_routes, true) as $route) {
+            // Check if the route match against the URI
+            if($route->match($pathInfo)) {
+                $this->_matchedRoute = $route;
+            }
+        }
+
+        if(null === $this->_matchedRoute) {
+            require_once 'iMSCP/Controller/Router/Exception.php';
+            throw new iMSCP_Controller_Router_Exception('No route matched the request', 404);
+        }
     }
 }

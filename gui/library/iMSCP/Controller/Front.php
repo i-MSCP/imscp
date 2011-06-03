@@ -181,7 +181,6 @@ class iMSCP_Controller_Front
      */
     public function setRouter(iMSCP_Controller_Router_Interface $router)
     {
-        $router->setFrontController($this);
         $this->_router = $router;
 
         return $this;
