@@ -139,9 +139,9 @@ class iMSCP_Registry
      * Setter method to register data by reference.
      *
      * This method take sense for the singleton objects that provide a method to
-     * recreate the instance. When the object instance is reseted, the alias that iq
+     * recreate the instance. When the object instance is reseted, the alias that is
      * registered in the registry will refer to the new instance. It's not the case
-     * with data that were registered with the {@link set()} method because
+     * with data that are registered with the {@link set()} method because
      * registered values for objects are objects identifiers and not real aliases.
      *
      * See the {@link http://www.php.net/manual/en/language.oop5.references.php Php
