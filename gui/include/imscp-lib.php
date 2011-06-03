@@ -25,10 +25,10 @@
  * @category	i-MSCP
  * @package		i-MSCP
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010 by i-MSCP | http://i-mscp.net
+ * @copyright   2010-2011 by i-MSCP | http://i-mscp.net
  * @author 		ispCP Team
  * @author		i-MSCP Team
- * @author 	    Laurent Declercq <laurent.declercq@i-mscp.net>
+ * @author 	    Laurent Declercq <l.declercq@nuxwin.com>
  * @version 	SVN: $Id$
  * @link        http://i-mscp.net i-MSCP Home Site
  * @license		http://www.mozilla.org/MPL/ MPL 1.1
@@ -52,8 +52,6 @@ define('INCLUDEPATH', dirname(__FILE__));
 
 /**
  * Autoloading classes
- *
- * @todo switch to POO
  */
 require_once INCLUDEPATH . '/imscp-loader.php';
 spl_autoload_register('autoload_class');
@@ -70,23 +68,21 @@ iMSCP_Registry::setAlias(
 );
 
 /**
- * Attach the primary writer to write uncaught exceptions messages to
- * the client browser.
+ * Attach the primary exception writer to write uncaught exceptions messages to the
+ * client browser.
  *
- * The writer writes all exception messages to the client browser. In production,
- * all messages are replaced by a specific message to avoid revealing important
- * information about the i-MSCP application environment if the user is not an
- * administrator.
+ * The exception writer writes all exception messages to the client browser. In
+ * production, all messages are replaced by a specific message to avoid revealing
+ * important information about the i-MSCP application environment if the user is not
+ * an administrator.
  *
- * Another optional writers will be attached to this object during
- * initialization process.
+ * Another writers will be attached to this object during initialization process if
+ * enabled in the application wide configuration file.
  */
 iMSCP_Registry::get('exceptionHandler')
 	->attach(new iMSCP_Exception_Writer_Browser('themes/default/exception.tpl'));
 
-/**
- * Encryption data
- */
+/**Encryption data */
 require_once INCLUDEPATH . '/imscp-db-keys.php';
 
 if($imscp_db_pass_key != '{KEY}' && $imscp_db_pass_iv != '{IV}') {
@@ -98,6 +94,7 @@ if($imscp_db_pass_key != '{KEY}' && $imscp_db_pass_iv != '{IV}') {
 		'Error: Database key and/or initialization vector was not generated!'
 	);
 }
+
 
 /**
  * Include i-MSCP common functions
@@ -136,10 +133,18 @@ require_once 'client-functions.php';
 /**
  * Some others shared libraries
  */
-require_once 'date-functions.php';
 require_once 'input-checks.php';
 require_once 'calc-functions.php';
 require_once 'lostpassword-functions.php';
 require_once 'emailtpl-functions.php';
 require_once 'layout-functions.php';
 require_once 'functions.ticket_system.php';
+
+/**
+ * View helper functions
+ */
+if(isset($_SESSION['user_type'])) {
+    $helperFileName = ucfirst(strtolower($_SESSION['user_type']));
+    require_once INCLUDEPATH . '/iMSCP/View/Helpers/Common.php';
+    require_once INCLUDEPATH . '/iMSCP/View/Helpers/' . $helperFileName . '.php';
+}

@@ -943,6 +943,16 @@ function user_goto($dest) {
 	exit;
 }
 
+/**
+ * Redirect to other page.
+ *
+ * @param  string $destination URL to redirect to
+ * @return void
+ */
+function redirectTo($destination) {
+    user_goto($destination);
+}
+
 function count_sql_user_by_name(&$sql, $sqlu_name) {
 
 	$query = "

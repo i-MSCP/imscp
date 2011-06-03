@@ -28,7 +28,7 @@
  * by moleSoftware GmbH. All Rights Reserved.
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
@@ -74,737 +74,17 @@ function encode($string, $charset = 'UTF-8')
 }
 
 /**
- * Helper function to generate admin main menu template part.
- *
- * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
- * @param  string $menu_file Path to menu template file
- * @return void
- */
-function gen_admin_mainmenu($tpl, $menu_file)
-{
-     /** @var $cfg iMSCP_Config_Handler_File */
-    $cfg = iMSCP_Registry::get('config');
-
-    /** @var $sql iMSCP_Database */
-    $sql = iMSCP_Registry::get('db');
-
-    $tpl->define_dynamic('menu', $menu_file);
-    $tpl->define_dynamic('isactive_support', 'menu');
-    $tpl->define_dynamic('custom_buttons', 'menu');
-    $tpl->assign(array(
-                      'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
-                      'TR_MENU_HOSTING_PLANS' => tr('Manage hosting plans'),
-                      'TR_MENU_SYSTEM_TOOLS' => tr('System tools'),
-                      'TR_MENU_MANAGE_USERS' => tr('Manage users'),
-                      'TR_MENU_STATISTICS' => tr('Statistics'),
-                      'SUPPORT_SYSTEM_PATH' => $cfg->IMSCP_SUPPORT_SYSTEM_PATH,
-                      'SUPPORT_SYSTEM_TARGET' => $cfg->IMSCP_SUPPORT_SYSTEM_TARGET,
-                      'TR_MENU_SUPPORT_SYSTEM' => tr('Support system'),
-                      'TR_MENU_SETTINGS' => tr('Settings'),
-                      'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
-                      'TR_MENU_HOSTING_PLANS' => tr('Manage hosting plans'),
-                      'TR_MENU_SYSTEM_TOOLS' => tr('System tools'),
-                      'TR_MENU_MANAGE_USERS' => tr('Manage users'),
-                      'TR_MENU_STATISTICS' => tr('Statistics'),
-                      'SUPPORT_SYSTEM_PATH' => $cfg->IMSCP_SUPPORT_SYSTEM_PATH,
-                      'SUPPORT_SYSTEM_TARGET' => $cfg->IMSCP_SUPPORT_SYSTEM_TARGET,
-                      'TR_MENU_SUPPORT_SYSTEM' => tr('Support system'),
-                      'TR_MENU_SETTINGS' => tr('Settings'),
-                      'TR_MENU_CHANGE_PASSWORD' => tr('Change password'),
-                      'TR_MENU_CHANGE_PERSONAL_DATA' => tr('Change personal data'),
-                      'TR_MENU_ADD_ADMIN' => tr('Add admin'),
-                      'TR_MENU_ADD_RESELLER' => tr('Add reseller'),
-                      'TR_MENU_RESELLER_ASIGNMENT' => tr('Reseller assignment'),
-                      'TR_MENU_USER_ASIGNMENT' => tr('User assignment'),
-                      'TR_MENU_EMAIL_SETUP' => tr('Email setup'),
-                      'TR_MENU_CIRCULAR' => tr('Email marketing'),
-                      'TR_MENU_ADD_HOSTING' => tr('Add hosting plan'),
-                      'TR_MENU_RESELLER_STATISTICS' => tr('Reseller statistics'),
-                      'TR_MENU_SERVER_STATISTICS' => tr('Server statistics'),
-                      'TR_MENU_ADMIN_LOG' => tr('Admin log'),
-                      'TR_MENU_MANAGE_IPS' => tr('Manage IPs'),
-                      'TR_MENU_SYSTEM_INFO' => tr('System info'),
-                      'TR_MENU_I18N' => tr('Internationalisation'),
-                      'TR_MENU_LANGUAGE' => tr('Language'),
-                      'TR_MENU_LAYOUT_TEMPLATES' => tr('Layout'),
-                      'TR_MENU_LOGOUT' => tr('Logout'),
-                      'TR_MENU_QUESTIONS_AND_COMMENTS' => tr('Support system'),
-                      'TR_MENU_SERVER_TRAFFIC_SETTINGS' => tr('Server traffic settings'),
-                      'TR_MENU_SERVER_STATUS' => tr('Server status'),
-                      'TR_MENU_IMSCP_UPDATE' => tr('i-MSCP updates'),
-                      'TR_MENU_IMSCP_DATABASE_UPDATE' => tr('i-MSCP database updates'),
-                      'TR_MENU_IMSCP_DEBUGGER' => tr('i-MSCP debugger'),
-                      'TR_CUSTOM_MENUS' => tr('Custom menus'),
-                      'TR_MENU_OVERVIEW' => tr('Overview'),
-                      'TR_MENU_MANAGE_SESSIONS' => tr('User sessions'),
-                      'TR_MENU_LOSTPW_EMAIL' => tr('Lostpw email setup'),
-                      'TR_MAINTENANCEMODE' => tr('Maintenance mode'),
-                      'TR_GENERAL_SETTINGS' => tr('General settings'),
-                      'TR_SERVERPORTS' => tr('Server ports')));
-
-    $query = "SELECT * FROM `custom_menus` WHERE `menu_level` = 'admin';";
-    $rs = exec_query($sql, $query);
-
-    if ($rs->recordCount() == 0) {
-        $tpl->assign('CUSTOM_BUTTONS', '');
-    } else {
-        global $i;
-        $i = 100;
-
-        while (!$rs->EOF) {
-            $menu_name = $rs->fields['menu_name'];
-            $menu_link = get_menu_vars($rs->fields['menu_link']);
-            $menu_target = $rs->fields['menu_target'];
-
-            if ($menu_target !== '') {
-                $menu_target = 'target="' . tohtml($menu_target) . '"';
-            }
-
-            $tpl->assign(array(
-                              'BUTTON_LINK' => tohtml($menu_link),
-                              'BUTTON_NAME' => tohtml($menu_name),
-                              'BUTTON_TARGET' => $menu_target,
-                              'BUTTON_ID' => $i));
-
-            $tpl->parse('CUSTOM_BUTTONS', '.custom_buttons');
-            $rs->moveNext();
-            $i++;
-        } // end while
-    } // end else
-
-    if (!$cfg->IMSCP_SUPPORT_SYSTEM) {
-        $tpl->assign('ISACTIVE_SUPPORT', '');
-    }
-
-    if (strtolower($cfg->HOSTING_PLANS_LEVEL) != 'admin') {
-        $tpl->assign('HOSTING_PLANS', '');
-    }
-
-    $tpl->parse('MAIN_MENU', 'menu');
-}
-
-/**
- * Helper function to generates admin menu template part.
- *
- * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
- * @param  string $menu_file Path to menu template file
- * @return void
- */
-function gen_admin_menu($tpl, $menu_file)
-{
-     /** @var $cfg iMSCP_Config_Handler_File */
-    $cfg = iMSCP_Registry::get('config');
-
-    /** @var $sql iMSCP_Database */
-    $sql = iMSCP_Registry::get('db');
-
-    $tpl->define_dynamic('menu', $menu_file);
-    $tpl->define_dynamic('custom_buttons', 'menu');
-    $tpl->assign(array(
-                      'TR_MENU_GENERAL_INFORMATION' => tr('General information'),
-                      'TR_MENU_CHANGE_PASSWORD' => tr('Change password'),
-                      'TR_MENU_CHANGE_PERSONAL_DATA' => tr('Change personal data'),
-                      'TR_MENU_MANAGE_USERS' => tr('Manage users'),
-                      'TR_MENU_ADD_ADMIN' => tr('Add admin'),
-                      'TR_MENU_ADD_RESELLER' => tr('Add reseller'),
-                      'TR_MENU_RESELLER_ASIGNMENT' => tr('Reseller assignment'),
-                      'TR_MENU_USER_ASIGNMENT' => tr('User assignment'),
-                      'TR_MENU_EMAIL_SETUP' => tr('Email setup'),
-                      'TR_MENU_CIRCULAR' => tr('Email marketing'),
-                      'TR_MENU_HOSTING_PLANS' => tr('Manage hosting plans'),
-                      'TR_MENU_ADD_HOSTING' => tr('Add hosting plan'),
-                      'TR_MENU_ROOTKIT_LOG' => tr('Rootkit Log'),
-                      'TR_MENU_RESELLER_STATISTICS' => tr('Reseller statistics'),
-                      'TR_MENU_SERVER_STATISTICS' => tr('Server statistics'),
-                      'TR_MENU_ADMIN_LOG' => tr('Admin log'),
-                      'TR_MENU_MANAGE_IPS' => tr('Manage IPs'),
-                      'TR_MENU_SUPPORT_SYSTEM' => tr('Support system'),
-                      'TR_MENU_SYSTEM_INFO' => tr('System info'),
-                      'TR_MENU_I18N' => tr('Internationalisation'),
-                      'TR_MENU_LANGUAGE' => tr('Language'),
-                      'TR_MENU_LAYOUT_TEMPLATES' => tr('Layout'),
-                      'TR_MENU_LOGOUT' => tr('Logout'),
-                      'TR_MENU_QUESTIONS_AND_COMMENTS' => tr('Support system'),
-                      'TR_MENU_STATISTICS' => tr('Statistics'),
-                      'TR_MENU_SYSTEM_TOOLS' => tr('System tools'),
-                      'TR_MENU_SERVER_TRAFFIC_SETTINGS' => tr('Server traffic settings'),
-                      'TR_MENU_SERVER_STATUS' => tr('Services status'),
-                      'TR_MENU_IMSCP_UPDATE' => tr('i-MSCP updates'),
-                      'TR_MENU_IMSCP_DEBUGGER' => tr('i-MSCP debugger'),
-                      'TR_CUSTOM_MENUS' => tr('Custom menus'),
-                      'TR_MENU_OVERVIEW' => tr('Overview'),
-                      'TR_MENU_MANAGE_SESSIONS' => tr('User sessions'),
-                      'SUPPORT_SYSTEM_PATH' => $cfg->IMSCP_SUPPORT_SYSTEM_PATH,
-                      'SUPPORT_SYSTEM_TARGET' => $cfg->IMSCP_SUPPORT_SYSTEM_TARGET,
-                      'TR_MENU_LOSTPW_EMAIL' => tr('Lostpw email setup'),
-                      'TR_MAINTENANCEMODE' => tr('Maintenance mode'),
-                      'TR_MENU_SETTINGS' => tr('Settings'),
-                      'TR_GENERAL_SETTINGS' => tr('General settings'),
-                      'TR_SERVERPORTS' => tr('Services ports'),
-                      'TR_MENU_IP_USAGE' => tr('IP usage'),
-                      'TR_MENU_MANAGE_SOFTWARE' => tr('Application management'),
-                      'TR_MENU_SOFTWARE_OPTIONS' => tr('Application options'),
-                      'VERSION' => $cfg->Version,
-                      'BUILDDATE' => $cfg->BuildDate,
-                      'CODENAME' => $cfg->CodeName));
-
-    $query = "SELECT * FROM `custom_menus` WHERE `menu_level` = 'admin1';";
-    $rs = exec_query($sql, $query);
-
-    if ($rs->recordCount() == 0) {
-        $tpl->assign('CUSTOM_BUTTONS', '');
-    } else {
-        global $i;
-        $i = 100;
-
-        while (!$rs->EOF) {
-            $menu_name = $rs->fields['menu_name'];
-            $menu_link = get_menu_vars($rs->fields['menu_link']);
-            $menu_target = $rs->fields['menu_target'];
-
-            if ($menu_target !== '') {
-                $menu_target = 'target="' . tohtml($menu_target) . '"';
-            }
-
-            $tpl->assign(array(
-                              'BUTTON_LINK' => tohtml($menu_link),
-                              'BUTTON_NAME' => tohtml($menu_name),
-                              'BUTTON_TARGET' => $menu_target,
-                              'BUTTON_ID' => $i));
-
-            $tpl->parse('CUSTOM_BUTTONS', '.custom_buttons');
-            $rs->moveNext();
-            $i++;
-        }
-    }
-
-    if (!$cfg->IMSCP_SUPPORT_SYSTEM) {
-        $tpl->assign('SUPPORT_SYSTEM', '');
-    }
-
-    if (strtolower($cfg->HOSTING_PLANS_LEVEL) != 'admin') {
-        $tpl->assign('HOSTING_PLANS', '');
-    }
-
-    $tpl->parse('MENU', 'menu');
-}
-
-/**
  * Returns count of SQL users.
  *
- * @param iMSCP_Database $sql iMSCP_Database instance
+ * @param iMSCP_Database $db iMSCP_Database instance
  * @return int Number of SQL users
  */
-function get_sql_user_count($sql)
+function get_sql_user_count($db)
 {
     $query = "SELECT DISTINCT `sqlu_name` FROM `sql_user`;";
-    $rs = exec_query($sql, $query);
+    $rs = exec_query($db, $query);
 
     return $rs->recordCount();
-}
-
-/**
- * Helper function to generate admin general information template part.
- *
- * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
- * @param  iMSCP_Database $sql iMSCP_Database instance
- * @return void
- */
-function getAdminGeneralInfo($tpl, $sql)
-{
-    /** @var $cfg  iMSCP_Config_Handler_File */
-    $cfg = iMSCP_Registry::get('config');
-
-    $tpl->assign(array(
-                      'TR_GENERAL_INFORMATION' => tr('General information'),
-                      'TR_ACCOUNT_NAME' => tr('Account name'),
-                      'TR_ADMIN_USERS' => tr('Admin users'),
-                      'TR_RESELLER_USERS' => tr('Reseller users'),
-                      'TR_NORMAL_USERS' => tr('Normal users'),
-                      'TR_DOMAINS' => tr('Domains'),
-                      'TR_SUBDOMAINS' => tr('Subdomains'),
-                      'TR_DOMAINS_ALIASES' => tr('Domain aliases'),
-                      'TR_MAIL_ACCOUNTS' => tr('Mail accounts'),
-                      'TR_FTP_ACCOUNTS' => tr('FTP accounts'),
-                      'TR_SQL_DATABASES' => tr('SQL databases'),
-                      'TR_SQL_USERS' => tr('SQL users'),
-                      'TR_SYSTEM_MESSAGES' => tr('System messages'),
-                      'TR_NO_NEW_MESSAGES' => tr('No new messages'),
-                      'TR_SERVER_TRAFFIC' => tr('Server traffic')));
-
-    // If COUNT_DEFAULT_EMAIL_ADDRESSES = false, admin total emails show
-    // [total - default_emails]/[total_emails]
-    $retrieve_total_emails = records_count(
-        'mail_users', 'mail_type NOT RLIKE \'_catchall\'', ''
-    );
-
-    if ($cfg->COUNT_DEFAULT_EMAIL_ADDRESSES) {
-        $show_total_emails = $retrieve_total_emails;
-    } else {
-        $retrieve_total_default_emails = records_count('mail_users', 'mail_acc',
-                                                       'abuse');
-
-        $retrieve_total_default_emails += records_count('mail_users', 'mail_acc',
-                                                        'webmaster');
-
-        $retrieve_total_default_emails += records_count('mail_users', 'mail_acc',
-                                                        'postmaster');
-
-        $show_total_emails = ($retrieve_total_emails - $retrieve_total_default_emails)
-                             . '/' . $retrieve_total_emails;
-    }
-
-    $tpl->assign(array(
-                      'ACCOUNT_NAME' => $_SESSION['user_logged'],
-                      'ADMIN_USERS' => records_count('admin', 'admin_type', 'admin'),
-                      'RESELLER_USERS' => records_count('admin', 'admin_type', 'reseller'),
-                      'NORMAL_USERS' => records_count('admin', 'admin_type', 'user'),
-                      'DOMAINS' => records_count('domain', '', ''),
-                      'SUBDOMAINS' => records_count('subdomain', '', '') +
-                                      records_count('subdomain_alias',
-                                                    'subdomain_alias_id', '', ''),
-                      'DOMAINS_ALIASES' => records_count('domain_aliasses', '', ''),
-                      'MAIL_ACCOUNTS' => $show_total_emails,
-                      'FTP_ACCOUNTS' => records_count('ftp_users', '', ''),
-                      'SQL_DATABASES' => records_count('sql_database', '', ''),
-                      'SQL_USERS' => get_sql_user_count($sql)));
-}
-
-/**
- * Helper function to generate admin list template part.
- *
- * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
- * @param  iMSCP_Database $sql iMSCP_Database instance
- * @return void
- */
-function gen_admin_list($tpl, $sql)
-{
-    /** @var $cfg  iMSCP_Config_Handler_File */
-    $cfg = iMSCP_Registry::get('config');
-
-    $query = "
-		SELECT
-			t1.`admin_id`, t1.`admin_name`, t1.`domain_created`,
-			IFNULL(t2.`admin_name`, '') AS `created_by`
-		FROM
-			`admin` AS `t1`
-		LEFT JOIN
-			`admin` AS `t2` ON `t1`.`created_by` = t2.`admin_id`
-		WHERE
-			`t1`.`admin_type` = 'admin'
-		ORDER BY
-			`t1`.`admin_name` ASC
-		;
-	";
-    $rs = exec_query($sql, $query);
-
-    if ($rs->recordCount() == 0) {
-        $tpl->assign(array(
-                          'ADMIN_MESSAGE' => tr('Administrators list is empty!'),
-                          'ADMIN_LIST' => ''));
-
-        $tpl->parse('ADMIN_MESSAGE', 'admin_message');
-    } else {
-        $tpl->assign(array(
-                          'TR_ADMIN_USERNAME' => tr('Username'),
-                          'TR_ADMIN_CREATED_ON' => tr('Creation date'),
-                          'TR_ADMIN_CREATED_BY' => tr('Created by'),
-                          'TR_ADMIN_OPTIONS' => tr('Options')));
-
-        $i = 0;
-        while (!$rs->EOF) {
-            $tpl->assign('ADMIN_CLASS', ($i % 2 == 0) ? 'content' : 'content2');
-            $admin_created = $rs->fields['domain_created'];
-
-            if ($admin_created == 0) {
-                $admin_created = tr('N/A');
-            } else {
-                $date_formt = $cfg->DATE_FORMAT;
-                $admin_created = date($date_formt, $admin_created);
-            }
-
-            if ($rs->fields['created_by'] == '' ||
-                $rs->fields['admin_id'] == $_SESSION['user_id']
-            ) {
-
-                $tpl->assign('ADMIN_DELETE_LINK', '');
-                $tpl->parse('ADMIN_DELETE_SHOW', 'admin_delete_show');
-            } else {
-                $tpl->assign(array(
-                                  'ADMIN_DELETE_SHOW' => '',
-                                  'TR_DELETE' => tr('Delete'),
-                                  'URL_DELETE_ADMIN' => 'user_delete.php?delete_id='
-                                                        . $rs->fields['admin_id'] .
-                                                        '&amp;delete_username=' .
-                                                        $rs->fields['admin_name'],
-                                  'ADMIN_USERNAME' => tohtml($rs->fields['admin_name'])));
-
-                $tpl->parse('ADMIN_DELETE_LINK', 'admin_delete_link');
-            }
-
-            $tpl->assign(array(
-                              'ADMIN_USERNAME' => tohtml($rs->fields['admin_name']),
-                              'ADMIN_CREATED_ON' => tohtml($admin_created),
-                              'ADMIN_CREATED_BY' => ($rs->fields['created_by'] != null)
-                                  ? tohtml($rs->fields['created_by']) : tr("System"),
-                              'URL_EDIT_ADMIN' => 'admin_edit.php?edit_id=' .
-                                                  $rs->fields['admin_id']));
-
-            $tpl->parse('ADMIN_ITEM', '.admin_item');
-            $rs->moveNext();
-            $i++;
-        }
-
-        $tpl->parse('ADMIN_LIST', 'admin_list');
-        $tpl->assign('ADMIN_MESSAGE', '');
-    }
-}
-
-/**
- * Helper function to generate reseller list template part.
- *
- * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
- * @param  iMSCP_Database $sql iMSCP_Database instance
- * @return void
- */
-function gen_reseller_list($tpl, $sql)
-{
-     /** @var $cfg iMSCP_Config_Handler_File */
-    $cfg = iMSCP_Registry::get('config');
-
-    $query = "
-		SELECT
-				`t1`.`admin_id`, `t1`.`admin_name`, `t1`.`domain_created`,
-				IFNULL(t2.`admin_name`, '') AS created_by
-		FROM
-				`admin` AS `t1`
-		LEFT JOIN
-				`admin` AS `t2` ON `t1`.`created_by` = t2.`admin_id`
-		WHERE
-				`t1`.`admin_type` = 'reseller'
-		ORDER BY
-				`t1`.`admin_name` ASC
-		;
-	";
-    $rs = exec_query($sql, $query);
-
-    if ($rs->recordCount() == 0) {
-        $tpl->assign(array(
-                          'RSL_MESSAGE' => tr('Resellers list is empty!'),
-                          'RSL_LIST' => ''));
-
-        $tpl->parse('RSL_MESSAGE', 'rsl_message');
-    } else {
-        $tpl->assign(array(
-                          'TR_RSL_USERNAME' => tr('Username'),
-                          'TR_RSL_CREATED_BY' => tr('Created by'),
-                          'TR_RSL_OPTIONS' => tr('Options')));
-
-        $i = 0;
-        while (!$rs->EOF) {
-            // @todo Not longer needed with the new theme
-            $tpl->assign('RSL_CLASS', ($i % 2 == 0) ? 'content' : 'content2');
-
-            if ($rs->fields['created_by'] == '') {
-                $tpl->assign(array(
-                                  'TR_DELETE' => tr('Delete'),
-                                  'RSL_DELETE_LINK' => ''));
-
-                $tpl->parse('RSL_DELETE_SHOW', 'rsl_delete_show');
-            } else {
-                $tpl->assign(array(
-                                  'RSL_DELETE_SHOW' => '',
-                                  'TR_DELETE' => tr('Delete'),
-                                  'URL_DELETE_RSL' => 'user_delete.php?delete_id=' .
-                                                      $rs->fields['admin_id'] .
-                                                      '&amp;delete_username=' .
-                                                      $rs->fields['admin_name'],
-                                  'TR_CHANGE_USER_INTERFACE' => tr('Switch to user interface'),
-                                  'GO_TO_USER_INTERFACE' => tr('Switch'),
-                                  'URL_CHANGE_INTERFACE' => 'change_user_interface.php?to_id=' .
-                                                            $rs->fields['admin_id']));
-
-                $tpl->parse('RSL_DELETE_LINK', 'rsl_delete_link');
-            }
-
-            $reseller_created = $rs->fields['domain_created'];
-
-            if ($reseller_created == 0) {
-                $reseller_created = tr('N/A');
-            } else {
-                $date_formt = $cfg->DATE_FORMAT;
-                $reseller_created = date($date_formt, $reseller_created);
-            }
-
-            $tpl->assign(array(
-                              'RSL_USERNAME' => tohtml($rs->fields['admin_name']),
-                              'RESELLER_CREATED_ON' => tohtml($reseller_created),
-                              'RSL_CREATED_BY' => tohtml($rs->fields['created_by']),
-                              'URL_EDIT_RSL' => 'reseller_edit.php?edit_id=' .
-                                                $rs->fields['admin_id']));
-
-            $tpl->parse('RSL_ITEM', '.rsl_item');
-            $rs->moveNext();
-            $i++;
-        }
-
-        $tpl->parse('RSL_LIST', 'rsl_list');
-        $tpl->assign('RSL_MESSAGE', '');
-    }
-}
-
-/**
- * Helper function to generate users list template part.
- *
- * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
- * @param  iMSCP_Database $sql iMSCP_Database instance
- * @return void
- */
-function gen_user_list($tpl, $sql)
-{
-     /** @var $cfg iMSCP_Config_Handler_File */
-    $cfg = iMSCP_Registry::get('config');
-
-    $start_index = 0;
-    $rows_per_page = $cfg->DOMAIN_ROWS_PER_PAGE;
-
-    if (isset($_GET['psi'])) {
-        $start_index = $_GET['psi'];
-    }
-
-    // Search request generated ?!
-    if (isset($_POST['uaction']) && !empty($_POST['uaction'])) {
-        $_SESSION['search_for'] = trim(clean_input($_POST['search_for']));
-        $_SESSION['search_common'] = $_POST['search_common'];
-        $_SESSION['search_status'] = $_POST['search_status'];
-        $start_index = 0;
-    } elseif (isset($_SESSION['search_for']) && !isset($_GET['psi'])) {
-        // He have not got scroll through patient records.
-        unset($_SESSION['search_for']);
-        unset($_SESSION['search_common']);
-        unset($_SESSION['search_status']);
-    }
-
-    $search_query = '';
-    $count_query = '';
-
-    if (isset($_SESSION['search_for'])) {
-        gen_admin_domain_query($search_query, $count_query, $start_index,
-                               $rows_per_page, $_SESSION['search_for'],
-                               $_SESSION['search_common'], $_SESSION['search_status']
-        );
-
-        gen_admin_domain_search_options($tpl, $_SESSION['search_for'],
-                                        $_SESSION['search_common'],
-                                        $_SESSION['search_status']);
-
-        $rs = exec_query($sql, $count_query);
-    } else {
-        gen_admin_domain_query($search_query, $count_query, $start_index,
-                               $rows_per_page, 'n/a', 'n/a', 'n/a');
-
-        gen_admin_domain_search_options($tpl, 'n/a', 'n/a', 'n/a');
-
-        $rs = exec_query($sql, $count_query);
-    }
-
-    $records_count = $rs->fields['cnt'];
-    $rs = execute_query($sql, $search_query);
-    $i = 0;
-
-    if ($rs->recordCount() == 0) {
-        if (isset($_SESSION['search_for'])) {
-            $tpl->assign(array(
-                              'USR_MESSAGE' => tr('Not found user records matching the search criteria!'),
-                              'USR_LIST' => '',
-                              'SCROLL_PREV' => '',
-                              'SCROLL_NEXT' => '',
-                              'TR_VIEW_DETAILS' => tr('view aliases'),
-                              'SHOW_DETAILS' => 'show'));
-
-            unset($_SESSION['search_for']);
-            unset($_SESSION['search_common']);
-            unset($_SESSION['search_status']);
-        } else {
-            $tpl->assign(array(
-                              'USR_MESSAGE' => tr('Users list is empty!'),
-                              'USR_LIST' => '',
-                              'SCROLL_PREV' => '',
-                              'SCROLL_NEXT' => '',
-                              'TR_VIEW_DETAILS' => tr('view aliases'),
-                              'SHOW_DETAILS' => 'show'));
-        }
-
-        $tpl->parse('USR_MESSAGE', 'usr_message');
-    } else {
-        $prev_si = $start_index - $rows_per_page;
-
-        if ($start_index == 0) {
-            $tpl->assign('SCROLL_PREV', '');
-        } else {
-            $tpl->assign(array(
-                              'SCROLL_PREV_GRAY' => '',
-                              'PREV_PSI' => $prev_si));
-        }
-
-        $next_si = $start_index + $rows_per_page;
-
-        if ($next_si + 1 > $records_count) {
-            $tpl->assign('SCROLL_NEXT', '');
-        } else {
-            $tpl->assign(array(
-                              'SCROLL_NEXT_GRAY' => '',
-                              'NEXT_PSI' => $next_si));
-        }
-
-        $tpl->assign(array(
-                          'TR_USR_USERNAME' => tr('Username'),
-                          'TR_USR_CREATED_BY' => tr('Created by'),
-                          'TR_USR_OPTIONS' => tr('Options'),
-                          'TR_USER_STATUS' => tr('Status'),
-                          'TR_DETAILS' => tr('Details')));
-
-        while (!$rs->EOF) {
-            // @todo Not longer needed with the new theme
-            $tpl->assign('USR_CLASS', ($i % 2 == 0) ? 'content' : 'content2');
-
-            // user status icon
-            $domain_created_id = $rs->fields['domain_created_id'];
-
-            $query = "
-				SELECT
-						`admin_name`
-				FROM
-						`admin`
-				WHERE
-						`admin_id` = ?
-				ORDER BY
-						`admin_name` ASC
-				;
-			";
-
-            $rs2 = exec_query($sql, $query, $domain_created_id);
-
-            if (!isset($rs2->fields['admin_name'])) {
-                $created_by_name = tr('N/A');
-            } else {
-                $created_by_name = $rs2->fields['admin_name'];
-            }
-
-            // Get disk usage by user
-            $tpl->assign(array(
-                              'USR_DELETE_SHOW' => '',
-                              'DOMAIN_ID' => $rs->fields['domain_id'],
-                              'TR_DELETE' => tr('Delete'),
-                              'URL_DELETE_USR' => 'user_delete.php?domain_id=' .
-                                                  $rs->fields['domain_id'],
-                              'TR_CHANGE_USER_INTERFACE' => tr('Switch to user interface'),
-                              'GO_TO_USER_INTERFACE' => tr('Switch'),
-                              'URL_CHANGE_INTERFACE' => 'change_user_interface.php?to_id=' .
-                                                        $rs->fields['domain_admin_id'],
-                              'USR_USERNAME' => tohtml($rs->fields['domain_name']),
-                              'TR_EDIT_DOMAIN' => tr('Edit domain'),
-                              'TR_EDIT_USR' => tr('Edit user')));
-
-            $tpl->parse('USR_DELETE_LINK', 'usr_delete_link');
-
-            if ($rs->fields['domain_status'] == $cfg->ITEM_OK_STATUS) {
-                $status = 'ok';
-                $status_txt = tr('Ok');
-                $status_url = 'domain_status_change.php?domain_id=' .
-                              $rs->fields['domain_id'];
-            } elseif ($rs->fields['domain_status'] == $cfg->ITEM_DISABLED_STATUS) {
-                $status = 'disabled';
-                $status_txt = tr('Disabled');
-                $status_url = 'domain_status_change.php?domain_id=' .
-                              $rs->fields['domain_id'];
-            } elseif ($rs->fields['domain_status'] == $cfg->ITEM_ADD_STATUS
-                      || $rs->fields['domain_status'] == $cfg->ITEM_RESTORE_STATUS
-                      || $rs->fields['domain_status'] == $cfg->ITEM_CHANGE_STATUS
-                      || $rs->fields['domain_status'] == $cfg->ITEM_TOENABLE_STATUS
-                      || $rs->fields['domain_status'] == $cfg->ITEM_TODISABLED_STATUS
-                      || $rs->fields['domain_status'] == $cfg->ITEM_DELETE_STATUS
-            ) {
-                $status = 'reload';
-                $status_txt = tr('Reload');
-                $status_url = '#';
-            } else {
-                $status = 'error';
-                $status_txt = tr('Error');
-                $status_url = 'domain_details.php?domain_id=' . $rs->fields['domain_id'];
-            }
-
-            $tpl->assign(array(
-                              'STATUS_ICON' => $status . '.png', // Only used in omega_original
-                              'STATUS' => $status,
-                              'TR_STATUS' => $status_txt,
-                              'URL_CHANGE_STATUS' => $status_url,));
-
-            // end of user status icon
-            $admin_name = decode_idna($rs->fields['domain_name']);
-            $domain_created = $rs->fields['domain_created'];
-
-            if ($domain_created == 0) {
-                $domain_created = tr('N/A');
-            } else {
-                $date_formt = $cfg->DATE_FORMAT;
-                $domain_created = date($date_formt, $domain_created);
-            }
-
-            $domain_expires = $rs->fields['domain_expires'];
-
-            if ($domain_expires == 0) {
-                $domain_expires = tr('Not Set');
-            } else {
-                $date_formt = $cfg->DATE_FORMAT;
-                $domain_expires = date($date_formt, $domain_expires);
-            }
-
-            $tpl->assign(array(
-                              'USR_USERNAME' => tohtml($admin_name),
-                              'USER_CREATED_ON' => tohtml($domain_created),
-                              'USER_EXPIRES_ON' => $domain_expires,
-                              'USR_CREATED_BY' => tohtml($created_by_name),
-                              'USR_OPTIONS' => '',
-                              'URL_EDIT_USR' => 'admin_edit.php?edit_id=' .
-                                                $rs->fields['domain_admin_id'],
-                              'TR_MESSAGE_CHANGE_STATUS' => tr('Are you sure you want to change the status of domain account?', true),
-                              'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s')));
-
-            gen_domain_details($tpl, $sql, $rs->fields['domain_id']);
-            $tpl->parse('USR_ITEM', '.usr_item');
-            $rs->moveNext();
-            $i++;
-        }
-
-        $tpl->parse('USR_LIST', 'usr_list');
-        $tpl->assign('USR_MESSAGE', '');
-    }
-}
-
-/**
- * Helper function to generate manage users template part.
- *
- * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
- * @param  iMSCP_Database $sql iMSCP_Database instance
- * @return void
- */
-function get_admin_manage_users($tpl, $sql)
-{
-    $tpl->assign(array(
-                      'TR_MANAGE_USERS' => tr('Manage users'),
-                      'TR_ADMINISTRATORS' => tr('Administrators'),
-                      'TR_RESELLERS' => tr('Resellers'),
-                      'TR_USERS' => tr('Users'),
-                      'TR_SEARCH' => tr('Search'),
-                      'TR_CREATED_ON' => tr('Creation date'),
-                      'TR_EXPIRES_ON' => tr('Expire date'),
-                      'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s'),
-                      'TR_EDIT' => tr('Edit')));
-
-    gen_admin_list($tpl, $sql);
-    gen_reseller_list($tpl, $sql);
-    gen_user_list($tpl, $sql);
 }
 
 /**
@@ -815,11 +95,11 @@ function get_admin_manage_users($tpl, $sql)
  */
 function generate_reseller_props($reseller_id)
 {
-    /** @var $sql iMSCP_Database */
-    $sql = iMSCP_Registry::get('db');
+    /** @var $db iMSCP_Database */
+    $db = iMSCP_Registry::get('db');
 
     $query = "SELECT * FROM `reseller_props` WHERE `reseller_id` = ?;";
-    $rs = exec_query($sql, $query, $reseller_id);
+    $rs = exec_query($db, $query, $reseller_id);
 
     if ($rs->rowCount() == 0) {
         return array_fill(0, 18, 0);
@@ -845,39 +125,19 @@ function generate_reseller_props($reseller_id)
  */
 function generate_reseller_users_props($reseller_id)
 {
-    /** @var $sql iMSCP_Database */
-    $sql = iMSCP_Registry::get('db');
+    /** @var $db iMSCP_Database */
+    $db = iMSCP_Registry::get('db');
 
-    $rdmn_current = 0;
-    $rdmn_max = 0;
-    $rdmn_uf = '_off_';
-    $rsub_current = 0;
-    $rsub_max = 0;
-    $rsub_uf = '_off_';
-    $rals_current = 0;
-    $rals_max = 0;
-    $rals_uf = '_off_';
-    $rmail_current = 0;
-    $rmail_max = 0;
-    $rmail_uf = '_off_';
-    $rftp_current = 0;
-    $rftp_max = 0;
-    $rftp_uf = '_off_';
-    $rsql_db_current = 0;
-    $rsql_db_max = 0;
-    $rsql_db_uf = '_off_';
-    $rsql_user_current = 0;
-    $rsql_user_max = 0;
-    $rsql_user_uf = '_off_';
-    $rtraff_current = 0;
-    $rtraff_max = 0;
-    $rtraff_uf = '_off_';
-    $rdisk_current = 0;
-    $rdisk_max = 0;
-    $rdisk_uf = '_off_';
+    $rdmn_current = $rdmn_max = $rsub_current = $rsub_max = $rals_current =
+    $rals_max = $rmail_current = $rmail_max = $rftp_current = $rftp_max =
+    $rsql_db_current = $rsql_db_max = $rsql_user_current = $rsql_user_max =
+    $rtraff_current = $rtraff_max = $rdisk_current = $rdisk_max = 0;
+
+    $rdmn_uf = $rsub_uf = $rals_uf = $rmail_uf = $rftp_uf = $rsql_db_uf =
+    $rsql_user_uf = $rtraff_uf = $rdisk_uf = '_off_';
 
     $query = "SELECT `admin_id` FROM `admin` WHERE `created_by` = ?;";
-    $rs = exec_query($sql, $query, $reseller_id);
+    $rs = exec_query($db, $query, $reseller_id);
 
     if ($rs->rowCount() == 0) {
         return array(
@@ -894,7 +154,7 @@ function generate_reseller_users_props($reseller_id)
 
         $query = "SELECT `domain_id` FROM `domain` WHERE `domain_admin_id` = ?;";
 
-        $dres = exec_query($sql, $query, $admin_id);
+        $dres = exec_query($db, $query, $admin_id);
         $user_id = $dres->fields['domain_id'];
 
         list($sub_current, $sub_max, $als_current, $als_max, $mail_current,
@@ -993,11 +253,11 @@ function generate_user_props($domainId)
      /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    /** @var $sql iMSCP_Database */
-    $sql = iMSCP_Registry::get('db');
+    /** @var $db iMSCP_Database */
+    $db = iMSCP_Registry::get('db');
 
     $query = "SELECT * FROM `domain` WHERE `domain_id` = ?;";
-    $rs = exec_query($sql, $query, $domainId);
+    $rs = exec_query($db, $query, $domainId);
 
     if ($rs->rowCount() == 0) {
         return array_fill(0, 14, 0);
@@ -1082,20 +342,20 @@ function generate_user_props($domainId)
  */
 function records_count($table, $where = '', $bind = '')
 {
-    /** @var $sql iMSCP_Database */
-    $sql = iMSCP_Registry::get('db');
+    /** @var $db iMSCP_Database */
+    $db = iMSCP_Registry::get('db');
 
     if ($where != '') {
         if ($bind != '') {
             $query = "SELECT COUNT(*) AS `cnt` FROM `$table` WHERE $where = ?;";
-            $rs = exec_query($sql, $query, $bind);
+            $rs = exec_query($db, $query, $bind);
         } else {
             $query = "SELECT COUNT(*) AS `cnt` FROM $table WHERE $where;";
-            $rs = exec_query($sql, $query);
+            $rs = exec_query($db, $query);
         }
     } else {
         $query = "SELECT COUNT(*) AS `cnt` FROM `$table`;";
-        $rs = exec_query($sql, $query);
+        $rs = exec_query($db, $query);
     }
 
     return (int)$rs->fields['cnt'];
@@ -1118,15 +378,15 @@ function records_count($table, $where = '', $bind = '')
  */
 function sub_records_count($field, $table, $where, $value, $subfield, $subtable, $subwhere, $subgroupname)
 {
-    /** @var $sql iMSCP_Database */
-    $sql = iMSCP_Registry::get('db');
+    /** @var $db iMSCP_Database */
+    $db = iMSCP_Registry::get('db');
 
     if ($where != '') {
         $query = "SELECT $field AS `field` FROM $table WHERE $where = ?;";
-        $rs = exec_query($sql, $query, $value);
+        $rs = exec_query($db, $query, $value);
     } else {
         $query = "SELECT $field AS `field` FROM $table;";
-        $rs = exec_query($sql, $query);
+        $rs = exec_query($db, $query);
     }
 
     $result = 0;
@@ -1155,7 +415,7 @@ function sub_records_count($field, $table, $where, $value, $subfield, $subtable,
                     `sqld_id` IN ($sqld_ids)
                 ;
             ";
-            $subres = exec_query($sql, $query);
+            $subres = exec_query($db, $query);
             $result = $subres->fields['cnt'];
         } else {
             return $result;
@@ -1178,7 +438,7 @@ function sub_records_count($field, $table, $where, $value, $subfield, $subtable,
                 return $result;
             }
 
-            $subres = exec_query($sql, $query, $contents);
+            $subres = exec_query($db, $query, $contents);
             $result += $subres->fields['cnt'];
             $rs->moveNext();
         }
@@ -1197,8 +457,8 @@ function generate_user_traffic($domainId)
 {
     global $crnt_month, $crnt_year;
 
-    /** @var $sql iMSCP_Database */
-    $sql = iMSCP_Registry::get('db');
+    /** @var $db iMSCP_Database */
+    $db = iMSCP_Registry::get('db');
 
     $from_timestamp = mktime(0, 0, 0, $crnt_month, 1, $crnt_year);
 
@@ -1222,7 +482,7 @@ function generate_user_traffic($domainId)
 		;
 	";
 
-    $rs = exec_query($sql, $query, $domainId);
+    $rs = exec_query($db, $query, $domainId);
 
     if ($rs->rowCount() == 0 || $rs->rowCount() > 1) {
         write_log(
@@ -1256,7 +516,7 @@ function generate_user_traffic($domainId)
 				`dtraff_time` < ?
 			;
 		";
-        $rs1 = exec_query($sql, $query, array($domain_id, $from_timestamp, $to_timestamp));
+        $rs1 = exec_query($db, $query, array($domain_id, $from_timestamp, $to_timestamp));
 
         return array(
             $domain_name, $domain_id, $rs1->fields['web'], $rs1->fields['ftp'],
@@ -1303,17 +563,17 @@ function make_usage_vals($current, $max)
 function sub_records_rlike_count($field, $table, $where, $value, $subfield,
     $subtable, $subwhere, $a, $b)
 {
-    /** @var $sql iMSCP_Database */
-    $sql = iMSCP_Registry::get('db');
+    /** @var $db iMSCP_Database */
+    $db = iMSCP_Registry::get('db');
 
     if ($where != '') {
         $query = "SELECT $field AS `field` FROM $table WHERE $where = ?;";
 
-        $rs = exec_query($sql, $query, $value);
+        $rs = exec_query($db, $query, $value);
     } else {
         $query = "SELECT $field AS `field` FROM $table;";
 
-        $rs = exec_query($sql, $query);
+        $rs = exec_query($db, $query);
     }
 
     $result = 0;
@@ -1331,7 +591,7 @@ function sub_records_rlike_count($field, $table, $where, $value, $subfield,
             return $result;
         }
 
-        $subres = exec_query($sql, $query, $a . $contents . $b);
+        $subres = exec_query($db, $query, $a . $contents . $b);
         $result += $subres->fields['cnt'];
         $rs->moveNext();
     }
@@ -1339,41 +599,7 @@ function sub_records_rlike_count($field, $table, $where, $value, $subfield,
     return $result;
 }
 
-/**
- * Helper function to generate HTML list of months and years
- *
- * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
- * @param  $user_month
- * @param  $user_year
- * @return void
- */
-function gen_select_lists($tpl, $user_month, $user_year)
-{
-    global $crnt_month, $crnt_year;
 
-     /** @var $cfg iMSCP_Config_Handler_File */
-    $cfg = iMSCP_Registry::get('config');
-
-    if (!$user_month == '' || !$user_year == '') {
-        $crnt_month = $user_month;
-        $crnt_year = $user_year;
-    } else {
-        $crnt_month = date('m');
-        $crnt_year = date('Y');
-    }
-
-    for ($i = 1; $i <= 12; $i++) {
-        $selected = ($i == $crnt_month) ? $cfg->HTML_SELECTED : '';
-        $tpl->assign(array('OPTION_SELECTED' => $selected, 'MONTH_VALUE' => $i));
-        $tpl->parse('MONTH_LIST', '.month_list');
-    }
-
-    for ($i = $crnt_year - 1; $i <= $crnt_year + 1; $i++) {
-        $selected = ($i == $crnt_year) ? $cfg->HTML_SELECTED : '';
-        $tpl->assign(array('OPTION_SELECTED' => $selected, 'YEAR_VALUE' => $i));
-        $tpl->parse('YEAR_LIST', '.year_list');
-    }
-}
 
 /**
  * Returns user name matching identifier.
@@ -1383,10 +609,10 @@ function gen_select_lists($tpl, $user_month, $user_year)
  */
 function get_user_name($user_id)
 {
-    /** @var $sql iMSCP_Database */
-    $sql = iMSCP_Registry::get('db');
+    /** @var $db iMSCP_Database */
+    $db = iMSCP_Registry::get('db');
     $query = "SELECT `admin_name` FROM `admin` WHERE `admin_id` = ?;";
-    $rs = exec_query($sql, $query, $user_id);
+    $rs = exec_query($db, $query, $user_id);
 
     return $rs->fields('admin_name');
 }
@@ -1402,8 +628,8 @@ function get_logo($user_id)
      /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    /** @var $sql iMSCP_Database */
-    $sql = iMSCP_Registry::get('db');
+    /** @var $db iMSCP_Database */
+    $db = iMSCP_Registry::get('db');
 
     // check which logo we should return:
     $query = "
@@ -1416,7 +642,7 @@ function get_logo($user_id)
         ;
     ";
 
-    $rs = exec_query($sql, $query, $user_id);
+    $rs = exec_query($db, $query, $user_id);
 
     if ($rs->fields['admin_type'] == 'admin') {
         return get_admin_logo($user_id);
@@ -1451,10 +677,11 @@ function get_admin_logo($user_id)
      /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    /** @var $sql iMSCP_Database */
-    $sql = iMSCP_Registry::get('db');
+    /** @var $db iMSCP_Database */
+    $db = iMSCP_Registry::get('db');
+
     $query = "SELECT `logo` FROM `user_gui_props` WHERE `user_id`= ?;";
-    $rs = exec_query($sql, $query, $user_id);
+    $rs = exec_query($db, $query, $user_id);
 
     $user_logo = $rs->fields['logo'];
 
@@ -1497,8 +724,8 @@ function write_log($msg, $level = E_USER_WARNING)
      /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    /** @var $sql iMSCP_Database */
-    $sql = iMSCP_Registry::get('db');
+    /** @var $db iMSCP_Database */
+    $db = iMSCP_Registry::get('db');
 
     if (isset($_SERVER['REMOTE_ADDR'])) {
         $client_ip = $_SERVER['REMOTE_ADDR'];
@@ -1510,8 +737,7 @@ function write_log($msg, $level = E_USER_WARNING)
                         ENT_COMPAT, tr('encoding'));
 
     $query = "INSERT INTO `log` (`log_time`,`log_message`) VALUES(NOW(), ?);";
-
-    exec_query($sql, $query, $msg, false);
+    exec_query($db, $query, $msg, false);
 
     $msg = strip_tags(str_replace('<br />', "\n", $msg));
     $send_log_to = $cfg->DEFAULT_ADMIN_ADDRESS;
@@ -1557,7 +783,7 @@ AUTO_LOG_MSG;
             $query = "INSERT INTO `log` (`log_time`,`log_message`) VALUES(NOW(), ?);";
 
             // Change this to be compatible with PDO Exception only
-            exec_query($sql, $query, $log_message, false);
+            exec_query($db, $query, $log_message, false);
         }
     }
 }
@@ -1647,8 +873,8 @@ function update_reseller_props($reseller_id, $props)
 {
     $props = (array)$props;
 
-    /** @var $sql iMSCP_Database */
-    $sql = iMSCP_Registry::get('db');
+    /** @var $db iMSCP_Database */
+    $db = iMSCP_Registry::get('db');
 
     if (empty($props)) {
         return null;
@@ -1675,7 +901,7 @@ function update_reseller_props($reseller_id, $props)
 		;
 	";
 
-    $res = exec_query($sql, $query, array(
+    $res = exec_query($db, $query, array(
                                          $dmn_current, $dmn_max, $sub_current,
                                          $sub_max, $als_current, $als_max,
                                          $mail_current, $mail_max, $ftp_current,
@@ -1687,40 +913,19 @@ function update_reseller_props($reseller_id, $props)
     return $res;
 }
 
-/**
- * Helper function to generate logged from template part.
- *
- * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
- * @return void
- */
-function gen_logged_from($tpl)
-{
-    if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id'])) {
-        $tpl->assign(array(
-                          'YOU_ARE_LOGGED_AS' => tr(
-                              '%1$s you are now logged as %2$s',
-                              $_SESSION['logged_from'],
-                              decode_idna($_SESSION['user_logged'])
-                          ),
-                          'TR_GO_BACK' => tr('Go back')));
 
-        $tpl->parse('LOGGED_FROM', '.logged_from');
-    } else {
-        $tpl->assign('LOGGED_FROM', '');
-    }
-}
 
 /**
  * Change domain status (eg. Schedule an action to be performed by engine).
  *
- * @param  iMSCP_Database $sql iMSCP_Database instance
+ * @param  iMSCP_Database $db iMSCP_Database instance
  * @param  int $domain_id Domain unique identifier
  * @param  string $domain_name Domain name
  * @param  string $action Action to schedule
  * @param  string $location Location to go back after action scheduling
  * @return void
  */
-function change_domain_status($sql, $domain_id, $domain_name, $action, $location)
+function change_domain_status($db, $domain_id, $domain_name, $action, $location)
 {
      /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
@@ -1742,7 +947,7 @@ function change_domain_status($sql, $domain_id, $domain_name, $action, $location
             `domain_id` = ?
         ;
     ";
-    $rs = exec_query($sql, $query, $domain_id);
+    $rs = exec_query($db, $query, $domain_id);
 
     while (!$rs->EOF) {
         $mail_id = $rs->fields['mail_id'];
@@ -1793,13 +998,13 @@ function change_domain_status($sql, $domain_id, $domain_name, $action, $location
                 `mail_id` = ?
             ;
         ";
-        exec_query($sql, $query, array($mail_pass, $mail_status, $mail_id));
+        exec_query($db, $query, array($mail_pass, $mail_status, $mail_id));
         $rs->moveNext();
     }
 
     $query = "UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?;";
 
-    exec_query($sql, $query, array($new_status, $domain_id));
+    exec_query($db, $query, array($new_status, $domain_id));
     send_request();
 
     // let's get back to user overview after the system changes are finished
@@ -1897,15 +1102,15 @@ function gen_admin_domain_query(&$search_query, &$count_query, $start_index,
                                      " AND t2.`domain_status` = '$search_status'");
 
                 $count_query = "
-				SELECT
-					COUNT(*) AS cnt
-				FROM
-					`admin` AS t1, `domain` AS t2
-				$add_query
-				AND
-					t1.`admin_id` = t2.`domain_admin_id`
-				;
-			";
+				    SELECT
+					    COUNT(*) AS cnt
+				    FROM
+					    `admin` AS t1, `domain` AS t2
+				        $add_query
+				    AND
+					    t1.`admin_id` = t2.`domain_admin_id`
+				    ;
+			    ";
             } else {
                 $add_query = sprintf($add_query, ' ');
                 $count_query = "SELECT COUNT(*) AS cnt FROM `admin` $add_query;";
@@ -1929,85 +1134,7 @@ function gen_admin_domain_query(&$search_query, &$count_query, $start_index,
     }
 }
 
-/**
- * Helper function to generate domain search form template part.
- *
- * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
- * @param  string $search_for Object to search for
- * @param  $search_common Commone object to search for
- * @param  $search_status Object status to search for
- * @return void
- */
-function gen_admin_domain_search_options($tpl, $search_for, $search_common, $search_status)
-{
-     /** @var $cfg iMSCP_Config_Handler_File */
-    $cfg = iMSCP_Registry::get('config');
 
-     $domain_selected = $customerid_selected = $lastname_selected =
-     $company_selected = $city_selected = $state_selected = $country_selected =
-     $all_selected = $ok_selected = $suspended_selected = '';
-
-    if ($search_for == 'n/a' && $search_common == 'n/a' && $search_status == 'n/a') {
-        // we have no search and let's generate search fields empty
-        $domain_selected = $cfg->HTML_SELECTED;
-        $all_selected = $cfg->HTML_SELECTED;
-    }
-
-    if ($search_common == 'domain_name') {
-        $domain_selected = $cfg->HTML_SELECTED;
-    } elseif ($search_common == 'customer_id') {
-        $customerid_selected = $cfg->HTML_SELECTED;
-    } elseif ($search_common == 'lname') {
-        $lastname_selected = $cfg->HTML_SELECTED;
-    } elseif ($search_common === 'firm') {
-        $company_selected = $cfg->HTML_SELECTED;
-    } elseif ($search_common == 'city') {
-        $city_selected = $cfg->HTML_SELECTED;
-    } elseif ($search_common == 'state') {
-        $state_selected = $cfg->HTML_SELECTED;
-    } elseif ($search_common == 'country') {
-        $country_selected = $cfg->HTML_SELECTED;
-    }
-
-    if ($search_status == 'all') {
-        $all_selected = $cfg->HTML_SELECTED;
-    } elseif ($search_status == 'ok') {
-        $ok_selected = $cfg->HTML_SELECTED;
-    } elseif ($search_status == 'disabled') {
-        $suspended_selected = $cfg->HTML_SELECTED;
-    }
-
-    if ($search_for == 'n/a' || $search_for == '') {
-        $tpl->assign(array('SEARCH_FOR' => ''));
-    } else {
-        $tpl->assign(array('SEARCH_FOR' => $search_for));
-    }
-
-    $tpl->assign(array(
-                      'M_DOMAIN_NAME' => tr('Domain name'),
-                      'M_CUSTOMER_ID' => tr('Customer ID'),
-                      'M_LAST_NAME' => tr('Last name'),
-                      'M_COMPANY' => tr('Company'),
-                      'M_CITY' => tr('City'),
-                      'M_STATE' => tr('State/Province'),
-                      'M_COUNTRY' => tr('Country'),
-                      'M_ALL' => tr('All'),
-                      'M_OK' => tr('OK'),
-                      'M_SUSPENDED' => tr('Suspended'),
-                      'M_ERROR' => tr('Error'),
-
-                      // selected area
-                      'M_DOMAIN_NAME_SELECTED' => $domain_selected,
-                      'M_CUSTOMER_ID_SELECTED' => $customerid_selected,
-                      'M_LAST_NAME_SELECTED' => $lastname_selected,
-                      'M_COMPANY_SELECTED' => $company_selected,
-                      'M_CITY_SELECTED' => $city_selected,
-                      'M_STATE_SELECTED' => $state_selected,
-                      'M_COUNTRY_SELECTED' => $country_selected,
-                      'M_ALL_SELECTED' => $all_selected,
-                      'M_OK_SELECTED' => $ok_selected,
-                      'M_SUSPENDED_SELECTED' => $suspended_selected,));
-}
 
 /**
  * Delete domain with all sub items (usage in admin and reseller).
@@ -2021,8 +1148,8 @@ function delete_domain($domain_id, $goto, $breseller = false)
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    /** @var $sql iMSCP_Database */
-    $sql = iMSCP_Registry::get('db');
+    /** @var $db iMSCP_Database */
+    $db = iMSCP_Registry::get('db');
 
     // Get uid and gid of domain user
     $query = "
@@ -2039,9 +1166,9 @@ function delete_domain($domain_id, $goto, $breseller = false)
     if ($breseller) {
         $reseller_id = $_SESSION['user_id'];
         $query .= " AND `domain_created_id` = ?";
-        $res = exec_query($sql, $query, array($domain_id, $reseller_id));
+        $res = exec_query($db, $query, array($domain_id, $reseller_id));
     } else {
-        $res = exec_query($sql, $query, $domain_id);
+        $res = exec_query($db, $query, $domain_id);
     }
 
     $data = $res->fetchRow();
@@ -2062,7 +1189,7 @@ function delete_domain($domain_id, $goto, $breseller = false)
 
     // Mail users:
     $query = "UPDATE `mail_users` SET `status` = ? WHERE `domain_id` = ?;";
-    exec_query($sql, $query, array($cfg->ITEM_DELETE_STATUS, $domain_id));
+    exec_query($db, $query, array($cfg->ITEM_DELETE_STATUS, $domain_id));
 
     // Delete all protected areas related data (areas, groups and users)
     $query = "
@@ -2080,14 +1207,13 @@ function delete_domain($domain_id, $goto, $breseller = false)
 			`dmn`.`domain_id` = ?
 		;
 	";
-
-    exec_query($sql, $query, $domain_id);
+    exec_query($db, $query, $domain_id);
 
     // Delete subdomain aliases:
     $alias_a = array();
 
     $query = "SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?;";
-    $res = exec_query($sql, $query, $domain_id);
+    $res = exec_query($db, $query, $domain_id);
 
     while (!$res->EOF) {
         $alias_a[] = $res->fields['alias_id'];
@@ -2104,15 +1230,15 @@ function delete_domain($domain_id, $goto, $breseller = false)
                 `alias_id` IN (";
         $query .= implode(',', $alias_a);
         $query .= ")";
-        exec_query($sql, $query, $cfg->ITEM_DELETE_STATUS);
+        exec_query($db, $query, $cfg->ITEM_DELETE_STATUS);
     }
 
     // Delete SQL databases and users
     $query = "SELECT `sqld_id` FROM `sql_database` WHERE `domain_id` = ?;";
-    $res = exec_query($sql, $query, $domain_id);
+    $res = exec_query($db, $query, $domain_id);
 
     while (!$res->EOF) {
-        delete_sql_database($sql, $domain_id, $res->fields['sqld_id']);
+        delete_sql_database($db, $domain_id, $res->fields['sqld_id']);
         $res->moveNext();
     }
 
@@ -2126,55 +1252,55 @@ function delete_domain($domain_id, $goto, $breseller = false)
             `domain_id` = ?
         ;
     ";
-    exec_query($sql, $query, array($cfg->ITEM_DELETE_STATUS, $domain_id));
+    exec_query($db, $query, array($cfg->ITEM_DELETE_STATUS, $domain_id));
 
     // Remove domain traffic
     $query = "DELETE FROM `domain_traffic` WHERE`domain_id` = ?;";
-    exec_query($sql, $query, $domain_id);
+    exec_query($db, $query, $domain_id);
 
     // Delete domain DNS entries
     $query = "DELETE FROM `domain_dns` WHERE `domain_id` = ?;";
-    exec_query($sql, $query, $domain_id);
+    exec_query($db, $query, $domain_id);
 
     // Set domain deletion status
     $query = "UPDATE `domain` SET `domain_status` = 'delete' WHERE `domain_id` = ?;";
-    exec_query($sql, $query, $domain_id);
+    exec_query($db, $query, $domain_id);
 
     // Set domain subdomains deletion status
     $query = "UPDATE `subdomain` SET `subdomain_status` = ? WHERE `domain_id` = ?;";
-    exec_query($sql, $query, array($cfg->ITEM_DELETE_STATUS, $domain_id));
+    exec_query($db, $query, array($cfg->ITEM_DELETE_STATUS, $domain_id));
 
     // --- Send request to the daemon
     send_request();
 
     // Delete FTP users:
     $query = "DELETE FROM `ftp_users` WHERE `uid` = ?;";
-    exec_query($sql, $query, $domain_uid);
+    exec_query($db, $query, $domain_uid);
 
     // Delete FTP groups:
     $query = "DELETE FROM `ftp_group` WHERE `gid` = ?;";
-    exec_query($sql, $query, $domain_gid);
+    exec_query($db, $query, $domain_gid);
 
     // Delete i-MSCP login:
     $query = "DELETE FROM `admin` WHERE `admin_id` = ?;";
-    exec_query($sql, $query, $domain_admin_id);
+    exec_query($db, $query, $domain_admin_id);
 
     // Delete the quota section:
     $query = "DELETE FROM `quotalimits` WHERE `name` = ?;";
-    exec_query($sql, $query, $domain_name);
+    exec_query($db, $query, $domain_name);
 
     // Delete the quota section:
     $query = "DELETE FROM `quotatallies` WHERE `name` = ?;";
-    exec_query($sql, $query, $domain_name);
+    exec_query($db, $query, $domain_name);
 
     // Remove support tickets:
     $query = "DELETE FROM `tickets` WHERE ticket_from = ? OR ticket_to = ?;";
-    exec_query($sql, $query, array($domain_admin_id, $domain_admin_id));
+    exec_query($db, $query, array($domain_admin_id, $domain_admin_id));
 
     // Delete user gui properties
     $query = "DELETE FROM `user_gui_props` WHERE `user_id` = ?;";
 
-    exec_query($sql, $query, $domain_admin_id);
+    exec_query($db, $query, $domain_admin_id);
     write_log($_SESSION['user_logged'] . ': deletes domain ' . $domain_name);
 
     if(isset($reseller_id)) {
@@ -2185,74 +1311,7 @@ function delete_domain($domain_id, $goto, $breseller = false)
     user_goto($goto);
 }
 
-/**
- * Must be documented
- *
- * @param iMSCP_pTemplate $tpl iMSCP_pTemplate instance
- * @param $sql
- * @param $user_id
- * @param bool $encode
- * @return void
- */
-function gen_purchase_haf($tpl, $sql, $user_id, $encode = false)
-{
-     /** @var $cfg iMSCP_Config_Handler_File */
-    $cfg = iMSCP_Registry::get('config');
 
-    $query = "SELECT `header`, `footer` FROM `orders_settings` WHERE `user_id` = ?;";
-
-    if (isset($_SESSION['user_theme'])) {
-        $theme = $_SESSION['user_theme'];
-    } else {
-        $theme = $cfg->USER_INITIAL_THEME;
-    }
-
-    $rs = exec_query($sql, $query, $user_id);
-
-    if ($rs->recordCount() == 0) {
-        $title = tr("i-MSCP - Order Panel");
-
-        $header = <<<RIC
-<?xml version="1.0" encoding="{THEME_CHARSET}" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-	<head>
-		<title>{$title}</title>
-		<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
-		<meta http-equiv="Content-Style-Type" content="text/css" />
-		<link href="../themes/{$theme}/css/imscp_orderpanel.css" rel="stylesheet" type="text/css" />
-	</head>
-	<body>
-		<div align="center">
-			<table width="100%" style="height:95%">
-				<tr>
-					<td align="center">
-RIC;
-
-        $footer = <<<RIC
-					</td>
-				</tr>
-			</table>
-		</div>
-	</body>
-</html>
-RIC;
-    } else {
-        $header = $rs->fields['header'];
-        $footer = $rs->fields['footer'];
-        $header = str_replace('\\', '', $header);
-        $footer = str_replace('\\', '', $footer);
-    }
-
-    if ($encode) {
-        $header = htmlentities($header, ENT_COMPAT, 'UTF-8');
-        $footer = htmlentities($footer, ENT_COMPAT, 'UTF-8');
-    }
-
-    $tpl->assign(array(
-                      'PURCHASE_HEADER' => $header,
-                      'PURCHASE_FOOTER' => $footer));
-}
 
 /**
  * Returns token.
@@ -2275,7 +1334,7 @@ function generate_software_upload_token()
  * @param  $software_name
  * @param  $software_version
  * @param  $software_language
- * @param  $reseller_id
+ * @param int $reseller_id Reseller unique identifier
  * @param int $software_master_id
  * @param bool $sw_depot
  * @return void
@@ -2283,11 +1342,21 @@ function generate_software_upload_token()
 function update_existing_client_installations_res_upload($software_id, $software_name, $software_version,
     $software_language, $reseller_id, $software_master_id = 0, $sw_depot = false)
 {
-    /** @var $sql iMSCP_Database */
-    $sql = iMSCP_Registry::get('db');
+    /** @var $db iMSCP_Database */
+    $db = iMSCP_Registry::get('db');
 
-    $query = "SELECT `domain_id` FROM `domain` WHERE `domain_software_allowed` = 'yes' AND `domain_created_id` = ?;";
-    $res = exec_query($sql, $query, array($reseller_id));
+    $query = "
+        SELECT
+            `domain_id`
+        FROM
+            `domain`
+        WHERE
+            `domain_software_allowed` = 'yes'
+        AND
+            `domain_created_id` = ?
+        ;
+    ";
+    $res = exec_query($db, $query, $reseller_id);
 
     if ($res->RecordCount() > 0) {
         while (!$res->EOF) {
@@ -2310,8 +1379,7 @@ function update_existing_client_installations_res_upload($software_id, $software
 						`domain_id` = ?
 					;
 				";
-
-                exec_query($sql, $updatequery, array(
+                exec_query($db, $updatequery, array(
                                                     $software_id, $software_master_id,
                                                     $software_name, $software_version,
                                                     $software_language,
@@ -2334,8 +1402,7 @@ function update_existing_client_installations_res_upload($software_id, $software
 						`domain_id` = ?
 					;
 				";
-
-                exec_query($sql, $updatequery, array(
+                exec_query($db, $updatequery, array(
                                                     $software_id, $software_name,
                                                     $software_version,
                                                     $software_language,
@@ -2357,8 +1424,8 @@ function update_existing_client_installations_res_upload($software_id, $software
  */
 function update_existing_client_installations_sw_depot($software_id, $software_master_id, $reseller_id)
 {
-    /** @var $sql iMSCP_Database */
-    $sql = iMSCP_Registry::get('db');
+    /** @var $db iMSCP_Database */
+    $db = iMSCP_Registry::get('db');
 
     $query = "
         SELECT
@@ -2371,7 +1438,7 @@ function update_existing_client_installations_sw_depot($software_id, $software_m
             `domain_created_id` = ?
         ;
      ";
-    $res = exec_query($sql, $query, $reseller_id);
+    $res = exec_query($db, $query, $reseller_id);
 
     if ($res->RecordCount() > 0) {
         while (!$res->EOF) {
@@ -2389,7 +1456,7 @@ function update_existing_client_installations_sw_depot($software_id, $software_m
 				;
 			";
 
-            exec_query($sql, $updatequery, array(
+            exec_query($db, $updatequery, array(
                                                 $software_id, $software_master_id,
                                                 $res->fields['domain_id']));
             $res->MoveNext();
@@ -2405,11 +1472,19 @@ function update_existing_client_installations_sw_depot($software_id, $software_m
  */
 function get_reseller_sw_installer($reseller_id)
 {
-    /** @var $sql iMSCP_Database */
-    $sql = iMSCP_Registry::get('db');
+    /** @var $db iMSCP_Database */
+    $db = iMSCP_Registry::get('db');
 
-    $query = "SELECT `software_allowed` FROM `reseller_props` WHERE `reseller_id` = ?;";
-    $stmt = exec_query($sql, $query, $reseller_id);
+    $query = "
+        SELECT
+            `software_allowed`
+        FROM
+            `reseller_props`
+        WHERE
+            `reseller_id` = ?
+        ;
+    ";
+    $stmt = exec_query($db, $query, $reseller_id);
 
     return $stmt->fields['software_allowed'];
 }
@@ -2417,24 +1492,44 @@ function get_reseller_sw_installer($reseller_id)
 /**
  * Must be documented
  *
- * @param  $reseller_id
+ * @param  $reseller_id Reseller unique identifier
  * @param  $file_name
  * @param  $sw_id
  * @return void
  */
 function send_activated_sw($reseller_id, $file_name, $sw_id)
 {
-    global $cfg, $sql;
+    /** @var $cfg iMSCP_Config_Handler_File */
+    $cfg = iMSCP_Registry::get('config');
 
-    $query = "SELECT `admin_name` as reseller, `created_by`, `email` as res_email FROM `admin` WHERE`admin_id` = ?;";
-    $res = exec_query($sql, $query, $reseller_id);
+    /** @var $db iMSCP_Database */
+    $db = iMSCP_Registry::get('db');
+
+    $query = "
+        SELECT
+            `admin_name` as `reseller`, `created_by`, `email` as `res_email`
+        FROM
+            `admin`
+        WHERE
+            `admin_id` = ?;
+        ;
+    ";
+    $res = exec_query($db, $query, $reseller_id);
 
     $to_name = $res->fields['reseller'];
     $to_email = $res->fields['res_email'];
     $admin_id = $res->fields['created_by'];
 
-    $query = "SELECT `email` as adm_email, `admin_name` as admin FROM `admin` WHERE `admin_id` = ?;";
-    $res = exec_query($sql, $query, $admin_id);
+    $query = "
+        SELECT
+            `email` as adm_email, `admin_name` as `admin`
+        FROM
+            `admin`
+        WHERE
+            `admin_id` = ?
+        ;
+    ";
+    $res = exec_query($db, $query, $admin_id);
 
     $from_name = $res->fields['admin'];
     $from_email = $res->fields['adm_email'];
@@ -2489,7 +1584,11 @@ function send_activated_sw($reseller_id, $file_name, $sw_id)
  */
 function send_deleted_sw($reseller_id, $file_name, $sw_id, $subjectinput, $messageinput)
 {
-    global $cfg, $sql;
+    /** @var $cfg iMSCP_Config_Handler_File */
+    $cfg = iMSCP_Registry::get('config');
+
+    /** @var $db iMSCP_Database */
+    $db = iMSCP_Registry::get('db');
 
     $query = "
         SELECT
@@ -2499,7 +1598,7 @@ function send_deleted_sw($reseller_id, $file_name, $sw_id, $subjectinput, $messa
         WHERE `admin_id` = ?
         ;
     ";
-    $res = exec_query($sql, $query, $reseller_id);
+    $res = exec_query($db, $query, $reseller_id);
 
     $to_name = $res->fields['reseller'];
     $to_email = $res->fields['res_email'];
@@ -2514,7 +1613,7 @@ function send_deleted_sw($reseller_id, $file_name, $sw_id, $subjectinput, $messa
             `admin_id` = ?
         ;
     ";
-    $res = exec_query($sql, $query, $admin_id);
+    $res = exec_query($db, $query, $admin_id);
 
     $from_name = $res->fields['admin'];
     $from_email = $res->fields['adm_email'];
