@@ -231,7 +231,7 @@ $rs = exec_query($sql, $query, $_SESSION['user_id']);
 
 $dmn_name = $rs->fields['domain_name'];
 
-check_ftp_perms($sql, $ftp_acc);
+check_ftp_perms($ftp_acc);
 gen_page_dynamic_data($tpl, $sql, $ftp_acc);
 update_ftp_account($sql, $ftp_acc, $dmn_name);
 

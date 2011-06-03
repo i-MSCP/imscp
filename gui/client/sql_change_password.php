@@ -156,7 +156,7 @@ $tpl->assign(
 
 // dynamic page data.
 $db_user_name = gen_page_data($tpl, $sql, $db_user_id);
-check_usr_sql_perms($sql, $db_user_id);
+check_user_sql_perms($db_user_id);
 change_sql_user_pass($sql, $db_user_id, $db_user_name);
 
 // static page messages.

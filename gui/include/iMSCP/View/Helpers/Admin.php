@@ -790,29 +790,6 @@ function gen_select_lists($tpl, $user_month, $user_year)
 }
 
 /**
- * Helper function to generate logged from template part.
- *
- * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
- * @return void
- */
-function gen_logged_from($tpl)
-{
-    if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id'])) {
-        $tpl->assign(array(
-                          'YOU_ARE_LOGGED_AS' => tr(
-                              '%1$s you are now logged as %2$s',
-                              $_SESSION['logged_from'],
-                              decode_idna($_SESSION['user_logged'])
-                          ),
-                          'TR_GO_BACK' => tr('Go back')));
-
-        $tpl->parse('LOGGED_FROM', '.logged_from');
-    } else {
-        $tpl->assign('LOGGED_FROM', '');
-    }
-}
-
-/**
  * Helper function to generate domain search form template part.
  *
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance

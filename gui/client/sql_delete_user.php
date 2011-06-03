@@ -44,7 +44,7 @@ if (isset($_GET['id'])) {
 
 $dmn_id = get_user_domain_id($sql, $_SESSION['user_id']);
 
-check_usr_sql_perms($sql, $db_user_id);
+check_user_sql_perms($db_user_id);
 
 sql_delete_user($sql, $dmn_id, $db_user_id);
 

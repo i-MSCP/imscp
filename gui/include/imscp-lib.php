@@ -83,6 +83,7 @@ iMSCP_Registry::get('exceptionHandler')
 	->attach(new iMSCP_Exception_Writer_Browser('themes/default/exception.tpl'));
 
 /**Encryption data */
+
 require_once INCLUDEPATH . '/imscp-db-keys.php';
 
 if($imscp_db_pass_key != '{KEY}' && $imscp_db_pass_iv != '{IV}') {
@@ -91,16 +92,15 @@ if($imscp_db_pass_key != '{KEY}' && $imscp_db_pass_iv != '{IV}') {
 	unset($imscp_db_pass_key, $imscp_db_pass_iv);
 } else {
 	throw new iMSCP_Exception(
-		'Error: Database key and/or initialization vector was not generated!'
+		'Database key and/or initialization vector was not generated.'
 	);
 }
-
 
 /**
  * Include i-MSCP common functions
  */
 require_once 'vendor/net_idna/idna_convert.class.php';
-require_once INCLUDEPATH . '/common-functions.php';
+require_once INCLUDEPATH . '/shared-functions.php';
 require_once INCLUDEPATH . '/deprecated.php';
 
 /**
