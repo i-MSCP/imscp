@@ -490,4 +490,16 @@ class iMSCP_Database
 
         return $this->_db->errorInfo();
     }
+
+    /**
+     * Returns quote identifier symbol.
+     *
+     * @author Laurent Declercq <l.declercq@nuxwin.com>
+     * @since iMSCP 1.0.0
+     * @return string Quote identifier symbol
+     */
+    public function getQuoteIdentifierSymbol()
+    {
+        return $this->nameQuote;
+    }
 }
