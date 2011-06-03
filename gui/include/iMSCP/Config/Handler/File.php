@@ -25,7 +25,7 @@
  * @subpackage  Handler
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @copyright 	2010 by i-MSCP | http://i-mscp.net
- * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     SVN: $Id$
  * @link		http://i-mscp.net i-MSCP Home Site
  * @license     http://www.mozilla.org/MPL/ MPL 1.1
@@ -43,6 +43,7 @@ require_once  INCLUDEPATH . '/iMSCP/Config/Handler.php';
  * are stored in a flat file where each pair of key-values are separated by the
  * equal sign.
  *
+ * @property string MR_LOCK_FILE Path to lock file
  * @property string ROOT_TEMPLATE_PATH Root templates path
  * @property string USER_INITIAL_THEME User initial theme
  * @property string LOGIN_TEMPLATE_PATH Login templates path
@@ -154,7 +155,7 @@ require_once  INCLUDEPATH . '/iMSCP/Config/Handler.php';
  * @package		iMSCP_Config
  * @subpackage	Handler
  * @author		Benedikt Heintel <benedikt.heintel@i-mscp.net>
- * @author		Laurent Declercq <laurent.declercq@i-mscp.net>
+ * @author		Laurent Declercq <l.declercq@nuxwin.com>
  * @since       1.0.7 (ispCP)
  * @version		1.0.6
  */
@@ -171,11 +172,9 @@ class iMSCP_Config_Handler_File extends iMSCP_Config_Handler {
 	 * Loads all configuration parameters from a flat file
 	 *
 	 * <b>Note:</b> Default file path is set to:
-	 * {/usr/local}/etc/imscp/imscp.conf depending of the used distribution.
+	 * {/usr/local}/etc/imscp/imscp.conf depending of distribution.
 	 *
 	 * @param string $pathFile Configuration file path
-	 * @return void
-	 * @todo Should be more generic (path file shouldn't be hardcoded here)
 	 */
 	public function __construct($pathFile = null) {
 

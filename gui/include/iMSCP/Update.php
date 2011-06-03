@@ -38,7 +38,7 @@
  * @package     iMSCP_Update
  * @author      Jochen Manz <zothos@zothos.net>
  * @author      Daniel Andreca <sci2tech@gmail.com>
- * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     1.0.4
  * @since		r1355
  */

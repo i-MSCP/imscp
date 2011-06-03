@@ -374,7 +374,7 @@ class iMSCP_pTemplate {
 	/**
 	 * Check if a namespace exist
 	 *
-	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @since r2467
 	 * @param string $namespace namespace to be check
 	 * @return boolean TRUE if the namespace exist, FALSE otherwise

@@ -38,7 +38,7 @@
  * @category    i-MSCP
  * @package     iMSCP_Database
  * @author      ispCP Team
- * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
  */
 class iMSCP_Database
 {
@@ -175,7 +175,7 @@ class iMSCP_Database
      * Returns the PDO object linked to the current database connection object
      *
      * @since 1.0.7
-     * @author Laurent Declercq <laurent.declercq@i-mscp.net>
+     * @author Laurent Declercq <l.declercq@nuxwin.com>
      * @throws iMSCP_Exception
      * @param string $connection    Connection unique identifier
      * @return PDO                  A PDO instance
@@ -362,7 +362,7 @@ class iMSCP_Database
     /**
      * Quotes a string for use in a query.
      *
-     * @author Laurent Declercq <laurent.declercq@i-mscp.net>
+     * @author Laurent Declercq <l.declercq@nuxwin.com>
      * @since 1.0.0 (iMSCP)
      * @link i-mscp.net
      * @param $string                   The string to be quoted
@@ -383,7 +383,7 @@ class iMSCP_Database
      * information about this.
      *
      * @since r2013
-     * @author Laurent Declercq <laurent.declercq@i-mscp.net>
+     * @author Laurent Declercq <l.declercq@nuxwin.com>
      * @param int $attribute    Attribute uid
      * @param mixed $value      Attribute value
      * @return boolean          TRUE on success, FALSE on failure
@@ -439,7 +439,7 @@ class iMSCP_Database
      * Gets the last SQLSTATE error code.
      *
      * @since 1.0.7
-     * @author Laurent Declercq <laurent.declercq@i-mscp.net>
+     * @author Laurent Declercq <l.declercq@nuxwin.com>
      * @return mixed    The last SQLSTATE error code
      */
     public function getLastErrorCode()
@@ -453,7 +453,7 @@ class iMSCP_Database
      * This method returns the last error message set by the {@link execute()} or
      * {@link prepare()} methods.
      *
-     * @author Laurent Declercq <laurent.declercq@i-mscp.net>
+     * @author Laurent Declercq <l.declercq@nuxwin.com>
      * @since 1.0.7
      * @return string   Last error message set by the {@link execute()} or
      *                  {@link prepare()} methods.

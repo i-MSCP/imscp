@@ -922,7 +922,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	 *  - Possible missing value in "domain.allowbackup"
 	 *  - Change the naming convention for option 'domain' related to the backup feature
 	 *
-	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @version 1.0.2
 	 * @since r1998
 	 * @return array SQL statements to be performed
@@ -1056,7 +1056,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	/**
 	 * Fixes for ticket #2000 http://www.isp-control.net/ispcp/ticket/1985.
 	 *
-	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @version 1.0.2
 	 * @since r2013
 	 * @return array SQL statements to be performed
@@ -1189,7 +1189,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	/**
 	 * Transitional issue (Fix database update conflict)
 	 *
-	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @since r2701
 	 * @return array SQL statements to be performed
 	 */
@@ -1207,7 +1207,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	 * double and trailling slash in the relative paths of `.htaccess` files
 	 * for convenience reasons in the i-mscp-htaccess-mngr engine script.
 	 *
-	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @since r2698
 	 * @return array SQL statements to be performed
 	 */
@@ -1303,7 +1303,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	 * Remove all user gui properties that are orphan in the 'user_gui_props'
 	 * database table.
 	 *
-	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @since r2712
 	 * @return array SQL statements to be performed
 	 */
@@ -1711,7 +1711,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	 * Some data can be very larges like serialized data that represent a
 	 * object, an array...
 	 *
-	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @since r2988
 	 * @return array SQL statements to be performed
 	 */
@@ -1788,7 +1788,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	 *
 	 * Note: Moved to 42 (previous preinst fix was wrong)
 	 *
-	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @since r3299
 	 * @return array
 	 */
@@ -1801,7 +1801,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	 *
 	 * Note: Moved to 43 (previous fix was wrong)
 	 *
-	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @since r3477
 	 * @return array
 	 */
@@ -1812,7 +1812,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	/**
 	 * Fix for #2489 Postgrey - Undefined offset in settings_ports.php
 	 *
-	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @since r3547
 	 * @return array
 	 */
@@ -1847,7 +1847,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	/**
 	 * Allows to protect custom DNS records against deletion
 	 *
-	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @since r3607
 	 * @return array
 	 */
@@ -1973,7 +1973,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	/**
 	 * Add i-MSCP daemon service properties (moved to 50)
 	 *
-	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @since r3985
 	 * @return array
 	 */
@@ -1984,7 +1984,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	/**
 	 * Add i-MSCP daemon service properties
 	 *
-	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @since r4004
 	 * @return array
 	 */

@@ -26,7 +26,7 @@
  * @subpackage	Writer
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
  * @copyright 	2010 by i-MSCP | http://i-mscp.net
- * @author		Laurent Declercq <laurent.declercq@i-mscp.net>
+ * @author		Laurent Declercq <l.declercq@nuxwin.com>
  * @version		SVN: $Id$
  * @link		http://i-mscp.net i-MSCP Home Site
  * @license		http://www.mozilla.org/MPL/ MPL 1.1
@@ -54,7 +54,7 @@ require_once  INCLUDEPATH . '/iMSCP/Exception/Writer.php';
  * @category	i-MSCP
  * @package		iMSCP_Exception
  * @subpackage	Writer
- * @author		Laurent Declercq <laurent.declercq@i-mscp.net>
+ * @author		Laurent Declercq <l.declercq@nuxwin.com>
  * @since       1.0.7 (ispCP)
  * @version		1.0.6
  * @todo		Display more information like trace on debug mode.

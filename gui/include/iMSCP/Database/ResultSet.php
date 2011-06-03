@@ -169,7 +169,7 @@ class iMSCP_Database_ResultSet {
 	 *
 	 * Note: Currently, all fetch style are not implemented
 	 *
-	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @since 1.0.7 (ispCP)
 	 * @param  int $fetchStyle Controls how the next row will be returned to the
 	 * caller. This value must be one of the PDO::FETCH_* constants
@@ -206,7 +206,7 @@ class iMSCP_Database_ResultSet {
 	 * Fetches all row from the result set. The fetch_style parameter determines
 	 * how the rows are returned.
 	 *
-	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @since 1.0.0 (iMSCP)
 	 * @link i-mscp.net
 	 * @param int $fetchStyle Controls how the next row will be returned to the
@@ -236,7 +236,7 @@ class iMSCP_Database_ResultSet {
 	 * Error information associated with the last operation on the statement
 	 * handle
 	 *
-	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @since (ispCP)
 	 * @return array Error information
 	 */
@@ -251,7 +251,7 @@ class iMSCP_Database_ResultSet {
 	 * This method returns a stringified version of the error information
 	 * associated with the last statement operation.
 	 *
-	 * @author Laurent Declercq <laurent.declercq@i-mscp.net>
+	 * @author Laurent Declercq <l.declercq@nuxwin.com>
 	 * @since (ispCP)
 	 * @return string Error information
 	 */
