@@ -39,7 +39,7 @@
  *
  * @category    i-MSCP
  * @package     iMSCP_Initializer
- * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @since       1.0.0
  * @version     1.1.2
  */
