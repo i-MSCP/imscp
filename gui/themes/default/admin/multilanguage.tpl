@@ -28,7 +28,7 @@
 		
 			// Overrides exportation url to enable/disable gzip compression
 			//
-			// author Laurent Declercq <laurent.declercq@i-mscp.net>
+			// author Laurent Declercq <l.declercq@nuxwin.com>
 			// Since 1.0.6
 			function override_export_url(ob) {
 		

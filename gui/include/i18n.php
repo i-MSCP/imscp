@@ -82,7 +82,7 @@ function curlang($newlang = null, $force = false) {
  * @access public
  * @version 2.3
  * @author Benedikt Heintel <benedikt.heintel@i-mscp.net>
- * @author Laurent Declercq (nuxwin) <laurent.declercq@i-mscp.net>
+ * @author Laurent Declercq (nuxwin) <l.declercq@nuxwin.com>
  * @author Raphael Geissert (2007)
  * @param string $msgid string to translate
  * @param mixed $substitution Prevent the returned string from being replaced

@@ -25,9 +25,8 @@
  * @subpackage  client
  * @copyright   2006-2010 by ispCP | http://isp-control.net
  * @copyright   2010 by i-MSCP | http://i-mscp.net
- * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     SVN: $Id$
- * @replace     client/sql_auth.php
  * @link        http://i-mscp.net i-MSCP Home Site
  * @license     http://www.mozilla.org/MPL/ MPL 1.1
  */
@@ -43,16 +42,16 @@
  */
 
 /**
- * Get database login credentials
+ * Get database login credentials.
  *
- * @author Laurent Declercq <laurent.declercq@i-mscp.net>
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @since  1.0.7
  * @access private
  * @param  int $dbUserId Database user unique identifier
  * @return array Array that contains login credentials or FALSE on failure
  */
-function _getLoginCredentials($dbUserId) {
-
+function _getLoginCredentials($dbUserId)
+{
 	/**
 	 * @var $db iMSCP_Database_ResultSet
 	 */
@@ -88,31 +87,31 @@ function _getLoginCredentials($dbUserId) {
 }
 
 /**
- * Creates all cookies for PhpMyAdmin
+ * Creates all cookies for PhpMyAdmin.
  *
- * @author Laurent Declercq <laurent.declercq@i-mscp.net>
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @since  1.0.7 (ispCP)
  * @access private
  * @param  array $cookies Array that contains cookies definitions for PhpMyadmin
  * @return void
  */
-function _pmaCreateCookies($cookies) {
-
+function _pmaCreateCookies($cookies)
+{
 	foreach($cookies as $cookie) {
 		header("Set-Cookie: $cookie", false);
 	}
 }
 
 /**
- * PhpMyAdmin authentication
+ * PhpMyAdmin authentication.
  *
- * @author Laurent Declercq <laurent.declercq@i-mscp.net>
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @since  1.0.7 (ispCP)
  * @param  int $dbUserId Database user unique identifier
  * @return bool TRUE on success, FALSE otherwise
  */
-function pmaAuth($dbUserId) {
-
+function pmaAuth($dbUserId)
+{
 	$credentials = _getLoginCredentials($dbUserId);
 
 	if($credentials) {
@@ -123,8 +122,7 @@ function pmaAuth($dbUserId) {
 			)
 		);
 	} else {
-		set_page_message(tr('Unknown SQL user id!'), 'error');
-
+		set_page_message(tr('Unknown SQL user id.'), 'error');
 		return false;
 	}
 
@@ -157,12 +155,12 @@ function pmaAuth($dbUserId) {
 	$headers = get_headers($pmaUri, true);
 
 	if(!$headers || !isset($headers['Location'])) {
-		set_page_message(tr('Error: An error occurred while authentication!'), 'error');
-
+		set_page_message(tr('Error: An error occurred while authentication.'), 'error');
 		return false;
 	} else {
 		_pmaCreateCookies($headers['Set-Cookie']);
-		header("Location: {$headers['Location']}");
+		//header("Location: {$headers['Location']}");
+        redirectTo($headers['Location']);
 	}
 
 	return true;
@@ -183,8 +181,8 @@ check_login(__FILE__);
  */
 if(isset($_GET['id'])) {
 	if(!pmaAuth((int) $_GET['id'])) {
-		user_goto('sql_manage.php');
+		redirectTo('sql_manage.php');
 	}
 } else {
-	user_goto('/index.php');
+	redirectTo('/index.php');
 }

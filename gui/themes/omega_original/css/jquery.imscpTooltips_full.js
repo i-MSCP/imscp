@@ -4,7 +4,7 @@
  *
  * Version:	$Id$
  * @link	http://isp-control.net
- * @author	Laurent Declercq (nuxwin) <laurent.declercq@i-mscp.net>
+ * @author	Laurent Declercq (nuxwin) <l.declercq@nuxwin.com>
  *
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
@@ -59,7 +59,7 @@
  *
  * Tested on: MSIE 6,7,8, FF and others Gecko's based browser, chrome.
  *
- * @author Laurent Declercq (nuxwin) <laurent.declercq@i-mscp.net>
+ * @author Laurent Declercq (nuxwin) <l.declercq@nuxwin.com>
  * @version 1.0.0
  * @require Jquery 1.4.1
  */

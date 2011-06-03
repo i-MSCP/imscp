@@ -32,7 +32,7 @@
  *
  * This script allows net2ftp authentication from i-MSCP
  *
- * Borrowed heavily from client/pma_auth.php by Laurent Declercq <laurent.declercq@i-mscp.net>
+ * Borrowed heavily from client/pma_auth.php by Laurent Declercq <l.declercq@nuxwin.com>
  */
 
 /***********************************************************************************************************************
@@ -40,12 +40,12 @@
  */
 
 /**
- * Get ftp login credentials
+ * Get ftp login credentials.
  *
  * @author William Lightning <kassah@gmail.com>
  * @since  1.0.0
  * @access private
- * @param  string $userid FTP User
+ * @param  int $userId FTP User
  * @return array Array that contains login credentials or FALSE on failure
  */
 function _getLoginCredentials($userId) {
@@ -53,7 +53,7 @@ function _getLoginCredentials($userId) {
 	/**
 	 * @var $sql iMSCP_Database
 	 */
-	$sql = iMSCP_Registry::get('db');
+	$db = iMSCP_Registry::get('db');
 
 	// @todo Should be optimized
 	$query = "
@@ -69,7 +69,7 @@ function _getLoginCredentials($userId) {
 			`domain`.`domain_admin_id` = ?
 		;
 	";
-	$stmt = exec_query($sql, $query, array($userId, $_SESSION['user_id']));
+	$stmt = exec_query($db, $query, array($userId, $_SESSION['user_id']));
 
 	if($stmt->rowCount() == 1) {
 		return array(
@@ -82,7 +82,7 @@ function _getLoginCredentials($userId) {
 }
 
 /**
- * Creates all cookies for net2ftp
+ * Creates all cookies for net2ftp.
  *
  * @author William Lightning <kassah@gmail.com>
  * @since  1.0.0
@@ -98,7 +98,7 @@ function _net2ftpCreateCookies($cookies) {
 }
 
 /**
- * net2ftp authentication
+ * net2ftp authentication.
  *
  * @author William Lightning <kassah@gmail.com>
  * @since  1.0.0

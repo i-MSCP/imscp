@@ -49,7 +49,7 @@
  * Prepare and put data in session on error(s)
  *
  * @since 1.0.7 (ispCP)
- * @author Laurent Declercq <laurent.declercq@i-mscp.net>
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @param boolean TRUE on add, FALSE otherwise
  * @return void
  */
@@ -95,7 +95,7 @@ function toSession($mode) {
  * Validates a service port and sets an appropriate message on error
  *
  * @since 1.0.7 (ispCP)
- * @author Laurent Declercq <laurent.declercq@i-mscp.net>
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @param string $name Service port name
  * @param string $ip Ip address
  * @param int $port Service port
@@ -167,7 +167,7 @@ function validatesService($name, $ip, $port, $protocol, $show, $index = '') {
  * Adds or updates services ports
  *
  * @since 1.0.7 (ispCP)
- * @author Laurent Declercq <laurent.declercq@i-mscp.net>
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @param boolean $mode TRUE on add, FALSE on update
  * @return void
  */
@@ -250,7 +250,7 @@ function addUpdateServices($mode) {
  * This function is used for generation of both pages (show page and error page)
  *
  * @since 1.0.7 (ispCP)
- * @author Laurent Declercq <laurent.declercq@i-mscp.net>
+ * @author Laurent Declercq <l.declercq@nuxwin.com>
  * @param iMSCP_pTemplate $tpl iMSCP_pTemplate instance
  * @return void;
  */

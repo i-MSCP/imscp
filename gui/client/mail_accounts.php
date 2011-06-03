@@ -725,7 +725,7 @@ function gen_page_lists($tpl, $sql, $user_id) {
  * For performances reasons, the query is performed only once
  * and the result is cached.
  *
- * @author Laurent declercq <laurent.declercq@i-mscp.net>
+ * @author Laurent declercq <l.declercq@nuxwin.com>
  * @since r2513
  * @param iMSCP_Database $sql reference to the Database instance
  * @param int Domain name id

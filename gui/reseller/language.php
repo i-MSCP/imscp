@@ -37,6 +37,7 @@ require '../include/imscp-lib.php';
 /************************************************************************************
  * Main script
  */
+
 check_login(__FILE__);
 
 /** @var $cfg iMSCP_Config_Handler_File */
@@ -67,7 +68,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'save_lang') {
 
 	unset($_SESSION['user_def_lang']);
 	$_SESSION['user_def_lang'] = $user_lang;
-	set_page_message(tr('User language updated successfully!'));
+	set_page_message(tr('User language updated successfully.'), 'success');
 }
 
 // Makes sure that the language selected is the reseller's language
