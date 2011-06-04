@@ -136,7 +136,7 @@ sub checkISPCPVersion{
 
 	$main::ispcpConfig{'Version'} =~ m!([\d.]+)!;
 	if(version->new($1) < version->new('1.0.7')){
-		error((caller(0))[3].': Only ispCP 1.0.7 is supported');
+		error((caller(0))[3].': Only migration from ispCP 1.0.7 or later is supported');
 		iMSCP::Dialog->new()->set('defaultno', '');
 		exit 1 if iMSCP::Dialog->new()->yesno("
 
