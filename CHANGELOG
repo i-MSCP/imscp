@@ -3,6 +3,10 @@ i-MSCP ChangeLog
 
 2010-06-04 Daniel Andreca
 	- Engine:
+		Add migration script from ispcp
+
+2010-06-04 Daniel Andreca
+	- Engine:
 		Merge setup and update script (one script for both operation)
 		Improuve logging system
 		Use dialog for user interaction
