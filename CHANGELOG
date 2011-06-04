@@ -2,21 +2,18 @@ i-MSCP ChangeLog
 ~~~~~~~~~~~~~~~~
 
 2010-06-04 Daniel Andreca
-	- Engine:
-		Add migration script from ispcp
-
-2010-06-04 Daniel Andreca
     - CONFIGS:
 		Moved key file in /etc
 	- Engine:
+	    Add migration script for ispCP (version >= 1.0.7)
 	    Setup / Update scripts:
-		    - Merged setup and update script (one script for both operations)
-		    - Improuved logging system
-		    - Iintegrated dialog for user interaction
 		    - Backup imscp.conf so won't be overwrite in update process
 		    - Fixed: All subroutines from setup/update must be idempotent
 		    - Fixed #30: Domainname Error during setup
 		    - Fixed #31: [FreeBSD] An error occurred during setup process
+	        - Integrated dialog for user interaction
+	        - Improuved logging system
+		    - Merged setup and update script (one script for both operations)
 
 2010-12-15 Sascha Bay
 	- GUI:
