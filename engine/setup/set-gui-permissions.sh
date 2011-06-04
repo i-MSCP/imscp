@@ -62,11 +62,6 @@ recursive_set_permissions "$ROOT_DIR/gui/tools/webmail/data" \
 recursive_set_permissions "$ROOT_DIR/gui/software" \
 	$PANEL_USER $APACHE_GROUP 0755 0644
 
-# Decryption keys allow root access to the database, so they must only be
-# accessible by the panel user.
-set_permissions "$ROOT_DIR/gui/include/imscp-db-keys.php" \
-	$PANEL_USER $PANEL_GROUP 0400
-
 # Main virtual webhosts directory must be owned by root and readable by all
 # the domain-specific users.
 set_permissions $APACHE_WWW_DIR $ROOT_USER $ROOT_GROUP 0555

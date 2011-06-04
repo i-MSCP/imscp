@@ -185,13 +185,10 @@ Note: For all questions, answer "a" (trust always).
 6. Stop the imscp_daemon and build the System by using make:
 
 	# /etc/init.d/imscp_daemon stop
-	# make -f Makefile.opensuse install
+	# ./imscp-build
 
 7. Backup files:
 
-	# cp -v /srv/www/imscp/engine/imscp-db-keys.pl /tmp/imscp/srv/www/imscp/engine/
-	# cp -v /srv/www/imscp/engine/messenger/imscp-db-keys.pl /tmp/imscp/srv/www/imscp/engine/messenger/
-	# cp -v /srv/www/imscp/gui/include/imscp-db-keys.php /tmp/imscp/srv/www/imscp/gui/include/
 	# cp -v /srv/www/imscp/gui/themes/user_logos/* /tmp/imscp/srv/www/imscp/gui/themes/user_logos/
 	# cp -v /srv/www/imscp/gui/tools/webmail/data/* /tmp/imscp/srv/www/imscp/gui/tools/webmail/data/
 
@@ -202,25 +199,18 @@ Note: For all questions, answer "a" (trust always).
 	# rm -Rf /srv/www/imscp/gui/tools/{pma/,filemanager/,webmail/,index.php}
 	# rm -Rf /srv/www/imscp/gui/{*.php,favicon.ico,robots.txt}
 
-9. Copy /usr, /var and /srv directories into your system (you may make backups):
+9. Copy directories into your system (you may make backups):
+	# cp -Rv /tmp/imscp/* /
 
-	# cp -Rv /tmp/imscp/usr/* /usr/
-	# cp -Rv /tmp/imscp/var/* /var/
-	# cp -Rv /tmp/imscp/srv/* /srv/
-
-10. Backup imscp.conf and copy the /etc directory into your system (you may make backups):
-
-	# mv -v /etc/imscp/imscp.conf /etc/imscp/imscp.old.conf
-	# cp -Rv /tmp/imscp/etc/* /etc/
-
-11. Now it's time to update your installation. Change into the engine directory:
+10. Now it's time to update your installation. Change into the engine directory:
 
 	# cd /srv/www/imscp/engine/setup
 
-12. Start the engine update:
-	# perl imscp-update
+11. Start the engine update:
 
-13. Update i-MSCP step-by-step
+	# perl imscp-setup
+
+12. Update i-MSCP step-by-step
 
 	If you get no error, all went good; if you get one, look at
 	http://i-mscp.net to solve the problem.

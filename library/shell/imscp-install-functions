@@ -487,18 +487,6 @@ gui() {
 }
 # }}}
 
-# key() {{{
-#
-# Copy key files
-# @return	void
-key() {
-	make_folder "${SYSTEM_ROOT}/keys"
-	cd "${SELFDIR}/keys"
-	copy_file "${SYSTEM_ROOT}/keys/rpl.pl"
-	cd "${SELFDIR}"
-}
-# }}}
-
 # maintainer() {{{
 #
 # Copy maintainer script for current distribution if exists

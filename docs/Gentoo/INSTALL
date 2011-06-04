@@ -220,12 +220,9 @@ Make sure you are logged in as root and MySQL is running.
 
 5. Stop the imscp_daemon and build the System by using make:
 	# /etc/init.d/imscp_daemon stop
-	# make -f Makefile.gentoo install
+	# ./imscp-build
 
 6. Backup files
-	# cp -v /var/www/imscp/engine/imscp-db-keys.pl /tmp/imscp/var/www/imscp/engine/
-	# cp -v /var/www/imscp/engine/messenger/imscp-db-keys.pl /tmp/imscp/var/www/imscp/engine/messenger/
-	# cp -v /var/www/imscp/gui/include/imscp-db-keys.php /tmp/imscp/var/www/imscp/gui/include/
 	# cp -v /var/www/imscp/gui/themes/user_logos/* /tmp/imscp/var/www/imscp/gui/themes/user_logos/
 	# cp -v /var/www/imscp/gui/tools/webmail/data/* /tmp/imscp/var/www/imscp/gui/tools/webmail/data/
 
@@ -235,26 +232,21 @@ Make sure you are logged in as root and MySQL is running.
 	# rm -Rf /var/www/imscp/gui/tools/{pma/,filemanager/,webmail/,index.php}
 	# rm -Rf /var/www/imscp/gui/{*.php,favicon.ico,robots.txt}
 
-8. Copy /usr and /var directories into your system (you may make backups)
-	# cp -Rv /tmp/imscp/usr/* /usr/
-	# cp -Rv /tmp/imscp/var/* /var/
+8. Copy directories into your system (you may make backups):
+	# cp -Rv /tmp/imscp/* /
 
-9. Backup imscp.conf and copy the /etc directory into your system (you may make backups):
-	# mv -v /etc/imscp/imscp.conf /etc/imscp/imscp.old.conf
-	# cp -Rv /tmp/imscp/etc/* /etc/
-
-10. Now it's time to update your installation. Change into the engine directory:
+9. Now it's time to update your installation. Change into the engine directory:
 	# cd /var/www/imscp/engine/setup
 
-11. Start the engine update:
-	# perl imscp-update
+10. Start the engine update:
+	# perl imscp-setup
 
-12. Update i-MSCP step-by-step
+11. Update i-MSCP step-by-step
 
 	If you get no error, all went good; if you get one, look at
 	http://i-mscp.net to solve the problem.
 
-13. Clean the temporary folders:
+12. Clean the temporary folders:
 	# rm -fR /tmp/imscp/
 
 ================================================================================

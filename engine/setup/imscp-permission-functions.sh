@@ -48,7 +48,7 @@ OLD_IFS=$IFS
 IFS=$
 
 # Reading needed entries from imscp.conf
-for a in $(grep -E '^(APACHE_|CMD_|DEBUG|LOG_DIR|MR_LOCK|MTA_MAILBOX_|ROOT_|PHP_STARTER_DIR)' \
+for a in $(grep -E '^(APACHE_|CMD_|DEBUG|CONF_DIR|LOG_DIR|MR_LOCK|MTA_MAILBOX_|ROOT_|PHP_STARTER_DIR)' \
 ${CONF_FILE} | $CMD_SED 's/\s*=\s*\(.*\)/="\1"/'); do
 	 eval $a
 done

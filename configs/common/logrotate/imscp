@@ -66,29 +66,6 @@
   create 640 root adm
 }
 
-# Rotation for apache2, launching general statistics if awstats is installed
-#
-/var/log/apache2/*.log {
-  weekly
-  rotate 52
-  missingok
-  compress
-  delaycompress
-  notifempty
-  create 640 root adm
-  sharedscripts
-  prerotate
-	if [ `cat /etc/imscp/imscp.conf | grep -c 'AWSTATS_ACTIVE *= *yes'` = 1 ]; then
-      perl /var/www/imscp/engine/awstats/awstats_updateall.pl now -awstatsprog=/usr/lib/cgi-bin/awstats.pl >/dev/null 2>&1
-    fi
-  endscript
-  postrotate
-    if [ -f "`. /etc/apache2/envvars ; echo ${APACHE_PID_FILE:-/var/run/apache2.pid}`" ]; then
-      /etc/init.d/apache2 reload > /dev/null
-    fi
-  endscript
-}
-
 # Rotation for imscp-apache-logger logfiles
 #
 "/var/log/imscp/imscp-apache-logger.stderr" /var/log/imscp/imscp-apache-logger.stdout {
@@ -100,23 +77,6 @@
   delaycompress
   notifempty
   create 640 root adm
-}
-
-# Transfer rotation for ProFTPd
-#
-/var/log/proftpd/xferlog {
-  daily
-  rotate 7
-  missingok
-  compress
-  delaycompress
-  postrotate
-    if [ -e /var/run/syslogd.pid ]; then
-      /usr/bin/killall -HUP syslogd
-    elif [ -e /var/run/rsyslogd.pid ]; then
-      /usr/bin/killall -HUP rsyslogd
-    fi
-  endscript
 }
 
 # ProFTPd traffic rotation for i-MSCP traffic count

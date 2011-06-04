@@ -118,10 +118,6 @@ title "GUI setup"
 gui
 oktxt "Done"; writelog "\n"
 
-title "Key setup"
-key
-oktxt "Done"; writelog "\n"
-
 title "Maintainer scripts"
 maintainer
 oktxt "Done"; writelog "\n"

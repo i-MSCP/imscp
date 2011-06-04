@@ -35,60 +35,6 @@
 #    http://i-mscp.net
 #
 
-BEGIN {
-
-	my %needed 	= (
-		'strict' => '',
-		'warnings' => '',
-		'IO::Socket'=> '',
-		'DBI'=> '',
-		DBD::mysql => '',
-		MIME::Entity => '',
-		MIME::Parser => '',
-		Crypt::CBC => '',
-		Crypt::Blowfish => '',
-		Crypt::PasswdMD5 => '',
-		MIME::Base64 => '',
-		Term::ReadPassword => '',
-		File::Basename => '',
-		File::Path => '',
-		HTML::Entities=> '',
-		File::Temp => 'qw(tempdir)',
-		File::Copy::Recursive => 'qw(rcopy)',
-		Net::LibIDN => 'qw/idn_to_ascii idn_to_unicode/'
-	);
-
-	my ($mod, $mod_err, $mod_missing) = ('', '_off_', '');
-
-	for $mod (keys %needed) {
-
-		if (eval "require $mod") {
-
-			eval "use $mod $needed{$mod}";
-
-		} else {
-
-			print STDERR "\n[FATAL] Module [$mod] WAS NOT FOUND !\n" ;
-
-			$mod_err = '_on_';
-
-			if ($mod_missing eq '') {
-				$mod_missing .= $mod;
-			} else {
-				$mod_missing .= ", $mod";
-			}
-		}
-	}
-
-	if ($mod_err eq '_on_') {
-		print STDERR "\nModules [$mod_missing] WAS NOT FOUND in your system...\n";
-
-		exit 1;
-
-	} else {
-		$| = 1;
-	}
-}
 
 # Hide the "used only once: possible typo" warnings
 no warnings 'once';

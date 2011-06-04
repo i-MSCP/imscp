@@ -1,6 +1,18 @@
 i-MSCP ChangeLog
 ~~~~~~~~~~~~~~~~
 
+2010-06-04 Daniel Andreca
+	- Engine:
+		Merge setup and update script (one script for both operation)
+		Improuve logging system
+		Use dialog for user interaction
+		Move key file in /etc
+		Backup imscp.conf so won't be overwrite in update process
+		All subroutines used in setup/update are idempotent
+		Fixed #30: Domainname Error during setup
+		Fixed #31: [FreeBSD] An error occurred during setup process
+		Fixed #30: Domainname Error during setup
+
 2010-12-15 Sascha Bay
 	- GUI:
 	    Fixed #51: Enhancement - Change Package actions if software is installed

@@ -30,6 +30,8 @@
 # @link			http://i-mscp.net i-MSCP Home Site
 # @license		http://www.gnu.org/licenses/ GPL v2
 
+msgbox "\n\\Z1WARNING\\Zn:\n\nDISTRIBUITION IS NOT MAINTAINED.\n\nContinue on your own risk" 'i-MSCP preinstall script'
+
 SYSTEM_FOLDERS='
 				INST_PREF=/tmp/imscp
 				ROOT_CONF=${INST_PREF}/usr/local/etc

@@ -35,6 +35,61 @@
 #    http://i-mscp.net
 #
 
+BEGIN {
+
+	my %needed 	= (
+		'strict' => '',
+		'warnings' => '',
+		'IO::Socket'=> '',
+		'DBI'=> '',
+		DBD::mysql => '',
+		MIME::Entity => '',
+		MIME::Parser => '',
+		Crypt::CBC => '',
+		Crypt::Blowfish => '',
+		Crypt::PasswdMD5 => '',
+		MIME::Base64 => '',
+		Term::ReadPassword => '',
+		File::Basename => '',
+		File::Path => '',
+		HTML::Entities=> '',
+		File::Temp => 'qw(tempdir)',
+		File::Copy::Recursive => 'qw(rcopy)',
+		Net::LibIDN => 'qw/idn_to_ascii idn_to_unicode/'
+	);
+
+	my ($mod, $mod_err, $mod_missing) = ('', '_off_', '');
+
+	for $mod (keys %needed) {
+
+		if (eval "require $mod") {
+
+			eval "use $mod $needed{$mod}";
+
+		} else {
+
+			print STDERR "\n[FATAL] Module [$mod] WAS NOT FOUND !\n" ;
+
+			$mod_err = '_on_';
+
+			if ($mod_missing eq '') {
+				$mod_missing .= $mod;
+			} else {
+				$mod_missing .= ", $mod";
+			}
+		}
+	}
+
+	if ($mod_err eq '_on_') {
+		print STDERR "\nModules [$mod_missing] WAS NOT FOUND in your system...\n";
+
+		exit 1;
+
+	} else {
+		$| = 1;
+	}
+}
+
 use strict;
 use warnings;
 
@@ -44,7 +99,6 @@ no warnings 'once';
 $main::engine_debug = undef;
 
 require 'imscp_common_methods.pl';
-require 'imscp-db-keys.pl';
 
 ################################################################################
 # Load i-MSCP configuration from the imscp.conf file
@@ -58,34 +112,34 @@ if(-e '/usr/local/etc/imscp/imscp.conf'){
 my $rs = get_conf($main::cfg_file);
 die("FATAL: Can't load the imscp.conf file") if($rs != 0);
 
+
 ################################################################################
 # Enable debug mode if needed
 if ($main::cfg{'DEBUG'} != 0) {
 	$main::engine_debug = '_on_';
 }
 
+my $key_file		= "$main::cfg{'CONF_DIR'}/imscp-db-keys";
+our $db_pass_key	= '{KEY}';
+our $db_pass_iv		= '{IV}';
+my $file;
+
+require "$key_file" if( -f $key_file);
+
 ################################################################################
 # Generating i-MSCP Db key and initialization vector if needed
 #
-if ($main::db_pass_key eq '{KEY}' || $main::db_pass_iv eq '{IV}') {
+if ($db_pass_key eq '{KEY}' || $db_pass_iv eq '{IV}') {
 
-	print STDOUT "\tGenerating database keys, it may take some time, please ".
-		"wait...\n";
+	print STDERR ("Key file not found at $main::cfg{'CONF_DIR'}/imscp-db-keys. Run Setup to fix");
+	exit 1;
 
-	print STDOUT "\tIf it takes to long, please check: ".
-	 "http://i-mscp.net/dokuwiki/doku.php?id=keyrpl\n";
-
-	$rs = sys_command(
-		"perl $main::cfg{'ROOT_DIR'}/keys/rpl.pl " .
-		"$main::cfg{'GUI_ROOT_DIR'}/include/imscp-db-keys.php " .
-		"$main::cfg{'ROOT_DIR'}/engine/imscp-db-keys.pl " .
-		"$main::cfg{'ROOT_DIR'}/engine/messenger/imscp-db-keys.pl"
-	);
-
-	die('FATAL: Error during database keys generation!') if ($rs != 0);
-
-	do 'imscp-db-keys.pl';
 }
+
+$main::db_pass_key	= $db_pass_key;
+$main::db_pass_iv	= $db_pass_iv;
+
+die("FATAL: Can't load database parameters")  if (setup_main_vars() != 0);
 
 ################################################################################
 # Lock file system variables

@@ -148,6 +148,9 @@ class iMSCP_Initializer
         // Create or restore the session
         $this->_initializeSession();
 
+        // Create or restore the session
+        $this->_setEncryptKeys();
+
         // Establish the connection to the database
         $this->_initializeDatabase();
 
@@ -196,6 +199,9 @@ class iMSCP_Initializer
 
         // Include path
         $this->_setIncludePath();
+
+        // Create or restore the session
+        $this->_setEncryptKeys();
 
         // Establish the connection to the database
         $this->_initializeDatabase();
@@ -337,6 +343,23 @@ class iMSCP_Initializer
             session_start();
         }
     }
+
+/**
+	 * Encryption data
+	 *
+	 * @return void
+	 */
+	protected function _setEncryptKeys(){
+		eval(file_get_contents($this->_config->CONF_DIR . '/imscp-db-keys'));
+		if(isset($db_pass_key) && isset($db_pass_iv)) {
+			iMSCP_Registry::set('MCRYPT_KEY', $db_pass_key);
+			iMSCP_Registry::set('MCRYPT_IV', $db_pass_iv);
+		} else {
+			throw new iMSCP_Exception(
+				'Error: Database key and/or initialization vector was not generated!'
+			);
+		}
+	}
 
     /**
      * Establishes the connection to the database

@@ -82,20 +82,6 @@ iMSCP_Registry::setAlias(
 iMSCP_Registry::get('exceptionHandler')
 	->attach(new iMSCP_Exception_Writer_Browser('themes/default/exception.tpl'));
 
-/**Encryption data */
-
-require_once INCLUDEPATH . '/imscp-db-keys.php';
-
-if($imscp_db_pass_key != '{KEY}' && $imscp_db_pass_iv != '{IV}') {
-	iMSCP_Registry::set('MCRYPT_KEY', $imscp_db_pass_key);
-	iMSCP_Registry::set('MCRYPT_IV', $imscp_db_pass_iv);
-	unset($imscp_db_pass_key, $imscp_db_pass_iv);
-} else {
-	throw new iMSCP_Exception(
-		'Database key and/or initialization vector was not generated.'
-	);
-}
-
 /**
  * Include i-MSCP common functions
  */

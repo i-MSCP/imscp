@@ -157,12 +157,9 @@ Make sure you are logged in as root and MySQL is running.
 
 4. Stop the imscp_daemon and build the Software by using make:
 	# /etc/init.d/imscp_daemon stop
-	# make install
+	# ./imscp-build
 
-5. Backup files
-	# cp -v /var/www/imscp/engine/imscp-db-keys.pl /tmp/imscp/var/www/imscp/engine/
-	# cp -v /var/www/imscp/engine/messenger/imscp-db-keys.pl /tmp/imscp/var/www/imscp/engine/messenger/
-	# cp -v /var/www/imscp/gui/include/imscp-db-keys.php /tmp/imscp/var/www/imscp/gui/include/
+5. Backup files if needed
 	# cp -v /var/www/imscp/gui/themes/user_logos/* /tmp/imscp/var/www/imscp/gui/themes/user_logos/
 	# cp -TRv /var/www/imscp/gui/domain_default_page /tmp/imscp/var/www/imscp/gui/domain_default_page
 	# cp -v /var/www/imscp/gui/tools/webmail/data/* /tmp/imscp/var/www/imscp/gui/tools/webmail/data/
@@ -173,27 +170,21 @@ Make sure you are logged in as root and MySQL is running.
 	# rm -Rf /var/www/imscp/gui/tools/{pma/,filemanager/,webmail/,index.php}
 	# rm -Rf /var/www/imscp/gui/{*.php,favicon.ico,robots.txt}
 
-7. Copy /usr and /var directories into your system (you may make backups)
-	# cp -R /tmp/imscp/usr/* /usr/
-	# cp -R /tmp/imscp/var/* /var/
+7. Copy directories into your system (you may make backups):
+	# cp -R /tmp/imscp/* /
 
-8. Backup imscp.conf and copy the /etc directory into your system (you may make
-   backups):
-	# mv /etc/imscp/imscp.conf /etc/imscp/imscp.old.conf
-	# cp -R /tmp/imscp/etc/* /etc/
-
-9. Now it's time to update your installation. Change into the engine directory:
+8. Now it's time to update your installation. Change into the engine directory:
 	# cd /var/www/imscp/engine/setup
 
-10. Start the engine update:
-	# perl imscp-update
+9. Start the engine update:
+	# perl imscp-setup
 
-11. Update i-MSCP step-by-step
+10. Update i-MSCP step-by-step
 
 	If you get no error, all went good; if you get one, look at
 	http://i-mscp.net to solve the problem.
 
-12. Clean the temporary folders:
+11. Clean the temporary folders:
 	# rm -fR /tmp/imscp/
 
 ================================================================================

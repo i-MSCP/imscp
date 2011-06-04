@@ -87,6 +87,9 @@ BEGIN {
 $main::el_sep = "\t#\t";
 @main::el = ();
 
+our $db_pass_key	= '{KEY}';
+our $db_pass_iv		= '{IV}';
+
 sub push_el {
 
 	my ($el, $sub_name, $msgDebug) = @_;
@@ -300,7 +303,6 @@ $main::cfg_re = '^([\_A-Za-z0-9]+) *= *([^\n\r]*)[\n\r]';
 
 use FindBin;
 use lib "$FindBin::Bin/";
-require 'imscp-db-keys.pl';
 
 umask(027);
 
@@ -423,6 +425,21 @@ sub get_conf {
 			$main::cfg{$1} = $2;
 		}
 	}
+
+	my $key_file = "$main::cfg{'CONF_DIR'}/imscp-db-keys";
+
+	require $key_file if( -f $key_file);
+
+	if ($db_pass_key eq '{KEY}' || $db_pass_iv eq '{IV}') {
+
+		print STDERR ("Error: Destination path $main::cfg{'CONF_DIR'} don't exists or is not a directory!");
+		exit 1;
+
+	}
+
+	$main::db_pass_key	= $db_pass_key;
+	$main::db_pass_iv	= $db_pass_iv;
+
 
 	return -1 if (setup_main_vars() != 0);
 

@@ -48,11 +48,16 @@ FOLDERS='
 	${SYSTEM_ENGINE_ROOT}/setup
 	${SYSTEM_ENGINE_ROOT}/tools
 	${SYSTEM_ENGINE_ROOT}/traffic
+	${SYSTEM_ENGINE_ROOT}/PerlLib
+	${SYSTEM_ENGINE_ROOT}/PerlLib/Common
+	${SYSTEM_ENGINE_ROOT}/PerlLib/iMSCP
+	${SYSTEM_ENGINE_ROOT}/PerlLib/iMSCP/Database
+	${SYSTEM_ENGINE_ROOT}/PerlLib/iMSCP/Database/mysql
 ';
 COPY_CONFIG_FILE='';
 COPY_FILE='
 	${SYSTEM_ENGINE_ROOT}/imscp*
-	${SYSTEM_ENGINE_ROOT}/messenger/imscp-db-keys.pl
+	${SYSTEM_ENGINE_ROOT}/PerlLib*
 ';
 CREATE_FILE=''
 CHOWN_FILE='
@@ -67,7 +72,7 @@ CHMOD_FILE='
 	0700|${SYSTEM_ENGINE_ROOT}/setup
 	0700|${SYSTEM_ENGINE_ROOT}/tools
 	0700|${SYSTEM_ENGINE_ROOT}/imscp-*
-	0700|${SYSTEM_ENGINE_ROOT}/messenger/imscp-db-keys.pl
+	0700|${SYSTEM_ENGINE_ROOT}/PerlLib
 '
 
 

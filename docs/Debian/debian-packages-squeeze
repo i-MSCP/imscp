@@ -28,12 +28,15 @@ libexpat1-dev
 libcrypt-blowfish-perl
 libcrypt-cbc-perl
 libcrypt-passwdmd5-perl
+libdata-validate-domain-perl
+libdata-validate-ip-perl
 libdate-calc-perl
 libdate-manip-perl
 libdatetime-perl
 libdatetime-timezone-perl
 libdbd-mysql-perl
 libdbi-perl
+libemail-valid-perl
 libfile-copy-recursive-perl
 libfile-mimeinfo-perl
 libio-stringy-perl
