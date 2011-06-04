@@ -34,7 +34,6 @@ SYSTEM_FOLDERS=''
 FOLDERS='';
 COPY_CONFIG_FILE='';
 COPY_FILE='
-	${SYSTEM_ENGINE_ROOT}/setup/Perl*
 	${SYSTEM_ENGINE_ROOT}/setup/imscp*
 	${SYSTEM_ENGINE_ROOT}/setup/reset-setup
 	${SYSTEM_ENGINE_ROOT}/setup/set*
