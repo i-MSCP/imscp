@@ -6,16 +6,17 @@ i-MSCP ChangeLog
 		Add migration script from ispcp
 
 2010-06-04 Daniel Andreca
+    - CONFIGS:
+		Moved key file in /etc
 	- Engine:
-		Merge setup and update script (one script for both operation)
-		Improuve logging system
-		Use dialog for user interaction
-		Move key file in /etc
-		Backup imscp.conf so won't be overwrite in update process
-		All subroutines used in setup/update are idempotent
-		Fixed #30: Domainname Error during setup
-		Fixed #31: [FreeBSD] An error occurred during setup process
-		Fixed #30: Domainname Error during setup
+	    Setup / Update scripts:
+		    - Merged setup and update script (one script for both operations)
+		    - Improuved logging system
+		    - Iintegrated dialog for user interaction
+		    - Backup imscp.conf so won't be overwrite in update process
+		    - Fixed: All subroutines from setup/update must be idempotent
+		    - Fixed #30: Domainname Error during setup
+		    - Fixed #31: [FreeBSD] An error occurred during setup process
 
 2010-12-15 Sascha Bay
 	- GUI:
@@ -23,7 +24,7 @@ i-MSCP ChangeLog
 
 2010-12-12 Daniel Andreca
 	- GUI:
-		Fixed #50: Patch to fix the exception when switching users ( Ratatoille please stop copy and think before)
+		Fixed #50: Patch to fix the exception when switching users
 
 2010-12-12 Sascha Bay
 	- GUI:
@@ -37,9 +38,11 @@ i-MSCP ChangeLog
 
 2010-12-09 Laurent Declercq
 	- GUI:
-		Added iMSCP_Database_ResultSet::fetchAll() method to be able to fetches all rows from the current result set
+		Added iMSCP_Database_ResultSet::fetchAll() method to be able to fetches all
+		    rows from the current result set
 		iMSCP_Config_Handler: Some re-factorization tasks
-		iMSCP_Config_Handler_Db: Added counter for delete queries + some re-factorization tasks
+		iMSCP_Config_Handler_Db: Added counter for delete queries + some
+		re-factorization tasks
 		IMSCP_Database: Added quote() method + some re-factorization tasks
 
 2010-12-08 Sascha Bay
@@ -48,7 +51,8 @@ i-MSCP ChangeLog
 
 2010-12-07 Sascha Bay
 	- CONFIGS:
-		Fixed: Exceeding Fcgid (>= 2.3.6) Max Request Lenght (MaxRequestLenght) while PHP upload
+		Fixed: Exceeding Fcgid (>= 2.3.6) Max Request Lenght (MaxRequestLenght) while
+		    PHP upload
 	- GUI:
 		Added on-click-logon ftp-user (Thanks to William Lightning)
 
@@ -57,14 +61,16 @@ i-MSCP ChangeLog
 
 2010-12-05 Laurent Declercq
 	- GUI:
-		* Fixed: Setting services ports feature is broken since new template integration
+		* Fixed: Setting services ports feature is broken since new template
+		    integration
 		* Fixed: Wrong service port name...
 		* Fixed: Services that are not visible are not hidden
 		* Fixed: Optional services should not be visible on server status page
 
 2010-12-04 Laurent Declercq
 	- GUI:
-		* Added iMSCP_Services class to be able to get services properties and their status
+		* Added iMSCP_Services class to be able to get services properties and their
+		    status
 		* Added i-MSCP daemon service properties in database
 		* Fixed: Database update from frontend is broken
 		* Fixed: Pages messages are not displayed correctly
@@ -88,14 +94,17 @@ i-MSCP ChangeLog
 
 2010-12-02 Laurent Declercq
 	- GUI:
-		* Improved gen_page_message() function to be able to choose message type (info|warning|error)
+		* Improved gen_page_message() function to be able to choose message type
+		    (info|warning|error)
 		* Improved both login and lost password pages
 		* Fixed #35: Defect - Missing back stick in SQL
 
 2010-11-30 Laurent Declercq
 	- GUI
-		* Added properties description in iMSCP_Config_Handler_File to avoid warnings with some IDE
-		* Fixed: Warnings that cause breaks (encoding errors): Call-time pass-by-reference has been deprecated... in:
+		* Added properties description in iMSCP_Config_Handler_File to avoid warnings
+		    with some IDE
+		* Fixed: Warnings that cause breaks (encoding errors): Call-time
+		    pass-by-reference has been deprecated... in:
 			- admin/software_manage.php (Lines 652, 653, 654)
 			- reseller/index.php (line 356)
 			- reseller/software_upload.php (Lines 500, 541)
@@ -149,4 +158,5 @@ i-MSCP ChangeLog
 
 2010-11-13 Daniel Andreca
 	- ENGINE:
-		* Fixed #3: Defect - Wrong DNS entry when using multiple IP for alternative URL to reach your website
+		* Fixed #3: Defect - Wrong DNS entry when using multiple IP for alternative
+		    URL to reach your website
