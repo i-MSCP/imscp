@@ -724,8 +724,6 @@ sub removeFile{
 	for(
 		($^O =~ /bsd$/ ? '/usr/local/etc/' : '/etc/').'cron.d/ispcp',		#/etc/cron.d/ispcp
 		($^O =~ /bsd$/ ? '/usr/local/etc/' : '/etc/').'logrotate.d/ispcp',	#/etc/logrotate.d/ispcp
-		($^O =~ /bsd$/ ? '/usr/local/etc/' : '/etc/').'logrotate.d/ispcp1'	#/etc/cron.d/ispcp
-
 	){
 		$file = iMSCP::File->new(filename => $_);
 		$errors .= getLastError() if ($file->delFile());
