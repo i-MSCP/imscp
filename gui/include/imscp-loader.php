@@ -17,13 +17,14 @@
  * The Initial Developer of the Original Code is ispCP Team.
  * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ *
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  *
  * @category    i-MSCP
- * @package     i-MSCP_Loader
+ * @package     Core
  * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010 by i-MSCP | http://i-mscp.net
+ * @copyright   2010-2011 by i-MSCP | http://i-mscp.net
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     SVN: $Id$
  * @link        http://i-mscp.net i-MSCP Home Site
@@ -34,12 +35,13 @@
  * Autoloading classes
  *
  * @param string $className Class name to be loaded
+ * @return void
  */
-function autoload_class($className) {
+function autoload_class($className)
+{
+    $path = str_replace('_', '/', $className);
 
-	$path = str_replace('_', '/', $className);
-
-	if(file_exists(INCLUDEPATH . '/' . $path . '.php')) {
-		require_once INCLUDEPATH . '/' . $path . '.php';
-	}
+    if (file_exists(INCLUDEPATH . '/' . $path . '.php')) {
+        require_once INCLUDEPATH . '/' . $path . '.php';
+    }
 }

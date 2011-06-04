@@ -231,7 +231,11 @@ $rs = exec_query($sql, $query, $_SESSION['user_id']);
 
 $dmn_name = $rs->fields['domain_name'];
 
-check_ftp_perms($ftp_acc);
+if(!check_ftp_perms($ftp_acc)) {
+    set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
+    user_goto('ftp_accounts.php');
+}
+
 gen_page_dynamic_data($tpl, $sql, $ftp_acc);
 update_ftp_account($sql, $ftp_acc, $dmn_name);
 

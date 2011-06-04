@@ -153,18 +153,21 @@ $tpl->assign(
 	)
 );
 
-
-// dynamic page data.
 $db_user_name = gen_page_data($tpl, $sql, $db_user_id);
+
+if(!check_user_sql_perms($db_user_id))
+{
+    set_page_message(tr('User does not exist or you do not have permission to access this interface.'));
+    user_goto('sql_manage.php');
+}
+
 check_user_sql_perms($db_user_id);
 change_sql_user_pass($sql, $db_user_id, $db_user_name);
 
-// static page messages.
+
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_manage_sql.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_manage_sql.tpl');
-
 gen_logged_from($tpl);
-
 check_permissions($tpl);
 
 $tpl->assign(

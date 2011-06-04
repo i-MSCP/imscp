@@ -4,7 +4,7 @@
  *
  * @copyright   2001-2006 by moleSoftware GmbH
  * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010 by i-MSCP | http://i-mscp.net
+ * @copyright   2010-2011 by i-MSCP | http://i-mscp.net
  * @version     SVN: $Id$
  * @link        http://i-mscp.net
  * @author      ispCP Team

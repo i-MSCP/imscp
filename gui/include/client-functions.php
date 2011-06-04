@@ -26,25 +26,26 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
+ *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ *
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
 /**
  * Returns domain default properties.
  *
- * @param iMSCP_Database $db    Database instance
- * @param int $domain_admin_id  User unique identifier
- * @param bool $returnWKeys     Tells whether or not return value should be a
- *                              associative array
- * @return array                If $returnWkeys is true, returns an associative array
- *                              where each key is a domain propertie name. Otherwise
- *                              returns an indexed array where each value correspond
- *                              to  a propertie value, following the columns order in
- *                              database table.
- *
+ * @param iMSCP_Database $db   Database instance
+ * @param int $domain_admin_id User unique identifier
+ * @param bool $returnWKeys    Tells whether or not return value should be a
+ *                             associative array
+ * @return array               If $returnWkeys is true, returns an associative array
+ *                             where each key is a domain propertie name. Otherwise
+ *                             returns an indexed array where each value correspond
+ *                             to  a propertie value, following the columns order in
+ *                             database table.
  */
 function get_domain_default_props($db, $domain_admin_id, $returnWKeys = false)
 {
@@ -147,11 +148,11 @@ function get_domain_running_als_cnt($db, $domain_id)
 /**
  * Returns information about number of mail account for a specific domain.
  *
- * @param  iMSCP_Database $db   Database instance
- * @param  int $domain_id       Domain unique identifier
- * @return array                An array of values where the first item is the sum of
- *                              all other items, and where each other item represents
- *                              total number of a specific Mail account type
+ * @param  iMSCP_Database $db Database instance
+ * @param  int $domain_id     Domain unique identifier
+ * @return array              An array of values where the first item is the sum of
+ *                            all other items, and where each other item represents
+ *                            total number of a specific Mail account type
  */
 function get_domain_running_mail_acc_cnt($db, $domain_id)
 {
@@ -273,7 +274,7 @@ function get_domain_running_mail_acc_cnt($db, $domain_id)
 }
 
 /**
- * Returns number of Ftp accounts that belong to a domain.
+ * Returns total number of Ftp accounts that belong to a domain.
  *
  * @param  iMSCP_Database $db Database instance
  * @param  int $domain_id Domain unique identifier
@@ -317,7 +318,7 @@ function get_domain_running_dmn_ftp_acc_cnt($db, $domain_id)
  * domain.
  *
  * @param  iMSCP_Database $db Database instance
- * @param  $domain_id Domain unique identifier
+ * @param  int $domain_id Domain unique identifier
  * @return int Total number of Ftp accounts
  */
 function get_domain_running_sub_ftp_acc_cnt($db, $domain_id)
@@ -420,11 +421,11 @@ function get_domain_running_als_ftp_acc_cnt($db, $domain_id)
 /**
  * Returns information about number of Ftp account for a specific domain.
  *
- * @param  iMSCP_Database $db   Database instance
- * @param  int $domain_id       Domain unique identifier
- * @return array                An array of values where the first item is the sum of
- *                              all other items, and where each other item represents
- *                              total number of a specific Ftp account type
+ * @param  iMSCP_Database $db Database instance
+ * @param  int $domain_id     Domain unique identifier
+ * @return array              An array of values where the first item is the sum of
+ *                            all other items, and where each other item represents
+ *                            total number of a specific Ftp account type
  */
 function get_domain_running_ftp_acc_cnt($db, $domain_id)
 {
@@ -488,10 +489,10 @@ function get_domain_running_sqlu_acc_cnt($db, $domain_id)
  * Returns both total number of database and SQL user that belong to a specific
  * domain.
  *
- * @param  iMSCP_Database $db   Database instance
- * @param  int $domain_id       Domain unique identifier
- * @return array                An array where the first item is the Database total
- *                              number, and the second the SQL users total number.
+ * @param  iMSCP_Database $db Database instance
+ * @param  int $domain_id     Domain unique identifier
+ * @return array              An array where the first item is the Database total
+ *                            number, and the second the SQL users total number.
  */
 function get_domain_running_sql_acc_cnt($db, $domain_id)
 {
@@ -501,10 +502,10 @@ function get_domain_running_sql_acc_cnt($db, $domain_id)
 }
 
 /**
- *
+ * Must be documented.
  *
  * @param  iMSCP_Database $db Database instance
- * @param  $domain_id Domain unique identifier
+ * @param  int $domain_id Domain unique identifier
  * @return array
  */
 function get_domain_running_props_cnt($db, $domain_id)
@@ -519,8 +520,6 @@ function get_domain_running_props_cnt($db, $domain_id)
     return array($sub_cnt, $als_cnt, $mail_acc_cnt, $ftp_acc_cnt, $sqld_acc_cnt,
                  $sqlu_acc_cnt);
 }
-
-
 
 /**
  * Return domain unique identifier that belong to a specific user account.
@@ -571,11 +570,11 @@ function user_trans_mail_type($mail_type)
 }
 
 /**
+ * Count SQL user by name.
  *
- *
- * @param  iMSCP_Database $db Database instance
- * @param  string $sqlu_name SQL user name
- * @return mixed
+ * @param iMSCP_Database $db Database instance
+ * @param string $sqlu_name SQL user name to match against
+ * @return int
  */
 function count_sql_user_by_name($db, $sqlu_name)
 {
@@ -594,10 +593,10 @@ function count_sql_user_by_name($db, $sqlu_name)
 }
 
 /**
- * Deletes an SQL user.
+ * Deletes a SQL user.
  *
  * @param  iMSCP_Database $db Databas instance
- * @param  $domain_id Domain unique identifier
+ * @param  int $domain_id Domain unique identifier
  * @param  int $db_user_id Sql user unique identifier
  * @return
  */
@@ -665,47 +664,52 @@ function sql_delete_user($db, $domain_id, $db_user_id)
 }
 
 /**
- *
+ * Checks if an user has permissions on a specific SQL user.
  *
  * @param  int $db_user_id SQL user unique identifier.
- * @return void
+ * @return bool TRUE if user have permission on SQL user, FALSE otherwise.
  */
 function check_user_sql_perms($db_user_id)
 {
     if (who_owns_this($db_user_id, 'sqlu_id') != $_SESSION['user_id']) {
-        set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
-        user_goto('sql_manage.php');
+        return false;
     }
+
+    return true;
 }
 
 /**
+ * Checks if an user has permissions on  specific SQL Database.
  *
  * @param  int $db_id Database unique identifier
- * @return void
+ * @return bool TRUE if user have permission on SQL user, FALSE otherwise.
  */
 function check_db_sql_perms($db_id)
 {
     if (who_owns_this($db_id, 'sqld_id') != $_SESSION['user_id']) {
-        set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
-        user_goto('sql_manage.php');
+        return false;
     }
+
+    return true;
 }
 
 /**
+ * Checks if an user has permissions on a specific Ftp account.
  *
  * @param  int $ftp_acc Ftp account unique identifier
- * @return void
+ * @return bool TRUE if user have permission on Ftp account, FALSE otherwise.
  */
 function check_ftp_perms($ftp_acc)
 {
     if (who_owns_this($ftp_acc, 'ftp_user') != $_SESSION['user_id']) {
-        set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
-        user_goto('ftp_accounts.php');
+        return false;
     }
+
+    return true;
 }
 
 /**
- * Deletes an SQL database.
+ * Deletes a SQL database.
  *
  * @param  iMSCP_Database $db Database instance
  * @param  int $domain_id Domain unique identifier
@@ -765,31 +769,22 @@ function delete_sql_database($db, $domain_id, $database_id)
         }
     }
 
-    $query = "DROP DATABASE IF EXISTS $db_name;";
-    exec_query($db, $query);
+    exec_query($db, "DROP DATABASE IF EXISTS $db_name;");
 
     write_log($_SESSION['user_logged'] . ': delete SQL database: ' . tohtml($db_name));
 
-    $query = "
-		DELETE FROM
-			`sql_database`
-		WHERE
-			`domain_id` = ?
-		AND
-			`sqld_id` = ?
-		;
-	";
+    $query = "DELETE FROM sql_database` WHERE `domain_id` = ? AND `sqld_id` = ?;";
     exec_query($db, $query, array($domain_id, $database_id));
 
     update_reseller_c_props(get_reseller_id($database_id));
 }
 
 /**
+ * Returns translated gender code.
  *
- *
- * @param string $code
- * @param bool $nullOnBad
- * @return null|Translated
+ * @param string $code Gender code to be returned
+ * @param bool $nullOnBad Tells whether or not null must be returned on unknow $code
+ * @return null|string Translated gender or null in some circonstances.
  */
 function get_gender_by_code($code, $nullOnBad = false)
 {
@@ -806,11 +801,11 @@ function get_gender_by_code($code, $nullOnBad = false)
 }
 
 /**
- *
+ * Checks if a mount point exists.
  *
  * @param  int $domain_id Domain unique identifier
- * @param  string $mnt_point mount point
- * @return bool
+ * @param  string $mnt_point mount point to check
+ * @return bool TRUE if the mount point exists, FALSE otherwise
  */
 function mount_point_exists($domain_id, $mnt_point)
 {

@@ -26,9 +26,11 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
+ *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ *
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
@@ -1024,6 +1026,48 @@ function is_serialized($data)
     }
 
     return false;
+}
+
+/**
+ * Must be documented
+ *
+ * @param  iMSCP_pTemplate $tpl Template engine
+ * @return void
+ */
+function check_permissions($tpl)
+{
+    if (isset($_SESSION['sql_support']) && $_SESSION['sql_support'] == 'no') {
+        $tpl->assign('SQL_SUPPORT', '');
+    }
+    if (isset($_SESSION['email_support']) && $_SESSION['email_support'] == 'no') {
+        $tpl->assign('ADD_EMAIL', '');
+    }
+    if (isset($_SESSION['subdomain_support'])
+        && $_SESSION['subdomain_support'] == 'no'
+    ) {
+        $tpl->assign('SUBDOMAIN_SUPPORT', '');
+    }
+    if (isset($_SESSION['alias_support']) && $_SESSION['alias_support'] == 'no') {
+        $tpl->assign('DOMAINALIAS_SUPPORT', '');
+    }
+    if (isset($_SESSION['subdomain_support'])
+        && $_SESSION['subdomain_support'] == 'no') {
+        $tpl->assign('SUBDOMAIN_SUPPORT_CONTENT', '');
+    }
+    if (isset($_SESSION['alias_support']) && $_SESSION['alias_support'] == 'no') {
+        $tpl->assign('DOMAINALIAS_SUPPORT_CONTENT', '');
+    }
+    if (isset($_SESSION['alias_support']) && $_SESSION['alias_support'] == 'no'
+        && isset($_SESSION['subdomain_support'])
+        && $_SESSION['subdomain_support'] == 'no'
+    ) {
+        $tpl->assign('DMN_MNGMNT', '');
+    }
+    if (isset($_SESSION['software_support'])
+        && $_SESSION['software_support'] == 'no'
+    ) {
+        $tpl->assign('NO_SOFTWARE', '');
+    }
 }
 
 /************************************************************************************

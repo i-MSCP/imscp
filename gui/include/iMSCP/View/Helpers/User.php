@@ -392,44 +392,4 @@ function gen_client_menu($tpl, $menu_file)
     $tpl->parse('MENU', 'menu');
 }
 
-/**
- * Must be documented
- *
- * @param  iMSCP_pTemplate $tpl Template engine
- * @return void
- */
-function check_permissions($tpl)
-{
-    if (isset($_SESSION['sql_support']) && $_SESSION['sql_support'] == 'no') {
-        $tpl->assign('SQL_SUPPORT', '');
-    }
-    if (isset($_SESSION['email_support']) && $_SESSION['email_support'] == 'no') {
-        $tpl->assign('ADD_EMAIL', '');
-    }
-    if (isset($_SESSION['subdomain_support'])
-        && $_SESSION['subdomain_support'] == 'no'
-    ) {
-        $tpl->assign('SUBDOMAIN_SUPPORT', '');
-    }
-    if (isset($_SESSION['alias_support']) && $_SESSION['alias_support'] == 'no') {
-        $tpl->assign('DOMAINALIAS_SUPPORT', '');
-    }
-    if (isset($_SESSION['subdomain_support'])
-        && $_SESSION['subdomain_support'] == 'no') {
-        $tpl->assign('SUBDOMAIN_SUPPORT_CONTENT', '');
-    }
-    if (isset($_SESSION['alias_support']) && $_SESSION['alias_support'] == 'no') {
-        $tpl->assign('DOMAINALIAS_SUPPORT_CONTENT', '');
-    }
-    if (isset($_SESSION['alias_support']) && $_SESSION['alias_support'] == 'no'
-        && isset($_SESSION['subdomain_support'])
-        && $_SESSION['subdomain_support'] == 'no'
-    ) {
-        $tpl->assign('DMN_MNGMNT', '');
-    }
-    if (isset($_SESSION['software_support'])
-        && $_SESSION['software_support'] == 'no'
-    ) {
-        $tpl->assign('NO_SOFTWARE', '');
-    }
-}
+
