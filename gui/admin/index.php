@@ -246,5 +246,3 @@ $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
 unsetMessages();
-
-if ($cfg->DUMP_GUI_DEBUG) dump_gui_debug();

@@ -245,7 +245,4 @@ function gen_hp_table(&$tpl, $reseller_id) {
 
 }
 
-if ($cfg->DUMP_GUI_DEBUG) {
-	dump_gui_debug();
-}
 unsetMessages();

@@ -100,12 +100,7 @@ $editid = $_GET['domain_id'];
 gen_detaildom_page($tpl, $_SESSION['user_id'], $editid);
 
 $tpl->parse('PAGE', 'page');
-
 $tpl->prnt();
-
-if ($cfg->DUMP_GUI_DEBUG) {
-	dump_gui_debug();
-}
 
 unsetMessages();
 

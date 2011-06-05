@@ -83,10 +83,6 @@ generatePageMessage($tpl);
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg->DUMP_GUI_DEBUG) {
-	dump_gui_debug();
-}
-
 /**
  * Validate domain deletion, display all items to delete
  * @param integer $domain_id

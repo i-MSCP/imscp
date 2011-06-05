@@ -125,9 +125,7 @@ if (!check_reseller_permissions($_SESSION['user_id'], 'alias')) {
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg->DUMP_GUI_DEBUG) {
-	dump_gui_debug();
-}// unset_messages();
+// unset_messages();
 
 // FUNCTION declaration
 

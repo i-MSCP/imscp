@@ -148,10 +148,6 @@ if ($rsql_user_max == "-1") $tpl->assign('SQL_USER_ADD', '');
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
 
-if ($cfg->DUMP_GUI_DEBUG) {
-	dump_gui_debug();
-}
-
 // Function declaration
 
 /**
