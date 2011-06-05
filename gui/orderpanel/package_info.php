@@ -65,7 +65,7 @@ function translate_sse($value) {
 	}
 }
 
-function gen_plan_details(&$tpl, &$sql, $user_id, $plan_id) {
+function gen_plan_details($tpl, $user_id, $plan_id) {
 
 	$cfg = iMSCP_Registry::get('config');
 
@@ -79,7 +79,7 @@ function gen_plan_details(&$tpl, &$sql, $user_id, $plan_id) {
 				`id` = ?
 		";
 
-		$rs = exec_query($sql, $query, $plan_id);
+		$rs = exec_query($query, $plan_id);
 	} else {
 		$query = "
 			SELECT
@@ -92,7 +92,7 @@ function gen_plan_details(&$tpl, &$sql, $user_id, $plan_id) {
 				`id` = ?
 		";
 
-		$rs = exec_query($sql, $query, array($user_id, $plan_id));
+		$rs = exec_query($query, array($user_id, $plan_id));
 	}
 
 	if ($rs->recordCount() == 0) {
@@ -187,8 +187,8 @@ if (isset($_GET['id']) && $bcoid) {
 	);
 }
 
-gen_purchase_haf($tpl, $sql, $user_id);
-gen_plan_details($tpl, $sql, $user_id, $plan_id);
+gen_purchase_haf($tpl, $user_id);
+gen_plan_details($tpl, $user_id, $plan_id);
 
 generatePageMessage($tpl);
 

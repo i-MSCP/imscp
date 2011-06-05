@@ -48,7 +48,7 @@ $tpl->define_dynamic('purchase_footer', 'page');
  * functions start
  */
 
-function gen_chart(&$tpl, &$sql, $user_id, $plan_id) {
+function gen_chart($tpl, $user_id, $plan_id) {
 
 	$cfg = iMSCP_Registry::get('config');
 
@@ -62,7 +62,7 @@ function gen_chart(&$tpl, &$sql, $user_id, $plan_id) {
 				`id` = ?
 		";
 
-		$rs = exec_query($sql, $query, $plan_id);
+		$rs = exec_query($query, $plan_id);
 	} else {
 		$query = "
 			SELECT
@@ -75,7 +75,7 @@ function gen_chart(&$tpl, &$sql, $user_id, $plan_id) {
 				`id` = ?
 		";
 
-		$rs = exec_query($sql, $query, array($user_id, $plan_id));
+		$rs = exec_query($query, array($user_id, $plan_id));
 	}
 
 	if ($rs->recordCount() == 0) {
@@ -184,8 +184,8 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['plan_id'])) {
 	);
 }
 
-gen_purchase_haf($tpl, $sql, $user_id);
-gen_chart($tpl, $sql, $user_id, $plan_id);
+gen_purchase_haf($tpl, $user_id);
+gen_chart($tpl, $user_id, $plan_id);
 gen_personal_data($tpl);
 
 generatePageMessage($tpl);

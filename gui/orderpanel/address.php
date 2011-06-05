@@ -46,7 +46,7 @@ $tpl->define_dynamic('purchase_footer', 'page');
  * functions start
  */
 
-function gen_address(&$tpl, &$sql, $user_id, $plan_id) {
+function gen_address($tpl,$user_id, $plan_id) {
 
 	$cfg = iMSCP_Registry::get('config');
 
@@ -253,8 +253,8 @@ if ((isset($_SESSION['fname']) && $_SESSION['fname'] != '')
 	user_goto('chart.php');
 }
 
-gen_purchase_haf($tpl, $sql, $user_id);
-gen_address($tpl, $sql, $user_id, $plan_id);
+gen_purchase_haf($tpl, $user_id);
+gen_address($tpl, $user_id, $plan_id);
 
 generatePageMessage($tpl);
 

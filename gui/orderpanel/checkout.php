@@ -47,7 +47,7 @@ $tpl->define_dynamic('purchase_footer', 'page');
  * functions start
  */
 
-function gen_checkout(&$tpl, &$sql, $user_id, $plan_id) {
+function gen_checkout($tpl, $user_id, $plan_id) {
 	$date = time();
 	$domain_name = $_SESSION['domainname'];
 	$fname = $_SESSION['fname'];
@@ -95,11 +95,13 @@ function gen_checkout(&$tpl, &$sql, $user_id, $plan_id) {
 		VALUES
 			(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 	";
+	exec_query($query, array($user_id, $plan_id, $date, $domain_name, $fname, $lname,
+                            $gender, $firm, $zip, $city, $state, $country, $email,
+                            $phone, $fax, $street1, $street2, $status));
 
-	$rs = exec_query($sql, $query, array($user_id, $plan_id, $date, $domain_name, $fname, $lname, $gender, $firm, $zip, $city, $state, $country, $email, $phone, $fax, $street1, $street2, $status));
-
-	$order_id = $sql->insertId();
-	send_order_emails($user_id, $domain_name, $fname, $lname, $email, $order_id);
+    /** @var $db iMSCP_Database */
+    $db = iMSCP_Registry::get('db');
+	send_order_emails($user_id, $domain_name, $fname, $lname, $email, $db->insertId());
 
 	// Remove useless data
 	unset($_SESSION['details']);
@@ -164,12 +166,12 @@ if ((isset($_SESSION['fname']) && $_SESSION['fname'] != '')
 	&& (isset($_SESSION['street1']) && $_SESSION['street1'] != '')
 	&& (isset($_SESSION['phone']) && $_SESSION['phone'] != '')
 	) {
-	gen_checkout($tpl, $sql, $user_id, $plan_id);
+	gen_checkout($tpl, $user_id, $plan_id);
 } else {
 	user_goto('index.php?user_id=' . $user_id);
 }
 
-gen_purchase_haf($tpl, $sql, $user_id);
+gen_purchase_haf($tpl, $user_id);
 generatePageMessage($tpl);
 
 $tpl->assign(

@@ -43,11 +43,10 @@
  *
  * @throws iMSCP_Exception_Production
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
- * @param  iMSCP_Database $sql iMSCP_Database instance
  * @param  int $user_id User id
  * @return void
  */
-function gen_packages_list($tpl, $sql, $user_id) {
+function gen_packages_list($tpl, $user_id) {
 
 	/**
  	 * @var $cfg iMSCP_Config_Handler_File
@@ -70,7 +69,7 @@ function gen_packages_list($tpl, $sql, $user_id) {
 				`t1`.`id`
 		";
 
-		$rs = exec_query($sql, $query, 'admin');
+		$rs = exec_query($query, 'admin');
 	} else {
 		$query = "
 			SELECT
@@ -83,7 +82,7 @@ function gen_packages_list($tpl, $sql, $user_id) {
 				`status` = '1'
 		";
 
-		$rs = exec_query($sql, $query, $user_id);
+		$rs = exec_query($query, $user_id);
 	}
 
 	if ($rs->recordCount() == 0) {
@@ -152,8 +151,8 @@ if (isset($_GET['user_id']) && is_numeric($_GET['user_id']) && $bcoid) {
 
 unset($_SESSION['plan_id']);
 
-gen_purchase_haf($tpl, $sql, $user_id);
-gen_packages_list($tpl, $sql, $user_id);
+gen_purchase_haf($tpl, $user_id);
+gen_packages_list($tpl, $user_id);
 
 generatePageMessage($tpl);
 

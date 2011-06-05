@@ -47,7 +47,6 @@ function validate_order_key($order_id, $key) {
 	$cfg = iMSCP_Registry::get('config');
 
 	$result = false;
-	$sql = iMSCP_Registry::get('db');
 	$query = "
 		SELECT
 			*
@@ -58,7 +57,7 @@ function validate_order_key($order_id, $key) {
 		AND
 			`status` = ?
 	";
-	$rs = exec_query($sql, $query, array($order_id, 'unconfirmed'));
+	$rs = exec_query($query, array($order_id, 'unconfirmed'));
 	if ($rs->recordCount() == 1) {
 		$domain_name	= $rs->fields['domain_name'];
 		$admin_id		= $rs->fields['user_id'];
@@ -77,7 +76,6 @@ function validate_order_key($order_id, $key) {
 function confirm_order($order_id) {
 
 	$cfg = iMSCP_Registry::get('config');
-	$sql = iMSCP_Registry::get('db');
 
 	$query = "
 		SELECT
@@ -87,13 +85,13 @@ function confirm_order($order_id) {
 		WHERE
 			`id` = ?
 	";
-	$rs = exec_query($sql, $query, $order_id);
+	$rs = exec_query($query, $order_id);
 	if ($rs->recordCount() == 1) {
 
 		$query = "
 			UPDATE `orders` SET `status` = ? WHERE `id` = ?
 		";
-		exec_query($sql, $query, array('new', $order_id));
+		exec_query($query, array('new', $order_id));
 
 		$admin_id		= $rs->fields['user_id'];
 		$domain_name	= $rs->fields['domain_name'];

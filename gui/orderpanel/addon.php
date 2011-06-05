@@ -66,7 +66,7 @@ function addon_domain($dmn_name) {
 	user_goto('address.php');
 }
 
-function is_plan_available(&$sql, $plan_id, $user_id) {
+function is_plan_available($plan_id, $user_id) {
 
 	$cfg = iMSCP_Registry::get('config');
 
@@ -80,7 +80,7 @@ function is_plan_available(&$sql, $plan_id, $user_id) {
 				`id` = ?
 			";
 
-		$rs = exec_query($sql, $query, $plan_id);
+		$rs = exec_query($query, $plan_id);
 	} else {
 		$query = "
 			SELECT
@@ -93,7 +93,7 @@ function is_plan_available(&$sql, $plan_id, $user_id) {
 				`id` = ?
 		";
 
-		$rs = exec_query($sql, $query, array($user_id, $plan_id));
+		$rs = exec_query($query, array($user_id, $plan_id));
 	}
 
 	return $rs->recordCount() > 0 && $rs->fields['status'] != 0;
@@ -114,7 +114,7 @@ if (isset($_SESSION['user_id'])) {
 		$plan_id = $_SESSION['plan_id'];
 	} else if (isset($_GET['id'])) {
 		$plan_id = $_GET['id'];
-		if (is_plan_available($sql, $plan_id, $user_id)) {
+		if (is_plan_available($plan_id, $user_id)) {
 			$_SESSION['plan_id'] = $plan_id;
 		} else {
 			throw new iMSCP_Exception_Production(
@@ -140,7 +140,7 @@ if (isset($_POST['domainname']) && $_POST['domainname'] != '') {
 	addon_domain($_POST['domainname']);
 }
 
-gen_purchase_haf($tpl, $sql, $user_id);
+gen_purchase_haf($tpl, $user_id);
 generatePageMessage($tpl);
 
 $tpl->assign(
