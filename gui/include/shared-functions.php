@@ -1449,11 +1449,10 @@ function get_client_software_permission($tpl, $sql, $user_id)
  * Returns reseller software permissions.
  *
  * @param  iMSCP_pTemplate $tpl Template engine
- * @param  iMSCP_Database $sql Database instance
  * @param  $reseller_id Reseller unique identifier
  * @return void
  */
-function get_reseller_software_permission($tpl, $sql, $reseller_id)
+function get_reseller_software_permission($tpl, $reseller_id)
 {
     $query = "
 		SELECT
@@ -1464,7 +1463,7 @@ function get_reseller_software_permission($tpl, $sql, $reseller_id)
 			`reseller_id` = ?
 		;
 	";
-    $rs = exec_query($sql, $query, array($reseller_id));
+    $rs = exec_query($query, array($reseller_id));
 
     if ($rs->fields('software_allowed') == 'yes') {
         $tpl->assign(array(
@@ -1678,15 +1677,14 @@ function get_webdepot_software_list($tpl, $user_id)
 }
 
 /**
- * Update database from the websoftware depot xml file list
+ * Update database from the websoftware depot xml file list.
  *
- * @since 1.0.0
+ * @since iMSCP 1.0.0
  * @author Sascha Bay (TheCry) <sascha.bay@i-mscp.net>
- * @param iMSCP_pTemplate $tpl Template engine
  * @param string $XML_URL
  * @param string $webdepot_last_update
  */
-function update_webdepot_software_list($tpl, $XML_URL, $webdepot_last_update)
+function update_webdepot_software_list($XML_URL, $webdepot_last_update)
 {
     $opts = array('http' => array('user_agent' => 'PHP libxml agent'));
     $context = stream_context_create($opts);
@@ -1695,9 +1693,11 @@ function update_webdepot_software_list($tpl, $XML_URL, $webdepot_last_update)
     $webdepot_xml_file = new DOMDocument('1.0', 'iso-8859-1');
     $webdepot_xml_file->load($XML_URL);
     $XML_FILE = simplexml_import_dom($webdepot_xml_file);
+
     if (utf8_decode($XML_FILE->LAST_UPDATE->DATE) != $webdepot_last_update) {
         $truncatequery = "TRUNCATE TABLE `web_software_depot`;";
-        exec_query($sql, $truncatequery);
+        exec_query($truncatequery);
+
         foreach ($XML_FILE->PACKAGE as $output) {
             if (!empty($output->INSTALL_TYPE) && !empty($output->INSTALL_TYPE) &&
                 !empty($output->INSTALL_TYPE) && !empty($output->INSTALL_TYPE) &&
@@ -1707,15 +1707,14 @@ function update_webdepot_software_list($tpl, $XML_URL, $webdepot_last_update)
             ) {
                 $query = "
                     INSERT INTO
-                        `web_software_depot`
-                            (
-                                `package_install_type`, `package_title`,
-                                `package_version`, `package_language`, `package_type`,
-                                `package_description`, `package_vendor_hp`,
-                                `package_download_link`, `package_signature_link`
-                            ) VALUES (
-                                ?, ?, ?, ?, ?, ?, ?, ?, ?
-                            )
+                        `web_software_depot` (
+                            `package_install_type`, `package_title`, `package_version`,
+                            `package_language`, `package_type`, `package_description`,
+                            `package_vendor_hp`, `package_download_link`,
+                            `package_signature_link`
+                        ) VALUES (
+                            ?, ?, ?, ?, ?, ?, ?, ?, ?
+                        )
                     ;
                 ";
                 exec_query($query,
@@ -1731,14 +1730,15 @@ function update_webdepot_software_list($tpl, $XML_URL, $webdepot_last_update)
                                 encode_idna(utf8_decode(strtolower(clean_input($output->SIGNATURE_LINK))))));
             }
         }
-        $updatequery = "
+        $query = "
             UPDATE
                 `web_software_options`
             SET
                 `webdepot_last_update` = '" . $XML_FILE->LAST_UPDATE->DATE . "'
             ;
         ";
-        exec_query($updatequery);
+        exec_query($query);
+
         set_page_message(tr("Websoftware depot list was updated"), 'info');
     } else {
         set_page_message(tr("No update for the websoftware depot list available"), 'warning');

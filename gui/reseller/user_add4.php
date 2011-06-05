@@ -53,7 +53,6 @@ function gen_al_page(&$tpl, $reseller_id) {
 	
 	global $alias_name, $forward, $forward_prefix, $mount_point;
 
-	$sql = iMSCP_Registry::get('db');
 	$cfg = iMSCP_Registry::get('config');
 
 	$dmn_id = $_SESSION['dmn_id'];
@@ -70,7 +69,7 @@ function gen_al_page(&$tpl, $reseller_id) {
 			`domain_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, $dmn_id);
+	$rs = exec_query($query, $dmn_id);
 
 	if ($rs->recordCount() == 0) {
 		$tpl->assign('ALIAS_LIST', '');
@@ -153,7 +152,7 @@ function gen_al_page(&$tpl, $reseller_id) {
 	);
 } // End of gen_al_page()
 
-function add_domain_alias(&$sql, &$err_al) {
+function add_domain_alias(&$err_al) {
 	global $cr_user_id, $alias_name, $domain_ip, $forward, $forward_prefix,
 		$mount_point, $validation_err_msg;
 
@@ -231,7 +230,7 @@ function add_domain_alias(&$sql, &$err_al) {
 			WHERE
 				`alias_name` = ?
 		";
-		$res = exec_query($sql, $query, $alias_name);
+		$res = exec_query($query, $alias_name);
 		$query = "
 			SELECT
 				`domain_id`
@@ -240,7 +239,7 @@ function add_domain_alias(&$sql, &$err_al) {
 			WHERE
 				`domain_name` = ?
 		";
-		$res2 = exec_query($sql, $query, $alias_name);
+		$res2 = exec_query($query, $alias_name);
 		if ($res->rowCount() > 0 || $res2->rowCount() > 0) {
 			// we already have a domain with this name
 			$err_al = tr("Domain with this name already exist");
@@ -263,7 +262,7 @@ function add_domain_alias(&$sql, &$err_al) {
 		VALUES
 			(?, ?, ?, ?, ?, ?)
 	";
-	exec_query($sql, $query, array(
+	exec_query($query, array(
 			$cr_user_id,
 			$alias_name,
 			$mount_point,
@@ -366,7 +365,7 @@ if(!is_xhr()) {
 			;
 		";
 	
-		$result = exec_query($sql, $query, array($domain_id, $reseller_id));
+		$result = exec_query($query, array($domain_id, $reseller_id));
 	
 		if ($result->recordCount() == 0) {
 			set_page_message(
@@ -410,7 +409,7 @@ if(isset($_POST['uaction'])) {
 		echo "/".encode_idna(strtolower($_POST['domain']));
 		exit;
 	} elseif($_POST['uaction'] == 'add_alias') {
-		add_domain_alias($sql, $err_txt);
+		add_domain_alias($err_txt);
 	} else {
 		throw new iMSCP_Exception(tr("Error: unknown action! {$_POST['uaction']}"));
 	}

@@ -169,3 +169,38 @@ function gen_def_language($tpl, $user_def_language)
     }
 }
 
+/**
+ * Helper function to generate HTML list of months and years
+ *
+ * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
+ * @param  $user_month
+ * @param  $user_year
+ * @return void
+ */
+function gen_select_lists($tpl, $user_month, $user_year)
+{
+    global $crnt_month, $crnt_year;
+
+     /** @var $cfg iMSCP_Config_Handler_File */
+    $cfg = iMSCP_Registry::get('config');
+
+    if (!$user_month == '' || !$user_year == '') {
+        $crnt_month = $user_month;
+        $crnt_year = $user_year;
+    } else {
+        $crnt_month = date('m');
+        $crnt_year = date('Y');
+    }
+
+    for ($i = 1; $i <= 12; $i++) {
+        $selected = ($i == $crnt_month) ? $cfg->HTML_SELECTED : '';
+        $tpl->assign(array('OPTION_SELECTED' => $selected, 'MONTH_VALUE' => $i));
+        $tpl->parse('MONTH_LIST', '.month_list');
+    }
+
+    for ($i = $crnt_year - 1; $i <= $crnt_year + 1; $i++) {
+        $selected = ($i == $crnt_year) ? $cfg->HTML_SELECTED : '';
+        $tpl->assign(array('OPTION_SELECTED' => $selected, 'YEAR_VALUE' => $i));
+        $tpl->parse('YEAR_LIST', '.year_list');
+    }
+}

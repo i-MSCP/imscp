@@ -148,8 +148,8 @@ class iMSCP_Initializer
         // Create or restore the session
         $this->_initializeSession();
 
-        // Create or restore the session
-        $this->_setEncryptKeys();
+        // Sets encryption keys
+        $this->_setEncryptionKeys();
 
         // Establish the connection to the database
         $this->_initializeDatabase();
@@ -200,13 +200,13 @@ class iMSCP_Initializer
         // Include path
         $this->_setIncludePath();
 
-        // Create or restore the session
-        $this->_setEncryptKeys();
+        // Sets encryption keys
+        $this->_setEncryptionKeys();
 
         // Establish the connection to the database
         $this->_initializeDatabase();
 
-        // Se encoding (Both PHP and database)
+        // Sets encoding (Both PHP and database)
         $this->_setEncoding();
 
         // Load all the configuration parameters from the database and merge
@@ -344,30 +344,38 @@ class iMSCP_Initializer
         }
     }
 
-/**
-	 * Encryption data
-	 *
-	 * @return void
-	 */
-	protected function _setEncryptKeys(){
-		eval(file_get_contents($this->_config->CONF_DIR . '/imscp-db-keys'));
-		if(isset($db_pass_key) && isset($db_pass_iv)) {
-			iMSCP_Registry::set('MCRYPT_KEY', $db_pass_key);
-			iMSCP_Registry::set('MCRYPT_IV', $db_pass_iv);
-		} else {
-			throw new iMSCP_Exception(
-				'Error: Database key and/or initialization vector was not generated!'
-			);
-		}
-	}
+    /**
+     * Sets encryption keys.
+     *
+     * @author Daniel Andreca <sci2tech@gmail.com>
+     * @since r4405 (on svn repository)
+     * @throws iMSCP_Exception When key and/or initialization vector was not generated
+     * @return void
+     */
+    protected function _setEncryptionKeys()
+    {
+        return;
+        $db_pass_key = $db_pass_iv = '';
+
+        eval(@file_get_contents($this->_config->CONF_DIR . '/imscp-db-keys'));
+
+        if (!empty($db_pass_key) && !empty($db_pass_iv)) {
+            iMSCP_Registry::set('MCRYPT_KEY', $db_pass_key);
+            iMSCP_Registry::set('MCRYPT_IV', $db_pass_iv);
+        } else {
+            throw new iMSCP_Exception(
+                'Database key and/or initialization vector was not generated.'
+            );
+        }
+    }
 
     /**
-     * Establishes the connection to the database
+     * Establishes the connection to the database server.
      *
-     * This methods establishes the default connection to the database by using
-     * configuration parameters that come from the basis configuration object and
-     * then, register the {@link iMSCP_Database} instance in the {@link iMSCP_Registry}
-     * for shared access.
+     * This methods establishes the default connection to the database server by
+     * using configuration parameters that come from the basis configuration object
+     * and then, register the {@link iMSCP_Database} instance in the
+     * {@link iMSCP_Registry} for shared access.
      *
      * A PDO instance is also registered in the registry for shared access.
      *
@@ -378,10 +386,11 @@ class iMSCP_Initializer
     protected function _initializeDatabase()
     {
         try {
-
             $connection = iMSCP_Database::connect(
+                //$this->_config->DATABASE_USER,
+                //decrypt_db_password($this->_config->DATABASE_PASSWORD),
                 $this->_config->DATABASE_USER,
-                decrypt_db_password($this->_config->DATABASE_PASSWORD),
+                $this->_config->DATABASE_PASSWORD,
                 $this->_config->DATABASE_TYPE,
                 $this->_config->DATABASE_HOST, $this->_config->DATABASE_NAME);
 
@@ -392,12 +401,11 @@ class iMSCP_Initializer
             );
         }
 
-        // Register both Database and PDO instances for shared access
+        // Register Database instance in registry for further usage.
         iMSCP_Registry::set('db', $connection);
-        iMSCP_Registry::set('pdo', iMSCP_Database::getRawInstance());
 
         // Will be removed ASAP
-        $GLOBALS['sql'] = iMSCP_Registry::get('db');
+        //$GLOBALS['sql'] = iMSCP_Registry::get('db');
     }
 
     /**
@@ -416,7 +424,10 @@ class iMSCP_Initializer
         ini_set('default_charset', 'UTF-8');
 
         // Switch optionally to utf8 based communication with the database
-        if (isset($this->_config->DATABASE_UTF8) && $this->_config->DATABASE_UTF8 == 'yes') {
+        if (isset($this->_config->DATABASE_UTF8) &&
+            $this->_config->DATABASE_UTF8 == 'yes'
+        ) {
+            /** @var $db iMSCP_Database */
             $db = iMSCP_Registry::get('db');
 
             if (!$db->execute('SET NAMES `utf8`;')) {
@@ -429,7 +440,7 @@ class iMSCP_Initializer
     }
 
     /**
-     * Sets timezone
+     * Sets timezone.
      *
      * This method ensures that the timezone is set to avoid any error with PHP
      * versions equal or later than version 5.3.x
@@ -446,14 +457,15 @@ class iMSCP_Initializer
     {
         // Timezone is not set in the php.ini file ?
         if (ini_get('date.timezone') == '') {
-            $timezone = (isset($this->_config->PHP_TIMEZONE) && $this->_config->PHP_TIMEZONE != '')
+            $timezone = (isset($this->_config->PHP_TIMEZONE) &&
+                         $this->_config->PHP_TIMEZONE != '')
                 ? $this->_config->PHP_TIMEZONE : 'UTC';
 
             if (!date_default_timezone_set($timezone)) {
                 throw new iMSCP_Exception(
-                    'Error: Invalid timezone identifier set in your imscp.conf file. ' .
+                    'Invalid timezone identifier set in your imscp.conf file. ' .
                     'Please fix this error and re-run the imscp-update script to fix ' .
-                    'the value in all your customers\' php.ini files. The current' .
+                    'the value in all your customers\' php.ini files. The' .
                     'list of valid identifiers is available at the ' .
                     '<a href="http://www.php.net/manual/en/timezones.php" ' .
                     'target="_blank">PHP Homepage</a> .'
@@ -477,8 +489,14 @@ class iMSCP_Initializer
      */
     protected function _processConfiguration()
     {
-        // We get an iMSCP_Config_Handler_Db object
-        $dbConfig = new iMSCP_Config_Handler_Db(iMSCP_Registry::get('pdo'));
+        /** @var $pdo iMSCP_Database */
+        $pdo = iMSCP_Database::getRawInstance();
+
+        // Creating new Db configuration handler.
+        // TODO: Inject the PDO object by using dependency injection instead of pass
+        // the PDO instance in constructor. All configuration handler will be aware
+        // of the dependency injection container.
+        $dbConfig = new iMSCP_Config_Handler_Db($pdo);
 
         // Now, we can override our basis configuration object with parameter
         // that come from the database
@@ -491,9 +509,9 @@ class iMSCP_Initializer
     /**
      * Initialize the PHP output buffering / spGzip filter.
      *
-     * <b>Note:</b> The hight level (like 8, 9) for compression are not recommended
-     * for performances reasons. The obtained gain with these levels is very small
-     * compared to the intermediate level like 6,7.
+     * <b>Note:</b> The hight level such as 8 and 9 for compression are not
+     * recommended for performances reasons. The obtained gain with these levels is
+     * very small compared to the intermediate level such as 6 or 7.
      *
      * @return void
      */
@@ -501,10 +519,9 @@ class iMSCP_Initializer
     {
         // Create a new filter that will be applyed on the buffer output
         /** @var $filter  iMSCP_Filter_Compress_Gzip*/
-        $filter = iMSCP_Registry::set(
-            'bufferFilter',
-            new iMSCP_Filter_Compress_Gzip(iMSCP_Filter_Compress_Gzip::FILTER_BUFFER)
-        );
+        $filter = iMSCP_Registry::set('bufferFilter',
+                                      new iMSCP_Filter_Compress_Gzip(
+                                          iMSCP_Filter_Compress_Gzip::FILTER_BUFFER));
 
         // Show compression information in HTML comment ?
         if (!$this->_config->SHOW_COMPRESSION_SIZE) {

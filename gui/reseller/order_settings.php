@@ -60,7 +60,7 @@ $tpl->assign(
  * Functions
  */
 
-function save_haf(&$tpl, &$sql) {
+function save_haf() {
 	$user_id = $_SESSION['user_id'];
 	$header = $_POST['header'];
 	$footer = $_POST['footer'];
@@ -73,7 +73,7 @@ function save_haf(&$tpl, &$sql) {
 		WHERE
 			`user_id` = ?
 	";
-	$rs = exec_query($sql, $query, $user_id);
+	$rs = exec_query($query, $user_id);
 
 	if ($rs->recordCount() !== 0) {
 		// update query
@@ -87,7 +87,7 @@ function save_haf(&$tpl, &$sql) {
 				`user_id` = ?
 		";
 
-		$rs = exec_query($sql, $query, array($header, $footer, $user_id));
+		exec_query($query, array($header, $footer, $user_id));
 	} else {
 		// create query
 		$query = "
@@ -97,7 +97,7 @@ function save_haf(&$tpl, &$sql) {
 				(?, ?, ?)
 		";
 
-		$rs = exec_query($sql, $query, array($user_id, $header, $footer));
+		exec_query($query, array($user_id, $header, $footer));
 	}
 }
 
@@ -109,10 +109,11 @@ function save_haf(&$tpl, &$sql) {
  *
  */
 if (isset($_POST['header']) && $_POST['header'] !== ''
-	&& isset ($_POST['footer']) && $_POST['footer'] !== '') {
-	save_haf($tpl, $sql);
+    && isset ($_POST['footer']) && $_POST['footer'] !== ''
+) {
+	save_haf();
 }
-gen_purchase_haf($tpl, $sql, $_SESSION['user_id'], true);
+gen_purchase_haf($tpl, $_SESSION['user_id'], true);
 
 gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_orders.tpl');
 gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_orders.tpl');

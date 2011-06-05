@@ -57,7 +57,7 @@ $query = "
 		`user_id` = ?
 ";
 
-$rs = exec_query($sql, $query, array($order_id, $reseller_id));
+$rs = exec_query($query, array($order_id, $reseller_id));
 
 if ($rs->recordCount() == 0) {
 	set_page_message(tr('Permission deny!'));
@@ -71,7 +71,7 @@ $query = "
 	WHERE
 		`id` = ?
 ";
-$rs = exec_query($sql, $query, $order_id);
+$rs = exec_query($query, $order_id);
 
 set_page_message(tr('Customer order was removed successful!'));
 

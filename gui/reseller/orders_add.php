@@ -38,6 +38,9 @@ check_login(__FILE__);
 
 $cfg = iMSCP_Registry::get('config');
 
+/** @var $db iMSCP_Database */
+$db = iMSCP_Registry::get('db');
+
 $reseller_id = $_SESSION['user_id'];
 
 if (isset($_GET['order_id']) && is_numeric($_GET['order_id'])) {
@@ -58,7 +61,7 @@ if (isset($cfg->HOSTING_PLANS_LEVEL)
 			`id` = ?
 	";
 
-	$rs = exec_query($sql, $query, $order_id);
+	$rs = exec_query($query, $order_id);
 } else {
 	$query = "
 		SELECT
@@ -71,7 +74,7 @@ if (isset($cfg->HOSTING_PLANS_LEVEL)
 			`user_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($order_id, $reseller_id));
+	$rs = exec_query($query, array($order_id, $reseller_id));
 }
 
 if ($rs->recordCount() == 0 || !isset($_SESSION['domain_ip'])) {
@@ -101,17 +104,17 @@ $err_msg = '';
 if (isset($cfg->HOSTING_PLANS_LEVEL)
 	&& $cfg->HOSTING_PLANS_LEVEL === 'admin') {
 	$query = "SELECT `props` FROM `hosting_plans` WHERE `id` = ?";
-	$res = exec_query($sql, $query, $hpid);
+	$res = exec_query($query, $hpid);
 } else {
 	$query = "SELECT `props` FROM `hosting_plans` WHERE `reseller_id` = ? AND `id` = ?";
-	$res = exec_query($sql, $query, array($reseller_id, $hpid));
+	$res = exec_query($query, array($reseller_id, $hpid));
 }
 $data = $res->fetchRow();
 $props = $data['props'];
 
 $_SESSION["ch_hpprops"] = $props;
 
-if (!reseller_limits_check($sql, $err_msg, $reseller_id, $hpid)) {
+if (!reseller_limits_check($err_msg, $reseller_id, $hpid)) {
 	set_page_message(tr('Order Cancelled: resellers maximum exceeded!'));
 	user_goto('orders.php');
 }
@@ -166,15 +169,14 @@ $query = "
 	)
 ";
 
-$res = exec_query($sql, $query, array(
+$res = exec_query($query, array(
 		$dmn_user_name, $inpass, $reseller_id, $first_name, $last_name, $firm,
 		$zip, $city, $state, $country, $user_email, $phone, $fax, $street_one,
 		$street_two, $customer_id)
 );
 
-print $sql->errorMsg();
-
-$record_id = $sql->insertId();
+print $db->errorMsg();
+$record_id = $db->insertId();
 
 $query = "
 	SELECT
@@ -185,7 +187,7 @@ $query = "
 		`reseller_id` = ?
 ";
 
-$rs = exec_query($sql, $query, $reseller_id);
+$rs = exec_query($query, $reseller_id);
 $domain_ip = $rs->fields['reseller_ips'];
 $status =  $cfg->ITEM_ADD_STATUS;
 
@@ -214,12 +216,12 @@ $query = "
 	)
 ";
 
-$res = exec_query($sql, $query, array($dmn_user_name, $record_id, $reseller_id,
+$res = exec_query($query, array($dmn_user_name, $record_id, $reseller_id,
 		$mail, $ftp, $traff, $sql_db, $sql_user, $status, $sub, $als, $domain_ip,
 		$disk, $php, $cgi, $backup,	$dns)
 );
 
-$dmn_id = $sql->insertId();
+$dmn_id = $db->insertId();
 
 // Add statistics group
 $query = "
@@ -228,10 +230,10 @@ $query = "
 	VALUES
 		(?, ?, ?, ?)
 ";
-$rs = exec_query($sql, $query, array($dmn_id, $dmn_user_name,
+$rs = exec_query($query, array($dmn_id, $dmn_user_name,
 	 	crypt_user_pass_with_salt($password), $status));
 
-$user_id = $sql->insertId();
+$user_id = $db->insertId();
 
 $awstats_auth = $cfg->AWSTATS_GROUP_AUTH;
 
@@ -241,7 +243,7 @@ $query = "
 	VALUES
 		(?, ?, ?, ?)
 ";
-$rs = exec_query($sql, $query, array($dmn_id, $awstats_auth, $user_id, $status));
+$rs = exec_query($query, array($dmn_id, $awstats_auth, $user_id, $status));
 
 // Create the 3 default addresses if wanted
 if ($cfg->CREATE_DEFAULT_EMAIL_ADDRESSES)
@@ -266,7 +268,7 @@ $query = "
 		(?, ?, ?)
 ";
 
-$res = exec_query($sql, $query, array($record_id, $user_def_lang,
+$res = exec_query($query, array($record_id, $user_def_lang,
 		$user_theme_color));
 
 // send query to the i-mscp daemon
@@ -287,7 +289,7 @@ $query = "
 	WHERE
 		`id` = ?
 ";
-exec_query($sql, $query, array('added', $order_id));
+exec_query($query, array('added', $order_id));
 
 unset($_SESSION['domain_ip']);
 

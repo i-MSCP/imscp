@@ -123,9 +123,6 @@ unsetMessages();
 
 function generate_users_list($tpl, $admin_id) {
 
-    /** @var $sql iMSCP_Database */
-	$sql = iMSCP_Registry::get('db');
-
     /** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
@@ -185,11 +182,11 @@ function generate_users_list($tpl, $admin_id) {
 		gen_manage_domain_search_options($tpl, 'n/a', 'n/a', 'n/a');
 	}
 
-	$rs = execute_query($sql, $count_query);
+	$rs = execute_query($count_query);
 
 	$records_count = $rs->fields['cnt'];
 
-	$rs = execute_query($sql, $search_query);
+	$rs = execute_query($search_query);
 
 	if ($records_count == 0) {
 		if (isset($_SESSION['search_for'])) {
@@ -298,7 +295,7 @@ function generate_users_list($tpl, $admin_id) {
                                   ? tr('%1$s of %2$s MB', round($rs->fields['domain_disk_usage'] / 1024 / 1024, 1), $rs->fields['domain_disk_limit'])
                                   : tr('%1$s of <b>unlimited</b> MB', round($rs->fields['domain_disk_usage'] / 1024 / 1024, 1))));
 
-			gen_domain_details($tpl, $sql, $rs->fields['domain_id']);
+			gen_domain_details($tpl, $rs->fields['domain_id']);
 			$tpl->parse('USER_ENTRY', '.user_entry');
 			$i++;
 			$rs->moveNext();

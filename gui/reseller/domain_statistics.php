@@ -78,7 +78,7 @@ if (!is_numeric($domain_id) || !is_numeric($month) || !is_numeric($year)) {
 }
 
 function get_domain_trafic($from, $to, $domain_id) {
-	$sql = iMSCP_Registry::get('db');
+
 	$reseller_id = $_SESSION['user_id'];
 	$query = "
 		SELECT
@@ -89,7 +89,7 @@ function get_domain_trafic($from, $to, $domain_id) {
 			`domain_id` = ? AND `domain_created_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($domain_id, $reseller_id));
+	$rs = exec_query($query, array($domain_id, $reseller_id));
 	if ($rs->recordCount() == 0) {
 		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
 		user_goto('user_statistics.php');
@@ -106,7 +106,7 @@ function get_domain_trafic($from, $to, $domain_id) {
 		WHERE
 			`domain_id` = ? AND `dtraff_time` >= ? AND `dtraff_time` <= ?
 	";
-	$rs = exec_query($sql, $query, array($domain_id, $from, $to));
+	$rs = exec_query($query, array($domain_id, $from, $to));
 
 	if ($rs->recordCount() == 0) {
 		return array(0, 0, 0, 0);
@@ -125,7 +125,6 @@ function generate_page(&$tpl, $domain_id) {
 	global $web_trf, $ftp_trf, $smtp_trf, $pop_trf;
 	global $sum_web, $sum_ftp, $sum_mail, $sum_pop;
 
-	$sql = iMSCP_Registry::get('db');
 	$cfg = iMSCP_Registry::get('config');
 
 	if ($month == date('m') && $year == date('Y')) {
@@ -157,7 +156,7 @@ function generate_page(&$tpl, $domain_id) {
 			WHERE
 				`domain_id` = ? AND `dtraff_time` >= ? AND `dtraff_time` <= ?
 		";
-		exec_query($sql, $query, array($domain_id, $ftm, $ltm));
+		exec_query($query, array($domain_id, $ftm, $ltm));
 
 		list($web_trf, $ftp_trf, $pop_trf, $smtp_trf) = get_domain_trafic($ftm, $ltm, $domain_id);
 

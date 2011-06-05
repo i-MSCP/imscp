@@ -42,10 +42,9 @@ require '../include/imscp-lib.php';
  * Generate List of Domains assigned to IPs.
  *
  * @param  iMSCP_pTemplate $tpl Template engine
- * @param  iMSCP_Database $sql
  * @return void
  */
-function listIPDomains($tpl, $sql)
+function listIPDomains($tpl)
 {
     global $reseller_id;
 
@@ -59,7 +58,7 @@ function listIPDomains($tpl, $sql)
 		;
 	";
 
-    $res = exec_query($sql, $query, $reseller_id);
+    $res = exec_query($query, $reseller_id);
     $data = $res->fetchRow();
     $reseller_ips = explode(";", substr($data['reseller_ips'], 0, -1));
 
@@ -75,7 +74,7 @@ function listIPDomains($tpl, $sql)
 		;
 	";
 
-    $rs = exec_query($sql, $query);
+    $rs = exec_query($query);
 
     if (!$rs->recordCount()) {
         while (!$rs->EOF) {
@@ -101,7 +100,7 @@ function listIPDomains($tpl, $sql)
 			;
 		";
 
-            $rs2 = exec_query($sql, $query, array($rs->fields['ip_id'], $reseller_id));
+            $rs2 = exec_query($query, array($rs->fields['ip_id'], $reseller_id));
             $domain_count = $rs2->recordCount();
 
             if ($rs2->recordCount() == 0) {
@@ -136,7 +135,7 @@ function listIPDomains($tpl, $sql)
 			;
 		";
 
-            $rs3 = exec_query($sql, $query, array($rs->fields['ip_id'], $reseller_id));
+            $rs3 = exec_query($query, array($rs->fields['ip_id'], $reseller_id));
             $alias_count = $rs3->recordCount();
 
             if ($rs3->recordCount() == 0) {
@@ -200,7 +199,7 @@ gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_statistic
 gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_statistics.tpl');
 gen_logged_from($tpl);
 
-listIPDomains($tpl, $sql);
+listIPDomains($tpl);
 
 $tpl->assign(array(
                   'TR_DOMAIN_STATISTICS' => tr('Domain statistics'),

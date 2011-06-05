@@ -124,7 +124,7 @@ unsetMessages();
  * Show user data
  */
 function gen_editalias_page(&$tpl, $edit_id) {
-	$sql = iMSCP_Registry::get('db');
+
 	$cfg = iMSCP_Registry::get('config');
 
 	$reseller_id = $_SESSION['user_id'];
@@ -147,14 +147,14 @@ function gen_editalias_page(&$tpl, $edit_id) {
 			t2.`domain_created_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($edit_id, $reseller_id));
+	$rs = exec_query($query, array($edit_id, $reseller_id));
 
 	if ($rs->recordCount() == 0) {
 		set_page_message(tr('User does not exist or you do not have permission to access this interface!'));
 		user_goto('alias.php');
 	}
 	// Get data from sql
-	$res = exec_query($sql, "SELECT * FROM `domain_aliasses` WHERE `alias_id` = ?", $edit_id);
+	$res = exec_query("SELECT * FROM `domain_aliasses` WHERE `alias_id` = ?", $edit_id);
 
 	if ($res->recordCount() <= 0) {
 		$_SESSION['aledit'] = '_no_';
@@ -162,7 +162,7 @@ function gen_editalias_page(&$tpl, $edit_id) {
 	}
 	$data = $res->fetchRow();
 	// Get IP data
-	$ipres = exec_query($sql, "SELECT * FROM `server_ips` WHERE `ip_id` = ?", $data['alias_ip_id']);
+	$ipres = exec_query("SELECT * FROM `server_ips` WHERE `ip_id` = ?", $data['alias_ip_id']);
 	$ipdat = $ipres->fetchRow();
 	$ip_data = $ipdat['ip_number'] . ' (' . $ipdat['ip_alias'] . ')';
 
@@ -218,9 +218,8 @@ function gen_editalias_page(&$tpl, $edit_id) {
 /**
  * Check input data
  */
-function check_fwd_data(&$tpl, $alias_id) {
+function check_fwd_data($tpl, $alias_id) {
 
-	$sql = iMSCP_Registry::get('db');
 	$cfg = iMSCP_Registry::get('config');
 
 	$forward_url = strtolower(clean_input($_POST['forward']));
@@ -278,7 +277,7 @@ function check_fwd_data(&$tpl, $alias_id) {
 			WHERE
 				`alias_id` = ?
 		";
-		exec_query($sql, $query, array($forward_url, $cfg->ITEM_CHANGE_STATUS, $alias_id));
+		exec_query($query, array($forward_url, $cfg->ITEM_CHANGE_STATUS, $alias_id));
 
 		$query = "
 			UPDATE
@@ -288,7 +287,7 @@ function check_fwd_data(&$tpl, $alias_id) {
 			WHERE
 				`alias_id` = ?
 		";
-		exec_query($sql, $query, array($cfg->ITEM_CHANGE_STATUS, $alias_id));
+		exec_query($query, array($cfg->ITEM_CHANGE_STATUS, $alias_id));
 
 		send_request();
 

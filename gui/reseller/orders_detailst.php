@@ -58,7 +58,7 @@ $tpl->assign(
  * Functions
  */
 
-function gen_order_details(&$tpl, &$sql, $user_id, $order_id) {
+function gen_order_details($tpl, $user_id, $order_id) {
 	$cfg = iMSCP_Registry::get('config');
 
 	$query = "
@@ -71,7 +71,7 @@ function gen_order_details(&$tpl, &$sql, $user_id, $order_id) {
 		AND
 			`user_id` = ?
 	";
-	$rs = exec_query($sql, $query, array($order_id, $user_id));
+	$rs = exec_query($query, array($order_id, $user_id));
 	if ($rs->recordCount() == 0) {
 		set_page_message(tr('Permission deny!'));
 		user_goto('orders.php');
@@ -121,7 +121,7 @@ function gen_order_details(&$tpl, &$sql, $user_id, $order_id) {
 		WHERE
 			`id` = ?
 	";
-	$rs = exec_query($sql, $query, $plan_id);
+	$rs = exec_query($query, $plan_id);
 	$plan_name = $rs->fields['name'] . "<br />" . $rs->fields['description'];
 
 	generate_ip_list($tpl, $_SESSION['user_id']);
@@ -154,7 +154,7 @@ function gen_order_details(&$tpl, &$sql, $user_id, $order_id) {
 	);
 }
 
-function update_order_details(&$tpl, &$sql, $user_id, $order_id) {
+function update_order_details($user_id, $order_id) {
 	$domain			= strtolower($_POST['domain']);
 	$domain			= encode_idna($domain);
 	$customer_id	= $_POST['customer_id'];
@@ -196,7 +196,7 @@ function update_order_details(&$tpl, &$sql, $user_id, $order_id) {
 		AND
 			`user_id` = ?
 	";
-	exec_query($sql, $query, array($domain, $customer_id, $fname, $lname, $gender, $firm, $zip, $city, $state, $country, $email, $phone, $fax, $street1, $street2, $order_id, $user_id));
+	exec_query($query, array($domain, $customer_id, $fname, $lname, $gender, $firm, $zip, $city, $state, $country, $email, $phone, $fax, $street1, $street2, $order_id, $user_id));
 }
 
 // end of functions
@@ -215,7 +215,7 @@ if (isset($_GET['order_id']) && is_numeric($_GET['order_id'])) {
 }
 
 if (isset($_POST['uaction'])) {
-	update_order_details($tpl, $sql, $_SESSION['user_id'], $order_id);
+	update_order_details($_SESSION['user_id'], $order_id);
 
 	if ($_POST['uaction'] === 'update_data') {
 		set_page_message(tr('Order data updated successfully!'));
@@ -225,7 +225,7 @@ if (isset($_POST['uaction'])) {
 	}
 }
 
-gen_order_details($tpl, $sql, $_SESSION['user_id'], $order_id);
+gen_order_details($tpl, $_SESSION['user_id'], $order_id);
 
 gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_orders.tpl');
 gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_orders.tpl');

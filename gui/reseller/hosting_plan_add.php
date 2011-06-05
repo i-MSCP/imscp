@@ -129,7 +129,7 @@ if (isset($_POST['uaction']) && ('add_plan' === $_POST['uaction'])) {
 	gen_empty_ahp_page($tpl);
 }
 
-get_reseller_software_permission ($tpl,$sql,$_SESSION['user_id']);
+get_reseller_software_permission ($tpl, $_SESSION['user_id']);
 generatePageMessage($tpl);
 
 list(
@@ -407,11 +407,10 @@ function save_data_to_db(&$tpl, $admin_id) {
 	global $hp_backup, $hp_dns, $hp_allowsoftware;
 	global $tos;
 
-	$sql = iMSCP_Registry::get('db');
 	$err_msg = '';
 
 	$query = "SELECT `id` FROM `hosting_plans` WHERE `name` = ? AND `reseller_id` = ?";
-	$res = exec_query($sql, $query, array($hp_name, $admin_id));
+	$res = exec_query($query, array($hp_name, $admin_id));
 
 	if ($res->rowCount() == 1) {
 		$tpl->assign('MESSAGE', tr('Hosting plan with entered name already exists!'));
@@ -421,7 +420,7 @@ function save_data_to_db(&$tpl, $admin_id) {
 		// this id is just for fake and is not used in reseller_limits_check.
 		$hpid = 0;
 
-		if (reseller_limits_check($sql, $err_msg, $admin_id, $hpid, $hp_props)) {
+		if (reseller_limits_check($err_msg, $admin_id, $hpid, $hp_props)) {
 			if (!empty($err_msg)) {
 				set_page_message($err_msg);
 				return false;
@@ -443,7 +442,9 @@ function save_data_to_db(&$tpl, $admin_id) {
 					VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 				";
 
-				$res = exec_query($sql, $query, array($admin_id, $hp_name, $description, $hp_props, $price, $setup_fee, $value, $payment, $status, $tos));
+				exec_query($query, array($admin_id, $hp_name, $description, $hp_props,
+                                        $price, $setup_fee, $value, $payment, $status,
+                                        $tos));
 
 				$_SESSION['hp_added'] = '_yes_';
 				user_goto('hosting_plan.php');

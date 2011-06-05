@@ -17,19 +17,19 @@
  * The Initial Developer of the Original Code is ispCP Team.
  * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * 
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ *
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_Exception
- * @subpackage	Writer
- * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010 by i-MSCP | http://i-mscp.net
- * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @version		SVN: $Id$
- * @link		http://i-mscp.net i-MSCP Home Site
- * @license		http://www.mozilla.org/MPL/ MPL 1.1
+ * @category    i-MSCP
+ * @package     iMSCP_Exception
+ * @subpackage  Writer
+ * @copyright   2006-2010 by ispCP | http://isp-control.net
+ * @copyright   2010-2011 by i-MSCP | http://i-mscp.net
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @version     SVN: $Id$
+ * @link        http://i-mscp.net i-MSCP Home Site
+ * @license     http://www.mozilla.org/MPL/ MPL 1.1
  */
 
 /**
@@ -51,145 +51,135 @@ require_once  INCLUDEPATH . '/iMSCP/Exception/Writer.php';
  *
  * <b>Note:</b> Will be improved later.
  *
- * @category	i-MSCP
- * @package		iMSCP_Exception
- * @subpackage	Writer
- * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @since       1.0.7 (ispCP)
- * @version		1.0.6
- * @todo		Display more information like trace on debug mode.
+ * @category    i-MSCP
+ * @package     iMSCP_Exception
+ * @subpackage  Writer
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
  */
-class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer {
+class iMSCP_Exception_Writer_Browser extends iMSCP_Exception_Writer
+{
 
-	/**
-	 * pTemplate instance
-	 *
-	 * @var iMSCP_pTemplate
-	 */
-	protected $_view = null;
+    /**
+     * pTemplate instance
+     *
+     * @var iMSCP_pTemplate
+     */
+    protected $_tpl = null;
 
-	/**
-	 * Template file path
-	 *
-	 * @var string
-	 */
-	protected $_templateFile = null;
+    /**
+     * Template file path
+     *
+     * @var string
+     */
+    protected $_templateFile = null;
 
-	/**
-	 * Constructor
-	 *
-	 * @param string Template file path
-	 */
-	public function __construct($templateFile = '') {
+    /**
+     * Constructor
+     *
+     * @param string $templateFile Template file path
+     */
+    public function __construct($templateFile = '')
+    {
+        $templateFile = (string)$templateFile;
+        if ($templateFile != '') {
+            if (is_readable($templateFile) ||
+                is_readable($templateFile = "../$templateFile")
+            ) {
+                $this->_templateFile = $templateFile;
+            }
+        }
+    }
 
-		if($templateFile != '') {
-			if(is_readable($templateFile = $templateFile) || is_readable($templateFile = "../$templateFile")) {
+    /**
+     * Writes the exception message to the client browser
+     *
+     * @return void
+     * @todo Add inline template for rescue
+     */
+    protected function _write()
+    {
 
-				$this->_templateFile = $templateFile;
-			}
-		}
-	}
+        if ($this->_tpl != null) {
+            $this->_tpl->prnt();
+        } else {
+            echo $this->_message;
+        }
+    }
 
-	/**
-	 * Writes the exception message to the client browser
-	 *
-	 * @return void
-	 * @todo Add inline template for rescue
-	 */
-	protected function _write() {
+    /**
+     * This methods is called from the subject (i.e. when an event occur)
+     *
+     * @param SplSubject $exceptionHandler iMSCP_Exception_Handler
+     * @return void
+     */
+    public function update(SplSubject $exceptionHandler)
+    {
 
-		if($this->_view != null) {
-			$this->_view->prnt();
-		} else {
-			echo $this->_message;
-		}
-	}
+        // Always write the real exception message if we are the admin
+        if (isset($_SESSION) &&
+            ((isset($_SESSION['logged_from']) && $_SESSION['logged_from'] == 'admin')
+             || isset($_SESSION['user_type']) && $_SESSION['user_type'] == 'admin')
+        ) {
+            $this->_message = $exceptionHandler->getException()->getMessage();
+        } else {
+            $productionException = $exceptionHandler->getProductionException();
 
-	/**
-	 * This methods is called from the subject (i.e. when an event occur)
-	 *
-	 * @param iMSCP_Exception_Handler $exceptionHandler iMSCP_Exception_Handler
-	 * @return void
-	 */
-	public function update(SplSubject $exceptionHandler) {
+            // An exception for production exists ? If it's not case, use the
+            // real exception raised
+            $this->_message = ($productionException !== false)
+                ? $productionException->getMessage()
+                : $exceptionHandler->getException()->getMessage();
+        }
 
-		// Always write the real exception message if we are the admin
-		if(isset($_SESSION) && ((isset($_SESSION['logged_from']) && $_SESSION['logged_from'] == 'admin') ||
-			isset($_SESSION['user_type']) && $_SESSION['user_type'] == 'admin')) {
+        if ($this->_templateFile != null) {
+            $this->_render();
+        }
 
-			$this->_message = $exceptionHandler->getException()->getMessage();
-		} else {
+        // Finally, we write the output
+        $this->_write();
+    }
 
-			$productionException = $exceptionHandler->getProductionException();
+    /**
+     * Render exception template file.
+     *
+     * @return void
+     */
+    protected function _render()
+    {
+        $tpl = new iMSCP_pTemplate();
+        $tpl->define('page', $this->_templateFile);
 
-			// An exception for production exists ? If it's not case, use the
-			// real exception raised
-			$this->_message = ($productionException !== false)
-				? $productionException->getMessage()
-				: $exceptionHandler->getException()->getMessage();
-		}
+        if (iMSCP_Registry::isRegistered('backButtonDestination')) {
+            $backButtonDestination = iMSCP_Registry::get('backButtonDestination');
+        } else {
+            $backButtonDestination = 'javascript:history.go(-1)';
+        }
 
-		if($this->_templateFile != null) {
-			$this->_render();
-		}
+        $tpl->assign(array('THEME_COLOR_PATH' => '/themes/' . 'default',
+                          'BACK_BUTTON_DESTINATION' => $backButtonDestination,
+                          'MESSAGE' => $this->_message,
+                          'productLink' => 'http://www.i-mscp.net'));
 
-		// Finally, we write the output
-		$this->_write();
-	}
+        // translation service is available ?
+        if (function_exists('tr')) {
+            $tpl->assign(array(
+                              'TR_EXCEPTION_PAGE_TITLE' => tr('i-MSCP - internet Multi Server Control Panel - Exception'),
+                              'THEME_CHARSET' => tr('encoding'),
+                              'productLongName' => tr('internet Multi Server Control Panel'),
+                              'productCopyright' => tr('© Copyright 2010-2011 i-MSCP Team<br/>All Rights Reserved.'),
+                              'MESSAGE_TITLE' => tr('An exception occurred'),
+                              'TR_BACK' => tr('Back')));
+        } else {
+            $tpl->assign(array(
+                              'TR_EXCEPTION_PAGE_TITLE' => 'i-MSCP - internet Multi Server Control Panel - Exception',
+                              'THEME_CHARSET' => 'UTF-8',
+                              'productLongName' => 'internet Multi Server Control Panel',
+                              'productCopyright' => '© Copyright 2010 i-MSCP Team<br/>All Rights Reserved',
+                              'MESSAGE_TITLE' => 'An exception occured',
+                              'TR_BACK' => 'Back'));
+        }
 
-	/**
-	 * Prepares the template
-	 *
-	 * @return void
-	 */
-	protected function _render() {
-
-		$this->_view = new iMSCP_pTemplate();
-		$this->_view->define('page', $this->_templateFile);
-
-
-		if(iMSCP_Registry::isRegistered('backButtonDestination')) {
-			$backButtonDestination = iMSCP_Registry::get('backButtonDestination');
-		} else {
-			$backButtonDestination = 'javascript:history.go(-1)';
-		}
-
-		$this->_view->assign(
-			array(
-				'THEME_COLOR_PATH' => '/themes/' . 'default',
-				'BACK_BUTTON_DESTINATION' => $backButtonDestination,
-				'MESSAGE_TITLE' => 'An exception occurred',
-				'MESSAGE' => $this->_message,
-				'productLink' => 'http://www.i-mscp.net',
-			)
-		);
-
-		// i18n support is available ?
-		if (function_exists('tr')) {
-			$this->_view->assign(
-				array(
-					'TR_EXCEPTION_PAGE_TITLE' => tr('i-MSCP - internet Multi Server Control Panel - Exception'),
-					'THEME_CHARSET' => tr('encoding'),
-					'productLongName' => tr('internet Multi Server Control Panel'),
-					'productCopyright' => tr('© Copyright 2010 i-MSCP Team<br/>All Rights Reserved'),
-					'MESSAGE_TITLE' => tr('An exception occurred'),
-					'TR_BACK' => tr('Back'),
-
-				)
-			);
-		} else {
-			$this->_view->assign(
-				array(
-					'TR_SYSTEM_MESSAGE_PAGE_TITLE' => 'i-MSCP - internet Multi Server Control Panel - Exception',
-					'THEME_CHARSET' => 'UTF-8',
-					'productLongName' => 'internet Multi Server Control Panel',
-					'productCopyright' => '© Copyright 2010 i-MSCP Team<br/>All Rights Reserved',
-					'MESSAGE_TITLE' => 'An exception occured',
-					'TR_BACK' => 'Back'
-				)
-			);
-		}
-
-		$this->_view->parse('PAGE', 'page');
-	} // end prepareTemplate()
+        $tpl->parse('PAGE', 'page');
+        $this->_tpl = $tpl;
+    }
 }

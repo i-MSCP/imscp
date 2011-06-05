@@ -51,7 +51,7 @@ $tpl->define_dynamic('traff_warn', 'page');
 $tpl->define_dynamic('t_software_support', 'page');
 
 // page functions.
-function gen_system_message(&$tpl, &$sql) {
+function gen_system_message($tpl) {
 	$user_id = $_SESSION['user_id'];
 
 	$query = "
@@ -72,7 +72,7 @@ function gen_system_message(&$tpl, &$sql) {
 			`ticket_reply` = 0
 	";
 
-	$rs = exec_query($sql, $query, array($user_id, $user_id));
+	$rs = exec_query($query, array($user_id, $user_id));
 
 	$num_question = $rs->fields('cnum');
 
@@ -91,7 +91,7 @@ function gen_system_message(&$tpl, &$sql) {
 }
 
 
-function gen_traff_usage(&$tpl, $usage, $max_usage, $bars_max) {
+function gen_traff_usage($tpl, $usage, $max_usage, $bars_max) {
 	if (0 !== $max_usage) {
 		list($percent, $bars) = calc_bars($usage, $max_usage, $bars_max);
 		$traffic_usage_data = tr('%1$s%% [%2$s of %3$s]', $percent, sizeit($usage), sizeit($max_usage));
@@ -110,7 +110,7 @@ function gen_traff_usage(&$tpl, $usage, $max_usage, $bars_max) {
 	);
 }
 
-function gen_disk_usage(&$tpl, $usage, $max_usage, $bars_max) {
+function gen_disk_usage($tpl, $usage, $max_usage, $bars_max) {
 	if (0 !== $max_usage) {
 		list($percent, $bars) = calc_bars($usage, $max_usage, $bars_max);
 		$traffic_usage_data = tr('%1$s%% [%2$s of %3$s]', $percent, sizeit($usage), sizeit($max_usage));
@@ -129,16 +129,15 @@ function gen_disk_usage(&$tpl, $usage, $max_usage, $bars_max) {
 	);
 }
 
-function generate_page_data(&$tpl, $reseller_id, $reseller_name) {
+function generate_page_data($tpl, $reseller_id, $reseller_name) {
 	global $crnt_month, $crnt_year;
-
-	$sql = iMSCP_Registry::get('db');
 
 	$crnt_month = date("m");
 	$crnt_year = date("Y");
+
 	// global
-	$tmpArr = get_reseller_default_props($sql, $reseller_id);
-	// $tmpArr = generate_reseller_props($reseller_id);
+	$tmpArr = get_reseller_default_props($reseller_id);
+
 	if ($tmpArr != NULL) { // there are data in db
 		list($rdmn_current, $rdmn_max,
 			$rsub_current, $rsub_max,
@@ -274,8 +273,7 @@ function generate_page_data(&$tpl, $reseller_id, $reseller_name) {
 	);
 }
 
-function gen_messages_table(&$tpl, $admin_id) {
-	$sql = iMSCP_Registry::get('db');
+function gen_messages_table($tpl, $admin_id) {
 
 	$query = "
 		SELECT
@@ -289,7 +287,7 @@ function gen_messages_table(&$tpl, $admin_id) {
 		AND
 			`ticket_reply` = '0'
 	;";
-	$res = exec_query($sql, $query, array($admin_id, $admin_id));
+	$res = exec_query($query, array($admin_id, $admin_id));
 
 	$questions = $res->rowCount();
 
@@ -337,7 +335,7 @@ generate_page_data($tpl, $_SESSION['user_id'], $_SESSION['user_logged']);
 
 // Makes sure that the language selected is the reseller's language
 if (!isset($_SESSION['logged_from']) && !isset($_SESSION['logged_from_id'])) {
-	list($user_def_lang, $user_def_layout) = get_user_gui_props($sql, $_SESSION['user_id']);
+	list($user_def_lang, $user_def_layout) = get_user_gui_props($_SESSION['user_id']);
 } else {
 	$user_def_layout = $_SESSION['user_theme'];
 	$user_def_lang = $_SESSION['user_def_lang'];
@@ -347,15 +345,15 @@ gen_messages_table($tpl, $_SESSION['user_id']);
 
 gen_logged_from($tpl);
 
-gen_def_language($tpl, $sql, $user_def_lang);
+gen_def_language($tpl, $user_def_lang);
 
 gen_def_layout($tpl, $user_def_layout);
 
 gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_general_information.tpl');
 gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_general_information.tpl');
-get_reseller_software_permission ($tpl, $sql,$_SESSION['user_id']);
+get_reseller_software_permission ($tpl, $_SESSION['user_id']);
 
-gen_system_message($tpl, $sql);
+gen_system_message($tpl);
 
 // static page messages.
 

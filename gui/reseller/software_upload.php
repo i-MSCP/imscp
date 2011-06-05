@@ -57,11 +57,6 @@ function formatFilesize($byte) {
  */
 function ask_reseller_is_allowed_web_depot ($user_id) {
 
-    /**
-     * @var $sql iMSCP_Database
-     */
-    $sql = iMSCP_Registry::get('db');
-
     $query = "
 		SELECT
 			`websoftwaredepot_allowed`
@@ -70,12 +65,12 @@ function ask_reseller_is_allowed_web_depot ($user_id) {
 		WHERE
 			`reseller_id` = ?
 	";
-	$rs = exec_query($sql, $query, $user_id);
+	$rs = exec_query($query, $user_id);
 
     return $rs->fields['websoftwaredepot_allowed'];
 }
 
-function get_avail_software ($tpl, $sql, $user_id) {
+function get_avail_software ($tpl, $user_id) {
 
 	/**
 	 * @var $cfg iMSCP_Config_Handler_File
@@ -91,7 +86,7 @@ function get_avail_software ($tpl, $sql, $user_id) {
 			`reseller_id` = ?
 	";
 
-    $rs = exec_query($sql, $query, $user_id);
+    $rs = exec_query($query, $user_id);
     $software_allowed = $rs->fields('software_allowed');
 	
 	if ($software_allowed == 'yes') {
@@ -135,7 +130,7 @@ function get_avail_software ($tpl, $sql, $user_id) {
 				$ordertype
 		";
 				
-		$rs = exec_query($sql, $query, $user_id);
+		$rs = exec_query($query, $user_id);
 		if ($rs->recordCount() > 0) {
 			while(!$rs->EOF) {
 				if($rs->fields['swstatus'] == "ok" || $rs->fields['swstatus'] == "ready") {
@@ -147,7 +142,7 @@ function get_avail_software ($tpl, $sql, $user_id) {
 							WHERE
 								`software_id` = ?
 						";
-						exec_query($sql, $updatequery, $rs->fields['id']);
+						exec_query($updatequery, $rs->fields['id']);
 						send_new_sw_upload ($user_id,$rs->fields['filename'].".tar.gz",$rs->fields['id']);
 						set_page_message(tr('Package installed successfully... Awaiting release from Admin!'));
 					}
@@ -171,7 +166,7 @@ function get_avail_software ($tpl, $sql, $user_id) {
 						AND
 							`domain`.`domain_id` = `web_software_inst`.`domain_id`
 					";
-					$rs2 = exec_query($sql, $query2, $rs->fields['id']);
+					$rs2 = exec_query($query2, $rs->fields['id']);
 					if ($rs2->recordCount() > 0) {
 						$swinstalled_domain = tr('This software is installed on following domain(s):');
 						$swinstalled_domain .= "<ul>";
@@ -283,7 +278,7 @@ function get_avail_software ($tpl, $sql, $user_id) {
 							WHERE
 								`software_id` = ?
 						";
-						$res = exec_query($sql, $delete, $rs->fields['id']);
+						exec_query($delete, $rs->fields['id']);
 					}
 				}
 				$tpl->parse('LIST_SOFTWARE', '.list_software');
@@ -325,11 +320,6 @@ check_login(__FILE__);
  */
 $cfg = iMSCP_Registry::get('config');
 
-/**
- * @var $sql iMSCP_Database
- */
-$sql = iMSCP_Registry::get('db');
-
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->RESELLER_TEMPLATE_PATH . '/software_upload.tpl');
 $tpl->define_dynamic('page_message', 'page');
@@ -360,7 +350,7 @@ if(ask_reseller_is_allowed_web_depot($_SESSION['user_id']) == "yes") {
                 $error = 1;
             }
             if(!$error) {
-                update_webdepot_software_list($tpl,$webdepot_xml_url,$webdepot_last_update);
+                update_webdepot_software_list($webdepot_xml_url,$webdepot_last_update);
             }
         }
         $packages_cnt = get_webdepot_software_list($tpl,$_SESSION['user_id']);
@@ -445,7 +435,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 							?, ?, ?, ?, ?, ?
 						)
 			";
-		$rs = exec_query($sql, $query, array(
+		$rs = exec_query($query, array(
 							$user_id, 
 							"waiting_for_input", 
 							"waiting_for_input", 
@@ -460,7 +450,9 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 							"toadd"
 							)
 						);
-		$sw_id = $sql->insertId();
+        /** @var $db iMSCP_Database */
+        $db = iMSCP_Registry::get('db');
+		$sw_id = $DB->insertId();
 		if ($file == 0) {
 			$dest_dir = $cfg->GUI_SOFTWARE_DIR.'/'.$user_id.'/'.$filename.'-'.$sw_id.$extension;
 			if (!is_dir($cfg->GUI_SOFTWARE_DIR.'/'.$user_id)) {
@@ -474,7 +466,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 					WHERE
 						`software_id` = ?
 				";
-				exec_query($sql, $query, array($sw_id));
+				exec_query($query, array($sw_id));
 				$sw_wget = "";
 				set_page_message(tr('ERROR: Could not upload the file. Max. upload filesize (%1$d MB) reached?', ini_get('upload_max_filesize')));
 				$upload = 0;
@@ -510,7 +502,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 						WHERE
 							`software_id` = ?
 					";
-					exec_query($sql, $query, $sw_id);
+					exec_query($query, $sw_id);
 					$show_max_remote_filesize = formatFilesize($cfg->MAX_REMOTE_FILESIZE);
 					set_page_message(tr('ERROR: Your remote filesize (%1$d B) is lower than 1 Byte. Please check your URL!', $show_remote_file_size));
 					$upload = 0;
@@ -522,7 +514,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 						WHERE
 							`software_id` = ?
 					";
-					exec_query($sql, $query, $sw_id);
+					exec_query($query, $sw_id);
 					$show_max_remote_filesize = formatFilesize($cfg->MAX_REMOTE_FILESIZE);
 					set_page_message(tr('ERROR: Max. remote filesize (%1$d MB) is reached. Your remote file ist %2$d MB', $show_max_remote_filesize, $show_remote_file_size));
 					$upload = 0;
@@ -540,7 +532,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 							WHERE
 								`software_id` = ?
 						";
-						exec_query($sql, $query, $sw_id);
+						exec_query($query, $sw_id);
 						set_page_message(tr('ERROR: Remote File not found!'));
 						$upload = 0;
 					}
@@ -553,7 +545,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 					WHERE
 						`software_id` = ?
 				";
-				exec_query($sql, $query, $sw_id);
+				exec_query($query, $sw_id);
 				set_page_message(tr('ERROR: Could not upload the file. File not found!'));
 				$upload = 0;
 			}
@@ -588,7 +580,7 @@ $tpl->assign(
 		)
 	);
 
-$sw_cnt = get_avail_software ($tpl, $sql, $_SESSION['user_id']);
+$sw_cnt = get_avail_software($tpl, $_SESSION['user_id']);
 
 $tpl->assign(
 		array(
@@ -629,7 +621,7 @@ gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_general_informatio
 
 gen_logged_from($tpl);
 
-get_reseller_software_permission ($tpl, $sql, $_SESSION['user_id']);
+get_reseller_software_permission ($tpl, $_SESSION['user_id']);
 
 generatePageMessage($tpl);
 

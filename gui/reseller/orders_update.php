@@ -60,7 +60,7 @@ if (isset($cfg->HOSTING_PLANS_LEVEL)
 			`status` = 'update'
 	";
 
-	$rs = exec_query($sql, $query, $order_id);
+	$rs = exec_query($query, $order_id);
 } else {
 	$query = "
 		SELECT
@@ -75,7 +75,7 @@ if (isset($cfg->HOSTING_PLANS_LEVEL)
 			`status` = 'update'
 	";
 
-	$rs = exec_query($sql, $query, array($order_id, $reseller_id));
+	$rs = exec_query($query, array($order_id, $reseller_id));
 }
 
 if ($rs->recordCount() == 0) {
@@ -85,24 +85,24 @@ if ($rs->recordCount() == 0) {
 
 $hpid = $rs->fields['plan_id'];
 $customer_id = $rs->fields['customer_id'];
-$dmn_id = get_user_domain_id($sql, $customer_id);
+$dmn_id = get_user_domain_id($customer_id);
 // let's check the reseller limits
 $err_msg = '';
 
 if (isset($cfg->HOSTING_PLANS_LEVEL)
 	&& $cfg->HOSTING_PLANS_LEVEL === 'admin') {
 	$query = "SELECT `props` FROM `hosting_plans` WHERE `id` = ?";
-	$res = exec_query($sql, $query, $hpid);
+	$res = exec_query($query, $hpid);
 } else {
 	$query = "SELECT `props` FROM `hosting_plans` WHERE `reseller_id` = ? AND `id` = ?";
-	$res = exec_query($sql, $query, array($reseller_id, $hpid));
+	$res = exec_query($query, array($reseller_id, $hpid));
 }
 $data = $res->fetchRow();
 $props = $data['props'];
 
 $_SESSION["ch_hpprops"] = $props;
 
-if (!reseller_limits_check($sql, $err_msg, $reseller_id, $hpid)) {
+if (!reseller_limits_check($err_msg, $reseller_id, $hpid)) {
 	set_page_message(tr("Order Canceled: resellers maximum exceeded!"));
 	user_goto('orders.php');
 }
@@ -130,7 +130,7 @@ if ($cfg->COUNT_DEFAULT_EMAIL_ADDRESSES == 0) {
 		AND (`mail_acc` = 'abuse'
 		OR `mail_acc` = 'postmaster'
 		OR `mail_acc` = 'webmaster')";
-	$rs = exec_query($sql, $query, $dmn_id);
+	$rs = exec_query($query, $dmn_id);
 	$default_mails = $rs->fields['cnt'];
 	$mail += $default_mails;
 }
@@ -180,7 +180,7 @@ list($rdmn_current, $rdmn_max,
 	$rsql_user_current, $rsql_user_max,
 	$rtraff_current, $rtraff_max,
 	$rdisk_current, $rdisk_max
-) = get_reseller_default_props($sql, $reseller_id); //generate_reseller_props($reseller_id);
+) = get_reseller_default_props($reseller_id);
 
 list($a, $b, $c, $d, $e, $f, $utraff_current, $udisk_current, $i, $h) = generate_user_traffic($dmn_id);
 
@@ -227,11 +227,11 @@ if (empty($ed_error)) {
 	update_reseller_props($reseller_id, $reseller_props);
 	// update the sql quotas, too
 	$query = "SELECT `domain_name` FROM `domain` WHERE `domain_id` = ?";
-	$rs = exec_query($sql, $query, $dmn_id);
+	$rs = exec_query($query, $dmn_id);
 	$temp_dmn_name = $rs->fields['domain_name'];
 
 	$query = "SELECT COUNT(`name`) AS cnt FROM `quotalimits` WHERE `name` = ?";
-	$rs = exec_query($sql, $query, $temp_dmn_name);
+	$rs = exec_query($query, $temp_dmn_name);
 	if ($rs->fields['cnt'] > 0) {
 		// we need to update it
 		if ($disk == 0) {
@@ -241,7 +241,7 @@ if (empty($ed_error)) {
 		}
 
 		$query = "UPDATE `quotalimits` SET `bytes_in_avail` = ? WHERE `name` = ?";
-		$rs = exec_query($sql, $query, array($dlim, $temp_dmn_name));
+		$rs = exec_query($query, array($dlim, $temp_dmn_name));
 	}
 
 	$query = "
@@ -252,7 +252,7 @@ if (empty($ed_error)) {
 		WHERE
 			`id` = ?
 	";
-	exec_query($sql, $query, array('added', $order_id));
+	exec_query($query, array('added', $order_id));
 	set_page_message(tr('Domain properties updated successfully!'));
 	user_goto('users.php?psi=last');
 } else {

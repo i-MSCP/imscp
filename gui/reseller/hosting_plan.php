@@ -129,7 +129,6 @@ function gen_hp_message(&$tpl) {
 function gen_hp_table(&$tpl, $reseller_id) {
 	global $external_event;
 
-	$sql = iMSCP_Registry::get('db');
 	$cfg = iMSCP_Registry::get('config');
 
 	if (isset($cfg->HOSTING_PLANS_LEVEL)
@@ -151,7 +150,7 @@ function gen_hp_table(&$tpl, $reseller_id) {
 				t1.`name`
 		";
 
-		$rs = exec_query($sql, $query, 'admin');
+		$rs = exec_query($query, 'admin');
 		$tr_edit = tr('View details');
 		$tpl->assign('HP_MENU_ADD', '');
 	} else {
@@ -165,7 +164,7 @@ function gen_hp_table(&$tpl, $reseller_id) {
 			ORDER BY
 				`name`
 		";
-		$rs = exec_query($sql, $query, $reseller_id);
+		$rs = exec_query($query, $reseller_id);
 		$tr_edit = tr('Edit');
 	}
 

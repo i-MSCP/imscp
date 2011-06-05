@@ -53,13 +53,13 @@ $tpl->assign(
 );
 
 if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_data') {
-	update_reseller_personal_data($sql, $_SESSION['user_id']);
+	update_reseller_personal_data($_SESSION['user_id']);
 }
 
-gen_reseller_personal_data($tpl, $sql, $_SESSION['user_id']);
+gen_reseller_personal_data($tpl, $_SESSION['user_id']);
 
 
-function gen_reseller_personal_data(&$tpl, &$sql, $user_id) {
+function gen_reseller_personal_data($tpl, $user_id) {
 	$cfg = iMSCP_Registry::get('config');
 
 	$query = "
@@ -83,7 +83,7 @@ function gen_reseller_personal_data(&$tpl, &$sql, $user_id) {
 			`admin_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, $user_id);
+	$rs = exec_query($query, $user_id);
 
 	$tpl->assign(
 		array(
@@ -106,7 +106,7 @@ function gen_reseller_personal_data(&$tpl, &$sql, $user_id) {
 	);
 }
 
-function update_reseller_personal_data(&$sql, $user_id) {
+function update_reseller_personal_data($user_id) {
 	$fname		= clean_input($_POST['fname']);
 	$lname		= clean_input($_POST['lname']);
 	$gender		= $_POST['gender'];
@@ -143,7 +143,6 @@ function update_reseller_personal_data(&$sql, $user_id) {
 	";
 
 	exec_query(
-			$sql,
 			$query,
 			array(
 				$fname, $lname, $firm, $zip, $city, $state, $country, $email,

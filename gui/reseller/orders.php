@@ -65,7 +65,7 @@ $tpl->assign(
  * Functions
  */
 
-function gen_order_page(&$tpl, &$sql, $user_id) {
+function gen_order_page($tpl, $user_id) {
 	$cfg = iMSCP_Registry::get('config');
 
 	$start_index = 0;
@@ -87,7 +87,7 @@ function gen_order_page(&$tpl, &$sql, $user_id) {
 			`status` != ?
 	";
 	// let's count
-	$rs = exec_query($sql, $count_query, array($user_id, 'added'));
+	$rs = exec_query($count_query, array($user_id, 'added'));
 	$records_count = $rs->fields['cnt'];
 
 	$query = "
@@ -104,7 +104,7 @@ function gen_order_page(&$tpl, &$sql, $user_id) {
 		LIMIT
 			$start_index, $rows_per_page
 	";
-	$rs = exec_query($sql, $query, array($user_id, 'added'));
+	$rs = exec_query($query, array($user_id, 'added'));
 
 	$prev_si = $start_index - $rows_per_page;
 
@@ -151,7 +151,7 @@ function gen_order_page(&$tpl, &$sql, $user_id) {
 				WHERE
 					`id` = ?
 			";
-			$rs_planname = exec_query($sql, $planname_query, $plan_id);
+			$rs_planname = exec_query($planname_query, $plan_id);
 			$plan_name = $rs_planname->fields['name'];
 
 			$tpl->assign('ITEM_CLASS', ($counter % 2 == 0) ? 'content' : 'content2');
@@ -167,7 +167,7 @@ function gen_order_page(&$tpl, &$sql, $user_id) {
 					WHERE
 						`admin_id` = ?
 				";
-				$rs_customer = exec_query($sql, $cusrtomer_query, $customer_id);
+				$rs_customer = exec_query($cusrtomer_query, $customer_id);
 				$user_details = tohtml($rs_customer->fields['fname']) . "&nbsp;"
 					. tohtml($rs_customer->fields['lname'])
 					. "<br /><a href=\"mailto:" . tohtml($rs_customer->fields['email'])
@@ -214,7 +214,7 @@ function gen_order_page(&$tpl, &$sql, $user_id) {
  *
  */
 
-gen_order_page($tpl, $sql, $_SESSION['user_id']);
+gen_order_page($tpl, $_SESSION['user_id']);
 
 gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_orders.tpl');
 gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_orders.tpl');

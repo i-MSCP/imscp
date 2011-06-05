@@ -53,12 +53,11 @@ function gen_al_page(&$tpl, $reseller_id) {
 
 	global $alias_name, $forward, $forward_prefix, $mount_point;
 
-	$sql = iMSCP_Registry::get('db');
 	$cfg = iMSCP_Registry::get('config');
 
 	list(,,,,,,$uals_current) = generate_reseller_user_props($reseller_id);
 
-	list(,,,,,$rals_max) = get_reseller_default_props($sql, $reseller_id);
+	list(,,,,,$rals_max) = get_reseller_default_props($reseller_id);
 
 	if ($uals_current >= $rals_max && $rals_max != "0") {
 		$_SESSION['almax'] = '_yes_';
@@ -126,7 +125,7 @@ function gen_al_page(&$tpl, $reseller_id) {
 /**
  * Must be documented
  */
-function add_domain_alias(&$sql, &$err_al) {
+function add_domain_alias(&$err_al) {
 
 	global $cr_user_id, $alias_name, $domain_ip, $forward, $forward_prefix,
 		$mount_point, $validation_err_msg;
@@ -154,7 +153,7 @@ function add_domain_alias(&$sql, &$err_al) {
 			`domain_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, $cr_user_id);
+	$rs = exec_query($query, $cr_user_id);
 	$domain_ip = $rs->fields['domain_ip_id'];
 
 	// First check if input string is a valid domain names
@@ -218,7 +217,7 @@ function add_domain_alias(&$sql, &$err_al) {
 			WHERE
 				`alias_name` = ?
 		";
-		$res = exec_query($sql, $query, $alias_name);
+		$res = exec_query($query, $alias_name);
 		
 		$query = "
 			SELECT
@@ -228,7 +227,7 @@ function add_domain_alias(&$sql, &$err_al) {
 			WHERE
 				`domain_name` = ?
 		";
-		$res2 = exec_query($sql, $query, $alias_name);
+		$res2 = exec_query($query, $alias_name);
 		if ($res->rowCount() > 0 || $res2->rowCount() > 0) {
 			// we already have domain with this name
 			$err_al = tr("Domain with this name already exist");
@@ -244,7 +243,7 @@ function add_domain_alias(&$sql, &$err_al) {
 			AND
 				`subdomain_mount` = ?
 		";
-		$subdomres = exec_query($sql, $query, array($cr_user_id, $mount_point));
+		$subdomres = exec_query($query, array($cr_user_id, $mount_point));
 		$subdomdata = $subdomres->fetchRow();
 		$query = "
 			SELECT
@@ -258,7 +257,7 @@ function add_domain_alias(&$sql, &$err_al) {
 			AND
 				`subdomain_alias_mount` = ?
 		";
-		$alssubdomres = exec_query($sql, $query, array($cr_user_id, $mount_point));
+		$alssubdomres = exec_query($query, array($cr_user_id, $mount_point));
 		$alssubdomdata = $alssubdomres->fetchRow();
 
 		if ($subdomdata['cnt'] > 0 || $alssubdomdata['alscnt'] > 0) {
@@ -280,9 +279,11 @@ function add_domain_alias(&$sql, &$err_al) {
 		VALUES
 				(?, ?, ?, ?, ?, ?)
 	";
-	exec_query($sql, $query, array($cr_user_id, $alias_name, $mount_point, $cfg->ITEM_ADD_STATUS, $domain_ip, $forward));
+	exec_query($query, array($cr_user_id, $alias_name, $mount_point, $cfg->ITEM_ADD_STATUS, $domain_ip, $forward));
 
-	$als_id = $sql->insertId();
+    /** @var $db iMSCP_Database */
+    $db = iMSCP_Registry::get('db');
+	$als_id = $db->insertId();
 
 	update_reseller_c_props(get_reseller_id($cr_user_id));
 
@@ -295,7 +296,7 @@ function add_domain_alias(&$sql, &$err_al) {
 			`admin_id` = ?
 		LIMIT 1
 	";
-	$rs = exec_query($sql, $query, who_owns_this($cr_user_id, 'dmn_id'));
+	$rs = exec_query($query, who_owns_this($cr_user_id, 'dmn_id'));
 	$user_email = $rs->fields['email'];
 
 	// Create the 3 default addresses if wanted
@@ -316,7 +317,7 @@ function add_domain_alias(&$sql, &$err_al) {
  */
 function gen_users_list(&$tpl, $reseller_id) {
 	global $cr_user_id;
-	$sql = iMSCP_Registry::get('db');
+
 	$cfg = iMSCP_Registry::get('config');
 
 	$query = "
@@ -332,7 +333,7 @@ function gen_users_list(&$tpl, $reseller_id) {
 			`admin_name`
 	";
 
-	$ar = exec_query($sql, $query, $reseller_id);
+	$ar = exec_query($query, $reseller_id);
 
 	if ($ar->rowCount() == 0) {
 		set_page_message(tr('There is no user records for this reseller to add an alias for.'));
@@ -358,7 +359,7 @@ function gen_users_list(&$tpl, $reseller_id) {
 				`domain_admin_id` = ?
 		";
 
-		$dr = exec_query($sql, $query, $admin_id);
+		$dr = exec_query($query, $admin_id);
 		$dd = $dr->fetchRow();
 
 		$domain_id = $dd['domain_id'];
@@ -462,7 +463,7 @@ if(!is_xhr()) {
 		$rdmn_current, $rdmn_max, $rsub_current, $rsub_max, $rals_current, $rals_max,
  		$rmail_current, $rmail_max, $rftp_current, $rftp_max, $rsql_db_current, $rsql_db_max,
  		$rsql_user_current, $rsql_user_max, $rtraff_current, $rtraff_max, $rdisk_current, $rdisk_max
- 	) = get_reseller_default_props($sql, $_SESSION['user_id']);
+ 	) = get_reseller_default_props($_SESSION['user_id']);
 
 	if ($rals_max != 0 && $rals_current >= $rals_max) {
 		$_SESSION['almax'] = '_yes_';
@@ -491,7 +492,7 @@ if(isset($_POST['uaction'])) {
 		echo "/".encode_idna(strtolower($_POST['domain']));
 		exit;
 	} elseif($_POST['uaction'] == 'add_alias') {
-		add_domain_alias($sql, $err_txt);
+		add_domain_alias($err_txt);
 	} else {
 		throw new iMSCP_Exception(tr("Error: unknown action! {$_POST['uaction']}"));
 	}

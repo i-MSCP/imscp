@@ -254,8 +254,10 @@ function add_user_data($reseller_id) {
 	global $fax, $inpass, $domain_ip;
 	global $dns, $backup, $neverexpire, $software_allowed;
 
-	$sql = iMSCP_Registry::get('db');
 	$cfg = iMSCP_Registry::get('config');
+
+    /** @var $db iMSCP_Database */
+    $db = iMSCP_Registry::get('db');
 
 	// Let's get Desired Hosting Plan Data;
 	$err_msg = '';
@@ -273,10 +275,10 @@ function add_user_data($reseller_id) {
 		if (isset($cfg->HOSTING_PLANS_LEVEL)
 			&& $cfg->HOSTING_PLANS_LEVEL === 'admin') {
 			$query = 'SELECT `props` FROM `hosting_plans` WHERE `id` = ?';
-			$res = exec_query($sql, $query, $hpid);
+			$res = exec_query($query, $hpid);
 		} else {
 			$query = "SELECT `props` FROM `hosting_plans` WHERE `reseller_id` = ? AND `id` = ?";
-			$res = exec_query($sql, $query, array($reseller_id, $hpid));
+			$res = exec_query($query, array($reseller_id, $hpid));
 		}
 
 		$data = $res->fetchRow();
@@ -344,8 +346,7 @@ function add_user_data($reseller_id) {
 		)
 	";
 
-	$res = exec_query(
-		$sql,
+	exec_query(
 		$query,
 		array(
 			$dmn_user_name, $inpass,
@@ -357,9 +358,8 @@ function add_user_data($reseller_id) {
 		)
 	);
 
-	print $sql->errorMsg();
-
-	$record_id = $sql->insertId();
+	print $db->errorMsg();
+	$record_id = $db->insertId();
 
     if($neverexpire != "on"){
             $domain_expires = datepicker_reseller_convert($dmn_expire);
@@ -395,8 +395,7 @@ function add_user_data($reseller_id) {
 		)
 	";
 
-	$res = exec_query(
-		$sql,
+	exec_query(
 		$query,
 		array(
 			$dmn_name, $record_id,
@@ -406,7 +405,7 @@ function add_user_data($reseller_id) {
 		)
 	);
 
-	$dmn_id = $sql->insertId();
+	$dmn_id = $db->insertId();
 
 	// Add statistics group
 
@@ -417,14 +416,14 @@ function add_user_data($reseller_id) {
 			(?, ?, ?, ?)
 	";
 
-	exec_query($sql, $query,
+	exec_query($query,
 			array(
 				$dmn_id, $dmn_name,
 				crypt_user_pass_with_salt($pure_user_pass), $cfg->ITEM_ADD_STATUS
 			)
 	);
 
-	$user_id = $sql->insertId();
+	$user_id = $db->insertId();
 
 	$query = "
 		INSERT INTO `htaccess_groups`
@@ -434,7 +433,6 @@ function add_user_data($reseller_id) {
 	";
 
 	exec_query(
-		$sql,
 		$query,
 		array(
 			$dmn_id, $cfg->AWSTATS_GROUP_AUTH, $user_id, $cfg->ITEM_ADD_STATUS
@@ -469,7 +467,7 @@ function add_user_data($reseller_id) {
 			(?, ?, ?)
 	";
 
-	$res = exec_query($sql, $query, array($record_id,
+	exec_query($query, array($record_id,
 			$user_def_lang,
 			$user_theme_color));
 	// send request to daemon
@@ -491,4 +489,4 @@ function add_user_data($reseller_id) {
 		$_SESSION['user_add3_added'] = "_yes_";
 		user_goto('users.php?psi=last');
 	}
-} // End of add_user_data()
+}

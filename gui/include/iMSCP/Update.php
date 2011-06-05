@@ -182,10 +182,8 @@ abstract class iMSCP_Update {
 	 */
 	public function executeUpdates() {
 
-		/**
-		 * @var $sql PDO
-		 */
-		$sql = iMSCP_Registry::get('pdo');
+        /** @var $pdo PDO */
+        $pdo = iMSCP_Database::getRawInstance();
 
 		/**
 		 * @var $dbConfig iMSCP_Config_Handler_Db
@@ -206,7 +204,7 @@ abstract class iMSCP_Update {
 			$queryArray = $this->$functionName($engine_run_request);
 
 			// First, switch to exception mode for errors management
-			$sql->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 			if(isset($dbConfig->FAILED_UPDATE)) {
 				list($failedUpdate, $queryNb) = $dbConfig->FAILED_UPDATE;
@@ -217,14 +215,14 @@ abstract class iMSCP_Update {
 
 			try {
 
-				// We execute all SQL statements
+				// Executes all SQL statements
 				foreach($queryArray as $index => $query) {
 					// Query was already applied with success ?
 					if($functionName == $failedUpdate && $index < $queryNb) {
 						continue;
 					}
 
-					$sql->query($query);
+					$pdo->query($query);
 				}
 
 				unset($dbConfig->FAILED_UPDATE);

@@ -92,13 +92,13 @@ if ($cfg->DUMP_GUI_DEBUG) {
  * @param integer $domain_id
  */
 function validate_domain_deletion($domain_id) {
-	global $tpl, $sql;
+	global $tpl;
 
 	$reseller = $_SESSION['user_id'];
 
 	// check for domain owns
 	$query = "SELECT `domain_id`, `domain_name` FROM `domain` WHERE `domain_id` = ? AND `domain_created_id` = ?";
-	$res = exec_query($sql, $query, array($domain_id, $reseller));
+	$res = exec_query($query, array($domain_id, $reseller));
 	$data = $res->fetchRow();
 	if ($data['domain_id'] == 0) {
 		set_page_message(tr('Wrong domain ID!'));
@@ -124,7 +124,7 @@ function validate_domain_deletion($domain_id) {
 
 	// check for mail acc in MAIN domain
 	$query = "SELECT * FROM `mail_users` WHERE `domain_id` = ?";
-	$res = exec_query($sql, $query, $domain_id);
+	$res = exec_query($query, $domain_id);
 	if (!$res->EOF) {
 		while (!$res->EOF) {
 
@@ -152,7 +152,7 @@ function validate_domain_deletion($domain_id) {
 
 	// check for ftp acc in MAIN domain
 	$query = "SELECT `ftp_users`.* FROM `ftp_users`, `domain` WHERE `domain`.`domain_id` = ? AND `ftp_users`.`uid` = `domain`.`domain_uid`";
-	$res = exec_query($sql, $query, $domain_id);
+	$res = exec_query($query, $domain_id);
 	if (!$res->EOF) {
 		while (!$res->EOF) {
 
@@ -173,7 +173,7 @@ function validate_domain_deletion($domain_id) {
 	// check for alias domains
 	$alias_a = array();
 	$query = "SELECT * FROM `domain_aliasses` WHERE `domain_id` = ?";
-	$res = exec_query($sql, $query, $domain_id);
+	$res = exec_query($query, $domain_id);
 	if (!$res->EOF) {
 		while (!$res->EOF) {
 			$alias_a[] = $res->fields['alias_id'];
@@ -195,7 +195,7 @@ function validate_domain_deletion($domain_id) {
 	// check for subdomains
 	$any_sub_found = false;
 	$query = "SELECT * FROM `subdomain` WHERE `domain_id` = ?";
-	$res = exec_query($sql, $query, $domain_id);
+	$res = exec_query($query, $domain_id);
 	while (!$res->EOF) {
 		$any_sub_found = true;
 		$tpl->assign(
@@ -218,7 +218,7 @@ function validate_domain_deletion($domain_id) {
 		$query = "SELECT * FROM `subdomain_alias` WHERE `alias_id` IN (";
 		$query .= implode(',', $alias_a);
 		$query .= ")";
-		$res = exec_query($sql, $query);
+		$res = exec_query($query);
 		while (!$res->EOF) {
 			$any_sub_found = true;
 			$tpl->assign(
@@ -235,13 +235,13 @@ function validate_domain_deletion($domain_id) {
 
 	// Check for databases and -users
 	$query = "SELECT * FROM `sql_database` WHERE `domain_id` = ?";
-	$res = exec_query($sql, $query, $domain_id);
+	$res = exec_query($query, $domain_id);
 	if (!$res->EOF) {
 
 		while (!$res->EOF) {
 
 			$query = "SELECT * FROM `sql_user` WHERE `sqld_id` = ?";
-			$ures = exec_query($sql, $query, $res->fields['sqld_id']);
+			$ures = exec_query($query, $res->fields['sqld_id']);
 
 			$users_a = array();
 			while (!$ures->EOF) {

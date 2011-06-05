@@ -184,8 +184,6 @@ function load_user_data_page($user_id) {
 	global $street_two, $mail, $phone;
 	global $fax;
 
-	$sql = iMSCP_Registry::get('db');
-
 	$reseller_id = $_SESSION['user_id'];
 
 	$query = "
@@ -201,7 +199,7 @@ function load_user_data_page($user_id) {
 			`created_by` = ?
 	";
 
-	$res = exec_query($sql, $query, array($user_id, $reseller_id));
+	$res = exec_query($query, array($user_id, $reseller_id));
 	$data = $res->fetchRow();
 
 	if ($res->recordCount() == 0) {
@@ -229,7 +227,7 @@ function load_user_data_page($user_id) {
 		$fax			= $data['fax'];
 	}
 
-} // End of gen_load_ehp_page()
+}
 
 
 /**
@@ -283,7 +281,6 @@ function update_data_in_db($hpid) {
 		$firm, $zip, $gender, $city, $state, $country, $street_one, $street_two,
 		$mail, $phone, $fax, $inpass, $admin_login;
 
-	$sql = iMSCP_Registry::get('db');
 	$cfg = iMSCP_Registry::get('config');
 
 	$reseller_id = $_SESSION['user_id'];
@@ -326,7 +323,7 @@ function update_data_in_db($hpid) {
 			AND
 				`created_by` = ?
 		";
-		exec_query($sql, $query, array(
+		exec_query($query, array(
 			$first_name,
 			$last_name,
 			$firm,
@@ -393,7 +390,7 @@ function update_data_in_db($hpid) {
 			AND
 				`created_by` = ?
 		";
-		exec_query($sql, $query, array(
+		exec_query($query, array(
 			$inpass,
 			$first_name,
 			$last_name,
@@ -422,7 +419,7 @@ function update_data_in_db($hpid) {
 				`user_name` = ?
 		";
 
-		$rs = exec_query($sql, $query, $admin_name);
+		$rs = exec_query($query, $admin_name);
 			if ($rs->recordCount() != 0) {
 				set_page_message(tr('User session was killed!'));
 				write_log($_SESSION['user_logged'] . " killed ".$admin_name."'s session because of password change");

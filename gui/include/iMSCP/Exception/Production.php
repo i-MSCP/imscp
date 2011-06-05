@@ -46,11 +46,13 @@ require_once  INCLUDEPATH . '/iMSCP/Exception.php';
  */
 class iMSCP_Exception_Production extends iMSCP_Exception {
 
-	/**
-	 * __Constructor
-	 *
-	 * @return void
-	 */
+    /**
+     * Constructor
+     *
+     * @param string $message
+     * @param int $code
+     * @return iMSCP_Exception_Production
+     */
 	public function __construct($message = '', $code = 0) {
 
 		if($message == '') {

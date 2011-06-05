@@ -119,7 +119,7 @@ if (isset($_POST['uaction']) && ("user_add2_nxt" === $_POST['uaction']) && (!iss
 		$_SESSION["step_two_data"] = "$dmn_name;0;";
 		$_SESSION["ch_hpprops"] = "$hp_php;$hp_cgi;$hp_sub;$hp_als;$hp_mail;$hp_ftp;$hp_sql_db;$hp_sql_user;$hp_traff;$hp_disk;$hp_backup;$hp_dns;$hp_allowsoftware";
 
-		if (reseller_limits_check($sql, $ehp_error, $_SESSION['user_id'], 0, $_SESSION["ch_hpprops"])) {
+		if (reseller_limits_check($ehp_error, $_SESSION['user_id'], 0, $_SESSION["ch_hpprops"])) {
 			user_goto('user_add3.php');
 		}
 	}
@@ -131,7 +131,7 @@ if (isset($_POST['uaction']) && ("user_add2_nxt" === $_POST['uaction']) && (!iss
 }
 
 get_init_au2_page($tpl);
-get_reseller_software_permission ($tpl,$sql,$_SESSION['user_id']);
+get_reseller_software_permission ($tpl, $_SESSION['user_id']);
 generatePageMessage($tpl);
 
 list($rsub_max, $rals_max, $rmail_max, $rftp_max, $rsql_db_max, $rsql_user_max) = check_reseller_permissions(
@@ -222,14 +222,9 @@ function get_hp_data($hpid, $admin_id) {
 	global $hp_name, $hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff,
 		$hp_disk, $hp_backup, $hp_dns, $hp_allowsoftware;
 
-	/**
-	 * @var $sql iMSCP_Database
-	 */
-	$sql = iMSCP_Registry::get('db');
-
 	$query = "SELECT `name`, `props` FROM `hosting_plans` WHERE `reseller_id` = ? AND `id` = ?";
 
-	$res = exec_query($sql, $query, array($admin_id, $hpid));
+	$res = exec_query($query, array($admin_id, $hpid));
 
 	if (0 !== $res->rowCount()) {
 		$data = $res->fetchRow();
@@ -266,8 +261,6 @@ function check_user_data($tpl) {
 
 	global $hp_name, $hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff,
 		$hp_disk, $hp_dmn, $hp_backup, $hp_dns, $hp_allowsoftware;
-
-	//$sql = iMSCP_Registry::get('db');
 
 	$ehp_error = array();
 
@@ -407,13 +400,8 @@ function check_hosting_plan_name($admin_id) {
 
 	global $hp_name;
 
-	/**
-	 * @var $sql iMSCP_Database
-	 */
-	$sql = iMSCP_Registry::get('db');
-
 	$query = "SELECT `id` FROM `hosting_plans` WHERE `name` = ? AND `reseller_id` = ?";
-	$res = exec_query($sql, $query, array($hp_name, $admin_id));
+	$res = exec_query($query, array($hp_name, $admin_id));
 
 	if ($res->rowCount() !== 0) {
 		return false;

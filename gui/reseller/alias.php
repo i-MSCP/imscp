@@ -47,15 +47,12 @@ require '../include/imscp-lib.php';
  */
 function generate_als_list($tpl, $reseller_id) {
 
-    /** @var $sql iMSCP_Database */
-	$sql = iMSCP_Registry::get('db');
-
     /** @var $cfg iMSCP_Config_Handler_File */
 	$cfg = iMSCP_Registry::get('config');
 
 	list(,,,,,,$uals_current) = generate_reseller_user_props($reseller_id);
 
-	list(,,,,,$rals_max) = get_reseller_default_props($sql, $reseller_id);
+	list(,,,,,$rals_max) = get_reseller_default_props($reseller_id);
 
 	if ($uals_current >= $rals_max && $rals_max != "0") {
 		$tpl->assign('ALS_ADD_BUTTON', '');
@@ -194,11 +191,11 @@ function generate_als_list($tpl, $reseller_id) {
 	}
 
 	// let's count
-	$rs = exec_query($sql, $count_query, $reseller_id);
+	$rs = exec_query($count_query, $reseller_id);
 	$records_count = $rs->fields['cnt'];
 
 	// Get all alias records
-	$rs = exec_query($sql, $query, $reseller_id);
+	$rs = exec_query($query, $reseller_id);
 
 	if ($records_count == 0) {
 		if (isset($_SESSION['search_for']) && $_SESSION['search_for'] != '') {
@@ -272,7 +269,7 @@ function generate_als_list($tpl, $reseller_id) {
 
 		$query = "SELECT `ip_number`, `ip_domain` FROM `server_ips` WHERE `ip_id` = ?;";
 
-		$alsip_r = exec_query($sql, $query, $als_ip_id);
+		$alsip_r = exec_query($query, $als_ip_id);
 		$alsip_d = $alsip_r->fetchRow();
 
 		$als_ip = $alsip_d['ip_number'];

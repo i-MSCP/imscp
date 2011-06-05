@@ -48,8 +48,6 @@ require '../include/imscp-lib.php';
  */
 function generate_page($tpl, $reseller_id, $reseller_name)
 {
-    /** @var $sql iMSCP_Database */
-    $sql = iMSCP_Registry::get('db');
 
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
@@ -82,7 +80,7 @@ function generate_page($tpl, $reseller_id, $reseller_name)
 		;
 	";
 
-    $rs = exec_query($sql, $count_query, $reseller_id);
+    $rs = exec_query($count_query, $reseller_id);
     $records_count = $rs->fields['cnt'];
 
     $query = "
@@ -101,7 +99,7 @@ function generate_page($tpl, $reseller_id, $reseller_name)
 		;
 	";
 
-    $rs = exec_query($sql, $query, $reseller_id);
+    $rs = exec_query($query, $reseller_id);
     $tpl->assign(array(
                       'RESELLER_NAME' => tohtml($reseller_name),
                       'RESELLER_ID' => $reseller_id));
@@ -142,7 +140,7 @@ function generate_page($tpl, $reseller_id, $reseller_name)
 				;
 			";
 
-            $dres = exec_query($sql, $query, $admin_id);
+            $dres = exec_query($query, $admin_id);
             generate_domain_entry($tpl, $dres->fields['domain_id'], $row++);
             $tpl->parse('DOMAIN_ENTRY', '.domain_entry');
             $rs->moveNext();

@@ -119,9 +119,9 @@ function tr($msgid, $substitution = false)
         if ($stmt == null) {
             $query = "SELECT `msgstr` FROM `$lang` WHERE `msgid` = :msgid;";
 
-            /** @var $db PDO */
-            $db = iMSCP_Registry::get('pdo');
-            $stmt = $db->prepare($query);
+            /** @var $pdo iMSCP_Database */
+            $pdo = iMSCP_Database::getRawInstance();
+            $stmt = $pdo->prepare($query);
         }
 
         // Execute the query

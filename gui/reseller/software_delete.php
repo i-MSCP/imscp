@@ -48,7 +48,7 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 		AND
 			`reseller_id` = ?
 	";
-	$rs = exec_query($sql, $query, array($_GET['id'], $_SESSION['user_id']));
+	$rs = exec_query($query, array($_GET['id'], $_SESSION['user_id']));
 	if ($rs->recordCount() != 1) {
 		set_page_message(tr('Wrong software id.'));
 		header('Location: software_upload.php');
@@ -65,7 +65,7 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 			WHERE
 				`software_id` = ?
 		";
-		$res = exec_query($sql, $update, $rs->fields['software_id']);
+		$res = exec_query($update, $rs->fields['software_id']);
 		$delete="
 			DELETE FROM
 				`web_software`
@@ -74,7 +74,7 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 			AND
 				`reseller_id` = ?
 		";
-		$res = exec_query($sql, $delete, array($_GET['id'], $_SESSION['user_id']));
+		$res = exec_query($delete, array($_GET['id'], $_SESSION['user_id']));
 		set_page_message(tr('Software was deleted.'));
 		header('Location: software_upload.php');
 	}

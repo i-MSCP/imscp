@@ -60,8 +60,6 @@ if (get_own_logo($_SESSION['user_id']) !== $cfg->ISP_LOGO_PATH . '/isp_logo.gif'
 function save_layout() {
 	global $theme_color;
 
-	$sql = iMSCP_Registry::get('db');
-
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'save_layout') {
 
 		$user_id = $_SESSION['user_id'];
@@ -75,7 +73,7 @@ function save_layout() {
 				`user_id` = ?
 		";
 
-		exec_query($sql, $query, array($user_layout, $user_id));
+		exec_query($query, array($user_layout, $user_id));
 		$theme_color = $user_layout;
 		$_SESSION['user_theme_color'] = $user_layout;
 	}
@@ -145,7 +143,6 @@ function update_logo() {
 
 
 function update_user_gui_props($file_name, $user_id) {
-	$sql = iMSCP_Registry::get('db');
 
 	$query = "
 		UPDATE
@@ -156,7 +153,7 @@ function update_user_gui_props($file_name, $user_id) {
 			`user_id` = ?
 	";
 
-	exec_query($sql, $query, array($file_name, $user_id));
+	exec_query($query, array($file_name, $user_id));
 }
 
 $tpl->assign(

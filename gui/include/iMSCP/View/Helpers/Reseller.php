@@ -26,9 +26,11 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
+ *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ *
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
@@ -48,9 +50,6 @@ function gen_reseller_mainmenu($tpl, $menu_file)
 {
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
-
-    /** @var $sql iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
 
     $tpl->define_dynamic('menu', $menu_file);
     $tpl->define_dynamic('isactive_support', 'menu');
@@ -95,7 +94,7 @@ function gen_reseller_mainmenu($tpl, $menu_file)
 	    ;
 	";
 
-    $rs = exec_query($db, $query);
+    $rs = exec_query($query);
     if ($rs->recordCount() == 0) {
         $tpl->assign('CUSTOM_BUTTONS', '');
     } else {
@@ -126,16 +125,8 @@ function gen_reseller_mainmenu($tpl, $menu_file)
         }
     }
 
-    $query = "
-	    SELECT
-		    `support_system`
-	    FROM
-		    `reseller_props`
-	    WHERE
-		    `reseller_id` = ?
-		;
-	";
-    $rs = exec_query($db, $query, $_SESSION['user_id']);
+    $query = "SELECT `support_system` FROM `reseller_props` WHERE `reseller_id` = ?;";
+    $rs = exec_query($query, $_SESSION['user_id']);
 
     if (!$cfg->IMSCP_SUPPORT_SYSTEM || $rs->fields['support_system'] == 'no') {
         $tpl->assign('ISACTIVE_SUPPORT', '');
@@ -155,9 +146,6 @@ function gen_reseller_menu($tpl, $menu_file)
 {
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
-
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
 
     $tpl->define_dynamic('menu', $menu_file);
     $tpl->define_dynamic('custom_buttons', 'menu');
@@ -208,7 +196,7 @@ function gen_reseller_menu($tpl, $menu_file)
 		;
 	";
 
-    $rs = exec_query($db, $query);
+    $rs = exec_query($query);
     if ($rs->recordCount() == 0) {
         $tpl->assign('CUSTOM_BUTTONS', '');
     } else {
@@ -236,16 +224,8 @@ function gen_reseller_menu($tpl, $menu_file)
         }
     }
 
-    $query = "
-	    SELECT
-		    `support_system`
-	    FROM
-		    `reseller_props`
-	    WHERE
-		    `reseller_id` = ?
-		;
-	";
-    $rs = exec_query($db, $query, $_SESSION['user_id']);
+    $query = "SELECT `support_system` FROM `reseller_props` WHERE `reseller_id` = ?;";
+    $rs = exec_query($query, $_SESSION['user_id']);
 
     if (!$cfg->IMSCP_SUPPORT_SYSTEM || $rs->fields['support_system'] == 'no') {
         $tpl->assign('ISACTIVE_SUPPORT', '');
@@ -255,16 +235,8 @@ function gen_reseller_menu($tpl, $menu_file)
         $tpl->assign('HP_MENU_ADD', '');
     }
 
-    $query = "
-		SELECT
-			`software_allowed`
-		FROM
-			`reseller_props`
-		WHERE
-			`reseller_id` = ?
-		;
-	";
-    $rs = exec_query($db, $query, $_SESSION['user_id']);
+    $query = "SELECT `software_allowed` FROM `reseller_props` WHERE `reseller_id` = ?;";
+    $rs = exec_query($query, $_SESSION['user_id']);
 
     if ($rs->fields('software_allowed') == 'yes') {
         $tpl->assign(array('SOFTWARE_MENU' => tr('yes')));
@@ -276,35 +248,31 @@ function gen_reseller_menu($tpl, $menu_file)
     $tpl->parse('MENU', 'menu');
 }
 
-
 /**
- * Generate IP list
+ * Returns Ip list.
+ *
+ * @param  iMSCP_pTemplate $tpl Template engine
+ * @param  $reseller_id Reseller unique identifier
+ * @return void
  */
 function generate_ip_list($tpl, $reseller_id)
 {
-
+    /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
-    $sql = iMSCP_Registry::get('db');
+
     global $domain_ip;
 
-    $query = "
-		SELECT
-			`reseller_ips`
-		FROM
-			`reseller_props`
-		WHERE
-			`reseller_id` = ?
-	";
+    $query = "SELECT `reseller_ips` FROM `reseller_props` WHERE `reseller_id` = ?;";
 
-    $res = exec_query($sql, $query, $reseller_id);
+    $res = exec_query($query, $reseller_id);
 
     $data = $res->fetchRow();
 
     $reseller_ips = $data['reseller_ips'];
 
-    $query = "SELECT * FROM `server_ips`";
+    $query = "SELECT * FROM `server_ips`;";
 
-    $res = exec_query($sql, $query);
+    $res = exec_query($query);
 
     while ($data = $res->fetchRow()) {
         $ip_id = $data['ip_id'];
@@ -312,33 +280,28 @@ function generate_ip_list($tpl, $reseller_id)
         if (preg_match("/$ip_id;/", $reseller_ips) == 1) {
             $selected = ($domain_ip === $ip_id) ? $cfg->HTML_SELECTED : '';
 
-            $tpl->assign(
-                array(
-                     'IP_NUM' => $data['ip_number'],
-                     'IP_NAME' => tohtml($data['ip_domain']),
-                     'IP_VALUE' => $ip_id,
-                     'IP_SELECTED' => $selected
-                )
-            );
+            $tpl->assign(array(
+                              'IP_NUM' => $data['ip_number'],
+                              'IP_NAME' => tohtml($data['ip_domain']),
+                              'IP_VALUE' => $ip_id,
+                              'IP_SELECTED' => $selected));
 
             $tpl->parse('IP_ENTRY', '.ip_entry');
         }
-    } // end loop
-} // end of generate_ip_list()
+    }
+}
 
 /**
  * Check validity of input data
- *
- * @todo check if we can remove out commented code block
+ * @param  $tpl
+ * @param  $noPass
+ * @return bool
  */
 function check_ruser_data($tpl, $noPass)
 {
-    global $dmn_name, $hpid, $dmn_user_name;
-    global $user_email, $customer_id, $first_name;
-    global $last_name, $firm, $zip, $gender;
-    global $city, $state, $country, $street_one;
-    global $street_two, $mail, $phone;
-    global $fax, $inpass, $domain_ip;
+    global $dmn_name, $hpid, $dmn_user_name, $user_email, $customer_id, $first_name,
+        $last_name, $firm, $zip, $gender, $city, $state, $country, $street_one,
+        $street_two, $mail, $phone, $fax, $inpass, $domain_ip;
 
     $cfg = iMSCP_Registry::get('config');
 
@@ -450,6 +413,13 @@ function check_ruser_data($tpl, $noPass)
     }
 }
 
+/**
+ * @param  $tpl
+ * @param  $search_for
+ * @param  $search_common
+ * @param  $search_status
+ * @return void
+ */
 function gen_manage_domain_search_options($tpl, $search_for, $search_common,
     $search_status)
 {

@@ -472,7 +472,7 @@ if($use_webdepot) {
             $error = 1;
         }
         if(!$error) {
-            update_webdepot_software_list($tpl,$webdepot_xml_url,$webdepot_last_update);
+            update_webdepot_software_list($webdepot_xml_url,$webdepot_last_update);
         }
     }
     $packages_cnt = get_webdepot_software_list($tpl,$_SESSION['user_id']);

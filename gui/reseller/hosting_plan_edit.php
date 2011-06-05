@@ -125,7 +125,7 @@ if (isset($_POST['uaction']) && ('add_plan' == $_POST['uaction'])) {
 	if (check_data_iscorrect($tpl)) { // Save data to db
 		save_data_to_db();
 	} else {
-		restore_form($tpl, $sql);
+		restore_form($tpl);
 	}
 } else {
 	// Get hosting plan id that comes for edit
@@ -133,12 +133,13 @@ if (isset($_POST['uaction']) && ('add_plan' == $_POST['uaction'])) {
 		$hpid = $_GET['hpid'];
 	}
 
-	gen_load_ehp_page($tpl, $sql, $hpid, $_SESSION['user_id']);
+	gen_load_ehp_page($tpl, $hpid, $_SESSION['user_id']);
 	$tpl->assign('MESSAGE', '');
 }
 
-if (isset($cfg->HOSTING_PLANS_LEVEL)
-	&& $cfg->HOSTING_PLANS_LEVEL === 'reseller') get_reseller_software_permission ($tpl,$sql,$_SESSION['user_id']);
+if (isset($cfg->HOSTING_PLANS_LEVEL) && $cfg->HOSTING_PLANS_LEVEL === 'reseller') {
+    get_reseller_software_permission($tpl, $_SESSION['user_id']);
+}
 	
 generatePageMessage($tpl);
 
@@ -156,7 +157,7 @@ if ($cfg->DUMP_GUI_DEBUG) {
 /**
  * Restore form on any error
  */
-function restore_form($tpl, $sql) {
+function restore_form($tpl) {
 
 	/**
 	 * @var $cfg iMSCP_Config_Handler_File
@@ -202,7 +203,7 @@ function restore_form($tpl, $sql) {
 /**
  * Generate load data from sql for requested hosting plan
  */
-function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
+function gen_load_ehp_page($tpl, $hpid, $admin_id) {
 
 	/**
 	 * @var $cfg iMSCP_Config_Handler_File
@@ -223,7 +224,7 @@ function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
 			;
 		";
 
-		$res = exec_query($sql, $query, $hpid);
+		$res = exec_query($query, $hpid);
 
 		$readonly = $cfg->HTML_READONLY;
 		$disabled = $cfg->HTML_DISABLED;
@@ -244,7 +245,7 @@ function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
 			;
 		";
 
-		$res = exec_query($sql, $query, array($admin_id, $hpid));
+		$res = exec_query($query, array($admin_id, $hpid));
 		$readonly = '';
 		$disabled = '';
 		$edit_hp = tr('Edit hosting plan');
@@ -477,11 +478,6 @@ function save_data_to_db() {
 	$hp_disk, $hpid, $hp_backup, $hp_dns, $hp_allowsoftware;
 //	global $tos;
 
-	/**
-	 * @var $sql iMSCP_Database
-	 */
-	$sql = iMSCP_Registry::get('db');
-
 	$err_msg = '';
 	$description = clean_input($_POST['hp_description']);
 	$price = clean_input($_POST['hp_price']);
@@ -496,10 +492,10 @@ function save_data_to_db() {
 
 	$admin_id = $_SESSION['user_id'];
 
-	if (reseller_limits_check($sql, $err_msg, $admin_id, $hpid, $hp_props)) {
+	if (reseller_limits_check($err_msg, $admin_id, $hpid, $hp_props)) {
 		if (!empty($err_msg)) {
 			set_page_message($err_msg);
-			restore_form($tpl, $sql);
+			restore_form($tpl);
 			return false;
 		} else {
 			$query = "
@@ -520,8 +516,7 @@ function save_data_to_db() {
 				;
 			";
 
-			$res = exec_query(
-				$sql,
+			exec_query(
 				$query,
 				array(
 					$hp_name, $description, $hp_props, $price, $setup_fee,
@@ -537,7 +532,7 @@ function save_data_to_db() {
 			tr("Hosting plan values exceed reseller maximum values!")
 		);
 
-		restore_form($tpl, $sql);
+		restore_form($tpl);
 		return false;
 	}
 } // end of save_data_to_db()
