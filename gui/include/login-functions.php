@@ -44,14 +44,11 @@ function do_session_timeout()
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-     /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     $ttl = time() - $cfg->SESSION_TIMEOUT * 60;
 
     $query = "DELETE FROM `login` WHERE `lastaccess` < ?;";
 
-    exec_query($db, $query, $ttl);
+    exec_query($query, $ttl);
 
     if (!session_exists(session_id())) {
         unset($_SESSION['user_logged']);
@@ -67,8 +64,6 @@ function do_session_timeout()
  */
 function session_exists($sessionId)
 {
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
     $ip = getipaddr();
 
     $query = "
@@ -82,7 +77,7 @@ function session_exists($sessionId)
             `ipaddr` = ?
         ;
      ";
-    $stmt = exec_query($db, $query, array($sessionId, $ip));
+    $stmt = exec_query($query, array($sessionId, $ip));
 
     return (bool) $stmt->recordCount();
 }
@@ -124,13 +119,10 @@ function init_login()
  */
 function username_exists($userName)
 {
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     $userName = encode_idna($userName);
 
     $query = 'SELECT `admin_id` FROM `admin` WHERE `admin_name` = ?;';
-    $stmt = exec_query($db, $query, $userName);
+    $stmt = exec_query($query, $userName);
 
     return (bool) $stmt->recordCount();
 }
@@ -143,11 +135,8 @@ function username_exists($userName)
  */
 function get_userdata($userName)
 {
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     $query = 'SELECT * FROM `admin` WHERE `admin_name` = ?;';
-    $stmt = exec_query($db, $query, $userName);
+    $stmt = exec_query($query, $userName);
 
     return $stmt->fetchRow();
 }
@@ -160,10 +149,6 @@ function get_userdata($userName)
  */
 function is_userdomain_expired($userName)
 {
-
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     $userData = get_userdata($userName);
 
     if (!is_array($userData)) {
@@ -175,7 +160,7 @@ function is_userdomain_expired($userName)
     }
 
     $query = 'SELECT `domain_expires` FROM `domain` WHERE `domain_admin_id` = ?;';
-    $stmt = exec_query($db, $query, $userData['admin_id']);
+    $stmt = exec_query($query, $userData['admin_id']);
 
     $row = $stmt->fetchRow();
 
@@ -197,9 +182,6 @@ function is_userdomain_ok($userName)
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     $userData = get_userdata($userName);
 
     if (!is_array($userData)) {
@@ -209,7 +191,7 @@ function is_userdomain_ok($userName)
     }
 
     $query = 'SELECT `domain_status` FROM `domain` WHERE `domain_admin_id` = ?;';
-    $stmt = exec_query($db, $query, $userData['admin_id']);
+    $stmt = exec_query($query, $userData['admin_id']);
     $row = $stmt->fetchRow();
 
     return (bool) ($row['domain_status'] == $cfg->ITEM_OK_STATUS);
@@ -227,9 +209,6 @@ function unblock($timeout = null, $type = 'bruteforce')
 {
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
-
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
 
     if (is_null($timeout)) {
         $timeout = $cfg->BRUTEFORCE_BLOCK_TIME;
@@ -277,7 +256,7 @@ function unblock($timeout = null, $type = 'bruteforce')
             throw new iMSCP_Exception('FIXME: ' . __FILE__ . ':' . __LINE__);
     }
 
-    exec_query($db, $query, array($max, $timeout));
+    exec_query($query, array($max, $timeout));
 }
 
 /**
@@ -293,9 +272,6 @@ function is_ipaddr_blocked($ipAddress = null, $type = 'bruteforce', $autoDeny = 
 {
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
-
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
 
     if (is_null($ipAddress)) {
         $ipAddress = getipaddr();
@@ -315,7 +291,7 @@ function is_ipaddr_blocked($ipAddress = null, $type = 'bruteforce', $autoDeny = 
             throw new iMSCP_Exception('FIXME: ' . __FILE__ . ':' . __LINE__);
     }
 
-    $stmt = exec_query($db, $query, array($ipAddress, $max));
+    $stmt = exec_query($query, array($ipAddress, $max));
 
     if (!$stmt->recordCount()) {
         return false;
@@ -339,9 +315,6 @@ function shall_user_wait($ipAddress = null, $displayMessage = true)
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    /** @var $sql iMSCP_Database */
-    $sql = iMSCP_Registry::get('db');
-
     if (!$cfg->BRUTEFORCE) {
         return false;
     }
@@ -352,7 +325,7 @@ function shall_user_wait($ipAddress = null, $displayMessage = true)
 
 
     $query = 'SELECT `lastaccess` FROM `login` WHERE `ipaddr` = ? AND `user_name` is NULL;';
-    $res = exec_query($sql, $query, $ipAddress);
+    $res = exec_query($query, $ipAddress);
 
     if ($res->recordCount() == 0) {
         return false;
@@ -392,9 +365,6 @@ function check_ipaddr($ipAddress = null, $type = 'bruteforce')
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    /** @var $sql iMSCP_Database */
-    $sql = iMSCP_Registry::get('db');
-
     if (is_null($ipAddress)) {
         $ipAddress = getipaddr();
     }
@@ -413,7 +383,7 @@ function check_ipaddr($ipAddress = null, $type = 'bruteforce')
 		;
 	";
 
-    $stmt = exec_query($sql, $query, $ipAddress);
+    $stmt = exec_query($query, $ipAddress);
 
     // First attempt ?
     if ($stmt->recordCount() == 0) {
@@ -427,7 +397,7 @@ function check_ipaddr($ipAddress = null, $type = 'bruteforce')
 			;
 		";
 
-        exec_query($sql, $query, array($sessionId, $ipAddress,
+        exec_query($query, array($sessionId, $ipAddress,
                                       (int)($type == 'bruteforce'),
                                       (int)($type == 'captcha')));
 
@@ -482,7 +452,7 @@ function check_ipaddr($ipAddress = null, $type = 'bruteforce')
 				";
             }
 
-            exec_query($sql, $query, $ipAddress);
+            exec_query($query, $ipAddress);
         } else {
             write_log("Login error, <b><i>$ipAddress</i></b> wait " . ($btime - time()) . " seconds", E_USER_NOTICE);
             iMSCP_Registry::set('backButtonDestination', $cfg->BASE_SERVER_VHOST_PREFIX . $cfg->BASE_SERVER_VHOST);
@@ -536,9 +506,6 @@ function register_user($userName, $userPassword)
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    /** @var $sql iMSCP_Database */
-    $sql = iMSCP_Registry::get('db');
-
     check_ipaddr();
 
     if (!username_exists($userName)) {
@@ -581,7 +548,7 @@ function register_user($userName, $userPassword)
 
         $sessionId = session_id();
         $query = "UPDATE `login` SET `user_name` = ?, `lastaccess` = ? WHERE `session_id` = ?;";
-        exec_query($sql, $query, array($userName, time(), $sessionId));
+        exec_query($query, array($userName, time(), $sessionId));
 
         $_SESSION['user_logged'] = $userData['admin_name'];
         $_SESSION['user_pass'] = $userData['admin_pass'];
@@ -611,9 +578,6 @@ function check_user_login()
 {
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
-
-    /** @var $sql iMSCP_Database */
-    $sql = iMSCP_Registry::get('db');
 
     $sessionId = session_id();
 
@@ -647,7 +611,7 @@ function check_user_login()
 		;
 	";
 
-    $rs = exec_query($sql, $query, array($userLogged, $userPassword, $userType, $userId, $sessionId));
+    $rs = exec_query($query, array($userLogged, $userPassword, $userType, $userId, $sessionId));
 
     if ($rs->recordCount() != 1) {
         write_log("Detected session manipulation on " . $userLogged . "'s session!");
@@ -669,7 +633,7 @@ function check_user_login()
 
     $query = "UPDATE `login` SET `lastaccess` = ? WHERE `session_id` = ?;";
 
-    exec_query($sql, $query, array(time(), $sessionId));
+    exec_query($query, array(time(), $sessionId));
 
     return true;
 }
@@ -757,9 +721,6 @@ function check_login($fileName = null, $preventExternalLogin = true)
  */
 function change_user_interface($fromId, $toId)
 {
-    /** @var $sql iMSCP_Database */
-    $sql = iMSCP_Registry::get('db');
-
     $index = null;
 
     while (1) {
@@ -773,8 +734,8 @@ function change_user_interface($fromId, $toId)
 			;
 		";
 
-        $rsFrom = exec_query($sql, $query, $fromId);
-        $rsTo = exec_query($sql, $query, $toId);
+        $rsFrom = exec_query($query, $fromId);
+        $rsTo = exec_query($query, $toId);
 
         if (($rsFrom->recordCount()) != 1 || ($rsTo->recordCount()) != 1) {
             set_page_message(tr('User does not exist or you do not have permission to access this interface!'), 'warning');
@@ -843,7 +804,7 @@ function change_user_interface($fromId, $toId)
 
         $query = "REPLACE INTO login (`session_id`, `ipaddr`, `user_name`, `lastaccess`) VALUES (?, ?, ?, ?);";
 
-        exec_query($sql, $query, array(session_id(), getipaddr(), $toUserData['admin_name'], $_SESSION['user_login_time']));
+        exec_query($query, array(session_id(), getipaddr(), $toUserData['admin_name'], $_SESSION['user_login_time']));
 
         write_log(
             sprintf(
@@ -867,8 +828,6 @@ function change_user_interface($fromId, $toId)
  */
 function unset_user_login_data($ignorePreserve = false, $restore = false)
 {
-    /** @var $sql iMSCP_Database */
-    $sql = iMSCP_Registry::get('db');
 
     if (isset($_SESSION['user_logged'])) {
 
@@ -876,7 +835,7 @@ function unset_user_login_data($ignorePreserve = false, $restore = false)
         $adminName = $_SESSION['user_logged'];
 
         $query = "DELETE FROM `login` WHERE `session_id` = ? AND `user_name` = ?;";
-        exec_query($sql, $query, array($sessionId, $adminName));
+        exec_query($query, array($sessionId, $adminName));
     }
 
     $preserveList = array(

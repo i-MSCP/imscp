@@ -35,13 +35,12 @@
 /**
  * Returns count of SQL users.
  *
- * @param iMSCP_Database $db iMSCP_Database instance
  * @return int Number of SQL users
  */
-function get_sql_user_count($db)
+function get_sql_user_count()
 {
     $query = "SELECT DISTINCT `sqlu_name` FROM `sql_user`;";
-    $rs = exec_query($db, $query);
+    $rs = exec_query($query);
 
     return $rs->recordCount();
 }
@@ -54,11 +53,8 @@ function get_sql_user_count($db)
  */
 function generate_reseller_props($reseller_id)
 {
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     $query = "SELECT * FROM `reseller_props` WHERE `reseller_id` = ?;";
-    $rs = exec_query($db, $query, $reseller_id);
+    $rs = exec_query($query, $reseller_id);
 
     if ($rs->rowCount() == 0) {
         return array_fill(0, 18, 0);
@@ -84,9 +80,6 @@ function generate_reseller_props($reseller_id)
  */
 function generate_reseller_users_props($reseller_id)
 {
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     $rdmn_current = $rdmn_max = $rsub_current = $rsub_max = $rals_current =
     $rals_max = $rmail_current = $rmail_max = $rftp_current = $rftp_max =
     $rsql_db_current = $rsql_db_max = $rsql_user_current = $rsql_user_max =
@@ -96,7 +89,7 @@ function generate_reseller_users_props($reseller_id)
     $rsql_user_uf = $rtraff_uf = $rdisk_uf = '_off_';
 
     $query = "SELECT `admin_id` FROM `admin` WHERE `created_by` = ?;";
-    $rs = exec_query($db, $query, $reseller_id);
+    $rs = exec_query($query, $reseller_id);
 
     if ($rs->rowCount() == 0) {
         return array(
@@ -113,7 +106,7 @@ function generate_reseller_users_props($reseller_id)
 
         $query = "SELECT `domain_id` FROM `domain` WHERE `domain_admin_id` = ?;";
 
-        $dres = exec_query($db, $query, $admin_id);
+        $dres = exec_query($query, $admin_id);
         $user_id = $dres->fields['domain_id'];
 
         list($sub_current, $sub_max, $als_current, $als_max, $mail_current,
@@ -316,11 +309,10 @@ function gen_admin_domain_query(&$search_query, &$count_query, $start_index,
  * @param bool $sw_depot
  * @return void
  */
-function update_existing_client_installations_res_upload($software_id, $software_name, $software_version,
-    $software_language, $reseller_id, $software_master_id = 0, $sw_depot = false)
+function update_existing_client_installations_res_upload($software_id, $software_name,
+    $software_version, $software_language, $reseller_id, $software_master_id = 0,
+    $sw_depot = false)
 {
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
 
     $query = "
         SELECT
@@ -333,7 +325,7 @@ function update_existing_client_installations_res_upload($software_id, $software
             `domain_created_id` = ?
         ;
     ";
-    $res = exec_query($db, $query, $reseller_id);
+    $res = exec_query($query, $reseller_id);
 
     if ($res->RecordCount() > 0) {
         while (!$res->EOF) {
@@ -356,11 +348,10 @@ function update_existing_client_installations_res_upload($software_id, $software
 						`domain_id` = ?
 					;
 				";
-                exec_query($db, $updatequery, array(
-                                                    $software_id, $software_master_id,
-                                                    $software_name, $software_version,
-                                                    $software_language,
-                                                    $res->fields['domain_id']));
+                exec_query($updatequery, array($software_id, $software_master_id,
+                                              $software_name, $software_version,
+                                              $software_language,
+                                              $res->fields['domain_id']));
             } else {
                 $updatequery = "
 					UPDATE
@@ -379,11 +370,9 @@ function update_existing_client_installations_res_upload($software_id, $software
 						`domain_id` = ?
 					;
 				";
-                exec_query($db, $updatequery, array(
-                                                    $software_id, $software_name,
-                                                    $software_version,
-                                                    $software_language,
-                                                    $res->fields['domain_id']));
+                exec_query($updatequery, array($software_id, $software_name,
+                                              $software_version, $software_language,
+                                              $res->fields['domain_id']));
             }
 
             $res->MoveNext();
@@ -399,11 +388,9 @@ function update_existing_client_installations_res_upload($software_id, $software
  * @param  $reseller_id
  * @return void
  */
-function update_existing_client_installations_sw_depot($software_id, $software_master_id, $reseller_id)
+function update_existing_client_installations_sw_depot($software_id,
+    $software_master_id, $reseller_id)
 {
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     $query = "
         SELECT
             `domain_id`
@@ -415,7 +402,7 @@ function update_existing_client_installations_sw_depot($software_id, $software_m
             `domain_created_id` = ?
         ;
      ";
-    $res = exec_query($db, $query, $reseller_id);
+    $res = exec_query($query, $reseller_id);
 
     if ($res->RecordCount() > 0) {
         while (!$res->EOF) {
@@ -433,9 +420,8 @@ function update_existing_client_installations_sw_depot($software_id, $software_m
 				;
 			";
 
-            exec_query($db, $updatequery, array(
-                                                $software_id, $software_master_id,
-                                                $res->fields['domain_id']));
+            exec_query($updatequery, array($software_id, $software_master_id,
+                                          $res->fields['domain_id']));
             $res->MoveNext();
         }
     }
@@ -454,9 +440,6 @@ function send_activated_sw($reseller_id, $file_name, $sw_id)
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     $query = "
         SELECT
             `admin_name` as `reseller`, `created_by`, `email` as `res_email`
@@ -466,7 +449,7 @@ function send_activated_sw($reseller_id, $file_name, $sw_id)
             `admin_id` = ?;
         ;
     ";
-    $res = exec_query($db, $query, $reseller_id);
+    $res = exec_query($query, $reseller_id);
 
     $to_name = $res->fields['reseller'];
     $to_email = $res->fields['res_email'];
@@ -481,7 +464,7 @@ function send_activated_sw($reseller_id, $file_name, $sw_id)
             `admin_id` = ?
         ;
     ";
-    $res = exec_query($db, $query, $admin_id);
+    $res = exec_query($query, $admin_id);
 
     $from_name = $res->fields['admin'];
     $from_email = $res->fields['adm_email'];
@@ -539,9 +522,6 @@ function send_deleted_sw($reseller_id, $file_name, $sw_id, $subjectinput, $messa
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     $query = "
         SELECT
             `admin_name` as reseller, `created_by`, `email` as res_email
@@ -550,7 +530,7 @@ function send_deleted_sw($reseller_id, $file_name, $sw_id, $subjectinput, $messa
         WHERE `admin_id` = ?
         ;
     ";
-    $res = exec_query($db, $query, $reseller_id);
+    $res = exec_query($query, $reseller_id);
 
     $to_name = $res->fields['reseller'];
     $to_email = $res->fields['res_email'];
@@ -565,7 +545,7 @@ function send_deleted_sw($reseller_id, $file_name, $sw_id, $subjectinput, $messa
             `admin_id` = ?
         ;
     ";
-    $res = exec_query($db, $query, $admin_id);
+    $res = exec_query($query, $admin_id);
 
     $from_name = $res->fields['admin'];
     $from_email = $res->fields['adm_email'];

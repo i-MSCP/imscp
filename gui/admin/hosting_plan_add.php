@@ -351,7 +351,7 @@ function check_data_correction(&$tpl) {
 /**
  * Add new host plan to DB
  */
-function save_data_to_db(&$tpl, $admin_id) {
+function save_data_to_db($tpl, $admin_id) {
 
 	global $hp_name, $description, $hp_php, $hp_cgi;
 	global $hp_sub, $hp_als, $hp_mail;
@@ -360,8 +360,6 @@ function save_data_to_db(&$tpl, $admin_id) {
 	global $price, $setup_fee, $value, $payment, $status;
 	global $hp_backup, $hp_dns, $hp_allowsoftware;
 	global $tos;
-
-	$sql = iMSCP_Registry::get('db');
 
 	$query = "SELECT `id` FROM `hosting_plans` WHERE `name` = ? AND `reseller_id` = ?";
 	$query = "
@@ -378,7 +376,7 @@ function save_data_to_db(&$tpl, $admin_id) {
 		AND
 			t1.`name` = ?
 	";
-	$res = exec_query($sql, $query, array('admin', $hp_name));
+	$res = exec_query($query, array('admin', $hp_name));
 
 	if ($res->rowCount() == 1) {
 		$tpl->assign('MESSAGE', tr('Hosting plan with entered name already exists!'));
@@ -401,9 +399,9 @@ function save_data_to_db(&$tpl, $admin_id) {
 				) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 		";
 
-		$res = exec_query($sql, $query, array($admin_id, $hp_name, $description, $hp_props, $price, $setup_fee, $value, $payment, $status, $tos));
+		exec_query($query, array($admin_id, $hp_name, $description, $hp_props, $price, $setup_fee, $value, $payment, $status, $tos));
 
 		$_SESSION['hp_added'] = '_yes_';
 		user_goto('hosting_plan.php');
 	}
-} // end of save_data_to_db()
+}

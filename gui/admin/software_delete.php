@@ -35,16 +35,11 @@ check_login(__FILE__);
  */
 $cfg = iMSCP_Registry::get('config');
 
-/**
- * @var $sql iMSCP_Database
- */
-$sql = iMSCP_Registry::get('db');
-
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/software_delete.tpl');
 $tpl->define_dynamic('page_message', 'page');
 
-function gen_page_data($tpl, $sql) {
+function gen_page_data($tpl) {
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'send_delmessage') {
 		$tpl->assign(
 			array(
@@ -83,7 +78,7 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 		WHERE
 			`software_id` = ?
 	";
-	$rs = exec_query($sql, $query, $software_id);
+	$rs = exec_query($query, $software_id);
 	
 	if ($rs->recordCount() != 1) {
 		set_page_message(tr('Wrong software id.'), 'error');
@@ -99,7 +94,7 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 		WHERE
 			`admin_id` = ?
 	";
-	$rs_res = exec_query($sql, $query_res, $rs->fields['reseller_id']);
+	$rs_res = exec_query($query_res, $rs->fields['reseller_id']);
 	$tpl->assign(
 			array(
 				'DELETE_SOFTWARE_RESELLER' => tr('%1$s (%2$s)', $rs_res->fields['admin_name'], $rs_res->fields['email'])
@@ -116,7 +111,7 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 			WHERE
 				`software_master_id` = ?
 		";
-		$res = exec_query($sql, $update, $rs->fields['software_id']);
+		$res = exec_query($update, $rs->fields['software_id']);
 		$delete = "
 			DELETE FROM
 				`web_software`
@@ -129,8 +124,8 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 			WHERE
 				`software_master_id` = ?
 		";
-		$res = exec_query($sql, $delete, $rs->fields['software_id']);
-		$res = exec_query($sql, $delete_master, $rs->fields['software_id']);
+		$res = exec_query($delete, $rs->fields['software_id']);
+		$res = exec_query($delete_master, $rs->fields['software_id']);
 		set_page_message(tr('Software was deleted.'), 'success');
 		header('Location: software_manage.php');
 	}else{
@@ -145,7 +140,7 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 					WHERE
 						`software_id` = ?
 				";
-				$res = exec_query($sql, $delete, $rs->fields['software_id']);
+				$res = exec_query($delete, $rs->fields['software_id']);
 				set_page_message(tr('Software was deleted.'), 'success');
 				header('Location: software_manage.php');
 			} else {
@@ -173,7 +168,7 @@ if (isset($_GET['id']) || isset($_POST['id'])) {
 	gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
 	gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_users_manage.tpl');
 
-	gen_page_data ($tpl, $sql);
+	gen_page_data ($tpl);
 	
 	generatePageMessage($tpl);
 	

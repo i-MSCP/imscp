@@ -86,11 +86,10 @@ $tpl->assign(
 	)
 );
 
-function generate_page(&$tpl, $reseller_id, $reseller_name) {
+function generate_page($tpl, $reseller_id, $reseller_name) {
 
 	global $rid;
 	$cfg = iMSCP_Registry::get('config');
-	$sql = iMSCP_Registry::get('db');
 
 	$start_index = 0;
 
@@ -135,10 +134,10 @@ function generate_page(&$tpl, $reseller_id, $reseller_name) {
 			$start_index, $rows_per_page
 SQL_QUERY;
 
-	$rs = exec_query($sql, $count_query, $reseller_id);
+	$rs = exec_query($count_query, $reseller_id);
 	$records_count = $rs->fields['cnt'];
 
-	$rs = exec_query($sql, $query, $reseller_id);
+	$rs = exec_query($query, $reseller_id);
 
 	$tpl->assign(
 		array(
@@ -205,7 +204,7 @@ SQL_QUERY;
 					`domain_admin_id` = ?
 			";
 
-			$dres = exec_query ($sql, $query, $admin_id);
+			$dres = exec_query($query, $admin_id);
 
 			generate_domain_entry($tpl, $dres->fields['domain_id'], $row++);
 

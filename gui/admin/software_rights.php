@@ -30,7 +30,7 @@
  *  Functions
  */
 
-function get_reseller_rights ($tpl, $sql, $software_id) {#
+function get_reseller_rights ($tpl, $software_id) {#
 	
 	$query = "
 		SELECT 
@@ -49,7 +49,7 @@ function get_reseller_rights ($tpl, $sql, $software_id) {#
 		AND
 			a.`software_master_id` = ?
 	";
-	$rs = exec_query($sql, $query, $software_id);
+	$rs = exec_query($query, $software_id);
 	if ($rs->recordCount() > 0){
 		while(!$rs->EOF) {
 			$adminquery = "
@@ -60,7 +60,7 @@ function get_reseller_rights ($tpl, $sql, $software_id) {#
 				WHERE
 					`admin_id` = ?
 			";
-			$rs_admin = exec_query($sql, $adminquery, $rs->fields['rights_add_by']);
+			$rs_admin = exec_query($adminquery, $rs->fields['rights_add_by']);
 			if ($rs_admin->fields['administrator'] == ""){
 				$added_by = tr('Admin not available');
 			}else{
@@ -93,7 +93,7 @@ function get_reseller_rights ($tpl, $sql, $software_id) {#
 	return $rs->recordCount();
 }	
 
-function get_reseller_list ($tpl, $sql, $software_id) {
+function get_reseller_list ($tpl, $software_id) {
 	
 	$query = "
 		SELECT 
@@ -109,7 +109,7 @@ function get_reseller_list ($tpl, $sql, $software_id) {
 		AND
 			a.`softwaredepot_allowed` = 'yes'
 	";
-	$rs = exec_query($sql, $query, array());
+	$rs = exec_query($query, array());
 	if ($rs->recordCount() > 0){
 		$reseller_count = 0;
 		while(!$rs->EOF) {
@@ -123,7 +123,7 @@ function get_reseller_list ($tpl, $sql, $software_id) {
 				AND 
 					`software_master_id` = ?
 			";
-			$rs2 = exec_query($sql, $query2, array($rs->fields['reseller_id'],$software_id));
+			$rs2 = exec_query($query2, array($rs->fields['reseller_id'],$software_id));
 			if ($rs2->recordCount() === 0){
 				$tpl->assign(
 						array(
@@ -176,11 +176,6 @@ check_login(__FILE__);
  */
 $cfg = iMSCP_Registry::get('config');
 
-/**
- * @var $sql iMSCP_Database
- */
-$sql = iMSCP_Registry::get('db');
-
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/software_rights.tpl');
 $tpl->define_dynamic('page_message', 'page');
@@ -216,8 +211,8 @@ $tpl->assign(
 			)
 	);
 
-$res_cnt = get_reseller_rights ($tpl, $sql, $software_id);
-$res_list = get_reseller_list ($tpl, $sql, $software_id);
+$res_cnt = get_reseller_rights ($tpl, $software_id);
+$res_list = get_reseller_list ($tpl, $software_id);
 
 $query = "
 	SELECT
@@ -229,7 +224,7 @@ $query = "
 	WHERE
 		`software_id` = ?
 ";
-$rs = exec_query($sql, $query, $software_id);
+$rs = exec_query($query, $software_id);
 $tpl->assign(
 		array(
 			'SOFTWARE_RIGHTS_ID'			=> $software_id,

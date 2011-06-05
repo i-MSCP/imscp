@@ -55,7 +55,6 @@ $tpl->assign(
 function update_password() {
 
 	$cfg = iMSCP_Registry::get('config');
-	$sql = iMSCP_Registry::get('db');
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_pass') {
 		if (empty($_POST['pass']) || empty($_POST['pass_rep']) || empty($_POST['curr_pass'])) {
@@ -96,7 +95,7 @@ function update_password() {
 				WHERE
 					`admin_id` = ?
 			";
-			$rs = exec_query($sql, $query, array($upass, $user_id));
+			exec_query($query, array($upass, $user_id));
 
 			set_page_message(tr('User password updated successfully!'), 'success');
 		}
@@ -104,8 +103,6 @@ function update_password() {
 }
 
 function check_udata($id, $pass) {
-
-	$sql = iMSCP_Registry::get('db');
 
 	$query = "
 		SELECT
@@ -116,7 +113,7 @@ function check_udata($id, $pass) {
 			`admin_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, $id);
+	$rs = exec_query($query, $id);
 
 	if ($rs->recordCount() == 1) {
 		$rs = $rs->fetchRow();

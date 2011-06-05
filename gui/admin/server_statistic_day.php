@@ -66,8 +66,7 @@ if (isset($_GET['month']) && isset($_GET['year']) && isset($_GET['day'])
 	user_goto('server_statistic.php');
 }
 
-function generate_page(&$tpl) {
-	$sql = iMSCP_Registry::get('db');
+function generate_page($tpl) {
 	global $month, $year, $day;
 
 	$all[0] = 0;
@@ -96,7 +95,7 @@ function generate_page(&$tpl) {
 			`traff_time` > ? AND `traff_time` < ?
 	";
 
-	$rs = exec_query($sql, $query, array($ftm, $ltm));
+	$rs = exec_query($query, array($ftm, $ltm));
 
 	$dnum = $rs->fields['cnt'];
 
@@ -117,7 +116,7 @@ function generate_page(&$tpl) {
 			`traff_time` > ? AND `traff_time` < ?
 	";
 
-	$rs1 = exec_query($sql, $query, array($ftm, $ltm));
+	$rs1 = exec_query($query, array($ftm, $ltm));
 
 	$row = 1;
 

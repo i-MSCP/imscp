@@ -35,11 +35,6 @@ check_login(__FILE__);
  */
 $cfg = iMSCP_Registry::get('config');
 
-/**
- * @var $sql iMSCP_Database
- */
-$sql = iMSCP_Registry::get('db');
-
 if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 	$query="
 		SELECT
@@ -52,7 +47,7 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 		WHERE
 			`software_id` = ?
 	";
-	$rs = exec_query($sql, $query, $_GET['id']);
+	$rs = exec_query($query, $_GET['id']);
 	if($rs->fields['software_depot'] == "yes") {
 		$filename = $cfg->GUI_SOFTWARE_DEPOT_DIR."/".$rs->fields['software_archive']."-".$rs->fields['software_id'].".tar.gz";
 	}else{

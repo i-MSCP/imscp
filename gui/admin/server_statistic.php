@@ -69,7 +69,6 @@ if (isset($_GET['month']) && isset($_GET['year'])) {
 }
 
 function get_server_trafic($from, $to) {
-	$sql = iMSCP_Registry::get('db');
 
 	$query = "
 		SELECT
@@ -87,7 +86,7 @@ function get_server_trafic($from, $to) {
 			`traff_time` > ? AND `traff_time` < ?
 	";
 
-	$rs = exec_query($sql, $query, array($from, $to));
+	$rs = exec_query($query, array($from, $to));
 
 	if ($rs->recordCount() == 0) {
 		return array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
@@ -104,8 +103,6 @@ function get_server_trafic($from, $to) {
 function generate_page(&$tpl) {
 
 	global $month, $year;
-	$sql = iMSCP_Registry::get('db');
-
 
 	if ($month == date('m') && $year == date('Y')) {
 		$curday = date('j');
@@ -139,7 +136,7 @@ function generate_page(&$tpl) {
 				`traff_time` > ? AND `traff_time` < ?
 		";
 
-		$rs = exec_query($sql, $query, array($ftm, $ltm));
+		$rs = exec_query($query, array($ftm, $ltm));
 		$has_data = false;
 		// if ($rs->fields['cnt'] > 0) {
 		if ($rs->recordCount() > 0) {

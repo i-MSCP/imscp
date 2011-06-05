@@ -57,10 +57,9 @@ $tpl->assign(
 	)
 );
 
-function generate_page(&$tpl) {
+function generate_page($tpl) {
 
 	$cfg = iMSCP_Registry::get('config');
-	$sql = iMSCP_Registry::get('db');
 
 	$start_index = 0;
 	$rows_per_page = 15;
@@ -86,11 +85,11 @@ function generate_page(&$tpl) {
 			$start_index, $rows_per_page
 	";
 
-	$rs = exec_query($sql, $count_query);
+	$rs = exec_query($count_query);
 
 	$records_count = $rs->fields['cnt'];
 
-	$rs = exec_query($sql, $query);
+	$rs = exec_query($query);
 
 	if ($rs->rowCount() == 0) {
 		$tpl->assign(
@@ -181,8 +180,6 @@ function generate_page(&$tpl) {
 }
 
 function clear_log() {
-	$sql = iMSCP_Registry::get('db');
-
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'clear_log') {
 		$query = null;
 		$msg = '';
@@ -250,7 +247,7 @@ function clear_log() {
 				throw new iMSCP_Exception(tr('Invalid time period!'));
 		}
 
-		$rs = execute_query($sql, $query);
+		$rs = execute_query($query);
 		write_log($msg);
 	}
 }

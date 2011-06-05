@@ -70,7 +70,7 @@ function gen_ip_action($ip_id, $status) {
 	}
 }
 
-function show_IPs($tpl, $sql) {
+function show_IPs($tpl) {
 
 	$cfg = iMSCP_Registry::get('config');
 
@@ -81,7 +81,7 @@ function show_IPs($tpl, $sql) {
 			`server_ips`
 	";
 
-	$rs = exec_query($sql, $query);
+	$rs = exec_query($query);
 
 	$row = 1;
 	$single = false;
@@ -137,7 +137,7 @@ function show_IPs($tpl, $sql) {
     }
 }
 
-function add_ip($tpl, $sql) {
+function add_ip($tpl) {
 
 	global $ip_number, $domain, $alias, $ip_card;
 	$cfg = iMSCP_Registry::get('config');
@@ -153,7 +153,7 @@ function add_ip($tpl, $sql) {
 					(?, ?, ?, ?, ?, ?)
 			";
 
-			exec_query($sql, $query, array($ip_number, htmlspecialchars($domain, ENT_QUOTES, "UTF-8"),
+			exec_query($query, array($ip_number, htmlspecialchars($domain, ENT_QUOTES, "UTF-8"),
 			htmlspecialchars($alias, ENT_QUOTES, "UTF-8"), htmlspecialchars($ip_card, ENT_QUOTES, "UTF-8"), NULL, $cfg->ITEM_ADD_STATUS));
 
 			send_request();
@@ -229,8 +229,6 @@ function check_user_data() {
 
 function IP_exists() {
 
-	$sql = iMSCP_Registry::get('db');
-
 	global $ip_number;
 
 	$query = "
@@ -242,7 +240,7 @@ function IP_exists() {
 			`ip_number` = ?
 	";
 
-	$rs = exec_query($sql, $query, $ip_number);
+	$rs = exec_query($query, $ip_number);
 
 	if ($rs->rowCount() == 0) {
 		return false;
@@ -284,9 +282,9 @@ gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_settings.tpl');
 
 show_Network_Cards($tpl, $interfaces);
 
-add_ip($tpl, $sql);
+add_ip($tpl);
 
-show_IPs($tpl, $sql);
+show_IPs($tpl);
 
 $tpl->assign(
 	array(

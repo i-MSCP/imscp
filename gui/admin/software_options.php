@@ -44,11 +44,6 @@ check_login(__FILE__);
  */
 $cfg = iMSCP_Registry::get('config');
 
-/**
- * @var $sql iMSCP_Database
- */
-$sql = iMSCP_Registry::get('db');
-
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/software_options.tpl');
 $tpl->define_dynamic('page_message', 'page');
@@ -86,7 +81,7 @@ if(isset($_POST['uaction']) && $_POST['uaction'] == "apply") {
                 `webdepot_xml_url` = '".$webdepot_xml_url."'
             ;
         ";
-        exec_query($sql, $query);
+        exec_query($query);
         set_page_message(tr("Main application installer options updated!"), 'info');
     }
 }
@@ -98,7 +93,7 @@ $query = "
         `web_software_options`
     ;
 ";
-$rs = exec_query($sql, $query);
+$rs = exec_query($query);
 
 $tpl->assign(
 	array(

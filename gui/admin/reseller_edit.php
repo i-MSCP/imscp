@@ -480,8 +480,6 @@ function check_user_ip_data($reseller_id, $r_ips, $u_ips) {
  */
 function get_reseller_prop($reseller_id) {
 
-	$sql = iMSCP_Registry::get('db');
-
 	$query = "
 		SELECT
 			`admin_name`, `fname`, `lname`, `firm`, `zip`, `city`, `state`,
@@ -499,7 +497,7 @@ function get_reseller_prop($reseller_id) {
 			r.`reseller_id` = a.`admin_id`
 	";
 
-	$rs = exec_query($sql, $query, $reseller_id);
+	$rs = exec_query($query, $reseller_id);
 
 	if ($rs->recordCount() <= 0) {
 			set_page_message(
@@ -528,7 +526,6 @@ function get_reseller_prop($reseller_id) {
 function get_servers_ips(&$tpl, $rip_lst) {
 
 	$cfg = iMSCP_Registry::get('config');
-	$sql = iMSCP_Registry::get('db');
 
 	$query = "
 		SELECT
@@ -539,7 +536,7 @@ function get_servers_ips(&$tpl, $rip_lst) {
 			`ip_number`
 	";
 
-	$rs = exec_query($sql, $query);
+	$rs = exec_query($query);
 
 	$i = 0;
 	$reseller_ips = '';
@@ -621,8 +618,6 @@ function get_servers_ips(&$tpl, $rip_lst) {
  */
 function have_reseller_ip_users($reseller_id, $ip, &$ip_num, &$ip_name) {
 
-	$sql = iMSCP_Registry::get('db');
-
 	$query = "
 		SELECT
 			`admin_id`
@@ -632,7 +627,7 @@ function have_reseller_ip_users($reseller_id, $ip, &$ip_num, &$ip_name) {
 			`created_by` = ?
 	";
 
-	$res = exec_query($sql, $query, $reseller_id);
+	$res = exec_query($query, $reseller_id);
 
 	if ($res->rowCount() == 0) {
 		return false;
@@ -656,7 +651,7 @@ function have_reseller_ip_users($reseller_id, $ip, &$ip_num, &$ip_name) {
 				`server_ips`.`ip_id` = ?
 		";
 
-		$dres = exec_query($sql, $query, array($reseller_id, $ip));
+		$dres = exec_query($query, array($reseller_id, $ip));
 
 		if ($dres->rowCount() != 0) {
 			$ip_num = $dres->fields['ip_number'];
@@ -679,9 +674,6 @@ function update_reseller() {
 
 	// Get needed data
 	$rdata =& get_data();
-
-	// Get database instance
-	$sql = iMSCP_Registry::get('db');
 
 	/**
 	 * Update reseller additional data
@@ -712,7 +704,7 @@ function update_reseller() {
 		array_unshift($qparams, crypt_user_pass($_POST['pass0']));
 	}
 
-	exec_query($sql, $query, $qparams);
+	exec_query($query, $qparams);
 	
 	if($rdata['domain_software_allowed'] == "no") {
  		$query_user = "
@@ -723,13 +715,9 @@ function update_reseller() {
  			WHERE
  				`domain_created_id` = ?
  		";
-		exec_query(
- 			$sql,
-			$query_user,
- 			array(
- 				$rdata['domain_software_allowed'], $rdata['edit_id']
- 			)
- 		);
+		exec_query($query_user,array(
+                                    $rdata['domain_software_allowed'],
+                                    $rdata['edit_id']));
  	}
  	if ($domain_softwaredepot_allowed == "no") {
  		$query = "
@@ -743,7 +731,6 @@ function update_reseller() {
 				`reseller_id` = ?
  		";
  		$rs = exec_query(
- 				$sql,
  				$query,
  				array(
  					$edit_id
@@ -760,7 +747,6 @@ function update_reseller() {
 						`software_id` = ?
 				";
 				exec_query(
-					$sql,
 					$update,
 					array(
 						$rs->fields['software_id']
@@ -776,7 +762,7 @@ function update_reseller() {
 				AND
 					`reseller_id` = ?
 			";
-			exec_query($sql, $delete_rights, array($edit_id));
+			exec_query($delete_rights, array($edit_id));
 	 	}
 	}
  
@@ -798,7 +784,6 @@ function update_reseller() {
 	";
 
 	exec_query(
-		$sql,
 		$query,
 		array(
 			$rdata['reseller_ips'], $rdata['max_dmn_cnt'],
@@ -823,16 +808,14 @@ function update_reseller() {
  *
  * @author Laurent Declercq (Nuxwin) <l.declercq@nuxwin.com>
  * @since r2561
- * [@param object &$tpl reference to the template instance]
+ * [@param object $tpl template instance]
  * @return array reseller properties and additional data
  */
-function &get_data(&$tpl = false) {
+function &get_data($tpl = false) {
 
 	static $rdata = array();
 
 	if (empty($rdata) && $tpl !== false) {
-
-		$sql = iMSCP_Registry::get('db');
 
 		// Update action
 		if (isset($_POST['uaction']) && $_POST['uaction'] == 'update_reseller') {
@@ -849,7 +832,7 @@ function &get_data(&$tpl = false) {
 					`admin_id` = ?
 			";
 
-			$rs = exec_query($sql, $query, $rdata['edit_id']);
+			$rs = exec_query($query, $rdata['edit_id']);
 
 			if ($rs->recordCount() <= 0) {
 				user_goto('manage_users.php');

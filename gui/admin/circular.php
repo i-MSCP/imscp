@@ -52,7 +52,7 @@ $tpl->assign(
 	)
 );
 
-function gen_page_data(&$tpl, &$sql) {
+function gen_page_data($tpl) {
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'send_circular') {
 		$tpl->assign(
@@ -77,7 +77,7 @@ function gen_page_data(&$tpl, &$sql) {
 				`email`
 		";
 
-		$rs = exec_query($sql, $query, $user_id);
+		$rs = exec_query($query, $user_id);
 
 		if (isset($rs->fields['fname']) && isset($rs->fields['lname'])) {
 			$sender_name = $rs->fields['fname'] . ' ' . $rs->fields['lname'];
@@ -134,7 +134,7 @@ function check_user_data(&$tpl) {
 	}
 }
 
-function send_reseller_message(&$sql) {
+function send_reseller_message() {
 
 	$user_id = $_SESSION['user_id'];
 
@@ -154,7 +154,7 @@ function send_reseller_message(&$sql) {
 			`email`
 	";
 
-	$rs = exec_query($sql, $query, $user_id);
+	$rs = exec_query($query, $user_id);
 
 	while (!$rs->EOF) {
 		if ($_POST['rcpt_to'] == 'rslrs' || $_POST['rcpt_to'] == 'usrs_rslrs') {
@@ -164,7 +164,7 @@ function send_reseller_message(&$sql) {
 		}
 
 		if ($_POST['rcpt_to'] == 'usrs' || $_POST['rcpt_to'] == 'usrs_rslrs') {
-			send_reseller_users_message($sql, $rs->fields['admin_id']);
+			send_reseller_users_message($rs->fields['admin_id']);
 		}
 
 		$rs->moveNext();
@@ -174,17 +174,17 @@ function send_reseller_message(&$sql) {
 	write_log('Mass email was sent from ' . tohtml($sender_name) . '<' . $sender_email . '>!');
 }
 
-function send_circular(&$tpl, &$sql) {
+function send_circular($tpl) {
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'send_circular') {
 		if (check_user_data($tpl)) {
-			send_reseller_message($sql);
+			send_reseller_message();
 			unset($_POST['uaction']);
-			gen_page_data($tpl, $sql);
+			gen_page_data($tpl);
 		}
 	}
 }
 
-function send_reseller_users_message(&$sql, $admin_id) {
+function send_reseller_users_message($admin_id) {
 
 	$msg_subject = clean_input($_POST['msg_subject'], false);
 	$msg_text = clean_input($_POST['msg_text'], false);
@@ -202,7 +202,7 @@ function send_reseller_users_message(&$sql, $admin_id) {
 			`email`
 	";
 
-	$rs = exec_query($sql, $query, $admin_id);
+	$rs = exec_query($query, $admin_id);
 
 	while (!$rs->EOF) {
 		$to = "\"" . encode($rs->fields['fname'] . " " . $rs->fields['lname']) . "\" <" . $rs->fields['email'] . ">";
@@ -247,9 +247,9 @@ $tpl->assign(
 	)
 );
 
-send_circular($tpl, $sql);
+send_circular($tpl);
 
-gen_page_data($tpl, $sql);
+gen_page_data($tpl);
 
 generatePageMessage($tpl);
 

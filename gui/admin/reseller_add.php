@@ -60,7 +60,7 @@ $tpl->assign(
 /**
  * Get Server IPs
  */
-function get_server_ip($tpl, $sql) {
+function get_server_ip($tpl) {
 
 	$cfg = iMSCP_Registry::get('config');
 
@@ -73,7 +73,7 @@ function get_server_ip($tpl, $sql) {
 			`ip_number`
 	";
 
-	$rs = exec_query($sql, $query);
+	$rs = exec_query($query);
 
 	$i = 0;
 
@@ -144,10 +144,9 @@ function get_server_ip($tpl, $sql) {
 
 /**
  * @param  $tpl
- * @param  $sql
  * @return void
  */
-function add_reseller($tpl, $sql) {
+function add_reseller($tpl) {
 
 	global $reseller_ips;
 	$cfg = iMSCP_Registry::get('config');
@@ -215,7 +214,7 @@ function add_reseller($tpl, $sql) {
 				)
 			";
 
-			exec_query($sql, $query, array($username,
+			exec_query($query, array($username,
 					$upass,
 					$user_id,
 					$fname,
@@ -233,7 +232,9 @@ function add_reseller($tpl, $sql) {
 					$gender)
 			);
 
-			$new_admin_id = $sql->insertId();
+            /** @var $db iMSCP_Database */
+            $db = iMSCP_Registry::get('db');
+			$new_admin_id = $db->insertId();
 
 			$user_logged = $_SESSION['user_logged'];
 
@@ -255,7 +256,7 @@ function add_reseller($tpl, $sql) {
 					(?, ?, ?, ?)
 			";
 
-			exec_query($sql, $query, array($new_admin_id,
+			exec_query($query, array($new_admin_id,
 					$user_def_lang,
 					$user_theme_color,
 					$user_logo)
@@ -312,7 +313,7 @@ function add_reseller($tpl, $sql) {
 				)
 				";
 
-			exec_query($sql, $query, array($new_admin_id, $reseller_ips,
+			exec_query($query, array($new_admin_id, $reseller_ips,
 					$nreseller_max_domain_cnt,
 					$nreseller_max_subdomain_cnt,
 					$nreseller_max_alias_cnt,
@@ -436,7 +437,6 @@ function check_user_data() {
 	global $reseller_ips;
 
 	$cfg = iMSCP_Registry::get('config');
-	$sql = iMSCP_Registry::get('db');
 
 	$username = clean_input($_POST['username']);
 
@@ -449,7 +449,7 @@ function check_user_data() {
 			`admin_name` = ?
 	";
 
-	$rs = exec_query($sql, $query, $username);
+	$rs = exec_query($query, $username);
 
 	if ($rs->recordCount() != 0) {
 		set_page_message(tr('This user name already exist!'), 'warning');
@@ -561,9 +561,9 @@ function check_user_data() {
 gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
 gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_users_manage.tpl');
 
-$reseller_ips = get_server_ip($tpl, $sql);
+$reseller_ips = get_server_ip($tpl);
 
-add_reseller($tpl, $sql);
+add_reseller($tpl);
 
 $tpl->assign(
 	array(

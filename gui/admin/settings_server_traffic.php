@@ -55,7 +55,7 @@ $tpl->assign(
 /**
  * @todo What's about the outcommented code?
  */
-function update_server_settings(&$sql) {
+function update_server_settings() {
 
 	if (!isset($_POST['uaction']) && !isset($_POST['uaction'])) {
 		return;
@@ -92,12 +92,12 @@ function update_server_settings(&$sql) {
 			`straff_max` = ?,
 			`straff_warn` = ?
 	";
-	$rs = exec_query($sql, $query, array($max_traffic, $traffic_warning));
+	exec_query($query, array($max_traffic, $traffic_warning));
 
 	set_page_message(tr('Server traffic settings updated successfully!'), 'success');
 }
 
-function generate_server_data($tpl, $sql) {
+function generate_server_data($tpl) {
 
 	$query = "
 		SELECT
@@ -107,7 +107,7 @@ function generate_server_data($tpl, $sql) {
 			`straff_settings`
 	";
 
-	$rs = exec_query($sql, $query);
+	$rs = exec_query($query);
 
 	$tpl->assign(
 		array(
@@ -135,9 +135,9 @@ $tpl->assign(
 	)
 );
 
-update_server_settings($sql);
+update_server_settings();
 
-generate_server_data($tpl, $sql);
+generate_server_data($tpl);
 
 generatePageMessage($tpl);
 

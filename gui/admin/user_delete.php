@@ -99,7 +99,6 @@ if ($cfg->DUMP_GUI_DEBUG) {
  */
 function delete_user($user_id) {
 
-	global $sql;
 	$cfg = iMSCP_Registry::get('config');
 
 	$query = "
@@ -111,7 +110,7 @@ function delete_user($user_id) {
 			`user_gui_props` AS b ON b.`user_id` = a.`admin_id`
 		WHERE
 			`admin_id` = ?";
-	$res = exec_query($sql, $query, $user_id);
+	$res = exec_query($query, $user_id);
 	$data = $res->fetchRow();
 	$type = $data['admin_type'];
 	if (empty($type) || $type == 'user') {
@@ -123,14 +122,14 @@ function delete_user($user_id) {
 		$reseller_logo = $data['logo'];
 		// delete reseller props
 		$query = "DELETE FROM `reseller_props` WHERE `reseller_id` = ?";
-		exec_query($sql, $query, $user_id);
+		exec_query($query, $user_id);
 		// delete hosting plans
 		$query = "DELETE FROM `hosting_plans` WHERE `reseller_id` = ?";
-		exec_query($sql, $query, $user_id);
+		exec_query($query, $user_id);
 		// delete all software
 		delete_reseller_software($user_id);
 		$query = "DELETE FROM `web_software` WHERE `reseller_id` = ?";
-		exec_query($sql, $query, array($user_id));
+		exec_query($query, array($user_id));
 		// delete reseller logo if exists
 		if (!empty($reseller_logo) && $reseller_logo !== 0) {
 			try {
@@ -143,7 +142,7 @@ function delete_user($user_id) {
 	
 	// Delete i-mscp login:
 	$query = "DELETE FROM `admin` WHERE `admin_id` = ?";
-	exec_query($sql, $query, $user_id);
+	exec_query($query, $user_id);
 
 	write_log($_SESSION['user_logged'] .": deletes user " . $user_id);
 
@@ -152,11 +151,14 @@ function delete_user($user_id) {
 }
 
 /**
- * Delete reseller software pakets
+ * Delete reseller software pakets.
+ *
  * @param integer $user_id Reseller ID to delete software pakets
  */
 function delete_reseller_software($user_id) {
-	global $sql, $cfg;
+
+    /** @var $cfg iMSCP_Config_Handler_File */
+    $cfg = iMSCP_Registry::get('config');
 
 	$query = "
 		SELECT
@@ -167,7 +169,7 @@ function delete_reseller_software($user_id) {
 		WHERE
 			`reseller_id` = ?
 	";
-	$res = exec_query($sql, $query, array($user_id));
+	$res = exec_query($query, array($user_id));
 	if ($res->RecordCount() > 0) {
 		while (!$res ->EOF) {
 			$del_path = $cfg->GUI_SOFTWARE_DIR."/".$user_id."/".$res->fields['software_archive']."-".$res->fields['software_id'].".tar.gz";
@@ -186,17 +188,15 @@ function delete_reseller_software($user_id) {
  */
 function validate_user_deletion($user_id) {
 
-	global $sql;
-
 	$result = false;
 
 	// check if there are domains created by user
 	$query = "SELECT COUNT(`domain_id`) AS `num_domains` FROM `domain` WHERE `domain_created_id` = ?";
-	$res = exec_query($sql, $query, $user_id);
+	$res = exec_query($query, $user_id);
 	$data = $res->fetchRow();
 	if ($data['num_domains'] == 0) {
 		$query = "SELECT `admin_type` FROM `admin` WHERE `admin_id` = ?";
-		$res = exec_query($sql, $query, $user_id);
+		$res = exec_query($query, $user_id);
 		$data = $res->fetchRow();
 		$type = $data['admin_type'];
 		if ($type == 'admin' || $type == 'reseller') {
@@ -217,11 +217,11 @@ function validate_user_deletion($user_id) {
  */
 function validate_domain_deletion($domain_id) {
 
-	global $tpl, $sql;
+	global $tpl;
 
 	// check for domain owns
 	$query = "SELECT `domain_id`, `domain_name`, `domain_created_id` FROM `domain` WHERE `domain_id` = ?";
-	$res = exec_query($sql, $query, $domain_id);
+	$res = exec_query($query, $domain_id);
 	$data = $res->fetchRow();
 	if ($data['domain_id'] == 0) {
 		set_page_message(tr('Wrong domain ID!'), 'error');
@@ -249,7 +249,7 @@ function validate_domain_deletion($domain_id) {
 
 	// check for mail acc in MAIN domain
 	$query = "SELECT * FROM `mail_users` WHERE `domain_id` = ?";
-	$res = exec_query($sql, $query, $domain_id);
+	$res = exec_query($query, $domain_id);
 	if (!$res->EOF) {
 		while (!$res->EOF) {
 
@@ -277,7 +277,7 @@ function validate_domain_deletion($domain_id) {
 
 	// check for ftp acc in MAIN domain
 	$query = "SELECT `ftp_users`.* FROM `ftp_users`, `domain` WHERE `domain`.`domain_id` = ? AND `ftp_users`.`uid` = `domain`.`domain_uid`";
-	$res = exec_query($sql, $query, $domain_id);
+	$res = exec_query($query, $domain_id);
 	if (!$res->EOF) {
 		while (!$res->EOF) {
 
@@ -298,7 +298,7 @@ function validate_domain_deletion($domain_id) {
 	// check for alias domains
 	$alias_a = array();
 	$query = "SELECT * FROM `domain_aliasses` WHERE `domain_id` = ?";
-	$res = exec_query($sql, $query, $domain_id);
+	$res = exec_query($query, $domain_id);
 	if (!$res->EOF) {
 		while (!$res->EOF) {
 			$alias_a[] = $res->fields['alias_id'];
@@ -320,7 +320,7 @@ function validate_domain_deletion($domain_id) {
 	// check for subdomains
 	$any_sub_found = false;
 	$query = "SELECT * FROM `subdomain` WHERE `domain_id` = ?";
-	$res = exec_query($sql, $query, $domain_id);
+	$res = exec_query($query, $domain_id);
 	while (!$res->EOF) {
 		$any_sub_found = true;
 		$tpl->assign(
@@ -343,7 +343,7 @@ function validate_domain_deletion($domain_id) {
 		$query = "SELECT * FROM `subdomain_alias` WHERE `alias_id` IN (";
 		$query .= implode(',', $alias_a);
 		$query .= ")";
-		$res = exec_query($sql, $query);
+		$res = exec_query($query);
 		while (!$res->EOF) {
 			$any_sub_found = true;
 			$tpl->assign(
@@ -360,13 +360,13 @@ function validate_domain_deletion($domain_id) {
 
 	// Check for databases and -users
 	$query = "SELECT * FROM `sql_database` WHERE `domain_id` = ?";
-	$res = exec_query($sql, $query, $domain_id);
+	$res = exec_query($query, $domain_id);
 	if (!$res->EOF) {
 
 		while (!$res->EOF) {
 
 			$query = "SELECT * FROM `sql_user` WHERE `sqld_id` = ?";
-			$ures = exec_query($sql, $query, $res->fields['sqld_id']);
+			$ures = exec_query($query, $res->fields['sqld_id']);
 
 			$users_a = array();
 			while (!$ures->EOF) {

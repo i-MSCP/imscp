@@ -40,7 +40,6 @@ check_login(__FILE__);
 
 if (isset($_GET['export_lang']) && $_GET['export_lang'] !== '') {
 
-	$sql = iMSCP_Registry::get('db');
 	$language_table = $_GET['export_lang'];
 
 	$query = "
@@ -53,7 +52,7 @@ if (isset($_GET['export_lang']) && $_GET['export_lang'] !== '') {
 		;
 	";
 
-	$stmt = execute_query($sql, $query);
+	$stmt = execute_query($query);
 
 	if ($stmt->RowCount() > 0 && $stmt->fields['msgstr'] != '') {
 
@@ -74,7 +73,7 @@ if (isset($_GET['export_lang']) && $_GET['export_lang'] !== '') {
 	/**
 	 * @var $stmt iMSCP_Database_ResultSet
 	 */
-	$stmt = exec_query($sql, $query);
+	$stmt = exec_query( $query);
 
 	if ($stmt->recordCount() == 0) {
 		set_page_message(tr('Incorrect data input!'), 'error');

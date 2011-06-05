@@ -44,7 +44,7 @@ $query = "
 		`domain_status` = 'toadd'
 ";
 
-$rs = execute_query($sql, $query);
+$rs = execute_query($query);
 print "Domains updated";
 
 $query = "
@@ -54,7 +54,7 @@ $query = "
 		`alias_status` = 'toadd'
 ";
 
-$rs = execute_query($sql, $query);
+$rs = execute_query($query);
 print "Domain aliases updated";
 
 $query = "
@@ -64,7 +64,7 @@ $query = "
 		`subdomain_status` = 'toadd'
 ";
 
-$rs = execute_query($sql, $query);
+$rs = execute_query($query);
 print "Subdomains updated";
 
 $query = "
@@ -74,7 +74,7 @@ $query = "
 		`subdomain_alias_status` = 'toadd'
 ";
 
-$rs = execute_query($sql, $query);
+$rs = execute_query($query);
 print "Subdomains alias updated";
 
 $query = "
@@ -84,5 +84,5 @@ $query = "
 		`status` = 'toadd'
 ";
 
-$rs = execute_query($sql, $query);
+$rs = execute_query($query);
 print "Emails updated";

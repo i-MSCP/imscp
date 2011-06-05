@@ -65,7 +65,7 @@ $query = "
 		`lang` = ?
 ";
 
-$rs = exec_query($sql, $query, $delete_lang);
+$rs = exec_query($query, $delete_lang);
 
 // ERROR - we have domains that use this IP
 if ($rs->recordCount () > 0) {
@@ -76,7 +76,7 @@ if ($rs->recordCount () > 0) {
 
 $query = "DROP TABLE `$delete_lang`";
 
-$rs = exec_query($sql, $query);
+$rs = exec_query($query);
 
 write_log(sprintf("%s removed language: %s", $_SESSION['user_logged'], $delete_lang));
 

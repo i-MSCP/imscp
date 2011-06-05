@@ -53,7 +53,7 @@ $tpl->assign(
 	)
 );
 
-function kill_session($sql) {
+function kill_session() {
 
 	if (isset($_GET['kill']) && $_GET['kill'] !== ''
 		&& $_GET['kill'] !== $_SESSION['user_logged']) {
@@ -65,13 +65,13 @@ function kill_session($sql) {
 				`session_id` = ?
 		";
 
-		$rs = exec_query($sql, $query, $admin_name);
+		exec_query($query, $admin_name);
 		set_page_message(tr('User session was killed!'));
 		write_log($_SESSION['user_logged'] . ": killed user session: $admin_name!");
 	}
 }
 
-function gen_user_sessions(&$tpl, &$sql) {
+function gen_user_sessions($tpl) {
 	$query = "
 		SELECT
 			*
@@ -79,7 +79,7 @@ function gen_user_sessions(&$tpl, &$sql) {
 			`login`
 	";
 
-	$rs = exec_query($sql, $query);
+	$rs = exec_query($query);
 
 	$row = 1;
 	while (!$rs->EOF) {
@@ -127,9 +127,9 @@ function gen_user_sessions(&$tpl, &$sql) {
 gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
 gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_users_manage.tpl');
 
-kill_session($sql);
+kill_session();
 
-gen_user_sessions($tpl, $sql);
+gen_user_sessions($tpl);
 
 $tpl->assign(
 	array(

@@ -37,7 +37,6 @@
 /**
  * Returns domain default properties.
  *
- * @param iMSCP_Database $db   Database instance
  * @param int $domain_admin_id User unique identifier
  * @param bool $returnWKeys    Tells whether or not return value should be a
  *                             associative array
@@ -47,7 +46,7 @@
  *                             to  a propertie value, following the columns order in
  *                             database table.
  */
-function get_domain_default_props($db, $domain_admin_id, $returnWKeys = false)
+function get_domain_default_props($domain_admin_id, $returnWKeys = false)
 {
     $query = "
 		SELECT
@@ -65,7 +64,7 @@ function get_domain_default_props($db, $domain_admin_id, $returnWKeys = false)
 			`domain_admin_id` = ?
 		;
 	";
-    $stmt = exec_query($db, $query, $domain_admin_id);
+    $stmt = exec_query($query, $domain_admin_id);
 
     if (!$returnWKeys) {
         return array($stmt->fields['domain_id'], $stmt->fields['domain_name'],
@@ -91,11 +90,10 @@ function get_domain_default_props($db, $domain_admin_id, $returnWKeys = false)
  * Note, this function doesn't make any differentiation between sub domains and the
  * aliasses subdomains. The result is simply the sum of both.
  *
- * @param  iMSCP_Database $db Database instance
  * @param  int $domain_id Domain unique identifier
  * @return int Total number of subdomains
  */
-function get_domain_running_sub_cnt($db, $domain_id)
+function get_domain_running_sub_cnt($domain_id)
 {
     $query = "
 		SELECT
@@ -106,7 +104,7 @@ function get_domain_running_sub_cnt($db, $domain_id)
 			`domain_id` = ?
 		;
 	";
-    $stmt1 = exec_query($db, $query, $domain_id);
+    $stmt1 = exec_query($query, $domain_id);
 
     $query = "
 		SELECT
@@ -117,7 +115,7 @@ function get_domain_running_sub_cnt($db, $domain_id)
 			`alias_id` IN (SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?)
 		;
 	";
-    $stmt2 = exec_query($db, $query, $domain_id);
+    $stmt2 = exec_query($query, $domain_id);
 
     return $stmt1->fields['cnt'] + $stmt2->fields['cnt'];
 }
@@ -125,11 +123,10 @@ function get_domain_running_sub_cnt($db, $domain_id)
 /**
  * Returns number of domain aliasses that belong to a specific domain.
  *
- * @param  iMSCP_Database $db Database instance
  * @param  int $domain_id Domain unique identifier
  * @return int Total number of domain aliasses
  */
-function get_domain_running_als_cnt($db, $domain_id)
+function get_domain_running_als_cnt($domain_id)
 {
     $query = "
 		SELECT
@@ -140,7 +137,7 @@ function get_domain_running_als_cnt($db, $domain_id)
 			`domain_id` = ?
 		;
 	";
-    $stmt = exec_query($db, $query, $domain_id);
+    $stmt = exec_query($query, $domain_id);
 
     return $stmt->fields['cnt'];
 }
@@ -148,13 +145,12 @@ function get_domain_running_als_cnt($db, $domain_id)
 /**
  * Returns information about number of mail account for a specific domain.
  *
- * @param  iMSCP_Database $db Database instance
  * @param  int $domain_id     Domain unique identifier
  * @return array              An array of values where the first item is the sum of
  *                            all other items, and where each other item represents
  *                            total number of a specific Mail account type
  */
-function get_domain_running_mail_acc_cnt($db, $domain_id)
+function get_domain_running_mail_acc_cnt($domain_id)
 {
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
@@ -257,16 +253,16 @@ function get_domain_running_mail_acc_cnt($db, $domain_id)
 		";
     }
 
-    $stmt = exec_query($db, $query_dmn, $domain_id);
+    $stmt = exec_query($query_dmn, $domain_id);
     $dmn_mail_acc = $stmt->fields['cnt'];
 
-    $stmt = exec_query($db, $query_als, $domain_id);
+    $stmt = exec_query($query_als, $domain_id);
     $als_mail_acc = $stmt->fields['cnt'];
 
-    $stmt = exec_query($db, $query_sub, $domain_id);
+    $stmt = exec_query($query_sub, $domain_id);
     $sub_mail_acc = $stmt->fields['cnt'];
 
-    $stmt = exec_query($db, $query_alssub, $domain_id);
+    $stmt = exec_query($query_alssub, $domain_id);
     $alssub_mail_acc = $stmt->fields['cnt'];
 
     return array($dmn_mail_acc + $als_mail_acc + $sub_mail_acc + $alssub_mail_acc,
@@ -276,11 +272,10 @@ function get_domain_running_mail_acc_cnt($db, $domain_id)
 /**
  * Returns total number of Ftp accounts that belong to a domain.
  *
- * @param  iMSCP_Database $db Database instance
  * @param  int $domain_id Domain unique identifier
  * @return int Number of Ftp accounts
  */
-function get_domain_running_dmn_ftp_acc_cnt($db, $domain_id)
+function get_domain_running_dmn_ftp_acc_cnt($domain_id)
 {
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
@@ -295,7 +290,7 @@ function get_domain_running_dmn_ftp_acc_cnt($db, $domain_id)
 		;
 	";
 
-    $stmt = exec_query($db, $query, $domain_id);
+    $stmt = exec_query($query, $domain_id);
 
     $query = "
 		SELECT
@@ -307,7 +302,7 @@ function get_domain_running_dmn_ftp_acc_cnt($db, $domain_id)
 		;
 	";
 
-    $stmt = exec_query($db, $query, '%' . $cfg->FTP_USERNAME_SEPARATOR .
+    $stmt = exec_query($query, '%' . $cfg->FTP_USERNAME_SEPARATOR .
                                       $stmt->fields['domain_name']);
 
     return $stmt->fields['cnt'];
@@ -317,14 +312,13 @@ function get_domain_running_dmn_ftp_acc_cnt($db, $domain_id)
  * Returns total number of Ftp accounts that belong to subdomains of a specific
  * domain.
  *
- * @param  iMSCP_Database $db Database instance
  * @param  int $domain_id Domain unique identifier
  * @return int Total number of Ftp accounts
  */
-function get_domain_running_sub_ftp_acc_cnt($db, $domain_id)
+function get_domain_running_sub_ftp_acc_cnt($domain_id)
 {
     $query = "SELECT `domain_name` FROM `domain` WHERE `domain_id` = ?;";
-    $stmt1 = exec_query($db, $query, $domain_id);
+    $stmt1 = exec_query($query, $domain_id);
 
     $query = "
 		SELECT
@@ -337,7 +331,7 @@ function get_domain_running_sub_ftp_acc_cnt($db, $domain_id)
 			`subdomain_id`
 		;
 	";
-    $stmt2 = exec_query($db, $query, $domain_id);
+    $stmt2 = exec_query($query, $domain_id);
 
     $sub_ftp_acc_cnt = 0;
 
@@ -356,7 +350,7 @@ function get_domain_running_sub_ftp_acc_cnt($db, $domain_id)
 				    `userid` LIKE ?
 			    ;
 		    ";
-            $stmt3 = exec_query($db, $query,
+            $stmt3 = exec_query($query,
                                 '%' . $ftpSeparator .
                                 $stmt2->fields['subdomain_name'] . '.' .
                                 $stmt1->fields['domain_name']);
@@ -373,11 +367,10 @@ function get_domain_running_sub_ftp_acc_cnt($db, $domain_id)
  * Returns total number of Ftp accounts that belong to domain aliasses of a specific
  * domain.
  *
- * @param  iMSCP_Database $db Database instance
  * @param  int $domain_id Domain unique identifier
  * @return int Total number of Ftp accounts
  */
-function get_domain_running_als_ftp_acc_cnt($db, $domain_id)
+function get_domain_running_als_ftp_acc_cnt($domain_id)
 {
     $query = "
 		SELECT
@@ -390,7 +383,7 @@ function get_domain_running_als_ftp_acc_cnt($db, $domain_id)
 			`alias_id`
 		;
 	";
-    $stmt1 = exec_query($db, $query, $domain_id);
+    $stmt1 = exec_query($query, $domain_id);
 
     $als_ftp_acc_cnt = 0;
 
@@ -408,7 +401,7 @@ function get_domain_running_als_ftp_acc_cnt($db, $domain_id)
 				    `userid` LIKE ?
 			    ;
 		    ";
-            $stmt2 = exec_query($db, $query,
+            $stmt2 = exec_query($query,
                                 '%' . $ftpSeparator . $stmt1->fields['alias_name']);
             $als_ftp_acc_cnt += $stmt2->fields['cnt'];
             $stmt1->moveNext();
@@ -421,17 +414,16 @@ function get_domain_running_als_ftp_acc_cnt($db, $domain_id)
 /**
  * Returns information about number of Ftp account for a specific domain.
  *
- * @param  iMSCP_Database $db Database instance
  * @param  int $domain_id     Domain unique identifier
  * @return array              An array of values where the first item is the sum of
  *                            all other items, and where each other item represents
  *                            total number of a specific Ftp account type
  */
-function get_domain_running_ftp_acc_cnt($db, $domain_id)
+function get_domain_running_ftp_acc_cnt($domain_id)
 {
-    $dmn_ftp_acc_cnt = get_domain_running_dmn_ftp_acc_cnt($db, $domain_id);
-    $sub_ftp_acc_cnt = get_domain_running_sub_ftp_acc_cnt($db, $domain_id);
-    $als_ftp_acc_cnt = get_domain_running_als_ftp_acc_cnt($db, $domain_id);
+    $dmn_ftp_acc_cnt = get_domain_running_dmn_ftp_acc_cnt($domain_id);
+    $sub_ftp_acc_cnt = get_domain_running_sub_ftp_acc_cnt($domain_id);
+    $als_ftp_acc_cnt = get_domain_running_als_ftp_acc_cnt($domain_id);
 
     return array($dmn_ftp_acc_cnt + $sub_ftp_acc_cnt + $als_ftp_acc_cnt,
                  $dmn_ftp_acc_cnt, $sub_ftp_acc_cnt, $als_ftp_acc_cnt);
@@ -440,11 +432,10 @@ function get_domain_running_ftp_acc_cnt($db, $domain_id)
 /**
  * Returns total number of databases that belong to a specific domain.
  *
- * @param  iMSCP_Database $db Database instance
  * @param  int $domain_id Domain unique identifier
  * @return int Total number of databases for a specific domain
  */
-function get_domain_running_sqld_acc_cnt($db, $domain_id)
+function get_domain_running_sqld_acc_cnt($domain_id)
 {
     $query = "
 		SELECT
@@ -455,7 +446,7 @@ function get_domain_running_sqld_acc_cnt($db, $domain_id)
 			`domain_id` = ?
 		;
 	";
-    $stmt = exec_query($db, $query, $domain_id);
+    $stmt = exec_query($query, $domain_id);
 
     return $stmt->fields['cnt'];
 }
@@ -463,11 +454,10 @@ function get_domain_running_sqld_acc_cnt($db, $domain_id)
 /**
  * Returns total number of SQL user that belong to a specific domain.
  *
- * @param  iMSCP_Database $db Database instance
  * @param  int $domain_id Domain unique identifier
  * @return int Total number of SQL users for a specific domain
  */
-function get_domain_running_sqlu_acc_cnt($db, $domain_id)
+function get_domain_running_sqlu_acc_cnt($domain_id)
 {
     $query = "
 		SELECT DISTINCT
@@ -480,7 +470,7 @@ function get_domain_running_sqlu_acc_cnt($db, $domain_id)
 			`t2`.`sqld_id` = `t1`.`sqld_id`
 		;
 	";
-    $stmt = exec_query($db, $query, $domain_id);
+    $stmt = exec_query($query, $domain_id);
 
     return $stmt->recordCount();
 }
@@ -489,33 +479,31 @@ function get_domain_running_sqlu_acc_cnt($db, $domain_id)
  * Returns both total number of database and SQL user that belong to a specific
  * domain.
  *
- * @param  iMSCP_Database $db Database instance
  * @param  int $domain_id     Domain unique identifier
  * @return array              An array where the first item is the Database total
  *                            number, and the second the SQL users total number.
  */
-function get_domain_running_sql_acc_cnt($db, $domain_id)
+function get_domain_running_sql_acc_cnt($domain_id)
 {
     return array(
-        get_domain_running_sqld_acc_cnt($db, $domain_id),
-        get_domain_running_sqlu_acc_cnt($db, $domain_id));
+        get_domain_running_sqld_acc_cnt($domain_id),
+        get_domain_running_sqlu_acc_cnt($domain_id));
 }
 
 /**
  * Must be documented.
  *
- * @param  iMSCP_Database $db Database instance
  * @param  int $domain_id Domain unique identifier
  * @return array
  */
-function get_domain_running_props_cnt($db, $domain_id)
+function get_domain_running_props_cnt($domain_id)
 {
-    $sub_cnt = get_domain_running_sub_cnt($db, $domain_id);
-    $als_cnt = get_domain_running_als_cnt($db, $domain_id);
+    $sub_cnt = get_domain_running_sub_cnt($domain_id);
+    $als_cnt = get_domain_running_als_cnt($domain_id);
 
-    list($mail_acc_cnt,,,,) = get_domain_running_mail_acc_cnt($db, $domain_id);
-    list($ftp_acc_cnt,,,) = get_domain_running_ftp_acc_cnt($db, $domain_id);
-    list($sqld_acc_cnt, $sqlu_acc_cnt) = get_domain_running_sql_acc_cnt($db, $domain_id);
+    list($mail_acc_cnt,,,,) = get_domain_running_mail_acc_cnt($domain_id);
+    list($ftp_acc_cnt,,,) = get_domain_running_ftp_acc_cnt($domain_id);
+    list($sqld_acc_cnt, $sqlu_acc_cnt) = get_domain_running_sql_acc_cnt($domain_id);
 
     return array($sub_cnt, $als_cnt, $mail_acc_cnt, $ftp_acc_cnt, $sqld_acc_cnt,
                  $sqlu_acc_cnt);
@@ -524,14 +512,13 @@ function get_domain_running_props_cnt($db, $domain_id)
 /**
  * Return domain unique identifier that belong to a specific user account.
  *
- * @param  iMSCP_Database $db Database instance
  * @param  in $user_id User unique identifier
  * @return int Unique identifier of a user's domain
  */
-function get_user_domain_id($db, $user_id)
+function get_user_domain_id($user_id)
 {
     $query = "SELECT `domain_id` FROM `domain` WHERE `domain_admin_id` = ?;";
-    $stmt = exec_query($db, $query, $user_id);
+    $stmt = exec_query($query, $user_id);
 
     return $stmt->fields['domain_id'];
 }
@@ -572,11 +559,10 @@ function user_trans_mail_type($mail_type)
 /**
  * Count SQL user by name.
  *
- * @param iMSCP_Database $db Database instance
  * @param string $sqlu_name SQL user name to match against
  * @return int
  */
-function count_sql_user_by_name($db, $sqlu_name)
+function count_sql_user_by_name($sqlu_name)
 {
     $query = "
 		SELECT
@@ -587,7 +573,7 @@ function count_sql_user_by_name($db, $sqlu_name)
 			`sqlu_name` = ?
 		;
 	";
-    $stmt = exec_query($db, $query, $sqlu_name);
+    $stmt = exec_query($query, $sqlu_name);
 
     return $stmt->fields['cnt'];
 }
@@ -600,7 +586,7 @@ function count_sql_user_by_name($db, $sqlu_name)
  * @param  int $db_user_id Sql user unique identifier
  * @return
  */
-function sql_delete_user($db, $domain_id, $db_user_id)
+function sql_delete_user($domain_id, $db_user_id)
 {
     $query = "
 		SELECT
@@ -616,7 +602,7 @@ function sql_delete_user($db, $domain_id, $db_user_id)
 			`t1`.`sqlu_id` = ?
 		;
 	";
-    $stmt = exec_query($db, $query, array($domain_id, $db_user_id));
+    $stmt = exec_query($query, array($domain_id, $db_user_id));
 
     if (!$stmt->recordCount()) {
         if ($_SESSION['user_type'] === 'admin'
@@ -629,37 +615,37 @@ function sql_delete_user($db, $domain_id, $db_user_id)
 
     // remove from i-MSCP sql_user table.
     $query = 'DELETE FROM `sql_user` WHERE `sqlu_id` = ?;';
-    exec_query($db, $query, $db_user_id);
+    exec_query($query, $db_user_id);
 
     update_reseller_c_props(get_reseller_id($domain_id));
 
     $db_name = quoteIdentifier($stmt->fields['sqld_name']);
     $db_user_name = $stmt->fields['sqlu_name'];
 
-    if (count_sql_user_by_name($db, $stmt->fields['sqlu_name']) == 0) {
+    if (count_sql_user_by_name($stmt->fields['sqlu_name']) == 0) {
         // revoke grants on global level, if any;
         $query = "REVOKE ALL ON *.* FROM ?@'%';";
-        exec_query($db, $query, $db_user_name);
+        exec_query($query, $db_user_name);
 
         $query = "REVOKE ALL ON *.* FROM ?@localhost;";
-        exec_query($db, $query, $db_user_name);
+        exec_query($query, $db_user_name);
 
         // delete user record from mysql.user table;
         $query = "DROP USER ?@'%';";
-        exec_query($db, $query, $db_user_name);
+        exec_query($query, $db_user_name);
 
         $query = "DROP USER ?@'localhost';";
-        exec_query($db, $query, $db_user_name);
+        exec_query($query, $db_user_name);
 
         // flush privileges.
         $query = "FLUSH PRIVILEGES;";
-        exec_query($db, $query);
+        exec_query($query);
     } else {
         $query = "REVOKE ALL ON $db_name.* FROM ?@'%';";
-        exec_query($db, $query, $db_user_name);
+        exec_query($query, $db_user_name);
 
         $query = "REVOKE ALL ON $db_name.* FROM ?@localhost;";
-        exec_query($db, $query, $db_user_name);
+        exec_query($query, $db_user_name);
     }
 }
 
@@ -711,12 +697,11 @@ function check_ftp_perms($ftp_acc)
 /**
  * Deletes a SQL database.
  *
- * @param  iMSCP_Database $db Database instance
  * @param  int $domain_id Domain unique identifier
  * @param  int $database_id Databse unique identifier
  * @return
  */
-function delete_sql_database($db, $domain_id, $database_id)
+function delete_sql_database($domain_id, $database_id)
 {
     $query = "
 		SELECT
@@ -729,7 +714,7 @@ function delete_sql_database($db, $domain_id, $database_id)
 			`sqld_id` = ?
 		;
 	";
-    $stmt = exec_query($db, $query, array($domain_id, $database_id));
+    $stmt = exec_query($query, array($domain_id, $database_id));
 
     if (!$stmt->recordCount()) {
         if ($_SESSION['user_type'] === 'admin'
@@ -759,22 +744,22 @@ function delete_sql_database($db, $domain_id, $database_id)
 			`t1`.`sqld_id` = ?
 		;
 	";
-    $stmt = exec_query($db, $query, array($domain_id, $database_id));
+    $stmt = exec_query($query, array($domain_id, $database_id));
 
     if (!$stmt->recordCount()) {
         while (!$stmt->EOF) {
             $db_user_id = $stmt->fields['db_user_id'];
-            sql_delete_user($db, $domain_id, $db_user_id);
+            sql_delete_user($domain_id, $db_user_id);
             $stmt->moveNext();
         }
     }
 
-    exec_query($db, "DROP DATABASE IF EXISTS $db_name;");
+    exec_query("DROP DATABASE IF EXISTS $db_name;");
 
     write_log($_SESSION['user_logged'] . ': delete SQL database: ' . tohtml($db_name));
 
     $query = "DELETE FROM sql_database` WHERE `domain_id` = ? AND `sqld_id` = ?;";
-    exec_query($db, $query, array($domain_id, $database_id));
+    exec_query($query, array($domain_id, $database_id));
 
     update_reseller_c_props(get_reseller_id($database_id));
 }
@@ -809,9 +794,6 @@ function get_gender_by_code($code, $nullOnBad = false)
  */
 function mount_point_exists($domain_id, $mnt_point)
 {
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     $query = "
 		SELECT
 			`t1`.`domain_id`, `t2`.`alias_mount`, `t3`.`subdomain_mount`,
@@ -843,8 +825,8 @@ function mount_point_exists($domain_id, $mnt_point)
 		;
 	";
 
-    $stmt = exec_query($db, $query,
-                       array($domain_id, $mnt_point, $mnt_point, $mnt_point));
+    $stmt = exec_query($query,  array(
+                                     $domain_id, $mnt_point, $mnt_point, $mnt_point));
 
     if ($stmt->recordCount()) {
         return true;

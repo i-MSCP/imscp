@@ -79,7 +79,6 @@ function generate_page($tpl) {
 	global $month, $year;
 
 	$cfg = iMSCP_Registry::get('config');
-	$sql = iMSCP_Registry::get('db');
 
 	$start_index = 0;
 
@@ -122,10 +121,10 @@ function generate_page($tpl) {
 		;
     ";
 
-	$rs = exec_query($sql, $count_query);
+	$rs = exec_query($count_query);
 	$records_count = $rs->fields['cnt'];
 
-	$rs = exec_query($sql, $query);
+	$rs = exec_query($query);
 
 	if ($rs->rowCount() == 0) {
 

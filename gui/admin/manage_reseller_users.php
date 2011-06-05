@@ -49,7 +49,7 @@ $tpl->define_dynamic('src_reseller_option', 'src_reseller');
 $tpl->define_dynamic('dst_reseller', 'page');
 $tpl->define_dynamic('dst_reseller_option', 'dst_reseller');
 
-function gen_user_table(&$tpl, &$sql) {
+function gen_user_table($tpl) {
 
 	$cfg = iMSCP_Registry::get('config');
 
@@ -64,7 +64,7 @@ function gen_user_table(&$tpl, &$sql) {
 			`admin_name`
 	";
 
-	$rs = exec_query($sql, $query);
+	$rs = exec_query($query);
 
 	if ($rs->recordCount() == 0) {
 		set_page_message(tr('Reseller or user list is empty!'), 'error');
@@ -141,7 +141,7 @@ function gen_user_table(&$tpl, &$sql) {
 				`admin_name`
 		";
 		$not_in = implode(',', $all_resellers);
-		$rs = exec_query($sql, $query, $not_in);
+		$rs = exec_query($query, $not_in);
 	} else {
 		$query = "
 			SELECT
@@ -155,7 +155,7 @@ function gen_user_table(&$tpl, &$sql) {
 			ORDER BY
 				`admin_name`
 		";
-		$rs = exec_query($sql, $query, $reseller_id);
+		$rs = exec_query($query, $reseller_id);
 	}
 
 
@@ -195,7 +195,7 @@ function gen_user_table(&$tpl, &$sql) {
 	}
 }
 
-function update_reseller_user($sql) {
+function update_reseller_user() {
 
 	if (isset($_POST['uaction'])
 		&& $_POST['uaction'] === 'move_user'
@@ -205,7 +205,6 @@ function update_reseller_user($sql) {
 }
 
 function check_user_data() {
-	$sql = iMSCP_Registry::get('db');
 
 	$query = "
 		SELECT
@@ -218,7 +217,7 @@ function check_user_data() {
 			`admin_name`
 	";
 
-	$rs = exec_query($sql, $query);
+	$rs = exec_query($query);
 
 	$selected_users = '';
 
@@ -256,7 +255,7 @@ function check_user_data() {
 			`reseller_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, $dst_reseller);
+	$rs = exec_query($query, $dst_reseller);
 
 	$mru_error = '_off_';
 
@@ -278,8 +277,6 @@ function check_user_data() {
 }
 
 function manage_reseller_limits($dest_reseller, $src_reseller, $users, &$err) {
-
-	$sql = iMSCP_Registry::get('db');
 
 	list($dest_dmn_current, $dest_dmn_max,
 		$dest_sub_current, $dest_sub_max,
@@ -315,7 +312,7 @@ function manage_reseller_limits($dest_reseller, $src_reseller, $users, &$err) {
 				`domain_admin_id` = ?
 		";
 
-		$rs = exec_query($sql, $query, $users_array[$i]);
+		$rs = exec_query($query, $users_array[$i]);
 
 		$domain_name = $rs->fields['domain_name'];
 
@@ -376,10 +373,10 @@ function manage_reseller_limits($dest_reseller, $src_reseller, $users, &$err) {
 
 	for ($i = 0, $cnt_users_array = count($users_array) - 1; $i < $cnt_users_array; $i++) {
 		$query = "UPDATE `admin` SET `created_by` = ? WHERE `admin_id` = ?";
-		exec_query($sql, $query, array($dest_reseller, $users_array[$i]));
+		exec_query($query, array($dest_reseller, $users_array[$i]));
 
 		$query = "UPDATE `domain` SET `domain_created_id` = ? WHERE `domain_admin_id` = ?";
-		exec_query($sql, $query, array($dest_reseller, $users_array[$i]));
+		exec_query($query, array($dest_reseller, $users_array[$i]));
 	}
 
 	return true;
@@ -458,8 +455,6 @@ function calculate_reseller_dvals(&$dest, $dest_max, &$src, $src_max, $umax, &$e
 
 function check_ip_sets($dest, $users, &$err) {
 
-	$sql = iMSCP_Registry::get('db');
-
 	$users_array = explode(";", $users);
 
 	for ($i = 0, $cnt_users_array = count($users_array); $i < $cnt_users_array; $i++) {
@@ -472,7 +467,7 @@ function check_ip_sets($dest, $users, &$err) {
 				`domain_admin_id` = ?
 		";
 
-		$rs = exec_query($sql, $query, $users_array[$i]);
+		$rs = exec_query($query, $users_array[$i]);
 
 		$domain_ip_id = $rs->fields['domain_ip_id'];
 
@@ -509,9 +504,9 @@ $tpl->assign(
 gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
 gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_users_manage.tpl');
 
-update_reseller_user($sql);
+update_reseller_user();
 
-gen_user_table($tpl, $sql);
+gen_user_table($tpl);
 
 $tpl->assign(
 	array(

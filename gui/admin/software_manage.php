@@ -52,7 +52,7 @@ function formatFilesize($byte) {
 	return $byte . ' ' . $string;
 }
 
-function get_avail_software ($tpl, $sql) {
+function get_avail_software($tpl) {
 	$query="
 		SELECT
 			`a`.`software_id` as `id`, `a`.`software_name` as `name`, `a`.`software_version` as `version`,
@@ -72,7 +72,7 @@ function get_avail_software ($tpl, $sql) {
 			`a`.`software_name` ASC
 		;
 	";
-	$rs = exec_query($sql, $query, array());
+	$rs = exec_query($query, array());
 	if ($rs->recordCount() > 0) {
 		while(!$rs->EOF) {
 			$import_url = "software_import.php?id=".$rs->fields['id'];
@@ -111,7 +111,7 @@ function get_avail_software ($tpl, $sql) {
 	return $rs->recordCount();
 }
 
-function get_avail_softwaredepot ($tpl, $sql) {
+function get_avail_softwaredepot ($tpl) {
 
 	/**
  	 * @var $cfg iMSCP_Config_Handler_File
@@ -137,14 +137,14 @@ function get_avail_softwaredepot ($tpl, $sql) {
 		;
 	";
 
-	$rs = exec_query($sql, $query, array());
+	$rs = exec_query($query, array());
 
 	if ($rs->recordCount() > 0) {
 		while(!$rs->EOF) {
 			if($rs->fields['swstatus'] == 'ok' || $rs->fields['swstatus'] == 'ready') {
 				if($rs->fields['swstatus'] == 'ready') {
 					$updatequery = "UPDATE `web_software` SET `software_status` = 'ok' WHERE `software_id` = ?;";
-					exec_query($sql, $updatequery, $rs->fields['id']);
+					exec_query($updatequery, $rs->fields['id']);
 					set_page_message(tr('Package installed successfully!'), 'success');
 				}
 
@@ -280,7 +280,7 @@ function get_avail_softwaredepot ($tpl, $sql) {
 								;	
 							";
 
-							$rs_res = exec_query($sql, $query, $exist_software_id);
+							$rs_res = exec_query($query, $exist_software_id);
 							set_page_message(
 								tr(
 									'This package already exist in the depot of the reseller "%1$s"!',
@@ -295,7 +295,7 @@ function get_avail_softwaredepot ($tpl, $sql) {
 
 						@unlink($del_path);
 						$delete="DELETE FROM `web_software` WHERE `software_id` = ?;";
-						exec_query($sql, $delete, $rs->fields['id']);
+						exec_query($delete, $rs->fields['id']);
 					}
 			}
 
@@ -311,7 +311,7 @@ function get_avail_softwaredepot ($tpl, $sql) {
 	return $rs->recordCount();
 }
 
-function get_reseller_software ($tpl, $sql) {
+function get_reseller_software ($tpl) {
 
 	$query="
 		SELECT
@@ -329,12 +329,12 @@ function get_reseller_software ($tpl, $sql) {
 		;
 	";
 
-	$rs = exec_query($sql, $query, array());
+	$rs = exec_query($query, array());
 
 	if ($rs->recordCount() > 0) {
 		while(!$rs->EOF) {
 			$query="SELECT `software_id` FROM `web_software` WHERE `reseller_id` = ?;";
-			$rssoftware = exec_query($sql, $query, $rs->fields['reseller_id']);
+			$rssoftware = exec_query($query, $rs->fields['reseller_id']);
 			$software_ids = array();
 
 			while ($data = $rssoftware->fetchRow()) {
@@ -355,7 +355,7 @@ function get_reseller_software ($tpl, $sql) {
 				;
 			";
 
-			$rscountswdepot = exec_query($sql, $query, $rs->fields['reseller_id']);
+			$rscountswdepot = exec_query($query, $rs->fields['reseller_id']);
 
 			$query="
 				SELECT
@@ -369,7 +369,7 @@ function get_reseller_software ($tpl, $sql) {
 				;
 			";
 
-			$rscountwaiting = exec_query($sql, $query, $rs->fields['reseller_id']);
+			$rscountwaiting = exec_query($query, $rs->fields['reseller_id']);
 
 			$query="
 				SELECT
@@ -383,7 +383,7 @@ function get_reseller_software ($tpl, $sql) {
 				;
 			";
 
-			$rscountactivated = exec_query($sql, $query, $rs->fields['reseller_id']);
+			$rscountactivated = exec_query($query, $rs->fields['reseller_id']);
 
 			if(count($software_ids) > 0){
 				$query="
@@ -399,7 +399,7 @@ function get_reseller_software ($tpl, $sql) {
 						`software_status` = 'ok'
 					;
 				";
-				$rscountin_use = exec_query($sql, $query, array());
+				$rscountin_use = exec_query($query, array());
 				$sw_in_use = $rscountin_use->fields['in_use'];
 			}else{
 				$sw_in_use = 0;
@@ -439,11 +439,6 @@ check_login(__FILE__);
  * @var $cfg iMSCP_Config_Handler_File
  */
 $cfg = iMSCP_Registry::get('config');
-
-/**
- * @var $sql iMSCP_Database
- */
-$sql = iMSCP_Registry::get('db');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/software_manage.tpl');
@@ -557,7 +552,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 			";
 
 		$rs = exec_query(
-			$sql, $query,
+			$query,
 				array(
 					$user_id, 'waiting_for_input', 'waiting_for_input', 'waiting_for_input',  'waiting_for_input', 0,
 					$filename, 'waiting_for_input', 'waiting_for_input', 'waiting_for_input', 'waiting_for_input', 1,
@@ -565,7 +560,9 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 				)
 		);
 
-		$sw_id = $sql->insertId();
+        /** @var $db iMSCP_Database */
+        $db = iMSCP_Registry::get('db');
+		$sw_id = $db->insertId();
 		if ($file == 0) {
 			$dest_dir = $cfg->GUI_SOFTWARE_DEPOT_DIR . '/' . $filename . '-' . $sw_id.$extension;
 
@@ -575,9 +572,8 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 
 			if (!move_uploaded_file($_FILES['sw_file']['tmp_name'], $dest_dir)) {
 				// Delete software entry
-				$query = "
-					DELETE FROM `web_software` WHERE `software_id` = ?;";
-				exec_query($sql, $query, array($sw_id));
+				$query = "DELETE FROM `web_software` WHERE `software_id` = ?;";
+				exec_query($query, array($sw_id));
 
 				$sw_wget = '';
 
@@ -618,7 +614,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 				if($remote_file_size < 1){
 					// Delete software entry
 					$query = "DELETE FROM `web_software` WHERE `software_id` = ?;";
-					exec_query($sql, $query, $sw_id);
+					exec_query($query, $sw_id);
 					$show_max_remote_filesize = formatFilesize($cfg->MAX_REMOTE_FILESIZE);
 					set_page_message(
 						tr(
@@ -632,7 +628,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 				} elseif($remote_file_size > $cfg->MAX_REMOTE_FILESIZE) {
 					// Delete software entry
 					$query = "DELETE FROM `web_software` WHERE `software_id` = ?;";
-					exec_query($sql, $query, $sw_id);
+					exec_query($query, $sw_id);
 					$show_max_remote_filesize = formatFilesize($cfg->MAX_REMOTE_FILESIZE);
 					set_page_message(
 						tr(
@@ -652,7 +648,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
 					} else {
 						// Delete software entry
 						$query = "DELETE FROM `web_software` WHERE`software_id` = ?;";
-						exec_query($sql, $query, $sw_id);
+						exec_query($query, $sw_id);
 						set_page_message(tr('Error: Remote File not found!'), 'error');
 						$upload = 0;
 					}
@@ -660,7 +656,7 @@ if (isset($_POST['upload']) && $_SESSION['software_upload_token'] == $_POST['sen
    			} else {
 				// Delete software entry
 				$query = "DELETE FROM `web_software` WHERE `software_id` = ?;";
-				exec_query($sql, $query, $sw_id);
+				exec_query($query, $sw_id);
 				set_page_message(tr('Error: Could not upload the file. File not found!'), 'error');
 				$upload = 0;
 			}
@@ -690,9 +686,9 @@ $tpl->assign(
 		)
 );
 
-$sw_cnt = get_avail_software($tpl, $sql);
-$swdepot_cnt = get_avail_softwaredepot($tpl, $sql);
-$res_cnt = get_reseller_software($tpl, $sql);
+$sw_cnt = get_avail_software($tpl);
+$swdepot_cnt = get_avail_softwaredepot($tpl);
+$res_cnt = get_reseller_software($tpl);
 
 $tpl->assign(
 	array(

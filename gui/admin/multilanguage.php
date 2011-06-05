@@ -53,18 +53,17 @@ function showLang($tpl) {
 	 */
 	$cfg = iMSCP_Registry::get('config');
 
-	/**
-	 * @var $sql iMSCP_Database
-	 */
-	$sql = iMSCP_Registry::get('db');
 
-	$tables = $sql->metaTables();
+	/** @var $db iMSCP_Database */
+	$db = iMSCP_Registry::get('db');
+
+	$tables = $db->metaTables();
 
 	$nlang = count($tables);
 
 	$row = 1;
 
-	list($user_def_lang) = get_user_gui_props($sql, $_SESSION['user_id']);
+	list($user_def_lang) = get_user_gui_props($_SESSION['user_id']);
 
 	$usr_def_lng = explode('_', $user_def_lang);
 
@@ -89,7 +88,7 @@ function showLang($tpl) {
 			'imscp_languageRevision') as $msgstr) {
 
 			$stmt[] = exec_query(
-				$sql, "SELECT `msgstr` FROM `{$tables[$i]}` WHERE `msgid` = '$msgstr'
+				"SELECT `msgstr` FROM `{$tables[$i]}` WHERE `msgid` = '$msgstr'
 			");
 		}
 
@@ -154,7 +153,7 @@ function showLang($tpl) {
 		// Retrieving number of translated messages
 		$query = "SELECT COUNT(`msgid`) AS `cnt` FROM `{$tables[$i]}`;";
 
-		$stmt = exec_query($sql, $query);
+		$stmt = exec_query($query);
 
 		$tpl->assign(
 			array(
@@ -229,12 +228,13 @@ function importLanguageFile() {
                         }
 
 
-		$sql = iMSCP_Registry::get('db');
+        /** @var $sql iMSCP_Database */
+		$db = iMSCP_Registry::get('db');
 
 		$lang_table = 'lang_' . $ab['imscp_table'];
 		$lang_update = false;
 
-		for ($i = 0, $tables = $sql->metaTables(), $nlang = count($tables) ;
+		for ($i = 0, $tables = $db->metaTables(), $nlang = count($tables) ;
 			$i < $nlang; $i++) {
 
 			if ($lang_table == $tables[$i]) {
@@ -244,7 +244,7 @@ function importLanguageFile() {
 		}
 
 		if ($lang_update) {
-			execute_query($sql, "DROP TABLE IF EXISTS `$lang_table`;");
+			execute_query("DROP TABLE IF EXISTS `$lang_table`;");
 		}
 
 		$query = "
@@ -256,7 +256,7 @@ function importLanguageFile() {
 			) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 		";
 
-		execute_query($sql, $query);
+		execute_query($query);
 
 		foreach ($ab as $msgid => $msgstr) {
 			$query = "
@@ -265,9 +265,7 @@ function importLanguageFile() {
 				) VALUES (?, ?);
 			";
 
-			exec_query(
-				$sql, $query, str_replace("\\n", "\n", array($msgid, $msgstr))
-			);
+			exec_query($query, str_replace("\\n", "\n", array($msgid, $msgstr)));
 		}
 
 		if (!$lang_update) {

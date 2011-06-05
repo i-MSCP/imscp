@@ -130,7 +130,6 @@ function gen_hp_message() {
 function gen_hp_table(&$tpl, $reseller_id) {
 
 	$cfg = iMSCP_Registry::get('config');
-	$sql = iMSCP_Registry::get('db');
 
 	$query = "
 		SELECT
@@ -146,7 +145,7 @@ function gen_hp_table(&$tpl, $reseller_id) {
 		ORDER BY
 			t1.`name`
 	";
-	$rs = exec_query($sql, $query, 'admin');
+	$rs = exec_query($query, 'admin');
 	$tr_edit = tr('Edit');
 
 	if ($rs->rowCount() == 0) {

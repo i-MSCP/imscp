@@ -60,7 +60,7 @@ $query = "
 		`domain_ip_id` = ?
 ";
 
-$rs = exec_query($sql, $query, $delete_id);
+$rs = exec_query($query, $delete_id);
 
 if ($rs->fields['dcnt'] > 0) {
 	// ERROR - we have domain(s) that use this IP
@@ -72,7 +72,7 @@ if ($rs->fields['dcnt'] > 0) {
 // check if the IP is assigned to reseller
 $query = "SELECT `reseller_ips` FROM `reseller_props`";
 
-$res = exec_query($sql, $query);
+$res = exec_query($query);
 
 while (($data = $res->fetchRow())) {
 	if (preg_match("/$delete_id;/", $data['reseller_ips'])) {
@@ -90,7 +90,7 @@ $query = "
 		`ip_id` = ?
 ";
 
-$rs = exec_query($sql, $query, $delete_id);
+$rs = exec_query($query, $delete_id);
 
 $user_logged = $_SESSION['user_logged'];
 
@@ -109,7 +109,7 @@ $query = "
 	LIMIT 1
 ";
 
-$rs = exec_query($sql, $query, array($cfg->ITEM_DELETE_STATUS, $delete_id));
+$rs = exec_query($query, array($cfg->ITEM_DELETE_STATUS, $delete_id));
 
 send_request();
 

@@ -51,10 +51,8 @@
  */
 function get_user_name($user_id)
 {
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
     $query = "SELECT `admin_name` FROM `admin` WHERE `admin_id` = ?;";
-    $rs = exec_query($db, $query, $user_id);
+    $rs = exec_query($query, $user_id);
 
     return $rs->fields('admin_name');
 }
@@ -75,11 +73,8 @@ function generate_user_props($domainId)
      /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     $query = "SELECT * FROM `domain` WHERE `domain_id` = ?;";
-    $rs = exec_query($db, $query, $domainId);
+    $rs = exec_query($query, $domainId);
 
     if ($rs->rowCount() == 0) {
         return array_fill(0, 14, 0);
@@ -166,9 +161,6 @@ function update_user_props($user_id, $props)
     /** @var $cfg iMSCP_Config_Handler_File $cfg **/
     $cfg = iMSCP_Registry::get('config');
 
-    /** @var $db abook_database */
-    $db = iMSCP_Registry::get('db');
-
     list(,$sub_max,, $als_max,, $mail_max,, $ftp_max,, $sql_db_max,,$sql_user_max,
         $traff_max, $disk_max, $domain_php, $domain_cgi,, $domain_dns,
         $domain_software_allowed) = explode(';', $props);
@@ -194,7 +186,7 @@ function update_user_props($user_id, $props)
 		;
 	";
 
-    $rs = exec_query($db, $query, array(
+    $rs = exec_query($query, array(
                                        $user_id, $domain_php, $domain_cgi,
                                        $domain_dns, $domain_software_allowed));
 
@@ -222,7 +214,7 @@ function update_user_props($user_id, $props)
 				`domain_id` = ?
 			;
 		";
-        exec_query($db, $query, array(
+        exec_query($query, array(
                                      $domain_last_modified, $mail_max, $ftp_max,
                                      $traff_max, $sql_db_max, $sql_user_max,
                                      $update_status, $als_max, $sub_max,
@@ -240,7 +232,7 @@ function update_user_props($user_id, $props)
 				`domain_id` = ?
 			;
 		";
-        exec_query($db, $query, array($update_status, $user_id));
+        exec_query($query, array($update_status, $user_id));
 
         // let's update all subdomains for this domain
         $query = "
@@ -252,7 +244,7 @@ function update_user_props($user_id, $props)
 				`domain_id` = ?
 			;
 		";
-        exec_query($db, $query, array($update_status, $user_id));
+        exec_query($query, array($update_status, $user_id));
 
         // let's update all alias subdomains for this domain
         $query = "
@@ -271,7 +263,7 @@ function update_user_props($user_id, $props)
 				)
 			;
 		";
-        exec_query($db, $query, array($update_status, $user_id));
+        exec_query($query, array($update_status, $user_id));
 
         // Send request to the i-MSCP daemon
         send_request();
@@ -291,7 +283,7 @@ function update_user_props($user_id, $props)
 				domain_id = ?
 			;
 		";
-        exec_query($db, $query, array(
+        exec_query($query, array(
                                      $sub_max, $als_max, $mail_max, $ftp_max,
                                      $sql_db_max,$sql_user_max, $traff_max, $disk_max,
                                      $user_id));
@@ -307,9 +299,6 @@ function update_user_props($user_id, $props)
  */
 function update_expire_date($user_id, $domain_new_expire)
 {
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     $query = "
 		UPDATE
 			`domain`
@@ -319,20 +308,19 @@ function update_expire_date($user_id, $domain_new_expire)
 			`domain_id` = ?
 		;
 	";
-    exec_query($db, $query, array($domain_new_expire, $user_id));
+    exec_query($query, array($domain_new_expire, $user_id));
 }
 
 /**
  * Change domain status (eg. Schedule an action to be performed by engine).
  *
- * @param  iMSCP_Database $db iMSCP_Database instance
  * @param  int $domain_id Domain unique identifier
  * @param  string $domain_name Domain name
  * @param  string $action Action to schedule
  * @param  string $location Location to go back after action scheduling
  * @return void
  */
-function change_domain_status($db, $domain_id, $domain_name, $action, $location)
+function change_domain_status($domain_id, $domain_name, $action, $location)
 {
      /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
@@ -354,7 +342,7 @@ function change_domain_status($db, $domain_id, $domain_name, $action, $location)
             `domain_id` = ?
         ;
     ";
-    $rs = exec_query($db, $query, $domain_id);
+    $rs = exec_query($query, $domain_id);
 
     while (!$rs->EOF) {
         $mail_id = $rs->fields['mail_id'];
@@ -405,13 +393,13 @@ function change_domain_status($db, $domain_id, $domain_name, $action, $location)
                 `mail_id` = ?
             ;
         ";
-        exec_query($db, $query, array($mail_pass, $mail_status, $mail_id));
+        exec_query($query, array($mail_pass, $mail_status, $mail_id));
         $rs->moveNext();
     }
 
     $query = "UPDATE `domain` SET `domain_status` = ? WHERE `domain_id` = ?;";
 
-    exec_query($db, $query, array($new_status, $domain_id));
+    exec_query($query, array($new_status, $domain_id));
     send_request();
 
     // let's get back to user overview after the system changes are finished
@@ -449,9 +437,6 @@ function delete_domain($domain_id, $goto, $breseller = false)
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     // Get uid and gid of domain user
     $query = "
 		SELECT
@@ -467,9 +452,9 @@ function delete_domain($domain_id, $goto, $breseller = false)
     if ($breseller) {
         $reseller_id = $_SESSION['user_id'];
         $query .= " AND `domain_created_id` = ?";
-        $res = exec_query($db, $query, array($domain_id, $reseller_id));
+        $res = exec_query($query, array($domain_id, $reseller_id));
     } else {
-        $res = exec_query($db, $query, $domain_id);
+        $res = exec_query($query, $domain_id);
     }
 
     $data = $res->fetchRow();
@@ -490,7 +475,7 @@ function delete_domain($domain_id, $goto, $breseller = false)
 
     // Mail users:
     $query = "UPDATE `mail_users` SET `status` = ? WHERE `domain_id` = ?;";
-    exec_query($db, $query, array($cfg->ITEM_DELETE_STATUS, $domain_id));
+    exec_query($query, array($cfg->ITEM_DELETE_STATUS, $domain_id));
 
     // Delete all protected areas related data (areas, groups and users)
     $query = "
@@ -508,13 +493,13 @@ function delete_domain($domain_id, $goto, $breseller = false)
 			`dmn`.`domain_id` = ?
 		;
 	";
-    exec_query($db, $query, $domain_id);
+    exec_query($query, $domain_id);
 
     // Delete subdomain aliases:
     $alias_a = array();
 
     $query = "SELECT `alias_id` FROM `domain_aliasses` WHERE `domain_id` = ?;";
-    $res = exec_query($db, $query, $domain_id);
+    $res = exec_query($query, $domain_id);
 
     while (!$res->EOF) {
         $alias_a[] = $res->fields['alias_id'];
@@ -531,15 +516,15 @@ function delete_domain($domain_id, $goto, $breseller = false)
                 `alias_id` IN (";
         $query .= implode(',', $alias_a);
         $query .= ")";
-        exec_query($db, $query, $cfg->ITEM_DELETE_STATUS);
+        exec_query($query, $cfg->ITEM_DELETE_STATUS);
     }
 
     // Delete SQL databases and users
     $query = "SELECT `sqld_id` FROM `sql_database` WHERE `domain_id` = ?;";
-    $res = exec_query($db, $query, $domain_id);
+    $res = exec_query($query, $domain_id);
 
     while (!$res->EOF) {
-        delete_sql_database($db, $domain_id, $res->fields['sqld_id']);
+        delete_sql_database($domain_id, $res->fields['sqld_id']);
         $res->moveNext();
     }
 
@@ -553,55 +538,55 @@ function delete_domain($domain_id, $goto, $breseller = false)
             `domain_id` = ?
         ;
     ";
-    exec_query($db, $query, array($cfg->ITEM_DELETE_STATUS, $domain_id));
+    exec_query($query, array($cfg->ITEM_DELETE_STATUS, $domain_id));
 
     // Remove domain traffic
     $query = "DELETE FROM `domain_traffic` WHERE`domain_id` = ?;";
-    exec_query($db, $query, $domain_id);
+    exec_query($query, $domain_id);
 
     // Delete domain DNS entries
     $query = "DELETE FROM `domain_dns` WHERE `domain_id` = ?;";
-    exec_query($db, $query, $domain_id);
+    exec_query($query, $domain_id);
 
     // Set domain deletion status
     $query = "UPDATE `domain` SET `domain_status` = 'delete' WHERE `domain_id` = ?;";
-    exec_query($db, $query, $domain_id);
+    exec_query($query, $domain_id);
 
     // Set domain subdomains deletion status
     $query = "UPDATE `subdomain` SET `subdomain_status` = ? WHERE `domain_id` = ?;";
-    exec_query($db, $query, array($cfg->ITEM_DELETE_STATUS, $domain_id));
+    exec_query($query, array($cfg->ITEM_DELETE_STATUS, $domain_id));
 
     // --- Send request to the daemon
     send_request();
 
     // Delete FTP users:
     $query = "DELETE FROM `ftp_users` WHERE `uid` = ?;";
-    exec_query($db, $query, $domain_uid);
+    exec_query($query, $domain_uid);
 
     // Delete FTP groups:
     $query = "DELETE FROM `ftp_group` WHERE `gid` = ?;";
-    exec_query($db, $query, $domain_gid);
+    exec_query($query, $domain_gid);
 
     // Delete i-MSCP login:
     $query = "DELETE FROM `admin` WHERE `admin_id` = ?;";
-    exec_query($db, $query, $domain_admin_id);
+    exec_query($query, $domain_admin_id);
 
     // Delete the quota section:
     $query = "DELETE FROM `quotalimits` WHERE `name` = ?;";
-    exec_query($db, $query, $domain_name);
+    exec_query($query, $domain_name);
 
     // Delete the quota section:
     $query = "DELETE FROM `quotatallies` WHERE `name` = ?;";
-    exec_query($db, $query, $domain_name);
+    exec_query($query, $domain_name);
 
     // Remove support tickets:
     $query = "DELETE FROM `tickets` WHERE ticket_from = ? OR ticket_to = ?;";
-    exec_query($db, $query, array($domain_admin_id, $domain_admin_id));
+    exec_query($query, array($domain_admin_id, $domain_admin_id));
 
     // Delete user gui properties
     $query = "DELETE FROM `user_gui_props` WHERE `user_id` = ?;";
 
-    exec_query($db, $query, $domain_admin_id);
+    exec_query($query, $domain_admin_id);
     write_log($_SESSION['user_logged'] . ': deletes domain ' . $domain_name);
 
     if(isset($reseller_id)) {
@@ -629,15 +614,12 @@ function delete_domain($domain_id, $goto, $breseller = false)
  */
 function sub_records_count($field, $table, $where, $value, $subfield, $subtable, $subwhere, $subgroupname)
 {
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     if ($where != '') {
         $query = "SELECT $field AS `field` FROM $table WHERE $where = ?;";
-        $rs = exec_query($db, $query, $value);
+        $rs = exec_query($query, $value);
     } else {
         $query = "SELECT $field AS `field` FROM $table;";
-        $rs = exec_query($db, $query);
+        $rs = exec_query($query);
     }
 
     $result = 0;
@@ -666,7 +648,7 @@ function sub_records_count($field, $table, $where, $value, $subfield, $subtable,
                     `sqld_id` IN ($sqld_ids)
                 ;
             ";
-            $subres = exec_query($db, $query);
+            $subres = exec_query($query);
             $result = $subres->fields['cnt'];
         } else {
             return $result;
@@ -689,7 +671,7 @@ function sub_records_count($field, $table, $where, $value, $subfield, $subtable,
                 return $result;
             }
 
-            $subres = exec_query($db, $query, $contents);
+            $subres = exec_query($query, $contents);
             $result += $subres->fields['cnt'];
             $rs->moveNext();
         }
@@ -715,17 +697,15 @@ function sub_records_count($field, $table, $where, $value, $subfield, $subtable,
 function sub_records_rlike_count($field, $table, $where, $value, $subfield,
     $subtable, $subwhere, $a, $b)
 {
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
 
     if ($where != '') {
         $query = "SELECT $field AS `field` FROM $table WHERE $where = ?;";
 
-        $rs = exec_query($db, $query, $value);
+        $rs = exec_query($query, $value);
     } else {
         $query = "SELECT $field AS `field` FROM $table;";
 
-        $rs = exec_query($db, $query);
+        $rs = exec_query($query);
     }
 
     $result = 0;
@@ -743,7 +723,7 @@ function sub_records_rlike_count($field, $table, $where, $value, $subfield,
             return $result;
         }
 
-        $subres = exec_query($db, $query, $a . $contents . $b);
+        $subres = exec_query($query, $a . $contents . $b);
         $result += $subres->fields['cnt'];
         $rs->moveNext();
     }
@@ -765,9 +745,6 @@ function sub_records_rlike_count($field, $table, $where, $value, $subfield,
 function update_reseller_props($reseller_id, $props)
 {
     $props = (array)$props;
-
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
 
     if (empty($props)) {
         return null;
@@ -794,7 +771,7 @@ function update_reseller_props($reseller_id, $props)
 		;
 	";
 
-    $res = exec_query($db, $query, array(
+    $res = exec_query($query, array(
                                          $dmn_current, $dmn_max, $sub_current,
                                          $sub_max, $als_current, $als_max,
                                          $mail_current, $mail_max, $ftp_current,
@@ -1105,9 +1082,6 @@ function generate_user_traffic($domainId)
 {
     global $crnt_month, $crnt_year;
 
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     $from_timestamp = mktime(0, 0, 0, $crnt_month, 1, $crnt_year);
 
     if ($crnt_month == 12) {
@@ -1130,7 +1104,7 @@ function generate_user_traffic($domainId)
 		;
 	";
 
-    $rs = exec_query($db, $query, $domainId);
+    $rs = exec_query($query, $domainId);
 
     if ($rs->rowCount() == 0 || $rs->rowCount() > 1) {
         write_log(
@@ -1164,7 +1138,7 @@ function generate_user_traffic($domainId)
 				`dtraff_time` < ?
 			;
 		";
-        $rs1 = exec_query($db, $query, array($domain_id, $from_timestamp, $to_timestamp));
+        $rs1 = exec_query($query, array($domain_id, $from_timestamp, $to_timestamp));
 
         return array(
             $domain_name, $domain_id, $rs1->fields['web'], $rs1->fields['ftp'],
@@ -1206,9 +1180,6 @@ function get_logo($user_id)
      /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     // check which logo we should return:
     $query = "
         SELECT
@@ -1220,7 +1191,7 @@ function get_logo($user_id)
         ;
     ";
 
-    $rs = exec_query($db, $query, $user_id);
+    $rs = exec_query($query, $user_id);
 
     if ($rs->fields['admin_type'] == 'admin') {
         return get_admin_logo($user_id);
@@ -1255,11 +1226,8 @@ function get_admin_logo($user_id)
      /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     $query = "SELECT `logo` FROM `user_gui_props` WHERE `user_id`= ?;";
-    $rs = exec_query($db, $query, $user_id);
+    $rs = exec_query($query, $user_id);
 
     $user_logo = $rs->fields['logo'];
 
@@ -1288,9 +1256,6 @@ function write_log($msg, $level = E_USER_WARNING)
      /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     if (isset($_SERVER['REMOTE_ADDR'])) {
         $client_ip = $_SERVER['REMOTE_ADDR'];
     } else {
@@ -1301,7 +1266,7 @@ function write_log($msg, $level = E_USER_WARNING)
                         ENT_COMPAT, tr('encoding'));
 
     $query = "INSERT INTO `log` (`log_time`,`log_message`) VALUES(NOW(), ?);";
-    exec_query($db, $query, $msg, false);
+    exec_query($query, $msg, false);
 
     $msg = strip_tags(str_replace('<br />', "\n", $msg));
     $send_log_to = $cfg->DEFAULT_ADMIN_ADDRESS;
@@ -1347,7 +1312,7 @@ AUTO_LOG_MSG;
             $query = "INSERT INTO `log` (`log_time`,`log_message`) VALUES(NOW(), ?);";
 
             // Change this to be compatible with PDO Exception only
-            exec_query($db, $query, $log_message, false);
+            exec_query($query, $log_message, false);
         }
     }
 }
@@ -1525,11 +1490,8 @@ function get_reseller_software_permission($tpl, $sql, $reseller_id)
  */
 function get_application_installer_conf()
 {
-    /** @var $sql iMSCP_Database */
-    $sql = iMSCP_Registry::get('db');
-
     $query = "SELECT * FROM `web_software_options`;";
-    $rs = exec_query($sql, $query);
+    $rs = exec_query($query);
 
     return array(
         $rs->fields['use_webdepot'], $rs->fields['webdepot_xml_url'],
@@ -1551,11 +1513,6 @@ function get_application_installer_conf()
 function check_package_is_installed($package_installtype, $package_name,
     $package_version, $package_language, $user_id)
 {
-    /**
-     * @var $sql iMSCP_Database
-     */
-    $db = iMSCP_Registry::get('db');
-
     $query = "
         SELECT
             `admin_type`,
@@ -1566,7 +1523,7 @@ function check_package_is_installed($package_installtype, $package_name,
             `admin_id` = '" . $user_id . "'
         ;
     ";
-    $rs_admin_type = exec_query($db, $query);
+    $rs_admin_type = exec_query($query);
     if ($rs_admin_type->fields['admin_type'] == "admin") {
         $query = "
             SELECT
@@ -1606,7 +1563,7 @@ function check_package_is_installed($package_installtype, $package_name,
             ;
         ";
     }
-    $rs = exec_query($db, $query);
+    $rs = exec_query($query);
     $sw_count_res = $rs->recordCount();
 
     $query = "
@@ -1628,7 +1585,7 @@ function check_package_is_installed($package_installtype, $package_name,
             `software_depot`        = 'yes'
         ;
     ";
-    $rs = exec_query($db, $query);
+    $rs = exec_query($query);
     $sw_count_swdepot = $rs->recordCount();
 
     if ($sw_count_res > 0 || $sw_count_swdepot > 0) {
@@ -1654,9 +1611,6 @@ function check_package_is_installed($package_installtype, $package_name,
  */
 function get_webdepot_software_list($tpl, $user_id)
 {
-    /** @var $sql iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     $query = "
 		SELECT
 			*
@@ -1667,7 +1621,7 @@ function get_webdepot_software_list($tpl, $user_id)
 		    `package_title` ASC
 		;
 	";
-    $rs = exec_query($db, $query);
+    $rs = exec_query($query);
 
     if ($rs->recordCount() > 0) {
         while (!$rs->EOF) {
@@ -1734,9 +1688,6 @@ function get_webdepot_software_list($tpl, $user_id)
  */
 function update_webdepot_software_list($tpl, $XML_URL, $webdepot_last_update)
 {
-    /** @var $sql iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     $opts = array('http' => array('user_agent' => 'PHP libxml agent'));
     $context = stream_context_create($opts);
     libxml_set_streams_context($context);
@@ -1767,7 +1718,7 @@ function update_webdepot_software_list($tpl, $XML_URL, $webdepot_last_update)
                             )
                     ;
                 ";
-                exec_query($db, $query,
+                exec_query($query,
                            array(
                                 utf8_decode(clean_input($output->INSTALL_TYPE)),
                                 utf8_decode(clean_input($output->TITLE)),
@@ -1787,7 +1738,7 @@ function update_webdepot_software_list($tpl, $XML_URL, $webdepot_last_update)
                 `webdepot_last_update` = '" . $XML_FILE->LAST_UPDATE->DATE . "'
             ;
         ";
-        exec_query($db, $updatequery);
+        exec_query($updatequery);
         set_page_message(tr("Websoftware depot list was updated"), 'info');
     } else {
         set_page_message(tr("No update for the websoftware depot list available"), 'warning');
@@ -1816,9 +1767,6 @@ function generate_software_upload_token()
  */
 function get_reseller_sw_installer($reseller_id)
 {
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     $query = "
         SELECT
             `software_allowed`
@@ -1828,7 +1776,7 @@ function get_reseller_sw_installer($reseller_id)
             `reseller_id` = ?
         ;
     ";
-    $stmt = exec_query($db, $query, $reseller_id);
+    $stmt = exec_query($query, $reseller_id);
 
     return $stmt->fields['software_allowed'];
 }
@@ -2044,13 +1992,19 @@ function encrypt_db_password($password)
  *
  * @see iMSCP_Database::execute()
  * @throws iMSCP_Exception_Database
- * @param  iMSCP_Database $db           iMSCP_Database instance
  * @param string $query                 SQL statement to be executed
  * @param array|int|string $parameters  OPTIONAL parameters - See iMSCP_Database::execute()
  * @return iMSCP_Database_ResultSet     An iMSCP_Database_ResultSet object
  */
-function execute_query($db, $query, $parameters = null)
+function execute_query($query, $parameters = null)
 {
+    static $db = null;
+
+    if(null === $db) {
+        /** @var $db iMSCP_Database */
+        $db = iMSCP_Registry::get('db');
+    }
+
     if (null !== $parameters) {
         $parameters = func_get_args();
         array_shift($parameters);
@@ -2075,7 +2029,6 @@ function execute_query($db, $query, $parameters = null)
  * {@link iMSCP_Exception_Writer_Mail writer} is active.
  *
  * @throws iMSCP_Exception_Database
- * @param iMSCP_Database $db        iMSCP_Database Instance
  * @param string $query             SQL statement
  * @param string|int|array $bind    Data to bind to the placeholders
  * @param boolean $failDie          If TRUE, throws an iMSCP_Exception_Database
@@ -2084,8 +2037,15 @@ function execute_query($db, $query, $parameters = null)
  *                                  a result set or FALSE on failure if $failDie is
  *                                  set to FALSE
  */
-function exec_query($db, $query, $bind = null, $failDie = true)
+function exec_query($query, $bind = null, $failDie = true)
 {
+    static $db = null;
+
+    if(null === $db) {
+        /** @var $db iMSCP_Database */
+        $db = iMSCP_Registry::get('db');
+    }
+
     //echo $query . '<br />';
     if (!($stmt = $db->prepare($query)) || !($stmt = $db->execute($stmt, $bind))) {
         if ($failDie) {
@@ -2108,8 +2068,12 @@ function exec_query($db, $query, $bind = null, $failDie = true)
  */
 function quoteIdentifier($identifier)
 {
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
+    static $db = null;
+
+    if(null === $db) {
+        /** @var $db iMSCP_Database */
+        $db = iMSCP_Registry::get('db');
+    }
 
     $quoteIdentifierSymbol = $db->getQuoteIdentifierSymbol();
 
@@ -2174,20 +2138,17 @@ function dump_gui_debug()
  */
 function records_count($table, $where = '', $bind = '')
 {
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     if ($where != '') {
         if ($bind != '') {
             $query = "SELECT COUNT(*) AS `cnt` FROM `$table` WHERE $where = ?;";
-            $rs = exec_query($db, $query, $bind);
+            $rs = exec_query($query, $bind);
         } else {
             $query = "SELECT COUNT(*) AS `cnt` FROM $table WHERE $where;";
-            $rs = exec_query($db, $query);
+            $rs = exec_query($query);
         }
     } else {
         $query = "SELECT COUNT(*) AS `cnt` FROM `$table`;";
-        $rs = exec_query($db, $query);
+        $rs = exec_query($query);
     }
 
     return (int)$rs->fields['cnt'];

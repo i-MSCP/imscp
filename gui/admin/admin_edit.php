@@ -59,9 +59,10 @@ $tpl->assign(
 	)
 );
 
-function update_data(&$sql) {
+function update_data() {
 
 	global $edit_id;
+
 	$cfg = iMSCP_Registry::get('config');
 
 	if (isset($_POST['Submit']) && isset($_POST['uaction']) && $_POST['uaction'] === 'edit_user') {
@@ -102,7 +103,7 @@ function update_data(&$sql) {
 					WHERE
 						`admin_id` = ?
 				";
-				$rs = exec_query($sql, $query, array($fname,
+				$rs = exec_query($query, array($fname,
 						$lname,
 						$firm,
 						$zip,
@@ -170,7 +171,7 @@ function update_data(&$sql) {
 						`admin_id` = ?
 				";
 
-				$rs = exec_query($sql, $query, array($upass,
+				$rs = exec_query($query, array($upass,
 						$fname,
 						$lname,
 						$firm,
@@ -196,7 +197,7 @@ function update_data(&$sql) {
 						`user_name` = ?
 				";
 
-				$rs = exec_query($sql, $query, $admin_name);
+				$rs = exec_query($query, $admin_name);
 				if ($rs->recordCount() != 0) {
 					set_page_message(tr('User session was killed!'));
 					write_log($_SESSION['user_logged'] . " killed " . $admin_name . "'s session because of password change");
@@ -212,7 +213,7 @@ function update_data(&$sql) {
 			if (isset($_POST['send_data']) && !empty($_POST['pass'])) {
 				$query = "SELECT admin_type FROM admin WHERE admin_id='" . addslashes(htmlspecialchars($edit_id)) . "'";
 
-				$res = exec_query($sql, $query);
+				$res = exec_query($query);
 
 				if ($res->fields['admin_type'] == 'admin') {
 					$admin_type = tr('Administrator');
@@ -282,7 +283,7 @@ $query = "
 		`admin_id` = ?
 ";
 
-$rs = exec_query($sql, $query, $edit_id);
+$rs = exec_query($query, $edit_id);
 
 if ($rs->recordCount() <= 0) {
 	user_goto('manage_users.php');
@@ -291,7 +292,7 @@ if ($rs->recordCount() <= 0) {
 gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
 gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_users_manage.tpl');
 
-update_data($sql);
+update_data();
 
 $admin_name = tohtml(decode_idna($rs->fields['admin_name']));
 

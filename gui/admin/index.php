@@ -47,11 +47,6 @@
  */
 function generateSystemMessage($tpl) {
 
-	/**
-	 * @var $sql iMSCP_Database
-	 */
-	$sql = iMSCP_Registry::get('db');
-
 	$userId = $_SESSION['user_id'];
 
 	$query = "
@@ -68,7 +63,7 @@ function generateSystemMessage($tpl) {
 		;
 	";
 
-	$rs = exec_query($sql, $query, $userId);
+	$rs = exec_query($query, $userId);
 
 	$numQuestion = $rs->fields('cnum');
 
@@ -146,14 +141,9 @@ function getUpdateInfo($tpl) {
  */
 function generateServerTraffic($tpl) {
 
-	/**
-	 * @var $sql iMSCP_Database
-	 */
-	$sql = iMSCP_Registry::get('db');
-
 	$query = "SELECT `straff_max`, `straff_warn` FROM `straff_settings`";
 
-	$rs = exec_query($sql, $query);
+	$rs = exec_query($query);
 
 	$straff_max = (($rs->fields['straff_max']) * 1024) * 1024;
 	$fdofmnth = mktime(0, 0, 0, date('m'), 1, date('Y'));
@@ -170,7 +160,7 @@ function generateServerTraffic($tpl) {
 			`traff_time` < ?
 	";
 
-	$rs1 = exec_query($sql, $query, array($fdofmnth, $ldofmnth));
+	$rs1 = exec_query($query, array($fdofmnth, $ldofmnth));
 
 	$traff = $rs1->fields['traffic'];
 
@@ -244,7 +234,7 @@ $tpl->assign(
 gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_general_information.tpl');
 gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_general_information.tpl');
 
-getAdminGeneralInfo($tpl, $sql);
+getAdminGeneralInfo($tpl);
 
 getUpdateInfo($tpl);
 generateSystemMessage($tpl);

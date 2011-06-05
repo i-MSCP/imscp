@@ -35,11 +35,6 @@ check_login(__FILE__);
  */
 $cfg = iMSCP_Registry::get('config');
 
-/**
- * @var $sql iMSCP_Database
- */
-$sql = iMSCP_Registry::get('db');
-
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->ADMIN_TEMPLATE_PATH . '/software_reseller.tpl');
 $tpl->define_dynamic('page_message', 'page');
@@ -63,7 +58,7 @@ if (isset($_GET['id'])){
 	header('Location: software_manage.php');
 }
 
-function get_installed_res_software ($tpl, $sql, $reseller_id) {
+function get_installed_res_software ($tpl, $reseller_id) {
 	$query="
 		SELECT
 			a.`software_id` as id,
@@ -92,7 +87,7 @@ function get_installed_res_software ($tpl, $sql, $reseller_id) {
 			a.`software_type` ASC,
 			a.`software_name` ASC
 	";
-	$rs = exec_query($sql, $query, $reseller_id);
+	$rs = exec_query($query, $reseller_id);
 	if ($rs->recordCount() > 0) {
 		while(!$rs->EOF) {
 				$query2="
@@ -113,7 +108,7 @@ function get_installed_res_software ($tpl, $sql, $reseller_id) {
 					AND
 						`domain`.`domain_id` = `web_software_inst`.`domain_id`
 				";
-				$rs2 = exec_query($sql, $query2, $rs->fields['id']);
+				$rs2 = exec_query($query2, $rs->fields['id']);
 				if($rs2->recordCount() > 0){
 					$swinstalled_domain = tr('This package is installed on following domain(s):');
 					$swinstalled_domain .= "<ul>";
@@ -156,7 +151,7 @@ function get_installed_res_software ($tpl, $sql, $reseller_id) {
 			WHERE
 				`admin_id` = ?
 		";
-		$reseller = exec_query($sql, $query, $reseller_id);
+		$reseller = exec_query($query, $reseller_id);
 		if ($reseller->recordCount() > 0) {
 			$tpl->assign(
 					array(
@@ -174,7 +169,7 @@ function get_installed_res_software ($tpl, $sql, $reseller_id) {
 	return $rs->recordCount();
 }
 
-function get_reseller_software ($tpl, $sql) {
+function get_reseller_software ($tpl) {
 	$query="
 		SELECT
 			t1.`admin_id` as reseller_id,
@@ -190,7 +185,7 @@ function get_reseller_software ($tpl, $sql) {
 		ORDER BY
 			t1.`admin_id` ASC
 	";
-	$rs = exec_query($sql, $query, array());
+	$rs = exec_query($query, array());
 	if ($rs->recordCount() > 0) {
 		while(!$rs->EOF) {
 			$query="
@@ -201,7 +196,7 @@ function get_reseller_software ($tpl, $sql) {
 				WHERE
 					`reseller_id` = ?
 			";
-			$rssoftware = exec_query($sql, $query, $rs->fields['reseller_id']);
+			$rssoftware = exec_query($query, $rs->fields['reseller_id']);
 			$software_ids = array();
 			while ($data = $rssoftware->fetchRow()) {
 				$software_ids[] = $data['software_id'];
@@ -218,7 +213,7 @@ function get_reseller_software ($tpl, $sql) {
 				AND
 					`reseller_id` = ?
 			";
-			$rscountswdepot = exec_query($sql, $query, $rs->fields['reseller_id']);
+			$rscountswdepot = exec_query($query, $rs->fields['reseller_id']);
 			$query="
 				SELECT
 					count(`software_id`) as waiting
@@ -229,7 +224,7 @@ function get_reseller_software ($tpl, $sql) {
 				AND
 					`reseller_id` = ?
 			";
-			$rscountwaiting = exec_query($sql, $query, $rs->fields['reseller_id']);
+			$rscountwaiting = exec_query($query, $rs->fields['reseller_id']);
 			$query="
 				SELECT
 					count(`software_id`) as activated
@@ -239,7 +234,7 @@ function get_reseller_software ($tpl, $sql) {
 				AND
 					`reseller_id` = ?
 			";
-			$rscountactivated = exec_query($sql, $query, $rs->fields['reseller_id']);
+			$rscountactivated = exec_query($query, $rs->fields['reseller_id']);
 			if(count($software_ids) > 0){
 				$query="
 					SELECT
@@ -253,7 +248,7 @@ function get_reseller_software ($tpl, $sql) {
 					AND
 						`software_status` = 'ok'
 				";
-				$rscountin_use = exec_query($sql, $query, array());
+				$rscountin_use = exec_query($query);
 				$sw_in_use = $rscountin_use->fields['in_use'];
 			}else{
 				$sw_in_use = 0;
@@ -289,8 +284,8 @@ $tpl->assign(
 			)
 	);
 
-$software_cnt = get_installed_res_software ($tpl, $sql, $_GET['id']);
-$res_cnt = get_reseller_software ($tpl, $sql, $_GET['id']);
+$software_cnt = get_installed_res_software ($tpl, $_GET['id']);
+$res_cnt = get_reseller_software ($tpl, $_GET['id']);
 
 $tpl->assign(
 		array(

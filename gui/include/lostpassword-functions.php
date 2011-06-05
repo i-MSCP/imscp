@@ -148,9 +148,6 @@ function strRandom($length, $strSessionVar)
  */
 function removeOldKeys($ttl)
 {
-     /** @var $sql iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     $boundary = date('Y-m-d H:i:s', time() - $ttl * 60);
 
     $query = "
@@ -162,7 +159,7 @@ function removeOldKeys($ttl)
             `uniqkey_time` < ?
         ;
     ";
-    exec_query($db, $query, $boundary);
+    exec_query($query, $boundary);
 }
 
 /**
@@ -174,9 +171,6 @@ function removeOldKeys($ttl)
  */
 function setUniqKey($adminName, $uniqueKey)
 {
-     /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     $query = "
         UPDATE
             `admin`
@@ -186,7 +180,7 @@ function setUniqKey($adminName, $uniqueKey)
             `admin_name` = ?
         ;
     ";
-    exec_query($db, $query, array($uniqueKey, date('Y-m-d H:i:s', time()), $adminName));
+    exec_query($query, array($uniqueKey, date('Y-m-d H:i:s', time()), $adminName));
 }
 
 /**
@@ -198,15 +192,12 @@ function setUniqKey($adminName, $uniqueKey)
  */
 function setPassword($uniqueKey, $userPassword)
 {
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     if ($uniqueKey == '') {
         exit;
     }
 
     $query = "UPDATE `admin` SET `admin_pass` = ? WHERE `uniqkey` = ?;";
-    exec_query($db, $query, array(crypt_user_pass($userPassword), $uniqueKey));
+    exec_query($query, array(crypt_user_pass($userPassword), $uniqueKey));
 }
 
 /**
@@ -217,11 +208,8 @@ function setPassword($uniqueKey, $userPassword)
  */
 function uniqueKeyExists($uniqueKey)
 {
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     $query = "SELECT `uniqkey` FROM `admin` WHERE `uniqkey` = ?;";
-    $stmt = exec_query($db, $query, $uniqueKey);
+    $stmt = exec_query($query, $uniqueKey);
 
     return (bool) $stmt->recordCount();
 }
@@ -255,9 +243,6 @@ function sendPassword($uniqueKey)
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     $query = "
         SELECT
             `admin_name`, `created_by`, `fname`, `lname`, `email`
@@ -268,7 +253,7 @@ function sendPassword($uniqueKey)
         ;
     ";
 
-    $stmt = exec_query($db, $query, $uniqueKey);
+    $stmt = exec_query($query, $uniqueKey);
 
     if ($stmt->recordCount()) {
         $adminName = $stmt->fields['admin_name'];
@@ -290,7 +275,7 @@ function sendPassword($uniqueKey)
                 `uniqkey` = ?
             ;
         ";
-        exec_query($db, $query, array('', '', $uniqueKey));
+        exec_query($query, array('', '', $uniqueKey));
 
         if ($createdBy == 0) {
             $createdBy = 1;
@@ -359,9 +344,6 @@ function requestPassword($adminName)
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    /** @var $sql iMSCP_Database */
-    $sql = iMSCP_Registry::get('db');
-
     $query = "
         SELECT
             `created_by`, `fname`, `lname`, `email`
@@ -371,7 +353,7 @@ function requestPassword($adminName)
             `admin_name` = ?
         ;
     ";
-    $stmt = exec_query($sql, $query, $adminName);
+    $stmt = exec_query($query, $adminName);
 
     if (!$stmt->recordCount())
     {

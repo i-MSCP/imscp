@@ -35,11 +35,6 @@ check_login(__FILE__);
  */
 $cfg = iMSCP_Registry::get('config');
 
-/**
- * @var $sql iMSCP_Database
- */
-$sql = iMSCP_Registry::get('db');
-
 if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 	$query="
 		SELECT
@@ -51,7 +46,7 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 		AND
 			`software_active` = 0
 	";
-	$rs = exec_query($sql, $query, $_GET['id']);
+	$rs = exec_query($query, $_GET['id']);
 	if ($rs->recordCount() != 1) {
 		set_page_message(tr('Wrong software id.'), 'error');
 		header('Location: software_manage.php');
@@ -73,7 +68,7 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 		@copy($source_file, $dest_file);
 		@unlink($source_file);
 		
-		$res = exec_query($sql, $update, $_GET['id']);
+		$res = exec_query($update, $_GET['id']);
 		$query="
 			INSERT INTO
 				`web_software`
@@ -106,7 +101,6 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 					)
 		";
 		exec_query(
-			$sql,
 			$query,
 			array(
 				$rs->fields['software_id'], 
@@ -124,8 +118,9 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 				"1", "ok", $user_id, "yes"
 			)
 		);
-					
-		$sw_id = $sql->insertId();
+        /** @var $db iMSCP_Database */
+        $db = iMSCP_Registry::get('db');
+		$sw_id = $db->insertId();
 		update_existing_client_installations_res_upload(
 			$sw_id, $rs->fields['software_name'], $rs->fields['software_version'],
 			$rs->fields['software_language'], $rs->fields['reseller_id'], $rs->fields['software_id'],

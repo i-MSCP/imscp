@@ -49,9 +49,6 @@ function gen_admin_mainmenu($tpl, $menu_file)
      /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     $tpl->define_dynamic('menu', $menu_file);
     $tpl->define_dynamic('isactive_support', 'menu');
     $tpl->define_dynamic('custom_buttons', 'menu');
@@ -107,7 +104,7 @@ function gen_admin_mainmenu($tpl, $menu_file)
                       'TR_SERVERPORTS' => tr('Server ports')));
 
     $query = "SELECT * FROM `custom_menus` WHERE `menu_level` = 'admin';";
-    $rs = exec_query($db, $query);
+    $rs = exec_query($query);
 
     if ($rs->recordCount() == 0) {
         $tpl->assign('CUSTOM_BUTTONS', '');
@@ -157,9 +154,6 @@ function gen_admin_menu($tpl, $menu_file)
 {
      /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
-
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
 
     $tpl->define_dynamic('menu', $menu_file);
     $tpl->define_dynamic('custom_buttons', 'menu');
@@ -212,7 +206,7 @@ function gen_admin_menu($tpl, $menu_file)
                       'CODENAME' => $cfg->CodeName));
 
     $query = "SELECT * FROM `custom_menus` WHERE `menu_level` = 'admin1';";
-    $rs = exec_query($db, $query);
+    $rs = exec_query($query);
 
     if ($rs->recordCount() == 0) {
         $tpl->assign('CUSTOM_BUTTONS', '');
@@ -256,10 +250,9 @@ function gen_admin_menu($tpl, $menu_file)
  * Helper function to generate admin general information template part.
  *
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
- * @param  iMSCP_Database $db iMSCP_Database instance
  * @return void
  */
-function getAdminGeneralInfo($tpl, $db)
+function getAdminGeneralInfo($tpl)
 {
     /** @var $cfg  iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
@@ -316,17 +309,16 @@ function getAdminGeneralInfo($tpl, $db)
                       'MAIL_ACCOUNTS' => $show_total_emails,
                       'FTP_ACCOUNTS' => records_count('ftp_users', '', ''),
                       'SQL_DATABASES' => records_count('sql_database', '', ''),
-                      'SQL_USERS' => get_sql_user_count($db)));
+                      'SQL_USERS' => get_sql_user_count()));
 }
 
 /**
  * Helper function to generate admin list template part.
  *
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
- * @param  iMSCP_Database $db iMSCP_Database instance
  * @return void
  */
-function gen_admin_list($tpl, $db)
+function gen_admin_list($tpl)
 {
     /** @var $cfg  iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
@@ -345,7 +337,7 @@ function gen_admin_list($tpl, $db)
 			`t1`.`admin_name` ASC
 		;
 	";
-    $rs = exec_query($db, $query);
+    $rs = exec_query($query);
 
     if ($rs->recordCount() == 0) {
         $tpl->assign(array(
@@ -413,10 +405,9 @@ function gen_admin_list($tpl, $db)
  * Helper function to generate reseller list template part.
  *
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
- * @param  iMSCP_Database $db iMSCP_Database instance
  * @return void
  */
-function gen_reseller_list($tpl, $db)
+function gen_reseller_list($tpl)
 {
      /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
@@ -435,7 +426,7 @@ function gen_reseller_list($tpl, $db)
 				`t1`.`admin_name` ASC
 		;
 	";
-    $rs = exec_query($db, $query);
+    $rs = exec_query($query);
 
     if ($rs->recordCount() == 0) {
         $tpl->assign(array(
@@ -506,10 +497,9 @@ function gen_reseller_list($tpl, $db)
  * Helper function to generate an user list.
  *
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
- * @param  iMSCP_Database $db iMSCP_Database instance
  * @return void
  */
-function gen_user_list($tpl, $db)
+function gen_user_list($tpl)
 {
      /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
@@ -546,17 +536,17 @@ function gen_user_list($tpl, $db)
                                         $_SESSION['search_common'],
                                         $_SESSION['search_status']);
 
-        $rs = exec_query($db, $count_query);
+        $rs = exec_query($count_query);
     } else {
         gen_admin_domain_query($search_query, $count_query, $start_index,
                                $rows_per_page, 'n/a', 'n/a', 'n/a');
 
         gen_admin_domain_search_options($tpl, 'n/a', 'n/a', 'n/a');
-        $rs = exec_query($db, $count_query);
+        $rs = exec_query($count_query);
     }
 
     $records_count = $rs->fields['cnt'];
-    $rs = execute_query($db, $search_query);
+    $rs = execute_query($search_query);
     $i = 0;
 
     if ($rs->recordCount() == 0) {
@@ -629,7 +619,7 @@ function gen_user_list($tpl, $db)
 						`admin_name` ASC
 				;
 			";
-            $rs2 = exec_query($db, $query, $domain_created_id);
+            $rs2 = exec_query($query, $domain_created_id);
 
             if (!isset($rs2->fields['admin_name'])) {
                 $created_by_name = tr('N/A');
@@ -717,7 +707,7 @@ function gen_user_list($tpl, $db)
                               'TR_MESSAGE_CHANGE_STATUS' => tr('Are you sure you want to change the status of domain account?', true),
                               'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s')));
 
-            gen_domain_details($tpl, $db, $rs->fields['domain_id']);
+            gen_domain_details($tpl, $rs->fields['domain_id']);
             $tpl->parse('USR_ITEM', '.usr_item');
             $rs->moveNext();
             $i++;
@@ -732,10 +722,9 @@ function gen_user_list($tpl, $db)
  * Helper function to generate manage users template part.
  *
  * @param  iMSCP_pTemplate $tpl iMSCP_pTemplate instance
- * @param  iMSCP_Database $db iMSCP_Database instance
  * @return void
  */
-function get_admin_manage_users($tpl, $db)
+function get_admin_manage_users($tpl)
 {
     $tpl->assign(array(
                       'TR_MANAGE_USERS' => tr('Manage users'),
@@ -748,9 +737,9 @@ function get_admin_manage_users($tpl, $db)
                       'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s'),
                       'TR_EDIT' => tr('Edit')));
 
-    gen_admin_list($tpl, $db);
-    gen_reseller_list($tpl, $db);
-    gen_user_list($tpl, $db);
+    gen_admin_list($tpl);
+    gen_reseller_list($tpl);
+    gen_user_list($tpl);
 }
 
 /**
@@ -873,12 +862,11 @@ function gen_admin_domain_search_options($tpl, $search_for, $search_common, $sea
  * Must be documented
  *
  * @param iMSCP_pTemplate $tpl iMSCP_pTemplate instance
- * @param  iMSCP_Database $db
  * @param $user_id
  * @param bool $encode
  * @return void
  */
-function gen_purchase_haf($tpl, $db, $user_id, $encode = false)
+function gen_purchase_haf($tpl, $user_id, $encode = false)
 {
      /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
@@ -891,7 +879,7 @@ function gen_purchase_haf($tpl, $db, $user_id, $encode = false)
         $theme = $cfg->USER_INITIAL_THEME;
     }
 
-    $rs = exec_query($db, $query, $user_id);
+    $rs = exec_query($query, $user_id);
 
     if ($rs->recordCount() == 0) {
         $title = tr("i-MSCP - Order Panel");

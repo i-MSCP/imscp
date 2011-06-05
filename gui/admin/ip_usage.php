@@ -56,10 +56,9 @@ $tpl->assign(array(
  * Generate List of Domains assigned to IPs
  *
  * @param  iMSCP_pTemplate $tpl
- * @param  iMSCP_Database $sql
  * @return void
  */
-function listIPDomains($tpl, $sql) {
+function listIPDomains($tpl) {
 	
 	$query = "
 		SELECT
@@ -70,7 +69,7 @@ function listIPDomains($tpl, $sql) {
 		;
 	";
 	
-	$rs = exec_query($sql, $query);
+	$rs = exec_query($query);
 
     if ($rs->rowCount()) {
         while (!$rs->EOF) {
@@ -94,7 +93,7 @@ function listIPDomains($tpl, $sql) {
 			;
 		";
 
-            $rs2 = exec_query($sql, $query, $rs->fields['ip_id']);
+            $rs2 = exec_query($query, $rs->fields['ip_id']);
             $domain_count = $rs2->recordCount();
 
             if ($rs2->recordCount() == 0) {
@@ -134,7 +133,7 @@ function listIPDomains($tpl, $sql) {
 		    ;
 		";
 
-            $rs3 = exec_query($sql, $query, $rs->fields['ip_id']);
+            $rs3 = exec_query($query, $rs->fields['ip_id']);
             $alias_count = $rs3->recordCount();
 
             if ($rs3->recordCount() == 0) {
@@ -176,7 +175,7 @@ function listIPDomains($tpl, $sql) {
 gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_statistics.tpl');
 gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_statistics.tpl');
 
-listIPDomains($tpl, $sql);
+listIPDomains($tpl);
 
 $tpl->assign(array(
                   'TR_SERVER_STATISTICS' => tr('Server statistics'),

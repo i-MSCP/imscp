@@ -54,11 +54,10 @@ $tpl->assign(
 
 /**
  * @param  $tpl iMSCP_pTemplate
- * @param  $sql iMSCP_Database
  * @return void
  */
-function add_user($tpl, $sql) {
-
+function add_user($tpl)
+{
 	$cfg = iMSCP_Registry::get('config');
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_user') {
@@ -129,7 +128,7 @@ function add_user($tpl, $sql) {
 					)
 			";
 
-			exec_query($sql, $query, array($username,
+			exec_query($query, array($username,
 					$upass,
 					$user_id,
 					$fname,
@@ -146,7 +145,9 @@ function add_user($tpl, $sql) {
 					$street2,
 					$gender));
 
-			$new_admin_id = $sql->insertId();
+            /** @var $db iMSCP_Database */
+            $db = iMSCP_Registry::get('db');
+			$new_admin_id = $db->insertId();
 
 			$user_logged = $_SESSION['user_logged'];
 
@@ -165,7 +166,7 @@ function add_user($tpl, $sql) {
 				) VALUES (?,?,?,?)
 			";
 
-			exec_query($sql, $query, array($new_admin_id,
+			exec_query($query, array($new_admin_id,
 					$user_def_lang,
 					$user_theme_color,
 					$user_logo));
@@ -235,7 +236,6 @@ function add_user($tpl, $sql) {
 function check_user_data() {
 
 	$cfg = iMSCP_Registry::get('config');
-	$sql = iMSCP_Registry::get('db');
 
 	if (!validates_username($_POST['username'])) {
 		set_page_message(tr("Incorrect username length or syntax!"), 'error');
@@ -285,7 +285,7 @@ function check_user_data() {
 
 	$username = clean_input($_POST['username']);
 
-	$rs = exec_query($sql, $query, $username);
+	$rs = exec_query($query, $username);
 
 	if ($rs->recordCount() != 0) {
 		set_page_message(tr('This user name already exist!'), 'warning');
@@ -299,7 +299,7 @@ function check_user_data() {
 gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
 gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_users_manage.tpl');
 
-add_user($tpl, $sql);
+add_user($tpl);
 
 $tpl->assign(
 	array(

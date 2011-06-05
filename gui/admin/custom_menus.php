@@ -33,7 +33,7 @@
  */
 
 // site functions
-function gen_button_list(&$tpl, &$sql) {
+function gen_button_list($tpl) {
 	$query = "
 		SELECT
 			*
@@ -41,7 +41,7 @@ function gen_button_list(&$tpl, &$sql) {
 			`custom_menus`
 	";
 
-	$rs = exec_query($sql, $query);
+	$rs = exec_query($query);
 	if ($rs->recordCount() == 0) {
 		$tpl->assign('BUTTON_LIST', '');
 
@@ -84,7 +84,7 @@ function gen_button_list(&$tpl, &$sql) {
 	} // end else
 }
 
-function add_new_button(&$sql) {
+function add_new_button() {
 	if (!isset($_POST['uaction'])) {
 		return;
 	} else if ($_POST['uaction'] != 'new_button') {
@@ -122,7 +122,7 @@ function add_new_button(&$sql) {
 			VALUES (?, ?, ?, ?)
 		";
 
-		$rs = exec_query($sql, $query, array($button_view,
+		$rs = exec_query($query, array($button_view,
 				$button_name,
 				$button_link,
 				$button_target));
@@ -132,7 +132,7 @@ function add_new_button(&$sql) {
 	}
 }
 
-function delete_button(&$sql) {
+function delete_button() {
 	if ($_GET['delete_id'] === '' || !is_numeric($_GET['delete_id'])) {
 		set_page_message(tr('Missing or incorrect data input!'), 'error');
 		return;
@@ -146,14 +146,14 @@ function delete_button(&$sql) {
 				`menu_id` = ?
 		";
 
-		$rs = exec_query($sql, $query, $delete_id);
+		$rs = exec_query($query, $delete_id);
 
 		set_page_message(tr('Custom menu deleted successful!'), 'success');
 		return;
 	}
 }
 
-function edit_button(&$tpl, &$sql) {
+function edit_button(&$tpl) {
 
 	$cfg = iMSCP_Registry::get('config');
 
@@ -172,7 +172,7 @@ function edit_button(&$tpl, &$sql) {
 				`menu_id` = ?
 		";
 
-		$rs = exec_query($sql, $query, $edit_id);
+		$rs = exec_query($query, $edit_id);
 		if ($rs->recordCount() == 0) {
 			set_page_message(tr('Missing or incorrect data input!'), 'error');
 			$tpl->assign('EDIT_BUTTON', '');
@@ -225,7 +225,7 @@ function edit_button(&$tpl, &$sql) {
 	}
 }
 
-function update_button(&$sql) {
+function update_button() {
 
 	if (!isset($_POST['uaction'])) {
 		return;
@@ -266,7 +266,7 @@ function update_button(&$sql) {
 				`menu_id` = ?
 		";
 
-		$rs = exec_query($sql, $query, array(
+		$rs = exec_query($query, array(
 				$button_view,
 				$button_name,
 				$button_link,
@@ -306,19 +306,19 @@ $tpl->assign(
 gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_settings.tpl');
 gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_settings.tpl');
 
-add_new_button($sql);
+add_new_button();
 
 if (isset($_GET['delete_id'])) {
-	delete_button($sql);
+	delete_button();
 }
 
 if (isset($_GET['edit_id'])) {
-	edit_button($tpl, $sql);
+	edit_button($tpl);
 }
 
-update_button($sql);
+update_button();
 
-gen_button_list($tpl, $sql);
+gen_button_list($tpl);
 
 $tpl->assign(
 	array(

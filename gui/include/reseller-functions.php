@@ -51,16 +51,15 @@ define('MT_ALSSUB_CATCHALL', 'alssub_catchall');
 /**
  * Returns reseller's default properties.
  *
- * @param  iMSCP_Database $db Database instance
  * @param  $reseller_id Reseller unique identifier
  * @return array|null
  */
-function get_reseller_default_props($db, $reseller_id)
+function get_reseller_default_props($reseller_id)
 {
     $query = "SELECT * FROM `reseller_props` WHERE `reseller_id` = ?;";
-    $rs = exec_query($db, $query, $reseller_id);
+    $rs = exec_query($query, $reseller_id);
 
-    if (0 == $rs->rowCount()) {
+    if (!$rs->rowCount()) {
         return NULL;
     }
 
@@ -84,19 +83,16 @@ function get_reseller_default_props($db, $reseller_id)
  */
 function generate_reseller_user_props($reseller_id)
 {
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     $rdmn_current = $rdmn_max = $rsub_current = $rsub_max = $rals_current =
     $rals_max = $rmail_current = $rmail_max = $rftp_current = $rftp_max =
     $rsql_db_current = $rsql_db_max = $rsql_user_current = $rsql_user_max =
     $rtraff_current = $rtraff_max = $rdisk_current = $rdisk_max = 0;
 
     $rdmn_uf = $rsub_uf = $rals_uf = $rmail_uf = $rftp_uf = $rsql_db_uf =
-    $rsql_user_uf =  $rtraff_uf = $rdisk_uf = '_off_';
+    $rsql_user_uf = $rtraff_uf = $rdisk_uf = '_off_';
 
     $query = "SELECT `admin_id` FROM `admin` WHERE `created_by` = ?;";
-    $stmt = exec_query($db, $query, $reseller_id);
+    $stmt = exec_query($query, $reseller_id);
 
     if ($stmt->rowCount() == 0) {
         return array_fill(0, 27, 0);
@@ -106,7 +102,7 @@ function generate_reseller_user_props($reseller_id)
         $admin_id = $data['admin_id'];
 
         $query = "SELECT `domain_id` FROM `domain` WHERE `domain_admin_id` = ?;";
-        $stmt1 = exec_query($db, $query, $admin_id);
+        $stmt1 = exec_query($query, $admin_id);
 
         $ddata = $stmt1->fetchRow();
         $user_id = $ddata['domain_id'];
@@ -115,11 +111,11 @@ function generate_reseller_user_props($reseller_id)
             $ftp_current, $ftp_max, $sql_db_current, $sql_db_max, $sql_user_current,
             $sql_user_max, $traff_max, $disk_max) = get_user_props($user_id);
 
-        list(,,,,,,$traff_current,$disk_current) = generate_user_traffic($user_id);
+        list(, , , , , , $traff_current, $disk_current) = generate_user_traffic($user_id);
         $rdmn_current += 1;
 
         if ($sub_max != -1) {
-            if ($sub_max == 0){
+            if ($sub_max == 0) {
                 $rsub_uf = '_on_';
             }
 
@@ -162,7 +158,7 @@ function generate_reseller_user_props($reseller_id)
         }
 
         if ($sql_user_max != -1) {
-            if ($sql_user_max == 0){
+            if ($sql_user_max == 0) {
                 $rsql_user_uf = '_on_';
             }
 
@@ -175,7 +171,7 @@ function generate_reseller_user_props($reseller_id)
         $rtraff_current += $traff_current;
         $rtraff_max += $traff_max;
 
-        if ($disk_max == 0){
+        if ($disk_max == 0) {
             $rdisk_uf = '_on_';
         }
 
@@ -190,6 +186,7 @@ function generate_reseller_user_props($reseller_id)
                  $rsql_user_max, $rsql_user_uf, $rtraff_current, $rtraff_max,
                  $rtraff_uf, $rdisk_current, $rdisk_max, $rdisk_uf);
 }
+
 /**
  * Returns user's traffic information.
  *
@@ -200,9 +197,6 @@ function get_user_traffic($user_id)
 {
     // Todo Really needed ?
     global $crnt_month, $crnt_year;
-
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
 
     $query = "
 		SELECT
@@ -217,7 +211,7 @@ function get_user_traffic($user_id)
 			`domain_id`
 		;
 	";
-    $stmt = exec_query($db, $query, $user_id);
+    $stmt = exec_query($query, $user_id);
 
     if ($stmt->rowCount() == 0 || $stmt->rowCount() > 1) {
         return array('n/a', 0, 0, 0, 0, 0, 0, 0, 0, 0);
@@ -245,7 +239,7 @@ function get_user_traffic($user_id)
 				`tyear`, `tmonth`
 			;
 		";
-        $stmt = exec_query($db, $query, $domain_id);
+        $stmt = exec_query($query, $domain_id);
 
         $max_traffic_month =
         $data['web'] = $data['ftp'] = $data['smtp'] =
@@ -264,7 +258,7 @@ function get_user_traffic($user_id)
 
         return array($domain_name, $domain_id, $data['web'], $data['ftp'],
                      $data['smtp'], $data['pop'], $data['total'], $domain_disk_usage,
-                     $domain_traff_limit, $domain_disk_limit,$max_traffic_month);
+                     $domain_traff_limit, $domain_disk_limit, $max_traffic_month);
     }
 }
 
@@ -279,18 +273,15 @@ function get_user_props($user_id)
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     $query = "SELECT * FROM `domain` WHERE `domain_id` = ?;";
-    $stmt = exec_query($db, $query, $user_id);
+    $stmt = exec_query($query, $user_id);
 
     if ($stmt->rowCount() == 0) {
         return array_fill(0, 14, 0);
     }
 
     $data = $stmt->fetchRow();
-    $sub_current = get_domain_running_sub_cnt($db, $user_id);
+    $sub_current = get_domain_running_sub_cnt($user_id);
     $sub_max = $data['domain_subd_limit'];
     $als_current = records_count('domain_aliasses', 'domain_id', $user_id);
     $als_max = $data['domain_alias_limit'];
@@ -326,7 +317,7 @@ function get_user_props($user_id)
     $ftp_max = $data['domain_ftpacc_limit'];
     $sql_db_current = records_count('sql_database', 'domain_id', $user_id);
     $sql_db_max = $data['domain_sqld_limit'];
-    $sql_user_current = get_domain_running_sqlu_acc_cnt($sql, $user_id);
+    $sql_user_current = get_domain_running_sqlu_acc_cnt($user_id);
     $sql_user_max = $data['domain_sqlu_limit'];
     $traff_max = $data['domain_traffic_limit'];
     $disk_max = $data['domain_disk_limit'];
@@ -338,10 +329,10 @@ function get_user_props($user_id)
 }
 
 /**
- * Returns normalized status
+ * Returns translated status.
  *
- * @param string $status status to normalise
- * @return string normalized status
+ * @param string $status Status to translated
+ * @return string Translated status
  */
 function translate_dmn_status($status)
 {
@@ -379,9 +370,6 @@ function translate_dmn_status($status)
  */
 function imscp_domain_exists($domain_name, $reseller_id)
 {
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     $query_domain = "
 		SELECT
 			COUNT(`domain_id`) AS `cnt`
@@ -391,7 +379,7 @@ function imscp_domain_exists($domain_name, $reseller_id)
 			`domain_name` = ?
 		;
 	";
-    $stmt_domain = exec_query($db, $query_domain, $domain_name);
+    $stmt_domain = exec_query($query_domain, $domain_name);
 
     // query to check if the domain name exists in the table for domain aliases
     $query_alias = "
@@ -405,7 +393,7 @@ function imscp_domain_exists($domain_name, $reseller_id)
 			`t1`.`alias_name` = ?
 		;
 	";
-    $stmt_aliases = exec_query($db, $query_alias, $domain_name);
+    $stmt_aliases = exec_query($query_alias, $domain_name);
 
     // redefine query to check in the table domain/acounts if 3rd level for this reseller is allowed
     $query_domain = "
@@ -444,8 +432,8 @@ function imscp_domain_exists($domain_name, $reseller_id)
         $dom_part_cnt = $dom_part_cnt + strlen($split_domain[$i]) + 1;
         $idom = substr($domain_name, $dom_part_cnt);
         // execute query the redefined queries for domains/accounts and aliases tables
-        $stmt2 = exec_query($db, $query_domain, array($idom, $reseller_id));
-        $stmt3 = exec_query($db, $query_alias, array($idom, $reseller_id));
+        $stmt2 = exec_query($query_domain, array($idom, $reseller_id));
+        $stmt3 = exec_query($query_alias, array($idom, $reseller_id));
 
         // do we have available record. id yes => the variable error get value different 0
         if ($stmt2->fields['cnt'] > 0 || $stmt3->fields['cnt'] > 0) {
@@ -480,7 +468,8 @@ function imscp_domain_exists($domain_name, $reseller_id)
 	";
     $subdomains = array();
 
-    $res_build_sub = exec_query($db, $query_build_subdomain, $reseller_id);
+    $res_build_sub = exec_query($query_build_subdomain, $reseller_id);
+
     while (!$res_build_sub->EOF) {
         $subdomains[] = $res_build_sub->fields['subdomain_name'] . '.' .
                         $res_build_sub->fields['domain_name'];
@@ -575,32 +564,31 @@ function gen_manage_domain_query(&$search_query, &$count_query, $reseller_id,
 		";
     } elseif ($search_for != '') {
         if ($search_common === 'domain_name') {
-            $add_query = "WHERE `admin_name` RLIKE '".addslashes($search_for)."' %s";
+            $add_query = "WHERE `admin_name` RLIKE '" . addslashes($search_for) . "' %s";
         } elseif ($search_common === 'customer_id') {
-            $add_query = "WHERE `customer_id` RLIKE '".addslashes($search_for)."' %s";
+            $add_query = "WHERE `customer_id` RLIKE '" . addslashes($search_for) . "' %s";
         } elseif ($search_common === 'lname') {
-            $add_query = "WHERE (`lname` RLIKE '".addslashes($search_for) .
+            $add_query = "WHERE (`lname` RLIKE '" . addslashes($search_for) .
                          "' OR `fname` RLIKE '" . addslashes($search_for) . "') %s";
         } elseif ($search_common === 'firm') {
-            $add_query = "WHERE `firm` RLIKE '".addslashes($search_for)."' %s";
+            $add_query = "WHERE `firm` RLIKE '" . addslashes($search_for) . "' %s";
         } elseif ($search_common === 'city') {
-            $add_query = "WHERE `city` RLIKE '".addslashes($search_for)."' %s";
+            $add_query = "WHERE `city` RLIKE '" . addslashes($search_for) . "' %s";
         } elseif ($search_common === 'state') {
-            $add_query = "WHERE `state` RLIKE '".addslashes($search_for)."' %s";
+            $add_query = "WHERE `state` RLIKE '" . addslashes($search_for) . "' %s";
         } elseif ($search_common === 'country') {
-            $add_query = "WHERE `country` RLIKE '".addslashes($search_for)."' %s";
+            $add_query = "WHERE `country` RLIKE '" . addslashes($search_for) . "' %s";
         }
 
         if (isset($add_query)) {
             if ($search_status != 'all') {
                 $add_query = sprintf($add_query, " AND t1.`created_by` = '$reseller_id' AND t2.`domain_status` = '$search_status'");
                 $count_query = "
-				SELECT
-					COUNT(`admin_id`) AS `cnt`
-				FROM
-					`admin` AS `t1`,
-					`domain` AS `t2`
-				$add_query
+				    SELECT
+					    COUNT(`admin_id`) AS `cnt`
+				    FROM
+					    `admin` AS `t1`, `domain` AS `t2`
+				    $add_query
 				AND
 					`t1`.`admin_id` = `t2`.`domain_admin_id`
 				;
@@ -613,6 +601,7 @@ function gen_manage_domain_query(&$search_query, &$count_query, $reseller_id,
 				FROM
 					`admin`
 				$add_query
+				;
 			";
             }
 
@@ -636,14 +625,13 @@ function gen_manage_domain_query(&$search_query, &$count_query, $reseller_id,
 
 /**
  *
- * @param  $sql
  * @param  $err_msg
  * @param  $reseller_id
  * @param  $hpid
  * @param string $newprops
  * @return bool
  */
-function reseller_limits_check(&$sql, &$err_msg, $reseller_id, $hpid, $newprops = "")
+function reseller_limits_check(&$err_msg, $reseller_id, $hpid, $newprops = "")
 {
     $error = false;
 
@@ -661,7 +649,7 @@ function reseller_limits_check(&$sql, &$err_msg, $reseller_id, $hpid, $newprops 
 					`id` = ?
 			";
 
-            $res = exec_query($sql, $query, $hpid);
+            $res = exec_query($query, $hpid);
             $data = $res->fetchRow();
             $props = $data['props'];
         }
@@ -685,7 +673,7 @@ function reseller_limits_check(&$sql, &$err_msg, $reseller_id, $hpid, $newprops 
 		;
 	";
 
-    $res = exec_query($sql, $query, $reseller_id);
+    $res = exec_query($query, $reseller_id);
     $data = $res->fetchRow();
     $dmn_current = $data['current_dmn_cnt'];
     $dmn_max = $data['max_dmn_cnt'];
@@ -893,15 +881,12 @@ function send_alias_order_email($alias_name)
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     $user_id = $_SESSION['user_id'];
 
     $reseller_id = who_owns_this($user_id, 'user');
 
     $query = 'SELECT `fname`, `lname` FROM `admin` WHERE `admin_id` = ?;';
-    $rs = exec_query($db, $query, $user_id);
+    $rs = exec_query($query, $user_id);
     $ufname = $rs->fields['fname'];
     $ulname = $rs->fields['lname'];
     $uemail = $_SESSION['user_email'];
@@ -974,9 +959,6 @@ function client_mail_add_default_accounts($dmn_id, $user_email, $dmn_part,
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    /** @var $db  */
-    $db = iMSCP_Registry::get('db');
-
     if ($cfg->CREATE_DEFAULT_EMAIL_ADDRESSES) {
 
         $forward_type = ($dmn_type == 'alias') ? 'alias_forward' : 'normal_forward';
@@ -994,20 +976,20 @@ function client_mail_add_default_accounts($dmn_id, $user_email, $dmn_part,
 		";
 
         // create default forwarder for webmaster@domain.tld to the account's owner
-        exec_query($db, $query, array(
+        exec_query($query, array(
                                      'webmaster', '_no_', $user_email, $dmn_id,
                                      $forward_type, $sub_id, $cfg->ITEM_ADD_STATUS,
                                      '_no_', 10485760, 'webmaster@' . $dmn_part));
 
         // create default forwarder for postmaster@domain.tld to the account's reseller
-        exec_query($db, $query, array(
+        exec_query($query, array(
                                      'postmaster', '_no_', $_SESSION['user_email'],
                                      $dmn_id, $forward_type, $sub_id,
                                      $cfg->ITEM_ADD_STATUS, '_no_', 10485760,
                                      'postmaster@' . $dmn_part));
 
         // create default forwarder for abuse@domain.tld to the account's reseller
-        exec_query($db, $query, array(
+        exec_query($query, array(
                                      'abuse', '_no_', $_SESSION['user_email'],
                                      $dmn_id, $forward_type, $sub_id,
                                      $cfg->ITEM_ADD_STATUS, '_no_', 10485760,
@@ -1025,9 +1007,6 @@ function recalc_reseller_c_props($reseller_id)
 {
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
-
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
 
     $delstatus = $cfg->ITEM_DELETE_STATUS;
 
@@ -1051,7 +1030,7 @@ function recalc_reseller_c_props($reseller_id)
 			`domain_status` != ?
 		;
 	";
-    $res = exec_query($db, $query, array($reseller_id, $delstatus));
+    $res = exec_query($query, array($reseller_id, $delstatus));
 
     $current_dmn_cnt = $res->fields['crn_domains'];
 
@@ -1065,7 +1044,7 @@ function recalc_reseller_c_props($reseller_id)
         $current_disk_amnt = $res->fields['current_disk_amnt'];
         $current_traff_amnt = $res->fields['current_traff_amnt'];
     } else {
-        $current_sub_cnt =  $current_als_cnt = $current_mail_cnt = $current_ftp_cnt =
+        $current_sub_cnt = $current_als_cnt = $current_mail_cnt = $current_ftp_cnt =
         $current_sql_db_cnt = $current_sql_user_cnt = $current_disk_amnt =
         $current_traff_amnt = 0;
     }
@@ -1083,9 +1062,6 @@ function recalc_reseller_c_props($reseller_id)
  */
 function update_reseller_c_props($reseller_id)
 {
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     $query = "
 		UPDATE
 			`reseller_props`
@@ -1102,7 +1078,7 @@ function update_reseller_c_props($reseller_id)
 
     $props = recalc_reseller_c_props($reseller_id);
     $props[] = $reseller_id;
-    exec_query($db, $query, $props);
+    exec_query($query, $props);
 }
 
 /**
@@ -1113,8 +1089,6 @@ function update_reseller_c_props($reseller_id)
  */
 function get_reseller_id($domain_id)
 {
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
 
     $query = "
 		SELECT
@@ -1127,7 +1101,7 @@ function get_reseller_id($domain_id)
 			d.`domain_admin_id` = a.`admin_id`
 		;
 	";
-    $rs = exec_query($db, $query, $domain_id);
+    $rs = exec_query($query, $domain_id);
 
     if ($rs->recordCount() == 0) {
         return 0;
@@ -1146,15 +1120,12 @@ function get_reseller_id($domain_id)
  */
 function check_reseller_permissions($reseller_id, $permission)
 {
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
-    list(,,, $rsub_max,, $rals_max,, $rmail_max,, $rftp_max,, $rsql_db_max,,
-        $rsql_user_max) = get_reseller_default_props($db, $reseller_id);
+    list(, , , $rsub_max, , $rals_max, , $rmail_max, , $rftp_max, , $rsql_db_max, ,
+        $rsql_user_max) = get_reseller_default_props($reseller_id);
 
     if ($permission == 'all_permissions') {
         return array($rsub_max, $rals_max, $rmail_max, $rftp_max, $rsql_db_max,
-            $rsql_user_max);
+                     $rsql_user_max);
     } elseif ($permission == 'subdomain' && $rsub_max == '-1') {
         return false;
     } elseif ($permission == 'alias' && $rals_max == '-1') {
@@ -1198,9 +1169,6 @@ function send_new_sw_upload($reseller_id, $file_name, $sw_id)
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     $query = "
 		SELECT
 			`admin_name` as reseller,
@@ -1212,7 +1180,7 @@ function send_new_sw_upload($reseller_id, $file_name, $sw_id)
 			`admin_id` = ?
 	";
 
-    $res = exec_query($db, $query, $reseller_id);
+    $res = exec_query($query, $reseller_id);
 
     $from_name = $res->fields['reseller'];
     $from_email = $res->fields['res_email'];
@@ -1228,7 +1196,7 @@ function send_new_sw_upload($reseller_id, $file_name, $sw_id)
 			`admin_id` = ?
 		;
 	";
-    $res = exec_query($db, $query, $admin_id);
+    $res = exec_query($query, $admin_id);
 
     $to_name = $res->fields['admin'];
     $to_email = $res->fields['adm_email'];
@@ -1273,3 +1241,4 @@ function send_new_sw_upload($reseller_id, $file_name, $sw_id)
     $subject = encode($subject);
     mail($to_email, $subject, $message, $headers);
 }
+

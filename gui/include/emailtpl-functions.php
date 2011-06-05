@@ -44,9 +44,6 @@
  */
 function get_email_tpl_data($admin_id, $tpl_name)
 {
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     $query = "
 		SELECT
 			`fname`, `lname`, `firm`, `email`
@@ -56,7 +53,7 @@ function get_email_tpl_data($admin_id, $tpl_name)
 			`admin_id` = ?
 		;
 	";
-    $stmt = exec_query($db, $query, $admin_id);
+    $stmt = exec_query($query, $admin_id);
 
     if ((trim($stmt->fields('fname')) != '')
         && (trim($stmt->fields('lname')) != '')
@@ -91,7 +88,7 @@ function get_email_tpl_data($admin_id, $tpl_name)
 			`name` = ?
 		;
 	";
-    $stmt = exec_query($db, $query, array($admin_id, $tpl_name));
+    $stmt = exec_query($query, array($admin_id, $tpl_name));
 
     if ($stmt->rowCount()) {
         $data['subject'] = $stmt->fields['subject'];
@@ -115,9 +112,6 @@ function get_email_tpl_data($admin_id, $tpl_name)
  */
 function set_email_tpl_data($admin_id, $tpl_name, $data)
 {
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     $query = "
 		SELECT
 			`subject`, `message`
@@ -128,7 +122,7 @@ function set_email_tpl_data($admin_id, $tpl_name, $data)
 		AND
 			`name` = ?
 	";
-    $stmt = exec_query($db, $query, array($admin_id, $tpl_name));
+    $stmt = exec_query($query, array($admin_id, $tpl_name));
 
     if (!$stmt->rowCount()) {
         $query = "
@@ -155,7 +149,7 @@ function set_email_tpl_data($admin_id, $tpl_name, $data)
 
     }
 
-    exec_query($db, $query, array($data['subject'], $data['message'],
+    exec_query($query, array($data['subject'], $data['message'],
                                  $admin_id, $tpl_name));
 }
 

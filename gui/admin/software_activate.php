@@ -30,11 +30,6 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-/**
- * @var $sql iMSCP_Database
- */
-$sql = iMSCP_Registry::get('db');
-
 if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 	$query="
 		SELECT
@@ -48,7 +43,7 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 		AND
 			`software_active` = 0
 	";
-	$rs = exec_query($sql, $query, $_GET['id']);
+	$rs = exec_query($query, $_GET['id']);
 	if ($rs->recordCount() != 1) {
 		set_page_message(tr('Wrong software id.'), 'error');
 		header('Location: software_manage.php');
@@ -61,7 +56,7 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 			WHERE
 				`software_id` = ?
 		";
-		$res = exec_query($sql, $update, $_GET['id']);
+		$res = exec_query($update, $_GET['id']);
 		$query="
 			SELECT
 				`software_id`,
@@ -75,7 +70,7 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 			WHERE
 				`software_id` = ?
 		";
-		$res = exec_query($sql, $query, $_GET['id']);
+		$res = exec_query($query, $_GET['id']);
 		
 		update_existing_client_installations_res_upload(
 			$res->fields['software_id'], $res->fields['software_name'],

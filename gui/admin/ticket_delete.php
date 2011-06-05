@@ -58,7 +58,7 @@ if (isset($_GET['ticket_id']) && $_GET['ticket_id'] !== '') {
 			(`ticket_from` = ? OR `ticket_to` = ?)
 	;";
 
-	$rs = exec_query($sql, $query, array($ticket_id, $user_id, $user_id));
+	$rs = exec_query($query, array($ticket_id, $user_id, $user_id));
 
 	if ($rs->recordCount() == 0) {
 		user_goto('ticket_system.php');

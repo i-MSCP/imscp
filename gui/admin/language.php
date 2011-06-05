@@ -65,7 +65,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'save_lang') {
 	    ;
 	";
 
-    $rs = exec_query($sql, $query, array($user_lang, $user_id));
+    $rs = exec_query($query, array($user_lang, $user_id));
 
     unset($_SESSION['user_def_lang']);
     $_SESSION['user_def_lang'] = $user_lang;
@@ -74,13 +74,13 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'save_lang') {
 
 
 if (!isset($_SESSION['logged_from']) && !isset($_SESSION['logged_from_id'])) {
-    list($user_def_lang, $user_def_layout) = get_user_gui_props($sql, $_SESSION['user_id']);
+    list($user_def_lang, $user_def_layout) = get_user_gui_props($_SESSION['user_id']);
 } else {
     $user_def_layout = $_SESSION['user_theme'];
     $user_def_lang = $_SESSION['user_def_lang'];
 }
 
-gen_def_language($tpl, $sql, $user_def_lang);
+gen_def_language($tpl, $user_def_lang);
 
 $tpl->assign(array(
                   'TR_CLIENT_LANGUAGE_TITLE' => tr('i-MSCP - Admin/Change Language'),

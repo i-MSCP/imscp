@@ -1,6 +1,6 @@
 <?php
 
-function gen_domain_details($tpl, $sql, $domain_id)
+function gen_domain_details($tpl, $domain_id)
 {
     $tpl->assign('USER_DETAILS', '');
 
@@ -31,7 +31,7 @@ function gen_domain_details($tpl, $sql, $domain_id)
 			ORDER BY
 				`alias_id` DESC
 		";
-        $alias_rs = exec_query($sql, $alias_query, $domain_id);
+        $alias_rs = exec_query($alias_query, $domain_id);
 
         if ($alias_rs->recordCount() == 0) {
             $tpl->assign('USER_DETAILS', '');
@@ -88,11 +88,10 @@ function gen_logged_from($tpl)
  * message is shown.
  *
  * @param  iMSCP_pTemplate $tpl Template engine
- * @param  iMSCP_Database $sql
  * @param  $user_def_language
  * @return void
  */
-function gen_def_language($tpl, $sql, $user_def_language)
+function gen_def_language($tpl, $user_def_language)
 {
 
     /** @var $cfg iMSCP_Config_Handler_File */
@@ -103,7 +102,7 @@ function gen_def_language($tpl, $sql, $user_def_language)
 
     // Retrieve all available languages (one database table per language)
     $query = "SHOW TABLES LIKE 'lang_%';";
-    $stmt = exec_query($sql, $query);
+    $stmt = exec_query($query);
 
     $stmt->setFetchStyle(PDO::FETCH_NUM);
 
@@ -121,7 +120,7 @@ function gen_def_language($tpl, $sql, $user_def_language)
 			;
 		";
 
-            $stmt2 = exec_query($sql, $query);
+            $stmt2 = exec_query($query);
 
             $query = "
 			SELECT
@@ -133,7 +132,7 @@ function gen_def_language($tpl, $sql, $user_def_language)
 			;
 		";
 
-            $stmt3 = exec_query($sql, $query);
+            $stmt3 = exec_query($query);
 
             if ($stmt2->recordCount() == 0 || $stmt3->recordCount() == 0) {
                 $language_name = tr('Unknown');

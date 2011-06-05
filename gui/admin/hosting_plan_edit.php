@@ -140,7 +140,7 @@ if (isset($_POST['uaction']) && ('add_plan' === $_POST['uaction'])) {
 		$hpid = $_GET['hpid'];
 	}
 
-	gen_load_ehp_page($tpl, $sql, $hpid, $_SESSION['user_id']);
+	gen_load_ehp_page($tpl, $hpid, $_SESSION['user_id']);
 	$tpl->assign('MESSAGE', "");
 }
 
@@ -203,7 +203,7 @@ function restore_form(&$tpl) {
 /**
  * Generate load data from sql for requested hosting plan
  */
-function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
+function gen_load_ehp_page($tpl, $hpid, $admin_id) {
 
 	$cfg = iMSCP_Registry::get('config');
 
@@ -219,7 +219,7 @@ function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
 		;
 	";
 
-	$res = exec_query($sql, $query, $hpid);
+	$res = exec_query($query, $hpid);
 
 	$readonly = '';
 	$disabled = '';
@@ -299,12 +299,12 @@ function gen_load_ehp_page(&$tpl, &$sql, $hpid, $admin_id) {
 			'TR_SOFTWARE_NO' 		=> ($hp_allowsoftware == '_no_' || !$hp_allowsoftware) ? $cfg->HTML_CHECKED : ''
 		)
 	);
-} // end of gen_load_ehp_page()
+}
 
 /**
  * Check correction of input data
  */
-function check_data_iscorrect(&$tpl) {
+function check_data_iscorrect($tpl) {
 
 	global $hp_name, $hp_php, $hp_cgi;
 	global $hp_sub, $hp_als, $hp_mail;
@@ -425,8 +425,6 @@ function save_data_to_db() {
 	global $hp_backup, $hp_dns;
 	//global $tos;
 
-	$sql = iMSCP_Registry::get('db');
-
 	$description 	= clean_input($_POST['hp_description']);
 	$price 		= clean_input($_POST['hp_price']);
 	$setup_fee 	= clean_input($_POST['hp_setupfee']);
@@ -456,16 +454,10 @@ function save_data_to_db() {
 		;
 	";
 
-	$res = exec_query(
-		$sql,
-		$query,
-		array(
-			$hp_name, $description, $hp_props, $price,
-			$setup_fee, $value, $payment, $status, $tos, $hpid
-		)
-	);
+	exec_query($query,array($hp_name, $description, $hp_props, $price,
+                                  $setup_fee, $value, $payment, $status, $tos, $hpid));
 
 	$_SESSION['hp_updated'] = "_yes_";
 	user_goto('hosting_plan.php');
 
-} // end of save_data_to_db()
+}

@@ -38,7 +38,7 @@ check_login(__FILE__);
 
 $cfg = iMSCP_Registry::get('config');
 
-function save_layout(&$sql) {
+function save_layout() {
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'save_layout') {
 		$user_id = $_SESSION['user_id'];
@@ -53,7 +53,8 @@ function save_layout(&$sql) {
 			WHERE
 				`user_id` = ?
 		";
-		$rs = exec_query($sql, $query, array($user_layout, $user_id));
+		exec_query($query, array($user_layout, $user_id));
+
 		$_SESSION['user_theme_color'] = $user_layout;
 		$theme_color = $user_layout;
 		$user_def_layout = $user_layout;
@@ -130,8 +131,6 @@ function update_logo() {
 
 function update_user_logo($file_name, $user_id) {
 
-	$sql = iMSCP_Registry::get('db');
-
 	$query = "
 		UPDATE
 			`user_gui_props`
@@ -141,7 +140,7 @@ function update_user_logo($file_name, $user_id) {
 			`user_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($file_name, $user_id));
+	exec_query($query, array($file_name, $user_id));
 }
 
 $tpl = new iMSCP_pTemplate();
@@ -151,7 +150,7 @@ $tpl->define_dynamic('hosting_plans', 'page');
 $tpl->define_dynamic('def_layout', 'page');
 $tpl->define_dynamic('logo_remove_button', 'page');
 
-save_layout($sql);
+save_layout();
 
 update_logo();
 

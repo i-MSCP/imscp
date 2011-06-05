@@ -50,11 +50,8 @@ function hasTicketSystem($user_id = null)
     if (!$cfg->IMSCP_SUPPORT_SYSTEM) {
         return false;
     } elseif ($user_id !== null) {
-        /** @var $db iMSCP_Database */
-        $db = iMSCP_Registry::get('db');
-
         $query = "SELECT`support_system`  FROM `reseller_props` WHERE `reseller_id` = ?;";
-        $stmt = exec_query($db, $query, $user_id);
+        $stmt = exec_query($query, $user_id);
 
         if ($stmt->fields['support_system'] == 'no') {
             return false;
@@ -80,9 +77,6 @@ function hasTicketSystem($user_id = null)
  */
 function getTicketStatus($ticket_id)
 {
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     $query = "
         SELECT
             `ticket_status`
@@ -94,7 +88,7 @@ function getTicketStatus($ticket_id)
             (`ticket_from` = ? OR `ticket_to` = ?)
         ;
     ";
-    $stmt = exec_query($db, $query, array(
+    $stmt = exec_query($query, array(
                                         $ticket_id,
                                         $_SESSION['user_id'],
                                         $_SESSION['user_id']
@@ -120,9 +114,6 @@ function getTicketStatus($ticket_id)
  */
 function changeTicketStatus($ticket_id, $ticket_status)
 {
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     $query = "
 		UPDATE
 			`tickets`
@@ -136,7 +127,7 @@ function changeTicketStatus($ticket_id, $ticket_status)
 			(`ticket_from` = ? OR `ticket_to` = ?)
 	    ;
 	";
-    exec_query($db, $query, array(
+    exec_query($query, array(
                                   $ticket_status,
                                   $ticket_id,
                                   $ticket_id,
@@ -158,9 +149,6 @@ function changeTicketStatus($ticket_id, $ticket_status)
 function createTicket($user_id, $admin_id, $urgency, $subject, $message,
     $userLevel)
 {
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     if ($userLevel < 1 || $userLevel > 2)
         throw new iMSCP_Exception('User level is not valid.');
 
@@ -181,7 +169,7 @@ function createTicket($user_id, $admin_id, $urgency, $subject, $message,
             )
 	    ;
 	";
-    exec_query($db, $query, array(
+    exec_query($query, array(
                                  $userLevel, $user_id, $admin_id, $ticket_status,
                                  $ticket_reply, $urgency, $ticket_date, $subject,
                                  $user_message));
@@ -206,9 +194,6 @@ function createTicket($user_id, $admin_id, $urgency, $subject, $message,
 function updateTicket($ticket_id, $user_id, $urgency, $subject, $message,
     $ticketLevel, $userLevel)
 {
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     $ticket_date = time();
     $subject = clean_input($subject);
     $user_message = clean_input($message);
@@ -222,7 +207,7 @@ function updateTicket($ticket_id, $user_id, $urgency, $subject, $message,
 			`ticket_id` = ?
 	    ;
 	";
-    $stmt = exec_query($db, $query, $ticket_id);
+    $stmt = exec_query($query, $ticket_id);
 
     /* Ticket levels:
      *  1:      Client -> Reseller
@@ -250,7 +235,7 @@ function updateTicket($ticket_id, $user_id, $urgency, $subject, $message,
 	    ;
 	";
 
-    exec_query($db, $query, array($ticket_from, $ticket_to, null, $ticket_id,
+    exec_query($query, array($ticket_from, $ticket_to, null, $ticket_id,
                                   $urgency, $ticket_date, $subject, $user_message));
 
     $ticket_status = getTicketStatus($ticket_id);
@@ -288,12 +273,9 @@ function updateTicket($ticket_id, $user_id, $urgency, $subject, $message,
  */
 function getUserLevel($ticket_id)
 {
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     // Get info about the type of message
     $query = "SELECT `ticket_level` FROM `tickets` WHERE `ticket_id` = ?;";
-    $stmt = exec_query($db, $query, $ticket_id);
+    $stmt = exec_query($query, $ticket_id);
 
     return $stmt->fields['ticket_level'];
 }
@@ -353,9 +335,6 @@ function getTicketUrgency($ticket_urgency)
  */
 function getTicketSender($ticket_id)
 {
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     $query = "
 		SELECT
             `a`.`admin_name`, `a`.`fname`, `a`.`lname`
@@ -367,7 +346,7 @@ function getTicketSender($ticket_id)
 			`ticket_id` = ?
 	    ;
 	";
-    $stmt = exec_query($db, $query, $ticket_id);
+    $stmt = exec_query($query, $ticket_id);
 
     $from_user_name = decode_idna($stmt->fields['admin_name']);
     $from_first_name = $stmt->fields['fname'];
@@ -388,9 +367,6 @@ function ticketGetLastDate($ticket_id)
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     $query = "
 		SELECT
 			`ticket_date`
@@ -402,7 +378,7 @@ function ticketGetLastDate($ticket_id)
 			`ticket_date` DESC
 	    ;
 	";
-    $stmt = exec_query($db, $query, array($ticket_id));
+    $stmt = exec_query($query, array($ticket_id));
 
     if (null == $stmt->fields['ticket_date']) {
         return tr('Never');
@@ -425,9 +401,6 @@ function ticketGetLastDate($ticket_id)
  */
 function generateTicketList($tpl, $user_id, $start, $count, $userLevel, $status)
 {
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     $count_query = "
 		SELECT
 			COUNT(`ticket_id`) AS count
@@ -446,7 +419,7 @@ function generateTicketList($tpl, $user_id, $start, $count, $userLevel, $status)
         $count_query .= " `ticket_status` = 0;";
     }
 
-    $rs = exec_query($db, $count_query, array($user_id, $user_id));
+    $rs = exec_query($count_query, array($user_id, $user_id));
     $records_count = $rs->fields['count'];
 
     $query = "
@@ -470,7 +443,7 @@ function generateTicketList($tpl, $user_id, $start, $count, $userLevel, $status)
 
     $query .= " ORDER BY `ticket_date` DESC LIMIT $start,$count;";
 
-    $rs = exec_query($db, $query, array($user_id, $user_id));
+    $rs = exec_query($query, array($user_id, $user_id));
 
     if ($rs->recordCount() == 0) {
         $tpl->assign(array(
@@ -550,9 +523,6 @@ function showTicketContent($tpl, $ticket_id, $user_id, $screenwidth)
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     $query = "
 		SELECT
 			`ticket_id`, `ticket_status`, `ticket_reply`, `ticket_urgency`,
@@ -565,7 +535,7 @@ function showTicketContent($tpl, $ticket_id, $user_id, $screenwidth)
 			(`ticket_from` = ? OR `ticket_to` = ?)
 	    ;
 	";
-    $stmt = exec_query($db, $query, array($ticket_id, $user_id, $user_id));
+    $stmt = exec_query($query, array($ticket_id, $user_id, $user_id));
 
     if (!$stmt->recordCount()) {
         $tpl->assign('TICKETS_LIST', '');
@@ -616,9 +586,6 @@ function showTicketReplies($tpl, $ticket_id, $screenwidth)
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     $query = "
 		SELECT
 			`ticket_id`, `ticket_urgency`, `ticket_date`, `ticket_message`
@@ -631,7 +598,7 @@ function showTicketReplies($tpl, $ticket_id, $screenwidth)
 	    ;
 	";
 
-    $stmt = exec_query($db, $query, $ticket_id);
+    $stmt = exec_query($query, $ticket_id);
 
     if ($stmt->recordCount()) {
         while (!$stmt->EOF) {
@@ -667,9 +634,6 @@ function sendTicketNotification($to_id, $from_id, $ticket_subject, $ticket_messa
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     // To information
     $query = "
         SELECT
@@ -681,7 +645,7 @@ function sendTicketNotification($to_id, $from_id, $ticket_subject, $ticket_messa
 		;
 	";
 
-    $stmt = exec_query($db, $query, $to_id);
+    $stmt = exec_query($query, $to_id);
     $to_email = $stmt->fields['email'];
     $to_fname = $stmt->fields['fname'];
     $to_lname = $stmt->fields['lname'];
@@ -698,7 +662,7 @@ function sendTicketNotification($to_id, $from_id, $ticket_subject, $ticket_messa
 		;
     ";
 
-    $stmt = exec_query($db, $query, $from_id);
+    $stmt = exec_query($query, $from_id);
     $from_email = $stmt->fields['email'];
     $from_fname = $stmt->fields['fname'];
     $from_lname = $stmt->fields['lname'];
@@ -776,11 +740,8 @@ function sendTicketNotification($to_id, $from_id, $ticket_subject, $ticket_messa
  */
 function deleteTicket($ticket_id)
 {
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     $query = "DELETE FROM `tickets` WHERE `ticket_id` = ? OR `ticket_reply` = ?;";
-    exec_query($db, $query, array($ticket_id, $ticket_id));
+    exec_query($query, array($ticket_id, $ticket_id));
 }
 
 /**
@@ -792,9 +753,6 @@ function deleteTicket($ticket_id)
  */
 function deleteTickets($status, $user_id)
 {
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     $query = "
 		DELETE FROM
 			`tickets`
@@ -809,5 +767,5 @@ function deleteTickets($status, $user_id)
         $query .= " `ticket_status` = 0;";
     }
 
-    exec_query($db, $query, array($user_id, $user_id));
+    exec_query($query, array($user_id, $user_id));
 }

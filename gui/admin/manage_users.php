@@ -124,7 +124,7 @@ if (!$cfg->exists('HOSTING_PLANS_LEVEL')
 gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
 gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_users_manage.tpl');
 
-get_admin_manage_users($tpl, $sql);
+get_admin_manage_users($tpl);
 
 generatePageMessage($tpl);
 

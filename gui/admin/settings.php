@@ -171,7 +171,7 @@ $tpl->assign(
 	)
 );
 
-gen_def_language($tpl, $sql, $cfg['USER_INITIAL_LANG']);
+gen_def_language($tpl, $cfg['USER_INITIAL_LANG']);
 
 // Grab the value only once to improve performances
 $html_selected = $cfg->HTML_SELECTED;

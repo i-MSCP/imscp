@@ -33,7 +33,7 @@
  */
 
 if (isset($_SESSION['user_id']) && !isset($_SESSION['logged_from']) && !isset($_SESSION['logged_from_id'])) {
-	list($user_def_lang, $user_def_layout) = get_user_gui_props($sql, $_SESSION['user_id']);
+	list($user_def_lang, $user_def_layout) = get_user_gui_props($_SESSION['user_id']);
 
 	$_SESSION['user_theme'] = $user_def_layout;
 	$_SESSION['user_def_lang'] = $user_def_lang;
@@ -41,7 +41,7 @@ if (isset($_SESSION['user_id']) && !isset($_SESSION['logged_from']) && !isset($_
 
 // THEME_COLOR management stuff.
 
-function get_user_gui_props($sql, $user_id) {
+function get_user_gui_props($user_id) {
 
 	/**
 	 * @var $cfg iMSCP_Config_Handler_File
@@ -57,7 +57,7 @@ function get_user_gui_props($sql, $user_id) {
 			`user_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, $user_id);
+	$rs = exec_query($query, $user_id);
 
 	if ($rs->recordCount() == 0
 		|| (empty($rs->fields['lang']) && empty($rs->fields['layout']))) {
@@ -153,11 +153,6 @@ function get_menu_vars($menu_link) {
 	 */
 	$cfg = iMSCP_Registry::get('config');
 
-	/**
-	 * @var $sql iMSCP_Database
-	 */
-	$sql = iMSCP_Registry::get('db');
-
 	$user_id = $_SESSION['user_id'];
 
 	$query = "
@@ -171,7 +166,7 @@ function get_menu_vars($menu_link) {
 			`admin_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, $user_id);
+	$rs = exec_query($query, $user_id);
 
 	$search = array();
 	$replace = array();
@@ -220,7 +215,7 @@ function get_menu_vars($menu_link) {
 			`domain_admin_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, $user_id);
+	$rs = exec_query($query, $user_id);
 
 	$search [] = '{domain_name}';
 	$replace[] = $rs->fields['domain_name'];

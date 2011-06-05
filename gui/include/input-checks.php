@@ -779,8 +779,6 @@ function get_session($value)
  */
 function who_owns_this($id, $type = 'dmn', $forcefinal = false)
 {
-    $sql = iMSCP_Registry::get('db');
-
     $who = null;
     // Fix $type according to type or by alias
     switch ($type) {
@@ -1013,7 +1011,7 @@ function who_owns_this($id, $type = 'dmn', $forcefinal = false)
                 throw new iMSCP_Exception(tr('Unknown Error'));
             }
             $select = $matches[1];
-            $rs = exec_query($sql, $r['query'], $id);
+            $rs = exec_query($r['query'], $id);
             if ($rs->recordCount() != 0) {
                 if ($r['is_final'] || $forcefinal) {
                     $who = $rs->fields[$select];

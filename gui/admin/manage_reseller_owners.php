@@ -50,7 +50,7 @@ $tpl->define_dynamic('select_admin_option', 'select_admin');
 /**
  * @todo check if it's useful to have the table admin two times in the same query
  */
-function gen_reseller_table(&$tpl, &$sql) {
+function gen_reseller_table($tpl) {
 
 	$cfg = iMSCP_Registry::get('config');
 
@@ -69,7 +69,7 @@ function gen_reseller_table(&$tpl, &$sql) {
 			`admin_id`
 	";
 
-	$rs = exec_query($sql, $query);
+	$rs = exec_query($query);
 
 	$i = 0;
 
@@ -127,7 +127,7 @@ function gen_reseller_table(&$tpl, &$sql) {
 			`admin_name`
 	";
 
-	$rs = exec_query($sql, $query);
+	$rs = exec_query($query);
 
 	while (!$rs->EOF) {
 
@@ -159,7 +159,7 @@ function gen_reseller_table(&$tpl, &$sql) {
 	$tpl->assign('PAGE_MESSAGE', '');
 }
 
-function update_reseller_owner($sql) {
+function update_reseller_owner() {
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'reseller_owner') {
 		$query = "
@@ -173,7 +173,7 @@ function update_reseller_owner($sql) {
 				`admin_name`
 		";
 
-		$rs = execute_query($sql, $query);
+		$rs = execute_query($query);
 
 		while (!$rs->EOF) {
 			$admin_id = $rs->fields['admin_id'];
@@ -192,7 +192,7 @@ function update_reseller_owner($sql) {
 						`admin_id` = ?
 				";
 
-				$up = exec_query($sql, $query, array($dest_admin, $admin_id));
+				exec_query($query, array($dest_admin, $admin_id));
 			}
 
 			$rs->moveNext();
@@ -218,9 +218,9 @@ $tpl->assign(
 gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
 gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_users_manage.tpl');
 
-update_reseller_owner($sql);
+update_reseller_owner();
 
-gen_reseller_table($tpl, $sql);
+gen_reseller_table($tpl);
 
 $tpl->assign(
 	array(
