@@ -2,13 +2,13 @@
 /**
  * i-MSCP a internet Multi Server Control Panel
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010 by i-MSCP | http://i-mscp.net
- * @version 	SVN: $Id$
- * @link 		http://i-mscp.net
- * @author 		ispCP Team
- * @author 		i-MSCP Team
+ * @copyright   2001-2006 by moleSoftware GmbH
+ * @copyright   2006-2010 by ispCP | http://isp-control.net
+ * @copyright   2010-2011 by i-MSCP | http://i-mscp.net
+ * @version     SVN: $Id$
+ * @link        http://i-mscp.net
+ * @author      ispCP Team
+ * @author      i-MSCP Team
  *
  * @license
  * The contents of this file are subject to the Mozilla Public License
@@ -26,8 +26,10 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
+ *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
+ *
  * Portions created by the i-MSCP Team are Copyright (C) 2010 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
@@ -48,33 +50,30 @@ $tpl->define_dynamic('scroll_next_gray', 'page');
 $tpl->define_dynamic('scroll_next', 'page');
 $tpl->define_dynamic('clear_log', 'page');
 
-$tpl->assign(
-	array(
-		'TR_ADMIN_ADMIN_LOG_PAGE_TITLE'	=> tr('iMSCP - Admin/Admin Log'),
-		'THEME_COLOR_PATH'				=> "../themes/{$cfg->USER_INITIAL_THEME}",
-		'THEME_CHARSET'					=> tr('encoding'),
-		'ISP_LOGO'						=> get_logo($_SESSION['user_id'])
-	)
-);
+$tpl->assign(array(
+                  'TR_ADMIN_ADMIN_LOG_PAGE_TITLE' => tr('iMSCP - Admin/Admin Log'),
+                  'THEME_COLOR_PATH' => "../themes/{$cfg->USER_INITIAL_THEME}",
+                  'THEME_CHARSET' => tr('encoding'),
+                  'ISP_LOGO' => get_logo($_SESSION['user_id'])));
 
-function generate_page($tpl) {
+/**
+ * @param  iMSCP_pTemplate $tpl
+ * @return void
+ */
+function generate_page($tpl)
+{
+    /** @var $cfg iMSCP_Config_Handler_File */
+    $cfg = iMSCP_Registry::get('config');
 
-	$cfg = iMSCP_Registry::get('config');
+    $start_index = 0;
+    $rows_per_page = 15;
 
-	$start_index = 0;
-	$rows_per_page = 15;
+    if (isset($_GET['psi']) && is_numeric($_GET['psi']))
+        $start_index = intval($_GET['psi']);
 
-	if (isset($_GET['psi']) && is_numeric($_GET['psi']))
-		$start_index = intval($_GET['psi']);
+    $count_query = "SELECT COUNT(`log_id`) AS `cnt` FROM `log`;";
 
-	$count_query = "
-		SELECT
-			COUNT(`log_id`) AS cnt
-		FROM
-			`log`
-	";
-
-	$query = "
+    $query = "
 		SELECT
 			DATE_FORMAT(`log_time`, '%Y-%m-%d %H:%i') AS dat, `log_message`
 		FROM
@@ -83,203 +82,176 @@ function generate_page($tpl) {
 			`log_time` DESC
 		LIMIT
 			$start_index, $rows_per_page
+		;
 	";
 
-	$rs = exec_query($count_query);
+    $rs = exec_query($count_query);
+    $records_count = $rs->fields['cnt'];
+    $rs = exec_query($query);
 
-	$records_count = $rs->fields['cnt'];
+    if ($rs->rowCount() == 0) {
+        $tpl->assign(array(
+                          'LOG_ROW' => '',
+                          'PAG_MESSAGE' => tr('Log is empty!'),
+                          'USERS_LIST' => '',
+                          'SCROLL_PREV' => '',
+                          'SCROLL_NEXT' => '',
+                          'CLEAR_LOG' => ''));
+    } else {
+        $prev_si = $start_index - $rows_per_page;
 
-	$rs = exec_query($query);
+        if ($start_index == 0) {
+            $tpl->assign('SCROLL_PREV', '');
+        } else {
+            $tpl->assign(array(
+                              'SCROLL_PREV_GRAY' => '',
+                              'PREV_PSI' => $prev_si));
+        }
 
-	if ($rs->rowCount() == 0) {
-		$tpl->assign(
-			array(
-				'LOG_ROW'		=> '',
-				'PAG_MESSAGE'	=> tr('Log is empty!'),
-				'USERS_LIST'	=> '',
-				'SCROLL_PREV'	=> '',
-				'SCROLL_NEXT'	=> '',
-				'CLEAR_LOG'		=> ''
-			)
-		);
-	} else {
-		$prev_si = $start_index - $rows_per_page;
+        $next_si = $start_index + $rows_per_page;
 
-		if ($start_index == 0) {
-			$tpl->assign('SCROLL_PREV', '');
-		} else {
-			$tpl->assign(
-				array(
-					'SCROLL_PREV_GRAY'	=> '',
-					'PREV_PSI'			=> $prev_si
-				)
-			);
-		}
+        if ($next_si + 1 > $records_count) {
+            $tpl->assign('SCROLL_NEXT', '');
+        } else {
+            $tpl->assign(array(
+                              'SCROLL_NEXT_GRAY' => '',
+                              'NEXT_PSI' => $next_si));
+        }
 
-		$next_si = $start_index + $rows_per_page;
+        $tpl->assign('PAGE_MESSAGE', '');
 
-		if ($next_si + 1 > $records_count) {
-			$tpl->assign('SCROLL_NEXT', '');
-		} else {
-			$tpl->assign(
-				array(
-					'SCROLL_NEXT_GRAY'	=> '',
-					'NEXT_PSI'			=> $next_si
-				)
-			);
-		}
+        $row = 1;
 
-		$tpl->assign(
-			array(
-				'PAGE_MESSAGE' => ''
-			)
-		);
+        while (!$rs->EOF) {
+            $tpl->assign(array(
+                              'ROW_CLASS' => ($row++ % 2 == 0) ? 'content'
+                                  : 'content2'));
 
-		$row = 1;
+            $log_message = $rs->fields['log_message'];
 
-		while (!$rs->EOF) {
-			$tpl->assign(
-				array(
-					'ROW_CLASS' => ($row++ % 2 == 0) ? 'content' : 'content2',
-				)
-			);
+            $replaces = array(
+                '/[^a-zA-Z](delete[sd]?)[^a-zA-Z]/i' => ' <strong style="color:#FF0000">\\1</strong> ',
+                '/[^a-zA-Z](remove[sd]?)[^a-zA-Z]/i' => ' <strong style="color:#FF0000">\\1</strong> ',
+                '/[^a-zA-Z](add(s|ed)?)[^a-zA-Z]/i' => ' <strong style="color:#33CC66">\\1</strong> ',
+                '/[^a-zA-Z](change[sd]?)[^a-zA-Z]/i' => ' <strong style="color:#3300FF">\\1</strong> ',
+                '/[^a-zA-Z](update[sd]?)[^a-zA-Z]/i' => ' <strong style="color:#3300FF">\\1</strong> ',
+                '/[^a-zA-Z](edit(s|ed)?)[^a-zA-Z]/i' => ' <strong style="color:#33CC66">\\1</strong> ',
+                '/[^a-zA-Z](unknown)[^a-zA-Z]/i' => ' <strong style="color:#CC00FF">\\1</strong> ',
+                '/[^a-zA-Z](logged)[^a-zA-Z]/i' => ' <strong style="color:#336600">\\1</strong> ',
+                '/[^a-zA-Z]((session )?manipulation)[^a-zA-Z]/i' => ' <strong style="color:#FF0000">\\1</strong> ',
+                '/[^a-zA-Z]*(Warning[\!]?)[^a-zA-Z]/i' => ' <strong style="color:#FF0000">\\1</strong> ',
+                '/(bad password login data)/i' => ' <strong style="color:#FF0000">\\1</strong> '
+            );
 
-			$log_message = $rs->fields['log_message'];
+            foreach ($replaces as $pattern => $replacement) {
+                $log_message = preg_replace($pattern, $replacement, $log_message);
+            }
 
-			$replaces = array(
-				'/[^a-zA-Z](delete[sd]?)[^a-zA-Z]/i'	=> ' <strong style="color:#FF0000">\\1</strong> ',
-				'/[^a-zA-Z](remove[sd]?)[^a-zA-Z]/i'	=> ' <strong style="color:#FF0000">\\1</strong> ',
-				'/[^a-zA-Z](add(s|ed)?)[^a-zA-Z]/i'		=> ' <strong style="color:#33CC66">\\1</strong> ',
-				'/[^a-zA-Z](change[sd]?)[^a-zA-Z]/i'	=> ' <strong style="color:#3300FF">\\1</strong> ',
-				'/[^a-zA-Z](update[sd]?)[^a-zA-Z]/i'	=> ' <strong style="color:#3300FF">\\1</strong> ',
-				'/[^a-zA-Z](edit(s|ed)?)[^a-zA-Z]/i'	=> ' <strong style="color:#33CC66">\\1</strong> ',
-				'/[^a-zA-Z](unknown)[^a-zA-Z]/i'		=> ' <strong style="color:#CC00FF">\\1</strong> ',
-				'/[^a-zA-Z](logged)[^a-zA-Z]/i'			=> ' <strong style="color:#336600">\\1</strong> ',
-				'/[^a-zA-Z]((session )?manipulation)[^a-zA-Z]/i'	=> ' <strong style="color:#FF0000">\\1</strong> ',
-				'/[^a-zA-Z]*(Warning[\!]?)[^a-zA-Z]/i'	=> ' <strong style="color:#FF0000">\\1</strong> ',
-				'/(bad password login data)/i'			=> ' <strong style="color:#FF0000">\\1</strong> '
-			);
+            $date_formt = $cfg->DATE_FORMAT . ' H:i';
+            $tpl->assign(array(
+                     'MESSAGE' => $log_message,
+                     'DATE' => date($date_formt, strtotime($rs->fields['dat']))));
 
-			foreach ($replaces as $pattern => $replacement) {
-				$log_message = preg_replace($pattern, $replacement, $log_message);
-			}
+            $tpl->parse('LOG_ROW', '.log_row');
 
-			$date_formt = $cfg->DATE_FORMAT . ' H:i';
-			$tpl->assign(
-				array(
-					'MESSAGE'	=> $log_message,
-					'DATE'		=> date($date_formt, strtotime($rs->fields['dat'])),
-				)
-			);
-
-			$tpl->parse('LOG_ROW', '.log_row');
-
-			$rs->moveNext();
-		} // end while
-	}
+            $rs->moveNext();
+        }
+    }
 }
 
-function clear_log() {
-	if (isset($_POST['uaction']) && $_POST['uaction'] === 'clear_log') {
-		$query = null;
-		$msg = '';
+/**
+ * @throws iMSCP_Exception
+ * @return void
+ */
+function clear_log()
+{
+    if (isset($_POST['uaction']) && $_POST['uaction'] === 'clear_log') {
+        $query = null;
+        $msg = '';
 
-		switch ($_POST['uaction_clear']) {
-			case 0:
-				$query = "DELETE FROM `log`";
-				$msg = tr('%s deleted the full admin log!', $_SESSION['user_logged']);
-				break;
-
-			case 2:
-				// 2 Weeks
-				$query = "
+        switch ($_POST['uaction_clear']) {
+            case 0:
+                $query = "DELETE FROM `log`";
+                $msg = tr('%s deleted the full admin log!', $_SESSION['user_logged']);
+                break;
+            case 2:
+                // 2 Weeks
+                $query = "
 					DELETE FROM
 						`log`
 					WHERE
 						DATE_SUB(CURDATE(), INTERVAL 14 DAY) >= `log_time`
+					;
 				";
-				$msg = tr('%s deleted the admin log older than two weeks!', $_SESSION['user_logged']);
-
-				break;
-
-			case 4:
-				$query = "
+                $msg = tr('%s deleted the admin log older than two weeks!', $_SESSION['user_logged']);
+                break;
+            case 4:
+                $query = "
 					DELETE FROM
 						`log`
 					WHERE
 						DATE_SUB(CURDATE(), INTERVAL 1 MONTH) >= `log_time`
+					;
 				";
-				$msg = tr('%s deleted the admin log older than one month!', $_SESSION['user_logged']);
-
-				break;
-
-			case 12:
-				$query = "
+                $msg = tr('%s deleted the admin log older than one month!', $_SESSION['user_logged']);
+                break;
+            case 12:
+                $query = "
 					DELETE FROM
 						`log`
 					WHERE
 						DATE_SUB(CURDATE(), INTERVAL 3 MONTH) >= `log_time`
+					;
 				";
-				$msg = tr('%s deleted the admin log older than three months!', $_SESSION['user_logged']);
-				break;
+                $msg = tr('%s deleted the admin log older than three months!', $_SESSION['user_logged']);
+                break;
 
-			case 26:
-				$query = "
+            case 26:
+                $query = "
 					DELETE FROM
 						`log`
 					WHERE
 						DATE_SUB(CURDATE(), INTERVAL 6 MONTH) >= `log_time`
+					;
 				";
-				$msg = tr('%s deleted the admin log older than six months!', $_SESSION['user_logged']);
-				break;
-
-			case 52;
-				$query = "
+                $msg = tr('%s deleted the admin log older than six months!', $_SESSION['user_logged']);
+                break;
+            case 52;
+                $query = "
 					DELETE FROM
 						`log`
 					WHERE
 						DATE_SUB(CURDATE(), INTERVAL 1 YEAR) >= `log_time`
+					;
 				";
-				$msg = tr('%s deleted the admin log older than one year!', $_SESSION['user_logged']);
+                $msg = tr('%s deleted the admin log older than one year!', $_SESSION['user_logged']);
+                break;
+            default:
+                throw new iMSCP_Exception(tr('Invalid time period!'));
+        }
 
-				break;
-			default:
-				throw new iMSCP_Exception(tr('Invalid time period!'));
-		}
-
-		$rs = execute_query($query);
-		write_log($msg);
-	}
+        execute_query($query);
+        write_log($msg);
+    }
 }
 
-/*
- *
- * static page messages.
- *
- */
 gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_general_information.tpl');
 gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_general_information.tpl');
-
 clear_log();
+generate_page($tpl);
 
-generate_page ($tpl);
-
-$tpl->assign(
-	array(
-		'TR_ADMIN_LOG'				=> tr('Admin Log'),
-		'TR_CLEAR_LOG'				=> tr('Clear log'),
-		'TR_DATE'					=> tr('Date'),
-		'TR_MESSAGE'				=> tr('Message'),
-		'TR_CLEAR_LOG_MESSAGE'		=> tr('Delete from log:'),
-		'TR_CLEAR_LOG_EVERYTHING'	=> tr('everything'),
-		'TR_CLEAR_LOG_LAST2'		=> tr('older than 2 weeks'),
-		'TR_CLEAR_LOG_LAST4'		=> tr('older than 1 month'),
-		'TR_CLEAR_LOG_LAST12'		=> tr('older than 3 months'),
-		'TR_CLEAR_LOG_LAST26'		=> tr('older than 6 months'),
-		'TR_CLEAR_LOG_LAST52'		=> tr('older than 12 months'),
-	)
-);
-// gen_page_message($tpl);
+$tpl->assign(array(
+                  'TR_ADMIN_LOG' => tr('Admin Log'),
+                  'TR_CLEAR_LOG' => tr('Clear log'),
+                  'TR_DATE' => tr('Date'),
+                  'TR_MESSAGE' => tr('Message'),
+                  'TR_CLEAR_LOG_MESSAGE' => tr('Delete from log:'),
+                  'TR_CLEAR_LOG_EVERYTHING' => tr('everything'),
+                  'TR_CLEAR_LOG_LAST2' => tr('older than 2 weeks'),
+                  'TR_CLEAR_LOG_LAST4' => tr('older than 1 month'),
+                  'TR_CLEAR_LOG_LAST12' => tr('older than 3 months'),
+                  'TR_CLEAR_LOG_LAST26' => tr('older than 6 months'),
+                  'TR_CLEAR_LOG_LAST52' => tr('older than 12 months')));
 
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();

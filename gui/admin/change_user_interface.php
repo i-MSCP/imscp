@@ -2,13 +2,13 @@
 /**
  * i-MSCP a internet Multi Server Control Panel
  *
- * @copyright 	2001-2006 by moleSoftware GmbH
- * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010 by i-MSCP | http://i-mscp.net
- * @version 	SVN: $Id$
- * @link 		http://i-mscp.net
- * @author 		ispCP Team
- * @author 		i-MSCP Team
+ * @copyright   2001-2006 by moleSoftware GmbH
+ * @copyright   2006-2010 by ispCP | http://isp-control.net
+ * @copyright   2010-2011 by i-MSCP | http://i-mscp.net
+ * @version     SVN: $Id$
+ * @link        http://i-mscp.net
+ * @author      ispCP Team
+ * @author      i-MSCP Team
  *
  * @license
  * The contents of this file are subject to the Mozilla Public License
@@ -26,9 +26,11 @@
  * The Initial Developer of the Original Code is moleSoftware GmbH.
  * Portions created by Initial Developer are Copyright (C) 2001-2006
  * by moleSoftware GmbH. All Rights Reserved.
+ *
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ *
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
@@ -39,17 +41,17 @@ check_login(__FILE__);
 // we need to check only if all vars are OK
 // admin can walk into all interfaces
 if (isset($_SESSION['user_id']) && isset($_GET['to_id'])) {
-	$from_id = $_SESSION['user_id'];
+    $from_id = $_SESSION['user_id'];
 
-	$to_id = $_GET['to_id'];
-	// admin logged as an other admin:
-	if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id'])) {
-		$from_id = $_SESSION['logged_from_id'];
-	} else {
-		$from_id = $_SESSION['user_id'];
-	}
+    $to_id = $_GET['to_id'];
+    // admin logged as an other admin:
+    if (isset($_SESSION['logged_from']) && isset($_SESSION['logged_from_id'])) {
+        $from_id = $_SESSION['logged_from_id'];
+    } else {
+        $from_id = $_SESSION['user_id'];
+    }
 
-	change_user_interface($from_id, $to_id);
+    change_user_interface($from_id, $to_id);
 } else {
-	user_goto('manage_users.php');
+    user_goto('manage_users.php');
 }
