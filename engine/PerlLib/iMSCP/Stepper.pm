@@ -94,15 +94,18 @@ sub step{
 	my $rs = &{$code} if (ref $code eq 'CODE');
 
 	if($rs && $exit eq 'yes'){
+		iMSCP::Dialog->new()->endGauge()  if iMSCP::Dialog->new()->needGauge();
 		iMSCP::Dialog->new()->msgbox(
 					"\n
 					\\Z1[ERROR]\\Zn
 
-					Error while performing step: '$text'
+					Error while performing step:
+
+					$text
 
 					Error was:
 
-					\\Z1".($rs =~ /^\d+$/ ? getLastError() : $rs)."\\Zn
+					\\Z1".($rs =~ /^\d+$/ ? getLastError() : $rs)."\\Zn\n
 
 					Error detail can be found in $main::imscpConfig{'LOG_DIR'}/imscp-setup.log
 

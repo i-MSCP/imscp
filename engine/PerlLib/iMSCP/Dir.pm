@@ -174,6 +174,41 @@ sub make{
 	0;
 }
 
+sub remove{
+
+	my $self	= shift;
+	my $err;
+
+	debug((caller(0))[3].': Starting...');
+
+	debug((caller(0))[3].": $self->{dirname}");
+
+	use File::Path 'remove_tree';
+
+	if ( -d  $self->{dirname}) {
+
+		use File::Path;
+		remove_tree( $self->{dirname}, {error => \$err});
+
+		if (@$err) {
+			for my $diag (@$err) {
+				my ($dir, $message) = %$diag;
+				if ($dir eq '') {
+					error((caller(0))[3].": General error: $message");
+				}
+				else {
+					error((caller(0))[3].": Problem deleting $dir: $message");
+				}
+			}
+			return 1;
+		}
+
+	}
+
+	debug((caller(0))[3].': Ending...');
+
+	0;
+}
 
 1;
 
