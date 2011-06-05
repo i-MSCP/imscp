@@ -56,7 +56,7 @@ $tpl->assign(
 	)
 );
 
-function padd_user(&$tpl, &$sql, $dmn_id) {
+function padd_user($tpl, $dmn_id) {
 
 	$cfg = iMSCP_Registry::get('config');
 
@@ -95,7 +95,7 @@ function padd_user(&$tpl, &$sql, $dmn_id) {
 				AND
 					`dmn_id` = ?
 			";
-			$rs = exec_query($sql, $query, array($uname, $dmn_id));
+			$rs = exec_query($query, array($uname, $dmn_id));
 
 			if ($rs->recordCount() == 0) {
 
@@ -105,7 +105,7 @@ function padd_user(&$tpl, &$sql, $dmn_id) {
 					VALUES
 						(?, ?, ?, ?)
 				";
-				$rs = exec_query($sql, $query, array($dmn_id, $uname, $upass, $status));
+				exec_query($query, array($dmn_id, $uname, $upass, $status));
 
 				send_request();
 
@@ -135,7 +135,7 @@ gen_logged_from($tpl);
 
 check_permissions($tpl);
 
-padd_user($tpl, $sql, get_user_domain_id($sql, $_SESSION['user_id']));
+padd_user($tpl, get_user_domain_id($_SESSION['user_id']));
 
 $tpl->assign(
 	array(

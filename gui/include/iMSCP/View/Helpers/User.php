@@ -52,9 +52,6 @@ function gen_client_mainmenu($tpl, $menu_file)
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
-
     $tpl->define_dynamic('menu', $menu_file);
     $tpl->define_dynamic('isactive_awstats', 'menu');
     $tpl->define_dynamic('isactive_domain', 'menu');
@@ -117,7 +114,7 @@ function gen_client_mainmenu($tpl, $menu_file)
 		;
 	";
 
-    $stmt = exec_query($db, $query);
+    $stmt = exec_query($query);
 
     if ($stmt->recordCount() == 0) {
         $tpl->assign('CUSTOM_BUTTONS', '');
@@ -150,7 +147,7 @@ function gen_client_mainmenu($tpl, $menu_file)
 
     list(,,,,,,,,$dmn_mailacc_limit, $dmn_ftpacc_limit,, $dmn_sqld_limit,,,
         $dmn_als_limit,$dmn_subd_limit,,,,,,,$domain_dns
-    ) = get_domain_default_props($db, $_SESSION['user_id']);
+    ) = get_domain_default_props($_SESSION['user_id']);
 
     if ($dmn_mailacc_limit == -1)
         $tpl->assign('ISACTIVE_EMAIL', '');
@@ -174,7 +171,7 @@ function gen_client_mainmenu($tpl, $menu_file)
 		;
 	";
 
-    $stmt = exec_query($db, $query, $_SESSION['user_created_by']);
+    $stmt = exec_query($query, $_SESSION['user_created_by']);
 
     if (!$cfg->IMSCP_SUPPORT_SYSTEM || $stmt->fields['support_system'] == 'no') {
         $tpl->assign('ISACTIVE_SUPPORT', '');
@@ -202,9 +199,6 @@ function gen_client_menu($tpl, $menu_file)
 {
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
-
-    /** @var $db iMSCP_Database */
-    $db = iMSCP_Registry::get('db');
 
     $tpl->define_dynamic('menu', $menu_file);
     $tpl->define_dynamic('custom_buttons', 'menu');
@@ -268,7 +262,7 @@ function gen_client_menu($tpl, $menu_file)
 			`menu_level` = 'all'
 		;
 	";
-    $stmt = exec_query($db, $query);
+    $stmt = exec_query($query);
 
     if (!$stmt->recordCount()) {
         $tpl->assign('CUSTOM_BUTTONS', '');
@@ -298,14 +292,14 @@ function gen_client_menu($tpl, $menu_file)
     }
 
     $query = "SELECT `support_system` FROM `reseller_props` WHERE `reseller_id` = ?;";
-    $stmt = exec_query($db, $query, $_SESSION['user_created_by']);
+    $stmt = exec_query($query, $_SESSION['user_created_by']);
 
     if (!$cfg->IMSCP_SUPPORT_SYSTEM || $stmt->fields['support_system'] == 'no') {
         $tpl->assign('SUPPORT_SYSTEM', '');
     }
 
     list($dmn_id,,,,,,,,$dmn_mailacc_limit,,,,,,$dmn_als_limit,$dmn_subd_limit,,,,,,,
-        $dmn_dns) = get_domain_default_props($db, $_SESSION['user_id']);
+        $dmn_dns) = get_domain_default_props($_SESSION['user_id']);
 
     if ($dmn_mailacc_limit == -1) {
         $tpl->assign('ACTIVE_EMAIL', '');
@@ -329,13 +323,13 @@ function gen_client_menu($tpl, $menu_file)
                           'ISACTIVE_DNS' => ''));
     }
 
-    $sub_cnt = get_domain_running_sub_cnt($db, $dmn_id);
+    $sub_cnt = get_domain_running_sub_cnt($dmn_id);
 
     if ($dmn_subd_limit != 0 && $sub_cnt >= $dmn_subd_limit) {
         $tpl->assign('ISACTIVE_SUBDOMAIN_MENU', '');
     }
 
-    $als_cnt = get_domain_running_als_cnt($db, $dmn_id);
+    $als_cnt = get_domain_running_als_cnt($dmn_id);
 
     if ($dmn_als_limit != 0 && $als_cnt >= $dmn_als_limit) {
         $tpl->assign('ISACTIVE_ALIAS_MENU', '');
@@ -361,7 +355,7 @@ function gen_client_menu($tpl, $menu_file)
 			`status` = '1'
 		;
 	";
-    $stmt = exec_query($db, $query, $_SESSION['user_created_by']);
+    $stmt = exec_query($query, $_SESSION['user_created_by']);
 
     if (!$stmt->recordCount() ) {
         if ($cfg->HOSTING_PLANS_LEVEL != 'admin') {
@@ -378,7 +372,7 @@ function gen_client_menu($tpl, $menu_file)
 			`domain_admin_id` = ?
 		;
 	";
-    $stmt = exec_query($db, $query, array($_SESSION['user_id']));
+    $stmt = exec_query($query, array($_SESSION['user_id']));
 
     if ($stmt->fields('domain_software_allowed') == 'yes'
         && $stmt->fields('domain_ftpacc_limit') != '-1'
@@ -391,5 +385,3 @@ function gen_client_menu($tpl, $menu_file)
 
     $tpl->parse('MENU', 'menu');
 }
-
-

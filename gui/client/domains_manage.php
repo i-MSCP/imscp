@@ -57,8 +57,8 @@ $tpl->define_dynamic('dns_item', 'dns_list');
 
 // page functions.
 
-function gen_user_dns_list(&$tpl, &$sql, $user_id) {
-	$domain_id = get_user_domain_id($sql, $user_id);
+function gen_user_dns_list($tpl, $user_id) {
+	$domain_id = get_user_domain_id($user_id);
 
 	$query = "
 		SELECT
@@ -86,7 +86,7 @@ function gen_user_dns_list(&$tpl, &$sql, $user_id) {
 			`domain_type`
 	";
 
-	$rs = exec_query($sql, $query, $domain_id);
+	$rs = exec_query($query, $domain_id);
 	if ($rs->recordCount() == 0) {
 		$tpl->assign(array('DNS_MSG' => tr("Manual zone's records list is empty!"), 'DNS_LIST' => ''));
 		$tpl->parse('DNS_MESSAGE', 'dns_message');
@@ -199,9 +199,9 @@ function gen_user_sub_forward($sub_id, $sub_status, $url_forward, $dmn_type) {
 	}
 }
 
-function gen_user_sub_list(&$tpl, &$sql, $user_id) {
+function gen_user_sub_list($tpl, $user_id) {
 
-	$domain_id = get_user_domain_id($sql, $user_id);
+	$domain_id = get_user_domain_id($user_id);
 
 	$query = "
 		SELECT
@@ -239,8 +239,8 @@ function gen_user_sub_list(&$tpl, &$sql, $user_id) {
 			`subdomain_alias_name`
 	";
 
-	$rs = exec_query($sql, $query, $domain_id);
-	$rs2 = exec_query($sql, $query2, $domain_id);
+	$rs = exec_query($query, $domain_id);
+	$rs2 = exec_query($query2, $domain_id);
 
 	if (($rs->recordCount() + $rs2->recordCount()) == 0) {
 		$tpl->assign(array('SUB_MSG' => tr('Subdomain list is empty!'), 'SUB_LIST' => ''));
@@ -335,9 +335,9 @@ function gen_user_als_forward($als_id, $als_status, $url_forward) {
 	}
 }
 
-function gen_user_als_list(&$tpl, &$sql, $user_id) {
+function gen_user_als_list($tpl, $user_id) {
 
-	$domain_id = get_user_domain_id($sql, $user_id);
+	$domain_id = get_user_domain_id($user_id);
 
 	$query = "
 		SELECT
@@ -356,7 +356,7 @@ function gen_user_als_list(&$tpl, &$sql, $user_id) {
 			`alias_name`
 	";
 
-	$rs = exec_query($sql, $query, $domain_id);
+	$rs = exec_query($query, $domain_id);
 
 	if ($rs->recordCount() == 0) {
 		$tpl->assign(array('ALS_MSG' => tr('Alias list is empty!'), 'ALS_LIST' => ''));
@@ -406,11 +406,9 @@ $tpl->assign(
 
 // dynamic page data.
 
-gen_user_sub_list($tpl, $sql, $_SESSION['user_id']);
-gen_user_als_list($tpl, $sql, $_SESSION['user_id']);
-gen_user_dns_list($tpl, $sql, $_SESSION['user_id']);
-// static page messages.
-
+gen_user_sub_list($tpl, $_SESSION['user_id']);
+gen_user_als_list($tpl, $_SESSION['user_id']);
+gen_user_dns_list($tpl, $_SESSION['user_id']);
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_manage_domains.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_manage_domains.tpl');
 

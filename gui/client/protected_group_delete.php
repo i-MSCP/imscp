@@ -38,7 +38,7 @@ check_login(__FILE__);
 
 $cfg = iMSCP_Registry::get('config');
 
-$dmn_id = get_user_domain_id($sql, $_SESSION['user_id']);
+$dmn_id = get_user_domain_id($_SESSION['user_id']);
 
 
 if (isset($_GET['gname'])
@@ -65,7 +65,7 @@ $query = "
 		`ugroup` != ?
 ";
 
-$rs = exec_query($sql, $query, array($change_status, $group_id, $dmn_id, $awstats_auth));
+$rs = exec_query($query, array($change_status, $group_id, $dmn_id, $awstats_auth));
 
 
 $query = "
@@ -77,7 +77,7 @@ $query = "
 		`dmn_id` = ?
 ";
 
-$rs = exec_query($sql, $query, $dmn_id);
+$rs = exec_query($query, $dmn_id);
 
 while (!$rs->EOF) {
 
@@ -104,7 +104,7 @@ while (!$rs->EOF) {
 			WHERE
 				`id` = ?
 		";
-		$rs_update = exec_query($sql, $update_query, array($grp_id, $status, $ht_id));
+		$rs_update = exec_query($update_query, array($grp_id, $status, $ht_id));
 	}
 
 	$rs->moveNext();

@@ -147,12 +147,11 @@ function gen_user_mail_auto_respond(
  * Must be documented
  *
  * @param iMSCP_pTemplate $tpl reference to pTemplate object
- * @param iMSCP_Databse $sql reference to imscp_Database object
  * @param int $dmn_id domain name id
  * @param string $dmn_name domain name
  * @return int number of domain mails adresses
  */
-function gen_page_dmn_mail_list($tpl, $sql, $dmn_id, $dmn_name) {
+function gen_page_dmn_mail_list($tpl, $dmn_id, $dmn_name) {
 
 	$dmn_query = "
 		SELECT
@@ -195,7 +194,7 @@ function gen_page_dmn_mail_list($tpl, $sql, $dmn_id, $dmn_name) {
 			`mail_type` DESC
 	";
 
-	$rs = exec_query($sql, $dmn_query, $dmn_id);
+	$rs = exec_query($dmn_query, $dmn_id);
 
 	if ($rs->recordCount() == 0) {
 		return 0;
@@ -269,12 +268,11 @@ function gen_page_dmn_mail_list($tpl, $sql, $dmn_id, $dmn_name) {
  * Must be documented
  *
  * @param iMSCP_pTemplate $tpl reference to the template object
- * @param iMSCP_Database $sql reference to the imscp_Database object
  * @param int $dmn_id domain name id
  * @param strinc $dmn_name domain name
  * @return int number of subdomain mails addresses
  */
-function gen_page_sub_mail_list($tpl, $sql, $dmn_id, $dmn_name) {
+function gen_page_sub_mail_list($tpl, $dmn_id, $dmn_name) {
 
 	$sub_query = "
 		SELECT
@@ -323,7 +321,7 @@ function gen_page_sub_mail_list($tpl, $sql, $dmn_id, $dmn_name) {
 			t2.`mail_type` DESC
 	";
 
-	$rs = exec_query($sql, $sub_query, array($dmn_id, $dmn_id));
+	$rs = exec_query($sub_query, array($dmn_id, $dmn_id));
 
 	if ($rs->recordCount() == 0) {
 		return 0;
@@ -398,12 +396,11 @@ function gen_page_sub_mail_list($tpl, $sql, $dmn_id, $dmn_name) {
  * Must be documented
  *
  * @param iMSCP_pTemplate $tpl reference to the pTemplate object
- * @param iMSCP_Database $sql reference to the iMSCP_Database object
  * @param int $dmn_id domain name id
  * @param string $dmn_name domain name
  * @return int number of subdomain alias mails addresses
  */
-function gen_page_als_sub_mail_list($tpl, $sql, $dmn_id, $dmn_name) {
+function gen_page_als_sub_mail_list($tpl, $dmn_id, $dmn_name) {
 
 	$sub_query = "
 		SELECT
@@ -458,7 +455,7 @@ function gen_page_als_sub_mail_list($tpl, $sql, $dmn_id, $dmn_name) {
 			t1.`mail_type` DESC
 	";
 
-	$rs = exec_query($sql, $sub_query, $dmn_id);
+	$rs = exec_query($sub_query, $dmn_id);
 
 	if ($rs->recordCount() == 0) {
 		return 0;
@@ -525,12 +522,11 @@ function gen_page_als_sub_mail_list($tpl, $sql, $dmn_id, $dmn_name) {
  * Must be documented
  *
  * @param pTtempalte $tpl reference to pTemplate object
- * @param iMSCP_Database $sql reference to the iMSCP_Database object
  * @param int $dmn_id domain name id;
  * @param string $dmn_name domain name
  * @return int number of domain alias mails addresses
  */
-function gen_page_als_mail_list($tpl, $sql, $dmn_id, $dmn_name) {
+function gen_page_als_mail_list($tpl, $dmn_id, $dmn_name) {
 
 	$als_query = "
 		SELECT
@@ -579,7 +575,7 @@ function gen_page_als_mail_list($tpl, $sql, $dmn_id, $dmn_name) {
 			t2.`mail_type` DESC
 	";
 
-	$rs = exec_query($sql, $als_query, array($dmn_id, $dmn_id));
+	$rs = exec_query($als_query, array($dmn_id, $dmn_id));
 
 	if ($rs->recordCount() == 0) {
 		return 0;
@@ -649,29 +645,28 @@ function gen_page_als_mail_list($tpl, $sql, $dmn_id, $dmn_name) {
  * Must be documented
  *
  * @param iMSCP_pTemplate $tpl Reference to the pTemplate object
- * @param iMSCP_Database $sql Reference to the iMSCP_Database object
  * @param int $user_id Customer id
  * @return void
  */
-function gen_page_lists($tpl, $sql, $user_id) {
+function gen_page_lists($tpl, $user_id) {
 
 	global $dmn_id;
 	$cfg = iMSCP_Registry::get('config');
 
 	list($dmn_id,$dmn_name,,,,,,,$dmn_mailacc_limit
-	) = get_domain_default_props($sql, $user_id);
+	) = get_domain_default_props($user_id);
 
-	$dmn_mails = gen_page_dmn_mail_list($tpl, $sql, $dmn_id, $dmn_name);
-	$sub_mails = gen_page_sub_mail_list($tpl, $sql, $dmn_id, $dmn_name);
-	$alssub_mails = gen_page_als_sub_mail_list($tpl, $sql, $dmn_id, $dmn_name);
-	$als_mails = gen_page_als_mail_list($tpl, $sql, $dmn_id, $dmn_name);
+	$dmn_mails = gen_page_dmn_mail_list($tpl, $dmn_id, $dmn_name);
+	$sub_mails = gen_page_sub_mail_list($tpl, $dmn_id, $dmn_name);
+	$alssub_mails = gen_page_als_sub_mail_list($tpl, $dmn_id, $dmn_name);
+	$als_mails = gen_page_als_mail_list($tpl, $dmn_id, $dmn_name);
 
 	// If 'uaction' is set and own value is != 'hide', the total includes
 	// the number of email by default
 	$counted_mails = $total_mails =
 		$dmn_mails + $sub_mails + $als_mails + $alssub_mails;
 
-	$default_mails = count_default_mails($sql, $dmn_id);
+	$default_mails = count_default_mails($dmn_id);
 
 	if ($cfg->COUNT_DEFAULT_EMAIL_ADDRESSES == 0) {
 		if (isset($_POST['uaction']) && $_POST['uaction'] == 'show') {
@@ -727,11 +722,10 @@ function gen_page_lists($tpl, $sql, $user_id) {
  *
  * @author Laurent declercq <l.declercq@nuxwin.com>
  * @since r2513
- * @param iMSCP_Database $sql reference to the Database instance
  * @param int Domain name id
  * @return int Number of default mails adresses
  */
-function count_default_mails($sql, $dmn_id) {
+function count_default_mails($dmn_id) {
 
 	static $count_default_mails;
 
@@ -753,7 +747,7 @@ function count_default_mails($sql, $dmn_id) {
 				)
 		";
 
-		$rs = exec_query($sql, $query, $dmn_id);
+		$rs = exec_query($query, $dmn_id);
 		$count_default_mails = (int) $rs->fields['cnt'];
 	}
 
@@ -766,7 +760,7 @@ if (isset($_SESSION['email_support']) && $_SESSION['email_support'] == 'no') {
 	$tpl->assign('NO_MAILS', '');
 }
 
-gen_page_lists($tpl, $sql, $_SESSION['user_id']);
+gen_page_lists($tpl, $_SESSION['user_id']);
 
 // static page messages.
 
@@ -799,7 +793,7 @@ $tpl->assign(
 
 // Displays the "show/hide" button for default emails
 // only if default mail address exists
-if (count_default_mails($sql, $dmn_id) > 0) {
+if (count_default_mails($dmn_id) > 0) {
 
 	$tpl->assign(
 		array(

@@ -52,7 +52,7 @@ if (isset($_GET['id'])) {
 }
 
 // page functions.
-function change_sql_user_pass(&$sql, $db_user_id, $db_user_name) {
+function change_sql_user_pass($db_user_id, $db_user_name) {
 
 	$cfg = iMSCP_Registry::get('config');
 
@@ -101,24 +101,24 @@ function change_sql_user_pass(&$sql, $db_user_id, $db_user_name) {
 		WHERE
 			`sqlu_name` = ?
 	";
-
-	$rs = exec_query($sql, $query, array(encrypt_db_password($user_pass), $db_user_name));
+	exec_query($query, array(encrypt_db_password($user_pass), $db_user_name));
 
 	// update user pass in the mysql system tables;
 	// TODO use prepared statement for $user_pass
 	$query = "SET PASSWORD FOR '$db_user_name'@'%' = PASSWORD('$user_pass')";
 
-	$rs = execute_query($sql, $query);
+	execute_query($query);
 	// TODO use prepared statement for $user_pass
 	$query = "SET PASSWORD FOR '$db_user_name'@localhost = PASSWORD('$user_pass')";
-	$rs = execute_query($sql, $query);
+	execute_query($query);
 
 	write_log($_SESSION['user_logged'] . ": update SQL user password: " . tohtml($db_user_name));
 	set_page_message(tr('SQL user password was successfully changed!'), 'success');
 	user_goto('sql_manage.php');
 }
 
-function gen_page_data(&$tpl, &$sql, $db_user_id) {
+function gen_page_data(&$tpl, $db_user_id) {
+
 	$query = "
 		SELECT
 			`sqlu_name`
@@ -128,7 +128,7 @@ function gen_page_data(&$tpl, &$sql, $db_user_id) {
 			`sqlu_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, $db_user_id);
+	$rs = exec_query($query, $db_user_id);
 	$tpl->assign(
 		array(
 			'USER_NAME' => tohtml($rs->fields['sqlu_name']),
@@ -153,7 +153,7 @@ $tpl->assign(
 	)
 );
 
-$db_user_name = gen_page_data($tpl, $sql, $db_user_id);
+$db_user_name = gen_page_data($tpl, $db_user_id);
 
 if(!check_user_sql_perms($db_user_id))
 {
@@ -162,7 +162,7 @@ if(!check_user_sql_perms($db_user_id))
 }
 
 check_user_sql_perms($db_user_id);
-change_sql_user_pass($sql, $db_user_id, $db_user_name);
+change_sql_user_pass($db_user_id, $db_user_name);
 
 
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_manage_sql.tpl');

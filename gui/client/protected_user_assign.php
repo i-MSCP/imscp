@@ -61,7 +61,7 @@ $tpl->assign(
  * functions
  */
 
-function get_htuser_name(&$sql, &$uuser_id, &$dmn_id) {
+function get_htuser_name(&$uuser_id, &$dmn_id) {
 	$query = "
 		SELECT
 			`uname`
@@ -73,7 +73,7 @@ function get_htuser_name(&$sql, &$uuser_id, &$dmn_id) {
 			`id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($dmn_id, $uuser_id));
+	$rs = exec_query($query, array($dmn_id, $uuser_id));
 
 	if ($rs->recordCount() == 0) {
 		user_goto('protected_user_manage.php');
@@ -82,20 +82,20 @@ function get_htuser_name(&$sql, &$uuser_id, &$dmn_id) {
 	}
 }
 
-function gen_user_assign(&$tpl, &$sql, &$dmn_id) {
+function gen_user_assign($tpl, &$dmn_id) {
 	if (isset($_GET['uname'])
 		&& $_GET['uname'] !== ''
 		&& is_numeric($_GET['uname'])) {
 		$uuser_id = $_GET['uname'];
 
-		$tpl->assign('UNAME', tohtml(get_htuser_name($sql, $uuser_id, $dmn_id)));
+		$tpl->assign('UNAME', tohtml(get_htuser_name($uuser_id, $dmn_id)));
 		$tpl->assign('UID', $uuser_id);
 	} else if (isset($_POST['nadmin_name'])
 		&& !empty($_POST['nadmin_name'])
 		&& is_numeric($_POST['nadmin_name'])) {
 		$uuser_id = $_POST['nadmin_name'];
 
-		$tpl->assign('UNAME', tohtml(get_htuser_name($sql, $uuser_id, $dmn_id)));
+		$tpl->assign('UNAME', tohtml(get_htuser_name($uuser_id, $dmn_id)));
 		$tpl->assign('UID', $uuser_id);
 	} else {
 		user_goto('protected_user_manage.php');
@@ -110,7 +110,7 @@ function gen_user_assign(&$tpl, &$sql, &$dmn_id) {
 			`dmn_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, $dmn_id);
+	$rs = exec_query($query, $dmn_id);
 
 	if ($rs->recordCount() == 0) {
 		set_page_message(tr('You have no groups!'), 'error');
@@ -164,7 +164,7 @@ function gen_user_assign(&$tpl, &$sql, &$dmn_id) {
 	}
 }
 
-function add_user_to_group(&$tpl, &$sql, &$dmn_id) {
+function add_user_to_group($tpl, &$dmn_id) {
 
 	$cfg = iMSCP_Registry::get('config');
 
@@ -188,7 +188,7 @@ function add_user_to_group(&$tpl, &$sql, &$dmn_id) {
 				`id` = ?
 		";
 
-		$rs = exec_query($sql, $query, array($dmn_id, $group_id));
+		$rs = exec_query($query, array($dmn_id, $group_id));
 
 		$members = $rs->fields['members'];
 		if ($members == '') {
@@ -210,8 +210,7 @@ function add_user_to_group(&$tpl, &$sql, &$dmn_id) {
 			AND
 				`dmn_id` = ?
 		";
-
-		$rs_update = exec_query($sql, $update_query, array($members, $change_status, $group_id, $dmn_id));
+		exec_query($update_query, array($members, $change_status, $group_id, $dmn_id));
 
 		send_request();
 		set_page_message(tr('User was assigned to the %s group', $rs->fields['ugroup']));
@@ -220,7 +219,7 @@ function add_user_to_group(&$tpl, &$sql, &$dmn_id) {
 	}
 }
 
-function delete_user_from_group(&$tpl, &$sql, &$dmn_id) {
+function delete_user_from_group($tpl, &$dmn_id) {
 
 	$cfg = iMSCP_Registry::get('config');
 
@@ -244,7 +243,7 @@ function delete_user_from_group(&$tpl, &$sql, &$dmn_id) {
 				`id` = ?
 		";
 
-		$rs = exec_query($sql, $query, array($dmn_id, $group_id));
+		$rs = exec_query($query, array($dmn_id, $group_id));
 
 		$members = explode(',', $rs->fields['members']);
 		$key = array_search($uuser_id, $members);
@@ -264,7 +263,7 @@ function delete_user_from_group(&$tpl, &$sql, &$dmn_id) {
 					`dmn_id` = ?
 			";
 
-			$rs_update = exec_query($sql, $update_query, array($members, $change_status, $group_id, $dmn_id));
+			exec_query($update_query, array($members, $change_status, $group_id, $dmn_id));
 			send_request();
 
 			set_page_message(tr('User was deleted from the %s group ', $rs->fields['ugroup']));
@@ -285,13 +284,13 @@ gen_logged_from($tpl);
 
 check_permissions($tpl);
 
-$dmn_id = get_user_domain_id($sql, $_SESSION['user_id']);
+$dmn_id = get_user_domain_id($_SESSION['user_id']);
 
-add_user_to_group($tpl, $sql, $dmn_id);
+add_user_to_group($tpl, $dmn_id);
 
-delete_user_from_group($tpl, $sql, $dmn_id);
+delete_user_from_group($tpl, $dmn_id);
 
-gen_user_assign($tpl, $sql, $dmn_id);
+gen_user_assign($tpl, $dmn_id);
 
 $tpl->assign(
 	array(

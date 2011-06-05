@@ -57,7 +57,7 @@ $tpl->assign(
 	)
 );
 
-function padd_group(&$tpl, &$sql, $dmn_id) {
+function padd_group($tpl, $dmn_id) {
 
 	$cfg = iMSCP_Registry::get('config');
 
@@ -82,7 +82,7 @@ function padd_group(&$tpl, &$sql, $dmn_id) {
 					`dmn_id` = ?
 			";
 
-			$rs = exec_query($sql, $query, array($groupname, $dmn_id));
+			$rs = exec_query($query, array($groupname, $dmn_id));
 
 			if ($rs->recordCount() == 0) {
 				$change_status = $cfg->ITEM_ADD_STATUS;
@@ -94,7 +94,7 @@ function padd_group(&$tpl, &$sql, $dmn_id) {
 						(?, ?, ?)
 				";
 
-				$rs = exec_query($sql, $query, array($dmn_id, $groupname, $change_status));
+				exec_query($query, array($dmn_id, $groupname, $change_status));
 
 				send_request();
 
@@ -127,7 +127,7 @@ gen_logged_from($tpl);
 
 check_permissions($tpl);
 
-padd_group($tpl, $sql, get_user_domain_id($sql, $_SESSION['user_id']));
+padd_group($tpl, get_user_domain_id($_SESSION['user_id']));
 
 $tpl->assign(
 	array(

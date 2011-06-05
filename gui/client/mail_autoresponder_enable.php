@@ -45,7 +45,7 @@ $tpl->define_dynamic('logged_from', 'page');
 
 // page functions.
 
-function check_email_user(&$sql) {
+function check_email_user() {
 	$dmn_name = $_SESSION['user_logged'];
 	$mail_id = $_GET['id'];
 
@@ -65,7 +65,7 @@ function check_email_user(&$sql) {
 			t2.`domain_name` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($mail_id, $dmn_name));
+	$rs = exec_query($query, array($mail_id, $dmn_name));
 
 	if ($rs->recordCount() == 0) {
 		set_page_message(tr('User does not exist or you do not have permission to access this interface!'), 'error');
@@ -73,7 +73,7 @@ function check_email_user(&$sql) {
 	}
 }
 
-function gen_page_dynamic_data(&$tpl, &$sql, $mail_id) {
+function gen_page_dynamic_data($tpl, $mail_id) {
 
 	$cfg = iMSCP_Registry::get('config');
 
@@ -97,8 +97,7 @@ function gen_page_dynamic_data(&$tpl, &$sql, $mail_id) {
 			WHERE
 				`mail_id` = ?
 		";
-
-		$rs = exec_query($sql, $query, array($item_change_status, $arsp_message, $mail_id));
+		exec_query($query, array($item_change_status, $arsp_message, $mail_id));
 
 		send_request();
 		$query = "
@@ -121,7 +120,7 @@ function gen_page_dynamic_data(&$tpl, &$sql, $mail_id) {
 				`mail_id` = ?
 		";
 
-		$rs = exec_query($sql, $query, $mail_id);
+		$rs = exec_query($query, $mail_id);
 		$mail_name = $rs->fields['mailbox'];
 		write_log($_SESSION['user_logged'] . ": add mail autoresponder: " . $mail_name);
 		set_page_message(tr('Mail account scheduler for modification!'));
@@ -137,7 +136,7 @@ function gen_page_dynamic_data(&$tpl, &$sql, $mail_id) {
 				`mail_id` = ?
 		";
 
-		$rs = exec_query($sql, $query, $mail_id);
+		$rs = exec_query($query, $mail_id);
 		$mail_name = $rs->fields['mail_acc'];
 
 		$tpl->assign('ARSP_MESSAGE', tohtml($rs->fields['mail_auto_respond_text']));
@@ -171,8 +170,8 @@ $tpl->assign(
 
 // dynamic page data.
 
-check_email_user($sql);
-gen_page_dynamic_data($tpl, $sql, $mail_id);
+check_email_user();
+gen_page_dynamic_data($tpl, $mail_id);
 
 // static page messages.
 

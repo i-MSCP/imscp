@@ -46,14 +46,14 @@ function gen_page_msg(&$tpl, $erro_txt) {
 
 }
 
-function check_subdomain_permissions($sql, $user_id) {
-	$props = get_domain_default_props($sql, $user_id, true);
+function check_subdomain_permissions($user_id) {
+	$props = get_domain_default_props($user_id, true);
 
 	$dmn_id = $props['domain_id'];
 	$dmn_name = $props['domain_name'];
 	$dmn_subd_limit = $props['domain_subd_limit'];
 
-	$sub_cnt = get_domain_running_sub_cnt($sql, $dmn_id);
+	$sub_cnt = get_domain_running_sub_cnt($dmn_id);
 
 	if ($dmn_subd_limit != 0 && $sub_cnt >= $dmn_subd_limit) {
 		set_page_message(tr('Subdomains limit reached!'), 'error');
@@ -69,13 +69,13 @@ function check_subdomain_permissions($sql, $user_id) {
 			WHERE
 				`alias_id` = ?
 		";
-		$rs = exec_query($sql, $query_alias, $_POST['als_id']);
+		$rs = exec_query($query_alias, $_POST['als_id']);
 		return $rs->fields['alias_name'];
 	}
 	return $dmn_name; // Will be used in subdmn_exists()
 }
 
-function gen_user_add_subdomain_data(&$tpl, &$sql, $user_id) {
+function gen_user_add_subdomain_data($tpl, $user_id) {
 
 	$cfg = iMSCP_Registry::get('config');
 
@@ -91,7 +91,7 @@ function gen_user_add_subdomain_data(&$tpl, &$sql, $user_id) {
 			`domain_admin_id` = ?
 	';
 
-	$rs = exec_query($sql, $query, $user_id);
+	$rs = exec_query($query, $user_id);
 	$domainname = decode_idna($rs->fields['domain_name']);
 	$tpl->assign(
 		array(
@@ -100,7 +100,7 @@ function gen_user_add_subdomain_data(&$tpl, &$sql, $user_id) {
 			'SUB_ALS_CHECKED'	=> ''
 		)
 	);
-	gen_dmn_als_list($tpl, $sql, $rs->fields['domain_id'], 'no');
+	gen_dmn_als_list($tpl, $rs->fields['domain_id'], 'no');
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_subd') {
 		if($_POST['status'] == 1) {
@@ -156,7 +156,7 @@ function gen_user_add_subdomain_data(&$tpl, &$sql, $user_id) {
 	);
 }
 
-function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
+function gen_dmn_als_list($tpl, $dmn_id, $post_check) {
 
 	$cfg = iMSCP_Registry::get('config');
 
@@ -175,7 +175,7 @@ function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 			`alias_name`
 	";
 
-	$rs = exec_query($sql, $query, array($dmn_id, $ok_status));
+	$rs = exec_query($query, array($dmn_id, $ok_status));
 	if ($rs->recordCount() == 0) {
 		$tpl->assign(
 			array(
@@ -215,7 +215,7 @@ function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 	}
 }
 
-function subdmn_exists(&$sql, $user_id, $domain_id, $sub_name) {
+function subdmn_exists($user_id, $domain_id, $sub_name) {
 	global $dmn_name;
 
 	$cfg = iMSCP_Registry::get('config');
@@ -263,8 +263,8 @@ function subdmn_exists(&$sql, $user_id, $domain_id, $sub_name) {
 	}
 	$domain_name = $sub_name . "." . $dmn_name;
 
-	$rs_subdomain = exec_query($sql, $query_subdomain, array($domain_id, $sub_name));
-	$rs_domain = exec_query($sql, $query_domain, array($domain_name));
+	$rs_subdomain = exec_query($query_subdomain, array($domain_id, $sub_name));
+	$rs_domain = exec_query($query_domain, array($domain_name));
 
 	$std_subs = array(
 		'www', 'mail', 'webmail', 'pop', 'pop3', 'imap', 'smtp', 'pma', 'relay',
@@ -282,7 +282,7 @@ function subdmn_exists(&$sql, $user_id, $domain_id, $sub_name) {
 	return true;
 }
 
-function subdmn_mnt_pt_exists(&$sql, $user_id, $domain_id, $sub_name, $sub_mnt_pt) {
+function subdmn_mnt_pt_exists($user_id, $domain_id, $sub_name, $sub_mnt_pt) {
 
 	if ($_POST['dmn_type'] == 'als') {
 		$query = "
@@ -322,9 +322,9 @@ function subdmn_mnt_pt_exists(&$sql, $user_id, $domain_id, $sub_name, $sub_mnt_p
 				`alias_mount` = ?
 		";
 	}
-	$rs = exec_query($sql, $query, array($domain_id, $sub_mnt_pt));
+	$rs = exec_query($query, array($domain_id, $sub_mnt_pt));
 	if (isset($query2))
-		$rs2 = exec_query($sql, $query2, array($domain_id, $sub_mnt_pt));
+		$rs2 = exec_query($query2, array($domain_id, $sub_mnt_pt));
 
 	if ($rs->fields['cnt'] > 0 || (isset($rs2) && $rs2->fields['cnt'] > 0)) {
 		return true;
@@ -332,7 +332,7 @@ function subdmn_mnt_pt_exists(&$sql, $user_id, $domain_id, $sub_name, $sub_mnt_p
 	return false;
 }
 
-function subdomain_schedule(&$sql, $user_id, $domain_id, $sub_name, $sub_mnt_pt, $forward) {
+function subdomain_schedule($user_id, $domain_id, $sub_name, $sub_mnt_pt, $forward) {
 
 	$cfg = iMSCP_Registry::get('config');
 
@@ -364,23 +364,18 @@ function subdomain_schedule(&$sql, $user_id, $domain_id, $sub_name, $sub_mnt_pt,
 		";
 	}
 
-	$rs = exec_query($sql, $query, array($domain_id, $sub_name, $sub_mnt_pt, $forward, $status_add));
+	exec_query($query, array($domain_id, $sub_name, $sub_mnt_pt, $forward, $status_add));
 
 	update_reseller_c_props(get_reseller_id($domain_id));
-
-	$sub_id = $sql->insertId();
-
-	// We do not need to create the default mail addresses, subdomains are
-	// related to their domains.
 
 	write_log($_SESSION['user_logged'] . ": adds new subdomain: " . $sub_name);
 	send_request();
 }
 
-function check_subdomain_data(&$tpl, &$sql, &$err_sub, $user_id, $dmn_name) {
+function check_subdomain_data($tpl, &$err_sub, $user_id, $dmn_name) {
 
 	global $validation_err_msg;
-	$dmn_id = $domain_id = get_user_domain_id($sql, $user_id);
+	$dmn_id = $domain_id = get_user_domain_id($user_id);
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_subd') {
 
@@ -423,7 +418,7 @@ function check_subdomain_data(&$tpl, &$sql, &$err_sub, $user_id, $dmn_name) {
 					`alias_id` = ?
 			";
 
-			$rs = exec_query($sql, $query_alias, $_POST['als_id']);
+			$rs = exec_query($query_alias, $_POST['als_id']);
 
 			$als_mnt = $rs->fields['alias_mount'];
 
@@ -444,7 +439,7 @@ function check_subdomain_data(&$tpl, &$sql, &$err_sub, $user_id, $dmn_name) {
 		// Should be perfomed after domain names syntax validation now
 		$sub_name = encode_idna($sub_name);
 
-		if (subdmn_exists($sql, $user_id, $domain_id, $sub_name)) {
+		if (subdmn_exists($user_id, $domain_id, $sub_name)) {
 			$err_sub = tr('Subdomain already exists or is not allowed!');
 		} elseif (mount_point_exists($dmn_id, array_encode_idna($sub_mnt_pt, true))) {
 			$err_sub = tr('Mount point already in use!');
@@ -495,7 +490,7 @@ function check_subdomain_data(&$tpl, &$sql, &$err_sub, $user_id, $dmn_name) {
 		if ('_off_' !== $err_sub) {
 			return;
 		}
-		subdomain_schedule($sql, $user_id, $domain_id, $sub_name, $sub_mnt_pt, $forward);
+		subdomain_schedule($user_id, $domain_id, $sub_name, $sub_mnt_pt, $forward);
 		set_page_message(tr('Subdomain scheduled for addition!'));
 		user_goto('domains_manage.php');
 	}
@@ -584,14 +579,14 @@ if(isset($_POST['uaction'])) {
 		echo "/".encode_idna(strtolower($_POST['subdomain']));
 		exit;
 	} elseif($_POST['uaction'] == 'add_subd') {
-		$dmn_name = check_subdomain_permissions($sql, $_SESSION['user_id']);
-		gen_user_add_subdomain_data($tpl, $sql, $_SESSION['user_id']);
-		check_subdomain_data($tpl, $sql, $err_txt, $_SESSION['user_id'], $dmn_name);
+		$dmn_name = check_subdomain_permissions($_SESSION['user_id']);
+		gen_user_add_subdomain_data($tpl, $_SESSION['user_id']);
+		check_subdomain_data($tpl, $err_txt, $_SESSION['user_id'], $dmn_name);
 	} else {
 		throw new iMSCP_Exception(tr("Error: unknown action! {$_POST['uaction']}"));
 	}
 } else { // Default view
-	gen_user_add_subdomain_data($tpl, $sql, $_SESSION['user_id']);
+	gen_user_add_subdomain_data($tpl, $_SESSION['user_id']);
 }
 
 gen_page_msg($tpl, $err_txt);

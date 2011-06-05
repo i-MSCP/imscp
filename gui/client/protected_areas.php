@@ -55,7 +55,7 @@ $tpl->assign(
 	)
 );
 
-function gen_htaccess_entries(&$tpl, &$sql, &$dmn_id) {
+function gen_htaccess_entries($tpl, &$dmn_id) {
 	$query = "
 		SELECT
 			*
@@ -65,7 +65,7 @@ function gen_htaccess_entries(&$tpl, &$sql, &$dmn_id) {
 			`dmn_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, $dmn_id);
+	$rs = exec_query($query, $dmn_id);
 
 	if ($rs->recordCount() == 0) {
 		$tpl->assign('PROTECTED_AREAS', '');
@@ -111,9 +111,9 @@ gen_logged_from($tpl);
 
 check_permissions($tpl);
 
-$dmn_id = get_user_domain_id($sql, $_SESSION['user_id']);
+$dmn_id = get_user_domain_id($_SESSION['user_id']);
 
-gen_htaccess_entries($tpl, $sql, $dmn_id);
+gen_htaccess_entries($tpl, $dmn_id);
 
 $tpl->assign(
 	array(

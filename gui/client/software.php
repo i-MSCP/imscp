@@ -30,7 +30,7 @@
  *  Functions
  */
 
-function gen_user_software_action($software_id, $dmn_id, $sql, $tpl) {
+function gen_user_software_action($software_id, $dmn_id, $tpl) {
 	$find_software = "
 		SELECT
 			`software_status`
@@ -41,7 +41,7 @@ function gen_user_software_action($software_id, $dmn_id, $sql, $tpl) {
 		AND
 			`domain_id` = ?
 	";
-	$sw = exec_query($sql, $find_software, array($software_id, $dmn_id));
+	$sw = exec_query($find_software, array($software_id, $dmn_id));
 	if ($sw -> recordCount() == 0) {
 		$software_status = 'not installed';
 		$software_icon = 'edit';
@@ -97,7 +97,7 @@ function gen_user_software_action($software_id, $dmn_id, $sql, $tpl) {
     }
 }
 
-function gen_software_list($tpl, $sql, $dmn_id, $dmn_name, $reseller_id, $admin_id) {
+function gen_software_list($tpl, $dmn_id, $dmn_name, $reseller_id, $admin_id) {
 
 	global $counter, $delcounter;
 	$query = "
@@ -109,7 +109,7 @@ function gen_software_list($tpl, $sql, $dmn_id, $dmn_name, $reseller_id, $admin_
 		WHERE
 			`domain_admin_id` = ?
 	";
-	$rs = exec_query($sql, $query, $admin_id);
+	$rs = exec_query($query, $admin_id);
 	if ($rs->fields('domain_software_allowed') == 'yes' && $rs->fields('domain_ftpacc_limit') != "-1") {
 		$find_deleted_software = "
 			SELECT
@@ -125,7 +125,7 @@ function gen_software_list($tpl, $sql, $dmn_id, $dmn_name, $reseller_id, $admin_
 			AND
 				software_res_del = '1'
 		";
-		$deleted_sw = exec_query($sql, $find_deleted_software, $dmn_id);
+		$deleted_sw = exec_query($find_deleted_software, $dmn_id);
 		if ($deleted_sw->recordCount() == 0) {
 			$tpl->assign('SOFTWARE_DEL_ITEM', '');
 			$tpl->assign('DEL_SOFTWARE_SUPPORT', '');
@@ -224,7 +224,7 @@ function gen_software_list($tpl, $sql, $dmn_id, $dmn_name, $reseller_id, $admin_
 				$ordertype
 		";
 
-		$rs = exec_query($sql, $list_query, $reseller_id);
+		$rs = exec_query($list_query, $reseller_id);
 		if ($rs -> recordCount() == 0) {
 			$tpl->assign('SOFTWARE_ITEM', '');
 			$tpl->assign(
@@ -245,8 +245,8 @@ function gen_software_list($tpl, $sql, $dmn_id, $dmn_name, $reseller_id, $admin_
 				}
 				list(
 					$software_action, $software_action_script, $view_software_script,
-					$software_status, $software_icon) = gen_user_software_action($rs -> fields['software_id'], $dmn_id, $sql,
-					$tpl);
+					$software_status, $software_icon
+                ) = gen_user_software_action($rs -> fields['software_id'], $dmn_id, $tpl);
 				$tpl -> assign(
 							array(
 								'SOFTWARE_NAME' 			=> $rs -> fields['software_name'],
@@ -288,10 +288,10 @@ function gen_software_list($tpl, $sql, $dmn_id, $dmn_name, $reseller_id, $admin_
 	}
 }
 
-function gen_page_lists($tpl, $sql, $user_id) {
+function gen_page_lists($tpl, $user_id) {
 
-    list($dmn_id,$dmn_name,,,$dmn_created_id,) = get_domain_default_props($sql, $user_id);
-    $software_poss = gen_software_list($tpl, $sql, $dmn_id, $dmn_name, $dmn_created_id, $_SESSION['user_id']);
+    list($dmn_id,$dmn_name,,,$dmn_created_id,) = get_domain_default_props($user_id);
+    $software_poss = gen_software_list($tpl, $dmn_id, $dmn_name, $dmn_created_id, $_SESSION['user_id']);
     $tpl -> assign('TOTAL_SOFTWARE_AVAILABLE', $software_poss);
 	$tpl->parse('SOFTWARE_MESSAGE', 'software_message');
 }
@@ -361,14 +361,14 @@ $tpl -> assign(
 	)
 );
 
-gen_page_lists($tpl, $sql, $_SESSION['user_id']);
+gen_page_lists($tpl, $_SESSION['user_id']);
 
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_webtools.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_webtools.tpl');
 
 gen_logged_from($tpl);
 
-get_client_software_permission($tpl, $sql,$_SESSION['user_id']);
+get_client_software_permission($tpl, $_SESSION['user_id']);
 
 check_permissions($tpl);
 

@@ -30,13 +30,8 @@ require '../include/imscp-lib.php';
 
 check_login(__FILE__);
 
-/**
- * @var $sql iMSCP_Database
- */
-$sql = iMSCP_Registry::get('db');
-
 if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
-	list($dmn_id, $rest) = get_domain_default_props($sql, $_SESSION['user_id']);
+	list($dmn_id, $rest) = get_domain_default_props($_SESSION['user_id']);
 	$query = "
 		SELECT
 			`software_id`,
@@ -48,7 +43,7 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 		AND
 			`domain_id` = ?
 	";
-	$rs = exec_query($sql, $query, array($_GET['id'], $dmn_id));
+	$rs = exec_query($query, array($_GET['id'], $dmn_id));
 	if ($rs->recordCount() != 1) {
 		set_page_message(tr('Wrong software id.'), 'error');
 		header('Location: software.php');
@@ -62,7 +57,7 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 				AND
 					`domain_id` = ?
 			";
-			$res = exec_query($sql, $delete, array($_GET['id'], $dmn_id));
+			$res = exec_query($delete, array($_GET['id'], $dmn_id));
 			set_page_message(tr('Software deleted successful.'), 'success');
 		}else{
 			$delete = "
@@ -75,7 +70,7 @@ if (isset($_GET['id']) AND is_numeric($_GET['id'])) {
 				AND
 					`domain_id` = ?
 			";
-			$res = exec_query($sql, $delete, array('delete', $_GET['id'], $dmn_id));
+			$res = exec_query($delete, array('delete', $_GET['id'], $dmn_id));
 			send_request();
 			set_page_message(tr('Software will be deleted now.'));
 		}

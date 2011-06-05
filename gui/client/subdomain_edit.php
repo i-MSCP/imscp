@@ -102,7 +102,7 @@ if (isset($_POST['uaction']) && ($_POST['uaction'] === 'modify')) {
 		user_goto('domains_manage.php');
 	}
 	// Save data to db
-	if (check_fwd_data($tpl, $sql, $editid, $dmntype)) {
+	if (check_fwd_data($tpl, $editid, $dmntype)) {
 		$_SESSION['subedit'] = '_yes_';
 		user_goto('domains_manage.php');
 	}
@@ -123,7 +123,7 @@ if (isset($_POST['uaction']) && ($_POST['uaction'] === 'modify')) {
 	$tpl->assign('PAGE_MESSAGE', '');
 }
 
-gen_editsubdomain_page($tpl, $sql, $editid, $dmntype);
+gen_editsubdomain_page($tpl, $editid, $dmntype);
 
 $tpl->parse('PAGE', 'page');
 $tpl->prnt();
@@ -138,9 +138,9 @@ unsetMessages();
 /**
  * Show user data
  */
-function gen_editsubdomain_page(&$tpl, &$sql, $edit_id, $dmn_type) {
+function gen_editsubdomain_page($tpl, $edit_id, $dmn_type) {
 	// Get data from sql
-	list($domain_id, $domain_name) = get_domain_default_props($sql, $_SESSION['user_id']);
+	list($domain_id, $domain_name) = get_domain_default_props($_SESSION['user_id']);
 
 	if ($dmn_type === 'dmn') {
 		$query = '
@@ -153,7 +153,7 @@ function gen_editsubdomain_page(&$tpl, &$sql, $edit_id, $dmn_type) {
 			AND
 				`domain_id` = ?
 		';
-		$res = exec_query($sql, $query, array($edit_id, $domain_id));
+		$res = exec_query($query, array($edit_id, $domain_id));
 	} else {
 		$query = '
 			SELECT
@@ -170,7 +170,7 @@ function gen_editsubdomain_page(&$tpl, &$sql, $edit_id, $dmn_type) {
 			AND
 				`subdomain_alias_id` = ?
 		';
-		$res = exec_query($sql, $query, array($domain_id, $edit_id));
+		$res = exec_query($query, array($domain_id, $edit_id));
 	}
 
 	if ($res->RecordCount() <= 0) {
@@ -234,7 +234,7 @@ function gen_editsubdomain_page(&$tpl, &$sql, $edit_id, $dmn_type) {
 /**
  * Check input data
  */
-function check_fwd_data(&$tpl, &$sql, $subdomain_id, $dmn_type) {
+function check_fwd_data($tpl, $subdomain_id, $dmn_type) {
 
 	$forward_url = strtolower(clean_input($_POST['forward']));
 	$status = $_POST['status'];
@@ -301,9 +301,7 @@ function check_fwd_data(&$tpl, &$sql, $subdomain_id, $dmn_type) {
 					`subdomain_alias_id` = ?
 			';
 		}
-
-		exec_query($sql, $query, array($forward_url, iMSCP_Registry::get('config')->ITEM_CHANGE_STATUS, $subdomain_id));
-
+		exec_query($query, array($forward_url, iMSCP_Registry::get('config')->ITEM_CHANGE_STATUS, $subdomain_id));
 		send_request();
 
 		$admin_login = $_SESSION['user_logged'];

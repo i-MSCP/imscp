@@ -54,7 +54,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 		;
 	";
 
-	$rs = exec_query($sql, $query, array($ftp_id, $dmn_name));
+	$rs = exec_query($query, array($ftp_id, $dmn_name));
 	$ftp_name = $rs->fields['userid'];
 
 	if ($rs->recordCount() == 0) {
@@ -73,7 +73,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 		;
 	";
 
-	$rs = exec_query($sql, $query, $ftp_id);
+	$rs = exec_query($query, $ftp_id);
 
 	$ftp_gid = $rs->fields['gid'];
 	$ftp_members = $rs->fields['members'];
@@ -91,7 +91,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 			;
 		";
 
-		$rs = exec_query($sql, $query, $ftp_gid);
+		$rs = exec_query($query, $ftp_gid);
 
 	} else {
 		$query = "
@@ -104,7 +104,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 			;
 		";
 
-		$rs = exec_query($sql, $query, array($members, $ftp_gid));
+		$rs = exec_query($query, array($members, $ftp_gid));
 	}
 
 	$query = "
@@ -115,9 +115,9 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 		;
 	";
 
-	$rs = exec_query($sql, $query, $ftp_id);
+	$rs = exec_query($query, $ftp_id);
 
-	$domain_props = get_domain_default_props($sql, $_SESSION['user_id']);
+	$domain_props = get_domain_default_props($_SESSION['user_id']);
 	update_reseller_c_props($domain_props[4]);
 
 	write_log($_SESSION['user_logged'].": deletes FTP account: ".$ftp_name);

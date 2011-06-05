@@ -38,7 +38,7 @@ check_login(__FILE__);
 
 $cfg = iMSCP_Registry::get('config');
 
-function check_email_user(&$sql) {
+function check_email_user() {
 
 	$dmn_name = $_SESSION['user_logged'];
 	$mail_id = $_GET['id'];
@@ -59,7 +59,7 @@ function check_email_user(&$sql) {
 			t2.domain_name = ?
 ";
 
-	$rs = exec_query($sql, $query, array($mail_id, $dmn_name));
+	$rs = exec_query($query, array($mail_id, $dmn_name));
 	$mail_acc = $rs->fields['mail_acc'];
 
 	if ($rs->recordCount() == 0) {
@@ -68,7 +68,7 @@ function check_email_user(&$sql) {
 	}
 }
 
-check_email_user($sql);
+check_email_user();
 
 if (isset($_GET['id']) && $_GET['id'] !== '') {
 	$mail_id = $_GET['id'];
@@ -84,7 +84,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 			mail_id = ?
 	";
 
-	$rs = exec_query($sql, $query, array($item_change_status, $mail_id));
+	$rs = exec_query($query, array($item_change_status, $mail_id));
 
 	send_request();
 	$query = "
@@ -107,7 +107,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 			`mail_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, $mail_id);
+	$rs = exec_query($query, $mail_id);
 	$mail_name = $rs->fields['mailbox'];
 	write_log($_SESSION['user_logged'].": disabled mail autoresponder: ".$mail_name);
 	set_page_message(tr('Mail account scheduled for modification!'));

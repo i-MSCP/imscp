@@ -49,7 +49,7 @@ $tpl->define_dynamic('user_list', 'db_list');
 $count = -1;
 
 // page functions.
-function gen_db_user_list(&$tpl, &$sql, $db_id) {
+function gen_db_user_list($tpl, $db_id) {
 
 	global $count;
 
@@ -64,7 +64,7 @@ function gen_db_user_list(&$tpl, &$sql, $db_id) {
 			`sqlu_name`
 	";
 
-	$rs = exec_query($sql, $query, $db_id);
+	$rs = exec_query($query, $db_id);
 
 	if ($rs->recordCount() == 0) {
 		$tpl->assign(
@@ -99,9 +99,9 @@ function gen_db_user_list(&$tpl, &$sql, $db_id) {
 	}
 }
 
-function gen_db_list(&$tpl, &$sql, $user_id) {
+function gen_db_list($tpl, $user_id) {
 
-	$dmn_id = get_user_domain_id($sql, $user_id);
+	$dmn_id = get_user_domain_id($user_id);
 
 	$query = "
 		SELECT
@@ -114,7 +114,7 @@ function gen_db_list(&$tpl, &$sql, $user_id) {
 			`sqld_name`
 	";
 
-	$rs = exec_query($sql, $query, $dmn_id);
+	$rs = exec_query($query, $dmn_id);
 
 	if ($rs->recordCount() == 0) {
 		set_page_message(tr('Database list is empty!'));
@@ -123,7 +123,7 @@ function gen_db_list(&$tpl, &$sql, $user_id) {
 		while (!$rs->EOF) {
 			$db_id = $rs->fields['sqld_id'];
 			$db_name = $rs->fields['sqld_name'];
-			gen_db_user_list($tpl, $sql, $db_id);
+			gen_db_user_list($tpl, $db_id);
 			$tpl->assign(
 				array(
 					'DB_ID'		=> $db_id,
@@ -156,7 +156,7 @@ $tpl->assign(
 
 // dynamic page data.
 
-gen_db_list($tpl, $sql, $_SESSION['user_id']);
+gen_db_list($tpl, $_SESSION['user_id']);
 
 // static page messages.
 

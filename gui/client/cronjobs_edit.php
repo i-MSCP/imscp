@@ -55,13 +55,13 @@ $tpl->assign(
 /**
  * @todo Implement this function
  */
-function update_cron_job(&$tpl, &$sql, $cron_id) {
+function update_cron_job($tpl, $cron_id) {
 } // End of update_cron_job()
 
 /**
  * @todo Implement this function
  */
-function gen_cron_job(&$tpl, &$sql, $user_id) {
+function gen_cron_job($tpl, $user_id) {
 } // End of gen_cron_job()
 
 /*
@@ -78,9 +78,9 @@ gen_logged_from($tpl);
 check_permissions($tpl);
 
 if (isset($_GET['cron_id']) && is_numeric($_GET['cron_id'])) {
-	update_cron_job($tpl, $sql, $_GET['cron_id']);
+	update_cron_job($tpl, $_GET['cron_id']);
 }
-gen_cron_job($tpl, $sql, $_SESSION['user_id']);
+gen_cron_job($tpl, $_SESSION['user_id']);
 
 $tpl->assign(
 	array(

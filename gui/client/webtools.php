@@ -80,7 +80,7 @@ list(
 	$dmn_cgi,
 	$backup,
 	$dmn_dns
-) = get_domain_default_props($sql, $_SESSION['user_id']);
+) = get_domain_default_props($_SESSION['user_id']);
 
 if ($dmn_mailacc_limit == -1) {
 	$tpl->assign('ACTIVE_EMAIL', '');
@@ -101,7 +101,7 @@ gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_webtools.tpl');
 
 gen_logged_from($tpl);
 
-get_client_software_permission ($tpl, $sql,$_SESSION['user_id']);
+get_client_software_permission ($tpl, $_SESSION['user_id']);
 
 check_permissions($tpl);
 

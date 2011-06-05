@@ -52,17 +52,12 @@ $tpl->define_dynamic('action_link', 'list_item');
 
 function gen_directories($tpl) {
 
-	/**
-	 * @var $sql iMSCP_Database
-	 */
-	$sql = iMSCP_Registry::get('db');
-
 	// Initialize variables
 	$path = isset($_GET['cur_dir']) ? $_GET['cur_dir'] : '';
 	$domain = $_SESSION['user_logged'];
 
 	// Create the virtual file system and open it so it can be used
-	$vfs = new iMSCP_VirtualFileSystem($domain, $sql);
+	$vfs = new iMSCP_VirtualFileSystem($domain);
 
 	// Get the directory listing
 	$list = $vfs->ls($path);

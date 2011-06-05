@@ -39,7 +39,7 @@
 /**
  * Must be documented
  */
-function check_client_domainalias_counts($sql, $user_id) {
+function check_client_domainalias_counts($user_id) {
 
 	list($dmn_id,
 		$dmn_name,
@@ -64,9 +64,9 @@ function check_client_domainalias_counts($sql, $user_id) {
 		$dmn_cgi,
 		$allowbackup,
 		$dmn_dns
-	) = get_domain_default_props($sql, $user_id);
+	) = get_domain_default_props($user_id);
 
-	$als_cnt = get_domain_running_als_cnt($sql, $dmn_id);
+	$als_cnt = get_domain_running_als_cnt($dmn_id);
 
 	if ($dmn_als_limit != 0 && $als_cnt >= $dmn_als_limit) {
 		set_page_message(tr('Domain alias limit reached!'), 'error');
@@ -136,14 +136,14 @@ function gen_al_page(&$tpl, $reseller_id) {
 
 } // End of gen_al_page()
 
-function add_domain_alias(&$sql, &$err_al) {
+function add_domain_alias(&$err_al) {
 
 	global $cr_user_id, $alias_name, $domain_ip, $forward, $forward_prefix,
 		$mount_point, $validation_err_msg;
 
 	$cfg = iMSCP_Registry::get('config');
 
-	$cr_user_id = $domain_id = get_user_domain_id($sql, $_SESSION['user_id']);
+	$cr_user_id = $domain_id = get_user_domain_id($_SESSION['user_id']);
 	$alias_name	= strtolower($_POST['ndomain_name']);
 	$mount_point = array_encode_idna(strtolower($_POST['ndomain_mpoint']), true);
 
@@ -164,7 +164,7 @@ function add_domain_alias(&$sql, &$err_al) {
 			`domain_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, $cr_user_id);
+	$rs = exec_query($query, $cr_user_id);
 	$domain_ip = $rs->fields['domain_ip_id'];
 
 	// First check if input string is a valid domain names
@@ -228,7 +228,7 @@ function add_domain_alias(&$sql, &$err_al) {
 			WHERE
 				`alias_name` = ?
 		";
-		$res = exec_query($sql, $query, $alias_name);
+		$res = exec_query($query, $alias_name);
 		$query = "
 			SELECT
 				`domain_id`
@@ -237,7 +237,7 @@ function add_domain_alias(&$sql, &$err_al) {
 			WHERE
 				`domain_name` = ?
 		";
-		$res2 = exec_query($sql, $query, $alias_name);
+		$res2 = exec_query($query, $alias_name);
 		if ($res->rowCount() > 0 || $res2->rowCount() > 0) {
 			// we already have domain with this name
 			$err_al = tr("Domain with this name already exist");
@@ -253,7 +253,7 @@ function add_domain_alias(&$sql, &$err_al) {
 			AND
 				`subdomain_mount` = ?
 		";
-		$subdomres = exec_query($sql, $query, array($cr_user_id, $mount_point));
+		$subdomres = exec_query($query, array($cr_user_id, $mount_point));
 		$subdomdata = $subdomres->fetchRow();
 		$query = "
 			SELECT
@@ -267,7 +267,7 @@ function add_domain_alias(&$sql, &$err_al) {
 			AND
 				`subdomain_alias_mount` = ?
 		";
-		$alssubdomres = exec_query($sql, $query, array($cr_user_id, $mount_point));
+		$alssubdomres = exec_query($query, array($cr_user_id, $mount_point));
 		$alssubdomdata = $alssubdomres->fetchRow();
 		if ($subdomdata['cnt'] > 0 || $alssubdomdata['alscnt'] > 0) {
 			$err_al = tr("There is a subdomain with the same mount point!");
@@ -289,9 +289,11 @@ function add_domain_alias(&$sql, &$err_al) {
 		VALUES 
 				(?, ?, ?, ?, ?, ?)
 	";
-	exec_query($sql, $query, array($cr_user_id, $alias_name, $mount_point, $status, $domain_ip, $forward));
+	exec_query($query, array($cr_user_id, $alias_name, $mount_point, $status, $domain_ip, $forward));
 
-	$als_id = $sql->insertId();
+    /** @var $db iMSCP_Database */
+    $db = iMSCP_Registry::get('db');
+	$als_id = $db->insertId();
 
 	update_reseller_c_props(get_reseller_id($cr_user_id));
 
@@ -388,7 +390,7 @@ if(!is_xhr()) {
 		)
 	);
 	
-	check_client_domainalias_counts($sql, $_SESSION['user_id']);
+	check_client_domainalias_counts($_SESSION['user_id']);
 }
 
 $err_txt = '_off_';
@@ -409,7 +411,7 @@ if(isset($_POST['uaction'])) {
 		echo "/".encode_idna(strtolower($_POST['domain']));
 		exit;
 	} elseif($_POST['uaction'] == 'add_alias') {
-		add_domain_alias($sql, $err_txt);
+		add_domain_alias($err_txt);
 	} else {
 		throw new iMSCP_Exception(tr("Error: unknown action! {$_POST['uaction']}"));
 	}

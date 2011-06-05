@@ -70,14 +70,15 @@ $query = "
 		t2.`domain_name` = ?
 ";
 
-$rs = exec_query($sql, $query, array($delete_id, $dmn_name));
+$rs = exec_query($query, array($delete_id, $dmn_name));
+
 if ($rs->recordCount() == 0) {
 	user_goto('mail_accounts.php');
 }
 
 // check for catchall assigment !!
 $query = "SELECT `mail_acc`, `domain_id`, `sub_id`, `mail_type` FROM `mail_users` WHERE `mail_id` = ?";
-$res = exec_query($sql, $query, $delete_id);
+$res = exec_query($query, $delete_id);
 $data = $res->fetchRow();
 
 if (preg_match("/".MT_NORMAL_MAIL."/", $data['mail_type']) || preg_match("/".MT_NORMAL_FORWARD."/", $data['mail_type'])) {
@@ -86,23 +87,23 @@ if (preg_match("/".MT_NORMAL_MAIL."/", $data['mail_type']) || preg_match("/".MT_
 	$mail_name = $data['mail_acc'] . '@' . $_SESSION['user_logged']; //$domain_name;
 } else if (preg_match("/".MT_ALIAS_MAIL."/", $data['mail_type']) || preg_match("/".MT_ALIAS_FORWARD."/", $data['mail_type'])) {
 	// mail to domain alias
-	$res_tmp = exec_query($sql, "SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id` = ?", $data['sub_id']);
+	$res_tmp = exec_query("SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id` = ?", $data['sub_id']);
 	$dat_tmp = $res_tmp->fetchRow();
 	$mail_name = $data['mail_acc'] . '@' . $dat_tmp['alias_name'];
 } else if (preg_match("/".MT_SUBDOM_MAIL."/", $data['mail_type']) || preg_match("/".MT_SUBDOM_FORWARD."/", $data['mail_type'])) {
 	// mail to subdomain
-	$res_tmp = exec_query($sql, "SELECT `subdomain_name` FROM `subdomain` WHERE `subdomain_id` = ?", $data['sub_id']);
+	$res_tmp = exec_query("SELECT `subdomain_name` FROM `subdomain` WHERE `subdomain_id` = ?", $data['sub_id']);
 	$dat_tmp = $res_tmp->fetchRow();
 	$mail_name = $data['mail_acc'] . '@' . $dat_tmp['subdomain_name'].'.'.$dmn_name;
 } else if (preg_match("/".MT_ALSSUB_MAIL."/", $data['mail_type']) || preg_match("/".MT_ALSSUB_FORWARD."/", $data['mail_type'])) {
 	// mail to subdomain
-	$res_tmp = exec_query($sql, "SELECT `subdomain_alias_name`, `alias_name` FROM `subdomain_alias` AS t1, `domain_aliasses` AS t2 WHERE t1.`alias_id` = t2.`alias_id` AND `subdomain_alias_id` = ?", $data['sub_id']);
+	$res_tmp = exec_query("SELECT `subdomain_alias_name`, `alias_name` FROM `subdomain_alias` AS t1, `domain_aliasses` AS t2 WHERE t1.`alias_id` = t2.`alias_id` AND `subdomain_alias_id` = ?", $data['sub_id']);
 	$dat_tmp = $res_tmp->fetchRow();
 	$mail_name = $data['mail_acc'] . '@' . $dat_tmp['subdomain_alias_name'].'.'.$dat_tmp['alias_name'];
 }
 
 $query = "SELECT `mail_id` FROM `mail_users` WHERE `mail_acc` = ? OR `mail_acc` LIKE ? OR `mail_acc` LIKE ? OR `mail_acc` LIKE ?";
-$res_tmp = exec_query($sql, $query, array($mail_name, "$mail_name,%", "%,$mail_name,%", "%,$mail_name"));
+$res_tmp = exec_query($query, array($mail_name, "$mail_name,%", "%,$mail_name,%", "%,$mail_name"));
 $num = $res_tmp->rowCount();
 if ($num > 0) {
 	set_page_message(tr('Please delete first CatchAll account for this email!'), 'error');
@@ -114,7 +115,7 @@ if ($num > 0) {
  * @todo useDB prepared statements
  */
 $query = "UPDATE `mail_users` SET `status` = '" . $cfg->ITEM_DELETE_STATUS . "' WHERE `mail_id` = ?";
-exec_query($sql, $query, $delete_id);
+exec_query($query, $delete_id);
 
 update_reseller_c_props(get_reseller_id($data['domain_id']));
 

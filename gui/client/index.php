@@ -72,7 +72,7 @@ function gen_num_limit_msg($num, $limit) {
 	return $num . '&nbsp;/&nbsp;' . $limit;
 }
 
-function gen_system_message(&$tpl, &$sql) {
+function gen_system_message($tpl) {
 	$user_id = $_SESSION['user_id'];
 
 	$query = "
@@ -88,7 +88,7 @@ function gen_system_message(&$tpl, &$sql) {
 			`ticket_reply` = 0
 	";
 
-	$rs = exec_query($sql, $query, array($user_id, $user_id));
+	$rs = exec_query($query, array($user_id, $user_id));
 
 	$num_question = $rs->fields('cnum');
 
@@ -247,19 +247,17 @@ function check_user_permissions(&$tpl, $dmn_sqld_limit, $dmn_sqlu_limit, $dmn_ph
  * Calculate the usege traffic/ return array (persent/value)
  */
 function make_traff_usege($domain_id) {
-	$sql = iMSCP_Registry::get('db');
 
-	$res = exec_query($sql, "SELECT `domain_id` FROM `domain` WHERE `domain_admin_id` = ?", $domain_id);
+	$res = exec_query("SELECT `domain_id` FROM `domain` WHERE `domain_admin_id` = ?", $domain_id);
 	$dom_id = $res->fetchRow();
 	$domain_id = $dom_id['domain_id'];
 
-	$res = exec_query($sql, "SELECT `domain_traffic_limit` FROM `domain` WHERE `domain_id` = ?", $domain_id);
+	$res = exec_query("SELECT `domain_traffic_limit` FROM `domain` WHERE `domain_id` = ?", $domain_id);
 	$dat = $res->fetchRow();
 
 	$fdofmnth = mktime(0, 0, 0, date("m"), 1, date("Y"));
 	$ldofmnth = mktime(1, 0, 0, date("m") + 1, 0, date("Y"));
-	$res = exec_query($sql,
-		"SELECT IFNULL(SUM(`dtraff_web`) + SUM(`dtraff_ftp`) + SUM(`dtraff_mail`) + SUM(`dtraff_pop`), 0) "
+	$res = exec_query("SELECT IFNULL(SUM(`dtraff_web`) + SUM(`dtraff_ftp`) + SUM(`dtraff_mail`) + SUM(`dtraff_pop`), 0) "
 		. "AS traffic FROM `domain_traffic` " . "WHERE `domain_id` = ? AND `dtraff_time` > ? AND `dtraff_time` < ?",
 		array($domain_id, $fdofmnth, $ldofmnth));
 	$data = $res->fetchRow();
@@ -276,7 +274,7 @@ function make_traff_usege($domain_id) {
 
 } // End of make_traff_usege()
 
-function gen_user_messages_label(&$tpl, &$sql, &$user_id) {
+function gen_user_messages_label($tpl, &$user_id) {
 	$query = "
 		SELECT
 			COUNT(`ticket_id`) AS cnum
@@ -288,7 +286,7 @@ function gen_user_messages_label(&$tpl, &$sql, &$user_id) {
 			`ticket_status` = '2'
 	";
 
-	$rs = exec_query($sql, $query, $user_id);
+	$rs = exec_query($query, $user_id);
 	$num_question = $rs->fields('cnum');
 
 	if ($num_question == 0) {
@@ -358,7 +356,7 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'save_layout') {
 		WHERE
 			`user_id` = ?
 	";
-	$rs = exec_query($sql, $query, array($user_layout, $user_id));
+	$rs = exec_query($query, array($user_layout, $user_id));
 	$theme_color = $user_layout;
 }
 
@@ -387,7 +385,7 @@ list(
 		$backup,
 		$dns,
 		$dmn_software_allowed
-	) = get_domain_default_props($sql, $_SESSION['user_id']);
+	) = get_domain_default_props($_SESSION['user_id']);
 
 list(
 		$sub_cnt,
@@ -396,7 +394,7 @@ list(
 		$ftp_acc_cnt,
 		$sqld_acc_cnt,
 		$sqlu_acc_cnt
-	) = get_domain_running_props_cnt($sql, $dmn_id);
+	) = get_domain_running_props_cnt($dmn_id);
 
 $dtraff_pr = 0;
 $dmn_traff_usege = 0;
@@ -410,7 +408,7 @@ gen_traff_usage($tpl, $dmn_traff_usege * 1024 * 1024, $dmn_traff_limit, 400);
 
 gen_disk_usage($tpl, $dmn_disk_usage, $dmn_disk_limit, 400);
 
-gen_user_messages_label($tpl, $sql, $_SESSION['user_id']);
+gen_user_messages_label($tpl, $_SESSION['user_id']);
 
 check_user_permissions(
 						$tpl, $dmn_sqld_limit, $dmn_sqlu_limit, $dmn_php,
@@ -490,9 +488,9 @@ gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_general_information.tp
 
 gen_logged_from($tpl);
 
-get_client_software_permission ($tpl,$sql,$_SESSION['user_id']);
+get_client_software_permission ($tpl, $_SESSION['user_id']);
 
-gen_system_message($tpl, $sql);
+gen_system_message($tpl);
 
 check_permissions($tpl);
 

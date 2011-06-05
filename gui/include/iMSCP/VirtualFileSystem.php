@@ -95,15 +95,16 @@ class iMSCP_VirtualFileSystem {
 	 * Warning! $domain parameter is not sanitized, so this is left as work for the caller.
 	 *
 	 * @param string $domain Domain name of the new VFS.
-	 * @param iMSCP_Database $db iMSCP_Database instance.
-	 * @return void
 	 */
-	public function __construct($domain, $db) {
+	public function __construct($domain) {
 
 		/**
 		 * @var $cfg iMSCP_Config_Handler_File
 		 */
 		$cfg = iMSCP_Registry::get('config');
+
+        /** @var $db iMSCP_Database */
+        $db = iMSCP_Registry::get('db');
 
 		$this->_domain = $domain;
 		$this->_db = $db;

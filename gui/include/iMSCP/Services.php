@@ -18,308 +18,309 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2006-2010 by
  * internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
+ * @category    i-MSCP
  * @package     iMSCP_Services
- * @copyright 	2010 by i-MSCP | http://i-mscp.net
+ * @copyright   2010-2011 by i-MSCP | http://i-mscp.net
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     SVN: $Id$
- * @link		http://i-mscp.net i-MSCP Home Site
+ * @link        http://i-mscp.net i-MSCP Home Site
  * @license     http://www.mozilla.org/MPL/ MPL 1.1
  */
 
 /**
  * Class that allows to get services properties and their status
  *
- * @category	i-MSCP
- * @package     iMSCP_Initializer
- * @copyright 	2010 by i-MSCP | http://i-mscp.net
- * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @Since		1.0.0 (i-MSCP)
- * @version		1.0.0
+ * @category    i-MSCP
+ * @package     iMSCP_Services
+ * @copyright   2010 by i-MSCP | http://i-mscp.net
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @Since       1.0.0 (i-MSCP)
+ * @version     1.0.1
  */
-class iMSCP_Services implements iterator, countable {
+class iMSCP_Services implements iterator, countable
+{
+    /**
+     * Array of services where each key is a service name and each associated value is
+     * an array that contain all properties.
+     *
+     * @var array Services
+     */
+    private $_services = array();
 
-	/**
-	 * Array of services where each key is a service name and each associated value is
-	 * an array that contain all properties
-	 *
-	 * @var array Services
-	 */
-	private $_services = array();
+    /**
+     * Service name currently queried.
+     *
+     * @var string
+     */
+    private $_queriedService = null;
 
-	/**
-	 * Service name currently queried
-	 *
-	 * @var string
-	 */
-	private $_queriedService = null;
+    /**
+     * Constructor.
+     */
+    public function __construct()
+    {
+        /** @var $cfg iMSCP_Config_Handler_File */
+        $cfg = iMSCP_Registry::get('config');
 
-	/**
-	 * Constructor
-	 * 
-	 * @return void
-	 */
-	public function __construct() {
+        /** @var $dbConfig iMSCP_Config_Handler_Db */
+        $dbConfig = iMSCP_Registry::get('dbConfig');
 
-		/**
-		 * @var $cfg iMSCP_Config_Handler_File
-		 */
-		$cfg = iMSCP_Registry::get('config');
+        // Retrieve all services properties
+        foreach ($dbConfig as $service => $serviceProperties) {
+            if (substr($service, 0, 5) == 'PORT_') {
+                $this->_services[$service] = explode(';', $serviceProperties);
 
-		/**
-		 * @var $dbConfig iMSCP_Config_Handler_Db
-		 */
-		$dbConfig = iMSCP_Registry::get('dbConfig');
+                if ($this->_services[$service][5] == '') {
+                    $this->_services[$service][5] = $cfg->BASE_SERVER_IP;
+                } elseif ($this->_services[$service][5] == '127.0.0.1') {
+                    $this->_services[$service][5] = 'localhost';
+                }
+            }
+        }
 
-		// Retrieve all services properties
-		foreach($dbConfig as $service => $serviceProperties) {
+        ksort($this->_services);
+    }
 
-			if(substr($service, 0, 5) == 'PORT_') {
-				$this->_services[$service] = explode(';', $serviceProperties);
+    /**
+     * Set service to be queried.
+     *
+     * @throws iMSCP_Exception
+     * @param  string $serviceName Service name
+     * @param  bool $normalize Tell whether or not the service name must be normalized
+     * @return void
+     */
+    public function setService($serviceName, $normalize = true)
+    {
+        // Normalise service name (ex. 'dns' to 'PORT_DNS')
+        if ($normalize) {
+            $normalizedServiceName = 'PORT_' . strtoupper($serviceName);
+        } else {
+            $normalizedServiceName = $serviceName;
+        }
 
-				if($this->_services[$service][5] == '') {
-					$this->_services[$service][5] = $cfg->BASE_SERVER_IP;
-				} elseif($this->_services[$service][5] == '127.0.0.1') {
-					$this->_services[$service][5] = 'localhost';
-				}
-			}
-		}
+        if (array_key_exists($normalizedServiceName, $this->_services)) {
+            $this->_queriedService = $normalizedServiceName;
+        } else {
+            throw new iMSCP_Exception("Unknown Service '$serviceName'!");
+        }
+    }
 
-		ksort($this->_services);
-	}
+    /**
+     * Get service listening port.
+     *
+     * @param  string $serviceName Service name
+     * @return array
+     */
+    public function getPort($serviceName = null)
+    {
+        if (!is_null($serviceName)) {
+            $this->setService($serviceName);
+        }
 
-	/**
-	 * Set service to be queried
-	 * 
-	 * @throws iMSCP_Exception
-	 * @param  string $serviceName Service name
-	 * @param  bool $normalize Tell whether or not the service name must be normalized
-	 * @return void
-	 */
-	public function setService($serviceName, $normalize = true) {
+        return $this->_getProperty($this->_queriedService, 0);
+    }
 
-		// Normalise service name (ex. 'dns' to 'PORT_DNS')
-		if($normalize) {
-			$normalizedServiceName = 'PORT_' . strtoupper($serviceName);
-		} else {
-			$normalizedServiceName = $serviceName;
-		}
+    /**
+     * Get service protocol.
+     *
+     * @param  string $serviceName Service name
+     * @return array
+     */
+    public function getProtocol($serviceName = null)
+    {
+        if (!is_null($serviceName)) {
+            $this->setService($serviceName);
+        }
 
-		if(array_key_exists($normalizedServiceName, $this->_services)) {
-			$this->_queriedService = $normalizedServiceName;
-		} else {
-			throw new iMSCP_Exception("Unknown Service '$serviceName'!");
-		}
-	}
+        return $this->_getProperty($this->_queriedService, 1);
+    }
 
-	/**
-	 * Get service listening port
-	 *
-	 * @param  string $serviceName Service name
-	 * @return array
-	 */
-	public function getPort($serviceName = null) {
+    /**
+     * Get service name.
+     *
+     * @param  $serviceName
+     * @return mixed
+     */
+    public function getName($serviceName = null)
+    {
+        if (!is_null($serviceName)) {
+            $this->setService($serviceName);
+        }
 
-		if(!is_null($serviceName)) {
-			$this->setService($serviceName);
-		}
+        return $this->_getProperty($this->_queriedService, 2);
+    }
 
-		return $this->_getProperty($this->_queriedService, 0);
-	}
+    /**
+     * Get service IP.
+     *
+     * @param  string $serviceName Service name
+     * @return array
+     */
+    public function getIp($serviceName = null)
+    {
+        if (!is_null($serviceName)) {
+            $this->setService($serviceName);
+        }
 
-	/**
-	 * Get service protocol
-	 *
-	 * @param  string $serviceName Service name
-	 * @return array
-	 */
-	public function getProtocol($serviceName = null) {
+        return $this->_getProperty($this->_queriedService, 5);
+    }
 
-		if(!is_null($serviceName)) {
-			$this->setService($serviceName);
-		}
+    /**
+     * Check if the service is read only.
+     *
+     * @param  $serviceName Service name
+     * @return bool TRUE if the service is read only, FALSE otherwise
+     */
+    public function isReadOnly($serviceName = null)
+    {
+        if (!is_null($serviceName)) {
+            $this->setService($serviceName);
+        }
 
-		return $this->_getProperty($this->_queriedService, 1);
-	}
+        return (bool)(!$this->_getProperty($this->_queriedService, 4));
+    }
 
-	/**
-	 * Get service name
-	 * 
-	 * @param  $serviceName
-	 * @return mixed
-	 */
-	public function getName($serviceName = null) {
+    /**
+     * Check if the service is visible.
+     *
+     * @param  $serviceName Service name
+     * @return bool TRUE if the service is visible, FALSE otherwise
+     */
+    public function isVisible($serviceName = null)
+    {
+        if (!is_null($serviceName)) {
+            $this->setService($serviceName);
+        }
 
-		if(!is_null($serviceName)) {
-			$this->setService($serviceName);
-		}
+        return (bool)$this->_getProperty($this->_queriedService, 3);
+    }
 
-		return $this->_getProperty($this->_queriedService, 2);
-	}
+    /**
+     * Check if a service is running.
+     *
+     * @return bool return TRUE if the service is currently running, FALSE otherwise
+     */
+    public function isRunning()
+    {
+        return $this->_getStatus();
+    }
 
-	/**
-	 * Get service IP
-	 *
-	 * @param  string $serviceName Service name
-	 * @return array
-	 */
-	public function getIp($serviceName = null) {
+    /**
+     * Check if a service is down.
+     *
+     * @param  $serviceName Service name
+     * @return bool return TRUE if the service is currently down, FALSE otherwise
+     */
+    public function isDown($serviceName = null)
+    {
 
-		if(!is_null($serviceName)) {
-			$this->setService($serviceName);
-		}
+        return (!($this->_getStatus()));
+    }
 
-		return $this->_getProperty($this->_queriedService, 5);
-	}
+    /**
+     * Returns the current element.
+     *
+     * @return mixed Returns the current element
+     */
+    public function current()
+    {
 
-	/**
-	 * Check if the service is read only
-	 *
-	 * @param  $serviceName Service name
-	 * @return bool TRUE if the service is read only, FALSE otherwise
-	 */
-	public function isReadOnly($serviceName = null) {
+        return current($this->_services);
+    }
 
-		if(!is_null($serviceName)) {
-			$this->setService($serviceName);
-		}
+    /**
+     * Returns the key of the current element.
+     *
+     * @return string Return the key of the current element or NULL on failure
+     */
+    public function key()
+    {
 
-		return (bool) (!$this->_getProperty($this->_queriedService, 4));
-	}
+        return key($this->_services);
+    }
 
-	/**
-	 * Check if the service is visible
-	 *
-	 * @param  $serviceName Service name
-	 * @return bool TRUE if the service is visible, FALSE otherwise
-	 */
-	public function isVisible($serviceName = null) {
+    /**
+     * Moves the current position to the next element.
+     *
+     * @return void
+     */
+    public function next()
+    {
+        next($this->_services);
+    }
 
-		if(!is_null($serviceName)) {
-			$this->setService($serviceName);
-		}
+    /**
+     * Rewinds back to the first element of the Iterator.
+     *
+     * <b>Note:</b> This is the first method called when starting a foreach
+     * loop. It will not be executed after foreach loops.
+     *
+     * @return void
+     */
+    public function rewind()
+    {
 
-		return (bool) $this->_getProperty($this->_queriedService, 3);
-	}
+        reset($this->_services);
+    }
 
-	/**
-	 * Check if a service is running
-	 *
-	 * @param  $serviceName Service name
-	 * @return bool return TRUE if the service is currently running, FALSE otherwise
-	 */
-	public function isRunning($serviceName = null) {
+    /**
+     * Checks if current position is valid.
+     *
+     * @return boolean TRUE on success or FALSE on failure
+     */
+    public function valid()
+    {
 
-		return $this->_getStatus();
-	}
+        return array_key_exists(key($this->_services), $this->_services);
+    }
 
-	/**
-	 * Check if a service is down
-	 *
-	 * @param  $serviceName Service name
-	 * @return bool return TRUE if the service is currently down, FALSE otherwise
-	 */
-	public function isDown($serviceName = null) {
+    /**
+     * Count number of service.
+     *
+     * @return int The custom count as an integer.
+     */
+    public function count()
+    {
 
-		return (!($this->_getStatus()));
-	}
+        return count($this->_services);
+    }
 
-	/**
-	 * Returns the current element
-	 *
-	 * @return mixed Returns the current element
-	 */
-	public function current() {
+    /**
+     * Get a service property value.
+     *
+     * @throws iMSCP_Exception
+     * @param  string $serviceName Service name
+     * @param  int $index Service property index
+     * @return mixed Service property value
+     */
+    private function _getProperty($serviceName, $index)
+    {
 
-		return current($this->_services);
-	}
+        if (!is_null($this->_queriedService)) {
+            return $this->_services[$this->_queriedService][$index];
+        } else {
+            throw new iMSCP_Exception('Service name to be queried is not set!');
+        }
+    }
 
-	/**
-	 * Returns the key of the current element
-	 *
-	 * @return string Return the key of the current element or NULL on failure
-	 */
-	public function key() {
+    /**
+     * Get service status.
+     *
+     * @return bool TRUE if the service is currently running, FALSE otherwise
+     */
+    private function _getStatus()
+    {
 
-		return key($this->_services);
-	}
+        ini_set('default_socket_timeout', 3);
 
-	/**
-	 * Moves the current position to the next element
-	 *
-	 * @return void
-	 */
-	public function next() {
+        if (($fp = @fsockopen($this->getProtocol() . '://' . $this->getIp(),
+                              $this->getPort()))
+        ) {
+            fclose($fp);
 
-		next($this->_services);
-	}
+            return true;
+        }
 
-	/**
-	 * Rewinds back to the first element of the Iterator
-	 *
-	 * <b>Note:</b> This is the first method called when starting a foreach
-	 * loop. It will not be executed after foreach loops.
-	 *
-	 * @return void
-	 */
-	public function rewind() {
-
-		reset($this->_services);
-	}
-
-	/**
-	 * Checks if current position is valid
-	 *
-	 * @return boolean TRUE on success or FALSE on failure
-	 */
-	public function valid() {
-
-		return array_key_exists(key($this->_services), $this->_services);
-	}
-
-	/**
-	 * Count number of service
-	 *
-	 * @return int The custom count as an integer.
-	 */
-	public function count() {
-
-		return count($this->_services);
-	}
-
-	/**
-	 * Get a service property value
-	 *
-	 * @throws iMSCP_Exception
-	 * @param  string $serviceName Service name
-	 * @param  int $index Service property index
-	 * @return mixed Service property value
-	 */
-	private function _getProperty($serviceName, $index) {
-
-		if(!is_null($this->_queriedService)) {
-			return $this->_services[$this->_queriedService][$index];
-		} else {
-			throw new iMSCP_Exception('Service name to be queried is not set!');
-		}
-	}
-
-	/**
-	 * Get service status
-	 *
-	 * @param  $serviceName Service name
-	 * @return bool TRUE if the service is currently running, FALSE otherwise
-	 */
-	private function _getStatus() {
-
-		ini_set('default_socket_timeout', 3);
-
-		if(($fp = @fsockopen($this->getProtocol() . '://' . $this->getIp(), $this->getPort()))) {
-			fclose($fp);
-
-			return true;
-		}
-
-		return false;
-	}
+        return false;
+    }
 }

@@ -48,6 +48,6 @@ if (isset($_GET['del_id']) && !empty($_GET['del_id'])) {
 }
 
 $query = "DELETE FROM `domain_aliasses` WHERE `alias_id` = '" . $del_id . "'";
-$rs = exec_query($sql, $query);
+$rs = exec_query($query);
 
 user_goto('domains_manage.php');

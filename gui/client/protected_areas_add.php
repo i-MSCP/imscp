@@ -58,7 +58,7 @@ $tpl->assign(
 /**
  * @todo use db prepared statements
  */
-function protect_area(&$tpl, &$sql, $dmn_id) {
+function protect_area($tpl, $dmn_id) {
 
 	$cfg = iMSCP_Registry::get('config');
 
@@ -103,7 +103,7 @@ function protect_area(&$tpl, &$sql, $dmn_id) {
 
 	// Check for existing directory
 	// We need to use the virtual file system
-	$vfs = new iMSCP_VirtualFileSystem($domain, $sql);
+	$vfs = new iMSCP_VirtualFileSystem($domain);
 	$res = $vfs->exists($path);
 	if (!$res) {
 		set_page_message(tr("%s doesn't exist", $path), 'error');
@@ -162,7 +162,7 @@ function protect_area(&$tpl, &$sql, $dmn_id) {
 			(`path` = ? OR `path` = ?)
 	";
 
-	$rs = exec_query($sql, $query, array($dmn_id, $path, $alt_path));
+	$rs = exec_query($query, array($dmn_id, $path, $alt_path));
 	$toadd_status = $cfg->ITEM_ADD_STATUS;
 	$tochange_status = $cfg->ITEM_CHANGE_STATUS;
 
@@ -182,7 +182,7 @@ function protect_area(&$tpl, &$sql, $dmn_id) {
 				`id` = '$update_id';
 SQL_QUERY;
 
-		$rs = exec_query($sql, $query, array($user_id, $group_id, $area_name, $path, $tochange_status));
+		exec_query($query, array($user_id, $group_id, $area_name, $path, $tochange_status));
 		send_request();
 		set_page_message(tr('Protected area updated successfully!'), 'success');
 	} else {
@@ -193,7 +193,7 @@ SQL_QUERY;
 				(?, ?, ?, ?, ?, ?, ?);
 		";
 
-		$rs = exec_query($sql, $query, array($dmn_id, $user_id, $group_id, 'Basic' , $area_name, $path, $toadd_status));
+		exec_query($query, array($dmn_id, $user_id, $group_id, 'Basic' , $area_name, $path, $toadd_status));
 		send_request();
 		set_page_message(tr('Protected area created successfully!'), 'success');
 	}
@@ -201,7 +201,7 @@ SQL_QUERY;
 	user_goto('protected_areas.php');
 }
 
-function gen_protect_it(&$tpl, &$sql, &$dmn_id) {
+function gen_protect_it($tpl, &$dmn_id) {
 
 	$cfg = iMSCP_Registry::get('config');
 
@@ -235,7 +235,7 @@ function gen_protect_it(&$tpl, &$sql, &$dmn_id) {
 				`id` = ?;
 		";
 
-		$rs = exec_query($sql, $query, array($dmn_id, $ht_id));
+		$rs = exec_query($query, array($dmn_id, $ht_id));
 
 		if ($rs->recordCount() == 0) {
 			user_goto('protected_areas_add.php');
@@ -302,7 +302,7 @@ function gen_protect_it(&$tpl, &$sql, &$dmn_id) {
 			`dmn_id` = ?;
 	";
 
-	$rs = exec_query($sql, $query, $dmn_id);
+	$rs = exec_query($query, $dmn_id);
 
 	if ($rs->recordCount() == 0) {
 		$tpl->assign(
@@ -348,7 +348,7 @@ function gen_protect_it(&$tpl, &$sql, &$dmn_id) {
 			`dmn_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, $dmn_id);
+	$rs = exec_query($query, $dmn_id);
 
 	if ($rs->recordCount() == 0) {
 		$tpl->assign(
@@ -395,11 +395,11 @@ gen_logged_from($tpl);
 
 check_permissions($tpl);
 
-$dmn_id = get_user_domain_id($sql, $_SESSION['user_id']);
+$dmn_id = get_user_domain_id($_SESSION['user_id']);
 
-protect_area($tpl, $sql, $dmn_id);
+protect_area($tpl, $dmn_id);
 
-gen_protect_it($tpl, $sql, $dmn_id);
+gen_protect_it($tpl, $dmn_id);
 
 $tpl->assign(
 	array(

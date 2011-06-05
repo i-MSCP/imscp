@@ -114,7 +114,7 @@ function gen_catchall_item(&$tpl, $action, $dmn_id, $dmn_name, $mail_id, $mail_a
 /**
  * @todo use db prepared statements
  */
-function gen_page_catchall_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
+function gen_page_catchall_list($tpl, $dmn_id, $dmn_name) {
 	global $counter;
 
 	$tpl->assign('CATCHALL_MESSAGE', '');
@@ -132,7 +132,7 @@ function gen_page_catchall_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 				`mail_type` = 'normal_catchall'
 		";
 
-		$rs = execute_query($sql, $query);
+		$rs = execute_query($query);
 
 		if ($rs->recordCount() == 0) {
 			gen_catchall_item($tpl, 'create', $dmn_id, $dmn_name, '', '', '', 'normal');
@@ -164,7 +164,7 @@ function gen_page_catchall_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 				`alias_status` = 'ok'
 		";
 
-		$rs = execute_query($sql, $query);
+		$rs = execute_query($query);
 
 		while (!$rs->EOF) {
 			$tpl->assign('ITEM_CLASS', ($counter % 2 == 0) ? 'content2' : 'content');
@@ -186,7 +186,7 @@ function gen_page_catchall_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 					`mail_type` = 'alias_catchall'
 			";
 
-			$rs_als = execute_query($sql, $query);
+			$rs_als = execute_query($query);
 
 			if ($rs_als->recordCount() == 0) {
 				gen_catchall_item($tpl, 'create', $als_id, $als_name, '', '', '', 'alias');
@@ -221,7 +221,7 @@ function gen_page_catchall_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 				a.`subdomain_alias_status` = 'ok'
 		";
 
-		$rs = execute_query($sql, $query);
+		$rs = execute_query($query);
 
 		while (!$rs->EOF) {
 			$tpl->assign('ITEM_CLASS', ($counter % 2 == 0) ? 'content2' : 'content');
@@ -243,7 +243,7 @@ function gen_page_catchall_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 					`mail_type` = 'alssub_catchall'
 			";
 
-			$rs_als = execute_query($sql, $query);
+			$rs_als = execute_query($query);
 
 			if ($rs_als->recordCount() == 0) {
 				gen_catchall_item($tpl, 'create', $als_id, $als_name, '', '', '', 'alssub');
@@ -278,7 +278,7 @@ function gen_page_catchall_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 				a.`subdomain_status` = 'ok'
 		";
 
-		$rs = execute_query($sql, $query);
+		$rs = execute_query($query);
 
 		while (!$rs->EOF) {
 			$tpl->assign('ITEM_CLASS', ($counter % 2 == 0) ? 'content2' : 'content');
@@ -300,7 +300,7 @@ function gen_page_catchall_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 					`mail_type` = 'subdom_catchall'
 			";
 
-			$rs_als = execute_query($sql, $query);
+			$rs_als = execute_query($query);
 
 			if ($rs_als->recordCount() == 0) {
 				gen_catchall_item($tpl, 'create', $als_id, $als_name, '', '', '', 'subdom');
@@ -321,7 +321,7 @@ function gen_page_catchall_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 		}
 }
 
-function gen_page_lists(&$tpl, &$sql, $user_id)
+function gen_page_lists(&$tpl, $user_id)
 {
 	list($dmn_id,
 		$dmn_name,
@@ -346,10 +346,9 @@ function gen_page_lists(&$tpl, &$sql, $user_id)
 		$dmn_cgi,
 		$allowbackup,
 		$dmn_dns
-	) = get_domain_default_props($sql, $user_id);
+	) = get_domain_default_props($user_id);
 
-	gen_page_catchall_list($tpl, $sql, $dmn_id, $dmn_name);
-	// gen_page_ftp_list($tpl, $sql, $dmn_id, $dmn_name);
+	gen_page_catchall_list($tpl, $dmn_id, $dmn_name);
 }
 
 // common page data.
@@ -369,7 +368,7 @@ if (isset($_SESSION['email_support']) && $_SESSION['email_support'] == "no") {
 	$tpl->assign('NO_MAILS', '');
 }
 
-gen_page_lists($tpl, $sql, $_SESSION['user_id']);
+gen_page_lists($tpl, $_SESSION['user_id']);
 
 // static page messages.
 

@@ -43,12 +43,12 @@ $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/error_edit.tpl');
 $tpl->define_dynamic('page_message', 'page');
 $tpl->define_dynamic('logged_from', 'page');
 
-function gen_error_page_data(&$tpl, &$sql, $user_id, $eid) {
+function gen_error_page_data($tpl, $user_id, $eid) {
 
 	$domain = $_SESSION['user_logged'];
 
 	// Check if we already have an error page
-	$vfs = new iMSCP_VirtualFileSystem($domain, $sql);
+	$vfs = new iMSCP_VirtualFileSystem($domain);
 	$error = $vfs->get('/errors/' . $eid . '.html');
 
 	if (false !== $error) {
@@ -83,7 +83,7 @@ if (!isset($_GET['eid'])) {
 }
 
 if ($eid == 401 || $eid == 403 || $eid == 404 || $eid == 500 || $eid == 503) {
-	gen_error_page_data($tpl, $sql, $_SESSION['user_id'], $_GET['eid']);
+	gen_error_page_data($tpl, $_SESSION['user_id'], $_GET['eid']);
 } else {
 	$tpl->assign(
 		array(

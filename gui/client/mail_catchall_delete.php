@@ -41,7 +41,7 @@ $cfg = iMSCP_Registry::get('config');
 if (isset($_GET['id']) && $_GET['id'] !== '') {
 	$mail_id = $_GET['id'];
 	$item_delete_status = $cfg->ITEM_DELETE_STATUS;
-	$dmn_id = get_user_domain_id($sql, $_SESSION['user_id']);
+	$dmn_id = get_user_domain_id($_SESSION['user_id']);
 
 	$query = "
 		SELECT
@@ -54,9 +54,9 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 			`mail_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($dmn_id, $mail_id));
+	$rs = exec_query($query, array($dmn_id, $mail_id));
 
-	if ($rs->recordCount() == 0) {
+	if (!$rs->recordCount()) {
 		user_goto('mail_catchall.php');
 	}
 
@@ -68,8 +68,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 		WHERE
 			`mail_id` = ?
 	";
-
-	$rs = exec_query($sql, $query, array($item_delete_status, $mail_id));
+	exec_query($query, array($item_delete_status, $mail_id));
 
 	send_request();
 	write_log($_SESSION['user_logged'].': deletes email catch all!');

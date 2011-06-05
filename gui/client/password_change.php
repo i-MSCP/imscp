@@ -82,15 +82,13 @@ if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_pass') {
 				`admin_id` = ?
 		";
 
-		$rs = exec_query($sql, $query, array($upass, $user_id));
+		$rs = exec_query($query, array($upass, $user_id));
 		write_log($_SESSION['user_logged'] . ": update password!");
 		set_page_message(tr('User password updated successfully!'), 'success');
 	}
 }
 
 function check_udata($id, $pass) {
-
-	$sql = iMSCP_Registry::get('db');
 
 	$query = "
 		SELECT
@@ -103,7 +101,7 @@ function check_udata($id, $pass) {
 			`admin_pass` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($id, md5($pass)));
+	$rs = exec_query($query, array($id, md5($pass)));
 
 	return (($rs->recordCount()) != 1) ? false : true;
 }

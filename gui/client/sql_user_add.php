@@ -61,7 +61,7 @@ if (isset($_GET['id'])) {
 
 // page functions.
 
-function check_sql_permissions(&$tpl, $sql, $user_id, $db_id, $sqluser_available) {
+function check_sql_permissions($tpl, $user_id, $db_id, $sqluser_available) {
 	list($dmn_id,
 		$dmn_name,
 		$dmn_gid,
@@ -85,10 +85,9 @@ function check_sql_permissions(&$tpl, $sql, $user_id, $db_id, $sqluser_available
 		$dmn_cgi,
 		$allowbackup,
 		$dmn_dns
-	) = get_domain_default_props($sql, $user_id);
+	) = get_domain_default_props($user_id);
 
-	list($sqld_acc_cnt,
-		$sqlu_acc_cnt) = get_domain_running_sql_acc_cnt($sql, $dmn_id);
+	list($sqld_acc_cnt, $sqlu_acc_cnt) = get_domain_running_sql_acc_cnt($dmn_id);
 
 	if ($dmn_sqlu_limit != 0 && $sqlu_acc_cnt >= $dmn_sqlu_limit) {
 		if (!$sqluser_available) {
@@ -115,9 +114,9 @@ function check_sql_permissions(&$tpl, $sql, $user_id, $db_id, $sqluser_available
 			t2.`domain_name` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($db_id, $dmn_name));
+	$rs = exec_query($query, array($db_id, $dmn_name));
 
-	if ($rs->recordCount() == 0) {
+	if (!$rs->recordCount()) {
 		set_page_message(tr('User does not exist or you do not have permission to access this interface!'), 'error');
 		user_goto('sql_manage.php');
 	}
@@ -126,10 +125,10 @@ function check_sql_permissions(&$tpl, $sql, $user_id, $db_id, $sqluser_available
 /**
  * Returns an array with a list of the sqlusers of the current database
  */
-function get_sqluser_list_of_current_db(&$sql, $db_id) {
+function get_sqluser_list_of_current_db($db_id) {
 	$query = "SELECT `sqlu_name` FROM `sql_user` WHERE `sqld_id` = ?";
 
-	$rs = exec_query($sql, $query, $db_id);
+	$rs = exec_query($query, $db_id);
 
 	if ($rs->recordCount() == 0) {
 		return false;
@@ -143,15 +142,15 @@ function get_sqluser_list_of_current_db(&$sql, $db_id) {
 	return $userlist;
 }
 
-function gen_sql_user_list(&$sql, &$tpl, $user_id, $db_id) {
+function gen_sql_user_list($tpl, $user_id, $db_id) {
 
 	$cfg = iMSCP_Registry::get('config');
 
 	$first_passed = true;
 	$user_found = false;
 	$oldrs_name = '';
-	$userlist = get_sqluser_list_of_current_db($sql, $db_id);
-	$dmn_id = get_user_domain_id($sql, $user_id);
+	$userlist = get_sqluser_list_of_current_db($db_id);
+	$dmn_id = get_user_domain_id($user_id);
 	// Let's select all sqlusers of the current domain except the users of the current database
 	$query = "
 		SELECT
@@ -170,7 +169,7 @@ function gen_sql_user_list(&$sql, &$tpl, $user_id, $db_id) {
 			t1.`sqlu_name`
 	";
 
-	$rs = exec_query($sql, $query, array($dmn_id, $db_id));
+	$rs = exec_query($query, array($dmn_id, $db_id));
 
 	while (!$rs->EOF) {
 		// Checks if it's the first element of the combobox and set it as selected
@@ -205,10 +204,10 @@ function gen_sql_user_list(&$sql, &$tpl, $user_id, $db_id) {
 	}
 }
 
-function check_db_user(&$sql, $db_user) {
+function check_db_user($db_user) {
 	$query = "SELECT COUNT(`User`) AS cnt FROM mysql.`user` WHERE `User` = ?";
 
-	$rs = exec_query($sql, $query, $db_user);
+	$rs = exec_query($query, $db_user);
 	return $rs->fields['cnt'];
 }
 
@@ -218,7 +217,7 @@ function check_db_user(&$sql, $db_user) {
  *  * If creation of database user fails in MySQL-Table, database user is already
  * 		in local i-MSCP table -> Error handling
  */
-function add_sql_user(&$sql, $user_id, $db_id) {
+function add_sql_user($user_id, $db_id) {
 
 	$cfg = iMSCP_Registry::get('config');
 
@@ -273,7 +272,7 @@ function add_sql_user(&$sql, $user_id, $db_id) {
 
 	if (isset($_POST['Add_Exist'])) {
 		$query = "SELECT `sqlu_pass` FROM `sql_user` WHERE `sqlu_id` = ?";
-		$rs = exec_query($sql, $query, $_POST['sqluser_id']);
+		$rs = exec_query($query, $_POST['sqluser_id']);
 
 		if ($rs->recordCount() == 0) {
 			set_page_message(tr('SQL-user not found! Maybe it was deleted by another user!'), 'warning');
@@ -284,7 +283,7 @@ function add_sql_user(&$sql, $user_id, $db_id) {
 		$user_pass = $_POST['pass'];
 	}
 
-	$dmn_id = get_user_domain_id($sql, $user_id);
+	$dmn_id = get_user_domain_id($user_id);
 
 	if (!isset($_POST['Add_Exist'])) {
 
@@ -304,7 +303,7 @@ function add_sql_user(&$sql, $user_id, $db_id) {
 		}
 	} else {
 		$query = "SELECT `sqlu_name` FROM `sql_user` WHERE `sqlu_id` = ?";
-		$rs = exec_query($sql, $query, $_POST['sqluser_id']);
+		$rs = exec_query($query, $_POST['sqluser_id']);
 		$db_user = $rs->fields['sqlu_name'];
 	}
 
@@ -321,7 +320,7 @@ function add_sql_user(&$sql, $user_id, $db_id) {
 
 	// have we such sql user in the system?!
 
-	if (check_db_user($sql, $db_user) && !isset($_POST['Add_Exist'])) {
+	if (check_db_user($db_user) && !isset($_POST['Add_Exist'])) {
 		set_page_message(tr('Specified SQL username name already exists!'), 'error');
 		return;
 	}
@@ -334,8 +333,7 @@ function add_sql_user(&$sql, $user_id, $db_id) {
 		VALUES
 			(?, ?, ?)
 	";
-
-	$rs = exec_query($sql, $query, array($db_id, $db_user, encrypt_db_password($user_pass)));
+	exec_query($query, array($db_id, $db_user, encrypt_db_password($user_pass)));
 
 	update_reseller_c_props(get_reseller_id($dmn_id));
 
@@ -350,14 +348,14 @@ function add_sql_user(&$sql, $user_id, $db_id) {
 			`domain_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($db_id, $dmn_id));
+	$rs = exec_query($query, array($db_id, $dmn_id));
 	$db_name = $rs->fields['db_name'];
 	$db_name = preg_replace("/([_%\?\*])/",'\\\$1',$db_name);
 
 	// add user in the mysql system tables
 	$query = "GRANT ALL PRIVILEGES ON ". quoteIdentifier($db_name) .".* TO ?@? IDENTIFIED BY ?";
-	exec_query($sql, $query, array($db_user, "localhost", $user_pass));
-	exec_query($sql, $query, array($db_user, "%", $user_pass));
+	exec_query($query, array($db_user, "localhost", $user_pass));
+	exec_query($query, array($db_user, "%", $user_pass));
 
 	write_log($_SESSION['user_logged'] . ": add SQL user: " . tohtml($db_user));
 	set_page_message(tr('SQL user successfully added!'), 'success');
@@ -426,10 +424,10 @@ $tpl->assign(
 
 // dynamic page data.
 
-$sqluser_available = gen_sql_user_list($sql, $tpl, $_SESSION['user_id'], $db_id);
-check_sql_permissions($tpl, $sql, $_SESSION['user_id'], $db_id, $sqluser_available);
+$sqluser_available = gen_sql_user_list($tpl, $_SESSION['user_id'], $db_id);
+check_sql_permissions($tpl, $_SESSION['user_id'], $db_id, $sqluser_available);
 gen_page_post_data($tpl, $db_id);
-add_sql_user($sql, $_SESSION['user_id'], $db_id);
+add_sql_user($_SESSION['user_id'], $db_id);
 
 // static page messages.
 

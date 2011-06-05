@@ -30,19 +30,14 @@
  *  Functions
  */
 
-function gen_user_domain_list($tpl, $sql, $user_id) {
+function gen_user_domain_list($tpl, $user_id) {
 
 	/**
 	* @var $cfg iMSCP_Config_Handler_File
 	*/
 	$cfg = iMSCP_Registry::get('config');
 
-	/**
-	 * @var $sql iMSCP_Database
-	 */
-	$sql = iMSCP_Registry::get('db');
-
-	$domain_id = get_user_domain_id($sql, $user_id);
+	$domain_id = get_user_domain_id($user_id);
 
 	//Get Domain Data
 	$querydomain = "
@@ -55,7 +50,7 @@ function gen_user_domain_list($tpl, $sql, $user_id) {
 		AND
 			`domain_id` = ?
 	";
-	$rsdomain = exec_query($sql, $querydomain, $domain_id);
+	$rsdomain = exec_query($querydomain, $domain_id);
 
 	//Get Aliase
 	$queryaliase = "
@@ -72,7 +67,7 @@ function gen_user_domain_list($tpl, $sql, $user_id) {
 		AND
 			`domain_id` = ?
 	";
-	$rsaliase = exec_query($sql, $queryaliase, $domain_id);
+	$rsaliase = exec_query($queryaliase, $domain_id);
 
 	//Get Subdomains
 	$querysubdomain = "
@@ -90,7 +85,7 @@ function gen_user_domain_list($tpl, $sql, $user_id) {
 		AND
 			`subdomain`.`domain_id` = ?
 	";
-	$rssubdomain = exec_query($sql, $querysubdomain, $domain_id);
+	$rssubdomain = exec_query($querysubdomain, $domain_id);
 
 	//Get Subaliase
 	$querysubaliase = "
@@ -108,7 +103,7 @@ function gen_user_domain_list($tpl, $sql, $user_id) {
 		AND
 			`domain_id` = ?
 	";
-	$rssubaliase = exec_query($sql, $querysubaliase, $domain_id);
+	$rssubaliase = exec_query($querysubaliase, $domain_id);
 
 	if (isset($_POST['selected_domain'])){
 		list ($posted_domain_id, $posted_aliasdomain_id, $posted_subdomain_id, $posted_aliassubdomain_id, $posted_mountpath) = explode(";", $_POST['selected_domain']);
@@ -198,17 +193,12 @@ function gen_user_domain_list($tpl, $sql, $user_id) {
 			);
 	}
 }
-function check_db_user_list($tpl, $sql, $db_id) {
+function check_db_user_list($tpl, $db_id) {
 
 	/**
 	* @var $cfg iMSCP_Config_Handler_File
 	*/
 	$cfg = iMSCP_Registry::get('config');;
-
-	/**
-	 * @var $sql iMSCP_Database
-	 */
-	$sql = iMSCP_Registry::get('db');
 
 	$count = 0;
 	$query = "
@@ -221,7 +211,7 @@ function check_db_user_list($tpl, $sql, $db_id) {
 		ORDER BY
 			`sqlu_name`
 	";
-	$rs = exec_query($sql, $query, $db_id);
+	$rs = exec_query($query, $db_id);
 	if ($rs->recordCount() == 0) {
 		$tpl->assign(
 				array(
@@ -263,17 +253,12 @@ function check_db_user_list($tpl, $sql, $db_id) {
 	return $count;
 }
 
-function check_db_avail(&$tpl, &$sql, $dmn_id, $dmn_sqld_limit) {
+function check_db_avail($tpl, $dmn_id, $dmn_sqld_limit) {
 
 	/**
 	* @var $cfg iMSCP_Config_Handler_File
 	*/
 	$cfg = iMSCP_Registry::get('config');
-
-	/**
-	 * @var $sql iMSCP_Database
-	 */
-	$sql = iMSCP_Registry::get('db');
 
 	$existdbuser = 0;
 	$check_db = "
@@ -287,7 +272,7 @@ function check_db_avail(&$tpl, &$sql, $dmn_id, $dmn_sqld_limit) {
 		ORDER BY
 			`sqld_name` ASC
 	";
-	$rs = exec_query($sql, $check_db, $dmn_id);
+	$rs = exec_query($check_db, $dmn_id);
 	if ($rs->recordCount() > 0) {
 		while (!$rs->EOF) {
 			if (isset($_POST['selected_db']) && $_POST['selected_db'] == $rs->fields['sqld_name']){
@@ -302,7 +287,7 @@ function check_db_avail(&$tpl, &$sql, $dmn_id, $dmn_sqld_limit) {
 							)
 					);
 			$tpl->parse('INSTALLDB_ITEM', '.installdb_item');
-			$existdbuser = check_db_user_list($tpl, $sql, $rs->fields['sqld_id']);
+			$existdbuser = check_db_user_list($tpl, $rs->fields['sqld_id']);
 			$existdbuser = +$existdbuser;
 			$rs->moveNext();
 		}
@@ -348,12 +333,7 @@ function check_db_avail(&$tpl, &$sql, $dmn_id, $dmn_sqld_limit) {
   	}
 }
 
-function check_software_avail($sql, $software_id, $dmn_created_id) {
-
-	/**
-	 * @var $sql iMSCP_Database
-	 */
-	$sql = iMSCP_Registry::get('db');
+function check_software_avail($software_id, $dmn_created_id) {
 
 	$check_avail = "
 			SELECT
@@ -365,7 +345,7 @@ function check_software_avail($sql, $software_id, $dmn_created_id) {
 			AND
 				`reseller_id` = ?
 	";
-  	$sa = exec_query($sql, $check_avail, array($software_id, $dmn_created_id));
+  	$sa = exec_query($check_avail, array($software_id, $dmn_created_id));
   	if ($sa -> recordCount() == 0) {
 		return FALSE;
   	} else {
@@ -373,12 +353,7 @@ function check_software_avail($sql, $software_id, $dmn_created_id) {
   	}
 }
 
-function check_is_installed(&$tpl, &$sql, $dmn_id, $software_id) {
-
-	/**
-	 * @var $sql iMSCP_Database
-	 */
-	$sql = iMSCP_Registry::get('db');
+function check_is_installed($tpl, $dmn_id, $software_id) {
 
   	$is_installed = "
 			SELECT
@@ -390,7 +365,7 @@ function check_is_installed(&$tpl, &$sql, $dmn_id, $software_id) {
 			AND
 				`software_id` = ?
 	";
-  	$is_inst = exec_query($sql, $is_installed, array($dmn_id, $software_id));
+  	$is_inst = exec_query($is_installed, array($dmn_id, $software_id));
   	if ($is_inst -> recordCount() == 0) {
 		$tpl -> assign ('SOFTWARE_INSTALL_BUTTON', 'software_install.php?id='.$software_id);
 		$tpl -> parse('SOFTWARE_INSTALL', '.software_install');
@@ -399,19 +374,14 @@ function check_is_installed(&$tpl, &$sql, $dmn_id, $software_id) {
   	}
 }
 
-function get_software_props ($tpl, $sql, $dmn_id, $software_id, $dmn_created_id, $dmn_sqld_limit) {
+function get_software_props ($tpl, $dmn_id, $software_id, $dmn_created_id, $dmn_sqld_limit) {
 
-	/**
-	 * @var $sql iMSCP_Database
-	 */
-	$sql = iMSCP_Registry::get('db');
-
-  	if (!check_software_avail($sql, $software_id, $dmn_created_id)) {
+  	if (!check_software_avail($software_id, $dmn_created_id)) {
 		set_page_message(tr('Software not found!'), 'error');
 		header('Location: software.php');
 		exit;
   	} else {
-		gen_user_domain_list($tpl, $sql, $_SESSION['user_id']);
+		gen_user_domain_list($tpl, $_SESSION['user_id']);
 		$software_props = "
 			SELECT
 				`software_name`,
@@ -424,14 +394,14 @@ function get_software_props ($tpl, $sql, $dmn_id, $software_id, $dmn_created_id,
 			AND
 				`reseller_id` = ?
 		";
-		$rs = exec_query($sql, $software_props, array($software_id, $dmn_created_id));
-		check_is_installed($tpl, $sql, $dmn_id, $software_id);
+		$rs = exec_query($software_props, array($software_id, $dmn_created_id));
+		check_is_installed($tpl, $dmn_id, $software_id);
 		if ($rs -> fields['software_db'] == 1) {
 			$tpl -> assign ('SOFTWARE_DB', tr('yes'));
 			if ($dmn_sqld_limit == '-1') {
 				$tpl -> parse('REQUIRE_INSTALLDB', '.require_installdb');
 			}
-			check_db_avail($tpl, $sql, $dmn_id, $dmn_sqld_limit);
+			check_db_avail($tpl, $dmn_id, $dmn_sqld_limit);
  		} else {
 			$tpl -> assign (
 						array(
@@ -450,7 +420,7 @@ function get_software_props ($tpl, $sql, $dmn_id, $software_id, $dmn_created_id,
   	}
 }
 
-function gen_page_lists($tpl, $sql, $user_id) {
+function gen_page_lists($tpl, $user_id) {
 	if (!isset($_GET['id']) || $_GET['id'] === '' || !is_numeric($_GET['id'])) {
 		set_page_message(tr('Software not found!'), 'error');
 		header('Location: software.php');
@@ -458,8 +428,8 @@ function gen_page_lists($tpl, $sql, $user_id) {
 	} else {
 		$software_id = $_GET['id'];
 	}
-    list($dmn_id,$dmn_name,,,$dmn_created_id,,,,,,$dmn_sqld_limit) = get_domain_default_props($sql, $user_id);
-	get_software_props ($tpl, $sql, $dmn_id, $software_id, $dmn_created_id, $dmn_sqld_limit);
+    list($dmn_id,$dmn_name,,,$dmn_created_id,,,,,,$dmn_sqld_limit) = get_domain_default_props($user_id);
+	get_software_props ($tpl, $dmn_id, $software_id, $dmn_created_id, $dmn_sqld_limit);
 	return $software_id;
 }
 
@@ -471,9 +441,9 @@ function check_db_connection($sql_database, $sql_user, $sql_pass) {
 	$cfg = iMSCP_Registry::get('config');
 
 	try {
-		iMSCP_Database::connect(
-			$sql_user, decrypt_db_password($sql_pass), $cfg->DATABASE_TYPE, $cfg->DATABASE_HOST, $sql_database, 'privateConnection'
-		);
+		iMSCP_Database::connect($sql_user, decrypt_db_password($sql_pass),
+                                $cfg->DATABASE_TYPE, $cfg->DATABASE_HOST,
+                                $sql_database, 'privateConnection');
 
 	} catch(PDOException $e) {
 
@@ -495,11 +465,6 @@ check_login(__FILE__);
  * @var $cfg iMSCP_Config_Handler_File
  */
 $cfg = iMSCP_Registry::get('config');
-
-/**
- * @var $sql iMSCP_Database
- */
-$sql = iMSCP_Registry::get('db');
 
 $tpl = new iMSCP_pTemplate();
 $tpl->define_dynamic('page', $cfg->CLIENT_TEMPLATE_PATH . '/software_install.tpl');
@@ -535,7 +500,7 @@ if (isset($_POST['Submit2'])) {
 		WHERE
 			`software_id` = ?
 	";
-	$rs = exec_query($sql, $query, $_GET['id']);
+	$rs = exec_query($query, $_GET['id']);
 	$install_username = clean_input($_POST['install_username'], true);
 	$install_password = clean_input($_POST['install_password'], true);
 	$install_email = clean_input($_POST['install_email'], true);
@@ -547,7 +512,7 @@ if (isset($_POST['Submit2'])) {
 	}
 	//Check dir exists
     $domain = $_SESSION['user_logged'];
-    $vfs = new iMSCP_VirtualFileSystem($domain, $sql);
+    $vfs = new iMSCP_VirtualFileSystem($domain);
     $list = $vfs->ls($other_dir);
     //Check dir exists
 
@@ -570,7 +535,7 @@ if (isset($_POST['Submit2'])) {
 		$dmn_disk_limit,
 		$dmn_disk_usage,
 		$dmn_php,
-		$dmn_cgi) = get_domain_default_props($sql, $_SESSION['user_id']);
+		$dmn_cgi) = get_domain_default_props($_SESSION['user_id']);
 
 
 	$querypath = "
@@ -584,7 +549,7 @@ if (isset($_POST['Submit2'])) {
 		AND
 			`path` = ?
 	";
-	$rspath = exec_query($sql, $querypath, array($dmn_id, $other_dir));
+	$rspath = exec_query($querypath, array($dmn_id, $other_dir));
 	list ($posted_domain_id, $posted_aliasdomain_id, $posted_subdomain_id, $posted_aliassubdomain_id, $posted_mountpath) = explode(';', $_POST['selected_domain']);
 	if(($posted_aliasdomain_id + $posted_subdomain_id + $posted_aliassubdomain_id) > 0){
 		if($posted_aliasdomain_id > 0){
@@ -596,7 +561,7 @@ if (isset($_POST['Submit2'])) {
 				WHERE
 					`alias_id` = ?
 			";
-			$rsdomainpath = exec_query($sql, $querydomainpath, $posted_aliasdomain_id);
+			$rsdomainpath = exec_query($querydomainpath, $posted_aliasdomain_id);
 			$domain_path = $rsdomainpath->fields['domainpath'];
 			$domain_path = str_replace("/", "\/", $domain_path);
 		} elseif($posted_subdomain_id > 0){
@@ -608,7 +573,7 @@ if (isset($_POST['Submit2'])) {
 				WHERE
 					`subdomain_id` = ?
 			";
-			$rsdomainpath = exec_query($sql, $querydomainpath, $posted_subdomain_id);
+			$rsdomainpath = exec_query($querydomainpath, $posted_subdomain_id);
 			$domain_path = $rsdomainpath->fields['domainpath'];
 			$domain_path = str_replace("/", "\/", $domain_path);
 		} elseif($posted_aliassubdomain_id > 0){
@@ -620,7 +585,7 @@ if (isset($_POST['Submit2'])) {
 				WHERE
 					`subdomain_alias_id` = ?
 			";
-			$rsdomainpath = exec_query($sql, $querydomainpath, $posted_aliassubdomain_id);
+			$rsdomainpath = exec_query($querydomainpath, $posted_aliassubdomain_id);
 			$domain_path = $rsdomainpath->fields['domainpath'];
 			$domain_path = str_replace("/", "\/", $domain_path);
 		} else {
@@ -640,7 +605,7 @@ if (isset($_POST['Submit2'])) {
 			WHERE
 				`sqlu_name` = ?
 		";
-		$rsdatabase = exec_query($sql, $querydbuser, $sql_user);
+		$rsdatabase = exec_query($querydbuser, $sql_user);
 
 		$db_connection_ok = check_db_connection($selected_db, $sql_user, $rsdatabase->fields['sqlu_pass']);
 		$sql_pass = $rsdatabase->fields['sqlu_pass'];
@@ -680,7 +645,7 @@ if (isset($_POST['Submit2'])) {
 			WHERE
 				`software_id` = ?
 		";
-		$rs = exec_query($sql, $query, $_GET['id']);
+		$rs = exec_query($query, $_GET['id']);
 
 		$prefix = $rs->fields['software_prefix'];
 		if($sw_db_required == "1") {
@@ -701,7 +666,16 @@ if (isset($_POST['Submit2'])) {
 							?, ?, ?, ?
 						)
 			";
-			$rs = exec_query($sql, $query, array($dmn_id, $posted_aliasdomain_id, $posted_subdomain_id, $posted_aliassubdomain_id, $id, $software_master_id, $sw_software_name, $sw_software_version, $software_language, $other_dir, $prefix, $selected_db, $sql_user, $sql_pass, $install_username, encrypt_db_password($install_password), $install_email, $cfg->ITEM_ADD_STATUS, $software_depot));
+			$rs = exec_query($query, array($dmn_id, $posted_aliasdomain_id,
+                                          $posted_subdomain_id,
+                                          $posted_aliassubdomain_id, $id,
+                                          $software_master_id, $sw_software_name,
+                                          $sw_software_version, $software_language,
+                                          $other_dir, $prefix, $selected_db,
+                                          $sql_user, $sql_pass, $install_username,
+                                          encrypt_db_password($install_password),
+                                          $install_email, $cfg->ITEM_ADD_STATUS,
+                                          $software_depot));
 		} else {
 			$query="
 				INSERT INTO
@@ -720,7 +694,7 @@ if (isset($_POST['Submit2'])) {
 							?, ?, ?, ?
 						)
 			";
-			$rs = exec_query($sql, $query, array($dmn_id, $posted_aliasdomain_id, $posted_subdomain_id, $posted_aliassubdomain_id, $id, $software_master_id, $sw_software_name, $sw_software_version, $software_language, $other_dir, "not_required", "not_required", "not_required", "not_required", $install_username, encrypt_db_password($install_password), $install_email, $cfg->ITEM_ADD_STATUS, $software_depot));
+			$rs = exec_query($query, array($dmn_id, $posted_aliasdomain_id, $posted_subdomain_id, $posted_aliassubdomain_id, $id, $software_master_id, $sw_software_name, $sw_software_version, $software_language, $other_dir, "not_required", "not_required", "not_required", "not_required", $install_username, encrypt_db_password($install_password), $install_email, $cfg->ITEM_ADD_STATUS, $software_depot));
 		}
 		send_request();
 		header('Location: software.php');
@@ -771,7 +745,7 @@ $tpl -> assign(
 // dynamic page data.
 //
 
-$software_id = gen_page_lists($tpl, $sql, $_SESSION['user_id']);
+$software_id = gen_page_lists($tpl, $_SESSION['user_id']);
 
 //
 // static page messages.
@@ -782,7 +756,7 @@ gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_webtools.tpl');
 
 gen_logged_from($tpl);
 
-get_client_software_permission ($tpl, $sql,$_SESSION['user_id']);
+get_client_software_permission ($tpl, $_SESSION['user_id']);
 
 check_permissions($tpl);
 

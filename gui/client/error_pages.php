@@ -45,22 +45,22 @@ $tpl->define_dynamic('logged_from', 'page');
 
 // page functions.
 
-function write_error_page(&$sql, $user_id, $eid) {
+function write_error_page($user_id, $eid) {
 
 	$error = $_POST['error'];
 	$file = '/errors/' . $eid . '.html';
-	$vfs = new iMSCP_VirtualFileSystem($_SESSION['user_logged'], $sql);
+	$vfs = new iMSCP_VirtualFileSystem($_SESSION['user_logged']);
 
 	return $vfs->put($file, $error);
 }
 
-function update_error_page(&$sql, $user_id) {
+function update_error_page($user_id) {
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_error') {
 		$eid = intval($_POST['eid']);
 
 		if (in_array($eid, array(401, 402, 403, 404, 500, 503))
-			&& write_error_page($sql, $_SESSION['user_id'], $eid)) {
+			&& write_error_page($_SESSION['user_id'], $eid)) {
 			set_page_message(tr('Custom error page was updated!'), 'success');
 		} else {
 			set_page_message(tr('System error - custom error page was not updated!'), 'error');
@@ -87,7 +87,7 @@ $tpl->assign(
 
 // dynamic page data.
 
-update_error_page($sql, $_SESSION['user_id']);
+update_error_page($_SESSION['user_id']);
 
 // static page messages.
 

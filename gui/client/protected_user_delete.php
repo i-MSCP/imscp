@@ -38,7 +38,7 @@ check_login(__FILE__);
 
 $cfg = iMSCP_Registry::get('config');
 
-$dmn_id = get_user_domain_id($sql, $_SESSION['user_id']);
+$dmn_id = get_user_domain_id($_SESSION['user_id']);
 
 if (isset($_GET['uname'])
 	&& $_GET['uname'] !== ''
@@ -59,7 +59,7 @@ $query = "
 		`id` = ?
 ";
 
-$rs = exec_query($sql, $query, array($dmn_id, $uuser_id));
+$rs = exec_query($query, array($dmn_id, $uuser_id));
 $uname = $rs->fields['uname'];
 
 $change_status = $cfg->ITEM_DELETE_STATUS;
@@ -75,7 +75,7 @@ $query = "
 		`dmn_id` = ?
 ";
 
-$rs = exec_query($sql, $query, array($change_status, $uuser_id, $dmn_id));
+$rs = exec_query($query, array($change_status, $uuser_id, $dmn_id));
 
 // let's delete this user if assigned to a group
 $query = "
@@ -87,7 +87,7 @@ $query = "
 	WHERE
 		`dmn_id` = ?
 ";
-$rs = exec_query($sql, $query, $dmn_id);
+$rs = exec_query($query, $dmn_id);
 
  if ($rs->recordCount() !== 0) {
 
@@ -108,7 +108,7 @@ $rs = exec_query($sql, $query, $dmn_id);
 				WHERE
 					`id` = ?
 			";
-			$rs_update = exec_query($sql, $update_query, array($members, $change_status, $group_id));
+			$rs_update = exec_query($update_query, array($members, $change_status, $group_id));
 		}
 		$rs->moveNext();
 	 }
@@ -124,7 +124,7 @@ $query = "
 		`dmn_id` = ?
 ";
 
-$rs = exec_query($sql, $query, $dmn_id);
+$rs = exec_query($query, $dmn_id);
 
 while (!$rs->EOF) {
 	$ht_id = $rs->fields['id'];
@@ -151,7 +151,7 @@ while (!$rs->EOF) {
 				`id` = ?
 		";
 
-		$rs_update = exec_query($sql, $update_query, array($usr_id, $status, $ht_id));
+		$rs_update = exec_query($update_query, array($usr_id, $status, $ht_id));
 	}
 
 	$rs->moveNext();

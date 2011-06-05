@@ -53,12 +53,12 @@ $tpl->assign(
 );
 
 if (isset($_POST['uaction']) && $_POST['uaction'] === 'updt_data') {
-	update_user_personal_data($sql, $_SESSION['user_id']);
+	update_user_personal_data($_SESSION['user_id']);
 }
 
-gen_user_personal_data($tpl, $sql, $_SESSION['user_id']);
+gen_user_personal_data($tpl, $_SESSION['user_id']);
 
-function gen_user_personal_data(&$tpl, &$sql, $user_id) {
+function gen_user_personal_data($tpl, $user_id) {
 
 	$cfg = iMSCP_Registry::get('config');
 
@@ -83,7 +83,7 @@ function gen_user_personal_data(&$tpl, &$sql, $user_id) {
 			`admin_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, $user_id);
+	$rs = exec_query($query, $user_id);
 	$tpl->assign(
 		array(
 			'FIRST_NAME'	=> empty($rs->fields['fname']) ? '' : tohtml($rs->fields['fname']),
@@ -105,7 +105,7 @@ function gen_user_personal_data(&$tpl, &$sql, $user_id) {
 	);
 }
 
-function update_user_personal_data(&$sql, $user_id) {
+function update_user_personal_data($user_id) {
 	$fname = clean_input($_POST['fname']);
 	$lname = clean_input($_POST['lname']);
 	$gender = $_POST['gender'];
@@ -140,8 +140,9 @@ function update_user_personal_data(&$sql, $user_id) {
 		WHERE
 			`admin_id` = ?
 	";
-
-	$rs = exec_query($sql, $query, array($fname, $lname, $firm, $zip, $city, $state, $country, $street1, $street2, $email, $phone, $fax, $gender, $user_id));
+	exec_query($query, array($fname, $lname, $firm, $zip, $city, $state, $country,
+                            $street1, $street2, $email, $phone, $fax, $gender,
+                            $user_id));
 
 	write_log($_SESSION['user_logged'] . ": update personal data");
 	set_page_message(tr('Personal data updated successfully!'), 'success');

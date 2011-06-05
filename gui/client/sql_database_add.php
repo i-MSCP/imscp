@@ -97,13 +97,12 @@ function gen_page_post_data(&$tpl) {
 /**
  * Check if a database with same name already exists
  *
- * @param  iMSCP_Database $sql iMSCP_Database instance
  * @param  string $db_name database name to be checked
  * @return boolean TRUE if database exists, false otherwise
  */
-function check_db_name($sql, $db_name) {
+function check_db_name($db_name) {
 
-	$rs = exec_query($sql, 'SHOW DATABASES');
+	$rs = exec_query('SHOW DATABASES');
 
 	while (!$rs->EOF) {
 		if ($db_name == $rs->fields['Database']) {
@@ -116,7 +115,7 @@ function check_db_name($sql, $db_name) {
 	return false;
 }
 
-function add_sql_database(&$sql, $user_id) {
+function add_sql_database($user_id) {
 
 	$cfg = iMSCP_Registry::get('config');
 
@@ -129,7 +128,7 @@ function add_sql_database(&$sql, $user_id) {
 		return;
 	}
 
-	$dmn_id = get_user_domain_id($sql, $user_id);
+	$dmn_id = get_user_domain_id($user_id);
 
 	if (isset($_POST['use_dmn_id']) && $_POST['use_dmn_id'] === 'on') {
 
@@ -149,7 +148,7 @@ function add_sql_database(&$sql, $user_id) {
 	}
 
 	// have we such database in the system!?
-	if (check_db_name($sql, $db_name)) {
+	if (check_db_name($db_name)) {
 		set_page_message(tr('Specified database name already exists!'), 'error');
 		return;
 	}
@@ -160,7 +159,7 @@ function add_sql_database(&$sql, $user_id) {
 	}
 
 	$query = 'create database ' . quoteIdentifier($db_name);
-	$rs = exec_query($sql, $query);
+	exec_query($query);
 
 	$query = "
 		INSERT INTO `sql_database`
@@ -169,7 +168,7 @@ function add_sql_database(&$sql, $user_id) {
 			(?, ?)
 	";
 
-	$rs = exec_query($sql, $query, array($dmn_id, $db_name));
+	exec_query($query, array($dmn_id, $db_name));
 
 	update_reseller_c_props(get_reseller_id($dmn_id));
 
@@ -183,7 +182,7 @@ function add_sql_database(&$sql, $user_id) {
 /**
  * check user sql permission
  */
-function check_sql_permissions($sql, $user_id) {
+function check_sql_permissions($user_id) {
 	if (isset($_SESSION['sql_support']) && $_SESSION['sql_support'] == "no") {
 		header("Location: index.php");
 	}
@@ -211,9 +210,9 @@ function check_sql_permissions($sql, $user_id) {
 		$dmn_cgi,
 		$allowbackup,
 		$dmn_dns
-	) = get_domain_default_props($sql, $user_id);
+	) = get_domain_default_props($user_id);
 
-	list($sqld_acc_cnt, $sqlu_acc_cnt) = get_domain_running_sql_acc_cnt($sql, $dmn_id);
+	list($sqld_acc_cnt, $sqlu_acc_cnt) = get_domain_running_sql_acc_cnt($dmn_id);
 
 	if ($dmn_sqld_limit != 0 && $sqld_acc_cnt >= $dmn_sqld_limit) {
 		set_page_message(tr('SQL accounts limit reached!'), 'error');
@@ -232,11 +231,11 @@ $tpl->assign(
 
 // dynamic page data.
 
-check_sql_permissions($sql, $_SESSION['user_id']);
+check_sql_permissions($_SESSION['user_id']);
 
 gen_page_post_data($tpl);
 
-add_sql_database($sql, $_SESSION['user_id']);
+add_sql_database($_SESSION['user_id']);
 
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_manage_sql.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_manage_sql.tpl');

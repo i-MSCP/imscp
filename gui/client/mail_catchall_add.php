@@ -54,7 +54,7 @@ if (isset($_GET['id'])) {
 
 // page functions.
 
-function gen_dynamic_page_data(&$tpl, &$sql, $id) {
+function gen_dynamic_page_data($tpl, $id) {
 
 	global $domain_id;
 	$cfg = iMSCP_Registry::get('config');
@@ -82,7 +82,7 @@ function gen_dynamic_page_data(&$tpl, &$sql, $id) {
 		$dmn_cgi,
 		$allowbackup,
 		$dmn_dns
-	) = get_domain_default_props($sql, $_SESSION['user_id']);
+	) = get_domain_default_props($_SESSION['user_id']);
 
 	$domain_id = $dmn_id;
 
@@ -90,7 +90,7 @@ function gen_dynamic_page_data(&$tpl, &$sql, $id) {
 		$dmn_mail_acc_cnt,
 		$sub_mail_acc_cnt,
 		$als_mail_acc_cnt,
-		$alssub_mail_acc_cnt) = get_domain_running_mail_acc_cnt($sql, $dmn_id);
+		$alssub_mail_acc_cnt) = get_domain_running_mail_acc_cnt($dmn_id);
 
 	if ($dmn_mailacc_limit != 0 && $mail_acc_cnt >= $dmn_mailacc_limit) {
 		set_page_message(tr('Mail accounts limit reached!'), 'error');
@@ -122,7 +122,7 @@ function gen_dynamic_page_data(&$tpl, &$sql, $id) {
 					t1.`mail_type` DESC, t1.`mail_acc`
 			";
 
-			$rs = exec_query($sql, $query, array($item_id, $item_id, $ok_status));
+			$rs = exec_query($query, array($item_id, $item_id, $ok_status));
 			if ($rs->recordCount() == 0) {
 				$tpl->assign(array('FORWARD_MAIL' => $cfg->HTML_CHECKED, 'MAIL_LIST' => '', 'DEFAULT' => 'forward'));
 			} else {
@@ -164,7 +164,7 @@ function gen_dynamic_page_data(&$tpl, &$sql, $id) {
 					t1.`mail_type` DESC, t1.`mail_acc`
 			";
 
-			$rs = exec_query($sql, $query, array($ok_status, $item_id));
+			$rs = exec_query($query, array($ok_status, $item_id));
 
 			if ($rs->recordCount() == 0) {
 				$tpl->assign(array('FORWARD_MAIL' => $cfg->HTML_CHECKED, 'MAIL_LIST' => '', 'DEFAULT' => 'forward'));
@@ -210,7 +210,7 @@ function gen_dynamic_page_data(&$tpl, &$sql, $id) {
 					t1.`mail_type` DESC, t1.`mail_acc`
 			";
 
-			$rs = exec_query($sql, $query, array($ok_status, $item_id));
+			$rs = exec_query($query, array($ok_status, $item_id));
 
 			if ($rs->recordCount() == 0) {
 				$tpl->assign(array('FORWARD_MAIL' => $cfg->HTML_CHECKED, 'MAIL_LIST' => '', 'DEFAULT' => 'forward'));
@@ -256,7 +256,7 @@ function gen_dynamic_page_data(&$tpl, &$sql, $id) {
 					t1.`mail_type` DESC, t1.`mail_acc`
 			";
 
-			$rs = exec_query($sql, $query, array($ok_status, $item_id));
+			$rs = exec_query($query, array($ok_status, $item_id));
 
 			if ($rs->recordCount() == 0) {
 				$tpl->assign(array('FORWARD_MAIL' => $cfg->HTML_CHECKED, 'MAIL_LIST' => '', 'DEFAULT' => 'forward'));
@@ -286,7 +286,7 @@ function gen_dynamic_page_data(&$tpl, &$sql, $id) {
 	}
 }
 
-function create_catchall_mail_account(&$sql, $id) {
+function create_catchall_mail_account($id) {
 
 	$cfg = iMSCP_Registry::get('config');
 
@@ -327,7 +327,7 @@ function create_catchall_mail_account(&$sql, $id) {
 						`mail_id` = ?
 				";
 
-				$rs = exec_query($sql, $query, $mail_id);
+				$rs = exec_query($query, $mail_id);
 				$domain_id = $rs->fields['domain_id'];
 				$sub_id = $rs->fields['sub_id'];
 				$status = $cfg->ITEM_ADD_STATUS;
@@ -351,8 +351,7 @@ function create_catchall_mail_account(&$sql, $id) {
 					VALUES
 						(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 				";
-
-				$rs = exec_query($sql, $query, array($mail_acc, '_no_', '_no_', $domain_id, $mail_type, $sub_id, $status, '_no_', NULL, $mail_addr));
+				exec_query($query, array($mail_acc, '_no_', '_no_', $domain_id, $mail_type, $sub_id, $status, '_no_', NULL, $mail_addr));
 
 				send_request();
 				write_log($_SESSION['user_logged'] . ": adds new email catch all");
@@ -372,13 +371,13 @@ function create_catchall_mail_account(&$sql, $id) {
 				$sub_id = '0';
 				$domain_id = $item_id;
 				$query = "SELECT `domain_name` FROM `domain` WHERE `domain_id` = ?";
-				$rs = exec_query($sql, $query, $domain_id);
+				$rs = exec_query($query, $domain_id);
 				$mail_addr = '@' . $rs->fields['domain_name'];
 			} elseif ($item_type === 'alias') {
 				$mail_type = 'alias_catchall';
 				$sub_id = $item_id;
 				$query = "SELECT `domain_aliasses`.`domain_id`, `alias_name` FROM `domain_aliasses` WHERE `alias_id` = ?";
-				$rs = exec_query($sql, $query, $item_id);
+				$rs = exec_query($query, $item_id);
 				$domain_id = $rs->fields['domain_id'];
 				$mail_addr = '@' . $rs->fields['alias_name'];
 			} elseif ($item_type === 'subdom') {
@@ -386,7 +385,7 @@ function create_catchall_mail_account(&$sql, $id) {
 				$sub_id = $item_id;
 				$query = "SELECT `subdomain`.`domain_id`, `subdomain_name`, `domain_name` FROM `subdomain`, `domain`
 					WHERE `subdomain_id` = ? AND `domain`.`domain_id` = `subdomain`.`domain_id`";
-				$rs = exec_query($sql, $query, $item_id);
+				$rs = exec_query($query, $item_id);
 				$domain_id = $rs->fields['domain_id'];
 				$mail_addr = '@' . $rs->fields['subdomain_name'] . '.' . $rs->fields['domain_name'];
 			} elseif ($item_type === 'alssub') {
@@ -405,7 +404,7 @@ function create_catchall_mail_account(&$sql, $id) {
 					AND
 						t1.`alias_id` = t2.`alias_id`
 					";
-				$rs = exec_query($sql, $query, $item_id);
+				$rs = exec_query($query, $item_id);
 				$domain_id = $rs->fields['domain_id'];
 				$mail_addr = '@' . $rs->fields['subdomain_alias_name'] . '.' . $rs->fields['alias_name'];
 			}
@@ -443,8 +442,7 @@ function create_catchall_mail_account(&$sql, $id) {
 				VALUES
 					(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 			";
-
-			$rs = exec_query($sql, $query, array(implode(',', $mail_acc), '_no_', '_no_', $domain_id, $mail_type, $sub_id, $status, '_no_', NULL, $mail_addr));
+            exec_query($query, array(implode(',', $mail_acc), '_no_', '_no_', $domain_id, $mail_type, $sub_id, $status, '_no_', NULL, $mail_addr));
 
 			send_request();
 			write_log($_SESSION['user_logged'] . ": adds new email catch all ");
@@ -469,8 +467,8 @@ $tpl->assign(
 
 // dynamic page data.
 
-gen_dynamic_page_data($tpl, $sql, $item_id);
-create_catchall_mail_account($sql, $item_id);
+gen_dynamic_page_data($tpl, $item_id);
+create_catchall_mail_account($item_id);
 $tpl->assign('ID', $item_id);
 
 // static page messages.

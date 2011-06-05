@@ -126,11 +126,10 @@ unsetMessages();
 function gen_editalias_page(&$tpl, $edit_id) {
 
 	$cfg = iMSCP_Registry::get('config');
-	$sql = iMSCP_Registry::get('db');
 
 	// Get data from sql
-	list($domain_id) = get_domain_default_props($sql, $_SESSION['user_id']);
-	$res = exec_query($sql, "SELECT * FROM `domain_aliasses` WHERE `alias_id` = ? AND `domain_id` = ?", array($edit_id, $domain_id));
+	list($domain_id) = get_domain_default_props($_SESSION['user_id']);
+	$res = exec_query("SELECT * FROM `domain_aliasses` WHERE `alias_id` = ? AND `domain_id` = ?", array($edit_id, $domain_id));
 
 	if ($res->recordCount() <= 0) {
 		$_SESSION['aledit'] = '_no_';
@@ -138,7 +137,7 @@ function gen_editalias_page(&$tpl, $edit_id) {
 	}
 	$data = $res->fetchRow();
 	// Get IP data
-	$ipres = exec_query($sql, "SELECT * FROM `server_ips` WHERE `ip_id` = ?", $data['alias_ip_id']);
+	$ipres = exec_query("SELECT * FROM `server_ips` WHERE `ip_id` = ?", $data['alias_ip_id']);
 	$ipdat = $ipres->fetchRow();
 	$ip_data = $ipdat['ip_number'] . ' (' . $ipdat['ip_alias'] . ')';
 
@@ -198,7 +197,6 @@ function gen_editalias_page(&$tpl, $edit_id) {
 function check_fwd_data(&$tpl, $alias_id) {
 
 	$cfg = iMSCP_Registry::get('config');
-	$sql = iMSCP_Registry::get('db');
 
 	$forward_url = strtolower(clean_input($_POST['forward']));
 	$status = $_POST['status'];
@@ -257,7 +255,7 @@ function check_fwd_data(&$tpl, $alias_id) {
 			WHERE
 				`alias_id` = ?
 		";
-		exec_query($sql, $query, array($forward_url, $cfg->ITEM_CHANGE_STATUS, $alias_id));
+		exec_query($query, array($forward_url, $cfg->ITEM_CHANGE_STATUS, $alias_id));
 
 		$query = "
 			UPDATE
@@ -267,13 +265,13 @@ function check_fwd_data(&$tpl, $alias_id) {
 			WHERE
 				`alias_id` = ?
 		";
-		exec_query($sql, $query, array($cfg->ITEM_CHANGE_STATUS, $alias_id));
+		exec_query($query, array($cfg->ITEM_CHANGE_STATUS, $alias_id));
 
 		send_request();
 
 		$admin_login = $_SESSION['user_logged'];
 
-		$rs = exec_query( $sql, "SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id` = ?", $alias_id );
+		$rs = exec_query("SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id` = ?", $alias_id );
 
 		write_log("$admin_login: change domain alias forward: " . $rs->fields['alias_name']);
 		unset($_SESSION['edit_ID']);

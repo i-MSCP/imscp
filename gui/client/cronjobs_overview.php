@@ -60,7 +60,7 @@ $tpl->assign(
 /**
  * @todo implement this function
  */
-function gen_cron_jobs(&$tpl, &$sql, $user_id) {
+function gen_cron_jobs($tpl, $user_id) {
 } // End of gen_cron_job();
 
 /*
@@ -80,7 +80,7 @@ gen_logged_from($tpl);
 
 check_permissions($tpl);
 
-gen_cron_jobs($tpl, $sql, $_SESSION['user_id']);
+gen_cron_jobs($tpl, $_SESSION['user_id']);
 
 $tpl->assign(
 	array(

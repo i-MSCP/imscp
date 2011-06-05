@@ -87,8 +87,6 @@ function gen_page_post_data(&$tpl, $current_month, $current_year) {
 
 function get_domain_trafic($from, $to, $domain_id) {
 
-	$sql = iMSCP_Registry::get('db');
-
 	$query = "
 		SELECT
 			IFNULL(SUM(`dtraff_web`), 0) AS web_dr,
@@ -105,7 +103,7 @@ function get_domain_trafic($from, $to, $domain_id) {
 			`dtraff_time` <= ?
 	";
 
-	$rs = exec_query($sql, $query, array($domain_id, $from, $to));
+	$rs = exec_query($query, array($domain_id, $from, $to));
 
 	if ($rs->recordCount() == 0) {
 		return array(0, 0, 0, 0);
@@ -122,7 +120,7 @@ function get_domain_trafic($from, $to, $domain_id) {
 /**
  * @todo Check the out commented code at the end of this function, can we remove it?
  */
-function gen_dmn_traff_list(&$tpl, &$sql, $month, $year, $user_id) {
+function gen_dmn_traff_list($tpl, $month, $year, $user_id) {
 
 	global $web_trf, $ftp_trf, $smtp_trf, $pop_trf,
 	$sum_web, $sum_ftp, $sum_mail, $sum_pop;
@@ -139,7 +137,7 @@ function gen_dmn_traff_list(&$tpl, &$sql, $month, $year, $user_id) {
 			`domain_admin_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, $domain_admin_id);
+	$rs = exec_query($query, $domain_admin_id);
 	$domain_id = $rs->fields('domain_id');
 	$fdofmnth = mktime(0, 0, 0, $month, 1, $year);
 	$ldofmnth = mktime(1, 0, 0, $month + 1, 0, $year);
@@ -179,7 +177,7 @@ function gen_dmn_traff_list(&$tpl, &$sql, $month, $year, $user_id) {
 				`dtraff_time` <= ?
 		";
 
-		$rs = exec_query($sql, $query, array($domain_id, $ftm, $ltm));
+		$rs = exec_query($query, array($domain_id, $ftm, $ltm));
 
 		$has_data = false;
 		list($web_trf,
@@ -227,86 +225,6 @@ function gen_dmn_traff_list(&$tpl, &$sql, $month, $year, $user_id) {
 		$tpl->parse('TRAFF_ITEM', '.traff_item');
 		$counter++;
 	}
-
-	/*
-	$start_date = mktime(0,0,0, $month, 1, $year);
-	$end_date = mktime(0,0,0, $month + 1, 1, $year);
-	$dmn_id = get_user_domain_id($sql, $user_id);
-	$query = "
-		SELECT
-			`dtraff_time` AS traff_date,
-			`dtraff_web` AS web_traff,
-			`dtraff_ftp` AS ftp_traff,
-			`dtraff_mail` AS smtp_traff,
-			`dtraff_pop` AS pop_traff,
-			(`dtraff_web` + `dtraff_ftp` + `dtraff_mail` + `dtraff_pop`) AS sum_traff
-		FROM
-			`domain_traffic`
-		WHERE
-			`domain_id` = '$dmn_id'
-		AND
-			`dtraff_time` >= '$start_date'
-		AND
-			`dtraff_time` < '$end_date'
-		ORDER BY
-			`dtraff_time`
-	";
-
-	$rs = execute_query($sql, $query);
-
-	if ($rs->RecordCount() == 0) {
-
-		$tpl->assign('TRAFF_LIST', '');
-
-		set_page_message(tr('Traffic accounting for the selected month is missing!'));
-
-	} else {
-
-		$web_all = 0; $ftp_all = 0; $smtp_all = 0; $pop_all = 0; $sum_all = 0; $i = 1;
-
-		while (!$rs->EOF) {
-
-			$tpl->assign(
-				array(
-					'DATE' => date("d.m.Y, G:i", $rs->fields['traff_date']),
-					'WEB_TRAFF' => sizeit($rs->fields['web_traff']),
-					'FTP_TRAFF' => sizeit($rs->fields['ftp_traff']),
-					'SMTP_TRAFF' => sizeit($rs->fields['smtp_traff']),
-					'POP_TRAFF' => sizeit($rs->fields['pop_traff']),
-					'SUM_TRAFF' => sizeit($rs->fields['sum_traff']),
-					'CONTENT' => ($i % 2 == 0) ? 'content3' : 'content2'
-				)
-			);
-
-			$tpl->parse('TRAFF_ITEM', '.traff_item');
-
-			$web_all += $rs->fields['web_traff'];
-
-			$ftp_all += $rs->fields['ftp_traff'];
-
-			$smtp_all += $rs->fields['smtp_traff'];
-
-			$pop_all += $rs->fields['pop_traff'];
-
-			$sum_all += $rs->fields['sum_traff'];
-
-			$rs->MoveNext(); $i++;
-
-		}
-
-		$tpl->assign(
-			array(
-				'WEB_ALL' => sizeit($web_all),
-				'FTP_ALL' => sizeit($ftp_all),
-				'SMTP_ALL' => sizeit($smtp_all),
-				'POP_ALL' => sizeit($pop_all),
-				'SUM_ALL' => sizeit($sum_all)
-			)
-		);
-
-	}
-*/
-
 }
 
 // common page data.
@@ -327,7 +245,7 @@ $current_month = date("m", time());
 $current_year = date("Y", time());
 
 list($current_month, $current_year) = gen_page_post_data($tpl, $current_month, $current_year);
-gen_dmn_traff_list($tpl, $sql, $current_month, $current_year, $_SESSION['user_id']);
+gen_dmn_traff_list($tpl, $current_month, $current_year, $_SESSION['user_id']);
 
 // static page messages.
 

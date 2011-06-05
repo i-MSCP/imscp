@@ -1399,11 +1399,10 @@ function send_add_user_auto_msg($admin_id, $uname, $upass, $uemail, $ufname,
  * Returns client software permissions.
  *
  * @param  iMSCP_pTemplate $tpl Template engine
- * @param  iMSCP_Database $sql Database instance
  * @param  $user_id User unique identifier
  * @return void
  */
-function get_client_software_permission($tpl, $sql, $user_id)
+function get_client_software_permission($tpl, $user_id)
 {
     $query = "
 		SELECT
@@ -1415,7 +1414,7 @@ function get_client_software_permission($tpl, $sql, $user_id)
 			`domain_admin_id` = ?
 		;
 	";
-    $rs = exec_query($sql, $query, array($user_id));
+    $rs = exec_query($query, array($user_id));
 
     if ($rs->fields('domain_software_allowed') == 'yes' && $rs->fields('domain_ftpacc_limit') != "-1") {
         $tpl->assign(array(

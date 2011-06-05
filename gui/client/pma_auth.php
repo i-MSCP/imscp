@@ -52,11 +52,6 @@
  */
 function _getLoginCredentials($dbUserId)
 {
-	/**
-	 * @var $db iMSCP_Database_ResultSet
-	 */
-	$db = iMSCP_Registry::get('db');
-
 	// @todo Should be optimized
 	$query = "
 		SELECT
@@ -74,7 +69,7 @@ function _getLoginCredentials($dbUserId)
 		;
 	";
 
-	$stmt = exec_query($db, $query, array($dbUserId, $_SESSION['user_id']));
+	$stmt = exec_query($query, array($dbUserId, $_SESSION['user_id']));
 
 	if($stmt->rowCount() == 1) {
 		return array(

@@ -45,7 +45,7 @@ $tpl->define_dynamic('logged_from', 'page');
 
 // page functions.
 
-function send_backup_restore_request(&$sql, $user_id) {
+function send_backup_restore_request($user_id) {
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'bk_restore') {
 
 		$query = "
@@ -57,7 +57,7 @@ function send_backup_restore_request(&$sql, $user_id) {
 				`domain_admin_id` = ?
 		";
 
-		$rs = exec_query($sql, $query, $user_id);
+		exec_query($query, $user_id);
 
 		send_request();
 		write_log($_SESSION['user_logged'] . ": restore backup files.");
@@ -78,7 +78,7 @@ $tpl->assign(
 
 // dynamic page data.
 
-send_backup_restore_request($sql, $_SESSION['user_id']);
+send_backup_restore_request($_SESSION['user_id']);
 
 // static page messages.
 

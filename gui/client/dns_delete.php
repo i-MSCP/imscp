@@ -36,7 +36,7 @@ if (isset($_GET['edit_id']) && $_GET['edit_id'] !== '') {
 	$cfg = iMSCP_Registry::get('config');
 
 	$dns_id = (int) $_GET['edit_id'];
-	$dmn_id = get_user_domain_id($sql, $_SESSION['user_id']);
+	$dmn_id = get_user_domain_id($_SESSION['user_id']);
 
 	$query = "
 		SELECT
@@ -58,7 +58,7 @@ if (isset($_GET['edit_id']) && $_GET['edit_id'] !== '') {
 		;
 	";
 
-	$rs = exec_query($sql, $query, array($dmn_id, $dns_id));
+	$rs = exec_query($query, array($dmn_id, $dns_id));
 	$dom_name = $rs->fields['domain_name'];
 	$dns_name = $rs->fields['domain_dns'];
 	$id = $rs->fields['id'];
@@ -82,7 +82,7 @@ if (isset($_GET['edit_id']) && $_GET['edit_id'] !== '') {
 		;
 	";
 
-	$rs = exec_query($sql, $query, $dns_id);
+	$rs = exec_query($query, $dns_id);
 
 	if (empty($alias_id)) {
 
@@ -96,7 +96,7 @@ if (isset($_GET['edit_id']) && $_GET['edit_id'] !== '') {
    			;
   		";
 
-		exec_query($sql, $query, array($cfg->ITEM_DNSCHANGE_STATUS, $dmn_id));
+		exec_query($query, array($cfg->ITEM_DNSCHANGE_STATUS, $dmn_id));
 
 	} else {
 
@@ -113,7 +113,7 @@ if (isset($_GET['edit_id']) && $_GET['edit_id'] !== '') {
 		";
 
 		exec_query(
-			$sql, $query,
+			$query,
 			array($cfg->ITEM_DNSCHANGE_STATUS, $dmn_id, $alias_id)
 		);
 	}

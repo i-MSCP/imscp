@@ -48,7 +48,7 @@ $tpl->define_dynamic('table_list', 'page');
 
 // page functions.
 
-function gen_page_ftp_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
+function gen_page_ftp_list($tpl, $dmn_id, $dmn_name) {
 	$query = "
 		SELECT
 			`gid`,
@@ -59,7 +59,7 @@ function gen_page_ftp_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 			`groupname` = ?
 	";
 
-	$rs = exec_query($sql, $query, $dmn_name);
+	$rs = exec_query($query, $dmn_name);
 
 	if ($rs->recordCount() == 0) {
 		$tpl->assign(
@@ -98,7 +98,7 @@ function gen_page_ftp_list(&$tpl, &$sql, $dmn_id, $dmn_name) {
 	}
 }
 
-function gen_page_lists(&$tpl, &$sql, $user_id) {
+function gen_page_lists($tpl, $user_id) {
 
 	list($dmn_id,
 		$dmn_name,
@@ -123,9 +123,9 @@ function gen_page_lists(&$tpl, &$sql, $user_id) {
 		$dmn_cgi,
 		$allowbackup,
 		$dmn_dns
-	) = get_domain_default_props($sql, $user_id);
+	) = get_domain_default_props($user_id);
 
-	gen_page_ftp_list($tpl, $sql, $dmn_id, $dmn_name);
+	gen_page_ftp_list($tpl, $dmn_id, $dmn_name);
 	// return $total_mails;
 }
 
@@ -144,7 +144,7 @@ $tpl->assign(
 // dynamic page data.
 
 
-gen_page_lists($tpl, $sql, $_SESSION['user_id']);
+gen_page_lists($tpl, $_SESSION['user_id']);
 
 // static page messages.
 

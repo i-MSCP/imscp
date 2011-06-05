@@ -68,7 +68,7 @@ function check_update_current_value($curr, $new) {
 	return $result;
 }
 
-function gen_hp(&$tpl, &$sql, $user_id) {
+function gen_hp($tpl, $user_id) {
 
 	$cfg = iMSCP_Registry::get('config');
 
@@ -82,7 +82,7 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 			`domain_admin_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, $user_id);
+	$rs = exec_query($query, $user_id);
 	$domain_id = $rs->fields['domain_id'];
 
 	// get current domain settings
@@ -95,7 +95,7 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 			`domain_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, $domain_id);
+	$rs = exec_query($query, $domain_id);
 	$current = $rs->fetchRow();
 
 	$availabe_order = 0;
@@ -112,7 +112,7 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 			`status` <> ?
 	";
 
-	$rs = exec_query($sql, $query, array($user_id, 'added'));
+	$rs = exec_query($query, array($user_id, 'added'));
 
 	if ($rs->recordCount() > 0) {
 		$availabe_order = 1;
@@ -127,7 +127,7 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 				`id` = ?
 		";
 
-		$rs = exec_query($sql, $query, $availabe_hp_id);
+		$rs = exec_query($query, $availabe_hp_id);
 		$count = 2;
 		$purchase_text = tr('Cancel order');
 		$purchase_link = 'delete_id';
@@ -152,7 +152,7 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 					t1.`name`
 			";
 
-			$rs = exec_query($sql, $query, 'admin');
+			$rs = exec_query($query, 'admin');
 
 			$count = $rs->recordCount();
 			$count++;
@@ -179,8 +179,8 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 					`status` = '1'
 			";
 
-			$cnt = exec_query($sql, $count_query, $_SESSION['user_created_by']);
-			$rs = exec_query($sql, $query, $_SESSION['user_created_by']);
+			$cnt = exec_query($count_query, $_SESSION['user_created_by']);
+			$rs = exec_query($query, $_SESSION['user_created_by']);
 			$count = $cnt->fields['cnum'] + 1;
 		}
 
@@ -294,7 +294,7 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 	
 			$traffic_usage = tr('Traffic limit') . ": " . translate_limit_value($hp_traff, true);
 	
-			$curr_value = get_domain_running_als_cnt($sql, $domain_id);
+			$curr_value = get_domain_running_als_cnt($domain_id);
 	
 			if (!check_update_current_value($curr_value, $hp_als)) {
 				$error_msgs[] = tr("You have more aliases in use than the new hosting plan limits.");
@@ -302,7 +302,7 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 	
 			$details .= tr('Aliases') . ": " . translate_limit_value($hp_als) . "<br />";
 	
-			$curr_value = get_domain_running_sub_cnt($sql, $domain_id);
+			$curr_value = get_domain_running_sub_cnt($domain_id);
 	
 			if (!check_update_current_value($curr_value, $hp_sub)) {
 				$error_msgs[] = tr("You have more subdomains in use than the new hosting plan limits.");
@@ -310,7 +310,7 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 	
 			$details .= tr('Subdomains') . ": " . translate_limit_value($hp_sub) . "<br />";
 	
-			$curr_value = get_domain_running_mail_acc_cnt($sql, $domain_id);
+			$curr_value = get_domain_running_mail_acc_cnt($domain_id);
 	
 			if (!check_update_current_value($curr_value[0], $hp_mail)) {
 				$error_msgs[] = tr("You have more Email addresses in use than the new hosting plan limits.");
@@ -318,7 +318,7 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 	
 			$details .= tr('Emails') . ": " . translate_limit_value($hp_mail) . "<br />";
 	
-			$curr_value = get_domain_running_ftp_acc_cnt($sql, $domain_id);
+			$curr_value = get_domain_running_ftp_acc_cnt($domain_id);
 	
 			if (!check_update_current_value($curr_value[0], $hp_ftp)) {
 				$error_msgs[] = tr("You have more FTP accounts in use than the new hosting plan limits.");
@@ -326,7 +326,7 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 	
 			$details .= tr('FTPs') . ": " . translate_limit_value($hp_ftp) . "<br />";
 	
-			$curr_value = get_domain_running_sqld_acc_cnt($sql, $domain_id);
+			$curr_value = get_domain_running_sqld_acc_cnt($domain_id);
 	
 			if (!check_update_current_value($curr_value, $hp_sql_db)) {
 				$error_msgs[] = tr("You have more SQL databases in use than the new hosting plan limits.");
@@ -334,7 +334,7 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 	
 			$details .= tr('SQL Databases') . ": " . translate_limit_value($hp_sql_db) . "<br />";
 	
-			$curr_value = get_domain_running_sqlu_acc_cnt($sql, $domain_id);
+			$curr_value = get_domain_running_sqlu_acc_cnt($domain_id);
 	
 			if (!check_update_current_value($curr_value, $hp_sql_user)) {
 				$error_msgs[] = tr("You have more SQL database users in use than the new hosting plan limits.");
@@ -385,7 +385,7 @@ function gen_hp(&$tpl, &$sql, $user_id) {
 					`domain_software_allowed` = ?
 			";
 	
-			$check = exec_query($sql, $check_query,
+			$check = exec_query($check_query,
 				array(
 					$_SESSION['user_id'],
 					$hp_mail, $hp_ftp, $hp_traff,
@@ -468,7 +468,7 @@ $tpl->assign(
 /**
  * @todo the 2nd query has 2 identical tables in FROM-clause, is this OK?
  */
-function add_new_order(&$tpl, &$sql, $order_id, $user_id) {
+function add_new_order($tpl,$order_id, $user_id) {
 
 	$cfg = iMSCP_Registry::get('config');
 
@@ -482,7 +482,7 @@ function add_new_order(&$tpl, &$sql, $order_id, $user_id) {
 			`domain_admin_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, $user_id);
+	$rs = exec_query($query, $user_id);
 	$domain_id = $rs->fields['domain_id'];
 
 	// get current domain settings
@@ -495,7 +495,7 @@ function add_new_order(&$tpl, &$sql, $order_id, $user_id) {
 			`domain_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, $domain_id);
+	$rs = exec_query($query, $domain_id);
 	$current = $rs->fetchRow();
 
 	$query = "
@@ -508,7 +508,7 @@ function add_new_order(&$tpl, &$sql, $order_id, $user_id) {
 	";
 
 	$error_msgs = array();
-	$rs = exec_query($sql, $query, $order_id);
+	$rs = exec_query($query, $order_id);
 	list($hp_php, $hp_cgi, $hp_sub, $hp_als, $hp_mail, $hp_ftp, $hp_sql_db, $hp_sql_user, $hp_traff, $hp_disk, $hp_backup, $hp_dns, $hp_allowsoftware) = explode(";", $rs->fields['props']);
 
 	$traffic = get_user_traffic($domain_id);
@@ -518,32 +518,32 @@ function add_new_order(&$tpl, &$sql, $order_id, $user_id) {
 		$error_msgs[] = tr("You have more disk space in use than the new hosting plan limits.");
 	}
 
-	$curr_value = get_domain_running_als_cnt($sql, $domain_id);
+	$curr_value = get_domain_running_als_cnt($domain_id);
 	if (!check_update_current_value($curr_value, $hp_als)) {
 		$error_msgs[] = tr("You have more aliases in use than the new hosting plan limits.");
 	}
 
-	$curr_value = get_domain_running_sub_cnt($sql, $domain_id);
+	$curr_value = get_domain_running_sub_cnt($domain_id);
 	if (!check_update_current_value($curr_value, $hp_sub)) {
 		$error_msgs[] = tr("You have more subdomains in use than the new hosting plan limits.");
 	}
 
-	$curr_value = get_domain_running_mail_acc_cnt($sql, $domain_id);
+	$curr_value = get_domain_running_mail_acc_cnt($domain_id);
 	if (!check_update_current_value($curr_value[0], $hp_mail)) {
 		$error_msgs[] = tr("You have more e-mail addresses in use than the new hosting plan limits.");
 	}
 
-	$curr_value = get_domain_running_ftp_acc_cnt($sql, $domain_id);
+	$curr_value = get_domain_running_ftp_acc_cnt($domain_id);
 	if (!check_update_current_value($curr_value[0], $hp_ftp)) {
 		$error_msgs[] = tr("You have more FTP accounts in use than the new hosting plan limits.");
 	}
 
-	$curr_value = get_domain_running_sqld_acc_cnt($sql, $domain_id);
+	$curr_value = get_domain_running_sqld_acc_cnt($domain_id);
 	if (!check_update_current_value($curr_value, $hp_sql_db)) {
 		$error_msgs[] = tr("You have more SQL databases in use than the new hosting plan limits.");
 	}
 
-	$curr_value = get_domain_running_sqlu_acc_cnt($sql, $domain_id);
+	$curr_value = get_domain_running_sqlu_acc_cnt($domain_id);
 	if (!check_update_current_value($curr_value, $hp_sql_user)) {
 		$error_msgs[] = tr("You have more SQL database users in use than the new hosting plan limits.");
 	}
@@ -579,7 +579,7 @@ function add_new_order(&$tpl, &$sql, $order_id, $user_id) {
 			(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 	";
 
-	$rs = exec_query($sql, $query, array(
+	exec_query($query, array(
 		$_SESSION['user_created_by'], $order_id, $date, $_SESSION['user_logged'],
 		$user_id, '', '', '', '', '', '', '', '', '', '', '', '', $status
 	));
@@ -598,7 +598,7 @@ function add_new_order(&$tpl, &$sql, $order_id, $user_id) {
 			t2.`admin_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($_SESSION['user_created_by'], $_SESSION['user_id']));
+	$rs = exec_query($query, array($_SESSION['user_created_by'], $_SESSION['user_id']));
 
 	$to = $rs->fields['reseller_mail'];
 	$from = $rs->fields['user_mail'];
@@ -617,7 +617,7 @@ function add_new_order(&$tpl, &$sql, $order_id, $user_id) {
 	$mail_result = mail($to, $subject, $message, $headers);
 }
 
-function del_order(&$tpl, &$sql, $order_id, $user_id) {
+function del_order($tpl, $order_id, $user_id) {
 
 	$query = "
 		DELETE FROM
@@ -628,7 +628,7 @@ function del_order(&$tpl, &$sql, $order_id, $user_id) {
 			`customer_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($_SESSION['user_created_by'], $user_id));
+	exec_query($query, array($_SESSION['user_created_by'], $user_id));
 	set_page_message(tr('Your request for hosting pack update was removed successfully'), 'success');
 }
 
@@ -639,14 +639,14 @@ function del_order(&$tpl, &$sql, $order_id, $user_id) {
  */
 
 if (isset($_GET['delete_id']) && is_numeric($_GET['delete_id'])) {
-	del_order($tpl, $sql, $_GET['delete_id'], $_SESSION['user_id']);
+	del_order($tpl, $_GET['delete_id'], $_SESSION['user_id']);
 }
 
 if (isset($_GET['order_id']) && is_numeric($_GET['order_id'])) {
-	add_new_order($tpl, $sql, $_GET['order_id'], $_SESSION['user_id']);
+	add_new_order($tpl, $_GET['order_id'], $_SESSION['user_id']);
 }
 
-gen_hp($tpl, $sql, $_SESSION['user_id']);
+gen_hp($tpl, $_SESSION['user_id']);
 
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_general_information.tpl');
 gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_general_information.tpl');

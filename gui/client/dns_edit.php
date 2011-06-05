@@ -136,11 +136,11 @@ unsetMessages();
 
 // Begin function block
 
-function mysql_get_enum(&$sql, $object, &$default = null) {
+function mysql_get_enum($object, &$default = null) {
 
 	list($table, $col) = explode(".", $object);
 
-	$res = exec_query($sql, "SHOW COLUMNS FROM ".$table." LIKE '".$col."'");
+	$res = exec_query("SHOW COLUMNS FROM ".$table." LIKE '".$col."'");
 	$row = $res->fetchRow();
 	$default = $row['Default'];
 
@@ -226,12 +226,12 @@ function decode_zone_data($data) {
  */
 function gen_editdns_page(&$tpl, $edit_id) {
 
-	global $sql, $DNS_allowed_types;
+	global $DNS_allowed_types;
 	$cfg = iMSCP_Registry::get('config');
 
 	list(
 		$dmn_id, $dmn_name,,,,,,,,,,,,,,,,,,,,,$dmn_dns
-	) = get_domain_default_props($sql, $_SESSION['user_id']);
+	) = get_domain_default_props($_SESSION['user_id']);
 
 	if ($dmn_dns != 'yes') {
 		not_allowed();
@@ -257,7 +257,7 @@ function gen_editdns_page(&$tpl, $edit_id) {
 			AND `alias_status` <> :state
 		";
 
-		$res = exec_query($sql, $query, array('domain_id' => $dmn_id, 'state' => $cfg->ITEM_ORDERED_STATUS));
+		$res = exec_query($query, array('domain_id' => $dmn_id, 'state' => $cfg->ITEM_ORDERED_STATUS));
 		$sel = '';
 		while ($row = $res->fetchRow()) {
 			$sel.= '<option value="' . $row['alias_id'] . '">' .
@@ -273,7 +273,7 @@ function gen_editdns_page(&$tpl, $edit_id) {
 				AND
 					`domain_id` = ?
 			;";
-		$res = exec_query($sql, $query, array($edit_id, $dmn_id));
+		$res = exec_query($query, array($edit_id, $dmn_id));
 		if ($res->recordCount() <= 0)
 		not_allowed();
 		$data = $res->fetchRow();
@@ -291,8 +291,8 @@ function gen_editdns_page(&$tpl, $edit_id) {
 		not_allowed();
 	}
 
-	$dns_type = create_options(array_intersect($DNS_allowed_types, mysql_get_enum($sql, "domain_dns.domain_type")), tryPost('type', $data['domain_type']));
-	$dns_class = create_options(mysql_get_enum($sql, "domain_dns.domain_class"), tryPost('class', $data['domain_class']));
+	$dns_type = create_options(array_intersect($DNS_allowed_types, mysql_get_enum("domain_dns.domain_type")), tryPost('type', $data['domain_type']));
+	$dns_class = create_options(mysql_get_enum("domain_dns.domain_class"), tryPost('class', $data['domain_class']));
 
 	$tpl->assign(
 		array(
@@ -455,7 +455,6 @@ function validate_NAME($domain, &$err) {
 
 function check_fwd_data(&$tpl, $edit_id) {
 
-	global $sql;
 	$cfg = iMSCP_Registry::get('config');
 
 	$add_mode = $edit_id === true;
@@ -469,7 +468,7 @@ function check_fwd_data(&$tpl, $edit_id) {
 	$_class = $_POST['class'];
 	$_type = $_POST['type'];
 
-	list($dmn_id) = get_domain_default_props($sql, $_SESSION['user_id']);
+	list($dmn_id) = get_domain_default_props($_SESSION['user_id']);
 	if ($add_mode) {
 		$query = "
 			SELECT
@@ -494,7 +493,7 @@ function check_fwd_data(&$tpl, $edit_id) {
 			WHERE
 				IFNULL(`tbl`.`alias_id`, 0) = ?
 		";
-		$res = exec_query($sql, $query, array($dmn_id, $dmn_id, $_POST['alias_id']));
+		$res = exec_query($query, array($dmn_id, $dmn_id, $_POST['alias_id']));
 		if ($res->recordCount() <= 0) {
 			not_allowed();
 		}
@@ -503,7 +502,7 @@ function check_fwd_data(&$tpl, $edit_id) {
 		// if no alias is selected, ID is 0 else the real alias_id
 		$alias_id = $alias_id['alias_id'];
 	} else {
-		$res = exec_query($sql, "
+		$res = exec_query("
 		SELECT
 			 domain_dns.*,
 			IFNULL(`domain_aliasses`.`alias_name`,`domain`.`domain_name`) AS `domain_name`
@@ -582,14 +581,16 @@ function check_fwd_data(&$tpl, $edit_id) {
 			";
 
 			$rs = exec_query(
-				$sql, $query,
+				$query,
 				array($dmn_id, $alias_id, $_dns, $_class, $_type, $_text),
 				false
 			);
 
 			# Error because duplicate entry ? (SQLSTATE 23000)
 			if($rs === false) {
-				if($sql->getLastErrorCode() == 23000) {
+                /** @var $db iMSCP_Database */
+                $db = iMSCP_Registry::get('db');
+				if($db->getLastErrorCode() == 23000) {
 					$tpl->assign(
 						'MESSAGE', tr('Error: DNS record already exist!')
 					);
@@ -598,7 +599,7 @@ function check_fwd_data(&$tpl, $edit_id) {
 					return false;
 				} else { # Another error ? Throw exception
 					throw new iMSCP_Exception_Database(
-						$sql->getLastErrorMessage() . " - Query: $query"
+						$db->getLastErrorMessage() . " - Query: $query"
 					);
 				}
 			}
@@ -617,7 +618,7 @@ function check_fwd_data(&$tpl, $edit_id) {
 			";
 
 			exec_query(
-				$sql, $query, array($_dns, $_class, $_type, $_text, $edit_id)
+				$query, array($_dns, $_class, $_type, $_text, $edit_id)
 			);
 		}
 
@@ -634,7 +635,7 @@ function check_fwd_data(&$tpl, $edit_id) {
    			";
 
 			exec_query(
-				$sql, $query, array($cfg->ITEM_DNSCHANGE_STATUS, $dmn_id)
+				$query, array($cfg->ITEM_DNSCHANGE_STATUS, $dmn_id)
 			);
 
 		} else {
@@ -650,7 +651,7 @@ function check_fwd_data(&$tpl, $edit_id) {
 			";
 
 			exec_query(
-				$sql, $query,
+				$query,
 				array($cfg->ITEM_DNSCHANGE_STATUS, $dmn_id, $alias_id)
 			);
 		}

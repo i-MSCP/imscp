@@ -53,7 +53,7 @@ $tpl->define_dynamic('logged_from', 'page');
 
 // page functions.
 
-function gen_page_dynamic_data(&$tpl, &$sql, $ftp_acc) {
+function gen_page_dynamic_data($tpl, $ftp_acc) {
 
 	$cfg = iMSCP_Registry::get('config');
 
@@ -66,7 +66,7 @@ function gen_page_dynamic_data(&$tpl, &$sql, $ftp_acc) {
 			`userid` = ?
 	";
 
-	$rs = exec_query($sql, $query, $ftp_acc);
+	$rs = exec_query($query, $ftp_acc);
 
 	$homedir = $rs->fields['homedir'];
 	$domain_ftp = $_SESSION['user_logged'];
@@ -90,13 +90,13 @@ function gen_page_dynamic_data(&$tpl, &$sql, $ftp_acc) {
 	);
 }
 
-function update_ftp_account(&$sql, $ftp_acc, $dmn_name) {
+function update_ftp_account($ftp_acc, $dmn_name) {
 
 	global $other_dir;
 	$cfg = iMSCP_Registry::get('config');
 
 	// Create a virtual filesystem (it's important to use =&!)
-	$vfs = new iMSCP_VirtualFileSystem($dmn_name, $sql);
+	$vfs = new iMSCP_VirtualFileSystem($dmn_name);
 
 	if (isset($_POST['uaction']) && $_POST['uaction'] === 'edit_user') {
 		if (!empty($_POST['pass']) || !empty($_POST['pass_rep'])) {
@@ -142,7 +142,7 @@ function update_ftp_account(&$sql, $ftp_acc, $dmn_name) {
 						`userid` = ?
 				";
 
-				$rs = exec_query($sql, $query, array($pass, $rawpass, $other_dir, $ftp_acc));
+				exec_query($query, array($pass, $rawpass, $other_dir, $ftp_acc));
 			} else {
 				$query = "
 					UPDATE
@@ -153,7 +153,7 @@ function update_ftp_account(&$sql, $ftp_acc, $dmn_name) {
 					WHERE
 						`userid` = ?
 				";
-				$rs = exec_query($sql, $query, array($pass, $rawpass, $ftp_acc));
+				exec_query($query, array($pass, $rawpass, $ftp_acc));
 			}
 
 			write_log($_SESSION['user_logged'] . ": updated FTP " . $ftp_acc . " account data");
@@ -175,7 +175,7 @@ function update_ftp_account(&$sql, $ftp_acc, $dmn_name) {
 				$ftp_home = str_replace('//', '/', $other_dir);
 				// Check for $other_dir existence
 				// Create a virtual filesystem (it's important to use =&!)
-				$vfs = new iMSCP_VirtualFileSystem($dmn_name, $sql);
+				$vfs = new iMSCP_VirtualFileSystem($dmn_name);
 				// Check for directory existence
 				$res = $vfs->exists($other_dir);
 				if (!$res) {
@@ -196,8 +196,8 @@ function update_ftp_account(&$sql, $ftp_acc, $dmn_name) {
 				WHERE
 					`userid` = ?
 			";
+			exec_query($query, array($other_dir, $ftp_acc));
 
-			$rs = exec_query($sql, $query, array($other_dir, $ftp_acc));
 			set_page_message(tr('FTP account data updated!'), 'success');
 			user_goto('ftp_accounts.php');
 		}
@@ -227,7 +227,7 @@ $query = "
 		`domain_admin_id` = ?
 ";
 
-$rs = exec_query($sql, $query, $_SESSION['user_id']);
+$rs = exec_query($query, $_SESSION['user_id']);
 
 $dmn_name = $rs->fields['domain_name'];
 
@@ -236,8 +236,8 @@ if(!check_ftp_perms($ftp_acc)) {
     user_goto('ftp_accounts.php');
 }
 
-gen_page_dynamic_data($tpl, $sql, $ftp_acc);
-update_ftp_account($sql, $ftp_acc, $dmn_name);
+gen_page_dynamic_data($tpl, $ftp_acc);
+update_ftp_account($ftp_acc, $dmn_name);
 
 // static page messages.
 

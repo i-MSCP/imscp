@@ -97,7 +97,7 @@ function gen_page_form_data(&$tpl, $dmn_name, $post_check) {
 	}
 }
 
-function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
+function gen_dmn_als_list($tpl, $dmn_id, $post_check) {
 
 	$cfg = iMSCP_Registry::get('config');
 
@@ -116,7 +116,7 @@ function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 			`alias_name`
 	";
 
-	$rs = exec_query($sql, $query, array($dmn_id, $ok_status));
+	$rs = exec_query($query, array($dmn_id, $ok_status));
 	if ($rs->recordCount() == 0) {
 		$tpl->assign(
 			array(
@@ -167,7 +167,7 @@ function gen_dmn_als_list(&$tpl, &$sql, $dmn_id, $post_check) {
 	}
 }
 
-function gen_dmn_sub_list(&$tpl, &$sql, $dmn_id, $dmn_name, $post_check) {
+function gen_dmn_sub_list($tpl, $dmn_id, $dmn_name, $post_check) {
 
 	$cfg = iMSCP_Registry::get('config');
 
@@ -186,7 +186,7 @@ function gen_dmn_sub_list(&$tpl, &$sql, $dmn_id, $dmn_name, $post_check) {
 			`subdomain_name`
 ";
 
-	$rs = exec_query($sql, $query, array($dmn_id, $ok_status));
+	$rs = exec_query($query, array($dmn_id, $ok_status));
 
 	if ($rs->recordCount() == 0) {
 		$tpl->assign(
@@ -240,7 +240,7 @@ function gen_dmn_sub_list(&$tpl, &$sql, $dmn_id, $dmn_name, $post_check) {
 	}
 }
 
-function gen_dmn_als_sub_list(&$tpl, &$sql, $dmn_id, $post_check) {
+function gen_dmn_als_sub_list($tpl, $dmn_id, $post_check) {
 
 	$cfg = iMSCP_Registry::get('config');
 
@@ -262,7 +262,7 @@ function gen_dmn_als_sub_list(&$tpl, &$sql, $dmn_id, $post_check) {
 			t1.`subdomain_alias_name`
 	";
 
-	$rs = exec_query($sql, $query, array($dmn_id, $ok_status));
+	$rs = exec_query($query, array($dmn_id, $ok_status));
 
 	if ($rs->recordCount() == 0) {
 		$tpl->assign(
@@ -316,7 +316,7 @@ function gen_dmn_als_sub_list(&$tpl, &$sql, $dmn_id, $post_check) {
 	}
 }
 
-function schedule_mail_account(&$sql, $domain_id, $dmn_name, $mail_acc) {
+function schedule_mail_account($domain_id, $dmn_name, $mail_acc) {
 
 	$cfg = iMSCP_Registry::get('config');
 
@@ -411,7 +411,7 @@ function schedule_mail_account(&$sql, $domain_id, $dmn_name, $mail_acc) {
 			LEFT (`mail_type`, LOCATE('_', `mail_type`)-1) = ?
 	";
 
-	$rs = exec_query($sql, $check_acc_query, array($mail_acc, $domain_id, $sub_id, $dmn_type));
+	$rs = exec_query($check_acc_query, array($mail_acc, $domain_id, $sub_id, $dmn_type));
 
 	if ($rs->fields['cnt'] > 0) {
 		set_page_message(tr('Mail account already exists!'), 'error');
@@ -441,7 +441,7 @@ function schedule_mail_account(&$sql, $domain_id, $dmn_name, $mail_acc) {
 			(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 	";
 
-	$rs = exec_query($sql, $query, array($mail_acc,
+	exec_query($query, array($mail_acc,
 			$mail_pass,
 			$mail_forward,
 			$domain_id,
@@ -460,7 +460,7 @@ function schedule_mail_account(&$sql, $domain_id, $dmn_name, $mail_acc) {
 	user_goto('mail_accounts.php');
 }
 
-function check_mail_acc_data(&$sql, $dmn_id, $dmn_name) {
+function check_mail_acc_data($dmn_id, $dmn_name) {
 
 	$cfg = iMSCP_Registry::get('config');
 
@@ -556,7 +556,7 @@ function check_mail_acc_data(&$sql, $dmn_id, $dmn_name) {
 			set_page_message(sprintf(tr('%s id is invalid! You cannot add mail accounts!'),$type), 'error');
 			return false;
 		}
-		$rs = exec_query($sql, $query, array($_POST[$id], $dmn_id));
+		$rs = exec_query($query, array($_POST[$id], $dmn_id));
 		if ($rs->fields['name'] == '') {
 			set_page_message(sprintf(tr('%s id is invalid! You cannot add mail accounts!'),$type), 'error');
 			return false;
@@ -569,10 +569,10 @@ function check_mail_acc_data(&$sql, $dmn_id, $dmn_name) {
 		return false;
 	}
 
-	schedule_mail_account($sql, $dmn_id, $dmn_name, $mail_acc);
+	schedule_mail_account($dmn_id, $dmn_name, $mail_acc);
 }
 
-function gen_page_mail_acc_props(&$tpl, &$sql, $user_id) {
+function gen_page_mail_acc_props($tpl, $user_id) {
 	list($dmn_id,
 		$dmn_name,
 		$dmn_gid,
@@ -596,13 +596,13 @@ function gen_page_mail_acc_props(&$tpl, &$sql, $user_id) {
 		$dmn_cgi,
 		$allowbackup,
 		$dmn_dns
-	) = get_domain_default_props($sql, $user_id);
+	) = get_domain_default_props($user_id);
 
 	list($mail_acc_cnt,
 		$dmn_mail_acc_cnt,
 		$sub_mail_acc_cnt,
 		$als_mail_acc_cnt,
-		$alssub_mail_acc_cnt) = get_domain_running_mail_acc_cnt($sql, $dmn_id);
+		$alssub_mail_acc_cnt) = get_domain_running_mail_acc_cnt($dmn_id);
 
 	if ($dmn_mailacc_limit != 0 && $mail_acc_cnt >= $dmn_mailacc_limit) {
 		set_page_message(tr('Mail accounts limit reached!'), 'error');
@@ -610,11 +610,11 @@ function gen_page_mail_acc_props(&$tpl, &$sql, $user_id) {
 	} else {
 		$post_check = isset($_POST['uaction']) ? 'yes' : 'no';
 		gen_page_form_data($tpl, $dmn_name, $post_check);
-		gen_dmn_als_list($tpl, $sql, $dmn_id, $post_check);
-		gen_dmn_sub_list($tpl, $sql, $dmn_id, $dmn_name, $post_check);
-		gen_dmn_als_sub_list($tpl, $sql, $dmn_id, $post_check);
+		gen_dmn_als_list($tpl, $dmn_id, $post_check);
+		gen_dmn_sub_list($tpl, $dmn_id, $dmn_name, $post_check);
+		gen_dmn_als_sub_list($tpl, $dmn_id, $post_check);
 		if (isset($_POST['uaction']) && $_POST['uaction'] === 'add_user') {
-			check_mail_acc_data($sql, $dmn_id, $dmn_name);
+			check_mail_acc_data($dmn_id, $dmn_name);
 		}
 	}
 }
@@ -636,7 +636,7 @@ $tpl->assign(
 
 // dynamic page data.
 
-gen_page_mail_acc_props($tpl, $sql, $_SESSION['user_id']);
+gen_page_mail_acc_props($tpl, $_SESSION['user_id']);
 
 // static page messages.
 

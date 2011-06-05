@@ -60,7 +60,7 @@ $tpl->assign(
 	)
 );
 
-function pedit_user(&$tpl, &$sql, &$dmn_id, &$uuser_id) {
+function pedit_user($tpl, &$dmn_id, &$uuser_id) {
 
 	$cfg = iMSCP_Registry::get('config');
 
@@ -95,7 +95,7 @@ function pedit_user(&$tpl, &$sql, &$dmn_id, &$uuser_id) {
 				AND
 					`id` = ?
 			";
-			$rs = exec_query($sql, $query, array($nadmin_password, $change_status, $dmn_id, $uuser_id,));
+			exec_query($query, array($nadmin_password, $change_status, $dmn_id, $uuser_id,));
 
 			send_request();
 
@@ -109,7 +109,7 @@ function pedit_user(&$tpl, &$sql, &$dmn_id, &$uuser_id) {
 				AND
 					`id` = ?
 			";
-			$rs = exec_query($sql, $query, array($dmn_id, $uuser_id));
+			$rs = exec_query($query, array($dmn_id, $uuser_id));
 			$uname = $rs->fields['uname'];
 
 			$admin_login = $_SESSION['user_logged'];
@@ -142,7 +142,7 @@ gen_logged_from($tpl);
 
 check_permissions($tpl);
 
-$dmn_id = get_user_domain_id($sql, $_SESSION['user_id']);
+$dmn_id = get_user_domain_id($_SESSION['user_id']);
 
 if (isset($_GET['uname'])
 	&& $_GET['uname'] !== ''
@@ -163,7 +163,7 @@ if (isset($_GET['uname'])
 			`id` = '$uuser_id'
 	";
 
-	$rs = execute_query($sql, $query);
+	$rs = execute_query($query);
 
 	if ($rs->recordCount() == 0) {
 		user_goto('protected_user_manage.php');
@@ -194,7 +194,7 @@ if (isset($_GET['uname'])
 			`id` = '$uuser_id'
 	";
 
-	$rs = execute_query($sql, $query);
+	$rs = execute_query($query);
 
 	if ($rs->recordCount() == 0) {
 		user_goto('protected_user_manage.php');
@@ -205,7 +205,7 @@ if (isset($_GET['uname'])
 				'UID'	=> $uuser_id,
 			)
 		);
-		pedit_user($tpl, $sql, $dmn_id, $uuser_id);
+		pedit_user($tpl, $dmn_id, $uuser_id);
 	}
 } else {
 	user_goto('protected_user_manage.php');

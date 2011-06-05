@@ -47,7 +47,7 @@ $tpl->define_dynamic('forward_mail', 'page');
 
 // page functions
 
-function edit_mail_account(&$tpl, &$sql) {
+function edit_mail_account($tpl) {
 
 	$cfg = iMSCP_Registry::get('config');
 
@@ -74,7 +74,7 @@ function edit_mail_account(&$tpl, &$sql) {
 			t2.`domain_name` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($mail_id, $dmn_name));
+	$rs = exec_query($query, array($mail_id, $dmn_name));
 
 	if ($rs->recordCount() == 0) {
 		set_page_message(tr('User does not exist or you do not have permission to access this interface!'), 'error');
@@ -89,56 +89,56 @@ function edit_mail_account(&$tpl, &$sql) {
 		foreach (explode(',', $mail_type_list) as $mail_type) {
 			if ($mail_type == MT_NORMAL_MAIL) {
 				$mtype[] = 1;
-				$res1 = exec_query($sql, "SELECT `domain_name` FROM `domain` WHERE `domain_id` = ?", $domain_id);
+				$res1 = exec_query("SELECT `domain_name` FROM `domain` WHERE `domain_id` = ?", $domain_id);
 				$tmp1 = $res1->fetchRow(0);
 				$maildomain = $tmp1['domain_name'];
 			} else if ($mail_type == MT_NORMAL_FORWARD) {
 				$mtype[] = 4;
-				$res1 = exec_query($sql, "SELECT `domain_name` FROM `domain` WHERE `domain_id` = ?", $domain_id);
+				$res1 = exec_query("SELECT `domain_name` FROM `domain` WHERE `domain_id` = ?", $domain_id);
 				$tmp1 = $res1->fetchRow(0);
 				$maildomain = $tmp1['domain_name'];
 			} else if ($mail_type == MT_ALIAS_MAIL) {
 				$mtype[] = 2;
-				$res1 = exec_query($sql, "SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id` = ?", $sub_id);
+				$res1 = exec_query("SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id` = ?", $sub_id);
 				$tmp1 = $res1->fetchRow(0);
 				$maildomain = $tmp1['alias_name'];
 			} else if ($mail_type == MT_ALIAS_FORWARD) {
 				$mtype[] = 5;
-				$res1 = exec_query($sql, "SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id` = ?", $sub_id);
+				$res1 = exec_query("SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id` = ?", $sub_id);
 				$tmp1 = $res1->fetchRow();
 				$maildomain = $tmp1['alias_name'];
 			} else if ($mail_type == MT_SUBDOM_MAIL) {
 				$mtype[] = 3;
-				$res1 = exec_query($sql, "SELECT `subdomain_name` FROM `subdomain` WHERE `subdomain_id` = ?", $sub_id);
+				$res1 = exec_query("SELECT `subdomain_name` FROM `subdomain` WHERE `subdomain_id` = ?", $sub_id);
 				$tmp1 = $res1->fetchRow();
 				$maildomain = $tmp1['subdomain_name'];
-				$res1 = exec_query($sql, "SELECT `domain_name` FROM `domain` WHERE `domain_id` = ?", $domain_id);
+				$res1 = exec_query("SELECT `domain_name` FROM `domain` WHERE `domain_id` = ?", $domain_id);
 				$tmp1 = $res1->fetchRow(0);
 				$maildomain = $maildomain . "." . $tmp1['domain_name'];
 			} else if ($mail_type == MT_SUBDOM_FORWARD) {
 				$mtype[] = 6;
-				$res1 = exec_query($sql, "SELECT `subdomain_name` FROM `subdomain` WHERE `subdomain_id` = ?", $sub_id);
+				$res1 = exec_query("SELECT `subdomain_name` FROM `subdomain` WHERE `subdomain_id` = ?", $sub_id);
 				$tmp1 = $res1->fetchRow();
 				$maildomain = $tmp1['subdomain_name'];
-				$res1 = exec_query($sql, "SELECT `domain_name` FROM `domain` WHERE `domain_id` = ?", $domain_id);
+				$res1 = exec_query("SELECT `domain_name` FROM `domain` WHERE `domain_id` = ?", $domain_id);
 				$tmp1 = $res1->fetchRow(0);
 				$maildomain = $maildomain . "." . $tmp1['domain_name'];
 			} else if ($mail_type == MT_ALSSUB_MAIL) {
 				$mtype[] = 7;
-				$res1 = exec_query($sql, "SELECT `subdomain_alias_name`, `alias_id` FROM `subdomain_alias` WHERE `subdomain_alias_id` = ?", $sub_id);
+				$res1 = exec_query("SELECT `subdomain_alias_name`, `alias_id` FROM `subdomain_alias` WHERE `subdomain_alias_id` = ?", $sub_id);
 				$tmp1 = $res1->fetchRow();
 				$maildomain = $tmp1['subdomain_alias_name'];
 				$alias_id = $tmp1['alias_id'];
-				$res1 = exec_query($sql, "SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id` = ?", $alias_id);
+				$res1 = exec_query("SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id` = ?", $alias_id);
 				$tmp1 = $res1->fetchRow(0);
 				$maildomain = $maildomain . "." . $tmp1['alias_name'];
 			} else if ($mail_type == MT_ALSSUB_FORWARD) {
 				$mtype[] = 8;
-				$res1 = exec_query($sql, "SELECT `subdomain_alias_name`, `alias_id` FROM `subdomain_alias` WHERE `subdomain_alias_id` = ?", $sub_id);
+				$res1 = exec_query("SELECT `subdomain_alias_name`, `alias_id` FROM `subdomain_alias` WHERE `subdomain_alias_id` = ?", $sub_id);
 				$tmp1 = $res1->fetchRow();
 				$maildomain = $tmp1['subdomain_alias_name'];
 				$alias_id = $tmp1['alias_id'];
-				$res1 = exec_query($sql, "SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id` = ?", $alias_id);
+				$res1 = exec_query("SELECT `alias_name` FROM `domain_aliasses` WHERE `alias_id` = ?", $alias_id);
 				$tmp1 = $res1->fetchRow(0);
 				$maildomain = $maildomain . "." . $tmp1['alias_name'];
 			}
@@ -193,7 +193,7 @@ function edit_mail_account(&$tpl, &$sql) {
 	}
 }
 
-function update_email_pass($sql) {
+function update_email_pass() {
 
 	$cfg = iMSCP_Registry::get('config');
 
@@ -232,13 +232,13 @@ function update_email_pass($sql) {
 		$pass=encrypt_db_password($pass);
 		$status = $cfg->ITEM_CHANGE_STATUS;
 		$query = "UPDATE `mail_users` SET `mail_pass` = ?, `status` = ? WHERE `mail_id` = ?";
-		$rs = exec_query($sql, $query, array($pass, $status, $mail_id));
+		exec_query($query, array($pass, $status, $mail_id));
 		write_log($_SESSION['user_logged'] . ": change mail account password: $mail_account");
 		return true;
 	}
 }
 
-function update_email_forward(&$tpl, &$sql) {
+function update_email_forward($tpl) {
 
 	$cfg = iMSCP_Registry::get('config');
 
@@ -301,15 +301,13 @@ function update_email_forward(&$tpl, &$sql) {
 	$status = $cfg->ITEM_CHANGE_STATUS;
 
 	$query = "UPDATE `mail_users` SET `mail_forward` = ?, `mail_type` = ?, `status` = ? WHERE `mail_id` = ?";
-
-	$rs = exec_query($sql, $query, array($forward_list, $mail_type, $status, $mail_id));
+    exec_query($query, array($forward_list, $mail_type, $status, $mail_id));
 
 	write_log($_SESSION['user_logged'] . ": change mail forward: $mail_account");
 	return true;
 }
 
 // end page functions.
-
 
 $tpl->assign(
 	array(
@@ -322,9 +320,9 @@ $tpl->assign(
 
 // dynamic page data.
 
-edit_mail_account($tpl, $sql);
+edit_mail_account($tpl);
 
-if (update_email_pass($sql) && update_email_forward($tpl, $sql)) {
+if (update_email_pass() && update_email_forward($tpl)) {
 	set_page_message(tr("Mail were updated successfully!"), 'success');
 	send_request();
 	user_goto('mail_accounts.php');

@@ -30,7 +30,7 @@
  *  Functions
  */
 
-function check_software_avail($sql, $software_id, $dmn_created_id) {
+function check_software_avail($software_id, $dmn_created_id) {
 	
 	$check_avail = "
 		SELECT
@@ -42,7 +42,7 @@ function check_software_avail($sql, $software_id, $dmn_created_id) {
 		AND
 			`reseller_id` = ?
 	";
-	$sa = exec_query($sql, $check_avail, array($software_id, $dmn_created_id));
+	$sa = exec_query($check_avail, array($software_id, $dmn_created_id));
 	if ($sa -> recordCount() == 0) {
 		return FALSE;
   	} else {
@@ -50,7 +50,7 @@ function check_software_avail($sql, $software_id, $dmn_created_id) {
   	}
 }
 
-function check_is_installed($tpl, $sql, $dmn_id, $software_id) {
+function check_is_installed($tpl, $dmn_id, $software_id) {
 	
 	$is_installed = "
 		SELECT
@@ -65,7 +65,7 @@ function check_is_installed($tpl, $sql, $dmn_id, $software_id) {
 		AND
 			`software_id` = ?
 	";
-	$is_inst = exec_query($sql, $is_installed, array($dmn_id, $software_id));
+	$is_inst = exec_query($is_installed, array($dmn_id, $software_id));
 	if ($is_inst -> recordCount() == 0) {
 		$tpl -> assign(
 					array(
@@ -92,9 +92,9 @@ function check_is_installed($tpl, $sql, $dmn_id, $software_id) {
 	}
 }
 
-function get_software_props ($tpl, $sql, $dmn_id, $software_id, $dmn_created_id, $dmn_sqld_limit) {
+function get_software_props ($tpl, $dmn_id, $software_id, $dmn_created_id, $dmn_sqld_limit) {
 
-	if (!check_software_avail($sql, $software_id, $dmn_created_id)) {
+	if (!check_software_avail($software_id, $dmn_created_id)) {
 		set_page_message(tr('Software not found!'), 'error');
 		header('Location: software.php');
 		exit;
@@ -115,7 +115,7 @@ function get_software_props ($tpl, $sql, $dmn_id, $software_id, $dmn_created_id,
 			AND
 				`reseller_id` = ?
 		";
-		$rs = exec_query($sql, $software_props, array($software_id, $dmn_created_id));
+		$rs = exec_query($software_props, array($software_id, $dmn_created_id));
 		if ($rs -> fields['software_db'] == 1) {
 			$tpl -> assign('SOFTWARE_DB', tr('yes'));
 			if ($dmn_sqld_limit == '-1') { 
@@ -158,12 +158,12 @@ function get_software_props ($tpl, $sql, $dmn_id, $software_id, $dmn_created_id,
 						'SOFTWARE_DESC' 		=> nl2br(wordwrap($rs -> fields['software_desc'],200, "\n", true))
 					)
 				);
-		check_is_installed($tpl, $sql, $dmn_id, $software_id);
+		check_is_installed($tpl, $dmn_id, $software_id);
 		$tpl -> parse('SOFTWARE_ITEM', 'software_item');
 	}
 }
 
-function gen_page_lists($tpl, $sql, $user_id) {
+function gen_page_lists($tpl, $user_id) {
 	if (!isset($_GET['id']) || $_GET['id'] === '' || !is_numeric($_GET['id'])) {
 		set_page_message(tr('Software not found!'), 'error');
 		header('Location: software.php');
@@ -171,8 +171,8 @@ function gen_page_lists($tpl, $sql, $user_id) {
 	} else {
 		$software_id = $_GET['id'];
 	}
-    list($dmn_id, $dmn_name,,,$dmn_created_id,,,,,,$dmn_sqld_limit,) = get_domain_default_props($sql, $user_id);
-	get_software_props ($tpl, $sql, $dmn_id, $software_id, $dmn_created_id, $dmn_sqld_limit);
+    list($dmn_id, $dmn_name,,,$dmn_created_id,,,,,,$dmn_sqld_limit,) = get_domain_default_props($user_id);
+	get_software_props ($tpl, $dmn_id, $software_id, $dmn_created_id, $dmn_sqld_limit);
 	return $software_id;
 }
 
@@ -213,7 +213,7 @@ if (isset($_SESSION['software_support']) && $_SESSION['software_support'] == "no
 	$tpl -> assign('NO_SOFTWARE', '');
 }
 
-$software_id = gen_page_lists($tpl, $sql, $_SESSION['user_id']);
+$software_id = gen_page_lists($tpl, $_SESSION['user_id']);
 
 
 gen_client_mainmenu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/main_menu_webtools.tpl');
@@ -221,7 +221,7 @@ gen_client_menu($tpl, $cfg->CLIENT_TEMPLATE_PATH . '/menu_webtools.tpl');
 
 gen_logged_from($tpl);
 
-get_client_software_permission ($tpl,$sql,$_SESSION['user_id']);
+get_client_software_permission ($tpl, $_SESSION['user_id']);
 
 check_permissions($tpl);
 

@@ -21,240 +21,247 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010 by
  * i-MSCP - internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
- * @package		iMSCP_NetworkCard
- * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010 by i-MSCP | http://i-mscp.net
- * @author 		ispCP Team
- * @author 		i-MSCP Team
- * @version 	SVN: $Id$
- * @link		http://i-mscp.net i-MSCP Home Site
- * @license		http://www.mozilla.org/MPL/ MPL 1.1
+ * @category    i-MSCP
+ * @package     iMSCP_NetworkCard
+ * @copyright   2006-2010 by ispCP | http://isp-control.net
+ * @copyright   2010 by i-MSCP | http://i-mscp.net
+ * @author      ispCP Team
+ * @author      i-MSCP Team
+ * @version     SVN: $Id$
+ * @link        http://i-mscp.net i-MSCP Home Site
+ * @license     http://www.mozilla.org/MPL/ MPL 1.1
  */
 
 /**
  * Class Network Card
  *
- * @category	i-MSCP
- * @package		iMSCP_NetworkCard
- * @author 		ispCP Team
+ * @category    i-MSCP
+ * @package     iMSCP_NetworkCard
+ * @author      ispCP Team
  */
-class iMSCP_NetworkCard {
+class iMSCP_NetworkCard
+{
+    /**
+     * Should be documented
+     *
+     * @var array
+     */
+    protected $_interfacesInfo = array();
 
-	/**
-	 * Should be documented
-	 *
-	 * @var array
-	 */
-	protected $_interfacesInfo = array();
+    /**
+     * Should be documented
+     *
+     * @var array
+     */
+    protected $_interfaces = array();
 
-	/**
-	 * Should be documented
-	 *
-	 * @var array
-	 */
-	protected $_interfaces = array();
+    /**
+     * Should be documented
+     *
+     * array
+     */
+    protected $_offlineInterfaces = array();
 
-	/**
-	 * Should be documented
-	 *
-	 * array
-	 */
-	protected $_offlineInterfaces = array();
+    /**
+     * Should be documented
+     *
+     * @var array
+     */
+    protected $_virtualInterfaces = array();
 
-	/**
-	 * Should be documented
-	 *
-	 * @var array
-	 */
-	protected $_virtualInterfaces = array();
+    /**
+     * Should be documented
+     *
+     * @var array
+     */
+    protected $_availableInterfaces = array();
 
-	/**
-	 * Should be documented
-	 *
-	 * @var array
-	 */
-	protected $_availableInterfaces = array();
+    /**
+     * Should be documented
+     *
+     * @var array
+     */
+    protected $_errors = '';
 
-	/**
-	 * Should be documented
-	 *
-	 * @var array
-	 */
-	protected $_errors = '';
+    /**
+     * Should be documented
+     *
+     */
+    public function __construct()
+    {
+        $this->_getInterface();
+        $this->_populateInterfaces();
+    }
 
-	/**
-	 * Should be documented
-	 *
-	 * @return void
-	 */
-	public function __construct() {
+    /**
+     * Should be documented
+     *
+     * @param  $filename
+     * @return string
+     */
+    public function read($filename)
+    {
+        if (($result = @file_get_contents($filename)) === false) {
+            $this->_errors .= sprintf(tr('File %s does not exists or cannot be reached!'),
+                                      $filename);
 
-		$this->_getInterface();
-		$this->_populateInterfaces();
-	}
+            return '';
+        }
 
-	/**
-	 * Should be documented
-	 *
-	 * @param  $filename
-	 * @return string
-	 */
-	public function read($filename) {
+        return $result;
 
-		if (($result = @file_get_contents($filename)) === false) {
-			$this->_errors .= sprintf(tr('File %s does not exists or cannot be reached!'), $filename);
+    }
 
-			return '';
-		}
+    /**
+     * Should be documented
+     *
+     * @return array
+     */
+    public function network()
+    {
 
-		return $result;
+        $file = $this->read('/proc/net/dev');
+        preg_match_all('/(.+):.+/', $file, $dev_name);
 
-	}
+        return $dev_name[1];
+    }
 
-	/**
-	 * Should be documented
-	 *
-	 * @return string
-	 */
-	public function network() {
+    /**
+     * Should be documented
+     *
+     * @return void
+     */
+    private function _getInterface()
+    {
+        foreach ($this->network() as $key => $value) {
+            $this->_interfaces[] = trim($value);
+        }
+    }
 
-		$file = $this->read('/proc/net/dev');
-		preg_match_all('/(.+):.+/', $file, $dev_name);
+    /**
+     * Should be documented
+     *
+     * @param  string $strProgram
+     * @param  string &$strError
+     * @return bool|string
+     */
+    protected function executeExternal($strProgram, &$strError)
+    {
+        $strBuffer = '';
 
-		return $dev_name[1];
-	}
+        $descriptorspec = array(0 => array('pipe', 'r'), 1 => array('pipe', 'w'),
+                                2 => array('pipe', 'w'));
 
-	/**
-	 * Should be documented
-	 *
-	 * @return void
-	 */
-	private function _getInterface() {
+        $pipes = array();
+        $process = proc_open($strProgram, $descriptorspec, $pipes);
 
-		foreach ($this->network() as $key => $value) {
-			$this->_interfaces[] = trim($value);
-		}
-	}
+        if (is_resource($process)) {
+            while (!feof($pipes[1])) {
+                $strBuffer .= fgets($pipes[1], 1024);
+            }
 
-	/**
-	 * Should be documented
-	 *
-	 * @param  string $strProgram
-	 * @param  string &$strError
-	 * @return bool|string
-	 */
-	protected function executeExternal($strProgram, &$strError) {
+            fclose($pipes[1]);
 
-		$strBuffer = '';
+            while (!feof($pipes[2])) {
+                $strError .= fgets($pipes[2], 1024);
+            }
 
-		$descriptorspec = array(0 => array('pipe', 'r'), 1 => array('pipe', 'w'), 2 => array('pipe', 'w'));
+            fclose($pipes[2]);
+        }
 
-		$pipes = array();
-		$process = proc_open($strProgram, $descriptorspec, $pipes);
+        $return_value = proc_close($process);
+        $strError = trim($strError);
+        $strBuffer = trim($strBuffer);
 
-		if (is_resource($process)) {
-			while (!feof($pipes[1])) {
-				$strBuffer .= fgets($pipes[1], 1024);
-			}
+        if (!empty($strError) || $return_value != 0) {
+            $strError .= "\nReturn value: " . $return_value;
 
-			fclose($pipes[1]);
+            return false;
+        }
 
-			while (!feof($pipes[2])) {
-				$strError .= fgets($pipes[2], 1024);
-			}
+        return $strBuffer;
+    }
 
-			fclose($pipes[2]);
-		}
+    /**
+     * Should be documented
+     *
+     * @return bool
+     */
+    private function _populateInterfaces()
+    {
+        /** @var $cfg iMSCP_Config_Handler_File */
+        $cfg = iMSCP_Registry::get('config');
 
-		$return_value = proc_close($process);
-		$strError = trim($strError);
-		$strBuffer = trim($strBuffer);
+        $err = '';
+        $message = $this->executeExternal($cfg->CMD_IFCONFIG, $err);
 
-		if (!empty($strError) || $return_value != 0) {
-			$strError .= "\nReturn value: " . $return_value;
+        if (!$message) {
+            $this->_errors .= tr('Error while trying to obtain list of network cards.')
+                              . $err;
 
-			return false;
-		}
+            return false;
+        }
 
-		return $strBuffer;
-	}
+        preg_match_all("/(?isU)([^ ]{1,}) {1,}.+(?:(?:\n\n)|$)/",
+                       $message, $this->_interfacesInfo);
 
-	/**
-	 * Should be documented
-	 *
-	 * @return bool
-	 */
-	private function _populateInterfaces() {
+        foreach ($this->_interfacesInfo[0] as $a) {
+            if (preg_match("/inet addr\:([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})/",
+                           $a, $b)) {
+                $this->_interfacesInfo[2][] = trim($b[1]);
+            } else {
+                $this->_interfacesInfo[2][] = '';
+            }
+        }
 
-		/**
-		 * @var $cfg iMSCP_Config_Handler_File
-		 */
-		$cfg = iMSCP_Registry::get('config');
+        $this->_offlineInterfaces = array_diff($this->_interfaces,
+                                               $this->_interfacesInfo[1]);
 
-		$err = '';
-		$message = $this->executeExternal($cfg->CMD_IFCONFIG, $err);
+        $this->_virtualInterfaces = array_diff($this->_interfacesInfo[1],
+                                               $this->_interfaces);
 
-		if (!$message) {
-			$this->_errors .= tr('Error while trying to obtain list of network cards!') . $err;
+        $this->_availableInterfaces = array_diff($this->_interfaces,
+                                                 $this->_offlineInterfaces,
+                                                 $this->_virtualInterfaces,
+                                                 array('lo')
+        );
+    }
 
-			return false;
-		}
+    /**
+     * Should be documented
+     *
+     * @return array
+     */
+    public function getAvailableInterface()
+    {
+        return $this->_availableInterfaces;
+    }
 
-		preg_match_all("/(?isU)([^ ]{1,}) {1,}.+(?:(?:\n\n)|$)/", $message, $this->_interfacesInfo);
+    /**
+     * Should be documented
+     *
+     * @return string
+     */
+    public function getErrors()
+    {
+        return nl2br($this->_errors);
+    }
 
-		foreach ($this->_interfacesInfo[0] as $a) {
-			if (preg_match("/inet addr\:([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})/",$a,$b)) {
-				$this->_interfacesInfo[2][] = trim($b[1]);
-			} else {
-				$this->_interfacesInfo[2][] = '';
-			}
-		}
+    /**
+     * Should be documented
+     *
+     * @param  string $ip
+     * @return array
+     */
+    public function ip2NetworkCard($ip)
+    {
+        $key = array_search($ip, $this->_interfacesInfo[2]);
 
-		$this->_offlineInterfaces =
-			array_diff($this->_interfaces, $this->_interfacesInfo[1]);
-
-		$this->_virtualInterfaces = array_diff($this->_interfacesInfo[1], $this->_interfaces);
-
-		$this->_availableInterfaces = array_diff(
-			$this->_interfaces, $this->_offlineInterfaces, $this->_virtualInterfaces, array('lo')
-		);
-	}
-
-	/**
-	 * Should be documented
-	 *
-	 * @return array
-	 */
-	public function getAvailableInterface() {
-
-		return $this->_availableInterfaces;
-	}
-
-	/**
-	 * Should be documented
-	 *
-	 * @return string
-	 */
-	public function getErrors() {
-
-		return nl2br($this->_errors);
-	}
-
-	/**
-	 * Should be documented
-	 *
-	 * @param  string $ip
-	 * @return array
-	 */
-	public function ip2NetworkCard($ip) {
-
-		$key = array_search($ip, $this->_interfacesInfo[2]);
-
-		if ($key === false) {
-			$this->_errors .= sprintf(tr("This IP (%s) is not assigned to any network card!"), $ip);
-		} else {
-			return $this->_interfacesInfo[1][$key];
-		}
-	}
+        if ($key === false) {
+            $this->_errors .= sprintf(tr("This IP (%s) is not assigned to any network card!"),
+                                      $ip);
+        } else {
+            return $this->_interfacesInfo[1][$key];
+        }
+    }
 }

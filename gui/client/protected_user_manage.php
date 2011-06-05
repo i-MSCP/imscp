@@ -81,7 +81,7 @@ function gen_group_action($id, $status, $group) {
 	}
 }
 
-function gen_pusres(&$tpl, &$sql, &$dmn_id) {
+function gen_pusres($tpl, &$dmn_id) {
 	$query = "
 		SELECT
 			*
@@ -93,7 +93,7 @@ function gen_pusres(&$tpl, &$sql, &$dmn_id) {
 			`dmn_id` DESC
 	";
 
-	$rs = exec_query($sql, $query, $dmn_id);
+	$rs = exec_query($query, $dmn_id);
 
 	if ($rs->recordCount() == 0) {
 		$tpl->assign(
@@ -130,7 +130,7 @@ function gen_pusres(&$tpl, &$sql, &$dmn_id) {
 /**
  * @todo Why is $member = ... out commented?
  */
-function gen_pgroups(&$tpl, &$sql, &$dmn_id) {
+function gen_pgroups($tpl, &$dmn_id) {
 	$query = "
 		SELECT
 			*
@@ -142,7 +142,7 @@ function gen_pgroups(&$tpl, &$sql, &$dmn_id) {
 			`dmn_id` DESC
 	";
 
-	$rs = exec_query($sql, $query, $dmn_id);
+	$rs = exec_query($query, $dmn_id);
 
 	if ($rs->recordCount() == 0) {
 		$tpl->assign('GROUP_MESSAGE', tr('You have no groups!'));
@@ -179,7 +179,7 @@ function gen_pgroups(&$tpl, &$sql, &$dmn_id) {
 							`id` = ?
 					";
 
-					$rs_members = exec_query($sql, $query, $members[$i]);
+					$rs_members = exec_query($query, $members[$i]);
 
 					if ($cnt_members == 1 || $cnt_members == $i + 1) {
 						$tpl->assign('MEMBER', tohtml($rs_members->fields['uname']));
@@ -211,11 +211,11 @@ gen_logged_from($tpl);
 
 check_permissions($tpl);
 
-$dmn_id = get_user_domain_id($sql, $_SESSION['user_id']);
+$dmn_id = get_user_domain_id($_SESSION['user_id']);
 
-gen_pusres($tpl, $sql, $dmn_id);
+gen_pusres($tpl, $dmn_id);
 
-gen_pgroups($tpl, $sql, $dmn_id);
+gen_pgroups($tpl, $dmn_id);
 
 $tpl->assign(
 	array(

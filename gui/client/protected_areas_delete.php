@@ -46,7 +46,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 
 	$id = $_GET['id'];
 	$delete_status = $cfg->ITEM_DELETE_STATUS;
-	$dmn_id = get_user_domain_id($sql, $_SESSION['user_id']);
+	$dmn_id = get_user_domain_id($_SESSION['user_id']);
 
 	// let's see the status of this thing
 	$query = "
@@ -60,7 +60,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 			`dmn_id` = ?
 	";
 
-	$rs = exec_query($sql, $query, array($id, $dmn_id));
+	$rs = exec_query($query, array($id, $dmn_id));
 	$status = $rs->fields['status'];
 	$ok_status = $cfg->ITEM_OK_STATUS;
 
@@ -81,7 +81,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 			`dmn_id` = ?
 SQL_QUERY;
 
-	$rs = exec_query($sql, $query, array($id, $dmn_id));
+	$rs = exec_query($query, array($id, $dmn_id));
 	send_request();
 
 	write_log($_SESSION['user_logged'].": deletes protected area with ID: ".$_GET['id']);
