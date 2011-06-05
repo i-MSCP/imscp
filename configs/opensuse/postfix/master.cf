@@ -122,7 +122,7 @@ scache    unix  -       -       n       -       1       scache
 #
 
 imscp-arpl unix  -      n       n       -       -       pipe
-  flags=O user=vmail argv=/srv/www/imscp/engine/messenger/imscp-arpl-msgr
+  flags=O user={ARPL_USER}:{ARPL_GROUP} argv={ARPL_PATH}
 
 # ====================================================================
 # Interfaces to non-Postfix software. Be sure to examine the manual

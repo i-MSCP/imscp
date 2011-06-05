@@ -76,7 +76,7 @@ localhost:10025 inet  n -       n       -      -        smtpd
 
 # i-MSCP autoresponder
 imscp-arpl unix  -      n       n       -       -       pipe
-  flags=O user=vmail argv=/var/www/imscp/engine/messenger/imscp-arpl-msgr
+  flags=O user={ARPL_USER}:{ARPL_GROUP} argv={ARPL_PATH}
 
 # TLS - Activate, if TLS is avaiable/used
 smtps     inet  n       -       n       -       -       smtpd

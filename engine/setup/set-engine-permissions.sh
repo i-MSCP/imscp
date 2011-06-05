@@ -51,7 +51,7 @@ else
 	set_permissions "/etc/imscp/imscp.conf" $ROOT_USER $ROOT_GROUP 0644
 fi
 
-set_permissions "$CONF_DIR/imscp-db-keys" $ROOT_USER $PANEL_GROUP 0640
+set_permissions "$CONF_DIR/imscp-db-keys" $ROOT_USER $MASTER_GROUP 0640
 
 # Only root can run engine scripts
 recursive_set_permissions "$ROOT_DIR/engine" $ROOT_USER $ROOT_GROUP 0700 0700

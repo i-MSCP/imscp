@@ -1468,7 +1468,23 @@ sub setup_mta {
 
 	# Storing the new file in the working directory
 	$file = iMSCP::File->new(filename => "$cfgDir/master.cf");
-	$file->copyFile("$wrkDir/") and return 1;
+	$cfgTpl	= $file->get();
+	return 1 if (!$cfgTpl);
+	$cfgTpl = iMSCP::Templator::process(
+		{
+			ARPL_USER					=> $main::imscpConfig{'MTA_MAILBOX_UID_NAME'},
+			ARPL_GROUP					=> $main::imscpConfig{'MASTER_GROUP'},
+			ARPL_PATH					=> $main::imscpConfig{'ROOT_DIR'}."/engine/messenger/imscp-arpl-msgr"
+		},
+		$cfgTpl
+	);
+	return 1 if (!$cfgTpl);
+
+	$file = iMSCP::File->new(filename => "$wrkDir/master.cf");
+	$file->set($cfgTpl) and return 1;
+	$file->save() and return 1;
+	$file->mode(0644) and return 1;
+	$file->owner($main::imscpConfig{'ROOT_USER'}, $main::imscpConfig{'ROOT_GROUP'}) and return 1;
 
 	# Installing the new file in the production dir
 	$file->copyFile($main::imscpConfig{'POSTFIX_MASTER_CONF_FILE'}) and return 1;
@@ -2204,7 +2220,7 @@ sub setup_gui_pma {
 		if(!$ctrlUserPwd){
 			$ctrlUserPwd = iMSCP::Crypt::randomString(16);
 		}
-		$ctrlUserPwd =~ s/('|"|`|#|;)//g;
+		$ctrlUserPwd =~ s/('|"|`|#|;|\\)/_/g;
 		iMSCP::Dialog->new()->msgbox("Your password is '".$ctrlUserPwd."'");
 		iMSCP::Dialog->new()->set('cancel-label');
 
@@ -3091,7 +3107,7 @@ sub setup_system_users{
 		$cmd = ($main::imscpConfig{'ROOT_GROUP'} eq 'wheel') ?
 			"$main::imscpConfig{'CMD_USERADD'} $mailUName -c vmail-user -s /bin/false"
 		:
-			"$main::imscpConfig{'CMD_USERADD'} -c vmail-user -g $mailGrName -s /bin/false $mailUName"
+			"$main::imscpConfig{'CMD_USERADD'} -c vmail-user -g $mailGrName -s /bin/false -r $mailUName"
 		;
 		$rs = execute($cmd, \$stdout, \$stderr);
 		debug((caller(0))[3].": $stdout") if $stdout;
@@ -3099,6 +3115,38 @@ sub setup_system_users{
 		warning((caller(0))[3].": $stderr") if ($stderr && !$rs);
 		return $rs if $rs;
 	}
+
+	##MASTER GROUP
+	my $masterGrName = $main::imscpConfig{'MASTER_GROUP'};
+	if(!getgrnam($masterGrName)){
+		debug ((caller(0))[3].": Create group $masterGrName:");
+		$rs = execute("$main::imscpConfig{'CMD_GROUPADD'} $masterGrName", \$stdout, \$stderr);
+		debug((caller(0))[3].": $stdout") if $stdout;
+		error((caller(0))[3].": $stderr") if ($stderr && $rs);
+		warning((caller(0))[3].": $stderr") if ($stderr && !$rs);
+		return $rs if $rs;
+	}
+
+	(undef, undef, undef, my $gUsers) = getgrnam($masterGrName);
+	$gUsers =~ s/\s/,/g;
+
+	debug((caller(0))[3].": Users in $masterGrName |$gUsers|");
+
+	for($mailUName, $panelUName){
+		if(!$gUsers || $_ !~ m/$gUsers/){
+			$cmd = ($main::imscpConfig{'ROOT_GROUP'} eq 'wheel') ?
+				"$main::imscpConfig{'CMD_USERGROUP'} $_ -G $masterGrName"
+			:
+				"$main::imscpConfig{'CMD_USERGROUP'} -G $masterGrName $_"
+			;
+			$rs = execute($cmd, \$stdout, \$stderr);
+			debug((caller(0))[3].": $stdout") if $stdout;
+			error((caller(0))[3].": $stderr") if ($stderr && $rs);
+			warning((caller(0))[3].": $stderr") if ($stderr && !$rs);
+			return $rs if $rs;
+		}
+	}
+
 	debug((caller(0))[3].': Ending...');
 
 	0;
