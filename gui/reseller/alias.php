@@ -417,7 +417,7 @@ $tpl->assign(array(
 gen_reseller_mainmenu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/main_menu_users_manage.tpl');
 gen_reseller_menu($tpl, $cfg->RESELLER_TEMPLATE_PATH . '/menu_users_manage.tpl');
 gen_logged_from($tpl);
-generate_als_list($tpl, $_SESSION['user_id'], $err_txt);
+generate_als_list($tpl, $_SESSION['user_id']);
 generate_als_messages();
 generatePageMessage($tpl);
 
