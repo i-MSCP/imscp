@@ -161,9 +161,9 @@ function get_domain_running_mail_acc_cnt($domain_id)
 		FROM
 			`mail_users`
 		WHERE
-			`mail_type` RLIKE '?'
+			`mail_type` RLIKE ?
 		AND
-			`mail_type` NOT LIKE '?'
+			`mail_type` NOT LIKE ?
 		AND
 			`domain_id` = ?
 	";
