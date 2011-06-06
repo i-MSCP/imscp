@@ -1780,6 +1780,10 @@ function get_reseller_sw_installer($reseller_id)
     return $stmt->fields['software_allowed'];
 }
 
+/************************************************************************************
+ * iMSCP daemon related functions
+ */
+
 /**
  * Reads line from the socket resource.
  *
