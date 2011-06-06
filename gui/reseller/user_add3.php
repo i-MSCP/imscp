@@ -323,8 +323,6 @@ function add_user_data($reseller_id) {
 		return;
 	}
 
-	check_for_lock_file();
-
 	$query = "
 		INSERT INTO `admin` (
 			`admin_name`, `admin_pass`, `admin_type`, `domain_created`,

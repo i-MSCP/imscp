@@ -1780,37 +1780,6 @@ function get_reseller_sw_installer($reseller_id)
     return $stmt->fields['software_allowed'];
 }
 
-/************************************************************************************
- * iMSCP daemon related functions
- */
-
-/**
- * Checks for lock file.
- *
- * @return bool TRUE if file is unlocked, FALSE otherwise
- */
-function check_for_lock_file()
-{
-    /** @var $cfg iMSCP_Config_Handler_File */
-    $cfg = iMSCP_Registry::get('config');
-
-    $fh = fopen($cfg->MR_LOCK_FILE, 'r');
-
-    if (!$fh) {
-        return false;
-    }
-
-    while (!flock($fh, LOCK_EX | LOCK_NB)) {
-        usleep(rand(200, 600) * 1000);
-        clearstatcache();
-
-        // Send header to keep connection
-        header("Cache-Control: no-store, no-cache, must-revalidate");
-    }
-
-    return true;
-}
-
 /**
  * Reads line from the socket resource.
  *
@@ -2086,42 +2055,6 @@ function quoteIdentifier($identifier)
 /************************************************************************************
  * Debugging related functions
  */
-
-/**
- * Debug function.
- *
- * @return void
- */
-function dump_gui_debug()
-{
-    echo '<span style="color:#00f;text-decoration:underline;">Content of <strong>$_SESSION</strong>:<br /></span>';
-    echo '<pre>';
-    echo htmlentities(print_r($_SESSION, true));
-    echo '</pre>';
-    echo '<span style="color:#00f;text-decoration:underline;">Content of <strong>$_POST</strong>:<br /></span>';
-    echo '<pre>';
-    echo htmlentities(print_r($_POST, true));
-    echo '</pre>';
-    echo '<span style="color:#00f;text-decoration:underline;">Content of <strong>$_GET</strong>:<br /></span>';
-    echo '<pre>';
-    echo htmlentities(print_r($_GET, true));
-    echo '</pre>';
-    echo '<span style="color:#00f;text-decoration:underline;">Content of <strong>$_COOKIE</strong>:<br /></span>';
-    echo '<pre>';
-    echo htmlentities(print_r($_COOKIE, true));
-    echo '</pre>';
-    echo '<span style="color:#00f;text-decoration:underline;">Content of <strong>$_FILES</strong>:<br /></span>';
-    echo '<pre>';
-    echo htmlentities(print_r($_FILES, true));
-    echo '</pre>';
-
-    /* Activate debug code if needed
-     echo '<span style="color:#00f;text-decoration:underline;">Content of <strong>$_SERVER</strong>:<br /></span>';
-     echo '<pre>';
-     echo htmlentities(print_r($_SERVER, true));
-     echo '</pre>';
-     */
-}
 
 /************************************************************************************
  * Unclassified functions
