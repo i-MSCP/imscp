@@ -1964,7 +1964,7 @@ sub restart_services {
 		['CMD_IMSCPD',			'restart',	1],
 		['CMD_NAMED',			'reload',	1],
 		['CMD_HTTPD',			'reload',	1],
-		['CMD_FTPD',			'reload',	1],
+		['CMD_FTPD',			'restart',	1],			# must be restarted
 		['CMD_CLAMD',			'reload',	1],
 		['CMD_POSTGREY',		'reload',	1],
 		['CMD_POLICYD_WEIGHT',	'reload',	0],
