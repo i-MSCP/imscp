@@ -166,7 +166,7 @@ function get_domain_running_mail_acc_cnt($domain_id)
 			`mail_type` NOT LIKE 'normal_catchall'
 		AND
 			`domain_id` = ?
-		;
+		
 	";
 
     $query_als = "
@@ -180,7 +180,7 @@ function get_domain_running_mail_acc_cnt($domain_id)
 			`mail_type` NOT LIKE 'alias_catchall'
 		AND
 			`domain_id` = ?
-		;
+		
 	";
 
     $query_sub = "
@@ -194,7 +194,7 @@ function get_domain_running_mail_acc_cnt($domain_id)
 			`mail_type` NOT LIKE 'subdom_catchall'
 		AND
 			`domain_id` = ?
-		;
+		
 	";
 
     $query_alssub = "
@@ -208,7 +208,7 @@ function get_domain_running_mail_acc_cnt($domain_id)
 			`mail_type` NOT LIKE 'alssub_catchall'
 		AND
 			`domain_id` = ?
-		;
+		
 	";
 
     if ($cfg->COUNT_DEFAULT_EMAIL_ADDRESSES == 0) {
@@ -255,15 +255,19 @@ function get_domain_running_mail_acc_cnt($domain_id)
 
     $stmt = exec_query($query_dmn, $domain_id);
     $dmn_mail_acc = $stmt->fields['cnt'];
+    $stmt->fetchAll();
 
     $stmt = exec_query($query_als, $domain_id);
     $als_mail_acc = $stmt->fields['cnt'];
+    $stmt->fetchAll();
 
     $stmt = exec_query($query_sub, $domain_id);
     $sub_mail_acc = $stmt->fields['cnt'];
+    $stmt->fetchAll();
 
     $stmt = exec_query($query_alssub, $domain_id);
     $alssub_mail_acc = $stmt->fields['cnt'];
+    $stmt->fetchAll();
 
     return array($dmn_mail_acc + $als_mail_acc + $sub_mail_acc + $alssub_mail_acc,
                  $dmn_mail_acc, $als_mail_acc, $sub_mail_acc, $alssub_mail_acc);
