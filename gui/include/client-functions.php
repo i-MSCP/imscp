@@ -155,90 +155,22 @@ function get_domain_running_mail_acc_cnt($domain_id)
     /** @var $cfg iMSCP_Config_Handler_File */
     $cfg = iMSCP_Registry::get('config');
 
-    $query_dmn = "
+    $query = "
 		SELECT
 			COUNT(`mail_id`) AS `cnt`
 		FROM
 			`mail_users`
 		WHERE
-			`mail_type` RLIKE 'normal_'
+			`mail_type` RLIKE '?'
 		AND
-			`mail_type` NOT LIKE 'normal_catchall'
-		AND
-			`domain_id` = ?
-	";
-
-    $query_als = "
-		SELECT
-			COUNT(`mail_id`) AS `cnt`
-		FROM
-			`mail_users`
-		WHERE
-			`mail_type` RLIKE 'alias_'
-		AND
-			`mail_type` NOT LIKE 'alias_catchall'
-		AND
-			`domain_id` = ?
-	";
-
-    $query_sub = "
-		SELECT
-			COUNT(`mail_id`) AS `cnt`
-		FROM
-			`mail_users`
-		WHERE
-			`mail_type` RLIKE 'subdom_'
-		AND
-			`mail_type` NOT LIKE 'subdom_catchall'
-		AND
-			`domain_id` = ?
-	";
-
-    $query_alssub = "
-		SELECT
-			COUNT(`mail_id`) AS cnt
-		FROM
-			`mail_users`
-		WHERE
-			`mail_type` RLIKE 'alssub_'
-		AND
-			`mail_type` NOT LIKE 'alssub_catchall'
+			`mail_type` NOT LIKE '?'
 		AND
 			`domain_id` = ?
 	";
 
     if ($cfg->COUNT_DEFAULT_EMAIL_ADDRESSES == 0) {
-        $query_dmn .= "
-			AND
-				`mail_acc` != 'abuse'
-			AND
-				`mail_acc` != 'postmaster'
-			AND
-				`mail_acc` != 'webmaster'
-			;
-		";
-
-        $query_als .= "
-			AND
-				`mail_acc` != 'abuse'
-			AND
-				`mail_acc` != 'postmaster'
-			AND
-				`mail_acc` != 'webmaster'
-			;
-		";
-
-        $query_sub .= "
-			AND
-				`mail_acc` != 'abuse'
-			AND
-				`mail_acc` != 'postmaster'
-			AND
-				`mail_acc` != 'webmaster'
-			;
-		";
-
-        $query_alssub .= "
+        $query .=
+            "
 			AND
 				`mail_acc` != 'abuse'
 			AND
@@ -249,16 +181,16 @@ function get_domain_running_mail_acc_cnt($domain_id)
 		";
     }
 
-    $stmt = exec_query($query_dmn, $domain_id);
+    $stmt = exec_query($query, array('normal_', 'normal_catchall', $domain_id));
     $dmn_mail_acc = $stmt->fields['cnt'];
 
-    $stmt = exec_query($query_als, $domain_id);
+    $stmt = exec_query($query, array('alias_', 'alias_catchall', $domain_id));
     $als_mail_acc = $stmt->fields['cnt'];
 
-    $stmt = exec_query($query_sub, $domain_id);
+    $stmt = exec_query($query, array('subdom_', 'subdom_catchall', $domain_id));
     $sub_mail_acc = $stmt->fields['cnt'];
 
-    $stmt = exec_query($query_alssub, $domain_id);
+    $stmt = exec_query($query, array('alssub_', 'alssub_catchall', $domain_id));
     $alssub_mail_acc = $stmt->fields['cnt'];
 
     return array($dmn_mail_acc + $als_mail_acc + $sub_mail_acc + $alssub_mail_acc,
