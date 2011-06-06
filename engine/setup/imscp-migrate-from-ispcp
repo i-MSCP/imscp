@@ -524,17 +524,7 @@ sub confSave{
 		MTA_MAILBOX_UID_NAME
 		MTA_MAILBOX_GID
 		MTA_MAILBOX_GID_NAME
-		CMD_AMAVIS
-		CMD_AUTHD
-		CMD_FTPD
-		CMD_HTTPD_CTL
-		CMD_HTTPD
-		CMD_IMAP
-		CMD_POSTGREY
-		CMD_POLICYD_WEIGHT
-		CMD_MTA
-		CMD_NAMED
-		CMD_POP/
+		/
 	){
 		$main::imscpConfig{$_} = $main::ispcpConfig{$_};
 	}
