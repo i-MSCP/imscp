@@ -32,16 +32,15 @@
  */
 
 /**
- * i-MSCP Initializer class
+ * Initializer.
  *
- * The initializer is responsible for processing the i-MSCP configuration, such as setting the include_path, initializing
- * logging, database and more.
+ * The initializer is responsible for processing the i-MSCP configuration, such as
+ * etting the include_path, initializing logging, database and more.
  *
  * @category    i-MSCP
  * @package     iMSCP_Initializer
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @since       1.0.0
- * @version     1.1.2
+ * @version     1.1.3
  */
 class iMSCP_Initializer
 {
@@ -60,7 +59,7 @@ class iMSCP_Initializer
     private static $_initialized = false;
 
     /**
-     * Runs initializer.
+     * Runs initializer
      *
      * By default, this will invoke the {@link _processAll}  or {@link _processCLI}
      * methods, which simply executes all of the initialization routines for
@@ -106,20 +105,22 @@ class iMSCP_Initializer
     }
 
     /**
+     * Singleton - Make new unavailbale.
+     *
      * Create a new Initializer instance that references the given
      * {@link iMSCP_Config_Handler_File} instance.
      *
      * @param iMSCP_Config_Handler|iMSCP_Config_Handler_File $config
      * @return iMSCP_Initializer
-     *
      */
     protected function __construct(iMSCP_Config_Handler $config)
     {
+        // Register config object in registry for further usaeg.
         $this->_config = iMSCP_Registry::set('config', $config);
     }
 
     /**
-     * Object of this class shouldn't be cloned
+     * Singleton - Make clone unavailable.
      */
     protected function __clone()
     {
@@ -132,12 +133,8 @@ class iMSCP_Initializer
      */
     protected function _processAll()
     {
-
         // Set display errors
         $this->_setDisplayErrors();
-
-        // Check php version and availability of the Php Standard Library
-        $this->_checkPhp();
 
         // Set additionally iMSCP_Exception_Writer observers
         $this->_setExceptionWriters();
@@ -173,13 +170,6 @@ class iMSCP_Initializer
         // Initialize logger
         // $this->_initializeLogger();
 
-        // Not yet fully integrated - (testing in progress)
-        // $this->loadPlugins();
-
-        // Trigger the 'OnAfterInitialize' action hook
-        // (will be activated later)
-        // iMSCP_Registry::get('Hook')->OnAfterInitialize();
-
         // Run after initialize callbacks (will be changed later)
         $this->_afterInitialize();
 
@@ -193,10 +183,6 @@ class iMSCP_Initializer
      */
     protected function _processCLI()
     {
-
-        // Check php version and availability of the Php Standard Library
-        $this->_checkPhp();
-
         // Include path
         $this->_setIncludePath();
 
@@ -228,42 +214,6 @@ class iMSCP_Initializer
     }
 
     /**
-     * Check for PHP version and Standard PHP library availability.
-     *
-     * i-MSCP uses interfaces and classes that come from the Standard Php library
-     * under PHP version 5.1.4. This methods ensures that the PHP version used is
-     * more recent or equal to the PHP version 5.1.4 and that the SPL is loaded.
-     *
-     * <b>Note:</b> i-MSCP requires PHP 5.1.4 or later because some SPL interface
-     * were not stable in earlier versions of PHP.
-     *
-     * @throws iMSCP_Exception
-     * @return void
-     * @todo Check SPL part (iMSCP_Exception_Handler use SPL)
-     */
-    protected function _checkPhp()
-    {
-        // MAJOR . MINOR . TINY
-        $php_version = substr(phpversion(), 0, 5);
-
-        if (!version_compare($php_version, '5.1.4', '>=')) {
-            $err_msg = sprintf('PHP version is %s. Version 5.1.4 or later is required!',
-                               $php_version);
-
-        // We will use SPL interfaces like SplObserver, SplSubject
-        // Note: Both ArrayAccess and Iterator interfaces are part of PHP core,
-        // so, we can do the checking here without any problem.
-        } elseif ($php_version < '5.3.0' && !extension_loaded('SPL')) {
-            $err_msg = 'Standard PHP Library (SPL) was not detected! See http://php.net/manual/en/book.spl.php' .
-                       ' for more information!';
-        } else {
-            return;
-        }
-
-        throw new iMSCP_Exception($err_msg);
-    }
-
-    /**
      * Sets additional writers or exception handler
      *
      * @return void
@@ -278,17 +228,6 @@ class iMSCP_Initializer
         $writerObservers = array_map('trim', $writerObservers);
         $writerObservers = array_map('strtolower', $writerObservers);
 
-        /*
-          if(in_array('file', $writerObservers)) {
-              // Writer not Yet Implemented
-              $exceptionHandler->attach(
-                  new iMSCP_Exception_Writer_File(
-                      'path_to_logfile'
-                  )
-              );
-          }
-          */
-
         if (in_array('mail', $writerObservers)) {
             $admin_email = $this->_config->DEFAULT_ADMIN_ADDRESS;
 
@@ -297,14 +236,6 @@ class iMSCP_Initializer
                     new iMSCP_Exception_Writer_Mail($admin_email));
             }
         }
-
-        /*
-          if(in_array('database', $writerObservers)) {
-              $exceptionHandler->attach(
-                  new iMSCP_Exception_Writer_Db(iMSCP_Registry::get('pdo'))
-              );
-          }
-          */
     }
 
     /**
@@ -400,9 +331,6 @@ class iMSCP_Initializer
 
         // Register Database instance in registry for further usage.
         iMSCP_Registry::set('db', $connection);
-
-        // Will be removed ASAP
-        //$GLOBALS['sql'] = iMSCP_Registry::get('db');
     }
 
     /**
@@ -412,6 +340,8 @@ class iMSCP_Initializer
      *
      * @throws iMSCP_Exception
      * @return void
+     * @todo add a specific listener that will operate on the 'onAfterConnection'
+     * event of the database component and that will set the charset.
      */
     protected function _setEncoding()
     {
@@ -472,7 +402,7 @@ class iMSCP_Initializer
     }
 
     /**
-     * Load configuration parameters from the database
+     * Load configuration parameters from the database.
      *
      * This function retrieves all the parameters from the database and merge them
      * with the basis configuration object.
@@ -491,7 +421,7 @@ class iMSCP_Initializer
 
         // Creating new Db configuration handler.
         // TODO: Inject the PDO object by using dependency injection instead of pass
-        // the PDO instance in constructor. All configuration handler will be aware
+        // the PDO instance in constructor. All configuration handlers will be aware
         // of the dependency injection container.
         $dbConfig = new iMSCP_Config_Handler_Db($pdo);
 
@@ -539,10 +469,11 @@ class iMSCP_Initializer
      */
     protected function _initializeI18n()
     {
+        throw new iMSCP_Exception('Not Yet Implemented.');
     }
 
     /**
-     * Initialize logger
+     * Initialize logger.
      *
      * <b>Note:</b> Not used at this moment (testing in progress)
      *
@@ -550,10 +481,11 @@ class iMSCP_Initializer
      */
     protected function _initializeLogger()
     {
+        throw new iMSCP_Exception('Not Yet Implemented.');
     }
 
     /**
-     * Not yet implemented
+     * Not yet implemented.
      *
      * Not used at this moment because we have only one theme.
      *
@@ -561,30 +493,41 @@ class iMSCP_Initializer
      */
     protected function _initializeLayout()
     {
+        throw new iMSCP_Exception('Not Yet Implemented.');
     }
 
     /**
-     * Load all plugins.
+     * Initialize Debug bar.
      *
-     * This method loads all the active plugins. Only plugins for the current
-     * execution context are loaded.
-     *
-     * <b>Note:</b> Not used at this moment (testing in progress...)
+     * Note: Each Debug bar plugin listens specfics events. They will auto-registered
+     * on the events manager by the debug bar component.
      *
      * @return void
      */
-    protected function _loadPlugins()
+    public function initializeDebugBar()
     {
+        if($this->_config->DEBUG) {
+            $debugBarPlugins = array(
+                // Debug information about variables such as $_GET, $_POST...
+                new iMSCP_Debug_Bar_Plugin_Variables(),
+                // Debug information about script execution time
+                new iMSCP_Debug_Bar_Plugin_Time(),
+                // Debug information about memory consumption
+                new iMSCP_Debug_Bar_Plugin_Memory(),
+                // Debug information about any exception thrown
+                new iMSCP_Debug_Bar_Plugin_Exception(),
+                // Debug information about all file included
+                new iMSCP_Debug_Bar_Plugin_Files(),
+                // Debug information about all query made during a script exection
+                // and their execution time.
+                new iMSCP_Debug_Bar_Plugin_Database());
 
-        // Load all the available plugins for the current execution context
-        // iMSCP_Plugin_Helpers::getPlugins();
-
-        // Register an iMSCP_Plugin_ActionsHooks for shared access
-        // iMSCP_Registry::set('Hook', iMSCP_Plugin_ActionsHooks::getInstance());
+            new iMSCP_Debug_Bar($debugBarPlugins);
+        }
     }
 
     /**
-     * Fires the afterInitialize callbacks
+     * Fires the afterInitialize callbacks.
      *
      * @return void
      */
