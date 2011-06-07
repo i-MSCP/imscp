@@ -39,10 +39,42 @@
 interface iMSCP_Debug_Bar_Plugin_Interface
 {
     /**
+     * Returns plugin unique identifier.
+     *
+     * @abstract
+     * @return void
+     */
+    public function getIdentifier();
+
+    /**
      * Returns list of events that the plugin listens on.
      *
      * @abstract
      * @return array
      */
     public function getListenedEvents();
+
+    /**
+     * Returns the plugin panel.
+     *
+     * @abstract
+     * @return void
+     */
+    public function getPanel();
+
+    /**
+     * Get plugin tab.
+     *
+     * @abstract
+     * @return string
+     */
+    public function getTab();
+
+    /**
+     * Returns plugin icon.
+     *
+     * @abstract
+     * @return string
+     */
+    public function getIcon();
 }
