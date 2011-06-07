@@ -293,7 +293,7 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer
 
         // Body
         $this->_body = "Dear admin,\n\n";
-        $this->_body .= 'An exception with the following message was raised in file ' .
+        $this->_body .= 'An exception with the following message was thrown in file ' .
                         $exception->getFile() . ' (Line: ' .
                         $exception->getLine() . "):\n\n";
 
@@ -341,9 +341,9 @@ class iMSCP_Exception_Writer_Mail extends iMSCP_Exception_Writer
 
         $this->_body .= "\n" . str_repeat('_', 60) . "\n";
         $this->_body .= self::NAME . "\n";
-        $this->_body .= "\n\nNote: If the same exception is raised several " .
-                        'times, this mail will not be re-send before ' .
-                        "{$this->_expiryTime} hours.\n";
+        $this->_body .= "\n\nNote: If an exception of same type is thrown again, you " .
+                        "will not receive this mail before an expiration time that is ".
+                        "currently fixed at {$this->_expiryTime} hour(s).\n";
         $this->_body = wordwrap($this->_body, 70, "\n");
     }
 
