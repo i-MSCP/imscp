@@ -17,12 +17,12 @@
  * The Initial Developer of the Original Code is ispCP Team.
  * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
- * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  * 
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
+ *
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
+ * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  *
  * @category	i-MSCP
  * @package		i-MSCP
@@ -48,6 +48,16 @@ error_reporting(E_ALL|E_STRICT);
 // Will be overwritten during initialization process
 // @see iMSCP_Initializer::_setDisplayErrors()
 ini_set('display_errors', 1);
+
+/**
+ * Check PHP version (5.2.6 or newer ) and SPL availability
+ */
+if (version_compare(phpversion(), '5.2.6', '<') === true) {
+	die('Your PHP version is ' . phpversion() . ". i-MSCP requires PHP 5.2.6 or newer.\n");
+} elseif(extension_loaded('SPL')) {
+    die("Standard PHP Library (SPL) was not detected on your system.\n " .
+        'See http://php.net/manual/en/book.spl.php for more information');
+}
 
 // Define path for the i-MSCP include directory
 define('INCLUDEPATH', dirname(__FILE__));

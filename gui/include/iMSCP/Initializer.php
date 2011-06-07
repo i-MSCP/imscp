@@ -516,9 +516,9 @@ class iMSCP_Initializer
                 new iMSCP_Debug_Bar_Plugin_Memory(),
                 // Debug information about any exception thrown
                 new iMSCP_Debug_Bar_Plugin_Exception(),
-                // Debug information about all file included
+                // Debug information about all included files
                 new iMSCP_Debug_Bar_Plugin_Files(),
-                // Debug information about all query made during a script exection
+                // Debug information about all queries made during a script exection
                 // and their execution time.
                 new iMSCP_Debug_Bar_Plugin_Database());
 
