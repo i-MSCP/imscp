@@ -48,7 +48,7 @@ class iMSCP_Events
     /**
      * The onLoginScriptEnd event occurs at the end of Login script.
      *
-     * The event listener method receives a iMSCP_Events_Events_Response instance.
+     * The event listener method receives a iMSCP_Events_Response instance.
      *
      * @var string
      */
@@ -66,7 +66,7 @@ class iMSCP_Events
     /**
      * The onAdminScriptEnd event occurs at the end of admin scripts.
      *
-     * The event listener method receives a iMSCP_Events_Events_Response instance.
+     * The event listener method receives a iMSCP_Events_Response instance.
      *
      * @var string
      */
@@ -84,7 +84,7 @@ class iMSCP_Events
     /**
      * The onResellerScriptEnd event occurs at the end of reseller scripts.
      *
-     * The event listener method receives a iMSCP_Events_Events_Response instance.
+     * The event listener method receives a iMSCP_Events_Response instance.
      *
      * @var string
      */
@@ -102,7 +102,7 @@ class iMSCP_Events
     /**
      * The onClientScriptEnd event occurs at the end of client scripts.
      *
-     * The event listener method receives a iMSCP_Events_Events_Response instance.
+     * The event listener method receives a iMSCP_Events_Response instance.
      *
      * @var string
      */
@@ -120,7 +120,7 @@ class iMSCP_Events
     /**
      * The onOrderPanelScriptEnd event occurs at the end of orderpanel scripts.
      *
-     * The event listener method receives a iMSCP_Events_Events_Response instance.
+     * The event listener method receives a iMSCP_Events_Response instance.
      *
      * @var string
      */
