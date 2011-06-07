@@ -1,6 +1,6 @@
 <?php
 /**
- * i-MSCP - internet Project Management System
+ * i-MSCP - internet Multi Server Control Panel
  * Copyright (C) 2010-2011 by i-MSCP team
  *
  * This program is free software; you can redistribute it and/or
@@ -41,12 +41,16 @@ final class iMSCP_Database_Events
     /**
      * The onBeforeConnection event occurs before connection to the database is made.
      *
+     * The event listener method receives an iMSCP_Database_Events_Database instance.
+     *
      * @var string
      */
     const onBeforeConnection = 'onBeforeConnection';
 
     /**
      * The onAfterConnection event occurs after connection to the database is made.
+     *
+     * The event listener method receives an iMSCP_Database_Events_Database instance.
      *
      * @var string
      */
@@ -55,12 +59,16 @@ final class iMSCP_Database_Events
     /**
      * The onBeforePrepare event occurs before an SQL statement was prepared for execution.
      *
+     * The event listener method receives an iMSCP_Database_Events_Database instance.
+     *
      * @var string
      */
     const onBeforePrepare = 'onBeforePrepare';
 
     /**
      * The onAfterPrepare event occurs after an SQL statement was prepared for execution.
+     *
+     * The event listener method receives an iMSCP_Database_Events_Statement instance.
      *
      * @var string
      */
@@ -69,12 +77,16 @@ final class iMSCP_Database_Events
     /**
      * The onBeforeExecute event occurs before a prepared SQL statement was executed.
      *
+     * The event listener method receives an iMSCP_Database_Events_Statement instance.
+     *
      * @var string
      */
     const onBeforeExecute = 'onBeforeExecute';
 
     /**
      * The onAfterExecute event occurs after a prepared SQL statement was executed.
+     *
+     * The event listener method receives an iMSCP_Database_Events_Statement instance.
      *
      * @var string
      */
