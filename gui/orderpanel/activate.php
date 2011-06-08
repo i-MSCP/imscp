@@ -34,6 +34,8 @@
 
 require '../include/imscp-lib.php';
 
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onOrderPanelScriptStart);
+
 $cfg = iMSCP_Registry::get('config');
 
 /**
@@ -175,4 +177,8 @@ $tpl->assign('ORDER_STATUS_MESSAGE', $msg);
 $tpl->assign('PAGE_TITLE', tr('Order confirmation'));
 
 $tpl->parse('PAGE', 'page');
+
+iMSCP_Events_Manager::getInstance()->dispatch(
+    iMSCP_Events::onOrderPanelScriptEnd, new iMSCP_Events_Response($tpl));
+
 $tpl->prnt();

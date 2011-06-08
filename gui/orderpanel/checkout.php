@@ -34,6 +34,8 @@
 
 require '../include/imscp-lib.php';
 
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onOrderPanelScriptStart);
+
 $cfg = iMSCP_Registry::get('config');
 
 $tpl = new iMSCP_pTemplate();
@@ -183,4 +185,8 @@ $tpl->assign(
 );
 
 $tpl->parse('PAGE', 'page');
+
+iMSCP_Events_Manager::getInstance()->dispatch(
+    iMSCP_Events::onOrderPanelScriptEnd, new iMSCP_Events_Response($tpl));
+
 $tpl->prnt();

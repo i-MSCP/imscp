@@ -121,6 +121,8 @@ function gen_packages_list($tpl, $user_id) {
 
 require '../include/imscp-lib.php';
 
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onOrderPanelScriptStart);
+
 /**
  * @var $cfg iMSCP_Config_Handler_File
  */
@@ -159,6 +161,10 @@ generatePageMessage($tpl);
 $tpl->assign(array('THEME_CHARSET' => tr('encoding'),));
 
 $tpl->parse('PAGE', 'page');
+
+iMSCP_Events_Manager::getInstance()->dispatch(
+    iMSCP_Events::onOrderPanelScriptEnd, new iMSCP_Events_Response($tpl));
+
 $tpl->prnt();
 
 unsetMessages();
