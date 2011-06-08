@@ -1,6 +1,6 @@
 <?php
 /**
- * i-MSCP - internet Project Management System
+ * i-MSCP - internet Multi Server Control Panel
  * Copyright (C) 2010-2011 by i-MSCP team
  *
  * This program is free software; you can redistribute it and/or
@@ -20,7 +20,7 @@
  * @category    iMSCP
  * @package     Core
  * @copyright   2010-2011 by i-MSCP team
- * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
+ * @author      Laurent Declercq <laurent.declercq@nuxwin.com>
  * @version     SVN: $Id$
  * @link        http://www.i-mscp.net i-MSCP Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
