@@ -50,12 +50,16 @@ class iMSCP_Database
     protected static $_instances = array();
 
     /**
+     * @var iMSCP_Events_Manager
+     */
+    protected $_eventManager;
+
+    /**
      * PDO instance.
      *
      * @var PDO
      */
     protected $_db = null;
-
 
     /**
      * Error code from last error occurred.
@@ -79,6 +83,8 @@ class iMSCP_Database
     public $nameQuote = '`';
 
     /**
+     * Singleton - Make new unavailable.
+     * 
      * Creates a PDO object and connects to the database.
      *
      * According the PDO implementation, a PDOException is raised on error
@@ -99,16 +105,29 @@ class iMSCP_Database
     private function __construct($user, $pass, $type, $host, $name,
         $driver_options = array())
     {
+        // Getting an events manager instance
+        // TODO dependency injection
+        $this->_eventManager = iMSCP_Events_Manager::getInstance();
+
+        // The onBeforeConnection event is fired here.
+        $this->_eventManager->dispatch(
+            iMSCP_Database_Events::onBeforeConnection,
+            new iMSCP_Database_Events_Database($this));
 
         $this->_db = new PDO($type . ':host=' . $host . ';dbname=' . $name, $user,
             $pass, $driver_options);
+
+        // The onAfterConnection event is fired here.
+        $this->_eventManager->dispatch(
+        iMSCP_Database_Events::onAfterConnection,
+        new iMSCP_Database_Events_Database($this));
 
         // @todo: Bad for future support of another RDBMS.
         $this->_db->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, true);
     }
 
     /**
-     * This class implements the Singleton design pattern
+     * Singleton - Make clone unavailable.
      */
     private function __clone()
     {
@@ -217,11 +236,21 @@ class iMSCP_Database
             }
         }
 
+        // The onBeforePrepare event is fired here.
+        $this->_eventManager->dispatch(
+            iMSCP_Database_Events::onBeforePrepare,
+            new iMSCP_Database_Events_Database($this, $sql));
+
         if (is_array($driver_options)) {
             $stmt = $this->_db->prepare($sql, $driver_options);
         } else {
             $stmt = $this->_db->prepare($sql);
         }
+
+        // The onAfterPrepare event is fired here.
+        $this->_eventManager->dispatch(
+            iMSCP_Database_Events::onAfterPrepare,
+            new iMSCP_Database_Events_Statement($stmt, $this));
 
         if (!$stmt) {
             $errorInfo = $this->errorInfo();
@@ -301,6 +330,12 @@ class iMSCP_Database
     public function execute($stmt, $parameters = null)
     {
         if ($stmt instanceof PDOStatement) {
+
+            // The onBeforeExecute event is fired here
+            $this->_eventManager->dispatch(
+                iMSCP_Database_Events::onBeforeExecute,
+                new iMSCP_Database_Events_Statement($stmt, $this));
+
             if (null === $parameters) {
                 $rs = $stmt->execute();
             } else {
@@ -314,7 +349,14 @@ class iMSCP_Database
         }
 
         if ($rs) {
-            return new iMSCP_Database_ResultSet($rs === true ? $stmt : $rs);
+            $stmt = $rs === true ? $stmt : $rs;
+
+            // The onAfterExecute event is fired here
+            $this->_eventManager->dispatch(
+                iMSCP_Database_Events::onAfterExecute,
+                new iMSCP_Database_Events_Statement($stmt, $this));
+
+            return new iMSCP_Database_ResultSet($stmt);
         } else {
             $errorInfo = is_string($stmt) ? $this->errorInfo() : $stmt->errorInfo();
 
