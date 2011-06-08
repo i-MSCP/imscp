@@ -54,7 +54,7 @@ ini_set('display_errors', 1);
  */
 if (version_compare(phpversion(), '5.2.6', '<') === true) {
 	die('Your PHP version is ' . phpversion() . ". i-MSCP requires PHP 5.2.6 or newer.\n");
-} elseif(extension_loaded('SPL')) {
+} elseif(!extension_loaded('SPL')) {
     die("Standard PHP Library (SPL) was not detected on your system.\n " .
         'See http://php.net/manual/en/book.spl.php for more information');
 }
