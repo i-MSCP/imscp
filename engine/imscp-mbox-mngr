@@ -339,8 +339,6 @@ sub mbox_add_sasl_data {
 		($rs, $dmn_name) = mbox_get_dmn_full_name($mbox_data);
 		return $rs if ($rs != 0);
 
-		$mail_pass=decrypt_db_password($mail_pass);
-
 		$cmd_del_user = "$main::cfg{'CMD_SASLDB_PASSWD2'} -d -f " .
 			"$etc_sasldb_file -u $dmn_name $mail_acc";
 
@@ -470,7 +468,6 @@ sub mbox_add_po_data {
 	my ($hash_key, $hash_value) = (undef, undef);
 
 	do {
-		$mail_pass=decrypt_db_password($mail_pass);
 
 		my ($rs, $dmn_name) = mbox_get_dmn_full_name($mbox_data);
 		return $rs if ($rs != 0);
