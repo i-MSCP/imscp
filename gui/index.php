@@ -36,6 +36,9 @@
 
 require 'include/imscp-lib.php';
 
+// The onLoginScriptStart is fired here
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
 
@@ -117,4 +120,9 @@ if ($cfg->LOSTPASSWORD) {
 generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
+
+// The onLoginScriptEnd event is fired here
+iMSCP_Events_Manager::getInstance()->dispatch(
+    iMSCP_Events::onLoginScriptEnd, new iMSCP_Events_Response($tpl));
+
 $tpl->prnt();
