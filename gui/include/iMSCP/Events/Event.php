@@ -23,14 +23,14 @@
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     SVN: $Id$
  * @link        http://www.i-mscp.net i-MSCP Home Site
- * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+ * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
 /**
  * Base class for classes containing event data.
  *
- * This class contains no event data. It is used by events that do not pass
- * state information to an event listener when an event is thrown.
+ * This class contains no event data. It is used by events that do not pass state
+ * information to an event listener when an event is thrown.
  *
  * @category    iMSCP
  * @package     iMSCP_Events

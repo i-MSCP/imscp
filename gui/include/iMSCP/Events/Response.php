@@ -23,17 +23,17 @@
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     SVN: $Id$
  * @link        http://www.i-mscp.net i-MSCP Home Site
- * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+ * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
 /**
  * Allows to modifie the response for a request.
  *
  * Formally, this event doesn't represent a reponse but that will change in future.
- * For now, this event allow to operate some modification on the template generated
- * by the iMSCP_pTemplate template engine. A listener method method that receives
- * this event can doing some change on the generated template before the final result
- * is sent to the client browser.
+ * For now, this event allow to operate some modifications on the template generated
+ * by the iMSCP_pTemplate template engine. A listener method that receives this event
+ * can doing some changes on the generated template before the final result is sent
+ * to the client browser.
  * 
  * @category    iMSCP
  * @package     iMSCP_Events

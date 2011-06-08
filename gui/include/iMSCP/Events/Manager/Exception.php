@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2011 by iMSCP team
+ * Copyright (C) 2010-2011 by i-MSCP team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -24,7 +24,7 @@
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     SVN: $Id$
  * @link        http://www.i-mscp.net i-MSCP Home Site
- * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+ * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
 /** @see iMSCP_Events_Exception */

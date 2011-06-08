@@ -23,7 +23,7 @@
  * @copyright   2010-2011 by i-MSCP team
  * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
  * @link        http://www.i-mscp.net i-MSCP Home Site
- * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+ * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
 /** @see iMSCP_Events_Manager_Interface */
@@ -33,8 +33,7 @@ require_once 'iMSCP/Events/Manager/Interface.php';
  * Events Manager class.
  *
  * The events manager is the central point of i-MSCP's event listener system.
- * Listeners are registered on the manager and events are fired through the
- * manager.
+ * Listeners are registered on the manager and events are fired through the manager.
  *
  * A listener can be an object or a callback function. The listeners objects must
  * implement listeners methods named as the events they listens on.
@@ -42,8 +41,10 @@ require_once 'iMSCP/Events/Manager/Interface.php';
  * A very basic example for a listener that listen on the 'AdminScriptStart':
  *
  * <code>
- * class HelloWorld {
- *      public function AdminScriptStart() {
+ * class HelloWorld
+ * {
+ *      public function AdminScriptStart()
+ *      {
  *          echo 'Hello World!';
  *          exit;
  *      }
@@ -87,7 +88,7 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
     }
 
     /**
-     * Singleton object - Make new unavailable.
+     * Singleton object - Make clone unavailable.
      *
      * @return void
      */

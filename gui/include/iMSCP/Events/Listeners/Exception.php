@@ -1,7 +1,7 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
- * Copyright (C) 2010-2011 by iMSCP team
+ * Copyright (C) 2010-2011 by i-MSCP team
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,11 +20,11 @@
  * @category    iMSCP
  * @package     iMSCP_Events
  * @subpackage  Listeners
- * @copyright   2010-2011 by iMSCP team
+ * @copyright   2010-2011 by i-MSCP team
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     SVS: $Id$
  * @link        http://www.i-mscp.net i-MSCP Home Site
- * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+ * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
 /** @see iMSCP_Events_Exception */
@@ -37,7 +37,7 @@ require_once 'iMSCP/Events/Exception.php';
  * @package     iMSCP_Events
  * @subpackage  Listeners
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @link        http://www.i-mscp.net i-MSCP Home Site
+ * @version     0.0.1
  */
 class iMSCP_Events_Listener_Exception extends iMSCP_Events_Exception
 {
