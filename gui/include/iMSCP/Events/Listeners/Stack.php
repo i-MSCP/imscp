@@ -49,7 +49,7 @@ class iMSCP_Events_Listeners_Stack implements IteratorAggregate
     protected $_listeners = array();
 
     /**
-     * Register a listener object.
+     * Adds a listener to the stack.
      *
      * @throws iMSCP_EventsManager_Exception When listener is already registered
      * @throws iMSCP_EventsManager_Exception When listener with same priority is found
@@ -57,7 +57,7 @@ class iMSCP_Events_Listeners_Stack implements IteratorAggregate
      * @param null $stackIndex OPTIONAL Stack index Listener priority
      * @return iMSCP_Events_Listeners_Stack Provides fluent interface, returns self
      */
-    public function registerListener($listener,  $stackIndex = null)
+    public function addListener($listener,  $stackIndex = null)
     {
         if (false !== array_search($listener, $this->_listeners, true)) {
             require_once 'iMSCP/Events/Exception.php';

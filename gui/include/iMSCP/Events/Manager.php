@@ -179,7 +179,7 @@ class iMSCP_Events_Manager implements iMSCP_Events_Manager_Interface
                 $this->_events[$eventName] = new iMSCP_Events_Listeners_Stack();
             }
 
-            $this->_events[$eventName]->registerListener($listener, $stackIndex);
+            $this->_events[$eventName]->addListener($listener, $stackIndex);
         }
 
         return $this;
