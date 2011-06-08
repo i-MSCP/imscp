@@ -34,7 +34,6 @@
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
-
 /***********************************************************************************************************************
  * Functions
  */
@@ -199,12 +198,13 @@ function generateServerTraffic($tpl) {
 	);
 }
 
-/***********************************************************************************************************************
+/************************************************************************************
  * Main script
  */
 
 require '../include/imscp-lib.php';
 
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
 /**
  * @var $cfg iMSCP_Config_Handler_File
  */
@@ -243,6 +243,10 @@ generateServerTraffic($tpl);
 generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
+
+iMSCP_Events_Manager::getInstance()->dispatch(
+    iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
+
 $tpl->prnt();
 
 unsetMessages();

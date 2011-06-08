@@ -282,6 +282,8 @@ function update_button() {
 // end site functions
 require '../include/imscp-lib.php';
 
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+
 check_login(__FILE__);
 
 $cfg = iMSCP_Registry::get('config');
@@ -353,6 +355,10 @@ if (isset($_GET['edit_id'])) {
 }
 
 $tpl->parse('PAGE', 'page');
+
+iMSCP_Events_Manager::getInstance()->dispatch(
+    iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
+
 $tpl->prnt();
 
 unsetMessages();

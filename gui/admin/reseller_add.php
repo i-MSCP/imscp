@@ -34,6 +34,8 @@
 
 require '../include/imscp-lib.php';
 
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+
 check_login(__FILE__);
 
 /** @var $cfg iMSCP_Config_Handler_File */
@@ -631,6 +633,10 @@ $tpl->assign(
 generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
+
+iMSCP_Events_Manager::getInstance()->dispatch(
+    iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
+
 $tpl->prnt();
 
 unsetMessages();

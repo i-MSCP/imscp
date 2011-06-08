@@ -34,6 +34,8 @@
 
 require '../include/imscp-lib.php';
 
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+
 check_login(__FILE__);
 
 $cfg = iMSCP_Registry::get('config');
@@ -99,10 +101,10 @@ $tpl->assign(
 generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
-$tpl->prnt();
 
-if ($cfg->DUMP_GUI_DEBUG) {
-	dump_gui_debug();
-}
+iMSCP_Events_Manager::getInstance()->dispatch(
+    iMSCP_Events::onAdminScriptEnd, new iMSCP_Events_Response($tpl));
+
+$tpl->prnt();
 
 unsetMessages();
