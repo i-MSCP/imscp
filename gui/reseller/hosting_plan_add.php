@@ -34,6 +34,8 @@
 
 require '../include/imscp-lib.php';
 
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
+
 check_login(__FILE__);
 
 $cfg = iMSCP_Registry::get('config');
@@ -149,6 +151,10 @@ if ($rsql_db_max    == "-1") $tpl->assign('SQL_DB_ADD', '');
 if ($rsql_user_max  == "-1") $tpl->assign('SQL_USER_ADD', '');
 
 $tpl->parse('PAGE', 'page');
+
+iMSCP_Events_Manager::getInstance()->dispatch(
+    iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
+
 $tpl->prnt();
 
 // Function definitions

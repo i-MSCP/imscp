@@ -34,6 +34,8 @@
 
 require '../include/imscp-lib.php';
 
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
+
 $cfg = iMSCP_Registry::get('config');
 
 check_login(__FILE__, $cfg->PREVENT_EXTERNAL_LOGIN_RESELLER);
@@ -361,6 +363,10 @@ generatePageMessage($tpl);
 
 $tpl->assign('LAYOUT', '');
 $tpl->parse('PAGE', 'page');
+
+iMSCP_Events_Manager::getInstance()->dispatch(
+    iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
+
 $tpl->prnt();
 
 unsetMessages();

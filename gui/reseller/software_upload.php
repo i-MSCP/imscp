@@ -313,6 +313,8 @@ function get_avail_software ($tpl, $user_id) {
 
 require '../include/imscp-lib.php';
 
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
+
 check_login(__FILE__);
 
 /**
@@ -627,6 +629,10 @@ generatePageMessage($tpl);
 
 $tpl->assign('LAYOUT', '');
 $tpl->parse('PAGE', 'page');
+
+iMSCP_Events_Manager::getInstance()->dispatch(
+    iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
+
 $tpl->prnt();
 
 unsetMessages();

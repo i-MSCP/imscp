@@ -405,6 +405,8 @@ function gen_page_msg(&$tpl, $error_txt) {
 
 require '../include/imscp-lib.php';
 
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
+
 check_login(__FILE__);
 
 $cfg = iMSCP_Registry::get('config');
@@ -505,4 +507,8 @@ gen_al_page($tpl, $_SESSION['user_id']);
 gen_page_msg($tpl, $err_txt);
 
 $tpl->parse('PAGE', 'page');
+
+iMSCP_Events_Manager::getInstance()->dispatch(
+    iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
+
 $tpl->prnt();

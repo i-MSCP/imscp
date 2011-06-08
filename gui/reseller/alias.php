@@ -34,6 +34,8 @@
 
 require '../include/imscp-lib.php';
 
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onResellerScriptStart);
+
 /************************************************************************************
  * Script functions
  */
@@ -432,6 +434,10 @@ $tpl->assign(array(
                   'TR_MESSAGE_DELETE' => tr('Are you sure you want to delete %s?', true, '%s')));
 
 $tpl->parse('PAGE', 'page');
+
+iMSCP_Events_Manager::getInstance()->dispatch(
+    iMSCP_Events::onResellerScriptEnd, new iMSCP_Events_Response($tpl));
+
 $tpl->prnt();
 
 unsetMessages();
