@@ -502,6 +502,8 @@ function check_subdomain_data($tpl, &$err_sub, $user_id, $dmn_name) {
 
 require '../include/imscp-lib.php';
 
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+
 check_login(__FILE__);
 
 $cfg = iMSCP_Registry::get('config');
@@ -592,4 +594,8 @@ if(isset($_POST['uaction'])) {
 gen_page_msg($tpl, $err_txt);
 
 $tpl->parse('PAGE', 'page');
+
+iMSCP_Events_Manager::getInstance()->dispatch(
+    iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
+
 $tpl->prnt();

@@ -459,6 +459,8 @@ function check_db_connection($sql_database, $sql_user, $sql_pass) {
 
 require '../include/imscp-lib.php';
 
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+
 check_login(__FILE__);
 
 /**
@@ -786,6 +788,10 @@ $tpl -> assign(
 generatePageMessage($tpl);
 
 $tpl -> parse('PAGE', 'page');
+
+iMSCP_Events_Manager::getInstance()->dispatch(
+    iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
+
 $tpl -> prnt();
 
 unsetMessages();

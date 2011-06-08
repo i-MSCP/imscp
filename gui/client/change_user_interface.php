@@ -34,6 +34,8 @@
 
 require '../include/imscp-lib.php';
 
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+
 check_login(__FILE__);
 
 if (isset($_SESSION['logged_from'])

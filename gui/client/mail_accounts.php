@@ -34,6 +34,8 @@
 
 require '../include/imscp-lib.php';
 
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onClientScriptStart);
+
 check_login(__FILE__);
 
 $cfg = iMSCP_Registry::get('config');
@@ -815,6 +817,10 @@ if (count_default_mails($dmn_id) > 0) {
 generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
+
+iMSCP_Events_Manager::getInstance()->dispatch(
+    iMSCP_Events::onClientScriptEnd, new iMSCP_Events_Response($tpl));
+
 $tpl->prnt();
 
 
