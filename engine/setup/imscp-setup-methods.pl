@@ -353,6 +353,8 @@ sub setup_imscp_database {
 
 	} else {
 
+		$main::imscpConfig{'DATABASE_NAME'} = $main::imscpConfigOld{'DATABASE_NAME'} if(! $main::imscpConfig{'DATABASE_NAME'});
+
 		if (my $error = updateDb()){
 			error ((caller(0))[3].": $error");
 			return 1;
