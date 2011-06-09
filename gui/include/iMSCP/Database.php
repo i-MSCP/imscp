@@ -112,15 +112,15 @@ class iMSCP_Database
         // The onBeforeConnection event is fired here.
         $this->_eventManager->dispatch(
             iMSCP_Database_Events::onBeforeConnection,
-            new iMSCP_Database_Events_Database($this));
+            new iMSCP_Database_Events_Database('', $this));
 
         $this->_db = new PDO($type . ':host=' . $host . ';dbname=' . $name, $user,
             $pass, $driver_options);
 
         // The onAfterConnection event is fired here.
         $this->_eventManager->dispatch(
-        iMSCP_Database_Events::onAfterConnection,
-        new iMSCP_Database_Events_Database($this));
+            iMSCP_Database_Events::onAfterConnection,
+            new iMSCP_Database_Events_Database('', $this));
 
         // @todo: Bad for future support of another RDBMS.
         $this->_db->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, true);
@@ -239,7 +239,7 @@ class iMSCP_Database
         // The onBeforePrepare event is fired here.
         $this->_eventManager->dispatch(
             iMSCP_Database_Events::onBeforePrepare,
-            new iMSCP_Database_Events_Database($this, $sql));
+            new iMSCP_Database_Events_Database($sql, $this));
 
         if (is_array($driver_options)) {
             $stmt = $this->_db->prepare($sql, $driver_options);
@@ -342,6 +342,12 @@ class iMSCP_Database
                 $rs = $stmt->execute((array)$parameters);
             }
         } elseif (null == $parameters) {
+
+            // The onBeforeExecute event is fired here
+            $this->_eventManager->dispatch(
+                iMSCP_Database_Events::onBeforeExecute,
+                new iMSCP_Database_Events_Database($stmt, $this));
+
             $rs = $this->_db->query($stmt);
         } else {
             $parameters = func_get_args();
