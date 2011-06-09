@@ -205,7 +205,7 @@ function gen_admin_menu($tpl, $menu_file)
                       'BUILDDATE' => $cfg->BuildDate,
                       'CODENAME' => $cfg->CodeName));
 
-    $query = "SELECT * FROM `custom_menus` WHERE `menu_level` = 'admin1';";
+    $query = "SELECT * FROM `custom_menus` WHERE `menu_level` = 'admin';";
     $rs = exec_query($query);
 
     if ($rs->recordCount() == 0) {
