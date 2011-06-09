@@ -512,7 +512,7 @@ class iMSCP_Initializer
         if($this->_config->DEBUG) {
             $debugBarPlugins = array(
                 // Debug information about variables such as $_GET, $_POST...
-                //new iMSCP_Debug_Bar_Plugin_Variables(),
+                new iMSCP_Debug_Bar_Plugin_Variables(),
                 // Debug information about script execution time
                 new iMSCP_Debug_Bar_Plugin_Timer()
                 // Debug information about memory consumption
