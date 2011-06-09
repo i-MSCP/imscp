@@ -54,7 +54,7 @@ interface iMSCP_Debug_Bar_Plugin_Interface
     public function getListenedEvents();
 
     /**
-     * Get plugin tab.
+     * Returns plugin tab.
      *
      * @abstract
      * @return string

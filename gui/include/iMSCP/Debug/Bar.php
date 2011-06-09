@@ -102,10 +102,10 @@ class iMSCP_Debug_Bar
     }
 
     /**
-     * Register a plugin on the events manager.
+     * Register a plugin listener on the events manager.
      *
      * @param  iMSCP_Debug_Bar_Plugin_Interface $plugin Plugin instance.
-     * @param $stackIndex Order which the plugin listeners will be executed.
+     * @param  int $stackIndex Order in which listeners methods will be executed.
      * @return void
      */
     protected function registerListener($plugin, $stackIndex)

@@ -30,9 +30,9 @@
 require_once 'iMSCP/Debug/Bar/Plugin.php';
 
 /**
- * Variables plugin for the i-MSCP Debug Bar component.
+ * Files plugin for the i-MSCP Debug Bar component.
  *
- * Provides debug information about variables such as $_GET, $_POST...
+ * Provide debug information about all included files.
  *
  * @package     iMSCP
  * @package     iMSCP_Debug
@@ -40,14 +40,21 @@ require_once 'iMSCP/Debug/Bar/Plugin.php';
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     0.0.1
  */
-class iMSCP_Debug_Bar_Plugin_Variables extends iMSCP_Debug_Bar_Plugin
+class iMSCP_Debug_Bar_Plugin_Files extends iMSCP_Debug_Bar_Plugin
 {
     /**
      * Plugin unique identifier.
      *
      * @var string
      */
-    const IDENTIFIER = 'Variables';
+    const IDENTIFIER = 'Files';
+
+    /**
+     * Stores included files
+     *
+     * @var
+     */
+    protected $_includedFiles = null;
 
     /**
      * Returns plugin unique identifier.
@@ -62,6 +69,7 @@ class iMSCP_Debug_Bar_Plugin_Variables extends iMSCP_Debug_Bar_Plugin
     /**
      * Returns list of events that this plugin listens on.
      *
+     * @abstract
      * @return array
      */
     public function getListenedEvents()
@@ -76,7 +84,7 @@ class iMSCP_Debug_Bar_Plugin_Variables extends iMSCP_Debug_Bar_Plugin
      */
     public function getTab()
     {
-        return $this->getIdentifier();
+        return count($this->_getIncludedFiles()) . ' ' . $this->getIdentifier();
     }
 
     /**
@@ -86,25 +94,28 @@ class iMSCP_Debug_Bar_Plugin_Variables extends iMSCP_Debug_Bar_Plugin
      */
     public function getPanel()
     {
-        $vars = '<h4>$_GET</h4>'
-                 . '<div id="iMSCPdebug_get">' . $this->_humanize($_GET) . '</div>';
+        $included = $this->_getIncludedFiles();
+        $xhtml = '<h4>File Information</h4>';
+        $xhtml .= count($included) . ' Files Included<br />';
+        $size = 0;
 
-        $vars .= '<h4>$_POST</h4>'
-                 . '<div id="iMSCPdebug_post">' . $this->_humanize($_POST) . '</div>';
+        foreach ($included as $file) {
+            $size += filesize($file);
+        }
 
-        $vars .= '<h4>$_COOKIE</h4>'
-                 . '<div id="iMSCPdebug_cookie">' . $this->_humanize($_COOKIE) . '</div>';
+        $xhtml .= 'Total Size: ' . round($size / 1024, 1) . 'K<br />';
+        $xhtml .= '<h4>Application Files</h4>';
 
-        $vars .= '<h4>$_FILE</h4>'
-                 . '<div id="iMSCPdebug_file">' . $this->_humanize($_FILES) . '</div>';
+        foreach ($included as $file) {
+            $file = str_replace($this->_basePath, '', $file);
+            $inUserLib = false;
 
-        $vars .= '<h4>$_SESSION</h4>'
-                 . '<div id="iMSCPdebug_session">' . $this->_humanize($_SESSION) . '</div>';
+            if (!$inUserLib) {
+                $xhtml .= $file . '<br />';
+            }
+        }
 
-        $vars .= '<h4>$_ENV</h4>'
-                 . '<div id="iMSCPdebug_env">' . $this->_humanize($_ENV) . '</div>';
-
-        return $vars;
+        return $xhtml;
     }
 
     /**
@@ -114,6 +125,23 @@ class iMSCP_Debug_Bar_Plugin_Variables extends iMSCP_Debug_Bar_Plugin
      */
     public function getIcon()
     {
-        return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAFWSURBVBgZBcE/SFQBAAfg792dppJeEhjZn80MChpqdQ2iscmlscGi1nBPaGkviKKhONSpvSGHcCrBiDDjEhOC0I68sjvf+/V9RQCsLHRu7k0yvtN8MTMPICJieaLVS5IkafVeTkZEFLGy0JndO6vWNGVafPJVh2p8q/lqZl60DpIkaWcpa1nLYtpJkqR1EPVLz+pX4rj47FDbD2NKJ1U+6jTeTRdL/YuNrkLdhhuAZVP6ukqbh7V0TzmtadSEDZXKhhMG7ekZl24jGDLgtwEd6+jbdWAAEY0gKsPO+KPy01+jGgqlUjTK4ZroK/UVKoeOgJ5CpRyq5e2qjhF1laAS8c+Ymk1ZrVXXt2+9+fJBYUwDpZ4RR7Wtf9u9m2tF8Hwi9zJ3/tg5pW2FHVv7eZJHd75TBPD0QuYze7n4Zdv+ch7cfg8UAcDjq7mfwTycew1AEQAAAMB/0x+5JQ3zQMYAAAAASUVORK5CYII=';
+        return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAADPSURBVCjPdZFNCsIwEEZHPYdSz1DaHsMzuPM6RRcewSO4caPQ3sBDKCK02p+08DmZtGkKlQ+GhHm8MBmiFQUU2ng0B7khClTdQqdBiX1Ma1qMgbDlxh0XnJHiit2JNq5HgAo3KEx7BFAM/PMI0CDB2KNvh1gjHZBi8OR448GnAkeNDEDvKZDh2Xl4cBcwtcKXkZdYLJBYwCCFPDRpMEjNyKcDPC4RbXuPiWKkNABPOuNhItegz0pGFkD+y3p0s48DDB43dU7+eLWes3gdn5Y/LD9Y6skuWXcAAAAASUVORK5CYII=';
+    }
+
+    /**
+     * Returns list of all included files.
+     *
+     * @return array
+     */
+    protected function _getIncludedFiles()
+    {
+        if (null !== $this->_includedFiles) {
+            return $this->_includedFiles;
+        }
+
+        $this->_includedFiles = get_included_files();
+        sort($this->_includedFiles);
+
+        return $this->_includedFiles;
     }
 }

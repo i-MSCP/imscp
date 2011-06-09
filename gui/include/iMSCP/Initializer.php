@@ -124,6 +124,7 @@ class iMSCP_Initializer
      */
     protected function __clone()
     {
+
     }
 
     /**
@@ -514,13 +515,13 @@ class iMSCP_Initializer
                 // Debug information about variables such as $_GET, $_POST...
                 new iMSCP_Debug_Bar_Plugin_Variables(),
                 // Debug information about script execution time
-                new iMSCP_Debug_Bar_Plugin_Timer()
+                new iMSCP_Debug_Bar_Plugin_Timer(),
                 // Debug information about memory consumption
                 //new iMSCP_Debug_Bar_Plugin_Memory(),
                 // Debug information about any exception thrown
                 //new iMSCP_Debug_Bar_Plugin_Exception(),
                 // Debug information about all included files
-                //new iMSCP_Debug_Bar_Plugin_Files(),
+                new iMSCP_Debug_Bar_Plugin_Files(),
                 // Debug information about all queries made during a script exection
                 // and their execution time.
                 //new iMSCP_Debug_Bar_Plugin_Database()
