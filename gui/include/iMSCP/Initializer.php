@@ -161,8 +161,11 @@ class iMSCP_Initializer
         // it to our basis configuration object
         $this->_processConfiguration();
 
+        // initialize the debug bar
+        $this->initializeDebugBar();
+
         // Initialize output buffering
-        $this->_initializeOutputBuffering();
+        //$this->_initializeOutputBuffering();
 
         // Initialize internationalization libraries
         // $this->_initializeI18n();
@@ -509,20 +512,22 @@ class iMSCP_Initializer
         if($this->_config->DEBUG) {
             $debugBarPlugins = array(
                 // Debug information about variables such as $_GET, $_POST...
-                new iMSCP_Debug_Bar_Plugin_Variables(),
+                //new iMSCP_Debug_Bar_Plugin_Variables(),
                 // Debug information about script execution time
-                new iMSCP_Debug_Bar_Plugin_Time(),
+                new iMSCP_Debug_Bar_Plugin_Timer()
                 // Debug information about memory consumption
-                new iMSCP_Debug_Bar_Plugin_Memory(),
+                //new iMSCP_Debug_Bar_Plugin_Memory(),
                 // Debug information about any exception thrown
-                new iMSCP_Debug_Bar_Plugin_Exception(),
+                //new iMSCP_Debug_Bar_Plugin_Exception(),
                 // Debug information about all included files
-                new iMSCP_Debug_Bar_Plugin_Files(),
+                //new iMSCP_Debug_Bar_Plugin_Files(),
                 // Debug information about all queries made during a script exection
                 // and their execution time.
-                new iMSCP_Debug_Bar_Plugin_Database());
+                //new iMSCP_Debug_Bar_Plugin_Database()
+            );
 
-            new iMSCP_Debug_Bar($debugBarPlugins);
+            $eventManager = iMSCP_Events_Manager::getInstance();
+            new iMSCP_Debug_Bar($eventManager, $debugBarPlugins);
         }
     }
 
