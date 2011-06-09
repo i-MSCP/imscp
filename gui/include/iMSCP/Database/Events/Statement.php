@@ -50,12 +50,12 @@ class iMSCP_Database_Events_Statement extends iMSCP_Database_Events_Database
      * Constructor.
      *
      * @param PDOStatement $statement
-     * @param iMSCP_Database $db
+     * @param iMSCP_Database $db Database instance
      */
     public function __construct(PDOStatement $statement, iMSCP_Database $db)
     {
         $this->_statement = $statement;
-        parent::__construct($db, $statement->queryString);
+        parent::__construct($statement->queryString, $db);
     }
 
     /**

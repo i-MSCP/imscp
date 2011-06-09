@@ -58,11 +58,11 @@ class iMSCP_Database_Events_Database extends iMSCP_Events_Event
     /**
      * Constructor.
      *
-     * @param iMSCP_Database $db
      * @param string $query
+     * @param iMSCP_Database $db Database instance
      * @return iMSCP_Database_Events_Database
      */
-    public function __construct(iMSCP_Database $db, $query = '')
+    public function __construct($query = '', iMSCP_Database $db)
     {
         $this->_db = $db;
         $this->_query = (string)$query;
