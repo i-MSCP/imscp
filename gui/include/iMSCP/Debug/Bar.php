@@ -84,30 +84,34 @@ class iMSCP_Debug_Bar
         // Creating i-MSCP Version Tab always shown
         $this->_plugins[] = new iMSCP_Debug_Bar_Plugin_Version();
 
+        $i = 998;
         foreach ((array)$plugins as $plugin) {
             if (!$plugin instanceof iMSCP_Debug_Bar_Plugin_Interface) {
                 throw new iMSCP_Debug_Bar_Exception(
                     'All plugins for the debug bar must implement the ' .
                     'iMSCP_Debug_Bar_Plugin_Interface interface.');
             } else {
-                $this->registerListener($plugin);
+                $this->registerListener($plugin, $i);
                 $this->_plugins[] = $plugin;
             }
+
+            $i--;
         }
 
-        $eventsManager->registerListener($this->_listenedEvents, $this);
+        $eventsManager->registerListener($this->_listenedEvents, $this, 999);
     }
 
     /**
      * Register a plugin on the events manager.
      *
      * @param  iMSCP_Debug_Bar_Plugin_Interface $plugin Plugin instance.
+     * @param $stackIndex Order which the plugin listeners will be executed.
      * @return void
      */
-    protected function registerListener($plugin)
+    protected function registerListener($plugin, $stackIndex)
     {
         $this->_enventsManager->registerListener(
-            $plugin->getListenedEvents(), $plugin);
+            $plugin->getListenedEvents(), $plugin, $stackIndex);
     }
 
     /**
