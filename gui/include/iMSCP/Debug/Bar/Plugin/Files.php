@@ -107,12 +107,7 @@ class iMSCP_Debug_Bar_Plugin_Files extends iMSCP_Debug_Bar_Plugin
         $xhtml .= '<h4>Application Files</h4>';
 
         foreach ($included as $file) {
-            $file = str_replace($this->_basePath, '', $file);
-            $inUserLib = false;
-
-            if (!$inUserLib) {
-                $xhtml .= $file . '<br />';
-            }
+            $xhtml .= $file . '<br />';
         }
 
         return $xhtml;
