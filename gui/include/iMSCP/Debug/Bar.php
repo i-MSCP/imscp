@@ -46,6 +46,8 @@ class iMSCP_Debug_Bar
     protected $_enventsManager;
 
     /**
+     * Event that this listener receives.
+     *
      * @var iMSCP_Events_Response
      */
     protected $_event;
@@ -63,10 +65,11 @@ class iMSCP_Debug_Bar
      * @var array An array that contains list of events.
      */
     protected $_listenedEvents = array(
+        iMSCP_Events::onLoginScriptEnd,
+        // TODO iMSCP_Events::onLostPasswordScriptEnd,
         iMSCP_Events::onAdminScriptEnd,
         iMSCP_Events::onResellerScriptEnd,
         iMSCP_Events::onClientScriptEnd,
-        iMSCP_Events::onLoginScriptEnd,
         iMSCP_Events::onOrderPanelScriptEnd
     );
 
@@ -110,8 +113,12 @@ class iMSCP_Debug_Bar
      */
     protected function registerListener($plugin, $stackIndex)
     {
-        $this->_enventsManager->registerListener(
-            $plugin->getListenedEvents(), $plugin, $stackIndex);
+        $listenedEvents = $plugin->getListenedEvents();
+
+        if(!empty($listenedEvents)) {
+            $this->_enventsManager->registerListener(
+                $listenedEvents, $plugin, $stackIndex);
+        }
     }
 
     /**
@@ -119,7 +126,7 @@ class iMSCP_Debug_Bar
      * since they do same job.
      *
      * @param string $listenerMethod Listener method
-     * @param iMSCP_Events_Event $event Event object
+     * @param iMSCP_Events_Response $event Event object
      */
     public function __call($listenerMethod, $event)
     {
@@ -149,6 +156,7 @@ class iMSCP_Debug_Bar
         foreach ($this->_plugins as $plugin)
         {
             $panel = $plugin->getPanel();
+
             if ($panel == '') {
                 continue;
             }

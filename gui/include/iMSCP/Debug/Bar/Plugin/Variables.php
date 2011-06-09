@@ -86,22 +86,24 @@ class iMSCP_Debug_Bar_Plugin_Variables extends iMSCP_Debug_Bar_Plugin
      */
     public function getPanel()
     {
-        $vars = '<h4>$_GET</h4>'
+        $vars = '<h4>Variables</h4>';
+
+        $vars .= '<h4>$_GET:</h4>'
                  . '<div id="iMSCPdebug_get">' . $this->_humanize($_GET) . '</div>';
 
-        $vars .= '<h4>$_POST</h4>'
+        $vars .= '<h4>$_POST:</h4>'
                  . '<div id="iMSCPdebug_post">' . $this->_humanize($_POST) . '</div>';
 
-        $vars .= '<h4>$_COOKIE</h4>'
+        $vars .= '<h4>$_COOKIE:</h4>'
                  . '<div id="iMSCPdebug_cookie">' . $this->_humanize($_COOKIE) . '</div>';
 
-        $vars .= '<h4>$_FILE</h4>'
+        $vars .= '<h4>$_FILE:</h4>'
                  . '<div id="iMSCPdebug_file">' . $this->_humanize($_FILES) . '</div>';
 
-        $vars .= '<h4>$_SESSION</h4>'
+        $vars .= '<h4>$_SESSION:</h4>'
                  . '<div id="iMSCPdebug_session">' . $this->_humanize($_SESSION) . '</div>';
 
-        $vars .= '<h4>$_ENV</h4>'
+        $vars .= '<h4>$_ENV:</h4>'
                  . '<div id="iMSCPdebug_env">' . $this->_humanize($_ENV) . '</div>';
 
         return $vars;

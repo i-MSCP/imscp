@@ -146,6 +146,9 @@ class iMSCP_Initializer
         // Create or restore the session
         $this->_initializeSession();
 
+        // initialize the debug bar
+        $this->initializeDebugBar();
+
         // Sets encryption keys
         $this->_setEncryptionKeys();
 
@@ -162,11 +165,8 @@ class iMSCP_Initializer
         // it to our basis configuration object
         $this->_processConfiguration();
 
-        // initialize the debug bar
-        $this->initializeDebugBar();
-
         // Initialize output buffering
-        //$this->_initializeOutputBuffering();
+        $this->_initializeOutputBuffering();
 
         // Initialize internationalization libraries
         // $this->_initializeI18n();
@@ -524,7 +524,7 @@ class iMSCP_Initializer
                 new iMSCP_Debug_Bar_Plugin_Files(),
                 // Debug information about all queries made during a script exection
                 // and their execution time.
-                //new iMSCP_Debug_Bar_Plugin_Database()
+                new iMSCP_Debug_Bar_Plugin_Database()
             );
 
             $eventManager = iMSCP_Events_Manager::getInstance();
