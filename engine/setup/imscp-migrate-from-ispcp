@@ -40,7 +40,7 @@ use Data::Dumper;
 
 umask(027);
 
-iMSCP::Requirements->new()->test('all');
+iMSCP::Boot->new(mode => 'all')->init();
 
 loadConfigs();
 
@@ -62,6 +62,7 @@ sub setup_engine {
 		[\&userTest, 'System users are in place?: '],
 		[\&systemConfigTest, 'Save system config files if exists: '],
 		[\&confSave, 'Save system configuration: '],
+		[\&dbUpgrade, 'Save system configuration: '],
 		[\&otherMessCleanup, 'Some system cleaning: '],
 		[\&daemonRemove, 'Remove imscp daemon: '],
 		[\&removeDirs, 'Delete ispcp directories: '],
@@ -91,7 +92,6 @@ sub loadConfigs{
 	fatal((caller(0))[3].': conf files not found') if(! -f $path.'ispcp/ispcp.conf' || ! -f $path.'imscp/imscp.conf');
 
 	tie %main::ispcpConfig, 'iMSCP::Config','fileName' => $path.'ispcp/ispcp.conf';
-	tie %main::imscpConfig, 'iMSCP::Config','fileName' => $path.'imscp/imscp.conf';
 
 	debug((caller(0))[3].': Ending...');
 
@@ -204,6 +204,7 @@ sub checkDbPass{
 
 							Fix this and restart.
 	");
+	error((caller(0))[3].": ispCP database keys are corrupt! We tryied to use folowing keys\n".join("\n", @paths));
 	debug((caller(0))[3].': Ending...');
 	1;
 }
@@ -218,7 +219,7 @@ sub connectispCPDb{
 	$crypt->set('key', $main::ispcpDBKey);
 	$crypt->set('iv', $main::ispcpDBiv);
 	my $pass = $crypt->decrypt_db_password($main::ispcpConfig{'DATABASE_PASSWORD'});
-	my $database = iMSCP::Database->new(db => $main::ispcpConfig{'DATABASE_TYPE'})->factory();
+	my $database = iMSCP::Database->new(db => 'mysql')->factory();
 	$database->set('DATABASE_NAME', $main::ispcpConfig{'DATABASE_NAME'});
 	$database->set('DATABASE_HOST', $main::ispcpConfig{'DATABASE_HOST'});
 	$database->set('DATABASE_USER', $main::ispcpConfig{'DATABASE_USER'});
@@ -274,7 +275,7 @@ sub databaseIntegrityTest{
 	local $Data::Dumper::Terse = 1;
 	for my $test (@tests){
 		my $preparedQuery =  sprintf($query, $test->{childTable}, $test->{parentTable}, $test->{childField}, $test->{parentField}, $test->{parentField}, $test->{limit});
-		my $database = iMSCP::Database->new(db => $main::ispcpConfig{'DATABASE_TYPE'})->factory();
+		my $database = iMSCP::Database->new(db => 'mysql')->factory();
 		my $result = $database->doQuery($test->{group}, $preparedQuery);
 		if (ref $result ne 'HASH'){
 			error $preparedQuery;
@@ -304,7 +305,7 @@ sub databaseIntegrityTest{
 
 	for my $test (@tests){
 		my $preparedQuery =  sprintf($query, $test->{table}, $test->{statusField});
-		my $database = iMSCP::Database->new(db => $main::ispcpConfig{'DATABASE_TYPE'})->factory();
+		my $database = iMSCP::Database->new(db => 'mysql')->factory();
 		my $result = $database->doQuery($test->{group}, $preparedQuery);
 		if (ref $result ne 'HASH'){
 			error $preparedQuery;
@@ -320,7 +321,7 @@ sub databaseIntegrityTest{
 
 	#test databases and sql users
 	$query = 'SELECT * FROM `sql_user` as t1 LEFT JOIN `sql_database` AS t2 ON t1.`sqld_id` = t2.`sqld_id`';
-	my $database = iMSCP::Database->new(db => $main::ispcpConfig{'DATABASE_TYPE'})->factory();
+	my $database = iMSCP::Database->new(db => 'mysql')->factory();
 	my $result = $database->doQuery('sqlu_id', $query);
 	if (ref $result ne 'HASH'){
 		error $query;
@@ -380,7 +381,7 @@ sub userTest{
 
 	## CLIENT USER
 	my $query = 'SELECT * FROM `domain`';
-	my $database = iMSCP::Database->new(db => $main::ispcpConfig{'DATABASE_TYPE'})->factory();
+	my $database = iMSCP::Database->new(db => 'mysql')->factory();
 	my $result = $database->doQuery('domain_gid', $query);
 	if (ref $result ne 'HASH'){
 		push(@errors, "$query produced following error: $result");
@@ -398,29 +399,14 @@ sub userTest{
 		}
 	}
 
-	## SYSTEM USER
-	push(@errors, "No system user has group id $main::ispcpConfig{'APACHE_SUEXEC_MIN_GID'}") if(!getgrgid($main::ispcpConfig{'APACHE_SUEXEC_MIN_GID'}));
-	push(@errors, "No such group ".$main::ispcpConfig{'APACHE_SUEXEC_USER_PREF'}.$main::ispcpConfig{'APACHE_SUEXEC_MIN_GID'})
-		if(!getgrnam($main::ispcpConfig{'APACHE_SUEXEC_USER_PREF'}.$main::ispcpConfig{'APACHE_SUEXEC_MIN_GID'}));
-	push(@errors, "No system user has user id = $main::ispcpConfig{'APACHE_SUEXEC_MIN_UID'}") if(!getpwuid($main::ispcpConfig{'APACHE_SUEXEC_MIN_UID'}));
-	push(@errors, "No such user ".$main::ispcpConfig{'APACHE_SUEXEC_USER_PREF'}.$main::ispcpConfig{'APACHE_SUEXEC_MIN_UID'})
-		if(!getpwnam($main::ispcpConfig{'APACHE_SUEXEC_USER_PREF'}.$main::ispcpConfig{'APACHE_SUEXEC_MIN_UID'}));
-
-	## MAIL USERS
-	push(@errors, "No system user has group id $main::ispcpConfig{'MTA_MAILBOX_GID'}") if(!getgrgid($main::ispcpConfig{'MTA_MAILBOX_GID'}));
-	push(@errors, "No such group ".$main::ispcpConfig{'MTA_MAILBOX_GID_NAME'})
-		if(!getgrnam($main::ispcpConfig{'MTA_MAILBOX_GID_NAME'}));
-	push(@errors, "No system user has user id = $main::ispcpConfig{'MTA_MAILBOX_UID'}") if(!getpwuid($main::ispcpConfig{'MTA_MAILBOX_UID'}));
-	push(@errors, "No such user ".$main::ispcpConfig{'MTA_MAILBOX_UID_NAME'})
-		if(!getpwnam($main::ispcpConfig{'MTA_MAILBOX_UID_NAME'}));
-
 	if (@errors){
 		iMSCP::Dialog->new()->msgbox("
-							\\Z1\\ZuispCP database records are corrupt!\\Zn\n
+							\\Z1\\ZuispCP users records are missing or corrupt!\\Zn\n
 							Please fix folowing:\n\n".
 							join("\n\n", @errors)
 							."\n\nFix this and try again.
 		");
+		error((caller(0))[3].": \n".join("\n", @errors));
 		debug((caller(0))[3].': Ending...');
 		return 1;
 	}
@@ -452,11 +438,11 @@ sub systemConfigTest{
 		push (@errors, $stderr) if $rv;
 	}
 
-	my $database = iMSCP::Database->new(db => $main::ispcpConfig{'DATABASE_TYPE'})->factory();
+	my $database = iMSCP::Database->new(db => 'mysql')->factory();
 	my $query = "
-				SELECT `domain_name` as 'name' from `domain`
+				SELECT `domain_name` AS 'name' FROM `domain`
 				UNION
-				SELECT `alias_name` as 'name'  FROM `domain_aliasses`
+				SELECT `alias_name` AS 'name' FROM `domain_aliasses`
 	";
 	my $result = $database->doQuery('name', $query);
 	if (ref $result ne 'HASH'){
@@ -479,12 +465,13 @@ sub systemConfigTest{
 
 	$rv = 0;
 	if (@errors){
-		if(iMSCP::Dialog->new()->yesno("
-							\\Z1\\ZuErrors while saving system files!\\Zn:\n
+		if(iMSCP::Dialog->new()->msgbox("
+							\\Z1\\ZuErrors while saving system files!\\Zn:\n\n
 							".join("\n", @errors)."\n
 							Fix this and after that try again"
 		)){
 			$rv = 1;
+			warning((caller(0))[3].": \n".join("\n", @errors));
 		}
 	}
 	debug((caller(0))[3].': Ending...');
@@ -499,7 +486,9 @@ sub confSave{
 
 	my $crypt = iMSCP::Crypt->new();
 	my $pass = $crypt->decrypt_db_password($main::ispcpConfig{'DATABASE_PASSWORD'});
-	iMSCP::Boot::genKey();
+
+	$crypt->set('key',	$main::imscpDBKey);
+	$crypt->set('iv',	 $main::imscpDBiv);
 	$main::imscpConfig{'DATABASE_PASSWORD'} = $crypt->encrypt_db_password($pass);
 
 	for(qw/
@@ -527,6 +516,95 @@ sub confSave{
 		/
 	){
 		$main::imscpConfig{$_} = $main::ispcpConfig{$_};
+	}
+
+
+
+	debug((caller(0))[3].': Ending...');
+	0;
+}
+
+sub savePass {
+	debug((caller(0))[3].': Starting...');
+	my $table		= shift;
+	my $field_id	= shift;
+	my $field_pass	= shift;
+	my $values		= shift;
+	my $errors		= shift;
+
+	#switch key
+	my $crypt = iMSCP::Crypt->new();
+	$crypt->set('key',	$main::ispcpDBKey);
+	$crypt->set('iv',	 $main::ispcpDBiv);
+
+	my $pass =  $crypt->decrypt_db_password($values->{$field_pass});
+
+	#restore keys
+	$crypt->set('key',	$main::imscpDBKey);
+	$crypt->set('iv',	 $main::imscpDBiv);
+
+	$pass = $crypt->encrypt_db_password($pass);
+
+	my $database = iMSCP::Database->new(db => 'mysql')->factory();
+	my $query = "UPDATE `$table` SET `$field_pass` = ? WHERE `$field_id` = ?";
+	my $error = $database->doQuery('dummy', $query, $pass, $values->{$field_id});
+	if (ref $error ne 'HASH'){
+		push(@{$errors}, "$query produced following error: $error");
+	}
+
+	debug((caller(0))[3].': Ending...');
+	0;
+}
+
+sub dbUpgrade{
+
+	debug((caller(0))[3].': Starting...');
+
+	my @errors;
+
+	my $query = 'UPDATE `config` SET `value` = \'47\' WHERE `config`.`name` = \'DATABASE_REVISION\' AND `value` > \'47\'';
+	my $database = iMSCP::Database->new(db => 'mysql')->factory();
+	my $result = $database->doQuery('mail_id', $query);
+	if (ref $result ne 'HASH'){
+		push(@errors, "$query produced following error: $result");
+	}
+
+	$query = 'SELECT `mail_id`, `mail_pass` FROM `mail_users` WHERE `mail_pass` != \'_no_\'';
+	$database = iMSCP::Database->new(db => 'mysql')->factory();
+	$result = $database->doQuery('mail_id', $query);
+	if (ref $result ne 'HASH'){
+		push(@errors, "$query produced following error: $result");
+	} else {
+		if (keys %{$result}){
+			for my $row (values %{$result}){
+				savePass('mail_users', 'mail_id', 'mail_pass', $row, \@errors);
+			}
+		}
+	}
+
+	$query = 'SELECT `sqlu_id`, `sqlu_pass` FROM `sql_user`';
+	$database = iMSCP::Database->new(db => 'mysql')->factory();
+	$result = $database->doQuery('sqlu_id', $query);
+	if (ref $result ne 'HASH'){
+		push(@errors, "$query produced following error: $result");
+	} else {
+		if (keys %{$result}){
+			for my $row (values %{$result}){
+				savePass('sql_user', 'sqlu_id', 'sqlu_pass', $row, \@errors);
+			}
+		}
+	}
+
+	if (@errors){
+		error((caller(0))[3].": \n".join("\n", @errors));
+		exit 0 if iMSCP::Dialog->new()->msgbox("
+								\\Z1\\ZuWARNING\\Zn\n
+								Please fix folowing:\n\n".
+								join("\n\n", @errors)
+								."\n
+								This are not fatal error so we can proceed forward.
+								be aware that some password must be changed before works again
+		");
 	}
 
 	debug((caller(0))[3].': Ending...');
@@ -624,11 +702,13 @@ sub otherMessCleanup{
 	}
 
 	if (@errors){
-		exit 0 if iMSCP::Dialog->new()->yesno("
+		warning((caller(0))[3].": \n".join("\n", @errors));
+		exit 0 if iMSCP::Dialog->new()->msgbox("
 								\\Z1\\ZuWARNING\\Zn\n
 								Please fix folowing:\n".
 								join("\n\n", @errors)
-								."\nThis are not fatal error so we can proceed forward.
+								."\n
+								This are not fatal error so we can proceed forward.
 								be aware that we do not guarantee that will succeed
 		");
 	}
@@ -658,12 +738,15 @@ sub daemonRemove{
 			unlink $_ or push(@errors, ": Delete $_ failed: $!");
 		}
 	}
+
 	if (@errors){
-		exit 0 if iMSCP::Dialog->new()->yesno("
+		warning((caller(0))[3].": \n".join("\n", @errors));
+		exit 0 if iMSCP::Dialog->new()->msgbox("
 								\\Z1\\ZuWARNING\\Zn\n
 								Please fix folowing:\n".
 								join("\n\n", @errors)
-								."\nThis are not fatal error so we can proceed forward.
+								."\n
+								This are not fatal error so we can proceed forward.
 								be aware that we do not guarantee that will succeed
 		");
 	}
@@ -691,13 +774,17 @@ sub removeDirs{
 		$errors .= getLastError() if $dir->remove();
 	}
 
-	iMSCP::Dialog->new()->yesno("
-								\\Z1\\ZuWARNING\\Zn\n
-								Please fix folowing:\n".
-								$errors
-								."\nThis are not fatal error so we can proceed forward.
-								be aware that we do not guarantee that will succeed
-	") if $errors;
+	 if ($errors) {
+		iMSCP::Dialog->new()->msgbox("
+									\\Z1\\ZuWARNING\\Zn\n
+									Please fix folowing:\n".
+									$errors
+									."\n
+									This are not fatal error so we can proceed forward.
+									be aware that we do not guarantee that will succeed
+		");
+		warning((caller(0))[3].": \n$errors\n");
+	};
 
 	debug((caller(0))[3].': Ending...');
 	0;
@@ -719,14 +806,17 @@ sub removeFile{
 		$errors .= getLastError() if ($file->delFile());
 	}
 
-	iMSCP::Dialog->new()->yesno("
-								\\Z1\\ZuWARNING\\Zn\n
-								Please fix folowing:\n".
-								$errors
-								."\nThis are not fatal error so we can proceed forward.
-								be aware that we do not guarantee that will succeed
-	") if $errors;
-
+	if ($errors) {
+		iMSCP::Dialog->new()->msgbox("
+									\\Z1\\ZuWARNING\\Zn\n
+									Please fix folowing:\n".
+									$errors
+									."\n
+									This are not fatal error so we can proceed forward.
+									be aware that we do not guarantee that will succeed
+		");
+		warning((caller(0))[3].": \n$errors\n");
+	}
 	debug((caller(0))[3].': Ending...');
 	0;
 }
@@ -735,7 +825,7 @@ sub systemSetup{
 
 	debug((caller(0))[3].': Starting...');
 
-	iMSCP::Dialog->new()->yesno("
+	iMSCP::Dialog->new()->msgbox("
 								\\Z1SUCCESS\\Zn\n\n
 								You can now install iMSCP. Type \\Z4./imscp-setup\\Zn
 	");
