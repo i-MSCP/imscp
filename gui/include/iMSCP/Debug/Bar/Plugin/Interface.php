@@ -21,10 +21,9 @@
  * @package     iMSCP_Debug
  * @subpackage  Bar_Plugin
  * @copyright   2010-2011 by i-MSCP team
- * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
- * @version     SVN: $Id$
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @link        http://www.i-mscp.net i-MSCP Home Site
- * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+ * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
 /**
@@ -33,7 +32,7 @@
  * @package     iMSCP
  * @package     iMSCP_Debug
  * @subpackage  Bar_Plugin
- * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     0.0.1
  */
 interface iMSCP_Debug_Bar_Plugin_Interface
@@ -42,7 +41,7 @@ interface iMSCP_Debug_Bar_Plugin_Interface
      * Returns plugin unique identifier.
      *
      * @abstract
-     * @return void
+     * @return string
      */
     public function getIdentifier();
 
@@ -55,20 +54,20 @@ interface iMSCP_Debug_Bar_Plugin_Interface
     public function getListenedEvents();
 
     /**
-     * Returns the plugin panel.
-     *
-     * @abstract
-     * @return void
-     */
-    public function getPanel();
-
-    /**
      * Get plugin tab.
      *
      * @abstract
      * @return string
      */
     public function getTab();
+
+    /**
+     * Returns the plugin panel.
+     *
+     * @abstract
+     * @return string
+     */
+    public function getPanel();
 
     /**
      * Returns plugin icon.

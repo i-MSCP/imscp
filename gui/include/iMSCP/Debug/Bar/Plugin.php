@@ -21,10 +21,10 @@
  * @package     iMSCP_Debug
  * @subpackage  Bar_Plugin
  * @copyright   2010-2011 by i-MSCP team
- * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     SVN: $Id$
  * @link        http://www.i-mscp.net i-MSCP Home Site
- * @license     http://www.gnu.org/licenses/gpl-2.0.html GPL v2
+ * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
 /** @See iMSCP_Debug_Bar_Plugin_Interface */
@@ -36,11 +36,12 @@ require_once 'iMSCP/Debug/Bar/Plugin/Interface.php';
  * @package     iMSCP
  * @package     iMSCP_Debug
  * @subpackage  Bar
- * @author      Laurent Declercq <laurent.declercq@i-mscp.net>
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     0.0.1
  */
 abstract class iMSCP_Debug_Bar_Plugin implements iMSCP_Debug_Bar_Plugin_Interface
 {
+
     /**
      * Transforms data into human readable format.
      *
