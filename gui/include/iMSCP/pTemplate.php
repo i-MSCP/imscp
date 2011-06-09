@@ -709,6 +709,29 @@ class iMSCP_pTemplate
     }
 
     /**
+     * Returns last parse result.
+     *
+     * @return string
+     */
+    public function getLastParseResult()
+    {
+        return $this->last_parsed;
+    }
+
+    /**
+     * Replaces last parse result with given content.
+     *
+     * @param string $newContent New content
+     * @return iMSCP_pTemplate Provides fluent interface, returns self
+     */
+    public function replaceLastParseResult($newContent)
+    {
+        $this->last_parsed = (string)$newContent;
+
+        return $this;
+    }
+
+    /**
      * @return void
      */
     /*
