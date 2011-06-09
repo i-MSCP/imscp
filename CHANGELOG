@@ -10,6 +10,7 @@ i-MSCP ChangeLog
 	- GUI:
 		- Update pma
 		- Update idna_convert.class.php
+		- Update Net_DNS
 
 2010-06-04 Daniel Andreca
 	- CONFIGS:

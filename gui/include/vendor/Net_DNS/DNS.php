@@ -36,7 +36,7 @@
 * @author     Florian Anderiasch <fa@php.net>
 * @copyright  The PHP Group
 * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
-* @version    CVS: $Id: DNS.php,v 1.16 2009/06/08 04:23:33 clockwerx Exp $
+* @version    CVS: $Id: DNS.php 302014 2010-08-09 06:17:29Z bate $
 * @link       http://pear.php.net/package/Net_DNS
 */
 
@@ -280,6 +280,7 @@ class Net_DNS
      *   <li>ATMA
      *   <li>NAPTR
      *   <li>TSIG
+     *   <li>SPF
      *   <li>UINFO
      *   <li>UID
      *   <li>GID
@@ -333,6 +334,7 @@ class Net_DNS
                 'SRV'           => 33,
                 'ATMA'          => 34,
                 'NAPTR'         => 35,
+                'SPF'           => 99,
                 'UINFO'         => 100,
                 'UID'           => 101,
                 'GID'           => 102,
@@ -399,6 +401,7 @@ class Net_DNS
                 33 => 'SRV',
                 34 => 'ATMA',
                 35 => 'NAPTR',
+                99 => 'SPF',
                 100 => 'UINFO',
                 101 => 'UID',
                 102 => 'GID',
