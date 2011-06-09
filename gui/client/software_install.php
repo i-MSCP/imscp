@@ -441,7 +441,7 @@ function check_db_connection($sql_database, $sql_user, $sql_pass) {
 	$cfg = iMSCP_Registry::get('config');
 
 	try {
-		iMSCP_Database::connect($sql_user, decrypt_db_password($sql_pass),
+		iMSCP_Database::connect($sql_user, $sql_pass,
                                 $cfg->DATABASE_TYPE, $cfg->DATABASE_HOST,
                                 $sql_database, 'privateConnection');
 
@@ -675,7 +675,7 @@ if (isset($_POST['Submit2'])) {
                                           $sw_software_version, $software_language,
                                           $other_dir, $prefix, $selected_db,
                                           $sql_user, $sql_pass, $install_username,
-                                          encrypt_db_password($install_password),
+                                          $install_password,
                                           $install_email, $cfg->ITEM_ADD_STATUS,
                                           $software_depot));
 		} else {
@@ -696,7 +696,7 @@ if (isset($_POST['Submit2'])) {
 							?, ?, ?, ?
 						)
 			";
-			$rs = exec_query($query, array($dmn_id, $posted_aliasdomain_id, $posted_subdomain_id, $posted_aliassubdomain_id, $id, $software_master_id, $sw_software_name, $sw_software_version, $software_language, $other_dir, "not_required", "not_required", "not_required", "not_required", $install_username, encrypt_db_password($install_password), $install_email, $cfg->ITEM_ADD_STATUS, $software_depot));
+			$rs = exec_query($query, array($dmn_id, $posted_aliasdomain_id, $posted_subdomain_id, $posted_aliassubdomain_id, $id, $software_master_id, $sw_software_name, $sw_software_version, $software_language, $other_dir, "not_required", "not_required", "not_required", "not_required", $install_username, $install_password, $install_email, $cfg->ITEM_ADD_STATUS, $software_depot));
 		}
 		send_request();
 		header('Location: software.php');

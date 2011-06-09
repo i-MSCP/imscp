@@ -1287,7 +1287,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 		if ($rs->recordCount() == 0) {
 			$sqlUpd[] = "
 				ALTER IGNORE TABLE
-				    `hosting_plans`
+					`hosting_plans`
 				ADD
 					`tos` BLOB NOT NULL
 				;
@@ -1383,9 +1383,9 @@ class iMSCP_Update_Database extends iMSCP_Update {
 
 		$sqlUpd = array();
 
-        if (isset($cfg->CRITICAL_UPDATE_REVISION)) {
-            $critical_update = $cfg->CRITICAL_UPDATE_REVISION;
-        }
+		if (isset($cfg->CRITICAL_UPDATE_REVISION)) {
+			$critical_update = $cfg->CRITICAL_UPDATE_REVISION;
+		}
 
 		if (!isset($critical_update) || $critical_update < 3) {
 			/**
@@ -1870,18 +1870,22 @@ class iMSCP_Update_Database extends iMSCP_Update {
 
 	/**
 	 * Fixed some CSRF issues in admin log
-	 * 
+	 *
 	 *  @author Thomas Wacker <thomas.wacker@ispcp.net>
 	 *  @since r3695
 	 *  @return array
 	 */
 	protected function _databaseUpdate_46() {
 		$sqlUpd = array();
-		
+
 		$sqlUpd[] = "TRUNCATE TABLE `log`;";
-		
+
 		return $sqlUpd;
 	}
+
+	/**
+	 * iMSCP start here. Any usage require copyright
+	 */
 
 	/**
 	 * Removed unused 'suexec_props' table
@@ -1897,7 +1901,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 
 		return $sqlUpd;
 	}
-	
+
 	/**
 	 * Adding apps-installer ticket #14 https://sourceforge.net/apps/trac/i-mscp/ticket/14
 	 *
@@ -1933,7 +1937,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 				) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 			;
 		";
-						
+
 		$sqlUpd[]	= "
 			CREATE TABLE IF NOT EXISTS
 				`web_software_inst` (
@@ -1961,12 +1965,12 @@ class iMSCP_Update_Database extends iMSCP_Update {
 				) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 			;
 		";
-		
-		$sqlUpd[]	= "ALTER TABLE `domain` ADD `domain_software_allowed` VARCHAR( 15 ) COLLATE utf8_unicode_ci NOT NULL default 'no';";
-		$sqlUpd[]	= "ALTER TABLE `reseller_props` ADD `software_allowed` VARCHAR( 15 ) COLLATE utf8_unicode_ci NOT NULL default 'no';";
-		$sqlUpd[]	= "ALTER TABLE `reseller_props` ADD `softwaredepot_allowed` VARCHAR( 15 ) COLLATE utf8_unicode_ci NOT NULL default 'yes';";
+
+		$sqlUpd[]	= self::secureAddColumnTable('domain', 'domain_software_allowed', "ALTER TABLE `domain` ADD `domain_software_allowed` VARCHAR( 15 ) COLLATE utf8_unicode_ci NOT NULL default 'no'");
+		$sqlUpd[]	= self::secureAddColumnTable('reseller_props', 'software_allowed', "ALTER TABLE `reseller_props` ADD `software_allowed` VARCHAR( 15 ) COLLATE utf8_unicode_ci NOT NULL default 'no'");
+		$sqlUpd[]	= self::secureAddColumnTable('reseller_props', 'softwaredepot_allowed', "ALTER TABLE `reseller_props` ADD `softwaredepot_allowed` VARCHAR( 15 ) COLLATE utf8_unicode_ci NOT NULL default 'yes'");
 	 	$sqlUpd[]	= "UPDATE `hosting_plans` SET `props` = CONCAT(`props`,';_no_');";
-	 	
+
 	 	return $sqlUpd;
 	 }
 
@@ -1998,7 +2002,7 @@ class iMSCP_Update_Database extends iMSCP_Update {
 
 		return array();
 	 }
-	 
+
 	/**
 	 * Added field for on-click-logon from the ftp-user site(such as PMA)
 	 *
@@ -2009,19 +2013,22 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	protected function _databaseUpdate_51() {
 		$sqlUpd = array();
 
-		$sqlUpd[] = "
+		$sqlUpd[] = self::secureAddColumnTable(
+		'ftp_users',
+		'rawpasswd',
+		"
 			ALTER IGNORE TABLE
 				`ftp_users`
 			ADD
 				`rawpasswd` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
 			AFTER
-				`passwd`;
-		";
+				`passwd`
+		");
 
 		return $sqlUpd;
 	}
 
-    /**
+	/**
 	 * Adding apps-installer new options
 	 *
 	 * @author		Sascha Bay (TheCry) <worst.case@gmx.de>
@@ -2030,11 +2037,11 @@ class iMSCP_Update_Database extends iMSCP_Update {
 	 * @access		protected
 	 * @return		array
 	 */
-	 protected function _databaseUpdate_52() {
-	 	$sqlUpd = array();
-	 	$sqlUpd[]	= "
-	 		CREATE TABLE IF NOT EXISTS
-	 			`web_software_depot` (
+	protected function _databaseUpdate_52() {
+		$sqlUpd = array();
+		$sqlUpd[]	= "
+			CREATE TABLE IF NOT EXISTS
+				`web_software_depot` (
 					`package_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 					`package_install_type` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
 					`package_title` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
@@ -2046,55 +2053,177 @@ class iMSCP_Update_Database extends iMSCP_Update {
 					`package_download_link` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
 					`package_signature_link` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
 					PRIMARY KEY (`package_id`)
-                ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1
+				) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1
 			;
 		";
 
 		$sqlUpd[]	= "
 			CREATE TABLE IF NOT EXISTS
 				`web_software_options` (
-                    `use_webdepot` tinyint(1) unsigned NOT NULL DEFAULT '1',
-                    `webdepot_xml_url` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-                    `webdepot_last_update` datetime NOT NULL
-                ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+					`use_webdepot` tinyint(1) unsigned NOT NULL DEFAULT '1',
+					`webdepot_xml_url` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+					`webdepot_last_update` datetime NOT NULL
+				) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 			;
 		";
 
-         $sqlUpd[] = "
-			INSERT INTO
+		$sqlUpd[] = "
+			REPLACE INTO
 				`web_software_options` (`use_webdepot`, `webdepot_xml_url`, `webdepot_last_update`)
 			VALUES
 				('1', 'http://app-pkg.i-mscp.net/imscp_webdepot_list.xml', '0000-00-00 00:00:00')
 			;
 		";
 
-         $sqlUpd[] = "
-			ALTER TABLE
-				`web_software`
-			ADD
-				`software_installtype` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL
-			AFTER
-				`reseller_id`;
+		$sqlUpd[] = self::secureAddColumnTable(
+			'web_software',
+			'software_installtype',
+			"
+				ALTER IGNORE TABLE
+					`web_software`
+				ADD
+					`software_installtype` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL
+				AFTER
+					`reseller_id`
+			"
+		);
+
+		$sqlUpd[] = " UPDATE `web_software` SET `software_installtype` = 'install'";
+
+		$sqlUpd[] = self::secureAddColumnTable(
+			'reseller_props',
+			'websoftwaredepot_allowed',
+			"ALTER IGNORE TABLE `reseller_props` ADD `websoftwaredepot_allowed` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL DEFAULT 'yes'"
+		);
+
+		return $sqlUpd;
+	}
+
+	protected function _databaseUpdate_53() {
+
+		$sqlUpd = array();
+
+		$status = iMSCP_Registry::get('config')->ITEM_CHANGE_STATUS;
+
+		$query = "
+			SELECT
+				`mail_id`,
+				`mail_pass`
+			FROM
+				`mail_users`
+			WHERE
+				`mail_type` RLIKE '^normal_mail'
+			OR
+				`mail_type` RLIKE '^alias_mail'
+			OR
+				`mail_type` RLIKE '^subdom_mail'
+			;
 		";
 
-         $sqlUpd[] = "
-			UPDATE
-				`web_software`
-			SET
-				`software_installtype` = 'install'
-				;
+		$rs = exec_query($query);
+
+		if ($rs->recordCount() != 0) {
+			while (!$rs->EOF) {
+				$sqlUpd[] = "
+					UPDATE
+						`mail_users`
+					SET
+						`mail_pass`= '" . decrypt_db_password($rs->fields['mail_pass']) . "',
+						`status` = '$status' WHERE `mail_id` = '" . $rs->fields['mail_id'] . "'
+					;
+				";
+
+				$rs->moveNext();
+			}
+		}
+
+		$query ="
+			SELECT
+				`sqlu_id`,
+				`sqlu_pass`
+			FROM
+				`sql_user`
+			;
 		";
 
-         $sqlUpd[] = "
-			ALTER TABLE
-				`reseller_props`
-			ADD
-				`websoftwaredepot_allowed` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL DEFAULT 'yes'
+		$rs = exec_query($query);
+
+		if ($rs->recordCount() != 0) {
+			while (!$rs->EOF) {
+				$sqlUpd[] = "
+					UPDATE
+						`sql_user`
+					SET
+						`sqlu_pass` = '" . decrypt_db_password($rs->fields['sqlu_pass']) . "'
+					WHERE `sqlu_id` = '" . $rs->fields['sqlu_id'] . "'
+					;
+				";
+
+				$rs->moveNext();
+			}
+		}
+
+		$query ="
+			SELECT
+				`userid`,
+				`rawpasswd`
+			FROM
+				`ftp_users`
+			;
 		";
 
-         return $sqlUpd;
-     }
+		$rs = exec_query($query);
+
+		if ($rs->recordCount() != 0) {
+			while (!$rs->EOF) {
+				$sqlUpd[] = "
+					UPDATE
+						`ftp_users`
+					SET
+						`rawpasswd` = '" . decrypt_db_password($rs->fields['rawpasswd']) . "'
+					WHERE `userid` = '" . $rs->fields['userid'] . "'
+					;
+				";
+
+				$rs->moveNext();
+			}
+		}
+
+		return $sqlUpd;
+	}
+
+	protected function _databaseUpdate_54() {
+
+		$sqlUpd = array();
+
+		$sql = iMSCP_Registry::get('db');
+		$tables = $sql->metaTables();
+
+		foreach  ($tables as $table) {
+			$sqlUpd[] = "ALTER TABLE $table ENGINE=InnoDB;";
+		}
+
+		return $sqlUpd;
+	}
+
 	/*
 	 * DO NOT CHANGE ANYTHING BELOW THIS LINE!
 	 */
+
+	protected function secureAddColumnTable($table, $column, $query){
+		$dbName	= iMSCP_Registry::get('config')->DATABASE_NAME;
+		return "
+		DROP PROCEDURE IF EXISTS test;
+		CREATE PROCEDURE test()
+		BEGIN
+		if not exists(
+			SELECT * FROM information_schema.COLUMNS WHERE column_name='$column' and table_name='$table' and table_schema='$dbName'
+		) THEN
+			$query;
+		END IF;
+		END;
+		CALL test();
+		DROP PROCEDURE IF EXISTS test;
+		";
+	}
 }

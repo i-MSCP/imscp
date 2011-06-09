@@ -361,10 +361,7 @@ function change_domain_status($domain_id, $domain_name, $action, $location)
                     || preg_match('/^' . MT_SUBDOM_MAIL . '/', $mail_type)
                     || preg_match('/^' . MT_ALSSUB_MAIL . '/', $mail_type)
                 ) {
-
-                    $mail_pass = decrypt_db_password($mail_pass);
                     $mail_pass = $pass_prefix . $mail_pass;
-                    $mail_pass = encrypt_db_password($mail_pass);
                 }
             } else if ($action == 'enable') {
                 if (preg_match('/^' . MT_NORMAL_MAIL . '/', $mail_type)
@@ -372,10 +369,7 @@ function change_domain_status($domain_id, $domain_name, $action, $location)
                     || preg_match('/^' . MT_SUBDOM_MAIL . '/', $mail_type)
                     || preg_match('/^' . MT_ALSSUB_MAIL . '/', $mail_type)
                 ) {
-
-                    $mail_pass = decrypt_db_password($mail_pass);
                     $mail_pass = substr($mail_pass, 4, 50);
-                    $mail_pass = encrypt_db_password($mail_pass);
                 }
             } else {
                 return;
@@ -1915,45 +1909,6 @@ function decrypt_db_password($password)
         throw new iMSCP_Exception("PHP extension 'mcrypt' not loaded!");
     }
 }
-
-/**
- * Encrypte database password.
- *
- * @throws iMSCP_Exception
- * @param $password Database password
- * @return string Encrypted database password
- * @todo Remove error operator
- */
-function encrypt_db_password($password)
-{
-    if (extension_loaded('mcrypt')) {
-        $td = @mcrypt_module_open(MCRYPT_BLOWFISH, '', 'cbc', '');
-        $key = iMSCP_Registry::get('MCRYPT_KEY');
-        $iv = iMSCP_Registry::get('MCRYPT_IV');
-
-        // compatibility with used perl pads
-        $block_size = @mcrypt_enc_get_block_size($td);
-        $strlen = strlen($password);
-
-        $pads = $block_size - $strlen % $block_size;
-
-        $password .= str_repeat(' ', $pads);
-
-        // Initialize encryption
-        @mcrypt_generic_init($td, $key, $iv);
-        // Encrypt string
-        $encrypted = @mcrypt_generic($td, $password);
-        @mcrypt_generic_deinit($td);
-        @mcrypt_module_close($td);
-
-        $text = @base64_encode($encrypted);
-
-        return trim($text);
-    } else {
-        throw new iMSCP_Exception("PHP extension 'mcrypt' not loaded!");
-    }
-}
-
 
 /**
  * Executes a SQL statement.

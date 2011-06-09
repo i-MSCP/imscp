@@ -17,7 +17,7 @@
  * The Initial Developer of the Original Code is ispCP Team.
  * Portions created by Initial Developer are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
- * 
+ *
  * Portions created by the i-MSCP Team are Copyright (C) 2010 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  *
@@ -74,7 +74,7 @@ function _getLoginCredentials($dbUserId)
 	if($stmt->rowCount() == 1) {
 		return array(
 			$stmt->fields['sqlu_name'],
-			decrypt_db_password($stmt->fields['sqlu_pass'])
+			$stmt->fields['sqlu_pass']
 		);
 	} else {
 		return false;

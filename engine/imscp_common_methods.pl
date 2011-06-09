@@ -1664,49 +1664,6 @@ sub check_master {
 	0;
 }
 
-sub encrypt_db_password {
-
-	push_el(\@main::el, 'encrypt_db_password()', 'Starting...');
-
-	my ($pass) = @_;
-
-	if (!defined $pass || $pass eq '') {
-		push_el(
-			\@main::el, 'encrypt_db_password()', 'ERROR: Undefined input data...'
-		);
-
-		return (1, '');
-	}
-
-	if (length($main::db_pass_key) != 32 || length($main::db_pass_iv) != 8) {
-		push_el(
-			\@main::el, 'encrypt_db_password()',
-			'[WARNING] KEY or IV has invalid length'
-		);
-
-		return (0, '');
-	}
-
-	my $cipher = Crypt::CBC -> new(
-		{
-			'key' => $main::db_pass_key,
-			'keysize' => 32,
-			'cipher' => 'Blowfish',
-			'iv'  => $main::db_pass_iv,
-			'regenerate_key' => 0,
-			'padding' => 'space',
-			'prepend_iv' => 0
-		}
-	);
-
-	my $ciphertext = $cipher->encrypt($pass);
-	my $encoded = encode_base64($ciphertext); chop($encoded);
-
-	push_el(\@main::el, 'encrypt_db_password()', 'Ending...');
-
-	return (0, $encoded);
-}
-
 sub decrypt_db_password {
 
 	push_el(\@main::el, 'decrypt_db_password()', 'Starting...');

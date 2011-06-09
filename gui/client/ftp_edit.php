@@ -116,7 +116,7 @@ function update_ftp_account($ftp_acc, $dmn_name) {
 			}
 
 			$pass = crypt_user_pass_with_salt($_POST['pass']);
-			$rawpass = encrypt_db_password($_POST['pass']);
+			$rawpass = $_POST['pass'];
 			if (isset($_POST['use_other_dir']) && $_POST['use_other_dir'] === 'on') {
 
 				$other_dir = clean_input($_POST['other_dir']);

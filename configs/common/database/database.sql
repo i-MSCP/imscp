@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS `admin` (
   `uniqkey_time` timestamp NULL default NULL,
   UNIQUE KEY `admin_id` (`admin_id`),
   UNIQUE KEY `admin_name` (`admin_name`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS `auto_num` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `msg` varchar(255) collate utf8_unicode_ci default NULL,
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS `config` (
   `name` varchar(255) collate utf8_unicode_ci NOT NULL default '',
   `value` longtext collate utf8_unicode_ci NOT NULL,
   PRIMARY KEY  (`name`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `config`
@@ -129,7 +129,7 @@ INSERT INTO `config` (`name`, `value`) VALUES
 ('PREVENT_EXTERNAL_LOGIN_ADMIN', '1'),
 ('PREVENT_EXTERNAL_LOGIN_RESELLER', '1'),
 ('PREVENT_EXTERNAL_LOGIN_CLIENT', '1'),
-('DATABASE_REVISION', '52');
+('DATABASE_REVISION', '54');
 
 -- --------------------------------------------------------
 
@@ -144,7 +144,7 @@ CREATE TABLE IF NOT EXISTS `custom_menus` (
   `menu_link` varchar(200) collate utf8_unicode_ci default NULL,
   `menu_target` varchar(200) collate utf8_unicode_ci NOT NULL default '',
   PRIMARY KEY  (`menu_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -181,7 +181,7 @@ CREATE TABLE IF NOT EXISTS `domain` (
   UNIQUE KEY `domain_id` (`domain_id`),
   UNIQUE KEY `domain_name` (`domain_name`),
   KEY `i_domain_admin_id` (`domain_admin_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -198,7 +198,7 @@ CREATE TABLE IF NOT EXISTS `domain_aliasses` (
   `alias_ip_id` int(10) unsigned default NULL,
   `url_forward` varchar(200) collate utf8_unicode_ci default NULL,
   PRIMARY KEY  (`alias_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -217,7 +217,7 @@ CREATE TABLE IF NOT EXISTS `domain_dns` (
   `protected` varchar(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
   PRIMARY KEY  (`domain_dns_id`),
   UNIQUE KEY `domain_id` (`domain_id`,`alias_id`,`domain_dns`,`domain_class`,`domain_type`,`domain_text`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -236,7 +236,7 @@ CREATE TABLE IF NOT EXISTS `domain_traffic` (
   PRIMARY KEY  (`dtraff_id`),
   KEY `i_domain_id` (`domain_id`),
   KEY `i_dtraff_time` (`dtraff_time`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -251,7 +251,7 @@ CREATE TABLE IF NOT EXISTS `email_tpls` (
   `subject` varchar(200) collate utf8_unicode_ci default NULL,
   `message` text collate utf8_unicode_ci,
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -267,7 +267,7 @@ CREATE TABLE IF NOT EXISTS `error_pages` (
   `error_404` text collate utf8_unicode_ci NOT NULL,
   `error_500` text collate utf8_unicode_ci NOT NULL,
   PRIMARY KEY  (`ep_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -280,7 +280,7 @@ CREATE TABLE IF NOT EXISTS `ftp_group` (
   `gid` int(10) unsigned NOT NULL default '0',
   `members` text collate utf8_unicode_ci,
   UNIQUE KEY `groupname` (`groupname`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -297,7 +297,7 @@ CREATE TABLE IF NOT EXISTS `ftp_users` (
   `shell` varchar(255) collate utf8_unicode_ci default NULL,
   `homedir` varchar(255) collate utf8_unicode_ci default NULL,
   UNIQUE KEY `userid` (`userid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -318,7 +318,7 @@ CREATE TABLE IF NOT EXISTS `hosting_plans` (
   `status` int(10) unsigned NOT NULL default '0',
   `tos`	BLOB NOT NULL,
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -336,7 +336,7 @@ CREATE TABLE IF NOT EXISTS `htaccess` (
   `path` varchar(255) collate utf8_unicode_ci default NULL,
   `status` varchar(255) collate utf8_unicode_ci default NULL,
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -351,7 +351,7 @@ CREATE TABLE IF NOT EXISTS `htaccess_groups` (
   `members` text collate utf8_unicode_ci,
   `status` varchar(255) collate utf8_unicode_ci default NULL,
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -366,7 +366,7 @@ CREATE TABLE IF NOT EXISTS `htaccess_users` (
   `upass` varchar(255) collate utf8_unicode_ci default NULL,
   `status` varchar(255) collate utf8_unicode_ci default NULL,
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -379,7 +379,7 @@ CREATE TABLE IF NOT EXISTS `log` (
   `log_time` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
   `log_message` varchar(250) collate utf8_unicode_ci default NULL,
   PRIMARY KEY  (`log_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -395,7 +395,7 @@ CREATE TABLE IF NOT EXISTS `login` (
   `captcha_count` tinyint(1) default '0',
   `user_name` varchar(255) collate utf8_unicode_ci default NULL,
   PRIMARY KEY  (`session_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -417,7 +417,7 @@ CREATE TABLE IF NOT EXISTS `mail_users` (
   `quota` int(10) default '10485760',
   `mail_addr` varchar(200) collate utf8_unicode_ci default NULL,
   PRIMARY KEY  (`mail_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -447,7 +447,7 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `street2` varchar(200) collate utf8_unicode_ci default NULL,
   `status` varchar(255) collate utf8_unicode_ci default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -461,7 +461,7 @@ CREATE TABLE IF NOT EXISTS `orders_settings` (
   `header` text collate utf8_unicode_ci,
   `footer` text collate utf8_unicode_ci,
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -481,7 +481,7 @@ CREATE TABLE IF NOT EXISTS `quotalimits` (
   `files_out_avail` int(10) unsigned NOT NULL default '0',
   `files_xfer_avail` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`name`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -499,7 +499,7 @@ CREATE TABLE IF NOT EXISTS `quotatallies` (
   `files_out_used` int(10) unsigned NOT NULL default '0',
   `files_xfer_used` int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (`name`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -535,7 +535,7 @@ CREATE TABLE IF NOT EXISTS `reseller_props` (
   `softwaredepot_allowed` varchar(15) collate utf8_general_ci NOT NULL default 'yes',
   `websoftwaredepot_allowed` varchar(15) collate utf8_general_ci NOT NULL default 'yes',
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -552,7 +552,7 @@ CREATE TABLE IF NOT EXISTS `server_ips` (
   `ip_ssl_domain_id` int(10) default NULL,
   `ip_status` varchar(255) collate utf8_unicode_ci default NULL,
   UNIQUE KEY `ip_id` (`ip_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -573,7 +573,7 @@ CREATE TABLE IF NOT EXISTS `server_traffic` (
   `bytes_web_out` bigint(20) unsigned default NULL,
   PRIMARY KEY  (`straff_id`),
   KEY `traff_time` (`traff_time`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -586,7 +586,7 @@ CREATE TABLE IF NOT EXISTS `sql_database` (
   `domain_id` int(10) unsigned default '0',
   `sqld_name` varchar(64) character set utf8 collate utf8_bin default 'n/a',
   UNIQUE KEY `sqld_id` (`sqld_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -600,7 +600,7 @@ CREATE TABLE IF NOT EXISTS `sql_user` (
   `sqlu_name` varchar(64) collate utf8_unicode_ci default 'n/a',
   `sqlu_pass` varchar(64) collate utf8_unicode_ci default 'n/a',
   UNIQUE KEY `sqlu_id` (`sqlu_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -612,7 +612,7 @@ CREATE TABLE IF NOT EXISTS `straff_settings` (
   `straff_max` int(10) unsigned default NULL,
   `straff_warn` int(10) unsigned default NULL,
   `straff_email` int(10) unsigned default NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `straff_settings`
@@ -634,7 +634,7 @@ CREATE TABLE IF NOT EXISTS `subdomain` (
   `subdomain_url_forward` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
   `subdomain_status` varchar(255) collate utf8_unicode_ci default NULL,
   PRIMARY KEY  (`subdomain_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -650,7 +650,7 @@ CREATE TABLE IF NOT EXISTS `subdomain_alias` (
   `subdomain_alias_url_forward` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
   `subdomain_alias_status` varchar(255) collate utf8_unicode_ci default NULL,
   PRIMARY KEY  (`subdomain_alias_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -670,7 +670,7 @@ CREATE TABLE IF NOT EXISTS `tickets` (
   `ticket_subject` varchar(255) collate utf8_unicode_ci default NULL,
   `ticket_message` text collate utf8_unicode_ci,
   PRIMARY KEY  (`ticket_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -685,7 +685,7 @@ CREATE TABLE IF NOT EXISTS `user_gui_props` (
   `layout` varchar(255) collate utf8_unicode_ci default '',
   `logo` varchar(255) collate utf8_unicode_ci NOT NULL default '0',
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -713,7 +713,7 @@ CREATE TABLE IF NOT EXISTS `web_software` (
   `rights_add_by` int(10) unsigned NOT NULL default '0',
   `software_depot` varchar(15) character set utf8 collate utf8_unicode_ci NOT NULL NOT NULL DEFAULT 'no',
   PRIMARY KEY  (`software_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -743,7 +743,7 @@ CREATE TABLE IF NOT EXISTS `web_software_inst` (
   `software_status` varchar(15) character set utf8 collate utf8_unicode_ci NOT NULL,
   `software_depot` varchar(15) character set utf8 collate utf8_unicode_ci NOT NULL NOT NULL DEFAULT 'no',
   KEY `software_id` (`software_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -763,7 +763,7 @@ CREATE TABLE IF NOT EXISTS `web_software_depot` (
   `package_download_link` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `package_signature_link` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`package_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -775,7 +775,7 @@ CREATE TABLE IF NOT EXISTS `web_software_options` (
   `use_webdepot` tinyint(1) unsigned NOT NULL DEFAULT '1',
   `webdepot_xml_url` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `webdepot_last_update` datetime NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `web_software_options`

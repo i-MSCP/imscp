@@ -420,13 +420,6 @@ function schedule_mail_account($domain_id, $dmn_name, $mail_acc) {
 		return false;
 	}
 
-	if (preg_match("/^normal_mail/", $mail_type)
-		|| preg_match("/^alias_mail/", $mail_type)
-		|| preg_match("/^subdom_mail/", $mail_type)
-		|| preg_match("/^alssub_mail/", $mail_type)) {
-		$mail_pass=encrypt_db_password($mail_pass);
-	}
-
 	$query = "
 		INSERT INTO `mail_users` (
 			`mail_acc`,

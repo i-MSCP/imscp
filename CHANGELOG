@@ -4,6 +4,9 @@ i-MSCP ChangeLog
 2010-06-09 Daniel Andreca
 	- Engine:
 		Fixed #66: Migration script
+	- ENGINE, GUI, CONFIGS:
+		- Drop password encryption
+		- Convert to InnoDB
 
 2010-06-04 Daniel Andreca
 	- CONFIGS:

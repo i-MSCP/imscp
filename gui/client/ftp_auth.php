@@ -69,7 +69,7 @@ function _getLoginCredentials($userId) {
 	if($stmt->rowCount() == 1) {
 		return array(
 			$stmt->fields['userid'],
-			decrypt_db_password($stmt->fields['rawpasswd'])
+			$stmt->fields['rawpasswd']
 		);
 	} else {
 		return false;

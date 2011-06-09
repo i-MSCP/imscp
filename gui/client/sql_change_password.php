@@ -103,7 +103,7 @@ function change_sql_user_pass($db_user_id, $db_user_name) {
 		WHERE
 			`sqlu_name` = ?
 	";
-	exec_query($query, array(encrypt_db_password($user_pass), $db_user_name));
+	exec_query($query, array($user_pass, $db_user_name));
 
 	// update user pass in the mysql system tables;
 	// TODO use prepared statement for $user_pass

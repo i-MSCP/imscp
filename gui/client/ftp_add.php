@@ -434,7 +434,7 @@ function add_ftp_user($dmn_name) {
 
 	$ftp_shell = $cfg->CMD_SHELL;
 	$ftp_passwd = crypt_user_pass_with_salt($_POST['pass']);
-	$ftp_rawpasswd = encrypt_db_password($_POST['pass']);
+	$ftp_rawpasswd = $_POST['pass'];
 
 	$query = "
 		INSERT INTO ftp_users

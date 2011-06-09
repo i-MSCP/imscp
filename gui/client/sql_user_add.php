@@ -280,7 +280,7 @@ function add_sql_user($user_id, $db_id) {
 			set_page_message(tr('SQL-user not found! Maybe it was deleted by another user!'), 'warning');
 			return;
 		}
-		$user_pass = decrypt_db_password($rs->fields['sqlu_pass']);
+		$user_pass = $rs->fields['sqlu_pass'];
 	} else {
 		$user_pass = $_POST['pass'];
 	}
@@ -335,7 +335,7 @@ function add_sql_user($user_id, $db_id) {
 		VALUES
 			(?, ?, ?)
 	";
-	exec_query($query, array($db_id, $db_user, encrypt_db_password($user_pass)));
+	exec_query($query, array($db_id, $db_user, $user_pass));
 
 	update_reseller_c_props(get_reseller_id($dmn_id));
 

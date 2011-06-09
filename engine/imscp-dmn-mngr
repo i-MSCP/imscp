@@ -3919,7 +3919,7 @@ sub dmn_restore_data {
 				# to be able to use them in system commands
 				map { s/"/\\"/g }
 					my $dbuser = @$rdata[0]->[0],
-					my $dbpass = decrypt_db_password(@$rdata[0]->[1]),
+					my $dbpass = @$rdata[0]->[1],
 					my $dbname = $1,
 					$_ = $_;
 
