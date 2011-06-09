@@ -253,7 +253,6 @@ class iMSCP_Debug_Bar_Plugin_Timer extends iMSCP_Debug_Bar_Plugin
         }
 
         $this->_times['scriptStart'] = (microtime(true) - $_SERVER['REQUEST_TIME']) * 1000;
-
     }
 
     /**

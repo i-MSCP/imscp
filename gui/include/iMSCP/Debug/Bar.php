@@ -114,12 +114,12 @@ class iMSCP_Debug_Bar
      * Catch all calls for listener methods of this class to avoid to declarate them
      * since they do same job.
      *
-     * @param string $name Listener method
+     * @param string $listenerMethod Listener method
      * @param iMSCP_Events_Event $event Event object
      */
-    public function __call($name, $event)
+    public function __call($listenerMethod, $event)
     {
-        if (!in_array($name, $this->_listenedEvents)) {
+        if (!in_array($listenerMethod, $this->_listenedEvents)) {
             throw new iMSCP_Debug_Bar_Exception('Unknown listener method.');
         }
 
@@ -134,7 +134,6 @@ class iMSCP_Debug_Bar
      */
     protected function buidDebugBar()
     {
-
         // Doesn't act on AJAX request.
         if (is_xhr()) {
             return;
@@ -142,7 +141,6 @@ class iMSCP_Debug_Bar
 
         $xhtml = '';
 
-        // Creating menu tab for all registered plugins
         /** @var $plugin iMSCP_Debug_Bar_Plugin_Interface */
         foreach ($this->_plugins as $plugin)
         {
@@ -155,7 +153,6 @@ class iMSCP_Debug_Bar
                    . '" class="iMSCPdebug_panel">' . $panel . '</div>';
         }
 
-        // Creating panel content for all registered plugins
         foreach ($this->_plugins as $plugin) {
             $tab = $plugin->getTab();
 
