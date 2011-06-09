@@ -9,6 +9,7 @@ i-MSCP ChangeLog
 		- Convert to InnoDB
 	- GUI:
 		- Update pma
+		- Update idna_convert.class.php
 
 2010-06-04 Daniel Andreca
 	- CONFIGS:
