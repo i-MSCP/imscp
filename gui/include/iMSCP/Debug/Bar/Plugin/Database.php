@@ -159,7 +159,7 @@ class iMSCP_Debug_Bar_Plugin_Database extends iMSCP_Debug_Bar_Plugin
      */
     public function getPanel()
     {
-        $html = '<h4>Database queries and execution their time</h4><ol>';
+        $html = '<h4>Database queries and their execution time</h4><ol>';
 
         $html .= '<li><strong>[' . round($this->_queries['connection'], 2) . ' ms]</strong> '
                  . 'connection' . '</li>';
