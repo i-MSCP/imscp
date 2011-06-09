@@ -517,7 +517,7 @@ class iMSCP_Initializer
                 // Debug information about script execution time
                 new iMSCP_Debug_Bar_Plugin_Timer(),
                 // Debug information about memory consumption
-                //new iMSCP_Debug_Bar_Plugin_Memory(),
+                new iMSCP_Debug_Bar_Plugin_Memory(),
                 // Debug information about any exception thrown
                 //new iMSCP_Debug_Bar_Plugin_Exception(),
                 // Debug information about all included files
