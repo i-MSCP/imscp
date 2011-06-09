@@ -7,6 +7,8 @@ i-MSCP ChangeLog
 	- ENGINE, GUI, CONFIGS:
 		- Drop password encryption
 		- Convert to InnoDB
+	- GUI:
+		- Update pma
 
 2010-06-04 Daniel Andreca
 	- CONFIGS:

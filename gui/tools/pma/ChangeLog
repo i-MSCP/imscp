@@ -1,6 +1,20 @@
 ﻿phpMyAdmin - ChangeLog
 ======================
 
+3.4.2.0 (2011-06-07)
+- bug #3301249 [interface] Iconic table operations does not remove inline edit label
+- bug #3303869 [interface] Unnecessary scrolling on Databases page
+- patch #3303813 [setup] Define a label that was missing
+- bug #3305606 [interface] Show all button wraps on privileges page
+- bug #3305517 [config] Config for export compression not used
+- bug #3305883 [interface] Table is dropped regardless of confirmation
+- [auth] Fixed error handling for signon auth method.
+- bug #3276001 [core] Avoid caching of index.php.
+- bug #3306958 [interface] Unnecessary Details slider
+- bug #3308476 [interface] "Show all" not persistent after a sort
+- bug #3308072 [auth] Version disclosure to anonymous visitors
+- bug #3306981 [interface] pmahomme and table statistics
+
 3.4.1.0 (2011-05-20)
 - bug #3301108 [interface] Synchronize and already configured host
 - bug #3302457 Inline edit and $cfg['PropertiesIconic']
