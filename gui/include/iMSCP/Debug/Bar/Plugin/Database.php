@@ -50,23 +50,6 @@ class iMSCP_Debug_Bar_Plugin_Database extends iMSCP_Debug_Bar_Plugin
      */
     const IDENTIFIER = 'Database';
 
-
-    /**
-     * @var int
-     */
-    protected $totalQueries = 0;
-
-    /**
-     * @var int
-     */
-    protected $totalTimeElapsed = 0;
-
-    /**
-     *
-     * @var array
-     */
-    protected $_queries = array();
-
     /**
      * Events that this plugin listens on.
      *
@@ -78,6 +61,26 @@ class iMSCP_Debug_Bar_Plugin_Database extends iMSCP_Debug_Bar_Plugin
         iMSCP_Database_Events::onBeforeExecute,
         iMSCP_Database_Events::onAfterExecute
     );
+
+    /**
+     * Total number of executed queries.
+     *
+     * @var int
+     */
+    protected $totalQueries = 0;
+
+    /**
+     *
+     * @var int
+     */
+    protected $totalTimeElapsed = 0;
+
+    /**
+     * Array that contains queries and their execution time.
+     *
+     * @var array
+     */
+    protected $_queries = array();
 
     /**
      * Start to compute time for database connection.

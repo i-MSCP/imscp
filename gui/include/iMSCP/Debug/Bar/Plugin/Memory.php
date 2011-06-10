@@ -57,6 +57,8 @@ class iMSCP_Debug_Bar_Plugin_Memory extends iMSCP_Debug_Bar_Plugin
     protected $_listenedEvents = array(
         iMSCP_Events::onLoginScriptStart,
         iMSCP_Events::onLoginScriptEnd,
+        iMSCP_Events::onLostPasswordScriptStart,
+        iMSCP_Events::onLostPasswordScriptEnd,
         iMSCP_Events::onAdminScriptStart,
         iMSCP_Events::onAdminScriptEnd,
         iMSCP_Events::onResellerScriptStart,
@@ -89,6 +91,7 @@ class iMSCP_Debug_Bar_Plugin_Memory extends iMSCP_Debug_Bar_Plugin
         } else {
             switch ($listenerMethod) {
                 case iMSCP_Events::onLoginScriptStart:
+                case iMSCP_Events::onLostPasswordScriptStart:
                 case iMSCP_Events::onAdminScriptStart:
                 case iMSCP_Events::onResellerScriptStart:
                 case iMSCP_Events::onClientScriptStart:

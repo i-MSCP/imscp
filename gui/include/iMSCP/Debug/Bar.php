@@ -66,7 +66,7 @@ class iMSCP_Debug_Bar
      */
     protected $_listenedEvents = array(
         iMSCP_Events::onLoginScriptEnd,
-        // TODO iMSCP_Events::onLostPasswordScriptEnd,
+        iMSCP_Events::onLostPasswordScriptEnd,
         iMSCP_Events::onAdminScriptEnd,
         iMSCP_Events::onResellerScriptEnd,
         iMSCP_Events::onClientScriptEnd,
@@ -206,6 +206,7 @@ class iMSCP_Debug_Bar
                 #iMSCPdebug_debug { font: 11px/1.4em Lucida Grande, Lucida Sans Unicode, sans-serif; position:fixed; bottom:0px; left:0px; color:#000; z-index: 255;}
                 #iMSCPdebug_debug ol {margin:10px 0px; padding:0 25px}
                 #iMSCPdebug_debug li {margin:0 0 10px 0;}
+
                 #iMSCPdebug_debug .clickable {cursor:pointer}
                 #iMSCPdebug_toggler { font-weight:bold; background:#BFBFBF; }
                 .iMSCPdebug_span { border: 1px solid #999; border-right:0px; background:#DFDFDF; padding: 5px 5px; }
