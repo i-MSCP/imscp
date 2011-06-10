@@ -55,6 +55,25 @@ class iMSCP_Events
     const onLoginScriptEnd = 'onLoginScriptEnd';
 
     /**
+     * The onLostPasswordScriptStart event occurs at the very beginning of the
+     * LostPassword script.
+     *
+     * The event listener method receives a iMSCP_Events_Event instance.
+     *
+     * @var string
+     */
+    const onLostPasswordScriptStart = 'onLostPasswordScriptStart';
+
+    /**
+     * The onLostPasswordScriptEnd event occurs at the end of the LostPassword script.
+     *
+     * The event listener method receives a iMSCP_Events_Response instance.
+     *
+     * @var string
+     */
+    const onLostPasswordScriptEnd = 'onLostPasswordScriptEnd';
+
+    /**
      * The onAdminScriptStart event occurs at the very beginning of admin scripts.
      *
      * The event listener method receives a iMSCP_Events_Event instance.

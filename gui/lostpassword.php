@@ -37,6 +37,7 @@
 // Include needed library
 require 'include/imscp-lib.php';
 
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onLostPasswordScriptStart);
 
 /** @var $cfg iMSCP_Config_Handler_File */
 $cfg = iMSCP_Registry::get('config');
@@ -121,4 +122,8 @@ if (isset($_GET['key']) && $_GET['key'] != '') {
 generatePageMessage($tpl);
 
 $tpl->parse('PAGE', 'page');
+
+iMSCP_Events_Manager::getInstance()->dispatch(
+    iMSCP_Events::onLostPasswordScriptStart, new iMSCP_Events_Response($tpl));
+
 $tpl->prnt();
