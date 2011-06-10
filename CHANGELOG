@@ -5,55 +5,52 @@ i-MSCP ChangeLog
 i-MSCP 1.0.0-beta1
 -------------------------------------------------------------------------------------
 
-Features / Hehancement:
+Features / Enhancement:
     Gui:
         Core:
-            Added on-click-logon ftp-user
-            Added software installer
-            Added Events system
-            Added DebugBar component
-            New Theme (XHTML strict)
-            Dropped useless password encryption
+            - Added on-click-logon ftp-user
+            - Added software installer
+            - Added Events system
+            - Added DebugBar component
+            - New Theme (XHTML strict)
+            - Dropped useless password encryption
         Database:
-            Switched to InnoDB engine
+            - Switched to InnoDB engine
         Tools:
-            Updated PhpMyAdmin to version 3.4.2
+            - Updated PhpMyAdmin to version 3.4.2
         Vendor:
-            Updated idna_convert.class.php
-            Updated Net_DNS
-        Tickets:
-            - Fixed #3: Defect - Wrong DNS entry when using multiple IP for alternative
-            - Fixed #5:  Update - jQuery - version 1.4.4 available
-            - Fixed #12: Some CSRF issues in admin log
-            - Fixed #10: IP-Overview for admin and reseller
-            - Fixed #35: Defect - Missing back stick in SQL
-            - Fixed #36: Deprecated: Call-time pass
-            - Fixed #37: Cosmetics - Hosting plan Header Color
-            - Fixed #38: Defect - Missing checkbox for hostingplan Terms of Service
-            - Fixed #39: Cosmetics - Missing background for the datepicker header
-            - Fixed #40: Updated phpMyAdmin to version 3.3.8.1
-            - Fixed #48: Licence header for create_release.sh
-		    - Fixed #49: Some improvements on multilanguage.php
-            - Fixed #50: Patch to fix the exception when switching users
-	        - Fixed #51: Enhancement - Change Package actions if software is installed
+            - Updated idna_convert.class.php
+            - Updated Net_DNS
     Engine:
-        Migration:
-            Added migration script for ispCP version >= 1.0.7
-        Setup/Update:
-            New installer (Dialog, only one script for both setup and update process)
-        Core:
-            Improved logging system
         Config:
-            Moved keys file into /etc
-        Tickets:
-            - Fixed #23: Merge Config files if not Distribution specific
-            - Fixed #24: Missing Program "Dialog" in pagackelist
-            - Fixed #26: Warnings in build script being installed via serial console
-            - Fixed #27: Add logger to build script
-            - Fixed #29: Wrong link during Setup
-            - Fixed #30: Domainname Error during setup
-            - Fixed #31: [FreeBSD] An error occurred during setup process
-    Documentation:
-	    Tickets:
-	        - Fixed #25: Little Error in INSTALL
+            - Moved keys file into /etc
+        Core:
+            - Improved logging system
+        Migration:
+            - Added migration script for ispCP version >= 1.0.7
+        Setup/Update:
+            - New installer (Dialog, only one script for both setup and update process)
 
+Tickets:
+    - Fixed #3: Defect - Wrong DNS entry when using multiple IP for alternative
+    - Fixed #5:  Update - jQuery - version 1.4.4 available
+    - Fixed #12: Some CSRF issues in admin log
+    - Fixed #10: IP-Overview for admin and reseller
+    - Fixed #23: Merge Config files if not Distribution specific
+    - Fixed #24: Missing Program "Dialog" in pagackelist
+    - Fixed #25: Little Error in INSTALL
+    - Fixed #26: Warnings in build script being installed via serial console
+    - Fixed #27: Add logger to build script
+    - Fixed #29: Wrong link during Setup
+    - Fixed #30: Domainname Error during setup
+    - Fixed #31: [FreeBSD] An error occurred during setup process
+    - Fixed #35: Defect - Missing back stick in SQL
+    - Fixed #36: Deprecated: Call-time pass
+    - Fixed #37: Cosmetics - Hosting plan Header Color
+    - Fixed #38: Defect - Missing checkbox for hostingplan Terms of Service
+    - Fixed #39: Cosmetics - Missing background for the datepicker header
+    - Fixed #40: Updated phpMyAdmin to version 3.3.8.1
+    - Fixed #48: Licence header for create_release.sh
+    - Fixed #49: Some improvements on multilanguage.php
+    - Fixed #50: Patch to fix the exception when switching users
+    - Fixed #51: Enhancement - Change Package actions if software is installed
