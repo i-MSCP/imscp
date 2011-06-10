@@ -62,9 +62,9 @@ Tickets:
     - Fixed #50: Patch to fix the exception when switching users
     - Fixed #51: Enhancement - Change Package actions if software is installed
     - Fixed #52: Cosmetics - Occurences of ispcp in Sources
-    - Fixed #53: misc cosmetics
-    - Fixed #54: some cosmetics
-    - Fixed #56: more cosmetics
+    - Fixed #53: Cosmetics - Wrong link in docs/Ubuntu/INSTALL
+    - Fixed #54: Cosmetics - Wrong header in gui/admin/ip_usage.php
+    - Fixed #56: Cosmetics - Wrong logo path
     - Fixed #59: Bug - Wrong path in debian and ubuntu config
     - Fixed #66: Migration script
     - Fixed #67: Database PDO::MYSQL_ATTR_USE_BUFFERED_QUERY
