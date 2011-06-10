@@ -18,8 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * @package     iMSCP
- * @package     iMSCP_Debug
- * @subpackage  Bar_Plugin
+ * @package     iMSCP_Events
+ * @subpackage  Listeners
  * @copyright   2010-2011 by i-MSCP team
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     SVN: $Id$
@@ -28,45 +28,21 @@
  */
 
 /**
- * Interface for i-MSCP Debug Bar component's plugins.
- *
+ * Interface for events listeners.
+ * 
  * @package     iMSCP
- * @package     iMSCP_Debug
- * @subpackage  Bar_Plugin
+ * @package     iMSCP_Events
+ * @subpackage  Listeners
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     0.0.1
  */
-interface iMSCP_Debug_Bar_Plugin_Interface
+interface iMSCP_Events_Listeners_Interface
 {
     /**
-     * Returns plugin unique identifier.
+     * Returns list of listened events.
      *
      * @abstract
-     * @return string
+     * @return array
      */
-    public function getIdentifier();
-
-    /**
-     * Returns plugin tab.
-     *
-     * @abstract
-     * @return string
-     */
-    public function getTab();
-
-    /**
-     * Returns the plugin panel.
-     *
-     * @abstract
-     * @return string
-     */
-    public function getPanel();
-
-    /**
-     * Returns plugin icon.
-     *
-     * @abstract
-     * @return string
-     */
-    public function getIcon();
+    public function getListenedEvents();
 }

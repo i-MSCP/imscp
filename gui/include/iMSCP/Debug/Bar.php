@@ -27,6 +27,9 @@
  * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
+/** @see iMSCP_Events_Listeners_Interface */
+require_once 'iMSCP/Events/Listeners/Interface.php';
+
 /**
  * i-MSCP DebugBar component.
  *
@@ -58,7 +61,7 @@
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     0.0.1
  */
-class iMSCP_Debug_Bar
+class iMSCP_Debug_Bar implements iMSCP_Events_Listeners_Interface
 {
     /**
      * Events manager instance.
@@ -98,8 +101,9 @@ class iMSCP_Debug_Bar
     /**
      * Constructor.
      *
-     * @throws iMSCP_Debug_Bar_Exception
-     * @param iMSCP_Events_Manager $eventsManager
+     * @throws iMSCP_Debug_Bar_Exception if a plugin doesn't implement the
+     *                                   iMSCP_Debug_Bar_Plugin_Interface interface
+     * @param iMSCP_Events_Manager $eventsManager Events manager
      * @param string|array $plugins Plugin(s) instance(s).
      */
     public function __construct(iMSCP_Events_Manager $eventsManager, $plugins)
@@ -109,38 +113,34 @@ class iMSCP_Debug_Bar
         // Creating i-MSCP Version Tab always shown
         $this->_plugins[] = new iMSCP_Debug_Bar_Plugin_Version();
 
-        $i = 998;
+        $stackIndex = 998;
         foreach ((array)$plugins as $plugin) {
             if (!$plugin instanceof iMSCP_Debug_Bar_Plugin_Interface) {
                 throw new iMSCP_Debug_Bar_Exception(
                     'All plugins for the debug bar must implement the ' .
                     'iMSCP_Debug_Bar_Plugin_Interface interface.');
-            } else {
-                $this->registerListener($plugin, $i);
-                $this->_plugins[] = $plugin;
+            } elseif($plugin instanceof iMSCP_Events_Listeners_Interface) {
+                $this->registerListener($plugin, $stackIndex);
+                $stackIndex--;
             }
 
-            $i--;
+            $this->_plugins[] = $plugin;
         }
 
-        $eventsManager->registerListener($this->_listenedEvents, $this, 999);
+        $eventsManager->registerListener($this->getListenedEvents(), $this, 999);
     }
 
     /**
      * Register a plugin listener on the events manager.
      *
-     * @param  iMSCP_Debug_Bar_Plugin_Interface $plugin Plugin instance.
+     * @param  iMSCP_Events_Listeners_Interface $plugin Plugin instance.
      * @param  int $stackIndex Order in which listeners methods will be executed.
      * @return void
      */
     protected function registerListener($plugin, $stackIndex)
     {
-        $listenedEvents = $plugin->getListenedEvents();
-
-        if(!empty($listenedEvents)) {
-            $this->_enventsManager->registerListener(
-                $listenedEvents, $plugin, $stackIndex);
-        }
+        $this->_enventsManager->registerListener(
+            $plugin->getListenedEvents(), $plugin, $stackIndex);
     }
 
     /**
@@ -158,6 +158,16 @@ class iMSCP_Debug_Bar
 
         $this->_event = $event[0];
         $this->buidDebugBar();
+    }
+
+    /**
+     * Returns list of listeneds events.
+     *
+     * @return array
+     */
+    public function getListenedEvents()
+    {
+        return $this->_listenedEvents;
     }
 
     /**

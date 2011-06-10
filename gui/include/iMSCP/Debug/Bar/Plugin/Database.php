@@ -22,12 +22,16 @@
  * @subpackage  Bar_Plugin
  * @copyright   2010-2011 by i-MSCP team
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @version     SVN: $Id$
  * @link        http://www.i-mscp.net i-MSCP Home Site
  * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
 /** @See iMSCP_Debug_Bar_Plugin */
 require_once 'iMSCP/Debug/Bar/Plugin.php';
+
+/** @see iMSCP_Events_Listeners_Interface */
+require_once 'iMSCP/Events/Listeners/Interface.php';
 
 /**
  * Database plugin for the i-MSCP Debug Bar component.
@@ -41,7 +45,8 @@ require_once 'iMSCP/Debug/Bar/Plugin.php';
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     0.0.1
  */
-class iMSCP_Debug_Bar_Plugin_Database extends iMSCP_Debug_Bar_Plugin
+class iMSCP_Debug_Bar_Plugin_Database extends iMSCP_Debug_Bar_Plugin implements
+    iMSCP_Events_Listeners_Interface
 {
     /**
      * Plugin unique identifier.
