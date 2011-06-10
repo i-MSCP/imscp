@@ -8,12 +8,12 @@ i-MSCP 1.0.0-beta1
 Features / Enhancement:
     Gui:
         Core:
+            - Added debugBar component
+            - Added events system
             - Added on-click-logon ftp-user
             - Added software installer
-            - Added Events system
-            - Added DebugBar component
-            - New Theme (XHTML strict)
-            - Dropped useless password encryption
+            - Dropped password encryption for Ftp, Mail accounts...
+            - New theme (XHTML strict)
         Database:
             - Switched to InnoDB engine
         Tools:
@@ -32,15 +32,21 @@ Features / Enhancement:
             - New installer (Dialog, only one script for both setup and update process)
 
 Tickets:
-    - Fixed #3: Defect - Wrong DNS entry when using multiple IP for alternative
+    - Fixed #3:  Defect - Wrong DNS entry when using multiple IP for alternative
     - Fixed #5:  Update - jQuery - version 1.4.4 available
+    - Fixed #6:  Update - idna_convert class - version 0.6.9 available
+    - Fixed #7:  Task - Import i-MSCP theme
+    - Fixed #10: Enhancement - IP-Overview for admin and reseller
+    - Fixed #11: Defect - Wrong used variables
     - Fixed #12: Some CSRF issues in admin log
+    - Fixed #14: Feature - Software Installer
     - Fixed #10: IP-Overview for admin and reseller
     - Fixed #23: Merge Config files if not Distribution specific
-    - Fixed #24: Missing Program "Dialog" in pagackelist
+    - Fixed #24: Missing Program "Dialog" in package list
     - Fixed #25: Little Error in INSTALL
     - Fixed #26: Warnings in build script being installed via serial console
     - Fixed #27: Add logger to build script
+    - Fixed #28: Defect - [FreeBSD] imscp-build use wrong path
     - Fixed #29: Wrong link during Setup
     - Fixed #30: Domainname Error during setup
     - Fixed #31: [FreeBSD] An error occurred during setup process
@@ -50,7 +56,16 @@ Tickets:
     - Fixed #38: Defect - Missing checkbox for hostingplan Terms of Service
     - Fixed #39: Cosmetics - Missing background for the datepicker header
     - Fixed #40: Updated phpMyAdmin to version 3.3.8.1
+    - Fixed #42: Cosmetics - Wrong design in phpMyAdmin
+    - Fixed #44: Update - Net::DNS v1.0.7 is available
     - Fixed #48: Licence header for create_release.sh
     - Fixed #49: Some improvements on multilanguage.php
     - Fixed #50: Patch to fix the exception when switching users
     - Fixed #51: Enhancement - Change Package actions if software is installed
+    - Fixed #52: Cosmetics - Occurences of ispcp in Sources
+    - Fixed #53: misc cosmetics
+    - Fixed #54: some cosmetics
+    - Fixed #56: more cosmetics
+    - Fixed #59: Bug - Wrong path in debian and ubuntu config
+    - Fixed #66: Migration script
+    - Fixed #67: Database PDO::MYSQL_ATTR_USE_BUFFERED_QUERY
