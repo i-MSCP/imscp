@@ -40,7 +40,6 @@ Tickets:
     - Fixed #11: Defect - Wrong used variables
     - Fixed #12: Some CSRF issues in admin log
     - Fixed #14: Feature - Software Installer
-    - Fixed #10: IP-Overview for admin and reseller
     - Fixed #23: Merge Config files if not Distribution specific
     - Fixed #24: Missing Program "Dialog" in package list
     - Fixed #25: Little Error in INSTALL
