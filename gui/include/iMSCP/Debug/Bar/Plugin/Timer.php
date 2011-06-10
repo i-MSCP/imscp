@@ -206,6 +206,7 @@ class iMSCP_Debug_Bar_Plugin_Timer extends iMSCP_Debug_Bar_Plugin
 
                 $xhtml .= '</div>';
             }
+
             $xhtml .= '</div>';
         }
 

@@ -28,7 +28,29 @@
  */
 
 /**
- * i-MSCP Debug Bar component.
+ * i-MSCP DebugBar component.
+ *
+ * This component is a development helper that provides some debug information. The
+ * component comes with a bunch of plugins where each of them provides a particular
+ * set of debug information. A plugin can be or not an event listener that listens on
+ * one or more events that are thrown in the application work flow.ow.
+ *
+ * For now, the DebugBar component come with the followings plugins:
+ *
+ *  - Version : i-MSCP version, list of all PHP extensions available.
+ *
+ *  - Variables : Contents of $_GET, $_POST, $_COOKIE, $_FILES and $_SESSION and
+ *    $_ENV variables.
+ *
+ *  - Timer : Timing information of current request, time spent in level script ;
+ *    support custom timers. Also average, min and max time for requests.
+ *
+ *  - Files : Number and size of files included with complete list.
+ *
+ *  - Memory : Peak memory usage, memory usage of Level scripts and the whole
+ *    application ; support for custom memory markers.
+ *
+ *  - Database : Full listing of SQL queries and the time for each.
  *
  * @package     iMSCP
  * @package     iMSCP_Debug
@@ -206,6 +228,8 @@ class iMSCP_Debug_Bar
         return ('
             <style type="text/css" media="screen">
                 #iMSCPdebug_debug { font: 11px/1.4em Lucida Grande, Lucida Sans Unicode, sans-serif; position:fixed; bottom:5px; left:0px; color:#000; z-index: 255;}
+                #iMSCPdebug_debug a {color:blue;}
+                #iMSCPdebug_debug p {margin:0:}
                 #iMSCPdebug_debug ol {margin:10px 0px; padding:0 25px}
                 #iMSCPdebug_debug li {margin:0 0 10px 0;}
                 #iMSCPdebug_debug .clickable { cursor:pointer }

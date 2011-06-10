@@ -6,21 +6,8 @@ i-MSCP 1.0.0-beta1
 -------------------------------------------------------------------------------------
 
 Features / Enhancement:
-    Gui:
-        Core:
-            - Added debugBar component
-            - Added events system
-            - Added on-click-logon ftp-user
-            - Added software installer
-            - Dropped password encryption for Ftp, Mail accounts...
-            - New theme (XHTML strict)
-        Database:
+    Database:
             - Switched to InnoDB engine
-        Tools:
-            - Updated PhpMyAdmin to version 3.4.2
-        Vendor:
-            - Updated idna_convert.class.php
-            - Updated Net_DNS
     Engine:
         Config:
             - Moved keys file into /etc
@@ -30,6 +17,19 @@ Features / Enhancement:
             - Added migration script for ispCP version >= 1.0.7
         Setup/Update:
             - New installer (Dialog, only one script for both setup and update process)
+    Gui:
+        Core:
+            - Added debugBar component
+            - Added events system component
+            - Added on-click-logon ftp-user
+            - Added software installer
+            - Dropped password encryption for Ftp, Mail accounts...
+            - New theme (XHTML strict)
+        Tools:
+            - Updated PhpMyAdmin to version 3.4.2
+        Vendor:
+            - Updated idna_convert.class.php
+            - Updated Net_DNS
 
 Tickets:
     - Fixed #3:  Defect - Wrong DNS entry when using multiple IP for alternative

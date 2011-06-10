@@ -41,7 +41,6 @@ require_once 'iMSCP/Debug/Bar/Plugin/Interface.php';
  */
 abstract class iMSCP_Debug_Bar_Plugin implements iMSCP_Debug_Bar_Plugin_Interface
 {
-
     /**
      * Transforms data into human readable format.
      *
