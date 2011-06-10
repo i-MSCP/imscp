@@ -259,7 +259,8 @@ sub setup_imscp_database_connection {
 			$msg = '';
 			do{
 				$dbPort = iMSCP::Dialog->new()->inputbox("Please enter database port name (default null or 3306) $msg", $dbPort);
-				$msg = "\n\n$dbPort is not a valid port number!"
+				$dbPort =~ s/[^\d]//g;
+				$msg = "\n\n$dbPort is not a valid port number!";
 			} while ($dbPort && $dbPort !~ /^[\d]*$/);
 
 			$dbUser =  iMSCP::Dialog->new()->inputbox('Please enter database user name (default root)', $dbUser);
@@ -1434,6 +1435,9 @@ sub setup_mta {
 
 	# Building the file
 	my $hostname = $main::imscpConfig{'SERVER_HOSTNAME'};
+	my $gid	= getgrnam($main::imscpConfig{'MTA_MAILBOX_GID_NAME'});
+	my $uid	= getpwnam($main::imscpConfig{'MTA_MAILBOX_UID_NAME'});
+
 
 	$cfgTpl = iMSCP::Templator::process(
 		{
@@ -1447,9 +1451,9 @@ sub setup_mta {
 			MTA_VIRTUAL_DMN_HASH		=> $main::imscpConfig{'MTA_VIRTUAL_DMN_HASH'},
 			MTA_VIRTUAL_MAILBOX_HASH	=> $main::imscpConfig{'MTA_VIRTUAL_MAILBOX_HASH'},
 			MTA_VIRTUAL_ALIAS_HASH		=> $main::imscpConfig{'MTA_VIRTUAL_ALIAS_HASH'},
-			MTA_MAILBOX_MIN_UID			=> $main::imscpConfig{'MTA_MAILBOX_MIN_UID'},
-			MTA_MAILBOX_UID				=> $main::imscpConfig{'MTA_MAILBOX_UID'},
-			MTA_MAILBOX_GID				=> $main::imscpConfig{'MTA_MAILBOX_GID'},
+			MTA_MAILBOX_MIN_UID			=> $uid,
+			MTA_MAILBOX_UID				=> $uid,
+			MTA_MAILBOX_GID				=> $gid,
 			PORT_POSTGREY				=> $main::imscpConfig{'PORT_POSTGREY'}
 		},
 		$cfgTpl

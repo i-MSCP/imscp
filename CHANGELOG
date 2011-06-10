@@ -68,3 +68,4 @@ Tickets:
     - Fixed #59: Bug - Wrong path in debian and ubuntu config
     - Fixed #66: Migration script
     - Fixed #67: Database PDO::MYSQL_ATTR_USE_BUFFERED_QUERY
+    - Fixed #73: Problem with Mail
