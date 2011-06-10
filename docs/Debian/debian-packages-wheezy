@@ -13,6 +13,7 @@ courier-base
 courier-imap
 courier-maildrop
 courier-pop
+dialog
 diff
 dnsutils
 gcc
@@ -62,13 +63,13 @@ libmysqlclient16
 locales
 lsb-base
 lsb-release
-dialog
 lynx
 lzma
 make
 mysql-client
 mysql-common
 mysql-server
+openssl
 original-awk
 patch
 perl
