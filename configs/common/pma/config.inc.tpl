@@ -1,5 +1,4 @@
 <?php
-/* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
  * i-MSCP a internet Multi Server Control Panel
  *
@@ -10,16 +9,13 @@
  *
  * @version     $Id$
  * @package     phpMyAdmin
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2010 by i-MSCP | http://i-mscp.net
+ * @copyright   2010-2011 by i-MSCP | http://i-mscp.net
  * @link        http://i-mscp.net
- * @author      ispCP Team
  * @author      i-MSCP Team
  */
 
 /*
- * This is needed for cookie based authentication to encrypt password in
- * cookie
+ * This is needed for cookie based authentication to encrypt password in cookie
  */
 $cfg['blowfish_secret']                 = '{BLOWFISH}';
 
@@ -35,25 +31,31 @@ $i++;
 
 /* Authentication type */
 $cfg['Servers'][$i]['auth_type'] 		= 'cookie';
+
 /* Parameters set by i-MSCP */
 $cfg['Servers'][$i]['user']				= $_POST['pma_username'];
 $cfg['Servers'][$i]['password']			= $_POST['pma_password'];
+
 /* Server parameters */
 $cfg['Servers'][$i]['host'] 			= '{HOSTNAME}';
 $cfg['Servers'][$i]['port'] 			= '3306';
 $cfg['Servers'][$i]['connect_type'] 	= 'tcp';
 $cfg['Servers'][$i]['compress'] 		= true;
+
 /* Select mysqli if your server has it */
 $cfg['Servers'][$i]['extension'] 		= 'mysql';
 $cfg['Servers'][$i]['AllowNoPassword']  = false;
+
 /* rajk - for blobstreaming */
 $cfg['Servers'][$i]['bs_garbage_threshold'] = 50;
 $cfg['Servers'][$i]['bs_repository_threshold'] = '32M';
 $cfg['Servers'][$i]['bs_temp_blob_timeout'] = 600;
 $cfg['Servers'][$i]['bs_temp_log_threshold'] = '32M';
+
 /* User for advanced features */
 $cfg['Servers'][$i]['controluser'] 		= '{PMA_USER}';
 $cfg['Servers'][$i]['controlpass'] 		= '{PMA_PASS}';
+
 /* Advanced phpMyAdmin features */
 $cfg['Servers'][$i]['pmadb']      	    = 'phpmyadmin';
 $cfg['Servers'][$i]['bookmarktable'] 	= 'pma_bookmark';
@@ -66,12 +68,16 @@ $cfg['Servers'][$i]['history'] 			= 'pma_history';
 $cfg['Servers'][$i]['tracking']         = 'pma_tracking';
 $cfg['Servers'][$i]['designer_coords']	= 'pma_designer_coords';
 $cfg['Servers'][$i]['hide_db'] 			= '(information_schema|phpmyadmin|mysql)';
+
 /* Added to hide warnings about disabled features */
 $cfg['PmaNoRelation_DisableWarning'] = true;
+
 /* Added to hide warning about Suhosin */
 $cfg['SuhosinDisableWarning'] = true;
+
 /* Name of the Server displayed */
 /*$cfg['Servers'][$i]['verbose'] 		= 'mysql.myserver.com';*/ // reactivate if domain is set in SETUP
+
 $cfg['Servers'][$i]['SignonSession']	= 'i-MSCP';
 /* Contrib / Swekey authentication */
 // $cfg['Servers'][$i]['auth_swekey_config'] = '/etc/swekey-pma.conf';
@@ -116,4 +122,3 @@ $cfg['BrowseMIME'] 						= true;
 //$cfg['ThemeDefault'] 					= 'imscp';
 /* switch off new 'hex as binaray' mode */
 $cfg['DisplayBinaryAsHex'] 				= false;
-?>
