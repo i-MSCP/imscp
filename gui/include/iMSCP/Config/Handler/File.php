@@ -1,6 +1,6 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * The contents of this file are subject to the Mozilla Public License
  * Version 1.1 (the "License"); you may not use this file except in
@@ -20,24 +20,22 @@
  * Portions created by the i-MSCP Team are Copyright (C) 2010 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  *
- * @category	i-MSCP
+ * @category    i-MSCP
  * @package     iMSCP_Config
  * @subpackage  Handler
- * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010 by i-MSCP | http://i-mscp.net
+ * @copyright   2006-2010 by ispCP | http://isp-control.net
+ * @copyright   2010 by i-MSCP | http://i-mscp.net
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
  * @version     SVN: $Id$
- * @link		http://i-mscp.net i-MSCP Home Site
+ * @link        http://i-mscp.net i-MSCP Home Site
  * @license     http://www.mozilla.org/MPL/ MPL 1.1
  */
 
-/**
- * @see iMSCP_Config_Handler
- */
+/** @see iMSCP_Config_Handler */
 require_once  INCLUDEPATH . '/iMSCP/Config/Handler.php';
 
 /**
- * Class to handle configuration parameters from a flat file
+ * Class to handle configuration parameters from a flat file.
  *
  * iMSCP_Config_Handler adapter class to handle configuration parameters that
  * are stored in a flat file where each pair of key-values are separated by the
@@ -152,75 +150,76 @@ require_once  INCLUDEPATH . '/iMSCP/Config/Handler.php';
  * @property string Version
  * @property string CodeName
  *
- * @package		iMSCP_Config
- * @subpackage	Handler
- * @author		Benedikt Heintel <benedikt.heintel@i-mscp.net>
- * @author		Laurent Declercq <l.declercq@nuxwin.com>
- * @since       1.0.7 (ispCP)
- * @version		1.0.6
+ * @package     iMSCP_Config
+ * @subpackage  Handler
+ * @author      Benedikt Heintel <benedikt.heintel@i-mscp.net>
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @version     1.0.6
  */
-class iMSCP_Config_Handler_File extends iMSCP_Config_Handler {
+class iMSCP_Config_Handler_File extends iMSCP_Config_Handler
+{
+    /**
+     * Configuration file path
+     *
+     * @var string
+     */
+    protected $_pathFile;
 
-	/**
-	 * Configuration file path
-	 *
-	 * @var string
-	 */
-	protected $_pathFile;
+    /**
+     * Loads all configuration parameters from a flat file
+     *
+     * <b>Note:</b> Default file path is set to:
+     * {/usr/local}/etc/imscp/imscp.conf depending of distribution.
+     *
+     * @param string $pathFile Configuration file path
+     */
+    public function __construct($pathFile = null)
+    {
+        if (is_null($pathFile)) {
+            if (getenv('IMSCP_CONF')) {
+                $pathFile = getEnv('IMSCP_CONF');
+            } else {
+                switch (PHP_OS) {
+                    case 'FreeBSD':
+                    case 'OpenBSD':
+                    case 'NetBSD':
+                        $pathFile = '/usr/local/etc/imscp/imscp.conf';
+                        break;
+                    default:
+                        $pathFile = '/etc/imscp/imscp.conf';
+                }
+            }
+        }
 
-	/**
-	 * Loads all configuration parameters from a flat file
-	 *
-	 * <b>Note:</b> Default file path is set to:
-	 * {/usr/local}/etc/imscp/imscp.conf depending of distribution.
-	 *
-	 * @param string $pathFile Configuration file path
-	 */
-	public function __construct($pathFile = null) {
+        $this->_pathFile = $pathFile;
+        $this->_parseFile();
+    }
 
-		if(is_null($pathFile)) {
-			if (getenv('IMSCP_CONF')) {
-				$pathFile = getEnv('IMSCP_CONF');
-			} else {
-				switch (PHP_OS) {
-					case 'FreeBSD':
-					case 'OpenBSD':
-					case 'NetBSD':
-						$pathFile = '/usr/local/etc/imscp/imscp.conf';
-						break;
-					default:
-						$pathFile = '/etc/imscp/imscp.conf';
-				}
-			}
-		}
+    /**
+     * Opens a configuration file and parses its Key = Value pairs into the
+     * {@link iMSCP_Config_Hangler::parameters} array.
+     *
+     * @throws iMSCP_Exception
+     * @return void
+     * @todo Don't use error operator
+     */
+    protected function _parseFile()
+    {
 
-		$this->_pathFile = $pathFile;
-		$this->_parseFile();
-	}
+        $fd = @file_get_contents($this->_pathFile);
 
-	/**
-	 * Opens a configuration file and parses its Key = Value pairs into the
-	 * {@link iMSCP_Config_Hangler::parameters} array.
-	 *
-	 * @throws iMSCP_Exception
-	 * @return void
-	 * @todo Don't use error operator
-	 */
-	protected function _parseFile() {
+        if ($fd === false) {
+            throw new iMSCP_Exception(
+                "Unable to open the configuration file `{$this->_pathFile}`.");
+        }
 
-		$fd = @file_get_contents($this->_pathFile);
+        $lines = explode(PHP_EOL, $fd);
 
-		if ($fd === false) {
-			throw new iMSCP_Exception("Error: Unable to open the configuration file `{$this->_pathFile}`!");
-		}
-
-		$lines = explode(PHP_EOL, $fd);
-
-		foreach ($lines as $line) {
-			if (!empty($line) && $line[0] != '#' && strpos($line, '=')) {
-				list($key, $value) = explode('=', $line, 2);
-				$this[trim($key)] = trim($value);
-			}
-		}
-	}
+        foreach ($lines as $line) {
+            if (!empty($line) && $line[0] != '#' && strpos($line, '=')) {
+                list($key, $value) = explode('=', $line, 2);
+                $this[trim($key)] = trim($value);
+            }
+        }
+    }
 }
