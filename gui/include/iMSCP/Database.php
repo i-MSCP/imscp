@@ -211,10 +211,10 @@ class iMSCP_Database
     }
 
     /**
-     * Prepares a SQL statement
+     * Prepares an SQL statement.
      *
      * The SQL statement can contains zero or more named or question mark parameters
-     * markers for which real values willbe substituted when the statement will be
+     * markers for which real values will be substituted when the statement will be
      * executed.
      *
      * See {@link http://www.php.net/manual/en/pdo.prepare.php}
