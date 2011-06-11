@@ -53,7 +53,7 @@ $dbUpdate = iMSCP_Update_Database::getInstance();
 if(isset($_POST['uaction']) && $_POST['uaction'] == 'update') {
 
 	// Execute all available db updates
-	if(!$dbUpdate->applyUpdate()) {
+	if(!$dbUpdate->applyUpdates()) {
 		throw new iMSCP_Exception($dbUpdate->getError());
 	}
 

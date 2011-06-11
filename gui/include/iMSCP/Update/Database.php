@@ -41,7 +41,7 @@ require_once 'iMSCP/Update.php';
  * @subpackage  Database
  * @author      Daniel Andreca <sci2tech@gmail.com>
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     1.0.5
+ * @version     0.0.1
  */
 class iMSCP_Update_Database extends iMSCP_Update
 {
@@ -51,8 +51,8 @@ class iMSCP_Update_Database extends iMSCP_Update
     protected static $_instance;
 
     /**
-     * Tell whether or not an request must be send to the i-MSCP daemon after
-     * that all database updates was applied.
+     * Tells whether or not a request must be send to the i-MSCP daemon after that
+     * all database updates were applied.
      *
      * @var bool
      */
@@ -91,9 +91,107 @@ class iMSCP_Update_Database extends iMSCP_Update
     }
 
     /**
+     * Checks for available database update(s).
+     *
+     * @return bool TRUE if update(s) available, FALSE otherwise
+     */
+    public function isAvailableUpdate()
+    {
+        // DATABASE_REVISION < last database methode revision number
+        if ($this->getLastAppliedUpdate() < $this->getNextUpdate()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Apply all available database updates.
+     *
+     * @return bool TRUE on success, FALSE othewise
+     */
+    public function applyUpdates()
+    {
+        /** @var $dbConfig iMSCP_Config_Handler_Db */
+        $dbConfig = iMSCP_Registry::get('dbConfig');
+
+        /** @var $pdo PDO */
+        $pdo = iMSCP_Database::getRawInstance();
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        while ($this->isAvailableUpdate()) {
+            $databaseUpdateRevision = $this->getNextUpdate();
+
+            // Get the database update method name
+            $databaseUpdateMethod = '_databaseUpdate_' . $databaseUpdateRevision;
+
+            // Gets the stack of queries from the databse update method
+            $queryStack = $this->$databaseUpdateMethod();
+
+            // Checks if the current database update was already executed with a failed
+            // status
+            if (isset($dbConfig->FAILED_UPDATE)) {
+                list($failedUpdate, $failedQueryIndex) = $dbConfig->FAILED_UPDATE;
+            } else {
+                $failedUpdate = '';
+                $failedQueryIndex = -1;
+            }
+
+            // Execute all queries from the queries stack returned by the database
+            // update method
+            foreach ($queryStack as $index => $query)
+            {
+                // Query was already applied with success ?
+                if ($databaseUpdateMethod == $failedUpdate &&
+                    $index < $failedQueryIndex
+                ) {
+                    continue;
+                }
+
+                try {
+                    // Execute query
+                    $pdo->query($query);
+                } catch (PDOException $e) {
+                    // Store the query index that was failed and the database update
+                    // method that wrap it
+                    $dbConfig->FAILED_UPDATE = "$databaseUpdateMethod;$index";
+
+                    // Prepare error message
+                    $errorMessage = sprintf(
+                        'Database update %s failed', $databaseUpdateRevision);
+
+                    // Extended error message
+                    if (PHP_SAPI != 'cli') {
+                        $errorMessage .= ':<br /><br />' . $e->getMessage() .
+                                         '<br /><br />Query: ' . trim($query);
+                    } else {
+                        $errorMessage .= ":\n\n" . $e->getMessage() .
+                                         "\nQuery: " . trim($query);
+                    }
+
+                    $this->_lastError = $errorMessage;
+
+                    return false;
+                }
+            }
+
+            // Database update was successfully applied - updating revision number
+            // in the database
+            $dbConfig->set('DATABASE_REVISION', $databaseUpdateRevision);
+        }
+
+        // We should never run the backend scripts from the CLI update script
+        if (PHP_SAPI != 'cli' && $this->_daemonRequest) {
+            send_request();
+        }
+
+        return true;
+    }
+
+    /**
      * Return next database update revision.
      *
-     * @return int
+     * @return int 0 if no update available
      */
     protected function getNextUpdate()
     {
@@ -108,9 +206,11 @@ class iMSCP_Update_Database extends iMSCP_Update
     }
 
     /**
-     * Returns last datababse update revision.
+     * Returns the revision of the last available datababse update.
      *
-     * @return int Last available database update revision
+     * Note: For performances reasons, the revision is retrieved once.
+     *
+     * @return int The  revision of the last available database update
      */
     protected function getLastAvailableUpdateRevision()
     {
@@ -136,9 +236,9 @@ class iMSCP_Update_Database extends iMSCP_Update
     }
 
     /**
-     * Returns last applied database update revision.
+     * Returns revision of the last applied database update.
      *
-     * @return int
+     * @return int Revision of the last applied database update
      */
     protected function getLastAppliedUpdate()
     {
@@ -150,102 +250,6 @@ class iMSCP_Update_Database extends iMSCP_Update
         }
 
         return (int)$dbConfig->DATABASE_REVISION;
-    }
-
-    /**
-     * Checks for available update.
-     *
-     * @return bool TRUE if update is available, FALSE otherwise.
-     */
-    public function isAvailableUpdate()
-    {
-        // DATABASE_REVISION < last database methode revision number
-        if ($this->getLastAppliedUpdate() < $this->getNextUpdate()) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Apply all available database updates.
-     *
-     * @return bool TRUE on success, FALSE othewise
-     */
-    public function applyUpdate()
-    {
-        /** @var $pdo PDO */
-        $pdo = iMSCP_Database::getRawInstance();
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-        /** @var $dbConfig iMSCP_Config_Handler_Db */
-        $dbConfig = iMSCP_Registry::get('dbConfig');
-
-        while ($this->isAvailableUpdate()) {
-            $databaseUpdateRevision = $this->getNextUpdate();
-
-            // Get the update method name
-            $databaseUpdateMethod = '_databaseUpdate_' . $databaseUpdateRevision;
-
-            // Gets the stack of queries from the databse update method
-            $queryStack = $this->$databaseUpdateMethod();
-
-            // Checks if the current database update was already applied with failed
-            // result
-            if (isset($dbConfig->FAILED_UPDATE)) {
-                list($failedUpdate, $failedQueryIndex) = $dbConfig->FAILED_UPDATE;
-            } else {
-                $failedUpdate = '';
-                $failedQueryIndex = -1;
-            }
-
-            // Execute all queries in the queries stack of the current database update
-            foreach ($queryStack as $index => $query)
-            {
-                // Query was already applied with success ?
-                if ($databaseUpdateMethod == $failedUpdate &&
-                    $index < $failedQueryIndex
-                ) {
-                    continue;
-                }
-
-                try {
-                    // Execute query
-                    $pdo->query($query);
-                } catch (PDOException $e) {
-                    // Store the query number that was failed and the method name
-                    // that wraps it
-                    $dbConfig->FAILED_UPDATE = "$databaseUpdateMethod;$index";
-
-                    // Prepare error message
-                    $errorMessage = sprintf(
-                        'Database update %s failed', $databaseUpdateRevision);
-
-                    // Extended error message
-                    if (PHP_SAPI != 'cli') {
-                        $errorMessage .= ':<br /><br />' . $e->getMessage() .
-                                         '<br /><br />Query: ' . trim($query);
-                    } else {
-                        $errorMessage .= ":\n\n" . $e->getMessage() .
-                                         "\nQuery: " . trim($query);
-                    }
-
-                    $this->_lastError = $errorMessage;
-
-                    return false;
-                }
-            }
-
-            // Database update was successfully applied, update revision in the database
-            $dbConfig->set('DATABASE_REVISION', $databaseUpdateRevision);
-        }
-
-        // We should never run the backend scripts from the CLI update script
-        if (PHP_SAPI != 'cli' && $this->_daemonRequest) {
-            send_request();
-        }
-
-        return true;
     }
 
     /**
@@ -286,6 +290,8 @@ class iMSCP_Update_Database extends iMSCP_Update
 			DROP PROCEDURE IF EXISTS test;
 		";
     }
+
+    // Implement all database update methods below
 
     /**
      * Catch all database updates methods (2 to 45) that were removed.

@@ -39,7 +39,7 @@ require_once 'iMSCP/Update.php';
  * @subpackage  Version
  * @author      Daniel Andreca <sci2tech@gmail.com>
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     1.0.5
+ * @version     0.0.1
  */
 class iMSCP_Update_Version extends iMSCP_Update
 {
@@ -83,7 +83,7 @@ class iMSCP_Update_Version extends iMSCP_Update
     /**
      * Return next update.
      *
-     * @return int
+     * @return int 0 if not update or server not reachable.
      */
     protected function getNextUpdate()
     {
@@ -143,9 +143,10 @@ class iMSCP_Update_Version extends iMSCP_Update
     /**
      * Apply all available update.
      *
+     * @throws iMSCP_Update_Exception Since this method is not implemented
      * @return void
      */
-    public function applyUpdate()
+    public function applyUpdates()
     {
         require_once 'iMSCP/Update/Exception.php';
         throw new iMSCP_Update_Exception('Method not implemented.');

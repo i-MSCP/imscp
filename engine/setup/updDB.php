@@ -47,7 +47,7 @@ try {
 	// Gets an iMSCP_Update_Database instance
 	$databaseUpdate = iMSCP_Update_Database::getInstance();
 
-	if(!$databaseUpdate->applyUpdate()) {
+	if(!$databaseUpdate->applyUpdates()) {
 		print "\n[ERROR]: " . $databaseUpdate->getError() . "\n\n";
 		exit(1);
 	}

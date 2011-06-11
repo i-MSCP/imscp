@@ -97,7 +97,7 @@ function getUpdateInfo($tpl) {
 		$tpl->assign(
 			array(
 				'DATABASE_UPDATE' => '<a href="database_update.php" class="link">' .
-				tr('A database update is available') . '</a>'
+				tr('One or more updates to the database are available.') . '</a>'
 			)
 		);
 
