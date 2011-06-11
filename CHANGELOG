@@ -25,6 +25,7 @@ Features / Enhancement:
             - Added software installer
             - Dropped password encryption for Ftp, Mail accounts...
             - New theme (XHTML strict)
+            - Rewritten update component
         Tools:
             - Updated PhpMyAdmin to version 3.4.2
         Vendor:
