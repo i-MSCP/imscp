@@ -54,10 +54,10 @@ abstract class iMSCP_Update
     abstract public function applyUpdates();
 
     /**
-     * Checks for available update(s).
+     * Checks for available update.
      *
      * @abstract
-     * @return bool TRUE if update(s) available, FALSE otherwise
+     * @return bool TRUE if an update available, FALSE otherwise
      */
     abstract public function isAvailableUpdate();
 

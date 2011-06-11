@@ -110,7 +110,7 @@ class iMSCP_Update_Version extends iMSCP_Update
     /**
      * Check for available update.
      *
-     * @return bool TRUE if update is available, FALSE otherwise.
+     * @return bool TRUE if an update is available, FALSE otherwise.
      */
     public function isAvailableUpdate()
     {

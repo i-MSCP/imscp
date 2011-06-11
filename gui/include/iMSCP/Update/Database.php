@@ -91,13 +91,12 @@ class iMSCP_Update_Database extends iMSCP_Update
     }
 
     /**
-     * Checks for available database update(s).
+     * Checks for available database update.
      *
-     * @return bool TRUE if update(s) available, FALSE otherwise
+     * @return bool TRUE if an update is available, FALSE otherwise
      */
     public function isAvailableUpdate()
     {
-        // DATABASE_REVISION < last database methode revision number
         if ($this->getLastAppliedUpdate() < $this->getNextUpdate()) {
             return true;
         }
@@ -662,6 +661,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 
         /** @var $db iMSCP_Database */
         $db = iMSCP_Registry::get('db');
+
         $tables = $db->metaTables();
 
         foreach ($tables as $table) {
