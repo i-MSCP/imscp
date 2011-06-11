@@ -517,7 +517,7 @@ function register_user($userName, $userPassword)
 
     $userData = get_userdata($userName);
 
-    if ((iMSCP_Update_Database::getInstance()->checkUpdateExists() ||
+    if ((iMSCP_Update_Database::getInstance()->isAvailableUpdate() ||
          ($cfg->MAINTENANCEMODE)) && $userData['admin_type'] != 'admin'
     ) {
         write_log("Login error, <b><i>" . $userName ."</i></b> system currently in maintenance mode");
@@ -620,7 +620,7 @@ function check_user_login()
         return false;
     }
 
-    if ((iMSCP_Update_Database::getInstance()->checkUpdateExists() || ($cfg->MAINTENANCEMODE)) &&
+    if ((iMSCP_Update_Database::getInstance()->isAvailableUpdate() || ($cfg->MAINTENANCEMODE)) &&
         $userType != 'admin'
     ) {
         unset_user_login_data(true);
