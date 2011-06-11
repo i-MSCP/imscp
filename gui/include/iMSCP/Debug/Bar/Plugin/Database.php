@@ -72,13 +72,13 @@ class iMSCP_Debug_Bar_Plugin_Database extends iMSCP_Debug_Bar_Plugin implements
      *
      * @var int
      */
-    protected $totalQueries = 0;
+    protected $_totalQueries = 0;
 
     /**
      *
      * @var int
      */
-    protected $totalTimeElapsed = 0;
+    protected $_totalTimeElapsed = 0;
 
     /**
      * Array that contains queries and their execution time.
@@ -86,6 +86,14 @@ class iMSCP_Debug_Bar_Plugin_Database extends iMSCP_Debug_Bar_Plugin implements
      * @var array
      */
     protected $_queries = array();
+
+
+    /**
+     * Query index.
+     *
+     * @var int
+     */
+    protected $_queryIndex = 0;
 
     /**
      * Start to compute time for database connection.
@@ -108,6 +116,11 @@ class iMSCP_Debug_Bar_Plugin_Database extends iMSCP_Debug_Bar_Plugin implements
     {
         $this->_queries['connection'] =
             (microtime(true) * 1000) - $this->_queries['connection'];
+
+        $this->_totalTimeElapsed =
+            $this->_totalTimeElapsed + $this->_queries['connection'];
+
+        $this->_totalQueries++;
     }
 
     /**
@@ -116,7 +129,8 @@ class iMSCP_Debug_Bar_Plugin_Database extends iMSCP_Debug_Bar_Plugin implements
      */
     public function onBeforeExecute($event)
     {
-        $this->_queries[$event->getQueryString()] = microtime(true) * 1000;
+        $this->_queries[$this->_queryIndex]['queryString'] = $event->getQueryString();
+        $this->_queries[$this->_queryIndex]['time'] = microtime(true) * 1000;
     }
 
     /**
@@ -125,8 +139,13 @@ class iMSCP_Debug_Bar_Plugin_Database extends iMSCP_Debug_Bar_Plugin implements
      */
     public function onAfterExecute($event)
     {
-        $this->_queries[$event->getQueryString()] =
-            ((microtime(true) * 1000) - $this->_queries[$event->getQueryString()]);
+        $this->_queries[$this->_queryIndex]['time'] =
+            ((microtime(true) * 1000) - $this->_queries[$this->_queryIndex]['time']);
+
+        $this->_totalQueries++;
+        $this->_totalTimeElapsed = $this->_totalTimeElapsed +
+                                   $this->_queries[$this->_queryIndex]['time'];
+        $this->_queryIndex++;
     }
 
     /**
@@ -157,7 +176,8 @@ class iMSCP_Debug_Bar_Plugin_Database extends iMSCP_Debug_Bar_Plugin implements
      */
     public function getTab()
     {
-        return $this->getIdentifier();
+        return $this->_totalQueries . ' queries in '.
+               round($this->_totalTimeElapsed, 2) . ' ms';
     }
 
     /**
@@ -174,9 +194,9 @@ class iMSCP_Debug_Bar_Plugin_Database extends iMSCP_Debug_Bar_Plugin implements
 
         unset($this->_queries['connection']);
 
-        foreach ($this->_queries as $query => $time) {
-            $xhtml .= '<li><strong>[' . round($time, 2) . ' ms]</strong> '
-                     . htmlspecialchars($query) . '</li>';
+        foreach ($this->_queries as $query) {
+            $xhtml .= '<li><strong>[' . round($query['time'], 2) . ' ms]</strong> '
+                     . htmlspecialchars($query['queryString']) . '</li>';
         }
 
         $xhtml .= '</ol>';
