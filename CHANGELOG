@@ -5,7 +5,7 @@ i-MSCP ChangeLog
 i-MSCP 1.0.0-beta1
 -------------------------------------------------------------------------------------
 
-Features / Enhancement:
+Features / Enhancements:
     Database:
             - Switched to InnoDB engine
     Engine:
@@ -16,16 +16,16 @@ Features / Enhancement:
         Migration:
             - Added migration script for ispCP version >= 1.0.7
         Setup/Update:
-            - New installer (Dialog, only one script for both setup and update process)
+            - New installer (Dialog ; merged setup and update scripts)
     Gui:
         Core:
-            - Added debugBar component
-            - Added events system component
+            - Added DebugBar component
+            - Added Events system component
             - Added on-click-logon ftp-user
-            - Added software installer
+            - Added Software installer
             - Dropped password encryption for Ftp, Mail accounts...
             - New theme (XHTML strict)
-            - Rewritten update component
+            - Rewritten Update component
         Tools:
             - Updated PhpMyAdmin to version 3.4.2
         Vendor:
