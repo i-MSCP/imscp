@@ -1438,6 +1438,9 @@ sub setup_mta {
 	my $gid	= getgrnam($main::imscpConfig{'MTA_MAILBOX_GID_NAME'});
 	my $uid	= getpwnam($main::imscpConfig{'MTA_MAILBOX_UID_NAME'});
 
+	$main::imscpConfig{'MTA_MAILBOX_MIN_UID'} = $uid if $main::imscpConfig{'MTA_MAILBOX_MIN_UID'} != $uid;
+	$main::imscpConfig{'MTA_MAILBOX_UID'} = $uid if $main::imscpConfig{'MTA_MAILBOX_UID'} != $uid;
+	$main::imscpConfig{'MTA_MAILBOX_GID'} = $gid if $main::imscpConfig{'MTA_MAILBOX_GID'} != $gid;
 
 	$cfgTpl = iMSCP::Templator::process(
 		{
