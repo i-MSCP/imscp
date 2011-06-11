@@ -1,214 +1,345 @@
 <?php
 /**
  * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2011 by i-MSCP team
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "ispCP - ISP Control Panel".
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * The Initial Developer of the Original Code is ispCP Team.
- * Portions created by Initial Developer are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- *
- * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
- * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
- *
- * @category	i-MSCP
- * @package	 iMSCP_Update
- * @copyright   2006-2010 by ispCP | http://isp-control.net
- * @copyright   2006-2010 by ispCP | http://i-mscp.net
- * @author	  ispCP Team
- * @author	  i-MSCP Team
- * @version	 SVN: $Id$
- * @link		http://i-mscp.net i-MSCP Home Site
- * @license	 http://www.mozilla.org/MPL/ MPL 1.1
+ * @category    iMSCP
+ * @package     iMSCP_Update
+ * @subpackage  Database
+ * @copyright   2010-2011 by i-MSCP team
+ * @author      Daniel Andreca <sci2tech@gmail.com>
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @version     SVN: $Id$
+ * @link        http://www.i-mscp.net i-MSCP Home Site
+ * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
 
+/** @see iMSCP_Update */
+require_once 'iMSCP/Update.php';
+
 /**
- * Class for database updates
+ * Update version class.
  *
- * @category	i-MSCP
- * @package	 iMSCP_Update
- * @author	  Daniel Andreca <sci2tech@gmail.com>
- * @since	   r1355
+ * Checks if an update is available for i-MSCP.
+ *
+ * @category    iMSCP
+ * @package     iMSCP_Update
+ * @subpackage  Database
+ * @author      Daniel Andreca <sci2tech@gmail.com>
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @version     1.0.5
  */
 class iMSCP_Update_Database extends iMSCP_Update
 {
-	/**
-	 * iMSCP_Update_Database instance.
-	 *
-	 * @var iMSCP_Update_Database
-	 */
-	protected static $_instance = null;
+    /**
+     * @var iMSCP_Update
+     */
+    protected static $_instance;
 
-	/**
-	 * The database variable name for the update version.
-	 *
-	 * @var string
-	 */
-	protected $_databaseVariableName = 'DATABASE_REVISION';
+    /**
+     * Tell whether or not an request must be send to the i-MSCP daemon after
+     * that all database updates was applied.
+     *
+     * @var bool
+     */
+    protected $_daemonRequest = false;
 
-	/**
-	 * The update functions prefix.
-	 *
-	 * @var string
-	 */
-	protected $_functionName = '_databaseUpdate_';
+    /**
+     * Singleton - Make new unavailable.
+     */
+    protected function __construct()
+    {
 
-	/**
-	 * Default error message for updates that have failed.
-	 *
-	 * @var string
-	 */
-	protected $_errorMessage = 'Database update %s failed';
+    }
 
-	/**
-	 * Get an iMSCP_Update_Database instance.
-	 *
-	 * @return iMSCP_Update_Database An iMSCP_Update_Database instance
-	 */
-	public static function getInstance()
-	{
-		if (is_null(self::$_instance)) {
-			self::$_instance = new self;
-		}
+    /**
+     * Singleton - Make clone unavailable.
+     *
+     * @return void
+     */
+    protected function __clone()
+    {
 
-		return self::$_instance;
-	}
+    }
 
-	/*
-	  * Insert the update functions below this entry. The revision has to be
-	  * ascending and unique. Each databaseUpdate function has to return a array,
-	  * even if the array contains only one entry.
-	  */
+    /**
+     * Implements Singleton design pattern.
+     *
+     * @return iMSCP_Update
+     */
+    public static function getInstance()
+    {
+        if (null === self::$_instance) {
+            self::$_instance = new self();
+        }
 
-	/**
-	 * Initial Update. Insert the first Revision.
-	 *
-	 * @author Jochen Manz <zothos@zothos.net>
-	 * @since r1355
-	 * @return array SQL statements to be performed
-	 */
-	protected function _databaseUpdate_1()
-	{
-		$sqlUpd = array();
+        return self::$_instance;
+    }
 
-		$sqlUpd[] = "
-			INSERT INTO
-				`config` (name, value)
-			VALUES
-				('DATABASE_REVISION', '1')
-			;
+    /**
+     * Return next database update revision.
+     *
+     * @return int
+     */
+    protected function getNextUpdate()
+    {
+        $lastAvailableUpdateRevision = $this->getLastAvailableUpdateRevision();
+        $nextUpdateRevision = $this->getLastAppliedUpdate();
+
+        if ($nextUpdateRevision < $lastAvailableUpdateRevision) {
+            return $nextUpdateRevision + 1;
+        }
+
+        return 0;
+    }
+
+    /**
+     * Returns last datababse update revision.
+     *
+     * @return int Last available database update revision
+     */
+    protected function getLastAvailableUpdateRevision()
+    {
+        static $lastAvailableUpdateRevision = null;
+
+        if (null === $lastAvailableUpdateRevision) {
+            $reflection = new ReflectionClass(__CLASS__);
+            $databaseUpdateMethods = array();
+
+            foreach ($reflection->getMethods() as $method)
+            {
+                if (strpos($method->name, '_databaseUpdate_') !== false) {
+                    $databaseUpdateMethods[] = $method->name;
+                }
+            }
+
+            $databaseUpdateMethod = (string)end($databaseUpdateMethods);
+            $lastAvailableUpdateRevision = (int)substr(
+                $databaseUpdateMethod, strrpos($databaseUpdateMethod, '_') + 1);
+        }
+
+        return $lastAvailableUpdateRevision;
+    }
+
+    /**
+     * Returns last applied database update revision.
+     *
+     * @return int
+     */
+    protected function getLastAppliedUpdate()
+    {
+        /** @var $dbConfig iMSCP_Config_Handler_Db */
+        $dbConfig = iMSCP_Registry::get('dbConfig');
+
+        if (!isset($dbConfig->DATABASE_REVISION)) {
+            $dbConfig->DATABASE_REVISION = 1;
+        }
+
+        return (int)$dbConfig->DATABASE_REVISION;
+    }
+
+    /**
+     * Checks for available update.
+     *
+     * @return bool TRUE if update is available, FALSE otherwise.
+     */
+    public function isAvailableUpdate()
+    {
+        // DATABASE_REVISION < last database methode revision number
+        if ($this->getLastAppliedUpdate() < $this->getNextUpdate()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Apply all available database updates.
+     *
+     * @return bool TRUE on success, FALSE othewise
+     */
+    public function applyUpdate()
+    {
+        /** @var $pdo PDO */
+        $pdo = iMSCP_Database::getRawInstance();
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        /** @var $dbConfig iMSCP_Config_Handler_Db */
+        $dbConfig = iMSCP_Registry::get('dbConfig');
+
+        while ($this->isAvailableUpdate()) {
+            $databaseUpdateRevision = $this->getNextUpdate();
+
+            // Get the update method name
+            $databaseUpdateMethod = '_databaseUpdate_' . $databaseUpdateRevision;
+
+            // Gets the stack of queries from the databse update method
+            $queryStack = $this->$databaseUpdateMethod();
+
+            // Checks if the current database update was already applied with failed
+            // result
+            if (isset($dbConfig->FAILED_UPDATE)) {
+                list($failedUpdate, $failedQueryIndex) = $dbConfig->FAILED_UPDATE;
+            } else {
+                $failedUpdate = '';
+                $failedQueryIndex = -1;
+            }
+
+            // Execute all queries in the queries stack of the current database update
+            foreach ($queryStack as $index => $query)
+            {
+                // Query was already applied with success ?
+                if ($databaseUpdateMethod == $failedUpdate &&
+                    $index < $failedQueryIndex
+                ) {
+                    continue;
+                }
+
+                try {
+                    // Execute query
+                    $pdo->query($query);
+                } catch (PDOException $e) {
+                    // Store the query number that was failed and the method name
+                    // that wraps it
+                    $dbConfig->FAILED_UPDATE = "$databaseUpdateMethod;$index";
+
+                    // Prepare error message
+                    $errorMessage = sprintf(
+                        'Database update %s failed', $databaseUpdateRevision);
+
+                    // Extended error message
+                    if (PHP_SAPI != 'cli') {
+                        $errorMessage .= ':<br /><br />' . $e->getMessage() .
+                                         '<br /><br />Query: ' . trim($query);
+                    } else {
+                        $errorMessage .= ":\n\n" . $e->getMessage() .
+                                         "\nQuery: " . trim($query);
+                    }
+
+                    $this->_lastError = $errorMessage;
+
+                    return false;
+                }
+            }
+
+            // Database update was successfully applied, update revision in the database
+            $dbConfig->set('DATABASE_REVISION', $databaseUpdateRevision);
+        }
+
+        // We should never run the backend scripts from the CLI update script
+        if (PHP_SAPI != 'cli' && $this->_daemonRequest) {
+            send_request();
+        }
+
+        return true;
+    }
+
+    /**
+     * Check if a column exists in a database table and if not execute query to add
+     * that column.
+     *
+     * @author Daniel Andreca <sci2tech@gmail.com>
+     * @since r4509
+     * @param string $table Database table name
+     * @param string $column Column to be added in the database table
+     * @param string $query Query to create column
+     * @return string Query to be executed
+     */
+    protected function secureAddColumnTable($table, $column, $query)
+    {
+        $dbName = iMSCP_Registry::get('config')->DATABASE_NAME;
+
+        return "
+			DROP PROCEDURE IF EXISTS test;
+			CREATE PROCEDURE test()
+			BEGIN
+				if not exists(
+					SELECT
+					    *
+					FROM
+					    information_schema.COLUMNS
+					WHERE
+					    column_name='$column'
+					AND
+					    table_name='$table'
+					AND
+					    table_schema='$dbName'
+				) THEN
+					$query;
+				END IF;
+			END;
+			CALL test();
+			DROP PROCEDURE IF EXISTS test;
 		";
+    }
 
-		return $sqlUpd;
-	}
+    /**
+     * Catch all database updates methods (2 to 45) that were removed.
+     *
+     * Note: Database update 1 is now useless.
+     *
+     * @param  string $updateMethod Database method name
+     * @param  array $param $parameter
+     * @return array Stack of SQL statements to be applied
+     */
+    public function __call($updateMethod, $param)
+    {
+        return array();
+    }
 
-	/**
-	 * Legacy code. Not used
-	 *
-	 * @return empty array. No SQL statements will be performed
-	 */
-	protected function _databaseUpdate_2() { return array(); }
-	protected function _databaseUpdate_3() { return array(); }
-	protected function _databaseUpdate_4() { return array(); }
-	protected function _databaseUpdate_5() { return array(); }
-	protected function _databaseUpdate_6() { return array(); }
-	protected function _databaseUpdate_7() { return array(); }
-	protected function _databaseUpdate_8() { return array(); }
-	protected function _databaseUpdate_9() { return array(); }
-	protected function _databaseUpdate_10() { return array(); }
-	protected function _databaseUpdate_11() { return array(); }
-	protected function _databaseUpdate_12() { return array(); }
-	protected function _databaseUpdate_13() { return array(); }
-	protected function _databaseUpdate_14() { return array(); }
-	protected function _databaseUpdate_15() { return array(); }
-	protected function _databaseUpdate_16() { return array(); }
-	protected function _databaseUpdate_17() { return array(); }
-	protected function _databaseUpdate_18() { return array(); }
-	protected function _databaseUpdate_19() { return array(); }
-	protected function _databaseUpdate_20() { return array(); }
-	protected function _databaseUpdate_21() { return array(); }
-	protected function _databaseUpdate_22() { return array(); }
-	protected function _databaseUpdate_23() { return array(); }
-	protected function _databaseUpdate_24() { return array(); }
-	protected function _databaseUpdate_25() { return array(); }
-	protected function _databaseUpdate_26() { return array(); }
-	protected function _databaseUpdate_27() { return array(); }
-	protected function _databaseUpdate_28() { return array(); }
-	protected function _databaseUpdate_29() { return array(); }
-	protected function _databaseUpdate_30() { return array(); }
-	protected function _databaseUpdate_31() { return array(); }
-	protected function _databaseUpdate_32() { return array(); }
-	protected function _databaseUpdate_33() { return array(); }
-	protected function _databaseUpdate_34() { return array(); }
-	protected function _databaseUpdate_35() { return array(); }
-	protected function _databaseUpdate_36() { return array(); }
-	protected function _databaseUpdate_37() { return array(); }
-	protected function _databaseUpdate_38() { return array(); }
-	protected function _databaseUpdate_39() { return array(); }
-	protected function _databaseUpdate_40() { return array(); }
-	protected function _databaseUpdate_41() { return array(); }
-	protected function _databaseUpdate_42() { return array(); }
-	protected function _databaseUpdate_43() { return array(); }
-	protected function _databaseUpdate_44() { return array(); }
-	protected function _databaseUpdate_45() { return array(); }
+    /**
+     * Fixed some CSRF issues in admin log.
+     *
+     * @author Thomas Wacker <thomas.wacker@ispcp.net>
+     * @since r3695
+     * @return array Stack of SQL statements to be executed
+     */
+    protected function _databaseUpdate_46()
+    {
+        $sqlUpd = array();
 
-	/*
-	 * End of legacy code
-	 */
+        $sqlUpd[] = "TRUNCATE TABLE `log`;";
 
-	/**
-	 * Fixed some CSRF issues in admin log.
-	 *
-	 * @author Thomas Wacker <thomas.wacker@ispcp.net>
-	 * @since r3695
-	 * @return array
-	 */
-	protected function _databaseUpdate_46()
-	{
-		$sqlUpd = array();
+        return $sqlUpd;
+    }
 
-		$sqlUpd[] = "TRUNCATE TABLE `log`;";
+    /**
+     * Removed unused 'suexec_props' table.
+     *
+     * @author Laurent Declercq <l.declercq@nuxwin.com>
+     * @since r3709
+     * @return array Stack of SQL statements to be applied
+     */
+    protected function _databaseUpdate_47()
+    {
+        return array("DROP TABLE IF EXISTS `suexec_props`;");
+    }
 
-		return $sqlUpd;
-	}
-
-	/**
-	 * iMSCP start here. Any usage require copyright
-	 */
-
-	/**
-	 * Removed unused 'suexec_props' table.
-	 *
-	 * @author Laurent Declercq <ldeclercq@nuxwin.com>
-	 * @since r3709
-	 * @return array
-	 */
-	protected function _databaseUpdate_47()
-	{
-		return array("DROP TABLE IF EXISTS `suexec_props`;");
-	}
-
-	/**
-	 * Adding apps-installer ticket #14.
-	 *
-	 * @author  Sascha Bay (TheCry) <worst.case@gmx.de>
-	 * @since   r3695
-	 * @return  array
-	 */
-	protected function _databaseUpdate_48()
-	{
-		$sqlUpd = array();
-		$sqlUpd[] = "
+    /**
+     * Adding apps-installer ticket #14.
+     *
+     * @author  Sascha Bay <worst.case@gmx.de>
+     * @since   r3695
+     * @return  array Stack of SQL statements to be executed
+     */
+    protected function _databaseUpdate_48()
+    {
+        $sqlUpd = array();
+        $sqlUpd[] = "
 	 		CREATE TABLE IF NOT EXISTS
 	 			`web_software` (
 					`software_id` int(10) unsigned NOT NULL auto_increment,
@@ -233,7 +364,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 			;
 		";
 
-		$sqlUpd[] = "
+        $sqlUpd[] = "
 			CREATE TABLE IF NOT EXISTS
 				`web_software_inst` (
 					`domain_id` int(10) unsigned NOT NULL,
@@ -261,53 +392,83 @@ class iMSCP_Update_Database extends iMSCP_Update
 			;
 		";
 
-		$sqlUpd[] = self::secureAddColumnTable('domain', 'domain_software_allowed', "ALTER TABLE `domain` ADD `domain_software_allowed` VARCHAR( 15 ) COLLATE utf8_unicode_ci NOT NULL default 'no'");
-		$sqlUpd[] = self::secureAddColumnTable('reseller_props', 'software_allowed', "ALTER TABLE `reseller_props` ADD `software_allowed` VARCHAR( 15 ) COLLATE utf8_unicode_ci NOT NULL default 'no'");
-		$sqlUpd[] = self::secureAddColumnTable('reseller_props', 'softwaredepot_allowed', "ALTER TABLE `reseller_props` ADD `softwaredepot_allowed` VARCHAR( 15 ) COLLATE utf8_unicode_ci NOT NULL default 'yes'");
-		$sqlUpd[] = "UPDATE `hosting_plans` SET `props` = CONCAT(`props`,';_no_');";
+        $sqlUpd[] = self::secureAddColumnTable(
+            'domain', 'domain_software_allowed',
+            "
+                ALTER TABLE
+                    `domain`
+                ADD
+                    `domain_software_allowed` VARCHAR( 15 ) COLLATE utf8_unicode_ci NOT NULL default 'no'
+                ;
+            "
+        );
 
-		return $sqlUpd;
-	}
+        $sqlUpd[] = self::secureAddColumnTable(
+            'reseller_props', 'software_allowed',
+            "
+                ALTER TABLE
+                    `reseller_props`
+                ADD
+                    `software_allowed` VARCHAR( 15 ) COLLATE utf8_unicode_ci NOT NULL default 'no'
+                ;
+            "
+        );
 
-	/**
-	 * Add i-MSCP daemon service properties (moved to 50).
-	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
-	 * @since r3985
-	 * @return array
-	 */
-	protected function _databaseUpdate_49()
-	{
-		return array();
-	}
+        $sqlUpd[] = self::secureAddColumnTable(
+            'reseller_props', 'softwaredepot_allowed',
+            "
+                ALTER TABLE
+                    `reseller_props`
+                ADD
+                    `softwaredepot_allowed` VARCHAR( 15 ) COLLATE utf8_unicode_ci NOT NULL default 'yes'
+                ;
+            "
+        );
 
-	/**
-	 * Add i-MSCP daemon service properties
-	 *
-	 * @author Laurent Declercq <l.declercq@nuxwin.com>
-	 * @since r4004
-	 * @return array
-	 */
-	protected function _databaseUpdate_50()
-	{
-		/** @var $dbConfig iMSCP_Config_Handler_Db */
-		$dbConfig = iMSCP_Registry::get('dbConfig');
-		$dbConfig->PORT_IMSCP_DAEMON = "9876;tcp;i-MSCP-Daemon;1;0;127.0.0.1";
+        $sqlUpd[] = "UPDATE `hosting_plans` SET `props` = CONCAT(`props`,';_no_');";
 
-		return array();
-	}
+        return $sqlUpd;
+    }
 
-	/**
-	 * Added field for on-click-logon from the ftp-user site(such as PMA).
-	 *
-	 * @author William Lightning <kassah@gmail.com>
-	 * @return array
-	 */
-	protected function _databaseUpdate_51()
-	{
-		$sqlUpd = array();
+    /**
+     * Add i-MSCP daemon service properties (moved to 50).
+     *
+     * @author Laurent Declercq <l.declercq@nuxwin.com>
+     * @since r3985
+     * @return array Stack of SQL statements to be executed
+     */
+    protected function _databaseUpdate_49()
+    {
+        return array();
+    }
 
-		$query = "
+    /**
+     * Add i-MSCP daemon service properties
+     *
+     * @author Laurent Declercq <l.declercq@nuxwin.com>
+     * @since r4004
+     * @return array Stack of SQL statements to be executed
+     */
+    protected function _databaseUpdate_50()
+    {
+        /** @var $dbConfig iMSCP_Config_Handler_Db */
+        $dbConfig = iMSCP_Registry::get('dbConfig');
+        $dbConfig->PORT_IMSCP_DAEMON = "9876;tcp;i-MSCP-Daemon;1;0;127.0.0.1";
+
+        return array();
+    }
+
+    /**
+     * Added field for on-click-logon from the ftp-user site(such as PMA).
+     *
+     * @author William Lightning <kassah@gmail.com>
+     * @return array Stack of SQL statements to be executed
+     */
+    protected function _databaseUpdate_51()
+    {
+        $sqlUpd = array();
+
+        $query = "
 			ALTER IGNORE TABLE
 				`ftp_users`
 			ADD
@@ -317,22 +478,23 @@ class iMSCP_Update_Database extends iMSCP_Update
 			;
 		";
 
-		$sqlUpd[] = self::secureAddColumnTable('ftp_users', 'rawpasswd', $query);
+        $sqlUpd[] = self::secureAddColumnTable('ftp_users', 'rawpasswd', $query);
 
-		return $sqlUpd;
-	}
+        return $sqlUpd;
+    }
 
-	/**
-	 * Adding apps-installer new options.
-	 *
-	 * @author  Sascha Bay (TheCry) <worst.case@gmx.de>
-	 * @since   r4036
-	 * @return  array
-	 */
-	protected function _databaseUpdate_52()
-	{
-		$sqlUpd = array();
-		$sqlUpd[] = "
+    /**
+     * Adding apps-installer new options.
+     *
+     * @author  Sascha Bay (TheCry) <worst.case@gmx.de>
+     * @since   r4036
+     * @return  array Stack of SQL statements to be executed
+     */
+    protected function _databaseUpdate_52()
+    {
+        $sqlUpd = array();
+
+        $sqlUpd[] = "
 			CREATE TABLE IF NOT EXISTS
 				`web_software_depot` (
 					`package_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -346,11 +508,11 @@ class iMSCP_Update_Database extends iMSCP_Update
 					`package_download_link` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
 					`package_signature_link` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
 					PRIMARY KEY (`package_id`)
-				) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1
+				) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
 			;
 		";
 
-		$sqlUpd[] = "
+        $sqlUpd[] = "
 			CREATE TABLE IF NOT EXISTS
 				`web_software_options` (
 					`use_webdepot` tinyint(1) unsigned NOT NULL DEFAULT '1',
@@ -360,7 +522,7 @@ class iMSCP_Update_Database extends iMSCP_Update
 			;
 		";
 
-		$sqlUpd[] = "
+        $sqlUpd[] = "
 			REPLACE INTO
 				`web_software_options` (`use_webdepot`, `webdepot_xml_url`, `webdepot_last_update`)
 			VALUES
@@ -368,49 +530,53 @@ class iMSCP_Update_Database extends iMSCP_Update
 			;
 		";
 
-		$sqlUpd[] = self::secureAddColumnTable(
-			'web_software',
-			'software_installtype',
-			"
+        $sqlUpd[] = self::secureAddColumnTable(
+            'web_software',
+            'software_installtype',
+            "
 				ALTER IGNORE TABLE
 					`web_software`
 				ADD
 					`software_installtype` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL
 				AFTER
 					`reseller_id`
+			    ;
 			"
-		);
+        );
 
-		$sqlUpd[] = " UPDATE `web_software` SET `software_installtype` = 'install'";
+        $sqlUpd[] = " UPDATE `web_software` SET `software_installtype` = 'install';";
 
-		$sqlUpd[] = self::secureAddColumnTable(
-			'reseller_props',
-			'websoftwaredepot_allowed',
-			"ALTER IGNORE TABLE `reseller_props` ADD `websoftwaredepot_allowed` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL DEFAULT 'yes'"
-		);
+        $sqlUpd[] = self::secureAddColumnTable(
+            'reseller_props',
+            'websoftwaredepot_allowed',
+            "
+                ALTER IGNORE TABLE
+                    `reseller_props`
+                ADD
+                    `websoftwaredepot_allowed` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL DEFAULT 'yes'
+                ;
+            "
+        );
 
-		return $sqlUpd;
-	}
+        return $sqlUpd;
+    }
 
-	/**
-	 * Decrypt email, ftp and sql users password in database
-	 *
-	 * @author Daniel Andreca <sci2tech@gmail.com>
-	 * @version 1.0.0
-	 * @since r4509
-	 *
-	 * @return array
-	 */
-	protected function _databaseUpdate_53()
-	{
-		$sqlUpd = array();
+    /**
+     * Decrypt email, ftp and sql users password in database.
+     *
+     * @author Daniel Andreca <sci2tech@gmail.com>
+     * @since r4509
+     * @return array Stack of SQL statements to be executed
+     */
+    protected function _databaseUpdate_53()
+    {
+        $sqlUpd = array();
 
-		$status = iMSCP_Registry::get('config')->ITEM_CHANGE_STATUS;
+        $status = iMSCP_Registry::get('config')->ITEM_CHANGE_STATUS;
 
-		$query = "
+        $query = "
 			SELECT
-				`mail_id`,
-				`mail_pass`
+				`mail_id`, `mail_pass`
 			FROM
 				`mail_users`
 			WHERE
@@ -422,136 +588,80 @@ class iMSCP_Update_Database extends iMSCP_Update
 			;
 		";
 
-		$rs = exec_query($query);
+        $stmt = exec_query($query);
 
-		if ($rs->recordCount() != 0) {
-			while (!$rs->EOF) {
-				$sqlUpd[] = "
+        if ($stmt->recordCount() != 0) {
+            while (!$stmt->EOF) {
+                $sqlUpd[] = "
 					UPDATE
 						`mail_users`
 					SET
-						`mail_pass`= '" . decrypt_db_password($rs->fields['mail_pass']) . "',
-						`status` = '$status' WHERE `mail_id` = '" . $rs->fields['mail_id'] . "'
+						`mail_pass`= '" . decrypt_db_password($stmt->fields['mail_pass']) . "',
+						`status` = '$status' WHERE `mail_id` = '" . $stmt->fields['mail_id'] . "'
 					;
 				";
 
-				$rs->moveNext();
-			}
-		}
+                $stmt->moveNext();
+            }
+        }
 
-		$query = "
-			SELECT
-				`sqlu_id`,
-				`sqlu_pass`
-			FROM
-				`sql_user`
-			;
-		";
+        $stmt = exec_query("SELECT `sqlu_id`, `sqlu_pass` FROM `sql_user`;");
 
-		$rs = exec_query($query);
-
-		if ($rs->recordCount() != 0) {
-			while (!$rs->EOF) {
-				$sqlUpd[] = "
+        if ($stmt->recordCount() != 0) {
+            while (!$stmt->EOF) {
+                $sqlUpd[] = "
 					UPDATE
 						`sql_user`
 					SET
-						`sqlu_pass` = '" . decrypt_db_password($rs->fields['sqlu_pass']) . "'
-					WHERE `sqlu_id` = '" . $rs->fields['sqlu_id'] . "'
+						`sqlu_pass` = '" . decrypt_db_password($stmt->fields['sqlu_pass']) . "'
+					WHERE `sqlu_id` = '" . $stmt->fields['sqlu_id'] . "'
 					;
 				";
 
-				$rs->moveNext();
-			}
-		}
+                $stmt->moveNext();
+            }
+        }
 
-		$query = "
-			SELECT
-				`userid`,
-				`rawpasswd`
-			FROM
-				`ftp_users`
-			;
-		";
+        $stmt = exec_query("SELECT `userid`, `rawpasswd` FROM `ftp_users`;");
 
-		$rs = exec_query($query);
-
-		if ($rs->recordCount() != 0) {
-			while (!$rs->EOF) {
-				$sqlUpd[] = "
+        if ($stmt->recordCount() != 0) {
+            while (!$stmt->EOF) {
+                $sqlUpd[] = "
 					UPDATE
 						`ftp_users`
 					SET
-						`rawpasswd` = '" . decrypt_db_password($rs->fields['rawpasswd']) . "'
-					WHERE `userid` = '" . $rs->fields['userid'] . "'
+						`rawpasswd` = '" . decrypt_db_password($stmt->fields['rawpasswd']) . "'
+					WHERE
+					    `userid` = '" . $stmt->fields['userid'] . "'
 					;
 				";
 
-				$rs->moveNext();
-			}
-		}
+                $stmt->moveNext();
+            }
+        }
 
-		return $sqlUpd;
-	}
+        return $sqlUpd;
+    }
 
-	/**
-	 * Convert tables to InnoDB
-	 *
-	 * @author Daniel Andreca <sci2tech@gmail.com>
-	 * @version 1.0.0
-	 * @since r4509
-	 *
-	 * @return		array
-	 */
-	protected function _databaseUpdate_54()
-	{
+    /**
+     * Convert tables to InnoDB.
+     *
+     * @author Daniel Andreca <sci2tech@gmail.com>
+     * @since r4509
+     * @return array Stack of SQL statements to be executed
+     */
+    protected function _databaseUpdate_54()
+    {
+        $sqlUpd = array();
 
-		$sqlUpd = array();
+        /** @var $db iMSCP_Database */
+        $db = iMSCP_Registry::get('db');
+        $tables = $db->metaTables();
 
-		/** @var $db iMSCP_Database */
-		$db = iMSCP_Registry::get('db');
-		$tables = $db->metaTables();
+        foreach ($tables as $table) {
+            $sqlUpd[] = "ALTER TABLE $table ENGINE=InnoDB;";
+        }
 
-		foreach ($tables as $table) {
-			$sqlUpd[] = "ALTER TABLE $table ENGINE=InnoDB;";
-		}
-
-		return $sqlUpd;
-	}
-
-	/*
-	 * DO NOT CHANGE ANYTHING BELOW THIS LINE!
-	 */
-
-	/**
-	 *
-	 * Check if a column exists in a database table and if not execute query to add that column
-	 *
-	 * @author Daniel Andreca <sci2tech@gmail.com>
-	 * @version 1.0.0
-	 * @since r4509
-	 *
-	 * @param	string $table	Table name
-	 * @param	string $column	Columnt to be added to table
-	 * @param	string $query	Query to create column
-	 * @return	string 			query to be performed
-	 */
-	protected function secureAddColumnTable($table, $column, $query)
-	{
-		$dbName = iMSCP_Registry::get('config')->DATABASE_NAME;
-
-		return "
-			DROP PROCEDURE IF EXISTS test;
-			CREATE PROCEDURE test()
-			BEGIN
-				if not exists(
-					SELECT * FROM information_schema.COLUMNS WHERE column_name='$column' and table_name='$table' and table_schema='$dbName'
-				) THEN
-					$query;
-				END IF;
-			END;
-			CALL test();
-			DROP PROCEDURE IF EXISTS test;
-		";
-	}
+        return $sqlUpd;
+    }
 }

@@ -1,160 +1,153 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
+ * Copyright (C) 2010-2011 by i-MSCP team
  *
- * The contents of this file are subject to the Mozilla Public License
- * Version 1.1 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://www.mozilla.org/MPL/
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
- * License for the specific language governing rights and limitations
- * under the License.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * The Original Code is "ispCP - ISP Control Panel".
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * The Initial Developer of the Original Code is ispCP Team.
- * Portions created by Initial Developer are Copyright (C) 2006-2010 by
- * isp Control Panel. All Rights Reserved.
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
- * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
- *
- * @category	i-MSCP
- * @package		iMSCP_Update
- * @copyright 	2006-2010 by ispCP | http://isp-control.net
- * @copyright 	2010 by i-MSCP | http://i-mscp.net
- * @author 		ispCP Team
- * @author 		i-MSCP Team
- * @version 	SVN: $Id$
- * @link		http://i-mscp.net i-MSCP Home Site
- * @license		http://www.mozilla.org/MPL/ MPL 1.1
+ * @category    iMSCP
+ * @package     iMSCP_Update
+ * @subpackage  Version
+ * @copyright   2010-2011 by i-MSCP team
+ * @author      Daniel Andreca <sci2tech@gmail.com>
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @version     SVN: $Id$
+ * @link        http://www.i-mscp.net i-MSCP Home Site
+ * @license     http://www.gnu.org/licenses/gpl-2.0.txt GPL v2
  */
+
+/** @see iMSCP_Update */
+require_once 'iMSCP/Update.php';
 
 /**
- * Class iMSCP_Update_Version implements the iMSCP_Update abstract class for
- * future online version update functions
+ * Update version class.
  *
- * @package		iMSCP_Update
- * @author		Daniel Andreca <sci2tech@gmail.com>
- * @copyright	2006-2009 by ispCP | http://isp-control.net
- * @version		1.0.1
- * @since		r1355
+ * @category    iMSCP
+ * @package     iMSCP_Update
+ * @subpackage  Version
+ * @author      Daniel Andreca <sci2tech@gmail.com>
+ * @author      Laurent Declercq <l.declercq@nuxwin.com>
+ * @version     1.0.5
  */
-class iMSCP_Update_Version extends iMSCP_Update {
+class iMSCP_Update_Version extends iMSCP_Update
+{
+    /**
+     * @var iMSCP_Update
+     */
+    protected static $_instance;
 
-	/**
-	 * iMSCP_Update_Version instance
-	 *
-	 * @var iMSCP_Update_Version
-	 */
-	protected static $_instance = null;
+    /**
+     * Singleton - Make new unavailable.
+     */
+    protected function __construct()
+    {
 
-	/**
-	 * Database variable name for the update version
-	 *
-	 * @var string
-	 */
-	protected $_databaseVariableName = 'VERSION_UPDATE';
+    }
 
-	/**
-	 * Error message string
-	 *
-	 * @var string
-	 */
-	protected $_errorMessage = 'Version update %s failed';
+    /**
+     * Singleton - Make clone unavailable.
+     *
+     * @return void
+     */
+    protected function __clone()
+    {
 
-	/**
-	 * Gets a iMSCP_Update_Version instance
-	 *
-	 * @return iMSCP_Update_Version
-	 */
-	public static function getInstance() {
+    }
 
-		if (is_null(self::$_instance)) {
-			self::$_instance = new self;
-		}
+    /**
+     * Implements Singleton design pattern.
+     *
+     * @return iMSCP_Update
+     */
+    public static function getInstance()
+    {
+        if (null === self::$_instance) {
+            self::$_instance = new self();
+        }
 
-		return self::$_instance;
-	}
+        return self::$_instance;
+    }
 
-	/**
-	 * Return the current i-MSCP installed version
-	 *
-	 * @return int Current i-MSCP installed version
-	 */
-	protected function _getCurrentVersion() {
+    /**
+     * Return next update.
+     *
+     * @return int
+     */
+    protected function getNextUpdate()
+    {
+        ini_set('user_agent', 'Mozilla/5.0');
 
-		/**
-		 * @var $cfg iMSCP_Config_Handler_File
-		 */
-		$cfg = iMSCP_Registry::get('config');
+        $timeout = ini_set('default_socket_timeout', 3);
+        $fh = @fopen('http://i-mscp.net/latest.txt', 'r');
 
-		return (int) $cfg->BuildDate;
-	}
+        // Restore previous timeout
+        ini_set('default_socket_timeout', $timeout);
 
-	/**
-	 * Gets the last available i-MSCP version
-	 *
-	 * @return bool|int Returns the last i-MSCP version available or FALSE on
-	 * failure
-	 * @todo Rename this function name that don't reflects the real purpose
-	 */
-	protected function _getNextVersion() {
+        if (!is_resource($fh)) {
+            $this->_lastError = tr("Couldn't check for updates. Website not reachable.");
 
-		$last_update = "http://i-mscp.net/latest.txt";
-		ini_set('user_agent', 'Mozilla/5.0');
-		$timeout = 2;
-		$old_timeout = ini_set('default_socket_timeout', $timeout);
-		$dh2 = @fopen($last_update, 'r');
-		ini_set('default_socket_timeout', $old_timeout);
+            return 0;
+        }
 
-		if (!is_resource($dh2)) {
-			$this->_addErrorMessage(tr("Couldn't check for updates! Website not reachable."));
+        $nextUpdate = (int)fread($fh, 8);
+        fclose($fh);
 
-			return false;
-		}
+        return $nextUpdate;
+    }
 
-		$last_update_result = (int) fread($dh2, 8);
-		fclose($dh2);
+    /**
+     * Check for available update.
+     *
+     * @return bool TRUE if update is available, FALSE otherwise.
+     */
+    public function isAvailableUpdate()
+    {
+        if ($this->getLastAppliedUpdate() < $this->getNextUpdate()) {
+            return true;
+        }
 
-		return $last_update_result;
-	}
+        return false;
+    }
 
-	/**
-	 * Check for i-MSCP update
-	 *
-	 * @return boolean TRUE if a new i-MSCP version is available FALSE otherwise
-	 * @todo Rename this function name that don't reflects the real purpose
-	 */
-	public function checkUpdateExists() {
+    /**
+     * Returns last applied update.
+     *
+     * @throws iMSCP_Update_Exception When unable to retrieve last applied update
+     * @return int
+     */
+    protected function getLastAppliedUpdate()
+    {
+        /** @var $cfg iMSCP_Config_Handler_File */
+        $cfg = iMSCP_Registry::get('config');
 
-		return ($this->_getNextVersion() > $this->_currentVersion) ? true : false;
-	}
+        if (isset($cfg->BuildDate)) {
+            return (int)$cfg->BuildDate;
+        } else {
+            require_once 'iMSCP/Update/Exception.php';
+            throw new iMSCP_Update_Exception('Unable to retrieve last applied update.');
+        }
+    }
 
-	/**
-	 * Should be documented
-	 *
-	 * @param  $version
-	 * @return string
-	 */
-	protected function _returnFunctionName($version) {
-
-		return 'dummyFunctionThatAllwaysExists';
-	}
-
-	/**
-	 * Should be documented
-	 *
-	 * @param  $engine_run_request
-	 * @return void
-	 */
-	protected function dummyFunctionThatAllwaysExists(&$engine_run_request) {
-		// uncomment when engine part will be ready
-		/*
-		$dbConfig = iMSCP_Registry::get(DbConfig);
-		$dbConfig->VERSION_UPDATE = $this->getNextVersion();
-		$engine_run_request = true;
-		 */
-	}
+    /**
+     * Apply all available update.
+     *
+     * @return void
+     */
+    public function applyUpdate()
+    {
+        require_once 'iMSCP/Update/Exception.php';
+        throw new iMSCP_Update_Exception('Method not implemented.');
+    }
 }

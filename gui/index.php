@@ -80,7 +80,7 @@ $tpl->assign(array(
                   'THEME_CHARSET' => tr('encoding'),
                   'THEME_COLOR_PATH' => $cfg->LOGIN_TEMPLATE_PATH));
 
-if (($cfg->MAINTENANCEMODE || iMSCP_Update_Database::getInstance()->checkUpdateExists())
+if (($cfg->MAINTENANCEMODE || iMSCP_Update_Database::getInstance()->isAvailableUpdate())
     && !isset($_GET['admin'])
 ) {
     $tpl->define_dynamic('page', $cfg->LOGIN_TEMPLATE_PATH . '/maintenancemode.tpl');

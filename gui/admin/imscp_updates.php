@@ -56,43 +56,41 @@ $tpl->assign(
 	)
 );
 
-/* BEGIN common functions */
-function get_update_infos(&$tpl) {
+/**
+ * @param  iMSCP_pTemplate $tpl
+ * @return void
+ */
+function get_update_infos($tpl)
+{
+    /** @var $cfg iMSCP_Config_Handler_File */
+    $cfg = iMSCP_Registry::get('config');
 
-	$cfg = iMSCP_Registry::get('config');
+    if (!$cfg->CHECK_FOR_UPDATES) {
+        $tpl->assign(array(
+                 'UPDATE_MESSAGE' => '',
+                 'UPDATE' => tr('Update checking is disabled!'),
+                 'INFOS' => tr('Enable update at') . " <a href=\"settings.php\">" . tr('Settings') . '</a>'));
 
-	if (!$cfg->CHECK_FOR_UPDATES) {
-		$tpl->assign(
-			array(
-				'UPDATE_MESSAGE'	=> '',
-				'UPDATE'			=> tr('Update checking is disabled!'),
-				'INFOS'				=> tr('Enable update at') . " <a href=\"settings.php\">" . tr('Settings') . "</a>"
-			)
-		);
-		$tpl->parse('UPDATE_INFOS', 'update_infos');
-		return false;
-	}
+        $tpl->parse('UPDATE_INFOS', 'update_infos');
+        return;
+    }
 
-	if (iMSCP_Update_Version::getInstance()->checkUpdateExists()) {
-		$tpl->assign(
-			array(
-				'UPDATE_MESSAGE' => '',
-				'UPDATE' => tr('New i-MSCP update is now available'),
-				'INFOS' => tr('Get it at') . " <a href=\"http://www.i-mscp.net/download.html\" class=\"link\" target=\"i-mscp\">http://www.i-mscp.net/download.html</a>"
-			)
-		);
+    if (iMSCP_Update_Version::getInstance()->isAvailableUpdate()) {
+        $tpl->assign(array(
+                          'UPDATE_MESSAGE' => '',
+                          'UPDATE' => tr('New i-MSCP update is now available'),
+                          'INFOS' => tr('Get it at') . " <a href=\"http://www.i-mscp.net/download.html\" class=\"link\" target=\"i-mscp\">http://www.i-mscp.net/download.html</a>"));
 
-		$tpl->parse('UPDATE_INFOS', 'update_infos');
-	} else {
-		if (iMSCP_Update_Version::getInstance()->getErrorMessage() != "") {
-			$tpl->assign(array('TR_MESSAGE' => iMSCP_Update_Version::getInstance()->getErrorMessage()));
-		} else {
-			$tpl->assign('TABLE_HEADER', '');
-		}
-		$tpl->assign('UPDATE_INFOS', '');
-	}
+        $tpl->parse('UPDATE_INFOS', 'update_infos');
+    } elseif (iMSCP_Update_Version::getInstance()->getError() != '') {
+        $tpl->assign(array('TR_MESSAGE' => iMSCP_Update_Version::getInstance()->getError()));
+    } else {
+        $tpl->assign('TABLE_HEADER', '');
+    }
+
+    $tpl->assign('UPDATE_INFOS', '');
 }
-/* END system functions */
+
 
 /*
  *
@@ -114,7 +112,6 @@ $tpl->assign(
 );
 
 generatePageMessage($tpl);
-
 get_update_infos($tpl);
 
 $tpl->parse('PAGE', 'page');

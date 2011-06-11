@@ -35,10 +35,8 @@
 // GUI root directory absolute path
 $gui_root_dir = '{GUI_ROOT_DIR}';
 
-if(preg_match('/^\{GUI_ROOT_DIR\}$/', $gui_root_dir)) {
-	print 'Error: The gui root directory is not defined in the ' . __FILE__ .
-		" file!\n";
-
+if(strpos($gui_root_dir, '{GUI_ROOT_DIR}') !== false) {
+	print 'The gui root directory is not defined in the ' . __FILE__ ." file.\n";
 	exit(1);
 }
 
@@ -47,16 +45,14 @@ try {
 	require_once $gui_root_dir . '/include/imscp-lib.php';
 
 	// Gets an iMSCP_Update_Database instance
-	$dbUpdate = iMSCP_Update_Database::getInstance();
+	$databaseUpdate = iMSCP_Update_Database::getInstance();
 
-	if(!$dbUpdate->executeUpdates()) {
-		print "\n[ERROR]: " .$dbUpdate->getErrorMessage() . "\n\n";
-
+	if(!$databaseUpdate->applyUpdate()) {
+		print "\n[ERROR]: " . $databaseUpdate->getError() . "\n\n";
 		exit(1);
 	}
 
 } catch(Exception $e) {
-
 	$message = "\n[ERROR]: " . $e->getMessage() . "\n\nStackTrace:\n" .
 		$e->getTraceAsString() . "\n\n";
 

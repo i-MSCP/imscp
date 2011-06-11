@@ -53,8 +53,8 @@ $dbUpdate = iMSCP_Update_Database::getInstance();
 if(isset($_POST['uaction']) && $_POST['uaction'] == 'update') {
 
 	// Execute all available db updates
-	if(!$dbUpdate->executeUpdates()) {
-		throw new iMSCP_Exception($dbUpdate->getErrorMessage());
+	if(!$dbUpdate->applyUpdate()) {
+		throw new iMSCP_Exception($dbUpdate->getError());
 	}
 
 	// Set success page message
@@ -82,7 +82,7 @@ $tpl->assign(
 gen_admin_mainmenu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/main_menu_system_tools.tpl');
 gen_admin_menu($tpl, $cfg->ADMIN_TEMPLATE_PATH . '/menu_system_tools.tpl');
 
-if($dbUpdate->checkUpdateExists()) {
+if($dbUpdate->isAvailableUpdate()) {
 	$tpl->assign(
 		array(
 			'TR_AVAILABLE_UPDATES' => tr('Available database updates'),

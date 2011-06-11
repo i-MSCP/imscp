@@ -33,233 +33,62 @@
  */
 
 /**
- * Abstract class to implement update functions
+ * Base class for update.
  *
+ * @category    iMSCP
  * @package     iMSCP_Update
- * @author      Jochen Manz <zothos@zothos.net>
  * @author      Daniel Andreca <sci2tech@gmail.com>
  * @author      Laurent Declercq <l.declercq@nuxwin.com>
- * @version     1.0.4
- * @since		r1355
+ * @version     1.0.5
  */
-abstract class iMSCP_Update {
+abstract class iMSCP_Update
+{
+    /**
+     * Last error message.
+     *
+     * @var string
+     */
+    protected $_lastError = '';
 
-	/**
-	 * Version of the last update that was applied
-	 *
-	 * @var int
-	 */
-	protected $_currentVersion = 0;
+    /**
+     * Apply all available update.
+     *
+     * @abstract
+     * @return void
+     */
+    abstract public function applyUpdate();
 
-	/**
-	 * Error messages for updates that have failed
-	 *
-	 * @var string
-	 */
-	protected $_errorMessages = '';
+    /**
+     * Checks for available update.
+     *
+     * @abstract
+     * @return void
+     */
+    abstract public function isAvailableUpdate();
 
-	/**
-	 * Database variable name for the update version
-	 *
-	 * @var string
-	 */
-	protected $_databaseVariableName = '';
+    /**
+     * Returns last applied update.
+     *
+     * @abstract
+     * @return int
+     */
+    abstract protected function getLastAppliedUpdate();
 
-	/**
-	 * Update functions prefix
-	 *
-	 * @var string
-	 */
-	protected $_functionName = '';
+    /**
+     * Return next update.
+     *
+     * @abstract
+     * @return int
+     */
+    abstract protected function getNextUpdate();
 
-	/**
-	 * Error message for updates that have failed
-	 *
-	 * @var string
-	 */
-	protected $_errorMessage = '';
-
-	/**
-	 * This class implements the singleton design pattern
-	 *
-	 * @return void
-	 */
-	protected function __construct() {
-
-		$this->_currentVersion = $this->_getCurrentVersion();
-	}
-
-	/**
-	 * This class implements the singleton design pattern
-	 *
-	 * @return void
-	 */
-	protected function __clone() {}
-
-	/**
-	 * Returns the version of the last update that was applied
-	 *
-	 * @return int Last update that was applied
-	 */
-	protected function _getCurrentVersion() {
-
-		$dbConfig = iMSCP_Registry::get('dbConfig');
-
-		return (int) $dbConfig->get($this->_databaseVariableName);
-	}
-
-	/**
-	 * Returns the version of the next update
-	 *
-	 * @return int The version of the next update
-	 */
-	protected function _getNextVersion() {
-
-		return $this->_currentVersion + 1;
-	}
-
-	/**
-	 * Checks if a new update is available
-	 *
-	 * @return boolean TRUE if a new update is available, FALSE otherwise
-	 */
-	public function checkUpdateExists() {
-
-		$functionName = $this->_returnFunctionName($this->_getNextVersion());
-
-		return (method_exists($this, $functionName)) ? true : false;
-	}
-
-	/**
-	 * Returns the name of the function that provides the update
-	 *
-	 * @return string Update function name
-	 */
-	protected function _returnFunctionName($version) {
-
-		return $this->_functionName . $version;
-	}
-
-	/**
-	 * Sends a request to the i-MSCP daemon
-	 *
-	 * @return void
-	 */
-	protected function _sendEngineRequest() {
-
-		send_request();
-	}
-
-	/**
-	 * Adds a new message in the errors messages cache
-	 *
-	 * @return void
-	 */
-	protected function _addErrorMessage($message) {
-
-		$this->_errorMessages .= $message;
-	}
-
-	/**
-	 * Accessor for error messages
-	 *
-	 * @return string Error messages
-	 */
-	public function getErrorMessage() {
-
-		return $this->_errorMessages;
-	}
-
-	/**
-	 * Executes all available updates
-	 *
-	 * This method executes all available updates. If a query provided by an update fail, the succeeded queries from
-	 * this update will not executed again.
-	 *
-	 * @return boolean TRUE on success, FALSE otherwise
-	 * @todo Should be more generic (Only the database variable should be
-	 * updated here. Other stuff should be implemented by the concrete class
-	 */
-	public function executeUpdates() {
-
-        /** @var $pdo PDO */
-        $pdo = iMSCP_Database::getRawInstance();
-
-		/**
-		 * @var $dbConfig iMSCP_Config_Handler_Db
-		 */
-		$dbConfig = iMSCP_Registry::get('dbConfig');
-
-		$engine_run_request = false;
-
-		while ($this->checkUpdateExists()) {
-
-			// Get the next database update Version
-			$newVersion = $this->_getNextVersion();
-
-			// Get the needed function name
-			$functionName = $this->_returnFunctionName($newVersion);
-
-			// Pull the query from the update function using a variable function
-			$queryArray = $this->$functionName($engine_run_request);
-
-			// First, switch to exception mode for errors management
-			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-			if(isset($dbConfig->FAILED_UPDATE)) {
-				list($failedUpdate, $queryNb) = $dbConfig->FAILED_UPDATE;
-			} else {
-				$failedUpdate = 'inexistent';
-				$index = -1;
-			}
-
-			try {
-
-				// Executes all SQL statements
-				foreach($queryArray as $index => $query) {
-					// Query was already applied with success ?
-					if($functionName == $failedUpdate && $index < $queryNb) {
-						continue;
-					}
-
-					$pdo->query($query);
-				}
-
-				unset($dbConfig->FAILED_UPDATE);
-
-				// Update revision
-				$dbConfig->set($this->_databaseVariableName, $newVersion);
-
-			} catch (PDOException $e) {
-
-				// Store the query number and function name that wraps it
-				$dbConfig->FAILED_UPDATE = "$functionName;$index";
-
-				// Prepare error message
-				$errorMessage =  sprintf($this->_errorMessage, $newVersion);
-
-				// Extended error message
-				if(PHP_SAPI != 'cli') {
-					$errorMessage .= ':<br /><br />' . $e->getMessage() . '<br /><br />Query: ' . trim($query);
-				} else {
-					$errorMessage .= ":\n\n" . $e->getMessage() . "\nQuery: " . trim($query);
-				}
-
-				$this->_addErrorMessage($errorMessage);
-
-				// An error occurred, we stop here !
-				return false;
-			}
-
-			$this->_currentVersion = $newVersion;
-
-		} // End while
-
-		// We should never run the backend scripts from the CLI update script
-		if(PHP_SAPI != 'cli' && $engine_run_request) {
-			$this->_sendEngineRequest();
-		}
-
-		return true;
-	}
+    /**
+     * Returns last error occured.
+     *
+     * @return string Last error
+     */
+    public function getError()
+    {
+        return $this->_lastError;
+    }
 }

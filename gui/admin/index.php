@@ -1,6 +1,6 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * @copyright 	2001-2006 by moleSoftware GmbH
  * @copyright 	2006-2010 by ispCP | http://isp-control.net
@@ -30,11 +30,11 @@
  * Portions created by the ispCP Team are Copyright (C) 2006-2010 by
  * isp Control Panel. All Rights Reserved.
  * 
- * Portions created by the i-MSCP Team are Copyright (C) 2010 by
+ * Portions created by the i-MSCP Team are Copyright (C) 2010-2011 by
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
-/***********************************************************************************************************************
+/************************************************************************************
  * Functions
  */
 
@@ -93,7 +93,7 @@ function getUpdateInfo($tpl) {
 	 */
 	$cfg = iMSCP_Registry::get('config');
 
-	if (iMSCP_Update_Database::getInstance()->checkUpdateExists()) {
+	if (iMSCP_Update_Database::getInstance()->isAvailableUpdate()) {
 		$tpl->assign(
 			array(
 				'DATABASE_UPDATE' => '<a href="database_update.php" class="link">' .
@@ -113,7 +113,7 @@ function getUpdateInfo($tpl) {
 		return false;
 	}
 
-	if (iMSCP_Update_Version::getInstance()->checkUpdateExists()) {
+	if (iMSCP_Update_Version::getInstance()->isAvailableUpdate()) {
 		$tpl->assign(
 			array(
 				'UPDATE' => '<a href="imscp_updates.php" class="link">' .
@@ -123,8 +123,8 @@ function getUpdateInfo($tpl) {
 
 		$tpl->parse('UPDATE_MESSAGE', 'update_message');
 	} else {
-		if (iMSCP_Update_Version::getInstance()->getErrorMessage() != "") {
-			$tpl->assign(array('UPDATE' => iMSCP_Update_Version::getInstance()->getErrorMessage()));
+		if (iMSCP_Update_Version::getInstance()->getError() != '') {
+			$tpl->assign(array('UPDATE' => iMSCP_Update_Version::getInstance()->getError()));
 			$tpl->parse('UPDATE_MESSAGE', 'update_message');
 		} else {
 			$tpl->assign(array('UPDATE_MESSAGE' => ''));
