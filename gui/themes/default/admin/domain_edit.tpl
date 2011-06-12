@@ -1,220 +1,215 @@
 <?xml version="1.0" encoding="{THEME_CHARSET}" ?>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<title>{TR_EDIT_DOMAIN_PAGE_TITLE}</title>
-<meta name="robots" content="nofollow, noindex" />
-<meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
-<meta http-equiv="Content-Style-Type" content="text/css" />
-<meta http-equiv="Content-Script-Type" content="text/javascript" />
-<link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="{THEME_COLOR_PATH}/css/imscp.js"></script>
-<script type="text/javascript" src="../themes/omega_original/css/tooltip.js"></script>
-</head>
-
-<body onload="MM_preloadImages('{THEME_COLOR_PATH}/images/icons/database_a.gif','{THEME_COLOR_PATH}/images/icons/hosting_plans_a.gif','{THEME_COLOR_PATH}/images/icons/domains_a.gif','{THEME_COLOR_PATH}/images/icons/general_a.gif' ,'{THEME_COLOR_PATH}/images/icons/manage_users_a.gif','{THEME_COLOR_PATH}/images/icons/webtools_a.gif','{THEME_COLOR_PATH}/images/icons/statistics_a.gif','{THEME_COLOR_PATH}/images/icons/support_a.gif')">
-<!-- ToolTip --> 
-<div id="dmn_exp_help" style="background-color:#ffffe0;border: 1px #000000 solid;display:none;margin:5px;padding:5px;font-size:9pt;font-family:Verdana, sans-serif;color:#000000;width:200px;position:absolute;">{TR_DMN_EXP_HELP}</div>
-<!-- ToolTip end --> 
-<table width="100%" border="0" cellspacing="0" cellpadding="0" style="height:100%;padding:0;margin:0 auto;">
-<tr>
-<td align="left" valign="top" style="vertical-align: top; width: 195px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_left.jpg" width="195" height="56" border="0" alt="i-MSCP Logogram" /></td>
-<td style="height: 56px; width:100%; background-color: #0f0f0f"><img src="{THEME_COLOR_PATH}/images/top/top_left_bg.jpg" width="582" height="56" border="0" alt="" /></td>
-<td style="width: 73px; height: 56px;"><img src="{THEME_COLOR_PATH}/images/top/top_right.jpg" width="73" height="56" border="0" alt="" /></td>
-</tr>
-	<tr>
-		<td style="width: 195px; vertical-align: top;">{MENU}</td>
-	    <td colspan="2" style="vertical-align: top;"><table style="width: 100%; padding:0;margin:0;" cellspacing="0">
-          <tr style="height:95px;">
-            <td style="padding-left:30px; width: 100%; background-image: url({THEME_COLOR_PATH}/images/top/middle_bg.jpg);">{MAIN_MENU}</td>
-            <td style="padding:0;margin:0;text-align: right; width: 73px;vertical-align: top;"><img src="{THEME_COLOR_PATH}/images/top/middle_right.jpg" width="73" height="95" border="0" alt="" /></td>
-          </tr>
-          <tr>
-            <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
-              <tr>
-                <td align="left"><table width="100%" cellpadding="5" cellspacing="5">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
+        <meta http-equiv="X-UA-Compatible" content="IE=8" />
+        <title>{TR_EDIT_DOMAIN_PAGE_TITLE}</title>
+        <meta name="robots" content="nofollow, noindex" />
+        <link href="{THEME_COLOR_PATH}/css/imscp.css" rel="stylesheet" type="text/css" />
+        <link href="{THEME_COLOR_PATH}/css/jquery.ui.datepicker.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="{THEME_COLOR_PATH}/js/imscp.js"></script>
+        <script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.js"></script>
+        <script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.imscpTooltips.js"></script>
+        <script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.ui.core.js"></script>
+        <script type="text/javascript" src="{THEME_COLOR_PATH}/js/jquery.ui.datepicker.js"></script>
+        <!--[if IE 6]>
+        <script type="text/javascript" src="{THEME_COLOR_PATH}/js/DD_belatedPNG_0.0.8a-min.js"></script>
+        <script type="text/javascript">
+            DD_belatedPNG.fix('*');
+        </script>
+        <![endif]-->
+        <script language="JavaScript" type="text/JavaScript">
+            /*<![CDATA[*/
+            $(document).ready(function() {
+                $('#dmn_exp_help').iMSCPtooltips({msg:"{TR_DMN_EXP_HELP}"});
+                $('#datepicker').datepicker();
+                $('#datepicker').change(function() {
+                    if($(this).val() != '') {
+                        $('#neverexpire').attr('disabled', 'disabled')
+                    } else {
+                        $('#neverexpire').removeAttr('disabled');
+                    }
+                });
+                $('#neverexpire').change(function() {
+                    if($(this).is(':checked')) {
+                        $('#datepicker').attr('disabled', 'disabled')
+                    } else {
+                        $('#datepicker').removeAttr('disabled');
+                    }
+                });
+            });
+            /*]]>*/
+        </script>
+    </head>
+    <body>
+        <div class="header">
+            {MAIN_MENU}
+            <div class="logo">
+                <img src="{THEME_COLOR_PATH}/images/imscp_logo.png" alt="i-MSCP logo" />
+            </div>
+        </div>
+        <div class="location">
+            <div class="location-area icons-left">
+                <h1 class="manage_users">{TR_MENU_MANAGE_USERS}</h1>
+            </div>
+            <ul class="location-menu">
+                <!-- <li><a class="help" href="#">Help</a></li> -->
+                <li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a>
+                </li>
+            </ul>
+            <ul class="path">
+                <li><a href="manage_users.php">{TR_MENU_MANAGE_USERS}</a></li>
+                <li>
+                    <a href="domain_edit.php?edit_id={DOMAIN_ID}">{TR_EDIT_DOMAIN}</a>
+                </li>
+            </ul>
+        </div>
+        <div class="left_menu">
+            {MENU}
+        </div>
+        <div class="body">
+            <h2 class="domains"><span>{TR_EDIT_DOMAIN}</span></h2>
+            <!-- BDP: page_message -->
+            <div class="{MESSAGE_CLS}">{MESSAGE}</div>
+            <!-- EDP: page_message -->
+            <form name="admin_edit_domain_frm" method="post" action="domain_edit.php">
+                <table>
                     <tr>
-                      <td width="25"><img src="{THEME_COLOR_PATH}/images/content/table_icon_domains.png" width="25" height="25" alt="" /></td>
-                      <td colspan="2" class="title">{TR_EDIT_DOMAIN}</td>
+                        <td>{TR_DOMAIN_NAME}</td>
+                        <td>{VL_DOMAIN_NAME}</td>
                     </tr>
-                </table></td>
-                <td width="27" align="right">&nbsp;</td>
-              </tr>
-              <tr>
-                <td><form name="reseller_edit_domain_frm" method="post" action="domain_edit.php">
-                    <table width="100%" cellpadding="5" cellspacing="5">
-                      <tr>
-                        <td width="25" align="left">&nbsp;</td>
-                        <td colspan="2" align="left" class="content3"><b>{TR_DOMAIN_PROPERTIES}</b></td>
-                      </tr>
-                      <!-- BDP: page_message -->
-                      <tr>
-                        <td>&nbsp;</td>
-                        <td colspan="2" class="title"><span class="message">{MESSAGE}</span></td>
-                      </tr>
-                      <!-- EDP: page_message -->
-                      <tr>
-                        <td width="25">&nbsp;</td>
-                        <td class="content2" width="193">{TR_DOMAIN_NAME}</td>
-                        <td class="content">{VL_DOMAIN_NAME}</td>
-                      </tr>
-                      <tr>
-                        <td width="25">&nbsp;</td>
-                        <td class="content2" width="193">{TR_DOMAIN_IP}</td>
-                        <td class="content">{VL_DOMAIN_IP}
-                          <!--
-				<select name="domain_ip">
-
-                      <option value="{IP_VALUE}" {IP_SELECTED}>{IP_NUM}&nbsp;({IP_NAME})</option>
-
-                    </select>
-				-->
+                    <tr>
+                        <td>{TR_DOMAIN_EXPIRE}</td>
+                        <td>{VL_DOMAIN_EXPIRE}</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="datepicker">{TR_DOMAIN_NEW_EXPIRE}</label>
+                            <span style="vertical-align:middle;" class="icon i_help" id="dmn_exp_help">Help</span>
                         </td>
-                      </tr>
-				<tr>
-                	<td width="25">&nbsp;</td>
-                	<td class="content2" width="193">{TR_DOMAIN_EXPIRE}</td>
-                	<td class="content">{VL_DOMAIN_EXPIRE}</td>
-				</tr>
-				<tr>
-					<td width="25">&nbsp;</td>
-					<td class="content2" width="193">{TR_DOMAIN_NEW_EXPIRE} <img src="{THEME_COLOR_PATH}/images/icons/help.png" width="16" height="16" onmouseover="showTip('dmn_exp_help', event)" onmouseout="hideTip('dmn_exp_help')" /></td>
-					<td class="content"><select name="dmn_expire">
-						<option value="0">Unchanged</option>
-						<option value="-1">- 1 Month</option>
-						<option value="1">+ 1 Month</option>
-						<option value="2">+ 2 Months</option>
-						<option value="3">+ 3 Months</option>
-						<option value="6">+ 6 Months</option>
-						<option value="12">+ 1 Year</option>
-						<option value="24">+ 2 Years</option>
-					</select></td>
-				</tr>
-                      <tr>
-                        <td width="25">&nbsp;</td>
-                        <td class="content2" width="193">{TR_PHP_SUPP}</td>
-                        <td class="content">
-                          <select name="domain_php" id="domain_php">
-                            <option value="_yes_" {PHP_YES}>{TR_YES}</option>
-                            <option value="_no_" {PHP_NO}>{TR_NO}</option>
-                          </select>
+                        <td>
+                            <div class="content">
+                                <input type="text" id="datepicker" name="dmn_expire_date" value="{VL_DOMAIN_EXPIRE_DATE}" {VL_DISABLED} />
+                                <label for="neverexpire">(MM/DD/YYYY) {TR_EXPIRE_CHECKBOX}</label>
+                                <input type="checkbox" name="neverexpire" id="neverexpire" {VL_NEVEREXPIRE} {VL_DISABLED_NE}/>
+                            </div>
                         </td>
-                      </tr>
-                      <tr>
-                        <td width="25">&nbsp;</td>
-                        <td class="content2" width="193">{TR_CGI_SUPP}</td>
-                        <td class="content">
-                          <select name="domain_cgi" id="domain_cgi">
-                            <option value="_yes_" {CGI_YES}>{TR_YES}</option>
-                            <option value="_no_" {CGI_NO}>{TR_NO}</option>
-                          </select>
+                    </tr>
+                    <tr>
+                        <td>{TR_DOMAIN_IP}</td>
+                        <td>{VL_DOMAIN_IP}</td>
+                    </tr>
+                    <tr>
+                        <td><label for="domain_php">{TR_PHP_SUPP}</label></td>
+                        <td><select id="domain_php" name="domain_php">
+                            <option value="yes" {PHP_YES}>{TR_YES}</option>
+                            <option value="no" {PHP_NO}>{TR_NO}</option>
+                        </select>
                         </td>
-                      </tr>
-                      <tr>
-						<td width="25">&nbsp;</td>
-						<td class="content2" width="193">{TR_SOFTWARE_SUPP}</td>
-						<td class="content">
-						  <select name="domain_software_allowed" id="domain_software_allowed">
-							<option value="yes" {SOFTWARE_YES}>{TR_YES}</option>
-							<option value="no" {SOFTWARE_NO}>{TR_NO}</option>
-						  </select>
-						</td>
-					  </tr>
-                      <tr>
-                        <td width="25">&nbsp;</td>
-                        <td class="content2" width="193">{TR_DNS_SUPP}</td>
-                        <td class="content">
-                          <select name="domain_dns" id="domain_dns">
-                            <option value="_yes_" {DNS_YES}>{TR_YES}</option>
-                            <option value="_no_" {DNS_NO}>{TR_NO}</option>
-                          </select>
+                    </tr>
+                    <!-- BDP: t_software_support -->
+                    <tr>
+                        <td>
+                            <label for="domain_software_allowed">{TR_SOFTWARE_SUPP}</label>
                         </td>
-                      </tr>
-                      <tr>
-                        <td width="25">&nbsp;</td>
-                        <td class="content2" width="193">{TR_BACKUP}</td>
-                        <td class="content">
-                          <select name="backup">
-                            <option value="_dmn_" {BACKUP_DOMAIN}>{TR_BACKUP_DOMAIN}</option>
-                            <option value="_sql_" {BACKUP_SQL}>{TR_BACKUP_SQL}</option>
-                            <option value="_full_" {BACKUP_FULL}>{TR_BACKUP_FULL}</option>
-                            <option value="_no_" {BACKUP_NO}>{TR_BACKUP_NO}</option>
-                          </select>
+                        <td>
+                            <select name="domain_software_allowed" id="domain_software_allowed">
+                                <option value="yes" {SOFTWARE_YES}>{TR_YES}</option>
+                                <option value="no" {SOFTWARE_NO}>{TR_NO}</option>
+                            </select>
                         </td>
-                      </tr>
-                      <tr>
-                        <td width="25">&nbsp;</td>
-                        <td class="content2" width="193">{TR_SUBDOMAINS}</td>
-                        <td class="content"><input type="text" name="dom_sub" value="{VL_DOM_SUB}" style="width:100px" class="textinput" />
+                    </tr>
+                    <!-- EDP: t_software_support -->
+                    <tr>
+                        <td><label for="domain_cgi">{TR_CGI_SUPP}</label></td>
+                        <td><select id="domain_cgi" name="domain_cgi">
+                            <option value="yes" {CGI_YES}>{TR_YES}</option>
+                            <option value="no" {CGI_NO}>{TR_NO}</option>
+                        </select>
                         </td>
-                      </tr>
-                      <tr>
-                        <td width="25">&nbsp;</td>
-                        <td class="content2" width="193">{TR_ALIAS}</td>
-                        <td class="content"><input type="text" name="dom_alias" value="{VL_DOM_ALIAS}" style="width:100px" class="textinput" />
+                    </tr>
+                    <tr>
+                        <td><label for="domain_dns">{TR_DNS_SUPP}</label></td>
+                        <td><select id="domain_dns" name="domain_dns">
+                            <option value="yes" {DNS_YES}>{TR_YES}</option>
+                            <option value="no" {DNS_NO}>{TR_NO}</option>
+                        </select>
                         </td>
-                      </tr>
-                      <tr>
-                        <td width="25">&nbsp;</td>
-                        <td class="content2" width="193">{TR_MAIL_ACCOUNT}</td>
-                        <td class="content"><input type="text" name="dom_mail_acCount" value="{VL_DOM_MAIL_ACCOUNT}" style="width:100px" class="textinput" />
+                    </tr>
+                    <tr>
+                        <td><label for="backup">{TR_BACKUP}</label></td>
+                        <td><select id="backup" name="backup">
+                            <option value="dmn" {BACKUP_DOMAIN}>{TR_BACKUP_DOMAIN}</option>
+                            <option value="sql" {BACKUP_SQL}>{TR_BACKUP_SQL}</option>
+                            <option value="full" {BACKUP_FULL}>{TR_BACKUP_FULL}</option>
+                            <option value="no" {BACKUP_NO}>{TR_BACKUP_NO}</option>
+                        </select>
                         </td>
-                      </tr>
-                      <tr>
-                        <td width="25">&nbsp;</td>
-                        <td class="content2" width="193">{TR_FTP_ACCOUNTS}</td>
-                        <td class="content"><input type="text" name="dom_ftp_acCounts" value="{VL_FTP_ACCOUNTS}" style="width:100px" class="textinput" />
+                    </tr>
+                    <tr>
+                        <td><label for="dom_sub">{TR_SUBDOMAINS}</label></td>
+                        <td>
+                            <input type="text" name="dom_sub" id="dom_sub" value="{VL_DOM_SUB}" />
                         </td>
-                      </tr>
-                      <tr>
-                        <td width="25">&nbsp;</td>
-                        <td class="content2" width="193">{TR_SQL_DB}</td>
-                        <td class="content"><input type="text" name="dom_sqldb" value="{VL_SQL_DB}" style="width:100px" class="textinput" />
+                    </tr>
+                    <tr>
+                        <td><label for="dom_alias">{TR_ALIAS}</label></td>
+                        <td>
+                            <input type="text" name="dom_alias" id="dom_alias" value="{VL_DOM_ALIAS}" />
                         </td>
-                      </tr>
-                      <tr>
-                        <td width="25">&nbsp;</td>
-                        <td class="content2" width="193">{TR_SQL_USERS}</td>
-                        <td class="content"><input type="text" name="dom_sql_users" value="{VL_SQL_USERS}" style="width:100px" class="textinput" />
+                    </tr>
+                    <tr>
+                        <td><label for="dom_mail_acCount">{TR_MAIL_ACCOUNT}</label>
                         </td>
-                      </tr>
-                      <tr>
-                        <td width="25">&nbsp;</td>
-                        <td class="content2" width="193">{TR_TRAFFIC}</td>
-                        <td class="content"><input type="text" name="dom_traffic" value="{VL_TRAFFIC}" style="width:100px" class="textinput" />
+                        <td>
+                            <input type="text" name="dom_mail_acCount" id="dom_mail_acCount" value="{VL_DOM_MAIL_ACCOUNT}" />
                         </td>
-                      </tr>
-                      <tr>
-                        <td width="25">&nbsp;</td>
-                        <td class="content2" width="193">{TR_DISK}</td>
-                        <td class="content"><input type="text" name="dom_disk" value="{VL_DOM_DISK}" style="width:100px" class="textinput" />
+                    </tr>
+                    <tr>
+                        <td><label for="dom_ftp_acCounts">{TR_FTP_ACCOUNTS}</label>
                         </td>
-                      </tr>
-                      <tr>
-                        <td width="25">&nbsp;</td>
-                        <td class="content2" width="193">{TR_USER_NAME}</td>
-                        <td class="content">{VL_USER_NAME}</td>
-                      </tr>
-                      <tr>
-                        <td>&nbsp;</td>
-                        <td colspan="2"><input name="Submit" type="submit" class="button" value="{TR_UPDATE_DATA}" />
-                          &nbsp;&nbsp;&nbsp;
-                          <input name="Submit" type="submit" class="button" onclick="MM_goToURL('parent','manage_users.php');return document.MM_returnValue" value=" {TR_CANCEL} " /></td>
-                      </tr>
-                      <tr>
-                        <td colspan="3"><input type="hidden" name="uaction" value="sub_data" />
+                        <td>
+                            <input type="text" name="dom_ftp_acCounts" id="dom_ftp_acCounts" value="{VL_FTP_ACCOUNTS}" />
                         </td>
-                      </tr>
-                    </table></form></td>
-                <td>&nbsp;</td>
-              </tr>
-              <tr>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-              </tr>
-            </table></td>
-          </tr>
-        </table></td>
-	</tr>
-</table>
-</body>
+                    </tr>
+                    <tr>
+                        <td><label for="dom_sqldb">{TR_SQL_DB}</label></td>
+                        <td>
+                            <input type="text" name="dom_sqldb" id="dom_sqldb" value="{VL_SQL_DB}" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="dom_sql_users">{TR_SQL_USERS}</label></td>
+                        <td>
+                            <input type="text" name="dom_sql_users" id="dom_sql_users" value="{VL_SQL_USERS}" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="dom_traffic">{TR_TRAFFIC}</label></td>
+                        <td>
+                            <input type="text" name="dom_traffic" id="dom_traffic" value="{VL_TRAFFIC}" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="dom_disk">{TR_DISK}</label></td>
+                        <td>
+                            <input type="text" name="dom_disk" id="dom_disk" value="{VL_DOM_DISK}" />
+                        </td>
+                    </tr>
+                </table>
+                <div class="buttons">
+                    <input name="Submit" type="submit" value="{TR_UPDATE_DATA}" />
+                    <input name="Submit" type="submit" onclick="MM_goToURL('parent','users.php');return document.MM_returnValue" value="{TR_CANCEL}" />
+                    <input type="hidden" name="uaction" value="update" />
+                    <input type="hidden" name="domain_id" value="{DOMAIN_ID}" />
+                </div>
+            </form>
+            <br />
+        </div>
+        <div class="footer">
+            i-MSCP {VERSION}<br />build: {BUILDDATE}<br />Codename: {CODENAME}
+        </div>
+    </body>
 </html>
