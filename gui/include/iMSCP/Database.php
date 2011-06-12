@@ -381,7 +381,7 @@ class iMSCP_Database
     /**
      * Returns the list of the permanent tables from the database.
      *
-     * @return array    An array that represents a list of the permanent tables
+     * @return array An array that represents a list of the permanent tables
      */
     public function metaTables()
     {
@@ -401,7 +401,7 @@ class iMSCP_Database
     /**
      * Returns the Id of the last inserted row.
      *
-     * @return string   Last row identifier that was inserted in database
+     * @return string Last row identifier that was inserted in database
      */
     public function insertId()
     {
@@ -433,9 +433,9 @@ class iMSCP_Database
      *
      * @since r2013
      * @author Laurent Declercq <l.declercq@nuxwin.com>
-     * @param int $attribute    Attribute uid
-     * @param mixed $value      Attribute value
-     * @return boolean          TRUE on success, FALSE on failure
+     * @param int $attribute Attribute identifier
+     * @param mixed $value Attribute value
+     * @return boolean TRUE on success, FALSE on failure
      */
     public function setAttribute($attribute, $value)
     {
@@ -446,7 +446,7 @@ class iMSCP_Database
      * Retrieves a PDO database connection attribute.
      *
      * @param $attribute
-     * @return mixed    Attribute value or NULL on failure
+     * @return mixed Attribute value or NULL on failure
      */
     public function getAttribute($attribute)
     {
@@ -456,7 +456,7 @@ class iMSCP_Database
     /**
      *  Initiates a transaction.
      *
-     * @return boolean  TRUE on success, FALSE on failure
+     * @return boolean TRUE on success, FALSE on failure
      */
     public function startTransaction()
     {
@@ -466,7 +466,7 @@ class iMSCP_Database
     /**
      * Commits a transaction.
      *
-     * @return boolean  TRUE on success, FALSE on failure
+     * @return boolean TRUE on success, FALSE on failure
      */
     public function completeTransaction()
     {
@@ -489,7 +489,7 @@ class iMSCP_Database
      *
      * @since 1.0.7
      * @author Laurent Declercq <l.declercq@nuxwin.com>
-     * @return mixed    The last SQLSTATE error code
+     * @return mixed  The last SQLSTATE error code
      */
     public function getLastErrorCode()
     {
@@ -503,9 +503,8 @@ class iMSCP_Database
      * {@link prepare()} methods.
      *
      * @author Laurent Declercq <l.declercq@nuxwin.com>
-     * @since 1.0.7
-     * @return string   Last error message set by the {@link execute()} or
-     *                  {@link prepare()} methods.
+     * @return string Last error message set by the {@link execute()} or
+     *                {@link prepare()} methods.
      */
     public function getLastErrorMessage()
     {
@@ -518,7 +517,7 @@ class iMSCP_Database
      * This method returns a stringified version of the error information associated
      * with the last database operation.
      *
-     * @return string   Error information associated with the last database operation
+     * @return string Error information associated with the last database operation
      */
     public function errorMsg()
     {
@@ -531,8 +530,8 @@ class iMSCP_Database
      * This method returns a array that contains error information associated with
      * the last database operation.
      *
-     * @return array    Array that contains error information associated with the
-     *                  last database operation
+     * @return array Array that contains error information associated with the last
+     *               database operation
      */
     public function errorInfo()
     {
