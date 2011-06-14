@@ -2799,7 +2799,7 @@ sub askSecondaryDNS{
 		return 0;
 	}
 
-	while (! ($out = iMSCP::Dialog->new()->radiolist("Enable secondary DNS server address IP?", 'yes', 'no'))){}
+	while (! ($out = iMSCP::Dialog->new()->radiolist("Enable secondary DNS server address IP?", 'no', 'yes'))){}
 	if($out eq 'no'){
 		$main::imscpConfig{'SECONDARY_DNS'} = 'no';
 		debug((caller(0))[3].': Ending...');
