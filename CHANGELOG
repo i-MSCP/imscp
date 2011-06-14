@@ -7,7 +7,7 @@ i-MSCP 1.0.0-beta1
 Distributions:
     Debian:
         - Added support for testing (wheezy)
-        - Removed support for oldstable (lenny) - Not supported by new installer
+        - Removed support for oldstable (lenny) - Perl >= v5.10.1 required
 
 Features / Enhancements:
     Database:
@@ -20,21 +20,22 @@ Features / Enhancements:
         Migration:
             - Added migration script for ispCP version >= 1.0.7
         Setup/Update:
+            - New i-mscp tree builder
             - New installer (Dialog ; merged setup and update scripts)
     Gui:
         Core:
             - Added DebugBar component
             - Added Events system component
-            - Added on-click-logon ftp-user
-            - Added Software installer
+            - Added on-click-logon ftp-user - Thanks to William Lightning
+            - Added Software installer - Thanks to Sascha Bay
             - Dropped password encryption for Ftp, Mail accounts...
-            - New theme (XHTML strict)
+            - New theme (XHTML strict) - Thanks to Henrik Schytte and Marc Pujol
             - Rewritten Update component
         Tools:
             - Updated PhpMyAdmin to version 3.4.2
         Vendor:
-            - Updated idna_convert.class.php
-            - Updated Net_DNS
+            - Updated idna_convert.class.php to version 0.8.0
+            - Updated Net_DNS to version 1.0.7
 
 Tickets:
     - Fixed #3:  Defect - Wrong DNS entry when using multiple IP for alternative
