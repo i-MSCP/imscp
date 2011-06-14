@@ -183,7 +183,7 @@ table .icon {
 }
 
 .warning, .success, .error, .info {
-    margin: 2em 1em 1em;
+    margin: 1em 1em 1em;
     border: 1px solid;
     padding: 15px 10px 15px 50px;
     text-align: left;
