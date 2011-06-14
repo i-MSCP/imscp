@@ -25,7 +25,7 @@ msgstr "UTF-8"
 msgid "_: Localised language"
 msgstr "English - English"
 
-msgid "ispCP Omega a Virtual Hosting Control System"
+msgid "i-MSCP  a Virtual Hosting Control System"
 msgstr ""
 
 msgid "Administrator login"
@@ -55,7 +55,7 @@ msgstr ""
 msgid "Retrieving lost passwords is currently not possible"
 msgstr ""
 
-msgid "ispCP - Virtual Hosting Control System"
+msgid "i-MSCP - Virtual Hosting Control System"
 msgstr ""
 
 msgid "Your new password has been sent."
@@ -91,7 +91,7 @@ msgstr ""
 msgid "Request password"
 msgstr ""
 
-msgid "ispCP - Admin/Manage users/Add User"
+msgid "i-MSCP - Admin/Manage users/Add User"
 msgstr ""
 
 msgid "Administrator"
@@ -197,10 +197,10 @@ msgstr ""
 msgid "Domain account"
 msgstr ""
 
-msgid "ispCP - Admin/Manage users/Edit Administrator"
+msgid "i-MSCP - Admin/Manage users/Edit Administrator"
 msgstr ""
 
-msgid "ispCP - Admin/Manage users/Edit User"
+msgid "i-MSCP - Admin/Manage users/Edit User"
 msgstr ""
 
 msgid "Edit admin"
@@ -224,7 +224,7 @@ msgstr ""
 msgid "Demo Version!"
 msgstr ""
 
-msgid "ispCP - Admin/Admin Log"
+msgid "i-MSCP - Admin/Admin Log"
 msgstr ""
 
 msgid "Log is empty!"
@@ -290,7 +290,7 @@ msgstr ""
 msgid "older than 12 months"
 msgstr ""
 
-msgid "ispCP - Admin - Email Marketing"
+msgid "i-MSCP - Admin - Email Marketing"
 msgstr ""
 
 msgid "Please specify a message subject!"
@@ -359,7 +359,7 @@ msgstr ""
 msgid "Custom menu deleted successful!"
 msgstr ""
 
-msgid "ispCP - Admin - Manage custom menus"
+msgid "i-MSCP - Admin - Manage custom menus"
 msgstr ""
 
 msgid "Manage custom menus"
@@ -438,7 +438,7 @@ msgstr ""
 msgid "No database updates available"
 msgstr ""
 
-msgid "ispCP - Domain/Details"
+msgid "i-MSCP - Domain/Details"
 msgstr ""
 
 msgid "Domain details"
@@ -522,7 +522,7 @@ msgstr ""
 msgid "Disabled"
 msgstr ""
 
-msgid "ispCP - Admin/Edit Domain"
+msgid "i-MSCP - Admin/Edit Domain"
 msgstr ""
 
 msgid "Edit Domain"
@@ -674,7 +674,7 @@ msgstr ""
 msgid "You are exceeding reseller limits for the <em>%s</em> service!"
 msgstr ""
 
-msgid "ispCP - Domain Statistics Data"
+msgid "i-MSCP - Domain Statistics Data"
 msgstr ""
 
 msgid "Domain statistics"
@@ -707,7 +707,7 @@ msgstr ""
 msgid "Day"
 msgstr ""
 
-msgid "ispCP - Administrator/Add hosting plan"
+msgid "i-MSCP - Administrator/Add hosting plan"
 msgstr ""
 
 msgid "Add hosting plan"
@@ -817,7 +817,7 @@ msgstr ""
 msgid "Hosting plan with entered name already exists!"
 msgstr ""
 
-msgid "ispCP - Administrator/Edit hosting plan"
+msgid "i-MSCP - Administrator/Edit hosting plan"
 msgstr ""
 
 msgid "Price Style"
@@ -841,7 +841,7 @@ msgstr ""
 msgid "Incorrect setup fee. Example: 19.99"
 msgstr ""
 
-msgid "ispCP - Administrator/Hosting Plan Management"
+msgid "i-MSCP - Administrator/Hosting Plan Management"
 msgstr ""
 
 msgid "Hosting plans"
@@ -896,7 +896,7 @@ msgstr ""
 msgid "Update checking is disabled!"
 msgstr ""
 
-msgid "New ispCP update is now available"
+msgid "New i-MSCP update is now available"
 msgstr ""
 
 msgid "You are exceeding your traffic limit!"
@@ -910,7 +910,7 @@ msgstr ""
 msgid "%1$d%% [%2$s of %3$s]"
 msgstr ""
 
-msgid "ispCP - Admin/Main Index"
+msgid "i-MSCP - Admin/Main Index"
 msgstr ""
 
 msgid "You cannot delete the last active IP address!"
@@ -925,7 +925,7 @@ msgstr ""
 msgid "IP was deleted!"
 msgstr ""
 
-msgid "ispCP - Admin/IP manage"
+msgid "i-MSCP - Admin/IP manage"
 msgstr ""
 
 msgid "Remove IP"
@@ -983,7 +983,7 @@ msgstr ""
 msgid "No email account system errors"
 msgstr ""
 
-msgid "ispCP debugger"
+msgid "i-MSCP debugger"
 msgstr ""
 
 msgid "Domain errors"
@@ -1001,7 +1001,7 @@ msgstr ""
 msgid "Mail account errors"
 msgstr ""
 
-msgid "ispCP Daemon tools"
+msgid "i-MSCP Daemon tools"
 msgstr ""
 
 msgid "Execute requests"
@@ -1032,13 +1032,13 @@ msgstr ""
 msgid "Get it at"
 msgstr ""
 
-msgid "ispCP updates"
+msgid "i-MSCP updates"
 msgstr ""
 
-msgid "Available ispCP updates"
+msgid "Available i-MSCP updates"
 msgstr ""
 
-msgid "No new ispCP updates available"
+msgid "No new i-MSCP updates available"
 msgstr ""
 
 msgid "Language was removed!"
@@ -1047,7 +1047,7 @@ msgstr ""
 msgid "User language updated successfully!"
 msgstr ""
 
-msgid "ispCP - Admin/Change Language"
+msgid "i-MSCP - Admin/Change Language"
 msgstr ""
 
 msgid "Language"
@@ -1059,7 +1059,7 @@ msgstr ""
 msgid "Reseller list is empty!"
 msgstr ""
 
-msgid "ispCP - Admin/Manage users/Reseller assignment"
+msgid "i-MSCP - Admin/Manage users/Reseller assignment"
 msgstr ""
 
 msgid "Reseller assignment"
@@ -1123,7 +1123,7 @@ msgid ""
 "reseller !<br>This user cannot be moved!"
 msgstr ""
 
-msgid "ispCP - Admin/Manage users/User assignment"
+msgid "i-MSCP - Admin/Manage users/User assignment"
 msgstr ""
 
 msgid "User assignment"
@@ -1141,7 +1141,7 @@ msgstr ""
 msgid "To reseller"
 msgstr ""
 
-msgid "ispCP - Admin/Manage Users"
+msgid "i-MSCP - Admin/Manage Users"
 msgstr ""
 
 msgid "User added"
@@ -1168,7 +1168,7 @@ msgstr ""
 msgid "Incorrect data input!"
 msgstr ""
 
-msgid "ispCP - Admin/Internationalisation"
+msgid "i-MSCP - Admin/Internationalisation"
 msgstr ""
 
 msgid "Upload file error!"
@@ -1231,7 +1231,7 @@ msgstr ""
 msgid "Export"
 msgstr ""
 
-msgid "ispCP - Admin/Change Password"
+msgid "i-MSCP - Admin/Change Password"
 msgstr ""
 
 msgid "Please fill up all data fields!"
@@ -1261,7 +1261,7 @@ msgstr ""
 msgid "Password change is deactivated!"
 msgstr ""
 
-msgid "ispCP - Admin/Change Personal Data"
+msgid "i-MSCP - Admin/Change Personal Data"
 msgstr ""
 
 msgid "Personal data updated successfully!"
@@ -1276,7 +1276,7 @@ msgstr ""
 msgid "Update data"
 msgstr ""
 
-msgid "ispCP - Admin/Manage users/Add reseller"
+msgid "i-MSCP - Admin/Manage users/Add reseller"
 msgstr ""
 
 msgid "Reseller IP list is empty!"
@@ -1400,7 +1400,7 @@ msgstr ""
 msgid "ERROR: The reseller account you trying to edit does not exist!"
 msgstr ""
 
-msgid "ispCP - Admin/Manage users/Edit Reseller"
+msgid "i-MSCP - Admin/Manage users/Edit Reseller"
 msgstr ""
 
 msgid ""
@@ -1433,11 +1433,11 @@ msgstr ""
 
 #, php-format
 msgid ""
-"ispCP NOTICE:\\n\\nThe `Enter` key is disabled for performance reasons!"
+"i-MSCP NOTICE:\\n\\nThe `Enter` key is disabled for performance reasons!"
 "\\nInstead, use the %s button to update the data."
 msgstr ""
 
-msgid "ispCP - Reseller statistics"
+msgid "i-MSCP - Reseller statistics"
 msgstr ""
 
 msgid "Not found reseller(s) in your system!"
@@ -1471,7 +1471,7 @@ msgstr ""
 msgid "SQL user"
 msgstr ""
 
-msgid "ispCP - Admin/Reseller User Statistics"
+msgid "i-MSCP - Admin/Reseller User Statistics"
 msgstr ""
 
 #, php-format
@@ -1520,7 +1520,7 @@ msgstr ""
 msgid "SQL<br>user"
 msgstr ""
 
-msgid "ispCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
+msgid "i-MSCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
 msgstr ""
 
 #, php-format
@@ -1530,7 +1530,7 @@ msgstr ""
 msgid "Anti-Rootkits Tools Log Checker"
 msgstr ""
 
-msgid "ispCP - Admin/Server day stats"
+msgid "i-MSCP - Admin/Server day stats"
 msgstr ""
 
 msgid "Server day statistics"
@@ -1578,13 +1578,13 @@ msgstr ""
 msgid "All out"
 msgstr ""
 
-msgid "ispCP - Admin/Server statistics"
+msgid "i-MSCP - Admin/Server statistics"
 msgstr ""
 
 msgid "Server statistics"
 msgstr ""
 
-msgid "ispCP Admin / System Tools / Server Status"
+msgid "i-MSCP Admin / System Tools / Server Status"
 msgstr ""
 
 msgid "UP"
@@ -1602,7 +1602,7 @@ msgstr ""
 msgid "Server status"
 msgstr ""
 
-msgid "ispCP - Admin/Manage Sessions"
+msgid "i-MSCP - Admin/Manage Sessions"
 msgstr ""
 
 msgid "Manage user sessions"
@@ -1668,7 +1668,7 @@ msgstr ""
 msgid "Auto email template data updated!"
 msgstr ""
 
-msgid "ispCP - Admin/Lostpw email setup"
+msgid "i-MSCP - Admin/Lostpw email setup"
 msgstr ""
 
 msgid "Lost password e-mail"
@@ -1710,7 +1710,7 @@ msgstr ""
 msgid "URL protocol"
 msgstr ""
 
-msgid "ispCP - Admin/Maintenance mode"
+msgid "i-MSCP - Admin/Maintenance mode"
 msgstr ""
 
 msgid "Settings saved !"
@@ -1722,7 +1722,7 @@ msgstr ""
 msgid "Under this mode only administrators can login"
 msgstr ""
 
-msgid "ispCP - Admin/Settings"
+msgid "i-MSCP - Admin/Settings"
 msgstr ""
 
 msgid "ERROR: Only positive numbers are allowed !"
@@ -1913,7 +1913,7 @@ msgstr ""
 msgid "Add new service port"
 msgstr ""
 
-msgid "ispCP - Admin/Server Traffic Settings"
+msgid "i-MSCP - Admin/Server Traffic Settings"
 msgstr ""
 
 msgid "Wrong data input!"
@@ -1940,7 +1940,7 @@ msgstr ""
 msgid "Warning traffic [MB]"
 msgstr ""
 
-msgid "ispCP - Admin/Manage users/Email setup"
+msgid "i-MSCP - Admin/Manage users/Email setup"
 msgstr ""
 
 msgid "Email setup"
@@ -2021,7 +2021,7 @@ msgstr ""
 msgid "You have no support tickets."
 msgstr ""
 
-msgid "ispCP - Client/Questions & Comments"
+msgid "i-MSCP - Client/Questions & Comments"
 msgstr ""
 
 msgid "Support tickets"
@@ -2063,7 +2063,7 @@ msgstr ""
 msgid "[Re]"
 msgstr ""
 
-msgid "ispCP - Client/Enable Mail Autoresponder"
+msgid "i-MSCP - Client/Enable Mail Autoresponder"
 msgstr ""
 
 msgid "Ticket not found!"
@@ -2075,7 +2075,7 @@ msgstr ""
 msgid "Close ticket"
 msgstr ""
 
-msgid "ispCP - Client: Support System: View Ticket"
+msgid "i-MSCP - Client: Support System: View Ticket"
 msgstr ""
 
 msgid "Please type your message!"
@@ -2090,7 +2090,7 @@ msgstr ""
 msgid "Ticket was reopened!"
 msgstr ""
 
-msgid "ispCP - Admin: Support System: View Ticket"
+msgid "i-MSCP - Admin: Support System: View Ticket"
 msgstr ""
 
 msgid "View support ticket"
@@ -2102,7 +2102,7 @@ msgstr ""
 msgid "Send reply"
 msgstr ""
 
-msgid "ispCP - Delete Domain"
+msgid "i-MSCP - Delete Domain"
 msgstr ""
 
 msgid "Wrong domain ID!"
@@ -2146,7 +2146,7 @@ msgstr ""
 msgid "Yes, delete the domain."
 msgstr ""
 
-msgid "ispCP Client : Add Alias"
+msgid "i-MSCP Client : Add Alias"
 msgstr ""
 
 msgid "Manage domain alias"
@@ -2167,7 +2167,7 @@ msgstr ""
 msgid "Add alias"
 msgstr ""
 
-msgid "You do not need 'www.' ispCP will add it on its own."
+msgid "You do not need 'www.' i-MSCP will add it on its own."
 msgstr ""
 
 msgid "Wrong domain name!"
@@ -2231,7 +2231,7 @@ msgstr ""
 msgid "Alias scheduled for deletion!"
 msgstr ""
 
-msgid "ispCP - Manage Domain Alias/Edit Alias"
+msgid "i-MSCP - Manage Domain Alias/Edit Alias"
 msgstr ""
 
 msgid "Edit domain alias"
@@ -2253,7 +2253,7 @@ msgstr ""
 msgid "Backup archive scheduled for restoring!"
 msgstr ""
 
-msgid "ispCP - Client/Daily Backup"
+msgid "i-MSCP - Client/Daily Backup"
 msgstr ""
 
 msgid "Daily backup"
@@ -2287,7 +2287,7 @@ msgstr ""
 msgid "Are you sure you want to restore the backup?"
 msgstr ""
 
-msgid "ispCP - Client/Cronjob Manager"
+msgid "i-MSCP - Client/Cronjob Manager"
 msgstr ""
 
 msgid "Cronjob Manager"
@@ -2329,10 +2329,10 @@ msgstr ""
 msgid "DNS zone record scheduled for deletion!"
 msgstr ""
 
-msgid "ispCP - Manage Domain Alias/Add DNS zone's record"
+msgid "i-MSCP - Manage Domain Alias/Add DNS zone's record"
 msgstr ""
 
-msgid "ispCP - Manage Domain Alias/Edit DNS zone's record"
+msgid "i-MSCP - Manage Domain Alias/Edit DNS zone's record"
 msgstr ""
 
 msgid "Add DNS zone's record (EXPERIMENTAL)"
@@ -2448,7 +2448,7 @@ msgstr ""
 msgid "Alias list is empty!"
 msgstr ""
 
-msgid "ispCP - Client/Manage Domains"
+msgid "i-MSCP - Client/Manage Domains"
 msgstr ""
 
 msgid "Manage domains"
@@ -2466,7 +2466,7 @@ msgstr ""
 msgid "Record data"
 msgstr ""
 
-msgid "ispCP - Client/Domain Statistics"
+msgid "i-MSCP - Client/Domain Statistics"
 msgstr ""
 
 msgid "Web Stats"
@@ -2484,7 +2484,7 @@ msgstr ""
 msgid "Sum"
 msgstr ""
 
-msgid "ispCP - Client/Manage Error Custom Pages"
+msgid "i-MSCP - Client/Manage Error Custom Pages"
 msgstr ""
 
 msgid "Server error - please choose error page"
@@ -2520,7 +2520,7 @@ msgstr ""
 msgid "FTP list is empty!"
 msgstr ""
 
-msgid "ispCP - Client/Manage Users"
+msgid "i-MSCP - Client/Manage Users"
 msgstr ""
 
 msgid "Manage users"
@@ -2575,7 +2575,7 @@ msgstr ""
 msgid "FTP accounts limit reached!"
 msgstr ""
 
-msgid "ispCP - Client/Add FTP User"
+msgid "i-MSCP - Client/Add FTP User"
 msgstr ""
 
 msgid "Add FTP user"
@@ -2605,7 +2605,7 @@ msgstr ""
 msgid "Protect it"
 msgstr ""
 
-msgid "ispCP - Client/Webtools"
+msgid "i-MSCP - Client/Webtools"
 msgstr ""
 
 msgid "Directory tree"
@@ -2623,7 +2623,7 @@ msgstr ""
 msgid "FTP account data updated!"
 msgstr ""
 
-msgid "ispCP - Client/Edit FTP Account"
+msgid "i-MSCP - Client/Edit FTP Account"
 msgstr ""
 
 msgid "Edit FTP user"
@@ -2732,7 +2732,7 @@ msgstr ""
 msgid "There are no available hosting plans for update"
 msgstr ""
 
-msgid "ispCP - Update hosting plan"
+msgid "i-MSCP - Update hosting plan"
 msgstr ""
 
 msgid "You have more e-mail addresses in use than the new hosting plan limits."
@@ -2741,14 +2741,14 @@ msgstr ""
 msgid "Your request for hosting pack update was added successfully"
 msgstr ""
 
-msgid "[ispCP OrderPanel] - You have an update order"
+msgid "[i-MSCP OrderPanel] - You have an update order"
 msgstr ""
 
 #, php-format
 msgid ""
 "You have an update order for the account %s\n"
 "\n"
-"Please login into your ispCP control panel at %s for more details"
+"Please login into your i-MSCP control panel at %s for more details"
 msgstr ""
 
 msgid "Your request for hosting pack update was removed successfully"
@@ -2781,7 +2781,7 @@ msgstr ""
 msgid "This Domain is expired"
 msgstr ""
 
-msgid "ispCP - Client/Main Index"
+msgid "i-MSCP - Client/Main Index"
 msgstr ""
 
 msgid "General information"
@@ -2811,7 +2811,7 @@ msgstr ""
 msgid "Alternative URL to reach your website"
 msgstr ""
 
-msgid "ispCP - Client/Change Language"
+msgid "i-MSCP - Client/Change Language"
 msgstr ""
 
 msgid "Please wait for update"
@@ -2891,7 +2891,7 @@ msgstr ""
 msgid "Mail accounts limit reached!"
 msgstr ""
 
-msgid "ispCP - Client/Add Mail User"
+msgid "i-MSCP - Client/Add Mail User"
 msgstr ""
 
 msgid "Add mail users"
@@ -2924,7 +2924,7 @@ msgstr ""
 msgid "Mail account scheduler for modification!"
 msgstr ""
 
-msgid "ispCP - Client/Enable Mail Auto Responder"
+msgid "i-MSCP - Client/Enable Mail Auto Responder"
 msgstr ""
 
 msgid "Edit mail auto responder"
@@ -2942,7 +2942,7 @@ msgstr ""
 msgid "Mail forward list error!"
 msgstr ""
 
-msgid "ispCP - Client/Create CatchAll Mail Account"
+msgid "i-MSCP - Client/Create CatchAll Mail Account"
 msgstr ""
 
 msgid "Create catch all mail account"
@@ -2975,7 +2975,7 @@ msgstr ""
 msgid "Email account not found!"
 msgstr ""
 
-msgid "ispCP - Manage Mail and FTP / Edit mail account"
+msgid "i-MSCP - Manage Mail and FTP / Edit mail account"
 msgstr ""
 
 msgid "Mail were updated successfully!"
@@ -2984,10 +2984,10 @@ msgstr ""
 msgid "Edit email account"
 msgstr ""
 
-msgid "ispCP - Client/Change Password"
+msgid "i-MSCP - Client/Change Password"
 msgstr ""
 
-msgid "ispCP - Client/Change Personal Data"
+msgid "i-MSCP - Client/Change Personal Data"
 msgstr ""
 
 msgid "Please choose user or group"
@@ -3137,7 +3137,7 @@ msgstr ""
 msgid "SQL user password was successfully changed!"
 msgstr ""
 
-msgid "ispCP - Client/Change SQL User Password"
+msgid "i-MSCP - Client/Change SQL User Password"
 msgstr ""
 
 msgid "Change SQL user password"
@@ -3165,7 +3165,7 @@ msgstr ""
 msgid "SQL accounts limit reached!"
 msgstr ""
 
-msgid "ispCP - Client/Add SQL Database"
+msgid "i-MSCP - Client/Add SQL Database"
 msgstr ""
 
 msgid "Add SQL database"
@@ -3195,7 +3195,7 @@ msgstr ""
 msgid "Database list is empty!"
 msgstr ""
 
-msgid "ispCP - Client/Manage SQL"
+msgid "i-MSCP - Client/Manage SQL"
 msgstr ""
 
 msgid "Manage SQL"
@@ -3247,7 +3247,7 @@ msgstr ""
 msgid "SQL user successfully added!"
 msgstr ""
 
-msgid "ispCP - Client/Add SQL User"
+msgid "i-MSCP - Client/Add SQL User"
 msgstr ""
 
 msgid "SQL user name"
@@ -3286,7 +3286,7 @@ msgstr ""
 msgid "Subdomain scheduled for addition!"
 msgstr ""
 
-msgid "ispCP - Client/Add Subdomain"
+msgid "i-MSCP - Client/Add Subdomain"
 msgstr ""
 
 msgid "Add subdomain"
@@ -3307,7 +3307,7 @@ msgstr ""
 msgid "Your message was sent!"
 msgstr ""
 
-msgid "ispCP - Support system - New ticket"
+msgid "i-MSCP - Support system - New ticket"
 msgstr ""
 
 msgid "New ticket"
@@ -3364,7 +3364,7 @@ msgstr ""
 msgid "Logout"
 msgstr ""
 
-msgid "ispCP database updates"
+msgid "i-MSCP database updates"
 msgstr ""
 
 msgid "Custom menus"
@@ -3464,7 +3464,7 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-msgid "ispCP - Order Panel"
+msgid "i-MSCP - Order Panel"
 msgstr ""
 
 #, php-format
@@ -3577,7 +3577,7 @@ msgstr ""
 msgid "Unknown type"
 msgstr ""
 
-msgid "Welcome {USERNAME} to ispCP!"
+msgid "Welcome {USERNAME} to i-MSCP!"
 msgstr ""
 
 msgid ""
@@ -3585,7 +3585,7 @@ msgid ""
 "\n"
 "Hello {NAME}!\n"
 "\n"
-"A new ispCP account has been created for you.\n"
+"A new i-MSCP account has been created for you.\n"
 "Your account information:\n"
 "\n"
 "User type: {USERTYPE}\n"
@@ -3600,28 +3600,28 @@ msgid ""
 "User name: {USERNAME}\n"
 "Password: {PASSWORD}\n"
 "\n"
-"Best wishes with ispCP!\n"
-"The ispCP Team.\n"
+"Best wishes with i-MSCP!\n"
+"The i-MSCP Team.\n"
 "\n"
 msgstr ""
 
-msgid "Please activate your new ispCP password!"
+msgid "Please activate your new i-MSCP password!"
 msgstr ""
 
 msgid ""
 "\n"
 "\n"
 "Hello {NAME}!\n"
-"Use this link to activate your new ispCP password:\n"
+"Use this link to activate your new i-MSCP password:\n"
 "\n"
 "{LINK}\n"
 "\n"
-"Good Luck with the ispCP System\n"
-"The ispCP Team\n"
+"Good Luck with the i-MSCP System\n"
+"The i-MSCP Team\n"
 "\n"
 msgstr ""
 
-msgid "Your new ispCP login!"
+msgid "Your new i-MSCP login!"
 msgstr ""
 
 msgid ""
@@ -3634,8 +3634,8 @@ msgid ""
 "\n"
 "You can login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
 "\n"
-"Best wishes with ispCP!\n"
-"The ispCP Team\n"
+"Best wishes with i-MSCP!\n"
+"The i-MSCP Team\n"
 "\n"
 msgstr ""
 
@@ -3655,8 +3655,8 @@ msgid ""
 "\n"
 "{ACTIVATE_LINK}\n"
 "\n"
-"Thank you for using ispCP services.\n"
-"The ispCP Team\n"
+"Thank you for using i-MSCP services.\n"
+"The i-MSCP Team\n"
 "\n"
 msgstr ""
 
@@ -3674,8 +3674,8 @@ msgid ""
 "Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}"
 "{BASE_SERVER_VHOST}/reseller/alias.php\n"
 "\n"
-"Thank you for using ispCP services.\n"
-"The ispCP Team\n"
+"Thank you for using i-MSCP services.\n"
+"The i-MSCP Team\n"
 "\n"
 msgstr ""
 
@@ -3893,7 +3893,7 @@ msgstr ""
 msgid "You have a disk limit!<br />You cannot add an user with unlimited disk!"
 msgstr ""
 
-msgid "ispCP Error"
+msgid "i-MSCP Error"
 msgstr ""
 
 msgid "Error Message"
@@ -3908,7 +3908,7 @@ msgid ""
 "Dear {RESELLER},\n"
 "you have a new order from {NAME} <{MAIL}> for domain {DOMAIN}\n"
 "\n"
-"Please login into your ispCP control panel for more details.\n"
+"Please login into your i-MSCP control panel for more details.\n"
 "\n"
 msgstr ""
 
@@ -4001,7 +4001,7 @@ msgstr ""
 msgid "Your Own Domain"
 msgstr ""
 
-msgid "ispCP Control Panel"
+msgid "i-MSCP Control Panel"
 msgstr ""
 
 msgid "Automatic Updates"
@@ -4016,13 +4016,13 @@ msgstr ""
 msgid "Performance"
 msgstr ""
 
-msgid "ispCP Reseller: Add Alias"
+msgid "i-MSCP Reseller: Add Alias"
 msgstr ""
 
 msgid "There is no user records for this reseller to add an alias for."
 msgstr ""
 
-msgid "ispCP - Manage Domain/Alias"
+msgid "i-MSCP - Manage Domain/Alias"
 msgstr ""
 
 msgid "Manage alias"
@@ -4064,13 +4064,13 @@ msgstr ""
 msgid "Ordered domain alias not activated!"
 msgstr ""
 
-msgid "ispCP - Circular"
+msgid "i-MSCP - Circular"
 msgstr ""
 
 msgid "Circular"
 msgstr ""
 
-msgid "ispCP - Domain/Edit"
+msgid "i-MSCP - Domain/Edit"
 msgstr ""
 
 msgid "Unchanged"
@@ -4120,7 +4120,7 @@ msgstr ""
 msgid "The <em>%s</em> service cannot be unlimited!"
 msgstr ""
 
-msgid "ispCP - Reseller/Add hosting plan"
+msgid "i-MSCP - Reseller/Add hosting plan"
 msgstr ""
 
 msgid "Price must be a number!"
@@ -4135,13 +4135,13 @@ msgstr ""
 msgid "Hosting plan values exceed reseller maximum values!"
 msgstr ""
 
-msgid "ispCP - Reseller/Edit hosting plan"
+msgid "i-MSCP - Reseller/Edit hosting plan"
 msgstr ""
 
 msgid "View hosting plan"
 msgstr ""
 
-msgid "ispCP - Reseller/Main Index"
+msgid "i-MSCP - Reseller/Main Index"
 msgstr ""
 
 msgid "View details"
@@ -4172,10 +4172,10 @@ msgstr ""
 msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr ""
 
-msgid "ispCP - Reseller/Change Language"
+msgid "i-MSCP - Reseller/Change Language"
 msgstr ""
 
-msgid "ispCP - Reseller/Order email setup"
+msgid "i-MSCP - Reseller/Order email setup"
 msgstr ""
 
 msgid "Manage orders"
@@ -4199,7 +4199,7 @@ msgstr ""
 msgid "Customer order was removed successful!"
 msgstr ""
 
-msgid "ispCP - Reseller/Order details"
+msgid "i-MSCP - Reseller/Order details"
 msgstr ""
 
 msgid "Order data updated successfully!"
@@ -4226,7 +4226,7 @@ msgstr ""
 msgid "Add to the system"
 msgstr ""
 
-msgid "ispCP - Reseller/Order settings"
+msgid "i-MSCP - Reseller/Order settings"
 msgstr ""
 
 msgid "Header"
@@ -4241,7 +4241,7 @@ msgstr ""
 msgid "Footer"
 msgstr ""
 
-msgid "ispCP - Reseller/Order management"
+msgid "i-MSCP - Reseller/Order management"
 msgstr ""
 
 msgid "You do not have new orders!"
@@ -4265,13 +4265,13 @@ msgstr ""
 msgid "Order Canceled: resellers maximum exceeded!"
 msgstr ""
 
-msgid "ispCP - Reseller/Change Password"
+msgid "i-MSCP - Reseller/Change Password"
 msgstr ""
 
-msgid "ispCP - Reseller/Change Personal Data"
+msgid "i-MSCP - Reseller/Change Personal Data"
 msgstr ""
 
-msgid "ispCP - Reseller/Lostpw email setup"
+msgid "i-MSCP - Reseller/Lostpw email setup"
 msgstr ""
 
 msgid "Lostpw email"
@@ -4280,13 +4280,13 @@ msgstr ""
 msgid "Lostpw link"
 msgstr ""
 
-msgid "ispCP - Reseller/Manage users/Email setup"
+msgid "i-MSCP - Reseller/Manage users/Email setup"
 msgstr ""
 
-msgid "ispCP - Reseller: Support System: View Ticket"
+msgid "i-MSCP - Reseller: Support System: View Ticket"
 msgstr ""
 
-msgid "ispCP - Users/Add user"
+msgid "i-MSCP - Users/Add user"
 msgstr ""
 
 msgid "1 Month"
@@ -4319,7 +4319,7 @@ msgstr ""
 msgid "You have no hosting plans. Please contact your system administrator."
 msgstr ""
 
-msgid "ispCP - User/Add user(step2)"
+msgid "i-MSCP - User/Add user(step2)"
 msgstr ""
 
 msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
@@ -4334,7 +4334,7 @@ msgstr ""
 msgid "Domain data has been altered. Please enter again"
 msgstr ""
 
-msgid "ispCP - User/Add user"
+msgid "i-MSCP - User/Add user"
 msgstr ""
 
 msgid "Add other domains to this account"
@@ -4344,13 +4344,13 @@ msgstr ""
 msgid "System error with Domain Id: %d"
 msgstr ""
 
-msgid "ispCP - Users/Edit"
+msgid "i-MSCP - Users/Edit"
 msgstr ""
 
 msgid "Users list"
 msgstr ""
 
-msgid "ispCP - Users"
+msgid "i-MSCP - Users"
 msgstr ""
 
 #, php-format

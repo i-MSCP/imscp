@@ -1,5 +1,5 @@
 # Ispcp Farsi translation.
-# Copyright (C) 2006-2010 ispCP Team
+# Copyright (C) 2006-2010 i-MSCP Team
 # This file is distributed under the same license as the PACKAGE package.
 msgid ""
 msgstr ""
@@ -28,7 +28,7 @@ msgstr "UTF-8"
 msgid "_: Localised language"
 msgstr "ایران) فارسی) - Iranian (Farsi)"
 
-msgid "ispCP Omega a Virtual Hosting Control System"
+msgid "i-MSCP  a Virtual Hosting Control System"
 msgstr "آی اس پی سی پی امگا - سیستم کنترل پنل مجازی"
 
 msgid "Administrator login"
@@ -58,7 +58,7 @@ msgstr "رمز عبور گم شده"
 msgid "Retrieving lost passwords is currently not possible"
 msgstr "بازیابی رمز عبور گم شده فعلا ممکن نیست"
 
-msgid "ispCP - Virtual Hosting Control System"
+msgid "i-MSCP - Virtual Hosting Control System"
 msgstr "آی اس پی سی پی - سیستم کنترل پنل مجازی"
 
 msgid "Your new password has been sent."
@@ -99,7 +99,7 @@ msgstr ""
 msgid "Request password"
 msgstr "درخواست رمز عبور"
 
-msgid "ispCP - Admin/Manage users/Add User"
+msgid "i-MSCP - Admin/Manage users/Add User"
 msgstr "آی اس پی سی پی - مدیر /مدیریت کاربران /افزودن کاربر"
 
 msgid "Administrator"
@@ -205,10 +205,10 @@ msgstr "باز-فروش"
 msgid "Domain account"
 msgstr "حساب دامنه"
 
-msgid "ispCP - Admin/Manage users/Edit Administrator"
+msgid "i-MSCP - Admin/Manage users/Edit Administrator"
 msgstr "آی اس پی سی پی - مدیر/ مدیریت کاربران/ ویرایش مدیر"
 
-msgid "ispCP - Admin/Manage users/Edit User"
+msgid "i-MSCP - Admin/Manage users/Edit User"
 msgstr "آی اس پی سی پی -مدیر/مدیریت کاربران/ویرایش کاربر"
 
 msgid "Edit admin"
@@ -232,7 +232,7 @@ msgstr "تغییر رمز عبور ممنوع شده!"
 msgid "Demo Version!"
 msgstr "نسخه نمایشی!"
 
-msgid "ispCP - Admin/Admin Log"
+msgid "i-MSCP - Admin/Admin Log"
 msgstr "آی اس پی سی پی - مدیر/ لاگ مدیر"
 
 msgid "Log is empty!"
@@ -298,7 +298,7 @@ msgstr "قدیمی تر از ۶ ماه"
 msgid "older than 12 months"
 msgstr "قدیمی تر از ۱۲ ماه"
 
-msgid "ispCP - Admin - Email Marketing"
+msgid "i-MSCP - Admin - Email Marketing"
 msgstr "آی اس پی سی پی - مدیر - مارکتینگ ایمیل"
 
 msgid "Please specify a message subject!"
@@ -367,7 +367,7 @@ msgstr "!منوی داده ی شخصی شده با موفقیت بروز شد"
 msgid "Custom menu deleted successful!"
 msgstr "منوی شخصی شده با موفقیت پاک شد!"
 
-msgid "ispCP - Admin - Manage custom menus"
+msgid "i-MSCP - Admin - Manage custom menus"
 msgstr "آی اس پی سی پی - مدیر - مدیریت منوهای شخصی شده"
 
 msgid "Manage custom menus"
@@ -446,7 +446,7 @@ msgstr "اعمال بروزرسانی"
 msgid "No database updates available"
 msgstr "هیچ بروزرسانی بانک داده ای فراهم نیست"
 
-msgid "ispCP - Domain/Details"
+msgid "i-MSCP - Domain/Details"
 msgstr "آی اس پی سی پی - دامنه/جزئیات"
 
 msgid "Domain details"
@@ -530,7 +530,7 @@ msgstr "فعال"
 msgid "Disabled"
 msgstr "غیرفعال"
 
-msgid "ispCP - Admin/Edit Domain"
+msgid "i-MSCP - Admin/Edit Domain"
 msgstr "آی اس پی سی پی - مدیر/ویرایش دامنه"
 
 msgid "Edit Domain"
@@ -683,7 +683,7 @@ msgstr "برای ریسلر حد سرویس <em>%s</em> وجود دارد!"
 msgid "You are exceeding reseller limits for the <em>%s</em> service!"
 msgstr "برای سرویس <em>%s</em> شما از حد مجاز برای ریسلر فراتر رفته اید!"
 
-msgid "ispCP - Domain Statistics Data"
+msgid "i-MSCP - Domain Statistics Data"
 msgstr "آی اس پی سی پی -داده های آماری دامنه"
 
 msgid "Domain statistics"
@@ -716,7 +716,7 @@ msgstr "کل ترافیک"
 msgid "Day"
 msgstr "روز"
 
-msgid "ispCP - Administrator/Add hosting plan"
+msgid "i-MSCP - Administrator/Add hosting plan"
 msgstr "آی اس پی سی پی - مدیر/افزودن پلن میزبانی"
 
 msgid "Add hosting plan"
@@ -827,7 +827,7 @@ msgstr "سینتکس هزینه نصب نادرست است!"
 msgid "Hosting plan with entered name already exists!"
 msgstr "یک پلن میزبانی با این نام از قبل وجود دارد!"
 
-msgid "ispCP - Administrator/Edit hosting plan"
+msgid "i-MSCP - Administrator/Edit hosting plan"
 msgstr "آی اس پی سی پی - مدیر/ویرایش پلن میزبانی"
 
 msgid "Price Style"
@@ -851,7 +851,7 @@ msgstr "تعرفه نادرست است. مثال: 9.99"
 msgid "Incorrect setup fee. Example: 19.99"
 msgstr "هزینه نصب نادرست است. مثال: 19.99"
 
-msgid "ispCP - Administrator/Hosting Plan Management"
+msgid "i-MSCP - Administrator/Hosting Plan Management"
 msgstr "آی اس پی سی پی -مدیر/مدیریت پلن های هاستینگ"
 
 msgid "Hosting plans"
@@ -906,7 +906,7 @@ msgstr "یک بروزرسانی بانک داده فراهم است"
 msgid "Update checking is disabled!"
 msgstr "واررسی بروزرسانی غیرفعال شده!"
 
-msgid "New ispCP update is now available"
+msgid "New i-MSCP update is now available"
 msgstr "یک بروزرسانی جدید آی اس پی سی پی فراهم است"
 
 msgid "You are exceeding your traffic limit!"
@@ -920,7 +920,7 @@ msgstr "%1$d%% [%2$s از نامحدود]"
 msgid "%1$d%% [%2$s of %3$s]"
 msgstr "%1$d%% [%2$s از %3$s]"
 
-msgid "ispCP - Admin/Main Index"
+msgid "i-MSCP - Admin/Main Index"
 msgstr "آی اس پی سی پی -مدیر/فهرست اصلی"
 
 msgid "You cannot delete the last active IP address!"
@@ -935,7 +935,7 @@ msgstr "خطا: ما کاربری داریم که از این آی پی استف
 msgid "IP was deleted!"
 msgstr "آی پی حذف شده است!"
 
-msgid "ispCP - Admin/IP manage"
+msgid "i-MSCP - Admin/IP manage"
 msgstr "آی اس پی سی پی - مدیر/مدیریت آی پی"
 
 msgid "Remove IP"
@@ -993,7 +993,7 @@ msgstr "هیچ خطای زیردامنه ی الحاقی وجود ندارد"
 msgid "No email account system errors"
 msgstr "هیچ خطای حساب ایمیل وجود ندارد"
 
-msgid "ispCP debugger"
+msgid "i-MSCP debugger"
 msgstr "خطایاب آی اس پی سی پی"
 
 msgid "Domain errors"
@@ -1011,7 +1011,7 @@ msgstr "خطاهای زیردامنه ی الحاقی"
 msgid "Mail account errors"
 msgstr "خطاهای حساب ایمیل"
 
-msgid "ispCP Daemon tools"
+msgid "i-MSCP Daemon tools"
 msgstr "ابزارهای دیمن آی اس پی سی پی"
 
 msgid "Execute requests"
@@ -1042,13 +1042,13 @@ msgstr "تنظیمات"
 msgid "Get it at"
 msgstr "بگیر از"
 
-msgid "ispCP updates"
+msgid "i-MSCP updates"
 msgstr "بروزرسانی های آی اس پی سی پی"
 
-msgid "Available ispCP updates"
+msgid "Available i-MSCP updates"
 msgstr "بروزرسانی های فراهم آی اس پی سی پی"
 
-msgid "No new ispCP updates available"
+msgid "No new i-MSCP updates available"
 msgstr "هیچ بروزرسانی آی اس پی سی پی وجود ندارد"
 
 msgid "Language was removed!"
@@ -1057,7 +1057,7 @@ msgstr "زبان حذف شد!"
 msgid "User language updated successfully!"
 msgstr "بروزرسانی زبان کاربر با موفقیت انجام شد!"
 
-msgid "ispCP - Admin/Change Language"
+msgid "i-MSCP - Admin/Change Language"
 msgstr "آی اس پی سی پی - مدیر/تغییر زبان"
 
 msgid "Language"
@@ -1069,7 +1069,7 @@ msgstr "زبان پیشفرض خود را انتخاب کنید"
 msgid "Reseller list is empty!"
 msgstr "لیست ریسلر خالی است!"
 
-msgid "ispCP - Admin/Manage users/Reseller assignment"
+msgid "i-MSCP - Admin/Manage users/Reseller assignment"
 msgstr "آی اس پی سی پی - مدیر/مدیریت کاربران/ انتساب ریسلر"
 
 msgid "Reseller assignment"
@@ -1138,7 +1138,7 @@ msgstr ""
 " <b>%s</b> آی پی ای دارد که نمی توان از ریسلر مقصد جابجا کرد! <br>این کاربر "
 "را نمی توان جابجا کرد!"
 
-msgid "ispCP - Admin/Manage users/User assignment"
+msgid "i-MSCP - Admin/Manage users/User assignment"
 msgstr "آی اس پی سی پی - مدیر/مدیریت کاربران/انتساب کاربر"
 
 msgid "User assignment"
@@ -1156,7 +1156,7 @@ msgstr "از ریسلر"
 msgid "To reseller"
 msgstr "به ریسلر"
 
-msgid "ispCP - Admin/Manage Users"
+msgid "i-MSCP - Admin/Manage Users"
 msgstr "آی اس پی سی پی -مدیر/مدیریت کاربران"
 
 msgid "User added"
@@ -1183,7 +1183,7 @@ msgstr "کاربر غیرفعال شد"
 msgid "Incorrect data input!"
 msgstr "داده ورودی خطاست!"
 
-msgid "ispCP - Admin/Internationalisation"
+msgid "i-MSCP - Admin/Internationalisation"
 msgstr "آی اس پی سی پی - مدیر/ بین المللی کردن"
 
 msgid "Upload file error!"
@@ -1246,7 +1246,7 @@ msgstr "نصب"
 msgid "Export"
 msgstr "صادر کردن"
 
-msgid "ispCP - Admin/Change Password"
+msgid "i-MSCP - Admin/Change Password"
 msgstr "آی اس پی سی پی - مدیر/تغییر رمز عبور"
 
 msgid "Please fill up all data fields!"
@@ -1276,7 +1276,7 @@ msgstr "رمز عبور فعلی"
 msgid "Password change is deactivated!"
 msgstr "تغییر رمز عبور غیرفعال شد!"
 
-msgid "ispCP - Admin/Change Personal Data"
+msgid "i-MSCP - Admin/Change Personal Data"
 msgstr "آی اس پی سی پی - مدیر/تغییر اطلاعات شخصی"
 
 msgid "Personal data updated successfully!"
@@ -1291,7 +1291,7 @@ msgstr "اطلاعات شخصی"
 msgid "Update data"
 msgstr "بروزرسانی اطلاعات"
 
-msgid "ispCP - Admin/Manage users/Add reseller"
+msgid "i-MSCP - Admin/Manage users/Add reseller"
 msgstr "آی اس پی سی پی - مدیر/مدیریت کاربران/افزودن ریسلر"
 
 msgid "Reseller IP list is empty!"
@@ -1423,7 +1423,7 @@ msgstr "این ریسلر دامنه هایی دارد که به آدرس  <b>%s
 msgid "ERROR: The reseller account you trying to edit does not exist!"
 msgstr "خطا: حساب ریسلری که می خواهید ویرایش کنید وجود ندارد! "
 
-msgid "ispCP - Admin/Manage users/Edit Reseller"
+msgid "i-MSCP - Admin/Manage users/Edit Reseller"
 msgstr "آی اس پی سی پی - مدیر/مدیریت کاربران/ویرایش ریسلر"
 
 msgid ""
@@ -1458,13 +1458,13 @@ msgstr "برای کپی کردن رمز ورود تولید شده به کلیپ
 
 #, php-format
 msgid ""
-"ispCP NOTICE:\\n\\nThe `Enter` key is disabled for performance reasons!"
+"i-MSCP NOTICE:\\n\\nThe `Enter` key is disabled for performance reasons!"
 "\\nInstead, use the %s button to update the data."
 msgstr ""
-"ispCP NOTICE:\\n\\nدکمه ی Enter به دلیل افزایش کارآیی غیرفعال شده است\\nلطفا "
+"i-MSCP NOTICE:\\n\\nدکمه ی Enter به دلیل افزایش کارآیی غیرفعال شده است\\nلطفا "
 "به جای آن از دکمه %s برای بروزرسانی اطلاعات استفاده کنید."
 
-msgid "ispCP - Reseller statistics"
+msgid "i-MSCP - Reseller statistics"
 msgstr "آی اس پی سی پی - آمار ریسلر"
 
 msgid "Not found reseller(s) in your system!"
@@ -1498,7 +1498,7 @@ msgstr "بانک های داده اس کیو ال"
 msgid "SQL user"
 msgstr "کاربران اس کیو ال"
 
-msgid "ispCP - Admin/Reseller User Statistics"
+msgid "i-MSCP - Admin/Reseller User Statistics"
 msgstr "آی اس پی سی پی - مدیر/آمار کاربران ریسلر"
 
 #, php-format
@@ -1547,7 +1547,7 @@ msgstr "بانک داده<br />اس کیو ال"
 msgid "SQL<br>user"
 msgstr "کاربر <br> اس کیو ال"
 
-msgid "ispCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
+msgid "i-MSCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
 msgstr "مدیر آی اس پی سی پی / ابزارهای سیستم / ابزارهای لاگ چکر ضدروتکیت "
 
 #, php-format
@@ -1557,7 +1557,7 @@ msgstr "این %s خالی است یا وجود ندارد "
 msgid "Anti-Rootkits Tools Log Checker"
 msgstr " ابزارهای لاگ چکر ضدروتکیت"
 
-msgid "ispCP - Admin/Server day stats"
+msgid "i-MSCP - Admin/Server day stats"
 msgstr "آی اس پی سی پی - مدیر/ آمار روز سرور"
 
 msgid "Server day statistics"
@@ -1605,13 +1605,13 @@ msgstr "ورود به همه"
 msgid "All out"
 msgstr "خروج از همه"
 
-msgid "ispCP - Admin/Server statistics"
+msgid "i-MSCP - Admin/Server statistics"
 msgstr "آی اس پی سی پی - مدیر/آمارهای سرور"
 
 msgid "Server statistics"
 msgstr "آمارهای سرور"
 
-msgid "ispCP Admin / System Tools / Server Status"
+msgid "i-MSCP Admin / System Tools / Server Status"
 msgstr "مدیر آی ای پی سی پی / ابزارهای سیستم / وضعیت سرور"
 
 msgid "UP"
@@ -1629,7 +1629,7 @@ msgstr "سرویس"
 msgid "Server status"
 msgstr "وضعیت سرور"
 
-msgid "ispCP - Admin/Manage Sessions"
+msgid "i-MSCP - Admin/Manage Sessions"
 msgstr "آی اس پی سی پی - مدیر/مدیریت سشن ها"
 
 msgid "Manage user sessions"
@@ -1695,7 +1695,7 @@ msgstr "لطفا پیام را مشخص کنید!"
 msgid "Auto email template data updated!"
 msgstr "قالب اتوماتیک ایمیل بروز شد!"
 
-msgid "ispCP - Admin/Lostpw email setup"
+msgid "i-MSCP - Admin/Lostpw email setup"
 msgstr "آی اس پی سی پی - مدیر/تنظیم ایمیل بازیابی رمزعبور"
 
 msgid "Lost password e-mail"
@@ -1737,7 +1737,7 @@ msgstr "یوآرال این پنل مدیریت"
 msgid "URL protocol"
 msgstr "پروتکل یوآرال"
 
-msgid "ispCP - Admin/Maintenance mode"
+msgid "i-MSCP - Admin/Maintenance mode"
 msgstr "آی اس پی سی پی - مدیر/مد نگهداری"
 
 msgid "Settings saved !"
@@ -1749,7 +1749,7 @@ msgstr "مد نگهداری"
 msgid "Under this mode only administrators can login"
 msgstr "در این مد فقط مدیر می تواند لاگین کند"
 
-msgid "ispCP - Admin/Settings"
+msgid "i-MSCP - Admin/Settings"
 msgstr "آی اس پی سی پی = مدیر/تنظیمات"
 
 msgid "ERROR: Only positive numbers are allowed !"
@@ -1952,7 +1952,7 @@ msgstr ""
 msgid "Add new service port"
 msgstr "افزودن پلن میزبانی کاربری جدید"
 
-msgid "ispCP - Admin/Server Traffic Settings"
+msgid "i-MSCP - Admin/Server Traffic Settings"
 msgstr "آی اس پی سی پی - مدیر/تنظیمات ترافیک سرور"
 
 msgid "Wrong data input!"
@@ -1979,7 +1979,7 @@ msgstr "ماکسیموم ترافیک -مگ"
 msgid "Warning traffic [MB]"
 msgstr "ترافیک هشدار - مگ"
 
-msgid "ispCP - Admin/Manage users/Email setup"
+msgid "i-MSCP - Admin/Manage users/Email setup"
 msgstr "آی اس پی سی پی - مدیر/مدیریت کاربران/نصب ایمیل"
 
 msgid "Email setup"
@@ -2061,7 +2061,7 @@ msgstr "مدت روشن بودن"
 msgid "You have no support tickets."
 msgstr "شما تیکت پشتیبانی ندارید."
 
-msgid "ispCP - Client/Questions & Comments"
+msgid "i-MSCP - Client/Questions & Comments"
 msgstr "آی اس پی سی پی - مشتری/پرسش ها و نظرات"
 
 msgid "Support tickets"
@@ -2103,7 +2103,7 @@ msgstr "[جدید]"
 msgid "[Re]"
 msgstr "[پاسخ]"
 
-msgid "ispCP - Client/Enable Mail Autoresponder"
+msgid "i-MSCP - Client/Enable Mail Autoresponder"
 msgstr "آی اس پی سی پی - مشتری/فعال کردن پاسخ اتوماتیک ایمیل"
 
 msgid "Ticket not found!"
@@ -2115,7 +2115,7 @@ msgstr "گشودن تیکت"
 msgid "Close ticket"
 msgstr "بستن تیکت"
 
-msgid "ispCP - Client: Support System: View Ticket"
+msgid "i-MSCP - Client: Support System: View Ticket"
 msgstr "آی اس پی سی پی: سیستم پشتیبانی: دیدن تیکت"
 
 msgid "Please type your message!"
@@ -2130,7 +2130,7 @@ msgstr "تیکت بسته شد!"
 msgid "Ticket was reopened!"
 msgstr "تیکت بازگشایی شد!"
 
-msgid "ispCP - Admin: Support System: View Ticket"
+msgid "i-MSCP - Admin: Support System: View Ticket"
 msgstr "آی اس پی سی پی - مدیر: سیستم پشتیبانی: دیدن تیکت"
 
 msgid "View support ticket"
@@ -2142,7 +2142,7 @@ msgstr "فرستادن پاسخ پیام"
 msgid "Send reply"
 msgstr "فرستادن پاسخ"
 
-msgid "ispCP - Delete Domain"
+msgid "i-MSCP - Delete Domain"
 msgstr "آی اس پی سی پی - حذف دامنه"
 
 msgid "Wrong domain ID!"
@@ -2188,7 +2188,7 @@ msgstr ""
 msgid "Yes, delete the domain."
 msgstr "بله، دامنه را پاک کن."
 
-msgid "ispCP Client : Add Alias"
+msgid "i-MSCP Client : Add Alias"
 msgstr "مشتری آی اس پی سی پی: افزودن دامنه الحاقی"
 
 msgid "Manage domain alias"
@@ -2209,7 +2209,7 @@ msgstr "فوروارد به یوآرال"
 msgid "Add alias"
 msgstr "افزودن دامنه الحاقی"
 
-msgid "You do not need 'www.' ispCP will add it on its own."
+msgid "You do not need 'www.' i-MSCP will add it on its own."
 msgstr ""
 "افزودن www لازم نیست. آی اس پی سی پی به طور اتوماتیک آن را اضافه می کند."
 
@@ -2280,7 +2280,7 @@ msgstr ""
 msgid "Alias scheduled for deletion!"
 msgstr "الحاقی در برنامه پاک شدن قرار گرفت!"
 
-msgid "ispCP - Manage Domain Alias/Edit Alias"
+msgid "i-MSCP - Manage Domain Alias/Edit Alias"
 msgstr "آی اس پی سی پی - مدیریت دامنه های الحاقی/ویرایش الحاقی ها"
 
 msgid "Edit domain alias"
@@ -2304,7 +2304,7 @@ msgstr " زیردامنه در برنامه حذف قرار گرفت"
 msgid "Backup archive scheduled for restoring!"
 msgstr "آرشیو بک آپ دربرنامه بازیابی قرار گرفت!"
 
-msgid "ispCP - Client/Daily Backup"
+msgid "i-MSCP - Client/Daily Backup"
 msgstr "آی اس پی سی پی - مشتری/بک آپ روزانه"
 
 msgid "Daily backup"
@@ -2338,7 +2338,7 @@ msgstr "بازیابی"
 msgid "Are you sure you want to restore the backup?"
 msgstr "آیا مطمئن هستید که می خواهید بک آپ را بازیابی کنید؟"
 
-msgid "ispCP - Client/Cronjob Manager"
+msgid "i-MSCP - Client/Cronjob Manager"
 msgstr "آی اس پی سی پی - مشتری/مدیر کرون جاب"
 
 msgid "Cronjob Manager"
@@ -2380,10 +2380,10 @@ msgstr "کرون جاب ها"
 msgid "DNS zone record scheduled for deletion!"
 msgstr "رکورد ناحیه دی ان اس در برنامه ی حذف قرار گرفت!"
 
-msgid "ispCP - Manage Domain Alias/Add DNS zone's record"
+msgid "i-MSCP - Manage Domain Alias/Add DNS zone's record"
 msgstr "آی اس پی سی پی - مدیریت دامنه های الحاقی/افزودن رکورد ناحیه دی ان اس"
 
-msgid "ispCP - Manage Domain Alias/Edit DNS zone's record"
+msgid "i-MSCP - Manage Domain Alias/Edit DNS zone's record"
 msgstr "آی اس پی سی پی - مدیریت دامنه های الحاقی/ویرایش رکورد ناحیه دی ان اس"
 
 msgid "Add DNS zone's record (EXPERIMENTAL)"
@@ -2499,7 +2499,7 @@ msgstr "حذف سفارش"
 msgid "Alias list is empty!"
 msgstr "لیست دامنه الحاقی خالی است!"
 
-msgid "ispCP - Client/Manage Domains"
+msgid "i-MSCP - Client/Manage Domains"
 msgstr "آی اس پی سی پی - مشتریان/مدیریت دامنه ها"
 
 msgid "Manage domains"
@@ -2517,7 +2517,7 @@ msgstr "کنش ها"
 msgid "Record data"
 msgstr "اطلاعات رکورد"
 
-msgid "ispCP - Client/Domain Statistics"
+msgid "i-MSCP - Client/Domain Statistics"
 msgstr "آی اس پی سی پی - مشتری/آمار دامنه"
 
 msgid "Web Stats"
@@ -2535,7 +2535,7 @@ msgstr "پاپ ۳/آی مپ"
 msgid "Sum"
 msgstr "جمع"
 
-msgid "ispCP - Client/Manage Error Custom Pages"
+msgid "i-MSCP - Client/Manage Error Custom Pages"
 msgstr "آی اس پی سی پی - مشتری/صفحات خطای شخصی شده"
 
 msgid "Server error - please choose error page"
@@ -2571,7 +2571,7 @@ msgstr "صفحه های خطا"
 msgid "FTP list is empty!"
 msgstr "لیست اف تی پی خالی است!"
 
-msgid "ispCP - Client/Manage Users"
+msgid "i-MSCP - Client/Manage Users"
 msgstr "آی اس پی سی پی - مشتری/مدیریت کاربران"
 
 msgid "Manage users"
@@ -2627,7 +2627,7 @@ msgstr "لطفا دایرکتوری دیگری برای حساب اف تی پی 
 msgid "FTP accounts limit reached!"
 msgstr "تعداد حساب های اف تی پی به حداکثر رسیده!"
 
-msgid "ispCP - Client/Add FTP User"
+msgid "i-MSCP - Client/Add FTP User"
 msgstr "آی اس پی سی پی - مشتری/افزودن کاربر اف تی پی"
 
 msgid "Add FTP user"
@@ -2657,7 +2657,7 @@ msgstr "دایرکتوری والد"
 msgid "Protect it"
 msgstr "محافظت اش کنید"
 
-msgid "ispCP - Client/Webtools"
+msgid "i-MSCP - Client/Webtools"
 msgstr "آی اس پی سی پی - مشتری/ابزارهای وب"
 
 msgid "Directory tree"
@@ -2675,7 +2675,7 @@ msgstr "حساب اف تی پی با موفقیت حذف شد!"
 msgid "FTP account data updated!"
 msgstr "اطلاعات حساب افی تی پی بروز شد!"
 
-msgid "ispCP - Client/Edit FTP Account"
+msgid "i-MSCP - Client/Edit FTP Account"
 msgstr "آی اس پی سی پی - مشتری/ویرایش حساب اف تی پی"
 
 msgid "Edit FTP user"
@@ -2790,7 +2790,7 @@ msgstr "متوجه هشدار هستم - خرید کن!"
 msgid "There are no available hosting plans for update"
 msgstr "هیچ پلن میزبانی برای ارتقا وجود ندارد"
 
-msgid "ispCP - Update hosting plan"
+msgid "i-MSCP - Update hosting plan"
 msgstr "آی اس پی سی پی - ارتقای پلن میزبانی"
 
 msgid "You have more e-mail addresses in use than the new hosting plan limits."
@@ -2799,14 +2799,14 @@ msgstr " آدرس های ایمیل مورد استفاده ی شما بیش ا�
 msgid "Your request for hosting pack update was added successfully"
 msgstr "درخواست شما برای ارتقای پکیج میزبانی با موفقیت افزوده شد"
 
-msgid "[ispCP OrderPanel] - You have an update order"
+msgid "[i-MSCP OrderPanel] - You have an update order"
 msgstr " [پنل سفارش آی اس پی سی پی] - شما سفارش ارتقا دارید"
 
 #, php-format
 msgid ""
 "You have an update order for the account %s\n"
 "\n"
-"Please login into your ispCP control panel at %s for more details"
+"Please login into your i-MSCP control panel at %s for more details"
 msgstr ""
 "شما یک سفارش ارتقا برای حساب  %s دارید \n"
 " \n"
@@ -2842,7 +2842,7 @@ msgstr ""
 msgid "This Domain is expired"
 msgstr "این دامنه منقضی شده"
 
-msgid "ispCP - Client/Main Index"
+msgid "i-MSCP - Client/Main Index"
 msgstr "آی اس پی سی پی - مشتری/فهرست اصلی"
 
 msgid "General information"
@@ -2872,7 +2872,7 @@ msgstr "فضای دیسک استفاده شده"
 msgid "Alternative URL to reach your website"
 msgstr ""
 
-msgid "ispCP - Client/Change Language"
+msgid "i-MSCP - Client/Change Language"
 msgstr "آی اس پی سی پی - مشتری/تغییر زبان"
 
 msgid "Please wait for update"
@@ -2952,7 +2952,7 @@ msgstr "لیست فوروارد خالی است!"
 msgid "Mail accounts limit reached!"
 msgstr "شما به حداکثر حساب های ایمیل رسیده اید!"
 
-msgid "ispCP - Client/Add Mail User"
+msgid "i-MSCP - Client/Add Mail User"
 msgstr "آی اس پی سی - مشتری/افزودن کاربر ایمیل"
 
 msgid "Add mail users"
@@ -2985,7 +2985,7 @@ msgstr "لطفا پیام ایمیل پاسخ خودکار خود را وارد 
 msgid "Mail account scheduler for modification!"
 msgstr "حساب ایمیل دربرنامه ی اصلاح قرار گرفت!"
 
-msgid "ispCP - Client/Enable Mail Auto Responder"
+msgid "i-MSCP - Client/Enable Mail Auto Responder"
 msgstr "آی اس پی سی پی - مشتری/فعال کردن ایمیل پاسخ خودکار"
 
 msgid "Edit mail auto responder"
@@ -3003,7 +3003,7 @@ msgstr "حساب جمع آورنده ایمیل در برنامه ایجاد ق�
 msgid "Mail forward list error!"
 msgstr "خطا در لیست فوروارد ایمیل"
 
-msgid "ispCP - Client/Create CatchAll Mail Account"
+msgid "i-MSCP - Client/Create CatchAll Mail Account"
 msgstr "آی اس پی سی پی - مشتری/ایجاد حساب جمع آورنده ی ایمیل (CatchAll)"
 
 msgid "Create catch all mail account"
@@ -3036,7 +3036,7 @@ msgstr "لطفا نخستین حساب جمع آورنده ی کل برای ای
 msgid "Email account not found!"
 msgstr "حساب ایمیل یافت نشد!"
 
-msgid "ispCP - Manage Mail and FTP / Edit mail account"
+msgid "i-MSCP - Manage Mail and FTP / Edit mail account"
 msgstr "آی اس پی سی پی - مدیریت ایمیل و اف تی پی/ ویرایش حساب ایمیل"
 
 msgid "Mail were updated successfully!"
@@ -3045,10 +3045,10 @@ msgstr "ایمیل با موفقیت بروز شد!"
 msgid "Edit email account"
 msgstr "ویرایش حساب ایمیل"
 
-msgid "ispCP - Client/Change Password"
+msgid "i-MSCP - Client/Change Password"
 msgstr "آی اس پی سی پی - مشتری/تغییر رمز عبور"
 
-msgid "ispCP - Client/Change Personal Data"
+msgid "i-MSCP - Client/Change Personal Data"
 msgstr "آی اس پی سی پی - مشتری/تغییر اطلاعات شخصی"
 
 msgid "Please choose user or group"
@@ -3198,7 +3198,7 @@ msgstr ""
 msgid "SQL user password was successfully changed!"
 msgstr "رمز عبور کاربر اس کیو ال با موفقیت تغییر داده شد!"
 
-msgid "ispCP - Client/Change SQL User Password"
+msgid "i-MSCP - Client/Change SQL User Password"
 msgstr "آی اس پی سی پی - مشتری/تغییر رمز عبور کاربر اس کیو ال"
 
 msgid "Change SQL user password"
@@ -3226,7 +3226,7 @@ msgstr "بانک داده ی اس کیو ال با موفقیت ایجاد شد!
 msgid "SQL accounts limit reached!"
 msgstr "شما به حداکثر تعداد حساب های اس کیو ال رسیده اید!"
 
-msgid "ispCP - Client/Add SQL Database"
+msgid "i-MSCP - Client/Add SQL Database"
 msgstr "آی اس پی سی پی - مشتری/افزودن بانک داده اس کیو ال"
 
 msgid "Add SQL database"
@@ -3256,7 +3256,7 @@ msgstr "لیست کاربر اس کیو ال خالی است!"
 msgid "Database list is empty!"
 msgstr "لیست بانک داده خالی است!"
 
-msgid "ispCP - Client/Manage SQL"
+msgid "i-MSCP - Client/Manage SQL"
 msgstr "آی اس پی سی پی - مشتری/مدیریت اس کیو ال"
 
 msgid "Manage SQL"
@@ -3311,7 +3311,7 @@ msgstr "نام کاربری اس کیو ال از قبل وجود دارد!"
 msgid "SQL user successfully added!"
 msgstr "کاربر اس کیو ال با موفقیت افزوده شد!"
 
-msgid "ispCP - Client/Add SQL User"
+msgid "i-MSCP - Client/Add SQL User"
 msgstr "آی اس پی سی پی - مشتری/افزودن کاربر اس کیو ال"
 
 msgid "SQL user name"
@@ -3350,7 +3350,7 @@ msgstr " سینتکس نقطه ی مونت نادرست است"
 msgid "Subdomain scheduled for addition!"
 msgstr "زیردامنه در برنامه افزودن قرار گرفت!"
 
-msgid "ispCP - Client/Add Subdomain"
+msgid "i-MSCP - Client/Add Subdomain"
 msgstr "آی اس پی سی پی - مشتری/افزودن زیردامنه"
 
 msgid "Add subdomain"
@@ -3371,7 +3371,7 @@ msgstr "لطفا موضوع پیام را مشخص کنید!"
 msgid "Your message was sent!"
 msgstr "پیام شما فرستاده شد!"
 
-msgid "ispCP - Support system - New ticket"
+msgid "i-MSCP - Support system - New ticket"
 msgstr "آی اس پی سی پی - سیستم پشتیبانی - تیکت جدید"
 
 msgid "New ticket"
@@ -3428,7 +3428,7 @@ msgstr "لاگ مدیر"
 msgid "Logout"
 msgstr "خروج"
 
-msgid "ispCP database updates"
+msgid "i-MSCP database updates"
 msgstr "بروزرسانی بانک داده آی اس پی سی پی"
 
 msgid "Custom menus"
@@ -3528,7 +3528,7 @@ msgstr "معلق شد"
 msgid "Error"
 msgstr "خطا"
 
-msgid "ispCP - Order Panel"
+msgid "i-MSCP - Order Panel"
 msgstr "آی اس پی سی پی - پنل سفارش"
 
 #, php-format
@@ -3645,7 +3645,7 @@ msgstr " فوروارد دامنه الحاقی "
 msgid "Unknown type"
 msgstr "نوع نامعلوم"
 
-msgid "Welcome {USERNAME} to ispCP!"
+msgid "Welcome {USERNAME} to i-MSCP!"
 msgstr " سلام {USERNAME}به آی اس پی سی پی خوش آمدید"
 
 msgid ""
@@ -3653,7 +3653,7 @@ msgid ""
 "\n"
 "Hello {NAME}!\n"
 "\n"
-"A new ispCP account has been created for you.\n"
+"A new i-MSCP account has been created for you.\n"
 "Your account information:\n"
 "\n"
 "User type: {USERTYPE}\n"
@@ -3668,8 +3668,8 @@ msgid ""
 "User name: {USERNAME}\n"
 "Password: {PASSWORD}\n"
 "\n"
-"Best wishes with ispCP!\n"
-"The ispCP Team.\n"
+"Best wishes with i-MSCP!\n"
+"The i-MSCP Team.\n"
 "\n"
 msgstr ""
 "\n"
@@ -3693,19 +3693,19 @@ msgstr ""
 "امیدواریم از آی اس پی سی پی لذت ببرید!\n"
 " تیم آی اس پی سی پی\n"
 
-msgid "Please activate your new ispCP password!"
+msgid "Please activate your new i-MSCP password!"
 msgstr "لطفا رمز عبور جدید ای اس پی سی پی خود را فعال کنید!"
 
 msgid ""
 "\n"
 "\n"
 "Hello {NAME}!\n"
-"Use this link to activate your new ispCP password:\n"
+"Use this link to activate your new i-MSCP password:\n"
 "\n"
 "{LINK}\n"
 "\n"
-"Good Luck with the ispCP System\n"
-"The ispCP Team\n"
+"Good Luck with the i-MSCP System\n"
+"The i-MSCP Team\n"
 "\n"
 msgstr ""
 "\n"
@@ -3719,7 +3719,7 @@ msgstr ""
 " با بهترین آرزوها!\n"
 " تیم آی اس پی سی پی\n"
 
-msgid "Your new ispCP login!"
+msgid "Your new i-MSCP login!"
 msgstr "!اطلاعات جدید ورود شما به آی اس پی سی پی "
 
 msgid ""
@@ -3732,8 +3732,8 @@ msgid ""
 "\n"
 "You can login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
 "\n"
-"Best wishes with ispCP!\n"
-"The ispCP Team\n"
+"Best wishes with i-MSCP!\n"
+"The i-MSCP Team\n"
 "\n"
 msgstr ""
 "\n"
@@ -3765,8 +3765,8 @@ msgid ""
 "\n"
 "{ACTIVATE_LINK}\n"
 "\n"
-"Thank you for using ispCP services.\n"
-"The ispCP Team\n"
+"Thank you for using i-MSCP services.\n"
+"The i-MSCP Team\n"
 "\n"
 msgstr ""
 "\n"
@@ -3794,8 +3794,8 @@ msgid ""
 "Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}"
 "{BASE_SERVER_VHOST}/reseller/alias.php\n"
 "\n"
-"Thank you for using ispCP services.\n"
-"The ispCP Team\n"
+"Thank you for using i-MSCP services.\n"
+"The i-MSCP Team\n"
 "\n"
 msgstr ""
 "\n"
@@ -4056,7 +4056,7 @@ msgstr ""
 " شما حدی برای فضای دیسک تان دارید!<br /> نمی توانید کاربری با فضای دیسک "
 "نامحدود بیفزایید! "
 
-msgid "ispCP Error"
+msgid "i-MSCP Error"
 msgstr "خطای آی اس پی سی پی"
 
 msgid "Error Message"
@@ -4071,7 +4071,7 @@ msgid ""
 "Dear {RESELLER},\n"
 "you have a new order from {NAME} <{MAIL}> for domain {DOMAIN}\n"
 "\n"
-"Please login into your ispCP control panel for more details.\n"
+"Please login into your i-MSCP control panel for more details.\n"
 "\n"
 msgstr ""
 "\n"
@@ -4175,7 +4175,7 @@ msgstr "پشتیبانی وب و ایمیل"
 msgid "Your Own Domain"
 msgstr "دامنه ی خود شما"
 
-msgid "ispCP Control Panel"
+msgid "i-MSCP Control Panel"
 msgstr "کنترل پنل آی اس پی سی پی"
 
 msgid "Automatic Updates"
@@ -4190,13 +4190,13 @@ msgstr "هزینه راه اندازی"
 msgid "Performance"
 msgstr "عملکرد"
 
-msgid "ispCP Reseller: Add Alias"
+msgid "i-MSCP Reseller: Add Alias"
 msgstr "ریسلر آی اس پی سی پی: دامنه الحاقی افزوده نشد"
 
 msgid "There is no user records for this reseller to add an alias for."
 msgstr "هیچ رکورد کاربری برای این ریسلر نیست که به آن دامنه الحاقی افزوده شود"
 
-msgid "ispCP - Manage Domain/Alias"
+msgid "i-MSCP - Manage Domain/Alias"
 msgstr "آی اس پی سی پی - مدیریت دامنه/الحاقی"
 
 msgid "Manage alias"
@@ -4238,13 +4238,13 @@ msgstr " !دامنه الحاقی سفارش داده شده فعال شد"
 msgid "Ordered domain alias not activated!"
 msgstr " !دامنه الحاقی سفارش داده شده فعال نشد"
 
-msgid "ispCP - Circular"
+msgid "i-MSCP - Circular"
 msgstr "آی اس پی سی پی - دوری"
 
 msgid "Circular"
 msgstr "دوری"
 
-msgid "ispCP - Domain/Edit"
+msgid "i-MSCP - Domain/Edit"
 msgstr "آی اس پی سی پی - دامنه/ویرایش"
 
 msgid "Unchanged"
@@ -4294,7 +4294,7 @@ msgstr "سرویس <em>%s</em> را نمی توان محدود کرد!"
 msgid "The <em>%s</em> service cannot be unlimited!"
 msgstr "سرویس <em>%s</em>  نمی تواند نامحدود باشد!"
 
-msgid "ispCP - Reseller/Add hosting plan"
+msgid "i-MSCP - Reseller/Add hosting plan"
 msgstr "آی اس پی سی پی - ریسلر/افزودن پلن میزبانی"
 
 msgid "Price must be a number!"
@@ -4309,13 +4309,13 @@ msgstr "بانک داده اس کیو ال <i>غیرفعال</i> نشده است
 msgid "Hosting plan values exceed reseller maximum values!"
 msgstr "ارزش های پلن میزبانی از حداکثر ارزش های ریسلر فراتر می رود"
 
-msgid "ispCP - Reseller/Edit hosting plan"
+msgid "i-MSCP - Reseller/Edit hosting plan"
 msgstr "آی اس پی سی پی - ریسلر/ویرایش پلن میزبانی"
 
 msgid "View hosting plan"
 msgstr "دیدن پلن میزبانی"
 
-msgid "ispCP - Reseller/Main Index"
+msgid "i-MSCP - Reseller/Main Index"
 msgstr "آی اس پی سی پی - ریسلر/فهرست اصلی"
 
 msgid "View details"
@@ -4346,10 +4346,10 @@ msgstr "%1$d / %2$d از <b>%3$d</b>"
 msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr "%1$d / %2$d از <b>illimité</b>"
 
-msgid "ispCP - Reseller/Change Language"
+msgid "i-MSCP - Reseller/Change Language"
 msgstr "آی اس پی سی پی - ریسلر/تغییر زبان"
 
-msgid "ispCP - Reseller/Order email setup"
+msgid "i-MSCP - Reseller/Order email setup"
 msgstr "آی اس پی سی پی - ریسلر/سفارش راه اندازی ایمیل"
 
 msgid "Manage orders"
@@ -4373,7 +4373,7 @@ msgstr "کاربر افزوده شد!"
 msgid "Customer order was removed successful!"
 msgstr "سفارش مشتری باموفقیت حذف شد!"
 
-msgid "ispCP - Reseller/Order details"
+msgid "i-MSCP - Reseller/Order details"
 msgstr "آی اس پی سی پی - ریسلر/جزئیات سفارش"
 
 msgid "Order data updated successfully!"
@@ -4400,7 +4400,7 @@ msgstr "آیا مطمئن هستید که می خواهید این سفارش ر
 msgid "Add to the system"
 msgstr "افزودن به سیستم"
 
-msgid "ispCP - Reseller/Order settings"
+msgid "i-MSCP - Reseller/Order settings"
 msgstr "آی اس پی سی پی - ریسلر/تنظیمات سفارش "
 
 msgid "Header"
@@ -4415,7 +4415,7 @@ msgstr "یوآرال پیاده سازی"
 msgid "Footer"
 msgstr "فوتر"
 
-msgid "ispCP - Reseller/Order management"
+msgid "i-MSCP - Reseller/Order management"
 msgstr "آی اس پی سی پی - ریسلر/مدیریت سفارش"
 
 msgid "You do not have new orders!"
@@ -4439,13 +4439,13 @@ msgstr "افزودن/جزئیات"
 msgid "Order Canceled: resellers maximum exceeded!"
 msgstr "سفارش لغو شد: تعداد ریسلرها از حداکثر گذشته!"
 
-msgid "ispCP - Reseller/Change Password"
+msgid "i-MSCP - Reseller/Change Password"
 msgstr "آی اس پی سی پی - ریسلر/تغییر رمز عبور"
 
-msgid "ispCP - Reseller/Change Personal Data"
+msgid "i-MSCP - Reseller/Change Personal Data"
 msgstr "آی اس پی سی پی - ریسلر/تغییر اطلاعات شخصی"
 
-msgid "ispCP - Reseller/Lostpw email setup"
+msgid "i-MSCP - Reseller/Lostpw email setup"
 msgstr "آی اس پی سی پی - ریسلر/راه اندازی ایمیل بازیابی رمز عبور"
 
 msgid "Lostpw email"
@@ -4454,13 +4454,13 @@ msgstr "ایمیل بازیابی رمز عبور"
 msgid "Lostpw link"
 msgstr "پیوند رمز ورود گم شده"
 
-msgid "ispCP - Reseller/Manage users/Email setup"
+msgid "i-MSCP - Reseller/Manage users/Email setup"
 msgstr "آی اس پی سی پی - ریسلر/مدیریت کاربران/راه اندازی ایمیل"
 
-msgid "ispCP - Reseller: Support System: View Ticket"
+msgid "i-MSCP - Reseller: Support System: View Ticket"
 msgstr "آی اس پی سی پی - ریسلر: سیستم پشتیبانی: دیدن تیکت"
 
-msgid "ispCP - Users/Add user"
+msgid "i-MSCP - Users/Add user"
 msgstr "آی اس پی سی پی - کاربران/افزودن کاربر"
 
 msgid "1 Month"
@@ -4493,7 +4493,7 @@ msgstr "گام بعد"
 msgid "You have no hosting plans. Please contact your system administrator."
 msgstr "شما پلن میزبانی ندارید. لطفا با مدیر سیستم تان تماس بگیرید"
 
-msgid "ispCP - User/Add user(step2)"
+msgid "i-MSCP - User/Add user(step2)"
 msgstr "آی اس پی سی پی - کاربر/افزودن کاربر (گام ۲)"
 
 msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
@@ -4508,7 +4508,7 @@ msgstr "آوستات"
 msgid "Domain data has been altered. Please enter again"
 msgstr "اطلاعات دامنه تغییر داده شد. لطفا آنها را دوباره وارد کنید"
 
-msgid "ispCP - User/Add user"
+msgid "i-MSCP - User/Add user"
 msgstr "آی اس پی سی پی - کاربران/افزودن کاربر"
 
 msgid "Add other domains to this account"
@@ -4518,13 +4518,13 @@ msgstr "دامنه های دیگری به این حساب اضافه کنید."
 msgid "System error with Domain Id: %d"
 msgstr "%d خطای سیستم با ای دی دامنه"
 
-msgid "ispCP - Users/Edit"
+msgid "i-MSCP - Users/Edit"
 msgstr "آی اس پی سی پی - کاربران/ویرایش "
 
 msgid "Users list"
 msgstr "فهرست کاربران"
 
-msgid "ispCP - Users"
+msgid "i-MSCP - Users"
 msgstr "آی اس پی سی پی - کاربران "
 
 #, php-format

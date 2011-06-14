@@ -24,7 +24,7 @@ msgstr "UTF-8"
 msgid "_: Localised language"
 msgstr "Українська - Ukrainian"
 
-msgid "ispCP Omega a Virtual Hosting Control System"
+msgid "i-MSCP  a Virtual Hosting Control System"
 msgstr ""
 
 msgid "Administrator login"
@@ -54,7 +54,7 @@ msgstr "Відновити пароль"
 msgid "Retrieving lost passwords is currently not possible"
 msgstr ""
 
-msgid "ispCP - Virtual Hosting Control System"
+msgid "i-MSCP - Virtual Hosting Control System"
 msgstr ""
 
 #, fuzzy
@@ -92,8 +92,8 @@ msgstr ""
 msgid "Request password"
 msgstr "Запит пароля"
 
-msgid "ispCP - Admin/Manage users/Add User"
-msgstr "ispCP - Адміністратор/Керування користувачами/Додавання користувача"
+msgid "i-MSCP - Admin/Manage users/Add User"
+msgstr "i-MSCP - Адміністратор/Керування користувачами/Додавання користувача"
 
 msgid "Administrator"
 msgstr "Адміністратор"
@@ -204,12 +204,12 @@ msgid "Domain account"
 msgstr "Обліковий запис домену"
 
 #, fuzzy
-msgid "ispCP - Admin/Manage users/Edit Administrator"
-msgstr "ispCP - Адміністратор/Керування користувачами/Редагування користувача"
+msgid "i-MSCP - Admin/Manage users/Edit Administrator"
+msgstr "i-MSCP - Адміністратор/Керування користувачами/Редагування користувача"
 
 #, fuzzy
-msgid "ispCP - Admin/Manage users/Edit User"
-msgstr "ispCP - Адміністратор/Керування користувачами/Додавання користувача"
+msgid "i-MSCP - Admin/Manage users/Edit User"
+msgstr "i-MSCP - Адміністратор/Керування користувачами/Додавання користувача"
 
 msgid "Edit admin"
 msgstr "Редагувати адміністратора"
@@ -234,8 +234,8 @@ msgstr "Оновлення мови встановлене!"
 msgid "Demo Version!"
 msgstr ""
 
-msgid "ispCP - Admin/Admin Log"
-msgstr "ispCP - Адміністратор/Журнал адміністратора"
+msgid "i-MSCP - Admin/Admin Log"
+msgstr "i-MSCP - Адміністратор/Журнал адміністратора"
 
 msgid "Log is empty!"
 msgstr "Журнал порожній!"
@@ -300,7 +300,7 @@ msgstr "давніші за 6 місяців"
 msgid "older than 12 months"
 msgstr "давніші за 12 місяців"
 
-msgid "ispCP - Admin - Email Marketing"
+msgid "i-MSCP - Admin - Email Marketing"
 msgstr ""
 
 msgid "Please specify a message subject!"
@@ -370,8 +370,8 @@ msgstr "Дані персональних меню успішно оновлен
 msgid "Custom menu deleted successful!"
 msgstr "Персональне меню успішно видалене!"
 
-msgid "ispCP - Admin - Manage custom menus"
-msgstr "ispCP - Адміністратор - Керування персональними меню"
+msgid "i-MSCP - Admin - Manage custom menus"
+msgstr "i-MSCP - Адміністратор - Керування персональними меню"
 
 msgid "Manage custom menus"
 msgstr "Керування персональними меню"
@@ -434,14 +434,14 @@ msgstr "Користувачі баз даних"
 
 #, fuzzy
 msgid "Available database updates"
-msgstr "Доступні оновлення ispCP"
+msgstr "Доступні оновлення i-MSCP"
 
 msgid "Update details"
 msgstr "Деталі оновлення"
 
 #, fuzzy
 msgid "New Database update is now available"
-msgstr "Доступне оновлення ispCP"
+msgstr "Доступне оновлення i-MSCP"
 
 #, fuzzy
 msgid "Do you want to execute the Updates now?"
@@ -453,10 +453,10 @@ msgstr "Виконати запит"
 
 #, fuzzy
 msgid "No database updates available"
-msgstr "Немає нових оновлень ispCP"
+msgstr "Немає нових оновлень i-MSCP"
 
-msgid "ispCP - Domain/Details"
-msgstr "ispCP - Домен/Деталі"
+msgid "i-MSCP - Domain/Details"
+msgstr "i-MSCP - Домен/Деталі"
 
 msgid "Domain details"
 msgstr "Деталі домену"
@@ -541,8 +541,8 @@ msgid "Disabled"
 msgstr "Вимкнено"
 
 #, fuzzy
-msgid "ispCP - Admin/Edit Domain"
-msgstr "ispCP - Адміністратор/Журнал адміністратора"
+msgid "i-MSCP - Admin/Edit Domain"
+msgstr "i-MSCP - Адміністратор/Журнал адміністратора"
 
 msgid "Edit Domain"
 msgstr "Редагувати домен"
@@ -714,8 +714,8 @@ msgstr ""
 msgid "You are exceeding reseller limits for the <em>%s</em> service!"
 msgstr ""
 
-msgid "ispCP - Domain Statistics Data"
-msgstr "ispCP - Статистика домену"
+msgid "i-MSCP - Domain Statistics Data"
+msgstr "i-MSCP - Статистика домену"
 
 msgid "Domain statistics"
 msgstr "Статистика домену"
@@ -747,8 +747,8 @@ msgstr "Весь трафік"
 msgid "Day"
 msgstr "День"
 
-msgid "ispCP - Administrator/Add hosting plan"
-msgstr "ispCP - Адміністратор/Додавання хостінг-плану"
+msgid "i-MSCP - Administrator/Add hosting plan"
+msgstr "i-MSCP - Адміністратор/Додавання хостінг-плану"
 
 msgid "Add hosting plan"
 msgstr "Додати хостинґ-план"
@@ -860,8 +860,8 @@ msgstr "Невірний синтаксис <i>ліміту поштових с�
 msgid "Hosting plan with entered name already exists!"
 msgstr "Хостінг-план із введеною назвою вже існує!"
 
-msgid "ispCP - Administrator/Edit hosting plan"
-msgstr "ispCP - Адміністратор/Редагування хостінг-плану"
+msgid "i-MSCP - Administrator/Edit hosting plan"
+msgstr "i-MSCP - Адміністратор/Редагування хостінг-плану"
 
 #, fuzzy
 msgid "Price Style"
@@ -885,8 +885,8 @@ msgstr ""
 msgid "Incorrect setup fee. Example: 19.99"
 msgstr ""
 
-msgid "ispCP - Administrator/Hosting Plan Management"
-msgstr "ispCP - Адміністратор/Керування хостінг-планами"
+msgid "i-MSCP - Administrator/Hosting Plan Management"
+msgstr "i-MSCP - Адміністратор/Керування хостінг-планами"
 
 msgid "Hosting plans"
 msgstr "Хостінг-плани"
@@ -937,14 +937,14 @@ msgstr "Переглянути"
 
 #, fuzzy
 msgid "A database update is available"
-msgstr "Немає нових оновлень ispCP"
+msgstr "Немає нових оновлень i-MSCP"
 
 #, fuzzy
 msgid "Update checking is disabled!"
 msgstr "Оновлення мови встановлене!"
 
-msgid "New ispCP update is now available"
-msgstr "Доступне оновлення ispCP"
+msgid "New i-MSCP update is now available"
+msgstr "Доступне оновлення i-MSCP"
 
 msgid "You are exceeding your traffic limit!"
 msgstr "Ви вичерпали ліміт трафіку!"
@@ -957,8 +957,8 @@ msgstr ""
 msgid "%1$d%% [%2$s of %3$s]"
 msgstr ""
 
-msgid "ispCP - Admin/Main Index"
-msgstr "ispCP - Адміністратор/Головна"
+msgid "i-MSCP - Admin/Main Index"
+msgstr "i-MSCP - Адміністратор/Головна"
 
 msgid "You cannot delete the last active IP address!"
 msgstr ""
@@ -972,8 +972,8 @@ msgstr ""
 msgid "IP was deleted!"
 msgstr "IP видалено!"
 
-msgid "ispCP - Admin/IP manage"
-msgstr "ispCP - Адміністратор/Керування IP"
+msgid "i-MSCP - Admin/IP manage"
+msgstr "i-MSCP - Адміністратор/Керування IP"
 
 #, fuzzy
 msgid "Remove IP"
@@ -1034,8 +1034,8 @@ msgstr "Немає помилок системи піддоменів"
 msgid "No email account system errors"
 msgstr "Немає помилок системи електронних скриньок"
 
-msgid "ispCP debugger"
-msgstr "Налагоджувач ispCP"
+msgid "i-MSCP debugger"
+msgstr "Налагоджувач i-MSCP"
 
 msgid "Domain errors"
 msgstr "Помилки системи доменів"
@@ -1054,8 +1054,8 @@ msgid "Mail account errors"
 msgstr "Помилки поштових скриньок"
 
 #, fuzzy
-msgid "ispCP Daemon tools"
-msgstr "ispCP - Клієнт/Web-інструменти"
+msgid "i-MSCP Daemon tools"
+msgstr "i-MSCP - Клієнт/Web-інструменти"
 
 #, fuzzy
 msgid "Execute requests"
@@ -1088,14 +1088,14 @@ msgstr "Налаштування"
 msgid "Get it at"
 msgstr "Завантажити з"
 
-msgid "ispCP updates"
-msgstr "Оновлення ispCP"
+msgid "i-MSCP updates"
+msgstr "Оновлення i-MSCP"
 
-msgid "Available ispCP updates"
-msgstr "Доступні оновлення ispCP"
+msgid "Available i-MSCP updates"
+msgstr "Доступні оновлення i-MSCP"
 
-msgid "No new ispCP updates available"
-msgstr "Немає нових оновлень ispCP"
+msgid "No new i-MSCP updates available"
+msgstr "Немає нових оновлень i-MSCP"
 
 #, fuzzy
 msgid "Language was removed!"
@@ -1105,8 +1105,8 @@ msgid "User language updated successfully!"
 msgstr "Мова користувача успішно оновлена!"
 
 #, fuzzy
-msgid "ispCP - Admin/Change Language"
-msgstr "ispCP - Клієнт/Зміна мови"
+msgid "i-MSCP - Admin/Change Language"
+msgstr "i-MSCP - Клієнт/Зміна мови"
 
 msgid "Language"
 msgstr "Мова"
@@ -1118,8 +1118,8 @@ msgstr "Вибір основної мови"
 msgid "Reseller list is empty!"
 msgstr "Список реселерів порожній!"
 
-msgid "ispCP - Admin/Manage users/Reseller assignment"
-msgstr "ispCP - Адміністратор/Керування користувачами/Призначення реселера"
+msgid "i-MSCP - Admin/Manage users/Reseller assignment"
+msgstr "i-MSCP - Адміністратор/Керування користувачами/Призначення реселера"
 
 msgid "Reseller assignment"
 msgstr "Призначення реселера"
@@ -1182,8 +1182,8 @@ msgid ""
 "reseller !<br>This user cannot be moved!"
 msgstr ""
 
-msgid "ispCP - Admin/Manage users/User assignment"
-msgstr "ispCP - Адміністратор/Керування користувачами/Призначення користувача"
+msgid "i-MSCP - Admin/Manage users/User assignment"
+msgstr "i-MSCP - Адміністратор/Керування користувачами/Призначення користувача"
 
 msgid "User assignment"
 msgstr "Призначення користувача"
@@ -1200,8 +1200,8 @@ msgstr "Від реселера"
 msgid "To reseller"
 msgstr "Реселеру"
 
-msgid "ispCP - Admin/Manage Users"
-msgstr "ispCP - Адміністратор/Керування користувачами"
+msgid "i-MSCP - Admin/Manage Users"
+msgstr "i-MSCP - Адміністратор/Керування користувачами"
 
 msgid "User added"
 msgstr "Користувача додано"
@@ -1227,7 +1227,7 @@ msgstr "Користувача заблоковано"
 msgid "Incorrect data input!"
 msgstr "Невірне введення даних!"
 
-msgid "ispCP - Admin/Internationalisation"
+msgid "i-MSCP - Admin/Internationalisation"
 msgstr ""
 
 msgid "Upload file error!"
@@ -1294,8 +1294,8 @@ msgstr "Установити"
 msgid "Export"
 msgstr "Експорт"
 
-msgid "ispCP - Admin/Change Password"
-msgstr "ispCP - Адміністратор/Зміна пароля"
+msgid "i-MSCP - Admin/Change Password"
+msgstr "i-MSCP - Адміністратор/Зміна пароля"
 
 msgid "Please fill up all data fields!"
 msgstr "Будь ласка, заповніть усі поля!"
@@ -1325,8 +1325,8 @@ msgstr "Поточний пароль"
 msgid "Password change is deactivated!"
 msgstr "Аліас домену додано!"
 
-msgid "ispCP - Admin/Change Personal Data"
-msgstr "ispCP - Адміністратор/Зміна персональних даних"
+msgid "i-MSCP - Admin/Change Personal Data"
+msgstr "i-MSCP - Адміністратор/Зміна персональних даних"
 
 msgid "Personal data updated successfully!"
 msgstr "Персональні дані успішно оновлені!"
@@ -1340,7 +1340,7 @@ msgstr "Персональні дані"
 msgid "Update data"
 msgstr "Оновити відомості"
 
-msgid "ispCP - Admin/Manage users/Add reseller"
+msgid "i-MSCP - Admin/Manage users/Add reseller"
 msgstr ""
 
 msgid "Reseller IP list is empty!"
@@ -1476,8 +1476,8 @@ msgstr "Це Реселлер має областей покладених на 
 msgid "ERROR: The reseller account you trying to edit does not exist!"
 msgstr ""
 
-msgid "ispCP - Admin/Manage users/Edit Reseller"
-msgstr "ispCP - Адміністратор/Керування користувачами/Редагування реселера"
+msgid "i-MSCP - Admin/Manage users/Edit Reseller"
+msgstr "i-MSCP - Адміністратор/Керування користувачами/Редагування реселера"
 
 msgid ""
 "ERROR: One or more errors was found! Please, correct them and try again!"
@@ -1511,12 +1511,12 @@ msgstr ""
 
 #, php-format
 msgid ""
-"ispCP NOTICE:\\n\\nThe `Enter` key is disabled for performance reasons!"
+"i-MSCP NOTICE:\\n\\nThe `Enter` key is disabled for performance reasons!"
 "\\nInstead, use the %s button to update the data."
 msgstr ""
 
-msgid "ispCP - Reseller statistics"
-msgstr "ispCP - Статистика реселера"
+msgid "i-MSCP - Reseller statistics"
+msgstr "i-MSCP - Статистика реселера"
 
 msgid "Not found reseller(s) in your system!"
 msgstr "У системі не знайдено реселера(-ів)!"
@@ -1550,8 +1550,8 @@ msgstr "База даних SQL"
 msgid "SQL user"
 msgstr "Користувач SQL"
 
-msgid "ispCP - Admin/Reseller User Statistics"
-msgstr "ispCP - Адміністратор/Статистика реселера"
+msgid "i-MSCP - Admin/Reseller User Statistics"
+msgstr "i-MSCP - Адміністратор/Статистика реселера"
 
 #, php-format
 msgid "%1$s <br/>of<br/> <b>%2$s</b>"
@@ -1600,8 +1600,8 @@ msgid "SQL<br>user"
 msgstr "Користувач<br>SQL"
 
 #, fuzzy
-msgid "ispCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
-msgstr "Адміністратор ispCP / Системні інструменти / Стан сервера"
+msgid "i-MSCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
+msgstr "Адміністратор i-MSCP / Системні інструменти / Стан сервера"
 
 #, fuzzy, php-format
 msgid "%s doesn't exist or is empty"
@@ -1610,8 +1610,8 @@ msgstr "%s Не існує або порожній"
 msgid "Anti-Rootkits Tools Log Checker"
 msgstr ""
 
-msgid "ispCP - Admin/Server day stats"
-msgstr "ispCP - Адміністратор/Денна статистика сервера"
+msgid "i-MSCP - Admin/Server day stats"
+msgstr "i-MSCP - Адміністратор/Денна статистика сервера"
 
 msgid "Server day statistics"
 msgstr "Денна статистика сервера"
@@ -1662,14 +1662,14 @@ msgstr "Усі в"
 msgid "All out"
 msgstr "Усі за"
 
-msgid "ispCP - Admin/Server statistics"
-msgstr "ispCP - Адміністратор/Статистика сервера"
+msgid "i-MSCP - Admin/Server statistics"
+msgstr "i-MSCP - Адміністратор/Статистика сервера"
 
 msgid "Server statistics"
 msgstr "Статистика сервера"
 
-msgid "ispCP Admin / System Tools / Server Status"
-msgstr "Адміністратор ispCP / Системні інструменти / Стан сервера"
+msgid "i-MSCP Admin / System Tools / Server Status"
+msgstr "Адміністратор i-MSCP / Системні інструменти / Стан сервера"
 
 msgid "UP"
 msgstr ""
@@ -1686,8 +1686,8 @@ msgstr "Сервіс"
 msgid "Server status"
 msgstr "Стан сервера"
 
-msgid "ispCP - Admin/Manage Sessions"
-msgstr "ispCP - Адміністратор/Керування сесіями"
+msgid "i-MSCP - Admin/Manage Sessions"
+msgstr "i-MSCP - Адміністратор/Керування сесіями"
 
 msgid "Manage user sessions"
 msgstr "Керування сесіями користувача"
@@ -1752,8 +1752,8 @@ msgstr "Будь ласка, укажіть повідомлення!"
 msgid "Auto email template data updated!"
 msgstr "Шаблон автовідповідача пошти оновлено!"
 
-msgid "ispCP - Admin/Lostpw email setup"
-msgstr "ispCP - Адміністратор/Налаштування втрати пароля"
+msgid "i-MSCP - Admin/Lostpw email setup"
+msgstr "i-MSCP - Адміністратор/Налаштування втрати пароля"
 
 msgid "Lost password e-mail"
 msgstr ""
@@ -1796,8 +1796,8 @@ msgid "URL protocol"
 msgstr "Протокол"
 
 #, fuzzy
-msgid "ispCP - Admin/Maintenance mode"
-msgstr "ispCP - Адміністратор/Головна"
+msgid "i-MSCP - Admin/Maintenance mode"
+msgstr "i-MSCP - Адміністратор/Головна"
 
 msgid "Settings saved !"
 msgstr "Налаштування збережені!"
@@ -1810,7 +1810,7 @@ msgstr "Керування замовленнями"
 msgid "Under this mode only administrators can login"
 msgstr "Лише адміністратори можуть входити в цьому режимі"
 
-msgid "ispCP - Admin/Settings"
+msgid "i-MSCP - Admin/Settings"
 msgstr ""
 
 msgid "ERROR: Only positive numbers are allowed !"
@@ -2016,8 +2016,8 @@ msgstr ""
 msgid "Add new service port"
 msgstr "Додати новий хостінґ-план"
 
-msgid "ispCP - Admin/Server Traffic Settings"
-msgstr "ispCP - Адміністратор/Налаштування трафіка сервера"
+msgid "i-MSCP - Admin/Server Traffic Settings"
+msgstr "i-MSCP - Адміністратор/Налаштування трафіка сервера"
 
 msgid "Wrong data input!"
 msgstr "Невірно введені дані!"
@@ -2043,9 +2043,9 @@ msgstr "Макс. трафік [MB]"
 msgid "Warning traffic [MB]"
 msgstr "Ліміт трафіка [МБ]"
 
-msgid "ispCP - Admin/Manage users/Email setup"
+msgid "i-MSCP - Admin/Manage users/Email setup"
 msgstr ""
-"ispCP - Адміністратор/Керування користувачами/Налаштування електронної пошти"
+"i-MSCP - Адміністратор/Керування користувачами/Налаштування електронної пошти"
 
 msgid "Email setup"
 msgstr "Налаштування електронної пошти"
@@ -2126,8 +2126,8 @@ msgstr "Час роботи"
 msgid "You have no support tickets."
 msgstr "Ви не маєте запитів підтримки."
 
-msgid "ispCP - Client/Questions & Comments"
-msgstr "ispCP - Клієнт/Питання та пропозиції"
+msgid "i-MSCP - Client/Questions & Comments"
+msgstr "i-MSCP - Клієнт/Питання та пропозиції"
 
 msgid "Support tickets"
 msgstr "Запити підтримки"
@@ -2168,8 +2168,8 @@ msgstr "[Нове]"
 msgid "[Re]"
 msgstr "[Відповідь]"
 
-msgid "ispCP - Client/Enable Mail Autoresponder"
-msgstr "ispCP - Клієнт/Активація автовідповідача"
+msgid "i-MSCP - Client/Enable Mail Autoresponder"
+msgstr "i-MSCP - Клієнт/Активація автовідповідача"
 
 msgid "Ticket not found!"
 msgstr "Запит не знайдено!"
@@ -2180,8 +2180,8 @@ msgstr "Відкритий запит"
 msgid "Close ticket"
 msgstr "Закрити запит підтримки"
 
-msgid "ispCP - Client: Support System: View Ticket"
-msgstr "ispCP - Клієнт : Система підтримки: Перегляд запитів"
+msgid "i-MSCP - Client: Support System: View Ticket"
+msgstr "i-MSCP - Клієнт : Система підтримки: Перегляд запитів"
 
 msgid "Please type your message!"
 msgstr "Будь ласка, введіть повідомлення!"
@@ -2195,7 +2195,7 @@ msgstr "Запит закрито!"
 msgid "Ticket was reopened!"
 msgstr ""
 
-msgid "ispCP - Admin: Support System: View Ticket"
+msgid "i-MSCP - Admin: Support System: View Ticket"
 msgstr ""
 
 msgid "View support ticket"
@@ -2208,8 +2208,8 @@ msgid "Send reply"
 msgstr "Надіслати відповідь"
 
 #, fuzzy
-msgid "ispCP - Delete Domain"
-msgstr "ispCP - Клієнт/Керування доменами"
+msgid "i-MSCP - Delete Domain"
+msgstr "i-MSCP - Клієнт/Керування доменами"
 
 msgid "Wrong domain ID!"
 msgstr "Невірний ID домену!"
@@ -2261,8 +2261,8 @@ msgstr ""
 msgid "Yes, delete the domain."
 msgstr ""
 
-msgid "ispCP Client : Add Alias"
-msgstr "Клієнт ispCP : Додавання аліасу"
+msgid "i-MSCP Client : Add Alias"
+msgstr "Клієнт i-MSCP : Додавання аліасу"
 
 msgid "Manage domain alias"
 msgstr "Керування аліасами домену"
@@ -2282,7 +2282,7 @@ msgstr "Переслати на URL"
 msgid "Add alias"
 msgstr "Додати аліас"
 
-msgid "You do not need 'www.' ispCP will add it on its own."
+msgid "You do not need 'www.' i-MSCP will add it on its own."
 msgstr ""
 
 #, fuzzy
@@ -2362,8 +2362,8 @@ msgstr ""
 msgid "Alias scheduled for deletion!"
 msgstr "Триває видалення аліасу!"
 
-msgid "ispCP - Manage Domain Alias/Edit Alias"
-msgstr "ispCP - Керування аліасами домену/Редагування аліасів"
+msgid "i-MSCP - Manage Domain Alias/Edit Alias"
+msgstr "i-MSCP - Керування аліасами домену/Редагування аліасів"
 
 msgid "Edit domain alias"
 msgstr "Редагувати аліас домену"
@@ -2387,8 +2387,8 @@ msgstr "Триває видалення піддомену!"
 msgid "Backup archive scheduled for restoring!"
 msgstr "Триває відновлення архівів..."
 
-msgid "ispCP - Client/Daily Backup"
-msgstr "ispCP - Клієнт/Щоденна архівація"
+msgid "i-MSCP - Client/Daily Backup"
+msgstr "i-MSCP - Клієнт/Щоденна архівація"
 
 msgid "Daily backup"
 msgstr "Щоденна архівація"
@@ -2422,8 +2422,8 @@ msgstr "Відновити"
 msgid "Are you sure you want to restore the backup?"
 msgstr "Ви впевнені, що бажаєте видалити цей обліковий запис?"
 
-msgid "ispCP - Client/Cronjob Manager"
-msgstr "ispCP - Клієнт/Керування завданнями Cron"
+msgid "i-MSCP - Client/Cronjob Manager"
+msgstr "i-MSCP - Клієнт/Керування завданнями Cron"
 
 msgid "Cronjob Manager"
 msgstr "Менеджер завдань Cron'a"
@@ -2467,12 +2467,12 @@ msgid "DNS zone record scheduled for deletion!"
 msgstr "Триває видалення піддомену!"
 
 #, fuzzy
-msgid "ispCP - Manage Domain Alias/Add DNS zone's record"
-msgstr "ispCP - Керування аліасами домену/Редагування аліасів"
+msgid "i-MSCP - Manage Domain Alias/Add DNS zone's record"
+msgstr "i-MSCP - Керування аліасами домену/Редагування аліасів"
 
 #, fuzzy
-msgid "ispCP - Manage Domain Alias/Edit DNS zone's record"
-msgstr "ispCP - Керування аліасами домену/Редагування аліасів"
+msgid "i-MSCP - Manage Domain Alias/Edit DNS zone's record"
+msgstr "i-MSCP - Керування аліасами домену/Редагування аліасів"
 
 msgid "Add DNS zone's record (EXPERIMENTAL)"
 msgstr ""
@@ -2594,8 +2594,8 @@ msgstr "Видалити замовлення"
 msgid "Alias list is empty!"
 msgstr "Список аліасів порожній!"
 
-msgid "ispCP - Client/Manage Domains"
-msgstr "ispCP - Клієнт/Керування доменами"
+msgid "i-MSCP - Client/Manage Domains"
+msgstr "i-MSCP - Клієнт/Керування доменами"
 
 msgid "Manage domains"
 msgstr "Керування доменами"
@@ -2614,8 +2614,8 @@ msgstr "Дія"
 msgid "Record data"
 msgstr "Загальні відомості"
 
-msgid "ispCP - Client/Domain Statistics"
-msgstr "ispCP - Клієнт/Статистика домену"
+msgid "i-MSCP - Client/Domain Statistics"
+msgstr "i-MSCP - Клієнт/Статистика домену"
 
 msgid "Web Stats"
 msgstr ""
@@ -2632,8 +2632,8 @@ msgstr ""
 msgid "Sum"
 msgstr "Сума"
 
-msgid "ispCP - Client/Manage Error Custom Pages"
-msgstr "ispCP - Клієнт/Керування власними сторінками помилок"
+msgid "i-MSCP - Client/Manage Error Custom Pages"
+msgstr "i-MSCP - Клієнт/Керування власними сторінками помилок"
 
 msgid "Server error - please choose error page"
 msgstr "Серверна помилка - оберіть сторінку помилки"
@@ -2668,8 +2668,8 @@ msgstr "Сторінки помилок"
 msgid "FTP list is empty!"
 msgstr "Список FTP порожній!"
 
-msgid "ispCP - Client/Manage Users"
-msgstr "ispCP - Клієнт/Керування користувачами"
+msgid "i-MSCP - Client/Manage Users"
+msgstr "i-MSCP - Клієнт/Керування користувачами"
 
 msgid "Manage users"
 msgstr "Керування користувачами"
@@ -2727,8 +2727,8 @@ msgstr "Будь ласка, укажіть іншу директорію кор
 msgid "FTP accounts limit reached!"
 msgstr ""
 
-msgid "ispCP - Client/Add FTP User"
-msgstr "ispCP - Клієнт/Додавання користувача FTP"
+msgid "i-MSCP - Client/Add FTP User"
+msgstr "i-MSCP - Клієнт/Додавання користувача FTP"
 
 msgid "Add FTP user"
 msgstr "Додати користувача FTP"
@@ -2760,8 +2760,8 @@ msgstr "Батьківська директорія"
 msgid "Protect it"
 msgstr "Захистити"
 
-msgid "ispCP - Client/Webtools"
-msgstr "ispCP - Клієнт/Web-інструменти"
+msgid "i-MSCP - Client/Webtools"
+msgstr "i-MSCP - Клієнт/Web-інструменти"
 
 msgid "Directory tree"
 msgstr "Дерево директорій"
@@ -2778,8 +2778,8 @@ msgstr "Користувача FTP успішно видалено!"
 msgid "FTP account data updated!"
 msgstr "Дані користувача FTP оновлені!"
 
-msgid "ispCP - Client/Edit FTP Account"
-msgstr "ispCP - Клієнт/Редагування облікового запису FTP"
+msgid "i-MSCP - Client/Edit FTP Account"
+msgstr "i-MSCP - Клієнт/Редагування облікового запису FTP"
 
 msgid "Edit FTP user"
 msgstr "Редагувати користувача FTP"
@@ -2891,8 +2891,8 @@ msgstr ""
 msgid "There are no available hosting plans for update"
 msgstr "Немає хостінг-планів для переходу"
 
-msgid "ispCP - Update hosting plan"
-msgstr "ispCP - Оновлення хостінг-плану"
+msgid "i-MSCP - Update hosting plan"
+msgstr "i-MSCP - Оновлення хостінг-плану"
 
 msgid "You have more e-mail addresses in use than the new hosting plan limits."
 msgstr ""
@@ -2900,14 +2900,14 @@ msgstr ""
 msgid "Your request for hosting pack update was added successfully"
 msgstr "Ваш запит на зміну хостінг-плану успішно доданий"
 
-msgid "[ispCP OrderPanel] - You have an update order"
+msgid "[i-MSCP OrderPanel] - You have an update order"
 msgstr ""
 
 #, php-format
 msgid ""
 "You have an update order for the account %s\n"
 "\n"
-"Please login into your ispCP control panel at %s for more details"
+"Please login into your i-MSCP control panel at %s for more details"
 msgstr ""
 
 msgid "Your request for hosting pack update was removed successfully"
@@ -2941,8 +2941,8 @@ msgstr ""
 msgid "This Domain is expired"
 msgstr "Характеристики домену"
 
-msgid "ispCP - Client/Main Index"
-msgstr "ispCP - Клієнт/Головна"
+msgid "i-MSCP - Client/Main Index"
+msgstr "i-MSCP - Клієнт/Головна"
 
 msgid "General information"
 msgstr "Загальна інформація"
@@ -2971,8 +2971,8 @@ msgstr "Використання дискового простору"
 msgid "Alternative URL to reach your website"
 msgstr ""
 
-msgid "ispCP - Client/Change Language"
-msgstr "ispCP - Клієнт/Зміна мови"
+msgid "i-MSCP - Client/Change Language"
+msgstr "i-MSCP - Клієнт/Зміна мови"
 
 msgid "Please wait for update"
 msgstr "Будь ласка, зачекайте оновлення!"
@@ -3054,8 +3054,8 @@ msgstr "Список пересилання порожній!"
 msgid "Mail accounts limit reached!"
 msgstr ""
 
-msgid "ispCP - Client/Add Mail User"
-msgstr "ispCP - Клієнт/Додавання поштової скриньки"
+msgid "i-MSCP - Client/Add Mail User"
+msgstr "i-MSCP - Клієнт/Додавання поштової скриньки"
 
 msgid "Add mail users"
 msgstr "Додати поштові скриньки"
@@ -3088,8 +3088,8 @@ msgstr "Будь ласка, введіть повідомлення автов�
 msgid "Mail account scheduler for modification!"
 msgstr "Оновлення поштової скриньки!"
 
-msgid "ispCP - Client/Enable Mail Auto Responder"
-msgstr "ispCP - Клієнт/Активація автовідповідача"
+msgid "i-MSCP - Client/Enable Mail Auto Responder"
+msgstr "i-MSCP - Клієнт/Активація автовідповідача"
 
 msgid "Edit mail auto responder"
 msgstr "Редагувати поштовий автовідповідач"
@@ -3106,8 +3106,8 @@ msgstr "Перехоплення всього в процесі створенн
 msgid "Mail forward list error!"
 msgstr "Помилка списку пересилання пошти!"
 
-msgid "ispCP - Client/Create CatchAll Mail Account"
-msgstr "ispCP - Клієнт/Створення \"перехоплювача пошти\""
+msgid "i-MSCP - Client/Create CatchAll Mail Account"
+msgstr "i-MSCP - Клієнт/Створення \"перехоплювача пошти\""
 
 msgid "Create catch all mail account"
 msgstr "Створити перехоплення всіх поштових облікових записів"
@@ -3139,8 +3139,8 @@ msgstr "Видаліть спочатку \"перехоплювач усіх\" 
 msgid "Email account not found!"
 msgstr ""
 
-msgid "ispCP - Manage Mail and FTP / Edit mail account"
-msgstr "ispCP - Керування поштою та FTP / Редагування поштової скриньки"
+msgid "i-MSCP - Manage Mail and FTP / Edit mail account"
+msgstr "i-MSCP - Керування поштою та FTP / Редагування поштової скриньки"
 
 msgid "Mail were updated successfully!"
 msgstr "Пошта успішно оновлена!"
@@ -3148,11 +3148,11 @@ msgstr "Пошта успішно оновлена!"
 msgid "Edit email account"
 msgstr "Редагувати поштову скриньку"
 
-msgid "ispCP - Client/Change Password"
-msgstr "ispCP - Клієнт/Зміна пароля"
+msgid "i-MSCP - Client/Change Password"
+msgstr "i-MSCP - Клієнт/Зміна пароля"
 
-msgid "ispCP - Client/Change Personal Data"
-msgstr "ispCP - Клієнт/Зміна персональних даних"
+msgid "i-MSCP - Client/Change Personal Data"
+msgstr "i-MSCP - Клієнт/Зміна персональних даних"
 
 msgid "Please choose user or group"
 msgstr "Оберіть користувача або групу"
@@ -3304,8 +3304,8 @@ msgstr ""
 msgid "SQL user password was successfully changed!"
 msgstr "Пароль користувача SQL успішно змінений!"
 
-msgid "ispCP - Client/Change SQL User Password"
-msgstr "ispCP - Клієнт/Зміна пароля користувача SQL"
+msgid "i-MSCP - Client/Change SQL User Password"
+msgstr "i-MSCP - Клієнт/Зміна пароля користувача SQL"
 
 msgid "Change SQL user password"
 msgstr "Змінити пароль користувача SQL"
@@ -3332,8 +3332,8 @@ msgstr "База даних SQL успішно створена!"
 msgid "SQL accounts limit reached!"
 msgstr ""
 
-msgid "ispCP - Client/Add SQL Database"
-msgstr "ispCP - Клієнт/Додавання бази даних SQL"
+msgid "i-MSCP - Client/Add SQL Database"
+msgstr "i-MSCP - Клієнт/Додавання бази даних SQL"
 
 msgid "Add SQL database"
 msgstr "Додати SQL базу"
@@ -3362,8 +3362,8 @@ msgstr "Список користувачів баз даних порожній
 msgid "Database list is empty!"
 msgstr "Список баз даних порожній!"
 
-msgid "ispCP - Client/Manage SQL"
-msgstr "ispCP - Клієнт/Керування SQL"
+msgid "i-MSCP - Client/Manage SQL"
+msgstr "i-MSCP - Клієнт/Керування SQL"
 
 msgid "Manage SQL"
 msgstr "Керування SQL"
@@ -3417,8 +3417,8 @@ msgstr "Вказаний користувач бази даних уже існ�
 msgid "SQL user successfully added!"
 msgstr "Користувач SQL успішно доданий!"
 
-msgid "ispCP - Client/Add SQL User"
-msgstr "ispCP - Клієнт/Додавання користувача SQL"
+msgid "i-MSCP - Client/Add SQL User"
+msgstr "i-MSCP - Клієнт/Додавання користувача SQL"
 
 msgid "SQL user name"
 msgstr "Користувач SQL"
@@ -3459,8 +3459,8 @@ msgstr "Невірний синтаксис <i>точки монтування</
 msgid "Subdomain scheduled for addition!"
 msgstr "Триває додавання піддомену!"
 
-msgid "ispCP - Client/Add Subdomain"
-msgstr "ispCP - Клієнт/Додавання піддомену"
+msgid "i-MSCP - Client/Add Subdomain"
+msgstr "i-MSCP - Клієнт/Додавання піддомену"
 
 msgid "Add subdomain"
 msgstr "Додати піддомен"
@@ -3481,8 +3481,8 @@ msgstr "Будь ласка, укажіть тему повідомлення!"
 msgid "Your message was sent!"
 msgstr "Ваше повідомлення надіслане!"
 
-msgid "ispCP - Support system - New ticket"
-msgstr "ispCP - Система підтримки"
+msgid "i-MSCP - Support system - New ticket"
+msgstr "i-MSCP - Система підтримки"
 
 msgid "New ticket"
 msgstr "Новий запит"
@@ -3501,7 +3501,7 @@ msgstr "Невідкладний"
 
 #, fuzzy
 msgid "ISPCP - Client/Webtools"
-msgstr "ispCP - Клієнт/Web-інструменти"
+msgstr "i-MSCP - Клієнт/Web-інструменти"
 
 msgid "Webtools"
 msgstr "Web-інструменти"
@@ -3541,8 +3541,8 @@ msgid "Logout"
 msgstr "Вийти"
 
 #, fuzzy
-msgid "ispCP database updates"
-msgstr "Оновлення ispCP"
+msgid "i-MSCP database updates"
+msgstr "Оновлення i-MSCP"
 
 msgid "Custom menus"
 msgstr "Персональні меню"
@@ -3646,8 +3646,8 @@ msgid "Error"
 msgstr "Помилка"
 
 #, fuzzy
-msgid "ispCP - Order Panel"
-msgstr "Контрольна панель ispCP"
+msgid "i-MSCP - Order Panel"
+msgstr "Контрольна панель i-MSCP"
 
 #, php-format
 msgid "%.2f PB"
@@ -3765,7 +3765,7 @@ msgstr "Перенаправлення піддомену"
 msgid "Unknown type"
 msgstr "Невідомий тип"
 
-msgid "Welcome {USERNAME} to ispCP!"
+msgid "Welcome {USERNAME} to i-MSCP!"
 msgstr ""
 
 msgid ""
@@ -3773,7 +3773,7 @@ msgid ""
 "\n"
 "Hello {NAME}!\n"
 "\n"
-"A new ispCP account has been created for you.\n"
+"A new i-MSCP account has been created for you.\n"
 "Your account information:\n"
 "\n"
 "User type: {USERTYPE}\n"
@@ -3788,29 +3788,29 @@ msgid ""
 "User name: {USERNAME}\n"
 "Password: {PASSWORD}\n"
 "\n"
-"Best wishes with ispCP!\n"
-"The ispCP Team.\n"
+"Best wishes with i-MSCP!\n"
+"The i-MSCP Team.\n"
 "\n"
 msgstr ""
 
 #, fuzzy
-msgid "Please activate your new ispCP password!"
+msgid "Please activate your new i-MSCP password!"
 msgstr "Будь ласка, введіть пароль користувача!"
 
 msgid ""
 "\n"
 "\n"
 "Hello {NAME}!\n"
-"Use this link to activate your new ispCP password:\n"
+"Use this link to activate your new i-MSCP password:\n"
 "\n"
 "{LINK}\n"
 "\n"
-"Good Luck with the ispCP System\n"
-"The ispCP Team\n"
+"Good Luck with the i-MSCP System\n"
+"The i-MSCP Team\n"
 "\n"
 msgstr ""
 
-msgid "Your new ispCP login!"
+msgid "Your new i-MSCP login!"
 msgstr ""
 
 msgid ""
@@ -3823,8 +3823,8 @@ msgid ""
 "\n"
 "You can login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
 "\n"
-"Best wishes with ispCP!\n"
-"The ispCP Team\n"
+"Best wishes with i-MSCP!\n"
+"The i-MSCP Team\n"
 "\n"
 msgstr ""
 
@@ -3844,8 +3844,8 @@ msgid ""
 "\n"
 "{ACTIVATE_LINK}\n"
 "\n"
-"Thank you for using ispCP services.\n"
-"The ispCP Team\n"
+"Thank you for using i-MSCP services.\n"
+"The i-MSCP Team\n"
 "\n"
 msgstr ""
 
@@ -3863,8 +3863,8 @@ msgid ""
 "Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}"
 "{BASE_SERVER_VHOST}/reseller/alias.php\n"
 "\n"
-"Thank you for using ispCP services.\n"
-"The ispCP Team\n"
+"Thank you for using i-MSCP services.\n"
+"The i-MSCP Team\n"
 "\n"
 msgstr ""
 
@@ -4102,7 +4102,7 @@ msgid "You have a disk limit!<br />You cannot add an user with unlimited disk!"
 msgstr ""
 
 #, fuzzy
-msgid "ispCP Error"
+msgid "i-MSCP Error"
 msgstr "Помилка"
 
 #, fuzzy
@@ -4118,7 +4118,7 @@ msgid ""
 "Dear {RESELLER},\n"
 "you have a new order from {NAME} <{MAIL}> for domain {DOMAIN}\n"
 "\n"
-"Please login into your ispCP control panel for more details.\n"
+"Please login into your i-MSCP control panel for more details.\n"
 "\n"
 msgstr ""
 
@@ -4219,8 +4219,8 @@ msgstr "Web & E-mail підтримка"
 msgid "Your Own Domain"
 msgstr "Ваш власний домен"
 
-msgid "ispCP Control Panel"
-msgstr "Контрольна панель ispCP"
+msgid "i-MSCP Control Panel"
+msgstr "Контрольна панель i-MSCP"
 
 msgid "Automatic Updates"
 msgstr "Автоматичні оновлення"
@@ -4235,14 +4235,14 @@ msgid "Performance"
 msgstr "Виконання"
 
 #, fuzzy
-msgid "ispCP Reseller: Add Alias"
-msgstr "Реселер ispCP : Додавання аліасу"
+msgid "i-MSCP Reseller: Add Alias"
+msgstr "Реселер i-MSCP : Додавання аліасу"
 
 msgid "There is no user records for this reseller to add an alias for."
 msgstr ""
 
-msgid "ispCP - Manage Domain/Alias"
-msgstr "ispCP - Керування доменами/Аліаси"
+msgid "i-MSCP - Manage Domain/Alias"
+msgstr "i-MSCP - Керування доменами/Аліаси"
 
 msgid "Manage alias"
 msgstr "Керування аліасами"
@@ -4287,14 +4287,14 @@ msgstr "Аліас домену додано!"
 msgid "Ordered domain alias not activated!"
 msgstr "Аліас домену не додано!"
 
-msgid "ispCP - Circular"
-msgstr "ispCP - Адміністратор/Реклама"
+msgid "i-MSCP - Circular"
+msgstr "i-MSCP - Адміністратор/Реклама"
 
 msgid "Circular"
 msgstr "Масова розсилка пошти"
 
-msgid "ispCP - Domain/Edit"
-msgstr "ispCP - Домен/Редагування"
+msgid "i-MSCP - Domain/Edit"
+msgstr "i-MSCP - Домен/Редагування"
 
 #, fuzzy
 msgid "Unchanged"
@@ -4352,8 +4352,8 @@ msgstr ""
 msgid "The <em>%s</em> service cannot be unlimited!"
 msgstr ""
 
-msgid "ispCP - Reseller/Add hosting plan"
-msgstr "ispCP - Реселер/Додавання хостінг-плану"
+msgid "i-MSCP - Reseller/Add hosting plan"
+msgstr "i-MSCP - Реселер/Додавання хостінг-плану"
 
 msgid "Price must be a number!"
 msgstr ""
@@ -4368,14 +4368,14 @@ msgstr "БД MySQL<br><i>(-1 - заборонено, 0 - необмежено)</
 msgid "Hosting plan values exceed reseller maximum values!"
 msgstr ""
 
-msgid "ispCP - Reseller/Edit hosting plan"
-msgstr "ispCP - Реселер/Редагування хостінг-плану"
+msgid "i-MSCP - Reseller/Edit hosting plan"
+msgstr "i-MSCP - Реселер/Редагування хостінг-плану"
 
 msgid "View hosting plan"
 msgstr "Перегляд хостінг-плану"
 
-msgid "ispCP - Reseller/Main Index"
-msgstr "ispCP - Реселер/Головна"
+msgid "i-MSCP - Reseller/Main Index"
+msgstr "i-MSCP - Реселер/Головна"
 
 msgid "View details"
 msgstr "Перегляд деталей"
@@ -4406,11 +4406,11 @@ msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr ""
 
 #, fuzzy
-msgid "ispCP - Reseller/Change Language"
-msgstr "ispCP - Клієнт/Зміна мови"
+msgid "i-MSCP - Reseller/Change Language"
+msgstr "i-MSCP - Клієнт/Зміна мови"
 
-msgid "ispCP - Reseller/Order email setup"
-msgstr "ispCP - Реселер/Налаштування замовлення"
+msgid "i-MSCP - Reseller/Order email setup"
+msgstr "i-MSCP - Реселер/Налаштування замовлення"
 
 msgid "Manage orders"
 msgstr "Керування замовленнями"
@@ -4434,8 +4434,8 @@ msgstr "Користувача додано!"
 msgid "Customer order was removed successful!"
 msgstr "Замовлення було успішно видалене!"
 
-msgid "ispCP - Reseller/Order details"
-msgstr "ispCP - Реселер/Деталі замовлення"
+msgid "i-MSCP - Reseller/Order details"
+msgstr "i-MSCP - Реселер/Деталі замовлення"
 
 msgid "Order data updated successfully!"
 msgstr "Дані про замовлення успішно оновлені!"
@@ -4461,8 +4461,8 @@ msgstr "Ви впевнені, що бажаєте видалити це зам�
 msgid "Add to the system"
 msgstr "Додати в систему"
 
-msgid "ispCP - Reseller/Order settings"
-msgstr "ispCP - Реселер/Налаштування замовлення"
+msgid "i-MSCP - Reseller/Order settings"
+msgstr "i-MSCP - Реселер/Налаштування замовлення"
 
 msgid "Header"
 msgstr "Верхня частина"
@@ -4476,8 +4476,8 @@ msgstr "Робочий URL"
 msgid "Footer"
 msgstr "Нижня частина"
 
-msgid "ispCP - Reseller/Order management"
-msgstr "ispCP - Реселер/Керування замовленнями"
+msgid "i-MSCP - Reseller/Order management"
+msgstr "i-MSCP - Реселер/Керування замовленнями"
 
 msgid "You do not have new orders!"
 msgstr "Ви не маєте нових замовлень!"
@@ -4500,14 +4500,14 @@ msgstr "Додати/Деталі"
 msgid "Order Canceled: resellers maximum exceeded!"
 msgstr ""
 
-msgid "ispCP - Reseller/Change Password"
-msgstr "ispCP - Реселер/Зміна пароля"
+msgid "i-MSCP - Reseller/Change Password"
+msgstr "i-MSCP - Реселер/Зміна пароля"
 
-msgid "ispCP - Reseller/Change Personal Data"
-msgstr "ispCP - Реселер/Зміна персональних даних"
+msgid "i-MSCP - Reseller/Change Personal Data"
+msgstr "i-MSCP - Реселер/Зміна персональних даних"
 
-msgid "ispCP - Reseller/Lostpw email setup"
-msgstr "ispCP - Реселер/Налаштування відновлення пароля"
+msgid "i-MSCP - Reseller/Lostpw email setup"
+msgstr "i-MSCP - Реселер/Налаштування відновлення пароля"
 
 msgid "Lostpw email"
 msgstr "E-mail для відновлення пароля"
@@ -4515,14 +4515,14 @@ msgstr "E-mail для відновлення пароля"
 msgid "Lostpw link"
 msgstr "Посилання на відновлення пароля"
 
-msgid "ispCP - Reseller/Manage users/Email setup"
+msgid "i-MSCP - Reseller/Manage users/Email setup"
 msgstr ""
 
-msgid "ispCP - Reseller: Support System: View Ticket"
-msgstr "ispCP - Реселер : Система підтримки: Перегляд запитів"
+msgid "i-MSCP - Reseller: Support System: View Ticket"
+msgstr "i-MSCP - Реселер : Система підтримки: Перегляд запитів"
 
-msgid "ispCP - Users/Add user"
-msgstr "ispCP - Користувачі/Додавання користувача"
+msgid "i-MSCP - Users/Add user"
+msgstr "i-MSCP - Користувачі/Додавання користувача"
 
 #, fuzzy
 msgid "1 Month"
@@ -4560,8 +4560,8 @@ msgstr "Наступний крок"
 msgid "You have no hosting plans. Please contact your system administrator."
 msgstr ""
 
-msgid "ispCP - User/Add user(step2)"
-msgstr "ispCP - Користувач/Додавання користувача (крок 2)"
+msgid "i-MSCP - User/Add user(step2)"
+msgstr "i-MSCP - Користувач/Додавання користувача (крок 2)"
 
 msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr ""
@@ -4575,8 +4575,8 @@ msgstr "AWStats"
 msgid "Domain data has been altered. Please enter again"
 msgstr ""
 
-msgid "ispCP - User/Add user"
-msgstr "ispCP - Користувач/Додавання користувача"
+msgid "i-MSCP - User/Add user"
+msgstr "i-MSCP - Користувач/Додавання користувача"
 
 msgid "Add other domains to this account"
 msgstr "Додати інші домени до цього облікового запису"
@@ -4585,14 +4585,14 @@ msgstr "Додати інші домени до цього облікового 
 msgid "System error with Domain Id: %d"
 msgstr ""
 
-msgid "ispCP - Users/Edit"
-msgstr "ispCP - Користувачі/Редагування"
+msgid "i-MSCP - Users/Edit"
+msgstr "i-MSCP - Користувачі/Редагування"
 
 msgid "Users list"
 msgstr "Список користувачів"
 
-msgid "ispCP - Users"
-msgstr "ispCP - Користувачі"
+msgid "i-MSCP - Users"
+msgstr "i-MSCP - Користувачі"
 
 #, fuzzy, php-format
 msgid "Are you sure you want to change the status of %s?"

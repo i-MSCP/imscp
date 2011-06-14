@@ -1,5 +1,5 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) 2008 ispCP Team
+# Copyright (C) 2008 i-MSCP Team
 # This file is distributed under the same license as the PACKAGE package.
 # Karl M. Kittilsen karl@kittilsen.org 2008
 #
@@ -25,8 +25,8 @@ msgstr "UTF-8"
 msgid "_: Localised language"
 msgstr "Norsk (Bokmål) - Norwegian (Bokmål)"
 
-msgid "ispCP Omega a Virtual Hosting Control System"
-msgstr "ispCP Omega a Virtual Hosting Control System"
+msgid "i-MSCP  a Virtual Hosting Control System"
+msgstr "i-MSCP  a Virtual Hosting Control System"
 
 msgid "Administrator login"
 msgstr "Administrator login"
@@ -56,8 +56,8 @@ msgid "Retrieving lost passwords is currently not possible"
 msgstr "Gjenoppretting av tapte passord er for øyeblikket ikke tilgjengelig"
 
 #, fuzzy
-msgid "ispCP - Virtual Hosting Control System"
-msgstr "ispCP - Virtual Hosting Control System"
+msgid "i-MSCP - Virtual Hosting Control System"
+msgstr "i-MSCP - Virtual Hosting Control System"
 
 #, fuzzy
 msgid "Your new password has been sent."
@@ -96,8 +96,8 @@ msgstr ""
 msgid "Request password"
 msgstr "Forespørr passord"
 
-msgid "ispCP - Admin/Manage users/Add User"
-msgstr "ispCP - Admin/Administrer brukere/Legg til bruker"
+msgid "i-MSCP - Admin/Manage users/Add User"
+msgstr "i-MSCP - Admin/Administrer brukere/Legg til bruker"
 
 msgid "Administrator"
 msgstr "Administrator"
@@ -203,12 +203,12 @@ msgstr "Forhandler"
 msgid "Domain account"
 msgstr "Domene konto"
 
-msgid "ispCP - Admin/Manage users/Edit Administrator"
-msgstr "ispCP - Admin/Administrer brukere/Endre Administrator"
+msgid "i-MSCP - Admin/Manage users/Edit Administrator"
+msgstr "i-MSCP - Admin/Administrer brukere/Endre Administrator"
 
 #, fuzzy
-msgid "ispCP - Admin/Manage users/Edit User"
-msgstr "ispCP - Admin/Administrer brukere/Legg til bruker"
+msgid "i-MSCP - Admin/Manage users/Edit User"
+msgstr "i-MSCP - Admin/Administrer brukere/Legg til bruker"
 
 msgid "Edit admin"
 msgstr "Endre administrator"
@@ -232,8 +232,8 @@ msgstr "Passordinformasjon mangler!"
 msgid "Demo Version!"
 msgstr ""
 
-msgid "ispCP - Admin/Admin Log"
-msgstr "ispCP - Admin/Admin Logg"
+msgid "i-MSCP - Admin/Admin Log"
+msgstr "i-MSCP - Admin/Admin Logg"
 
 msgid "Log is empty!"
 msgstr "Innloggingen er tom!"
@@ -298,8 +298,8 @@ msgstr "eldre enn 6 måneder"
 msgid "older than 12 months"
 msgstr "eldre enn 12 måneder"
 
-msgid "ispCP - Admin - Email Marketing"
-msgstr "ispCP - Admin - Email Markedsføring"
+msgid "i-MSCP - Admin - Email Marketing"
+msgstr "i-MSCP - Admin - Email Markedsføring"
 
 msgid "Please specify a message subject!"
 msgstr "Vennligst spesifiser emne på meldingen!"
@@ -368,8 +368,8 @@ msgstr "Egendefinert menydata vellykket oppdatert!"
 msgid "Custom menu deleted successful!"
 msgstr "Den egendefinerte menyen ble vellykket slettet!"
 
-msgid "ispCP - Admin - Manage custom menus"
-msgstr "ispCP - Admin - Administrer egendefinerte menyer"
+msgid "i-MSCP - Admin - Manage custom menus"
+msgstr "i-MSCP - Admin - Administrer egendefinerte menyer"
 
 msgid "Manage custom menus"
 msgstr "Administrere egendefinerte menyer"
@@ -448,8 +448,8 @@ msgstr "Utfør spørring"
 msgid "No database updates available"
 msgstr "Ingen database oppdateringer tilgjengelig"
 
-msgid "ispCP - Domain/Details"
-msgstr "ispCP - Domene/Detaljer"
+msgid "i-MSCP - Domain/Details"
+msgstr "i-MSCP - Domene/Detaljer"
 
 msgid "Domain details"
 msgstr "Domene detaljer"
@@ -534,8 +534,8 @@ msgid "Disabled"
 msgstr "Deaktivert"
 
 #, fuzzy
-msgid "ispCP - Admin/Edit Domain"
-msgstr "ispCP - Admin/Admin Logg"
+msgid "i-MSCP - Admin/Edit Domain"
+msgstr "i-MSCP - Admin/Admin Logg"
 
 msgid "Edit Domain"
 msgstr "Endre domene"
@@ -689,8 +689,8 @@ msgstr ""
 msgid "You are exceeding reseller limits for the <em>%s</em> service!"
 msgstr ""
 
-msgid "ispCP - Domain Statistics Data"
-msgstr "ispCP - Domene Statistisk Data"
+msgid "i-MSCP - Domain Statistics Data"
+msgstr "i-MSCP - Domene Statistisk Data"
 
 msgid "Domain statistics"
 msgstr "Domene statestikk"
@@ -722,8 +722,8 @@ msgstr "All traffikk"
 msgid "Day"
 msgstr "Dag"
 
-msgid "ispCP - Administrator/Add hosting plan"
-msgstr "ispCP - Administrator/Legg til betalingsløsning "
+msgid "i-MSCP - Administrator/Add hosting plan"
+msgstr "i-MSCP - Administrator/Legg til betalingsløsning "
 
 msgid "Add hosting plan"
 msgstr "Legg til betalingsløsning"
@@ -833,8 +833,8 @@ msgstr "Ugyldig utseende på opprettelseskostnad!"
 msgid "Hosting plan with entered name already exists!"
 msgstr "En betalingsløsning med dette navnet eksisterer allerede!"
 
-msgid "ispCP - Administrator/Edit hosting plan"
-msgstr "ispCP - Administrator/Endre betalingsplan"
+msgid "i-MSCP - Administrator/Edit hosting plan"
+msgstr "i-MSCP - Administrator/Endre betalingsplan"
 
 msgid "Price Style"
 msgstr "Pris Stil"
@@ -857,8 +857,8 @@ msgstr "Ugyldig pris. Eksempel: 9.99"
 msgid "Incorrect setup fee. Example: 19.99"
 msgstr "Ugyldig opprettings kostnad. Eksempel: 19.99"
 
-msgid "ispCP - Administrator/Hosting Plan Management"
-msgstr "ispCP - Administrator/Betalingsplan Administrasjon"
+msgid "i-MSCP - Administrator/Hosting Plan Management"
+msgstr "i-MSCP - Administrator/Betalingsplan Administrasjon"
 
 msgid "Hosting plans"
 msgstr "Betalingsplaner"
@@ -913,8 +913,8 @@ msgstr "Ingen database oppdateringer tilgjengelig"
 msgid "Update checking is disabled!"
 msgstr ""
 
-msgid "New ispCP update is now available"
-msgstr "Ny ispCP oppdatering er nå tilgjengelig"
+msgid "New i-MSCP update is now available"
+msgstr "Ny i-MSCP oppdatering er nå tilgjengelig"
 
 msgid "You are exceeding your traffic limit!"
 msgstr "Du overskirder din trafikk grense!"
@@ -928,8 +928,8 @@ msgid "%1$d%% [%2$s of %3$s]"
 msgstr "%1$d%% [%2$s av %3$s]"
 
 #, fuzzy
-msgid "ispCP - Admin/Main Index"
-msgstr "ispCP - Klient/Hovedside"
+msgid "i-MSCP - Admin/Main Index"
+msgstr "i-MSCP - Klient/Hovedside"
 
 msgid "You cannot delete the last active IP address!"
 msgstr "Du kan ikke fjerne den siste aktive IP adressen!"
@@ -943,8 +943,8 @@ msgstr "Error: vi har en forhandler som bruker denne IP'en!"
 msgid "IP was deleted!"
 msgstr "IP'en ble slettet!"
 
-msgid "ispCP - Admin/IP manage"
-msgstr "ispCP - Admin/IP administrasjon"
+msgid "i-MSCP - Admin/IP manage"
+msgstr "i-MSCP - Admin/IP administrasjon"
 
 msgid "Remove IP"
 msgstr "Fjern IP"
@@ -1003,8 +1003,8 @@ msgstr "Ingen systemfeil for underdomener"
 msgid "No email account system errors"
 msgstr "Ingen systemfeil for email kontoer"
 
-msgid "ispCP debugger"
-msgstr "ispCP debugger"
+msgid "i-MSCP debugger"
+msgstr "i-MSCP debugger"
 
 msgid "Domain errors"
 msgstr "Domene feil"
@@ -1022,8 +1022,8 @@ msgstr "Videresending av underdomene"
 msgid "Mail account errors"
 msgstr "Mail konto feil"
 
-msgid "ispCP Daemon tools"
-msgstr "ispCP Prosessverktøy"
+msgid "i-MSCP Daemon tools"
+msgstr "i-MSCP Prosessverktøy"
 
 msgid "Execute requests"
 msgstr "Utfør handlindger"
@@ -1055,14 +1055,14 @@ msgstr "Instillinger"
 msgid "Get it at"
 msgstr "Få alt"
 
-msgid "ispCP updates"
-msgstr "ispCP oppdateringer"
+msgid "i-MSCP updates"
+msgstr "i-MSCP oppdateringer"
 
-msgid "Available ispCP updates"
-msgstr "Tilgjengelige ispCP oppdateringer"
+msgid "Available i-MSCP updates"
+msgstr "Tilgjengelige i-MSCP oppdateringer"
 
-msgid "No new ispCP updates available"
-msgstr "Ingen nye ispCP updateringer tilgjengelig"
+msgid "No new i-MSCP updates available"
+msgstr "Ingen nye i-MSCP updateringer tilgjengelig"
 
 #, fuzzy
 msgid "Language was removed!"
@@ -1071,8 +1071,8 @@ msgstr "Språket ble oppdatert!"
 msgid "User language updated successfully!"
 msgstr "Oppdatering av brukerspråk vellykket!"
 
-msgid "ispCP - Admin/Change Language"
-msgstr "ispCP - Admin/Endre Språk"
+msgid "i-MSCP - Admin/Change Language"
+msgstr "i-MSCP - Admin/Endre Språk"
 
 msgid "Language"
 msgstr "Språk"
@@ -1084,8 +1084,8 @@ msgstr "Velg standar språk"
 msgid "Reseller list is empty!"
 msgstr "Forhandler listen er tom!"
 
-msgid "ispCP - Admin/Manage users/Reseller assignment"
-msgstr "ispCP - Admin/Forhandler brukere/Forhandler tildeling"
+msgid "i-MSCP - Admin/Manage users/Reseller assignment"
+msgstr "i-MSCP - Admin/Forhandler brukere/Forhandler tildeling"
 
 msgid "Reseller assignment"
 msgstr "Forhandler tildeling"
@@ -1149,8 +1149,8 @@ msgid ""
 "reseller !<br>This user cannot be moved!"
 msgstr ""
 
-msgid "ispCP - Admin/Manage users/User assignment"
-msgstr "ispCP - Admin/Administrer brukere/Brukertildeling"
+msgid "i-MSCP - Admin/Manage users/User assignment"
+msgstr "i-MSCP - Admin/Administrer brukere/Brukertildeling"
 
 msgid "User assignment"
 msgstr "Brukertildeling"
@@ -1167,8 +1167,8 @@ msgstr "Fra forhandler"
 msgid "To reseller"
 msgstr "Til forhandler"
 
-msgid "ispCP - Admin/Manage Users"
-msgstr "ispCP - Admin/Administrer Brukere"
+msgid "i-MSCP - Admin/Manage Users"
+msgstr "i-MSCP - Admin/Administrer Brukere"
 
 msgid "User added"
 msgstr "Bruker lagt til"
@@ -1196,8 +1196,8 @@ msgstr "Brukeren ble deaktivert"
 msgid "Incorrect data input!"
 msgstr "Ugyldig inndata"
 
-msgid "ispCP - Admin/Internationalisation"
-msgstr "ispCP - Admin/Internasjonalisering"
+msgid "i-MSCP - Admin/Internationalisation"
+msgstr "i-MSCP - Admin/Internasjonalisering"
 
 msgid "Upload file error!"
 msgstr "Feil med fil opplasting!"
@@ -1260,8 +1260,8 @@ msgstr "Installer"
 msgid "Export"
 msgstr "Eksporter"
 
-msgid "ispCP - Admin/Change Password"
-msgstr "ispCP - Admin/Endre Passord"
+msgid "i-MSCP - Admin/Change Password"
+msgstr "i-MSCP - Admin/Endre Passord"
 
 msgid "Please fill up all data fields!"
 msgstr "Venligst fyll inn data i alle feltene!"
@@ -1290,8 +1290,8 @@ msgstr "Nåværende passord"
 msgid "Password change is deactivated!"
 msgstr ""
 
-msgid "ispCP - Admin/Change Personal Data"
-msgstr "ispCP - Admin/Endre Personlig Informasjon"
+msgid "i-MSCP - Admin/Change Personal Data"
+msgstr "i-MSCP - Admin/Endre Personlig Informasjon"
 
 msgid "Personal data updated successfully!"
 msgstr "Oppdatering av personlig informasjon vellykket!"
@@ -1305,8 +1305,8 @@ msgstr "Personlig informasjon"
 msgid "Update data"
 msgstr "Oppdater informasjon"
 
-msgid "ispCP - Admin/Manage users/Add reseller"
-msgstr "ispCP - Admin/Administrer brukere/Legg til forhandler"
+msgid "i-MSCP - Admin/Manage users/Add reseller"
+msgstr "i-MSCP - Admin/Administrer brukere/Legg til forhandler"
 
 msgid "Reseller IP list is empty!"
 msgstr "Forhandler IP listen er tom!"
@@ -1434,8 +1434,8 @@ msgstr ""
 msgid "ERROR: The reseller account you trying to edit does not exist!"
 msgstr ""
 
-msgid "ispCP - Admin/Manage users/Edit Reseller"
-msgstr "ispCP - Admin/Administer brukere/Endre Forhandler"
+msgid "i-MSCP - Admin/Manage users/Edit Reseller"
+msgstr "i-MSCP - Admin/Administer brukere/Endre Forhandler"
 
 msgid ""
 "ERROR: One or more errors was found! Please, correct them and try again!"
@@ -1468,12 +1468,12 @@ msgstr ""
 
 #, php-format
 msgid ""
-"ispCP NOTICE:\\n\\nThe `Enter` key is disabled for performance reasons!"
+"i-MSCP NOTICE:\\n\\nThe `Enter` key is disabled for performance reasons!"
 "\\nInstead, use the %s button to update the data."
 msgstr ""
 
-msgid "ispCP - Reseller statistics"
-msgstr "ispCP - Forhandler statistikk"
+msgid "i-MSCP - Reseller statistics"
+msgstr "i-MSCP - Forhandler statistikk"
 
 msgid "Not found reseller(s) in your system!"
 msgstr "Forhandler(E) ikke funnet på ditt system!"
@@ -1506,8 +1506,8 @@ msgstr "SQL database"
 msgid "SQL user"
 msgstr "SQL bruker"
 
-msgid "ispCP - Admin/Reseller User Statistics"
-msgstr "ispCP - Admin/Reseller Bruker Statistikk"
+msgid "i-MSCP - Admin/Reseller User Statistics"
+msgstr "i-MSCP - Admin/Reseller Bruker Statistikk"
 
 #, php-format
 msgid "%1$s <br/>of<br/> <b>%2$s</b>"
@@ -1555,8 +1555,8 @@ msgstr "SQL<br>database"
 msgid "SQL<br>user"
 msgstr "SQL <br>bruker"
 
-msgid "ispCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
-msgstr "ispCP Admin / Systemverktøy / Anti-Rootkit Verktøy Log Sjekker"
+msgid "i-MSCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
+msgstr "i-MSCP Admin / Systemverktøy / Anti-Rootkit Verktøy Log Sjekker"
 
 #, php-format
 msgid "%s doesn't exist or is empty"
@@ -1565,8 +1565,8 @@ msgstr "%s eksisterer ikke, eller er tom"
 msgid "Anti-Rootkits Tools Log Checker"
 msgstr "Anti-Rootkits Verktøys Log Sjekker"
 
-msgid "ispCP - Admin/Server day stats"
-msgstr "ispCP - Admin/Server dag statistikker"
+msgid "i-MSCP - Admin/Server day stats"
+msgstr "i-MSCP - Admin/Server dag statistikker"
 
 msgid "Server day statistics"
 msgstr "Server dag statistikker"
@@ -1617,14 +1617,14 @@ msgstr "Alt inn"
 msgid "All out"
 msgstr "Alt ut"
 
-msgid "ispCP - Admin/Server statistics"
-msgstr "ispCP - Admin/Server statistikk"
+msgid "i-MSCP - Admin/Server statistics"
+msgstr "i-MSCP - Admin/Server statistikk"
 
 msgid "Server statistics"
 msgstr "Server statistikk"
 
-msgid "ispCP Admin / System Tools / Server Status"
-msgstr "ispCP Admin / Systemverkøy / Server Status"
+msgid "i-MSCP Admin / System Tools / Server Status"
+msgstr "i-MSCP Admin / Systemverkøy / Server Status"
 
 msgid "UP"
 msgstr "OPPE"
@@ -1641,8 +1641,8 @@ msgstr "Service"
 msgid "Server status"
 msgstr "Server status"
 
-msgid "ispCP - Admin/Manage Sessions"
-msgstr "ispCP - Admin/Administrer Sesjoner"
+msgid "i-MSCP - Admin/Manage Sessions"
+msgstr "i-MSCP - Admin/Administrer Sesjoner"
 
 msgid "Manage user sessions"
 msgstr "Administrer brukersesjoner"
@@ -1707,8 +1707,8 @@ msgstr "Vennligst spesifiser en melding!"
 msgid "Auto email template data updated!"
 msgstr "Informasjonen i auto email malen ble oppdatert!"
 
-msgid "ispCP - Admin/Lostpw email setup"
-msgstr "ispCP - Admin/Glemtpw email setup"
+msgid "i-MSCP - Admin/Lostpw email setup"
+msgstr "i-MSCP - Admin/Glemtpw email setup"
 
 msgid "Lost password e-mail"
 msgstr "Glemt passord e-mail"
@@ -1750,8 +1750,8 @@ msgstr ""
 msgid "URL protocol"
 msgstr "Protokoll"
 
-msgid "ispCP - Admin/Maintenance mode"
-msgstr "ispCP - Admin/Vedlikeholds modus"
+msgid "i-MSCP - Admin/Maintenance mode"
+msgstr "i-MSCP - Admin/Vedlikeholds modus"
 
 msgid "Settings saved !"
 msgstr "Instillinger lagret !"
@@ -1762,8 +1762,8 @@ msgstr "Vedlikeholds modus"
 msgid "Under this mode only administrators can login"
 msgstr "I denne modusen kan bare administratorer logge inn"
 
-msgid "ispCP - Admin/Settings"
-msgstr "ispCP - Admin/Instillinger"
+msgid "i-MSCP - Admin/Settings"
+msgstr "i-MSCP - Admin/Instillinger"
 
 msgid "ERROR: Only positive numbers are allowed !"
 msgstr "FEIL: Kun positive nummer tillatt!"
@@ -1970,8 +1970,8 @@ msgstr ""
 msgid "Add new service port"
 msgstr "Legg til ny betalingsløsning for brukere"
 
-msgid "ispCP - Admin/Server Traffic Settings"
-msgstr "ispCP - Admin/Server Traffic Settings"
+msgid "i-MSCP - Admin/Server Traffic Settings"
+msgstr "i-MSCP - Admin/Server Traffic Settings"
 
 msgid "Wrong data input!"
 msgstr "Gal inndata!"
@@ -1997,7 +1997,7 @@ msgstr "Maks trafikk [MB]"
 msgid "Warning traffic [MB]"
 msgstr "Advarsels trafikk [MB]"
 
-msgid "ispCP - Admin/Manage users/Email setup"
+msgid "i-MSCP - Admin/Manage users/Email setup"
 msgstr "sipCP - Admin/Administrer brukere/Email oppsett"
 
 msgid "Email setup"
@@ -2079,8 +2079,8 @@ msgstr "Oppetid"
 msgid "You have no support tickets."
 msgstr "Du har ingen hjelpsaker"
 
-msgid "ispCP - Client/Questions & Comments"
-msgstr "ispCP - Klient/Spørsmål & Kommentarer"
+msgid "i-MSCP - Client/Questions & Comments"
+msgstr "i-MSCP - Klient/Spørsmål & Kommentarer"
 
 msgid "Support tickets"
 msgstr "Hjelp sak"
@@ -2121,8 +2121,8 @@ msgstr "[Ny]"
 msgid "[Re]"
 msgstr "[Sv]"
 
-msgid "ispCP - Client/Enable Mail Autoresponder"
-msgstr "ispCP - Client/Aktiver Mail Autosvar"
+msgid "i-MSCP - Client/Enable Mail Autoresponder"
+msgstr "i-MSCP - Client/Aktiver Mail Autosvar"
 
 msgid "Ticket not found!"
 msgstr "Sak ikke funnet!"
@@ -2133,8 +2133,8 @@ msgstr "Åpen sak"
 msgid "Close ticket"
 msgstr "Lukket sak"
 
-msgid "ispCP - Client: Support System: View Ticket"
-msgstr "ispCP - Client : Hjelp system: Vis Saker"
+msgid "i-MSCP - Client: Support System: View Ticket"
+msgstr "i-MSCP - Client : Hjelp system: Vis Saker"
 
 msgid "Please type your message!"
 msgstr "Vennligst skriv inn til melding!"
@@ -2148,8 +2148,8 @@ msgstr "Saken ble lukket!"
 msgid "Ticket was reopened!"
 msgstr "Saken ble gjennåpnet!"
 
-msgid "ispCP - Admin: Support System: View Ticket"
-msgstr "ispCP - Admin : Support System: Vis Saker"
+msgid "i-MSCP - Admin: Support System: View Ticket"
+msgstr "i-MSCP - Admin : Support System: Vis Saker"
 
 msgid "View support ticket"
 msgstr "Vist hjelp sak"
@@ -2161,8 +2161,8 @@ msgid "Send reply"
 msgstr "Send svar"
 
 #, fuzzy
-msgid "ispCP - Delete Domain"
-msgstr "ispCP - Klient/Administrer Domener"
+msgid "i-MSCP - Delete Domain"
+msgstr "i-MSCP - Klient/Administrer Domener"
 
 msgid "Wrong domain ID!"
 msgstr "Gal domene ID"
@@ -2214,8 +2214,8 @@ msgstr ""
 msgid "Yes, delete the domain."
 msgstr "%s slett hele administratorloggen"
 
-msgid "ispCP Client : Add Alias"
-msgstr "ispCP Client : Legg til peker"
+msgid "i-MSCP Client : Add Alias"
+msgstr "i-MSCP Client : Legg til peker"
 
 msgid "Manage domain alias"
 msgstr "Administrer domene pekere"
@@ -2235,9 +2235,9 @@ msgstr "WWW-videresendings URL"
 msgid "Add alias"
 msgstr "Legg til peker"
 
-msgid "You do not need 'www.' ispCP will add it on its own."
+msgid "You do not need 'www.' i-MSCP will add it on its own."
 msgstr ""
-"Du trenger ikke å skrive inn 'www.' ispCP vil legge det til automatisk."
+"Du trenger ikke å skrive inn 'www.' i-MSCP vil legge det til automatisk."
 
 #, fuzzy
 msgid "Wrong domain name!"
@@ -2304,7 +2304,7 @@ msgstr ""
 msgid "Alias scheduled for deletion!"
 msgstr "Peker lagt i kø for sletting!"
 
-msgid "ispCP - Manage Domain Alias/Edit Alias"
+msgid "i-MSCP - Manage Domain Alias/Edit Alias"
 msgstr "sipCP - Administrer Domene Pekere/Endre Peker"
 
 msgid "Edit domain alias"
@@ -2326,8 +2326,8 @@ msgstr ""
 msgid "Backup archive scheduled for restoring!"
 msgstr "Sikkerhetskopi lagt i kø for gjennoppretting!"
 
-msgid "ispCP - Client/Daily Backup"
-msgstr "ispCP - Klient/Daglig Sikkerhetskopiering"
+msgid "i-MSCP - Client/Daily Backup"
+msgstr "i-MSCP - Klient/Daglig Sikkerhetskopiering"
 
 msgid "Daily backup"
 msgstr "Daglig sikkerhetskopiering"
@@ -2363,8 +2363,8 @@ msgstr "Gjenopprett"
 msgid "Are you sure you want to restore the backup?"
 msgstr "Er du sikker på at du vil tilbakeføre sikkerhetskopien?"
 
-msgid "ispCP - Client/Cronjob Manager"
-msgstr "ispCP - Klient/Cronjob Manager"
+msgid "i-MSCP - Client/Cronjob Manager"
+msgstr "i-MSCP - Klient/Cronjob Manager"
 
 #, fuzzy
 msgid "Cronjob Manager"
@@ -2412,11 +2412,11 @@ msgid "DNS zone record scheduled for deletion!"
 msgstr "Peker lagt i kø for sletting!"
 
 #, fuzzy
-msgid "ispCP - Manage Domain Alias/Add DNS zone's record"
+msgid "i-MSCP - Manage Domain Alias/Add DNS zone's record"
 msgstr "sipCP - Administrer Domene Pekere/Endre Peker"
 
 #, fuzzy
-msgid "ispCP - Manage Domain Alias/Edit DNS zone's record"
+msgid "i-MSCP - Manage Domain Alias/Edit DNS zone's record"
 msgstr "sipCP - Administrer Domene Pekere/Endre Peker"
 
 msgid "Add DNS zone's record (EXPERIMENTAL)"
@@ -2544,8 +2544,8 @@ msgstr "Slatt ordre"
 msgid "Alias list is empty!"
 msgstr "Peker listen er tom!"
 
-msgid "ispCP - Client/Manage Domains"
-msgstr "ispCP - Klient/Administrer Domener"
+msgid "i-MSCP - Client/Manage Domains"
+msgstr "i-MSCP - Klient/Administrer Domener"
 
 msgid "Manage domains"
 msgstr "Administrer domener"
@@ -2563,8 +2563,8 @@ msgstr "Handlinger"
 msgid "Record data"
 msgstr "Kjernedata"
 
-msgid "ispCP - Client/Domain Statistics"
-msgstr "ispCP - Klient/Domene Statistikk"
+msgid "i-MSCP - Client/Domain Statistics"
+msgstr "i-MSCP - Klient/Domene Statistikk"
 
 msgid "Web Stats"
 msgstr "Web Statistikk"
@@ -2581,8 +2581,8 @@ msgstr "POP3/IMAP"
 msgid "Sum"
 msgstr "Sum"
 
-msgid "ispCP - Client/Manage Error Custom Pages"
-msgstr "ispCP - Klient/Administrer Egendefinerte Feilsider"
+msgid "i-MSCP - Client/Manage Error Custom Pages"
+msgstr "i-MSCP - Klient/Administrer Egendefinerte Feilsider"
 
 msgid "Server error - please choose error page"
 msgstr "Server error - venligst velg feilside"
@@ -2619,8 +2619,8 @@ msgstr "Feil sider"
 msgid "FTP list is empty!"
 msgstr "FTP listen er tom!"
 
-msgid "ispCP - Client/Manage Users"
-msgstr "ispCP - Klient/Administrer Brukere"
+msgid "i-MSCP - Client/Manage Users"
+msgstr "i-MSCP - Klient/Administrer Brukere"
 
 msgid "Manage users"
 msgstr "Administrer brukere"
@@ -2677,8 +2677,8 @@ msgstr "Vennligs spesifiser en annen mappe for denne FTP kontoen!"
 msgid "FTP accounts limit reached!"
 msgstr "Grensen for FTP kontoer nådd!"
 
-msgid "ispCP - Client/Add FTP User"
-msgstr "ispCP - Client/Legg til FTP Bruker"
+msgid "i-MSCP - Client/Add FTP User"
+msgstr "i-MSCP - Client/Legg til FTP Bruker"
 
 msgid "Add FTP user"
 msgstr "Legg til FTP bruker"
@@ -2712,8 +2712,8 @@ msgstr "Oversående mappe"
 msgid "Protect it"
 msgstr "Beskytt det"
 
-msgid "ispCP - Client/Webtools"
-msgstr "ispCP - Klient/Webverktøy"
+msgid "i-MSCP - Client/Webtools"
+msgstr "i-MSCP - Klient/Webverktøy"
 
 msgid "Directory tree"
 msgstr "Mappetre"
@@ -2730,8 +2730,8 @@ msgstr "Sletting av FTP kontoen vellykket!"
 msgid "FTP account data updated!"
 msgstr "FTP kontoinformasjon oppdatert!"
 
-msgid "ispCP - Client/Edit FTP Account"
-msgstr "ispCP - Klient/Endre FTP Konto"
+msgid "i-MSCP - Client/Edit FTP Account"
+msgstr "i-MSCP - Klient/Endre FTP Konto"
 
 msgid "Edit FTP user"
 msgstr "Endre FTP bruker"
@@ -2843,7 +2843,7 @@ msgstr ""
 msgid "There are no available hosting plans for update"
 msgstr ""
 
-msgid "ispCP - Update hosting plan"
+msgid "i-MSCP - Update hosting plan"
 msgstr ""
 
 msgid "You have more e-mail addresses in use than the new hosting plan limits."
@@ -2852,14 +2852,14 @@ msgstr ""
 msgid "Your request for hosting pack update was added successfully"
 msgstr ""
 
-msgid "[ispCP OrderPanel] - You have an update order"
+msgid "[i-MSCP OrderPanel] - You have an update order"
 msgstr ""
 
 #, php-format
 msgid ""
 "You have an update order for the account %s\n"
 "\n"
-"Please login into your ispCP control panel at %s for more details"
+"Please login into your i-MSCP control panel at %s for more details"
 msgstr ""
 
 msgid "Your request for hosting pack update was removed successfully"
@@ -2893,8 +2893,8 @@ msgstr ""
 msgid "This Domain is expired"
 msgstr "Domene Funksjoner"
 
-msgid "ispCP - Client/Main Index"
-msgstr "ispCP - Klient/Hovedside"
+msgid "i-MSCP - Client/Main Index"
+msgstr "i-MSCP - Klient/Hovedside"
 
 msgid "General information"
 msgstr "Generell informasjon"
@@ -2923,8 +2923,8 @@ msgstr "Disk bruk"
 msgid "Alternative URL to reach your website"
 msgstr ""
 
-msgid "ispCP - Client/Change Language"
-msgstr "ispCP - Klient/Endre Språk"
+msgid "i-MSCP - Client/Change Language"
+msgstr "i-MSCP - Klient/Endre Språk"
 
 msgid "Please wait for update"
 msgstr "Venligst vent på en oppdatering"
@@ -3006,8 +3006,8 @@ msgstr "Videresendingslisten er tom!"
 msgid "Mail accounts limit reached!"
 msgstr "Mail konto grensen nådd!"
 
-msgid "ispCP - Client/Add Mail User"
-msgstr "ispCP - Klient/Legg til Mail Bruker"
+msgid "i-MSCP - Client/Add Mail User"
+msgstr "i-MSCP - Klient/Legg til Mail Bruker"
 
 msgid "Add mail users"
 msgstr "Legg til mail bruker"
@@ -3040,8 +3040,8 @@ msgstr "Venligst skriv inn din autosvar melding!"
 msgid "Mail account scheduler for modification!"
 msgstr "Mail konto lagt i kø for modifisering!"
 
-msgid "ispCP - Client/Enable Mail Auto Responder"
-msgstr "ispCP - Klient/Aktiver Mail Autosvar"
+msgid "i-MSCP - Client/Enable Mail Auto Responder"
+msgstr "i-MSCP - Klient/Aktiver Mail Autosvar"
 
 msgid "Edit mail auto responder"
 msgstr "Endre mail autosvar"
@@ -3058,8 +3058,8 @@ msgstr "Fang alle kontoer som ligger i kø for å bli opprettet!"
 msgid "Mail forward list error!"
 msgstr "Mail videresendingsliste feil!"
 
-msgid "ispCP - Client/Create CatchAll Mail Account"
-msgstr "ispCP - Klient/Legg til FangAlle Mail Kontoer"
+msgid "i-MSCP - Client/Create CatchAll Mail Account"
+msgstr "i-MSCP - Klient/Legg til FangAlle Mail Kontoer"
 
 msgid "Create catch all mail account"
 msgstr "Legg til en fang all mail konto"
@@ -3093,8 +3093,8 @@ msgstr ""
 msgid "Email account not found!"
 msgstr "Email konto ikke funnet!"
 
-msgid "ispCP - Manage Mail and FTP / Edit mail account"
-msgstr "ispCP - Administrer Mail og FTP / Endre mail konto"
+msgid "i-MSCP - Manage Mail and FTP / Edit mail account"
+msgstr "i-MSCP - Administrer Mail og FTP / Endre mail konto"
 
 msgid "Mail were updated successfully!"
 msgstr "Mail bel vellykket oppdatert!"
@@ -3102,11 +3102,11 @@ msgstr "Mail bel vellykket oppdatert!"
 msgid "Edit email account"
 msgstr "Endre email konto"
 
-msgid "ispCP - Client/Change Password"
-msgstr "ispCP - Klient/Endre Passord"
+msgid "i-MSCP - Client/Change Password"
+msgstr "i-MSCP - Klient/Endre Passord"
 
-msgid "ispCP - Client/Change Personal Data"
-msgstr "ispCP - Klient/Endre Personlig Informasjon"
+msgid "i-MSCP - Client/Change Personal Data"
+msgstr "i-MSCP - Klient/Endre Personlig Informasjon"
 
 msgid "Please choose user or group"
 msgstr "Venligst velg en bruker eller gruppe"
@@ -3259,8 +3259,8 @@ msgstr ""
 msgid "SQL user password was successfully changed!"
 msgstr "Passordet på SQL brukeren ble endret vellykket!"
 
-msgid "ispCP - Client/Change SQL User Password"
-msgstr "ispCP - Endre Passord på SQL Brukeren"
+msgid "i-MSCP - Client/Change SQL User Password"
+msgstr "i-MSCP - Endre Passord på SQL Brukeren"
 
 #, fuzzy
 msgid "Change SQL user password"
@@ -3288,8 +3288,8 @@ msgstr "Oppretting av SQL databasen var vellykket!"
 msgid "SQL accounts limit reached!"
 msgstr "Grensen for SQL kontoer nådd!"
 
-msgid "ispCP - Client/Add SQL Database"
-msgstr "ispCP - Client/Legg til SQL Database"
+msgid "i-MSCP - Client/Add SQL Database"
+msgstr "i-MSCP - Client/Legg til SQL Database"
 
 msgid "Add SQL database"
 msgstr "Legg til SQL database"
@@ -3318,8 +3318,8 @@ msgstr "Database brukerlisten er tom!"
 msgid "Database list is empty!"
 msgstr "Database listen er tom!"
 
-msgid "ispCP - Client/Manage SQL"
-msgstr "ispCP - Klient/Administrer SQL"
+msgid "i-MSCP - Client/Manage SQL"
+msgstr "i-MSCP - Klient/Administrer SQL"
 
 msgid "Manage SQL"
 msgstr "Administrer SQL"
@@ -3373,8 +3373,8 @@ msgstr "Det spesifiserte SQL brukernavnet eksisterer allerede!"
 msgid "SQL user successfully added!"
 msgstr "SQL brukeren ble vellykket lagt til!"
 
-msgid "ispCP - Client/Add SQL User"
-msgstr "ispCP - Klient/Legg til SQL Bruker"
+msgid "i-MSCP - Client/Add SQL User"
+msgstr "i-MSCP - Klient/Legg til SQL Bruker"
 
 msgid "SQL user name"
 msgstr "SQL brukernavn"
@@ -3417,8 +3417,8 @@ msgstr "Gal form på munteringspunkt"
 msgid "Subdomain scheduled for addition!"
 msgstr "Underdomene lagt i kø for å bli lagt til!"
 
-msgid "ispCP - Client/Add Subdomain"
-msgstr "ispCP - Klient/Legg til Underdomene"
+msgid "i-MSCP - Client/Add Subdomain"
+msgstr "i-MSCP - Klient/Legg til Underdomene"
 
 msgid "Add subdomain"
 msgstr "Legg til underdomene"
@@ -3438,8 +3438,8 @@ msgstr "Venligs spesifiser meldings emne!"
 msgid "Your message was sent!"
 msgstr "Din melding ble sendt!"
 
-msgid "ispCP - Support system - New ticket"
-msgstr "ispCP - Hjelp system - Ny hjelp sak"
+msgid "i-MSCP - Support system - New ticket"
+msgstr "i-MSCP - Hjelp system - Ny hjelp sak"
 
 msgid "New ticket"
 msgstr "Ny sak"
@@ -3496,8 +3496,8 @@ msgstr "Admin logg"
 msgid "Logout"
 msgstr "Log ut"
 
-msgid "ispCP database updates"
-msgstr "ispCP database oppdateringer"
+msgid "i-MSCP database updates"
+msgstr "i-MSCP database oppdateringer"
 
 msgid "Custom menus"
 msgstr "Egendefinerte menyer"
@@ -3598,7 +3598,7 @@ msgstr ""
 msgid "Error"
 msgstr "Feil"
 
-msgid "ispCP - Order Panel"
+msgid "i-MSCP - Order Panel"
 msgstr ""
 
 #, php-format
@@ -3717,8 +3717,8 @@ msgstr "Videresending av underdomene"
 msgid "Unknown type"
 msgstr "Ukjent type"
 
-msgid "Welcome {USERNAME} to ispCP!"
-msgstr "Velkommen {USERNAME} til ispCP!"
+msgid "Welcome {USERNAME} to i-MSCP!"
+msgstr "Velkommen {USERNAME} til i-MSCP!"
 
 #, fuzzy
 msgid ""
@@ -3726,7 +3726,7 @@ msgid ""
 "\n"
 "Hello {NAME}!\n"
 "\n"
-"A new ispCP account has been created for you.\n"
+"A new i-MSCP account has been created for you.\n"
 "Your account information:\n"
 "\n"
 "User type: {USERTYPE}\n"
@@ -3741,15 +3741,15 @@ msgid ""
 "User name: {USERNAME}\n"
 "Password: {PASSWORD}\n"
 "\n"
-"Best wishes with ispCP!\n"
-"The ispCP Team.\n"
+"Best wishes with i-MSCP!\n"
+"The i-MSCP Team.\n"
 "\n"
 msgstr ""
 "\n"
 "\n"
 "Hei {NAME}!\n"
 "\n"
-"En ny ispCP konto har blitt opprettet for deg.\n"
+"En ny i-MSCP konto har blitt opprettet for deg.\n"
 "Din kontoinformasjon:\n"
 "\n"
 "Brukertype: {USERTYPE}\n"
@@ -3761,37 +3761,37 @@ msgstr ""
 "Du kan nå logge inn på {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
 "\n"
 "Lykke til!\n"
-"Hilsen ispCP Team.\n"
+"Hilsen i-MSCP Team.\n"
 "\n"
 
-msgid "Please activate your new ispCP password!"
-msgstr "Venligst akriver ditt nye ispCP passord!"
+msgid "Please activate your new i-MSCP password!"
+msgstr "Venligst akriver ditt nye i-MSCP passord!"
 
 msgid ""
 "\n"
 "\n"
 "Hello {NAME}!\n"
-"Use this link to activate your new ispCP password:\n"
+"Use this link to activate your new i-MSCP password:\n"
 "\n"
 "{LINK}\n"
 "\n"
-"Good Luck with the ispCP System\n"
-"The ispCP Team\n"
+"Good Luck with the i-MSCP System\n"
+"The i-MSCP Team\n"
 "\n"
 msgstr ""
 "\n"
 "\n"
 "Hei {NAME}!\n"
-"Bruk denne linken når du skal aktivere ditt ispCP passord:\n"
+"Bruk denne linken når du skal aktivere ditt i-MSCP passord:\n"
 "\n"
 "{LINK}\n"
 "\n"
-"Lykke til med ispCP systemet\n"
-"Hilsen ispCP Team\n"
+"Lykke til med i-MSCP systemet\n"
+"Hilsen i-MSCP Team\n"
 "\n"
 
-msgid "Your new ispCP login!"
-msgstr "Din nye ispCP login!"
+msgid "Your new i-MSCP login!"
+msgstr "Din nye i-MSCP login!"
 
 msgid ""
 "\n"
@@ -3803,8 +3803,8 @@ msgid ""
 "\n"
 "You can login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
 "\n"
-"Best wishes with ispCP!\n"
-"The ispCP Team\n"
+"Best wishes with i-MSCP!\n"
+"The i-MSCP Team\n"
 "\n"
 msgstr ""
 "\n"
@@ -3816,8 +3816,8 @@ msgstr ""
 "\n"
 "Du kan logge inn på {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
 "\n"
-"Best wishes with ispCP!\n"
-"The ispCP Team\n"
+"Best wishes with i-MSCP!\n"
+"The i-MSCP Team\n"
 "\n"
 
 msgid "Confirmation for domain order {DOMAIN}!"
@@ -3836,8 +3836,8 @@ msgid ""
 "\n"
 "{ACTIVATE_LINK}\n"
 "\n"
-"Thank you for using ispCP services.\n"
-"The ispCP Team\n"
+"Thank you for using i-MSCP services.\n"
+"The i-MSCP Team\n"
 "\n"
 msgstr ""
 
@@ -3855,8 +3855,8 @@ msgid ""
 "Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}"
 "{BASE_SERVER_VHOST}/reseller/alias.php\n"
 "\n"
-"Thank you for using ispCP services.\n"
-"The ispCP Team\n"
+"Thank you for using i-MSCP services.\n"
+"The i-MSCP Team\n"
 "\n"
 msgstr ""
 
@@ -4113,8 +4113,8 @@ msgstr ""
 "Du har en grense for trafikk!<br>Du kan ikke legge til brukere med "
 "ubegrenset trafikk!"
 
-msgid "ispCP Error"
-msgstr "ispCP Feil"
+msgid "i-MSCP Error"
+msgstr "i-MSCP Feil"
 
 msgid "Error Message"
 msgstr "Feilmelding"
@@ -4128,7 +4128,7 @@ msgid ""
 "Dear {RESELLER},\n"
 "you have a new order from {NAME} <{MAIL}> for domain {DOMAIN}\n"
 "\n"
-"Please login into your ispCP control panel for more details.\n"
+"Please login into your i-MSCP control panel for more details.\n"
 "\n"
 msgstr ""
 
@@ -4228,8 +4228,8 @@ msgstr "Web & E-Mail Hjelp"
 msgid "Your Own Domain"
 msgstr "Ditt Eget Domene"
 
-msgid "ispCP Control Panel"
-msgstr "ispCP Kontrollpanel"
+msgid "i-MSCP Control Panel"
+msgstr "i-MSCP Kontrollpanel"
 
 msgid "Automatic Updates"
 msgstr "Automatiske Oppdateringer"
@@ -4244,14 +4244,14 @@ msgid "Performance"
 msgstr "Ytelse"
 
 #, fuzzy
-msgid "ispCP Reseller: Add Alias"
-msgstr "ispCP Forhandler : Legg til Pekere"
+msgid "i-MSCP Reseller: Add Alias"
+msgstr "i-MSCP Forhandler : Legg til Pekere"
 
 msgid "There is no user records for this reseller to add an alias for."
 msgstr ""
 
-msgid "ispCP - Manage Domain/Alias"
-msgstr "ispCP - Administrer Domene/Pekere"
+msgid "i-MSCP - Manage Domain/Alias"
+msgstr "i-MSCP - Administrer Domene/Pekere"
 
 msgid "Manage alias"
 msgstr "Administrer pekere"
@@ -4294,15 +4294,15 @@ msgid "Ordered domain alias not activated!"
 msgstr ""
 
 #, fuzzy
-msgid "ispCP - Circular"
-msgstr "ispCP - Sirkelformet"
+msgid "i-MSCP - Circular"
+msgstr "i-MSCP - Sirkelformet"
 
 #, fuzzy
 msgid "Circular"
 msgstr "Sirkelformet"
 
-msgid "ispCP - Domain/Edit"
-msgstr "ispCP - Domene/Endre"
+msgid "i-MSCP - Domain/Edit"
+msgstr "i-MSCP - Domene/Endre"
 
 #, fuzzy
 msgid "Unchanged"
@@ -4360,7 +4360,7 @@ msgstr "<em>%s</em> tjenesten kan ikke bli deaktivert!"
 msgid "The <em>%s</em> service cannot be unlimited!"
 msgstr "<em>%s</em> tjenesten kan ikke bli deaktivert!"
 
-msgid "ispCP - Reseller/Add hosting plan"
+msgid "i-MSCP - Reseller/Add hosting plan"
 msgstr ""
 
 msgid "Price must be a number!"
@@ -4376,14 +4376,14 @@ msgstr "Begrensningen for SQL databaser er  <i>disabled</i>!"
 msgid "Hosting plan values exceed reseller maximum values!"
 msgstr ""
 
-msgid "ispCP - Reseller/Edit hosting plan"
+msgid "i-MSCP - Reseller/Edit hosting plan"
 msgstr ""
 
 msgid "View hosting plan"
 msgstr ""
 
-msgid "ispCP - Reseller/Main Index"
-msgstr "ispCP - Forhandler/Hovedside"
+msgid "i-MSCP - Reseller/Main Index"
+msgstr "i-MSCP - Forhandler/Hovedside"
 
 msgid "View details"
 msgstr "Vis detaljer"
@@ -4413,11 +4413,11 @@ msgstr "%1$d / %2$d av <b>%3$d</b>"
 msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr "%1$d / %2$d av <b>ubegrenset</b>"
 
-msgid "ispCP - Reseller/Change Language"
-msgstr "ispCP - Forhandler/Endre Språk"
+msgid "i-MSCP - Reseller/Change Language"
+msgstr "i-MSCP - Forhandler/Endre Språk"
 
-msgid "ispCP - Reseller/Order email setup"
-msgstr "ispCP - Forhandler/Oppsett av ordre email"
+msgid "i-MSCP - Reseller/Order email setup"
+msgstr "i-MSCP - Forhandler/Oppsett av ordre email"
 
 msgid "Manage orders"
 msgstr "Administrer ordre"
@@ -4441,8 +4441,8 @@ msgstr "Bruker lagt til!"
 msgid "Customer order was removed successful!"
 msgstr ""
 
-msgid "ispCP - Reseller/Order details"
-msgstr "ispCP - Forhandler/Ordre detaljer"
+msgid "i-MSCP - Reseller/Order details"
+msgstr "i-MSCP - Forhandler/Ordre detaljer"
 
 msgid "Order data updated successfully!"
 msgstr ""
@@ -4469,8 +4469,8 @@ msgstr "Er du sikker på at du vil slette denne ordren"
 msgid "Add to the system"
 msgstr "Legg til systemet"
 
-msgid "ispCP - Reseller/Order settings"
-msgstr "ispCP - Forhandler/Ordre instillinger"
+msgid "i-MSCP - Reseller/Order settings"
+msgstr "i-MSCP - Forhandler/Ordre instillinger"
 
 #, fuzzy
 msgid "Header"
@@ -4486,8 +4486,8 @@ msgstr "Implementasjons URL"
 msgid "Footer"
 msgstr "Footer"
 
-msgid "ispCP - Reseller/Order management"
-msgstr "ispCP - Forhandler/Ordre administrasjon"
+msgid "i-MSCP - Reseller/Order management"
+msgstr "i-MSCP - Forhandler/Ordre administrasjon"
 
 msgid "You do not have new orders!"
 msgstr "Du har ingen nye ordre!"
@@ -4510,13 +4510,13 @@ msgstr "Legg til/Detaljer"
 msgid "Order Canceled: resellers maximum exceeded!"
 msgstr ""
 
-msgid "ispCP - Reseller/Change Password"
-msgstr "ispCP - Forhandler/Endre Passord"
+msgid "i-MSCP - Reseller/Change Password"
+msgstr "i-MSCP - Forhandler/Endre Passord"
 
-msgid "ispCP - Reseller/Change Personal Data"
-msgstr "ispCP - Forhandler/Endre Personlig Informasjon"
+msgid "i-MSCP - Reseller/Change Personal Data"
+msgstr "i-MSCP - Forhandler/Endre Personlig Informasjon"
 
-msgid "ispCP - Reseller/Lostpw email setup"
+msgid "i-MSCP - Reseller/Lostpw email setup"
 msgstr ""
 
 msgid "Lostpw email"
@@ -4525,15 +4525,15 @@ msgstr "Glemtpw email"
 msgid "Lostpw link"
 msgstr "Glemtpw link"
 
-msgid "ispCP - Reseller/Manage users/Email setup"
+msgid "i-MSCP - Reseller/Manage users/Email setup"
 msgstr ""
 
 #, fuzzy
-msgid "ispCP - Reseller: Support System: View Ticket"
-msgstr "ispCP - Forhandler : Hjelp System: Vis Hjelp Forespørsler"
+msgid "i-MSCP - Reseller: Support System: View Ticket"
+msgstr "i-MSCP - Forhandler : Hjelp System: Vis Hjelp Forespørsler"
 
-msgid "ispCP - Users/Add user"
-msgstr "ispCP - Brukere/Legg til brukere"
+msgid "i-MSCP - Users/Add user"
+msgstr "i-MSCP - Brukere/Legg til brukere"
 
 #, fuzzy
 msgid "1 Month"
@@ -4573,8 +4573,8 @@ msgstr ""
 "Du har ikke valgt noen betalingsløsning. Vennligst ta kontakt med din "
 "systemadministrator. "
 
-msgid "ispCP - User/Add user(step2)"
-msgstr "ispCP - Bruker/Legg til bruker(steg2)"
+msgid "i-MSCP - User/Add user(step2)"
+msgstr "i-MSCP - Bruker/Legg til bruker(steg2)"
 
 msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Maks antall domener<br><i>(-1 disabled, 0 unlimited)</i>"
@@ -4588,8 +4588,8 @@ msgstr "Awstats"
 msgid "Domain data has been altered. Please enter again"
 msgstr ""
 
-msgid "ispCP - User/Add user"
-msgstr "ispCP - Bruker/Legg til bruker"
+msgid "i-MSCP - User/Add user"
+msgstr "i-MSCP - Bruker/Legg til bruker"
 
 msgid "Add other domains to this account"
 msgstr "Legg flere domener til denne kontoen"
@@ -4598,14 +4598,14 @@ msgstr "Legg flere domener til denne kontoen"
 msgid "System error with Domain Id: %d"
 msgstr ""
 
-msgid "ispCP - Users/Edit"
-msgstr "ispCP - Brukere/Endre"
+msgid "i-MSCP - Users/Edit"
+msgstr "i-MSCP - Brukere/Endre"
 
 msgid "Users list"
 msgstr "Bruker liste"
 
-msgid "ispCP - Users"
-msgstr "ispCP - Brukere"
+msgid "i-MSCP - Users"
+msgstr "i-MSCP - Brukere"
 
 #, fuzzy, php-format
 msgid "Are you sure you want to change the status of %s?"

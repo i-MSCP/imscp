@@ -23,8 +23,8 @@ msgstr "UTF-8"
 msgid "_: Localised language"
 msgstr "Lietuviø - Lithuanian"
 
-msgid "ispCP Omega a Virtual Hosting Control System"
-msgstr "ispCP Omega yra Virtualaus Hostingo Valdymo Sistema"
+msgid "i-MSCP  a Virtual Hosting Control System"
+msgstr "i-MSCP  yra Virtualaus Hostingo Valdymo Sistema"
 
 msgid "Administrator login"
 msgstr "Administratoriaus prisijungimas"
@@ -53,8 +53,8 @@ msgstr "Pamirðau slaptaþodá"
 msgid "Retrieving lost passwords is currently not possible"
 msgstr "Atkûrti prarastus slaptaþodþius ðiuo mentu neámanoma"
 
-msgid "ispCP - Virtual Hosting Control System"
-msgstr "ispCP - Virtualaus Hostingo Valdymo Sistema"
+msgid "i-MSCP - Virtual Hosting Control System"
+msgstr "i-MSCP - Virtualaus Hostingo Valdymo Sistema"
 
 msgid "Your new password has been sent."
 msgstr "Jûsø naujas slaptaþodis buvo iðsiøstas."
@@ -94,8 +94,8 @@ msgstr ""
 msgid "Request password"
 msgstr "Praðyti slaptaþodþio"
 
-msgid "ispCP - Admin/Manage users/Add User"
-msgstr "ispCP - Administratorius/Tvarkyti vartotojai/Pridëti vartotoja"
+msgid "i-MSCP - Admin/Manage users/Add User"
+msgstr "i-MSCP - Administratorius/Tvarkyti vartotojai/Pridëti vartotoja"
 
 msgid "Administrator"
 msgstr "Administratorius"
@@ -203,12 +203,12 @@ msgstr "Perpardavinëtojas"
 msgid "Domain account"
 msgstr "Domeno sàskaita"
 
-msgid "ispCP - Admin/Manage users/Edit Administrator"
+msgid "i-MSCP - Admin/Manage users/Edit Administrator"
 msgstr ""
-"ispCP - Administratorius/Tvarkyti vartotojai/Redaguoti Administratorius"
+"i-MSCP - Administratorius/Tvarkyti vartotojai/Redaguoti Administratorius"
 
-msgid "ispCP - Admin/Manage users/Edit User"
-msgstr "ispCP - Admnistratorius/Tvarkyti vartotojai/Redaguoti Vartotojas"
+msgid "i-MSCP - Admin/Manage users/Edit User"
+msgstr "i-MSCP - Admnistratorius/Tvarkyti vartotojai/Redaguoti Vartotojas"
 
 msgid "Edit admin"
 msgstr "Redaguoti administratoriø"
@@ -232,8 +232,8 @@ msgstr "Atnaujinimø tikrinimas iðjungtas!"
 msgid "Demo Version!"
 msgstr ""
 
-msgid "ispCP - Admin/Admin Log"
-msgstr "ispCP - Administratorius/Administratoriaus áraðai"
+msgid "i-MSCP - Admin/Admin Log"
+msgstr "i-MSCP - Administratorius/Administratoriaus áraðai"
 
 msgid "Log is empty!"
 msgstr "Áraðai tuðti"
@@ -299,8 +299,8 @@ msgstr "senesnius nei 6 mënesiai"
 msgid "older than 12 months"
 msgstr "senesnius nei metai"
 
-msgid "ispCP - Admin - Email Marketing"
-msgstr "ispCP - Administratorius - El.Paðto prekyba"
+msgid "i-MSCP - Admin - Email Marketing"
+msgstr "i-MSCP - Administratorius - El.Paðto prekyba"
 
 msgid "Please specify a message subject!"
 msgstr "Praðome ávesti praneðimo temà!"
@@ -368,8 +368,8 @@ msgstr "Papildomø meniu duomenys atnaujinti sëkmingai!"
 msgid "Custom menu deleted successful!"
 msgstr "Papildomi meniu iðtrinti sëkmingai!"
 
-msgid "ispCP - Admin - Manage custom menus"
-msgstr "ispCP - Administratorius - Tvarkyti papildomus meniu"
+msgid "i-MSCP - Admin - Manage custom menus"
+msgstr "i-MSCP - Administratorius - Tvarkyti papildomus meniu"
 
 msgid "Manage custom menus"
 msgstr "Tvarkyti papildomus meniu"
@@ -447,8 +447,8 @@ msgstr "Paleisti atnaujinimus"
 msgid "No database updates available"
 msgstr "Nëra duombazës atnaujinimø"
 
-msgid "ispCP - Domain/Details"
-msgstr "ispCP - Domenas/Detalës"
+msgid "i-MSCP - Domain/Details"
+msgstr "i-MSCP - Domenas/Detalës"
 
 msgid "Domain details"
 msgstr "Domeno detalës"
@@ -532,8 +532,8 @@ msgstr "Ájungta"
 msgid "Disabled"
 msgstr "Iðjungta"
 
-msgid "ispCP - Admin/Edit Domain"
-msgstr "ispCP - Administratorius/Redaguoti Domenas"
+msgid "i-MSCP - Admin/Edit Domain"
+msgstr "i-MSCP - Administratorius/Redaguoti Domenas"
 
 msgid "Edit Domain"
 msgstr "Redaguoti domenà"
@@ -686,8 +686,8 @@ msgstr "<em>%s</em> paslaugai yra nustatytas perpardavinëtojø limitas!"
 msgid "You are exceeding reseller limits for the <em>%s</em> service!"
 msgstr "Jûs esate virðyje perpardavinëtojø limitus <em>%s</em> paslaugai!"
 
-msgid "ispCP - Domain Statistics Data"
-msgstr "ispCP - Domenø statistikos duomenys"
+msgid "i-MSCP - Domain Statistics Data"
+msgstr "i-MSCP - Domenø statistikos duomenys"
 
 msgid "Domain statistics"
 msgstr "Domenø statistikos"
@@ -719,8 +719,8 @@ msgstr "Visas srautas"
 msgid "Day"
 msgstr "Diena"
 
-msgid "ispCP - Administrator/Add hosting plan"
-msgstr "ispCP - Administratorius/Pridëti hostingo planà"
+msgid "i-MSCP - Administrator/Add hosting plan"
+msgstr "i-MSCP - Administratorius/Pridëti hostingo planà"
 
 msgid "Add hosting plan"
 msgstr "Pridëti hostingo planà"
@@ -830,8 +830,8 @@ msgstr "Neteisinga registracijos mokesèio sintaksë"
 msgid "Hosting plan with entered name already exists!"
 msgstr "Ávestas hostingo plano pavadinimas jau yra!"
 
-msgid "ispCP - Administrator/Edit hosting plan"
-msgstr "ispCP - Administratorius/Redaguoti hostingo planà"
+msgid "i-MSCP - Administrator/Edit hosting plan"
+msgstr "i-MSCP - Administratorius/Redaguoti hostingo planà"
 
 msgid "Price Style"
 msgstr "Kainos tipas"
@@ -854,8 +854,8 @@ msgstr "Neteisingai ávesta kaina. Pavizdys: 9.99"
 msgid "Incorrect setup fee. Example: 19.99"
 msgstr "Neteisingai ávestas registracijos mokestis. Pavizdys: 19.99"
 
-msgid "ispCP - Administrator/Hosting Plan Management"
-msgstr "ispCP - Administratorius/Hostingo Planø Tvarkymas"
+msgid "i-MSCP - Administrator/Hosting Plan Management"
+msgstr "i-MSCP - Administratorius/Hostingo Planø Tvarkymas"
 
 msgid "Hosting plans"
 msgstr "Hostingo planai"
@@ -909,8 +909,8 @@ msgstr "Yra duombazës atnaujinimas"
 msgid "Update checking is disabled!"
 msgstr "Atnaujinimø tikrinimas iðjungtas!"
 
-msgid "New ispCP update is now available"
-msgstr "Yra iðleistas naujas ispCP atnaujinimas"
+msgid "New i-MSCP update is now available"
+msgstr "Yra iðleistas naujas i-MSCP atnaujinimas"
 
 msgid "You are exceeding your traffic limit!"
 msgstr "Jûs esate virðije srauto limità!"
@@ -923,8 +923,8 @@ msgstr "%1$d%% [%2$s ið neribotø]"
 msgid "%1$d%% [%2$s of %3$s]"
 msgstr "%1$d%% [%2$s ið %3$s]"
 
-msgid "ispCP - Admin/Main Index"
-msgstr "ispCP - Administratorius/Pagrindinis puslapis"
+msgid "i-MSCP - Admin/Main Index"
+msgstr "i-MSCP - Administratorius/Pagrindinis puslapis"
 
 msgid "You cannot delete the last active IP address!"
 msgstr "Jûs negalite paðalinti paskutiniø aktyviø IP adresø!"
@@ -938,8 +938,8 @@ msgstr "Klaida: mes jau turime perpardavinëtojà naudojanti ðá IP!"
 msgid "IP was deleted!"
 msgstr "IP buvo paðalintasÀ"
 
-msgid "ispCP - Admin/IP manage"
-msgstr "ispCP - Administratorius/IP tvarkymas"
+msgid "i-MSCP - Admin/IP manage"
+msgstr "i-MSCP - Administratorius/IP tvarkymas"
 
 msgid "Remove IP"
 msgstr "Ðalinti IP"
@@ -996,8 +996,8 @@ msgstr "Jokiø subdomenø pavadinimø sistemos klaidø nëra"
 msgid "No email account system errors"
 msgstr "Jokiø el.paðto sàskaitø sistemos klaidø nëra"
 
-msgid "ispCP debugger"
-msgstr "ispCP debugger"
+msgid "i-MSCP debugger"
+msgstr "i-MSCP debugger"
 
 msgid "Domain errors"
 msgstr "Domenø klaidos"
@@ -1014,8 +1014,8 @@ msgstr "Subdomenø pavadinimø klaidos"
 msgid "Mail account errors"
 msgstr "El.paðto sàskaitos klaidos"
 
-msgid "ispCP Daemon tools"
-msgstr "ispCP Daemon árankiai"
+msgid "i-MSCP Daemon tools"
+msgstr "i-MSCP Daemon árankiai"
 
 msgid "Execute requests"
 msgstr "Vykdyti praðymus"
@@ -1045,14 +1045,14 @@ msgstr "Nustatymai"
 msgid "Get it at"
 msgstr "Gauk tai"
 
-msgid "ispCP updates"
-msgstr "ispCP atnaujinimai"
+msgid "i-MSCP updates"
+msgstr "i-MSCP atnaujinimai"
 
-msgid "Available ispCP updates"
-msgstr "Galimi ispCP atnaujinimai"
+msgid "Available i-MSCP updates"
+msgstr "Galimi i-MSCP atnaujinimai"
 
-msgid "No new ispCP updates available"
-msgstr "Nëra naujø ispCP atnaujinimø"
+msgid "No new i-MSCP updates available"
+msgstr "Nëra naujø i-MSCP atnaujinimø"
 
 msgid "Language was removed!"
 msgstr "Kalba buvo paðalinta!"
@@ -1060,8 +1060,8 @@ msgstr "Kalba buvo paðalinta!"
 msgid "User language updated successfully!"
 msgstr "Vartotojø kalba atnaujinta sëkmingai!"
 
-msgid "ispCP - Admin/Change Language"
-msgstr "ispCP - Administratorius/Keisti Kalbà"
+msgid "i-MSCP - Admin/Change Language"
+msgstr "i-MSCP - Administratorius/Keisti Kalbà"
 
 msgid "Language"
 msgstr "Kalba"
@@ -1072,9 +1072,9 @@ msgstr "Pasirinkite numatytà kalbà"
 msgid "Reseller list is empty!"
 msgstr "Perpardavinëtojø sàraðas yra tuðèias!"
 
-msgid "ispCP - Admin/Manage users/Reseller assignment"
+msgid "i-MSCP - Admin/Manage users/Reseller assignment"
 msgstr ""
-"ispCP - Administratorius/Tvarkyti vartotojai/Perpardavinëtojo paskirtis"
+"i-MSCP - Administratorius/Tvarkyti vartotojai/Perpardavinëtojo paskirtis"
 
 msgid "Reseller assignment"
 msgstr "Perpardavinëtojo paskirtis"
@@ -1143,8 +1143,8 @@ msgstr ""
 "<b>%s</b> turi IP adresø kurie negali  bûti tvarkome pas paskirtà "
 "perpardavinëtojà !<br>Ðis vartotojas negali bûti perkeltas!"
 
-msgid "ispCP - Admin/Manage users/User assignment"
-msgstr "ispCP - Administratorius/Tvarkyti vartotojai/Vartotojo paskirtys"
+msgid "i-MSCP - Admin/Manage users/User assignment"
+msgstr "i-MSCP - Administratorius/Tvarkyti vartotojai/Vartotojo paskirtys"
 
 msgid "User assignment"
 msgstr "Vartotojo paskirtys"
@@ -1161,8 +1161,8 @@ msgstr "Ið perpardavinëtojo"
 msgid "To reseller"
 msgstr "Á perpardavinëtojà"
 
-msgid "ispCP - Admin/Manage Users"
-msgstr "ispCP - Administratorius/Tvarkyti Vartotojus"
+msgid "i-MSCP - Admin/Manage Users"
+msgstr "i-MSCP - Administratorius/Tvarkyti Vartotojus"
 
 msgid "User added"
 msgstr "Vartotojas pridëtas"
@@ -1190,8 +1190,8 @@ msgstr "Vartotojas buvo atjungtas"
 msgid "Incorrect data input!"
 msgstr "Neteisinga ávesta informacija!"
 
-msgid "ispCP - Admin/Internationalisation"
-msgstr "ispCP - Administratorius/Internacionalizavimas"
+msgid "i-MSCP - Admin/Internationalisation"
+msgstr "i-MSCP - Administratorius/Internacionalizavimas"
 
 msgid "Upload file error!"
 msgstr "Keliamo failo klaida!"
@@ -1253,8 +1253,8 @@ msgstr "Diegti"
 msgid "Export"
 msgstr "Eksportuoti"
 
-msgid "ispCP - Admin/Change Password"
-msgstr "ispCP - Administratorius/Keisti Slaptaþodá"
+msgid "i-MSCP - Admin/Change Password"
+msgstr "i-MSCP - Administratorius/Keisti Slaptaþodá"
 
 msgid "Please fill up all data fields!"
 msgstr "Praðome uþpildyti visus informacijos laukelius!"
@@ -1283,8 +1283,8 @@ msgstr "Dabartinis slaptaþodis"
 msgid "Password change is deactivated!"
 msgstr ""
 
-msgid "ispCP - Admin/Change Personal Data"
-msgstr "ispCP - Administratorius/Keisti Asmeninæ Informacijà"
+msgid "i-MSCP - Admin/Change Personal Data"
+msgstr "i-MSCP - Administratorius/Keisti Asmeninæ Informacijà"
 
 msgid "Personal data updated successfully!"
 msgstr "Asmeninë informacija sëkmingai atnaujinta!"
@@ -1298,8 +1298,8 @@ msgstr "Asmeninë informacija"
 msgid "Update data"
 msgstr "Atnaujinti informacijà"
 
-msgid "ispCP - Admin/Manage users/Add reseller"
-msgstr "ispCP - Administratorius/Tvarkyti vartotojai/Pridëti perpardavinëtojà"
+msgid "i-MSCP - Admin/Manage users/Add reseller"
+msgstr "i-MSCP - Administratorius/Tvarkyti vartotojai/Pridëti perpardavinëtojà"
 
 msgid "Reseller IP list is empty!"
 msgstr "Perpardavinëtojø IP sàraðas yra tuðèias!"
@@ -1432,8 +1432,8 @@ msgstr "Ðis perpardavinëtojas turi domenø priskirtø prie <b>%s</b> adreso!<b
 msgid "ERROR: The reseller account you trying to edit does not exist!"
 msgstr ""
 
-msgid "ispCP - Admin/Manage users/Edit Reseller"
-msgstr "ispCP - Administracija/Tvarkyti vartotojai/Redaguoti Perpardavinëtojà"
+msgid "i-MSCP - Admin/Manage users/Edit Reseller"
+msgstr "i-MSCP - Administracija/Tvarkyti vartotojai/Redaguoti Perpardavinëtojà"
 
 msgid ""
 "ERROR: One or more errors was found! Please, correct them and try again!"
@@ -1466,12 +1466,12 @@ msgstr ""
 
 #, php-format
 msgid ""
-"ispCP NOTICE:\\n\\nThe `Enter` key is disabled for performance reasons!"
+"i-MSCP NOTICE:\\n\\nThe `Enter` key is disabled for performance reasons!"
 "\\nInstead, use the %s button to update the data."
 msgstr ""
 
-msgid "ispCP - Reseller statistics"
-msgstr "ispCP - Perpardavinëtojo statistikos duomenys"
+msgid "i-MSCP - Reseller statistics"
+msgstr "i-MSCP - Perpardavinëtojo statistikos duomenys"
 
 msgid "Not found reseller(s) in your system!"
 msgstr "Nerastas(-i) perpardavinëtojas(-ai) jûsø sistemoje!"
@@ -1504,8 +1504,8 @@ msgstr "SQL duombazë"
 msgid "SQL user"
 msgstr "SQL vartotojas"
 
-msgid "ispCP - Admin/Reseller User Statistics"
-msgstr "ispCP - Administratorius/Perpardavinëtojo Vartotojo Statistika"
+msgid "i-MSCP - Admin/Reseller User Statistics"
+msgstr "i-MSCP - Administratorius/Perpardavinëtojo Vartotojo Statistika"
 
 #, php-format
 msgid "%1$s <br/>of<br/> <b>%2$s</b>"
@@ -1553,9 +1553,9 @@ msgstr "SQL<br>duombazë"
 msgid "SQL<br>user"
 msgstr "SQL<br>vartotojas"
 
-msgid "ispCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
+msgid "i-MSCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
 msgstr ""
-"ispCP Administratorius / Sistemos árankiai / Anti-Rootkits árankiø tikrinimas"
+"i-MSCP Administratorius / Sistemos árankiai / Anti-Rootkits árankiø tikrinimas"
 
 #, php-format
 msgid "%s doesn't exist or is empty"
@@ -1564,8 +1564,8 @@ msgstr "%s neegzistuoja arba yra tuðèias"
 msgid "Anti-Rootkits Tools Log Checker"
 msgstr "Anti-Rootkits árankiø tikrinimas"
 
-msgid "ispCP - Admin/Server day stats"
-msgstr "ispCP - Administratorius/Serverio dienos statistika"
+msgid "i-MSCP - Admin/Server day stats"
+msgstr "i-MSCP - Administratorius/Serverio dienos statistika"
 
 msgid "Server day statistics"
 msgstr "Serverio dienos statistika"
@@ -1612,14 +1612,14 @@ msgstr "Visi in"
 msgid "All out"
 msgstr "Visi out"
 
-msgid "ispCP - Admin/Server statistics"
-msgstr "ispCP - Adminstratorius/Serverio statistikos duomenys"
+msgid "i-MSCP - Admin/Server statistics"
+msgstr "i-MSCP - Adminstratorius/Serverio statistikos duomenys"
 
 msgid "Server statistics"
 msgstr "Serverio statistikos duomenys"
 
-msgid "ispCP Admin / System Tools / Server Status"
-msgstr "ispCP Administratorius / Sistemos Árankiai / Serverio Bûklë"
+msgid "i-MSCP Admin / System Tools / Server Status"
+msgstr "i-MSCP Administratorius / Sistemos Árankiai / Serverio Bûklë"
 
 msgid "UP"
 msgstr "UP"
@@ -1636,8 +1636,8 @@ msgstr "Paslauga"
 msgid "Server status"
 msgstr "Serverio bûklë"
 
-msgid "ispCP - Admin/Manage Sessions"
-msgstr "ispCP - Administratorius/Tvarkyti sesijas"
+msgid "i-MSCP - Admin/Manage Sessions"
+msgstr "i-MSCP - Administratorius/Tvarkyti sesijas"
 
 msgid "Manage user sessions"
 msgstr "Tvarkyti vartotojo sesijas"
@@ -1703,8 +1703,8 @@ msgstr ""
 msgid "Auto email template data updated!"
 msgstr ""
 
-msgid "ispCP - Admin/Lostpw email setup"
-msgstr "ispCP - Administratorius/Prarasto slaptaþodþio el.laiðko nustatymas"
+msgid "i-MSCP - Admin/Lostpw email setup"
+msgstr "i-MSCP - Administratorius/Prarasto slaptaþodþio el.laiðko nustatymas"
 
 msgid "Lost password e-mail"
 msgstr "Prarasto slaptaþodþio el.laiðkas"
@@ -1747,8 +1747,8 @@ msgstr "URL á ðià administracijos lentelæ"
 msgid "URL protocol"
 msgstr "URL protokolas"
 
-msgid "ispCP - Admin/Maintenance mode"
-msgstr "ispCP - Administratorius/Remonto bûsena"
+msgid "i-MSCP - Admin/Maintenance mode"
+msgstr "i-MSCP - Administratorius/Remonto bûsena"
 
 msgid "Settings saved !"
 msgstr "Nustatymai iðsaugoti !"
@@ -1759,8 +1759,8 @@ msgstr "Remonto bûsena"
 msgid "Under this mode only administrators can login"
 msgstr "Esant ðiai bûsenai tik administratoriai gali prisijungti"
 
-msgid "ispCP - Admin/Settings"
-msgstr "ispCP - Administratorius/Nustatymai"
+msgid "i-MSCP - Admin/Settings"
+msgstr "i-MSCP - Administratorius/Nustatymai"
 
 msgid "ERROR: Only positive numbers are allowed !"
 msgstr "KLAIDA: Tik pozityvûs numeriai leidþiami !"
@@ -1962,8 +1962,8 @@ msgstr ""
 msgid "Add new service port"
 msgstr "Pridëti naujà vartotojø hostingo planà"
 
-msgid "ispCP - Admin/Server Traffic Settings"
-msgstr "ispCP - Administratorius/Serverio Srauto Nustatymai"
+msgid "i-MSCP - Admin/Server Traffic Settings"
+msgstr "i-MSCP - Administratorius/Serverio Srauto Nustatymai"
 
 msgid "Wrong data input!"
 msgstr "Neteisingai ávesti duomenys!"
@@ -1989,8 +1989,8 @@ msgstr "Maksimalus srautas [MB]"
 msgid "Warning traffic [MB]"
 msgstr "Pavojingas srautas [MB]"
 
-msgid "ispCP - Admin/Manage users/Email setup"
-msgstr "ispCP - Administratorius/Tvarkyti vartotojai/El.paðto nustatymai"
+msgid "i-MSCP - Admin/Manage users/Email setup"
+msgstr "i-MSCP - Administratorius/Tvarkyti vartotojai/El.paðto nustatymai"
 
 msgid "Email setup"
 msgstr "El.paðto nustatimai"
@@ -2074,8 +2074,8 @@ msgstr "Up time"
 msgid "You have no support tickets."
 msgstr "Jûs neturite pagalbos bilietø."
 
-msgid "ispCP - Client/Questions & Comments"
-msgstr "ispCP - Klientas/Klausimai ir Komentarai"
+msgid "i-MSCP - Client/Questions & Comments"
+msgstr "i-MSCP - Klientas/Klausimai ir Komentarai"
 
 msgid "Support tickets"
 msgstr "Pagalbos bilietai"
@@ -2117,8 +2117,8 @@ msgstr "[Naujas]"
 msgid "[Re]"
 msgstr "[Ats]"
 
-msgid "ispCP - Client/Enable Mail Autoresponder"
-msgstr "ispCP - Klientas/Ájungti paðto autoatsakiklá"
+msgid "i-MSCP - Client/Enable Mail Autoresponder"
+msgstr "i-MSCP - Klientas/Ájungti paðto autoatsakiklá"
 
 msgid "Ticket not found!"
 msgstr "Bilietas nerastas!"
@@ -2129,8 +2129,8 @@ msgstr "Atidaryti bilietà"
 msgid "Close ticket"
 msgstr "Uþdaryti bilietà"
 
-msgid "ispCP - Client: Support System: View Ticket"
-msgstr "ispCP - Klientas: Pagalbos Sistema: Rodyti Bilietà"
+msgid "i-MSCP - Client: Support System: View Ticket"
+msgstr "i-MSCP - Klientas: Pagalbos Sistema: Rodyti Bilietà"
 
 msgid "Please type your message!"
 msgstr "Praðome áraðyti jûsø praneðimà!"
@@ -2144,8 +2144,8 @@ msgstr "Bilietas uþdarytas!"
 msgid "Ticket was reopened!"
 msgstr "Bilietas vël atidarytas!"
 
-msgid "ispCP - Admin: Support System: View Ticket"
-msgstr "ispCP - Administratorius: Pagalbos Sistema: Rodyti Bilietà"
+msgid "i-MSCP - Admin: Support System: View Ticket"
+msgstr "i-MSCP - Administratorius: Pagalbos Sistema: Rodyti Bilietà"
 
 msgid "View support ticket"
 msgstr "Rodyti pagalbos bilietà"
@@ -2156,8 +2156,8 @@ msgstr "Siøsti praneðimo atsakymà"
 msgid "Send reply"
 msgstr "Siøsti atsakymà"
 
-msgid "ispCP - Delete Domain"
-msgstr "ispCP - Trinti Domenà"
+msgid "i-MSCP - Delete Domain"
+msgstr "i-MSCP - Trinti Domenà"
 
 msgid "Wrong domain ID!"
 msgstr "Neteisingas domeno ID!"
@@ -2204,8 +2204,8 @@ msgstr ""
 msgid "Yes, delete the domain."
 msgstr "Taip, ðalinti domenà."
 
-msgid "ispCP Client : Add Alias"
-msgstr "ispCP Klientas : Pridëti Pavadinimà"
+msgid "i-MSCP Client : Add Alias"
+msgstr "i-MSCP Klientas : Pridëti Pavadinimà"
 
 msgid "Manage domain alias"
 msgstr "Tvarkyti domeno pavadinimus"
@@ -2225,8 +2225,8 @@ msgstr "Nukreipti á URL"
 msgid "Add alias"
 msgstr "Pridëti pavadinimà"
 
-msgid "You do not need 'www.' ispCP will add it on its own."
-msgstr "Jums nereikia raðyti 'www.' ispCP pridës tai automatiðkai."
+msgid "You do not need 'www.' i-MSCP will add it on its own."
+msgstr "Jums nereikia raðyti 'www.' i-MSCP pridës tai automatiðkai."
 
 msgid "Wrong domain name!"
 msgstr "Netinkamas domeno vardas!"
@@ -2291,7 +2291,7 @@ msgstr ""
 msgid "Alias scheduled for deletion!"
 msgstr ""
 
-msgid "ispCP - Manage Domain Alias/Edit Alias"
+msgid "i-MSCP - Manage Domain Alias/Edit Alias"
 msgstr ""
 
 msgid "Edit domain alias"
@@ -2315,8 +2315,8 @@ msgstr ""
 msgid "Backup archive scheduled for restoring!"
 msgstr ""
 
-msgid "ispCP - Client/Daily Backup"
-msgstr "ispCP - Klientas/Kasdieniniai Backup"
+msgid "i-MSCP - Client/Daily Backup"
+msgstr "i-MSCP - Klientas/Kasdieniniai Backup"
 
 msgid "Daily backup"
 msgstr "Kasdieniniai backup"
@@ -2349,8 +2349,8 @@ msgstr "Atkûrti"
 msgid "Are you sure you want to restore the backup?"
 msgstr "Ar tikrai norite atkûrti ið backup?"
 
-msgid "ispCP - Client/Cronjob Manager"
-msgstr "ispCP - Klientas/Cronjob Tvarkymas"
+msgid "i-MSCP - Client/Cronjob Manager"
+msgstr "i-MSCP - Klientas/Cronjob Tvarkymas"
 
 msgid "Cronjob Manager"
 msgstr "Cronjob Tvarkymas"
@@ -2391,10 +2391,10 @@ msgstr "Cronjobs"
 msgid "DNS zone record scheduled for deletion!"
 msgstr ""
 
-msgid "ispCP - Manage Domain Alias/Add DNS zone's record"
+msgid "i-MSCP - Manage Domain Alias/Add DNS zone's record"
 msgstr ""
 
-msgid "ispCP - Manage Domain Alias/Edit DNS zone's record"
+msgid "i-MSCP - Manage Domain Alias/Edit DNS zone's record"
 msgstr ""
 
 msgid "Add DNS zone's record (EXPERIMENTAL)"
@@ -2510,7 +2510,7 @@ msgstr ""
 msgid "Alias list is empty!"
 msgstr ""
 
-msgid "ispCP - Client/Manage Domains"
+msgid "i-MSCP - Client/Manage Domains"
 msgstr ""
 
 msgid "Manage domains"
@@ -2528,7 +2528,7 @@ msgstr ""
 msgid "Record data"
 msgstr ""
 
-msgid "ispCP - Client/Domain Statistics"
+msgid "i-MSCP - Client/Domain Statistics"
 msgstr ""
 
 msgid "Web Stats"
@@ -2546,7 +2546,7 @@ msgstr ""
 msgid "Sum"
 msgstr ""
 
-msgid "ispCP - Client/Manage Error Custom Pages"
+msgid "i-MSCP - Client/Manage Error Custom Pages"
 msgstr ""
 
 msgid "Server error - please choose error page"
@@ -2582,7 +2582,7 @@ msgstr ""
 msgid "FTP list is empty!"
 msgstr ""
 
-msgid "ispCP - Client/Manage Users"
+msgid "i-MSCP - Client/Manage Users"
 msgstr ""
 
 msgid "Manage users"
@@ -2638,7 +2638,7 @@ msgstr ""
 msgid "FTP accounts limit reached!"
 msgstr ""
 
-msgid "ispCP - Client/Add FTP User"
+msgid "i-MSCP - Client/Add FTP User"
 msgstr ""
 
 msgid "Add FTP user"
@@ -2668,7 +2668,7 @@ msgstr ""
 msgid "Protect it"
 msgstr ""
 
-msgid "ispCP - Client/Webtools"
+msgid "i-MSCP - Client/Webtools"
 msgstr ""
 
 msgid "Directory tree"
@@ -2686,7 +2686,7 @@ msgstr ""
 msgid "FTP account data updated!"
 msgstr ""
 
-msgid "ispCP - Client/Edit FTP Account"
+msgid "i-MSCP - Client/Edit FTP Account"
 msgstr ""
 
 msgid "Edit FTP user"
@@ -2795,7 +2795,7 @@ msgstr ""
 msgid "There are no available hosting plans for update"
 msgstr ""
 
-msgid "ispCP - Update hosting plan"
+msgid "i-MSCP - Update hosting plan"
 msgstr ""
 
 msgid "You have more e-mail addresses in use than the new hosting plan limits."
@@ -2804,14 +2804,14 @@ msgstr ""
 msgid "Your request for hosting pack update was added successfully"
 msgstr ""
 
-msgid "[ispCP OrderPanel] - You have an update order"
+msgid "[i-MSCP OrderPanel] - You have an update order"
 msgstr ""
 
 #, php-format
 msgid ""
 "You have an update order for the account %s\n"
 "\n"
-"Please login into your ispCP control panel at %s for more details"
+"Please login into your i-MSCP control panel at %s for more details"
 msgstr ""
 
 msgid "Your request for hosting pack update was removed successfully"
@@ -2845,7 +2845,7 @@ msgstr ""
 msgid "This Domain is expired"
 msgstr "Domenas galioja iki"
 
-msgid "ispCP - Client/Main Index"
+msgid "i-MSCP - Client/Main Index"
 msgstr ""
 
 msgid "General information"
@@ -2875,7 +2875,7 @@ msgstr ""
 msgid "Alternative URL to reach your website"
 msgstr ""
 
-msgid "ispCP - Client/Change Language"
+msgid "i-MSCP - Client/Change Language"
 msgstr ""
 
 msgid "Please wait for update"
@@ -2956,7 +2956,7 @@ msgstr ""
 msgid "Mail accounts limit reached!"
 msgstr ""
 
-msgid "ispCP - Client/Add Mail User"
+msgid "i-MSCP - Client/Add Mail User"
 msgstr ""
 
 msgid "Add mail users"
@@ -2989,7 +2989,7 @@ msgstr ""
 msgid "Mail account scheduler for modification!"
 msgstr ""
 
-msgid "ispCP - Client/Enable Mail Auto Responder"
+msgid "i-MSCP - Client/Enable Mail Auto Responder"
 msgstr ""
 
 msgid "Edit mail auto responder"
@@ -3007,7 +3007,7 @@ msgstr ""
 msgid "Mail forward list error!"
 msgstr ""
 
-msgid "ispCP - Client/Create CatchAll Mail Account"
+msgid "i-MSCP - Client/Create CatchAll Mail Account"
 msgstr ""
 
 msgid "Create catch all mail account"
@@ -3040,7 +3040,7 @@ msgstr ""
 msgid "Email account not found!"
 msgstr ""
 
-msgid "ispCP - Manage Mail and FTP / Edit mail account"
+msgid "i-MSCP - Manage Mail and FTP / Edit mail account"
 msgstr ""
 
 msgid "Mail were updated successfully!"
@@ -3049,10 +3049,10 @@ msgstr ""
 msgid "Edit email account"
 msgstr ""
 
-msgid "ispCP - Client/Change Password"
+msgid "i-MSCP - Client/Change Password"
 msgstr ""
 
-msgid "ispCP - Client/Change Personal Data"
+msgid "i-MSCP - Client/Change Personal Data"
 msgstr ""
 
 msgid "Please choose user or group"
@@ -3202,7 +3202,7 @@ msgstr ""
 msgid "SQL user password was successfully changed!"
 msgstr ""
 
-msgid "ispCP - Client/Change SQL User Password"
+msgid "i-MSCP - Client/Change SQL User Password"
 msgstr ""
 
 msgid "Change SQL user password"
@@ -3230,7 +3230,7 @@ msgstr ""
 msgid "SQL accounts limit reached!"
 msgstr ""
 
-msgid "ispCP - Client/Add SQL Database"
+msgid "i-MSCP - Client/Add SQL Database"
 msgstr ""
 
 msgid "Add SQL database"
@@ -3260,7 +3260,7 @@ msgstr ""
 msgid "Database list is empty!"
 msgstr ""
 
-msgid "ispCP - Client/Manage SQL"
+msgid "i-MSCP - Client/Manage SQL"
 msgstr ""
 
 msgid "Manage SQL"
@@ -3312,7 +3312,7 @@ msgstr ""
 msgid "SQL user successfully added!"
 msgstr ""
 
-msgid "ispCP - Client/Add SQL User"
+msgid "i-MSCP - Client/Add SQL User"
 msgstr ""
 
 msgid "SQL user name"
@@ -3351,7 +3351,7 @@ msgstr ""
 msgid "Subdomain scheduled for addition!"
 msgstr ""
 
-msgid "ispCP - Client/Add Subdomain"
+msgid "i-MSCP - Client/Add Subdomain"
 msgstr ""
 
 msgid "Add subdomain"
@@ -3372,7 +3372,7 @@ msgstr ""
 msgid "Your message was sent!"
 msgstr ""
 
-msgid "ispCP - Support system - New ticket"
+msgid "i-MSCP - Support system - New ticket"
 msgstr ""
 
 msgid "New ticket"
@@ -3429,7 +3429,7 @@ msgstr ""
 msgid "Logout"
 msgstr ""
 
-msgid "ispCP database updates"
+msgid "i-MSCP database updates"
 msgstr ""
 
 msgid "Custom menus"
@@ -3529,7 +3529,7 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-msgid "ispCP - Order Panel"
+msgid "i-MSCP - Order Panel"
 msgstr ""
 
 #, php-format
@@ -3646,7 +3646,7 @@ msgstr ""
 msgid "Unknown type"
 msgstr ""
 
-msgid "Welcome {USERNAME} to ispCP!"
+msgid "Welcome {USERNAME} to i-MSCP!"
 msgstr ""
 
 msgid ""
@@ -3654,7 +3654,7 @@ msgid ""
 "\n"
 "Hello {NAME}!\n"
 "\n"
-"A new ispCP account has been created for you.\n"
+"A new i-MSCP account has been created for you.\n"
 "Your account information:\n"
 "\n"
 "User type: {USERTYPE}\n"
@@ -3669,28 +3669,28 @@ msgid ""
 "User name: {USERNAME}\n"
 "Password: {PASSWORD}\n"
 "\n"
-"Best wishes with ispCP!\n"
-"The ispCP Team.\n"
+"Best wishes with i-MSCP!\n"
+"The i-MSCP Team.\n"
 "\n"
 msgstr ""
 
-msgid "Please activate your new ispCP password!"
+msgid "Please activate your new i-MSCP password!"
 msgstr ""
 
 msgid ""
 "\n"
 "\n"
 "Hello {NAME}!\n"
-"Use this link to activate your new ispCP password:\n"
+"Use this link to activate your new i-MSCP password:\n"
 "\n"
 "{LINK}\n"
 "\n"
-"Good Luck with the ispCP System\n"
-"The ispCP Team\n"
+"Good Luck with the i-MSCP System\n"
+"The i-MSCP Team\n"
 "\n"
 msgstr ""
 
-msgid "Your new ispCP login!"
+msgid "Your new i-MSCP login!"
 msgstr ""
 
 msgid ""
@@ -3703,8 +3703,8 @@ msgid ""
 "\n"
 "You can login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
 "\n"
-"Best wishes with ispCP!\n"
-"The ispCP Team\n"
+"Best wishes with i-MSCP!\n"
+"The i-MSCP Team\n"
 "\n"
 msgstr ""
 
@@ -3724,8 +3724,8 @@ msgid ""
 "\n"
 "{ACTIVATE_LINK}\n"
 "\n"
-"Thank you for using ispCP services.\n"
-"The ispCP Team\n"
+"Thank you for using i-MSCP services.\n"
+"The i-MSCP Team\n"
 "\n"
 msgstr ""
 
@@ -3743,8 +3743,8 @@ msgid ""
 "Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}"
 "{BASE_SERVER_VHOST}/reseller/alias.php\n"
 "\n"
-"Thank you for using ispCP services.\n"
-"The ispCP Team\n"
+"Thank you for using i-MSCP services.\n"
+"The i-MSCP Team\n"
 "\n"
 msgstr ""
 
@@ -3963,7 +3963,7 @@ msgstr ""
 msgid "You have a disk limit!<br />You cannot add an user with unlimited disk!"
 msgstr ""
 
-msgid "ispCP Error"
+msgid "i-MSCP Error"
 msgstr ""
 
 msgid "Error Message"
@@ -3978,7 +3978,7 @@ msgid ""
 "Dear {RESELLER},\n"
 "you have a new order from {NAME} <{MAIL}> for domain {DOMAIN}\n"
 "\n"
-"Please login into your ispCP control panel for more details.\n"
+"Please login into your i-MSCP control panel for more details.\n"
 "\n"
 msgstr ""
 
@@ -4073,7 +4073,7 @@ msgstr ""
 msgid "Your Own Domain"
 msgstr ""
 
-msgid "ispCP Control Panel"
+msgid "i-MSCP Control Panel"
 msgstr ""
 
 msgid "Automatic Updates"
@@ -4088,13 +4088,13 @@ msgstr ""
 msgid "Performance"
 msgstr ""
 
-msgid "ispCP Reseller: Add Alias"
+msgid "i-MSCP Reseller: Add Alias"
 msgstr ""
 
 msgid "There is no user records for this reseller to add an alias for."
 msgstr ""
 
-msgid "ispCP - Manage Domain/Alias"
+msgid "i-MSCP - Manage Domain/Alias"
 msgstr ""
 
 msgid "Manage alias"
@@ -4136,13 +4136,13 @@ msgstr ""
 msgid "Ordered domain alias not activated!"
 msgstr ""
 
-msgid "ispCP - Circular"
+msgid "i-MSCP - Circular"
 msgstr ""
 
 msgid "Circular"
 msgstr ""
 
-msgid "ispCP - Domain/Edit"
+msgid "i-MSCP - Domain/Edit"
 msgstr ""
 
 msgid "Unchanged"
@@ -4192,7 +4192,7 @@ msgstr ""
 msgid "The <em>%s</em> service cannot be unlimited!"
 msgstr ""
 
-msgid "ispCP - Reseller/Add hosting plan"
+msgid "i-MSCP - Reseller/Add hosting plan"
 msgstr ""
 
 msgid "Price must be a number!"
@@ -4207,13 +4207,13 @@ msgstr ""
 msgid "Hosting plan values exceed reseller maximum values!"
 msgstr ""
 
-msgid "ispCP - Reseller/Edit hosting plan"
+msgid "i-MSCP - Reseller/Edit hosting plan"
 msgstr ""
 
 msgid "View hosting plan"
 msgstr ""
 
-msgid "ispCP - Reseller/Main Index"
+msgid "i-MSCP - Reseller/Main Index"
 msgstr ""
 
 msgid "View details"
@@ -4244,10 +4244,10 @@ msgstr ""
 msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr ""
 
-msgid "ispCP - Reseller/Change Language"
+msgid "i-MSCP - Reseller/Change Language"
 msgstr ""
 
-msgid "ispCP - Reseller/Order email setup"
+msgid "i-MSCP - Reseller/Order email setup"
 msgstr ""
 
 msgid "Manage orders"
@@ -4271,7 +4271,7 @@ msgstr ""
 msgid "Customer order was removed successful!"
 msgstr ""
 
-msgid "ispCP - Reseller/Order details"
+msgid "i-MSCP - Reseller/Order details"
 msgstr ""
 
 msgid "Order data updated successfully!"
@@ -4298,7 +4298,7 @@ msgstr ""
 msgid "Add to the system"
 msgstr ""
 
-msgid "ispCP - Reseller/Order settings"
+msgid "i-MSCP - Reseller/Order settings"
 msgstr ""
 
 msgid "Header"
@@ -4313,7 +4313,7 @@ msgstr ""
 msgid "Footer"
 msgstr ""
 
-msgid "ispCP - Reseller/Order management"
+msgid "i-MSCP - Reseller/Order management"
 msgstr ""
 
 msgid "You do not have new orders!"
@@ -4337,13 +4337,13 @@ msgstr ""
 msgid "Order Canceled: resellers maximum exceeded!"
 msgstr ""
 
-msgid "ispCP - Reseller/Change Password"
+msgid "i-MSCP - Reseller/Change Password"
 msgstr ""
 
-msgid "ispCP - Reseller/Change Personal Data"
+msgid "i-MSCP - Reseller/Change Personal Data"
 msgstr ""
 
-msgid "ispCP - Reseller/Lostpw email setup"
+msgid "i-MSCP - Reseller/Lostpw email setup"
 msgstr ""
 
 msgid "Lostpw email"
@@ -4352,13 +4352,13 @@ msgstr ""
 msgid "Lostpw link"
 msgstr ""
 
-msgid "ispCP - Reseller/Manage users/Email setup"
+msgid "i-MSCP - Reseller/Manage users/Email setup"
 msgstr ""
 
-msgid "ispCP - Reseller: Support System: View Ticket"
+msgid "i-MSCP - Reseller: Support System: View Ticket"
 msgstr ""
 
-msgid "ispCP - Users/Add user"
+msgid "i-MSCP - Users/Add user"
 msgstr ""
 
 msgid "1 Month"
@@ -4391,7 +4391,7 @@ msgstr ""
 msgid "You have no hosting plans. Please contact your system administrator."
 msgstr ""
 
-msgid "ispCP - User/Add user(step2)"
+msgid "i-MSCP - User/Add user(step2)"
 msgstr ""
 
 msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
@@ -4406,7 +4406,7 @@ msgstr ""
 msgid "Domain data has been altered. Please enter again"
 msgstr ""
 
-msgid "ispCP - User/Add user"
+msgid "i-MSCP - User/Add user"
 msgstr ""
 
 msgid "Add other domains to this account"
@@ -4416,13 +4416,13 @@ msgstr ""
 msgid "System error with Domain Id: %d"
 msgstr ""
 
-msgid "ispCP - Users/Edit"
+msgid "i-MSCP - Users/Edit"
 msgstr ""
 
 msgid "Users list"
 msgstr ""
 
-msgid "ispCP - Users"
+msgid "i-MSCP - Users"
 msgstr ""
 
 #, php-format

@@ -25,8 +25,8 @@ msgstr "UTF-8"
 msgid "_: Localised language"
 msgstr "български език - Bulgarian"
 
-msgid "ispCP Omega a Virtual Hosting Control System"
-msgstr "ispCP - Виртуална Система за Управление на Хостинг"
+msgid "i-MSCP  a Virtual Hosting Control System"
+msgstr "i-MSCP - Виртуална Система за Управление на Хостинг"
 
 msgid "Administrator login"
 msgstr "Административен Вход"
@@ -55,8 +55,8 @@ msgstr "Забравена парола"
 msgid "Retrieving lost passwords is currently not possible"
 msgstr "Възстановяването на загубената парола в момента е невъзможно"
 
-msgid "ispCP - Virtual Hosting Control System"
-msgstr "ispCP - Виртуална Система за Управление на Хостинг"
+msgid "i-MSCP - Virtual Hosting Control System"
+msgstr "i-MSCP - Виртуална Система за Управление на Хостинг"
 
 #, fuzzy
 msgid "Your new password has been sent."
@@ -93,8 +93,8 @@ msgstr "(Въведете комбинацията от символиот из�
 msgid "Request password"
 msgstr "Необходима е парола"
 
-msgid "ispCP - Admin/Manage users/Add User"
-msgstr "ispCP - Админ/Управление на потребители/Добави потребител"
+msgid "i-MSCP - Admin/Manage users/Add User"
+msgstr "i-MSCP - Админ/Управление на потребители/Добави потребител"
 
 msgid "Administrator"
 msgstr "Администратор"
@@ -200,12 +200,12 @@ msgstr "Риселър"
 msgid "Domain account"
 msgstr "Домейна акаунт"
 
-msgid "ispCP - Admin/Manage users/Edit Administrator"
-msgstr "ispCP - Админ/Управление на потребители/Редакция администратор"
+msgid "i-MSCP - Admin/Manage users/Edit Administrator"
+msgstr "i-MSCP - Админ/Управление на потребители/Редакция администратор"
 
 #, fuzzy
-msgid "ispCP - Admin/Manage users/Edit User"
-msgstr "ispCP - Админ/Управление на потребители/Добави потребител"
+msgid "i-MSCP - Admin/Manage users/Edit User"
+msgstr "i-MSCP - Админ/Управление на потребители/Добави потребител"
 
 msgid "Edit admin"
 msgstr "Редакция админ"
@@ -229,7 +229,7 @@ msgstr "Паролата не е указана!"
 msgid "Demo Version!"
 msgstr ""
 
-msgid "ispCP - Admin/Admin Log"
+msgid "i-MSCP - Admin/Admin Log"
 msgstr ""
 
 msgid "Log is empty!"
@@ -295,8 +295,8 @@ msgstr "по-старо от 6 месеца"
 msgid "older than 12 months"
 msgstr "по-стари от година"
 
-msgid "ispCP - Admin - Email Marketing"
-msgstr "ispCP - Админ - Изпращане на поща"
+msgid "i-MSCP - Admin - Email Marketing"
+msgstr "i-MSCP - Админ - Изпращане на поща"
 
 msgid "Please specify a message subject!"
 msgstr "Моля, въведете тема съобщението!"
@@ -365,8 +365,8 @@ msgstr "Персоналното меню беше успешно обновен
 msgid "Custom menu deleted successful!"
 msgstr "Персоналното меню беше успешно изтрито!"
 
-msgid "ispCP - Admin - Manage custom menus"
-msgstr "ispCP - Админ - Управление на персонални менюта"
+msgid "i-MSCP - Admin - Manage custom menus"
+msgstr "i-MSCP - Админ - Управление на персонални менюта"
 
 msgid "Manage custom menus"
 msgstr "Управление на персонални менюта"
@@ -429,14 +429,14 @@ msgstr "Потребители на бази данни"
 
 #, fuzzy
 msgid "Available database updates"
-msgstr "Достъпни ispCP обновявания"
+msgstr "Достъпни i-MSCP обновявания"
 
 msgid "Update details"
 msgstr "Обнови детайлите"
 
 #, fuzzy
 msgid "New Database update is now available"
-msgstr "Достъпно е ново обновяване за ispCP"
+msgstr "Достъпно е ново обновяване за i-MSCP"
 
 #, fuzzy
 msgid "Do you want to execute the Updates now?"
@@ -448,10 +448,10 @@ msgstr "Изпълни заявка"
 
 #, fuzzy
 msgid "No database updates available"
-msgstr "Няма достъпни ispCP обновявания"
+msgstr "Няма достъпни i-MSCP обновявания"
 
-msgid "ispCP - Domain/Details"
-msgstr "ispCP - домейн/Детайли"
+msgid "i-MSCP - Domain/Details"
+msgstr "i-MSCP - домейн/Детайли"
 
 msgid "Domain details"
 msgstr "Информация за домейна"
@@ -536,8 +536,8 @@ msgid "Disabled"
 msgstr "Забранен"
 
 #, fuzzy
-msgid "ispCP - Admin/Edit Domain"
-msgstr "ispCP - Админ/Управление IP"
+msgid "i-MSCP - Admin/Edit Domain"
+msgstr "i-MSCP - Админ/Управление IP"
 
 msgid "Edit Domain"
 msgstr "Редакция на домейна"
@@ -699,8 +699,8 @@ msgstr "за услугата <em>%s</em> съществува риселърс�
 msgid "You are exceeding reseller limits for the <em>%s</em> service!"
 msgstr "Вие сте превишили риселърския Ограничение за услугата <em>%s</em>"
 
-msgid "ispCP - Domain Statistics Data"
-msgstr "ispCP - данни Статистики домейни"
+msgid "i-MSCP - Domain Statistics Data"
+msgstr "i-MSCP - данни Статистики домейни"
 
 msgid "Domain statistics"
 msgstr "Статистика домейна"
@@ -732,8 +732,8 @@ msgstr "Целия трафик"
 msgid "Day"
 msgstr "Ден"
 
-msgid "ispCP - Administrator/Add hosting plan"
-msgstr "ispCP - Админ/Добави хостинг-план"
+msgid "i-MSCP - Administrator/Add hosting plan"
+msgstr "i-MSCP - Админ/Добави хостинг-план"
 
 msgid "Add hosting plan"
 msgstr "Добави хостинг-план"
@@ -844,8 +844,8 @@ msgstr "Некоректен такса включване!"
 msgid "Hosting plan with entered name already exists!"
 msgstr "Хостинг-план с въведеното име вече съществува!"
 
-msgid "ispCP - Administrator/Edit hosting plan"
-msgstr "ispCP - Администратор/Редакция на хостинг-план"
+msgid "i-MSCP - Administrator/Edit hosting plan"
+msgstr "i-MSCP - Администратор/Редакция на хостинг-план"
 
 msgid "Price Style"
 msgstr "Стил цени"
@@ -868,8 +868,8 @@ msgstr "Некоректна цена. Пример: 9.99"
 msgid "Incorrect setup fee. Example: 19.99"
 msgstr "Некоректна цена за включване. Пример 19.99"
 
-msgid "ispCP - Administrator/Hosting Plan Management"
-msgstr "ispCP - Администратор/Управление хостинг-планове"
+msgid "i-MSCP - Administrator/Hosting Plan Management"
+msgstr "i-MSCP - Администратор/Управление хостинг-планове"
 
 msgid "Hosting plans"
 msgstr "Хостинг-планове"
@@ -919,13 +919,13 @@ msgstr "Преглед"
 
 #, fuzzy
 msgid "A database update is available"
-msgstr "Няма достъпни ispCP обновявания"
+msgstr "Няма достъпни i-MSCP обновявания"
 
 msgid "Update checking is disabled!"
 msgstr ""
 
-msgid "New ispCP update is now available"
-msgstr "Достъпно е ново обновяване за ispCP"
+msgid "New i-MSCP update is now available"
+msgstr "Достъпно е ново обновяване за i-MSCP"
 
 msgid "You are exceeding your traffic limit!"
 msgstr "Вие сте превишили Вашето ограничение за трафик!"
@@ -938,8 +938,8 @@ msgstr "%1$d%% [%2$s от без Ограничение]"
 msgid "%1$d%% [%2$s of %3$s]"
 msgstr "%1$d%% [%2$s от %3$s]"
 
-msgid "ispCP - Admin/Main Index"
-msgstr "ispCP - Админ/Главен индекс"
+msgid "i-MSCP - Admin/Main Index"
+msgstr "i-MSCP - Админ/Главен индекс"
 
 msgid "You cannot delete the last active IP address!"
 msgstr "Вие не можете да изтриете последния активен IP!"
@@ -953,8 +953,8 @@ msgstr "Грешка: има риселър използващ этот IP!"
 msgid "IP was deleted!"
 msgstr "IP удалён!"
 
-msgid "ispCP - Admin/IP manage"
-msgstr "ispCP - Админ/Управление IP"
+msgid "i-MSCP - Admin/IP manage"
+msgstr "i-MSCP - Админ/Управление IP"
 
 msgid "Remove IP"
 msgstr "изтриете IP"
@@ -1014,8 +1014,8 @@ msgstr "Няма грешки на системата за поддомейни"
 msgid "No email account system errors"
 msgstr "Няма грешки на системата за пошенски кутии"
 
-msgid "ispCP debugger"
-msgstr "ispCP дебугер"
+msgid "i-MSCP debugger"
+msgstr "i-MSCP дебугер"
 
 msgid "Domain errors"
 msgstr "Грешки домейни"
@@ -1033,8 +1033,8 @@ msgstr "Преадресация на поддомейна"
 msgid "Mail account errors"
 msgstr "Грешки на пощенските кутии"
 
-msgid "ispCP Daemon tools"
-msgstr "ispCP Инструменти на системата"
+msgid "i-MSCP Daemon tools"
+msgstr "i-MSCP Инструменти на системата"
 
 msgid "Execute requests"
 msgstr "Изпълни заявка"
@@ -1066,14 +1066,14 @@ msgstr "Настройки"
 msgid "Get it at"
 msgstr "Вземи от"
 
-msgid "ispCP updates"
-msgstr "Обновявания ispCP"
+msgid "i-MSCP updates"
+msgstr "Обновявания i-MSCP"
 
-msgid "Available ispCP updates"
-msgstr "Достъпни ispCP обновявания"
+msgid "Available i-MSCP updates"
+msgstr "Достъпни i-MSCP обновявания"
 
-msgid "No new ispCP updates available"
-msgstr "Няма достъпни ispCP обновявания"
+msgid "No new i-MSCP updates available"
+msgstr "Няма достъпни i-MSCP обновявания"
 
 #, fuzzy
 msgid "Language was removed!"
@@ -1082,8 +1082,8 @@ msgstr "Език беше сменен!"
 msgid "User language updated successfully!"
 msgstr "Език на потребителския интерфейса беше успешно променен!"
 
-msgid "ispCP - Admin/Change Language"
-msgstr "ispCP - Админ/Смяна на език"
+msgid "i-MSCP - Admin/Change Language"
+msgstr "i-MSCP - Админ/Смяна на език"
 
 msgid "Language"
 msgstr "Език"
@@ -1095,8 +1095,8 @@ msgstr "Избор на езика по подразбиране"
 msgid "Reseller list is empty!"
 msgstr "Списъкът с риселъри е празен!"
 
-msgid "ispCP - Admin/Manage users/Reseller assignment"
-msgstr "ispCP - Админ/Управление на потребители/Назначи риселър"
+msgid "i-MSCP - Admin/Manage users/Reseller assignment"
+msgstr "i-MSCP - Админ/Управление на потребители/Назначи риселър"
 
 msgid "Reseller assignment"
 msgstr "Назначи риселър"
@@ -1165,8 +1165,8 @@ msgstr ""
 "<b>%s</b> има IP адрес който не може да се управлява от определеното място "
 "риселъра !<br>Този потребител не може да бъде преместен!"
 
-msgid "ispCP - Admin/Manage users/User assignment"
-msgstr "ispCP - Админ/Управление на потребители/Назначи потребител"
+msgid "i-MSCP - Admin/Manage users/User assignment"
+msgstr "i-MSCP - Админ/Управление на потребители/Назначи потребител"
 
 msgid "User assignment"
 msgstr "Назначи потребител"
@@ -1183,8 +1183,8 @@ msgstr "От риселъра"
 msgid "To reseller"
 msgstr "За риселъра"
 
-msgid "ispCP - Admin/Manage Users"
-msgstr "ispCP - Админ/Управление на потребители"
+msgid "i-MSCP - Admin/Manage Users"
+msgstr "i-MSCP - Админ/Управление на потребители"
 
 msgid "User added"
 msgstr "Потребителя е добавен"
@@ -1211,8 +1211,8 @@ msgstr "Потребителя беше забранен"
 msgid "Incorrect data input!"
 msgstr "Некоректен вход на данни!"
 
-msgid "ispCP - Admin/Internationalisation"
-msgstr "ispCP - Админ/Интернационализация"
+msgid "i-MSCP - Admin/Internationalisation"
+msgstr "i-MSCP - Админ/Интернационализация"
 
 msgid "Upload file error!"
 msgstr "Грешка при зареждане на файла!"
@@ -1275,8 +1275,8 @@ msgstr "Инсталиране"
 msgid "Export"
 msgstr "Експорт"
 
-msgid "ispCP - Admin/Change Password"
-msgstr "ispCP - Админ/Смяна парола"
+msgid "i-MSCP - Admin/Change Password"
+msgstr "i-MSCP - Админ/Смяна парола"
 
 msgid "Please fill up all data fields!"
 msgstr "Моля, попълнете всички полета!"
@@ -1306,8 +1306,8 @@ msgstr "Текуща парола"
 msgid "Password change is deactivated!"
 msgstr "заявката за псевдоним на домейна е активирана!"
 
-msgid "ispCP - Admin/Change Personal Data"
-msgstr "ispCP - Админ/Промяна персонали данни"
+msgid "i-MSCP - Admin/Change Personal Data"
+msgstr "i-MSCP - Админ/Промяна персонали данни"
 
 msgid "Personal data updated successfully!"
 msgstr "Персоналните данни са променени успешно!"
@@ -1321,8 +1321,8 @@ msgstr "Персоналниданни"
 msgid "Update data"
 msgstr "Промяна данни"
 
-msgid "ispCP - Admin/Manage users/Add reseller"
-msgstr "ispCP - Админ/Управление на потребители/Добавяне риселър"
+msgid "i-MSCP - Admin/Manage users/Add reseller"
+msgstr "i-MSCP - Админ/Управление на потребители/Добавяне риселър"
 
 msgid "Reseller IP list is empty!"
 msgstr "Списъкът на IP риселъра е празен"
@@ -1454,8 +1454,8 @@ msgstr "Този риселър има домейни привързани къ�
 msgid "ERROR: The reseller account you trying to edit does not exist!"
 msgstr ""
 
-msgid "ispCP - Admin/Manage users/Edit Reseller"
-msgstr "ispCP - Админ/Управление на потребители/Редакция риселър"
+msgid "i-MSCP - Admin/Manage users/Edit Reseller"
+msgstr "i-MSCP - Админ/Управление на потребители/Редакция риселър"
 
 msgid ""
 "ERROR: One or more errors was found! Please, correct them and try again!"
@@ -1488,12 +1488,12 @@ msgstr ""
 
 #, php-format
 msgid ""
-"ispCP NOTICE:\\n\\nThe `Enter` key is disabled for performance reasons!"
+"i-MSCP NOTICE:\\n\\nThe `Enter` key is disabled for performance reasons!"
 "\\nInstead, use the %s button to update the data."
 msgstr ""
 
-msgid "ispCP - Reseller statistics"
-msgstr "ispCP - Статистика на риселъри"
+msgid "i-MSCP - Reseller statistics"
+msgstr "i-MSCP - Статистика на риселъри"
 
 msgid "Not found reseller(s) in your system!"
 msgstr "Риселъра не е открит във вашата система!"
@@ -1526,8 +1526,8 @@ msgstr "База данни SQL"
 msgid "SQL user"
 msgstr "SQL потребители"
 
-msgid "ispCP - Admin/Reseller User Statistics"
-msgstr "ispCP - Админ/Статистика на потребителите на Риселъра"
+msgid "i-MSCP - Admin/Reseller User Statistics"
+msgstr "i-MSCP - Админ/Статистика на потребителите на Риселъра"
 
 #, php-format
 msgid "%1$s <br/>of<br/> <b>%2$s</b>"
@@ -1575,9 +1575,9 @@ msgstr "SQL<br>база"
 msgid "SQL<br>user"
 msgstr "SQL<br>потребител"
 
-msgid "ispCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
+msgid "i-MSCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
 msgstr ""
-"ispCP Админ / Системни инструменти / Анти-шпионски инструмент за проврка на "
+"i-MSCP Админ / Системни инструменти / Анти-шпионски инструмент за проврка на "
 "Логовете"
 
 #, php-format
@@ -1587,8 +1587,8 @@ msgstr "%s не съществува или празен"
 msgid "Anti-Rootkits Tools Log Checker"
 msgstr "Анти-шпионски инструмент за проврка на Логовете"
 
-msgid "ispCP - Admin/Server day stats"
-msgstr "ispCP - Админ/Дневна статистика на сървъра"
+msgid "i-MSCP - Admin/Server day stats"
+msgstr "i-MSCP - Админ/Дневна статистика на сървъра"
 
 msgid "Server day statistics"
 msgstr "Дневна статистика на сървъра"
@@ -1639,14 +1639,14 @@ msgstr "Всички-вход"
 msgid "All out"
 msgstr "Всички-изход"
 
-msgid "ispCP - Admin/Server statistics"
-msgstr "ispCP - Админ/Статистика на сървъра"
+msgid "i-MSCP - Admin/Server statistics"
+msgstr "i-MSCP - Админ/Статистика на сървъра"
 
 msgid "Server statistics"
 msgstr "Статистика на сървъра"
 
-msgid "ispCP Admin / System Tools / Server Status"
-msgstr "ispCP Админ / Системни инструменти / Статус на сървъра"
+msgid "i-MSCP Admin / System Tools / Server Status"
+msgstr "i-MSCP Админ / Системни инструменти / Статус на сървъра"
 
 msgid "UP"
 msgstr "ОК"
@@ -1663,8 +1663,8 @@ msgstr "Служба"
 msgid "Server status"
 msgstr "Статус на сървъра"
 
-msgid "ispCP - Admin/Manage Sessions"
-msgstr "ispCP - Админ/Управление на сесии"
+msgid "i-MSCP - Admin/Manage Sessions"
+msgstr "i-MSCP - Админ/Управление на сесии"
 
 msgid "Manage user sessions"
 msgstr "Управление на потребителиските сесии"
@@ -1729,8 +1729,8 @@ msgstr "Моля, въведете съобщение!"
 msgid "Auto email template data updated!"
 msgstr "Шаблон за авто разпращане е променен!"
 
-msgid "ispCP - Admin/Lostpw email setup"
-msgstr "ispCP - Админ/Настройка за възстановяване на парола"
+msgid "i-MSCP - Admin/Lostpw email setup"
+msgstr "i-MSCP - Админ/Настройка за възстановяване на парола"
 
 msgid "Lost password e-mail"
 msgstr "Възстановена парола"
@@ -1773,8 +1773,8 @@ msgstr ""
 msgid "URL protocol"
 msgstr "Протокол"
 
-msgid "ispCP - Admin/Maintenance mode"
-msgstr "ispCP - Админ/Режим на поддръжка"
+msgid "i-MSCP - Admin/Maintenance mode"
+msgstr "i-MSCP - Админ/Режим на поддръжка"
 
 msgid "Settings saved !"
 msgstr "Настройките са запазени !"
@@ -1785,8 +1785,8 @@ msgstr "Режим на поддръжка"
 msgid "Under this mode only administrators can login"
 msgstr "В този режим само администраторите могат да влизат"
 
-msgid "ispCP - Admin/Settings"
-msgstr "ispCP - Админ/Настройки"
+msgid "i-MSCP - Admin/Settings"
+msgstr "i-MSCP - Админ/Настройки"
 
 msgid "ERROR: Only positive numbers are allowed !"
 msgstr "Грешка: Само положителни числа са разрешени !"
@@ -1993,8 +1993,8 @@ msgstr ""
 msgid "Add new service port"
 msgstr "Добави Нов хостинг-план"
 
-msgid "ispCP - Admin/Server Traffic Settings"
-msgstr "ispCP - Админ/настройки за трафик на сървъра"
+msgid "i-MSCP - Admin/Server Traffic Settings"
+msgstr "i-MSCP - Админ/настройки за трафик на сървъра"
 
 msgid "Wrong data input!"
 msgstr "Грешка при въвеждане на данни!"
@@ -2020,8 +2020,8 @@ msgstr "Максимален трафик [Мб]"
 msgid "Warning traffic [MB]"
 msgstr "Предупреждение за трафик [Мб]"
 
-msgid "ispCP - Admin/Manage users/Email setup"
-msgstr "ispCP - Админ/Управление на потребители/Настройка на Пощенска кутия"
+msgid "i-MSCP - Admin/Manage users/Email setup"
+msgstr "i-MSCP - Админ/Управление на потребители/Настройка на Пощенска кутия"
 
 msgid "Email setup"
 msgstr "Настройка на Пощенска кутия"
@@ -2102,8 +2102,8 @@ msgstr "Време онлайн"
 msgid "You have no support tickets."
 msgstr "Няма билети за поддръжка."
 
-msgid "ispCP - Client/Questions & Comments"
-msgstr "ispCP - Клиент/Въпроси и Коментари"
+msgid "i-MSCP - Client/Questions & Comments"
+msgstr "i-MSCP - Клиент/Въпроси и Коментари"
 
 msgid "Support tickets"
 msgstr "Билети поддръжка"
@@ -2144,8 +2144,8 @@ msgstr "[Нов]"
 msgid "[Re]"
 msgstr ""
 
-msgid "ispCP - Client/Enable Mail Autoresponder"
-msgstr "ispCP - Клиент/Активирай Имейл Автоматичен отговор"
+msgid "i-MSCP - Client/Enable Mail Autoresponder"
+msgstr "i-MSCP - Клиент/Активирай Имейл Автоматичен отговор"
 
 msgid "Ticket not found!"
 msgstr "Билета не е намерен!"
@@ -2156,8 +2156,8 @@ msgstr "Отворен билет"
 msgid "Close ticket"
 msgstr "Затворен билет"
 
-msgid "ispCP - Client: Support System: View Ticket"
-msgstr "ispCP - Клиент : Служба поддръжка: Показат Билети"
+msgid "i-MSCP - Client: Support System: View Ticket"
+msgstr "i-MSCP - Клиент : Служба поддръжка: Показат Билети"
 
 msgid "Please type your message!"
 msgstr "Моля, въведете Ваше съобщение!"
@@ -2171,8 +2171,8 @@ msgstr "Билет закрит!"
 msgid "Ticket was reopened!"
 msgstr "Билет перезагружен!"
 
-msgid "ispCP - Admin: Support System: View Ticket"
-msgstr "ispCP - Админ : Служба поддръжка: Преглед Билетов"
+msgid "i-MSCP - Admin: Support System: View Ticket"
+msgstr "i-MSCP - Админ : Служба поддръжка: Преглед Билетов"
 
 msgid "View support ticket"
 msgstr "Преглед билетов поддръжка"
@@ -2184,8 +2184,8 @@ msgid "Send reply"
 msgstr "Отправит ответ"
 
 #, fuzzy
-msgid "ispCP - Delete Domain"
-msgstr "ispCP - Клиент/Управление на домейни"
+msgid "i-MSCP - Delete Domain"
+msgstr "i-MSCP - Клиент/Управление на домейни"
 
 msgid "Wrong domain ID!"
 msgstr "Неверен Домайн ID!"
@@ -2238,8 +2238,8 @@ msgstr ""
 msgid "Yes, delete the domain."
 msgstr "%s изтрий целия лог на администратора!"
 
-msgid "ispCP Client : Add Alias"
-msgstr "ispCP клиент: Добави псевдоним"
+msgid "i-MSCP Client : Add Alias"
+msgstr "i-MSCP клиент: Добави псевдоним"
 
 msgid "Manage domain alias"
 msgstr "Управление псевдонимами"
@@ -2259,8 +2259,8 @@ msgstr "Ппенасочване на УРЛ"
 msgid "Add alias"
 msgstr "Добави псевдоним"
 
-msgid "You do not need 'www.' ispCP will add it on its own."
-msgstr "Няма нужда от 'www.' ispCP го добавя само."
+msgid "You do not need 'www.' i-MSCP will add it on its own."
+msgstr "Няма нужда от 'www.' i-MSCP го добавя само."
 
 #, fuzzy
 msgid "Wrong domain name!"
@@ -2335,8 +2335,8 @@ msgstr ""
 msgid "Alias scheduled for deletion!"
 msgstr "Псевдонима е добавен в графика за изтриване!"
 
-msgid "ispCP - Manage Domain Alias/Edit Alias"
-msgstr "ispCP - Управление на псевдоними/Редакция на псевдоним"
+msgid "i-MSCP - Manage Domain Alias/Edit Alias"
+msgstr "i-MSCP - Управление на псевдоними/Редакция на псевдоним"
 
 msgid "Edit domain alias"
 msgstr "Редакция на псевдоним на домейна"
@@ -2359,8 +2359,8 @@ msgstr "Поддомейна е добавен в графика за изтри
 msgid "Backup archive scheduled for restoring!"
 msgstr "Бекап архива е добавен в графика за възстановяване!"
 
-msgid "ispCP - Client/Daily Backup"
-msgstr "ispCP - Клиент/Ежедневен бекап"
+msgid "i-MSCP - Client/Daily Backup"
+msgstr "i-MSCP - Клиент/Ежедневен бекап"
 
 msgid "Daily backup"
 msgstr "Ежедневен бекап"
@@ -2396,8 +2396,8 @@ msgstr "Възстанови"
 msgid "Are you sure you want to restore the backup?"
 msgstr "Сигурни ли сте,че искате да възстановите архивното копие?"
 
-msgid "ispCP - Client/Cronjob Manager"
-msgstr "ispCP - Клиент/Мениджър за Планови Задачи"
+msgid "i-MSCP - Client/Cronjob Manager"
+msgstr "i-MSCP - Клиент/Мениджър за Планови Задачи"
 
 msgid "Cronjob Manager"
 msgstr "Мениджър за Планови Задачи"
@@ -2440,12 +2440,12 @@ msgid "DNS zone record scheduled for deletion!"
 msgstr "Поддомейна е добавен в графика за изтриване!"
 
 #, fuzzy
-msgid "ispCP - Manage Domain Alias/Add DNS zone's record"
-msgstr "ispCP - Управление на псевдоними/Редакция на псевдоним"
+msgid "i-MSCP - Manage Domain Alias/Add DNS zone's record"
+msgstr "i-MSCP - Управление на псевдоними/Редакция на псевдоним"
 
 #, fuzzy
-msgid "ispCP - Manage Domain Alias/Edit DNS zone's record"
-msgstr "ispCP - Управление на псевдоними/Редакция на псевдоним"
+msgid "i-MSCP - Manage Domain Alias/Edit DNS zone's record"
+msgstr "i-MSCP - Управление на псевдоними/Редакция на псевдоним"
 
 msgid "Add DNS zone's record (EXPERIMENTAL)"
 msgstr ""
@@ -2572,8 +2572,8 @@ msgstr "Изтрий заявка"
 msgid "Alias list is empty!"
 msgstr "Списъкът с псевдоними е празен!"
 
-msgid "ispCP - Client/Manage Domains"
-msgstr "ispCP - Клиент/Управление на домейни"
+msgid "i-MSCP - Client/Manage Domains"
+msgstr "i-MSCP - Клиент/Управление на домейни"
 
 msgid "Manage domains"
 msgstr "Управление на домейни"
@@ -2591,8 +2591,8 @@ msgstr "Действия"
 msgid "Record data"
 msgstr "данни ядро"
 
-msgid "ispCP - Client/Domain Statistics"
-msgstr "ispCP - Клиент/Статистика на домейна"
+msgid "i-MSCP - Client/Domain Statistics"
+msgstr "i-MSCP - Клиент/Статистика на домейна"
 
 msgid "Web Stats"
 msgstr "Уеб статистика"
@@ -2609,8 +2609,8 @@ msgstr ""
 msgid "Sum"
 msgstr ""
 
-msgid "ispCP - Client/Manage Error Custom Pages"
-msgstr "ispCP - Клиент/Управление на страниците с грешки"
+msgid "i-MSCP - Client/Manage Error Custom Pages"
+msgstr "i-MSCP - Клиент/Управление на страниците с грешки"
 
 msgid "Server error - please choose error page"
 msgstr "Грешка на сървъра - укажете страницата с грешки"
@@ -2645,8 +2645,8 @@ msgstr "Страници с грешки"
 msgid "FTP list is empty!"
 msgstr "Списъкът с FTP е празен!"
 
-msgid "ispCP - Client/Manage Users"
-msgstr "ispCP - Клиент/Управление на потребители"
+msgid "i-MSCP - Client/Manage Users"
+msgstr "i-MSCP - Клиент/Управление на потребители"
 
 msgid "Manage users"
 msgstr "Управление на потребители"
@@ -2704,8 +2704,8 @@ msgstr "Укажете друга FTP акаунт директория!"
 msgid "FTP accounts limit reached!"
 msgstr "Ограничението за брой FTP акаунти е достигнато!"
 
-msgid "ispCP - Client/Add FTP User"
-msgstr "ispCP - Клиент/Добави FTP потребител"
+msgid "i-MSCP - Client/Add FTP User"
+msgstr "i-MSCP - Клиент/Добави FTP потребител"
 
 msgid "Add FTP user"
 msgstr "Добави FTP потребител"
@@ -2737,8 +2737,8 @@ msgstr "Родителска Директория"
 msgid "Protect it"
 msgstr "Защити"
 
-msgid "ispCP - Client/Webtools"
-msgstr "ispCP - Клиент/Уеб инструменти"
+msgid "i-MSCP - Client/Webtools"
+msgstr "i-MSCP - Клиент/Уеб инструменти"
 
 msgid "Directory tree"
 msgstr "Дърво с папки"
@@ -2755,8 +2755,8 @@ msgstr "FTP акаунта беше успешно изтрит!"
 msgid "FTP account data updated!"
 msgstr "FTP акаунта е обновен!"
 
-msgid "ispCP - Client/Edit FTP Account"
-msgstr "ispCP - Клиент/Редакция на FTP акаунт"
+msgid "i-MSCP - Client/Edit FTP Account"
+msgstr "i-MSCP - Клиент/Редакция на FTP акаунт"
 
 msgid "Edit FTP user"
 msgstr "Редакция на FTP потребител"
@@ -2866,8 +2866,8 @@ msgstr ""
 msgid "There are no available hosting plans for update"
 msgstr "Няма достъпни хостинг планове за обновяване"
 
-msgid "ispCP - Update hosting plan"
-msgstr "ispCP - Обнови хостинг-план"
+msgid "i-MSCP - Update hosting plan"
+msgstr "i-MSCP - Обнови хостинг-план"
 
 msgid "You have more e-mail addresses in use than the new hosting plan limits."
 msgstr ""
@@ -2875,14 +2875,14 @@ msgstr ""
 msgid "Your request for hosting pack update was added successfully"
 msgstr "Вашето запитване за обновяване на хостинг-плана беше успешно добавен"
 
-msgid "[ispCP OrderPanel] - You have an update order"
-msgstr "[ispCP Панел за заявки] - Имате заявка за обновяване"
+msgid "[i-MSCP OrderPanel] - You have an update order"
+msgstr "[i-MSCP Панел за заявки] - Имате заявка за обновяване"
 
 #, fuzzy, php-format
 msgid ""
 "You have an update order for the account %s\n"
 "\n"
-"Please login into your ispCP control panel at %s for more details"
+"Please login into your i-MSCP control panel at %s for more details"
 msgstr ""
 "Имате заявка за промяна на акаунт %s\n"
 "\n"
@@ -2920,8 +2920,8 @@ msgstr ""
 msgid "This Domain is expired"
 msgstr "Параметри домейна"
 
-msgid "ispCP - Client/Main Index"
-msgstr "ispCP - Клиент/Главен индекс"
+msgid "i-MSCP - Client/Main Index"
+msgstr "i-MSCP - Клиент/Главен индекс"
 
 msgid "General information"
 msgstr "Обща информация"
@@ -2950,8 +2950,8 @@ msgstr "Използвано дисково пространство"
 msgid "Alternative URL to reach your website"
 msgstr ""
 
-msgid "ispCP - Client/Change Language"
-msgstr "ispCP - Клиент/Промяна език"
+msgid "i-MSCP - Client/Change Language"
+msgstr "i-MSCP - Клиент/Промяна език"
 
 msgid "Please wait for update"
 msgstr "Изчакайте да се обнови"
@@ -3033,8 +3033,8 @@ msgstr "Списъкът с пренасочвания е празен!"
 msgid "Mail accounts limit reached!"
 msgstr "Ограничението за брой пощенски кутии е достигнат!"
 
-msgid "ispCP - Client/Add Mail User"
-msgstr "ispCP - Клиент/Добави пощенска кутия"
+msgid "i-MSCP - Client/Add Mail User"
+msgstr "i-MSCP - Клиент/Добави пощенска кутия"
 
 msgid "Add mail users"
 msgstr "Добави потребители"
@@ -3067,8 +3067,8 @@ msgstr "Напишете своето съобщение за Автотични
 msgid "Mail account scheduler for modification!"
 msgstr "Пощенската кутия е добавена в графика за промени!"
 
-msgid "ispCP - Client/Enable Mail Auto Responder"
-msgstr "ispCP - Клиент/Активвация Пощенски Автоматично отговаряне"
+msgid "i-MSCP - Client/Enable Mail Auto Responder"
+msgstr "i-MSCP - Клиент/Активвация Пощенски Автоматично отговаряне"
 
 msgid "Edit mail auto responder"
 msgstr "Редакция на пощенското Автоматирно Отговаряне"
@@ -3085,8 +3085,8 @@ msgstr "Catch all акаунт вграфика за създаване"
 msgid "Mail forward list error!"
 msgstr "Грешка в списка за пренаправление на поща!"
 
-msgid "ispCP - Client/Create CatchAll Mail Account"
-msgstr "ispCP - Клиент/Создат CatchAll пощенска кутия"
+msgid "i-MSCP - Client/Create CatchAll Mail Account"
+msgstr "i-MSCP - Клиент/Создат CatchAll пощенска кутия"
 
 msgid "Create catch all mail account"
 msgstr "Создат CatchAll пощенска кутия"
@@ -3118,8 +3118,8 @@ msgstr "Първо изтрийте CatchAll акаунта за тази пощ
 msgid "Email account not found!"
 msgstr "Пощенската кутия не е намерена!"
 
-msgid "ispCP - Manage Mail and FTP / Edit mail account"
-msgstr "ispCP - Управление на Пащата и FTP / Редакция на Пощенстата кутия"
+msgid "i-MSCP - Manage Mail and FTP / Edit mail account"
+msgstr "i-MSCP - Управление на Пащата и FTP / Редакция на Пощенстата кутия"
 
 msgid "Mail were updated successfully!"
 msgstr "Пощенската кутия беще променена успешно!"
@@ -3127,11 +3127,11 @@ msgstr "Пощенската кутия беще променена успешн
 msgid "Edit email account"
 msgstr "Редакция на пощенската кутия"
 
-msgid "ispCP - Client/Change Password"
-msgstr "ispCP - Клиент/Смени парола"
+msgid "i-MSCP - Client/Change Password"
+msgstr "i-MSCP - Клиент/Смени парола"
 
-msgid "ispCP - Client/Change Personal Data"
-msgstr "ispCP - Клиент/Смяна на персонални данни"
+msgid "i-MSCP - Client/Change Personal Data"
+msgstr "i-MSCP - Клиент/Смяна на персонални данни"
 
 msgid "Please choose user or group"
 msgstr "Моля, изберете потребител или група"
@@ -3285,8 +3285,8 @@ msgstr ""
 msgid "SQL user password was successfully changed!"
 msgstr "Паролата на SQL потребителя беше успешно променена!"
 
-msgid "ispCP - Client/Change SQL User Password"
-msgstr "ispCP - Клиент/Промяна паролата на SQL потребител"
+msgid "i-MSCP - Client/Change SQL User Password"
+msgstr "i-MSCP - Клиент/Промяна паролата на SQL потребител"
 
 msgid "Change SQL user password"
 msgstr "Промяна паролата на SQL потребител"
@@ -3313,8 +3313,8 @@ msgstr "SQL Базата данни беше успешно създадена!"
 msgid "SQL accounts limit reached!"
 msgstr "Достигнато е Ограничението за SQL потребители"
 
-msgid "ispCP - Client/Add SQL Database"
-msgstr "ispCP - Клиент/Добави SQL база данни"
+msgid "i-MSCP - Client/Add SQL Database"
+msgstr "i-MSCP - Клиент/Добави SQL база данни"
 
 msgid "Add SQL database"
 msgstr "Добави SQL база данни"
@@ -3343,8 +3343,8 @@ msgstr "Списъкът с потребители на бази данни е �
 msgid "Database list is empty!"
 msgstr "Списъкът с бази данни е празен!"
 
-msgid "ispCP - Client/Manage SQL"
-msgstr "ispCP - Клиент/Управление SQL"
+msgid "i-MSCP - Client/Manage SQL"
+msgstr "i-MSCP - Клиент/Управление SQL"
 
 msgid "Manage SQL"
 msgstr "Управление SQL"
@@ -3397,8 +3397,8 @@ msgstr "Указаното SQL потребителско име вече същ
 msgid "SQL user successfully added!"
 msgstr "SQL потребители успешно добавлен!"
 
-msgid "ispCP - Client/Add SQL User"
-msgstr "ispCP - Клиент/Добави SQL потребител"
+msgid "i-MSCP - Client/Add SQL User"
+msgstr "i-MSCP - Клиент/Добави SQL потребител"
 
 msgid "SQL user name"
 msgstr "SQL потребителско име"
@@ -3440,8 +3440,8 @@ msgstr "Некоректен синтакс <i>точка на монтиран�
 msgid "Subdomain scheduled for addition!"
 msgstr "Поддомейна е добавен ф графика за добавяне!"
 
-msgid "ispCP - Client/Add Subdomain"
-msgstr "ispCP - Клиент/Добави поддомейн"
+msgid "i-MSCP - Client/Add Subdomain"
+msgstr "i-MSCP - Клиент/Добави поддомейн"
 
 msgid "Add subdomain"
 msgstr "Добави поддомейн"
@@ -3461,8 +3461,8 @@ msgstr "Моля, въведете тема на съобщението!"
 msgid "Your message was sent!"
 msgstr "Вашето съобщение беше изпратено!"
 
-msgid "ispCP - Support system - New ticket"
-msgstr "ispCP - Техно поддръжка - Нов билет"
+msgid "i-MSCP - Support system - New ticket"
+msgstr "i-MSCP - Техно поддръжка - Нов билет"
 
 msgid "New ticket"
 msgstr "Нов билет"
@@ -3519,8 +3519,8 @@ msgid "Logout"
 msgstr "Изход"
 
 #, fuzzy
-msgid "ispCP database updates"
-msgstr "Обновявания ispCP"
+msgid "i-MSCP database updates"
+msgstr "Обновявания i-MSCP"
 
 msgid "Custom menus"
 msgstr "Персоналное меню"
@@ -3621,8 +3621,8 @@ msgstr "Отсранен"
 msgid "Error"
 msgstr "Грешка"
 
-msgid "ispCP - Order Panel"
-msgstr "ispCP - Панел за заявки"
+msgid "i-MSCP - Order Panel"
+msgstr "i-MSCP - Панел за заявки"
 
 #, php-format
 msgid "%.2f PB"
@@ -3740,8 +3740,8 @@ msgstr "Преадресация на поддомейна"
 msgid "Unknown type"
 msgstr "Неизвестен тип"
 
-msgid "Welcome {USERNAME} to ispCP!"
-msgstr "{USERNAME}, добро пожаловат в ispCP!"
+msgid "Welcome {USERNAME} to i-MSCP!"
+msgstr "{USERNAME}, добро пожаловат в i-MSCP!"
 
 #, fuzzy
 msgid ""
@@ -3749,7 +3749,7 @@ msgid ""
 "\n"
 "Hello {NAME}!\n"
 "\n"
-"A new ispCP account has been created for you.\n"
+"A new i-MSCP account has been created for you.\n"
 "Your account information:\n"
 "\n"
 "User type: {USERTYPE}\n"
@@ -3764,8 +3764,8 @@ msgid ""
 "User name: {USERNAME}\n"
 "Password: {PASSWORD}\n"
 "\n"
-"Best wishes with ispCP!\n"
-"The ispCP Team.\n"
+"Best wishes with i-MSCP!\n"
+"The i-MSCP Team.\n"
 "\n"
 msgstr ""
 "\n"
@@ -3784,23 +3784,23 @@ msgstr ""
 "Вие можете да влезете сега на адрес: {BASE_SERVER_VHOST_PREFIX}"
 "{BASE_SERVER_VHOST}\n"
 "\n"
-"С най-добри пожелания ispCP!\n"
-"Екипът на ispCP.\n"
+"С най-добри пожелания i-MSCP!\n"
+"Екипът на i-MSCP.\n"
 "\n"
 
-msgid "Please activate your new ispCP password!"
-msgstr "Моля, активируйте свой Нов ispCP парола!"
+msgid "Please activate your new i-MSCP password!"
+msgstr "Моля, активируйте свой Нов i-MSCP парола!"
 
 msgid ""
 "\n"
 "\n"
 "Hello {NAME}!\n"
-"Use this link to activate your new ispCP password:\n"
+"Use this link to activate your new i-MSCP password:\n"
 "\n"
 "{LINK}\n"
 "\n"
-"Good Luck with the ispCP System\n"
-"The ispCP Team\n"
+"Good Luck with the i-MSCP System\n"
+"The i-MSCP Team\n"
 "\n"
 msgstr ""
 "\n"
@@ -3810,12 +3810,12 @@ msgstr ""
 "\n"
 "{LINK}\n"
 "\n"
-"Успех със системата ispCP\n"
-"Екипът на ispCP\n"
+"Успех със системата i-MSCP\n"
+"Екипът на i-MSCP\n"
 "\n"
 
-msgid "Your new ispCP login!"
-msgstr "Вашите нови данни за вход в ispCP!"
+msgid "Your new i-MSCP login!"
+msgstr "Вашите нови данни за вход в i-MSCP!"
 
 msgid ""
 "\n"
@@ -3827,8 +3827,8 @@ msgid ""
 "\n"
 "You can login at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
 "\n"
-"Best wishes with ispCP!\n"
-"The ispCP Team\n"
+"Best wishes with i-MSCP!\n"
+"The i-MSCP Team\n"
 "\n"
 msgstr ""
 "\n"
@@ -3840,8 +3840,8 @@ msgstr ""
 "\n"
 "Вие можете да влезете сега: {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
 "\n"
-"С най-добри пожелания от ispCP!\n"
-"Екипът на ispCP\n"
+"С най-добри пожелания от i-MSCP!\n"
+"Екипът на i-MSCP\n"
 "\n"
 
 msgid "Confirmation for domain order {DOMAIN}!"
@@ -3861,8 +3861,8 @@ msgid ""
 "\n"
 "{ACTIVATE_LINK}\n"
 "\n"
-"Thank you for using ispCP services.\n"
-"The ispCP Team\n"
+"Thank you for using i-MSCP services.\n"
+"The i-MSCP Team\n"
 "\n"
 msgstr ""
 "\n"
@@ -3872,8 +3872,8 @@ msgstr ""
 "\n"
 "{DOMAIN}\n"
 "\n"
-"Благодарим, използвате услугите на ispCP.\n"
-"Екипът на ispCP\n"
+"Благодарим, използвате услугите на i-MSCP.\n"
+"Екипът на i-MSCP\n"
 "\n"
 
 msgid "New alias order for {CUSTOMER}!"
@@ -3891,8 +3891,8 @@ msgid ""
 "Once logged in, you can activate his new alias at {BASE_SERVER_VHOST_PREFIX}"
 "{BASE_SERVER_VHOST}/reseller/alias.php\n"
 "\n"
-"Thank you for using ispCP services.\n"
-"The ispCP Team\n"
+"Thank you for using i-MSCP services.\n"
+"The i-MSCP Team\n"
 "\n"
 msgstr ""
 "\n"
@@ -3905,8 +3905,8 @@ msgstr ""
 "Когато влвзете в панела Вие ще можете да активирате неговия псевдоним тут\n"
 "{BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/reseller/alias.php\n"
 "\n"
-"Благодарим, че използвате Услугата на ispCP.\n"
-"Екипът на ispCP\n"
+"Благодарим, че използвате Услугата на i-MSCP.\n"
+"Екипът на i-MSCP\n"
 "\n"
 
 #, fuzzy
@@ -4169,8 +4169,8 @@ msgstr ""
 "Имате Ограничено дисково пространство!<br>Вие не можете да добавите "
 "потребител с безгранично дисковото пространство!"
 
-msgid "ispCP Error"
-msgstr "Грешка ispCP"
+msgid "i-MSCP Error"
+msgstr "Грешка i-MSCP"
 
 msgid "Error Message"
 msgstr "Съобщение за грешка"
@@ -4185,7 +4185,7 @@ msgid ""
 "Dear {RESELLER},\n"
 "you have a new order from {NAME} <{MAIL}> for domain {DOMAIN}\n"
 "\n"
-"Please login into your ispCP control panel for more details.\n"
+"Please login into your i-MSCP control panel for more details.\n"
 "\n"
 msgstr ""
 "\n"
@@ -4193,7 +4193,7 @@ msgstr ""
 "Уважаемий {RESELLER},\n"
 "Имате нова заявка от {NAME} <{MAIL}> за домейн {DOMAIN}\n"
 "\n"
-"Моля влезте в панела за управления ispCP за да получите по-подробна "
+"Моля влезте в панела за управления i-MSCP за да получите по-подробна "
 "информация.\n"
 "\n"
 "\n"
@@ -4295,8 +4295,8 @@ msgstr "Поддръжка Web и E-Mail"
 msgid "Your Own Domain"
 msgstr "Вашия собствен домейн"
 
-msgid "ispCP Control Panel"
-msgstr "Контролен Панел ispCP"
+msgid "i-MSCP Control Panel"
+msgstr "Контролен Панел i-MSCP"
 
 msgid "Automatic Updates"
 msgstr "Автоматични Обновявания"
@@ -4311,14 +4311,14 @@ msgid "Performance"
 msgstr "Производителност"
 
 #, fuzzy
-msgid "ispCP Reseller: Add Alias"
-msgstr "ispCP Риселър : Добави псевдоним"
+msgid "i-MSCP Reseller: Add Alias"
+msgstr "i-MSCP Риселър : Добави псевдоним"
 
 msgid "There is no user records for this reseller to add an alias for."
 msgstr ""
 
-msgid "ispCP - Manage Domain/Alias"
-msgstr "ispCP - Управление домейни/Псевдоними"
+msgid "i-MSCP - Manage Domain/Alias"
+msgstr "i-MSCP - Управление домейни/Псевдоними"
 
 msgid "Manage alias"
 msgstr "Управление на псевдоними"
@@ -4359,14 +4359,14 @@ msgstr "заявката за псевдоним на домейна е акти
 msgid "Ordered domain alias not activated!"
 msgstr "заявката за псевдоним на домейна НЕ е активирана!"
 
-msgid "ispCP - Circular"
+msgid "i-MSCP - Circular"
 msgstr ""
 
 msgid "Circular"
 msgstr ""
 
-msgid "ispCP - Domain/Edit"
-msgstr "ispCP - домейн/Редакция"
+msgid "i-MSCP - Domain/Edit"
+msgstr "i-MSCP - домейн/Редакция"
 
 #, fuzzy
 msgid "Unchanged"
@@ -4424,8 +4424,8 @@ msgstr "Услугата <em>%s</em> не может да бъде ограни�
 msgid "The <em>%s</em> service cannot be unlimited!"
 msgstr "Услугата <em>%s</em> не може да бъде без ограничение! "
 
-msgid "ispCP - Reseller/Add hosting plan"
-msgstr "ispCP - Риселър/Добави хостинг-план"
+msgid "i-MSCP - Reseller/Add hosting plan"
+msgstr "i-MSCP - Риселър/Добави хостинг-план"
 
 msgid "Price must be a number!"
 msgstr "Цената трябва да бъде указанна в цифри!"
@@ -4440,14 +4440,14 @@ msgstr "Ограничението за SQL бази данни е <i>Забра
 msgid "Hosting plan values exceed reseller maximum values!"
 msgstr ""
 
-msgid "ispCP - Reseller/Edit hosting plan"
-msgstr "ispCP - Риселър/Редакция хостинг-план"
+msgid "i-MSCP - Reseller/Edit hosting plan"
+msgstr "i-MSCP - Риселър/Редакция хостинг-план"
 
 msgid "View hosting plan"
 msgstr "Преглед хостинг-план"
 
-msgid "ispCP - Reseller/Main Index"
-msgstr "ispCP - Риселър/Главна"
+msgid "i-MSCP - Reseller/Main Index"
+msgstr "i-MSCP - Риселър/Главна"
 
 msgid "View details"
 msgstr "Преглед детайли"
@@ -4477,11 +4477,11 @@ msgstr "%1$d / %2$d от <b>%3$d</b>"
 msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr "%1$d / %2$d от <b>без Ограничение</b>"
 
-msgid "ispCP - Reseller/Change Language"
-msgstr "ispCP - Риселър/Смяна на езика"
+msgid "i-MSCP - Reseller/Change Language"
+msgstr "i-MSCP - Риселър/Смяна на езика"
 
-msgid "ispCP - Reseller/Order email setup"
-msgstr "ispCP - Риселър/Настройка имейл за заявки"
+msgid "i-MSCP - Reseller/Order email setup"
+msgstr "i-MSCP - Риселър/Настройка имейл за заявки"
 
 msgid "Manage orders"
 msgstr "Управление заявки"
@@ -4505,8 +4505,8 @@ msgstr "Потребителя е добавен!"
 msgid "Customer order was removed successful!"
 msgstr "Клиента заявка успешно е изтрита!"
 
-msgid "ispCP - Reseller/Order details"
-msgstr "ispCP - Риселър/Детайли заявка"
+msgid "i-MSCP - Reseller/Order details"
+msgstr "i-MSCP - Риселър/Детайли заявка"
 
 msgid "Order data updated successfully!"
 msgstr "данните на заявката са успешно обновени!"
@@ -4532,8 +4532,8 @@ msgstr "Уверени ли сте,че искате да изтриете та�
 msgid "Add to the system"
 msgstr "Добави в системата"
 
-msgid "ispCP - Reseller/Order settings"
-msgstr "ispCP - Риселър/Настройки заявкаа"
+msgid "i-MSCP - Reseller/Order settings"
+msgstr "i-MSCP - Риселър/Настройки заявкаа"
 
 msgid "Header"
 msgstr "Шапка"
@@ -4547,8 +4547,8 @@ msgstr "Изпълнителен УРЛ"
 msgid "Footer"
 msgstr "Футер"
 
-msgid "ispCP - Reseller/Order management"
-msgstr "ispCP - Риселър/Управление заявки"
+msgid "i-MSCP - Reseller/Order management"
+msgstr "i-MSCP - Риселър/Управление заявки"
 
 msgid "You do not have new orders!"
 msgstr "Нямате нови заявки!"
@@ -4571,14 +4571,14 @@ msgstr "Добави/Детали"
 msgid "Order Canceled: resellers maximum exceeded!"
 msgstr ""
 
-msgid "ispCP - Reseller/Change Password"
-msgstr "ispCP - Риселър/Промяна парола"
+msgid "i-MSCP - Reseller/Change Password"
+msgstr "i-MSCP - Риселър/Промяна парола"
 
-msgid "ispCP - Reseller/Change Personal Data"
-msgstr "ispCP - Риселър/Промяна Персонални данни"
+msgid "i-MSCP - Reseller/Change Personal Data"
+msgstr "i-MSCP - Риселър/Промяна Персонални данни"
 
-msgid "ispCP - Reseller/Lostpw email setup"
-msgstr "ispCP - Риселър/Настройки възстановяване на парола"
+msgid "i-MSCP - Reseller/Lostpw email setup"
+msgstr "i-MSCP - Риселър/Настройки възстановяване на парола"
 
 msgid "Lostpw email"
 msgstr "Имайл - Възстановяване на парола"
@@ -4586,14 +4586,14 @@ msgstr "Имайл - Възстановяване на парола"
 msgid "Lostpw link"
 msgstr "Връзка към възстановяване на парола"
 
-msgid "ispCP - Reseller/Manage users/Email setup"
-msgstr "ispCP - Риселър/Управление потребители/Настройка поща"
+msgid "i-MSCP - Reseller/Manage users/Email setup"
+msgstr "i-MSCP - Риселър/Управление потребители/Настройка поща"
 
-msgid "ispCP - Reseller: Support System: View Ticket"
-msgstr "ispCP - Риселър : Служба Поддръжка: Преглед Билети"
+msgid "i-MSCP - Reseller: Support System: View Ticket"
+msgstr "i-MSCP - Риселър : Служба Поддръжка: Преглед Билети"
 
-msgid "ispCP - Users/Add user"
-msgstr "ispCP - потребители/Добави потребител"
+msgid "i-MSCP - Users/Add user"
+msgstr "i-MSCP - потребители/Добави потребител"
 
 #, fuzzy
 msgid "1 Month"
@@ -4631,8 +4631,8 @@ msgstr "Следваща стъпка"
 msgid "You have no hosting plans. Please contact your system administrator."
 msgstr "Нямате хостинг планове. Свържете се с вашия системен администратор."
 
-msgid "ispCP - User/Add user(step2)"
-msgstr "ispCP - Потребител/Добави потребител (стъпка 2)"
+msgid "i-MSCP - User/Add user(step2)"
+msgstr "i-MSCP - Потребител/Добави потребител (стъпка 2)"
 
 msgid "Max domains<br><i>(-1 disabled, 0 unlimited)</i>"
 msgstr "Максимум домейни<br><i>(-1 забранено, 0 без Ограничение)</i>"
@@ -4646,8 +4646,8 @@ msgstr "Статистика AwStats"
 msgid "Domain data has been altered. Please enter again"
 msgstr ""
 
-msgid "ispCP - User/Add user"
-msgstr "ispCP - Потребитеи/Добави потребител"
+msgid "i-MSCP - User/Add user"
+msgstr "i-MSCP - Потребитеи/Добави потребител"
 
 msgid "Add other domains to this account"
 msgstr "Добавите другие домейн  към този акаунт"
@@ -4656,14 +4656,14 @@ msgstr "Добавите другие домейн  към този акаунт
 msgid "System error with Domain Id: %d"
 msgstr ""
 
-msgid "ispCP - Users/Edit"
-msgstr "ispCP - Потребители/Редакция"
+msgid "i-MSCP - Users/Edit"
+msgstr "i-MSCP - Потребители/Редакция"
 
 msgid "Users list"
 msgstr "Списък потребители"
 
-msgid "ispCP - Users"
-msgstr "ispCP - потребителии"
+msgid "i-MSCP - Users"
+msgstr "i-MSCP - потребителии"
 
 #, php-format
 msgid "Are you sure you want to change the status of %s?"
