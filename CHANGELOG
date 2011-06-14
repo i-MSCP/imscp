@@ -4,6 +4,10 @@ i-MSCP ChangeLog
 -------------------------------------------------------------------------------------
 i-MSCP 1.0.0-beta1
 -------------------------------------------------------------------------------------
+Distributions:
+    Debian:
+        - Added support for testing (wheezy)
+        - Removed support for oldstable (lenny) - Not supported by new installer
 
 Features / Enhancements:
     Database:
