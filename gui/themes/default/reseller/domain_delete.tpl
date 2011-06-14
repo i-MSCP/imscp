@@ -47,12 +47,12 @@
 		</div>
 
 		<div class="body">
-
+			<h2 class="user"><span>{TR_DELETE_DOMAIN} {DOMAIN_NAME}</span></h2>
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
 
-			<h2 class="user"><span>{TR_DELETE_DOMAIN} {DOMAIN_NAME}</span></h2>
+
 			<table>
 				<tr>
 					<td colspan="2">{TR_DOMAIN_SUMMARY}</td>

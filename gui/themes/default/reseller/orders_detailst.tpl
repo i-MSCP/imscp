@@ -59,11 +59,12 @@
 
 
 		<div class="body">
+            			<h2 class="domains"><span>{TR_ORDER_DETAILS}</span></h2>
 			<!-- BDP: page_message -->
    				<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 	   		<!-- EDP: page_message -->
 
-			<h2 class="domains"><span>{TR_ORDER_DETAILS}</span></h2>
+
 			<form name="order_details" method="post" action="orders_detailst.php?order_id={ID}">
 				<fieldset>
 					<legend>{TR_HOSTING_INFO}</legend>

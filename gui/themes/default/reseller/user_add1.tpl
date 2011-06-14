@@ -78,12 +78,12 @@
 		</div>
 
 		<div class="body">
-
+			<h2 class="general"><span>{TR_ADD_USER}</span></h2>
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
 
-			<h2 class="general"><span>{TR_ADD_USER}</span></h2>
+
 			<!-- BDP: add_form -->
 			<form name="reseller_add_users_first_frm" method="post" action="user_add1.php">
 				<fieldset>

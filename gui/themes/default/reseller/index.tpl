@@ -47,15 +47,16 @@
 		</div>
 
 		<div class="body">
-
+			<h2 class="general"><span>{GENERAL_INFO}</span></h2>
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
+
 			<!-- BDP: msg_entry -->
 			<div class="warning">{TR_NEW_MSGS}</div>
 			<!-- EDP: msg_entry -->
 
-			<h2 class="general"><span>{GENERAL_INFO}</span></h2>
+
 			<!-- BDP: props_list -->
 			<table>
 				<tr>

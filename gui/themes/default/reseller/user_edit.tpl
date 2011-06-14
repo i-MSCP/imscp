@@ -46,11 +46,12 @@
 		</div>
 
 		<div class="body">
+            			<h2 class="general"><span>{TR_MANAGE_USERS}</span></h2>
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
 
-			<h2 class="general"><span>{TR_MANAGE_USERS}</span></h2>
+
 
 			<form name="search_user" method="post" action="user_edit.php">
 				<fieldset>
