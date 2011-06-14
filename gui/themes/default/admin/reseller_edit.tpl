@@ -19,10 +19,6 @@
         <![endif]-->
         <script language="JavaScript" type="text/JavaScript">
 		/*<![CDATA[*/
-		
-			/*
-		 	 * Global variable - TRUE if a password was generated, FALSE otherwise
-		 	 */
 			gpwd=false;
 		
 			$(document).ready(function(){
@@ -125,18 +121,16 @@
         </div>
 
         <div class="body">
-
+            <h2 class="user"><span>{TR_EDIT_RESELLER}</span></h2>
             <!-- BDP: page_message -->
             <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->
-
-            <h2 class="user"><span>{TR_EDIT_RESELLER}</span></h2>
             <form name="admin_edit_reseller" method="post" action="reseller_edit.php">
                 <fieldset>
                     <legend>{TR_CORE_DATA}</legend>
                     <table>
                         <tr>
-                            <td><label for="username">{TR_USERNAME}</label></td>
+                            <td>{TR_USERNAME}</td>
                             <td>{USERNAME}</td>
                         </tr>
                         <tr>
@@ -258,8 +252,8 @@
                         <!-- EDP: rsl_ip_item -->
                     </table>
                     <!-- EDP: rsl_ip_list -->
-                </fieldset>
 
+                </fieldset>
 
                 <fieldset>
                     <legend>{TR_ADDITIONAL_DATA}</legend>

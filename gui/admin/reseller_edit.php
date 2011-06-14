@@ -32,17 +32,8 @@
  * i-MSCP a internet Multi Server Control Panel. All Rights Reserved.
  */
 
-/**
- * Include core libraries
- */
-require '../include/imscp-lib.php';
-
-iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
-
-$cfg = iMSCP_Registry::get('config');
-
 /*******************************************************************************
- * Functions
+ * Script functions
  */
 
 /**
@@ -52,7 +43,6 @@ $cfg = iMSCP_Registry::get('config');
  * is performed only once.
  *
  * @author Laurent Declercq (nuxwin) <l.declercq@nuxwin.com>
- * @since rxxxx
  * @return array cleaned data
  */
 function get_clean_input_data() {
@@ -100,7 +90,7 @@ function get_clean_input_data() {
 }
 
 /**
- * Check reseller data
+ * Check reseller data.
  *
  * @param array &$errFields  rerefence to the error indicators of input fields
  * @return boolean TRUE if all data are valid, FALSE otherwise
@@ -112,32 +102,19 @@ function check_data(&$errFields) {
 	// Get needed data
 	$rdata =& get_data();
 
-	/**
-	 * Check for new password
-	 */
-
 	if (!empty($_POST['pass0']) || !empty($_POST['pass1'])) {
-
 		if (!chk_password($_POST['pass0'])) {
-
 			if ($cfg->PASSWD_STRONG) {
-				set_page_message(
-					sprintf(
-						tr('The password must be at least %s long and contain letters and numbers to be valid.'),
-						$cfg->PASSWD_CHARS
-					),
-					'error'
-				);
+				set_page_message(sprintf(
+                                     tr('The password must be at least %s long and contain letters and numbers to be valid.'),
+                                     $cfg->PASSWD_CHARS),
+                                 'error');
 
 			} else {
-
-				set_page_message(
-					sprintf(
-						tr('Password data is shorter than %s signs or includes not permitted signs!'),
-						$cfg->PASSWD_CHARS
-					),
-					'error'
-				);
+				set_page_message(sprintf(
+                                     tr('Password data is shorter than %s signs or includes not permitted signs!'),
+                                     $cfg->PASSWD_CHARS),
+                                 'error');
 			}
 
 			$errFields[] = 'PWD_ERR';
@@ -151,10 +128,6 @@ function check_data(&$errFields) {
 		}
 	}
 
-	/**
-	 * Check for mail address
-	 */
-
 	if (!chk_email($rdata['email'])) {
 		set_page_message(tr('Incorrect email syntax!'), 'error');
 
@@ -162,31 +135,20 @@ function check_data(&$errFields) {
 	}
 
 	list(
-		$udmn_current, $udmn_max, $udmn_uf, $usub_current, $usub_max, $usub_uf,
-		$uals_current, $uals_max, $uals_uf, $umail_current, $umail_max, $umail_uf,
-		$uftp_current, $uftp_max, $uftp_uf, $usql_db_current, $usql_db_max,
-		$usql_db_uf, $usql_user_current, $usql_user_max, $usql_user_uf,
-		$utraff_current, $utraff_max, $utraff_uf, $udisk_current, $udisk_max,
-		$udisk_uf
+		$udmn_current, , $udmn_uf, $usub_current, , $usub_uf, $uals_current, ,
+        $uals_uf, $umail_current, , $umail_uf, $uftp_current, , $uftp_uf,
+        $usql_db_current, , $usql_db_uf, $usql_user_current, , $usql_user_uf,
+		$utraff_current, , $utraff_uf, $udisk_current, ,$udisk_uf
 	) = generate_reseller_users_props($rdata['edit_id']);
 
 
-	list(
-		$rdmn_current, $rdmn_max, $rsub_current, $rsub_max, $rals_current,
-		$rals_max, $rmail_current, $rmail_max, $rftp_current, $rftp_max,
-		$rsql_db_current, $rsql_db_max, $rsql_user_current, $rsql_user_max,
-		$rtraff_current, $rtraff_max, $rdisk_current, $rdisk_max
-	) = generate_reseller_props($rdata['edit_id']);
-
-	/**
-	 * Check for new domains limit
-	 */
+	list($rdmn_current, , $rsub_current, , $rals_current,, $rmail_current, ,
+        $rftp_current, ,$rsql_db_current, , $rsql_user_current, ,$rtraff_current, ,
+        $rdisk_current) = generate_reseller_props($rdata['edit_id']);
 
 	if (imscp_limit_check($rdata['max_dmn_cnt'], null)) {
-		$rs = _check_new_limit(
-			$rdata['max_dmn_cnt'], $rdmn_current,
-			$udmn_current, $udmn_uf, tr('Domains')
-		);
+		$rs = _check_new_limit($rdata['max_dmn_cnt'], $rdmn_current,
+                               $udmn_current, $udmn_uf, tr('Domains'));
 	} else {
 		set_page_message(tr('Incorrect domains limit!'), 'error');
 		$rs = false;
@@ -201,10 +163,8 @@ function check_data(&$errFields) {
 	 */
 
 	if (imscp_limit_check($rdata['max_sub_cnt'])) {
-		$rs = _check_new_limit(
-			$rdata['max_sub_cnt'], $rsub_current,
-			$usub_current, $usub_uf, tr('Subdomains')
-		);
+		$rs = _check_new_limit($rdata['max_sub_cnt'], $rsub_current,
+                               $usub_current, $usub_uf, tr('Subdomains'));
 	} else {
 		set_page_message(tr('Incorrect subdomains limit!'), 'error');
 		$rs = false;
@@ -219,10 +179,8 @@ function check_data(&$errFields) {
 	 */
 
 	if (imscp_limit_check($rdata['max_als_cnt'])) {
-		$rs = _check_new_limit(
-			$rdata['max_als_cnt'], $rals_current,
-			$uals_current, $uals_uf, tr('Aliases')
-		);
+		$rs = _check_new_limit($rdata['max_als_cnt'], $rals_current,
+                               $uals_current, $uals_uf, tr('Aliases'));
 	} else {
 		set_page_message(tr('Incorrect aliases limit!'), 'error');
 		$rs = false;
@@ -237,10 +195,8 @@ function check_data(&$errFields) {
 	 */
 
 	if (imscp_limit_check($rdata['max_mail_cnt'])) {
-		$rs = _check_new_limit(
-			$rdata['max_mail_cnt'], $rmail_current,
-			$umail_current, $umail_uf, tr('Mail')
-		);
+		$rs = _check_new_limit($rdata['max_mail_cnt'], $rmail_current,
+                               $umail_current, $umail_uf, tr('Mail'));
 	} else {
 		set_page_message(tr('Incorrect mail accounts limit!'), 'error');
 		$rs = false;
@@ -255,10 +211,8 @@ function check_data(&$errFields) {
 	 */
 
 	if (imscp_limit_check($rdata['max_ftp_cnt'])) {
-		$rs = _check_new_limit(
-			$rdata['max_ftp_cnt'], $rftp_current,
-			$uftp_current, $uftp_uf, tr('FTP')
-		);
+		$rs = _check_new_limit($rdata['max_ftp_cnt'], $rftp_current,
+                               $uftp_current, $uftp_uf, tr('FTP'));
 	} else {
 		set_page_message(tr('Incorrect FTP accounts limit!'), 'error');
 		$rs = false;
@@ -275,15 +229,11 @@ function check_data(&$errFields) {
 	if (!$rs = imscp_limit_check($rdata['max_sql_db_cnt'])) {
 		set_page_message(tr('Incorrect SQL databases limit!'), 'error');
 	} else if ($rdata['max_sql_db_cnt'] == -1 && $rdata['max_sql_user_cnt'] != -1) {
-		set_page_message(
-			tr('SQL databases limit is <i>disabled</i> but SQL users limit not!'), 'error'
-		);
+		set_page_message(tr('SQL databases limit is <i>disabled</i> but SQL users limit not!'), 'error');
 		$rs = false;
 	} else {
-		$rs = _check_new_limit(
-			$rdata['max_sql_db_cnt'], $rsql_db_current,
-			$usql_db_current, $usql_db_uf, tr('SQL Databases')
-		);
+		$rs = _check_new_limit($rdata['max_sql_db_cnt'], $rsql_db_current,
+                               $usql_db_current, $usql_db_uf, tr('SQL Databases'));
 	}
 
 	if (!$rs) {
@@ -296,33 +246,22 @@ function check_data(&$errFields) {
 
 	if (!$rs = imscp_limit_check($rdata['max_sql_user_cnt'])) {
 		set_page_message(tr('Incorrect SQL users limit!'), 'error');
-	} else if ($rdata['max_sql_db_cnt'] != -1
-		&& $rdata['max_sql_user_cnt'] == -1) {
-		set_page_message(
-			tr('SQL users limit is <i>disabled</i> but SQL databases limit not!'), 'error'
-		);
+	} else if ($rdata['max_sql_db_cnt'] != -1 && $rdata['max_sql_user_cnt'] == -1) {
+		set_page_message(tr('SQL users limit is <i>disabled</i> but SQL databases limit not!'), 'error');
 		$rs = false;
 	} else {
-		$rs = _check_new_limit(
-			$rdata['max_sql_user_cnt'], $rsql_user_current,
-			$usql_user_current, $usql_user_uf, tr('SQL Users')
-		);
+		$rs = _check_new_limit($rdata['max_sql_user_cnt'], $rsql_user_current,
+                               $usql_user_current, $usql_user_uf, tr('SQL Users'));
 	}
 
 	if (!$rs) {
 		$errFields[] = 'SQLU_ERR';
 	}
 
-	/**
-	 * Check for new traffic limit
-	 */
-
 	if (imscp_limit_check($rdata['max_traff_amnt'], null)) {
-		$rs = _check_new_limit(
-			$rdata['max_traff_amnt'], $rtraff_current,
-			$utraff_current / 1024 / 1024, $utraff_uf,
-			tr('Web Traffic')
-		);
+		$rs = _check_new_limit($rdata['max_traff_amnt'], $rtraff_current,
+                               $utraff_current / 1024 / 1024, $utraff_uf,
+                               tr('Web Traffic'));
 	} else {
 		set_page_message(tr('Incorrect traffic limit!'), 'error');
 		$rs = false;
@@ -337,11 +276,9 @@ function check_data(&$errFields) {
 	 */
 
 	if (imscp_limit_check($rdata['max_disk_amnt'], null)) {
-		$rs = _check_new_limit(
-			$rdata['max_disk_amnt'], $rdisk_current,
-			$udisk_current / 1024 / 1024, $udisk_uf,
-			tr('Disk storage')
-		);
+		$rs = _check_new_limit($rdata['max_disk_amnt'], $rdisk_current,
+                               $udisk_current / 1024 / 1024, $udisk_uf,
+                               tr('Disk storage'));
 	} else {
 		set_page_message(tr('Incorrect disk quota limit!'), 'error');
 		$rs = false;
@@ -356,31 +293,23 @@ function check_data(&$errFields) {
 	 */
 
 	if ($rdata['reseller_ips'] == '') {
-		set_page_message(
-			tr('You must assign at least one IP number for a reseller!'), 'error'
-		);
+		set_page_message(tr('You must assign at least one IP number for a reseller!'), 'error');
 	}
 
 	check_user_ip_data($rdata['edit_id'], $rdata['rip_lst'], $rdata['reseller_ips']);
 
-} // check_reseller_data()
+}
 
 /**
- * Check new limit per service
- *
- * Here, the following is considered as unique service:
- * domains, subdomains, domain alias, mail, ftp, sql user,
- * sql database, traffic, diskspace
- *
- * @access private
- * @param int $new_limit new limit
- * @param int $assigned_by_reseller
- * @param int $used_by_customers
- * @param string unlimited: set to '_on_' if unlimited, '_off_' otherwise
- * @param string service name, like domains subdomains...
- * @return boolean TRUE if no error was occured, FALSE otherwise
+ * @param  $new_limit
+ * @param  $assigned_by_reseller
+ * @param  $used_by_customers
+ * @param  $unlimited
+ * @param  $service_name
+ * @return bool
  */
-function _check_new_limit($new_limit, $assigned_by_reseller, $used_by_customers, $unlimited, $service_name) {
+function _check_new_limit($new_limit, $assigned_by_reseller, $used_by_customers,
+    $unlimited, $service_name) {
 
 	// Small Workaround to get the error state
 	$err_state = isset($_SESSION['user_page_message']) ?
@@ -393,43 +322,32 @@ function _check_new_limit($new_limit, $assigned_by_reseller, $used_by_customers,
 
 			// If the new limit is < to the already used accounts/limits by users
 			if ($new_limit < $used_by_customers && $new_limit != -1) {
-				set_page_message(
-					tr("This reseller's customers are using/have more/higher <b>%s</b> accounts/limits than the new limit you entered.", $service_name),
-					'error'
-				);
+				set_page_message(tr("This reseller's customers are using/have more/higher <b>%s</b> accounts/limits than the new limit you entered.", $service_name),
+                                 'error');
 
 			// If the new limit is < to the already assigned accounts/limits by reseller
 			} elseif ($new_limit < $assigned_by_reseller && $new_limit != -1) {
-				set_page_message(
-					tr('This reseller has already assigned more/higher <b>%s</b> accounts/limits than the new limit you entered.', $service_name),
-					'error'
-				);
+				set_page_message(tr('This reseller has already assigned more/higher <b>%s</b> accounts/limits than the new limit you entered.', $service_name),
+                                 'error');
 
 			// If the new limit is -1 (disabled) and the already used accounts/limits by users is greater 0
 			} elseif ($new_limit == -1 && $used_by_customers > 0) {
-				set_page_message(
-					tr("This reseller's customers are using/have more/higher <b>%s</b> accounts/limits than the new limit you entered.", $service_name),
-					'error'
-				);
+				set_page_message(tr("This reseller's customers are using/have more/higher <b>%s</b> accounts/limits than the new limit you entered.", $service_name),
+                                 'error');
 
 			// If the new limit is -1 (disabled) and the already assigned accounts/limits by reseller is greater 0
 			} elseif ($new_limit == -1 && $assigned_by_reseller > 0) {
-				set_page_message(
-					tr('This reseller has already assigned more/higher <b>%s</b> accounts/limits than the new limit you entered.', $service_name),
-					'error'
-				);
+				set_page_message(tr('This reseller has already assigned more/higher <b>%s</b> accounts/limits than the new limit you entered.', $service_name),
+                                 'error');
 			}
 
 		// One or more reseller's customers have unlimited rights
 		} elseif ($new_limit != 0) {
 			set_page_message(
-				tr('This reseller has customer(s) with unlimited rights for the <b>%s</b> service!', $service_name),
-				'error'
-			);
+				tr('This reseller has customer(s) with unlimited rights for the <b>%s</b> service!',
+                   $service_name),'error');
 
-			set_page_message(
-				tr('If you want to limit the reseller, you must first limit its customers!'), 'error'
-			);
+			set_page_message(tr('If you want to limit the reseller, you must first limit its customers!'), 'error');
 		}
 	}
 
@@ -509,6 +427,7 @@ function get_reseller_prop($reseller_id) {
 			user_goto('manage_users.php');
 	}
 
+    $rdata = array();
 	foreach ($rs->fields as $fname => $value){
 		if (!is_int($fname)) {
 			$rdata[$fname] = $value;
@@ -519,13 +438,11 @@ function get_reseller_prop($reseller_id) {
 }
 
 /**
- * Get Server IPs
- *
- * @param object &$tpl reference to the temmplate instance
- * @param string reseller IP addresses list
- * @return string reseller list of assigned Ips
+ * @param  iMSCP_pTemplate $tpl Template engine
+ * @param  $rip_lst
+ * @return string
  */
-function get_servers_ips(&$tpl, $rip_lst) {
+function get_servers_ips($tpl, $rip_lst) {
 
 	$cfg = iMSCP_Registry::get('config');
 
@@ -553,14 +470,11 @@ function get_servers_ips(&$tpl, $rip_lst) {
 
 		$tpl->parse('RSL_IP_MESSAGE', 'rsl_ip_message');
 	} else {
-		$tpl->assign(
-				array(
-					'TR_RSL_IP_NUMBER' => tr('No.'),
-					'TR_RSL_IP_ASSIGN' => tr('Assign'),
-					'TR_RSL_IP_LABEL' => tr('Label'),
-					'TR_RSL_IP_IP' => tr('Number')
-				)
-			);
+        $tpl->assign(array(
+                          'TR_RSL_IP_NUMBER' => tr('No.'),
+                          'TR_RSL_IP_ASSIGN' => tr('Assign'),
+                          'TR_RSL_IP_LABEL' => tr('Label'),
+                          'TR_RSL_IP_IP' => tr('Number')));
 
 		while (!$rs->EOF) {
 			$tpl->assign(
@@ -590,16 +504,13 @@ function get_servers_ips(&$tpl, $rip_lst) {
 				}
 			}
 
-			$tpl->assign(
-				array(
-					'RSL_IP_NUMBER' => $i + 1,
-					'RSL_IP_LABEL' => $rs->fields['ip_domain'],
-					'RSL_IP_IP' => $rs->fields['ip_number'],
-					'RSL_IP_CKB_NAME' => $ip_var_name,
-					'RSL_IP_CKB_VALUE' => 'asgned',
-					'RSL_IP_ITEM_ASSIGNED' => $ip_item_assigned
-				)
-			);
+            $tpl->assign(array(
+                              'RSL_IP_NUMBER' => $i + 1,
+                              'RSL_IP_LABEL' => $rs->fields['ip_domain'],
+                              'RSL_IP_IP' => $rs->fields['ip_number'],
+                              'RSL_IP_CKB_NAME' => $ip_var_name,
+                              'RSL_IP_CKB_VALUE' => 'asgned',
+                              'RSL_IP_ITEM_ASSIGNED' => $ip_item_assigned));
 
 			$tpl->parse('RSL_IP_ITEM', '.rsl_ip_item');
 			$rs->moveNext();
@@ -616,18 +527,15 @@ function get_servers_ips(&$tpl, $rip_lst) {
 } // End get_servers_ips()
 
 /**
- * @todo Must be documented
+ * @param  int $reseller_id Reseller unique identifier
+ * @param  $ip
+ * @param  $ip_num
+ * @param  string $ip_name
+ * @return bool
  */
 function have_reseller_ip_users($reseller_id, $ip, &$ip_num, &$ip_name) {
 
-	$query = "
-		SELECT
-			`admin_id`
-		FROM
-			`admin`
-		WHERE
-			`created_by` = ?
-	";
+	$query = "SELECT `admin_id` FROM `admin` WHERE `created_by` = ?";
 
 	$res = exec_query($query, $reseller_id);
 
@@ -636,13 +544,9 @@ function have_reseller_ip_users($reseller_id, $ip, &$ip_num, &$ip_name) {
 	}
 
 	while (!$res->EOF) {
-		$admin_id = $res->fields['admin_id'];
-
 		$query = "
 			SELECT
-				`domain`.`domain_id`,
-				`server_ips`.`ip_number`,
-				`server_ips`.`ip_domain`
+				`domain`.`domain_id`, `server_ips`.`ip_number`, `server_ips`.`ip_domain`
 			FROM
 				`domain`, `server_ips`
 			WHERE
@@ -665,7 +569,7 @@ function have_reseller_ip_users($reseller_id, $ip, &$ip_num, &$ip_name) {
 	}
 
 	return false;
-} // end have_reseller_ip_users()
+}
 
 /**
  * Update the reseller additional data and properties
@@ -677,29 +581,22 @@ function update_reseller() {
 	// Get needed data
 	$rdata =& get_data();
 
-	/**
-	 * Update reseller additional data
-	 */
-
 	$query = "
 		UPDATE
 			`admin`
 		SET
-			`fname` = ?, `lname` = ?, `firm` = ?, `zip` = ?,
-			`city` = ?, `state` = ?, `country` = ?, `email` = ?,
-			`phone` = ?, `fax` = ?, `street1` = ?, `street2` = ?,
-			`gender` = ?
+			`fname` = ?, `lname` = ?, `firm` = ?, `zip` = ?, `city` = ?, `state` = ?,
+			`country` = ?, `email` = ?, `phone` = ?, `fax` = ?, `street1` = ?,
+			`street2` = ?, `gender` = ?
 		WHERE
 			`admin_id` = ?
 		";
 
-		$qparams = array(
-			$rdata['fname'], $rdata['lname'], $rdata['firm'],
-			$rdata['zip'], $rdata['city'], $rdata['state'],
-			$rdata['country'], $rdata['email'], $rdata['phone'],
-			$rdata['fax'], $rdata['street1'], $rdata['street2'],
-			$rdata['gender'], $rdata['edit_id']
-		);
+    $qparams = array($rdata['fname'], $rdata['lname'], $rdata['firm'],
+                     $rdata['zip'], $rdata['city'], $rdata['state'],
+                     $rdata['country'], $rdata['email'], $rdata['phone'],
+                     $rdata['fax'], $rdata['street1'], $rdata['street2'],
+                     $rdata['gender'], $rdata['edit_id']);
 
 	if (!empty($_POST['pass0'])) {
 		$query = str_replace( '`fname`', '`admin_pass` = ?, `fname`', $query);
@@ -707,8 +604,8 @@ function update_reseller() {
 	}
 
 	exec_query($query, $qparams);
-	
-	if($rdata['domain_software_allowed'] == "no") {
+
+	if($rdata['software_allowed'] == "no") {
  		$query_user = "
  			UPDATE
  				`domain`
@@ -716,12 +613,14 @@ function update_reseller() {
  				`domain_software_allowed` = ?
  			WHERE
  				`domain_created_id` = ?
+ 			;
  		";
-		exec_query($query_user,array(
-                                    $rdata['domain_software_allowed'],
-                                    $rdata['edit_id']));
+         exec_query($query_user, array(
+                                      $rdata['softwaredepot_allowed'],
+                                      $rdata['edit_id']));
  	}
- 	if ($domain_softwaredepot_allowed == "no") {
+
+ 	if ($rdata['websoftwaredepot_allowed'] == 'no') {
  		$query = "
  			SELECT
  				`software_id`
@@ -732,12 +631,8 @@ function update_reseller() {
 			AND
 				`reseller_id` = ?
  		";
- 		$rs = exec_query(
- 				$query,
- 				array(
- 					$edit_id
- 				)
- 			);
+ 		$rs = exec_query($query, array($rdata['edit_id']));
+
 	 	if ($rs->RecordCount() > 0) {
 			while(!$rs->EOF) {
 				$update = "
@@ -748,14 +643,11 @@ function update_reseller() {
 					WHERE
 						`software_id` = ?
 				";
-				exec_query(
-					$update,
-					array(
-						$rs->fields['software_id']
-					)
-				);
-			$rs->MoveNext();
+				exec_query($update, array($rs->fields['software_id']));
+
+			    $rs->MoveNext();
 			}
+
 			$delete_rights = "
 				DELETE FROM
 					`web_software`
@@ -764,13 +656,11 @@ function update_reseller() {
 				AND
 					`reseller_id` = ?
 			";
-			exec_query($delete_rights, array($edit_id));
+			exec_query($delete_rights, array($rdata['edit_id']));
 	 	}
 	}
- 
-	/**
-	 * Update reseller properties
-	 */
+
+    /** Update reseller's properties */
 
 	$query = "
 		UPDATE
@@ -785,20 +675,19 @@ function update_reseller() {
 			`reseller_id` = ?
 	";
 
-	exec_query(
-		$query,
-		array(
-			$rdata['reseller_ips'], $rdata['max_dmn_cnt'],
-			$rdata['max_sub_cnt'], $rdata['max_als_cnt'],
-			$rdata['max_mail_cnt'], $rdata['max_ftp_cnt'],
-			$rdata['max_sql_db_cnt'], $rdata['max_sql_user_cnt'],
-			$rdata['max_traff_amnt'], $rdata['max_disk_amnt'],
-			$rdata['support_system'], $rdata['customer_id'], $rdata['domain_software_allowed'],
-			$rdata['domain_softwaredepot_allowed'], $rdata['domain_websoftwaredepot_allowed'], $rdata['edit_id']
-		)
-	);
+    exec_query($query, array(
+                            $rdata['reseller_ips'], $rdata['max_dmn_cnt'],
+                            $rdata['max_sub_cnt'], $rdata['max_als_cnt'],
+                            $rdata['max_mail_cnt'], $rdata['max_ftp_cnt'],
+                            $rdata['max_sql_db_cnt'], $rdata['max_sql_user_cnt'],
+                            $rdata['max_traff_amnt'], $rdata['max_disk_amnt'],
+                            $rdata['support_system'], $rdata['customer_id'],
+                            $rdata['domain_software_allowed'],
+                            $rdata['domain_softwaredepot_allowed'],
+                            $rdata['domain_websoftwaredepot_allowed'],
+                            $rdata['edit_id']));
 
-} // end update_reseller()
+}
 
 /**
  * Get reseller data
@@ -809,8 +698,7 @@ function update_reseller() {
  * parameter of this function during the first call.
  *
  * @author Laurent Declercq (Nuxwin) <l.declercq@nuxwin.com>
- * @since r2561
- * [@param object $tpl template instance]
+ * @param iMSCP_pTemplate|bool $tpl OPTIONAL template instance
  * @return array reseller properties and additional data
  */
 function &get_data($tpl = false) {
@@ -818,10 +706,8 @@ function &get_data($tpl = false) {
 	static $rdata = array();
 
 	if (empty($rdata) && $tpl !== false) {
-
 		// Update action
 		if (isset($_POST['uaction']) && $_POST['uaction'] == 'update_reseller') {
-
 			// Get clean input data
 			$rdata = get_clean_input_data();
 
@@ -858,7 +744,7 @@ function &get_data($tpl = false) {
 	}
 
 	return $rdata;
-} // end get_data()
+}
 
 /**
  * Input Fields Errors Highlighting
@@ -867,16 +753,15 @@ function &get_data($tpl = false) {
  *
  * @author Laurent Declercq (Nuxwin) <l.declercq@nuxwin.com>
  * @Since r2587
- * @param object &$tpl reference to the template instance
+ * @param iMSCP_pTemplate $tpl reference to the template instance
  * @param array &$errFields reference to the array of error fields indicators
  * @return void
  */
-function fields_highlighting(&$tpl, &$errFields) {
+function fields_highlighting($tpl, &$errFields) {
 
-	$fields = array(
-		'PWD_ERR', 'PWDR_ERR', 'EMAIL_ERR', 'DMN_ERR', 'SUB_ERR', 'ALS_ERR',
-		'MAIL_ERR', 'FTP_ERR', 'SQLD_ERR', 'SQLU_ERR', 'TRF_ERR', 'DISK_ERR'
-	);
+    $fields = array(
+        'PWD_ERR', 'PWDR_ERR', 'EMAIL_ERR', 'DMN_ERR', 'SUB_ERR', 'ALS_ERR',
+        'MAIL_ERR', 'FTP_ERR', 'SQLD_ERR', 'SQLU_ERR', 'TRF_ERR', 'DISK_ERR');
 
 	$l1 = 'border:1px rgb(233,0,0) solid;';
 
@@ -886,8 +771,15 @@ function fields_highlighting(&$tpl, &$errFields) {
 }
 
 /*******************************************************************************
- * Main
+ * Main script
  */
+
+// include needed libraries
+require '../include/imscp-lib.php';
+
+iMSCP_Events_Manager::getInstance()->dispatch(iMSCP_Events::onAdminScriptStart);
+
+$cfg = iMSCP_Registry::get('config');
 
 check_login(__FILE__);
 
@@ -954,10 +846,8 @@ if (isset($_REQUEST['edit_id']) && !isset($_POST['Cancel'])) {
 			update_reseller();
 
 			// Adds admin log entry
-			write_log(
-				"{$_SESSION['user_logged']}: changes data/password for reseller: " .
-				"{$rdata['edit_username']}!"
-			);
+			write_log("{$_SESSION['user_logged']}: changes data/password for reseller: " .
+                      "{$rdata['edit_username']}!");
 
 			// Send new authentication data to reseller if needed
 			if (isset($_POST['send_data']) && !empty($_POST['pass0'])) {
@@ -1006,13 +896,6 @@ if (isset($_REQUEST['edit_id']) && !isset($_POST['Cancel'])) {
 	user_goto('manage_users.php');
 }
 
-/**
- * Script dispatcher - end
- */
-
-/**
- * Template preparation
- */
 
 // Input Fields Errors Highlighting
 fields_highlighting($tpl, $errFields);
@@ -1024,6 +907,7 @@ if ($rdata['support_system'] == 'yes') {
 	$support_no = $cfg->HTML_CHECKED;
 	$support_yes = '';
 }
+
 
 $tpl->assign(
 	array(
@@ -1095,15 +979,15 @@ $tpl->assign(
 		'USERNAME' => tohtml($rdata['admin_name']),
 		'EMAIL' => tohtml($rdata['email']),
 
-		'MAX_DOMAIN_COUNT' => $rdata['max_dmn_cnt'],
-		'MAX_SUBDOMAIN_COUNT' => $rdata['max_sub_cnt'],
-		'MAX_ALIASES_COUNT' => $rdata['max_als_cnt'],
-		'MAX_MAIL_USERS_COUNT' => $rdata['max_mail_cnt'],
-		'MAX_FTP_USERS_COUNT' => $rdata['max_ftp_cnt'],
-		'MAX_SQLDB_COUNT' => $rdata['max_sql_db_cnt'],
-		'MAX_SQL_USERS_COUNT' => $rdata['max_sql_user_cnt'],
-		'MAX_TRAFFIC_AMOUNT' => $rdata['max_traff_amnt'],
-		'MAX_DISK_AMOUNT' => $rdata['max_disk_amnt'],
+		'MAX_DOMAIN_COUNT' => intval($rdata['max_dmn_cnt']),
+		'MAX_SUBDOMAIN_COUNT' => intval($rdata['max_sub_cnt']),
+		'MAX_ALIASES_COUNT' => intval($rdata['max_als_cnt']),
+		'MAX_MAIL_USERS_COUNT' => intval($rdata['max_mail_cnt']),
+		'MAX_FTP_USERS_COUNT' => intval($rdata['max_ftp_cnt']),
+		'MAX_SQLDB_COUNT' => intval($rdata['max_sql_db_cnt']),
+		'MAX_SQL_USERS_COUNT' => intval($rdata['max_sql_user_cnt']),
+		'MAX_TRAFFIC_AMOUNT' => intval($rdata['max_traff_amnt']),
+		'MAX_DISK_AMOUNT' => intval($rdata['max_disk_amnt']),
 
 		'SUPPORT_YES' => $support_yes,
 		'SUPPORT_NO' => $support_no,
