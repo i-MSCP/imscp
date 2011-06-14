@@ -217,7 +217,7 @@ SQL_QUERY;
 	}
 }
 
-function generate_domain_entry(&$tpl, $user_id, $row) {
+function generate_domain_entry($tpl, $user_id, $row) {
 
 	global $crnt_month, $crnt_year;
 
