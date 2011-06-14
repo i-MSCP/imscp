@@ -45,11 +45,10 @@
         </div>
 
         <div class="body">
+	        <h2 class="support"><span>{TR_VIEW_SUPPORT_TICKET}</span></h2>
             <!-- BDP: page_message -->
             <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->
-
-	        <h2 class="support"><span>{TR_VIEW_SUPPORT_TICKET}</span></h2>
 
 			<table>
 				<!-- BDP: tickets_list -->

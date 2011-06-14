@@ -49,6 +49,7 @@
 
         <div class="body">
             <h2 class="doc"><span>{TR_SERVER_STATUS}</span></h2>
+
             <!-- BDP: props_list -->
             <table>
                 <tr>

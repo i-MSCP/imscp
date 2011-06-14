@@ -45,11 +45,11 @@
 		</div>
 
 		<div class="body">
+			<h2 class="stats"><span>{TR_RESELLER_USER_STATISTICS}</span></h2>
+
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
-
-			<h2 class="stats"><span>{TR_RESELLER_USER_STATISTICS}</span></h2>
 
 			<!-- BDP: props_list -->
 			<form name="rs_frm" method="post" action="reseller_user_statistics.php?psi={POST_PREV_PSI}">

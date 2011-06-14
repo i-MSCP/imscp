@@ -41,11 +41,12 @@
             {MENU}
         </div>
         <div class="body">
+	        <h2 class="settings"><span>{TR_SERVER_TRAFFIC_SETTINGS}</span></h2>
+
             <!-- BDP: page_message -->
             <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->
 
-	    <h2 class="settings"><span>{TR_SERVER_TRAFFIC_SETTINGS}</span></h2>
 	    <form action="settings_server_traffic.php" method="post" name="admin_modify_server_traffic_settings" id="admin_modify_server_traffic_settings">
 		<fieldset>
 		    <legend>{TR_SET_SERVER_TRAFFIC_SETTINGS}</legend>

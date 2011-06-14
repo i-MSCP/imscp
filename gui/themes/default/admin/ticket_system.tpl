@@ -52,12 +52,12 @@
 
 
         <div class="body">
+            <h2 class="support"><span>{TR_OPEN_TICKETS}</span></h2>
             <!-- BDP: page_message -->
             <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->
 
             <!-- BDP: tickets_list -->
-            <h2 class="support"><span>{TR_OPEN_TICKETS}</span></h2>
             <table>
                 <thead>
                     <tr>

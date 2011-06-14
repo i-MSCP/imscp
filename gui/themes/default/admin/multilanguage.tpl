@@ -74,12 +74,12 @@
     </div>
 
     <div class="body">
+        <h2 class="multilanguage"><span>{TR_MULTILANGUAGE}</span></h2>
 
         <!-- BDP: page_message -->
         <div class="{MESSAGE_CLS}">{MESSAGE}</div>
         <!-- EDP: page_message -->
 
-        <h2 class="multilanguage"><span>{TR_MULTILANGUAGE}</span></h2>
         <form action="multilanguage.php" method="post" enctype="multipart/form-data" name="set_layout" id="set_layout">
             <fieldset>
                 <legend>{TR_INSTALLED_LANGUAGES}</legend>

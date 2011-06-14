@@ -74,11 +74,11 @@
 			{MENU}
 		</div>
 		<div class="body">
+			<h2 class="general"><span>{TR_SERVERPORTS}</span></h2>
+
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
-
-			<h2 class="general"><span>{TR_SERVERPORTS}</span></h2>
 
 			<!-- start form edit -->
 			<form name="frm_to_updt" method="post" action="settings_ports.php" onsubmit="return enable_for_post();">

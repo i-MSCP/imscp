@@ -40,11 +40,13 @@
             {MENU}
         </div>
         <div class="body">
+            <h2 class="general"><span>{TR_IP_ADMIN_USAGE_STATISTICS}</span></h2>
+
             <!-- BDP: page_message -->
             <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->
+
             <!-- BDP: statistics -->
-            <h2 class="general"><span>{TR_IP_ADMIN_USAGE_STATISTICS}</span></h2>
             <table>
                 <!-- BDP: ip_row -->
                 <thead>

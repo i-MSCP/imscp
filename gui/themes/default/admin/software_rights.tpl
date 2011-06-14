@@ -54,12 +54,12 @@
         </div>
 
         <div class="body">
-
+            <h2 class="apps_installer"><span>{TR_ADD_RIGHTS} {TR_SOFTWARE_NAME}</span></h2>
             <!-- BDP: page_message -->
             <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->
             
-            <h2 class="apps_installer"><span>{TR_ADD_RIGHTS} {TR_SOFTWARE_NAME}</span></h2>
+
             <table>
             	<!-- BDP: no_select_reseller -->
 				<tr>

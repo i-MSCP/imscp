@@ -43,9 +43,11 @@
         </div>
         <div class="body">
             <h2 class="user"><span>{TR_ADD_ADMIN}</span></h2>
+
             <!-- BDP: page_message -->
             <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->
+
             <form name="admin_add_user" method="post" action="admin_add.php">
                 <!-- BDP: props_list -->
                 <fieldset>

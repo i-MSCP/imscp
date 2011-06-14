@@ -55,13 +55,14 @@
         </div>
 
         <div class="body">
+            <!-- BDP: tickets_list -->
+            <h2 class="support"><span>{MANAGE_IPS}</span></h2>
+            <!-- BDP: ip_available -->
+
             <!-- BDP: page_message -->
             <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->
 
-            <!-- BDP: tickets_list -->
-            <h2 class="support"><span>{MANAGE_IPS}</span></h2>
-            <!-- BDP: ip_available -->
             <fieldset>
                 <legend>{TR_AVAILABLE_IPS}</legend>
                 <table>

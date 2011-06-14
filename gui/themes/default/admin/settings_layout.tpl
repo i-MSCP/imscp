@@ -45,13 +45,12 @@
         </div>
 
         <div class="body">
+            <h2 class="multilanguage"><span>{TR_LAYOUT_SETTINGS}</span></h2>
 
             <!-- BDP: page_message -->
             <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->
 
-            <h2 class="multilanguage"><span>{TR_LAYOUT_SETTINGS}</span></h2>
-			
 			<table>
 				<tr>
 					<th >{TR_LOGO_FILE}</th>

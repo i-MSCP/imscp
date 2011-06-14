@@ -41,9 +41,11 @@
         </div>
         <div class="body">
             <h2 class="update"><span>{TR_SECTION_TITLE}</span></h2>
+
             <!-- BDP: page_message -->
             <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->
+
             <!-- BDP: database_update -->
             <form name='database_update' action='database_update.php' method='post'>
                 <table class="description">
@@ -62,6 +64,7 @@
                 </div>
             </form>
             <!-- EDP: database_update -->
+
         </div>
         <div class="footer">i-MSCP {VERSION}<br />build: {BUILDDATE}
             <br />Codename: {CODENAME}</div>

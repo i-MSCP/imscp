@@ -55,12 +55,11 @@
 
 
 		<div class="body">
-		
+            <h2 class="hosting_plans"><span>{TR_HOSTING_PLANS}</span></h2>
+
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
-				
-			<h2 class="hosting_plans"><span>{TR_HOSTING_PLANS}</span></h2>
 				
 			<!-- BDP: hp_table -->
 			<table>

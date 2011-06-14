@@ -44,10 +44,12 @@
 			{MENU}
 		</div>
 		<div class="body">
+            <h2 class="general"><span>{TR_SETTINGS}</span></h2>
+
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
-			<h2 class="general"><span>{TR_SETTINGS}</span></h2>
+
 			<form action="settings.php" method="post" name="frmsettings" id="frmsettings">
 				<fieldset>
 					<legend>Core data</legend>

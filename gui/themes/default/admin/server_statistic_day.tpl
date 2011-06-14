@@ -45,12 +45,12 @@
         </div>
 
         <div class="body">
+            <h2 class="general"><span>{TR_SERVER_DAY_STATISTICS}</span></h2>
 
             <!-- BDP: page_message -->
             <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->
 
-            <h2 class="general"><span>{TR_SERVER_DAY_STATISTICS}</span></h2>
             <p>{TR_YEAR} {YEAR}&nbsp;&nbsp;&nbsp;&nbsp; {TR_MONTH} {MONTH}&nbsp;&nbsp;&nbsp;{TR_DAY} {DAY}</p>
             <table>
             	<thead>

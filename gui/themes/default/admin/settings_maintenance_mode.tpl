@@ -45,12 +45,12 @@
         </div>
 
         <div class="body">
+            <h2 class="maintenancemode"><span>{TR_MAINTENANCEMODE}</span></h2>
 
             <!-- BDP: page_message -->
             <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->
 
-            <h2 class="maintenancemode"><span>{TR_MAINTENANCEMODE}</span></h2>
             <form action="settings_maintenance_mode.php" method="post" name="maintenancemode_frm" id="maintenancemode_frm">
                 <table>
                     <tr>

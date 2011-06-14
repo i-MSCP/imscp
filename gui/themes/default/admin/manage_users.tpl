@@ -60,13 +60,11 @@
         </div>
 
         <div class="body">
+            <h2 class="users"><span>{TR_ADMINISTRATORS}</span></h2>
 
             <!-- BDP: page_message -->
             <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->
-
-
-            <h2 class="users"><span>{TR_ADMINISTRATORS}</span></h2>
 
             <!-- BDP: admin_message -->
             <div class="info">{ADMIN_MESSAGE}</div>

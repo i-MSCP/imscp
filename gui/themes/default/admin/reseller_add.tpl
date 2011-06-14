@@ -45,12 +45,12 @@
         </div>
 
         <div class="body">
+            <h2 class="user"><span>{TR_ADD_RESELLER}</span></h2>
 
             <!-- BDP: page_message -->
             <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->
 
-            <h2 class="user"><span>{TR_ADD_RESELLER}</span></h2>
             <form name="admin_add_reseller" method="post" action="reseller_add.php">
                 <fieldset>
                     <legend>{TR_CORE_DATA}</legend>

@@ -46,13 +46,12 @@
 
 
 		<div class="body">
-		
+			<h2 class="hosting_plans"><span>{TR_ADD_HOSTING_PLAN}</span></h2>
+
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
-			
-			<h2 class="hosting_plans"><span>{TR_ADD_HOSTING_PLAN}</span></h2>
-			
+
 			<form name="reseller_add_host_plant_frm" method="post" action="hosting_plan_add.php">
 					<fieldset>
 						<legend>{TR_HOSTING PLAN PROPS}</legend>

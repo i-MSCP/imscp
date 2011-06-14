@@ -38,8 +38,8 @@
         </div>
 
         <div class="body">
-
             <h2 class="general"><span>{TR_ROOTKIT_LOG}</span></h2>
+
             <!-- BDP: props_list -->
             <table>
                 <tr>

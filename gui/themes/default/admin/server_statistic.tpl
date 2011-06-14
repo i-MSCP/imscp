@@ -45,13 +45,11 @@
         </div>
 
         <div class="body">
+            <h2 class="general"><span>{TR_SERVER_STATISTICS}</span></h2>
 
             <!-- BDP: page_message -->
             <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->
-
-            <h2 class="general"><span>{TR_SERVER_STATISTICS}</span></h2>
-
 
 			<form action="server_statistic.php" method="post" name="reseller_user_statistics" id="reseller_user_statistics">
 				{TR_MONTH}

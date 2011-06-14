@@ -49,9 +49,11 @@
         </div>
         <div class="body">
             <h2 class="support"><span>{TR_TITLE_CUSTOM_MENUS}</span></h2>
+
             <!-- BDP: page_message -->
             <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->
+
             <table>
                 <tr>
                     <th>{TR_MENU_NAME}</th>

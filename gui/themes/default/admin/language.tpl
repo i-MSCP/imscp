@@ -17,7 +17,6 @@
     </head>
 
     <body>
-
         <div class="header">
             {MAIN_MENU}
 
@@ -45,12 +44,12 @@
         </div>
 
         <div class="body">
+            <h2 class="multilanguage"><span>{TR_CHOOSE_DEFAULT_LANGUAGE}</span></h2>
 
             <!-- BDP: page_message -->
             <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->
 
-            <h2 class="multilanguage"><span>{TR_CHOOSE_DEFAULT_LANGUAGE}</span></h2>
             <form name="client_change_language" method="post" action="language.php">
                 <table>
                     <tr>

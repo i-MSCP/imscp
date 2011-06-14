@@ -40,7 +40,7 @@
             {MENU}
         </div>
         <div class="body">
-    
+            <h2 class="general"><span>{TR_GENERAL_INFORMATION}</span></h2>
             <!-- BDP: page_message -->
             <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->
@@ -56,9 +56,6 @@
             <!-- BDP: database_update_message -->
             <div class="warning">{DATABASE_UPDATE}</div>
             <!-- EDP: database_update_message -->
-
-            <h2 class="general"><span>{TR_GENERAL_INFORMATION}</span></h2>
-
             <table>
                 <tr>
                     <td>{TR_ACCOUNT_NAME}</td>

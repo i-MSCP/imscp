@@ -44,12 +44,12 @@
         </div>
 
         <div class="body">
+            <h2 class="users2"><span>{TR_RESELLER_ASSIGNMENT}</span></h2>
 
             <!-- BDP: page_message -->
             <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->
 
-            <h2 class="users2"><span>{TR_RESELLER_ASSIGNMENT}</span></h2>
             <form action="manage_reseller_owners.php" method="post" name="admin_reseller_assignment" id="admin_reseller_assignment">
    
                 <!-- BDP: reseller_list -->

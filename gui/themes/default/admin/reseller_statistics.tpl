@@ -40,12 +40,13 @@
             {MENU}
         </div>
         <div class="body">
+            <h2 class="general"><span>{TR_RESELLER_STATISTICS}</span></h2>
+
             <!-- BDP: page_message -->
             <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->
 
             <!-- BDP: statistics_form -->
-            <h2 class="general"><span>{TR_RESELLER_STATISTICS}</span></h2>
             <form action="reseller_statistics.php?psi={POST_PREV_PSI}" method="post" name="rs_frm" id="rs_frm">
                 <label for="month">{TR_MONTH}</label>
                 <select name="month" id="month">

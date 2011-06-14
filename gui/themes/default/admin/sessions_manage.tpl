@@ -45,12 +45,12 @@
         </div>
 
         <div class="body">
+            <h2 class="users2"><span>{TR_MANAGE_USER_SESSIONS}</span></h2>
 
             <!-- BDP: page_message -->
             <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->
 
-            <h2 class="users2"><span>{TR_MANAGE_USER_SESSIONS}</span></h2>
             <table>
                 <tr>
                     <th>{TR_USERNAME}</th>

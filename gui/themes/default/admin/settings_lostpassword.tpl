@@ -44,12 +44,12 @@
         </div>
 
         <div class="body">
+            <h2 class="general"><span>{TR_LOSTPW_EMAIL}</span></h2>
 
             <!-- BDP: page_message -->
             <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->
 
-            <h2 class="general"><span>{TR_LOSTPW_EMAIL}</span></h2>
             <form action="settings_lostpassword.php" method="post" name="frmlostpassword" id="frmlostpassword">
                 <fieldset>
                     <legend>{TR_MESSAGE_TEMPLATE_INFO}</legend>

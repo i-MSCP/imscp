@@ -48,11 +48,11 @@
         </div>
 
         <div class="body">
+            <h2 class="stats"><span>{TR_DOMAIN_STATISTICS}</span></h2>
+
             <!-- BDP: page_message -->
             <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->
-
-            <h2 class="stats"><span>{TR_DOMAIN_STATISTICS}</span></h2>
 
             <form name="domain_statistics_frm" method="post" action="domain_statistics.php">
             	{TR_MONTH}
