@@ -66,7 +66,7 @@
 					<table>
 						<tbody>
 							<tr>
-								<td><label for="urgency">{TR_URGENCY}</label></td>
+								<td style="width:300px;"><label for="urgency">{TR_URGENCY}</label></td>
 								<td><select id="urgency" name="urgency">
 									  <option value="1" {OPT_URGENCY_1}>{TR_LOW}</option>
 									  <option value="2" {OPT_URGENCY_2}>{TR_MEDIUM}</option>
@@ -81,7 +81,7 @@
 							</tr>
 							<tr>
 								<td><label for="user_message">{TR_YOUR_MESSAGE}</label></td>
-								<td><textarea name="user_message" cols="80" rows="12">{USER_MESSAGE}</textarea></td>
+								<td><textarea id="user_message" name="user_message" cols="80" rows="12">{USER_MESSAGE}</textarea></td>
 							</tr>
 						</tbody>
 					</table>

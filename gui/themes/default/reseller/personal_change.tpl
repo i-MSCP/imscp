@@ -54,11 +54,11 @@
 			<form action="personal_change.php" method="post" name="client_change_personal_frm">
 				<table>
 					<tr>
-					  <td><label for="first_name">{TR_FIRST_NAME}</label></td>
+					  <td style="width:300px;"><label for="fname">{TR_FIRST_NAME}</label></td>
 					  <td><input type="text" name="fname" id="fname" value="{FIRST_NAME}"/></td>
 					</tr>
 					<tr>
-					  <td><label for="last_name">{TR_LAST_NAME}</label></td>
+					  <td><label for="lname">{TR_LAST_NAME}</label></td>
 					  <td><input type="text" name="lname" id="lname" value="{LAST_NAME}"/></td>
 					</tr>
 					<tr>

@@ -90,12 +90,12 @@
 					<legend>{TR_CORE_DATA}</legend>
 					<table>
 						<tr>
-							<td>{TR_DOMAIN_NAME} <span class="icon i_help" id="dmn_help">Help</span></td>
+							<td style="width:300px;">{TR_DOMAIN_NAME} <span  style="vertical-align:middle" class="icon i_help" id="dmn_help">Help</span></td>
 							<td><input type="text" name="dmn_name" value="{DMN_NAME_VALUE}"/></td>
 						</tr>
 						<!-- BDP: expire -->
 							<tr>
-								<td><label for="dmn_expire">{TR_DOMAIN_EXPIRE}</label></td>
+								<td>{TR_DOMAIN_EXPIRE}</td>
 								<td>
 									<script>
 										$(function() {

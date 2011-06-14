@@ -68,7 +68,7 @@
 						</thead>
 						<tbody>
 							<tr>
-								<td>{TR_USER_LOGIN_NAME}</td>
+								<td style="width:200px;">{TR_USER_LOGIN_NAME}</td>
 								<td>{USERNAME}</td>
 								<td>{TR_USER_LOGIN_NAME}</td>
 								<td>{USERNAME}</td>
@@ -104,7 +104,7 @@
 					<legend>{TR_MESSAGE_TEMPLATE}</legend>
 					<table>
 						<tr>
-							<td>{TR_SENDER_EMAIL}</td>
+							<td style="width:200px;">{TR_SENDER_EMAIL}</td>
 							<td colspan="2">{SENDER_EMAIL_VALUE}</td>
 						</tr>
 						<tr>

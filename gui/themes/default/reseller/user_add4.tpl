@@ -132,9 +132,7 @@
 							<td><input id="ndomain_mpoint" name="ndomain_mpoint" type="text" value='{MP}' /></td>
 						</tr>
 						<tr>
-							<td>
-								<label for="status">{TR_ENABLE_FWD}</label>
-							</td>
+							<td>{TR_ENABLE_FWD}</td>
 							<td>
 								<input type="radio" name="status" id="status_enable"{CHECK_EN} value="1" onChange="setForwardReadonly(this);" /><label for="status_enable">{TR_ENABLE}</label><br />
 								<input type="radio" name="status" id="status_disable"{CHECK_DIS} value="0" onChange="setForwardReadonly(this);" /><label for="status_disable">{TR_DISABLE}</label>

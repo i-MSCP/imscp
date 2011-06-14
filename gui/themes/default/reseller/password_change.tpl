@@ -56,7 +56,7 @@
 
 				<table>
 					<tr>
-						<td><label for="curr_pass">{TR_CURR_PASSWORD}</label></td>
+						<td style="width:300px;"><label for="curr_pass">{TR_CURR_PASSWORD}</label></td>
 						<td><input type="password" name="curr_pass" id="curr_pass" value=""/></td>
 					</tr>
 					<tr>

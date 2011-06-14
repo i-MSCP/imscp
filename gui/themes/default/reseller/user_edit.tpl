@@ -58,7 +58,7 @@
 					<legend>{TR_CORE_DATA}</legend>
 					<table>
 						<tr>
-							<td>{TR_USERNAME}</td>
+							<td style="width: 300px;">{TR_USERNAME}</td>
 							<td>{VL_USERNAME}</td>
 						</tr>
 						<tr>
@@ -82,7 +82,7 @@
 					<legend>{TR_ADDITIONAL_DATA}</legend>
 					<table>
 						<tr>
-							<td><label for="useruid">{TR_CUSTOMER_ID}</label></td>
+							<td style="width: 300px;"><label for="useruid">{TR_CUSTOMER_ID}</label></td>
 							<td><input type="text" name="useruid" id="useruid" value="{VL_USR_ID}"/></td>
 						</tr>
 						<tr>
@@ -120,7 +120,7 @@
 						</tr>
 						<tr>
 							<td><label for="useratate">{TR_STATE}</label></td>
-							<td><input type="text" name="userstate" id="userstate" value="{VL_USRSTATE}" /></td>
+							<td><input id="useratate" type="text" name="userstate" id="userstate" value="{VL_USRSTATE}" /></td>
 						</tr>
 						<tr>
 							<td><label for="usercountry">{TR_COUNTRY}</label></td>

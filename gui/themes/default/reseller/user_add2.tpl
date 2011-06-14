@@ -60,7 +60,7 @@
 					<legend>{TR_HOSTING_PLAN_PROPERTIES}</legend>
 					<table>
 						<tr>
-							<td>{TR_TEMPLATE_NAME}</td>
+							<td style="width:300px;">{TR_TEMPLATE_NAME}</td>
 							<td><input name="template" type="hidden" id="template" value="{VL_TEMPLATE_NAME}" />{VL_TEMPLATE_NAME}</td>
 						</tr>
 						<tr>

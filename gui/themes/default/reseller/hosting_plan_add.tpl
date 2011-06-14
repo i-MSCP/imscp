@@ -56,7 +56,7 @@
                     <legend>{TR_HOSTING PLAN PROPS}</legend>
                     <table>
                         <tr>
-                            <td><label for="hp_name">{TR_TEMPLATE_NAME}</label></td>
+                            <td style="width:300px;"><label for="hp_name">{TR_TEMPLATE_NAME}</label></td>
                             <td>
                                 <input id="hp_name" type="text" name="hp_name" value="{HP_NAME_VALUE}" />
                             </td>
@@ -164,7 +164,7 @@
                     <legend>{TR_BILLING_PROPS}</legend>
                     <table>
                         <tr>
-                            <td><label for="hp_price">{TR_PRICE}</label></td>
+                            <td style="width:300px;"><label for="hp_price">{TR_PRICE}</label></td>
                             <td>
                                 <input name="hp_price" type="text" id="hp_price" value="{HP_PRICE}" />
                             </td>
@@ -204,7 +204,7 @@
                             <td colspan="2">{TR_TOS_NOTE}</td>
                         </tr>
                         <tr>
-                            <td>{TR_TOS_DESCRIPTION}</td>
+                            <td style="width:300px;">{TR_TOS_DESCRIPTION}</td>
                             <td>
                                 <textarea name="hp_tos" cols="70" rows="8">{HP_TOS_VALUE}</textarea>
                             </td>

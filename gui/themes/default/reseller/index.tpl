@@ -60,7 +60,7 @@
 			<!-- BDP: props_list -->
 			<table>
 				<tr>
-					<td>{ACCOUNT_NAME}</td>
+					<td style="width:300px;">{ACCOUNT_NAME}</td>
 					<td>{RESELLER_NAME}</td>
 				</tr>
 				<tr>

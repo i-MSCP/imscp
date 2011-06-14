@@ -55,7 +55,7 @@
                     <legend>{TR_MESSAGE_TEMPLATE_INFO}</legend>
                     <table>
                         <tr>
-                            <td>{TR_USER_LOGIN_NAME}</td>
+                            <td style="width:300px;">{TR_USER_LOGIN_NAME}</td>
                             <td>{USERNAME}</td>
                         </tr>
                         <tr>
@@ -84,7 +84,7 @@
                     <legend>{TR_MESSAGE_TEMPLATE}</legend>
                     <table>
                         <tr>
-                            <td><label for="auto_subject">{TR_SUBJECT}</label></td>
+                            <td style="width:300px;"><label for="auto_subject">{TR_SUBJECT}</label></td>
                             <td>
                                 <input type="text" id="auto_subject" name="auto_subject" value="{SUBJECT_VALUE}" />
                             </td>

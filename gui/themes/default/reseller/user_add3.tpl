@@ -57,7 +57,7 @@
 				<fieldset>
 					<legend>{TR_CORE_DATA}</legend>
 					<table>
-						<td><label for="username">{TR_USERNAME}</label></td>
+						<td style="width:300px;"><label for="username">{TR_USERNAME}</label></td>
 						<td>{VL_USERNAME}</td>
 						<tr>
 							<td><label for="password">{TR_PASSWORD}</label></td>
@@ -97,7 +97,7 @@
 					<legend>{TR_ADDITIONAL_DATA}</legend>
 					<table>
 						<tr>
-							<td><label for="useruid">{TR_CUSTOMER_ID}</label></td>
+							<td style="width:300px;"><label for="useruid">{TR_CUSTOMER_ID}</label></td>
 							<td><input type="text" name="useruid" id="useruid" value="{VL_USR_ID}"/></td>
 						</tr>
 						<tr>
@@ -135,7 +135,7 @@
 						</tr>
 						<tr>
 							<td><label for="useratate">{TR_STATE_PROVINCE}</label></td>
-							<td><input type="text" name="userstate" id="userstate" value="{VL_USRSTATE}" /></td>
+							<td><input type="text" id="useratate" name="userstate" id="userstate" value="{VL_USRSTATE}" /></td>
 						</tr>
 						<tr>
 							<td><label for="usercountry">{TR_COUNTRY}</label></td>
