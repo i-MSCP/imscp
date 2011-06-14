@@ -36,7 +36,7 @@
 // GUI root directory absolute path
 $gui_root_dir = '{GUI_ROOT_DIR}';
 
-if(strpos('GUI_ROOT_DIR', $gui_root_dir) !== false) {
+if(strpos($gui_root_dir, 'GUI_ROOT_DIR') !== false) {
 	print 'The gui root directory is not defined in the ' . __FILE__ ." file.\n";
 	exit(1);
 }
