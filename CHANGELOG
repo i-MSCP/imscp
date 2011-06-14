@@ -72,3 +72,4 @@ Tickets:
     - Fixed #67: Database PDO::MYSQL_ATTR_USE_BUFFERED_QUERY
     - Fixed #73: Problem with Mail
     - Fixed #75: Bug - Can't change Admin password
+    - Fixed #76: Bug - Typo in SQL query

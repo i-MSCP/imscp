@@ -273,7 +273,7 @@ function update_user_props($domainId, $props)
 			UPDATE
 				`domain`
 			SET
-			    `domain_last_modified` = ? `domain_subd_limit` = ?,
+			    `domain_last_modified` = ?, `domain_subd_limit` = ?,
 			    `domain_alias_limit` = ?, `domain_mailacc_limit` = ?,
 			    `domain_ftpacc_limit` = ?, `domain_sqld_limit` = ?,
 			    `domain_sqlu_limit` = ?, `domain_traffic_limit` = ?,
