@@ -59,7 +59,7 @@
 			<form name="add_user_group" method="post" action="protected_group_add.php">
 				<table>
 					<tr>
-						<td><label for="groupname">{TR_GROUPNAME}</label></td>
+						<td style="width: 300px;"><label for="groupname">{TR_GROUPNAME}</label></td>
 						<td><input name="groupname" type="text" id="groupname" value="" /></td>
 					</tr>
 				</table>

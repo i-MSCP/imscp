@@ -58,7 +58,7 @@
 			<form name="sql_add_database_frm" method="post" action="sql_database_add.php">
 				<table>
 					<tr>
-						<td><label for="db_name">{TR_DB_NAME}</label></td>
+						<td style="width: 300px;"><label for="db_name">{TR_DB_NAME}</label></td>
 						<td><input type="text" id="db_name" name="db_name" value="{DB_NAME}" /></td>
 					</tr>
 					<tr>

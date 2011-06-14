@@ -96,7 +96,7 @@
 					<legend>{TR_ADD_ALIAS}</legend>
 					<table>
 						<tr>
-							<td>
+							<td style="width: 300px;">
 								 <label for="ndomain_name">{TR_DOMAIN_NAME}</label><span class="icon i_help" id="dmn_help">Help</span>
 							</td>
 							<td>

@@ -59,7 +59,7 @@
 			<form name="client_language_frm" method="post" action="language.php">
 				<table>
 					<tr>
-						<td><label for="def_language">{TR_CHOOSE_DEFAULT_LANGUAGE}</label></td>
+						<td style="width: 300px;"><label for="def_language">{TR_CHOOSE_DEFAULT_LANGUAGE}</label></td>
 						<td><select name="def_language" id="def_language">
 							<!-- BDP: def_language -->
 							<option value="{LANG_VALUE}" {LANG_SELECTED}>{LANG_NAME}</option>

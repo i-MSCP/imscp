@@ -58,7 +58,7 @@
 			<form name="edit_ftp_acc_frm" method="post" action="ftp_edit.php">
 				<table>
 					<tr>
-						<td><label for="ftp_account">{TR_FTP_ACCOUNT}</label></td>
+						<td style="width: 300px;"><label for="ftp_account">{TR_FTP_ACCOUNT}</label></td>
 						<td><input id="ftp_account" type="text" name="username" value="{FTP_ACCOUNT}"  readonly="readonly"/></td>
 					</tr>
 					<tr>

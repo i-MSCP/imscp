@@ -57,7 +57,7 @@
 			<form name="sql_change_password_frm" method="post" action="sql_change_password.php">
 				<table>
 					<tr>
-						<td><label for="user_name">{TR_USER_NAME}</label></td>
+						<td style="width: 300px;"><label for="user_name">{TR_USER_NAME}</label></td>
 						<td><input id="user_name" type="text" name="user_name" value="{USER_NAME}" readonly="readonly" /></td>
 					</tr>
 					<tr>

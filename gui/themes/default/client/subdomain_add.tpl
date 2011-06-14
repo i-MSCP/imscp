@@ -99,10 +99,10 @@
 			<form name="client_add_subdomain_frm" method="post" action="subdomain_add.php">
 				<table>
 					<tr>
-						<td>
+						<td style="width: 300px;">
 							<label for="subdomain_name">{TR_SUBDOMAIN_NAME}</label><span class="icon i_help" id="dmn_help">Help</span>
 						</td>
-						<td>
+						<td style="width: 300px;">
 							<input type="text" name="subdomain_name" id="subdomain_name" value="{SUBDOMAIN_NAME}" />
 						</td>
 						<td>

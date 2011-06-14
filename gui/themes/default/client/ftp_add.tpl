@@ -121,7 +121,7 @@ function changeDom(wath) {
 			<form name="add_ftp_acc_frm" method="post" action="ftp_add.php">
 				<table>
 					<tr>
-						<td><label for="username">{TR_USERNAME}</label></td>
+						<td style="width: 300px;"><label for="username">{TR_USERNAME}</label></td>
 						<td><input id="username" type="text" name="username" value="{USERNAME}" /></td>
 					</tr>
 					<tr>

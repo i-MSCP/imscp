@@ -57,7 +57,7 @@
 
 			<table>
 				<tr>
-					<td>{TR_ACCOUNT_NAME} / {TR_MAIN_DOMAIN}</td>
+					<td style="width: 300px;">{TR_ACCOUNT_NAME} / {TR_MAIN_DOMAIN}</td>
 					<td>{ACCOUNT_NAME}</td>
 				</tr>
 				<!-- BDP: t_php_support -->

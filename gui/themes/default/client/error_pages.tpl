@@ -57,8 +57,8 @@
 
 			<table>
 				<tr>
-					<td><span class="icon big i_error401">{TR_ERROR_401}</span></td>
-					<td><a href="error_edit.php?eid=401" class="icon i_edit">{TR_EDIT}</a></td>
+					<td style="width: 300px;"><span class="icon big i_error401">{TR_ERROR_401}</span></td>
+					<td style="width: 20px;"><a href="error_edit.php?eid=401" class="icon i_edit">{TR_EDIT}</a></td>
 					<td><a href="{DOMAIN}/errors/401.html" target="_blank" class="icon i_preview">{TR_VIEW}</a></td>
 				</tr>
 				<tr>

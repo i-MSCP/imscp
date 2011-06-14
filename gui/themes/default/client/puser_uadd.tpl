@@ -60,7 +60,7 @@
 			<form name="add_user_group" method="post" action="protected_user_add.php">
 				<table>
 					<tr>
-						<td><label for="username">{TR_USERNAME}</label></td>
+						<td style="width: 300px;"><label for="username">{TR_USERNAME}</label></td>
 						<td><input name="username" id="username" type="text" value="" /></td>
 					</tr>
 					<tr>

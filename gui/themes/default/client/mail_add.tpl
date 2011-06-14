@@ -137,7 +137,7 @@
 			<form name="add_mail_acc_frm" method="post" action="mail_add.php">
 				<table>
 					<tr>
-						<td><label for="username">{TR_USERNAME}</label></td>
+						<td style="width: 300px;"><label for="username">{TR_USERNAME}</label></td>
 						<td><input type="text" name="username" id="username" value="{USERNAME}" /></td>
 					</tr>
 					<tr>

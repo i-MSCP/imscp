@@ -66,7 +66,7 @@
 					<table>
 						<tbody>
 							<tr>
-								<td><label for="urgency">{TR_URGENCY}</label></td>
+								<td style="width: 300px;"><label for="urgency">{TR_URGENCY}</label></td>
 								<td><select id="urgency" name="urgency">
 									  <option value="1" {OPT_URGENCY_1}>{TR_LOW}</option>
 									  <option value="2" {OPT_URGENCY_2}>{TR_MEDIUM}</option>
