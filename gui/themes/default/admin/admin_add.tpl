@@ -54,7 +54,9 @@
                     <legend>{TR_CORE_DATA}</legend>
                     <table>
                         <tr>
-                            <td><label for="username">{TR_USERNAME}</label></td>
+                            <td style="width:300px;">
+                                <label for="username">{TR_USERNAME}</label>
+                            </td>
                             <td>
                                 <input type="text" name="username" id="username" value="{USERNAME}" />
                             </td>
@@ -85,7 +87,9 @@
                     <legend>{TR_ADDITIONAL_DATA}</legend>
                     <table>
                         <tr>
-                            <td><label for="first_name">{TR_FIRST_NAME}</label></td>
+                            <td style="width:300px;">
+                                <label for="first_name">{TR_FIRST_NAME}</label>
+                            </td>
                             <td>
                                 <input type="text" name="fname" id="first_name" value="{FIRST_NAME}" />
                             </td>

@@ -15,7 +15,6 @@
         </script>
         <![endif]-->
     </head>
-
     <body>
         <div class="header">
             {MAIN_MENU}
@@ -24,7 +23,6 @@
                 <img src="{THEME_COLOR_PATH}/images/imscp_logo.png" alt="i-MSCP logo" />
             </div>
         </div>
-
         <div class="location">
             <div class="location-area icons-left">
                 <h1 class="general">{TR_MENU_GENERAL_INFORMATION}</h1>
@@ -38,11 +36,9 @@
                 <li><a href="password_change.php">{TR_CHOOSE_DEFAULT_LANGUAGE}</a></li>
             </ul>
         </div>
-                 
         <div class="left_menu">
             {MENU}
         </div>
-
         <div class="body">
             <h2 class="multilanguage"><span>{TR_CHOOSE_DEFAULT_LANGUAGE}</span></h2>
 
@@ -53,7 +49,9 @@
             <form name="client_change_language" method="post" action="language.php">
                 <table>
                     <tr>
-                        <td><label for="def_language">{TR_CHOOSE_DEFAULT_LANGUAGE}</label></td>
+                        <td style="width:300px;">
+                            <label for="def_language">{TR_CHOOSE_DEFAULT_LANGUAGE}</label>
+                        </td>
                         <td>
                             <select name="def_language" id="def_language">
                                 <!-- BDP: def_language -->
@@ -63,18 +61,14 @@
                         </td>
                     </tr>
                 </table>
-
                 <div class="buttons">
                     <input name="Submit" type="submit" class="button" value="{TR_SAVE}" />
                     <input type="hidden" name="uaction" value="save_lang" />
                 </div>
             </form>
-
         </div>
-
         <div class="footer">
             i-MSCP {VERSION}<br />build: {BUILDDATE}<br />Codename: {CODENAME}
         </div>
-    
     </body>
 </html>

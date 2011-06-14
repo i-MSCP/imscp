@@ -54,7 +54,7 @@
             
 		    <table>
 			<tr>
-			    <td width="200"><strong>{TR_USER_LOGIN_NAME}</strong></td>
+			    <td style="width:300px;"><strong>{TR_USER_LOGIN_NAME}</strong></td>
 			    <td>{USERNAME}</td>
 			</tr>
 			<tr>
@@ -85,7 +85,9 @@
 
 		    <table>
 			<tr>
-			    <td><label for="auto_subject"><strong>{TR_SUBJECT}</strong></label></td>
+			    <td style="width:300px;">
+                    <label for="auto_subject"><strong>{TR_SUBJECT}</strong></label>
+                </td>
 			    <td><input type="text" name="auto_subject" id="auto_subject" value="{SUBJECT_VALUE}" style="width:80%" />
 			    </td>
 			</tr>

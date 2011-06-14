@@ -60,7 +60,7 @@
                             <th colspan="2">{TR_PASSWORD_EMAIL}</th>
                         </tr>
                         <tr>
-                            <td><strong>{TR_USER_LOGIN_NAME}</strong></td>
+                            <td style="width:270px;"><strong>{TR_USER_LOGIN_NAME}</strong></td>
                             <td>{USERNAME}</td>
                             <td><strong>{TR_USER_LOGIN_NAME}</strong></td>
                             <td>{USERNAME}</td>

@@ -19,13 +19,11 @@
     <body>
 
 	<div class="header">
-            {MAIN_MENU}
-
+        {MAIN_MENU}
 	    <div class="logo">
                 <img src="{THEME_COLOR_PATH}/images/imscp_logo.png" alt="i-MSCP logo" />
             </div>
         </div>
-
         <div class="location">
             <div class="location-area icons-left">
                 <h1 class="general">{TR_MENU_GENERAL_INFORMATION}</h1>
@@ -38,22 +36,18 @@
                 <li><a href="server_status.php">{TR_SERVER_STATUS}</a></li>
             </ul>
         </div>
-
         <div class="left_menu">
             {MENU}
         </div>
-
         <div class="footer">
             i-MSCP {VERSION}<br />build: {BUILDDATE}<br />Codename: {CODENAME}
         </div>
-
         <div class="body">
             <h2 class="doc"><span>{TR_SERVER_STATUS}</span></h2>
-
             <!-- BDP: props_list -->
             <table>
                 <tr>
-                    <th>{TR_HOST}</th>
+                    <th style="width:300px;">{TR_HOST}</th>
                     <th>{TR_SERVICE}</th>
                     <th>{TR_STATUS}</th>
                 </tr>
@@ -67,6 +61,5 @@
             </table>
             <!-- EDP: props_list -->
         </div>
-
     </body>
 </html>

@@ -17,10 +17,8 @@
     </head>
 
     <body>
-
         <div class="header">
             {MAIN_MENU}
-
             <div class="logo">
                 <img src="{THEME_COLOR_PATH}/images/imscp_logo.png" alt="i-MSCP logo" />
             </div>
@@ -48,15 +46,15 @@
             <!-- BDP: props_list -->
             <table class="description">
                 <tr>
-                    <th width="300">{TR_KERNEL}</th>
+                    <th style="width:300px;">{TR_KERNEL}</th>
                     <td>{KERNEL}</td>
                 </tr>
                 <tr>
-                    <th width="300">{TR_UPTIME}</th>
+                    <th>{TR_UPTIME}</th>
                     <td>{UPTIME}</td>
                 </tr>
                 <tr>
-                    <th width="300">{TR_LOAD}</th>
+                    <th>{TR_LOAD}</th>
                     <td>{LOAD}</td>
                 </tr>
             </table>
@@ -65,31 +63,32 @@
             <h2 class="tools"><span>{TR_CPU_SYSTEM_INFO}</span></h2>
             <table class="description">
                 <tr>
-                    <th width="300">{TR_CPU_MODEL}</th>
+                    <th style="width:300px;">{TR_CPU_MODEL}</th>
                     <td >{CPU_MODEL}</td>
                 </tr>
                 <tr>
-                    <th width="300">{TR_CPU_COUNT}</th>
+                    <th>{TR_CPU_COUNT}</th>
                     <td>{CPU_COUNT}</td>
                 </tr>
                 <tr>
-                    <th width="300">{TR_CPU_MHZ}</th>
+                    <th>{TR_CPU_MHZ}</th>
                     <td>{CPU_MHZ}</td>
                 </tr>
                 <tr>
-                    <th width="300">{TR_CPU_CACHE}</th>
+                    <th >{TR_CPU_CACHE}</th>
                     <td>{CPU_CACHE}</td>
                 </tr>
                 <tr>
-                    <th width="300">{TR_CPU_BOGOMIPS}</th>
+                    <th>{TR_CPU_BOGOMIPS}</th>
                     <td>{CPU_BOGOMIPS}</td>
                 </tr>
             </table>
 
             <h2 class="tools"><span>{TR_MEMRY_SYSTEM_INFO}</span></h2>
+
             <table>
                 <tr>
-                    <th>{TR_RAM}</th>
+                    <th style="width:300px;">{TR_RAM}</th>
                     <th>{TR_TOTAL}</th>
                     <th>{TR_USED}</th>
                     <th>{TR_FREE}</th>
@@ -115,10 +114,11 @@
             </table>
 
             <h2 class="tools"><span>{TR_FILE_SYSTEM_INFO}</span></h2>
+
             <!-- BDP: disk_list -->
             <table>
                 <tr>
-                    <th>{TR_MOUNT}</th>
+                    <th style="width:300px;">{TR_MOUNT}</th>
                     <th>{TR_TYPE}</th>
                     <th>{TR_PARTITION}</th>
                     <th>{TR_PERCENT}</th>
@@ -141,7 +141,6 @@
             <!-- EDP: disk_list -->
             <br />
         </div>
-
         <div class="footer">
             i-MSCP {VERSION}<br />build: {BUILDDATE}<br />Codename: {CODENAME}
         </div>

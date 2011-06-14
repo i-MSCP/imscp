@@ -74,7 +74,7 @@
             <!-- BDP: admin_list -->
             <table>
                 <tr>
-                    <th>{TR_ADMIN_USERNAME}</th>
+                    <th style="width:300px;">{TR_ADMIN_USERNAME}</th>
                     <th>{TR_CREATED_ON}</th>
                     <th>{TR_ADMIN_CREATED_BY}</th>
                     <th>{TR_ADMIN_OPTIONS}</th>
@@ -99,7 +99,6 @@
             <!-- EDP: admin_list -->
             <!-- EDP: props_list -->
 
-
             <h2 class="users"><span>{TR_RESELLERS}</span></h2>
 
             <!-- BDP: rsl_message -->
@@ -109,7 +108,7 @@
             <!-- BDP: rsl_list -->
             <table>
             <tr>
-                <th>{TR_RSL_USERNAME}</th>
+                <th style="width:300px;">{TR_RSL_USERNAME}</th>
                 <th>{TR_CREATED_ON}</th>
                 <th>{TR_RSL_CREATED_BY}</th>
                 <th>{TR_RSL_OPTIONS}</th>
@@ -136,6 +135,8 @@
             <div class="info">{USR_MESSAGE}</div>
             <!-- EDP: usr_message -->
 
+            <!-- BDP: usr_list -->
+
             <form action="manage_users.php" method="post" name="search_user" id="search_user">
                 <a class="icon i_show_alias" href="#" onclick="return sbmt(document.forms[0],'{SHOW_DETAILS}');">{TR_VIEW_DETAILS}</a>
                 <input name="search_for" type="text" value="{SEARCH_FOR}" />
@@ -157,7 +158,7 @@
                 <input type="hidden" name="uaction" value="go_search" />
             </form>
 
-            <!-- BDP: usr_list -->
+
             <table>
                 <tr>
                     <th>{TR_USER_STATUS}</th>
@@ -193,9 +194,7 @@
                 </tr>
                 <!-- EDP: user_details -->
                 <!-- EDP: usr_item -->
-            <!-- EDP: usr_list -->
             </table>
-
             <div class="paginator">
                 <!-- BDP: scroll_next_gray -->
                     <a class="icon i_next_gray" href="#">&nbsp;</a>
@@ -210,8 +209,7 @@
                     <a class="icon i_prev_gray" href="#">&nbsp;</a>
                 <!-- EDP: scroll_prev_gray -->
             </div>
-
+            <!-- EDP: usr_list -->
         </div>
-
     </body>
 </html>

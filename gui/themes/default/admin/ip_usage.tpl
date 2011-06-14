@@ -56,7 +56,7 @@
                 </thead>
                 <tr>
                     <td>&nbsp;</td>
-                    <td><b>{TR_DOMAIN_NAME}</b></td>
+                    <td style="width:300px;"><b>{TR_DOMAIN_NAME}</b></td>
                     <td><b>{TR_RESELLER_NAME}</b></td>
                 </tr>
                 <!-- BDP: domain_row -->

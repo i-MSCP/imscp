@@ -53,7 +53,9 @@
 
 		    <table>
 			<tr>
-			    <td><label for="max_traffic">{TR_MAX_TRAFFIC}</label></td>
+			    <td style="width:300px;">
+                    <label for="max_traffic">{TR_MAX_TRAFFIC}</label>
+                </td>
 			    <td>
 				<input name="max_traffic" type="text" id="max_traffic" value="{MAX_TRAFFIC}" />
 			    </td>

@@ -55,7 +55,7 @@
 					<legend>Core data</legend>
 					<table>
 						<tr>
-							<td width="300"><label for="checkforupdate">{TR_CHECK_FOR_UPDATES}</label></td>
+							<td style="width:300px;"><label for="checkforupdate">{TR_CHECK_FOR_UPDATES}</label></td>
 							<td>
 								<select name="checkforupdate" id="checkforupdate">
 									<option value="0"{CHECK_FOR_UPDATES_SELECTED_OFF}>{TR_DISABLED}</option>
@@ -69,7 +69,7 @@
 					<legend>{TR_LOSTPASSWORD}</legend>
 					<table>
 						<tr>
-							<td width="300"><label for="lostpassword">{TR_LOSTPASSWORD}</label></td>
+							<td style="width:300px;"><label for="lostpassword">{TR_LOSTPASSWORD}</label></td>
 							<td>
 								<select name="lostpassword" id="lostpassword">
 									<option value="0" {LOSTPASSWORD_SELECTED_OFF}>{TR_DISABLED}</option>
@@ -87,7 +87,7 @@
 					<legend>{TR_PASSWORD_SETTINGS}</legend>
 					<table>
 						<tr>
-							<td width="300"><label for="passwd_strong">{TR_PASSWD_STRONG}</label></td>
+							<td style="width:300px;"><label for="passwd_strong">{TR_PASSWD_STRONG}</label></td>
 							<td>
 								<select name="passwd_strong" id="passwd_strong">
 									<option value="0" {PASSWD_STRONG_OFF}>{TR_DISABLED}</option>
@@ -105,7 +105,7 @@
 					<legend>{TR_BRUTEFORCE}</legend>
 					<table>
 						<tr>
-							<td width="300"><label for="bruteforce">{TR_BRUTEFORCE}</label></td>
+							<td style="width:300px;"><label for="bruteforce">{TR_BRUTEFORCE}</label></td>
 							<td>
 								<select name="bruteforce" id="bruteforce">
 									<option value="0" {BRUTEFORCE_SELECTED_OFF}>{TR_DISABLED}</option>
@@ -114,7 +114,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td width="300"><label for="bruteforce_between">{TR_BRUTEFORCE_BETWEEN}</label></td>
+							<td style="width:300px;"><label for="bruteforce_between">{TR_BRUTEFORCE_BETWEEN}</label></td>
 							<td>
 								<select name="bruteforce_between" id="bruteforce_between">
 									<option value="0" {BRUTEFORCE_BETWEEN_SELECTED_OFF}>{TR_DISABLED}</option>
@@ -123,19 +123,19 @@
 							</td>
 						</tr>
 						<tr>
-							<td width="300"><label for="bruteforce_max_login">{TR_BRUTEFORCE_MAX_LOGIN}</label></td>
+							<td style="width:300px;"><label for="bruteforce_max_login">{TR_BRUTEFORCE_MAX_LOGIN}</label></td>
 							<td><input type="text" name="bruteforce_max_login" id="bruteforce_max_login" value="{BRUTEFORCE_MAX_LOGIN_VALUE}" maxlength="3" /></td>
 						</tr>
 						<tr>
-							<td width="300"><label for="bruteforce_block_time">{TR_BRUTEFORCE_BLOCK_TIME}</label></td>
+							<td><label for="bruteforce_block_time">{TR_BRUTEFORCE_BLOCK_TIME}</label></td>
 							<td><input name="bruteforce_block_time" id="bruteforce_block_time" type="text" value="{BRUTEFORCE_BLOCK_TIME_VALUE}" maxlength="3" /></td>
 						</tr>
 						<tr>
-							<td width="300"><label for="bruteforce_between_time">{TR_BRUTEFORCE_BETWEEN_TIME}</label></td>
+							<td><label for="bruteforce_between_time">{TR_BRUTEFORCE_BETWEEN_TIME}</label></td>
 							<td><input name="bruteforce_between_time" id="bruteforce_between_time" type="text"  value="{BRUTEFORCE_BETWEEN_TIME_VALUE}" maxlength="3" /></td>
 						</tr>
 						<tr>
-							<td width="300"><label for="bruteforce_max_capcha">{TR_BRUTEFORCE_MAX_CAPTCHA}</label></td>
+							<td><label for="bruteforce_max_capcha">{TR_BRUTEFORCE_MAX_CAPTCHA}</label></td>
 							<td><input name="bruteforce_max_capcha" id="bruteforce_max_capcha" type="text" value="{BRUTEFORCE_MAX_CAPTCHA}" maxlength="3" /></td>
 						</tr>
 					</table>
@@ -144,7 +144,7 @@
 					<legend>{TR_DNAMES_VALIDATION_SETTINGS}</legend>
 					<table>
 						<tr>
-							<td width="300"><label for="tld_strict_validation">{TR_TLD_STRICT_VALIDATION}</label><span class="icon i_help" id="tld_help">Help</span></td>
+							<td style="width:300px;"><label for="tld_strict_validation">{TR_TLD_STRICT_VALIDATION}</label><span class="icon i_help" id="tld_help">Help</span></td>
 							<td>
 								<select name="tld_strict_validation" id="tld_strict_validation">
 									<option value="0" {TLD_STRICT_VALIDATION_OFF}>{TR_DISABLED}</option>
@@ -153,7 +153,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td width="300"><label for="sld_strict_validation">{TR_SLD_STRICT_VALIDATION}</label><span class="icon i_help" id="sld_help">Help</span></td>
+							<td><label for="sld_strict_validation">{TR_SLD_STRICT_VALIDATION}</label><span class="icon i_help" id="sld_help">Help</span></td>
 							<td>
 								<select name="sld_strict_validation" id="sld_strict_validation">
 									<option value="0" {SLD_STRICT_VALIDATION_OFF}>{TR_DISABLED}</option>
@@ -162,13 +162,13 @@
 							</td>
 						</tr>
 						<tr>
-							<td width="300"><label for="max_dnames_labels">{TR_MAX_DNAMES_LABELS}</label></td>
+							<td><label for="max_dnames_labels">{TR_MAX_DNAMES_LABELS}</label></td>
 							<td>
 								<input name="max_dnames_labels" id="max_dnames_labels" type="text" value="{MAX_DNAMES_LABELS_VALUE}" maxlength="2" />
 							</td>
 						</tr>
 						<tr>
-							<td width="300"><label for="max_subdnames_labels">{TR_MAX_SUBDNAMES_LABELS}</label></td>
+							<td><label for="max_subdnames_labels">{TR_MAX_SUBDNAMES_LABELS}</label></td>
 							<td><input name="max_subdnames_labels" id="max_subdnames_labels" type="text" value="{MAX_SUBDNAMES_LABELS_VALUE}" maxlength="2" /></td>
 						</tr>
 					</table>
@@ -177,7 +177,7 @@
 					<legend>{TR_MAIL_SETTINGS}</legend>
 						<table>
 						<tr>
-							<td width="300"><label for="create_default_email_addresses">{TR_CREATE_DEFAULT_EMAIL_ADDRESSES}</label></td>
+							<td style="width:300px;"><label for="create_default_email_addresses">{TR_CREATE_DEFAULT_EMAIL_ADDRESSES}</label></td>
 								<td>
 								<select name="create_default_email_addresses" id="create_default_email_addresses">
 									<option value="0" {CREATE_DEFAULT_EMAIL_ADDRESSES_OFF}>{TR_DISABLED}</option>
@@ -186,7 +186,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td width="300"><label for="count_default_email_addresses">{TR_COUNT_DEFAULT_EMAIL_ADDRESSES}</label></td>
+							<td><label for="count_default_email_addresses">{TR_COUNT_DEFAULT_EMAIL_ADDRESSES}</label></td>
 							<td>
 								<select name="count_default_email_addresses" id="count_default_email_addresses">
 									<option value="0" {COUNT_DEFAULT_EMAIL_ADDRESSES_OFF}>{TR_DISABLED}</option>
@@ -195,7 +195,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td width="300"><label for="hard_mail_suspension">{TR_HARD_MAIL_SUSPENSION}</label></td>
+							<td><label for="hard_mail_suspension">{TR_HARD_MAIL_SUSPENSION}</label></td>
 							<td>
 								<select name="hard_mail_suspension" id="hard_mail_suspension">
 									<option value="0" {HARD_MAIL_SUSPENSION_OFF}>{TR_DISABLED}</option>
@@ -209,7 +209,7 @@
 					<legend>{TR_OTHER_SETTINGS}</legend>
 					<table>
 						<tr>
-							<td width="300"><label for="def_language">{TR_USER_INITIAL_LANG}</label></td>
+							<td style="width:300px;"><label for="def_language">{TR_USER_INITIAL_LANG}</label></td>
 							<td>
 								<select name="def_language" id="def_language">
 								<!-- BDP: def_language -->
@@ -219,7 +219,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td width="300"><label for="support_system">{TR_SUPPORT_SYSTEM}</label></td>
+							<td><label for="support_system">{TR_SUPPORT_SYSTEM}</label></td>
 							<td>
 								<select name="support_system" id="support_system">
 									<option value="0" {SUPPORT_SYSTEM_SELECTED_OFF}>{TR_DISABLED}</option>
@@ -228,7 +228,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td width="300"><label for="show_compression_size">{TR_SHOW_COMPRESSION_SIZE}</label></td>
+							<td><label for="show_compression_size">{TR_SHOW_COMPRESSION_SIZE}</label></td>
 							<td>
 								<select name="show_compression_size" id="show_compression_size">
 									<option value="0" {SHOW_COMPRESSION_SIZE_SELECTED_OFF}>{TR_DISABLED}</option>
@@ -237,7 +237,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td width="300"><label for="hosting_plan_level">{TR_HOSTING_PLANS_LEVEL}</label></td>
+							<td><label for="hosting_plan_level">{TR_HOSTING_PLANS_LEVEL}</label></td>
 							<td class="content">
 								<select name="hosting_plan_level" id="hosting_plan_level">
 									<option value="admin" {HOSTING_PLANS_LEVEL_ADMIN}>{TR_ADMIN}</option>
@@ -246,11 +246,11 @@
 							</td>
 						</tr>
 						<tr>
-							<td width="300"><label for="domain_rows_per_page">{TR_DOMAIN_ROWS_PER_PAGE}</label></td>
+							<td><label for="domain_rows_per_page">{TR_DOMAIN_ROWS_PER_PAGE}</label></td>
 							<td><input name="domain_rows_per_page" id="domain_rows_per_page" type="text" value="{DOMAIN_ROWS_PER_PAGE}" maxlength="3" /></td>
 						</tr>
 						<tr>
-							<td width="300"><label for="log_level">{TR_LOG_LEVEL}</label></td>
+							<td><label for="log_level">{TR_LOG_LEVEL}</label></td>
 							<td>
 								<select name="log_level" id="log_level">
 									<option value="E_USER_OFF" {LOG_LEVEL_SELECTED_OFF}>{TR_E_USER_OFF}</option>
@@ -261,7 +261,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td width="300"><label for="prevent_external_login_admin">{TR_PREVENT_EXTERNAL_LOGIN_ADMIN}</label></td>
+							<td><label for="prevent_external_login_admin">{TR_PREVENT_EXTERNAL_LOGIN_ADMIN}</label></td>
 							<td>
 								<select name="prevent_external_login_admin" id="prevent_external_login_admin">
 									<option value="0" {PREVENT_EXTERNAL_LOGIN_ADMIN_SELECTED_OFF}>{TR_DISABLED}</option>
@@ -270,7 +270,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td width="300"><label for="prevent_external_login_reseller">{TR_PREVENT_EXTERNAL_LOGIN_RESELLER}</label></td>
+							<td><label for="prevent_external_login_reseller">{TR_PREVENT_EXTERNAL_LOGIN_RESELLER}</label></td>
 							<td>
 								<select name="prevent_external_login_reseller" id="prevent_external_login_reseller">
 									<option value="0" {PREVENT_EXTERNAL_LOGIN_RESELLER_SELECTED_OFF}>{TR_DISABLED}</option>
@@ -279,7 +279,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td width="300"><label for="prevent_external_login_client">{TR_PREVENT_EXTERNAL_LOGIN_CLIENT}</label></td>
+							<td><label for="prevent_external_login_client">{TR_PREVENT_EXTERNAL_LOGIN_CLIENT}</label></td>
 							<td>
 								<select name="prevent_external_login_client" id="prevent_external_login_client">
 									<option value="0" {PREVENT_EXTERNAL_LOGIN_CLIENT_SELECTED_OFF}>{TR_DISABLED}</option>
@@ -288,7 +288,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td width="300"><label for="coid">{TR_CUSTOM_ORDERPANEL_ID}</label></td>
+							<td><label for="coid">{TR_CUSTOM_ORDERPANEL_ID}</label></td>
 							<td><input type="text" name="coid" id="coid" value="{CUSTOM_ORDERPANEL_ID}" /></td>
 						</tr>
 					</table>
@@ -298,6 +298,7 @@
 					<input type="hidden" name="uaction" value="apply" />
 				</div>
 			</form>
+            <br />
 		</div>
 		<div class="footer">i-MSCP {VERSION}<br />build: {BUILDDATE}<br />Codename: {CODENAME}</div>
     </body>

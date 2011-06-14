@@ -56,7 +56,7 @@
 
             <table>
                 <tr>
-                    <th>{TR_MENU_NAME}</th>
+                    <th style="width:300px;">{TR_MENU_NAME}</th>
                     <th>{TR_LEVEL}</th>
                     <th>{TR_ACTON}</th>
                 </tr>
@@ -82,7 +82,9 @@
 
                     <table>
                         <tr>
-                            <td><label for="bname1">{TR_BUTTON_NAME}</label></td>
+                            <td style="width:300px;">
+                                <label for="bname1">{TR_BUTTON_NAME}</label>
+                            </td>
                             <td><input type="text" name="bname" id="bname1" /></td>
                         </tr>
                         <tr>

@@ -54,7 +54,9 @@
             <form action="settings_maintenance_mode.php" method="post" name="maintenancemode_frm" id="maintenancemode_frm">
                 <table>
                     <tr>
-                        <td><label for="maintenancemode_message">{TR_MESSAGE}</label></td>
+                        <td style="width:300px;">
+                            <label for="maintenancemode_message">{TR_MESSAGE}</label>
+                        </td>
                         <td><textarea name="maintenancemode_message" id="maintenancemode_message" cols="80" rows="15">{MESSAGE_VALUE}</textarea></td>
                     </tr>
                     <tr>

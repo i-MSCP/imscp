@@ -56,7 +56,9 @@
                     <legend>{TR_CORE_DATA}</legend>
                     <table>
                         <tr>
-                            <td><label for="username">{TR_USERNAME}</label></td>
+                            <td style="width:300px;">
+                                <label for="username">{TR_USERNAME}</label>
+                            </td>
                             <td><input type="text" name="username" id="username" value="{USERNAME}" /></td>
                         </tr>
                         <tr>
@@ -157,7 +159,7 @@
                     <!-- BDP: rsl_ip_list -->
                     <table>
                         <tr>
-                            <th>{TR_RSL_IP_NUMBER}</th>
+                            <th style="width:300px;">{TR_RSL_IP_NUMBER}</th>
                             <th>{TR_RSL_IP_ASSIGN}</th>
                             <th>{TR_RSL_IP_LABEL}</th>
                             <th>{TR_RSL_IP_IP}</th>
@@ -179,7 +181,9 @@
                     <legend>{TR_ADDITIONAL_DATA}</legend>
                     <table>
                         <tr>
-                            <td><label for="customer_id">{TR_CUSTOMER_ID}</label></td>
+                            <td style="width:300px;">
+                                <label for="customer_id">{TR_CUSTOMER_ID}</label>
+                            </td>
                             <td><input type="text" name="customer_id" id="customer_id" value="{CUSTOMER_ID}"/></td>
                         </tr>
                         <tr>

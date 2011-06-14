@@ -51,7 +51,9 @@
                     <legend>{TR_CORE_DATA}</legend>
                     <table>
                         <tr>
-                            <td><label for="rcpt_to">{TR_SEND_TO}</label></td>
+                            <td style="width:300px;">
+                                <label for="rcpt_to">{TR_SEND_TO}</label>
+                            </td>
                             <td><select id="rcpt_to" name="rcpt_to">
                                 <option value="usrs">{TR_ALL_USERS}</option>
                                 <option value="rsls">{TR_ALL_RESELLERS}</option>
@@ -78,7 +80,8 @@
                     <legend>{TR_ADDITIONAL_DATA}</legend>
                     <table>
                         <tr>
-                            <td><label for="sender_email">{TR_SENDER_EMAIL}</label>
+                            <td style="width:300px;">
+                                <label for="sender_email">{TR_SENDER_EMAIL}</label>
                             </td>
                             <td>
                                 <input type="text" name="sender_email" id="sender_email" value="{SENDER_EMAIL}" />

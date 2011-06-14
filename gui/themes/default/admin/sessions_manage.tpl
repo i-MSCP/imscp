@@ -53,7 +53,7 @@
 
             <table>
                 <tr>
-                    <th>{TR_USERNAME}</th>
+                    <th style="width:300px;">{TR_USERNAME}</th>
                     <th>{TR_LOGIN_ON}</th>
                     <th>{TR_OPTIONS}</th>
                 </tr>

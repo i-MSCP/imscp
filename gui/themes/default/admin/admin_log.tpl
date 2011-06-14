@@ -58,7 +58,7 @@
             </form>
             <table>
                 <tr>
-                    <th>{TR_DATE}</th>
+                    <th style="width:300px;">{TR_DATE}</th>
                     <th>{TR_MESSAGE}</th>
                 </tr>
                 <!-- BDP: log_row -->

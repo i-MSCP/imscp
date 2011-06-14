@@ -47,17 +47,19 @@
 
         <div class="body">
             <h2 class="apps_installer"><span>{TR_OPTIONS_SOFTWARE}</span></h2>
+
             <!-- BDP: page_message -->
             <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->
-
 
             <form action="software_options.php" method="post" name="appssettings" id="appssettings">
                 <fieldset>
 					<legend>{TR_MAIN_OPTIONS}</legend>
 					<table>
 						<tr>
-							<td width="300"><label for="use_webdepot">{TR_USE_WEBDEPOT}</label></td>
+							<td style="width:300px;">
+                                <label for="use_webdepot">{TR_USE_WEBDEPOT}</label>
+                            </td>
 							<td>
 								<select name="use_webdepot" id="use_webdepot">
 									<option value="0"{USE_WEBDEPOT_SELECTED_OFF}>{TR_DISABLED}</option>
@@ -80,10 +82,6 @@
 					<input type="hidden" name="uaction" value="apply" />
 				</div>
             </form>
-            <div class="paginator">
-
-            </div>
-
         </div>
     </body>
 </html>

@@ -67,7 +67,7 @@
                 <legend>{TR_AVAILABLE_IPS}</legend>
                 <table>
                     <tr align="center">
-                        <th>{TR_IP}</th>
+                        <th style="width:300px;">{TR_IP}</th>
                         <th>{TR_DOMAIN}</th>
                         <th>{TR_ALIAS}</th>
                         <th>{TR_NETWORK_CARD}</th>
@@ -98,7 +98,7 @@
 
                     <table>
                         <tr>
-                            <td><label for="ip">{TR_IP}</label></td>
+                            <td style="width:300px;">{TR_IP}</td>
                             <td>
                                 <input class="ip-segment" name="ip_number_1" type="text" value="{VALUE_IP1}" maxlength="3" />.
                                 <input class="ip-segment" name="ip_number_2" type="text" value="{VALUE_IP2}" maxlength="3" />.

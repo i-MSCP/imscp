@@ -85,7 +85,7 @@
                 <legend>{TR_INSTALLED_LANGUAGES}</legend>
                 <table>
                     <tr>
-                        <th>{TR_LANGUAGE}</th>
+                        <th style="width:300px;">{TR_LANGUAGE}</th>
                         <th>{TR_MESSAGES}</th>
                         <th>{TR_LANG_REV}</th>
                         <th>{TR_DEFAULT}</th>
@@ -121,7 +121,7 @@
                 <legend>{TR_INSTALL_NEW_LANGUAGE}</legend>
                 <table>
                     <tr>
-                        <td>{TR_LANGUAGE_FILE}</td>
+                        <td style="width:300px;">{TR_LANGUAGE_FILE}</td>
                         <td><input type="file" name="lang_file" /></td>
                     </tr>
                 </table>

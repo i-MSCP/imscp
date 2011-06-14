@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="{THEME_CHARSET}" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset={THEME_CHARSET}" />
@@ -16,7 +16,6 @@
         <![endif]-->
     </head>
     <body>
-
         <div class="header">
             {MAIN_MENU}
             <div class="logo">
@@ -29,13 +28,13 @@
             </div>
             <ul class="location-menu">
                 <!-- <li><a class="help" href="#">Help</a></li> -->
-                <li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a></li>
+                <li><a class="logout" href="../index.php?logout">{TR_MENU_LOGOUT}</a>
+                </li>
             </ul>
             <ul class="path">
                 <li><a href="index.php">{TR_GENERAL_INFORMATION}</a></li>
             </ul>
         </div>
-
         <div class="left_menu">
             {MENU}
         </div>
@@ -58,7 +57,7 @@
             <!-- EDP: database_update_message -->
             <table>
                 <tr>
-                    <td>{TR_ACCOUNT_NAME}</td>
+                    <td style="width:300px;">{TR_ACCOUNT_NAME}</td>
                     <td>{ACCOUNT_NAME}</td>
                 </tr>
                 <tr>
@@ -102,14 +101,15 @@
                     <td>{SQL_USERS}</td>
                 </tr>
             </table>
-            
+
             <h2 class="traffic"><span>{TR_SERVER_TRAFFIC}</span></h2>
             <!-- BDP: traff_warn -->
             <div class="warning">{TR_TRAFFIC_WARNING}</div>
             <!-- EDP: traff_warn -->
-            {TRAFFIC_WARNING}
-            <div class="graph"><span style="width:{TRAFFIC_PERCENT}%">&nbsp;</span></div>
-        
+        {TRAFFIC_WARNING}
+            <div class="graph"><span style="width:{TRAFFIC_PERCENT}%">&nbsp;</span>
+            </div>
+
         </div>
         <div class="footer">
             i-MSCP {VERSION}<br />build: {BUILDDATE}<br />Codename: {CODENAME}

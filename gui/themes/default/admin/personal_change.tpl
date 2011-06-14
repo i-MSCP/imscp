@@ -53,11 +53,13 @@
             <form action="personal_change.php" method="post" name="client_change_personal_frm">
                 <table>
                     <tr>
-                      <td><label for="first_name">{TR_FIRST_NAME}</label></td>
+                      <td style="width:300px;">
+                          <label for="fname">{TR_FIRST_NAME}</label>
+                      </td>
                       <td><input type="text" name="fname" id="fname" value="{FIRST_NAME}"/></td>
                     </tr>
                     <tr>
-                      <td><label for="last_name">{TR_LAST_NAME}</label></td>
+                      <td><label for="lname">{TR_LAST_NAME}</label></td>
                       <td><input type="text" name="lname" id="lname" value="{LAST_NAME}"/></td>
                     </tr>
                     <tr>
@@ -82,7 +84,7 @@
                       <td><input type="text" name="street2" id="street2" value="{STREET_2}" /></td>
                     </tr>
                     <tr>
-                      <td><label for="zip_postal_code">{TR_ZIP_POSTAL_CODE}</label></td>
+                      <td><label for="zip">{TR_ZIP_POSTAL_CODE}</label></td>
                       <td><input type="text" name="zip" id="zip" value="{ZIP}" /></td>
                     </tr>
                     <tr>
@@ -110,14 +112,12 @@
                       <td><input type="text" name="fax" id="fax" value="{FAX}" /></td>
                     </tr>
                 </table>
-                
                 <div class="buttons">
                     <input name="Submit" type="submit" class="button" value="{TR_UPDATE_DATA}" />
                     <input type="hidden" name="uaction" value="updt_data" />
                 </div>
             </form>
         </div>
-
         <div class="footer">
             i-MSCP {VERSION}<br />build: {BUILDDATE}<br />Codename: {CODENAME}
         </div>
