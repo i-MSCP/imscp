@@ -675,7 +675,7 @@ function isACE($label)
  */
 
 /**
- * Function for checking i-MSCP limits.
+ * Function for checking i-MSCP limits syntax.
  *
  * @param string $data Limit field data (by default valids are numbers greater equal 0)
  * @param mixed $extra single extra permitted value or array of permitted values

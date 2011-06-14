@@ -27,7 +27,7 @@
  */
 
 /**
- * Allows to modifie the response for a request.
+ * Allows to modify the response for a request.
  *
  * Formally, this event doesn't represent a reponse but that will change in future.
  * For now, this event allow to operate some modifications on the template generated

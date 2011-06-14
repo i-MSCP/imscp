@@ -150,23 +150,27 @@ function generate_user_props($domainId)
 }
 
 /**
- * Updates client properties.
+ * Updates client's domain properties.
  *
- * @param  $user_id User unique identifier
- * @param  $props New properties values
+ * @param  int $domainId Domain unique identifier
+ * @param  string $props String that contain new properties values
  * @return void
  */
-function update_user_props($user_id, $props)
+function update_user_props($domainId, $props)
 {
     /** @var $cfg iMSCP_Config_Handler_File $cfg **/
     $cfg = iMSCP_Registry::get('config');
 
-    list(,$sub_max,, $als_max,, $mail_max,, $ftp_max,, $sql_db_max,,$sql_user_max,
-        $traff_max, $disk_max, $domain_php, $domain_cgi,, $domain_dns,
-        $domain_software_allowed) = explode(';', $props);
+    list(, $subMaxValue, , $alsMaxValue, , $mailMaxValue, , $ftpMaxValue, ,
+        $sqlDbMaxValue, , $sqlUserMaxValue, $trafficMaxValue, $diskMaxValue,
+        $phpSupport, $cgiSupport, , $customDnsSupport, $softwareInstallerSupport
+    ) = explode(';', $props);
 
-    // have to check if PHP and/or CGI and/or IP change
-    $domain_last_modified = time();
+
+    $domainLastModified = time();
+
+    // We must check the previous values of some properties (eg. php, cgi, dns,
+    // software installer) to determine if we must send a request to the ispCP daemon
 
     $query = "
 		SELECT
@@ -185,20 +189,15 @@ function update_user_props($user_id, $props)
 			`domain_software_allowed` = ?
 		;
 	";
+    $stmt = exec_query($query, array($domainId, $phpSupport, $cgiSupport,
+                                    $customDnsSupport, $softwareInstallerSupport));
 
-    $rs = exec_query($query, array(
-                                       $user_id, $domain_php, $domain_cgi,
-                                       $domain_dns, $domain_software_allowed));
+    // No record found. That mean that a least one propertie value was changed
+    if ($stmt->recordCount() == 0) {
 
-    if ($rs->recordCount() == 0) {
-        // We have to rebuild the system entry for this domain
-        // and also all domain alias and subdomains
+        $updateStatus = $cfg->ITEM_CHANGE_STATUS;
 
-        $update_status = $cfg->ITEM_CHANGE_STATUS;
-
-        // ... and go update
-
-        // update the domain
+        // Updating client's domain properties
         $query = "
 			UPDATE
 				`domain`
@@ -214,15 +213,14 @@ function update_user_props($user_id, $props)
 				`domain_id` = ?
 			;
 		";
-        exec_query($query, array(
-                                     $domain_last_modified, $mail_max, $ftp_max,
-                                     $traff_max, $sql_db_max, $sql_user_max,
-                                     $update_status, $als_max, $sub_max,
-                                     $disk_max, $domain_php, $domain_cgi,
-                                     $domain_dns, $domain_software_allowed,
-                                     $user_id));
+        exec_query($query, array($domainLastModified, $mailMaxValue, $ftpMaxValue,
+                                $trafficMaxValue, $sqlDbMaxValue, $sqlUserMaxValue,
+                                $updateStatus, $alsMaxValue, $subMaxValue,
+                                $diskMaxValue, $phpSupport, $cgiSupport,
+                                $customDnsSupport, $softwareInstallerSupport,
+                                $domainId));
 
-        // let's update all alias domains for this domain
+        // Let's update all alias domains for this domain
         $query = "
 			UPDATE
 				`domain_aliasses`
@@ -232,9 +230,9 @@ function update_user_props($user_id, $props)
 				`domain_id` = ?
 			;
 		";
-        exec_query($query, array($update_status, $user_id));
+        exec_query($query, array($updateStatus, $domainId));
 
-        // let's update all subdomains for this domain
+        // Let's update all subdomains for this domain
         $query = "
 			UPDATE
 				`subdomain`
@@ -244,9 +242,9 @@ function update_user_props($user_id, $props)
 				`domain_id` = ?
 			;
 		";
-        exec_query($query, array($update_status, $user_id));
+        exec_query($query, array($updateStatus, $domainId));
 
-        // let's update all alias subdomains for this domain
+        // Let's update all alias subdomains for this domain
         $query = "
 			UPDATE
 				`subdomain_alias`
@@ -263,30 +261,31 @@ function update_user_props($user_id, $props)
 				)
 			;
 		";
-        exec_query($query, array($update_status, $user_id));
+        exec_query($query, array($updateStatus, $domainId));
 
-        // Send request to the i-MSCP daemon
+        // Send a request to the i-MSCP daemon
         send_request();
     } else {
-        // we do not have IP and/or PHP and/or CGI changes
-        // we have to update only the domain props and not
-        // to rebuild system entries
+        // We do not have changes for the PHP and/or CGI and/or CustomDNS and/or
+        // SoftwareInstaller properties. We have to update only the client's domain
+        // properties.
         $query = "
 			UPDATE
 				`domain`
 			SET
-				`domain_subd_limit` = ?, `domain_alias_limit` = ?,
-				`domain_mailacc_limit` = ?, `domain_ftpacc_limit` = ?,
-				`domain_sqld_limit` = ?, `domain_sqlu_limit` = ?,
-				`domain_traffic_limit` = ?, `domain_disk_limit` = ?
+			    `domain_last_modified` = ? `domain_subd_limit` = ?,
+			    `domain_alias_limit` = ?, `domain_mailacc_limit` = ?,
+			    `domain_ftpacc_limit` = ?, `domain_sqld_limit` = ?,
+			    `domain_sqlu_limit` = ?, `domain_traffic_limit` = ?,
+			    `domain_disk_limit` = ?
 			WHERE
 				domain_id = ?
 			;
 		";
-        exec_query($query, array(
-                                     $sub_max, $als_max, $mail_max, $ftp_max,
-                                     $sql_db_max,$sql_user_max, $traff_max, $disk_max,
-                                     $user_id));
+        exec_query($query, array($domainLastModified, $subMaxValue, $alsMaxValue,
+                                $mailMaxValue, $ftpMaxValue, $sqlDbMaxValue,
+                                $sqlUserMaxValue, $trafficMaxValue, $diskMaxValue,
+                                $domainId));
     }
 }
 
