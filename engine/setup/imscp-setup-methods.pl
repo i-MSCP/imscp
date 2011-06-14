@@ -1755,7 +1755,7 @@ sub setup_ftpd {
 		if(!$dbPass){
 			$dbPass = iMSCP::Crypt::randomString(8);
 		}
-		$dbPass =~ s/('|"|`|#|;)//g;
+		$dbPass =~ s/('|"|`|#|;|\s)/_/g;
 		iMSCP::Dialog->new()->msgbox("Your password is '".$dbPass."' (we have stripped not allowd chars)");
 		iMSCP::Dialog->new()->set('cancel-label');
 
