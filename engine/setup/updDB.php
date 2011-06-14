@@ -1,10 +1,11 @@
 <?php
 /**
- * i-MSCP a internet Multi Server Control Panel
+ * i-MSCP - internet Multi Server Control Panel
  *
  * Copyright (C) 2006-2010 by isp Control Panel - http://ispcp.net
  * Copyright (C) 2010 by internet Multi Server Control Panel - http://i-mscp.net
  *
+ * Author:  Laurent Declercq <l.declercq@nuxwin.com>
  * Version: $Id$
  *
  * The contents of this file are subject to the Mozilla Public License
@@ -35,7 +36,7 @@
 // GUI root directory absolute path
 $gui_root_dir = '{GUI_ROOT_DIR}';
 
-if(preg_match('/^\{GUI_ROOT_DIR\}$/', $gui_root_dir)) {
+if(strpos('GUI_ROOT_DIR', $gui_root_dir) !== false) {
 	print 'The gui root directory is not defined in the ' . __FILE__ ." file.\n";
 	exit(1);
 }
