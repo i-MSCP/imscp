@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zh_TW\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-17 10:11+0200\n"
+"POT-Creation-Date: 2011-06-13 16:29+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Benedikt Heintel <benedikt@heintel.org>\n"
 "Language-Team: Chinese (Taiwan) <zh_HK@li.org>\n"
@@ -19,89 +19,405 @@ msgstr ""
 msgid "encoding"
 msgstr "UTF-8"
 
-#. Please fill in the language you are translating to in the following form:
-#. native language name (native country name) - english language name (english country name)
 msgid "_: Localised language"
 msgstr "繁體中文 - Chinese Traditional"
 
-msgid "i-MSCP  a Virtual Hosting Control System"
-msgstr "i-MSCP  虛擬主機管理系統"
+#, php-format
+msgid "File %s does not exists or cannot be reached!"
+msgstr ""
 
-msgid "Administrator login"
-msgstr "管理員登入"
+msgid "Error while trying to obtain list of network cards."
+msgstr ""
 
-msgid "Login"
-msgstr "登入"
+#, php-format
+msgid "This IP (%s) is not assigned to any network card!"
+msgstr ""
+
+msgid "N/A"
+msgstr "空"
+
+msgid "Day"
+msgstr "日"
+
+#, fuzzy
+msgid "Days"
+msgstr "日"
+
+msgid "Hour"
+msgstr "小時"
+
+#, fuzzy
+msgid "Hours"
+msgstr "小時"
+
+#, fuzzy
+msgid "Minute"
+msgstr "分"
+
+#, fuzzy
+msgid "Minutes"
+msgstr "分"
+
+#, fuzzy
+msgid "An error occured! Please, contact your administrator!"
+msgstr "無法打開目錄！<br />請聯繫你的管理員！"
+
+#, fuzzy
+msgid "Couldn't check for updates. Website not reachable."
+msgstr "無法檢查更新！無法連絡更新網站。"
+
+msgid "General information"
+msgstr "概要訊息"
+
+msgid "Manage hosting plans"
+msgstr "管理託管計劃"
+
+msgid "System tools"
+msgstr "系統工具"
+
+msgid "Manage users"
+msgstr "使用者管理"
+
+msgid "Statistics"
+msgstr "資料統計"
+
+msgid "Support system"
+msgstr "系統支援"
+
+msgid "Settings"
+msgstr "設定"
+
+msgid "Change password"
+msgstr "修改密碼"
+
+msgid "Change personal data"
+msgstr "修改個人資料"
+
+msgid "Add admin"
+msgstr "增加管理員"
+
+msgid "Add reseller"
+msgstr "增加代理商"
+
+msgid "Reseller assignment"
+msgstr "代理商分配"
+
+msgid "User assignment"
+msgstr "使用者分配"
+
+msgid "Email setup"
+msgstr "郵件設定"
+
+msgid "Email marketing"
+msgstr "電子郵件推銷"
+
+msgid "Add hosting plan"
+msgstr "增加託管計劃"
+
+msgid "Reseller statistics"
+msgstr "代理商統計"
+
+msgid "Server statistics"
+msgstr "伺服器統計"
+
+msgid "Admin log"
+msgstr "管理員日誌"
+
+msgid "Manage IPs"
+msgstr "管理 IPs"
+
+msgid "System info"
+msgstr "系統資訊"
+
+msgid "Internationalisation"
+msgstr "語言設定"
+
+msgid "Language"
+msgstr "語言"
+
+msgid "Layout"
+msgstr "版面"
+
+msgid "Logout"
+msgstr "登出"
+
+msgid "Server traffic settings"
+msgstr "伺服器流量設定"
+
+msgid "Server status"
+msgstr "伺服器狀態"
+
+msgid "i-MSCP updates"
+msgstr "i-MSCP 更新"
+
+msgid "i-MSCP database updates"
+msgstr "i-MSCP 資料庫更新"
+
+msgid "i-MSCP debugger"
+msgstr "i-MSCP 調試器"
+
+msgid "Custom menus"
+msgstr "自定義功能表"
+
+msgid "Overview"
+msgstr "概覽"
+
+msgid "User sessions"
+msgstr "使用者會話層"
+
+msgid "Lostpw email setup"
+msgstr "忘記密碼郵件設定"
+
+msgid "Maintenance mode"
+msgstr "維護模式"
+
+msgid "General settings"
+msgstr "一般設定"
+
+msgid "Server ports"
+msgstr "伺服器連接埠"
+
+msgid "Rootkit Log"
+msgstr "Rootkit 日誌"
+
+#, fuzzy
+msgid "Services status"
+msgstr "伺服器狀態"
+
+#, fuzzy
+msgid "Services ports"
+msgstr "伺服器連接埠"
+
+#, fuzzy
+msgid "IP usage"
+msgstr "磁片使用量"
+
+msgid "Application management"
+msgstr ""
+
+msgid "Application options"
+msgstr ""
+
+msgid "Account name"
+msgstr "帳號名"
+
+msgid "Admin users"
+msgstr "管理員使用者"
+
+msgid "Reseller users"
+msgstr "代理商使用者"
+
+msgid "Normal users"
+msgstr "普通使用者"
+
+msgid "Domains"
+msgstr "網域"
+
+msgid "Subdomains"
+msgstr "子網域"
+
+msgid "Domain aliases"
+msgstr "網域別名"
+
+msgid "Mail accounts"
+msgstr "Mail 帳號"
+
+msgid "FTP accounts"
+msgstr "FTP  帳號"
+
+msgid "SQL databases"
+msgstr "SQL 資料庫"
+
+msgid "SQL users"
+msgstr "SQL 使用者"
+
+msgid "System messages"
+msgstr "系統訊息"
+
+msgid "No new messages"
+msgstr "沒有新訊息"
+
+msgid "Server traffic"
+msgstr "伺服器流量"
+
+msgid "Administrators list is empty!"
+msgstr "管理員列表為空！"
 
 msgid "Username"
 msgstr "使用者名稱"
 
-msgid "Password"
-msgstr "密碼"
+msgid "Creation date"
+msgstr "建立日期"
 
-msgid "Please enter your login information"
-msgstr "請輸入你的登入資訊"
+msgid "Created by"
+msgstr "建立者"
 
-msgid "Secure Connection"
-msgstr "安全連接"
+msgid "Options"
+msgstr "選項"
 
-msgid "Normal Connection"
-msgstr "正常連接"
+msgid "Delete"
+msgstr "刪除"
 
-msgid "Lost password"
-msgstr "找回密碼"
+msgid "System"
+msgstr "系統"
 
-msgid "Retrieving lost passwords is currently not possible"
-msgstr "目前不可使用找回忘記的密碼功能"
+msgid "Resellers list is empty!"
+msgstr "代理商列表為空！"
 
-msgid "i-MSCP - Virtual Hosting Control System"
-msgstr "i-MSCP - 虛擬主機管理系統"
+msgid "Switch to user interface"
+msgstr "切換使用者介面"
+
+msgid "Switch"
+msgstr "切換"
+
+msgid "Not found user records matching the search criteria!"
+msgstr "沒有找到與搜索欄位相匹配的使用者記錄！"
+
+msgid "view aliases"
+msgstr "查看別名"
+
+msgid "Users list is empty!"
+msgstr "使用者列表為空！"
+
+msgid "Status"
+msgstr "狀態"
+
+msgid "Details"
+msgstr "詳細"
+
+msgid "Edit domain"
+msgstr "編輯網域"
+
+msgid "Edit user"
+msgstr "編輯使用者"
+
+msgid "Ok"
+msgstr ""
+
+msgid "Disabled"
+msgstr "停用"
 
 #, fuzzy
-msgid "Your new password has been sent."
-msgstr "您的新密碼已經發送。"
+msgid "Reload"
+msgstr "上傳"
 
-msgid "New password could not been sent."
-msgstr "您的新密碼無法發送。"
+msgid "Error"
+msgstr "錯誤"
+
+msgid "Not Set"
+msgstr ""
+
+msgid "Are you sure you want to change the status of domain account?"
+msgstr "你確定想改變網域帳號狀態嗎？"
 
 #, php-format
-msgid ""
-"Your password request has been initiated. You will receive an email with "
-"instructions to complete the process. This reset request will expire in %s "
-"minutes."
-msgstr ""
-"您的密碼請求已經收到。您將收到一封電子郵件，並依照指示完成。這個請求將於 %s "
-"分鐘到期。"
+msgid "Are you sure you want to delete %s?"
+msgstr "你確定想刪除%s?"
 
-msgid "Back"
-msgstr "返回"
-
-#, fuzzy
-msgid "User or security code was incorrect!"
-msgstr "錯誤：驗證碼不正確"
-
-msgid "Retry"
-msgstr "重試"
-
-msgid "Security code"
-msgstr "驗證碼"
-
-msgid ""
-"(To avoid abuse, we ask you to write the combination of letters on the above "
-"picture into the field \"Security code\")"
-msgstr "（為避免濫用，請輸入上面圖中顯示的字母到“驗證碼”欄中）"
-
-msgid "Request password"
-msgstr "請輸入密碼"
-
-msgid "i-MSCP - Admin/Manage users/Add User"
-msgstr "i-MSCP - 管理員/管理使用者/增加使用者"
-
-msgid "Administrator"
+msgid "Administrators"
 msgstr "管理員"
 
-msgid "Incorrect username length or syntax!"
-msgstr "使用者名長度或語法錯誤！"
+msgid "Resellers"
+msgstr "代理商"
+
+msgid "Users"
+msgstr "使用者"
+
+msgid "Search"
+msgstr "搜索"
+
+#, fuzzy
+msgid "Expire date"
+msgstr "訂單資料"
+
+msgid "Edit"
+msgstr "編輯"
+
+msgid "Domain name"
+msgstr "網域名稱"
+
+msgid "Customer ID"
+msgstr "客戶 ID"
+
+msgid "Last name"
+msgstr "姓"
+
+msgid "Company"
+msgstr "公司名稱"
+
+msgid "City"
+msgstr "城市"
+
+#, fuzzy
+msgid "State/Province"
+msgstr "服務"
+
+msgid "Country"
+msgstr "國家"
+
+msgid "All"
+msgstr "所有"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Suspended"
+msgstr "暫停"
+
+msgid "i-MSCP - Order Panel"
+msgstr "i-MSCP - 訂單面板"
+
+msgid "hide aliases"
+msgstr "隱藏別名"
+
+#, php-format
+msgid "%1$s you are now logged as %2$s"
+msgstr "%1$s 你現在已登入為 %2$s"
+
+msgid "Go back"
+msgstr "返回"
+
+msgid "Unknown"
+msgstr "保密"
+
+msgid "No language tables found in the database."
+msgstr ""
+
+msgid "Add user"
+msgstr "增加使用者"
+
+msgid "Manage domains"
+msgstr "網域管理"
+
+msgid "Domain alias"
+msgstr "網域別名"
+
+msgid "Domain statistics"
+msgstr "網域統計"
+
+msgid "New ticket"
+msgstr "新客戶疑問"
+
+msgid "Layout settings"
+msgstr "版面設定"
+
+msgid "Manage Orders"
+msgstr "管理訂單"
+
+msgid "Order settings"
+msgstr "訂單設定"
+
+msgid "Order email setup"
+msgstr "訂單郵件設定"
+
+msgid "yes"
+msgstr "是"
+
+msgid "Please fill up both data fields for password!"
+msgstr "請填寫兩個密碼輸入欄！"
+
+msgid "Passwords don't match!"
+msgstr "密碼不正確！"
 
 #, php-format
 msgid ""
@@ -113,23 +429,190 @@ msgstr "密碼必須最少%s字元，包括字母和數字。"
 msgid "Password data is shorter than %s signs or includes not permitted signs!"
 msgstr "密碼資料短於%s符號或包含不允許字元！"
 
-msgid "Entered passwords do not match!"
-msgstr "輸入的密碼不正確！"
-
 msgid "Incorrect email length or syntax!"
 msgstr "電子郵件位址的長度或語法錯誤！"
 
-msgid "This user name already exist!"
+msgid "Add subdomain"
+msgstr "增加子網域"
+
+msgid "Email and FTP accounts"
+msgstr "Email 和 FTP 帳號"
+
+msgid "Add mail user"
+msgstr "增加郵件使用者"
+
+msgid "Add FTP user"
+msgstr "增加 FTP 使用者"
+
+msgid "Manage SQL"
+msgstr "管理 SQL"
+
+msgid "Error pages"
+msgstr "錯誤頁面"
+
+msgid "Add SQL database"
+msgstr "增加 SQL 資料庫"
+
+msgid "Daily backup"
+msgstr "日常備份"
+
+msgid "PhpMyAdmin"
+msgstr "PhpMyAdmin"
+
+msgid "Webmail"
+msgstr "網頁郵件"
+
+msgid "Filemanager"
+msgstr "文件管理器"
+
+msgid "Webtools"
+msgstr "Web工具"
+
+msgid "Protected areas"
+msgstr "保護區域"
+
+msgid "Web statistics"
+msgstr "Web 統計"
+
+msgid "Group/User management"
+msgstr "組/使用者管理"
+
+msgid "Email Accounts"
+msgstr "郵件帳號"
+
+msgid "FTP Accounts"
+msgstr "FTP 帳號"
+
+msgid "Catch all"
+msgstr "CatchAll"
+
+msgid "Add alias"
+msgstr "增加別名"
+
+msgid "Update Hosting Package"
+msgstr "更新託管計劃"
+
+msgid "Add DNS zone's record"
+msgstr ""
+
+msgid "Manage SSL certificate"
+msgstr ""
+
+msgid "i-MSCP application installer"
+msgstr ""
+
+msgid "All fields are required!"
+msgstr ""
+
+#, fuzzy
+msgid "internet Multi Server Control Panel"
+msgstr "i-MSCP 控制面板"
+
+msgid "© Copyright 2010 i-MSCP Team<br/>All Rights Reserved"
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP - Multi Server Control Panel"
+msgstr "i-MSCP 控制面板"
+
+msgid "Administrator login"
+msgstr "管理員登入"
+
+#, fuzzy
+msgid "i-MSCP - Multi Server Control Panel / Login"
+msgstr "i-MSCP 控制面板"
+
+msgid "Login"
+msgstr "登入"
+
+msgid "Password"
+msgstr "密碼"
+
+#, fuzzy
+msgid "phpMyAdmin"
+msgstr "PhpMyAdmin"
+
+#, fuzzy
+msgid "FileManager"
+msgstr "文件管理器"
+
+msgid "Secure Connection"
+msgstr "安全連接"
+
+msgid "Normal Connection"
+msgstr "正常連接"
+
+msgid "Lost password"
+msgstr "找回密碼"
+
+msgid "php-extension 'gd' not loaded."
+msgstr ""
+
+msgid "Captcha fontfile not found."
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP - Multi Server Control Panel - Lost password"
+msgstr "i-MSCP - 客戶/修改 SQL 使用者密碼"
+
+msgid "Security code"
+msgstr "驗證碼"
+
+#, fuzzy
+msgid ""
+"To avoid abuse, we ask you to write the combination of letters on the "
+"picture above into the field \"Security code\""
+msgstr "（為避免濫用，請輸入上面圖中顯示的字母到“驗證碼”欄中）"
+
+#, fuzzy
+msgid "Get password"
+msgstr "產生密碼"
+
+msgid "Back"
+msgstr "返回"
+
+#, fuzzy
+msgid "Your new password has been sent. Check your mail."
+msgstr "您的新密碼已經發送。"
+
+#, fuzzy
+msgid "New password has not been sent. Ask your administrator."
+msgstr "您的新密碼無法發送。"
+
+#, php-format
+msgid ""
+"Your password request has been initiated. You will receive an email with "
+"instructions to complete the process. This reset request will expire in %s "
+"minutes."
+msgstr ""
+"您的密碼請求已經收到。您將收到一封電子郵件，並依照指示完成。這個請求將於 %s "
+"分鐘到期。"
+
+#, fuzzy
+msgid "User or security code are incorrect."
+msgstr "錯誤：驗證碼不正確"
+
+msgid "All fields are required."
+msgstr ""
+
+msgid "i-MSCP - Admin/Manage users/Add User"
+msgstr "i-MSCP - 管理員/管理使用者/增加使用者"
+
+msgid "Administrator"
+msgstr "管理員"
+
+msgid "Incorrect username length or syntax!"
+msgstr "使用者名長度或語法錯誤！"
+
+msgid "Entered passwords do not match!"
+msgstr "輸入的密碼不正確！"
+
+#, fuzzy
+msgid "This user name already exist."
 msgstr "使用者已經被使用！"
 
 msgid "Empty data or wrong field!"
 msgstr "空白資料或錯誤欄位！"
-
-msgid "Passwords don't match!"
-msgstr "密碼不正確！"
-
-msgid "Add admin"
-msgstr "增加管理員"
 
 msgid "Core data"
 msgstr "核心資料"
@@ -146,9 +629,6 @@ msgstr "額外資料"
 msgid "First name"
 msgstr "名"
 
-msgid "Last name"
-msgstr "姓"
-
 msgid "Gender"
 msgstr "性別"
 
@@ -158,24 +638,8 @@ msgstr "男"
 msgid "Female"
 msgstr "女"
 
-msgid "Unknown"
-msgstr "保密"
-
-msgid "Company"
-msgstr "公司名稱"
-
 msgid "Zip/Postal code"
 msgstr "郵區編號"
-
-msgid "City"
-msgstr "城市"
-
-#, fuzzy
-msgid "State/Province"
-msgstr "服務"
-
-msgid "Country"
-msgstr "國家"
 
 msgid "Street 1"
 msgstr "街道 1"
@@ -211,9 +675,6 @@ msgstr "i-MSCP - 管理員/管理使用者/增加使用者"
 msgid "Edit admin"
 msgstr "編輯管理員"
 
-msgid "Edit user"
-msgstr "編輯使用者"
-
 msgid "Update"
 msgstr "更新"
 
@@ -230,7 +691,8 @@ msgstr "未啟用更新檢查！"
 msgid "Demo Version!"
 msgstr "試用版本"
 
-msgid "i-MSCP - Admin/Admin Log"
+#, fuzzy
+msgid "iMSCP - Admin/Admin Log"
 msgstr "i-MSCP - 管理員/管理日誌"
 
 msgid "Log is empty!"
@@ -314,9 +776,6 @@ msgstr "請指定寄件者郵件地址！"
 msgid "You send email to your users successfully!"
 msgstr "你已發送電子郵件給你的使用者！"
 
-msgid "Email marketing"
-msgstr "電子郵件推銷"
-
 msgid "Send message to"
 msgstr "發送訊息到"
 
@@ -346,9 +805,6 @@ msgstr "你還沒有自訂目錄。"
 
 msgid "User"
 msgstr "使用者"
-
-msgid "All"
-msgstr "所有"
 
 msgid "Missing or incorrect data input!"
 msgstr "輸入的資料不完全或不正確！"
@@ -405,12 +861,6 @@ msgstr "功能表按鈕"
 msgid "Action"
 msgstr "動作"
 
-msgid "Edit"
-msgstr "編輯"
-
-msgid "Delete"
-msgstr "刪除"
-
 msgid "Level"
 msgstr "等級"
 
@@ -420,9 +870,9 @@ msgstr "儲存"
 msgid "Edit button"
 msgstr "編輯按鈕"
 
-#, php-format
-msgid "Are you sure you want to delete %s?"
-msgstr "你確定想刪除%s?"
+#, fuzzy
+msgid "i-MSCP - Admin / System tools / Database Update"
+msgstr "i-MSCP 管理員 / 系統工具 / 伺服器狀態"
 
 msgid "Database updates"
 msgstr "更新資料庫"
@@ -436,15 +886,12 @@ msgstr "更新詳細"
 msgid "New Database update is now available"
 msgstr "現在有新的資料庫更新"
 
-msgid "Do you want to execute the Updates now?"
-msgstr "你想現在就執行更新嗎？"
+msgid "No provided"
+msgstr ""
 
 #, fuzzy
 msgid "Execute updates"
 msgstr "執行查詢"
-
-msgid "No database updates available"
-msgstr "沒有資料庫更新"
 
 msgid "i-MSCP - Domain/Details"
 msgstr "i-MSCP - 網域/詳細資料"
@@ -452,14 +899,8 @@ msgstr "i-MSCP - 網域/詳細資料"
 msgid "Domain details"
 msgstr "網域詳細資料"
 
-msgid "Domain name"
-msgstr "網域名稱"
-
 msgid "Domain IP"
 msgstr "網域 IP"
-
-msgid "Status"
-msgstr "狀態"
 
 msgid "PHP support"
 msgstr "支援 PHP "
@@ -493,24 +934,6 @@ msgstr "已用"
 msgid "Limit"
 msgstr "限制"
 
-msgid "Mail accounts"
-msgstr "Mail 帳號"
-
-msgid "FTP accounts"
-msgstr "FTP  帳號"
-
-msgid "SQL databases"
-msgstr "SQL 資料庫"
-
-msgid "SQL users"
-msgstr "SQL 使用者"
-
-msgid "Subdomains"
-msgstr "子網域"
-
-msgid "Domain aliases"
-msgstr "網域別名"
-
 msgid "Submit changes"
 msgstr "提交更改"
 
@@ -529,8 +952,117 @@ msgstr "否"
 msgid "Enabled"
 msgstr "啟用"
 
-msgid "Disabled"
-msgstr "停用"
+#, fuzzy
+msgid "Incorrect subdomains limit."
+msgstr "不正確的子網域數限制！"
+
+#, fuzzy
+msgid "Incorrect aliases limit."
+msgstr "不正確的別名限制！"
+
+#, fuzzy
+msgid "Incorrect mail accounts limit."
+msgstr "不正確的郵件帳號限制！"
+
+#, fuzzy
+msgid "Incorrect FTP accounts limit."
+msgstr "不正確的 FTP 帳號限制！"
+
+#, fuzzy
+msgid "Incorrect SQL users limit."
+msgstr "不正確的 SQL 使用者限制！"
+
+msgid "SQL databases limit is <i>disabled</i>!"
+msgstr "SQL 資料庫限制為 <i>停用</i>！"
+
+#, fuzzy
+msgid "Incorrect SQL databases limit."
+msgstr "不正確的SQL資料庫限制！"
+
+msgid "SQL users limit is <i>disabled</i>!"
+msgstr "SQL 使用者限制為 <i>停用</i>！"
+
+#, fuzzy
+msgid "Incorrect traffic limit."
+msgstr "不正確的流量限制！"
+
+#, fuzzy
+msgid "Incorrect disk quota limit."
+msgstr "不正確的磁碟空間配額限制！"
+
+msgid "The application installer needs PHP to enable."
+msgstr ""
+
+msgid "The application installer of the users reseller is not activated."
+msgstr ""
+
+msgid "Subdomain"
+msgstr "子網域"
+
+msgid "Alias"
+msgstr "別名"
+
+msgid "Mail"
+msgstr "郵件"
+
+msgid "FTP"
+msgstr "FTP"
+
+msgid "SQL Database"
+msgstr "SQL 資料庫"
+
+msgid "SQL User"
+msgstr "SQL 使用者"
+
+msgid "Traffic"
+msgstr "流量"
+
+msgid "Disk"
+msgstr "磁碟空間"
+
+#, fuzzy
+msgid "Domain properties could not be updated."
+msgstr "網域屬性無法更新！"
+
+msgid "Domain properties updated successfully!"
+msgstr "網域屬性已更新！"
+
+#, php-format
+msgid "The <em>%s</em> service cannot be disabled!"
+msgstr "此 <em>%s</em> 服務不能被禁止！"
+
+#, php-format
+msgid "There are <em>%s</em> records on system!"
+msgstr "有 <em>%s</em> 條記錄在系統裏！"
+
+#, php-format
+msgid "The <em>%s</em> service cannot be limited! "
+msgstr "<em>%s</em> 服務不能被限制！ "
+
+#, php-format
+msgid ""
+"Specified number is smaller than <em>%s</em> records, present on the system!"
+msgstr "指定數小於目前系統裏的 <em>%s</em> 條記錄！"
+
+#, php-format
+msgid "The <em>%s</em> service cannot be disabled! "
+msgstr "<em>%s</em> 服務不能停用！ "
+
+#, php-format
+msgid "There are <em>%s</em> records on the system!"
+msgstr "有 <em>%s</em> 條記錄在系統裏！"
+
+#, php-format
+msgid "The <em>%s</em> service cannot be unlimited! "
+msgstr "<em>%s</em> 服務不能設為無限制！"
+
+#, php-format
+msgid "There are reseller limits for the <em>%s</em> service!"
+msgstr "此 <em>%s</em>服務有代理商限制！"
+
+#, php-format
+msgid "You are exceeding reseller limits for the <em>%s</em> service!"
+msgstr "<em>%s</em> 服務已超出代理商限制！"
 
 msgid "i-MSCP - Admin/Edit Domain"
 msgstr "i-MSCP - 管理員/編輯網域"
@@ -585,111 +1117,32 @@ msgid ""
 "In case 'Domain expire' is 'N/A', the expiration date will be set from today."
 msgstr "如果沒有填入'域名到期日'，到期日期將被設置為今天。"
 
+msgid "or Check for <strong>never Expire</strong>"
+msgstr ""
+
 msgid ""
-"User does not exist or you do not have permission to access this interface!"
-msgstr "使用者不存在或你沒有許可權訪問此介面！"
+"You cannot access this page directly. You must switch to reseller level."
+msgstr ""
 
-msgid "N/A"
-msgstr "空"
-
-msgid "Incorrect subdomains limit!"
-msgstr "不正確的子網域數限制！"
-
-msgid "Incorrect aliases limit!"
-msgstr "不正確的別名限制！"
-
-msgid "Incorrect mail accounts limit!"
-msgstr "不正確的郵件帳號限制！"
-
-msgid "Incorrect FTP accounts limit!"
-msgstr "不正確的 FTP 帳號限制！"
-
-msgid "Incorrect SQL users limit!"
-msgstr "不正確的 SQL 使用者限制！"
-
-msgid "SQL databases limit is <i>disabled</i>!"
-msgstr "SQL 資料庫限制為 <i>停用</i>！"
-
-msgid "Incorrect SQL databases limit!"
-msgstr "不正確的SQL資料庫限制！"
-
-msgid "SQL users limit is <i>disabled</i>!"
-msgstr "SQL 使用者限制為 <i>停用</i>！"
-
-msgid "Incorrect traffic limit!"
-msgstr "不正確的流量限制！"
-
-msgid "Incorrect disk quota limit!"
-msgstr "不正確的磁碟空間配額限制！"
-
-msgid "Subdomain"
-msgstr "子網域"
-
-msgid "Alias"
-msgstr "別名"
-
-msgid "Mail"
-msgstr "郵件"
-
-msgid "FTP"
-msgstr "FTP"
-
-msgid "SQL Database"
-msgstr "SQL 資料庫"
-
-msgid "SQL User"
-msgstr "SQL 使用者"
-
-msgid "Traffic"
-msgstr "流量"
-
-msgid "Disk"
-msgstr "磁碟空間"
-
-msgid "Domain properties could not be updated!"
-msgstr "網域屬性無法更新！"
-
-msgid "Domain properties updated successfully!"
-msgstr "網域屬性已更新！"
-
-#, php-format
-msgid "The <em>%s</em> service cannot be disabled! "
-msgstr "<em>%s</em> 服務不能停用！ "
-
-#, php-format
-msgid "There are <em>%s</em> records on system!"
-msgstr "有 <em>%s</em> 條記錄在系統裏！"
-
-#, php-format
-msgid "The <em>%s</em> service cannot be limited! "
-msgstr "<em>%s</em> 服務不能被限制！ "
-
-#, php-format
 msgid ""
-"Specified number is smaller than <em>%s</em> records, present on the system!"
-msgstr "指定數小於目前系統裏的 <em>%s</em> 條記錄！"
+"Unable to update domain properties: The domain does not exist or is an "
+"orphan."
+msgstr ""
 
-#, php-format
-msgid "There are <em>%s</em> records on the system!"
-msgstr "有 <em>%s</em> 條記錄在系統裏！"
+msgid "Unable to update domain: Domain ID not found."
+msgstr ""
 
-#, php-format
-msgid "The <em>%s</em> service cannot be unlimited! "
-msgstr "<em>%s</em> 服務不能設為無限制！"
+msgid "Unable to edit domain: The domain does not exist or is an orphan."
+msgstr ""
 
-#, php-format
-msgid "There are reseller limits for the <em>%s</em> service!"
-msgstr "此 <em>%s</em>服務有代理商限制！"
-
-#, php-format
-msgid "You are exceeding reseller limits for the <em>%s</em> service!"
-msgstr "<em>%s</em> 服務已超出代理商限制！"
+msgid "Unable to edit domain: ID not found."
+msgstr ""
 
 msgid "i-MSCP - Domain Statistics Data"
 msgstr "i-MSCP - 網域統計資料"
 
-msgid "Domain statistics"
-msgstr "網域統計"
+msgid "Reseller users table"
+msgstr "代理商使用者表"
 
 msgid "Month"
 msgstr "月"
@@ -715,14 +1168,47 @@ msgstr "POP3/IMAP 流量"
 msgid "All traffic"
 msgstr "所有流量"
 
-msgid "Day"
-msgstr "日"
+msgid "i-MSCP - Administrator/Hosting Plan Management"
+msgstr "i-MSCP - 管理員/託管計劃管理"
+
+msgid "Hosting plans"
+msgstr "託管計劃"
+
+msgid "Purchasing"
+msgstr "購買"
+
+msgid "Add new user hosting plan"
+msgstr "增加新的託管計劃"
+
+msgid "Return to previous menu"
+msgstr "返回上一級目錄"
+
+msgid "Hosting plan added!"
+msgstr "託管計劃增加完成！"
+
+msgid "Hosting plan deleted!"
+msgstr "託管計劃刪除完成！"
+
+msgid "Hosting plan updated!"
+msgstr "託管計劃更新完成！"
+
+msgid "Hosting plan can't be deleted, there are orders!"
+msgstr "託管計劃不能被刪除，它們處於工作狀態！"
+
+msgid "Hosting plans not found!"
+msgstr "沒有發現託管計劃！"
+
+msgid "No."
+msgstr "否."
+
+msgid "Name"
+msgstr "名稱"
+
+msgid "Show hosting plan"
+msgstr "顯示託管計劃"
 
 msgid "i-MSCP - Administrator/Add hosting plan"
 msgstr "i-MSCP - 管理員/增加託管計劃"
-
-msgid "Add hosting plan"
-msgstr "增加託管計劃"
 
 msgid "Hosting plan properties"
 msgstr "託管計劃屬性"
@@ -768,9 +1254,6 @@ msgstr "Apache 日誌檔"
 
 msgid "AwStats"
 msgstr "AwStats"
-
-msgid "yes"
-msgstr "是"
 
 msgid "no"
 msgstr "否"
@@ -826,6 +1309,33 @@ msgstr "不正確的價格語法！"
 msgid "Incorrect setup fee syntax!"
 msgstr "不正確的安裝費用語法！"
 
+msgid "Incorrect subdomains limit!"
+msgstr "不正確的子網域數限制！"
+
+msgid "Incorrect aliases limit!"
+msgstr "不正確的別名限制！"
+
+msgid "Incorrect mail accounts limit!"
+msgstr "不正確的郵件帳號限制！"
+
+msgid "Incorrect FTP accounts limit!"
+msgstr "不正確的 FTP 帳號限制！"
+
+msgid "Incorrect SQL databases limit!"
+msgstr "不正確的SQL資料庫限制！"
+
+msgid "Incorrect SQL users limit!"
+msgstr "不正確的 SQL 使用者限制！"
+
+msgid "Incorrect traffic limit!"
+msgstr "不正確的流量限制！"
+
+msgid "Incorrect disk quota limit!"
+msgstr "不正確的磁碟空間配額限制！"
+
+msgid "The i-MSCP application installer needs PHP to enable it!"
+msgstr ""
+
 msgid "Hosting plan with entered name already exists!"
 msgstr "輸入的主機託管計劃已存在！"
 
@@ -853,47 +1363,104 @@ msgstr "不正確的價格。例: 9.99"
 msgid "Incorrect setup fee. Example: 19.99"
 msgstr "不正確的安裝費用。例:19.99"
 
-msgid "i-MSCP - Administrator/Hosting Plan Management"
-msgstr "i-MSCP - 管理員/託管計劃管理"
+msgid "No domain system errors"
+msgstr "沒有網域系統錯誤"
 
-msgid "Hosting plans"
-msgstr "託管計劃"
+msgid "No domain alias system errors"
+msgstr "沒有網域別名系統錯誤"
 
-msgid "Manage hosting plans"
-msgstr "管理託管計劃"
+msgid "No subdomain system errors"
+msgstr "沒有子網域系統錯誤"
 
-msgid "Purchasing"
-msgstr "購買"
+#, fuzzy
+msgid "No alias subdomain system errors"
+msgstr "沒有子網域系統錯誤"
 
-msgid "Add new user hosting plan"
-msgstr "增加新的託管計劃"
+msgid "No email account system errors"
+msgstr "沒有郵件統計系統錯誤"
 
-msgid "Return to previous menu"
-msgstr "返回上一級目錄"
+#, fuzzy
+msgid "missing domain"
+msgstr "主網域"
 
-msgid "Hosting plan added!"
-msgstr "託管計劃增加完成！"
+#, fuzzy
+msgid "missing alias"
+msgstr "網域別名"
 
-msgid "Hosting plan deleted!"
-msgstr "託管計劃刪除完成！"
+msgid "orphan entry"
+msgstr ""
 
-msgid "Hosting plan updated!"
-msgstr "託管計劃更新完成！"
+#, fuzzy
+msgid "No htaccess related system errors"
+msgstr "沒有網域別名系統錯誤"
 
-msgid "Hosting plan can't be deleted, there are orders!"
-msgstr "託管計劃不能被刪除，它們處於工作狀態！"
+#, fuzzy
+msgid "Missing domain"
+msgstr "主網域"
 
-msgid "Hosting plans not found!"
-msgstr "沒有發現託管計劃！"
+#, php-format
+msgid "Daemon returned %d as status code"
+msgstr "後台返回 %d 狀態碼"
 
-msgid "No."
-msgstr "否."
+msgid "Unknown type!"
+msgstr "未知類型！"
 
-msgid "Name"
-msgstr "名稱"
+msgid "Done"
+msgstr "完成"
 
-msgid "Show hosting plan"
-msgstr "顯示託管計劃"
+msgid "Unknown Error"
+msgstr "未知錯誤"
+
+msgid "Domain errors"
+msgstr ""
+
+msgid "Domain alias errors"
+msgstr "網域別名錯誤"
+
+msgid "Subdomain errors"
+msgstr "子網域錯誤"
+
+#, fuzzy
+msgid "Alias subdomain errors"
+msgstr "子網域轉寄"
+
+msgid "Mail account errors"
+msgstr "郵件統計錯誤"
+
+msgid ".htaccess related errors"
+msgstr ""
+
+msgid "i-MSCP Daemon tools"
+msgstr "i-MSCP 後台工具"
+
+msgid "Execute requests"
+msgstr "執行請求"
+
+#, fuzzy
+msgid "Set status to 'change'"
+msgstr "設定狀態到 \"更改\""
+
+#, fuzzy, php-format
+msgid "%s Errors in database"
+msgstr ""
+
+msgid "Update checking is disabled!"
+msgstr "未啟用更新檢查！"
+
+msgid "Enable update at"
+msgstr "啟用更新在"
+
+msgid "New i-MSCP update is now available"
+msgstr "有新的 i-MSCP 更新"
+
+msgid "Get it at"
+msgstr "取之於"
+
+msgid "Available i-MSCP updates"
+msgstr "可用 i-MSCP 更新"
+
+msgid "No new i-MSCP updates available"
+msgstr "沒有新的 i-MSCP 更新可用"
 
 #, php-format
 msgid "You have <b>%d</b> new support questions"
@@ -902,14 +1469,8 @@ msgstr "你有 <b>%d</b> 新的客戶疑問"
 msgid "View"
 msgstr "查閱"
 
-msgid "A database update is available"
-msgstr "有一個資料庫更新"
-
-msgid "Update checking is disabled!"
-msgstr "未啟用更新檢查！"
-
-msgid "New i-MSCP update is now available"
-msgstr "有新的 i-MSCP 更新"
+msgid "One or more updates to the database are available."
+msgstr ""
 
 msgid "You are exceeding your traffic limit!"
 msgstr "你的流量已超出限制！"
@@ -943,6 +1504,10 @@ msgstr "i-MSCP - 管理員/IP 管理"
 msgid "Remove IP"
 msgstr "刪除 IP"
 
+#, fuzzy
+msgid "No IP's available"
+msgstr "沒有新的 i-MSCP 更新可用"
+
 msgid "New IP was added!"
 msgstr "新 IP 已增加！"
 
@@ -962,9 +1527,6 @@ msgstr "此 IP 已存在！"
 msgid "Please select nework interface!"
 msgstr "切換使用者介面"
 
-msgid "Manage IPs"
-msgstr "管理 IPs"
-
 msgid "Available IPs"
 msgstr "可用 IPs"
 
@@ -982,110 +1544,53 @@ msgstr "增加新 IP"
 msgid "Are you sure you want to delete this IP: %s?"
 msgstr "你確定想刪除此 IP？: %s"
 
-msgid "No domain system errors"
-msgstr "沒有網域系統錯誤"
-
-msgid "No domain alias system errors"
-msgstr "沒有網域別名系統錯誤"
-
-msgid "No subdomain system errors"
-msgstr "沒有子網域系統錯誤"
+#, fuzzy
+msgid "i-MSCP - Admin/IP Usage"
+msgstr "i-MSCP - 管理員/IP 管理"
 
 #, fuzzy
-msgid "No alias subdomain system errors"
-msgstr "沒有子網域系統錯誤"
+msgid "Total Domains"
+msgstr "網域"
 
-msgid "No email account system errors"
-msgstr "沒有郵件統計系統錯誤"
-
-msgid "i-MSCP debugger"
-msgstr "i-MSCP 調試器"
-
-msgid "Domain errors"
-msgstr "網域錯誤"
-
-msgid "Domain alias errors"
-msgstr "網域別名錯誤"
-
-msgid "Subdomain errors"
-msgstr "子網域錯誤"
+msgid "No records found"
+msgstr ""
 
 #, fuzzy
-msgid "Alias subdomain errors"
-msgstr "子網域轉寄"
-
-msgid "Mail account errors"
-msgstr "郵件統計錯誤"
-
-msgid "i-MSCP Daemon tools"
-msgstr "i-MSCP 後台工具"
-
-msgid "Execute requests"
-msgstr "執行請求"
+msgid "Admin/IP usage statistics"
+msgstr "網域統計"
 
 #, fuzzy
-msgid "Set status to 'change'"
-msgstr "設定狀態到 \"更改\""
-
-#, php-format
-msgid "Daemon returned %d as status code"
-msgstr "後台返回 %d 狀態碼"
-
-msgid "Unknown type!"
-msgstr "未知類型！"
-
-msgid "Done"
-msgstr "完成"
-
-msgid "Unknown Error"
-msgstr "未知錯誤"
-
-msgid "Enable update at"
-msgstr "啟用更新在"
-
-msgid "Settings"
-msgstr "設定"
-
-msgid "Get it at"
-msgstr "取之於"
-
-msgid "i-MSCP updates"
-msgstr "i-MSCP 更新"
-
-msgid "Available i-MSCP updates"
-msgstr "可用 i-MSCP 更新"
-
-msgid "No new i-MSCP updates available"
-msgstr "沒有新的 i-MSCP 更新可用"
+msgid "Domain Name"
+msgstr "網域名稱"
 
 #, fuzzy
-msgid "Language was removed!"
-msgstr "已更新語言！"
+msgid "Reseller Name"
+msgstr "代理商名稱"
 
-msgid "User language updated successfully!"
+#, fuzzy
+msgid "User language updated successfully."
 msgstr "使用者語言更換完成！"
 
 msgid "i-MSCP - Admin/Change Language"
 msgstr "i-MSCP - 管理員/更改語言"
 
-msgid "Language"
-msgstr "語言"
-
 #, fuzzy
 msgid "Choose your default language"
 msgstr "選擇默認語言"
+
+#, fuzzy
+msgid "Error we have user that uses that language!"
+msgstr "錯誤: 此IP正被一個代理商所使用！"
+
+#, fuzzy
+msgid "Language was removed!"
+msgstr "已更新語言！"
 
 msgid "Reseller list is empty!"
 msgstr "代理商列表為空！"
 
 msgid "i-MSCP - Admin/Manage users/Reseller assignment"
 msgstr "i-MSCP - 管理員/管理使用者/代理商分配"
-
-msgid "Reseller assignment"
-msgstr "代理商分配"
-
-msgid "Reseller users"
-msgstr "代理商使用者"
 
 msgid "Mark"
 msgstr "標記"
@@ -1145,12 +1650,6 @@ msgstr "<b>%s</b> 有IP位址不能被目的代理商所管理！<br>此使用�
 msgid "i-MSCP - Admin/Manage users/User assignment"
 msgstr "i-MSCP - 管理員/管理使用者/使用者分配"
 
-msgid "User assignment"
-msgstr "使用者分配"
-
-msgid "Users"
-msgstr "使用者"
-
 msgid "User name"
 msgstr "使用者名稱"
 
@@ -1184,11 +1683,16 @@ msgstr "此使用者有網域！<br>要刪除使用者請先刪除此使用者�
 msgid "User was disabled"
 msgstr "使用者已被停用"
 
-msgid "Incorrect data input!"
-msgstr "輸入的資料不正確！"
+#, fuzzy
+msgid "Uninstall"
+msgstr "反安裝"
 
-msgid "i-MSCP - Admin/Internationalisation"
-msgstr "i-MSCP - 管理員/語言設定"
+#, php-format
+msgid "%d messages translated"
+msgstr "%d 資訊已翻譯"
+
+msgid "Gzipped"
+msgstr ""
 
 msgid "Upload file error!"
 msgstr "上傳檔案錯誤！"
@@ -1202,7 +1706,8 @@ msgstr "不能讀取語言檔！"
 msgid "Uploaded file is not a valid language file!"
 msgstr "上傳的檔案不是一個有效的語言檔！"
 
-msgid "Uploaded file does not contain the language information!"
+#, fuzzy
+msgid "Uploaded file does not contain language information!"
 msgstr "上傳的檔案不包含語言資訊！"
 
 #, php-format
@@ -1219,15 +1724,8 @@ msgstr ""
 msgid "Language was updated!"
 msgstr "已更新語言！"
 
-msgid "uninstall"
-msgstr "反安裝"
-
-#, php-format
-msgid "%d messages translated"
-msgstr "%d 資訊已翻譯"
-
-msgid "Internationalisation"
-msgstr "語言設定"
+msgid "i-MSCP - Admin/Internationalisation"
+msgstr "i-MSCP - 管理員/語言設定"
 
 msgid "Installed languages"
 msgstr "已安裝語言"
@@ -1236,8 +1734,8 @@ msgid "Messages"
 msgstr "訊息"
 
 #, fuzzy
-msgid "Panel Default"
-msgstr "默認"
+msgid "Panel default language"
+msgstr "選擇默認語言"
 
 msgid "Install new language"
 msgstr "安裝新語言"
@@ -1250,6 +1748,9 @@ msgstr "安裝"
 
 msgid "Export"
 msgstr "導出"
+
+msgid "Incorrect data input!"
+msgstr "輸入的資料不正確！"
 
 msgid "i-MSCP - Admin/Change Password"
 msgstr "i-MSCP - 管理員/修改密碼"
@@ -1265,9 +1766,6 @@ msgstr "目前密碼錯誤！"
 
 msgid "User password updated successfully!"
 msgstr "使用者密碼已修改！"
-
-msgid "Change password"
-msgstr "修改密碼"
 
 msgid "Password data"
 msgstr "密碼資料"
@@ -1287,9 +1785,6 @@ msgstr "i-MSCP - 管理員/修改個人資料"
 
 msgid "Personal data updated successfully!"
 msgstr "個人資料已修改！"
-
-msgid "Change personal data"
-msgstr "修改個人資料"
 
 msgid "Personal data"
 msgstr "個人資料"
@@ -1312,6 +1807,9 @@ msgstr "標籤"
 msgid "Number"
 msgstr "數量"
 
+msgid "This user name already exist!"
+msgstr "使用者已經被使用！"
+
 msgid "Incorrect email syntax!"
 msgstr "不正確的郵件位址語法！"
 
@@ -1328,9 +1826,6 @@ msgstr "SQL 使用者限制為 <i>停用</i>！"
 
 msgid "You must assign at least one IP number for a reseller!"
 msgstr "你必須為代理商指派至少一個IP！"
-
-msgid "Add reseller"
-msgstr "增加代理商"
 
 msgid "Domains limit<br><i>(0 unlimited)</i>"
 msgstr "網域限制<br><i>(0 無限制)</i>"
@@ -1356,29 +1851,20 @@ msgstr "備份與恢復"
 msgid "Custom error pages"
 msgstr "自定義錯誤頁"
 
-msgid "Protected areas"
-msgstr "保護區域"
-
-msgid "Webmail"
-msgstr "網頁郵件"
-
 msgid "Directory listing"
 msgstr "目錄列表"
 
 msgid "Logo upload"
 msgstr "圖示上傳"
 
-msgid "Support system"
-msgstr "系統支援"
+msgid "Can use software depot"
+msgstr ""
+
+msgid "Can use websoftware depot"
+msgstr ""
 
 msgid "Reseller IPs"
 msgstr "代理商 IPs"
-
-msgid "Customer ID"
-msgstr "客戶 ID"
-
-msgid "Domains"
-msgstr "網域"
 
 msgid "Aliases"
 msgstr "別名"
@@ -1465,7 +1951,8 @@ msgstr ""
 msgid "i-MSCP - Reseller statistics"
 msgstr "i-MSCP - 代理商統計"
 
-msgid "Not found reseller(s) in your system!"
+#, fuzzy
+msgid "No reseller is registered in your system!"
 msgstr "在你系統中沒有找到代理商！"
 
 #, php-format
@@ -1515,9 +2002,6 @@ msgstr "%1$d <br/>of<br/> <b>%2$d</b>"
 msgid "%d <br/>of<br/> <b>unlimited</b>"
 msgstr "%d <br/>of<br/> <b>允許量</b>"
 
-msgid "Reseller users table"
-msgstr "代理商使用者表"
-
 msgid "This reseller has no domains."
 msgstr "此代理商沒有網域。"
 
@@ -1555,23 +2039,8 @@ msgstr "%s 不存在或為空"
 msgid "Anti-Rootkits Tools Log Checker"
 msgstr "反Rootkits工具日誌檢查器"
 
-msgid "i-MSCP - Admin/Server day stats"
-msgstr "i-MSCP - 管理員/伺服器日統計"
-
-msgid "Server day statistics"
-msgstr "伺服器日統計"
-
-msgid "Month:"
-msgstr "月:"
-
-msgid "Year:"
-msgstr "年:"
-
-msgid "Day:"
-msgstr "日:"
-
-msgid "Hour"
-msgstr "小時"
+msgid "i-MSCP - Admin/Server statistics"
+msgstr "i-MSCP - 管理員/伺服器統計"
 
 msgid "Web in"
 msgstr "Web 接收"
@@ -1607,20 +2076,24 @@ msgstr "全部接收"
 msgid "All out"
 msgstr "全部發送"
 
-msgid "i-MSCP - Admin/Server statistics"
-msgstr "i-MSCP - 管理員/伺服器統計"
+msgid "i-MSCP - Admin/Server day stats"
+msgstr "i-MSCP - 管理員/伺服器日統計"
 
-msgid "Server statistics"
-msgstr "伺服器統計"
+msgid "Server day statistics"
+msgstr "伺服器日統計"
 
-msgid "i-MSCP Admin / System Tools / Server Status"
+msgid "Month:"
+msgstr "月:"
+
+msgid "Year:"
+msgstr "年:"
+
+msgid "Day:"
+msgstr "日:"
+
+#, fuzzy
+msgid "i-MSCP Admin / General Information / Server Status"
 msgstr "i-MSCP 管理員 / 系統工具 / 伺服器狀態"
-
-msgid "UP"
-msgstr "已運行"
-
-msgid "DOWN"
-msgstr "未運行"
 
 msgid "Host"
 msgstr "主機"
@@ -1628,8 +2101,11 @@ msgstr "主機"
 msgid "Service"
 msgstr "服務"
 
-msgid "Server status"
-msgstr "伺服器狀態"
+msgid "UP"
+msgstr "已運行"
+
+msgid "DOWN"
+msgstr "未運行"
 
 msgid "i-MSCP - Admin/Manage Sessions"
 msgstr "i-MSCP - 管理員/管理會話層"
@@ -1643,127 +2119,26 @@ msgstr "使用者類型"
 msgid "Last access"
 msgstr "最後訪問"
 
-msgid "Options"
-msgstr "選項"
-
 msgid "Kill session"
 msgstr "終止會話層"
-
-msgid "You can only upload images!"
-msgstr "你只能上傳圖像檔！"
-
-msgid "Images have to be smaller than 195 x 195 pixels!"
-msgstr "圖像檔必須小於 195 x 195 像素！"
-
-msgid "Your logo was successful uploaded!"
-msgstr "你的圖像已經上傳！"
-
-msgid "Layout settings"
-msgstr "版面設定"
-
-msgid "Installed layouts"
-msgstr "已安裝的版面"
-
-msgid "Layout name"
-msgstr "版面名稱"
-
-msgid "default"
-msgstr "默認"
-
-msgid "Upload logo"
-msgstr "上傳圖示"
-
-msgid "Logo file"
-msgstr "圖示檔"
-
-msgid "Upload"
-msgstr "上傳"
-
-msgid "Remove"
-msgstr "移除"
-
-msgid "Choose default layout"
-msgstr "選擇默認版面"
-
-msgid "Layout"
-msgstr "版面"
-
-msgid "Please specify a subject!"
-msgstr "請指定一個主題！"
-
-msgid "Please specify message!"
-msgstr "請指定訊息！"
-
-msgid "Auto email template data updated!"
-msgstr "自動郵件範本資料更新完成！"
-
-msgid "i-MSCP - Admin/Lostpw email setup"
-msgstr "i-MSCP - 管理員/忘記密碼郵件設定"
-
-msgid "Lost password e-mail"
-msgstr "找回密碼郵件位址"
-
-msgid "Message template info"
-msgstr "訊息範本資訊"
-
-msgid "Message template"
-msgstr "訊息範本"
-
-msgid "Activation E-Mail"
-msgstr "啟動用 E-Mail"
-
-msgid "Password E-Mail"
-msgstr "密碼用 E-Mail"
-
-msgid "User login (system) name"
-msgstr "使用者登入 （系統）名稱"
-
-msgid "User password"
-msgstr "使用者密碼"
-
-msgid "User (first and last) name"
-msgstr "使用者名稱（姓氏和名字）"
-
-msgid "Lost password link"
-msgstr "找回密碼鏈結"
-
-msgid "Subject"
-msgstr "主題"
-
-msgid "Apply changes"
-msgstr "應用更改"
-
-msgid "URL to this admin panel"
-msgstr "轉到管理員面板的 URL"
-
-#, fuzzy
-msgid "URL protocol"
-msgstr "協議"
-
-msgid "i-MSCP - Admin/Maintenance mode"
-msgstr "i-MSCP - 管理員/維護模式"
-
-msgid "Settings saved !"
-msgstr "設定已儲存！"
-
-msgid "Maintenance mode"
-msgstr "維護模式"
-
-msgid "Under this mode only administrators can login"
-msgstr "此模式下只允許管理員登入"
 
 msgid "i-MSCP - Admin/Settings"
 msgstr "i-MSCP - 管理員/設定"
 
-msgid "ERROR: Only positive numbers are allowed !"
+#, fuzzy
+msgid "Error: Only positive numbers are allowed!"
 msgstr "錯誤: 只允許正數！"
 
-#, fuzzy
-msgid "Settings saved!"
-msgstr "設定已儲存！"
+#, php-format
+msgid "%d configuration parameter(s) was updated!"
+msgstr ""
 
-msgid "General settings"
-msgstr "一般設定"
+#, php-format
+msgid "%d configuration parameter(s) was created!"
+msgstr ""
+
+msgid "Nothing's been changed!"
+msgstr ""
 
 msgid "Activation link expire time (minutes)"
 msgstr "啟動密碼鏈結過期時間（分鐘）"
@@ -1811,12 +2186,8 @@ msgstr "建立默認 E-Mail 地址"
 msgid "E-Mail accounts are hard suspended"
 msgstr "E-Mail 帳號強制暫停"
 
-#, fuzzy
-msgid "Panel default language"
-msgstr "選擇默認語言"
-
-msgid "Server ports"
-msgstr "伺服器連接埠"
+msgid "Apply changes"
+msgstr "應用更改"
 
 msgid "Hosting plans available for"
 msgstr "可用的託管計劃用於"
@@ -1885,53 +2256,141 @@ msgstr ""
 msgid "Maximal number of labels for subdomains"
 msgstr ""
 
-#, fuzzy
-msgid ""
-"ERROR: Only letters, numbers, dash and underscore are allowed for services "
-"names!"
-msgstr "錯誤:只能允許字母、數位、破折號、底線。"
+msgid "You can only upload images!"
+msgstr "你只能上傳圖像檔！"
+
+msgid "Images have to be smaller than 195 x 195 pixels!"
+msgstr "圖像檔必須小於 195 x 195 像素！"
+
+msgid "Your logo was successful uploaded!"
+msgstr "你的圖像已經上傳！"
+
+msgid "Installed layouts"
+msgstr "已安裝的版面"
+
+msgid "Layout name"
+msgstr "版面名稱"
+
+msgid "default"
+msgstr "默認"
+
+msgid "Upload logo"
+msgstr "上傳圖示"
+
+msgid "Logo file"
+msgstr "圖示檔"
+
+msgid "Upload"
+msgstr "上傳"
+
+msgid "Remove"
+msgstr "移除"
+
+msgid "Choose default layout"
+msgstr "選擇默認版面"
+
+msgid "Please specify a subject!"
+msgstr "請指定一個主題！"
+
+msgid "Please specify message!"
+msgstr "請指定訊息！"
+
+msgid "Auto email template data updated!"
+msgstr "自動郵件範本資料更新完成！"
+
+msgid "i-MSCP - Admin/Lostpw email setup"
+msgstr "i-MSCP - 管理員/忘記密碼郵件設定"
+
+msgid "Lost password e-mail"
+msgstr "找回密碼郵件位址"
+
+msgid "Message template info"
+msgstr "訊息範本資訊"
+
+msgid "Message template"
+msgstr "訊息範本"
+
+msgid "Activation E-Mail"
+msgstr "啟動用 E-Mail"
+
+msgid "Password E-Mail"
+msgstr "密碼用 E-Mail"
+
+msgid "User login (system) name"
+msgstr "使用者登入 （系統）名稱"
+
+msgid "User password"
+msgstr "使用者密碼"
+
+msgid "User (first and last) name"
+msgstr "使用者名稱（姓氏和名字）"
+
+msgid "Lost password link"
+msgstr "找回密碼鏈結"
+
+msgid "Subject"
+msgstr "主題"
+
+msgid "URL to this admin panel"
+msgstr "轉到管理員面板的 URL"
 
 #, fuzzy
-msgid "ERROR: Wrong Ip number!"
+msgid "URL protocol"
+msgstr "協議"
+
+msgid "i-MSCP - Admin/Maintenance mode"
+msgstr "i-MSCP - 管理員/維護模式"
+
+msgid "Settings saved !"
+msgstr "設定已儲存！"
+
+msgid "Under this mode only administrators can login"
+msgstr "此模式下只允許管理員登入"
+
+#, fuzzy
+msgid "Error: Wrong Ip number!"
 msgstr "錯誤 IP 號碼！"
 
 #, fuzzy
-msgid "ERROR: Only positive numbers are allowed for services ports!"
+msgid "Error: Only positive numbers are allowed for services ports!"
 msgstr "錯誤: 只允許正數！"
 
 #, fuzzy
-msgid "ERROR: Service port with same name already exists!"
+msgid "Error: Service port with same name already exists!"
 msgstr "錯誤:連接埠已被使用！"
 
-msgid "ERROR: Unallowed protocol!"
+msgid "Error: Unallowed protocol!"
 msgstr ""
 
-msgid "ERROR: Bad value for show entry!"
+msgid "Error: Wrong value for show entry!"
 msgstr ""
 
 #, fuzzy
-msgid "Service port was added!"
+msgid "Service port was successfully added"
 msgstr "新 IP 已增加！"
 
-#, php-format
-msgid "%d Service(s) port was updated!"
+#, fuzzy, php-format
+msgid "%d Service(s) port was successfully updated"
 msgstr ""
 
-msgid "Nothing's been changed!"
-msgstr ""
-
-msgid "You have no custom service ports defined."
-msgstr "你還沒有自定義的伺服器連接埠。"
-
-msgid "ERROR: Unknown service port name!"
+msgid "Nothing's been changed"
 msgstr ""
 
 #, fuzzy
-msgid "Service port was removed!"
+msgid "You have no custom service ports defined"
+msgstr "你還沒有自定義的伺服器連接埠。"
+
+#, fuzzy
+msgid "Service port was successfully removed!"
 msgstr "疑問支援已打開！"
 
-msgid "ERROR: You are not allowed to remove this port entry!"
-msgstr ""
+#, fuzzy
+msgid "Error: You are not allowed to remove this service port entry!"
+msgstr "你確定想刪除%s?"
+
+#, fuzzy
+msgid "i-MSCP - Admin / Settings"
+msgstr "i-MSCP - 管理員/設定"
 
 msgid "udp"
 msgstr "udp"
@@ -1971,9 +2430,6 @@ msgstr "伺服器流量設定已更新！"
 msgid "Modify"
 msgstr "更改"
 
-msgid "Server traffic settings"
-msgstr "伺服器流量設定"
-
 msgid "Set server traffic settings"
 msgstr "設定伺服器流量"
 
@@ -1986,14 +2442,401 @@ msgstr "警告流量 [MB]"
 msgid "i-MSCP - Admin/Manage users/Email setup"
 msgstr "i-MSCP - 管理員/管理使用者/郵件設定"
 
-msgid "Email setup"
-msgstr "郵件設定"
-
 msgid "User real (first and last) name"
 msgstr "使用者實名（姓氏和名字）"
 
 msgid "User type (admin, reseller, user)"
 msgstr "使用者類型（管理員，代理商，使用者）"
+
+#, fuzzy
+msgid "Wrong software id."
+msgstr "錯誤的訂單 ID！"
+
+msgid "Software was activated."
+msgstr ""
+
+#, fuzzy
+msgid "No Resellers found."
+msgstr "代理商"
+
+#, fuzzy
+msgid "Rights succesfully added."
+msgstr "SQL 使用者成功增加！"
+
+msgid "Rights succesfully removed."
+msgstr ""
+
+#, php-format
+msgid "%1$s (%2$s)"
+msgstr ""
+
+#, fuzzy
+msgid "Software was deleted."
+msgstr "IP 已被刪除！"
+
+#, fuzzy
+msgid "Fill out a message text!"
+msgstr "你的訊息已發送！"
+
+#, fuzzy
+msgid "i-MSCP - Application Management"
+msgstr "i-MSCP - 客戶/定時任務管理器"
+
+msgid "Message to reseller before deleting the software"
+msgstr ""
+
+#, fuzzy
+msgid "Delete reseller software"
+msgstr "編輯代理商終止！"
+
+#, fuzzy
+msgid "Reseller data"
+msgstr "代理商名稱"
+
+msgid "Delete software and send message"
+msgstr ""
+
+#, fuzzy, php-format
+msgid "File does not exist. %1$s.tar.gz"
+msgstr "%s 不存在"
+
+#, fuzzy
+msgid "Software was imported succesfully."
+msgstr "SQL 資料庫已刪除！"
+
+msgid "Download"
+msgstr ""
+
+msgid "Activate"
+msgstr "啟動"
+
+#, fuzzy
+msgid "Import"
+msgstr "導出"
+
+msgid "No software is waiting for activation"
+msgstr ""
+
+#, fuzzy
+msgid "Package installed successfully!"
+msgstr "FTP 帳號已刪除！"
+
+msgid "Rights"
+msgstr ""
+
+msgid "Softwarerights"
+msgstr ""
+
+msgid "Installing your uploaded package. Please refresh this site."
+msgstr ""
+
+msgid ""
+"The package will be installed automaticly to your system after upload.<br /"
+">Refresh your site to see the new status!"
+msgstr ""
+
+#, fuzzy
+msgid "installing"
+msgstr "反安裝"
+
+msgid "Failure in the package. Deleting!"
+msgstr ""
+
+msgid ""
+"There is an Error inside your package. Please check it!<br />Refresh your "
+"site to see the new status!"
+msgstr ""
+
+#, fuzzy
+msgid "deleting"
+msgstr "訂單設定"
+
+msgid "Your package is corrupt. Please correct it!"
+msgstr ""
+
+msgid "Package already exist in the software depot!"
+msgstr ""
+
+msgid ""
+"Check your software depot uploads!<br />It is not allowed to upload this "
+"package two times.<br />Refresh your site to see the new status!"
+msgstr ""
+
+#, fuzzy
+msgid "This package already exist in the software depot!"
+msgstr "此網域已在系統中！"
+
+msgid "Package already exist in the reseller depot!"
+msgstr ""
+
+msgid ""
+"Check the reseller uploads!<br />It is not allowed to upload this package "
+"two times.<br />Refresh your site to see the new status!"
+msgstr ""
+
+#, php-format
+msgid "This package already exist in the depot of the reseller \"%1$s\"!"
+msgstr ""
+
+msgid "No software in software depot available!"
+msgstr ""
+
+msgid "No reseller with activated software installer found!"
+msgstr ""
+
+msgid "Unable to read xml file for web softwares!"
+msgstr ""
+
+msgid "i-MSCP application installer web software depot"
+msgstr ""
+
+#, fuzzy
+msgid "Update from web depot"
+msgstr "更新訂單"
+
+#, fuzzy
+msgid "Package title"
+msgstr "套餐價格"
+
+#, fuzzy
+msgid "Package install type"
+msgstr "計劃功能"
+
+#, fuzzy
+msgid "Package version"
+msgstr "套餐價格"
+
+#, fuzzy
+msgid "Package language"
+msgstr "計劃功能"
+
+#, fuzzy
+msgid "Package type"
+msgstr "套餐價格"
+
+#, fuzzy
+msgid "Package vendor HP"
+msgstr "計劃功能"
+
+#, fuzzy
+msgid "Package actions"
+msgstr "計劃功能"
+
+msgid "Web software depot packages total"
+msgstr ""
+
+msgid "You have to choose between file-upload and wget-function."
+msgstr ""
+
+msgid "You must select a file to upload/download."
+msgstr ""
+
+msgid "File needs to be a .tar.gz-archive"
+msgstr ""
+
+#, php-format
+msgid "Error: Could not upload file. Max. upload filesize (%1$d MB) reached?"
+msgstr ""
+
+#, php-format
+msgid ""
+"Error: Your remote filesize (%1$d B) is lower than 1 Byte. Please check your "
+"URL!"
+msgstr ""
+
+#, php-format
+msgid ""
+"Error: Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB"
+msgstr ""
+
+#, fuzzy
+msgid "Error: Remote File not found!"
+msgstr "錯誤 404 (找不到)"
+
+msgid "Error: Could not upload the file. File not found!"
+msgstr ""
+
+#, fuzzy
+msgid "File was successfully uploaded."
+msgstr "你的圖像已經上傳！"
+
+msgid "Software depot"
+msgstr ""
+
+msgid "Software depot total"
+msgstr ""
+
+msgid "Software depot upload"
+msgstr ""
+
+#, php-format
+msgid "Choose file (Max: %1$d MB)"
+msgstr ""
+
+#, php-format
+msgid "or remote file (Max: %1$d MB)"
+msgstr ""
+
+#, fuzzy
+msgid "Upload now"
+msgstr "上傳圖示"
+
+msgid "Awaiting Activation"
+msgstr ""
+
+#, fuzzy
+msgid "Reseller software list"
+msgstr "代理商統計"
+
+#, fuzzy
+msgid "Application"
+msgstr "動作"
+
+msgid "App-Version"
+msgstr ""
+
+msgid "Type"
+msgstr "類型"
+
+#, fuzzy
+msgid "Depot import"
+msgstr "伺服器連接埠"
+
+msgid "Software total"
+msgstr ""
+
+#, fuzzy
+msgid "Reseller total"
+msgstr "代理商名稱"
+
+#, fuzzy
+msgid "Waiting for activation"
+msgstr "等候批准"
+
+#, fuzzy
+msgid "Activated software"
+msgstr "啟動"
+
+msgid "Total installations"
+msgstr ""
+
+#, fuzzy
+msgid "Are you sure you want to activate this package?"
+msgstr "你確定想刪除此訂單嗎？"
+
+#, fuzzy
+msgid "Are you sure you want to import this package into the software depot?"
+msgstr "你確定想改變 %s? 的狀態嗎？"
+
+#, fuzzy
+msgid "Are you sure you want to delete this package?"
+msgstr "你確定想刪除此訂單嗎？"
+
+#, fuzzy
+msgid "i-MSCP - Application management options"
+msgstr "i-MSCP - 管理員/管理會話層"
+
+msgid "Main application installer options updated!"
+msgstr ""
+
+msgid "Application management options"
+msgstr ""
+
+msgid "Main application installer options"
+msgstr ""
+
+msgid "Using i-MSCP application installer websoftware depot"
+msgstr ""
+
+msgid "i-MSCP websoftware depot XML-File URL"
+msgstr ""
+
+msgid "Last i-MSCP websoftware depot update"
+msgstr ""
+
+#, fuzzy
+msgid "not available"
+msgstr "可用 IPs"
+
+#, fuzzy
+msgid "Wrong reseller id."
+msgstr "來自代理商"
+
+msgid "This package is installed on following domain(s):"
+msgstr ""
+
+msgid "This package is not installed"
+msgstr ""
+
+#, php-format
+msgid "%1$s - (Softwaredepot)"
+msgstr ""
+
+#, php-format
+msgid "%1$s`s - Software"
+msgstr ""
+
+#, fuzzy
+msgid "No software available!"
+msgstr "沒有資料庫更新"
+
+#, fuzzy
+msgid "Installed on"
+msgstr "已安裝的版面"
+
+#, fuzzy
+msgid "Reseller list"
+msgstr "代理商"
+
+msgid "Softwaredepot"
+msgstr ""
+
+#, fuzzy
+msgid "Admin not available"
+msgstr "可用的託管計劃用於"
+
+#, fuzzy
+msgid "Are you sure to remove the permissions ?"
+msgstr "你確定想恢復備份？"
+
+msgid "No Reseller with permissions for this software found"
+msgstr ""
+
+#, fuzzy
+msgid "All reseller"
+msgstr "所有代理商"
+
+msgid "No Reseller available to add the permissions"
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP - Application Management (Permissions)"
+msgstr "i-MSCP - 管理員/管理會話層"
+
+#, php-format
+msgid "%1$s - (Version: %2$s, Language: %3$s)"
+msgstr ""
+
+msgid "Add permissions for reseller to software:"
+msgstr ""
+
+#, fuzzy
+msgid "Remove permissions"
+msgstr "試用版本"
+
+#, fuzzy
+msgid "Reseller with permissions total"
+msgstr "代理商統計表"
+
+msgid "Added by"
+msgstr ""
+
+#, fuzzy
+msgid "Add permissions"
+msgstr "增加現有使用者"
+
+msgid "Software permissions"
+msgstr ""
 
 msgid "CPU bogomips"
 msgstr "CPU bogomips"
@@ -2047,35 +2890,20 @@ msgstr "總共空間"
 msgid "Swap"
 msgstr "交換區"
 
-msgid "System info"
-msgstr "系統資訊"
-
 msgid "Vital system info"
 msgstr "重要的系統資訊"
 
 msgid "Total"
 msgstr "總計"
 
-msgid "Type"
-msgstr "類型"
-
 msgid "Up time"
 msgstr "運行時間"
-
-msgid "You have no support tickets."
-msgstr "你沒有客戶疑問。"
 
 msgid "i-MSCP - Client/Questions & Comments"
 msgstr "i-MSCP - 客戶/疑問和解答"
 
 msgid "Support tickets"
 msgstr "客戶疑問"
-
-msgid "From"
-msgstr "From"
-
-msgid "To"
-msgstr "To"
 
 msgid "Priority"
 msgstr "優先權"
@@ -2092,6 +2920,9 @@ msgstr "未解答疑問"
 msgid "Closed tickets"
 msgstr "已解答疑問"
 
+msgid "From"
+msgstr "From"
+
 msgid "Support ticket deleted successfully!"
 msgstr "客戶疑問已刪除！"
 
@@ -2101,23 +2932,8 @@ msgstr "所有未解答疑問已刪除！"
 msgid "All closed support tickets deleted successfully!"
 msgstr "所有已解答疑問已刪除！"
 
-msgid "[New]"
-msgstr "[New]"
-
-msgid "[Re]"
-msgstr "[Re]"
-
 msgid "i-MSCP - Client/Enable Mail Autoresponder"
 msgstr "i-MSCP - 客戶/啟用郵件自動回覆器"
-
-msgid "Ticket not found!"
-msgstr "沒有找到疑問！"
-
-msgid "Open ticket"
-msgstr "未解答疑問"
-
-msgid "Close ticket"
-msgstr "已解答查疑問"
 
 msgid "i-MSCP - Client: Support System: View Ticket"
 msgstr "i-MSCP - 客戶 : 系統支援: 查看疑問"
@@ -2125,14 +2941,8 @@ msgstr "i-MSCP - 客戶 : 系統支援: 查看疑問"
 msgid "Please type your message!"
 msgstr "請輸入你的訊息！"
 
-msgid "Message was sent."
-msgstr "訊息已發送！"
-
-msgid "Ticket was closed!"
-msgstr "疑問支援已關閉！"
-
-msgid "Ticket was reopened!"
-msgstr "疑問支援已打開！"
+msgid "Ticket not found!"
+msgstr "沒有找到疑問！"
 
 msgid "i-MSCP - Admin: Support System: View Ticket"
 msgstr "i-MSCP - 管理員 : 系統支援: 查看疑問"
@@ -2201,47 +3011,6 @@ msgstr ""
 msgid "Yes, delete the domain."
 msgstr "%s 刪除所有管理日誌！"
 
-msgid "i-MSCP Client : Add Alias"
-msgstr "i-MSCP 客戶 : 增加別名"
-
-msgid "Manage domain alias"
-msgstr "管理網域別名"
-
-msgid "Add domain alias"
-msgstr "增加網域別名"
-
-msgid "User account"
-msgstr "使用者總計"
-
-msgid "Directory mount point"
-msgstr "目錄掛載點"
-
-msgid "Forward to URL"
-msgstr "轉到URL地址"
-
-msgid "Add alias"
-msgstr "增加別名"
-
-msgid "You do not need 'www.' i-MSCP will add it on its own."
-msgstr "你不需要輸入“www.”i-MSCP 將自動增加。"
-
-#, fuzzy
-msgid "Wrong domain name!"
-msgstr "錯誤的網域語法！"
-
-#, fuzzy
-msgid "Please write mount point!"
-msgstr "請等待更新"
-
-msgid "Enable Forward"
-msgstr "啟用轉向"
-
-msgid "Enable"
-msgstr "有效"
-
-msgid "Disable"
-msgstr "停用"
-
 msgid "Domain alias limit reached!"
 msgstr "網域別名限制！"
 
@@ -2273,6 +3042,44 @@ msgstr "別名啟動已預定！"
 
 msgid "Alias scheduled for addition!"
 msgstr "別名增加已預定！"
+
+msgid "i-MSCP Client : Add Alias"
+msgstr "i-MSCP 客戶 : 增加別名"
+
+msgid "Manage domain alias"
+msgstr "管理網域別名"
+
+msgid "Add domain alias"
+msgstr "增加網域別名"
+
+msgid "User account"
+msgstr "使用者總計"
+
+msgid "Directory mount point"
+msgstr "目錄掛載點"
+
+msgid "Forward to URL"
+msgstr "轉到URL地址"
+
+msgid "You do not need 'www.' i-MSCP will add it on its own."
+msgstr "你不需要輸入“www.”i-MSCP 將自動增加。"
+
+#, fuzzy
+msgid "Wrong domain name!"
+msgstr "錯誤的網域語法！"
+
+#, fuzzy
+msgid "Please write mount point!"
+msgstr "請等待更新"
+
+msgid "Enable Forward"
+msgstr "啟用轉向"
+
+msgid "Enable"
+msgstr "有效"
+
+msgid "Disable"
+msgstr "停用"
 
 #, fuzzy
 msgid ""
@@ -2315,9 +3122,6 @@ msgstr "備份存檔恢復已預定！"
 
 msgid "i-MSCP - Client/Daily Backup"
 msgstr "i-MSCP - 客戶/日常備份"
-
-msgid "Daily backup"
-msgstr "日常備份"
 
 msgid "Instructions to download today's backup"
 msgstr "下載今天備份的說明"
@@ -2386,8 +3190,11 @@ msgstr "編輯定時任務"
 msgid "Cronjobs"
 msgstr "定時任務"
 
+msgid "You are not allowed to remove this DNS record!"
+msgstr ""
+
 #, fuzzy
-msgid "DNS zone record scheduled for deletion!"
+msgid "Custom DNS record scheduled for deletion!"
 msgstr "子網域刪除已預定！"
 
 #, fuzzy
@@ -2449,6 +3256,10 @@ msgstr "密碼資料"
 msgid "DNS zone's records (EXPERIMENTAL)"
 msgstr ""
 
+#, fuzzy
+msgid "You are not allowed to edit this DNS record!"
+msgstr "你沒有別名記錄。"
+
 #, php-format
 msgid "Use of disallowed char(\"%s\") in CNAME"
 msgstr ""
@@ -2507,40 +3318,8 @@ msgid "Unknown zone type %s!"
 msgstr ""
 
 #, fuzzy
-msgid "Manual zone's records list is empty!"
-msgstr "郵件統計表為空！"
-
-#, php-format
-msgid "%s record"
-msgstr ""
-
-msgid "Subdomain list is empty!"
-msgstr "子網域列表為空！"
-
-msgid "Delete order"
-msgstr "刪除訂單"
-
-msgid "Alias list is empty!"
-msgstr "別名列表為空！"
-
-msgid "i-MSCP - Client/Manage Domains"
-msgstr "i-MSCP - 客戶/網域管理"
-
-msgid "Manage domains"
-msgstr "網域管理"
-
-msgid "Mount point"
-msgstr "掛載點"
-
-msgid "Forward"
-msgstr "轉向"
-
-msgid "Actions"
-msgstr "動作"
-
-#, fuzzy
-msgid "Record data"
-msgstr "核心資料"
+msgid "Error: DNS record already exist!"
+msgstr "此使用者已存在！"
 
 msgid "i-MSCP - Client/Domain Statistics"
 msgstr "i-MSCP - 客戶/網域統計"
@@ -2560,6 +3339,39 @@ msgstr "POP3/IMAP"
 msgid "Sum"
 msgstr "總數"
 
+#, fuzzy
+msgid "Manual zone's records list is empty!"
+msgstr "郵件統計表為空！"
+
+#, php-format
+msgid "%s record"
+msgstr ""
+
+msgid "Subdomain list is empty!"
+msgstr "子網域列表為空！"
+
+msgid "Delete order"
+msgstr "刪除訂單"
+
+msgid "Alias list is empty!"
+msgstr "別名列表為空！"
+
+msgid "i-MSCP - Client/Manage Domains"
+msgstr "i-MSCP - 客戶/網域管理"
+
+msgid "Mount point"
+msgstr "掛載點"
+
+msgid "Forward"
+msgstr "轉向"
+
+msgid "Actions"
+msgstr "動作"
+
+#, fuzzy
+msgid "Record data"
+msgstr "核心資料"
+
 msgid "i-MSCP - Client/Manage Error Custom Pages"
 msgstr "i-MSCP - 客戶/管理錯誤自定義頁面"
 
@@ -2572,7 +3384,8 @@ msgstr "編輯錯誤頁"
 msgid "Custom error page was updated!"
 msgstr "自定義的錯誤頁已更新！"
 
-msgid "System error - custom error page was NOT updated!"
+#, fuzzy
+msgid "System error - custom error page was not updated!"
 msgstr "系統錯誤 -自定義的錯誤頁還未更新！"
 
 msgid "Error 401 (unauthorised)"
@@ -2590,17 +3403,11 @@ msgstr "錯誤 500 (內部伺服器錯誤)"
 msgid "Error 503 (service unavailable)"
 msgstr "錯誤 503 (服務無法使用)"
 
-msgid "Error pages"
-msgstr "錯誤頁面"
-
 msgid "FTP list is empty!"
 msgstr "FTP 列表為空！"
 
 msgid "i-MSCP - Client/Manage Users"
 msgstr "i-MSCP - 客戶/使用者管理"
-
-msgid "Manage users"
-msgstr "使用者管理"
 
 msgid "FTPs total"
 msgstr "FTPs 總數"
@@ -2610,6 +3417,10 @@ msgstr "FTP 使用者"
 
 msgid "FTP account"
 msgstr "FTP 帳號"
+
+#, fuzzy
+msgid "Login As"
+msgstr "登入"
 
 msgid "Empty List"
 msgstr "空列表"
@@ -2646,7 +3457,8 @@ msgstr "子網域列表為空！在那你無法增加 FTP 帳號！"
 msgid "Alias list is empty! You cannot add FTP accounts there!"
 msgstr "別名列表為空！在那你無法增加 FTP 帳號！"
 
-msgid "Please specify other FTP account dir!"
+#, fuzzy
+msgid "Please specify other FTP account directory!"
 msgstr "請指定其他FTP帳號的目錄！"
 
 msgid "FTP accounts limit reached!"
@@ -2654,9 +3466,6 @@ msgstr "FTP 帳號限制！"
 
 msgid "i-MSCP - Client/Add FTP User"
 msgstr "i-MSCP - 客戶/增加 FTP 使用者"
-
-msgid "Add FTP user"
-msgstr "增加 FTP 使用者"
 
 msgid "To main domain"
 msgstr "到主網域"
@@ -2673,14 +3482,16 @@ msgstr "使用其他目錄"
 msgid "Choose dir"
 msgstr "選擇目錄"
 
-msgid "Cannot open directory!<br>Please contact your administrator!"
+#, fuzzy
+msgid "Unknown FTP user id!"
+msgstr "未知類型！"
+
+#, fuzzy
+msgid "Cannot open directory! Please contact your administrator!"
 msgstr "無法打開目錄！<br />請聯繫你的管理員！"
 
 msgid "Parent Directory"
 msgstr "上層目錄"
-
-msgid "Protect it"
-msgstr "保護它"
 
 msgid "i-MSCP - Client/Webtools"
 msgstr "i-MSCP - 客戶/Web工具"
@@ -2702,6 +3513,10 @@ msgstr "FTP 帳號資料已更新！"
 
 msgid "i-MSCP - Client/Edit FTP Account"
 msgstr "i-MSCP - 客戶/編輯 FTP 帳號"
+
+msgid ""
+"User does not exist or you do not have permission to access this interface!"
+msgstr "使用者不存在或你沒有許可權訪問此介面！"
 
 msgid "Edit FTP user"
 msgstr "編輯 FTP 使用者"
@@ -2754,6 +3569,17 @@ msgstr "PHP 支援: 未支援"
 
 msgid ""
 "You have DNS enabled, but the new hosting plan doesn't has this feature."
+msgstr ""
+
+msgid "i-MSCP application installer: enabled"
+msgstr ""
+
+msgid "i-MSCP application installer: disabled"
+msgstr ""
+
+msgid ""
+"You have the i-MSCP application installer enabled, but the new hosting plan "
+"doesn't has this feature."
 msgstr ""
 
 msgid "You have more disk space in use than the new hosting plan limits."
@@ -2854,21 +3680,12 @@ msgstr "你已超出磁碟空間限制！"
 msgid "You have no new support questions!"
 msgstr "你沒有新的客戶支援疑問！"
 
-msgid "Not Set"
-msgstr ""
-
 #, fuzzy
 msgid "This Domain is expired"
 msgstr "網域功能"
 
 msgid "i-MSCP - Client/Main Index"
 msgstr "i-MSCP - 客戶/主索引"
-
-msgid "General information"
-msgstr "概要訊息"
-
-msgid "Account name"
-msgstr "帳號名"
 
 msgid "Main domain"
 msgstr "主網域"
@@ -2891,6 +3708,9 @@ msgstr "磁片使用量"
 
 msgid "Alternative URL to reach your website"
 msgstr ""
+
+msgid "User language updated successfully!"
+msgstr "使用者語言更換完成！"
 
 msgid "i-MSCP - Client/Change Language"
 msgstr "i-MSCP - 客戶/更改語言"
@@ -3021,6 +3841,18 @@ msgstr "你的訊息"
 msgid "Enable mail auto responder"
 msgstr "啟用郵件自動回覆器"
 
+msgid "Delete CatchAll"
+msgstr "刪除 CatchAll"
+
+msgid "None"
+msgstr "空"
+
+msgid "Create catch all"
+msgstr "建立 CatchAll"
+
+msgid "Catch all account"
+msgstr "CatchAll 帳號"
+
 msgid "Catch all account scheduled for creation!"
 msgstr "發覺所有的帳號建立已預定！"
 
@@ -3036,23 +3868,8 @@ msgstr "建立 CatchAll 郵件帳號"
 msgid "Mail accounts list"
 msgstr "郵件帳號列表"
 
-msgid "Create catch all"
-msgstr "建立 CatchAll"
-
 msgid "Catch all account scheduled for deletion!"
 msgstr "CatchAll 帳號刪除已預定！"
-
-msgid "Delete CatchAll"
-msgstr "刪除 CatchAll"
-
-msgid "None"
-msgstr "空"
-
-msgid "Catch all account"
-msgstr "CatchAll 帳號"
-
-msgid "Catch all"
-msgstr "CatchAll"
 
 msgid "Please delete first CatchAll account for this email!"
 msgstr "請為此郵件刪除第一個 CatchAll 帳號！"
@@ -3074,6 +3891,34 @@ msgstr "i-MSCP - 客戶/修改密碼"
 
 msgid "i-MSCP - Client/Change Personal Data"
 msgstr "i-MSCP - 客戶/修改個人資料"
+
+#, fuzzy
+msgid "Unknown SQL user id."
+msgstr "未知錯誤"
+
+msgid "Error: An error occurred while authentication."
+msgstr ""
+
+msgid "You do not have protected areas"
+msgstr "你沒有受保護區域"
+
+msgid "Manage users and groups"
+msgstr "管理使用者和組"
+
+msgid "Group name"
+msgstr "組名"
+
+msgid "Group members"
+msgstr "組成員"
+
+msgid "Add group"
+msgstr "增加組"
+
+msgid "Group"
+msgstr "組"
+
+msgid "Add new protected area"
+msgstr "增加新的保護區域"
 
 msgid "Please choose user or group"
 msgstr "請選擇使用者或組"
@@ -3118,6 +3963,9 @@ msgstr "路徑"
 msgid "Groups"
 msgstr "組"
 
+msgid "Protect it"
+msgstr "保護它"
+
 msgid "User auth"
 msgstr "使用者認證"
 
@@ -3130,9 +3978,6 @@ msgstr "區域名"
 msgid "Unprotect it"
 msgstr "解除保護"
 
-msgid "Manage users and groups"
-msgstr "管理使用者和組"
-
 msgid "Protected area status should be OK if you want to delete it!"
 msgstr "如果你想刪除保護區域狀態，現在應該可以被刪除！"
 
@@ -3141,27 +3986,6 @@ msgstr "保護區域已刪除！"
 
 msgid "Permission deny!"
 msgstr "未受權，拒絕！"
-
-msgid "You do not have protected areas"
-msgstr "你沒有受保護區域"
-
-msgid "Add user"
-msgstr "增加使用者"
-
-msgid "Group name"
-msgstr "組名"
-
-msgid "Group members"
-msgstr "組成員"
-
-msgid "Add group"
-msgstr "增加組"
-
-msgid "Group"
-msgstr "組"
-
-msgid "Add new protected area"
-msgstr "增加新的保護區域"
 
 msgid "Protected area was deleted successful!"
 msgstr "新保護區域已刪除！"
@@ -3207,7 +4031,183 @@ msgstr "更新使用者"
 msgid "You have no users!"
 msgstr "你沒有使用者！"
 
-msgid "Error while authenticating!"
+#, fuzzy
+msgid "Install in progress..."
+msgstr "增加處理中"
+
+#, fuzzy
+msgid "Deletion in progress..."
+msgstr "刪除處理中"
+
+#, fuzzy
+msgid "Are you sure to install this package?"
+msgstr "你確定想刪除此訂單嗎？"
+
+#, php-format
+msgid ""
+"This Package (%s, V%s) was deleted by your reseller. You can only uninstall "
+"this package!<br />Please delete the files and database for this package "
+"manually!"
+msgstr ""
+
+msgid "Installed Package which was deleted by your reseller!"
+msgstr ""
+
+#, fuzzy
+msgid "No software available"
+msgstr "沒有資料庫更新"
+
+msgid "required"
+msgstr ""
+
+msgid "not required"
+msgstr ""
+
+#, fuzzy
+msgid "You do not have permissions to install software"
+msgstr "你沒有許可權訪問此介面！"
+
+#, fuzzy
+msgid "i-MSCP - application installer"
+msgstr "i-MSCP - 客戶/定時任務管理器"
+
+#, fuzzy
+msgid "Install software"
+msgstr "安裝新語言"
+
+msgid "Software"
+msgstr ""
+
+#, fuzzy
+msgid "Version"
+msgstr "試用版本"
+
+#, fuzzy
+msgid "Database"
+msgstr "SQL 資料庫"
+
+#, fuzzy
+msgid "Apps available"
+msgstr "可用 IPs"
+
+msgid "Software installation"
+msgstr ""
+
+#, fuzzy
+msgid "Software deleted successful."
+msgstr "保護區域已刪除！"
+
+msgid "Software will be deleted now."
+msgstr ""
+
+msgid "Database user list is empty!"
+msgstr "資料庫使用者列表為空！"
+
+msgid "At first you must create a database!"
+msgstr ""
+
+#, fuzzy
+msgid "Add new database"
+msgstr "增加 SQL 資料庫"
+
+#, fuzzy
+msgid "Software not found!"
+msgstr "沒有找到疑問！"
+
+#, php-format
+msgid "The directory -%1$s- was created!"
+msgstr ""
+
+#, fuzzy
+msgid "Please select the correct user for your database!"
+msgstr "請選擇某個使用者！"
+
+#, fuzzy
+msgid "You have to fill out inputs!"
+msgstr "你沒有組！"
+
+msgid "You cant't install outside from htdocs!"
+msgstr ""
+
+msgid "You choose a directory, which doesn't match with the domain directory!"
+msgstr ""
+
+#, php-format
+msgid "The directory -%1$s- doesn't exist. Please create it!"
+msgstr ""
+
+#, php-format
+msgid "Please select another directory! %1$s (%2$s) is installed there!"
+msgstr ""
+
+msgid "i-MSCP - Install Software"
+msgstr ""
+
+#, fuzzy
+msgid "Install Software"
+msgstr "安裝新語言"
+
+#, fuzzy
+msgid "Database required"
+msgstr "資料庫使用者"
+
+#, fuzzy
+msgid "Select Domain"
+msgstr "真實網域"
+
+#, fuzzy
+msgid "back"
+msgstr "返回"
+
+#, fuzzy
+msgid "install"
+msgstr "反安裝"
+
+#, fuzzy
+msgid "Install path"
+msgstr "安裝"
+
+msgid "Create directory, if not exist!"
+msgstr ""
+
+#, fuzzy
+msgid "Select database"
+msgstr "SQL 資料庫"
+
+#, fuzzy
+msgid "SQL-User"
+msgstr "SQL 使用者"
+
+#, fuzzy
+msgid "installed"
+msgstr "反安裝"
+
+msgid "Installation infos"
+msgstr ""
+
+#, fuzzy
+msgid "Software status:"
+msgstr "伺服器狀態"
+
+msgid "Installation path:"
+msgstr ""
+
+#, fuzzy
+msgid "Used database:"
+msgstr "SQL 資料庫"
+
+msgid "You need a Database for this software"
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP - Software details"
+msgstr "i-MSCP - 網域/詳細資料"
+
+#, fuzzy
+msgid "Software details"
+msgstr "訂單詳細"
+
+msgid "Homepage"
 msgstr ""
 
 msgid "Please type user password!"
@@ -3224,6 +4224,11 @@ msgstr "SQL 使用者密碼已修改！"
 
 msgid "i-MSCP - Client/Change SQL User Password"
 msgstr "i-MSCP - 客戶/修改 SQL 使用者密碼"
+
+#, fuzzy
+msgid ""
+"User does not exist or you do not have permission to access this interface."
+msgstr "使用者不存在或你沒有許可權訪問此介面！"
 
 msgid "Change SQL user password"
 msgstr "修改 SQL 使用者密碼"
@@ -3253,9 +4258,6 @@ msgstr "SQL 帳號限制！"
 msgid "i-MSCP - Client/Add SQL Database"
 msgstr "i-MSCP - 客戶/增加 SQL 資料庫"
 
-msgid "Add SQL database"
-msgstr "增加 SQL 資料庫"
-
 msgid "Database name"
 msgstr "資料庫名"
 
@@ -3274,24 +4276,14 @@ msgstr "SQL 資料庫已刪除！"
 msgid "SQL user was removed successfully!"
 msgstr "SQL 使用者已刪除！"
 
-msgid "Database user list is empty!"
-msgstr "資料庫使用者列表為空！"
-
 msgid "Database list is empty!"
 msgstr "資料庫列表為空！"
 
 msgid "i-MSCP - Client/Manage SQL"
 msgstr "i-MSCP - 客戶/管理 SQL"
 
-msgid "Manage SQL"
-msgstr "管理 SQL"
-
 msgid "Database Name and Users"
 msgstr "資料庫名和使用者"
-
-#, fuzzy
-msgid "phpMyAdmin"
-msgstr "PhpMyAdmin"
 
 msgid "Database users"
 msgstr "資料庫使用者"
@@ -3378,9 +4370,6 @@ msgstr "子網域增加已預定！"
 msgid "i-MSCP - Client/Add Subdomain"
 msgstr "i-MSCP - 客戶/增加子網域"
 
-msgid "Add subdomain"
-msgstr "增加子網域"
-
 msgid "Subdomain data"
 msgstr "子網域數據"
 
@@ -3390,17 +4379,27 @@ msgstr "子網域"
 msgid "Directory tree mount point"
 msgstr "目錄樹掛載點"
 
-msgid "Please specify message subject!"
-msgstr "請指定訊息主題！"
+#, fuzzy
+msgid "i-MSCP - Manage Subdomain/Edit Subdomain"
+msgstr "i-MSCP - 管理員/編輯網域"
 
-msgid "Your message was sent!"
-msgstr "你的訊息已發送！"
+#, fuzzy
+msgid "Manage subdomain"
+msgstr "網域管理"
 
-msgid "i-MSCP - Support system - New ticket"
+#, fuzzy
+msgid "Edit subdomain"
+msgstr "編輯網域"
+
+msgid "A Forward URL has to start with 'http://'"
+msgstr "轉向URL地址必須以“http://”開始"
+
+#, fuzzy
+msgid "i-MSCP - Support System - New ticket"
 msgstr "i-MSCP - 系統支援 - 新客戶疑問"
 
-msgid "New ticket"
-msgstr "新客戶疑問"
+msgid "Please specify message subject!"
+msgstr "請指定訊息主題！"
 
 msgid "Low"
 msgstr "低"
@@ -3413,12 +4412,6 @@ msgstr "高"
 
 msgid "Very high"
 msgstr "非常高"
-
-msgid "ISPCP - Client/Webtools"
-msgstr "ISPCP - 客戶/Web工具"
-
-msgid "Webtools"
-msgstr "Web工具"
 
 msgid "Customize error pages for your domain"
 msgstr "為你的網域自定義錯誤頁"
@@ -3438,124 +4431,39 @@ msgstr "查看你的Awstats統計"
 msgid "Manage protected areas, users and groups"
 msgstr "管理保護區域、使用者和組"
 
-msgid "System tools"
-msgstr "系統工具"
+msgid "Install various software with a few *clicks*"
+msgstr ""
 
-msgid "Statistics"
-msgstr "資料統計"
-
-msgid "Reseller statistics"
-msgstr "代理商統計"
-
-msgid "Admin log"
-msgstr "管理員日誌"
-
-msgid "Logout"
-msgstr "登出"
-
-msgid "i-MSCP database updates"
-msgstr "i-MSCP 資料庫更新"
-
-msgid "Custom menus"
-msgstr "自定義功能表"
-
-msgid "Overview"
-msgstr "概覽"
-
-msgid "User sessions"
-msgstr "使用者會話層"
-
-msgid "Lostpw email setup"
-msgstr "忘記密碼郵件設定"
-
-msgid "Rootkit Log"
-msgstr "Rootkit 日誌"
-
-msgid "Admin users"
-msgstr "管理員使用者"
-
-msgid "Normal users"
-msgstr "普通使用者"
-
-msgid "System messages"
-msgstr "系統訊息"
-
-msgid "No new messages"
-msgstr "沒有新訊息"
-
-msgid "Server traffic"
-msgstr "伺服器流量"
-
-msgid "Administrators list is empty!"
-msgstr "管理員列表為空！"
-
-msgid "Creation date"
-msgstr "建立日期"
-
-msgid "Created by"
-msgstr "建立者"
-
-msgid "System"
-msgstr "系統"
-
-msgid "Resellers list is empty!"
-msgstr "代理商列表為空！"
-
-msgid "Switch to user interface"
-msgstr "切換使用者介面"
-
-msgid "Switch"
-msgstr "切換"
-
-msgid "Not found user records matching the search criteria!"
-msgstr "沒有找到與搜索欄位相匹配的使用者記錄！"
-
-msgid "view aliases"
-msgstr "查看別名"
-
-msgid "Users list is empty!"
-msgstr "使用者列表為空！"
-
-msgid "Details"
-msgstr "詳細"
-
-msgid "Edit domain"
-msgstr "編輯網域"
-
-msgid "Are you sure you want to change the status of domain account?"
-msgstr "你確定想改變網域帳號狀態嗎？"
-
-msgid "Administrators"
-msgstr "管理員"
-
-msgid "Resellers"
-msgstr "代理商"
-
-msgid "Search"
-msgstr "搜索"
+msgid "{ADMIN} activated your software package"
+msgstr ""
 
 #, fuzzy
-msgid "Expire date"
-msgstr "訂單資料"
+msgid ""
+"Dear {RESELLER},\n"
+"\tYour uploaded a software package was succesful activated by {ADMIN}.\n"
+"\n"
+"\tDetails:\n"
+"\tPackage Name: {SOFTWARE}\n"
+"\tPackage ID: {SOFTWARE_ID}\n"
+"\n"
+"\tPlease login into your i-MSCP control panel for more details."
+msgstr ""
 
-#, php-format
-msgid "%1$s you are now logged as %2$s"
-msgstr "%1$s 你現在已登入為 %2$s"
+#, fuzzy
+msgid " was deleted by {ADMIN}!"
+msgstr "IP 已被刪除！"
 
-msgid "Go back"
-msgstr "返回"
-
-msgid "OK"
-msgstr "OK"
-
-msgid "Suspended"
-msgstr "暫停"
-
-msgid "Error"
-msgstr "錯誤"
-
-msgid "i-MSCP - Order Panel"
-msgstr "i-MSCP - 訂單面板"
+msgid ""
+"Dear {RESELLER},\n"
+"\t\tYour uploaded software was deleted by {ADMIN}.\n"
+"\n"
+"\tDetails:\n"
+"\tPackage Name: {SOFTWARE}\n"
+"\tPackage ID: {SOFTWARE_ID}\n"
+"\n"
+"\tMessage from {ADMIN}:\n"
+"\t"
+msgstr ""
 
 #, php-format
 msgid "%.2f PB"
@@ -3580,69 +4488,6 @@ msgstr "%.2f KB"
 #, php-format
 msgid "%d B"
 msgstr "%d B"
-
-#, php-format
-msgid "File %s does not exists or cannot be reached!"
-msgstr ""
-
-msgid "Error while trying to obtain list of network cards!"
-msgstr ""
-
-#, php-format
-msgid "This IP (%s) is not assigned to any network card!"
-msgstr ""
-
-#, fuzzy
-msgid "Days"
-msgstr "日"
-
-#, fuzzy
-msgid "Hours"
-msgstr "小時"
-
-#, fuzzy
-msgid "Minute"
-msgstr "分"
-
-#, fuzzy
-msgid "Minutes"
-msgstr "分"
-
-msgid "Couldn't check for updates! Website not reachable."
-msgstr "無法檢查更新！無法連絡更新網站。"
-
-msgid "Email and FTP accounts"
-msgstr "Email 和 FTP 帳號"
-
-msgid "Add mail user"
-msgstr "增加郵件使用者"
-
-msgid "PhpMyAdmin"
-msgstr "PhpMyAdmin"
-
-msgid "Filemanager"
-msgstr "文件管理器"
-
-msgid "Web statistics"
-msgstr "Web 統計"
-
-msgid "Group/User management"
-msgstr "組/使用者管理"
-
-msgid "Email Accounts"
-msgstr "郵件帳號"
-
-msgid "FTP Accounts"
-msgstr "FTP 帳號"
-
-msgid "Update Hosting Package"
-msgstr "更新託管計劃"
-
-msgid "Add DNS zone's record"
-msgstr ""
-
-msgid "Manage SSL certificate"
-msgstr ""
 
 msgid "Domain mail"
 msgstr "網域郵件"
@@ -3693,7 +4538,50 @@ msgid ""
 "\n"
 "You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
 "\n"
-"Statistics: http://{USERNAME}/stats/\n"
+"Statistics: {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/{USERNAME}/stats/\n"
+"User name: {USERNAME}\n"
+"Password: {PASSWORD}\n"
+"\n"
+"Best wishes with i-MSCP!\n"
+"The i-MSCP Team.\n"
+"\n"
+msgstr ""
+"\n"
+"\n"
+"你好，{NAME}！\n"
+"\n"
+"一個新的 i-MSCP 帳號已經為你建立。\n"
+"你的帳號資料:\n"
+"\n"
+"使用者類型: {USERTYPE}\n"
+"使用者名稱: {USERNAME}\n"
+"使用者密碼: {PASSWORD}\n"
+"\n"
+"請首次登入時修改密碼，並記得經常更換你的密碼。\n"
+"\n"
+"現在你可以登入到 {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}。\n"
+"\n"
+"i-MSCP 誠摯的祝願！\n"
+"i-MSCP 團隊。\n"
+"\n"
+
+#, fuzzy
+msgid ""
+"\n"
+"\n"
+"Hello {NAME}!\n"
+"\n"
+"A new i-MSCP account has been created for you.\n"
+"Your account information:\n"
+"\n"
+"User type: {USERTYPE}\n"
+"User name: {USERNAME}\n"
+"Password: {PASSWORD}\n"
+"\n"
+"Remember to change your password often and the first time you login.\n"
+"\n"
+"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
+"\n"
 "User name: {USERNAME}\n"
 "Password: {PASSWORD}\n"
 "\n"
@@ -3841,6 +4729,40 @@ msgstr ""
 "i-MSCP 團隊\n"
 "\n"
 
+#, fuzzy
+msgid "Your message has been sent."
+msgstr "你的訊息已發送！"
+
+#, fuzzy
+msgid "Your message has been sent"
+msgstr "你的訊息已發送！"
+
+msgid "Ticket was closed!"
+msgstr "疑問支援已關閉！"
+
+msgid "Ticket was reopened!"
+msgstr "疑問支援已打開！"
+
+#, fuzzy
+msgid "Never"
+msgstr "等級"
+
+#, fuzzy
+msgid "You don't have support tickets."
+msgstr "你沒有客戶疑問。"
+
+msgid "[New]"
+msgstr "[New]"
+
+msgid "[Re]"
+msgstr "[Re]"
+
+msgid "Open ticket"
+msgstr "未解答疑問"
+
+msgid "Close ticket"
+msgstr "已解答查疑問"
+
 msgid "[Ticket]"
 msgstr "[客戶疑問]"
 
@@ -3921,12 +4843,9 @@ msgid "Wrong Second Level Domain syntax: <b>%s</b>"
 msgstr ""
 
 msgid ""
-"ERROR: ACE labels are not allowed. Please use the ToUnicode equivalent.<br /"
+"ACE labels are not allowed. Please use the ToUnicode equivalent.<br /"
 "><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> "
 "instead</small>."
-msgstr ""
-
-msgid "ERROR: PHP extension 'mcrypt' not loaded!"
 msgstr ""
 
 #, php-format
@@ -3938,7 +4857,7 @@ msgid "You have been blocked for %d minutes."
 msgstr "你已被凍結 %d 分鐘"
 
 #, fuzzy
-msgid "You entered an incorrect username/password."
+msgid "You entered an incorrect username!"
 msgstr "你輸入的密碼不正確。"
 
 msgid "System is currently under maintenance! Only administrators can login."
@@ -3959,26 +4878,15 @@ msgstr "%s's 帳號狀態不正常！"
 msgid "%s's domain expired!"
 msgstr ""
 
+#, fuzzy
+msgid "You entered an incorrect password!"
+msgstr "你輸入的密碼不正確。"
+
 msgid "Request from foreign host was blocked!"
 msgstr "來自國外主機的請求已被封鎖！"
 
 msgid "You do not have permission to access this interface!"
 msgstr "你沒有許可權訪問此介面！"
-
-msgid "Domain alias"
-msgstr "網域別名"
-
-msgid "Manage Orders"
-msgstr "管理訂單"
-
-msgid "Order settings"
-msgstr "訂單設定"
-
-msgid "Order email setup"
-msgstr "訂單郵件設定"
-
-msgid "Please fill up both data fields for password!"
-msgstr "請填寫兩個密碼輸入欄！"
 
 msgid "Addition in progress"
 msgstr "增加處理中"
@@ -3995,14 +4903,12 @@ msgstr "開始啟用"
 msgid "Being suspended"
 msgstr "開始暫停"
 
-msgid "Awaiting for approval"
+#, fuzzy
+msgid "Awaiting approval"
 msgstr "等候批准"
 
 msgid "Unknown error"
 msgstr "未知錯誤"
-
-msgid "hide aliases"
-msgstr "隱藏別名"
 
 #, fuzzy
 msgid "You have reached your domains limit.<br />You cannot add more domains!"
@@ -4077,11 +4983,80 @@ msgstr "你有流量限制！<br>你無法增加一個無限制流量的使用�
 msgid "You have a disk limit!<br />You cannot add an user with unlimited disk!"
 msgstr "你有磁片使用限制！<br>你無法增加一個無限制使用磁片的使用者！"
 
-msgid "i-MSCP Error"
-msgstr "i-MSCP 錯誤"
+msgid "{RESELLER} uploaded a new software package"
+msgstr ""
 
-msgid "Error Message"
-msgstr "錯誤訊息"
+#, fuzzy
+msgid ""
+"Dear {ADMIN},\n"
+"\t{RESELLER} has uploaded a new software package.\n"
+"\n"
+"\tDetails:\n"
+"\tReseller ID: {RESELLER_ID}\n"
+"\tPackage Name: {SOFTWARE}\n"
+"\tPackage ID: {SOFTWARE_ID}\n"
+"\n"
+"\tPlease login into your i-MSCP control panel for more details."
+msgstr ""
+
+#, fuzzy
+msgid "Installation details"
+msgstr "託管詳細資料"
+
+msgid ""
+"Please set now the Username and Password for the later Login in the "
+"Application. (Required fiels!)"
+msgstr ""
+
+#, fuzzy
+msgid "Login username"
+msgstr "錯誤的使用者名！"
+
+#, fuzzy
+msgid "Login password"
+msgstr "找回密碼"
+
+#, fuzzy
+msgid "Emailadress"
+msgstr "郵件"
+
+#, fuzzy
+msgid "enabled"
+msgstr "啟用"
+
+#, fuzzy
+msgid "Application Description"
+msgstr "描述"
+
+#, fuzzy
+msgid "You do not have permissions to install application yet"
+msgstr "你沒有許可權訪問此介面！"
+
+msgid "Vendor hompage"
+msgstr ""
+
+msgid "Installed in software depot"
+msgstr ""
+
+msgid "Installed in reseller depot"
+msgstr ""
+
+#, fuzzy
+msgid "Start installation"
+msgstr "語言設定"
+
+#, fuzzy
+msgid "Are you sure to install this package from the webdepot?"
+msgstr "你確定想恢復備份？"
+
+msgid "No software in webdepot found!"
+msgstr ""
+
+msgid "Websoftware depot list was updated"
+msgstr ""
+
+msgid "No update for the websoftware depot list available"
+msgstr ""
 
 msgid "You have a new order"
 msgstr "你有一個新訂單"
@@ -4115,6 +5090,10 @@ msgstr ""
 #, fuzzy
 msgid "Order confirmation"
 msgstr "概要訊息"
+
+#, fuzzy
+msgid "Domain already exists on the system!"
+msgstr "此網域已在系統中！"
 
 #, fuzzy
 msgid "This hosting plan is not available for purchase"
@@ -4153,6 +5132,11 @@ msgstr "費用"
 
 msgid "Personal Data"
 msgstr "個人資料"
+
+msgid ""
+"(To avoid abuse, we ask you to write the combination of letters on the above "
+"picture into the field \"Security code\")"
+msgstr "（為避免濫用，請輸入上面圖中顯示的字母到“驗證碼”欄中）"
 
 #, fuzzy
 msgid "Security code was incorrect!"
@@ -4215,27 +5199,8 @@ msgstr "安裝費用"
 msgid "Performance"
 msgstr "性能"
 
-#, fuzzy
-msgid "i-MSCP Reseller: Add Alias"
-msgstr "i-MSCP 代理商 : 增加別名"
-
-msgid "There is no user records for this reseller to add an alias for."
-msgstr ""
-
-msgid "i-MSCP - Manage Domain/Alias"
-msgstr "i-MSCP - 管理網域/別名"
-
-msgid "Manage alias"
-msgstr "管理別名"
-
-msgid "Real domain"
-msgstr "真實網域"
-
 msgid "You have no alias records."
 msgstr "你沒有別名記錄。"
-
-msgid "Activate"
-msgstr "啟動"
 
 msgid "Domain alias added for termination!"
 msgstr "網域別名增加終止！"
@@ -4264,6 +5229,22 @@ msgstr "訂過的網域別名已啟動！"
 msgid "Ordered domain alias not activated!"
 msgstr "訂過的網域別名未啟動！"
 
+msgid "i-MSCP - Manage Domain/Alias"
+msgstr "i-MSCP - 管理網域/別名"
+
+msgid "Manage alias"
+msgstr "管理別名"
+
+msgid "Real domain"
+msgstr "真實網域"
+
+msgid "There is no user records for this reseller to add an alias for."
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP Reseller: Add Alias"
+msgstr "i-MSCP 代理商 : 增加別名"
+
 msgid "i-MSCP - Circular"
 msgstr "i-MSCP - 迴圈"
 
@@ -4273,38 +5254,8 @@ msgstr "迴圈"
 msgid "i-MSCP - Domain/Edit"
 msgstr "i-MSCP - 網域/編輯"
 
-#, fuzzy
-msgid "Unchanged"
-msgstr "修改"
-
-#, fuzzy
-msgid "Never"
-msgstr "等級"
-
-msgid "- 1 Month"
-msgstr "减一月"
-
-msgid "+ 1 Month"
-msgstr "加一月"
-
-msgid "+ 2 Months"
-msgstr "加二月"
-
-msgid "+ 3 Months"
-msgstr "加三月"
-
-msgid "+ 6 Months"
-msgstr "加六月"
-
-msgid "+ 1 Year"
-msgstr "加一年"
-
-msgid "+ 2 Years"
-msgstr "加二年"
-
-#, php-format
-msgid "The <em>%s</em> service cannot be disabled!"
-msgstr "此 <em>%s</em> 服務不能被禁止！"
+msgid "Domain properties could not be updated!"
+msgstr "網域屬性無法更新！"
 
 #, php-format
 msgid "The <em>%s</em> have to be disabled!"
@@ -4321,6 +5272,12 @@ msgstr "此 <em>%s</em> 服務不能被限制！"
 #, php-format
 msgid "The <em>%s</em> service cannot be unlimited!"
 msgstr "此 <em>%s</em> 服務不能無限制！"
+
+msgid "i-MSCP - Reseller/Main Index"
+msgstr "i-MSCP - 代理商/主索引"
+
+msgid "View details"
+msgstr "查看詳細"
 
 msgid "i-MSCP - Reseller/Add hosting plan"
 msgstr "i-MSCP - 代理商/增加託管計劃"
@@ -4342,12 +5299,6 @@ msgstr "i-MSCP - 代理商/編輯託管計劃"
 
 msgid "View hosting plan"
 msgstr "查看託管計劃"
-
-msgid "i-MSCP - Reseller/Main Index"
-msgstr "i-MSCP - 代理商/主索引"
-
-msgid "View details"
-msgstr "查看詳細"
 
 msgid "User accounts"
 msgstr "使用者記錄"
@@ -4374,6 +5325,17 @@ msgstr "%1$d / %2$d 的 <b>%3$d</b>"
 msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr "%1$d / %2$d 的 <b>無限制</b>"
 
+msgid "No Ip statistics to be show."
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP - Reseller/IP Usage"
+msgstr "i-MSCP - 代理商/更改語言"
+
+#, fuzzy
+msgid "Reseller/IP usage statistics"
+msgstr "代理商統計"
+
 msgid "i-MSCP - Reseller/Change Language"
 msgstr "i-MSCP - 代理商/更改語言"
 
@@ -4386,49 +5348,6 @@ msgstr "訂單管理"
 #, fuzzy
 msgid "Activation Link"
 msgstr "啟動用 E-Mail"
-
-msgid "Wrong order ID!"
-msgstr "錯誤的訂單 ID！"
-
-#, fuzzy
-msgid "Order Cancelled: resellers maximum exceeded!"
-msgstr "訂單取消: 到達代理商最高限制"
-
-msgid "Wrong domain name syntax!"
-msgstr "錯誤的網域語法！"
-
-msgid "User added!"
-msgstr "使用者已增加！"
-
-msgid "Customer order was removed successful!"
-msgstr "顧客訂單已被刪除！"
-
-msgid "i-MSCP - Reseller/Order details"
-msgstr "i-MSCP - 代理商/訂單詳細"
-
-msgid "Order data updated successfully!"
-msgstr "訂單資料已更新成功！"
-
-msgid "Order date"
-msgstr "訂單資料"
-
-msgid "Hosting plan"
-msgstr "託管計劃"
-
-msgid "Hosting details"
-msgstr "託管詳細資料"
-
-msgid "Order details"
-msgstr "訂單詳細"
-
-msgid "Customer data"
-msgstr "顧客數據"
-
-msgid "Are you sure you want to delete this order?"
-msgstr "你確定想刪除此訂單嗎？"
-
-msgid "Add to the system"
-msgstr "增加到系統裏"
 
 msgid "i-MSCP - Reseller/Order settings"
 msgstr "i-MSCP - 代理商/訂單設定"
@@ -4460,11 +5379,54 @@ msgstr "更新訂單"
 msgid "ID"
 msgstr "ID"
 
+msgid "Customer data"
+msgstr "顧客數據"
+
 msgid "Order"
 msgstr "訂單"
 
+msgid "Hosting plan"
+msgstr "託管計劃"
+
+msgid "Are you sure you want to delete this order?"
+msgstr "你確定想刪除此訂單嗎？"
+
 msgid "Add/Details"
 msgstr "增加/詳細"
+
+msgid "Wrong order ID!"
+msgstr "錯誤的訂單 ID！"
+
+#, fuzzy
+msgid "Order Cancelled: resellers maximum exceeded!"
+msgstr "訂單取消: 到達代理商最高限制"
+
+msgid "Wrong domain name syntax!"
+msgstr "錯誤的網域語法！"
+
+msgid "User added!"
+msgstr "使用者已增加！"
+
+msgid "Customer order was removed successful!"
+msgstr "顧客訂單已被刪除！"
+
+msgid "i-MSCP - Reseller/Order details"
+msgstr "i-MSCP - 代理商/訂單詳細"
+
+msgid "Order data updated successfully!"
+msgstr "訂單資料已更新成功！"
+
+msgid "Order date"
+msgstr "訂單資料"
+
+msgid "Hosting details"
+msgstr "託管詳細資料"
+
+msgid "Order details"
+msgstr "訂單詳細"
+
+msgid "Add to the system"
+msgstr "增加到系統裏"
 
 msgid "Order Canceled: resellers maximum exceeded!"
 msgstr "訂單取消: 到達代理商最高限制"
@@ -4484,8 +5446,139 @@ msgstr "忘記密碼郵件"
 msgid "Lostpw link"
 msgstr "忘記密碼鏈結"
 
+#, fuzzy
+msgid "Please specify a subject."
+msgstr "請指定一個主題！"
+
+#, fuzzy
+msgid "Auto email template data updated."
+msgstr "自動郵件範本資料更新完成！"
+
 msgid "i-MSCP - Reseller/Manage users/Email setup"
 msgstr "i-MSCP - 代理商/管理使用者/郵件設定"
+
+msgid "Package installed successfully... Awaiting release from Admin!"
+msgstr ""
+
+msgid "This software is installed on following domain(s):"
+msgstr ""
+
+msgid "This package is not installed yet"
+msgstr ""
+
+#, fuzzy
+msgid "waiting for activation"
+msgstr "等候批准"
+
+msgid "activated (Softwaredepot)"
+msgstr ""
+
+#, fuzzy
+msgid "activated"
+msgstr "啟動"
+
+msgid "Installing your uploaded package. Please refresh the site."
+msgstr ""
+
+msgid ""
+"After your upload the package it will be installed on your systems.<br /"
+">Refresh your site to see the new status!"
+msgstr ""
+
+msgid "Failure in package. Deleting!"
+msgstr ""
+
+msgid ""
+"Check your package. There is an error inside!<br />Refresh your site to see "
+"the new status!"
+msgstr ""
+
+msgid "The package is corrupt. Please correct it!"
+msgstr ""
+
+msgid ""
+"Please contact the administrator!<br />Ask him for the permissions to use "
+"this package.<br />It is not allowed to upload this packet two times.<br /"
+">Refresh your site to see the new status!"
+msgstr ""
+
+msgid "This package already exist in the administrator software depot!"
+msgstr ""
+
+msgid "Package already exist in your software depot!"
+msgstr ""
+
+msgid ""
+"Check your own uploads!<br />Ask the administrator if you don't find the "
+"package.<br />It is not allowed to upload this packages two times.<br /"
+">Refresh your site to see the new status!"
+msgstr ""
+
+msgid "This package already exist in your software depot!"
+msgstr ""
+
+#, fuzzy
+msgid "You do not have any software uploaded yet"
+msgstr "你沒有新的訂單！"
+
+#, fuzzy
+msgid "You do not have permissions to upload software"
+msgstr "你沒有許可權訪問此介面！"
+
+#, php-format
+msgid ""
+"ERROR: Could not upload the file. Max. upload filesize (%1$d MB) reached?"
+msgstr ""
+
+#, php-format
+msgid ""
+"ERROR: Your remote filesize (%1$d B) is lower than 1 Byte. Please check your "
+"URL!"
+msgstr ""
+
+#, php-format
+msgid ""
+"ERROR: Max. remote filesize (%1$d MB) is reached. Your remote file ist %2$d "
+"MB"
+msgstr ""
+
+msgid "ERROR: Remote File not found!"
+msgstr ""
+
+msgid "ERROR: Could not upload the file. File not found!"
+msgstr ""
+
+msgid "Software available"
+msgstr ""
+
+msgid "Software-Synonym"
+msgstr ""
+
+#, fuzzy
+msgid "Software-Version"
+msgstr "試用版本"
+
+#, fuzzy
+msgid "Software status"
+msgstr "伺服器狀態"
+
+#, fuzzy
+msgid "Software upload"
+msgstr "圖示上傳"
+
+#, fuzzy
+msgid "Requires Database?"
+msgstr "SQL 資料庫"
+
+#, fuzzy
+msgid "Database prefix"
+msgstr "資料庫名"
+
+msgid "Link to authors homepage"
+msgstr ""
+
+msgid "i-MSCP - Support system - New ticket"
+msgstr "i-MSCP - 系統支援 - 新客戶疑問"
 
 msgid "i-MSCP - Reseller: Support System: View Ticket"
 msgstr "i-MSCP - 代理商 : 系統支援: 查看疑問"
@@ -4493,23 +5586,9 @@ msgstr "i-MSCP - 代理商 : 系統支援: 查看疑問"
 msgid "i-MSCP - Users/Add user"
 msgstr "i-MSCP - 使用者/增加使用者"
 
-msgid "1 Month"
-msgstr "一月"
-
-msgid "2 Months"
-msgstr "二月"
-
-msgid "3 Months"
-msgstr "三月"
-
-msgid "6 Months"
-msgstr "六月"
-
-msgid "1 Year"
-msgstr "一年"
-
-msgid "2 Years"
-msgstr "两年"
+#, fuzzy
+msgid "Domain expire date"
+msgstr "網域功能"
 
 msgid "Choose hosting plan"
 msgstr "選擇託管計劃"
@@ -4554,6 +5633,9 @@ msgstr "i-MSCP - 使用者/編輯"
 msgid "Users list"
 msgstr "使用者列表"
 
+msgid "This reseller has no domains yet."
+msgstr "此代理商還沒有網域。"
+
 msgid "i-MSCP - Users"
 msgstr "i-MSCP - 使用者"
 
@@ -4573,8 +5655,9 @@ msgstr "頻寬"
 msgid "View aliases"
 msgstr "查看別名"
 
-msgid "You have no users."
-msgstr "你還沒有使用者。"
+#, fuzzy
+msgid "You do not have customers."
+msgstr "你沒有新的訂單！"
 
 #, php-format
 msgid "%1$s of %2$s MB"
@@ -4600,8 +5683,104 @@ msgstr "使用者已到期！"
 msgid "User not terminated!"
 msgstr "使用者未終止！"
 
-msgid "This reseller has no domains yet."
-msgstr "此代理商還沒有網域。"
+#~ msgid "i-MSCP  a Virtual Hosting Control System"
+#~ msgstr "i-MSCP  虛擬主機管理系統"
+
+#~ msgid "Please enter your login information"
+#~ msgstr "請輸入你的登入資訊"
+
+#~ msgid "Retrieving lost passwords is currently not possible"
+#~ msgstr "目前不可使用找回忘記的密碼功能"
+
+#~ msgid "i-MSCP - Virtual Hosting Control System"
+#~ msgstr "i-MSCP - 虛擬主機管理系統"
+
+#~ msgid "Retry"
+#~ msgstr "重試"
+
+#~ msgid "Request password"
+#~ msgstr "請輸入密碼"
+
+#~ msgid "Do you want to execute the Updates now?"
+#~ msgstr "你想現在就執行更新嗎？"
+
+#~ msgid "A database update is available"
+#~ msgstr "有一個資料庫更新"
+
+#, fuzzy
+#~ msgid "Panel Default"
+#~ msgstr "默認"
+
+#, fuzzy
+#~ msgid "Settings saved!"
+#~ msgstr "設定已儲存！"
+
+#, fuzzy
+#~ msgid ""
+#~ "ERROR: Only letters, numbers, dash and underscore are allowed for "
+#~ "services names!"
+#~ msgstr "錯誤:只能允許字母、數位、破折號、底線。"
+
+#~ msgid "To"
+#~ msgstr "To"
+
+#~ msgid "Message was sent."
+#~ msgstr "訊息已發送！"
+
+#~ msgid "ISPCP - Client/Webtools"
+#~ msgstr "ISPCP - 客戶/Web工具"
+
+#~ msgid "i-MSCP Error"
+#~ msgstr "i-MSCP 錯誤"
+
+#~ msgid "Error Message"
+#~ msgstr "錯誤訊息"
+
+#, fuzzy
+#~ msgid "Unchanged"
+#~ msgstr "修改"
+
+#~ msgid "- 1 Month"
+#~ msgstr "减一月"
+
+#~ msgid "+ 1 Month"
+#~ msgstr "加一月"
+
+#~ msgid "+ 2 Months"
+#~ msgstr "加二月"
+
+#~ msgid "+ 3 Months"
+#~ msgstr "加三月"
+
+#~ msgid "+ 6 Months"
+#~ msgstr "加六月"
+
+#~ msgid "+ 1 Year"
+#~ msgstr "加一年"
+
+#~ msgid "+ 2 Years"
+#~ msgstr "加二年"
+
+#~ msgid "1 Month"
+#~ msgstr "一月"
+
+#~ msgid "2 Months"
+#~ msgstr "二月"
+
+#~ msgid "3 Months"
+#~ msgstr "三月"
+
+#~ msgid "6 Months"
+#~ msgstr "六月"
+
+#~ msgid "1 Year"
+#~ msgstr "一年"
+
+#~ msgid "2 Years"
+#~ msgstr "两年"
+
+#~ msgid "You have no users."
+#~ msgstr "你還沒有使用者。"
 
 #~ msgid "Services"
 #~ msgstr "服務"
@@ -4636,17 +5815,11 @@ msgstr "此代理商還沒有網域。"
 #~ "Inconsistency between current_ftp_cnt and actual ftp count: %1$d != %2$d"
 #~ msgstr "現時ftp數目 與 實際ftp數目 衝突: %1$d != %2$d"
 
-#~ msgid "Edit reseller aborted!"
-#~ msgstr "編輯代理商終止！"
-
 #~ msgid "Domains limit<br><i>(-1 disabled, 0 unlimited)</i>"
 #~ msgstr "網域限制<br><i>((-1 無效, 0 無限制)</i>"
 
 #~ msgid "Incorrect forward syntax"
 #~ msgstr "不正確的轉向語法"
-
-#~ msgid "A Forward URL has to start with 'http://'"
-#~ msgstr "轉向URL地址必須以“http://”開始"
 
 #~ msgid "Entered passwords differ from the another!"
 #~ msgstr "輸入的密碼不同於另外一個！"

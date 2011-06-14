@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ca_ES\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-17 10:11+0200\n"
+"POT-Creation-Date: 2011-06-13 16:29+0200\n"
 "PO-Revision-Date: 2010-08-30 11:02+0200\n"
 "Last-Translator: Joan Juvanteny <jjuvan@grn.cat>\n"
 "Language-Team: Catalan <ca@li.org>\n"
@@ -24,90 +24,403 @@ msgstr ""
 msgid "encoding"
 msgstr "UTF-8"
 
-#. Please fill in the language you are translating to in the following form:
-#. native language name (native country name) - english language name (english country name)
 msgid "_: Localised language"
 msgstr "Català - Catalan"
 
-msgid "i-MSCP  a Virtual Hosting Control System"
-msgstr "i-MSCP  un Sistema de control de Hosting"
+#, php-format
+msgid "File %s does not exists or cannot be reached!"
+msgstr "El fitxer %s no existeix o no es pot obtenir!"
 
-msgid "Administrator login"
-msgstr "Accedir com a administrador"
+#, fuzzy
+msgid "Error while trying to obtain list of network cards."
+msgstr "Error provant d'obtenir la llista de la targes de xarxa!"
 
-msgid "Login"
-msgstr "Accedir"
+#, php-format
+msgid "This IP (%s) is not assigned to any network card!"
+msgstr "La IP (%s) no està assignada a cap tarja de xarxa!"
+
+msgid "N/A"
+msgstr "N/A"
+
+msgid "Day"
+msgstr "Dia"
+
+msgid "Days"
+msgstr "Dies"
+
+msgid "Hour"
+msgstr "Hora"
+
+msgid "Hours"
+msgstr "Hores"
+
+msgid "Minute"
+msgstr "Minut"
+
+msgid "Minutes"
+msgstr "Minuts"
+
+#, fuzzy
+msgid "An error occured! Please, contact your administrator!"
+msgstr ""
+"No es pot obrir el directori!<br> Si us plau contacteu amb el vostre "
+"administrador !"
+
+#, fuzzy
+msgid "Couldn't check for updates. Website not reachable."
+msgstr ""
+"No es poden comprovar les actualitzacions! La web no es troba disponible."
+
+msgid "General information"
+msgstr "Informació General"
+
+msgid "Manage hosting plans"
+msgstr "Administrar plans de hosting"
+
+msgid "System tools"
+msgstr "Eines del sistema"
+
+msgid "Manage users"
+msgstr "Administrar Usuaris"
+
+msgid "Statistics"
+msgstr "Estadístiques"
+
+msgid "Support system"
+msgstr "Sistema de suport"
+
+msgid "Settings"
+msgstr "Paràmetres"
+
+msgid "Change password"
+msgstr "Canviar contrasenya"
+
+msgid "Change personal data"
+msgstr "Canviar dades personals"
+
+msgid "Add admin"
+msgstr "Afegir administrador"
+
+msgid "Add reseller"
+msgstr "Afegir distribuïdor"
+
+msgid "Reseller assignment"
+msgstr "Assignació distribuïdors"
+
+msgid "User assignment"
+msgstr "Assignació d'usuari"
+
+msgid "Email setup"
+msgstr "Configurar Email"
+
+msgid "Email marketing"
+msgstr "Màrqueting per correu"
+
+msgid "Add hosting plan"
+msgstr "Afegir pla de hosting"
+
+msgid "Reseller statistics"
+msgstr "Estadístiques de distribuïdor"
+
+msgid "Server statistics"
+msgstr "Estadístiques del Servidor"
+
+msgid "Admin log"
+msgstr "Log d'Admin"
+
+msgid "Manage IPs"
+msgstr "Administrar IPs"
+
+msgid "System info"
+msgstr "Informació del sistema"
+
+msgid "Internationalisation"
+msgstr "Internacionalització"
+
+msgid "Language"
+msgstr "Idioma"
+
+msgid "Layout"
+msgstr "Presentació"
+
+msgid "Logout"
+msgstr "Sortir"
+
+msgid "Server traffic settings"
+msgstr "Paràmetres de trànsit del servidor"
+
+msgid "Server status"
+msgstr "Estat del servidor"
+
+msgid "i-MSCP updates"
+msgstr "Actualitzacions i-MSCP"
+
+msgid "i-MSCP database updates"
+msgstr "i-MSCP - Actualitzacions de base de dades"
+
+msgid "i-MSCP debugger"
+msgstr "i-MSCP debugger"
+
+msgid "Custom menus"
+msgstr "Personalitzar menús "
+
+msgid "Overview"
+msgstr "Vista general"
+
+msgid "User sessions"
+msgstr "Sessions d'usuari"
+
+msgid "Lostpw email setup"
+msgstr "Configurar pèrdua de contrasenya de correu"
+
+msgid "Maintenance mode"
+msgstr "Mode manteniment"
+
+msgid "General settings"
+msgstr "Paràmetres generals"
+
+msgid "Server ports"
+msgstr "Ports del servidor"
+
+msgid "Rootkit Log"
+msgstr "Rootkit Log"
+
+#, fuzzy
+msgid "Services status"
+msgstr "Estat del servidor"
+
+#, fuzzy
+msgid "Services ports"
+msgstr "Ports del servidor"
+
+#, fuzzy
+msgid "IP usage"
+msgstr "Ús de disc"
+
+msgid "Application management"
+msgstr ""
+
+msgid "Application options"
+msgstr ""
+
+msgid "Account name"
+msgstr "Nom del compte"
+
+msgid "Admin users"
+msgstr "Usuaris administradors"
+
+msgid "Reseller users"
+msgstr "Usuaris distribuïdors"
+
+msgid "Normal users"
+msgstr "Usuaris normals"
+
+msgid "Domains"
+msgstr "Dominis"
+
+msgid "Subdomains"
+msgstr "Subdominis"
+
+msgid "Domain aliases"
+msgstr "Àlies de domini"
+
+msgid "Mail accounts"
+msgstr "Comptes de correu"
+
+msgid "FTP accounts"
+msgstr "Comptes de FTP"
+
+msgid "SQL databases"
+msgstr "Bases de dades SQL"
+
+msgid "SQL users"
+msgstr "Usuaris SQL"
+
+msgid "System messages"
+msgstr "Missatges del sistema"
+
+msgid "No new messages"
+msgstr "No hi ha nous missatges"
+
+msgid "Server traffic"
+msgstr "Trànsit del servidor"
+
+msgid "Administrators list is empty!"
+msgstr "La llista d'administradors està buida!"
 
 msgid "Username"
 msgstr "Nom d'usuari"
 
-msgid "Password"
-msgstr "Contrasenya"
+msgid "Creation date"
+msgstr "Data de creació"
 
-msgid "Please enter your login information"
-msgstr "Si us plau, entra la teva informació d'accés"
+msgid "Created by"
+msgstr "Creat per"
 
-msgid "Secure Connection"
-msgstr "Connexió segura"
+msgid "Options"
+msgstr "Opcions"
 
-msgid "Normal Connection"
-msgstr "Connexió normal"
+msgid "Delete"
+msgstr "Esborrar"
 
-msgid "Lost password"
-msgstr "Contrasenya perduda"
+msgid "System"
+msgstr "Sistema"
 
-msgid "Retrieving lost passwords is currently not possible"
-msgstr "Actualment no es poden recuperar les contrasenyes perdudes"
+msgid "Resellers list is empty!"
+msgstr "La llista de distribuïdors està buida!"
 
-msgid "i-MSCP - Virtual Hosting Control System"
-msgstr "i-MSCP - Sistema de control de Hosting"
+msgid "Switch to user interface"
+msgstr "Canviar a la interfície d'usuari"
 
-msgid "Your new password has been sent."
-msgstr "S'ha enviat la nova contrasenya."
+msgid "Switch"
+msgstr "Canviar"
 
-msgid "New password could not been sent."
-msgstr "La nova contrasenya no s'ha pogut enviar"
+msgid "Not found user records matching the search criteria!"
+msgstr "No s'han trobat coincidències segons els criteris de cerca!"
+
+msgid "view aliases"
+msgstr "veure àlies"
+
+msgid "Users list is empty!"
+msgstr "La llista d'usuaris és buida!"
+
+msgid "Status"
+msgstr "Estat"
+
+msgid "Details"
+msgstr "Detalls"
+
+msgid "Edit domain"
+msgstr "Editar domini"
+
+msgid "Edit user"
+msgstr "Editar usuari"
+
+msgid "Ok"
+msgstr ""
+
+msgid "Disabled"
+msgstr "Desactivat"
+
+#, fuzzy
+msgid "Reload"
+msgstr "Carregar"
+
+msgid "Error"
+msgstr "Error"
+
+msgid "Not Set"
+msgstr "No definit"
+
+msgid "Are you sure you want to change the status of domain account?"
+msgstr "Esteu segurs que voleu canviar l'estat del domini?"
 
 #, php-format
-msgid ""
-"Your password request has been initiated. You will receive an email with "
-"instructions to complete the process. This reset request will expire in %s "
-"minutes."
+msgid "Are you sure you want to delete %s?"
+msgstr "Estàs segur que vols esborrar %s?"
+
+msgid "Administrators"
+msgstr "Administradors"
+
+msgid "Resellers"
+msgstr "Distribuïdors"
+
+msgid "Users"
+msgstr "Usuaris"
+
+msgid "Search"
+msgstr "Buscar"
+
+msgid "Expire date"
+msgstr "Data de caducitat"
+
+msgid "Edit"
+msgstr "Editar"
+
+msgid "Domain name"
+msgstr "Nom del domini"
+
+msgid "Customer ID"
+msgstr "ID del client"
+
+msgid "Last name"
+msgstr "Cognom"
+
+msgid "Company"
+msgstr "Empresa"
+
+msgid "City"
+msgstr "Ciutat"
+
+msgid "State/Province"
+msgstr "Estat/Província"
+
+msgid "Country"
+msgstr "País"
+
+msgid "All"
+msgstr "Tots"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Suspended"
+msgstr "Suspès"
+
+msgid "i-MSCP - Order Panel"
+msgstr "i-MSCP - Panell de Comandes"
+
+msgid "hide aliases"
+msgstr "Amagar àlies"
+
+#, php-format
+msgid "%1$s you are now logged as %2$s"
+msgstr "%1$s esteu validats com a %2$s"
+
+msgid "Go back"
+msgstr "Tornar"
+
+msgid "Unknown"
+msgstr "Desconegut"
+
+msgid "No language tables found in the database."
 msgstr ""
-"La teva sol·licitud de contrasenya ha començat. Hauries de rebre un correu "
-"amb les instruccions per completar el proces. Aquesta sol·licitud caducarà "
-"en %s minuts."
 
-msgid "Back"
-msgstr "Enrere"
+msgid "Add user"
+msgstr "Afegir usuari"
 
-msgid "User or security code was incorrect!"
-msgstr "El codi de seguretat o l'usuari no eren correctes"
+msgid "Manage domains"
+msgstr "Administrar dominis"
 
-msgid "Retry"
-msgstr "Reintentar"
+msgid "Domain alias"
+msgstr "Àlies de dominis"
 
-msgid "Security code"
-msgstr "Codi de seguretat"
+msgid "Domain statistics"
+msgstr "Estadístiques de domini"
 
-msgid ""
-"(To avoid abuse, we ask you to write the combination of letters on the above "
-"picture into the field \"Security code\")"
-msgstr ""
-"(Per evitar mals usos, et demanem que escriguis la combinació de lletres de "
-"sobre la imatge dins del camp \"Codi de seguretat\""
+msgid "New ticket"
+msgstr "Nou tiquet"
 
-msgid "Request password"
-msgstr "Sol·licitar contrassenya"
+msgid "Layout settings"
+msgstr "Paràmetres presentació"
 
-msgid "i-MSCP - Admin/Manage users/Add User"
-msgstr "i-MSCP - Gestionar usuaris/Afegir usuari"
+msgid "Manage Orders"
+msgstr "Administrar Comandes"
 
-msgid "Administrator"
-msgstr "Administrador"
+msgid "Order settings"
+msgstr "Paràmetres de la comanda"
 
-msgid "Incorrect username length or syntax!"
-msgstr "Llargada o sintaxi del nom d'usuari incorrecta"
+msgid "Order email setup"
+msgstr "Configuració correu de comanda"
+
+msgid "yes"
+msgstr "sí"
+
+msgid "Please fill up both data fields for password!"
+msgstr "Si us plau ompliu ambdós camps per la contrasenya!"
+
+msgid "Passwords don't match!"
+msgstr "Les contrasenyes no són iguals!"
 
 #, php-format
 msgid ""
@@ -122,23 +435,193 @@ msgid "Password data is shorter than %s signs or includes not permitted signs!"
 msgstr ""
 "La contrasenya té menys de %s caràcters o inclou caràcters no permesos!"
 
-msgid "Entered passwords do not match!"
-msgstr "Les contrasenyes entrades són diferents"
-
 msgid "Incorrect email length or syntax!"
 msgstr "Llargada o sintaxi del correu incorrecta"
 
-msgid "This user name already exist!"
+msgid "Add subdomain"
+msgstr "Afegir subdomini"
+
+msgid "Email and FTP accounts"
+msgstr "Comptes FTP i de correu"
+
+msgid "Add mail user"
+msgstr "Afegir usuari de correu"
+
+msgid "Add FTP user"
+msgstr "Afegir usuari FTP"
+
+msgid "Manage SQL"
+msgstr "Administrar SQL"
+
+msgid "Error pages"
+msgstr "Pàgines d'error"
+
+msgid "Add SQL database"
+msgstr "Afegir base de dades SQL"
+
+msgid "Daily backup"
+msgstr "Backup Diari"
+
+msgid "PhpMyAdmin"
+msgstr "PhpMyAdmin"
+
+msgid "Webmail"
+msgstr "Correu web"
+
+msgid "Filemanager"
+msgstr "Administrador de fitxers"
+
+msgid "Webtools"
+msgstr "Eines Web"
+
+msgid "Protected areas"
+msgstr "Àrees protegides"
+
+msgid "Web statistics"
+msgstr "Estadístiques web"
+
+msgid "Group/User management"
+msgstr "Administració d'usuaris/grups"
+
+msgid "Email Accounts"
+msgstr "Comptes de correu"
+
+msgid "FTP Accounts"
+msgstr "Comptes FTP"
+
+msgid "Catch all"
+msgstr "Catch all"
+
+msgid "Add alias"
+msgstr "Afegir àlies"
+
+msgid "Update Hosting Package"
+msgstr "Actualitzar pla de hosting"
+
+msgid "Add DNS zone's record"
+msgstr "Afegir entrada a la zona DNS"
+
+msgid "Manage SSL certificate"
+msgstr "Administrar el certificat SSL"
+
+msgid "i-MSCP application installer"
+msgstr ""
+
+msgid "All fields are required!"
+msgstr ""
+
+#, fuzzy
+msgid "internet Multi Server Control Panel"
+msgstr "ispCp Panell de Control"
+
+msgid "© Copyright 2010 i-MSCP Team<br/>All Rights Reserved"
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP - Multi Server Control Panel"
+msgstr "ispCp Panell de Control"
+
+msgid "Administrator login"
+msgstr "Accedir com a administrador"
+
+#, fuzzy
+msgid "i-MSCP - Multi Server Control Panel / Login"
+msgstr "ispCp Panell de Control"
+
+msgid "Login"
+msgstr "Accedir"
+
+msgid "Password"
+msgstr "Contrasenya"
+
+msgid "phpMyAdmin"
+msgstr "phpMyAdmin"
+
+#, fuzzy
+msgid "FileManager"
+msgstr "Administrador de fitxers"
+
+msgid "Secure Connection"
+msgstr "Connexió segura"
+
+msgid "Normal Connection"
+msgstr "Connexió normal"
+
+msgid "Lost password"
+msgstr "Contrasenya perduda"
+
+#, fuzzy
+msgid "php-extension 'gd' not loaded."
+msgstr "ERROR: L'extensió de PHP 'mcrypt' no està carregada!"
+
+msgid "Captcha fontfile not found."
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP - Multi Server Control Panel - Lost password"
+msgstr "i-MSCP - Client/Canviar Contrasenya Usuari SQL"
+
+msgid "Security code"
+msgstr "Codi de seguretat"
+
+#, fuzzy
+msgid ""
+"To avoid abuse, we ask you to write the combination of letters on the "
+"picture above into the field \"Security code\""
+msgstr ""
+"(Per evitar mals usos, et demanem que escriguis la combinació de lletres de "
+"sobre la imatge dins del camp \"Codi de seguretat\""
+
+#, fuzzy
+msgid "Get password"
+msgstr "Generar contrasenya"
+
+msgid "Back"
+msgstr "Enrere"
+
+#, fuzzy
+msgid "Your new password has been sent. Check your mail."
+msgstr "S'ha enviat la nova contrasenya."
+
+#, fuzzy
+msgid "New password has not been sent. Ask your administrator."
+msgstr "La nova contrasenya no s'ha pogut enviar"
+
+#, php-format
+msgid ""
+"Your password request has been initiated. You will receive an email with "
+"instructions to complete the process. This reset request will expire in %s "
+"minutes."
+msgstr ""
+"La teva sol·licitud de contrasenya ha començat. Hauries de rebre un correu "
+"amb les instruccions per completar el proces. Aquesta sol·licitud caducarà "
+"en %s minuts."
+
+#, fuzzy
+msgid "User or security code are incorrect."
+msgstr "El codi de seguretat o l'usuari no eren correctes"
+
+msgid "All fields are required."
+msgstr ""
+
+msgid "i-MSCP - Admin/Manage users/Add User"
+msgstr "i-MSCP - Gestionar usuaris/Afegir usuari"
+
+msgid "Administrator"
+msgstr "Administrador"
+
+msgid "Incorrect username length or syntax!"
+msgstr "Llargada o sintaxi del nom d'usuari incorrecta"
+
+msgid "Entered passwords do not match!"
+msgstr "Les contrasenyes entrades són diferents"
+
+#, fuzzy
+msgid "This user name already exist."
 msgstr "Aquest nom d'usuari ja existeix"
 
 msgid "Empty data or wrong field!"
 msgstr "Dades buides o camp incorrecte"
-
-msgid "Passwords don't match!"
-msgstr "Les contrasenyes no són iguals!"
-
-msgid "Add admin"
-msgstr "Afegir administrador"
 
 msgid "Core data"
 msgstr "Dades principals"
@@ -155,9 +638,6 @@ msgstr "Dades addicionals"
 msgid "First name"
 msgstr "Nom"
 
-msgid "Last name"
-msgstr "Cognom"
-
 msgid "Gender"
 msgstr "Gènere"
 
@@ -167,23 +647,8 @@ msgstr "Home"
 msgid "Female"
 msgstr "Dona"
 
-msgid "Unknown"
-msgstr "Desconegut"
-
-msgid "Company"
-msgstr "Empresa"
-
 msgid "Zip/Postal code"
 msgstr "Codi postal"
-
-msgid "City"
-msgstr "Ciutat"
-
-msgid "State/Province"
-msgstr "Estat/Província"
-
-msgid "Country"
-msgstr "País"
 
 msgid "Street 1"
 msgstr "Carrer 1"
@@ -218,9 +683,6 @@ msgstr "i-MSCP - Admin/Administrar usuari/Editar usuari"
 msgid "Edit admin"
 msgstr "Editar admin"
 
-msgid "Edit user"
-msgstr "Editar usuari"
-
 msgid "Update"
 msgstr "Actualitzar"
 
@@ -236,7 +698,8 @@ msgstr "Canvi de contrasenya desactivada!"
 msgid "Demo Version!"
 msgstr "Versió de mostra!"
 
-msgid "i-MSCP - Admin/Admin Log"
+#, fuzzy
+msgid "iMSCP - Admin/Admin Log"
 msgstr "i-MSCP - Admin/Registre d'Admin"
 
 msgid "Log is empty!"
@@ -320,9 +783,6 @@ msgstr "Si us plau especifica el correu del remitent! "
 msgid "You send email to your users successfully!"
 msgstr "Has enviat correctament el correu als teus usuaris!"
 
-msgid "Email marketing"
-msgstr "Màrqueting per correu"
-
 msgid "Send message to"
 msgstr "Enviar el missatge a "
 
@@ -352,9 +812,6 @@ msgstr "No tens menús personalitzats"
 
 msgid "User"
 msgstr "Usuari"
-
-msgid "All"
-msgstr "Tots"
 
 msgid "Missing or incorrect data input!"
 msgstr "Dades d'entrada incorrectes o inexistents!"
@@ -410,12 +867,6 @@ msgstr "Botó de menú"
 msgid "Action"
 msgstr "Acció"
 
-msgid "Edit"
-msgstr "Editar"
-
-msgid "Delete"
-msgstr "Esborrar"
-
 msgid "Level"
 msgstr "Nivell"
 
@@ -425,9 +876,9 @@ msgstr "Guardar"
 msgid "Edit button"
 msgstr "Editar botó"
 
-#, php-format
-msgid "Are you sure you want to delete %s?"
-msgstr "Estàs segur que vols esborrar %s?"
+#, fuzzy
+msgid "i-MSCP - Admin / System tools / Database Update"
+msgstr "i-MSCP - Admin/Eines de sistema/Estat del servidor"
 
 msgid "Database updates"
 msgstr "Actualitzacions de la base de dades"
@@ -441,14 +892,11 @@ msgstr "Detalls de l'actualització"
 msgid "New Database update is now available"
 msgstr "Hi ha una actualització de la base de dades disponible"
 
-msgid "Do you want to execute the Updates now?"
-msgstr "Vols fer les actualitzacions ara?"
+msgid "No provided"
+msgstr ""
 
 msgid "Execute updates"
 msgstr "Realitzar actualitzacions"
-
-msgid "No database updates available"
-msgstr "No hi ha actualitzacions de la base de dades disponibles"
 
 msgid "i-MSCP - Domain/Details"
 msgstr "i-MSCP - Detalls del domini"
@@ -456,14 +904,8 @@ msgstr "i-MSCP - Detalls del domini"
 msgid "Domain details"
 msgstr "Detalls del domini"
 
-msgid "Domain name"
-msgstr "Nom del domini"
-
 msgid "Domain IP"
 msgstr "IP del domini"
-
-msgid "Status"
-msgstr "Estat"
 
 msgid "PHP support"
 msgstr "Suport de PHP"
@@ -495,24 +937,6 @@ msgstr "Usat"
 msgid "Limit"
 msgstr "Límit"
 
-msgid "Mail accounts"
-msgstr "Comptes de correu"
-
-msgid "FTP accounts"
-msgstr "Comptes de FTP"
-
-msgid "SQL databases"
-msgstr "Bases de dades SQL"
-
-msgid "SQL users"
-msgstr "Usuaris SQL"
-
-msgid "Subdomains"
-msgstr "Subdominis"
-
-msgid "Domain aliases"
-msgstr "Àlies de domini"
-
 msgid "Submit changes"
 msgstr "Enviar canvis"
 
@@ -531,8 +955,120 @@ msgstr "No"
 msgid "Enabled"
 msgstr "Activat"
 
-msgid "Disabled"
-msgstr "Desactivat"
+#, fuzzy
+msgid "Incorrect subdomains limit."
+msgstr "Límit de subdominis incorrecte"
+
+#, fuzzy
+msgid "Incorrect aliases limit."
+msgstr "Límit d'àlies incorrecte"
+
+#, fuzzy
+msgid "Incorrect mail accounts limit."
+msgstr "Límit de bústies de correu incorrecte!"
+
+#, fuzzy
+msgid "Incorrect FTP accounts limit."
+msgstr "Límit de comptes FTP!"
+
+#, fuzzy
+msgid "Incorrect SQL users limit."
+msgstr "Límit d'usuaris SQL incorrecte"
+
+msgid "SQL databases limit is <i>disabled</i>!"
+msgstr "El límit de les bases de dades SQL està <i>desactivat</i>!"
+
+#, fuzzy
+msgid "Incorrect SQL databases limit."
+msgstr "Límit de bases de dades SQL incorrecte!"
+
+msgid "SQL users limit is <i>disabled</i>!"
+msgstr "El límit d'usuaris SQL està <i>desactivat</i>!"
+
+#, fuzzy
+msgid "Incorrect traffic limit."
+msgstr "Límit de trànsit incorrecte!"
+
+#, fuzzy
+msgid "Incorrect disk quota limit."
+msgstr "Límit de quota de disc incorrecte!"
+
+msgid "The application installer needs PHP to enable."
+msgstr ""
+
+msgid "The application installer of the users reseller is not activated."
+msgstr ""
+
+msgid "Subdomain"
+msgstr "Subdomini"
+
+msgid "Alias"
+msgstr "Àlies"
+
+msgid "Mail"
+msgstr "Correu"
+
+msgid "FTP"
+msgstr "FTP"
+
+msgid "SQL Database"
+msgstr "Base de dades SQL"
+
+msgid "SQL User"
+msgstr "Usuari SQL"
+
+msgid "Traffic"
+msgstr "Trànsit"
+
+msgid "Disk"
+msgstr "Disc"
+
+#, fuzzy
+msgid "Domain properties could not be updated."
+msgstr "Les propietats del domini no s'han pogut actualitzar!"
+
+msgid "Domain properties updated successfully!"
+msgstr "Propietats del domini actualitzades satisfactòriament!"
+
+#, php-format
+msgid "The <em>%s</em> service cannot be disabled!"
+msgstr "El servei de <em>%s</em> no es pot desactivar! "
+
+#, php-format
+msgid "There are <em>%s</em> records on system!"
+msgstr "Hi ha <em>%s</em> registres al sistema!"
+
+#, php-format
+msgid "The <em>%s</em> service cannot be limited! "
+msgstr "El servei de <em>%s</em> no es pot limitar!"
+
+#, php-format
+msgid ""
+"Specified number is smaller than <em>%s</em> records, present on the system!"
+msgstr ""
+"El nombre especificat és més petit que els registres de <em>%s</em> al "
+"sistema!"
+
+#, php-format
+msgid "The <em>%s</em> service cannot be disabled! "
+msgstr "El servei de <em>%s</em> no es pot desactivar!"
+
+#, php-format
+msgid "There are <em>%s</em> records on the system!"
+msgstr "Hi ha registres de <em>%s</em> al sistema!"
+
+#, php-format
+msgid "The <em>%s</em> service cannot be unlimited! "
+msgstr "El servei de <em>%s</em> no es pot il·limitar!"
+
+#, php-format
+msgid "There are reseller limits for the <em>%s</em> service!"
+msgstr "Hi ha límits de distribuïdor per al servei de <em>%s</em>!"
+
+#, php-format
+msgid "You are exceeding reseller limits for the <em>%s</em> service!"
+msgstr ""
+"Esteu excedint els límits de distribuïdor per al servei de <em>%s</em>!"
 
 msgid "i-MSCP - Admin/Edit Domain"
 msgstr "i-MSCP - Admin/Editar domini"
@@ -588,115 +1124,32 @@ msgstr ""
 "En cas que 'Caducitat de domini' sigui 'N/A' la caducitat del domini es "
 "comptarà  a partir d'avui."
 
+msgid "or Check for <strong>never Expire</strong>"
+msgstr ""
+
 msgid ""
-"User does not exist or you do not have permission to access this interface!"
+"You cannot access this page directly. You must switch to reseller level."
 msgstr ""
-"L'usuari no existeix o no teniu permís per accedir a aquesta interfície!"
 
-msgid "N/A"
-msgstr "N/A"
-
-msgid "Incorrect subdomains limit!"
-msgstr "Límit de subdominis incorrecte"
-
-msgid "Incorrect aliases limit!"
-msgstr "Límit d'àlies incorrecte"
-
-msgid "Incorrect mail accounts limit!"
-msgstr "Límit de bústies de correu incorrecte!"
-
-msgid "Incorrect FTP accounts limit!"
-msgstr "Límit de comptes FTP!"
-
-msgid "Incorrect SQL users limit!"
-msgstr "Límit d'usuaris SQL incorrecte"
-
-msgid "SQL databases limit is <i>disabled</i>!"
-msgstr "El límit de les bases de dades SQL està <i>desactivat</i>!"
-
-msgid "Incorrect SQL databases limit!"
-msgstr "Límit de bases de dades SQL incorrecte!"
-
-msgid "SQL users limit is <i>disabled</i>!"
-msgstr "El límit d'usuaris SQL està <i>desactivat</i>!"
-
-msgid "Incorrect traffic limit!"
-msgstr "Límit de trànsit incorrecte!"
-
-msgid "Incorrect disk quota limit!"
-msgstr "Límit de quota de disc incorrecte!"
-
-msgid "Subdomain"
-msgstr "Subdomini"
-
-msgid "Alias"
-msgstr "Àlies"
-
-msgid "Mail"
-msgstr "Correu"
-
-msgid "FTP"
-msgstr "FTP"
-
-msgid "SQL Database"
-msgstr "Base de dades SQL"
-
-msgid "SQL User"
-msgstr "Usuari SQL"
-
-msgid "Traffic"
-msgstr "Trànsit"
-
-msgid "Disk"
-msgstr "Disc"
-
-msgid "Domain properties could not be updated!"
-msgstr "Les propietats del domini no s'han pogut actualitzar!"
-
-msgid "Domain properties updated successfully!"
-msgstr "Propietats del domini actualitzades satisfactòriament!"
-
-#, php-format
-msgid "The <em>%s</em> service cannot be disabled! "
-msgstr "El servei de <em>%s</em> no es pot desactivar!"
-
-#, php-format
-msgid "There are <em>%s</em> records on system!"
-msgstr "Hi ha <em>%s</em> registres al sistema!"
-
-#, php-format
-msgid "The <em>%s</em> service cannot be limited! "
-msgstr "El servei de <em>%s</em> no es pot limitar!"
-
-#, php-format
 msgid ""
-"Specified number is smaller than <em>%s</em> records, present on the system!"
+"Unable to update domain properties: The domain does not exist or is an "
+"orphan."
 msgstr ""
-"El nombre especificat és més petit que els registres de <em>%s</em> al "
-"sistema!"
 
-#, php-format
-msgid "There are <em>%s</em> records on the system!"
-msgstr "Hi ha registres de <em>%s</em> al sistema!"
-
-#, php-format
-msgid "The <em>%s</em> service cannot be unlimited! "
-msgstr "El servei de <em>%s</em> no es pot il·limitar!"
-
-#, php-format
-msgid "There are reseller limits for the <em>%s</em> service!"
-msgstr "Hi ha límits de distribuïdor per al servei de <em>%s</em>!"
-
-#, php-format
-msgid "You are exceeding reseller limits for the <em>%s</em> service!"
+msgid "Unable to update domain: Domain ID not found."
 msgstr ""
-"Esteu excedint els límits de distribuïdor per al servei de <em>%s</em>!"
+
+msgid "Unable to edit domain: The domain does not exist or is an orphan."
+msgstr ""
+
+msgid "Unable to edit domain: ID not found."
+msgstr ""
 
 msgid "i-MSCP - Domain Statistics Data"
 msgstr "i-MSCP - Estadístiques de domini"
 
-msgid "Domain statistics"
-msgstr "Estadístiques de domini"
+msgid "Reseller users table"
+msgstr "Taula d'usuaris distribuïdors"
 
 msgid "Month"
 msgstr "Mes"
@@ -722,14 +1175,47 @@ msgstr "Trànsit POP3/IMAP"
 msgid "All traffic"
 msgstr "Tot el trànsit"
 
-msgid "Day"
-msgstr "Dia"
+msgid "i-MSCP - Administrator/Hosting Plan Management"
+msgstr "i-MSCP - Administrador/Administració de Plans de Hosting"
+
+msgid "Hosting plans"
+msgstr "Plans de hosting"
+
+msgid "Purchasing"
+msgstr "Sol·licitar"
+
+msgid "Add new user hosting plan"
+msgstr "Afegir un nou usuari del pla de hosting"
+
+msgid "Return to previous menu"
+msgstr "Tornar al menú previ"
+
+msgid "Hosting plan added!"
+msgstr "S'ha afegit el pla de hosting!"
+
+msgid "Hosting plan deleted!"
+msgstr "S'ha eliminat el pla de hosting!"
+
+msgid "Hosting plan updated!"
+msgstr "S'ha actualitzat el pla de hosting!"
+
+msgid "Hosting plan can't be deleted, there are orders!"
+msgstr "No es pot eliminar el pla de hosting, hi ha comandes!"
+
+msgid "Hosting plans not found!"
+msgstr "No s'han trobat plans de hosting!"
+
+msgid "No."
+msgstr "No."
+
+msgid "Name"
+msgstr "Nom"
+
+msgid "Show hosting plan"
+msgstr "Veure pla de hosting"
 
 msgid "i-MSCP - Administrator/Add hosting plan"
 msgstr "i-MSCP - Administrador/Afegir pla de hosting"
-
-msgid "Add hosting plan"
-msgstr "Afegir pla de hosting"
 
 msgid "Hosting plan properties"
 msgstr "Propietats del pla de hosting"
@@ -775,9 +1261,6 @@ msgstr "Registres d'Apache"
 
 msgid "AwStats"
 msgstr "AwStats"
-
-msgid "yes"
-msgstr "sí"
 
 msgid "no"
 msgstr "no"
@@ -834,6 +1317,33 @@ msgstr "Sintaxi de preu incorrecta"
 msgid "Incorrect setup fee syntax!"
 msgstr "Sintaxi del preu d'alta incorrecta"
 
+msgid "Incorrect subdomains limit!"
+msgstr "Límit de subdominis incorrecte"
+
+msgid "Incorrect aliases limit!"
+msgstr "Límit d'àlies incorrecte"
+
+msgid "Incorrect mail accounts limit!"
+msgstr "Límit de bústies de correu incorrecte!"
+
+msgid "Incorrect FTP accounts limit!"
+msgstr "Límit de comptes FTP!"
+
+msgid "Incorrect SQL databases limit!"
+msgstr "Límit de bases de dades SQL incorrecte!"
+
+msgid "Incorrect SQL users limit!"
+msgstr "Límit d'usuaris SQL incorrecte"
+
+msgid "Incorrect traffic limit!"
+msgstr "Límit de trànsit incorrecte!"
+
+msgid "Incorrect disk quota limit!"
+msgstr "Límit de quota de disc incorrecte!"
+
+msgid "The i-MSCP application installer needs PHP to enable it!"
+msgstr ""
+
 msgid "Hosting plan with entered name already exists!"
 msgstr "Ja existeix un pla de hosting amb aquest nom"
 
@@ -861,47 +1371,101 @@ msgstr "Preu incorrecte: Exemple: 9.99"
 msgid "Incorrect setup fee. Example: 19.99"
 msgstr "Alta incorrecta: Exemple: 19.99"
 
-msgid "i-MSCP - Administrator/Hosting Plan Management"
-msgstr "i-MSCP - Administrador/Administració de Plans de Hosting"
+msgid "No domain system errors"
+msgstr "No hi ha errors de domini al sistema"
 
-msgid "Hosting plans"
-msgstr "Plans de hosting"
+msgid "No domain alias system errors"
+msgstr "No hi ha errors d'àlies de domini al sistema"
 
-msgid "Manage hosting plans"
-msgstr "Administrar plans de hosting"
+msgid "No subdomain system errors"
+msgstr "No hi ha errors amb els subdominis al sistema"
 
-msgid "Purchasing"
-msgstr "Sol·licitar"
+msgid "No alias subdomain system errors"
+msgstr "No hi ha errors amb els alies de subdomini al sistema"
 
-msgid "Add new user hosting plan"
-msgstr "Afegir un nou usuari del pla de hosting"
+msgid "No email account system errors"
+msgstr "No hi ha errors amb els comptes de correu al sistema"
 
-msgid "Return to previous menu"
-msgstr "Tornar al menú previ"
+#, fuzzy
+msgid "missing domain"
+msgstr "Domini principal"
 
-msgid "Hosting plan added!"
-msgstr "S'ha afegit el pla de hosting!"
+#, fuzzy
+msgid "missing alias"
+msgstr "Àlies de dominis"
 
-msgid "Hosting plan deleted!"
-msgstr "S'ha eliminat el pla de hosting!"
+msgid "orphan entry"
+msgstr ""
 
-msgid "Hosting plan updated!"
-msgstr "S'ha actualitzat el pla de hosting!"
+#, fuzzy
+msgid "No htaccess related system errors"
+msgstr "No hi ha errors d'àlies de domini al sistema"
 
-msgid "Hosting plan can't be deleted, there are orders!"
-msgstr "No es pot eliminar el pla de hosting, hi ha comandes!"
+#, fuzzy
+msgid "Missing domain"
+msgstr "Domini principal"
 
-msgid "Hosting plans not found!"
-msgstr "No s'han trobat plans de hosting!"
+#, php-format
+msgid "Daemon returned %d as status code"
+msgstr "El dimoni ha retornat el codi d'estat %d"
 
-msgid "No."
-msgstr "No."
+msgid "Unknown type!"
+msgstr "Tipus desconegut!"
 
-msgid "Name"
-msgstr "Nom"
+msgid "Done"
+msgstr "Fet"
 
-msgid "Show hosting plan"
-msgstr "Veure pla de hosting"
+msgid "Unknown Error"
+msgstr "Error desconegut"
+
+msgid "Domain errors"
+msgstr "Errors de domini"
+
+msgid "Domain alias errors"
+msgstr "Errors d'àlies de domini"
+
+msgid "Subdomain errors"
+msgstr "Errors de subdomini"
+
+msgid "Alias subdomain errors"
+msgstr "Errors de àlies de subdomini"
+
+msgid "Mail account errors"
+msgstr "Errors de comptes de correu"
+
+msgid ".htaccess related errors"
+msgstr ""
+
+msgid "i-MSCP Daemon tools"
+msgstr "i-MSCP Eines dels dimonis"
+
+msgid "Execute requests"
+msgstr "Executar consultes"
+
+msgid "Set status to 'change'"
+msgstr "Canvia a estat 'canviar'"
+
+#, fuzzy, php-format
+msgid "%s Errors in database"
+msgstr ""
+
+msgid "Update checking is disabled!"
+msgstr "Busca d'actualitzacions deshabilitada"
+
+msgid "Enable update at"
+msgstr "Habilitar actualització a "
+
+msgid "New i-MSCP update is now available"
+msgstr "Una nova actualització de i-MSCP està disponible"
+
+msgid "Get it at"
+msgstr "Obtén-la"
+
+msgid "Available i-MSCP updates"
+msgstr "Actualitzacions i-MSCP disponibles"
+
+msgid "No new i-MSCP updates available"
+msgstr "No hi ha actualitzacions de i-MSCP disponibles"
 
 #, php-format
 msgid "You have <b>%d</b> new support questions"
@@ -910,14 +1474,8 @@ msgstr "Teniu  <b>%d</b> noves peticions de suport"
 msgid "View"
 msgstr "Veure"
 
-msgid "A database update is available"
-msgstr "Hi ha actualitzacions de la base de dades disponibles"
-
-msgid "Update checking is disabled!"
-msgstr "Busca d'actualitzacions deshabilitada"
-
-msgid "New i-MSCP update is now available"
-msgstr "Una nova actualització de i-MSCP està disponible"
+msgid "One or more updates to the database are available."
+msgstr ""
 
 msgid "You are exceeding your traffic limit!"
 msgstr "Esteu sobrepassant el límit de trànsit!"
@@ -951,6 +1509,10 @@ msgstr "i-MSCP - Admin/Administrar IP"
 msgid "Remove IP"
 msgstr "Eliminar IP"
 
+#, fuzzy
+msgid "No IP's available"
+msgstr "No hi ha actualitzacions de i-MSCP disponibles"
+
 msgid "New IP was added!"
 msgstr "S'ha afegit una nova IP!"
 
@@ -969,9 +1531,6 @@ msgstr "Aquesta IP ja existeix!"
 msgid "Please select nework interface!"
 msgstr "Sisplau, tria la interficie de xarxa!"
 
-msgid "Manage IPs"
-msgstr "Administrar IPs"
-
 msgid "Available IPs"
 msgstr "IPs disponibles"
 
@@ -988,105 +1547,51 @@ msgstr "Afegir nova IP"
 msgid "Are you sure you want to delete this IP: %s?"
 msgstr "Esteu segurs que voleu eliminar aquesta IP: %s?"
 
-msgid "No domain system errors"
-msgstr "No hi ha errors de domini al sistema"
+#, fuzzy
+msgid "i-MSCP - Admin/IP Usage"
+msgstr "i-MSCP - Admin/Administrar IP"
 
-msgid "No domain alias system errors"
-msgstr "No hi ha errors d'àlies de domini al sistema"
+#, fuzzy
+msgid "Total Domains"
+msgstr "Dominis"
 
-msgid "No subdomain system errors"
-msgstr "No hi ha errors amb els subdominis al sistema"
+msgid "No records found"
+msgstr ""
 
-msgid "No alias subdomain system errors"
-msgstr "No hi ha errors amb els alies de subdomini al sistema"
+#, fuzzy
+msgid "Admin/IP usage statistics"
+msgstr "Estadístiques de domini"
 
-msgid "No email account system errors"
-msgstr "No hi ha errors amb els comptes de correu al sistema"
+#, fuzzy
+msgid "Domain Name"
+msgstr "Nom del domini"
 
-msgid "i-MSCP debugger"
-msgstr "i-MSCP debugger"
+#, fuzzy
+msgid "Reseller Name"
+msgstr "Nom del distribuïdor"
 
-msgid "Domain errors"
-msgstr "Errors de domini"
-
-msgid "Domain alias errors"
-msgstr "Errors d'àlies de domini"
-
-msgid "Subdomain errors"
-msgstr "Errors de subdomini"
-
-msgid "Alias subdomain errors"
-msgstr "Errors de àlies de subdomini"
-
-msgid "Mail account errors"
-msgstr "Errors de comptes de correu"
-
-msgid "i-MSCP Daemon tools"
-msgstr "i-MSCP Eines dels dimonis"
-
-msgid "Execute requests"
-msgstr "Executar consultes"
-
-msgid "Set status to 'change'"
-msgstr "Canvia a estat 'canviar'"
-
-#, php-format
-msgid "Daemon returned %d as status code"
-msgstr "El dimoni ha retornat el codi d'estat %d"
-
-msgid "Unknown type!"
-msgstr "Tipus desconegut!"
-
-msgid "Done"
-msgstr "Fet"
-
-msgid "Unknown Error"
-msgstr "Error desconegut"
-
-msgid "Enable update at"
-msgstr "Habilitar actualització a "
-
-msgid "Settings"
-msgstr "Paràmetres"
-
-msgid "Get it at"
-msgstr "Obtén-la"
-
-msgid "i-MSCP updates"
-msgstr "Actualitzacions i-MSCP"
-
-msgid "Available i-MSCP updates"
-msgstr "Actualitzacions i-MSCP disponibles"
-
-msgid "No new i-MSCP updates available"
-msgstr "No hi ha actualitzacions de i-MSCP disponibles"
-
-msgid "Language was removed!"
-msgstr "S'ha esborrat l'idioma!"
-
-msgid "User language updated successfully!"
+#, fuzzy
+msgid "User language updated successfully."
 msgstr "Idioma de l'usuari actualitzat correctament!"
 
 msgid "i-MSCP - Admin/Change Language"
 msgstr "i-MSCP - Admin/Canviar Idioma"
 
-msgid "Language"
-msgstr "Idioma"
-
 msgid "Choose your default language"
 msgstr "Escolliu idioma per defecte"
+
+#, fuzzy
+msgid "Error we have user that uses that language!"
+msgstr "Error: ja hi ha un distribuïdor fent servir aquesta IP!"
+
+msgid "Language was removed!"
+msgstr "S'ha esborrat l'idioma!"
 
 msgid "Reseller list is empty!"
 msgstr "La llista de distribuïdors és buida!"
 
 msgid "i-MSCP - Admin/Manage users/Reseller assignment"
 msgstr "i-MSCP - Admin/Administrar usuaris/Assignació distribuïdors"
-
-msgid "Reseller assignment"
-msgstr "Assignació distribuïdors"
-
-msgid "Reseller users"
-msgstr "Usuaris distribuïdors"
 
 msgid "Mark"
 msgstr "Marca"
@@ -1152,12 +1657,6 @@ msgstr ""
 msgid "i-MSCP - Admin/Manage users/User assignment"
 msgstr "i-MSCP - Admin/Administrar usuaris/Assignació d'usuaris"
 
-msgid "User assignment"
-msgstr "Assignació d'usuari"
-
-msgid "Users"
-msgstr "Usuaris"
-
 msgid "User name"
 msgstr "Nom d'usuari"
 
@@ -1193,11 +1692,16 @@ msgstr ""
 msgid "User was disabled"
 msgstr "L'usuari ha estat desactivat"
 
-msgid "Incorrect data input!"
-msgstr "Dades introduïdes incorrectes!"
+#, fuzzy
+msgid "Uninstall"
+msgstr "desinstal·lar"
 
-msgid "i-MSCP - Admin/Internationalisation"
-msgstr "i-MSCP - Admin/Internacionalització"
+#, php-format
+msgid "%d messages translated"
+msgstr "%d missatges traduïts"
+
+msgid "Gzipped"
+msgstr ""
 
 msgid "Upload file error!"
 msgstr "Error al carregar l'arxiu!"
@@ -1211,7 +1715,8 @@ msgstr "No es pot llegir l'arxiu d'idioma!"
 msgid "Uploaded file is not a valid language file!"
 msgstr "L'arxiu carregat no és un arxiu d'idioma vàlid!"
 
-msgid "Uploaded file does not contain the language information!"
+#, fuzzy
+msgid "Uploaded file does not contain language information!"
 msgstr "L'arxiu carregat no conté informació d'idioma!"
 
 #, php-format
@@ -1228,15 +1733,8 @@ msgstr "%s llenguatge actualitzat: %s"
 msgid "Language was updated!"
 msgstr "L'idioma s'ha actualitzat!"
 
-msgid "uninstall"
-msgstr "desinstal·lar"
-
-#, php-format
-msgid "%d messages translated"
-msgstr "%d missatges traduïts"
-
-msgid "Internationalisation"
-msgstr "Internacionalització"
+msgid "i-MSCP - Admin/Internationalisation"
+msgstr "i-MSCP - Admin/Internacionalització"
 
 msgid "Installed languages"
 msgstr "Idiomes instal·lats"
@@ -1244,8 +1742,8 @@ msgstr "Idiomes instal·lats"
 msgid "Messages"
 msgstr "Missatges"
 
-msgid "Panel Default"
-msgstr "Panell per defecte"
+msgid "Panel default language"
+msgstr "Escolliu idioma per defecte"
 
 msgid "Install new language"
 msgstr "Instal·lar nou idioma"
@@ -1258,6 +1756,9 @@ msgstr "Instal·lar"
 
 msgid "Export"
 msgstr "Exportar"
+
+msgid "Incorrect data input!"
+msgstr "Dades introduïdes incorrectes!"
 
 msgid "i-MSCP - Admin/Change Password"
 msgstr "i-MSCP - Admin/Canviar contrasenya"
@@ -1273,9 +1774,6 @@ msgstr "La contrasenya actual és incorrecta"
 
 msgid "User password updated successfully!"
 msgstr "Contrasenya d'usuari actualitzada correctament!"
-
-msgid "Change password"
-msgstr "Canviar contrasenya"
 
 msgid "Password data"
 msgstr "Dades de contrasenya"
@@ -1294,9 +1792,6 @@ msgstr "i-MSCP - Admin/Canviar Dades Personals"
 
 msgid "Personal data updated successfully!"
 msgstr "Dades personals actualitzades correctament!"
-
-msgid "Change personal data"
-msgstr "Canviar dades personals"
 
 msgid "Personal data"
 msgstr "Dades personals"
@@ -1319,6 +1814,9 @@ msgstr "Etiqueta"
 msgid "Number"
 msgstr "Número"
 
+msgid "This user name already exist!"
+msgstr "Aquest nom d'usuari ja existeix"
+
 msgid "Incorrect email syntax!"
 msgstr "Sintaxi del correu incorrecta!"
 
@@ -1337,9 +1835,6 @@ msgstr ""
 
 msgid "You must assign at least one IP number for a reseller!"
 msgstr "Has d'assignar almenys una IP per distribuïdor!"
-
-msgid "Add reseller"
-msgstr "Afegir distribuïdor"
 
 msgid "Domains limit<br><i>(0 unlimited)</i>"
 msgstr "Límit de dominis<br><i>(0 il·limitat)</i>"
@@ -1365,29 +1860,20 @@ msgstr "Còpia i recuperació"
 msgid "Custom error pages"
 msgstr "Pàgines d'error personalitzades"
 
-msgid "Protected areas"
-msgstr "Àrees protegides"
-
-msgid "Webmail"
-msgstr "Correu web"
-
 msgid "Directory listing"
 msgstr "Llistat de directori"
 
 msgid "Logo upload"
 msgstr "Càrrega del logo"
 
-msgid "Support system"
-msgstr "Sistema de suport"
+msgid "Can use software depot"
+msgstr ""
+
+msgid "Can use websoftware depot"
+msgstr ""
 
 msgid "Reseller IPs"
 msgstr "IPs de distribuïdor"
-
-msgid "Customer ID"
-msgstr "ID del client"
-
-msgid "Domains"
-msgstr "Dominis"
 
 msgid "Aliases"
 msgstr "Àlies"
@@ -1483,7 +1969,8 @@ msgstr ""
 msgid "i-MSCP - Reseller statistics"
 msgstr "i-MSCP - Estadístiques del distribuïdor"
 
-msgid "Not found reseller(s) in your system!"
+#, fuzzy
+msgid "No reseller is registered in your system!"
 msgstr "No s'ha trobat el distribuïdor(s) al vostre sistema!"
 
 #, php-format
@@ -1533,9 +2020,6 @@ msgstr "%1$d <br/>de<br/> <b>%2$d</b>"
 msgid "%d <br/>of<br/> <b>unlimited</b>"
 msgstr "%d <br/>de<br/> <b>il·limitat</b>"
 
-msgid "Reseller users table"
-msgstr "Taula d'usuaris distribuïdors"
-
 msgid "This reseller has no domains."
 msgstr "El distribuïdor no té dominis."
 
@@ -1575,23 +2059,8 @@ msgstr "%s no existeix o és buit"
 msgid "Anti-Rootkits Tools Log Checker"
 msgstr "Registre dels anàlisi de les eines Anti-Rootkits"
 
-msgid "i-MSCP - Admin/Server day stats"
-msgstr "i-MSCP - Admin/Estadístiques diàries del servidor"
-
-msgid "Server day statistics"
-msgstr "Estadístiques diàries del servidor"
-
-msgid "Month:"
-msgstr "Mes:"
-
-msgid "Year:"
-msgstr "Any:"
-
-msgid "Day:"
-msgstr "Dia:"
-
-msgid "Hour"
-msgstr "Hora"
+msgid "i-MSCP - Admin/Server statistics"
+msgstr "i-MSCP - Admin/Estadístiques del Servidor"
 
 msgid "Web in"
 msgstr "Web entrada"
@@ -1623,20 +2092,24 @@ msgstr "Total Entrada"
 msgid "All out"
 msgstr "Total Sortida"
 
-msgid "i-MSCP - Admin/Server statistics"
-msgstr "i-MSCP - Admin/Estadístiques del Servidor"
+msgid "i-MSCP - Admin/Server day stats"
+msgstr "i-MSCP - Admin/Estadístiques diàries del servidor"
 
-msgid "Server statistics"
-msgstr "Estadístiques del Servidor"
+msgid "Server day statistics"
+msgstr "Estadístiques diàries del servidor"
 
-msgid "i-MSCP Admin / System Tools / Server Status"
+msgid "Month:"
+msgstr "Mes:"
+
+msgid "Year:"
+msgstr "Any:"
+
+msgid "Day:"
+msgstr "Dia:"
+
+#, fuzzy
+msgid "i-MSCP Admin / General Information / Server Status"
 msgstr "i-MSCP - Admin/Eines de sistema/Estat del servidor"
-
-msgid "UP"
-msgstr "ACTIU"
-
-msgid "DOWN"
-msgstr "PARAT"
 
 msgid "Host"
 msgstr "Host"
@@ -1644,8 +2117,11 @@ msgstr "Host"
 msgid "Service"
 msgstr "Servei"
 
-msgid "Server status"
-msgstr "Estat del servidor"
+msgid "UP"
+msgstr "ACTIU"
+
+msgid "DOWN"
+msgstr "PARAT"
 
 msgid "i-MSCP - Admin/Manage Sessions"
 msgstr "i-MSCP - Admin/Administrar Sessions"
@@ -1659,125 +2135,26 @@ msgstr "Tipus d'usuari"
 msgid "Last access"
 msgstr "Darrer accés"
 
-msgid "Options"
-msgstr "Opcions"
-
 msgid "Kill session"
 msgstr "Eliminar sessió"
-
-msgid "You can only upload images!"
-msgstr "Només podeu carregar imatges!"
-
-msgid "Images have to be smaller than 195 x 195 pixels!"
-msgstr "Les imatges han de ser més petites de 195 x 195 pixels!"
-
-msgid "Your logo was successful uploaded!"
-msgstr "El vostre logo ha estat carregat correctament!"
-
-msgid "Layout settings"
-msgstr "Paràmetres presentació"
-
-msgid "Installed layouts"
-msgstr "Presentacions instal·lades"
-
-msgid "Layout name"
-msgstr "Nom presentació"
-
-msgid "default"
-msgstr "defecte"
-
-msgid "Upload logo"
-msgstr "Carregar logo"
-
-msgid "Logo file"
-msgstr "Arxiu logo"
-
-msgid "Upload"
-msgstr "Carregar"
-
-msgid "Remove"
-msgstr "Eliminar"
-
-msgid "Choose default layout"
-msgstr "Escollir presentació per defecte"
-
-msgid "Layout"
-msgstr "Presentació"
-
-msgid "Please specify a subject!"
-msgstr "Si us plau especifiqueu un assumpte!"
-
-msgid "Please specify message!"
-msgstr "Si us plau especifiqueu un missatge!"
-
-msgid "Auto email template data updated!"
-msgstr "Plantilla automàtica de correu actualitzada!"
-
-msgid "i-MSCP - Admin/Lostpw email setup"
-msgstr "i-MSCP - Admin/Contrassenya perduda del correu"
-
-msgid "Lost password e-mail"
-msgstr "Contrasenya de correu perduda"
-
-msgid "Message template info"
-msgstr "Informació de la plantilla del missatge"
-
-msgid "Message template"
-msgstr "Plantilla de missatge"
-
-msgid "Activation E-Mail"
-msgstr "Activació de correu"
-
-msgid "Password E-Mail"
-msgstr "Contrasenya de correu"
-
-msgid "User login (system) name"
-msgstr "Accés de l'usuari (sistema)"
-
-msgid "User password"
-msgstr "Contrasenya d'usuari"
-
-msgid "User (first and last) name"
-msgstr "Nom d'usuari (nom i cognoms)"
-
-msgid "Lost password link"
-msgstr "Link de contrasenya perduda"
-
-msgid "Subject"
-msgstr "Assumpte"
-
-msgid "Apply changes"
-msgstr "Aplicar canvis"
-
-msgid "URL to this admin panel"
-msgstr "URL al panell d'administrador "
-
-msgid "URL protocol"
-msgstr "Protocol URL"
-
-msgid "i-MSCP - Admin/Maintenance mode"
-msgstr "i-MSCP - Admin/Mode Manteniment"
-
-msgid "Settings saved !"
-msgstr "Paràmetres guardats!"
-
-msgid "Maintenance mode"
-msgstr "Mode manteniment"
-
-msgid "Under this mode only administrators can login"
-msgstr "Només els administradors poden entrar en aquest mode"
 
 msgid "i-MSCP - Admin/Settings"
 msgstr "i-MSCP - Admin/Paràmetres"
 
-msgid "ERROR: Only positive numbers are allowed !"
+#, fuzzy
+msgid "Error: Only positive numbers are allowed!"
 msgstr "ERROR: Només es permeten números positius!"
 
-msgid "Settings saved!"
-msgstr "Paràmetres guardats!"
+#, fuzzy, php-format
+msgid "%d configuration parameter(s) was updated!"
+msgstr "%d ports del(s) servei(s) s'ha(n) actualitzat!"
 
-msgid "General settings"
-msgstr "Paràmetres generals"
+#, php-format
+msgid "%d configuration parameter(s) was created!"
+msgstr ""
+
+msgid "Nothing's been changed!"
+msgstr "No s'ha fet cap canvi!"
 
 msgid "Activation link expire time (minutes)"
 msgstr "Temps d'expiració del link d'activació (minuts)"
@@ -1824,11 +2201,8 @@ msgstr "Comptar les adreçes de correu per defecte"
 msgid "E-Mail accounts are hard suspended"
 msgstr "Els comptes de correu estan desactivats"
 
-msgid "Panel default language"
-msgstr "Escolliu idioma per defecte"
-
-msgid "Server ports"
-msgstr "Ports del servidor"
+msgid "Apply changes"
+msgstr "Aplicar canvis"
 
 msgid "Hosting plans available for"
 msgstr "Plans de hosting disponibles per"
@@ -1900,49 +2274,143 @@ msgstr ""
 msgid "Maximal number of labels for subdomains"
 msgstr "Màxim nombre d'etiquetes per subdominis"
 
-msgid ""
-"ERROR: Only letters, numbers, dash and underscore are allowed for services "
-"names!"
-msgstr ""
-"ERROR: Només estan permesos lletres, números, guions i Barres per els noms "
-"dels serveis!"
+msgid "You can only upload images!"
+msgstr "Només podeu carregar imatges!"
 
-msgid "ERROR: Wrong Ip number!"
+msgid "Images have to be smaller than 195 x 195 pixels!"
+msgstr "Les imatges han de ser més petites de 195 x 195 pixels!"
+
+msgid "Your logo was successful uploaded!"
+msgstr "El vostre logo ha estat carregat correctament!"
+
+msgid "Installed layouts"
+msgstr "Presentacions instal·lades"
+
+msgid "Layout name"
+msgstr "Nom presentació"
+
+msgid "default"
+msgstr "defecte"
+
+msgid "Upload logo"
+msgstr "Carregar logo"
+
+msgid "Logo file"
+msgstr "Arxiu logo"
+
+msgid "Upload"
+msgstr "Carregar"
+
+msgid "Remove"
+msgstr "Eliminar"
+
+msgid "Choose default layout"
+msgstr "Escollir presentació per defecte"
+
+msgid "Please specify a subject!"
+msgstr "Si us plau especifiqueu un assumpte!"
+
+msgid "Please specify message!"
+msgstr "Si us plau especifiqueu un missatge!"
+
+msgid "Auto email template data updated!"
+msgstr "Plantilla automàtica de correu actualitzada!"
+
+msgid "i-MSCP - Admin/Lostpw email setup"
+msgstr "i-MSCP - Admin/Contrassenya perduda del correu"
+
+msgid "Lost password e-mail"
+msgstr "Contrasenya de correu perduda"
+
+msgid "Message template info"
+msgstr "Informació de la plantilla del missatge"
+
+msgid "Message template"
+msgstr "Plantilla de missatge"
+
+msgid "Activation E-Mail"
+msgstr "Activació de correu"
+
+msgid "Password E-Mail"
+msgstr "Contrasenya de correu"
+
+msgid "User login (system) name"
+msgstr "Accés de l'usuari (sistema)"
+
+msgid "User password"
+msgstr "Contrasenya d'usuari"
+
+msgid "User (first and last) name"
+msgstr "Nom d'usuari (nom i cognoms)"
+
+msgid "Lost password link"
+msgstr "Link de contrasenya perduda"
+
+msgid "Subject"
+msgstr "Assumpte"
+
+msgid "URL to this admin panel"
+msgstr "URL al panell d'administrador "
+
+msgid "URL protocol"
+msgstr "Protocol URL"
+
+msgid "i-MSCP - Admin/Maintenance mode"
+msgstr "i-MSCP - Admin/Mode Manteniment"
+
+msgid "Settings saved !"
+msgstr "Paràmetres guardats!"
+
+msgid "Under this mode only administrators can login"
+msgstr "Només els administradors poden entrar en aquest mode"
+
+#, fuzzy
+msgid "Error: Wrong Ip number!"
 msgstr "ERROR: IP incorrecta!"
 
-msgid "ERROR: Only positive numbers are allowed for services ports!"
+#, fuzzy
+msgid "Error: Only positive numbers are allowed for services ports!"
 msgstr "ERROR: Només es permeten números positius per els ports dels serveis!"
 
-msgid "ERROR: Service port with same name already exists!"
+#, fuzzy
+msgid "Error: Service port with same name already exists!"
 msgstr "ERROR: Ja existeix un port per el servei amb el mateix nom!"
 
-msgid "ERROR: Unallowed protocol!"
+#, fuzzy
+msgid "Error: Unallowed protocol!"
 msgstr "ERROR: Protocol no permès!"
 
-msgid "ERROR: Bad value for show entry!"
+#, fuzzy
+msgid "Error: Wrong value for show entry!"
 msgstr "ERROR: Valor incorrecte per l'entrada!"
 
-msgid "Service port was added!"
+#, fuzzy
+msgid "Service port was successfully added"
 msgstr "S'ha afegit un port al servei!"
 
-#, php-format
-msgid "%d Service(s) port was updated!"
+#, fuzzy, php-format
+msgid "%d Service(s) port was successfully updated"
 msgstr "%d ports del(s) servei(s) s'ha(n) actualitzat!"
 
-msgid "Nothing's been changed!"
+#, fuzzy
+msgid "Nothing's been changed"
 msgstr "No s'ha fet cap canvi!"
 
-msgid "You have no custom service ports defined."
+#, fuzzy
+msgid "You have no custom service ports defined"
 msgstr "No teniu ports de servei definits."
 
-msgid "ERROR: Unknown service port name!"
-msgstr "ERROR: Nom de port de servei desconegut!"
-
-msgid "Service port was removed!"
+#, fuzzy
+msgid "Service port was successfully removed!"
 msgstr "El port del servei s'ha esborrat!"
 
-msgid "ERROR: You are not allowed to remove this port entry!"
+#, fuzzy
+msgid "Error: You are not allowed to remove this service port entry!"
 msgstr "ERROR: No estas autoritzat a esborrar aquest port!"
+
+#, fuzzy
+msgid "i-MSCP - Admin / Settings"
+msgstr "i-MSCP - Admin/Paràmetres"
 
 msgid "udp"
 msgstr "udp"
@@ -1981,9 +2449,6 @@ msgstr "Paràmetres de trànsit del servidor actualitzats correctament!"
 msgid "Modify"
 msgstr "Modificar"
 
-msgid "Server traffic settings"
-msgstr "Paràmetres de trànsit del servidor"
-
 msgid "Set server traffic settings"
 msgstr "Definir paràmetres de trànsit del servidor"
 
@@ -1996,14 +2461,400 @@ msgstr "Trànsit d'avís [MB]"
 msgid "i-MSCP - Admin/Manage users/Email setup"
 msgstr "i-MSCP - Admin/Administrar Usuaris/Configurar Email"
 
-msgid "Email setup"
-msgstr "Configurar Email"
-
 msgid "User real (first and last) name"
 msgstr "Nom real de l'usuari (nom i cognoms)"
 
 msgid "User type (admin, reseller, user)"
 msgstr "Tipus d'usuari (admin, distribuidor, usuari)"
+
+#, fuzzy
+msgid "Wrong software id."
+msgstr "ID de comanda errònia!"
+
+msgid "Software was activated."
+msgstr ""
+
+#, fuzzy
+msgid "No Resellers found."
+msgstr "Distribuïdors"
+
+#, fuzzy
+msgid "Rights succesfully added."
+msgstr "Usuari SQL afegit correctament!"
+
+msgid "Rights succesfully removed."
+msgstr ""
+
+#, fuzzy, php-format
+msgid "%1$s (%2$s)"
+msgstr "%1$s de %2$s MB"
+
+#, fuzzy
+msgid "Software was deleted."
+msgstr "S'ha esborrat la IP!"
+
+#, fuzzy
+msgid "Fill out a message text!"
+msgstr "El vostre missatge ha estat enviat!"
+
+#, fuzzy
+msgid "i-MSCP - Application Management"
+msgstr "i-MSCP - Client/Administrador Tasques Programades"
+
+msgid "Message to reseller before deleting the software"
+msgstr ""
+
+msgid "Delete reseller software"
+msgstr ""
+
+#, fuzzy
+msgid "Reseller data"
+msgstr "Nom del distribuïdor"
+
+msgid "Delete software and send message"
+msgstr ""
+
+#, fuzzy, php-format
+msgid "File does not exist. %1$s.tar.gz"
+msgstr "%s no existeix"
+
+#, fuzzy
+msgid "Software was imported succesfully."
+msgstr "La base de dades SQL s'ha eliminat correctament!"
+
+msgid "Download"
+msgstr ""
+
+msgid "Activate"
+msgstr "Activar"
+
+#, fuzzy
+msgid "Import"
+msgstr "Exportar"
+
+msgid "No software is waiting for activation"
+msgstr ""
+
+#, fuzzy
+msgid "Package installed successfully!"
+msgstr "Compte FTP eliminat correctament!"
+
+msgid "Rights"
+msgstr ""
+
+msgid "Softwarerights"
+msgstr ""
+
+msgid "Installing your uploaded package. Please refresh this site."
+msgstr ""
+
+msgid ""
+"The package will be installed automaticly to your system after upload.<br /"
+">Refresh your site to see the new status!"
+msgstr ""
+
+#, fuzzy
+msgid "installing"
+msgstr "desinstal·lar"
+
+msgid "Failure in the package. Deleting!"
+msgstr ""
+
+msgid ""
+"There is an Error inside your package. Please check it!<br />Refresh your "
+"site to see the new status!"
+msgstr ""
+
+#, fuzzy
+msgid "deleting"
+msgstr "Paràmetres de la comanda"
+
+msgid "Your package is corrupt. Please correct it!"
+msgstr ""
+
+msgid "Package already exist in the software depot!"
+msgstr ""
+
+msgid ""
+"Check your software depot uploads!<br />It is not allowed to upload this "
+"package two times.<br />Refresh your site to see the new status!"
+msgstr ""
+
+#, fuzzy
+msgid "This package already exist in the software depot!"
+msgstr "Un domini amb aquest nom ja existeix al sistema!"
+
+msgid "Package already exist in the reseller depot!"
+msgstr ""
+
+msgid ""
+"Check the reseller uploads!<br />It is not allowed to upload this package "
+"two times.<br />Refresh your site to see the new status!"
+msgstr ""
+
+#, php-format
+msgid "This package already exist in the depot of the reseller \"%1$s\"!"
+msgstr ""
+
+msgid "No software in software depot available!"
+msgstr ""
+
+msgid "No reseller with activated software installer found!"
+msgstr ""
+
+msgid "Unable to read xml file for web softwares!"
+msgstr ""
+
+msgid "i-MSCP application installer web software depot"
+msgstr ""
+
+#, fuzzy
+msgid "Update from web depot"
+msgstr "Actualitzar petició"
+
+#, fuzzy
+msgid "Package title"
+msgstr "Preu del paquet"
+
+#, fuzzy
+msgid "Package install type"
+msgstr "Característiques del pack"
+
+#, fuzzy
+msgid "Package version"
+msgstr "Preu del paquet"
+
+#, fuzzy
+msgid "Package language"
+msgstr "Característiques del pack"
+
+#, fuzzy
+msgid "Package type"
+msgstr "Preu del paquet"
+
+#, fuzzy
+msgid "Package vendor HP"
+msgstr "Característiques del pack"
+
+#, fuzzy
+msgid "Package actions"
+msgstr "Característiques del pack"
+
+msgid "Web software depot packages total"
+msgstr ""
+
+msgid "You have to choose between file-upload and wget-function."
+msgstr ""
+
+msgid "You must select a file to upload/download."
+msgstr ""
+
+msgid "File needs to be a .tar.gz-archive"
+msgstr ""
+
+#, php-format
+msgid "Error: Could not upload file. Max. upload filesize (%1$d MB) reached?"
+msgstr ""
+
+#, php-format
+msgid ""
+"Error: Your remote filesize (%1$d B) is lower than 1 Byte. Please check your "
+"URL!"
+msgstr ""
+
+#, php-format
+msgid ""
+"Error: Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB"
+msgstr ""
+
+#, fuzzy
+msgid "Error: Remote File not found!"
+msgstr "Error 404 (no trobat)"
+
+msgid "Error: Could not upload the file. File not found!"
+msgstr ""
+
+#, fuzzy
+msgid "File was successfully uploaded."
+msgstr "El vostre logo ha estat carregat correctament!"
+
+msgid "Software depot"
+msgstr ""
+
+msgid "Software depot total"
+msgstr ""
+
+msgid "Software depot upload"
+msgstr ""
+
+#, php-format
+msgid "Choose file (Max: %1$d MB)"
+msgstr ""
+
+#, php-format
+msgid "or remote file (Max: %1$d MB)"
+msgstr ""
+
+#, fuzzy
+msgid "Upload now"
+msgstr "Carregar logo"
+
+msgid "Awaiting Activation"
+msgstr ""
+
+#, fuzzy
+msgid "Reseller software list"
+msgstr "Estadístiques de distribuïdor"
+
+#, fuzzy
+msgid "Application"
+msgstr "Acció"
+
+msgid "App-Version"
+msgstr ""
+
+msgid "Type"
+msgstr "Tipus"
+
+#, fuzzy
+msgid "Depot import"
+msgstr "Port de desí"
+
+msgid "Software total"
+msgstr ""
+
+#, fuzzy
+msgid "Reseller total"
+msgstr "Nom del distribuïdor"
+
+#, fuzzy
+msgid "Waiting for activation"
+msgstr "Pendent d'aprovació"
+
+#, fuzzy
+msgid "Activated software"
+msgstr "Activar"
+
+msgid "Total installations"
+msgstr ""
+
+#, fuzzy
+msgid "Are you sure you want to activate this package?"
+msgstr "Esteu segurs que voleu eliminar aquesta comanda?"
+
+#, fuzzy
+msgid "Are you sure you want to import this package into the software depot?"
+msgstr "Esteu segurs que voleu canviar l'estat del domini %s?"
+
+#, fuzzy
+msgid "Are you sure you want to delete this package?"
+msgstr "Esteu segurs que voleu eliminar aquesta comanda?"
+
+#, fuzzy
+msgid "i-MSCP - Application management options"
+msgstr "i-MSCP - Admin/Administrar Sessions"
+
+msgid "Main application installer options updated!"
+msgstr ""
+
+msgid "Application management options"
+msgstr ""
+
+msgid "Main application installer options"
+msgstr ""
+
+msgid "Using i-MSCP application installer websoftware depot"
+msgstr ""
+
+msgid "i-MSCP websoftware depot XML-File URL"
+msgstr ""
+
+msgid "Last i-MSCP websoftware depot update"
+msgstr ""
+
+#, fuzzy
+msgid "not available"
+msgstr "IPs disponibles"
+
+#, fuzzy
+msgid "Wrong reseller id."
+msgstr "Del distribuïdor"
+
+msgid "This package is installed on following domain(s):"
+msgstr ""
+
+msgid "This package is not installed"
+msgstr ""
+
+#, php-format
+msgid "%1$s - (Softwaredepot)"
+msgstr ""
+
+#, php-format
+msgid "%1$s`s - Software"
+msgstr ""
+
+#, fuzzy
+msgid "No software available!"
+msgstr "No hi ha actualitzacions de la base de dades disponibles"
+
+#, fuzzy
+msgid "Installed on"
+msgstr "Presentacions instal·lades"
+
+#, fuzzy
+msgid "Reseller list"
+msgstr "Distribuïdors"
+
+msgid "Softwaredepot"
+msgstr ""
+
+#, fuzzy
+msgid "Admin not available"
+msgstr "Plans de hosting disponibles per"
+
+#, fuzzy
+msgid "Are you sure to remove the permissions ?"
+msgstr "Esteu segurs de restaurar el backup?"
+
+msgid "No Reseller with permissions for this software found"
+msgstr ""
+
+#, fuzzy
+msgid "All reseller"
+msgstr "Tots els distribuïdors"
+
+msgid "No Reseller available to add the permissions"
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP - Application Management (Permissions)"
+msgstr "i-MSCP - Admin/Administrar Sessions"
+
+#, php-format
+msgid "%1$s - (Version: %2$s, Language: %3$s)"
+msgstr ""
+
+msgid "Add permissions for reseller to software:"
+msgstr ""
+
+#, fuzzy
+msgid "Remove permissions"
+msgstr "Versió de mostra!"
+
+#, fuzzy
+msgid "Reseller with permissions total"
+msgstr "Taula d'estadístiques dels distribuïdors"
+
+msgid "Added by"
+msgstr ""
+
+#, fuzzy
+msgid "Add permissions"
+msgstr "Afegir usuari existent"
+
+msgid "Software permissions"
+msgstr ""
 
 msgid "CPU bogomips"
 msgstr "CPU bogomips"
@@ -2056,35 +2907,20 @@ msgstr "Mida"
 msgid "Swap"
 msgstr "Swap"
 
-msgid "System info"
-msgstr "Informació del sistema"
-
 msgid "Vital system info"
 msgstr "Informació vital del sistema"
 
 msgid "Total"
 msgstr "Total"
 
-msgid "Type"
-msgstr "Tipus"
-
 msgid "Up time"
 msgstr "Uptime"
-
-msgid "You have no support tickets."
-msgstr "No teniu tickets de suport."
 
 msgid "i-MSCP - Client/Questions & Comments"
 msgstr "i-MSCP - Client/Preguntes i Comentaris"
 
 msgid "Support tickets"
 msgstr "Tiquets de suport"
-
-msgid "From"
-msgstr "De"
-
-msgid "To"
-msgstr "A"
 
 msgid "Priority"
 msgstr "Prioritat"
@@ -2101,6 +2937,9 @@ msgstr "Tiquets oberts"
 msgid "Closed tickets"
 msgstr "Tiquets tancats"
 
+msgid "From"
+msgstr "De"
+
 msgid "Support ticket deleted successfully!"
 msgstr "El tiquet de suport s'ha eliminat correctament!"
 
@@ -2110,23 +2949,8 @@ msgstr "Tots els tiquets de suport oberts s'han eliminat correctament!"
 msgid "All closed support tickets deleted successfully!"
 msgstr "Tots els tiquets de suport tancats s'han eliminat correctament!"
 
-msgid "[New]"
-msgstr "[Nou]"
-
-msgid "[Re]"
-msgstr "[Re]"
-
 msgid "i-MSCP - Client/Enable Mail Autoresponder"
 msgstr "i-MSCP - Client/Activar Autoresposta de correu"
-
-msgid "Ticket not found!"
-msgstr "Tiquet no trobat!"
-
-msgid "Open ticket"
-msgstr "Obrir tiquet"
-
-msgid "Close ticket"
-msgstr "Tancar tiquet"
 
 msgid "i-MSCP - Client: Support System: View Ticket"
 msgstr "i-MSCP - Client: Sistema de Suport: Veure Tiquets"
@@ -2134,14 +2958,8 @@ msgstr "i-MSCP - Client: Sistema de Suport: Veure Tiquets"
 msgid "Please type your message!"
 msgstr "Si us plau escriviu el vostre missatge!"
 
-msgid "Message was sent."
-msgstr "El missatge ha estat enviat"
-
-msgid "Ticket was closed!"
-msgstr "El tiquet s'ha tancat!"
-
-msgid "Ticket was reopened!"
-msgstr "El ticket s'ha reobert!"
+msgid "Ticket not found!"
+msgstr "Tiquet no trobat!"
 
 msgid "i-MSCP - Admin: Support System: View Ticket"
 msgstr "i-MSCP - Admin : Sistema de suport: Veure Tiquets"
@@ -2201,45 +3019,6 @@ msgstr ""
 msgid "Yes, delete the domain."
 msgstr "Si, esborra el domini."
 
-msgid "i-MSCP Client : Add Alias"
-msgstr "i-MSCP - Client: Afegir Àlies"
-
-msgid "Manage domain alias"
-msgstr "Administrar àlies de domini"
-
-msgid "Add domain alias"
-msgstr "Afegir àlies de domini"
-
-msgid "User account"
-msgstr "Compte d'usuari"
-
-msgid "Directory mount point"
-msgstr "Directori del punt de muntatge"
-
-msgid "Forward to URL"
-msgstr "Redirigir a la URL"
-
-msgid "Add alias"
-msgstr "Afegir àlies"
-
-msgid "You do not need 'www.' i-MSCP will add it on its own."
-msgstr "No necessiteu el 'www'. i-MSCP ja ho afegirà."
-
-msgid "Wrong domain name!"
-msgstr "Nom de domini incorrecte!"
-
-msgid "Please write mount point!"
-msgstr "Si us plau especifiqueu el punt de muntatge!"
-
-msgid "Enable Forward"
-msgstr "Activar Redirecció"
-
-msgid "Enable"
-msgstr "Activar"
-
-msgid "Disable"
-msgstr "Desactivar"
-
 msgid "Domain alias limit reached!"
 msgstr "S'ha arribat al límit d'àlies de domini!"
 
@@ -2269,6 +3048,42 @@ msgstr "Àlies programat per ser activat!"
 
 msgid "Alias scheduled for addition!"
 msgstr "Àlies programat per ser afegit!"
+
+msgid "i-MSCP Client : Add Alias"
+msgstr "i-MSCP - Client: Afegir Àlies"
+
+msgid "Manage domain alias"
+msgstr "Administrar àlies de domini"
+
+msgid "Add domain alias"
+msgstr "Afegir àlies de domini"
+
+msgid "User account"
+msgstr "Compte d'usuari"
+
+msgid "Directory mount point"
+msgstr "Directori del punt de muntatge"
+
+msgid "Forward to URL"
+msgstr "Redirigir a la URL"
+
+msgid "You do not need 'www.' i-MSCP will add it on its own."
+msgstr "No necessiteu el 'www'. i-MSCP ja ho afegirà."
+
+msgid "Wrong domain name!"
+msgstr "Nom de domini incorrecte!"
+
+msgid "Please write mount point!"
+msgstr "Si us plau especifiqueu el punt de muntatge!"
+
+msgid "Enable Forward"
+msgstr "Activar Redirecció"
+
+msgid "Enable"
+msgstr "Activar"
+
+msgid "Disable"
+msgstr "Desactivar"
 
 msgid ""
 "Domain alias you are trying to remove has subdomains!<br>First remove them!"
@@ -2318,9 +3133,6 @@ msgstr "Arxius de backup programats per restauració!"
 
 msgid "i-MSCP - Client/Daily Backup"
 msgstr "i-MSCP - Client/Backup Diari"
-
-msgid "Daily backup"
-msgstr "Backup Diari"
 
 msgid "Instructions to download today's backup"
 msgstr "Instruccions per descarregar el backup diari"
@@ -2390,7 +3202,12 @@ msgstr "Editar Tasques Programades"
 msgid "Cronjobs"
 msgstr "Tasques programades"
 
-msgid "DNS zone record scheduled for deletion!"
+#, fuzzy
+msgid "You are not allowed to remove this DNS record!"
+msgstr "ERROR: No estas autoritzat a esborrar aquest port!"
+
+#, fuzzy
+msgid "Custom DNS record scheduled for deletion!"
 msgstr "Zona DNS programada per eliminació!"
 
 msgid "i-MSCP - Manage Domain Alias/Add DNS zone's record"
@@ -2444,6 +3261,10 @@ msgstr "Dades del registre en pla"
 msgid "DNS zone's records (EXPERIMENTAL)"
 msgstr "Entrades de la zona DNS (EXPERIMENTAL)"
 
+#, fuzzy
+msgid "You are not allowed to edit this DNS record!"
+msgstr "ERROR: No estas autoritzat a esborrar aquest port!"
+
 #, php-format
 msgid "Use of disallowed char(\"%s\") in CNAME"
 msgstr "No es permet fer servir el caràcter (\"%s\") en un CNAME"
@@ -2496,39 +3317,9 @@ msgstr "No puc validar l'entrada %s. Motiu: '%s'."
 msgid "Unknown zone type %s!"
 msgstr "Tipus de zona %s desconegut!"
 
-msgid "Manual zone's records list is empty!"
-msgstr "La llista de zones DNS manuals és buida!"
-
-#, php-format
-msgid "%s record"
-msgstr "entrada %s"
-
-msgid "Subdomain list is empty!"
-msgstr "La llista de subdominis és buida!"
-
-msgid "Delete order"
-msgstr "Eliminar comanda"
-
-msgid "Alias list is empty!"
-msgstr "La llista d'àlies és buida!"
-
-msgid "i-MSCP - Client/Manage Domains"
-msgstr "i-MSCP - Client/Administrar Dominis"
-
-msgid "Manage domains"
-msgstr "Administrar dominis"
-
-msgid "Mount point"
-msgstr "Punt de muntatge"
-
-msgid "Forward"
-msgstr "Reenviar"
-
-msgid "Actions"
-msgstr "Accions"
-
-msgid "Record data"
-msgstr "Dades de l'entrada"
+#, fuzzy
+msgid "Error: DNS record already exist!"
+msgstr "Ja existeix l'usuari!"
 
 msgid "i-MSCP - Client/Domain Statistics"
 msgstr "i-MSCP - Client/Estadístiques del Domini"
@@ -2548,6 +3339,37 @@ msgstr "POP3/IMAP"
 msgid "Sum"
 msgstr "Suma"
 
+msgid "Manual zone's records list is empty!"
+msgstr "La llista de zones DNS manuals és buida!"
+
+#, php-format
+msgid "%s record"
+msgstr "entrada %s"
+
+msgid "Subdomain list is empty!"
+msgstr "La llista de subdominis és buida!"
+
+msgid "Delete order"
+msgstr "Eliminar comanda"
+
+msgid "Alias list is empty!"
+msgstr "La llista d'àlies és buida!"
+
+msgid "i-MSCP - Client/Manage Domains"
+msgstr "i-MSCP - Client/Administrar Dominis"
+
+msgid "Mount point"
+msgstr "Punt de muntatge"
+
+msgid "Forward"
+msgstr "Reenviar"
+
+msgid "Actions"
+msgstr "Accions"
+
+msgid "Record data"
+msgstr "Dades de l'entrada"
+
 msgid "i-MSCP - Client/Manage Error Custom Pages"
 msgstr "i-MSCP - Client/Administrar Pàgines d'Error Personalitzades"
 
@@ -2560,7 +3382,8 @@ msgstr "Editar pàgina d'error"
 msgid "Custom error page was updated!"
 msgstr "Pàgina d'error personalitzada actualitzada!"
 
-msgid "System error - custom error page was NOT updated!"
+#, fuzzy
+msgid "System error - custom error page was not updated!"
 msgstr ""
 "Error de sistema - NO s'ha actualitzat la pàgina d'error personalitzada!"
 
@@ -2579,17 +3402,11 @@ msgstr "Error 500 (error intern del servidor)"
 msgid "Error 503 (service unavailable)"
 msgstr "Error 503 (servei no disponible)"
 
-msgid "Error pages"
-msgstr "Pàgines d'error"
-
 msgid "FTP list is empty!"
 msgstr "La llista d'FTP és buida!"
 
 msgid "i-MSCP - Client/Manage Users"
 msgstr "ispCp - Client/Administrar Usuaris"
-
-msgid "Manage users"
-msgstr "Administrar Usuaris"
 
 msgid "FTPs total"
 msgstr "Total FTPs"
@@ -2599,6 +3416,10 @@ msgstr "Usuaris FTP"
 
 msgid "FTP account"
 msgstr "Compte FTP"
+
+#, fuzzy
+msgid "Login As"
+msgstr "Accedir"
 
 msgid "Empty List"
 msgstr "Llista Buida"
@@ -2634,7 +3455,8 @@ msgstr "La llista de subdominis és buida! No podeu hi afegir comptes FTP!"
 msgid "Alias list is empty! You cannot add FTP accounts there!"
 msgstr "La llista d'àlies és buida! No hi podeu afegir comptes FTP!"
 
-msgid "Please specify other FTP account dir!"
+#, fuzzy
+msgid "Please specify other FTP account directory!"
 msgstr "Si us plau especifiqueu un altre directori FTP!"
 
 msgid "FTP accounts limit reached!"
@@ -2642,9 +3464,6 @@ msgstr "S'ha assolit el límit de comptes FTP!"
 
 msgid "i-MSCP - Client/Add FTP User"
 msgstr "i-MSCP - Client/Afegir Usuari FTP"
-
-msgid "Add FTP user"
-msgstr "Afegir usuari FTP"
 
 msgid "To main domain"
 msgstr "Al domini principal"
@@ -2661,16 +3480,18 @@ msgstr "Utilitzar un altre directori"
 msgid "Choose dir"
 msgstr "Escollir directori"
 
-msgid "Cannot open directory!<br>Please contact your administrator!"
+#, fuzzy
+msgid "Unknown FTP user id!"
+msgstr "Tipus desconegut!"
+
+#, fuzzy
+msgid "Cannot open directory! Please contact your administrator!"
 msgstr ""
 "No es pot obrir el directori!<br> Si us plau contacteu amb el vostre "
 "administrador !"
 
 msgid "Parent Directory"
 msgstr "Directori arrel"
-
-msgid "Protect it"
-msgstr "Protegir"
 
 msgid "i-MSCP - Client/Webtools"
 msgstr "isCP - Client/Eines web"
@@ -2692,6 +3513,11 @@ msgstr "Dades del compte FTP actualitzades!"
 
 msgid "i-MSCP - Client/Edit FTP Account"
 msgstr "i-MSCP - Client/Editar Compte FTP"
+
+msgid ""
+"User does not exist or you do not have permission to access this interface!"
+msgstr ""
+"L'usuari no existeix o no teniu permís per accedir a aquesta interfície!"
 
 msgid "Edit FTP user"
 msgstr "Editar usuari FTP"
@@ -2747,6 +3573,19 @@ msgid ""
 msgstr ""
 "Tens el control de DNS habilitat, però el nou pla de hosting no té aquesta "
 "funció."
+
+msgid "i-MSCP application installer: enabled"
+msgstr ""
+
+msgid "i-MSCP application installer: disabled"
+msgstr ""
+
+#, fuzzy
+msgid ""
+"You have the i-MSCP application installer enabled, but the new hosting plan "
+"doesn't has this feature."
+msgstr ""
+"Tens el PHP habilitat, però el nou pla de hosting no té aquesta funció."
 
 msgid "You have more disk space in use than the new hosting plan limits."
 msgstr ""
@@ -2865,20 +3704,11 @@ msgstr "Esteu sobrepassant el límit de disc!"
 msgid "You have no new support questions!"
 msgstr "No teniu preguntes de suport!"
 
-msgid "Not Set"
-msgstr "No definit"
-
 msgid "This Domain is expired"
 msgstr "Aquest domini està caducat"
 
 msgid "i-MSCP - Client/Main Index"
 msgstr "i-MSCP - Client/Índex principal"
-
-msgid "General information"
-msgstr "Informació General"
-
-msgid "Account name"
-msgstr "Nom del compte"
 
 msgid "Main domain"
 msgstr "Domini principal"
@@ -2900,6 +3730,9 @@ msgstr "Ús de disc"
 
 msgid "Alternative URL to reach your website"
 msgstr "URL alternativa per arribar a la teva web"
+
+msgid "User language updated successfully!"
+msgstr "Idioma de l'usuari actualitzat correctament!"
 
 msgid "i-MSCP - Client/Change Language"
 msgstr "i-MSCP - Client/Canviar idioma"
@@ -3028,6 +3861,18 @@ msgstr "El vostre missatge"
 msgid "Enable mail auto responder"
 msgstr "Activar autoresposta al correu"
 
+msgid "Delete CatchAll"
+msgstr "Esborrar CatchAll"
+
+msgid "None"
+msgstr "Cap"
+
+msgid "Create catch all"
+msgstr "Crear catch all"
+
+msgid "Catch all account"
+msgstr "Compte Catch all"
+
 msgid "Catch all account scheduled for creation!"
 msgstr "Compte Catch all programat per ser creat!"
 
@@ -3043,23 +3888,8 @@ msgstr "Crear un compte catch all"
 msgid "Mail accounts list"
 msgstr "Llista de comptes de correu"
 
-msgid "Create catch all"
-msgstr "Crear catch all"
-
 msgid "Catch all account scheduled for deletion!"
 msgstr "Compte Catchall programat per eliminació!"
-
-msgid "Delete CatchAll"
-msgstr "Esborrar CatchAll"
-
-msgid "None"
-msgstr "Cap"
-
-msgid "Catch all account"
-msgstr "Compte Catch all"
-
-msgid "Catch all"
-msgstr "Catch all"
 
 msgid "Please delete first CatchAll account for this email!"
 msgstr "Si us plau elimineu primer el compte CatchAll per aquest email!"
@@ -3081,6 +3911,35 @@ msgstr "ispCp - Client/Canviar Contrasenya"
 
 msgid "i-MSCP - Client/Change Personal Data"
 msgstr "ispCp - Client/Canviar Dades Personals"
+
+#, fuzzy
+msgid "Unknown SQL user id."
+msgstr "Error desconegut"
+
+#, fuzzy
+msgid "Error: An error occurred while authentication."
+msgstr "Error en l'autenticació!"
+
+msgid "You do not have protected areas"
+msgstr "No teniu àrees protegides"
+
+msgid "Manage users and groups"
+msgstr "Administrar usuaris i grups"
+
+msgid "Group name"
+msgstr "Nom del grup"
+
+msgid "Group members"
+msgstr "Membres del grup"
+
+msgid "Add group"
+msgstr "Afegir grup"
+
+msgid "Group"
+msgstr "Grup"
+
+msgid "Add new protected area"
+msgstr "Afegir nova àrea protegida"
 
 msgid "Please choose user or group"
 msgstr "Si us plau escolliu usuari o grup"
@@ -3125,6 +3984,9 @@ msgstr "Ruta"
 msgid "Groups"
 msgstr "Grups"
 
+msgid "Protect it"
+msgstr "Protegir"
+
 msgid "User auth"
 msgstr "Autentificació per usuari"
 
@@ -3137,9 +3999,6 @@ msgstr "Nom d'àrea"
 msgid "Unprotect it"
 msgstr "Desprotegir"
 
-msgid "Manage users and groups"
-msgstr "Administrar usuaris i grups"
-
 msgid "Protected area status should be OK if you want to delete it!"
 msgstr ""
 "L'estat de l'àrea protegida hauria de ser OK abans d'intentar eliminar-la!"
@@ -3149,27 +4008,6 @@ msgstr "Àrea protegida eliminada correctament!"
 
 msgid "Permission deny!"
 msgstr "Permís denegat!"
-
-msgid "You do not have protected areas"
-msgstr "No teniu àrees protegides"
-
-msgid "Add user"
-msgstr "Afegir usuari"
-
-msgid "Group name"
-msgstr "Nom del grup"
-
-msgid "Group members"
-msgstr "Membres del grup"
-
-msgid "Add group"
-msgstr "Afegir grup"
-
-msgid "Group"
-msgstr "Grup"
-
-msgid "Add new protected area"
-msgstr "Afegir nova àrea protegida"
 
 msgid "Protected area was deleted successful!"
 msgstr "L'àrea protegida s'ha eliminat correctament!"
@@ -3215,8 +4053,184 @@ msgstr "Actualitzar usuari"
 msgid "You have no users!"
 msgstr "No teniu usuaris!"
 
-msgid "Error while authenticating!"
-msgstr "Error en l'autenticació!"
+#, fuzzy
+msgid "Install in progress..."
+msgstr "Addició en curs"
+
+#, fuzzy
+msgid "Deletion in progress..."
+msgstr "Eliminació en curs"
+
+#, fuzzy
+msgid "Are you sure to install this package?"
+msgstr "Esteu segurs que voleu eliminar aquesta comanda?"
+
+#, php-format
+msgid ""
+"This Package (%s, V%s) was deleted by your reseller. You can only uninstall "
+"this package!<br />Please delete the files and database for this package "
+"manually!"
+msgstr ""
+
+msgid "Installed Package which was deleted by your reseller!"
+msgstr ""
+
+#, fuzzy
+msgid "No software available"
+msgstr "No hi ha actualitzacions de la base de dades disponibles"
+
+msgid "required"
+msgstr ""
+
+msgid "not required"
+msgstr ""
+
+#, fuzzy
+msgid "You do not have permissions to install software"
+msgstr "No teniu permís per accedir a aquesta interfície!"
+
+#, fuzzy
+msgid "i-MSCP - application installer"
+msgstr "i-MSCP - Client/Administrador Tasques Programades"
+
+#, fuzzy
+msgid "Install software"
+msgstr "Instal·lar nou idioma"
+
+msgid "Software"
+msgstr ""
+
+#, fuzzy
+msgid "Version"
+msgstr "Versió de mostra!"
+
+#, fuzzy
+msgid "Database"
+msgstr "Base de dades SQL"
+
+#, fuzzy
+msgid "Apps available"
+msgstr "IPs disponibles"
+
+msgid "Software installation"
+msgstr ""
+
+#, fuzzy
+msgid "Software deleted successful."
+msgstr "Àrea protegida eliminada correctament!"
+
+msgid "Software will be deleted now."
+msgstr ""
+
+msgid "Database user list is empty!"
+msgstr "La llista d'usuaris de base de dades és buida!"
+
+msgid "At first you must create a database!"
+msgstr ""
+
+#, fuzzy
+msgid "Add new database"
+msgstr "Afegir base de dades SQL"
+
+#, fuzzy
+msgid "Software not found!"
+msgstr "Tiquet no trobat!"
+
+#, php-format
+msgid "The directory -%1$s- was created!"
+msgstr ""
+
+#, fuzzy
+msgid "Please select the correct user for your database!"
+msgstr "Si us plau seleccioneu un usuari(s)!"
+
+#, fuzzy
+msgid "You have to fill out inputs!"
+msgstr "No teniu grups!"
+
+msgid "You cant't install outside from htdocs!"
+msgstr ""
+
+msgid "You choose a directory, which doesn't match with the domain directory!"
+msgstr ""
+
+#, php-format
+msgid "The directory -%1$s- doesn't exist. Please create it!"
+msgstr ""
+
+#, php-format
+msgid "Please select another directory! %1$s (%2$s) is installed there!"
+msgstr ""
+
+msgid "i-MSCP - Install Software"
+msgstr ""
+
+#, fuzzy
+msgid "Install Software"
+msgstr "Instal·lar nou idioma"
+
+#, fuzzy
+msgid "Database required"
+msgstr "Usuaris de base de dades"
+
+#, fuzzy
+msgid "Select Domain"
+msgstr "Esborrar domini"
+
+#, fuzzy
+msgid "back"
+msgstr "Tornar"
+
+#, fuzzy
+msgid "install"
+msgstr "desinstal·lar"
+
+#, fuzzy
+msgid "Install path"
+msgstr "Instal·lar"
+
+msgid "Create directory, if not exist!"
+msgstr ""
+
+#, fuzzy
+msgid "Select database"
+msgstr "Base de dades SQL"
+
+#, fuzzy
+msgid "SQL-User"
+msgstr "Usuari SQL"
+
+#, fuzzy
+msgid "installed"
+msgstr "desinstal·lar"
+
+msgid "Installation infos"
+msgstr ""
+
+#, fuzzy
+msgid "Software status:"
+msgstr "Estat del servidor"
+
+msgid "Installation path:"
+msgstr ""
+
+#, fuzzy
+msgid "Used database:"
+msgstr "Base de dades SQL"
+
+msgid "You need a Database for this software"
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP - Software details"
+msgstr "i-MSCP - Detalls del domini"
+
+#, fuzzy
+msgid "Software details"
+msgstr "Detalls de la comanda"
+
+msgid "Homepage"
+msgstr ""
 
 msgid "Please type user password!"
 msgstr "Si us plau escriviu la contrasenya de l'usuari!"
@@ -3233,6 +4247,12 @@ msgstr "Contrasenya d'usuari SQL canviada correctament!"
 
 msgid "i-MSCP - Client/Change SQL User Password"
 msgstr "i-MSCP - Client/Canviar Contrasenya Usuari SQL"
+
+#, fuzzy
+msgid ""
+"User does not exist or you do not have permission to access this interface."
+msgstr ""
+"L'usuari no existeix o no teniu permís per accedir a aquesta interfície!"
 
 msgid "Change SQL user password"
 msgstr "Canviar contrasenya usuari SQL"
@@ -3262,9 +4282,6 @@ msgstr "S'ha arribat al límit de comptes SQL!"
 msgid "i-MSCP - Client/Add SQL Database"
 msgstr "i-MSCP - Client/Afegir Base de Dades SQL"
 
-msgid "Add SQL database"
-msgstr "Afegir base de dades SQL"
-
 msgid "Database name"
 msgstr "Nom de base de dades"
 
@@ -3283,23 +4300,14 @@ msgstr "La base de dades SQL s'ha eliminat correctament!"
 msgid "SQL user was removed successfully!"
 msgstr "Usuari SQL eliminat satisfactòriament!"
 
-msgid "Database user list is empty!"
-msgstr "La llista d'usuaris de base de dades és buida!"
-
 msgid "Database list is empty!"
 msgstr "La llista de bases de dades és buida!"
 
 msgid "i-MSCP - Client/Manage SQL"
 msgstr "i-MSCP - Client/Administrar SQL"
 
-msgid "Manage SQL"
-msgstr "Administrar SQL"
-
 msgid "Database Name and Users"
 msgstr "Usuaris i noms de base de dades"
-
-msgid "phpMyAdmin"
-msgstr "phpMyAdmin"
 
 msgid "Database users"
 msgstr "Usuaris de base de dades"
@@ -3388,9 +4396,6 @@ msgstr "Subdomini programat per ser afegit!"
 msgid "i-MSCP - Client/Add Subdomain"
 msgstr "i-MSCP - Client/Afegir subdomini"
 
-msgid "Add subdomain"
-msgstr "Afegir subdomini"
-
 msgid "Subdomain data"
 msgstr "Dades subdominis"
 
@@ -3400,17 +4405,27 @@ msgstr "Nom subdomini"
 msgid "Directory tree mount point"
 msgstr "Punt de muntatge de l'arbre directoris"
 
-msgid "Please specify message subject!"
-msgstr "Si us plau especifiqueu l'assumpte del missatge"
+#, fuzzy
+msgid "i-MSCP - Manage Subdomain/Edit Subdomain"
+msgstr "i-MSCP - Admin/Editar domini"
 
-msgid "Your message was sent!"
-msgstr "El vostre missatge ha estat enviat!"
+#, fuzzy
+msgid "Manage subdomain"
+msgstr "Administrar dominis"
 
-msgid "i-MSCP - Support system - New ticket"
+#, fuzzy
+msgid "Edit subdomain"
+msgstr "Editar domini"
+
+msgid "A Forward URL has to start with 'http://'"
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP - Support System - New ticket"
 msgstr "isCP - Sistema de suport - Nou tiquet"
 
-msgid "New ticket"
-msgstr "Nou tiquet"
+msgid "Please specify message subject!"
+msgstr "Si us plau especifiqueu l'assumpte del missatge"
 
 msgid "Low"
 msgstr "Baixa"
@@ -3423,12 +4438,6 @@ msgstr "Alta"
 
 msgid "Very high"
 msgstr "Molt alta"
-
-msgid "ISPCP - Client/Webtools"
-msgstr "ISPCP - Client/Eines web"
-
-msgid "Webtools"
-msgstr "Eines Web"
 
 msgid "Customize error pages for your domain"
 msgstr "Personalitzar pàgines d'error pel vostre domini"
@@ -3448,123 +4457,39 @@ msgstr "Accedir a les estadístiques Awstats"
 msgid "Manage protected areas, users and groups"
 msgstr "Administrar àrees protegides, usuaris i grups"
 
-msgid "System tools"
-msgstr "Eines del sistema"
+msgid "Install various software with a few *clicks*"
+msgstr ""
 
-msgid "Statistics"
-msgstr "Estadístiques"
+msgid "{ADMIN} activated your software package"
+msgstr ""
 
-msgid "Reseller statistics"
-msgstr "Estadístiques de distribuïdor"
+#, fuzzy
+msgid ""
+"Dear {RESELLER},\n"
+"\tYour uploaded a software package was succesful activated by {ADMIN}.\n"
+"\n"
+"\tDetails:\n"
+"\tPackage Name: {SOFTWARE}\n"
+"\tPackage ID: {SOFTWARE_ID}\n"
+"\n"
+"\tPlease login into your i-MSCP control panel for more details."
+msgstr ""
 
-msgid "Admin log"
-msgstr "Log d'Admin"
+#, fuzzy
+msgid " was deleted by {ADMIN}!"
+msgstr "S'ha esborrat la IP!"
 
-msgid "Logout"
-msgstr "Sortir"
-
-msgid "i-MSCP database updates"
-msgstr "i-MSCP - Actualitzacions de base de dades"
-
-msgid "Custom menus"
-msgstr "Personalitzar menús "
-
-msgid "Overview"
-msgstr "Vista general"
-
-msgid "User sessions"
-msgstr "Sessions d'usuari"
-
-msgid "Lostpw email setup"
-msgstr "Configurar pèrdua de contrasenya de correu"
-
-msgid "Rootkit Log"
-msgstr "Rootkit Log"
-
-msgid "Admin users"
-msgstr "Usuaris administradors"
-
-msgid "Normal users"
-msgstr "Usuaris normals"
-
-msgid "System messages"
-msgstr "Missatges del sistema"
-
-msgid "No new messages"
-msgstr "No hi ha nous missatges"
-
-msgid "Server traffic"
-msgstr "Trànsit del servidor"
-
-msgid "Administrators list is empty!"
-msgstr "La llista d'administradors està buida!"
-
-msgid "Creation date"
-msgstr "Data de creació"
-
-msgid "Created by"
-msgstr "Creat per"
-
-msgid "System"
-msgstr "Sistema"
-
-msgid "Resellers list is empty!"
-msgstr "La llista de distribuïdors està buida!"
-
-msgid "Switch to user interface"
-msgstr "Canviar a la interfície d'usuari"
-
-msgid "Switch"
-msgstr "Canviar"
-
-msgid "Not found user records matching the search criteria!"
-msgstr "No s'han trobat coincidències segons els criteris de cerca!"
-
-msgid "view aliases"
-msgstr "veure àlies"
-
-msgid "Users list is empty!"
-msgstr "La llista d'usuaris és buida!"
-
-msgid "Details"
-msgstr "Detalls"
-
-msgid "Edit domain"
-msgstr "Editar domini"
-
-msgid "Are you sure you want to change the status of domain account?"
-msgstr "Esteu segurs que voleu canviar l'estat del domini?"
-
-msgid "Administrators"
-msgstr "Administradors"
-
-msgid "Resellers"
-msgstr "Distribuïdors"
-
-msgid "Search"
-msgstr "Buscar"
-
-msgid "Expire date"
-msgstr "Data de caducitat"
-
-#, php-format
-msgid "%1$s you are now logged as %2$s"
-msgstr "%1$s esteu validats com a %2$s"
-
-msgid "Go back"
-msgstr "Tornar"
-
-msgid "OK"
-msgstr "OK"
-
-msgid "Suspended"
-msgstr "Suspès"
-
-msgid "Error"
-msgstr "Error"
-
-msgid "i-MSCP - Order Panel"
-msgstr "i-MSCP - Panell de Comandes"
+msgid ""
+"Dear {RESELLER},\n"
+"\t\tYour uploaded software was deleted by {ADMIN}.\n"
+"\n"
+"\tDetails:\n"
+"\tPackage Name: {SOFTWARE}\n"
+"\tPackage ID: {SOFTWARE_ID}\n"
+"\n"
+"\tMessage from {ADMIN}:\n"
+"\t"
+msgstr ""
 
 #, php-format
 msgid "%.2f PB"
@@ -3589,66 +4514,6 @@ msgstr "%.2f KB"
 #, php-format
 msgid "%d B"
 msgstr "%d B"
-
-#, php-format
-msgid "File %s does not exists or cannot be reached!"
-msgstr "El fitxer %s no existeix o no es pot obtenir!"
-
-msgid "Error while trying to obtain list of network cards!"
-msgstr "Error provant d'obtenir la llista de la targes de xarxa!"
-
-#, php-format
-msgid "This IP (%s) is not assigned to any network card!"
-msgstr "La IP (%s) no està assignada a cap tarja de xarxa!"
-
-msgid "Days"
-msgstr "Dies"
-
-msgid "Hours"
-msgstr "Hores"
-
-msgid "Minute"
-msgstr "Minut"
-
-msgid "Minutes"
-msgstr "Minuts"
-
-msgid "Couldn't check for updates! Website not reachable."
-msgstr ""
-"No es poden comprovar les actualitzacions! La web no es troba disponible."
-
-msgid "Email and FTP accounts"
-msgstr "Comptes FTP i de correu"
-
-msgid "Add mail user"
-msgstr "Afegir usuari de correu"
-
-msgid "PhpMyAdmin"
-msgstr "PhpMyAdmin"
-
-msgid "Filemanager"
-msgstr "Administrador de fitxers"
-
-msgid "Web statistics"
-msgstr "Estadístiques web"
-
-msgid "Group/User management"
-msgstr "Administració d'usuaris/grups"
-
-msgid "Email Accounts"
-msgstr "Comptes de correu"
-
-msgid "FTP Accounts"
-msgstr "Comptes FTP"
-
-msgid "Update Hosting Package"
-msgstr "Actualitzar pla de hosting"
-
-msgid "Add DNS zone's record"
-msgstr "Afegir entrada a la zona DNS"
-
-msgid "Manage SSL certificate"
-msgstr "Administrar el certificat SSL"
 
 msgid "Domain mail"
 msgstr "Correu del domini"
@@ -3680,6 +4545,7 @@ msgstr "Tipus desconegut"
 msgid "Welcome {USERNAME} to i-MSCP!"
 msgstr "Benvigut {USERNAME} al panell de control i-MSCP!"
 
+#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -3696,7 +4562,56 @@ msgid ""
 "\n"
 "You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
 "\n"
-"Statistics: http://{USERNAME}/stats/\n"
+"Statistics: {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/{USERNAME}/stats/\n"
+"User name: {USERNAME}\n"
+"Password: {PASSWORD}\n"
+"\n"
+"Best wishes with i-MSCP!\n"
+"The i-MSCP Team.\n"
+"\n"
+msgstr ""
+"\n"
+"\n"
+"Benvolgut {NAME}!\n"
+"\n"
+"S'ha creat un nou compte al panell de control.\n"
+"La informació del vostre compte:\n"
+"\n"
+"Tipus d'usuari: {USERTYPE}\n"
+"Usuari: {USERNAME}\n"
+"Contrasenya: {PASSWORD}\n"
+"\n"
+"Recordeu de canviar sovint la contrasenya d'accés i també la primera vegada "
+"que accediu al sistema.\n"
+"\n"
+"Podeu entrar ara mateix a través de  {BASE_SERVER_VHOST_PREFIX}"
+"{BASE_SERVER_VHOST}\n"
+"\n"
+"Estádistiques: http://{USERNAME}/stats/\n"
+"Usuari: {USERNAME}\n"
+"Contrasenya: {PASSWORD}\n"
+"\n"
+"Els millors desitjos amb i-MSCP!\n"
+"L'equip de i-MSCP.\n"
+"\n"
+
+#, fuzzy
+msgid ""
+"\n"
+"\n"
+"Hello {NAME}!\n"
+"\n"
+"A new i-MSCP account has been created for you.\n"
+"Your account information:\n"
+"\n"
+"User type: {USERTYPE}\n"
+"User name: {USERNAME}\n"
+"Password: {PASSWORD}\n"
+"\n"
+"Remember to change your password often and the first time you login.\n"
+"\n"
+"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
+"\n"
 "User name: {USERNAME}\n"
 "Password: {PASSWORD}\n"
 "\n"
@@ -3853,6 +4768,39 @@ msgstr ""
 "L'equip de i-MSCP\n"
 "\n"
 
+#, fuzzy
+msgid "Your message has been sent."
+msgstr "El vostre missatge ha estat enviat!"
+
+#, fuzzy
+msgid "Your message has been sent"
+msgstr "El vostre missatge ha estat enviat!"
+
+msgid "Ticket was closed!"
+msgstr "El tiquet s'ha tancat!"
+
+msgid "Ticket was reopened!"
+msgstr "El ticket s'ha reobert!"
+
+msgid "Never"
+msgstr "Mai"
+
+#, fuzzy
+msgid "You don't have support tickets."
+msgstr "No teniu tickets de suport."
+
+msgid "[New]"
+msgstr "[Nou]"
+
+msgid "[Re]"
+msgstr "[Re]"
+
+msgid "Open ticket"
+msgstr "Obrir tiquet"
+
+msgid "Close ticket"
+msgstr "Tancar tiquet"
+
 msgid "[Ticket]"
 msgstr "[Tiquet]"
 
@@ -3927,17 +4875,15 @@ msgstr "Nom de domini incorrecte: <b>%s</b> està reservat!"
 msgid "Wrong Second Level Domain syntax: <b>%s</b>"
 msgstr "Sintaxi del mom del domini de segon nivell incorrecte:  <b>%s</b>"
 
+#, fuzzy
 msgid ""
-"ERROR: ACE labels are not allowed. Please use the ToUnicode equivalent.<br /"
+"ACE labels are not allowed. Please use the ToUnicode equivalent.<br /"
 "><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> "
 "instead</small>."
 msgstr ""
 "ERROR: Les etiquetes ACE no estan permeses. Siusplau feu servir l'equivalent "
 "ToUnicode.<br /><small>Exemple: per l'etiqueta ACE <b>xn--bcher-kva</b> feu "
 "servir <b>bücher</b></small>"
-
-msgid "ERROR: PHP extension 'mcrypt' not loaded!"
-msgstr "ERROR: L'extensió de PHP 'mcrypt' no està carregada!"
 
 #, php-format
 msgid "You have to wait %d seconds."
@@ -3947,7 +4893,8 @@ msgstr "Heu d'esperar %d segons"
 msgid "You have been blocked for %d minutes."
 msgstr "Heu estat bloquejats durant %d minuts"
 
-msgid "You entered an incorrect username/password."
+#, fuzzy
+msgid "You entered an incorrect username!"
 msgstr "Heu introduït un usuari/contrasenya incorrectes."
 
 msgid "System is currently under maintenance! Only administrators can login."
@@ -3973,26 +4920,15 @@ msgstr "L'estat del compte %s no és correcte!"
 msgid "%s's domain expired!"
 msgstr "%s dominis caducats!"
 
+#, fuzzy
+msgid "You entered an incorrect password!"
+msgstr "Heu introduït un usuari/contrasenya incorrectes."
+
 msgid "Request from foreign host was blocked!"
 msgstr "Bloquejada petició des de host desconegut!"
 
 msgid "You do not have permission to access this interface!"
 msgstr "No teniu permís per accedir a aquesta interfície!"
-
-msgid "Domain alias"
-msgstr "Àlies de dominis"
-
-msgid "Manage Orders"
-msgstr "Administrar Comandes"
-
-msgid "Order settings"
-msgstr "Paràmetres de la comanda"
-
-msgid "Order email setup"
-msgstr "Configuració correu de comanda"
-
-msgid "Please fill up both data fields for password!"
-msgstr "Si us plau ompliu ambdós camps per la contrasenya!"
 
 msgid "Addition in progress"
 msgstr "Addició en curs"
@@ -4009,14 +4945,12 @@ msgstr "Activant-se"
 msgid "Being suspended"
 msgstr "Cancel·lant-se"
 
-msgid "Awaiting for approval"
+#, fuzzy
+msgid "Awaiting approval"
 msgstr "Pendent d'aprovació"
 
 msgid "Unknown error"
 msgstr "Error desconegut"
-
-msgid "hide aliases"
-msgstr "Amagar àlies"
 
 msgid "You have reached your domains limit.<br />You cannot add more domains!"
 msgstr "Heu arribat al límit de dominis.<br/> No podeu afegir més dominis!"
@@ -4098,11 +5032,80 @@ msgid "You have a disk limit!<br />You cannot add an user with unlimited disk!"
 msgstr ""
 "Teniu límits de disc!<br /> No podeu afegir un usuari amb disc il·limitat!"
 
-msgid "i-MSCP Error"
-msgstr "i-MSCP Error"
+msgid "{RESELLER} uploaded a new software package"
+msgstr ""
 
-msgid "Error Message"
-msgstr "Missatge d'error"
+#, fuzzy
+msgid ""
+"Dear {ADMIN},\n"
+"\t{RESELLER} has uploaded a new software package.\n"
+"\n"
+"\tDetails:\n"
+"\tReseller ID: {RESELLER_ID}\n"
+"\tPackage Name: {SOFTWARE}\n"
+"\tPackage ID: {SOFTWARE_ID}\n"
+"\n"
+"\tPlease login into your i-MSCP control panel for more details."
+msgstr ""
+
+#, fuzzy
+msgid "Installation details"
+msgstr "Detalls del hosting"
+
+msgid ""
+"Please set now the Username and Password for the later Login in the "
+"Application. (Required fiels!)"
+msgstr ""
+
+#, fuzzy
+msgid "Login username"
+msgstr "Nom d'usuari incorrecte!"
+
+#, fuzzy
+msgid "Login password"
+msgstr "Contrasenya perduda"
+
+#, fuzzy
+msgid "Emailadress"
+msgstr "Correus"
+
+#, fuzzy
+msgid "enabled"
+msgstr "Activat"
+
+#, fuzzy
+msgid "Application Description"
+msgstr "Descripció"
+
+#, fuzzy
+msgid "You do not have permissions to install application yet"
+msgstr "No teniu permís per accedir a aquesta interfície!"
+
+msgid "Vendor hompage"
+msgstr ""
+
+msgid "Installed in software depot"
+msgstr ""
+
+msgid "Installed in reseller depot"
+msgstr ""
+
+#, fuzzy
+msgid "Start installation"
+msgstr "Internacionalització"
+
+#, fuzzy
+msgid "Are you sure to install this package from the webdepot?"
+msgstr "Esteu segurs de restaurar el backup?"
+
+msgid "No software in webdepot found!"
+msgstr ""
+
+msgid "Websoftware depot list was updated"
+msgstr ""
+
+msgid "No update for the websoftware depot list available"
+msgstr ""
 
 msgid "You have a new order"
 msgstr "Teniu una nova comanda"
@@ -4132,6 +5135,10 @@ msgstr "Error al crear la comanda! Potser ja està actiu?"
 
 msgid "Order confirmation"
 msgstr "Confirmació de la comanda"
+
+#, fuzzy
+msgid "Domain already exists on the system!"
+msgstr "Un domini amb aquest nom ja existeix al sistema!"
 
 msgid "This hosting plan is not available for purchase"
 msgstr "Aquest pla de hosting no està disponible per compra"
@@ -4168,6 +5175,13 @@ msgstr "Costos"
 
 msgid "Personal Data"
 msgstr "Dades Personals"
+
+msgid ""
+"(To avoid abuse, we ask you to write the combination of letters on the above "
+"picture into the field \"Security code\")"
+msgstr ""
+"(Per evitar mals usos, et demanem que escriguis la combinació de lletres de "
+"sobre la imatge dins del camp \"Codi de seguretat\""
 
 msgid "Security code was incorrect!"
 msgstr "El codi de seguretat no era correcte"
@@ -4230,26 +5244,8 @@ msgstr "Alta"
 msgid "Performance"
 msgstr "Rendiment"
 
-msgid "i-MSCP Reseller: Add Alias"
-msgstr "i-MSCP Distribuïdor : Afegir Àlies"
-
-msgid "There is no user records for this reseller to add an alias for."
-msgstr "Aquest distribuïdor no té registres d'usuari per afegir alias."
-
-msgid "i-MSCP - Manage Domain/Alias"
-msgstr "i-MSCP - Administrar Domini/Àlies"
-
-msgid "Manage alias"
-msgstr "Administrar àlies"
-
-msgid "Real domain"
-msgstr "Domini real"
-
 msgid "You have no alias records."
 msgstr "No teniu registres d'àlies"
-
-msgid "Activate"
-msgstr "Activar"
 
 msgid "Domain alias added for termination!"
 msgstr "L'àlies de domini està preparat per eliminar-lo"
@@ -4278,6 +5274,21 @@ msgstr "Àlies de domini sol·licitat activat!"
 msgid "Ordered domain alias not activated!"
 msgstr "Àlies de domini sol·licitat no activat!"
 
+msgid "i-MSCP - Manage Domain/Alias"
+msgstr "i-MSCP - Administrar Domini/Àlies"
+
+msgid "Manage alias"
+msgstr "Administrar àlies"
+
+msgid "Real domain"
+msgstr "Domini real"
+
+msgid "There is no user records for this reseller to add an alias for."
+msgstr "Aquest distribuïdor no té registres d'usuari per afegir alias."
+
+msgid "i-MSCP Reseller: Add Alias"
+msgstr "i-MSCP Distribuïdor : Afegir Àlies"
+
 msgid "i-MSCP - Circular"
 msgstr "i-MSCP - Circular"
 
@@ -4287,36 +5298,8 @@ msgstr "Circular"
 msgid "i-MSCP - Domain/Edit"
 msgstr "i-MSCP - Domini/Editar"
 
-msgid "Unchanged"
-msgstr "Sense canviar"
-
-msgid "Never"
-msgstr "Mai"
-
-msgid "- 1 Month"
-msgstr "- 1 Mes"
-
-msgid "+ 1 Month"
-msgstr "+ 1 Mes"
-
-msgid "+ 2 Months"
-msgstr "+ 2 Mesos"
-
-msgid "+ 3 Months"
-msgstr "+ 3 Mesos"
-
-msgid "+ 6 Months"
-msgstr "+ 6 Mesos"
-
-msgid "+ 1 Year"
-msgstr "+ 1 Any"
-
-msgid "+ 2 Years"
-msgstr "+ 2 Anys"
-
-#, php-format
-msgid "The <em>%s</em> service cannot be disabled!"
-msgstr "El servei de <em>%s</em> no es pot desactivar! "
+msgid "Domain properties could not be updated!"
+msgstr "Les propietats del domini no s'han pogut actualitzar!"
 
 #, php-format
 msgid "The <em>%s</em> have to be disabled!"
@@ -4333,6 +5316,12 @@ msgstr "El servei de <em>%s</em> no es pot limitar! "
 #, php-format
 msgid "The <em>%s</em> service cannot be unlimited!"
 msgstr "El servei de <em>%s</em> no es pot il·limitar! "
+
+msgid "i-MSCP - Reseller/Main Index"
+msgstr "i-MSCP - Distribuïdor/Menú principal"
+
+msgid "View details"
+msgstr "Veure detalls"
 
 msgid "i-MSCP - Reseller/Add hosting plan"
 msgstr "i-MSCP - Distribuïdor/Afegir pla de hosting"
@@ -4355,12 +5344,6 @@ msgstr "i-MSCP - Distribuïdor/Editar pla de hosting"
 
 msgid "View hosting plan"
 msgstr "Veure pla de hosting"
-
-msgid "i-MSCP - Reseller/Main Index"
-msgstr "i-MSCP - Distribuïdor/Menú principal"
-
-msgid "View details"
-msgstr "Veure detalls"
 
 msgid "User accounts"
 msgstr "Comptes d'usuari"
@@ -4387,6 +5370,17 @@ msgstr "%1$d / %2$d de <b>%3$d</b>"
 msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr "%1$d / %2$d de <b>il·limitat</b>"
 
+msgid "No Ip statistics to be show."
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP - Reseller/IP Usage"
+msgstr "i-MSCP - Distribuïdor/Canviar Llenguatge"
+
+#, fuzzy
+msgid "Reseller/IP usage statistics"
+msgstr "Estadístiques de distribuïdor"
+
 msgid "i-MSCP - Reseller/Change Language"
 msgstr "i-MSCP - Distribuïdor/Canviar Llenguatge"
 
@@ -4398,48 +5392,6 @@ msgstr "Administrar comandes"
 
 msgid "Activation Link"
 msgstr "Link per l'activació"
-
-msgid "Wrong order ID!"
-msgstr "ID de comanda errònia!"
-
-msgid "Order Cancelled: resellers maximum exceeded!"
-msgstr "Comanda Cancel·lada: màxim de distribuïdors excedit!"
-
-msgid "Wrong domain name syntax!"
-msgstr "Sintàxi de domini incorrecta!"
-
-msgid "User added!"
-msgstr "Usuari afegit!"
-
-msgid "Customer order was removed successful!"
-msgstr "La comanda del client ha estat eliminada amb èxit!"
-
-msgid "i-MSCP - Reseller/Order details"
-msgstr "i-MSCP - Distribuïdor/Detalls de la comanda"
-
-msgid "Order data updated successfully!"
-msgstr "Comanda actualitzada correctament!"
-
-msgid "Order date"
-msgstr "Data de la comanda"
-
-msgid "Hosting plan"
-msgstr "Pla de Hosting"
-
-msgid "Hosting details"
-msgstr "Detalls del hosting"
-
-msgid "Order details"
-msgstr "Detalls de la comanda"
-
-msgid "Customer data"
-msgstr "Dades del client"
-
-msgid "Are you sure you want to delete this order?"
-msgstr "Esteu segurs que voleu eliminar aquesta comanda?"
-
-msgid "Add to the system"
-msgstr "Afegir al sistema"
 
 msgid "i-MSCP - Reseller/Order settings"
 msgstr "i-MSCP - Distribuïdor/Paràmetres de les comandes"
@@ -4471,11 +5423,53 @@ msgstr "Actualitzar petició"
 msgid "ID"
 msgstr "ID"
 
+msgid "Customer data"
+msgstr "Dades del client"
+
 msgid "Order"
 msgstr "Demanar"
 
+msgid "Hosting plan"
+msgstr "Pla de Hosting"
+
+msgid "Are you sure you want to delete this order?"
+msgstr "Esteu segurs que voleu eliminar aquesta comanda?"
+
 msgid "Add/Details"
 msgstr "Afegir/Detalls"
+
+msgid "Wrong order ID!"
+msgstr "ID de comanda errònia!"
+
+msgid "Order Cancelled: resellers maximum exceeded!"
+msgstr "Comanda Cancel·lada: màxim de distribuïdors excedit!"
+
+msgid "Wrong domain name syntax!"
+msgstr "Sintàxi de domini incorrecta!"
+
+msgid "User added!"
+msgstr "Usuari afegit!"
+
+msgid "Customer order was removed successful!"
+msgstr "La comanda del client ha estat eliminada amb èxit!"
+
+msgid "i-MSCP - Reseller/Order details"
+msgstr "i-MSCP - Distribuïdor/Detalls de la comanda"
+
+msgid "Order data updated successfully!"
+msgstr "Comanda actualitzada correctament!"
+
+msgid "Order date"
+msgstr "Data de la comanda"
+
+msgid "Hosting details"
+msgstr "Detalls del hosting"
+
+msgid "Order details"
+msgstr "Detalls de la comanda"
+
+msgid "Add to the system"
+msgstr "Afegir al sistema"
 
 msgid "Order Canceled: resellers maximum exceeded!"
 msgstr "Comanda Cancel·lada; màxim de distribuïdors excedit!"
@@ -4495,8 +5489,139 @@ msgstr "pèrdua de contrasenya de correu"
 msgid "Lostpw link"
 msgstr "Link Pèrdua de contrasenya de correu"
 
+#, fuzzy
+msgid "Please specify a subject."
+msgstr "Si us plau especifiqueu un assumpte!"
+
+#, fuzzy
+msgid "Auto email template data updated."
+msgstr "Plantilla automàtica de correu actualitzada!"
+
 msgid "i-MSCP - Reseller/Manage users/Email setup"
 msgstr "i-MSCP - Distribuïdor/Administració usuaris/Configuració Correu"
+
+msgid "Package installed successfully... Awaiting release from Admin!"
+msgstr ""
+
+msgid "This software is installed on following domain(s):"
+msgstr ""
+
+msgid "This package is not installed yet"
+msgstr ""
+
+#, fuzzy
+msgid "waiting for activation"
+msgstr "Pendent d'aprovació"
+
+msgid "activated (Softwaredepot)"
+msgstr ""
+
+#, fuzzy
+msgid "activated"
+msgstr "Activar"
+
+msgid "Installing your uploaded package. Please refresh the site."
+msgstr ""
+
+msgid ""
+"After your upload the package it will be installed on your systems.<br /"
+">Refresh your site to see the new status!"
+msgstr ""
+
+msgid "Failure in package. Deleting!"
+msgstr ""
+
+msgid ""
+"Check your package. There is an error inside!<br />Refresh your site to see "
+"the new status!"
+msgstr ""
+
+msgid "The package is corrupt. Please correct it!"
+msgstr ""
+
+msgid ""
+"Please contact the administrator!<br />Ask him for the permissions to use "
+"this package.<br />It is not allowed to upload this packet two times.<br /"
+">Refresh your site to see the new status!"
+msgstr ""
+
+msgid "This package already exist in the administrator software depot!"
+msgstr ""
+
+msgid "Package already exist in your software depot!"
+msgstr ""
+
+msgid ""
+"Check your own uploads!<br />Ask the administrator if you don't find the "
+"package.<br />It is not allowed to upload this packages two times.<br /"
+">Refresh your site to see the new status!"
+msgstr ""
+
+msgid "This package already exist in your software depot!"
+msgstr ""
+
+#, fuzzy
+msgid "You do not have any software uploaded yet"
+msgstr "No teniu noves comandes!"
+
+#, fuzzy
+msgid "You do not have permissions to upload software"
+msgstr "No teniu permís per accedir a aquesta interfície!"
+
+#, php-format
+msgid ""
+"ERROR: Could not upload the file. Max. upload filesize (%1$d MB) reached?"
+msgstr ""
+
+#, php-format
+msgid ""
+"ERROR: Your remote filesize (%1$d B) is lower than 1 Byte. Please check your "
+"URL!"
+msgstr ""
+
+#, php-format
+msgid ""
+"ERROR: Max. remote filesize (%1$d MB) is reached. Your remote file ist %2$d "
+"MB"
+msgstr ""
+
+msgid "ERROR: Remote File not found!"
+msgstr ""
+
+msgid "ERROR: Could not upload the file. File not found!"
+msgstr ""
+
+msgid "Software available"
+msgstr ""
+
+msgid "Software-Synonym"
+msgstr ""
+
+#, fuzzy
+msgid "Software-Version"
+msgstr "Versió del kernel"
+
+#, fuzzy
+msgid "Software status"
+msgstr "Estat del servidor"
+
+#, fuzzy
+msgid "Software upload"
+msgstr "Mostrar càrrega del servidor"
+
+#, fuzzy
+msgid "Requires Database?"
+msgstr "Base de dades SQL"
+
+#, fuzzy
+msgid "Database prefix"
+msgstr "Nom de base de dades"
+
+msgid "Link to authors homepage"
+msgstr ""
+
+msgid "i-MSCP - Support system - New ticket"
+msgstr "isCP - Sistema de suport - Nou tiquet"
 
 msgid "i-MSCP - Reseller: Support System: View Ticket"
 msgstr "i-MSCP-Distribuïdor : Sistema de Suport: Veure Tiquets"
@@ -4504,23 +5629,9 @@ msgstr "i-MSCP-Distribuïdor : Sistema de Suport: Veure Tiquets"
 msgid "i-MSCP - Users/Add user"
 msgstr "i-MSCP - Usuaris/Afegir usuari"
 
-msgid "1 Month"
-msgstr "1 Mes"
-
-msgid "2 Months"
-msgstr "2 Mesos"
-
-msgid "3 Months"
-msgstr "3 Mesos"
-
-msgid "6 Months"
-msgstr "6 Mesos"
-
-msgid "1 Year"
-msgstr "1 Any"
-
-msgid "2 Years"
-msgstr "2 Anys"
+#, fuzzy
+msgid "Domain expire date"
+msgstr "Caducitat del domini"
 
 msgid "Choose hosting plan"
 msgstr "Escollir pla de hosting"
@@ -4567,6 +5678,9 @@ msgstr "i-MSCP - Usuaris/Editar"
 msgid "Users list"
 msgstr "Llista d'usuaris"
 
+msgid "This reseller has no domains yet."
+msgstr "Aquest distribuïdor encara no té dominis."
+
 msgid "i-MSCP - Users"
 msgstr "i-MSCP - Usuaris"
 
@@ -4586,8 +5700,9 @@ msgstr "Ample de banda"
 msgid "View aliases"
 msgstr "Veure àlies"
 
-msgid "You have no users."
-msgstr "No teniu usuaris."
+#, fuzzy
+msgid "You do not have customers."
+msgstr "No teniu noves comandes!"
 
 #, php-format
 msgid "%1$s of %2$s MB"
@@ -4615,11 +5730,105 @@ msgstr "Usuari eliminat"
 msgid "User not terminated!"
 msgstr "Usuari no eliminat!"
 
-msgid "This reseller has no domains yet."
-msgstr "Aquest distribuïdor encara no té dominis."
+#~ msgid "i-MSCP  a Virtual Hosting Control System"
+#~ msgstr "i-MSCP  un Sistema de control de Hosting"
 
-#~ msgid "Show server load"
-#~ msgstr "Mostrar càrrega del servidor"
+#~ msgid "Please enter your login information"
+#~ msgstr "Si us plau, entra la teva informació d'accés"
+
+#~ msgid "Retrieving lost passwords is currently not possible"
+#~ msgstr "Actualment no es poden recuperar les contrasenyes perdudes"
+
+#~ msgid "i-MSCP - Virtual Hosting Control System"
+#~ msgstr "i-MSCP - Sistema de control de Hosting"
+
+#~ msgid "Retry"
+#~ msgstr "Reintentar"
+
+#~ msgid "Request password"
+#~ msgstr "Sol·licitar contrassenya"
+
+#~ msgid "Do you want to execute the Updates now?"
+#~ msgstr "Vols fer les actualitzacions ara?"
+
+#~ msgid "A database update is available"
+#~ msgstr "Hi ha actualitzacions de la base de dades disponibles"
+
+#~ msgid "Panel Default"
+#~ msgstr "Panell per defecte"
+
+#~ msgid "Settings saved!"
+#~ msgstr "Paràmetres guardats!"
+
+#~ msgid ""
+#~ "ERROR: Only letters, numbers, dash and underscore are allowed for "
+#~ "services names!"
+#~ msgstr ""
+#~ "ERROR: Només estan permesos lletres, números, guions i Barres per els "
+#~ "noms dels serveis!"
+
+#~ msgid "ERROR: Unknown service port name!"
+#~ msgstr "ERROR: Nom de port de servei desconegut!"
+
+#~ msgid "To"
+#~ msgstr "A"
+
+#~ msgid "Message was sent."
+#~ msgstr "El missatge ha estat enviat"
+
+#~ msgid "ISPCP - Client/Webtools"
+#~ msgstr "ISPCP - Client/Eines web"
+
+#~ msgid "i-MSCP Error"
+#~ msgstr "i-MSCP Error"
+
+#~ msgid "Error Message"
+#~ msgstr "Missatge d'error"
+
+#~ msgid "Unchanged"
+#~ msgstr "Sense canviar"
+
+#~ msgid "- 1 Month"
+#~ msgstr "- 1 Mes"
+
+#~ msgid "+ 1 Month"
+#~ msgstr "+ 1 Mes"
+
+#~ msgid "+ 2 Months"
+#~ msgstr "+ 2 Mesos"
+
+#~ msgid "+ 3 Months"
+#~ msgstr "+ 3 Mesos"
+
+#~ msgid "+ 6 Months"
+#~ msgstr "+ 6 Mesos"
+
+#~ msgid "+ 1 Year"
+#~ msgstr "+ 1 Any"
+
+#~ msgid "+ 2 Years"
+#~ msgstr "+ 2 Anys"
+
+#~ msgid "1 Month"
+#~ msgstr "1 Mes"
+
+#~ msgid "2 Months"
+#~ msgstr "2 Mesos"
+
+#~ msgid "3 Months"
+#~ msgstr "3 Mesos"
+
+#~ msgid "6 Months"
+#~ msgstr "6 Mesos"
+
+#~ msgid "1 Year"
+#~ msgstr "1 Any"
+
+#~ msgid "2 Years"
+#~ msgstr "2 Anys"
+
+#~ msgid "You have no users."
+#~ msgstr "No teniu usuaris."
 
 #~ msgid "Services"
 #~ msgstr "Serveis"

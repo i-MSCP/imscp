@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: v1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-17 10:11+0200\n"
+"POT-Creation-Date: 2011-06-13 16:29+0200\n"
 "PO-Revision-Date: 2009-12-15 01:27+0100\n"
 "Last-Translator: Takashi <takashi@elekta.lt>\n"
 "Language-Team: Lithuanian <lt_LT@li.org>\n"
@@ -18,90 +18,400 @@ msgstr ""
 msgid "encoding"
 msgstr "UTF-8"
 
-#. Please fill in the language you are translating to in the following form:
-#. native language name (native country name) - english language name (english country name)
 msgid "_: Localised language"
 msgstr "Lietuviø - Lithuanian"
 
-msgid "i-MSCP  a Virtual Hosting Control System"
-msgstr "i-MSCP  yra Virtualaus Hostingo Valdymo Sistema"
+#, php-format
+msgid "File %s does not exists or cannot be reached!"
+msgstr ""
 
-msgid "Administrator login"
-msgstr "Administratoriaus prisijungimas"
+msgid "Error while trying to obtain list of network cards."
+msgstr ""
 
-msgid "Login"
-msgstr "Prisijungti"
+#, php-format
+msgid "This IP (%s) is not assigned to any network card!"
+msgstr ""
+
+msgid "N/A"
+msgstr "N/A"
+
+msgid "Day"
+msgstr "Diena"
+
+#, fuzzy
+msgid "Days"
+msgstr "Diena"
+
+msgid "Hour"
+msgstr "Valanda"
+
+#, fuzzy
+msgid "Hours"
+msgstr "Valanda"
+
+#, fuzzy
+msgid "Minute"
+msgstr "minutës"
+
+#, fuzzy
+msgid "Minutes"
+msgstr "minutës"
+
+msgid "An error occured! Please, contact your administrator!"
+msgstr ""
+
+msgid "Couldn't check for updates. Website not reachable."
+msgstr ""
+
+msgid "General information"
+msgstr ""
+
+msgid "Manage hosting plans"
+msgstr "Tvarkyti hostingo planus"
+
+msgid "System tools"
+msgstr ""
+
+msgid "Manage users"
+msgstr ""
+
+msgid "Statistics"
+msgstr ""
+
+msgid "Support system"
+msgstr "Pagalbos sistema"
+
+msgid "Settings"
+msgstr "Nustatymai"
+
+msgid "Change password"
+msgstr "Keisti slaptaþodá"
+
+msgid "Change personal data"
+msgstr "Keisti asmeninæ informacijà"
+
+msgid "Add admin"
+msgstr "Pridëti administratoriu"
+
+msgid "Add reseller"
+msgstr "Pridëti perpardavinëtojà"
+
+msgid "Reseller assignment"
+msgstr "Perpardavinëtojo paskirtis"
+
+msgid "User assignment"
+msgstr "Vartotojo paskirtys"
+
+msgid "Email setup"
+msgstr "El.paðto nustatimai"
+
+msgid "Email marketing"
+msgstr "El.paðto prekyba"
+
+msgid "Add hosting plan"
+msgstr "Pridëti hostingo planà"
+
+msgid "Reseller statistics"
+msgstr ""
+
+msgid "Server statistics"
+msgstr "Serverio statistikos duomenys"
+
+msgid "Admin log"
+msgstr ""
+
+msgid "Manage IPs"
+msgstr "Tvarkyti IP adresus"
+
+msgid "System info"
+msgstr "Sistmos informacija"
+
+msgid "Internationalisation"
+msgstr "Internacionalizavimas"
+
+msgid "Language"
+msgstr "Kalba"
+
+msgid "Layout"
+msgstr ""
+
+msgid "Logout"
+msgstr ""
+
+msgid "Server traffic settings"
+msgstr "Serverio srauto nustatymai"
+
+msgid "Server status"
+msgstr "Serverio bûklë"
+
+msgid "i-MSCP updates"
+msgstr "i-MSCP atnaujinimai"
+
+msgid "i-MSCP database updates"
+msgstr ""
+
+msgid "i-MSCP debugger"
+msgstr "i-MSCP debugger"
+
+msgid "Custom menus"
+msgstr ""
+
+msgid "Overview"
+msgstr ""
+
+msgid "User sessions"
+msgstr ""
+
+msgid "Lostpw email setup"
+msgstr ""
+
+msgid "Maintenance mode"
+msgstr "Remonto bûsena"
+
+msgid "General settings"
+msgstr "Pagrindingiai nustatymai"
+
+msgid "Server ports"
+msgstr "Serverio portai"
+
+msgid "Rootkit Log"
+msgstr ""
+
+#, fuzzy
+msgid "Services status"
+msgstr "Serverio bûklë"
+
+#, fuzzy
+msgid "Services ports"
+msgstr "Serverio portai"
+
+msgid "IP usage"
+msgstr ""
+
+msgid "Application management"
+msgstr ""
+
+msgid "Application options"
+msgstr ""
+
+msgid "Account name"
+msgstr ""
+
+msgid "Admin users"
+msgstr ""
+
+msgid "Reseller users"
+msgstr "Perpardavinëtojo klientai"
+
+msgid "Normal users"
+msgstr ""
+
+msgid "Domains"
+msgstr "Domenai"
+
+msgid "Subdomains"
+msgstr "Subdomenai"
+
+msgid "Domain aliases"
+msgstr "Domenø pavadinimai"
+
+msgid "Mail accounts"
+msgstr "El.paðto sàskaitø"
+
+msgid "FTP accounts"
+msgstr "FTP sàskaitø"
+
+msgid "SQL databases"
+msgstr "SQL duombaziø"
+
+msgid "SQL users"
+msgstr "SQL vartotojø"
+
+msgid "System messages"
+msgstr ""
+
+msgid "No new messages"
+msgstr ""
+
+msgid "Server traffic"
+msgstr ""
+
+msgid "Administrators list is empty!"
+msgstr ""
 
 msgid "Username"
 msgstr "Vartotojo vardas"
 
-msgid "Password"
-msgstr "Slaptaþodis"
+msgid "Creation date"
+msgstr ""
 
-msgid "Please enter your login information"
-msgstr "Praðome ávesti prisijungimo informacija"
+msgid "Created by"
+msgstr ""
 
-msgid "Secure Connection"
-msgstr "Saugi sesija"
+msgid "Options"
+msgstr "Pasirinktys"
 
-msgid "Normal Connection"
-msgstr "Normali sesija"
+msgid "Delete"
+msgstr "Trinti"
 
-msgid "Lost password"
-msgstr "Pamirðau slaptaþodá"
+msgid "System"
+msgstr ""
 
-msgid "Retrieving lost passwords is currently not possible"
-msgstr "Atkûrti prarastus slaptaþodþius ðiuo mentu neámanoma"
+msgid "Resellers list is empty!"
+msgstr ""
 
-msgid "i-MSCP - Virtual Hosting Control System"
-msgstr "i-MSCP - Virtualaus Hostingo Valdymo Sistema"
+msgid "Switch to user interface"
+msgstr ""
 
-msgid "Your new password has been sent."
-msgstr "Jûsø naujas slaptaþodis buvo iðsiøstas."
+msgid "Switch"
+msgstr ""
 
-msgid "New password could not been sent."
-msgstr "Naujas slaptaþodis negalëjo bûti iðsiøstas"
+msgid "Not found user records matching the search criteria!"
+msgstr ""
+
+msgid "view aliases"
+msgstr ""
+
+msgid "Users list is empty!"
+msgstr ""
+
+msgid "Status"
+msgstr "Bûsena"
+
+msgid "Details"
+msgstr ""
+
+msgid "Edit domain"
+msgstr ""
+
+msgid "Edit user"
+msgstr "Redaguoti vartotojà"
+
+msgid "Ok"
+msgstr ""
+
+msgid "Disabled"
+msgstr "Iðjungta"
+
+#, fuzzy
+msgid "Reload"
+msgstr "Ákelti"
+
+msgid "Error"
+msgstr ""
+
+msgid "Not Set"
+msgstr ""
+
+msgid "Are you sure you want to change the status of domain account?"
+msgstr ""
 
 #, php-format
-msgid ""
-"Your password request has been initiated. You will receive an email with "
-"instructions to complete the process. This reset request will expire in %s "
-"minutes."
+msgid "Are you sure you want to delete %s?"
+msgstr "Ar tikrai norite paðalinti %s?"
+
+msgid "Administrators"
 msgstr ""
-"Jûsø slaptaþodþio praðymas buvo pradëtas vykdyti. Jûs gausite el.laiðkà su "
-"instrukcijomis kaip ávykdyti procesà. Atkûrimo procesas baigs galioti po %s "
-"minuèiø."
 
-msgid "Back"
-msgstr "Gráþti"
-
-msgid "User or security code was incorrect!"
-msgstr "Vartotojas arba apsaugos kodas ávestas neteisingai!"
-
-msgid "Retry"
-msgstr "Dar kartà"
-
-msgid "Security code"
-msgstr "Apsaugos kodas"
-
-msgid ""
-"(To avoid abuse, we ask you to write the combination of letters on the above "
-"picture into the field \"Security code\")"
+msgid "Resellers"
 msgstr ""
-"(Siekiant iðvengti piktnaudþiavimo, mes praðome áraðyti raidþiø kombinacija "
-"esanèià paveikslëlyje á \"Apsaugos kodas\" laukelá)"
 
-msgid "Request password"
-msgstr "Praðyti slaptaþodþio"
+msgid "Users"
+msgstr "Vartotojai"
 
-msgid "i-MSCP - Admin/Manage users/Add User"
-msgstr "i-MSCP - Administratorius/Tvarkyti vartotojai/Pridëti vartotoja"
+msgid "Search"
+msgstr ""
 
-msgid "Administrator"
-msgstr "Administratorius"
+msgid "Expire date"
+msgstr ""
 
-msgid "Incorrect username length or syntax!"
-msgstr "Netinkamas vartotojo vardo ilgis arba sintaksë!"
+msgid "Edit"
+msgstr "Keisti"
+
+msgid "Domain name"
+msgstr "Domeno pavadinimas"
+
+msgid "Customer ID"
+msgstr "Pirkëjo ID"
+
+msgid "Last name"
+msgstr "Pavardë"
+
+msgid "Company"
+msgstr "Ámonë"
+
+msgid "City"
+msgstr "Miestas"
+
+msgid "State/Province"
+msgstr "Rajonas"
+
+msgid "Country"
+msgstr "Ðalis"
+
+msgid "All"
+msgstr "Visi"
+
+msgid "OK"
+msgstr ""
+
+msgid "Suspended"
+msgstr ""
+
+msgid "i-MSCP - Order Panel"
+msgstr ""
+
+msgid "hide aliases"
+msgstr ""
+
+#, php-format
+msgid "%1$s you are now logged as %2$s"
+msgstr ""
+
+msgid "Go back"
+msgstr ""
+
+msgid "Unknown"
+msgstr "Neþinoma"
+
+msgid "No language tables found in the database."
+msgstr ""
+
+msgid "Add user"
+msgstr ""
+
+msgid "Manage domains"
+msgstr ""
+
+msgid "Domain alias"
+msgstr ""
+
+msgid "Domain statistics"
+msgstr "Domenø statistikos"
+
+msgid "New ticket"
+msgstr ""
+
+msgid "Layout settings"
+msgstr ""
+
+msgid "Manage Orders"
+msgstr ""
+
+msgid "Order settings"
+msgstr ""
+
+msgid "Order email setup"
+msgstr ""
+
+msgid "yes"
+msgstr "taip"
+
+msgid "Please fill up both data fields for password!"
+msgstr ""
+
+msgid "Passwords don't match!"
+msgstr "Slaptaþodþiai neatitinka!"
 
 #, php-format
 msgid ""
@@ -116,23 +426,188 @@ msgstr ""
 "Slaptaþodis ávestas trumpesnis nei % skaitmenø arba panaudoti neleistini "
 "þenklai!"
 
-msgid "Entered passwords do not match!"
-msgstr "Ávesti slaptaþodþiai neatitinka!"
-
 msgid "Incorrect email length or syntax!"
 msgstr "Neteisingas el.paðto ilgis arba sintaksë!"
 
-msgid "This user name already exist!"
+msgid "Add subdomain"
+msgstr ""
+
+msgid "Email and FTP accounts"
+msgstr ""
+
+msgid "Add mail user"
+msgstr ""
+
+msgid "Add FTP user"
+msgstr ""
+
+msgid "Manage SQL"
+msgstr ""
+
+msgid "Error pages"
+msgstr ""
+
+msgid "Add SQL database"
+msgstr ""
+
+msgid "Daily backup"
+msgstr "Kasdieniniai backup"
+
+msgid "PhpMyAdmin"
+msgstr ""
+
+msgid "Webmail"
+msgstr "Webmail"
+
+msgid "Filemanager"
+msgstr ""
+
+msgid "Webtools"
+msgstr ""
+
+msgid "Protected areas"
+msgstr "Apsaugotos vietos"
+
+msgid "Web statistics"
+msgstr ""
+
+msgid "Group/User management"
+msgstr ""
+
+msgid "Email Accounts"
+msgstr ""
+
+msgid "FTP Accounts"
+msgstr ""
+
+msgid "Catch all"
+msgstr ""
+
+msgid "Add alias"
+msgstr "Pridëti pavadinimà"
+
+msgid "Update Hosting Package"
+msgstr ""
+
+msgid "Add DNS zone's record"
+msgstr ""
+
+msgid "Manage SSL certificate"
+msgstr ""
+
+msgid "i-MSCP application installer"
+msgstr ""
+
+msgid "All fields are required!"
+msgstr ""
+
+msgid "internet Multi Server Control Panel"
+msgstr ""
+
+msgid "© Copyright 2010 i-MSCP Team<br/>All Rights Reserved"
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP - Multi Server Control Panel"
+msgstr "i-MSCP - Virtualaus Hostingo Valdymo Sistema"
+
+msgid "Administrator login"
+msgstr "Administratoriaus prisijungimas"
+
+msgid "i-MSCP - Multi Server Control Panel / Login"
+msgstr ""
+
+msgid "Login"
+msgstr "Prisijungti"
+
+msgid "Password"
+msgstr "Slaptaþodis"
+
+msgid "phpMyAdmin"
+msgstr ""
+
+msgid "FileManager"
+msgstr ""
+
+msgid "Secure Connection"
+msgstr "Saugi sesija"
+
+msgid "Normal Connection"
+msgstr "Normali sesija"
+
+msgid "Lost password"
+msgstr "Pamirðau slaptaþodá"
+
+msgid "php-extension 'gd' not loaded."
+msgstr ""
+
+msgid "Captcha fontfile not found."
+msgstr ""
+
+msgid "i-MSCP - Multi Server Control Panel - Lost password"
+msgstr ""
+
+msgid "Security code"
+msgstr "Apsaugos kodas"
+
+#, fuzzy
+msgid ""
+"To avoid abuse, we ask you to write the combination of letters on the "
+"picture above into the field \"Security code\""
+msgstr ""
+"(Siekiant iðvengti piktnaudþiavimo, mes praðome áraðyti raidþiø kombinacija "
+"esanèià paveikslëlyje á \"Apsaugos kodas\" laukelá)"
+
+#, fuzzy
+msgid "Get password"
+msgstr "Sugeneruoti slaptaþodá"
+
+msgid "Back"
+msgstr "Gráþti"
+
+#, fuzzy
+msgid "Your new password has been sent. Check your mail."
+msgstr "Jûsø naujas slaptaþodis buvo iðsiøstas."
+
+#, fuzzy
+msgid "New password has not been sent. Ask your administrator."
+msgstr "Naujas slaptaþodis negalëjo bûti iðsiøstas"
+
+#, php-format
+msgid ""
+"Your password request has been initiated. You will receive an email with "
+"instructions to complete the process. This reset request will expire in %s "
+"minutes."
+msgstr ""
+"Jûsø slaptaþodþio praðymas buvo pradëtas vykdyti. Jûs gausite el.laiðkà su "
+"instrukcijomis kaip ávykdyti procesà. Atkûrimo procesas baigs galioti po %s "
+"minuèiø."
+
+#, fuzzy
+msgid "User or security code are incorrect."
+msgstr "Vartotojas arba apsaugos kodas ávestas neteisingai!"
+
+msgid "All fields are required."
+msgstr ""
+
+msgid "i-MSCP - Admin/Manage users/Add User"
+msgstr "i-MSCP - Administratorius/Tvarkyti vartotojai/Pridëti vartotoja"
+
+msgid "Administrator"
+msgstr "Administratorius"
+
+msgid "Incorrect username length or syntax!"
+msgstr "Netinkamas vartotojo vardo ilgis arba sintaksë!"
+
+msgid "Entered passwords do not match!"
+msgstr "Ávesti slaptaþodþiai neatitinka!"
+
+#, fuzzy
+msgid "This user name already exist."
 msgstr "Ðis vartotojo vardas jau uþimtas!"
 
 msgid "Empty data or wrong field!"
 msgstr "Neávestas arba neteisingai uþpildytas laukelis!"
-
-msgid "Passwords don't match!"
-msgstr "Slaptaþodþiai neatitinka!"
-
-msgid "Add admin"
-msgstr "Pridëti administratoriu"
 
 msgid "Core data"
 msgstr "Pagrindiniai duomenys"
@@ -149,9 +624,6 @@ msgstr "Papildomi duomenys"
 msgid "First name"
 msgstr "Vardas"
 
-msgid "Last name"
-msgstr "Pavardë"
-
 msgid "Gender"
 msgstr "Lytis"
 
@@ -161,23 +633,8 @@ msgstr "Vyras"
 msgid "Female"
 msgstr "Moteris"
 
-msgid "Unknown"
-msgstr "Neþinoma"
-
-msgid "Company"
-msgstr "Ámonë"
-
 msgid "Zip/Postal code"
 msgstr "Paðto dëþutës kodas"
-
-msgid "City"
-msgstr "Miestas"
-
-msgid "State/Province"
-msgstr "Rajonas"
-
-msgid "Country"
-msgstr "Ðalis"
 
 msgid "Street 1"
 msgstr "Gatvë 1"
@@ -213,9 +670,6 @@ msgstr "i-MSCP - Admnistratorius/Tvarkyti vartotojai/Redaguoti Vartotojas"
 msgid "Edit admin"
 msgstr "Redaguoti administratoriø"
 
-msgid "Edit user"
-msgstr "Redaguoti vartotojà"
-
 msgid "Update"
 msgstr "Atnaujinti"
 
@@ -232,7 +686,8 @@ msgstr "Atnaujinimø tikrinimas iðjungtas!"
 msgid "Demo Version!"
 msgstr ""
 
-msgid "i-MSCP - Admin/Admin Log"
+#, fuzzy
+msgid "iMSCP - Admin/Admin Log"
 msgstr "i-MSCP - Administratorius/Administratoriaus áraðai"
 
 msgid "Log is empty!"
@@ -317,9 +772,6 @@ msgstr "Praðome ávesti siuntëjo el.paðtà!"
 msgid "You send email to your users successfully!"
 msgstr "Jûs iðsiuntëte jûsø vartotojams el.paðtà sëkmingai!"
 
-msgid "Email marketing"
-msgstr "El.paðto prekyba"
-
 msgid "Send message to"
 msgstr "Siøsti praneðima kam"
 
@@ -349,9 +801,6 @@ msgstr "Jûs neturite papildomø meniu"
 
 msgid "User"
 msgstr "Vartotojas"
-
-msgid "All"
-msgstr "Visi"
 
 msgid "Missing or incorrect data input!"
 msgstr "Truksta arba neteisingai ávesti duomenys!"
@@ -407,12 +856,6 @@ msgstr "Meniu mygtukas"
 msgid "Action"
 msgstr "Veiksmas"
 
-msgid "Edit"
-msgstr "Keisti"
-
-msgid "Delete"
-msgstr "Trinti"
-
 msgid "Level"
 msgstr "Lygis"
 
@@ -422,9 +865,9 @@ msgstr "Saugoti"
 msgid "Edit button"
 msgstr "Keisti mygtukà"
 
-#, php-format
-msgid "Are you sure you want to delete %s?"
-msgstr "Ar tikrai norite paðalinti %s?"
+#, fuzzy
+msgid "i-MSCP - Admin / System tools / Database Update"
+msgstr "i-MSCP Administratorius / Sistemos Árankiai / Serverio Bûklë"
 
 msgid "Database updates"
 msgstr "Duombazës atnaujinimai"
@@ -438,14 +881,11 @@ msgstr "Atnaujinti detales"
 msgid "New Database update is now available"
 msgstr "Yra naujas duombazës atnaujinimas"
 
-msgid "Do you want to execute the Updates now?"
-msgstr "Ar norite paleisti atnaujinimus dabar?"
+msgid "No provided"
+msgstr ""
 
 msgid "Execute updates"
 msgstr "Paleisti atnaujinimus"
-
-msgid "No database updates available"
-msgstr "Nëra duombazës atnaujinimø"
 
 msgid "i-MSCP - Domain/Details"
 msgstr "i-MSCP - Domenas/Detalës"
@@ -453,14 +893,8 @@ msgstr "i-MSCP - Domenas/Detalës"
 msgid "Domain details"
 msgstr "Domeno detalës"
 
-msgid "Domain name"
-msgstr "Domeno pavadinimas"
-
 msgid "Domain IP"
 msgstr "Domeno IP"
-
-msgid "Status"
-msgstr "Bûsena"
 
 msgid "PHP support"
 msgstr "PHP palaikymas"
@@ -493,24 +927,6 @@ msgstr "Panaudota"
 msgid "Limit"
 msgstr "Limitas"
 
-msgid "Mail accounts"
-msgstr "El.paðto sàskaitø"
-
-msgid "FTP accounts"
-msgstr "FTP sàskaitø"
-
-msgid "SQL databases"
-msgstr "SQL duombaziø"
-
-msgid "SQL users"
-msgstr "SQL vartotojø"
-
-msgid "Subdomains"
-msgstr "Subdomenai"
-
-msgid "Domain aliases"
-msgstr "Domenø pavadinimai"
-
 msgid "Submit changes"
 msgstr "Patvirtinti pakeitimus"
 
@@ -529,8 +945,117 @@ msgstr "Ne"
 msgid "Enabled"
 msgstr "Ájungta"
 
-msgid "Disabled"
-msgstr "Iðjungta"
+#, fuzzy
+msgid "Incorrect subdomains limit."
+msgstr "Neteisingas subdomenø limitas!"
+
+#, fuzzy
+msgid "Incorrect aliases limit."
+msgstr "Neteisingas pavadinimø limitas!"
+
+#, fuzzy
+msgid "Incorrect mail accounts limit."
+msgstr "Neteisingas el.paðto sàskaitø limitas!"
+
+#, fuzzy
+msgid "Incorrect FTP accounts limit."
+msgstr "Neteisingas FTP sàskaitø limitas!"
+
+#, fuzzy
+msgid "Incorrect SQL users limit."
+msgstr "Neteisingas SQL vartotojø limitas!"
+
+msgid "SQL databases limit is <i>disabled</i>!"
+msgstr "SQL duombaziø limitas yra <i>iðjungtas</i>!"
+
+#, fuzzy
+msgid "Incorrect SQL databases limit."
+msgstr "Neteisingas SQL duombaziø limitas!"
+
+msgid "SQL users limit is <i>disabled</i>!"
+msgstr "SQL vartotojø limitas yra <i>iðjungtas</i>!"
+
+#, fuzzy
+msgid "Incorrect traffic limit."
+msgstr "Neteisingas srauto limitas!"
+
+#, fuzzy
+msgid "Incorrect disk quota limit."
+msgstr "Neteisingas disko talpos limitas!"
+
+msgid "The application installer needs PHP to enable."
+msgstr ""
+
+msgid "The application installer of the users reseller is not activated."
+msgstr ""
+
+msgid "Subdomain"
+msgstr "Subdomenas"
+
+msgid "Alias"
+msgstr "Pavadinimas"
+
+msgid "Mail"
+msgstr "El.paðtas"
+
+msgid "FTP"
+msgstr "FTP"
+
+msgid "SQL Database"
+msgstr "SQL duombazë"
+
+msgid "SQL User"
+msgstr "SQL vartotojas"
+
+msgid "Traffic"
+msgstr "Srautas"
+
+msgid "Disk"
+msgstr "Talpa"
+
+#, fuzzy
+msgid "Domain properties could not be updated."
+msgstr "Domeno pasirinktys nebuvo atnaujinti!"
+
+msgid "Domain properties updated successfully!"
+msgstr "Domeno pasirinktys atnaujinti sëkmingai!"
+
+#, php-format
+msgid "The <em>%s</em> service cannot be disabled!"
+msgstr ""
+
+#, php-format
+msgid "There are <em>%s</em> records on system!"
+msgstr "Sistemoje yra <em>%s</em> áraðai!"
+
+#, php-format
+msgid "The <em>%s</em> service cannot be limited! "
+msgstr "<em>%s</em> paslauga negali bûti limituota!"
+
+#, php-format
+msgid ""
+"Specified number is smaller than <em>%s</em> records, present on the system!"
+msgstr "Nurodytas numeris yra maþesnis nei <em>%s</em> áraðø yra sistemoje!"
+
+#, php-format
+msgid "The <em>%s</em> service cannot be disabled! "
+msgstr "<em>%s</em> paslauga negali bûti iðjungta!"
+
+#, php-format
+msgid "There are <em>%s</em> records on the system!"
+msgstr "Ðiuo metu sistemoje yra <em>%s</em> áraðø!"
+
+#, php-format
+msgid "The <em>%s</em> service cannot be unlimited! "
+msgstr "<em>%s</em> paslauga negali bûti nelimituota!"
+
+#, php-format
+msgid "There are reseller limits for the <em>%s</em> service!"
+msgstr "<em>%s</em> paslaugai yra nustatytas perpardavinëtojø limitas!"
+
+#, php-format
+msgid "You are exceeding reseller limits for the <em>%s</em> service!"
+msgstr "Jûs esate virðyje perpardavinëtojø limitus <em>%s</em> paslaugai!"
 
 msgid "i-MSCP - Admin/Edit Domain"
 msgstr "i-MSCP - Administratorius/Redaguoti Domenas"
@@ -586,111 +1111,32 @@ msgstr ""
 "Jei 'Domenas nebegalios' atvëju yra 'N/A', galiojimo data bus nustatyta nuo "
 "ðiandien."
 
+msgid "or Check for <strong>never Expire</strong>"
+msgstr ""
+
 msgid ""
-"User does not exist or you do not have permission to access this interface!"
-msgstr "Vartotojas neegzistuoja arba jûs neturite teisës prie ðios sàsajos!"
+"You cannot access this page directly. You must switch to reseller level."
+msgstr ""
 
-msgid "N/A"
-msgstr "N/A"
-
-msgid "Incorrect subdomains limit!"
-msgstr "Neteisingas subdomenø limitas!"
-
-msgid "Incorrect aliases limit!"
-msgstr "Neteisingas pavadinimø limitas!"
-
-msgid "Incorrect mail accounts limit!"
-msgstr "Neteisingas el.paðto sàskaitø limitas!"
-
-msgid "Incorrect FTP accounts limit!"
-msgstr "Neteisingas FTP sàskaitø limitas!"
-
-msgid "Incorrect SQL users limit!"
-msgstr "Neteisingas SQL vartotojø limitas!"
-
-msgid "SQL databases limit is <i>disabled</i>!"
-msgstr "SQL duombaziø limitas yra <i>iðjungtas</i>!"
-
-msgid "Incorrect SQL databases limit!"
-msgstr "Neteisingas SQL duombaziø limitas!"
-
-msgid "SQL users limit is <i>disabled</i>!"
-msgstr "SQL vartotojø limitas yra <i>iðjungtas</i>!"
-
-msgid "Incorrect traffic limit!"
-msgstr "Neteisingas srauto limitas!"
-
-msgid "Incorrect disk quota limit!"
-msgstr "Neteisingas disko talpos limitas!"
-
-msgid "Subdomain"
-msgstr "Subdomenas"
-
-msgid "Alias"
-msgstr "Pavadinimas"
-
-msgid "Mail"
-msgstr "El.paðtas"
-
-msgid "FTP"
-msgstr "FTP"
-
-msgid "SQL Database"
-msgstr "SQL duombazë"
-
-msgid "SQL User"
-msgstr "SQL vartotojas"
-
-msgid "Traffic"
-msgstr "Srautas"
-
-msgid "Disk"
-msgstr "Talpa"
-
-msgid "Domain properties could not be updated!"
-msgstr "Domeno pasirinktys nebuvo atnaujinti!"
-
-msgid "Domain properties updated successfully!"
-msgstr "Domeno pasirinktys atnaujinti sëkmingai!"
-
-#, php-format
-msgid "The <em>%s</em> service cannot be disabled! "
-msgstr "<em>%s</em> paslauga negali bûti iðjungta!"
-
-#, php-format
-msgid "There are <em>%s</em> records on system!"
-msgstr "Sistemoje yra <em>%s</em> áraðai!"
-
-#, php-format
-msgid "The <em>%s</em> service cannot be limited! "
-msgstr "<em>%s</em> paslauga negali bûti limituota!"
-
-#, php-format
 msgid ""
-"Specified number is smaller than <em>%s</em> records, present on the system!"
-msgstr "Nurodytas numeris yra maþesnis nei <em>%s</em> áraðø yra sistemoje!"
+"Unable to update domain properties: The domain does not exist or is an "
+"orphan."
+msgstr ""
 
-#, php-format
-msgid "There are <em>%s</em> records on the system!"
-msgstr "Ðiuo metu sistemoje yra <em>%s</em> áraðø!"
+msgid "Unable to update domain: Domain ID not found."
+msgstr ""
 
-#, php-format
-msgid "The <em>%s</em> service cannot be unlimited! "
-msgstr "<em>%s</em> paslauga negali bûti nelimituota!"
+msgid "Unable to edit domain: The domain does not exist or is an orphan."
+msgstr ""
 
-#, php-format
-msgid "There are reseller limits for the <em>%s</em> service!"
-msgstr "<em>%s</em> paslaugai yra nustatytas perpardavinëtojø limitas!"
-
-#, php-format
-msgid "You are exceeding reseller limits for the <em>%s</em> service!"
-msgstr "Jûs esate virðyje perpardavinëtojø limitus <em>%s</em> paslaugai!"
+msgid "Unable to edit domain: ID not found."
+msgstr ""
 
 msgid "i-MSCP - Domain Statistics Data"
 msgstr "i-MSCP - Domenø statistikos duomenys"
 
-msgid "Domain statistics"
-msgstr "Domenø statistikos"
+msgid "Reseller users table"
+msgstr "Perpardavinëtojo vartotojø lentelë"
 
 msgid "Month"
 msgstr "Mënuo"
@@ -716,14 +1162,47 @@ msgstr "POP3/IMAP srautas"
 msgid "All traffic"
 msgstr "Visas srautas"
 
-msgid "Day"
-msgstr "Diena"
+msgid "i-MSCP - Administrator/Hosting Plan Management"
+msgstr "i-MSCP - Administratorius/Hostingo Planø Tvarkymas"
+
+msgid "Hosting plans"
+msgstr "Hostingo planai"
+
+msgid "Purchasing"
+msgstr "Pirkimai"
+
+msgid "Add new user hosting plan"
+msgstr "Pridëti naujà vartotojø hostingo planà"
+
+msgid "Return to previous menu"
+msgstr "Gráþti á buvusá meniu"
+
+msgid "Hosting plan added!"
+msgstr "Hostingo planas pridëtas!"
+
+msgid "Hosting plan deleted!"
+msgstr "Hostingo planas iðtrintas!"
+
+msgid "Hosting plan updated!"
+msgstr "Hostingo planas atnaujintas!"
+
+msgid "Hosting plan can't be deleted, there are orders!"
+msgstr "Hostingo planas negali bûti iðtrintas. Yra pirkëjø!"
+
+msgid "Hosting plans not found!"
+msgstr "Hostingo planai nerasti!"
+
+msgid "No."
+msgstr "Ne."
+
+msgid "Name"
+msgstr "Pavadinimas"
+
+msgid "Show hosting plan"
+msgstr "Rodyti hostingo planà"
 
 msgid "i-MSCP - Administrator/Add hosting plan"
 msgstr "i-MSCP - Administratorius/Pridëti hostingo planà"
-
-msgid "Add hosting plan"
-msgstr "Pridëti hostingo planà"
 
 msgid "Hosting plan properties"
 msgstr "Hostingo plano pasirinktys"
@@ -769,9 +1248,6 @@ msgstr "Apache saugomi áraðai"
 
 msgid "AwStats"
 msgstr "AwStats"
-
-msgid "yes"
-msgstr "taip"
 
 msgid "no"
 msgstr "ne"
@@ -827,6 +1303,33 @@ msgstr "Neteisinga kainos sintaksë"
 msgid "Incorrect setup fee syntax!"
 msgstr "Neteisinga registracijos mokesèio sintaksë"
 
+msgid "Incorrect subdomains limit!"
+msgstr "Neteisingas subdomenø limitas!"
+
+msgid "Incorrect aliases limit!"
+msgstr "Neteisingas pavadinimø limitas!"
+
+msgid "Incorrect mail accounts limit!"
+msgstr "Neteisingas el.paðto sàskaitø limitas!"
+
+msgid "Incorrect FTP accounts limit!"
+msgstr "Neteisingas FTP sàskaitø limitas!"
+
+msgid "Incorrect SQL databases limit!"
+msgstr "Neteisingas SQL duombaziø limitas!"
+
+msgid "Incorrect SQL users limit!"
+msgstr "Neteisingas SQL vartotojø limitas!"
+
+msgid "Incorrect traffic limit!"
+msgstr "Neteisingas srauto limitas!"
+
+msgid "Incorrect disk quota limit!"
+msgstr "Neteisingas disko talpos limitas!"
+
+msgid "The i-MSCP application installer needs PHP to enable it!"
+msgstr ""
+
 msgid "Hosting plan with entered name already exists!"
 msgstr "Ávestas hostingo plano pavadinimas jau yra!"
 
@@ -854,47 +1357,101 @@ msgstr "Neteisingai ávesta kaina. Pavizdys: 9.99"
 msgid "Incorrect setup fee. Example: 19.99"
 msgstr "Neteisingai ávestas registracijos mokestis. Pavizdys: 19.99"
 
-msgid "i-MSCP - Administrator/Hosting Plan Management"
-msgstr "i-MSCP - Administratorius/Hostingo Planø Tvarkymas"
+msgid "No domain system errors"
+msgstr "Jokiø domenø sitemos klaidø nëra"
 
-msgid "Hosting plans"
-msgstr "Hostingo planai"
+msgid "No domain alias system errors"
+msgstr "Jokiø domenø pavadinimø sistemos klaidø nëra"
 
-msgid "Manage hosting plans"
-msgstr "Tvarkyti hostingo planus"
+msgid "No subdomain system errors"
+msgstr "Jokiø subdomenø sistemos klaidø nëra"
 
-msgid "Purchasing"
-msgstr "Pirkimai"
+msgid "No alias subdomain system errors"
+msgstr "Jokiø subdomenø pavadinimø sistemos klaidø nëra"
 
-msgid "Add new user hosting plan"
-msgstr "Pridëti naujà vartotojø hostingo planà"
+msgid "No email account system errors"
+msgstr "Jokiø el.paðto sàskaitø sistemos klaidø nëra"
 
-msgid "Return to previous menu"
-msgstr "Gráþti á buvusá meniu"
+#, fuzzy
+msgid "missing domain"
+msgstr "Domeno subdomenai:"
 
-msgid "Hosting plan added!"
-msgstr "Hostingo planas pridëtas!"
+#, fuzzy
+msgid "missing alias"
+msgstr "Domenø pavadinimai"
 
-msgid "Hosting plan deleted!"
-msgstr "Hostingo planas iðtrintas!"
+msgid "orphan entry"
+msgstr ""
 
-msgid "Hosting plan updated!"
-msgstr "Hostingo planas atnaujintas!"
+#, fuzzy
+msgid "No htaccess related system errors"
+msgstr "Jokiø domenø pavadinimø sistemos klaidø nëra"
 
-msgid "Hosting plan can't be deleted, there are orders!"
-msgstr "Hostingo planas negali bûti iðtrintas. Yra pirkëjø!"
+#, fuzzy
+msgid "Missing domain"
+msgstr "Tvarkyti domeno pavadinimus"
 
-msgid "Hosting plans not found!"
-msgstr "Hostingo planai nerasti!"
+#, php-format
+msgid "Daemon returned %d as status code"
+msgstr "Daemon sugraþino %d kaip statuso kodà"
 
-msgid "No."
-msgstr "Ne."
+msgid "Unknown type!"
+msgstr "Neþinomas typas!"
 
-msgid "Name"
-msgstr "Pavadinimas"
+msgid "Done"
+msgstr "Baigti"
 
-msgid "Show hosting plan"
-msgstr "Rodyti hostingo planà"
+msgid "Unknown Error"
+msgstr "Neþinoma klaida"
+
+msgid "Domain errors"
+msgstr "Domenø klaidos"
+
+msgid "Domain alias errors"
+msgstr "Domenø pavadinimø klaidos"
+
+msgid "Subdomain errors"
+msgstr "Subdomenø klaidos"
+
+msgid "Alias subdomain errors"
+msgstr "Subdomenø pavadinimø klaidos"
+
+msgid "Mail account errors"
+msgstr "El.paðto sàskaitos klaidos"
+
+msgid ".htaccess related errors"
+msgstr ""
+
+msgid "i-MSCP Daemon tools"
+msgstr "i-MSCP Daemon árankiai"
+
+msgid "Execute requests"
+msgstr "Vykdyti praðymus"
+
+msgid "Set status to 'change'"
+msgstr "Nustatyti statusà á 'pokytis"
+
+#, fuzzy, php-format
+msgid "%s Errors in database"
+msgstr ""
+
+msgid "Update checking is disabled!"
+msgstr "Atnaujinimø tikrinimas iðjungtas!"
+
+msgid "Enable update at"
+msgstr "Ájungti atnaujinimus"
+
+msgid "New i-MSCP update is now available"
+msgstr "Yra iðleistas naujas i-MSCP atnaujinimas"
+
+msgid "Get it at"
+msgstr "Gauk tai"
+
+msgid "Available i-MSCP updates"
+msgstr "Galimi i-MSCP atnaujinimai"
+
+msgid "No new i-MSCP updates available"
+msgstr "Nëra naujø i-MSCP atnaujinimø"
 
 #, php-format
 msgid "You have <b>%d</b> new support questions"
@@ -903,14 +1460,8 @@ msgstr "Jûs turite naujø pagalbos klausimø: <b>%d</b>"
 msgid "View"
 msgstr "Rodyti"
 
-msgid "A database update is available"
-msgstr "Yra duombazës atnaujinimas"
-
-msgid "Update checking is disabled!"
-msgstr "Atnaujinimø tikrinimas iðjungtas!"
-
-msgid "New i-MSCP update is now available"
-msgstr "Yra iðleistas naujas i-MSCP atnaujinimas"
+msgid "One or more updates to the database are available."
+msgstr ""
 
 msgid "You are exceeding your traffic limit!"
 msgstr "Jûs esate virðije srauto limità!"
@@ -944,6 +1495,10 @@ msgstr "i-MSCP - Administratorius/IP tvarkymas"
 msgid "Remove IP"
 msgstr "Ðalinti IP"
 
+#, fuzzy
+msgid "No IP's available"
+msgstr "Nëra naujø i-MSCP atnaujinimø"
+
 msgid "New IP was added!"
 msgstr "Naujas IP buvo pridëtas!"
 
@@ -962,9 +1517,6 @@ msgstr "Ðis IP jau naudojamas!"
 msgid "Please select nework interface!"
 msgstr "Praðome pasirinkti tinklo sàsajà!"
 
-msgid "Manage IPs"
-msgstr "Tvarkyti IP adresus"
-
 msgid "Available IPs"
 msgstr "Esami IP adresai"
 
@@ -981,93 +1533,45 @@ msgstr "Pridëti naujà IP"
 msgid "Are you sure you want to delete this IP: %s?"
 msgstr "Ar tikrai norite paðalinti ðá IP adresà: %s?"
 
-msgid "No domain system errors"
-msgstr "Jokiø domenø sitemos klaidø nëra"
+#, fuzzy
+msgid "i-MSCP - Admin/IP Usage"
+msgstr "i-MSCP - Administratorius/IP tvarkymas"
 
-msgid "No domain alias system errors"
-msgstr "Jokiø domenø pavadinimø sistemos klaidø nëra"
+#, fuzzy
+msgid "Total Domains"
+msgstr "Domenai"
 
-msgid "No subdomain system errors"
-msgstr "Jokiø subdomenø sistemos klaidø nëra"
+msgid "No records found"
+msgstr ""
 
-msgid "No alias subdomain system errors"
-msgstr "Jokiø subdomenø pavadinimø sistemos klaidø nëra"
+#, fuzzy
+msgid "Admin/IP usage statistics"
+msgstr "Domenø statistikos"
 
-msgid "No email account system errors"
-msgstr "Jokiø el.paðto sàskaitø sistemos klaidø nëra"
+#, fuzzy
+msgid "Domain Name"
+msgstr "Domeno pavadinimas"
 
-msgid "i-MSCP debugger"
-msgstr "i-MSCP debugger"
+#, fuzzy
+msgid "Reseller Name"
+msgstr "Perpardavinëtojo vardas"
 
-msgid "Domain errors"
-msgstr "Domenø klaidos"
-
-msgid "Domain alias errors"
-msgstr "Domenø pavadinimø klaidos"
-
-msgid "Subdomain errors"
-msgstr "Subdomenø klaidos"
-
-msgid "Alias subdomain errors"
-msgstr "Subdomenø pavadinimø klaidos"
-
-msgid "Mail account errors"
-msgstr "El.paðto sàskaitos klaidos"
-
-msgid "i-MSCP Daemon tools"
-msgstr "i-MSCP Daemon árankiai"
-
-msgid "Execute requests"
-msgstr "Vykdyti praðymus"
-
-msgid "Set status to 'change'"
-msgstr "Nustatyti statusà á 'pokytis"
-
-#, php-format
-msgid "Daemon returned %d as status code"
-msgstr "Daemon sugraþino %d kaip statuso kodà"
-
-msgid "Unknown type!"
-msgstr "Neþinomas typas!"
-
-msgid "Done"
-msgstr "Baigti"
-
-msgid "Unknown Error"
-msgstr "Neþinoma klaida"
-
-msgid "Enable update at"
-msgstr "Ájungti atnaujinimus"
-
-msgid "Settings"
-msgstr "Nustatymai"
-
-msgid "Get it at"
-msgstr "Gauk tai"
-
-msgid "i-MSCP updates"
-msgstr "i-MSCP atnaujinimai"
-
-msgid "Available i-MSCP updates"
-msgstr "Galimi i-MSCP atnaujinimai"
-
-msgid "No new i-MSCP updates available"
-msgstr "Nëra naujø i-MSCP atnaujinimø"
-
-msgid "Language was removed!"
-msgstr "Kalba buvo paðalinta!"
-
-msgid "User language updated successfully!"
+#, fuzzy
+msgid "User language updated successfully."
 msgstr "Vartotojø kalba atnaujinta sëkmingai!"
 
 msgid "i-MSCP - Admin/Change Language"
 msgstr "i-MSCP - Administratorius/Keisti Kalbà"
 
-msgid "Language"
-msgstr "Kalba"
-
 msgid "Choose your default language"
 msgstr "Pasirinkite numatytà kalbà"
+
+#, fuzzy
+msgid "Error we have user that uses that language!"
+msgstr "Klaida: mes jau turime perpardavinëtojà naudojanti ðá IP!"
+
+msgid "Language was removed!"
+msgstr "Kalba buvo paðalinta!"
 
 msgid "Reseller list is empty!"
 msgstr "Perpardavinëtojø sàraðas yra tuðèias!"
@@ -1075,12 +1579,6 @@ msgstr "Perpardavinëtojø sàraðas yra tuðèias!"
 msgid "i-MSCP - Admin/Manage users/Reseller assignment"
 msgstr ""
 "i-MSCP - Administratorius/Tvarkyti vartotojai/Perpardavinëtojo paskirtis"
-
-msgid "Reseller assignment"
-msgstr "Perpardavinëtojo paskirtis"
-
-msgid "Reseller users"
-msgstr "Perpardavinëtojo klientai"
 
 msgid "Mark"
 msgstr "Þymë"
@@ -1146,12 +1644,6 @@ msgstr ""
 msgid "i-MSCP - Admin/Manage users/User assignment"
 msgstr "i-MSCP - Administratorius/Tvarkyti vartotojai/Vartotojo paskirtys"
 
-msgid "User assignment"
-msgstr "Vartotojo paskirtys"
-
-msgid "Users"
-msgstr "Vartotojai"
-
 msgid "User name"
 msgstr "Vartotojo vardas"
 
@@ -1187,11 +1679,16 @@ msgstr ""
 msgid "User was disabled"
 msgstr "Vartotojas buvo atjungtas"
 
-msgid "Incorrect data input!"
-msgstr "Neteisinga ávesta informacija!"
+#, fuzzy
+msgid "Uninstall"
+msgstr "paðalinti"
 
-msgid "i-MSCP - Admin/Internationalisation"
-msgstr "i-MSCP - Administratorius/Internacionalizavimas"
+#, php-format
+msgid "%d messages translated"
+msgstr "%d praneðimai iðversti"
+
+msgid "Gzipped"
+msgstr ""
 
 msgid "Upload file error!"
 msgstr "Keliamo failo klaida!"
@@ -1205,7 +1702,8 @@ msgstr "Negali nuskaityti kalbos failo!"
 msgid "Uploaded file is not a valid language file!"
 msgstr "Ákeltas failas nëra teisingas kalbos failas!"
 
-msgid "Uploaded file does not contain the language information!"
+#, fuzzy
+msgid "Uploaded file does not contain language information!"
 msgstr "Ákeltas failas neturi jokios kalbos informacijos!"
 
 #, php-format
@@ -1222,15 +1720,8 @@ msgstr ""
 msgid "Language was updated!"
 msgstr "Kalba atnaujinta!"
 
-msgid "uninstall"
-msgstr "paðalinti"
-
-#, php-format
-msgid "%d messages translated"
-msgstr "%d praneðimai iðversti"
-
-msgid "Internationalisation"
-msgstr "Internacionalizavimas"
+msgid "i-MSCP - Admin/Internationalisation"
+msgstr "i-MSCP - Administratorius/Internacionalizavimas"
 
 msgid "Installed languages"
 msgstr "Ádiegtos kalbos"
@@ -1238,8 +1729,8 @@ msgstr "Ádiegtos kalbos"
 msgid "Messages"
 msgstr "Praneðimai"
 
-msgid "Panel Default"
-msgstr "Numatyta skydelis"
+msgid "Panel default language"
+msgstr "Lentos numatyta kalba"
 
 msgid "Install new language"
 msgstr "Ádiegti naujà kalbà"
@@ -1252,6 +1743,9 @@ msgstr "Diegti"
 
 msgid "Export"
 msgstr "Eksportuoti"
+
+msgid "Incorrect data input!"
+msgstr "Neteisinga ávesta informacija!"
 
 msgid "i-MSCP - Admin/Change Password"
 msgstr "i-MSCP - Administratorius/Keisti Slaptaþodá"
@@ -1267,9 +1761,6 @@ msgstr "Dabartinis slaptaþodis neteisingas!"
 
 msgid "User password updated successfully!"
 msgstr "Vartojo slaptaþodis sëkmingai atnaujintas"
-
-msgid "Change password"
-msgstr "Keisti slaptaþodá"
 
 msgid "Password data"
 msgstr "Slaptaþodþio informacija"
@@ -1288,9 +1779,6 @@ msgstr "i-MSCP - Administratorius/Keisti Asmeninæ Informacijà"
 
 msgid "Personal data updated successfully!"
 msgstr "Asmeninë informacija sëkmingai atnaujinta!"
-
-msgid "Change personal data"
-msgstr "Keisti asmeninæ informacijà"
 
 msgid "Personal data"
 msgstr "Asmeninë informacija"
@@ -1313,6 +1801,9 @@ msgstr "Paþyma"
 msgid "Number"
 msgstr "Numeris"
 
+msgid "This user name already exist!"
+msgstr "Ðis vartotojo vardas jau uþimtas!"
+
 msgid "Incorrect email syntax!"
 msgstr "Neteisinga el.paðto sintaksë!"
 
@@ -1329,9 +1820,6 @@ msgstr "SQL vartotojø limitas yra <i>iðjungtas</i>!"
 
 msgid "You must assign at least one IP number for a reseller!"
 msgstr "Jûs turite priskirti maþiausiai vienà IP adresà perpardavinëtojui!"
-
-msgid "Add reseller"
-msgstr "Pridëti perpardavinëtojà"
 
 msgid "Domains limit<br><i>(0 unlimited)</i>"
 msgstr "Domenø limitas<br><i>(0 nelimituotas)</i>"
@@ -1357,29 +1845,20 @@ msgstr "Backup ir atkûrimas"
 msgid "Custom error pages"
 msgstr "Papildomi klaidø puslapiai"
 
-msgid "Protected areas"
-msgstr "Apsaugotos vietos"
-
-msgid "Webmail"
-msgstr "Webmail"
-
 msgid "Directory listing"
 msgstr "Direktorijø rikiavimas"
 
 msgid "Logo upload"
 msgstr "Logo ákelimas"
 
-msgid "Support system"
-msgstr "Pagalbos sistema"
+msgid "Can use software depot"
+msgstr ""
+
+msgid "Can use websoftware depot"
+msgstr ""
 
 msgid "Reseller IPs"
 msgstr "Perpardavinëtojo IP adresai"
-
-msgid "Customer ID"
-msgstr "Pirkëjo ID"
-
-msgid "Domains"
-msgstr "Domenai"
 
 msgid "Aliases"
 msgstr "Pavadinimai"
@@ -1473,7 +1952,8 @@ msgstr ""
 msgid "i-MSCP - Reseller statistics"
 msgstr "i-MSCP - Perpardavinëtojo statistikos duomenys"
 
-msgid "Not found reseller(s) in your system!"
+#, fuzzy
+msgid "No reseller is registered in your system!"
 msgstr "Nerastas(-i) perpardavinëtojas(-ai) jûsø sistemoje!"
 
 #, php-format
@@ -1523,9 +2003,6 @@ msgstr "%1$d <br/>ið<br/> <b>%2$d</b>"
 msgid "%d <br/>of<br/> <b>unlimited</b>"
 msgstr "%d <br/>ið<br/> <b>neribotø</b>"
 
-msgid "Reseller users table"
-msgstr "Perpardavinëtojo vartotojø lentelë"
-
 msgid "This reseller has no domains."
 msgstr "Ðis perpardavinëtojas neturi domenø."
 
@@ -1555,7 +2032,8 @@ msgstr "SQL<br>vartotojas"
 
 msgid "i-MSCP Admin / System Tools / Anti-Rootkits Tools Log Checker"
 msgstr ""
-"i-MSCP Administratorius / Sistemos árankiai / Anti-Rootkits árankiø tikrinimas"
+"i-MSCP Administratorius / Sistemos árankiai / Anti-Rootkits árankiø "
+"tikrinimas"
 
 #, php-format
 msgid "%s doesn't exist or is empty"
@@ -1564,23 +2042,8 @@ msgstr "%s neegzistuoja arba yra tuðèias"
 msgid "Anti-Rootkits Tools Log Checker"
 msgstr "Anti-Rootkits árankiø tikrinimas"
 
-msgid "i-MSCP - Admin/Server day stats"
-msgstr "i-MSCP - Administratorius/Serverio dienos statistika"
-
-msgid "Server day statistics"
-msgstr "Serverio dienos statistika"
-
-msgid "Month:"
-msgstr "Mënuo:"
-
-msgid "Year:"
-msgstr "Metai:"
-
-msgid "Day:"
-msgstr "Diena:"
-
-msgid "Hour"
-msgstr "Valanda"
+msgid "i-MSCP - Admin/Server statistics"
+msgstr "i-MSCP - Adminstratorius/Serverio statistikos duomenys"
 
 msgid "Web in"
 msgstr "Web in"
@@ -1612,20 +2075,24 @@ msgstr "Visi in"
 msgid "All out"
 msgstr "Visi out"
 
-msgid "i-MSCP - Admin/Server statistics"
-msgstr "i-MSCP - Adminstratorius/Serverio statistikos duomenys"
+msgid "i-MSCP - Admin/Server day stats"
+msgstr "i-MSCP - Administratorius/Serverio dienos statistika"
 
-msgid "Server statistics"
-msgstr "Serverio statistikos duomenys"
+msgid "Server day statistics"
+msgstr "Serverio dienos statistika"
 
-msgid "i-MSCP Admin / System Tools / Server Status"
+msgid "Month:"
+msgstr "Mënuo:"
+
+msgid "Year:"
+msgstr "Metai:"
+
+msgid "Day:"
+msgstr "Diena:"
+
+#, fuzzy
+msgid "i-MSCP Admin / General Information / Server Status"
 msgstr "i-MSCP Administratorius / Sistemos Árankiai / Serverio Bûklë"
-
-msgid "UP"
-msgstr "UP"
-
-msgid "DOWN"
-msgstr "DOWN"
 
 msgid "Host"
 msgstr "Hostas"
@@ -1633,8 +2100,11 @@ msgstr "Hostas"
 msgid "Service"
 msgstr "Paslauga"
 
-msgid "Server status"
-msgstr "Serverio bûklë"
+msgid "UP"
+msgstr "UP"
+
+msgid "DOWN"
+msgstr "DOWN"
 
 msgid "i-MSCP - Admin/Manage Sessions"
 msgstr "i-MSCP - Administratorius/Tvarkyti sesijas"
@@ -1648,129 +2118,26 @@ msgstr "Vartotojo tipas"
 msgid "Last access"
 msgstr "Paskutinis prisijungimas"
 
-msgid "Options"
-msgstr "Pasirinktys"
-
 msgid "Kill session"
 msgstr "Uþdaryti sesijà"
-
-#, fuzzy
-msgid "You can only upload images!"
-msgstr "Jûs galite ákelti tik paveikslëlius!"
-
-msgid "Images have to be smaller than 195 x 195 pixels!"
-msgstr "Paveiksl4liai turi bûti maþesni nei 195 x 195 pikseliai!"
-
-msgid "Your logo was successful uploaded!"
-msgstr "Jûsû logo sëkmingai ákeltas!"
-
-msgid "Layout settings"
-msgstr ""
-
-msgid "Installed layouts"
-msgstr ""
-
-msgid "Layout name"
-msgstr ""
-
-msgid "default"
-msgstr ""
-
-msgid "Upload logo"
-msgstr "Ákelti logo"
-
-msgid "Logo file"
-msgstr "Logo failas"
-
-msgid "Upload"
-msgstr "Ákelti"
-
-msgid "Remove"
-msgstr "Ðalinti"
-
-msgid "Choose default layout"
-msgstr ""
-
-msgid "Layout"
-msgstr ""
-
-msgid "Please specify a subject!"
-msgstr ""
-
-msgid "Please specify message!"
-msgstr ""
-
-msgid "Auto email template data updated!"
-msgstr ""
-
-msgid "i-MSCP - Admin/Lostpw email setup"
-msgstr "i-MSCP - Administratorius/Prarasto slaptaþodþio el.laiðko nustatymas"
-
-msgid "Lost password e-mail"
-msgstr "Prarasto slaptaþodþio el.laiðkas"
-
-#, fuzzy
-msgid "Message template info"
-msgstr "Praneðimo iðvaizdos informacija"
-
-#, fuzzy
-msgid "Message template"
-msgstr "Praneðimo iðvaizda"
-
-msgid "Activation E-Mail"
-msgstr "Aktyvacijos El.Laiðkas"
-
-msgid "Password E-Mail"
-msgstr "Slaptaþodþio El.Laiðkas"
-
-msgid "User login (system) name"
-msgstr "Vartotojo prisijungimo (sistemos) vardas"
-
-msgid "User password"
-msgstr "Vartotojo slaptaþodis"
-
-msgid "User (first and last) name"
-msgstr "Vartotojo vardas ir pavardë"
-
-msgid "Lost password link"
-msgstr "Prarasto slaptaþodþio nuoroda"
-
-msgid "Subject"
-msgstr "Tema"
-
-msgid "Apply changes"
-msgstr "Pritaikyti pakeitimus"
-
-msgid "URL to this admin panel"
-msgstr "URL á ðià administracijos lentelæ"
-
-msgid "URL protocol"
-msgstr "URL protokolas"
-
-msgid "i-MSCP - Admin/Maintenance mode"
-msgstr "i-MSCP - Administratorius/Remonto bûsena"
-
-msgid "Settings saved !"
-msgstr "Nustatymai iðsaugoti !"
-
-msgid "Maintenance mode"
-msgstr "Remonto bûsena"
-
-msgid "Under this mode only administrators can login"
-msgstr "Esant ðiai bûsenai tik administratoriai gali prisijungti"
 
 msgid "i-MSCP - Admin/Settings"
 msgstr "i-MSCP - Administratorius/Nustatymai"
 
-msgid "ERROR: Only positive numbers are allowed !"
+#, fuzzy
+msgid "Error: Only positive numbers are allowed!"
 msgstr "KLAIDA: Tik pozityvûs numeriai leidþiami !"
 
-#, fuzzy
-msgid "Settings saved!"
-msgstr "Nustatymai iðsaugoti !"
+#, php-format
+msgid "%d configuration parameter(s) was updated!"
+msgstr ""
 
-msgid "General settings"
-msgstr "Pagrindingiai nustatymai"
+#, php-format
+msgid "%d configuration parameter(s) was created!"
+msgstr ""
+
+msgid "Nothing's been changed!"
+msgstr ""
 
 msgid "Activation link expire time (minutes)"
 msgstr "Aktivacijos nuorodos galiojimo laikas (minutëmis)"
@@ -1817,11 +2184,8 @@ msgstr "Skaièiuoti numatytus El.Paðto adresus"
 msgid "E-Mail accounts are hard suspended"
 msgstr "El.Paðto sàskaitos yra sunkiai sustabdomos"
 
-msgid "Panel default language"
-msgstr "Lentos numatyta kalba"
-
-msgid "Server ports"
-msgstr "Serverio portai"
+msgid "Apply changes"
+msgstr "Pritaikyti pakeitimus"
 
 msgid "Hosting plans available for"
 msgstr "Hostingo planai galimi"
@@ -1892,52 +2256,142 @@ msgid "Maximal number of labels for subdomains"
 msgstr ""
 
 #, fuzzy
-msgid ""
-"ERROR: Only letters, numbers, dash and underscore are allowed for services "
-"names!"
-msgstr "KLAIDA: Tik raidës, skaièiai, brûkðniai ir pabraukimai yra leidþiami!"
+msgid "You can only upload images!"
+msgstr "Jûs galite ákelti tik paveikslëlius!"
+
+msgid "Images have to be smaller than 195 x 195 pixels!"
+msgstr "Paveiksl4liai turi bûti maþesni nei 195 x 195 pikseliai!"
+
+msgid "Your logo was successful uploaded!"
+msgstr "Jûsû logo sëkmingai ákeltas!"
+
+msgid "Installed layouts"
+msgstr ""
+
+msgid "Layout name"
+msgstr ""
+
+msgid "default"
+msgstr ""
+
+msgid "Upload logo"
+msgstr "Ákelti logo"
+
+msgid "Logo file"
+msgstr "Logo failas"
+
+msgid "Upload"
+msgstr "Ákelti"
+
+msgid "Remove"
+msgstr "Ðalinti"
+
+msgid "Choose default layout"
+msgstr ""
+
+msgid "Please specify a subject!"
+msgstr ""
+
+msgid "Please specify message!"
+msgstr ""
+
+msgid "Auto email template data updated!"
+msgstr ""
+
+msgid "i-MSCP - Admin/Lostpw email setup"
+msgstr "i-MSCP - Administratorius/Prarasto slaptaþodþio el.laiðko nustatymas"
+
+msgid "Lost password e-mail"
+msgstr "Prarasto slaptaþodþio el.laiðkas"
 
 #, fuzzy
-msgid "ERROR: Wrong Ip number!"
+msgid "Message template info"
+msgstr "Praneðimo iðvaizdos informacija"
+
+#, fuzzy
+msgid "Message template"
+msgstr "Praneðimo iðvaizda"
+
+msgid "Activation E-Mail"
+msgstr "Aktyvacijos El.Laiðkas"
+
+msgid "Password E-Mail"
+msgstr "Slaptaþodþio El.Laiðkas"
+
+msgid "User login (system) name"
+msgstr "Vartotojo prisijungimo (sistemos) vardas"
+
+msgid "User password"
+msgstr "Vartotojo slaptaþodis"
+
+msgid "User (first and last) name"
+msgstr "Vartotojo vardas ir pavardë"
+
+msgid "Lost password link"
+msgstr "Prarasto slaptaþodþio nuoroda"
+
+msgid "Subject"
+msgstr "Tema"
+
+msgid "URL to this admin panel"
+msgstr "URL á ðià administracijos lentelæ"
+
+msgid "URL protocol"
+msgstr "URL protokolas"
+
+msgid "i-MSCP - Admin/Maintenance mode"
+msgstr "i-MSCP - Administratorius/Remonto bûsena"
+
+msgid "Settings saved !"
+msgstr "Nustatymai iðsaugoti !"
+
+msgid "Under this mode only administrators can login"
+msgstr "Esant ðiai bûsenai tik administratoriai gali prisijungti"
+
+#, fuzzy
+msgid "Error: Wrong Ip number!"
 msgstr "Netinkamas IP numeris!"
 
 #, fuzzy
-msgid "ERROR: Only positive numbers are allowed for services ports!"
+msgid "Error: Only positive numbers are allowed for services ports!"
 msgstr "KLAIDA: Tik pozityvûs numeriai leidþiami !"
 
 #, fuzzy
-msgid "ERROR: Service port with same name already exists!"
+msgid "Error: Service port with same name already exists!"
 msgstr "KLAIDA: Portas jau yra naudojamas!"
 
-msgid "ERROR: Unallowed protocol!"
+msgid "Error: Unallowed protocol!"
 msgstr ""
 
-msgid "ERROR: Bad value for show entry!"
+msgid "Error: Wrong value for show entry!"
 msgstr ""
 
 #, fuzzy
-msgid "Service port was added!"
+msgid "Service port was successfully added"
 msgstr "Naujas IP buvo pridëtas!"
 
-#, php-format
-msgid "%d Service(s) port was updated!"
+#, fuzzy, php-format
+msgid "%d Service(s) port was successfully updated"
 msgstr ""
 
-msgid "Nothing's been changed!"
-msgstr ""
-
-msgid "You have no custom service ports defined."
-msgstr ""
-
-msgid "ERROR: Unknown service port name!"
+msgid "Nothing's been changed"
 msgstr ""
 
 #, fuzzy
-msgid "Service port was removed!"
+msgid "You have no custom service ports defined"
+msgstr "Jûs neturite papildomø meniu"
+
+#, fuzzy
+msgid "Service port was successfully removed!"
 msgstr "Bilietas vël atidarytas!"
 
-msgid "ERROR: You are not allowed to remove this port entry!"
-msgstr ""
+#, fuzzy
+msgid "Error: You are not allowed to remove this service port entry!"
+msgstr "Ar tikrai norite paðalinti %s?"
+
+#, fuzzy
+msgid "i-MSCP - Admin / Settings"
+msgstr "i-MSCP - Administratorius/Nustatymai"
 
 msgid "udp"
 msgstr "udp"
@@ -1977,9 +2431,6 @@ msgstr "Serverio srauto nustatymai sëkmingai atnaujinti!"
 msgid "Modify"
 msgstr "Keisti"
 
-msgid "Server traffic settings"
-msgstr "Serverio srauto nustatymai"
-
 msgid "Set server traffic settings"
 msgstr "Nustatyti serverio srauto nustatymus"
 
@@ -1992,14 +2443,388 @@ msgstr "Pavojingas srautas [MB]"
 msgid "i-MSCP - Admin/Manage users/Email setup"
 msgstr "i-MSCP - Administratorius/Tvarkyti vartotojai/El.paðto nustatymai"
 
-msgid "Email setup"
-msgstr "El.paðto nustatimai"
-
 msgid "User real (first and last) name"
 msgstr "Vartotojo tikras vardas ir pavardë"
 
 msgid "User type (admin, reseller, user)"
 msgstr "Vartotojo tipas (administratorius, perpardavinëtojas, vartotojsa)"
+
+msgid "Wrong software id."
+msgstr ""
+
+msgid "Software was activated."
+msgstr ""
+
+#, fuzzy
+msgid "No Resellers found."
+msgstr "Perpardavinëtojo vardas"
+
+msgid "Rights succesfully added."
+msgstr ""
+
+msgid "Rights succesfully removed."
+msgstr ""
+
+#, php-format
+msgid "%1$s (%2$s)"
+msgstr ""
+
+#, fuzzy
+msgid "Software was deleted."
+msgstr "IP buvo paðalintasÀ"
+
+msgid "Fill out a message text!"
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP - Application Management"
+msgstr "i-MSCP - Klientas/Cronjob Tvarkymas"
+
+msgid "Message to reseller before deleting the software"
+msgstr ""
+
+#, fuzzy
+msgid "Delete reseller software"
+msgstr "Perpardavinëtojo redagavimas atðauktas"
+
+#, fuzzy
+msgid "Reseller data"
+msgstr "Perpardavinëtojo vardas"
+
+msgid "Delete software and send message"
+msgstr ""
+
+#, php-format
+msgid "File does not exist. %1$s.tar.gz"
+msgstr ""
+
+#, fuzzy
+msgid "Software was imported succesfully."
+msgstr "Vartojo slaptaþodis sëkmingai atnaujintas"
+
+msgid "Download"
+msgstr ""
+
+msgid "Activate"
+msgstr ""
+
+#, fuzzy
+msgid "Import"
+msgstr "Eksportuoti"
+
+msgid "No software is waiting for activation"
+msgstr ""
+
+#, fuzzy
+msgid "Package installed successfully!"
+msgstr "Vartotojø kalba atnaujinta sëkmingai!"
+
+msgid "Rights"
+msgstr ""
+
+msgid "Softwarerights"
+msgstr ""
+
+msgid "Installing your uploaded package. Please refresh this site."
+msgstr ""
+
+msgid ""
+"The package will be installed automaticly to your system after upload.<br /"
+">Refresh your site to see the new status!"
+msgstr ""
+
+#, fuzzy
+msgid "installing"
+msgstr "paðalinti"
+
+msgid "Failure in the package. Deleting!"
+msgstr ""
+
+msgid ""
+"There is an Error inside your package. Please check it!<br />Refresh your "
+"site to see the new status!"
+msgstr ""
+
+#, fuzzy
+msgid "deleting"
+msgstr "Nustatymai"
+
+msgid "Your package is corrupt. Please correct it!"
+msgstr ""
+
+msgid "Package already exist in the software depot!"
+msgstr ""
+
+msgid ""
+"Check your software depot uploads!<br />It is not allowed to upload this "
+"package two times.<br />Refresh your site to see the new status!"
+msgstr ""
+
+#, fuzzy
+msgid "This package already exist in the software depot!"
+msgstr "Domenas su ðiuo vardu jau yra ðioje sistemoje!"
+
+msgid "Package already exist in the reseller depot!"
+msgstr ""
+
+msgid ""
+"Check the reseller uploads!<br />It is not allowed to upload this package "
+"two times.<br />Refresh your site to see the new status!"
+msgstr ""
+
+#, php-format
+msgid "This package already exist in the depot of the reseller \"%1$s\"!"
+msgstr ""
+
+msgid "No software in software depot available!"
+msgstr ""
+
+msgid "No reseller with activated software installer found!"
+msgstr ""
+
+msgid "Unable to read xml file for web softwares!"
+msgstr ""
+
+msgid "i-MSCP application installer web software depot"
+msgstr ""
+
+msgid "Update from web depot"
+msgstr ""
+
+#, fuzzy
+msgid "Package title"
+msgstr "Kalbos failas"
+
+#, fuzzy
+msgid "Package install type"
+msgstr "Nauja kalba ádiegta!"
+
+#, fuzzy
+msgid "Package version"
+msgstr "Tvarkyti vartotojo sesijas"
+
+#, fuzzy
+msgid "Package language"
+msgstr "Lietuviø - Lithuanian"
+
+msgid "Package type"
+msgstr ""
+
+msgid "Package vendor HP"
+msgstr ""
+
+msgid "Package actions"
+msgstr ""
+
+msgid "Web software depot packages total"
+msgstr ""
+
+msgid "You have to choose between file-upload and wget-function."
+msgstr ""
+
+msgid "You must select a file to upload/download."
+msgstr ""
+
+msgid "File needs to be a .tar.gz-archive"
+msgstr ""
+
+#, php-format
+msgid "Error: Could not upload file. Max. upload filesize (%1$d MB) reached?"
+msgstr ""
+
+#, php-format
+msgid ""
+"Error: Your remote filesize (%1$d B) is lower than 1 Byte. Please check your "
+"URL!"
+msgstr ""
+
+#, php-format
+msgid ""
+"Error: Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB"
+msgstr ""
+
+msgid "Error: Remote File not found!"
+msgstr ""
+
+msgid "Error: Could not upload the file. File not found!"
+msgstr ""
+
+#, fuzzy
+msgid "File was successfully uploaded."
+msgstr "Jûsû logo sëkmingai ákeltas!"
+
+msgid "Software depot"
+msgstr ""
+
+msgid "Software depot total"
+msgstr ""
+
+msgid "Software depot upload"
+msgstr ""
+
+#, php-format
+msgid "Choose file (Max: %1$d MB)"
+msgstr ""
+
+#, php-format
+msgid "or remote file (Max: %1$d MB)"
+msgstr ""
+
+#, fuzzy
+msgid "Upload now"
+msgstr "Ákelti logo"
+
+msgid "Awaiting Activation"
+msgstr ""
+
+#, fuzzy
+msgid "Reseller software list"
+msgstr "Perpardavinëtojø sàraðas yra tuðèias!"
+
+#, fuzzy
+msgid "Application"
+msgstr "Veiksmas"
+
+msgid "App-Version"
+msgstr ""
+
+msgid "Type"
+msgstr "Tipas"
+
+msgid "Depot import"
+msgstr ""
+
+msgid "Software total"
+msgstr ""
+
+#, fuzzy
+msgid "Reseller total"
+msgstr "Perpardavinëtojo vardas"
+
+msgid "Waiting for activation"
+msgstr ""
+
+msgid "Activated software"
+msgstr ""
+
+msgid "Total installations"
+msgstr ""
+
+#, fuzzy
+msgid "Are you sure you want to activate this package?"
+msgstr "Ar tikrai norite atkûrti ið backup?"
+
+#, fuzzy
+msgid "Are you sure you want to import this package into the software depot?"
+msgstr "Ar tikrai norite atkûrti ið backup?"
+
+#, fuzzy
+msgid "Are you sure you want to delete this package?"
+msgstr "Ar tikrai norite paðalinti ðá IP adresà: %s?"
+
+#, fuzzy
+msgid "i-MSCP - Application management options"
+msgstr "i-MSCP - Administratorius/Tvarkyti sesijas"
+
+msgid "Main application installer options updated!"
+msgstr ""
+
+msgid "Application management options"
+msgstr ""
+
+msgid "Main application installer options"
+msgstr ""
+
+msgid "Using i-MSCP application installer websoftware depot"
+msgstr ""
+
+msgid "i-MSCP websoftware depot XML-File URL"
+msgstr ""
+
+msgid "Last i-MSCP websoftware depot update"
+msgstr ""
+
+#, fuzzy
+msgid "not available"
+msgstr "Esami IP adresai"
+
+#, fuzzy
+msgid "Wrong reseller id."
+msgstr "Ið perpardavinëtojo"
+
+msgid "This package is installed on following domain(s):"
+msgstr ""
+
+msgid "This package is not installed"
+msgstr ""
+
+#, php-format
+msgid "%1$s - (Softwaredepot)"
+msgstr ""
+
+#, php-format
+msgid "%1$s`s - Software"
+msgstr ""
+
+#, fuzzy
+msgid "No software available!"
+msgstr "Nëra duombazës atnaujinimø"
+
+#, fuzzy
+msgid "Installed on"
+msgstr "Diegti"
+
+#, fuzzy
+msgid "Reseller list"
+msgstr "Perpardavinëtojo IP adresai"
+
+msgid "Softwaredepot"
+msgstr ""
+
+#, fuzzy
+msgid "Admin not available"
+msgstr "Hostingo planai galimi"
+
+#, fuzzy
+msgid "Are you sure to remove the permissions ?"
+msgstr "Ar tikrai norite atkûrti ið backup?"
+
+msgid "No Reseller with permissions for this software found"
+msgstr ""
+
+#, fuzzy
+msgid "All reseller"
+msgstr "Visiems perpardavinëtojams"
+
+msgid "No Reseller available to add the permissions"
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP - Application Management (Permissions)"
+msgstr "i-MSCP - Administratorius/Tvarkyti sesijas"
+
+#, php-format
+msgid "%1$s - (Version: %2$s, Language: %3$s)"
+msgstr ""
+
+msgid "Add permissions for reseller to software:"
+msgstr ""
+
+msgid "Remove permissions"
+msgstr ""
+
+#, fuzzy
+msgid "Reseller with permissions total"
+msgstr "Perpardavinëtojo statistikos lentelë"
+
+msgid "Added by"
+msgstr ""
+
+msgid "Add permissions"
+msgstr ""
+
+msgid "Software permissions"
+msgstr ""
 
 #, fuzzy
 msgid "CPU bogomips"
@@ -2055,9 +2880,6 @@ msgstr "Dydis"
 msgid "Swap"
 msgstr "Swap"
 
-msgid "System info"
-msgstr "Sistmos informacija"
-
 #, fuzzy
 msgid "Vital system info"
 msgstr "Gyvybiðkos sistemos informacija"
@@ -2065,26 +2887,14 @@ msgstr "Gyvybiðkos sistemos informacija"
 msgid "Total"
 msgstr "Viso"
 
-msgid "Type"
-msgstr "Tipas"
-
 msgid "Up time"
 msgstr "Up time"
-
-msgid "You have no support tickets."
-msgstr "Jûs neturite pagalbos bilietø."
 
 msgid "i-MSCP - Client/Questions & Comments"
 msgstr "i-MSCP - Klientas/Klausimai ir Komentarai"
 
 msgid "Support tickets"
 msgstr "Pagalbos bilietai"
-
-msgid "From"
-msgstr "Nuo"
-
-msgid "To"
-msgstr "Kam"
 
 msgid "Priority"
 msgstr "Svarbûmas"
@@ -2101,6 +2911,9 @@ msgstr "Atidaryti bilietai"
 msgid "Closed tickets"
 msgstr "Uþdaryti bilietai"
 
+msgid "From"
+msgstr "Nuo"
+
 msgid "Support ticket deleted successfully!"
 msgstr "Pagalbos bilietas sëkmingai iðtrintas!"
 
@@ -2110,24 +2923,8 @@ msgstr "Visi atidaryti pagalbos bilietai sëkmingai iðtrinti!"
 msgid "All closed support tickets deleted successfully!"
 msgstr "Visi uþdaryti pagalbos bilietai sëkmingai iðtrinti!"
 
-msgid "[New]"
-msgstr "[Naujas]"
-
-#, fuzzy
-msgid "[Re]"
-msgstr "[Ats]"
-
 msgid "i-MSCP - Client/Enable Mail Autoresponder"
 msgstr "i-MSCP - Klientas/Ájungti paðto autoatsakiklá"
-
-msgid "Ticket not found!"
-msgstr "Bilietas nerastas!"
-
-msgid "Open ticket"
-msgstr "Atidaryti bilietà"
-
-msgid "Close ticket"
-msgstr "Uþdaryti bilietà"
 
 msgid "i-MSCP - Client: Support System: View Ticket"
 msgstr "i-MSCP - Klientas: Pagalbos Sistema: Rodyti Bilietà"
@@ -2135,14 +2932,8 @@ msgstr "i-MSCP - Klientas: Pagalbos Sistema: Rodyti Bilietà"
 msgid "Please type your message!"
 msgstr "Praðome áraðyti jûsø praneðimà!"
 
-msgid "Message was sent."
-msgstr "Praneðimas iðsiøstas."
-
-msgid "Ticket was closed!"
-msgstr "Bilietas uþdarytas!"
-
-msgid "Ticket was reopened!"
-msgstr "Bilietas vël atidarytas!"
+msgid "Ticket not found!"
+msgstr "Bilietas nerastas!"
 
 msgid "i-MSCP - Admin: Support System: View Ticket"
 msgstr "i-MSCP - Administratorius: Pagalbos Sistema: Rodyti Bilietà"
@@ -2204,45 +2995,6 @@ msgstr ""
 msgid "Yes, delete the domain."
 msgstr "Taip, ðalinti domenà."
 
-msgid "i-MSCP Client : Add Alias"
-msgstr "i-MSCP Klientas : Pridëti Pavadinimà"
-
-msgid "Manage domain alias"
-msgstr "Tvarkyti domeno pavadinimus"
-
-msgid "Add domain alias"
-msgstr "Pridëti domeno pavadinimus"
-
-msgid "User account"
-msgstr "Vartotojo sàskaita"
-
-msgid "Directory mount point"
-msgstr "Direktorijos pagrindinis taðkas"
-
-msgid "Forward to URL"
-msgstr "Nukreipti á URL"
-
-msgid "Add alias"
-msgstr "Pridëti pavadinimà"
-
-msgid "You do not need 'www.' i-MSCP will add it on its own."
-msgstr "Jums nereikia raðyti 'www.' i-MSCP pridës tai automatiðkai."
-
-msgid "Wrong domain name!"
-msgstr "Netinkamas domeno vardas!"
-
-msgid "Please write mount point!"
-msgstr "Praðome paraðyti pagrindiná taðkà!"
-
-msgid "Enable Forward"
-msgstr "Ájungti nukreipimà"
-
-msgid "Enable"
-msgstr "Ájungti"
-
-msgid "Disable"
-msgstr "Iðjungti"
-
 msgid "Domain alias limit reached!"
 msgstr "Domeno pavadinimø limitas pasiektas!"
 
@@ -2274,6 +3026,42 @@ msgstr ""
 
 msgid "Alias scheduled for addition!"
 msgstr ""
+
+msgid "i-MSCP Client : Add Alias"
+msgstr "i-MSCP Klientas : Pridëti Pavadinimà"
+
+msgid "Manage domain alias"
+msgstr "Tvarkyti domeno pavadinimus"
+
+msgid "Add domain alias"
+msgstr "Pridëti domeno pavadinimus"
+
+msgid "User account"
+msgstr "Vartotojo sàskaita"
+
+msgid "Directory mount point"
+msgstr "Direktorijos pagrindinis taðkas"
+
+msgid "Forward to URL"
+msgstr "Nukreipti á URL"
+
+msgid "You do not need 'www.' i-MSCP will add it on its own."
+msgstr "Jums nereikia raðyti 'www.' i-MSCP pridës tai automatiðkai."
+
+msgid "Wrong domain name!"
+msgstr "Netinkamas domeno vardas!"
+
+msgid "Please write mount point!"
+msgstr "Praðome paraðyti pagrindiná taðkà!"
+
+msgid "Enable Forward"
+msgstr "Ájungti nukreipimà"
+
+msgid "Enable"
+msgstr "Ájungti"
+
+msgid "Disable"
+msgstr "Iðjungti"
 
 msgid ""
 "Domain alias you are trying to remove has subdomains!<br>First remove them!"
@@ -2317,9 +3105,6 @@ msgstr ""
 
 msgid "i-MSCP - Client/Daily Backup"
 msgstr "i-MSCP - Klientas/Kasdieniniai Backup"
-
-msgid "Daily backup"
-msgstr "Kasdieniniai backup"
 
 msgid "Instructions to download today's backup"
 msgstr "Instrukcija pasisiøsti ðiandienos backup"
@@ -2388,7 +3173,10 @@ msgstr "Redaguoti Cronjob"
 msgid "Cronjobs"
 msgstr "Cronjobs"
 
-msgid "DNS zone record scheduled for deletion!"
+msgid "You are not allowed to remove this DNS record!"
+msgstr ""
+
+msgid "Custom DNS record scheduled for deletion!"
 msgstr ""
 
 msgid "i-MSCP - Manage Domain Alias/Add DNS zone's record"
@@ -2440,6 +3228,9 @@ msgid "Plain record data"
 msgstr ""
 
 msgid "DNS zone's records (EXPERIMENTAL)"
+msgstr ""
+
+msgid "You are not allowed to edit this DNS record!"
 msgstr ""
 
 #, php-format
@@ -2494,38 +3285,7 @@ msgstr ""
 msgid "Unknown zone type %s!"
 msgstr ""
 
-msgid "Manual zone's records list is empty!"
-msgstr ""
-
-#, php-format
-msgid "%s record"
-msgstr ""
-
-msgid "Subdomain list is empty!"
-msgstr ""
-
-msgid "Delete order"
-msgstr ""
-
-msgid "Alias list is empty!"
-msgstr ""
-
-msgid "i-MSCP - Client/Manage Domains"
-msgstr ""
-
-msgid "Manage domains"
-msgstr ""
-
-msgid "Mount point"
-msgstr ""
-
-msgid "Forward"
-msgstr ""
-
-msgid "Actions"
-msgstr ""
-
-msgid "Record data"
+msgid "Error: DNS record already exist!"
 msgstr ""
 
 msgid "i-MSCP - Client/Domain Statistics"
@@ -2546,6 +3306,37 @@ msgstr ""
 msgid "Sum"
 msgstr ""
 
+msgid "Manual zone's records list is empty!"
+msgstr ""
+
+#, php-format
+msgid "%s record"
+msgstr ""
+
+msgid "Subdomain list is empty!"
+msgstr ""
+
+msgid "Delete order"
+msgstr ""
+
+msgid "Alias list is empty!"
+msgstr ""
+
+msgid "i-MSCP - Client/Manage Domains"
+msgstr ""
+
+msgid "Mount point"
+msgstr ""
+
+msgid "Forward"
+msgstr ""
+
+msgid "Actions"
+msgstr ""
+
+msgid "Record data"
+msgstr ""
+
 msgid "i-MSCP - Client/Manage Error Custom Pages"
 msgstr ""
 
@@ -2558,7 +3349,7 @@ msgstr ""
 msgid "Custom error page was updated!"
 msgstr ""
 
-msgid "System error - custom error page was NOT updated!"
+msgid "System error - custom error page was not updated!"
 msgstr ""
 
 msgid "Error 401 (unauthorised)"
@@ -2576,16 +3367,10 @@ msgstr ""
 msgid "Error 503 (service unavailable)"
 msgstr ""
 
-msgid "Error pages"
-msgstr ""
-
 msgid "FTP list is empty!"
 msgstr ""
 
 msgid "i-MSCP - Client/Manage Users"
-msgstr ""
-
-msgid "Manage users"
 msgstr ""
 
 msgid "FTPs total"
@@ -2596,6 +3381,10 @@ msgstr ""
 
 msgid "FTP account"
 msgstr ""
+
+#, fuzzy
+msgid "Login As"
+msgstr "Prisijungti"
 
 msgid "Empty List"
 msgstr ""
@@ -2632,16 +3421,14 @@ msgstr ""
 msgid "Alias list is empty! You cannot add FTP accounts there!"
 msgstr ""
 
-msgid "Please specify other FTP account dir!"
-msgstr ""
+#, fuzzy
+msgid "Please specify other FTP account directory!"
+msgstr "Praðome ávesti praneðimo turiná!"
 
 msgid "FTP accounts limit reached!"
 msgstr ""
 
 msgid "i-MSCP - Client/Add FTP User"
-msgstr ""
-
-msgid "Add FTP user"
 msgstr ""
 
 msgid "To main domain"
@@ -2659,13 +3446,14 @@ msgstr ""
 msgid "Choose dir"
 msgstr ""
 
-msgid "Cannot open directory!<br>Please contact your administrator!"
+#, fuzzy
+msgid "Unknown FTP user id!"
+msgstr "Neþinomas typas!"
+
+msgid "Cannot open directory! Please contact your administrator!"
 msgstr ""
 
 msgid "Parent Directory"
-msgstr ""
-
-msgid "Protect it"
 msgstr ""
 
 msgid "i-MSCP - Client/Webtools"
@@ -2688,6 +3476,10 @@ msgstr ""
 
 msgid "i-MSCP - Client/Edit FTP Account"
 msgstr ""
+
+msgid ""
+"User does not exist or you do not have permission to access this interface!"
+msgstr "Vartotojas neegzistuoja arba jûs neturite teisës prie ðios sàsajos!"
 
 msgid "Edit FTP user"
 msgstr ""
@@ -2738,6 +3530,17 @@ msgstr ""
 
 msgid ""
 "You have DNS enabled, but the new hosting plan doesn't has this feature."
+msgstr ""
+
+msgid "i-MSCP application installer: enabled"
+msgstr ""
+
+msgid "i-MSCP application installer: disabled"
+msgstr ""
+
+msgid ""
+"You have the i-MSCP application installer enabled, but the new hosting plan "
+"doesn't has this feature."
 msgstr ""
 
 msgid "You have more disk space in use than the new hosting plan limits."
@@ -2838,20 +3641,11 @@ msgstr ""
 msgid "You have no new support questions!"
 msgstr ""
 
-msgid "Not Set"
-msgstr ""
-
 #, fuzzy
 msgid "This Domain is expired"
 msgstr "Domenas galioja iki"
 
 msgid "i-MSCP - Client/Main Index"
-msgstr ""
-
-msgid "General information"
-msgstr ""
-
-msgid "Account name"
 msgstr ""
 
 msgid "Main domain"
@@ -2874,6 +3668,9 @@ msgstr ""
 
 msgid "Alternative URL to reach your website"
 msgstr ""
+
+msgid "User language updated successfully!"
+msgstr "Vartotojø kalba atnaujinta sëkmingai!"
 
 msgid "i-MSCP - Client/Change Language"
 msgstr ""
@@ -3001,6 +3798,18 @@ msgstr ""
 msgid "Enable mail auto responder"
 msgstr ""
 
+msgid "Delete CatchAll"
+msgstr ""
+
+msgid "None"
+msgstr ""
+
+msgid "Create catch all"
+msgstr ""
+
+msgid "Catch all account"
+msgstr ""
+
 msgid "Catch all account scheduled for creation!"
 msgstr ""
 
@@ -3016,22 +3825,7 @@ msgstr ""
 msgid "Mail accounts list"
 msgstr ""
 
-msgid "Create catch all"
-msgstr ""
-
 msgid "Catch all account scheduled for deletion!"
-msgstr ""
-
-msgid "Delete CatchAll"
-msgstr ""
-
-msgid "None"
-msgstr ""
-
-msgid "Catch all account"
-msgstr ""
-
-msgid "Catch all"
 msgstr ""
 
 msgid "Please delete first CatchAll account for this email!"
@@ -3053,6 +3847,33 @@ msgid "i-MSCP - Client/Change Password"
 msgstr ""
 
 msgid "i-MSCP - Client/Change Personal Data"
+msgstr ""
+
+msgid "Unknown SQL user id."
+msgstr ""
+
+msgid "Error: An error occurred while authentication."
+msgstr ""
+
+msgid "You do not have protected areas"
+msgstr ""
+
+msgid "Manage users and groups"
+msgstr ""
+
+msgid "Group name"
+msgstr ""
+
+msgid "Group members"
+msgstr ""
+
+msgid "Add group"
+msgstr ""
+
+msgid "Group"
+msgstr ""
+
+msgid "Add new protected area"
 msgstr ""
 
 msgid "Please choose user or group"
@@ -3098,6 +3919,9 @@ msgstr ""
 msgid "Groups"
 msgstr ""
 
+msgid "Protect it"
+msgstr ""
+
 msgid "User auth"
 msgstr ""
 
@@ -3110,9 +3934,6 @@ msgstr ""
 msgid "Unprotect it"
 msgstr ""
 
-msgid "Manage users and groups"
-msgstr ""
-
 msgid "Protected area status should be OK if you want to delete it!"
 msgstr ""
 
@@ -3120,27 +3941,6 @@ msgid "Protected area deleted successfully!"
 msgstr ""
 
 msgid "Permission deny!"
-msgstr ""
-
-msgid "You do not have protected areas"
-msgstr ""
-
-msgid "Add user"
-msgstr ""
-
-msgid "Group name"
-msgstr ""
-
-msgid "Group members"
-msgstr ""
-
-msgid "Add group"
-msgstr ""
-
-msgid "Group"
-msgstr ""
-
-msgid "Add new protected area"
 msgstr ""
 
 msgid "Protected area was deleted successful!"
@@ -3187,7 +3987,179 @@ msgstr ""
 msgid "You have no users!"
 msgstr ""
 
-msgid "Error while authenticating!"
+msgid "Install in progress..."
+msgstr ""
+
+msgid "Deletion in progress..."
+msgstr ""
+
+#, fuzzy
+msgid "Are you sure to install this package?"
+msgstr "Ar tikrai norite atkûrti ið backup?"
+
+#, php-format
+msgid ""
+"This Package (%s, V%s) was deleted by your reseller. You can only uninstall "
+"this package!<br />Please delete the files and database for this package "
+"manually!"
+msgstr ""
+
+msgid "Installed Package which was deleted by your reseller!"
+msgstr ""
+
+#, fuzzy
+msgid "No software available"
+msgstr "Nëra duombazës atnaujinimø"
+
+msgid "required"
+msgstr ""
+
+msgid "not required"
+msgstr ""
+
+msgid "You do not have permissions to install software"
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP - application installer"
+msgstr "i-MSCP - Klientas/Cronjob Tvarkymas"
+
+#, fuzzy
+msgid "Install software"
+msgstr "Ádiegti naujà kalbà"
+
+msgid "Software"
+msgstr ""
+
+#, fuzzy
+msgid "Version"
+msgstr "Uþdaryti sesijà"
+
+#, fuzzy
+msgid "Database"
+msgstr "SQL duombazë"
+
+#, fuzzy
+msgid "Apps available"
+msgstr "Esami IP adresai"
+
+msgid "Software installation"
+msgstr ""
+
+#, fuzzy
+msgid "Software deleted successful."
+msgstr "Pagalbos bilietas sëkmingai iðtrintas!"
+
+msgid "Software will be deleted now."
+msgstr ""
+
+msgid "Database user list is empty!"
+msgstr ""
+
+msgid "At first you must create a database!"
+msgstr ""
+
+#, fuzzy
+msgid "Add new database"
+msgstr "SQL duombazë"
+
+#, fuzzy
+msgid "Software not found!"
+msgstr "Bilietas nerastas!"
+
+#, php-format
+msgid "The directory -%1$s- was created!"
+msgstr ""
+
+#, fuzzy
+msgid "Please select the correct user for your database!"
+msgstr "Praðome pasirinkti vartotojà(-us)!"
+
+#, fuzzy
+msgid "You have to fill out inputs!"
+msgstr "Jûs neturite papildomø meniu"
+
+msgid "You cant't install outside from htdocs!"
+msgstr ""
+
+msgid "You choose a directory, which doesn't match with the domain directory!"
+msgstr ""
+
+#, php-format
+msgid "The directory -%1$s- doesn't exist. Please create it!"
+msgstr ""
+
+#, php-format
+msgid "Please select another directory! %1$s (%2$s) is installed there!"
+msgstr ""
+
+msgid "i-MSCP - Install Software"
+msgstr ""
+
+#, fuzzy
+msgid "Install Software"
+msgstr "Ádiegti naujà kalbà"
+
+#, fuzzy
+msgid "Database required"
+msgstr "Duombazës atnaujinimai"
+
+#, fuzzy
+msgid "Select Domain"
+msgstr "Trinti domenà"
+
+msgid "back"
+msgstr ""
+
+#, fuzzy
+msgid "install"
+msgstr "paðalinti"
+
+#, fuzzy
+msgid "Install path"
+msgstr "Diegti"
+
+msgid "Create directory, if not exist!"
+msgstr ""
+
+#, fuzzy
+msgid "Select database"
+msgstr "SQL duombazë"
+
+#, fuzzy
+msgid "SQL-User"
+msgstr "SQL vartotojas"
+
+#, fuzzy
+msgid "installed"
+msgstr "paðalinti"
+
+msgid "Installation infos"
+msgstr ""
+
+#, fuzzy
+msgid "Software status:"
+msgstr "Serverio bûklë"
+
+msgid "Installation path:"
+msgstr ""
+
+#, fuzzy
+msgid "Used database:"
+msgstr "SQL duombazë"
+
+msgid "You need a Database for this software"
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP - Software details"
+msgstr "i-MSCP - Domenas/Detalës"
+
+#, fuzzy
+msgid "Software details"
+msgstr "Atnaujinti detales"
+
+msgid "Homepage"
 msgstr ""
 
 msgid "Please type user password!"
@@ -3204,6 +4176,11 @@ msgstr ""
 
 msgid "i-MSCP - Client/Change SQL User Password"
 msgstr ""
+
+#, fuzzy
+msgid ""
+"User does not exist or you do not have permission to access this interface."
+msgstr "Vartotojas neegzistuoja arba jûs neturite teisës prie ðios sàsajos!"
 
 msgid "Change SQL user password"
 msgstr ""
@@ -3233,9 +4210,6 @@ msgstr ""
 msgid "i-MSCP - Client/Add SQL Database"
 msgstr ""
 
-msgid "Add SQL database"
-msgstr ""
-
 msgid "Database name"
 msgstr ""
 
@@ -3254,22 +4228,13 @@ msgstr ""
 msgid "SQL user was removed successfully!"
 msgstr ""
 
-msgid "Database user list is empty!"
-msgstr ""
-
 msgid "Database list is empty!"
 msgstr ""
 
 msgid "i-MSCP - Client/Manage SQL"
 msgstr ""
 
-msgid "Manage SQL"
-msgstr ""
-
 msgid "Database Name and Users"
-msgstr ""
-
-msgid "phpMyAdmin"
 msgstr ""
 
 msgid "Database users"
@@ -3354,9 +4319,6 @@ msgstr ""
 msgid "i-MSCP - Client/Add Subdomain"
 msgstr ""
 
-msgid "Add subdomain"
-msgstr ""
-
 msgid "Subdomain data"
 msgstr ""
 
@@ -3366,16 +4328,26 @@ msgstr ""
 msgid "Directory tree mount point"
 msgstr ""
 
+#, fuzzy
+msgid "i-MSCP - Manage Subdomain/Edit Subdomain"
+msgstr "i-MSCP - Administratorius/Redaguoti Domenas"
+
+#, fuzzy
+msgid "Manage subdomain"
+msgstr "Tvarkyti domeno pavadinimus"
+
+#, fuzzy
+msgid "Edit subdomain"
+msgstr "Redaguoti domenà"
+
+msgid "A Forward URL has to start with 'http://'"
+msgstr "Nukreipiamas URL turi prasidëti su 'http://'"
+
+#, fuzzy
+msgid "i-MSCP - Support System - New ticket"
+msgstr "i-MSCP - Administratorius: Pagalbos Sistema: Rodyti Bilietà"
+
 msgid "Please specify message subject!"
-msgstr ""
-
-msgid "Your message was sent!"
-msgstr ""
-
-msgid "i-MSCP - Support system - New ticket"
-msgstr ""
-
-msgid "New ticket"
 msgstr ""
 
 msgid "Low"
@@ -3388,12 +4360,6 @@ msgid "High"
 msgstr ""
 
 msgid "Very high"
-msgstr ""
-
-msgid "ISPCP - Client/Webtools"
-msgstr ""
-
-msgid "Webtools"
 msgstr ""
 
 msgid "Customize error pages for your domain"
@@ -3414,122 +4380,37 @@ msgstr ""
 msgid "Manage protected areas, users and groups"
 msgstr ""
 
-msgid "System tools"
+msgid "Install various software with a few *clicks*"
 msgstr ""
 
-msgid "Statistics"
+msgid "{ADMIN} activated your software package"
 msgstr ""
 
-msgid "Reseller statistics"
+msgid ""
+"Dear {RESELLER},\n"
+"\tYour uploaded a software package was succesful activated by {ADMIN}.\n"
+"\n"
+"\tDetails:\n"
+"\tPackage Name: {SOFTWARE}\n"
+"\tPackage ID: {SOFTWARE_ID}\n"
+"\n"
+"\tPlease login into your i-MSCP control panel for more details."
 msgstr ""
 
-msgid "Admin log"
-msgstr ""
+#, fuzzy
+msgid " was deleted by {ADMIN}!"
+msgstr "IP buvo paðalintasÀ"
 
-msgid "Logout"
-msgstr ""
-
-msgid "i-MSCP database updates"
-msgstr ""
-
-msgid "Custom menus"
-msgstr ""
-
-msgid "Overview"
-msgstr ""
-
-msgid "User sessions"
-msgstr ""
-
-msgid "Lostpw email setup"
-msgstr ""
-
-msgid "Rootkit Log"
-msgstr ""
-
-msgid "Admin users"
-msgstr ""
-
-msgid "Normal users"
-msgstr ""
-
-msgid "System messages"
-msgstr ""
-
-msgid "No new messages"
-msgstr ""
-
-msgid "Server traffic"
-msgstr ""
-
-msgid "Administrators list is empty!"
-msgstr ""
-
-msgid "Creation date"
-msgstr ""
-
-msgid "Created by"
-msgstr ""
-
-msgid "System"
-msgstr ""
-
-msgid "Resellers list is empty!"
-msgstr ""
-
-msgid "Switch to user interface"
-msgstr ""
-
-msgid "Switch"
-msgstr ""
-
-msgid "Not found user records matching the search criteria!"
-msgstr ""
-
-msgid "view aliases"
-msgstr ""
-
-msgid "Users list is empty!"
-msgstr ""
-
-msgid "Details"
-msgstr ""
-
-msgid "Edit domain"
-msgstr ""
-
-msgid "Are you sure you want to change the status of domain account?"
-msgstr ""
-
-msgid "Administrators"
-msgstr ""
-
-msgid "Resellers"
-msgstr ""
-
-msgid "Search"
-msgstr ""
-
-msgid "Expire date"
-msgstr ""
-
-#, php-format
-msgid "%1$s you are now logged as %2$s"
-msgstr ""
-
-msgid "Go back"
-msgstr ""
-
-msgid "OK"
-msgstr ""
-
-msgid "Suspended"
-msgstr ""
-
-msgid "Error"
-msgstr ""
-
-msgid "i-MSCP - Order Panel"
+msgid ""
+"Dear {RESELLER},\n"
+"\t\tYour uploaded software was deleted by {ADMIN}.\n"
+"\n"
+"\tDetails:\n"
+"\tPackage Name: {SOFTWARE}\n"
+"\tPackage ID: {SOFTWARE_ID}\n"
+"\n"
+"\tMessage from {ADMIN}:\n"
+"\t"
 msgstr ""
 
 #, php-format
@@ -3554,69 +4435,6 @@ msgstr ""
 
 #, php-format
 msgid "%d B"
-msgstr ""
-
-#, php-format
-msgid "File %s does not exists or cannot be reached!"
-msgstr ""
-
-msgid "Error while trying to obtain list of network cards!"
-msgstr ""
-
-#, php-format
-msgid "This IP (%s) is not assigned to any network card!"
-msgstr ""
-
-#, fuzzy
-msgid "Days"
-msgstr "Diena"
-
-#, fuzzy
-msgid "Hours"
-msgstr "Valanda"
-
-#, fuzzy
-msgid "Minute"
-msgstr "minutës"
-
-#, fuzzy
-msgid "Minutes"
-msgstr "minutës"
-
-msgid "Couldn't check for updates! Website not reachable."
-msgstr ""
-
-msgid "Email and FTP accounts"
-msgstr ""
-
-msgid "Add mail user"
-msgstr ""
-
-msgid "PhpMyAdmin"
-msgstr ""
-
-msgid "Filemanager"
-msgstr ""
-
-msgid "Web statistics"
-msgstr ""
-
-msgid "Group/User management"
-msgstr ""
-
-msgid "Email Accounts"
-msgstr ""
-
-msgid "FTP Accounts"
-msgstr ""
-
-msgid "Update Hosting Package"
-msgstr ""
-
-msgid "Add DNS zone's record"
-msgstr ""
-
-msgid "Manage SSL certificate"
 msgstr ""
 
 msgid "Domain mail"
@@ -3665,7 +4483,31 @@ msgid ""
 "\n"
 "You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
 "\n"
-"Statistics: http://{USERNAME}/stats/\n"
+"Statistics: {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/{USERNAME}/stats/\n"
+"User name: {USERNAME}\n"
+"Password: {PASSWORD}\n"
+"\n"
+"Best wishes with i-MSCP!\n"
+"The i-MSCP Team.\n"
+"\n"
+msgstr ""
+
+msgid ""
+"\n"
+"\n"
+"Hello {NAME}!\n"
+"\n"
+"A new i-MSCP account has been created for you.\n"
+"Your account information:\n"
+"\n"
+"User type: {USERTYPE}\n"
+"User name: {USERNAME}\n"
+"Password: {PASSWORD}\n"
+"\n"
+"Remember to change your password often and the first time you login.\n"
+"\n"
+"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
+"\n"
 "User name: {USERNAME}\n"
 "Password: {PASSWORD}\n"
 "\n"
@@ -3748,6 +4590,40 @@ msgid ""
 "\n"
 msgstr ""
 
+#, fuzzy
+msgid "Your message has been sent."
+msgstr "Jûsø naujas slaptaþodis buvo iðsiøstas."
+
+#, fuzzy
+msgid "Your message has been sent"
+msgstr "Jûsø naujas slaptaþodis buvo iðsiøstas."
+
+msgid "Ticket was closed!"
+msgstr "Bilietas uþdarytas!"
+
+msgid "Ticket was reopened!"
+msgstr "Bilietas vël atidarytas!"
+
+msgid "Never"
+msgstr ""
+
+#, fuzzy
+msgid "You don't have support tickets."
+msgstr "Jûs neturite pagalbos bilietø."
+
+msgid "[New]"
+msgstr "[Naujas]"
+
+#, fuzzy
+msgid "[Re]"
+msgstr "[Ats]"
+
+msgid "Open ticket"
+msgstr "Atidaryti bilietà"
+
+msgid "Close ticket"
+msgstr "Uþdaryti bilietà"
+
 msgid "[Ticket]"
 msgstr ""
 
@@ -3818,12 +4694,9 @@ msgid "Wrong Second Level Domain syntax: <b>%s</b>"
 msgstr ""
 
 msgid ""
-"ERROR: ACE labels are not allowed. Please use the ToUnicode equivalent.<br /"
+"ACE labels are not allowed. Please use the ToUnicode equivalent.<br /"
 "><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> "
 "instead</small>."
-msgstr ""
-
-msgid "ERROR: PHP extension 'mcrypt' not loaded!"
 msgstr ""
 
 #, php-format
@@ -3834,7 +4707,7 @@ msgstr ""
 msgid "You have been blocked for %d minutes."
 msgstr ""
 
-msgid "You entered an incorrect username/password."
+msgid "You entered an incorrect username!"
 msgstr ""
 
 msgid "System is currently under maintenance! Only administrators can login."
@@ -3855,25 +4728,13 @@ msgstr ""
 msgid "%s's domain expired!"
 msgstr ""
 
+msgid "You entered an incorrect password!"
+msgstr ""
+
 msgid "Request from foreign host was blocked!"
 msgstr ""
 
 msgid "You do not have permission to access this interface!"
-msgstr ""
-
-msgid "Domain alias"
-msgstr ""
-
-msgid "Manage Orders"
-msgstr ""
-
-msgid "Order settings"
-msgstr ""
-
-msgid "Order email setup"
-msgstr ""
-
-msgid "Please fill up both data fields for password!"
 msgstr ""
 
 msgid "Addition in progress"
@@ -3891,13 +4752,10 @@ msgstr ""
 msgid "Being suspended"
 msgstr ""
 
-msgid "Awaiting for approval"
+msgid "Awaiting approval"
 msgstr ""
 
 msgid "Unknown error"
-msgstr ""
-
-msgid "hide aliases"
 msgstr ""
 
 msgid "You have reached your domains limit.<br />You cannot add more domains!"
@@ -3963,10 +4821,77 @@ msgstr ""
 msgid "You have a disk limit!<br />You cannot add an user with unlimited disk!"
 msgstr ""
 
-msgid "i-MSCP Error"
+msgid "{RESELLER} uploaded a new software package"
 msgstr ""
 
-msgid "Error Message"
+msgid ""
+"Dear {ADMIN},\n"
+"\t{RESELLER} has uploaded a new software package.\n"
+"\n"
+"\tDetails:\n"
+"\tReseller ID: {RESELLER_ID}\n"
+"\tPackage Name: {SOFTWARE}\n"
+"\tPackage ID: {SOFTWARE_ID}\n"
+"\n"
+"\tPlease login into your i-MSCP control panel for more details."
+msgstr ""
+
+#, fuzzy
+msgid "Installation details"
+msgstr "Domeno detalës"
+
+msgid ""
+"Please set now the Username and Password for the later Login in the "
+"Application. (Required fiels!)"
+msgstr ""
+
+#, fuzzy
+msgid "Login username"
+msgstr "Domeno pavadinimas"
+
+#, fuzzy
+msgid "Login password"
+msgstr "Pamirðau slaptaþodá"
+
+#, fuzzy
+msgid "Emailadress"
+msgstr "El.paðtas"
+
+#, fuzzy
+msgid "enabled"
+msgstr "Ájungta"
+
+#, fuzzy
+msgid "Application Description"
+msgstr "Apraðymas"
+
+msgid "You do not have permissions to install application yet"
+msgstr ""
+
+msgid "Vendor hompage"
+msgstr ""
+
+msgid "Installed in software depot"
+msgstr ""
+
+msgid "Installed in reseller depot"
+msgstr ""
+
+#, fuzzy
+msgid "Start installation"
+msgstr "Internacionalizavimas"
+
+#, fuzzy
+msgid "Are you sure to install this package from the webdepot?"
+msgstr "Ar tikrai norite atkûrti ið backup?"
+
+msgid "No software in webdepot found!"
+msgstr ""
+
+msgid "Websoftware depot list was updated"
+msgstr ""
+
+msgid "No update for the websoftware depot list available"
 msgstr ""
 
 msgid "You have a new order"
@@ -3990,6 +4915,10 @@ msgstr ""
 
 msgid "Order confirmation"
 msgstr ""
+
+#, fuzzy
+msgid "Domain already exists on the system!"
+msgstr "Domenas su ðiuo vardu jau yra ðioje sistemoje!"
 
 #, fuzzy
 msgid "This hosting plan is not available for purchase"
@@ -4028,6 +4957,13 @@ msgstr ""
 
 msgid "Personal Data"
 msgstr ""
+
+msgid ""
+"(To avoid abuse, we ask you to write the combination of letters on the above "
+"picture into the field \"Security code\")"
+msgstr ""
+"(Siekiant iðvengti piktnaudþiavimo, mes praðome áraðyti raidþiø kombinacija "
+"esanèià paveikslëlyje á \"Apsaugos kodas\" laukelá)"
 
 msgid "Security code was incorrect!"
 msgstr ""
@@ -4088,25 +5024,7 @@ msgstr ""
 msgid "Performance"
 msgstr ""
 
-msgid "i-MSCP Reseller: Add Alias"
-msgstr ""
-
-msgid "There is no user records for this reseller to add an alias for."
-msgstr ""
-
-msgid "i-MSCP - Manage Domain/Alias"
-msgstr ""
-
-msgid "Manage alias"
-msgstr ""
-
-msgid "Real domain"
-msgstr ""
-
 msgid "You have no alias records."
-msgstr ""
-
-msgid "Activate"
 msgstr ""
 
 msgid "Domain alias added for termination!"
@@ -4136,6 +5054,21 @@ msgstr ""
 msgid "Ordered domain alias not activated!"
 msgstr ""
 
+msgid "i-MSCP - Manage Domain/Alias"
+msgstr ""
+
+msgid "Manage alias"
+msgstr ""
+
+msgid "Real domain"
+msgstr ""
+
+msgid "There is no user records for this reseller to add an alias for."
+msgstr ""
+
+msgid "i-MSCP Reseller: Add Alias"
+msgstr ""
+
 msgid "i-MSCP - Circular"
 msgstr ""
 
@@ -4145,36 +5078,8 @@ msgstr ""
 msgid "i-MSCP - Domain/Edit"
 msgstr ""
 
-msgid "Unchanged"
-msgstr ""
-
-msgid "Never"
-msgstr ""
-
-msgid "- 1 Month"
-msgstr ""
-
-msgid "+ 1 Month"
-msgstr ""
-
-msgid "+ 2 Months"
-msgstr ""
-
-msgid "+ 3 Months"
-msgstr ""
-
-msgid "+ 6 Months"
-msgstr ""
-
-msgid "+ 1 Year"
-msgstr ""
-
-msgid "+ 2 Years"
-msgstr ""
-
-#, php-format
-msgid "The <em>%s</em> service cannot be disabled!"
-msgstr ""
+msgid "Domain properties could not be updated!"
+msgstr "Domeno pasirinktys nebuvo atnaujinti!"
 
 #, fuzzy, php-format
 msgid "The <em>%s</em> have to be disabled!"
@@ -4190,6 +5095,12 @@ msgstr ""
 
 #, php-format
 msgid "The <em>%s</em> service cannot be unlimited!"
+msgstr ""
+
+msgid "i-MSCP - Reseller/Main Index"
+msgstr ""
+
+msgid "View details"
 msgstr ""
 
 msgid "i-MSCP - Reseller/Add hosting plan"
@@ -4211,12 +5122,6 @@ msgid "i-MSCP - Reseller/Edit hosting plan"
 msgstr ""
 
 msgid "View hosting plan"
-msgstr ""
-
-msgid "i-MSCP - Reseller/Main Index"
-msgstr ""
-
-msgid "View details"
 msgstr ""
 
 msgid "User accounts"
@@ -4244,6 +5149,17 @@ msgstr ""
 msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr ""
 
+msgid "No Ip statistics to be show."
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP - Reseller/IP Usage"
+msgstr "i-MSCP - Perpardavinëtojo statistikos duomenys"
+
+#, fuzzy
+msgid "Reseller/IP usage statistics"
+msgstr "Perpardavinëtojo statistikos lentelë"
+
 msgid "i-MSCP - Reseller/Change Language"
 msgstr ""
 
@@ -4254,48 +5170,6 @@ msgid "Manage orders"
 msgstr ""
 
 msgid "Activation Link"
-msgstr ""
-
-msgid "Wrong order ID!"
-msgstr ""
-
-msgid "Order Cancelled: resellers maximum exceeded!"
-msgstr ""
-
-msgid "Wrong domain name syntax!"
-msgstr ""
-
-msgid "User added!"
-msgstr ""
-
-msgid "Customer order was removed successful!"
-msgstr ""
-
-msgid "i-MSCP - Reseller/Order details"
-msgstr ""
-
-msgid "Order data updated successfully!"
-msgstr ""
-
-msgid "Order date"
-msgstr ""
-
-msgid "Hosting plan"
-msgstr ""
-
-msgid "Hosting details"
-msgstr ""
-
-msgid "Order details"
-msgstr ""
-
-msgid "Customer data"
-msgstr ""
-
-msgid "Are you sure you want to delete this order?"
-msgstr ""
-
-msgid "Add to the system"
 msgstr ""
 
 msgid "i-MSCP - Reseller/Order settings"
@@ -4328,10 +5202,52 @@ msgstr ""
 msgid "ID"
 msgstr ""
 
+msgid "Customer data"
+msgstr ""
+
 msgid "Order"
 msgstr ""
 
+msgid "Hosting plan"
+msgstr ""
+
+msgid "Are you sure you want to delete this order?"
+msgstr ""
+
 msgid "Add/Details"
+msgstr ""
+
+msgid "Wrong order ID!"
+msgstr ""
+
+msgid "Order Cancelled: resellers maximum exceeded!"
+msgstr ""
+
+msgid "Wrong domain name syntax!"
+msgstr ""
+
+msgid "User added!"
+msgstr ""
+
+msgid "Customer order was removed successful!"
+msgstr ""
+
+msgid "i-MSCP - Reseller/Order details"
+msgstr ""
+
+msgid "Order data updated successfully!"
+msgstr ""
+
+msgid "Order date"
+msgstr ""
+
+msgid "Hosting details"
+msgstr ""
+
+msgid "Order details"
+msgstr ""
+
+msgid "Add to the system"
 msgstr ""
 
 msgid "Order Canceled: resellers maximum exceeded!"
@@ -4352,7 +5268,135 @@ msgstr ""
 msgid "Lostpw link"
 msgstr ""
 
+#, fuzzy
+msgid "Please specify a subject."
+msgstr "Praðome ávesti praneðimo temà!"
+
+#, fuzzy
+msgid "Auto email template data updated."
+msgstr "Galimi duombazës atnaujinimai"
+
 msgid "i-MSCP - Reseller/Manage users/Email setup"
+msgstr ""
+
+msgid "Package installed successfully... Awaiting release from Admin!"
+msgstr ""
+
+msgid "This software is installed on following domain(s):"
+msgstr ""
+
+msgid "This package is not installed yet"
+msgstr ""
+
+msgid "waiting for activation"
+msgstr ""
+
+msgid "activated (Softwaredepot)"
+msgstr ""
+
+#, fuzzy
+msgid "activated"
+msgstr "Aktyvûs"
+
+msgid "Installing your uploaded package. Please refresh the site."
+msgstr ""
+
+msgid ""
+"After your upload the package it will be installed on your systems.<br /"
+">Refresh your site to see the new status!"
+msgstr ""
+
+msgid "Failure in package. Deleting!"
+msgstr ""
+
+msgid ""
+"Check your package. There is an error inside!<br />Refresh your site to see "
+"the new status!"
+msgstr ""
+
+msgid "The package is corrupt. Please correct it!"
+msgstr ""
+
+msgid ""
+"Please contact the administrator!<br />Ask him for the permissions to use "
+"this package.<br />It is not allowed to upload this packet two times.<br /"
+">Refresh your site to see the new status!"
+msgstr ""
+
+msgid "This package already exist in the administrator software depot!"
+msgstr ""
+
+msgid "Package already exist in your software depot!"
+msgstr ""
+
+msgid ""
+"Check your own uploads!<br />Ask the administrator if you don't find the "
+"package.<br />It is not allowed to upload this packages two times.<br /"
+">Refresh your site to see the new status!"
+msgstr ""
+
+msgid "This package already exist in your software depot!"
+msgstr ""
+
+msgid "You do not have any software uploaded yet"
+msgstr ""
+
+msgid "You do not have permissions to upload software"
+msgstr ""
+
+#, php-format
+msgid ""
+"ERROR: Could not upload the file. Max. upload filesize (%1$d MB) reached?"
+msgstr ""
+
+#, php-format
+msgid ""
+"ERROR: Your remote filesize (%1$d B) is lower than 1 Byte. Please check your "
+"URL!"
+msgstr ""
+
+#, php-format
+msgid ""
+"ERROR: Max. remote filesize (%1$d MB) is reached. Your remote file ist %2$d "
+"MB"
+msgstr ""
+
+msgid "ERROR: Remote File not found!"
+msgstr ""
+
+msgid "ERROR: Could not upload the file. File not found!"
+msgstr ""
+
+msgid "Software available"
+msgstr ""
+
+msgid "Software-Synonym"
+msgstr ""
+
+#, fuzzy
+msgid "Software-Version"
+msgstr "Uþdaryti sesijà"
+
+#, fuzzy
+msgid "Software status"
+msgstr "Serverio bûklë"
+
+#, fuzzy
+msgid "Software upload"
+msgstr "Rodyti serverio apkrovà"
+
+#, fuzzy
+msgid "Requires Database?"
+msgstr "SQL duombazë"
+
+#, fuzzy
+msgid "Database prefix"
+msgstr "Duombazës atnaujinimai"
+
+msgid "Link to authors homepage"
+msgstr ""
+
+msgid "i-MSCP - Support system - New ticket"
 msgstr ""
 
 msgid "i-MSCP - Reseller: Support System: View Ticket"
@@ -4361,23 +5405,9 @@ msgstr ""
 msgid "i-MSCP - Users/Add user"
 msgstr ""
 
-msgid "1 Month"
-msgstr ""
-
-msgid "2 Months"
-msgstr ""
-
-msgid "3 Months"
-msgstr ""
-
-msgid "6 Months"
-msgstr ""
-
-msgid "1 Year"
-msgstr ""
-
-msgid "2 Years"
-msgstr ""
+#, fuzzy
+msgid "Domain expire date"
+msgstr "Domenas galioja iki"
 
 msgid "Choose hosting plan"
 msgstr ""
@@ -4422,6 +5452,9 @@ msgstr ""
 msgid "Users list"
 msgstr ""
 
+msgid "This reseller has no domains yet."
+msgstr ""
+
 msgid "i-MSCP - Users"
 msgstr ""
 
@@ -4441,8 +5474,9 @@ msgstr ""
 msgid "View aliases"
 msgstr ""
 
-msgid "You have no users."
-msgstr ""
+#, fuzzy
+msgid "You do not have customers."
+msgstr "Jûs neturite papildomø meniu"
 
 #, php-format
 msgid "%1$s of %2$s MB"
@@ -4468,11 +5502,46 @@ msgstr ""
 msgid "User not terminated!"
 msgstr ""
 
-msgid "This reseller has no domains yet."
-msgstr ""
+#~ msgid "i-MSCP  a Virtual Hosting Control System"
+#~ msgstr "i-MSCP  yra Virtualaus Hostingo Valdymo Sistema"
 
-#~ msgid "Show server load"
-#~ msgstr "Rodyti serverio apkrovà"
+#~ msgid "Please enter your login information"
+#~ msgstr "Praðome ávesti prisijungimo informacija"
+
+#~ msgid "Retrieving lost passwords is currently not possible"
+#~ msgstr "Atkûrti prarastus slaptaþodþius ðiuo mentu neámanoma"
+
+#~ msgid "Retry"
+#~ msgstr "Dar kartà"
+
+#~ msgid "Request password"
+#~ msgstr "Praðyti slaptaþodþio"
+
+#~ msgid "Do you want to execute the Updates now?"
+#~ msgstr "Ar norite paleisti atnaujinimus dabar?"
+
+#~ msgid "A database update is available"
+#~ msgstr "Yra duombazës atnaujinimas"
+
+#~ msgid "Panel Default"
+#~ msgstr "Numatyta skydelis"
+
+#, fuzzy
+#~ msgid "Settings saved!"
+#~ msgstr "Nustatymai iðsaugoti !"
+
+#, fuzzy
+#~ msgid ""
+#~ "ERROR: Only letters, numbers, dash and underscore are allowed for "
+#~ "services names!"
+#~ msgstr ""
+#~ "KLAIDA: Tik raidës, skaièiai, brûkðniai ir pabraukimai yra leidþiami!"
+
+#~ msgid "To"
+#~ msgstr "Kam"
+
+#~ msgid "Message was sent."
+#~ msgstr "Praneðimas iðsiøstas."
 
 #~ msgid "Services"
 #~ msgstr "Paslaugos"
@@ -4504,14 +5573,8 @@ msgstr ""
 #~ msgstr ""
 #~ "Nenuoseklumas tarp current_ftp_cnt ir tikrojo ftp skaièiaus: %1$d != %2$d"
 
-#~ msgid "Edit reseller aborted!"
-#~ msgstr "Perpardavinëtojo redagavimas atðauktas"
-
 #~ msgid "Domains limit<br><i>(-1 disabled, 0 unlimited)</i>"
 #~ msgstr "Domenø limitas<br><i>(-1 iðjungtas, 0 nelimituotas)</i>"
 
 #~ msgid "Incorrect forward syntax"
 #~ msgstr "Neteisinga nukreipimo sintaksë"
-
-#~ msgid "A Forward URL has to start with 'http://'"
-#~ msgstr "Nukreipiamas URL turi prasidëti su 'http://'"

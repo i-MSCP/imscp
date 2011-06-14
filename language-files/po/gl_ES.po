@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gl_ES\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-17 10:11+0200\n"
+"POT-Creation-Date: 2011-06-13 16:29+0200\n"
 "PO-Revision-Date: 2010-02-22 21:00+0100\n"
 "Last-Translator: Medulio <medulio@ciberirmandade.org>\n"
 "Language-Team: Galego <gl@li.org>\n"
@@ -23,90 +23,407 @@ msgstr ""
 msgid "encoding"
 msgstr "UTF-8"
 
-#. Please fill in the language you are translating to in the following form:
-#. native language name (native country name) - english language name (english country name)
 msgid "_: Localised language"
 msgstr "Galego - Galician"
 
-msgid "i-MSCP  a Virtual Hosting Control System"
-msgstr "i-MSCP  un Sistema de Control de Hospedaxe Virtual"
+#, php-format
+msgid "File %s does not exists or cannot be reached!"
+msgstr "O arquivo %s non existe ou non pode ser atopado!"
 
-msgid "Administrator login"
-msgstr "Inicio de sesión de administrador"
+#, fuzzy
+msgid "Error while trying to obtain list of network cards."
+msgstr "Erro ao tentar obter a listaxe de tarxetas de rede!"
 
-msgid "Login"
-msgstr "Iniciar sesión"
+#, php-format
+msgid "This IP (%s) is not assigned to any network card!"
+msgstr "Este IP (%s) non está asignado a tarxeta de rede ningunha!"
+
+msgid "N/A"
+msgstr "N/D"
+
+msgid "Day"
+msgstr "Día"
+
+#, fuzzy
+msgid "Days"
+msgstr "Día"
+
+msgid "Hour"
+msgstr "Hora"
+
+#, fuzzy
+msgid "Hours"
+msgstr "Hora"
+
+#, fuzzy
+msgid "Minute"
+msgstr "minutos"
+
+#, fuzzy
+msgid "Minutes"
+msgstr "minutos"
+
+#, fuzzy
+msgid "An error occured! Please, contact your administrator!"
+msgstr ""
+"Non se pode abrir o directori o!<br>Por favor, contacta co teu "
+"administrador !"
+
+#, fuzzy
+msgid "Couldn't check for updates. Website not reachable."
+msgstr "Non se pode comprobar se hai actualizacións! Sitio web non dispoñible."
+
+msgid "General information"
+msgstr "Información xeral"
+
+msgid "Manage hosting plans"
+msgstr "Xestionar planos de hospedaxe"
+
+msgid "System tools"
+msgstr "Ferramentas do sistema"
+
+msgid "Manage users"
+msgstr "Administrar usuarios"
+
+msgid "Statistics"
+msgstr "Estatísticas"
+
+msgid "Support system"
+msgstr "Sistema de Atención"
+
+msgid "Settings"
+msgstr "Configuración"
+
+msgid "Change password"
+msgstr "Mudar contrasinal"
+
+msgid "Change personal data"
+msgstr "Mudar datos persoais"
+
+msgid "Add admin"
+msgstr "Engadir administrador"
+
+msgid "Add reseller"
+msgstr "Engadir revendedor"
+
+msgid "Reseller assignment"
+msgstr "Asignación de revendedor"
+
+msgid "User assignment"
+msgstr "Asignación de usuarios"
+
+msgid "Email setup"
+msgstr "Configuración de correo-e"
+
+msgid "Email marketing"
+msgstr "Correo-e de mercadotecnia"
+
+msgid "Add hosting plan"
+msgstr "Engadir plano de hospedaxe"
+
+msgid "Reseller statistics"
+msgstr "Estatísticas de revendedor"
+
+msgid "Server statistics"
+msgstr "Estatísticas do servidor"
+
+msgid "Admin log"
+msgstr "Rexistro (log) de administración"
+
+msgid "Manage IPs"
+msgstr "Xestionar IPs"
+
+msgid "System info"
+msgstr "Información do sistema"
+
+msgid "Internationalisation"
+msgstr "Internacionalización"
+
+msgid "Language"
+msgstr "Idioma"
+
+msgid "Layout"
+msgstr "Deseño"
+
+msgid "Logout"
+msgstr "Rematar sesión"
+
+msgid "Server traffic settings"
+msgstr "Configuración do tráfico do servidor"
+
+msgid "Server status"
+msgstr "Estado do servidor"
+
+msgid "i-MSCP updates"
+msgstr "Actualizacións do i-MSCP"
+
+msgid "i-MSCP database updates"
+msgstr "Actualizacións do banco de datos do i-MSCP "
+
+msgid "i-MSCP debugger"
+msgstr "Depurador do i-MSCP"
+
+msgid "Custom menus"
+msgstr "Menús personalizados"
+
+msgid "Overview"
+msgstr "Resumo"
+
+msgid "User sessions"
+msgstr "Sesións de usuario"
+
+msgid "Lostpw email setup"
+msgstr "Configuración do correo-e de contrasinal esquecido"
+
+msgid "Maintenance mode"
+msgstr "Modo de mantemento"
+
+msgid "General settings"
+msgstr "Configuración xeral"
+
+msgid "Server ports"
+msgstr "Portos do servidor"
+
+msgid "Rootkit Log"
+msgstr "Rexistro (log) de Rootkit"
+
+#, fuzzy
+msgid "Services status"
+msgstr "Estado do servidor"
+
+#, fuzzy
+msgid "Services ports"
+msgstr "Portos do servidor"
+
+#, fuzzy
+msgid "IP usage"
+msgstr "Emprego de disco"
+
+msgid "Application management"
+msgstr ""
+
+msgid "Application options"
+msgstr ""
+
+msgid "Account name"
+msgstr "Nome de conta"
+
+msgid "Admin users"
+msgstr "Usuarios administradores"
+
+msgid "Reseller users"
+msgstr "Usuarios do revendedor"
+
+msgid "Normal users"
+msgstr "Usuarios normais"
+
+msgid "Domains"
+msgstr "Dominios"
+
+msgid "Subdomains"
+msgstr "Subdominios"
+
+msgid "Domain aliases"
+msgstr "Alias de dominios"
+
+msgid "Mail accounts"
+msgstr "Contas de correo"
+
+msgid "FTP accounts"
+msgstr "Contas de FTP"
+
+msgid "SQL databases"
+msgstr "Bancos de datos SQL"
+
+msgid "SQL users"
+msgstr "Usuarios SQL"
+
+msgid "System messages"
+msgstr "Mensaxes do sistema"
+
+msgid "No new messages"
+msgstr "Non hai mensaxes novas"
+
+msgid "Server traffic"
+msgstr "Tráfico do servidor"
+
+msgid "Administrators list is empty!"
+msgstr "A listaxe de administradores está baleira!"
 
 msgid "Username"
 msgstr "Nome de usuario"
 
-msgid "Password"
-msgstr "Contrasinal"
+msgid "Creation date"
+msgstr "Data de creación"
 
-msgid "Please enter your login information"
-msgstr "Por favor, insire a túa información de inicio de sesión"
+msgid "Created by"
+msgstr "Creado por"
 
-msgid "Secure Connection"
-msgstr "Conexión Segura"
+msgid "Options"
+msgstr "Opcións"
 
-msgid "Normal Connection"
-msgstr "Conexión Normal"
+msgid "Delete"
+msgstr "Eliminar"
 
-msgid "Lost password"
-msgstr "Contrasinal esquecido"
+msgid "System"
+msgstr "Sistema"
 
-msgid "Retrieving lost passwords is currently not possible"
-msgstr "Non se poden recuperar contrasinais esquecidos nestes intres"
+msgid "Resellers list is empty!"
+msgstr "A listaxe de revendedores está baleira!"
 
-msgid "i-MSCP - Virtual Hosting Control System"
-msgstr "i-MSCP - Sistema de Control de Hospedaxe Virtual"
+msgid "Switch to user interface"
+msgstr "Mudar á interface de usuario"
 
-msgid "Your new password has been sent."
-msgstr "O teu novo contrasinal foi enviado."
+msgid "Switch"
+msgstr "Mudar"
 
-msgid "New password could not been sent."
-msgstr "Non foi posíbel enviar o novo contrasinal."
+msgid "Not found user records matching the search criteria!"
+msgstr ""
+"Non se atoparon rexistros de usuario que concorden co criterio de procura!"
+
+msgid "view aliases"
+msgstr "ver alias"
+
+msgid "Users list is empty!"
+msgstr "A listaxe de usuarios está baleira!"
+
+msgid "Status"
+msgstr "Estado"
+
+msgid "Details"
+msgstr "Pormenores"
+
+msgid "Edit domain"
+msgstr "Editar dominio"
+
+msgid "Edit user"
+msgstr "Editar usuario"
+
+msgid "Ok"
+msgstr ""
+
+msgid "Disabled"
+msgstr "Desactivado"
+
+#, fuzzy
+msgid "Reload"
+msgstr "Subir"
+
+msgid "Error"
+msgstr "Erro"
+
+msgid "Not Set"
+msgstr ""
+
+msgid "Are you sure you want to change the status of domain account?"
+msgstr "Estás certo de querer mudar o estado da conta do dominio?"
 
 #, php-format
-msgid ""
-"Your password request has been initiated. You will receive an email with "
-"instructions to complete the process. This reset request will expire in %s "
-"minutes."
+msgid "Are you sure you want to delete %s?"
+msgstr "Estás certo de querer eliminar %s?"
+
+msgid "Administrators"
+msgstr "Administradores"
+
+msgid "Resellers"
+msgstr "Revendedores"
+
+msgid "Users"
+msgstr "Usuarios"
+
+msgid "Search"
+msgstr "Procurar"
+
+msgid "Expire date"
+msgstr "Data de caducidade"
+
+msgid "Edit"
+msgstr "Modificar"
+
+msgid "Domain name"
+msgstr "Nome do dominio"
+
+msgid "Customer ID"
+msgstr "ID de cliente"
+
+msgid "Last name"
+msgstr "Apelido"
+
+msgid "Company"
+msgstr "Empresa"
+
+msgid "City"
+msgstr "Cidade"
+
+msgid "State/Province"
+msgstr "Estado/Provincia"
+
+msgid "Country"
+msgstr "País"
+
+msgid "All"
+msgstr "Todo"
+
+msgid "OK"
+msgstr "Correcto"
+
+msgid "Suspended"
+msgstr "Suspendido"
+
+msgid "i-MSCP - Order Panel"
+msgstr "i-MSCP - Panel de Pedidos"
+
+msgid "hide aliases"
+msgstr "agochar alias"
+
+#, php-format
+msgid "%1$s you are now logged as %2$s"
+msgstr "%1$s agora iniciaches sesión como %2$s"
+
+msgid "Go back"
+msgstr "Volver atrás"
+
+msgid "Unknown"
+msgstr "Descoñecido"
+
+msgid "No language tables found in the database."
 msgstr ""
-"Iniciouse a tua solicitude de contrasinal. Receberás un correo-e coas "
-"instrucións para completares o proceso.. Este reinicio caducará en %s "
-"minutos."
 
-msgid "Back"
-msgstr "Atrás"
+msgid "Add user"
+msgstr "Engadir usuario"
 
-msgid "User or security code was incorrect!"
-msgstr "O usuario ou o código de seguridade era incorrecto!"
+msgid "Manage domains"
+msgstr "Xestionar dominios"
 
-msgid "Retry"
-msgstr "Tentar de novo"
+msgid "Domain alias"
+msgstr "Alias de dominio"
 
-msgid "Security code"
-msgstr "Código de seguridade"
+msgid "Domain statistics"
+msgstr "Estatísticas do dominio"
 
-msgid ""
-"(To avoid abuse, we ask you to write the combination of letters on the above "
-"picture into the field \"Security code\")"
-msgstr ""
-"(Para evitar abusos, solicitámosche que escribas a combinación de letras, "
-"amosada na imaxe inferior, dentro do campo \"Código de seguridade\")"
+msgid "New ticket"
+msgstr "Nova solicitude"
 
-msgid "Request password"
-msgstr "Solicitar contrasinal"
+msgid "Layout settings"
+msgstr "Configuración da maquetación"
 
-msgid "i-MSCP - Admin/Manage users/Add User"
-msgstr "i-MSCP - Administrar/Xestionar usuarios/Engadir Usuario"
+msgid "Manage Orders"
+msgstr "Xestionar Pedidos"
 
-msgid "Administrator"
-msgstr "Administrador"
+msgid "Order settings"
+msgstr "Configuracións de pedido"
 
-msgid "Incorrect username length or syntax!"
-msgstr "Sintaxe ou longo do nome de usuario incorrectos!"
+msgid "Order email setup"
+msgstr "Configuración do correo-e de pedido"
+
+msgid "yes"
+msgstr "si"
+
+msgid "Please fill up both data fields for password!"
+msgstr "Por favor, cubre ámbolos dous campos de datos para o contrasinal!"
+
+msgid "Passwords don't match!"
+msgstr "Os contrasinais non coinciden!"
 
 #, php-format
 msgid ""
@@ -122,23 +439,192 @@ msgstr ""
 "Os datos de contrasinal son máis curtos de %s signos ou os includes non "
 "permiten signos!"
 
-msgid "Entered passwords do not match!"
-msgstr "Os contrasinais inseridos non coinciden!"
-
 msgid "Incorrect email length or syntax!"
 msgstr "Sintaxe ou longo do correo-e incorrectos!"
 
-msgid "This user name already exist!"
+msgid "Add subdomain"
+msgstr "Engadir subdominio"
+
+msgid "Email and FTP accounts"
+msgstr "Contas de correo-e e FTP"
+
+msgid "Add mail user"
+msgstr "Engadir usuario de correo"
+
+msgid "Add FTP user"
+msgstr "Engadir usuario FTP"
+
+msgid "Manage SQL"
+msgstr "Xestionar SQL"
+
+msgid "Error pages"
+msgstr "Páxinas de erro"
+
+msgid "Add SQL database"
+msgstr "Engadir banco de datos SQL"
+
+msgid "Daily backup"
+msgstr "Copia de seguridade diaria"
+
+msgid "PhpMyAdmin"
+msgstr "PhpMyAdmin"
+
+msgid "Webmail"
+msgstr "Correo-web"
+
+msgid "Filemanager"
+msgstr "Filemanager (xestor de arquivos)"
+
+msgid "Webtools"
+msgstr "Ferramentas Web"
+
+msgid "Protected areas"
+msgstr "Áreas protexidas"
+
+msgid "Web statistics"
+msgstr "Estatísticas web"
+
+msgid "Group/User management"
+msgstr "Xestión de Grupo/Usuario"
+
+msgid "Email Accounts"
+msgstr "Contas de Correo-e"
+
+msgid "FTP Accounts"
+msgstr "Contas de FTP"
+
+msgid "Catch all"
+msgstr "Recolle-todo"
+
+msgid "Add alias"
+msgstr "Engadir alias"
+
+msgid "Update Hosting Package"
+msgstr "Paquete de Actualización de Hospedaxe"
+
+msgid "Add DNS zone's record"
+msgstr "Engadir información de zona DNS"
+
+msgid "Manage SSL certificate"
+msgstr "Xestionar certificado SSL"
+
+msgid "i-MSCP application installer"
+msgstr ""
+
+msgid "All fields are required!"
+msgstr ""
+
+#, fuzzy
+msgid "internet Multi Server Control Panel"
+msgstr "Panel de Control do i-MSCP"
+
+msgid "© Copyright 2010 i-MSCP Team<br/>All Rights Reserved"
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP - Multi Server Control Panel"
+msgstr "Panel de Control do i-MSCP"
+
+msgid "Administrator login"
+msgstr "Inicio de sesión de administrador"
+
+#, fuzzy
+msgid "i-MSCP - Multi Server Control Panel / Login"
+msgstr "Panel de Control do i-MSCP"
+
+msgid "Login"
+msgstr "Iniciar sesión"
+
+msgid "Password"
+msgstr "Contrasinal"
+
+msgid "phpMyAdmin"
+msgstr "phpMyAdmin"
+
+#, fuzzy
+msgid "FileManager"
+msgstr "Filemanager (xestor de arquivos)"
+
+msgid "Secure Connection"
+msgstr "Conexión Segura"
+
+msgid "Normal Connection"
+msgstr "Conexión Normal"
+
+msgid "Lost password"
+msgstr "Contrasinal esquecido"
+
+msgid "php-extension 'gd' not loaded."
+msgstr ""
+
+msgid "Captcha fontfile not found."
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP - Multi Server Control Panel - Lost password"
+msgstr "i-MSCP - Cliente/Mudar Contrasinal de Usuario SQL"
+
+msgid "Security code"
+msgstr "Código de seguridade"
+
+#, fuzzy
+msgid ""
+"To avoid abuse, we ask you to write the combination of letters on the "
+"picture above into the field \"Security code\""
+msgstr ""
+"(Para evitar abusos, solicitámosche que escribas a combinación de letras, "
+"amosada na imaxe inferior, dentro do campo \"Código de seguridade\")"
+
+#, fuzzy
+msgid "Get password"
+msgstr "Xerar contrasinal"
+
+msgid "Back"
+msgstr "Atrás"
+
+#, fuzzy
+msgid "Your new password has been sent. Check your mail."
+msgstr "O teu novo contrasinal foi enviado."
+
+#, fuzzy
+msgid "New password has not been sent. Ask your administrator."
+msgstr "Non foi posíbel enviar o novo contrasinal."
+
+#, php-format
+msgid ""
+"Your password request has been initiated. You will receive an email with "
+"instructions to complete the process. This reset request will expire in %s "
+"minutes."
+msgstr ""
+"Iniciouse a tua solicitude de contrasinal. Receberás un correo-e coas "
+"instrucións para completares o proceso.. Este reinicio caducará en %s "
+"minutos."
+
+#, fuzzy
+msgid "User or security code are incorrect."
+msgstr "O usuario ou o código de seguridade era incorrecto!"
+
+msgid "All fields are required."
+msgstr ""
+
+msgid "i-MSCP - Admin/Manage users/Add User"
+msgstr "i-MSCP - Administrar/Xestionar usuarios/Engadir Usuario"
+
+msgid "Administrator"
+msgstr "Administrador"
+
+msgid "Incorrect username length or syntax!"
+msgstr "Sintaxe ou longo do nome de usuario incorrectos!"
+
+msgid "Entered passwords do not match!"
+msgstr "Os contrasinais inseridos non coinciden!"
+
+#, fuzzy
+msgid "This user name already exist."
 msgstr "Este nome de usuario xa existe!"
 
 msgid "Empty data or wrong field!"
 msgstr "Datos baleiros ou campo con erros!"
-
-msgid "Passwords don't match!"
-msgstr "Os contrasinais non coinciden!"
-
-msgid "Add admin"
-msgstr "Engadir administrador"
 
 msgid "Core data"
 msgstr "Datos básicos"
@@ -155,9 +641,6 @@ msgstr "Datos adicionais"
 msgid "First name"
 msgstr "Nome"
 
-msgid "Last name"
-msgstr "Apelido"
-
 msgid "Gender"
 msgstr "Sexo"
 
@@ -167,23 +650,8 @@ msgstr "Home"
 msgid "Female"
 msgstr "Muller"
 
-msgid "Unknown"
-msgstr "Descoñecido"
-
-msgid "Company"
-msgstr "Empresa"
-
 msgid "Zip/Postal code"
 msgstr "Código Postal"
-
-msgid "City"
-msgstr "Cidade"
-
-msgid "State/Province"
-msgstr "Estado/Provincia"
-
-msgid "Country"
-msgstr "País"
 
 msgid "Street 1"
 msgstr "Rúa 1"
@@ -218,9 +686,6 @@ msgstr "i-MSCP - Administrar/Xestionar usuarios/Editar Usuario"
 msgid "Edit admin"
 msgstr "Editar administrador"
 
-msgid "Edit user"
-msgstr "Editar usuario"
-
 msgid "Update"
 msgstr "Actualizar"
 
@@ -236,7 +701,8 @@ msgstr "O troco de contrasinal está desactivado!"
 msgid "Demo Version!"
 msgstr "Versión de Demostración!"
 
-msgid "i-MSCP - Admin/Admin Log"
+#, fuzzy
+msgid "iMSCP - Admin/Admin Log"
 msgstr "i-MSCP - Admin/Rexistro (log) Admin"
 
 msgid "Log is empty!"
@@ -320,9 +786,6 @@ msgstr "Por favor, especifica un correo-e de remitente!"
 msgid "You send email to your users successfully!"
 msgstr "Enviaches o correo-e aos teus usuarios de xeito correcto!"
 
-msgid "Email marketing"
-msgstr "Correo-e de mercadotecnia"
-
 msgid "Send message to"
 msgstr "Enviar mensaxe a"
 
@@ -352,9 +815,6 @@ msgstr "Non tes menús personalizados."
 
 msgid "User"
 msgstr "Usuario"
-
-msgid "All"
-msgstr "Todo"
 
 msgid "Missing or incorrect data input!"
 msgstr "Datos de entrada non atopados ou incorrectos!"
@@ -410,12 +870,6 @@ msgstr "Botón de menú"
 msgid "Action"
 msgstr "Acción"
 
-msgid "Edit"
-msgstr "Modificar"
-
-msgid "Delete"
-msgstr "Eliminar"
-
 msgid "Level"
 msgstr "Nivel"
 
@@ -425,9 +879,9 @@ msgstr "Gardar"
 msgid "Edit button"
 msgstr "Editar botón"
 
-#, php-format
-msgid "Are you sure you want to delete %s?"
-msgstr "Estás certo de querer eliminar %s?"
+#, fuzzy
+msgid "i-MSCP - Admin / System tools / Database Update"
+msgstr "i-MSCP Admin/Ferramentas do Sistema/Estado do Servidor"
 
 msgid "Database updates"
 msgstr "Actualizacións do banco de datos"
@@ -441,14 +895,11 @@ msgstr "Pormenores da actualización"
 msgid "New Database update is now available"
 msgstr "Agora mesmo está dispoñible unha nova actualización de banco de datos"
 
-msgid "Do you want to execute the Updates now?"
-msgstr "Queres executar as actualizacións agora?"
+msgid "No provided"
+msgstr ""
 
 msgid "Execute updates"
 msgstr "Executar actualizacións"
-
-msgid "No database updates available"
-msgstr "Non hai actualizacións de banco de datos dispoñibles"
 
 msgid "i-MSCP - Domain/Details"
 msgstr "i-MSCP - Dominio/Pormenores"
@@ -456,14 +907,8 @@ msgstr "i-MSCP - Dominio/Pormenores"
 msgid "Domain details"
 msgstr "Pormenores do dominio"
 
-msgid "Domain name"
-msgstr "Nome do dominio"
-
 msgid "Domain IP"
 msgstr "IP do dominio"
-
-msgid "Status"
-msgstr "Estado"
 
 msgid "PHP support"
 msgstr "Soporte PHP"
@@ -495,24 +940,6 @@ msgstr "Empregado"
 msgid "Limit"
 msgstr "Límite"
 
-msgid "Mail accounts"
-msgstr "Contas de correo"
-
-msgid "FTP accounts"
-msgstr "Contas de FTP"
-
-msgid "SQL databases"
-msgstr "Bancos de datos SQL"
-
-msgid "SQL users"
-msgstr "Usuarios SQL"
-
-msgid "Subdomains"
-msgstr "Subdominios"
-
-msgid "Domain aliases"
-msgstr "Alias de dominios"
-
 msgid "Submit changes"
 msgstr "Enviar trocos"
 
@@ -531,8 +958,119 @@ msgstr "Non"
 msgid "Enabled"
 msgstr "Activado"
 
-msgid "Disabled"
-msgstr "Desactivado"
+#, fuzzy
+msgid "Incorrect subdomains limit."
+msgstr "Límite de subdominios incorrecto!"
+
+#, fuzzy
+msgid "Incorrect aliases limit."
+msgstr "Límite de alias incorrecto!"
+
+#, fuzzy
+msgid "Incorrect mail accounts limit."
+msgstr "Límite de contas de correo incorrecto!"
+
+#, fuzzy
+msgid "Incorrect FTP accounts limit."
+msgstr "Límite de contas FTP incorrecto!"
+
+#, fuzzy
+msgid "Incorrect SQL users limit."
+msgstr "Límite de usuarios SQL incorrecto!"
+
+msgid "SQL databases limit is <i>disabled</i>!"
+msgstr "O límite de bancos de datos SQL está <i>desactivado</i>!"
+
+#, fuzzy
+msgid "Incorrect SQL databases limit."
+msgstr "Límite de bancos de datos SQL incorrecto!"
+
+msgid "SQL users limit is <i>disabled</i>!"
+msgstr "O límite de usuarios SQL está <i>desactivado</i>!"
+
+#, fuzzy
+msgid "Incorrect traffic limit."
+msgstr "Límite de tráfico incorrecto!"
+
+#, fuzzy
+msgid "Incorrect disk quota limit."
+msgstr "Límite de cota de disco incorrecta!"
+
+msgid "The application installer needs PHP to enable."
+msgstr ""
+
+msgid "The application installer of the users reseller is not activated."
+msgstr ""
+
+msgid "Subdomain"
+msgstr "Subdominio"
+
+msgid "Alias"
+msgstr "Alias"
+
+msgid "Mail"
+msgstr "Correo"
+
+msgid "FTP"
+msgstr "FTP"
+
+msgid "SQL Database"
+msgstr "Banco de datos SQL"
+
+msgid "SQL User"
+msgstr "Usuario SQL"
+
+msgid "Traffic"
+msgstr "Tráfico"
+
+msgid "Disk"
+msgstr "Disco"
+
+#, fuzzy
+msgid "Domain properties could not be updated."
+msgstr "Non se puideron actualizar as propiedades do dominio!"
+
+msgid "Domain properties updated successfully!"
+msgstr "Propiedades do dominio actualizadas de xeito correcto!"
+
+#, php-format
+msgid "The <em>%s</em> service cannot be disabled!"
+msgstr "O servizo <em>%s</em> non pode ser desactivado!"
+
+#, php-format
+msgid "There are <em>%s</em> records on system!"
+msgstr "Hai <em>%s</em> rexistros no sistema!"
+
+#, php-format
+msgid "The <em>%s</em> service cannot be limited! "
+msgstr "O servizo <em>%s</em> non pode ser limitado! "
+
+#, php-format
+msgid ""
+"Specified number is smaller than <em>%s</em> records, present on the system!"
+msgstr ""
+"O número especificado e máis pequeno de <em>%s</em> rexistros, presente no "
+"sistema!"
+
+#, php-format
+msgid "The <em>%s</em> service cannot be disabled! "
+msgstr "O servizo <em>%s</em> non pode ser desactivado! "
+
+#, php-format
+msgid "There are <em>%s</em> records on the system!"
+msgstr "Hai <em>%s</em> rexistros no sistema!"
+
+#, php-format
+msgid "The <em>%s</em> service cannot be unlimited! "
+msgstr "O servizo <em>%s</em> non pode ser ilimitado! "
+
+#, php-format
+msgid "There are reseller limits for the <em>%s</em> service!"
+msgstr "Hai límites de revendedor para o servizo <em>%s</em>!"
+
+#, php-format
+msgid "You are exceeding reseller limits for the <em>%s</em> service!"
+msgstr "Estás a exceder os límites de revendedor para o servizo <em>%s</em>!"
 
 msgid "i-MSCP - Admin/Edit Domain"
 msgstr "i-MSCP - Admin/Editar Dominio"
@@ -589,113 +1127,32 @@ msgstr ""
 "No caso que a 'Caducidade do dominio' sexa 'N/A', a data de caducidade será "
 "configurada para o día de hoxe."
 
-msgid ""
-"User does not exist or you do not have permission to access this interface!"
-msgstr "O usuario non existe ou non tes permiso para acceder a esta interface!"
-
-msgid "N/A"
-msgstr "N/D"
-
-msgid "Incorrect subdomains limit!"
-msgstr "Límite de subdominios incorrecto!"
-
-msgid "Incorrect aliases limit!"
-msgstr "Límite de alias incorrecto!"
-
-msgid "Incorrect mail accounts limit!"
-msgstr "Límite de contas de correo incorrecto!"
-
-msgid "Incorrect FTP accounts limit!"
-msgstr "Límite de contas FTP incorrecto!"
-
-msgid "Incorrect SQL users limit!"
-msgstr "Límite de usuarios SQL incorrecto!"
-
-msgid "SQL databases limit is <i>disabled</i>!"
-msgstr "O límite de bancos de datos SQL está <i>desactivado</i>!"
-
-msgid "Incorrect SQL databases limit!"
-msgstr "Límite de bancos de datos SQL incorrecto!"
-
-msgid "SQL users limit is <i>disabled</i>!"
-msgstr "O límite de usuarios SQL está <i>desactivado</i>!"
-
-msgid "Incorrect traffic limit!"
-msgstr "Límite de tráfico incorrecto!"
-
-msgid "Incorrect disk quota limit!"
-msgstr "Límite de cota de disco incorrecta!"
-
-msgid "Subdomain"
-msgstr "Subdominio"
-
-msgid "Alias"
-msgstr "Alias"
-
-msgid "Mail"
-msgstr "Correo"
-
-msgid "FTP"
-msgstr "FTP"
-
-msgid "SQL Database"
-msgstr "Banco de datos SQL"
-
-msgid "SQL User"
-msgstr "Usuario SQL"
-
-msgid "Traffic"
-msgstr "Tráfico"
-
-msgid "Disk"
-msgstr "Disco"
-
-msgid "Domain properties could not be updated!"
-msgstr "Non se puideron actualizar as propiedades do dominio!"
-
-msgid "Domain properties updated successfully!"
-msgstr "Propiedades do dominio actualizadas de xeito correcto!"
-
-#, php-format
-msgid "The <em>%s</em> service cannot be disabled! "
-msgstr "O servizo <em>%s</em> non pode ser desactivado! "
-
-#, php-format
-msgid "There are <em>%s</em> records on system!"
-msgstr "Hai <em>%s</em> rexistros no sistema!"
-
-#, php-format
-msgid "The <em>%s</em> service cannot be limited! "
-msgstr "O servizo <em>%s</em> non pode ser limitado! "
-
-#, php-format
-msgid ""
-"Specified number is smaller than <em>%s</em> records, present on the system!"
+msgid "or Check for <strong>never Expire</strong>"
 msgstr ""
-"O número especificado e máis pequeno de <em>%s</em> rexistros, presente no "
-"sistema!"
 
-#, php-format
-msgid "There are <em>%s</em> records on the system!"
-msgstr "Hai <em>%s</em> rexistros no sistema!"
+msgid ""
+"You cannot access this page directly. You must switch to reseller level."
+msgstr ""
 
-#, php-format
-msgid "The <em>%s</em> service cannot be unlimited! "
-msgstr "O servizo <em>%s</em> non pode ser ilimitado! "
+msgid ""
+"Unable to update domain properties: The domain does not exist or is an "
+"orphan."
+msgstr ""
 
-#, php-format
-msgid "There are reseller limits for the <em>%s</em> service!"
-msgstr "Hai límites de revendedor para o servizo <em>%s</em>!"
+msgid "Unable to update domain: Domain ID not found."
+msgstr ""
 
-#, php-format
-msgid "You are exceeding reseller limits for the <em>%s</em> service!"
-msgstr "Estás a exceder os límites de revendedor para o servizo <em>%s</em>!"
+msgid "Unable to edit domain: The domain does not exist or is an orphan."
+msgstr ""
+
+msgid "Unable to edit domain: ID not found."
+msgstr ""
 
 msgid "i-MSCP - Domain Statistics Data"
 msgstr "i-MSCP - Datos Estatísticos do Dominio"
 
-msgid "Domain statistics"
-msgstr "Estatísticas do dominio"
+msgid "Reseller users table"
+msgstr "Táboa de usuarios do revendedor"
 
 msgid "Month"
 msgstr "Mes"
@@ -721,14 +1178,47 @@ msgstr "Tráficos POP3/IMAP"
 msgid "All traffic"
 msgstr "Todo o tráfico"
 
-msgid "Day"
-msgstr "Día"
+msgid "i-MSCP - Administrator/Hosting Plan Management"
+msgstr "i-MSCP - Administrador/Xestión de Planos de Hospedaxe"
+
+msgid "Hosting plans"
+msgstr "Planos de hospedaxe"
+
+msgid "Purchasing"
+msgstr "Compras"
+
+msgid "Add new user hosting plan"
+msgstr "Engadir novo usuario de plano de hospedaxe"
+
+msgid "Return to previous menu"
+msgstr "Volver ao menú anterior"
+
+msgid "Hosting plan added!"
+msgstr "Plano de hospedaxe engadido!"
+
+msgid "Hosting plan deleted!"
+msgstr "Plano de hospedaxe eliminado!"
+
+msgid "Hosting plan updated!"
+msgstr "Plano de hospedaxe actualizado!"
+
+msgid "Hosting plan can't be deleted, there are orders!"
+msgstr "Non se pode eliminar o plano de hospedaxe, xa que hai pedidos!"
+
+msgid "Hosting plans not found!"
+msgstr "Non se atoparon planos de hospedaxe!"
+
+msgid "No."
+msgstr "Non."
+
+msgid "Name"
+msgstr "Nome"
+
+msgid "Show hosting plan"
+msgstr "Amosar plano de hospedaxe"
 
 msgid "i-MSCP - Administrator/Add hosting plan"
 msgstr "i-MSCP - Administrador/Engadir plano de hospedaxe"
-
-msgid "Add hosting plan"
-msgstr "Engadir plano de hospedaxe"
 
 msgid "Hosting plan properties"
 msgstr "Propiedades do plano de hospedaxe"
@@ -774,9 +1264,6 @@ msgstr "Arquivos de rexistro (log) do Apache"
 
 msgid "AwStats"
 msgstr "AwStats"
-
-msgid "yes"
-msgstr "si"
 
 msgid "no"
 msgstr "non"
@@ -832,6 +1319,33 @@ msgstr "Sintaxe de prezo incorrecta!"
 msgid "Incorrect setup fee syntax!"
 msgstr "Sintaxe de gastos de instalación incorrecta!"
 
+msgid "Incorrect subdomains limit!"
+msgstr "Límite de subdominios incorrecto!"
+
+msgid "Incorrect aliases limit!"
+msgstr "Límite de alias incorrecto!"
+
+msgid "Incorrect mail accounts limit!"
+msgstr "Límite de contas de correo incorrecto!"
+
+msgid "Incorrect FTP accounts limit!"
+msgstr "Límite de contas FTP incorrecto!"
+
+msgid "Incorrect SQL databases limit!"
+msgstr "Límite de bancos de datos SQL incorrecto!"
+
+msgid "Incorrect SQL users limit!"
+msgstr "Límite de usuarios SQL incorrecto!"
+
+msgid "Incorrect traffic limit!"
+msgstr "Límite de tráfico incorrecto!"
+
+msgid "Incorrect disk quota limit!"
+msgstr "Límite de cota de disco incorrecta!"
+
+msgid "The i-MSCP application installer needs PHP to enable it!"
+msgstr ""
+
 msgid "Hosting plan with entered name already exists!"
 msgstr "Xa existe o plano de hospedaxe co nome inserido!"
 
@@ -859,47 +1373,101 @@ msgstr "Prezo incorrecto. Exemplo: 9.99"
 msgid "Incorrect setup fee. Example: 19.99"
 msgstr "Gastos de instalación incorrectos. Exemplo: 19.99"
 
-msgid "i-MSCP - Administrator/Hosting Plan Management"
-msgstr "i-MSCP - Administrador/Xestión de Planos de Hospedaxe"
+msgid "No domain system errors"
+msgstr "Non hai erros de sistema de dominios"
 
-msgid "Hosting plans"
-msgstr "Planos de hospedaxe"
+msgid "No domain alias system errors"
+msgstr "Non hai erros de sistema de alias de dominios"
 
-msgid "Manage hosting plans"
-msgstr "Xestionar planos de hospedaxe"
+msgid "No subdomain system errors"
+msgstr "Non hai erros de sistema de subdominios"
 
-msgid "Purchasing"
-msgstr "Compras"
+msgid "No alias subdomain system errors"
+msgstr "Non hai erros de sistema de alias de subdominios"
 
-msgid "Add new user hosting plan"
-msgstr "Engadir novo usuario de plano de hospedaxe"
+msgid "No email account system errors"
+msgstr "Non hai erros de sistema de contas de correo-e"
 
-msgid "Return to previous menu"
-msgstr "Volver ao menú anterior"
+#, fuzzy
+msgid "missing domain"
+msgstr "Dominio principal"
 
-msgid "Hosting plan added!"
-msgstr "Plano de hospedaxe engadido!"
+#, fuzzy
+msgid "missing alias"
+msgstr "Alias de dominio"
 
-msgid "Hosting plan deleted!"
-msgstr "Plano de hospedaxe eliminado!"
+msgid "orphan entry"
+msgstr ""
 
-msgid "Hosting plan updated!"
-msgstr "Plano de hospedaxe actualizado!"
+#, fuzzy
+msgid "No htaccess related system errors"
+msgstr "Non hai erros de sistema de alias de dominios"
 
-msgid "Hosting plan can't be deleted, there are orders!"
-msgstr "Non se pode eliminar o plano de hospedaxe, xa que hai pedidos!"
+#, fuzzy
+msgid "Missing domain"
+msgstr "Dominio principal"
 
-msgid "Hosting plans not found!"
-msgstr "Non se atoparon planos de hospedaxe!"
+#, php-format
+msgid "Daemon returned %d as status code"
+msgstr "O proceso MDE devolveu %d como código de estado"
 
-msgid "No."
-msgstr "Non."
+msgid "Unknown type!"
+msgstr "Tipo descoñecido!"
 
-msgid "Name"
-msgstr "Nome"
+msgid "Done"
+msgstr "Feito"
 
-msgid "Show hosting plan"
-msgstr "Amosar plano de hospedaxe"
+msgid "Unknown Error"
+msgstr "Erro descoñecido"
+
+msgid "Domain errors"
+msgstr "Erros de dominio"
+
+msgid "Domain alias errors"
+msgstr "Erros de alias de dominio"
+
+msgid "Subdomain errors"
+msgstr "Erros de subdominio"
+
+msgid "Alias subdomain errors"
+msgstr "Erros de alias de subdominios"
+
+msgid "Mail account errors"
+msgstr "Erros de conta de correo-e"
+
+msgid ".htaccess related errors"
+msgstr ""
+
+msgid "i-MSCP Daemon tools"
+msgstr "Ferramentas do Proceso MDE (Monitor de Disco e Execución) i-MSCP"
+
+msgid "Execute requests"
+msgstr "Solicitudes de execución"
+
+msgid "Set status to 'change'"
+msgstr "Configurar o estado a 'mudar'"
+
+#, fuzzy, php-format
+msgid "%s Errors in database"
+msgstr ""
+
+msgid "Update checking is disabled!"
+msgstr "A comprobación de actualizacións está desactivada!"
+
+msgid "Enable update at"
+msgstr "Activar actualización en"
+
+msgid "New i-MSCP update is now available"
+msgstr "Agora mesmo está dispoñible unha nova actualización do i-MSCP"
+
+msgid "Get it at"
+msgstr "Obteno en"
+
+msgid "Available i-MSCP updates"
+msgstr "Actualizacións do i-MSCP dispoñibles"
+
+msgid "No new i-MSCP updates available"
+msgstr "Non hai novas actualizacións do i-MSCP dispoñibles"
 
 #, php-format
 msgid "You have <b>%d</b> new support questions"
@@ -908,14 +1476,8 @@ msgstr "Tes <b>%d</b> novas solicitudes de atención"
 msgid "View"
 msgstr "Ver"
 
-msgid "A database update is available"
-msgstr "Actualización do banco de datos dispoñible"
-
-msgid "Update checking is disabled!"
-msgstr "A comprobación de actualizacións está desactivada!"
-
-msgid "New i-MSCP update is now available"
-msgstr "Agora mesmo está dispoñible unha nova actualización do i-MSCP"
+msgid "One or more updates to the database are available."
+msgstr ""
 
 msgid "You are exceeding your traffic limit!"
 msgstr "Estás a exceder o teu límite de tráfico!"
@@ -949,6 +1511,10 @@ msgstr "i-MSCP - Admin/Xestión de IPs"
 msgid "Remove IP"
 msgstr "Eliminar IP"
 
+#, fuzzy
+msgid "No IP's available"
+msgstr "Non hai novas actualizacións do i-MSCP dispoñibles"
+
 msgid "New IP was added!"
 msgstr "Novo IP engadido!"
 
@@ -967,9 +1533,6 @@ msgstr "Este IP xa existe!"
 msgid "Please select nework interface!"
 msgstr "Por favor, selecciona a interface de rede!"
 
-msgid "Manage IPs"
-msgstr "Xestionar IPs"
-
 msgid "Available IPs"
 msgstr "IPs dispoñibles"
 
@@ -986,105 +1549,51 @@ msgstr "Engadir novo IP"
 msgid "Are you sure you want to delete this IP: %s?"
 msgstr "Estás certo de querer eliminar este IP: %s?"
 
-msgid "No domain system errors"
-msgstr "Non hai erros de sistema de dominios"
+#, fuzzy
+msgid "i-MSCP - Admin/IP Usage"
+msgstr "i-MSCP - Admin/Xestión de IPs"
 
-msgid "No domain alias system errors"
-msgstr "Non hai erros de sistema de alias de dominios"
+#, fuzzy
+msgid "Total Domains"
+msgstr "Dominios"
 
-msgid "No subdomain system errors"
-msgstr "Non hai erros de sistema de subdominios"
+msgid "No records found"
+msgstr ""
 
-msgid "No alias subdomain system errors"
-msgstr "Non hai erros de sistema de alias de subdominios"
+#, fuzzy
+msgid "Admin/IP usage statistics"
+msgstr "Estatísticas do dominio"
 
-msgid "No email account system errors"
-msgstr "Non hai erros de sistema de contas de correo-e"
+#, fuzzy
+msgid "Domain Name"
+msgstr "Nome do dominio"
 
-msgid "i-MSCP debugger"
-msgstr "Depurador do i-MSCP"
+#, fuzzy
+msgid "Reseller Name"
+msgstr "Nome do revendedor"
 
-msgid "Domain errors"
-msgstr "Erros de dominio"
-
-msgid "Domain alias errors"
-msgstr "Erros de alias de dominio"
-
-msgid "Subdomain errors"
-msgstr "Erros de subdominio"
-
-msgid "Alias subdomain errors"
-msgstr "Erros de alias de subdominios"
-
-msgid "Mail account errors"
-msgstr "Erros de conta de correo-e"
-
-msgid "i-MSCP Daemon tools"
-msgstr "Ferramentas do Proceso MDE (Monitor de Disco e Execución) i-MSCP"
-
-msgid "Execute requests"
-msgstr "Solicitudes de execución"
-
-msgid "Set status to 'change'"
-msgstr "Configurar o estado a 'mudar'"
-
-#, php-format
-msgid "Daemon returned %d as status code"
-msgstr "O proceso MDE devolveu %d como código de estado"
-
-msgid "Unknown type!"
-msgstr "Tipo descoñecido!"
-
-msgid "Done"
-msgstr "Feito"
-
-msgid "Unknown Error"
-msgstr "Erro descoñecido"
-
-msgid "Enable update at"
-msgstr "Activar actualización en"
-
-msgid "Settings"
-msgstr "Configuración"
-
-msgid "Get it at"
-msgstr "Obteno en"
-
-msgid "i-MSCP updates"
-msgstr "Actualizacións do i-MSCP"
-
-msgid "Available i-MSCP updates"
-msgstr "Actualizacións do i-MSCP dispoñibles"
-
-msgid "No new i-MSCP updates available"
-msgstr "Non hai novas actualizacións do i-MSCP dispoñibles"
-
-msgid "Language was removed!"
-msgstr "O idioma foi eliminado!"
-
-msgid "User language updated successfully!"
+#, fuzzy
+msgid "User language updated successfully."
 msgstr "Idioma de usuario actualizado de xeito correcto!"
 
 msgid "i-MSCP - Admin/Change Language"
 msgstr "i-MSCP - Admin/Mudar Idioma"
 
-msgid "Language"
-msgstr "Idioma"
-
 msgid "Choose your default language"
 msgstr "Escolle o teu idioma predeterminado"
+
+#, fuzzy
+msgid "Error we have user that uses that language!"
+msgstr "Erro: temos un revendedor empregando este IP!"
+
+msgid "Language was removed!"
+msgstr "O idioma foi eliminado!"
 
 msgid "Reseller list is empty!"
 msgstr "A listaxe de revendedores está baleira!"
 
 msgid "i-MSCP - Admin/Manage users/Reseller assignment"
 msgstr "i-MSCP - Admin/Xestionar usuarios/Asignación de revendedor"
-
-msgid "Reseller assignment"
-msgstr "Asignación de revendedor"
-
-msgid "Reseller users"
-msgstr "Usuarios do revendedor"
 
 msgid "Mark"
 msgstr "Marcar"
@@ -1150,12 +1659,6 @@ msgstr ""
 msgid "i-MSCP - Admin/Manage users/User assignment"
 msgstr "i-MSCP - Admin/Xestionar usuarios/Asignación de usuarios"
 
-msgid "User assignment"
-msgstr "Asignación de usuarios"
-
-msgid "Users"
-msgstr "Usuarios"
-
 msgid "User name"
 msgstr "Nome de usuario"
 
@@ -1191,11 +1694,16 @@ msgstr ""
 msgid "User was disabled"
 msgstr "O usuario foi desactivado"
 
-msgid "Incorrect data input!"
-msgstr "Datos de entrada incorrectos!"
+#, fuzzy
+msgid "Uninstall"
+msgstr "desinstalar"
 
-msgid "i-MSCP - Admin/Internationalisation"
-msgstr "i-MSCP - Admin/Internacionalización"
+#, php-format
+msgid "%d messages translated"
+msgstr "%d mensaxes traducidas"
+
+msgid "Gzipped"
+msgstr ""
 
 msgid "Upload file error!"
 msgstr "Erro ao tentar subir o arquivo!"
@@ -1209,7 +1717,8 @@ msgstr "Non se pode ler o arquivo de idioma!"
 msgid "Uploaded file is not a valid language file!"
 msgstr "O arquivo subido non é un ficheiro de idioma válido!"
 
-msgid "Uploaded file does not contain the language information!"
+#, fuzzy
+msgid "Uploaded file does not contain language information!"
 msgstr "O arquivo subido non contén a información de idioma!"
 
 #, php-format
@@ -1226,15 +1735,8 @@ msgstr ""
 msgid "Language was updated!"
 msgstr "O idioma foi actualizado!"
 
-msgid "uninstall"
-msgstr "desinstalar"
-
-#, php-format
-msgid "%d messages translated"
-msgstr "%d mensaxes traducidas"
-
-msgid "Internationalisation"
-msgstr "Internacionalización"
+msgid "i-MSCP - Admin/Internationalisation"
+msgstr "i-MSCP - Admin/Internacionalización"
 
 msgid "Installed languages"
 msgstr "Idiomas instalados"
@@ -1242,8 +1744,8 @@ msgstr "Idiomas instalados"
 msgid "Messages"
 msgstr "Mensaxes"
 
-msgid "Panel Default"
-msgstr "Predeterminado do Panel"
+msgid "Panel default language"
+msgstr "Idioma predeterminado do panel"
 
 msgid "Install new language"
 msgstr "Instalar novo idioma"
@@ -1256,6 +1758,9 @@ msgstr "Instalar"
 
 msgid "Export"
 msgstr "Exportar"
+
+msgid "Incorrect data input!"
+msgstr "Datos de entrada incorrectos!"
 
 msgid "i-MSCP - Admin/Change Password"
 msgstr "i-MSCP - Admin/Mudar Contrasinal"
@@ -1271,9 +1776,6 @@ msgstr "O contrasinal actual é incorrecto!"
 
 msgid "User password updated successfully!"
 msgstr "Contrasinal do usuario actualizada de xeito correcto!"
-
-msgid "Change password"
-msgstr "Mudar contrasinal"
 
 msgid "Password data"
 msgstr "Datos de contrasinal"
@@ -1292,9 +1794,6 @@ msgstr "i-MSCP - Admin/Mudar Datos Persoais"
 
 msgid "Personal data updated successfully!"
 msgstr "Datos persoais actualizados de xeito correcto!"
-
-msgid "Change personal data"
-msgstr "Mudar datos persoais"
 
 msgid "Personal data"
 msgstr "Datos persoais"
@@ -1317,6 +1816,9 @@ msgstr "Etiqueta"
 msgid "Number"
 msgstr "Número"
 
+msgid "This user name already exist!"
+msgstr "Este nome de usuario xa existe!"
+
 msgid "Incorrect email syntax!"
 msgstr "Sintaxe de correo-e incorrecta!"
 
@@ -1335,9 +1837,6 @@ msgstr ""
 
 msgid "You must assign at least one IP number for a reseller!"
 msgstr "Debes asignar un número IP como mínimo para un revendedor!"
-
-msgid "Add reseller"
-msgstr "Engadir revendedor"
 
 msgid "Domains limit<br><i>(0 unlimited)</i>"
 msgstr "Límite de dominios<br><i>(0 sen límite)</i>"
@@ -1363,29 +1862,20 @@ msgstr "Copia de respaldo e restauración"
 msgid "Custom error pages"
 msgstr "Páxinas de erro á medida"
 
-msgid "Protected areas"
-msgstr "Áreas protexidas"
-
-msgid "Webmail"
-msgstr "Correo-web"
-
 msgid "Directory listing"
 msgstr "Listaxe de directorio"
 
 msgid "Logo upload"
 msgstr "Subida de logo"
 
-msgid "Support system"
-msgstr "Sistema de Atención"
+msgid "Can use software depot"
+msgstr ""
+
+msgid "Can use websoftware depot"
+msgstr ""
 
 msgid "Reseller IPs"
 msgstr "IPs de revendedor"
-
-msgid "Customer ID"
-msgstr "ID de cliente"
-
-msgid "Domains"
-msgstr "Dominios"
 
 msgid "Aliases"
 msgstr "Alias"
@@ -1474,13 +1964,14 @@ msgid ""
 "i-MSCP NOTICE:\\n\\nThe `Enter` key is disabled for performance reasons!"
 "\\nInstead, use the %s button to update the data."
 msgstr ""
-"NOTA do i-MSCP:\\n\\nA tecla`Enter` está desactivada por razóns de rendemento!"
-"\\nNo seu lugar,emprega o botón %s para actualizares os datos."
+"NOTA do i-MSCP:\\n\\nA tecla`Enter` está desactivada por razóns de "
+"rendemento!\\nNo seu lugar,emprega o botón %s para actualizares os datos."
 
 msgid "i-MSCP - Reseller statistics"
 msgstr "i-MSCP - Estatísticas de revendedor"
 
-msgid "Not found reseller(s) in your system!"
+#, fuzzy
+msgid "No reseller is registered in your system!"
 msgstr "Non se atopou revendedor ningún no teu sistema!"
 
 #, php-format
@@ -1530,9 +2021,6 @@ msgstr "%1$d <br/>de<br/> <b>%2$d</b>"
 msgid "%d <br/>of<br/> <b>unlimited</b>"
 msgstr "%d <br/>de<br/> <b>ilimitado</b>"
 
-msgid "Reseller users table"
-msgstr "Táboa de usuarios do revendedor"
-
 msgid "This reseller has no domains."
 msgstr "Este revendedor non ten dominios."
 
@@ -1572,23 +2060,8 @@ msgstr "%s non existe ou está baleiro"
 msgid "Anti-Rootkits Tools Log Checker"
 msgstr "Ferramentas Anti-Rootkits Comprobador de Rexistro (Log)"
 
-msgid "i-MSCP - Admin/Server day stats"
-msgstr "i-MSCP - Admin/Estatísticas do día do servidor"
-
-msgid "Server day statistics"
-msgstr "Estatísticas do día do servidor"
-
-msgid "Month:"
-msgstr "Mes:"
-
-msgid "Year:"
-msgstr "Ano:"
-
-msgid "Day:"
-msgstr "Día:"
-
-msgid "Hour"
-msgstr "Hora"
+msgid "i-MSCP - Admin/Server statistics"
+msgstr "i-MSCP - Admin/Estatísticas do servidor"
 
 msgid "Web in"
 msgstr "Entrada web"
@@ -1620,20 +2093,24 @@ msgstr "Todas as entradas"
 msgid "All out"
 msgstr "Todas as saídas"
 
-msgid "i-MSCP - Admin/Server statistics"
-msgstr "i-MSCP - Admin/Estatísticas do servidor"
+msgid "i-MSCP - Admin/Server day stats"
+msgstr "i-MSCP - Admin/Estatísticas do día do servidor"
 
-msgid "Server statistics"
-msgstr "Estatísticas do servidor"
+msgid "Server day statistics"
+msgstr "Estatísticas do día do servidor"
 
-msgid "i-MSCP Admin / System Tools / Server Status"
+msgid "Month:"
+msgstr "Mes:"
+
+msgid "Year:"
+msgstr "Ano:"
+
+msgid "Day:"
+msgstr "Día:"
+
+#, fuzzy
+msgid "i-MSCP Admin / General Information / Server Status"
 msgstr "i-MSCP Admin/Ferramentas do Sistema/Estado do Servidor"
-
-msgid "UP"
-msgstr "FUNCIONANDO"
-
-msgid "DOWN"
-msgstr "PARADO"
 
 msgid "Host"
 msgstr "Host"
@@ -1641,8 +2118,11 @@ msgstr "Host"
 msgid "Service"
 msgstr "Servizo"
 
-msgid "Server status"
-msgstr "Estado do servidor"
+msgid "UP"
+msgstr "FUNCIONANDO"
+
+msgid "DOWN"
+msgstr "PARADO"
 
 msgid "i-MSCP - Admin/Manage Sessions"
 msgstr "i-MSCP - Admin/Xestionar Sesións"
@@ -1656,126 +2136,26 @@ msgstr "Tipo de usuario"
 msgid "Last access"
 msgstr "Último acceso"
 
-msgid "Options"
-msgstr "Opcións"
-
 msgid "Kill session"
 msgstr "Forzar remate de sesión"
-
-msgid "You can only upload images!"
-msgstr "Só podes subir imaxes!"
-
-msgid "Images have to be smaller than 195 x 195 pixels!"
-msgstr "As imaxes deben ser máis pequenas de 195 x 195 puntos!"
-
-msgid "Your logo was successful uploaded!"
-msgstr "O teu logo foi subido de xeito correcto!"
-
-msgid "Layout settings"
-msgstr "Configuración da maquetación"
-
-msgid "Installed layouts"
-msgstr "Maquetacións instaladas"
-
-msgid "Layout name"
-msgstr "Nome da maquetación"
-
-msgid "default"
-msgstr "por defecto"
-
-msgid "Upload logo"
-msgstr "Subir logo"
-
-msgid "Logo file"
-msgstr "Arquivo de logo"
-
-msgid "Upload"
-msgstr "Subir"
-
-msgid "Remove"
-msgstr "Eliminar"
-
-msgid "Choose default layout"
-msgstr "Escolle a maquetación predeterminada"
-
-msgid "Layout"
-msgstr "Deseño"
-
-msgid "Please specify a subject!"
-msgstr "Por favor, especifica un asunto!"
-
-msgid "Please specify message!"
-msgstr "Por favor, especifica unha mensaxe!"
-
-msgid "Auto email template data updated!"
-msgstr "Sobreplanta de correo-e automático actualizada!"
-
-msgid "i-MSCP - Admin/Lostpw email setup"
-msgstr "i-MSCP - Admin/Configuración do correo-e de contrasinal esquecido"
-
-msgid "Lost password e-mail"
-msgstr "Correo-e do contrasinal esquecido"
-
-msgid "Message template info"
-msgstr "Información de sobreplanta de mensaxe"
-
-msgid "Message template"
-msgstr "Sobreplanta de mensaxe"
-
-msgid "Activation E-Mail"
-msgstr "Correo-e de activación"
-
-msgid "Password E-Mail"
-msgstr "Correo-e do contrasinal"
-
-msgid "User login (system) name"
-msgstr "Nome de usuario para inicio de sesión (sistema)"
-
-msgid "User password"
-msgstr "Contrasinal de usuario"
-
-msgid "User (first and last) name"
-msgstr "Nome (e apelido) de usuario"
-
-msgid "Lost password link"
-msgstr "Ligazón ao contrasinal esquecido"
-
-msgid "Subject"
-msgstr "Asunto"
-
-msgid "Apply changes"
-msgstr "Aplicar trocos"
-
-msgid "URL to this admin panel"
-msgstr "URL deica este panel de administración"
-
-msgid "URL protocol"
-msgstr "Protocolo URL"
-
-msgid "i-MSCP - Admin/Maintenance mode"
-msgstr "i-MSCP - Admin/Modo de mantemento"
-
-msgid "Settings saved !"
-msgstr "Configuración gardada!"
-
-msgid "Maintenance mode"
-msgstr "Modo de mantemento"
-
-msgid "Under this mode only administrators can login"
-msgstr "Dentro deste modo só poden iniciar sesión os administradores"
 
 msgid "i-MSCP - Admin/Settings"
 msgstr "i-MSCP - Admin/Configuración"
 
-msgid "ERROR: Only positive numbers are allowed !"
+#, fuzzy
+msgid "Error: Only positive numbers are allowed!"
 msgstr "ERRO: só se permiten números positivos!"
 
-#, fuzzy
-msgid "Settings saved!"
-msgstr "Configuración gardada!"
+#, php-format
+msgid "%d configuration parameter(s) was updated!"
+msgstr ""
 
-msgid "General settings"
-msgstr "Configuración xeral"
+#, php-format
+msgid "%d configuration parameter(s) was created!"
+msgstr ""
+
+msgid "Nothing's been changed!"
+msgstr ""
 
 msgid "Activation link expire time (minutes)"
 msgstr "Tempo de expiración da ligazón de activación (minutos)"
@@ -1822,11 +2202,8 @@ msgstr "Contar enderezos de correo-e predeterminados"
 msgid "E-Mail accounts are hard suspended"
 msgstr "As contas de correo-e están suspendidas de xeito estrito"
 
-msgid "Panel default language"
-msgstr "Idioma predeterminado do panel"
-
-msgid "Server ports"
-msgstr "Portos do servidor"
+msgid "Apply changes"
+msgstr "Aplicar trocos"
 
 msgid "Hosting plans available for"
 msgstr "Planos de hospedaxe dispoñibles para"
@@ -1899,53 +2276,140 @@ msgstr ""
 msgid "Maximal number of labels for subdomains"
 msgstr "Número máximo de etiquetas para subdominios"
 
-#, fuzzy
-msgid ""
-"ERROR: Only letters, numbers, dash and underscore are allowed for services "
-"names!"
-msgstr "ERRO: só se permiten letras, números, guións e subliñados!"
+msgid "You can only upload images!"
+msgstr "Só podes subir imaxes!"
+
+msgid "Images have to be smaller than 195 x 195 pixels!"
+msgstr "As imaxes deben ser máis pequenas de 195 x 195 puntos!"
+
+msgid "Your logo was successful uploaded!"
+msgstr "O teu logo foi subido de xeito correcto!"
+
+msgid "Installed layouts"
+msgstr "Maquetacións instaladas"
+
+msgid "Layout name"
+msgstr "Nome da maquetación"
+
+msgid "default"
+msgstr "por defecto"
+
+msgid "Upload logo"
+msgstr "Subir logo"
+
+msgid "Logo file"
+msgstr "Arquivo de logo"
+
+msgid "Upload"
+msgstr "Subir"
+
+msgid "Remove"
+msgstr "Eliminar"
+
+msgid "Choose default layout"
+msgstr "Escolle a maquetación predeterminada"
+
+msgid "Please specify a subject!"
+msgstr "Por favor, especifica un asunto!"
+
+msgid "Please specify message!"
+msgstr "Por favor, especifica unha mensaxe!"
+
+msgid "Auto email template data updated!"
+msgstr "Sobreplanta de correo-e automático actualizada!"
+
+msgid "i-MSCP - Admin/Lostpw email setup"
+msgstr "i-MSCP - Admin/Configuración do correo-e de contrasinal esquecido"
+
+msgid "Lost password e-mail"
+msgstr "Correo-e do contrasinal esquecido"
+
+msgid "Message template info"
+msgstr "Información de sobreplanta de mensaxe"
+
+msgid "Message template"
+msgstr "Sobreplanta de mensaxe"
+
+msgid "Activation E-Mail"
+msgstr "Correo-e de activación"
+
+msgid "Password E-Mail"
+msgstr "Correo-e do contrasinal"
+
+msgid "User login (system) name"
+msgstr "Nome de usuario para inicio de sesión (sistema)"
+
+msgid "User password"
+msgstr "Contrasinal de usuario"
+
+msgid "User (first and last) name"
+msgstr "Nome (e apelido) de usuario"
+
+msgid "Lost password link"
+msgstr "Ligazón ao contrasinal esquecido"
+
+msgid "Subject"
+msgstr "Asunto"
+
+msgid "URL to this admin panel"
+msgstr "URL deica este panel de administración"
+
+msgid "URL protocol"
+msgstr "Protocolo URL"
+
+msgid "i-MSCP - Admin/Maintenance mode"
+msgstr "i-MSCP - Admin/Modo de mantemento"
+
+msgid "Settings saved !"
+msgstr "Configuración gardada!"
+
+msgid "Under this mode only administrators can login"
+msgstr "Dentro deste modo só poden iniciar sesión os administradores"
 
 #, fuzzy
-msgid "ERROR: Wrong Ip number!"
+msgid "Error: Wrong Ip number!"
 msgstr "Número de IP incorrecto!"
 
 #, fuzzy
-msgid "ERROR: Only positive numbers are allowed for services ports!"
+msgid "Error: Only positive numbers are allowed for services ports!"
 msgstr "ERRO: só se permiten números positivos!"
 
 #, fuzzy
-msgid "ERROR: Service port with same name already exists!"
+msgid "Error: Service port with same name already exists!"
 msgstr "ERRO: o porto xa existe!"
 
-msgid "ERROR: Unallowed protocol!"
+msgid "Error: Unallowed protocol!"
 msgstr ""
 
-msgid "ERROR: Bad value for show entry!"
+msgid "Error: Wrong value for show entry!"
 msgstr ""
 
 #, fuzzy
-msgid "Service port was added!"
+msgid "Service port was successfully added"
 msgstr "Novo IP engadido!"
 
-#, php-format
-msgid "%d Service(s) port was updated!"
+#, fuzzy, php-format
+msgid "%d Service(s) port was successfully updated"
 msgstr ""
 
-msgid "Nothing's been changed!"
-msgstr ""
-
-msgid "You have no custom service ports defined."
-msgstr "Non tes portos de servizo personalizado definidos."
-
-msgid "ERROR: Unknown service port name!"
+msgid "Nothing's been changed"
 msgstr ""
 
 #, fuzzy
-msgid "Service port was removed!"
+msgid "You have no custom service ports defined"
+msgstr "Non tes portos de servizo personalizado definidos."
+
+#, fuzzy
+msgid "Service port was successfully removed!"
 msgstr "A solicitude foi aberta de novo!"
 
-msgid "ERROR: You are not allowed to remove this port entry!"
-msgstr ""
+#, fuzzy
+msgid "Error: You are not allowed to remove this service port entry!"
+msgstr "Estás certo de querer eliminar %s?"
+
+#, fuzzy
+msgid "i-MSCP - Admin / Settings"
+msgstr "i-MSCP - Admin/Configuración"
 
 msgid "udp"
 msgstr "udp"
@@ -1985,9 +2449,6 @@ msgstr "Configuración do tráfico do servidor actualizada de xeito correcto!"
 msgid "Modify"
 msgstr "Modificar"
 
-msgid "Server traffic settings"
-msgstr "Configuración do tráfico do servidor"
-
 msgid "Set server traffic settings"
 msgstr "Configurar os axustes do tráfico do servidor"
 
@@ -2000,14 +2461,400 @@ msgstr "Tráfico de aviso [MB]"
 msgid "i-MSCP - Admin/Manage users/Email setup"
 msgstr "i-MSCP - Admin/Xestionar usuarios/Configuración de correo-e"
 
-msgid "Email setup"
-msgstr "Configuración de correo-e"
-
 msgid "User real (first and last) name"
 msgstr "Nome real do usuario (nome e apelido)"
 
 msgid "User type (admin, reseller, user)"
 msgstr "Tipo de usuario (administrador, revendedor, usuario)"
+
+#, fuzzy
+msgid "Wrong software id."
+msgstr "ID de pedido incorrecto!"
+
+msgid "Software was activated."
+msgstr ""
+
+#, fuzzy
+msgid "No Resellers found."
+msgstr "Revendedores"
+
+#, fuzzy
+msgid "Rights succesfully added."
+msgstr "Usuario SQL engadido de xeito correcto!"
+
+msgid "Rights succesfully removed."
+msgstr ""
+
+#, fuzzy, php-format
+msgid "%1$s (%2$s)"
+msgstr "%1$s de %2$s MB"
+
+#, fuzzy
+msgid "Software was deleted."
+msgstr "Eliminouse o IP!"
+
+#, fuzzy
+msgid "Fill out a message text!"
+msgstr "A túa mensaxe foi enviada!"
+
+#, fuzzy
+msgid "i-MSCP - Application Management"
+msgstr "i-MSCP - Cliente/Xestor de Traballos Cron"
+
+msgid "Message to reseller before deleting the software"
+msgstr ""
+
+msgid "Delete reseller software"
+msgstr ""
+
+#, fuzzy
+msgid "Reseller data"
+msgstr "Nome do revendedor"
+
+msgid "Delete software and send message"
+msgstr ""
+
+#, fuzzy, php-format
+msgid "File does not exist. %1$s.tar.gz"
+msgstr "%s non existe"
+
+#, fuzzy
+msgid "Software was imported succesfully."
+msgstr "Banco de datos SQL eliminado de xeito correcto!"
+
+msgid "Download"
+msgstr ""
+
+msgid "Activate"
+msgstr "Activar"
+
+#, fuzzy
+msgid "Import"
+msgstr "Exportar"
+
+msgid "No software is waiting for activation"
+msgstr ""
+
+#, fuzzy
+msgid "Package installed successfully!"
+msgstr "Conta FTP eliminada de xeito correcto!"
+
+msgid "Rights"
+msgstr ""
+
+msgid "Softwarerights"
+msgstr ""
+
+msgid "Installing your uploaded package. Please refresh this site."
+msgstr ""
+
+msgid ""
+"The package will be installed automaticly to your system after upload.<br /"
+">Refresh your site to see the new status!"
+msgstr ""
+
+#, fuzzy
+msgid "installing"
+msgstr "desinstalar"
+
+msgid "Failure in the package. Deleting!"
+msgstr ""
+
+msgid ""
+"There is an Error inside your package. Please check it!<br />Refresh your "
+"site to see the new status!"
+msgstr ""
+
+#, fuzzy
+msgid "deleting"
+msgstr "Configuracións de pedido"
+
+msgid "Your package is corrupt. Please correct it!"
+msgstr ""
+
+msgid "Package already exist in the software depot!"
+msgstr ""
+
+msgid ""
+"Check your software depot uploads!<br />It is not allowed to upload this "
+"package two times.<br />Refresh your site to see the new status!"
+msgstr ""
+
+#, fuzzy
+msgid "This package already exist in the software depot!"
+msgstr "Xa existe un dominio con este nome neste sistema!"
+
+msgid "Package already exist in the reseller depot!"
+msgstr ""
+
+msgid ""
+"Check the reseller uploads!<br />It is not allowed to upload this package "
+"two times.<br />Refresh your site to see the new status!"
+msgstr ""
+
+#, php-format
+msgid "This package already exist in the depot of the reseller \"%1$s\"!"
+msgstr ""
+
+msgid "No software in software depot available!"
+msgstr ""
+
+msgid "No reseller with activated software installer found!"
+msgstr ""
+
+msgid "Unable to read xml file for web softwares!"
+msgstr ""
+
+msgid "i-MSCP application installer web software depot"
+msgstr ""
+
+#, fuzzy
+msgid "Update from web depot"
+msgstr "Actualizar pedido"
+
+#, fuzzy
+msgid "Package title"
+msgstr "Prezo do Paquete"
+
+#, fuzzy
+msgid "Package install type"
+msgstr "Características do Paquete"
+
+#, fuzzy
+msgid "Package version"
+msgstr "Prezo do Paquete"
+
+#, fuzzy
+msgid "Package language"
+msgstr "Características do Paquete"
+
+#, fuzzy
+msgid "Package type"
+msgstr "Prezo do Paquete"
+
+#, fuzzy
+msgid "Package vendor HP"
+msgstr "Características do Paquete"
+
+#, fuzzy
+msgid "Package actions"
+msgstr "Características do Paquete"
+
+msgid "Web software depot packages total"
+msgstr ""
+
+msgid "You have to choose between file-upload and wget-function."
+msgstr ""
+
+msgid "You must select a file to upload/download."
+msgstr ""
+
+msgid "File needs to be a .tar.gz-archive"
+msgstr ""
+
+#, php-format
+msgid "Error: Could not upload file. Max. upload filesize (%1$d MB) reached?"
+msgstr ""
+
+#, php-format
+msgid ""
+"Error: Your remote filesize (%1$d B) is lower than 1 Byte. Please check your "
+"URL!"
+msgstr ""
+
+#, php-format
+msgid ""
+"Error: Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB"
+msgstr ""
+
+#, fuzzy
+msgid "Error: Remote File not found!"
+msgstr "Erro 404 (non atopado)"
+
+msgid "Error: Could not upload the file. File not found!"
+msgstr ""
+
+#, fuzzy
+msgid "File was successfully uploaded."
+msgstr "O teu logo foi subido de xeito correcto!"
+
+msgid "Software depot"
+msgstr ""
+
+msgid "Software depot total"
+msgstr ""
+
+msgid "Software depot upload"
+msgstr ""
+
+#, php-format
+msgid "Choose file (Max: %1$d MB)"
+msgstr ""
+
+#, php-format
+msgid "or remote file (Max: %1$d MB)"
+msgstr ""
+
+#, fuzzy
+msgid "Upload now"
+msgstr "Subir logo"
+
+msgid "Awaiting Activation"
+msgstr ""
+
+#, fuzzy
+msgid "Reseller software list"
+msgstr "Estatísticas de revendedor"
+
+#, fuzzy
+msgid "Application"
+msgstr "Acción"
+
+msgid "App-Version"
+msgstr ""
+
+msgid "Type"
+msgstr "Tipo"
+
+#, fuzzy
+msgid "Depot import"
+msgstr "Porto de destino"
+
+msgid "Software total"
+msgstr ""
+
+#, fuzzy
+msgid "Reseller total"
+msgstr "Nome do revendedor"
+
+#, fuzzy
+msgid "Waiting for activation"
+msgstr "Agardando por aprobación"
+
+#, fuzzy
+msgid "Activated software"
+msgstr "Activar"
+
+msgid "Total installations"
+msgstr ""
+
+#, fuzzy
+msgid "Are you sure you want to activate this package?"
+msgstr "Estás certo de querer eliminar este pedido?"
+
+#, fuzzy
+msgid "Are you sure you want to import this package into the software depot?"
+msgstr "Estás certo de querer mudar o estado de %s?"
+
+#, fuzzy
+msgid "Are you sure you want to delete this package?"
+msgstr "Estás certo de querer eliminar este pedido?"
+
+#, fuzzy
+msgid "i-MSCP - Application management options"
+msgstr "i-MSCP - Admin/Xestionar Sesións"
+
+msgid "Main application installer options updated!"
+msgstr ""
+
+msgid "Application management options"
+msgstr ""
+
+msgid "Main application installer options"
+msgstr ""
+
+msgid "Using i-MSCP application installer websoftware depot"
+msgstr ""
+
+msgid "i-MSCP websoftware depot XML-File URL"
+msgstr ""
+
+msgid "Last i-MSCP websoftware depot update"
+msgstr ""
+
+#, fuzzy
+msgid "not available"
+msgstr "IPs dispoñibles"
+
+#, fuzzy
+msgid "Wrong reseller id."
+msgstr "Do revendedor"
+
+msgid "This package is installed on following domain(s):"
+msgstr ""
+
+msgid "This package is not installed"
+msgstr ""
+
+#, php-format
+msgid "%1$s - (Softwaredepot)"
+msgstr ""
+
+#, php-format
+msgid "%1$s`s - Software"
+msgstr ""
+
+#, fuzzy
+msgid "No software available!"
+msgstr "Non hai actualizacións de banco de datos dispoñibles"
+
+#, fuzzy
+msgid "Installed on"
+msgstr "Maquetacións instaladas"
+
+#, fuzzy
+msgid "Reseller list"
+msgstr "Revendedores"
+
+msgid "Softwaredepot"
+msgstr ""
+
+#, fuzzy
+msgid "Admin not available"
+msgstr "Planos de hospedaxe dispoñibles para"
+
+#, fuzzy
+msgid "Are you sure to remove the permissions ?"
+msgstr "Estás certo de querer restaurar a copia de seguridade?"
+
+msgid "No Reseller with permissions for this software found"
+msgstr ""
+
+#, fuzzy
+msgid "All reseller"
+msgstr "Todos os revendedores"
+
+msgid "No Reseller available to add the permissions"
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP - Application Management (Permissions)"
+msgstr "i-MSCP - Admin/Xestionar Sesións"
+
+#, php-format
+msgid "%1$s - (Version: %2$s, Language: %3$s)"
+msgstr ""
+
+msgid "Add permissions for reseller to software:"
+msgstr ""
+
+#, fuzzy
+msgid "Remove permissions"
+msgstr "Versión de Demostración!"
+
+#, fuzzy
+msgid "Reseller with permissions total"
+msgstr "Táboa de estatísticas do revendedor"
+
+msgid "Added by"
+msgstr ""
+
+#, fuzzy
+msgid "Add permissions"
+msgstr "Engadir usuario existente"
+
+msgid "Software permissions"
+msgstr ""
 
 msgid "CPU bogomips"
 msgstr "Bogomips da CPU"
@@ -2061,35 +2908,20 @@ msgstr "Tamaño"
 msgid "Swap"
 msgstr "Intercambio"
 
-msgid "System info"
-msgstr "Información do sistema"
-
 msgid "Vital system info"
 msgstr "Información vital do sistema"
 
 msgid "Total"
 msgstr "Total"
 
-msgid "Type"
-msgstr "Tipo"
-
 msgid "Up time"
 msgstr "Tempo de activación"
-
-msgid "You have no support tickets."
-msgstr "Non tes solicitudes de atención."
 
 msgid "i-MSCP - Client/Questions & Comments"
 msgstr "i-MSCP - Cliente/Preguntas e Comentarios"
 
 msgid "Support tickets"
 msgstr "Solicitudes de atención"
-
-msgid "From"
-msgstr "De"
-
-msgid "To"
-msgstr "Para"
 
 msgid "Priority"
 msgstr "Prioridade"
@@ -2106,6 +2938,9 @@ msgstr "Solicitudes abertas"
 msgid "Closed tickets"
 msgstr "Solicitudes pechadas"
 
+msgid "From"
+msgstr "De"
+
 msgid "Support ticket deleted successfully!"
 msgstr "Solicitude de atención eliminada de xeito correcto!"
 
@@ -2117,23 +2952,8 @@ msgid "All closed support tickets deleted successfully!"
 msgstr ""
 "Todas as solicitudes de atención pechadas foron eliminadas de xeito correcto!"
 
-msgid "[New]"
-msgstr "[Novo]"
-
-msgid "[Re]"
-msgstr "[Re]"
-
 msgid "i-MSCP - Client/Enable Mail Autoresponder"
 msgstr "i-MSCP - Cliente/Activar Resposta Automática de Correo"
-
-msgid "Ticket not found!"
-msgstr "Solicitude non atopada!"
-
-msgid "Open ticket"
-msgstr "Solicitude aberta"
-
-msgid "Close ticket"
-msgstr "Pechar solicitude"
 
 msgid "i-MSCP - Client: Support System: View Ticket"
 msgstr "i-MSCP - Cliente: Sistema de Atención: Ver Solicitudes"
@@ -2141,14 +2961,8 @@ msgstr "i-MSCP - Cliente: Sistema de Atención: Ver Solicitudes"
 msgid "Please type your message!"
 msgstr "Por favor, insire a túa mensaxe!"
 
-msgid "Message was sent."
-msgstr "A mensaxe foi enviada."
-
-msgid "Ticket was closed!"
-msgstr "Solicitude pechada!"
-
-msgid "Ticket was reopened!"
-msgstr "A solicitude foi aberta de novo!"
+msgid "Ticket not found!"
+msgstr "Solicitude non atopada!"
 
 msgid "i-MSCP - Admin: Support System: View Ticket"
 msgstr "i-MSCP- Admin: Sistema de Atención: Ver Solicitudes"
@@ -2209,45 +3023,6 @@ msgstr ""
 msgid "Yes, delete the domain."
 msgstr "Si, eliminar o dominio."
 
-msgid "i-MSCP Client : Add Alias"
-msgstr "i-MSCP - Cliente: Engadir Alias"
-
-msgid "Manage domain alias"
-msgstr "Xestionar alias de dominio"
-
-msgid "Add domain alias"
-msgstr "Engadir alias de dominio"
-
-msgid "User account"
-msgstr "Conta de usuario"
-
-msgid "Directory mount point"
-msgstr "Punto de montaxe do directorio"
-
-msgid "Forward to URL"
-msgstr "Reenviar ao URL"
-
-msgid "Add alias"
-msgstr "Engadir alias"
-
-msgid "You do not need 'www.' i-MSCP will add it on its own."
-msgstr "Non precisas o 'www.' xa que será engadido polo mesmo i-MSCP."
-
-msgid "Wrong domain name!"
-msgstr "Nome de dominio erróneo!"
-
-msgid "Please write mount point!"
-msgstr "Por favor, insire o punto de montaxe!"
-
-msgid "Enable Forward"
-msgstr "Activar Reenvío"
-
-msgid "Enable"
-msgstr "Activar"
-
-msgid "Disable"
-msgstr "Desactivar"
-
 msgid "Domain alias limit reached!"
 msgstr "Alcanzouse o límite de alias do dominio!"
 
@@ -2278,6 +3053,42 @@ msgstr "Alias programado para activación!"
 
 msgid "Alias scheduled for addition!"
 msgstr "Alias programado para adición!"
+
+msgid "i-MSCP Client : Add Alias"
+msgstr "i-MSCP - Cliente: Engadir Alias"
+
+msgid "Manage domain alias"
+msgstr "Xestionar alias de dominio"
+
+msgid "Add domain alias"
+msgstr "Engadir alias de dominio"
+
+msgid "User account"
+msgstr "Conta de usuario"
+
+msgid "Directory mount point"
+msgstr "Punto de montaxe do directorio"
+
+msgid "Forward to URL"
+msgstr "Reenviar ao URL"
+
+msgid "You do not need 'www.' i-MSCP will add it on its own."
+msgstr "Non precisas o 'www.' xa que será engadido polo mesmo i-MSCP."
+
+msgid "Wrong domain name!"
+msgstr "Nome de dominio erróneo!"
+
+msgid "Please write mount point!"
+msgstr "Por favor, insire o punto de montaxe!"
+
+msgid "Enable Forward"
+msgstr "Activar Reenvío"
+
+msgid "Enable"
+msgstr "Activar"
+
+msgid "Disable"
+msgstr "Desactivar"
 
 msgid ""
 "Domain alias you are trying to remove has subdomains!<br>First remove them!"
@@ -2327,9 +3138,6 @@ msgstr "Arquivo de copia de seguridade programado para ser restaurado!"
 
 msgid "i-MSCP - Client/Daily Backup"
 msgstr "i-MSCP - Cliente/Copia de Seguridade Diaria"
-
-msgid "Daily backup"
-msgstr "Copia de seguridade diaria"
 
 msgid "Instructions to download today's backup"
 msgstr "Instrucións para descargar a copia de seguridade de hoxe"
@@ -2400,7 +3208,11 @@ msgstr "Editar Traballo Cron"
 msgid "Cronjobs"
 msgstr "Traballos Cron"
 
-msgid "DNS zone record scheduled for deletion!"
+msgid "You are not allowed to remove this DNS record!"
+msgstr ""
+
+#, fuzzy
+msgid "Custom DNS record scheduled for deletion!"
 msgstr "Información de zona DNS programada para ser eliminada!"
 
 msgid "i-MSCP - Manage Domain Alias/Add DNS zone's record"
@@ -2454,6 +3266,10 @@ msgstr "Datos de información simple"
 msgid "DNS zone's records (EXPERIMENTAL)"
 msgstr "Informacións de zonas DNS (EXPERIMENTAL)"
 
+#, fuzzy
+msgid "You are not allowed to edit this DNS record!"
+msgstr "Non tes rexistros de alias."
+
 #, php-format
 msgid "Use of disallowed char(\"%s\") in CNAME"
 msgstr "Uso do carácter (\"%s\") non permitido en CNAME"
@@ -2506,39 +3322,9 @@ msgstr "Non se pode validar a información %s. O motivo '%s'."
 msgid "Unknown zone type %s!"
 msgstr "Tipo de zona %s descoñecido!"
 
-msgid "Manual zone's records list is empty!"
-msgstr "A listaxe de informacións de zona está baleira!"
-
-#, php-format
-msgid "%s record"
-msgstr "información %s"
-
-msgid "Subdomain list is empty!"
-msgstr "A listaxe de subdominios está baleira!"
-
-msgid "Delete order"
-msgstr "Eliminar pedido"
-
-msgid "Alias list is empty!"
-msgstr "A listaxe de alias está baleira!"
-
-msgid "i-MSCP - Client/Manage Domains"
-msgstr "i-MSCP - Cliente/Xestionar Dominios"
-
-msgid "Manage domains"
-msgstr "Xestionar dominios"
-
-msgid "Mount point"
-msgstr "Punto de montaxe"
-
-msgid "Forward"
-msgstr "Reenvío"
-
-msgid "Actions"
-msgstr "Accións"
-
-msgid "Record data"
-msgstr "Datos de información"
+#, fuzzy
+msgid "Error: DNS record already exist!"
+msgstr "O usuario xa existe!"
 
 msgid "i-MSCP - Client/Domain Statistics"
 msgstr "i-MSCP - Cliente/Estatísticas de Dominio"
@@ -2558,6 +3344,37 @@ msgstr "POP3/IMAP"
 msgid "Sum"
 msgstr "Suma"
 
+msgid "Manual zone's records list is empty!"
+msgstr "A listaxe de informacións de zona está baleira!"
+
+#, php-format
+msgid "%s record"
+msgstr "información %s"
+
+msgid "Subdomain list is empty!"
+msgstr "A listaxe de subdominios está baleira!"
+
+msgid "Delete order"
+msgstr "Eliminar pedido"
+
+msgid "Alias list is empty!"
+msgstr "A listaxe de alias está baleira!"
+
+msgid "i-MSCP - Client/Manage Domains"
+msgstr "i-MSCP - Cliente/Xestionar Dominios"
+
+msgid "Mount point"
+msgstr "Punto de montaxe"
+
+msgid "Forward"
+msgstr "Reenvío"
+
+msgid "Actions"
+msgstr "Accións"
+
+msgid "Record data"
+msgstr "Datos de información"
+
 msgid "i-MSCP - Client/Manage Error Custom Pages"
 msgstr "i-MSCP - Cliente/Xestionar Páxinas de Erro Personalizadas"
 
@@ -2570,7 +3387,8 @@ msgstr "Editar páxina de erro"
 msgid "Custom error page was updated!"
 msgstr "A páxina de erro personalizada foi actualizada!"
 
-msgid "System error - custom error page was NOT updated!"
+#, fuzzy
+msgid "System error - custom error page was not updated!"
 msgstr "Erro de sistema - a páxina de erro personalizada NON foi actualizada!"
 
 msgid "Error 401 (unauthorised)"
@@ -2588,17 +3406,11 @@ msgstr "Erro 500 (erro interno do servidor)"
 msgid "Error 503 (service unavailable)"
 msgstr "Erro 503 (servizo non dispoñible)"
 
-msgid "Error pages"
-msgstr "Páxinas de erro"
-
 msgid "FTP list is empty!"
 msgstr "A listaxe de FTP está baleira!"
 
 msgid "i-MSCP - Client/Manage Users"
 msgstr "i-MSCP - Cliente/Xestionar usuarios"
-
-msgid "Manage users"
-msgstr "Administrar usuarios"
 
 msgid "FTPs total"
 msgstr "Total de FTPs"
@@ -2608,6 +3420,10 @@ msgstr "Usuarios FTP"
 
 msgid "FTP account"
 msgstr "Conta FTP"
+
+#, fuzzy
+msgid "Login As"
+msgstr "Iniciar sesión"
 
 msgid "Empty List"
 msgstr "Listaxe Baleira"
@@ -2644,7 +3460,8 @@ msgstr ""
 msgid "Alias list is empty! You cannot add FTP accounts there!"
 msgstr "A listaxe de alias está baleira! Non podes engadir aquí contas FTP!"
 
-msgid "Please specify other FTP account dir!"
+#, fuzzy
+msgid "Please specify other FTP account directory!"
 msgstr "Por favor, especifica outro directorio da conta FTP!"
 
 msgid "FTP accounts limit reached!"
@@ -2652,9 +3469,6 @@ msgstr "Acadouse o límite de contas FTP!"
 
 msgid "i-MSCP - Client/Add FTP User"
 msgstr "i-MSCP - Cliente/Engadir Usuario FTP"
-
-msgid "Add FTP user"
-msgstr "Engadir usuario FTP"
 
 msgid "To main domain"
 msgstr "A dominio principal"
@@ -2671,16 +3485,18 @@ msgstr "Empregar outro directorio"
 msgid "Choose dir"
 msgstr "Escoller directorio"
 
-msgid "Cannot open directory!<br>Please contact your administrator!"
+#, fuzzy
+msgid "Unknown FTP user id!"
+msgstr "Tipo descoñecido!"
+
+#, fuzzy
+msgid "Cannot open directory! Please contact your administrator!"
 msgstr ""
 "Non se pode abrir o directori o!<br>Por favor, contacta co teu "
 "administrador !"
 
 msgid "Parent Directory"
 msgstr "Directorio Pai"
-
-msgid "Protect it"
-msgstr "Protexelo"
 
 msgid "i-MSCP - Client/Webtools"
 msgstr "i-MSCP - Cliente/Ferramentas Web"
@@ -2702,6 +3518,10 @@ msgstr "Datos da conta FTP actualizados!"
 
 msgid "i-MSCP - Client/Edit FTP Account"
 msgstr "i-MSCP - Cliente/Editar Conta FTP"
+
+msgid ""
+"User does not exist or you do not have permission to access this interface!"
+msgstr "O usuario non existe ou non tes permiso para acceder a esta interface!"
 
 msgid "Edit FTP user"
 msgstr "Editar usuario FTP"
@@ -2758,6 +3578,20 @@ msgid ""
 "You have DNS enabled, but the new hosting plan doesn't has this feature."
 msgstr ""
 "Tes activado o DNS, porén, o novo plano de hospedaxe non ten esa "
+"característica."
+
+msgid "i-MSCP application installer: enabled"
+msgstr ""
+
+msgid "i-MSCP application installer: disabled"
+msgstr ""
+
+#, fuzzy
+msgid ""
+"You have the i-MSCP application installer enabled, but the new hosting plan "
+"doesn't has this feature."
+msgstr ""
+"Tes activado o PHP, porén, o novo plano de hospedaxe non ten esa "
 "característica."
 
 msgid "You have more disk space in use than the new hosting plan limits."
@@ -2855,8 +3689,8 @@ msgid ""
 msgstr ""
 "Tes un pedido de actualización para a conta %s\n"
 "\n"
-"Por favor, inicia sesión no teu panel de control do i-MSCP en %s para obteres "
-"máis detalles"
+"Por favor, inicia sesión no teu panel de control do i-MSCP en %s para "
+"obteres máis detalles"
 
 msgid "Your request for hosting pack update was removed successfully"
 msgstr ""
@@ -2884,20 +3718,11 @@ msgstr "Estás a exceder o teu límite de disco!"
 msgid "You have no new support questions!"
 msgstr "Non tes preguntas de atención novas!"
 
-msgid "Not Set"
-msgstr ""
-
 msgid "This Domain is expired"
 msgstr "Este dominio está caducado"
 
 msgid "i-MSCP - Client/Main Index"
 msgstr "i-MSCP - Cliente/Índice Principal"
-
-msgid "General information"
-msgstr "Información xeral"
-
-msgid "Account name"
-msgstr "Nome de conta"
 
 msgid "Main domain"
 msgstr "Dominio principal"
@@ -2919,6 +3744,9 @@ msgstr "Emprego de disco"
 
 msgid "Alternative URL to reach your website"
 msgstr ""
+
+msgid "User language updated successfully!"
+msgstr "Idioma de usuario actualizado de xeito correcto!"
 
 msgid "i-MSCP - Client/Change Language"
 msgstr "i-MSCP - Cliente/Mudar Idioma"
@@ -3047,6 +3875,18 @@ msgstr "A túa mensaxe"
 msgid "Enable mail auto responder"
 msgstr "Activar contestador automático de correo"
 
+msgid "Delete CatchAll"
+msgstr "Eliminar recolle-todo"
+
+msgid "None"
+msgstr "Ningún"
+
+msgid "Create catch all"
+msgstr "Crear recolle-todo"
+
+msgid "Catch all account"
+msgstr "Conta recolle-todo"
+
 msgid "Catch all account scheduled for creation!"
 msgstr "Conta recolle-todo programada para ser creada!"
 
@@ -3062,23 +3902,8 @@ msgstr "Crear conta de correo recolle-todo"
 msgid "Mail accounts list"
 msgstr "Listaxe de contas de correo"
 
-msgid "Create catch all"
-msgstr "Crear recolle-todo"
-
 msgid "Catch all account scheduled for deletion!"
 msgstr "Conta recolle-todo programada para ser eliminada!"
-
-msgid "Delete CatchAll"
-msgstr "Eliminar recolle-todo"
-
-msgid "None"
-msgstr "Ningún"
-
-msgid "Catch all account"
-msgstr "Conta recolle-todo"
-
-msgid "Catch all"
-msgstr "Recolle-todo"
 
 msgid "Please delete first CatchAll account for this email!"
 msgstr "Por favor, elimina primeiro a conta Recolle-todo para este correo-e!"
@@ -3100,6 +3925,35 @@ msgstr "i-MSCP - Cliente/Mudar Contrasinal"
 
 msgid "i-MSCP - Client/Change Personal Data"
 msgstr "i-MSCP - Cliente/Mudar Datos Persoais"
+
+#, fuzzy
+msgid "Unknown SQL user id."
+msgstr "Erro descoñecido"
+
+#, fuzzy
+msgid "Error: An error occurred while authentication."
+msgstr "Erro ao tentar a identificación!"
+
+msgid "You do not have protected areas"
+msgstr "Non tes áreas protexidas"
+
+msgid "Manage users and groups"
+msgstr "Xestionar usuarios e grupos"
+
+msgid "Group name"
+msgstr "Nome do grupo"
+
+msgid "Group members"
+msgstr "Membros do grupo"
+
+msgid "Add group"
+msgstr "Engadir grupo"
+
+msgid "Group"
+msgstr "Grupo"
+
+msgid "Add new protected area"
+msgstr "Engadir nova área protexida"
 
 msgid "Please choose user or group"
 msgstr "Por favor, escolle usuario ou grupo"
@@ -3144,6 +3998,9 @@ msgstr "Ruta"
 msgid "Groups"
 msgstr "Grupos"
 
+msgid "Protect it"
+msgstr "Protexelo"
+
 msgid "User auth"
 msgstr "User auth (usuarios autorizados)"
 
@@ -3156,9 +4013,6 @@ msgstr "Nome da área"
 msgid "Unprotect it"
 msgstr "Desprotexela"
 
-msgid "Manage users and groups"
-msgstr "Xestionar usuarios e grupos"
-
 msgid "Protected area status should be OK if you want to delete it!"
 msgstr "Se queres eliminar unha área protexida o seu estado debe ser correcto!"
 
@@ -3167,27 +4021,6 @@ msgstr "Área protexida eliminada de xeito correcto!"
 
 msgid "Permission deny!"
 msgstr "Permiso denegado!"
-
-msgid "You do not have protected areas"
-msgstr "Non tes áreas protexidas"
-
-msgid "Add user"
-msgstr "Engadir usuario"
-
-msgid "Group name"
-msgstr "Nome do grupo"
-
-msgid "Group members"
-msgstr "Membros do grupo"
-
-msgid "Add group"
-msgstr "Engadir grupo"
-
-msgid "Group"
-msgstr "Grupo"
-
-msgid "Add new protected area"
-msgstr "Engadir nova área protexida"
 
 msgid "Protected area was deleted successful!"
 msgstr "Elimináronse de xeito correcto as áreas protexidas!"
@@ -3233,8 +4066,184 @@ msgstr "Actualizar usuario"
 msgid "You have no users!"
 msgstr "Non tes usuarios!"
 
-msgid "Error while authenticating!"
-msgstr "Erro ao tentar a identificación!"
+#, fuzzy
+msgid "Install in progress..."
+msgstr "Engadido en proceso"
+
+#, fuzzy
+msgid "Deletion in progress..."
+msgstr "Eliminado en proceso"
+
+#, fuzzy
+msgid "Are you sure to install this package?"
+msgstr "Estás certo de querer eliminar este pedido?"
+
+#, php-format
+msgid ""
+"This Package (%s, V%s) was deleted by your reseller. You can only uninstall "
+"this package!<br />Please delete the files and database for this package "
+"manually!"
+msgstr ""
+
+msgid "Installed Package which was deleted by your reseller!"
+msgstr ""
+
+#, fuzzy
+msgid "No software available"
+msgstr "Non hai actualizacións de banco de datos dispoñibles"
+
+msgid "required"
+msgstr ""
+
+msgid "not required"
+msgstr ""
+
+#, fuzzy
+msgid "You do not have permissions to install software"
+msgstr "Non tes permiso para acceder a esta interface!"
+
+#, fuzzy
+msgid "i-MSCP - application installer"
+msgstr "i-MSCP - Cliente/Xestor de Traballos Cron"
+
+#, fuzzy
+msgid "Install software"
+msgstr "Instalar novo idioma"
+
+msgid "Software"
+msgstr ""
+
+#, fuzzy
+msgid "Version"
+msgstr "Versión de Demostración!"
+
+#, fuzzy
+msgid "Database"
+msgstr "Banco de datos SQL"
+
+#, fuzzy
+msgid "Apps available"
+msgstr "IPs dispoñibles"
+
+msgid "Software installation"
+msgstr ""
+
+#, fuzzy
+msgid "Software deleted successful."
+msgstr "Área protexida eliminada de xeito correcto!"
+
+msgid "Software will be deleted now."
+msgstr ""
+
+msgid "Database user list is empty!"
+msgstr "A listaxe de usuarios de bancos de datos está baleira!"
+
+msgid "At first you must create a database!"
+msgstr ""
+
+#, fuzzy
+msgid "Add new database"
+msgstr "Engadir banco de datos SQL"
+
+#, fuzzy
+msgid "Software not found!"
+msgstr "Solicitude non atopada!"
+
+#, php-format
+msgid "The directory -%1$s- was created!"
+msgstr ""
+
+#, fuzzy
+msgid "Please select the correct user for your database!"
+msgstr "Por favor, selecciona algún(s) usuario(s)!"
+
+#, fuzzy
+msgid "You have to fill out inputs!"
+msgstr "Non tes grupos!"
+
+msgid "You cant't install outside from htdocs!"
+msgstr ""
+
+msgid "You choose a directory, which doesn't match with the domain directory!"
+msgstr ""
+
+#, php-format
+msgid "The directory -%1$s- doesn't exist. Please create it!"
+msgstr ""
+
+#, php-format
+msgid "Please select another directory! %1$s (%2$s) is installed there!"
+msgstr ""
+
+msgid "i-MSCP - Install Software"
+msgstr ""
+
+#, fuzzy
+msgid "Install Software"
+msgstr "Instalar novo idioma"
+
+#, fuzzy
+msgid "Database required"
+msgstr "Usuarios de banco de datos"
+
+#, fuzzy
+msgid "Select Domain"
+msgstr "Eliminar dominio"
+
+#, fuzzy
+msgid "back"
+msgstr "Volver atrás"
+
+#, fuzzy
+msgid "install"
+msgstr "desinstalar"
+
+#, fuzzy
+msgid "Install path"
+msgstr "Instalar"
+
+msgid "Create directory, if not exist!"
+msgstr ""
+
+#, fuzzy
+msgid "Select database"
+msgstr "Banco de datos SQL"
+
+#, fuzzy
+msgid "SQL-User"
+msgstr "Usuario SQL"
+
+#, fuzzy
+msgid "installed"
+msgstr "desinstalar"
+
+msgid "Installation infos"
+msgstr ""
+
+#, fuzzy
+msgid "Software status:"
+msgstr "Estado do servidor"
+
+msgid "Installation path:"
+msgstr ""
+
+#, fuzzy
+msgid "Used database:"
+msgstr "Banco de datos SQL"
+
+msgid "You need a Database for this software"
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP - Software details"
+msgstr "i-MSCP - Dominio/Pormenores"
+
+#, fuzzy
+msgid "Software details"
+msgstr "Pormenores do pedido"
+
+msgid "Homepage"
+msgstr ""
 
 msgid "Please type user password!"
 msgstr "Por favor, insire o contrasinal de usuario!"
@@ -3250,6 +4259,11 @@ msgstr "Mudouse de xeito correcto o contrasinal do usuario SQL!"
 
 msgid "i-MSCP - Client/Change SQL User Password"
 msgstr "i-MSCP - Cliente/Mudar Contrasinal de Usuario SQL"
+
+#, fuzzy
+msgid ""
+"User does not exist or you do not have permission to access this interface."
+msgstr "O usuario non existe ou non tes permiso para acceder a esta interface!"
 
 msgid "Change SQL user password"
 msgstr "Mudar contrasinal de usuario SQL"
@@ -3279,9 +4293,6 @@ msgstr "Límite de contas SQL acadado!"
 msgid "i-MSCP - Client/Add SQL Database"
 msgstr "i-MSCP - Cliente/Engadir Banco de Datos SQL"
 
-msgid "Add SQL database"
-msgstr "Engadir banco de datos SQL"
-
 msgid "Database name"
 msgstr "Nome do banco de datos"
 
@@ -3300,23 +4311,14 @@ msgstr "Banco de datos SQL eliminado de xeito correcto!"
 msgid "SQL user was removed successfully!"
 msgstr "O usuario SQL foi eliminado de xeito correcto!"
 
-msgid "Database user list is empty!"
-msgstr "A listaxe de usuarios de bancos de datos está baleira!"
-
 msgid "Database list is empty!"
 msgstr "A listaxe de bancos de datos está baleira!"
 
 msgid "i-MSCP - Client/Manage SQL"
 msgstr "i-MSCP - Cliente/Xestionar SQL"
 
-msgid "Manage SQL"
-msgstr "Xestionar SQL"
-
 msgid "Database Name and Users"
 msgstr "Nome de Banco de Datos e Usuarios"
-
-msgid "phpMyAdmin"
-msgstr "phpMyAdmin"
 
 msgid "Database users"
 msgstr "Usuarios de banco de datos"
@@ -3404,9 +4406,6 @@ msgstr "Subdominio programado para ser engadido!"
 msgid "i-MSCP - Client/Add Subdomain"
 msgstr "isp - Cliente/Engadir Subdominio"
 
-msgid "Add subdomain"
-msgstr "Engadir subdominio"
-
 msgid "Subdomain data"
 msgstr "Datos do subdominio"
 
@@ -3416,17 +4415,27 @@ msgstr "Nome do subdominio"
 msgid "Directory tree mount point"
 msgstr "Punto de montaxe da árbore de directorios"
 
-msgid "Please specify message subject!"
-msgstr "Por favor, especifica o asunto da mensaxe!"
+#, fuzzy
+msgid "i-MSCP - Manage Subdomain/Edit Subdomain"
+msgstr "i-MSCP - Admin/Editar Dominio"
 
-msgid "Your message was sent!"
-msgstr "A túa mensaxe foi enviada!"
+#, fuzzy
+msgid "Manage subdomain"
+msgstr "Xestionar dominios"
 
-msgid "i-MSCP - Support system - New ticket"
+#, fuzzy
+msgid "Edit subdomain"
+msgstr "Editar dominio"
+
+msgid "A Forward URL has to start with 'http://'"
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP - Support System - New ticket"
 msgstr "i-MSCP - Sistema de atención - Nova solicitude"
 
-msgid "New ticket"
-msgstr "Nova solicitude"
+msgid "Please specify message subject!"
+msgstr "Por favor, especifica o asunto da mensaxe!"
 
 msgid "Low"
 msgstr "Baixa"
@@ -3439,12 +4448,6 @@ msgstr "Alta"
 
 msgid "Very high"
 msgstr "Moi alto"
-
-msgid "ISPCP - Client/Webtools"
-msgstr "i-MSCP - Cliente/Ferramentas Web"
-
-msgid "Webtools"
-msgstr "Ferramentas Web"
 
 msgid "Customize error pages for your domain"
 msgstr "Personalizar páxinas de erro para o teu dominio"
@@ -3464,124 +4467,39 @@ msgstr "Acceder as túas estatísticas Awstats"
 msgid "Manage protected areas, users and groups"
 msgstr "Xestionar áreas protexidas, usuarios e grupos"
 
-msgid "System tools"
-msgstr "Ferramentas do sistema"
-
-msgid "Statistics"
-msgstr "Estatísticas"
-
-msgid "Reseller statistics"
-msgstr "Estatísticas de revendedor"
-
-msgid "Admin log"
-msgstr "Rexistro (log) de administración"
-
-msgid "Logout"
-msgstr "Rematar sesión"
-
-msgid "i-MSCP database updates"
-msgstr "Actualizacións do banco de datos do i-MSCP "
-
-msgid "Custom menus"
-msgstr "Menús personalizados"
-
-msgid "Overview"
-msgstr "Resumo"
-
-msgid "User sessions"
-msgstr "Sesións de usuario"
-
-msgid "Lostpw email setup"
-msgstr "Configuración do correo-e de contrasinal esquecido"
-
-msgid "Rootkit Log"
-msgstr "Rexistro (log) de Rootkit"
-
-msgid "Admin users"
-msgstr "Usuarios administradores"
-
-msgid "Normal users"
-msgstr "Usuarios normais"
-
-msgid "System messages"
-msgstr "Mensaxes do sistema"
-
-msgid "No new messages"
-msgstr "Non hai mensaxes novas"
-
-msgid "Server traffic"
-msgstr "Tráfico do servidor"
-
-msgid "Administrators list is empty!"
-msgstr "A listaxe de administradores está baleira!"
-
-msgid "Creation date"
-msgstr "Data de creación"
-
-msgid "Created by"
-msgstr "Creado por"
-
-msgid "System"
-msgstr "Sistema"
-
-msgid "Resellers list is empty!"
-msgstr "A listaxe de revendedores está baleira!"
-
-msgid "Switch to user interface"
-msgstr "Mudar á interface de usuario"
-
-msgid "Switch"
-msgstr "Mudar"
-
-msgid "Not found user records matching the search criteria!"
+msgid "Install various software with a few *clicks*"
 msgstr ""
-"Non se atoparon rexistros de usuario que concorden co criterio de procura!"
 
-msgid "view aliases"
-msgstr "ver alias"
+msgid "{ADMIN} activated your software package"
+msgstr ""
 
-msgid "Users list is empty!"
-msgstr "A listaxe de usuarios está baleira!"
+#, fuzzy
+msgid ""
+"Dear {RESELLER},\n"
+"\tYour uploaded a software package was succesful activated by {ADMIN}.\n"
+"\n"
+"\tDetails:\n"
+"\tPackage Name: {SOFTWARE}\n"
+"\tPackage ID: {SOFTWARE_ID}\n"
+"\n"
+"\tPlease login into your i-MSCP control panel for more details."
+msgstr ""
 
-msgid "Details"
-msgstr "Pormenores"
+#, fuzzy
+msgid " was deleted by {ADMIN}!"
+msgstr "Eliminouse o IP!"
 
-msgid "Edit domain"
-msgstr "Editar dominio"
-
-msgid "Are you sure you want to change the status of domain account?"
-msgstr "Estás certo de querer mudar o estado da conta do dominio?"
-
-msgid "Administrators"
-msgstr "Administradores"
-
-msgid "Resellers"
-msgstr "Revendedores"
-
-msgid "Search"
-msgstr "Procurar"
-
-msgid "Expire date"
-msgstr "Data de caducidade"
-
-#, php-format
-msgid "%1$s you are now logged as %2$s"
-msgstr "%1$s agora iniciaches sesión como %2$s"
-
-msgid "Go back"
-msgstr "Volver atrás"
-
-msgid "OK"
-msgstr "Correcto"
-
-msgid "Suspended"
-msgstr "Suspendido"
-
-msgid "Error"
-msgstr "Erro"
-
-msgid "i-MSCP - Order Panel"
-msgstr "i-MSCP - Panel de Pedidos"
+msgid ""
+"Dear {RESELLER},\n"
+"\t\tYour uploaded software was deleted by {ADMIN}.\n"
+"\n"
+"\tDetails:\n"
+"\tPackage Name: {SOFTWARE}\n"
+"\tPackage ID: {SOFTWARE_ID}\n"
+"\n"
+"\tMessage from {ADMIN}:\n"
+"\t"
+msgstr ""
 
 #, php-format
 msgid "%.2f PB"
@@ -3606,69 +4524,6 @@ msgstr "%.2f KB"
 #, php-format
 msgid "%d B"
 msgstr "%d B"
-
-#, php-format
-msgid "File %s does not exists or cannot be reached!"
-msgstr "O arquivo %s non existe ou non pode ser atopado!"
-
-msgid "Error while trying to obtain list of network cards!"
-msgstr "Erro ao tentar obter a listaxe de tarxetas de rede!"
-
-#, php-format
-msgid "This IP (%s) is not assigned to any network card!"
-msgstr "Este IP (%s) non está asignado a tarxeta de rede ningunha!"
-
-#, fuzzy
-msgid "Days"
-msgstr "Día"
-
-#, fuzzy
-msgid "Hours"
-msgstr "Hora"
-
-#, fuzzy
-msgid "Minute"
-msgstr "minutos"
-
-#, fuzzy
-msgid "Minutes"
-msgstr "minutos"
-
-msgid "Couldn't check for updates! Website not reachable."
-msgstr "Non se pode comprobar se hai actualizacións! Sitio web non dispoñible."
-
-msgid "Email and FTP accounts"
-msgstr "Contas de correo-e e FTP"
-
-msgid "Add mail user"
-msgstr "Engadir usuario de correo"
-
-msgid "PhpMyAdmin"
-msgstr "PhpMyAdmin"
-
-msgid "Filemanager"
-msgstr "Filemanager (xestor de arquivos)"
-
-msgid "Web statistics"
-msgstr "Estatísticas web"
-
-msgid "Group/User management"
-msgstr "Xestión de Grupo/Usuario"
-
-msgid "Email Accounts"
-msgstr "Contas de Correo-e"
-
-msgid "FTP Accounts"
-msgstr "Contas de FTP"
-
-msgid "Update Hosting Package"
-msgstr "Paquete de Actualización de Hospedaxe"
-
-msgid "Add DNS zone's record"
-msgstr "Engadir información de zona DNS"
-
-msgid "Manage SSL certificate"
-msgstr "Xestionar certificado SSL"
 
 msgid "Domain mail"
 msgstr "Correo do dominio"
@@ -3700,6 +4555,7 @@ msgstr "Tipo descoñecido"
 msgid "Welcome {USERNAME} to i-MSCP!"
 msgstr "Benvido ao i-MSCP, {USERNAME}!"
 
+#, fuzzy
 msgid ""
 "\n"
 "\n"
@@ -3716,7 +4572,56 @@ msgid ""
 "\n"
 "You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
 "\n"
-"Statistics: http://{USERNAME}/stats/\n"
+"Statistics: {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/{USERNAME}/stats/\n"
+"User name: {USERNAME}\n"
+"Password: {PASSWORD}\n"
+"\n"
+"Best wishes with i-MSCP!\n"
+"The i-MSCP Team.\n"
+"\n"
+msgstr ""
+"\n"
+"\n"
+"Ola {NAME}!\n"
+"\n"
+"Creouse unha nova conta do i-MSCP para ti.\n"
+"A información da túa conta é:\n"
+"\n"
+"Tipo de usuario: {USERTYPE}\n"
+"Nome de usuario: {USERNAME}\n"
+"Contrasinal: {PASSWORD}\n"
+"\n"
+"Lembra mudar o teu contrasinal a miúdo e a primeira vez que inicies unha "
+"sesión.\n"
+"\n"
+"Podes iniciar sesión agora mesmo en {BASE_SERVER_VHOST_PREFIX}"
+"{BASE_SERVER_VHOST}\n"
+"\n"
+"Estatísticas: http://{USERNAME}/stats/\n"
+"Nome de usuario: {USERNAME}\n"
+"Contrasinal: {PASSWORD}\n"
+"\n"
+"Os nosos mellores desexos co i-MSCP!\n"
+"O equipo do i-MSCP.\n"
+"\n"
+
+#, fuzzy
+msgid ""
+"\n"
+"\n"
+"Hello {NAME}!\n"
+"\n"
+"A new i-MSCP account has been created for you.\n"
+"Your account information:\n"
+"\n"
+"User type: {USERTYPE}\n"
+"User name: {USERNAME}\n"
+"Password: {PASSWORD}\n"
+"\n"
+"Remember to change your password often and the first time you login.\n"
+"\n"
+"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
+"\n"
 "User name: {USERNAME}\n"
 "Password: {PASSWORD}\n"
 "\n"
@@ -3873,6 +4778,39 @@ msgstr ""
 "O equipo do i-MSCP\n"
 "\n"
 
+#, fuzzy
+msgid "Your message has been sent."
+msgstr "A túa mensaxe foi enviada!"
+
+#, fuzzy
+msgid "Your message has been sent"
+msgstr "A túa mensaxe foi enviada!"
+
+msgid "Ticket was closed!"
+msgstr "Solicitude pechada!"
+
+msgid "Ticket was reopened!"
+msgstr "A solicitude foi aberta de novo!"
+
+msgid "Never"
+msgstr "Nunca"
+
+#, fuzzy
+msgid "You don't have support tickets."
+msgstr "Non tes solicitudes de atención."
+
+msgid "[New]"
+msgstr "[Novo]"
+
+msgid "[Re]"
+msgstr "[Re]"
+
+msgid "Open ticket"
+msgstr "Solicitude aberta"
+
+msgid "Close ticket"
+msgstr "Pechar solicitude"
+
 msgid "[Ticket]"
 msgstr "[Solicitude]"
 
@@ -3947,17 +4885,15 @@ msgstr "Nome de dominio erróneo: <b>%s</b> está reservado!"
 msgid "Wrong Second Level Domain syntax: <b>%s</b>"
 msgstr "Sintaxe de Dominio de Segundo Nivel incorrecta: <b>%s</b>"
 
+#, fuzzy
 msgid ""
-"ERROR: ACE labels are not allowed. Please use the ToUnicode equivalent.<br /"
+"ACE labels are not allowed. Please use the ToUnicode equivalent.<br /"
 "><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> "
 "instead</small>."
 msgstr ""
 "ERRO: non se permiten etiquetas ACE. Por favor, usa o equivalente ToUnicode."
 "<br /><small>Por exemplo: para a etiqueta ACE <b>xn--bcher-kva</b> emprega "
 "<b>bücher</b> no seu lugar</small>."
-
-msgid "ERROR: PHP extension 'mcrypt' not loaded!"
-msgstr ""
 
 #, php-format
 msgid "You have to wait %d seconds."
@@ -3967,7 +4903,8 @@ msgstr "Terás que agardar %d segundos."
 msgid "You have been blocked for %d minutes."
 msgstr "Fuches bloqueado por %d minutos."
 
-msgid "You entered an incorrect username/password."
+#, fuzzy
+msgid "You entered an incorrect username!"
 msgstr "Inseriches un nome de usuario/contrasinal incorrecto."
 
 msgid "System is currently under maintenance! Only administrators can login."
@@ -3994,26 +4931,15 @@ msgstr "O estado da conta %s non é correcto!"
 msgid "%s's domain expired!"
 msgstr "O dominio %s's caducou!"
 
+#, fuzzy
+msgid "You entered an incorrect password!"
+msgstr "Inseriches un nome de usuario/contrasinal incorrecto."
+
 msgid "Request from foreign host was blocked!"
 msgstr "A petición procedente do host externo foi bloqueada!"
 
 msgid "You do not have permission to access this interface!"
 msgstr "Non tes permiso para acceder a esta interface!"
-
-msgid "Domain alias"
-msgstr "Alias de dominio"
-
-msgid "Manage Orders"
-msgstr "Xestionar Pedidos"
-
-msgid "Order settings"
-msgstr "Configuracións de pedido"
-
-msgid "Order email setup"
-msgstr "Configuración do correo-e de pedido"
-
-msgid "Please fill up both data fields for password!"
-msgstr "Por favor, cubre ámbolos dous campos de datos para o contrasinal!"
 
 msgid "Addition in progress"
 msgstr "Engadido en proceso"
@@ -4030,14 +4956,12 @@ msgstr "A activar"
 msgid "Being suspended"
 msgstr "A suspender"
 
-msgid "Awaiting for approval"
+#, fuzzy
+msgid "Awaiting approval"
 msgstr "Agardando por aprobación"
 
 msgid "Unknown error"
 msgstr "Erro descoñecido"
-
-msgid "hide aliases"
-msgstr "agochar alias"
 
 msgid "You have reached your domains limit.<br />You cannot add more domains!"
 msgstr ""
@@ -4121,11 +5045,80 @@ msgstr ""
 "Tes un límite de disco!<br />Non podes engadir un usuario con disco "
 "ilimitado!"
 
-msgid "i-MSCP Error"
-msgstr "Erro i-MSCP"
+msgid "{RESELLER} uploaded a new software package"
+msgstr ""
 
-msgid "Error Message"
-msgstr "Mensaxe de Erro"
+#, fuzzy
+msgid ""
+"Dear {ADMIN},\n"
+"\t{RESELLER} has uploaded a new software package.\n"
+"\n"
+"\tDetails:\n"
+"\tReseller ID: {RESELLER_ID}\n"
+"\tPackage Name: {SOFTWARE}\n"
+"\tPackage ID: {SOFTWARE_ID}\n"
+"\n"
+"\tPlease login into your i-MSCP control panel for more details."
+msgstr ""
+
+#, fuzzy
+msgid "Installation details"
+msgstr "Pormenores do hospedaxe"
+
+msgid ""
+"Please set now the Username and Password for the later Login in the "
+"Application. (Required fiels!)"
+msgstr ""
+
+#, fuzzy
+msgid "Login username"
+msgstr "Nome de usuario incorrecto!"
+
+#, fuzzy
+msgid "Login password"
+msgstr "Contrasinal esquecido"
+
+#, fuzzy
+msgid "Emailadress"
+msgstr "Correos-e"
+
+#, fuzzy
+msgid "enabled"
+msgstr "Activado"
+
+#, fuzzy
+msgid "Application Description"
+msgstr "Descrición"
+
+#, fuzzy
+msgid "You do not have permissions to install application yet"
+msgstr "Non tes permiso para acceder a esta interface!"
+
+msgid "Vendor hompage"
+msgstr ""
+
+msgid "Installed in software depot"
+msgstr ""
+
+msgid "Installed in reseller depot"
+msgstr ""
+
+#, fuzzy
+msgid "Start installation"
+msgstr "Internacionalización"
+
+#, fuzzy
+msgid "Are you sure to install this package from the webdepot?"
+msgstr "Estás certo de querer restaurar a copia de seguridade?"
+
+msgid "No software in webdepot found!"
+msgstr ""
+
+msgid "Websoftware depot list was updated"
+msgstr ""
+
+msgid "No update for the websoftware depot list available"
+msgstr ""
 
 msgid "You have a new order"
 msgstr "Tes un novo pedido"
@@ -4156,6 +5149,10 @@ msgstr "Erro a crear o pedido! Talvez xa foi activado?"
 
 msgid "Order confirmation"
 msgstr "Confirmación de pedido"
+
+#, fuzzy
+msgid "Domain already exists on the system!"
+msgstr "Xa existe un dominio con este nome neste sistema!"
 
 msgid "This hosting plan is not available for purchase"
 msgstr "Este plano de hospedaxe non está dispoñible para mercar"
@@ -4193,6 +5190,13 @@ msgstr "Custos"
 
 msgid "Personal Data"
 msgstr "Datos Persoais"
+
+msgid ""
+"(To avoid abuse, we ask you to write the combination of letters on the above "
+"picture into the field \"Security code\")"
+msgstr ""
+"(Para evitar abusos, solicitámosche que escribas a combinación de letras, "
+"amosada na imaxe inferior, dentro do campo \"Código de seguridade\")"
 
 msgid "Security code was incorrect!"
 msgstr "O código de seguridade era incorrecto!"
@@ -4255,27 +5259,8 @@ msgstr "Gastos de Instalación"
 msgid "Performance"
 msgstr "Rendemento"
 
-msgid "i-MSCP Reseller: Add Alias"
-msgstr "Revendedor i-MSCP: Engadir Alias"
-
-msgid "There is no user records for this reseller to add an alias for."
-msgstr ""
-"Non hai rexistros de usuario para este revendedor aos que engadir un alias."
-
-msgid "i-MSCP - Manage Domain/Alias"
-msgstr "i-MSCP - Xestionar Dominio/Alias"
-
-msgid "Manage alias"
-msgstr "Xestionar alias"
-
-msgid "Real domain"
-msgstr "Dominio real"
-
 msgid "You have no alias records."
 msgstr "Non tes rexistros de alias."
-
-msgid "Activate"
-msgstr "Activar"
 
 msgid "Domain alias added for termination!"
 msgstr "Alias de dominio engadido para dar de baixa!"
@@ -4304,6 +5289,22 @@ msgstr "Alias de dominio do pedido activado!"
 msgid "Ordered domain alias not activated!"
 msgstr "Alias de dominio do pedido non activado!"
 
+msgid "i-MSCP - Manage Domain/Alias"
+msgstr "i-MSCP - Xestionar Dominio/Alias"
+
+msgid "Manage alias"
+msgstr "Xestionar alias"
+
+msgid "Real domain"
+msgstr "Dominio real"
+
+msgid "There is no user records for this reseller to add an alias for."
+msgstr ""
+"Non hai rexistros de usuario para este revendedor aos que engadir un alias."
+
+msgid "i-MSCP Reseller: Add Alias"
+msgstr "Revendedor i-MSCP: Engadir Alias"
+
 msgid "i-MSCP - Circular"
 msgstr "i-MSCP - Circular"
 
@@ -4313,36 +5314,8 @@ msgstr "Circular"
 msgid "i-MSCP - Domain/Edit"
 msgstr "i-MSCP - Dominio/Editar"
 
-msgid "Unchanged"
-msgstr "Sen trocos"
-
-msgid "Never"
-msgstr "Nunca"
-
-msgid "- 1 Month"
-msgstr "- 1 Mes"
-
-msgid "+ 1 Month"
-msgstr "+ 1 Mes"
-
-msgid "+ 2 Months"
-msgstr "+ 2 Meses"
-
-msgid "+ 3 Months"
-msgstr "+ 3 Meses"
-
-msgid "+ 6 Months"
-msgstr "+ 6 Meses"
-
-msgid "+ 1 Year"
-msgstr "+ 1 Ano"
-
-msgid "+ 2 Years"
-msgstr "+ 2 Anos"
-
-#, php-format
-msgid "The <em>%s</em> service cannot be disabled!"
-msgstr "O servizo <em>%s</em> non pode ser desactivado!"
+msgid "Domain properties could not be updated!"
+msgstr "Non se puideron actualizar as propiedades do dominio!"
 
 #, php-format
 msgid "The <em>%s</em> have to be disabled!"
@@ -4359,6 +5332,12 @@ msgstr "O servizo <em>%s</em> non pode ser limitado!"
 #, php-format
 msgid "The <em>%s</em> service cannot be unlimited!"
 msgstr "O servizo <em>%s</em> non pode ser ilimitado!"
+
+msgid "i-MSCP - Reseller/Main Index"
+msgstr "i-MSCP - Revendedores/Índice Principal"
+
+msgid "View details"
+msgstr "Ver pormenores"
 
 msgid "i-MSCP - Reseller/Add hosting plan"
 msgstr "i-MSCP - Revendedor/Engadir plano de hospedaxe"
@@ -4381,12 +5360,6 @@ msgstr "i-MSCP - Revendedor/Editar plano de hospedaxe"
 
 msgid "View hosting plan"
 msgstr "Ver plano de hospedaxe"
-
-msgid "i-MSCP - Reseller/Main Index"
-msgstr "i-MSCP - Revendedores/Índice Principal"
-
-msgid "View details"
-msgstr "Ver pormenores"
 
 msgid "User accounts"
 msgstr "Contas de usuario"
@@ -4413,6 +5386,17 @@ msgstr "%1$d / %2$d de <b>%3$d</b>"
 msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr "%1$d / %2$d de <b>ilimitado</b>"
 
+msgid "No Ip statistics to be show."
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP - Reseller/IP Usage"
+msgstr "i-MSCP - Revendedor/Mudar Idioma"
+
+#, fuzzy
+msgid "Reseller/IP usage statistics"
+msgstr "Estatísticas de revendedor"
+
 msgid "i-MSCP - Reseller/Change Language"
 msgstr "i-MSCP - Revendedor/Mudar Idioma"
 
@@ -4424,48 +5408,6 @@ msgstr "Xestionar pedidos"
 
 msgid "Activation Link"
 msgstr "Ligazón de Activación"
-
-msgid "Wrong order ID!"
-msgstr "ID de pedido incorrecto!"
-
-msgid "Order Cancelled: resellers maximum exceeded!"
-msgstr "Pedido cancelado: máximo de revendedores excedido!"
-
-msgid "Wrong domain name syntax!"
-msgstr "Sintaxe de nome de dominio incorrecta!"
-
-msgid "User added!"
-msgstr "Usuario engadido!"
-
-msgid "Customer order was removed successful!"
-msgstr "O pedido do cliente foi eliminado de xeito correcto!"
-
-msgid "i-MSCP - Reseller/Order details"
-msgstr "i-MSCP - Revendedor/Pormenores de Pedido"
-
-msgid "Order data updated successfully!"
-msgstr "Datos de pedido actualizados de xeito correcto!"
-
-msgid "Order date"
-msgstr "Data do pedido"
-
-msgid "Hosting plan"
-msgstr "Plano de hospedaxe"
-
-msgid "Hosting details"
-msgstr "Pormenores do hospedaxe"
-
-msgid "Order details"
-msgstr "Pormenores do pedido"
-
-msgid "Customer data"
-msgstr "Datos do cliente"
-
-msgid "Are you sure you want to delete this order?"
-msgstr "Estás certo de querer eliminar este pedido?"
-
-msgid "Add to the system"
-msgstr "Engadir ao sistema"
 
 msgid "i-MSCP - Reseller/Order settings"
 msgstr "i-MSCP - Revendedor/Configuración de Pedido"
@@ -4497,11 +5439,53 @@ msgstr "Actualizar pedido"
 msgid "ID"
 msgstr "ID"
 
+msgid "Customer data"
+msgstr "Datos do cliente"
+
 msgid "Order"
 msgstr "Orde"
 
+msgid "Hosting plan"
+msgstr "Plano de hospedaxe"
+
+msgid "Are you sure you want to delete this order?"
+msgstr "Estás certo de querer eliminar este pedido?"
+
 msgid "Add/Details"
 msgstr "Engadir/Pormenores"
+
+msgid "Wrong order ID!"
+msgstr "ID de pedido incorrecto!"
+
+msgid "Order Cancelled: resellers maximum exceeded!"
+msgstr "Pedido cancelado: máximo de revendedores excedido!"
+
+msgid "Wrong domain name syntax!"
+msgstr "Sintaxe de nome de dominio incorrecta!"
+
+msgid "User added!"
+msgstr "Usuario engadido!"
+
+msgid "Customer order was removed successful!"
+msgstr "O pedido do cliente foi eliminado de xeito correcto!"
+
+msgid "i-MSCP - Reseller/Order details"
+msgstr "i-MSCP - Revendedor/Pormenores de Pedido"
+
+msgid "Order data updated successfully!"
+msgstr "Datos de pedido actualizados de xeito correcto!"
+
+msgid "Order date"
+msgstr "Data do pedido"
+
+msgid "Hosting details"
+msgstr "Pormenores do hospedaxe"
+
+msgid "Order details"
+msgstr "Pormenores do pedido"
+
+msgid "Add to the system"
+msgstr "Engadir ao sistema"
 
 msgid "Order Canceled: resellers maximum exceeded!"
 msgstr "Pedido cancelado: máximo de revendedores excedido!"
@@ -4521,8 +5505,139 @@ msgstr "Correo-e de contrasinal esquecido"
 msgid "Lostpw link"
 msgstr "Ligazón de contrasinal esquecido"
 
+#, fuzzy
+msgid "Please specify a subject."
+msgstr "Por favor, especifica un asunto!"
+
+#, fuzzy
+msgid "Auto email template data updated."
+msgstr "Sobreplanta de correo-e automático actualizada!"
+
 msgid "i-MSCP - Reseller/Manage users/Email setup"
 msgstr "i-MSCP - Revendedor/Xestionar usuarios/Configuración de correo-e"
+
+msgid "Package installed successfully... Awaiting release from Admin!"
+msgstr ""
+
+msgid "This software is installed on following domain(s):"
+msgstr ""
+
+msgid "This package is not installed yet"
+msgstr ""
+
+#, fuzzy
+msgid "waiting for activation"
+msgstr "Agardando por aprobación"
+
+msgid "activated (Softwaredepot)"
+msgstr ""
+
+#, fuzzy
+msgid "activated"
+msgstr "Activar"
+
+msgid "Installing your uploaded package. Please refresh the site."
+msgstr ""
+
+msgid ""
+"After your upload the package it will be installed on your systems.<br /"
+">Refresh your site to see the new status!"
+msgstr ""
+
+msgid "Failure in package. Deleting!"
+msgstr ""
+
+msgid ""
+"Check your package. There is an error inside!<br />Refresh your site to see "
+"the new status!"
+msgstr ""
+
+msgid "The package is corrupt. Please correct it!"
+msgstr ""
+
+msgid ""
+"Please contact the administrator!<br />Ask him for the permissions to use "
+"this package.<br />It is not allowed to upload this packet two times.<br /"
+">Refresh your site to see the new status!"
+msgstr ""
+
+msgid "This package already exist in the administrator software depot!"
+msgstr ""
+
+msgid "Package already exist in your software depot!"
+msgstr ""
+
+msgid ""
+"Check your own uploads!<br />Ask the administrator if you don't find the "
+"package.<br />It is not allowed to upload this packages two times.<br /"
+">Refresh your site to see the new status!"
+msgstr ""
+
+msgid "This package already exist in your software depot!"
+msgstr ""
+
+#, fuzzy
+msgid "You do not have any software uploaded yet"
+msgstr "Non tes pedidos novos!"
+
+#, fuzzy
+msgid "You do not have permissions to upload software"
+msgstr "Non tes permiso para acceder a esta interface!"
+
+#, php-format
+msgid ""
+"ERROR: Could not upload the file. Max. upload filesize (%1$d MB) reached?"
+msgstr ""
+
+#, php-format
+msgid ""
+"ERROR: Your remote filesize (%1$d B) is lower than 1 Byte. Please check your "
+"URL!"
+msgstr ""
+
+#, php-format
+msgid ""
+"ERROR: Max. remote filesize (%1$d MB) is reached. Your remote file ist %2$d "
+"MB"
+msgstr ""
+
+msgid "ERROR: Remote File not found!"
+msgstr ""
+
+msgid "ERROR: Could not upload the file. File not found!"
+msgstr ""
+
+msgid "Software available"
+msgstr ""
+
+msgid "Software-Synonym"
+msgstr ""
+
+#, fuzzy
+msgid "Software-Version"
+msgstr "Versión de Demostración!"
+
+#, fuzzy
+msgid "Software status"
+msgstr "Estado do servidor"
+
+#, fuzzy
+msgid "Software upload"
+msgstr "Amosar carga do servidor"
+
+#, fuzzy
+msgid "Requires Database?"
+msgstr "Banco de datos SQL"
+
+#, fuzzy
+msgid "Database prefix"
+msgstr "Nome do banco de datos"
+
+msgid "Link to authors homepage"
+msgstr ""
+
+msgid "i-MSCP - Support system - New ticket"
+msgstr "i-MSCP - Sistema de atención - Nova solicitude"
 
 msgid "i-MSCP - Reseller: Support System: View Ticket"
 msgstr "i-MSCP - Revendedor : Sistema de Atención : Ver Solicitudes"
@@ -4530,23 +5645,9 @@ msgstr "i-MSCP - Revendedor : Sistema de Atención : Ver Solicitudes"
 msgid "i-MSCP - Users/Add user"
 msgstr "i-MSCP - Usuarios/Engadir Usuario"
 
-msgid "1 Month"
-msgstr "1 Mes"
-
-msgid "2 Months"
-msgstr "2 Meses"
-
-msgid "3 Months"
-msgstr "3 Meses"
-
-msgid "6 Months"
-msgstr "6 Meses"
-
-msgid "1 Year"
-msgstr "1 Ano"
-
-msgid "2 Years"
-msgstr "2 Anos"
+#, fuzzy
+msgid "Domain expire date"
+msgstr "Caducidade do dominio"
 
 msgid "Choose hosting plan"
 msgstr "Escoller plano de hospedaxe"
@@ -4593,6 +5694,9 @@ msgstr "i-MSCP - Usuarios/Editar"
 msgid "Users list"
 msgstr "Listaxe de usuarios"
 
+msgid "This reseller has no domains yet."
+msgstr "Este revendedor aínda non ten dominios."
+
 msgid "i-MSCP - Users"
 msgstr "i-MSCP - Usuarios"
 
@@ -4612,8 +5716,9 @@ msgstr "Amplo de banda"
 msgid "View aliases"
 msgstr "Ver alias"
 
-msgid "You have no users."
-msgstr "Non tes usuarios."
+#, fuzzy
+msgid "You do not have customers."
+msgstr "Non tes pedidos novos!"
 
 #, php-format
 msgid "%1$s of %2$s MB"
@@ -4641,11 +5746,102 @@ msgstr "Usuario dado de baixa!"
 msgid "User not terminated!"
 msgstr "Usuario non dado de baixa!"
 
-msgid "This reseller has no domains yet."
-msgstr "Este revendedor aínda non ten dominios."
+#~ msgid "i-MSCP  a Virtual Hosting Control System"
+#~ msgstr "i-MSCP  un Sistema de Control de Hospedaxe Virtual"
 
-#~ msgid "Show server load"
-#~ msgstr "Amosar carga do servidor"
+#~ msgid "Please enter your login information"
+#~ msgstr "Por favor, insire a túa información de inicio de sesión"
+
+#~ msgid "Retrieving lost passwords is currently not possible"
+#~ msgstr "Non se poden recuperar contrasinais esquecidos nestes intres"
+
+#~ msgid "i-MSCP - Virtual Hosting Control System"
+#~ msgstr "i-MSCP - Sistema de Control de Hospedaxe Virtual"
+
+#~ msgid "Retry"
+#~ msgstr "Tentar de novo"
+
+#~ msgid "Request password"
+#~ msgstr "Solicitar contrasinal"
+
+#~ msgid "Do you want to execute the Updates now?"
+#~ msgstr "Queres executar as actualizacións agora?"
+
+#~ msgid "A database update is available"
+#~ msgstr "Actualización do banco de datos dispoñible"
+
+#~ msgid "Panel Default"
+#~ msgstr "Predeterminado do Panel"
+
+#, fuzzy
+#~ msgid "Settings saved!"
+#~ msgstr "Configuración gardada!"
+
+#, fuzzy
+#~ msgid ""
+#~ "ERROR: Only letters, numbers, dash and underscore are allowed for "
+#~ "services names!"
+#~ msgstr "ERRO: só se permiten letras, números, guións e subliñados!"
+
+#~ msgid "To"
+#~ msgstr "Para"
+
+#~ msgid "Message was sent."
+#~ msgstr "A mensaxe foi enviada."
+
+#~ msgid "ISPCP - Client/Webtools"
+#~ msgstr "i-MSCP - Cliente/Ferramentas Web"
+
+#~ msgid "i-MSCP Error"
+#~ msgstr "Erro i-MSCP"
+
+#~ msgid "Error Message"
+#~ msgstr "Mensaxe de Erro"
+
+#~ msgid "Unchanged"
+#~ msgstr "Sen trocos"
+
+#~ msgid "- 1 Month"
+#~ msgstr "- 1 Mes"
+
+#~ msgid "+ 1 Month"
+#~ msgstr "+ 1 Mes"
+
+#~ msgid "+ 2 Months"
+#~ msgstr "+ 2 Meses"
+
+#~ msgid "+ 3 Months"
+#~ msgstr "+ 3 Meses"
+
+#~ msgid "+ 6 Months"
+#~ msgstr "+ 6 Meses"
+
+#~ msgid "+ 1 Year"
+#~ msgstr "+ 1 Ano"
+
+#~ msgid "+ 2 Years"
+#~ msgstr "+ 2 Anos"
+
+#~ msgid "1 Month"
+#~ msgstr "1 Mes"
+
+#~ msgid "2 Months"
+#~ msgstr "2 Meses"
+
+#~ msgid "3 Months"
+#~ msgstr "3 Meses"
+
+#~ msgid "6 Months"
+#~ msgstr "6 Meses"
+
+#~ msgid "1 Year"
+#~ msgstr "1 Ano"
+
+#~ msgid "2 Years"
+#~ msgstr "2 Anos"
+
+#~ msgid "You have no users."
+#~ msgstr "Non tes usuarios."
 
 #~ msgid "Services"
 #~ msgstr "Servizos"

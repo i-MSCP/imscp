@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bg_BG\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-17 10:11+0200\n"
+"POT-Creation-Date: 2011-06-13 16:29+0200\n"
 "PO-Revision-Date: 2009-12-18 14:26+0100\n"
 "Last-Translator: Laurent Declercq <l.declercq@nuxwin.com>\n"
 "Language-Team: Bulgarian <bg_BG@li.org>\n"
@@ -20,87 +20,409 @@ msgstr ""
 msgid "encoding"
 msgstr "UTF-8"
 
-#. Please fill in the language you are translating to in the following form:
-#. native language name (native country name) - english language name (english country name)
 msgid "_: Localised language"
 msgstr "български език - Bulgarian"
 
-msgid "i-MSCP  a Virtual Hosting Control System"
-msgstr "i-MSCP - Виртуална Система за Управление на Хостинг"
+#, php-format
+msgid "File %s does not exists or cannot be reached!"
+msgstr ""
 
-msgid "Administrator login"
-msgstr "Административен Вход"
+msgid "Error while trying to obtain list of network cards."
+msgstr ""
 
-msgid "Login"
-msgstr "Вход"
+#, php-format
+msgid "This IP (%s) is not assigned to any network card!"
+msgstr ""
+
+msgid "N/A"
+msgstr ""
+
+msgid "Day"
+msgstr "Ден"
+
+#, fuzzy
+msgid "Days"
+msgstr "Ден"
+
+msgid "Hour"
+msgstr "Час"
+
+#, fuzzy
+msgid "Hours"
+msgstr "Час"
+
+#, fuzzy
+msgid "Minute"
+msgstr "минути"
+
+#, fuzzy
+msgid "Minutes"
+msgstr "минути"
+
+#, fuzzy
+msgid "An error occured! Please, contact your administrator!"
+msgstr ""
+"Невъзможно е да отвори директорията !<br> Свържете се със своя "
+"администратор !"
+
+#, fuzzy
+msgid "Couldn't check for updates. Website not reachable."
+msgstr "Не е възможна проверка за обновявания! Сайтът не отговаря."
+
+msgid "General information"
+msgstr "Обща информация"
+
+msgid "Manage hosting plans"
+msgstr "Управление хостинг планове"
+
+msgid "System tools"
+msgstr "Системни инструменти"
+
+msgid "Manage users"
+msgstr "Управление на потребители"
+
+msgid "Statistics"
+msgstr "Статистика"
+
+msgid "Support system"
+msgstr "Служба за поддръжка"
+
+msgid "Settings"
+msgstr "Настройки"
+
+msgid "Change password"
+msgstr "Смени парола"
+
+msgid "Change personal data"
+msgstr "Промяна персоналниданни"
+
+msgid "Add admin"
+msgstr "Добави админ"
+
+msgid "Add reseller"
+msgstr "Добави риселър"
+
+msgid "Reseller assignment"
+msgstr "Назначи риселър"
+
+msgid "User assignment"
+msgstr "Назначи потребител"
+
+msgid "Email setup"
+msgstr "Настройка на Пощенска кутия"
+
+msgid "Email marketing"
+msgstr "Изпращане на поща"
+
+msgid "Add hosting plan"
+msgstr "Добави хостинг-план"
+
+msgid "Reseller statistics"
+msgstr "Статистика риселър"
+
+msgid "Server statistics"
+msgstr "Статистика на сървъра"
+
+msgid "Admin log"
+msgstr "Админ Журнал"
+
+msgid "Manage IPs"
+msgstr "Управление IP адреси"
+
+msgid "System info"
+msgstr "Системна информация"
+
+msgid "Internationalisation"
+msgstr "Интернационализация"
+
+msgid "Language"
+msgstr "Език"
+
+msgid "Layout"
+msgstr "Макет"
+
+msgid "Logout"
+msgstr "Изход"
+
+msgid "Server traffic settings"
+msgstr "настройки за трафик на сървъра"
+
+msgid "Server status"
+msgstr "Статус на сървъра"
+
+msgid "i-MSCP updates"
+msgstr "Обновявания i-MSCP"
+
+#, fuzzy
+msgid "i-MSCP database updates"
+msgstr "Обновявания i-MSCP"
+
+msgid "i-MSCP debugger"
+msgstr "i-MSCP дебугер"
+
+msgid "Custom menus"
+msgstr "Персоналное меню"
+
+msgid "Overview"
+msgstr "Преглед"
+
+msgid "User sessions"
+msgstr "Потребителиски сессии"
+
+msgid "Lostpw email setup"
+msgstr "Настройка за възстановяване на пароли"
+
+msgid "Maintenance mode"
+msgstr "Режим на поддръжка"
+
+msgid "General settings"
+msgstr "Общи настройки"
+
+msgid "Server ports"
+msgstr "Портове на сървъра"
+
+msgid "Rootkit Log"
+msgstr "Анти-взлом лог"
+
+#, fuzzy
+msgid "Services status"
+msgstr "Статус на сървъра"
+
+#, fuzzy
+msgid "Services ports"
+msgstr "Портове на сървъра"
+
+#, fuzzy
+msgid "IP usage"
+msgstr "Използвано дисково пространство"
+
+msgid "Application management"
+msgstr ""
+
+msgid "Application options"
+msgstr ""
+
+msgid "Account name"
+msgstr "Име на акаунта"
+
+msgid "Admin users"
+msgstr "Администратори"
+
+msgid "Reseller users"
+msgstr "Потребители на риселъра"
+
+msgid "Normal users"
+msgstr "потребителии"
+
+msgid "Domains"
+msgstr "Домейни"
+
+msgid "Subdomains"
+msgstr "Поддомейни"
+
+msgid "Domain aliases"
+msgstr "Псевдоними на домейна"
+
+msgid "Mail accounts"
+msgstr "Пощенски кутии"
+
+msgid "FTP accounts"
+msgstr "FTP акаунти"
+
+msgid "SQL databases"
+msgstr "База данни SQL"
+
+msgid "SQL users"
+msgstr "SQL потребителии"
+
+msgid "System messages"
+msgstr "Системни съобшения"
+
+msgid "No new messages"
+msgstr "Няма нови съобщения "
+
+msgid "Server traffic"
+msgstr "Трафик на сървъра"
+
+msgid "Administrators list is empty!"
+msgstr "Списъкът с администратори е празен!"
 
 msgid "Username"
 msgstr "Потребител"
 
-msgid "Password"
-msgstr "Парола"
+msgid "Creation date"
+msgstr "Дата на създаване"
 
-msgid "Please enter your login information"
-msgstr "Моля, въведете Вашите данни за вход"
+msgid "Created by"
+msgstr "Автор "
 
-msgid "Secure Connection"
-msgstr "Безопастна връзка"
+msgid "Options"
+msgstr "Опции"
 
-msgid "Normal Connection"
-msgstr "Нормална връзка"
+msgid "Delete"
+msgstr "Изтриване"
 
-msgid "Lost password"
-msgstr "Забравена парола"
+msgid "System"
+msgstr "Система"
 
-msgid "Retrieving lost passwords is currently not possible"
-msgstr "Възстановяването на загубената парола в момента е невъзможно"
+msgid "Resellers list is empty!"
+msgstr "Списъкът с риселъри е празен!"
 
-msgid "i-MSCP - Virtual Hosting Control System"
-msgstr "i-MSCP - Виртуална Система за Управление на Хостинг"
+msgid "Switch to user interface"
+msgstr "Превключи на потребителски интерфейс"
+
+msgid "Switch"
+msgstr "Переключит"
+
+msgid "Not found user records matching the search criteria!"
+msgstr "Не е намерен запис за потребител отговарящ на критериите на търсене!"
+
+msgid "view aliases"
+msgstr "Преглед псевдоними"
+
+msgid "Users list is empty!"
+msgstr "Списъкът с потребители е празен!"
+
+msgid "Status"
+msgstr "Статус"
+
+msgid "Details"
+msgstr "Детайли"
 
 #, fuzzy
-msgid "Your new password has been sent."
-msgstr "Заявка за обновяване на паролата е изпълнена"
+msgid "Edit domain"
+msgstr "Редакция на домейна"
 
-msgid "New password could not been sent."
+msgid "Edit user"
+msgstr "Редакция потребител"
+
+msgid "Ok"
 msgstr ""
+
+msgid "Disabled"
+msgstr "Забранен"
+
+#, fuzzy
+msgid "Reload"
+msgstr "Закачка"
+
+msgid "Error"
+msgstr "Грешка"
+
+msgid "Not Set"
+msgstr ""
+
+msgid "Are you sure you want to change the status of domain account?"
+msgstr "Сигурни ли сте,че искате да промените статуса на домейн акаунта?"
 
 #, php-format
-msgid ""
-"Your password request has been initiated. You will receive an email with "
-"instructions to complete the process. This reset request will expire in %s "
-"minutes."
+msgid "Are you sure you want to delete %s?"
 msgstr ""
 
-msgid "Back"
-msgstr "Назад"
+msgid "Administrators"
+msgstr "Администратори"
+
+msgid "Resellers"
+msgstr "Риселъри"
+
+msgid "Users"
+msgstr "Потребители"
+
+msgid "Search"
+msgstr "Търсене"
 
 #, fuzzy
-msgid "User or security code was incorrect!"
-msgstr "Грешка: Секретният код е неправилен!"
+msgid "Expire date"
+msgstr "Дата на заявката"
 
-msgid "Retry"
-msgstr "Отново"
+msgid "Edit"
+msgstr "Редакция"
 
-msgid "Security code"
-msgstr "Секретен код"
+msgid "Domain name"
+msgstr "Име на Домейна"
 
-msgid ""
-"(To avoid abuse, we ask you to write the combination of letters on the above "
-"picture into the field \"Security code\")"
-msgstr "(Въведете комбинацията от символиот изображението \"Секретен код\")"
+msgid "Customer ID"
+msgstr "Клиент ID"
 
-msgid "Request password"
-msgstr "Необходима е парола"
+msgid "Last name"
+msgstr "Фамилия"
 
-msgid "i-MSCP - Admin/Manage users/Add User"
-msgstr "i-MSCP - Админ/Управление на потребители/Добави потребител"
+msgid "Company"
+msgstr "Компания"
 
-msgid "Administrator"
-msgstr "Администратор"
+msgid "City"
+msgstr "Град"
 
-msgid "Incorrect username length or syntax!"
-msgstr "Некоректна дължина или синтаксис на потребителското име"
+#, fuzzy
+msgid "State/Province"
+msgstr "Служба"
+
+msgid "Country"
+msgstr "Страна"
+
+msgid "All"
+msgstr "Всички"
+
+msgid "OK"
+msgstr "Ок"
+
+msgid "Suspended"
+msgstr "Отсранен"
+
+msgid "i-MSCP - Order Panel"
+msgstr "i-MSCP - Панел за заявки"
+
+msgid "hide aliases"
+msgstr "скрити псевдоними"
+
+#, php-format
+msgid "%1$s you are now logged as %2$s"
+msgstr "%1$s Вие се влезли като %2$s"
+
+msgid "Go back"
+msgstr "Назад"
+
+msgid "Unknown"
+msgstr "Неизвестен"
+
+msgid "No language tables found in the database."
+msgstr ""
+
+msgid "Add user"
+msgstr "Добави потребител"
+
+msgid "Manage domains"
+msgstr "Управление на домейни"
+
+msgid "Domain alias"
+msgstr "Псевдоними на домейни"
+
+msgid "Domain statistics"
+msgstr "Статистика домейна"
+
+msgid "New ticket"
+msgstr "Нов билет"
+
+msgid "Layout settings"
+msgstr "Настройки на макета"
+
+msgid "Manage Orders"
+msgstr "Управление на заявки"
+
+msgid "Order settings"
+msgstr "Заявки за настройка"
+
+msgid "Order email setup"
+msgstr "Заявка за имейл настройка"
+
+msgid "yes"
+msgstr "да"
+
+msgid "Please fill up both data fields for password!"
+msgstr "Моля, запълнете двете полета за парола!"
+
+msgid "Passwords don't match!"
+msgstr "Паролите не съвпадат!"
 
 #, php-format
 msgid ""
@@ -112,23 +434,187 @@ msgstr ""
 msgid "Password data is shorter than %s signs or includes not permitted signs!"
 msgstr ""
 
-msgid "Entered passwords do not match!"
-msgstr "Въведените пароли не съвпадат"
-
 msgid "Incorrect email length or syntax!"
 msgstr "Некоректна дължина или синтаксис на имейла"
 
-msgid "This user name already exist!"
+msgid "Add subdomain"
+msgstr "Добави поддомейн"
+
+msgid "Email and FTP accounts"
+msgstr "Email и FTP акаунти"
+
+msgid "Add mail user"
+msgstr "Добави пощенска кутия"
+
+msgid "Add FTP user"
+msgstr "Добави FTP потребител"
+
+msgid "Manage SQL"
+msgstr "Управление SQL"
+
+msgid "Error pages"
+msgstr "Страници с грешки"
+
+msgid "Add SQL database"
+msgstr "Добави SQL база данни"
+
+msgid "Daily backup"
+msgstr "Ежедневен бекап"
+
+msgid "PhpMyAdmin"
+msgstr ""
+
+msgid "Webmail"
+msgstr ""
+
+msgid "Filemanager"
+msgstr "Файл Мениджър"
+
+msgid "Webtools"
+msgstr "Уеб-инструменти"
+
+msgid "Protected areas"
+msgstr "Защитена зона"
+
+msgid "Web statistics"
+msgstr "Web статистика"
+
+msgid "Group/User management"
+msgstr "Группа/Мениджър потребители"
+
+msgid "Email Accounts"
+msgstr "Пощенски кутии"
+
+msgid "FTP Accounts"
+msgstr "FTP Акаунти"
+
+msgid "Catch all"
+msgstr "Обхвани Всички"
+
+msgid "Add alias"
+msgstr "Добави псевдоним"
+
+msgid "Update Hosting Package"
+msgstr "Обнови Хостинг-Пакет"
+
+msgid "Add DNS zone's record"
+msgstr ""
+
+msgid "Manage SSL certificate"
+msgstr ""
+
+msgid "i-MSCP application installer"
+msgstr ""
+
+msgid "All fields are required!"
+msgstr ""
+
+#, fuzzy
+msgid "internet Multi Server Control Panel"
+msgstr "Контролен Панел i-MSCP"
+
+msgid "© Copyright 2010 i-MSCP Team<br/>All Rights Reserved"
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP - Multi Server Control Panel"
+msgstr "Контролен Панел i-MSCP"
+
+msgid "Administrator login"
+msgstr "Административен Вход"
+
+#, fuzzy
+msgid "i-MSCP - Multi Server Control Panel / Login"
+msgstr "Контролен Панел i-MSCP"
+
+msgid "Login"
+msgstr "Вход"
+
+msgid "Password"
+msgstr "Парола"
+
+#, fuzzy
+msgid "phpMyAdmin"
+msgstr "Вход в phpMyAdmin"
+
+#, fuzzy
+msgid "FileManager"
+msgstr "Файл Мениджър"
+
+msgid "Secure Connection"
+msgstr "Безопастна връзка"
+
+msgid "Normal Connection"
+msgstr "Нормална връзка"
+
+msgid "Lost password"
+msgstr "Забравена парола"
+
+msgid "php-extension 'gd' not loaded."
+msgstr ""
+
+msgid "Captcha fontfile not found."
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP - Multi Server Control Panel - Lost password"
+msgstr "i-MSCP - Клиент/Промяна паролата на SQL потребител"
+
+msgid "Security code"
+msgstr "Секретен код"
+
+#, fuzzy
+msgid ""
+"To avoid abuse, we ask you to write the combination of letters on the "
+"picture above into the field \"Security code\""
+msgstr "(Въведете комбинацията от символиот изображението \"Секретен код\")"
+
+#, fuzzy
+msgid "Get password"
+msgstr "Генерирай парола"
+
+msgid "Back"
+msgstr "Назад"
+
+#, fuzzy
+msgid "Your new password has been sent. Check your mail."
+msgstr "Заявка за обновяване на паролата е изпълнена"
+
+msgid "New password has not been sent. Ask your administrator."
+msgstr ""
+
+#, php-format
+msgid ""
+"Your password request has been initiated. You will receive an email with "
+"instructions to complete the process. This reset request will expire in %s "
+"minutes."
+msgstr ""
+
+#, fuzzy
+msgid "User or security code are incorrect."
+msgstr "Грешка: Секретният код е неправилен!"
+
+msgid "All fields are required."
+msgstr ""
+
+msgid "i-MSCP - Admin/Manage users/Add User"
+msgstr "i-MSCP - Админ/Управление на потребители/Добави потребител"
+
+msgid "Administrator"
+msgstr "Администратор"
+
+msgid "Incorrect username length or syntax!"
+msgstr "Некоректна дължина или синтаксис на потребителското име"
+
+msgid "Entered passwords do not match!"
+msgstr "Въведените пароли не съвпадат"
+
+#, fuzzy
+msgid "This user name already exist."
 msgstr "Такова потребителско име вече съществува"
 
 msgid "Empty data or wrong field!"
 msgstr "Празно или неправилно попълнено поле!"
-
-msgid "Passwords don't match!"
-msgstr "Паролите не съвпадат!"
-
-msgid "Add admin"
-msgstr "Добави админ"
 
 msgid "Core data"
 msgstr "данни ядро"
@@ -145,9 +631,6 @@ msgstr "Допълнителни данни"
 msgid "First name"
 msgstr "Име"
 
-msgid "Last name"
-msgstr "Фамилия"
-
 msgid "Gender"
 msgstr "Пол"
 
@@ -157,24 +640,8 @@ msgstr "Мъжки"
 msgid "Female"
 msgstr "Женски"
 
-msgid "Unknown"
-msgstr "Неизвестен"
-
-msgid "Company"
-msgstr "Компания"
-
 msgid "Zip/Postal code"
 msgstr "Пощенски код"
-
-msgid "City"
-msgstr "Град"
-
-#, fuzzy
-msgid "State/Province"
-msgstr "Служба"
-
-msgid "Country"
-msgstr "Страна"
 
 msgid "Street 1"
 msgstr "Улица 1"
@@ -210,9 +677,6 @@ msgstr "i-MSCP - Админ/Управление на потребители/Д�
 msgid "Edit admin"
 msgstr "Редакция админ"
 
-msgid "Edit user"
-msgstr "Редакция потребител"
-
 msgid "Update"
 msgstr "Промяна"
 
@@ -229,8 +693,9 @@ msgstr "Паролата не е указана!"
 msgid "Demo Version!"
 msgstr ""
 
-msgid "i-MSCP - Admin/Admin Log"
-msgstr ""
+#, fuzzy
+msgid "iMSCP - Admin/Admin Log"
+msgstr "i-MSCP - Админ/Настройки"
 
 msgid "Log is empty!"
 msgstr "Логът е празен!"
@@ -313,9 +778,6 @@ msgstr "Моля, укажете адрес на изпращача!"
 msgid "You send email to your users successfully!"
 msgstr "Вие успешно изпратихте съобщение на вашите потребители!"
 
-msgid "Email marketing"
-msgstr "Изпращане на поща"
-
 msgid "Send message to"
 msgstr "Изпрати до"
 
@@ -345,9 +807,6 @@ msgstr "Нямате индивидуално меню."
 
 msgid "User"
 msgstr "Потребител"
-
-msgid "All"
-msgstr "Всички"
 
 msgid "Missing or incorrect data input!"
 msgstr "Пропуснат или некоректен вход!"
@@ -404,12 +863,6 @@ msgstr "Бутон меню"
 msgid "Action"
 msgstr "Действие"
 
-msgid "Edit"
-msgstr "Редакция"
-
-msgid "Delete"
-msgstr "Изтриване"
-
 msgid "Level"
 msgstr "Ниво"
 
@@ -419,9 +872,9 @@ msgstr "Запази"
 msgid "Edit button"
 msgstr "Редакция бутон"
 
-#, php-format
-msgid "Are you sure you want to delete %s?"
-msgstr ""
+#, fuzzy
+msgid "i-MSCP - Admin / System tools / Database Update"
+msgstr "i-MSCP Админ / Системни инструменти / Статус на сървъра"
 
 #, fuzzy
 msgid "Database updates"
@@ -438,17 +891,12 @@ msgstr "Обнови детайлите"
 msgid "New Database update is now available"
 msgstr "Достъпно е ново обновяване за i-MSCP"
 
-#, fuzzy
-msgid "Do you want to execute the Updates now?"
-msgstr "Уверени ли сте,че искате да изтриете тази заявка?"
+msgid "No provided"
+msgstr ""
 
 #, fuzzy
 msgid "Execute updates"
 msgstr "Изпълни заявка"
-
-#, fuzzy
-msgid "No database updates available"
-msgstr "Няма достъпни i-MSCP обновявания"
 
 msgid "i-MSCP - Domain/Details"
 msgstr "i-MSCP - домейн/Детайли"
@@ -456,14 +904,8 @@ msgstr "i-MSCP - домейн/Детайли"
 msgid "Domain details"
 msgstr "Информация за домейна"
 
-msgid "Domain name"
-msgstr "Име на Домейна"
-
 msgid "Domain IP"
 msgstr "домейн IP"
-
-msgid "Status"
-msgstr "Статус"
 
 msgid "PHP support"
 msgstr "Поддръжка PHP"
@@ -496,24 +938,6 @@ msgstr "Използовано"
 msgid "Limit"
 msgstr "Ограничение"
 
-msgid "Mail accounts"
-msgstr "Пощенски кутии"
-
-msgid "FTP accounts"
-msgstr "FTP акаунти"
-
-msgid "SQL databases"
-msgstr "База данни SQL"
-
-msgid "SQL users"
-msgstr "SQL потребителии"
-
-msgid "Subdomains"
-msgstr "Поддомейни"
-
-msgid "Domain aliases"
-msgstr "Псевдоними на домейна"
-
 msgid "Submit changes"
 msgstr "Приеми промените"
 
@@ -532,8 +956,119 @@ msgstr "Не"
 msgid "Enabled"
 msgstr "Включено"
 
-msgid "Disabled"
-msgstr "Забранен"
+#, fuzzy
+msgid "Incorrect subdomains limit."
+msgstr "Некоректно ограничение за поддомейни!"
+
+#, fuzzy
+msgid "Incorrect aliases limit."
+msgstr "Некоректно ограничение за псевдоними!"
+
+#, fuzzy
+msgid "Incorrect mail accounts limit."
+msgstr "Некоректно ограничения за пощенски кутии!"
+
+#, fuzzy
+msgid "Incorrect FTP accounts limit."
+msgstr "Некоректно ограничения за FTP акаунти!"
+
+#, fuzzy
+msgid "Incorrect SQL users limit."
+msgstr "Некоректно ограничения за SQL потребители!"
+
+msgid "SQL databases limit is <i>disabled</i>!"
+msgstr "Ограничението за SQL бази данни е <i>Забранено</i>!"
+
+#, fuzzy
+msgid "Incorrect SQL databases limit."
+msgstr "Некоректно ограничения за SQL бази данни!"
+
+msgid "SQL users limit is <i>disabled</i>!"
+msgstr "Ограничението за SQL потребители е <i>Забранено</i>"
+
+#, fuzzy
+msgid "Incorrect traffic limit."
+msgstr "Некоректно ограничения за трафик!"
+
+#, fuzzy
+msgid "Incorrect disk quota limit."
+msgstr "Некоректно ограничения за дисково пространство!"
+
+msgid "The application installer needs PHP to enable."
+msgstr ""
+
+msgid "The application installer of the users reseller is not activated."
+msgstr ""
+
+msgid "Subdomain"
+msgstr "Поддомейн"
+
+msgid "Alias"
+msgstr "Псевдоним"
+
+msgid "Mail"
+msgstr "Имейл"
+
+msgid "FTP"
+msgstr ""
+
+msgid "SQL Database"
+msgstr "SQL База данни"
+
+msgid "SQL User"
+msgstr "SQL потребител"
+
+msgid "Traffic"
+msgstr "Трафик"
+
+msgid "Disk"
+msgstr "Диск"
+
+#, fuzzy
+msgid "Domain properties could not be updated."
+msgstr "Настройките на домейна не могат да бъдат променени!"
+
+msgid "Domain properties updated successfully!"
+msgstr "Настройките на домейна са успешно променени!"
+
+#, fuzzy, php-format
+msgid "The <em>%s</em> service cannot be disabled!"
+msgstr "Услугата <em>%s</em> не может да бъде Забранена! "
+
+#, php-format
+msgid "There are <em>%s</em> records on system!"
+msgstr "В системата има <em>%s</em> записи!"
+
+#, php-format
+msgid "The <em>%s</em> service cannot be limited! "
+msgstr "Услугата <em>%s</em> не может да бъде ограничена!"
+
+#, php-format
+msgid ""
+"Specified number is smaller than <em>%s</em> records, present on the system!"
+msgstr ""
+"Избраната стойност е по-малка от <em>%s</em> записите, съществуващи в "
+"системата!"
+
+#, php-format
+msgid "The <em>%s</em> service cannot be disabled! "
+msgstr "Услугата <em>%s</em> не может да бъде Забранена! "
+
+#, php-format
+msgid "There are <em>%s</em> records on the system!"
+msgstr "В системата има <em>%s</em> записи!"
+
+#, php-format
+msgid "The <em>%s</em> service cannot be unlimited! "
+msgstr "Услугата <em>%s</em> не може да бъде без ограничение! "
+
+#, php-format
+msgid "There are reseller limits for the <em>%s</em> service!"
+msgstr "за услугата <em>%s</em> съществува риселърски Ограничениеи!"
+
+#, php-format
+msgid "You are exceeding reseller limits for the <em>%s</em> service!"
+msgstr "Вие сте превишили риселърския Ограничение за услугата <em>%s</em>"
 
 #, fuzzy
 msgid "i-MSCP - Admin/Edit Domain"
@@ -596,114 +1131,32 @@ msgid ""
 "In case 'Domain expire' is 'N/A', the expiration date will be set from today."
 msgstr ""
 
+msgid "or Check for <strong>never Expire</strong>"
+msgstr ""
+
 msgid ""
-"User does not exist or you do not have permission to access this interface!"
-msgstr ""
-"Потребителя не съществува или Вие нямате право на достъпа до този интерфейс!"
-
-msgid "N/A"
+"You cannot access this page directly. You must switch to reseller level."
 msgstr ""
 
-msgid "Incorrect subdomains limit!"
-msgstr "Некоректно ограничение за поддомейни!"
-
-msgid "Incorrect aliases limit!"
-msgstr "Некоректно ограничение за псевдоними!"
-
-msgid "Incorrect mail accounts limit!"
-msgstr "Некоректно ограничения за пощенски кутии!"
-
-msgid "Incorrect FTP accounts limit!"
-msgstr "Некоректно ограничения за FTP акаунти!"
-
-msgid "Incorrect SQL users limit!"
-msgstr "Некоректно ограничения за SQL потребители!"
-
-msgid "SQL databases limit is <i>disabled</i>!"
-msgstr "Ограничението за SQL бази данни е <i>Забранено</i>!"
-
-msgid "Incorrect SQL databases limit!"
-msgstr "Некоректно ограничения за SQL бази данни!"
-
-msgid "SQL users limit is <i>disabled</i>!"
-msgstr "Ограничението за SQL потребители е <i>Забранено</i>"
-
-msgid "Incorrect traffic limit!"
-msgstr "Некоректно ограничения за трафик!"
-
-msgid "Incorrect disk quota limit!"
-msgstr "Некоректно ограничения за дисково пространство!"
-
-msgid "Subdomain"
-msgstr "Поддомейн"
-
-msgid "Alias"
-msgstr "Псевдоним"
-
-msgid "Mail"
-msgstr "Имейл"
-
-msgid "FTP"
-msgstr ""
-
-msgid "SQL Database"
-msgstr "SQL База данни"
-
-msgid "SQL User"
-msgstr "SQL потребител"
-
-msgid "Traffic"
-msgstr "Трафик"
-
-msgid "Disk"
-msgstr "Диск"
-
-msgid "Domain properties could not be updated!"
-msgstr "Настройките на домейна не могат да бъдат променени!"
-
-msgid "Domain properties updated successfully!"
-msgstr "Настройките на домейна са успешно променени!"
-
-#, php-format
-msgid "The <em>%s</em> service cannot be disabled! "
-msgstr "Услугата <em>%s</em> не может да бъде Забранена! "
-
-#, php-format
-msgid "There are <em>%s</em> records on system!"
-msgstr "В системата има <em>%s</em> записи!"
-
-#, php-format
-msgid "The <em>%s</em> service cannot be limited! "
-msgstr "Услугата <em>%s</em> не может да бъде ограничена!"
-
-#, php-format
 msgid ""
-"Specified number is smaller than <em>%s</em> records, present on the system!"
+"Unable to update domain properties: The domain does not exist or is an "
+"orphan."
 msgstr ""
-"Избраната стойност е по-малка от <em>%s</em> записите, съществуващи в "
-"системата!"
 
-#, php-format
-msgid "There are <em>%s</em> records on the system!"
-msgstr "В системата има <em>%s</em> записи!"
+msgid "Unable to update domain: Domain ID not found."
+msgstr ""
 
-#, php-format
-msgid "The <em>%s</em> service cannot be unlimited! "
-msgstr "Услугата <em>%s</em> не може да бъде без ограничение! "
+msgid "Unable to edit domain: The domain does not exist or is an orphan."
+msgstr ""
 
-#, php-format
-msgid "There are reseller limits for the <em>%s</em> service!"
-msgstr "за услугата <em>%s</em> съществува риселърски Ограничениеи!"
-
-#, php-format
-msgid "You are exceeding reseller limits for the <em>%s</em> service!"
-msgstr "Вие сте превишили риселърския Ограничение за услугата <em>%s</em>"
+msgid "Unable to edit domain: ID not found."
+msgstr ""
 
 msgid "i-MSCP - Domain Statistics Data"
 msgstr "i-MSCP - данни Статистики домейни"
 
-msgid "Domain statistics"
-msgstr "Статистика домейна"
+msgid "Reseller users table"
+msgstr "Таблица за потребителите на риселъра"
 
 msgid "Month"
 msgstr "Месец"
@@ -729,14 +1182,47 @@ msgstr "POP3/IMAP трафик"
 msgid "All traffic"
 msgstr "Целия трафик"
 
-msgid "Day"
-msgstr "Ден"
+msgid "i-MSCP - Administrator/Hosting Plan Management"
+msgstr "i-MSCP - Администратор/Управление хостинг-планове"
+
+msgid "Hosting plans"
+msgstr "Хостинг-планове"
+
+msgid "Purchasing"
+msgstr "заявка"
+
+msgid "Add new user hosting plan"
+msgstr "Добави Нов хостинг-план"
+
+msgid "Return to previous menu"
+msgstr "Връщане в предното меню"
+
+msgid "Hosting plan added!"
+msgstr "Хостинг-план е добавен!"
+
+msgid "Hosting plan deleted!"
+msgstr "Хостинг-план е изтрит!"
+
+msgid "Hosting plan updated!"
+msgstr "Хостинг-план е обновен!"
+
+msgid "Hosting plan can't be deleted, there are orders!"
+msgstr "Хостинг плана не може да бъде изтрит, в него има заявки!"
+
+msgid "Hosting plans not found!"
+msgstr "Хостинг-плановете не са открити!"
+
+msgid "No."
+msgstr ""
+
+msgid "Name"
+msgstr "Име"
+
+msgid "Show hosting plan"
+msgstr "Покажи хостинг-план"
 
 msgid "i-MSCP - Administrator/Add hosting plan"
 msgstr "i-MSCP - Админ/Добави хостинг-план"
-
-msgid "Add hosting plan"
-msgstr "Добави хостинг-план"
 
 msgid "Hosting plan properties"
 msgstr "Свойства хостинг-плана"
@@ -783,9 +1269,6 @@ msgstr "Файл журнал на Apache"
 
 msgid "AwStats"
 msgstr "Статистика"
-
-msgid "yes"
-msgstr "да"
 
 msgid "no"
 msgstr "не"
@@ -841,6 +1324,33 @@ msgstr "Некоректна цена!"
 msgid "Incorrect setup fee syntax!"
 msgstr "Некоректен такса включване!"
 
+msgid "Incorrect subdomains limit!"
+msgstr "Некоректно ограничение за поддомейни!"
+
+msgid "Incorrect aliases limit!"
+msgstr "Некоректно ограничение за псевдоними!"
+
+msgid "Incorrect mail accounts limit!"
+msgstr "Некоректно ограничения за пощенски кутии!"
+
+msgid "Incorrect FTP accounts limit!"
+msgstr "Некоректно ограничения за FTP акаунти!"
+
+msgid "Incorrect SQL databases limit!"
+msgstr "Некоректно ограничения за SQL бази данни!"
+
+msgid "Incorrect SQL users limit!"
+msgstr "Некоректно ограничения за SQL потребители!"
+
+msgid "Incorrect traffic limit!"
+msgstr "Некоректно ограничения за трафик!"
+
+msgid "Incorrect disk quota limit!"
+msgstr "Некоректно ограничения за дисково пространство!"
+
+msgid "The i-MSCP application installer needs PHP to enable it!"
+msgstr ""
+
 msgid "Hosting plan with entered name already exists!"
 msgstr "Хостинг-план с въведеното име вече съществува!"
 
@@ -868,47 +1378,105 @@ msgstr "Некоректна цена. Пример: 9.99"
 msgid "Incorrect setup fee. Example: 19.99"
 msgstr "Некоректна цена за включване. Пример 19.99"
 
-msgid "i-MSCP - Administrator/Hosting Plan Management"
-msgstr "i-MSCP - Администратор/Управление хостинг-планове"
+msgid "No domain system errors"
+msgstr "Няма грешки на системата за домейни"
 
-msgid "Hosting plans"
-msgstr "Хостинг-планове"
+msgid "No domain alias system errors"
+msgstr "Няма грешки на системата за псевдоними на домейна"
 
-msgid "Manage hosting plans"
-msgstr "Управление хостинг планове"
+msgid "No subdomain system errors"
+msgstr "Няма грешки на системата за поддомейни"
 
-msgid "Purchasing"
-msgstr "заявка"
+#, fuzzy
+msgid "No alias subdomain system errors"
+msgstr "Няма грешки на системата за поддомейни"
 
-msgid "Add new user hosting plan"
-msgstr "Добави Нов хостинг-план"
+msgid "No email account system errors"
+msgstr "Няма грешки на системата за пошенски кутии"
 
-msgid "Return to previous menu"
-msgstr "Връщане в предното меню"
+#, fuzzy
+msgid "missing domain"
+msgstr "Главен домейн"
 
-msgid "Hosting plan added!"
-msgstr "Хостинг-план е добавен!"
+#, fuzzy
+msgid "missing alias"
+msgstr "Псевдоними на домейни"
 
-msgid "Hosting plan deleted!"
-msgstr "Хостинг-план е изтрит!"
-
-msgid "Hosting plan updated!"
-msgstr "Хостинг-план е обновен!"
-
-msgid "Hosting plan can't be deleted, there are orders!"
-msgstr "Хостинг плана не може да бъде изтрит, в него има заявки!"
-
-msgid "Hosting plans not found!"
-msgstr "Хостинг-плановете не са открити!"
-
-msgid "No."
+msgid "orphan entry"
 msgstr ""
 
-msgid "Name"
-msgstr "Име"
+#, fuzzy
+msgid "No htaccess related system errors"
+msgstr "Няма грешки на системата за псевдоними на домейна"
 
-msgid "Show hosting plan"
-msgstr "Покажи хостинг-план"
+#, fuzzy
+msgid "Missing domain"
+msgstr "Главен домейн"
+
+#, php-format
+msgid "Daemon returned %d as status code"
+msgstr "Върнат статус код на системата: %d"
+
+#, fuzzy
+msgid "Unknown type!"
+msgstr "Неизвестен тип"
+
+msgid "Done"
+msgstr "Готово"
+
+msgid "Unknown Error"
+msgstr "Неизвестна Грешка"
+
+msgid "Domain errors"
+msgstr "Грешки домейни"
+
+msgid "Domain alias errors"
+msgstr "Грешки псевдоними на домейна"
+
+msgid "Subdomain errors"
+msgstr "Грешки поддомейни"
+
+#, fuzzy
+msgid "Alias subdomain errors"
+msgstr "Преадресация на поддомейна"
+
+msgid "Mail account errors"
+msgstr "Грешки на пощенските кутии"
+
+msgid ".htaccess related errors"
+msgstr ""
+
+msgid "i-MSCP Daemon tools"
+msgstr "i-MSCP Инструменти на системата"
+
+msgid "Execute requests"
+msgstr "Изпълни заявка"
+
+msgid "Set status to 'change'"
+msgstr ""
+
+#, fuzzy, php-format
+msgid "%s Errors in database"
+msgstr ""
+
+msgid "Update checking is disabled!"
+msgstr ""
+
+#, fuzzy
+msgid "Enable update at"
+msgstr "Потребители на бази данни"
+
+msgid "New i-MSCP update is now available"
+msgstr "Достъпно е ново обновяване за i-MSCP"
+
+msgid "Get it at"
+msgstr "Вземи от"
+
+msgid "Available i-MSCP updates"
+msgstr "Достъпни i-MSCP обновявания"
+
+msgid "No new i-MSCP updates available"
+msgstr "Няма достъпни i-MSCP обновявания"
 
 #, php-format
 msgid "You have <b>%d</b> new support questions"
@@ -917,15 +1485,8 @@ msgstr "Имате нови въпроси към поддръжката <b>%d</
 msgid "View"
 msgstr "Преглед"
 
-#, fuzzy
-msgid "A database update is available"
-msgstr "Няма достъпни i-MSCP обновявания"
-
-msgid "Update checking is disabled!"
+msgid "One or more updates to the database are available."
 msgstr ""
-
-msgid "New i-MSCP update is now available"
-msgstr "Достъпно е ново обновяване за i-MSCP"
 
 msgid "You are exceeding your traffic limit!"
 msgstr "Вие сте превишили Вашето ограничение за трафик!"
@@ -959,6 +1520,10 @@ msgstr "i-MSCP - Админ/Управление IP"
 msgid "Remove IP"
 msgstr "изтриете IP"
 
+#, fuzzy
+msgid "No IP's available"
+msgstr "Няма достъпни i-MSCP обновявания"
+
 msgid "New IP was added!"
 msgstr "Нов IP адрес беше добавлен!"
 
@@ -978,9 +1543,6 @@ msgstr "Това IP вече съществува!"
 msgid "Please select nework interface!"
 msgstr "Превключи на потребителски интерфейс"
 
-msgid "Manage IPs"
-msgstr "Управление IP адреси"
-
 msgid "Available IPs"
 msgstr "Доступни IP"
 
@@ -998,111 +1560,53 @@ msgstr "Добави IP"
 msgid "Are you sure you want to delete this IP: %s?"
 msgstr "Сигурни ли сте, че искате изтриете този IP: %s? "
 
-msgid "No domain system errors"
-msgstr "Няма грешки на системата за домейни"
-
-msgid "No domain alias system errors"
-msgstr "Няма грешки на системата за псевдоними на домейна"
-
-msgid "No subdomain system errors"
-msgstr "Няма грешки на системата за поддомейни"
+#, fuzzy
+msgid "i-MSCP - Admin/IP Usage"
+msgstr "i-MSCP - Админ/Управление IP"
 
 #, fuzzy
-msgid "No alias subdomain system errors"
-msgstr "Няма грешки на системата за поддомейни"
+msgid "Total Domains"
+msgstr "Домейни"
 
-msgid "No email account system errors"
-msgstr "Няма грешки на системата за пошенски кутии"
-
-msgid "i-MSCP debugger"
-msgstr "i-MSCP дебугер"
-
-msgid "Domain errors"
-msgstr "Грешки домейни"
-
-msgid "Domain alias errors"
-msgstr "Грешки псевдоними на домейна"
-
-msgid "Subdomain errors"
-msgstr "Грешки поддомейни"
-
-#, fuzzy
-msgid "Alias subdomain errors"
-msgstr "Преадресация на поддомейна"
-
-msgid "Mail account errors"
-msgstr "Грешки на пощенските кутии"
-
-msgid "i-MSCP Daemon tools"
-msgstr "i-MSCP Инструменти на системата"
-
-msgid "Execute requests"
-msgstr "Изпълни заявка"
-
-msgid "Set status to 'change'"
+msgid "No records found"
 msgstr ""
 
-#, php-format
-msgid "Daemon returned %d as status code"
-msgstr "Върнат статус код на системата: %d"
+#, fuzzy
+msgid "Admin/IP usage statistics"
+msgstr "Статистика домейна"
 
 #, fuzzy
-msgid "Unknown type!"
-msgstr "Неизвестен тип"
-
-msgid "Done"
-msgstr "Готово"
-
-msgid "Unknown Error"
-msgstr "Неизвестна Грешка"
+msgid "Domain Name"
+msgstr "Име на Домейна"
 
 #, fuzzy
-msgid "Enable update at"
-msgstr "Потребители на бази данни"
-
-msgid "Settings"
-msgstr "Настройки"
-
-msgid "Get it at"
-msgstr "Вземи от"
-
-msgid "i-MSCP updates"
-msgstr "Обновявания i-MSCP"
-
-msgid "Available i-MSCP updates"
-msgstr "Достъпни i-MSCP обновявания"
-
-msgid "No new i-MSCP updates available"
-msgstr "Няма достъпни i-MSCP обновявания"
+msgid "Reseller Name"
+msgstr "Име на риселъра"
 
 #, fuzzy
-msgid "Language was removed!"
-msgstr "Език беше сменен!"
-
-msgid "User language updated successfully!"
+msgid "User language updated successfully."
 msgstr "Език на потребителския интерфейса беше успешно променен!"
 
 msgid "i-MSCP - Admin/Change Language"
 msgstr "i-MSCP - Админ/Смяна на език"
 
-msgid "Language"
-msgstr "Език"
-
 #, fuzzy
 msgid "Choose your default language"
 msgstr "Избор на езика по подразбиране"
+
+#, fuzzy
+msgid "Error we have user that uses that language!"
+msgstr "Грешка: има риселър използващ этот IP!"
+
+#, fuzzy
+msgid "Language was removed!"
+msgstr "Език беше сменен!"
 
 msgid "Reseller list is empty!"
 msgstr "Списъкът с риселъри е празен!"
 
 msgid "i-MSCP - Admin/Manage users/Reseller assignment"
 msgstr "i-MSCP - Админ/Управление на потребители/Назначи риселър"
-
-msgid "Reseller assignment"
-msgstr "Назначи риселър"
-
-msgid "Reseller users"
-msgstr "Потребители на риселъра"
 
 msgid "Mark"
 msgstr "Марка"
@@ -1168,12 +1672,6 @@ msgstr ""
 msgid "i-MSCP - Admin/Manage users/User assignment"
 msgstr "i-MSCP - Админ/Управление на потребители/Назначи потребител"
 
-msgid "User assignment"
-msgstr "Назначи потребител"
-
-msgid "Users"
-msgstr "Потребители"
-
 msgid "User name"
 msgstr "Потребителско име"
 
@@ -1208,11 +1706,16 @@ msgstr ""
 msgid "User was disabled"
 msgstr "Потребителя беше забранен"
 
-msgid "Incorrect data input!"
-msgstr "Некоректен вход на данни!"
+#, fuzzy
+msgid "Uninstall"
+msgstr "деинсталирай"
 
-msgid "i-MSCP - Admin/Internationalisation"
-msgstr "i-MSCP - Админ/Интернационализация"
+#, php-format
+msgid "%d messages translated"
+msgstr "%d съобщението е преведено"
+
+msgid "Gzipped"
+msgstr ""
 
 msgid "Upload file error!"
 msgstr "Грешка при зареждане на файла!"
@@ -1226,7 +1729,8 @@ msgstr "Невъзможно е да се прочете файла с език�
 msgid "Uploaded file is not a valid language file!"
 msgstr "Качания файл не е валиден езиков файл!"
 
-msgid "Uploaded file does not contain the language information!"
+#, fuzzy
+msgid "Uploaded file does not contain language information!"
 msgstr "Качания файл не съдържа информация за език!"
 
 #, php-format
@@ -1243,15 +1747,8 @@ msgstr ""
 msgid "Language was updated!"
 msgstr "Език беше сменен!"
 
-msgid "uninstall"
-msgstr "деинсталирай"
-
-#, php-format
-msgid "%d messages translated"
-msgstr "%d съобщението е преведено"
-
-msgid "Internationalisation"
-msgstr "Интернационализация"
+msgid "i-MSCP - Admin/Internationalisation"
+msgstr "i-MSCP - Админ/Интернационализация"
 
 msgid "Installed languages"
 msgstr "Инсталирани езици"
@@ -1260,8 +1757,8 @@ msgid "Messages"
 msgstr "Съобщения"
 
 #, fuzzy
-msgid "Panel Default"
-msgstr "По подразбиране"
+msgid "Panel default language"
+msgstr "Избор на езика по подразбиране"
 
 msgid "Install new language"
 msgstr "Инсталирайте Нов език"
@@ -1274,6 +1771,9 @@ msgstr "Инсталиране"
 
 msgid "Export"
 msgstr "Експорт"
+
+msgid "Incorrect data input!"
+msgstr "Некоректен вход на данни!"
 
 msgid "i-MSCP - Admin/Change Password"
 msgstr "i-MSCP - Админ/Смяна парола"
@@ -1289,9 +1789,6 @@ msgstr "Текущата парола е неправилна!"
 
 msgid "User password updated successfully!"
 msgstr "Потребителската парола беше успешно променена!"
-
-msgid "Change password"
-msgstr "Смени парола"
 
 msgid "Password data"
 msgstr "данни парола"
@@ -1311,9 +1808,6 @@ msgstr "i-MSCP - Админ/Промяна персонали данни"
 
 msgid "Personal data updated successfully!"
 msgstr "Персоналните данни са променени успешно!"
-
-msgid "Change personal data"
-msgstr "Промяна персоналниданни"
 
 msgid "Personal data"
 msgstr "Персоналниданни"
@@ -1336,6 +1830,9 @@ msgstr "Етикет"
 msgid "Number"
 msgstr "Номер"
 
+msgid "This user name already exist!"
+msgstr "Такова потребителско име вече съществува"
+
 msgid "Incorrect email syntax!"
 msgstr "Некоректен синтаксис на имейла!"
 
@@ -1352,9 +1849,6 @@ msgstr "Ограничението за SQL потребители е <i>Заб�
 
 msgid "You must assign at least one IP number for a reseller!"
 msgstr "Трябва да дадете поне един IP адрес за риселъра"
-
-msgid "Add reseller"
-msgstr "Добави риселър"
 
 msgid "Domains limit<br><i>(0 unlimited)</i>"
 msgstr "Ограничение домейни<br><i>(0 без Ограничение)</i>"
@@ -1380,29 +1874,20 @@ msgstr "Резервно копие и възстановяване"
 msgid "Custom error pages"
 msgstr "Персонална страница за грешки"
 
-msgid "Protected areas"
-msgstr "Защитена зона"
-
-msgid "Webmail"
-msgstr ""
-
 msgid "Directory listing"
 msgstr "Списък папки"
 
 msgid "Logo upload"
 msgstr ""
 
-msgid "Support system"
-msgstr "Служба за поддръжка"
+msgid "Can use software depot"
+msgstr ""
+
+msgid "Can use websoftware depot"
+msgstr ""
 
 msgid "Reseller IPs"
 msgstr "Риселърско IP"
-
-msgid "Customer ID"
-msgstr "Клиент ID"
-
-msgid "Domains"
-msgstr "Домейни"
 
 msgid "Aliases"
 msgstr "Псевдоним"
@@ -1495,7 +1980,8 @@ msgstr ""
 msgid "i-MSCP - Reseller statistics"
 msgstr "i-MSCP - Статистика на риселъри"
 
-msgid "Not found reseller(s) in your system!"
+#, fuzzy
+msgid "No reseller is registered in your system!"
 msgstr "Риселъра не е открит във вашата система!"
 
 #, php-format
@@ -1545,9 +2031,6 @@ msgstr "%1$d <br/>от<br/> <b>%2$d</b>"
 msgid "%d <br/>of<br/> <b>unlimited</b>"
 msgstr "%d <br/>от<br/> <b>без Ограничение</b>"
 
-msgid "Reseller users table"
-msgstr "Таблица за потребителите на риселъра"
-
 msgid "This reseller has no domains."
 msgstr "Този риселър няма домейни."
 
@@ -1587,23 +2070,8 @@ msgstr "%s не съществува или празен"
 msgid "Anti-Rootkits Tools Log Checker"
 msgstr "Анти-шпионски инструмент за проврка на Логовете"
 
-msgid "i-MSCP - Admin/Server day stats"
-msgstr "i-MSCP - Админ/Дневна статистика на сървъра"
-
-msgid "Server day statistics"
-msgstr "Дневна статистика на сървъра"
-
-msgid "Month:"
-msgstr "Месец:"
-
-msgid "Year:"
-msgstr "Година:"
-
-msgid "Day:"
-msgstr "Ден:"
-
-msgid "Hour"
-msgstr "Час"
+msgid "i-MSCP - Admin/Server statistics"
+msgstr "i-MSCP - Админ/Статистика на сървъра"
 
 msgid "Web in"
 msgstr "Уеб-вход"
@@ -1639,20 +2107,24 @@ msgstr "Всички-вход"
 msgid "All out"
 msgstr "Всички-изход"
 
-msgid "i-MSCP - Admin/Server statistics"
-msgstr "i-MSCP - Админ/Статистика на сървъра"
+msgid "i-MSCP - Admin/Server day stats"
+msgstr "i-MSCP - Админ/Дневна статистика на сървъра"
 
-msgid "Server statistics"
-msgstr "Статистика на сървъра"
+msgid "Server day statistics"
+msgstr "Дневна статистика на сървъра"
 
-msgid "i-MSCP Admin / System Tools / Server Status"
+msgid "Month:"
+msgstr "Месец:"
+
+msgid "Year:"
+msgstr "Година:"
+
+msgid "Day:"
+msgstr "Ден:"
+
+#, fuzzy
+msgid "i-MSCP Admin / General Information / Server Status"
 msgstr "i-MSCP Админ / Системни инструменти / Статус на сървъра"
-
-msgid "UP"
-msgstr "ОК"
-
-msgid "DOWN"
-msgstr "Спрян"
 
 msgid "Host"
 msgstr "Хост"
@@ -1660,8 +2132,11 @@ msgstr "Хост"
 msgid "Service"
 msgstr "Служба"
 
-msgid "Server status"
-msgstr "Статус на сървъра"
+msgid "UP"
+msgstr "ОК"
+
+msgid "DOWN"
+msgstr "Спрян"
 
 msgid "i-MSCP - Admin/Manage Sessions"
 msgstr "i-MSCP - Админ/Управление на сесии"
@@ -1675,128 +2150,26 @@ msgstr "Тип потребител"
 msgid "Last access"
 msgstr "Последен достъп"
 
-msgid "Options"
-msgstr "Опции"
-
 msgid "Kill session"
 msgstr "Закрий сесията"
-
-msgid "You can only upload images!"
-msgstr "Вие можете само да качвате картинки!"
-
-msgid "Images have to be smaller than 195 x 195 pixels!"
-msgstr "Картинките трябва да бъдат по-малки от 195 x 195 пиксела!"
-
-msgid "Your logo was successful uploaded!"
-msgstr "Вашето лого беше успешно заредено!"
-
-msgid "Layout settings"
-msgstr "Настройки на макета"
-
-msgid "Installed layouts"
-msgstr "Инсталирани макети"
-
-msgid "Layout name"
-msgstr "Име на макет"
-
-msgid "default"
-msgstr "по подразбиране"
-
-msgid "Upload logo"
-msgstr "Качи лого"
-
-msgid "Logo file"
-msgstr "Файл за Лого"
-
-msgid "Upload"
-msgstr "Закачка"
-
-msgid "Remove"
-msgstr "изтриете"
-
-msgid "Choose default layout"
-msgstr "Избор макет по подразбиране"
-
-msgid "Layout"
-msgstr "Макет"
-
-msgid "Please specify a subject!"
-msgstr "Моля, въведете тема!"
-
-msgid "Please specify message!"
-msgstr "Моля, въведете съобщение!"
-
-msgid "Auto email template data updated!"
-msgstr "Шаблон за авто разпращане е променен!"
-
-msgid "i-MSCP - Admin/Lostpw email setup"
-msgstr "i-MSCP - Админ/Настройка за възстановяване на парола"
-
-msgid "Lost password e-mail"
-msgstr "Възстановена парола"
-
-msgid "Message template info"
-msgstr "Информация за шаблона"
-
-msgid "Message template"
-msgstr "Шаблон на съобщението"
-
-msgid "Activation E-Mail"
-msgstr "Активация имайл"
-
-#, fuzzy
-msgid "Password E-Mail"
-msgstr "данни парола"
-
-msgid "User login (system) name"
-msgstr "Системно име (логин) потребител"
-
-msgid "User password"
-msgstr "Потребителска парола"
-
-msgid "User (first and last) name"
-msgstr "Име и Фамилия потребител"
-
-msgid "Lost password link"
-msgstr "Връзка към активация на възстановена парола"
-
-msgid "Subject"
-msgstr "Тема"
-
-msgid "Apply changes"
-msgstr "Приеми промените"
-
-msgid "URL to this admin panel"
-msgstr ""
-
-#, fuzzy
-msgid "URL protocol"
-msgstr "Протокол"
-
-msgid "i-MSCP - Admin/Maintenance mode"
-msgstr "i-MSCP - Админ/Режим на поддръжка"
-
-msgid "Settings saved !"
-msgstr "Настройките са запазени !"
-
-msgid "Maintenance mode"
-msgstr "Режим на поддръжка"
-
-msgid "Under this mode only administrators can login"
-msgstr "В този режим само администраторите могат да влизат"
 
 msgid "i-MSCP - Admin/Settings"
 msgstr "i-MSCP - Админ/Настройки"
 
-msgid "ERROR: Only positive numbers are allowed !"
+#, fuzzy
+msgid "Error: Only positive numbers are allowed!"
 msgstr "Грешка: Само положителни числа са разрешени !"
 
-#, fuzzy
-msgid "Settings saved!"
-msgstr "Настройките са запазени !"
+#, php-format
+msgid "%d configuration parameter(s) was updated!"
+msgstr ""
 
-msgid "General settings"
-msgstr "Общи настройки"
+#, php-format
+msgid "%d configuration parameter(s) was created!"
+msgstr ""
+
+msgid "Nothing's been changed!"
+msgstr ""
 
 msgid "Activation link expire time (minutes)"
 msgstr "Срок на действие на връзките (минути)"
@@ -1843,12 +2216,8 @@ msgstr ""
 msgid "E-Mail accounts are hard suspended"
 msgstr ""
 
-#, fuzzy
-msgid "Panel default language"
-msgstr "Избор на езика по подразбиране"
-
-msgid "Server ports"
-msgstr "Портове на сървъра"
+msgid "Apply changes"
+msgstr "Приеми промените"
 
 msgid "Hosting plans available for"
 msgstr ""
@@ -1921,54 +2290,141 @@ msgstr ""
 msgid "Maximal number of labels for subdomains"
 msgstr ""
 
-#, fuzzy
-msgid ""
-"ERROR: Only letters, numbers, dash and underscore are allowed for services "
-"names!"
-msgstr ""
-"Грешка: Само латински символи, числа, тире и ниска черта се разрешават!"
+msgid "You can only upload images!"
+msgstr "Вие можете само да качвате картинки!"
+
+msgid "Images have to be smaller than 195 x 195 pixels!"
+msgstr "Картинките трябва да бъдат по-малки от 195 x 195 пиксела!"
+
+msgid "Your logo was successful uploaded!"
+msgstr "Вашето лого беше успешно заредено!"
+
+msgid "Installed layouts"
+msgstr "Инсталирани макети"
+
+msgid "Layout name"
+msgstr "Име на макет"
+
+msgid "default"
+msgstr "по подразбиране"
+
+msgid "Upload logo"
+msgstr "Качи лого"
+
+msgid "Logo file"
+msgstr "Файл за Лого"
+
+msgid "Upload"
+msgstr "Закачка"
+
+msgid "Remove"
+msgstr "изтриете"
+
+msgid "Choose default layout"
+msgstr "Избор макет по подразбиране"
+
+msgid "Please specify a subject!"
+msgstr "Моля, въведете тема!"
+
+msgid "Please specify message!"
+msgstr "Моля, въведете съобщение!"
+
+msgid "Auto email template data updated!"
+msgstr "Шаблон за авто разпращане е променен!"
+
+msgid "i-MSCP - Admin/Lostpw email setup"
+msgstr "i-MSCP - Админ/Настройка за възстановяване на парола"
+
+msgid "Lost password e-mail"
+msgstr "Възстановена парола"
+
+msgid "Message template info"
+msgstr "Информация за шаблона"
+
+msgid "Message template"
+msgstr "Шаблон на съобщението"
+
+msgid "Activation E-Mail"
+msgstr "Активация имайл"
 
 #, fuzzy
-msgid "ERROR: Wrong Ip number!"
+msgid "Password E-Mail"
+msgstr "данни парола"
+
+msgid "User login (system) name"
+msgstr "Системно име (логин) потребител"
+
+msgid "User password"
+msgstr "Потребителска парола"
+
+msgid "User (first and last) name"
+msgstr "Име и Фамилия потребител"
+
+msgid "Lost password link"
+msgstr "Връзка към активация на възстановена парола"
+
+msgid "Subject"
+msgstr "Тема"
+
+msgid "URL to this admin panel"
+msgstr ""
+
+#, fuzzy
+msgid "URL protocol"
+msgstr "Протокол"
+
+msgid "i-MSCP - Admin/Maintenance mode"
+msgstr "i-MSCP - Админ/Режим на поддръжка"
+
+msgid "Settings saved !"
+msgstr "Настройките са запазени !"
+
+msgid "Under this mode only administrators can login"
+msgstr "В този режим само администраторите могат да влизат"
+
+#, fuzzy
+msgid "Error: Wrong Ip number!"
 msgstr "Неправилен IP адрес!"
 
 #, fuzzy
-msgid "ERROR: Only positive numbers are allowed for services ports!"
+msgid "Error: Only positive numbers are allowed for services ports!"
 msgstr "Грешка: Само положителни числа са разрешени !"
 
 #, fuzzy
-msgid "ERROR: Service port with same name already exists!"
+msgid "Error: Service port with same name already exists!"
 msgstr "Грешка: Портът вече съществува!"
 
-msgid "ERROR: Unallowed protocol!"
+msgid "Error: Unallowed protocol!"
 msgstr ""
 
-msgid "ERROR: Bad value for show entry!"
+msgid "Error: Wrong value for show entry!"
 msgstr ""
 
 #, fuzzy
-msgid "Service port was added!"
+msgid "Service port was successfully added"
 msgstr "Нов IP адрес беше добавлен!"
 
-#, php-format
-msgid "%d Service(s) port was updated!"
+#, fuzzy, php-format
+msgid "%d Service(s) port was successfully updated"
 msgstr ""
 
-msgid "Nothing's been changed!"
-msgstr ""
-
-msgid "You have no custom service ports defined."
-msgstr "Няма портове избрани за Изборни Услуги."
-
-msgid "ERROR: Unknown service port name!"
+msgid "Nothing's been changed"
 msgstr ""
 
 #, fuzzy
-msgid "Service port was removed!"
+msgid "You have no custom service ports defined"
+msgstr "Няма портове избрани за Изборни Услуги."
+
+#, fuzzy
+msgid "Service port was successfully removed!"
 msgstr "Билет перезагружен!"
 
-msgid "ERROR: You are not allowed to remove this port entry!"
+msgid "Error: You are not allowed to remove this service port entry!"
 msgstr ""
+
+#, fuzzy
+msgid "i-MSCP - Admin / Settings"
+msgstr "i-MSCP - Админ/Настройки"
 
 msgid "udp"
 msgstr ""
@@ -2008,9 +2464,6 @@ msgstr "настройките за трафик на сървъра са обн
 msgid "Modify"
 msgstr "Промяна"
 
-msgid "Server traffic settings"
-msgstr "настройки за трафик на сървъра"
-
 msgid "Set server traffic settings"
 msgstr "Установете настройките за трафик на сървъра"
 
@@ -2023,13 +2476,398 @@ msgstr "Предупреждение за трафик [Мб]"
 msgid "i-MSCP - Admin/Manage users/Email setup"
 msgstr "i-MSCP - Админ/Управление на потребители/Настройка на Пощенска кутия"
 
-msgid "Email setup"
-msgstr "Настройка на Пощенска кутия"
-
 msgid "User real (first and last) name"
 msgstr "Настоящо Име и Фамилия на потребител"
 
 msgid "User type (admin, reseller, user)"
+msgstr ""
+
+#, fuzzy
+msgid "Wrong software id."
+msgstr "Неверна Заявка ID!"
+
+msgid "Software was activated."
+msgstr ""
+
+#, fuzzy
+msgid "No Resellers found."
+msgstr "Риселъри"
+
+#, fuzzy
+msgid "Rights succesfully added."
+msgstr "SQL потребители успешно добавлен!"
+
+msgid "Rights succesfully removed."
+msgstr ""
+
+#, php-format
+msgid "%1$s (%2$s)"
+msgstr ""
+
+#, fuzzy
+msgid "Software was deleted."
+msgstr "IP удалён!"
+
+#, fuzzy
+msgid "Fill out a message text!"
+msgstr "Вашето съобщение беше изпратено!"
+
+#, fuzzy
+msgid "i-MSCP - Application Management"
+msgstr "i-MSCP - Клиент/Мениджър за Планови Задачи"
+
+msgid "Message to reseller before deleting the software"
+msgstr ""
+
+#, fuzzy
+msgid "Delete reseller software"
+msgstr "Редакцията на риселъра беше прекратена!"
+
+#, fuzzy
+msgid "Reseller data"
+msgstr "Име на риселъра"
+
+msgid "Delete software and send message"
+msgstr ""
+
+#, fuzzy, php-format
+msgid "File does not exist. %1$s.tar.gz"
+msgstr "%s не съществува"
+
+#, fuzzy
+msgid "Software was imported succesfully."
+msgstr "SQL Базата данни беше успешно изтрита!"
+
+msgid "Download"
+msgstr ""
+
+msgid "Activate"
+msgstr "Активирай"
+
+#, fuzzy
+msgid "Import"
+msgstr "Експорт"
+
+msgid "No software is waiting for activation"
+msgstr ""
+
+#, fuzzy
+msgid "Package installed successfully!"
+msgstr "FTP акаунта беше успешно изтрит!"
+
+msgid "Rights"
+msgstr ""
+
+msgid "Softwarerights"
+msgstr ""
+
+msgid "Installing your uploaded package. Please refresh this site."
+msgstr ""
+
+msgid ""
+"The package will be installed automaticly to your system after upload.<br /"
+">Refresh your site to see the new status!"
+msgstr ""
+
+#, fuzzy
+msgid "installing"
+msgstr "деинсталирай"
+
+msgid "Failure in the package. Deleting!"
+msgstr ""
+
+msgid ""
+"There is an Error inside your package. Please check it!<br />Refresh your "
+"site to see the new status!"
+msgstr ""
+
+#, fuzzy
+msgid "deleting"
+msgstr "Заявки за настройка"
+
+msgid "Your package is corrupt. Please correct it!"
+msgstr ""
+
+msgid "Package already exist in the software depot!"
+msgstr ""
+
+msgid ""
+"Check your software depot uploads!<br />It is not allowed to upload this "
+"package two times.<br />Refresh your site to see the new status!"
+msgstr ""
+
+#, fuzzy
+msgid "This package already exist in the software depot!"
+msgstr "домейн с такова име вече съществува в системата!"
+
+msgid "Package already exist in the reseller depot!"
+msgstr ""
+
+msgid ""
+"Check the reseller uploads!<br />It is not allowed to upload this package "
+"two times.<br />Refresh your site to see the new status!"
+msgstr ""
+
+#, php-format
+msgid "This package already exist in the depot of the reseller \"%1$s\"!"
+msgstr ""
+
+msgid "No software in software depot available!"
+msgstr ""
+
+msgid "No reseller with activated software installer found!"
+msgstr ""
+
+msgid "Unable to read xml file for web softwares!"
+msgstr ""
+
+msgid "i-MSCP application installer web software depot"
+msgstr ""
+
+#, fuzzy
+msgid "Update from web depot"
+msgstr "Обнови заявката"
+
+#, fuzzy
+msgid "Package title"
+msgstr "Цена на Пакета"
+
+#, fuzzy
+msgid "Package install type"
+msgstr "Параметри на пакета"
+
+#, fuzzy
+msgid "Package version"
+msgstr "Цена на Пакета"
+
+#, fuzzy
+msgid "Package language"
+msgstr "Параметри на пакета"
+
+#, fuzzy
+msgid "Package type"
+msgstr "Цена на Пакета"
+
+#, fuzzy
+msgid "Package vendor HP"
+msgstr "Параметри на пакета"
+
+#, fuzzy
+msgid "Package actions"
+msgstr "Параметри на пакета"
+
+msgid "Web software depot packages total"
+msgstr ""
+
+msgid "You have to choose between file-upload and wget-function."
+msgstr ""
+
+msgid "You must select a file to upload/download."
+msgstr ""
+
+msgid "File needs to be a .tar.gz-archive"
+msgstr ""
+
+#, php-format
+msgid "Error: Could not upload file. Max. upload filesize (%1$d MB) reached?"
+msgstr ""
+
+#, php-format
+msgid ""
+"Error: Your remote filesize (%1$d B) is lower than 1 Byte. Please check your "
+"URL!"
+msgstr ""
+
+#, php-format
+msgid ""
+"Error: Max. remote filesize (%1$d MB) is reached. Your remote file is %2$d MB"
+msgstr ""
+
+#, fuzzy
+msgid "Error: Remote File not found!"
+msgstr "Грешка 404 (не е намерен)"
+
+msgid "Error: Could not upload the file. File not found!"
+msgstr ""
+
+#, fuzzy
+msgid "File was successfully uploaded."
+msgstr "Вашето лого беше успешно заредено!"
+
+msgid "Software depot"
+msgstr ""
+
+msgid "Software depot total"
+msgstr ""
+
+msgid "Software depot upload"
+msgstr ""
+
+#, php-format
+msgid "Choose file (Max: %1$d MB)"
+msgstr ""
+
+#, php-format
+msgid "or remote file (Max: %1$d MB)"
+msgstr ""
+
+#, fuzzy
+msgid "Upload now"
+msgstr "Качи лого"
+
+msgid "Awaiting Activation"
+msgstr ""
+
+#, fuzzy
+msgid "Reseller software list"
+msgstr "Статистика риселър"
+
+#, fuzzy
+msgid "Application"
+msgstr "Действие"
+
+msgid "App-Version"
+msgstr ""
+
+msgid "Type"
+msgstr "Тип"
+
+#, fuzzy
+msgid "Depot import"
+msgstr "Портове на сървъра"
+
+msgid "Software total"
+msgstr ""
+
+#, fuzzy
+msgid "Reseller total"
+msgstr "Име на риселъра"
+
+#, fuzzy
+msgid "Waiting for activation"
+msgstr "очакване за подтвърждение"
+
+#, fuzzy
+msgid "Activated software"
+msgstr "Активирай"
+
+msgid "Total installations"
+msgstr ""
+
+#, fuzzy
+msgid "Are you sure you want to activate this package?"
+msgstr "Уверени ли сте,че искате да изтриете тази заявка?"
+
+#, fuzzy
+msgid "Are you sure you want to import this package into the software depot?"
+msgstr "Уверени ли сте,че искате да изтриете тази заявка?"
+
+#, fuzzy
+msgid "Are you sure you want to delete this package?"
+msgstr "Уверени ли сте,че искате да изтриете тази заявка?"
+
+#, fuzzy
+msgid "i-MSCP - Application management options"
+msgstr "i-MSCP - Админ/Управление на сесии"
+
+msgid "Main application installer options updated!"
+msgstr ""
+
+msgid "Application management options"
+msgstr ""
+
+msgid "Main application installer options"
+msgstr ""
+
+msgid "Using i-MSCP application installer websoftware depot"
+msgstr ""
+
+msgid "i-MSCP websoftware depot XML-File URL"
+msgstr ""
+
+msgid "Last i-MSCP websoftware depot update"
+msgstr ""
+
+#, fuzzy
+msgid "not available"
+msgstr "Доступни IP"
+
+#, fuzzy
+msgid "Wrong reseller id."
+msgstr "От риселъра"
+
+msgid "This package is installed on following domain(s):"
+msgstr ""
+
+msgid "This package is not installed"
+msgstr ""
+
+#, php-format
+msgid "%1$s - (Softwaredepot)"
+msgstr ""
+
+#, php-format
+msgid "%1$s`s - Software"
+msgstr ""
+
+#, fuzzy
+msgid "No software available!"
+msgstr "Няма достъпни i-MSCP обновявания"
+
+#, fuzzy
+msgid "Installed on"
+msgstr "Инсталирани макети"
+
+#, fuzzy
+msgid "Reseller list"
+msgstr "Риселъри"
+
+msgid "Softwaredepot"
+msgstr ""
+
+msgid "Admin not available"
+msgstr ""
+
+#, fuzzy
+msgid "Are you sure to remove the permissions ?"
+msgstr "Сигурни ли сте,че искате да възстановите архивното копие?"
+
+msgid "No Reseller with permissions for this software found"
+msgstr ""
+
+#, fuzzy
+msgid "All reseller"
+msgstr "Всички риселъри"
+
+msgid "No Reseller available to add the permissions"
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP - Application Management (Permissions)"
+msgstr "i-MSCP - Админ/Управление на сесии"
+
+#, php-format
+msgid "%1$s - (Version: %2$s, Language: %3$s)"
+msgstr ""
+
+msgid "Add permissions for reseller to software:"
+msgstr ""
+
+msgid "Remove permissions"
+msgstr ""
+
+#, fuzzy
+msgid "Reseller with permissions total"
+msgstr "Таблица със статистиките на риселъра"
+
+msgid "Added by"
+msgstr ""
+
+#, fuzzy
+msgid "Add permissions"
+msgstr "Добави съществуващ потребител"
+
+msgid "Software permissions"
 msgstr ""
 
 msgid "CPU bogomips"
@@ -2084,35 +2922,20 @@ msgstr "Размер"
 msgid "Swap"
 msgstr "Swap Файл"
 
-msgid "System info"
-msgstr "Системна информация"
-
 msgid "Vital system info"
 msgstr "Важна системна информация"
 
 msgid "Total"
 msgstr "Всичко"
 
-msgid "Type"
-msgstr "Тип"
-
 msgid "Up time"
 msgstr "Време онлайн"
-
-msgid "You have no support tickets."
-msgstr "Няма билети за поддръжка."
 
 msgid "i-MSCP - Client/Questions & Comments"
 msgstr "i-MSCP - Клиент/Въпроси и Коментари"
 
 msgid "Support tickets"
 msgstr "Билети поддръжка"
-
-msgid "From"
-msgstr "От"
-
-msgid "To"
-msgstr ""
 
 msgid "Priority"
 msgstr "Приоритет"
@@ -2129,6 +2952,9 @@ msgstr "Отворени билети"
 msgid "Closed tickets"
 msgstr "Закрити билети"
 
+msgid "From"
+msgstr "От"
+
 msgid "Support ticket deleted successfully!"
 msgstr "Билета за поддръжка е изтрит успешно!"
 
@@ -2138,23 +2964,8 @@ msgstr "Всички отворени билети за поддръжка са 
 msgid "All closed support tickets deleted successfully!"
 msgstr "Всички затворени билети за поддръжка са успешно изтрити!"
 
-msgid "[New]"
-msgstr "[Нов]"
-
-msgid "[Re]"
-msgstr ""
-
 msgid "i-MSCP - Client/Enable Mail Autoresponder"
 msgstr "i-MSCP - Клиент/Активирай Имейл Автоматичен отговор"
-
-msgid "Ticket not found!"
-msgstr "Билета не е намерен!"
-
-msgid "Open ticket"
-msgstr "Отворен билет"
-
-msgid "Close ticket"
-msgstr "Затворен билет"
 
 msgid "i-MSCP - Client: Support System: View Ticket"
 msgstr "i-MSCP - Клиент : Служба поддръжка: Показат Билети"
@@ -2162,14 +2973,8 @@ msgstr "i-MSCP - Клиент : Служба поддръжка: Показат 
 msgid "Please type your message!"
 msgstr "Моля, въведете Ваше съобщение!"
 
-msgid "Message was sent."
-msgstr "съобщението беше изпратено."
-
-msgid "Ticket was closed!"
-msgstr "Билет закрит!"
-
-msgid "Ticket was reopened!"
-msgstr "Билет перезагружен!"
+msgid "Ticket not found!"
+msgstr "Билета не е намерен!"
 
 msgid "i-MSCP - Admin: Support System: View Ticket"
 msgstr "i-MSCP - Админ : Служба поддръжка: Преглед Билетов"
@@ -2238,47 +3043,6 @@ msgstr ""
 msgid "Yes, delete the domain."
 msgstr "%s изтрий целия лог на администратора!"
 
-msgid "i-MSCP Client : Add Alias"
-msgstr "i-MSCP клиент: Добави псевдоним"
-
-msgid "Manage domain alias"
-msgstr "Управление псевдонимами"
-
-msgid "Add domain alias"
-msgstr "Добави псевдоним домейна"
-
-msgid "User account"
-msgstr "Учётная запис потребител"
-
-msgid "Directory mount point"
-msgstr "Точка за монтиране на папка"
-
-msgid "Forward to URL"
-msgstr "Ппенасочване на УРЛ"
-
-msgid "Add alias"
-msgstr "Добави псевдоним"
-
-msgid "You do not need 'www.' i-MSCP will add it on its own."
-msgstr "Няма нужда от 'www.' i-MSCP го добавя само."
-
-#, fuzzy
-msgid "Wrong domain name!"
-msgstr "Неправилен синтаксис за име на домейн!"
-
-#, fuzzy
-msgid "Please write mount point!"
-msgstr "Изчакайте да се обнови"
-
-msgid "Enable Forward"
-msgstr "Активирай преадресация"
-
-msgid "Enable"
-msgstr "Включи"
-
-msgid "Disable"
-msgstr "Забрани"
-
 msgid "Domain alias limit reached!"
 msgstr "Ограничението за псевдоними е достигнато!"
 
@@ -2311,6 +3075,44 @@ msgstr "Псевдонимът е в графика за активации!"
 
 msgid "Alias scheduled for addition!"
 msgstr "Псевдонимът е добавен в графика за добавяне!"
+
+msgid "i-MSCP Client : Add Alias"
+msgstr "i-MSCP клиент: Добави псевдоним"
+
+msgid "Manage domain alias"
+msgstr "Управление псевдонимами"
+
+msgid "Add domain alias"
+msgstr "Добави псевдоним домейна"
+
+msgid "User account"
+msgstr "Учётная запис потребител"
+
+msgid "Directory mount point"
+msgstr "Точка за монтиране на папка"
+
+msgid "Forward to URL"
+msgstr "Ппенасочване на УРЛ"
+
+msgid "You do not need 'www.' i-MSCP will add it on its own."
+msgstr "Няма нужда от 'www.' i-MSCP го добавя само."
+
+#, fuzzy
+msgid "Wrong domain name!"
+msgstr "Неправилен синтаксис за име на домейн!"
+
+#, fuzzy
+msgid "Please write mount point!"
+msgstr "Изчакайте да се обнови"
+
+msgid "Enable Forward"
+msgstr "Активирай преадресация"
+
+msgid "Enable"
+msgstr "Включи"
+
+msgid "Disable"
+msgstr "Забрани"
 
 #, fuzzy
 msgid ""
@@ -2361,9 +3163,6 @@ msgstr "Бекап архива е добавен в графика за въз�
 
 msgid "i-MSCP - Client/Daily Backup"
 msgstr "i-MSCP - Клиент/Ежедневен бекап"
-
-msgid "Daily backup"
-msgstr "Ежедневен бекап"
 
 msgid "Instructions to download today's backup"
 msgstr "Инструкция за сваляне на днешното архивно копие"
@@ -2435,8 +3234,11 @@ msgstr "Редакция на задача"
 msgid "Cronjobs"
 msgstr "Задачи"
 
+msgid "You are not allowed to remove this DNS record!"
+msgstr ""
+
 #, fuzzy
-msgid "DNS zone record scheduled for deletion!"
+msgid "Custom DNS record scheduled for deletion!"
 msgstr "Поддомейна е добавен в графика за изтриване!"
 
 #, fuzzy
@@ -2498,6 +3300,10 @@ msgstr "данни парола"
 msgid "DNS zone's records (EXPERIMENTAL)"
 msgstr ""
 
+#, fuzzy
+msgid "You are not allowed to edit this DNS record!"
+msgstr "Няма записи за псевдоними."
+
 #, php-format
 msgid "Use of disallowed char(\"%s\") in CNAME"
 msgstr ""
@@ -2556,40 +3362,8 @@ msgid "Unknown zone type %s!"
 msgstr ""
 
 #, fuzzy
-msgid "Manual zone's records list is empty!"
-msgstr "Списъкът с пощенски кутии е празен!"
-
-#, php-format
-msgid "%s record"
-msgstr ""
-
-msgid "Subdomain list is empty!"
-msgstr "Списъкът с поддомейни е празен"
-
-msgid "Delete order"
-msgstr "Изтрий заявка"
-
-msgid "Alias list is empty!"
-msgstr "Списъкът с псевдоними е празен!"
-
-msgid "i-MSCP - Client/Manage Domains"
-msgstr "i-MSCP - Клиент/Управление на домейни"
-
-msgid "Manage domains"
-msgstr "Управление на домейни"
-
-msgid "Mount point"
-msgstr "Точка на монтиране"
-
-msgid "Forward"
-msgstr "Пренасочване"
-
-msgid "Actions"
-msgstr "Действия"
-
-#, fuzzy
-msgid "Record data"
-msgstr "данни ядро"
+msgid "Error: DNS record already exist!"
+msgstr "Потребителят вече съществува!"
 
 msgid "i-MSCP - Client/Domain Statistics"
 msgstr "i-MSCP - Клиент/Статистика на домейна"
@@ -2609,6 +3383,39 @@ msgstr ""
 msgid "Sum"
 msgstr ""
 
+#, fuzzy
+msgid "Manual zone's records list is empty!"
+msgstr "Списъкът с пощенски кутии е празен!"
+
+#, php-format
+msgid "%s record"
+msgstr ""
+
+msgid "Subdomain list is empty!"
+msgstr "Списъкът с поддомейни е празен"
+
+msgid "Delete order"
+msgstr "Изтрий заявка"
+
+msgid "Alias list is empty!"
+msgstr "Списъкът с псевдоними е празен!"
+
+msgid "i-MSCP - Client/Manage Domains"
+msgstr "i-MSCP - Клиент/Управление на домейни"
+
+msgid "Mount point"
+msgstr "Точка на монтиране"
+
+msgid "Forward"
+msgstr "Пренасочване"
+
+msgid "Actions"
+msgstr "Действия"
+
+#, fuzzy
+msgid "Record data"
+msgstr "данни ядро"
+
 msgid "i-MSCP - Client/Manage Error Custom Pages"
 msgstr "i-MSCP - Клиент/Управление на страниците с грешки"
 
@@ -2621,7 +3428,8 @@ msgstr "Редакция на страницата с грешки"
 msgid "Custom error page was updated!"
 msgstr "Ручната страница с грешки беше променена!"
 
-msgid "System error - custom error page was NOT updated!"
+#, fuzzy
+msgid "System error - custom error page was not updated!"
 msgstr "Системна Грешка - страницата с грешки не е обновена!"
 
 msgid "Error 401 (unauthorised)"
@@ -2639,17 +3447,11 @@ msgstr "Грешка 500 (вътрешна сървърна грешка)"
 msgid "Error 503 (service unavailable)"
 msgstr "Error 503 (Услугата не доступна)"
 
-msgid "Error pages"
-msgstr "Страници с грешки"
-
 msgid "FTP list is empty!"
 msgstr "Списъкът с FTP е празен!"
 
 msgid "i-MSCP - Client/Manage Users"
 msgstr "i-MSCP - Клиент/Управление на потребители"
-
-msgid "Manage users"
-msgstr "Управление на потребители"
 
 msgid "FTPs total"
 msgstr "FTPs Всичко"
@@ -2659,6 +3461,10 @@ msgstr "FTP потребителии"
 
 msgid "FTP account"
 msgstr "FTP акаунт"
+
+#, fuzzy
+msgid "Login As"
+msgstr "Вход"
 
 msgid "Empty List"
 msgstr "Празен Списък"
@@ -2698,7 +3504,8 @@ msgstr ""
 msgid "Alias list is empty! You cannot add FTP accounts there!"
 msgstr "Списъкът с псевдоними е празен! Вие не може да добави тук FTP акаунт!"
 
-msgid "Please specify other FTP account dir!"
+#, fuzzy
+msgid "Please specify other FTP account directory!"
 msgstr "Укажете друга FTP акаунт директория!"
 
 msgid "FTP accounts limit reached!"
@@ -2706,9 +3513,6 @@ msgstr "Ограничението за брой FTP акаунти е дост�
 
 msgid "i-MSCP - Client/Add FTP User"
 msgstr "i-MSCP - Клиент/Добави FTP потребител"
-
-msgid "Add FTP user"
-msgstr "Добави FTP потребител"
 
 msgid "To main domain"
 msgstr "Към главния домейн"
@@ -2726,16 +3530,17 @@ msgid "Choose dir"
 msgstr "Изберете директория"
 
 #, fuzzy
-msgid "Cannot open directory!<br>Please contact your administrator!"
+msgid "Unknown FTP user id!"
+msgstr "Неизвестен тип"
+
+#, fuzzy
+msgid "Cannot open directory! Please contact your administrator!"
 msgstr ""
 "Невъзможно е да отвори директорията !<br> Свържете се със своя "
 "администратор !"
 
 msgid "Parent Directory"
 msgstr "Родителска Директория"
-
-msgid "Protect it"
-msgstr "Защити"
 
 msgid "i-MSCP - Client/Webtools"
 msgstr "i-MSCP - Клиент/Уеб инструменти"
@@ -2757,6 +3562,11 @@ msgstr "FTP акаунта е обновен!"
 
 msgid "i-MSCP - Client/Edit FTP Account"
 msgstr "i-MSCP - Клиент/Редакция на FTP акаунт"
+
+msgid ""
+"User does not exist or you do not have permission to access this interface!"
+msgstr ""
+"Потребителя не съществува или Вие нямате право на достъпа до този интерфейс!"
 
 msgid "Edit FTP user"
 msgstr "Редакция на FTP потребител"
@@ -2809,6 +3619,17 @@ msgstr "поддержка PHP: включена"
 
 msgid ""
 "You have DNS enabled, but the new hosting plan doesn't has this feature."
+msgstr ""
+
+msgid "i-MSCP application installer: enabled"
+msgstr ""
+
+msgid "i-MSCP application installer: disabled"
+msgstr ""
+
+msgid ""
+"You have the i-MSCP application installer enabled, but the new hosting plan "
+"doesn't has this feature."
 msgstr ""
 
 msgid "You have more disk space in use than the new hosting plan limits."
@@ -2913,21 +3734,12 @@ msgstr "Вие сте превишили ограничението за дис�
 msgid "You have no new support questions!"
 msgstr "Няма заявка за тех.поддръжка!"
 
-msgid "Not Set"
-msgstr ""
-
 #, fuzzy
 msgid "This Domain is expired"
 msgstr "Параметри домейна"
 
 msgid "i-MSCP - Client/Main Index"
 msgstr "i-MSCP - Клиент/Главен индекс"
-
-msgid "General information"
-msgstr "Обща информация"
-
-msgid "Account name"
-msgstr "Име на акаунта"
 
 msgid "Main domain"
 msgstr "Главен домейн"
@@ -2949,6 +3761,9 @@ msgstr "Използвано дисково пространство"
 
 msgid "Alternative URL to reach your website"
 msgstr ""
+
+msgid "User language updated successfully!"
+msgstr "Език на потребителския интерфейса беше успешно променен!"
 
 msgid "i-MSCP - Client/Change Language"
 msgstr "i-MSCP - Клиент/Промяна език"
@@ -3079,6 +3894,18 @@ msgstr "Вашето съобщение"
 msgid "Enable mail auto responder"
 msgstr "Включи пощенския Автоматичен отговор"
 
+msgid "Delete CatchAll"
+msgstr "Изтрий CatchAll"
+
+msgid "None"
+msgstr "Празно"
+
+msgid "Create catch all"
+msgstr "Създай catch all"
+
+msgid "Catch all account"
+msgstr "Catch all акаунт"
+
 msgid "Catch all account scheduled for creation!"
 msgstr "Catch all акаунт вграфика за създаване"
 
@@ -3094,23 +3921,8 @@ msgstr "Создат CatchAll пощенска кутия"
 msgid "Mail accounts list"
 msgstr "Списък пощенски кутии"
 
-msgid "Create catch all"
-msgstr "Създай catch all"
-
 msgid "Catch all account scheduled for deletion!"
 msgstr "Catch all акаунта е добавен в графика за изтриване!"
-
-msgid "Delete CatchAll"
-msgstr "Изтрий CatchAll"
-
-msgid "None"
-msgstr "Празно"
-
-msgid "Catch all account"
-msgstr "Catch all акаунт"
-
-msgid "Catch all"
-msgstr "Обхвани Всички"
 
 msgid "Please delete first CatchAll account for this email!"
 msgstr "Първо изтрийте CatchAll акаунта за тази пощенска кутия!"
@@ -3132,6 +3944,34 @@ msgstr "i-MSCP - Клиент/Смени парола"
 
 msgid "i-MSCP - Client/Change Personal Data"
 msgstr "i-MSCP - Клиент/Смяна на персонални данни"
+
+#, fuzzy
+msgid "Unknown SQL user id."
+msgstr "Неизвестна Грешка"
+
+msgid "Error: An error occurred while authentication."
+msgstr ""
+
+msgid "You do not have protected areas"
+msgstr "Нямате защитени зони"
+
+msgid "Manage users and groups"
+msgstr "Управление потребители и групи"
+
+msgid "Group name"
+msgstr "Име на група"
+
+msgid "Group members"
+msgstr "Членове на група"
+
+msgid "Add group"
+msgstr "Добави група"
+
+msgid "Group"
+msgstr "Група"
+
+msgid "Add new protected area"
+msgstr "Добави нова защитена зона"
 
 msgid "Please choose user or group"
 msgstr "Моля, изберете потребител или група"
@@ -3179,6 +4019,9 @@ msgstr "Път"
 msgid "Groups"
 msgstr "Групи"
 
+msgid "Protect it"
+msgstr "Защити"
+
 msgid "User auth"
 msgstr "Право потребител"
 
@@ -3191,9 +4034,6 @@ msgstr "Име на зона"
 msgid "Unprotect it"
 msgstr "Махни защита"
 
-msgid "Manage users and groups"
-msgstr "Управление потребители и групи"
-
 msgid "Protected area status should be OK if you want to delete it!"
 msgstr ""
 "Статусът на защитената зона трябва да бъде нормален ако искате да го "
@@ -3204,27 +4044,6 @@ msgstr "Защитената зона е изтрита успешно!"
 
 msgid "Permission deny!"
 msgstr "Достъпът е забранен!"
-
-msgid "You do not have protected areas"
-msgstr "Нямате защитени зони"
-
-msgid "Add user"
-msgstr "Добави потребител"
-
-msgid "Group name"
-msgstr "Име на група"
-
-msgid "Group members"
-msgstr "Членове на група"
-
-msgid "Add group"
-msgstr "Добави група"
-
-msgid "Group"
-msgstr "Група"
-
-msgid "Add new protected area"
-msgstr "Добави нова защитена зона"
 
 msgid "Protected area was deleted successful!"
 msgstr "Защитената зона е изтрита успешно!"
@@ -3270,7 +4089,183 @@ msgstr "Обнови потребител"
 msgid "You have no users!"
 msgstr "Нямате потребители!"
 
-msgid "Error while authenticating!"
+#, fuzzy
+msgid "Install in progress..."
+msgstr "Добавяне..."
+
+#, fuzzy
+msgid "Deletion in progress..."
+msgstr "Изтриване..."
+
+#, fuzzy
+msgid "Are you sure to install this package?"
+msgstr "Уверени ли сте,че искате да изтриете тази заявка?"
+
+#, php-format
+msgid ""
+"This Package (%s, V%s) was deleted by your reseller. You can only uninstall "
+"this package!<br />Please delete the files and database for this package "
+"manually!"
+msgstr ""
+
+msgid "Installed Package which was deleted by your reseller!"
+msgstr ""
+
+#, fuzzy
+msgid "No software available"
+msgstr "Няма достъпни i-MSCP обновявания"
+
+msgid "required"
+msgstr ""
+
+msgid "not required"
+msgstr ""
+
+#, fuzzy
+msgid "You do not have permissions to install software"
+msgstr "Нямате достатъчно права за достъпа до този интерфейс!"
+
+#, fuzzy
+msgid "i-MSCP - application installer"
+msgstr "i-MSCP - Клиент/Мениджър за Планови Задачи"
+
+#, fuzzy
+msgid "Install software"
+msgstr "Инсталирайте Нов език"
+
+msgid "Software"
+msgstr ""
+
+#, fuzzy
+msgid "Version"
+msgstr "Закрий сесията"
+
+#, fuzzy
+msgid "Database"
+msgstr "SQL База данни"
+
+#, fuzzy
+msgid "Apps available"
+msgstr "Доступни IP"
+
+msgid "Software installation"
+msgstr ""
+
+#, fuzzy
+msgid "Software deleted successful."
+msgstr "Защитената зона е изтрита успешно!"
+
+msgid "Software will be deleted now."
+msgstr ""
+
+msgid "Database user list is empty!"
+msgstr "Списъкът с потребители на бази данни е празен!"
+
+msgid "At first you must create a database!"
+msgstr ""
+
+#, fuzzy
+msgid "Add new database"
+msgstr "Добави SQL база данни"
+
+#, fuzzy
+msgid "Software not found!"
+msgstr "Билета не е намерен!"
+
+#, php-format
+msgid "The directory -%1$s- was created!"
+msgstr ""
+
+#, fuzzy
+msgid "Please select the correct user for your database!"
+msgstr "Моля, изберете някой друг потребител(и)!"
+
+#, fuzzy
+msgid "You have to fill out inputs!"
+msgstr "Нямате група!"
+
+msgid "You cant't install outside from htdocs!"
+msgstr ""
+
+msgid "You choose a directory, which doesn't match with the domain directory!"
+msgstr ""
+
+#, php-format
+msgid "The directory -%1$s- doesn't exist. Please create it!"
+msgstr ""
+
+#, php-format
+msgid "Please select another directory! %1$s (%2$s) is installed there!"
+msgstr ""
+
+msgid "i-MSCP - Install Software"
+msgstr ""
+
+#, fuzzy
+msgid "Install Software"
+msgstr "Инсталирайте Нов език"
+
+#, fuzzy
+msgid "Database required"
+msgstr "Потребители на бази данни"
+
+#, fuzzy
+msgid "Select Domain"
+msgstr "Реален домейн"
+
+#, fuzzy
+msgid "back"
+msgstr "Назад"
+
+#, fuzzy
+msgid "install"
+msgstr "деинсталирай"
+
+#, fuzzy
+msgid "Install path"
+msgstr "Инсталиране"
+
+msgid "Create directory, if not exist!"
+msgstr ""
+
+#, fuzzy
+msgid "Select database"
+msgstr "База данни SQL"
+
+#, fuzzy
+msgid "SQL-User"
+msgstr "SQL потребител"
+
+#, fuzzy
+msgid "installed"
+msgstr "деинсталирай"
+
+msgid "Installation infos"
+msgstr ""
+
+#, fuzzy
+msgid "Software status:"
+msgstr "Статус на сървъра"
+
+msgid "Installation path:"
+msgstr ""
+
+#, fuzzy
+msgid "Used database:"
+msgstr "База данни SQL"
+
+msgid "You need a Database for this software"
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP - Software details"
+msgstr "i-MSCP - домейн/Детайли"
+
+#, fuzzy
+msgid "Software details"
+msgstr "Детайли заявка"
+
+msgid "Homepage"
 msgstr ""
 
 msgid "Please type user password!"
@@ -3287,6 +4282,12 @@ msgstr "Паролата на SQL потребителя беше успешно
 
 msgid "i-MSCP - Client/Change SQL User Password"
 msgstr "i-MSCP - Клиент/Промяна паролата на SQL потребител"
+
+#, fuzzy
+msgid ""
+"User does not exist or you do not have permission to access this interface."
+msgstr ""
+"Потребителя не съществува или Вие нямате право на достъпа до този интерфейс!"
 
 msgid "Change SQL user password"
 msgstr "Промяна паролата на SQL потребител"
@@ -3316,9 +4317,6 @@ msgstr "Достигнато е Ограничението за SQL потреб
 msgid "i-MSCP - Client/Add SQL Database"
 msgstr "i-MSCP - Клиент/Добави SQL база данни"
 
-msgid "Add SQL database"
-msgstr "Добави SQL база данни"
-
 msgid "Database name"
 msgstr "Име на базата данни"
 
@@ -3337,24 +4335,14 @@ msgstr "SQL Базата данни беше успешно изтрита!"
 msgid "SQL user was removed successfully!"
 msgstr "SQL потребителя е изтрит успешно!"
 
-msgid "Database user list is empty!"
-msgstr "Списъкът с потребители на бази данни е празен!"
-
 msgid "Database list is empty!"
 msgstr "Списъкът с бази данни е празен!"
 
 msgid "i-MSCP - Client/Manage SQL"
 msgstr "i-MSCP - Клиент/Управление SQL"
 
-msgid "Manage SQL"
-msgstr "Управление SQL"
-
 msgid "Database Name and Users"
 msgstr "Име и потребители на бази данни"
-
-#, fuzzy
-msgid "phpMyAdmin"
-msgstr "Вход в phpMyAdmin"
 
 msgid "Database users"
 msgstr "Потребители на бази данни"
@@ -3443,9 +4431,6 @@ msgstr "Поддомейна е добавен ф графика за добав
 msgid "i-MSCP - Client/Add Subdomain"
 msgstr "i-MSCP - Клиент/Добави поддомейн"
 
-msgid "Add subdomain"
-msgstr "Добави поддомейн"
-
 msgid "Subdomain data"
 msgstr "Данни за поддомейна"
 
@@ -3455,17 +4440,27 @@ msgstr "Име поддомейна"
 msgid "Directory tree mount point"
 msgstr "Точка за монтиране на папки"
 
-msgid "Please specify message subject!"
-msgstr "Моля, въведете тема на съобщението!"
+#, fuzzy
+msgid "i-MSCP - Manage Subdomain/Edit Subdomain"
+msgstr "i-MSCP - Админ/Управление IP"
 
-msgid "Your message was sent!"
-msgstr "Вашето съобщение беше изпратено!"
+#, fuzzy
+msgid "Manage subdomain"
+msgstr "Управление на домейни"
 
-msgid "i-MSCP - Support system - New ticket"
+#, fuzzy
+msgid "Edit subdomain"
+msgstr "Редакция на домейна"
+
+msgid "A Forward URL has to start with 'http://'"
+msgstr "УРЛ преадресацията трябва да започва с 'http://'"
+
+#, fuzzy
+msgid "i-MSCP - Support System - New ticket"
 msgstr "i-MSCP - Техно поддръжка - Нов билет"
 
-msgid "New ticket"
-msgstr "Нов билет"
+msgid "Please specify message subject!"
+msgstr "Моля, въведете тема на съобщението!"
 
 msgid "Low"
 msgstr "Нисък"
@@ -3478,12 +4473,6 @@ msgstr "Висок"
 
 msgid "Very high"
 msgstr "Много висок"
-
-msgid "ISPCP - Client/Webtools"
-msgstr "ISPCP - Клиент/Уеб-инструменти"
-
-msgid "Webtools"
-msgstr "Уеб-инструменти"
 
 msgid "Customize error pages for your domain"
 msgstr "Изберете страници с грешки за вашия домейна"
@@ -3503,126 +4492,39 @@ msgstr "Достъп към Вашата статистика"
 msgid "Manage protected areas, users and groups"
 msgstr "Управление защитени зони, потребители и групи"
 
-msgid "System tools"
-msgstr "Системни инструменти"
+msgid "Install various software with a few *clicks*"
+msgstr ""
 
-msgid "Statistics"
-msgstr "Статистика"
-
-msgid "Reseller statistics"
-msgstr "Статистика риселър"
-
-msgid "Admin log"
-msgstr "Админ Журнал"
-
-msgid "Logout"
-msgstr "Изход"
+msgid "{ADMIN} activated your software package"
+msgstr ""
 
 #, fuzzy
-msgid "i-MSCP database updates"
-msgstr "Обновявания i-MSCP"
-
-msgid "Custom menus"
-msgstr "Персоналное меню"
-
-msgid "Overview"
-msgstr "Преглед"
-
-msgid "User sessions"
-msgstr "Потребителиски сессии"
-
-msgid "Lostpw email setup"
-msgstr "Настройка за възстановяване на пароли"
-
-msgid "Rootkit Log"
-msgstr "Анти-взлом лог"
-
-msgid "Admin users"
-msgstr "Администратори"
-
-msgid "Normal users"
-msgstr "потребителии"
-
-msgid "System messages"
-msgstr "Системни съобшения"
-
-msgid "No new messages"
-msgstr "Няма нови съобщения "
-
-msgid "Server traffic"
-msgstr "Трафик на сървъра"
-
-msgid "Administrators list is empty!"
-msgstr "Списъкът с администратори е празен!"
-
-msgid "Creation date"
-msgstr "Дата на създаване"
-
-msgid "Created by"
-msgstr "Автор "
-
-msgid "System"
-msgstr "Система"
-
-msgid "Resellers list is empty!"
-msgstr "Списъкът с риселъри е празен!"
-
-msgid "Switch to user interface"
-msgstr "Превключи на потребителски интерфейс"
-
-msgid "Switch"
-msgstr "Переключит"
-
-msgid "Not found user records matching the search criteria!"
-msgstr "Не е намерен запис за потребител отговарящ на критериите на търсене!"
-
-msgid "view aliases"
-msgstr "Преглед псевдоними"
-
-msgid "Users list is empty!"
-msgstr "Списъкът с потребители е празен!"
-
-msgid "Details"
-msgstr "Детайли"
+msgid ""
+"Dear {RESELLER},\n"
+"\tYour uploaded a software package was succesful activated by {ADMIN}.\n"
+"\n"
+"\tDetails:\n"
+"\tPackage Name: {SOFTWARE}\n"
+"\tPackage ID: {SOFTWARE_ID}\n"
+"\n"
+"\tPlease login into your i-MSCP control panel for more details."
+msgstr ""
 
 #, fuzzy
-msgid "Edit domain"
-msgstr "Редакция на домейна"
+msgid " was deleted by {ADMIN}!"
+msgstr "IP удалён!"
 
-msgid "Are you sure you want to change the status of domain account?"
-msgstr "Сигурни ли сте,че искате да промените статуса на домейн акаунта?"
-
-msgid "Administrators"
-msgstr "Администратори"
-
-msgid "Resellers"
-msgstr "Риселъри"
-
-msgid "Search"
-msgstr "Търсене"
-
-#, fuzzy
-msgid "Expire date"
-msgstr "Дата на заявката"
-
-#, php-format
-msgid "%1$s you are now logged as %2$s"
-msgstr "%1$s Вие се влезли като %2$s"
-
-msgid "Go back"
-msgstr "Назад"
-
-msgid "OK"
-msgstr "Ок"
-
-msgid "Suspended"
-msgstr "Отсранен"
-
-msgid "Error"
-msgstr "Грешка"
-
-msgid "i-MSCP - Order Panel"
-msgstr "i-MSCP - Панел за заявки"
+msgid ""
+"Dear {RESELLER},\n"
+"\t\tYour uploaded software was deleted by {ADMIN}.\n"
+"\n"
+"\tDetails:\n"
+"\tPackage Name: {SOFTWARE}\n"
+"\tPackage ID: {SOFTWARE_ID}\n"
+"\n"
+"\tMessage from {ADMIN}:\n"
+"\t"
+msgstr ""
 
 #, php-format
 msgid "%.2f PB"
@@ -3647,69 +4549,6 @@ msgstr "%.2f Кб"
 #, php-format
 msgid "%d B"
 msgstr "%d Б"
-
-#, php-format
-msgid "File %s does not exists or cannot be reached!"
-msgstr ""
-
-msgid "Error while trying to obtain list of network cards!"
-msgstr ""
-
-#, php-format
-msgid "This IP (%s) is not assigned to any network card!"
-msgstr ""
-
-#, fuzzy
-msgid "Days"
-msgstr "Ден"
-
-#, fuzzy
-msgid "Hours"
-msgstr "Час"
-
-#, fuzzy
-msgid "Minute"
-msgstr "минути"
-
-#, fuzzy
-msgid "Minutes"
-msgstr "минути"
-
-msgid "Couldn't check for updates! Website not reachable."
-msgstr "Не е възможна проверка за обновявания! Сайтът не отговаря."
-
-msgid "Email and FTP accounts"
-msgstr "Email и FTP акаунти"
-
-msgid "Add mail user"
-msgstr "Добави пощенска кутия"
-
-msgid "PhpMyAdmin"
-msgstr ""
-
-msgid "Filemanager"
-msgstr "Файл Мениджър"
-
-msgid "Web statistics"
-msgstr "Web статистика"
-
-msgid "Group/User management"
-msgstr "Группа/Мениджър потребители"
-
-msgid "Email Accounts"
-msgstr "Пощенски кутии"
-
-msgid "FTP Accounts"
-msgstr "FTP Акаунти"
-
-msgid "Update Hosting Package"
-msgstr "Обнови Хостинг-Пакет"
-
-msgid "Add DNS zone's record"
-msgstr ""
-
-msgid "Manage SSL certificate"
-msgstr ""
 
 msgid "Domain mail"
 msgstr "Домейн mail"
@@ -3760,7 +4599,51 @@ msgid ""
 "\n"
 "You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
 "\n"
-"Statistics: http://{USERNAME}/stats/\n"
+"Statistics: {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}/{USERNAME}/stats/\n"
+"User name: {USERNAME}\n"
+"Password: {PASSWORD}\n"
+"\n"
+"Best wishes with i-MSCP!\n"
+"The i-MSCP Team.\n"
+"\n"
+msgstr ""
+"\n"
+"\n"
+"Здравейте {NAME}!\n"
+"\n"
+"за вас беше създаден нов акаунт.\n"
+"Информация за вашия акаунт:\n"
+"\n"
+"Тип потребител: {USERTYPE}\n"
+"Потребителско име: {USERNAME}\n"
+"Парола: {PASSWORD}\n"
+"\n"
+"Препоръчваме Ви да сменяте често вашата парола, след первото Ви влизане.\n"
+"\n"
+"Вие можете да влезете сега на адрес: {BASE_SERVER_VHOST_PREFIX}"
+"{BASE_SERVER_VHOST}\n"
+"\n"
+"С най-добри пожелания i-MSCP!\n"
+"Екипът на i-MSCP.\n"
+"\n"
+
+#, fuzzy
+msgid ""
+"\n"
+"\n"
+"Hello {NAME}!\n"
+"\n"
+"A new i-MSCP account has been created for you.\n"
+"Your account information:\n"
+"\n"
+"User type: {USERTYPE}\n"
+"User name: {USERNAME}\n"
+"Password: {PASSWORD}\n"
+"\n"
+"Remember to change your password often and the first time you login.\n"
+"\n"
+"You can login right now at {BASE_SERVER_VHOST_PREFIX}{BASE_SERVER_VHOST}\n"
+"\n"
 "User name: {USERNAME}\n"
 "Password: {PASSWORD}\n"
 "\n"
@@ -3910,6 +4793,40 @@ msgstr ""
 "\n"
 
 #, fuzzy
+msgid "Your message has been sent."
+msgstr "Вашето съобщение беше изпратено!"
+
+#, fuzzy
+msgid "Your message has been sent"
+msgstr "Вашето съобщение беше изпратено!"
+
+msgid "Ticket was closed!"
+msgstr "Билет закрит!"
+
+msgid "Ticket was reopened!"
+msgstr "Билет перезагружен!"
+
+#, fuzzy
+msgid "Never"
+msgstr "Ниво"
+
+#, fuzzy
+msgid "You don't have support tickets."
+msgstr "Няма билети за поддръжка."
+
+msgid "[New]"
+msgstr "[Нов]"
+
+msgid "[Re]"
+msgstr ""
+
+msgid "Open ticket"
+msgstr "Отворен билет"
+
+msgid "Close ticket"
+msgstr "Затворен билет"
+
+#, fuzzy
 msgid "[Ticket]"
 msgstr "[Билет] {SUBJ}"
 
@@ -3989,12 +4906,9 @@ msgid "Wrong Second Level Domain syntax: <b>%s</b>"
 msgstr ""
 
 msgid ""
-"ERROR: ACE labels are not allowed. Please use the ToUnicode equivalent.<br /"
+"ACE labels are not allowed. Please use the ToUnicode equivalent.<br /"
 "><small>Example: for ACE label <b>xn--bcher-kva</b> use <b>bücher</b> "
 "instead</small>."
-msgstr ""
-
-msgid "ERROR: PHP extension 'mcrypt' not loaded!"
 msgstr ""
 
 #, php-format
@@ -4006,7 +4920,7 @@ msgid "You have been blocked for %d minutes."
 msgstr "Вие сте блокирани за %d минут"
 
 #, fuzzy
-msgid "You entered an incorrect username/password."
+msgid "You entered an incorrect username!"
 msgstr "Въвели сте некоректна парола."
 
 msgid "System is currently under maintenance! Only administrators can login."
@@ -4031,26 +4945,15 @@ msgstr "%s's лош статус на акаунта!"
 msgid "%s's domain expired!"
 msgstr ""
 
+#, fuzzy
+msgid "You entered an incorrect password!"
+msgstr "Въвели сте некоректна парола."
+
 msgid "Request from foreign host was blocked!"
 msgstr "Запитване от външен хост беше блокирано!"
 
 msgid "You do not have permission to access this interface!"
 msgstr "Нямате достатъчно права за достъпа до този интерфейс!"
-
-msgid "Domain alias"
-msgstr "Псевдоними на домейни"
-
-msgid "Manage Orders"
-msgstr "Управление на заявки"
-
-msgid "Order settings"
-msgstr "Заявки за настройка"
-
-msgid "Order email setup"
-msgstr "Заявка за имейл настройка"
-
-msgid "Please fill up both data fields for password!"
-msgstr "Моля, запълнете двете полета за парола!"
 
 msgid "Addition in progress"
 msgstr "Добавяне..."
@@ -4067,14 +4970,12 @@ msgstr "Разрешени"
 msgid "Being suspended"
 msgstr "Преостановени"
 
-msgid "Awaiting for approval"
+#, fuzzy
+msgid "Awaiting approval"
 msgstr "очакване за подтвърждение"
 
 msgid "Unknown error"
 msgstr "Неизвестна Грешка"
-
-msgid "hide aliases"
-msgstr "скрити псевдоними"
 
 #, fuzzy
 msgid "You have reached your domains limit.<br />You cannot add more domains!"
@@ -4169,11 +5070,80 @@ msgstr ""
 "Имате Ограничено дисково пространство!<br>Вие не можете да добавите "
 "потребител с безгранично дисковото пространство!"
 
-msgid "i-MSCP Error"
-msgstr "Грешка i-MSCP"
+msgid "{RESELLER} uploaded a new software package"
+msgstr ""
 
-msgid "Error Message"
-msgstr "Съобщение за грешка"
+#, fuzzy
+msgid ""
+"Dear {ADMIN},\n"
+"\t{RESELLER} has uploaded a new software package.\n"
+"\n"
+"\tDetails:\n"
+"\tReseller ID: {RESELLER_ID}\n"
+"\tPackage Name: {SOFTWARE}\n"
+"\tPackage ID: {SOFTWARE_ID}\n"
+"\n"
+"\tPlease login into your i-MSCP control panel for more details."
+msgstr ""
+
+#, fuzzy
+msgid "Installation details"
+msgstr "Детайли за хостинга"
+
+msgid ""
+"Please set now the Username and Password for the later Login in the "
+"Application. (Required fiels!)"
+msgstr ""
+
+#, fuzzy
+msgid "Login username"
+msgstr "Неправилно потребителско име!"
+
+#, fuzzy
+msgid "Login password"
+msgstr "Забравена парола"
+
+#, fuzzy
+msgid "Emailadress"
+msgstr "Пощенски кутии"
+
+#, fuzzy
+msgid "enabled"
+msgstr "Включено"
+
+#, fuzzy
+msgid "Application Description"
+msgstr "Описание"
+
+#, fuzzy
+msgid "You do not have permissions to install application yet"
+msgstr "Нямате достатъчно права за достъпа до този интерфейс!"
+
+msgid "Vendor hompage"
+msgstr ""
+
+msgid "Installed in software depot"
+msgstr ""
+
+msgid "Installed in reseller depot"
+msgstr ""
+
+#, fuzzy
+msgid "Start installation"
+msgstr "Интернационализация"
+
+#, fuzzy
+msgid "Are you sure to install this package from the webdepot?"
+msgstr "Сигурни ли сте,че искате да възстановите архивното копие?"
+
+msgid "No software in webdepot found!"
+msgstr ""
+
+msgid "Websoftware depot list was updated"
+msgstr ""
+
+msgid "No update for the websoftware depot list available"
+msgstr ""
 
 msgid "You have a new order"
 msgstr "Имате нова заявка"
@@ -4208,6 +5178,10 @@ msgstr ""
 #, fuzzy
 msgid "Order confirmation"
 msgstr "Обща информация"
+
+#, fuzzy
+msgid "Domain already exists on the system!"
+msgstr "домейн с такова име вече съществува в системата!"
 
 #, fuzzy
 msgid "This hosting plan is not available for purchase"
@@ -4246,6 +5220,11 @@ msgstr "Стойност"
 
 msgid "Personal Data"
 msgstr "Персоналниданни"
+
+msgid ""
+"(To avoid abuse, we ask you to write the combination of letters on the above "
+"picture into the field \"Security code\")"
+msgstr "(Въведете комбинацията от символиот изображението \"Секретен код\")"
 
 #, fuzzy
 msgid "Security code was incorrect!"
@@ -4310,27 +5289,8 @@ msgstr "Такса за настройка"
 msgid "Performance"
 msgstr "Производителност"
 
-#, fuzzy
-msgid "i-MSCP Reseller: Add Alias"
-msgstr "i-MSCP Риселър : Добави псевдоним"
-
-msgid "There is no user records for this reseller to add an alias for."
-msgstr ""
-
-msgid "i-MSCP - Manage Domain/Alias"
-msgstr "i-MSCP - Управление домейни/Псевдоними"
-
-msgid "Manage alias"
-msgstr "Управление на псевдоними"
-
-msgid "Real domain"
-msgstr "Реален домейн"
-
 msgid "You have no alias records."
 msgstr "Няма записи за псевдоними."
-
-msgid "Activate"
-msgstr "Активирай"
 
 msgid "Domain alias added for termination!"
 msgstr "Псевдонимът на домейна е добавен за приключване!"
@@ -4359,6 +5319,22 @@ msgstr "заявката за псевдоним на домейна е акти
 msgid "Ordered domain alias not activated!"
 msgstr "заявката за псевдоним на домейна НЕ е активирана!"
 
+msgid "i-MSCP - Manage Domain/Alias"
+msgstr "i-MSCP - Управление домейни/Псевдоними"
+
+msgid "Manage alias"
+msgstr "Управление на псевдоними"
+
+msgid "Real domain"
+msgstr "Реален домейн"
+
+msgid "There is no user records for this reseller to add an alias for."
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP Reseller: Add Alias"
+msgstr "i-MSCP Риселър : Добави псевдоним"
+
 msgid "i-MSCP - Circular"
 msgstr ""
 
@@ -4368,45 +5344,8 @@ msgstr ""
 msgid "i-MSCP - Domain/Edit"
 msgstr "i-MSCP - домейн/Редакция"
 
-#, fuzzy
-msgid "Unchanged"
-msgstr "Промяна"
-
-#, fuzzy
-msgid "Never"
-msgstr "Ниво"
-
-#, fuzzy
-msgid "- 1 Month"
-msgstr "Месец"
-
-#, fuzzy
-msgid "+ 1 Month"
-msgstr "Месец"
-
-#, fuzzy
-msgid "+ 2 Months"
-msgstr "Месец"
-
-#, fuzzy
-msgid "+ 3 Months"
-msgstr "Месец"
-
-#, fuzzy
-msgid "+ 6 Months"
-msgstr "Месец"
-
-#, fuzzy
-msgid "+ 1 Year"
-msgstr "Година"
-
-#, fuzzy
-msgid "+ 2 Years"
-msgstr "Година"
-
-#, fuzzy, php-format
-msgid "The <em>%s</em> service cannot be disabled!"
-msgstr "Услугата <em>%s</em> не может да бъде Забранена! "
+msgid "Domain properties could not be updated!"
+msgstr "Настройките на домейна не могат да бъдат променени!"
 
 #, fuzzy, php-format
 msgid "The <em>%s</em> have to be disabled!"
@@ -4423,6 +5362,12 @@ msgstr "Услугата <em>%s</em> не может да бъде ограни�
 #, fuzzy, php-format
 msgid "The <em>%s</em> service cannot be unlimited!"
 msgstr "Услугата <em>%s</em> не може да бъде без ограничение! "
+
+msgid "i-MSCP - Reseller/Main Index"
+msgstr "i-MSCP - Риселър/Главна"
+
+msgid "View details"
+msgstr "Преглед детайли"
 
 msgid "i-MSCP - Reseller/Add hosting plan"
 msgstr "i-MSCP - Риселър/Добави хостинг-план"
@@ -4445,12 +5390,6 @@ msgstr "i-MSCP - Риселър/Редакция хостинг-план"
 
 msgid "View hosting plan"
 msgstr "Преглед хостинг-план"
-
-msgid "i-MSCP - Reseller/Main Index"
-msgstr "i-MSCP - Риселър/Главна"
-
-msgid "View details"
-msgstr "Преглед детайли"
 
 msgid "User accounts"
 msgstr "потребители"
@@ -4477,6 +5416,17 @@ msgstr "%1$d / %2$d от <b>%3$d</b>"
 msgid "%1$d / %2$d of <b>unlimited</b>"
 msgstr "%1$d / %2$d от <b>без Ограничение</b>"
 
+msgid "No Ip statistics to be show."
+msgstr ""
+
+#, fuzzy
+msgid "i-MSCP - Reseller/IP Usage"
+msgstr "i-MSCP - Риселър/Смяна на езика"
+
+#, fuzzy
+msgid "Reseller/IP usage statistics"
+msgstr "Статистика риселър"
+
 msgid "i-MSCP - Reseller/Change Language"
 msgstr "i-MSCP - Риселър/Смяна на езика"
 
@@ -4489,48 +5439,6 @@ msgstr "Управление заявки"
 #, fuzzy
 msgid "Activation Link"
 msgstr "Активация имайл"
-
-msgid "Wrong order ID!"
-msgstr "Неверна Заявка ID!"
-
-msgid "Order Cancelled: resellers maximum exceeded!"
-msgstr ""
-
-msgid "Wrong domain name syntax!"
-msgstr "Неправилен синтаксис за име на домейн!"
-
-msgid "User added!"
-msgstr "Потребителя е добавен!"
-
-msgid "Customer order was removed successful!"
-msgstr "Клиента заявка успешно е изтрита!"
-
-msgid "i-MSCP - Reseller/Order details"
-msgstr "i-MSCP - Риселър/Детайли заявка"
-
-msgid "Order data updated successfully!"
-msgstr "данните на заявката са успешно обновени!"
-
-msgid "Order date"
-msgstr "Дата на заявката"
-
-msgid "Hosting plan"
-msgstr "Хостинг-план"
-
-msgid "Hosting details"
-msgstr "Детайли за хостинга"
-
-msgid "Order details"
-msgstr "Детайли заявка"
-
-msgid "Customer data"
-msgstr "данни клиент"
-
-msgid "Are you sure you want to delete this order?"
-msgstr "Уверени ли сте,че искате да изтриете тази заявка?"
-
-msgid "Add to the system"
-msgstr "Добави в системата"
 
 msgid "i-MSCP - Reseller/Order settings"
 msgstr "i-MSCP - Риселър/Настройки заявкаа"
@@ -4562,11 +5470,53 @@ msgstr "Обнови заявката"
 msgid "ID"
 msgstr ""
 
+msgid "Customer data"
+msgstr "данни клиент"
+
 msgid "Order"
 msgstr "заявка"
 
+msgid "Hosting plan"
+msgstr "Хостинг-план"
+
+msgid "Are you sure you want to delete this order?"
+msgstr "Уверени ли сте,че искате да изтриете тази заявка?"
+
 msgid "Add/Details"
 msgstr "Добави/Детали"
+
+msgid "Wrong order ID!"
+msgstr "Неверна Заявка ID!"
+
+msgid "Order Cancelled: resellers maximum exceeded!"
+msgstr ""
+
+msgid "Wrong domain name syntax!"
+msgstr "Неправилен синтаксис за име на домейн!"
+
+msgid "User added!"
+msgstr "Потребителя е добавен!"
+
+msgid "Customer order was removed successful!"
+msgstr "Клиента заявка успешно е изтрита!"
+
+msgid "i-MSCP - Reseller/Order details"
+msgstr "i-MSCP - Риселър/Детайли заявка"
+
+msgid "Order data updated successfully!"
+msgstr "данните на заявката са успешно обновени!"
+
+msgid "Order date"
+msgstr "Дата на заявката"
+
+msgid "Hosting details"
+msgstr "Детайли за хостинга"
+
+msgid "Order details"
+msgstr "Детайли заявка"
+
+msgid "Add to the system"
+msgstr "Добави в системата"
 
 msgid "Order Canceled: resellers maximum exceeded!"
 msgstr ""
@@ -4586,8 +5536,138 @@ msgstr "Имайл - Възстановяване на парола"
 msgid "Lostpw link"
 msgstr "Връзка към възстановяване на парола"
 
+#, fuzzy
+msgid "Please specify a subject."
+msgstr "Моля, въведете тема!"
+
+#, fuzzy
+msgid "Auto email template data updated."
+msgstr "Шаблон за авто разпращане е променен!"
+
 msgid "i-MSCP - Reseller/Manage users/Email setup"
 msgstr "i-MSCP - Риселър/Управление потребители/Настройка поща"
+
+msgid "Package installed successfully... Awaiting release from Admin!"
+msgstr ""
+
+msgid "This software is installed on following domain(s):"
+msgstr ""
+
+msgid "This package is not installed yet"
+msgstr ""
+
+#, fuzzy
+msgid "waiting for activation"
+msgstr "очакване за подтвърждение"
+
+msgid "activated (Softwaredepot)"
+msgstr ""
+
+#, fuzzy
+msgid "activated"
+msgstr "Активирай"
+
+msgid "Installing your uploaded package. Please refresh the site."
+msgstr ""
+
+msgid ""
+"After your upload the package it will be installed on your systems.<br /"
+">Refresh your site to see the new status!"
+msgstr ""
+
+msgid "Failure in package. Deleting!"
+msgstr ""
+
+msgid ""
+"Check your package. There is an error inside!<br />Refresh your site to see "
+"the new status!"
+msgstr ""
+
+msgid "The package is corrupt. Please correct it!"
+msgstr ""
+
+msgid ""
+"Please contact the administrator!<br />Ask him for the permissions to use "
+"this package.<br />It is not allowed to upload this packet two times.<br /"
+">Refresh your site to see the new status!"
+msgstr ""
+
+msgid "This package already exist in the administrator software depot!"
+msgstr ""
+
+msgid "Package already exist in your software depot!"
+msgstr ""
+
+msgid ""
+"Check your own uploads!<br />Ask the administrator if you don't find the "
+"package.<br />It is not allowed to upload this packages two times.<br /"
+">Refresh your site to see the new status!"
+msgstr ""
+
+msgid "This package already exist in your software depot!"
+msgstr ""
+
+#, fuzzy
+msgid "You do not have any software uploaded yet"
+msgstr "Нямате нови заявки!"
+
+#, fuzzy
+msgid "You do not have permissions to upload software"
+msgstr "Нямате достатъчно права за достъпа до този интерфейс!"
+
+#, php-format
+msgid ""
+"ERROR: Could not upload the file. Max. upload filesize (%1$d MB) reached?"
+msgstr ""
+
+#, php-format
+msgid ""
+"ERROR: Your remote filesize (%1$d B) is lower than 1 Byte. Please check your "
+"URL!"
+msgstr ""
+
+#, php-format
+msgid ""
+"ERROR: Max. remote filesize (%1$d MB) is reached. Your remote file ist %2$d "
+"MB"
+msgstr ""
+
+msgid "ERROR: Remote File not found!"
+msgstr ""
+
+msgid "ERROR: Could not upload the file. File not found!"
+msgstr ""
+
+msgid "Software available"
+msgstr ""
+
+msgid "Software-Synonym"
+msgstr ""
+
+#, fuzzy
+msgid "Software-Version"
+msgstr "Закрий сесията"
+
+#, fuzzy
+msgid "Software status"
+msgstr "Статус на сървъра"
+
+msgid "Software upload"
+msgstr ""
+
+#, fuzzy
+msgid "Requires Database?"
+msgstr "SQL База данни"
+
+#, fuzzy
+msgid "Database prefix"
+msgstr "Име на базата данни"
+
+msgid "Link to authors homepage"
+msgstr ""
+
+msgid "i-MSCP - Support system - New ticket"
+msgstr "i-MSCP - Техно поддръжка - Нов билет"
 
 msgid "i-MSCP - Reseller: Support System: View Ticket"
 msgstr "i-MSCP - Риселър : Служба Поддръжка: Преглед Билети"
@@ -4596,28 +5676,8 @@ msgid "i-MSCP - Users/Add user"
 msgstr "i-MSCP - потребители/Добави потребител"
 
 #, fuzzy
-msgid "1 Month"
-msgstr "Месец"
-
-#, fuzzy
-msgid "2 Months"
-msgstr "Месец"
-
-#, fuzzy
-msgid "3 Months"
-msgstr "Месец"
-
-#, fuzzy
-msgid "6 Months"
-msgstr "Месец"
-
-#, fuzzy
-msgid "1 Year"
-msgstr "Година"
-
-#, fuzzy
-msgid "2 Years"
-msgstr "Година"
+msgid "Domain expire date"
+msgstr "Параметри домейна"
 
 msgid "Choose hosting plan"
 msgstr "Изберете хостинг-план"
@@ -4662,6 +5722,9 @@ msgstr "i-MSCP - Потребители/Редакция"
 msgid "Users list"
 msgstr "Списък потребители"
 
+msgid "This reseller has no domains yet."
+msgstr "Този риселър няма домейни засега."
+
 msgid "i-MSCP - Users"
 msgstr "i-MSCP - потребителии"
 
@@ -4681,8 +5744,9 @@ msgstr ""
 msgid "View aliases"
 msgstr "Преглед псевдоними"
 
-msgid "You have no users."
-msgstr "Нямате потребители."
+#, fuzzy
+msgid "You do not have customers."
+msgstr "Нямате нови заявки!"
 
 #, php-format
 msgid "%1$s of %2$s MB"
@@ -4709,8 +5773,117 @@ msgstr "Потребителя е закрит!"
 msgid "User not terminated!"
 msgstr "Потребителя не е приключен!"
 
-msgid "This reseller has no domains yet."
-msgstr "Този риселър няма домейни засега."
+#~ msgid "i-MSCP  a Virtual Hosting Control System"
+#~ msgstr "i-MSCP - Виртуална Система за Управление на Хостинг"
+
+#~ msgid "Please enter your login information"
+#~ msgstr "Моля, въведете Вашите данни за вход"
+
+#~ msgid "Retrieving lost passwords is currently not possible"
+#~ msgstr "Възстановяването на загубената парола в момента е невъзможно"
+
+#~ msgid "i-MSCP - Virtual Hosting Control System"
+#~ msgstr "i-MSCP - Виртуална Система за Управление на Хостинг"
+
+#~ msgid "Retry"
+#~ msgstr "Отново"
+
+#~ msgid "Request password"
+#~ msgstr "Необходима е парола"
+
+#, fuzzy
+#~ msgid "Do you want to execute the Updates now?"
+#~ msgstr "Уверени ли сте,че искате да изтриете тази заявка?"
+
+#, fuzzy
+#~ msgid "A database update is available"
+#~ msgstr "Няма достъпни i-MSCP обновявания"
+
+#, fuzzy
+#~ msgid "Panel Default"
+#~ msgstr "По подразбиране"
+
+#, fuzzy
+#~ msgid "Settings saved!"
+#~ msgstr "Настройките са запазени !"
+
+#, fuzzy
+#~ msgid ""
+#~ "ERROR: Only letters, numbers, dash and underscore are allowed for "
+#~ "services names!"
+#~ msgstr ""
+#~ "Грешка: Само латински символи, числа, тире и ниска черта се разрешават!"
+
+#~ msgid "Message was sent."
+#~ msgstr "съобщението беше изпратено."
+
+#~ msgid "ISPCP - Client/Webtools"
+#~ msgstr "ISPCP - Клиент/Уеб-инструменти"
+
+#~ msgid "i-MSCP Error"
+#~ msgstr "Грешка i-MSCP"
+
+#~ msgid "Error Message"
+#~ msgstr "Съобщение за грешка"
+
+#, fuzzy
+#~ msgid "Unchanged"
+#~ msgstr "Промяна"
+
+#, fuzzy
+#~ msgid "- 1 Month"
+#~ msgstr "Месец"
+
+#, fuzzy
+#~ msgid "+ 1 Month"
+#~ msgstr "Месец"
+
+#, fuzzy
+#~ msgid "+ 2 Months"
+#~ msgstr "Месец"
+
+#, fuzzy
+#~ msgid "+ 3 Months"
+#~ msgstr "Месец"
+
+#, fuzzy
+#~ msgid "+ 6 Months"
+#~ msgstr "Месец"
+
+#, fuzzy
+#~ msgid "+ 1 Year"
+#~ msgstr "Година"
+
+#, fuzzy
+#~ msgid "+ 2 Years"
+#~ msgstr "Година"
+
+#, fuzzy
+#~ msgid "1 Month"
+#~ msgstr "Месец"
+
+#, fuzzy
+#~ msgid "2 Months"
+#~ msgstr "Месец"
+
+#, fuzzy
+#~ msgid "3 Months"
+#~ msgstr "Месец"
+
+#, fuzzy
+#~ msgid "6 Months"
+#~ msgstr "Месец"
+
+#, fuzzy
+#~ msgid "1 Year"
+#~ msgstr "Година"
+
+#, fuzzy
+#~ msgid "2 Years"
+#~ msgstr "Година"
+
+#~ msgid "You have no users."
+#~ msgstr "Нямате потребители."
 
 #~ msgid "Services"
 #~ msgstr "Услуги"
@@ -4749,18 +5922,12 @@ msgstr "Този риселър няма домейни засега."
 #~ "Несъвместимост между current_ftp_cnt и фактическите FTP потребители "
 #~ "съставлява: %1$d != %2$d"
 
-#~ msgid "Edit reseller aborted!"
-#~ msgstr "Редакцията на риселъра беше прекратена!"
-
 #, fuzzy
 #~ msgid "Domains limit<br><i>(-1 disabled, 0 unlimited)</i>"
 #~ msgstr "Ограничение поддомейни<br><i>(-1 забранено, 0 без Ограничение)</i>"
 
 #~ msgid "Incorrect forward syntax"
 #~ msgstr "Некоректен синтакс на <i>пренасочване</i>!"
-
-#~ msgid "A Forward URL has to start with 'http://'"
-#~ msgstr "УРЛ преадресацията трябва да започва с 'http://'"
 
 #~ msgid "Entered passwords differ from the another!"
 #~ msgstr "Въведените пароли са различни!"
