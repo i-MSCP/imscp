@@ -63,7 +63,7 @@
                             <td><label for="pass_rep">{TR_PASSWORD_REPEAT}</label>
                             </td>
                             <td>
-                                <input type="password" name="pass" id="pass_rep" value="{VAL_PASSWORD}" />
+                                <input type="password" name="pass_rep" id="pass_rep" value="{VAL_PASSWORD}" />
                             </td>
                         </tr>
                         <tr>
