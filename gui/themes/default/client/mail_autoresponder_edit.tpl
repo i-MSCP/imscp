@@ -48,11 +48,12 @@
 		</div>
 
 		<div class="body">
+			<h2 class="support"><span>{TR_EDIT_MAIL_AUTORESPONDER}</span></h2>
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
 
-			<h2 class="support"><span>{TR_EDIT_MAIL_AUTORESPONDER}</span></h2>
+
 			<form name="manage_users_common_frm" method="post" action="">
 				<fieldset>
 					<legend>{TR_ARSP_MESSAGE}</legend>

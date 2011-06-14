@@ -112,11 +112,12 @@ function changeDom(wath) {
 		</div>
 
 		<div class="body">
+            			<h2 class="ftp"><span>{TR_ADD_FTP_USER}</span></h2>
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
 
-			<h2 class="ftp"><span>{TR_ADD_FTP_USER}</span></h2>
+
 			<form name="add_ftp_acc_frm" method="post" action="ftp_add.php">
 				<table>
 					<tr>

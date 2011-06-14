@@ -56,11 +56,12 @@
 
 
 		<div class="body">
+            			<h2 class="hdd"><span>{TR_BACKUP}</span></h2>
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
 
-			<h2 class="hdd"><span>{TR_BACKUP}</span></h2>
+
 			<h2>{TR_DOWNLOAD_DIRECTION}</h2>
 			<ol>
 				<li>{TR_FTP_LOG_ON}</li>

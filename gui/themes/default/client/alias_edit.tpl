@@ -62,12 +62,12 @@
 		</div>
 
 		<div class="body">
-
+			<h2 class="domains"><span>{TR_MANAGE_DOMAIN_ALIAS}</span></h2>
 			<!-- BDP: page_message -->
 				<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
 
-			<h2 class="domains"><span>{TR_MANAGE_DOMAIN_ALIAS}</span></h2>
+
 
 			<form name="edit_alias_frm" method="post" action="alias_edit.php?edit_id={ID}">
 				<fieldset>

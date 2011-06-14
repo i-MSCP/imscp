@@ -48,13 +48,13 @@
 			{MENU}
 		</div>
 
-
 		<div class="body">
+			<h2 class="users"><span>{TR_ADD_GROUP}</span></h2>
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
 
-			<h2 class="users"><span>{TR_ADD_GROUP}</span></h2>
+
 
 			<form name="add_user_group" method="post" action="protected_group_add.php">
 				<table>

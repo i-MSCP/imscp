@@ -74,11 +74,13 @@
 
 
 		<div class="body">
+			<h2 class="apps_installer"><span>{TR_INSTALL_SOFTWARE}</span></h2>
+
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
 			
-			<h2 class="apps_installer"><span>{TR_INSTALL_SOFTWARE}</span></h2>
+
 			<table>
 				<tr>
 					<th><div style="float:left">{TR_SOFTWARE}</div><div style="float:left"><a href="{TR_SOFTWARE_ASC}" class="app_icon i_app_asc"></a><a href="{TR_SOFTWARE_DESC}" class="app_icon i_app_desc"></a></div></th>

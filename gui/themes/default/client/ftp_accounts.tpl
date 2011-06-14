@@ -57,6 +57,7 @@
 		</div>
 
 		<div class="body">
+            			<h2 class="ftp"><span>{TR_FTP_USERS}</span></h2>
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
@@ -65,7 +66,7 @@
 			<div class="info">{FTP_MSG}</div>
 			<!-- EDP: ftp_message -->
 
-			<h2 class="ftp"><span>{TR_FTP_USERS}</span></h2>
+
 			<table>
 				<thead>
 					<tr>

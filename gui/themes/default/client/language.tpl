@@ -48,11 +48,13 @@
 
 
 		<div class="body">
+            			<h2 class="multilanguage"><span>{TR_LANGUAGE}</span></h2>
+
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
 
-			<h2 class="multilanguage"><span>{TR_LANGUAGE}</span></h2>
+
 
 			<form name="client_language_frm" method="post" action="language.php">
 				<table>

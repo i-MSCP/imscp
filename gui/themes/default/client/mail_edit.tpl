@@ -77,12 +77,12 @@
 		</div>
 
 		<div class="body">
-
+			<h2 class="email"><span>{TR_EDIT_EMAIL_ACCOUNT}</span></h2>
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
 
-			<h2 class="email"><span>{TR_EDIT_EMAIL_ACCOUNT}</span></h2>
+
 			<form name="edit_mail_acc_frm" method="post" action="mail_edit.php?id={MAIL_ID}">
 				<fieldset>
 					<legend>{EMAIL_ACCOUNT}</legend>

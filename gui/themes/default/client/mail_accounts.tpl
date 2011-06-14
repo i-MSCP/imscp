@@ -57,11 +57,13 @@
 		</div>
 
 		<div class="body">
+            			<h2 class="email"><span>{TR_MAIL_USERS}</span></h2>
+
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
 
-			<h2 class="email"><span>{TR_MAIL_USERS}</span></h2>
+
 			<!-- BDP: mail_message -->
 			<div class="info">{MAIL_MSG}</div>
 			<!-- EDP: mail_message -->

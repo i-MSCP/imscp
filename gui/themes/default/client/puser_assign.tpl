@@ -49,11 +49,12 @@
 
 
 		<div class="body">
+			<h2 class="users"><span>{TR_USER_ASSIGN}</span></h2>
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
 
-			<h2 class="users"><span>{TR_USER_ASSIGN}</span></h2>
+
 
 			<form name="puser_assign" method="post" action="protected_user_assign.php?uname={UNAME}">
 				<fieldset>

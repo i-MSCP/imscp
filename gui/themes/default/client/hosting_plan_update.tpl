@@ -47,11 +47,12 @@
 		</div>
 
 		<div class="body">
+            			<h2 class="purchasing"><span>{TR_MENU_UPDATE_HP}</span></h2>
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
 
-			<h2 class="purchasing"><span>{TR_MENU_UPDATE_HP}</span></h2>
+
 
 			<table>
 					<!-- BDP: hosting_plans -->

@@ -48,11 +48,13 @@
 
 
 		<div class="body">
+            			<h2 class="webtools"><span>{TR_MENU_WEBTOOLS}</span></h2>
+
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
 
-			<h2 class="webtools"><span>{TR_MENU_WEBTOOLS}</span></h2>
+
 
 		   	<a href="protected_areas.php">{TR_HTACCESS}</a>
 			<p>{TR_HTACCESS_TEXT}</p>

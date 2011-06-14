@@ -90,12 +90,12 @@
 		</div>
 
 		<div class="body">
-		
+			<h2 class="domains"><span>{TR_ADD_SUBDOMAIN}</span></h2>
 			<!-- BDP: page_message -->
 				<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
 
-			<h2 class="domains"><span>{TR_ADD_SUBDOMAIN}</span></h2>
+
 			<form name="client_add_subdomain_frm" method="post" action="subdomain_add.php">
 				<table>
 					<tr>
@@ -131,8 +131,8 @@
 							<label for="status">{TR_ENABLE_FWD}</label>
 						</td>
 						<td colspan=2">
-							<input type="radio" name="status" {CHECK_EN} value="1" onChange='setForwardReadonly(this);' />{TR_ENABLE}<br />
-							<input type="radio" name="status" {CHECK_DIS} value="0" onChange='setForwardReadonly(this);' />{TR_DISABLE}
+							<input type="radio" name="status" {CHECK_EN} value="1" onchange='setForwardReadonly(this);' />{TR_ENABLE}<br />
+							<input type="radio" name="status" {CHECK_DIS} value="0" onchange='setForwardReadonly(this);' />{TR_DISABLE}
 						</td>
 					</tr>
 					<tr>

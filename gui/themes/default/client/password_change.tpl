@@ -47,11 +47,12 @@
 		</div>
 
 		<div class="body">
+			<h2 class="password"><span>{TR_CHANGE_PASSWORD}</span></h2>
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
 
-			<h2 class="password"><span>{TR_CHANGE_PASSWORD}</span></h2>
+
 
 			<form name="client_change_pass_frm" method="post" action="password_change.php">
 				<table>

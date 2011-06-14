@@ -56,11 +56,12 @@
 
 
 		<div class="body">
+			<h2 class="users"><span>{TR_USER_MANAGE}</span></h2>
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
 
-			<h2 class="users"><span>{TR_USER_MANAGE}</span></h2>
+
 			<!-- BDP: usr_msg -->
 			<div class="warning">{USER_MESSAGE}</div>
 			<!-- EDP: usr_msg -->

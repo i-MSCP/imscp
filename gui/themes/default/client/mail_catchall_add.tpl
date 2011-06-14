@@ -61,13 +61,14 @@
 		</div>
 
 		<div class="body">
+			<h2 class="email"><span>{TR_CREATE_CATCHALL_MAIL_ACCOUNT}</span></h2>
 			<div id="fwd_help" class="tooltip">{TR_FWD_HELP}</div>
 
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
 
-			<h2 class="email"><span>{TR_CREATE_CATCHALL_MAIL_ACCOUNT}</span></h2>
+
 
 			<form name="create_catchall_frm" method="post" action="mail_catchall_add.php">
 				<table>

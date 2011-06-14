@@ -127,12 +127,12 @@
 		</div>
 
 		<div class="body">
-
+			<h2 class="email"><span>{TR_ADD_MAIL_USER}</span></h2>
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
 
-			<h2 class="email"><span>{TR_ADD_MAIL_USER}</span></h2>
+
 
 			<form name="add_mail_acc_frm" method="post" action="mail_add.php">
 				<table>
