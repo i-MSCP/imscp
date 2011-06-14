@@ -244,7 +244,7 @@ class iMSCP_Debug_Bar implements iMSCP_Events_Listeners_Interface
                 #iMSCPdebug_debug li {margin:0 0 10px 0;}
                 #iMSCPdebug_debug .clickable { cursor:pointer }
                 #iMSCPdebug_toggler { font-weight:bold; background:#BFBFBF; }
-                .iMSCPdebug_span { border: 1px solid #999; border-right:0px; background:#DFDFDF; padding: 5px 5px; }
+                .iMSCPdebug_span { border: 1px solid #999; border-right:0px; background:#DFDFDF; padding: 6px 5px; }
                 .iMSCPdebug_last { border: 1px solid #999; }
                 .iMSCPdebug_panel { text-align:left; position:absolute;bottom:21px;width:600px; max-height:400px; overflow:auto; display:none; background:#E8E8E8; padding:5px; border: 1px solid #999; }
                 .iMSCPdebug_panel .pre {font: 11px/1.4em Monaco, Lucida Console, monospace; margin:0 0 0 22px}
