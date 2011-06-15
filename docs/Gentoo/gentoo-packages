@@ -9,6 +9,7 @@ dev-lang/php
 dev-libs/apr-util
 dev-libs/cyrus-sasl
 dev-libs/geoip
+dev-libs/expat
 dev-libs/libIDL
 dev-libs/openssl
 dev-perl/BerkeleyDB

@@ -55,6 +55,7 @@ Tickets:
     - Fixed #29: Wrong link during Setup
     - Fixed #30: Domainname Error during setup
     - Fixed #31: [FreeBSD] An error occurred during setup process
+    - Fixed #32: Needed package to install CPAN XML::Parser
     - Fixed #34: Task - Default and Disabled Headers picture mismatch
     - Fixed #35: Defect - Missing back stick in SQL
     - Fixed #36: Deprecated: Call-time pass
