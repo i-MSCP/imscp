@@ -21,6 +21,7 @@ cyrus-sasl-gssapi
 cyrus-sasl-plain
 cyrus-sasl-md5
 cyrus-sasl-ntlm
+dialog
 expect
 gcc
 httpd
@@ -74,6 +75,8 @@ perl-TimeDate
 perl-URI
 perl-Unix-Syslog
 perl-HTML-Parser
+perl-libwww-perl
+perl-URI
 php
 php-bcmath
 php-cli
@@ -90,6 +93,7 @@ php-xml
 postfix
 proftpd
 proftpd-mysql
+redhat-lsb
 rkhunter
 spamassassin
 system-config-bind
@@ -97,5 +101,5 @@ tar
 unixODBC
 unzip
 wget
-redhat-lsb
-dialog
+expat
+expat-devel

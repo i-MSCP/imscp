@@ -24,6 +24,8 @@ gcc
 gzip
 iptables
 lha
+libexpat1
+libexpat-devel
 libidn-devel
 liblzma0
 libmysqlclient-devel
