@@ -134,8 +134,8 @@
 							<td><input type="text" name="usercity" id="usercity" value="{VL_USRCITY}" /></td>
 						</tr>
 						<tr>
-							<td><label for="useratate">{TR_STATE_PROVINCE}</label></td>
-							<td><input type="text" id="useratate" name="userstate"  value="{VL_USRSTATE}" /></td>
+							<td><label for="userstate">{TR_STATE_PROVINCE}</label></td>
+							<td><input type="text" id="userstate" name="userstate"  value="{VL_USRSTATE}" /></td>
 						</tr>
 						<tr>
 							<td><label for="usercountry">{TR_COUNTRY}</label></td>
