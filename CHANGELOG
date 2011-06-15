@@ -79,3 +79,4 @@ Tickets:
     - Fixed #73: Problem with Mail
     - Fixed #75: Bug - Can't change Admin password
     - Fixed #76: Bug - Typo in SQL query
+    - Fixed #78: Bug - Typo error in HTML

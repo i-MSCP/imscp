@@ -120,7 +120,7 @@
 						</tr>
 						<tr>
 							<td><label for="useratate">{TR_STATE}</label></td>
-							<td><input id="useratate" type="text" name="userstate" id="userstate" value="{VL_USRSTATE}" /></td>
+							<td><input id="useratate" type="text" name="userstate" value="{VL_USRSTATE}" /></td>
 						</tr>
 						<tr>
 							<td><label for="usercountry">{TR_COUNTRY}</label></td>

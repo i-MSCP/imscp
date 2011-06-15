@@ -46,18 +46,18 @@
 		</div>
 
 		<div class="body">
-            			<h2 class="user"><span>{TR_ADD_USER}</span></h2>
+            <h2 class="user"><span>{TR_ADD_USER}</span></h2>
+
 			<!-- BDP: page_message -->
 			<div class="{MESSAGE_CLS}">{MESSAGE}</div>
 			<!-- EDP: page_message -->
-
 
 			<!-- BDP: add_user -->
 			<form name="reseller_add_users_first_frm" method="post" action="user_add3.php">
 				<fieldset>
 					<legend>{TR_CORE_DATA}</legend>
 					<table>
-						<td style="width:300px;"><label for="username">{TR_USERNAME}</label></td>
+						<td style="width:300px;">{TR_USERNAME}</td>
 						<td>{VL_USERNAME}</td>
 						<tr>
 							<td><label for="password">{TR_PASSWORD}</label></td>
@@ -135,7 +135,7 @@
 						</tr>
 						<tr>
 							<td><label for="useratate">{TR_STATE_PROVINCE}</label></td>
-							<td><input type="text" id="useratate" name="userstate" id="userstate" value="{VL_USRSTATE}" /></td>
+							<td><input type="text" id="useratate" name="userstate"  value="{VL_USRSTATE}" /></td>
 						</tr>
 						<tr>
 							<td><label for="usercountry">{TR_COUNTRY}</label></td>
