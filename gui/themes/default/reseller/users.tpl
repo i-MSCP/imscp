@@ -61,9 +61,11 @@
         </div>
         <div class="body">
             <h2 class="users"><span>{TR_MANAGE_USERS}</span></h2>
+
             <!-- BDP: page_message -->
             <div class="{MESSAGE_CLS}">{MESSAGE}</div>
             <!-- EDP: page_message -->
+
             <!-- BDP: users_search -->
             <form action="users.php" method="post" name="search_user" id="search_user">
                 <a class="icon i_show_alias" href="#" onclick="return sbmt_details(document.forms[0],'{SHOW_DETAILS}');">{TR_VIEW_DETAILS}</a>
@@ -86,6 +88,7 @@
                 <input type="hidden" name="details" value="" />
             </form>
             <!-- EDP: users_search -->
+
             <!-- BDP: users_list -->
             <table>
                 <thead>
@@ -110,21 +113,19 @@
                         <td>{DISK_USAGE}</td>
                         <td>
                             <a class="icon i_identity" href="domain_details.php?domain_id={DOMAIN_ID}">{TR_DETAILS}</a>
-                            <a class="icon i_details" href="change_user_interface.php?to_id={USER_ID}">{CHANGE_INTERFACE}</a>
+
                             <!-- BDP: edit_option -->
-                            <a class="icon i_edit" href="user_edit.php?edit_id={USER_ID}">{TR_EDIT_USER}</a>
                             <a class="icon i_user" href="domain_edit.php?edit_id={DOMAIN_ID}">{TR_EDIT_DOMAIN}</a>
-                            <a class="icon i_stats" href="domain_statistics.php?month={VL_MONTH}&year={VL_YEAR}&domain_id={DOMAIN_ID}">{TR_STAT}</a>
+                            <a class="icon i_edit" href="user_edit.php?edit_id={USER_ID}">{TR_EDIT_USER}</a>
                             <!-- EDP: edit_option -->
 
-                            <!-- BDP: usr_delete_show -->
-                            <!-- EDP: usr_delete_show -->
-                            
-                            <!-- BDP: usr_delete_link -->
+                            <a class="icon i_details" href="change_user_interface.php?to_id={USER_ID}">{CHANGE_INTERFACE}</a>
+
+                            <a class="icon i_stats" href="domain_statistics.php?month={VL_MONTH}&year={VL_YEAR}&domain_id={DOMAIN_ID}">{TR_STAT}</a>
                             <a class="icon i_delete" href="domain_delete.php?domain_id={DOMAIN_ID}">{ACTION}</a>
-                            <!-- EDP: usr_delete_link -->
                         </td>
                     </tr>
+
                     <!-- BDP: user_details -->
                     <tr>
                         <td colspan="5">
@@ -136,19 +137,22 @@
                 </tbody>
             </table>
             <!-- EDP: users_list -->
+
             <div class="paginator">
+
                 <!-- BDP: scroll_next_gray -->
                 <a class="icon i_next_gray" href="#">&nbsp;</a>
                 <!-- EDP: scroll_next_gray -->
-                <!-- BDP: scroll_next -->
-                <a class="icon i_next" href="manage_users.php?psi={NEXT_PSI}" title="next">next</a>
-                <!-- EDP: scroll_next -->
                 <!-- BDP: scroll_prev -->
                 <a class="icon i_prev" href="manage_users.php?psi={PREV_PSI}" title="previous">previous</a>
                 <!-- EDP: scroll_prev -->
+
                 <!-- BDP: scroll_prev_gray -->
                 <a class="icon i_prev_gray" href="#">&nbsp;</a>
                 <!-- EDP: scroll_prev_gray -->
+                <!-- BDP: scroll_next -->
+                <a class="icon i_next" href="manage_users.php?psi={NEXT_PSI}" title="next">next</a>
+                <!-- EDP: scroll_next -->
             </div>
         </div>
     </body>
